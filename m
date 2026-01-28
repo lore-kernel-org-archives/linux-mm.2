@@ -4,87 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 156B8D25B47
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 11:37:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E3C9D25B44
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 11:37:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 587196B0088; Wed, 28 Jan 2026 06:37:17 -0500 (EST)
+	id D67E66B0089; Wed, 28 Jan 2026 06:37:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5345F6B0089; Wed, 28 Jan 2026 06:37:17 -0500 (EST)
+	id D12106B008A; Wed, 28 Jan 2026 06:37:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 436836B008A; Wed, 28 Jan 2026 06:37:17 -0500 (EST)
+	id C148B6B008C; Wed, 28 Jan 2026 06:37:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 308A16B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:37:17 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BFA1659BEB
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:37:16 +0000 (UTC)
-X-FDA: 84381171672.23.64F6B67
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0882540008
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:37:14 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gMlOBtzn;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id B1A6B6B0089
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:37:54 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 77B6216012A
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:37:54 +0000 (UTC)
+X-FDA: 84381173268.05.9396C44
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A57F320006
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:37:52 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=jECwzv8B;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=qhFYLLD9;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769600235;
+	s=arc-20220608; t=1769600272;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UlKQChddLdxZPeqYj8vUb1zR2eafXVPlDxieXVjqwOI=;
-	b=j1XkYOweOh5/mZQbJI06g11YaBeMlpaykPxeviaGKXZ/pKlZGI43+dPsWfXfWKzvzhc7sB
-	QdNpM0Nj7GRqn17lFGlPFmbAfU1owaZ0rzogTtbD9rLwliETPisc35uykQUYlTW/GeJaaH
-	wsYyI8ntstV/lRBdquaaypgF6ez3bj8=
+	bh=wtyO7XYUaz9mOuesnWv95Jo4C0Zc65c4VM15labksX8=;
+	b=rv0pMqeAlLPjkIswSF0n5QiiPu1sRsR48fQFNnBZAn3PbcjiFUC3Hh7dzSQQI3/O6SDwfi
+	0wSjiUZRJW3V180glbb66Z0m9SlVHJYXCvuYnAjo/IgxYtphVRg5H6X+5VzjDGT1QZIE71
+	MAeAF+NQnim1e5KxbUm5bpjJjVOzv/A=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gMlOBtzn;
-	spf=pass (imf01.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769600235; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linutronix.de header.s=2020 header.b=jECwzv8B;
+	dkim=pass header.d=linutronix.de header.s=2020e header.b=qhFYLLD9;
+	spf=pass (imf03.hostedemail.com: domain of bigeasy@linutronix.de designates 193.142.43.55 as permitted sender) smtp.mailfrom=bigeasy@linutronix.de;
+	dmarc=pass (policy=none) header.from=linutronix.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769600272; a=rsa-sha256;
 	cv=none;
-	b=0ywmIxClIqmYyawb9wvnoERKGNfT0vGv3GKYqKDdJNzW3sIbnd1KNdqKlGrSw38i+ATSPo
-	mr5RT08uy6giucmIvh4qIhGz+/93rS/M3jo0soshN8PlNZYHKIg+UAtiXNwYs80rICzdn9
-	GbrRZRecZXFIiI2zkMMpQfTgzbiDcwo=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1164343494;
-	Wed, 28 Jan 2026 11:37:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A26EC4CEF1;
-	Wed, 28 Jan 2026 11:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769600233;
-	bh=zRZNkTKFTz5IxCRo3AGoh26bLjhm9IdzCS9p+cUNL/Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gMlOBtzneEAXPPCTjIDdg/6Y5GogWFlAZ0n6d05y6FtDGapTASUKqdEt4KQhwy7DG
-	 weWadp9FyWirxVb9vCJ0Oq+p8eobDPxMSToSvYOiySp9bTziNUMj8WfWXE+u9QRI8c
-	 vgVdWqOMYsPZ/fcD7eZOd54/9P+23i2GFvYqQJIvqBFPjiY9wC+xjjlS29pJVAsj/D
-	 ItmXB/K6VMjyUEGZd4VuQKY4BTtj/J8/VtZ0sQOn9wiZwPKUjvvy0+2nfE32ew6oKp
-	 yD1+Ue6jjs4oCOy5dQ64SSVELJIESavfu+YQq9VMxINdFIUlGAyZUHfL+CtRGQHdXX
-	 sSVqxlzetaXLg==
-Date: Wed, 28 Jan 2026 13:37:08 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 2/2] liveupdate: luo_file: remember retrieve() status
-Message-ID: <aXn05ADvj0X7N5bK@kernel.org>
-References: <20260126230302.2936817-1-pratyush@kernel.org>
- <20260126230302.2936817-3-pratyush@kernel.org>
+	b=MXlpIaWQpfZ/1cLoLMeGyxdZHFPZYz3IOb86a4WooMqggtLozC3NfP5OYokmzka8Cg/CE/
+	WhqKBBgSOJ1j8gwTiAET4nkBubLep0h2nNp0DtEMsiaNWUqciQX/P1uCUcz4kKMPlCCOxn
+	WXQGOcozyTTMJxCORdWa77m8hp+WNhc=
+Date: Wed, 28 Jan 2026 12:37:49 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1769600270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wtyO7XYUaz9mOuesnWv95Jo4C0Zc65c4VM15labksX8=;
+	b=jECwzv8BRRAbVPN1XHND+5m14GiJR1JxVaaes+gZcYKB3hkIlz+n8Z5JbRRfOSzpi+eESH
+	xFXOCta6VH50L2NLlym5L1ExphxEaYFBlZjnOYs0HGC/pRF+J4Q2/dniNngbA3SsLM2OgK
+	gYEj2ajwAqV7a2+vovTmeqy9mldXBN/AwYJ9feZOL1JAgNG6LodtJiJeB270J3bQmIuZl2
+	dR7rfXqQOhqEx3ZgQrk+3T6e7QHY7mzJrrz5sagI6AFydoGl6umcGrJWoRNU9DQpYGy1uT
+	KNOXuuVOCHSAUrf090UzRsY+8ZgwLkgnH/qBbCOeIP//nT7n2GYd6/UnQgM6mg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1769600270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wtyO7XYUaz9mOuesnWv95Jo4C0Zc65c4VM15labksX8=;
+	b=qhFYLLD9tfYykNB2DRE2Fk9t3+/bbeA+5JcJi0VnRgghHk9FVWEvsf5SMlVmXGU7PlFATQ
+	AmKZnTicB/bgCiAQ==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: Re: [PATCH v4 04/10] mm/vma: add+use vma lockdep acquire/release
+ defines
+Message-ID: <20260128113749.osNjwNqo@linutronix.de>
+References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
+ <fdae72441949ecf3b4a0ed3510da803e881bb153.1769198904.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260126230302.2936817-3-pratyush@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <fdae72441949ecf3b4a0ed3510da803e881bb153.1769198904.git.lorenzo.stoakes@oracle.com>
 X-Rspamd-Server: rspam11
-X-Stat-Signature: r3gsm9izh6mxhha6dqh8pyqpbk8raqwi
+X-Stat-Signature: juruyg418tkc9ipa87enbrbaujgqzxxy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0882540008
-X-HE-Tag: 1769600234-898816
-X-HE-Meta: U2FsdGVkX1/0SHtBfuKXrODnfJl5H3ueOiYsO3LIQlXgyHNnHpyrYMqoNpcrw9UEBnkbXpWGBuLPYtEoLKKpoGjevCMgu6ae94d6xcnc6i86GkDauFTroxqBqp6BTtHoq7wwB/tmDRjrUEii/1bp1baLCP7KozmlHi8r9nbYPnQR0zH9nSJkWaxxmMbCzMqGMivMfxwp/zP0BwzzJkPmPAuT5mxy+XcIkzXYY0pn84w7drUWqK5FmxljVFs0MCrnjCC9vsTaW7mqvO/qFkd4j6izUMUY//tIDpgj9XseK6T1bP0WhAuOjNnbfUV3H5OI0D1/Tt/kv2rlvJWEOBorHAarRHceZRksG85RpNZ+64NYz4rHCLMagdahOL9yXbtW2yzinlg+p1VXhetrimMI9kZ2UIiebqnd+QMAuI4BLP79w6LkEHUiB0aCfYTlLp3GF2ymfqrvtR59lLluZESOX1lyhSkZHCaT6+fn78A7sCg1HBwAsok7QeU0Pg5A9i9pD3YiLt8wV+8Ny8ZuNExxseOCuZz/+vRKWhp9bOjiADmJnusFcypfYCIkqc4hX53eOYkJ5yfmmOVoKj4OQYt+gnqGbqHrTDFS/6c9/H6W6fYkK8Fz92wkx8NmALiUrZ+s3VjNmv4DkkEpZoEshqhKQgE5n7gn8wjtYV14+2ymNS/cbIM2z+IsXxyZdsEl7pAL4nuNHKXvCahq9MLKIuyK6bojo2xaH99GKfN2ZyP7MIyxKrpenZNTNqjMgJJ2mxOV1h+EDbjyfxq77//JFFS381w2mYhAP4Dzt7ieAWxdr5GSTbb4wH41KqXFzRZ+KuLSmmuMKe6g1K5QE9UMxOTB0Rdx2CJMdpTsE2gQbvVZFAdt6OTDbjXYXJDnKyPXN/rtNmki02m93a9Z/18T3WMlQh8vF+lg5DEQZ9isThXY7rSMxyW7zqIZGZAJvm9N9NCgTzCKulJQ5WwnbXebBhX
- kBnB4kio
- FQBxWTZsSU5LJPs+yxCs9A3kbh6nL0lC+YcZ1eyv/8cmNybdiXyltB/77KfHIzTMbdw563YAHrjlWE5cYlmBoXWPUW8y/pSYv0to8v1gqfwjhq2FzSJHWHn1goPgrIORTvaJy1KuBNfap5uq7ZkSItdX1N0EN/DCKlRpJbs0vruEcqPC9b6jdXZzqpW2UGb1dD+kRm2vZB4CqSSiNprLJRrMF10yMKI2bAakgVUKX3/50J5gULGDzKLDIlq+zGhkiVqYfbv0gxev8YsqltzTZGrENsvJOOIJTn22YnaeyZvDY+JOoOIfMzdNHWY5xzAEB7rg/
+X-Rspamd-Queue-Id: A57F320006
+X-HE-Tag: 1769600272-51475
+X-HE-Meta: U2FsdGVkX1/fGwSLpbPaufodHvMyC7UM4ycPZb6Yz22h6Gd27IwyG/S8w05byv/kwjSOOAjsZII7W4FcYFxGdx6HQ6BKoW77CUIIlEUKbaJ/hTn66Was0wZ638NTNeXcEjOuoswCTuUq+8gkA8ACGERonRrPljlscokkclVH/4+i4ezLzJ0cBbZU/aNw3VgXYb64JVfhRpn1mAhfyEragbboo5ChA+RU8ovp9TpvVmRJOsWwTxFHZ97sCti52v+gQNkoOYyHSyC9BLrFCdA+cWDlIawMs7Fom+yjG7XvOpq6gWgnA6XsKL6VaDeQmVgfSbxCIXToGJfIa3Mk0V94wYogkE5sVBtUb75lZXMfm9ZN/jADzlzNAFo9+YEg/wIvq3n8WTl/ecroLSup55lmD87mBQc+mCmFPLAysoa1boC57RkNwoEC0mRpDN/jcSRufMRrO3bwbg2Qk3vklHQ3ZvXAoyqNIXRK7KAbTGYIh9N/1GIg1uLJIUBJgyx5j31Ht+VY1AJvUa/pu5s7zZPInDlzp5kq9xfDv8wPS67BONCccg0N8MiUDRfx9DpElmbdyto7CbAPHkOY5X8EW0PodYNwdHPRzlQuATLb76sawrlCiTUNgRJC+ZMwo2MNe76dmpXcKFHocsi5b8YNmRo6cmdtQoWFM/C5b4LVZ0ZEgn+I5oANEOryIRbNMhAgy+txYEfDsttYF/qO6G0U42VF0D1XrAxVOXEn05uxDF2Ji2lKg/gIEE/53ulVBx0T7kQ+QCx5GZ6XsHZMmY+MeCP+MFxszvs+dFKXEDfXG/8i11roFVWi1EV3eYyqCdVEVx30b7VssjEoQBMrF0ESbVu7TvtkUshNXaIZ9T+ah7I2yuafOQOQTCWq8N6sUwMt6mSpd9jUZIUKKqXoJ+Zd/X4ONa6Pfs7sjAjJJVX++blYSLS6Td85p9JG3LDQ2b9EDZqRs7QU7vry24FfPyFn+O2
+ 5UScr31W
+ fecvgWC+eFPj0rFgM6T/ga/cFZCPE+iZe+n3yNxb1OI63vy358DHj5YpalGLocEmBtOYdrilotxrS+/yJ35sI/xb8xGzBV++9mWBSPhPJyv8P49ug8o6NkyOffNm0ZpvzNnhiWJ4yuf9C0UuwO5QqvdsZv4f7Ceqz3hK2s6tXAG45kSlOB1qY2WIu/4Z3YAPcQ+wacqIV4UywVp8Ue0xpX2z8+s5dgx6mie1S
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,245 +115,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pratyush,
-
-On Tue, Jan 27, 2026 at 12:02:53AM +0100, Pratyush Yadav wrote:
-> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
-> 
-> LUO keeps track of successful retrieve attempts on a LUO file. It does
-> so to avoid multiple retrievals of the same file. Doing so will cause
-
-						  ^ Multiple  retrievals
-
-> problems because once the file is retrieved, the serialized data
-> structures are likely freed and the file is likely in a very different
-> state from what the code expects.
-> 
-> This is kept track of by the retrieved boolean in struct luo_file, and
-
-The 'retrieve' boolean in struct luo_file keeps track of this,
-
-> is passed to the finish callback so it knows what work was already done
-> and what it has left to do.
-> 
-> All this works well when retrieve succeeds. When it fails,
-> luo_retrieve_file() returns the error immediately, without ever storing
-> anywhere that a retrieve was attempted or what its error code was. This
-> results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
-> but nothing prevents it from trying this again.
-> 
-> The retry is problematic for much of the same reasons listed above. The
-> file is likely in a very different state than what the retrieve logic
-> normally expects, and it might even have freed some serialization data
-> structures. Attempting to access them or free them again is going to
-> break things.
-> 
-> For example, if memfd managed to restore 8 of its 10 folios, but fails
-> on the 9th, a subsequent retrieve attempt will try to call
-> kho_restore_folio() on the first folio again, and that will fail with a
-> warning since it is an invalid operation.
-> 
-> Apart from the retry, finish() also breaks. Since on failure the
-> retrieved bool in luo_file is never touched, the finish() call on
-> session close will tell the file handler that retrieve was never
-> attempted, and it will try to access or free the data structures that
-> might not exist, much in the same way as the retry attempt.
-> 
-> There is no sane way of attempting the retrieve again. Remember the
-> error retrieve returned and directly return it on a retry. Also pass
-> this status code to finish() so it can make the right decision on the
-> work it needs to do.
-> 
-> This is done by changing the bool to an integer. A value of 0 means
-> retrieve was never attempted, a positive value means it succeeded, and a
-> negative value means it failed and the error code is the value.
-> 
-> Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
-> ---
->  include/linux/liveupdate.h   |  7 ++++--
->  kernel/liveupdate/luo_file.c | 41 ++++++++++++++++++++++--------------
->  mm/memfd_luo.c               |  7 +++++-
->  3 files changed, 36 insertions(+), 19 deletions(-)
-> 
-> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
-> index a7f6ee5b6771..a543a3a8e837 100644
-> --- a/include/linux/liveupdate.h
-> +++ b/include/linux/liveupdate.h
-> @@ -21,7 +21,10 @@ struct file;
->   * struct liveupdate_file_op_args - Arguments for file operation callbacks.
->   * @handler:          The file handler being called.
->   * @retrieved:        The retrieve status for the 'can_finish / finish'
-> - *                    operation.
-> + *                    operation. A value of 0 means the retrieve has not been
-> + *                    attempted, a positive value means the retrieve was
-> + *                    successful, and a negative value means the retrieve failed,
-> + *                    and the value is the error code of the call.
->   * @file:             The file object. For retrieve: [OUT] The callback sets
->   *                    this to the new file. For other ops: [IN] The caller sets
->   *                    this to the file being operated on.
-> @@ -37,7 +40,7 @@ struct file;
->   */
->  struct liveupdate_file_op_args {
->  	struct liveupdate_file_handler *handler;
-> -	bool retrieved;
-> +	bool retrieve_sts;
-
-int retrieve_sts?
-
-and maybe spell out _status rather than _sts?
-
->  	struct file *file;
->  	u64 serialized_data;
->  	void *private_data;
-> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-> index 9f7283379ebc..82577b4cca2b 100644
-> --- a/kernel/liveupdate/luo_file.c
-> +++ b/kernel/liveupdate/luo_file.c
-> @@ -133,9 +133,12 @@ static LIST_HEAD(luo_file_handler_list);
->   *                 state that is not preserved. Set by the handler's .preserve()
->   *                 callback, and must be freed in the handler's .unpreserve()
->   *                 callback.
-> - * @retrieved:     A flag indicating whether a user/kernel in the new kernel has
-> + * @retrieve_sts:  Status code indicating whether a user/kernel in the new kernel has
->   *                 successfully called retrieve() on this file. This prevents
-> - *                 multiple retrieval attempts.
-> + *                 multiple retrieval attempts. A value of 0 means a retrieve()
-> + *                 has not been attempted, a positive value means the retrieve()
-> + *                 was successful, and a negative value means the retrieve()
-> + *                 failed, and the value is the error code of the call.
->   * @mutex:         A mutex that protects the fields of this specific instance
->   *                 (e.g., @retrieved, @file), ensuring that operations like
->   *                 retrieving or finishing a file are atomic.
-> @@ -160,7 +163,7 @@ struct luo_file {
->  	struct file *file;
->  	u64 serialized_data;
->  	void *private_data;
-> -	bool retrieved;
-> +	int retrieve_sts;
->  	struct mutex mutex;
->  	struct list_head list;
->  	u64 token;
-> @@ -293,7 +296,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
->  	luo_file->file = file;
->  	luo_file->fh = fh;
->  	luo_file->token = token;
-> -	luo_file->retrieved = false;
-> +	luo_file->retrieve_sts = 0;
-
-We kzalloc() luo_file, so this is not strictly required.
-
->  	mutex_init(&luo_file->mutex);
->  
->  	args.handler = fh;
-> @@ -569,7 +572,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
->  		return -ENOENT;
->  
->  	guard(mutex)(&luo_file->mutex);
-> -	if (luo_file->retrieved) {
-> +	if (luo_file->retrieve_sts > 0) {
->  		/*
->  		 * Someone is asking for this file again, so get a reference
->  		 * for them.
-> @@ -577,21 +580,27 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
->  		get_file(luo_file->file);
->  		*filep = luo_file->file;
->  		return 0;
-> +	} else if (luo_file->retrieve_sts < 0) {
-> +		/* Retrieve was attempted and it failed. Return the error code. */
-> +		return luo_file->retrieve_sts;
->  	}
-
-I'd put it before the check for > 0, i.e
-
-	if (luo_file->retrieve_sts < 0)
-		return luo_file->retrieve_sts;
-
-	if (luo_file->retrieve_sts > 0) 
-		...
-
-  
->  	args.handler = luo_file->fh;
->  	args.serialized_data = luo_file->serialized_data;
->  	err = luo_file->fh->ops->retrieve(&args);
-> -	if (!err) {
-> -		luo_file->file = args.file;
-> -
-> -		/* Get reference so we can keep this file in LUO until finish */
-> -		get_file(luo_file->file);
-> -		*filep = luo_file->file;
-> -		luo_file->retrieved = true;
-> +	if (err) {
-> +		/* Keep the error code for later use. */
-> +		luo_file->retrieve_sts = err;
-> +		return err;
->  	}
->  
-> -	return err;
-> +	luo_file->file = args.file;
-> +	/* Get reference so we can keep this file in LUO until finish */
-> +	get_file(luo_file->file);
-> +	*filep = luo_file->file;
-> +	luo_file->retrieve_sts = 1;
+On 2026-01-23 20:12:14 [+0000], Lorenzo Stoakes wrote:
+> --- a/include/linux/mmap_lock.h
+> +++ b/include/linux/mmap_lock.h
+> @@ -78,6 +78,37 @@ static inline void mmap_assert_write_locked(const stru=
+ct mm_struct *mm)
+=E2=80=A6
+> +/* Only meaningful if CONFIG_LOCK_STAT is defined. */
+> +#define __vma_lockdep_stat_mark_acquired(vma) \
+> +	lock_acquired(&vma->vmlock_dep_map, _RET_IP_)
 > +
-> +	return 0;
->  }
->  
->  static int luo_file_can_finish_one(struct luo_file_set *file_set,
-> @@ -607,7 +616,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
->  		args.handler = luo_file->fh;
->  		args.file = luo_file->file;
->  		args.serialized_data = luo_file->serialized_data;
-> -		args.retrieved = luo_file->retrieved;
-> +		args.retrieve_sts = luo_file->retrieve_sts;
->  		can_finish = luo_file->fh->ops->can_finish(&args);
->  	}
->  
-> @@ -624,7 +633,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
->  	args.handler = luo_file->fh;
->  	args.file = luo_file->file;
->  	args.serialized_data = luo_file->serialized_data;
-> -	args.retrieved = luo_file->retrieved;
-> +	args.retrieve_sts = luo_file->retrieve_sts;
->  
->  	luo_file->fh->ops->finish(&args);
->  }
-> @@ -779,7 +788,7 @@ int luo_file_deserialize(struct luo_file_set *file_set,
->  		luo_file->file = NULL;
->  		luo_file->serialized_data = file_ser[i].data;
->  		luo_file->token = file_ser[i].token;
-> -		luo_file->retrieved = false;
-> +		luo_file->retrieve_sts = 0;
 
-Here as well, we kzalloc() luo_file, so zeroing out of the fields is not
-strictly required.
+After going through the remaining series, I don't think I found a
+matching lock_contended(). So perf/ tracing just give you a few
+lock-acquired events. Wouldn't it make sense to also some
+lock_contended() events where the caller had to wait before it could
+acquire the lock?
 
->  		mutex_init(&luo_file->mutex);
->  		list_add_tail(&luo_file->list, &file_set->files_list);
->  	}
-> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
-> index a34fccc23b6a..ffc9f879833b 100644
-> --- a/mm/memfd_luo.c
-> +++ b/mm/memfd_luo.c
-> @@ -326,7 +326,12 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
->  	struct memfd_luo_folio_ser *folios_ser;
->  	struct memfd_luo_ser *ser;
->  
-> -	if (args->retrieved)
-> +	/*
-> +	 * If retrieve was successful, nothing to do. If it failed, retrieve()
-> +	 * already cleaned up everything it could. So nothing to do there
-> +	 * either. Only need to clean up when retrieve was not called.
-> +	 */
-> +	if (args->retrieve_sts)
->  		return;
->  
->  	ser = phys_to_virt(args->serialized_data);
-> -- 
-> 2.52.0.457.g6b5491de43-goog
-> 
-
--- 
-Sincerely yours,
-Mike.
+Sebastian
 
