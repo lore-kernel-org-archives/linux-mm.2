@@ -4,95 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7928DD35687
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 07:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D40D35662
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 08:00:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5453D6B0088; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
+	id 6AB0F6B0088; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F2F06B0089; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
+	id 6593A6B0089; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CADC6B008A; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
+	id 558016B008A; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2971D6B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 02:13:08 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 61241C1D96
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:13:07 +0000 (UTC)
-X-FDA: 84380506014.30.92E7179
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 100F840006
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:13:03 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 441706B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD133D39A3
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:00:50 +0000 (UTC)
+X-FDA: 84380626260.22.8CF96D2
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C684E40007
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:00:48 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GNnmKJXM;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	dkim=pass header.d=suse.com header.s=google header.b=UVbqIt+p;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769584385;
+	s=arc-20220608; t=1769587249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lDrDHaxzPUqDOGHtSAjw8UIOY7PPSYbUnoNgzHvr5I0=;
-	b=DOU4pk43tW8XGwHdvmoZ4FNkBoMMN+1j9+toa1ux69qbMeNVt0JOdwEVj6vA+P/CDMsc0g
-	HQ2lBgvGj0gbgyuMxtnci/O9XMTP52KDvfY0PESSo3BRD6aOWnKtlFQ2ODKAAb+m974avg
-	MPSGNRxWGiOe81cxkJ2ItXMOq/ZNGxI=
+	bh=aOz/mJtzptjbG9UgUIfZqgEEjdmwSn5lnDfZqyL3N2M=;
+	b=SWg6AYReLhpqzRSUW+e9StiD8oMjiJzri8u0u9PDSHBbv8AvIIEN8mvDOAUxA0MxBMIPwO
+	hWnhubA3b/DFZGx91PCtl48n5+0ZNzv48a3OZtzrmalKw59o3BJd7weoaEyg97j+gP5acI
+	sJOaN7nJe0Ij5eCq3a/pWQNcFTPAse4=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=GNnmKJXM;
-	spf=pass (imf01.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769584385; a=rsa-sha256;
+	dkim=pass header.d=suse.com header.s=google header.b=UVbqIt+p;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769587249; a=rsa-sha256;
 	cv=none;
-	b=4/6HuKxyY91Cd7VcE3WVvbWDHhvU8v4HpVRGwxv+jCqapEWt8pofLS8v0owha3+4nAodpA
-	1qUQzJViHslxEwGF4rHZN8m2+/E8JQ5DtOn1n6zax3WfEUX7Sxh3NmwQUKH0TGWUYNZLKG
-	aVcLE/PwLHhcEyYJFhwAQ5uZOgBYCL4=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=lDrDHaxzPUqDOGHtSAjw8UIOY7PPSYbUnoNgzHvr5I0=;
-	b=GNnmKJXMOHfYxhNgVBD7aQXjjtZO1CwYmiFKicdhYA6iwUIQjplxkGPLDZ4VvWG0Au+0kgJ/6
-	3bLirJmYGft9AUlO4U5m2sXFWL3IYjb1AgWi1zrTFAJ+M5YnT1v5GjvmtbE3GozIddRJ9kXs2Vk
-	cBVcPYqEiLnA567zo+XIgzo=
-Received: from mail.maildlp.com (unknown [172.19.162.144])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4f1D0H4cJyz12LDP;
-	Wed, 28 Jan 2026 15:09:03 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id E85124056C;
-	Wed, 28 Jan 2026 15:12:57 +0800 (CST)
-Received: from [10.174.179.179] (10.174.179.179) by
- kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 28 Jan 2026 15:12:57 +0800
-Message-ID: <c78b76c5-8709-44d0-85c3-feccd41b2ddd@huawei.com>
-Date: Wed, 28 Jan 2026 15:12:56 +0800
+	b=iJVW8oBsLJmdsEofNFU85N1kHswa12KFCx5aanLoy/IxmPLtKfDu9COeYXxTy4elbnMuVu
+	VSKg8t3oNqgE4RWY5QfEzqjdBo18nqrcM+ovbEA6c2jHc5UqTTnS4dH4p2RDLPgdc181rk
+	YiBoM2+s1jgpavJFG61ATqQfQAhHbw8=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4806f3fc50bso3588825e9.0
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 00:00:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1769587247; x=1770192047; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=aOz/mJtzptjbG9UgUIfZqgEEjdmwSn5lnDfZqyL3N2M=;
+        b=UVbqIt+pp+kSX25eIx0zedDrjpZCHceOuIE+v77Ouj0GS3oW3l9ivyqnmnlXnO5TZk
+         OBtVI89lNk1RlmPuT6uNTf44qCTd13fsCBny1pKmiq6irVW7ogNqCTwPp1xF0uBBgTJ6
+         wxqmgw4M3qB+9a5u8DGguVPP5TYmHABe8Wdflll0zTiWEsjzgCOUvgd8PvxF6IW3VTnT
+         Y+ULUc5L7RUAIXAaV9k5Qwc2sHcUWn1Z+UzUEddP/un8hJi+Jy/S1qXtExQSORT6DTGl
+         igB3Nw/i6m/R9rBsNGQ49croFFO+S/B3Z++UsOxYkvHMJX/UKBYY97pTHuhpNrO36A/2
+         IZ6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769587247; x=1770192047;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aOz/mJtzptjbG9UgUIfZqgEEjdmwSn5lnDfZqyL3N2M=;
+        b=qiOni2soIAsnu0UuchCuTShgawq5HxS2w37fKlqZmQ6w7jcNdYD7k+AFUoJt7E2M45
+         RzLnDZwKrVa498+E6LMUYHNu/Lw8CRyGqhMcK/QAFlT6xJG2/bu3W5YtOt7lJNvLawcP
+         AKyfu2j0kz52tg9tSivFiGQ9VoGvHd63gtMc9h/KGysNE/RqZKGKnGcIPObsOAgRx6Fx
+         q5J1WcsjFCZVRng2aUCuLTicGYFrPWM/Rgqm9To83qaRdsEYBWsdAP+qujZVWmZeiF4P
+         KVLJ03ylMSlmBQ1mYujBXc9W7rcfO4x1NME2V29IbuBAA9vM+Uv9/BX/PXXCgBmLVQqj
+         Mt4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWYHbuEORxdYkbO6lWJeqepsgI08I3AjkhJ/g1EX/YXGhlf/jJ6NFUUeZ5wheUTOahAGzZhj8rX6Q==@kvack.org
+X-Gm-Message-State: AOJu0YxC9I0N57MwKfo0/uFKXlfaxP9aKHZdgtgTh6sc6qnu5hGIdNzr
+	D4G8FC+nNe8WP/T15hfE2fU6pHaihqHIkzcoZ3zilci0uYtEUQfjr1N4yO3tzEPYJFw=
+X-Gm-Gg: AZuq6aLfhCFeOOVMA/BF9CkpDYd5yvGPVWAU7yDFQasq4SooW+0EmMlheru2jF1K5Yr
+	2V7nv8oX3bkQ4z8f0TMlDTdv3nWy8nTffLy+oG3awWD36RJvXtKUTF4iIKv3haNFbJvT+vrmnbp
+	WyIyUbkx4ucbzcWpX1TnpG7xO0EfP6plMap38zGpNxu2xy8kFmK2oBUU6pcU3CJYG9a9D8jNkqB
+	h4wEFCMLbTfk84bwM3d3TYgGqNrjo7rr9eMwXNg/M9EiwRjZnClUIbmokzNGxxoTs+RuQHu/5Pp
+	dCNeSfPMpfH6s+tkZ8kGGs8satNOxm743U8KL4SAODS+J0vCFgUf1yjPhgbL3Ct/ZlfeED2ZP1P
+	slLN0jnN6ZuavH0YKhUM5G8iXbGYnuhJelOG9a9dwy5sBfFuez9u14nOn1N9JaPbcoBTmpraMmV
+	y68kPypn3EjR0lxaiS94aWqYYt
+X-Received: by 2002:a05:600c:450b:b0:47e:e946:3a72 with SMTP id 5b1f17b1804b1-48069c5fed2mr44222975e9.27.1769587246995;
+        Wed, 28 Jan 2026 00:00:46 -0800 (PST)
+Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066bee7d0sm118235395e9.4.2026.01.28.00.00.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 00:00:46 -0800 (PST)
+Date: Wed, 28 Jan 2026 09:00:45 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH bpf-next v3 07/17] mm: introduce BPF OOM struct ops
+Message-ID: <aXnCLWYbQ8xZ2IyO@tiehlicka>
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+ <20260127024421.494929-8-roman.gushchin@linux.dev>
+ <aXiHok-3SKqLncCf@tiehlicka>
+ <7ia4tsw6hi93.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: mm: fix pass user prot to ioremap_prot in
- generic_access_phys
-To: <akpm@linux-foundation.org>, <david@kernel.org>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <zengheng4@huawei.com>,
-	<ryan.roberts@arm.com>, <anshuman.khandual@arm.com>,
-	<wangkefeng.wang@huawei.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20260127090129.412084-1-tujinjiang@huawei.com>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <20260127090129.412084-1-tujinjiang@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.179]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 100F840006
-X-Stat-Signature: 1dw9aksaty5agf1mx3i6wb9pznbzmskz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7ia4tsw6hi93.fsf@castle.c.googlers.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C684E40007
+X-Stat-Signature: y9p786hgsye96n9c19yd1mq7bupi4uzd
 X-Rspam-User: 
-X-HE-Tag: 1769584383-41772
-X-HE-Meta: U2FsdGVkX18roOjvZY9UT7TV1nEFJlyRCB4UBVSm/bPk/0bv5hpBoCO3NQKpC1XG0E3t4PeyoEkqz5S0iPFgGsUjrGdScvz4A6KWg35VMa5OaGG3mSZSy/4ymeLeNE74O3/2n3oXOQjpuEyhFYhss1Y+wcTZYQ/BVP1hZU5Yx5YXOivm/SibonX2QsUx+VqRcu81zP0dfUrbbg1XkFjgbmgiWKjDkl5AKRrs9+vgY6d27G8K/e/pT8olmbm9guCvH0TrqfdTtXCCw4ARZQqVvEcWop5zg7owHe8My2V6D4Ru+BW+4CLKHcke8SURWUQKO28hspmeZ53kvzQNx4sFBngpCqO7PM16TLGfGWEgOtQ5dR38ToK/d5cz9wKRJCHaeL9tYkiivsyLoaWubYRhwxI5sV2haSLIjDx6fHCxZWh4rN1TOmpATWL5u1022UQ15e2XxOr40c8xq3x6A4KD3B4zm9po4qSxrRfOylcFn10z+rlEOc3Vx3KiYK0rQC4nw6Yf6/UWY/3dkDl7PSN1lrMZNcXuaP1rNvaJFoWZUCtWV1uzhpZ5KN8Fl9+2uMvvZ4zbJf576TQ54vxbQwpdpyFG9WPvtSnkBsh/bpub+7MD1mjHaxDnCdiyIQ5E4GriJydi4rHG79U+nGK0fThNONxQ8R9uy7XrDQpV1BfO63CxQWSfPiqqt0vq9wDTejpkwCKbLayhNxZz/ew2BHfvSZQKTNF1umlSYRLx1T9/CrpCW23n/Mq/fsNpPTSwZ8QKKFNk87O4Lb5aB9X9sfoLNqSFgJrYyOQarV9f52D3sWjmvJdGOc/PcJt5pTulhmapCBBqBtsIWwAbZQX5C3sqNGIgwZ+emTBxGOc8pJoQVBpXIr6GeTjDT3977HQdJ3bVAcb46Ke5D4N2r0t8bhiav3WK1I+oAlF5BBoK3EsCGffszv+7XxBJ1TmihV+FJOAcHXw1XjCT/XG9ydslHqq
- ggpbfgaC
- W0Wd2Sw8aHwF3hE1nJtqX42osQpf2GcH8DtUHafC184JPcax94b7HoESXaKFtNH2900rssMs6K+w+TZvcEYAYGCLD6P3aah4qLdBQROV2CkPvmguyelYIPmBNTbCO0PZcZyJJgjPQBT5yW+pW0aF9yIvdyuAGvk5aAAmOrMlz9tT8cNuHVSwj8qTgWnOUw6O61MJW4tDLlGWOFgxK9OBlH5L+cytKv6m0ahp0dlBNYyyyLPrFXrcS2FSTp0FOoUCrZLIiluFNOnW9M6DHILnHSFR6YQgpziwwpd/qj7CzAGG3CgF/dNaDOUs4l24MQpx75+ryD+1IyC+jThA5G9quJCzOaaUkk8JqhFZRPpf4IJ0otU8BhP6BYXVN/vG9Fr9345hREMVUMXHRZ85ibiuS9qs/yPJz02lo3L5/
+X-HE-Tag: 1769587248-362058
+X-HE-Meta: U2FsdGVkX19WzkBIsGH3tjbNvYxtS6zk5eii3hyFiV1WyoZsE8h40jZC0gTwVSyTY+P9asFvXvlVNSDnf7JKjv1ErmaejiMQZnLSoirGTnJiFBtl7p2xCxVp+p/JewITbsIptdpN3O8R1fSbCgKu+XykIbokI+SyRipdHSc+bvAc1xebE9FiODo2TYNNb2y8usteFdYt+faXmh0nlQeov/G3Xd7bCuVx6uW8GBiogCIT3ugbu6TGx9NIuFhoprCUdRExcqJhm6HMv6Wte8HoJGZ91C5wZpEbyICZu2eQjNeTl7sZAYW/ClkDnaIGBFjakTTDslyKS5GPhwn1AjluIU9b+RJBjSNEHzyIUgoJBHEtKgEm4Q8n5Y668zY8Mv/NzvyrrsHUxP9U5nFL7kdCdcM9TsDCQaLDIuyzJkyxfYx60Chw0UmZu1cb2ad/7yMZyry+QjterpOIFzH0GIZc7XwZ2HGdj/sq4DZ4ZKw9RgvXkPHNcwY9mNrvB/avtmaZ9qbUIdxQ3HaqsuQ9BRtccy477vCtvcIJEmgNDB8UeXdUbpN+6+9w2jNEy7DJw6fa1RtS0Lrju4F/yg9V+5QzrliQGmQpPvchjuE9v8YCMcDOXmUf4ObDXYO0fxWgJh8KTCra9+2lgdrWwpXgpOuMSzR1BbpIMbTQjBsfX5XjE+ZtImsXDPPMNm6O8vYELiRwpFDqNUKbNeggmd+z7HQUocWrrkE1NJOMdiaowAt/wADghbaYTuOCXHaJKfBA3ZlnD5OjB1nU+ADj7zCDWYLQ98GT37E3d9DD3jMtqhrli2IOk+6bICWYgbClAHftq8xNCwx7k8eahWSgMoVrQKMVGQ0osG8sXF0WtDOchGcPq/7hkMRn6ItmwO9n4tuBoJSMKRqdcebx0tiMGnr2yWcHM9ZC7GxmKMO+XVuCl6E/g7/jESNxawwHcF50yzIMuDyn8BPwtcxhKqDyCEP0jU0
+ Sfev9TT6
+ ZAwi2erJtmJiJXbrxRf0nF+e3s32m0NmAZoRE5QgNtj5s6Gn06JGhFwrkDFc8YR33t4b7vJWHOyqZBck7Fk7IGz084M0TYpiWeRulCPf++xFepGH1rboFImBbp4DfUaUTUE+/qaK73tm04/rlxeovS9nxpR4jdJ6AiMZE9T7Y8Nf1YZ6Xy2SNBNFhjvRkb/MmRAol5jfu/fAujuZMuEchUgXUqT1KXl2sZOL7tnZoOeYGr4cDCFiMyXeKabYDEql/BkokjxFE3RNEQizWPFmkGWXcW1U9gpoJMTvE/stGr/PcjfUkrjFLhgTJpD99VyHApXX6uDoCO/nnFkEhREAZEzXyxl4Dqo4QKXI1lOgINqFfTiMDGQXIlnFuV1OylnhvrCrFwYUBYQmhcHKQ4pwOALGisKrKQLqclZ81
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,157 +125,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Tue 27-01-26 21:12:56, Roman Gushchin wrote:
+> Michal Hocko <mhocko@suse.com> writes:
+> 
+> > On Mon 26-01-26 18:44:10, Roman Gushchin wrote:
+> >> Introduce a bpf struct ops for implementing custom OOM handling
+> >> policies.
+> >> 
+> >> It's possible to load one bpf_oom_ops for the system and one
+> >> bpf_oom_ops for every memory cgroup. In case of a memcg OOM, the
+> >> cgroup tree is traversed from the OOM'ing memcg up to the root and
+> >> corresponding BPF OOM handlers are executed until some memory is
+> >> freed. If no memory is freed, the kernel OOM killer is invoked.
+> >> 
+> >> The struct ops provides the bpf_handle_out_of_memory() callback,
+> >> which expected to return 1 if it was able to free some memory and 0
+> >> otherwise. If 1 is returned, the kernel also checks the bpf_memory_freed
+> >> field of the oom_control structure, which is expected to be set by
+> >> kfuncs suitable for releasing memory (which will be introduced later
+> >> in the patch series). If both are set, OOM is considered handled,
+> >> otherwise the next OOM handler in the chain is executed: e.g. BPF OOM
+> >> attached to the parent cgroup or the kernel OOM killer.
+> >
+> > I still find this dual reporting a bit confusing. I can see your
+> > intention in having a pre-defined "releasers" of the memory to trust BPF
+> > handlers more but they do have access to oc->bpf_memory_freed so they
+> > can manipulate it. Therefore an additional level of protection is rather
+> > weak.
+> 
+> No, they can't. They have only a read-only access.
 
-在 2026/1/27 17:01, Jinjiang Tu 写道:
-> Here is a syzkaller error log:
->    [0000000020ffc000] pgd=080000010598d403, p4d=080000010598d403, pud=0800000125ddb403,
->                       pmd=080000007833c403, pte=01608000007fcfcf
->    Unable to handle kernel read from unreadable memory at virtual address ffff80008ea89000
->    KASAN: probably user-memory-access in range [0x0000000475448000-0x0000000475448007]
->    Mem abort info:
->      ESR = 0x000000009600000f
->      EC = 0x25: DABT (current EL), IL = 32 bits
->      SET = 0, FnV = 0
->      EA = 0, S1PTW = 0
->      FSC = 0x0f: level 3 permission fault
->    Data abort info:
->      ISV = 0, ISS = 0x0000000f, ISS2 = 0x00000000
->      CM = 0, WnR = 0, TnD = 0, TagAccess = 0
->      GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
->    swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000001244aa000
->    [ffff80008ea89000] pgd=100000013ffff403, p4d=100000013ffff403, pud=100000013fffe403,
-> 		     pmd=100000010a453403, pte=01608000007fcfcf
->    Internal error: Oops: 000000009600000f [#1] SMP
->    Modules linked in: team
->    CPU: 1 PID: 10840 Comm: syz.9.83 Kdump: loaded Tainted: G
->    Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
->    pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->    pc : __memcpy_fromio+0x80/0xf8
->    lr : generic_access_phys+0x20c/0x2b8
->    sp : ffff8000a0507960
->    x29: ffff8000a0507960 x28: 1ffff000140a0f44 x27: ffff00003833cfe0
->    x26: 0000000000000000 x25: 0000000000001000 x24: 0010000000000001
->    x23: ffff80008ea89000 x22: ffff00004ea63000 x21: 0000000000001000
->    x20: ffff80008ea89000 x19: ffff00004ea62000 x18: 0000000000000000
->    x17: 0000000000000000 x16: 0000000000000000 x15: ffff8000806f1e3c
->    x14: ffff8000806f1d44 x13: 0000000041b58ab3 x12: ffff7000140a0f23
->    x11: 1ffff000140a0f22 x10: ffff7000140a0f22 x9 : ffff800080579d24
->    x8 : 0000000000000004 x7 : 0000000000000003 x6 : 0000000000000001
->    x5 : ffff8000a0507910 x4 : ffff7000140a0f22 x3 : dfff800000000000
->    x2 : 0000000000001000 x1 : ffff80008ea89000 x0 : ffff00004ea62000
->    Call trace:
->      __memcpy_fromio+0x80/0xf8
->      generic_access_phys+0x20c/0x2b8
->      __access_remote_vm+0x46c/0x5b8
->      access_remote_vm+0x18/0x30
->      environ_read+0x238/0x3e8
->      vfs_read+0xe4/0x2b0
->      ksys_read+0xcc/0x178
->      __arm64_sys_read+0x4c/0x68
->      invoke_syscall+0x68/0x1a0
->      el0_svc_common.constprop.0+0x11c/0x150
->      do_el0_svc+0x38/0x50
->      el0_svc+0x50/0x258
->      el0t_64_sync_handler+0xc0/0xc8
->      el0t_64_sync+0x1a4/0x1a8
->    Code: 91002339 aa1403f7 8b190276 d503201f (f94002f8)
->
-> The local syzkaller first maps I/O address from /dev/mem to userspace,
-> overiding the stack vma with MAP_FIXED flag. As a result, when reading
-> /proc/$pid/environ, generic_access_phys() is called to access the region,
-> which triggers a PAN permission-check fault and causes a kernel access
-> fault.
->
-> The root cause is that generic_access_phys() passes a user pte to
-> ioremap_prot(), the user pte sets PTE_USER and PTE_NG bits.  Consequently,
-> any subsequent kernel-mode access to the remapped address raises a fault.
->
-> To fix it, define arch_mk_kernel_prot() to convert user prot to kernel
-> prot for arm64, and call arch_mk_kernel_prot() in generic_access_phys(),
-> so that a user prot is passed to ioremap_prot().
->
-> Fixes: 893dea9ccd08 ("arm64: Add HAVE_IOREMAP_PROT support")
-> Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
-> ---
-> Change since v1:
->   * fix in ther caller generic_access_phys(), suggested by Catalin Marinas.
->
->   arch/arm64/include/asm/io.h | 11 +++++++++++
->   mm/memory.c                 | 12 +++++++++++-
->   2 files changed, 22 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
-> index 83e03abbb2ca..fe8607eafab6 100644
-> --- a/arch/arm64/include/asm/io.h
-> +++ b/arch/arm64/include/asm/io.h
-> @@ -267,6 +267,17 @@ int arm64_ioremap_prot_hook_register(const ioremap_prot_hook_t hook);
->   
->   #define ioremap_prot ioremap_prot
->   
-> +#define arch_mk_kernel_prot arch_mk_kernel_prot
-> +static inline pgprot_t arch_mk_kernel_prot(pgprot_t user_prot)
-> +{
-> +	unsigned long kernel_prot_val;
-> +
-> +	kernel_prot_val = _PAGE_KERNEL & ~(PTE_WRITE | PTE_ATTRINDX_MASK);
-> +	kernel_prot_val |= pgprot_val(user_prot) & (PTE_WRITE | PTE_ATTRINDX_MASK);
-> +
-> +	return __pgprot(kernel_prot_val);
-> +}
+Could you explain this a bit more. This must be some BPF magic because
+they are getting a standard pointer to oom_control.
+ 
+> > It is also not really clear to me how this works while there is OOM
+> > victim on the way out. (i.e. tsk_is_oom_victim() -> abort case). This
+> > will result in no killing therefore no bpf_memory_freed, right? Handler
+> > itself should consider its work done. How exactly is this handled.
+> 
+> It's a good question, I see your point...
+> Basically we want to give a handler an option to exit with "I promise,
+> some memory will be freed soon" without doing anything destructive.
+> But keeping it save at the same time.
 
-I found I misunderstand the READ/WRITE permisson here.
-If the pte is writeale, the PTE_WRITE is 1, and PTE_RDONLY means dirty or not (With DBM).
-If the pte is read-only, the PTE_WRITE is 0, and PTE_RDONLY is 1.
+Yes, something like OOM_BACKOFF, OOM_PROCESSED, OOM_FAILED.
 
-Since generic_access_phys() have checked if the user can write with:
+> I don't have a perfect answer out of my head, maybe some sort of a
+> rate-limiter/counter might work? E.g. a handler can promise this N times
+> before the kernel kicks in? Any ideas?
 
-		if ((write & FOLL_WRITE) && !pte_write(pte))
-		return -EINVAL;
+Counters usually do not work very well for async operations. In this
+case there is oom_repaer and/or task exit to finish the oom operation.
+The former is bound and guaranteed to make a forward progress but there
+is no time frame to assume when that happens as it depends on how many
+tasks might be queued (usually a single one but this is not something to
+rely on because of concurrent ooms in memcgs and also multiple tasks
+could be killed at the same time).
 
-So, maybe we could always grant writable permission, just as x86's ioremap() does?
+Another complication is that there are multiple levels of OOM to track
+(global, NUMA, memcg) so any watchdog would have to be aware of that as
+well. I am really wondering whether we really need to be so careful with
+handlers. It is not like you would allow any random oom handler to be
+loaded, right? Would it make sense to start without this protection and
+converge to something as we see how this evolves? Maybe this will raise
+the bar for oom handlers as the price for bugs is going to be really
+high.
 
-Thanks.
+> > Also is there any way to handle the oom by increasing the memcg limit?
+> > I do not see a callback for that.
+> 
+> There is no kfunc yet, but it's a good idea (which we accidentally
+> discussed few days ago). I'll implement it.
 
-> +
->   #define _PAGE_IOREMAP PROT_DEVICE_nGnRE
->   
->   #define ioremap_wc(addr, size)	\
-> diff --git a/mm/memory.c b/mm/memory.c
-> index da360a6eb8a4..68fcfc3bbad8 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -6836,6 +6836,14 @@ void follow_pfnmap_end(struct follow_pfnmap_args *args)
->   EXPORT_SYMBOL_GPL(follow_pfnmap_end);
->   
->   #ifdef CONFIG_HAVE_IOREMAP_PROT
-> +#ifndef arch_mk_kernel_prot
-> +#define arch_mk_kernel_prot arch_mk_kernel_prot
-> +static inline pgprot_t arch_mk_kernel_prot(pgprot_t user_prot)
-> +{
-> +	return user_prot;
-> +}
-> +#endif
-> +
->   /**
->    * generic_access_phys - generic implementation for iomem mmap access
->    * @vma: the vma to access
-> @@ -6853,6 +6861,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
->   {
->   	resource_size_t phys_addr;
->   	pgprot_t prot = __pgprot(0);
-> +	pgprot_t kernel_prot;
->   	void __iomem *maddr;
->   	int offset = offset_in_page(addr);
->   	int ret = -EINVAL;
-> @@ -6870,7 +6879,8 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
->   	if ((write & FOLL_WRITE) && !writable)
->   		return -EINVAL;
->   
-> -	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), prot);
-> +	kernel_prot = arch_mk_kernel_prot(prot);
-> +	maddr = ioremap_prot(phys_addr, PAGE_ALIGN(len + offset), kernel_prot);
->   	if (!maddr)
->   		return -ENOMEM;
->   
+Cool!
+-- 
+Michal Hocko
+SUSE Labs
 
