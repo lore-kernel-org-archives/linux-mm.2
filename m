@@ -4,239 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEB1D46BF4
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 19:20:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CC5CD46BF8
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 20:22:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B01986B0005; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
+	id 1F8276B0005; Wed, 28 Jan 2026 15:22:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8876B0089; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
+	id 1A87F6B0089; Wed, 28 Jan 2026 15:22:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 990606B008A; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
+	id 0A7D36B008A; Wed, 28 Jan 2026 15:22:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 814936B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 14:20:44 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2C3D3BB4A1
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:20:44 +0000 (UTC)
-X-FDA: 84382339608.18.637B919
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D83514000E
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:20:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=IMgsUXA2;
-	spf=pass (imf01.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769628041;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E99F66B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 15:22:02 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DA665B3CB
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 20:22:02 +0000 (UTC)
+X-FDA: 84382494084.17.E5A0ED1
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 60F7B1C0010
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 20:22:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=T5bvitWa;
+	spf=pass (imf18.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769631720;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Jrc4de4LgyczWTzCdak00725+38ZlOAXDjASx1f2/E=;
-	b=H0lwuFBHOJX38GdKrhBesaY3tBbXjEgn6SR/DCN58EAM1+Au8IdtHz7fXld1j5IrGRn40U
-	mUmVYEoWGkiC1L9F8FOo9UkBt5XpoYzRWbGuN3wFE7IAKV3Q4cGI24oyW5FDuFq4WZOXP1
-	ifdZm3mH8UezhNXuE8v5j4XP/NMDpr0=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=IMgsUXA2;
-	spf=pass (imf01.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769628041; a=rsa-sha256;
-	cv=pass;
-	b=UT8XtiegXYxL9/o3GWTgQpUZPXBgUGWG9G44IKQgs3BlsvGT4RDEKSGfBS5DQD1HLyAxjg
-	qA1ZbH89zr1dVq5bpi8ahdISZuuTHQPX7AHetNy3BLRALl9xm5+6Nxx73ykScZTJumhmeP
-	x4akn/NeVTco4cwrsxnhmNVtT79FbIc=
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60SJF4Z32248256;
-	Wed, 28 Jan 2026 11:20:27 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=3Jrc4de4LgyczWTzCdak00725+38ZlOAXDjASx1f2/E=; b=IMgsUXA2Da6S
-	dFip02RIHz34b+IBTJjNLqIfHsGn1GnA2JFkU1iqcQi2o0h5brdsRcVJ3tyY8q7j
-	Ng+kwweeN3jkiekLRQphw2Dhknf2IKGAiyl6/8fvWImbyAAmT1eUaAuSG/Ny+ioG
-	Ly76uNv3ZXhte/Cay9e1mOJXDfV2vL5ZpMDVxgDnUGIHruEDdCcEWafx5D1B6BfI
-	fLp4cYqsXcT8gPk4aHX/wOnvRzSI2jeaGvVuEn6VhQdW4SIz8MGsEEwZuroLaw0c
-	5IUFnD0pKPLWI1P3AShxWSCd7qZ1m7b93EUJBgL8Lpa/ICfw+T8uO74Br949Krrs
-	xH4YBLHGbw==
-Received: from sa9pr02cu001.outbound.protection.outlook.com (mail-southcentralusazon11013068.outbound.protection.outlook.com [40.93.196.68])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4bykbwc55h-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 28 Jan 2026 11:20:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OIwa+jJzdT7s6olY5FK3bRmpDtLc1gyj2So6hgkM1kCFiJX7iNT1jHwv5fPDnzemU8k+8knsyPSlecfjOTCZkMruTh6zCQSjk0nYgMxqGoI13oQHn6xf7wEor5/CTQ4rr7qIj0uNvEE+a/4ERJ7i4tUU7tdhZRxrvU/JSsQA1iEhk1vj4qpFl+XULoj4XFvmCvgFZ5NVy35+kup1b8WptXG8is2K7rQ4zhgKRSGStpLtKz7J5XWfoUkYolUkWjaf2tLev+7XAHeY4bjx/c68P9eoyGcrOxq5bHDPEeq69Mtd03wE26oA8OiZo9pz0cByyn/Bsl0GI7+gwbQH8iDesA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Jrc4de4LgyczWTzCdak00725+38ZlOAXDjASx1f2/E=;
- b=j7JGnPcdAIZxnZ9j91fa1G388YC/uMhTJpd5Jw6cQW+zWaNNVLuyjWiIqe41C9iJz4gy0zbVF/dyg3PjcqykUorhZgMlqzzFux/lFMKvD/FJ808ywCg/fFCQ5EyMWjOkZLpw4mXaW3gGfvVSRRyMVNMIIJ5jseq/bjSQr5RMMw+kzPleewh31lK1QY3M/SzM75NpKwq2JtUwxvsOl+4bzX4wEYQH88kgUcbSVxfIeSOtLjDqKcvpJeMYHQf+V5qvSu6Rb/1RMFWUDWoIN3MTZbPT9Sd7EaNHYdS+3eWIdlW+r7Opw5d5u43mvXBzLWysDo63+EotIPxF/FqmDA+DkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
- dkim=pass header.d=meta.com; arc=none
-Received: from LV3PR15MB6455.namprd15.prod.outlook.com (2603:10b6:408:1ad::10)
- by DM4PR15MB6273.namprd15.prod.outlook.com (2603:10b6:8:18c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
- 2026 19:20:23 +0000
-Received: from LV3PR15MB6455.namprd15.prod.outlook.com
- ([fe80::444a:f42c:1d70:40b5]) by LV3PR15MB6455.namprd15.prod.outlook.com
- ([fe80::444a:f42c:1d70:40b5%4]) with mapi id 15.20.9564.007; Wed, 28 Jan 2026
- 19:20:23 +0000
-Message-ID: <32a7c9a6-0844-4dd1-b092-badca305546a@meta.com>
-Date: Wed, 28 Jan 2026 14:20:14 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
- split
-To: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
-        Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Hugh Dickins <hughd@google.com>,
-        Andrew Morton
- <akpm@linux-foundation.org>,
-        Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
-        Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>,
-        Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
-        Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
-References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
- <20260128130336.727049-1-clm@meta.com> <aXo6ltB5iqAKJzY8@KASONG-MC4>
-Content-Language: en-US
-From: Chris Mason <clm@meta.com>
-In-Reply-To: <aXo6ltB5iqAKJzY8@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MN0PR05CA0013.namprd05.prod.outlook.com
- (2603:10b6:208:52c::7) To LV3PR15MB6455.namprd15.prod.outlook.com
- (2603:10b6:408:1ad::10)
+	bh=MOneaQwgm5r1vQWLDH+rGl4A5aPHuLzm9ueYQTD0ies=;
+	b=Tu9XlEXxtBKmUZWYSHoe6udDwgl8MmPrRNdIcTDgKwDmNsPecQIIYBJYGBhrvByh//wkrR
+	kcQV4elbWDu6GAIr3hzWrZGvMcqipVlFKiRXiwAnyi1qNXWrJvV5GmIcM/4nHQTOvZE/1R
+	4+3mY1lhE4dg6NvjSeObulHru6YoR5s=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=T5bvitWa;
+	spf=pass (imf18.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769631720; a=rsa-sha256;
+	cv=none;
+	b=beVFIS8pturPVi/U4s+SV2Q4+zWs4ZXyQtLrG/02D8WGYmqlNNnoJMeappyQr3KruRPBx5
+	5ImIC4FspG8664pT50RC8tBMupXfEm3yxevtRIwKI+qaZK5swOBoBdWV8BpdKIHIqMkAcR
+	POVy6oE+YcnktP5ejc8l7rm2fwLuVzg=
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b883c8dfb00so65682866b.1
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:21:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769631719; x=1770236519; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MOneaQwgm5r1vQWLDH+rGl4A5aPHuLzm9ueYQTD0ies=;
+        b=T5bvitWaQWmzXcln9zVdpLXFe0k58Sf0sntYAojPRbTneQEgLXz6jNGQdyNGnOTpav
+         s0u8076LddsR0+QSbb0JSSdOL+NL6ZUi4jcN735dy6jREhgCHxorrc6RIoKQM3uLvQ3G
+         Zjfc8DlG984oUmfUKLLCwrkJQoizxMvRrhY45tPWibuOD4YrMtzwlIsnye0yyJ3oTiSz
+         QnbWat5+M56lgGqBDNO8Q1f0ZIlnBxDgKXLx8ednBiQoVK1PdzQtzxrsGbjFM3JCdtPB
+         bCJdqIpnWOkxtjOOLodJ5twI34oArRKYF8QTm0R12LKzwSL9qulQC2VWliSRQXE46AFB
+         X3tA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769631719; x=1770236519;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MOneaQwgm5r1vQWLDH+rGl4A5aPHuLzm9ueYQTD0ies=;
+        b=GpzDbHTq4EgV5yxd7hKfcH3yNZEMoD0gVeZ8czz3VCdvRUeuUwN4gMzTjkhN1sWcDM
+         n9HvddYXHhwoMEcRyrtgD96JVrrcgSocqyAp4vGwxBgnK8+rFrgTxp7qFXF7Cs9aN7aq
+         641yq0+9e7zBBT8CpqpGESo/VFwNQ9T8J3pDXpV+zfvZxGMl0LBlCcXU80kiHM4zwd7q
+         WYZ0q6fCrb1SYDk/ELyBA+4Rco0uIKqR75tq7bLYNCC1rcIvtCs/8d7zI381brJ7OE7W
+         tsUsgQhUb0TVipNyKWsCjp2jMmOiipmVVshG6K2Trb72cvP4MfnVT8M3/0Lq2v/y2U6+
+         LS/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWcnPmuREZTVf9gBHx8u9JDZxxPwMm/OZwfBVfLwXtAy8celOuTBpJWyEKMyqq6aoQvydZTCvhHcg==@kvack.org
+X-Gm-Message-State: AOJu0YxQAfKBOS9odod9TxMuBiwBS3ZhY0BwIb9E/9y1DcwUYCjvm9YV
+	zjzkHiHIpxYO4OC4lm5wsbdMT/ywfYr3xcvC9m2htp+Ro9Lo2v1AYv2rjelVIjGS+g==
+X-Gm-Gg: AZuq6aJYqCrfIbugZqg6R7FD3I5kbE0UJSSnKFoTU+kN+cVraaCPUJTYHp2yNJyaw2N
+	6PeNE+Tm8HxQm6LFPFgwpBH/m6/gwuGU4GOric+2NzHZx0eaHt7TSqIpAzuD9iKZ33NBQgk7dlc
+	W+Wy8lIG43V5w4odoFhw6dpCL4CoOxt00Fm2dIxcpY86XkswFq5Grg6lGyuX3Tc5twymyD5IrND
+	G+JBT/bMVpAz+bI4F+p0qn+ykwZgYhGzOC7RgM9oiJMobYbbdoMuLoXvGcagT+xHv5g7sgCIqg5
+	FZP9n0pgIloQ5/6GHvbDlT6jLHAemkAx3ZWStrSyhRmuir4M+eEx3OFXtIRmu5+cEQ3tKVwCdwb
+	hzpbtf+fCfu+yyYTpfqNo/IYoI3ya9LUXm/MRDrh871/MENOG4HcOfgU62F11Tl3rfUx9xVwbbF
+	3EzX2Ywndh9f/d1x7RWv+DsMw4ve79CaQHjCvox8DNTk0P6q0Ukl/7PCCT2oo1lg==
+X-Received: by 2002:a17:907:7f8c:b0:b86:f558:ecc0 with SMTP id a640c23a62f3a-b8dab1c8bc7mr433016666b.29.1769631718213;
+        Wed, 28 Jan 2026 12:21:58 -0800 (PST)
+Received: from google.com (93.50.90.34.bc.googleusercontent.com. [34.90.50.93])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbef86deesm171812666b.3.2026.01.28.12.21.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 12:21:57 -0800 (PST)
+Date: Wed, 28 Jan 2026 20:21:54 +0000
+From: Matt Bobrowski <mattbobrowski@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bpf@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH bpf-next v3 09/17] mm: introduce bpf_out_of_memory() BPF
+ kfunc
+Message-ID: <aXpv4r_3L0UWzAQn@google.com>
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+ <20260127024421.494929-10-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR15MB6455:EE_|DM4PR15MB6273:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb0bd036-2b35-4764-aae8-08de5ea248be
-X-FB-Source: Internal
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZGlhbW8yelFkbGdkcUU2V00wL3psbVJzLzVzV0pFT3NWdG9WcDBRZW1za0F6?=
- =?utf-8?B?M0xGd1JZdkpuS2tFWnlkUnF0UFRSNUR2SFdmcTVCTjRBQnNzbitqWWtodk4v?=
- =?utf-8?B?Y0Q0Mnl3L05odzMyUkYyYjBhd3BVdHNjbjF1Wkw5dU44dW1ET0V1bGw4TW9p?=
- =?utf-8?B?bk1TRmRha050UHpoQnAxaGpWUUxGRVduUXEyQVVSejBacDlIMkRSdWJnQjI2?=
- =?utf-8?B?QkxhTEVPTXBodXZjanZhVkc0TGg4QmhzZk5zV1dQZHFHNWpOL2ZtUWwzMEZm?=
- =?utf-8?B?YVVIRnloWjRnSXFseno2WW41YzNkdE41Q1kyUXZIdzRqZlc2WHQ2QkxBYzA2?=
- =?utf-8?B?Y2VpZGlNNjE0MGZmd3pzb3JxeElaVjd6RVYrWW9DaU5pNkQ4amtNaWg3V3JT?=
- =?utf-8?B?RVcydHBzU2lCUUtHOFFCcEZiQ2NHYVZTQTAxUTNuTDJIeWMzbGljNW1hSVFK?=
- =?utf-8?B?WlZTZlp2U2JmQ2o2N2t1Tm9QK01hTTNPS1ErVEQ5VGg3MzFuWDRMMGxqUGNT?=
- =?utf-8?B?ZmdSaGVSbGR3cHNja1VrdUIzZDc4MFdFbnJxWkllNjhJTHhVb2JhZnlmN2Ja?=
- =?utf-8?B?M3RSNmZRTmlKc004Sk9Sc0tYS0JGai96NzN0Y2IxQ0hvdVg5TlVVTTl0andj?=
- =?utf-8?B?M0pnQ3VrRG9hTDNnZTQ5VTJJRzFQNy8wTW5JbFEzZS9UcGNoN2pIbktIT0VX?=
- =?utf-8?B?cUZySEVoWUVtUGhtQWtVMGluUVFKV0l2QnA3RWFFRXIvQTB6cFhpaXhTYjha?=
- =?utf-8?B?NjdEVGpTdjMwdTdsZTFkT2JRaWNPZTdlaW0zckJ5ZG9Bb3FrUkRpaGNXUnpN?=
- =?utf-8?B?c0ZlYWFhSVZCSDQxQnFpMUhmT0ZJUWF1K0Q0bHd0dy9KK1VhV1BOYUZMUll1?=
- =?utf-8?B?a2pvV1c2bEgwMkRpWWZYeWdaRWsva2tJNXI5cFNlQWE3R0J0a2lNRjVhNUcy?=
- =?utf-8?B?UWZLd0pEbkdpK3RHeEFDaE5Cajd2U1lxN0hydGM2TFBkbG5UcklFQm04SWNk?=
- =?utf-8?B?Z0dKYXNKNitMVHB2dVpsS1A2Q05ZSVIvaFN6UE9SajF6bG1QZXVDNHp6SSs5?=
- =?utf-8?B?M0o2ZlNrY1N3TTYwUUQxM0duaTUxSlFyZzBCdWE0Zm9nZnUzWEpNZzFWeGVy?=
- =?utf-8?B?YTVtQUFzVC8rNVZEMlR1eS85QW52OXpzalpDZjNiNWd2OUdlS2d3RndBWm1Y?=
- =?utf-8?B?Ymw1emg4c2ZrOUR0eUhIRVIxSEV0aHdOZTlYWE1US0MrOCt5YnM1aGxjKzE0?=
- =?utf-8?B?YkZ5MkpCRXdKM3QxdWpnMmdyZlBHS2tHMExxWHVtK3BkZkV1Z0laZng3YlRC?=
- =?utf-8?B?WVBmaFVHeTVFTHkzM0RrL2g1MHpXcDRJYXRTK1VlbjF3bVp4Tk4xVjZVam83?=
- =?utf-8?B?dEwzQ0svc3MwOFdWMWcyZ0ZSaFhDQWU2a1pYUDZnWkVBelNqQkd3anlkbXgx?=
- =?utf-8?B?eTRyT3VzSElPRDBnRDBxb2xvSUhHeUx1MHIyWjZkeVRnRzJEcjhUcFpBZmsy?=
- =?utf-8?B?UktwL1BaV0g4L3J2d3RLVjZZdkQ1bXpYbEs2QVNkN2I4UzNGS3R1Q1I0NkQ3?=
- =?utf-8?B?TkhMSnF2VXBGdStUL2RYeCtpcnMyajVEQkpiVzhEVFB0OTFWTjRlS0NKdkV3?=
- =?utf-8?B?UG5IT1BTVE9ZRWkvU3l1NGpodERQdUExd1F5Q0ViR0VmNi9KRXc3RnZXaW1t?=
- =?utf-8?B?dlFzcDJXaktQSDl6TndBdGdaQmNsdUloT0tLR2dVWFZtaFRLV2lKeVJLUVZa?=
- =?utf-8?B?OG9oZ2xNS3VnK29BRmIxdTB1RjhQcWFOWW1uZis1ZFhweDA0V2UyYjFmZXps?=
- =?utf-8?B?NWhBZFd3MUVhZGNsRzQ2NFJOaDVuOCs4UUswb2o1TnkwdEhaWnBJMHVxNTVL?=
- =?utf-8?B?eDdkRTNveTFNck5LL0lzRW5uNTRWL3JRakw5N2lHZ0gyQVArcWRRS3A2VUh2?=
- =?utf-8?B?NkRKWDNveWwzc3FWVjB0RHdpWEM5LzBPWHppR1FDb1U5NW5kTVh2NE1hSlln?=
- =?utf-8?B?V2EzZ3dMcEpEc01uY3RQbm5iR2UxMUdCNXdsQmdkczhOQWV1Zi9ya0lUQlo3?=
- =?utf-8?B?MThYd2xCdloxRXZzRHJRbHpTRzd3ajFBQkNJV0IxTnNhZk5DTDJnTTFSZjgw?=
- =?utf-8?Q?Pmaw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR15MB6455.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MkJUNi9laDhIZEFpTVJGOWY3VE1jczdiVTVQbWY1ajJkYVlhSmZqdjRML0d6?=
- =?utf-8?B?RG50T0dxV1lhWWQ4Q0N6Z2l0bnFJRVhLcmFZVWNRb1p4cUtrc1A5N1FCaWpt?=
- =?utf-8?B?N0ZGN3JaYXBNeFRXVW1lOFlSQXV5d1NpdVV1Rlp6R0VMM0N3d3VPbThsb0lG?=
- =?utf-8?B?aTZHTE5BQmZkVjRiemVWdnJwbmVlRG9ISHpCL2dOdFBESnM5UjZUVEVRWkJI?=
- =?utf-8?B?Qk0xekZ0Qi8vN0pNcFp4VStacnpNemZWSkIvSlF1TTJndDkvSHVkdC9KV20x?=
- =?utf-8?B?N0ZRUlh6UXUwQ3hSbTlTZlV4SjVabm9PNC80eldQcWJTWWZQMUdrL3VKZGZL?=
- =?utf-8?B?SGhiTVk3T0kxM3p4KzR1S0M2cWE3V0JQVFRrS2xwZ21vcmczcjZoUDJYT3Nk?=
- =?utf-8?B?YSs3WTVRQ2VHbEIzWE8zM1kxNnFFUlRRV2Z5VUVvS0tqQ0lCcTFRMm0zNk1S?=
- =?utf-8?B?STZzNW1XdUVNR1A1Z3FMNzIrK0F4K29GWkNzSkRDMzd0VTM3YjExVWhycXVB?=
- =?utf-8?B?UlpxeGg3Z3lTd2laMkdDRGRYNzJINU40M0VkTysrc2pucW1JeVBGY0VYTFhl?=
- =?utf-8?B?QmhQRk1rTEh3R1Jjd0hUSFFOVnNPRFdpNnNSR1F3QkRiQmI0VE1zQjlYcWdH?=
- =?utf-8?B?aXk5b2lUVlNLNTJiMk1SaS9PK1VKS0tCZkdGazY3bExVQk1Oa0pFcnhpWmpi?=
- =?utf-8?B?RUZTa1lzVEx1ajl1SDBLdzVVK3ZHRWl1RFFHdWVjcFYzdDNvRTJEWnFUNlZ0?=
- =?utf-8?B?MjR1UFNiUkxkTmhZRGdGTDhEQnpINEVwSEtUNERPZDB4U2tja3h0Q2dUR2U1?=
- =?utf-8?B?dVNXTzljUEY3dnJpNUNHKzJad0dsUG96Uy85eko0NVpWdHZ6dG43T2tGcHRR?=
- =?utf-8?B?UXhWS2VobmpYVGdpSEFuQ0NzQlRDejFqUU52eFFYNDd4R0NabFc4cTUxbnBX?=
- =?utf-8?B?eTRQL05DeGhzQkg4dTNGZDZHVDlrTVRJYjhmYm9WVGozQmFJV2o5Tit4STht?=
- =?utf-8?B?UEp5ZWdMT1ZUbHg3M3FqYTlJTkF6NjlmdGVucFpVbmw1blM4a1ZPQmlvYTl2?=
- =?utf-8?B?dlNjcWg4V2creDIvTUorSzdUUWJKeEZhUVpvMFpiTlZoUXVtSzdZNEczMzFY?=
- =?utf-8?B?T05KSWNvd1E1Z0lkTDkwdm1lMkFVMlMyMEhTSlhlY21xa01wT2djY0o1S25V?=
- =?utf-8?B?c0JLQ2RqTmhjQUtqb2pncUEyWVhEN3F4TnhiNzdQR2Q0NzJYWjZud3E4di9I?=
- =?utf-8?B?TGprL09FOUxqSUE3c3hSK3dJaFM2K0wyN001elZaZmozOWtJeEdqNEptVW5h?=
- =?utf-8?B?RUE1ZzBWakJzVndHNVRqUWgxRHk5czNjeHVVYis1Q2hlK3JuL1VoVm0wUU01?=
- =?utf-8?B?U2dUdEcrTStrNnoyMmVMaXJFZVBnb3dmeFNvSzFhbnNUeE8xUzRiTnhDYUgv?=
- =?utf-8?B?amtvZ1lTaFkyOUJJdGYxbEgyMUU0UnkybTFqRHh0ZDkyU3VGRzY5bERmQ29z?=
- =?utf-8?B?ODhQT1lxYTNxTC84eVRaV2lqTWpEY0YvQlZpTkxYNDIrV2dFeXl2WDh5WThN?=
- =?utf-8?B?QmdNS0Z2SzZwazA2b1BaVHpIL3ZwSGdkYW5PMXh5bGpVdG9iQVRnNzYraEpT?=
- =?utf-8?B?OTVHaXhKaDRzMDZ2V0MzUGxDOXgxWm91cEJqU25hd0JvS2JqYlVZVXNTMkRQ?=
- =?utf-8?B?TUY0OEE4VDNUNTVzRXU2ajZISVFOZlNaRHVrSFdkbkNjOHIyTENNSWtmcTA5?=
- =?utf-8?B?ckFIYjdwU3dDNTJ5NFJNdDN4TmgwdnA3clpvZHBFdC8zTUhuS3VsOWV2aDNl?=
- =?utf-8?B?MXczaWhyK1JZdFozOWlkRUhvVHduL2ZIMUM3ZGE2bVJpTW1ZaFdTcUpndDZE?=
- =?utf-8?B?SHNaMStVQmJFMWhzbFNTMDBreDFLVk5zajBZMmVhNU56d1FPVllvMDlNWk8z?=
- =?utf-8?B?T3NBSEhPbUg0dk11Z0xYL2lPazZrSUZMUTBLYUx3aWR4QmxFZUxSYzV2RGFy?=
- =?utf-8?B?Y2IxdGZrNXFham5vYnQ1VStydzRGWmoxRGhvMlpWOXhmTWc0V202bk5IREgz?=
- =?utf-8?B?MGZtY21yZW9ZanVheUVyWElBNmpPK0EvZDhubjBORDQwSGF4VG0vSjRuQ3V6?=
- =?utf-8?B?T0Y5cXJEU0N0NGdIeHhTTXVLNFc5UlRvM0w5cmpyRzZuZkVUWEhwQXdYYys0?=
- =?utf-8?B?b1BrSlVqNUY3VDJYeWxmTktqeE5JWHB0MzFZcnVPNEErM1dGWm1NVU8zWGkr?=
- =?utf-8?B?NmM0Y0pGWkxDRkFlWnZMRCsyTEFGOEwxakREK1RrNG00YkV3ZUNCeVlMd1NI?=
- =?utf-8?Q?9w8rYI4mxAKZaFELl0?=
-X-OriginatorOrg: meta.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb0bd036-2b35-4764-aae8-08de5ea248be
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR15MB6455.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 19:20:23.3145
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /EohBzTPi0L63LFdU5wyOpPrcy1PXt2q7Q9GK4u9coABavTF1UH1Q/XXpx/fPz/h
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR15MB6273
-X-Authority-Analysis: v=2.4 cv=O6Q0fR9W c=1 sm=1 tr=0 ts=697a617a cx=c_pps
- a=0JRlrhwbVVPmsaj0kffiDg==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=GvQkQWPkAAAA:8 a=qGJZMtbXaoSNzlnTLp4A:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: fqAA-znrdSvvdx7iNpMSc_rVs_PjnvZH
-X-Proofpoint-GUID: fqAA-znrdSvvdx7iNpMSc_rVs_PjnvZH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDE1OCBTYWx0ZWRfX6ehjUQPLOkJT
- hIW7hs7Q4v9ww/HLG2Eu1jG0ioGc8zw3Wn7T6uhe9Hh3EtQeRVmsCzjwdiGB/s9I0Xo7c4jgCUw
- 0+Ir19Ng1bUB5f5UivaNxbYw5FzDQHy8lBy9IvtOeN4d/3Oda6dbOf5Md31A37dIREqUK2IWeoO
- aNe0VyY8tqXTve1hDYLPq7CJEHYboo7g25aVjoG8QCH9S/wJrcu1vhoMnfUMqnMAcopxeRHXZ++
- 75mTQVO6KFISTSfjRTJlKvbHp95zHyv5hTpU6TBb4Q+RYDt8Aqf/jBziUwHYlwTOQdgiR8ieQqh
- 22XBYOgN8DvQ2wbTx6ifiUtBJVcp1zSKzxpQ9efXEkNn7mAnFNbGKYHlveKs+hb8yGfjJSa1WKD
- 1sXaXSMXrrxR4e1nk7rBSP2CCzBOTQQjn9+wDodY542sIbTLQmyjxBVJt6BSG6zQFeKNfBDX+HB
- 56d/vZveD4EZ2UDvdoA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-28_04,2026-01-28_03,2025-10-01_01
-X-Rspamd-Server: rspam12
-X-Stat-Signature: rnmwma1rim153eqctuwftn4gsr8uox7g
-X-Rspamd-Queue-Id: D83514000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260127024421.494929-10-roman.gushchin@linux.dev>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 60F7B1C0010
+X-Stat-Signature: ocoewqft4u6moyxjh8gfidrktuokizaq
 X-Rspam-User: 
-X-HE-Tag: 1769628040-856854
-X-HE-Meta: U2FsdGVkX1821FwaETrgmdhp2BKhBllQFwazgNTweWWSnzxc04if4Ktf7w8cZsFU4bC1qEcf+Ep28ttSrq8uacbFuXI0aCGlp6QUAdBFBSxLrA9Sdd1X0DLnv6KT4NAUfene2ziESp+EhFvo7YRy9YEsVicoPUDhTFBEmlQZX7xM1llRhgPxB1jkumzlmHEIGx2zVSL99FvPfah1uMt7+tIjfFEoU061QVFRLGeuuZAFuWisGIj/Op1VzHtTLiA1U7BUVC5SNrguAFB2el9iMcrTFFkec7R391zrM9fz6EHms34Dl53LCbIfZVKOKSPtUQTxZ5Abr3l09iwyTBw32GxF5sT7WQ7+Rcmfwuf28VlfIHj2Ct7TFkzhF3fD2lN2pIiBoClxBYFXhVjtYgp8IVB6j6hF/a+Nl3k4DjRqKdO2Bruat1OsKEH4WzydVNK4/lBTIiGRvJNlQ+kXUU/Vk8n11lgEj1i5KBSQQGEsTLUKcJqRXQbK6D+Jltuj3PPQ0f0cvg3sgOwr3R70uUgzxOVepoCjDxW3pFenFeJU4WQ5VQr3l2oO9D0mOuuRCRc1VNTrbhzht7taY+zpd0KcVmHxUAa8ETMJax+XeGGCvRcKBZWrl9ayjrFCsDA3YpyN1rE2YdEtYGNFV8LDS/AfN7Yh/PgFyW8d2KfsRX04vSPhQM2xQWHooaWPknlQO1Or/09zwXM6oi9enCJRB7rYWrGQxOjv2Fnyt85ZiuYahB68Qy8LjfrKZJjarml6SuzdSKxA7WQXVnXQncugnBFCFShDPMxXoWcvlT7FWVO4iDxcZ4+qHsb+6J18FkitLtI0i/J5Nl/y6DmQUYFxrH3xyWbiooRseFuXz3hXAgyirm34f5/J1/Przxxe6jhu9a5POnX9EhdyAUHE+U5c9E6DxW3l65ukVEDhRdb/px27fGgq+bNk0CEzglwZ2dkGJOrqNUCOfgP0B0iEsV6EuQ8
- DgIaUJiJ
- B9kTWnHEgvmyMjaqnOwLqbjdfbP4CwNnYQogUSaLN1VlLyQklyMBVdxn3ClyvCPJGcZ3fBnQPcJWc2eijpf+zpMgfEL2GlN1jiJjDvJPMLgF4a5KeEu/hpm7LRq2dtHl/h1s7WPx0ZlDkCzWXAcgDerdwHPsgqIAWRstwSzg0j8YzGoSoB7KGxbDflQ6yFcx3cRb57o0jY/oTIlRXv2BnMORCPXln3x1JqOK5R7dxR4FcBgBa9c2kG9HGsZ/g6MH6/XcXwduSS5UTjbsaTMqzNAk8lixmqW7q4z/IXneuM6+SOy0C3hq7qkBs4/47MhbeIU2vkzdbxgvjVZ+OiwBm1cp2RKEgwQ+LejodQ2ta15kD80AitSfkwbN3xa87yWivSZKe+q1jHxN9cu7I3lW4t5LlaxBYvcYYvq7sbEsrXYOrl1b6Z8MSFEZ+EFEig1Mmvu0rfaWKPsVuUwJQpkn4D7Ue2Btr5u16SCAWdRK924JKHt4Dntj1X1k+H4FYn5jtjJYPsNImbF5FmaTtssGWuJnnF+syCIa3ctBhFD5b6YCcRAzgG1ZKD4ubtqmtlG+CjP57GpZ1mNUPEGw=
+X-HE-Tag: 1769631720-661439
+X-HE-Meta: U2FsdGVkX19pZH+VYvDYpf6s90DEskUszcl+gFZm47HOeaVvC4HYaxQyKXvNR/gI5aGv8Rnc6BhZyOOTxg+gqhIZsB6VJX13fDdf+voql01G8VtJq9diavs7FULdUieZytXzJtt6Z1WgdFgK+LmQlJZAR4UeOf0hTtlU71E7ejsWUuI2em+UrTCqo0d7t6uHHnvZHzI7AqLp5QPn+drpnPQTq+kSeiFNpLcLegvHNnZF+QKs/OoWYHKf5Yf/QW7O2Q51NjFtIVBoRWj4dxl88O3LFTlB48ZD71bXiSaFhxfAkGmpUJbIrp4kU60vkbdhYX4a3v5+LYMMJ9MK1BCN8JYTPo4eNNip4sIbSf6YxcXn+WE+xTKo0i0/AqttytXHEqjXdhMkrOZskpnFObrTbwD5+mr4VhjXGYmit6vm1YIoFHLprZxEnXzrs81aV5ZTRSmfDa5XCKcMdpPiDclLWchKi/I2vUh50SLmtl/tQplE7YN5pMtG6tKVmeuVnfnNlDW1i0VOAYZv3Iunrr/h1QB5RhPjDHs04shdzFyBvSYds3sXwTdSeeluhlFTI5YoUFkGXAQE67VKNAO6SYZPfscOhERG/f1s8A74pLBrwA+MNLMvUirKLCI1KGUyyjZn8vi2k7Ig9EPfnJpuK/lxqlboKDbkQdaKnlZpFWzyeGd+oyYrqLLIptxKDOLgKKbD4OomF/JsdQJcOdfqKZR84tdRyeAcmVYJ0UJIo9K44StRghqhuE5OAAcNV+ByVAKv+wB3I6yZftqw9VFGe8dzSm/20dk2NUgoLFbFcHO/034T92nMNL9InzJzS6fZaMUsM54Aw5ztu2RV326lreS1wHTed36sDMlgdWT3P2RxC1pVnMQkNGW/6P16ATi20f+tv8fDxwVA8Oc+laAVUNoiaRO3UGy3c5VzPfev1niyEN04st6xnakqp3GvysHaStOYbtixb+hRoa/aBDyTMl+
+ idE6/7Op
+ uTGR+g+RxbVoIAzILqVYlfO5AOPFeGitIkWFhqoieP7AKxedyyETwXNQ8MoSHyFPcoKW+qDbzaOxXJHKLBm9fG6lTJHYoCKzjaAoP3MBQIikAwRlsT+tnI0Lk4s7MYc49KlIZaRa6fNQq1gREjKLsWZiNW5cPul80FXKv7h4wLLArSr2VydyVWYccVpa9WRkZdgRqdxhRGPjIDRPCXd1WoeIBVmEWO6kSm0ayvysxnx9Vf6DTTZYf4FFNiW1y2GHylVUyomvTvIsY6Jj/NCXwD2J4nJTHXCNoDdK2iu8gkM+xiiYkbSVCRb/xfpo62LhMekYAudOnwwaRdtaTPA/um+eI14onqyj05D7MH7omxXlyVlMubH43F6s20GeZaLoEsFYy930xVpIKh+EcpB3luvCGrYxUPbT2kdEN2y0+a0XztabtAbAQUd6ZttEJXSA8oanmj9WsjUOT1VgrydZ0JZyGA0UrFbNtEjNzs1APV4rNdBVFOX/iMVKx7A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,110 +124,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/28/26 11:52 AM, Kairui Song wrote:
-> On Wed, Jan 28, 2026 at 05:02:34AM +0800, Chris Mason wrote:
->>
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>
->> [ ... ]
->>
->>> @@ -1191,12 +1203,23 @@
->>>  		folio = fbatch.folios[i];
->>>
->>>  		if (xa_is_value(folio)) {
->>> +			int order;
->>>  			long swaps_freed;
->>>
->>>  			if (unfalloc)
->>>  				continue;
->>> -			swaps_freed = shmem_free_swap(mapping, indices[i], folio);
->>> +			swaps_freed = shmem_free_swap(mapping, indices[i],
->>> +						      end - 1, folio);
->>>  			if (!swaps_freed) {
->>> +				/*
->>> +				 * If found a large swap entry cross the end border,
->>> +				 * skip it as the truncate_inode_partial_folio above
->>> +				 * should have at least zerod its content once.
->>> +				 */
->>> +				order = shmem_confirm_swap(mapping, indices[i],
->>> +							   radix_to_swp_entry(folio));
->>> +				if (order > 0 && indices[i] + (1 << order) > end)
->>> +					continue;
->>>  				/* Swap was replaced by page: retry */
->>>  				index = indices[i];
->>>  				break;
->>
->> Could this code infinite loop if a large swap entry crosses the START
->> boundary instead of the END boundary?
+On Mon, Jan 26, 2026 at 06:44:12PM -0800, Roman Gushchin wrote:
+> Introduce bpf_out_of_memory() bpf kfunc, which allows to declare
+> an out of memory events and trigger the corresponding kernel OOM
+> handling mechanism.
 > 
-> Thanks for the review! It's really helpful :)
+> It takes a trusted memcg pointer (or NULL for system-wide OOMs)
+> as an argument, as well as the page order.
 > 
->> When shmem_free_swap() returns 0, it could be either because:
->> (a) The entry was replaced by a page, or
->> (b) The entry failed the boundary check (base < index ||
->>     base + nr_pages - 1 > end)
->>
->> The boundary check here only handles case (b) for entries crossing the
->> END boundary:
->>
->>     if (order > 0 && indices[i] + (1 << order) > end)
->>         continue;
->>
->> But what happens if the entry crosses the START boundary? If
->> find_get_entries() returns a large swap entry at indices[i] where
->> the entry's base (calculated as indices[i] & ~((1 << order) - 1)) is
->> less than the truncation start point, then shmem_free_swap() will
->> return 0 due to the "base < index" check. The code will then call
->> shmem_confirm_swap(), get the order, check if it crosses the END
->> boundary (which it doesn't), and retry with the same index:
->>
->>     index = indices[i];
->>     break;
->>
->> The next iteration will find the same entry again at the same index,
->> leading to an infinite loop. For example:
->>
->> - Truncating range [18, 30]
->> - Large swap entry at [16, 23] (order 3, 8 pages)
->> - indices[i] = 18
->> - shmem_free_swap() sees base=16 < index=18, returns 0
->> - Check: 18 + 8 > 30 is false (26 <= 30)
->> - Retries with index=18
->> - Loop repeats indefinitely
+> If the BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK flag is not set, only one OOM
+> can be declared and handled in the system at once, so if the function
+> is called in parallel to another OOM handling, it bails out with -EBUSY.
+> This mode is suited for global OOM's: any concurrent OOMs will likely
+> do the job and release some memory. In a blocking mode (which is
+> suited for memcg OOMs) the execution will wait on the oom_lock mutex.
 > 
-> I think this is a valid issue. And it's worse than that, during the `while (index < end)` loop a new large entry can land anywhere in the range, if one interaction's starting `index` points to the middle of any large entry, an infinite loop will occur: indices[0] are always equal to the `index` iteration value of that moments, shmem_free_swap will fail because the swap entry's index doesn't match indices[0], and so the `index = indices[i]; break;` keep it loop forever.
+> The function is declared as sleepable. It guarantees that it won't
+> be called from an atomic context. It's required by the OOM handling
+> code, which shouldn't be called from a non-blocking context.
 > 
-> The chance seems very low though.
+> Handling of a memcg OOM almost always requires taking of the
+> css_set_lock spinlock. The fact that bpf_out_of_memory() is sleepable
+> also guarantees that it can't be called with acquired css_set_lock,
+> so the kernel can't deadlock on it.
 > 
->> Should the boundary check also handle the START case, perhaps:
->>
->>     if (order > 0) {
->>         pgoff_t base = indices[i] & ~((1UL << order) - 1);
->>         if (base + (1 << order) - 1 > end || base < start)
->>             continue;
->>     }
+> To avoid deadlocks on the oom lock, the function is filtered out for
+> bpf oom struct ops programs and all tracing programs.
 > 
-> This still doesn't cover the case when a new large entry somehow lands in the range during the loop.
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> ---
+>  include/linux/oom.h |  5 +++
+>  mm/oom_kill.c       | 85 +++++++++++++++++++++++++++++++++++++++++++--
+>  2 files changed, 88 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/oom.h b/include/linux/oom.h
+> index c2dce336bcb4..851dba9287b5 100644
+> --- a/include/linux/oom.h
+> +++ b/include/linux/oom.h
+> @@ -21,6 +21,11 @@ enum oom_constraint {
+>  	CONSTRAINT_MEMCG,
+>  };
+>  
+> +enum bpf_oom_flags {
+> +	BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK = 1 << 0,
+> +	BPF_OOM_FLAGS_LAST = 1 << 1,
+> +};
+> +
+>  /*
+>   * Details of the page allocation that triggered the oom killer that are used to
+>   * determine what should be killed.
+> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> index 09897597907f..8f63a370b8f5 100644
+> --- a/mm/oom_kill.c
+> +++ b/mm/oom_kill.c
+> @@ -1334,6 +1334,53 @@ __bpf_kfunc int bpf_oom_kill_process(struct oom_control *oc,
+>  	return 0;
+>  }
+>  
+> +/**
+> + * bpf_out_of_memory - declare Out Of Memory state and invoke OOM killer
+> + * @memcg__nullable: memcg or NULL for system-wide OOMs
+> + * @order: order of page which wasn't allocated
+> + * @flags: flags
+> + *
+> + * Declares the Out Of Memory state and invokes the OOM killer.
+> + *
+> + * OOM handlers are synchronized using the oom_lock mutex. If wait_on_oom_lock
+> + * is true, the function will wait on it. Otherwise it bails out with -EBUSY
+> + * if oom_lock is contended.
+> + *
+> + * Generally it's advised to pass wait_on_oom_lock=false for global OOMs
+> + * and wait_on_oom_lock=true for memcg-scoped OOMs.
+> + *
+> + * Returns 1 if the forward progress was achieved and some memory was freed.
+> + * Returns a negative value if an error occurred.
+> + */
+> +__bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
+> +				  int order, u64 flags)
+> +{
+> +	struct oom_control oc = {
+> +		.memcg = memcg__nullable,
+> +		.gfp_mask = GFP_KERNEL,
+> +		.order = order,
+> +	};
+> +	int ret;
+> +
+> +	if (flags & ~(BPF_OOM_FLAGS_LAST - 1))
+> +		return -EINVAL;
+> +
+> +	if (oc.order < 0 || oc.order > MAX_PAGE_ORDER)
+> +		return -EINVAL;
+> +
+> +	if (flags & BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK) {
+> +		ret = mutex_lock_killable(&oom_lock);
 
-FWIW, I'd have been really surprised if claude actually fixed the
-bug...I haven't stopped the prompt from making the suggestions just
-because I think it helps explain the potential issue.
+If contended and we end up waiting here, some forward progress could
+have been made in the interim. Enough such that this pending OOM event
+initiated by the call into bpf_out_of_memory() may no longer even be
+warranted. What do you think about adding an escape hatch here, which
+could simply be in the form of a user-defined function callback?
 
+> +		if (ret)
+> +			return ret;
+> +	} else if (!mutex_trylock(&oom_lock))
+> +		return -EBUSY;
+> +
+> +	ret = out_of_memory(&oc);
+> +
+> +	mutex_unlock(&oom_lock);
+> +	return ret;
+> +}
+> +
+>  __bpf_kfunc_end_defs();
+>  
+>  BTF_KFUNCS_START(bpf_oom_kfuncs)
+> @@ -1356,14 +1403,48 @@ static const struct btf_kfunc_id_set bpf_oom_kfunc_set = {
+>  	.filter         = bpf_oom_kfunc_filter,
+>  };
+>  
+> +BTF_KFUNCS_START(bpf_declare_oom_kfuncs)
+> +BTF_ID_FLAGS(func, bpf_out_of_memory, KF_SLEEPABLE)
+> +BTF_KFUNCS_END(bpf_declare_oom_kfuncs)
+> +
+> +static int bpf_declare_oom_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
+> +{
+> +	if (!btf_id_set8_contains(&bpf_declare_oom_kfuncs, kfunc_id))
+> +		return 0;
+> +
+> +	if (prog->type == BPF_PROG_TYPE_STRUCT_OPS &&
+> +	    prog->aux->attach_btf_id == bpf_oom_ops_ids[0])
+> +		return -EACCES;
+> +
+> +	if (prog->type == BPF_PROG_TYPE_TRACING)
+> +		return -EACCES;
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct btf_kfunc_id_set bpf_declare_oom_kfunc_set = {
+> +	.owner          = THIS_MODULE,
+> +	.set            = &bpf_declare_oom_kfuncs,
+> +	.filter         = bpf_declare_oom_kfunc_filter,
+> +};
+> +
+>  static int __init bpf_oom_init(void)
+>  {
+>  	int err;
+>  
+>  	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS,
+>  					&bpf_oom_kfunc_set);
+> -	if (err)
+> -		pr_warn("error while registering bpf oom kfuncs: %d", err);
+> +	if (err) {
+> +		pr_warn("error while registering struct_ops bpf oom kfuncs: %d", err);
+> +		return err;
+> +	}
+> +
+> +	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
+> +					&bpf_declare_oom_kfunc_set);
+> +	if (err) {
+> +		pr_warn("error while registering unspec bpf oom kfuncs: %d", err);
+> +		return err;
+> +	}
+>  
+>  	return err;
+>  }
+> -- 
+> 2.52.0
 > 
->> where 'start' is preserved from before the loop?
-> 
-> How about following patch:
-> 
-> From 863f38c757ee0898b6b7f0f8c695f551a1380ce8 Mon Sep 17 00:00:00 2001
-> From: Kairui Song <kasong@tencent.com>
-> Date: Thu, 29 Jan 2026 00:19:23 +0800
-> Subject: [PATCH] mm, shmem: prevent infinite loop on truncate race
-> 
-
-I ran this incremental through and it didn't flag any issues, thanks!
-
--chris
-
 
