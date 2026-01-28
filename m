@@ -4,100 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA904D35697
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12133D35699
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:30:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21DA76B0089; Wed, 28 Jan 2026 04:30:39 -0500 (EST)
+	id 74A846B008A; Wed, 28 Jan 2026 04:30:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DED96B008A; Wed, 28 Jan 2026 04:30:39 -0500 (EST)
+	id 708816B008C; Wed, 28 Jan 2026 04:30:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A9DB6B008C; Wed, 28 Jan 2026 04:30:39 -0500 (EST)
+	id 621286B0092; Wed, 28 Jan 2026 04:30:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F1ED36B0089
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:30:38 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8815713B223
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:38 +0000 (UTC)
-X-FDA: 84380852556.20.27057DD
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 83C7D80011
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:36 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KS8WfrQW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 520F06B008A
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:30:42 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0A73ED3CCE
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:42 +0000 (UTC)
+X-FDA: 84380852724.16.24FC562
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1C913100005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TLbbKaV2;
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769592636;
+	s=arc-20220608; t=1769592640;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JXkKpfW2fKRP2DHBX2nOhkvpUQvYM7wlOqYMZBE7moY=;
-	b=ziRuzcv92Z1x9ja9JZfqXES0zggev9N0KuoFvdDc28rIxQPw0gd3svs3weOoVkeel+J1Aw
-	VkpiN0UMzINtyS09faALXrHIWF69Rh/GE8sVK/0HAcl/BLKUAglSM9m/JTDkdYOT/YJiBd
-	IJQvnRZPzX+iuyJwMniOiCaShtY+5y0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592636; a=rsa-sha256;
-	cv=none;
-	b=k+KG6Io9CH2V9QKEKyY9You6wWkkpigC3HsNebj0juaGVZYaakxQ0cE3P1Jwiq/yKuj8jp
-	WO00/eU5zSYFhfqfW8n1bzvcQfc7AUz4pmSrms7nPpsMJ118d7KFqd+KMSEg+cvjEiGz/U
-	tm+kT92Vt7WVXfbgDWKxhZPRaM5j3yQ=
+	bh=jHlSAs5DuvtfLFcO72y/SZVl/BNUOfJD+/3/mENU6eI=;
+	b=BcTBJ6yl8zbACojmlhE/NHuwNSTGq0DT55eLPGb0oDQSNv+HohSgBYQ623zlqpuDqRfQP2
+	eMEdGb+ZV68c24LvuzS3LrbJ68ylAcsYElyLC+j+gJ7OxPop/ANbNaCwTi6jUqJDfXFicC
+	e9XYe2lQ8M2M9LZjl9GKRtOvIazVKNU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KS8WfrQW;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-81f47610542so3539243b3a.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:36 -0800 (PST)
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=TLbbKaV2;
+	spf=pass (imf05.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592640; a=rsa-sha256;
+	cv=none;
+	b=lKVprgT3CC8Wc65+zlT+S/7d+y8+pdIAAYQnBuWglHZQ55m/bBKH0Wfvd/nSNB9oi6CNB0
+	UJOV4giSGwZwouFx73wnuOecdSK6+pExgEauwA+Tfia/KDpgyEQLCr7PFmRe1L1llNdQA+
+	4PNJtsLUYuLHs+JnpOVe8ZgyoYGNj0U=
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-34b75fba315so3933256a91.3
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769592635; x=1770197435; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769592639; x=1770197439; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=JXkKpfW2fKRP2DHBX2nOhkvpUQvYM7wlOqYMZBE7moY=;
-        b=KS8WfrQWcH9p7Kd1TqkXbjyeuPsB7vMUw8TzMN3uuI7aYDRJMvZcspmDKdRZXynqUt
-         Hr24CB3Y8MsEbOQPw4O+q8A8gCTGYF9DognGkKKwrjOy/OEHxqz5EKPsps8LRSbQUhky
-         NXHCJvHuu7RQMKxn4eUI3vpAK2i3dnj+NVTLY4yKmcoS9oiw4/xbf6pHYiYBs7SBjxU6
-         Xn0H1uvFL0j3Xjg9+RyIzJ2OUceFC5m/f6Epss1OrALrOqOQGu6OIvbburwJDXaIMDZk
-         xuijHKP34aVf5YoHFtLSb8rkx0otFV4UGIVpL9k3n76QDELuYl5bHGg9yp2m2ahCjkEo
-         WEZA==
+        bh=jHlSAs5DuvtfLFcO72y/SZVl/BNUOfJD+/3/mENU6eI=;
+        b=TLbbKaV2Ngrq3spM0uOVYZqkJoMGC2MQSdxEYA3MBZIUQ55h4kLEHY0rxqdm7VSK9z
+         4vj4h0TSDv8YWIjWksrT/gURzxQRSVVkL5nmp9OmKWHd6VJhvZ9+oDdKb2bdo4wHksFZ
+         8Plyo2e0LJ76Ngg83JNNvJDfTAyVZpQrEfd2ep4OjhKsbfF3MqasgrARfw75DoyyJefl
+         wCTkwTNo8GSaSrGqOe66AU1Bvt9yzusPeV9DGzenGCksPjQ35aLvYttxmcJ7oV32awt0
+         CgnmC867dah/ld1+VYPG5jhqlHtuj3itifgfrDfDMAl40UYKUKu8+Ymarkk/+fSybWdl
+         XfkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769592635; x=1770197435;
+        d=1e100.net; s=20230601; t=1769592639; x=1770197439;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=JXkKpfW2fKRP2DHBX2nOhkvpUQvYM7wlOqYMZBE7moY=;
-        b=A/Sa+8Ac8AsvevUIMnEx6Tf9w8Ood0qbpIyBfO7r425X7chvAPq+IzLlwEfOeBByiD
-         OoPvjiRxEX/AT0DW9dWd2cOn9Lf4LO8vx4KBqjNXl7G6TtfdToD8takepAE4eUQaMZ2V
-         /Sb/hA6IKZ1NS0EfnfroPSGTf7zKhDkdOXU6G962f4Rbl6W8mNkxqh/jZqCXX0s9FzLY
-         cZhviIXr6IG4ucGlFHycxEGU/iibBBtFVSTaM0m3eO0lAqUbHLMbK0pUmeCYZVS6SAo7
-         Gv5EYAGwiq0Mga+qQ3DoiOX3fN3ipRjVzr+JQsmnL4Q9Wb9z84ADgKCxJJ3FWBvmPdqx
-         kAVw==
-X-Gm-Message-State: AOJu0YypcLEgMVTka8aviJ4JywwNNY/z9eC4SvoFJr1KMikgysLUlkEk
-	+DKSjSiv1nHd2Rrg4MO7UJzIe0dcoCvpabJblvUx8xhV+N+1aL5q6Lyi
-X-Gm-Gg: AZuq6aJqFtc/OO5bckHX7OLeASRBl/9BzEL3IeC5ntJG/qSmK4KASvAQO+GfqFA524r
-	2rVw38gIm9A2PWNKCQx4Q30DU7fyZQwvRuuZW5J+ReCo1JqMAEdNSeABErWJTxF+ecoBtJhrI3Y
-	1QeeSHAjYeCQ+iRv5R69zUu4dPBJpa1X+AoIWHHmEjms/GDs9VqqiBq/ZxpyRgnQImI0usn9akb
-	C4ZMkVLqYG5MiiY/Yq4srVjw0+szhPDog69sZEiBRwd+t6wGcOhqV6Tbe7SvY47rdQ4oxn6LmIp
-	F3oJtoR880EC8c/77C4x2bRCI8FAgM36V+/S3GDJftyfP37keVubjnBOANBokqdIZxjMrXHgu7s
-	YLZcnfwxFROvIev413HrasVqGKdp/1En3exlJe7ADuMfOOtLNskQe0yXF6PwqENfKPrRb5LLmRw
-	PB+g3f5R7OPqTCpLQEQidSkTp7cQ86uEyP6wmfyjf3peezNKQ93MudE0FqWq90hSQhZVKH
-X-Received: by 2002:a17:90a:c2cb:b0:34c:4c6d:ad0f with SMTP id 98e67ed59e1d1-353fedb04e4mr4505185a91.37.1769592635182;
-        Wed, 28 Jan 2026 01:30:35 -0800 (PST)
+        bh=jHlSAs5DuvtfLFcO72y/SZVl/BNUOfJD+/3/mENU6eI=;
+        b=dJiDd7tUjUZdS3xsXr2BNWnwlBlYSz9flBTqEvwmtmdSK/vYc8ghCWPjY9tlhAQCFY
+         Xe6drHFpiHiyJ+2nT/ENR2Haj7a51HnlLqAN2wcEQs7L1kBa2TTL5ZqEH90Iee8f2CvI
+         d1KQPoouAoFBl3+VsPrhYJUdgOd3uhogUZZEMnUlxDfU4seh2FPba+s2XqKQN/7OfnAo
+         bdaPAVZ0p4X1ndfBlYH1O1ncdarnuGxtPRe3w9mQsGDl/HVasu+J5HvzfTJHgvH0mVIk
+         JxfqvRltinhpD26TFE7ReHiweVthY4Qu+wb8S0+3rHfR7fqpwskIRwM3FzOnCavo4Kjo
+         ph7g==
+X-Gm-Message-State: AOJu0Yzzn3Ay3y/XLBfSl6udOqeWRp59nsLU1Y4vslGq9EDJX+HlE6xO
+	bZx8OsImzNgqUaQsfDVk91LOKzq2hoVCsK15jAUDBBljeBvPQVi+23/R
+X-Gm-Gg: AZuq6aLHE2gvrU/crkqG/g1p+HbuVDBhrm0d7ELHnBkjl+gYnL13d/qWoTYOl7oWqJS
+	OMu4kQvobTPveinHp8zGgBzEADKLqE1h33MG4UpCZCDss0+xfjaPm1JZWD5hSu3U9uqSCCFi2Ly
+	jxf0QSfhQz1iE7bPDyoAJugSXv+Z4IaYms3wJAcePjQFDyqSg0WdpZVSCg7Adnr4ZRyC/eRqA7G
+	3kdStdMNU5D1T2MehwcKPzOQZNJsGEmXKQNgrfML0kycxlEZDv3rQrdLh0ObSLuYD0x4ZST+9BE
+	IRN4kT/oaHniw8r9nn87T6vzZfpLAKhl6b1iKphWBh/+hgm4rdhxiHrZijmj84c1UM/33b29qI+
+	6HgfYrBNCD+Y5sDLoYQ9NP1bSVcrXKiHTAuw8awV10QHBlLXBBkH1Tb5XYoFrKtCTOukUjzk4uk
+	9KL2pD9AoniJsib4mydKSBZgqtCqgyIMpy7ve+ilQ2hIJIMyQ0aZmso+WqHUIXTMkyFOcA
+X-Received: by 2002:a17:90b:3901:b0:32d:f352:f764 with SMTP id 98e67ed59e1d1-353fecd08edmr3956834a91.2.1769592638870;
+        Wed, 28 Jan 2026 01:30:38 -0800 (PST)
 Received: from [127.0.0.1] ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.31
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 01:30:34 -0800 (PST)
+        Wed, 28 Jan 2026 01:30:38 -0800 (PST)
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 28 Jan 2026 17:28:25 +0800
-Subject: [PATCH v2 01/12] mm, swap: protect si->swap_file properly and use
- as a mount indicator
+Date: Wed, 28 Jan 2026 17:28:26 +0800
+Subject: [PATCH v2 02/12] mm, swap: clean up swapon process and locking
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-swap-table-p3-v2-1-fe0b67ef0215@tencent.com>
+Message-Id: <20260128-swap-table-p3-v2-2-fe0b67ef0215@tencent.com>
 References: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 In-Reply-To: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 To: linux-mm@kvack.org
@@ -109,21 +108,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
  Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=5423;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=8467;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=KCJ3euqA2qAaRKKZ+5BOjIB6OnqWy66OxHgNUHCngaI=;
- b=yUDffmpYnq0E0QTlzeFqQIlUHmu6snQJuTNpipCSscvVCs/a0w84zEQXy7hojSBMeXeMrbeiT
- uuD5ZksxBlFCx3xtlmgpeUcAp/e/Q7vCV0UdfEg0XIrukAPUSaAbqkI
+ bh=GJOWST4EwFrMORO0TdNo6OHVZqB7RqYtXfEdQQZxN/s=;
+ b=eaBaKJzF46kjkypZP4nFMY/8qkGRIc2eKS5aNa/7z8CfPJ2+q5TnR7L2qpYC5Tg4uFLC0vwP6
+ y1nyymxOE7tDzhppZ04ZedNIJwRp+gsO1r1jLBx2C6FJ81WxLUiledA
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Rspamd-Queue-Id: 83C7D80011
-X-Stat-Signature: 58sijs1x9xnhu5ag74uidtfyknnq6xec
+X-Rspamd-Server: rspam11
+X-Stat-Signature: fmoieejmqeojzjjon1thiotqqdb8mitq
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769592636-676359
-X-HE-Meta: U2FsdGVkX19YrpwveZur+qb+rdPeWRYPOZrImjrM3sciqMsp8DeMGgSad7QRN5ISoHqI1JirbuJuVFDSvMROiXeJhtB4nMsHWFrwaRkMw640FIgBUOMTF5vdr6Tozr5lvVSXVBL7K+p9j+3xMAVkAdHRT4n9AU6YHiyZxrzISbTe07h/aZ0AoaMUmqlLjHZHPGJkLomJpGVHqB7UkP6TJinAj168AiAoHeI7REkeAQZyC7DOyZkMMTvWP+UjyQztH5FhtyyVjXlkmTHWTh+MkRo9rVEzTGlhXgivh22mv8cXXJGOTwfVNJ47cXk/hU38K5pYhPPxXdDMoJ57JMhTxjlBLhce4y53aI14ULM5cGwyGsMC4C3NZX3yc903TDAe9JSbTzEpGcjenlTgJj9yi/63CxgwnFB2cNVZlNYcxLEHXiuM+1MxQ+4nvYpPOM84PGbkXZZo7NH0JIOb/vesxw7NLc3cc8VzJqob6chwer2jBgQncVHrAgUO4OwLVKZwshoS2zrzPF6I3XVjJ9Ii96IUqVZwn5k3W/ZE9U03G+/Y4NEl/5hTR041i39HF6i3oeFYN2LfY5YaMmks4kLgFFLz8MHr/VjVM/fo3TIbHfOLlr0hNgXc2tUqk4H41t/9k4M9AVA4gIFzv3JPazAHywhflRsQWnA7ef5w0xEZTXZPzfi81yR65KxOQAyw/Bcc175tByhYemH5tUe22oB7B1e2i+XhbIoH1XFGABV2ASK3gXoZySlGyr6bkWGx70EWPpzlhdoZkql71vJzdj0AWgOciFCUwWSKW71bo4n62MtapLh6A9Efh+Q1J85U33UMbvMTA5YWb+Bc+GTJz1+X6EVBaxqgcG7iwUbItflybxNs2qhtxikDyE/7W0QImZ2sfGdfDo9yRs8y7AiA2hOaj/6Vp4FzkEkiO14BzYSeA/fh1MRbq9qtFI+fpolfRk9x+pXE539z09JLJwjVS2e
- Hc+RnIQi
- +q4lJbB5xOfcDNL/0OCr5RNzJ88GRSCwzS6dUcgv+d7pIbsLDVJn2NPmrXVnVp/ls8dCnKChVynuujw7P9meJyv/ZzzGa7vsg6KBk8Lu4CIsMEfCeULgdeAUVKK9mDPrHhxy43UYtuNmqzyqlE11875U7eHS/HPtV7iZhwIHdxLJ8+kh6IJ4AQ0QRB2MR060fiFFOCTL4jQk9Pe8abu+T3tpAzbcDnFSVZH7OaSAgeS1tlPEuT8P93ZLi/bbs1CvQQO96Odnr7rGa98+3TIcdxiC0ctH909E6s68qq+DJhuPenu+pODhGqzH8bG776K7iWOm+lXvvvf1hja7zXzp5qXOb/Y9L98SRXquYLjJBOtOUH/Qn0v9YFpzkKwU8TVa+1ucdATnZau9JWaCnXkoDWBgIlsYK6BboMijrz/VhvzqkdfqGapAlbupLHcj1vmxYJXcByIBqbvYKvHSMu0Uc5tQumq0IhmplPDN7
+X-Rspamd-Queue-Id: 1C913100005
+X-HE-Tag: 1769592639-871687
+X-HE-Meta: U2FsdGVkX18notdoiO94ZixciTAu+/AT8aHQzAu7Q7hUiLnqy4wzKfW4C+4S4MbFt25lgtixgm8H9iHP7PyrNNJHg7E1KVMSge559wxHsOUBeFvbMAc6S/guTa55A8YAUwYlD2eA7zO1IYr8IA3S9AKt6J8k2mQxTUbbBMvoWjhLRWfvX3kGCJ7y+3irv33D7bP+33lP+AazYgizEu4/CccHTDRvAt0ltChTLQw+36PYCCL1QuibLDyYU0PCPRPV+evCG6WN5B0cV/CQeKtxIb4LxXhp79lc70FTUEY6YOR1EC4wcTQ5ADahwUzcYsVZZYxkEf+kzGxv4cq/+0R/7ltfnET7KdJp7O942EGrZn35R0UUbKHjzedBf8yFZYnnwa3QJBJqvQTRTdVki3C88UK4pifaszhwgUORNwxS8FjEerT0hq/0phILi14466oqREpfoRj306dEzGcyEMhGdaD9/FXp+ZaMioGK13sw9LY0ZYibQSfWmBEyW86TSapb89HoTglGvALff9IRL66rw/CVHFcqj1ysP7sFvUTPMdFRX8C1robLS/vABFtqvy4RztotYKR/N40mTI/i9QaCSrcwse184Uw+ESkP9DEmUHB44GpIORSAGrRnfQ0NVG5oxGiLGTVTTBpfyX1TosZSvD4aPZP5UZlKHc0uXHgnRsFzRrO/XVsBafwxPC/rKZvDKjoTTRH3yyCVK/ISkC6991X6MfnElJo23WS4rVlERBapyGynwgCAxs7zVtuj5PZ3aVhXWIpoy+3R9TILrBesG2KzNGTn3vnpmNC4LQ8i1dNhZM2/DxSUZjEAvLbTE8KA4ZfruuQ2tFJbZo68ndH0a6EPClu1dmxUuk3pHHl+1Uecaa4CiVLHJXoj/8mTGwh0wLBvzZe6USJxMwB58qEPrxNvnBj6ovwLa2CTH2tgnGtkwWPyow7bFXifvtKiXEOaJ4+hBMoMUiQzrOtOFiw
+ rPw0RpUT
+ 4K2/uXIOeLlr0O0gltHj0boS8Zkx2kDqsIMBKFbrr0GiCq2tPeRDeuGYnxqGxJkoXF/a6gP7xnsI06blMz6pHgmNb8LZhIngM8AXorzYHbDc2llgIUdxXIyvAM6k/QY8Weu/8cWPpfBe8zcKxPLhmwVPY1k1EgPwqaR8KXH8Hd7ms1uUO4r6NNm1S3yURW36Eo/xodubiNRWg5CSZAdDNS9p+N68TRHrSitRERbizKKP5Hs9XOqQNR9mjCa3+k333ITv3qPQO6gFkpuP0oKBEBKJWHaV2AlDgnJJ2AibfM721cQrOGkNelH8ZKKyYAnDkNVYN9WOMF0hoNth7BhD0SP8qPAy4OA9XceDq+69hn+NiCnGABOMwUXWS/0w1c1u6/LS9m0qpftnpnd1h96Fp8DMqxfQtmNmv+ANIFyYAX5dYJjdOdr90qFqLIQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,150 +133,244 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-/proc/swaps uses si->swap_map as the indicator to check if the swap
-device is mounted. swap_map will be removed soon, so change it to use
-si->swap_file instead because:
+Slightly clean up the swapon process. Add comments about what swap_lock
+protects, introduce and rename helpers that wrap swap_map and
+cluster_info setup, and do it outside of the swap_lock lock.
 
-- si->swap_file is exactly the only dynamic content that /proc/swaps is
-  interested in. Previously, it was checking si->swap_map just to ensure
-  si->swap_file is available. si->swap_map is set under mutex
-  protection, and after si->swap_file is set, so having si->swap_map set
-  guarantees si->swap_file is set.
+This lock protection is not needed for swap_map and cluster_info setup
+because all swap users must either hold the percpu ref or hold a stable
+allocated swap entry (e.g., locking a folio in the swap cache) before
+accessing. So before the swap device is exposed by enable_swap_info,
+nothing would use the swap device's map or cluster.
 
-- Checking si->flags doesn't work here. SWP_WRITEOK is cleared during
-  swapoff, but /proc/swaps is supposed to show the device under swapoff
-  too to report the swapoff progress. And SWP_USED is set even if the
-  device hasn't been properly set up.
-
-We can have another flag, but the easier way is to just check
-si->swap_file directly. So protect si->swap_file setting with mutext,
-and set si->swap_file only when the swap device is truly enabled.
-
-/proc/swaps only interested in si->swap_file and a few static data
-reading. Only si->swap_file needs protection. Reading other static
-fields is always fine.
+So we are safe to allocate and set up swap data freely first, then
+expose the swap device and set the SWP_WRITEOK flag.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swapfile.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+ mm/swapfile.c | 87 ++++++++++++++++++++++++++++++++---------------------------
+ 1 file changed, 48 insertions(+), 39 deletions(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 7b055f15d705..521f7713a7c3 100644
+index 521f7713a7c3..53ce222c3aba 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -110,6 +110,7 @@ struct swap_info_struct *swap_info[MAX_SWAPFILES];
+@@ -65,6 +65,13 @@ static void move_cluster(struct swap_info_struct *si,
+ 			 struct swap_cluster_info *ci, struct list_head *list,
+ 			 enum swap_cluster_flags new_flags);
  
- static struct kmem_cache *swap_table_cachep;
++/*
++ * Protects the swap_info array, and the SWP_USED flag. swap_info contains
++ * lazily allocated & freed swap device info struts, and SWP_USED indicates
++ * which device is used, ~SWP_USED devices and can be reused.
++ *
++ * Also protects swap_active_head total_swap_pages, and the SWP_WRITEOK flag.
++ */
+ static DEFINE_SPINLOCK(swap_lock);
+ static unsigned int nr_swapfiles;
+ atomic_long_t nr_swap_pages;
+@@ -2646,8 +2653,6 @@ static int setup_swap_extents(struct swap_info_struct *sis,
+ }
  
-+/* Protects si->swap_file for /proc/swaps usage */
- static DEFINE_MUTEX(swapon_mutex);
- 
- static DECLARE_WAIT_QUEUE_HEAD(proc_poll_wait);
-@@ -2521,7 +2522,8 @@ static void drain_mmlist(void)
- /*
-  * Free all of a swapdev's extent information
-  */
--static void destroy_swap_extents(struct swap_info_struct *sis)
-+static void destroy_swap_extents(struct swap_info_struct *sis,
-+				 struct file *swap_file)
+ static void setup_swap_info(struct swap_info_struct *si, int prio,
+-			    unsigned char *swap_map,
+-			    struct swap_cluster_info *cluster_info,
+ 			    unsigned long *zeromap)
  {
- 	while (!RB_EMPTY_ROOT(&sis->swap_extent_root)) {
- 		struct rb_node *rb = sis->swap_extent_root.rb_node;
-@@ -2532,7 +2534,6 @@ static void destroy_swap_extents(struct swap_info_struct *sis)
- 	}
+ 	si->prio = prio;
+@@ -2657,8 +2662,6 @@ static void setup_swap_info(struct swap_info_struct *si, int prio,
+ 	 */
+ 	si->list.prio = -si->prio;
+ 	si->avail_list.prio = -si->prio;
+-	si->swap_map = swap_map;
+-	si->cluster_info = cluster_info;
+ 	si->zeromap = zeromap;
+ }
  
- 	if (sis->flags & SWP_ACTIVATED) {
--		struct file *swap_file = sis->swap_file;
- 		struct address_space *mapping = swap_file->f_mapping;
+@@ -2676,13 +2679,11 @@ static void _enable_swap_info(struct swap_info_struct *si)
+ }
  
- 		sis->flags &= ~SWP_ACTIVATED;
-@@ -2615,9 +2616,9 @@ EXPORT_SYMBOL_GPL(add_swap_extent);
-  * Typically it is in the 1-4 megabyte range.  So we can have hundreds of
-  * extents in the rbtree. - akpm.
-  */
--static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
-+static int setup_swap_extents(struct swap_info_struct *sis,
-+			      struct file *swap_file, sector_t *span)
+ static void enable_swap_info(struct swap_info_struct *si, int prio,
+-				unsigned char *swap_map,
+-				struct swap_cluster_info *cluster_info,
+-				unsigned long *zeromap)
++			     unsigned long *zeromap)
  {
--	struct file *swap_file = sis->swap_file;
- 	struct address_space *mapping = swap_file->f_mapping;
- 	struct inode *inode = mapping->host;
- 	int ret;
-@@ -2635,7 +2636,7 @@ static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
- 		sis->flags |= SWP_ACTIVATED;
- 		if ((sis->flags & SWP_FS_OPS) &&
- 		    sio_pool_init() != 0) {
--			destroy_swap_extents(sis);
-+			destroy_swap_extents(sis, swap_file);
- 			return -ENOMEM;
- 		}
- 		return ret;
-@@ -2851,7 +2852,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	flush_work(&p->reclaim_work);
- 	flush_percpu_swap_cluster(p);
- 
--	destroy_swap_extents(p);
-+	destroy_swap_extents(p, p->swap_file);
- 	if (p->flags & SWP_CONTINUED)
- 		free_swap_count_continuations(p);
- 
-@@ -2941,7 +2942,7 @@ static void *swap_start(struct seq_file *swap, loff_t *pos)
- 		return SEQ_START_TOKEN;
- 
- 	for (type = 0; (si = swap_type_to_info(type)); type++) {
--		if (!(si->flags & SWP_USED) || !si->swap_map)
-+		if (!(si->swap_file))
- 			continue;
- 		if (!--l)
- 			return si;
-@@ -2962,7 +2963,7 @@ static void *swap_next(struct seq_file *swap, void *v, loff_t *pos)
- 
- 	++(*pos);
- 	for (; (si = swap_type_to_info(type)); type++) {
--		if (!(si->flags & SWP_USED) || !si->swap_map)
-+		if (!(si->swap_file))
- 			continue;
- 		return si;
+ 	spin_lock(&swap_lock);
+ 	spin_lock(&si->lock);
+-	setup_swap_info(si, prio, swap_map, cluster_info, zeromap);
++	setup_swap_info(si, prio, zeromap);
+ 	spin_unlock(&si->lock);
+ 	spin_unlock(&swap_lock);
+ 	/*
+@@ -2700,7 +2701,7 @@ static void reinsert_swap_info(struct swap_info_struct *si)
+ {
+ 	spin_lock(&swap_lock);
+ 	spin_lock(&si->lock);
+-	setup_swap_info(si, si->prio, si->swap_map, si->cluster_info, si->zeromap);
++	setup_swap_info(si, si->prio, si->zeromap);
+ 	_enable_swap_info(si);
+ 	spin_unlock(&si->lock);
+ 	spin_unlock(&swap_lock);
+@@ -2724,8 +2725,8 @@ static void wait_for_allocation(struct swap_info_struct *si)
  	}
-@@ -3379,7 +3380,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 		goto bad_swap;
- 	}
+ }
  
--	si->swap_file = swap_file;
- 	mapping = swap_file->f_mapping;
- 	dentry = swap_file->f_path.dentry;
- 	inode = mapping->host;
-@@ -3429,7 +3429,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+-static void free_cluster_info(struct swap_cluster_info *cluster_info,
+-			      unsigned long maxpages)
++static void free_swap_cluster_info(struct swap_cluster_info *cluster_info,
++				   unsigned long maxpages)
+ {
+ 	struct swap_cluster_info *ci;
+ 	int i, nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
+@@ -2883,7 +2884,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	p->global_cluster = NULL;
+ 	vfree(swap_map);
+ 	kvfree(zeromap);
+-	free_cluster_info(cluster_info, maxpages);
++	free_swap_cluster_info(cluster_info, maxpages);
+ 	/* Destroy swap account information */
+ 	swap_cgroup_swapoff(p->type);
  
- 	si->max = maxpages;
- 	si->pages = maxpages - 1;
--	nr_extents = setup_swap_extents(si, &span);
-+	nr_extents = setup_swap_extents(si, swap_file, &span);
- 	if (nr_extents < 0) {
- 		error = nr_extents;
- 		goto bad_swap_unlock_inode;
-@@ -3538,6 +3538,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	prio = DEF_SWAP_PRIO;
- 	if (swap_flags & SWAP_FLAG_PREFER)
- 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
+@@ -3232,10 +3233,15 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
+ 
+ static int setup_swap_map(struct swap_info_struct *si,
+ 			  union swap_header *swap_header,
+-			  unsigned char *swap_map,
+ 			  unsigned long maxpages)
+ {
+ 	unsigned long i;
++	unsigned char *swap_map;
 +
-+	si->swap_file = swap_file;
- 	enable_swap_info(si, prio, swap_map, cluster_info, zeromap);
++	swap_map = vzalloc(maxpages);
++	si->swap_map = swap_map;
++	if (!swap_map)
++		return -ENOMEM;
+ 
+ 	swap_map[0] = SWAP_MAP_BAD; /* omit header page */
+ 	for (i = 0; i < swap_header->info.nr_badpages; i++) {
+@@ -3256,9 +3262,9 @@ static int setup_swap_map(struct swap_info_struct *si,
+ 	return 0;
+ }
+ 
+-static struct swap_cluster_info *setup_clusters(struct swap_info_struct *si,
+-						union swap_header *swap_header,
+-						unsigned long maxpages)
++static int setup_swap_clusters_info(struct swap_info_struct *si,
++				    union swap_header *swap_header,
++				    unsigned long maxpages)
+ {
+ 	unsigned long nr_clusters = DIV_ROUND_UP(maxpages, SWAPFILE_CLUSTER);
+ 	struct swap_cluster_info *cluster_info;
+@@ -3328,10 +3334,11 @@ static struct swap_cluster_info *setup_clusters(struct swap_info_struct *si,
+ 		}
+ 	}
+ 
+-	return cluster_info;
++	si->cluster_info = cluster_info;
++	return 0;
+ err:
+-	free_cluster_info(cluster_info, maxpages);
+-	return ERR_PTR(err);
++	free_swap_cluster_info(cluster_info, maxpages);
++	return err;
+ }
+ 
+ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+@@ -3347,9 +3354,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	int nr_extents;
+ 	sector_t span;
+ 	unsigned long maxpages;
+-	unsigned char *swap_map = NULL;
+ 	unsigned long *zeromap = NULL;
+-	struct swap_cluster_info *cluster_info = NULL;
+ 	struct folio *folio = NULL;
+ 	struct inode *inode = NULL;
+ 	bool inced_nr_rotate_swap = false;
+@@ -3360,6 +3365,11 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EPERM;
+ 
++	/*
++	 * Allocate or reuse existing !SWP_USED swap_info. The returned
++	 * si will stay in a dying status, so nothing will access its content
++	 * until enable_swap_info resurrects its percpu ref and expose it.
++	 */
+ 	si = alloc_swap_info();
+ 	if (IS_ERR(si))
+ 		return PTR_ERR(si);
+@@ -3442,18 +3452,17 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 
+ 	maxpages = si->max;
+ 
+-	/* OK, set up the swap map and apply the bad block list */
+-	swap_map = vzalloc(maxpages);
+-	if (!swap_map) {
+-		error = -ENOMEM;
++	/* Setup the swap map and apply bad block */
++	error = setup_swap_map(si, swap_header, maxpages);
++	if (error)
+ 		goto bad_swap_unlock_inode;
+-	}
+ 
+-	error = swap_cgroup_swapon(si->type, maxpages);
++	/* Set up the swap cluster info */
++	error = setup_swap_clusters_info(si, swap_header, maxpages);
+ 	if (error)
+ 		goto bad_swap_unlock_inode;
+ 
+-	error = setup_swap_map(si, swap_header, swap_map, maxpages);
++	error = swap_cgroup_swapon(si->type, maxpages);
+ 	if (error)
+ 		goto bad_swap_unlock_inode;
+ 
+@@ -3481,13 +3490,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		inced_nr_rotate_swap = true;
+ 	}
+ 
+-	cluster_info = setup_clusters(si, swap_header, maxpages);
+-	if (IS_ERR(cluster_info)) {
+-		error = PTR_ERR(cluster_info);
+-		cluster_info = NULL;
+-		goto bad_swap_unlock_inode;
+-	}
+-
+ 	if ((swap_flags & SWAP_FLAG_DISCARD) &&
+ 	    si->bdev && bdev_max_discard_sectors(si->bdev)) {
+ 		/*
+@@ -3540,7 +3542,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
+ 
+ 	si->swap_file = swap_file;
+-	enable_swap_info(si, prio, swap_map, cluster_info, zeromap);
++
++	/* Sets SWP_WRITEOK, resurrect the percpu ref, expose the swap device */
++	enable_swap_info(si, prio, zeromap);
  
  	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
-@@ -3562,10 +3564,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	kfree(si->global_cluster);
- 	si->global_cluster = NULL;
+ 		K(si->pages), name->name, si->prio, nr_extents,
+@@ -3566,13 +3570,18 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
  	inode = NULL;
--	destroy_swap_extents(si);
-+	destroy_swap_extents(si, swap_file);
+ 	destroy_swap_extents(si, swap_file);
  	swap_cgroup_swapoff(si->type);
++	vfree(si->swap_map);
++	si->swap_map = NULL;
++	free_swap_cluster_info(si->cluster_info, si->max);
++	si->cluster_info = NULL;
++	/*
++	 * Clear the SWP_USED flag after all resources are freed so
++	 * alloc_swap_info can reuse this si safely.
++	 */
  	spin_lock(&swap_lock);
--	si->swap_file = NULL;
  	si->flags = 0;
  	spin_unlock(&swap_lock);
- 	vfree(swap_map);
+-	vfree(swap_map);
+ 	kvfree(zeromap);
+-	if (cluster_info)
+-		free_cluster_info(cluster_info, maxpages);
+ 	if (inced_nr_rotate_swap)
+ 		atomic_dec(&nr_rotate_swap);
+ 	if (swap_file)
 
 -- 
 2.52.0
