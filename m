@@ -4,100 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6658D35697
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:30:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29927D35690
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:31:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D8356B0095; Wed, 28 Jan 2026 04:30:58 -0500 (EST)
+	id 944446B0096; Wed, 28 Jan 2026 04:31:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A36D6B0096; Wed, 28 Jan 2026 04:30:58 -0500 (EST)
+	id 8FB4E6B0098; Wed, 28 Jan 2026 04:31:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12FA36B0098; Wed, 28 Jan 2026 04:30:58 -0500 (EST)
+	id 7FE306B0099; Wed, 28 Jan 2026 04:31:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F19586B0095
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:30:57 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8556A14053A
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:57 +0000 (UTC)
-X-FDA: 84380853354.21.13B621D
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 89F311C0004
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:54 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c6yPrJXz;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 728F76B0096
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:31:00 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4454D1A0533
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:31:00 +0000 (UTC)
+X-FDA: 84380853480.07.761A70E
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 489982000C
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:58 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VJrqCbGv;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769592654;
+	s=arc-20220608; t=1769592658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dh09qgby8S6xDVlW5KdfbSbFeHI4SQYQYdGZvGyhK/w=;
-	b=PGx4yAR1kRdTeU2SA0I/UIVA7IjI7Y3AMMmsBe9lR/cFjFEle7c01rslxgOKSokykZo84+
-	IaUVrCl42IzR+RPHVV571OljwcMEc4fWcT2MBHK12pZcsN+pnDVYRJ0oGcuWHfpi+ALvV+
-	LBgLHpcZnMYP6tUtH6TGdxUJNOsT0Pw=
+	bh=FByi9ivqPJyIjI850sU//sSIfdwjIzLDbOJYWWeWKFE=;
+	b=E/pCIJvjM6LyvjdCColQGDJXTPDa1IKCLijq5GvDfw9OHMPYNHOJ0a1+cjBO+EO7DkC3GO
+	kDedkhT+3iOWxVFwPEo9L41q6KSQX6OVxS6/VrusETIk5+JBo9tEoasquBX5uLdGtREAGW
+	AYAFHNW6giCfJXMw/fUuI0aQOOe/mvk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c6yPrJXz;
-	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VJrqCbGv;
+	spf=pass (imf13.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592654; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592658; a=rsa-sha256;
 	cv=none;
-	b=MwYl11oVw0V2S3aCs/JsOqmgnR24t0F8guptPuxkA4VqDMpLT8F/7BJ0hk3YsC0szEWBlk
-	U47W3hUJttfqSXkaW62znprGTw/CQ2LXl+YTgJzqUujTt4dgxZXlaAebZMsrCORFSsDAze
-	9/WOhzSIvccuGGdOs2GOszwAT9op2wU=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-34c363eb612so3732158a91.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:54 -0800 (PST)
+	b=k5bBqhbdqc2CJKbfk3E4lOlsScoTpwQoejfZ9PBA3YNZQUZ2Pqu48DSHeAmnaeOggpEHbV
+	EQh2H2muCf0r6p/m79mrGcIWE1Ad227vp/u9mcZacQ3mvIupavcb6BsLRXb+7ot9NC7k5A
+	fKHUxybhvL2cVgsg6K4Ns/KkUR8k210=
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c626bd75628so2330942a12.3
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769592653; x=1770197453; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769592657; x=1770197457; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dh09qgby8S6xDVlW5KdfbSbFeHI4SQYQYdGZvGyhK/w=;
-        b=c6yPrJXzYA2dqkdBhrWzUlMuqZbCZn45WYcMapg8g9ftMaOHUMqz/Q9EEHKDqcH3Tz
-         IrDDWUDHKdxJmC8ZMZXlTLOHU6BQ5+bZ1G3MekunkcVCWZusdf/N+AXFG46fqNOaufRG
-         xAIo9QcxnfZ9yEeaiUR9yrFg5GWuAmyFTpj0flnAC4FMhDXQve3ooYd+93/ThwflHFiG
-         00JVQ8WBaiLiGilQIrgHy8owuipMUIqA7pQDpWqbpZLbgsYNKe3HnN1iuUDYBCZaVbZw
-         dl5vljAmFWnDa5qzMy+MDj+iyD1sFRB5ZwX+4wEmwiiESC9V6xU88+PQeqGMicPcjeg3
-         R9GA==
+        bh=FByi9ivqPJyIjI850sU//sSIfdwjIzLDbOJYWWeWKFE=;
+        b=VJrqCbGvFu+OSEvAbRqzBOY7aOst6LJ9tlKiKkmlRtGMm+3/ViStx/eZIrVAV5l4Vy
+         HHqHGTVgIpml9JARzBmYUl4S/RlNfSHoodn/0ixaGacFMKbUdyUSk/AhBo8CcVfZpLia
+         WUxJM9wLiEx/1Rnaia2jhmlCEXrwma5dvYgR6SV9W1CgfCHXVeeVhWYm6jGWfSlV6Z56
+         /GQfz01riVKerZwIbPYfcs//8z8sXeQufmBdH9pk15M5S2R7QX1byJICwJnIw4zHi5DJ
+         ndBU6TXPPkntQEf2DY0ojqlzyfsrNDJx+Aw4XevsOMmXaOD9IO3sN9Sh/6YgWVqlPN2N
+         RFzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769592653; x=1770197453;
+        d=1e100.net; s=20230601; t=1769592657; x=1770197457;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=dh09qgby8S6xDVlW5KdfbSbFeHI4SQYQYdGZvGyhK/w=;
-        b=XuwKUqxcECuLv70501uWy/93+YDN4ImU1QfsWPv9I8pg86tPOaHG0IIXveNDyieWA1
-         cl4giduwRxq2ngTALVJhAZit05VacHpnHt5kB4Jc6QMQYVIvU68IzB8Z+XD8yDmPQA+C
-         uLE4+92xpOMfFG2gKgISzrbC9CbmWbh88sJtOCMPv1i0cMHnDL9217jIrPN7vXlq/Okh
-         7kFadGIjKfjaHrdokS/SNVHrmfKHFxJYBH5CUvDYn6Pw7pc2kOvJcWJjEESEcHFLRb/5
-         Y+bkeGdPayUmt6XWaQZzWEde1kbuu6NaKQ10n76wQu5PiitQzQ/b/ozi5NW050zdbue/
-         eJFw==
-X-Gm-Message-State: AOJu0YwYdHv9JWYVlV+PBF9ASwO4Rj2aiTNitF3FgGjinavjtzHva1V+
-	7LZqASAfbgVZT8kY/gCf90oHLYc8vH/o1BbZ6AGLsKxv1emRetu3xM0F
-X-Gm-Gg: AZuq6aLm6tUBycjJRbwa7gliXs+EyiEKtNPdm306gE+t0HVJ7msQepn6MWEBz5zkop/
-	L3yKuyomjsV3y1vhcjwAVtZFwao0RFzF3nm4pamVPy/ZFQGu9N1vwsmmd5RsKHQc9aNpBjP0MVW
-	rXhpLD8Br8hQ2/JO+2eZj99BUlhggoX59n7Qg8Sy+PDVOKh9xKdsnEseuclIhzqWkcTmZBDoWoN
-	mv9X/WDt0zG9Jfg6GsVfhH3V87acWnmMUhnPydrCnuhQoFp106gfRRZLTai6iDqGUjvmegYY3Ig
-	2ZdztOCkb2bREuDmPSu888l0Pi3yA8+5wI6UPNMB100EvRxA6WE6dUqFRsbGHqpkfh7yjv98PcN
-	L4hy65PQmekeMLWiPZnIfXhDM4haPpF4FLfa+AsyBjiBuAgRze7EftXvLpk1BWIoUcH5U/xXyij
-	UFx6w+w0D8CMXr4aGeaBMCtNI6qc6O2HHsm+oSCC84L5n1dCX9IYj7EpS008V3zaQ7PBJv
-X-Received: by 2002:a17:90b:268a:b0:33b:a906:e40 with SMTP id 98e67ed59e1d1-353fecc68aamr4206658a91.2.1769592653395;
-        Wed, 28 Jan 2026 01:30:53 -0800 (PST)
+        bh=FByi9ivqPJyIjI850sU//sSIfdwjIzLDbOJYWWeWKFE=;
+        b=P49tAzVMJ9O1We6KjpNybjN+fDfeE7vHWj+kEUaim3mscg1o2j2o0qJ1RQa5e0ffS4
+         0eiimvMGUGNWCDhmQDBnw701mLl8J1j/W1DjLQUN3Pi34cgQiUynTPoCBc1jmRC0xTQS
+         fc2GCD5QUlSbnOFl3FAK/+OtK+o0fxhm+6E4OzdT0gMXFhxaRTpc+jV4KmrlUfJfkhBZ
+         IYI/OtshygrQkG4MoSq1DnMCIEmVgfoNY3+gdlYQiM1+cWiva2ccdv4YKQYkzRvi52kL
+         IFSGl2hCArGp8shzMKBPD/FZylivNrXnUvNKcXfkNW9Yu0MHWi9lGiXF6SW9MFDyu1EU
+         NJ1A==
+X-Gm-Message-State: AOJu0Yz3eQVN8Mqb6hnmX/RyoQfb8Fuq0BAVw7BIPKow9ToFF25cpw8m
+	Ial0K2PPt9KxVOZHFLCRqnUo9T1bvzhB5vakZ3yUhdhQHxRhRbcxmCeB
+X-Gm-Gg: AZuq6aJgXgVFov2ffiJauStt1XL7EMM33lVXHdHY7rqdfBDDBcRboQkRy4qw1VBTm4Y
+	9/0XglrmyoozQ6rIHqXUS1YDLt6uocD3S6ycRiV45K7lsl8Ps0oATJsJDZMBHVy/37JZ6jgCJf7
+	H7uVLjWEtzXSacWh5JjrzP2TpsDi6tRL+wvIn8EzDbfHFWr7tGTr/tKYWiMuh9UH9oGjXh+H4Ql
+	cTK0dTZ6O02roD6v/blZk/Ge7gmhD5cGkaCOZ30Pa1oNK3fcILz6OtnfF1clKNlc2VB6B5m46Rm
+	tLhQTfQvVUxxOSMvQlEsTWEpa2DhwnO9KcSB8/leKRViG8Yl9ms/gLjH1G7dllM7l/X7B6P5OEe
+	5TZ8W7OOVQBHo+f/4j5V5a/VYRSVosfMk/UhMYwT18HIeUlWxfMwiBlV4CFx8Vk64aKNTBbsIxi
+	ceEXHj2ICA6vSrmlhhrxXujnz6H9k95GD4sjznd/B+Bat/UMAxvwtTeo+VAA==
+X-Received: by 2002:a17:90b:2c86:b0:32e:7340:a7f7 with SMTP id 98e67ed59e1d1-353feccb368mr3822825a91.2.1769592656953;
+        Wed, 28 Jan 2026 01:30:56 -0800 (PST)
 Received: from [127.0.0.1] ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 01:30:52 -0800 (PST)
+        Wed, 28 Jan 2026 01:30:56 -0800 (PST)
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 28 Jan 2026 17:28:30 +0800
-Subject: [PATCH v2 06/12] mm, swap: implement helpers for reserving data in
- the swap table
+Date: Wed, 28 Jan 2026 17:28:31 +0800
+Subject: [PATCH v2 07/12] mm, swap: mark bad slots in swap table directly
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-swap-table-p3-v2-6-fe0b67ef0215@tencent.com>
+Message-Id: <20260128-swap-table-p3-v2-7-fe0b67ef0215@tencent.com>
 References: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 In-Reply-To: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 To: linux-mm@kvack.org
@@ -109,21 +108,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
  Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=8791;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=4470;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=BTH7PLu1JcCgfu/sHFpEotAODg5Cd2G+MvLqcP9QWOM=;
- b=gbRif2/XxCHZURM6jy0wYODIgNiThYiIXJAfEMflr4osMuoS0q9rvNODHkucFrhDHBgf8VRqy
- b8sX9SNJVy2DNn0sYgPey2bxinRBiXote/Np8l7yzIECi1YVLcuOt93
+ bh=8m9COjsQHMkFcnP8SRLKraCOnV7wwqbxj9agW6bIMxQ=;
+ b=PJ+2tKOVSzN+igBqvPYB4aflWKuvIjXVLzoOy7Sa6fTN51lteTQv078zHknrSO4i0Gbrf5zBc
+ Y8yCq/5qPiBDOWGFjReAYZwOOSw8UlyCNYO2ncZR5mduSyDsLBD916v
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 89F311C0004
-X-Stat-Signature: 6mhkw9bmgr4e6icmuq14z46qscm5q43c
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 489982000C
+X-Stat-Signature: nphyyuggtoqfwuhgm3y8d63k5syqs7sh
 X-Rspam-User: 
-X-HE-Tag: 1769592654-684911
-X-HE-Meta: U2FsdGVkX1+1OW/y+yQYf+VF7SCInBRB70NrmxEnZ+Ta73LdwUpnE2/UuDLy/08ReJHDCRHh2EeXtMBO4Ba5I7UjhY15FlVms32IxyKnKGkHywTrF4V1tAdrMgThuG3cY0YObDn83wzV6V5Jij3QgCk06ctbU9AsKrNZ2XQxun9J5w5IAkDiKQgaopGM3mkCK6GFuZ27Zm6NYFnr2OoIoZXqstvwcYh6bL6XQi33HlV+n2vrnG8nnqRFH8aYuwp0xLNlCmSNa1GByjDqffYUX6n9dWwDoQudFCIYDtsYCD8v5xfrzaL3MUfplYWvtxnQwC4Du5L0cOJPCtPlLC5b1LUUyB99hUHft5GHypRXC9K+Cm41HsBIXux7N7T4+hwMgCSEFwvWcZzuMbozNz2cYUuWeb9hWqU7rcJiTzvqBErGVhm0eqoGaLydwnaQtH0BssPjA1JbdwNSW2gb3gRjYYI8OYx4DKZ7EjKp+34QaFuaF9bZBB6KzHeEdwjH5Z6XyExuMgGjqjowdHyCZxZY2vX2mkhx3K8V9W5Tliav23+VFIUFilMJ6es1+SFKiRBESQ7YMNPA/nMkIRYPe3XAw1wfFipNRNvN9J/Bqc7YB94PWOkokFZO7RK8EfCSKDJcY2SLDZ611PlfYLPYWFfuIWnFv1JMjBBxgd/XpcRvPzj4RFF8ncFYm6hy/gAZsZFDPoBGPoiTngJwVqkfW230FRx+TA1+6n3dPxHXBdm6b0FE25lcdxaxsQHTyG7eWHwsqLmM4h0iileerXlM/+WPrY7c/2ME29ddvJZh/4+9GSNv7M/mTzznltIzXEm8laOONruX/4X4tM7DBZm2A6YjvkQxMPK/0IZqGQPQ5I6g/SHVoviZ0FOdaI0Ch9mrOz6EUl6ai4dAyPuJuDWsF5KQhzPirt4M8yNSePjDpcQIFcUNEedDyzJgbddO9QMzKwk7ZYVnbjwULPYWayho/wL
- vhK5SNKg
- p/ewCD58NxuHZ7QYph62rnnnJ97RD1RDDtZ3DDyj7iWmUWzdKxDKM/H77vbKiXgPJfDbLOlIB0H/UvQHQg5UuxLsStqqa7DFOd4M22Pbw7aCZYYs3tQuOSUqu8ohfLiYDHT/xm89HBn0gsXV55n5H3I9RIHbDdlFNpzqszkoD4m3j3UX/Rt0HhAnZV+dj5fR4LAEKUiSPnSz8ayofE1Hb4j9igcJPGo5ySzgCcK4DfN6bBIdkwCaQXdQMpGGGgKtr92bdt73ZYGikqijqctShGQGcM0/58S/Gf+Jr8/VCO1vKuMCjpU+qURL6GnWvXAMyxJtHX40otSSZ8ZwkvEbmimbbOrSvGCFilKTTfLnR2Tbe7lEnWYNUpzn+UiKqFntm/+CcpJ9QjTQVViyzxAchLSKVg37Zt9rkwS5m7EiN2AtHVGj6SOuTbGH8ew==
+X-HE-Tag: 1769592658-721800
+X-HE-Meta: U2FsdGVkX18HBG53PnySGwGQEh0rP+wJMFdQejj1QXExgLmlM2dGLOeCp/o2Mzn2/xe/4vTxBCIpunhJUJf6bhAPEJtXxo3STFfMl8xjPaaAJN1ymwKN2ZV+RLzIj2kk4ygv8C0VQX/OPVhlBMhZhqNKqxAExp13OH4h5nTLSK1DCCUIb4qYe0EHsu/LhdeB9YbxxJcfdhRMfx9pcRmfGUIk7Qyj1MNX++y7/MKqfT1kCOKEL+m/yvJwPgTFwUaC5QwhNTTTO31PvCFo1zeT91ZtnLodl7amGwb2HhNIYqs/ZneyXDu3Q0+nSDH+/v4qZGLeeKDr95lN0Gf4BeY01JazngzWJrS0g4WxRmGGqCl8b8JqwkYkVYfL/On5qgySAPE1cNlqqZiIUkkH3cRhJqMqg6oSMJ+e8Ukf3+ZZttyp3HhbVF52s7moj1VBqJPfaQLlZMPiA8tcvYmWzbH4iAuRm6PlEsMdHtaNyoSwPEaZM1wb/dg+0KtHVMaas5KfjArgX1WILfKF5KfL34+iL6wwX6AHnxiBHDALtn2ECMQGHXqK/qNqS0R3tFjj/7k1Pia+c/pyqIJSwOEnwiR6vRgj+tnOKDKzaY/sTIEP1oDdfydAGH5cNVY8lyOJLVCVUJpKh6rQc4oWMVjr3A7sSTa6L0lbZkwmDoVsvt9HfENZRXC7RTaa0X2yWSe9POcEGyXrJTMTNDnGVCkZGI/4ZJcCurIdKpAWqLL3h6Se1UasHOMSKo2HjnHclsKtj8jG1zNr6yXE49NyDY/XQhsws7f+nZcgVm0NyPWJp6hCBGW5lg6OUxhEk6YRd4IQ3SvcP+QBFnbLW0kaBaX8Q9EHFZJKERZq6Gs+XAqmW2k/gImyRQfYT95xmkTbYW1KsCdKcQG7g/QvzWzE3qArhRxdiVsVBLroHYKXYx0o05JA6dQlJLji4wsA0zz7h7LwtitCv9MLQyeFOveYzv28hqP
+ RwCJuOlX
+ 6T0Fs6+OAsyx3mfuIpamGBbQQ4Kxt5qejq/iyI4+muCkLX0ndwaU5mS2dg5NRsCu275hQ+PlOMg0cafSxaol18sQ7jNdqVfzgJ7UaoyGXaNB8TVre8s9CKA5DKIcFWLqVgxjPr0gdB0IgmaryrvMVdmlummMQMU4lqcSRpELDVPWIzlL8Ks/Di/cqZV5SKabpSZewX/JCgH/fZs+37zClKxmIa9jZwyJo8wl8XP3qVNu1FnwBq+V8Dmca/euLeQU87WNubupiuZrh8Bq4l/PlzHj7Voa32Ji9cNIsRiWlVThJAHcGA0MmIKoxW1k9KEzJ2ucbyStIOD69Cu7Upw1g8uMJoTyjc1iMaI/u/9V3ss61ygkJCUIbyQqIJvzm9rw6eqniSc6h8I39/C5PP3PmU17ubhqbQnc8IXJTuOnXNNc8OP6G8Gz6wjAYKF35EV8yQ4/G1wVB9vdZhDX6aVCc3BPJGQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,253 +133,135 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-To prepare for using the swap table as the unified swap layer, introduce
-macros and helpers for storing multiple kinds of data in a swap table
-entry.
-
-From now on, we are storing PFN in the swap table to make space for
-extra counting bits (SWAP_COUNT). Shadows are still stored as they are,
-as the SWAP_COUNT is not used yet.
-
-Also, rename shadow_swp_to_tb to shadow_to_swp_tb. That's a spelling
-error, not really worth a separate fix.
-
-No behaviour change yet, just prepare the API.
+In preparing the deprecating swap_map, mark bad slots in the swap table
+too when setting SWAP_MAP_BAD in swap_map. Also, refine the swap table
+sanity check on freeing to adapt to the bad slots change. For swapoff,
+the bad slots count must match the cluster usage count, as nothing
+should touch them, and they contribute to the cluster usage count on
+swapon. For ordinary swap table freeing, the swap table of clusters with
+bad slots should never be freed since the cluster usage count never
+reaches zero.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swap_state.c |   6 +--
- mm/swap_table.h | 131 +++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 124 insertions(+), 13 deletions(-)
+ mm/swapfile.c | 56 +++++++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 41 insertions(+), 15 deletions(-)
 
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 6d0eef7470be..e213ee35c1d2 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -148,7 +148,7 @@ void __swap_cache_add_folio(struct swap_cluster_info *ci,
- 	VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
- 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapbacked(folio), folio);
- 
--	new_tb = folio_to_swp_tb(folio);
-+	new_tb = folio_to_swp_tb(folio, 0);
- 	ci_start = swp_cluster_offset(entry);
- 	ci_off = ci_start;
- 	ci_end = ci_start + nr_pages;
-@@ -249,7 +249,7 @@ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
- 	VM_WARN_ON_ONCE_FOLIO(folio_test_writeback(folio), folio);
- 
- 	si = __swap_entry_to_info(entry);
--	new_tb = shadow_swp_to_tb(shadow);
-+	new_tb = shadow_to_swp_tb(shadow, 0);
- 	ci_start = swp_cluster_offset(entry);
- 	ci_end = ci_start + nr_pages;
- 	ci_off = ci_start;
-@@ -331,7 +331,7 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
- 	VM_WARN_ON_ONCE(!entry.val);
- 
- 	/* Swap cache still stores N entries instead of a high-order entry */
--	new_tb = folio_to_swp_tb(new);
-+	new_tb = folio_to_swp_tb(new, 0);
- 	do {
- 		old_tb = __swap_table_xchg(ci, ci_off, new_tb);
- 		WARN_ON_ONCE(!swp_tb_is_folio(old_tb) || swp_tb_to_folio(old_tb) != old);
-diff --git a/mm/swap_table.h b/mm/swap_table.h
-index 10e11d1f3b04..10762ac5f4f5 100644
---- a/mm/swap_table.h
-+++ b/mm/swap_table.h
-@@ -12,17 +12,72 @@ struct swap_table {
- };
- 
- #define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
--#define SWP_TB_COUNT_BITS		4
- 
- /*
-  * A swap table entry represents the status of a swap slot on a swap
-  * (physical or virtual) device. The swap table in each cluster is a
-  * 1:1 map of the swap slots in this cluster.
-  *
-- * Each swap table entry could be a pointer (folio), a XA_VALUE
-- * (shadow), or NULL.
-+ * Swap table entry type and bits layouts:
-+ *
-+ * NULL:     |---------------- 0 ---------------| - Free slot
-+ * Shadow:   | SWAP_COUNT |---- SHADOW_VAL ---|1| - Swapped out slot
-+ * PFN:      | SWAP_COUNT |------ PFN -------|10| - Cached slot
-+ * Pointer:  |----------- Pointer ----------|100| - (Unused)
-+ * Bad:      |------------- 1 -------------|1000| - Bad slot
-+ *
-+ * SWAP_COUNT is `SWP_TB_COUNT_BITS` long, each entry is an atomic long.
-+ *
-+ * Usages:
-+ *
-+ * - NULL: Swap slot is unused, could be allocated.
-+ *
-+ * - Shadow: Swap slot is used and not cached (usually swapped out). It reuses
-+ *   the XA_VALUE format to be compatible with working set shadows. SHADOW_VAL
-+ *   part might be all 0 if the working shadow info is absent. In such a case,
-+ *   we still want to keep the shadow format as a placeholder.
-+ *
-+ *   Memcg ID is embedded in SHADOW_VAL.
-+ *
-+ * - PFN: Swap slot is in use, and cached. Memcg info is recorded on the page
-+ *   struct.
-+ *
-+ * - Pointer: Unused yet. `0b100` is reserved for potential pointer usage
-+ *   because only the lower three bits can be used as a marker for 8 bytes
-+ *   aligned pointers.
-+ *
-+ * - Bad: Swap slot is reserved, protects swap header or holes on swap devices.
-  */
- 
-+#if defined(MAX_POSSIBLE_PHYSMEM_BITS)
-+#define SWAP_CACHE_PFN_BITS (MAX_POSSIBLE_PHYSMEM_BITS - PAGE_SHIFT)
-+#elif defined(MAX_PHYSMEM_BITS)
-+#define SWAP_CACHE_PFN_BITS (MAX_PHYSMEM_BITS - PAGE_SHIFT)
-+#else
-+#define SWAP_CACHE_PFN_BITS (BITS_PER_LONG - PAGE_SHIFT)
-+#endif
-+
-+/* NULL Entry, all 0 */
-+#define SWP_TB_NULL		0UL
-+
-+/* Swapped out: shadow */
-+#define SWP_TB_SHADOW_MARK	0b1UL
-+
-+/* Cached: PFN */
-+#define SWP_TB_PFN_BITS		(SWAP_CACHE_PFN_BITS + SWP_TB_PFN_MARK_BITS)
-+#define SWP_TB_PFN_MARK		0b10UL
-+#define SWP_TB_PFN_MARK_BITS	2
-+#define SWP_TB_PFN_MARK_MASK	(BIT(SWP_TB_PFN_MARK_BITS) - 1)
-+
-+/* SWAP_COUNT part for PFN or shadow, the width can be shrunk or extended */
-+#define SWP_TB_COUNT_BITS      min(4, BITS_PER_LONG - SWP_TB_PFN_BITS)
-+#define SWP_TB_COUNT_MASK      (~((~0UL) >> SWP_TB_COUNT_BITS))
-+#define SWP_TB_COUNT_SHIFT     (BITS_PER_LONG - SWP_TB_COUNT_BITS)
-+#define SWP_TB_COUNT_MAX       ((1 << SWP_TB_COUNT_BITS) - 1)
-+
-+/* Bad slot: ends with 0b1000 and rests of bits are all 1 */
-+#define SWP_TB_BAD		((~0UL) << 3)
-+
- /* Macro for shadow offset calculation */
- #define SWAP_COUNT_SHIFT	SWP_TB_COUNT_BITS
- 
-@@ -35,18 +90,47 @@ static inline unsigned long null_to_swp_tb(void)
- 	return 0;
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index df8b13eecab1..bdce2abd9135 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -454,16 +454,37 @@ static void swap_table_free(struct swap_table *table)
+ 		 swap_table_free_folio_rcu_cb);
  }
  
--static inline unsigned long folio_to_swp_tb(struct folio *folio)
-+static inline unsigned long __count_to_swp_tb(unsigned char count)
- {
-+	/*
-+	 * At least three values are needed to distinguish free (0),
-+	 * used (count > 0 && count < SWP_TB_COUNT_MAX), and
-+	 * overflow (count == SWP_TB_COUNT_MAX).
-+	 */
-+	BUILD_BUG_ON(SWP_TB_COUNT_MAX < 2 || SWP_TB_COUNT_BITS < 2);
-+	VM_WARN_ON(count > SWP_TB_COUNT_MAX);
-+	return ((unsigned long)count) << SWP_TB_COUNT_SHIFT;
-+}
-+
-+static inline unsigned long pfn_to_swp_tb(unsigned long pfn, unsigned int count)
++/*
++ * Sanity check to ensure nothing leaked, and the specified range is empty.
++ * One special case is that bad slots can't be freed, so check the number of
++ * bad slots for swapoff, and non-swapoff path must never free bad slots.
++ */
++static void swap_cluster_assert_empty(struct swap_cluster_info *ci, bool swapoff)
 +{
++	unsigned int ci_off = 0, ci_end = SWAPFILE_CLUSTER;
 +	unsigned long swp_tb;
++	int bad_slots = 0;
 +
- 	BUILD_BUG_ON(sizeof(unsigned long) != sizeof(void *));
--	return (unsigned long)folio;
-+	BUILD_BUG_ON(SWAP_CACHE_PFN_BITS >
-+		     (BITS_PER_LONG - SWP_TB_PFN_MARK_BITS - SWP_TB_COUNT_BITS));
++	if (!IS_ENABLED(CONFIG_DEBUG_VM) && !swapoff)
++		return;
 +
-+	swp_tb = (pfn << SWP_TB_PFN_MARK_BITS) | SWP_TB_PFN_MARK;
-+	VM_WARN_ON_ONCE(swp_tb & SWP_TB_COUNT_MASK);
++	do {
++		swp_tb = __swap_table_get(ci, ci_off);
++		if (swp_tb_is_bad(swp_tb))
++			bad_slots++;
++		else
++			WARN_ON_ONCE(!swp_tb_is_null(swp_tb));
++	} while (++ci_off < ci_end);
 +
-+	return swp_tb | __count_to_swp_tb(count);
++	WARN_ON_ONCE(bad_slots != (swapoff ? ci->count : 0));
 +}
 +
-+static inline unsigned long folio_to_swp_tb(struct folio *folio, unsigned int count)
-+{
-+	return pfn_to_swp_tb(folio_pfn(folio), count);
- }
- 
--static inline unsigned long shadow_swp_to_tb(void *shadow)
-+static inline unsigned long shadow_to_swp_tb(void *shadow, unsigned int count)
+ static void swap_cluster_free_table(struct swap_cluster_info *ci)
  {
- 	BUILD_BUG_ON((BITS_PER_XA_VALUE + 1) !=
- 		     BITS_PER_BYTE * sizeof(unsigned long));
-+	BUILD_BUG_ON((unsigned long)xa_mk_value(0) != SWP_TB_SHADOW_MARK);
-+
- 	VM_WARN_ON_ONCE(shadow && !xa_is_value(shadow));
--	return (unsigned long)shadow;
-+	VM_WARN_ON_ONCE(shadow && ((unsigned long)shadow & SWP_TB_COUNT_MASK));
-+
-+	return (unsigned long)shadow | __count_to_swp_tb(count) | SWP_TB_SHADOW_MARK;
+-	unsigned int ci_off;
+ 	struct swap_table *table;
+ 
+ 	/* Only empty cluster's table is allow to be freed  */
+ 	lockdep_assert_held(&ci->lock);
+-	VM_WARN_ON_ONCE(!cluster_is_empty(ci));
+-	for (ci_off = 0; ci_off < SWAPFILE_CLUSTER; ci_off++)
+-		VM_WARN_ON_ONCE(!swp_tb_is_null(__swap_table_get(ci, ci_off)));
+ 	table = (void *)rcu_dereference_protected(ci->table, true);
+ 	rcu_assign_pointer(ci->table, NULL);
+ 
+@@ -567,6 +588,7 @@ static void swap_cluster_schedule_discard(struct swap_info_struct *si,
+ 
+ static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info *ci)
+ {
++	swap_cluster_assert_empty(ci, false);
+ 	swap_cluster_free_table(ci);
+ 	move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
+ 	ci->order = 0;
+@@ -747,9 +769,11 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+ 				       struct swap_cluster_info *cluster_info,
+ 				       unsigned int offset, bool mask)
+ {
++	unsigned int ci_off = offset % SWAPFILE_CLUSTER;
+ 	unsigned long idx = offset / SWAPFILE_CLUSTER;
+-	struct swap_table *table;
+ 	struct swap_cluster_info *ci;
++	struct swap_table *table;
++	int ret = 0;
+ 
+ 	/* si->max may got shrunk by swap swap_activate() */
+ 	if (offset >= si->max && !mask) {
+@@ -767,13 +791,7 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+ 		pr_warn("Empty swap-file\n");
+ 		return -EINVAL;
+ 	}
+-	/* Check for duplicated bad swap slots. */
+-	if (si->swap_map[offset]) {
+-		pr_warn("Duplicated bad slot offset %d\n", offset);
+-		return -EINVAL;
+-	}
+ 
+-	si->swap_map[offset] = SWAP_MAP_BAD;
+ 	ci = cluster_info + idx;
+ 	if (!ci->table) {
+ 		table = swap_table_alloc(GFP_KERNEL);
+@@ -781,13 +799,21 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+ 			return -ENOMEM;
+ 		rcu_assign_pointer(ci->table, table);
+ 	}
+-
+-	ci->count++;
++	spin_lock(&ci->lock);
++	/* Check for duplicated bad swap slots. */
++	if (__swap_table_xchg(ci, ci_off, SWP_TB_BAD) != SWP_TB_NULL) {
++		pr_warn("Duplicated bad slot offset %d\n", offset);
++		ret = -EINVAL;
++	} else {
++		si->swap_map[offset] = SWAP_MAP_BAD;
++		ci->count++;
++	}
++	spin_unlock(&ci->lock);
+ 
+ 	WARN_ON(ci->count > SWAPFILE_CLUSTER);
+ 	WARN_ON(ci->flags);
+ 
+-	return 0;
++	return ret;
  }
  
  /*
-@@ -59,7 +143,7 @@ static inline bool swp_tb_is_null(unsigned long swp_tb)
- 
- static inline bool swp_tb_is_folio(unsigned long swp_tb)
- {
--	return !xa_is_value((void *)swp_tb) && !swp_tb_is_null(swp_tb);
-+	return ((swp_tb & SWP_TB_PFN_MARK_MASK) == SWP_TB_PFN_MARK);
- }
- 
- static inline bool swp_tb_is_shadow(unsigned long swp_tb)
-@@ -67,19 +151,44 @@ static inline bool swp_tb_is_shadow(unsigned long swp_tb)
- 	return xa_is_value((void *)swp_tb);
- }
- 
-+static inline bool swp_tb_is_bad(unsigned long swp_tb)
-+{
-+	return swp_tb == SWP_TB_BAD;
-+}
-+
-+static inline bool swp_tb_is_countable(unsigned long swp_tb)
-+{
-+	return (swp_tb_is_shadow(swp_tb) || swp_tb_is_folio(swp_tb) ||
-+		swp_tb_is_null(swp_tb));
-+}
-+
- /*
-  * Helpers for retrieving info from swap table.
-  */
- static inline struct folio *swp_tb_to_folio(unsigned long swp_tb)
- {
- 	VM_WARN_ON(!swp_tb_is_folio(swp_tb));
--	return (void *)swp_tb;
-+	return pfn_folio((swp_tb & ~SWP_TB_COUNT_MASK) >> SWP_TB_PFN_MARK_BITS);
- }
- 
- static inline void *swp_tb_to_shadow(unsigned long swp_tb)
- {
- 	VM_WARN_ON(!swp_tb_is_shadow(swp_tb));
--	return (void *)swp_tb;
-+	/* No shift needed, xa_value is stored as it is in the lower bits. */
-+	return (void *)(swp_tb & ~SWP_TB_COUNT_MASK);
-+}
-+
-+static inline unsigned char __swp_tb_get_count(unsigned long swp_tb)
-+{
-+	VM_WARN_ON(!swp_tb_is_countable(swp_tb));
-+	return ((swp_tb & SWP_TB_COUNT_MASK) >> SWP_TB_COUNT_SHIFT);
-+}
-+
-+static inline int swp_tb_get_count(unsigned long swp_tb)
-+{
-+	if (swp_tb_is_countable(swp_tb))
-+		return __swp_tb_get_count(swp_tb);
-+	return -EINVAL;
- }
- 
- /*
-@@ -124,6 +233,8 @@ static inline unsigned long swap_table_get(struct swap_cluster_info *ci,
- 	atomic_long_t *table;
- 	unsigned long swp_tb;
- 
-+	VM_WARN_ON_ONCE(off >= SWAPFILE_CLUSTER);
-+
- 	rcu_read_lock();
- 	table = rcu_dereference(ci->table);
- 	swp_tb = table ? atomic_long_read(&table[off]) : null_to_swp_tb();
+@@ -2743,7 +2769,7 @@ static void free_swap_cluster_info(struct swap_cluster_info *cluster_info,
+ 		/* Cluster with bad marks count will have a remaining table */
+ 		spin_lock(&ci->lock);
+ 		if (rcu_dereference_protected(ci->table, true)) {
+-			ci->count = 0;
++			swap_cluster_assert_empty(ci, true);
+ 			swap_cluster_free_table(ci);
+ 		}
+ 		spin_unlock(&ci->lock);
 
 -- 
 2.52.0
