@@ -4,144 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DAEED35692
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 08:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70829D35692
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 08:54:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 894FA6B0088; Wed, 28 Jan 2026 03:45:09 -0500 (EST)
+	id 9D26F6B0088; Wed, 28 Jan 2026 03:54:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8430D6B0089; Wed, 28 Jan 2026 03:45:09 -0500 (EST)
+	id 97D2B6B0089; Wed, 28 Jan 2026 03:54:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 724BF6B008A; Wed, 28 Jan 2026 03:45:09 -0500 (EST)
+	id 8AD2B6B008A; Wed, 28 Jan 2026 03:54:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F7B56B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:45:09 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0634CB9BAD
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:45:09 +0000 (UTC)
-X-FDA: 84380737938.21.B0991A6
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 0AF2040002
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:45:06 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=H50DQSks;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CEB06B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:54:05 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20BA3B99F1
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:54:05 +0000 (UTC)
+X-FDA: 84380760450.10.CAF00F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 7AE70140008
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:54:03 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IiNsTsjt;
+	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769589907;
+	s=arc-20220608; t=1769590443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yzZ5aaJur2cGbo3tv1Z3AlCZuGpqhSu9RlDH7L/IIPI=;
-	b=xk7DBx/FMsCju0jaNVfzdXZfpRHSbtPc3kRGGyYU8T11jdyqlAiiqM8kI6gGmSWt+DJV92
-	Mg+c+2FBywgHDlXsgqj7tWLukh81G8Y93rKYBwEDN7uZxpCKhOlzcVTMlkbxD5yYg5SySa
-	MaoXdaU1GDbuZz0Ula/8WKC5BB9jdz8=
+	bh=wxcLHxE0h0tZrYY8m14TIbzP4neRX2cVHl04cabob+s=;
+	b=oEPAAZkW7X5y5y/Clwz6nrDrDZYsaoOUHfwr77/KrWAhaB+nEAFbeGro7Yqm/VO2pIkG+V
+	VXZ3upfH3xWh6CJKLu3Y/6FbqeGLqov6iWlC4i7k4Hww3PM1Y9J45RCXAsU8xMqMsitPwA
+	RcXS/iPW1bq6Cmy1xOsVKYt2jMu02kE=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=H50DQSks;
-	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769589907; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=IiNsTsjt;
+	spf=pass (imf23.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769590443; a=rsa-sha256;
 	cv=none;
-	b=VPEY2s5HKCnJiKj9hLLSxhxASI6W5ae4HSMLfLPP+jm0K3X5ytDgi/l4Yq5BRS/GA8NlMX
-	bBLDztTjoXyC0OCWzvjjAdHIqrPLGgafd++frSfVAmgL+ygK+qaBY4A6wovKEP+uC7IDxQ
-	W5hcuVcA5R/mdP1RJ0N/WnAMq9HMQIE=
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48069a48629so15201365e9.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 00:45:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769589905; x=1770194705; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yzZ5aaJur2cGbo3tv1Z3AlCZuGpqhSu9RlDH7L/IIPI=;
-        b=H50DQSksDMJQAcUqDG4oRHSPcIj2+4PYMXXYDQWwntDpEUr67Eu0Zh0ZnweX/KoaAD
-         z3duJVNnzlf2TSzIUHW/1MUbQpwT3FoASvoVG7UBIbhmrf8dyQnlS5o6Xdt9Glvzap6Y
-         6wBuQhJFUhGSmg3t8G9gWc31ZaraMh42diMPuE5gGRH7rdZEC9tTqUX+aJw4uzqW3lQc
-         tXynyNhIwg27MMcQlQpGhLnMZRg8HMv3iAMai12iM7kDQi5Lg2j12RAkZqcI2ZFNvNCT
-         BD2H6TQuoDXY44TYmbyZ4oPT1pihvjTHNgA9BVEtdC8IxqDxg+0mTrniHEfZjOUCHWWU
-         DrEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769589905; x=1770194705;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yzZ5aaJur2cGbo3tv1Z3AlCZuGpqhSu9RlDH7L/IIPI=;
-        b=UEwiqQni67JZEdEI718/5e44JtauBGRqclHZAALsx8w58js9+MBzwRfyZxIdyuHkwa
-         H7FMwPoLn9Lu1wbRv3GHvVjuIAVFBSmUN7idA7jAvbAnSFuB8rv2hdQjNNXPbDhpxZfI
-         6PnseHx3kXPM+aiuk6U/Jw+UpwlSlejhxmm9wg7Kc+M2STL+XUU7Go8AO47PL8nmzSHJ
-         TYk6s63GGDviNpXL+QA8UugIUDaV+4+JvL/jRy7AvjL3pWSj0yr+e72Hp/FCiRgPq7+S
-         2xsO+PaGR8S0amEIlWfLZUoSJ9Dva80q3ehilY7yS5Mr5hF+zS72DSxuw2mw748AXwMt
-         jJdA==
-X-Forwarded-Encrypted: i=1; AJvYcCUbStI9XNjbWC9OuLanNh/qEJFAXMK6a7c5pJsPq1Ot+8HHXIBjL9JBt3cjlvjC10waJhOcM1KXKw==@kvack.org
-X-Gm-Message-State: AOJu0YwTWJK3e16cRLPtplAHcTCHtdEMqpKpJ3yxINXrnuu6GYSo+0M3
-	s9mOqrFMIW/PhkWaFGakC83k/CxL+yIDlk1Rl0wwIDNnE+44jRdjjXvXsP7mA8wUxwU=
-X-Gm-Gg: AZuq6aK/y7ndYesE9fAl4uQkHcALSwPdFUR0jhs7VhX88tZYThSzXG8NoyPjIeltflN
-	hX02ADtXWEfEmb5hnBWk+jOfl+UFpvtHMtvc7EbIT4vfOly5IWI7xRB5noq80f5kRslvojSjJhM
-	/VaEgsL8tnoBIPKoNNbhpoto7twzDbuLk+dJPJZxFHO3VQXFYesM4QUAtoBxBb1Eg7JYavsfVtt
-	TeM+aBzdmSyaa4uQk8vJO63BrskLq7FMK8UARJAEYx+SlPgAF9fP7pLNcmQZ+8OuKOStZpZWrbQ
-	cvAJ2xC6BpzbruUxfXwOKwGMyLWf1oUkj1XMWBHeMrpxYDa8zgLURkaVeh51DgXO8i5GY0f/ULm
-	RIFhLu+gAajLX52hWIYpM5MpY+gco18dsf+KTzpEZJcLSciTuSoY0s39JnSm+SkI//dx/7iFvLs
-	dAbuNzxz3vhNmP8Kur0rB+V4dy
-X-Received: by 2002:a05:600c:4e12:b0:480:6873:b2f6 with SMTP id 5b1f17b1804b1-48069c557d0mr54819185e9.20.1769589905328;
-        Wed, 28 Jan 2026 00:45:05 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066bee7d0sm121124905e9.4.2026.01.28.00.45.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 00:45:04 -0800 (PST)
-Date: Wed, 28 Jan 2026 09:45:03 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 03/33] memcg: Prepare to protect against concurrent
- isolated cpuset change
-Message-ID: <aXnMj1phN3TJZkNz@tiehlicka>
-References: <20260125224541.50226-1-frederic@kernel.org>
- <20260125224541.50226-4-frederic@kernel.org>
- <aXeZQoSHJ9QX7B6W@tiehlicka>
- <aXizUsfywjtIIN50@localhost.localdomain>
+	b=gpyOUBdE7rtSaDeY4K6+qEZsVqFUaQ1HwL00WbOeWF+jj2W0SAQ+6SxsFiULJvxeyLJrN+
+	zEXgTer+/nIuLagTizxbvKHMigAlw48KMh/fYDoYmRr3TVSis4L/yW1O6PVjCACB4x/NPY
+	l8+kp53a3Kg0yuBDivG48FD8rvJjS4U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 68D5D60097;
+	Wed, 28 Jan 2026 08:54:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B35C4CEF1;
+	Wed, 28 Jan 2026 08:54:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1769590442;
+	bh=sp8ZzgKfLYBf6n5dvtaPV7JJtZoVmZtARJEfnOlvgnA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IiNsTsjt7/JJEy7yHNve/JooAIlH0pnM87ZGvmgdHepEWko5EVz56NLPJSRbmXI8w
+	 sxKEPaOCpGXqDtQ0OHpQYWN7Mt9VjqvMvARm+eLYaHLPTNohEerYQif5fI9Qezgjy+
+	 G4XDfI/hst0WjbqQ1xzHMsJI6EzUETgPfOt5Yvr0=
+Date: Wed, 28 Jan 2026 09:53:58 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Samuel Wu <wusamuel@google.com>, linux-fsdevel@vger.kernel.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
+	linux-mm@kvack.org, linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
+	linux-usb@vger.kernel.org, paul@paul-moore.com,
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com, selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org, clm@meta.com,
+	android-kernel-team <android-kernel-team@google.com>
+Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
+Message-ID: <2026012812-jurist-whoops-0ef5@gregkh>
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+ <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
+ <2026012715-mantra-pope-9431@gregkh>
+ <CAHk-=whME4fu2Gn+W7MPiFHqwn51VByhpttf-wHdhAqQAQXpqw@mail.gmail.com>
+ <20260127201454.GQ3183987@ZenIV>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aXizUsfywjtIIN50@localhost.localdomain>
+In-Reply-To: <20260127201454.GQ3183987@ZenIV>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7AE70140008
+X-Stat-Signature: 5jpanu9asysqo3ne9qxpkgagpeu7zsu8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0AF2040002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: qd1nwpm6wosb38y1q8ounoirdhwez69k
-X-HE-Tag: 1769589906-668484
-X-HE-Meta: U2FsdGVkX19Z2Ne6MR3IwEABlH17/KR12KI4VnbyRvS+pAuAYew4M5E275bBN8Y04BWQny+7ba5elCO95fmtPqYeGW+ZtkDb8OKoPFU4u7I/xQk3DfvTrJ3afqADCR3BFa0quktDF/4BoAQncTRodKyJG7cHqC1ZVaUNplpyACuLAVbCCwOGt4x44UlL1oKf3Q2qOB4ZJOXBka2JattrOLPXMsG1AtQMXxDT9slHr3nJUTWKWkIvVOet0PIbxt5C6Gy1htGiHP5HjRjfjtrZvwlaQUKlMIrRS/Xj7dVbKy3i/6M8/f+9nuviJWuzm0vF84OSlHA22WoUF8I2XtTXfFzIcVofrW3iwVM/wDtSBhOA3w8H1Xh14lFF9eFpgQwT7VfBVRa9UJFrxAPbyMibYrwaab9zFWf4uWY43ZbPGEwoyMD4hbymOh1iTkcxOg/xtVyABjw5uHdM+dwX9XnRo19wy5FghhR8CS4p/Fq5bY8PBgelv8l9SKcm728KTY/y7+ryNOAczPC9UIhxcbo7zqwbH0zJQL0rl5UmWxMfUT074Tkz3c8tjz5f4w7U1tpOEKPH5zGxAHbATyVHcanZyRXMchoMcimVp92sMGob7DfF5Vn1kDbZk3rtSItIsY0ZELTqC1aHzbuMLWUNrjF+wkXvEI0WlLxKk6wiNxKsLFnSQRqdt/VDd+As4ZkbyyzxsVWBd46IHaBJlYYih2D2P5a7Ekj894/IfoI4T++73yiFi0UasxuRjNw6JlO82KxLyHcEs4KZjGjoLxcmYpKp/vpnkq1yMvyudofHUPeIeXVysMvWX+mgmE51yR1l811fUgS0yZg5hBcBHZxJGQ3x6YdYTumtJg7IAbMsErhfmoAYbnX/CXm6PzPB7eSczzrfNDqDvekc6GT8IfXR6krR70Ymin0EcgHpgqmPcQHiSqahYfCGyLnGKVXGumt42wNyhL5w8DZYWWvX6d4nTPa
- h8TTSvJ0
- gHz6crqxzqOX4l/SGUo+k2pbiBINQkbKHTi6y2T8ux/VK0mhD6Neyp9LOZGhIdFMvKaC4sjTvLPtEyoN85hAgyunvbyoftpjA+pfeP4ZU7AEwu/LLL5+eXPG2sPVsgwGp1fMGOrCR/An1S/EEDDK9OlXXsOTkqCQBaAbtSl/LYKmOfO8pYXNAMBvbr5eVfR3ZqPEdjDcitd/ceqnO0LBCZCqsIQph2s9TYt/EMc31sfjcwr4Eu0Zxth3FrZjrCaXwY8f0mMBNIR/jiGIA5o4oSk+4SJBkNXkgbJcB+yl5Ocy+RVP9ipqNZekMpbX6WlStIbhaU38px23Mvq+Q+xiAciy2ngRVvmDx5b+hYX9f+m1qG3Y=
+X-HE-Tag: 1769590443-594492
+X-HE-Meta: U2FsdGVkX192oMe3yAleyYlddtpmfYDw0aqmTsWYCSd+zbEpDiPEx3f2QF+PGauoF6oI4cLnfRCdz94tDQlaSg9OfawTZr4cB2nf50n6PapSQfPOa6rYo1ED2BJIf2PedlQGphIKMx1txNk2Nc7GnoVQ4F3qWNhzu6xK3WBy1HjZVRjS9s4Yl0zlt5jh2pKvaWfVzfvnHKM/kcJqxBZROEsojR+SZ4N3bfSahDBHCUdn2tyx3enx900Eiz9MkE1eykVzUstkd2Pr1ixtq+mrUHP4e7GxyeUV5Rv9rWPCB0la+Dz1hKEWvwsuRdpOrY6lXeHgAIlDVhRydj9g+ucWGhxasUm6XI9c1Joz4FZwuIfmIqsxxc4KtlvhKWWnj0402s44Ijd40WEhMU7YDrwWgKVXT1IbFGyBXTSXVrUltf8hIOiZS1+zvUug9daWvLCF0Xm/LXM3Uql3cJUZ0ES3Xv/qWJxV+VMgIQSlMKS3yh5VswPXFAfUBi7zJoGeDtOEGZtUYydQ3n56ofO4a0yFg7vdwCct0t+vHQUyrnzfp/UNqxhrF6absOB87pz4PxwdZv+VZ8cDKYTuU2hfVljbqqTyHiYT+iR8sIx3/iI2x3QGW9iCqPzUJGy+7XUPuotKQIfACxzFPZ/zuGlo+rX0YDdIAjNA//m4O2m/b54+M1I/3T6MmYD9o1Q3g+4NVdllPdUO+NaJcWNr8qO9AfYPRYQNAnr3kiTWDW0B/kWNzhBC1nY1WsWoKr7RZ0LIkH6chUYP+bFhRtGkHIAUJPvp77DOukvkc9Fl2LLxsbJzkaNkCwoQuqaBGymacBFK0d1ZDGwMEwWfghE6PbasxLz3NG6k9kbn8CbE7PeCHI7YkATjx2Xa80N/Cj/GzxGfm1mLzMTPlgGkUm8lWzBZsAoI9qiS7slrQMdz7yApSF13TU05unZW96ysbdaKPWe35/UgxhzWsEfwHsONX0CU7dH
+ VsX2YKYV
+ SdI28XCPgoV6O2v6Z7sAIYQa+KWxTyDp62cBtPFeYVB9TrudjnIdClEcPb3jIrvtUm+OEvWA7ceLGfO9odzBIWrqtpKV1d7gfrue9DdDdE5YK5iAR9cp5iz0zXmZdo4vVgPu76BIQAEsvkeOaYrMHUlwU/WjwYVym4Ks5Ar5Dsnbo6DgH5WQiuem1+YB1cX6BW1doCmlgIfEVsDtfpUZzVGb/c0uIbx6dz6bA3jbJNQzyi8b4RvKAIQgpPkNAjoytZJsWyFNXcAVBz0h1lCgYUrTJhXnW+p7n15nf50dEPChKgeUnRV1PunbgTjVl3xrKxLqu/WeEYrXvL7+rEaYZn4ydIpvEW6TRRtyFvcWEJ1wSli0DCfGbUPsrEN/d7vo1E6ZT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,56 +101,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 27-01-26 13:45:06, Frederic Weisbecker wrote:
-> Le Mon, Jan 26, 2026 at 05:41:38PM +0100, Michal Hocko a écrit :
-> > On Sun 25-01-26 23:45:10, Frederic Weisbecker wrote:
-> > > The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifiable at
-> > > runtime. In order to synchronize against memcg workqueue to make sure
-> > > that no asynchronous draining is pending or executing on a newly made
-> > > isolated CPU, target and queue a drain work under the same RCU critical
-> > > section.
-> > > 
-> > > Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a memcg
-> > > workqueue flush will also be issued in a further change to make sure
-> > > that no work remains pending after a CPU has been made isolated.
-> > > 
-> > > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> > > ---
-> > >  mm/memcontrol.c | 21 +++++++++++++++++----
-> > >  1 file changed, 17 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > index be810c1fbfc3..2289a0299331 100644
-> > > --- a/mm/memcontrol.c
-> > > +++ b/mm/memcontrol.c
-> > > @@ -2003,6 +2003,19 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
-> > >  	return flush;
-> > >  }
-> > >  
-> > > +static void schedule_drain_work(int cpu, struct work_struct *work)
-> > > +{
-> > > +	/*
-> > > +	 * Protect housekeeping cpumask read and work enqueue together
-> > > +	 * in the same RCU critical section so that later cpuset isolated
-> > > +	 * partition update only need to wait for an RCU GP and flush the
-> > > +	 * pending work on newly isolated CPUs.
-> > > +	 */
-> > > +	guard(rcu)();
-> > > +	if (!cpu_is_isolated(cpu))
-> > > +		schedule_work_on(cpu, work);
+On Tue, Jan 27, 2026 at 08:14:54PM +0000, Al Viro wrote:
+> On Tue, Jan 27, 2026 at 10:39:04AM -0800, Linus Torvalds wrote:
+> > On Mon, 26 Jan 2026 at 23:42, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > Note that I had to revert commit e5bf5ee26663 ("functionfs: fix the
+> > > open/removal races") from the stable backports, as it was causing issues
+> > > on the pixel devices it got backported to.  So perhaps look there?
 > > 
-> > Shouldn't this in the guarded rcu section?
+> > Hmm. That commit is obviously still upstream, do we understand why it
+> > caused problems in the backports?
 > 
-> This is what guard(rcu)() does, right?
-> Or am I missing something?
+> This is all I've seen:
+> 
+> | It has been reported to cause test problems in Android devices.  As the
+> | other functionfs changes were not also backported at the same time,
+> | something is out of sync.  So just revert this one for now and it can
+> | come back in the future as a patch series if it is tested.
+> 
+> My apologies for not following up on that one; Greg, could you give some
+> references to those reports?
 
-I am probably misreading the patch. But I've had the following in mind
+Sorry, all I got was a "this commit caused devices to fail" and was
+found from bisection, on the 6.18.y tree.  Samuel has much more
+information as to exactly what is happening here as he can see the test
+results properly, I'll let him work through this, thanks!
 
-	scoped_guard(rcu) {
-		if (!cpu_is_isolated(cpu))
-			schedule_work_on(cpu, work);
-	}
--- 
-Michal Hocko
-SUSE Labs
+greg k-h
 
