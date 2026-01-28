@@ -4,99 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5E6CD35690
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:31:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 802BAD35697
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:31:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5631F6B0099; Wed, 28 Jan 2026 04:31:04 -0500 (EST)
+	id ED0236B009B; Wed, 28 Jan 2026 04:31:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50D6D6B009B; Wed, 28 Jan 2026 04:31:04 -0500 (EST)
+	id EB0D06B009D; Wed, 28 Jan 2026 04:31:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43B446B009D; Wed, 28 Jan 2026 04:31:04 -0500 (EST)
+	id D68546B009E; Wed, 28 Jan 2026 04:31:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2ED196B0099
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:31:04 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E94AF1A0544
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:31:03 +0000 (UTC)
-X-FDA: 84380853606.23.57CD5E1
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E475B4000D
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:31:01 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KgsMIo43;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C08F66B009B
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:31:08 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7C5CFC1EF9
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:31:08 +0000 (UTC)
+X-FDA: 84380853816.02.F3DC2FE
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 60FCD40012
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:31:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WrT9uECw;
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769592662;
+	s=arc-20220608; t=1769592666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bBjV8XyXDLoEReDqKUKA22e4GI0fZeu23FHRrREbJdM=;
-	b=5Y1LjOattK0BfEn85nIQ5hKt/oIVAymWIJoPe5mrX8zZ/OZ1B685Vn/YMuo1bj0LubB/Mf
-	qpF0kpB4oAmoi4KDduc81j7rd2i+XScFCECMiBUzs3vpBh104M/nQS6A4XMpFsfunCbwu1
-	IAd0pEVdmMSVTqjFjUW9dblKIWSwJo4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592662; a=rsa-sha256;
-	cv=none;
-	b=2XOQdT8axN1kcokzl4ZCuEvtww7aAv+rsLWraWPr0/S4mS3IPkyqjO2cnNXQtt7k6wYBVe
-	nhdhKc+umZY2B3oq7fYPeQuWWDNJIMQl5N8hsxH1QV9KB4XcRZAZS8rkwyA5yXM6H4EKTl
-	1yLNnBdnt69u+l5khFzeRBNtvY1bYXY=
+	bh=2jVZYcuj/952HrEWjhUWvom6u4cCoa68QkTz/H2mQNA=;
+	b=fKdntSWTNa7E0GvJpl3BpBmTRABxcoHytj/HCz7pMa8WS/vBzso7SVUiElmDM7N0Aw/Q90
+	zYrJzDa4KjLKHyxVS67WtndHq26lfFba1uKmbQXEU2Ze+y0SfLqypWi2FLKWulefWOUwRE
+	x5t+qxBroaYd6cATjYu319UO7hGeyk4=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KgsMIo43;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a0c09bb78cso6206475ad.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:31:01 -0800 (PST)
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WrT9uECw;
+	spf=pass (imf27.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592666; a=rsa-sha256;
+	cv=none;
+	b=ni8LP9oMqGgQF5R01zK++5NwOyHHXwIuMEfzk9dw7JsKwl+KYEE983qEFKmb3FseR/U5D5
+	r+trEt9mybk1EJE/hDhxXSP0NLKk1IsWIrHkisAwz54H+CrKt+CffqEYKDQ5XDYMJg9HOX
+	856SpW5BowWpWtObpAaV9zwXslLoKkE=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-353576abcfeso2768055a91.0
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:31:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769592661; x=1770197461; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769592665; x=1770197465; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=bBjV8XyXDLoEReDqKUKA22e4GI0fZeu23FHRrREbJdM=;
-        b=KgsMIo43wi0FMUopEjOwCAEC3ZdullyPFO5zZQWpuuQlGSV4/vDY0aDP0o8ROzQmFg
-         yoQJhbRtqqKmiGXf4uQbxsKE5BAcD1RZl6/y8zUzIwrRT2loe0hBV6iM7nbbkjHiVsF1
-         bhXDZWQUe9h5U1GsUgc+CRye653r0MeTt4tcAih42VkJt7U811H0gqvTyIoDbrjILtON
-         IWELZd2aEEefnDMnf2X9jc/ry7qyy2mCLMcJj4taPn61pcPPjrJKgJooo+QEu7dKwcd+
-         1ZqDtL5TTSpBa4ByJslNBbfR15Y+DD3VN3p/Pl29LOaVa7JM3b4MVJcUWrV2gkYxGDxP
-         fnzw==
+        bh=2jVZYcuj/952HrEWjhUWvom6u4cCoa68QkTz/H2mQNA=;
+        b=WrT9uECwakJEqJV+QRXifuwWmh9ZBt6r7wroHwjgoZHkXHYz30DzDr7+NJDwpKR4F6
+         DiOD+9vtOsFr2qcWKj6BHUy1a3nzYaun1X4dg5JInd5gb+UqTBfqENvZu+bzknQz/YTn
+         rmr5fTyuPJJJYnyS6TTTcCWrGDG0r+EfdvnUrkoO1W0LAIfcK+yPJOyKYbSqqK7RBvtZ
+         k11WvmoeexpLFxBL1LgtsllB65l5+v/UxUeJkJkH9m/VbOQ235qa4fFzLmJJCR+igN5B
+         Gy3E3p0ZoP+4z4v0vfdPF6jEWIzo2TCl45LCmJklv5TZka3BYJXAJ3Ru+7Ai3RVxhzCZ
+         S59Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769592661; x=1770197461;
+        d=1e100.net; s=20230601; t=1769592665; x=1770197465;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=bBjV8XyXDLoEReDqKUKA22e4GI0fZeu23FHRrREbJdM=;
-        b=R11zRjsI81UoFUul0hZYtrp0g1rYXjk7OzOfZaUIEAqtla0Dwr8bEs89PokNVXMgD8
-         wmzPscJ0ORkOevaO/A/zUY/iBNHUlZz5DuVPKtdYJxtyH+0U4tyj4PTdzyJzaSGQfXH6
-         sTa+V4/nbUEKSp9LinJG/x1CK6Ve/uWGnuY9KcP6LGWSK0LCtb1o4YXNiOO9LfPD2aVV
-         X5wcIAo+PK0M3KaeDu/K6J5hLZ5dRgfEFdlGkKRXKGyKan+g0v2kuRMoF9v2aYvLVryT
-         fdcIJn1Df7VxIlcsw5qdInezaSmKuMehTICd9HDfhDH617Q6HVoPqD6cCHWPgGugljus
-         QHkQ==
-X-Gm-Message-State: AOJu0YxBPP8+reqoI5Giukdch1khuC1tfl63xd5ZSLa3tbqCq1XVmUf9
-	pTSp95fkQT6gvRtOANqOIEQQG00RxQHBa2YOVjjKK1s/VAKi7ktw7zps
-X-Gm-Gg: AZuq6aKmjkzEEaUdLBcMmuyLFk8vev0rcVmzh45jQ5K25X7NxOP4bHrTGhoBgiCba20
-	sWbP5+f9krk6fClpn+flfDb5UfEol8lS668dWwz/NmGqewF8911TFsrpS9iz4ixwg+pl/r9MtUn
-	KI/hDi094+5AK7GrH6nWBKF1eTs8EvEtga0xo84UIQPWBy4sssK/kexY4WpGc8ifQ53V4oSzLi7
-	+XojeOs2smBpvyCsQbZB9TCSd1p8MUP5r8NMF06VIkMRWqU3Lts9jXs4INEYG/YbiQWqZQjA+FH
-	tzbGaHZVt2wtBtHBmvdjQ7mjAtqeHSfd+TH9JNTSoUSvq5h3hXjEhFuHusC3opnAWzJ8MPdHSsq
-	yrj+b8VSPEof1UyNkzQ6Mns4CrdlhSPBZyc6Mo+GuOq6TXyjClMnoNreFB5ah6xxamiHh1AwgIf
-	X8h8cN0qqCt+D8VAqJwI2QVV6oInIgjQoOwKWsfNeVepAvqpUJ28rHXEPFQg==
-X-Received: by 2002:a17:902:d512:b0:2a0:9238:881d with SMTP id d9443c01a7336-2a87130a499mr48464525ad.15.1769592660621;
-        Wed, 28 Jan 2026 01:31:00 -0800 (PST)
+        bh=2jVZYcuj/952HrEWjhUWvom6u4cCoa68QkTz/H2mQNA=;
+        b=mCvirgVdEufq0JspcGPOSJbO9mIewx+e8sQs/7KIsuoy5oPwjQoMH6iE4Fugnt8vqD
+         YOaYmnp6TJ16GnDYcOuBaisuuJKGPbYplIrxYGR2K5Rvowsg3YXGAVTPNjOJsbgSzpf7
+         hduhETUW3ZKoIXIPJUc0KVRH0VMOJT6+V88hqDbOZm1F/vhNw3nM5iVhEnHnbOTWd42r
+         JbTSGM37GIniSuKjpCzvX8dVox10TQRn68V3aHLFRAVvMkhwbeRrdsP0BRhBnSwSuZ49
+         /cWUlHjA6GeT5UDoWR9n8jKiKS2OpfBH1Laydf/GfZa87H6SGV881o4r3eucVOHPe/IZ
+         416g==
+X-Gm-Message-State: AOJu0Yy2OiXr3equ7pta1e7yVQntr9LSAmTlBaRsYCW3Pne3dGGNLf/i
+	RW+jv5b0qASJK2h4p+X0rwoQo3tifih7YlO02ZklvNwWi59arUBPRMnR
+X-Gm-Gg: AZuq6aKDCTSV7F1U9vgTGqU6nOJDlj3t0rZ+vEtzVCW2nNLCFKEGtOVJNldh39JBA78
+	fZefeTvF+RYPcnvrZAswyTwDQIdLhB/QnHDKBMEReSg7hqVc0Jjt1zWj2ul8YsVELsCW9HRh3B8
+	nCvjWPliqn6C0AzNg3glwcWQP2ku1150x3N+IiQ4LzeiIMVrEcZ68mlvfInMF81UM8p7KxrW00E
+	Ho07nCbCgebm++Y3wQEEvnPeD9pVK8pKuyJDfej3v0qEzuqMLEBadjAO0wEzRZbAsCHgW+TBVMd
+	dYG9j0golD7UpJH+rJX9GhgB4LwcV6Fz11RovCMRGaj9DB3lYXcBAS09Imvlv0jg/pSfbgYTNtt
+	01USbmMsUmzK16/QLj1XloRNMvmDRcIfiuGnE2UEC4KzQZSeqTwrH1oL4TGyGKJ4njQlPjaMWXY
+	L9U0JjVnrvquza9g72KjNp9lwQDLERLwNjyQ9ARdyUvqgD99CCA9fSbO/vxg==
+X-Received: by 2002:a17:90b:384f:b0:341:8b2b:43c with SMTP id 98e67ed59e1d1-353fed70ccamr4458153a91.18.1769592664714;
+        Wed, 28 Jan 2026 01:31:04 -0800 (PST)
 Received: from [127.0.0.1] ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.57
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.31.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 01:31:00 -0800 (PST)
+        Wed, 28 Jan 2026 01:31:03 -0800 (PST)
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 28 Jan 2026 17:28:32 +0800
-Subject: [PATCH v2 08/12] mm, swap: simplify swap table sanity range check
+Date: Wed, 28 Jan 2026 17:28:33 +0800
+Subject: [PATCH v2 09/12] mm, swap: use the swap table to track the swap
+ count
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-swap-table-p3-v2-8-fe0b67ef0215@tencent.com>
+Message-Id: <20260128-swap-table-p3-v2-9-fe0b67ef0215@tencent.com>
 References: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 In-Reply-To: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 To: linux-mm@kvack.org
@@ -108,21 +109,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
  Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=3805;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=51351;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=xEm9vmKYs9I8cGuUNSJYWeygrYtNmSS9LIdq7v6ecsc=;
- b=CUVi91qTEx9seoLd4nVc/dyAm11X+quXmPpT9xgVXUnFcUQM1MsVopybAyeIimWtDj/4ioUTd
- 65YlGEfRcVhDQPepEaODn3lzB2foec2pXntqtIJ5Cqsb8HJ9ymQKWUK
+ bh=YQ7/z8seUp2+1e2hnjIrZhzqPnbrBbFot/D1wqXDcEE=;
+ b=dHSs14YYnFsLWVaSmfzSEKzhJQer/Dh9dX9VaSnoL3+wRb2TPUdG7DO2Qa38lRAQHhz6oJdpE
+ 8kfbAjXgXCNDySgjVLFiQPVKirKjZywJM13vPjVqmfRqTs+o8cfpgSS
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Rspamd-Queue-Id: E475B4000D
-X-Stat-Signature: 5afx5u881tfz67irzcjh8e57btdw17yr
+X-Rspamd-Server: rspam12
+X-Stat-Signature: zkq75ynkshgma3ysck1ynciugsyik7q1
+X-Rspamd-Queue-Id: 60FCD40012
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769592661-887575
-X-HE-Meta: U2FsdGVkX1/ngy5+TkR0xKxJaolvi6pgue/7nJyFu+Gr8MFk4R2783RUse9k20jktTNwSru3qN6rogiyEvD0RDxC+MDH1Zl13Jf20ibyWH+fJtoLFTOVPnnV4QHfe4VlnFUvcR+Tzn2vHC/iVzU479OWuz3d8MDfWbwy/DzH37RXZersD0wksxQwtEfZ1TfAJY3vMq4fksw7Sjo/mx3rI0LOS7+3DhJ3WvMEpFHzngw6rcc4Dv1tJPogZu4cW+xIr6LvNXwmaLStdVr9ZuyY5DVEik2g8wttjjMqbiKaQYa3FQJqEk4WGzwTXAl8iEtBAEft3MA+XI5vtSM6KimL8iP/25Y4Fw6UiZhIWel7VYaMHrQnN+Ur5WhnFtvCFYS3EZ90TYYs6kWuR9Dbf9d1Aq42DlM2pBtvjQ2zyKJfKEk8CHDvG8AqZZ3oBwkSs8vVO6NXU6la8hZ+pwJtJdIyCjsqPjXf0TxLeETixKOPrJiL2g+vFg8HE7a3hsA5k0ClIWh6l702PRB0H8KJtAN1Nv7gUVjI1O06DTC8plGYzSTPI0njj+1/2Khhpt3eQ1RI5dZPuwU6PjRanzzxxf/Wtu07ycNhXdQn+bkym2rQpbR3cpC4obAuuhqivQTvRAfa+o3YVSx9BSLv0mSDCoEKETI87eCgUYSenuLuVpQ+dfF5SuDB8sYIp7iyvcPeBoyXrHfz3+SrJmGqthYORX3TGvlPifKbxwVD9XiFT/jx/vm57gF7smh9kwttY8pmOvt/WG4qaFTzPa53VX4UJBj1TEfrmoJgNZw20hJEWN4AfzijanQHit5VldwVlUsgM8mcnPlV/zBah65diGJyc071jzdSBjIOIe660zX+SsFpnQSs9SrY0v7OgQkd+8amh68MuGVTXMINzsIOrZXcXiiSj8OaRip27SAI8Mx7GEf0Kp4S+vlxq0PMeyDG2dVK/huRc/Ho/2dOfGlrQ7FkZLv
- xUcqivBQ
- IhfUda0qOPXgpf5RuoHnQUcpAC1xPcvmZ/fZ67y6N7QRZZQ2eE/2vO6VRXo8zgwJwkTeTwZ7udn1Q4cF0/Tu6ivBjArh0KRg78jphiYSQTYdXYsk0SeEKNLvFdo4HS98/l4qF6wRGrnvWOzOOctPJT/E5JKn546M8yz3KdqbX6dlbNswVKonVNJK5uzHP+pyK7ak3P2L7Gheyw/xqsf5YMTw+3W3ORyo/QeRUAyazt8PREE1JGWrXmYqauqbVRlMwLapqHoG0sOI81xiP8ClT0SHPi0/7UjqHvNJm9AAp7grX1JmUKsM7JU5I+aP/QBHasVT7IlNxV1Vy2Ur+ALwYns09F/oBYnhY+blFlRPHptuEiTsrVxGYNhk/e7g/dD0Umj7UZEBxAfgliO4dTUitvrBi5K9ea36PUvbN6xIAaj8VY07EnS6oYN64WQ==
+X-HE-Tag: 1769592666-446959
+X-HE-Meta: U2FsdGVkX1+7s1x1m/zueA5Uw2uxzasMM5jj/8J5BuMrBKkmz5btoXNbM22B/8OGsL7M8tNjxMtPjQ2DN42qf8TI7+K58iG3Oy31KcN6ZfVDTKXiaES9hS/cAd8rjWWffJFqTq2Hu5WSuD5LlgpIr4wpsSeG9WDUfDDxK3o4+u324M12IFsIki6RSDGvlPALLz16d9VUsuctkHk3RUv2yxc8dszP4FIGR9ROudHjUQLpx1CWbqj3Y4KgcsgWKuDlqwmw27CcA6k9ODQWFZ8/NwDQsaHzomGax+PEo5BCgZVl2VmB/XpeQuhiyLYpfXy/leU5tZuSLFY7qpGvF7AMU9SpEkdEzr3iXXa8US2k++nbKYcRLUM5KuYJZMqRDKGJaJk2fuMf0IKRK7FZ4rJGBLszxQrlPTGzjIrDTwtmwr1ca+JQtyiZHBlhV6qQVun4RKFOwaH8bGICtW/DH4srX2tKRQwIQCij6F11QstiVHLxzWv0iPXQSSc050bGTbYY4oF4Xixu+D15f7Jn1HyxXPQyY9XTJ9yIQvUyQ5CcK9J94VYHobZIDBIkYA+wqgD9oWSl2Hdy78elmtXyeclMTMlj9xVjZtywQrHSHgOJYorgtshX6Kkm2r3EbJjTIhKNeZH5+jD1k8SCvWW03UTNEmvM6wvpB2k2c5o9OIaLkbJi9JZu39zpX+2ewpUZ2pZJr5z+DrrFWjk7czSHIgVD/byPDzvUTPWJjhV6OnDXeTUgYDgqctk+1FeB7UNPVAqXOUJZZZzxaduNEZhXHn4WzJaIIagaRnXfuRBMdO7cP5xkK0rJPrERU4dv5+Z7Qrs+YQmeZddZZPS3MYpS9Si8yaVdw1WWr08MmgTUcSfzFj6ppbhQjHPdSIkaeC1EZ6Ux2MN1+Cf/dPjIw/xOLuiFdqVUbTw0oAf6tv4GCwX1b0qaxZBjKjcaixPX39C78keyT4Sif7bedid9lavzGAe
+ Jeax8wx9
+ i9m+jP7Br9a9+3zxY+v7Xebp4s8zCuvbZGWdAfFwY11cLHhwRdsJrgrwcQGItlet8RRbHF5JyOACQYIb5TTi3QTZ4nK01O9ECck81wf9tfJyb2HD8iD1YgpROttKyQqXMe6fnwb+/hacK8W+VHeOC/9+LGknSaR8Qs2hC5sluIRy0qDPwEx9wxJcE9yWVpTZIarZSSuViwvDA0xtaJC9xZ64dSm0sBSUKPIQcqcrjI62RNQ/obDLKhk1u8kHPXfpHXDThJKmULA09szeqsSKrAypaf7ee7dlZmrizVOdw4aVc9XodPXnI5f1RIwBde4Hhq5UzoINN8J67o7KWMYV4UpGqIQG1Q8TUnAOMUIgvAp47pAcF523qgnTmazyb1VUB0yShWVVMIgquXBETD5jxP3Ylet310XRISjzwGihQpqoXQearNO8yVs9DuuVBfTncUWg3CvFiRHaxoJxp0hp9n4YAnyyuhDVtrPmCEAEE9ebj7EQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,103 +134,1542 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-The newly introduced helper, which checks bad slots and emptiness of a
-cluster, can cover the older sanity check just fine, with a more
-rigorous condition check. So merge them.
+Now all the infrastructures are ready, switch to using the swap table
+only. This is unfortunately a large patch because the whole old counting
+mechanism, especially SWP_CONTINUED, has to be gone and switch to the
+new mechanism together, with no intermediate steps available.
 
+The swap table is capable of holding up to SWP_TB_COUNT_MAX - 1 counts
+in the higher bits of each table entry, so using that, the swap_map can
+be completely dropped.
+
+swap_map also had a limit of SWAP_CONT_MAX. Any value beyond that limit
+will require a COUNT_CONTINUED page. COUNT_CONTINUED is a bit complex to
+maintain, so for the swap table, a simpler approach is used: when the
+count goes beyond SWP_TB_COUNT_MAX - 1, the cluster will have an
+extend_table allocated, which is a swap cluster-sized array of unsigned
+long. The counting is basically offloaded there until the count drops
+below SWAP_CONT_MAX again.
+
+Both the swap table and the extend table are cluster-based, so they
+exhibit good performance and sparsity.
+
+To make the switch from swap_map to swap table clean, this commit cleans
+up and introduces a new set of functions based on the swap table design,
+for manipulating swap counts:
+
+- __swap_cluster_dup_entry, __swap_cluster_put_entry,
+  __swap_cluster_alloc_entry, __swap_cluster_free_entry:
+
+  Increase/decrease the count of a swap slot, or alloc / free a swap
+  slot. This is the internal routine that does the counting work based
+  on the swap table and handles all the complexities. The caller will
+  need to lock the cluster before calling them.
+
+  All swap count-related update operations are wrapped by these four
+  helpers.
+
+- swap_dup_entries_cluster, swap_put_entries_cluster:
+
+  Increase/decrease the swap count of one or a set of swap slots in the
+  same cluster range. These two helpers serve as the common routines for
+  folio_dup_swap & swap_dup_entry_direct, or
+  folio_put_swap & swap_put_entries_direct.
+
+And use these helpers to replace all existing callers. This helps to
+simplify the count tracking by a lot, and the swap_map is gone.
+
+Suggested-by: Chris Li <chrisl@kernel.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swapfile.c | 35 +++++++++--------------------------
- 1 file changed, 9 insertions(+), 26 deletions(-)
+ include/linux/swap.h |  28 +-
+ mm/memory.c          |   2 +-
+ mm/swap.h            |  14 +-
+ mm/swap_state.c      |  53 ++--
+ mm/swap_table.h      |   5 +
+ mm/swapfile.c        | 780 +++++++++++++++++++--------------------------------
+ 6 files changed, 330 insertions(+), 552 deletions(-)
 
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 62fc7499b408..0effe3cc50f5 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -208,7 +208,6 @@ enum {
+ 	SWP_DISCARDABLE = (1 << 2),	/* blkdev support discard */
+ 	SWP_DISCARDING	= (1 << 3),	/* now discarding a free cluster */
+ 	SWP_SOLIDSTATE	= (1 << 4),	/* blkdev seeks are cheap */
+-	SWP_CONTINUED	= (1 << 5),	/* swap_map has count continuation */
+ 	SWP_BLKDEV	= (1 << 6),	/* its a block device */
+ 	SWP_ACTIVATED	= (1 << 7),	/* set after swap_activate success */
+ 	SWP_FS_OPS	= (1 << 8),	/* swapfile operations go through fs */
+@@ -223,16 +222,6 @@ enum {
+ #define SWAP_CLUSTER_MAX_SKIPPED (SWAP_CLUSTER_MAX << 10)
+ #define COMPACT_CLUSTER_MAX SWAP_CLUSTER_MAX
+ 
+-/* Bit flag in swap_map */
+-#define COUNT_CONTINUED	0x80	/* Flag swap_map continuation for full count */
+-
+-/* Special value in first swap_map */
+-#define SWAP_MAP_MAX	0x3e	/* Max count */
+-#define SWAP_MAP_BAD	0x3f	/* Note page is bad */
+-
+-/* Special value in each swap_map continuation */
+-#define SWAP_CONT_MAX	0x7f	/* Max count */
+-
+ /*
+  * The first page in the swap file is the swap header, which is always marked
+  * bad to prevent it from being allocated as an entry. This also prevents the
+@@ -264,8 +253,7 @@ struct swap_info_struct {
+ 	signed short	prio;		/* swap priority of this type */
+ 	struct plist_node list;		/* entry in swap_active_head */
+ 	signed char	type;		/* strange name for an index */
+-	unsigned int	max;		/* extent of the swap_map */
+-	unsigned char *swap_map;	/* vmalloc'ed array of usage counts */
++	unsigned int	max;		/* size of this swap device */
+ 	unsigned long *zeromap;		/* kvmalloc'ed bitmap to track zero pages */
+ 	struct swap_cluster_info *cluster_info; /* cluster info. Only for SSD */
+ 	struct list_head free_clusters; /* free clusters list */
+@@ -284,18 +272,14 @@ struct swap_info_struct {
+ 	struct completion comp;		/* seldom referenced */
+ 	spinlock_t lock;		/*
+ 					 * protect map scan related fields like
+-					 * swap_map, inuse_pages and all cluster
+-					 * lists. other fields are only changed
++					 * inuse_pages and all cluster lists.
++					 * Other fields are only changed
+ 					 * at swapon/swapoff, so are protected
+ 					 * by swap_lock. changing flags need
+ 					 * hold this lock and swap_lock. If
+ 					 * both locks need hold, hold swap_lock
+ 					 * first.
+ 					 */
+-	spinlock_t cont_lock;		/*
+-					 * protect swap count continuation page
+-					 * list.
+-					 */
+ 	struct work_struct discard_work; /* discard worker */
+ 	struct work_struct reclaim_work; /* reclaim worker */
+ 	struct list_head discard_clusters; /* discard clusters list */
+@@ -451,7 +435,6 @@ static inline long get_nr_swap_pages(void)
+ }
+ 
+ extern void si_swapinfo(struct sysinfo *);
+-extern int add_swap_count_continuation(swp_entry_t, gfp_t);
+ int swap_type_of(dev_t device, sector_t offset);
+ int find_first_swap(dev_t *device);
+ extern unsigned int count_swap_pages(int, int);
+@@ -517,11 +500,6 @@ static inline void free_swap_cache(struct folio *folio)
+ {
+ }
+ 
+-static inline int add_swap_count_continuation(swp_entry_t swp, gfp_t gfp_mask)
+-{
+-	return 0;
+-}
+-
+ static inline int swap_dup_entry_direct(swp_entry_t ent)
+ {
+ 	return 0;
+diff --git a/mm/memory.c b/mm/memory.c
+index 7238dd9dd629..a5f471d79507 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1348,7 +1348,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+ 
+ 	if (ret == -EIO) {
+ 		VM_WARN_ON_ONCE(!entry.val);
+-		if (add_swap_count_continuation(entry, GFP_KERNEL) < 0) {
++		if (swap_retry_table_alloc(entry, GFP_KERNEL) < 0) {
+ 			ret = -ENOMEM;
+ 			goto out;
+ 		}
+diff --git a/mm/swap.h b/mm/swap.h
+index bfafa637c458..751430e2d2a5 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -37,6 +37,7 @@ struct swap_cluster_info {
+ 	u8 flags;
+ 	u8 order;
+ 	atomic_long_t __rcu *table;	/* Swap table entries, see mm/swap_table.h */
++	unsigned long *extend_table;	/* For large swap count, protected by ci->lock */
+ 	struct list_head list;
+ };
+ 
+@@ -183,6 +184,8 @@ static inline void swap_cluster_unlock_irq(struct swap_cluster_info *ci)
+ 	spin_unlock_irq(&ci->lock);
+ }
+ 
++extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
++
+ /*
+  * Below are the core routines for doing swap for a folio.
+  * All helpers requires the folio to be locked, and a locked folio
+@@ -206,9 +209,9 @@ int folio_dup_swap(struct folio *folio, struct page *subpage);
+ void folio_put_swap(struct folio *folio, struct page *subpage);
+ 
+ /* For internal use */
+-extern void swap_entries_free(struct swap_info_struct *si,
+-			      struct swap_cluster_info *ci,
+-			      unsigned long offset, unsigned int nr_pages);
++extern void __swap_cluster_free_entries(struct swap_info_struct *si,
++					struct swap_cluster_info *ci,
++					unsigned int ci_off, unsigned int nr_pages);
+ 
+ /* linux/mm/page_io.c */
+ int sio_pool_init(void);
+@@ -446,6 +449,11 @@ static inline int swap_writeout(struct folio *folio,
+ 	return 0;
+ }
+ 
++static inline int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
++{
++	return -EINVAL;
++}
++
+ static inline bool swap_cache_has_folio(swp_entry_t entry)
+ {
+ 	return false;
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index e213ee35c1d2..c808f0948b10 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -140,21 +140,20 @@ void *swap_cache_get_shadow(swp_entry_t entry)
+ void __swap_cache_add_folio(struct swap_cluster_info *ci,
+ 			    struct folio *folio, swp_entry_t entry)
+ {
+-	unsigned long new_tb;
+-	unsigned int ci_start, ci_off, ci_end;
++	unsigned int ci_off = swp_cluster_offset(entry), ci_end;
+ 	unsigned long nr_pages = folio_nr_pages(folio);
++	unsigned long pfn = folio_pfn(folio);
++	unsigned long old_tb;
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
+ 	VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_swapbacked(folio), folio);
+ 
+-	new_tb = folio_to_swp_tb(folio, 0);
+-	ci_start = swp_cluster_offset(entry);
+-	ci_off = ci_start;
+-	ci_end = ci_start + nr_pages;
++	ci_end = ci_off + nr_pages;
+ 	do {
+-		VM_WARN_ON_ONCE(swp_tb_is_folio(__swap_table_get(ci, ci_off)));
+-		__swap_table_set(ci, ci_off, new_tb);
++		old_tb = __swap_table_get(ci, ci_off);
++		VM_WARN_ON_ONCE(swp_tb_is_folio(old_tb));
++		__swap_table_set(ci, ci_off, pfn_to_swp_tb(pfn, __swp_tb_get_count(old_tb)));
+ 	} while (++ci_off < ci_end);
+ 
+ 	folio_ref_add(folio, nr_pages);
+@@ -183,14 +182,13 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ 	unsigned long old_tb;
+ 	struct swap_info_struct *si;
+ 	struct swap_cluster_info *ci;
+-	unsigned int ci_start, ci_off, ci_end, offset;
++	unsigned int ci_start, ci_off, ci_end;
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+ 
+ 	si = __swap_entry_to_info(entry);
+ 	ci_start = swp_cluster_offset(entry);
+ 	ci_end = ci_start + nr_pages;
+ 	ci_off = ci_start;
+-	offset = swp_offset(entry);
+ 	ci = swap_cluster_lock(si, swp_offset(entry));
+ 	if (unlikely(!ci->table)) {
+ 		err = -ENOENT;
+@@ -202,13 +200,12 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ 			err = -EEXIST;
+ 			goto failed;
+ 		}
+-		if (unlikely(!__swap_count(swp_entry(swp_type(entry), offset)))) {
++		if (unlikely(!__swp_tb_get_count(old_tb))) {
+ 			err = -ENOENT;
+ 			goto failed;
+ 		}
+ 		if (swp_tb_is_shadow(old_tb))
+ 			shadow = swp_tb_to_shadow(old_tb);
+-		offset++;
+ 	} while (++ci_off < ci_end);
+ 	__swap_cache_add_folio(ci, folio, entry);
+ 	swap_cluster_unlock(ci);
+@@ -237,8 +234,9 @@ static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
+ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+ 			    swp_entry_t entry, void *shadow)
+ {
++	int count;
++	unsigned long old_tb;
+ 	struct swap_info_struct *si;
+-	unsigned long old_tb, new_tb;
+ 	unsigned int ci_start, ci_off, ci_end;
+ 	bool folio_swapped = false, need_free = false;
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+@@ -249,20 +247,20 @@ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+ 	VM_WARN_ON_ONCE_FOLIO(folio_test_writeback(folio), folio);
+ 
+ 	si = __swap_entry_to_info(entry);
+-	new_tb = shadow_to_swp_tb(shadow, 0);
+ 	ci_start = swp_cluster_offset(entry);
+ 	ci_end = ci_start + nr_pages;
+ 	ci_off = ci_start;
+ 	do {
+-		/* If shadow is NULL, we sets an empty shadow */
+-		old_tb = __swap_table_xchg(ci, ci_off, new_tb);
++		old_tb = __swap_table_get(ci, ci_off);
+ 		WARN_ON_ONCE(!swp_tb_is_folio(old_tb) ||
+ 			     swp_tb_to_folio(old_tb) != folio);
+-		if (__swap_count(swp_entry(si->type,
+-				 swp_offset(entry) + ci_off - ci_start)))
++		count = __swp_tb_get_count(old_tb);
++		if (count)
+ 			folio_swapped = true;
+ 		else
+ 			need_free = true;
++		/* If shadow is NULL, we sets an empty shadow. */
++		__swap_table_set(ci, ci_off, shadow_to_swp_tb(shadow, count));
+ 	} while (++ci_off < ci_end);
+ 
+ 	folio->swap.val = 0;
+@@ -271,13 +269,13 @@ void __swap_cache_del_folio(struct swap_cluster_info *ci, struct folio *folio,
+ 	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, -nr_pages);
+ 
+ 	if (!folio_swapped) {
+-		swap_entries_free(si, ci, swp_offset(entry), nr_pages);
++		__swap_cluster_free_entries(si, ci, ci_start, nr_pages);
+ 	} else if (need_free) {
++		ci_off = ci_start;
+ 		do {
+-			if (!__swap_count(entry))
+-				swap_entries_free(si, ci, swp_offset(entry), 1);
+-			entry.val++;
+-		} while (--nr_pages);
++			if (!__swp_tb_get_count(__swap_table_get(ci, ci_off)))
++				__swap_cluster_free_entries(si, ci, ci_off, 1);
++		} while (++ci_off < ci_end);
+ 	}
+ }
+ 
+@@ -324,17 +322,18 @@ void __swap_cache_replace_folio(struct swap_cluster_info *ci,
+ 	unsigned long nr_pages = folio_nr_pages(new);
+ 	unsigned int ci_off = swp_cluster_offset(entry);
+ 	unsigned int ci_end = ci_off + nr_pages;
+-	unsigned long old_tb, new_tb;
++	unsigned int pfn = folio_pfn(new);
++	unsigned long old_tb;
+ 
+ 	VM_WARN_ON_ONCE(!folio_test_swapcache(old) || !folio_test_swapcache(new));
+ 	VM_WARN_ON_ONCE(!folio_test_locked(old) || !folio_test_locked(new));
+ 	VM_WARN_ON_ONCE(!entry.val);
+ 
+ 	/* Swap cache still stores N entries instead of a high-order entry */
+-	new_tb = folio_to_swp_tb(new, 0);
+ 	do {
+-		old_tb = __swap_table_xchg(ci, ci_off, new_tb);
++		old_tb = __swap_table_get(ci, ci_off);
+ 		WARN_ON_ONCE(!swp_tb_is_folio(old_tb) || swp_tb_to_folio(old_tb) != old);
++		__swap_table_set(ci, ci_off, pfn_to_swp_tb(pfn, __swp_tb_get_count(old_tb)));
+ 	} while (++ci_off < ci_end);
+ 
+ 	/*
+@@ -368,7 +367,7 @@ void __swap_cache_clear_shadow(swp_entry_t entry, int nr_ents)
+ 	ci_end = ci_off + nr_ents;
+ 	do {
+ 		old = __swap_table_xchg(ci, ci_off, null_to_swp_tb());
+-		WARN_ON_ONCE(swp_tb_is_folio(old));
++		WARN_ON_ONCE(swp_tb_is_folio(old) || swp_tb_get_count(old));
+ 	} while (++ci_off < ci_end);
+ }
+ 
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index 10762ac5f4f5..8415ffbe2b9c 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -191,6 +191,11 @@ static inline int swp_tb_get_count(unsigned long swp_tb)
+ 	return -EINVAL;
+ }
+ 
++static inline unsigned long __swp_tb_mk_count(unsigned long swp_tb, int count)
++{
++	return ((swp_tb & ~SWP_TB_COUNT_MASK) | __count_to_swp_tb(count));
++}
++
+ /*
+  * Helpers for accessing or modifying the swap table of a cluster,
+  * the swap cluster must be locked.
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index bdce2abd9135..968153691fc4 100644
+index 968153691fc4..45579ace27ba 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -459,9 +459,11 @@ static void swap_table_free(struct swap_table *table)
-  * One special case is that bad slots can't be freed, so check the number of
-  * bad slots for swapoff, and non-swapoff path must never free bad slots.
-  */
--static void swap_cluster_assert_empty(struct swap_cluster_info *ci, bool swapoff)
-+static void swap_cluster_assert_empty(struct swap_cluster_info *ci,
-+				      unsigned int ci_off, unsigned int nr,
-+				      bool swapoff)
+@@ -51,15 +51,8 @@
+ #include "swap_table.h"
+ #include "swap.h"
+ 
+-static bool swap_count_continued(struct swap_info_struct *, pgoff_t,
+-				 unsigned char);
+-static void free_swap_count_continuations(struct swap_info_struct *);
+ static void swap_range_alloc(struct swap_info_struct *si,
+ 			     unsigned int nr_entries);
+-static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr);
+-static void swap_put_entry_locked(struct swap_info_struct *si,
+-				  struct swap_cluster_info *ci,
+-				  unsigned long offset);
+ static bool folio_swapcache_freeable(struct folio *folio);
+ static void move_cluster(struct swap_info_struct *si,
+ 			 struct swap_cluster_info *ci, struct list_head *list,
+@@ -182,22 +175,19 @@ static long swap_usage_in_pages(struct swap_info_struct *si)
+ /* Reclaim the swap entry if swap is getting full */
+ #define TTRS_FULL		0x4
+ 
+-static bool swap_only_has_cache(struct swap_info_struct *si,
+-				struct swap_cluster_info *ci,
++static bool swap_only_has_cache(struct swap_cluster_info *ci,
+ 				unsigned long offset, int nr_pages)
  {
--	unsigned int ci_off = 0, ci_end = SWAPFILE_CLUSTER;
-+	unsigned int ci_end = ci_off + nr;
+ 	unsigned int ci_off = offset % SWAPFILE_CLUSTER;
+-	unsigned char *map = si->swap_map + offset;
+-	unsigned char *map_end = map + nr_pages;
++	unsigned int ci_end = ci_off + nr_pages;
  	unsigned long swp_tb;
- 	int bad_slots = 0;
  
-@@ -588,7 +590,7 @@ static void swap_cluster_schedule_discard(struct swap_info_struct *si,
+ 	do {
+ 		swp_tb = __swap_table_get(ci, ci_off);
+ 		VM_WARN_ON_ONCE(!swp_tb_is_folio(swp_tb));
+-		if (*map)
++		if (swp_tb_get_count(swp_tb))
+ 			return false;
+-		++ci_off;
+-	} while (++map < map_end);
++	} while (++ci_off < ci_end);
  
- static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info *ci)
+ 	return true;
+ }
+@@ -256,7 +246,7 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
+ 	 * reference or pending writeback, and can't be allocated to others.
+ 	 */
+ 	ci = swap_cluster_lock(si, offset);
+-	need_reclaim = swap_only_has_cache(si, ci, offset, nr_pages);
++	need_reclaim = swap_only_has_cache(ci, offset, nr_pages);
+ 	swap_cluster_unlock(ci);
+ 	if (!need_reclaim)
+ 		goto out_unlock;
+@@ -479,6 +469,7 @@ static void swap_cluster_assert_empty(struct swap_cluster_info *ci,
+ 	} while (++ci_off < ci_end);
+ 
+ 	WARN_ON_ONCE(bad_slots != (swapoff ? ci->count : 0));
++	WARN_ON_ONCE(nr == SWAPFILE_CLUSTER && ci->extend_table);
+ }
+ 
+ static void swap_cluster_free_table(struct swap_cluster_info *ci)
+@@ -529,7 +520,7 @@ swap_cluster_alloc_table(struct swap_info_struct *si,
+ 		spin_unlock(&si->global_cluster_lock);
+ 	local_unlock(&percpu_swap_cluster.lock);
+ 
+-	table = swap_table_alloc(__GFP_HIGH | __GFP_NOMEMALLOC | GFP_KERNEL);
++	table = swap_table_alloc(__GFP_HIGH | __GFP_NOMEMALLOC | GFP_KERNEL | __GFP_NOWARN);
+ 
+ 	/*
+ 	 * Back to atomic context. We might have migrated to a new CPU with a
+@@ -807,7 +798,6 @@ static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
+ 		pr_warn("Duplicated bad slot offset %d\n", offset);
+ 		ret = -EINVAL;
+ 	} else {
+-		si->swap_map[offset] = SWAP_MAP_BAD;
+ 		ci->count++;
+ 	}
+ 	spin_unlock(&ci->lock);
+@@ -829,18 +819,16 @@ static bool cluster_reclaim_range(struct swap_info_struct *si,
  {
--	swap_cluster_assert_empty(ci, false);
-+	swap_cluster_assert_empty(ci, 0, SWAPFILE_CLUSTER, false);
- 	swap_cluster_free_table(ci);
- 	move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
- 	ci->order = 0;
-@@ -898,26 +900,6 @@ static bool cluster_scan_range(struct swap_info_struct *si,
+ 	unsigned int nr_pages = 1 << order;
+ 	unsigned long offset = start, end = start + nr_pages;
+-	unsigned char *map = si->swap_map;
+ 	unsigned long swp_tb;
+ 
+ 	spin_unlock(&ci->lock);
+ 	do {
+-		if (READ_ONCE(map[offset]))
+-			break;
+ 		swp_tb = swap_table_get(ci, offset % SWAPFILE_CLUSTER);
+-		if (swp_tb_is_folio(swp_tb)) {
++		if (swp_tb_get_count(swp_tb))
++			break;
++		if (swp_tb_is_folio(swp_tb))
+ 			if (__try_to_reclaim_swap(si, offset, TTRS_ANYWAY) < 0)
+ 				break;
+-		}
+ 	} while (++offset < end);
+ 	spin_lock(&ci->lock);
+ 
+@@ -864,7 +852,7 @@ static bool cluster_reclaim_range(struct swap_info_struct *si,
+ 	 */
+ 	for (offset = start; offset < end; offset++) {
+ 		swp_tb = __swap_table_get(ci, offset % SWAPFILE_CLUSTER);
+-		if (map[offset] || !swp_tb_is_null(swp_tb))
++		if (!swp_tb_is_null(swp_tb))
+ 			return false;
+ 	}
+ 
+@@ -876,37 +864,35 @@ static bool cluster_scan_range(struct swap_info_struct *si,
+ 			       unsigned long offset, unsigned int nr_pages,
+ 			       bool *need_reclaim)
+ {
+-	unsigned long end = offset + nr_pages;
+-	unsigned char *map = si->swap_map;
++	unsigned int ci_off = offset % SWAPFILE_CLUSTER;
++	unsigned int ci_end = ci_off + nr_pages;
+ 	unsigned long swp_tb;
+ 
+-	if (cluster_is_empty(ci))
+-		return true;
+-
+ 	do {
+-		if (map[offset])
+-			return false;
+-		swp_tb = __swap_table_get(ci, offset % SWAPFILE_CLUSTER);
+-		if (swp_tb_is_folio(swp_tb)) {
++		swp_tb = __swap_table_get(ci, ci_off);
++		if (swp_tb_is_null(swp_tb))
++			continue;
++		if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb)) {
+ 			if (!vm_swap_full())
+ 				return false;
+ 			*need_reclaim = true;
+-		} else {
+-			/* A entry with no count and no cache must be null */
+-			VM_WARN_ON_ONCE(!swp_tb_is_null(swp_tb));
++			continue;
+ 		}
+-	} while (++offset < end);
++		/* Slot with zero count can only be NULL or folio */
++		VM_WARN_ON(!swp_tb_get_count(swp_tb));
++		return false;
++	} while (++ci_off < ci_end);
+ 
  	return true;
  }
  
--/*
-- * Currently, the swap table is not used for count tracking, just
-- * do a sanity check here to ensure nothing leaked, so the swap
-- * table should be empty upon freeing.
-- */
--static void swap_cluster_assert_table_empty(struct swap_cluster_info *ci,
--				unsigned int start, unsigned int nr)
--{
--	unsigned int ci_off = start % SWAPFILE_CLUSTER;
--	unsigned int ci_end = ci_off + nr;
--	unsigned long swp_tb;
--
--	if (IS_ENABLED(CONFIG_DEBUG_VM)) {
--		do {
--			swp_tb = __swap_table_get(ci, ci_off);
--			VM_WARN_ON_ONCE(!swp_tb_is_null(swp_tb));
--		} while (++ci_off < ci_end);
--	}
--}
--
- static bool cluster_alloc_range(struct swap_info_struct *si,
- 				struct swap_cluster_info *ci,
- 				struct folio *folio,
-@@ -943,13 +925,14 @@ static bool cluster_alloc_range(struct swap_info_struct *si,
+-static bool cluster_alloc_range(struct swap_info_struct *si,
+-				struct swap_cluster_info *ci,
+-				struct folio *folio,
+-				unsigned int offset)
++static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
++					 struct swap_cluster_info *ci,
++					 struct folio *folio,
++					 unsigned int ci_off)
+ {
+-	unsigned long nr_pages;
+ 	unsigned int order;
++	unsigned long nr_pages;
+ 
+ 	lockdep_assert_held(&ci->lock);
+ 
+@@ -925,14 +911,15 @@ static bool cluster_alloc_range(struct swap_info_struct *si,
  	if (likely(folio)) {
  		order = folio_order(folio);
  		nr_pages = 1 << order;
-+		swap_cluster_assert_empty(ci, offset % SWAPFILE_CLUSTER, nr_pages, false);
- 		__swap_cache_add_folio(ci, folio, swp_entry(si->type, offset));
+-		swap_cluster_assert_empty(ci, offset % SWAPFILE_CLUSTER, nr_pages, false);
+-		__swap_cache_add_folio(ci, folio, swp_entry(si->type, offset));
++		swap_cluster_assert_empty(ci, ci_off, nr_pages, false);
++		__swap_cache_add_folio(ci, folio, swp_entry(si->type,
++							    ci_off + cluster_offset(si, ci)));
  	} else if (IS_ENABLED(CONFIG_HIBERNATION)) {
  		order = 0;
  		nr_pages = 1;
- 		WARN_ON_ONCE(si->swap_map[offset]);
- 		si->swap_map[offset] = 1;
--		swap_cluster_assert_table_empty(ci, offset, 1);
-+		swap_cluster_assert_empty(ci, offset % SWAPFILE_CLUSTER, 1, false);
+-		WARN_ON_ONCE(si->swap_map[offset]);
+-		si->swap_map[offset] = 1;
+-		swap_cluster_assert_empty(ci, offset % SWAPFILE_CLUSTER, 1, false);
++		swap_cluster_assert_empty(ci, ci_off, 1, false);
++		/* Sets a fake shadow as placeholder */
++		__swap_table_set(ci, ci_off, shadow_to_swp_tb(NULL, 1));
  	} else {
  		/* Allocation without folio is only possible with hibernation */
  		WARN_ON_ONCE(1);
-@@ -1768,7 +1751,7 @@ void swap_entries_free(struct swap_info_struct *si,
+@@ -983,7 +970,7 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+ 			if (!ret)
+ 				continue;
+ 		}
+-		if (!cluster_alloc_range(si, ci, folio, offset))
++		if (!__swap_cluster_alloc_entries(si, ci, folio, offset % SWAPFILE_CLUSTER))
+ 			break;
+ 		found = offset;
+ 		offset += nr_pages;
+@@ -1030,7 +1017,7 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 	long to_scan = 1;
+ 	unsigned long offset, end;
+ 	struct swap_cluster_info *ci;
+-	unsigned char *map = si->swap_map;
++	unsigned long swp_tb;
+ 	int nr_reclaim;
  
- 	mem_cgroup_uncharge_swap(entry, nr_pages);
+ 	if (force)
+@@ -1042,8 +1029,8 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
+ 		to_scan--;
+ 
+ 		while (offset < end) {
+-			if (!READ_ONCE(map[offset]) &&
+-			    swp_tb_is_folio(swap_table_get(ci, offset % SWAPFILE_CLUSTER))) {
++			swp_tb = swap_table_get(ci, offset % SWAPFILE_CLUSTER);
++			if (swp_tb_is_folio(swp_tb) && !__swp_tb_get_count(swp_tb)) {
+ 				spin_unlock(&ci->lock);
+ 				nr_reclaim = __try_to_reclaim_swap(si, offset,
+ 								   TTRS_ANYWAY);
+@@ -1452,40 +1439,129 @@ static bool swap_sync_discard(void)
+ 	return false;
+ }
+ 
++/*
++ * Allocate an array of unsigned long to contain counts above SWP_TB_COUNT_MAX.
++ */
++static int swap_extend_table_alloc(struct swap_info_struct *si,
++				   struct swap_cluster_info *ci, gfp_t gfp)
++{
++	void *table = kzalloc(sizeof(unsigned long) * SWAPFILE_CLUSTER, gfp);
++
++	if (!table)
++		return -ENOMEM;
++
++	spin_lock(&ci->lock);
++	if (!ci->extend_table)
++		ci->extend_table = table;
++	else
++		kfree(table);
++	spin_unlock(&ci->lock);
++	return 0;
++}
++
++int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
++{
++	int ret;
++	struct swap_info_struct *si;
++	struct swap_cluster_info *ci;
++	unsigned long offset = swp_offset(entry);
++
++	si = get_swap_device(entry);
++	if (!si)
++		return 0;
++
++	ci = __swap_offset_to_cluster(si, offset);
++	ret = swap_extend_table_alloc(si, ci, gfp);
++
++	put_swap_device(si);
++	return ret;
++}
++
++static void swap_extend_table_try_free(struct swap_cluster_info *ci)
++{
++	unsigned long i;
++	bool can_free = true;
++
++	if (!ci->extend_table)
++		return;
++
++	for (i = 0; i < SWAPFILE_CLUSTER; i++) {
++		if (ci->extend_table[i])
++			can_free = false;
++	}
++
++	if (can_free) {
++		kfree(ci->extend_table);
++		ci->extend_table = NULL;
++	}
++}
++
++/* Decrease the swap count of one slot, without freeing it */
++static void __swap_cluster_put_entry(struct swap_cluster_info *ci,
++				    unsigned int ci_off)
++{
++	int count;
++	unsigned long swp_tb;
++
++	lockdep_assert_held(&ci->lock);
++	swp_tb = __swap_table_get(ci, ci_off);
++	count = __swp_tb_get_count(swp_tb);
++
++	VM_WARN_ON_ONCE(count <= 0);
++	VM_WARN_ON_ONCE(count > SWP_TB_COUNT_MAX);
++
++	if (count == SWP_TB_COUNT_MAX) {
++		count = ci->extend_table[ci_off];
++		/* Overflow starts with SWP_TB_COUNT_MAX */
++		VM_WARN_ON_ONCE(count < SWP_TB_COUNT_MAX);
++		count--;
++		if (count == (SWP_TB_COUNT_MAX - 1)) {
++			ci->extend_table[ci_off] = 0;
++			__swap_table_set(ci, ci_off, __swp_tb_mk_count(swp_tb, count));
++			swap_extend_table_try_free(ci);
++		} else {
++			ci->extend_table[ci_off] = count;
++		}
++	} else {
++		__swap_table_set(ci, ci_off, __swp_tb_mk_count(swp_tb, --count));
++	}
++}
++
+ /**
+- * swap_put_entries_cluster - Decrease the swap count of a set of slots.
++ * swap_put_entries_cluster - Decrease the swap count of slots within one cluster
+  * @si: The swap device.
+- * @start: start offset of slots.
++ * @offset: start offset of slots.
+  * @nr: number of slots.
+- * @reclaim_cache: if true, also reclaim the swap cache.
++ * @reclaim_cache: if true, also reclaim the swap cache if slots are freed.
+  *
+  * This helper decreases the swap count of a set of slots and tries to
+  * batch free them. Also reclaims the swap cache if @reclaim_cache is true.
+- * Context: The caller must ensure that all slots belong to the same
+- * cluster and their swap count doesn't go underflow.
++ *
++ * Context: The specified slots must be pinned by existing swap count or swap
++ * cache reference, so they won't be released until this helper returns.
+  */
+ static void swap_put_entries_cluster(struct swap_info_struct *si,
+-				     unsigned long start, int nr,
++				     pgoff_t offset, int nr,
+ 				     bool reclaim_cache)
+ {
+-	unsigned long offset = start, end = start + nr;
+-	unsigned long batch_start = SWAP_ENTRY_INVALID;
+ 	struct swap_cluster_info *ci;
++	unsigned int ci_off, ci_end;
++	pgoff_t end = offset + nr;
+ 	bool need_reclaim = false;
+ 	unsigned int nr_reclaimed;
+ 	unsigned long swp_tb;
+-	unsigned int count;
++	int ci_batch = -1;
+ 
+ 	ci = swap_cluster_lock(si, offset);
++	ci_off = offset % SWAPFILE_CLUSTER;
++	ci_end = ci_off + nr;
+ 	do {
+-		swp_tb = __swap_table_get(ci, offset % SWAPFILE_CLUSTER);
+-		count = si->swap_map[offset];
+-		VM_WARN_ON(count < 1 || count == SWAP_MAP_BAD);
+-		if (count == 1) {
++		swp_tb = __swap_table_get(ci, ci_off);
++		if (swp_tb_get_count(swp_tb) == 1) {
+ 			/* count == 1 and non-cached slots will be batch freed. */
+ 			if (!swp_tb_is_folio(swp_tb)) {
+-				if (!batch_start)
+-					batch_start = offset;
++				if (ci_batch == -1)
++					ci_batch = ci_off;
+ 				continue;
+ 			}
+ 			/* count will be 0 after put, slot can be reclaimed */
+@@ -1497,21 +1573,20 @@ static void swap_put_entries_cluster(struct swap_info_struct *si,
+ 		 * slots will be freed when folio is removed from swap cache
+ 		 * (__swap_cache_del_folio).
+ 		 */
+-		swap_put_entry_locked(si, ci, offset);
+-		if (batch_start) {
+-			swap_entries_free(si, ci, batch_start, offset - batch_start);
+-			batch_start = SWAP_ENTRY_INVALID;
++		__swap_cluster_put_entry(ci, ci_off);
++		if (ci_batch != -1) {
++			__swap_cluster_free_entries(si, ci, ci_batch, ci_off - ci_batch);
++			ci_batch = -1;
+ 		}
+-	} while (++offset < end);
++	} while (++ci_off < ci_end);
+ 
+-	if (batch_start)
+-		swap_entries_free(si, ci, batch_start, offset - batch_start);
++	if (ci_batch != -1)
++		__swap_cluster_free_entries(si, ci, ci_batch, ci_off - ci_batch);
+ 	swap_cluster_unlock(ci);
+ 
+ 	if (!need_reclaim || !reclaim_cache)
+ 		return;
+ 
+-	offset = start;
+ 	do {
+ 		nr_reclaimed = __try_to_reclaim_swap(si, offset,
+ 						     TTRS_UNMAPPED | TTRS_FULL);
+@@ -1521,6 +1596,90 @@ static void swap_put_entries_cluster(struct swap_info_struct *si,
+ 	} while (offset < end);
+ }
+ 
++/* Increase the swap count of one slot. */
++static int __swap_cluster_dup_entry(struct swap_cluster_info *ci,
++				    unsigned int ci_off)
++{
++	int count;
++	unsigned long swp_tb;
++
++	lockdep_assert_held(&ci->lock);
++	swp_tb = __swap_table_get(ci, ci_off);
++	/* Bad or special slots can't be handled */
++	if (WARN_ON_ONCE(swp_tb_is_bad(swp_tb)))
++		return -EINVAL;
++	count = __swp_tb_get_count(swp_tb);
++	/* Must be either cached or have a count already */
++	if (WARN_ON_ONCE(!count && !swp_tb_is_folio(swp_tb)))
++		return -ENOENT;
++
++	if (likely(count < (SWP_TB_COUNT_MAX - 1))) {
++		__swap_table_set(ci, ci_off, __swp_tb_mk_count(swp_tb, count + 1));
++		VM_WARN_ON_ONCE(ci->extend_table && ci->extend_table[ci_off]);
++	} else if (count == (SWP_TB_COUNT_MAX - 1)) {
++		if (ci->extend_table) {
++			VM_WARN_ON_ONCE(ci->extend_table[ci_off]);
++			ci->extend_table[ci_off] = SWP_TB_COUNT_MAX;
++			__swap_table_set(ci, ci_off, __swp_tb_mk_count(swp_tb, SWP_TB_COUNT_MAX));
++		} else {
++			return -ENOMEM;
++		}
++	} else if (count == SWP_TB_COUNT_MAX) {
++		++ci->extend_table[ci_off];
++	} else {
++		/* Never happens unless counting went wrong */
++		WARN_ON_ONCE(1);
++	}
++
++	return 0;
++}
++
++/**
++ * swap_dup_entries_cluster: Increase the swap count of slots within one cluster.
++ * @si: The swap device.
++ * @offset: start offset of slots.
++ * @nr: number of slots.
++ *
++ * Context: The specified slots must be pinned by existing swap count or swap
++ * cache reference, so they won't be released until this helper returns.
++ * Return: 0 on success. -ENOMEM if the swap count maxed out (SWP_TB_COUNT_MAX)
++ * and failed to allocate an extended table.
++ */
++static int swap_dup_entries_cluster(struct swap_info_struct *si,
++				    pgoff_t offset, int nr)
++{
++	int err;
++	struct swap_cluster_info *ci;
++	unsigned int ci_start, ci_off, ci_end;
++
++	ci_start = offset % SWAPFILE_CLUSTER;
++	ci_end = ci_start + nr;
++	ci_off = ci_start;
++	ci = swap_cluster_lock(si, offset);
++restart:
++	do {
++		err = __swap_cluster_dup_entry(ci, ci_off);
++		if (unlikely(err)) {
++			if (err == -ENOMEM) {
++				spin_unlock(&ci->lock);
++				err = swap_extend_table_alloc(si, ci, GFP_ATOMIC);
++				spin_lock(&ci->lock);
++				if (!err)
++					goto restart;
++			}
++			goto failed;
++		}
++	} while (++ci_off < ci_end);
++	swap_cluster_unlock(ci);
++	return 0;
++failed:
++	while (ci_off-- > ci_start)
++		__swap_cluster_put_entry(ci, ci_off);
++	swap_extend_table_try_free(ci);
++	swap_cluster_unlock(ci);
++	return err;
++}
++
+ /**
+  * folio_alloc_swap - allocate swap space for a folio
+  * @folio: folio we want to move to swap
+@@ -1595,7 +1754,6 @@ int folio_alloc_swap(struct folio *folio)
+  */
+ int folio_dup_swap(struct folio *folio, struct page *subpage)
+ {
+-	int err = 0;
+ 	swp_entry_t entry = folio->swap;
+ 	unsigned long nr_pages = folio_nr_pages(folio);
+ 
+@@ -1607,10 +1765,8 @@ int folio_dup_swap(struct folio *folio, struct page *subpage)
+ 		nr_pages = 1;
+ 	}
+ 
+-	while (!err && __swap_duplicate(entry, 1, nr_pages) == -ENOMEM)
+-		err = add_swap_count_continuation(entry, GFP_ATOMIC);
+-
+-	return err;
++	return swap_dup_entries_cluster(swap_entry_to_info(entry),
++					swp_offset(entry), nr_pages);
+ }
+ 
+ /**
+@@ -1639,28 +1795,6 @@ void folio_put_swap(struct folio *folio, struct page *subpage)
+ 	swap_put_entries_cluster(si, swp_offset(entry), nr_pages, false);
+ }
+ 
+-static void swap_put_entry_locked(struct swap_info_struct *si,
+-				  struct swap_cluster_info *ci,
+-				  unsigned long offset)
+-{
+-	unsigned char count;
+-
+-	count = si->swap_map[offset];
+-	if ((count & ~COUNT_CONTINUED) <= SWAP_MAP_MAX) {
+-		if (count == COUNT_CONTINUED) {
+-			if (swap_count_continued(si, offset, count))
+-				count = SWAP_MAP_MAX | COUNT_CONTINUED;
+-			else
+-				count = SWAP_MAP_MAX;
+-		} else
+-			count--;
+-	}
+-
+-	WRITE_ONCE(si->swap_map[offset], count);
+-	if (!count && !swp_tb_is_folio(__swap_table_get(ci, offset % SWAPFILE_CLUSTER)))
+-		swap_entries_free(si, ci, offset, 1);
+-}
+-
+ /*
+  * When we get a swap entry, if there aren't some other ways to
+  * prevent swapoff, such as the folio in swap cache is locked, RCU
+@@ -1727,31 +1861,30 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
+ }
+ 
+ /*
+- * Drop the last ref of swap entries, caller have to ensure all entries
+- * belong to the same cgroup and cluster.
++ * Free a set of swap slots after their swap count dropped to zero, or will be
++ * zero after putting the last ref (saves one __swap_cluster_put_entry call).
+  */
+-void swap_entries_free(struct swap_info_struct *si,
+-		       struct swap_cluster_info *ci,
+-		       unsigned long offset, unsigned int nr_pages)
++void __swap_cluster_free_entries(struct swap_info_struct *si,
++				 struct swap_cluster_info *ci,
++				 unsigned int ci_start, unsigned int nr_pages)
+ {
+-	swp_entry_t entry = swp_entry(si->type, offset);
+-	unsigned char *map = si->swap_map + offset;
+-	unsigned char *map_end = map + nr_pages;
++	unsigned long old_tb;
++	unsigned int ci_off = ci_start, ci_end = ci_start + nr_pages;
++	unsigned long offset = cluster_offset(si, ci) + ci_start;
+ 
+-	/* It should never free entries across different clusters */
+-	VM_BUG_ON(ci != __swap_offset_to_cluster(si, offset + nr_pages - 1));
+-	VM_BUG_ON(cluster_is_empty(ci));
+-	VM_BUG_ON(ci->count < nr_pages);
++	VM_WARN_ON(ci->count < nr_pages);
+ 
+ 	ci->count -= nr_pages;
+ 	do {
+-		VM_WARN_ON(*map > 1);
+-		*map = 0;
+-	} while (++map < map_end);
++		old_tb = __swap_table_get(ci, ci_off);
++		/* Release the last ref, or after swap cache is dropped */
++		VM_WARN_ON(!swp_tb_is_shadow(old_tb) || __swp_tb_get_count(old_tb) > 1);
++		__swap_table_set(ci, ci_off, null_to_swp_tb());
++	} while (++ci_off < ci_end);
+ 
+-	mem_cgroup_uncharge_swap(entry, nr_pages);
++	mem_cgroup_uncharge_swap(swp_entry(si->type, offset), nr_pages);
  	swap_range_free(si, offset, nr_pages);
--	swap_cluster_assert_table_empty(ci, offset, nr_pages);
-+	swap_cluster_assert_empty(ci, offset % SWAPFILE_CLUSTER, nr_pages, false);
+-	swap_cluster_assert_empty(ci, offset % SWAPFILE_CLUSTER, nr_pages, false);
++	swap_cluster_assert_empty(ci, ci_start, nr_pages, false);
  
  	if (!ci->count)
  		free_cluster(si, ci);
-@@ -2769,7 +2752,7 @@ static void free_swap_cluster_info(struct swap_cluster_info *cluster_info,
- 		/* Cluster with bad marks count will have a remaining table */
- 		spin_lock(&ci->lock);
- 		if (rcu_dereference_protected(ci->table, true)) {
--			swap_cluster_assert_empty(ci, true);
-+			swap_cluster_assert_empty(ci, 0, SWAPFILE_CLUSTER, true);
- 			swap_cluster_free_table(ci);
+@@ -1761,10 +1894,10 @@ void swap_entries_free(struct swap_info_struct *si,
+ 
+ int __swap_count(swp_entry_t entry)
+ {
+-	struct swap_info_struct *si = __swap_entry_to_info(entry);
+-	pgoff_t offset = swp_offset(entry);
++	struct swap_cluster_info *ci = __swap_entry_to_cluster(entry);
++	unsigned int ci_off = swp_cluster_offset(entry);
+ 
+-	return si->swap_map[offset];
++	return swp_tb_get_count(__swap_table_get(ci, ci_off));
+ }
+ 
+ /**
+@@ -1776,81 +1909,62 @@ bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry)
+ {
+ 	pgoff_t offset = swp_offset(entry);
+ 	struct swap_cluster_info *ci;
+-	int count;
++	unsigned long swp_tb;
+ 
+ 	ci = swap_cluster_lock(si, offset);
+-	count = si->swap_map[offset];
++	swp_tb = swap_table_get(ci, offset % SWAPFILE_CLUSTER);
+ 	swap_cluster_unlock(ci);
+ 
+-	return count && count != SWAP_MAP_BAD;
++	return swp_tb_get_count(swp_tb) > 0;
+ }
+ 
+ /*
+  * How many references to @entry are currently swapped out?
+- * This considers COUNT_CONTINUED so it returns exact answer.
++ * This returns exact answer.
+  */
+ int swp_swapcount(swp_entry_t entry)
+ {
+-	int count, tmp_count, n;
+ 	struct swap_info_struct *si;
+ 	struct swap_cluster_info *ci;
+-	struct page *page;
+-	pgoff_t offset;
+-	unsigned char *map;
++	unsigned long swp_tb;
++	int count;
+ 
+ 	si = get_swap_device(entry);
+ 	if (!si)
+ 		return 0;
+ 
+-	offset = swp_offset(entry);
+-
+-	ci = swap_cluster_lock(si, offset);
+-
+-	count = si->swap_map[offset];
+-	if (!(count & COUNT_CONTINUED))
+-		goto out;
+-
+-	count &= ~COUNT_CONTINUED;
+-	n = SWAP_MAP_MAX + 1;
+-
+-	page = vmalloc_to_page(si->swap_map + offset);
+-	offset &= ~PAGE_MASK;
+-	VM_BUG_ON(page_private(page) != SWP_CONTINUED);
+-
+-	do {
+-		page = list_next_entry(page, lru);
+-		map = kmap_local_page(page);
+-		tmp_count = map[offset];
+-		kunmap_local(map);
+-
+-		count += (tmp_count & ~COUNT_CONTINUED) * n;
+-		n *= (SWAP_CONT_MAX + 1);
+-	} while (tmp_count & COUNT_CONTINUED);
+-out:
++	ci = swap_cluster_lock(si, swp_offset(entry));
++	swp_tb = __swap_table_get(ci, swp_cluster_offset(entry));
++	count = swp_tb_get_count(swp_tb);
++	if (count == SWP_TB_COUNT_MAX)
++		count = ci->extend_table[swp_cluster_offset(entry)];
+ 	swap_cluster_unlock(ci);
+ 	put_swap_device(si);
+-	return count;
++
++	return count < 0 ? 0 : count;
+ }
+ 
+ static bool swap_page_trans_huge_swapped(struct swap_info_struct *si,
+ 					 swp_entry_t entry, int order)
+ {
+ 	struct swap_cluster_info *ci;
+-	unsigned char *map = si->swap_map;
+ 	unsigned int nr_pages = 1 << order;
+ 	unsigned long roffset = swp_offset(entry);
+ 	unsigned long offset = round_down(roffset, nr_pages);
++	unsigned int ci_off;
+ 	int i;
+ 	bool ret = false;
+ 
+ 	ci = swap_cluster_lock(si, offset);
+ 	if (nr_pages == 1) {
+-		if (map[roffset])
++		ci_off = roffset % SWAPFILE_CLUSTER;
++		if (swp_tb_get_count(__swap_table_get(ci, ci_off)))
+ 			ret = true;
+ 		goto unlock_out;
+ 	}
+ 	for (i = 0; i < nr_pages; i++) {
+-		if (map[offset + i]) {
++		ci_off = (offset + i) % SWAPFILE_CLUSTER;
++		if (swp_tb_get_count(__swap_table_get(ci, ci_off))) {
+ 			ret = true;
+ 			break;
  		}
- 		spin_unlock(&ci->lock);
+@@ -2005,7 +2119,8 @@ void swap_free_hibernation_slot(swp_entry_t entry)
+ 		return;
+ 
+ 	ci = swap_cluster_lock(si, offset);
+-	swap_put_entry_locked(si, ci, offset);
++	__swap_cluster_put_entry(ci, offset % SWAPFILE_CLUSTER);
++	__swap_cluster_free_entries(si, ci, offset % SWAPFILE_CLUSTER, 1);
+ 	swap_cluster_unlock(ci);
+ 
+ 	/* In theory readahead might add it to the swap cache by accident */
+@@ -2231,13 +2346,10 @@ static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
+ 			unsigned int type)
+ {
+ 	pte_t *pte = NULL;
+-	struct swap_info_struct *si;
+ 
+-	si = swap_info[type];
+ 	do {
+ 		struct folio *folio;
+-		unsigned long offset;
+-		unsigned char swp_count;
++		unsigned long swp_tb;
+ 		softleaf_t entry;
+ 		int ret;
+ 		pte_t ptent;
+@@ -2256,7 +2368,6 @@ static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
+ 		if (swp_type(entry) != type)
+ 			continue;
+ 
+-		offset = swp_offset(entry);
+ 		pte_unmap(pte);
+ 		pte = NULL;
+ 
+@@ -2273,8 +2384,9 @@ static int unuse_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
+ 						&vmf);
+ 		}
+ 		if (!folio) {
+-			swp_count = READ_ONCE(si->swap_map[offset]);
+-			if (swp_count == 0 || swp_count == SWAP_MAP_BAD)
++			swp_tb = swap_table_get(__swap_entry_to_cluster(entry),
++						swp_cluster_offset(entry));
++			if (swp_tb_get_count(swp_tb) <= 0)
+ 				continue;
+ 			return -ENOMEM;
+ 		}
+@@ -2402,7 +2514,7 @@ static int unuse_mm(struct mm_struct *mm, unsigned int type)
+ }
+ 
+ /*
+- * Scan swap_map from current position to next entry still in use.
++ * Scan swap table from current position to next entry still in use.
+  * Return 0 if there are no inuse entries after prev till end of
+  * the map.
+  */
+@@ -2411,7 +2523,6 @@ static unsigned int find_next_to_unuse(struct swap_info_struct *si,
+ {
+ 	unsigned int i;
+ 	unsigned long swp_tb;
+-	unsigned char count;
+ 
+ 	/*
+ 	 * No need for swap_lock here: we're just looking
+@@ -2420,12 +2531,9 @@ static unsigned int find_next_to_unuse(struct swap_info_struct *si,
+ 	 * allocations from this area (while holding swap_lock).
+ 	 */
+ 	for (i = prev + 1; i < si->max; i++) {
+-		count = READ_ONCE(si->swap_map[i]);
+ 		swp_tb = swap_table_get(__swap_offset_to_cluster(si, i),
+ 					i % SWAPFILE_CLUSTER);
+-		if (count == SWAP_MAP_BAD)
+-			continue;
+-		if (count || swp_tb_is_folio(swp_tb))
++		if (!swp_tb_is_null(swp_tb) && !swp_tb_is_bad(swp_tb))
+ 			break;
+ 		if ((i % LATENCY_LIMIT) == 0)
+ 			cond_resched();
+@@ -2785,7 +2893,6 @@ static void flush_percpu_swap_cluster(struct swap_info_struct *si)
+ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ {
+ 	struct swap_info_struct *p = NULL;
+-	unsigned char *swap_map;
+ 	unsigned long *zeromap;
+ 	struct swap_cluster_info *cluster_info;
+ 	struct file *swap_file, *victim;
+@@ -2868,8 +2975,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	flush_percpu_swap_cluster(p);
+ 
+ 	destroy_swap_extents(p, p->swap_file);
+-	if (p->flags & SWP_CONTINUED)
+-		free_swap_count_continuations(p);
+ 
+ 	if (!(p->flags & SWP_SOLIDSTATE))
+ 		atomic_dec(&nr_rotate_swap);
+@@ -2881,8 +2986,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 
+ 	swap_file = p->swap_file;
+ 	p->swap_file = NULL;
+-	swap_map = p->swap_map;
+-	p->swap_map = NULL;
+ 	zeromap = p->zeromap;
+ 	p->zeromap = NULL;
+ 	maxpages = p->max;
+@@ -2896,7 +2999,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	mutex_unlock(&swapon_mutex);
+ 	kfree(p->global_cluster);
+ 	p->global_cluster = NULL;
+-	vfree(swap_map);
+ 	kvfree(zeromap);
+ 	free_swap_cluster_info(cluster_info, maxpages);
+ 	/* Destroy swap account information */
+@@ -3118,7 +3220,6 @@ static struct swap_info_struct *alloc_swap_info(void)
+ 		kvfree(defer);
+ 	}
+ 	spin_lock_init(&p->lock);
+-	spin_lock_init(&p->cont_lock);
+ 	atomic_long_set(&p->inuse_pages, SWAP_USAGE_OFFLIST_BIT);
+ 	init_completion(&p->comp);
+ 
+@@ -3245,19 +3346,6 @@ static unsigned long read_swap_header(struct swap_info_struct *si,
+ 	return maxpages;
+ }
+ 
+-static int setup_swap_map(struct swap_info_struct *si,
+-			  union swap_header *swap_header,
+-			  unsigned long maxpages)
+-{
+-	unsigned char *swap_map;
+-
+-	swap_map = vzalloc(maxpages);
+-	si->swap_map = swap_map;
+-	if (!swap_map)
+-		return -ENOMEM;
+-	return 0;
+-}
+-
+ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ 				    union swap_header *swap_header,
+ 				    unsigned long maxpages)
+@@ -3449,11 +3537,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 
+ 	maxpages = si->max;
+ 
+-	/* Setup the swap map and apply bad block */
+-	error = setup_swap_map(si, swap_header, maxpages);
+-	if (error)
+-		goto bad_swap_unlock_inode;
+-
+ 	/* Set up the swap cluster info */
+ 	error = setup_swap_clusters_info(si, swap_header, maxpages);
+ 	if (error)
+@@ -3574,8 +3657,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	inode = NULL;
+ 	destroy_swap_extents(si, swap_file);
+ 	swap_cgroup_swapoff(si->type);
+-	vfree(si->swap_map);
+-	si->swap_map = NULL;
+ 	free_swap_cluster_info(si->cluster_info, si->max);
+ 	si->cluster_info = NULL;
+ 	kvfree(si->zeromap);
+@@ -3618,82 +3699,6 @@ void si_swapinfo(struct sysinfo *val)
+ 	spin_unlock(&swap_lock);
+ }
+ 
+-/*
+- * Verify that nr swap entries are valid and increment their swap map counts.
+- *
+- * Returns error code in following case.
+- * - success -> 0
+- * - swp_entry is invalid -> EINVAL
+- * - swap-mapped reference is requested but the entry is not used. -> ENOENT
+- * - swap-mapped reference requested but needs continued swap count. -> ENOMEM
+- */
+-static int swap_dup_entries(struct swap_info_struct *si,
+-			    struct swap_cluster_info *ci,
+-			    unsigned long offset,
+-			    unsigned char usage, int nr)
+-{
+-	int i;
+-	unsigned char count;
+-
+-	for (i = 0; i < nr; i++) {
+-		count = si->swap_map[offset + i];
+-		/*
+-		 * For swapin out, allocator never allocates bad slots. for
+-		 * swapin, readahead is guarded by swap_entry_swapped.
+-		 */
+-		if (WARN_ON(count == SWAP_MAP_BAD))
+-			return -ENOENT;
+-		/*
+-		 * Swap count duplication must be guarded by either swap cache folio (from
+-		 * folio_dup_swap) or external lock of existing entry (from swap_dup_entry_direct).
+-		 */
+-		if (WARN_ON(!count &&
+-			    !swp_tb_is_folio(__swap_table_get(ci, offset % SWAPFILE_CLUSTER))))
+-			return -ENOENT;
+-		if (WARN_ON((count & ~COUNT_CONTINUED) > SWAP_MAP_MAX))
+-			return -EINVAL;
+-	}
+-
+-	for (i = 0; i < nr; i++) {
+-		count = si->swap_map[offset + i];
+-		if ((count & ~COUNT_CONTINUED) < SWAP_MAP_MAX)
+-			count += usage;
+-		else if (swap_count_continued(si, offset + i, count))
+-			count = COUNT_CONTINUED;
+-		else {
+-			/*
+-			 * Don't need to rollback changes, because if
+-			 * usage == 1, there must be nr == 1.
+-			 */
+-			return -ENOMEM;
+-		}
+-
+-		WRITE_ONCE(si->swap_map[offset + i], count);
+-	}
+-
+-	return 0;
+-}
+-
+-static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr)
+-{
+-	int err;
+-	struct swap_info_struct *si;
+-	struct swap_cluster_info *ci;
+-	unsigned long offset = swp_offset(entry);
+-
+-	si = swap_entry_to_info(entry);
+-	if (WARN_ON_ONCE(!si)) {
+-		pr_err("%s%08lx\n", Bad_file, entry.val);
+-		return -EINVAL;
+-	}
+-
+-	VM_WARN_ON(nr > SWAPFILE_CLUSTER - offset % SWAPFILE_CLUSTER);
+-	ci = swap_cluster_lock(si, offset);
+-	err = swap_dup_entries(si, ci, offset, usage, nr);
+-	swap_cluster_unlock(ci);
+-	return err;
+-}
+-
+ /*
+  * swap_dup_entry_direct() - Increase reference count of a swap entry by one.
+  * @entry: first swap entry from which we want to increase the refcount.
+@@ -3707,233 +3712,16 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr)
+  * owner. e.g., locking the PTL of a PTE containing the entry being increased.
+  */
+ int swap_dup_entry_direct(swp_entry_t entry)
+-{
+-	int err = 0;
+-	while (!err && __swap_duplicate(entry, 1, 1) == -ENOMEM)
+-		err = add_swap_count_continuation(entry, GFP_ATOMIC);
+-	return err;
+-}
+-
+-/*
+- * add_swap_count_continuation - called when a swap count is duplicated
+- * beyond SWAP_MAP_MAX, it allocates a new page and links that to the entry's
+- * page of the original vmalloc'ed swap_map, to hold the continuation count
+- * (for that entry and for its neighbouring PAGE_SIZE swap entries).  Called
+- * again when count is duplicated beyond SWAP_MAP_MAX * SWAP_CONT_MAX, etc.
+- *
+- * These continuation pages are seldom referenced: the common paths all work
+- * on the original swap_map, only referring to a continuation page when the
+- * low "digit" of a count is incremented or decremented through SWAP_MAP_MAX.
+- *
+- * add_swap_count_continuation(, GFP_ATOMIC) can be called while holding
+- * page table locks; if it fails, add_swap_count_continuation(, GFP_KERNEL)
+- * can be called after dropping locks.
+- */
+-int add_swap_count_continuation(swp_entry_t entry, gfp_t gfp_mask)
+ {
+ 	struct swap_info_struct *si;
+-	struct swap_cluster_info *ci;
+-	struct page *head;
+-	struct page *page;
+-	struct page *list_page;
+-	pgoff_t offset;
+-	unsigned char count;
+-	int ret = 0;
+-
+-	/*
+-	 * When debugging, it's easier to use __GFP_ZERO here; but it's better
+-	 * for latency not to zero a page while GFP_ATOMIC and holding locks.
+-	 */
+-	page = alloc_page(gfp_mask | __GFP_HIGHMEM);
+ 
+-	si = get_swap_device(entry);
+-	if (!si) {
+-		/*
+-		 * An acceptable race has occurred since the failing
+-		 * __swap_duplicate(): the swap device may be swapoff
+-		 */
+-		goto outer;
+-	}
+-
+-	offset = swp_offset(entry);
+-
+-	ci = swap_cluster_lock(si, offset);
+-
+-	count = si->swap_map[offset];
+-
+-	if ((count & ~COUNT_CONTINUED) != SWAP_MAP_MAX) {
+-		/*
+-		 * The higher the swap count, the more likely it is that tasks
+-		 * will race to add swap count continuation: we need to avoid
+-		 * over-provisioning.
+-		 */
+-		goto out;
+-	}
+-
+-	if (!page) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	head = vmalloc_to_page(si->swap_map + offset);
+-	offset &= ~PAGE_MASK;
+-
+-	spin_lock(&si->cont_lock);
+-	/*
+-	 * Page allocation does not initialize the page's lru field,
+-	 * but it does always reset its private field.
+-	 */
+-	if (!page_private(head)) {
+-		BUG_ON(count & COUNT_CONTINUED);
+-		INIT_LIST_HEAD(&head->lru);
+-		set_page_private(head, SWP_CONTINUED);
+-		si->flags |= SWP_CONTINUED;
+-	}
+-
+-	list_for_each_entry(list_page, &head->lru, lru) {
+-		unsigned char *map;
+-
+-		/*
+-		 * If the previous map said no continuation, but we've found
+-		 * a continuation page, free our allocation and use this one.
+-		 */
+-		if (!(count & COUNT_CONTINUED))
+-			goto out_unlock_cont;
+-
+-		map = kmap_local_page(list_page) + offset;
+-		count = *map;
+-		kunmap_local(map);
+-
+-		/*
+-		 * If this continuation count now has some space in it,
+-		 * free our allocation and use this one.
+-		 */
+-		if ((count & ~COUNT_CONTINUED) != SWAP_CONT_MAX)
+-			goto out_unlock_cont;
+-	}
+-
+-	list_add_tail(&page->lru, &head->lru);
+-	page = NULL;			/* now it's attached, don't free it */
+-out_unlock_cont:
+-	spin_unlock(&si->cont_lock);
+-out:
+-	swap_cluster_unlock(ci);
+-	put_swap_device(si);
+-outer:
+-	if (page)
+-		__free_page(page);
+-	return ret;
+-}
+-
+-/*
+- * swap_count_continued - when the original swap_map count is incremented
+- * from SWAP_MAP_MAX, check if there is already a continuation page to carry
+- * into, carry if so, or else fail until a new continuation page is allocated;
+- * when the original swap_map count is decremented from 0 with continuation,
+- * borrow from the continuation and report whether it still holds more.
+- * Called while __swap_duplicate() or caller of swap_put_entry_locked()
+- * holds cluster lock.
+- */
+-static bool swap_count_continued(struct swap_info_struct *si,
+-				 pgoff_t offset, unsigned char count)
+-{
+-	struct page *head;
+-	struct page *page;
+-	unsigned char *map;
+-	bool ret;
+-
+-	head = vmalloc_to_page(si->swap_map + offset);
+-	if (page_private(head) != SWP_CONTINUED) {
+-		BUG_ON(count & COUNT_CONTINUED);
+-		return false;		/* need to add count continuation */
+-	}
+-
+-	spin_lock(&si->cont_lock);
+-	offset &= ~PAGE_MASK;
+-	page = list_next_entry(head, lru);
+-	map = kmap_local_page(page) + offset;
+-
+-	if (count == SWAP_MAP_MAX)	/* initial increment from swap_map */
+-		goto init_map;		/* jump over SWAP_CONT_MAX checks */
+-
+-	if (count == (SWAP_MAP_MAX | COUNT_CONTINUED)) { /* incrementing */
+-		/*
+-		 * Think of how you add 1 to 999
+-		 */
+-		while (*map == (SWAP_CONT_MAX | COUNT_CONTINUED)) {
+-			kunmap_local(map);
+-			page = list_next_entry(page, lru);
+-			BUG_ON(page == head);
+-			map = kmap_local_page(page) + offset;
+-		}
+-		if (*map == SWAP_CONT_MAX) {
+-			kunmap_local(map);
+-			page = list_next_entry(page, lru);
+-			if (page == head) {
+-				ret = false;	/* add count continuation */
+-				goto out;
+-			}
+-			map = kmap_local_page(page) + offset;
+-init_map:		*map = 0;		/* we didn't zero the page */
+-		}
+-		*map += 1;
+-		kunmap_local(map);
+-		while ((page = list_prev_entry(page, lru)) != head) {
+-			map = kmap_local_page(page) + offset;
+-			*map = COUNT_CONTINUED;
+-			kunmap_local(map);
+-		}
+-		ret = true;			/* incremented */
+-
+-	} else {				/* decrementing */
+-		/*
+-		 * Think of how you subtract 1 from 1000
+-		 */
+-		BUG_ON(count != COUNT_CONTINUED);
+-		while (*map == COUNT_CONTINUED) {
+-			kunmap_local(map);
+-			page = list_next_entry(page, lru);
+-			BUG_ON(page == head);
+-			map = kmap_local_page(page) + offset;
+-		}
+-		BUG_ON(*map == 0);
+-		*map -= 1;
+-		if (*map == 0)
+-			count = 0;
+-		kunmap_local(map);
+-		while ((page = list_prev_entry(page, lru)) != head) {
+-			map = kmap_local_page(page) + offset;
+-			*map = SWAP_CONT_MAX | count;
+-			count = COUNT_CONTINUED;
+-			kunmap_local(map);
+-		}
+-		ret = count == COUNT_CONTINUED;
++	si = swap_entry_to_info(entry);
++	if (WARN_ON_ONCE(!si)) {
++		pr_err("%s%08lx\n", Bad_file, entry.val);
++		return -EINVAL;
+ 	}
+-out:
+-	spin_unlock(&si->cont_lock);
+-	return ret;
+-}
+ 
+-/*
+- * free_swap_count_continuations - swapoff free all the continuation pages
+- * appended to the swap_map, after swap_map is quiesced, before vfree'ing it.
+- */
+-static void free_swap_count_continuations(struct swap_info_struct *si)
+-{
+-	pgoff_t offset;
+-
+-	for (offset = 0; offset < si->max; offset += PAGE_SIZE) {
+-		struct page *head;
+-		head = vmalloc_to_page(si->swap_map + offset);
+-		if (page_private(head)) {
+-			struct page *page, *next;
+-
+-			list_for_each_entry_safe(page, next, &head->lru, lru) {
+-				list_del(&page->lru);
+-				__free_page(page);
+-			}
+-		}
+-	}
++	return swap_dup_entries_cluster(si, swp_offset(entry), 1);
+ }
+ 
+ #if defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
 
 -- 
 2.52.0
