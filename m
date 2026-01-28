@@ -4,118 +4,166 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CC5CD46BF8
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 20:22:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D487ED46BFA
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 20:41:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F8276B0005; Wed, 28 Jan 2026 15:22:03 -0500 (EST)
+	id 0164E6B0005; Wed, 28 Jan 2026 15:41:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A87F6B0089; Wed, 28 Jan 2026 15:22:03 -0500 (EST)
+	id F05626B0089; Wed, 28 Jan 2026 15:41:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A7D36B008A; Wed, 28 Jan 2026 15:22:03 -0500 (EST)
+	id DDCF16B008A; Wed, 28 Jan 2026 15:41:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E99F66B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 15:22:02 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7DA665B3CB
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 20:22:02 +0000 (UTC)
-X-FDA: 84382494084.17.E5A0ED1
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 60F7B1C0010
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 20:22:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=T5bvitWa;
-	spf=pass (imf18.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769631720;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CBBEB6B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 15:41:21 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B58413BAF3
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 20:41:21 +0000 (UTC)
+X-FDA: 84382542762.18.322C03E
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010067.outbound.protection.outlook.com [52.101.193.67])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 346CF10000C
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 20:41:18 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=VtkdDX1q;
+	spf=pass (imf05.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 52.101.193.67 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769632878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MOneaQwgm5r1vQWLDH+rGl4A5aPHuLzm9ueYQTD0ies=;
-	b=Tu9XlEXxtBKmUZWYSHoe6udDwgl8MmPrRNdIcTDgKwDmNsPecQIIYBJYGBhrvByh//wkrR
-	kcQV4elbWDu6GAIr3hzWrZGvMcqipVlFKiRXiwAnyi1qNXWrJvV5GmIcM/4nHQTOvZE/1R
-	4+3mY1lhE4dg6NvjSeObulHru6YoR5s=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=T5bvitWa;
-	spf=pass (imf18.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769631720; a=rsa-sha256;
-	cv=none;
-	b=beVFIS8pturPVi/U4s+SV2Q4+zWs4ZXyQtLrG/02D8WGYmqlNNnoJMeappyQr3KruRPBx5
-	5ImIC4FspG8664pT50RC8tBMupXfEm3yxevtRIwKI+qaZK5swOBoBdWV8BpdKIHIqMkAcR
-	POVy6oE+YcnktP5ejc8l7rm2fwLuVzg=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b883c8dfb00so65682866b.1
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:21:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769631719; x=1770236519; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MOneaQwgm5r1vQWLDH+rGl4A5aPHuLzm9ueYQTD0ies=;
-        b=T5bvitWaQWmzXcln9zVdpLXFe0k58Sf0sntYAojPRbTneQEgLXz6jNGQdyNGnOTpav
-         s0u8076LddsR0+QSbb0JSSdOL+NL6ZUi4jcN735dy6jREhgCHxorrc6RIoKQM3uLvQ3G
-         Zjfc8DlG984oUmfUKLLCwrkJQoizxMvRrhY45tPWibuOD4YrMtzwlIsnye0yyJ3oTiSz
-         QnbWat5+M56lgGqBDNO8Q1f0ZIlnBxDgKXLx8ednBiQoVK1PdzQtzxrsGbjFM3JCdtPB
-         bCJdqIpnWOkxtjOOLodJ5twI34oArRKYF8QTm0R12LKzwSL9qulQC2VWliSRQXE46AFB
-         X3tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769631719; x=1770236519;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MOneaQwgm5r1vQWLDH+rGl4A5aPHuLzm9ueYQTD0ies=;
-        b=GpzDbHTq4EgV5yxd7hKfcH3yNZEMoD0gVeZ8czz3VCdvRUeuUwN4gMzTjkhN1sWcDM
-         n9HvddYXHhwoMEcRyrtgD96JVrrcgSocqyAp4vGwxBgnK8+rFrgTxp7qFXF7Cs9aN7aq
-         641yq0+9e7zBBT8CpqpGESo/VFwNQ9T8J3pDXpV+zfvZxGMl0LBlCcXU80kiHM4zwd7q
-         WYZ0q6fCrb1SYDk/ELyBA+4Rco0uIKqR75tq7bLYNCC1rcIvtCs/8d7zI381brJ7OE7W
-         tsUsgQhUb0TVipNyKWsCjp2jMmOiipmVVshG6K2Trb72cvP4MfnVT8M3/0Lq2v/y2U6+
-         LS/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWcnPmuREZTVf9gBHx8u9JDZxxPwMm/OZwfBVfLwXtAy8celOuTBpJWyEKMyqq6aoQvydZTCvhHcg==@kvack.org
-X-Gm-Message-State: AOJu0YxQAfKBOS9odod9TxMuBiwBS3ZhY0BwIb9E/9y1DcwUYCjvm9YV
-	zjzkHiHIpxYO4OC4lm5wsbdMT/ywfYr3xcvC9m2htp+Ro9Lo2v1AYv2rjelVIjGS+g==
-X-Gm-Gg: AZuq6aJYqCrfIbugZqg6R7FD3I5kbE0UJSSnKFoTU+kN+cVraaCPUJTYHp2yNJyaw2N
-	6PeNE+Tm8HxQm6LFPFgwpBH/m6/gwuGU4GOric+2NzHZx0eaHt7TSqIpAzuD9iKZ33NBQgk7dlc
-	W+Wy8lIG43V5w4odoFhw6dpCL4CoOxt00Fm2dIxcpY86XkswFq5Grg6lGyuX3Tc5twymyD5IrND
-	G+JBT/bMVpAz+bI4F+p0qn+ykwZgYhGzOC7RgM9oiJMobYbbdoMuLoXvGcagT+xHv5g7sgCIqg5
-	FZP9n0pgIloQ5/6GHvbDlT6jLHAemkAx3ZWStrSyhRmuir4M+eEx3OFXtIRmu5+cEQ3tKVwCdwb
-	hzpbtf+fCfu+yyYTpfqNo/IYoI3ya9LUXm/MRDrh871/MENOG4HcOfgU62F11Tl3rfUx9xVwbbF
-	3EzX2Ywndh9f/d1x7RWv+DsMw4ve79CaQHjCvox8DNTk0P6q0Ukl/7PCCT2oo1lg==
-X-Received: by 2002:a17:907:7f8c:b0:b86:f558:ecc0 with SMTP id a640c23a62f3a-b8dab1c8bc7mr433016666b.29.1769631718213;
-        Wed, 28 Jan 2026 12:21:58 -0800 (PST)
-Received: from google.com (93.50.90.34.bc.googleusercontent.com. [34.90.50.93])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbef86deesm171812666b.3.2026.01.28.12.21.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 12:21:57 -0800 (PST)
-Date: Wed, 28 Jan 2026 20:21:54 +0000
-From: Matt Bobrowski <mattbobrowski@google.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 09/17] mm: introduce bpf_out_of_memory() BPF
- kfunc
-Message-ID: <aXpv4r_3L0UWzAQn@google.com>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <20260127024421.494929-10-roman.gushchin@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fQG+QZUWSH/EiGQEfpl/PhoLrtB8cI/3kvHyv4/lCsI=;
+	b=ynEB9Qp6jgWScp7DCJXzaD9xmo64DIP19HoIVaVNMtyfx6BN7LR3gvo7Xl58xxtMUmfAdN
+	OyrRKH5nysniCLP9Wt4r8eKYe0M+LOqZitj8u4e/d3aLFQfysi1JzvHGxbMsVFrEyKxQ17
+	oOFvysoPJTs58h1WZEP98YQgkHjwZ1U=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=VtkdDX1q;
+	spf=pass (imf05.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 52.101.193.67 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769632878; a=rsa-sha256;
+	cv=pass;
+	b=121Jlc/Gt0ZxL3aI6CJZFbT8a9Y26FkZ5oZnA4o0QVpDghlBwhGM61tTxK+5GKHdoo3EcJ
+	mDKnRvCaYsCM32mus8h1Pw7Cy7u8iXqtYVomBg5t/Ly0GLFi0PCqQ3LOlreTq4Bpbb+utM
+	pwcUjT4hWub4hB8uBbQVTiYRY4QD9X8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KtwCyQ5cTk1XIgUNzolkoGdnHbl+hJLTe/hvw/aeZ2CvjmkEuwnBkSit0xo5UVbOfo9P5eG8OlKSLugLuZ+Y7SBdtpcOPA4Db+nLW2eUnHJ6wnxQPJkEvgcgQMbl4rQGHvBvJDLJHeP7S6ZNt4n1ktCGzYsNRblg+V1ja2qnnCD+gQ6m0f4Hf3ijneXo72aJn29RfC1DAecgWLrXRq6T6vFMumUX2mPun99EO84U9JD6xOPkhDwFBGKZFsEOHgb6fhBw/cw0WPtv4HdW26V5MU6Y1ynZBBVfWRW+Juu/9PlOfUIO64o7tzLe7p4dd/6wuMEz20MpThKe12VO1YQ98Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fQG+QZUWSH/EiGQEfpl/PhoLrtB8cI/3kvHyv4/lCsI=;
+ b=VL4HQn4z3d8qjXZovpkK7Khq/mzGSVjwyV7/Leley8do4jY27fVp5rebVoZaGhEI8PKwQD/a3Z2xN4hyBQfdtTZboJ6tiewoK3gOQby/Zx1dNH0iPbnhgtSl86PztPoaDvY8/xemRGIBLE3HV/+oG6E1EZ7qYs7UwPIztUKMYvstyjvLdO4ArhMtGKEi2y+2s5jnjOqHJfeZmBQPcXGzv4NUfLQnsnFoFjUBxluKCHe1EUzWL+rabzq8AF+zHz1Ev4AAsVfUB+dGCv0wOqJtUv5a+ip69fvxq3y9glAc4rAVmDkz50mX//ASJ70TXUjzEmKAnB+lpgHKh0KzgSEbPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kvack.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=fQG+QZUWSH/EiGQEfpl/PhoLrtB8cI/3kvHyv4/lCsI=;
+ b=VtkdDX1qEsat9YQFM1PNmHymASc2C/5aOMRClu2FxT2BckwGnV/sYNmfuhO5ELklMFNZeRp7ejpFA8ioMKXKBsEq16KO5EIcaqahjhPZLka7dAtld3wKZ896UYoOVXPe3D5n8l1o9G1bqlOfdqfXE1Pvh/7IT2AdCGMtJ6KiBiU=
+Received: from BYAPR03CA0023.namprd03.prod.outlook.com (2603:10b6:a02:a8::36)
+ by CH3PR12MB8879.namprd12.prod.outlook.com (2603:10b6:610:171::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Wed, 28 Jan
+ 2026 20:41:13 +0000
+Received: from BY1PEPF0001AE18.namprd04.prod.outlook.com
+ (2603:10b6:a02:a8:cafe::7f) by BYAPR03CA0023.outlook.office365.com
+ (2603:10b6:a02:a8::36) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.8 via Frontend Transport; Wed,
+ 28 Jan 2026 20:41:13 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BY1PEPF0001AE18.mail.protection.outlook.com (10.167.242.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.3 via Frontend Transport; Wed, 28 Jan 2026 20:41:12 +0000
+Received: from ellora.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 28 Jan
+ 2026 14:41:11 -0600
+From: "Pratik R. Sampat" <prsampat@amd.com>
+To: <linux-mm@kvack.org>, <linux-coco@lists.linux.dev>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>
+CC: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <kas@kernel.org>, <ardb@kernel.org>,
+	<akpm@linux-foundation.org>, <david@kernel.org>, <osalvador@suse.de>,
+	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <prsampat@amd.com>
+Subject: [PATCH v3 0/2] SEV-SNP Unaccepted Memory Hotplug
+Date: Wed, 28 Jan 2026 14:41:03 -0600
+Message-ID: <20260128204105.508855-1-prsampat@amd.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127024421.494929-10-roman.gushchin@linux.dev>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 60F7B1C0010
-X-Stat-Signature: ocoewqft4u6moyxjh8gfidrktuokizaq
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY1PEPF0001AE18:EE_|CH3PR12MB8879:EE_
+X-MS-Office365-Filtering-Correlation-Id: b744149e-6333-47e0-b708-08de5ead931f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014|7416014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?KRIINUCTPCkYeZPo27WNidzQ6FvjZ2nlOl0AMTfXKNT6hlBtDV+jRhTcJzpZ?=
+ =?us-ascii?Q?Mf0GgkjDlXZoVUabmHZbKyoRJAJH4FdD928wSVdSVWnu1vO2+Jgn172512lo?=
+ =?us-ascii?Q?rZLu51iIlZ9T78vqwzzeb6rz/UU0VhjkJYGJg2gcvJ1lh8ar20fzhWdygiVZ?=
+ =?us-ascii?Q?Jk802Eh1hDFwiX7WmILi9/RGV90T3iR37yMsRvwBihkff+6GjpUzZasntinh?=
+ =?us-ascii?Q?kxUZfuxSpnXrsya7Bl00/MLFWfmmd8oAx38R/B9UHOmsLlAfjFpl0KI80fvJ?=
+ =?us-ascii?Q?hbHV6jxnfnao1qnIktZIwo0Q2jfDrXXqunKWqpGbiJmoGKg0fcJ+fzfybRf4?=
+ =?us-ascii?Q?Cn3wM9jG39T/UBaylg1Vuy0oCT1+yESPh02bpckakGAm8reflLwMvPzhj7SP?=
+ =?us-ascii?Q?zth3eVjEtSNZ+sz2QgabrLjQ9eJ5+FIunQuewqZ2FnH8PXpN98pz9C+nFMLf?=
+ =?us-ascii?Q?xch8dbS5ScF0nQz4PzCxkocjjj+jyQbIrUfJ6WQaCCAkAl/bNnXr77UHK0pt?=
+ =?us-ascii?Q?k+My6tK5y+Ulqujya65UNPEGE1rOVB7dX3e5qytyEqw5rIPdiwJGbW+2AxD/?=
+ =?us-ascii?Q?1/CG8bKpeEUAtFyyd/uXKxzkHCTuO8PoGmVN6F2XcaVU7MvZsZa4tToHuJgg?=
+ =?us-ascii?Q?YJXdkiN7qYWDvn7MwP7FbyX8/FOeFFvAX1PlIeiD2tGMfJaGdGYD7HYLeCVq?=
+ =?us-ascii?Q?jjyrF5ix3sMC1rO0JNpH+Wxo+ishwbC1UZ79hdUx9Jcmfduzd/o16ebYIfzu?=
+ =?us-ascii?Q?MHBfRyDH5pN4aSHrI1BJcbOWowZzXc0i/8z2deHkI4byEPGq0EVCNZcxeGQ6?=
+ =?us-ascii?Q?40VGxNTKm8c7tVkrCgxSzCGENRXoMEGwVzjx3aZeLlSVhdFc9f3HBXIz/dKH?=
+ =?us-ascii?Q?NuVLhKNYbl7hEXfsYTzxdAyCKgHp/lmm2Ppc1Ag8/rDBwzR32JtH/dndecCg?=
+ =?us-ascii?Q?u22RDEm3GmyjW4R6olFpnC7sK8j202au55jR8+iZoJ8j8Y3r+TDq6S8bgK6L?=
+ =?us-ascii?Q?voXETv64Yr4BZsfKYWsZcDBYhIiqkMeu3x9e0qFEBUd7Qxsf7tjFEtQ9uz7z?=
+ =?us-ascii?Q?eXtdJndYDhddgf8W97jLAPoGGh0KuXNodJZ7OUfN5U7q+Kh795ikbgXLEV4q?=
+ =?us-ascii?Q?e5ac7HYwec74hi22nBUQ0U2Nsr3FI0nBTZC618r4QIBxe/gnt68UVWkRb4oF?=
+ =?us-ascii?Q?zhZG4/GB+KfVobhc7eEgG4Mj9Lbp03Pp15eSdXuPhOSEQR6xkNaAWupo256j?=
+ =?us-ascii?Q?3gDfjVdWJbz0AqDkUqEtQZv8Dq9RGE+JgA1MahbbseAwfGx6ZKRoi/YtoSMJ?=
+ =?us-ascii?Q?FR2oXcxxOxUhp79GbAu3RSqqLG3xcXcISS4w6ZtfvvvPvsMBiuobs+8v6VeC?=
+ =?us-ascii?Q?+e+Rrqq/raavlgDYX0pB29Yt2zy8Bm4PKUBZN0Q7OvyKW1PTwBYKrYB5Oa+u?=
+ =?us-ascii?Q?K2e0A1vyu1Bel8MBppepJ8wc0LZfu1YBf5YvRSVaXoRBL8A9cH8pWqvypdwX?=
+ =?us-ascii?Q?rybTm53ftGnhXRk2fmF5yieT9aHCPHYTN1jmerhT0N70m80w0BruKjG2j8sC?=
+ =?us-ascii?Q?bkKBq4kAbTmnc0rf7ULbiM4eS+kp2VdR7ztXyQgGk5tO0PKsA18krvYsMU85?=
+ =?us-ascii?Q?iNnnUmWg3e+H+eMVsYikCa0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014)(7416014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 20:41:12.2536
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b744149e-6333-47e0-b708-08de5ead931f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BY1PEPF0001AE18.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8879
+X-Stat-Signature: c7htponqqxmr31xet68agodwr8a4ccgi
 X-Rspam-User: 
-X-HE-Tag: 1769631720-661439
-X-HE-Meta: U2FsdGVkX19pZH+VYvDYpf6s90DEskUszcl+gFZm47HOeaVvC4HYaxQyKXvNR/gI5aGv8Rnc6BhZyOOTxg+gqhIZsB6VJX13fDdf+voql01G8VtJq9diavs7FULdUieZytXzJtt6Z1WgdFgK+LmQlJZAR4UeOf0hTtlU71E7ejsWUuI2em+UrTCqo0d7t6uHHnvZHzI7AqLp5QPn+drpnPQTq+kSeiFNpLcLegvHNnZF+QKs/OoWYHKf5Yf/QW7O2Q51NjFtIVBoRWj4dxl88O3LFTlB48ZD71bXiSaFhxfAkGmpUJbIrp4kU60vkbdhYX4a3v5+LYMMJ9MK1BCN8JYTPo4eNNip4sIbSf6YxcXn+WE+xTKo0i0/AqttytXHEqjXdhMkrOZskpnFObrTbwD5+mr4VhjXGYmit6vm1YIoFHLprZxEnXzrs81aV5ZTRSmfDa5XCKcMdpPiDclLWchKi/I2vUh50SLmtl/tQplE7YN5pMtG6tKVmeuVnfnNlDW1i0VOAYZv3Iunrr/h1QB5RhPjDHs04shdzFyBvSYds3sXwTdSeeluhlFTI5YoUFkGXAQE67VKNAO6SYZPfscOhERG/f1s8A74pLBrwA+MNLMvUirKLCI1KGUyyjZn8vi2k7Ig9EPfnJpuK/lxqlboKDbkQdaKnlZpFWzyeGd+oyYrqLLIptxKDOLgKKbD4OomF/JsdQJcOdfqKZR84tdRyeAcmVYJ0UJIo9K44StRghqhuE5OAAcNV+ByVAKv+wB3I6yZftqw9VFGe8dzSm/20dk2NUgoLFbFcHO/034T92nMNL9InzJzS6fZaMUsM54Aw5ztu2RV326lreS1wHTed36sDMlgdWT3P2RxC1pVnMQkNGW/6P16ATi20f+tv8fDxwVA8Oc+laAVUNoiaRO3UGy3c5VzPfev1niyEN04st6xnakqp3GvysHaStOYbtixb+hRoa/aBDyTMl+
- idE6/7Op
- uTGR+g+RxbVoIAzILqVYlfO5AOPFeGitIkWFhqoieP7AKxedyyETwXNQ8MoSHyFPcoKW+qDbzaOxXJHKLBm9fG6lTJHYoCKzjaAoP3MBQIikAwRlsT+tnI0Lk4s7MYc49KlIZaRa6fNQq1gREjKLsWZiNW5cPul80FXKv7h4wLLArSr2VydyVWYccVpa9WRkZdgRqdxhRGPjIDRPCXd1WoeIBVmEWO6kSm0ayvysxnx9Vf6DTTZYf4FFNiW1y2GHylVUyomvTvIsY6Jj/NCXwD2J4nJTHXCNoDdK2iu8gkM+xiiYkbSVCRb/xfpo62LhMekYAudOnwwaRdtaTPA/um+eI14onqyj05D7MH7omxXlyVlMubH43F6s20GeZaLoEsFYy930xVpIKh+EcpB3luvCGrYxUPbT2kdEN2y0+a0XztabtAbAQUd6ZttEJXSA8oanmj9WsjUOT1VgrydZ0JZyGA0UrFbNtEjNzs1APV4rNdBVFOX/iMVKx7A==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 346CF10000C
+X-HE-Tag: 1769632878-287221
+X-HE-Meta: U2FsdGVkX1/nQxXimE6sMlu53PqOBETfJBahQ0Kfaet0EToBhac1TpcyTkGW9bKPOxhJJkdIVyBoaTgUeJ+MFRGAEM5vAjxWcL+JUQs3VV8BX8EU0/tvB3vXzM7fWS1oZfZImNxMw9K5jyHqD7V7OYSdDVDIU2EPue+ogAlwTlHuLmtFiqEkye9AbC+vBVUVLNnKO7bjTGz/0p3qB99lnFMeH5TGQfUQiT0o5IfbwvJ0EyoidBuBCw9Egd6SwxgEhoOtdOHxmMA8qURwUDbaz1APIgdxvxhqKMKJaY6PVfzAK421GmMCqGz5rvcuXnEcph3mMZDOJzd3mqsFAWxXoMQmIMxwiVaIh2dXZ43ntvRnzi16gt+fgRn4IKLv2KY5wWTGiKttOtSnltbqU3DK3iGFYDurbp1Uc/645+YFP/9eKbihSBW0dHdMkxOgrX3jZf9nEUtJQqnWTosBqo5GvuDn1lBsM+IOLzV2kMSR+doFXiBHHsCmNRvvaIYKN3sKmiMnar7hE69+MsJBazUQ/DTx+DiMHPr58hzCbKAxM5MNqqysNrjvkhwgPAHtXzEok8diOq9DSOQSsDY2obHwYJDfa2sUAErrBPhnMg/7GRQ3L++gTffHEdaQX/JmBUYcN3Eoqd+BAc3CxPO3IOhUL52I1gjJsPSg2VfxoYDYRsVSbXO1+6Iql7W2ACDWh/B56z6xLZ53KxhSYEW1xpUncFUcaHSVD+RREcDQmz9qyl4l4nLNLFDjhXlcnX0zp8Cygss94kXM+GQBEKvBZLvnrsfjtpASiSaBjj1OcP08ssxKB+lG71ZfImuwoFyH/bCYumC6KHyEnShCTd0NlV2vjvl3OuP4GV9k2nrOcZGztPJEkOClf331I2J7Xuu8qBUxC115TrjcrTLZJ1Pu+GNlWwwK9kjASyJizOMHGlAEbcNwwWOTSAhGROQ7JvjjV3Ne3rx80YfDEpuNUgHWrCk
+ zD8mxxpG
+ knL3KH/EoZ202fwMWEy53iY6ylYMw9Z7Kz54rh8cwusueKZK1wESlRaIhxNvtHDGodetw7srQDI19/SyaGH9A+UmgOnSWH/V7caMaR0CS6takA/+hOQzWILqG6X5AIdylnTETUv8aANeOFF7gKPCsvAHbrQ0lqIAq/dGG1AilRpnuxZv+jUGD67ipevZeIa5j+700O0hgMtG/mKYH9S3vXmzqtgG+JL06GhQVN1Uo091vFqmZXIlX3kdOqibBj8bm1Ja5Gg6Q+Upf0naMFjLSgOJWhVeRNrCMiBQmjariL78NZbY/RfEkcqKqbf9KN5ItJwFglRWuDCZ20TaGvwwBPHEzqxlCrL3iw95td6C6yknNRdpPoFyCL9U2srVdXbvwfbiGG1TIsWZBLSAbmotTygaFZl8iC88/V7dSlFWNPVtUi5LeLAKekKXZCdkidfor7+aDeXO76VN3mXQWpbayHJKw8M+YMuBWSPLMMBQ/4uAGOzgJeuLJX9S5iGu8p7rGJ7QVqXdNcgRlNYI/zFvJXAwheZt7Hro/4ZI7pNW0Zc+fcf19r4SSNdQZlMnI6/06t5uaP8nNGHt0lrrLpeyZRAbv9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,172 +172,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26, 2026 at 06:44:12PM -0800, Roman Gushchin wrote:
-> Introduce bpf_out_of_memory() bpf kfunc, which allows to declare
-> an out of memory events and trigger the corresponding kernel OOM
-> handling mechanism.
-> 
-> It takes a trusted memcg pointer (or NULL for system-wide OOMs)
-> as an argument, as well as the page order.
-> 
-> If the BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK flag is not set, only one OOM
-> can be declared and handled in the system at once, so if the function
-> is called in parallel to another OOM handling, it bails out with -EBUSY.
-> This mode is suited for global OOM's: any concurrent OOMs will likely
-> do the job and release some memory. In a blocking mode (which is
-> suited for memcg OOMs) the execution will wait on the oom_lock mutex.
-> 
-> The function is declared as sleepable. It guarantees that it won't
-> be called from an atomic context. It's required by the OOM handling
-> code, which shouldn't be called from a non-blocking context.
-> 
-> Handling of a memcg OOM almost always requires taking of the
-> css_set_lock spinlock. The fact that bpf_out_of_memory() is sleepable
-> also guarantees that it can't be called with acquired css_set_lock,
-> so the kernel can't deadlock on it.
-> 
-> To avoid deadlocks on the oom lock, the function is filtered out for
-> bpf oom struct ops programs and all tracing programs.
-> 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> ---
->  include/linux/oom.h |  5 +++
->  mm/oom_kill.c       | 85 +++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 88 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/oom.h b/include/linux/oom.h
-> index c2dce336bcb4..851dba9287b5 100644
-> --- a/include/linux/oom.h
-> +++ b/include/linux/oom.h
-> @@ -21,6 +21,11 @@ enum oom_constraint {
->  	CONSTRAINT_MEMCG,
->  };
->  
-> +enum bpf_oom_flags {
-> +	BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK = 1 << 0,
-> +	BPF_OOM_FLAGS_LAST = 1 << 1,
-> +};
-> +
->  /*
->   * Details of the page allocation that triggered the oom killer that are used to
->   * determine what should be killed.
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 09897597907f..8f63a370b8f5 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-> @@ -1334,6 +1334,53 @@ __bpf_kfunc int bpf_oom_kill_process(struct oom_control *oc,
->  	return 0;
->  }
->  
-> +/**
-> + * bpf_out_of_memory - declare Out Of Memory state and invoke OOM killer
-> + * @memcg__nullable: memcg or NULL for system-wide OOMs
-> + * @order: order of page which wasn't allocated
-> + * @flags: flags
-> + *
-> + * Declares the Out Of Memory state and invokes the OOM killer.
-> + *
-> + * OOM handlers are synchronized using the oom_lock mutex. If wait_on_oom_lock
-> + * is true, the function will wait on it. Otherwise it bails out with -EBUSY
-> + * if oom_lock is contended.
-> + *
-> + * Generally it's advised to pass wait_on_oom_lock=false for global OOMs
-> + * and wait_on_oom_lock=true for memcg-scoped OOMs.
-> + *
-> + * Returns 1 if the forward progress was achieved and some memory was freed.
-> + * Returns a negative value if an error occurred.
-> + */
-> +__bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
-> +				  int order, u64 flags)
-> +{
-> +	struct oom_control oc = {
-> +		.memcg = memcg__nullable,
-> +		.gfp_mask = GFP_KERNEL,
-> +		.order = order,
-> +	};
-> +	int ret;
-> +
-> +	if (flags & ~(BPF_OOM_FLAGS_LAST - 1))
-> +		return -EINVAL;
-> +
-> +	if (oc.order < 0 || oc.order > MAX_PAGE_ORDER)
-> +		return -EINVAL;
-> +
-> +	if (flags & BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK) {
-> +		ret = mutex_lock_killable(&oom_lock);
+Guest memory hot-plug/remove via the QEMU monitor is used by virtual
+machines to dynamically scale the memory capacity of a system with
+virtually zero downtime to the guest. For confidential VMs, memory has
+to be first accepted before it can be used. Add support to accept
+memory that has been hot-added and revert back it's state for
+hypervisors to be able to use the pages during hot-remove.
 
-If contended and we end up waiting here, some forward progress could
-have been made in the interim. Enough such that this pending OOM event
-initiated by the call into bpf_out_of_memory() may no longer even be
-warranted. What do you think about adding an escape hatch here, which
-could simply be in the form of a user-defined function callback?
+Usage (for SNP guests)
+----------------------
+Step1: Spawn a QEMU SNP guest with the additional parameter of slots and
+maximum possible memory, along with the initial memory as below:
+"-m X,slots=Y,maxmem=Z".
 
-> +		if (ret)
-> +			return ret;
-> +	} else if (!mutex_trylock(&oom_lock))
-> +		return -EBUSY;
-> +
-> +	ret = out_of_memory(&oc);
-> +
-> +	mutex_unlock(&oom_lock);
-> +	return ret;
-> +}
-> +
->  __bpf_kfunc_end_defs();
->  
->  BTF_KFUNCS_START(bpf_oom_kfuncs)
-> @@ -1356,14 +1403,48 @@ static const struct btf_kfunc_id_set bpf_oom_kfunc_set = {
->  	.filter         = bpf_oom_kfunc_filter,
->  };
->  
-> +BTF_KFUNCS_START(bpf_declare_oom_kfuncs)
-> +BTF_ID_FLAGS(func, bpf_out_of_memory, KF_SLEEPABLE)
-> +BTF_KFUNCS_END(bpf_declare_oom_kfuncs)
-> +
-> +static int bpf_declare_oom_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
-> +{
-> +	if (!btf_id_set8_contains(&bpf_declare_oom_kfuncs, kfunc_id))
-> +		return 0;
-> +
-> +	if (prog->type == BPF_PROG_TYPE_STRUCT_OPS &&
-> +	    prog->aux->attach_btf_id == bpf_oom_ops_ids[0])
-> +		return -EACCES;
-> +
-> +	if (prog->type == BPF_PROG_TYPE_TRACING)
-> +		return -EACCES;
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct btf_kfunc_id_set bpf_declare_oom_kfunc_set = {
-> +	.owner          = THIS_MODULE,
-> +	.set            = &bpf_declare_oom_kfuncs,
-> +	.filter         = bpf_declare_oom_kfunc_filter,
-> +};
-> +
->  static int __init bpf_oom_init(void)
->  {
->  	int err;
->  
->  	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS,
->  					&bpf_oom_kfunc_set);
-> -	if (err)
-> -		pr_warn("error while registering bpf oom kfuncs: %d", err);
-> +	if (err) {
-> +		pr_warn("error while registering struct_ops bpf oom kfuncs: %d", err);
-> +		return err;
-> +	}
-> +
-> +	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_UNSPEC,
-> +					&bpf_declare_oom_kfunc_set);
-> +	if (err) {
-> +		pr_warn("error while registering unspec bpf oom kfuncs: %d", err);
-> +		return err;
-> +	}
->  
->  	return err;
->  }
-> -- 
-> 2.52.0
-> 
+Step2: Once the guest is booted, launch the qemu monitor and hotplug
+the memory as follows:
+(qemu) object_add memory-backend-memfd,id=mem1,size=1G
+(qemu) device_add pc-dimm,id=dimm1,memdev=mem1
+
+Memory is accepted up-front when added to the guest.
+
+If using auto-onlining by either:
+    a) echo online > /sys/devices/system/memory/auto_online_blocks, OR
+    b) enable CONFIG_MHP_DEFAULT_ONLINE_TYPE_* while compiling kernel
+Memory should show up automatically.
+
+Otherwise, memory can also be onlined by echoing 1 to the newly added
+blocks in: /sys/devices/system/memory/memoryXX/online
+
+Step3: memory can be hot-removed using the qemu monitor using:
+(qemu) device_remove dimm1
+(qemu) object_remove mem1
+
+Tip: Enable the kvm_convert_memory event in QEMU to observe memory
+conversions between private and shared during hotplug/remove.
+
+The series is based on
+        git.kernel.org/pub/scm/virt/kvm/kvm.git next
+
+Comments and feedback appreciated!
+
+Changelog Patch v2..v3:
+-----------------------
+https://lore.kernel.org/all/20260112202300.43546-1-prsampat@amd.com/
+1. Account for cold-plugged memory at boot and introduce proper handling
+   of the unaccepted bitmap during both hotplug and remove. (Kiryl)
+2. #include<asm/unaccepted_memory.h> within memory_hotplug caused build
+   failures on non-x86 archs (Andrew). Instead of introducing
+   #if-deffery to have arch agnostic fall throughs, create hotplug
+   specific helper functions since we now also need to take care of
+   managing the bitmaps due to 1. as well.
+
+Changelog RFC..Patch v2:
+------------------------
+https://lore.kernel.org/all/20251125175753.1428857-1-prsampat@amd.com/
+Based on feedback from the RFC, reworked the series to accept memory
+upfront on hotplug. This is done for two reasons:
+1. Avoids modifying the unaccepted bitmap. Extending the bitmap would
+   require either:
+   * Dynamically allocating the bitmap, which would need changes to EFI
+     struct definitions, or
+   * Pre-allocating a larger bitmap to accommodate hotpluggable memory.
+     This poses challenges since e820 is parsed before SRAT, which
+     contains the actual memory ranges information.
+2. There are currently no known use-cases that would benefit from lazy
+   acceptance of hotplugged ranges which warrants this additional
+   complexity.
+
+Pratik R. Sampat (2):
+  mm/memory_hotplug: Add support to accept memory during hot-add
+  x86/sev: Add support to unaccept memory after hot-remove
+
+ arch/x86/coco/sev/core.c                 | 13 +++++
+ arch/x86/include/asm/sev.h               |  2 +
+ arch/x86/include/asm/unaccepted_memory.h |  9 +++
+ drivers/firmware/efi/unaccepted_memory.c | 74 ++++++++++++++++++++++++
+ include/linux/mm.h                       | 14 +++++
+ mm/memory_hotplug.c                      |  4 ++
+ 6 files changed, 116 insertions(+)
+
+-- 
+2.52.0
+
 
