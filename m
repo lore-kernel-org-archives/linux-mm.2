@@ -4,116 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C678BD46BEB
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 19:17:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B056CD46BF5
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 19:18:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 04C766B0005; Wed, 28 Jan 2026 14:17:25 -0500 (EST)
+	id 0853F6B0005; Wed, 28 Jan 2026 14:18:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3C5E6B0089; Wed, 28 Jan 2026 14:17:24 -0500 (EST)
+	id 05DA16B0089; Wed, 28 Jan 2026 14:18:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1DF36B008A; Wed, 28 Jan 2026 14:17:24 -0500 (EST)
+	id ECBD06B008A; Wed, 28 Jan 2026 14:18:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D1DA06B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 14:17:24 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5EE1614075D
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:17:24 +0000 (UTC)
-X-FDA: 84382331208.03.C5F7A25
-Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7C7D74000B
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:17:22 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nbMaDlPl;
-	spf=pass (imf12.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D992F6B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 14:18:51 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F7051B0C4B
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:18:51 +0000 (UTC)
+X-FDA: 84382334862.07.E674804
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5B2AC140005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:18:49 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w8CN0m3J;
+	spf=pass (imf09.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769627842;
+	s=arc-20220608; t=1769627930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=foymp24JtH4ZC5gHeCXURFQMtU4VpzKeRfs9qQlLjHA=;
-	b=rQVpO5dr5MwyIBiDzH5jk9SHzduzgTFbhAwhD22Q8zGlki+1TwsmEhdx7GmAA/pmAUT3ZE
-	uU1G4n7bN75+5zEw3d9OzUf7357OCkiZ0bgfrPLQjEn5J1ZuH6W53NL65VScvkuX62Rxju
-	pm6jKDbUnyVjKlUju+Ff0Tx2yAp0YmY=
+	bh=WlevcV+s/Akx87IZT0lp1ZcnLiIY5tgyZl3WZ+5t1Bg=;
+	b=KVHNnHUy5Z9xY1W0kVnB6CDUP3TJjImNBxUER7HqJ5knb9Rk8uOiBByqVx3+wV5ANT33jw
+	jXPiohiYzYR3TJSP+jdDG/nWSc10zBD/Nkt5qZhAV3OizdLk+x9eJwgIgb+Z+REvboFqly
+	+T0r6kCCHNX9qE3oN/cyrw1HJYA6LCI=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nbMaDlPl;
-	spf=pass (imf12.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.169 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769627842; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w8CN0m3J;
+	spf=pass (imf09.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769627930; a=rsa-sha256;
 	cv=none;
-	b=szn8LC6ag7aMGVgeWk+TvxpTrzJKSm6ClacKWcXjzMO0Mca0KCp5fON4Ca9+ZKj0EOz4A3
-	h6VT9YNKYTdXuXeq4Q+h9WqhRiQOiekOIatPW70TdpeaMRqX5vpZK7XLErPC9GJt9cO29N
-	yJCu7pz+6tSLgEacSoxZeD0Sez7DvOU=
-Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2ae2eb49b4bso599613eec.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:17:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769627841; x=1770232641; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=foymp24JtH4ZC5gHeCXURFQMtU4VpzKeRfs9qQlLjHA=;
-        b=nbMaDlPlAMHUol54nhHtr7OWUa9qEKmI1yXJovjLiexEpv3S6XRFFHCivooS7Sz7xl
-         kyHTjabTmfIFete+X/Eg3MdVawTs8rbIlSx4xObT6eIc8nS3jmO8FS6qHFzVQHFCWvJ0
-         USmKlj9CFagr+xyIHUyuCC3UyToodn8T7XuZK5jiX45ejtnynyEuMFNGdvSdSz7iFV+H
-         IoTJ3Wr2rapr3o/mQUlXR4Xf6b97grW+HOa/Sp32GLkrPE7f9qNSaC8n4Q+Q/qsPmCaN
-         /ImVEOEHkSUKs0pStPlNJoa+lU9yLrrVfsCoLcXLm4U6duJmbP+jCFo2jIoxCA/HHMh8
-         r0kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769627841; x=1770232641;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=foymp24JtH4ZC5gHeCXURFQMtU4VpzKeRfs9qQlLjHA=;
-        b=LW5c4+BRiqqLbc1ZPpRu6tQfmfRZ3MmwkrGF/7kmnbkwlCApj+9owBQ10HmNLEcJtk
-         tk6c8AYd+KDyy9ZaHzjybhbvP0pFtxqyByKadGMkA2VcdrQ4UK5tIO7umIMzIPqh1tvU
-         sorl7R2miOVvEfQaYsXRUVVqSCQSo5N91SwfA8T1U6AJUTKpGuZJraouj8xEFX8I8+Ef
-         N9hCOkZyoxMgF8LV8QMMDyims1yJs/UGWD0nWNmKHABI/t/MyMeRlP8ytd0xNMt/PgSu
-         vNN81G7XicehCzBWuGi2evMZpSSYEF9b5OrJ2pz0JO0GrmSPMzKOGUL5WUHIDXLr+Jxg
-         TvDg==
-X-Forwarded-Encrypted: i=1; AJvYcCWT9SdUrkx0NLJ4V+H9UDEOSJVQJUzlXgUov6QmkzHN+7Q1go8IKBD5xYL3ymjqmlY7vb8rE0fTUA==@kvack.org
-X-Gm-Message-State: AOJu0YxcCSvztEF0TucGQ/gLPB0zIbDv7NBEP/SZJMdI+PHmYrCbXm3F
-	Y9+a7olhYaDFxvY2PBaXvkGKSESGrnrlMVM2T5hqUZXB9LO0BpNOeDAY
-X-Gm-Gg: AZuq6aJtxuMnB297aFW2Un5DwmrhSlA1g9U+dTAnj67c2l5bd1TrPxCs5SExeM0t0D0
-	vJtDELARiAwS5PrzwnGEPBp6jdc47qfRumlnpsxoJeP8reAHtRvRHUgF+I5eZ8KpCkaHpGh6mYH
-	fLJwFfW/QnTYOxvrgP5L44mC8D8tteN2rUYz9zRsBIPU8iV5VmmEey7Szg74WZfOZeUYU7OregE
-	nog7+Nm/F8wakEKlbyZbBvToPFk+VqXgU3nF6RtzinQA8fyl4lbrJ8MNanad7p14aeXnse+u/GN
-	bjazSZYamH88wamyfX0miuZ61djyxCBQKUtd8zq5otOnge/N36I9i7s88V4wB3wwSeCp9k27P1/
-	GOQxMRuMppt6YfoRPRJNN/cq09eVOTpZLQ15cS46IAEegnvaPfXkgH4GvlgSOMalt8HXkwaAQsf
-	DBjM/MLYf9un7s/4mHEjFS7X1m5PnWmeiJmn5ju8SKtnQ=
-X-Received: by 2002:a05:7300:7307:b0:2b1:7910:b102 with SMTP id 5a478bee46e88-2b78da133fbmr3982778eec.37.1769627840996;
-        Wed, 28 Jan 2026 11:17:20 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9d6b663sm3521180c88.1.2026.01.28.11.17.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 11:17:20 -0800 (PST)
-Date: Wed, 28 Jan 2026 11:17:17 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	akpm@linux-foundation.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 0/3] Convert x86/mm/pat to ptdescs
-Message-ID: <aXpgvYe1BySUXnKf@fedora>
-References: <20260127005140.197847-1-vishal.moola@gmail.com>
- <aXn4i6Zo8OKyVoCL@kernel.org>
+	b=A+WgZ0n2InFSr61fHxybfa1ri6cyZZOj7K0suRy1WFk9qMLqaCbQqUJji6toedCQz0icwU
+	xgKOmhQItgQ8e7OK06buh5kYTtuqtNpr5K+RfZsPIQrvoO1ErEoGw3oOI3akFFzHJr/YhX
+	PA3MpXHpyBYWUv0/M1SHRYDbIYSZUJ0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769627927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WlevcV+s/Akx87IZT0lp1ZcnLiIY5tgyZl3WZ+5t1Bg=;
+	b=w8CN0m3Ju240SyX0s68sp64BVQ7qbMjsgdzT4R0XLdDqgi+es2vRzkfCFkf58/hI2VWQk6
+	h6vjyoAzx2SVJKgfSd9aEBK/Sn/6AnVrx+LgNcSCAXu/BBk2BvFsvhLIBwYXzWLUJBfRL+
+	YZ9Byu9GXWh1VQNU4IZvmBD/pRqi2a8=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Matt Bobrowski <mattbobrowski@google.com>
+Cc: bpf@vger.kernel.org,  Michal Hocko <mhocko@suse.com>,  Alexei
+ Starovoitov <ast@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,  JP
+ Kobryn <inwardvessel@gmail.com>,  linux-kernel@vger.kernel.org,
+  linux-mm@kvack.org,  Suren Baghdasaryan <surenb@google.com>,  Johannes
+ Weiner <hannes@cmpxchg.org>,  Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH bpf-next v3 02/17] bpf: allow attaching struct_ops to
+ cgroups
+In-Reply-To: <aXnyKw5sRt_MB-8A@google.com> (Matt Bobrowski's message of "Wed,
+	28 Jan 2026 11:25:31 +0000")
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+	<20260127024421.494929-3-roman.gushchin@linux.dev>
+	<aXnyKw5sRt_MB-8A@google.com>
+Date: Wed, 28 Jan 2026 11:18:36 -0800
+Message-ID: <87tsw5y29f.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXn4i6Zo8OKyVoCL@kernel.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: p5ime5g4qkq3s7zp8crecajf5pxssyxm
-X-Rspamd-Queue-Id: 7C7D74000B
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5B2AC140005
+X-Stat-Signature: b1rno3ohw15b5iwrc4zacdikoyrf84xa
 X-Rspam-User: 
-X-HE-Tag: 1769627842-881369
-X-HE-Meta: U2FsdGVkX18T56O5m5nd6LAbRKqXgz9RVUw28ge4Vhy+If93ip3Xvp/yHZ2tTzg5dA+xs7uo3o72LTEd4MwM1hbveKw5L9wnRY0Kf+PikNFb9tKjL30/zzs/ujF0u4bcsdRMnzB1eOY2uGv2yXqRK+jDIt2A0myZ3wY9oW45ZQzZgZ3kSasYblnc2WcT8L+9k9VmMxtuh1mJxC2ZvpxwgZ0uHG7v1+vNT14ri0iMMyMG+iKtn74kipONmvGn7GZKkF2Z40OWwoYw+R4ZgBOcpHJr/CSV3ycxGPJI4JpG7xdb9ZBSpXaivsXE4gGvjWmWe7vsc99hO8fPw6v1+ZIESIfpGs0Nusl9+rbc6PnDOcuRER+ONImjk4ZJqkLOxuoD45HK4Bs1hCSt5cHyMsOzVbzlBwA9yxpJ3cdVc0i3gYikqeD6daHBy8gyovVWSWK16zAojOC6BkDFFRcWIZ48BrTgt1xy7B6/agVFLfBMkeSUd6fwycjcSq5iWW0Xs9ZqM2Ai2ioeH1C4DjrmW3yNEX55ynwK7+mCEQlLONe/U58m9vbSaCuqkFzGBZG/AOV6p5eToEh9bAperoDLxYi/E/2Xof7WmXGaBK3hJ6UVbd77uSC0IeojPbRLEG2qCZRnuFa5r1WeEdP6KeMBkXGZgCTpfhjaTna+KvGWW93davqBsXm5sAh9PbE++Han/sMFHcfC0+vWuyN0fI3HHixKQJOoR4ei1hzPtJ7V794lWz25OgeY5V7KLulY1/tNNn6QI7eSRG5yD0AZ1oROTJ39UJSXiEUre0tWRWxMlcScawouIfy0//L9dxxbDwSi78iEqT/U/VtPunICVLRCNstymYUOTuy9pTve5DF/Gdx8X374P8rxxGdbYVB8xzpkOgNirqfy1PR3Gx7erEl35O9j7KP3egtulDAJuLLAe3sfuzG8F0+GQgQSdGux2fUcghqHgXZvOeMCpO6EnCuiR8L
- wDcUH2Sn
- qNkcFZicNQH06dHNUIIyrG+thm3SH9Ri0EX6l0FUIlIKCQonw0s57P+2km3LKcW0p78WUMccD6mpQwzJsbKqxG+66fYDEz3HCduiAYsx2kApwHbfxi23/K4YlZ3PVIXXIEmZjPDOuL0WDpTseTaiqcqaDHlp4TZnQ1sOULuZ6bGTlNF/evHCy3xNKvF6oHSgI5hdmHmNpbb2zqS9LH3EtWvGF1IwoAy4LCGyJs2ekMKaDRem9DqW//D7Ie+tyfWzxl8l3NoqzxmQ1yUpSAVpVsg8IcNcf/4DGDpfcKHHeUu0cinG3x8qTOwWHxCuCjUASML47ido2CLOXD7OELQ/rZop8o2xWt/kOpWh37VvyZMy6B3inhVrK9IVU33nwDC1r/tYOmCu3Vk60pP76k3PO6h969elU01I1Ke8TFGvFmZxX+cllFVrPhtplFdTwJN91TmzvWUH+FR6qUI92AwStr8orfQ==
+X-HE-Tag: 1769627929-845364
+X-HE-Meta: U2FsdGVkX1/AT12gwcYRbrgyjYGXqQ9dNfI8h9zFHu0MxW7QgyTEW9CmAIiuEyNTkafc+5o3rGO3UYmzkfyRTYS6zDMBO7ckcY5xF2YQBSmjKDqsyPvDyKRTCsMS1T++IGMClSYUS9NzjLD4c+CPb+lPPJ69ZlnckSO2tdB687xAgyzlR8D0uyoqBkFEy6hECTXy+ZrfHaAvjGl8FmMcTSA++8/Yb63ACZWjC73XWxbbDr2OCFs+eAB5GvCtD6ccs9xEjYbCSxL+o344siCb1U6nPJOzPiU6aJdpbkyTnrzQwpwXjdiHCuL/9ja4U/vuinyK9l5YjCyOey1au6oa9Q6jwmYuCxPVQMg6YfMty1+Qxgoori+zID48Bw+ZlJ9fMFJV9xQAUkP5zvXGQKC66z9MOMCJplmiP0AK+Z6TX67JjopwmgpdrjPlkFc6odBGFR0LZtuu5qOkh1lVWHXXjDq7ssRrnySCA43M9qBBCOAP0mwaAeQLtBtzSlgrXWnbv8oia7LXQeSBJ9UHT+dlOlsoTFW0WvAtvNl3c66kJGMe74NmgYx3Fm09R1YLcVwkZ50OnZjc18yjMCSCybO40MGqlHtl6ABphfOnx9G8CxYscQMQ+7xWPebzgr/zFEf2ThlYVJln64JLFMqizrmSaOx3F32Z4ZdgjazxU65rU828O3mt4DI3kcrD59clItck1wrdHnkoxOGFsK/slam3gdrtGauhXJ2CWGvdCZ6GZz6eqzyqrKJgJ1XieuYS1ft9ZmYjkwa8UF52jgX7OFl/CJq9spLZH3I/RqM7bmv+RFE+ybym5ltrPaKq6vh/kGDTCIRcNFpXUR78wtT2Aqq+GbBGWTjPelYm84UWDgZuikqiYk/l1rNKKF0hHmHGHY8GdA3cy0h4e4i7kd7rvY6SJ7Znxocq56CrPrb5vf8UBF7ECi4GBLWpbUqLTqHKh558Z9vGx7OorJLPdcVzrb+
+ a8d7Zq62
+ eIv12uVDjkZwVxEGqitckDcFpZnJu5ulYAKH+Q9sZXD+HHDgx+bYFTik471yJmqpq09g8UVr0h7xf4+zPutC/2gf3kjKQdAKcjSyl9kIzrZ9UsfSD5CYl5YIITqXHOU5QBzay2KgAmb6XJG5SmMsuGQ7OlWXSB6aNHL4H1guGW01gJ4QhRnoY1wWnBC5kXLtV911WXMvcFuFQxg1r6TLQzhxMZgA9MW2O/bheL1VeVAunro/BLdGKn2MBkooD/jKqSmLMVK1lCKUPmyg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,46 +93,439 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 28, 2026 at 01:52:43PM +0200, Mike Rapoport wrote:
-> Hi Vishal,
-> 
-> On Mon, Jan 26, 2026 at 04:51:37PM -0800, Vishal Moola (Oracle) wrote:
-> > x86/mm/pat should be using ptdescs. One line has already been
-> > converted to pagetable_free(), while the allocation sites use
-> > get_free_pages(). This causes issues separately allocating ptdescs
-> > from struct page.
-> > 
-> > These patches convert the allocation/free sites to use ptdescs. In
-> > the short term, this helps enable Matthew's work to allocate frozen
-> > pagetables. And in the long term, this will help us cleanly split
-> > ptdesc allocations from struct page.
-> > 
-> > ------
-> > 
-> > Based on current mm-new.
-> > 
-> > Vishal Moola (Oracle) (3):
-> >   x86/mm/pat: Convert pte code to use ptdescs
-> >   x86/mm/pat: Convert pmd code to use ptdescs
-> 
-> There are still get_zeroed_page() calls in populate_pgd(). I think they
-> also should be converted to pagetable_alloc().
+Matt Bobrowski <mattbobrowski@google.com> writes:
 
-Thanks, I missed those. They should be converted too, so I'll add those
-in v2.
+> On Mon, Jan 26, 2026 at 06:44:05PM -0800, Roman Gushchin wrote:
+>> Introduce an ability to attach bpf struct_ops'es to cgroups.
+>> 
+>> From user's standpoint it works in the following way:
+>> a user passes a BPF_F_CGROUP_FD flag and specifies the target cgroup
+>> fd while creating a struct_ops link. As the result, the bpf struct_ops
+>> link will be created and attached to a cgroup.
+>> 
+>> The cgroup.bpf structure maintains a list of attached struct ops links.
+>> If the cgroup is getting deleted, attached struct ops'es are getting
+>> auto-detached and the userspace program gets a notification.
+>> 
+>> This change doesn't answer the question how bpf programs belonging
+>> to these struct ops'es will be executed. It will be done individually
+>> for every bpf struct ops which supports this.
+>> 
+>> Please, note that unlike "normal" bpf programs, struct ops'es
+>> are not propagated to cgroup sub-trees.
+>> 
+>> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+>> ---
+>>  include/linux/bpf-cgroup-defs.h |  3 ++
+>>  include/linux/bpf-cgroup.h      | 16 +++++++++
+>>  include/linux/bpf.h             |  3 ++
+>>  include/uapi/linux/bpf.h        |  3 ++
+>>  kernel/bpf/bpf_struct_ops.c     | 59 ++++++++++++++++++++++++++++++---
+>>  kernel/bpf/cgroup.c             | 46 +++++++++++++++++++++++++
+>>  tools/include/uapi/linux/bpf.h  |  1 +
+>>  7 files changed, 127 insertions(+), 4 deletions(-)
+>> 
+>> diff --git a/include/linux/bpf-cgroup-defs.h b/include/linux/bpf-cgroup-defs.h
+>> index c9e6b26abab6..6c5e37190dad 100644
+>> --- a/include/linux/bpf-cgroup-defs.h
+>> +++ b/include/linux/bpf-cgroup-defs.h
+>> @@ -71,6 +71,9 @@ struct cgroup_bpf {
+>>  	/* temp storage for effective prog array used by prog_attach/detach */
+>>  	struct bpf_prog_array *inactive;
+>>  
+>> +	/* list of bpf struct ops links */
+>> +	struct list_head struct_ops_links;
+>> +
+>>  	/* reference counter used to detach bpf programs after cgroup removal */
+>>  	struct percpu_ref refcnt;
+>>  
+>> diff --git a/include/linux/bpf-cgroup.h b/include/linux/bpf-cgroup.h
+>> index 2f535331f926..a6c327257006 100644
+>> --- a/include/linux/bpf-cgroup.h
+>> +++ b/include/linux/bpf-cgroup.h
+>> @@ -423,6 +423,11 @@ int cgroup_bpf_link_attach(const union bpf_attr *attr, struct bpf_prog *prog);
+>>  int cgroup_bpf_prog_query(const union bpf_attr *attr,
+>>  			  union bpf_attr __user *uattr);
+>>  
+>> +int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
+>> +				 struct bpf_struct_ops_link *link);
+>> +void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
+>> +				  struct bpf_struct_ops_link *link);
+>> +
+>>  const struct bpf_func_proto *
+>>  cgroup_common_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog);
+>>  #else
+>> @@ -451,6 +456,17 @@ static inline int cgroup_bpf_link_attach(const union bpf_attr *attr,
+>>  	return -EINVAL;
+>>  }
+>>  
+>> +static inline int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
+>> +					       struct bpf_struct_ops_link *link)
+>> +{
+>> +	return -EINVAL;
+>> +}
+>> +
+>> +static inline void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
+>> +						struct bpf_struct_ops_link *link)
+>> +{
+>> +}
+>> +
+>>  static inline int cgroup_bpf_prog_query(const union bpf_attr *attr,
+>>  					union bpf_attr __user *uattr)
+>>  {
+>> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+>> index 899dd911dc82..391888eb257c 100644
+>> --- a/include/linux/bpf.h
+>> +++ b/include/linux/bpf.h
+>> @@ -1894,6 +1894,9 @@ struct bpf_raw_tp_link {
+>>  struct bpf_struct_ops_link {
+>>  	struct bpf_link link;
+>>  	struct bpf_map __rcu *map;
+>> +	struct cgroup *cgroup;
+>> +	bool cgroup_removed;
+>> +	struct list_head list;
+>>  	wait_queue_head_t wait_hup;
+>>  };
+>>  
+>> diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+>> index 44e7dbc278e3..28544e8af1cd 100644
+>> --- a/include/uapi/linux/bpf.h
+>> +++ b/include/uapi/linux/bpf.h
+>> @@ -1237,6 +1237,7 @@ enum bpf_perf_event_type {
+>>  #define BPF_F_AFTER		(1U << 4)
+>>  #define BPF_F_ID		(1U << 5)
+>>  #define BPF_F_PREORDER		(1U << 6)
+>> +#define BPF_F_CGROUP_FD		(1U << 7)
+>>  #define BPF_F_LINK		BPF_F_LINK /* 1 << 13 */
+>>  
+>>  /* If BPF_F_STRICT_ALIGNMENT is used in BPF_PROG_LOAD command, the
+>> @@ -6775,6 +6776,8 @@ struct bpf_link_info {
+>>  		} xdp;
+>>  		struct {
+>>  			__u32 map_id;
+>> +			__u32 :32;
+>> +			__u64 cgroup_id;
+>>  		} struct_ops;
+>>  		struct {
+>>  			__u32 pf;
+>> diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+>> index de01cf3025b3..2e361e22cfa0 100644
+>> --- a/kernel/bpf/bpf_struct_ops.c
+>> +++ b/kernel/bpf/bpf_struct_ops.c
+>> @@ -13,6 +13,8 @@
+>>  #include <linux/btf_ids.h>
+>>  #include <linux/rcupdate_wait.h>
+>>  #include <linux/poll.h>
+>> +#include <linux/bpf-cgroup.h>
+>> +#include <linux/cgroup.h>
+>>  
+>>  struct bpf_struct_ops_value {
+>>  	struct bpf_struct_ops_common_value common;
+>> @@ -1220,6 +1222,10 @@ static void bpf_struct_ops_map_link_dealloc(struct bpf_link *link)
+>>  		st_map->st_ops_desc->st_ops->unreg(&st_map->kvalue.data, link);
+>>  		bpf_map_put(&st_map->map);
+>>  	}
+>> +
+>> +	if (st_link->cgroup)
+>> +		cgroup_bpf_detach_struct_ops(st_link->cgroup, st_link);
+>> +
+>>  	kfree(st_link);
+>>  }
+>>  
+>> @@ -1228,6 +1234,7 @@ static void bpf_struct_ops_map_link_show_fdinfo(const struct bpf_link *link,
+>>  {
+>>  	struct bpf_struct_ops_link *st_link;
+>>  	struct bpf_map *map;
+>> +	u64 cgrp_id = 0;
+>
+> Assigning 0 to cgrp_id would technically be incorrect, right? Like,
+> cgroup_id() for !CONFIG_CGROUPS default to returning 1, and for
+> CONFIG_CGROUPS the ID allocation is done via the idr_alloc_cyclic()
+> API using a range between 1 and INT_MAX. Perhaps here it serves as a
+> valid sentinel value? Is that the rationale?
 
-> Other than that LGTM.
-> 
-> >   x86/mm/pat: Convert split_large_page() to use ptdescs
-> > 
-> >  arch/x86/mm/pat/set_memory.c | 37 +++++++++++++++++++-----------------
-> >  1 file changed, 20 insertions(+), 17 deletions(-)
-> > 
-> > -- 
-> > 2.52.0
-> > 
-> 
-> -- 
-> Sincerely yours,
-> Mike.
+Yes. Idk, maybe (u64)-1 works better here, I don't have a strong
+opinion. Realistically I doubt there are too many bpf users with
+!CONFIG_CGROUPS. Alexei even suggested in the past to make CONFIG_MEMCG
+mandatory, which implies CONFIG_CGROUPS.
+
+> In general, shouldn't all the cgroup related logic within this source
+> file be protected by a CONFIG_CGROUPS ifdef? For example, both
+> cgroup_get_from_fd() and cgroup_put() lack stubs when building with
+> !CONFIG_CGROUPS.
+>
+>>  	st_link = container_of(link, struct bpf_struct_ops_link, link);
+>>  	rcu_read_lock();
+>> @@ -1235,6 +1242,14 @@ static void bpf_struct_ops_map_link_show_fdinfo(const struct bpf_link *link,
+>>  	if (map)
+>>  		seq_printf(seq, "map_id:\t%d\n", map->id);
+>>  	rcu_read_unlock();
+>> +
+>> +	cgroup_lock();
+>> +	if (st_link->cgroup)
+>> +		cgrp_id = cgroup_id(st_link->cgroup);
+>> +	cgroup_unlock();
+>> +
+>> +	if (cgrp_id)
+>> +		seq_printf(seq, "cgroup_id:\t%llu\n", cgrp_id);
+>
+> Probably could introduce a simple inline helper for the
+> cgroup_lock()/cgroup_id()/cgroup_unlock() dance that's going on in
+> here and bpf_struct_ops_map_link_fill_link_info() below.
+
+I'll try, thanks!
+
+>
+>>  }
+>>  
+>>  static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+>> @@ -1242,6 +1257,7 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+>>  {
+>>  	struct bpf_struct_ops_link *st_link;
+>>  	struct bpf_map *map;
+>> +	u64 cgrp_id = 0;
+>>  
+>>  	st_link = container_of(link, struct bpf_struct_ops_link, link);
+>>  	rcu_read_lock();
+>> @@ -1249,6 +1265,13 @@ static int bpf_struct_ops_map_link_fill_link_info(const struct bpf_link *link,
+>>  	if (map)
+>>  		info->struct_ops.map_id = map->id;
+>>  	rcu_read_unlock();
+>> +
+>> +	cgroup_lock();
+>> +	if (st_link->cgroup)
+>> +		cgrp_id = cgroup_id(st_link->cgroup);
+>> +	cgroup_unlock();
+>> +
+>> +	info->struct_ops.cgroup_id = cgrp_id;
+>
+> As mentioned above a simple inline helper could simply yield the
+> following here:
+>
+> ...
+> 	  info->struct_ops.cgroup_id = bpf_struct_ops_lin_cgroup_id();
+> ...
+>
+>>  	return 0;
+>>  }
+>>  
+>> @@ -1327,6 +1350,9 @@ static int bpf_struct_ops_map_link_detach(struct bpf_link *link)
+>>  
+>>  	mutex_unlock(&update_mutex);
+>>  
+>> +	if (st_link->cgroup)
+>> +		cgroup_bpf_detach_struct_ops(st_link->cgroup, st_link);
+>> +
+>>  	wake_up_interruptible_poll(&st_link->wait_hup, EPOLLHUP);
+>>  
+>>  	return 0;
+>> @@ -1339,6 +1365,9 @@ static __poll_t bpf_struct_ops_map_link_poll(struct file *file,
+>>  
+>>  	poll_wait(file, &st_link->wait_hup, pts);
+>>  
+>> +	if (st_link->cgroup_removed)
+>> +		return EPOLLHUP;
+>> +
+>>  	return rcu_access_pointer(st_link->map) ? 0 : EPOLLHUP;
+>>  }
+>>  
+>> @@ -1357,8 +1386,12 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+>>  	struct bpf_link_primer link_primer;
+>>  	struct bpf_struct_ops_map *st_map;
+>>  	struct bpf_map *map;
+>> +	struct cgroup *cgrp;
+>>  	int err;
+>>  
+>> +	if (attr->link_create.flags & ~BPF_F_CGROUP_FD)
+>> +		return -EINVAL;
+>> +
+>
+> BPF_F_CGROUP_FD is dependent on the cgroup subsystem, therefore it
+> probably makes some sense to only accept BPF_F_CGROUP_FD when
+> CONFIG_BPF_CGROUP is enabled, otherwise -EOPNOTSUPP?
+>
+> I'd also probably rewrite this such that we do:
+>
+> ...
+> 	struct cgroup *cgrp = NULL;
+> 	...
+> 	if (attr->link_create.flags & ~BPF_F_CGROUP_FD) {
+> #if IS_ENABLED(CONFIG_CGROUP_BPF)
+> 	cgrp = cgroup_get_from_fd(attr->link_create.target_fd);
+> 	if (IS_ERR(cgrp))
+> 		return PTR_ERR(cgrp);
+> #else
+> 	return -EOPNOTSUPP;
+> #endif
+> 	}
+> ...
+> 	if (cgrp) {
+> 		link->cgroup = cgrp;
+> 		if (cgroup_bpf_attach_struct_ops(cgrp, link)) {
+> 		   cgroup_put(cgrp);
+> 		   goto err_out;
+> 		}
+> 	}
+>
+> IMO the code is cleaner and reads better too.
+>
+>>  	map = bpf_map_get(attr->link_create.map_fd);
+>>  	if (IS_ERR(map))
+>>  		return PTR_ERR(map);
+>> @@ -1378,11 +1411,26 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+>>  	bpf_link_init(&link->link, BPF_LINK_TYPE_STRUCT_OPS, &bpf_struct_ops_map_lops, NULL,
+>>  		      attr->link_create.attach_type);
+>>  
+>> +	init_waitqueue_head(&link->wait_hup);
+>> +
+>> +	if (attr->link_create.flags & BPF_F_CGROUP_FD) {
+>> +		cgrp = cgroup_get_from_fd(attr->link_create.target_fd);
+>> +		if (IS_ERR(cgrp)) {
+>> +			err = PTR_ERR(cgrp);
+>> +			goto err_out;
+>> +		}
+>> +		link->cgroup = cgrp;
+>> +		err = cgroup_bpf_attach_struct_ops(cgrp, link);
+>> +		if (err) {
+>> +			cgroup_put(cgrp);
+>> +			link->cgroup = NULL;
+>> +			goto err_out;
+>> +		}
+>> +	}
+>> +
+>>  	err = bpf_link_prime(&link->link, &link_primer);
+>>  	if (err)
+>> -		goto err_out;
+>> -
+>> -	init_waitqueue_head(&link->wait_hup);
+>> +		goto err_put_cgroup;
+>>  
+>>  	/* Hold the update_mutex such that the subsystem cannot
+>>  	 * do link->ops->detach() before the link is fully initialized.
+>> @@ -1393,13 +1441,16 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
+>>  		mutex_unlock(&update_mutex);
+>>  		bpf_link_cleanup(&link_primer);
+>>  		link = NULL;
+>> -		goto err_out;
+>> +		goto err_put_cgroup;
+>>  	}
+>>  	RCU_INIT_POINTER(link->map, map);
+>>  	mutex_unlock(&update_mutex);
+>>  
+>>  	return bpf_link_settle(&link_primer);
+>>  
+>> +err_put_cgroup:
+>> +	if (link && link->cgroup)
+>> +		cgroup_bpf_detach_struct_ops(link->cgroup, link);
+>>  err_out:
+>>  	bpf_map_put(map);
+>>  	kfree(link);
+>> diff --git a/kernel/bpf/cgroup.c b/kernel/bpf/cgroup.c
+>> index 69988af44b37..7b1903be6f69 100644
+>> --- a/kernel/bpf/cgroup.c
+>> +++ b/kernel/bpf/cgroup.c
+>> @@ -16,6 +16,7 @@
+>>  #include <linux/bpf-cgroup.h>
+>>  #include <linux/bpf_lsm.h>
+>>  #include <linux/bpf_verifier.h>
+>> +#include <linux/poll.h>
+>>  #include <net/sock.h>
+>>  #include <net/bpf_sk_storage.h>
+>>  
+>> @@ -307,12 +308,23 @@ static void cgroup_bpf_release(struct work_struct *work)
+>>  					       bpf.release_work);
+>>  	struct bpf_prog_array *old_array;
+>>  	struct list_head *storages = &cgrp->bpf.storages;
+>> +	struct bpf_struct_ops_link *st_link, *st_tmp;
+>>  	struct bpf_cgroup_storage *storage, *stmp;
+>> +	LIST_HEAD(st_links);
+>>  
+>>  	unsigned int atype;
+>>  
+>>  	cgroup_lock();
+>>  
+>> +	list_splice_init(&cgrp->bpf.struct_ops_links, &st_links);
+>> +	list_for_each_entry_safe(st_link, st_tmp, &st_links, list) {
+>> +		st_link->cgroup = NULL;
+>> +		st_link->cgroup_removed = true;
+>> +		cgroup_put(cgrp);
+>> +		if (IS_ERR(bpf_link_inc_not_zero(&st_link->link)))
+>> +			list_del(&st_link->list);
+>> +	}
+>> +
+>>  	for (atype = 0; atype < ARRAY_SIZE(cgrp->bpf.progs); atype++) {
+>>  		struct hlist_head *progs = &cgrp->bpf.progs[atype];
+>>  		struct bpf_prog_list *pl;
+>> @@ -346,6 +358,11 @@ static void cgroup_bpf_release(struct work_struct *work)
+>>  
+>>  	cgroup_unlock();
+>>  
+>> +	list_for_each_entry_safe(st_link, st_tmp, &st_links, list) {
+>> +		st_link->link.ops->detach(&st_link->link);
+>> +		bpf_link_put(&st_link->link);
+>> +	}
+>> +
+>>  	for (p = cgroup_parent(cgrp); p; p = cgroup_parent(p))
+>>  		cgroup_bpf_put(p);
+>>  
+>> @@ -525,6 +542,7 @@ static int cgroup_bpf_inherit(struct cgroup *cgrp)
+>>  		INIT_HLIST_HEAD(&cgrp->bpf.progs[i]);
+>>  
+>>  	INIT_LIST_HEAD(&cgrp->bpf.storages);
+>> +	INIT_LIST_HEAD(&cgrp->bpf.struct_ops_links);
+>>  
+>>  	for (i = 0; i < NR; i++)
+>>  		if (compute_effective_progs(cgrp, i, &arrays[i]))
+>> @@ -2759,3 +2777,31 @@ cgroup_common_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
+>>  		return NULL;
+>>  	}
+>>  }
+>> +
+>> +int cgroup_bpf_attach_struct_ops(struct cgroup *cgrp,
+>> +				 struct bpf_struct_ops_link *link)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	cgroup_lock();
+>> +	if (percpu_ref_is_zero(&cgrp->bpf.refcnt)) {
+>> +		ret = -EBUSY;
+>
+> If the cgroup is dying, then perhaps -EINVAL would be more appropriate
+> here, no? I'd argue that -EBUSY implies a temporary or transient
+> state.
+
+Idk, I thought about it and settled on -EBUSY to highlight the
+transient nature of the issue. ENOENT is another option.
+I don't really think EINVAL is the best choice here.
+
+>
+>> +		goto out;
+>> +	}
+>> +	list_add_tail(&link->list, &cgrp->bpf.struct_ops_links);
+>> +out:
+>> +	cgroup_unlock();
+>> +	return ret;
+>> +}
+>> +
+>> +void cgroup_bpf_detach_struct_ops(struct cgroup *cgrp,
+>> +				  struct bpf_struct_ops_link *link)
+>> +{
+>> +	cgroup_lock();
+>> +	if (link->cgroup == cgrp) {
+>> +		list_del(&link->list);
+>> +		link->cgroup = NULL;
+>> +		cgroup_put(cgrp);
+>> +	}
+>> +	cgroup_unlock();
+>> +}
+>
+> Within cgroup_bpf_attach_struct_ops() and
+> cgroup_bpf_detach_struct_ops() the cgrp pointer appears to be
+> superfluous? Both should probably only operate on link->cgroup
+> instead? A !link->cgroup when calling either should be considered as
+> -EINVAL.
+
+Ack.
+
+Thank you for the review!
 
