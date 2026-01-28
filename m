@@ -4,118 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87C98D3568A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 08:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5407BD35692
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 08:29:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9D3A06B0088; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
+	id 4282B6B0088; Wed, 28 Jan 2026 03:29:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 981456B0089; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
+	id 3D5416B0089; Wed, 28 Jan 2026 03:29:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88CF36B008A; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
+	id 2D7F36B008A; Wed, 28 Jan 2026 03:29:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 74DAD6B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7A2459322
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:06:19 +0000 (UTC)
-X-FDA: 84380640078.15.7AAB556
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id EDE478000D
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:06:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=LzQtXb5c;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E8CE6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:29:43 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6336759188
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:29:42 +0000 (UTC)
+X-FDA: 84380699004.22.5A6B981
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 3756240008
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:29:40 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769587578;
+	s=arc-20220608; t=1769588980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enqYBRxEAs7b1XTfNQDYASta7yWhNLiXox4ui9P9FD4=;
-	b=2PXfLzTFzKPgutShf4urS5NlSIP+OUTjJdVtllOqRHPR/E7mZEWL4525pByZQUBKkWGRfY
-	VjRd2rhHb46ewYu6We2+PvxvebV6YuVxckv/7UsGM6d5MyWJVqNe0aGgnYSYvHBxI4NAzx
-	8vMXFLjeCXMjiR4Yr448GE0teKZU2os=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rZiE3lgcnnLKUOYzheNLafiNZCIsZbJNSirGk0ukU9I=;
+	b=UNbqjl1lVcOE4XZhoOYZItLD1HZ9WYkHMvLVY93PFhcFjfzy8XCj7B+CYhdMd2IigiT4vn
+	YyAiI4M1fUoRsD5muymM8k9WgWWGyCzWs9lQEBmi+1droxz9hXRMEOrZDkfte247L2ojRO
+	3ekZDGaZsNKz2XbORAeOM/bxgHOWB6Y=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=LzQtXb5c;
-	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769587578; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769588980; a=rsa-sha256;
 	cv=none;
-	b=TG5tXo/Z+MGtq7KkQRd8Hm33f86tEpYlHQ0R1vzRtzVtYpc+j1r70dMSSS5/TFPbbxJ6mI
-	JoA3KcM9rT/euV3QM4qz9G1YoMk0fni2OytNGWyu2C0mRK/iVNcKbw+mMTXe2yYi8qAb3I
-	Ci1uXqzpJ5TmCJ1KLK8l0VP6jqnyoAA=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4358fb60802so340377f8f.1
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 00:06:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769587576; x=1770192376; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=enqYBRxEAs7b1XTfNQDYASta7yWhNLiXox4ui9P9FD4=;
-        b=LzQtXb5chPydHQ8MtmU66VL26vmzIv/bEWn8y+eVjLqgYkZ/MJeJFuo1gKMqan3R+Q
-         E9ILCRTigo3XGjsHlli688MzEQ0bOTt3ijG9NfgQ0PY9ez1hSuvqQCPgKA1Z4BkYug8y
-         I14zgpbF92hnCvaXcBnp7mwnUW5AwQJR6yf4WRUhYjFREiQNIEZuD6KUU8Y4jzfhKHFL
-         3wGtb2g1+ZMGRxyh3/pdUbbctN/PoYh0wHGoCkuC//L9U1vrHNiJef7tNHQdNzF/virr
-         VigITwYs9PZxwQFIt1Dcvd6gAL/r9wxAnwH+9eliRLIS/4/11TrHpn4pGZbp3DrAmZos
-         P5pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769587576; x=1770192376;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=enqYBRxEAs7b1XTfNQDYASta7yWhNLiXox4ui9P9FD4=;
-        b=Cd0qppAkYBTdND4xwNiW2qU3LXDUGnWEvK+urCwAXEcz92qhkznt4BPLQdU04c43Cy
-         KmnhX9XKzuqd8W0CdVL0xYd53rgDR0ZfqjiDC3ARVaORCKvGGmAnG/MCh0KsAnFCtZrJ
-         fX6mA+Wi4Bo/AZSnBTUnbS0z8HKF8EKCcMmTGaNO+BFCvOEPMegOz/hp4Xoi9xxJ5TJ7
-         rng9iEntkr1KE+Bb6Dqe1rMthG79WYtLEs6bqq+qlUdbFQ36T/kCYfF0wvSt7sjJ/Uzi
-         /7j5jujGEkCEgEEcKJdoT7hX8ChwinBgyHvlmd0jtLRk+9k5EL6jaUETk2unrZDIgY0p
-         Qz9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUlw7pdkqvQEe+48ZqusSrm2OdEpso7EWpAQOR4zj0xIvlcAghC1OQt3tW7P8cf1bYTTv94LkCWeQ==@kvack.org
-X-Gm-Message-State: AOJu0YyosfCecwg8ZXtAK3NlbY5rF7qi81dtJyj+GCbhlJPOSOjERhz3
-	9gds7wZSnYS7zPrR0+qvMi0euXNZrJt9Zg3jjLI8n2yeXBD3qDrxJEK9E5qTyBf0QxA=
-X-Gm-Gg: AZuq6aKqtwZSaHCaIqS04tEGXVL0rzBQpGDpy1fm2HIRChPeGQ0hwMdrE/QxUKFpQdv
-	fDvsy3bseeIqLYnsadFv9HOoPga70r2TUgc91gyqe+BvCK+Gb/m9Sib/lJTfqodrKmG4X0bFJw2
-	XotT4xW2PDt0AGNggbWWR7WDFEH65h6WDbwBPLz5q1MEc98ucnVYI6Rj6657OFgAz4Hz8no6/Ic
-	8rdHHfSE8WGXpHNXn0rU71AXZuvDN1D+thdstz6xryWm0xh7yAcqe1gWw3N8RO1WpEDLMBXgsu0
-	9GJ9nZevIlH9yCwAz3oE0o0kovbADhEIy8BMkigsy38vBeIQlEzbjtBOyxyUFtsLWLQxu7Gsb74
-	5e3zcxpdIyfDQN2k57JukZQFWoY+UBKger1MwbFLtLhHdIBEPEfZStAAiCck6j/vPPLLGIzXekA
-	V0hfmURNYPXWhTMn2koCwtpnNH
-X-Received: by 2002:a05:6000:1787:b0:435:9a18:5a29 with SMTP id ffacd0b85a97d-435dd1ba13fmr6723122f8f.11.1769587576172;
-        Wed, 28 Jan 2026 00:06:16 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10edfe7sm4930747f8f.14.2026.01.28.00.06.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 00:06:15 -0800 (PST)
-Date: Wed, 28 Jan 2026 09:06:14 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 00/17] mm: BPF OOM
-Message-ID: <aXnDdkYmtipGwSjK@tiehlicka>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <aXh_LpTzDhvv20uB@tiehlicka>
- <7ia44io6kbwj.fsf@castle.c.googlers.com>
+	b=iPfu5c6N+xTCrFJmm2o6syi2Nws9H9RtfFAreOpgAHBwz3WZsjsZPhd0GI9y0gMwwV4gXs
+	onPdXuWuemVRrwlUj06y6LpEqV8j4SnVphj2UoK/xFG5ncSBNo9JYAQGjX1TVLwnms1Fyh
+	CBuSZm3BLN6u+HwhPrbnS2uQUa8LZew=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 875A11515;
+	Wed, 28 Jan 2026 00:29:32 -0800 (PST)
+Received: from [10.164.18.94] (unknown [10.164.18.94])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4DECA3F5CA;
+	Wed, 28 Jan 2026 00:29:36 -0800 (PST)
+Message-ID: <72dfd11f-dca4-447e-89c5-7a87cb675bda@arm.com>
+Date: Wed, 28 Jan 2026 13:59:33 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ia44io6kbwj.fsf@castle.c.googlers.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EDE478000D
-X-Stat-Signature: mz9f6ouc85fd9a6z4814fu6t6fbc1m1w
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-new v5 2/5] mm: khugepaged: refine scan progress number
+To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260123082232.16413-1-vernon2gm@gmail.com>
+ <20260123082232.16413-3-vernon2gm@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20260123082232.16413-3-vernon2gm@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1769587577-965668
-X-HE-Meta: U2FsdGVkX1/gGaBbKhDfxFMiQ2D4PRujm5r6/MXG8Qtw+40cO1szmuSoNb8zKhLUvS3CPJ1pPv0ll/dBF1b9eRfH5763Ucd6qzXB5MzZwFlnqTdwO1IlRymCURUFfrlfV5PZ/27xyaWlziArX/pZuzRUuqAjoPCF8At5SeMZyxn5A819YvoW+1yfeyuWt1CMm7g0qp2xrqIeBR54T916mzTWfcn3M6GJFahEb4kRZCDSqh1a4PMrz82dB9Vf5YAhGSr+9HuNmfIL7Uk046wT54+YKZQLUgJdIS0KcypTGZvBd3ebvsotLZMibUdUGTAuexJfdSZ0gQjJulvMFxQeAewUK8d7xNE9AJzeaSJvaUnOkIPqT0ZB33+KYPBqcg8uukqpo26yGcrWCG271iarmhBq5t+20po0YWAw0ZGi59BOEXirYzlBJH+CFIfqzIwQGA9TfLXXrACArZVxHRCTVatRrcbiLfZsIXwZiuznu7FbU3iU+PZe0qCTB30ZLF39jU75QJiWWMveLyZPBJIIvDm8lqHOkHEy+dcLpO+7NPmlE9RMHMT04zj0MbsIGSKrFX5mjKhebLPvYXaaJDCjs0vMoKTUHW8wMRMAXsGZxLcmiiAUukmnwXRwKfmElEm0oGcabLUyTPxR3t8W31WITvOL/N96PcGykYYKppHtozjSBNk4WYsj2g3FRneWYzkIGDANl22aoMQTgTIuf9dlaP6HGwgMKzWh0uG5BAMImP+VqGcjkY3yj3DsJiU8w1gAsp1NZ0TxGMfcCwItyTNhOq+0YuOWbbf++9zhGJSUkB8lT940TpYCZMMODdAdlmnFmJ1HQrYWRvYDJZxvhSvpL0l0eEBXOj+UPB6496ncau7qecqWEWNPytb3s0TQnf4KECygyLLX+QtvTJNIRx8mBWQIr83umRmP9KuhnumxP5cy8ZW91dbhMxdbesqglUOZ3BznsTaAUiay25g90/B
- A131XuEO
- t9xL2/vGdcwAl4+PSrBiCJu8zQnIwNfTTS3dVREAvfIIiktEgyFfLRc+QlO9S6FU9Xd3iF3H70Zih/TTH2F4jNMLR/iIGDpCfd48CBcGTcRbvxCmfiHCubSB7w3vApz3sLd140COs5zwzYyNRhgCBbrbyLjkZnDoaLvCUqXqL71IcAU0GGbaBDc2lpu019IVOh8Qv7Hm0xWeqKsFBbhq2ClNzILORY16NzaEIvvwmDxiVxn/vjBkmrEbG9V2q0FbviPZHTQO8pAZOOd1XoJ2GcIVZE18ZHYXegHUApHNFTJ34q3e7Pr7P5C9UM8+FsVz7hhQ9xgcSEMXBMmfYhHYgdA29mNFk0Rz6Wf6hKeRnte9dvrhuDWSIcVByJOty58ru3Bbm+PbzkWWP6imBcTa1y1O50Z8MoxWzZm6DV6uX3X1kYqnuiXZMt4gwdo7fHdKxLtVl8p1AqHkCbfFhN9MgzN2rMt7Kcu8x8lWNr7725K7JJMtYSX5OxUa0hQ==
+X-Rspamd-Queue-Id: 3756240008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: iitcg3ju1z3mbf8gonyu3w9her7s1133
+X-HE-Tag: 1769588980-215940
+X-HE-Meta: U2FsdGVkX19vnK2pck1l+Mtb6LmjpZZ22CECUINl1H4ZJ/ye2iIopmn/OmEdlhtD6UnDjiKi+3FU3AqKikITSM20AOwITH2ds6BsUlHSOb9e+pkiuKa/fAjygn216w9PjY2SB4DfOZTGvnWJsgB/vf/QbwAfeSgi5lwCecKCMjWRCdQ7IANpf81F+R1X0HSMsEQYatiNzzMzG9jvBfqIe7ptE4tjindQ7jHq3MTIWmpnbrzCr/EadiFSfM56cNtwe2AqewVcdSh8wPstkVKFIdUNZ7e3NHoziKJG+jCeQpzkBumWp+Z6N2yMNEJGHgjfWkcieZmat+o/ADmYEmr6n8EjcpJGn+xx9uG+KYrD+JCwX1CL5P0iP/MnNCNLcrKtpCnQjcSY/oanzSoCJwnC/Cjd1MZiDD73h6fnuvTA3Xn9Vq+NmPaEkGMqIQikAiaG0/q35TNcO6qBewWslrzVGFuawceeiEt+5b2HD7FShSAa0ZeNQ3SO+iNbPVQuS8szboq4ysnMKQDGUZGT2IXQhDwsvcuxCHUGwgozGv63LltK1BBffs6iKPRAS85NT57GvYbM1FiKvgL29znvvny/+W+UL+XxW2BeznKJHmdGCsFjKLFJj3bJlRi4gNH7wCtZZQmthYnyuR2xF2dExO9tHwahvfGsGRUPVvmAf1LUukLJtUFgEnuSPpWXHkJ0+sm+ejtfeh7qYy3h7IwYHVpAJWQaVB0nDBiFA4sCb/5VB0NHv7f+T7xjI3ToMAn5eGuABV0JvGphbjRV4zfPVUiVgzDpCNsj4B07pEvxz86btiWVs65st5oyE9zPAFh6hiojuOP4TwSYqYFwLnO2vsJsO7ooLS7BYA1EfvTLsPP32qa0pWGNMCJklAvUseZ8JOVLZtHeXbV1Kls9zGYMGJpVPBSez86Xb+fUmBHXxdmgGHUbWcl8tlOhn1azzXIR3KaGHR8IRBlXidFbXTCruVZ
+ SPrropWV
+ hxNV7Om1d9e8RlGH/lmfZKbLC9fEuMmzuDybkYE/jEPtLolEFu3oirhnLpoUtEmfOytVtPi63H7ZhTGKBVBAXRoGqZvRkqL2Tnd+iDjcBzIPa+ZrFbzhrDgU0P7ATCuQDMiYQuR/eFqjsJrvxIK0Zp3hvyciOOlbiT5aKOZNPy89tBaYad1NFSK2mSg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,70 +88,238 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 27-01-26 21:01:48, Roman Gushchin wrote:
-> Michal Hocko <mhocko@suse.com> writes:
-> 
-> > On Mon 26-01-26 18:44:03, Roman Gushchin wrote:
-> >> This patchset adds an ability to customize the out of memory
-> >> handling using bpf.
-> >> 
-> >> It focuses on two parts:
-> >> 1) OOM handling policy,
-> >> 2) PSI-based OOM invocation.
-> >> 
-> >> The idea to use bpf for customizing the OOM handling is not new, but
-> >> unlike the previous proposal [1], which augmented the existing task
-> >> ranking policy, this one tries to be as generic as possible and
-> >> leverage the full power of the modern bpf.
-> >> 
-> >> It provides a generic interface which is called before the existing OOM
-> >> killer code and allows implementing any policy, e.g. picking a victim
-> >> task or memory cgroup or potentially even releasing memory in other
-> >> ways, e.g. deleting tmpfs files (the last one might require some
-> >> additional but relatively simple changes).
-> >
-> > Are you planning to write any highlevel documentation on how to use the
-> > existing infrastructure to implement proper/correct OOM handlers with
-> > these generic interfaces?
-> 
-> What do you expect from such a document, can you, please, elaborate?
 
-Sure. Essentially an expected structure of the handler. What is the API
-it can use, what is has to do and what it must not do. Essentially a
-single place you can read and get enough information to start developing
-your oom handler.
+On 23/01/26 1:52 pm, Vernon Yang wrote:
+> From: Vernon Yang <yanglincheng@kylinos.cn>
+>
+> Currently, each scan always increases "progress" by HPAGE_PMD_NR,
+> even if only scanning a single PTE/PMD entry.
+>
+> - When only scanning a sigle PTE entry, let me provide a detailed
+>   example:
+>
+> static int hpage_collapse_scan_pmd()
+> {
+> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+> 	     _pte++, addr += PAGE_SIZE) {
+> 		pte_t pteval = ptep_get(_pte);
+> 		...
+> 		if (pte_uffd_wp(pteval)) { <-- first scan hit
+> 			result = SCAN_PTE_UFFD_WP;
+> 			goto out_unmap;
+> 		}
+> 	}
+> }
+>
+> During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
+> directly. In practice, only one PTE is scanned before termination.
+> Here, "progress += 1" reflects the actual number of PTEs scanned, but
+> previously "progress += HPAGE_PMD_NR" always.
+>
+> - When the memory has been collapsed to PMD, let me provide a detailed
+>   example:
+>
+> The following data is traced by bpftrace on a desktop system. After
+> the system has been left idle for 10 minutes upon booting, a lot of
+> SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan
+> by khugepaged.
+>
+> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> @scan_pmd_status[6]: 2           ## SCAN_EXCEED_SHARED_PTE
+> @scan_pmd_status[3]: 142         ## SCAN_PMD_MAPPED
+> @scan_pmd_status[2]: 178         ## SCAN_NO_PTE_TABLE
 
-> I'm asking because the main promise of bpf is to provide some sort
-> of a safe playground, so anyone can experiment with writing their
-> bpf implementations (like sched_ext schedulers or bpf oom policies)
-> with minimum risk. Yes, it might work sub-optimally and kill too many
-> tasks, but it won't crash or deadlock the system.
-> So in way I don't want to prescribe the "right way" of writing
-> oom handler, but it totally makes sense to provide an example.
-> 
-> As of now the best way to get an example of a bpf handler is to look
-> into the commit "[PATCH bpf-next v3 12/17] bpf: selftests: BPF OOM
-> struct ops test".
+Could you elaborate what is [1], [6] etc and 1,2,142, etc?
 
-Examples are really great but having a central place to document
-available API is much more helpful IMHO. The generally scattered nature
-of BPF hooks makes it really hard to even know what is available to oom
-handlers to use.
+> total progress size: 674 MB
+> Total time         : 419 seconds ## include khugepaged_scan_sleep_millisecs
+>
+> The khugepaged_scan list save all task that support collapse into hugepage,
+> as long as the task is not destroyed, khugepaged will not remove it from
+> the khugepaged_scan list. This exist a phenomenon where task has already
+> collapsed all memory regions into hugepage, but khugepaged continues to
+> scan it, which wastes CPU time and invalid, and due to
+> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+> scanning a large number of invalid task, so scanning really valid task
+> is later.
+>
+> After applying this patch, when the memory is either SCAN_PMD_MAPPED or
+> SCAN_NO_PTE_TABLE, just skip it, as follow:
+>
+> @scan_pmd_status[6]: 2
+> @scan_pmd_status[3]: 147
+> @scan_pmd_status[2]: 173
+> total progress size: 45 MB
+> Total time         : 20 seconds
+>
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+>  include/linux/xarray.h |  9 ++++++++
+>  mm/khugepaged.c        | 47 ++++++++++++++++++++++++++++++++++--------
+>  2 files changed, 47 insertions(+), 9 deletions(-)
+>
+> diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+> index be850174e802..f77d97d7b957 100644
+> --- a/include/linux/xarray.h
+> +++ b/include/linux/xarray.h
+> @@ -1646,6 +1646,15 @@ static inline void xas_set(struct xa_state *xas, unsigned long index)
+>  	xas->xa_node = XAS_RESTART;
+>  }
+>  
+> +/**
+> + * xas_get_index() - Get XArray operation state for a different index.
+> + * @xas: XArray operation state.
+> + */
+> +static inline unsigned long xas_get_index(struct xa_state *xas)
+> +{
+> +	return xas->xa_index;
+> +}
+> +
+>  /**
+>   * xas_advance() - Skip over sibling entries.
+>   * @xas: XArray operation state.
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 6f0f05148765..de95029e3763 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -68,7 +68,10 @@ enum scan_result {
+>  static struct task_struct *khugepaged_thread __read_mostly;
+>  static DEFINE_MUTEX(khugepaged_mutex);
+>  
+> -/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+> +/*
+> + * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+> + * every 10 second.
+> + */
+>  static unsigned int khugepaged_pages_to_scan __read_mostly;
+>  static unsigned int khugepaged_pages_collapsed;
+>  static unsigned int khugepaged_full_scans;
+> @@ -1240,7 +1243,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>  }
+>  
+>  static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+> -		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
+> +		struct vm_area_struct *vma, unsigned long start_addr,
+> +		bool *mmap_locked, unsigned int *cur_progress,
+>  		struct collapse_control *cc)
+>  {
+>  	pmd_t *pmd;
+> @@ -1255,6 +1259,9 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>  
+>  	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>  
+> +	if (cur_progress)
+> +		*cur_progress += 1;
 
-> Another viable idea (also suggested by Andrew Morton) is to develop
-> a production ready memcg-aware OOM killer in BPF, put the source code
-> into the kernel tree and make it loadable by default (obviously under a
-> config option). Myself or one of my colleagues will try to explore it a
-> bit later: the tricky part is this by-default loading because there are
-> no existing precedents.
+Why not be a little more explicit, and do this addition if find_pmd_or_thp_or_none fails,
+or pte_offset_map_lock fails? The way you do it right now is not readable - it gives no
+idea as to why on function entry we do a +1 right away. Please do add some comments too.
 
-It certainly makes sense to have trusted implementation of a commonly
-requested oom policy that we couldn't implement due to specific nature
-that doesn't really apply to many users. And have that in the tree. I am
-not thrilled about auto-loading because this could be easily done by a
-simple tooling.
+> +
+>  	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>  	if (result != SCAN_SUCCEED)
+>  		goto out;
+> @@ -1396,6 +1403,12 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>  		result = SCAN_SUCCEED;
+>  	}
+>  out_unmap:
+> +	if (cur_progress) {
+> +		if (_pte >= pte + HPAGE_PMD_NR)
+> +			*cur_progress += HPAGE_PMD_NR - 1;
+> +		else
+> +			*cur_progress += _pte - pte;
+> +	}
+>  	pte_unmap_unlock(pte, ptl);
+>  	if (result == SCAN_SUCCEED) {
+>  		result = collapse_huge_page(mm, start_addr, referenced,
+> @@ -2286,8 +2299,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	return result;
+>  }
+>  
+> -static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+> -		struct file *file, pgoff_t start, struct collapse_control *cc)
+> +static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
+> +		unsigned long addr, struct file *file, pgoff_t start,
+> +		unsigned int *cur_progress, struct collapse_control *cc)
+>  {
+>  	struct folio *folio = NULL;
+>  	struct address_space *mapping = file->f_mapping;
+> @@ -2376,6 +2390,18 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
+>  			cond_resched_rcu();
+>  		}
+>  	}
+> +	if (cur_progress) {
+> +		unsigned long idx = xas_get_index(&xas) - start;
+> +
+> +		if (folio == NULL)
+> +			*cur_progress += HPAGE_PMD_NR;
 
--- 
-Michal Hocko
-SUSE Labs
+I think this whole block needs some comments. Can you explain, why you
+do a particular increment in each case?
+
+> +		else if (xa_is_value(folio))
+> +			*cur_progress += idx + (1 << xas_get_order(&xas));
+> +		else if (folio_order(folio) == HPAGE_PMD_ORDER)
+> +			*cur_progress += idx + 1;
+> +		else
+> +			*cur_progress += idx + folio_nr_pages(folio);
+> +	}
+>  	rcu_read_unlock();
+>  
+>  	if (result == SCAN_SUCCEED) {
+> @@ -2456,6 +2482,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>  
+>  		while (khugepaged_scan.address < hend) {
+>  			bool mmap_locked = true;
+> +			unsigned int cur_progress = 0;
+>  
+>  			cond_resched();
+>  			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+> @@ -2472,7 +2499,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>  				mmap_read_unlock(mm);
+>  				mmap_locked = false;
+>  				*result = hpage_collapse_scan_file(mm,
+> -					khugepaged_scan.address, file, pgoff, cc);
+> +					khugepaged_scan.address, file, pgoff,
+> +					&cur_progress, cc);
+>  				fput(file);
+>  				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+>  					mmap_read_lock(mm);
+> @@ -2486,7 +2514,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>  				}
+>  			} else {
+>  				*result = hpage_collapse_scan_pmd(mm, vma,
+> -					khugepaged_scan.address, &mmap_locked, cc);
+> +					khugepaged_scan.address, &mmap_locked,
+> +					&cur_progress, cc);
+>  			}
+>  
+>  			if (*result == SCAN_SUCCEED)
+> @@ -2494,7 +2523,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>  
+>  			/* move to next address */
+>  			khugepaged_scan.address += HPAGE_PMD_SIZE;
+> -			progress += HPAGE_PMD_NR;
+> +			progress += cur_progress;
+>  			if (!mmap_locked)
+>  				/*
+>  				 * We released mmap_lock so break loop.  Note
+> @@ -2817,7 +2846,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>  			mmap_locked = false;
+>  			*lock_dropped = true;
+>  			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
+> -							  cc);
+> +							  NULL, cc);
+>  
+>  			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
+>  			    mapping_can_writeback(file->f_mapping)) {
+> @@ -2832,7 +2861,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>  			fput(file);
+>  		} else {
+>  			result = hpage_collapse_scan_pmd(mm, vma, addr,
+> -							 &mmap_locked, cc);
+> +							 &mmap_locked, NULL, cc);
+>  		}
+>  		if (!mmap_locked)
+>  			*lock_dropped = true;
 
