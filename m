@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45619D35697
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:30:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E666BD35697
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:30:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B11486B0092; Wed, 28 Jan 2026 04:30:49 -0500 (EST)
+	id 5E8BC6B0093; Wed, 28 Jan 2026 04:30:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6176B0093; Wed, 28 Jan 2026 04:30:49 -0500 (EST)
+	id 5B34F6B0095; Wed, 28 Jan 2026 04:30:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 993D46B0095; Wed, 28 Jan 2026 04:30:49 -0500 (EST)
+	id 4CCC76B0096; Wed, 28 Jan 2026 04:30:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 875EA6B0092
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:30:49 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2586B594FE
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:49 +0000 (UTC)
-X-FDA: 84380853018.08.A6AB2CA
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5415340006
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:47 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DA7F6B0093
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:30:53 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E40551A0533
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:52 +0000 (UTC)
+X-FDA: 84380853144.20.514BB1D
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf01.hostedemail.com (Postfix) with ESMTP id D84C04000D
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:50 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XTWpQV9N;
-	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lo45FIOZ;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769592647;
+	s=arc-20220608; t=1769592650;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aAw5ZLwfH3aOqNw+8qnqKgdPaynl21dDWoO/xPxb8Vc=;
-	b=t6nKtjnxn/96BmV3U4a/5ko0034+ZPnv3H0jQBCwzKC/PdGsTrIP+qi7I9LdfONH1QSf9k
-	QtYOx8X/Hgh8PYh5OtgK0bbS5km1Sq+PqufQSXsP6fJuh0Z2StU3Y2vi0CB9h6PePeFCbj
-	HLT/S43M5zLji1kh8AQt8OFe0sptE7Q=
+	bh=CkTKKula0DQd5wgE6uWfgSKH0QJhpKGSFifSGYvHSoo=;
+	b=0KsP9n4f8yJ2hpuezy4n9itIcTtXTQgy4E6EFy0yYKHzgMwz9jEhzAP5LLx2QBRFzaabz1
+	g/81xxIavfN4i40ZBDOXFLIfJr647Ik0DO4AOhDe8uoindse6ukOzldGrTiXNeOL7kA6IZ
+	4eXcvdK3aywm929dNOoZe5+Sj5Mcu/Y=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XTWpQV9N;
-	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Lo45FIOZ;
+	spf=pass (imf01.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592647; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592650; a=rsa-sha256;
 	cv=none;
-	b=qRri4bea52S9nrSXB/9WQ6rBUh+3G08IIS3pX+Ti77nxf5/hieNniSomJ6rF0jH7qItCRB
-	wEodDef/dg9YzjUjxjrgfoqumOaIWhwGs1wqM7SYvYqKknEOiyhidoQZQdZ4UVDQDfdMEj
-	5QTAOROmeRBxaSSJfUHHn+TDxgurUzk=
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-352e2c59264so4518136a91.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:47 -0800 (PST)
+	b=QoZF7Y5vdNSmIQMgNjXg9oOSPs8esT8A5IZkGFE6WuOVjtI5VIkvmv/TZrazZD7U7Fb5+o
+	LT6uCba+5z8ysqNZD114CVWYfYs5KboeDX2IfUCE+yDtkijEYgIHI9XdSODZc2dWRgIhH3
+	V77XZGVhiwlYxFQUzykqoLMjSYYmYmE=
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3540266d356so892909a91.0
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769592646; x=1770197446; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769592650; x=1770197450; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=aAw5ZLwfH3aOqNw+8qnqKgdPaynl21dDWoO/xPxb8Vc=;
-        b=XTWpQV9NBQLArPqwRQg07hWapSmRwivcein/WZ7dOZA160LOSd5ggr1IYN7vtIzBdA
-         xBGGuqdaftcjw9A9GX/FMwfmxSbRjkV8EHCblSey6U7mFSjZz5tFzstJCoAmwP7bixVc
-         OFo3yGV0ufX/pv3JoT4EqmCwE2s63MsffsozxchawlTAV4R/S+SeJkH/rg4kYF4Vycmc
-         i5KC9SwiEJ5pdCf5zjWBX4w8q5zwWi9sRBfkEjjakQu0V1cm8cI77IxU4/SaLdkXAq9U
-         pVh4ib5Cos55TqH88LrRkGj0gKsQ8B6d49HdQctLX+Zt65Y1SgiXfNBI0zFQxkX2HUtc
-         CVdQ==
+        bh=CkTKKula0DQd5wgE6uWfgSKH0QJhpKGSFifSGYvHSoo=;
+        b=Lo45FIOZDJQLkDaNRr7H5FXe5i+UOaOG8QZ649Wlap7hrDl5fKVR6S41m9pyS5azKy
+         STOdNm123c8kyloafSFLS0mx1qYJWH6iigk8tTXNbYi2EAvVrURk7zDhfDLgBp4TVpA3
+         lJ8h2J4QDJkNQV7xyYi+IKHZTshybhYzsBxJ+x4y1BusKkCB9cG1Hs7q8/UCB/uJAgL8
+         7iigH4eEsBlnKUGhbzBmak8cn+MGhvoGW9E9UVI6/TzDWvco8P9xcFhvpOm8Jl8ZaSDf
+         gXX+EAppddrsraDLDHMFOLgG8umTZrOY1cG6mJYsuPDH25t7I+OgLuPpBkjOXc4XGuHq
+         jaHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769592646; x=1770197446;
+        d=1e100.net; s=20230601; t=1769592650; x=1770197450;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=aAw5ZLwfH3aOqNw+8qnqKgdPaynl21dDWoO/xPxb8Vc=;
-        b=JqVuLyGT0c9/lHUcvk7ZCWjZGH11N/HGT5MwKxzHG64JuLiKc48sm10rINioz5frwS
-         n/jcZKePMofQq+1Bf7Apz1LhwgPaerUvYGB1XZpY7sBbp2eMz/oU1JKwFjJGB5z4Y1aZ
-         dpJ4bT/cyF74FqYmyd67P8J1nwDK5IVamxKoqcW+sZNUvESMzCmzc+RRWkBsQf/BPwfQ
-         zNdPFiCQuokcyZmXZu9Az0oWPztvpB31R1xSFETFGwpz+yiim0QK8ij3k6QpERRp6IRZ
-         JRkw8sXo5mj9dagxyXRcx34dr4nNDoKbbH2Enc2cOE7faLDqtcOAmBYG6rTwAos4kXcw
-         lTwA==
-X-Gm-Message-State: AOJu0YyU8E8NJt30zgO+nmRkyndBjPm14iiST+YE+kCTySZbhjI9mP2a
-	0pP9HMDeGhqaevsrDeJakJlVPo+lqbhGskzHT8L1hnB7/UGd57VqwvHz
-X-Gm-Gg: AZuq6aL6rQNcGGZ/+d6QL65RNTjJkLqKQf0lXmmBSCqGP5soorDvRnukKqh7y81s/fg
-	Tz9q8RkvQ8X2S4hDvah8o2ph3EDaOFrcKysZWoqN1AciVUSU6MM+fT8JAV+YL7EUEvYJgxz40Bz
-	F6YJkJ7IyMV/tXcY6klYBqHdFPFOAcHfH63IOmamo3/pqgf3UFAmEjWCPYxgXeOSu2RbNGBu+kz
-	q88KjDSsyDxK59+eFIrQ0J4G5FuBALRUMstF7uF4vjaGVuXKLIqmSK6EKDgccokPBHlUuoABhuR
-	d3xHNuDTadVR9F5kk8QlwacYeN/elNpJYGRQQBhVmb7NEoEKv9sGmevA5n/wdB/o5AUsxMX2qQS
-	LMlgyugLdVLxoOH2bZiPQ6yiMzD8A1h2XF1Cfsni/HEr4byQzQTYhiWywsj9VZAsVqLtd0bPFpb
-	9ITqoeil03DdItrpNSjpaJzWx4tf+XLnD7TSg2/QImhuOHf+1448SsKqO3Hg==
-X-Received: by 2002:a17:90b:2f04:b0:340:ad5e:cb with SMTP id 98e67ed59e1d1-353fecdcfabmr4259352a91.8.1769592646111;
-        Wed, 28 Jan 2026 01:30:46 -0800 (PST)
+        bh=CkTKKula0DQd5wgE6uWfgSKH0QJhpKGSFifSGYvHSoo=;
+        b=r6fcSqzEh8MzirN7sXpt3cdLn30jKaMzrtBbR/iWCYgZ6Bgp6yYThjvy5aq86v2Zkv
+         i8f8ohdCkQBKPDgoxLY8LfeaMnhy7JqdHtgQFYf+YQZhLRKHGi1T28z99qyJNrkJ+rWp
+         BpamGJnA+/YLGIddqGKAqju3+CO93E0ciaTI2HSFWt5JTfHpM0ab4pGoFcnx4xAdRDMD
+         IZO+1fVshyLC0wI+PL+l2mqOBUUtF72UkCjxpHhl0y4zMoulXE5H40S30JxejdJrg36o
+         D7yU3l5sZxHni4+RMWFt2IdoLO0HDHwQlmCYeFNXGaIp0zRc99AHQVzC9G4nWAM/cp8e
+         xz8A==
+X-Gm-Message-State: AOJu0Yw7y4jM5BDLuPY7W4CRZkdOx3MXo2ZFD9FmM+BBLKskEoYXx54/
+	fcSRmwFwNlqpmfy0D1VX93tFSmmS8aGtqtMNwxoSkYuv/BBdHP1oPqcFlFb2Zuazwmg=
+X-Gm-Gg: AZuq6aL16tfeGdhfJN0ASMYaL++EzP8Ti15c3snujlVn+qllQeExXddo7PNVK91nv9K
+	xGFf1B2xYoj+0EgOQPEryZETvRVihwQ2hcpQk4wEfGAqN0D715ykM7HGDs1yeZbYdcyLjczS9Zx
+	vqsFy45lbkLanMK1wtaPWYsHTpWruW3BM6PslKRXq9kv5wRkjAmfLdKjPZvwavjrIyfglesb0Qi
+	qd3D/jVso/BIpc16iyFeb8lkLIKsD96HSkbAiWhT1HLBeVT1OE2zeGobJCHPlUfKVt0TbLpGeS6
+	oS6PWyxxy1MPIFSJ/d76StroDZr8IiDDRbC0MSs4e5CyDq7ZolLoCY5SGb1YwWgz1OoO37OyisF
+	3ao91O3d5RXhbHy51tvu/j2xUo5rKHkabJ9yyWkt7NyLEY/zjxLZugt2hzzki9xuNUs3RzNqe5t
+	YmFrRKiFiwb5aPq4GiQRT/MY42Vbqbz5TnRBqmaRJ6rXK/AXsbxp1RMrFXUA==
+X-Received: by 2002:a17:90b:3a08:b0:341:88c1:6a7d with SMTP id 98e67ed59e1d1-353fed8fc85mr4504462a91.18.1769592649720;
+        Wed, 28 Jan 2026 01:30:49 -0800 (PST)
 Received: from [127.0.0.1] ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.42
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 01:30:45 -0800 (PST)
+        Wed, 28 Jan 2026 01:30:49 -0800 (PST)
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 28 Jan 2026 17:28:28 +0800
-Subject: [PATCH v2 04/12] mm, swap: consolidate bad slots setup and make it
- more robust
+Date: Wed, 28 Jan 2026 17:28:29 +0800
+Subject: [PATCH v2 05/12] mm/workingset: leave highest bits empty for anon
+ shadow
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-swap-table-p3-v2-4-fe0b67ef0215@tencent.com>
+Message-Id: <20260128-swap-table-p3-v2-5-fe0b67ef0215@tencent.com>
 References: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 In-Reply-To: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 To: linux-mm@kvack.org
@@ -109,21 +109,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
  Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=4411;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=8883;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=OidTajkMc0iGAT4CQSZ4FaMMIJHOoz6IAuhiV5n7RgI=;
- b=cmDmAT8wUMiXX1gPvgA7bHsM5uiECNHeKtIvXly1+RBv9uooWAdTksHnja5oCbt81l6FmPKio
- PhDaU+N3Zy1AhsScxqi1FhSMKzBvxMFEkNRKnMayV5T5SAlUDMCxC8G
+ bh=FaLMbQqW7ETAqIJMdO/kAwe98yiKvc5zz/kgiu2u1QQ=;
+ b=wcdA5+u19hk2eVOm518EnInTkK1Kz2Uhd2N4ABKu63Gee9CLdcQfxDzjgT60+ZoOXlERb9Eos
+ McI0ABQcO7DAEtMZZwcmYmiDO16gZMJ7sitnYARk+mNktRlEbX3JsKa
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5415340006
-X-Stat-Signature: 51yq74wmryira1k9fergjnuhqhdyad7t
+X-Stat-Signature: 6nbfbytmxdwkfm9dypyj8kz6si9ein87
+X-Rspamd-Queue-Id: D84C04000D
 X-Rspam-User: 
-X-HE-Tag: 1769592647-814456
-X-HE-Meta: U2FsdGVkX18MPSmxJcv7GTL1a7TVnV2+cJ3EaHbScK+PxWWVMmdwpJcdJjAFVqmp45iWlGB/pPI/NHu3PBWj3u9SXlYq9XDTyqeOf3Re+rCfGich9efwgu5W7HTWnOLbjI9nEaOHUIVsrF48mgkhrh8bOhDOnLxMf7zLaFwppkXUb+GpVMMum14HFtKx4eFfW6mvHg+QfcNodAr9kC30vima6TmLeUXO2GH8oMPdn4TtqVxsx4683HwQe28WzDIV9z207hBU0TREBmWoFAMEazuauTInGJZwEvOayDLRK9D5rEVJVxo/3FJPk+VfgNM8bMqRwmzAAK4mFmhotB/JCJwogHjSHB1pRiG/1c7QVr6OJ4QngrgauaYZtdw/fKQKAlu4lOKQsFp3f4jL4u3kU9T36pOoe9VyY45kMAS2w6UihNhyDGzheOvDftNm/aGOWA+ai4lOf2iO9grh0Z89gZfHOFQVBY9dmKrouauOSud/EzBv6WZIW9nPvApRgr9gZbtM+0J1IK6wM6KkXi5wGgyqubZJ8kyFHlD6ifzYWZb1oP8gNjyileu/OXB4zdc7PCmJntFfj7mIVZYtSt0xtHVUtriiaLuz6v/o8RYLh/zIC7hgOVhtGYaxB2AieXX2QvUOy6pT1eeTYFr5lOTL97JHllb9YQrAiygZJhx1nkvgL5SbRtFEbFztSwzPulZcPyLkCELM5lTCgtu+4sGBGCjj57Re67s4l24kSkAVaJ50uVZ5k3Ay684rhLHg4O15Cn9O9TlsiWglQzcJT6+D8knCKOpTTyOE1p/b49cQtQGwAKtIj+64Rn00StkNlsU+g/eQDYgCQroULSZnA9vZCUIQJgTK6gBuWAuFjr3fT7wfpCiq1DiBT4UvsPyq53VLjqOAS0T6umdWQH9A9es0znlceHkfKodVR3vvSU8fEzkEBfb4MEBAdqwa1Wp0P+kEXt40ADa4/y2mKrrOOQY
- cFul6SoG
- ykc1AMAassVddzo781gV4wec7tQ==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769592650-238708
+X-HE-Meta: U2FsdGVkX18S+gVujpvgdC4Qg1FR5qTbUreMzXI+gHpFinrlYzQv0ADclw7W33XcrPHC/uHd3P7nNcIxX+XeQRHbDkldA+X2Y6gjF6qFbyYXn70S8vQOTfB0tH0QwZRfeLmDeEFy2eZfZPa0co82D5nIi6u76nS9FPIzfBkgD6t+bynnOIko8enQfbBBCbIo7X9/QvJLPhuJ82o0+3Zel9Ava553MLrZ/3t6yTxThyoC2++0t1cdquGmZ/yoprJhXVccoWrEAZvL67WR+UH5ApzkKGuRKqyUg0e0FPU+pHAmlpjuhk46gfC/B/iLAXBeSaXhS/JB72/8UL9uBnLI/y5UqFJgA3SQcfgGfvqZOfHNT9RbCvmpbfA5a2mDP+fGgRZK8IQfJNV2FqEaT7QFq56A8nlP82RPrQuRocdek9/zYokoE9wakLnjFn9Fo2xm7jvd7dfq39hHU5D59sjL+2xagZlKMOWOJoflpJo6Gce6NeKi4tsbcg6aD7NhuSc/fmYnq0Q56h/6lS4cizstw/FjIs8Pi+pGUemQMrHbY4gZA9B4RPr9jqj6+DHONmMNefssNbywsxMyonNoY4nIjpzf2P1gX5zoKcfvJyPvoJ59KhNzm3o4gTRkiCGy2/QZFOHU8Yn/vbl+/xu6uK6o2Wp5Q5JgU5J4bDR70tYaFSwbXCN80NEtNm4xPw6U/zesFTGwbYXn99IKYttH85ZqLGgcY9XD3sfheIBpiFvrTDj7czlJJOcXsIJVER5WRwCHKDYk0qOrXrWjoJahCZn3ck7kHKl0c0F8WIwjj+v48P6oZqimb5rruO4GchjTZBsSgywiXrmoR86Fv+Sl8P04fpudCK3W9oJdV4BHqWeg7T4/yB/HcgGUCoaksl1yZZm+wSTdvoDtOSzvWjR7d0SBg3CZvP7WPG4yGw4PFGY+8NxhOgG//esxOLkF7ZZVz7HcNMZo+vuYAw+z1jX6s6T
+ D3MH11a0
+ My6Vmz4uEZ9fO542daQFm0Gh54C+PeLMey31AeHJqH+l1Uc+5Ep/qf7g/apEDbBmRooatxoyZiYpP2SI/HLRjK/IfeigFGdDlnW55rCfrNPm5iW1f8zFxR3JT+CMFRWXmiH7WvGY834qUTYZ+AYyW7e98hBBa26cjFQG3SF1xETAZlxtUuXjJ/dCNH1SJt1Fw/QWNVP3mQ3XFcMQTrI5Ms1UD82CwJaQI46lIzPiJeHAy8IXZmQnm3CSMzg/yl3X2G0TnzZYjJM/EWYIGGZgCRkjgQ5KJxUnicCTJc8QMqup/KT+I+7BM3IMgcWAvC7GKH6nwO6rmq93TIVoQxmkgAAYGSAGQxao7sNRotwdZlb8r+BUmwxLzGEl7gNL7566my9Z17ILxX3CdGwpY9/ZGSMVvUwNTjsodwsRJINuL4t5iwECUkuIobZ+IkA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,136 +134,231 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Kairui Song <kasong@tencent.com>
 
-In preparation for using the swap table to track bad slots directly,
-move the bad slot setup to one place, set up the swap_map mark, and
-cluster counter update together.
+Swap table entry will need 4 bits reserved for swap count in the shadow,
+so the anon shadow should have its leading 4 bits remain 0.
 
-While at it, provide more informative logs and a more robust fallback if
-any bad slot info looks incorrect.
+This should be OK for the foreseeable future. Take 52 bits of physical
+address space as an example: for 4K pages, there would be at most 40
+bits for addressable pages. Currently, we have 36 bits available (64 - 1
+- 16 - 10 - 1, where XA_VALUE takes 1 bit for marker,
+MEM_CGROUP_ID_SHIFT takes 16 bits, NODES_SHIFT takes <=10 bits,
+WORKINGSET flags takes 1 bit).
 
-Fixes a potential issue that a malformed swap file may cause the cluster
-to be unusable upon swapon, and provides a more verbose warning on a
-malformed swap file
+So in the worst case, we previously need to pack the 40 bits of address
+in 36 bits fields using a 64K bucket (bucket_order = 4). After this, the
+bucket will be increased to 1M. Which should be fine, as on such large
+machines, the working set size will be way larger than the bucket size.
+
+And for MGLRU's gen number tracking, it should be even more than enough,
+MGLRU's gen number (max_seq) increment is much slower compared to the
+eviction counter (nonresident_age).
+
+And after all, either the refault distance or the gen distance is only a
+hint that can tolerate inaccuracy just fine.
+
+And the 4 bits can be shrunk to 3, or extended to a higher value if
+needed later.
 
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/swapfile.c | 68 +++++++++++++++++++++++++++++++++--------------------------
- 1 file changed, 38 insertions(+), 30 deletions(-)
+ mm/swap_table.h |  4 ++++
+ mm/workingset.c | 49 ++++++++++++++++++++++++++++++-------------------
+ 2 files changed, 34 insertions(+), 19 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 80bf0ea098f6..df8b13eecab1 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -743,13 +743,37 @@ static void relocate_cluster(struct swap_info_struct *si,
-  * slot. The cluster will not be added to the free cluster list, and its
-  * usage counter will be increased by 1. Only used for initialization.
+diff --git a/mm/swap_table.h b/mm/swap_table.h
+index ea244a57a5b7..10e11d1f3b04 100644
+--- a/mm/swap_table.h
++++ b/mm/swap_table.h
+@@ -12,6 +12,7 @@ struct swap_table {
+ };
+ 
+ #define SWP_TABLE_USE_PAGE (sizeof(struct swap_table) == PAGE_SIZE)
++#define SWP_TB_COUNT_BITS		4
+ 
+ /*
+  * A swap table entry represents the status of a swap slot on a swap
+@@ -22,6 +23,9 @@ struct swap_table {
+  * (shadow), or NULL.
   */
--static int swap_cluster_setup_bad_slot(struct swap_cluster_info *cluster_info,
--				       unsigned long offset)
-+static int swap_cluster_setup_bad_slot(struct swap_info_struct *si,
-+				       struct swap_cluster_info *cluster_info,
-+				       unsigned int offset, bool mask)
- {
- 	unsigned long idx = offset / SWAPFILE_CLUSTER;
- 	struct swap_table *table;
- 	struct swap_cluster_info *ci;
  
-+	/* si->max may got shrunk by swap swap_activate() */
-+	if (offset >= si->max && !mask) {
-+		pr_debug("Ignoring bad slot %u (max: %u)\n", offset, si->max);
-+		return 0;
-+	}
-+	/*
-+	 * Account it, skip header slot: si->pages is initiated as
-+	 * si->max - 1. Also skip the masking of last cluster,
-+	 * si->pages doesn't include that part.
-+	 */
-+	if (offset && !mask)
-+		si->pages -= 1;
-+	if (!si->pages) {
-+		pr_warn("Empty swap-file\n");
-+		return -EINVAL;
-+	}
-+	/* Check for duplicated bad swap slots. */
-+	if (si->swap_map[offset]) {
-+		pr_warn("Duplicated bad slot offset %d\n", offset);
-+		return -EINVAL;
-+	}
++/* Macro for shadow offset calculation */
++#define SWAP_COUNT_SHIFT	SWP_TB_COUNT_BITS
 +
-+	si->swap_map[offset] = SWAP_MAP_BAD;
- 	ci = cluster_info + idx;
- 	if (!ci->table) {
- 		table = swap_table_alloc(GFP_KERNEL);
-@@ -3216,30 +3240,12 @@ static int setup_swap_map(struct swap_info_struct *si,
- 			  union swap_header *swap_header,
- 			  unsigned long maxpages)
- {
--	unsigned long i;
- 	unsigned char *swap_map;
+ /*
+  * Helpers for casting one type of info into a swap table entry.
+  */
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 13422d304715..37a94979900f 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -16,6 +16,7 @@
+ #include <linux/dax.h>
+ #include <linux/fs.h>
+ #include <linux/mm.h>
++#include "swap_table.h"
+ #include "internal.h"
  
- 	swap_map = vzalloc(maxpages);
- 	si->swap_map = swap_map;
- 	if (!swap_map)
- 		return -ENOMEM;
--
--	swap_map[0] = SWAP_MAP_BAD; /* omit header page */
--	for (i = 0; i < swap_header->info.nr_badpages; i++) {
--		unsigned int page_nr = swap_header->info.badpages[i];
--		if (page_nr == 0 || page_nr > swap_header->info.last_page)
--			return -EINVAL;
--		if (page_nr < maxpages) {
--			swap_map[page_nr] = SWAP_MAP_BAD;
--			si->pages--;
--		}
--	}
--
--	if (!si->pages) {
--		pr_warn("Empty swap-file\n");
--		return -EINVAL;
--	}
--
- 	return 0;
+ /*
+@@ -184,7 +185,9 @@
+ #define EVICTION_SHIFT	((BITS_PER_LONG - BITS_PER_XA_VALUE) +	\
+ 			 WORKINGSET_SHIFT + NODES_SHIFT + \
+ 			 MEM_CGROUP_ID_SHIFT)
++#define EVICTION_SHIFT_ANON	(EVICTION_SHIFT + SWAP_COUNT_SHIFT)
+ #define EVICTION_MASK	(~0UL >> EVICTION_SHIFT)
++#define EVICTION_MASK_ANON	(~0UL >> EVICTION_SHIFT_ANON)
+ 
+ /*
+  * Eviction timestamps need to be able to cover the full range of
+@@ -194,12 +197,12 @@
+  * that case, we have to sacrifice granularity for distance, and group
+  * evictions into coarser buckets by shaving off lower timestamp bits.
+  */
+-static unsigned int bucket_order __read_mostly;
++static unsigned int bucket_order[ANON_AND_FILE] __read_mostly;
+ 
+ static void *pack_shadow(int memcgid, pg_data_t *pgdat, unsigned long eviction,
+-			 bool workingset)
++			 bool workingset, bool file)
+ {
+-	eviction &= EVICTION_MASK;
++	eviction &= file ? EVICTION_MASK : EVICTION_MASK_ANON;
+ 	eviction = (eviction << MEM_CGROUP_ID_SHIFT) | memcgid;
+ 	eviction = (eviction << NODES_SHIFT) | pgdat->node_id;
+ 	eviction = (eviction << WORKINGSET_SHIFT) | workingset;
+@@ -244,7 +247,8 @@ static void *lru_gen_eviction(struct folio *folio)
+ 	struct mem_cgroup *memcg = folio_memcg(folio);
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
+ 
+-	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH > BITS_PER_LONG - EVICTION_SHIFT);
++	BUILD_BUG_ON(LRU_GEN_WIDTH + LRU_REFS_WIDTH >
++		     BITS_PER_LONG - max(EVICTION_SHIFT, EVICTION_SHIFT_ANON));
+ 
+ 	lruvec = mem_cgroup_lruvec(memcg, pgdat);
+ 	lrugen = &lruvec->lrugen;
+@@ -254,7 +258,7 @@ static void *lru_gen_eviction(struct folio *folio)
+ 	hist = lru_hist_from_seq(min_seq);
+ 	atomic_long_add(delta, &lrugen->evicted[hist][type][tier]);
+ 
+-	return pack_shadow(mem_cgroup_private_id(memcg), pgdat, token, workingset);
++	return pack_shadow(mem_cgroup_private_id(memcg), pgdat, token, workingset, type);
  }
  
-@@ -3270,26 +3276,28 @@ static int setup_swap_clusters_info(struct swap_info_struct *si,
+ /*
+@@ -262,7 +266,7 @@ static void *lru_gen_eviction(struct folio *folio)
+  * Fills in @lruvec, @token, @workingset with the values unpacked from shadow.
+  */
+ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+-				unsigned long *token, bool *workingset)
++				unsigned long *token, bool *workingset, bool file)
+ {
+ 	int memcg_id;
+ 	unsigned long max_seq;
+@@ -275,7 +279,7 @@ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+ 	*lruvec = mem_cgroup_lruvec(memcg, pgdat);
+ 
+ 	max_seq = READ_ONCE((*lruvec)->lrugen.max_seq);
+-	max_seq &= EVICTION_MASK >> LRU_REFS_WIDTH;
++	max_seq &= (file ? EVICTION_MASK : EVICTION_MASK_ANON) >> LRU_REFS_WIDTH;
+ 
+ 	return abs_diff(max_seq, *token >> LRU_REFS_WIDTH) < MAX_NR_GENS;
+ }
+@@ -293,7 +297,7 @@ static void lru_gen_refault(struct folio *folio, void *shadow)
+ 
+ 	rcu_read_lock();
+ 
+-	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset);
++	recent = lru_gen_test_recent(shadow, &lruvec, &token, &workingset, type);
+ 	if (lruvec != folio_lruvec(folio))
+ 		goto unlock;
+ 
+@@ -331,7 +335,7 @@ static void *lru_gen_eviction(struct folio *folio)
+ }
+ 
+ static bool lru_gen_test_recent(void *shadow, struct lruvec **lruvec,
+-				unsigned long *token, bool *workingset)
++				unsigned long *token, bool *workingset, bool file)
+ {
+ 	return false;
+ }
+@@ -381,6 +385,7 @@ void workingset_age_nonresident(struct lruvec *lruvec, unsigned long nr_pages)
+ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+ {
+ 	struct pglist_data *pgdat = folio_pgdat(folio);
++	int file = folio_is_file_lru(folio);
+ 	unsigned long eviction;
+ 	struct lruvec *lruvec;
+ 	int memcgid;
+@@ -397,10 +402,10 @@ void *workingset_eviction(struct folio *folio, struct mem_cgroup *target_memcg)
+ 	/* XXX: target_memcg can be NULL, go through lruvec */
+ 	memcgid = mem_cgroup_private_id(lruvec_memcg(lruvec));
+ 	eviction = atomic_long_read(&lruvec->nonresident_age);
+-	eviction >>= bucket_order;
++	eviction >>= bucket_order[file];
+ 	workingset_age_nonresident(lruvec, folio_nr_pages(folio));
+ 	return pack_shadow(memcgid, pgdat, eviction,
+-				folio_test_workingset(folio));
++			   folio_test_workingset(folio), file);
+ }
+ 
+ /**
+@@ -431,14 +436,15 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 		bool recent;
+ 
+ 		rcu_read_lock();
+-		recent = lru_gen_test_recent(shadow, &eviction_lruvec, &eviction, workingset);
++		recent = lru_gen_test_recent(shadow, &eviction_lruvec, &eviction,
++					     workingset, file);
+ 		rcu_read_unlock();
+ 		return recent;
  	}
+ 
+ 	rcu_read_lock();
+ 	unpack_shadow(shadow, &memcgid, &pgdat, &eviction, workingset);
+-	eviction <<= bucket_order;
++	eviction <<= bucket_order[file];
  
  	/*
--	 * Mark unusable pages as unavailable. The clusters aren't
--	 * marked free yet, so no list operations are involved yet.
--	 *
--	 * See setup_swap_map(): header page, bad pages,
--	 * and the EOF part of the last cluster.
-+	 * Mark unusable pages (header page, bad pages, and the EOF part of
-+	 * the last cluster) as unavailable. The clusters aren't marked free
-+	 * yet, so no list operations are involved yet.
+ 	 * Look up the memcg associated with the stored ID. It might
+@@ -495,7 +501,8 @@ bool workingset_test_recent(void *shadow, bool file, bool *workingset,
+ 	 * longest time, so the occasional inappropriate activation
+ 	 * leading to pressure on the active list is not a problem.
  	 */
--	err = swap_cluster_setup_bad_slot(cluster_info, 0);
-+	err = swap_cluster_setup_bad_slot(si, cluster_info, 0, false);
- 	if (err)
- 		goto err;
- 	for (i = 0; i < swap_header->info.nr_badpages; i++) {
- 		unsigned int page_nr = swap_header->info.badpages[i];
+-	refault_distance = (refault - eviction) & EVICTION_MASK;
++	refault_distance = ((refault - eviction) &
++			    (file ? EVICTION_MASK : EVICTION_MASK_ANON));
  
--		if (page_nr >= maxpages)
--			continue;
--		err = swap_cluster_setup_bad_slot(cluster_info, page_nr);
-+		if (!page_nr || page_nr > swap_header->info.last_page) {
-+			pr_warn("Bad slot offset is out of border: %d (last_page: %d)\n",
-+				page_nr, swap_header->info.last_page);
-+			err = -EINVAL;
-+			goto err;
-+		}
-+		err = swap_cluster_setup_bad_slot(si, cluster_info, page_nr, false);
- 		if (err)
- 			goto err;
- 	}
- 	for (i = maxpages; i < round_up(maxpages, SWAPFILE_CLUSTER); i++) {
--		err = swap_cluster_setup_bad_slot(cluster_info, i);
-+		err = swap_cluster_setup_bad_slot(si, cluster_info, i, true);
- 		if (err)
- 			goto err;
- 	}
+ 	/*
+ 	 * Compare the distance to the existing workingset size. We
+@@ -780,8 +787,8 @@ static struct lock_class_key shadow_nodes_key;
+ 
+ static int __init workingset_init(void)
+ {
++	unsigned int timestamp_bits, timestamp_bits_anon;
+ 	struct shrinker *workingset_shadow_shrinker;
+-	unsigned int timestamp_bits;
+ 	unsigned int max_order;
+ 	int ret = -ENOMEM;
+ 
+@@ -794,11 +801,15 @@ static int __init workingset_init(void)
+ 	 * double the initial memory by using totalram_pages as-is.
+ 	 */
+ 	timestamp_bits = BITS_PER_LONG - EVICTION_SHIFT;
++	timestamp_bits_anon = BITS_PER_LONG - EVICTION_SHIFT_ANON;
+ 	max_order = fls_long(totalram_pages() - 1);
+-	if (max_order > timestamp_bits)
+-		bucket_order = max_order - timestamp_bits;
+-	pr_info("workingset: timestamp_bits=%d max_order=%d bucket_order=%u\n",
+-	       timestamp_bits, max_order, bucket_order);
++	if (max_order > (BITS_PER_LONG - EVICTION_SHIFT))
++		bucket_order[WORKINGSET_FILE] = max_order - timestamp_bits;
++	if (max_order > timestamp_bits_anon)
++		bucket_order[WORKINGSET_ANON] = max_order - timestamp_bits_anon;
++	pr_info("workingset: timestamp_bits=%d (anon: %d) max_order=%d bucket_order=%u (anon: %d)\n",
++		timestamp_bits, timestamp_bits_anon, max_order,
++		bucket_order[WORKINGSET_FILE], bucket_order[WORKINGSET_ANON]);
+ 
+ 	workingset_shadow_shrinker = shrinker_alloc(SHRINKER_NUMA_AWARE |
+ 						    SHRINKER_MEMCG_AWARE,
 
 -- 
 2.52.0
