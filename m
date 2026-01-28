@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DFE4D46BFA
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 21:18:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE8FD46BFA
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 21:18:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A35DA6B0005; Wed, 28 Jan 2026 16:18:08 -0500 (EST)
+	id F3A906B0089; Wed, 28 Jan 2026 16:18:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E3836B0089; Wed, 28 Jan 2026 16:18:08 -0500 (EST)
+	id F050D6B008A; Wed, 28 Jan 2026 16:18:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 891866B008A; Wed, 28 Jan 2026 16:18:08 -0500 (EST)
+	id DF36B6B008C; Wed, 28 Jan 2026 16:18:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 770C96B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:18:08 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 23B2D13BAD5
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:18:08 +0000 (UTC)
-X-FDA: 84382635456.08.8DE8F31
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 25D1A40008
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:18:05 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Qka2XqE0;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D06546B0089
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:18:38 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E5021A0730
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:18:38 +0000 (UTC)
+X-FDA: 84382636716.13.6099256
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6AD9940005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:18:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bA70FS+D;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769635086;
+	s=arc-20220608; t=1769635116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZU7FEnl0OZQVA7ODIpy0SKJAEacHqZRjK4EaXTvPIzs=;
-	b=KKI+6YZC4SA7hovF0RsTf84NKygDSey3knjMfqu145wIqKJehYQsoZzCfEpNDG94pD4sz+
-	IOcMRgNH5HYd0AamzW5AWPZs4Ix4gA1ovKkSezsTeOM/Gl7ipI9J4WbS74dnYzXurtCWbR
-	N7CWc8pU7pN13JS8kNAHcqjwcYru45M=
+	bh=xp9Fgd2RIw247dmeHBhZGyViCdcfCoSm8F9wNiqAlQI=;
+	b=xZv2KADCdj0SL5TngkdYkrFYzIND+4a99tq01GIKxtT6hH66QJ4tOlsxurUVBQooIsVnlO
+	QlT6AgNBvUDduGePlDpxL/zS9gqCrVJmEiT1Wk066nnvuVn7vGkv45pUb3DsouXeDaw6BO
+	w/8KqKBn4E6GwvFpCAewXjSDHXqVn+I=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=Qka2XqE0;
-	spf=pass (imf04.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=bA70FS+D;
+	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769635086; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769635116; a=rsa-sha256;
 	cv=none;
-	b=ESiHjapUJzFBEfugx1KxW8yxOF6a2hgz87kU1V2kvNBOh946Sie7m3l8+ZKXD+uJGibKoM
-	cggIu4GsdOTzmHRxf25OVM1tKWuZEp+igt4fDSHZAKUsxz/J9r2rudqowAikEib3WT5juO
-	V8803Mdrd/6oM3LkZdtNeEhfyHJU6hc=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4806bf03573so1573185e9.2
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:18:05 -0800 (PST)
+	b=A8egLogx0oz+F/KRVSndDKRiGi0XCMok5gje7+buxok+qVou1HP8yucSVdsVOThQQv0XY6
+	OEMoeDwR5Q5S53eAiCScr3TH1i4pEm4M+KTFwrihN1Q2yLvQNTfEutlHHQUZdn6K0KZfex
+	8yuHT6x0qsNyh7MTMIw3rDm5B6ej/rA=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-47d59da3d81so10166575e9.0
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:18:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769635085; x=1770239885; darn=kvack.org;
+        d=suse.com; s=google; t=1769635115; x=1770239915; darn=kvack.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=ZU7FEnl0OZQVA7ODIpy0SKJAEacHqZRjK4EaXTvPIzs=;
-        b=Qka2XqE0zn8hm27nQeOGOeRlaTgzLkaVoxekDJV1XYAM5Ur8dD3iAAyhKG66MstjIc
-         lYigUD5ALnMn6pgEGDy9Z2hschLfKitR0KPXNlXJ0z6SgP9GJTN6wGbzAmYEDVui6Ip8
-         rL9ZoUObHAuIegMGrFzonLw/PwDDsG6TNUFKSIx0GzoLTMrZchKQUP0oKe39UMYfGZqb
-         m9Hydn3xTXY2A0kQ/6mNifyDiTHaBC+s9jaIDZ2bz7No+69qKXCGHlWRYr8FGXcFBAqA
-         8o4lZNDyjU7wmrWuwHAneQAxnuhU+h7TXHIIi0XE+NpsHblYpjcoAHftk9uSYCPD2Qbs
-         jr5w==
+        bh=xp9Fgd2RIw247dmeHBhZGyViCdcfCoSm8F9wNiqAlQI=;
+        b=bA70FS+D53+b826iCY6qh/q7mVafAAytXPXtuyOc70aJFKyNJkaURgpDY+MfGXfAC/
+         6Rgfq0jRDAgTd8olPAVuLoPsVvFnV0x0+cum5cwMx0nDsTSkuBS6gGG0gRBdi7W/jm0E
+         PSwk3HJZvjGLOf+pv60CRrAjgvRRmPJVWBdLYzzQSmDaK2qLdpjdZ5xPKmaStgvdvJ2t
+         rfnn1V62ChrJSxTa7jxNFet2ge2K+k162v0gmQCsuCraa0g5Y43d86DEKjlTqCU1nGNS
+         4/k+3SEo+gh5HG54GL1XLaA0/Q3LkqStufhb3Q534LbZXVue4YZQH4Vzr5095U+Nw5/T
+         Eo1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769635085; x=1770239885;
+        d=1e100.net; s=20230601; t=1769635115; x=1770239915;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZU7FEnl0OZQVA7ODIpy0SKJAEacHqZRjK4EaXTvPIzs=;
-        b=OX3uhuUtFpiJ1EvCi+3B6S9wYrvKVQUsmJq9NXS67z3QowX4GV4YAJoKvojcjPCfru
-         XY+mxr3Ln99Y8FtahT23nA82tW05w4XwBarAptlsNfCc45ow/C2dKvcs6RI3rx+boRO3
-         4ZQ81wgy5wOBnLnC5IZPgXR4N45hNvGlLuwmPXiL3CQc8PPPQZpBvJ4ba2xvuYZJxgO7
-         QxjCXmQB2w3t1uQIjyFIEA+dw4kxON8wxBxxNIHLtjqY/3yPuYJQqVi0NuW2NOo+1u3E
-         Y+sLbB7c108ejZ4hjvYkFgPIqpnnKydHxWU568T6LMNDTY85fhuVmqk/N+Pyullgy23f
-         vYDw==
-X-Forwarded-Encrypted: i=1; AJvYcCX7EX5zpVFSqDeFSOcg7RF31a7iE1P1/bHdtGknWuJhpKDILCfBqYAA+PzxokywSy+DnrG7iqhUWg==@kvack.org
-X-Gm-Message-State: AOJu0YyZjEegZspGVW2GRjBDyD44cxdvbgUZxsx1hM9r8g0tRMXYiq49
-	H+kxUC2rHVmfyTPAiToUSW/oj8f1brNkYJAUF/28kdA0huyzp/78jpz/DIROaYkgJ04=
-X-Gm-Gg: AZuq6aK+Mv5LnVBk8bEVmHrisFvxJy4RhZrDtKKDH25I34fzrLKXRxsgS/6t3p6iwvR
-	pHL6+cFKF9ceQWx8W/oSfP1tKwmKno8i6C9qNyq/cRZgUl8itZVr9T686AOA+Ta9x003P9u5ICK
-	2ynTEfnGp0MbsBGNzarWyRb2c4dtyGmrVsUBIO7hF7efQhl2YP0oYIbV4a0jkx7sDqZr+7culwh
-	ihUaIn/QcMzWxhC3cLltfXbdGqT1iP5ktGb6CxV732sNvlseeuoLgjLwy01r0GXqzUr2+jHyDng
-	R0t+8TrDnhfKxhsIBxNCHttmXA82VAtKQn39Ug28l6HJyMcqIpIBnRM6wdtwn4oiJz6wvGKCIIk
-	yBwFS7FS9X4+YxX2slcaBCxJVj3VhBY4K+oA/GjRTVvmfVYx/MgYm7zz24rB119My50JzZsM5uE
-	tneK07e/11EupVxTicLyZvXmqm
-X-Received: by 2002:a05:600c:154c:b0:47e:e9bf:dd8a with SMTP id 5b1f17b1804b1-48069cb2fddmr85513805e9.37.1769635084662;
-        Wed, 28 Jan 2026 13:18:04 -0800 (PST)
+        bh=xp9Fgd2RIw247dmeHBhZGyViCdcfCoSm8F9wNiqAlQI=;
+        b=CrtVa52uA5seIAJFlddhr8Hwc37iVwS88Dyjzlm3+6WPKVTG5A0Af8Yi0aD7/qNWYP
+         nihxRwvsvh9x0zgkGfnQxpIGIB4SozcNiF9sWc1zSYY+lCK0uQRRCLSFCinRmQTG6LMf
+         hRwYQgxmGtugYDQFCIKq83zoF7CV/eK4pcd0CH4epjdg79AIntloiCYXv7y2l7svUqMY
+         Cqw5ptso9RrQMLfZidaQHiG+U/81RwEOcIOLNx8I7pZyE1nNQ1bbTO9f82aUjN0Y97Di
+         LvEwi/tXvlGGHTG4bz7APk3ckpG4B7DnhegNxdvLxJTP/sjFh2u1/9+7Pq9b3JSXMoJA
+         0zsw==
+X-Forwarded-Encrypted: i=1; AJvYcCXnUTFUvclvMfpHE4ci2qLlExu388GGQl5j4fVPTavXMvn4hACV/0jZGkbqsjudnM4hcQunh1PCjw==@kvack.org
+X-Gm-Message-State: AOJu0Yze4uCRR8bgC6bPFn5lGyx/afWifk1pA/ekv6zQ6s6RWww3i0lZ
+	nQ0xFVm4YkWAXH+wIKPNjpdOlLqQixCcKrNW33RFkfSqmSqX6D697OE2LEn1rPmfoig=
+X-Gm-Gg: AZuq6aLCO72t04pQMJkT80GQyGiCK+XGP+hku8ztWdGjM6JslVa7+ctgVR522ONY8LX
+	mqacXfRbJitoxuzFD/wb3OWB1doeIMcQv9qXB2Z3exqn079Fr5oTkqY1ksXmksXcp/+T8DqAGaR
+	N631ah8bbkef8o5LndbC4CVgWEydEh5fgfbn1xRp0iws5dIEHJeTyXw2OYijdqmvWLeQiw5qbCs
+	s/Vtlb2w8O2o9HCa+I71G5j+996lP++stXzUNAjz6FBnsnA/7cJKIKOi8UjnI1IcbDy1hDRO2Tb
+	JVamT9U2WKi3DpJBCYnShGvtuAieje7hPxWTIizC9TsQtYHVEpFKQVUqNWuSI8gjiwYWKNpPHuC
+	2R1UMVWh5O6xdFoMn7hx/lPKKVLejQT5y93WPZk/K0DFvjNY6EWw3lPlz3genhcztRytCL/fGFP
+	uf3GWuuBWDYkhFu5XkVOpRWgNC
+X-Received: by 2002:a7b:ca47:0:b0:47e:e38b:a83 with SMTP id 5b1f17b1804b1-480828828dcmr6056415e9.7.1769635114891;
+        Wed, 28 Jan 2026 13:18:34 -0800 (PST)
 Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806ce4c515sm85708295e9.11.2026.01.28.13.18.04
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e131ce64sm9991967f8f.26.2026.01.28.13.18.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 13:18:04 -0800 (PST)
-Date: Wed, 28 Jan 2026 22:18:03 +0100
+        Wed, 28 Jan 2026 13:18:34 -0800 (PST)
+Date: Wed, 28 Jan 2026 22:18:33 +0100
 From: Michal Hocko <mhocko@suse.com>
 To: Frederic Weisbecker <frederic@kernel.org>
 Cc: LKML <linux-kernel@vger.kernel.org>,
@@ -124,26 +124,27 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
 	netdev@vger.kernel.org
 Subject: Re: [PATCH 03/33] memcg: Prepare to protect against concurrent
  isolated cpuset change
-Message-ID: <aXp9CzgCTBEhlDqM@tiehlicka>
+Message-ID: <aXp9KWl3VaNDMKPp@tiehlicka>
 References: <20260125224541.50226-1-frederic@kernel.org>
  <20260125224541.50226-4-frederic@kernel.org>
  <aXeZQoSHJ9QX7B6W@tiehlicka>
  <aXizUsfywjtIIN50@localhost.localdomain>
  <aXnMj1phN3TJZkNz@tiehlicka>
  <aXnymtIZSc-fw1b8@localhost.localdomain>
+ <aXp9CzgCTBEhlDqM@tiehlicka>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aXnymtIZSc-fw1b8@localhost.localdomain>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 25D1A40008
-X-Stat-Signature: ywfbyp8wbqxofw55q3sdjtt9935ymwn1
+In-Reply-To: <aXp9CzgCTBEhlDqM@tiehlicka>
 X-Rspam-User: 
-X-HE-Tag: 1769635085-147729
-X-HE-Meta: U2FsdGVkX1/1qvMW8m9uB3Y3vZKDwzGyiMS208nf5N/cJRnF4Y0O9glUQWTTG9d/Lhfl9dS1N8W4Juboh0ohq3rNEoXRYS3PLYzOqzpNsRT4M2OtfsanC/kqUAdPQwmFMyCAD9ao8U2IW1aftujo56xDQ4YvZVs55XV/U2En0p8w0/oJbjV+UhzX+y6OAZVDLPrmw8ot4fEK/vu977tKrCSLDX5RSrCwWrLT5NfdgDO8rgy2BxrYPh0k866VZCk52Vf0rSCeQhDCCmeUds8wsxgiiJ691DQo4st0EBEZXRJ2UznJwAs1t5mvP40xF3XW5pm+8xNxCHXvjZhza+ZI8x2o5OlzHiCpeHip9PsVMMxBSL+siF/KuL96hYvtVlQUp/OQlXMMLidueLpBFpHRRKbfzSHoT1Dc+U03/2N0RISgTVobvAtQfdKcO3+O/Kw824MvFSHMAwyRJ2jS0mvjOKvHDTtvKnw3flzzt0mox6QTE6yMG4vUU2BjmxEx5ZHlfBbQIAtym1qN96DEJDMoK4NSx4UKpDNd1tBescsW2jeMEcz6HHCBQqUKJKUFxN9nH6Y9OTPH5eLYLiBkdhx28JiFxPklTZHfTAwkg8b7vFaC63EFAh/r34Rie8jhsOF1d+T5j3bYp3zJcgwRB4PjBKBKRiyMcSqsCTsgj8eCedbTiUCLR9vFWdRQ4HdFN2g+zuiyZR3A9TXjSgGsw1eMRu85YrfDAIIKuTI+ISRiNUMqdGbjheoYA6W4QVC3DtuzcjT8YdwcedWdC3XEU1GhKHn0/XP7ZmP2L+9paOW5HHQdkGH/wJkrBQUz5+efyNpupob6KRxEMUkd31prHHHkfXNdNrC3Pgni/JAFJVpcxukC6lqA76aLFeuD8Z/OVllXdG88asu9UQujpeYVURULMd2Liy99z78Uc69dGFO5jx/6RBXCqpO9qvjNS+PuaDKSSSHjCcn609Ju+zM+H7m
- NvgYNEP4
- /qwQ/1ThvHUdEYHt/dVJZLcM1movBm1UoHmXro6+ya2Wqs5/OH3is7BIRUE6+5jBHZFXZ+Q7kH5h6Cb3yX/29rinvvDIWOF9P8kN2UviiBIkJPITgNN0mRtGXB9BUz3Cmn83arI7JNt2OR1vdT4TRCcTzl1Zehh/zLTEO7G86qPUodlhd0YIAnL5hgQTc2WzwaJZfUOloxHNS7lflsgHU9lk2xrM5CnNJIapjhlBqMDBQR+BWkCYNw9C97omhELdYRRB2PZEnnHlUR9VQy63D68jDH0Alh0sFChIGV8WiviPOIX7j+5NvXT2JRmo5WyLJObsa9Si4C4/U1sWLF2r/1buo7hCWu21EgUpzgmagtdjxV1mEpFiZqvQEQhPUa9ZevGKVkuObLEZOMpsW0ciq09gmLQ==
+X-Rspamd-Queue-Id: 6AD9940005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cwguk7j1tijrrkefnccu4fat7huwd8hk
+X-HE-Tag: 1769635116-501135
+X-HE-Meta: U2FsdGVkX1/si14T0mbtJP8U+xiFwcHfnFUfNMJPERJgc4ymrphHG9usxCLjqzqkI1v9KxodnDQzGj829h2LJnUaTl+5mFQPAcCLk24F+JyyDS1EQz1HtU4fA8Zq6IquOOHK+es4SS5empkkLfHYD7OPEyb/K/B43etJQzwnzJvIPa1o0vPrZOlaFlWQMlj2eMJKZ2txD9M6d9Jf7BsVOB9hvex7wB45TmNKcP3M44nQ3zDYWrXnh4+Fz0ztuHaTRDr2wuB1Y0gt2sOTEsEwUa+S3IMJkcby9suWOjYlN24Z1bIudfjkgWqxfHyEbzGCAl1CR7q22ddcI/dCdwQysoKLbVWDamjXYW5ppGR9wAVT1ZkkaXlIhAl5gC7TKUyn+rT7rzqG1wDAMGJcCQunnxwFLYE4iXAJlQFT8QuPtiOyuJrpHe77kbtbr4HbA65sq3aAQKfRc7YFXgxA1JeWOWvB538wdATr0XxL7NlcGDVXO0bLPrHL8bnK5KJZh61gDzHgyHWWjYZ0/WQI4/KAkyUjk9RXN1MNZwYlKb25l5hsqy9IvTjiT0koi7owc0+6n9LOf6CajNzZwh8r8tyy/+pdC5Uj+AOYSsoJ2aJ89Zf40SjepVzN5IsY2W6pq7XuTEXnVx51ufBg1o1lBM2G2L/h0Josb1gWGIW+LZqq8MORZBVC5WPEkTa+cMI4DgKdJkjovvyQJTie5s2Q8QKK2g6/OwDuhu71efzToW+v+SjYSbCnzJ3tVlc+n0UjWgyizFeAqDG64Cy6Mf/DexSx7uo7ybOWw07cZM/jylZa9vxc4MDuyhU79kiq1G87srQH8heqsOHzIZgNE2IMBAsHFWDn0py88y27yCXgGTOI3yA3bcL+x+KhPhJfUVYSj8izuMUqPPu9Rq6nG4bbEUlMa0/W5HC+nb6hBrDbQNGdmhDt71UvfzysbhzCljSm8vj7OhqR6qK636+1QxRnS8e
+ VdLGZryX
+ xsBt2zuwPREoYgJs9GSa3TOeZ5Fq3BSs4OmH9ltmXpKI/ovrU1xsSV/IJ5Ef6y2i4UjY68d1miUdUek+I5Jb1be6sfFxmY2LURsl0eocfBDBckSd1BLQrpWLM2BNCNxdsfOgpEzppe/R6ywXn9yTGV6K817bxsi9vlNyG3ZIsgxGO988b+H9jxFc7yAFd4ZjIFUbW5HIfzDIH5g9sjle6uVn/+daYvOA3tYkdl/gw7p6CG4u2IckiW7Qg9ETVfypWAfM0OmTR0d4Ksi/DoM4GKJaKfZuTYfpiyaZUbYGGTFTbRtFLeT4nFtz/AsGkRM0fdIT6W9Bi+rC6JtFmyldMFAOZySsGt768QwR2rnCMt9HANhBo+8sfmUdOfaI/6L4zA9aAL7d4nZeB8dmMjBwF5D6cq/XUeFh8b1ecgA2Caiahf1230nqPxZL71y6jpEFbxyzIt8gxsM3EMxMTuzMW8w1ERg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,66 +153,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 28-01-26 12:27:22, Frederic Weisbecker wrote:
-> Le Wed, Jan 28, 2026 at 09:45:03AM +0100, Michal Hocko a écrit :
-> > On Tue 27-01-26 13:45:06, Frederic Weisbecker wrote:
-> > > Le Mon, Jan 26, 2026 at 05:41:38PM +0100, Michal Hocko a écrit :
-> > > > On Sun 25-01-26 23:45:10, Frederic Weisbecker wrote:
-> > > > > The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifiable at
-> > > > > runtime. In order to synchronize against memcg workqueue to make sure
-> > > > > that no asynchronous draining is pending or executing on a newly made
-> > > > > isolated CPU, target and queue a drain work under the same RCU critical
-> > > > > section.
+On Wed 28-01-26 22:18:04, Michal Hocko wrote:
+> On Wed 28-01-26 12:27:22, Frederic Weisbecker wrote:
+> > Le Wed, Jan 28, 2026 at 09:45:03AM +0100, Michal Hocko a écrit :
+> > > On Tue 27-01-26 13:45:06, Frederic Weisbecker wrote:
+> > > > Le Mon, Jan 26, 2026 at 05:41:38PM +0100, Michal Hocko a écrit :
+> > > > > On Sun 25-01-26 23:45:10, Frederic Weisbecker wrote:
+> > > > > > The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifiable at
+> > > > > > runtime. In order to synchronize against memcg workqueue to make sure
+> > > > > > that no asynchronous draining is pending or executing on a newly made
+> > > > > > isolated CPU, target and queue a drain work under the same RCU critical
+> > > > > > section.
+> > > > > > 
+> > > > > > Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a memcg
+> > > > > > workqueue flush will also be issued in a further change to make sure
+> > > > > > that no work remains pending after a CPU has been made isolated.
+> > > > > > 
+> > > > > > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> > > > > > ---
+> > > > > >  mm/memcontrol.c | 21 +++++++++++++++++----
+> > > > > >  1 file changed, 17 insertions(+), 4 deletions(-)
+> > > > > > 
+> > > > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> > > > > > index be810c1fbfc3..2289a0299331 100644
+> > > > > > --- a/mm/memcontrol.c
+> > > > > > +++ b/mm/memcontrol.c
+> > > > > > @@ -2003,6 +2003,19 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
+> > > > > >  	return flush;
+> > > > > >  }
+> > > > > >  
+> > > > > > +static void schedule_drain_work(int cpu, struct work_struct *work)
+> > > > > > +{
+> > > > > > +	/*
+> > > > > > +	 * Protect housekeeping cpumask read and work enqueue together
+> > > > > > +	 * in the same RCU critical section so that later cpuset isolated
+> > > > > > +	 * partition update only need to wait for an RCU GP and flush the
+> > > > > > +	 * pending work on newly isolated CPUs.
+> > > > > > +	 */
+> > > > > > +	guard(rcu)();
+> > > > > > +	if (!cpu_is_isolated(cpu))
+> > > > > > +		schedule_work_on(cpu, work);
 > > > > > 
-> > > > > Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a memcg
-> > > > > workqueue flush will also be issued in a further change to make sure
-> > > > > that no work remains pending after a CPU has been made isolated.
-> > > > > 
-> > > > > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> > > > > ---
-> > > > >  mm/memcontrol.c | 21 +++++++++++++++++----
-> > > > >  1 file changed, 17 insertions(+), 4 deletions(-)
-> > > > > 
-> > > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > > > index be810c1fbfc3..2289a0299331 100644
-> > > > > --- a/mm/memcontrol.c
-> > > > > +++ b/mm/memcontrol.c
-> > > > > @@ -2003,6 +2003,19 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
-> > > > >  	return flush;
-> > > > >  }
-> > > > >  
-> > > > > +static void schedule_drain_work(int cpu, struct work_struct *work)
-> > > > > +{
-> > > > > +	/*
-> > > > > +	 * Protect housekeeping cpumask read and work enqueue together
-> > > > > +	 * in the same RCU critical section so that later cpuset isolated
-> > > > > +	 * partition update only need to wait for an RCU GP and flush the
-> > > > > +	 * pending work on newly isolated CPUs.
-> > > > > +	 */
-> > > > > +	guard(rcu)();
-> > > > > +	if (!cpu_is_isolated(cpu))
-> > > > > +		schedule_work_on(cpu, work);
+> > > > > Shouldn't this in the guarded rcu section?
 > > > > 
-> > > > Shouldn't this in the guarded rcu section?
+> > > > This is what guard(rcu)() does, right?
+> > > > Or am I missing something?
 > > > 
-> > > This is what guard(rcu)() does, right?
-> > > Or am I missing something?
+> > > I am probably misreading the patch. But I've had the following in mind
+> > > 
+> > > 	scoped_guard(rcu) {
+> > > 		if (!cpu_is_isolated(cpu))
+> > > 			schedule_work_on(cpu, work);
+> > > 	}
 > > 
-> > I am probably misreading the patch. But I've had the following in mind
+> > guard(...)() protects everything that follows within the same block
+> > (here the whole function) whereas scoped_guard only applies to the
+> > following scope (here what is inside the {} in your example).
 > > 
-> > 	scoped_guard(rcu) {
-> > 		if (!cpu_is_isolated(cpu))
-> > 			schedule_work_on(cpu, work);
-> > 	}
+> > So both work.
 > 
-> guard(...)() protects everything that follows within the same block
-> (here the whole function) whereas scoped_guard only applies to the
-> following scope (here what is inside the {} in your example).
-> 
-> So both work.
+> I see. Thanks for the clarification. I would probably prefer a more
+> explicit call convention but no strong opinion on that.
 
-I see. Thanks for the clarification. I would probably prefer a more
-explicit call convention but no strong opinion on that.
+Forgot to add
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 -- 
 Michal Hocko
 SUSE Labs
