@@ -4,102 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF8DD35690
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA904D35697
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 09:30:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2D946B0088; Wed, 28 Jan 2026 04:30:35 -0500 (EST)
+	id 21DA76B0089; Wed, 28 Jan 2026 04:30:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D05376B0089; Wed, 28 Jan 2026 04:30:35 -0500 (EST)
+	id 1DED96B008A; Wed, 28 Jan 2026 04:30:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C08266B008A; Wed, 28 Jan 2026 04:30:35 -0500 (EST)
+	id 0A9DB6B008C; Wed, 28 Jan 2026 04:30:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id ADAFE6B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:30:35 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D03DE14055A
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:34 +0000 (UTC)
-X-FDA: 84380852388.29.E1DAEEE
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id E98F4140006
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hM0kmJg+;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F1ED36B0089
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 04:30:38 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8815713B223
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:38 +0000 (UTC)
+X-FDA: 84380852556.20.27057DD
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 83C7D80011
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 09:30:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KS8WfrQW;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592633; a=rsa-sha256;
-	cv=none;
-	b=PRR9USp2iMij/cOgPvfHWGqHW5PoCN1HMT/X88qJzsugHV17x5n4/YDhljLm7XRWYXdtST
-	m4w82HFwKCXlvYJJr+P4XZ5w9/Q4twGEYqtj/M9tgZAtMjdmU0Nc66MNZFxkWN9T/2Oyfp
-	E12xcGahSA1Zsas9dB74RcZVs0nT1Ks=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hM0kmJg+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769592633;
+	s=arc-20220608; t=1769592636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=CWU5+GI80rzKUvfGPShbg6eie5kBzuS4F6usClrZBLY=;
-	b=CeGgd9risSLmjaC1QjOl2g0bFLDJjx94zA7oq37Q0184Agt0TqiKXjTmrXWS7FhySnnZz6
-	4/0wuUNgdjASO+e+khmC4biN4X3yszfz0AIInlJT3VloSqMlUxsaXpR8nqDoMNWt4R66U6
-	PH6px4PbYWgxni2KEOvqqYbKD6TiLJ8=
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34f634dbfd6so5474881a91.2
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:32 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JXkKpfW2fKRP2DHBX2nOhkvpUQvYM7wlOqYMZBE7moY=;
+	b=ziRuzcv92Z1x9ja9JZfqXES0zggev9N0KuoFvdDc28rIxQPw0gd3svs3weOoVkeel+J1Aw
+	VkpiN0UMzINtyS09faALXrHIWF69Rh/GE8sVK/0HAcl/BLKUAglSM9m/JTDkdYOT/YJiBd
+	IJQvnRZPzX+iuyJwMniOiCaShtY+5y0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769592636; a=rsa-sha256;
+	cv=none;
+	b=k+KG6Io9CH2V9QKEKyY9You6wWkkpigC3HsNebj0juaGVZYaakxQ0cE3P1Jwiq/yKuj8jp
+	WO00/eU5zSYFhfqfW8n1bzvcQfc7AUz4pmSrms7nPpsMJ118d7KFqd+KMSEg+cvjEiGz/U
+	tm+kT92Vt7WVXfbgDWKxhZPRaM5j3yQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KS8WfrQW;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-81f47610542so3539243b3a.0
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 01:30:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769592632; x=1770197432; darn=kvack.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CWU5+GI80rzKUvfGPShbg6eie5kBzuS4F6usClrZBLY=;
-        b=hM0kmJg+7Q1iAeHOvJGWwpW58WTziF46AD0LbFakf0t9/Yvd6lR9Ob0cwpefnGbl4A
-         mEakw8hB6uDwpu+P1yBwObygoyVNjnFkn1F3iVT+R7y8AER8I+uue6H4RmVlXcO8Apty
-         ++scyUktfJyMb/3APTAWsYVpbd9ZE7vrOkbGs3GyuZibZQZTw+LI/mB1NbxIV7q4E5XZ
-         3maQzz1Uo09I1uxnEE/auTk1Uj5rI0tGeikDeANimyaO0iApTPAmMMGV5B8fdp5YPMLI
-         8mTvFoEulzMhrIu5Zlbm8GO48Uh7gBhruMfZ7qmTw12XKKwFkccAtxHqIqAUbEMgCqmX
-         W1Cg==
+        d=gmail.com; s=20230601; t=1769592635; x=1770197435; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JXkKpfW2fKRP2DHBX2nOhkvpUQvYM7wlOqYMZBE7moY=;
+        b=KS8WfrQWcH9p7Kd1TqkXbjyeuPsB7vMUw8TzMN3uuI7aYDRJMvZcspmDKdRZXynqUt
+         Hr24CB3Y8MsEbOQPw4O+q8A8gCTGYF9DognGkKKwrjOy/OEHxqz5EKPsps8LRSbQUhky
+         NXHCJvHuu7RQMKxn4eUI3vpAK2i3dnj+NVTLY4yKmcoS9oiw4/xbf6pHYiYBs7SBjxU6
+         Xn0H1uvFL0j3Xjg9+RyIzJ2OUceFC5m/f6Epss1OrALrOqOQGu6OIvbburwJDXaIMDZk
+         xuijHKP34aVf5YoHFtLSb8rkx0otFV4UGIVpL9k3n76QDELuYl5bHGg9yp2m2ahCjkEo
+         WEZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769592632; x=1770197432;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CWU5+GI80rzKUvfGPShbg6eie5kBzuS4F6usClrZBLY=;
-        b=pkTweNzAP+u6RD91vzUj97YsAdKT+BsJ/zEDF/cZcc245hQ2uONHhsvCtgC6lk5N97
-         sBxXJvCNDyfMvwS4qDs9YEo1fBhzgsGyKk95IieUGkeMGr1CPOpTEyThXHvxYppKu7X3
-         W6N787hlWIPOI35StgyY4isPQobADqvIpoG7G/j5r2M2yA1ZvzjJ36YpXq3LG/bw2fw2
-         j9c/850mZK1X3s01R7aSLP4gOszdqao5t6plqFQmSjwarbg1bPOvgbva8rmMLPrFHr99
-         lTBd1x/YHZSkMryZSdFm1Hrdf/RLnq1iRE/lCBx/L5I0qioKXbaJ+ROVuK+Wb5VCjiDH
-         jozA==
-X-Gm-Message-State: AOJu0Yxf7FbRL24H7K9YlThJcR9m5v5gx67Rx9EKWztp5Fw/2Ih5Xmay
-	KAeMcqCbCI9S0Eu9e4wbKsA26PrUlM8xtFi0DrfZz9gaErI+xErW8OnD
-X-Gm-Gg: AZuq6aIdsNckwNGHcPGPSF5tjN3WicpA5UXylSCUQWLfiNePGpK0q+skl/LQpcEYcPO
-	WVcuWawIrXI0xZpaibD4V7WpvtQdvjeqDXQ82P/mkCL6UZfYCZHcc1kG0xgjY5Pbr7ez03M80Hj
-	6hdNUkYo8q9TAuDRapZuQHB/pYnM8UxBq+kOgRtX/oNeqK9uFNZ2EfbC4Keq5Vs9lRHbMsIMWB5
-	GXQQgm/Hr8OMqeE99VPB/owCHg6CtBmbY9m1yePRQ/6magW2DXxyDQS5R6G1Uowuv5UfgXUTM0J
-	ruD5dmydDpkCk5ztIpqxz39AmbCIx28/m22ODxFW2TwLjNIOWEqy/hTdWREaNmczHJbTi5P79A4
-	dOifqeWW5msHb7TvwnThwmTGSqvxbjeByvoi4rpqGEn+CrKG+/i/gWSrd+/xicgqFDem1uJaOCs
-	Gt+VT8wFvENgLZHokXoz7YvwjSfvbleC554czB9z92L+Npd8bGN2Gq6guoEQ==
-X-Received: by 2002:a17:90b:2789:b0:34c:cb3c:f536 with SMTP id 98e67ed59e1d1-353fedbb396mr4978524a91.36.1769592631687;
-        Wed, 28 Jan 2026 01:30:31 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769592635; x=1770197435;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JXkKpfW2fKRP2DHBX2nOhkvpUQvYM7wlOqYMZBE7moY=;
+        b=A/Sa+8Ac8AsvevUIMnEx6Tf9w8Ood0qbpIyBfO7r425X7chvAPq+IzLlwEfOeBByiD
+         OoPvjiRxEX/AT0DW9dWd2cOn9Lf4LO8vx4KBqjNXl7G6TtfdToD8takepAE4eUQaMZ2V
+         /Sb/hA6IKZ1NS0EfnfroPSGTf7zKhDkdOXU6G962f4Rbl6W8mNkxqh/jZqCXX0s9FzLY
+         cZhviIXr6IG4ucGlFHycxEGU/iibBBtFVSTaM0m3eO0lAqUbHLMbK0pUmeCYZVS6SAo7
+         Gv5EYAGwiq0Mga+qQ3DoiOX3fN3ipRjVzr+JQsmnL4Q9Wb9z84ADgKCxJJ3FWBvmPdqx
+         kAVw==
+X-Gm-Message-State: AOJu0YypcLEgMVTka8aviJ4JywwNNY/z9eC4SvoFJr1KMikgysLUlkEk
+	+DKSjSiv1nHd2Rrg4MO7UJzIe0dcoCvpabJblvUx8xhV+N+1aL5q6Lyi
+X-Gm-Gg: AZuq6aJqFtc/OO5bckHX7OLeASRBl/9BzEL3IeC5ntJG/qSmK4KASvAQO+GfqFA524r
+	2rVw38gIm9A2PWNKCQx4Q30DU7fyZQwvRuuZW5J+ReCo1JqMAEdNSeABErWJTxF+ecoBtJhrI3Y
+	1QeeSHAjYeCQ+iRv5R69zUu4dPBJpa1X+AoIWHHmEjms/GDs9VqqiBq/ZxpyRgnQImI0usn9akb
+	C4ZMkVLqYG5MiiY/Yq4srVjw0+szhPDog69sZEiBRwd+t6wGcOhqV6Tbe7SvY47rdQ4oxn6LmIp
+	F3oJtoR880EC8c/77C4x2bRCI8FAgM36V+/S3GDJftyfP37keVubjnBOANBokqdIZxjMrXHgu7s
+	YLZcnfwxFROvIev413HrasVqGKdp/1En3exlJe7ADuMfOOtLNskQe0yXF6PwqENfKPrRb5LLmRw
+	PB+g3f5R7OPqTCpLQEQidSkTp7cQ86uEyP6wmfyjf3peezNKQ93MudE0FqWq90hSQhZVKH
+X-Received: by 2002:a17:90a:c2cb:b0:34c:4c6d:ad0f with SMTP id 98e67ed59e1d1-353fedb04e4mr4505185a91.37.1769592635182;
+        Wed, 28 Jan 2026 01:30:35 -0800 (PST)
 Received: from [127.0.0.1] ([43.132.141.21])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.28
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3540f3eca6dsm1872235a91.15.2026.01.28.01.30.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 01:30:31 -0800 (PST)
+        Wed, 28 Jan 2026 01:30:34 -0800 (PST)
 From: Kairui Song <ryncsn@gmail.com>
-Subject: [PATCH v2 00/12] mm, swap: swap table phase III: remove swap_map
-Date: Wed, 28 Jan 2026 17:28:24 +0800
-Message-Id: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
+Date: Wed, 28 Jan 2026 17:28:25 +0800
+Subject: [PATCH v2 01/12] mm, swap: protect si->swap_file properly and use
+ as a mount indicator
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/13MQQ7CIBCF4as0s3YMUCnqynuYLqAdLIlCA6RqG
- u4u7dLl/5L3rZAoOkpwbVaItLjkgq8hDg0Mk/YPQjfWBsGE5IJ3mN56xqzNk3Bu8TySai2RMtJ
- C/cyRrPvs3r2vPbmUQ/zu/MK3dZM6xsW/tHBkqNWJS2m1uRh2y+QH8vk4hBf0pZQfvk7J8qwAA
- AA=
-X-Change-ID: 20251216-swap-table-p3-8de73fee7b5f
+Message-Id: <20260128-swap-table-p3-v2-1-fe0b67ef0215@tencent.com>
+References: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
+In-Reply-To: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
 To: linux-mm@kvack.org
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
  Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
@@ -109,21 +109,21 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
  Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=4647;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769592628; l=5423;
  i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
- bh=twxbP0g4CrwvblUjXGxqvuvnnM3ZU03eSXMb1SiZqyw=;
- b=lCPeHPz6DUFJ2ww2Ne99AdSNMb3RP8bQZPv7KTiwIa8i/Xse0MopcYlXi+ciRLcD5+ibVAzG3
- 7v2N5Ee6wBuCWZ3/+3qOnRC0NBtow+djUmz6+9KwoozbKVLBnmr8XW7
+ bh=KCJ3euqA2qAaRKKZ+5BOjIB6OnqWy66OxHgNUHCngaI=;
+ b=yUDffmpYnq0E0QTlzeFqQIlUHmu6snQJuTNpipCSscvVCs/a0w84zEQXy7hojSBMeXeMrbeiT
+ uuD5ZksxBlFCx3xtlmgpeUcAp/e/Q7vCV0UdfEg0XIrukAPUSaAbqkI
 X-Developer-Key: i=kasong@tencent.com; a=ed25519;
  pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Rspamd-Queue-Id: 83C7D80011
+X-Stat-Signature: 58sijs1x9xnhu5ag74uidtfyknnq6xec
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: E98F4140006
-X-Stat-Signature: ig88e55379cmjwgfqkg8nz1qcq6kyogq
-X-HE-Tag: 1769592632-365665
-X-HE-Meta: U2FsdGVkX1/M1biNI2XIqMjyD0yObwCbYU1fD0+JbIxES/SkLlVDzNa+2giA8z1RYBKP4vyHYYK7SElNMEc9L4JzuZdkK+P5cMDU+5FPT1w3/00x/t7inO/IGUWJ3MVhmPDEv4y1SQrIG8ACUzhhRS7yIuEhZRGemIg8r7g+sym1sWmL+CcantFlgL4J61c6bpPSZaOMcPZcxZ6Bq4zZHzQDerZpYi7Mwgc0V9n5PK/CtIkpKjNmpb/BVMzLUDSlY4kqFT5yNRolZ3/YjA3ZuTgJVOSmcdB0lfki76pG+7Qv9ScdHxI5BoLDHNwsL4Nw0h7PtZ/jziiu4TbsanKBnOFokcGUDIpEgxZ8uG7lGw6BxWuhRtN8M4NL6wb1BnlYexlqtFzH8rF3bWFhpuaYm0P9yE3Uy5uCGTp1BgvAvoulry/tjZMdA3G7r0aSCqul/8ynl2a9QYBQJP1PdGRxhVF1fRg32WOuCCGeoLLqPB/rCebrvujyN1b0HRD4oQ/6PViTo9FlmYfFH6hiwmK4BX+BO1G0M9LxiEBRliWPddl845qG7iiyUytmn2CKbvL9nKnqaXAiZCii8d5TN7wXMxWwOYOBHfxDzQmGxr7+m3GYI6XDT3GxiIJBjKg0TUbVSKmpz7j8KGRW03goIgLSjM1I5oe4c557uuW57W8Gcr9197o8b1yNRIHMLbKKGbXC1KEM857mmhJAFUfcDFWgfk/861AgcSGp6GIhWw5PwkXhRywIdxhYv20+ZT/6rBN24GOVjlz6YdExm2MqTKB9tY6MXv8+/YOK4q8EWg1JGqy4OIjwPQ/GVAZ3eH6ps/OzEtgix6jRcpWnUhL2irbAjXCMMFhpogb8xSuXnqBOporxM2xly8Et4PJbwv1++Y1JNvGQ2CMLhO/1orVdfHx+KWgZKS2j7FrGIbHmCNBAmFRUybThE8SRg1e2cJ3geoqtQoERB70X8/Y+fZA8CDm
- TcH4HZ+Q
- 4pmWHB5OmcHnbeJ3SrziAO7LrB0SheJ5oxyhAixeONvwC/LM+xx4+GCVUlWq2c1yo6p5HzjVtp8x5uN5XYashHYYbPu5W2YfftnKVcpgNCX/1S5O+HJGabe9d9bj62bNuyQRXgGefmxGIsfah8IjtO9HT20/v4+HnNx6j+zsOz/MGf8zbyQaYsezcJYDon3/sU868t6L/BCJO4Fm0IEgtuTWUtBiG/hcJc5ZEv5bp+yCCJux0zzTVDNxXVoucZE5zLKG6IBT3kT7jVQchGUIxI6vXU/u89htgMF03tr8CL4iSK8eZy8EF4hDIRFGgqrpvObr71Z50u3k4kVGl/FtZ6o6PIjzBqhEdIdKbXX63FZwA8jsZjvdMPDPHPtBVqbn0/Ed4LtqaDjzncm4zEva81mzuMglER9RRu7W0Rx20e4YHslpRTbHDvOsm3wBvVpTbvBaEK5d3Y3aAP3Y9f0ufFLDRxvT3LBTRMiK/N5cS1RGOkMm45CQN8Iqbwg==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769592636-676359
+X-HE-Meta: U2FsdGVkX19YrpwveZur+qb+rdPeWRYPOZrImjrM3sciqMsp8DeMGgSad7QRN5ISoHqI1JirbuJuVFDSvMROiXeJhtB4nMsHWFrwaRkMw640FIgBUOMTF5vdr6Tozr5lvVSXVBL7K+p9j+3xMAVkAdHRT4n9AU6YHiyZxrzISbTe07h/aZ0AoaMUmqlLjHZHPGJkLomJpGVHqB7UkP6TJinAj168AiAoHeI7REkeAQZyC7DOyZkMMTvWP+UjyQztH5FhtyyVjXlkmTHWTh+MkRo9rVEzTGlhXgivh22mv8cXXJGOTwfVNJ47cXk/hU38K5pYhPPxXdDMoJ57JMhTxjlBLhce4y53aI14ULM5cGwyGsMC4C3NZX3yc903TDAe9JSbTzEpGcjenlTgJj9yi/63CxgwnFB2cNVZlNYcxLEHXiuM+1MxQ+4nvYpPOM84PGbkXZZo7NH0JIOb/vesxw7NLc3cc8VzJqob6chwer2jBgQncVHrAgUO4OwLVKZwshoS2zrzPF6I3XVjJ9Ii96IUqVZwn5k3W/ZE9U03G+/Y4NEl/5hTR041i39HF6i3oeFYN2LfY5YaMmks4kLgFFLz8MHr/VjVM/fo3TIbHfOLlr0hNgXc2tUqk4H41t/9k4M9AVA4gIFzv3JPazAHywhflRsQWnA7ef5w0xEZTXZPzfi81yR65KxOQAyw/Bcc175tByhYemH5tUe22oB7B1e2i+XhbIoH1XFGABV2ASK3gXoZySlGyr6bkWGx70EWPpzlhdoZkql71vJzdj0AWgOciFCUwWSKW71bo4n62MtapLh6A9Efh+Q1J85U33UMbvMTA5YWb+Bc+GTJz1+X6EVBaxqgcG7iwUbItflybxNs2qhtxikDyE/7W0QImZ2sfGdfDo9yRs8y7AiA2hOaj/6Vp4FzkEkiO14BzYSeA/fh1MRbq9qtFI+fpolfRk9x+pXE539z09JLJwjVS2e
+ Hc+RnIQi
+ +q4lJbB5xOfcDNL/0OCr5RNzJ88GRSCwzS6dUcgv+d7pIbsLDVJn2NPmrXVnVp/ls8dCnKChVynuujw7P9meJyv/ZzzGa7vsg6KBk8Lu4CIsMEfCeULgdeAUVKK9mDPrHhxy43UYtuNmqzyqlE11875U7eHS/HPtV7iZhwIHdxLJ8+kh6IJ4AQ0QRB2MR060fiFFOCTL4jQk9Pe8abu+T3tpAzbcDnFSVZH7OaSAgeS1tlPEuT8P93ZLi/bbs1CvQQO96Odnr7rGa98+3TIcdxiC0ctH909E6s68qq+DJhuPenu+pODhGqzH8bG776K7iWOm+lXvvvf1hja7zXzp5qXOb/Y9L98SRXquYLjJBOtOUH/Qn0v9YFpzkKwU8TVa+1ucdATnZau9JWaCnXkoDWBgIlsYK6BboMijrz/VhvzqkdfqGapAlbupLHcj1vmxYJXcByIBqbvYKvHSMu0Uc5tQumq0IhmplPDN7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,115 +132,154 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This series is based on phase II which is still in mm-unstable.
+From: Kairui Song <kasong@tencent.com>
 
-This series removes the static swap_map and uses the swap table for the
-swap count directly. This saves about ~30% memory usage for the static
-swap metadata. For example, this saves 256MB of memory when mounting a
-1TB swap device. Performance is slightly better too, since the double
-update of the swap table and swap_map is now gone.
+/proc/swaps uses si->swap_map as the indicator to check if the swap
+device is mounted. swap_map will be removed soon, so change it to use
+si->swap_file instead because:
 
-Test results:
+- si->swap_file is exactly the only dynamic content that /proc/swaps is
+  interested in. Previously, it was checking si->swap_map just to ensure
+  si->swap_file is available. si->swap_map is set under mutex
+  protection, and after si->swap_file is set, so having si->swap_map set
+  guarantees si->swap_file is set.
 
-Mounting a swap device:
-=======================
-Mount a 1TB brd device as SWAP, just to verify the memory save:
+- Checking si->flags doesn't work here. SWP_WRITEOK is cleared during
+  swapoff, but /proc/swaps is supposed to show the device under swapoff
+  too to report the swapoff progress. And SWP_USED is set even if the
+  device hasn't been properly set up.
 
-`free -m` before:
-               total        used        free      shared  buff/cache   available
-Mem:            1465        1051         417           1          61         413
-Swap:        1054435           0     1054435
+We can have another flag, but the easier way is to just check
+si->swap_file directly. So protect si->swap_file setting with mutext,
+and set si->swap_file only when the swap device is truly enabled.
 
-`free -m` after:
-               total        used        free      shared  buff/cache   available
-Mem:            1465         795         672           1          62         670
-Swap:        1054435           0     1054435
+/proc/swaps only interested in si->swap_file and a few static data
+reading. Only si->swap_file needs protection. Reading other static
+fields is always fine.
 
-Idle memory usage is reduced by ~256MB just as expected. And following
-this design we should be able to save another ~512MB in a next phase.
-
-Build kernel test:
-==================
-Test using ZSWAP with NVME SWAP, make -j48, defconfig, in a x86_64 VM
-with 5G RAM, under global pressure, avg of 32 test run:
-
-                Before            After:
-System time:    1038.97s          1013.75s (-2.4%)
-
-Test using ZRAM as SWAP, make -j12, tinyconfig, in a ARM64 VM with 1.5G
-RAM, under global pressure, avg of 32 test run:
-
-                Before            After:
-System time:    67.75s            66.65s (-1.6%)
-
-The result is slightly better.
-
-Redis / Valkey benchmark:
-=========================
-Test using ZRAM as SWAP, in a ARM64 VM with 1.5G RAM, under global pressure,
-avg of 64 test run:
-
-Server: valkey-server --maxmemory 2560M
-Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
-
-        no persistence              with BGSAVE
-Before: 472705.71 RPS               369451.68 RPS
-After:  481197.93 RPS (+1.8%)       374922.32 RPS (+1.5%)
-
-In conclusion, performance is better in all cases, and memory usage is
-much lower.
-
-The swap cgroup array will also be merged into the swap table in a later
-phase, saving the other ~60% part of the static swap metadata and making
-all the swap metadata dynamic. The improved API for swap operations also
-reduces the lock contention and makes more batching operations possible.
-
-Suggested-by: Chris Li <chrisl@kernel.org>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
-Changes in v2:
-- Fix build error for ARC with 40 bits of PAE address, adjust macros to
-  shrink SWP_TB_COUNT_BITS if needed, and trigger build error if that
-  field is too small. There should be no code change for 64 bit builds.
-- Fix build warning of unused variables.
-- SWP_TB_COUNT_MAX should be ((1 << SWP_TB_COUNT_BITS) - 1), not ((1 <<
-  SWP_TB_COUNT_BITS) - 2). No behavior change, just don't waste usable
-  bits and reduce the chance of a slower extended table path.
-- Add a missing NULL check in swap_extend_table_try_free.
-- Fix a typecast error in the swapoff path to silence some static analyzer.
-- Stress tested setups with SWP_TB_COUNT_BITS == 2, looks fine.
-- Link to v1:
-  https://lore.kernel.org/r/20260126-swap-table-p3-v1-0-a74155fab9b0@tencent.com
+ mm/swapfile.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
----
-Kairui Song (12):
-      mm, swap: protect si->swap_file properly and use as a mount indicator
-      mm, swap: clean up swapon process and locking
-      mm, swap: remove redundant arguments and locking for enabling a device
-      mm, swap: consolidate bad slots setup and make it more robust
-      mm/workingset: leave highest bits empty for anon shadow
-      mm, swap: implement helpers for reserving data in the swap table
-      mm, swap: mark bad slots in swap table directly
-      mm, swap: simplify swap table sanity range check
-      mm, swap: use the swap table to track the swap count
-      mm, swap: no need to truncate the scan border
-      mm, swap: simplify checking if a folio is swapped
-      mm, swap: no need to clear the shadow explicitly
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 7b055f15d705..521f7713a7c3 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -110,6 +110,7 @@ struct swap_info_struct *swap_info[MAX_SWAPFILES];
+ 
+ static struct kmem_cache *swap_table_cachep;
+ 
++/* Protects si->swap_file for /proc/swaps usage */
+ static DEFINE_MUTEX(swapon_mutex);
+ 
+ static DECLARE_WAIT_QUEUE_HEAD(proc_poll_wait);
+@@ -2521,7 +2522,8 @@ static void drain_mmlist(void)
+ /*
+  * Free all of a swapdev's extent information
+  */
+-static void destroy_swap_extents(struct swap_info_struct *sis)
++static void destroy_swap_extents(struct swap_info_struct *sis,
++				 struct file *swap_file)
+ {
+ 	while (!RB_EMPTY_ROOT(&sis->swap_extent_root)) {
+ 		struct rb_node *rb = sis->swap_extent_root.rb_node;
+@@ -2532,7 +2534,6 @@ static void destroy_swap_extents(struct swap_info_struct *sis)
+ 	}
+ 
+ 	if (sis->flags & SWP_ACTIVATED) {
+-		struct file *swap_file = sis->swap_file;
+ 		struct address_space *mapping = swap_file->f_mapping;
+ 
+ 		sis->flags &= ~SWP_ACTIVATED;
+@@ -2615,9 +2616,9 @@ EXPORT_SYMBOL_GPL(add_swap_extent);
+  * Typically it is in the 1-4 megabyte range.  So we can have hundreds of
+  * extents in the rbtree. - akpm.
+  */
+-static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
++static int setup_swap_extents(struct swap_info_struct *sis,
++			      struct file *swap_file, sector_t *span)
+ {
+-	struct file *swap_file = sis->swap_file;
+ 	struct address_space *mapping = swap_file->f_mapping;
+ 	struct inode *inode = mapping->host;
+ 	int ret;
+@@ -2635,7 +2636,7 @@ static int setup_swap_extents(struct swap_info_struct *sis, sector_t *span)
+ 		sis->flags |= SWP_ACTIVATED;
+ 		if ((sis->flags & SWP_FS_OPS) &&
+ 		    sio_pool_init() != 0) {
+-			destroy_swap_extents(sis);
++			destroy_swap_extents(sis, swap_file);
+ 			return -ENOMEM;
+ 		}
+ 		return ret;
+@@ -2851,7 +2852,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	flush_work(&p->reclaim_work);
+ 	flush_percpu_swap_cluster(p);
+ 
+-	destroy_swap_extents(p);
++	destroy_swap_extents(p, p->swap_file);
+ 	if (p->flags & SWP_CONTINUED)
+ 		free_swap_count_continuations(p);
+ 
+@@ -2941,7 +2942,7 @@ static void *swap_start(struct seq_file *swap, loff_t *pos)
+ 		return SEQ_START_TOKEN;
+ 
+ 	for (type = 0; (si = swap_type_to_info(type)); type++) {
+-		if (!(si->flags & SWP_USED) || !si->swap_map)
++		if (!(si->swap_file))
+ 			continue;
+ 		if (!--l)
+ 			return si;
+@@ -2962,7 +2963,7 @@ static void *swap_next(struct seq_file *swap, void *v, loff_t *pos)
+ 
+ 	++(*pos);
+ 	for (; (si = swap_type_to_info(type)); type++) {
+-		if (!(si->flags & SWP_USED) || !si->swap_map)
++		if (!(si->swap_file))
+ 			continue;
+ 		return si;
+ 	}
+@@ -3379,7 +3380,6 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 		goto bad_swap;
+ 	}
+ 
+-	si->swap_file = swap_file;
+ 	mapping = swap_file->f_mapping;
+ 	dentry = swap_file->f_path.dentry;
+ 	inode = mapping->host;
+@@ -3429,7 +3429,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 
+ 	si->max = maxpages;
+ 	si->pages = maxpages - 1;
+-	nr_extents = setup_swap_extents(si, &span);
++	nr_extents = setup_swap_extents(si, swap_file, &span);
+ 	if (nr_extents < 0) {
+ 		error = nr_extents;
+ 		goto bad_swap_unlock_inode;
+@@ -3538,6 +3538,8 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	prio = DEF_SWAP_PRIO;
+ 	if (swap_flags & SWAP_FLAG_PREFER)
+ 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
++
++	si->swap_file = swap_file;
+ 	enable_swap_info(si, prio, swap_map, cluster_info, zeromap);
+ 
+ 	pr_info("Adding %uk swap on %s.  Priority:%d extents:%d across:%lluk %s%s%s%s\n",
+@@ -3562,10 +3564,9 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
+ 	kfree(si->global_cluster);
+ 	si->global_cluster = NULL;
+ 	inode = NULL;
+-	destroy_swap_extents(si);
++	destroy_swap_extents(si, swap_file);
+ 	swap_cgroup_swapoff(si->type);
+ 	spin_lock(&swap_lock);
+-	si->swap_file = NULL;
+ 	si->flags = 0;
+ 	spin_unlock(&swap_lock);
+ 	vfree(swap_map);
 
- include/linux/swap.h |   28 +-
- mm/memory.c          |    2 +-
- mm/swap.h            |   22 +-
- mm/swap_state.c      |   72 ++--
- mm/swap_table.h      |  138 ++++++-
- mm/swapfile.c        | 1111 +++++++++++++++++++++-----------------------------
- mm/workingset.c      |   49 ++-
- 7 files changed, 663 insertions(+), 759 deletions(-)
----
-base-commit: b2394bad912787054d79bf22303dd03eb59aa416
-change-id: 20251216-swap-table-p3-8de73fee7b5f
-
-Best regards,
 -- 
-Kairui Song <kasong@tencent.com>
+2.52.0
 
 
