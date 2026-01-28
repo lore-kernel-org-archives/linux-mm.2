@@ -4,124 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F442D46BFA
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 21:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDD63D46BFB
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 21:15:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABB166B0005; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
+	id 2EA3E6B0005; Wed, 28 Jan 2026 16:15:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A994A6B0089; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
+	id 274356B0089; Wed, 28 Jan 2026 16:15:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99BBD6B008A; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
+	id 1A1736B008A; Wed, 28 Jan 2026 16:15:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 861C06B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF86C13BAF6
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:14:18 +0000 (UTC)
-X-FDA: 84382625796.18.02F2CD2
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	by imf22.hostedemail.com (Postfix) with ESMTP id DEE12C0010
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:14:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=J2rGXMNP;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A2926B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:15:12 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A9B97BB58A
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:15:11 +0000 (UTC)
+X-FDA: 84382628022.27.F513ECC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 65A3616000C
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:15:09 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OilXT9Om;
+	spf=pass (imf08.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769634857;
+	s=arc-20220608; t=1769634909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hv2y5+eHgpdbyVWkOZYtB9y4CpO1vE2yqof3Vkhxaww=;
-	b=iY3ZZ7BWS0lZq6HqL0BuGyziacBlCvCDNJonRsGuS0a4glqoC/qm4RVHIekrwJyMLqiK+V
-	xpFXl2dwVUk03dxBV+p6IukfIdx3OXgDQMKHLLiz6Aa0eYAOAR7rUKYkr3p8yRwdwoBnXc
-	fop7CyrE5/0SzPtR4X4KYfdLuUZnyr4=
+	bh=6fWpnvbu18FRlZukZYR3Pn1iiV0UIlI/SPk2HOEtmus=;
+	b=m28wNjU80d+TiV0W79dnfh3nf5xAzvWuI+bn4wevLEbaJFiaKYbmDvFV0uuaj/48fXIZpz
+	/hU66/pm4fN9BOe57paefXuxEkLywakMPpeYDi3TVdbDSDGvEm9/ao/wpgCne4DO6KSaLD
+	FS6tf1raayB/QzabXLCTSJGtG61R9Qk=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=J2rGXMNP;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769634857; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=OilXT9Om;
+	spf=pass (imf08.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769634909; a=rsa-sha256;
 	cv=none;
-	b=0UheJWC18V7baMQlUBdj+U5pPvPua6w5ZrdBOQWHyCTsJ7th6j9hYAXXWyCCPJFvvTqveC
-	2pUbKPoLAL+0VVRMP50s0/G3LKXR0druZ6Es+3vNniYGvtYQkEFLZV9GMJIzq2K4uUzU5D
-	5F9moTl4mP0p5EgAMK7Hr4OiA/XGLOA=
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-4806dffc64cso1936395e9.1
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:14:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769634855; x=1770239655; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hv2y5+eHgpdbyVWkOZYtB9y4CpO1vE2yqof3Vkhxaww=;
-        b=J2rGXMNPra0CYbRmwqSa8qvQiPzd2NEKI6lWobSbzTAS/iHUXA9DI+gQ2t+PvS8iUy
-         PxNYI5aZu/N25s/Oa1WM4MlplCajqvAOvlNvL98nOayGUSIelh47uC8l96iUOSQcQe7n
-         NhSsFnvcuGeWE8Nduv1TfH1Ni1mfXBEaArmouhatyp4SCvPdjCPnjtRKSkzmHE4UYJiL
-         NwGw9nkly+dmDjgNo6keK9OGjt+arwWSTwPA4isY5jysrlHqae0UC5vLdovb+H07MPM6
-         4iP1h5zVCCYh8snNKTnjiLCBaHySqfdw2AV1QcIlrET11rACxfeOG962GRBvRLkXf49S
-         9Wpw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769634855; x=1770239655;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hv2y5+eHgpdbyVWkOZYtB9y4CpO1vE2yqof3Vkhxaww=;
-        b=dJd1HETcAONgF+tznhylHlSowYXZVYq84UCWcx4frt0Hz9AhweftiwuPc1zMaMtTOT
-         2yRbP6roZocnl7ww0mbn7dVNuN5riuRw9Z/WhsIrGvcmC9OOIh6BtQhYczc4f6/7VT/k
-         QWHXRjUPz56AApA3Xjl+TZokJN9G+a4sR0yYdUS4V0Y55sxd6GByy6toKROwlkfW7cyy
-         yagH4nL8W9ELEUO47pTJe3SyZV5QrCTROhZdGO+9uJt3z6pT29sIs0Z/EfUtVmM52Gyu
-         9/zR/GaigTIM6zsElBmp85PDpavnO2/jl1AzI8Pow4NsQy0nCkAFZnswJDHflDqpr7a5
-         b7kg==
-X-Forwarded-Encrypted: i=1; AJvYcCUmYNukx9o7Ehkh/1YRGPnwWvjcuEwU1Z72edttJe5NBBTMGHKcUNGnOHM4xoKLk0/zNbN/bKB7Sg==@kvack.org
-X-Gm-Message-State: AOJu0YwM3nJDXxalnqMtemE+gXJW9YfkGFqevZnh2D630HA064fgzmCF
-	QIVAVkU58AYzioGV+csJeFsRZ6JU3Qa1OQdKcfgMq2cRuKuYa5tLcabKHvDAIFrTIyY=
-X-Gm-Gg: AZuq6aK9YxDmKWB6ljsxL+2iuMJa/BU75crLwr1t9LlW4bPASs4DxXhOzguY/UttCem
-	2/yjAoYL2WMurTKqch/OyyKMRGCawTjARNwpSS3egtIJpxWpfxCAADb1iSfMMGOJtHeNzqe1RhC
-	EJ/Ue8meqOzN9HOT7u36Cvj9mmXLvUuFUb0wfDpaP1jURfYGdU7jY435H2FuVNdmfDASxjvAK6X
-	NTqxOppNFnBGB06gN/xv43E/HLiXAjmBzCvMgm1LV+K0OoonU/771UbTI1at0uU+ZQoG2ZinpEY
-	wtWUbfEREHd1TP9KvyWzXj+KlPxNXJ+xSe+AFqQEFauEa/CO8UyFfl82eVcPuSIYEmPTjsXO1HD
-	lElVz3vbaOhA8c3lRBgQEAr+kbiodA9lUpz1N4/Qz8E4RGxAOAVRzLqx/cy471WLZ+7+7Dr3hiR
-	TM/6xPeM7hoTSSeqFtz/ab+6Ot
-X-Received: by 2002:a05:600c:3b96:b0:47e:e4ff:e2ac with SMTP id 5b1f17b1804b1-48069c60317mr95974885e9.33.1769634855205;
-        Wed, 28 Jan 2026 13:14:15 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e1354205sm10054004f8f.41.2026.01.28.13.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 13:14:14 -0800 (PST)
-Date: Wed, 28 Jan 2026 22:14:13 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Gregory Price <gourry@gourry.net>
-Cc: Akinobu Mita <akinobu.mita@gmail.com>, linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	akpm@linux-foundation.org, axelrasmussen@google.com,
-	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
-	david@kernel.org, zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, bingjiao@google.com
-Subject: Re: [PATCH v3 3/3] mm/vmscan: don't demote if there is not enough
- free memory in the lower memory tier
-Message-ID: <aXp8Jeaivfa79L4D@tiehlicka>
-References: <20260108101535.50696-1-akinobu.mita@gmail.com>
- <20260108101535.50696-4-akinobu.mita@gmail.com>
- <aWEn2ODG0gyej0Xr@gourry-fedora-PF4VCD3F>
- <CAC5umyhoMi_J_Ford2M_1fB-qCuPEDopAK1OF=AisZyDZ8duJQ@mail.gmail.com>
- <aXkfBF5bdnTZ7t7e@gourry-fedora-PF4VCD3F>
- <aXndXPMFK2fhLA4p@tiehlicka>
- <aXobeWtnJVrTmxlV@gourry-fedora-PF4VCD3F>
+	b=y8L8MIPUEBQDUT9+JjKX5luFwMdTMb9/m1GqeOo60LVbEk2L9FseFsUj3f9uZ4E3bebFb/
+	Ywd3Yh/fYSGXBEbD02I+o7i7tkRsId0Y6+Hkg4HsqZIehjtqLMjiQ/os0xa9dhPCi7ZeLw
+	+jXbOOlgpJDMlqR6Am5Jpg2Nz2rAclY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769634909; x=1801170909;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kYnNMET+0XVroY/Dhwum7UNruwrnQ+q9SltsegGPXqY=;
+  b=OilXT9OmcOGEaKXREzKYd91hesOXm88f29lgmToRidXJl8u3g4YCR5F+
+   gi/RUNJtr8bvQ6JSggTdxjBJ1zzFHOagpi+poiODSSXf46Lac806CVh6g
+   X75noRR2phEQX+6Bd6L0Zfn/c4lHzitW/OTNmqe3+tK4/Dxbi1+yhWK7A
+   8Ocy7sYYpkKuXARshaS5RD4jNLqIi0JNZgZHHozDPo98PS2wyJnCDuDYu
+   UlgFR6zsnK1qwcvDWwDdEblX9L3CnL973ZTli/kvSPDM5vprEcrmOZ54G
+   hHl3WMRK8PfxIK4r0O/vNTR9yh24Q2Gt5HepuX6yudMGTMbgxyDjmX+1Z
+   w==;
+X-CSE-ConnectionGUID: 2UwW5bphS6638Z4DLxP7qg==
+X-CSE-MsgGUID: SYhuTyefSUmzyYyW+UU+TA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11685"; a="96323488"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="96323488"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 13:15:08 -0800
+X-CSE-ConnectionGUID: 7ekzL47tRwyyuMokzGRHCQ==
+X-CSE-MsgGUID: 324L8ylVQ1qUgOvxGpki4A==
+X-ExtLoop1: 1
+Received: from kcaccard-desk.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 13:15:07 -0800
+Message-ID: <16aa84a9-83ce-4748-bc73-ccf5cb6ce376@intel.com>
+Date: Wed, 28 Jan 2026 13:15:06 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXobeWtnJVrTmxlV@gourry-fedora-PF4VCD3F>
-X-Stat-Signature: jxisexsrpzf65rcfq1rbz6hby6s4p7tw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
+ hot-remove
+To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
+ thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20260128204105.508855-1-prsampat@amd.com>
+ <20260128204105.508855-3-prsampat@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260128204105.508855-3-prsampat@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b88e63me61wkagp5ymdznzezt5d1ps9a
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: DEE12C0010
-X-HE-Tag: 1769634856-981946
-X-HE-Meta: U2FsdGVkX1+8Z761m8F7aPda+fA/VbVgDtqT1E+dpTJ+RaQAGjyvOXjqk8P/Q7YzuaBd/J9tX52GUaesgEz9xtfy0uF+CJU2oUIx1jZLl6mw2hgA2SXv+fcRZk0ppJWrpPUjtMW8wMO8Fybx+6aJUEyTmIXkpwicJI8SYl5XYgaawv4J4bigNN7whjwi0nL6USXpB7QD6Yu6edMPDcC+PEyW3UR/abvpEfDeFKImRc7VBSHhBwa6GxoM3yUqBKcT78lz0Dar4yE+uIt2vnn1nSDhoAb4YIMSKVb8+jRP2HNYeb3u0r3zJ1SeZ6aWsrEE3Yc3U5C8pBjdFfGrIsE1UtlsGZyFCU+Rr09KONXDeebAmOSnCcyT027ItJMsC3qAbsUzOHjXuH46MU+68dH1V3zUffO7zrdnZquv3csJa+OFMLVA4J15VrRL1hoU/GWjZuCgdSx1TYJz3IGEh7x+jKxZN1dPslaMXbkGT183Q77esl31G+6PAhu572h1ph0881MyjOokRGffiiv1rshoH6aDe9U2URP67Ef6w/swr/oo2y8fbEGRcSQYqDEwAvggDAOxw2/iGkL72aW5oDm7Gsbr3cMjIWeLa8KxABX05/KBswHrDK0xLLxC2gqWNq8OUnwdOIdPwd9oxJTeBp8X70jfbzk3zvN2A5AE60clnNzx0XZbpPKUTsAT4gpxVNI0gi3pgdNTb5m6cYUoPAHUHj3l3YapX+zSxiTsOGElGwUe0330M7zS8j/oC6Nxph/EZCQ2V+1y8oR0IoSHiYutttZeGmaXoWLA+d0vBpIJ+MrmnL7vD7IUioO4e6mDtZqTAfv83ajPlHFjHGhXyvAUXblwH3ZQd+xPpkWFtElXGTXdMS/JU16XajRWfv+26W/58b4uf98D0KucQGGPjeWrgYZWihP/LaDlai76vtmd5n0yQkxehf/z/Q7ADx03XDI2cVhd2aWjmeXQCph5Ik5
- /gflH3lf
- 1F0bJCRHsyipFDhhES72rk04IgH/ZHLRMB5DbUUiBvBZMtERJb76tWJawDIlAdOsmh527wSFLvF/wPWmdJmaJqma9BFqz5Ee0QRH0qLFbor5KUcATRCaF/selE8EvrUdS3ropmsECfKeVkMsiQeaPsJuZbELUEcUGuEbgC2FUdEI+r8cFpZwS827P2/rTIAsfbJWk5RlYkVacQW00ZRvzzkhOVMoLHr6PxNKlcubCFLHU0LeYB8DkPEIdTLtJwrQ9EIBs3/b/BBS97JUEwcyPOVQS1gj5S6a4oOlSNobxiMyLCzVM8qTB7suIeWDwc7s9hHlIDjmqsEjhn1jDDyqPpjnTv4Bmlq5ziyDk/7bquV89gOQajI5JviPdBTc7CsPoCM37MutjMl576AmbKGD4phZlSGNHnLUzWZKC66NYhsFiqMioX+1+GLwqdL+P+KSrRQ/B+lvfO5oRyoKywOkTQ9wy8gH3fZDOEc/s
+X-Rspamd-Queue-Id: 65A3616000C
+X-HE-Tag: 1769634909-688513
+X-HE-Meta: U2FsdGVkX199st+K3ORnWbbAYUfUiRLd1MMr5Iuoigc41tk1xtMkYEgDo+f6aw8Jm5geDF+9VUPCvf6Pi11sKzuhQAN7kbKmypdvYrWwFiN/6gdCYtRou9p58hj9W4rMo3LJ+zqnKXb2qMyqqmWCeL8K51cUHf344bshYowjfSehreZA2tVW46SB1yxqWHWcLbxlOXVcfoK2FS9U1xpcmyKDcdm1LSFt79wVovm3LoXhi8GK5d6Guh5Tg1NKKXHVxTzF3FpD6vmRBpwjh9ERxis9yzUBHU/CO5w9Cx/u1cju9zuJX15jvWehIsLNKo+Bg0q11CHNgLEpr2XE2GYF+6M0HyFVueizEdzVZRc347Oo7RQJi8OZJksXy4ScTO+7HDXNyYVX+vTLur4PWo3TA56p5xk187aX7DNyqtimp1JGYy9aMTP48SdFus8aoYKczQFGGkpFRQtEceChTDxPZJOM8/0iCXQalCipfPzNV+7HqNKhHrYX2KxbaTj/fHRc4io/dLGmuHnJeT81phEsCx38OCyrhUYNYLeUDxTWfI8DBsf6axHKExdrsav+lTuLusyOFg+jC+pTwVUPFYka05KWEdJ3HicUr6vwwEsgD/4FN30f2oR8H+4nk+mbEI7AJxatIXoydubcR+vKbiVydPWdQyq4yM5iw+kCFmAUCl3lDhBE3mp/+G3LwdTbbrfX6Smi5f+8xonnsdezyj6groI8LTxIAZlTLQ3L8iDvJ2qlUnw0e4EB9ai2IgrTU6Wa8DqTmS4paISDB4aQyxbFl0CS5zvj0S2FHWcGGd+pkPjRHGotufnoUhvNkE+q7v/FZ+iP8oRfxwquzt4RGkQBu2jXoEX1mpM+VWmA3iBve+EWHRLlZHUFBSaFOEVb3cT9n68WqWJEPJgDwE9oXHDQehPCEeucbB607az3LeH4+GOQXOFllHoVRRgjSmBBQGMnYjqyAjxj8xAhxFyd9gl
+ kGuLa745
+ uSlVWyb+HBNe5NTp2aZgLGohfgxUA2nds2U/VhjvLszoRpFEajtPnBa7WSYwu+2C67uKoJ0eWJ5/WuFiHMXjBQ/w/OfMTMRmGk5Hz66NsHHcw912POaImA2Z4EsS0Od/05D09dTXfHTpdkj96S0GFtECLHpLkFgp320JyH2LymKSEUj3yqju55GDr5Q4MbVI7UtQX2GzHqDrGBbY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,53 +152,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 28-01-26 09:21:45, Gregory Price wrote:
-> On Wed, Jan 28, 2026 at 10:56:44AM +0100, Michal Hocko wrote:
-> > >                 .gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
-> > >                         __GFP_NOMEMALLOC | GFP_NOWAIT,
-> > >         };
-> > 
-> > This will trigger kswapd so there will be background reclaim demoting
-> > from those lower tiers.
-> > 
-> 
-> given the node is full kswapd will be running, but the above line masks
-> ~__GFP_RECLAIM so it's not supposed to trigger either reclaim path.
+On 1/28/26 12:41, Pratik R. Sampat wrote:
+> +static inline void arch_unaccept_memory(phys_addr_t start, phys_addr_t end)
+> +{
+> +	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP)) {
+> +		snp_unaccept_memory(start, end);
+> +	} else {
+> +		panic("Cannot unaccept memory: unknown platform\n");
+> +	}
+> +}
 
-Yeah, my bad, I haven't looked carefully enough.
- 
-> > > Any chance you are using hugetlb on this system?  This looks like a
-> > > clear bug, but it may not be what you're experiencing.
-> > 
-> > Hugetlb pages are not sitting on LRU lists so they are not participating
-> > in the demotion.
-> > 
-> 
-> I noted in the v4 thread (responded there too) this was the case.
-> https://lore.kernel.org/linux-mm/aXksUiwYGwad5JvC@gourry-fedora-PF4VCD3F/
-> 
-> But since then we found another path through this code that adds
-> reclaim back on as well - and i wouldn't be surprised to find more.
-> 
-> the bigger issue is that this fix can cause inversions in transient
-> pressure situations - and in fact the current code will cause inversions
-> instead of waiting for reclaim to clear out lower nodes.
-> 
-> The reality is this code probably needs a proper look and detangling.
+This panic() is pretty nasty.
 
-Agreed!
+Can't we just disable memory hotplug up front if it's:
 
-> This has been on my back-burner for a while - i've wanted to sink the 
-> actual demotion code into memory-tiers.c and provide something like:
-> 
-> ... mt_demote_folios(src_nid, folio_list)
-> {
-> 	/* apply some demotion policy here */
-> }
-> 
-> ~Gregory
+	!cc_platform_has(CC_ATTR_GUEST_SEV_SNP)
 
--- 
-Michal Hocko
-SUSE Labs
+?
 
