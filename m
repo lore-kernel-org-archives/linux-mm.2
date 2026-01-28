@@ -4,116 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 397CED3F08E
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 16:29:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40196D3F08E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 16:32:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DCBB6B0005; Wed, 28 Jan 2026 11:29:57 -0500 (EST)
+	id 98F6F6B0089; Wed, 28 Jan 2026 11:32:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B3C36B0089; Wed, 28 Jan 2026 11:29:57 -0500 (EST)
+	id 9645F6B008A; Wed, 28 Jan 2026 11:32:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E0806B008A; Wed, 28 Jan 2026 11:29:57 -0500 (EST)
+	id 891376B008C; Wed, 28 Jan 2026 11:32:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EA686B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:29:57 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8D63D4272
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:29:56 +0000 (UTC)
-X-FDA: 84381909192.05.5BFCB5E
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf10.hostedemail.com (Postfix) with ESMTP id BF322C0006
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:29:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=DnlvIKsp;
-	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 763E36B0089
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:32:06 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 156491A0709
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:32:06 +0000 (UTC)
+X-FDA: 84381914652.10.ED15609
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 23B11A001B
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:32:03 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WGlZKZEB;
+	spf=pass (imf15.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769617795;
+	s=arc-20220608; t=1769617924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkBNSZsN9haLUZALrG85Bpqhx1SbTjrtFwWDUmDpT6A=;
-	b=sADe5jwndYm+b06HF9WZ5+NLpwUTGzQIIdqEqpDdZeFkxWTnNAse/CvfJ5R0BpZoe6v16D
-	XArWaEOvbD72soaudSg5lbOcjY+YIL2s5Xx+YOo50XCe+60p1x3yAsN2mW8s7TdwdnjqVP
-	vM4OGjhfFYyhOhT8qSykqUhmix+Syzk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZBOhl5QfO3A28TRtYUsNu8pCd3M0zspq69YD8AtaJ1U=;
+	b=W9w7P2SkaH09ZOKNhZGofu2wEGXZr4Ypg6JLtEPiDvbfviY3OLQf5+dMg1Tk9Nrwkd0J2Y
+	ideeFayvIyyToUCBARScDQlcnUh7DAWVFkYX7cu4sgLcpHNH9yGlpn2pipMgmmFwXr5RFL
+	jICLb7YsHskZs9C9Q5Mop0Brj35OyG0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=DnlvIKsp;
-	spf=pass (imf10.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769617795; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WGlZKZEB;
+	spf=pass (imf15.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769617924; a=rsa-sha256;
 	cv=none;
-	b=bTe1+bmf2kVxHC97aFuBedjRVmVjTilRwumX36uOtrOWqnci5aMAE9v56xPlhEQkrz4UL1
-	bcI3ce/3pgcOFIEg9NRaMaqQ7wU3/vl3vSw+vwQrJ3lRpVjRnI5SkSHoE9l+Lh1i2F+dUT
-	NdDp/jjn25cWEtt9y28WRrqWeptF5fo=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B3ED040E01A3;
-	Wed, 28 Jan 2026 16:29:51 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id wTmXdpBXVDHP; Wed, 28 Jan 2026 16:29:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1769617788; bh=AkBNSZsN9haLUZALrG85Bpqhx1SbTjrtFwWDUmDpT6A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DnlvIKsp+JaDr8QaY/x/h2k0ICj/t9uuh5SllKwetId6B9ZeCbKBzFtXoEtIYpK7S
-	 Z7tqRWckd4Ra+fxKNgrOjCl8psDcSJjhOoyo4SEvFCZL77dwUxjB62cH2aLCbUgjW4
-	 iDcdWTq+YvEl8aq1Oa+dMxKwnfzze34hl1o/68FHBi8oXIWjJmUD5ATgTZ8S8+mO9p
-	 z3d+KyFj58BJXslfZnLfJPGixzbHgOEANeGO/TadmfwbLu/+yLmZMoI/uzouGPiXyR
-	 N9tJob4pdJcGXZZ6XuMl/8ICavkgmbYwRvnx3cAKMIggxict93DWqvyV6gaYtcJge2
-	 N+KMq7t2mOSauQgIpn3+rvkI3mQ9xXCqe04eHSdHLjJDRmqIF+lFCHrR95Gx9aL9Ru
-	 aqHmT3Okwdm3nPV/GVJ8hm78goY/TKperJ7bwskiIOXRVeW379gHBTo+C9nRKSi7Hy
-	 qeBz2lHNbDYBBTHUpEw2T15EVnxOoYAusgMosCeixWcBdQYo1z+Zh8Ag4YoUzJJKR2
-	 dl0yTy+5twsHi6fqfjjR6m0lxvrLW/Uj3ly85YmFkIhDzLmFjYskF7zlwop8/P6U7P
-	 tzy8AmuLylkNoUP2KvGClMZgolc4DJhgcns79tZCbtnbbByNiyToI9SFE4TN3rl7sv
-	 mF1baVEl4VJ1pwtO5FZV7pAo=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id CFBC540E0028;
-	Wed, 28 Jan 2026 16:29:19 +0000 (UTC)
-Date: Wed, 28 Jan 2026 17:29:13 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Andy Lutomirski <luto@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, peterz@infradead.org,
-	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
-	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
-	junaids@google.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
-	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
-	yosry.ahmed@linux.dev
-Subject: Re: [PATCH 06/21] mm/page_alloc: add __GFP_SENSITIVE and always set
- it
-Message-ID: <20260128162913.GCaXo5Wch-bmKzIZuj@fat_crate.local>
-References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com>
- <fb450443-07c3-438c-888f-30540935da15@intel.com>
- <DD7WSY2PPABG.UK6GJ98WZS79@google.com>
- <20260128153834.GNaXotelMi3QMuvh9-@fat_crate.local>
- <DG0CGGDZ2G7J.54SC3XV42CWW@google.com>
+	b=7UG0pTi5ED54U0ppVwxm058/Ki49ClPvJ+W+fXrPZbpQxLmH/1oR11d8CpVHRXUnoiwCwN
+	ysauGZ2gdHgrDisAoHzvcfYTKH9KvXviqSl5RxvyDTViJ+4odZ+6Or4jFd+sgx32Q485Je
+	E+t+/2qf9rBYNk2LdZm4ZvvADRJspzE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0236343F81;
+	Wed, 28 Jan 2026 16:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA51C116C6;
+	Wed, 28 Jan 2026 16:32:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769617922;
+	bh=QbKda8xrUxEigtyC7rW0AxjR7Uf/A+PpdEzSH6Fe22g=;
+	h=From:Date:Subject:To:Cc:From;
+	b=WGlZKZEBAWrp6M3gAhqc9Xng8HryUVtKz57fHjJfGTHD1SJcfgL6NxkG2UsUJKY0N
+	 kMrxrHAMg2xijvw9NFY7gyM9RaWvBUGzZ2sWzIxn6RB2SjVCul7zW54WdX1mAMrejy
+	 hdHo/FwuHixXiHbDQi+hdECCjj0pfAJ7RPjKywriaavSyjDVw+jw2XzPo0P62VrhBV
+	 bWV4IBbvxIjqeft7yTC9kMKPSRjmh9USEPK7Bwx34/DIElATfZVJ1fzV2ff+E9Wl8J
+	 vWdlGo/Y/MKSSiItR9LdslW368+f+o4VkLAoUK9kjD5rGFbh+i9ge+u5wrseQHVxoo
+	 IqIByZgdw1Xeg==
+From: Mark Brown <broonie@kernel.org>
+Date: Wed, 28 Jan 2026 16:28:35 +0000
+Subject: [PATCH] mm: cma: Fix stub for cma_skip_dt_default_reserved_mem()
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DG0CGGDZ2G7J.54SC3XV42CWW@google.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: BF322C0006
-X-Stat-Signature: am7n14mc6brck9iht1ibhzxpt7wzsqtm
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260128-cma-fix-stubs-v1-1-e07a077d5b33@kernel.org>
+X-B4-Tracking: v=1; b=H4sIADI5emkC/yXMQQqEMAyF4atI1gZMFZW5yuDC1qgRRofGiiDe3
+ arLj8f7D1D2wgqf5ADPm6gscwSlCbixnQdG6aLBZKbMyNTofi32sqOuwSqa0lLumIqKOoifv+c
+ 4Pr1v81qDnditdwTO8wLhlRlpcQAAAA==
+X-Change-ID: 20260128-cma-fix-stubs-26b13ce1471d
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ "Rob Herring (Arm)" <robh@kernel.org>, 
+ Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>, 
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Mark Brown <broonie@kernel.org>
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1283; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=QbKda8xrUxEigtyC7rW0AxjR7Uf/A+PpdEzSH6Fe22g=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBpejn/kFnEv0sTZo3ggeXRnV6p0sd1Q1aVspYj3
+ IOKRPoNG7qJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCaXo5/wAKCRAk1otyXVSH
+ 0JeGB/41twQ91FH3FSXXsKADIC7eENmTj4J51sGJB3NrXYPL7ENLa9gXdpwhLPoI1U94yx8Brm6
+ K2Y/SyFw/1c9fMnsj7kSDGEcaNvu1VUUDf/rW0E0Pr81/KuX0GupHD3NbEkumCZFbXkA7qlPt6s
+ Y5VYm1B6oAgAwijt0XOcCvTv1zaEbbi8dskeRBLAMkh7Pis0Nx3Li2LTHMrw/kXQFVjOOcwziQW
+ JSaxX0/cmNy83GD40qsw+w/REvbuMEadToyf/xlRtTrDf8W1O67lo8RVWtbnIxrJcrN/rIe2h8f
+ yZYHaR04sU4tdsbiyUTBPA6nBMw/GqK0CBfYqI72zKJnSd2b
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 673f5s76w3dg7hb99grkeebzsab3qmao
+X-Rspamd-Queue-Id: 23B11A001B
 X-Rspam-User: 
-X-HE-Tag: 1769617794-33288
-X-HE-Meta: U2FsdGVkX19DX+BaGQSB/jptSOt4OKyJsRyPQq16QAu8KH1Ln8MDtamA1BEbORY6WboMflGZXHNhKoA2ug09xrXXcQPybnIOWGYOCJ8Ne8mB5QULqn1XAbDlQHM6cpYAaQ/vyaQzDARJgo7yNvLjnMJM9w1z8KCo/Bq/RX7e4hTNnOI9VphaDHkn2fuH71u31+fHVDFoB7uq00zo1F+24go1MdxOeCeX+Zi0E56NFtzIAH0csnEWYNFgfDog+zqKotPgxGnoGGqDcbav+pgXr5UvXGXJE41NXc/op7IyGd375MXWJ7p5k94DJzoHGOTEf+ypDATFs3l+RbMrJ0DMLifobtJtP9cxkuffHfm66oGLobV7SaJN20yMnvijvWPlXayxiYFZxlFnbsVWTdXTqVcBvPzT8WfedlZWulAC+kPAabPA983dsYP+1snNOZHTdWHpb7LDU6tBrB4wxOnLe9tv3Xj9iFGO98yfWtEPSUCb9cNc+Cwr3ZCxS565SE4pEuhbrJBsxgFOypTnR3sLXLu9nd41adsPo7eeSbFtlZsXvZ/7Jol56YTuB9Q0LpEI87sBZmWYMlFYyVYrd+x/rZX6gADkHFmYDEx4lNlq8l3m7a+KiwLbXjW0ElOIRnO1ha3qOdNYJyjzLVKe8QDCs1CofeRWE6rfnfXdk/p+C8t0sUNvA2rNns55uOQ5LPBUgOMR1qyCYgSzj0fz/Ylmh/pyJGwZEs9gt9IJMS8tIELssguYsxtU0DcnBJpcaHMAlhW8cY0f6Z2lqvJhsvsNJwZRGlBDrMz8bLP9tCJMqs6TcWd3uYI4zL/SX9mAAhaG3yWiwsk2C88+SI2dKZiMCwFdZANfvextRBCMEWDUAXrsr9xjPjIUh1s/4KzNBlh6i46NJ1pSmgWVWdLjEt50UTnw+B9YiAgw5tZLAMaXnLNCp+QSaYPIUsuDh4IkgkiN6mv8/2KCJi4Vv1JOIBG
- 6PS69bSd
- RIX1t2W8Puj4+7LB7XbAMcd5Z2IMe0o0va+DNKofi0De7GeD8nsE/HzIwQHYudNuyxeBsB6lC41LkWdGfrcHhTcZbMJ41eHRdMKiNMc8CpH2SZ7KHInGC65anTnJQZ9ByqR6hD1hxSLpX01KguATZqAbF64B9/B8Mk63E6CYLyTtBc/j+PShr75R8ZaRrEjdvxamJ4sMoIgj9bVWTPFNr7ZpeYLkoMWD00W8HC5WhHsSu65nVkAHz6XkKw13QciQsZlrYrZKB++GF1krCLqLQhtyH0g==
+X-HE-Tag: 1769617923-77380
+X-HE-Meta: U2FsdGVkX1+02FmCu/t1bheY4DTCWms8fkJsvBN3fF65bixbQxi+nUoGX8HZP+gdG2UYvF2Nv5tcHZqLwyHuUj+t5qIC/8yVvpaS7IMBZT4+euT1UBvSOlSKYK4hLRn2GxH/YXf5+oX1m3ei3gHpL3oTnhTNgw144DTaEX0731hFRwcXZas/0oqjv7aP2YSM0WlRW9PEhQH1Vu/iw5XRmcHiRmfigo5D5kebNM0fJ5LYbzbfwP/OtF+xcMxlubuTmnSRUxHuw7jO+a8ApzS/Fywp0VgxTskUu5/WRFQVjfio+/OW6COgdU0cEWT6+2Ro0taGhWz9uds9Y/WZYZJYmsqPqz4R/VQh/VFttNg9gAfaZEUmUHZFEMlU6qcjwGaxPTrwJb2sask1tgzaO8dmqZ6oBzkmqsvh6XcHkK7eT1OmmJnw/r+VFwIlhYgTjiF3KK11oUYsNAustbmGUmy0PbKcP61WcrCk8sTlZ2t2jA/37wPomr/qhwTqq69alChpYHLDaWSteBNH9tJ8zL7ZJfsuDePFp7J3Sf7ZsZZzc9oos02SYHvXTn8IpyJsaVwgIeHwnkd1VZaUyOr8mfibsOWVQCSkMO19yqrZ069SNQakqnY3kKpAQ7hdscWHeBDlk5AAhh/Lklhmhve2TXwCb7JS8bbK7C7JLjOopeTdjq1TKkOKKaZrdsuiAj52dL3bCBAbQy6SF46jX3lFaKquHs8/sraCoNJ/Vcya3CNuWZ8x3VdaDVsU39BbW7XTT+VOb2NMC5E2JqZ7SO8vSSjfdNWvXgJ10PBoI+RRU68g+xHwAFuhl5+pMGZoeup1ekMtfaYDmU37VI/ig50FmUQ3Iry7qgjBzr/iy3iFfZizLr+U/t4+6dchixRSnDXI7JDsfOO8usVykxA508gOqZduXsPmmR0vJRlwVM324LWMT5+PiwjZR+je/s1rEL0EpGN0IlZt50V8op3dCHLkosA
+ XrbmIFgT
+ UEEn8VJN1v0+I47HWH6Rx2Nv2RcNCFJorZY4g0FAjznPX4t79GONkNu+9Ma1V4M0ZJxSyb/y5BxcRefi3zCzokEwcw8v2DH+SPQsxvRGokqX2KsJvFNqN8ndUcBIh7Q2OnLFfslsZgjOf6bpNNcyJYK2Wu6mvQT6x287CyaLmbFK9XfGs175osFcKDkFSPT41vXxyVCvmHDHrC9WnG6j1LZbtoL0ERd5woz3dCieBSW2lpRlFEYp1aK8XzFY+uykCciAxIcA30zrWKq40lulOrD8+CL3AU6HVoVnyFs2R7uFo25EmDKc990M3IDVrSsWGkW9bir+/jIRN76w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,37 +113,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 28, 2026 at 03:57:07PM +0000, Brendan Jackman wrote:
->  Yeah, that time has long since passed, I'm sorry about the delay!
+The stub for cma_skip_dt_default_reserved_mem() is not inlined so
+triggers build warnings:
 
-Nothing to be sorry for.
+In file included from /tmp/next/build/fs/proc/meminfo.c:18:
+/tmp/next/build/include/linux/cma.h:68:13: warning: 'cma_skip_dt_default_reserved_mem' defined but not used [-Wunused-function]
+   68 | static bool cma_skip_dt_default_reserved_mem(void)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
->  I'm working on it as we speak. The submission I've been trying to
->  post for the last few week is to add a __GFP_UNMAPPED flag. That will
->  unblock the guest_memfd unmapped usecase.
->  
->  I got some design elements wrong and had to reimplement some stuff
->  during January (I had an AI review my code and it pointed out that
->  part of my pagetable management code was garbage. Spooky).
+which are fatal with -Werror.
 
-Did it say "garbage"? If so, yeah, you're using the lkml review profile :-P
+Fixes: 26332ae848f08 ("of: reserved_mem: Allow reserved_mem framework detect "cma=" kernel param")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ include/linux/cma.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> Now I'm working on integrating the new version with the guest_memfd features
-> to make sure it's actually fast (it's quite complicated so it had better be
-> useful). Once that's done I'll hopefully be ready to post....
-> 
->  _THEN_ I can update the __GFP_SENSITIVE functionality on top of the
->  __GFP_UNMAPPED functionality. The former means "don't map into ASI" and the
->  latter means "don't map at all" so they overlap in terms of allocator
->  stuff.l
+diff --git a/include/linux/cma.h b/include/linux/cma.h
+index 0bf408360641..d0793eaaadaa 100644
+--- a/include/linux/cma.h
++++ b/include/linux/cma.h
+@@ -65,7 +65,7 @@ extern void cma_reserve_pages_on_error(struct cma *cma);
+ #ifdef CONFIG_DMA_CMA
+ extern bool cma_skip_dt_default_reserved_mem(void);
+ #else
+-static bool cma_skip_dt_default_reserved_mem(void)
++static inline bool cma_skip_dt_default_reserved_mem(void)
+ {
+ 	return false;
+ }
 
-Sounds good.
+---
+base-commit: d0d97f0b2b2b4633022dfaef4ac08af0b7917efe
+change-id: 20260128-cma-fix-stubs-26b13ce1471d
 
-Thx.
+Best regards,
+--  
+Mark Brown <broonie@kernel.org>
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
