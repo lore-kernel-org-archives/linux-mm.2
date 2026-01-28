@@ -4,89 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25094D46BFA
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 21:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F442D46BFA
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 21:14:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D1986B0005; Wed, 28 Jan 2026 16:08:04 -0500 (EST)
+	id ABB166B0005; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47F126B0089; Wed, 28 Jan 2026 16:08:04 -0500 (EST)
+	id A994A6B0089; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38AD76B008A; Wed, 28 Jan 2026 16:08:04 -0500 (EST)
+	id 99BBD6B008A; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 296246B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:08:04 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D1DA31A07E6
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:08:03 +0000 (UTC)
-X-FDA: 84382610046.07.2728F47
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2DD5C100005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:08:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TNjeh53b;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 861C06B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:14:19 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF86C13BAF6
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:14:18 +0000 (UTC)
+X-FDA: 84382625796.18.02F2CD2
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DEE12C0010
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:14:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=J2rGXMNP;
+	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769634482;
+	s=arc-20220608; t=1769634857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i7x1v7MunDSig0PHX8nCeJqJ3VHrc/WfXSMRRgTvq/Y=;
-	b=cGW/NbF5PpoNngtTid0ymplEbLFeW8mAAE7QhSCoNimspPLCDXzY5v1bNcJhwQlpsWnDkj
-	APlV81C1DZBhJI8Z7zwrapMo8U7NuOhBkEUdvtNu4qLXRJ5KVOWQF0lOhGv1OhSb8YiFiv
-	kwD/xRLmCB0PWAXmKkqepNrMEiCIJbk=
+	bh=Hv2y5+eHgpdbyVWkOZYtB9y4CpO1vE2yqof3Vkhxaww=;
+	b=iY3ZZ7BWS0lZq6HqL0BuGyziacBlCvCDNJonRsGuS0a4glqoC/qm4RVHIekrwJyMLqiK+V
+	xpFXl2dwVUk03dxBV+p6IukfIdx3OXgDQMKHLLiz6Aa0eYAOAR7rUKYkr3p8yRwdwoBnXc
+	fop7CyrE5/0SzPtR4X4KYfdLuUZnyr4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=TNjeh53b;
-	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769634482; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=J2rGXMNP;
+	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.67 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769634857; a=rsa-sha256;
 	cv=none;
-	b=iW5F9BmV52M5oiFAY8+5z0Eq4h8mhJgVrSKzMwCzeuMcChWj90odvuRb5WVvrU+Oq86uZ3
-	4NszbvsIW6m+oykjygpLtngqHbWuhoXi6zpE0JSGqlwpE/ruEvFPggTjJXgsyuDDRLdpG0
-	V0VXcM3hQBcYZgEOTjdgNgl76M24vrE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 690A96000A;
-	Wed, 28 Jan 2026 21:08:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA88C4CEF1;
-	Wed, 28 Jan 2026 21:08:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769634481;
-	bh=tGJoCzuYyP9DDfnQaITfmSMCYnBd32iYXSX0TH7/yjE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TNjeh53b2GQ58MmlzIVlL1YmyRy9LNtW3kOgxsrEY1o9/jA1zEFOTtac2nyEPic86
-	 eB8+DQ2r2RLcT65sfScJ9mMsW3lAu7qVaPUgI3tbOE2DV9aeBW134Kr7/bELPqha8w
-	 ybLKc5nZjXl6e2n7rPaWZdZvUHZtT5x2FrGsr+Fk=
-Date: Wed, 28 Jan 2026 13:08:00 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: <linux-mm@kvack.org>, <linux-coco@lists.linux.dev>, <x86@kernel.org>,
- <linux-kernel@vger.kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
- <bp@alien8.de>, <dave.hansen@linux.intel.com>, <kas@kernel.org>,
- <ardb@kernel.org>, <david@kernel.org>, <osalvador@suse.de>,
- <thomas.lendacky@amd.com>, <michael.roth@amd.com>
-Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
- hot-remove
-Message-Id: <20260128130800.40adb423627ff6d8ffce7ccd@linux-foundation.org>
-In-Reply-To: <20260128204105.508855-3-prsampat@amd.com>
-References: <20260128204105.508855-1-prsampat@amd.com>
-	<20260128204105.508855-3-prsampat@amd.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gp8gy7enttobxrtbzz4z11yafqfpdsod
-X-Rspamd-Queue-Id: 2DD5C100005
+	b=0UheJWC18V7baMQlUBdj+U5pPvPua6w5ZrdBOQWHyCTsJ7th6j9hYAXXWyCCPJFvvTqveC
+	2pUbKPoLAL+0VVRMP50s0/G3LKXR0druZ6Es+3vNniYGvtYQkEFLZV9GMJIzq2K4uUzU5D
+	5F9moTl4mP0p5EgAMK7Hr4OiA/XGLOA=
+Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-4806dffc64cso1936395e9.1
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:14:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1769634855; x=1770239655; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hv2y5+eHgpdbyVWkOZYtB9y4CpO1vE2yqof3Vkhxaww=;
+        b=J2rGXMNPra0CYbRmwqSa8qvQiPzd2NEKI6lWobSbzTAS/iHUXA9DI+gQ2t+PvS8iUy
+         PxNYI5aZu/N25s/Oa1WM4MlplCajqvAOvlNvL98nOayGUSIelh47uC8l96iUOSQcQe7n
+         NhSsFnvcuGeWE8Nduv1TfH1Ni1mfXBEaArmouhatyp4SCvPdjCPnjtRKSkzmHE4UYJiL
+         NwGw9nkly+dmDjgNo6keK9OGjt+arwWSTwPA4isY5jysrlHqae0UC5vLdovb+H07MPM6
+         4iP1h5zVCCYh8snNKTnjiLCBaHySqfdw2AV1QcIlrET11rACxfeOG962GRBvRLkXf49S
+         9Wpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769634855; x=1770239655;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hv2y5+eHgpdbyVWkOZYtB9y4CpO1vE2yqof3Vkhxaww=;
+        b=dJd1HETcAONgF+tznhylHlSowYXZVYq84UCWcx4frt0Hz9AhweftiwuPc1zMaMtTOT
+         2yRbP6roZocnl7ww0mbn7dVNuN5riuRw9Z/WhsIrGvcmC9OOIh6BtQhYczc4f6/7VT/k
+         QWHXRjUPz56AApA3Xjl+TZokJN9G+a4sR0yYdUS4V0Y55sxd6GByy6toKROwlkfW7cyy
+         yagH4nL8W9ELEUO47pTJe3SyZV5QrCTROhZdGO+9uJt3z6pT29sIs0Z/EfUtVmM52Gyu
+         9/zR/GaigTIM6zsElBmp85PDpavnO2/jl1AzI8Pow4NsQy0nCkAFZnswJDHflDqpr7a5
+         b7kg==
+X-Forwarded-Encrypted: i=1; AJvYcCUmYNukx9o7Ehkh/1YRGPnwWvjcuEwU1Z72edttJe5NBBTMGHKcUNGnOHM4xoKLk0/zNbN/bKB7Sg==@kvack.org
+X-Gm-Message-State: AOJu0YwM3nJDXxalnqMtemE+gXJW9YfkGFqevZnh2D630HA064fgzmCF
+	QIVAVkU58AYzioGV+csJeFsRZ6JU3Qa1OQdKcfgMq2cRuKuYa5tLcabKHvDAIFrTIyY=
+X-Gm-Gg: AZuq6aK9YxDmKWB6ljsxL+2iuMJa/BU75crLwr1t9LlW4bPASs4DxXhOzguY/UttCem
+	2/yjAoYL2WMurTKqch/OyyKMRGCawTjARNwpSS3egtIJpxWpfxCAADb1iSfMMGOJtHeNzqe1RhC
+	EJ/Ue8meqOzN9HOT7u36Cvj9mmXLvUuFUb0wfDpaP1jURfYGdU7jY435H2FuVNdmfDASxjvAK6X
+	NTqxOppNFnBGB06gN/xv43E/HLiXAjmBzCvMgm1LV+K0OoonU/771UbTI1at0uU+ZQoG2ZinpEY
+	wtWUbfEREHd1TP9KvyWzXj+KlPxNXJ+xSe+AFqQEFauEa/CO8UyFfl82eVcPuSIYEmPTjsXO1HD
+	lElVz3vbaOhA8c3lRBgQEAr+kbiodA9lUpz1N4/Qz8E4RGxAOAVRzLqx/cy471WLZ+7+7Dr3hiR
+	TM/6xPeM7hoTSSeqFtz/ab+6Ot
+X-Received: by 2002:a05:600c:3b96:b0:47e:e4ff:e2ac with SMTP id 5b1f17b1804b1-48069c60317mr95974885e9.33.1769634855205;
+        Wed, 28 Jan 2026 13:14:15 -0800 (PST)
+Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e1354205sm10054004f8f.41.2026.01.28.13.14.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 13:14:14 -0800 (PST)
+Date: Wed, 28 Jan 2026 22:14:13 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Gregory Price <gourry@gourry.net>
+Cc: Akinobu Mita <akinobu.mita@gmail.com>, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	akpm@linux-foundation.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, bingjiao@google.com
+Subject: Re: [PATCH v3 3/3] mm/vmscan: don't demote if there is not enough
+ free memory in the lower memory tier
+Message-ID: <aXp8Jeaivfa79L4D@tiehlicka>
+References: <20260108101535.50696-1-akinobu.mita@gmail.com>
+ <20260108101535.50696-4-akinobu.mita@gmail.com>
+ <aWEn2ODG0gyej0Xr@gourry-fedora-PF4VCD3F>
+ <CAC5umyhoMi_J_Ford2M_1fB-qCuPEDopAK1OF=AisZyDZ8duJQ@mail.gmail.com>
+ <aXkfBF5bdnTZ7t7e@gourry-fedora-PF4VCD3F>
+ <aXndXPMFK2fhLA4p@tiehlicka>
+ <aXobeWtnJVrTmxlV@gourry-fedora-PF4VCD3F>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXobeWtnJVrTmxlV@gourry-fedora-PF4VCD3F>
+X-Stat-Signature: jxisexsrpzf65rcfq1rbz6hby6s4p7tw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769634482-999991
-X-HE-Meta: U2FsdGVkX1+Q+xb3pWLgYKdNKkUlySidCihbqZVYfLpMVwv77CFFhKcl9D7kkLz3HhYrURGay4uVZ0d0LXToZWq6Y5pdTTMNjeZh0kzNS+ENIHc4pxGhLvOOZ/whWmgTn/oB9M5zplka0cfBkF8mn6OffHyIw6Dr6eklro3zUo5pSOaY9FTe16vLe48DvRzrsA3au9JNI3WP59rth+n6FdzKLrgBkq6u5hLwJ0696A+aCQ1ywhSJ6cm5C6zjpIIrmmRYQMAY7r2j74Ctbgk/j1hlHFliIHTLyNjt5QfoitsMDgbRl6ZckUHjZ9Fosj8bPa20rnx4kjjQdJzRsfyoUMVqo63nK2PfReuKGzDndhbNuIW9/8BuQ7O/LQ4T6sLEddLMChu3FwbN6T9+nqRE4lYrLOyaUjgQbH6lluzCNqkbF8OhjO1Cc81XuqntAU0HYxs3l+fUMKWyi1gP0vRYwN8WBjhSV/CuKHX54dv7RCzJfzjgkHDaEa3KpVku8fipXqX0VtLQHMQbOW+khSzg5Ss85prh9XyXFmZbmB+KClQJqiukuF5w2SnvvoWSWKn/imj2GX1N5TctVxSmaG/6DOZjoVqYWC8ww/5/KuHDPePQ0cXcW7pQ74FBvpxmNoJ5Ddu4YXZgphRvRWg1+50GhtawihCq/nADK5r7rwZPAJ13IVACwi/RM8v87OvatFpKElyn9nRzTEf/Qvjxemm/wsk6U3cQjH22LBJ1EBkFNawPW+fMexy3KY2a6YWh7diELfvr8W0ZJdHbfnoRlEYekSOiHDLUkXS6RAoYIbT/ZVemz4MnZOmTIWZ3yEC55dIaEjwNBCq8KPEqcaLtdGpjiCtEuXBhte1403kzRnlb3GcT1/UwgPzlmlSN3jZXyWFe609rt/MXNIoC0U3c/nvGcF6qlZSPvv0xv3SVbhvmBbHLSh/gh2P3N7Eyg5edO1SlP5UPJEW7HwzGpbLT/UW
- 3QKeTDXI
- YHBaYNrNwfWBC0GkTv/GByQIOouzgmDBC9MCdLjbs0wr1yJ9W3W5MBLjJ+Joy1f6T66irVfJt4OmqrTSMI/zplb+q8GBFhwPARU6s0tZj8q40mlEP5ThwixI3MLLEjqiDt0Nv7KSO3SGFFUgiloNptIYoRMnBAviRy8QisClA09J5qUOY4CAX6ZWEGwG3TTwfUTa+/u93U3c86uEyqvGcclKT3rnV7UeQcA7MzqclQjZoCWeRc5oVoFVQEqm/9IF+kLTZHJwxk19UN9/YwHd96Enc+r/6XcnjJdDc3Dwgbc1SpnC/j8Yts+nNqQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: DEE12C0010
+X-HE-Tag: 1769634856-981946
+X-HE-Meta: U2FsdGVkX1+8Z761m8F7aPda+fA/VbVgDtqT1E+dpTJ+RaQAGjyvOXjqk8P/Q7YzuaBd/J9tX52GUaesgEz9xtfy0uF+CJU2oUIx1jZLl6mw2hgA2SXv+fcRZk0ppJWrpPUjtMW8wMO8Fybx+6aJUEyTmIXkpwicJI8SYl5XYgaawv4J4bigNN7whjwi0nL6USXpB7QD6Yu6edMPDcC+PEyW3UR/abvpEfDeFKImRc7VBSHhBwa6GxoM3yUqBKcT78lz0Dar4yE+uIt2vnn1nSDhoAb4YIMSKVb8+jRP2HNYeb3u0r3zJ1SeZ6aWsrEE3Yc3U5C8pBjdFfGrIsE1UtlsGZyFCU+Rr09KONXDeebAmOSnCcyT027ItJMsC3qAbsUzOHjXuH46MU+68dH1V3zUffO7zrdnZquv3csJa+OFMLVA4J15VrRL1hoU/GWjZuCgdSx1TYJz3IGEh7x+jKxZN1dPslaMXbkGT183Q77esl31G+6PAhu572h1ph0881MyjOokRGffiiv1rshoH6aDe9U2URP67Ef6w/swr/oo2y8fbEGRcSQYqDEwAvggDAOxw2/iGkL72aW5oDm7Gsbr3cMjIWeLa8KxABX05/KBswHrDK0xLLxC2gqWNq8OUnwdOIdPwd9oxJTeBp8X70jfbzk3zvN2A5AE60clnNzx0XZbpPKUTsAT4gpxVNI0gi3pgdNTb5m6cYUoPAHUHj3l3YapX+zSxiTsOGElGwUe0330M7zS8j/oC6Nxph/EZCQ2V+1y8oR0IoSHiYutttZeGmaXoWLA+d0vBpIJ+MrmnL7vD7IUioO4e6mDtZqTAfv83ajPlHFjHGhXyvAUXblwH3ZQd+xPpkWFtElXGTXdMS/JU16XajRWfv+26W/58b4uf98D0KucQGGPjeWrgYZWihP/LaDlai76vtmd5n0yQkxehf/z/Q7ADx03XDI2cVhd2aWjmeXQCph5Ik5
+ /gflH3lf
+ 1F0bJCRHsyipFDhhES72rk04IgH/ZHLRMB5DbUUiBvBZMtERJb76tWJawDIlAdOsmh527wSFLvF/wPWmdJmaJqma9BFqz5Ee0QRH0qLFbor5KUcATRCaF/selE8EvrUdS3ropmsECfKeVkMsiQeaPsJuZbELUEcUGuEbgC2FUdEI+r8cFpZwS827P2/rTIAsfbJWk5RlYkVacQW00ZRvzzkhOVMoLHr6PxNKlcubCFLHU0LeYB8DkPEIdTLtJwrQ9EIBs3/b/BBS97JUEwcyPOVQS1gj5S6a4oOlSNobxiMyLCzVM8qTB7suIeWDwc7s9hHlIDjmqsEjhn1jDDyqPpjnTv4Bmlq5ziyDk/7bquV89gOQajI5JviPdBTc7CsPoCM37MutjMl576AmbKGD4phZlSGNHnLUzWZKC66NYhsFiqMioX+1+GLwqdL+P+KSrRQ/B+lvfO5oRyoKywOkTQ9wy8gH3fZDOEc/s
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,101 +130,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 28 Jan 2026 14:41:05 -0600 "Pratik R. Sampat" <prsampat@amd.com> wrote:
-
-> Transition memory to the shared state during a hot-remove operation so
-> that it can be re-used by the hypervisor. This also applies when memory
-> is intended to be hotplugged back in later, as those pages will need to
-> be re-accepted after crossing the trust boundary.
+On Wed 28-01-26 09:21:45, Gregory Price wrote:
+> On Wed, Jan 28, 2026 at 10:56:44AM +0100, Michal Hocko wrote:
+> > >                 .gfp_mask = (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+> > >                         __GFP_NOMEMALLOC | GFP_NOWAIT,
+> > >         };
+> > 
+> > This will trigger kswapd so there will be background reclaim demoting
+> > from those lower tiers.
+> > 
 > 
-> ...
->
-> @@ -623,6 +624,7 @@ static inline int snp_issue_svsm_attest_req(u64 call_id, struct svsm_call *call,
->  	return -ENOTTY;
->  }
->  static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
-> +static inline void snp_unaccept_memory(phys_addr_t start, phys_addr_t end) { }
->  static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
->  static inline u64 sev_get_status(void) { return 0; }
->  static inline void sev_show_status(void) { }
-> diff --git a/arch/x86/include/asm/unaccepted_memory.h b/arch/x86/include/asm/unaccepted_memory.h
-> index f5937e9866ac..8715be843e65 100644
-> --- a/arch/x86/include/asm/unaccepted_memory.h
-> +++ b/arch/x86/include/asm/unaccepted_memory.h
-> @@ -18,6 +18,15 @@ static inline void arch_accept_memory(phys_addr_t start, phys_addr_t end)
->  	}
->  }
->  
-> +static inline void arch_unaccept_memory(phys_addr_t start, phys_addr_t end)
-> +{
-> +	if (cc_platform_has(CC_ATTR_GUEST_SEV_SNP)) {
-> +		snp_unaccept_memory(start, end);
-> +	} else {
-> +		panic("Cannot unaccept memory: unknown platform\n");
+> given the node is full kswapd will be running, but the above line masks
+> ~__GFP_RECLAIM so it's not supposed to trigger either reclaim path.
 
-Seems severe.  Dropping a WARN() and continuing would be preferred.
+Yeah, my bad, I haven't looked carefully enough.
+ 
+> > > Any chance you are using hugetlb on this system?  This looks like a
+> > > clear bug, but it may not be what you're experiencing.
+> > 
+> > Hugetlb pages are not sitting on LRU lists so they are not participating
+> > in the demotion.
+> > 
+> 
+> I noted in the v4 thread (responded there too) this was the case.
+> https://lore.kernel.org/linux-mm/aXksUiwYGwad5JvC@gourry-fedora-PF4VCD3F/
+> 
+> But since then we found another path through this code that adds
+> reclaim back on as well - and i wouldn't be surprised to find more.
+> 
+> the bigger issue is that this fix can cause inversions in transient
+> pressure situations - and in fact the current code will cause inversions
+> instead of waiting for reclaim to clear out lower nodes.
+> 
+> The reality is this code probably needs a proper look and detangling.
 
-What exactly happened here?  Am I correct in thinking that the check in
-snp_unaccept_memory() makes this a cant-happen?
+Agreed!
 
-> --- a/drivers/firmware/efi/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/unaccepted_memory.c
-> @@ -157,6 +157,52 @@ void accept_memory(phys_addr_t start, unsigned long size)
->  	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
->  }
->  
-> +void unaccept_memory(phys_addr_t start, unsigned long size)
-> +{
-> +	unsigned long range_start, range_end, bitrange_end;
-> +	struct efi_unaccepted_memory *unaccepted;
-> +	phys_addr_t end = start + size;
-> +	u64 unit_size, phys_base;
-> +	unsigned long flags;
-> +
-> +	unaccepted = efi_get_unaccepted_table();
-> +	if (!unaccepted)
-> +		return;
-> +
-> +	phys_base = unaccepted->phys_base;
-> +	unit_size = unaccepted->unit_size;
-> +
-> +	if (start < unaccepted->phys_base)
-> +		start = unaccepted->phys_base;
+> This has been on my back-burner for a while - i've wanted to sink the 
+> actual demotion code into memory-tiers.c and provide something like:
+> 
+> ... mt_demote_folios(src_nid, folio_list)
+> {
+> 	/* apply some demotion policy here */
+> }
+> 
+> ~Gregory
 
-max()?
-
-> +	if (end < unaccepted->phys_base)
-> +		return;
-> +
-> +	start -= phys_base;
-> +	end -= phys_base;
-> +
-> +	/* Make sure not to overrun the bitmap */
-> +	if (end > unaccepted->size * unit_size * BITS_PER_BYTE)
-> +		end = unaccepted->size * unit_size * BITS_PER_BYTE;
-
-min()?
-
-If you like min() and max().  Sometimes I find them annoying - need to mentally
-expand them to figure out what's going on.
-
-> +	range_start = start / unit_size;
-> +	bitrange_end = DIV_ROUND_UP(end, unit_size);
-> +
-> +	/* Only unaccept memory that was previously accepted in the range */
-> +	spin_lock_irqsave(&unaccepted_memory_lock, flags);
-> +	for_each_clear_bitrange_from(range_start, range_end, unaccepted->bitmap,
-> +				     bitrange_end) {
-> +		unsigned long phys_start, phys_end;
-> +		unsigned long len = range_end - range_start;
-> +
-> +		phys_start = range_start * unit_size + phys_base;
-> +		phys_end = range_end * unit_size + phys_base;
-> +
-> +		arch_unaccept_memory(phys_start, phys_end);
-> +		bitmap_set(unaccepted->bitmap, range_start, len);
-> +	}
-> +	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
-> +}
-
+-- 
+Michal Hocko
+SUSE Labs
 
