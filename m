@@ -4,117 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C6E2D25B44
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 11:19:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F2FFD25B44
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 11:20:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D710C6B0089; Wed, 28 Jan 2026 06:19:47 -0500 (EST)
+	id D79E86B008C; Wed, 28 Jan 2026 06:20:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFEC96B008A; Wed, 28 Jan 2026 06:19:47 -0500 (EST)
+	id D376E6B0092; Wed, 28 Jan 2026 06:20:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C28306B008C; Wed, 28 Jan 2026 06:19:47 -0500 (EST)
+	id C50DE6B0093; Wed, 28 Jan 2026 06:20:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE43B6B0089
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:19:47 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 559711B0DA2
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:19:47 +0000 (UTC)
-X-FDA: 84381127614.08.A4C18B2
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5FF491C0007
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:19:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=b26bIAC6;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B4BA26B008C
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:20:29 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B7305993D
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:20:29 +0000 (UTC)
+X-FDA: 84381129378.14.CB07B4D
+Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com [209.85.210.67])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B556B40009
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:20:27 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SlDE+RRA;
+	spf=pass (imf17.hostedemail.com: domain of realwujing@gmail.com designates 209.85.210.67 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769599185;
+	s=arc-20220608; t=1769599227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sE6tlLY2cerxXtkLllgRGINAxWflpeXsllvs5CeFxl4=;
-	b=ix5OynVKyQZj/LxMGzJ4ePdeDRoXAkgUJFh0ha14WInPmI4bZSalIGg7YT4E9G7+hWX3E0
-	l8XqBPSJINiDqzj///PbCegp+oLcqvmkwme61r3nPcj7NGvzfBBCwP7LIhJ7PQrnb6V/H0
-	+SOptMw5MAGmVlpk+PJojqtL05hSyDI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769599185; a=rsa-sha256;
-	cv=none;
-	b=fqUkfNj/NUHu8bAHbwZydHkRkm29wTtIAar+ZbN3iTOa9wCaPcWX0ZACZtbZkKlNAaBD21
-	IMYRzm5vWGHWKj0X5evFbCpsx9WlYNCvjSFsOmzizNtZVXj5fTVXC8MQUx3Axg+uBh/Qsv
-	lDfYtFFUroVT7mST2tX+QqCBQy7Fgyg=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=2MWO3DKTfHPlWbWoJnbmcsmvrxuGAi/ENfoXzbGs/t0=;
+	b=d8qnMAoQQ3uWjy3T1fbfFANQ7XASdOOibSExUshckaoZRO7Xokk3M0Ik3Sc5ej30rSsjrL
+	/NGsvcZkLzJx9gza/hUnw6v8M4+kp1UmWiLHDOLza9qNVKGU/yg6LcVO/GYXBO8Rm09yM2
+	wBWnNuDL/6SHKWzXYfEV5h/8e6iO5HI=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=b26bIAC6;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4806e0f6b69so4902955e9.3
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:19:45 -0800 (PST)
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SlDE+RRA;
+	spf=pass (imf17.hostedemail.com: domain of realwujing@gmail.com designates 209.85.210.67 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769599227; a=rsa-sha256;
+	cv=none;
+	b=6lqavQ0H0kkE0Dg64jo23n3fdwDRlpQLXwppTFJ/9X2cH0zZ8XMTItbqsmTJmoEVGCrjFv
+	FBhhN20hCWbWV5Eq7wgriQasNExR1PTMP4lH9b+kegkLFt9zawY6ha81qK4q5KMQ3AhRZI
+	cjeXgdYAH3/owtItH0CwhZx86NmTxzk=
+Received: by mail-ot1-f67.google.com with SMTP id 46e09a7af769-7d18d0e6d71so511304a34.1
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:20:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769599184; x=1770203984; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sE6tlLY2cerxXtkLllgRGINAxWflpeXsllvs5CeFxl4=;
-        b=b26bIAC6PS4kwOuSwVu9HHBP0V4dv1mNOXyb1u29/65hXnBqmblPqvFHGJQluvcVGi
-         62+JbpwW65VNdYZsTsQno7dSZ0Ma1BTJW+Q8y8/NHq0P663Q7/Epsyg6bAr9+BPAJM2E
-         8oCNtw7bmrH1fT7dw7cY2Sm7Zrnn9QI4ZH8tJIZejbXkb83jXFeHOoEmMugNTe6Q7RyX
-         Mo4++HYspa3jp+CtoQBUMNgF7H+Jm6myERzN6236raoHuGNadwd3ja7xkEbzBxjn+JKq
-         VqmiSC/OX9c6I1yfUItEo2ugmGnhrYqoXcbqN6Ek9oVoIwtRajgx0E+kh1yrdLcrWrCE
-         yrpg==
+        d=gmail.com; s=20230601; t=1769599227; x=1770204027; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2MWO3DKTfHPlWbWoJnbmcsmvrxuGAi/ENfoXzbGs/t0=;
+        b=SlDE+RRA8FLkVtra9nQG9t3pvoOmvLFDJkyetgZVswXOn6znwydsIZSyLq98lV4FGU
+         EU6jtzkct+iiVR5RFtpH/MQ2mtWjeKPYpxL9+lisxseLZyerySpMuII4ZxH/eSp1JoAc
+         wLpLxNOvWxef9sTd51iU8Q3tSbEqJ54OJJfSlBtk/HSvv3CsRjLCzO6sCZ6ovz4i6tSX
+         UCrrJ2U8gmn85Iigr9pfMtPu9IIC+bectaxvJ+Iaheo3bDxy8pc+Ci5Hqu+ji+/l/scl
+         XRsMxc4FkG/1RMg4K8xHo7MxsxRrLWez0rUawJ01uQqfGezn0FuzbZFraG6mDGnMu/Tw
+         taJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769599184; x=1770203984;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sE6tlLY2cerxXtkLllgRGINAxWflpeXsllvs5CeFxl4=;
-        b=sMb2BxqMwheaVLGnPN77F0wYs4gPMlaZc6GgTQniRLvZWozC7uqDkLU1ysTAsJ/4do
-         e9D6svYqNIv/9gL9H6APAf8PQEINO7vjDpRHki4XE+P2+SuUocdGXaMIukzVpYtTI1JJ
-         sAth+pGm724TCtDDI4P0Yh33+gEIIpbWxoUrYBGbtiWh5+CTVNL0im/lF+VpqjN+PThQ
-         it0E0Ec9voYLdcwaLkiUBROLjxrV00x7v+be1lfsCoZY/YEWmimaBwPwgSziVL8RiHIp
-         Kh47re3690dVtulIIlp4aXKZg/qlA7TXAobHea9p1Z7mmPTGsxA0RK5JSgcbJ7cexiUY
-         u7KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVa8rXIUc5kUvQO/UJ1ZUtc+C4p2AxMOyNofYosy9ScZ+VA23SWaPHqig765SVND8Dqlg0sNdWJxA==@kvack.org
-X-Gm-Message-State: AOJu0YwXmHHCntEw/RIGnS8N/IYnvZHuuz0xAhBcL086fsYBvHTvwxka
-	YLR5Hi2o03cHN3kQ+kS+RoV/2IGqgSam+/7aVbUVJqI1mWWtqOs5hyWc9ZkP4G+gXMk=
-X-Gm-Gg: AZuq6aI5G/umxsdiCXenTQxhy3w/5nPp7iYkIUxFVgbmC4aPDz1ZjN5Rsq0jOCNJ7bG
-	xb799teMHCAX1Ul6XWOfenhwbwPasaTkxblpnW7cpvblX/qhZBdAbkDJb8I2hjw3FKjZ0S1bEhz
-	+KKWODzPc0PIQ+5barxDaHg2iDcduFCIt+u9co7fuQsJoHIb2JZCAvg+jFEJdGHAzk/r7bhpVvO
-	LrP/YMYmdlVLmb86NyKVGdDx9hFyJuMahEXz1pe9XKNRX9G3pKLklkxg3t6dTko8ZT2Z/OCkhBe
-	4lH0HAhh/HMnYcDWG/pw/zM40meYlaP1zaXdadQ6O4rAhfwL5lQXzmWefN+EEFJjMx1dpj44W2a
-	2Gj6N5PKmBFeVxsUxr+cSRS8mvDn5c2bxz+44kBXsto+IaNGtH1/DMw1UZI49tKD1PxWY5OplWI
-	+p9glLrrtNaEmrFAiYq9RIbD7t
-X-Received: by 2002:a05:600c:8b63:b0:480:4be7:4f53 with SMTP id 5b1f17b1804b1-48069c5fad8mr72206785e9.31.1769599183682;
-        Wed, 28 Jan 2026 03:19:43 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806ce4c515sm55723105e9.11.2026.01.28.03.19.43
+        d=1e100.net; s=20230601; t=1769599227; x=1770204027;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2MWO3DKTfHPlWbWoJnbmcsmvrxuGAi/ENfoXzbGs/t0=;
+        b=Gk6zLJz1UqLrw5fxt/FtGmzINM0FKBisem2iAVH4tBZgQIb39I3ytQrXFyhr57aSrq
+         FQgBDDazMSS4JvS9vXW7f67nGFjei0WCBefsBv64KJutDLpcu0MDvCLhWbonKGoFDJCe
+         OIVYYsf2sKK+5AsOgcUfii21EV5b8VSWfCxIXjG9fUMSYGv3KecZGW2AXNWcHwMfJmLn
+         H+CJ8OvGJDQo8N3R1Bzl9ViILekCtuMHDYzWpGQCn6I7vXxDMBXbXVV9uqv6LmEb/Ipn
+         CYeSGpjBQCKexE1/bZymeKbclN1s5H+xz93Pa7KHgrZpydCeQTDHTqeZidbIbCVK028h
+         VreA==
+X-Forwarded-Encrypted: i=1; AJvYcCUj2ZQtZznIJPheL6wQDzaqs6qtZqUB3cMtoWfxyFz8rwjoEckwIyv03BkzIgmwpnaYD2zSB4t9bA==@kvack.org
+X-Gm-Message-State: AOJu0Yzo9M/QDqPiJrnnxLox/CB7zuZLBs370pildasGTWXf3hA+c0zX
+	y49gLJXS0Noz99xPAidH1i3o3XaR68AsjDotj+OGtIBPl6NT4dDir48D8J6CiGfEhyA=
+X-Gm-Gg: AZuq6aKVJlzRjViojnwutyGyEUECVXMTk7oJHASWyCb0jg+pemyN3tas0jpLqWcVk8p
+	uvNu4xAvwSOiFi/oSTtDcV0D/RyAXpZpTzS7yn6HMty0ndlwFYOq8crQcMs8aDYR9Xb4WHI3vX1
+	lf9vN3edKOBNvhtiuqUzKv9VxkoRq3C7g77T1K68RwLtjOXJWJvfLso3cIzxgFxQeZwwwe084gf
+	fxEVDQimZvutNyZjuIhICAHiJkzyj1UZ9vwL89Mfo8wIzFZvjc/98UxIlyN9t507DNjwwCLZO+P
+	OEtQM7TfadZ1UhqVVNd2sgaG+FOy76dXtQGAhUwTlbRCyMMIu4JdmQ0YQTEAIsywNyfDKQ0cVAe
+	S/8JPI+NhRGVoj21kjghERnzjur1bhFldRLSZYlVruDcevdHRbT39w1ckhX62uP+UILzmLN7T7W
+	ITV8tTA8tDRF3ePQ==
+X-Received: by 2002:a05:7300:cc12:b0:2ab:ecd0:5221 with SMTP id 5a478bee46e88-2b78da4b7e1mr3063339eec.42.1769592801585;
+        Wed, 28 Jan 2026 01:33:21 -0800 (PST)
+Received: from debian ([74.48.213.230])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16ee7d3sm1828362eec.11.2026.01.28.01.33.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 03:19:43 -0800 (PST)
-Date: Wed, 28 Jan 2026 12:19:42 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+        Wed, 28 Jan 2026 01:33:21 -0800 (PST)
+From: Qiliang Yuan <realwujing@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>
+Cc: lance.yang@linux.dev,
+	Qiliang Yuan <realwujing@gmail.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Qiliang Yuan <yuanql9@chinatelecom.cn>,
+	Wei Xu <weixugc@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <jackmanb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 07/17] mm: introduce BPF OOM struct ops
-Message-ID: <aXnwzpeaggySKRzd@tiehlicka>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <20260127024421.494929-8-roman.gushchin@linux.dev>
+	Zi Yan <ziy@nvidia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v8] mm/page_alloc: boost watermarks on atomic allocation failure
+Date: Wed, 28 Jan 2026 04:32:53 -0500
+Message-ID: <20260128093258.1740809-1-realwujing@gmail.com>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127024421.494929-8-roman.gushchin@linux.dev>
-X-Rspamd-Queue-Id: 5FF491C0007
-X-Stat-Signature: wubtqhswf3df5cngohi17jt9utiex1po
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B556B40009
+X-Stat-Signature: d595u1caef6ast7r9zdzf1gawrduf3yz
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769599185-374030
-X-HE-Meta: U2FsdGVkX1+k2TJq2EQMUBDQVfr6p8is+5geVs06PPI6kf88AW+2TAhJ+WM0S3pGPEkYESm05VKlKoLdO+7Hq2mABQzXAdlFAe8t4KfACoWBQNhK7mLsTSjB++nzkpVDdN0tOEIhsq7gCK2z9BmOwLYaePPCNR1KH7LAgdEsCli52aEQj0W5tO7BoiZFEl5lJA+qJ6fIrQOxY5KAhZ7iY7O/eG8CUWspuIudqxCW+cp9tvW08v5hsPiWUkhxYE/oQ8HyRXSIqU68JGxQWiL+HsJlYazLHATGz3bv6pOEXZGCFFS6oaljKR4F5dI/Foh74N6XgSvyYDQMtTTSNnRrWyuqTlB/lxK0PXO7asbKCWs/h8BCQvRp2CKsFclrcJKS5NdTB5FDSx2ciXBYs8pWXGdsxFQh0P7UKkg2BYcabTpYYGSamvgZpMYFi2gh2U53SvxhL8/sFUzgd3VHtsC2Hw5DkBLNSYckO3csePieJMhHnyIx92L1jpzJhWgZ47dk6VxJYl71qHPeJ2t+BvkxKl7sWRChTzJ1J9Bvc244ysznSxG3mv5PIK36fyQRLc+bZIxrB7otIIXM/itv4Wdf2qF3wXT5wBw+OlBIEvy/5ILWROhLKYqbecdKrKqwvQ8vm5lFq/B+JJmbtRFLDDus5WxcmLEFauDN3qkaR8ffkwRZppU0pwut2ckN1AHwcORXapkNXRzNpJPlWLeb73JqBjE7qkGmZELvBZfeYbQh1LfGwdQRyjdoGpL9IGYcf0Q2UbMyHKMVKBfD4PsuMlzP3tzualoSZJheeR4xaV+VGnpJ+r+ZqmNTqZA7WJSp2mcW8W4g1l/wCEXXZPYbEb6whfFUO/YP8NYCJpAuG7lGD9gKgZXFMu3jbIU+FG7ULmrfHaS2XdKpVwkskcQUNb8WBd9GKGGNdu7AcOJs19RhHeHeZH6jpRD4Ffwb6KtEFY36qUZdSSzrcUikkZVxuqg
- Gy8fa24p
- SCJ6bKhQLjKNCjMibi8wzDtdo1sWLQx4Bv7nhp734GCSUrI0uWAe3eA6R7lEN/5odwP5cOQ9VCET020qNzQpvdpdOw7xC0YNvVNmokXf7LK5b0tXpFx8ar4sqe7JGCfHAqhnHiQ5qzV1t+wPn/yQoLHqapVcpN457cpHMIUxxI7b1VHEGafmBkl1OqfnbHMydBj/zyI574+/PMzm4uc8yoadVsSgHHwz7rKHZ9hQUf7Al5K+lKXwe7J1GYychcZAPrxyKGfVWQuoGpSW8sWVZ8I54cddPLyoVPvUfr02DdKLBSFMpoVqUdcIBxN8YOMt4Cf4MTY91nFU4R5FbWqjV5ZVTJa3oeAaNgXYZRtoQu+FuT/o=
+X-HE-Tag: 1769599227-907096
+X-HE-Meta: U2FsdGVkX1+cOYHMMmkGvHyRoM6gqlf2THhrS+f54BfRrrd4Wwm39RqSGHmr2HMHS6v4ptcjEBoSjNlfCSRf/adc6kY5AkNx0WBpvUYjffrJK2pUSGpgre3USS1pkuY0w9tAvPLLXjtDeiLzH/HKnVeUmTJRGEk9GVu1jyRQtdEYUuVojI9Pm12jQZn+tJQ+wHa7MfkjT+veswmimQJHkfmXE2P2suXvHpNtAVR4ZYxZSP9c8AzjB9tHmK78DC9+dzIgnrQwXPWV+VBaSsENhVTNMLlLDW/i1Yr/7icJgrWmY17/s2iZ+H82PLFd64Eu9YuZloyxtrg4RSFU+/aJ1gHhFOKgryGT+RJIAhJTtPO1xtfk1zG0+nUFJjTc3ICdtegV9tShwadGgrcGaHyzpoc4fC5Ex0284I/rijy5zLIVNPdv170R5zzEA7A4pkf/vTv90lTiWR0uofEvsF0uwcAJfc1h9THq6Hl2ngKgV/90SvBQCt2vO8yPrsi+Y6ED/ir1ul8+aHFlBpbh0A+xnxLQfC9f8y0tIVEa3mVO5cAOJkAM3kyw3QRH5EIsZtI/AZzwaw2wPg07hI3qNBTbhh3ZbD+sAkZ4Hc8Qa4c90mGusX+Wq0rkfLZugqiTPvrXNEPk4BZFnuzOiwSJYLpmV4608IUy3aso/erA2pBEghQuHVxXxz+8sINWLOxanXwe5iN9fQgyM0m1cd2z9WHZajW1uDqIeO8GBRCZ6W2rBqbZd4e/u2U2Yybb0xH/cbLclxtKNA3KfsNMOcVeNc5XkraepAOxsvH3Vq3hgszXE096AV3oXTVOaLbUqGlO65rHuExf5nVMqiUzyO9sjn4ijwyqDC6jvBI7zyxztiHwtk/eGh3QeFdV9kOkHN/3DggRPdjKO4nfK/3w8/firOiER2Nozl3BznOZKjSgfcVQsVikAXcqVOEcZxvE1xgju7UdFGG+p/UW1TBFUf7RRsi
+ H2CFTSxQ
+ Q5rWuK0WRz+lQPDN/JnRVdy6opKhSaTmePKzj8Q+qWiGp05FV5LbG3yMrMGSCUhLfWmXS6ybDHhwT2Mc2IE6ppu1769ZI4l6m0ogd8Pk0cxtlfCEvnIQo/Uz44hKSXYJ66RyNFf8xhNEvyKzvHNVopii7l3fDKTacpNwUNBKe1CB2dcayzu4TQPvzRvnLPG3La8Rc4wPb/s8CSo1JcSX4PSK61atAd/kOmvcxy2KJEm4VhBi5BHFUfKTcABhW+PNA9WsKK2c3kO8gkZvuFizJxwWiylfs22ofSKpBH648oici6jmQaXBCA44IyjmkYBTL08lzp/E0GulZKUcjUzqIEwGS9xPPqv01ZP+GK8lrgwU6ZS4eNKw3ezwX+UsV4jMW1XAJ7WJFZ5e6wEiIdjhilOjNiZ7uKkhqLGhDBWFy8MTCiV4kP/ASiOY9oMUB17OR36BFI2RUyiHrbgYFYRcYQuIwkQpvTUmh3T13ryqf4GsjYuzTsrwKYCyzb09skF2Rc8iavAUu0t2jRDneZuQMCJO5V0TafwyoClFZj+a0SUpzKS6m1sQP2ZeWd5gtJeK2Orx5BVq25poCaCvHaDLg+zXGVg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,27 +132,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Once additional point I forgot to mention previously
+Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
+pressure as they cannot enter direct reclaim. This patch introduces a
+watermark boost mechanism to mitigate this issue.
 
-On Mon 26-01-26 18:44:10, Roman Gushchin wrote:
-> @@ -1168,6 +1180,13 @@ bool out_of_memory(struct oom_control *oc)
->  		return true;
->  	}
->  
-> +	/*
-> +	 * Let bpf handle the OOM first. If it was able to free up some memory,
-> +	 * bail out. Otherwise fall back to the kernel OOM killer.
-> +	 */
-> +	if (bpf_handle_oom(oc))
-> +		return true;
-> +
->  	select_bad_process(oc);
->  	/* Found nothing?!?! */
->  	if (!oc->chosen) {
+When a GFP_ATOMIC request enters the slowpath, the preferred zone's
+watermark_boost is increased under zone->lock protection. This triggers
+kswapd to proactively reclaim memory, creating a safety buffer for
+future atomic allocations. A 1-second debounce timer prevents excessive
+boosts during traffic bursts.
 
-Should this check for is_sysrq_oom and always use the in kernel OOM
-handling for Sysrq triggered ooms as a failsafe measure?
+This approach reuses existing watermark_boost infrastructure with
+minimal overhead and proper locking to ensure thread safety.
+
+Allocation failure logs:
+[38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
+[38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
+[38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
+[38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
+[38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
+[38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
+[38535649.655523] warn_alloc: 59 callbacks suppressed
+[38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
+[38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202601271341.5d24a59f-lkp@intel.com
+Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
+Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+---
+---
+v8:
+- Use spin_lock_irqsave() to prevent inconsistent lock state (softirq-on
+  vs in-softirq) as reported by LKP.
+v7:
+  - Use local variable for boost_amount to improve code readability
+  - Add zone->lock protection in boost_zones_for_atomic()
+  - Add lockdep assertion in boost_watermark() to prevent locking mistakes
+  - Remove redundant boost call at fail label due to 1-second debounce
+  - Link: https://lore.kernel.org/all/20260123064231.250767-1-realwujing@gmail.com/
+v6:
+  - Replace magic number ">> 10" with ATOMIC_BOOST_SCALE_SHIFT define
+  - Add documentation explaining 0.1% zone size boost rationale
+v5:
+  - Simplify to use native boost_watermark() instead of custom logic
+v4:
+  - Add watermark_scale_boost and gradual decay via balance_pgdat
+v3:
+  - Move debounce timer to per-zone; optimize zone selection
+v2:
+  - Add debounce logic and zone-proportional boosting
+v1:
+  - Initial: boost min_free_kbytes on GFP_ATOMIC failure
+
+ include/linux/mmzone.h |  1 +
+ mm/page_alloc.c        | 48 ++++++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 47 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index 75ef7c9f9307..8e37e4e6765b 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -882,6 +882,7 @@ struct zone {
+ 	/* zone watermarks, access with *_wmark_pages(zone) macros */
+ 	unsigned long _watermark[NR_WMARK];
+ 	unsigned long watermark_boost;
++	unsigned long last_boost_jiffies;
+ 
+ 	unsigned long nr_reserved_highatomic;
+ 	unsigned long nr_free_highatomic;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index c380f063e8b7..7dc1e056a082 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
+ static void __free_pages_ok(struct page *page, unsigned int order,
+ 			    fpi_t fpi_flags);
+ 
++/*
++ * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
++ * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
++ * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
++ */
++#define ATOMIC_BOOST_SCALE_SHIFT 10
++
+ /*
+  * results with 256, 32 in the lowmem_reserve sysctl:
+  *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
+@@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
+ static inline bool boost_watermark(struct zone *zone)
+ {
+ 	unsigned long max_boost;
++	unsigned long boost_amount;
++
++	lockdep_assert_held(&zone->lock);
+ 
+ 	if (!watermark_boost_factor)
+ 		return false;
+@@ -2189,12 +2199,42 @@ static inline bool boost_watermark(struct zone *zone)
+ 
+ 	max_boost = max(pageblock_nr_pages, max_boost);
+ 
+-	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
+-		max_boost);
++	boost_amount = max(pageblock_nr_pages,
++			   zone_managed_pages(zone) >> ATOMIC_BOOST_SCALE_SHIFT);
++	zone->watermark_boost = min(zone->watermark_boost + boost_amount,
++				    max_boost);
+ 
+ 	return true;
+ }
+ 
++static void boost_zones_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
++{
++	struct zoneref *z;
++	struct zone *zone;
++	unsigned long now = jiffies;
++	bool should_wake;
++
++	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
++		/* Rate-limit boosts to once per second per zone */
++		if (time_after(now, zone->last_boost_jiffies + HZ)) {
++			unsigned long flags;
++
++			zone->last_boost_jiffies = now;
++
++			/* Modify watermark under lock, wake kswapd outside */
++			spin_lock_irqsave(&zone->lock, flags);
++			should_wake = boost_watermark(zone);
++			spin_unlock_irqrestore(&zone->lock, flags);
++
++			if (should_wake)
++				wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
++
++			/* Boost only the preferred zone */
++			break;
++		}
++	}
++}
++
+ /*
+  * When we are falling back to another migratetype during allocation, should we
+  * try to claim an entire block to satisfy further allocations, instead of
+@@ -4742,6 +4782,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	if (page)
+ 		goto got_pg;
+ 
++	/* Boost watermarks for atomic requests entering slowpath */
++	if ((gfp_mask & GFP_ATOMIC) && order == 0)
++		boost_zones_for_atomic(ac, gfp_mask);
++
+ 	/*
+ 	 * For costly allocations, try direct compaction first, as it's likely
+ 	 * that we have enough base pages and don't need to reclaim. For non-
 -- 
-Michal Hocko
-SUSE Labs
+2.51.0
+
 
