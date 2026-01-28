@@ -4,81 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 462AAD2592A
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 13:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8ADA4D25B7E
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 13:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE1186B0096; Wed, 28 Jan 2026 08:55:51 -0500 (EST)
+	id F13A76B009E; Wed, 28 Jan 2026 08:55:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A994D6B0098; Wed, 28 Jan 2026 08:55:51 -0500 (EST)
+	id ED1E36B009F; Wed, 28 Jan 2026 08:55:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9911D6B0099; Wed, 28 Jan 2026 08:55:51 -0500 (EST)
+	id D97306B00A0; Wed, 28 Jan 2026 08:55:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 83A336B0096
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:55:51 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 530DFC23D2
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:55:51 +0000 (UTC)
-X-FDA: 84381520902.01.59F2EC7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 403F2100005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:55:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZOvBHJXC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769608549; a=rsa-sha256;
-	cv=none;
-	b=I+3wZfrszZGB03PdX6lmU0ea+ER1YZhhshmvgLpO8U/Rc6K/BX2YTyA3yvlW/FXZI+XCs3
-	JSiEvW+CxGWHdKm7txoROFsli6kpK4Bh9A58IWSaUzP2D/782IsMXOg2UdcWjkSAD20Ws+
-	0QVt9MjQ0q3U7tX6yXiaRuxkAnRZ2+k=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZOvBHJXC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C66EB6B009E
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:55:59 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8F5E4BA521
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:55:59 +0000 (UTC)
+X-FDA: 84381521238.22.DD8BE6C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D93C020007
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 13:55:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aSfS4zqk;
+	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769608549;
+	s=arc-20220608; t=1769608557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QKhigY+vVV16+GkeQJXcTpj4vizmnQQIlU3mIYyaz6E=;
-	b=ieq06SPIMSqWhw49P9ll1exDega2afFd14vkU2eHcLDCtmxmXWr7nBid9lU9or5pIeDASM
-	iuJUWkfsXI4Ms/MUZwWwIp/JyuDAa6xbXR2dzAQZcWQZ2q9cz+DQ6bTOGWbBjGqeFYP2iT
-	t/BcpTnswwIlwnmyYx81yhIBvEwcZGo=
+	bh=5itD1SDwquwWs2ds/5ZXa9iuE390ctktQFtmzlQ5/0M=;
+	b=KUDEPiXQSeklE88Y1EWYKVNWTdJpgIaDp0QZoW6CYSRypPimKWITmI3TMtkbf5gl0iq2Tg
+	TfY66Lu+XZ0wv2bhLhf2i97asj7jYNJxhvIdDpRfByM8m2UzWL0swdBtHNiPhsmQIBdQlG
+	W62HfLWe9zWihCrZjugvT0Ck08mMfv0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aSfS4zqk;
+	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769608557; a=rsa-sha256;
+	cv=none;
+	b=zj52mPgQJ4pvBrujZl01tgblwC7/oVtoexT/VhqLnZuP+tP3xsyR0ZxQsDv5Z0FuRDNJ4g
+	7dK+g5aHCf7BdEW0ktbjtKR9BC63Dhpw0lxphZLmFe7EkdMtX6u6OtZsWqRy7KecE/XDeN
+	vj7Tp3jdx0KREUgBCpj8XoMK6aF7zQ0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 721A644481;
-	Wed, 28 Jan 2026 13:55:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612D8C4CEF7;
-	Wed, 28 Jan 2026 13:55:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 63E37600AD;
+	Wed, 28 Jan 2026 13:55:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4842CC16AAE;
+	Wed, 28 Jan 2026 13:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769608548;
-	bh=4F/Szy/Cik4u0re8XChd+PvOlhHKvV3FFCqDor4py4I=;
+	s=k20201202; t=1769608557;
+	bh=gSmvqtqPx9nfy8Fha/oZ+Wj5/HcAhp/Bj63bLn9BVgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZOvBHJXCBdEVSav7bVOSuhG08QTbWvvlM9vHrnJl5ke4zZXkKPaGxt5MvEPpy4P9e
-	 QwzpK/Kr4Ua8TbKh5VKpP6sNpd+gmwJta6H/0RyVW9r2xreLLJa2vZBNKoFEjX7wV8
-	 XAHIfrer1Mb0YgoLxTXS1pNWz2GQJ71g9FdzlaLMhJHvlFUrAeMA1Gy6Hgaam0seB/
-	 Vn0m6dnSqwAUlkJa+9tojRlgioqXIC38CDAeknvH3XFWj/eVrnEC7h28SKuxzDW/b8
-	 MbV6xOrpb5b/pO6wRE3AyBTPe07b3jUbhvWgO3R3c6n3Eo5J+G/m8E97omGPUJd5ed
-	 YttuFOQuKJQ/Q==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 86550F4006A;
-	Wed, 28 Jan 2026 08:55:46 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 28 Jan 2026 08:55:46 -0500
-X-ME-Sender: <xms:YhV6aQXYXK4PTlTlsGsi-EXDgRriresz04zcDIqotuZmvsZtxfc6Rw>
-    <xme:YhV6adyB6XEUNHcJ8K7DZOLxtSBEh36rgXKCwi9-RpGND-xRgTk2NiMsRJbMIWwIh
-    nA0-rey9kH-zwWaKo85QcjpbuVpn2wu4XYje80DwncWzsGRLbOjLmSh>
-X-ME-Received: <xmr:YhV6aejTlcdBm04B9Zb0ixADZ-pd27JuoZQYdmfPWkW6bKitM1aTngU2bzgCzQ>
+	b=aSfS4zqkiQirAMa4sg/10S+f9YjL+SEBWnjL0oqrgw1ZwGZTJngNAJ72nT96X4RJF
+	 O/bCFOF/CKFdCt/MvG1wQqfVU/YWfUb+mNG+8RZWLYa6Dhilo1NQkkmjsVb+PUVljX
+	 HWt64cKbkmU7VMQ3jLd1BQLb/iVPvprRxo+s+cN/8yHRaTgzpVWdzM8PhhLykgYuce
+	 +xyu9QnskUWVexe2pVLB52fJzgPbhvuhOSdgmNFkhfI/gg2dE+TBrMQWk5+uu66ljc
+	 sFCJwrGbQq4FLLZcyrJsjybQQxEPTfNZ95iO5Mc5q+zzUjNlTmJUQ2XyYlh2G+11UX
+	 bPUclcasHDNrw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6E120F40069;
+	Wed, 28 Jan 2026 08:55:55 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 28 Jan 2026 08:55:55 -0500
+X-ME-Sender: <xms:axV6aXA1ExlFUtDBWzg_bt4IS7G8DRDTfKBgadVokIPfMe44t7P7BA>
+    <xme:axV6aWtqIaLFmJdFjQvxneGi9Vq0a1wFZnURiMxdK1iYHxxGTN12HAAX2DQxj4m32
+    f2pSZYcgqUUG3RehqchugthcLtLok35BOiA2NtA8wRS8dKsZCFrUw>
+X-ME-Received: <xmr:axV6actSKPCq5Ep2tkcGeMLxa5C8V1Sy3HfbLg73XsNW0jvicy-nlYW6k73Jgg>
 X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieefheegucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhirhihlhcu
     ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
     hrnhephfdufeejhefhkedtuedvfeevjeffvdfhvedtudfgudffjeefieekleehvdetvdev
-    necuvehluhhsthgvrhfuihiivgepvdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
     hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
     qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
     hnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphht
@@ -89,14 +89,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieefheegucetufdote
     tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
     guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
     rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
-X-ME-Proxy: <xmx:YhV6aQP9MF5N76J4tglK2iXE7aytvFT2B8OFD2wMmvEQM6ISVZ-P7A>
-    <xmx:YhV6aWhWq9u5KMXdTYtb8umMsbSReRRuuzZCbY3C8WNK4lOaheYJ4Q>
-    <xmx:YhV6aQq-wMuxk9YdIal3rqi6WZ1EAwSdLvkzeETKdd9rlQEhRB4HMw>
-    <xmx:YhV6aRhOa_W2y_xmndaioiM4BSpaB3NIJIRSWZirCBqugXLAfWoqpA>
-    <xmx:YhV6aWKwASNwQ7mAJ75LFcnKUB3-Ek04FvMrOZy1jdgYEszqG0DUyZgv>
+X-ME-Proxy: <xmx:axV6aar11BVtW7su70KxKpfacmLD_KKRjs1rwm6RxhxOdIp00YaVgQ>
+    <xmx:axV6aYM_1mkvTrlwWWHXImp-rSWQUlnT-77wYrYmJk715njwpiubag>
+    <xmx:axV6aYlAWDB55avl4rhWdKNXE4lnVZUNustFAxp0wNwJUNt_OJp7Xg>
+    <xmx:axV6aSv4P1g4WQ7uiaAQy7S_Lxydyfvcx6CLrwmCDWTtD69dspLNlQ>
+    <xmx:axV6aXks34t5g-5ItH6OTvzh9pV3ClyBtjP_MuqKX10NRTLBcDUU1oOE>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Jan 2026 08:55:44 -0500 (EST)
+ 28 Jan 2026 08:55:53 -0500 (EST)
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -126,22 +126,20 @@ Cc: Oscar Salvador <osalvador@suse.de>,
 	loongarch@lists.linux.dev,
 	linux-riscv@lists.infradead.org,
 	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCHv5 05/17] riscv/mm: Align vmemmap to maximal folio size
-Date: Wed, 28 Jan 2026 13:54:46 +0000
-Message-ID: <20260128135500.22121-6-kas@kernel.org>
+Subject: [PATCHv5 06/17] LoongArch/mm: Align vmemmap to maximal folio size
+Date: Wed, 28 Jan 2026 13:54:47 +0000
+Message-ID: <20260128135500.22121-7-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260128135500.22121-1-kas@kernel.org>
 References: <20260128135500.22121-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: kcrprg4pqp6btxo4z7c9k4pb6sfmurhe
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 403F2100005
-X-Stat-Signature: ewfseooqqptmsks8grjtc6kexabn4qyf
-X-HE-Tag: 1769608549-656905
-X-HE-Meta: U2FsdGVkX1+W/KksS4/D1ei4n3AnVHh+SYcSU/B5y2Qpyj79ku3pXN3UTuMiZnNRqsnuMYgixcVUN/49cIF/zdrUZaV0EtkgQpNzQe2bFikawLUi3GNIJbJyjy6hpVTkraf6N/rwmCYw/P30m+Tk6DudjcbejMYN1yZiqEjKa+6ogC3GT40ikIXGYuQGRMEzEG2mAaBEs1l72U45HIqf8ejTfhpxGjUcMBtCQNp8ILruobKlrecFzpSGtfopL23aDDUxLNNWldHTapPpzDfxCy0PP9BZECe2HPH++dU5/duGW9op34RolFTC8oQT9FFWBuEdaOcL0MrtSdAh9PyrYCvFlm1xCc/CvWdCYilyt7wMQo6q48TIk1P1pOSH0YDeIZVI/zQk5KUb9awaX+5Z70oT4ahiwlYAm1B3SA+W/Qn7UJ3Fv00VKTEEHuhYQBHIvQ0dgURpLy7ScqYTr8Dy55fPNdFsfOzerHvs0aqD4foMQXi/psCSOWBo+vJao2Yu6ak8iR+ZSJnQPQ9AtiRL5t4L5+H3FzsWxfpenhpMCaGqNsnpnkZb7mR4q+aUXKCASA2hmhfq1IvpqF9sYuW4/oJw15Jz29t/5w2zmQQjjkgS6c3IDexrkbEhWsPEsgZXHx41Rh2zlyk9UETRm5QVmOzFQren2lto1RUZGD5zw64jHR8gUP+VQimSF4AV+16ca56BpStGq2vOo+FDSGDS6MwUOSdLiYWaAoEsDqkP/MrO73hi/VPTN60Tyb+4HgTllcASK5aWpqy9HOMcPccfJszJ9Tphesps8GuFFsTRwz41QcIStSI8AY4/szYqMhTNZ/ZAk1llc4J//ftlwmpbOrG8GPU32+QKT77EJxoQXiQmCNDSQiuBAdAdyknA16vyjZYNujny6jwL3BtpFG/JuKDj6O8yen1D+wouhhyYxRR8Hv2eSNdWQy0IS9FJq9jEVPlIDpYX6fc7sarVo3v
- D2wj0EJ+
- neJv0IwiNwshUb5ryD/h1+QntYvKB0Me6umKuutazKVgN0boSZlc53meLI1zsSYNhJ9NUSlTIrZLxL4US3pIQYvj05cnXevzDxade6dadX36cY3R1AhGxkL1pnXpHzWX1UEznaa4XFFNs6C6Bf5BH3yfL+0ULORhcBrYi9gC8tZYhamOoPU7Hwq0qLF7Kpx0O05l0dRwrFPZTvSMpZeQM+5sM4LVpjsz41kIU2aMCCCG44ViajnUh69EBfOvzKNPu5K3n
+X-Rspamd-Queue-Id: D93C020007
+X-HE-Tag: 1769608557-452544
+X-HE-Meta: U2FsdGVkX1+UlCINd8f3izeC0CvoJradihmzqgO6XXDjJYuZSKIaw6f+GfRWYCgxhRl7X4A3Ibvvgf3ztrEQG9wSfLo2RNQHJ+fUNpaCN0aVFf8oXR7BVex5ZIxVYUZmi+ejVIuoMPM5EAhoR92TpIpIG8MhDz/Nitg4W80VQ+cj792zOMIg5TYaLfNU/aui3X4BWj6AUjyKpBB7nhFDbGCop4sM2eNvIQRTI+jF5Nn1so4ODeqCTofutN3RKlqdvXZ3aTL/H8Tpdf8Y/VoTS9L5gzbqAwUVl0LRt60xYbCV+JgOYo7dDOb4qPC9kNk5l+UXrmcd15EW/sUPyZgRkIiAjmc4//CwyG1ZiNjlQ3QJSm6AXBXKKOx+viXd6JntRQhBRpqcGe/Xv1j7svRow8SWGJ6OrB4pYAUH6fWqgYH6fQ6Evpl2R/VNYpDvTFzdCU3oV8d96gXJaWKcVM0fETXtFWaX3gB/M1zBQsIDw/UxObfuFuF4TvPXhuvU3RoaV9BUpBUFjB3Q+dpLbbA58MfXeDH5sPqevU8n0+JwD1LVppNFT2B6ze+dHIDx5dGYTG3CYq3aeXOhp0Ha8MwENHKLVuMQPboZeN6WnZkJeC5end2p8cXKHO0pnp2ZiUhvYILAGd2K5Mmxibt2tOieabZ5PDtCoGFBaJcRMETk38B/2eZDhcxSaIcqvOkdXXsXpgaST6Tf/1vplt2ZfHLiYcVoUoazTzlIf2whQNpsdm9wx9Rk7xZhM79tci/ierJZBJRWgbxmFzAbhpSo9DOLI2G+7JoZJJ7R4Mnzespbgy93gazOpKCjh7zJzx9pqsgrDCG3ScQkFYxHiA10PQOWSro+QGi5S/UjVWCTzdOCOmy9UPYx+n64nzp/yYYB8HJI9UYXnEBhg3rAGUaH5pPTufGsslDvE8iy/dkzJua5c6YAtSe8NbK26A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -158,23 +156,23 @@ Align vmemmap to MAX_FOLIO_NR_PAGES.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 ---
- arch/riscv/mm/init.c | 3 ++-
+ arch/loongarch/include/asm/pgtable.h | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 21d534824624..c555b9a4fdce 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -63,7 +63,8 @@ phys_addr_t phys_ram_base __ro_after_init;
- EXPORT_SYMBOL(phys_ram_base);
+diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
+index c33b3bcb733e..f9416acb9156 100644
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -113,7 +113,8 @@ extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+ 	 min(PTRS_PER_PGD * PTRS_PER_PUD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE, (1UL << cpu_vabits) / 2) - PMD_SIZE - VMEMMAP_SIZE - KFENCE_AREA_SIZE)
+ #endif
  
- #ifdef CONFIG_SPARSEMEM_VMEMMAP
--#define VMEMMAP_ADDR_ALIGN	(1ULL << SECTION_SIZE_BITS)
-+#define VMEMMAP_ADDR_ALIGN	max(1ULL << SECTION_SIZE_BITS, \
-+				    MAX_FOLIO_NR_PAGES * sizeof(struct page))
+-#define vmemmap		((struct page *)((VMALLOC_END + PMD_SIZE) & PMD_MASK))
++#define VMEMMAP_ALIGN	max(PMD_SIZE, MAX_FOLIO_NR_PAGES * sizeof(struct page))
++#define vmemmap		((struct page *)(ALIGN(VMALLOC_END, VMEMMAP_ALIGN)))
+ #define VMEMMAP_END	((unsigned long)vmemmap + VMEMMAP_SIZE - 1)
  
- unsigned long vmemmap_start_pfn __ro_after_init;
- EXPORT_SYMBOL(vmemmap_start_pfn);
+ #define KFENCE_AREA_START	(VMEMMAP_END + 1)
 -- 
 2.51.2
 
