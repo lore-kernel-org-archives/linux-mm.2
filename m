@@ -4,209 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB917D25B49
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 12:13:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5B8ED25B48
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 12:18:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E681B6B0092; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
+	id 1EDA86B0088; Wed, 28 Jan 2026 07:18:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF4D26B008A; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
+	id 19AA66B0089; Wed, 28 Jan 2026 07:18:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6ABE6B0093; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
+	id 06F1A6B008A; Wed, 28 Jan 2026 07:18:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AB71B6B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67EDD1A0624
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:13:18 +0000 (UTC)
-X-FDA: 84381262476.01.894B4BE
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BCC7A20005;
-	Wed, 28 Jan 2026 12:13:15 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id E4EF36B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:18:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92C221A061B
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:18:46 +0000 (UTC)
+X-FDA: 84381276252.22.C5892A2
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C3CE520003
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:18:43 +0000 (UTC)
 Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="gTRY/WK5";
-	spf=pass (imf13.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
+	dkim=pass header.d=intel.com header.s=Intel header.b=LkyM9apP;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769602396;
+	s=arc-20220608; t=1769602724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sd3tTNC9Qi1NraZ3FKZVjxKypYrlKrXHxdzsRn97YZE=;
-	b=VQClwoJq9Y9eeeiP18GRqZIrQxqaNtcjQ0iDS7MbMvu9PdLXXibW6DC77mplXQoudF3kmD
-	p2UdMsYp4n1A94HJmnegIK3ull9SHRG+xNzb+QDcnHL3stnWATaYfCMScJxZ2XQsFyZXJH
-	A8wmTwns+jmPBLvP/jOXTigotkoXp4w=
+	bh=DffyQC4Cucd/5UZil+qyIvLPTptHa4pIhfTfJoQ1+uM=;
+	b=fAtHHK3WB7f8NOBfP7TqdXSSwWX3hQ5385Ll1Ypefo1uRCRTcns6JVZ+2UMiwusdNskDWD
+	X/cdYbdt3Skd+djf1ro7jx20hPaZs/8VgXtyaZclmUsAuXBtdz4Zpr5KnwV73z/uNrJIv9
+	K0YqouyyVz+yk5EEViZBChzbKgXVxfQ=
 ARC-Authentication-Results: i=1;
 	imf13.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="gTRY/WK5";
-	spf=pass (imf13.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769602396; a=rsa-sha256;
+	dkim=pass header.d=intel.com header.s=Intel header.b=LkyM9apP;
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769602724; a=rsa-sha256;
 	cv=none;
-	b=WlAQ9SV6Q7lbYbct+bZpwZB5ceUpAAo/K+vSLYWzwF//7m/jroMSWOEW5MSrBbIduJaf5h
-	hNddYQfqgkl6eAwFlWTXW63Wg1mtUcOnRIIN0zmnwB3Siw6/QfxZIIpin3bOR1BheY90M3
-	bt/l45pHYSKpY8ZrlxSnh7Ke+0iNfOo=
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60SB138M1478460;
-	Wed, 28 Jan 2026 04:12:23 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=Sd3tTNC9Qi1NraZ3FKZVjxKypYrlKrXHxdzsRn97YZE=; b=gTRY/WK5dlMJ
-	+w33bnXlRn1cCiq77T2CcMcXQkZLDeCgVL96iSn62FmkkrRxzBM9MIvA0/cb+Yqp
-	7K2voFCBRv+61xwztZqJKWxwspJ55PsOpC1EDOp9KTPbF6BIJWuk9ijNdT5ye3hN
-	2qFlu8Baf7zOiO2sS+AFcRFjCj8EIQBI+FWjL8w8MnzADaoEJNxQSdivlV6UW3he
-	/wb0Y/R32ZcnznUNp/NThA2xnL9bV+ILuQu5yUUX8YQKP21FSmcApEMpZ5O3AuC3
-	/zWNiD+9HEYCHz+k7PzzpBd2lBlTxy8vvfv8sVuLDoGyHUQax4GHXHh1oNeRoIln
-	Y1F/zIHK8w==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4bycg226fm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 28 Jan 2026 04:12:23 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c085:108::150d) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Wed, 28 Jan 2026 12:12:18 +0000
-From: Chris Mason <clm@meta.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-CC: Andrew Morton <akpm@linux-foundation.org>,
-        Jarkko Sakkinen
-	<jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas
- Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov
-	<bp@alien8.de>, <x86@kernel.org>,
-        "H . Peter Anvin" <hpa@zytor.com>, Arnd
- Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma
-	<vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Maarten
- Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard
-	<mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie
-	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jani Nikula
-	<jani.nikula@linux.intel.com>,
-        Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Christian Koenig
-	<christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Matthew Auld
-	<matthew.auld@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Alexander
- Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>,
-        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang
-	<xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Konstantin Komarov
-	<almaz.alexandrovich@paragon-software.com>,
-        Mike Marshall
-	<hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Tony Luck
-	<tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave
- Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger
-	<babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
-        Damien Le Moal
-	<dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn
-	<jth@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Liam R . Howlett"
-	<Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
-	<rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Michal Hocko
-	<mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
-        Baolin Wang
-	<baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-        Nico Pache
-	<npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain
-	<dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang
-	<lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
-        Pedro Falcato
-	<pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
-        Paul Moore
-	<paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn"
-	<serge@hallyn.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes
-	<linux@rasmusvillemoes.dk>,
-        <linux-sgx@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
-        <linux-fsdevel@vger.kernel.org>, <linux-aio@kvack.org>,
-        <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>,
-        <linux-mm@kvack.org>, <ntfs3@lists.linux.dev>,
-        <devel@lists.orangefs.org>, <linux-xfs@vger.kernel.org>,
-        <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-        Jason
- Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 07/13] mm: update secretmem to use VMA flags on mmap_prepare
-Date: Wed, 28 Jan 2026 04:08:36 -0800
-Message-ID: <20260128121200.283932-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <a243a09b0a5d0581e963d696de1735f61f5b2075.1769097829.git.lorenzo.stoakes@oracle.com>
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com> <a243a09b0a5d0581e963d696de1735f61f5b2075.1769097829.git.lorenzo.stoakes@oracle.com>
+	b=0FsiSsQYcgtxAdIkCOppHpMpBKvTQyWwj0Q+iyZqYDedsJhhmnnHRc6/UVu9+E7993a2uj
+	rdyRsFhoZKS+XvekrKvBHkE9wmUv2oiINKyymz0rHwDZvprtzXEMqFlWI8FBXJFk4k/iNh
+	bDDcnyMlSiSTgquH63EX+J4QoXahZZo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769602724; x=1801138724;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=irHF387VhKHjsOnpsnW9NUk3sxxbxWzln/uy9xgtwqM=;
+  b=LkyM9apPgcQrf3qFNUYGDEup68NPyxSQcSTVC4cq0sEmkrKHYRakPRuk
+   uII29R5iRhVptnZMPW3uPOGtLyzCzVXrQC7LwmxJZ/gXQ8R9mcTtMyPiI
+   guN//yc+2MmvQ8yvZu3iSFgngrh2CuBrnB/kfaWY0Zuqkrw/3vo+K2auH
+   BuOrUdDHunvJYCv71CCyOYSXc4909y+GTiMb4tSa1BBD2zu9pJzvDUu9X
+   hBDI6NnowY6ZglY1eeHZZKl78EoLYCY6JMwLA0HNW0tqS3DSZPVi+jNnA
+   XR8bY9gziMpZZOS4k9ANEYtjm3/+/ldRg0JAgUwkpKvJBdLAgftu39ob8
+   w==;
+X-CSE-ConnectionGUID: cGPgNaA7Q8CRk9OhydfddQ==
+X-CSE-MsgGUID: KSETFIPrTMCBJVHqEmVL+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11684"; a="93469835"
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="93469835"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jan 2026 04:18:43 -0800
+X-CSE-ConnectionGUID: Q7Z5V0R1RjCKaaK9/1JSxA==
+X-CSE-MsgGUID: tIAdhHReTWOiiIA7g/WWbw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,258,1763452800"; 
+   d="scan'208";a="212353797"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 28 Jan 2026 04:18:35 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vl4VE-00000000ZeC-2fMW;
+	Wed, 28 Jan 2026 12:18:32 +0000
+Date: Wed, 28 Jan 2026 20:18:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"kernel@xen0n.name" <kernel@xen0n.name>,
+	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+	"linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+	"loongarch@lists.linux.dev" <loongarch@lists.linux.dev>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"maz@kernel.org" <maz@kernel.org>,
+	"oupton@kernel.org" <oupton@kernel.org>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"tglx@kernel.org" <tglx@kernel.org>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"luto@kernel.org" <luto@kernel.org>
+Subject: Re: [PATCH v10 01/15] set_memory: set_direct_map_* to take address
+Message-ID: <202601282023.vzRHJBfU-lkp@intel.com>
+References: <20260126164445.11867-2-kalyazin@amazon.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2620:10d:c085:108::150d]
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDA5OCBTYWx0ZWRfX/YMdvd0IEW+M
- mfJ/bYR9k4eRvDbs9QGzO+ygu2VSotJCKMMxUusrpYkrvYdQaFJRWVvBv2EkD12mCpCYEvw+XB/
- DwyN2M8BBbTeyqqZ9/i9fDyEPE0MOIwU1pNj8r3a1/SGXN38+xZGlcMtDVhwJA1iofmGT+NTjsa
- 3wJFzmew6yuj81cYLEWiubhhxDZMBD6hVVMuqCOVg+bB7Gz9bEYCH56KvIcfJ13/7NnDlwWy1ay
- rut+pW91VzKqtLFjeZDFQXQuymj3+pWlazUmuuQXtfS+yB5rh8eIrZb/ZGDSDilJLhwKOSnwEsm
- tXIPQzyp+XE21UBIWU7JysVYMwhm9BUIbA4gV+4NNGJrteyEtklAhziLQl5fV0j0MzIV6sri7hz
- h9QDQw7JEBl4y5dfKeMuesm0LqUNBE+g04KLVmq1Y9FiJcFdRQVCoCh0B4S6SthUPRAGT0RWyAc
- Vh/HaT4eUcQ+KnB1bbQ==
-X-Proofpoint-GUID: 6cECoo2vZpz-_Y4sX-WfJbWu0BG9k_53
-X-Authority-Analysis: v=2.4 cv=Q63fIo2a c=1 sm=1 tr=0 ts=6979fd27 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=VZ3cX_PGfQEInpbj4y4A:9
-X-Proofpoint-ORIG-GUID: 6cECoo2vZpz-_Y4sX-WfJbWu0BG9k_53
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-28_02,2026-01-28_01,2025-10-01_01
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BCC7A20005
-X-Stat-Signature: 6qo9fgbit497e81u79ehf5bub1m3ons7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260126164445.11867-2-kalyazin@amazon.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C3CE520003
+X-Stat-Signature: 9s7nqdrqwwxddnsou3w79cxftbpnz4pi
 X-Rspam-User: 
-X-HE-Tag: 1769602395-215775
-X-HE-Meta: U2FsdGVkX19PU9GL/iXM8jw0+ZUEp1ZASIZ6e5vIqvAEybifFX86kJS4UkvyhnefUqKAbualAskTwuFRIyIxnYn6F6PN53plrklns3erx1I0+v0gKRz9lJEwOEamOMy9wRZL+2vZTPPTWRXplaI3DYc1OL/rdKgBcLmwaaRBcBRFg8s7kE4eaDZqjzIRnUUiPPfsZS4qbWFGVlXMYxrq0f7UbJlcJPfApGVPRKa/2oL4VIJE2SbieWD+fgzaAh4s8NX3adhT63VVUxT8er7R27SeHWElCzXKsZm/tOeOfdYuqpLAE50ZlmMDsf/yX3Sqz0sd4878q1lAUUDZN8W8CAQ+AZrz8DmwbzSb6zHJChRyfxq2/sANPu1QN5YnH7SRVRlMFO16tH/G4Zsi3Ixhmdufy47XuPj+vOXYC+pdV4SqvLKZmr8fjmsMRubDUP5IC0O94dfeyLkaS/sD4lZFW67UBxMrYEK5sQm9N0yUVkuDVox1AihI0RkqbBKmeLHz1XVyd6Bwh20j+mwq7n2sHEgy21Jv6IpGxMHepZVwZAqozZkPxS2ymH6TJhYc4uVKL1BC3FPH4RYrYzGayFqHPtKOMy1JxbWNAjFTNgDpkgYOhFVkK5+0/Nar7IzLSTvRRSiI7BLQtjKzdWO+Dpfh1/poTdw39rWcRFhCRoMtdI30PJa49B0EvC7RsAUu0Z/UUrojt57dUMyNYX7ovo7PrH1VGyu51PJWpc6N5O4HZsZQndG6AA7HPFXAFoCxbxqwTDjPHRHfMdNM1oXwU/nFvTsd31XMsnMrWbCXbadzPqVT2Z+FyRjXJOTuB8HfQ19wbQWTCoilsShwrtS8T009xzN8vU/gHJVYv/+6i6sC4OpkVa9YTQDhuzEtTIccoMKMe1QkgVORmebXJ4oud861EoNQGAqllUqmstqSzv82tqUumpiF7TzY+3GgbCO2wXPvA+8vCvrBenJDuB0It8B
- wthFfvQc
- 7fHRQlXIdbjp/qEHYBsFq68SBhEGb2YMAtK5iAsgRwlZc/JHb1IGFn/HaALslnvdGVmSPrJWJ1lfss2BzQ/ICgW3hFCtH7jDPcz+PGdprAOtJIR3IFnLFrCyguOTXIkQb55C9GYe03Lsq7IT2iWd+xL6N/MOKHf8eu31SIduaOlo5Jp1GPi+HbwDSWvsAOH+4smG3s3E4MDXxDP2rIRpXNCSwwV7oiY6E7bRUj9ZxLxAfa3NIJB01tA5gvg==
+X-HE-Tag: 1769602723-75147
+X-HE-Meta: U2FsdGVkX19AZ5v51Ccnbb0eeneDcIyo2hKfASoomuG+Q2XW6H/fpBvRp56YH+j/TLiX6K2gpHfoW+OcAknh7av0l3rGPbkUDTfvKr7oFc/J7k+KeXzoVsstTVPJAmgq/QDhWDsYSK90R338Q4Xm/2iRsxmWtmJETksFWG/RriSh1UQ64GdGlg3g/1CuuyHxFnv28pjsQh8mXYCuH7PghU53C4+Ggm5I2XiK22kk+Mi765wyWyr4us/7+ZD0/4fKWCETQgMJowOjbh9QbdPfLrVJO1Ni7DL1uK5CEsYPCzzicLWjTvcP632u8g30GVWH0NLLT7LBdEDGklifBGPEZHB37tZLPITU4Mxgnms+KyhLWc0cqZ5oRruK5Nfcpe0JWGzxfpa2VWG7GcOC2RSQzkknvs10CCTBH+qNtrXtrLAWo1kqljQOG7WX/5dARc4GR+Dtq1hujmB3aoQTj4w59m7vdSqPojrGV3cCwLU7ru986Llvv6O8ULDRQbURRWamIuHB4t5deJ2MGVcO5L2GbP2y2mf0JYSaW8rQR0bTtzn7fp//NWSjOgMdgRCIQKmpeFe+6YvY+U7MN2+mbyjoE+axpwyIcY3Lnx/rnaaWMZ0MrxwZLrU0kBZ7FSCgPxwmBG2YUfrHP2zK4suSBuH1FCE9PTqgRfMbyd4tWF9ESC9RTFi8NqDCp6D0lowFDzV6stVNmuVedo+CCFN+FuqtuuQo7OJcn8Kv6EC026rU52GaWtlRCkgTg8TkI5am1dBfJ5s+sj0fBNJ7Wdrt4hkH8SWGsDeLhf+R2Ek1urjKKeR+d9p32yfo88T6WyvtvWCjLOYKpPptjYcLQGk49cOxj7aRBTIRd4wKLNA9t4Gg4uu3KU/mFYz3KG+4qktQQsuPshv5uV1W8kPp0oXsL7EiwqOL0fRfjqZVM/PVjNO2ZpVnqxZvTQZtMJExshrWe65LBIfPwcnSbudO3fA30Lv
+ 5pLY0Eku
+ LqEqFKLwKk5FaM/BT2Y8yT4zS+juciNPDRvsZxO8eMHfOTz8NnXYNKYwvyhyBas+0xt32mEyinyYFrp3bYQDfyAVPa+LAmgVmF+KQW0jxmeTxjk2FUTctJfs1XAyAsUzwjn7HpTwxo9oYrCb/3e8gOk9aBjdnnV2pyEy5N+DTum92j5/hDQ0RGoW6BXXvDlOFk+GmYRZmIy2DAAJzeH7qaNNGofy/Ln74E9a+eLUcj3eq2sxZi1IKpZ0J5Vm/kcERUFKHfGJ5YjuZEPG78sG16GtHesyjmqbN6q0irYqU8+cpmhvb6suwPPwQl2BtItcwkfM2DVpui4GhrnfAsSl50N6GLM0hAAbxECdC2n+djs1uUXpAghG9kFNjW4KlE/Vsuyyc9Xnyw3dJlxo//yayb19MpOmFKwMPNPBj/iAFlRGZuiVrPot+bPsd4w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -215,70 +135,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
-> This patch updates secretmem to use the new vma_flags_t type which will
-> soon supersede vm_flags_t altogether.
-> 
-> In order to make this change we also have to update mlock_future_ok(), we
-> replace the vm_flags_t parameter with a simple boolean is_vma_locked one,
-> which also simplifies the invocation here.
-> 
-> This is laying the groundwork for eliminating the vm_flags_t in
-> vm_area_desc and more broadly throughout the kernel.
-> 
+Hi Nikita,
 
-Hi everyone,
+kernel test robot noticed the following build errors:
 
-Running mm-new through AI review flagged this one:
+[auto build test ERROR on 0499add8efd72456514c6218c062911ccc922a99]
 
-> diff --git a/mm/mmap.c b/mm/mmap.c
-> --- a/mm/mmap.c
-> +++ b/mm/mmap.c
-> @@ -225,12 +225,12 @@ static inline unsigned long round_hint_to_min(unsigned long hint)
->  	return hint;
->  }
->
-> -bool mlock_future_ok(const struct mm_struct *mm, vm_flags_t vm_flags,
-> -			unsigned long bytes)
-> +bool mlock_future_ok(const struct mm_struct *mm, bool is_vma_locked,
-> +		     unsigned long bytes)
->  {
->  	unsigned long locked_pages, limit_pages;
->
-> -	if (!(vm_flags & VM_LOCKED) || capable(CAP_IPC_LOCK))
-> +	if (!is_vma_locked || capable(CAP_IPC_LOCK))
->  		return true;
+url:    https://github.com/intel-lab-lkp/linux/commits/Kalyazin-Nikita/set_memory-set_direct_map_-to-take-address/20260127-005641
+base:   0499add8efd72456514c6218c062911ccc922a99
+patch link:    https://lore.kernel.org/r/20260126164445.11867-2-kalyazin%40amazon.com
+patch subject: [PATCH v10 01/15] set_memory: set_direct_map_* to take address
+config: loongarch-allnoconfig (https://download.01.org/0day-ci/archive/20260128/202601282023.vzRHJBfU-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260128/202601282023.vzRHJBfU-lkp@intel.com/reproduce)
 
-[ ... ]
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601282023.vzRHJBfU-lkp@intel.com/
 
-> @@ -416,7 +416,7 @@
->  		if (!can_do_mlock())
->  			return -EPERM;
->
-> -	if (!mlock_future_ok(mm, vm_flags, len))
-> +	if (!mlock_future_ok(mm, vm_flags & VM_LOCKED, len))
->  		return -EAGAIN;
+All errors (new ones prefixed by >>):
 
-This looks correct - do_mmap() now extracts the VM_LOCKED bit from
-vm_flags and passes that to mlock_future_ok().
-
-However, it appears check_brk_limits() was not updated when
-mlock_future_ok() changed its signature. The function at mm/mmap.c:111
-still passes the raw def_flags value:
-
-    return mlock_future_ok(current->mm, current->mm->def_flags, len)
-        ? 0 : -EAGAIN;
-
-When def_flags has any bit set, this converts to true, incorrectly
-triggering mlock limit checks even when VM_LOCKED is not set. Should
-this be passing (current->mm->def_flags & VM_LOCKED) instead?
-
-[ ... ]
-
-Additionally, the test stub at tools/testing/vma/vma_internal.h:1627
-still has the old signature (mm, vm_flags_t vm_flags, bytes) while the
-production code now uses (mm, bool is_vma_locked, bytes). This could
-cause compilation issues or mask bugs in the test suite.
+>> arch/loongarch/mm/pageattr.c:211:16: error: redefinition of 'addr' with a different type: 'unsigned long' vs 'const void *'
+     211 |         unsigned long addr = (unsigned long)addr;
+         |                       ^
+   arch/loongarch/mm/pageattr.c:209:48: note: previous definition is here
+     209 | int set_direct_map_invalid_noflush(const void *addr)
+         |                                                ^
+   1 error generated.
 
 
+vim +211 arch/loongarch/mm/pageattr.c
+
+   208	
+   209	int set_direct_map_invalid_noflush(const void *addr)
+   210	{
+ > 211		unsigned long addr = (unsigned long)addr;
+   212	
+   213		if ((unsigned long)addr < vm_map_base)
+   214			return 0;
+   215	
+   216		return __set_memory((unsigned long)addr, 1, __pgprot(0),
+   217				    __pgprot(_PAGE_PRESENT | _PAGE_VALID));
+   218	}
+   219	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
