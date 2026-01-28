@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46D40D35662
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 08:00:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87C98D3568A
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 08:06:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AB0F6B0088; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
+	id 9D3A06B0088; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6593A6B0089; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
+	id 981456B0089; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 558016B008A; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
+	id 88CF36B008A; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 441706B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:00:51 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DD133D39A3
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:00:50 +0000 (UTC)
-X-FDA: 84380626260.22.8CF96D2
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf01.hostedemail.com (Postfix) with ESMTP id C684E40007
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:00:48 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UVbqIt+p;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 74DAD6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:06:20 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E7A2459322
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:06:19 +0000 (UTC)
+X-FDA: 84380640078.15.7AAB556
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	by imf30.hostedemail.com (Postfix) with ESMTP id EDE478000D
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:06:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=LzQtXb5c;
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769587249;
+	s=arc-20220608; t=1769587578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aOz/mJtzptjbG9UgUIfZqgEEjdmwSn5lnDfZqyL3N2M=;
-	b=SWg6AYReLhpqzRSUW+e9StiD8oMjiJzri8u0u9PDSHBbv8AvIIEN8mvDOAUxA0MxBMIPwO
-	hWnhubA3b/DFZGx91PCtl48n5+0ZNzv48a3OZtzrmalKw59o3BJd7weoaEyg97j+gP5acI
-	sJOaN7nJe0Ij5eCq3a/pWQNcFTPAse4=
+	bh=enqYBRxEAs7b1XTfNQDYASta7yWhNLiXox4ui9P9FD4=;
+	b=2PXfLzTFzKPgutShf4urS5NlSIP+OUTjJdVtllOqRHPR/E7mZEWL4525pByZQUBKkWGRfY
+	VjRd2rhHb46ewYu6We2+PvxvebV6YuVxckv/7UsGM6d5MyWJVqNe0aGgnYSYvHBxI4NAzx
+	8vMXFLjeCXMjiR4Yr448GE0teKZU2os=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UVbqIt+p;
-	spf=pass (imf01.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=LzQtXb5c;
+	spf=pass (imf30.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=mhocko@suse.com;
 	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769587249; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769587578; a=rsa-sha256;
 	cv=none;
-	b=iJVW8oBsLJmdsEofNFU85N1kHswa12KFCx5aanLoy/IxmPLtKfDu9COeYXxTy4elbnMuVu
-	VSKg8t3oNqgE4RWY5QfEzqjdBo18nqrcM+ovbEA6c2jHc5UqTTnS4dH4p2RDLPgdc181rk
-	YiBoM2+s1jgpavJFG61ATqQfQAhHbw8=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4806f3fc50bso3588825e9.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 00:00:48 -0800 (PST)
+	b=TG5tXo/Z+MGtq7KkQRd8Hm33f86tEpYlHQ0R1vzRtzVtYpc+j1r70dMSSS5/TFPbbxJ6mI
+	JoA3KcM9rT/euV3QM4qz9G1YoMk0fni2OytNGWyu2C0mRK/iVNcKbw+mMTXe2yYi8qAb3I
+	Ci1uXqzpJ5TmCJ1KLK8l0VP6jqnyoAA=
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4358fb60802so340377f8f.1
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 00:06:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769587247; x=1770192047; darn=kvack.org;
+        d=suse.com; s=google; t=1769587576; x=1770192376; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aOz/mJtzptjbG9UgUIfZqgEEjdmwSn5lnDfZqyL3N2M=;
-        b=UVbqIt+pp+kSX25eIx0zedDrjpZCHceOuIE+v77Ouj0GS3oW3l9ivyqnmnlXnO5TZk
-         OBtVI89lNk1RlmPuT6uNTf44qCTd13fsCBny1pKmiq6irVW7ogNqCTwPp1xF0uBBgTJ6
-         wxqmgw4M3qB+9a5u8DGguVPP5TYmHABe8Wdflll0zTiWEsjzgCOUvgd8PvxF6IW3VTnT
-         Y+ULUc5L7RUAIXAaV9k5Qwc2sHcUWn1Z+UzUEddP/un8hJi+Jy/S1qXtExQSORT6DTGl
-         igB3Nw/i6m/R9rBsNGQ49croFFO+S/B3Z++UsOxYkvHMJX/UKBYY97pTHuhpNrO36A/2
-         IZ6g==
+        bh=enqYBRxEAs7b1XTfNQDYASta7yWhNLiXox4ui9P9FD4=;
+        b=LzQtXb5chPydHQ8MtmU66VL26vmzIv/bEWn8y+eVjLqgYkZ/MJeJFuo1gKMqan3R+Q
+         E9ILCRTigo3XGjsHlli688MzEQ0bOTt3ijG9NfgQ0PY9ez1hSuvqQCPgKA1Z4BkYug8y
+         I14zgpbF92hnCvaXcBnp7mwnUW5AwQJR6yf4WRUhYjFREiQNIEZuD6KUU8Y4jzfhKHFL
+         3wGtb2g1+ZMGRxyh3/pdUbbctN/PoYh0wHGoCkuC//L9U1vrHNiJef7tNHQdNzF/virr
+         VigITwYs9PZxwQFIt1Dcvd6gAL/r9wxAnwH+9eliRLIS/4/11TrHpn4pGZbp3DrAmZos
+         P5pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769587247; x=1770192047;
+        d=1e100.net; s=20230601; t=1769587576; x=1770192376;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aOz/mJtzptjbG9UgUIfZqgEEjdmwSn5lnDfZqyL3N2M=;
-        b=qiOni2soIAsnu0UuchCuTShgawq5HxS2w37fKlqZmQ6w7jcNdYD7k+AFUoJt7E2M45
-         RzLnDZwKrVa498+E6LMUYHNu/Lw8CRyGqhMcK/QAFlT6xJG2/bu3W5YtOt7lJNvLawcP
-         AKyfu2j0kz52tg9tSivFiGQ9VoGvHd63gtMc9h/KGysNE/RqZKGKnGcIPObsOAgRx6Fx
-         q5J1WcsjFCZVRng2aUCuLTicGYFrPWM/Rgqm9To83qaRdsEYBWsdAP+qujZVWmZeiF4P
-         KVLJ03ylMSlmBQ1mYujBXc9W7rcfO4x1NME2V29IbuBAA9vM+Uv9/BX/PXXCgBmLVQqj
-         Mt4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWYHbuEORxdYkbO6lWJeqepsgI08I3AjkhJ/g1EX/YXGhlf/jJ6NFUUeZ5wheUTOahAGzZhj8rX6Q==@kvack.org
-X-Gm-Message-State: AOJu0YxC9I0N57MwKfo0/uFKXlfaxP9aKHZdgtgTh6sc6qnu5hGIdNzr
-	D4G8FC+nNe8WP/T15hfE2fU6pHaihqHIkzcoZ3zilci0uYtEUQfjr1N4yO3tzEPYJFw=
-X-Gm-Gg: AZuq6aLfhCFeOOVMA/BF9CkpDYd5yvGPVWAU7yDFQasq4SooW+0EmMlheru2jF1K5Yr
-	2V7nv8oX3bkQ4z8f0TMlDTdv3nWy8nTffLy+oG3awWD36RJvXtKUTF4iIKv3haNFbJvT+vrmnbp
-	WyIyUbkx4ucbzcWpX1TnpG7xO0EfP6plMap38zGpNxu2xy8kFmK2oBUU6pcU3CJYG9a9D8jNkqB
-	h4wEFCMLbTfk84bwM3d3TYgGqNrjo7rr9eMwXNg/M9EiwRjZnClUIbmokzNGxxoTs+RuQHu/5Pp
-	dCNeSfPMpfH6s+tkZ8kGGs8satNOxm743U8KL4SAODS+J0vCFgUf1yjPhgbL3Ct/ZlfeED2ZP1P
-	slLN0jnN6ZuavH0YKhUM5G8iXbGYnuhJelOG9a9dwy5sBfFuez9u14nOn1N9JaPbcoBTmpraMmV
-	y68kPypn3EjR0lxaiS94aWqYYt
-X-Received: by 2002:a05:600c:450b:b0:47e:e946:3a72 with SMTP id 5b1f17b1804b1-48069c5fed2mr44222975e9.27.1769587246995;
-        Wed, 28 Jan 2026 00:00:46 -0800 (PST)
+        bh=enqYBRxEAs7b1XTfNQDYASta7yWhNLiXox4ui9P9FD4=;
+        b=Cd0qppAkYBTdND4xwNiW2qU3LXDUGnWEvK+urCwAXEcz92qhkznt4BPLQdU04c43Cy
+         KmnhX9XKzuqd8W0CdVL0xYd53rgDR0ZfqjiDC3ARVaORCKvGGmAnG/MCh0KsAnFCtZrJ
+         fX6mA+Wi4Bo/AZSnBTUnbS0z8HKF8EKCcMmTGaNO+BFCvOEPMegOz/hp4Xoi9xxJ5TJ7
+         rng9iEntkr1KE+Bb6Dqe1rMthG79WYtLEs6bqq+qlUdbFQ36T/kCYfF0wvSt7sjJ/Uzi
+         /7j5jujGEkCEgEEcKJdoT7hX8ChwinBgyHvlmd0jtLRk+9k5EL6jaUETk2unrZDIgY0p
+         Qz9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUlw7pdkqvQEe+48ZqusSrm2OdEpso7EWpAQOR4zj0xIvlcAghC1OQt3tW7P8cf1bYTTv94LkCWeQ==@kvack.org
+X-Gm-Message-State: AOJu0YyosfCecwg8ZXtAK3NlbY5rF7qi81dtJyj+GCbhlJPOSOjERhz3
+	9gds7wZSnYS7zPrR0+qvMi0euXNZrJt9Zg3jjLI8n2yeXBD3qDrxJEK9E5qTyBf0QxA=
+X-Gm-Gg: AZuq6aKqtwZSaHCaIqS04tEGXVL0rzBQpGDpy1fm2HIRChPeGQ0hwMdrE/QxUKFpQdv
+	fDvsy3bseeIqLYnsadFv9HOoPga70r2TUgc91gyqe+BvCK+Gb/m9Sib/lJTfqodrKmG4X0bFJw2
+	XotT4xW2PDt0AGNggbWWR7WDFEH65h6WDbwBPLz5q1MEc98ucnVYI6Rj6657OFgAz4Hz8no6/Ic
+	8rdHHfSE8WGXpHNXn0rU71AXZuvDN1D+thdstz6xryWm0xh7yAcqe1gWw3N8RO1WpEDLMBXgsu0
+	9GJ9nZevIlH9yCwAz3oE0o0kovbADhEIy8BMkigsy38vBeIQlEzbjtBOyxyUFtsLWLQxu7Gsb74
+	5e3zcxpdIyfDQN2k57JukZQFWoY+UBKger1MwbFLtLhHdIBEPEfZStAAiCck6j/vPPLLGIzXekA
+	V0hfmURNYPXWhTMn2koCwtpnNH
+X-Received: by 2002:a05:6000:1787:b0:435:9a18:5a29 with SMTP id ffacd0b85a97d-435dd1ba13fmr6723122f8f.11.1769587576172;
+        Wed, 28 Jan 2026 00:06:16 -0800 (PST)
 Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066bee7d0sm118235395e9.4.2026.01.28.00.00.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10edfe7sm4930747f8f.14.2026.01.28.00.06.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 00:00:46 -0800 (PST)
-Date: Wed, 28 Jan 2026 09:00:45 +0100
+        Wed, 28 Jan 2026 00:06:15 -0800 (PST)
+Date: Wed, 28 Jan 2026 09:06:14 +0100
 From: Michal Hocko <mhocko@suse.com>
 To: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
@@ -99,24 +99,23 @@ Cc: bpf@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
 	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
 	Johannes Weiner <hannes@cmpxchg.org>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 07/17] mm: introduce BPF OOM struct ops
-Message-ID: <aXnCLWYbQ8xZ2IyO@tiehlicka>
+Subject: Re: [PATCH bpf-next v3 00/17] mm: BPF OOM
+Message-ID: <aXnDdkYmtipGwSjK@tiehlicka>
 References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <20260127024421.494929-8-roman.gushchin@linux.dev>
- <aXiHok-3SKqLncCf@tiehlicka>
- <7ia4tsw6hi93.fsf@castle.c.googlers.com>
+ <aXh_LpTzDhvv20uB@tiehlicka>
+ <7ia44io6kbwj.fsf@castle.c.googlers.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7ia4tsw6hi93.fsf@castle.c.googlers.com>
+In-Reply-To: <7ia44io6kbwj.fsf@castle.c.googlers.com>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C684E40007
-X-Stat-Signature: y9p786hgsye96n9c19yd1mq7bupi4uzd
+X-Rspamd-Queue-Id: EDE478000D
+X-Stat-Signature: mz9f6ouc85fd9a6z4814fu6t6fbc1m1w
 X-Rspam-User: 
-X-HE-Tag: 1769587248-362058
-X-HE-Meta: U2FsdGVkX19WzkBIsGH3tjbNvYxtS6zk5eii3hyFiV1WyoZsE8h40jZC0gTwVSyTY+P9asFvXvlVNSDnf7JKjv1ErmaejiMQZnLSoirGTnJiFBtl7p2xCxVp+p/JewITbsIptdpN3O8R1fSbCgKu+XykIbokI+SyRipdHSc+bvAc1xebE9FiODo2TYNNb2y8usteFdYt+faXmh0nlQeov/G3Xd7bCuVx6uW8GBiogCIT3ugbu6TGx9NIuFhoprCUdRExcqJhm6HMv6Wte8HoJGZ91C5wZpEbyICZu2eQjNeTl7sZAYW/ClkDnaIGBFjakTTDslyKS5GPhwn1AjluIU9b+RJBjSNEHzyIUgoJBHEtKgEm4Q8n5Y668zY8Mv/NzvyrrsHUxP9U5nFL7kdCdcM9TsDCQaLDIuyzJkyxfYx60Chw0UmZu1cb2ad/7yMZyry+QjterpOIFzH0GIZc7XwZ2HGdj/sq4DZ4ZKw9RgvXkPHNcwY9mNrvB/avtmaZ9qbUIdxQ3HaqsuQ9BRtccy477vCtvcIJEmgNDB8UeXdUbpN+6+9w2jNEy7DJw6fa1RtS0Lrju4F/yg9V+5QzrliQGmQpPvchjuE9v8YCMcDOXmUf4ObDXYO0fxWgJh8KTCra9+2lgdrWwpXgpOuMSzR1BbpIMbTQjBsfX5XjE+ZtImsXDPPMNm6O8vYELiRwpFDqNUKbNeggmd+z7HQUocWrrkE1NJOMdiaowAt/wADghbaYTuOCXHaJKfBA3ZlnD5OjB1nU+ADj7zCDWYLQ98GT37E3d9DD3jMtqhrli2IOk+6bICWYgbClAHftq8xNCwx7k8eahWSgMoVrQKMVGQ0osG8sXF0WtDOchGcPq/7hkMRn6ItmwO9n4tuBoJSMKRqdcebx0tiMGnr2yWcHM9ZC7GxmKMO+XVuCl6E/g7/jESNxawwHcF50yzIMuDyn8BPwtcxhKqDyCEP0jU0
- Sfev9TT6
- ZAwi2erJtmJiJXbrxRf0nF+e3s32m0NmAZoRE5QgNtj5s6Gn06JGhFwrkDFc8YR33t4b7vJWHOyqZBck7Fk7IGz084M0TYpiWeRulCPf++xFepGH1rboFImBbp4DfUaUTUE+/qaK73tm04/rlxeovS9nxpR4jdJ6AiMZE9T7Y8Nf1YZ6Xy2SNBNFhjvRkb/MmRAol5jfu/fAujuZMuEchUgXUqT1KXl2sZOL7tnZoOeYGr4cDCFiMyXeKabYDEql/BkokjxFE3RNEQizWPFmkGWXcW1U9gpoJMTvE/stGr/PcjfUkrjFLhgTJpD99VyHApXX6uDoCO/nnFkEhREAZEzXyxl4Dqo4QKXI1lOgINqFfTiMDGQXIlnFuV1OylnhvrCrFwYUBYQmhcHKQ4pwOALGisKrKQLqclZ81
+X-HE-Tag: 1769587577-965668
+X-HE-Meta: U2FsdGVkX1/gGaBbKhDfxFMiQ2D4PRujm5r6/MXG8Qtw+40cO1szmuSoNb8zKhLUvS3CPJ1pPv0ll/dBF1b9eRfH5763Ucd6qzXB5MzZwFlnqTdwO1IlRymCURUFfrlfV5PZ/27xyaWlziArX/pZuzRUuqAjoPCF8At5SeMZyxn5A819YvoW+1yfeyuWt1CMm7g0qp2xrqIeBR54T916mzTWfcn3M6GJFahEb4kRZCDSqh1a4PMrz82dB9Vf5YAhGSr+9HuNmfIL7Uk046wT54+YKZQLUgJdIS0KcypTGZvBd3ebvsotLZMibUdUGTAuexJfdSZ0gQjJulvMFxQeAewUK8d7xNE9AJzeaSJvaUnOkIPqT0ZB33+KYPBqcg8uukqpo26yGcrWCG271iarmhBq5t+20po0YWAw0ZGi59BOEXirYzlBJH+CFIfqzIwQGA9TfLXXrACArZVxHRCTVatRrcbiLfZsIXwZiuznu7FbU3iU+PZe0qCTB30ZLF39jU75QJiWWMveLyZPBJIIvDm8lqHOkHEy+dcLpO+7NPmlE9RMHMT04zj0MbsIGSKrFX5mjKhebLPvYXaaJDCjs0vMoKTUHW8wMRMAXsGZxLcmiiAUukmnwXRwKfmElEm0oGcabLUyTPxR3t8W31WITvOL/N96PcGykYYKppHtozjSBNk4WYsj2g3FRneWYzkIGDANl22aoMQTgTIuf9dlaP6HGwgMKzWh0uG5BAMImP+VqGcjkY3yj3DsJiU8w1gAsp1NZ0TxGMfcCwItyTNhOq+0YuOWbbf++9zhGJSUkB8lT940TpYCZMMODdAdlmnFmJ1HQrYWRvYDJZxvhSvpL0l0eEBXOj+UPB6496ncau7qecqWEWNPytb3s0TQnf4KECygyLLX+QtvTJNIRx8mBWQIr83umRmP9KuhnumxP5cy8ZW91dbhMxdbesqglUOZ3BznsTaAUiay25g90/B
+ A131XuEO
+ t9xL2/vGdcwAl4+PSrBiCJu8zQnIwNfTTS3dVREAvfIIiktEgyFfLRc+QlO9S6FU9Xd3iF3H70Zih/TTH2F4jNMLR/iIGDpCfd48CBcGTcRbvxCmfiHCubSB7w3vApz3sLd140COs5zwzYyNRhgCBbrbyLjkZnDoaLvCUqXqL71IcAU0GGbaBDc2lpu019IVOh8Qv7Hm0xWeqKsFBbhq2ClNzILORY16NzaEIvvwmDxiVxn/vjBkmrEbG9V2q0FbviPZHTQO8pAZOOd1XoJ2GcIVZE18ZHYXegHUApHNFTJ34q3e7Pr7P5C9UM8+FsVz7hhQ9xgcSEMXBMmfYhHYgdA29mNFk0Rz6Wf6hKeRnte9dvrhuDWSIcVByJOty58ru3Bbm+PbzkWWP6imBcTa1y1O50Z8MoxWzZm6DV6uX3X1kYqnuiXZMt4gwdo7fHdKxLtVl8p1AqHkCbfFhN9MgzN2rMt7Kcu8x8lWNr7725K7JJMtYSX5OxUa0hQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,79 +124,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 27-01-26 21:12:56, Roman Gushchin wrote:
+On Tue 27-01-26 21:01:48, Roman Gushchin wrote:
 > Michal Hocko <mhocko@suse.com> writes:
 > 
-> > On Mon 26-01-26 18:44:10, Roman Gushchin wrote:
-> >> Introduce a bpf struct ops for implementing custom OOM handling
-> >> policies.
+> > On Mon 26-01-26 18:44:03, Roman Gushchin wrote:
+> >> This patchset adds an ability to customize the out of memory
+> >> handling using bpf.
 > >> 
-> >> It's possible to load one bpf_oom_ops for the system and one
-> >> bpf_oom_ops for every memory cgroup. In case of a memcg OOM, the
-> >> cgroup tree is traversed from the OOM'ing memcg up to the root and
-> >> corresponding BPF OOM handlers are executed until some memory is
-> >> freed. If no memory is freed, the kernel OOM killer is invoked.
+> >> It focuses on two parts:
+> >> 1) OOM handling policy,
+> >> 2) PSI-based OOM invocation.
 > >> 
-> >> The struct ops provides the bpf_handle_out_of_memory() callback,
-> >> which expected to return 1 if it was able to free some memory and 0
-> >> otherwise. If 1 is returned, the kernel also checks the bpf_memory_freed
-> >> field of the oom_control structure, which is expected to be set by
-> >> kfuncs suitable for releasing memory (which will be introduced later
-> >> in the patch series). If both are set, OOM is considered handled,
-> >> otherwise the next OOM handler in the chain is executed: e.g. BPF OOM
-> >> attached to the parent cgroup or the kernel OOM killer.
+> >> The idea to use bpf for customizing the OOM handling is not new, but
+> >> unlike the previous proposal [1], which augmented the existing task
+> >> ranking policy, this one tries to be as generic as possible and
+> >> leverage the full power of the modern bpf.
+> >> 
+> >> It provides a generic interface which is called before the existing OOM
+> >> killer code and allows implementing any policy, e.g. picking a victim
+> >> task or memory cgroup or potentially even releasing memory in other
+> >> ways, e.g. deleting tmpfs files (the last one might require some
+> >> additional but relatively simple changes).
 > >
-> > I still find this dual reporting a bit confusing. I can see your
-> > intention in having a pre-defined "releasers" of the memory to trust BPF
-> > handlers more but they do have access to oc->bpf_memory_freed so they
-> > can manipulate it. Therefore an additional level of protection is rather
-> > weak.
+> > Are you planning to write any highlevel documentation on how to use the
+> > existing infrastructure to implement proper/correct OOM handlers with
+> > these generic interfaces?
 > 
-> No, they can't. They have only a read-only access.
+> What do you expect from such a document, can you, please, elaborate?
 
-Could you explain this a bit more. This must be some BPF magic because
-they are getting a standard pointer to oom_control.
- 
-> > It is also not really clear to me how this works while there is OOM
-> > victim on the way out. (i.e. tsk_is_oom_victim() -> abort case). This
-> > will result in no killing therefore no bpf_memory_freed, right? Handler
-> > itself should consider its work done. How exactly is this handled.
+Sure. Essentially an expected structure of the handler. What is the API
+it can use, what is has to do and what it must not do. Essentially a
+single place you can read and get enough information to start developing
+your oom handler.
+
+> I'm asking because the main promise of bpf is to provide some sort
+> of a safe playground, so anyone can experiment with writing their
+> bpf implementations (like sched_ext schedulers or bpf oom policies)
+> with minimum risk. Yes, it might work sub-optimally and kill too many
+> tasks, but it won't crash or deadlock the system.
+> So in way I don't want to prescribe the "right way" of writing
+> oom handler, but it totally makes sense to provide an example.
 > 
-> It's a good question, I see your point...
-> Basically we want to give a handler an option to exit with "I promise,
-> some memory will be freed soon" without doing anything destructive.
-> But keeping it save at the same time.
+> As of now the best way to get an example of a bpf handler is to look
+> into the commit "[PATCH bpf-next v3 12/17] bpf: selftests: BPF OOM
+> struct ops test".
 
-Yes, something like OOM_BACKOFF, OOM_PROCESSED, OOM_FAILED.
+Examples are really great but having a central place to document
+available API is much more helpful IMHO. The generally scattered nature
+of BPF hooks makes it really hard to even know what is available to oom
+handlers to use.
 
-> I don't have a perfect answer out of my head, maybe some sort of a
-> rate-limiter/counter might work? E.g. a handler can promise this N times
-> before the kernel kicks in? Any ideas?
+> Another viable idea (also suggested by Andrew Morton) is to develop
+> a production ready memcg-aware OOM killer in BPF, put the source code
+> into the kernel tree and make it loadable by default (obviously under a
+> config option). Myself or one of my colleagues will try to explore it a
+> bit later: the tricky part is this by-default loading because there are
+> no existing precedents.
 
-Counters usually do not work very well for async operations. In this
-case there is oom_repaer and/or task exit to finish the oom operation.
-The former is bound and guaranteed to make a forward progress but there
-is no time frame to assume when that happens as it depends on how many
-tasks might be queued (usually a single one but this is not something to
-rely on because of concurrent ooms in memcgs and also multiple tasks
-could be killed at the same time).
+It certainly makes sense to have trusted implementation of a commonly
+requested oom policy that we couldn't implement due to specific nature
+that doesn't really apply to many users. And have that in the tree. I am
+not thrilled about auto-loading because this could be easily done by a
+simple tooling.
 
-Another complication is that there are multiple levels of OOM to track
-(global, NUMA, memcg) so any watchdog would have to be aware of that as
-well. I am really wondering whether we really need to be so careful with
-handlers. It is not like you would allow any random oom handler to be
-loaded, right? Would it make sense to start without this protection and
-converge to something as we see how this evolves? Maybe this will raise
-the bar for oom handlers as the price for bugs is going to be really
-high.
-
-> > Also is there any way to handle the oom by increasing the memcg limit?
-> > I do not see a callback for that.
-> 
-> There is no kfunc yet, but it's a good idea (which we accidentally
-> discussed few days ago). I'll implement it.
-
-Cool!
 -- 
 Michal Hocko
 SUSE Labs
