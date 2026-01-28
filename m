@@ -4,89 +4,209 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A037AD25B44
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 11:52:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB917D25B49
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 12:13:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13A366B008A; Wed, 28 Jan 2026 06:52:53 -0500 (EST)
+	id E681B6B0092; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F2326B008C; Wed, 28 Jan 2026 06:52:53 -0500 (EST)
+	id DF4D26B008A; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 028556B0092; Wed, 28 Jan 2026 06:52:52 -0500 (EST)
+	id C6ABE6B0093; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EAF8F6B008A
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:52:52 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A2889D40A8
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:52:52 +0000 (UTC)
-X-FDA: 84381210984.25.2F9309B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1337A140002
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:52:50 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C0608Ttu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769601171; a=rsa-sha256;
-	cv=none;
-	b=p5LlOyDOhdv5J/YVpuCrKItzVnKEibCtIQRQiCYIINqyRpq4y52etnVCnWscsV+tcE5P5r
-	3NJrVHBaZCALNeLixHw1PKsALYM/4xo2mfH/v1hI4mXT+hKi7zgPaOScWyS3FlALZ21o33
-	qpmLqbKEP8P2ioGHNrOq0C1dyWI/SJU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=C0608Ttu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AB71B6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:13:18 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 67EDD1A0624
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:13:18 +0000 (UTC)
+X-FDA: 84381262476.01.894B4BE
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BCC7A20005;
+	Wed, 28 Jan 2026 12:13:15 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="gTRY/WK5";
+	spf=pass (imf13.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769601171;
+	s=arc-20220608; t=1769602396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6mLAVKxlV1psp5WhMmMccch4bs8PevBjlssdyt3ww5I=;
-	b=Ev6JIIJ0Sr//a6/Gulc+x6OdSHYuYdILCPFBb0YH2+ITd3+0RoVF3JhQgpeMR2G5jWi6lR
-	19LI/9uZN3jXTx2Cg+V7+k2K0R0Kq+hTohxLZSOZHETpqfZdcXEdlswhYoLKmAAj1S0guC
-	FXkg2XFria8+7Pf0FRUD7HleIUIvOjU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75F9760007;
-	Wed, 28 Jan 2026 11:52:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AABFC4CEF1;
-	Wed, 28 Jan 2026 11:52:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769601170;
-	bh=qGeiQcnPUREdu3NwgL8PhW+DAcExAANqppOHWMibh1M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=C0608TtuLAJdwx1KLa0K5cLbb458/bDhbLIzblRKsOyGSV4RJe9vIYW8YMegQfzEA
-	 nT70UewOXAYVf1GRY4pc880T3YL3C5cgtXPvflM9zJ2WCQHZlPMV1kTvv4zQ5hOMpF
-	 A255Jp1o582c7Lu51oJQp41SxmVvf3su7//YyqKRBMCfMt6wcFdIIWCKjWW7/3aAZd
-	 kppBXaQ/GOhtDVgC8ohsYpVBs2nXbCkeYvDjdnGVpc+VoA0uTu0NPzygloo426uskf
-	 moHAht3pfr+2hb9QhAMxP9D8qDMZS7Q9dpei5Oza56T1wlr0az+Gilnc5DrN5547HS
-	 5KcgciN4WPEeQ==
-Date: Wed, 28 Jan 2026 13:52:43 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	akpm@linux-foundation.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 0/3] Convert x86/mm/pat to ptdescs
-Message-ID: <aXn4i6Zo8OKyVoCL@kernel.org>
-References: <20260127005140.197847-1-vishal.moola@gmail.com>
+	bh=Sd3tTNC9Qi1NraZ3FKZVjxKypYrlKrXHxdzsRn97YZE=;
+	b=VQClwoJq9Y9eeeiP18GRqZIrQxqaNtcjQ0iDS7MbMvu9PdLXXibW6DC77mplXQoudF3kmD
+	p2UdMsYp4n1A94HJmnegIK3ull9SHRG+xNzb+QDcnHL3stnWATaYfCMScJxZ2XQsFyZXJH
+	A8wmTwns+jmPBLvP/jOXTigotkoXp4w=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b="gTRY/WK5";
+	spf=pass (imf13.hostedemail.com: domain of "prvs=048834cd31=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=048834cd31=clm@meta.com";
+	dmarc=pass (policy=reject) header.from=meta.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769602396; a=rsa-sha256;
+	cv=none;
+	b=WlAQ9SV6Q7lbYbct+bZpwZB5ceUpAAo/K+vSLYWzwF//7m/jroMSWOEW5MSrBbIduJaf5h
+	hNddYQfqgkl6eAwFlWTXW63Wg1mtUcOnRIIN0zmnwB3Siw6/QfxZIIpin3bOR1BheY90M3
+	bt/l45pHYSKpY8ZrlxSnh7Ke+0iNfOo=
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60SB138M1478460;
+	Wed, 28 Jan 2026 04:12:23 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=Sd3tTNC9Qi1NraZ3FKZVjxKypYrlKrXHxdzsRn97YZE=; b=gTRY/WK5dlMJ
+	+w33bnXlRn1cCiq77T2CcMcXQkZLDeCgVL96iSn62FmkkrRxzBM9MIvA0/cb+Yqp
+	7K2voFCBRv+61xwztZqJKWxwspJ55PsOpC1EDOp9KTPbF6BIJWuk9ijNdT5ye3hN
+	2qFlu8Baf7zOiO2sS+AFcRFjCj8EIQBI+FWjL8w8MnzADaoEJNxQSdivlV6UW3he
+	/wb0Y/R32ZcnznUNp/NThA2xnL9bV+ILuQu5yUUX8YQKP21FSmcApEMpZ5O3AuC3
+	/zWNiD+9HEYCHz+k7PzzpBd2lBlTxy8vvfv8sVuLDoGyHUQax4GHXHh1oNeRoIln
+	Y1F/zIHK8w==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4bycg226fm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 28 Jan 2026 04:12:23 -0800 (PST)
+Received: from devbig003.atn7.facebook.com (2620:10d:c085:108::150d) by
+ mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Wed, 28 Jan 2026 12:12:18 +0000
+From: Chris Mason <clm@meta.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: Andrew Morton <akpm@linux-foundation.org>,
+        Jarkko Sakkinen
+	<jarkko@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas
+ Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov
+	<bp@alien8.de>, <x86@kernel.org>,
+        "H . Peter Anvin" <hpa@zytor.com>, Arnd
+ Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma
+	<vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Jani Nikula
+	<jani.nikula@linux.intel.com>,
+        Joonas Lahtinen
+	<joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tursulin@ursulin.net>,
+        Christian Koenig
+	<christian.koenig@amd.com>,
+        Huang Rui <ray.huang@amd.com>, Matthew Auld
+	<matthew.auld@intel.com>,
+        Matthew Brost <matthew.brost@intel.com>,
+        Alexander
+ Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>,
+        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang
+	<xiang@kernel.org>,
+        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
+        Jeffle Xu <jefflexu@linux.alibaba.com>,
+        Sandeep Dhavale <dhavale@google.com>,
+        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
+        Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Muchun Song <muchun.song@linux.dev>,
+        Oscar Salvador <osalvador@suse.de>,
+        David Hildenbrand <david@kernel.org>,
+        Konstantin Komarov
+	<almaz.alexandrovich@paragon-software.com>,
+        Mike Marshall
+	<hubcap@omnibond.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        Tony Luck
+	<tony.luck@intel.com>,
+        Reinette Chatre <reinette.chatre@intel.com>,
+        Dave
+ Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
+        Babu Moger
+	<babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
+        Damien Le Moal
+	<dlemoal@kernel.org>,
+        Naohiro Aota <naohiro.aota@wdc.com>,
+        Johannes Thumshirn
+	<jth@kernel.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        "Liam R . Howlett"
+	<Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+	<rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Michal Hocko
+	<mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+        Baolin Wang
+	<baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
+        Nico Pache
+	<npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        Dev Jain
+	<dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+        Lance Yang
+	<lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
+        Pedro Falcato
+	<pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
+        Paul Moore
+	<paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+        "Serge E . Hallyn"
+	<serge@hallyn.com>,
+        Yury Norov <yury.norov@gmail.com>,
+        Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>,
+        <linux-sgx@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+        <dri-devel@lists.freedesktop.org>, <intel-gfx@lists.freedesktop.org>,
+        <linux-fsdevel@vger.kernel.org>, <linux-aio@kvack.org>,
+        <linux-erofs@lists.ozlabs.org>, <linux-ext4@vger.kernel.org>,
+        <linux-mm@kvack.org>, <ntfs3@lists.linux.dev>,
+        <devel@lists.orangefs.org>, <linux-xfs@vger.kernel.org>,
+        <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+        Jason
+ Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v2 07/13] mm: update secretmem to use VMA flags on mmap_prepare
+Date: Wed, 28 Jan 2026 04:08:36 -0800
+Message-ID: <20260128121200.283932-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <a243a09b0a5d0581e963d696de1735f61f5b2075.1769097829.git.lorenzo.stoakes@oracle.com>
+References: <cover.1769097829.git.lorenzo.stoakes@oracle.com> <a243a09b0a5d0581e963d696de1735f61f5b2075.1769097829.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260127005140.197847-1-vishal.moola@gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [2620:10d:c085:108::150d]
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDA5OCBTYWx0ZWRfX/YMdvd0IEW+M
+ mfJ/bYR9k4eRvDbs9QGzO+ygu2VSotJCKMMxUusrpYkrvYdQaFJRWVvBv2EkD12mCpCYEvw+XB/
+ DwyN2M8BBbTeyqqZ9/i9fDyEPE0MOIwU1pNj8r3a1/SGXN38+xZGlcMtDVhwJA1iofmGT+NTjsa
+ 3wJFzmew6yuj81cYLEWiubhhxDZMBD6hVVMuqCOVg+bB7Gz9bEYCH56KvIcfJ13/7NnDlwWy1ay
+ rut+pW91VzKqtLFjeZDFQXQuymj3+pWlazUmuuQXtfS+yB5rh8eIrZb/ZGDSDilJLhwKOSnwEsm
+ tXIPQzyp+XE21UBIWU7JysVYMwhm9BUIbA4gV+4NNGJrteyEtklAhziLQl5fV0j0MzIV6sri7hz
+ h9QDQw7JEBl4y5dfKeMuesm0LqUNBE+g04KLVmq1Y9FiJcFdRQVCoCh0B4S6SthUPRAGT0RWyAc
+ Vh/HaT4eUcQ+KnB1bbQ==
+X-Proofpoint-GUID: 6cECoo2vZpz-_Y4sX-WfJbWu0BG9k_53
+X-Authority-Analysis: v=2.4 cv=Q63fIo2a c=1 sm=1 tr=0 ts=6979fd27 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=VZ3cX_PGfQEInpbj4y4A:9
+X-Proofpoint-ORIG-GUID: 6cECoo2vZpz-_Y4sX-WfJbWu0BG9k_53
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-28_02,2026-01-28_01,2025-10-01_01
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BCC7A20005
+X-Stat-Signature: 6qo9fgbit497e81u79ehf5bub1m3ons7
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1337A140002
-X-Stat-Signature: ccrwyrkjwcjoo575k7494u3fk31s4k19
-X-HE-Tag: 1769601170-705189
-X-HE-Meta: U2FsdGVkX1/VzH5JcNLqGu8K/CVLpG4Fd/TFVP17HuJGF531xhYF48Yag1iIOcvcqO8UEEFtw2P//KUUHe8b4jY7cW4J67zHv1Demisw3Z6l6kzY7w3yFaIEvfre2gNTDu/hhaQHsSwQ8okiFkPXUFfvlFuY7Nxf0haUIdYaT3jLWFLNAemMSgSBU5vcfXJQvhjOA7SwQYcLlU3CFpStcqihZsPRATyo9U0Dl7GVRjBXEp6JUjrwj/WHhwutQEaqDbOuQ9qiNf+Vh5VZjWAZDof1ej4Kk1lFXhjT52ua9o6y2IoZtBZTrjh1GchYS3ZEPsCuF4Wpq8JDjifkAjRPtfGnVwXZO0C5AFU2fOorT8PRHHle9zzuZEh60bPvlga6UEgq+uEvIK3/FSRZoFRNTJhX0Tv2+DO5z6CPmdZr4CBvGJh/jtdvLD53Tr/50DhxPN+8hnmcThyaoEOd9qaXMaQO37lTvYPuQVTlO909XZU9YIvsSCsFgrgXV0Fac2FxVvEq3QTDPnIW6ZRb/j11RyZ5WoN1b1Dn6Va4yBCYtxVGU0wO2MCNfEOdLk4KkepJ6kZ/EAAz2fBA4Ffsx787JBBgyNJF8QfbZhCW/Os3SeE+ko/wRaixmYIPbJYrtAOD7sJ1dFjgI2bQsTOkVDxLR0CUIE1vpAGGD44QWutD012jtLDkMFpLBn19vhcl4O2eXQKAHky7CpdF2OM7zjko0G0Y4kqBvUFDewytPkW4JTKP1JnJ/LKQhQZvH7zo6qmfIEmxK03Zc2QDUKNWhhTAoJcotmd1gtx3VUWXjSGr8Hf8xcGry2V0+DebTL+0PFz1miuJvvZCB48dNA/vtL1FywNNCyxzaHwTHxR9Lzy+UEfvgtsbfzZAsA8NXxh7K0q3J33KpyC8QmDJenIFgGg5cGVbJQ5xwJuzfGdCL6JrT+bOA25uj7RxA/TkK+N8tCOI0r619XkudNnKmWfFMor
- aJVeeUW5
- zDBFAX+AkU5dezD6gJyZT+8jU+ELxfY7qK+dDu0BPSLZUVpUcsmthUpi7B2Z5kVu56av+nOMON6g3z+cYSQwiikDlFRtwKQVED25AARjToHOaVxf1QgyRI8Hftv/D1RU4hKQ4VCvRPNnNXULVnei8CyJHU4vEM39NPrVTF+41jiGfNQ20oCHSU1SQ2kJCCEoR07jWR2WRC9oRPdgeQPWF2NwVdJzOjqIp65wkwPTyVyuBdafevwGB1wr4EsjT2Oya5k5A/PtoLzGbOJHaRPgM77tR2Er5In6MVVSXm7fr/rV4jkzsYEd6iTYnYG6+Y3tvquor
+X-HE-Tag: 1769602395-215775
+X-HE-Meta: U2FsdGVkX19PU9GL/iXM8jw0+ZUEp1ZASIZ6e5vIqvAEybifFX86kJS4UkvyhnefUqKAbualAskTwuFRIyIxnYn6F6PN53plrklns3erx1I0+v0gKRz9lJEwOEamOMy9wRZL+2vZTPPTWRXplaI3DYc1OL/rdKgBcLmwaaRBcBRFg8s7kE4eaDZqjzIRnUUiPPfsZS4qbWFGVlXMYxrq0f7UbJlcJPfApGVPRKa/2oL4VIJE2SbieWD+fgzaAh4s8NX3adhT63VVUxT8er7R27SeHWElCzXKsZm/tOeOfdYuqpLAE50ZlmMDsf/yX3Sqz0sd4878q1lAUUDZN8W8CAQ+AZrz8DmwbzSb6zHJChRyfxq2/sANPu1QN5YnH7SRVRlMFO16tH/G4Zsi3Ixhmdufy47XuPj+vOXYC+pdV4SqvLKZmr8fjmsMRubDUP5IC0O94dfeyLkaS/sD4lZFW67UBxMrYEK5sQm9N0yUVkuDVox1AihI0RkqbBKmeLHz1XVyd6Bwh20j+mwq7n2sHEgy21Jv6IpGxMHepZVwZAqozZkPxS2ymH6TJhYc4uVKL1BC3FPH4RYrYzGayFqHPtKOMy1JxbWNAjFTNgDpkgYOhFVkK5+0/Nar7IzLSTvRRSiI7BLQtjKzdWO+Dpfh1/poTdw39rWcRFhCRoMtdI30PJa49B0EvC7RsAUu0Z/UUrojt57dUMyNYX7ovo7PrH1VGyu51PJWpc6N5O4HZsZQndG6AA7HPFXAFoCxbxqwTDjPHRHfMdNM1oXwU/nFvTsd31XMsnMrWbCXbadzPqVT2Z+FyRjXJOTuB8HfQ19wbQWTCoilsShwrtS8T009xzN8vU/gHJVYv/+6i6sC4OpkVa9YTQDhuzEtTIccoMKMe1QkgVORmebXJ4oud861EoNQGAqllUqmstqSzv82tqUumpiF7TzY+3GgbCO2wXPvA+8vCvrBenJDuB0It8B
+ wthFfvQc
+ 7fHRQlXIdbjp/qEHYBsFq68SBhEGb2YMAtK5iAsgRwlZc/JHb1IGFn/HaALslnvdGVmSPrJWJ1lfss2BzQ/ICgW3hFCtH7jDPcz+PGdprAOtJIR3IFnLFrCyguOTXIkQb55C9GYe03Lsq7IT2iWd+xL6N/MOKHf8eu31SIduaOlo5Jp1GPi+HbwDSWvsAOH+4smG3s3E4MDXxDP2rIRpXNCSwwV7oiY6E7bRUj9ZxLxAfa3NIJB01tA5gvg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,42 +215,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vishal,
-
-On Mon, Jan 26, 2026 at 04:51:37PM -0800, Vishal Moola (Oracle) wrote:
-> x86/mm/pat should be using ptdescs. One line has already been
-> converted to pagetable_free(), while the allocation sites use
-> get_free_pages(). This causes issues separately allocating ptdescs
-> from struct page.
+Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+> This patch updates secretmem to use the new vma_flags_t type which will
+> soon supersede vm_flags_t altogether.
 > 
-> These patches convert the allocation/free sites to use ptdescs. In
-> the short term, this helps enable Matthew's work to allocate frozen
-> pagetables. And in the long term, this will help us cleanly split
-> ptdesc allocations from struct page.
+> In order to make this change we also have to update mlock_future_ok(), we
+> replace the vm_flags_t parameter with a simple boolean is_vma_locked one,
+> which also simplifies the invocation here.
 > 
-> ------
-> 
-> Based on current mm-new.
-> 
-> Vishal Moola (Oracle) (3):
->   x86/mm/pat: Convert pte code to use ptdescs
->   x86/mm/pat: Convert pmd code to use ptdescs
-
-There are still get_zeroed_page() calls in populate_pgd(). I think they
-also should be converted to pagetable_alloc().
-
-Other than that LGTM.
-
->   x86/mm/pat: Convert split_large_page() to use ptdescs
-> 
->  arch/x86/mm/pat/set_memory.c | 37 +++++++++++++++++++-----------------
->  1 file changed, 20 insertions(+), 17 deletions(-)
-> 
-> -- 
-> 2.52.0
+> This is laying the groundwork for eliminating the vm_flags_t in
+> vm_area_desc and more broadly throughout the kernel.
 > 
 
--- 
-Sincerely yours,
-Mike.
+Hi everyone,
+
+Running mm-new through AI review flagged this one:
+
+> diff --git a/mm/mmap.c b/mm/mmap.c
+> --- a/mm/mmap.c
+> +++ b/mm/mmap.c
+> @@ -225,12 +225,12 @@ static inline unsigned long round_hint_to_min(unsigned long hint)
+>  	return hint;
+>  }
+>
+> -bool mlock_future_ok(const struct mm_struct *mm, vm_flags_t vm_flags,
+> -			unsigned long bytes)
+> +bool mlock_future_ok(const struct mm_struct *mm, bool is_vma_locked,
+> +		     unsigned long bytes)
+>  {
+>  	unsigned long locked_pages, limit_pages;
+>
+> -	if (!(vm_flags & VM_LOCKED) || capable(CAP_IPC_LOCK))
+> +	if (!is_vma_locked || capable(CAP_IPC_LOCK))
+>  		return true;
+
+[ ... ]
+
+> @@ -416,7 +416,7 @@
+>  		if (!can_do_mlock())
+>  			return -EPERM;
+>
+> -	if (!mlock_future_ok(mm, vm_flags, len))
+> +	if (!mlock_future_ok(mm, vm_flags & VM_LOCKED, len))
+>  		return -EAGAIN;
+
+This looks correct - do_mmap() now extracts the VM_LOCKED bit from
+vm_flags and passes that to mlock_future_ok().
+
+However, it appears check_brk_limits() was not updated when
+mlock_future_ok() changed its signature. The function at mm/mmap.c:111
+still passes the raw def_flags value:
+
+    return mlock_future_ok(current->mm, current->mm->def_flags, len)
+        ? 0 : -EAGAIN;
+
+When def_flags has any bit set, this converts to true, incorrectly
+triggering mlock limit checks even when VM_LOCKED is not set. Should
+this be passing (current->mm->def_flags & VM_LOCKED) instead?
+
+[ ... ]
+
+Additionally, the test stub at tools/testing/vma/vma_internal.h:1627
+still has the old signature (mm, vm_flags_t vm_flags, bytes) while the
+production code now uses (mm, bool is_vma_locked, bytes). This could
+cause compilation issues or mask bugs in the test suite.
+
+
 
