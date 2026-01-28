@@ -4,100 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFC11D25B4E
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 12:44:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A376BD25B57
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 12:59:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A99196B0088; Wed, 28 Jan 2026 07:44:13 -0500 (EST)
+	id CA3086B0088; Wed, 28 Jan 2026 07:59:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7AAD6B0089; Wed, 28 Jan 2026 07:44:13 -0500 (EST)
+	id C5A1E6B0089; Wed, 28 Jan 2026 07:59:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97CDE6B008A; Wed, 28 Jan 2026 07:44:13 -0500 (EST)
+	id B86656B008A; Wed, 28 Jan 2026 07:59:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 87C886B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:44:13 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E27B4D3580
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:44:12 +0000 (UTC)
-X-FDA: 84381340344.08.1FB500C
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
-	by imf30.hostedemail.com (Postfix) with ESMTP id CAC438000B
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:44:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JZUa3yfG;
-	spf=pass (imf30.hostedemail.com: domain of alibuda@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A5F206B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 07:59:38 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 366C9D3ADC
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:59:38 +0000 (UTC)
+X-FDA: 84381379236.22.91DF1DC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 445741C0011
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 12:59:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NBTfHOg/";
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769604251;
+	s=arc-20220608; t=1769605176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=926yyjJ3/AGkTyEPy9s/F8eCj2vY6m18P4EAX1f0swU=;
-	b=QN5wbQ642qje9LI2RLVuSLTKUiJTzZwKmBPOdewjl9hDTwK77JMuTpcewNYuHld52vij+e
-	+sMlUvIihGBEfgSL5aUHmyx4rzHQ2xB3G5+tgzsvu6bd0pqoSEodT587fZH7DdSETUhH99
-	YuvKOK1W4iRaXcbyoVycuiHpz6xUQzU=
+	bh=fImupnOL4b9i7QQRjTlfrJ3H6d1grCKQ4x8Gc/Btkvo=;
+	b=WeNaFUYQL4wBGIVawokq9qO6cmHbPdcVmBER8pOj4rD4uTypqYgVCCap2UqRiEpyI8aWrH
+	44xJtKNoQb3a0XB6a8PZdCJh4JyPJq2nQ2KNWg29EdVtqlv/0vn4BFa2pbBVd48zxDIqDi
+	qiwsMGus2/e91GvF0IZDMikd+4DKKx4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JZUa3yfG;
-	spf=pass (imf30.hostedemail.com: domain of alibuda@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=alibuda@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769604251; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NBTfHOg/";
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769605176; a=rsa-sha256;
 	cv=none;
-	b=QqM70cAdRxxR5YJX3CA/btO3dTMUp4JjM3orpFyKJ1xg9ERnqU48hatQaM6AMCaGys/4WX
-	uoFWFV0VP4P5OUWax3L+z47E//vHBSbx2oWYLjLECLjIddOL8K8vTrO6kXtKiD3viHsHD2
-	czNv1kcYmV7Qm3k6AQiIr2M/4ZjYKy4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1769604246; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=926yyjJ3/AGkTyEPy9s/F8eCj2vY6m18P4EAX1f0swU=;
-	b=JZUa3yfGJoPas8sO2s3Jy4KxfdRzFJCLBm/DsicnhLoPnpwvydldV18lwuH+ZBHDoZgtbYv/gGGoCCgTbNZWQ+aWlwx1hnlXvA8VQyJ3ZHK+RJ+A3Acvq89lkh4ZFfJUhcjdqZnSz1j1Tx7kKWHy4GU5qUvURapY/5i8rUky43k=
-Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wy3QjgL_1769604244 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 28 Jan 2026 20:44:05 +0800
-Date: Wed, 28 Jan 2026 20:44:04 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com    >
-To: Leon Romanovsky <leon@kernel.org>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-	oliver.yang@linux.alibaba.com
-Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
-Message-ID: <20260128124404.GA96868@j66a10360.sqa.eu95>
-References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
- <20260123082349.42663-3-alibuda@linux.alibaba.com>
- <aXPEFdEdtSmd6AzF@milan>
- <20260124093505.GA98529@j66a10360.sqa.eu95>
- <aXSjm1DXm6yP62tD@pc636>
- <20260124145754.GA57116@j66a10360.sqa.eu95>
- <20260127133417.GU13967@unreal>
- <20260128034558.GA126415@j66a10360.sqa.eu95>
- <20260128111346.GD12149@unreal>
+	b=taZ0tvht5OiSa/wYysxF2bUDiAPRvsGAOaeDkwoKSGSAPGpnVmBgf3qv2tieiUyooqPYN8
+	+MaSPTHbkCeMDMMNA4ujO3zbxR/6MH2kqHQyAQiHkmxwO05HPrN7B0i7LqpirjUDZDzJDo
+	smHvqLF6VMwKtoO4cJCOt7bJHLz66rc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 92A616012B;
+	Wed, 28 Jan 2026 12:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD59C4CEF1;
+	Wed, 28 Jan 2026 12:59:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769605175;
+	bh=MWbIAfBchoyoNYFkExtCSdFr3OpWnWDSLBb7n5YyyiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NBTfHOg/whqQDUteF39OH1O7ZJV51aj1KWZNMqn2BlAwriZqvU9IoZ/jZGACQeOOs
+	 RY7LMe0UJOen4cmLwQBNrDcMDy56MPDWJ7np7Ikasy4kHva3n0BUX8hR6aL9EOi9YE
+	 mlXIwUdNS4qAm74KUFZ20w3K6tOlCi4sVloSu+xt0crpAue8ir9NQbWD8IwuLWwc+h
+	 YMBsDW8aw/h+cIyR4oLjLbBpX7mBlzGfiasa67G+soyR4d3nNiMo977M0sdrh3WSiy
+	 yj6QsWFFsFGfkkF0mMHShiviwCxiDvGQSKWEm2oUnrF5vN+s9IOjnJboogs7pY7RaV
+	 DiaYPOiCYs61w==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id BCE41F40077;
+	Wed, 28 Jan 2026 07:59:33 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 28 Jan 2026 07:59:33 -0500
+X-ME-Sender: <xms:NQh6afJ7LEqqoM5OQSBBhs1ZhRV5cTf9wzuYgk14848G84yEUL4JXg>
+    <xme:NQh6aehQo8l2ezJmorIdL7M6yzV1beZOHBIYpcHHCn0MjO6m28O33o2rlRu4WKY-g
+    BGFt2JyJ-htIcu3PBsrEpT6BkAbnyKg3-y_Cf0KpHY90_DvZIxNBg>
+X-ME-Received: <xmr:NQh6aRHpyody9eTimhv_gyGyZe_jgAV4SdZQpmXiadWipdjHg7ntDgmQQtOrEg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieefgeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeefkedpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepmhhutghhuhhnrdhsohhngheslhhinhhugidruggvvhdprhgtphhtthhopehosh
+    grlhhvrgguohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehvsggrsghkrgesshhushgvrdgtiidprhgtphhtthhopehloh
+    hrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomhdprhgtphhtthhopeiiihih
+    sehnvhhiughirgdrtghomhdprhgtphhtthhopegshhgvsehrvgguhhgrthdrtghomhdprh
+    gtphhtthhopehmhhhotghkohesshhushgvrdgtohhmpdhrtghpthhtohephhgrnhhnvghs
+    segtmhhpgigthhhgrdhorhhg
+X-ME-Proxy: <xmx:NQh6aQLK4Svpd37QFpMIaymOrWp1qX2ZTSoVI1al2iVT_IfrNGYaTQ>
+    <xmx:NQh6aR-6IYa0nfLGKvBuinoM9HaZ1f-cbZ_w4jpQlSYZA0loNeZtCw>
+    <xmx:NQh6aSdDjX6urIZ_w9RfeIvmxqcCdOAVohyQ46LpJhQWyc_Q0uqfmg>
+    <xmx:NQh6aelrkE7J2Oj3AEWTG9Sesr0fqbLAaX-QIFQtaGLKQVLLHSqMcg>
+    <xmx:NQh6aeGioZD_gZGiZgG1YG8MLXwUDabCbuNEzFIW8SNHV1PjIH2Lh723>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 Jan 2026 07:59:32 -0500 (EST)
+Date: Wed, 28 Jan 2026 12:59:26 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>, kernel-team@meta.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
+	Frank van der Linden <fvdl@google.com>
+Subject: Re: [PATCHv4 09/14] mm/hugetlb: Remove fake head pages
+Message-ID: <aXoHb5fYfZNQxmMe@thinkstation>
+References: <20260121162253.2216580-1-kas@kernel.org>
+ <20260121162253.2216580-10-kas@kernel.org>
+ <ffe9811b-d7f8-4924-9ad6-96057a16b693@linux.dev>
+ <aXjPf_fIWX74YVWD@thinkstation>
+ <25C01EB2-FC77-43A5-A737-7BD3D2D98EDE@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260128111346.GD12149@unreal>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CAC438000B
-X-Stat-Signature: fkpkenjd8offmszku67n7dx7tarw86i7
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <25C01EB2-FC77-43A5-A737-7BD3D2D98EDE@linux.dev>
+X-Stat-Signature: mjwpweitmss689ag7dppxpmq81gjsaxe
+X-Rspamd-Queue-Id: 445741C0011
 X-Rspam-User: 
-X-HE-Tag: 1769604249-899841
-X-HE-Meta: U2FsdGVkX18WAJMDeSXocfb/Dy0timCsI20Klu8mFHoHKebaslMDR+OEogsmev2ZnqV74VDKcF6YKDgrJrHwNgKgjbDIrDT7RvLyk8bxQ19V0fBB7wjrtTzrhN7d6GhD6UYXAZ9UY13Q0qWxoLcR7np4BSnCBymZyQCMx73P46tb/UV9pfs3CmcYGxcmnBobGg2uK+gbb+efvKsD0MyBWI3cKBzdP2WJI6akDPZsEH/9t0cSRvRxkRZ/j4LhCMqi3HD+DDM+5mHY5Pq03PkcmtxH3B36Wv/KPUPG2WNJtk9OTHw6QrJHhy0eKf08MAm4rgopZ62XLDjnpEIoKyJKEaPEE/k28aHFklb2SmI9mwsl/Wfj1leM54Us1SX+hUdoy/P5+qFpWVstmVbNQ7kMXlyWLJYlWeOJK/MGaCD7lRlieaJHyRnVg1fqKQtAiMK3hCcYFLcrfp9SKWB5AdhblteHrXmxCMOAG1dfbRR5/qv52Qa+EU8FbE9Kq1/dNYmkQtANdx7mGs9Fz7U3mNUyeYW4jH98pfx4M+RDTuoz1ibCHhq8EjEli0ZFMfgJcf2arx2fzXMVEcfdPRD64vvwIwdAa8CCxqpmqkYS9Yg+ZeilbgjtyQQJTQflMrK33eyhVnttSR6eEcof/riH8uDE1M6Xbkpq+16SBa/W209Pdxtg3agmzdAFdxRX079XZhS8H+V4x8fyhMZTacbsZ9N1aOcVkLtNTRKsLiNkBC5nqK7runTC/4tGohq+2FK1Tw0nC35WHh9Ayltq9dIQNdcxQKUHOxoH2vh5wVv/4LYKZuVLqSw3e9hk7D6q1x7yXO/owUrHJ9teqK7ItwzM0BiZIOUhEd28b/SQ4KSLnH0i5Qrd2hbvIrjkcuKdLPyuuN0sHMSVjwD6i4Z8lDVgYQLMIYcpMBpyG/9Xm01XvzCuDSerMDux7Opcrm6zGrJT2gy4ALV1YJSqYjGoJ3IxQC4
- VBZSkFaR
- 9F/8faALIdLKJaDarCVGx6+BGTIcQX+qT/4ECatKt497sZ4fScRyY9TXeMvpmNZqBC9HkemDROTq88KVA06AcVt8JUMNqkRvTupn7/jvLUvmsqKczwXjQ0wnwESYEzw26ssF9MTyvI3xPeu16fg05FEua7erFicHAdwDf/dLRG/vBZGcx7jGOYfr+wNSyGmkk4g4uYXYiLmymFXZ2hXUN5H7gGKEOF49v8/ngiu21wYjeHG2gT2DgqCeEkEcu5WvyIXsu//to89SUob8=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769605176-50667
+X-HE-Meta: U2FsdGVkX18ZAhNnoiEVfHJhSy1DoSm6WxbJvJItFjfl6+2cbSxYu6tPWyLN7KE/DETqTVz34B1naPSASA3U+sDIlNEjqMmkqt2PLD+LSH/jkHMFHsfW5kXvXpNtH4TJqXmyEEWFhuWU+RTMFxULDpwGcLXe89DyAKAcgPWve3/TVXQ6wMokIY84gr/oE1hS9lTBxPzokRBzkK3sekTt5e77kVtjnxgW9Z+WDoxQkju5FQkdJ1LqfT1+p7H86kfzNVqQ9ZQt64F0QPQE/zWjxS1OIdFgJbP9hMcXHEIo+39KPeL7hMgdMFfDLpCywP5++9ZUuhVyiZqv6lxWNhGnS+hG2MX43scqLH+nT23cGYGDeO+tEL/vPvaNe0c9YydM9ex2/X/oneydSg4j6lpAsGvRYx9waw3dJ+CerEc46NJCgsOwfHrUhoV+7T+zXeMsYvMcSCwKROFS513yp5Rz+khAy4bl5u4bX2kFOGO06BjOe6Sy/z7bCosFD1wosW/CaA4p3N1CYOJy/JIihekdh07vToYv1mGZqMnNAcIWLCHlcwO2APxEGkHdLiFn55bdg+2Qdl2nq3gfdnvAKtCpaMa36r4H+HVVbmAXH98BcmETfOSH7ZDHmaoIEGlNAcaYh1GP2cmqvRLjyJdGli0vcdeG6cKJlK1N+K7AVZKz3Wqngy3bjGdfTAYxVX2hrCqydXBd+UBsZ26EltCwYXwg81oY/ur2Kh4P0V07YwD9eUj/bQ1vkAuuCE6e1R9USkyIZMozxMPrugMLdeEA4XgmAndXIlx6RV1MhsXlVxeMX86LM7tsljRQk01rnNDHgtNFcr2C1w8UOG3p29pq3mVmJFCxSGhI2q2vUoomQJO85ZA2DhQp+btgNWJi6TAOdbIdo+0ROdgKHdveg7EBQQxRAAI9/EDHHXQHAF7fYBNN5HSvbIP0hUf7+4Asqu+F/1gFtiTBoIKiAsD8OYP7txq
+ ce3K3tOp
+ hPfcE67kybumUjHHh1CfXbzsPLFxAo4af9RbRjvfJp2UwZnS4JB8SeV9WLHhaHYUZd80f5AISqivLHpzdtymHspiNxEu14qb73DWuSmNio28GnhGEDAxH991scCky5qTVSQqHKmqV8NxaSN/s8qoJr9eg8NsA3B5khkvB6rFQLPyQ4otfaTOZiJ1hj+baB6ktYTUZxt4ebrdmfhAhNyYVB3TyxeR52scg3soU+dZ/nFp1QbjMdWr7BnyyotXQvLTkj15SQJynhz1v25IGIPRwrd+dnOdGXSRDCVSHTRSVlwwgNGdgfK2x1vpb31fIqpq41t5O4QbTmX9DsB8gEh4aP9Fe384Lpd6xwJlRd0TR4nOfbpk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,102 +137,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 28, 2026 at 01:13:46PM +0200, Leon Romanovsky wrote:
-> On Wed, Jan 28, 2026 at 11:45:58AM +0800, D. Wythe wrote:
-> > On Tue, Jan 27, 2026 at 03:34:17PM +0200, Leon Romanovsky wrote:
-> > > On Sat, Jan 24, 2026 at 10:57:54PM +0800, D. Wythe wrote:
-> > > > On Sat, Jan 24, 2026 at 11:48:59AM +0100, Uladzislau Rezki wrote:
-> > > > > Hello, D. Wythe!
-> > > > > 
-> > > > > > On Fri, Jan 23, 2026 at 07:55:17PM +0100, Uladzislau Rezki wrote:
-> > > > > > > On Fri, Jan 23, 2026 at 04:23:48PM +0800, D. Wythe wrote:
-> > > > > > > > find_vm_area() provides a way to find the vm_struct associated with a
-> > > > > > > > virtual address. Export this symbol to modules so that modularized
-> > > > > > > > subsystems can perform lookups on vmalloc addresses.
-> > > > > > > > 
-> > > > > > > > Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-> > > > > > > > ---
-> > > > > > > >  mm/vmalloc.c | 1 +
-> > > > > > > >  1 file changed, 1 insertion(+)
-> > > > > > > > 
-> > > > > > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > > > > > > index ecbac900c35f..3eb9fe761c34 100644
-> > > > > > > > --- a/mm/vmalloc.c
-> > > > > > > > +++ b/mm/vmalloc.c
-> > > > > > > > @@ -3292,6 +3292,7 @@ struct vm_struct *find_vm_area(const void *addr)
-> > > > > > > >  
-> > > > > > > >  	return va->vm;
-> > > > > > > >  }
-> > > > > > > > +EXPORT_SYMBOL_GPL(find_vm_area);
-> > > > > > > >  
-> > > > > > > This is internal. We can not just export it.
-> > > > > > > 
-> > > > > > > --
-> > > > > > > Uladzislau Rezki
-> > > > > > 
-> > > > > > Hi Uladzislau,
-> > > > > > 
-> > > > > > Thank you for the feedback. I agree that we should avoid exposing
-> > > > > > internal implementation details like struct vm_struct to external
-> > > > > > subsystems.
-> > > > > > 
-> > > > > > Following Christoph's suggestion, I'm planning to encapsulate the page
-> > > > > > order lookup into a minimal helper instead:
-> > > > > > 
-> > > > > > unsigned int vmalloc_page_order(const void *addr){
-> > > > > > 	struct vm_struct *vm;
-> > > > > >  	vm = find_vm_area(addr);
-> > > > > > 	return vm ? vm->page_order : 0;
-> > > > > > }
-> > > > > > EXPORT_SYMBOL_GPL(vmalloc_page_order);
-> > > > > > 
-> > > > > > Does this approach look reasonable to you? It would keep the vm_struct
-> > > > > > layout private while satisfying the optimization needs of SMC.
-> > > > > > 
-> > > > > Could you please clarify why you need info about page_order? I have not
-> > > > > looked at your second patch.
-> > > > > 
-> > > > > Thanks!
-> > > > > 
-> > > > > --
-> > > > > Uladzislau Rezki
-> > > > 
-> > > > Hi Uladzislau,
-> > > > 
-> > > > This stems from optimizing memory registration in SMC-R. To provide the
-> > > > RDMA hardware with direct access to memory buffers, we must register
-> > > > them with the NIC. During this process, the hardware generates one MTT
-> > > > entry for each physically contiguous block. Since these hardware entries
-> > > > are a finite and scarce resource, and SMC currently defaults to a 4KB
-> > > > registration granularity, a single 2MB buffer consumes 512 entries. In
-> > > > high-concurrency scenarios, this inefficiency quickly exhausts NIC
-> > > > resources and becomes a major bottleneck for system scalability.
-> > > 
-> > > I believe this complexity can be avoided by using the RDMA MR pool API,
-> > > as other ULPs do, for example NVMe.
-> > > 
-> > > Thanks
-> > > 
-> > 
-> > Hi Leon,
-> > 
-> > Am I correct in assuming you are suggesting mr_pool to limit the number
-> > of MRs as a way to cap MTTE consumption?
+On Wed, Jan 28, 2026 at 10:43:13AM +0800, Muchun Song wrote:
 > 
-> I don't see this a limit, but something that is considered standard
-> practice to reduce MTT consumption.
 > 
+> > On Jan 27, 2026, at 22:51, Kiryl Shutsemau <kas@kernel.org> wrote:
 > > 
-> > However, our goal is to maximize the total registered memory within
-> > the MTTE limits rather than to cap it. In SMC-R, each connection
-> > occupies a configurable, fixed-size registered buffer; consequently,
-> > the more memory we can register, the more concurrent connections
-> > we can support.
+> > On Thu, Jan 22, 2026 at 03:00:03PM +0800, Muchun Song wrote:
+> >>> + if (pfn)
+> >>> + 	return pfn_to_page(pfn);
+> >>> +
+> >>> + tail = alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
+> >>> + if (!tail)
+> >>> + 	return NULL;
+> >>> +
+> >>> + p = page_to_virt(tail);
+> >>> + for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
+> >>> + 	prep_compound_tail(p + i, NULL, order);
+> >>> +
+> >>> + spin_lock(&hugetlb_lock);
+> >> 
+> >> hugetlb_lock is considered a contended lock, better not to abuse it.
+> >> cmpxchg() is enought in this case.
+> > 
+> > We hit the lock once per node (excluding races). Its contribution to the
+> > lock contention is negligible. spin_lock() is easier to follow. I will
+> > keep it.
 > 
-> It is not cap, but more efficient use of existing resources.
+> I don't think cmpxchg() is hard to follow. It’s precisely because of
+> your abuse that interrupts still have to be disabled here—hugetlb_lock
+> must be an irq-off lock. Are you really going to use spin_lock_irq just
+> because “it feels simpler” to you?
 
-Got it. While MRs pool might be more standard practice, but it doesn't
-address our specific bottleneck. In fact, smc already has its own internal
-MR reuse; our core issue remains reducing MTTE consumption by increasing the
-registration granularity to maximize the memory size mapped per MTT entry.
+I looked again at it and reconsidered. I will use cmpxchg(), but mostly
+because hugetlb_lock is a bad fit to protect anything in pg_data_t.
+vmemmap_tails can be used by code outside hugetlb.
+
+Here's the fixup.
+
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 29e9bbb43178..63e7ca85c8c9 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -512,18 +512,11 @@ static struct page *vmemmap_get_tail(unsigned int order, int node)
+ 	for (int i = 0; i < PAGE_SIZE / sizeof(struct page); i++)
+ 		prep_compound_tail(p + i, NULL, order);
+ 
+-	spin_lock(&hugetlb_lock);
+-	if (!NODE_DATA(node)->vmemmap_tails[idx]) {
+-		pfn = PHYS_PFN(virt_to_phys(p));
+-		NODE_DATA(node)->vmemmap_tails[idx] = pfn;
+-		tail = NULL;
+-	} else {
+-		pfn = NODE_DATA(node)->vmemmap_tails[idx];
+-	}
+-	spin_unlock(&hugetlb_lock);
+-
+-	if (tail)
++	pfn = PHYS_PFN(virt_to_phys(p));
++	if (cmpxchg(&NODE_DATA(node)->vmemmap_tails[idx], 0, pfn)) {
+ 		__free_page(tail);
++		pfn = READ_ONCE(NODE_DATA(node)->vmemmap_tails[idx]);
++	}
+ 
+ 	return pfn_to_page(pfn);
+ }
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
