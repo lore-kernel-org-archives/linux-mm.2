@@ -4,118 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99440D25B44
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 11:27:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B07AD25B45
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 11:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0752C6B0088; Wed, 28 Jan 2026 06:27:29 -0500 (EST)
+	id 847A76B0088; Wed, 28 Jan 2026 06:28:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3A566B0089; Wed, 28 Jan 2026 06:27:28 -0500 (EST)
+	id 7F1F36B0089; Wed, 28 Jan 2026 06:28:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E127B6B008A; Wed, 28 Jan 2026 06:27:28 -0500 (EST)
+	id 71F4F6B008A; Wed, 28 Jan 2026 06:28:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CFD926B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:27:28 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9F4601405B9
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:27:28 +0000 (UTC)
-X-FDA: 84381146976.05.16C50DC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id E86E3C000A
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:27:26 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mz3C0iEm;
-	spf=pass (imf28.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 60FCB6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 06:28:56 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B78DD2BE0
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:28:56 +0000 (UTC)
+X-FDA: 84381150672.16.DA67942
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2B21510000A
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:28:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tvKn3PAJ;
+	spf=pass (imf14.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769599647;
+	s=arc-20220608; t=1769599734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kGHzgo46JPR+trobxc3T2Vae69I3rJusIBD5JwJaaJ0=;
-	b=acHDpbxZK6r61UhqIuOXePicmCm+hlrCAeQZwkwHH23xRfeW3gILNQ6tCh4uxpxc0QPl+p
-	5gMG3Bi4lpTe0PyJ+POZl4asFthkLSYbsjaxtArXWY3HRHHzX0YcwBDxOMfbKR2GxKcpoV
-	gUIPQXtTqC/B4GK+FDWbh65PAi8hJzw=
+	bh=zsg0G1qQnJMZmcTOUlSvTX8oIURapE56eMOFO0KQLsg=;
+	b=4xmfMYBIiICYFzMiIFPw47YrHOfhuhuN9HwJYuaN17zpiJ02HBQaxZRzBwkB+N+fqpQPQm
+	C43bHNk71aR2MhbPHGlZL2FGwkbb7WHs9zeepJjC/yJg6PVH7rRBO66MWDfGRiLvArViPf
+	B14xr/fWHAkpvtZZqNcY6Je0zpwqWoM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mz3C0iEm;
-	spf=pass (imf28.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769599647; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tvKn3PAJ;
+	spf=pass (imf14.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769599734; a=rsa-sha256;
 	cv=none;
-	b=JfyPdVkAA/EmPB+QVeiZffty6ZUIGzsw+PW4p9y2MfaIeuVpjDjzGNe7WYMnkGdeP+CxZx
-	O/6l/8qfQy/L7R7lOe1nKnxfidoFDjlVIFx/5yAeKo7kgB5uqeVCXbIYcxaJ67W5ry5h0c
-	KVzjvK+x88CfZpOe36RLLTbLyDyyxwU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D7A25408DE;
-	Wed, 28 Jan 2026 11:27:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E518C4CEF1;
-	Wed, 28 Jan 2026 11:27:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769599645;
-	bh=5tl5UulReo9mfeinlsXovMEDngKOqoqnKHsMOgA3XXg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mz3C0iEmV05LCiMxqUUPC533EAwv7WtBXo/e17SkoRbQxRl6PaujEVCoYs/2hjxld
-	 Rk7+xGr7CUVtQH4qnGr1qBw93vhwI/1w1f7KLWmfMjMzjjmYM5aD0RmCa5DG/p28+B
-	 YWbry/suM5VuO9bHjWh/Qz3LEpn8slbnOrPzoasYeOollKP8VyQ2bmXL/ZrU2lWNVU
-	 WHZrERuRiGcHUvO9u1yHv0hska3Jv63+efynKRaT//NMkDFfSZgfNBBzik7HMSXTF9
-	 2KkIlAzlGUFQCOTdWtbPwX1bqJo/m6NEQ/fLxKKINz2jZmzHqIXGP6KWkqGr7wXJim
-	 bxRx2rrIFbokw==
-Date: Wed, 28 Jan 2026 12:27:22 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
+	b=bX/f5v34uR+UXfcFn5ay+srJdyiDkSIj3eRIuOj5kvZaeH5AnRm6PbmAsN26RPKaET3ivR
+	maCDSKTvfBxALCdewKoNYNZ+slSu0LmIVsoqckeBTBD1mwBiH7dP9Omt91qkZu93zcT0WH
+	LfhdKue4fEr9zRUXBYPJX2nRMrDk/Bc=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6581234d208so12497849a12.3
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 03:28:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769599733; x=1770204533; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zsg0G1qQnJMZmcTOUlSvTX8oIURapE56eMOFO0KQLsg=;
+        b=tvKn3PAJaKyBf++e10fKd10dSWJ8U/94oP+l3yvNsqRS+vYBXEw5h2Lkwd5h4fjE0C
+         5Jf9aVDvuBybDhgN7kwkTLA+bZtT9XW7k0XL22hfXBMN7sPKxz0vEd4MWh0SyCGnm/Pk
+         4hRnNgl+1Pa5XnDWaZqAKBVJnRsS/wWI8vTvRqg7r+uo8rVsUIM5Hl0ogbXqQDf5CIE0
+         CiYXSwdzUrdfLv5yk3J8514r4khuE/Q2jmfo3aQOiKAjm6UEy1tpR9IstvSGNdTYQ7kH
+         VDJ9Kj4USOjll1hFeMPrSfIKo9aCeNGDM2U+Kf6KOwhs0Ob1UOa9kmxyJRD/M9rC5k/9
+         ql4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769599733; x=1770204533;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zsg0G1qQnJMZmcTOUlSvTX8oIURapE56eMOFO0KQLsg=;
+        b=SyYY1mVCghDCOh/ZmQwayIEB1wEbiA4u6kEKFSAxL1NlbOpa9l5Ni+jcvWdSNERBKq
+         Q/CXyT9bbcWWQ320d61FsHzZRvpr3rQrbOGx8m12M1f3NdICMcs83PXsvzt91KgVq1hi
+         YBzBfwns0vQdsK/f/bNAiqLzt6t/TLicVOlHJRFW9B1cMrQ1/KbYi14qiPK/178DSrfe
+         8NvC8nGEvgxY8UJSA24MloCxA/9jF0aO9WyZynokxxSkumkiBBIYQ6fL7nZj3QfBk6dT
+         7G28lErLFZJf4Vi3gBCRWexrec6Jz1lP3lnPRuuz1B2Vz2SQcV+c6+FFlxb/B7CRMV88
+         DMow==
+X-Forwarded-Encrypted: i=1; AJvYcCXojA0Dh59c0mKPqz3yPvl/k7UI+nsVBvq3uo5ULuGBojaduYR5kq0//aJtAvZpbF4HhbfbeuQXNw==@kvack.org
+X-Gm-Message-State: AOJu0Ywj8e2ZHVNfEmVp5KHB80b51tv5X/QXZx+UOfI2pKuFi8yy+lEN
+	inlr6zVjWBVKyrMJ/qAVV30jNfAQEDFUY6eBo/d5WySOvPyvEZeXwDWwUQfBmvxl2Q==
+X-Gm-Gg: AZuq6aKd1EfgLXb98Cj1gLGmhd6GhIj6TLrL9Foyz3TFsyatz8kPvwt3u7IrqIHDY3+
+	aLn/gCP4f1kZ8FFhFJDZhxAuyx9DJ0dOyNHe063fUO2JC6WOod29CtjKa4mbAn2TQDv/ohBRv3L
+	RtZhiXyoDhO34RTjmYHN1aLRJYkUhFdfmWTdSzIx3pmAgZ8hBNnPpIXBngc0yjEWzVWE+csg0SB
+	WcGWOOO0sx2KMtnvPqHVU9lycbEb5qXYghOMk65j2cch17NivKa38M/zmwqjMAzZqk6pPBRbHQY
+	dCh27YuJRq/Yag6Cu3b0uQL1E2WqeYlEnLnboFt8ZiZyIA2bZO7gNtqGvQPgbPIdVSyJjsWUur1
+	rKrUX0gaPhxkRx83ICIinAl0zkdFILGRk7ePXoS3dPkwJbFIWNxYGFUtSNveVNoRvVu0PTUB/Re
+	Hse8uQIrMua2UEsb2zM6tBMENeTsbng0dBPsKnc8C2iHvCFqbP6ic=
+X-Received: by 2002:a17:907:da16:b0:b88:646b:ae3f with SMTP id a640c23a62f3a-b8dab1a5c0dmr331559966b.15.1769599732400;
+        Wed, 28 Jan 2026 03:28:52 -0800 (PST)
+Received: from google.com (93.50.90.34.bc.googleusercontent.com. [34.90.50.93])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbeff5629sm116615766b.27.2026.01.28.03.28.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 03:28:51 -0800 (PST)
+Date: Wed, 28 Jan 2026 11:28:48 +0000
+From: Matt Bobrowski <mattbobrowski@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bpf@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 03/33] memcg: Prepare to protect against concurrent
- isolated cpuset change
-Message-ID: <aXnymtIZSc-fw1b8@localhost.localdomain>
-References: <20260125224541.50226-1-frederic@kernel.org>
- <20260125224541.50226-4-frederic@kernel.org>
- <aXeZQoSHJ9QX7B6W@tiehlicka>
- <aXizUsfywjtIIN50@localhost.localdomain>
- <aXnMj1phN3TJZkNz@tiehlicka>
+	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH bpf-next v3 01/17] bpf: move bpf_struct_ops_link into
+ bpf.h
+Message-ID: <aXny8JWF3KZiqBZi@google.com>
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+ <20260127024421.494929-2-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aXnMj1phN3TJZkNz@tiehlicka>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E86E3C000A
-X-Stat-Signature: so4fdpq6rg6cujmhiy56f1p6h933d19w
+In-Reply-To: <20260127024421.494929-2-roman.gushchin@linux.dev>
 X-Rspam-User: 
-X-HE-Tag: 1769599646-793430
-X-HE-Meta: U2FsdGVkX1+KVIIDZu4ibq7stZ/T6OsICa3X+jhlMW2vHpoWRtyrO9SJa1NfrBT4h+C9Pw5WRpcz5dKb97sYaij/gmm2RL4ZDIJMFKeu8YtQnr8qkjnZdz7XiV92k3QkLv2keDTC2QAFp/A+Ek9YW6HdasU9bPaxHw5G7PueWkFo9TEXbjTV2JkavysUlQ/jSa/jw4o4uReyclSZ5exgPyF2Bb24kge71fI6gKa/t3tNLTL0WosVXo/K8ih+NIQjQfNnBTVGFcOGgbAhI2OOTv/IOZU2PXnVi/yrTHkOsP+CdU3Rc2XbvX0VLm6BQIBg18FpTNrHtzaand1NUyhXVPCGpJzB7fiqEy4aEqZF41/zxtuEHKxCwnvUYqXzuopHDT1VyBXCe1HGBVJ/9vUFO2OaVR9EdNokPugmmo5STLIotLzfBZnLA3NrFnf2w1VuhHSrSaKmbgOPEvdPmxxmgSrNkYE3puVtn3vxHVp3mgNtOgBzwlyNG0b6nFlPdnPCyUiPd+5+dax366bpu/UwyHOvSvMQE/NwcHhRVTSC0weM3955X+oF2fPCQXyBvIPiSDp5F06OKvXMYcPQtYztNAB0G7S/UwbGJsPxRL8MsOGyMj85HcHCI4EalCL4zssx4kocxLSDOiT4iApsXwpUHuHqitJBeWAw+LB3WVQYdaFXF5vXRiucWeqWivgyoYZXWClP/RpO2bKZr3h2sZ2ksVAGAALrRNsNyhSljQDTDLL2sOwqnHJsGuU0Nk7DGuS9ti0zhjMndP5p27/St2O+UylT20JSiHYruj2iXnXUArqmxxU9GxWW63w8gc0xJO2vRbdemDazENS2tLMpweaitApHFKwPqsDfxIufCD7kLQnUZiUbVsk48OF/NG+SxnV1GceLqUY3i/ZJTZfoqwzYAjGDbJ4sfXLy3uxiBKuJovdH19fNrnuSZ7aHyw61Xn/vQG7lxRdV+GiNttNdClH
- U7XF7uEv
- s6aC7M7kqQFtQjGuXdro8OHmbBsHl66RhnFZD5oE6O7wthkMNmbpsqg6wlYMK+jy2qx1xMmwUQ4e3MWCn72pbDEdC+BRHW4fIMl7NDiKEl0MghWhdYMKhQ6R4F/YneYi5etX7gVSfLwz/hQNi6/mzLa/UG9gRN22uQrEu6C/tX9FljPJyKtr7SLiQr65IOSi1yieShmpebyIjR7wpVfofFDxPiMjO6TLkOP9c
+X-Rspamd-Queue-Id: 2B21510000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: o4edgfgnkkp3zyxr3ugyc56fcqms3g1a
+X-HE-Tag: 1769599733-903783
+X-HE-Meta: U2FsdGVkX18kup6gQx4ViuU5doSY9LmTuMjTcrVHKxG+Dy2C/Z4bV014ABoNrNPioOukPtQtVjGOSK7R+AMTVSSbDdJGq8qs/sXFrXrbm8MSJsu7wzmodYQcE8Dobdvx10XrT9CBqYWhPEEQ4zMJPTi18xrEDpiFgwWQUUyM8gf67orv6qgurE8j69Wa5o19eszvnOmLUeJyk/wo0jipjVjQaJbKnGF2mNyQZ2Gjcc10uQywbFgmxL3CWv6nH4xJDLdi1gKsi+je42taJbHus95aiBOA4tQ/koHPYlO76xkoC+jp7AeiJLVVm+A3nqkE9P0n++OtbYtVicigoVd7ZZ8lo2Yj+H4/rLwmhV3/RLSjiswaaUCb0JSHGz08CAucEULWeukBe/3ITpyPKdmeuysK73Ar8T+UVBWIWNLk8adyoO+jEHLe7BPzWuvaRs6bFOm1OA2cnFhLToM8N10jYUY9lh1ZHsvxMq17PhRt8cR0jdUF6d09cUpdlCbvEj0ag4gkGiYfha+G/6F7s69uqWyZNpWhkheUT/m82OXQHuhs1k6QznAlraJVH4L1x/GgPkHc5X5azRZbvDBPmGkagwkuyPDXIboz6bT6c/on8/D+sy77YkjkruBHNRGTwbarH5sRTannqUSZAsWRGOw05Ln5ZF51f/qOg27YyqeSVNRMAOXIscaWGBTRw8xI+nxILdyP1HyKJg2LWOZjkWYSfyaZ97Cm9gBSsvoTulcHS1iCaWZ+2zLM0jpV3b9J0YWurGSf0NRI8UrUfaIdsDoxdnRqpJ5K73zh2UZKX9o69RVSmyGVnyx4dnEZu1TC7VRdL5leYfDhAQaPHju0gi04QlfhtdQsEOXNcqChilgbcMBuaMSsFRnQPAztTw8zvLKPBPjV6LH+QhslZpN12GAHmvlbCmrMif9toMFrbx4I+qhP+1ZacWJp17MdILMcZ0U5QGlsAI6C7fLNTrDA+hL
+ Jx4wRVA5
+ 95Sh8RqoXC750hi+WpMwZNZXNpi9Y+m7JZ7MYtpWixS40/+RJ6a/ICYJ4oAqfT42I5+uGfikeZsBKW3gUJgPeo27lxwmVyfSaOKUvAiQGeLGjcbb19GGEd4q8O+s6ZHnYJI91ABVnLRuYNiWRFLeI27eI3qxneG+zjgZyyl6sG65zsUilZkzeFuw4sgIEm/UtEkbT4M7ktjUnU++eMduEMbhnFXQIP472Yf0mBDLaqCuy6LVT0swpCfv5T+5kcw4Xi11f0BJoctjPRBUH0rCWRM4guP6YYDVyoJDk3BKdDTEa9BPL/30OKIUII4kmrp93UOX2X8gZJNasAlKaL3nrrSBWVXG2tPZOYpu8bORD85SdQjEcr2ddXSHbm4m3Quoh2rdOI5UdGZRSg4VgYm+CYnu0eNzLC9rcD1BqIGcnwoNUPtQ9eG0BYAam6r+tfzH7tM32Fb2wttHKql0Y3maJtFMBz7e4fzN1x+wG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,66 +124,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Wed, Jan 28, 2026 at 09:45:03AM +0100, Michal Hocko a écrit :
-> On Tue 27-01-26 13:45:06, Frederic Weisbecker wrote:
-> > Le Mon, Jan 26, 2026 at 05:41:38PM +0100, Michal Hocko a écrit :
-> > > On Sun 25-01-26 23:45:10, Frederic Weisbecker wrote:
-> > > > The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifiable at
-> > > > runtime. In order to synchronize against memcg workqueue to make sure
-> > > > that no asynchronous draining is pending or executing on a newly made
-> > > > isolated CPU, target and queue a drain work under the same RCU critical
-> > > > section.
-> > > > 
-> > > > Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a memcg
-> > > > workqueue flush will also be issued in a further change to make sure
-> > > > that no work remains pending after a CPU has been made isolated.
-> > > > 
-> > > > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> > > > ---
-> > > >  mm/memcontrol.c | 21 +++++++++++++++++----
-> > > >  1 file changed, 17 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> > > > index be810c1fbfc3..2289a0299331 100644
-> > > > --- a/mm/memcontrol.c
-> > > > +++ b/mm/memcontrol.c
-> > > > @@ -2003,6 +2003,19 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
-> > > >  	return flush;
-> > > >  }
-> > > >  
-> > > > +static void schedule_drain_work(int cpu, struct work_struct *work)
-> > > > +{
-> > > > +	/*
-> > > > +	 * Protect housekeeping cpumask read and work enqueue together
-> > > > +	 * in the same RCU critical section so that later cpuset isolated
-> > > > +	 * partition update only need to wait for an RCU GP and flush the
-> > > > +	 * pending work on newly isolated CPUs.
-> > > > +	 */
-> > > > +	guard(rcu)();
-> > > > +	if (!cpu_is_isolated(cpu))
-> > > > +		schedule_work_on(cpu, work);
-> > > 
-> > > Shouldn't this in the guarded rcu section?
-> > 
-> > This is what guard(rcu)() does, right?
-> > Or am I missing something?
+On Mon, Jan 26, 2026 at 06:44:04PM -0800, Roman Gushchin wrote:
+> Move struct bpf_struct_ops_link's definition into bpf.h,
+> where other custom bpf links definitions are.
 > 
-> I am probably misreading the patch. But I've had the following in mind
+> It's necessary to access its members from outside of generic
+> bpf_struct_ops implementation, which will be done by following
+> patches in the series.
+
+Looks OK to me:
+
+Acked-by: Matt Bobrowski <mattbobrowski@google.com>
+
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> ---
+>  include/linux/bpf.h         | 6 ++++++
+>  kernel/bpf/bpf_struct_ops.c | 6 ------
+>  2 files changed, 6 insertions(+), 6 deletions(-)
 > 
-> 	scoped_guard(rcu) {
-> 		if (!cpu_is_isolated(cpu))
-> 			schedule_work_on(cpu, work);
-> 	}
-
-guard(...)() protects everything that follows within the same block
-(here the whole function) whereas scoped_guard only applies to the
-following scope (here what is inside the {} in your example).
-
-So both work.
-
-Thanks.
-
--- 
-Frederic Weisbecker
-SUSE Labs
+> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+> index 4427c6e98331..899dd911dc82 100644
+> --- a/include/linux/bpf.h
+> +++ b/include/linux/bpf.h
+> @@ -1891,6 +1891,12 @@ struct bpf_raw_tp_link {
+>  	u64 cookie;
+>  };
+>  
+> +struct bpf_struct_ops_link {
+> +	struct bpf_link link;
+> +	struct bpf_map __rcu *map;
+> +	wait_queue_head_t wait_hup;
+> +};
+> +
+>  struct bpf_link_primer {
+>  	struct bpf_link *link;
+>  	struct file *file;
+> diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+> index c43346cb3d76..de01cf3025b3 100644
+> --- a/kernel/bpf/bpf_struct_ops.c
+> +++ b/kernel/bpf/bpf_struct_ops.c
+> @@ -55,12 +55,6 @@ struct bpf_struct_ops_map {
+>  	struct bpf_struct_ops_value kvalue;
+>  };
+>  
+> -struct bpf_struct_ops_link {
+> -	struct bpf_link link;
+> -	struct bpf_map __rcu *map;
+> -	wait_queue_head_t wait_hup;
+> -};
+> -
+>  static DEFINE_MUTEX(update_mutex);
+>  
+>  #define VALUE_PREFIX "bpf_struct_ops_"
+> -- 
+> 2.52.0
+> 
 
