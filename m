@@ -4,294 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15531D3F097
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 16:44:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B77F9D3F098
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 16:53:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 514CE6B0005; Wed, 28 Jan 2026 11:44:49 -0500 (EST)
+	id CA4F06B0005; Wed, 28 Jan 2026 11:53:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 469006B0092; Wed, 28 Jan 2026 11:44:49 -0500 (EST)
+	id C526E6B0089; Wed, 28 Jan 2026 11:53:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26DA76B0005; Wed, 28 Jan 2026 11:44:49 -0500 (EST)
+	id B5EA76B008A; Wed, 28 Jan 2026 11:53:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 036ED6B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:44:49 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6EA3C250A
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:44:48 +0000 (UTC)
-X-FDA: 84381946656.19.FDB8867
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 09A6910000A;
-	Wed, 28 Jan 2026 16:44:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=G7PPwhgr;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=fGnLY0Q5;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769618685;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FD736B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 11:53:08 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6528B5A556
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:53:08 +0000 (UTC)
+X-FDA: 84381967656.15.64D9FB6
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf03.hostedemail.com (Postfix) with ESMTP id A19242000B
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:53:06 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aC04p602;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769619186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=opu0x7FeVMzcAlmS8dPWKS7gc5jBEPD0/D78+u6NWys=;
-	b=WdK1VRq/gYSTA3ToGuJM+0kSfbnw7189uBJFEzZwmvg2gn1WA6O1/DnVZpVMUQZFET0TXh
-	yU5fq3C6O5uA840jpo/WZVnPLPrCkl7rrcmNtXRT10LOlXLL8PiwYfz8QLmPjJRfzCvl86
-	maJCzbGRVwcARBzazSH0gnYPR7OQAHg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769618685; a=rsa-sha256;
-	cv=pass;
-	b=N9KQUH6NYeTEfBN4q6yGCyim9ZNRyt5aNFbu4rYETkPQvyit/WYvgMXEhVZ2bzV2nDLg88
-	TbCcqO/ahwDBT32sGwc2OfaaLqJwpQG5KvB81Z/KZ6jPBz+ZuQ9IWLLO7yTsJfZqvoD3V4
-	nvYHQIQ8h87TBqO+wxJoqnUVkXPvvF4=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=G7PPwhgr;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=fGnLY0Q5;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf14.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60S4C6fC1432082;
-	Wed, 28 Jan 2026 16:44:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=opu0x7FeVMzcAlmS8d
-	PWKS7gc5jBEPD0/D78+u6NWys=; b=G7PPwhgrLKw8QEMf5XWD7w3MJbyJxiUq1W
-	+JXWNq7MBozkvpQldYDKVmynYdLZ/1oZaivUpfEx8AnN2R4ZHd7r4xH+g05EGO67
-	f4rhssNNT8xssUIieKgYwUWUykxUXrcGI7ZeIZdyXy0KcoVSkjbY7GuW4yW7UB/x
-	XcZvtmaDSeIquxKHPv9/VAMAl+AloKezTRK+/OEnSWEVUHJlZpuW/xz30zth8wh5
-	I+B5cy2FMeyUCmKqG7rdqGPd/SqTJPd/eeTV/sU+4XpVR43kn7OWaMBJ5bhbsZzm
-	seu0VzVVycUiUEnG/tb0rKd2rGiWf/iWE8oRPnlUeVUGwGJjsNgg==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4by5dj1cah-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 28 Jan 2026 16:44:24 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60SFNTUZ020001;
-	Wed, 28 Jan 2026 16:44:24 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012040.outbound.protection.outlook.com [40.93.195.40])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmhgf1xf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 28 Jan 2026 16:44:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rgbnES/GllpFsPIcUf2ZE+8NUlvVBLHN+iiqs17JnhoTnSm6bkYMDLby5ohGsY4W+/hcVEHOprDuzPsWs4TG7PbVIbYAaRJSdSgu38My+bYFEMRhrgG52BrLo8pvFLU9e4f3waaQzLRDGJOiL6a2tgl9t9e9WeOCaKN3D91FZ5ulmToeqsl80vXarfwRmGP0TngWW1jtaZ5/5BobLUEWccpzxYlQl7gO3iH1q97Y01xNDSEOAJ8uwW+4IsFir3I373dTYcy+5Stji+cKHHzmpzdP/R2eGRGNCJNXsExeggD2KVePbI2s00yyWGPw4pCSSST4UUkSVKuHt74YertU1A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=opu0x7FeVMzcAlmS8dPWKS7gc5jBEPD0/D78+u6NWys=;
- b=XJCmWpo0h3xO91lLF3YTtium4zRa0h+KrAjwEPjSarfES+Rexcfs+h0d7tgpTjsBfmfMQfpm87uW+CkSGhHKE5Zc0fOiLBw0jystcJn4QRv3Wqhmg5Emv15PS3URuTiLEuPr2rETj/rpQAbXk3D7sA8xxI/KxzgpNXtbTc0USzGLysL6lLBUjsWrI/h9X0/NwWoyYFBSC09KeQkil4uDBoMuOSpJ9ya3q5BN2j2tNXiOKLrRQbisXplcxFXdPdob0ICdnqXF4gvVlQabu8z87jWnwhf2FvT+4okXcFynwxa7k3bPMBBnNVmmjfr1kyqoqky7TrCvYkGiAz4bIqmCpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=+VIwZPYuTL84mdN01DfXHCnboBlP6LUsRJWXcsio5Wo=;
+	b=WqrzytvUiaLptnsfuIN0jhj7p1rqGppUnZs5D8nEDmR8+S76jj90bLh86cRljAODpd+G1K
+	IaUlCd7E6AT2azNLz0/yGu4HY8FVwt6YzXIe9yte9kyJS6KRApWzdY+kyKqit3v10nlSmi
+	/1RfrOYye8lS1UIl2u9vj8xHA9AlPL4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aC04p602;
+	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769619186; a=rsa-sha256;
+	cv=none;
+	b=oypcAPtP2TFNt4yzO2mWyDHtEnoAl8U6Q0xvcytqAMIUjHd38b5a3CTfrPHCjRkmWT+P40
+	xRPIUYTvTlmHCGP4EKTfl3XJTH84bPPm0qQ2XCvwewJRlg/iavU8x5WpLkSMLKwn46XVDa
+	y9IDCH0y0ECAB03UTuU/QjdZlmWmlVE=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-81e9d0cd082so28857b3a.0
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 08:53:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=opu0x7FeVMzcAlmS8dPWKS7gc5jBEPD0/D78+u6NWys=;
- b=fGnLY0Q5nmwq0s7XFHIg9VFkzWvpWWBCUtHfhTG1cQ5w74T/6O6QLTTK7P42qDvUDnG1pLcJs3YmUZB1mMIrTwKMSDM4DPJDZXdksvFxY03iRr17IkMLH+s11Avb6eszc3yfCgsv7WRkWLgD8FTOBnZcFnW/0YyA5MnB4Hv3htg=
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
- by IA1PR10MB7198.namprd10.prod.outlook.com (2603:10b6:208:3f3::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.8; Wed, 28 Jan
- 2026 16:44:15 +0000
-Received: from BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
- ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Wed, 28 Jan 2026
- 16:44:15 +0000
-Date: Wed, 28 Jan 2026 16:44:12 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger <babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
-        Pedro Falcato <pfalcato@suse.de>, David Howells <dhowells@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-sgx@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, linux-erofs@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
-        devel@lists.orangefs.org, linux-xfs@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 07/13] mm: update secretmem to use VMA flags on
- mmap_prepare
-Message-ID: <3aab9ab1-74b4-405e-9efb-08fc2500c06e@lucifer.local>
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
- <a243a09b0a5d0581e963d696de1735f61f5b2075.1769097829.git.lorenzo.stoakes@oracle.com>
+        d=gmail.com; s=20230601; t=1769619185; x=1770223985; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+VIwZPYuTL84mdN01DfXHCnboBlP6LUsRJWXcsio5Wo=;
+        b=aC04p60226nayL916Hnda22Iy1OEJm6dl7AR0UEyUOjNx+vQ/E0TakDN0ijW/VHDez
+         PLtb77hCSFZ11feX9FMbfdvOcnvFC4wCknUcb0YoChvZI06nLW+0vRU9QqQPsNoy8ZPB
+         CjzVfSia8ZooLBJuj8BYcfeeUf2bevdRYtVd6U3pjgdXS69LF+b/2oDFoJ4mw85ay7NR
+         ThwWEvjbHs6UAgdgo2Yg22AYdETiWkkNoVRsk2lEUZZeMIUaBp7So4F3VHeCau3TZPFb
+         k1rk6FHciOJ9G7zA6Bi57ImbEun97GOn9KNhhc/ZzWTI86Ect27dmUmbqbkhj6maDXvm
+         eA8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769619185; x=1770223985;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+VIwZPYuTL84mdN01DfXHCnboBlP6LUsRJWXcsio5Wo=;
+        b=Hb2IIYjxEmMWJGA8YXHlJWJ6FlgPxmRkC9mIZ/vsImdkUtGkxJL2jgdV7ZlySa+pt6
+         B3593QrE1zYCym0j23vKJM/MJdEjAGLEbGeidNqu3l7LlJt96UP7zEbo+cA7GUcko4m5
+         56r2Yb/696HQylwReqiacOroxsdJkhUccel9aq0U1K7GmlUr8MZdx3nP5bqLmGwf25M6
+         BA3cRFCFf6BGtjKKn8edQ7VHPMCrx8869xD3PGPTtIMaT3wDU9gosItLjlo1UWXssI+Q
+         1BdceeWuW2NryuHXl3NtWH6CUkTlJC9RopbWuaYGU048lnrj86pjB5dCPJgc+3191Biw
+         YJ7A==
+X-Gm-Message-State: AOJu0YzdsPMd32xTh6U4sudJs6rLk4hPFIkg19iewpWF7KEFT/25b6uC
+	eXQZiFLWrNTijeGW+Z1IMfWsREDkq9RrUoJJsuvxJHxCCIyRvtVIxc3B
+X-Gm-Gg: AZuq6aJU5GIwfrhZ7mlQ6htzf3I5iMDvjXAa/XlqhqK4vUquK+c+yB2PzooeV6P3Lej
+	HPKY9SbDegpOdyI9J0kqacTYzB4G7ClPCI7W7g3ZBKaQI8fYbrT7pWocElykyFk5yUL9KLCyyn8
+	PjIbKmsCz/fsbkfZIfPrbQJiHms7EZYc15J8edHChfc/sXeNE7SNPPBJjMJ537AsWUX+8OPXTEF
+	rRyf2iJTgzdw7v9AISnXd3KtAWkGayDM1buYCuaBLQHzSLqnRNh5pd7ztOylo8oJ44gFnvztR+V
+	eshiJkak0D07FAwJ88k6aU3OkXkyvXjSa9BoIeVHHujmUfYjQVcT6kfOKBaLo3nQIc3r83P9bu1
+	UPQD8H3OamvMaPATdCOqJGPrXZPic1gn/tqSOpEXe3ac2bz6wyZ91inhdXl+0zOF5nkVfqOxTFd
+	rj/EqJy+2YKtIstTPMhyY18HZt5kE2GiIaWL5NF3cd01SGvnM=
+X-Received: by 2002:a05:6a00:4fcc:b0:7aa:4f1d:c458 with SMTP id d2e1a72fcca58-823691849afmr5864355b3a.19.1769619185349;
+        Wed, 28 Jan 2026 08:53:05 -0800 (PST)
+Received: from KASONG-MC4 ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b1f188sm3546757b3a.13.2026.01.28.08.53.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 08:53:04 -0800 (PST)
+Date: Thu, 29 Jan 2026 00:52:59 +0800
+From: Kairui Song <ryncsn@gmail.com>
+To: Chris Mason <clm@meta.com>, linux-mm@kvack.org, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
+ split
+Message-ID: <aXo6ltB5iqAKJzY8@KASONG-MC4>
+References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
+ <20260128130336.727049-1-clm@meta.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a243a09b0a5d0581e963d696de1735f61f5b2075.1769097829.git.lorenzo.stoakes@oracle.com>
-X-ClientProxiedBy: LO4P265CA0238.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:350::11) To BL4PR10MB8229.namprd10.prod.outlook.com
- (2603:10b6:208:4e6::14)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|IA1PR10MB7198:EE_
-X-MS-Office365-Filtering-Correlation-Id: f93b3cd6-62bd-4e6c-3ecc-08de5e8c78ec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Nfd4jrR37+I4JjuqOag+LkVrWVENa9nJNfakhfix+8ewq7mrgPq8XnusvV24?=
- =?us-ascii?Q?ajV1BW9RDrAV0hP6YX8lOV+l8Rel3uPN62kWxiN8Jo5dpMv1/B2vpk/4GMHA?=
- =?us-ascii?Q?hoATZ6aa1UR/WeSccQZSjYpBs51/HhixSyIsys0LCD99PxTvkfcqg4GVBsAL?=
- =?us-ascii?Q?sva79tXOiYvX8IjXv+nt3E8wxBJrVimBMnQWqa9akHji7McHnK8l1cS2C3R7?=
- =?us-ascii?Q?a1mM2we5LQKULQIVo5wHSFVvDrgAM+PKDa3LqBhbNYaE/NzDEH9+QbIFcieL?=
- =?us-ascii?Q?5VCm/ZCrS214WKw1es1SPCWoMmDmhkNhG/MwdYLg3Hj83iZqYhTajWmnnqGR?=
- =?us-ascii?Q?gBXiAcnWeIyBroCmvV4xdU1ytQAWFtfGDZFCMRkV0WX7I3A5hF4bseOjGWQ8?=
- =?us-ascii?Q?qIG8aP9diiO10c1j0d09E72thGwJWNbNwJjC2E7L6kCCl//ZGAUVaz2s89sl?=
- =?us-ascii?Q?vAjbqSFjLzO9F6/C3lCrDf+mwumPyh0rvp2aRzBbdtov+zdkHOYhnkrdnjo8?=
- =?us-ascii?Q?/NkhQsm0iGZD6kSfeVYyTGTriVQ0MyhrdacH/RkcbvjKYb+RJAw87Y4/7pBS?=
- =?us-ascii?Q?rIl+aurA7XeM5tTO5ZRxWaal6I7o+qKRXC1ESMATH00301SpfSsjQaROcHu2?=
- =?us-ascii?Q?DLXMKn0UVxfMDrSmOO6itAzo/7TDs6Ap0271TXbLl2M9Z8iOh06DzbQihebR?=
- =?us-ascii?Q?SFGLcuLRn7WrkuftFGybtdCAnssL4QB/lNBG9vx2wzM7OovcurKm+92O44Fu?=
- =?us-ascii?Q?ETXC035vlwbAEfsR4Zde63XXRywvDpP6URPWTzmFEUnGP18KbO/pKRSAOMpC?=
- =?us-ascii?Q?imSW0yVpxaYeJlXo0tt/aJtZ+QBcILWn01ygX51cwf9WWlNvZcZ2qfhIhJE2?=
- =?us-ascii?Q?Hb5IJGDCqqP7L2ZOuNPUlkHoT1N3DitdTaOrcE4IleUDJgQ8CwF81ZjVfqg/?=
- =?us-ascii?Q?Coij5W7OwA20zAgFiFXsKWODMFPfkXOHyDV85LUWxnADG60f2thmaOuPK/Re?=
- =?us-ascii?Q?XeX1BMc3kZ5ByrpPxQ6AdCs/KYggAOfaLsrQceYKqVpLYqaQTEICBI0pQbO7?=
- =?us-ascii?Q?NBToZho1vaDJ9QjWmlccYeS6qsUbQPI/+UPj/E79xcPzUwl0zMJHhadGOOpH?=
- =?us-ascii?Q?80fK8d58Ru5yCPxInGcRoEqx9rqUah9RO4Joryxladp0waT2Q0nPJVvg7JpK?=
- =?us-ascii?Q?ILcI6XQzgGUCWl+4QsKifkhg+Wmv6bRjI/0eAeUA4BNyfFYO3bE/EcssheUC?=
- =?us-ascii?Q?iR8kBDJ6fuESnVjuCZ6E0L4JYkR2HrBdsBP9hGDLXUJO8ZlEpHtrVpsr/ha2?=
- =?us-ascii?Q?6IH1xYlIldo57Vj4+3r4fdAxANXTvtX9wpYSowPwjfdJIQKxtlW3qw94yr7K?=
- =?us-ascii?Q?9QBPdy7dUywsNZVLYWZnjwLa6gV8wYN4DdNL6l+N7WePPmISoMvjWglxQpQC?=
- =?us-ascii?Q?LRLYBXft420t2yovf+5iVxkhbfsxUyBez8RlBBjYvCE3VJXwdypAHptjzjxM?=
- =?us-ascii?Q?33dWXHkFCLK107O9RzCn3jDn7XcUIo/7uYZkziNa7NzF7tFJZQzEUXMMRvrT?=
- =?us-ascii?Q?uJucOKlyZ5Z2fRDSrnM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Q4G/hEbqprUEaZgXH65Ikvwor0IWWvhxOyThD2pNGHWD6eZDd4zb98gzFXNT?=
- =?us-ascii?Q?XV7JlUTyj1vyDsta3ST2vloDfDF2+LQViGFQ4D68YY+uUIbI4iDgrWWaJEsZ?=
- =?us-ascii?Q?iTMzNMdVADQ9QHHIzhp7o5JPJF87POYZ5wavHhdToCF8MlJzMoPnJVCKtuwG?=
- =?us-ascii?Q?3tLe+Y2QMvdQKxOTJkKzVOh/9QD5VCG8Q61eXc/I2EPxGY1wS2yVFCq3jGou?=
- =?us-ascii?Q?5/egDA5Ip69H8jC7/6HXTJFB+GzWa7kfARLPezGXEhJDdhE4zEwdHNgxcsM6?=
- =?us-ascii?Q?HHAifDzXcp2YQZUmHt8ecFcATzhige1uYAywB2112CHDNZW2FuSOs4OaTd30?=
- =?us-ascii?Q?ruGEbXh++H6TL9XSxMR1a2xesdbRmbndCPBVrsGOjbKc/R1jWzCgxlhS/BYQ?=
- =?us-ascii?Q?Ac1ufAH7BlhBhdISw/ZJ07Ux91UunmAfc6aVrCxCRHpAzo08u1SIGEyBZsN6?=
- =?us-ascii?Q?MPteu9wuGX5GCDrwIOUNAJ6F0v6eAnYJzCu0CHEojQh1K2qc2EZGcw2FFU3d?=
- =?us-ascii?Q?oOzdev+8cxtuIZZNlM71iTSIrYQIwBh6YRsfCu6U9AlqFk6vBLeYLprW+0y2?=
- =?us-ascii?Q?ODBVS99AWIIMS67rk9id+NVL9q7/fSgpMoVXL+Gjs+fEJkdiqiTIxI2vwIzo?=
- =?us-ascii?Q?kjzSBTEfF6SPw+b+hwRQW0dw94elC9yS+mx8tqCwgnhSWth4MBixn2Jzsc56?=
- =?us-ascii?Q?p77saWxXySUcVtxwOCdMOt+8zsJn6DpZA0R78QunFBPZoEt4o3RxG+bcU2C9?=
- =?us-ascii?Q?Cen7ZE1WGLPs/e/KsPd4mQHWrZ9mQr2Isu2715UZcS1y6KtyPDUZjRL4uOFH?=
- =?us-ascii?Q?elA5s/5HFsTpKy1VZuL3y+5Sjw9RBMaGXLsReNKkxDEDKh90j+G/MIaYPx7m?=
- =?us-ascii?Q?98uYFebyKez8LvVVOc11LMt2HgbjPKyyWKhC384vTvbMPZ12S9Y7QEFrZKYQ?=
- =?us-ascii?Q?Uo3cyV5vSpNS3sqRfJ3X2MXnG81PW/aK88lFmfXxzD4QH6TSqQUu+7hEj5hG?=
- =?us-ascii?Q?gFTMFTG7TnHhhXUKDG6eQULlnarFtiYsbb42C2Rxk7aj0n9y0DAG+9gV4HlG?=
- =?us-ascii?Q?7xeoCNAsuAO90fKTSJ93op1o635zcVNWnJjQQS3MIpWr9WLEJAgMkANnO6zZ?=
- =?us-ascii?Q?S9fslqu1q/lF/3SF004ixL1tU4Q3Q+cWw/7KQC0E2Az3t7rmNTRoUX55Hkbk?=
- =?us-ascii?Q?HNYBYs3hL6RlLaxT9S7cEJjO5jgGNaaya6VErIGdAixfWbTsaiIj2eNNX2Ww?=
- =?us-ascii?Q?H4spZlyvk97G6Eed2t6hT0KOXf9BZPFyh1o1JkXg5oeEsvAYKGJnqJ1G9ffM?=
- =?us-ascii?Q?kwiGiHpRbgDyIMec3f+bRNz2EgkKJ2hCOVDZLJzk6pMzN5w7iKEUx0bQyXmo?=
- =?us-ascii?Q?gyiTDL61tLJsNcTyDxAG6v3j3HwGyn8D9rpbA2MP9DYCqqbnAgjG/BvWZURg?=
- =?us-ascii?Q?vYoiqgZTWUJr66m5sSZKXL/SPCXsXFGAbd9c9br0eRrN2SCTkUgmWb7lkcF/?=
- =?us-ascii?Q?zJebMEhSQ8sOtB9DpJaQa9OaB9m0kRU29MA3tzBlc6E6mgycXH9OI7YbFtyV?=
- =?us-ascii?Q?GVopTtKJAOItYFpP/oc/of7TkVoEe2BY0MKnUue6Yzr8/wRWzxRTpe0RbUNa?=
- =?us-ascii?Q?sSASe8EmRQu2CoRXk1vE9IeYF/4JXzvEJJMzAuJgRgSDXo0aaTSSsPoMN2ne?=
- =?us-ascii?Q?xp8jF8cYzeN7I8WpeCCRUuAeE6tinmra1Dxav9wMSmAiID6RQVDgWRWlN1qe?=
- =?us-ascii?Q?lr0O5FlheMIgYhmzK0L2LsnUyIdhRlg=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	UIMhI4yE04TGD8YouozrZ0ciab4Kwj7mhubXi8fwxyCUi0OyK4Ac96RARKQcQyKgkpv9K1tu1Ys6K2p5cXNGeboxLhOeZrf8tJ0xC459En3FdBf0S8/gjJdnqefxtjx8SHc3vREd0hopdHYt4s7FwBpkMNegW9b1MvnkY+ygw6/7xfZmLfK5xlAp0SAIukLkplvnvKuBMwLQV0n5Qm6W6gYZ0F00W59NHjhdCwvne11BVS3+RKeLSVS1Gm163svdKq2Zk3DQ3wqtiK1o4APg/B4NL9VvqkPoNP43HQM6OswYur0MrIOdCOVCQ7lCoeQsJzGNuA2Cw3SULNJm5UYRjCu3PpDwGQPzNglMhiWlLkSGfpe+h9mLOI4+qUeeDDrN9ygIMymBcLJ6vUKDJd3sZ5nE0espktBUGTRPsSvJkIM1C97eBwXyuxZchuYzE7mXdIQlgYpWyqm8lUBBKPncBkRB1U2lL0wEKP94EHb63JRCpgl2aqWwuaskP45t4BWOU/WwfJz3AYlhPLcHVUGcb4KdEfB6rMGlTvGSAuEwo3fid4m/vX9rSXcM0Pm29+ssidYy9yrSdovvhde1/3cd3PS4M23COXsi6y8BMuSdyyM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f93b3cd6-62bd-4e6c-3ecc-08de5e8c78ec
-X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jan 2026 16:44:15.2130
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: t3ma2GMRC6GWNaDE1YJ81RbNfpAVtVWo+6eTvANoLL2VB6UACrpNKM/7LthpEXUB7TLJ21BsLQPCBKQYoQce4DmEj9jvUL/vFryHNIldlgg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7198
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-28_03,2026-01-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 phishscore=0
- mlxlogscore=999 mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601280138
-X-Proofpoint-ORIG-GUID: FlZPLo73qH5dlmnq9SqtNdXqvFhWjvGL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDEzNyBTYWx0ZWRfXz3JaJCLZI9Yh
- plFd4btUPADJWMSeUglpMWbTzcrt8ZxW6+LJZ55Pu38vougQ5HCzmNiqnsOfi1f44ZzEC0hawkH
- Y9camBZlXXVAU8o/o3VwO7/EbeykxXxpXOUaS8MofhlRVfN8nUvnSWSn8vfFs+ZKY5AUHWoWj/K
- kRGeEuXkNtZQQSlr8sjGeU4oO6cm5/BPPgQl+497PaFevnqQ0KqbSBKg+6z7Rk1JBLWw6CHHW6l
- wu8AeKGlqtN7FRLvVG4W50j2aW5+K6RnjVFX83L9+zkQSP6AEIxZ+z2ZQIgL68c52nOaH74RqEp
- T87CqNtkOKAUU09G+mBMozlbmxmxC6VDv049EU+IdclzjMJqxaRZvS6xGryQgbACmVQtOX/1061
- ITvT8CfiFk2skfqEg9fEFlx7yWc5f2TXKoQ2S+7Tn7tPElw0flb+omqLlWYwo9oXhN03zCUgapM
- hKD3gh5Hl0MiLlrBrX+StKLm6ZCit3mb3G23XlKo=
-X-Authority-Analysis: v=2.4 cv=IrsTsb/g c=1 sm=1 tr=0 ts=697a3ce8 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=REBL0svVakopdHju3rAA:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:12103
-X-Proofpoint-GUID: FlZPLo73qH5dlmnq9SqtNdXqvFhWjvGL
-X-Rspamd-Queue-Id: 09A6910000A
+In-Reply-To: <20260128130336.727049-1-clm@meta.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A19242000B
+X-Stat-Signature: t3qhu166s7k448a91gh78pzomamqkjk8
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: uc16cnqswugoxsnf74xtzefha1ceohmt
-X-HE-Tag: 1769618684-587282
-X-HE-Meta: U2FsdGVkX18CJSBMDVgC06Jfdm/vWD7jZKoQLNR0ufJi7omdzyKRr2oMsTy2BHQ9XxqTaA9HCZt6CCZ2WjV2TEhV1QXL9F/UqnhiWbzvgI9so7yBVClju6vYWlrQLH5gOij+m9rf1srPUmPAeGQqmpWwyTPh+i2a8ufzi7foiZGVPp7Qx8RfJW4DWx+7a5xlzlS0Rh0r8m00D/uAO9Rk5upQJ2pMSakDu8Y/lDqWgOtpGqdefiWt4l7JeXt1ntYElMOOPnG14RNcrj9QJNVkhBO1psV7Uy2/dMaUTwHibMnWhgyg+/59zaIMVWQS/fF/wRIgG5iSZaqeBvT5u5745l/70KuklyoIpMbBW0Paq78RoGyQk0UJArChSfLl/eJBwcORGrvPU9oRVA1pp4R3/NZQaXBl+/gUOuG/DyLZn6wQ/CKt54HKfS78bRt9Vmjy4rFFXdzMO3vav/nDDoAzNURN1lyzsj1Yy97O1k7BMVHYdW2yEeIBPrF4tuNh4oxmTSsNvwFzGR7tcWJxoniIevjeaG6t5Fq3MnAYhsTlpGj7MRcpx3SxdWnw14s4qIJ8cfpKWcHlKWXtP4oTtg7om3KZYHmWAxGc3nt/hPrJx1sVZXwZ4ZRp3wkM6SI5G6WzDL4yzFewiskYCkN8bSu9lxkqpy+qae++qfa7CGFou+ORwDoaTM2f0LQoHkCbOEiuqwrl5X1zU7rdPLr5ArSPaEjviaF0NRIuO//+h4efmu3ae02zYRBgdiu6D+8O7DDZ4PQYoO8NAYNSeArZKGIMjKKq82LXreTNWGYntlyMYpuELOig7CIB/JfttO9JXa8InrZNrQKoPNofEO5NCcEm4Q99CuRx6yIJRJ+YHvSdbRMwzoz3mRU2Z5fjbO6PjkKmG7TnYhwdZqoWczjW8T7OpEQXk7uEpPWPjifhAMkIf4Qy1JSHvNBQq0f20njAptrYWECHtxyf2QLc7pbMKBL
- 8rwUgb1U
- qfnJ/5Pd07AruhzuCNH1NFxVwA3UOtFlQI6TaVepnxTtOuT4bbp0qmry7iO/+4dJm2CDdFmargCqihgGm/KzlFdE7iK0bFH6y7Nyky/4U/ZmzHruUUInP2PTJ8SEMJOqMzOzEkrYYNjVTW4m2JW0qyGqtXePSJ7V+Uo9Fh+S9GA/kOuqUwDSO9FRmJ6FsoRkgLOxeOgHc7jJUrqh+TBoalsG29woYA+x52FQV8V+D5aQR7mBTxnCsFntqr9pXwyi9QJjI5bR2b7GXuJzviD5eNClhS+eek1BKsLEb6z63MrxobvYMlXcWi5kA4mH0jqkBDWG7vw2VbF7sNUiMcy3gddPyfyjZs+nT34FCzyBQTv/7OEmPibV9w+AJvpnMFz+FhXcGlF/IFJ8zk8d5/hZuEeQjY1k2SeCuOXvHbQYRg21QmbsdTKbqXoHVzQqljQnOaGjy/KENHIHNUp/bDUXL9B0polLBv6OK9BYUEN8YIMA59qTq76ojN5Ug03+TOo7ko5VNubhyvNg2FBV/dVFqLEe+OXDfgLrXb4JEcVST5ujKNa08AmLO8HWp+Ymy6ZjqowejZUHDJonFokmOJITL0dHgD12mvcMnlpPzGxBUz50ezbrbTLo+sTzj5b5r+CwjWVzacOO2VzFGFIUjA6BOo+FOWxNxrFa6dzvwOE++QZXDaGXoSxDcZvwRY7tevO+edzc1yYQiAYWCG4OCO+Q80vWGvfyFpLUQSdVsrOuBFagH3GIbNAjg+xC4+yaItbpkxDnl
+X-HE-Tag: 1769619186-634013
+X-HE-Meta: U2FsdGVkX19fNqToaJORjz466AUQHmkQDbJRlkXQVzjjvonBYp+MdttDekuXsPDwc0R66mZx2bhYMB5XNzf2GgHL+VEgqplYxNkr7//MxcBY0SpN6WDngItAU+/MP7vTEXdzdydiElgJaop2W219JlMsvad2eQsfJOnr5ikmwW/CCHjGkEKLTyRafeNL3KhxlwVy8QtAneLmUpu5qHJdMcM0FkjsjGowhc27g4CV4ZLoWo/zW+Ss7MPULsB52a6k++j/EfNaVhpNX85gtxQWG82ZK0tCgfXYAKdVptgy299GM5oVHLDtNmmu7F4EXoTZantaLdkChUj949tFYbA9oriPqY03NrcAKIA6PEIX5H1rgRvlRDj/fRGbxddSFbpWy8AH8c7Ci8qb4Y8hDXUmA1/Tk1cj4PvNycaI4OVSu8E29vkJSg+uU7e+TxxIBnob+aWVRyK3h5+K41eyu9Q3pfelyCoQ2PWnQ3fM8qs5educaDtXHCZJVeievNd92Bk4IvTEjIeWxt8jcnJlSd/H9r9Q/3HwA0AG1erhB2bKan0TnFnvufR39m8E6Pb9Vaw6CbbcMJHXnKC5doH4rXBwNiRBV27BczNWwjpYxwkQYpBRCAKFgXebVDKZrp3arUzsSrE3B4VsitkbIqMBOvrmgxNNMyoYWBC4OyeYDJ6Tr6Ya4mvsNMyNbpE/yveo6HCGj3X9B+x5hTH4YAM4A4VWC7DPv+fv94QPy1wqCbh5PQKQYWOWr6pHmhFIinU1dX2One5wakz/pgdxHhYouyt/kynKMkUkHKVP2jAu4LTTVvUiokGDyURjL3oHYFyqAdH1Mvgtr2B+clGmVfxGhLEXhtQOJs9Hfcd7YdFjS4hOxjm2RdAvghwCS5pYZo1SMQy1nTVMP0BbPYskrUVRvAXxWIJhPGpBwNp7lOnSHwvQZ+n7Njeids3xeynR2ydaWwGhIpkNj9IXvpqdIGCwJFR
+ gAPIqHDt
+ lhf5k3yg5pL2Cx5igKSLjcJNbrytdVATEypkTq+XFT9bBVyKLJXBcufsYZoXVWeZi5PXSLA42DHHnzBmmACea2BGOY/DG3HYu/CfK0+TLJRJaOhm/7DTKc2kCPD02WVObRtLQ5o2KpKW51Yfxyqw8JViv7DOkLv3uriTmki0by9QZsjrFWGEIQtNvLw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -300,39 +122,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Andrew,
+On Wed, Jan 28, 2026 at 05:02:34AM +0800, Chris Mason wrote:
+> 
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> 
+> [ ... ]
+> 
+> > @@ -1191,12 +1203,23 @@
+> >  		folio = fbatch.folios[i];
+> >
+> >  		if (xa_is_value(folio)) {
+> > +			int order;
+> >  			long swaps_freed;
+> >
+> >  			if (unfalloc)
+> >  				continue;
+> > -			swaps_freed = shmem_free_swap(mapping, indices[i], folio);
+> > +			swaps_freed = shmem_free_swap(mapping, indices[i],
+> > +						      end - 1, folio);
+> >  			if (!swaps_freed) {
+> > +				/*
+> > +				 * If found a large swap entry cross the end border,
+> > +				 * skip it as the truncate_inode_partial_folio above
+> > +				 * should have at least zerod its content once.
+> > +				 */
+> > +				order = shmem_confirm_swap(mapping, indices[i],
+> > +							   radix_to_swp_entry(folio));
+> > +				if (order > 0 && indices[i] + (1 << order) > end)
+> > +					continue;
+> >  				/* Swap was replaced by page: retry */
+> >  				index = indices[i];
+> >  				break;
+> 
+> Could this code infinite loop if a large swap entry crosses the START
+> boundary instead of the END boundary?
 
-Could you apply the below fix-patch to resolve the issue Chris's AI checks
-detected, I missed out one caller of mlock_future_ok() (a very human mistake
-;)).
+Thanks for the review! It's really helpful :)
 
-Cheers, Lorenzo
+> When shmem_free_swap() returns 0, it could be either because:
+> (a) The entry was replaced by a page, or
+> (b) The entry failed the boundary check (base < index ||
+>     base + nr_pages - 1 > end)
+> 
+> The boundary check here only handles case (b) for entries crossing the
+> END boundary:
+> 
+>     if (order > 0 && indices[i] + (1 << order) > end)
+>         continue;
+> 
+> But what happens if the entry crosses the START boundary? If
+> find_get_entries() returns a large swap entry at indices[i] where
+> the entry's base (calculated as indices[i] & ~((1 << order) - 1)) is
+> less than the truncation start point, then shmem_free_swap() will
+> return 0 due to the "base < index" check. The code will then call
+> shmem_confirm_swap(), get the order, check if it crosses the END
+> boundary (which it doesn't), and retry with the same index:
+> 
+>     index = indices[i];
+>     break;
+> 
+> The next iteration will find the same entry again at the same index,
+> leading to an infinite loop. For example:
+> 
+> - Truncating range [18, 30]
+> - Large swap entry at [16, 23] (order 3, 8 pages)
+> - indices[i] = 18
+> - shmem_free_swap() sees base=16 < index=18, returns 0
+> - Check: 18 + 8 > 30 is false (26 <= 30)
+> - Retries with index=18
+> - Loop repeats indefinitely
 
-----8<----
-From 652146b4d93a31bb6f9da9428ddaab8a4a53e170 Mon Sep 17 00:00:00 2001
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Date: Wed, 28 Jan 2026 16:41:55 +0000
-Subject: [PATCH] fix
+I think this is a valid issue. And it's worse than that, during the `while (index < end)` loop a new large entry can land anywhere in the range, if one interaction's starting `index` points to the middle of any large entry, an infinite loop will occur: indices[0] are always equal to the `index` iteration value of that moments, shmem_free_swap will fail because the swap entry's index doesn't match indices[0], and so the `index = indices[i]; break;` keep it loop forever.
 
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+The chance seems very low though.
+
+> Should the boundary check also handle the START case, perhaps:
+> 
+>     if (order > 0) {
+>         pgoff_t base = indices[i] & ~((1UL << order) - 1);
+>         if (base + (1 << order) - 1 > end || base < start)
+>             continue;
+>     }
+
+This still doesn't cover the case when a new large entry somehow lands in the range during the loop.
+
+> where 'start' is preserved from before the loop?
+
+How about following patch:
+
+From 863f38c757ee0898b6b7f0f8c695f551a1380ce8 Mon Sep 17 00:00:00 2001
+From: Kairui Song <kasong@tencent.com>
+Date: Thu, 29 Jan 2026 00:19:23 +0800
+Subject: [PATCH] mm, shmem: prevent infinite loop on truncate race
+
+When truncating a large swap entry, shmem_free_swap() returns 0 when the
+entry's index doesn't match the given index due to lookup alignment. The
+failure fallback path checks if the entry crosses the end border and
+aborts when it happens, so truncate won't erase an unexpected entry or
+range. But one scenario was ignored.
+
+When `index` points to the middle of a large swap entry, and the large
+swap entry doesn't go across the end border, find_get_entries() will
+return that large swap entry as the first item in the batch with
+`indices[0]` equal to `index`. The entry's base index will be smaller
+than `indices[0]`, so shmem_free_swap() will fail and return 0 due to
+the "base < index" check. The code will then call shmem_confirm_swap(),
+get the order, check if it crosses the END boundary (which it doesn't),
+and retry with the same index.
+
+The next iteration will find the same entry again at the same index with
+same indices, leading to an infinite loop.
+
+Fix this by retrying with a round-down index, and abort if the index is
+smaller than the truncate range.
+
+Reported-by: Chris Mason <clm@meta.com>
+Closes: https://lore.kernel.org/linux-mm/20260128130336.727049-1-clm@meta.com/
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
+Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/mmap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/shmem.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 354479c95896..5dfe57b6d69a 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -108,7 +108,8 @@ static int check_brk_limits(unsigned long addr, unsigned long len)
- 	if (IS_ERR_VALUE(mapped_addr))
- 		return mapped_addr;
-
--	return mlock_future_ok(current->mm, current->mm->def_flags, len)
-+	return mlock_future_ok(current->mm,
-+			      current->mm->def_flags & VM_LOCKED, len)
- 		? 0 : -EAGAIN;
- }
-
---
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b9ddd38621a0..fe3719eb5a3c 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1211,17 +1211,22 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
+ 				swaps_freed = shmem_free_swap(mapping, indices[i],
+ 							      end - 1, folio);
+ 				if (!swaps_freed) {
+-					/*
+-					 * If found a large swap entry cross the end border,
+-					 * skip it as the truncate_inode_partial_folio above
+-					 * should have at least zerod its content once.
+-					 */
++					pgoff_t base = indices[i];
++
+ 					order = shmem_confirm_swap(mapping, indices[i],
+ 								   radix_to_swp_entry(folio));
+-					if (order > 0 && indices[i] + (1 << order) > end)
+-						continue;
+-					/* Swap was replaced by page: retry */
+-					index = indices[i];
++					/*
++					 * If found a large swap entry cross the end or start
++					 * border, skip it as the truncate_inode_partial_folio
++					 * above should have at least zerod its content once.
++					 */
++					if (order > 0) {
++						base = round_down(base, 1 << order);
++						if (base < start || base + (1 << order) > end)
++							continue;
++					}
++					/* Swap was replaced by page or extended, retry */
++					index = base;
+ 					break;
+ 				}
+ 				nr_swaps_freed += swaps_freed;
+-- 
 2.52.0
+
+And I think we really should simplify the whole truncate loop.
 
