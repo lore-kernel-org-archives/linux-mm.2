@@ -4,116 +4,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9682D3F080
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 15:39:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85E03D3F083
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 15:50:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5D3D6B0005; Wed, 28 Jan 2026 10:39:27 -0500 (EST)
+	id C12B86B008A; Wed, 28 Jan 2026 10:50:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE0A66B0089; Wed, 28 Jan 2026 10:39:27 -0500 (EST)
+	id BE90D6B0092; Wed, 28 Jan 2026 10:50:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC28E6B008A; Wed, 28 Jan 2026 10:39:27 -0500 (EST)
+	id ABE1E6B0005; Wed, 28 Jan 2026 10:50:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA71D6B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 10:39:27 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5E906140711
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 15:39:27 +0000 (UTC)
-X-FDA: 84381781974.19.0B76841
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A5F5518000B
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 15:39:24 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=TW0ceT3X;
-	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CB4C6B0089
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 10:50:31 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A2AF1A06EC
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 15:50:31 +0000 (UTC)
+X-FDA: 84381809862.08.0C15B5A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DA8574001D
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 15:50:28 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z5g8en+G;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z2XN42P5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z5g8en+G;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z2XN42P5;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769615429; a=rsa-sha256;
+	cv=none;
+	b=WX1sZNmjjotRl9wTIxk+0kFQ+9VTjRwj7LRNXu3y/esG7YR/O8RuJHQW0qPNsiZ4NeCoGt
+	rGT6v1CaBgzJv7+2avkhyo/q09A1K3crQcd4zaCpXYzbgetqd1BuJPEykBi/JiaKfm/k0v
+	/T/wPOl4BfSw9tGNYxvnorWQxww7Ap4=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z5g8en+G;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z2XN42P5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=z5g8en+G;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z2XN42P5;
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf04.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769614765;
+	s=arc-20220608; t=1769615429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OJrLkzbLiP/G1Q2z0WidoSL5OxCawhN9nyT7chdhR3c=;
-	b=zkRtStjVH3XSJ1Ggo5oILD4k8EOzZd113n6OA4YtuTm9X0l9fylViNapT3MEUsnJNYFGzH
-	pV+LRAtNFJ88tyS0xZ+NDQpcxABJifxHtq8Aiwv/Eee5MTewlFXsWtyTrtJciRXpEnAT5d
-	qvKyRLuGuS/c4AOSsDT2FkbsdBsJCr4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769614765; a=rsa-sha256;
-	cv=none;
-	b=uYuZnDgYoVT/RUatzv3BLXb7f8MOkgmwv/kxvuMVbDm0el3DolVNnAm0m/SCXfn0N+ryeI
-	AlyP2Aw4SFvhs8VauQc7Tw5t61vBUYC9hESGZmNES0CSxU5Sn8uCp9aRHVTr8C6/PA7Fi/
-	81FHMhnkaEbrjvWCC/cd/pWxmzVIF6I=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=alien8.de header.s=alien8 header.b=TW0ceT3X;
-	spf=pass (imf06.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id BF61F40E0028;
-	Wed, 28 Jan 2026 15:39:17 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id bulQNjROPWIo; Wed, 28 Jan 2026 15:39:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1769614749; bh=4T067YNgSyD4e1KT46RL0EZmiXtm7nVWE8K1rm41USA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TW0ceT3Xd0PHmsouRPlvrVPEXWTyJuK+4vYAW5R7A68duJabmmhLsv7IwMh2IPQIU
-	 cu/WLQSE4LUb62RCWIj5Fr1Q1h2iOLNr7F9H294PBvrrvm4Zj4Q5916U5frtq+zTPn
-	 SEDd2ona1O3//ZnUkIaN95y4W2uiJusuTbmNVDJ6xvE1JlkLh3LuL8vRjM9HORtR/p
-	 8rrmpAFPMeYWwRk1GOkIHJnb1t14Nne39qtv0Mj/nV+codul+vmii4c3ewnB73oJRS
-	 mi+JDiS3OhUkMQA4yD5uG05arZMV8gB0l/3m8ndnucGmSYYhWyUA7KUX8kyyNqAwNW
-	 eMYlmVORCam9+k/wpaO0mrlHKlppshduwjg0rFc3Nklk474ey0QbEfFdENrfRjxkZU
-	 GDLFSrfBQYR2aq7stcnmMgKoJscW++JREyE6zsBR0zYQVd72mJ+rn0Nit9ZxWQYHxN
-	 YbaRVSlJN4HSh56Hf7x7YXR6O0I4ltGabXb9ax87vruPlEDMLNVC23Cvu0pxRYMSxt
-	 9XMWG/1FPbLfePcJBg7VKc/X96dTGMXgYe0uT01JahyKHBxAIuHCyLKvwaVeANjF6g
-	 YlxssyV5VZS10wBVQFdTo9qnHkrsu2UVVC/bzbYfkpzNaJG5mGIAacBEELqNCty+Be
-	 JEQt4orygIBcEyuSBbHvB+AM=
-Received: from zn.tnic (pd953023b.dip0.t-ipconnect.de [217.83.2.59])
+	bh=W5xl2haCUI0hSbDXGPGJjYXdaOWzaQKGtYWRQOCdGmk=;
+	b=072ImIjlixViYvm0N3Eypd+rMJ29a/UYISE7JDCT5jm3p5pNttl7fso0yH0/kWzs558+Vy
+	aNaDbzVC8Nms0GMbBy4Nv9gvxFknn+xjo65Iiy128yRY7yZLVnf3J0NIzwIaIgs8Q/5jUq
+	UP2Bl/U1Aj+xVLDaRiqzaPVOEuFmBpQ=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 6370240E00DA;
-	Wed, 28 Jan 2026 15:38:41 +0000 (UTC)
-Date: Wed, 28 Jan 2026 16:38:34 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, Andy Lutomirski <luto@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>, peterz@infradead.org,
-	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
-	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
-	junaids@google.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
-	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
-	yosry.ahmed@linux.dev
-Subject: Re: [PATCH 06/21] mm/page_alloc: add __GFP_SENSITIVE and always set
- it
-Message-ID: <20260128153834.GNaXotelMi3QMuvh9-@fat_crate.local>
-References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-6-2d861768041f@google.com>
- <fb450443-07c3-438c-888f-30540935da15@intel.com>
- <DD7WSY2PPABG.UK6GJ98WZS79@google.com>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 626F85BCD1;
+	Wed, 28 Jan 2026 15:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769615426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W5xl2haCUI0hSbDXGPGJjYXdaOWzaQKGtYWRQOCdGmk=;
+	b=z5g8en+G05pnMaNrzzDCXnf1qOdMVROErfW2cjLmhjMwUBS3nqT7MqPjMQ1soQOw95TLTo
+	Xuu1CJXJHDc4ykhi5dXEd8DlyHOU/VPbnkfrQyMvP403e5vyhMNr2RE5XHX5nWp9NGKcPU
+	HO4Eh1la/o/z3buNY93rhoQIoFEkvdw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769615426;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W5xl2haCUI0hSbDXGPGJjYXdaOWzaQKGtYWRQOCdGmk=;
+	b=z2XN42P5bGin/nEWebti+qMt69kcoJ1HxWoyBX5Ra2kIqBIQTO0F8xPzWqOas0ufx5A+2R
+	jhMG61Ostvk8GKAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769615426; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W5xl2haCUI0hSbDXGPGJjYXdaOWzaQKGtYWRQOCdGmk=;
+	b=z5g8en+G05pnMaNrzzDCXnf1qOdMVROErfW2cjLmhjMwUBS3nqT7MqPjMQ1soQOw95TLTo
+	Xuu1CJXJHDc4ykhi5dXEd8DlyHOU/VPbnkfrQyMvP403e5vyhMNr2RE5XHX5nWp9NGKcPU
+	HO4Eh1la/o/z3buNY93rhoQIoFEkvdw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769615426;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W5xl2haCUI0hSbDXGPGJjYXdaOWzaQKGtYWRQOCdGmk=;
+	b=z2XN42P5bGin/nEWebti+qMt69kcoJ1HxWoyBX5Ra2kIqBIQTO0F8xPzWqOas0ufx5A+2R
+	jhMG61Ostvk8GKAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E04173EA61;
+	Wed, 28 Jan 2026 15:50:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id k2B9MzwwemlHUQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 28 Jan 2026 15:50:20 +0000
+Date: Wed, 28 Jan 2026 15:50:19 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Yury Norov <ynorov@nvidia.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, Christian Koenig <christian.koenig@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Benjamin LaHaise <bcrl@kvack.org>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Tony Luck <tony.luck@intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
+	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>, 
+	Carlos Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>, 
+	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, 
+	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org, linux-erofs@lists.ozlabs.org, 
+	linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
+	devel@lists.orangefs.org, linux-xfs@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v2 00/13] mm: add bitmap VMA flag helpers and convert all
+ mmap_prepare to use them
+Message-ID: <wqtf6zwf72i5mmq4jxzea5lg7nziinqrm7eyou6n76ticah4py@ju4i4mndzsr2>
+References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
+ <aXjDaN4pwEyyBy-I@yury>
+ <5f764622-fd45-4c49-8ecb-7dc4d1fa48d6@lucifer.local>
+ <aXkv7DSUbdY-RD5d@yury>
+ <c7452c5f-e42f-4595-8680-bd1d5726be38@lucifer.local>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DD7WSY2PPABG.UK6GJ98WZS79@google.com>
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A5F5518000B
+In-Reply-To: <c7452c5f-e42f-4595-8680-bd1d5726be38@lucifer.local>
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: k7aenj6eoxwernsjqh8o8kjzfxeii5wa
-X-HE-Tag: 1769614764-751777
-X-HE-Meta: U2FsdGVkX1/1nE3PjKDha3KPZ27NR8Z+XHcEmk9DBnduaswmo6b7zVXw5CXGoeem0rhzVEng1q+zq4InT4DZxNMmGf+Ya2ZYtAGgBf8VUWdcKKbAUoeojf1zEgUy1VK+TCCRoM7ec3xKl9yWxesFsqBMX5SMQ5jkfuXA6cBGJNdt7CIz6lZM953d0zXTjk2w+WnBzFQy1u7ivW3QEbfe9GCz8fKPbzXJF6EG7yff5GHHpg+qCvqviFvhdzmEej0hWbr8SciSMtCZONJXi5g8Y7Ffa8dYEzi2tMXP+QVBkNbRv1SvLAY6FlaD4tGZhuVlAfydKKX/NQdjhx6//Ul7/wUOxF+6AWI3iCJzs1hbjqNiHQeuw5hFNbIBbKkYkFDekMBba6hQwv3u97YkzOW8tzqcFgUenfkAfZeWFsWcW8UJ8K8qpQqsBfRx528GkkN3SVy0NlyEdOBPYLBvNWpzCvZ83Kvh9FEnRN6mgXiei5+WPuw5KlQkF3uR8Zmw6oW6/JJEZnp1AdXLK13iR/UaASHEvGhvRiJNRTx8hesKDiJ8PEOV8HyEEaNJNqhuV71M1EsiAsE7cfBSB/g509NqcChYM5XIPwQ/DqChRhJwvQyMkgFD2nwMoFkDX8hC9xYuTc5HOE9M9PPutsSihWhBDTSQ26Z9se7bMUT8c/znhGboVMUvxVGXG9R5Bky/3bzydiROgKvjmrUKzquMJL2tg1pvsqVLWz4ZLX0naIPYqKVacH/NoMAhB+Ro9izBrP6V4mqVw23nVydFItRDv22XC9npFysuvGu9A8I4TLR1uLmE7pr0VS4xlH567vws9VX5nXxJREFf4JuRvF3wYydHxE1GShMJhRt34ReEZvCI76LcmR3Tmfaaiyn7K3V7rjU0Xhh9zLZEnxSKBKN8JxJz3k0/wAcUrBLUHKo4468LRJJb62kp7ZyVpjBO27smUQGNEjB02JvuGPe3EPZ0I65
- sYe2dX7D
- xVnQfbHGkfESUA6w2FjuaWOgr25QYz7aVs32BN9VPFHEKDpDNdM9was8CKMyDdEYdAM6HGEjLoEsJs5SSVKe1Xg67LdlQpUYIbsxC0t18u6EpXleGW4fbYg3dczJvwN5R2IsZazonkoz+xOpsdZ8pNkeObaWsT+ScIaaFbcnUZJ6CfO/jlXDnHQ/0mS/qK90UcOWkDDrThabqSk9Z5yP6djVfu9j+nTrzVF05kBLCjcIdnt9sXViUl7RCmc2TrdeSVGcfShkg+7V30JVecmcG4vf5b1WPC6FH7xjRTEW/YVBNRcxCu7AxGc1XwWlUvZZm0wmySeZ7hz74Wm4BQ0YiCVPvx+s4FdbRCTgF6ZUBNuklLDGBOW6+eK8+XYC1PwFmeo32FSFJOozLljHHf1wzLActWV2863cO3cUreBH+P8C1OEc=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: DA8574001D
+X-Stat-Signature: sabb7j59ht9n35ngrzqeegx6fy86msez
+X-HE-Tag: 1769615428-995133
+X-HE-Meta: U2FsdGVkX1+yCE0ph1y64BE2leytzEAsJ/IoztZ/tkfgcC88W5JyXXeF90VqnBEsnQ3pDRTDcg6XL9B6kctRHBVaL4H9HfU317XXhky4lwIpMgUEN3xLEoQqn7hukBDcUNTlq5sQJzfS4ZfqnDFO94nAKaub2blle0+paJ4CtX5lTbHKxXO3Xqn0IPXnjwi0TQZokZqjSino2sPhQdYgM8N9tEPyUe9uznxUxRRfi7evjiVNB9LrerVltd7bPmHmOs4YTqHrzFEsZhexqoLHHAenTPtXms4djLIprOa0D+3gP49vIMXg50Mu2L4QUoU0eXQiPCvEE1s4GkcAt4GIrcrSsjRJmjF58+BTmbI5oddKshlDVQxbwUywECJqwVN0XrcI1fzqZA63+tuoFLLqBNqx8FwRiCvqL3OFUgLQmfqkl3VASvOdpoT4lZOKm5VWr5TOFuSFXn7ijoFZrt29spJW+qa5PyyIVrNVvjeWBMQEjqokFovZHwf5KLplWeZeNm1aFOeTSWD8VP3Cik8bLC0Mivc6Fx5cMfu4SpcsT+RrELLPUvx1/6XknuK1sq+RP+oBrECeOgpFXs9JoHde2jgw8HuY098X1P+IMrwm8U6lG5Y2MRviy63nAbBr5lWIpHDEB0o2lIaTK/KHWfiAElZ2F0uy3w/NgB4w68E7lZbqAp0UIaGdeyG6nPg1kIaTKxK6l6cY+wMwQh5gAEJm29sZPC275T9iAh1BUZpDVoSqj0Y5ZWMeRPCmH9V45k1nusZ6MVGdbV6Yo2EVsV1HPmcQ1qh6UXT2JcYivpwJLgnp0ZQ3UNeG8nJEazHnU0NQkBtvwsvDAu5geaxK/tT8YH0CNxTAepmtqVPM58WZ4BuoTEMnk5z3EVIvHJELcWgCL0rvcCKml9lrGMDV7HPIxQHrPiquz4r+h1bVjnVf9OLDAkRi3kOMIQn6W7MVS2fNfNrr00/CIdQcZufG0XC
+ MLXDh7B9
+ iqOIld5x/NsUmDVL8CCnGsKPnhZdCm36POU/E25KDcKnZsrhOIP9RHuuAh++RPmOtVK7SQ7hQzh7HFJtA5UskrsKMMPLDaMJkui8TupQJurB7Gnrnj4cuK3Rp9Yhnl5HKKdslVIlM5gsa7KdLUbtUccjd/MFYDh530sSOH10ZiBMszHOouXU+z6iyauZYD/XR7z1rjLphwwtoMhLunWzpmNcLfS0HetluKASfC4vZMRshYUsNtYcgcKBgj15aTVJFdBvWBS9b35vCOvHz1VC7VO6EJRQtxi7YfM2Ib+6ON8iHRjrcd4GAf3pSvUnyqO31PfDcreJ7m1K1/h8Hx+7H4LL3+cF8/2iOms/Y4BT34ohpM6YB0rRUe0XJBM8ke1K13URjfNUWfClDT605e/ebwr+DUIxvHsCOw4lzfTSAPEOZJgU1fVUJ7z9Y6xL/0jH69dxFj7/kVN6SzpbjKaKHK4E1bVr+wn7WlxLwPdi+LwfW36hKk77TOVkJneJWMw6jKdG5Kn6+zoGS4bht7nX9VQppug==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,70 +175,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 02, 2025 at 02:34:33PM +0000, Brendan Jackman wrote:
-> On Wed Oct 1, 2025 at 9:18 PM UTC, Dave Hansen wrote:
-> > On 9/24/25 07:59, Brendan Jackman wrote:
-> >> +#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-> >> +#define ___GFP_SENSITIVE	BIT(___GFP_SENSITIVE_BIT)
-> >> +#else
-> >> +#define ___GFP_SENSITIVE 0
-> >> +#endif
+On Wed, Jan 28, 2026 at 09:33:44AM +0000, Lorenzo Stoakes wrote:
+> On Tue, Jan 27, 2026 at 04:36:44PM -0500, Yury Norov wrote:
+> > On Tue, Jan 27, 2026 at 02:40:03PM +0000, Lorenzo Stoakes wrote:
+> > > On Tue, Jan 27, 2026 at 08:53:44AM -0500, Yury Norov wrote:
+> > > > On Thu, Jan 22, 2026 at 04:06:09PM +0000, Lorenzo Stoakes wrote:
 > >
-> > This is clearly one of the inflection points of the series.
+> > ...
 > >
-> > To go any farther with this approach, I think it's critical to get a =
-few
-> > acks on this hunk specifically. Well, maybe not formal acked-by's, bu=
-t
-> > at least _clear_ agreement from at least one of:
+> > > > Even if you expect adding more flags, u128 would double your capacity,
+> > > > and people will still be able to use language-supported operation on
+> > > > the bits in flag. Which looks simpler to me...
+> > >
+> > > u128 isn't supported on all architectures, VMA flags have to have absolutely
 > >
-> > 	MEMORY MANAGEMENT - PAGE ALLOCATOR
-> > 	M:      Andrew Morton <akpm@linux-foundation.org>
-> > 	M:      Vlastimil Babka <vbabka@suse.cz>
+> > What about big integers?
 > >
-> > ... or this approach is dead in the water.
->=20
-> Yep, I agree. This is where the chicken-and-egg thing I mentioned in [0=
-]
-> comes into play though...
->=20
-> [0] https://lore.kernel.org/all/DD7SCRK2OJI9.1EJ9GSEH9FHW2@google.com/
+> >         typedef unsigned _BitInt(VMA_FLAGS_COUNT) vma_flags_t
+> 
+> There is no use of _BitInt anywhere in the kernel. That seems to be a
+> C23-only feature with limited compiler support that we simply couldn't use
+> yet.
+> 
+> https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p3639r0.html tells
+> me that it's supported in clang 16+ and gcc 14+.
+> 
+> We cannot put such a restriction on compilers in the kernel, obviously.
+> 
+> >
+> > > We want to be able to arbitrarily extend this as we please in the future. So
+> > > using u64 wouldn't buy us _anything_ except getting the 32-bit kernels in line.
+> >
+> > So enabling 32-bit arches is a big deal, even if it's a temporary
+> > solution. Again, how many flags in your opinion are blocked because of
+> > 32-bit integer limitation? How soon 64-bit capacity will get fully
+> > used?
+> 
+> In my opinion? I'm not sure where my opinion comes into this? There are 43 VMA
+> flags and 32-bits available in 32-bit kernels.
+> 
+> As I said to you before Yury, when adding new flags you have to add a whole
+> load of mess of #ifdef CONFIG_64BIT ... #endif etc. around things that have
+> nothing to do with 64-bit vs 32-bit architecture as a result.
+> 
+> It's a mess, we've run out.
+> 
+> Also something that might not have occurred to you - there is a chilling
+> effect of limited VMA flag availability - the bar to adding flags is
+> higher, and features that might have used VMA flags but need general kernel
+> support (incl. 32-bit) have to find other ways to store state like this.
+> 
 
-Btw:
+For the record, I fully agree with all of the points you made. I don't think
+it makes sense to hold this change back waiting for a feature that right
+now is relatively unobtainable (also IIRC the ABI around _BitInt was a bit
+unstable and confusing in general, I don't know if that changed).
 
-./include/linux/sockptr.h: In function =E2=80=98memdup_sockptr_noprof=E2=80=
-=99:
-./include/linux/gfp_types.h:306:41: error: =E2=80=98___GFP_SENSITIVE=E2=80=
-=99 undeclared (first use in this function); did you mean =E2=80=98___GFP=
-_SENSITIVE_BIT=E2=80=99?
-  306 | #define __GFP_SENSITIVE ((__force gfp_t)___GFP_SENSITIVE)
-      |                                         ^~~~~~~~~~~~~~~~
-./include/linux/slab.h:1049:76: note: in definition of macro =E2=80=98kma=
-lloc_node_track_caller_noprof=E2=80=99
- 1049 |         __kmalloc_node_track_caller_noprof(PASS_BUCKET_PARAMS(siz=
-e, NULL), flags, node, caller)
-      |                                                                  =
-          ^~~~~
-./include/linux/sockptr.h:126:19: note: in expansion of macro =E2=80=98km=
-alloc_track_caller_noprof=E2=80=99
-  126 |         void *p =3D kmalloc_track_caller_noprof(len, GFP_USER | _=
-_GFP_NOWARN);
-      |                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-./include/linux/gfp_types.h:390:43: note: in expansion of macro =E2=80=98=
-__GFP_SENSITIVE=E2=80=99
-  390 |                          __GFP_HARDWALL | __GFP_SENSITIVE)
-      |                                           ^~~~~~~~~~~~~~~
-./include/linux/sockptr.h:126:52: note: in expansion of macro =E2=80=98GF=
-P_USER=E2=80=99
-  126 |         void *p =3D kmalloc_track_caller_noprof(len, GFP_USER | _=
-_GFP_NOWARN);
-      |                                                    ^~~~~~~~
+The goals are to:
+1) get more than sizeof(unsigned long) * 8 flags so we don't have to uglify
+and gatekeep things behind 64-bit. Also letting us use VMA flags more freely.
+2) not cause any performance/codegen regression
 
-Perhaps it is time for a refresh and a new submission huh?
+Yes, the current patchset (and the current state of things too) uglifies
+things a bit, but it also provides things like type safety which are sorely
+needed here. And which 128-bit integers, or N-bit integers would not provide.
 
---=20
-Regards/Gruss,
-    Boris.
+And if any of the above suddenly become available to us in the future, it
+will be trivial to change because the VMA flags types will be fully
+encapsulated with proper accessors.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Or perhaps we'll rewrite it all in rust by the end of the decade and this is
+all a moot point, who knows ;)
+
+-- 
+Pedro
 
