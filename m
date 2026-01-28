@@ -4,118 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8017D46C01
-	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 22:57:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 788AAD46C0F
+	for <linux-mm@archiver.kernel.org>; Wed, 28 Jan 2026 22:59:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE9716B0005; Wed, 28 Jan 2026 17:57:28 -0500 (EST)
+	id DE3DB6B0005; Wed, 28 Jan 2026 17:59:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA0186B0089; Wed, 28 Jan 2026 17:57:28 -0500 (EST)
+	id D91B66B0089; Wed, 28 Jan 2026 17:59:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C94F6B008A; Wed, 28 Jan 2026 17:57:28 -0500 (EST)
+	id C73466B008A; Wed, 28 Jan 2026 17:59:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 859226B0005
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 17:57:28 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25F905723E
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 22:57:28 +0000 (UTC)
-X-FDA: 84382885776.22.A50AD0B
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 6849BA0006
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 22:57:26 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=mdDSWLcq;
-	spf=pass (imf15.hostedemail.com: domain of greenjustin@chromium.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=greenjustin@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769641046;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE0AD6B0005
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 17:59:52 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F8AE138F32
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 22:59:52 +0000 (UTC)
+X-FDA: 84382891824.07.3B7FDB1
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 64307180006
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 22:59:50 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ORAO29vl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf06.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769641190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=BVN9WQ1f1WUnnewMaQHeUq2RLnvcgWlrulAr8n3avs4=;
-	b=3J7VgSQSR8wqAwUV1vLXAa3Y2WMtaqPttS43y5I+l7oxi4UTjHXL9Oj5g0sgXAqVU9WbJF
-	XYcs+g8WBewZILK6wUQABRFEUp8aq/o6Y+5GLKcS+YPC4BWF/8eVO4CgnWLOVFm9FiOR60
-	4LuQc4JlaCKNxzxaU8Wah5GzL7JHWpU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=mdDSWLcq;
-	spf=pass (imf15.hostedemail.com: domain of greenjustin@chromium.org designates 209.85.219.42 as permitted sender) smtp.mailfrom=greenjustin@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769641046; a=rsa-sha256;
-	cv=none;
-	b=QY5o1dnznNCIVgCq9WwQHpfARg6id9/7yr3DqUXbbJTn4KqvTW7z3BhyDxDVXLgMkraXT+
-	z0ya09QXrrLEj3SOt0uGhnVywtTdp8zucQhRiLU8Tqjie2vVe9PQU8Ev8Qbko9Mb2D6sws
-	nHEtBrt8PWleZhlF9YTUUTBfwYc4h+4=
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89464760408so2530596d6.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 14:57:26 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=X6l9v6nvekI3IglgDHWcmVVwUUBXm23W2GZ36y4REus=;
+	b=SiKIG+Qsm9NX2WlpToSSOffpfvhsybcLtjThTwtA4+1mnOtnlj4SiymUONKOKm/LdIJMj0
+	ZuHO6TQRR6gopAbCibLyQmVTaWexF2VEeDi+7gSrkFExQHukBWJoNvZNv6jPrN5FUZvEAA
+	hNbkPAK7Bys32K53jx2c3Czxm8qXVBs=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769641190; a=rsa-sha256;
+	cv=pass;
+	b=EDJlHn6Em0B+bAdIozda0l0u5dGZ6ZrPCgl/r3xLpltuJXBtl2hjD+nYo9QvizcjGWorfH
+	GJoPP2hTALO6Fy3B7HTS5lOa/QTX3fpy+m+pqiSIiwq4emsuqHATlGd+djPZyMGrR+aQIR
+	JcBMgTG1Z1fDYGxKwEYKkinMkXkY3iA=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ORAO29vl;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf06.hostedemail.com: domain of bgeffon@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=bgeffon@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2a0d06cfa93so12335ad.1
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 14:59:50 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769641189; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T6uW33XpeNv4Se6wogqAlXu757vlDVymuHHmr9uTksD1MMTFpAxOCn1whByvlOUqd3
+         ydiHwtsyIRAOayw8wY2rFCWz2Rq724zbPYgZ6rDxqp0YX3lAh7xheSW4mraEVLJtrw4e
+         YNyzd7rSAfcSoMN24sIN4hNQRqYGeZgbJ3DUhsa/078Es1/dIsfT4YpCBLqnYD4YurPk
+         5hJ/N8x8CSbmCPyR9/VpcbM869ermi0AliF4GJRgmbDX4++yKwryVxKFcDh7hVMzEuWj
+         KM9Cmy8Et0FhBrBvkbw9T5dm4GruaeXkF08NI4l4gGHPceYs5YGs/oMhEACqG4/vz/xG
+         r1Mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=X6l9v6nvekI3IglgDHWcmVVwUUBXm23W2GZ36y4REus=;
+        fh=+ySk581tit2yEcNOu/FkixReTI9O1N+LlvqciWqwVxE=;
+        b=bhYsgtoVK2geu99wOrX9U/by8jgJya9VL3A4a06Sq86mzuDQPCNk0a+pv4zB+Lt5q8
+         tBmYZ3bqAhD5QA+exhfuY3aaC/qMVgBH0P+2pTEGB/IoVPPpme2cwoXxZ34y8cRhQgWa
+         pW2/V0azL+PL9jtVp07Ckr8HNGqzZqQ2La1gOU6/VyQwFk3ngZrj59tXg3aXwIjbQMcU
+         AyzK9tcg69ozDAG6UpPBuXLnkOQ2eqQWi1fsEkdewJfkDLYXYojTaUgrglX5KPg0qHRY
+         WBHCB1EWjdH6dA2+B8nzJbsalW/GstVrfZRfsXkbJoTTnMAQcoWSSAggnNsxzO4rzZT5
+         PI7Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1769641045; x=1770245845; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BVN9WQ1f1WUnnewMaQHeUq2RLnvcgWlrulAr8n3avs4=;
-        b=mdDSWLcq+TrD7SV9yRSNReNKVqmC0Gbr+tG3z5VrP+S7gN3VP+6chR/SSvRedEj79g
-         CDlmMCcpdgsLoGWAEkjxpJFAB4ZPUitBrEXFFOFm/V8meLCYjS15+Sr/JDUgdNiKW5+w
-         A4XgFyIE1Dw10kenG++DSFnRNUzc5MVh1GRQo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769641045; x=1770245845;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1769641189; x=1770245989; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BVN9WQ1f1WUnnewMaQHeUq2RLnvcgWlrulAr8n3avs4=;
-        b=sJNEI93n/hYm/2FsmvFLm1N/ClRB/iTgVc/ne/GTFIaiBCswdVqi3v/yWbjshCkQWs
-         aOgFXyUtKyTBJa7W2m92euytxHTq1O5BzCib9cKd/T8nD2x7j/a6FtvWH4FxCsYTuFMy
-         KjC9wrGjM3bx9muE6QSuCfBAFNJYeQFju4vssfRdr24b9yQQsGxFoW3EJEbJwLxOgOnF
-         EU1EVFRDG5bm2ZJqil7Mww8qo4va+stoZuqEpiS4ZC4pJS0MqIB7zzQgU5KinBAMvvNc
-         cSYeBLTRqSugPYS9qVkyI262ib90cte8TEmKF+4P4QNlYauMXxtVD8dfTN8R0P7r06wq
-         wD3A==
-X-Gm-Message-State: AOJu0YyP76bPDMTJlrIuQSqH8N7RPaM2kvA0OXYDrW1vcO26Zq8JZcQQ
-	omnNTEMuPzT+gL/fcjswwdDQMxvvMS/oh8OVeUH8GbrjP9vqjfAgzf2C6ZEp4tvXCw==
-X-Gm-Gg: AZuq6aIxsxO+MdhWu/VqSqGQPJrgITwO38sw1uklkOmp2nToCvAoBtGlVXXWrS/dwk7
-	kQgVcejDG8fFo4kWdqvVwABQecSxRvcLub3HRBOJBd1G2qCTOemyNI2n4AN/uTac20Zl8YC58RQ
-	SzwkazWRw2iDNZztVPnSYrUcSF8YyC8hZk9m8En36YxcGswDytqQJI1Z4jOZU5p6Fz6SmXiPJh+
-	DJTPzwQqwbTy/fm4+zwAiMqUvhJHTm2YAeSWCvg5wEZ9ZaaeCqywJtBnf71d4VwniG1gRUVwPrp
-	6LjqT6ndKmJjvKpMTPMd+9znNoGC/sVcJVr9Ym5AWs5N3P8oGvENQYVzOzLo7YqJSoZ8JIDjEt0
-	XSDDrHHSsA7oKXk32Sues5WSuLoLwGCQcn8Ohj2kweoI6AHbmSNU+7PTqn9wQtexmXASQ2jgUoI
-	5jQy+aOq0dZCSHuS2iwFUqHKHfgNQGXSS9D4vazoR/erhOvBx3ZM4Feyw7my8yDw1fyiQJABn7o
-	zP5HFLe
-X-Received: by 2002:a05:6214:29ca:b0:880:63b1:3f57 with SMTP id 6a1803df08f44-894cc8c8f68mr98777736d6.38.1769641045371;
-        Wed, 28 Jan 2026 14:57:25 -0800 (PST)
-Received: from greenjustin3.nyc.corp.google.com ([2a00:79e0:2c11:9:6215:4385:468c:4289])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d375b62asm27815526d6.41.2026.01.28.14.57.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 14:57:24 -0800 (PST)
-From: Justin Green <greenjustin@chromium.org>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-kernel@vger.kernel.org,
-	greenjustin@chromium.org,
-	greenjustin@google.com,
-	rientjes@google.com,
-	bgeffon@google.com,
-	arjunroy@google.com
-Subject: [PATCH] mm: Refactor vma_map_pages to use vm_insert_pages
-Date: Wed, 28 Jan 2026 17:56:47 -0500
-Message-ID: <20260128225648.2938636-1-greenjustin@chromium.org>
-X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
+        bh=X6l9v6nvekI3IglgDHWcmVVwUUBXm23W2GZ36y4REus=;
+        b=ORAO29vld6Y9kqfqr+xAC2XUl/4/epGVsqqgwuXRDPbYuw3+I+IypuujGVHYiSFx6L
+         Hw/Bw/SZteh3AXG8h1rS25J6rSpp1/DYaK1iP1tfeiGCMhGpSE92IXIVW94B0yyWSM6G
+         NrZMZ0/cK/rNT90NPtxsJODbymWbRrquERcH19C/xEvxpNX7dXmh+OebRnrfUONLs514
+         P5tBRsd80pTatahXiIqVMRbMH2UTtZ2v63n6QGu4e0TBz/qmWfAZuKbTLPa6LmcHiGGD
+         p65omzZFAPxdt5ELmJhfVxtVDIR9aUNUpR4Aqa546v5oK74TiErKp/IPHC/XHvL+dPwY
+         wWYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769641189; x=1770245989;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=X6l9v6nvekI3IglgDHWcmVVwUUBXm23W2GZ36y4REus=;
+        b=rt/0YFzEPrFRbjwWpgVdqVbff5jKkI4syxtPl3bp3FJAmLFGc+FoBBQf2ac9+Ktgs8
+         wGa12PxVuMAP23K0N1Ft0Ge3U6rIn9DWNw4CFvBdxPIQ8u8qfRCW4C2vzwQjSvQnkUyJ
+         GTeLRcPIiGvHxC/RcND9uEwqKNvUsHQ/EK1464l+66209puB/tSSgmXmYU43BYRU4Clx
+         yDLK4ruOOXKMRA5HZGS/BzkmJCtG+bQNc4epOEUI2aeNQJzNuH2TtG6RExYY1EWc31nD
+         aH1fW2Pc3TPFgWyCGuRfR7rqPioO3rSbrRA3YcGgrg9KSZanqq63SigKaI6zMkBiS9od
+         pTBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWoNshboZcIjelmv4X3pwfpKwkWrZM6MQ1CadAx6EQ+z2z1YMeac5t6cCnmJdz3TT9hStyDvThh/w==@kvack.org
+X-Gm-Message-State: AOJu0YwCw10jGpCuEHCC39KijCDitRfiaVJG8dVBCopuCU7fhakYU6ZR
+	adEd/Kr0U6SOidWW6sbKAcol3ZZUqu+FCefNOoejz/CmJBTi1iLED3rD0/noyDAbBrvDbiJvQcQ
+	UFOnif11iTGQDbmdmIIx54KhT7VDx8UqhqVnmupiH
+X-Gm-Gg: AZuq6aIRvyRIbAbWblhY6wGzVpgISS078L4e64UdNdVRPekSDtfFJiAfl7uCaxWH/cC
+	87rESK3Vc807q5ic840/BvIWpwmbXjoMRj4x+CxNDqUEUIoAx0ItUm6zkIFjdcdPJt34bEnSHI2
+	RYqU0WfZ3HTw6ke0/GYUji89CFRPDN5j1sid7H2bp8oPjLbMgo2tWVwkw3wTn5KboJdWaKVD7x7
+	TRHfhBwlzkIDO3U06la/yZ4SAFoLLQhxVv9CURhxxVeCYG0LFOHUqLXtKNbG+hCBhpA3MaHI5YO
+	g2pLZ+EfJF/8xid4qYRhNJ8FCglYSGbgxj9wERNrb7Cy48CmnR84NvPH
+X-Received: by 2002:a17:902:cec3:b0:2a7:7ca1:8622 with SMTP id
+ d9443c01a7336-2a8c0535dbfmr381645ad.11.1769641188528; Wed, 28 Jan 2026
+ 14:59:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: kdx1tazkngsddrzrstjk1geq44qk77xj
-X-Rspamd-Queue-Id: 6849BA0006
+References: <20260128225648.2938636-1-greenjustin@chromium.org>
+In-Reply-To: <20260128225648.2938636-1-greenjustin@chromium.org>
+From: Brian Geffon <bgeffon@google.com>
+Date: Wed, 28 Jan 2026 17:59:12 -0500
+X-Gm-Features: AZwV_QgU09LccZD18zBqk96rhfhFyiBkdkVIEJNhoW8BgX9BrqCNfPu6xEKNxDs
+Message-ID: <CADyq12wpDTjHVGs7CTQ3SPNMO_ovmMk-rN7L4i_AGvdoLYQLnA@mail.gmail.com>
+Subject: Re: [PATCH] mm: Refactor vma_map_pages to use vm_insert_pages
+To: Justin Green <greenjustin@chromium.org>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, david@kernel.org, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	linux-kernel@vger.kernel.org, greenjustin@google.com, rientjes@google.com, 
+	arjunroy@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 64307180006
+X-Stat-Signature: bsewhqujxor94timyxuw7zspo7chrbde
 X-Rspam-User: 
-X-HE-Tag: 1769641046-424910
-X-HE-Meta: U2FsdGVkX19RHc7e+550GVyxPuBr5Du7LocvJqbLklwhHXAKmKqiiMn7VtrY7c0iAAJaYY8ybBTeDw5986hZ1qtnR7zx5mGBHP4yTC6oKr6YqKjRGKuc07GWcVyyDUzuSPNDVQlNpHom8zKa7NZLsMD9wZ7SM7UiGTIcVQ/NfKinEBeJeDTHqyW6WUSA4qReBBnIKYQXWgYocBxecd9Nu2TIxfU9a1X9M0VV5NNNlLv2LHGwO75i+Xm/sFY64PlUcxsbjbyBuuyKEmfAdLZ0LsygtHjjQunYx3qhPwtDWwCJbK4iqaF/uQIiyEOmi+CzY6xpyRgz80PTNWDr3tTqTDQe7aZttzZ2oWDswSVS7hOjXt6mdeLagI9DJWRIj8LhgLv0AhpooLb77G74B7vyHEi74hNL1Invy4k+vESO7uPw+yXGtTO8Wm8iSInJBcg5K72wqYJSpiCGt5oWNKL60F2o1vWGZ0El1GxbY/hIP1r7w+J/6MDEyTAu6MLU9MVrIEaIZolPyenT06A1MN3BgwruFCtzyHArEm1NXZFXfLC84X0hVt99t9MyjrekkO3TtlJjGclWz8g0CvYwp/MR/AZzWwuwDiXjRrf0EQ5MdBhcFOpnNHYKciYbrbTAZzX4LRUPuClbVWDtAz0/PAj5JrDvFMuuSGr2gOgSJGVkZ9E6bjO81OjEaGd5vmWQEbmdiRlw077B1yPdR/VkVuyFHDxZGzdN8Hu0VyQ2d3YiMLtOlibr2GmqOqnMdqSZUp+fE/J1RYscrL6cKDsQQBic+aeuqUdck0iq4jS0gNy3kzJMMJKqGlzlLId8che4R/77T4aYhc7+BZDDZZnpsF73BeYyHyzPSlirQDppyvpA3WIKyo/Qa2uJ4aOWqjoLPeWVZ6eN/Td1fKFwyxPhs0rH2WGRa/EgmlrLPzawTm61ClWpiJc5HqZoKAa+o88BePyjTokXTIkSJZG1o1L95wC
- T1kGTHqV
- Y0WNEFl/e4+TJoh8/Mue3cGyxHj4aSIjepOisx9Kc+KZn8dHa7+ImLlbozQApV0Gt7PR17zGDX+NiGcZg7AVMx+Lljoj7GR++vgn9hpPbHmSnmdfeqxS2hvAmbLPsY/aYhbjoLe/iLLjS3D8A23/fx9bsb5SYh0VXoY7Ua/IcHvmjUjAo+DlP2a+7BzCpv+38Kv+WP243Ac6ZCbL9UuiAoKfhIOXePPeSFAWT87fFhy86HwU0Mf++L6fzRIjMKzY7ec8Vz+OoYhDOub2M3JwGI7Cne3qVQKLePEpyY9preXDnVNYeLKwh6E6UzruNUaewdmM/uzdunXq/pwi26jRQEiuF4kISEnRDQpkgGPBsZfMo2HMTQeYtm8kmxFtp5r4EaRoZZZK95mt+k8g=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769641190-467263
+X-HE-Meta: U2FsdGVkX18EL8te43WLuhZEagELJgpx8FatEPpfjyJo0yrKR1H3sBTb+bTnvc49fWSxR+7ozqwYJxEVrn1Ol8mWFkhHaf7u+B75oLfcNWhQS3b0FbQ4vEeNBfCMhqhQGVJSfkBqf6smjSbGl/nFQA9+uTkR7ycnw54RkSlFCBL1VC4cQ6RH0vdgj6YFBomLwKqpJak7wyNwzA76YZ/PsfEQPw5+MkmsJr43owkUBH8mcCrzlg5tXsHOiLOO3lq5m+1xYjn+vRwxXzuaFH36MpmiNlbE8O0l9b25BT3bAdkP5QOSY0cW4XqKJvkpLPz6+QTd5UeGMYhDRI4iNK3OvHqjXWlNvnn+bsz+qZXvSV0aOEY781lWdAas7BLA2zUipgmimASfMzB9WGZ5FF9ps221L10Uvke3Puz9vc+QGlcCH2aedXPy3ZeWDkyZo5H9GSDgu3EwDeXXK0wv5WFNiSun6MbqU0SNbTIFHn3w5mUILiRMW2iW2Fh+TCLwSNgjzX6Sh52fV1BA+vf7/bI3uOXtPh03dFHgtARojAgk1iTzjLpYTNjMz9cJQla2I1Tsph8YV2abdk0zTwFUKOLlAq/wC44VlQiEKFRvpH+NOnTrqFel3lWwEqpaR7KbS8FBk1iVoDQPYZTp1zVbrxBxFAGzSf7vnOS9QZ0baoPBMZewqVAVDuBagmjwe75XvMzCTarsCXh5xC+ipTqyAPPl7eYZkq9dMX260ZPpW7NiuMTLpYF/RvRs397nC6VAETu95DTbYj8uAMo1pYiB77obWuyvHIdqKt8XePwHL/l8wSmDx1kIiN2yoFTuR/dvQSAWtHrmPaVMW+fZaE2OFmjVxGcFiA8neCvAU/rpmcRr8JpB8btVZsyFWJJioTQ2+futNGMlto5kdvDRjLWEpUzb5onK7D2+bXHysAs6kiYUymVPr8qFo/fEns/yq6aA1mDB0eNTWkNlJEZfJhIja5U
+ YxPVG17L
+ mLksbknsJnZiiYOxl1clqq9+68vujtFMN1urTvhpRjY0rwFry6pcEOpQY2uZbv/FlA2JZ311plcpm6T7T2zeQGBh32+M4n3/zoF7Lc4zbDkqX86qFoiDCyrCQ+bIAoci272NDEVq8C5mhJmjBkyaVbMHwBcr5DL9nmuSZX7EWM6ytp5I4dWGcGaa+MTsX2gBwTmrLwGScFx88bKZeINc8ZPQFsTIRR5Zr9sMM4BWIRT4+s40WTTw8J5hT8vIBWO5CC8zxlHeXisFNTjQkwdszoNIUQ7mYtef9bvNvSYmsUcimEGA/7chd860b1ldAPh+/KlD5/bqAl1451H+MtV2kqfEU8g9n2sxWuRF3iw1CeEvDzGQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,51 +142,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-vma_map_pages currently calls vm_insert_page on each individual page in
-the mapping, which creates significant overhead because we are
-repeatedly spinlocking. Instead, we should batch insert pages using
-vm_insert_pages, which amortizes the cost of the spinlock.
+On Wed, Jan 28, 2026 at 5:57=E2=80=AFPM Justin Green <greenjustin@chromium.=
+org> wrote:
+>
+> vma_map_pages currently calls vm_insert_page on each individual page in
+> the mapping, which creates significant overhead because we are
+> repeatedly spinlocking. Instead, we should batch insert pages using
+> vm_insert_pages, which amortizes the cost of the spinlock.
 
-Tested through watching hardware accelerated video on a MTK ChromeOS
-device. This particular path maps both a V4L2 buffer and a GEM allocated
-buffer into userspace and converts the contents from one pixel format to
-another. Both vb2_mmap() and mtk_gem_object_mmap() exercise this
-pathway.
+This makes sense, I wonder why this wasn't done previously?
 
-Signed-off-by: Justin Green <greenjustin@chromium.org>
----
- mm/memory.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+>
+> Tested through watching hardware accelerated video on a MTK ChromeOS
+> device. This particular path maps both a V4L2 buffer and a GEM allocated
+> buffer into userspace and converts the contents from one pixel format to
+> another. Both vb2_mmap() and mtk_gem_object_mmap() exercise this
+> pathway.
+>
+> Signed-off-by: Justin Green <greenjustin@chromium.org>
 
-diff --git a/mm/memory.c b/mm/memory.c
-index da360a6eb8a4..7ae6ac42e7d8 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2499,7 +2499,6 @@ static int __vm_map_pages(struct vm_area_struct *vma, struct page **pages,
- {
- 	unsigned long count = vma_pages(vma);
- 	unsigned long uaddr = vma->vm_start;
--	int ret, i;
- 
- 	/* Fail if the user requested offset is beyond the end of the object */
- 	if (offset >= num)
-@@ -2509,14 +2508,7 @@ static int __vm_map_pages(struct vm_area_struct *vma, struct page **pages,
- 	if (count > num - offset)
- 		return -ENXIO;
- 
--	for (i = 0; i < count; i++) {
--		ret = vm_insert_page(vma, uaddr, pages[offset + i]);
--		if (ret < 0)
--			return ret;
--		uaddr += PAGE_SIZE;
--	}
--
--	return 0;
-+	return vm_insert_pages(vma, uaddr, pages + offset, &count);
- }
- 
- /**
--- 
-2.53.0.rc1.217.geba53bf80e-goog
+Acked-by: Brian Geffon <bgeffon@google.com>
 
+> ---
+>  mm/memory.c | 10 +---------
+>  1 file changed, 1 insertion(+), 9 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index da360a6eb8a4..7ae6ac42e7d8 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2499,7 +2499,6 @@ static int __vm_map_pages(struct vm_area_struct *vm=
+a, struct page **pages,
+>  {
+>         unsigned long count =3D vma_pages(vma);
+>         unsigned long uaddr =3D vma->vm_start;
+> -       int ret, i;
+>
+>         /* Fail if the user requested offset is beyond the end of the obj=
+ect */
+>         if (offset >=3D num)
+> @@ -2509,14 +2508,7 @@ static int __vm_map_pages(struct vm_area_struct *v=
+ma, struct page **pages,
+>         if (count > num - offset)
+>                 return -ENXIO;
+>
+> -       for (i =3D 0; i < count; i++) {
+> -               ret =3D vm_insert_page(vma, uaddr, pages[offset + i]);
+> -               if (ret < 0)
+> -                       return ret;
+> -               uaddr +=3D PAGE_SIZE;
+> -       }
+> -
+> -       return 0;
+> +       return vm_insert_pages(vma, uaddr, pages + offset, &count);
+>  }
+>
+>  /**
+> --
+> 2.53.0.rc1.217.geba53bf80e-goog
+>
 
