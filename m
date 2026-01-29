@@ -4,87 +4,132 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4D3CD46BF0
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 02:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A06DBD46C01
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 02:48:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C916E6B0088; Wed, 28 Jan 2026 21:27:18 -0500 (EST)
+	id 887916B0088; Wed, 28 Jan 2026 21:48:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3EE86B0089; Wed, 28 Jan 2026 21:27:18 -0500 (EST)
+	id 80A986B0089; Wed, 28 Jan 2026 21:48:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B209C6B008A; Wed, 28 Jan 2026 21:27:18 -0500 (EST)
+	id 6EC4B6B008A; Wed, 28 Jan 2026 21:48:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A26CE6B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:27:18 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2F7F01B0FA1
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 02:27:18 +0000 (UTC)
-X-FDA: 84383414556.16.EDA9518
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 092EBC0006
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 02:27:14 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=j99Oa7sx;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BD4E6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 21:48:24 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B55DD1A087D
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 02:48:23 +0000 (UTC)
+X-FDA: 84383467686.24.030538B
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DCFFF40008
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 02:48:21 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=aA4EQbXb;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769653636;
+	s=arc-20220608; t=1769654902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Vb061Q+F4cvQBZq/IQQ6DiA8ZyO7PXBJm0zl3HtzTo4=;
-	b=fJ+drpKrZbWHH4kiHrp4XEJR1KXwkXNafQ1ddtR4+K+WOygoU4Kh5CVAcQ5yrQPyuTHdoX
-	4sM7H1REkROURKfDz7kq/kzWvcqsxxeATroc3RJVMVV2jqinMTjXpru9IcAzxTqIU8WWJl
-	3G5k8A6xGXBmqZbWbHyj2DGxa2InQ54=
+	bh=logWgHGlCER7wF/d1bfHjZorFrIMr5ik74BP+Q9xdGQ=;
+	b=c/itHFhJzbhr++SC8PAaMFntvZHwLDewq64NwnQBu4I2RvpB+KzXvxH4MqxcnbgSzgWPEa
+	5nrQXNrzHoYgOW3FvFjTQwpM3Cl8ePGtlIk1mo9FgmOUmdHAtcV7MudpHu/7uWbjQUGinM
+	RBpsBR1BIBrplnHQk4gHV04CKJIK2Q4=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=j99Oa7sx;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.99 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769653636; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=aA4EQbXb;
+	spf=pass (imf04.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769654902; a=rsa-sha256;
 	cv=none;
-	b=v3V2hu/rdSAj+6Ib4SVNgTG0RNnKqLR8lkrGvCw28717F2gKup91PumvstrGPNgKOyetyl
-	VvNnGrFDfwu8PCSWnRZwK9v5lHqI32D7a+m8EdO8JGbBKV0KO/SctAyjDPrjyj3ZAyMzbn
-	1WLzCOORZBVHb7sJis2D2b8ggYxHiZo=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1769653631; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=Vb061Q+F4cvQBZq/IQQ6DiA8ZyO7PXBJm0zl3HtzTo4=;
-	b=j99Oa7sxEzZeA6oeOoEbmQrsob1MmXKueEnDd0jLucdOLc/OVzMH7nlH0yOnsh2o7lZeWktY4CLSVzm0KLuFPHe+Cgj3ebBekY5vxQwIxH5yRY1c1YEz0LBlWu6AbcUaBLxp3b1YD9yCzV7PGmHSiCKC6phMyUtlt56RFnfjzZw=
-Received: from 30.74.144.124(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wy5ZpTV_1769653630 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 29 Jan 2026 10:27:10 +0800
-Message-ID: <5db265de-b069-41c0-b8c2-a119dfb83485@linux.alibaba.com>
-Date: Thu, 29 Jan 2026 10:27:09 +0800
+	b=ROYukQq9tHCwU+0qsyZKgvq7yX+rSUDAfjCfrZhhsWTIyo3yoT+2jJuiPNhtGMS1XR1Klr
+	gYCg+z1FGPN9jifsuhv9sIj2KhkoKUcSSek3PwdwyyJVIqkrldMe11CW+9EiBwXarhfo8O
+	CQJEXBW5QXTSz+jPYL1Pu1Y6UfjIGqI=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c655e0ee70so61411885a.3
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 18:48:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1769654901; x=1770259701; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=logWgHGlCER7wF/d1bfHjZorFrIMr5ik74BP+Q9xdGQ=;
+        b=aA4EQbXbWuRh1F4xMkr1OPFCIhE037Vsjl/TV1bccXR8Ja2REmW7X0YZ0/3ssuDPnC
+         xXM/yfzxDLN0TWuZ6wOoQBXPryY16vV8iwK6oMalTGcb82K/MAAj/LYwOXA1SpgMJiGt
+         jht7/c24+DLq/hbKCPVxGjWcfS26dqurETQDV/dHgGI3+Xw4poPvEpNS43+tvYILl/J7
+         TJp4NxEoKvAbxBM07tujIV/dIIKvxaa9y1sBGyGGJDr1gCtWtRCzpYOCcDZwDMLux2qM
+         WQtTnJ9km+PYNFvwvQYwwrYcRpNDxtlldZ1+6MFxbWA1Hik+5xGNAmllyEcV2gNtzyXl
+         IhVw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769654901; x=1770259701;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=logWgHGlCER7wF/d1bfHjZorFrIMr5ik74BP+Q9xdGQ=;
+        b=CdKyBGu493h7CCIbfGSC7lwtMl8ynZNt36md00ahTZLDGimzZOfs2NKYqu/RkuPkLP
+         3wvxtzzOQGt2/UnKtO+LwUQg7p+062yT6LKViWL05I+UhGT+UJ9Rv3DEEDbEthl0zF8S
+         9vi/pTdUr6DOhaMC7WQ7S91IKniH6eYr7nMsnyAnFQxD42RtpVP1wpdNKf1kHLILAdsj
+         ZG5YlE+Jnts2aciYuyBD7oJ+3L/B40Vr99/H/FlyBAQLSsU9S5ksA8/RSu0xLAFKnsNC
+         0bILSGkd70j/zCXuPwaQpSWhDKeJKiyfKH7zgVFfrtlGw7GRCC2PMO0Y4XnjF115ZQ+u
+         CnGA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3DInKUk/xQCp9OVatwhTSoz5XqU+50YldeVE2WWnoTxLeDkrdDyI4foUOUGMNkswXgd8GuflZRg==@kvack.org
+X-Gm-Message-State: AOJu0YwTvaJ5xXkEv/QVx9n3zmDofz6dEf+5nFFRWQuUhTbmZYhUcEMu
+	X13xV8l7T6zD15kT3HMUJB7+x1u95R/P2W6TdEru8ktva2NxZWwIFpm7OPcsisAcmaM=
+X-Gm-Gg: AZuq6aInfNTnpT7fTGN6AOMm73GjZNjdWD/GrYptMSn1pOkSEQxCcAQwp1jQiBgu0I+
+	LgszCEkY7QRrSa51ipNLACO2yXt8JXi+iInymBoAe0XBj6Zy/ldGgxwi0xxmIZYQ3tKd4jgTM70
+	Rm5G1x66pGH4yTg8vl3qCuktSaE8dCCaCx4ysB/Ky3alBtSpkDGROrqEuKPMajy/subDPSr2G98
+	KJioUmjMGt7wNufFIXjlFx1Bup3rUbaUGUWtQKxA1Sgzr4vhL2ItU6d3qk5471LUwMxglfSS4eZ
+	doW3tpEldVF9iuboirvbyEhkLq96ytljonwZcsjb/g92b+IPRfnGTn2Ve18/DBuLCwBBULSlPKL
+	rQ/LstCDvN5fFKLt/gSxxLDtsYcyW8qGGOFbpArhmIGYnjYy14Qg8bN4kcSzJTUCgaz8yAh7Hhm
+	wozCAplgnU8DpbRDFEoDAcrWYBu8ozjzAeiYyyce1nSOGKApZKXEWL9XYb7Cs75+d8K9c1lYIkv
+	XF8YYq2
+X-Received: by 2002:a05:620a:444b:b0:8c5:310d:3b2a with SMTP id af79cd13be357-8c70b86793amr829909085a.19.1769654900885;
+        Wed, 28 Jan 2026 18:48:20 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711b7d169sm305514085a.4.2026.01.28.18.48.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Jan 2026 18:48:20 -0800 (PST)
+Date: Wed, 28 Jan 2026 21:48:18 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Akinobu Mita <akinobu.mita@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	akpm@linux-foundation.org, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org,
+	david@kernel.org, zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, ziy@nvidia.com, matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+	ying.huang@linux.alibaba.com, apopple@nvidia.com,
+	bingjiao@google.com, jonathan.cameron@huawei.com,
+	pratyush.brahma@oss.qualcomm.com
+Subject: Re: [PATCH v4 3/3] mm/vmscan: don't demote if there is not enough
+ free memory in the lower memory tier
+Message-ID: <aXrKctiYCIAGyOWV@gourry-fedora-PF4VCD3F>
+References: <20260113081453.8293-4-akinobu.mita@gmail.com>
+ <aWZLZzo5Hb1aFZ0j@tiehlicka>
+ <CAC5umyib=XmPkTvRT6eAsMx+WDx0NkSP9djh4xkhLJgwk_v8Mw@mail.gmail.com>
+ <aWfXHKDzoQBsHxAp@gourry-fedora-PF4VCD3F>
+ <CAC5umyg+wubKoQSfpDQvNh3K5Y7+iOEYn6_BuKFd53kHDVE7aw@mail.gmail.com>
+ <CAC5umyjOgZE0Qpa3W3qZ=sSkwkuf_md47jctXgi5UKWuG49o1Q@mail.gmail.com>
+ <aXJSlv1_K1uQCN16@gourry-fedora-PF4VCD3F>
+ <CAC5umyhrcb963mA9dUaZswJKq2MF_OVaipNmy=L4J7u6rPjfqA@mail.gmail.com>
+ <aXksUiwYGwad5JvC@gourry-fedora-PF4VCD3F>
+ <CAC5umyi6oW9qZZH75Owitojd+wgTGrz6uHsEFXxzo8aWF7FoKA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/shmem, swap: fix race of truncate and swap entry
- split
-To: Kairui Song <ryncsn@gmail.com>, Chris Mason <clm@meta.com>,
- linux-mm@kvack.org
-Cc: Hugh Dickins <hughd@google.com>, Andrew Morton
- <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>,
- Nhat Pham <nphamcs@gmail.com>, Chris Li <chrisl@kernel.org>,
- Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
- linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>,
- stable@vger.kernel.org
-References: <20260120-shmem-swap-fix-v3-1-3d33ebfbc057@tencent.com>
- <20260128130336.727049-1-clm@meta.com> <aXo6ltB5iqAKJzY8@KASONG-MC4>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <aXo6ltB5iqAKJzY8@KASONG-MC4>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 092EBC0006
-X-Stat-Signature: wtmx3678bzuwjqncawjf34nfykpheczn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAC5umyi6oW9qZZH75Owitojd+wgTGrz6uHsEFXxzo8aWF7FoKA@mail.gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: DCFFF40008
+X-Stat-Signature: bsb6tfdepjbdfd46sjrz8q9cijjqqskp
 X-Rspam-User: 
-X-HE-Tag: 1769653634-323685
-X-HE-Meta: U2FsdGVkX18/V3t7Vi6nbsSRPf3aTHOUROjMylhY0JEgGm6ibbQ8RsqTINtspGiLxxQVrLWarnQyfOni2UvOqdh9IA+YFeoMSFQ3ygADCRcjXykuQrPVYikPwDOFVBRuxrd369LTo/WTSrELIcmNBe+DTnC9x34ooWA2B8OSZkX8IuV3XiyAGd8IHa8XY+WRBoApNMyGtikTcqeifZnnqFqHyFJ2Ft/S/exk7g9cc2yWCd5l0nS9lQVyhOqzwu4vMDb6gsa0ABS1VoNjqwKCTshMUGmsDrCqw0ljKKrreQgU/JsyGaTvrh1P+xZG8MFreJNAX7jzj1k7pmksI6eGx8h8pYm/oDv2a05sVTaQ6Jja9/YuTj452LwhyRKxLun6uZX0kfZg677h+iDsK5GMTeYYQL91/2gcQRMzbLk4BrGecWelckbiVq+6qYVwRGsnpdtcXpk5Bto/79/t+iZr99g/tI1g6DLdbyg6IO2LSJl0TOg5B97R+ePSsE+/hViPTTYXl5NeNMP/fVBFcQqZm2cdegRXA73dcj/hqhjNEhdjnOq1wcjTkP40wYtfkU4ENSVbfMizqHHFrYvN6K46xu2BrRST/xv+smUQSsxUTNVVzGZxx6ck0p57VeLYagEcZOjjKIqZrwrt39GCrasQrjYpUCF+ozZcj/e23fnVgZSNwzDAih/70og2yB3dJmIU/kh9bj9xylEI6orIebF/9kcxsKvBKzDWofqV5jFR1m9naXdH/DgbJ0TFZHQYP4un+gOezojP+0u0I4eRBFXDaCVnOp4HgJXp/7yEkCPfM1deKXiDVIuDSSPonrR614UiEMR+kapaCbQY6XrjDDfI8mIkQpnfVvLFGfJPzi8YCbAxIEGwdanNYQ12nfn20STp6QYep7d4sPB82SrIwzKivMJk9BJEpCI/rRDt17TPxY6U+cVg55SR8G+ARswfdd5ctxVRUV012zs5nTa/AoA
- c18eWCah
- AwSRufPX8wqLvmqT2CWW3A1Ai4AdpXHQUH9e8Dg1vbl0Ex8UuoayV1psZR4HFzGFAfD/N1zIDCFe+eAHb74Wxp+cvCpD/Kq/Hl1OGxtz2h2FyfeEskZE5/zlMSKnB10/So/macHlN7LAYTF+1GjAbXcW3kCKtpNLB1QCy/riZtb5dyCeIESff0tMBz13Qg8BZ/Tp01+VfS4x8Rd43K2gkDeqmidXfD9fLZe383brsYytzcDVHcRNYlGLkLMWidUwF5S6GRqj+g1r7YriUaNhz3Afdb1JR2HpMjG8YoqVMWEK5Yg4ZNe0TZYTl2hKQOP0dEb+sA1YLkTp+C+DI8ChM6TFeihhht7wC0J4Fk0IH4ZeHb35odjWVIHNgR0AwcfaqcZaulWJ3SaDq1n8rEVqFLPY/rw==
+X-HE-Tag: 1769654901-789869
+X-HE-Meta: U2FsdGVkX1+0A95zoF34z5btVJamdH48k+FnAYr+/W68vV6Wadw8FCCTJifr1P2Rfc9c9aMojNwPJbQ1Wb43nwsmGeMf/d/RQLB1JCUnvCjaFEOSSW79gxIzht4OAqrwdcUXF2oSWtbxn8TOzAArWNqTaNiNM4alB80dzzw95DwCA8L1njCMnNWexI34PHPqIMCn9iEV5h0/ATUmsBcKlBdE8Iv+FO27fQJ7uym27sEh+/ddXcM5oOJXNBwf0MSQLAgZgzWrPkVmsc7+mAtaZSheeJKIu5D9XAQjxFgB86xfBC0ID1Ymwmh2WoDUBZ9HgcbPbUEGle6bixxfAeVn0dza9ui21CJqdyhOb/ESN8xRF3ockUDjHwBm7JwsE5C7jCwON3Zrqfc1L4Hy2yOTpbGABDiLj2tN+N0loZkjIagYY9kTx99MMHTjbjBJAahVIB9GLBBL6FYgi+7JRLXSfhjcE9kNR6WM7E/+nJhXpZOa4MTSVZE6XF0yHixYTxDvaM6pIhMKnKRs4E+kKQWEetg75BjZAAsx5hQRzvbtCvbsLswBCnfPyXdZutWALY3eKYhgJ6b/Kpivhp+OKUWWJxSLzRAZy4W/LmvDWWd/YfdwejNwLKns6rlxm4UQ/bOR4g7FNmFpSLHXTyprtt8sMWKbRGw9hRq6oDPuYJR3Li+neWTma5gUB3VcgF+qQRn82XRUWTelTJQzFmGTzie3p3OGyHs49Vok7GLw3bhzCBcRwQeou9Ie+T6JmURDqXviRbOoLe3EM8zrqMzen4hn3fAVcXpJgwks++mLCYyorb9s8xaTIaxdLzGKcIFUhIfpSRwYM985CSO0HYg3EwkfQ1oPlyvdoPzPoc3LXg6wmLyyYoKNimie3whiJyd9+B57LtP+9l9TkiT4BEyEwO4dNF6JM1o3Hb3yX/4YHXV1EXLcvwqSyscR1qoY2y9UJ9sjUfhoEt/BoKbiCEgHxkp
+ Y74JwMI8
+ Q5nvSWuMIlTQ+FVf5zq1BdaSqddjiatnQN5bs97hGazuKN3WF1cZjrKdaGZ22aXm/aoJMa6RXucvPu2cZp8TTItqePRoUaeU+ghm6nFz9U8uGp0wBry5stJ0NYpa1RFmSv/rdmlWYYxx7/TgCJ+I3PqdVSH0aL98DHdsmoDzjPASteSkzstbfhejNqBNspXLQCk5alIG2wxfn+SXdq2qvO4/HisA7/YyCG/oYTbr2FM4ijQP7Clwt4Mug70gjoxx9jv+JMZAzFuvI2xP4XyhhFEItO8o90R4y0L4HivE1drqWJXak5WVIbiQKo83pDrYQt0PrucWUchMWHlcyrpek9EP8vvwOTTanKUILhX7Y1vQdZkNFiTr/6sG28UAlJHiRGiSt6F71lfzomwry1/eV7NTiZPYdYJUL9xokgwjoBnEPtvU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,176 +138,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jan 29, 2026 at 09:51:44AM +0900, Akinobu Mita wrote:
+> > I'm not sure there's a best-option here, we may need additional input to
+> > determine what the least-worst option is.  Causing LRU inversion when
+> > all the nodes are pressured but swap is available is not preferable.
+> 
+> Would it be better if can_demote() returned false after checking that
+> there is no free swap space at all and that there is not enough free space
+> on the demote target node or its lower nodes?
+>
 
+I need some time to think on this.
 
-On 1/29/26 12:52 AM, Kairui Song wrote:
-> On Wed, Jan 28, 2026 at 05:02:34AM +0800, Chris Mason wrote:
->>
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>
->> [ ... ]
->>
->>> @@ -1191,12 +1203,23 @@
->>>   		folio = fbatch.folios[i];
->>>
->>>   		if (xa_is_value(folio)) {
->>> +			int order;
->>>   			long swaps_freed;
->>>
->>>   			if (unfalloc)
->>>   				continue;
->>> -			swaps_freed = shmem_free_swap(mapping, indices[i], folio);
->>> +			swaps_freed = shmem_free_swap(mapping, indices[i],
->>> +						      end - 1, folio);
->>>   			if (!swaps_freed) {
->>> +				/*
->>> +				 * If found a large swap entry cross the end border,
->>> +				 * skip it as the truncate_inode_partial_folio above
->>> +				 * should have at least zerod its content once.
->>> +				 */
->>> +				order = shmem_confirm_swap(mapping, indices[i],
->>> +							   radix_to_swp_entry(folio));
->>> +				if (order > 0 && indices[i] + (1 << order) > end)
->>> +					continue;
->>>   				/* Swap was replaced by page: retry */
->>>   				index = indices[i];
->>>   				break;
->>
->> Could this code infinite loop if a large swap entry crosses the START
->> boundary instead of the END boundary?
-> 
-> Thanks for the review! It's really helpful :)
-> 
->> When shmem_free_swap() returns 0, it could be either because:
->> (a) The entry was replaced by a page, or
->> (b) The entry failed the boundary check (base < index ||
->>      base + nr_pages - 1 > end)
->>
->> The boundary check here only handles case (b) for entries crossing the
->> END boundary:
->>
->>      if (order > 0 && indices[i] + (1 << order) > end)
->>          continue;
->>
->> But what happens if the entry crosses the START boundary? If
->> find_get_entries() returns a large swap entry at indices[i] where
->> the entry's base (calculated as indices[i] & ~((1 << order) - 1)) is
->> less than the truncation start point, then shmem_free_swap() will
->> return 0 due to the "base < index" check. The code will then call
->> shmem_confirm_swap(), get the order, check if it crosses the END
->> boundary (which it doesn't), and retry with the same index:
->>
->>      index = indices[i];
->>      break;
->>
->> The next iteration will find the same entry again at the same index,
->> leading to an infinite loop. For example:
->>
->> - Truncating range [18, 30]
->> - Large swap entry at [16, 23] (order 3, 8 pages)
->> - indices[i] = 18
->> - shmem_free_swap() sees base=16 < index=18, returns 0
->> - Check: 18 + 8 > 30 is false (26 <= 30)
->> - Retries with index=18
->> - Loop repeats indefinitely
-> 
-> I think this is a valid issue. And it's worse than that, during the `while (index < end)` loop a new large entry can land anywhere in the range, if one interaction's starting `index` points to the middle of any large entry, an infinite loop will occur: indices[0] are always equal to the `index` iteration value of that moments, shmem_free_swap will fail because the swap entry's index doesn't match indices[0], and so the `index = indices[i]; break;` keep it loop forever.
-> 
-> The chance seems very low though.
-> 
->> Should the boundary check also handle the START case, perhaps:
->>
->>      if (order > 0) {
->>          pgoff_t base = indices[i] & ~((1UL << order) - 1);
->>          if (base + (1 << order) - 1 > end || base < start)
->>              continue;
->>      }
-> 
-> This still doesn't cover the case when a new large entry somehow lands in the range during the loop.
-> 
->> where 'start' is preserved from before the loop?
-> 
-> How about following patch:
-> 
->  From 863f38c757ee0898b6b7f0f8c695f551a1380ce8 Mon Sep 17 00:00:00 2001
-> From: Kairui Song <kasong@tencent.com>
-> Date: Thu, 29 Jan 2026 00:19:23 +0800
-> Subject: [PATCH] mm, shmem: prevent infinite loop on truncate race
-> 
-> When truncating a large swap entry, shmem_free_swap() returns 0 when the
-> entry's index doesn't match the given index due to lookup alignment. The
-> failure fallback path checks if the entry crosses the end border and
-> aborts when it happens, so truncate won't erase an unexpected entry or
-> range. But one scenario was ignored.
-> 
-> When `index` points to the middle of a large swap entry, and the large
-> swap entry doesn't go across the end border, find_get_entries() will
-> return that large swap entry as the first item in the batch with
-> `indices[0]` equal to `index`. The entry's base index will be smaller
-> than `indices[0]`, so shmem_free_swap() will fail and return 0 due to
-> the "base < index" check. The code will then call shmem_confirm_swap(),
-> get the order, check if it crosses the END boundary (which it doesn't),
-> and retry with the same index.
-> 
-> The next iteration will find the same entry again at the same index with
-> same indices, leading to an infinite loop.
-> 
-> Fix this by retrying with a round-down index, and abort if the index is
-> smaller than the truncate range.
-> 
-> Reported-by: Chris Mason <clm@meta.com>
-> Closes: https://lore.kernel.org/linux-mm/20260128130336.727049-1-clm@meta.com/
-> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-> Fixes: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+If we take your patch, I think we essentially default to the same
+behavior as-if demotion was wholesale disabled in the first place -
+toptier nodes would reclaim space directly into swap.  zswap would
+probably get skipped if we're already in direct reclaim (if we can't
+allocate a page, neither can zswap).
 
-Thanks. The fix looks good to me.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+The alternative is reclaim makes absolutely no progress, even if there
+is (z)swap space available - which is essentially what you're
+experiencing.
 
-(BTW, I think we can simplify the logic by moving the boundary 
-validation into shmem_free_swap() in the future).
+Maybe there is an argument for simply falling back to swap if there's no
+room on any node further away.
 
->   mm/shmem.c | 23 ++++++++++++++---------
->   1 file changed, 14 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index b9ddd38621a0..fe3719eb5a3c 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1211,17 +1211,22 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, uoff_t lend,
->   				swaps_freed = shmem_free_swap(mapping, indices[i],
->   							      end - 1, folio);
->   				if (!swaps_freed) {
-> -					/*
-> -					 * If found a large swap entry cross the end border,
-> -					 * skip it as the truncate_inode_partial_folio above
-> -					 * should have at least zerod its content once.
-> -					 */
-> +					pgoff_t base = indices[i];
-> +
->   					order = shmem_confirm_swap(mapping, indices[i],
->   								   radix_to_swp_entry(folio));
-> -					if (order > 0 && indices[i] + (1 << order) > end)
-> -						continue;
-> -					/* Swap was replaced by page: retry */
-> -					index = indices[i];
-> +					/*
-> +					 * If found a large swap entry cross the end or start
-> +					 * border, skip it as the truncate_inode_partial_folio
-> +					 * above should have at least zerod its content once.
-> +					 */
-> +					if (order > 0) {
-> +						base = round_down(base, 1 << order);
-> +						if (base < start || base + (1 << order) > end)
-> +							continue;
-> +					}
-> +					/* Swap was replaced by page or extended, retry */
-> +					index = base;
->   					break;
->   				}
->   				nr_swaps_freed += swaps_freed;
+Will ponder this for a bit and get back to you.
 
+~Gregory
 
