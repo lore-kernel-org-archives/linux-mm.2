@@ -4,92 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFCED73E89
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 21:04:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07EE0D73E83
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 21:04:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B173F6B0088; Thu, 29 Jan 2026 16:04:51 -0500 (EST)
+	id 64F266B0089; Thu, 29 Jan 2026 16:04:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC53C6B0089; Thu, 29 Jan 2026 16:04:51 -0500 (EST)
+	id 63AF66B008A; Thu, 29 Jan 2026 16:04:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D0A76B008A; Thu, 29 Jan 2026 16:04:51 -0500 (EST)
+	id 512766B008C; Thu, 29 Jan 2026 16:04:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C36E6B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 16:04:51 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2543DC170C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E7AC6B0089
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 16:04:54 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D696113A2C6
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:04:53 +0000 (UTC)
+X-FDA: 84386230866.13.1CD099B
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 09A1714000A
 	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:04:51 +0000 (UTC)
-X-FDA: 84386230782.05.EF3C324
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5A12A160006
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:04:49 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=CkmtqWJB;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XVJiZ6oX;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.196 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769720689;
+	s=arc-20220608; t=1769720692;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=p7dwhjhUx8amshGTbVFKhqWt51EOp/YvCZDul2or7c8=;
-	b=vYPBTB7FdqcOeQBk3DgJj9U5rlKh0lDZsps65p6aJ1iK5+sRVkZGQprpAsn2XaJYYUH9zd
-	QeW31cvJzDXJVbqidp6r38IGaVq1cdxUDu3t9S2Ia/K69ikHYQTExB7Th87vvFZBKe37VX
-	xJn6YTPdqasdJ14eIyTVeIBUoe2qoKw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jFORCx/4rWXlwM5MWzZ4y2ZhtVTmicaaxzmL4W2ym48=;
+	b=h3fwPr+3e7UTDXqEWoW8ohsvbbrFfKve66RjLqa82rTDceqXpTqTRo7Vej7eLw2NsfclLf
+	aEMZ9siWdK6qnrfwznT72UgVkPM102l/7mqY4Zso/OUTTJnxUFwBPn7d+8tAJZ2by0kDDW
+	8fVgFtB1Xr2BBfrQVMQoec3KlWDAsnM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=CkmtqWJB;
-	spf=pass (imf08.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=XVJiZ6oX;
+	spf=pass (imf26.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.196 as permitted sender) smtp.mailfrom=gourry@gourry.net;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769720689; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769720692; a=rsa-sha256;
 	cv=none;
-	b=yvQfYb3nw6aQ6fMyhyucJD+4XZTuiovPEMEBNhDLYH4YDziGDRsXQD5rdnPZZ5YjSHNjR0
-	ueE0kjzDGsTegCy8BZGmZldmaTL/ayWJ5VlSielbJKx43XP0oGLHk9FYSl34r3JymRbqVa
-	ktOBitvap6a+4/k4zw8wqRwuphTW12Y=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8c5386f1c9fso185467485a.1
-        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:04:49 -0800 (PST)
+	b=hIkm7pHfxLv23SE9oRCOTp1qbKVAClbpQMFN7YBvRgbbbYchV4o4QltpjP6OKWsX3D3+Kf
+	0zFJWnXAa8RE7pna9e+4OG5EXbd4ECvZ4XoWy3D7D4hWgjSoeb8pdvzbdS6sEOj+mSb7w9
+	NyzAkbnvnxOArVpS+M4Nr1vnaJY5fkM=
+Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-8c532d8be8cso144851385a.2
+        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:04:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1769720688; x=1770325488; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p7dwhjhUx8amshGTbVFKhqWt51EOp/YvCZDul2or7c8=;
-        b=CkmtqWJBzkN+MJljjWR187ThIEhZ9/NJpFIEKI/S8Yo/FbhsA/vpwfLTDj1NXASFOR
-         tslNNHthd8I5HcHHb871e4LzgNjSaWurZvMOISbBfaEMHaSKrmaeL1pvSwOproep3rFc
-         0LBFSYmcarKl7VA1Kj4gXHmMhRLFnbkZYvXDypBuZ4pEwuurkjJ211Q/TMwXOwNFIc7O
-         vDmGGvm7RtW66k1Zt6VyJ6Oy3NlRGN6N4H5tGdG1FVKBTytw0MDBHFXa9xqFVmDhfDeU
-         4NH3ROeN0B1Lz8il3rH2E9QoSoI402JNuIXc+q4AmP9JBvkOkeFQ5d91OdAOXH+dZ1/T
-         db6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769720688; x=1770325488;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gourry.net; s=google; t=1769720691; x=1770325491; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p7dwhjhUx8amshGTbVFKhqWt51EOp/YvCZDul2or7c8=;
-        b=p7dneGPEylP49H3mqrq/zw1W9iAdgLdaFXo/smlmQSZqS2K68pIDuT2twzPAutAjLO
-         Ip4j+ls+A0rJN7zP030GlikxCQX1e5mdXKhxu88JrxoPRmJp1FmzwFGr83Z2muecL2Mh
-         HQ1yEyj0Gd5myXx/4xYewX9qWXdREYAYKpLpdPgZsL1qQfORoIPx+dTn/sFF10RmLj76
-         wRzU/RiJZmTXI3JbG4LU6HqC3w7u6ByRd2EXAZ2hk/siWG6fw+v4BsOmgB8VFTN0GqTr
-         /9hb1vUg/KFfEXemJcJRukehKWrnUuDETcDmyqzAho02sDyxu2z9CoJtxZ3BMz3BHKzp
-         3gCA==
-X-Gm-Message-State: AOJu0Yw02dUP/uA9cyP/QaDNEcgbzS32EAVrTDHM+iNRTD933CK0lEkR
-	gtDcqijQvMITslO5syU2jB+jJ+CPt9ZUaMg/62Llsxb41FzY803OSpoJBr+/LQvl43xv/8jpS6s
-	4FZNwVp0=
-X-Gm-Gg: AZuq6aKCNqTtiy0l8KJnUTskd1aeMmpXft43FFI43VKQfTIqd5W9ur4KbxL8565lPa6
-	pYcmR83tjCrif2VZUg58ZlaIw1pXEutrX5zNCNY0e71wmvqtQ3X5ZhBj3wCCCfL/jenZaYYZNpy
-	PoWx9MPNYtq2z6dqzdAJS6VAgojqbe7zPl3ZaL13SCf3PqMGcZ/H/k3h8I0Xl3vaS+/c5wozSUA
-	23g581H94VtG3OflnfxlqrzdOJhC2+oBfTE49NjTw0Syuyo6UacG30eMdSMZHX/ARr1nKNWHFzg
-	J5MDrz7Vl4xOfbEn/mS7Q6+CXrogr030gG6GsPugoo9OZSky2rtaltGnphGIhKIOFfK+PN/IgRI
-	Tka9+6vz9ha64DtsIlEI8Aqg+K14bVMVztWAyqthRjrHPENwhnK7ciTAtQUGyvUezouvkCxQG4e
-	9Ktr4cdPkBKPzK9ZKDcnXXTEDG9vSbNFITHPFW6e9zmbFI44Fm/OatqHD+tBRV0YDq30hmWYCFs
-	+c70HnwWnoPng==
-X-Received: by 2002:a05:620a:4801:b0:8c5:2d4c:4f0e with SMTP id af79cd13be357-8c9eb26aabbmr143736485a.25.1769720688060;
-        Thu, 29 Jan 2026 13:04:48 -0800 (PST)
+        bh=jFORCx/4rWXlwM5MWzZ4y2ZhtVTmicaaxzmL4W2ym48=;
+        b=XVJiZ6oXvd6XN9XOlFtSCUQqjQwGWVVXxkl4ograo/0uvimzKAQ2UPS/nEOSbVmrE5
+         R4Sdkb8o5KxlmxTqno8UWfgfqqf/5tECTKvo3W3XBa3vxb+JhJBl0yCHjFVkvsDKjrxm
+         tMWAOFsA6/2R3f4xqiDr4MOkbgiWUlfbzJt2buqzS8u+kD1YDwZok/X3Wb5hCp3Lh82M
+         d0Y1r5Cig8Rn4PfGxnTYAjwJDpxx2HWaqFqOcmIZveAVNCGRafDRHZZhT1kD3N+DtTLn
+         xcghZB1b8Apl/kX7GdgtBjshGkCArzQMGuy2sgEKr0nSbt3jkI9GT0ncP2MnnvL258+y
+         oa1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769720691; x=1770325491;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jFORCx/4rWXlwM5MWzZ4y2ZhtVTmicaaxzmL4W2ym48=;
+        b=OWQa/buYW/O6SZ7RM9clYu0+pPbrDt9uxHFJeQhmONSS9vwRoB65LVq16fsHZhqUrH
+         15QdO5MG2FHBQXrZhukgzgGwHFOLOMLQ19OnXzJf93fxSrg4ZHxJDj6QQc3/dIPLzy4a
+         1FMtoLQuw6Axixr0PypSQl9bsuwrvKbdiMOUnrl+1Qqfo0RAfILJRXQ8GJtWCIlX62nU
+         GczjFnYOOe8GmCI1RoAckQU1bn9NkQGbKki7snf5T88VhBToG9QMBgFRS4RB1pp22FrL
+         0pJNpE4+ASHx9AlMNbjJeKijFxrtuidxgBVfDPBtEuJr5fcPB/GYi3yKpHSLeREWXMNF
+         yJYg==
+X-Gm-Message-State: AOJu0Yzx+RI/lSRS0tygAigIrxWhFSpvitdbxWJUCygptIhj3z3hbR3v
+	b12o6u1KdHvF7mUgzZ+ajiAeAcYMijc1YV+ndQuLEDprKu7HTeXv04pOpuAktHspF+XYRe1L+hg
+	usS6oFKJDVA==
+X-Gm-Gg: AZuq6aKsVhLHrLXpGC2lhA1tk25nmvvB2O1q/P0XdBFkD2wnjuUutce9QKU3HqKBLqg
+	OnfxGaNirztKbmzc018LHsLZBM648nhTs+sAsBjDXdeVvtrrivNd36zE6TI4aWW86Q2AFovABqu
+	mcH+xbcBQAt2m7xWC47BiqnNX3fkfH5EKrxrBq7XTeAyEHx1Gnn+qmlCEcqEIcwVnQLmDV/m7RP
+	FUQGDgqm3hUmNogchggt229gEDzk0ZwxXyedza+CbTt211dNQCxzv7bQyfo5F9f45dlDKJjjnI3
+	/+9aLwrnJeBfEQNsz3FCrLjadVLpXlhgO/WlK2Bl3C8uBhScjweP/g0eosSbGjo/6MQJvf32YUX
+	xDZ/SMaihITZLJwrS1EyCSrIYyMWoPdFI1sreKScB3Bc7g6uuAdy0AvoWoda1wxEGF4+kzBRMqN
+	VkZAMusOl5dBwl+csh2SV56cu0KGc9pMOz6rdG13V5FnbrklHuDJlflFuzl8lLni/RfP76PpvQg
+	g8=
+X-Received: by 2002:a05:620a:298d:b0:8c5:391f:1db7 with SMTP id af79cd13be357-8c9eb3119c3mr144724885a.64.1769720690713;
+        Thu, 29 Jan 2026 13:04:50 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c71b859eaesm282041685a.46.2026.01.29.13.04.47
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c71b859eaesm282041685a.46.2026.01.29.13.04.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 13:04:47 -0800 (PST)
+        Thu, 29 Jan 2026 13:04:50 -0800 (PST)
 From: Gregory Price <gourry@gourry.net>
 To: linux-mm@kvack.org
 Cc: linux-cxl@vger.kernel.org,
@@ -108,21 +109,26 @@ Cc: linux-cxl@vger.kernel.org,
 	willy@infradead.org,
 	jack@suse.cz,
 	terry.bowman@amd.com,
-	john@jagalactic.com
-Subject: [PATCH 0/9] cxl: explicit DAX driver selection and hotplug
-Date: Thu, 29 Jan 2026 16:04:33 -0500
-Message-ID: <20260129210442.3951412-1-gourry@gourry.net>
+	john@jagalactic.com,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: [PATCH 1/9] mm/memory_hotplug: pass online_type to online_memory_block() via arg
+Date: Thu, 29 Jan 2026 16:04:34 -0500
+Message-ID: <20260129210442.3951412-2-gourry@gourry.net>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260129210442.3951412-1-gourry@gourry.net>
+References: <20260129210442.3951412-1-gourry@gourry.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5A12A160006
-X-Stat-Signature: uebnxxzj7u91p3jwwgm7mhatnub31nsa
+X-Stat-Signature: ncwhbs4jn7xux9nyfyhzehoy4dwd4rpt
+X-Rspamd-Queue-Id: 09A1714000A
 X-Rspam-User: 
-X-HE-Tag: 1769720689-614295
-X-HE-Meta: U2FsdGVkX1+3WGx7DCKBfn2w6d7cfwnV7wwDBY5nXvzMn/ZpNXgp+7KIVN5buo4h0gPzLThpb2t6JmN4fT0qUHJNTFMuIqNAtgj007rfPUWn8kj5yMG+yC6U1fE8Wy20Z+a2hMKv9nUNO1CDfed9tZYtMCOFNyP0OFULzfhXjqU2Tad4JELa4nGdCjcHO48FBffMIo4hfB8fnCTRArLRp6Y4Gddsh5KljZN4xrWJULU5oY3c7OwslFu9IgVJC1KhSosDVTR3uVF+lxXOBb6rnBJttoQOR3AMDnxZyKlGDY+Y0zLYFWsfx1gnFXjeJ/15o4BubGvKGIV43jutQS/MVxty/WaenARd/lI/JW5cl2LsBkWVeSMhEX19AzmfsC+rOKdH6MwNZI8RkrlA0FJoqmWQjeXIAomIZKyWjYBjncRSzBGjAXiq0Rji4g66f0Tyeg1mwxHioGwHJRIu6Fz6WBFKRQ4pD7lxjl9/Z43ARhuSjeswewnce42iLlcOhSvAYCiosWq35+bvC9OKhO90cA01V0/8QHhYmmR+8VfliY4OPTkHCU87KhC08T4ZpKWxaO199S0Vns3yF5DweNB0v9NjvFZzEh3kW6bke0zvYNZXZot3ZvBoFxlv6YQPJExm/zZeJL+Jrg7UV0LyiU8UGwUNkUuvGg3m6K0vQo9qUKVJ+6r/IYhdai0piVGadRi+p1gUSbdJ8hB49h/bVqX26qLL/5m43d8rhYJMdX5lXwzFogkuJCZcsLgu6Qyi5CtR3AYt2dL/+qFUtwzJ/8X5dY+ZTv4o2cu3Gien6iDXtAUUVqHKavv/1Jf0Ex74niHi3mkU6JV5TBNrqDV7NyEKHQ9ggqO1eayzO9ZTYLgSQ/V5lnKW1vKXv1fVIfoMxRe8NYbvZHLWgvKTZmCkRiz5zltWG64kMrg4OdT+Nm6Zv1GY42Z7LVrecPqi1MyHF85EEztVMEH68Vi2OQLIJDY
- mZAdanXi
- QFzXAm3C+Jf5X95vBx9GT+5bMlzYvLq8R3iOdJ8B8yI+Ep38/R7QXuYh6ufV1AWhU51EvggOXAQBPmPh15dguH2mZHBdLpJukwj34utQZUlyx9ZYK4J1aUWtdeOTbXONjbhcNUH6tqpiCQoa0cIrxGE8zQJsE9pFooNsokZu3ngMAKHMwpvEjIq+5+f9g7hc472MXAZR02AU/owbG8jZgEt2ruMD6HI7YmUxrwx3LHwH37j9r/B5A1ufuog==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769720691-726702
+X-HE-Meta: U2FsdGVkX1/gsytx7tda6O0AVryP3hyD8YBAiSj7ZdDw+MhNlPwfSrtXR69rLOMqAhHV0CrTDry4ZOV4Trz/YPD2dDvN0kcb36UTZ46gicDs/pZ3cgYEteBrIDGlKTMDmBtBNVrNqpk3hSTxwiMvl51XuQuInWk/TUoj/t405eTtayFaCEUK27kHVy5+LZ6Cg/62chBDWvh/t3IqmsP02P8Meuj7Cv5BlfTIJKSpGXZg6WbEr6BTjUgAHY/+KQgWn+Ngd3eKh36VaYuPlUr9BbxACA+voiD3RB+eFU5WkeV/mwZcxKJVCQgIz8nr36tO5/Wwq0Gdxtgo8WDx3vhIcKtGq+qUY4mFw47GXIUiPEBBtiLGTxTRO/uj/zPKS6UntaHdToks9iD/8k/AnkObTRyqbBUpGzcBFx1cWYVBuKnGNkqkIG4kNeuq+l/3oXuMOreicyEavT0EXwHI5SYL1HmR93ZkqR9We/0uMw4xUlQC2XbmbmSfIXfzjyZ+FSP5JRpOZn8bJErtPE5GF9Uyc8GvUQ5ETrgH/B8L/kA7Fwzj8HXRw7MIP/mdmdslA0XrtEPmk45NAdGkQZCqmehx0x07q23vde2mndUOMLvajUub8RoTFn8MJ+/zTxkPZ3Q07Gmyfa7ifSBKrtYeqmXf2MobvKMLazRiFxwr5NmHRKSYgb70fCVdkieex2HNdH+sW+f8JjMp4oIrssOSzDQ0D1K1y17E4ziUpbRo1EIuqtP2z6gBrv3Apm2Ej9DmPv9dWwKOdhrZ/sql9nar74nWzznPrYGu/RtYq0LWx6FjIG+QGl63mbGx77pISgtVoGnfQlLpeyKl1Llsw2+lseTu2BO/wLuKvMvYCzpAa8NU1nK1OaRksAzjyOoILlaIvVnmW+pz9ntK73N/lR9KCxVqJ1xHiyz7sR5JDellR90r15UeMN8MTfw2jXu7CUWQItKyc9ITbyuDzkwL0DasRiv
+ giZEujEl
+ Wvaq3Amuqh3xZWs7Dh5q4FqngOS0Qfeb97yKiqVR8hGJ4eq7JITQXphdo8HiV3xQw2mtcxkbmsoVgmrCl/C7G8atWoylR63UlcPSatdgUBNv2fOsVmQ3TjkxkjSPqyWjqhKvE4Yu6o+WeRLzQq5fVEJrwxORY89Zq6B3UWFEKCUq3nvUzwZcp+Alugn5gAhoR/Mdmd/9wBA8ijt4dek5xkwBHixlmama7wSzV1IRlBfSdMnJ87r7wGGbYi2F184LJ54HYfff32pn0PNSHepnJm45knrE061ADprcD2sex0ZWdfIBDX25mQrJYgKkPQcNivAXFYEEFIFdgRvJJw33OKTXJzRuZcuy+Z0LToH42UbfyltHdri2RdQyrmarXkfRRM+DsYaVs0YWhEIzYUHN/XKWxFe/7REpBzyTgVl2Qs1UYOUs4xnTD+ktILMCDbjgriIrHIkVTCAUxDlJaby48jkg7y8XYosayiygJm6EyGnjb61HbOIEzK0nvYTEYwj4t5bmZQUj3g4wOHrk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,86 +137,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, CXL regions that create DAX devices have no mechanism to
-control select the hotplug online policy for kmem regions at region
-creation time. Users must either rely on a build-time default or
-manually configure each memory block after hotplug occurs.
+Modify online_memory_block() to accept the online type through its arg
+parameter rather than calling mhp_get_default_online_type() internally.
+This prepares for allowing callers to specify explicit online types.
 
-Additionally, there is no explicit way to choose between device_dax
-and dax_kmem modes at region creation time - regions default to kmem.
+Update the caller in add_memory_resource() to pass the default online
+type via a local variable.
 
-This series addresses both issues by:
+No functional change.
 
-1. Plumbing an online_type parameter through the memory hotplug path,
-   from mm/memory_hotplug through the DAX layer, enabling drivers to
-   specify the desired policy (offline, online, online_movable).
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Signed-off-by: Gregory Price <gourry@gourry.net>
+---
+ mm/memory_hotplug.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-2. Adding infrastructure for explicit dax driver selection (kmem vs
-   device) when creating CXL DAX regions.
-
-3. Introducing new CXL region drivers that provide a two-stage binding
-   process with user-configurable policy between region creation and
-   memory hotplug.
-
-The new drivers are:
-- cxl_devdax_region: Creates dax_regions that bind to device_dax driver
-- cxl_sysram_region: Creates sysram_region devices with hotplug policy
-- cxl_dax_kmem_region: Probes sysram_regions to create kmem dax_regions
-
-The sysram_region device exposes an 'online_type' sysfs attribute
-allowing users to configure the memory online type before hotplug:
-
-    echo region0 > cxl_sysram_region/bind
-    echo online_movable > sysram_region0/online_type
-    echo sysram_region0 > cxl_dax_kmem_region/bind
-
-This enables explicit control over both the dax driver mode and the
-memory hotplug policy for CXL memory regions.
-
-In the future, with DCD regions, this will also provide a policy step
-which dictates how extents will be surfaces and managed (e.g. if the
-dc region is bound to the sysram driver, it will surface as system
-memory, while the devdax driver will surface extents as new devdax).
-
-Gregory Price (9):
-  mm/memory_hotplug: pass online_type to online_memory_block() via arg
-  mm/memory_hotplug: add __add_memory_driver_managed() with online_type
-    arg
-  dax: plumb online_type from dax_kmem creators to hotplug
-  drivers/cxl,dax: add dax driver mode selection for dax regions
-  cxl/core/region: move pmem region driver logic into pmem_region
-  cxl/core/region: move dax region device logic into dax_region.c
-  cxl/core: add cxl_devdax_region driver for explicit userland region
-    binding
-  cxl/core: Add dax_kmem_region and sysram_region drivers
-  Documentation/driver-api/cxl: add dax and sysram driver documentation
-
- Documentation/ABI/testing/sysfs-bus-cxl       |  21 ++
- .../driver-api/cxl/linux/cxl-driver.rst       |  43 +++
- .../driver-api/cxl/linux/dax-driver.rst       |  29 ++
- drivers/cxl/core/Makefile                     |   3 +
- drivers/cxl/core/core.h                       |  11 +
- drivers/cxl/core/dax_region.c                 | 179 ++++++++++
- drivers/cxl/core/pmem_region.c                | 191 +++++++++++
- drivers/cxl/core/port.c                       |   2 +
- drivers/cxl/core/region.c                     | 321 ++----------------
- drivers/cxl/core/sysram_region.c              | 180 ++++++++++
- drivers/cxl/cxl.h                             |  29 ++
- drivers/dax/bus.c                             |   3 +
- drivers/dax/bus.h                             |   7 +-
- drivers/dax/cxl.c                             |   7 +-
- drivers/dax/dax-private.h                     |   2 +
- drivers/dax/hmem/hmem.c                       |   2 +
- drivers/dax/kmem.c                            |  13 +-
- drivers/dax/pmem.c                            |   2 +
- include/linux/dax.h                           |   5 +
- include/linux/memory_hotplug.h                |   3 +
- mm/memory_hotplug.c                           |  95 ++++--
- 21 files changed, 826 insertions(+), 322 deletions(-)
- create mode 100644 drivers/cxl/core/dax_region.c
- create mode 100644 drivers/cxl/core/pmem_region.c
- create mode 100644 drivers/cxl/core/sysram_region.c
-
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index bc805029da51..87796b617d9e 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1337,7 +1337,9 @@ static int check_hotplug_memory_range(u64 start, u64 size)
+ 
+ static int online_memory_block(struct memory_block *mem, void *arg)
+ {
+-	mem->online_type = mhp_get_default_online_type();
++	int *online_type = arg;
++
++	mem->online_type = *online_type;
+ 	return device_online(&mem->dev);
+ }
+ 
+@@ -1578,8 +1580,12 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 		merge_system_ram_resource(res);
+ 
+ 	/* online pages if requested */
+-	if (mhp_get_default_online_type() != MMOP_OFFLINE)
+-		walk_memory_blocks(start, size, NULL, online_memory_block);
++	if (mhp_get_default_online_type() != MMOP_OFFLINE) {
++		int online_type = mhp_get_default_online_type();
++
++		walk_memory_blocks(start, size, &online_type,
++				   online_memory_block);
++	}
+ 
+ 	return ret;
+ error:
 -- 
 2.52.0
 
