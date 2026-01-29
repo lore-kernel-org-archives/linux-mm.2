@@ -4,94 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67553D73E9B
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA46DD73E87
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:11:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 65C006B00AE; Thu, 29 Jan 2026 17:03:40 -0500 (EST)
+	id 1322E6B0089; Thu, 29 Jan 2026 17:11:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63D776B00AF; Thu, 29 Jan 2026 17:03:40 -0500 (EST)
+	id 10A626B008A; Thu, 29 Jan 2026 17:11:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5664C6B00B6; Thu, 29 Jan 2026 17:03:40 -0500 (EST)
+	id F20AB6B0092; Thu, 29 Jan 2026 17:11:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4797F6B00AE
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:03:40 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C494CD47A3
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:03:39 +0000 (UTC)
-X-FDA: 84386378958.06.B7979FC
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DA1B318000C
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:03:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=e2moscRO;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DBA726B0089
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:11:49 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8DCBFD4637
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:11:49 +0000 (UTC)
+X-FDA: 84386399538.19.06821C1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 56250C0009
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:11:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfGjjc2a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oeajPHpO;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfGjjc2a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oeajPHpO;
+	spf=pass (imf22.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769724218;
+	s=arc-20220608; t=1769724707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=wjvwruhMiXhW6s5sNbKYQyMtxcB2O46DJ1/cRr2oxdo=;
-	b=3eOdJTIZYy8yTn1Zfp8VIc/4H7W7gCQIvqPX2Uv+wKoogWVc+9yREGwsciJUiw7mJ30ukB
-	e8acL1gfOwU/HhQHhOEGGRi86Lf56n9gU13/+qebdJfgF2qqaexQL6WksYr0CXQEyv+SGz
-	SNQIaek2mqtOsA7sTGAl+O1lA9heXeA=
+	bh=tfjqObhbTkkqPhq1xp1ApOV91NVuIjaXLWyEZcqVtxU=;
+	b=KVlZugfeesUjXxUp8XL7oCu+INXlZXm1IjcFnO+T5egrU7uAflxsBUZVD0IH5DT2iitKb6
+	Joo8CC/CLgRuCgtjOhYPDn9/dc6THF9KAgBu8vluuyYStnlRjf0CExcZvOyFnpOG2Lqo56
+	V3RtJ8w7kCVoh/aGM5ajWTPG9xBwFXc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=e2moscRO;
-	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769724218; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfGjjc2a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oeajPHpO;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ZfGjjc2a;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=oeajPHpO;
+	spf=pass (imf22.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769724707; a=rsa-sha256;
 	cv=none;
-	b=XkfJCEOMBvn0fRy+8vP0mCdQ4F1AnvKyt8oV0Yo6z64caPCsEBqtIG62R4dB4X8Uu9nN74
-	GWV4NdHAlY+9Hf6+tOQVMbJjGik2aRf+rSPVPoZJJerWZHx0NjlJyRWM2hsC3eB9MVkuK+
-	AiBMS3368abH8bUEAoYBD9EVtLbbAJs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769724217;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wjvwruhMiXhW6s5sNbKYQyMtxcB2O46DJ1/cRr2oxdo=;
-	b=e2moscROUFrD1sjqo3gGp6asZgEa9tlOYSZiMW56FD02oO4zvNbzJ+zH3oJK3fzpYlXwUc
-	mGoFuf/PAPNCpEWrXhEgUNBKZDZ34D9SHHDC3+qLgovQQ025yMn/49uLO0jSjaOTyJo3a3
-	sPE9stw6/HUeNE60MeKOZQYM9qHwm+o=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-IK_08TK5MK2n44uUIhC9UQ-1; Thu,
- 29 Jan 2026 17:03:33 -0500
-X-MC-Unique: IK_08TK5MK2n44uUIhC9UQ-1
-X-Mimecast-MFC-AGG-ID: IK_08TK5MK2n44uUIhC9UQ_1769724211
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	b=kDOgTAoRgaFl6Kw396nzraOAzqWVTcc8I0ex4X9PWPSJOjTnYjtF/fE2DRQMGXoAn+PJv7
+	X6rqIL0rPN61O7Dn56+cr9RrI8nxIYR/5g1S78ASCBE2fcvQribeuSB8eBPLCbtDM9peyh
+	uQEQC4X5s+Eq1flmjmwl0Yq3GhuVHHA=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 229AB1955E8C;
-	Thu, 29 Jan 2026 22:03:27 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.22.89.142])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3F3C018009A0;
-	Thu, 29 Jan 2026 22:03:26 +0000 (UTC)
-From: Luiz Capitulino <luizcap@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: linux-mm@kvack.org,
-	rppt@kernel.org
-Subject: [PATCH] x86: remove the BIOS memory corruption check
-Date: Thu, 29 Jan 2026 17:03:20 -0500
-Message-ID: <20260129220320.3012571-1-luizcap@redhat.com>
+	by smtp-out2.suse.de (Postfix) with ESMTPS id B24815BCF5;
+	Thu, 29 Jan 2026 22:11:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769724705; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tfjqObhbTkkqPhq1xp1ApOV91NVuIjaXLWyEZcqVtxU=;
+	b=ZfGjjc2aM4bFahKNUOB/B1FzJyZy7SAKy97LdrJYti9LxebQtgjxsk77Gk6JTsI/MKB5uA
+	vObmTPyZRHuhNiGGGuZkNjm7HOGpYD/sXbQNzuL1li/yUm2PAMqwmNo0Ey8gFOETPq8yMx
+	LAPvXNPwheEK36vFyOJGfvYY31x2Inc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769724705;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tfjqObhbTkkqPhq1xp1ApOV91NVuIjaXLWyEZcqVtxU=;
+	b=oeajPHpOiuGa2yxIAsoB8410i7RA2T6/Ay4f+3uyPHpxAsqZ/dgPQvpAqWxOL6MhUbDOis
+	IfG3YpJzGPfZk4DQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1769724705; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tfjqObhbTkkqPhq1xp1ApOV91NVuIjaXLWyEZcqVtxU=;
+	b=ZfGjjc2aM4bFahKNUOB/B1FzJyZy7SAKy97LdrJYti9LxebQtgjxsk77Gk6JTsI/MKB5uA
+	vObmTPyZRHuhNiGGGuZkNjm7HOGpYD/sXbQNzuL1li/yUm2PAMqwmNo0Ey8gFOETPq8yMx
+	LAPvXNPwheEK36vFyOJGfvYY31x2Inc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1769724705;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=tfjqObhbTkkqPhq1xp1ApOV91NVuIjaXLWyEZcqVtxU=;
+	b=oeajPHpOiuGa2yxIAsoB8410i7RA2T6/Ay4f+3uyPHpxAsqZ/dgPQvpAqWxOL6MhUbDOis
+	IfG3YpJzGPfZk4DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 590943EA61;
+	Thu, 29 Jan 2026 22:11:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id YYokDyHbe2kDbwAAD6G6ig
+	(envelope-from <krisman@suse.de>); Thu, 29 Jan 2026 22:11:45 +0000
+From: Gabriel Krisman Bertazi <krisman@suse.de>
+To: axboe@kernel.dk
+Cc: io-uring@vger.kernel.org,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org
+Subject: [PATCH 0/2] Introduce IORING_OP_MMAP
+Date: Thu, 29 Jan 2026 17:11:36 -0500
+Message-ID: <20260129221138.897715-1-krisman@suse.de>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 56250C0009
+X-Stat-Signature: s1rz3ajz87ug7h33idgp7dyna9psrri4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DA1B318000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ayx6biu1qby5nunsr8u77uan4wccb5xz
-X-HE-Tag: 1769724217-913142
-X-HE-Meta: U2FsdGVkX19PnJleoQNVowCknGb6rCbTwTqgebu1vX7P1XndvWJAVOYfupu25b7iKHwcASEbBYJ+zETcQGEIZ9MJySorGIc5wc5eMP0QviyDipzTvfh8xCsP/Vp9aOKni6OyWWr0lqEU0sUbw41KsKwI5zVytrJoV8vlaUBysO7p95iLc2semQ9CZgsR5rylPzBiE5YVXTi7bgSbzcP9ELEtbhTu7a7n9QEav68Tk+2xN9f8InqEswx+g5SaJ8nbzdA8+PABAVP5rc55fbCr4di2uoz6jXte07VA2JrGNvW9xAIB2AyN54WfqTS3NRvrhPVXmU0zlZrfF2kRa/mn1Z5WpCxaICcz9F1B+zNJjrSnq78i/g6OuL2M9gKicQd8hFnKpLi/2ByLVfvR38CzNCh4bMkP+8ALtWeG5Iv9bPRXWSw618Lw/HuQVaUaKiG+r1Rg/pMl5QmRUJtr1880lvJy6Kmul+W2FXUcD4VYuyLEb2Rq4frI0wgjWGtEn2kba7Aitm5OPQlKRr1QlGC4+KAcHrrJeIRgkbKlz6WtZL0qslhkNkT0vBJ18p2HboQdIPjVIYFFHvhrUd6tKYkZ3j4pv4WWhKJAUy+qlb+AOlidvdimpfBFJ7YKeHgpVDtnFfB8N7SURLEkrocBNV3crpPsS/X8iIkloLroIsjykkIZuvZzZoq6BUEiGRJcmki4OF7JuHjFUyjY4SyqXICG4ugBhkI99fizF5BtNRzzMJsjdIOaF5A1uADRY38ZGpDY26nbnKHjGGHy0O9XlYADEQ9Y8jPXt+ERumvMziLw/sivaGktvedAAsfdnWZChHj73toOhOglmuFiAA67WCK0W8wx0EI2/3GG0mwTBP+PhELkNfpX3kN3cZAN7nVphbGE93j/5z0cwjOkeyTescrk+u4mgrYIJe7jiwfmDIg72y6cGUtsfRmN0Aju0dnLItB7wl0eZVMk2MwQbw/lZ2K
- ciNYoCRY
- TPPDHpQvAqqrBVrAqr9e9WZf+nN/77sMY0bZSKnBT2CF84/e9nXTM8DvKYUhxcEBZgVM/LT7kYHtX4UX6tSYToDLkTfsP+lvQrBOikGSGB9ni+np6K8NtNu0PSZzxbYwtxbwbpPJB7waG7hXkXqHs8j1CEjAK2cNA0wHw6/dUQUSa6zuzgN7lRn5VZorp7B9N+hFcr65/Unm6H1qW2YWYUuzLENgpq9Fc3tpeIL4z28NK+iDZH9YDd56/91IIUb0ZNjxwE7l7SNTCzR3vBVBHnhx7YAgP+MjkNdV6PagT1e6eZdxDluBD9WR4bqP2vwpmG/xHE19jQMHlAVI=
+X-HE-Tag: 1769724707-499315
+X-HE-Meta: U2FsdGVkX1+/quIuqRSvgDEFXsVkrnZgC6brN9/orwVRjQDltXrk6mBwZAXTOX3Xx6ZB5csuZaU6G+diHXqThvsWO8G840ro3Tsq1QaIy4wp9y326iAe2YFqzKrhf9V8GvEFCuP9RAr2kv05IEOgehFAiJKWV1mrSykKFEsCpkmTcCPN7PQLJm/zndBM114SSeqLmQhC+sMe/R0UB8dM69dMV1d6R13rJprkecGiPU28+HgaRhkecawrDGvupnGy92oL+yCu842pl+ML2yp4qbOIK1TPrx71I9MiObuOjLet6N6P5jcVSbefsNtYLfyGNlpTo3DDzY/wF8cikOdkuEg8XufPqrdrIRZAzOCulkssec21209fNPeFGmvMDILrNKv09gIHKBvgnj+BrzgNDBGjh72499f7QIVTmGercYSHFp5x5N626fJRMyMiM/iFqWt0jRZZOwjtVvR1zmjBA68JERtX6MKVcXaezD3fiyVoYcDJPNxy58DOTngT1FGAj+cKTYPXfl3anvc9EWXacvnhY39SowXmVDM9gONjZ69fgOzh4Rw0lgOyxdLqGh+7g2p6LqrTrDAIIYF/8nHC864Zdllr/9QRqatiFsE3FLjWKlMkcR/SMhUfSWB17DOWqBh3txenyF6e6nBsPtaDsStqLNiVJdB00OExKYPq/8OwcnO6cLVleLM1JcvoazeqpngdPv3GlhGic09t1VZZH15bSk6lUI5GG15J1sypUtqwzTMAuKgC14J8izuM27/9IPLqcUDyhyFaY5aACiZND/nQSWINuGDImJNM3DwCYWH5ocyy7GsHoKqhHXIVIFar1h3IjeddE9gP5GD2mArSpN08WIWFrCjvQyJsTd3uER+gE13TKjzygm5AR5RpLQmvCU0T0YBbMJzrsin/9RpmQXIi0bUEjcE2XfYkkewzkGGpxtpFu3xIIESnpjZHI8QUcyjD/6UqMpIJq7eRrxK
+ VWXYly+K
+ GGtT4YzYsU65jwwUuglgiOGxe/Xu8WQ0ULR8gt0azXQUTwpdCAXWO9vFIxhMw3C6UQsC2/u+JSq9GJ4msNf2Suksxfu8G452uJhx4dnIjqNlKYCdmHSsU9iln4lvMoprB2Jp2thyA2R/oQwE+dLFr4AATWrccbgBeNii7078AG1i4+KJLn31LEeAoWH9ILQjyXTtqW8pSHUFoRUKmX7MVgsdVD/pU18v7/0ivy+XB/Eb7XGUzXXSY2FxqBRdl5cMMUqvri1qG2W11jahdmCrQDUK/ZwsgAWQ5PtVkcOGMxbDDjTGAiifmwEsbtWYGk0uf5IrhDXWQlhvuOj0v2XZlKyRq94VkLOl2PRGIfSXrPgKf6+o93ZsRbErwgmT5BR28jTBsHa1QejUfe5t88IX4x+fDBttfaSZOS/qwMDmYGMgXuExkpk4LNFn1WYsUJHbCWqlf1oe67aMf2ONm4MlDJ9wgLBtHO+KOTsT/ONSfL5Z8zae3Mw9GPOEA08ppX6neHN+MUlf4rmMJLF87E4oAYsdSzW4D+GbXqrNMj3bBOKCjT9lA3ZiGmm6vxAwSzoSx9UOaVkZOxNMMUNg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,398 +133,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The commit a799c2bd29d1 ("x86/setup: Consolidate early memory
-reservations") moved the reservation of the first 64K of physical memory
-to very early in setup_arch(). This silently broke the BIOS memory
-corruption check feature, as setup_bios_corruption_check() runs later
-and relies on finding free memblocks in the 0-64K range to reserve for
-scanning.
+Hi,
 
-This has been broken since v5.13. Fixing it would probably require
-parsing e820 ranges directly which adds unnecessary complexity.
+There's been a few requests over time for supporting mmap(2) over
+io_uring. The reasoning are twofold: 1) serving as base for batching
+multiple mappings in a single operation 2) supporting mmap of fixed
+files.
 
-Since x86 unconditionally reserves the first 64K range, any BIOS
-corruption in this range cannot affect the kernel which makes this
-feature purely informational. Remove it.
+Since mmap can operate on either anonymous memory and file descriptors,
+patch 1 adds support for optional fds in io_uring commands.  Patch 2
+implements the mmap operation itself.
 
-Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
----
+Note this patchset doesn't do any kind of smarter batching in MM.  While
+we can potentially do some interesting optimizations already, like
+holding the MM write lock instead of reacquiring it for each mapping, I
+wanted to focus on the API discussion first.  This is left as future
+work.
 
-I tried a few different fixes for this, but they would re-introduce
-the issues commit a799c2bd29d1 is trying to fix or be too
-complex. Since this is broken for years and apparently nobody
-complained, I concluded it's best to just drop it.
+liburing support, including testcases, will be sent shortly to the list,
+but can also be found at:
 
- .../admin-guide/kernel-parameters.txt         |  23 ---
- arch/x86/Kconfig                              |  30 ---
- arch/x86/configs/i386_defconfig               |   1 -
- arch/x86/configs/x86_64_defconfig             |   1 -
- arch/x86/include/asm/bios_ebda.h              |  17 --
- arch/x86/include/asm/setup.h                  |   1 -
- arch/x86/kernel/Makefile                      |   2 -
- arch/x86/kernel/check.c                       | 187 ------------------
- arch/x86/kernel/setup.c                       |   4 -
- 9 files changed, 266 deletions(-)
- delete mode 100644 arch/x86/kernel/check.c
+ https://github.com/krisman/liburing -b mmap
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index 1058f2a6d6a8..edf9966eaa54 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3890,29 +3890,6 @@ Kernel parameters
- 			specified as e820 types, e.g., 1 = RAM, 2 = reserved,
- 			3 = ACPI, 12 = PRAM.
- 
--	memory_corruption_check=0/1 [X86,EARLY]
--			Some BIOSes seem to corrupt the first 64k of
--			memory when doing things like suspend/resume.
--			Setting this option will scan the memory
--			looking for corruption.  Enabling this will
--			both detect corruption and prevent the kernel
--			from using the memory being corrupted.
--			However, it's intended as a diagnostic tool; if
--			repeatable BIOS-originated corruption always
--			affects the same memory, you can use memmap=
--			to prevent the kernel from using that memory.
--
--	memory_corruption_check_size=size [X86,EARLY]
--			By default it checks for corruption in the low
--			64k, making this memory unavailable for normal
--			use.  Use this parameter to scan for
--			corruption in more or less memory.
--
--	memory_corruption_check_period=seconds [X86,EARLY]
--			By default it checks for corruption every 60
--			seconds.  Use this parameter to check at some
--			other rate.  0 disables periodic checking.
--
- 	memory_hotplug.memmap_on_memory
- 			[KNL,X86,ARM] Boolean flag to enable this feature.
- 			Format: {on | off (default)}
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 80527299f859..4dbadd3f7af0 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -1608,36 +1608,6 @@ config X86_PMEM_LEGACY
- 
- 	  Say Y if unsure.
- 
--config X86_CHECK_BIOS_CORRUPTION
--	bool "Check for low memory corruption"
--	help
--	  Periodically check for memory corruption in low memory, which
--	  is suspected to be caused by BIOS.  Even when enabled in the
--	  configuration, it is disabled at runtime.  Enable it by
--	  setting "memory_corruption_check=1" on the kernel command
--	  line.  By default it scans the low 64k of memory every 60
--	  seconds; see the memory_corruption_check_size and
--	  memory_corruption_check_period parameters in
--	  Documentation/admin-guide/kernel-parameters.rst to adjust this.
--
--	  When enabled with the default parameters, this option has
--	  almost no overhead, as it reserves a relatively small amount
--	  of memory and scans it infrequently.  It both detects corruption
--	  and prevents it from affecting the running system.
--
--	  It is, however, intended as a diagnostic tool; if repeatable
--	  BIOS-originated corruption always affects the same memory,
--	  you can use memmap= to prevent the kernel from using that
--	  memory.
--
--config X86_BOOTPARAM_MEMORY_CORRUPTION_CHECK
--	bool "Set the default setting of memory_corruption_check"
--	depends on X86_CHECK_BIOS_CORRUPTION
--	default y
--	help
--	  Set whether the default state of memory_corruption_check is
--	  on or off.
--
- config MATH_EMULATION
- 	bool
- 	depends on MODIFY_LDT_SYSCALL
-diff --git a/arch/x86/configs/i386_defconfig b/arch/x86/configs/i386_defconfig
-index 79fa38ca954d..848c2d924668 100644
---- a/arch/x86/configs/i386_defconfig
-+++ b/arch/x86/configs/i386_defconfig
-@@ -36,7 +36,6 @@ CONFIG_PARAVIRT=y
- CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
- CONFIG_X86_MSR=y
- CONFIG_X86_CPUID=y
--CONFIG_X86_CHECK_BIOS_CORRUPTION=y
- # CONFIG_MTRR_SANITIZER is not set
- CONFIG_EFI=y
- CONFIG_EFI_STUB=y
-diff --git a/arch/x86/configs/x86_64_defconfig b/arch/x86/configs/x86_64_defconfig
-index 7d7310cdf8b0..8047f2779768 100644
---- a/arch/x86/configs/x86_64_defconfig
-+++ b/arch/x86/configs/x86_64_defconfig
-@@ -35,7 +35,6 @@ CONFIG_X86_REROUTE_FOR_BROKEN_BOOT_IRQS=y
- CONFIG_X86_MSR=y
- CONFIG_X86_CPUID=y
- CONFIG_NUMA=y
--CONFIG_X86_CHECK_BIOS_CORRUPTION=y
- # CONFIG_MTRR_SANITIZER is not set
- CONFIG_EFI=y
- CONFIG_EFI_STUB=y
-diff --git a/arch/x86/include/asm/bios_ebda.h b/arch/x86/include/asm/bios_ebda.h
-index 4d5a17e2febe..2f441fd9ebf8 100644
---- a/arch/x86/include/asm/bios_ebda.h
-+++ b/arch/x86/include/asm/bios_ebda.h
-@@ -20,21 +20,4 @@ static inline unsigned int get_bios_ebda(void)
- 
- void reserve_bios_regions(void);
- 
--#ifdef CONFIG_X86_CHECK_BIOS_CORRUPTION
--/*
-- * This is obviously not a great place for this, but we want to be
-- * able to scatter it around anywhere in the kernel.
-- */
--void check_for_bios_corruption(void);
--void start_periodic_check_for_corruption(void);
--#else
--static inline void check_for_bios_corruption(void)
--{
--}
--
--static inline void start_periodic_check_for_corruption(void)
--{
--}
--#endif
--
- #endif /* _ASM_X86_BIOS_EBDA_H */
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index 914eb32581c7..1f58361eb038 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -42,7 +42,6 @@ static inline void vsmp_init(void) { }
- 
- struct pt_regs;
- 
--void setup_bios_corruption_check(void);
- void early_platform_quirks(void);
- 
- extern unsigned long saved_video_mode;
-diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
-index bc184dd38d99..d39c7e078f67 100644
---- a/arch/x86/kernel/Makefile
-+++ b/arch/x86/kernel/Makefile
-@@ -135,8 +135,6 @@ obj-$(CONFIG_JAILHOUSE_GUEST)	+= jailhouse.o
- obj-$(CONFIG_EISA)		+= eisa.o
- obj-$(CONFIG_PCSPKR_PLATFORM)	+= pcspeaker.o
- 
--obj-$(CONFIG_X86_CHECK_BIOS_CORRUPTION) += check.o
--
- obj-$(CONFIG_OF)			+= devicetree.o
- obj-$(CONFIG_UPROBES)			+= uprobes.o
- 
-diff --git a/arch/x86/kernel/check.c b/arch/x86/kernel/check.c
-deleted file mode 100644
-index 5136e6818da8..000000000000
---- a/arch/x86/kernel/check.c
-+++ /dev/null
-@@ -1,187 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
--
--#include <linux/init.h>
--#include <linux/sched.h>
--#include <linux/kthread.h>
--#include <linux/workqueue.h>
--#include <linux/memblock.h>
--
--#include <asm/proto.h>
--#include <asm/setup.h>
--
--/*
-- * Some BIOSes seem to corrupt the low 64k of memory during events
-- * like suspend/resume and unplugging an HDMI cable.  Reserve all
-- * remaining free memory in that area and fill it with a distinct
-- * pattern.
-- */
--#define MAX_SCAN_AREAS	8
--
--static int __read_mostly memory_corruption_check = -1;
--
--static unsigned __read_mostly corruption_check_size = 64*1024;
--static unsigned __read_mostly corruption_check_period = 60; /* seconds */
--
--static struct scan_area {
--	u64 addr;
--	u64 size;
--} scan_areas[MAX_SCAN_AREAS];
--static int num_scan_areas;
--
--static __init int set_corruption_check(char *arg)
--{
--	ssize_t ret;
--	unsigned long val;
--
--	if (!arg) {
--		pr_err("memory_corruption_check config string not provided\n");
--		return -EINVAL;
--	}
--
--	ret = kstrtoul(arg, 10, &val);
--	if (ret)
--		return ret;
--
--	memory_corruption_check = val;
--
--	return 0;
--}
--early_param("memory_corruption_check", set_corruption_check);
--
--static __init int set_corruption_check_period(char *arg)
--{
--	ssize_t ret;
--	unsigned long val;
--
--	if (!arg) {
--		pr_err("memory_corruption_check_period config string not provided\n");
--		return -EINVAL;
--	}
--
--	ret = kstrtoul(arg, 10, &val);
--	if (ret)
--		return ret;
--
--	corruption_check_period = val;
--	return 0;
--}
--early_param("memory_corruption_check_period", set_corruption_check_period);
--
--static __init int set_corruption_check_size(char *arg)
--{
--	char *end;
--	unsigned size;
--
--	if (!arg) {
--		pr_err("memory_corruption_check_size config string not provided\n");
--		return -EINVAL;
--	}
--
--	size = memparse(arg, &end);
--
--	if (*end == '\0')
--		corruption_check_size = size;
--
--	return (size == corruption_check_size) ? 0 : -EINVAL;
--}
--early_param("memory_corruption_check_size", set_corruption_check_size);
--
--
--void __init setup_bios_corruption_check(void)
--{
--	phys_addr_t start, end;
--	u64 i;
--
--	if (memory_corruption_check == -1) {
--		memory_corruption_check =
--#ifdef CONFIG_X86_BOOTPARAM_MEMORY_CORRUPTION_CHECK
--			1
--#else
--			0
--#endif
--			;
--	}
--
--	if (corruption_check_size == 0)
--		memory_corruption_check = 0;
--
--	if (!memory_corruption_check)
--		return;
--
--	corruption_check_size = round_up(corruption_check_size, PAGE_SIZE);
--
--	for_each_free_mem_range(i, NUMA_NO_NODE, MEMBLOCK_NONE, &start, &end,
--				NULL) {
--		start = clamp_t(phys_addr_t, round_up(start, PAGE_SIZE),
--				PAGE_SIZE, corruption_check_size);
--		end = clamp_t(phys_addr_t, round_down(end, PAGE_SIZE),
--			      PAGE_SIZE, corruption_check_size);
--		if (start >= end)
--			continue;
--
--		memblock_reserve(start, end - start);
--		scan_areas[num_scan_areas].addr = start;
--		scan_areas[num_scan_areas].size = end - start;
--
--		/* Assume we've already mapped this early memory */
--		memset(__va(start), 0, end - start);
--
--		if (++num_scan_areas >= MAX_SCAN_AREAS)
--			break;
--	}
--
--	if (num_scan_areas)
--		pr_info("Scanning %d areas for low memory corruption\n", num_scan_areas);
--}
--
--
--static void check_for_bios_corruption(void)
--{
--	int i;
--	int corruption = 0;
--
--	if (!memory_corruption_check)
--		return;
--
--	for (i = 0; i < num_scan_areas; i++) {
--		unsigned long *addr = __va(scan_areas[i].addr);
--		unsigned long size = scan_areas[i].size;
--
--		for (; size; addr++, size -= sizeof(unsigned long)) {
--			if (!*addr)
--				continue;
--			pr_err("Corrupted low memory at %p (%lx phys) = %08lx\n", addr, __pa(addr), *addr);
--			corruption = 1;
--			*addr = 0;
--		}
--	}
--
--	WARN_ONCE(corruption, KERN_ERR "Memory corruption detected in low memory\n");
--}
--
--static void check_corruption(struct work_struct *dummy);
--static DECLARE_DELAYED_WORK(bios_check_work, check_corruption);
--
--static void check_corruption(struct work_struct *dummy)
--{
--	check_for_bios_corruption();
--	schedule_delayed_work(&bios_check_work,
--		round_jiffies_relative(corruption_check_period*HZ));
--}
--
--static int start_periodic_check_for_corruption(void)
--{
--	if (!num_scan_areas || !memory_corruption_check || corruption_check_period == 0)
--		return 0;
--
--	pr_info("Scanning for low memory corruption every %d seconds\n", corruption_check_period);
--
--	/* First time we run the checks right away */
--	schedule_delayed_work(&bios_check_work, 0);
--
--	return 0;
--}
--device_initcall(start_periodic_check_for_corruption);
--
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 1b2edd07a3e1..82e4cc0734a4 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -1094,10 +1094,6 @@ void __init setup_arch(char **cmdline_p)
- 	/* preallocate 4k for mptable mpc */
- 	e820__memblock_alloc_reserved_mpc_new();
- 
--#ifdef CONFIG_X86_CHECK_BIOS_CORRUPTION
--	setup_bios_corruption_check();
--#endif
--
- #ifdef CONFIG_X86_32
- 	printk(KERN_DEBUG "initial memory mapped: [mem 0x00000000-%#010lx]\n",
- 			(max_pfn_mapped<<PAGE_SHIFT) - 1);
+Thanks,
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org
+Cc: io-uring@vger.kernel.org
+
+Gabriel Krisman Bertazi (2):
+  io_uring: Support commands with optional file descriptors
+  io_uring: introduce IORING_OP_MMAP
+
+ include/uapi/linux/io_uring.h |  10 +++
+ io_uring/Makefile             |   2 +-
+ io_uring/io_uring.c           |  15 ++--
+ io_uring/mmap.c               | 147 ++++++++++++++++++++++++++++++++++
+ io_uring/mmap.h               |   4 +
+ io_uring/opdef.c              |   9 +++
+ io_uring/opdef.h              |   2 +
+ 7 files changed, 183 insertions(+), 6 deletions(-)
+ create mode 100644 io_uring/mmap.c
+ create mode 100644 io_uring/mmap.h
+
 -- 
 2.52.0
 
