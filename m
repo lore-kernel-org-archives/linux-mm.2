@@ -4,147 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6722D73E87
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:33:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3D7FD73E9B
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:34:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCBC16B00A7; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
+	id 336526B00A8; Thu, 29 Jan 2026 17:34:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7EB76B00A8; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
+	id 2E0AD6B00AA; Thu, 29 Jan 2026 17:34:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C23AC6B00A9; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
+	id 20D526B00AB; Thu, 29 Jan 2026 17:34:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B04016B00A7
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 85FB71A0323
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:33:23 +0000 (UTC)
-X-FDA: 84386453886.09.E25C1FC
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 983A14000C
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:33:21 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WZpqvLXw;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F2FE6B00A8
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:34:25 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4137160319
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:34:24 +0000 (UTC)
+X-FDA: 84386456448.10.3442D41
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E39DBC0019
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:34:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k3aIfBKU;
+	spf=pass (imf28.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769726001;
+	s=arc-20220608; t=1769726063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dBZ3PFz9KqTT7KdM5e4cMtXwD446xZIZixlzxugjwak=;
-	b=GBXRXbaXpaySAb6cPY/Kt8tOlCf1SMRcSuto++VHNY7TP+CqhiYX9JV6V3o6LtXCyzK2wj
-	CxT7yb7IylYjOMANmkfF5UMuhnsdmgSJFsFyERdzfOTAYNqYnWxdidS9KsB6ojFjnyLik7
-	mRQ+g8AIuGeXbegjtDkU51rmSz+voiI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769726001; a=rsa-sha256;
-	cv=none;
-	b=w0OP6M3GR8f1bcoDrVfsjK6YHuaCmhCw3DY35LKvsyU6r4CVckEsMZ4Li+H+ezMgGRDmir
-	jA+VhlzU0pjVpA/M73rr7Ug47lQKZXTVI2BPzu4q9fJnithRUlX7FTx60qUOVHBwXN8FMo
-	L0jSkEQOSyt/lJdeGnff54Gc34pGn2c=
+	bh=+sL552rFOPX6MZmF9xhCboTgoxHpoeG/bwKtIJk/3Cc=;
+	b=1rIAQXCO7eehjWZS4vHq8m3u27zr/VpY4AB1wKdoEdOu7gHzBsRwjqBf75HKEeiPaA/aKs
+	HeyoBsgN6+DrOrjo3MOSxqWdqMxSJx3MjKzs6LSQtQyPIj79ir4+nINT9kWzbF5fWVByyr
+	M6u/5V5/GPMXZCqpST1tjIJUGy9+N8U=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=WZpqvLXw;
-	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8230c33f477so699060b3a.2
-        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:33:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769726000; x=1770330800; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dBZ3PFz9KqTT7KdM5e4cMtXwD446xZIZixlzxugjwak=;
-        b=WZpqvLXwXtcnRyz/tZxZ417QR7EEoUGbwKBSt8e0+gtLYP5En1OLxdaBn/H89CkfOT
-         8IxYcdNVInLO0KrBV+cHVAWf9iyYLZ1JTussHp7fmzAnq7/Ks9lnLj42Pbjgk8wDW+Iw
-         8mrU0LkmGIPyUUaxI3T2AjiANyWp9DUkDeNXTEv6eILgJotaWzq2dQnSom/OiaMEwFrG
-         Kspxp7FJAVh2NlTu71AGping0vPpZmrZBmO2Rf1/oF/7RjLrgjLM/7M0Qskb4YftzoO3
-         kXXFnxWdZHhGxaGSq8wUCNqlnd4pk9eIpiK4/dPfoEWE397oQeetTAUsQKCbJXF4kH6w
-         68Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769726000; x=1770330800;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dBZ3PFz9KqTT7KdM5e4cMtXwD446xZIZixlzxugjwak=;
-        b=TVPg2aENISI2nimI0cA8d+cne/LjvKrS6lrWmprjmexX0FsJoMKfFmol9LsKPPZWNP
-         OJR+Hb51Q7v6Hxl0w/i+58EISvyPlFOBrtMHpkeWDjczmFeSVbRlO8pxRp9jCueEZvfF
-         s9I5/feKezGCvadx4CwDJf9jtKwZkAOt/l4LxrCwBBwyO6yWKCJinE5vA5zLtYzaSka6
-         lW6PWrNlowUmHuRwDfy01ZKVqx18Cd8d3P6y/nr0Ypp/zl6M7glVXEAXSMuvr9v3yogd
-         uOGd7kyqSqYMhxXbTH5rH8uDR5l0oKng0idgfA9a4IYclez4G1XW2pkOsKQnkPytjg6D
-         tFTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4Ii0K+xOE6IeQ++nk6CEPDx5idKZu2kHN8w/EgYDos+hI/g72gBqFeT4yhaccS8tt8JkCRBE43A==@kvack.org
-X-Gm-Message-State: AOJu0Yzs5W7jewOkYH5Ftt71zTtH8Ug8fJ1gDyway5gRlJJPuNPLyoCE
-	uKQrrVMxzI1Hu82AD/xXmx/NW8h/qRIFMHgVV4ntZKbe2M0hA9lMrwNEGBSQrcu9aw==
-X-Gm-Gg: AZuq6aKcNIUyxwnTAbp49w1i6umH1oGkRU+BBz0XS8AtEZ9xL881CU0aHJXRa2cHgxL
-	h0nf9yawsWqfrSv7s0Nf0/2do0YnwlD0qt/VHXYS5LH25vidTdG6srwvqS0GqJAuJmGnLtX6ovU
-	aE63yP5rfkb25n0ETjIw2f+NikQz8LYyFOcRYifU4TK2A6YvNH01RfdnuQG0QS57ARuVRzBaOk3
-	HYPm9JJaJWEfgSSkt8RisG/CnnjXqsXxnK3aMjsr3fRhHOl/DnxqVowCgA9bhNIv5n3rnAQefCv
-	lIxjBeQECMoEbP64agV6el9N4BhLSO1xF8kbaRTH3EzI9ZIfk6BYtq+Uef8WhNBRbZhtKytk7GM
-	CUXoDIZChwEqI1u3MGUSzQnSoY3lAkfaAEIOAXMnb9x9SlWoJdB6SXU1FN0kS/bNtzSmFNDi9Gw
-	Wj7/8D/ipJ4AG2cGA10kVGI1cF8L0MLf4iI5BLtHKj9ZDiithSIw==
-X-Received: by 2002:a05:6a00:1f0d:b0:81f:5ec1:8bcd with SMTP id d2e1a72fcca58-823ab684bffmr621422b3a.20.1769726000049;
-        Thu, 29 Jan 2026 14:33:20 -0800 (PST)
-Received: from google.com (79.217.168.34.bc.googleusercontent.com. [34.168.217.79])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379bfd797sm6165100b3a.43.2026.01.29.14.33.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 14:33:17 -0800 (PST)
-Date: Thu, 29 Jan 2026 22:33:13 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jacob Pan <jacob.pan@linux.microsoft.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
-	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
-	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Tomita Moeko <tomitamoeko@gmail.com>,
-	Vipin Sharma <vipinsh@google.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-Message-ID: <aXvgKRrbfymW5NKb@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
- <20260129212510.967611-11-dmatlack@google.com>
- <20260129142158.00004cdc@linux.microsoft.com>
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k3aIfBKU;
+	spf=pass (imf28.hostedemail.com: domain of djwong@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769726063; a=rsa-sha256;
+	cv=none;
+	b=ABAs9C5xnmiWImgVnA6AYMWjmB/UyGX4Pncd+5xwI8NyzJt1PQKGBcUH1C95YzlbJ8nvYL
+	pgTktWOtjY5mo7AXodAeI2M6rrCAG8YE7Dx3vJbfgE358lCgj0vcjicarcSJJ3/ip914z4
+	j1GIfzvh+86wgHI+6Kt8Qv7pvKQU3m4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id E6C2E41684;
+	Thu, 29 Jan 2026 22:34:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D07C4CEF7;
+	Thu, 29 Jan 2026 22:34:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769726061;
+	bh=aAsAQr3olCVAPwtnbMv+uKrBk9dB7Xxlgu3OYuVbFgw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k3aIfBKUpMQTLAl18ZSlFFxyK4de6DV6bM0MJut9fsQbs+B9SUiM6sLpiQU5BnYg+
+	 z5ZvLpTOEPD/o3Fi+TxkwSedlZosqXCT/XVjDugwguNV4l1BnIlmnp391M4iznR328
+	 KMnY1pNfZgbSDdJRIbiRhXmXnU8xKLhYj5xXdtKRS7rS4aPcRgt891nTs3fglhJgIb
+	 i0NEPceT8Sls/IB5ieb9pRBK/Hanu40d1jM2QvvjGK6dODI9fuaH6v8IahNbWKxJEX
+	 sAEtBzUPuoBDLG+OIrSEg7744r0fgIA+M/8QS1tg8SXJqpSe1qeoqLtNX0wL3C0keg
+	 IVk930WXDnc2A==
+Date: Thu, 29 Jan 2026 14:34:21 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
+	david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
+	hch@lst.de, ritesh.list@gmail.com, dave@stgolabs.net,
+	cem@kernel.org, wangyufei@vivo.com, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org, gost.dev@samsung.com,
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
+Subject: Re: [PATCH v3 6/6] xfs: offload writeback by AG using per-inode
+ dirty bitmap and per-AG workers
+Message-ID: <20260129223421.GE7712@frogsfrogsfrogs>
+References: <20260116100818.7576-1-kundan.kumar@samsung.com>
+ <CGME20260116101305epcas5p497cd6d9027301853669f1c1aaffbf128@epcas5p4.samsung.com>
+ <20260116100818.7576-7-kundan.kumar@samsung.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260129142158.00004cdc@linux.microsoft.com>
-X-Rspamd-Queue-Id: 983A14000C
+In-Reply-To: <20260116100818.7576-7-kundan.kumar@samsung.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: pmi9nni1ikr985h6dm8wnzaaxwygu8uk
+X-Rspamd-Queue-Id: E39DBC0019
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qfh5d4diqmh3jz48ohdjctimx1ux7jfr
-X-HE-Tag: 1769726001-157058
-X-HE-Meta: U2FsdGVkX1+goaR2Ntf4qSEBRPUrBri6NUAIPC6ipvZQRpZfhkJAEvyfexX0KTd2u6LgqSuOpOpWMhUuqAsSTUdsZffUGMr/o5rOa3rEjbWoGW6YKi5DK907USgPblK4iuyPuCdOfLZdzSUDic52uCOu4mFQvekd8gRpywOabZeKfLpzQiFgenxicohmfJvBfJasM0S6Zs0MFwQQIImSqyatG9op8UmJ2tfmu1Is4iXE36BjnYuU2kmfl54ZaioEHnwNWWmHwhH4OyK0/rolxmlrCCQPSRdWfY+pi9PEq+Da2cwdAqm3YTgpRU5aQ38QMxrzrXdg1ze1/1SE2HhuRha4siDplXF6fFEUo+yzeYBtzs/kXYx8mNCKcmz5cqOPa2vftXK1+AzXeAb7FQ6yKG0nLKJvnigRoBqOMnubxRQZxfxcBXib1sm2Ip5ey/IUlhwpyGb+ntLd4SIAnBbo79a2IEvekavU38zPckyqvGJAYN6M661qNXOt4v8zOzu7mvJGRClbo1NhF/+/qPWkXpuw/aLWWHQhk8JHJZwTFYHwkq/eDCoUZP5ENvgiqUIGgCu/2ESnKwl+6nOgGnlLo8AGlErjVNlaZ+VtJ4+o7Aa0ZAIgYrsC74MIc+ltKaLIid/Q390Vxhf68GvzgzNhFIkrR+zygvy9ERkz7XvZCscSrufVdz9AhrjM9DfuO7Iv79aez0rgjtyEOgeUvsSHxX68eA9EVtF6neugPoj9fuwrjR+bDBpQ0WLtz8Nn0geBE+X6ijVysiCshzl+Qw0z6EHvhs3UhTM8g9srjqlO2nC26YdC2b276/sKLaMlHy3gmiHsoLPCrXjP93Tgv6IBu/Ew9JfNLr9zLkNyIzNjC7Mzgq7S/sKbYLJXVEX/AldO4p1whQY44IFdKlf9OFkU4zpoqC1xzPUiHId+/Yqf8LhPkVRkKqFRaVgEmEmYG4O1Uqm8r0/F398T4VuxdaR
- tYzgcYZ8
- 5Ad3SWSa0Y7xqDdK+z0xqqMqvweVPtp03mpg/4U5zGdzG9BeM5DRMZp1vNSPoXWmKlmrFytgTx7PPjBgpqjhePV+SKcgiX0WyoLm1MYf1W/ok4cnhfj54zZyjGGRi8CUcGFWOjLGRJr95z9NdadAHSXKTBpVMaZsZL9Tb6Ww2MRSqCGp+pFsrV+3EI1Mr9905Hw/desg18qNcAO3waWvKVYB+JfjqGagtHNOQ43z+TYEZ4LIFbmBvAt++6zm8KplvreSUkCfGHjgQcg2Qi2wW1F0njBsNNKUYKrhoA2V66Va1ytx8+h9Kfi9Zo6LEJu18jB9sQ0LkLhblAn9GhXS1sGPtbWOaFlrwAUXKKDME0zQS+OmUuXevTM4jMcYMUgTcUqUX5UCvF13+YMAq07uHNNaPDm09FalIzph8KJe0pVQlm6gNl2HeQg31955T+HUuqxbMuovl19wRyuQ=
+X-HE-Tag: 1769726062-97536
+X-HE-Meta: U2FsdGVkX19N5B939UeuEkygSxk7dZmqJnrsrNcxt9F8O5QfWEfWUHcrKwpuxQxDB+6tWG2UnVqXTmJkWknTMd3j6GpwvtXahmMBEH14Rd8JA9QO9VvrvHsImN5C6cHWb6P8A1A9vR39xxriJ4YPgaHBBlcQJ+6oGn3isARo/jcBVWVQmBjHo2Rfwz7ksS3nyFf5QZMfL2CGVNpHRS7SJN5V2JEcO0H09l5dFfKc+O+D8Ft50mGVmrEJT/4B75FZOojYZ9Xqz0JtPje7OedNqc0xyUri+mSY2R0eFauwSN3+vIiGf52tMDLxfU/wvvEb8vX8juLXFncDLdXcK0haQ7CEnsl7BkV7QhcTm1mMbErgd/fGglvIa8+810F5QFWFmPZts6HWkZReC+IhSqUx7XW5ldFq1PmIHHkE78VVaQT63v2voZnhKCTNyPAZfeoTHfmDliApqQkzzbHAHZDvWgRM/QAELO0AvbxllU+oFlDam5rb53pZkDGVFp3d3u3Tu3cdNlCw3d5qtUqg+1kYCFNRM4NU1xE4hOak9BB+6TNnqIphWpJcsO4yuoTPzD+6qn2G11nPNDwgsVat9EbDuAX0m/QeYe18HZ0YzMgm3biYW7EsFWfB3xs2WjGsAzGWLf4OVn+3p9NeRrjV0qGbZYGzFOzcbtgaSERv2EeS12jwUZJvgpVyDlwrz6+G/0GBbQHYkOibkMEXX3V1tlg7yGIcQTkV0EVLq31d+gG5PCt5k358S4G9Eo0IVb0uuQljompQmm0T6hXp3XT0239yxOwvz3K65IkutTOFQPIKnZEjskOygEEU4tK03gHgzqrKE+JpT5A2jRc9DPSTOMXprU1AOMuyrzDaxGCKKPggg2Kxqg0p02IMgVw55nwc+vLW4UfIrtFulWrnzXB1cHVRcnrE2YmpffukBQ5VYV3Hk4dk9qoHYI/55WRIc6Gx/Wueg6mnP0WxNNb/yZDXOCn
+ kp3F9rii
+ HF9piQMHo+4ce2nkEAk6voGIwmooedkAHVcq/ofRTFpKbjBwcCzCTTzNxtR+tYGkjzIahSXJNQciI2Bsr7jBZ9+j9aKwfr/lCIxESiZofyQDM2WjmVWTjvTaM3ZEROzeofNZHOJXqhD21FwPZkyVfCCrzONjtc4ffH1wWAh7OkdULMtYLjSdKJt8CGGri2JQffhhmaQtYexRR7FvQJQxQtJzlUKHmeGq2L7Qb2pIxgYN4lKg+nmgxdfdphIhOR0SI1Dz/+KxMr6J4ZSG97xrg5xrAwtPxUsv9OGHd+V+6bhvkeRV9ZJMEfm5qYDVK8pxI9a/dy059VriZJ5punvaLXWCDLvtavzZeW2Ht
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,55 +99,249 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-01-29 02:21 PM, Jacob Pan wrote:
-> On Thu, 29 Jan 2026 21:24:57 +0000 David Matlack <dmatlack@google.com> wrote:
+On Fri, Jan 16, 2026 at 03:38:18PM +0530, Kundan Kumar wrote:
+> Offload XFS writeback to per-AG workers based on the inode dirty-AG
+> bitmap. Each worker scans and submits writeback only for folios
+> belonging to its AG.
+> 
+> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
+> ---
+>  fs/xfs/xfs_aops.c | 178 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 178 insertions(+)
+> 
+> diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
+> index 9d5b65922cd2..55c3154fb2b5 100644
+> --- a/fs/xfs/xfs_aops.c
+> +++ b/fs/xfs/xfs_aops.c
+> @@ -678,6 +678,180 @@ xfs_zoned_writeback_submit(
+>  	return 0;
+>  }
+>  
+> +static bool xfs_agp_match(struct xfs_inode *ip, pgoff_t index,
+> +			  xfs_agnumber_t agno)
+> +{
+> +	void *ent;
+> +	u32 v;
+> +	bool match = false;
+> +
+> +	ent = xa_load(&ip->i_ag_pmap, index);
+> +	if (ent && xa_is_value(ent)) {
+> +		v = xa_to_value(ent);
+> +		if (xfs_agp_valid(v))
+> +			match = (xfs_agp_agno(v) == (u32)agno);
+> +	}
+> +
+> +	return match;
+> +}
+> +
+> +static bool xfs_folio_matches_ag(struct folio *folio, xfs_agnumber_t agno)
+> +{
+> +	struct xfs_inode *ip = XFS_I(folio_mapping(folio)->host);
+> +
+> +	return xfs_agp_match(ip, folio->index, agno);
+> +}
+> +
+> +static int xfs_writepages_ag(struct xfs_inode *ip,
+> +			     struct writeback_control *wbc,
+> +			     xfs_agnumber_t agno)
+> +{
+> +	struct inode *inode = VFS_I(ip);
+> +	struct address_space *mapping = inode->i_mapping;
+> +	struct folio_batch *fbatch = &wbc->fbatch;
+> +	int ret = 0;
+> +	pgoff_t index, end;
+> +
+> +	wbc->range_cyclic = 0;
+> +
+> +	folio_batch_init(fbatch);
+> +	index = wbc->range_start >> PAGE_SHIFT;
+> +	end = wbc->range_end >> PAGE_SHIFT;
+> +
+> +	struct xfs_writepage_ctx wpc = {
+> +		.ctx = {
+> +			.inode = inode,
+> +			.wbc = wbc,
+> +			.ops = &xfs_writeback_ops,
+> +		},
+> +	};
+> +
+> +	while (index <= end) {
+> +		int i, nr;
+> +
+> +		/* get a batch of DIRTY folios starting at index */
+> +		nr = filemap_get_folios_tag(mapping, &index, end,
+> +					    PAGECACHE_TAG_DIRTY, fbatch);
+> +		if (!nr)
+> +			break;
+> +
+> +		for (i = 0; i < nr; i++) {
+> +			struct folio *folio = fbatch->folios[i];
+> +
+> +			/* Filter BEFORE locking */
+> +			if (!xfs_folio_matches_ag(folio, agno))
 
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c
-> > b/drivers/vfio/pci/vfio_pci_core.c index b01b94d81e28..c9f73f597797
-> > 100644 --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -515,12 +515,24 @@ int vfio_pci_core_enable(struct
-> > vfio_pci_core_device *vdev) if (ret)
-> >  		goto out_power;
-> >  
-> > -	/* If reset fails because of the device lock, fail this path
-> > entirely */
-> > -	ret = pci_try_reset_function(pdev);
-> > -	if (ret == -EAGAIN)
-> > -		goto out_disable_device;
-> > +	if (vdev->liveupdate_incoming_state) {
-> > +		/*
-> > +		 * This device was preserved by the previous kernel
-> > across a
-> > +		 * Live Update, so it does not need to be reset.
-> > +		 */
-> > +		vdev->reset_works =
-> > vdev->liveupdate_incoming_state->reset_works;
->
-> Just wondering what happened to skipping the bus master clearing. I
-> understand this version does not preserve the device itself yet; I’m
-> just curious whether there were specific difficulties that led to
-> dropping the earlier patch which skipped clearing bus master.
+So we grab a batch of dirty folios, and only /then/ check to see if
+they've been tagged with the target agno?  That doesn't seem very
+efficient if there are a lot of dirty folio and they're not evenly
+distributed among AGs.
 
-Hi Jacob,
+> +				continue;
+> +
+> +			folio_lock(folio);
+> +
+> +			/*
+> +			 * Now it's ours: clear dirty and submit.
+> +			 * This prevents *this AG worker* from seeing it again
+> +			 * next time.
+> +			 */
+> +			if (!folio_clear_dirty_for_io(folio)) {
+> +				folio_unlock(folio);
+> +				continue;
+> +			}
+> +			xa_erase(&ip->i_ag_pmap, folio->index);
 
-There's several places where bus master gets cleared that we need to
-eventually eliminate to fully preserve the device.
+Why erase the association?  Is this because once we've written the folio
+back to storage, we want a subsequent write to a fsblock within that
+folio to tag the folio with the agnumber of that fsblock?  Hrm, maybe
+that's how you deal with multi-fsblock folios; the folio tag reflects
+the first block to be dirtied within the folio?
 
- 1. vfio_pci_liveupdate_freeze() clears it during shutdown when it
-    restores vdev->pci_saved_state.
- 2. pci_device_shutdown() clears it during shutdown.
- 3. vfio_pci_core_enable() clears it when the preserved device file
-    is bound to an iommufd after the Live Update (in
-    vfio_pci_core_enable()).
+> +
+> +			ret = iomap_writeback_folio(&wpc.ctx, folio);
+> +			folio_unlock(folio);
+> +
+> +			if (ret) {
+> +				folio_batch_release(fbatch);
+> +				goto out;
+> +			}
+> +		}
+> +
+> +		folio_batch_release(fbatch);
+> +		cond_resched();
+> +	}
+> +
+> +out:
+> +	if (wpc.ctx.wb_ctx && wpc.ctx.ops && wpc.ctx.ops->writeback_submit)
+> +		wpc.ctx.ops->writeback_submit(&wpc.ctx, ret);
+> +
+> +	return ret;
+> +}
+> +
+> +static void xfs_ag_writeback_work(struct work_struct *work)
+> +{
+> +	struct xfs_ag_wb *awb = container_of(to_delayed_work(work),
+> +					     struct xfs_ag_wb, ag_work);
+> +	struct xfs_ag_wb_task *task;
+> +	struct xfs_mount *mp;
+> +	struct inode *inode;
+> +	struct xfs_inode *ip;
+> +	int ret;
+> +
+> +	for (;;) {
+> +		spin_lock(&awb->lock);
+> +		task = list_first_entry_or_null(&awb->task_list,
+> +						struct xfs_ag_wb_task, list);
+> +		if (task)
+> +			list_del_init(&task->list);
+> +		spin_unlock(&awb->lock);
+> +
+> +		if (!task)
+> +			break;
+> +
+> +		ip = task->ip;
+> +		mp = ip->i_mount;
+> +		inode = VFS_I(ip);
+> +
+> +		ret = xfs_writepages_ag(ip, &task->wbc, task->agno);
+> +
+> +		/* If didn't submit everything for this AG, set its bit */
+> +		if (ret)
+> +			set_bit(task->agno, ip->i_ag_dirty_bitmap);
+> +
+> +		iput(inode); /* drop igrab */
+> +		mempool_free(task, mp->m_ag_task_pool);
+> +	}
+> +}
+> +
+> +static int xfs_vm_writepages_offload(struct address_space *mapping,
+> +				     struct writeback_control *wbc)
+> +{
+> +	struct inode *inode = mapping->host;
+> +	struct xfs_inode *ip = XFS_I(inode);
+> +	struct xfs_mount *mp = ip->i_mount;
+> +	struct xfs_ag_wb *awb;
+> +	struct xfs_ag_wb_task *task;
+> +	xfs_agnumber_t agno;
+> +
+> +	if (!ip->i_ag_dirty_bits)
+> +		return 0;
+> +
+> +	for_each_set_bit(agno, ip->i_ag_dirty_bitmap, ip->i_ag_dirty_bits) {
+> +		if (!test_and_clear_bit(agno, ip->i_ag_dirty_bitmap))
+> +			continue;
+> +
+> +		task =  mempool_alloc(mp->m_ag_task_pool, GFP_NOFS);
 
-I think it would be safe to skip (3) in this series, since that's very
-similar to how this series skips resets during vfio_pci_core_enable()
-for preserved devices.
+Allocating memory (even from a mempool) during writeback makes me
+nervous...
 
-But I don't think it would be safe to skip (1) or (2) until the attached
-iommufd is fully preserved.
+> +		if (!task) {
+> +			set_bit(agno, ip->i_ag_dirty_bitmap);
+> +			continue;
+> +		}
 
-If you are just asking about (3) then I agree it could be skipped and I
-can include that in the next version.
+...because apparently the allocation can fail.  If so, then why don't we
+just fall back to serial writeback instead of ... moving on to the next
+AG and seeing if there's more memory?
+
+> +
+> +		INIT_LIST_HEAD(&task->list);
+> +		task->ip = ip;
+> +		task->agno = agno;
+> +		task->wbc = *wbc;
+> +		igrab(inode); /* worker owns inode ref */
+
+Shouldn't we check for a null return value here?  That should never
+happen, but we /do/ have the option of falling back to standard
+iomap_writepages.
+
+> +
+> +		awb = &mp->m_ag_wb[agno];
+> +
+> +		spin_lock(&awb->lock);
+> +		list_add_tail(&task->list, &awb->task_list);
+> +		spin_unlock(&awb->lock);
+> +
+> +		mod_delayed_work(mp->m_ag_wq, &awb->ag_work, 0);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct iomap_writeback_ops xfs_zoned_writeback_ops = {
+>  	.writeback_range	= xfs_zoned_writeback_range,
+>  	.writeback_submit	= xfs_zoned_writeback_submit,
+> @@ -706,6 +880,7 @@ xfs_init_ag_writeback(struct xfs_mount *mp)
+>  	for (agno = 0; agno < mp->m_sb.sb_agcount; agno++) {
+>  		struct xfs_ag_wb *awb = &mp->m_ag_wb[agno];
+>  
+> +		INIT_DELAYED_WORK(&awb->ag_work, xfs_ag_writeback_work);
+>  		spin_lock_init(&awb->lock);
+>  		INIT_LIST_HEAD(&awb->task_list);
+>  		awb->agno = agno;
+> @@ -769,6 +944,9 @@ xfs_vm_writepages(
+>  			xfs_open_zone_put(xc.open_zone);
+>  		return error;
+>  	} else {
+> +		if (wbc->sync_mode != WB_SYNC_ALL)
+> +			return xfs_vm_writepages_offload(mapping, wbc);
+> +
+>  		struct xfs_writepage_ctx	wpc = {
+>  			.ctx = {
+>  				.inode	= mapping->host,
+> -- 
+> 2.25.1
+> 
+> 
 
