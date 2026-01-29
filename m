@@ -4,123 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81D93D358F9
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 10:35:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9310CD358F7
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 10:39:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96DA06B0088; Thu, 29 Jan 2026 05:35:32 -0500 (EST)
+	id 05B6F6B0088; Thu, 29 Jan 2026 05:39:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945C06B0089; Thu, 29 Jan 2026 05:35:32 -0500 (EST)
+	id 033096B0089; Thu, 29 Jan 2026 05:39:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 847FE6B008A; Thu, 29 Jan 2026 05:35:32 -0500 (EST)
+	id E81176B008A; Thu, 29 Jan 2026 05:39:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 72DA86B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 05:35:32 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48A1016040C
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 10:35:32 +0000 (UTC)
-X-FDA: 84384644904.05.B371A12
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 26F2C16000B
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 10:35:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGm+Pe5L;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D42256B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 05:39:09 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 568F95BD56
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 10:39:09 +0000 (UTC)
+X-FDA: 84384654018.02.4111004
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D99461C000C
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 10:39:06 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3IbYcPNx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nU3Ocmfa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3IbYcPNx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nU3Ocmfa;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769683147; a=rsa-sha256;
+	cv=none;
+	b=s6aDsar2cY57Pg+3gw24a36xD22+flqP8gckM4qF5LjbhreM85yWl28Rl2JZwgSZwlTNDB
+	qwb8AUCaPadGXLhUU7sxRG72MG+ga07WeGjOaS7LW4NasUrLYX8CMCoW3OeC5UiYoA9l0m
+	8cOfBAKi0zfFAT/xN254sUKa0gFoq4I=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3IbYcPNx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nU3Ocmfa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3IbYcPNx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nU3Ocmfa;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769682930;
+	s=arc-20220608; t=1769683147;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rt/fJrEfptWIMl6gJnBgyhZ2v64WL4kEDwxRsPYbGlM=;
-	b=w8626fFLGupyfPj8aBjSMOwwml0IeojAKwBAVFOJu/QehD938OQC6JLMQ2AY18gmaOwe7T
-	yC/79iMN6pSHNpCbhDet6rR8Yh6PKq+MN63SAufvaMebNshAzM26jkmDGlubdhjBxJ1rWC
-	IxdZXyQvCDtw3icovDyXNNtAJtBg5PI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769682930; a=rsa-sha256;
-	cv=none;
-	b=Mhi7taN/Yb4kLbI9tevpcmnVZ4dv935ELCz5mr4xFlgq/2mdEMFWV8k5GPBkvV+GvlfFj7
-	NEV66D8yFdytiGqvPo8Ze44hqG70+PLEhlN/eJYCYRvZTTzYpgLZGq0oTpwQXWwBK3tU0Z
-	CR5jMIAqq/pl80503p2uqBA6c2xoGGk=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eGm+Pe5L;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E8B3C44262;
-	Thu, 29 Jan 2026 10:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F97C16AAE;
-	Thu, 29 Jan 2026 10:35:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769682928;
-	bh=B7t+HX7cNhdeA2zHoB8ThQ6BCCEjOkvXW+5RQmoXcqY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eGm+Pe5LVrS1PH26EJ06OJbvCkYSjmCQAQZi9v2MpV1ld6e2sLKst4M+MqyMvgIYS
-	 qFURRvzfYva0IqejrqLqhVJTphOz4DaiFLYx2fy72WrvQ2ZjTG8ZgsWMWM7d5TMQVV
-	 I8rlMzuAZwxNvXEQ5bUa4GN8gnMz7cLiHiHPW3gtfFt8cmh0Ra38xu8+wkAz+ygmgE
-	 kBkNV5yh7ldmTIORTrOEQewRueaVs602d0Kk0ckQTJWci7nUoMkANoZkGvPgZSZ1BY
-	 TCq+5o4DDG5mviyrWmTa7Qw34U2Dh9IRoznrCiW0pLY39o01poMq7PpSzH2jfAvcWm
-	 wY0H2bRr49elw==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4B707F40075;
-	Thu, 29 Jan 2026 05:35:27 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 29 Jan 2026 05:35:27 -0500
-X-ME-Sender: <xms:7zd7aWQJIlX8xOpb0kie4rT16Qk1y3GzYJWoOJaYFH279eSUu-yz2w>
-    <xme:7zd7acjgkHUISUSxBOAYvg0ACK-12IlSUtj5HajaTpOj9PTe-YLEyRSwsTQItoRyo
-    e4OFTcM4M_87wkApNTragA0rp6a_I21i5qVR8Rks5J_B2IdngLHzBI>
-X-ME-Received: <xmr:7zd7acuUyA6shq1QXasNuesRZEluwD8lmK27JJ5o-ojX2trXs2zMiR40DGWtog>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduieehleejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehprhhsrghmphgrthesrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmh
-    eskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdr
-    lhhinhhugidruggvvhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopehtghhlgieslhhinhhuthhrohhnihigrdguvgdprhgtphhtthhopehmihhngh
-    hosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgt
-    phhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:7zd7aZ5S2PtK8kE94JZRSTnBS8HuW9UF_Qt30LmF8-RuV0Vw5LhZfg>
-    <xmx:7zd7aepjz50WxJBcHBoKzoi-w8Hrs4p9jcbqVkSnGBYYX5RRcNi6MA>
-    <xmx:7zd7aVc23eMBzgziJueSlmU9gfPoeexdkR8_7cHNmUckjb512LujWw>
-    <xmx:7zd7aaIHC1DIYHwFrhQrOFkcu9-raY4Qqo0-_nV7V_heWN1NR1sUzw>
-    <xmx:7zd7aXcBWU0tMq_Su0hEacRzXc6HpK27MXmIWeJSsHwsR9oWHj2EeWa_>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Jan 2026 05:35:25 -0500 (EST)
-Date: Thu, 29 Jan 2026 10:35:20 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org, david@kernel.org, 
-	osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
-Subject: Re: [PATCH v3 1/2] mm/memory_hotplug: Add support to accept memory
- during hot-add
-Message-ID: <aXs09b7Q8wmHMFNQ@thinkstation>
-References: <20260128204105.508855-1-prsampat@amd.com>
- <20260128204105.508855-2-prsampat@amd.com>
+	bh=kYnsIXZ5zxZJH8iYP+5LzKA2WENDjPHg4mNO2xeQQz4=;
+	b=1i1LXEqn4Sh3bDM4lw5RzgewvqTGg5KbAfmhY0D/dr5dBdpgiOJbQcmGE3rfFg1f9kXRWK
+	lSAXlyiUExrIaTIG8L/K2IR9t+PtRQuDUsiwDE2PAnUNzdLxbgSSqVBPf6/i8HeNdQHu0W
+	F9fRDLGJTlAop2gL8bzxZ2RcKW56SE8=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3439334124;
+	Thu, 29 Jan 2026 10:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769683145; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kYnsIXZ5zxZJH8iYP+5LzKA2WENDjPHg4mNO2xeQQz4=;
+	b=3IbYcPNx+GISmxEddQ52E9CdI175py8uGvDDmhsZlUYEW1leaDWPsA1tLItcN9wO3mUYbl
+	Vqdh00xlfOJcp2wOefGmm/vF0X8XZOew5Om0EhOM3L0ffBKy4NBovTumoZ6fYW3Xq0X+d+
+	uK3Xc7tJ6BO8GDX89kaSvz4S2ulVuZA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769683145;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kYnsIXZ5zxZJH8iYP+5LzKA2WENDjPHg4mNO2xeQQz4=;
+	b=nU3Ocmfav0Fi6R72Tz1fYtu6anX1C8aY43Q1wyfURcMBPAwSkX+1GZYh4rdRZd9VLlUamw
+	fj5MO7imU2VU2cBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769683145; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kYnsIXZ5zxZJH8iYP+5LzKA2WENDjPHg4mNO2xeQQz4=;
+	b=3IbYcPNx+GISmxEddQ52E9CdI175py8uGvDDmhsZlUYEW1leaDWPsA1tLItcN9wO3mUYbl
+	Vqdh00xlfOJcp2wOefGmm/vF0X8XZOew5Om0EhOM3L0ffBKy4NBovTumoZ6fYW3Xq0X+d+
+	uK3Xc7tJ6BO8GDX89kaSvz4S2ulVuZA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769683145;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=kYnsIXZ5zxZJH8iYP+5LzKA2WENDjPHg4mNO2xeQQz4=;
+	b=nU3Ocmfav0Fi6R72Tz1fYtu6anX1C8aY43Q1wyfURcMBPAwSkX+1GZYh4rdRZd9VLlUamw
+	fj5MO7imU2VU2cBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0903D3EA61;
+	Thu, 29 Jan 2026 10:39:05 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 2t7NAck4e2lNcQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 29 Jan 2026 10:39:05 +0000
+Message-ID: <00e257f0-d80d-408e-963c-7962a1cef9d8@suse.cz>
+Date: Thu, 29 Jan 2026 11:39:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260128204105.508855-2-prsampat@amd.com>
-X-Rspamd-Queue-Id: 26F2C16000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slub: avoid list_lock contention from
+ __refill_objects_any()
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel test robot <oliver.sang@intel.com>
+References: <20260129-b4-refill_any_trylock-v1-1-de7420b25840@suse.cz>
+ <r4sorjw4p62mk2pvnjfrfx2w3zmwcz5yuflmcewll3jsmpju42@dniauu6pkm6j>
+ <aXsoxRXloFrvmOEL@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aXsoxRXloFrvmOEL@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qraxpjdoybxt8m8b81q6hws1ufzfexk3
-X-HE-Tag: 1769682929-66887
-X-HE-Meta: U2FsdGVkX18Th78pWmPvoKHJ9Hd2vGq1JANxakEzLRd2W9nlqsMpdp9kCYPNCHkiJAEbWUyt5kQAieHPMiIbKm5wQ+S37fqlnGT4SC4mX84tgERUaFoBGYBj0uITHslTQCQusE897FjG5oCIDbx8wE+MRBPHuzY8E/tpYe0qT1AAkXCTnhH4dQweRVbmyKJJf9a13jNKjMVzu/vXbSyWiY+hn48x4/TS4tZ7BNZRXGg4zeaXrttXcU3Yq8tRjDprNLDYJQadTaEv570sfuHJBm5X3Mjo9hPPjWfPSu9BIPMghW941SY/9b18OZ4St5iIw1+bQ7WMvb+my/kPwvn/qDEzL+wY+ZR4FX5ZnpTODPxFOmDn4hl4KzG85j/jMgj4a7fY/og4ad3T1BqsN6QO/ziOXJqGfbp0Aq2ygszXAfZitiu5dzeco61IQVfKvyYnPLSQUYXHKmfFLs2QeDXbRIX7q+FxCrToMdajjVm/9w6ObiHvyDLyDAdDO3lv94qHU/SV2tntZxgqbfkLxDLTmHxE6tR/xUACczH8/XBk5bb3h+76JDTPppufAR23rUNIf1AG6sG9sKmKjA1879urODp1YcATH4+Xt/rWfl980QMrCPaTQSZVWWdrxm5cPm2ER7+BfCzBW0zUR4kLK+75DbY5twY/SXnq7XI78zuHolhGONR8+y1hlc/Fd4XGlH+4/Z5C6zr/dsHAm3gsuec+LWea4gGB8HzOzt3j7hRe0X1DaLCvO0r1dz6b14uAkb46YUGL4YPoK3kvPIi2y9KplN4ffBJcSpgna2G1/Kvz14CIIDr5vCcEkC3U1V9J7iKdjQzIi5ZyWCtj0hrSq4O2FDZUSPO6N9Gcyj4MMXRH/UCcDIKABmnA6lYLyKRdLw2WJi2bSfl5kISsWxJglUp5OBCLKcWwL9cjG3KCgzgBF1brRKlGXG0ndZeHruaVGw73IdO1VlPMT7xgWBfyIch
- rz1EPIU3
- rleP22OXjsiJ9uoZ0EMHJMyzrLMKqdqzYiULEsy79qBvnrEeU8+MaObVeyqkf7qNfIzNmLIb4OMDK31F3QmyOX27EGDwLPAuD4ovK7CMGbCBfDfLkT8oFfZt5CdbSA50bGcvWaxz/CpTXR7p+FMZwv8YMOTmry2rzgMWkzWyOcJLqgl1jfWVsp3PeCumlpQDcBr5dW5q91nQ+RKwuNBS+LDbG9sZDUmg+c/AzMm4XmgVLZILeVhUothjLMDc13hnZkEqM6xIBVOGwAP97nYqXw/Xer6F1LUZY0hdpVs9YbI5bX8nQeNdXqEYKj6BRowG3vZsrk145aJHDFdNi5HHZvOdElO75jmwkki8o
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D99461C000C
+X-Stat-Signature: siyr31z8g767t9otk93cigxmyeite75f
+X-HE-Tag: 1769683146-68017
+X-HE-Meta: U2FsdGVkX181AuYh0BfoCZSWnnNJ9WClcm9GTUJxi9riq5lSn+KN6FTa0N8eKa2eXPVzzTu6G2Lv1ZkURH3EZO+oOIcYFf8bjqdJxmgOcMftz/FC0uMAFKCyi1QgpqsBKnrl0hnI7fADStzgpdrfZDO9xtf+sq7RufMk/E8bQRpmXxmRSGzX3c3UmrRqp+DTIVJG5U9eXcMc0GxYAovfxWvqq1McdhKSw6ULH9rs0v6gqssxGuOlT2VmgyuwINfA7A6f3LiEcNkcGSMx/GEfRfLRu20ONpYnWo2Jk3Ov5YP9usiExZ5wm6ZQND/2wG2NUtHcQ1tAwkpJ2RHypWmNsKGzZsPqwcUA6FIJDtirXPEd7CoJjQlrfQrVTnr6mTpYoJjZwzxCX+bf286jybfYjitoO/n0KDfOqQAb9TosX8H7cfdUJCtDdKeihkqVqHRHOw4kjSRKPNlawgEJjlzsD2INPbTyUOwZXRfTUb5YxgX/inDCVWaCpm6VQietHDpjdSFnWQ6yW1UHwTkeHLC2bnNawhLr31XnM6QMxaCpY3QRXqE45lYJHZgJBVM3dNOCJ1PKSAFYzQ62rWHerDfok2rUrSIT8CMFXsAAMK0hsw+5rhZKuJr/+g2gKXPjSsNWAHQMbDR/er5MyemGxGAzdG5HE3xa10pQz30mHRsKHR52sdYbHAqJU5ww2yTBycF4YhrmvX6QmlpQUWwCh/VLmMqgnZu2OTV4/IGdQlldXj5mIiLOargW85Z0+b1vUvxD9oWEcPOCJrbQzHoKT+lQB37YuZQ3EHioiqX3bIRbP5OarvAWbfkyY7JebsXywp0Pd0anYSqYb/Ir4Cd4E2A0oeArgsMjokzKOW7w/AmezONt9sysK394K1YGznqQL8DLxA/3Vbh/JfP8dCQiM4p3/Fdpoe6iEv+f0crsiuUQCVKowOlg6Sj5wort2UCqFHfEZVw+cwiX9QCnPCxnLpi
+ UIN4RJYW
+ 05qDcV9Djdx4OBVIWUf4SZHDHEb+TIUmiIjOca4HNZxsHV66xGjAz5I22NkzSRB1t6oqz6sX6M7dUDk0En7tk6rXjROOEokBHgxDtX6B48fb/IXdKAHGl9C7G6XiBkM9B2uF+/vLXil1vxE60KvKi1b6fHEYwRZS5f+74umxzGgm/oCYQBAYua6d1D9xntWVfCeBAdkBMQdMUoYD49P3MlWCOQXt0VHwYATPX8bSMjtikFvLJDXYqf8cNDxcS3IhSPukjOTiRBpAEYbG5wJZzJltOLSPaybvgzHWcUFrKNAvbHb96aPv+viXvcJK3e9Bs4FWwoKgZs4gvexmi6xYJKkMhSh8dpqzVWE09Mh6aNjRQ2YAat5nYxPkFlee6BJbmPRZI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,99 +182,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 28, 2026 at 02:41:04PM -0600, Pratik R. Sampat wrote:
-> Confidential computing guests require memory to be accepted before use.
-> The unaccepted memory bitmap maintained by firmware does not track
-> most hotplugged memory ranges apart from system memory annotated to be
-> cold plugged at boot.
+On 1/29/26 10:30, Harry Yoo wrote:
+> On Thu, Jan 29, 2026 at 05:21:21PM +0800, Hao Li wrote:
+>> On Thu, Jan 29, 2026 at 10:07:57AM +0100, Vlastimil Babka wrote:
+>> > Kernel test robot has reported a regression in the patch "slab: refill
+>> > sheaves from all nodes". When taken in isolation like this, there is
+>> > indeed a tradeoff - we prefer to use remote objects prior to allocating
+>> > new local slabs. It is replicating a behavior that existed before
+>> > sheaves for replenishing cpu (partial) slabs - now called
+>> > get_from_any_partial() to allocate a single object.
+>> > 
+>> > So the possibility of allocating remote objects is intended even if
+>> > remote accesses are then slower. But the profiles in the report also
+>> > suggested a contention on the list_lock spinlock. And that's something
+>> > we can try to avoid without much tradeoff - if someone else has the
+>> > spin_lock, it's more likely they are allocating from the node than
+>> > freeing to it, so we can skip it even if it means allocating a new local
+>> > slab - contributing to that lock's contention isn't worth it. It should
+>> > not result in partial slabs accumulating on the remote node.
+>> > 
+>> > Thus add an allow_spin parameter to __refill_objects_node() and
+>> > get_partial_node_bulk() to make the attempts from __refill_objects_any()
+>> > use only a trylock.
+>> > 
+>> > Reported-by: kernel test robot <oliver.sang@intel.com>
+>> > Link: https://lore.kernel.org/oe-lkp/202601132136.77efd6d7-lkp@intel.com
+>> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> 
+>> In my testing, this patch improved performance by:
+>> 
+>> will-it-scale.64.processes +14.2%
+>> will-it-scale.128.processes +9.6%
+>> will-it-scale.192.processes +10.8%
+>> will-it-scale.per_process_ops +11.6%
+>>
+>> Tested-by: Hao Li <hao.li@linux.dev>
 > 
-> Explicitly validate and transition the newly added memory to a private
-> state, making it usable by the guest.
-> 
-> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
-> ---
->  drivers/firmware/efi/unaccepted_memory.c | 18 ++++++++++++++++++
->  include/linux/mm.h                       |  5 +++++
->  mm/memory_hotplug.c                      |  2 ++
->  3 files changed, 25 insertions(+)
-> 
-> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
-> index c2c067eff634..5a4c8b0f56c8 100644
-> --- a/drivers/firmware/efi/unaccepted_memory.c
-> +++ b/drivers/firmware/efi/unaccepted_memory.c
-> @@ -209,6 +209,24 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
->  	return ret;
->  }
->  
-> +/*
-> + * Unaccepted memory bitmap only covers initial boot memory and not the
-> + * hotpluggable range that is part of SRAT parsing. However, some initial memory
-> + * with the attribute EFI_MEMORY_HOT_PLUGGABLE can indicate boot time memory
-> + * that can be hot-removed. Hence, handle acceptance in accordance with the
-> + * unaccepted bitmap. Otherwise, perform the state change for the memory range
-> + * up-front.
-> + */
-> +void accept_hotplug_memory(phys_addr_t start, unsigned long size)
-> +{
-> +	if (range_contains_unaccepted_memory(start, size)) {
-> +		accept_memory(start, size);
-> +		return;
-> +	}
+> I wonder if using spin_is_contended() or spin_is_locked()
+> would be better than trylock by avoiding an atomic operation?
 
-No. This is buggy. The memory has to be accepted regardless of state in
-the bitmap. If the memory is ever unplugged the bitmap state is not
-relevant.
-
-So, accept it unconditionally and mark the memory accepted in the
-bitmap.
-
-> +
-> +	arch_accept_memory(start, start + size);
-> +}
-> +
->  #ifdef CONFIG_PROC_VMCORE
->  static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
->  						unsigned long pfn)
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 15076261d0c2..2d3c1ea40606 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4504,6 +4504,7 @@ int set_anon_vma_name(unsigned long addr, unsigned long size,
->  
->  bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
->  void accept_memory(phys_addr_t start, unsigned long size);
-> +void accept_hotplug_memory(phys_addr_t start, unsigned long size);
->  
->  #else
->  
-> @@ -4517,6 +4518,10 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
->  {
->  }
->  
-> +static inline void accept_hotplug_memory(phys_addr_t start, unsigned long size)
-> +{
-> +}
-> +
->  #endif
->  
->  static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index a63ec679d861..549ccfd190ee 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -1567,6 +1567,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
->  	if (!strcmp(res->name, "System RAM"))
->  		firmware_map_add_hotplug(start, start + size, "System RAM");
->  
-> +	accept_hotplug_memory(start, size);
-> +
->  	/* device_online() will take the lock when calling online_pages() */
->  	mem_hotplug_done();
->  
-> -- 
-> 2.52.0
-> 
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+I checked and found that spin_trylock() itself implements a non-atomic check
+before the atomic. So adding a spin_is_locked() would only help the caller
+bail out a bit faster, but this is not a fastpath. It wouldn't help the
+cache coherency traffic, AFAIU.
 
