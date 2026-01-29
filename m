@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60BE9D61020
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 14:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83A72D61020
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 14:44:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B1686B008A; Thu, 29 Jan 2026 09:43:17 -0500 (EST)
+	id E9F6C6B0093; Thu, 29 Jan 2026 09:44:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95B1D6B0092; Thu, 29 Jan 2026 09:43:17 -0500 (EST)
+	id E571F6B0095; Thu, 29 Jan 2026 09:44:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8341B6B0093; Thu, 29 Jan 2026 09:43:17 -0500 (EST)
+	id D228B6B0096; Thu, 29 Jan 2026 09:44:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 724896B008A
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:43:17 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BFBBD2DC0
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:43:17 +0000 (UTC)
-X-FDA: 84385269234.14.CFA5BAC
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010028.outbound.protection.outlook.com [52.101.56.28])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 2B2F61C0007
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:43:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=vGgzP618;
-	spf=pass (imf21.hostedemail.com: domain of bharata@amd.com designates 52.101.56.28 as permitted sender) smtp.mailfrom=bharata@amd.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BD6B06B0093
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:44:26 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 519BAAA720
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:44:26 +0000 (UTC)
+X-FDA: 84385272132.02.8CC4AA2
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012037.outbound.protection.outlook.com [40.93.195.37])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4A934180005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:44:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3b+7pqk7;
+	spf=pass (imf06.hostedemail.com: domain of bharata@amd.com designates 40.93.195.37 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769697794;
+	s=arc-20220608; t=1769697863;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vtGPbM3cYUrnp6QDYMV1xn9+hixoSjQgngEFAtBt310=;
-	b=fdSOq3jLaZQ8JpDDrqCdXS7PBlCOfCCuG3cbL6HVOXUE+axm0HypfxD7Hlc+b8gYwPI4RA
-	Cl25YxqSopttZTPnAD3tu6dvDTE5KiglgFSD8uv4haP9/zBXqSNdmPJP8Dr+NGCjB3WFFh
-	uBH0mW5lDwUUIcnbTTB42KHxNtqQsFY=
+	bh=5zyXb6PRMNn1wV8HEhtyzL1c9ciblwBC2YNS1A9HsW0=;
+	b=YAJxr5PY3MJlKKLzVib8oDZV4/CkuyTb/6J/R3iQUhLxJSvxT6WuDF9KZGqIji5Jx+sunF
+	7zdT6GwFdEqqNuC6IMzqUZh0k5TZvYXnMj7pRYAvQvkUPVnme9gzhN24m0HVFCsHDC+6wA
+	O8+lJywOWekojdUuBzawm1Mq10j0T50=
 ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=vGgzP618;
-	spf=pass (imf21.hostedemail.com: domain of bharata@amd.com designates 52.101.56.28 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=3b+7pqk7;
+	spf=pass (imf06.hostedemail.com: domain of bharata@amd.com designates 40.93.195.37 as permitted sender) smtp.mailfrom=bharata@amd.com;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769697794; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769697863; a=rsa-sha256;
 	cv=pass;
-	b=daK9wkui/sW0EilWXaIxV+zGIc1WuQD5Gkvkf4TC0FSXJrOUsYSa+escek6NtFLwRH2OmE
-	AsY67rZDHQ1Me9wheNZafio6U5z9Law755ZF/hQK84bclxKSmWO8xhIKcCbtLe0E+FU0RR
-	ipfko9GACovygZXFvdeFpjjR2sYifkg=
+	b=TE+rIpHt1OP9HbDFQc+Vy4B3GKup8r1pyXEu0Mg7NZLshtG+R+Jvoe/rHNlwxzONFqkdfP
+	SUUR5WXDpMWxemo22rGGuKYNSyDpm3Ruaxrr6xhXtWR3LTTEb4xyp2QYv3YA3K/NSwoXgI
+	PxRyf78PixYeW9PbJApPBya/2E08Tus=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Oh+Kx9pwZjx/qs1dPF4ADu+m0/yq3HY7RD6FLPgpm8VPziPAsRHB2PNULTYU2uHXQ/N4Z6o+LgcPXHX4MpbOPkq4kk912FUFHR3Tm0I5zW7eBAAM/jnmTTIScgvjEEnyRGoUuByqIP/CYFcwmKfxPdLRsv2ihI4Jp4zcEwGZ/h792gjwSGo1D6rC5AfT2FFUSMZFJhcdnpVhGCWgn/jfaFBeRJlC/jx8Ogvwu4C3WEqywGwYpzNnRnOMCbhbtO/F7YMs+CvK+cYCJDpMy5Wbf3gn5CmtEjn9Ag+xlgSRhw21q+ZtLwhemtJLR/QyLraFqO0tuTHWzCGY2Bka30deMQ==
+ b=ujYCR9sdRJhGAYUBjWU303fLyLG0cb7bR+v5Y24NbL/mKj7wpq+F3ZuVET/syi508zfVn0XUtqfiegQeC1UbLK4EyqtaubDbsDx6eZD5SbbS47uGmTwcwPbnBTr9WCpsqlDBa7MFt0bND2HI4vLFuG0fyVIPncyiqQeelzCL/9GWQySFw2+P09zUFONpi0l1yJ5dBniATgZFimCJ/cX45hDJPnjpfCzSSXa/esYvTduG+zlhGZBvOLj6LNV04SSmw18KStwDr0gNxxHD51rmX664ZJgw3ivPIT58Jump8LXhhTegP/hsN/YAJNYFquWurDh0RdMVkSYJKtRk7iKZGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vtGPbM3cYUrnp6QDYMV1xn9+hixoSjQgngEFAtBt310=;
- b=xHcp4JjNflYIPLNUDZK56gn9EM8kIhtqJ+zyB3RIK01eEG7pGNMi3siwnuJzCijaEXWIfSfDC2M/7qwFNBFzs+IpnQsy7sBGUlM8ZMhkQn6M+3TkCH5pymdWhyB//+odmauDkliQPfUInSuMud2ShWc8pEnjUoMpH1lOtRLepOn66GPqwprcHGc/rALuPZmaotINTzfH6NGmpDmPZskWIyxf6/tLYH1RCpwaPuVkOzrrxU3HkPkdOkyIy4tBpFFsIIJzvRnh851b0dZnwv0C/mH/bjKgJQylDkO7M4IjDFSnpf4fh5l5VzkTiwcvpswEvjoVbQZVCWaHv3Qu+q4IkQ==
+ bh=5zyXb6PRMNn1wV8HEhtyzL1c9ciblwBC2YNS1A9HsW0=;
+ b=MmZSreioy+cLs6IcK83C+P5ttWzTg3ifTQU4f/VKbwpwWzqhDroRfZqoyn9x1n6y/8DbOsWggIhjumZHJ1EDVhYKwiVQGd4vkuktlksj/3Pc31Avz7LWoSrxsWOHxJAoocLjPGi9EDZijW3+TZpy2k1vKHlhdNzVfmwtjBmXyAdtO5jDmr7XCMf4lJxruxp1+IJMsx9qnsUJ/LyWKMzq3tpL0vaYk2o3657pWm33pmdgffYRP0UsuPn2ZCtYnxp0Is82a+rkVrBW5DK7kXuTgm8wS89ThkwcXZVg3aWS9CwWQxMuoYLA+J+jR0rAI/2mXDXqJIb0puzQVPKGshJ3Hg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vtGPbM3cYUrnp6QDYMV1xn9+hixoSjQgngEFAtBt310=;
- b=vGgzP618GUmyznTqsRpJG2YaP8hkmFxydhWHGvZBSn1taiWnpxKCSxeJE3iZ53u5uMBOFhcsolnW1k9TD7ZcrXT6ArYISM+Fk4S/akPpCX6DDpjfETjmPUaL/JZTtssngvEqUD98+D+GKaNySkT4bDtO+DgbGhUo39FUlVHmU1g=
-Received: from MW4P222CA0008.NAMP222.PROD.OUTLOOK.COM (2603:10b6:303:114::13)
- by MN2PR12MB4192.namprd12.prod.outlook.com (2603:10b6:208:1d5::15) with
+ bh=5zyXb6PRMNn1wV8HEhtyzL1c9ciblwBC2YNS1A9HsW0=;
+ b=3b+7pqk71wfk1J+VIcYWyqLgnKRR/NRiiCTCDGp6PolTEkNbRoAtxyrtnGl02Of0GiESyEGEJyeLcnfBcTFGLtz68yh0Cou7cCw8ZBjJSGRjd+fp9dkHlimQJN3hQr3MYlg+bZA5WSTx2gZ8noKxFQuHzLe/WmyPI952NJk5wYk=
+Received: from BN0PR04CA0098.namprd04.prod.outlook.com (2603:10b6:408:ec::13)
+ by PH7PR12MB5783.namprd12.prod.outlook.com (2603:10b6:510:1d2::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
- 2026 14:43:09 +0000
-Received: from MWH0EPF000971E5.namprd02.prod.outlook.com
- (2603:10b6:303:114:cafe::79) by MW4P222CA0008.outlook.office365.com
- (2603:10b6:303:114::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.7 via Frontend Transport; Thu,
- 29 Jan 2026 14:42:54 +0000
+ 2026 14:44:09 +0000
+Received: from BN2PEPF000055E0.namprd21.prod.outlook.com
+ (2603:10b6:408:ec:cafe::ed) by BN0PR04CA0098.outlook.office365.com
+ (2603:10b6:408:ec::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9542.16 via Frontend Transport; Thu,
+ 29 Jan 2026 14:43:50 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000971E5.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ BN2PEPF000055E0.mail.protection.outlook.com (10.167.245.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 14:43:08 +0000
+ 15.20.9587.0 via Frontend Transport; Thu, 29 Jan 2026 14:44:09 +0000
 Received: from BLR-L-BHARARAO.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 29 Jan
- 2026 08:42:58 -0600
+ 2026 08:44:01 -0600
 From: Bharata B Rao <bharata@amd.com>
 To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
 CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
@@ -102,9 +102,9 @@ CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
 	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
 	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
 	<shivankg@amd.com>, Bharata B Rao <bharata@amd.com>
-Subject: [RFC PATCH v5 04/10] mm: pghot: Precision mode for pghot
-Date: Thu, 29 Jan 2026 20:10:37 +0530
-Message-ID: <20260129144043.231636-5-bharata@amd.com>
+Subject: [RFC PATCH v5 06/10] x86: ibs: In-kernel IBS driver for memory access profiling
+Date: Thu, 29 Jan 2026 20:10:39 +0530
+Message-ID: <20260129144043.231636-7-bharata@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260129144043.231636-1-bharata@amd.com>
 References: <20260129144043.231636-1-bharata@amd.com>
@@ -116,63 +116,63 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E5:EE_|MN2PR12MB4192:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7c2b319-2463-45c7-57d6-08de5f44b86d
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055E0:EE_|PH7PR12MB5783:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e3570a1-62ad-46a8-8cd5-08de5f44dc94
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013;
+	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|13003099007;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Vn2iSVkv56czQ1mRkCE00pX66ytFXVviLpTm+EWDnIGhDu4BTorZH1ZRfpiO?=
- =?us-ascii?Q?ugPz6uDer1BcYMOrFhENpdym9U0z7W5oQOFuSY6WVlGoaUeupmdt5XDcAia5?=
- =?us-ascii?Q?RZIba2Q02exM6lUTs9iKszQKUgWgTZjnjdYHzc+Pklah+KwAIIWMfAtMTgCS?=
- =?us-ascii?Q?499feAGtMJWEAW0wirTAgEnvIyiFPUTSJB5LOB2PxxnjWsbh7CU4QGr81/9R?=
- =?us-ascii?Q?1fw1ucj+1+V5TvgBkS5XgsZ0QauZ7BKdVEXUWOZB8ciFUQs4juFWloQyfuQw?=
- =?us-ascii?Q?ggQUDDyz+qBWTTKMQnKdmXnaKalgdQ+uHkNzhGrOlIUa6ipacl4uXIZp0oYn?=
- =?us-ascii?Q?c0EqdzgoxnHbAEZDRyP6c3zRwU1agIbYmWO5S4ENpN60O4W96UdwoE4VM/aI?=
- =?us-ascii?Q?cLPJFd3FeOYh+/osQqs1DGD2n52bT1kuysnrMj4Jqn3LXB1JsAD6Da2/YMDc?=
- =?us-ascii?Q?VknUJOe8cDUyCjBFvBWr7u/ttesvXyx8qVYQo6VxeCC2NZo+JQu6064wRO4s?=
- =?us-ascii?Q?ctsfAb7ARlm5U/4XD4C8TnmuJdm7MDoSLaicgh/WgpuzWql6ZNWiE0kx8SIz?=
- =?us-ascii?Q?l8Egdslju69NBp/6wjbyfTkFt43XXImp/640Vh0wQczFCjqS7zJ2ujPL656x?=
- =?us-ascii?Q?ar0qZuxViYBUp1FVM0ex01QPxlDUoX7eng7eQ2EilhCojGJKYAqt9qxxCpQN?=
- =?us-ascii?Q?//9myh/hQRbecsCTkVARv3RebMnFUtgKBG1B9FO0c5jkzo/lugzYJ4gbFT50?=
- =?us-ascii?Q?RfKdLVNL2ulNDfKlsOhaeKJJF0nWoTcuvdQMY61O7dicfiW4IXEU6dhZgEst?=
- =?us-ascii?Q?RyVSWFMr3r6vKzzvZJb1o/nDPo3lgliSQEVF4NoUqJpujvDwfwlJHEsMHuf1?=
- =?us-ascii?Q?FAmZgXpzsrKMmMmMb2pvLslaDyhlbxvIqGMR8S6EmZ9yoH2XeYT2J82IJnmP?=
- =?us-ascii?Q?uhkckNu71iNok96GM+45G6OJRCGKjCxrOredH241IdQwpQk28rXIztk55YRx?=
- =?us-ascii?Q?I/DtAkQT2nVO9+nkTLOlTP+SaAlV14pcMFcYpL+IHiu9uz8zFaz6fHdCtifw?=
- =?us-ascii?Q?pINeKENZvwsN4XByd3WxE0OWaK8lCudOHgdUOu7CC0bXIlONokOCEXDysehj?=
- =?us-ascii?Q?+4c1tSDSqqU+UodjQhDFipQt9Ue0M9gY+EarqdjeexgHqAwAMplMyogRgmHf?=
- =?us-ascii?Q?Kd2L2UEzystw3N1MWtFYuAjtKN5dyIOg6zQ06IjxLgIxdIjVxedH+90w3/Z6?=
- =?us-ascii?Q?TrrhLe9ZjWWWBXro9SqFCElyH9zw9t3LO5X6R1v1nbXp2bXjKrAQFbzMNDXr?=
- =?us-ascii?Q?bdKUPvN8E3fbNbioglCu9RzBteyWW3F1deqhzQGxr6/60g8KQ/cd4lcJYxbz?=
- =?us-ascii?Q?Xqn6/2TQyrk/KydwSCH4Xz6hJWdOgyuYPjBx4OT5UkS6XvzKIV/uajFtTOtd?=
- =?us-ascii?Q?9zL/6z6XOCchGYz+RYpu/04rUn3OGfPJgGuciogQo6rxz+DD+kceG2P0AEMz?=
- =?us-ascii?Q?F3YJ+BZ8eDYAptICyELzMXVdfxGtHqahScLdMz8W50y6vDL8TQT7NcjaCEW7?=
- =?us-ascii?Q?xAIcbhxvXzqUYzWiyb1QrGr3ZIsvkslSLcga/5rhJtA66vlEHDXJ1FOw/nJw?=
- =?us-ascii?Q?ZX/7opMjzquuQVGidjO06/7XDdImYeeYc2+tRV/TXzdJuj5NRh1M7OIxaOcW?=
- =?us-ascii?Q?Abngnw=3D=3D?=
+	=?us-ascii?Q?h04WKilV/ZrpmKBCQM/CLVdvTvDyagINShho3s3MDOMjNkt3PJDE9PAaBAN3?=
+ =?us-ascii?Q?3w50jg/yyuGNGNtMa4il9E2q/L0xzZueFa0nxIxocvZO6IRIeVAJsSAJXRFv?=
+ =?us-ascii?Q?lWvV61Y9ygADm57lFh2a0WXOsdF7LHyzwRzdyUYsdbNEpVuoFNdYjTL9wzzG?=
+ =?us-ascii?Q?CoyAy0VE6bZrIkxcueaOJ8mD3+Acb8je9jMQgXJcZrDCT+x95sQU8MGWFjV5?=
+ =?us-ascii?Q?pCN75nz23S5N2TTRW4Fs94bZYNjNr4PIYotOnvQFEhjX6hYewLmDOXzM0kud?=
+ =?us-ascii?Q?+RFrkXXaqgWMH9x95OL5daGgRmmCCOopTIf4DoDJH3h4Q1YGKVKlUG/Thi1y?=
+ =?us-ascii?Q?HLyLkOIi5HtidA3Z4Pc5LdQ3kzLiUbnT6ohhhgJnseKg22HV5CmFNFXxfS2t?=
+ =?us-ascii?Q?6mjTuPmR5RF8Eauill3GmtwALfr/38mbqb2DDIU7/XT+1py76oZez+3Kyb8U?=
+ =?us-ascii?Q?f/a++lSMk0OGyGYV2EYPYXzNMWAE+YREvgkx9mUAQR+X50sabaLn1TR64J2w?=
+ =?us-ascii?Q?pDUYzUOT7IHoqIZlIX3pDz1ou5jAxiOhHkaNONVhVOYdpPxXaDO6kSvjX36m?=
+ =?us-ascii?Q?isUblxvvZsqBZ9lUdaFuV5VogLmCwkYplaAHiy5J7daOUxvPzgpxDAtYOZj9?=
+ =?us-ascii?Q?xXd9wq3pmDubkzghxPlq3TRD/zzhxm625bgd8ahPBMoGWhpzaDP8WeaHmmUe?=
+ =?us-ascii?Q?ZLM3TmwIezJ2nZN+WX2xF1Khl/29WJ62OzY0coud+zwT0ZiZFX0TvsF/RYrB?=
+ =?us-ascii?Q?XG1HaEXRCy0R94V/CsrD5MTOXPs8kwMlLVLJarxNHlfNBcVppZT1m4NXIQWe?=
+ =?us-ascii?Q?Dnt9FaRJ9128ONYWBcDfxAahrFR/G6RgzaYGUxETF0sqqP2GHqtPa3zqdQ+v?=
+ =?us-ascii?Q?yLmmCdttx4n7V215pOC+YTWCtWvVtme0iD0/JQRBSzRnDEWtTR6VSUT0x9EX?=
+ =?us-ascii?Q?GaL2M2H/YUzdLUR5/U6F9/AV4XbI+KHDHCcya1YIOYr6EarzcGu31pTJPAA8?=
+ =?us-ascii?Q?3qKBDJU7tO4714vV8mo83oByzxYaEgCDcK8tCFQ9oHyltUsvR1WrCP9o9VfU?=
+ =?us-ascii?Q?kusEb3Lg5mokP/+lSQgpGrZr5JT5Whq5+nrVT2382aVpOW09mRoQF/u8y0hy?=
+ =?us-ascii?Q?uTC7/V9NJKndMro3pSAiFFgiG2OY1lLy/4A1eXyGXXCLjxwBrx8lWPu3oP3m?=
+ =?us-ascii?Q?ciFr1G0iWFvBmwOe27XT+C1LCoPBGV4Ftr7NnTryoEejrS40oRbSk+1FWnkJ?=
+ =?us-ascii?Q?XS6dbRUFecEyiF/xNadbskwutd9YDuT7RXJ8OoLQb011Y343D7ecBJGyYaul?=
+ =?us-ascii?Q?N4tSrMGhXlcuo8W3uQ+4rbkflUtOh2wi5iC+sPaEpXMsjjRiHjFuS76wLZCI?=
+ =?us-ascii?Q?1Hq+IP50M5jxToAxKHFatTHrRXnS+dyYM4SgxOP38pYoN9t4JWZVR1y448ZO?=
+ =?us-ascii?Q?DpO7/DFQI9ZWY9nuTDh+h6NZEBaAYjjTjcJwmUghUKB1mN5cDnN+LoKQ2NA1?=
+ =?us-ascii?Q?HNOz41Z4pF5QXvNQYIjAo7g2UvKVsutRveh7c3FUqg59yIzqchixjDIQ8sF1?=
+ =?us-ascii?Q?Yqu9pBWqIae5kCTZpA9dmJf/HH0df2O8ghmwxPFcy7tTqpHgtHMx83xyI+Zj?=
+ =?us-ascii?Q?HZ22acsg8cb0fX3H74QPdcpl1mtd8lNd9V7RvRcCNHrUJg+p8Sibzkw6F+Cj?=
+ =?us-ascii?Q?KInIbwRk8Q5ZKWZeYljDp6fDgAA=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(13003099007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 14:43:08.8374
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 14:44:09.5899
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7c2b319-2463-45c7-57d6-08de5f44b86d
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e3570a1-62ad-46a8-8cd5-08de5f44dc94
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000971E5.namprd02.prod.outlook.com
+	BN2PEPF000055E0.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4192
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2B2F61C0007
-X-Stat-Signature: fcacsg3igyrfjkohk5hirpnbzjh4u33t
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5783
 X-Rspam-User: 
-X-HE-Tag: 1769697793-147683
-X-HE-Meta: U2FsdGVkX19lwwIljuYQSRNFXwahUnq6lrp/10xLcw2YU1RvowtTL6T/C65ufKavgI9/z5Sl4txYAl1k1hElwkGhTRJJB9df1Oxa4pvEV08rUOVpYOJnNBsGmyURO3OH8G9AfVGLkLKmZiS3A6zz7w3Q/IQIxMlSoF8eCXgBTGznjH5GUbNw4MBNdxDvFs7U0sNkvMihnR1q8yu6ZOFsBumLPuj5tFJAWDgt5PXhMIrMNlPvsd3P8xS7s5tIScNaMl5TJtYy1GYWTVr4ZDtFJeBsX0YRBFaM9I9kHZxSqAoQAaPYqVB5/9nr97zR1KTcMahgMObq/gb0zsAHygfe9PLwwSQCezoxUG2sslsOlqueKRRs6x6nyVA7iNjQhhEf73xDJwXM1wXF4lt4/dTBku+oqrTknDhtf1SVF0TAmH12+MPDbp6ezUfmsl17qkxIb+lYahrI2YT64aSlBiyxfNrtlkQ2UD09odtklel4vKgqHLEO+1uWxGiOKCfEarS0uayDj2FDadMokygoG7aIOMTonyvgUrz6esGX9kb7rfYAC2E7qHdfT83X/VZ1VhJZ+O/b+L82qcagdvfNtnJhitndNZ9X/7mCWsYiixyytS1IXYHDckrxknOn7sNppgyyrXss00OdET+i9wRsSy5ipxyz3o3LkHqOH2+ZT8y+m/ewaX4AoKvIxnB6/FV6CVvsOe0KwtJ0sIi66tBKEvo77M/FShpFSq5YyraARbD4vvwzhKxWZIQckIA6oiULxje/TEPEmVeERo8RY/jVJnbtIe8k3Y4oI0KbpKfv/gRbSAKIOHpa/muEZEbAcKBaAj+THRLGucDQ9kHuawiiY3ifppzSIKS56mSlg+nEL2fXgsXa2XxT2TCuDk1MynpHZEh1oss0XM9PP7KtTlrX9jEejmfME+h5x7YIUWxOQ7dvUhswrUBvPNcO0DWCgYHCiWvWRANIJPicVEKsPAbEG9U
- bKeICxtM
- z8oQu9Ho/qhotzhq7p4XtUxPQKIiGAcqhif4bJYZyUbxrOQakUmMP/FmUUHHuPX0XJ5MEdJqgEkSXT/lZegvsz1eE5B6C0LZed0is9qenKZXrJcU5Mo3fWVrgKAa+5sablgxd/cG18NYa0ILIc/TN4suZUbIG3GsFpiwkCrtdbGdTp6vslvod1tq6JtoJwe6jUTlphYVMaIvAe8BAx6xY04DTJNbZh5xorWfnQdaMeogNmEyLhKlfhqmkLEeab/1IQslXOnDubjoATCSvbuQmssYhSEThgTxOJIT19LcyC2nxoTkVCNOf4pAWP8zVKzSkVkw9hKNIWRfjZRMRTfQxcJTQEwwgw4tKSSlRzH7uv8qyL1liHhJv9atRU7lHxsCg5kcb6HgqSWnwvkWuSwD/q6nZCBzNWrgB0xR0gSx33+pPKhdQ/W2gAsqaXLMva3Um+LX5IUXT7s9iQ80nLypmpwz1hcO/3qC2NR07fAnpI+546BE3bqi8FEcPevkkN65hUQGneCHEM0C/fe4=
+X-Rspamd-Queue-Id: 4A934180005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 79m9wrdoppi7uiyaiozb4euhxgmq3isg
+X-HE-Tag: 1769697863-928258
+X-HE-Meta: U2FsdGVkX18nMu1/HzwQuJoHzqGM2NpBB0/eqetxWYhFLPaPsmOpuarGXAS0ZzbONHwWIS9mUFmseAF+t7xf0EIhmBv/xDvPGKxhLg2xwZGpTn5OjY8BlLmWSFEI5BjfjKiFKxgysOo2z3mW4vI+qjn7MXbmQ+kzT+871eMdHeVWwdl5TsGv1Rd2Zy5EiaxEHceL4HZbe8/LgjllHb7v63VwAKSiZ+VzWiBixD5JoRc3pccNnUeuk4FpNn/8wbMTFklkGYgze/2vSL/ZCxhYPPpLePn2Dvw6oMmBI2aWh2dwOUUa+MYVOK3iPOxn7Q4SeCAKEosiFxwYZDRxrnKMs0k6Ho1/kwoJXtqaLYN9TxJnHEB6SSSA6Qzv4KsLUqVuNrYEIBngVdIllQPIomGPPqcOiSfffUfIqtaz175LXqYL1IjEdrS+zhvrTN+xae+Y8vDh77jzXg5vYwAIl1LwdhZQ/9gJhYEi4EhESV5V3vqcIjkSa9I6RA615jhO4OTiq7Mqn3DxXX2VJXu6RdvlQbQfCzszSx7p+ywmg/0AatEbchmok7jUGqib4Mnt1NU14eWUQpjRDdIDw7aw4mloQ6wH1fwcNkrZl2JXD7j177P3ZY8csWOeM4MIkWBWarU5a6Se8oDaMDiMleIsQkonRVg68XJ8vDZYtYdmNdLaGCztyMZe9oVx1iw5bzPfIEqCZVD0UWU9JTQccldWA3XiIOvL6kfKtvSTXSc2VE+gwSGoJL4cHaiGO9m0uaFrPWRPYU+qsGWIP3Qt62b7ItcfSuLkrh0q1wK13sQVlG2IL74TXLpHjrtK/Dv2cSleDr9gx/TC6B2K+wvi4z2VVAR6sOPIuo0vSyn09jfhgi+Nb4aCT1gjdTfNA2/gZL7JUTd8lvzs7WCVb+CU29+yIufaBf+qGp8v948rRaiaT/uq+EA78wgppGFQ6ZSJ1NGKjQKV8Nh/A/BB1oG5OwBJH7K
+ jLw+c9tw
+ NLfAiYrBU5SxFeeATHbS3Ee4sQh05d/HFfAqp/hd+vjCOWdKg4rr5O4p1s0+msynOudBG8nbI0ixm62Imo4joFCiKri5FxoYIeSp9ETQKlKUbJH9L54RNuvXEHqGF5ubW+EsnbaE2EknZrQhYw8lJediwJQfXcrBCjmnWF8iVYVVP4XRZ1yJltDo7G6XMuGdCZw7+gqHI/odZWOsTF3qZ8I7PmM5itEE/QkVsH9WEU8fzudoa8xluG77cJKI2EE38aOkpfD2kyJxgDK8h7nHMD/wvV+iO4xZGY0LBqlUXS15cOLQgSiYG7IGph0H24utYKKCohocHTnxEcsbCOc7e5sYs/OJUCxTORNRtCNxPDBhaPFGK2TmsALt2SY3VOuG1De8pMNCfBi/O0toVSYfLlLou7dGk6WOf/j1cQDnnPF7IV9DvwR/7mj2j6vg4jN10XN101ivhqf1gtlNbroC6EAmWR1NtQijKOnZtFAfOgJr1QnYDEClhn4flIZALXivg3VRg8F9C5mr6h1r+aD2oJXj/ALmskOt3bWtegkzrgv93V14=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,262 +181,556 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-By default, one byte per PFN is used to store hotness information.
-Limited number of bits are used to store the access time leading
-to coarse-grained time tracking. Also there aren't enough bits
-to track the toptier NID explicitly and hence the default target_nid
-is used for promotion.
+Use IBS (Instruction Based Sampling) feature present
+in AMD processors for memory access tracking. The access
+information obtained from IBS via NMI is fed to pghot
+sub-system for futher action.
 
-This precise mode relaxes the above situation by storing the
-hotness information in 4 bytes per PFN. More fine-grained
-access time tracking and toptier NID tracking becomes possible
-in this mode.
+In addition to many other information related to the memory
+access, IBS provides physical (and virtual) address of the access
+and indicates if the access came from slower tier. Only memory
+accesses originating from slower tiers are further acted upon
+by this driver.
 
-Typically useful when toptier consists of more than one node.
+The samples are initially accumulated in percpu buffers which
+are flushed to pghot hot page tracking mechanism using irq_work.
+
+TODO: Many counters are added to vmstat just as debugging aid
+for now.
+
+About IBS
+---------
+IBS can be programmed to provide data about instruction
+execution periodically. This is done by programming a desired
+sample count (number of ops) in a control register. When the
+programmed number of ops are dispatched, a micro-op gets tagged,
+various information about the tagged micro-op's execution is
+populated in IBS execution MSRs and an interrupt is raised.
+While IBS provides a lot of data for each sample, for the
+purpose of  memory access profiling, we are interested in
+linear and physical address of the memory access that reached
+DRAM. Recent AMD processors provide further filtering where
+it is possible to limit the sampling to those ops that had
+an L3 miss which greately reduces the non-useful samples.
+
+While IBS provides capability to sample instruction fetch
+and execution, only IBS execution sampling is used here
+to collect data about memory accesses that occur during
+the instruction execution.
+
+More information about IBS is available in Sec 13.3 of
+AMD64 Architecture Programmer's Manual, Volume 2:System
+Programming which is present at:
+https://bugzilla.kernel.org/attachment.cgi?id=288923
+
+Information about MSRs used for programming IBS can be
+found in Sec 2.1.14.4 of PPR Vol 1 for AMD Family 19h
+Model 11h B1 which is currently present at:
+https://www.amd.com/system/files/TechDocs/55901_0.25.zip
 
 Signed-off-by: Bharata B Rao <bharata@amd.com>
 ---
- Documentation/admin-guide/mm/pghot.txt |  4 +-
- include/linux/mmzone.h                 |  2 +-
- include/linux/pghot.h                  | 31 ++++++++++++
- mm/Kconfig                             | 11 ++++
- mm/Makefile                            |  7 ++-
- mm/pghot-precise.c                     | 70 ++++++++++++++++++++++++++
- mm/pghot.c                             | 13 +++--
- 7 files changed, 130 insertions(+), 8 deletions(-)
- create mode 100644 mm/pghot-precise.c
+ arch/x86/events/amd/ibs.c        |  10 +
+ arch/x86/include/asm/msr-index.h |  16 ++
+ arch/x86/mm/Makefile             |   1 +
+ arch/x86/mm/ibs.c                | 317 +++++++++++++++++++++++++++++++
+ include/linux/pghot.h            |   8 +
+ include/linux/vm_event_item.h    |  19 ++
+ mm/Kconfig                       |  13 ++
+ mm/vmstat.c                      |  19 ++
+ 8 files changed, 403 insertions(+)
+ create mode 100644 arch/x86/mm/ibs.c
 
-diff --git a/Documentation/admin-guide/mm/pghot.txt b/Documentation/admin-guide/mm/pghot.txt
-index 01291b72e7ab..b329e692ef89 100644
---- a/Documentation/admin-guide/mm/pghot.txt
-+++ b/Documentation/admin-guide/mm/pghot.txt
-@@ -38,7 +38,7 @@ Path: /sys/kernel/debug/pghot/
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index aca89f23d2e0..dc544d084c17 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -13,6 +13,7 @@
+ #include <linux/ptrace.h>
+ #include <linux/syscore_ops.h>
+ #include <linux/sched/clock.h>
++#include <linux/pghot.h>
  
- 3. **freq_threshold**
-    - Minimum access frequency before a page is marked ready for promotion.
--   - Range: 1 to 3
-+   - Range: 1 to 3 in default mode, 1 to 7 in precision mode.
-    - Default: 2
-    - Example:
-      # echo 3 > /sys/kernel/debug/pghot/freq_threshold
-@@ -60,7 +60,7 @@ Path: /proc/sys/vm/pghot_promote_freq_window_ms
- - Controls the time window (in ms) for counting access frequency. A page is
-   considered hot only when **freq_threshold** number of accesses occur with
-   this time period.
--- Default: 4000 (4 seconds)
-+- Default: 4000 (4 seconds) in default mode and 5000 (5s) in precision mode.
- - Example:
-   # sysctl vm.pghot_promote_freq_window_ms=3000
+ #include <asm/apic.h>
+ #include <asm/msr.h>
+@@ -1760,6 +1761,15 @@ static __init int amd_ibs_init(void)
+ {
+ 	u32 caps;
  
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 22e08befb096..49c374064fc2 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1924,7 +1924,7 @@ struct mem_section {
- #ifdef CONFIG_PGHOT
- 	/*
- 	 * Per-PFN hotness data for this section.
--	 * Array of phi_t (u8 in default mode).
-+	 * Array of phi_t (u8 in default mode, u32 in precision mode).
- 	 * LSB is used as PGHOT_SECTION_HOT_BIT flag.
- 	 */
- 	void *hot_map;
-diff --git a/include/linux/pghot.h b/include/linux/pghot.h
-index 88e57aab697b..d3d59b0c0cf6 100644
---- a/include/linux/pghot.h
-+++ b/include/linux/pghot.h
-@@ -48,6 +48,36 @@ enum pghot_src_enabled {
++	/*
++	 * TODO: Find a clean way to disable perf IBS so that IBS
++	 * can be used for memory access profiling.
++	 */
++	if (hwmem_access_profiler_inuse()) {
++		pr_info("IBS isn't available for perf use\n");
++		return 0;
++	}
++
+ 	caps = __get_ibs_caps();
+ 	if (!caps)
+ 		return -ENODEV;	/* ibs not supported by the cpu */
+diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-index.h
+index 3d0a0950d20a..3c5d69ec83a2 100644
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -784,6 +784,22 @@
+ /* AMD Last Branch Record MSRs */
+ #define MSR_AMD64_LBR_SELECT			0xc000010e
  
- #define PGHOT_DEFAULT_NODE		0
++/* AMD IBS MSR bits */
++#define MSR_AMD64_IBSOPDATA2_DATASRC			0x7
++#define MSR_AMD64_IBSOPDATA2_DATASRC_LCL_CACHE		0x1
++#define MSR_AMD64_IBSOPDATA2_DATASRC_PEER_CACHE_NEAR	0x2
++#define MSR_AMD64_IBSOPDATA2_DATASRC_DRAM		0x3
++#define MSR_AMD64_IBSOPDATA2_DATASRC_FAR_CCX_CACHE	0x5
++#define MSR_AMD64_IBSOPDATA2_DATASRC_EXT_MEM		0x8
++#define	MSR_AMD64_IBSOPDATA2_RMTNODE			0x10
++
++#define MSR_AMD64_IBSOPDATA3_LDOP		BIT_ULL(0)
++#define MSR_AMD64_IBSOPDATA3_STOP		BIT_ULL(1)
++#define MSR_AMD64_IBSOPDATA3_DCMISS		BIT_ULL(7)
++#define MSR_AMD64_IBSOPDATA3_LADDR_VALID	BIT_ULL(17)
++#define MSR_AMD64_IBSOPDATA3_PADDR_VALID	BIT_ULL(18)
++#define MSR_AMD64_IBSOPDATA3_L2MISS		BIT_ULL(20)
++
+ /* Zen4 */
+ #define MSR_ZEN4_BP_CFG                 0xc001102e
+ #define MSR_ZEN4_BP_CFG_BP_SPEC_REDUCE_BIT 4
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index 5b9908f13dcf..361a456582e9 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -57,3 +57,4 @@ obj-$(CONFIG_X86_MEM_ENCRYPT)	+= mem_encrypt.o
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
  
-+#if defined(CONFIG_PGHOT_PRECISE)
-+#define PGHOT_DEFAULT_FREQ_WINDOW	(5 * MSEC_PER_SEC)
+ obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_boot.o
++obj-$(CONFIG_HWMEM_PROFILER)	+= ibs.o
+diff --git a/arch/x86/mm/ibs.c b/arch/x86/mm/ibs.c
+new file mode 100644
+index 000000000000..752f688375f9
+--- /dev/null
++++ b/arch/x86/mm/ibs.c
+@@ -0,0 +1,317 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/init.h>
++#include <linux/pghot.h>
++#include <linux/percpu.h>
++#include <linux/workqueue.h>
++#include <linux/irq_work.h>
++
++#include <asm/nmi.h>
++#include <asm/perf_event.h> /* TODO: Move defns like IBS_OP_ENABLE into non-perf header */
++#include <asm/apic.h>
++
++bool hwmem_access_profiling;
++
++static u64 ibs_config __read_mostly;
++static u32 ibs_caps;
++
++#define IBS_NR_SAMPLES	150
 +
 +/*
-+ * Bits 0-26 are used to store nid, frequency and time.
-+ * Bits 27-30 are unused now.
-+ * Bit 31 is used to indicate the page is ready for migration.
++ * Basic access info captured for each memory access.
 + */
-+#define PGHOT_MIGRATE_READY		31
++struct ibs_sample {
++	unsigned long pfn;
++	unsigned long time;	/* jiffies when accessed */
++	int nid;		/* Accessing node ID, if known */
++};
 +
-+#define PGHOT_NID_WIDTH			10
-+#define PGHOT_FREQ_WIDTH		3
-+/* time is stored in 14 bits which can represent up to 16s with HZ=1000 */
-+#define PGHOT_TIME_WIDTH		14
++/*
++ * Percpu buffer of access samples. Samples are accumulated here
++ * before pushing them to pghot sub-system for further action.
++ */
++struct ibs_sample_pcpu {
++	struct ibs_sample samples[IBS_NR_SAMPLES];
++	int head, tail;
++};
 +
-+#define PGHOT_NID_SHIFT			0
-+#define PGHOT_FREQ_SHIFT		(PGHOT_NID_SHIFT + PGHOT_NID_WIDTH)
-+#define PGHOT_TIME_SHIFT		(PGHOT_FREQ_SHIFT + PGHOT_FREQ_WIDTH)
++struct ibs_sample_pcpu __percpu *ibs_s;
 +
-+#define PGHOT_NID_MASK			GENMASK(PGHOT_NID_WIDTH - 1, 0)
-+#define PGHOT_FREQ_MASK			GENMASK(PGHOT_FREQ_WIDTH - 1, 0)
-+#define PGHOT_TIME_MASK			GENMASK(PGHOT_TIME_WIDTH - 1, 0)
++/*
++ * The workqueue for pushing the percpu access samples to pghot sub-system.
++ */
++static struct work_struct ibs_work;
++static struct irq_work ibs_irq_work;
 +
-+#define PGHOT_NID_MAX			((1 << PGHOT_NID_WIDTH) - 1)
-+#define PGHOT_FREQ_MAX			((1 << PGHOT_FREQ_WIDTH) - 1)
-+#define PGHOT_TIME_MAX			((1 << PGHOT_TIME_WIDTH) - 1)
++bool hwmem_access_profiler_inuse(void)
++{
++	return hwmem_access_profiling;
++}
 +
-+typedef u32 phi_t;
++/*
++ * Record the IBS-reported access sample in percpu buffer.
++ * Called from IBS NMI handler.
++ */
++static int ibs_push_sample(unsigned long pfn, int nid, unsigned long time)
++{
++	struct ibs_sample_pcpu *ibs_pcpu = raw_cpu_ptr(ibs_s);
++	int next = ibs_pcpu->head + 1;
 +
-+#else	/* !CONFIG_PGHOT_PRECISE */
- #define PGHOT_DEFAULT_FREQ_WINDOW	(4 * MSEC_PER_SEC)
++	if (next >= IBS_NR_SAMPLES)
++		next = 0;
++
++	if (next == ibs_pcpu->tail)
++		return 0;
++
++	ibs_pcpu->samples[ibs_pcpu->head].pfn = pfn;
++	ibs_pcpu->samples[ibs_pcpu->head].time = time;
++	ibs_pcpu->samples[ibs_pcpu->head].nid = nid;
++	ibs_pcpu->head = next;
++	return 1;
++}
++
++static int ibs_pop_sample(struct ibs_sample *s)
++{
++	struct ibs_sample_pcpu *ibs_pcpu = raw_cpu_ptr(ibs_s);
++
++	int next = ibs_pcpu->tail + 1;
++
++	if (ibs_pcpu->head == ibs_pcpu->tail)
++		return 0;
++
++	if (next >= IBS_NR_SAMPLES)
++		next = 0;
++
++	*s = ibs_pcpu->samples[ibs_pcpu->tail];
++	ibs_pcpu->tail = next;
++	return 1;
++}
++
++/*
++ * Remove access samples from percpu buffer and send them
++ * to pghot sub-system for further action.
++ */
++static void ibs_work_handler(struct work_struct *work)
++{
++	struct ibs_sample s;
++
++	while (ibs_pop_sample(&s))
++		pghot_record_access(s.pfn, s.nid, PGHOT_HW_HINTS, s.time);
++}
++
++static void ibs_irq_handler(struct irq_work *i)
++{
++	schedule_work_on(smp_processor_id(), &ibs_work);
++}
++
++/*
++ * IBS NMI handler: Process the memory access info reported by IBS.
++ *
++ * Reads the MSRs to collect all the information about the reported
++ * memory access, validates the access, stores the valid sample and
++ * schedules the work on this CPU to further process the sample.
++ */
++static int ibs_overflow_handler(unsigned int cmd, struct pt_regs *regs)
++{
++	struct mm_struct *mm = current->mm;
++	u64 ops_ctl, ops_data3, ops_data2;
++	u64 laddr = -1, paddr = -1;
++	u64 data_src, rmt_node;
++	struct page *page;
++	unsigned long pfn;
++
++	rdmsrl(MSR_AMD64_IBSOPCTL, ops_ctl);
++
++	/*
++	 * When IBS sampling period is reprogrammed via read-modify-update
++	 * of MSR_AMD64_IBSOPCTL, overflow NMIs could be generated with
++	 * IBS_OP_ENABLE not set. For such cases, return as HANDLED.
++	 *
++	 * With this, the handler will say "handled" for all NMIs that
++	 * aren't related to this NMI.  This stems from the limitation of
++	 * having both status and control bits in one MSR.
++	 */
++	if (!(ops_ctl & IBS_OP_VAL))
++		goto handled;
++
++	wrmsrl(MSR_AMD64_IBSOPCTL, ops_ctl & ~IBS_OP_VAL);
++
++	count_vm_event(HWHINT_NR_EVENTS);
++
++	if (!user_mode(regs)) {
++		count_vm_event(HWHINT_KERNEL);
++		goto handled;
++	}
++
++	if (!mm) {
++		count_vm_event(HWHINT_KTHREAD);
++		goto handled;
++	}
++
++	rdmsrl(MSR_AMD64_IBSOPDATA3, ops_data3);
++
++	/* Load/Store ops only */
++	/* TODO: DataSrc isn't valid for stores, so filter out stores? */
++	if (!(ops_data3 & (MSR_AMD64_IBSOPDATA3_LDOP |
++			   MSR_AMD64_IBSOPDATA3_STOP))) {
++		count_vm_event(HWHINT_NON_LOAD_STORES);
++		goto handled;
++	}
++
++	/* Discard the sample if it was L1 or L2 hit */
++	if (!(ops_data3 & (MSR_AMD64_IBSOPDATA3_DCMISS |
++			   MSR_AMD64_IBSOPDATA3_L2MISS))) {
++		count_vm_event(HWHINT_DC_L2_HITS);
++		goto handled;
++	}
++
++	rdmsrl(MSR_AMD64_IBSOPDATA2, ops_data2);
++	data_src = ops_data2 & MSR_AMD64_IBSOPDATA2_DATASRC;
++	if (ibs_caps & IBS_CAPS_ZEN4)
++		data_src |= ((ops_data2 & 0xC0) >> 3);
++
++	switch (data_src) {
++	case MSR_AMD64_IBSOPDATA2_DATASRC_LCL_CACHE:
++		count_vm_event(HWHINT_LOCAL_L3L1L2);
++		break;
++	case MSR_AMD64_IBSOPDATA2_DATASRC_PEER_CACHE_NEAR:
++		count_vm_event(HWHINT_LOCAL_PEER_CACHE_NEAR);
++		break;
++	case MSR_AMD64_IBSOPDATA2_DATASRC_DRAM:
++		count_vm_event(HWHINT_DRAM_ACCESSES);
++		break;
++	case MSR_AMD64_IBSOPDATA2_DATASRC_EXT_MEM:
++		count_vm_event(HWHINT_CXL_ACCESSES);
++		break;
++	case MSR_AMD64_IBSOPDATA2_DATASRC_FAR_CCX_CACHE:
++		count_vm_event(HWHINT_FAR_CACHE_HITS);
++		break;
++	}
++
++	rmt_node = ops_data2 & MSR_AMD64_IBSOPDATA2_RMTNODE;
++	if (rmt_node)
++		count_vm_event(HWHINT_REMOTE_NODE);
++
++	/* Is linear addr valid? */
++	if (ops_data3 & MSR_AMD64_IBSOPDATA3_LADDR_VALID)
++		rdmsrl(MSR_AMD64_IBSDCLINAD, laddr);
++	else {
++		count_vm_event(HWHINT_LADDR_INVALID);
++		goto handled;
++	}
++
++	/* Discard kernel address accesses */
++	if (laddr & (1UL << 63)) {
++		count_vm_event(HWHINT_KERNEL_ADDR);
++		goto handled;
++	}
++
++	/* Is phys addr valid? */
++	if (ops_data3 & MSR_AMD64_IBSOPDATA3_PADDR_VALID)
++		rdmsrl(MSR_AMD64_IBSDCPHYSAD, paddr);
++	else {
++		count_vm_event(HWHINT_PADDR_INVALID);
++		goto handled;
++	}
++
++	pfn = PHYS_PFN(paddr);
++	page = pfn_to_online_page(pfn);
++	if (!page)
++		goto handled;
++
++	if (!PageLRU(page)) {
++		count_vm_event(HWHINT_NON_LRU);
++		goto handled;
++	}
++
++	if (!ibs_push_sample(pfn, numa_node_id(), jiffies)) {
++		count_vm_event(HWHINT_BUFFER_FULL);
++		goto handled;
++	}
++
++	irq_work_queue(&ibs_irq_work);
++	count_vm_event(HWHINT_USEFUL_SAMPLES);
++
++handled:
++	return NMI_HANDLED;
++}
++
++static inline int get_ibs_lvt_offset(void)
++{
++	u64 val;
++
++	rdmsrl(MSR_AMD64_IBSCTL, val);
++	if (!(val & IBSCTL_LVT_OFFSET_VALID))
++		return -EINVAL;
++
++	return val & IBSCTL_LVT_OFFSET_MASK;
++}
++
++static void setup_APIC_ibs(void)
++{
++	int offset;
++
++	offset = get_ibs_lvt_offset();
++	if (offset < 0)
++		goto failed;
++
++	if (!setup_APIC_eilvt(offset, 0, APIC_EILVT_MSG_NMI, 0))
++		return;
++failed:
++	pr_warn("IBS APIC setup failed on cpu #%d\n",
++		smp_processor_id());
++}
++
++static void clear_APIC_ibs(void)
++{
++	int offset;
++
++	offset = get_ibs_lvt_offset();
++	if (offset >= 0)
++		setup_APIC_eilvt(offset, 0, APIC_EILVT_MSG_FIX, 1);
++}
++
++static int x86_amd_ibs_access_profile_startup(unsigned int cpu)
++{
++	setup_APIC_ibs();
++	return 0;
++}
++
++static int x86_amd_ibs_access_profile_teardown(unsigned int cpu)
++{
++	clear_APIC_ibs();
++	return 0;
++}
++
++static int __init ibs_access_profiling_init(void)
++{
++	if (!boot_cpu_has(X86_FEATURE_IBS)) {
++		pr_info("IBS capability is unavailable for access profiling\n");
++		return 0;
++	}
++
++	ibs_s = alloc_percpu_gfp(struct ibs_sample_pcpu, GFP_KERNEL | __GFP_ZERO);
++	if (!ibs_s)
++		return 0;
++
++	INIT_WORK(&ibs_work, ibs_work_handler);
++	init_irq_work(&ibs_irq_work, ibs_irq_handler);
++
++	/* Uses IBS Op sampling */
++	ibs_config = IBS_OP_CNT_CTL | IBS_OP_ENABLE;
++	ibs_caps = cpuid_eax(IBS_CPUID_FEATURES);
++	if (ibs_caps & IBS_CAPS_ZEN4)
++		ibs_config |= IBS_OP_L3MISSONLY;
++
++	register_nmi_handler(NMI_LOCAL, ibs_overflow_handler, 0, "ibs");
++
++	cpuhp_setup_state(CPUHP_AP_PERF_X86_AMD_IBS_STARTING,
++			  "x86/amd/ibs_access_profile:starting",
++			  x86_amd_ibs_access_profile_startup,
++			  x86_amd_ibs_access_profile_teardown);
++
++	pr_info("IBS setup for memory access profiling\n");
++	return 0;
++}
++
++arch_initcall(ibs_access_profiling_init);
+diff --git a/include/linux/pghot.h b/include/linux/pghot.h
+index d3d59b0c0cf6..20ea9767dbdd 100644
+--- a/include/linux/pghot.h
++++ b/include/linux/pghot.h
+@@ -2,6 +2,14 @@
+ #ifndef _LINUX_PGHOT_H
+ #define _LINUX_PGHOT_H
  
- /*
-@@ -74,6 +104,7 @@ enum pghot_src_enabled {
- #define PGHOT_TIME_MAX			((1 << PGHOT_TIME_WIDTH) - 1)
- 
- typedef u8 phi_t;
-+#endif /* CONFIG_PGHOT_PRECISE */
- 
- #define PGHOT_RECORD_SIZE		sizeof(phi_t)
- 
++#include <linux/types.h>
++
++#ifdef CONFIG_HWMEM_PROFILER
++bool hwmem_access_profiler_inuse(void);
++#else
++static inline bool hwmem_access_profiler_inuse(void) { return false; }
++#endif
++
+ /* Page hotness temperature sources */
+ enum pghot_src {
+ 	PGHOT_HW_HINTS,
+diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+index 5b8fd93b55fd..67efbca9051c 100644
+--- a/include/linux/vm_event_item.h
++++ b/include/linux/vm_event_item.h
+@@ -193,6 +193,25 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+ 		PGHOT_RECORD_HWHINTS,
+ 		PGHOT_RECORD_PGTSCANS,
+ 		PGHOT_RECORD_HINTFAULTS,
++#ifdef CONFIG_HWMEM_PROFILER
++		HWHINT_NR_EVENTS,
++		HWHINT_KERNEL,
++		HWHINT_KTHREAD,
++		HWHINT_NON_LOAD_STORES,
++		HWHINT_DC_L2_HITS,
++		HWHINT_LOCAL_L3L1L2,
++		HWHINT_LOCAL_PEER_CACHE_NEAR,
++		HWHINT_FAR_CACHE_HITS,
++		HWHINT_DRAM_ACCESSES,
++		HWHINT_CXL_ACCESSES,
++		HWHINT_REMOTE_NODE,
++		HWHINT_LADDR_INVALID,
++		HWHINT_KERNEL_ADDR,
++		HWHINT_PADDR_INVALID,
++		HWHINT_NON_LRU,
++		HWHINT_BUFFER_FULL,
++		HWHINT_USEFUL_SAMPLES,
++#endif /* CONFIG_HWMEM_PROFILER */
+ #endif /* CONFIG_PGHOT */
+ 		NR_VM_EVENT_ITEMS
+ };
 diff --git a/mm/Kconfig b/mm/Kconfig
-index f4f0147faac5..fde5aee3e16f 100644
+index fde5aee3e16f..07b16aece877 100644
 --- a/mm/Kconfig
 +++ b/mm/Kconfig
-@@ -1478,6 +1478,17 @@ config PGHOT
- 	  This adds 1 byte of metadata overhead per page in lower-tier
- 	  memory nodes.
+@@ -1489,6 +1489,19 @@ config PGHOT_PRECISE
+ 	  4 bytes per page against the default one byte per page. Preferable
+ 	  to enable this on systems with multiple nodes in toptier.
  
-+config PGHOT_PRECISE
-+	bool "Hot page tracking precision mode"
++config HWMEM_PROFILER
++	bool "HW based memory access profiling"
 +	def_bool n
 +	depends on PGHOT
++	depends on X86_64
 +	help
-+	  Enables precision mode for tracking hot pages with pghot sub-system.
-+	  Adds fine-grained access time tracking and explicit toptier target
-+	  NID tracking. Precise hot page tracking comes at the cost of using
-+	  4 bytes per page against the default one byte per page. Preferable
-+	  to enable this on systems with multiple nodes in toptier.
++	  Some hardware platforms are capable of providing memory access
++	  information in direct and actionable manner. Instruction Based
++	  Sampling (IBS) present on AMD Zen CPUs in one such example.
++	  Memory accesses obtained via such HW based mechanisms are
++	  rolled up to PGHOT sub-system for further action like hot page
++	  promotion or NUMA Balancing
 +
  source "mm/damon/Kconfig"
  
  endmenu
-diff --git a/mm/Makefile b/mm/Makefile
-index 655a27f3a215..89f999647752 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -147,4 +147,9 @@ obj-$(CONFIG_SHRINKER_DEBUG) += shrinker_debug.o
- obj-$(CONFIG_EXECMEM) += execmem.o
- obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
- obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
--obj-$(CONFIG_PGHOT) += pghot.o pghot-tunables.o pghot-default.o
-+obj-$(CONFIG_PGHOT) += pghot.o pghot-tunables.o
-+ifdef CONFIG_PGHOT_PRECISE
-+obj-$(CONFIG_PGHOT) += pghot-precise.o
-+else
-+obj-$(CONFIG_PGHOT) += pghot-default.o
-+endif
-diff --git a/mm/pghot-precise.c b/mm/pghot-precise.c
-new file mode 100644
-index 000000000000..d8d4f15b3f9f
---- /dev/null
-+++ b/mm/pghot-precise.c
-@@ -0,0 +1,70 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * pghot: Precision mode
-+ *
-+ * 4 byte hotness record per PFN (u32)
-+ * NID, time and frequency tracked as part of the record.
-+ */
-+
-+#include <linux/pghot.h>
-+#include <linux/jiffies.h>
-+
-+unsigned long pghot_access_latency(unsigned long old_time, unsigned long time)
-+{
-+	return jiffies_to_msecs((time - old_time) & PGHOT_TIME_MASK);
-+}
-+
-+bool pghot_update_record(phi_t *phi, int nid, unsigned long now)
-+{
-+	phi_t freq, old_freq, hotness, old_hotness, old_time, old_nid;
-+	phi_t time = now & PGHOT_TIME_MASK;
-+
-+	old_hotness = READ_ONCE(*phi);
-+	do {
-+		bool new_window = false;
-+
-+		hotness = old_hotness;
-+		old_nid = (hotness >> PGHOT_NID_SHIFT) & PGHOT_NID_MASK;
-+		old_freq = (hotness >> PGHOT_FREQ_SHIFT) & PGHOT_FREQ_MASK;
-+		old_time = (hotness >> PGHOT_TIME_SHIFT) & PGHOT_TIME_MASK;
-+
-+		if (pghot_access_latency(old_time, time) > sysctl_pghot_freq_window)
-+			new_window = true;
-+
-+		if (new_window)
-+			freq = 1;
-+		else if (old_freq < PGHOT_FREQ_MAX)
-+			freq = old_freq + 1;
-+		else
-+			freq = old_freq;
-+		nid = (nid == NUMA_NO_NODE) ? pghot_target_nid : nid;
-+
-+		hotness &= ~(PGHOT_NID_MASK << PGHOT_NID_SHIFT);
-+		hotness &= ~(PGHOT_FREQ_MASK << PGHOT_FREQ_SHIFT);
-+		hotness &= ~(PGHOT_TIME_MASK << PGHOT_TIME_SHIFT);
-+
-+		hotness |= (nid & PGHOT_NID_MASK) << PGHOT_NID_SHIFT;
-+		hotness |= (freq & PGHOT_FREQ_MASK) << PGHOT_FREQ_SHIFT;
-+		hotness |= (time & PGHOT_TIME_MASK) << PGHOT_TIME_SHIFT;
-+
-+		if (freq >= pghot_freq_threshold)
-+			hotness |= BIT(PGHOT_MIGRATE_READY);
-+	} while (unlikely(!try_cmpxchg(phi, &old_hotness, hotness)));
-+	return !!(hotness & BIT(PGHOT_MIGRATE_READY));
-+}
-+
-+int pghot_get_record(phi_t *phi, int *nid, int *freq, unsigned long *time)
-+{
-+	phi_t old_hotness, hotness = 0;
-+
-+	old_hotness = READ_ONCE(*phi);
-+	do {
-+		if (!(old_hotness & BIT(PGHOT_MIGRATE_READY)))
-+			return -EINVAL;
-+	} while (unlikely(!try_cmpxchg(phi, &old_hotness, hotness)));
-+
-+	*nid = (old_hotness >> PGHOT_NID_SHIFT) & PGHOT_NID_MASK;
-+	*freq = (old_hotness >> PGHOT_FREQ_SHIFT) & PGHOT_FREQ_MASK;
-+	*time = (old_hotness >> PGHOT_TIME_SHIFT) & PGHOT_TIME_MASK;
-+	return 0;
-+}
-diff --git a/mm/pghot.c b/mm/pghot.c
-index 95b5012d5b99..bf1d9029cbaa 100644
---- a/mm/pghot.c
-+++ b/mm/pghot.c
-@@ -10,6 +10,9 @@
-  * the frequency of access and last access time. Promotions are done
-  * to a default toptier NID.
-  *
-+ * In the precision mode, 4 bytes are used to store the frequency
-+ * of access, last access time and the accessing NID.
-+ *
-  * A kernel thread named kmigrated is provided to migrate or promote
-  * the hot pages. kmigrated runs for each lower tier node. It iterates
-  * over the node's PFNs and  migrates pages marked for migration into
-@@ -52,13 +55,15 @@ static bool kmigrated_started __ro_after_init;
-  * for the purpose of tracking page hotness and subsequent promotion.
-  *
-  * @pfn: PFN of the page
-- * @nid: Unused
-+ * @nid: Target NID to where the page needs to be migrated in precision
-+ *       mode but unused in default mode
-  * @src: The identifier of the sub-system that reports the access
-  * @now: Access time in jiffies
-  *
-- * Updates the frequency and time of access and marks the page as
-- * ready for migration if the frequency crosses a threshold. The pages
-- * marked for migration are migrated by kmigrated kernel thread.
-+ * Updates the NID (in precision mode only), frequency and time of access
-+ * and marks the page as ready for migration if the frequency crosses a
-+ * threshold. The pages marked for migration are migrated by kmigrated
-+ * kernel thread.
-  *
-  * Return: 0 on success and -EINVAL on failure to record the access.
-  */
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index f6f91b9dd887..62c47f44edf0 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -1506,6 +1506,25 @@ const char * const vmstat_text[] = {
+ 	[I(PGHOT_RECORD_HWHINTS)]		= "pghot_recorded_hwhints",
+ 	[I(PGHOT_RECORD_PGTSCANS)]		= "pghot_recorded_pgtscans",
+ 	[I(PGHOT_RECORD_HINTFAULTS)]		= "pghot_recorded_hintfaults",
++#ifdef CONFIG_HWMEM_PROFILER
++	[I(HWHINT_NR_EVENTS)]			= "hwhint_nr_events",
++	[I(HWHINT_KERNEL)]			= "hwhint_kernel",
++	[I(HWHINT_KTHREAD)]			= "hwhint_kthread",
++	[I(HWHINT_NON_LOAD_STORES)]		= "hwhint_non_load_stores",
++	[I(HWHINT_DC_L2_HITS)]			= "hwhint_dc_l2_hits",
++	[I(HWHINT_LOCAL_L3L1L2)]		= "hwhint_local_l3l1l2",
++	[I(HWHINT_LOCAL_PEER_CACHE_NEAR)]	= "hwhint_local_peer_cache_near",
++	[I(HWHINT_FAR_CACHE_HITS)]		= "hwhint_far_cache_hits",
++	[I(HWHINT_DRAM_ACCESSES)]		= "hwhint_dram_accesses",
++	[I(HWHINT_CXL_ACCESSES)]		= "hwhint_cxl_accesses",
++	[I(HWHINT_REMOTE_NODE)]			= "hwhint_remote_node",
++	[I(HWHINT_LADDR_INVALID)]		= "hwhint_invalid_laddr",
++	[I(HWHINT_KERNEL_ADDR)]			= "hwhint_kernel_addr",
++	[I(HWHINT_PADDR_INVALID)]		= "hwhint_invalid_paddr",
++	[I(HWHINT_NON_LRU)]			= "hwhint_non_lru",
++	[I(HWHINT_BUFFER_FULL)]			= "hwhint_buffer_full",
++	[I(HWHINT_USEFUL_SAMPLES)]		= "hwhint_useful_samples",
++#endif /* CONFIG_HWMEM_PROFILER */
+ #endif /* CONFIG_PGHOT */
+ #undef I
+ #endif /* CONFIG_VM_EVENT_COUNTERS */
 -- 
 2.34.1
 
