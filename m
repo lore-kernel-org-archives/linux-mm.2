@@ -4,93 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6043D46BED
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 00:44:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2480D46C01
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 00:44:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0EBC6B0088; Wed, 28 Jan 2026 19:44:08 -0500 (EST)
+	id 349B26B0089; Wed, 28 Jan 2026 19:44:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD8EA6B0089; Wed, 28 Jan 2026 19:44:08 -0500 (EST)
+	id 2F44D6B008A; Wed, 28 Jan 2026 19:44:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D063B6B008A; Wed, 28 Jan 2026 19:44:08 -0500 (EST)
+	id 1F2FB6B008C; Wed, 28 Jan 2026 19:44:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C9E96B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:44:08 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 16D505B75C
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:44:08 +0000 (UTC)
-X-FDA: 84383154576.08.2EC52A2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7E214140002
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:44:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NI7vmT9C;
-	spf=pass (imf26.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769647446;
+	by kanga.kvack.org (Postfix) with ESMTP id 0F7FD6B0089
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:44:41 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id CD9775B765
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:44:40 +0000 (UTC)
+X-FDA: 84383155920.17.EE51FC0
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E03304000E
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:44:38 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OfbsWINi;
+	spf=pass (imf04.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769647478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BqSrsgpb1WsGpoWhyfTlBdkBSLXacmN5CFVaA3ukqqQ=;
-	b=4aowol/WAsiLfytJXrf5oCuQI61aG3rLn9AnRy5a1siWeBFnX6Btkv95xVQ3jM19CNIXjJ
-	jWkaIVlR3/oC/Y76fEIPXroBfRpC8/Y31Rf+HWOUOhRhW2MOkbZABzW3nj/b4Dt4iVJnWp
-	tj4wFcbtG2bLDCInOLPho2lnOVKOV1M=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NI7vmT9C;
-	spf=pass (imf26.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769647446; a=rsa-sha256;
-	cv=none;
-	b=FOV2kdaYrFpL0bpNtvN6fBk7TK27LRdnp6/ZfGYzh57o2kAFUbMaYK6hVGugae6du0jVz3
-	oSmqSVwe1ikv2zrwEaDk6RvtB/b/nnjTvYHdX1HM3U69+c0pH5lJ9LiIYLV3Qq5UGIKTQ2
-	7J8AvMfi4uirMKmjQWacDVM8txbrBQI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BDF8160054;
-	Thu, 29 Jan 2026 00:44:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D83AC4CEF1;
-	Thu, 29 Jan 2026 00:44:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769647445;
-	bh=du+Chat2KKUjWi9KMstZ4LpJLC7xzl/p+SbRJ5Wo4Zk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NI7vmT9CRQFjO8mg1hFcsnq+/zwLSuSJG5XMxheGO3KEhe7eyZQdBY7VfZb+1nCGe
-	 R9woJsKNb3DCaoOzYBoG/vEBz6HwICn+EunyGgRGlbqhx2UAmewFUiSdIJZmHZJDFz
-	 MbCo2VP9ytTKwTlIePkAuci6DO7CYMhxir91QvsfJQhVaIk5fHM81UQd3OdOdJiYj2
-	 uaTuRP+cbyJ6/d24vJgrmraoutXjgUHHfsutaqzIJ5i9nteMYtT7QxBzSxQ3papiPZ
-	 WihvCxMaKaukGT/qogCcD6Vtgg0RXFDPE/CFY9yjx4v20buEFL4QTRGtIr0HCTv4Oz
-	 7XF37cwgR/2FA==
-Date: Wed, 28 Jan 2026 16:44:04 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
-	david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
-	hch@lst.de, ritesh.list@gmail.com, dave@stgolabs.net,
-	cem@kernel.org, wangyufei@vivo.com, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-xfs@vger.kernel.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v3 3/6] xfs: add per-inode AG prediction map and dirty-AG
- bitmap
-Message-ID: <20260129004404.GA7712@frogsfrogsfrogs>
-References: <20260116100818.7576-1-kundan.kumar@samsung.com>
- <CGME20260116101251epcas5p1cf5b48f2efb14fe4387be3053b3c3ebc@epcas5p1.samsung.com>
- <20260116100818.7576-4-kundan.kumar@samsung.com>
+	bh=XwM3zfTFqHE5kmjZguuH0nYrlQY8HFwC7+d1W+Ezm88=;
+	b=7HslRHvIfa0wJfT6YccitYAnRp8V4alYbdv4+i3jL1YHmMl6cFzoP9ZA5E7Uza9iCM3b6i
+	pgPyYvvT1fiiCi3DHU70dEUkcBK6f9nEHbUG+S6pQsrj2QibEPRCpErdkoO3BhY2O62Xta
+	n23oETFqSHoDSu3Zi0figLGpQ6vaGTg=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OfbsWINi;
+	spf=pass (imf04.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.219.41 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769647478; a=rsa-sha256;
+	cv=pass;
+	b=1qHaWCyhUSgqgDa2Wgk/391V16dUTMRRJH2MYMD5yc5GdsB4dWlJ/pLrL3tatY3JWCWEb9
+	0t0jwqY8c4SBjKkrTxT0xDZHwaJEwnGDhgeUzTkPq19h8kCNAZcv/fYA5bal2OneQi+Pxb
+	q/kn0y5QOyFBq+xG5nCzoP/szJOWib0=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-894703956b8so7510106d6.1
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:44:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769647478; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lFRn5Dsq+SssWa3b3TLBsbEdoBR4kwbXke5yQDEUR6SM2pvsuPOlmkE6v4ZDHFXW8W
+         kRySEb4RwuxoNveuAqOrROsQmSYlOf5DAWoVuvvy4EyCAqEdZMP89Xc83+gc82ieO/Vp
+         LpteuobTaFph9aB4+shZUyxQ52HGdw3jyCIV0oELMLzH3ln9PigpvMeklsfFzVQp+bfv
+         DevifeJ2DefBJp5XF4V96IIO6YEHgbQWujFENyPaWiSVFoNttOOZOSFN1uASwwkPE/G3
+         CWaQKhfr5dD5h3k3vbDR6aeP0JPonRpoERa36bXWbUXtr/LBpgvohpys1RcXVm//ZyGm
+         V2ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=XwM3zfTFqHE5kmjZguuH0nYrlQY8HFwC7+d1W+Ezm88=;
+        fh=CzQQQ4l3IJAM5rpWzMuPkrB+6ruLCocjaSBzYZ9/IIY=;
+        b=cg82cKbPPjkLJ5sP1HrOSnBel5/bon28lM659pYEzIuPJlmuex8DvEeTOcr3tmX3VP
+         /SsTfcXJA4pV3GVsJAaBImE6Laags6NIS7QcUga46n58AC8WDs8uGiLjsUNcrKwFXVXs
+         DBU6EX7d66r4aMSNuiKpewqAuso5QDxWkgCAPxeKR8h3d9+XBlnL20eEND6b5rQ3hT2z
+         STtFbazGyxY3ODJ1HtSAAXViReqOMY/18TEMutw3xtBahGDlD5CVjQrf4rLF8XXwlZbQ
+         CLZnMWw8iyf8aGFje3uw/GKr3BcojGhbX9bpb9rFrp6t+JYTYL/2FPxEz1ejb0oc78u8
+         wMXA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769647478; x=1770252278; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XwM3zfTFqHE5kmjZguuH0nYrlQY8HFwC7+d1W+Ezm88=;
+        b=OfbsWINi1004LRLGZJQgC0JGOdN7ndBYrCvmpBfuQGK/0tGQ6fYR1/YYpTPBTRS/Dv
+         ZAsmn5Q9pG/x1G8Kui26VtdxSN95JcR40wITY16DGCh0oOPFhQR3w5g2HAQOQ9tRP+7O
+         AUdZD5viDe2neM9/xnut8ijJ8OiogPxCGXPSmpFSvXEVXw12iyC/UH9UMNQ+58ZsEd5+
+         7gbfuJuaFjB5DLvmumxvzC34ovpshZtsloHrvus1uXrEDhKDtAyFanCCHigYdSo8+Rmi
+         Qj8knXDciaLGV6KsOpaaDejbAD3Q1w7QXsfWRHeuvFZPBHOdmivkzwpg0Fo8yW7kIda0
+         klAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769647478; x=1770252278;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=XwM3zfTFqHE5kmjZguuH0nYrlQY8HFwC7+d1W+Ezm88=;
+        b=oWjR3ySezTxzVc+K88ohx2HKHNit4nlqo0VQUzFVZnFY5siE7t8OWQCG4j8YRI8HQt
+         rqO0ilj7hm8+qHqdjoXsfK/KRiS+3cCMQyXZU31eKVHlPIjf2l1zS2iD+QhgB/dNDg5y
+         4SwTNsT8g78quFDpJEPRXC1CRs3dV2hDRfFSeSZh7CsEWWwi63LdBINq/fdtgZbHVNAY
+         btUquM6IRbml8sDK5oM9etkJJOAPiNz7DkL2NHciQ5v4WBY0jy3tVNzUBCvfRW/kolEO
+         bhAfKq9iatCz3GO4r0PsaDwkI2MtMxh5VxVOOgA/f+7TWhty/H9rbtz9N3cWNfD217U0
+         dj2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXLJcNHTwKFns7RJttanl1tkbiavGpO056xB9qQoyVaCEio24UfbUBCUFo4LpPPoHikLd9NShRQFw==@kvack.org
+X-Gm-Message-State: AOJu0Yyu3ZMMJmNQss1dRXSVphUSiUN0/QWXHQu5bCPGKeRjVRMaDdHo
+	OPCGX73sKvYwZtbplj/2Wci2re7jY6kghEyRI+7PY4yFIDKpWcX2BX3DkF/iiJzgQ3DxtwtzazK
+	vcasP5EN1fp6zpK1AUEkSatxYVV584mQ=
+X-Gm-Gg: AZuq6aIonVENuAmcXou1NPE8pj3BnpHofB2htwH8WFQmBU13aNEv/uKt0vpfTmhKvTm
+	u0BeB8VoiKUiP48fTMGG5mrhsZXOlJQHgIs1Zm6/sY6GWyXEahDw8nO7Ke5CnZdvyYZoljz4LSD
+	Rwl+7j6PRKXOTw3KbwSHVauyjDmsD81+/rip/wPxkei5/LQD+RcmeCISau3KpG7nVwt5EzxrOzA
+	chkRsrNFhFy6DwFsoBuz9jwg4EYcLj7Ml1b8EVtweWriO0Kb24Pj8LEidyJBn1tB1IQxbgurKJi
+	fqiAp/uRqFsSrJijKPSG8bE=
+X-Received: by 2002:a05:6214:d85:b0:894:7fd1:923a with SMTP id
+ 6a1803df08f44-894cc835eacmr95525106d6.24.1769647477989; Wed, 28 Jan 2026
+ 16:44:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116100818.7576-4-kundan.kumar@samsung.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7E214140002
-X-Stat-Signature: yatara5hd7f76gwpkbfd136egkee6gft
+References: <20260108101535.50696-1-akinobu.mita@gmail.com>
+ <20260108101535.50696-4-akinobu.mita@gmail.com> <aWEn2ODG0gyej0Xr@gourry-fedora-PF4VCD3F>
+ <CAC5umyhoMi_J_Ford2M_1fB-qCuPEDopAK1OF=AisZyDZ8duJQ@mail.gmail.com> <aXkfBF5bdnTZ7t7e@gourry-fedora-PF4VCD3F>
+In-Reply-To: <aXkfBF5bdnTZ7t7e@gourry-fedora-PF4VCD3F>
+From: Akinobu Mita <akinobu.mita@gmail.com>
+Date: Thu, 29 Jan 2026 09:44:27 +0900
+X-Gm-Features: AZwV_QgUyHkG-WUI7iNcz5xWCWhbTMOceR-EUzNXVnt7j2TJLEh0eaXRurf4hjo
+Message-ID: <CAC5umyieqMyasC=nZNtpP0jrO-YEYEZ1KyGeX=E=ZtWrYyDpMg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] mm/vmscan: don't demote if there is not enough
+ free memory in the lower memory tier
+To: Gregory Price <gourry@gourry.net>
+Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, akpm@linux-foundation.org, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, hannes@cmpxchg.org, david@kernel.org, 
+	mhocko@kernel.org, zhengqi.arch@bytedance.com, shakeel.butt@linux.dev, 
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, bingjiao@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Stat-Signature: dq5i8hw5ffrhd5xxgqiujqgdawaots1s
 X-Rspam-User: 
-X-HE-Tag: 1769647446-912801
-X-HE-Meta: U2FsdGVkX1+oBbCzx0lqM/JjPqYHWCVA15wiqOFAsjkzgCRIw/QAGdcyW28oCqjADlrb1dsm6nAEbzyFoI8+PmaXDe4DuJLFNz02bAGocpRXm6IoJM9avc0j2YJOYGVeGahbk3lbfmu6rWDi+WeF9WlcfZRgdHPPbcZ+SHL43ikC0UnDcv7E++n07E/JcUvRrKflDyciEKTvq/efLessqaSaqi3AEn7LUirLj+7S4RnY3L8E7quJaSkKRq9V9ZiLwNVX+m+rg+hIITwZ87SvcsMYFl2qr6rSZRdDlOyq3k/N5gW2s2G7PcUJlvULYClT7kIGGhjKKCw/vuKgf2LW46GL9fMmIR87som3ngi3Oktmv3YuArrxoc1EnRqrMxL4owsxBR9nS7db/PpQQzGVvlXdWwhxn24EN/sG5j3tbY1r7d+DVLjm9ugRcD7FAo6zZnADRfJUkEORQDuS5ZFaG20os9dN4cLyginqjRWGWztLHlB/fHt9Z7xc8XQZIeOwL1fzaQhJTwLHt9at3VveSsXKAbI28yC2trPYikXSkst0vGh0zzMu0Dk48btxZ4JCjyyPXbLhhVKj7pd677J3KcAwsIbc4jpJkeAYORC8vZra53GTYhrgj426jcuYvUdYcG69pMyWZ1T9De7OIIgS3ZedimhySXTrFXMsmQyEFyVCsG8LJJIGwzKK0smi/5WsSpDQ26iDVeZptF1v6dwJg0uTCCYIYrfxEIxbdso92VY15g8eaWvpf5tUarZkDC0HTPF4kjLy4MipcCBKQil5qMEL5CL63H5n1It5/GrNx8W/f7vB00D2PqsnU2SkSvjMtC0bIqvg/SeMrsxO1JZnWBLWv15qvQdf3VFPuHAiJ5endTPlZFbD1fTOGPvERxVA6dvMqMv2Q+QlQIXdl6h7SpbWHPMPYiBhDv2Q0G9aUtSsgXM8+VTQr6YxN7eY19N6k+92mWMRhTnYsY7Jd3p
- 3LJKCLJQ
- ZvDXu0ydwCLVXChg62z9BsDUO+dKEzUdmnmgmFgnb0o30py73FvFonm4X6dc7tEJwyWuaCsLeTYgNI7u2bc5svDs20TEGSTXJTNkhyunsgHdLwi3SvpxSqeraIBm98TsZHKqXZKCyFyDdC6qrkfAoHOa3I2lZd5Y4yH5fkBMcw3qtF2LitghfQfG6cHWC4BprpF15XHyzsXlLjP+v0zDbh+80hFp1ThZZVIg8vE9SE+H6eR9bNfE2jvsD7ERusj7gMW9aMl8V/gGW2922G6+hSLPjJiJjLe3FU7vfNdh7y8dFEHKQADp74DhH2050bgxVOXF1f8HttNWkS1+4lEXZ9JV4dbNNdv0Ttx4vjQ+jBFoIpAknKdPpe0GnJ/zgmN/ZCBLJ
+X-Rspamd-Queue-Id: E03304000E
+X-HE-Tag: 1769647478-753764
+X-HE-Meta: U2FsdGVkX18oSLivfhyq+//LmPkC5TTsqd1OTcvsStHPPecwguu8pmaceTRHyQCTVnrjWvJAYjXn7PXVgOAORZLinJuTCJootpF3oKff4NE5a6CAYaG05OLNEbpZEz6WVEaKzz+4FzqEQAVIXsv7FtO2g/NV2kviu6EA1235+OG7QnclcSMO97tjxha/5sv1I0HmVbA5fEoJFRXCbSvU998WoWC6MDWjDLnYgVIxIdk9c7s1SJ2ZqP1EcGlr36pk0DdsiAIO/YwtTdY4Mjg3s5wcaB/XqWTwVNmk6CU5ne2Lg8lY0M/ZXjXjrk28XttozZQaVetQOYj2ofcJGmBYug9ziF3Wgz5j7qdJ9m9CuX1TiaNjEW749yYHZVTie0wgFrBILFk1kMyqI7OkCgiZET5f2R0FsyS28cL4BrvMi9QtJPzVPUg+PSr6Yj0VSs3MnbBxMKxpjrB9jOU1oBGsGpvpEF+/yMECiaF7aDvOO3UtsDRg+Vz/uafFicfar44DnC3QYBxuVD9Pdje0n5ZHlD1OSkjuoZXjjqSAyAEn661xDidSlHNmwz8UsVifXTCTeC2kyRk0Y2uAZ9DN1AzzPHc4oVpBYdZ3azRgK1Fupuq9aH28gncr+GDy4Qkwn2NZnR1VeyhZE83fI+P/uzaEdEL3mAMhOB2Ex7Lx6CDVjRgp/Kq+VgOPKGRqolBvHB/vpYFKf9NOGVHO9CjzwUAjwUKO3PAxY+rVf08AlWnzE94XijWCpB/TsHhyLBWa3FUtUk+NNfGK10/PjwYes1FxQgHwkflstaURcf0EugUSzON5/BWWfz47rvkHan3yJaiLEv42memv/OPaUkMx6KLa7Y+FizOfpuyAHrm+Hl7TAXm6J6hZ2bOGTWZBp7kaviYA4LzeYuo4wf6MHD6WxTluIg5/B0ZzQ7U/L1fdygXDgPxhuf74HmXQJU0k4SSyobIFxGxpAqmHecuWbbocR1g
+ BN321H4c
+ hWiJIg6hgzwu+QlLiHWhXRdP/+QaXH5Z6avhLD9D6vGG9MZEgfq6LcxZRoTiID3c/Gj6IcMwcU1CfsxpGiScgv6bw+fiBScjLtMn5xcyeQ7Vr3OzXdst0pBEWeFUlLCuv4noyrApW7xfjPIYgfAdbSKlRNlmIAO4+exTl06fl1qcYCyYG/KqbfzwxitbGlPPrMYhj4av67PTszJ8TBbHJxNLdCyogAof+edO2MaXsiUDEwLI62He5IEtKnQTaOJgcOt2BiKpIypAZ7iTGo0qYUgTGWy9DFadEy5lwn8K9nMRWwBT1TI5zokOUA2DIK1C+/prqCEnv+aD+CwdXfJ7vabkZfU/LHlUHLZ2Q5ixkRY8ixwm/8cS4XsybYNPSzSPUNzEOiPQSnOP01WBWDd4xwu2Z0Ak+sFTMkj5YTt/qd0f6oKyynjizYqYt2GDMdeRhOQ5fxtq3KPG2ARYFU208A3zQz2vTD272wzbbMtAqGcLPteZ5e9Ei7zKrKWDZYyyI757//gE40uYHUqI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,107 +146,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 03:38:15PM +0530, Kundan Kumar wrote:
-> Add per-inode structures to track predicted AGs of dirty folios using
-> an xarray and bitmap. This enables efficient identification of AGs
-> involved in writeback.
-> 
-> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
-> ---
->  fs/xfs/xfs_icache.c | 27 +++++++++++++++++++++++++++
->  fs/xfs/xfs_inode.h  |  5 +++++
->  2 files changed, 32 insertions(+)
-> 
-> diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
-> index e44040206851..f97aa6d66271 100644
-> --- a/fs/xfs/xfs_icache.c
-> +++ b/fs/xfs/xfs_icache.c
-> @@ -80,6 +80,25 @@ static inline xa_mark_t ici_tag_to_mark(unsigned int tag)
->  	return XFS_PERAG_BLOCKGC_MARK;
->  }
->  
-> +static int xfs_inode_init_ag_bitmap(struct xfs_inode *ip)
-> +{
-> +	unsigned int bits = ip->i_mount->m_sb.sb_agcount;
-> +	unsigned int nlongs;
-> +
-> +	xa_init_flags(&ip->i_ag_pmap, XA_FLAGS_LOCK_IRQ);
+2026=E5=B9=B41=E6=9C=8828=E6=97=A5(=E6=B0=B4) 5:24 Gregory Price <gourry@go=
+urry.net>:
+>
+> On Sat, Jan 10, 2026 at 10:55:02PM +0900, Akinobu Mita wrote:
+> > 2026=E5=B9=B41=E6=9C=8810=E6=97=A5(=E5=9C=9F) 1:08 Gregory Price <gourr=
+y@gourry.net>:
+> > >
+> > > > +     for_each_node_mask(nid, allowed_mask) {
+> > > > +             int z;
+> > > > +             struct zone *zone;
+> > > > +             struct pglist_data *pgdat =3D NODE_DATA(nid);
+> > > > +
+> > > > +             for_each_managed_zone_pgdat(zone, pgdat, z, MAX_NR_ZO=
+NES - 1) {
+> > > > +                     if (zone_watermark_ok(zone, 0, min_wmark_page=
+s(zone),
+> > > > +                                             ZONE_MOVABLE, 0))
+> > >
+> > > Why does this only check zone movable?
+> >
+> > Here, zone_watermark_ok() checks the free memory for all zones from 0 t=
+o
+> > MAX_NR_ZONES - 1.
+> > There is no strong reason to pass ZONE_MOVABLE as the highest_zoneidx
+> > argument every time zone_watermark_ok() is called; I can change it if a=
+n
+> > appropriate value is found.
+> > In v1, highest_zoneidx was "sc ? sc->reclaim_idx : MAX_NR_ZONES - 1"
+> >
+> > > Also, would this also limit pressure-signal to invoke reclaim when
+> > > there is still swap space available?  Should demotion not be a pressu=
+re
+> > > source for triggering harder reclaim?
+> >
+> > Since can_reclaim_anon_pages() checks whether there is free space on th=
+e swap
+> > device before checking with can_demote(), I think the negative impact o=
+f this
+> > change will be small. However, since I have not been able to confirm th=
+e
+> > behavior when a swap device is available, I would like to correctly und=
+erstand
+> > the impact.
+>
+> Something else is going on here
+>
+> See demote_folio_list and alloc_demote_folio
+>
+> static unsigned int demote_folio_list(struct list_head *demote_folios,
+>                                       struct pglist_data *pgdat,
+>                                       struct mem_cgroup *memcg)
+> {
+>         struct migration_target_control mtc =3D {
+>                  */
+>                 .gfp_mask =3D (GFP_HIGHUSER_MOVABLE & ~__GFP_RECLAIM) |
+>                         __GFP_NOMEMALLOC | GFP_NOWAIT,
+>         };
+> }
+>
+> static struct folio *alloc_demote_folio(struct folio *src,
+>                 unsigned long private)
+> {
+>         /* Only attempt to demote to the preferred node */
+>         mtc->nmask =3D NULL;
+>         mtc->gfp_mask |=3D __GFP_THISNODE;
+>         dst =3D alloc_migration_target(src, (unsigned long)mtc);
+>         if (dst)
+>                 return dst;
+>
+>         /* Now attempt to demote to any node in the lower tier */
+>         mtc->gfp_mask &=3D ~__GFP_THISNODE;
+>         mtc->nmask =3D allowed_mask;
+>         return alloc_migration_target(src, (unsigned long)mtc);
+> }
+>
+>
+> /*
+> * %__GFP_RECLAIM is shorthand to allow/forbid both direct and kswapd recl=
+aim.
+> */
+>
+>
+> You basically shouldn't be hitting any reclaim behavior at all, and if
+> the target nodes are actually under various watermarks, you should be
+> getting allocation failures and quick-outs from the demotion logic.
+>
+> i.e. you should be seeing OOM happen
+>
+> When I dug in far enough I found this:
+>
+> static struct folio *alloc_demote_folio(struct folio *src,
+>                 unsigned long private)
+> {
+> ...
+>         dst =3D alloc_migration_target(src, (unsigned long)mtc);
+> }
+>
+> struct folio *alloc_migration_target(struct folio *src, unsigned long pri=
+vate)
+> {
+>
+> ...
+>         if (folio_test_hugetlb(src)) {
+>                 struct hstate *h =3D folio_hstate(src);
+>
+>                 gfp_mask =3D htlb_modify_alloc_mask(h, gfp_mask);
+>                 return alloc_hugetlb_folio_nodemask(h, nid, ...)
+>         }
+> }
+>
+> static inline gfp_t htlb_modify_alloc_mask(struct hstate *h, gfp_t gfp_ma=
+sk)
+> {
+>         gfp_t modified_mask =3D htlb_alloc_mask(h);
+>
+>         /* Some callers might want to enforce node */
+>         modified_mask |=3D (gfp_mask & __GFP_THISNODE);
+>
+>         modified_mask |=3D (gfp_mask & __GFP_NOWARN);
+>
+>         return modified_mask;
+> }
+>
+> /* Movability of hugepages depends on migration support. */
+> static inline gfp_t htlb_alloc_mask(struct hstate *h)
+> {
+>         gfp_t gfp =3D __GFP_COMP | __GFP_NOWARN;
+>
+>         gfp |=3D hugepage_movable_supported(h) ? GFP_HIGHUSER_MOVABLE : G=
+FP_HIGHUSER;
+>
+>         return gfp;
+> }
+>
+> #define GFP_USER        (__GFP_RECLAIM | __GFP_IO | __GFP_FS | __GFP_HARD=
+WALL)
+> #define GFP_HIGHUSER    (GFP_USER | __GFP_HIGHMEM)
+> #define GFP_HIGHUSER_MOVABLE    (GFP_HIGHUSER | __GFP_MOVABLE | __GFP_SKI=
+P_KASAN)
+>
+>
+> If we try to move a hugepage, we start including __GFP_RECLAIM again -
+> regardless of whether HIGHUSER_MOVABLE or HIGHUSER is used.
+>
+>
+> Any chance you are using hugetlb on this system?  This looks like a
+> clear bug, but it may not be what you're experiencing.
 
-This increases the size of struct xfs_inode by 40 bytes...
-
-> +	ip->i_ag_dirty_bitmap = NULL;
-> +	ip->i_ag_dirty_bits = bits;
-> +
-> +	if (!bits)
-> +		return 0;
-> +
-> +	nlongs = BITS_TO_LONGS(bits);
-> +	ip->i_ag_dirty_bitmap = kcalloc(nlongs, sizeof(unsigned long),
-> +					GFP_NOFS);
-
-...and there could be hundreds or thousands of AGs for each filesystem.
-That's a lot of kernel memory to handle this prediction stuff, and I"m
-not even sure what ag_dirty_bitmap does yet.
-
-> +
-> +	return ip->i_ag_dirty_bitmap ? 0 : -ENOMEM;
-> +}
-> +
->  /*
->   * Allocate and initialise an xfs_inode.
->   */
-> @@ -131,6 +150,8 @@ xfs_inode_alloc(
->  	ip->i_next_unlinked = NULLAGINO;
->  	ip->i_prev_unlinked = 0;
->  
-> +	xfs_inode_init_ag_bitmap(ip);
-
-Unchecked return value???
-
-> +
->  	return ip;
->  }
->  
-> @@ -194,6 +215,12 @@ xfs_inode_free(
->  	ip->i_ino = 0;
->  	spin_unlock(&ip->i_flags_lock);
->  
-> +	/* free xarray contents (values are immediate packed ints) */
-> +	xa_destroy(&ip->i_ag_pmap);
-> +	kfree(ip->i_ag_dirty_bitmap);
-> +	ip->i_ag_dirty_bitmap = NULL;
-> +	ip->i_ag_dirty_bits = 0;
-> +
->  	__xfs_inode_free(ip);
->  }
->  
-> diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
-> index bd6d33557194..dee449168605 100644
-> --- a/fs/xfs/xfs_inode.h
-> +++ b/fs/xfs/xfs_inode.h
-> @@ -99,6 +99,11 @@ typedef struct xfs_inode {
->  	spinlock_t		i_ioend_lock;
->  	struct work_struct	i_ioend_work;
->  	struct list_head	i_ioend_list;
-> +
-> +	/* AG prediction map: pgoff_t -> packed u32 */
-
-What about blocksize < pagesize filesystems?  Which packed agno do you
-associate with the pgoff_t?
-
-Also, do you have an xarray entry for each pgoff_t in a large folio?
-
---D
-
-> +	struct xarray           i_ag_pmap;
-> +	unsigned long           *i_ag_dirty_bitmap;
-> +	unsigned int            i_ag_dirty_bits;
->  } xfs_inode_t;
->  
->  static inline bool xfs_inode_on_unlinked_list(const struct xfs_inode *ip)
-> -- 
-> 2.25.1
-> 
-> 
+In my case where the issue was reproduced, alloc_demote_folio() failed almo=
+st
+every time, but the folio passed to alloc_migration_target() was always fal=
+se
+for both folio_test_hugetlb() and folio_test_large().
 
