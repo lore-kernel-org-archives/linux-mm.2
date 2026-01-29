@@ -4,143 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7544FD73E80
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 18:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F090D73E80
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 18:41:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 969246B0088; Thu, 29 Jan 2026 13:31:20 -0500 (EST)
+	id 42E906B0088; Thu, 29 Jan 2026 13:41:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 920816B0089; Thu, 29 Jan 2026 13:31:20 -0500 (EST)
+	id 3DC806B0089; Thu, 29 Jan 2026 13:41:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8227F6B008A; Thu, 29 Jan 2026 13:31:20 -0500 (EST)
+	id 2BE196B008A; Thu, 29 Jan 2026 13:41:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 72DED6B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:31:20 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28FB7B661A
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 18:31:20 +0000 (UTC)
-X-FDA: 84385843920.27.13A4370
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1C776C0010
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 18:31:17 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BC246B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:41:29 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C10E4138B08
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 18:41:28 +0000 (UTC)
+X-FDA: 84385869456.21.915B863
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E24DBC0004
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 18:41:26 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=fYqWIkdV;
-	spf=pass (imf28.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769711478;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EQTSuFqu;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769712087;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gaMEmesNW/2aeijf2CTvDdAzAco5YKTscfYAQiEGCu4=;
-	b=LVuMFQ2Ty5K3H3TAZobubyGeDuIvi2PmUyAdqhiLYZqiWM7PkkayWcpZDRWxXbgIYqkIsq
-	K/ugVTnPpI7kFUfEbnalnWmcgfBLwNxqlmdCWdeDEecpbQb5kxeQqoTTEbwkJ4XjtbN4/s
-	cHP+DEg0DWzAh7eXhU7ekEDap9vuR0Y=
-ARC-Authentication-Results: i=2;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Xlnz6aumZlbTSchYue5J7VboFXhHLrpxFx7kxdM7jFE=;
+	b=pTZlWVVtLOeLud5Pok09zcI7+5XVsWv6n/N6SKjPy7Y0GPBQy1IkMb59Qp14MTVEfKyAvL
+	Gr+BByasAeH5UYElFMYj/OLgMlC9h1owAW843a74ZtzznLfFioRWIcQmhj6Wx8IPja7JrN
+	GGfGK2tZbC3iNL91HBhCD0Zkj+628mU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769712087; a=rsa-sha256;
+	cv=none;
+	b=aUBU9WLmU4WnQwhwjqs2QYUTVZ8vt4o3wRBfzgQsX9Hdi6NOQ7MtgNdKHObcO+yb7QQ0eV
+	IFJtG5ng3vwk5tCiFWQR0PWhZ9cVjP1c2SqPwjmIS6/2hno23Mt+/vztLiLuz+qDkUKq1U
+	FJyKdUdYPe67SPY5qBH5OnrqHZEfSgw=
+ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=fYqWIkdV;
-	spf=pass (imf28.hostedemail.com: domain of paul@paul-moore.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769711478; a=rsa-sha256;
-	cv=pass;
-	b=E22u/3yswnn7pJKpps/BnqN3hAmGm/tLVaF+4jYFPzwwj2zYecKMgNPuVfNi481NAMQn0T
-	cVLMjJ2LPS+xJTUWrFBYSqa9/kmmuY4Hgio/UPqn+37JPFxHzo3TEv5cxBA2mDqbko+62l
-	zR6HKUbTNk5wsGLjk8wMK849Gpylaq4=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-29f2676bb21so10918235ad.0
-        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 10:31:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769711477; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AjdQ3zK3mMrNmrW+NWrCYbbeOnW6vb9We3cA8nuEyXkBJ6UJQSG44uVaLkGW+HCZsB
-         xM56bYgcJGAo8jwyar7u4bmCGwy/HSfqzBK2TCMY3vGNBI3R/9G5Tz+WiRCoaZzKc00g
-         NgCuMxlTYxeIoBYK6kpyXuZP5oPU+i+ptvh7qwWOvxv5Ik/JIyXYZhNC6ZZKceFtPmKS
-         1R4PLOMYgn1gZSjOUHdGi7FJK+CNfxj2WFltw5wUBOchffFsRgp/5woh9WXEZRflzBuW
-         p35qRhJcXSq1k7VG+a4ebepMeIQP+rWWmqkyyr2bUoACtEpgaAgLIVzxSfZCGHGWfTmO
-         gSiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gaMEmesNW/2aeijf2CTvDdAzAco5YKTscfYAQiEGCu4=;
-        fh=zsDx9NwI8SJ5O2vGMXwyFWJCaLD7M6aXKfDczLuXWrQ=;
-        b=jyHCcQdkhMZU/HIBO+vFGtYfbp1scet0hLfd/4wjyV6CYHd8a0KQfMuyU3Zw8EfGCh
-         FIvnP7F0wgHzuK+Z69Eedvuo09TDFcThJNtX/DBLRIXr6/3DCh9NDe615w8IuobkLrEF
-         GjcCz5lPZ2xHjhIKUrG1pLqf64k+zidvacePi/Cn2GOGscNeWb15lzLDMbnspCFweWz1
-         zhLBMeehA1MbPNnjiiAhOHipZzaSSyXVAxF1yAQC7YuJG3cwmT14uY60ST7k7sI40/JU
-         wOSsn6XMnXiwhRi+ZP7WwF3ImF+eoFFgN0IlTfm1KFm5TIDOhqos0TTwymZq2lOsDAQJ
-         6icw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1769711477; x=1770316277; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gaMEmesNW/2aeijf2CTvDdAzAco5YKTscfYAQiEGCu4=;
-        b=fYqWIkdVPLDiI3rNvMFdLDmRooFKq0td/YefOFebmBRxEFIJYA5WIc+eB+pFVjzywz
-         hVCzAvVRH2+Jeg2WBhSeHyhbbqi7TZwQaRLa8rOS0zbwQiZFU6EZ6Vl4zBKydG5UygWE
-         0YM9UFvGBk3TKAOCEzb1yALngvxGqNW1rZyDm6i7YdGBNEgtlaaDJPN3mCWPrdJnXpqA
-         G74Dle55gM0yOsMw8AHlUn+qSYE5legRvu7J28dETsjDX8cdkfxdZOaKnQfuIMRH12Me
-         um7wEguG3j0tmFDUu5EP8/RpxDooBGwG6uwHLYuzJk/9JwPcQrcQCxLHB17+/WYGgVMq
-         D+5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769711477; x=1770316277;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gaMEmesNW/2aeijf2CTvDdAzAco5YKTscfYAQiEGCu4=;
-        b=uKZNJxNryjiojhlfENMGtzu7yq39PsXXdRdFp8KXD9wnusj/uBZw6zhPXqK+0j8GOH
-         HF4/A0QtlfoFT9hTM2rB2CR6vX+XiPdMSMWk6TwuXTFswjCk5tr/8TmXtw0kaxApi2t7
-         +5yRTqRmGbty38H71PsYcMLb45/UV93HYvdyBqkSKdlHcUtK5uC/nox/4wOyNqSX0qLl
-         NERxn/Hof/UiQeWaxamMjdKW83Wc20KwtgNzXaV5Oe5IdptG7nYFPf4Z0AfIj1N/urbB
-         r4tKjq5ePIFaS6Aj8EwYcL0OR/rKWDlQEChNpMlf/+q5+3RaLp6Q4LsApkeI8F+qs3kR
-         1nMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXx6+DxfC97icvGfD0gdzWAQzyF8/wxBg9zmZqd4zzTXac0HeXRQdhmgVVaY1441123Xu5cRvY4xA==@kvack.org
-X-Gm-Message-State: AOJu0YylNm1Y/Lgj8uY0NzhCoI+lf2+D8zpBr8BEpLgRABtLIlZPOiBK
-	kzraPzdjrj61ezZwFyalmHxXeT+PZVd/LhpTBMtcQ1GF9S82h3Aiv+tx/VkD7CwSJA3CY3ENzxQ
-	ndUOrE33j+ze/eRcbpBwORGXItTAp4QCxid+1pCGO
-X-Gm-Gg: AZuq6aKWCUdCBNIE0yBaEMx2XxslbS7nrjnloxH8sIQtQQymtPRQMH7t42U1JaVN31E
-	UIlyjqAYjmPY0T387gwk/1HNxvgLa5TprdaRpD/wE/B/rR5f93AtSe84Le/qG3I8/TH7lwUVLyk
-	BSOAcpBI9Jt27CO3lOiP0OG0S4EboSV8IUGw6AhdvH6pTdGQd9cePXL1FV9Q1tJTMbpkgqwZU1h
-	cWm8uWLCVbo9dGH9hT3l6rLBA/q4ltvMEhTQOYP7vCb/iVgxAAP1M5XpxW2Nevn7KB4RPQ=
-X-Received: by 2002:a17:903:f8d:b0:2a3:1b33:ae11 with SMTP id
- d9443c01a7336-2a8d9949210mr973325ad.53.1769711476784; Thu, 29 Jan 2026
- 10:31:16 -0800 (PST)
-MIME-Version: 1.0
-References: <20251017202456.484010-36-paul@paul-moore.com> <20251017204815.505363-12-paul@paul-moore.com>
- <20251017204815.505363-21-paul@paul-moore.com> <0146e385-935b-4f66-9e6d-51bb47ae4bdc@lucifer.local>
- <14638978-b133-457a-ae9c-31ba54e3964c@lucifer.local> <74286aca-a565-489f-ad2c-886c650ea2bc@suse.cz>
- <01cb28cb-56b7-4862-bf27-07e4bf17115e@lucifer.local>
-In-Reply-To: <01cb28cb-56b7-4862-bf27-07e4bf17115e@lucifer.local>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 29 Jan 2026 13:31:05 -0500
-X-Gm-Features: AZwV_Qj91bihFusy7ufZpFTlJZmfomzjnqMHFZc12ATcxs7ntbmfJHUq6C4Bs2Q
-Message-ID: <CAHC9VhS_y2gy2nAK7C-OpchME0pzS34-QN2bY9t5SRBXArz8Xw@mail.gmail.com>
-Subject: Re: [PATCH v5 10/11] lsm: consolidate all of the LSM framework initcalls
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
-	john.johansen@canonical.com, zohar@linux.ibm.com, roberto.sassu@huawei.com, 
-	wufan@kernel.org, mic@digikod.net, gnoack@google.com, kees@kernel.org, 
-	mortonm@chromium.org, casey@schaufler-ca.com, 
-	penguin-kernel@i-love.sakura.ne.jp, nicolas.bouchinet@oss.cyber.gouv.fr, 
-	xiujianfeng@huawei.com, linux-mm <linux-mm@kvack.org>, 
-	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	dkim=pass header.d=linux.dev header.s=key1 header.b=EQTSuFqu;
+	spf=pass (imf28.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769712084;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Xlnz6aumZlbTSchYue5J7VboFXhHLrpxFx7kxdM7jFE=;
+	b=EQTSuFqu2W3JWsXY4FbUgQCd0SKbNN90pOEAd2Qp3H1CxbG+umwpCdeFrwFn5VozImAsV7
+	P2i18zlTAQta3caaUmOBL2jwk+HHw6WVSXKd2mcH3MYqYrvfK+rEW73UDNfzPqey+njdS9
+	ZCaq5KgPZNWPDSjkwN/KypqKs8hUWJM=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Rik van Riel <riel@surriel.com>,
+	Song Liu <songliubraving@fb.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	cgroups@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH] mm: khugepaged: fix NR_FILE_PAGES accounting in collapse_file()
+Date: Thu, 29 Jan 2026 10:40:54 -0800
+Message-ID: <20260129184054.910897-1-shakeel.butt@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: E24DBC0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1C776C0010
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nfhs8x14gucmrisentbfnfj419fwpb47
-X-HE-Tag: 1769711477-736675
-X-HE-Meta: U2FsdGVkX1/RrYItfhd3/zce8cIyr7gbQsQAxe1Mi3TJEH0qDkLb0zYYSkCCS2J4pzc3dvYRp0/qgler3UJERGjfSz3yEwa9iwqNedfFEBOUBy5p9T53mvpa3prWYvr70N+8+qXRp0LKdKF4FohdxVAyyu6Q6/0UAzvtymZCrVyS2LyUP4pe+zhJxSQNKnneSWQqmaY6thyUK43rEejHT6T4JfQLB7RFDhbkPtaUImRaHqJSQVAFZ/LlMZ6DregTKN9Z3NrJXpvmCVEMuxC/40beopy8gVzBWe2OJGDZhCV+6nqJq/PBgW3RQAx8v+H67a0nLs+LbwwEF/r2b19kwQnIj+3BXw0IHlnO0cJgh+UXFiBGSlRBLGEGO0BD/vmmpKPnVVYDWfWw+Phl1icSl7ZJsjeBSrQO0NlUhO+qO/M8y/QyE46AXwHwSinExqU3uR3C5+uCu1xHIV/gmZvuDIi9k4iNQfUdZ3XI3pAi3IGqkIsNUElyPuS30GaBfQxy01LE/N3v37Ebsco3thUlyZg04ZSKmEFHknfd6JizetuTHbmkdn0wE0nfBctqIBkGhwQnqHXlYaTjWV5Hic21FOGQdQ7QC6ca8onci4+/ffUFmdGuvfebNH81NXRqUs/kYecCL52AR/ipMUbbM3fC2iCsMK3t1wldrqZc5e4e/7SB0e8fEoEZdnjnMy8bJMtc4ioTiTqYUNXJRHIpO+fZngmtidWlrrWhdr1wxxLIPIV5l6wtjWH6lQrAHeU+UeBU45fBbCt4DeCVSjk6kN0Tjj+KPXsG0lBSv7cdMRaQFFUH+s3qBJ+yYm1BIuBIXSKXy5GHBqcdXonqr4gijbftURRvcyOfc2Mbt1g80wE1J8YnqZBMCZ8kGKFzgdlRm7K+FLvTBZlINHspYDtHNw26MoHU+ah2Tdi8Hry6BsE1FtONI4Jx5D14XOddQsGfQxXLo7yxURLWbhLiQmKk24Q
- LD9+fbAL
- 58V5a91dNyk6coWNvOeFcL37d3SYlI9na0ZHPvf/gBCJNaaRJDknbtLK+1AgJGJy2E26vgUe9iyWn3ZVx3Pdy+cWc/78MlgxdO2WphnGdInM8IN9UXBvDaQkVhBRsUmKeSvTM4/+xT51vz3h0LMI9rVl7j3rPdA3rvsd9qYxPp9kf+1pd4U0lv92HuAXcOiW3AJ2eGE5MnQ97wz7KIwvqT30A/h/6jCf2Zf3Vtfu45w3Pnr3yvhOSKpDC681TWeJW14FvTvZiGd4/m3y8Vq6g6kFPWjhmuFUH1kv5jFAV7XuXrp0qG45tmaPlNPf3uBpNi5fV3IVOqPEU6BCO2i5p+3Z+V5bd3wD3n6rdYKa12p5RxIiP/aFfN8wFulzpV0byAha+92rMohqn7kSObO3gZ66xKJUTfy2fHNV2W+JAaMvcGu6PjR5uv2F8J+a4cH0hdYG3
+X-Rspamd-Server: rspam05
+X-Stat-Signature: gi8t1kum9dshzhaq8biezkriscs19wec
+X-HE-Tag: 1769712086-341172
+X-HE-Meta: U2FsdGVkX181/goI9hzqq6sDltF0K8E8pObic8z05HF5TuRPbp0DEV9fknnK/I5QRNQPDRimq0GaLGiSeLHNnsZEizLheIl1rKilxIyZUNgNAY9aj2yQFiS5pIq2yY5pK1FGZaB4PJOTB99zzTyTB/yz6mWZQdWOgm0J1V1zomOE/3y0zhz+PIAiTDNhfBHvGJx04EGMiyguuHcMq2lhNyG+ejejUuiMNn6CARQKvdSNfNUQ51/AOECKgfDvj6HSd0atLKA/upraV4O5vogLIzncvb/xlTQC6VMCgV3ryC1wCbC5w1ICZi492P3ZbaK0t4QJX22ZoJVr4PxWcl8chSNr0olvwHVSRHZKe5+091XJlOj+Uy6B/TXkhHQxFXpN0FjfWBHyKJCZJM8zfft8TsgLA9MoIY9bBZVsS6N39q+XOu84bvFpFTKLru7aIuPsOrLeCGwx9hmpVvT0q8X3yNxyFdI89OHq6vc24orup06/uDz0BlI0fIDdNqKxIHWpPHqw/tUxNVp5Xtu77bdSc/jcVfU7D3oGiaD6eKK1bj/zyTwkRSNpqXDEBXv1ZfBMboiX2vIxsrI8JEl6sC4rcxbki9PVukWy4CLfQELrVxHFhplyBJ2TRFpJriOC8xc70FLfUgpxHuselLgRoPYG07+YiPVsKEiSxz7RG32IaFSyeUcuot1a5T+s8gG1DLL1J1vexdNFRszev8A7mqWlaxBZc19BcpkqF/ZwrRjdbfUVAKKwI4lNr/S/Qjm3hfgITIvWW3nyhuJHpHuti/Sx81ZHW3BXyGpIkduVS6A8xGWI2IUTG1jymg1RFM+jQ0RYSgPI2+tw+c4xkCbpXIKniac8tJOA14ADwAZWjb+YJe/CctTb3/DlF2ApMdEj0HAWfrxXukKFbkSx1haw+rFJQO1XbZGnKz33dYrVF4ViaNSOpFpHOWauXyKguxPsRqnf78KUj+OGHChxJYlJ+dG
+ e2e1wDBd
+ aj3P1C0v10biWdrlp7LhsuN0maURrVIYmie7wRXTqR/TmV+xfHtfdql977wRjW2EjMInL8M3jx+kMXASiXfu/cdn3oGxcSPccYcTv/7f9/wo6LhljOI9MQQd7XyeMY+n/0gZBPl04CQpAboW9vYRKMCvmfKajpLTUrpBwVZdqTx50T+zExdUObt96yrq0u0m1MtOouQQ3omYrWT1+ckE9CmPqX4YSpKlKqH90/J6dwh6irSlSS2ranjLnCg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,29 +101,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 12:11=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Thu, Jan 29, 2026 at 06:02:00PM +0100, Vlastimil Babka wrote:
-> > Agreed, the mmap_min_addr should stay visible and applied unconditional=
-ly.
-> > AFAICS the only relation to SECURITY/LSM is whether CONFIG_LSM_MMAP_MIN=
-_ADDR
-> > is used as an additional lower limit to both CONFIG_DEFAULT_MMAP_MIN_AD=
-DR
-> > and the sysctl-written value?
->
-> Thanks, yeah we should probably actually move the non-LSM-relevant stuff
-> out to mm to be honest.
+In META's fleet, we are seeing high level cgroups with zero file memcg
+stat but their descendants have non-zero file stat. This should not be
+possible. On further inspection by looking at kernel data structures
+though drgn, it was revealed that the high level cgroups have negative
+file stat which was aggregated from their children.
 
-Yes, definitely.  Send the LSM and VM lists some patches after the
-upcoming merge window closes and I'll make sure they are merged once
-fully ACK'd.
+Another interesting point was that this specific issue start happening
+more often as we started deploying thp-always more widely which
+indicates some correlation between file memory and THPs and indeed it
+was found that file memcg stat accounting is buggy in the collapse code
+path from the start.
 
-> But that's future work, for an -rc8 hotfix ...
+When collapse_file() replaces small folios with a large THP, it fails to
+properly update the NR_FILE_PAGES memcg stat for both the old folios
+being freed and the new THP being added. It assumes the old and new
+folios belong to the same cgroup. However this assumption breaks in
+couple of scenarios:
 
-Expect a patch later today.
+1. Binary (executable) package downloader running in a different cgroup
+   than the actual job executing the downloaded package.
 
---=20
-paul-moore.com
+2. File shared and mapped by processes running in different cgroups. One
+   process read-in the file and the second process either through
+   madvise(COLLAPSE) or khugepaged on behalf of second process
+   collapsing the file.
+
+So, the current code has two bugs:
+
+1. For non-shmem files, NR_FILE_PAGES is never incremented for the new
+   THP because nr_none is always 0 for non-shmem, and the stat update is
+   inside the "if (nr_none)" block.
+
+2. When freeing old folios, NR_FILE_PAGES is never decremented because
+   folio->mapping is set to NULL directly without calling
+   filemap_unaccount_folio().
+
+These bugs cause incorrect per-memcg accounting when the process
+triggering the collapse (MADV_COLLAPSE or khugepaged) belongs to a
+different memcg than the process that originally faulted in the pages:
+
+  - Process A (memcg X) reads file, creating 512 small page cache folios
+    charged to memcg X (NR_FILE_PAGES += 512 for memcg X)
+
+  - Process B (memcg Y) triggers collapse via MADV_COLLAPSE or khugepaged
+    scans B's mm. The new THP is charged to memcg Y.
+
+  - Old folios freed: NR_FILE_PAGES not decremented (bug)
+    New THP added: NR_FILE_PAGES not incremented (bug)
+
+  - Later, THP removed from page cache: NR_FILE_PAGES -= 512 for memcg Y
+
+Result: memcg X has +512 inflated pages, memcg Y has -512 (negative!)
+
+Fix this by:
+1. Always incrementing NR_FILE_PAGES by HPAGE_PMD_NR for the new THP
+2. Decrementing NR_FILE_PAGES for each old folio before clearing its
+   mapping pointer
+
+For shmem with holes (nr_none > 0), the net change is still +nr_none
+since we decrement (HPAGE_PMD_NR - nr_none) old pages and increment
+HPAGE_PMD_NR new pages.
+
+Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+---
+ mm/khugepaged.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 1d994b6c58c6..1cf8e154e214 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2200,8 +2200,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	else
+ 		lruvec_stat_mod_folio(new_folio, NR_FILE_THPS, HPAGE_PMD_NR);
+ 
++	lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, HPAGE_PMD_NR);
+ 	if (nr_none) {
+-		lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, nr_none);
+ 		/* nr_none is always 0 for non-shmem. */
+ 		lruvec_stat_mod_folio(new_folio, NR_SHMEM, nr_none);
+ 	}
+@@ -2238,6 +2238,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+ 	 */
+ 	list_for_each_entry_safe(folio, tmp, &pagelist, lru) {
+ 		list_del(&folio->lru);
++		lruvec_stat_mod_folio(folio, NR_FILE_PAGES,
++				      -folio_nr_pages(folio));
+ 		folio->mapping = NULL;
+ 		folio_clear_active(folio);
+ 		folio_clear_unevictable(folio);
+-- 
+2.47.3
+
 
