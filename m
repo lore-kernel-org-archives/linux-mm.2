@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1E6CD6101C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 14:41:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C50EFD6101C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 14:42:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 506296B0089; Thu, 29 Jan 2026 09:41:53 -0500 (EST)
+	id 3AAFD6B008A; Thu, 29 Jan 2026 09:42:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4862D6B008A; Thu, 29 Jan 2026 09:41:53 -0500 (EST)
+	id 3554F6B008C; Thu, 29 Jan 2026 09:42:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35E4E6B008C; Thu, 29 Jan 2026 09:41:53 -0500 (EST)
+	id 2572F6B0092; Thu, 29 Jan 2026 09:42:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 256E96B0089
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:41:53 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C92A11A0153
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:41:52 +0000 (UTC)
-X-FDA: 84385265664.07.CCB0F47
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013070.outbound.protection.outlook.com [40.93.196.70])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E34E340004
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:41:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=pjckwvg5;
-	spf=pass (imf07.hostedemail.com: domain of bharata@amd.com designates 40.93.196.70 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 11EC96B008A
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:42:23 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D1D45D3132
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:42:22 +0000 (UTC)
+X-FDA: 84385266924.03.49B2F11
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011010.outbound.protection.outlook.com [40.107.208.10])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 09E0D100005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:42:19 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=rTjKr8ER;
+	spf=pass (imf14.hostedemail.com: domain of bharata@amd.com designates 40.107.208.10 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769697710;
+	s=arc-20220608; t=1769697740;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y3TXnm3YqWala8nESp/YB4DNry5KtX1V6w/Vij00Mnk=;
-	b=RFapKMI47gAlcMku2X70l1mbYVgQcVDbfkupSByGxZU0avK/fMtSConSMsIcB1DpaU3QAj
-	OYB5Zc1rszOYXDudrIC5ScTjXjoar3E9dvZefYzsGKYjHFUhNRAkH5lPItbucOV3olTJRX
-	NxwkemaAGKr2SXMWCHkhaGYw6n3AS9E=
+	bh=23eiGBoQVc5DDMfaaIZ6YGesXKA5XD1hR5itk5/FwLw=;
+	b=cdrWcY79Q3+0p35HypSMmfL4Fhe6Ox6h701hz3oEtHfheasX9H8vcwHK0fKCmwtcnVdq9v
+	kewJnFrdVt0aW6mYXE2KiyZ2qAl2B+Pe6s+vK+uWjjGz1+v8xRtYnTMMF5Uy33kbrofGPs
+	fb9R2Nj8KRhu+C5vUv5pRrUwSPupRVs=
 ARC-Authentication-Results: i=2;
-	imf07.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=pjckwvg5;
-	spf=pass (imf07.hostedemail.com: domain of bharata@amd.com designates 40.93.196.70 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769697710; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=rTjKr8ER;
+	spf=pass (imf14.hostedemail.com: domain of bharata@amd.com designates 40.107.208.10 as permitted sender) smtp.mailfrom=bharata@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769697740; a=rsa-sha256;
 	cv=pass;
-	b=Sqt+1zpIcAtO17cQ0d3C+Lu7HQWezmsMllY8pFpFnCAMzVWuKQBMm1F7mZzeKlma2k54RW
-	6Spke6F84CA2kldBs2es3sXUoGZ4RdbMt0VGcmqulMhEBhwYOOwonRYgFOamq6gNLmEj6q
-	ivADZWi3CRlPTqn5oZzWa3zf3n7lL00=
+	b=VKAAokzcWkNDvTOYzsxwGmnWl8W6dbDSANPC/fh4emBlFYT/3ymiJ3D2PYaRQrwjBqFtON
+	JvXrzaJ+eI3kcqJzjFYcvEx/5nwyKbd7P+oTiFLB8EQ1dSP4TzboShfxtLpcm98P6ZZ2TC
+	7/XFIb7psBg1OQuNjl/E0xOpFRl8hsg=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fNyw/mWkaN8u1fmRxra1a8ttSmIv44ILJRiGC7BDetDPzkIV1QAqpDB3U5qi0LhBDW1nzSPF5XjP1Xms6H83IY/2rmH6J87U1aG73aDyiRBKqRagVDjZcVVuiRVzRfhQbDB44o0at1PnNPhkIDugKahWAu/85it0UfJkTbAFHihOF8kPPeuJJucTgAf/8hkllDUi2iAyR7iLZOv2DH64vEv6nDWuynDL40qLX8bq6wk6F1/GMXe/rSnMOYSQcrupWgEYvWaUpiob9+gVv9JVfwlFCICTj4C7BEUp+it/sMWOkzKdoYu8kV7t6OD0z37vj1rKgSgAfKUQdKiCHklNpQ==
+ b=Cgqm3QmZF9AyeXXQPEDkvoWjJuYbBE2Q9ajSLCwH/CupS5g/5fdEye/57BoerOroGJ7CBDCqIE3sdpNvL+0QpQtRf/f1p1ecKgwknwRl4GqSNcQssKrM95/ouCjiv3TF6P2kRYr/tyQO4geMd54a1RQHWkn/5qNxc2mDO4ix6WW4ypOy4kOLM2ggyZeiWjg+6Svjp2wUuoy/k/GQdaL/9S5J+RWDTamH1CFk25RNdRxFfuab42WhhuhSAKPokJKMbxOkCV6SpswbG45NbNdhFlRrt+OgYVN5DUAWjslaLVwlZ+FuGHcnpg12VzLdGqvFErzfKcI3VYzjQMF6MYC7sg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y3TXnm3YqWala8nESp/YB4DNry5KtX1V6w/Vij00Mnk=;
- b=L7Z2+BeOjusLxJdT3Y7snAWNeL6EfalNxkZf9Q1dFtTQUaxBPP6bD5fYwAAI+dicWPKOS5GbcnDSud4YIeMmC0LsPWtDk6QRe+6GkzJOh7IfDAp9jQh0fLBrtfISJ2xZoolTP+q94h0dRP3O9LoRB+myZp5Iwk+mY+IPT+jdvfbj4d1LksHIHQJqnfKeFF3k3jFoqK/9QmuIVI2ZkhQu/jOJCgw6KhrFtJD/DaE8sPWGGdyb4c77pT0y0pw2xtHWJuVQN/WmKe/krZBmeSnfGV4ZKvgACUj5UnglfxdLQMXAUBTYe2CxrFAqKeBhWTb/DQkyPJ68gSEiOfzDNRAthw==
+ bh=23eiGBoQVc5DDMfaaIZ6YGesXKA5XD1hR5itk5/FwLw=;
+ b=t9fD/bYa6PjTkWpQ/X14F6zR3XhIffJVYJeyXYc1Jen5kfXLQyTdDGIuUAxe7lSisFpxgr45AMVnxl8lRkcl9g5JCLMI4LJmxa4k8T7PRHf2Uu5Nm1xQPmSWyhGpC5eS4P1F0De9gg64PJZIH/K+ZtrMIj7QAV8I1iTO2PE/RbIWqpQNSaXyB1QK4Y4KpuSVz9MUDy/STSxovrAhwXBhvjcZ7SQu9rdGuI5VlAhrm5XymEv5Gear32hXthN47lHu0/eEAiq53HPpkH//wtHvVexOnk69uFlr3wKzaTKSg9V4Yzj0dVuqqffBpoYXw/EwzlKrz6qOHzBOsSdfwosQqA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y3TXnm3YqWala8nESp/YB4DNry5KtX1V6w/Vij00Mnk=;
- b=pjckwvg5ezmGTC3Ur6n4RBpm2ihi5qASE52ThW9l3TfSc4TF9WfUtS2YCr+5vYcxuEIl+Zwe1aFxwzMDhkw518/iVWa8nysV9P2hKTAAJ3erXRtzmyWM8cOKaeY4/DbGXnuFLFayu9e84Sa/NT8js3g9uLyDuxQTb6cTOfC1kDA=
-Received: from BY3PR05CA0055.namprd05.prod.outlook.com (2603:10b6:a03:39b::30)
- by SN7PR12MB7884.namprd12.prod.outlook.com (2603:10b6:806:343::18) with
+ bh=23eiGBoQVc5DDMfaaIZ6YGesXKA5XD1hR5itk5/FwLw=;
+ b=rTjKr8ERxN1OyLWV+0J8K9+AhctjmFEL1YL4icKMqxyxB101g+xWVaeCsMMF67E+fQ/xzLiJtRNTx5Ar6b02Dc1dTN1JEOFFfPt+Sd0CbnrFc3GfsZN5sMkTOQD0QgmclolWPQA4TcChw8+T/h2CqJ26UQ/p7mdVhgVWElnnl50=
+Received: from BY5PR17CA0022.namprd17.prod.outlook.com (2603:10b6:a03:1b8::35)
+ by MN2PR12MB4488.namprd12.prod.outlook.com (2603:10b6:208:24e::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
- 2026 14:41:42 +0000
-Received: from MWH0EPF000971E5.namprd02.prod.outlook.com
- (2603:10b6:a03:39b:cafe::b9) by BY3PR05CA0055.outlook.office365.com
- (2603:10b6:a03:39b::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.4 via Frontend Transport; Thu,
- 29 Jan 2026 14:41:40 +0000
+ 2026 14:42:12 +0000
+Received: from MWH0EPF000971E3.namprd02.prod.outlook.com
+ (2603:10b6:a03:1b8:cafe::15) by BY5PR17CA0022.outlook.office365.com
+ (2603:10b6:a03:1b8::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.10 via Frontend Transport; Thu,
+ 29 Jan 2026 14:42:11 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -83,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000971E5.mail.protection.outlook.com (10.167.243.73) with Microsoft
+ MWH0EPF000971E3.mail.protection.outlook.com (10.167.243.70) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 14:41:42 +0000
+ 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 14:42:11 +0000
 Received: from BLR-L-BHARARAO.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 29 Jan
- 2026 08:41:33 -0600
+ 2026 08:42:00 -0600
 From: Bharata B Rao <bharata@amd.com>
 To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
 CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
@@ -102,9 +102,9 @@ CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
 	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
 	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
 	<shivankg@amd.com>, Bharata B Rao <bharata@amd.com>
-Subject: [RFC PATCH v5 01/10] mm: migrate: Allow misplaced migration without VMA
-Date: Thu, 29 Jan 2026 20:10:34 +0530
-Message-ID: <20260129144043.231636-2-bharata@amd.com>
+Subject: [RFC PATCH v5 02/10] migrate: Add migrate_misplaced_folios_batch()
+Date: Thu, 29 Jan 2026 20:10:35 +0530
+Message-ID: <20260129144043.231636-3-bharata@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260129144043.231636-1-bharata@amd.com>
 References: <20260129144043.231636-1-bharata@amd.com>
@@ -116,63 +116,63 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000971E5:EE_|SN7PR12MB7884:EE_
-X-MS-Office365-Filtering-Correlation-Id: 326c1adc-eb88-431a-0c0e-08de5f4484b6
+X-MS-TrafficTypeDiagnostic: MWH0EPF000971E3:EE_|MN2PR12MB4488:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7458435f-10da-47c1-c673-08de5f449648
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014|7416014;
+	BCL:0;ARA:13230040|376014|7416014|36860700013|82310400026|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MlRnmO0fA+i/nWaeLmWxQQnz3gfYzqEyGWycJb+6CTJtwS7TLcrWNWFYPUZu?=
- =?us-ascii?Q?K7A5YCPjsj9g3sypufuX27HcPgfH/ZOifnI2iU0jT6aFiAZlgKVax/BizEqp?=
- =?us-ascii?Q?brum72xvnHUHV9kYTCMnIUR4o6tzwX3WkpuZUK3giiTrZ4FxRNSitN1ZLeGa?=
- =?us-ascii?Q?vZKuj5JbtIRmhRdJNpraAz9oZfe7jlo7OLRbv/NI20xxgWrk1Yz46dpxSsvg?=
- =?us-ascii?Q?cudsfIRyX9jNaTHousHcLzhBc5HQ+J77wPUAXQ7hzCUnNqPRM+HWocfDx47e?=
- =?us-ascii?Q?QnhzxSbqyWJRKD9YYf+PebItrY3iYhQR3KVKyK9Au0uiMF6h3TrRPDDyWUR2?=
- =?us-ascii?Q?g60tYhOVbzVdm2I+Wyt52QRXdeeYHpadmg6uiFLlXrLGtP2Ap+kpZw5h8gkA?=
- =?us-ascii?Q?HTWR9WCUmT5FUtv+/qS1U1HVc3XR9GuQtnPGPu7ByN8XdBDLh28Jmi8U3q5t?=
- =?us-ascii?Q?AZ3yPIGZoAYCkeQr/OUkgvamGLCMqi2RR/QtfKq9Riu+77/GYYosm0BiLDLV?=
- =?us-ascii?Q?0cY8IRAOrEOGRaFZBjelEeglAJTViVNJzbfn5Eq+h0lsUM9dx0jyUQXUBri/?=
- =?us-ascii?Q?Spw2awtLDgpR+tqQ9JF6EoKXGDNYn1lLu69eI65tTGtfmLELaVNsDhtSBXJ6?=
- =?us-ascii?Q?kLg5PcS+OJA8qAGNcWGyndMhmWHWm8wNz6+8IvzNLX6Qeztw0DqmMQc+sZIK?=
- =?us-ascii?Q?39r6hNhx2C4rxGgaWuDL67UIno6Z/PyKBGtf14l3kMejjRoAKKaIwmqWtyfm?=
- =?us-ascii?Q?+MWpX31FvKwbORjYUwQvrDg3qoVVzjqXoYVoJ3nPzJSTiRAvDYL+QWNOmcOo?=
- =?us-ascii?Q?zAnmF/N3eiRlkDAvLy+ywpkTOZUG3kbLsjgibagbC6sOT5RzOQSdrDej86aG?=
- =?us-ascii?Q?HAITeOewDaqrLRVRmUITyN/Xm8Ne1yC4isu1E3Yxondwg3724KzG9iVxYyTJ?=
- =?us-ascii?Q?gQtAIkNdCyN+vEGlHKtirzSGZupFL0dHi46UYS8GGssydar0ZkFmdkeIbe4I?=
- =?us-ascii?Q?l0FXSDuB54BHueBWbJJZCtyOBWWCLAus+7ByjLdNafkTExdyupBMmzR0Whkg?=
- =?us-ascii?Q?0Vsv29nq0sXc+hQgRN4yPamQ5ZfyMGXqBeEYPnd4ukjD1om8Zv3ZMsPSK879?=
- =?us-ascii?Q?tdM8yCdvXDl2mXgq31IGsZpWZPqgUFm2YetFePDcj2/1LM91DoXDmCPl82JX?=
- =?us-ascii?Q?cllwPD9kmcSQPcN9BumryIdQI+G0rjpC3TJb6tIOkFOLqmxEXdgrKsMotA48?=
- =?us-ascii?Q?CBiSeLRdHEuddY9wGAvjQI3ZdO800c9eLm6IKrLbc8Fg2y36uFV7glMdnuoh?=
- =?us-ascii?Q?ddVM+1k05pICbQcXPq7wJTZnnLcnkOyBl0mbQ7McZhuSmyRFI+P5+Nid/uBh?=
- =?us-ascii?Q?ESwqhsX8BL83dXBP1wZ1No5F54ZVCkT0VVBRt9EA1ZnQSyQybnKSBaMpnQdA?=
- =?us-ascii?Q?5OQCJ4A7UZjX3nGMH7JXECOQPQjI8iUEeGGAc+wV8ids6qE2Q3Neak2Qlxjy?=
- =?us-ascii?Q?De4/AcMXgUwIsAe0s0n8XjcBI10XO/35RX149v/NflZx0bhhq4Ro2gy2W04T?=
- =?us-ascii?Q?2hCKRdFlvgXqltNZCiH3ym3GrWIm1R9kJfsrFt0Mx0XXzNLhRaEdDOjBGqqp?=
- =?us-ascii?Q?SFfhAaBeSHyGfrngL35MZMKjZO2GrSzQcx/5m3Ap9UeoURkJBE886ELuV5Wf?=
- =?us-ascii?Q?SYmTsg=3D=3D?=
+	=?us-ascii?Q?Gb/k+LXknIEAlNMeYLRRxocUpehScyMPpxywUCnOzM6mZQJkdhl/DDM40OG8?=
+ =?us-ascii?Q?4vGze/KJeIvd1Io6XqdRC+0/4guM0CPN8p7ZAkZOFcm44SN0AIa2OLjXGZVX?=
+ =?us-ascii?Q?6yk3UHhfqSz3Tm96cZx5uWPcEvZMInxASmozQNntjhIwrhQimfAJmKbR1J2i?=
+ =?us-ascii?Q?Kzrbtm6b5ajPSYTEurSKQT+aZkqy3SpUxcQCkjzhOy1tpAHyz8p5ErfuMePb?=
+ =?us-ascii?Q?wgeAm+c0gcBm3iK/k9Cu1pucV2lUofsnugawKBeOGi8lSUoWn3YojT/BxC4/?=
+ =?us-ascii?Q?IwThiCssSsXTQlU/C9sZprI8zYna9O8Awiyajx3SRij0ooKkQ75Jgp7R5TpW?=
+ =?us-ascii?Q?bjlXb/QHvmtobRqIo85i/LN0acPG3LvZEMYWhx/3ZRLIqEcDCHSt9z5Hni9A?=
+ =?us-ascii?Q?FgSaebqktt6xj85LDeaJ4KWYNy98g0zB8S4eGIFd+4/DJlt5Q/mSoeETrZhp?=
+ =?us-ascii?Q?IAwodDKinwv32cB20PouOZ5N+4p+oOGlao4S4TcccV6kcnl4UrRMTze7nF2t?=
+ =?us-ascii?Q?sL/lBxv+hf8b49JJaSpKRIKZ9LcURqZtcuPNtreoXhmHQv4U9f8HUaALULDJ?=
+ =?us-ascii?Q?Gfkb3hg8LkHYmGe9Q9ddD+dqTu5M1MpUr5xUTSvCqR15bupNyXTQFtPYB2GP?=
+ =?us-ascii?Q?w0UvJq/tmoA9BFuqr/lswaPYzMhXBL+XiQjklR+f3R1590qAwP+cbsHwNgRl?=
+ =?us-ascii?Q?NGSuHn3arYoX5moDcfi8w/YL19PUenYYnx4tBjR+mR8fG+46ey9oEhXNd8jF?=
+ =?us-ascii?Q?MgSJFEAKSf+OF1vtOyHHjTg4bB57dJcVySTqb93VRiyj8gflbnOotWlDofCZ?=
+ =?us-ascii?Q?1q/vOD09DuRg+9ZBjOIvop3NQU/uVTXADS0cxnolb5q4jVRnbR1jlzd9HgP7?=
+ =?us-ascii?Q?z0t3svlTd301VX2iTKFfDvF7QLTjJrcWqE7zimEVbkA6cqk2GDu9oSVR9oKP?=
+ =?us-ascii?Q?F+tV6r9nDHkq8VzDDXKF+DabE7MQyolK1ramZm8r+jizijl8MX8J0Hl0K/rx?=
+ =?us-ascii?Q?inFUe/MK7LSQ8tff1nTS+4HxM1Vef7Z1AMOyQJavp7lcrXFWDnv6od6hmmI/?=
+ =?us-ascii?Q?fh0TPRVjJfn8pFnfO00/Vcm72rwj6iTRHjvy6TL7CQX2NxnqQIxHZP94/npA?=
+ =?us-ascii?Q?bHIY9YQS5UwWn3cxMYXSVIIsE0f1ob57vhFJsr/tcWwDZuMjGpmGS+2IA9Om?=
+ =?us-ascii?Q?p5lxD88UIAgf7cVTY66UvyBSibs8Tndi1lTO/Qo0z401L3E2vRHJzKf2jV8i?=
+ =?us-ascii?Q?1bmjt/VDNuscwhqq6K0721WLuq05eohJTdGZnmC4kOoD/G2+iDfF5cySlrvj?=
+ =?us-ascii?Q?3Pv2j3TjrVO52UOdYEtVm1a9ZntR+bS4T9CnkP3NBdEv+ehEOW8avmdYLA85?=
+ =?us-ascii?Q?9zKmIoAW9+TRYO3xlrMXomr8P2bKpOjNlU2gZVJ7LD6eYdJ7gQp1fURPAIwB?=
+ =?us-ascii?Q?U4L/TZD+WVlDOf4llZ8jBQock5FIhRjqunoSa1u3ovEL9QP46bkdo+7HIn1Q?=
+ =?us-ascii?Q?8yWOIJZDdxHOHe+YiIte8Rp4Rcnrgh+JldHleeXGjIYp7kaYodjFQh8PZE7F?=
+ =?us-ascii?Q?2EqQm3DGm0HGnUqEdbD/jcU4YMx9TkkNZcvVraWtavTEpuJIVujI+x6lR7gl?=
+ =?us-ascii?Q?aoDuMByt7JTgTASamEQrQ/ryadrZlzgtQuQoSEJVqnI/BJI3KB++NMVzOhd9?=
+ =?us-ascii?Q?BAXHbw=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014)(7416014);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(82310400026)(1800799024);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 14:41:42.1340
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 14:42:11.5615
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 326c1adc-eb88-431a-0c0e-08de5f4484b6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7458435f-10da-47c1-c673-08de5f449648
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000971E5.namprd02.prod.outlook.com
+	MWH0EPF000971E3.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7884
-X-Stat-Signature: yhyuw3wwyfpt1yhfois9hubc6no8n375
-X-Rspamd-Queue-Id: E34E340004
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4488
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 09E0D100005
+X-Stat-Signature: k8jjuhtdtaqd53wjoz8w4iyuhzofjuoe
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769697709-690056
-X-HE-Meta: U2FsdGVkX1+LNf/8d/H3XLKWMREGWNPVdach0RVR3YVWPJyV9OiIVqOCnoAJ9OXFByTzZkhRtqU9+az1RFGsnubtT6d1N2JIhtvV+E+FWzhzMEn/QZ3f2qCV2hgeVPrav58vHNtgO3MWEiLI1aBSmC5gy2VT3f7DADmfspC/7H87Awp02M7N5o+xIN360KCeb70y9NYOxWkeLalrH5iH4S57Ms3F5WSqscCN0Lz6Hm5qBwU2P+Dy8TnLQ35zNcACASCoYdBHxbuYqS/Q/JEbd+63e87INsI4y/6tmHo+K7vsKRe5PLzQGqUM1aYt2YcHmmhSjN5ZJlfhPHtSb6xhZTDFXWKa1O6Db+zyg6DVnhvOrhATEfa66j74Fzw/Xh7db/ttHvpSwMqgzywAtZM/AEffyE57tzx5sBacwLbpQN+MBOd08q7srSXN1Op9Iwsg6eii2Ldo3U8MUvyFD/RiMXdNGIHqtApYZe+uQQpPMB/gZGrp9zmC1VbmzMGUPX6H8JCOa3ba//pkB2IDRYV6FEqAJgdThddq8K2ZPTDy3QLAj7wOz1O3ChyT19aP7wh/7bpWQD/kHVRUT2SdyAL9QLTp2yIMcyh9SN0Oy5DGioI9kyj8KIZOudoR/ysE9L3XsR1/UARD0o/3ariUrgVE7lkQNoltnLU984pZiVCnWyQe9n5HtJc7PZaQ33ORPh8/3vk9ce6NHq71+eaXF5SWcagfi1fFhyIJvNQ5e/+/FGybhCV2Gyjk09dafuYzfCkhmHMHCjDXRsAwW9W518MQq3fPuEdoq1wJH696V2klkXAh7xjStJv1plbFLK0/tER372NtL2hpMtCt8a+2yb1HbIHOAyRFxZwY+/ZZifWb4/CrYJzYJG5YQtaLFDQiXt22hpmoSykUVxlEFCRN73AgAn7roOt8Xa4C+gJz/98B0IuhGl4q22ZlpbjzShoX7bHq4Pzl75vF05/Me/rC4wh
- kceurUXT
- nskwkFd6mXI4MZoC0A4du6tvZTxjeQClajUxKvDnvlNUm1BCFeQew8LMlg9zaTnA18gpuoae1OmNbeI1ayoj9NMQ1Rn8EbrWwpd+ry5QAiYDfG+ly8dPW4HmL7MtkdNJWeKkOSg8C3FvmCyR+1bzx0sooZjUs19jV7WDaaZpvo0bm9JUSyUVVFvBmG/iXOiRJdgMCzVrFImo8T2p8SXrwo+VfmDJj9zBnthHIkvgYnAeGqWJyW7ukQpz6A0m7vO8nB6ctSbE4R75Z3WbCWGYV0DtoqkeWsNZGC79fLZDAVyPbQMPIZcexMIvP/r/gFaMPhRMQivD0JLWHcw5q9ixzMp9BcOi4d3I2ewTOZqlPAa8yD4wiEXHLvxuwMSNb1WwX8yxSRw91szlp/qa8GR68OCcLCBNy+P51sXYZ9imMe2KCmoFi6d6qy1TrWJGUdEYy1ojZb3UXRcLdwM8f22C9gQpeUrQ/vqlFY7X7F4e074nhbCM=
+X-HE-Tag: 1769697739-156694
+X-HE-Meta: U2FsdGVkX1+ZpM4YyygEzDXezk6gMa8X9WuWd2iJGMzSkSkv29G2RbGVGJf4qpqcykitxF8usNUuU+u8pnzs1uNDtibsxqvo+p9ApgJQX+1rjtDViYe9/V6OSacPNWNuXjHdb44faXVOb5uTzZ0HK8aMy+IE3vk1ra1ojccOrIXMqhfLxm1T3nwoY11VcTwgIauT9TOHU5RUmHGg+/JrRwljv6l5te4Jad4bsFrcGR9MQseCL82yrBTPrT3XeXPpKgiyn2Yr9D2BV4jI0gVML3ogUMNZy6ADZ/ETr3TNPvQ56aE99DFKR3v5Wka12I6WQIuCR9vPFGp1Jtqy93oibqlXNMH6+/iYzC1SYcVqZyzqKvIQIJaICNXrttgrWPIbomJYX9+eZ3IhcZ8WcnWexFuWu8TU9c0r/J9O/UlREkgX872/N6fFAeYDMNZg/meqeFiduuPah5Fze+U0Y840Z5sLloNJkrGq9gJ7tAdE19S8n2Kf55fBHCsVRFCDeQH6zk2HHDYIyyn01mfJ5aHrKEl+FmGpnyVDR1dlDcnJX0byCIzakYBZFUy3ujytmd/HwB+GOFGBldc7jmcd/itIRTUteuD12aMtcqLbiRut59VT0DbcitktJ15iA2By4yU6H+1WXFxWr3WSvHGXz8i59CVuzvduKsz95us8yuKDAv3msNdjAhjbjUR0aRg4RCSXICGUrLI/A77w4BXVNRNyieAsqNMQc73U7A4zxvACkxLFaCdIjL1OhZwfj04hzsubUk9PdJhVZ72Gi2e54C89Uh/yYLPGp7FV0/Z6SrZ1oPv64PqQ2EafYN1AAz95fuCAWOVDhv9J2LyCni0Kt9DJ8KZb4ypoDRTg2dJi3oA1ASQq9OZvlWEMPOJ25h45WHcAqtbRXQ1TVaD6pli1F53DZWXbd4mGKdwpdawS89q+PDB+90aQdaP8J5YoOSqrsaOp4OiIjwtU5Efw6rP/S/u
+ puYKjImt
+ JL6nabIYAQrCo5GAhJrtVJ+EiqbEUEshC1vyzZ4+ug5NxlumQroFrm3MNx8Rwu3KYN0QeUljU0GUjXfJa3x3VC1+Xv67k4VPpoBwaCKbq9LLjrgpvrDrfTcY//RqBe2nPeoRqnOcXOw2X35gmqFRRYQaSIW55nSLcvyAyMn831EGm2qNNQg1PFMSqLk5cCGQtrJT1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,47 +181,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We want isolation of misplaced folios to work in contexts
-where VMA isn't available, typically when performing migrations
-from a kernel thread context. In order to prepare for that,
-allow migrate_misplaced_folio_prepare() to be called with
-a NULL VMA.
+From: Gregory Price <gourry@gourry.net>
 
-When migrate_misplaced_folio_prepare() is called with non-NULL
-VMA, it will check if the folio is mapped shared and that requires
-holding PTL lock. This path isn't taken when the function is
-invoked with NULL VMA (migration outside of process context).
-Therefore, when VMA == NULL, migrate_misplaced_folio_prepare()
-does not require the caller to hold the PTL.
+Tiered memory systems often require migrating multiple folios at once.
+Currently, migrate_misplaced_folio() handles only one folio per call,
+which is inefficient for batch operations. This patch introduces
+migrate_misplaced_folios_batch(), a batch variant that leverages
+migrate_pages() internally for improved performance.
 
+The caller must isolate folios beforehand using
+migrate_misplaced_folio_prepare(). On return, the folio list will be
+empty regardless of success or failure.
+
+This function will be used by pghot kmigrated thread.
+
+Signed-off-by: Gregory Price <gourry@gourry.net>
+[Rewrote commit description]
 Signed-off-by: Bharata B Rao <bharata@amd.com>
 ---
- mm/migrate.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/linux/migrate.h |  6 ++++++
+ mm/migrate.c            | 36 ++++++++++++++++++++++++++++++++++++
+ 2 files changed, 42 insertions(+)
 
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..f28326b88592 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -103,6 +103,7 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ int migrate_misplaced_folio_prepare(struct folio *folio,
+ 		struct vm_area_struct *vma, int node);
+ int migrate_misplaced_folio(struct folio *folio, int node);
++int migrate_misplaced_folios_batch(struct list_head *folio_list, int node);
+ #else
+ static inline int migrate_misplaced_folio_prepare(struct folio *folio,
+ 		struct vm_area_struct *vma, int node)
+@@ -113,6 +114,11 @@ static inline int migrate_misplaced_folio(struct folio *folio, int node)
+ {
+ 	return -EAGAIN; /* can't migrate now */
+ }
++static inline int migrate_misplaced_folios_batch(struct list_head *folio_list,
++						 int node)
++{
++	return -EAGAIN; /* can't migrate now */
++}
+ #endif /* CONFIG_NUMA_BALANCING */
+ 
+ #ifdef CONFIG_MIGRATION
 diff --git a/mm/migrate.c b/mm/migrate.c
-index 5169f9717f60..70f8f3ad4fd8 100644
+index 70f8f3ad4fd8..4a3a9a4ff435 100644
 --- a/mm/migrate.c
 +++ b/mm/migrate.c
-@@ -2652,7 +2652,8 @@ static struct folio *alloc_misplaced_dst_folio(struct folio *src,
- 
- /*
-  * Prepare for calling migrate_misplaced_folio() by isolating the folio if
-- * permitted. Must be called with the PTL still held.
-+ * permitted. Must be called with the PTL still held if called with a non-NULL
-+ * vma.
-  */
- int migrate_misplaced_folio_prepare(struct folio *folio,
- 		struct vm_area_struct *vma, int node)
-@@ -2669,7 +2670,7 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
- 		 * See folio_maybe_mapped_shared() on possible imprecision
- 		 * when we cannot easily detect if a folio is shared.
- 		 */
--		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
-+		if (vma && (vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
- 			return -EACCES;
- 
- 		/*
+@@ -2747,5 +2747,41 @@ int migrate_misplaced_folio(struct folio *folio, int node)
+ 	BUG_ON(!list_empty(&migratepages));
+ 	return nr_remaining ? -EAGAIN : 0;
+ }
++
++/**
++ * migrate_misplaced_folios_batch() - Batch variant of migrate_misplaced_folio.
++ * Attempts to migrate a folio list to the specified destination.
++ * @folio_list: Isolated list of folios to be batch-migrated.
++ * @node: The NUMA node ID to where the folios should be migrated.
++ *
++ * Caller is expected to have isolated the folios by calling
++ * migrate_misplaced_folio_prepare(), which will result in an
++ * elevated reference count on the folio.
++ *
++ * This function will un-isolate the folios, drop the elevated reference
++ * and remove them from the list before returning.
++ *
++ * Return: 0 on success and -EAGAIN on failure or partial migration.
++ *         On return, @folio_list will be empty regardless of success/failure.
++ */
++int migrate_misplaced_folios_batch(struct list_head *folio_list, int node)
++{
++	pg_data_t *pgdat = NODE_DATA(node);
++	unsigned int nr_succeeded = 0;
++	int nr_remaining;
++
++	nr_remaining = migrate_pages(folio_list, alloc_misplaced_dst_folio,
++				     NULL, node, MIGRATE_ASYNC,
++				     MR_NUMA_MISPLACED, &nr_succeeded);
++	if (nr_remaining)
++		putback_movable_pages(folio_list);
++
++	if (nr_succeeded) {
++		count_vm_numa_events(NUMA_PAGE_MIGRATE, nr_succeeded);
++		mod_node_page_state(pgdat, PGPROMOTE_SUCCESS, nr_succeeded);
++	}
++	WARN_ON(!list_empty(folio_list));
++	return nr_remaining ? -EAGAIN : 0;
++}
+ #endif /* CONFIG_NUMA_BALANCING */
+ #endif /* CONFIG_NUMA */
 -- 
 2.34.1
 
