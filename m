@@ -4,120 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 236D5D73E8E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 21:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF229D73E8C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 21:30:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D7A86B00AA; Thu, 29 Jan 2026 16:26:17 -0500 (EST)
+	id 029C06B00BC; Thu, 29 Jan 2026 16:30:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 44E4B6B00AB; Thu, 29 Jan 2026 16:26:17 -0500 (EST)
+	id F17FE6B00BD; Thu, 29 Jan 2026 16:30:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E51F6B00AC; Thu, 29 Jan 2026 16:26:17 -0500 (EST)
+	id E23ED6B00BE; Thu, 29 Jan 2026 16:30:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B8A26B00AA
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 16:26:17 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B75E213A29D
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:26:16 +0000 (UTC)
-X-FDA: 84386284752.21.34C2A09
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 0114718000C
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:26:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=PzSTaG5o;
-	spf=pass (imf24.hostedemail.com: domain of 3ddB7aQgKCFg3C0JB02A6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ddB7aQgKCFg3C0JB02A6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--dmatlack.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CF0246B00BC
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 16:30:46 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 87B9358508
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:30:46 +0000 (UTC)
+X-FDA: 84386296092.20.BA32232
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8CCAA40013
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:30:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Ba/ui7Gz";
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769721975;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769722244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J/muCk34u9aT1IY2gVvKiXcNAAUfYmiU08gi1alRQns=;
-	b=Js1K9t3vggC2zTKADbu4BUwO9HwQGfAabkUPmTr4Pxs2XBXWQglmOAc/irmvxb5BACAFIt
-	NCAh02DFNoyEZp08f1/sEUgck5S7esiXpUEOp5vKyGHVJHaQahX4WY2NKv4OeKPUU+WKSU
-	9yH5xyU6WJXKq2FpJGXfiSROD+pdmtI=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=PzSTaG5o;
-	spf=pass (imf24.hostedemail.com: domain of 3ddB7aQgKCFg3C0JB02A6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--dmatlack.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3ddB7aQgKCFg3C0JB02A6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--dmatlack.bounces.google.com;
+	bh=JqxcN7KtTUu9rL1wIU9EI9qT3i6tnGntzVMiIiyYLMQ=;
+	b=GDVc8KjEd4MDoRvzOtLKU8xOZrXT+AQwpATNoC2qNGexdz7UmjvcEWM9NKKHJD1pfQZgow
+	h89kOayzgjT+9MYrfZl4JesPf0DaeCGxLCZF+UtaEaoug327ikvRGYbvTYC0pGQjf7FvOT
+	EOzxl/LT+drnOeU8naE8t5ekKuHPojA=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="Ba/ui7Gz";
+	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.174 as permitted sender) smtp.mailfrom=surenb@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769721975; a=rsa-sha256;
-	cv=none;
-	b=SBHyB4BbT3DEPZWQOIQf2OCeggWGQrWB3/ylm7BDS9HXj9BWpv+n5AYs/hgy4Bnf2YyANv
-	t8RCCZQeG3rAMQREa4z97ZepuWaqjuVjXxNooWeRtO9l5qlKasFcyvQDe5gdZNc1q9SU/s
-	PGI88JzfEtX4suxyu+MW62eSSzpmvZQ=
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-34c5d203988so2580493a91.3
-        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:26:14 -0800 (PST)
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769722244; a=rsa-sha256;
+	cv=pass;
+	b=b7kouFdSkCQ9dgqzYzDp9CPlZwIrU3jjBSNAdP5kB9ji7OeOFxdW+P94pFJ2FX+Fewfk7o
+	y04ABVWWNg4rBwXReXY+O6+RlusKjlOe50PgbnwgMzvNX1AS50cEd7fexRLRrGO80LyiOx
+	Ua2ioxV+BzlBb6515XEcYJwy9H7dFZQ=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5014b5d8551so16651cf.0
+        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:30:44 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769722244; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dcXzqYNtdh0ifkMUeAARSQ3l1FY5yAlVOQ/9+YJ4Adc35QOuplX665Zrr67RK5OPaS
+         GctDaAr0CCv1/N5nrDp5retoKoNvnzmyb++r9vWRkSrCpeZ4FaVdWmwmC2iVcLJH/buh
+         MZJQff2y1IZ5fLJmxnbY4F6LGFxTO4MhIj2B4fMBKHQ1zhz+D6ubcgbMs/itcr+0yrRp
+         WLL98VLjvBuxa4khreQ0ruGmU/JgUqI8vNmZdJplDy7RN5wo2sKAzRHA8unAvb4nbsH3
+         gKe4KJcB9VuetyDZjm3FQUkcAiilovoF26EtaWyPWaFqCQl7mMSRDMNXACZm/ju0yIEK
+         6EXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JqxcN7KtTUu9rL1wIU9EI9qT3i6tnGntzVMiIiyYLMQ=;
+        fh=ZHFJCYvXZ/byaIkJg9rloFWX9vJvoKGRnYW9+v4XiF4=;
+        b=Tfp5cax3uV3Lltvsc/3k9Q1mw/Ox92JGmSGcvbpFFA8+gP1F3bqQB8746UhLZB2UyS
+         ZXdYfY5lRMZ27uOciHIoKnnicKbu9GmcY4+R0ugQiKunn4myXearMFQ0eEN9LZf4Xo+h
+         EIW4jnBBzG+lCdc4zpcuCyKS8Q74pkxd9fy1C2trmYlh/U2USZBAbF6VIdvBq+kXk7rS
+         8wyRyCKQo4A+nyElI40FLA8QEIdEXqFLLfTvCifaGnoF0SU3wpbX7otcZPjgvRZ/2F5i
+         4rMckbUrROgTaF26z9g1LyYzhesp2KH30nZtokzqN/Xwa7STXbFzrqNrrpMxXpG8vwQU
+         wwjQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769721974; x=1770326774; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J/muCk34u9aT1IY2gVvKiXcNAAUfYmiU08gi1alRQns=;
-        b=PzSTaG5opWpbM36q9GJFbxBvb5XzdY4KiX/QNA2zEbfWDq5LNdGDOVSI+veb1k/09H
-         boINMjXlGF9iFb0gleeGrDFzcZaIuwRZMGx5qKEBa1zAHfb7g/BY5cJadnN2UeOY6AVX
-         0vrK7kakBHb1uJmWhxYE/SQmC8ORb8JBQpmg/UCVKAmUqa4e8bYOD6+qEi0UsDiJkEd1
-         wmPiKIAH3nDdqaLDteKLhgRHv/PiV+iMelO4aJXwNmw2X4TEvKx7k85pAzMgBTRbZHIH
-         JlN5vckbpEdQNCPv4gS+OcGqgDppvajaq7Ol6xdirbVrGyj1ifldjnQjThI1zOri8DKA
-         N7wA==
+        d=google.com; s=20230601; t=1769722243; x=1770327043; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JqxcN7KtTUu9rL1wIU9EI9qT3i6tnGntzVMiIiyYLMQ=;
+        b=Ba/ui7GzWF2QLEXDnnfs2OB7uSkv89Kj1eKUd3l6mQknMzC0O7Up9bGD7SJvIbIFCk
+         C5kGrgDCgyQKxztw+TCVOjKuygZ/5y5oRp7hJE1QRs0s4bsuHqfByBYXcBEV86h34+rl
+         ss3Q0pCNIZnfn5rlA3MWK1ObrwjFBZeiCcRejpMg00OF+FPOmibJPGMxaWk2j+zUM34v
+         9qV7AOHvh7QT7fTJqFMGlEDuBvjk5TXO281wVzGasVX9ycYm95ZGLMqHbR6E4+1Hc9EA
+         +FV4fwSu8ejjxC9AtHBRKo2xrVYK8J2TyfenceZ6JPzpY79xrZbDG6sXw+DNBuyxhJ8S
+         56pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769721974; x=1770326774;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=J/muCk34u9aT1IY2gVvKiXcNAAUfYmiU08gi1alRQns=;
-        b=QdbLjWSAh6MBT+IkWoW0SSaw6dg/V5STUpIsZH8J+swhNheVDCAIYsmN7RkJE9AcOg
-         GwFbUMuZ5IA+NZK86F01SV9gUNv1oRPw/Q5uhaGyWA7gXffGhOK9/YbhKS6+gPcf2u2K
-         adBiAO3yIB9qnI+DiM2kc2KE2oP9hSH4mMjM+TV2m1jPdjRyaQx+yxyLvNJqvluplEnd
-         cXEnuYDa25EabpXNFyqNIRnMghDgrL9zWCNejLiuqpHhPDubd1jmdfTxui4HTHQL98Bw
-         QjK6gGQeasMi2lYfYjlvEv+5XaGYQUCul3UYWqQNPAB/XHt/hBdsxyGm/YnCytUHf3c9
-         FC0w==
-X-Forwarded-Encrypted: i=1; AJvYcCW+QX/4FVMVM4VJ6WjyJBqL3jtm2mrfZvnaDiLav3K3Yk6atRS4AQF1YPXyh8w1WHO0nL7b7PsWMA==@kvack.org
-X-Gm-Message-State: AOJu0YzNWFa6ASW/UN8OllzfbVYU8XkZzWEwGipwtCkt9XNrKQ78MABT
-	8vpsfuvUcNEsKGtrEq9VlRot3ct0OgN2LmYXvtCeoqNmEcisYvILfR2lCsBbGIgaFQlSaObK+cz
-	8UEp35u8rIQIVoA==
-X-Received: from pjbso3.prod.google.com ([2002:a17:90b:1f83:b0:33b:c211:1fa9])
- (user=dmatlack job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:d60d:b0:32e:38b0:15f4 with SMTP id 98e67ed59e1d1-3543b2dc1c9mr828054a91.7.1769721973868;
- Thu, 29 Jan 2026 13:26:13 -0800 (PST)
-Date: Thu, 29 Jan 2026 21:25:09 +0000
-In-Reply-To: <20260129212510.967611-1-dmatlack@google.com>
-Mime-Version: 1.0
-References: <20260129212510.967611-1-dmatlack@google.com>
-X-Mailer: git-send-email 2.53.0.rc1.225.gd81095ad13-goog
-Message-ID: <20260129212510.967611-23-dmatlack@google.com>
-Subject: [PATCH v2 22/22] vfio: selftests: Add continuous DMA to vfio_pci_liveupdate_kexec_test
-From: David Matlack <dmatlack@google.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
-	Alex Mastro <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, 
-	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
-	Jacob Pan <jacob.pan@linux.microsoft.com>, Jason Gunthorpe <jgg@nvidia.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>, 
-	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org, kvm@vger.kernel.org, 
-	Leon Romanovsky <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, 
-	"=?UTF-8?q?Micha=C5=82=20Winiarski?=" <michal.winiarski@intel.com>, Mike Rapoport <rppt@kernel.org>, 
-	Parav Pandit <parav@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pranjal Shrivastava <praan@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-	Raghavendra Rao Ananta <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, 
-	"=?UTF-8?q?Thomas=20Hellstr=C3=B6m?=" <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>, 
-	Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
-	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+        d=1e100.net; s=20230601; t=1769722243; x=1770327043;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JqxcN7KtTUu9rL1wIU9EI9qT3i6tnGntzVMiIiyYLMQ=;
+        b=EiCNQakpIocZHHQik/DJpgjEgnrvusoGLY8rniPX3GFbFKuorQ2h4VbxO1G5j2wi3L
+         K2pF+wu0+vABFkosa117wHt6YP5XfFVAN9pH0LFkW4wwE9puCDiYyBo1hb6jOfQvr+1d
+         g62WI9yifGnG1cagU8obO5v9oYs7In70o8KEcOLP7kDV2smfdoacRVor55+wBGv4EKis
+         wJI5iw+c/zhEcTRThBpjTIYlzV6RKX15ZHJWK3X7R705huUpk16Yavm5DUEfC00CgpqT
+         YREzscqdclzCUTVdwS9/Fke+qFatVDiir2xDkTao9t5y4Oq5g/aTGlaIYHHveeCyQyNV
+         jrdA==
+X-Forwarded-Encrypted: i=1; AJvYcCX6buEVkbFYMB0Drw46I0TcV3h8fM9kgQHCOGbpBVfCk9hDkHISUp2ai6yk7Dvcl3/B+NUcrvuRxg==@kvack.org
+X-Gm-Message-State: AOJu0YyExWcIpczPC77kNVMWSPjHiBASpn2EQWHb3B5Gbp6lA3lVNIh6
+	0O8YIrFxuipD08hbs4GvN6LLj7Lhw2pXWeHHV0OTbfwzX8ozkIV+7mz/4JiemweT3daNztTrDGi
+	Edteox2zeJiz7e297eMU+P4qk7FIgHWSwT88ZjtjP
+X-Gm-Gg: AZuq6aJ/NcyBoHQ8DZeG5udwtOW0f9Fx90Zd7s2iR0A5wlJNlxZcrbOqR258BA0N9aA
+	jAUg5c5/KxVs3qrNGUTHoxDm/qgKIFgKoFDpbD+yUsGBPezXLfdW31vwEKNFaGRjkVFUHRdW4R4
+	z6Jt/WHUqSAM+7if9mKqqstGa8Er3dfA8pBQSl7b5yJ5+QmMY2suUyNagk6Yw9uO0+3IQxoM3pR
+	/92/SgtDguPBYP91ktIF2I62legFcrXy30YdjXDMRV+p1Hijqk+PErQAFFXTbtmtYinqqRlSb2C
+	u4VbM6wAJwEENsBYd7fkV/Z4qw==
+X-Received: by 2002:a05:622a:1a85:b0:501:197d:32af with SMTP id
+ d75a77b69052e-505d282fe19mr1768141cf.0.1769722242948; Thu, 29 Jan 2026
+ 13:30:42 -0800 (PST)
+MIME-Version: 1.0
+References: <cover.1769198904.git.lorenzo.stoakes@oracle.com>
+ <fdae72441949ecf3b4a0ed3510da803e881bb153.1769198904.git.lorenzo.stoakes@oracle.com>
+ <20260128113749.osNjwNqo@linutronix.de> <71c45f74-0fb5-4ec8-aa67-d700df94b617@lucifer.local>
+In-Reply-To: <71c45f74-0fb5-4ec8-aa67-d700df94b617@lucifer.local>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 29 Jan 2026 13:30:32 -0800
+X-Gm-Features: AZwV_Qgm5gepZ8gbgQe6dEjUltBBWBnJtHfDRyEYqgKQxgjXh9yeS3JPa-VkvQk
+Message-ID: <CAJuCfpG+Ci2JSskDuE09jzdReXP-06Bu7XfeHTySBwQXb_dYtQ@mail.gmail.com>
+Subject: Re: [PATCH v4 04/10] mm/vma: add+use vma lockdep acquire/release defines
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Waiman Long <longman@redhat.com>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 4xz1k98nmn7poo9y67q8qgeknjwecy5k
-X-Rspamd-Queue-Id: 0114718000C
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8CCAA40013
+X-Stat-Signature: ihe1ukgqxbipt5ydhz499kjr8mqwr619
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769721974-620809
-X-HE-Meta: U2FsdGVkX18yQ4j13kXf86uMntUI8sxGXTm8enpxHPMpg0ftzTLoaD0d9qhsI8tCTdNJ72PRmt90jGwwxgOOWNlSdWEqaV4mqwIXpHHcmdKqFdpiwpG0Z6UfrjuLtKs9OFPYnSw/spHUh/MUPQzUPaxhZZy5VbAqzCuksInDn8cL1Wee9djgE5j+opFEtX9DW20xB6oVdwHuKF6KGxlbYoX619h4w5KVG2fCoxhzEXbfgqc4fJLf1b0xD1wUup2Ek5SmuU87zkaqNwDo+inDh5cVbgmXNroMKEB9ndx3AsvpNpxzEKQtw8eenjf4lGqCjCoXzo38jNPS/LmgPIu/SrFA9coe7c1Byx46f0k5H2NYj9F3Eo4abzftgfRmwQZfH2Fc1U61MK36epjnqhQqM2lkrqPaOBcRQgzY91MTMTpAwcgIQvPkM6aHaNWNSldYnQA4nD65gZJX9Cuy9h31E5MEkZCi6i+9jm+dkJHaUJCBpBtkNRRBf+MgL0cDeyfGHY8eCG5OyzFF/Cqr/3Tc5bY0655a28S+gVgyN2uEHLv04WieAJBA7+2gCvP5AzmCWu41T25f4bdFPI7Yt+dJttaVqPBS4Nk+fYC7udrya3Q2gcfyr/lvbIF0Aecb/13fW9uT2ElZ+us5F+ACj0iW6UXRhHy7ofavtRUXp8TEEWfGOm3ZtHXexVUi7jY8MT13DNNYFI6AnH6obiNOqHql7IRe2CLXV/UTAy31MPU+7fHTezOBQjHQZOYBTVV5KRMjVhTcAYHHJTOGqUvJzcvI6kiNVfu0SrgoEBbp/GhcTDbzGq4pht/aoOYascHVtHegBXswg+YxcFzm0PURD3XKkaIQU9kFV8N0QJSIWnkUuo7bLzO3sYNPfOeyMM61jxtUW76lgurHMRgeFTr5IrEety3zAMvI+pSYwk4388z+mbDKC+OrtInzmbUM1VTsSHs+G91fQ6ow0d45Nn/QDPp
- 6cmLlnDX
- ukVD481+D+PrFQtYsQ/WF8hSV5u7bZ9pNjzE913xz4Hz6K8txpiEzEJM0+4+i11x7QJdS/KhApUNSjruroCQfS9GcxvxL9qecw+uKxFi4uVKlS9fmt6GUWjBQPEhL+Nnuw8Nc8TwYLzggitGJH1AiNtI/8dqRONoGJL1RzAC7AwjH1galB+o4kfCaUFPxsViHvbtpfGiflvMEUweb+uUr6IilA1seaz94m6ETIRyEk1rpaMkcyzSqwq+3Vw1UMuoZbQR8agzJuuIpMLdlTMToH/b4nyKRbsuzh/5lAYk4PmUbhPpehbvz9aqyhQxg7yJ+fq6Spxcyg5Eqnh1jKXsvRRcgz7u3E09qw0tJvIuefLDr5N/E+R2qY6qJ4fApubK+/Y6wTg/k8DYBweSUOX+WUePsetEAuAIu+T9gJBgpoMJZNGr0uS/Xq0knmULvki92GuWo7/U8kICTUol4f10zGbXV2vf87QFptg5Rp3TLmGXVeFYI+nmGKYZ5JpGY6Ip5K4VEnbOXnU3l+oU5glLMEkqjsJFEsEvk9RIOC8Uw+58xChp8aqA0yUUvRcbuJ6k7VBXQDmiArDh4pcs0YS0r8NTRB0zs+I/7dQg6
+X-HE-Tag: 1769722244-587485
+X-HE-Meta: U2FsdGVkX19i4Uz6oScrAxnyWSouqrtBWszKxIqsMqlRPkrbTgX1foADmCXe4aQ7F/lF0aosQ0PaSAX8HkysHGKWkNtWp2VKCoOg0aQHM3OdNZ7Vg+q0AAy1SEo8paQWYEJlj10AsVNRwhU7BpYoPcbIiubLBcYWOBKd6VXf4zBXkgGvcFji1AKjkVXsMqibTE++j7U6xNJNASA/sWT/5GZ13i5wHCG5tIoKNH7burhUib/abN6MVGF5jr3xxJ5avVygMWzIClwYdS8a83W0hVd21laJRayVoQ/TlByNySS3DqYfpyejGG2FVlmam7n4Z1l57a6Kz2zADaEStdf9nRzyVBt8rPCkvYG4LVA8fg9P0DkuN6xRykRO7BYCQlflNtc88ucM6abNyQLug3GNtcMXmD/VIOGyGTc651AK1MitSZrknRfsWyEQsh6hSA3Wi0xx/8hoN+2B7UGHwfHRCFICWjq2UZOLKCRlzowRh1bkz6riVkVM6xo8ZZr+LnGkHeUp5IcaaEeRYdZs3iFMWKv7amDrvTHJX15+qj3vpc/Va8MbxviXy8+ydPmuSrVgwaicNnnwpwLx3+XAkt01k1+ZOoCOoUFCb5964ktIbAhhUDt1Z0ClxM8H/OuxbWXu2DnNyHqJnrI36Ht6URQleXStsapH7zA6SMNokeT0IBkRaiHZawy1UYoan5UznLuA2EmRBx6QcVLvedzX2aQyKmADbGnH3mR1cFna9w8pVwXqGwcccTN9SEZVCcOpb3gVsXfnwJ2xLkpiqC+qfTZWpoSS9/uhYTqoFvVC7CUT7v2KpMW6AjFQfjIt/Jo4hBwRY7tKP6Kplh/E2i1dXSmqwRUd+f8plJO41qLzReBb0kq5cD51tnccQtndZ84mFY6AR8zH4S4/bAE6l2MV53BfwB+1hkNqkFLThugCZCbSqodhyeutqQ2hd7R7ApRrsy61gYhrLG0yMo/pDZKOPxs
+ vJ3bZe36
+ IeMWXugHJVBWD8ROV1cEKsOF1Cjbxnmq/MjcmQhhK5gB35u25kLJ7EEIpA5t/gw4wxIBofeDJfkQEEVnNsmvsA/+7xP0uciSAFwUhdYkTWSnf5jz1gZAcNAfKlB/9t+DBqNs5Wsigg1P9BK4C5nC+LGGtLsmq6bs3NJHJ8p2k7jBbKItEPm+KsMd7ObzU6eoQkmEeHesDEZfRcgvoNA5jmpgxR3QokTS6nwywZCTzsD+cB5gHPeWX/aCXNWXiv89kp+dJys97dcu7Sa9CJ/7aBkAMRaiLPE0mkm98m15j8/RUJuyzM/2rN/IReDabLAiq+cCaDW3J/sd+SGc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,206 +147,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a long-running DMA memcpy operation to
-vfio_pci_liveupdate_kexec_test so that the device attempts to perform
-DMAs continuously during the Live Update.
+On Wed, Jan 28, 2026 at 3:48=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Wed, Jan 28, 2026 at 12:37:49PM +0100, Sebastian Andrzej Siewior wrote=
+:
+> > On 2026-01-23 20:12:14 [+0000], Lorenzo Stoakes wrote:
+> > > --- a/include/linux/mmap_lock.h
+> > > +++ b/include/linux/mmap_lock.h
+> > > @@ -78,6 +78,37 @@ static inline void mmap_assert_write_locked(const =
+struct mm_struct *mm)
+> > =E2=80=A6
+> > > +/* Only meaningful if CONFIG_LOCK_STAT is defined. */
+> > > +#define __vma_lockdep_stat_mark_acquired(vma) \
+> > > +   lock_acquired(&vma->vmlock_dep_map, _RET_IP_)
+> > > +
+> >
+> > After going through the remaining series, I don't think I found a
+> > matching lock_contended(). So perf/ tracing just give you a few
+> > lock-acquired events. Wouldn't it make sense to also some
+> > lock_contended() events where the caller had to wait before it could
+> > acquire the lock?
+>
+> Yeah I did wonder about this actually. The series really just abstracts t=
+his
+> part, so I think doing something with that should be a follow-up.
+>
+> Suren - what was your intent with this? I did wonder what we actually rea=
+lly
+> accomplished with this.
+>
+> VMA locks are always try-locks.
+>
+> Write locks can't be contended against one another since VMAs are always =
+a
+> per-process entity and not obtained remotely, so either a VMA is write-lo=
+cked by
+> us or not write-locked, never write-locked by anybody else.
 
-At this point iommufd preservation is not supported and bus mastering is
-not kept enabled on the device during across the kexec, so most of these
-DMAs will be dropped. However this test ensures that the current device
-preservation support does not lead to system instability or crashes if
-the device is active. And once iommufd and bus mastering are preserved,
-this test can be relaxed to check that the DMA operations completed
-successfully.
+Correct, all paths which call __vma_enter_locked() to either
+write-lock a vma or to detach it have to already hold the mmap write
+lock on vma->vm_mm. So, lock_contended() will never be triggered for
+vma write locking paths.
 
-Signed-off-by: David Matlack <dmatlack@google.com>
----
- .../vfio/vfio_pci_liveupdate_kexec_test.c     | 129 ++++++++++++++++++
- 1 file changed, 129 insertions(+)
+>
+> Read locks immediately give up if the VMA is write locked.
+>
+> Would we want to record a lock_contended() event in that case I guess the=
+n?
 
-diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-index 65c48196e44e..36bddfbb88ed 100644
---- a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-+++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
-@@ -1,8 +1,16 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
-+#include <linux/sizes.h>
-+#include <sys/mman.h>
-+
- #include <libliveupdate.h>
- #include <libvfio.h>
- 
-+#define MEMCPY_SIZE SZ_1G
-+#define DRIVER_SIZE SZ_1M
-+#define MEMFD_SIZE (MEMCPY_SIZE + DRIVER_SIZE)
-+
-+static struct dma_region memcpy_region;
- static const char *device_bdf;
- 
- static char state_session[LIVEUPDATE_SESSION_NAME_LENGTH];
-@@ -11,8 +19,89 @@ static char device_session[LIVEUPDATE_SESSION_NAME_LENGTH];
- enum {
- 	STATE_TOKEN,
- 	DEVICE_TOKEN,
-+	MEMFD_TOKEN,
- };
- 
-+static void dma_memcpy_one(struct vfio_pci_device *device)
-+{
-+	void *src = memcpy_region.vaddr, *dst;
-+	u64 size;
-+
-+	size = min_t(u64, memcpy_region.size / 2, device->driver.max_memcpy_size);
-+	dst = src + size;
-+
-+	memset(src, 1, size);
-+	memset(dst, 0, size);
-+
-+	printf("Kicking off 1 DMA memcpy operations of size 0x%lx...\n", size);
-+	vfio_pci_driver_memcpy(device,
-+			       to_iova(device, src),
-+			       to_iova(device, dst),
-+			       size);
-+
-+	VFIO_ASSERT_EQ(memcmp(src, dst, size), 0);
-+}
-+
-+static void dma_memcpy_start(struct vfio_pci_device *device)
-+{
-+	void *src = memcpy_region.vaddr, *dst;
-+	u64 count, size;
-+
-+	size = min_t(u64, memcpy_region.size / 2, device->driver.max_memcpy_size);
-+	dst = src + size;
-+
-+	/*
-+	 * Rough Math: If we assume the device will perform memcpy at a rate of
-+	 * 30GB/s then 7200GB of transfers will run for about 4 minutes.
-+	 */
-+	count = (u64)7200 * SZ_1G / size;
-+	count = min_t(u64, count, device->driver.max_memcpy_count);
-+
-+	memset(src, 1, size / 2);
-+	memset(dst, 0, size / 2);
-+
-+	printf("Kicking off %lu DMA memcpy operations of size 0x%lx...\n", count, size);
-+	vfio_pci_driver_memcpy_start(device,
-+				     to_iova(device, src),
-+				     to_iova(device, dst),
-+				     size, count);
-+}
-+
-+static void dma_memfd_map(struct vfio_pci_device *device, int fd)
-+{
-+	void *vaddr;
-+
-+	vaddr = mmap(NULL, MEMFD_SIZE, PROT_WRITE, MAP_SHARED, fd, 0);
-+	VFIO_ASSERT_NE(vaddr, MAP_FAILED);
-+
-+	memcpy_region.iova = SZ_4G;
-+	memcpy_region.size = MEMCPY_SIZE;
-+	memcpy_region.vaddr = vaddr;
-+	iommu_map(device->iommu, &memcpy_region);
-+
-+	device->driver.region.iova = memcpy_region.iova + memcpy_region.size;
-+	device->driver.region.size = DRIVER_SIZE;
-+	device->driver.region.vaddr = vaddr + memcpy_region.size;
-+	iommu_map(device->iommu, &device->driver.region);
-+}
-+
-+static void dma_memfd_setup(struct vfio_pci_device *device, int session_fd)
-+{
-+	int fd, ret;
-+
-+	fd = memfd_create("dma-buffer", 0);
-+	VFIO_ASSERT_GE(fd, 0);
-+
-+	ret = fallocate(fd, 0, 0, MEMFD_SIZE);
-+	VFIO_ASSERT_EQ(ret, 0);
-+
-+	printf("Preserving memfd of size 0x%x in session\n", MEMFD_SIZE);
-+	ret = luo_session_preserve_fd(session_fd, fd, MEMFD_TOKEN);
-+	VFIO_ASSERT_EQ(ret, 0);
-+
-+	dma_memfd_map(device, fd);
-+}
-+
- static void before_kexec(int luo_fd)
- {
- 	struct vfio_pci_device *device;
-@@ -32,6 +121,27 @@ static void before_kexec(int luo_fd)
- 	ret = luo_session_preserve_fd(session_fd, device->fd, DEVICE_TOKEN);
- 	VFIO_ASSERT_EQ(ret, 0);
- 
-+	dma_memfd_setup(device, session_fd);
-+
-+	/*
-+	 * If the device has a selftests driver, kick off a long-running DMA
-+	 * operation to exercise the device trying to DMA during a Live Update.
-+	 * Since iommufd preservation is not supported yet, these DMAs should be
-+	 * dropped. So this is just looking to verify that the system does not
-+	 * fall over and crash as a result of a busy device being preserved.
-+	 */
-+	if (device->driver.ops) {
-+		vfio_pci_driver_init(device);
-+		dma_memcpy_start(device);
-+
-+		/*
-+		 * Disable interrupts on the device or freeze() will fail.
-+		 * Unfortunately there isn't a way to easily have a test for
-+		 * that here since the check happens during shutdown.
-+		 */
-+		vfio_pci_msix_disable(device);
-+	}
-+
- 	close(luo_fd);
- 	daemonize_and_wait();
- }
-@@ -78,6 +188,7 @@ static void after_kexec(int luo_fd, int state_session_fd)
- 	struct iommu *iommu;
- 	int session_fd;
- 	int device_fd;
-+	int memfd;
- 	int stage;
- 
- 	check_open_vfio_device_fails();
-@@ -88,6 +199,10 @@ static void after_kexec(int luo_fd, int state_session_fd)
- 	session_fd = luo_retrieve_session(luo_fd, device_session);
- 	VFIO_ASSERT_GE(session_fd, 0);
- 
-+	printf("Retrieving memfd from LUO\n");
-+	memfd = luo_session_retrieve_fd(session_fd, MEMFD_TOKEN);
-+	VFIO_ASSERT_GE(memfd, 0);
-+
- 	printf("Finishing the session before retrieving the device (should fail)\n");
- 	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
- 
-@@ -109,9 +224,23 @@ static void after_kexec(int luo_fd, int state_session_fd)
- 	 */
- 	device = __vfio_pci_device_init(device_bdf, iommu, device_fd);
- 
-+	dma_memfd_map(device, memfd);
-+
- 	printf("Finishing the session\n");
- 	VFIO_ASSERT_EQ(luo_session_finish(session_fd), 0);
- 
-+	/*
-+	 * Once iommufd preservation is supported and the device is kept fully
-+	 * running across the Live Update, this should wait for the long-
-+	 * running DMA memcpy operation kicked off in before_kexec() to
-+	 * complete. But for now we expect the device to be reset so just
-+	 * trigger a single memcpy to make sure it's still functional.
-+	 */
-+	if (device->driver.ops) {
-+		vfio_pci_driver_init(device);
-+		dma_memcpy_one(device);
-+	}
-+
- 	vfio_pci_device_cleanup(device);
- 	iommu_cleanup(iommu);
- }
--- 
-2.53.0.rc1.225.gd81095ad13-goog
+Yes, we could have it in vma_start_read_locked_nested() if refcount
+increment fails and if the refcount !=3D 0 (if it's 0 then the vma is
+detached and the refcount can't change concurrently).
 
+>
+> I don't think we'd want to do that if the VMA were detached, only if it w=
+ere
+> write-locked?
+
+Yes, that's why we would need an additional check for 0 in there.
+
+I can add this logic after your patchset lands. I don't think we need
+to block it for this.
+Thanks,
+Suren.
+
+>
+> >
+> > Sebastian
+>
+> Cheers, Lorenzo
 
