@@ -4,116 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC504D358E5
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 08:42:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEECBD358E0
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 08:47:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 371086B0088; Thu, 29 Jan 2026 03:42:42 -0500 (EST)
+	id CFC736B0088; Thu, 29 Jan 2026 03:47:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F43F6B0089; Thu, 29 Jan 2026 03:42:42 -0500 (EST)
+	id CAABE6B0089; Thu, 29 Jan 2026 03:47:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2008F6B008A; Thu, 29 Jan 2026 03:42:42 -0500 (EST)
+	id B61D96B008A; Thu, 29 Jan 2026 03:47:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FCA26B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 03:42:42 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BA3B216095A
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:42:41 +0000 (UTC)
-X-FDA: 84384360522.05.24B70C4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3389640002
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:42:40 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WPGl94Lh;
-	spf=pass (imf12.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A411A6B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 03:47:07 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5577014090E
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:47:07 +0000 (UTC)
+X-FDA: 84384371694.09.8BE2712
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CD6351A0007
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:47:04 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JLhsJCWy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N6TMZz8d;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JLhsJCWy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N6TMZz8d;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769676160;
+	s=arc-20220608; t=1769676425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/sMdD4LH4lYD68ZQsgvC4Mnrtcefh8C9M3ruYdvsXKg=;
-	b=wmrU8tgkBsbdjXJIwLLcPxOfjCFXnmIwa3aPPI1vrxBdqFWP2pF1F5o/9t4+sXKVZ9A7zP
-	xpCPiURE/cOQuaD0/YkHOsVfALS2EQ7vQlaFmfJctFwU0HmCiCLAjWdOCU5kTcbnsTfOyE
-	sIAqVZtkfWndHnyV9XgVOEjg27bF4lc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769676160; a=rsa-sha256;
-	cv=none;
-	b=Zi4UtGb4U6Pf8ucxyPyl0nsZrXv4PfJa3p2NEGHAl0wepP8gQVLPrc4OKj1TxT1hBZPk6j
-	Y6rNG1RtUzW4BEkVVdU00fkaA508soZWhhqIl4YiqdvmM+lgdLjUDTbAYt1uv4/WnX7ipB
-	GIRyz+fTVgF9KykFHv2V7bELCADAmPU=
+	bh=ayXGorl1oZA4YurCNlc7iXC86LNC/WuwB8s/B5m+MTs=;
+	b=hmLdccwET77w4yfvWk70oJbbsYFiN3NJHtzB0XPMmkTsbuYAlWGNts/5VQaN6Pj7aRUV6Y
+	Y5OvZEFK21n4AtuXiMvpklVz27gzvi50QAR51xA9h4DhUB/KVPHfSYUuI3QXBRDm1wFzgV
+	kB/Z8Vulmu9s/SnpwJCLDyTylGzxsbc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WPGl94Lh;
-	spf=pass (imf12.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2321160054;
-	Thu, 29 Jan 2026 08:42:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4C1C4CEF7;
-	Thu, 29 Jan 2026 08:42:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769676158;
-	bh=9QMEWB+yM4NRpFfl8KXrYJ8s8e6vKN8iej0DvKpGhcU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=WPGl94Lhk/NCi3lEfZ8z65ulZBNKDA6CREUcGelyPWHfzLrK37HGMuOwr6ymnAWbq
-	 zMZw49VV3aaXfUo4RySMTADkUQE8+HOyxLnDUbS9p1QK1M0ZRy5dZoytzUnUWxQCiV
-	 JuT7cNRWclddUiuwl9xVh/+NdZ+rP0tENaakniujZDuQet4Cq/5STEjla2SU6a7q9W
-	 IS3R+R9rKQilV6AEDsD1IY1uaYb3R1j1y6rd5wzC3bsdxi84+lYX8JX2lPdhLlHGdW
-	 /cUwi/rw/43gTiJJkns0weSNlVwB+8yl7oSzYqr3Zf2SXhbeJgLk9oPQYFHNifZxf3
-	 yKjt2ycaK4QFQ==
-Date: Thu, 29 Jan 2026 01:42:32 -0700 (MST)
-From: Paul Walmsley <pjw@kernel.org>
-To: Deepak Gupta <debug@rivosinc.com>
-cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Vlastimil Babka <vbabka@suse.cz>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
-    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
-    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Andreas Hindborg <a.hindborg@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-    richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-    kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-    evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-    samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-    rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>, 
-    Andreas Korb <andreas.korb@aisec.fraunhofer.de>, 
-    Valentin Haudiquet <valentin.haudiquet@canonical.com>
-Subject: Re: [PATCH v26 10/28] riscv/mm: Implement map_shadow_stack()
- syscall
-In-Reply-To: <aXfRPJvoSsOW8AwM@debug.ba.rivosinc.com>
-Message-ID: <190df1c1-feb2-ae5d-7fdc-dd0c3d780b21@kernel.org>
-References: <20251211-v5_user_cfi_series-v26-0-f0f419e81ac0@rivosinc.com> <20251211-v5_user_cfi_series-v26-10-f0f419e81ac0@rivosinc.com> <aXfRPJvoSsOW8AwM@debug.ba.rivosinc.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JLhsJCWy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N6TMZz8d;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JLhsJCWy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N6TMZz8d;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769676425; a=rsa-sha256;
+	cv=none;
+	b=VoXwtjAuXwG3e0WqVe7otjioT2OK2BQ4tKDk2R9bpGSSFiCWFX25Ys4xIcHFhLu7v4SLwi
+	vw26vaGAkTs1pPP5rkEWAvEnuTlLKKBAEEz0ur6c8Og+0OKxymulzHMYi7k3rc1z1xy9D7
+	fpu2iat+cSjXzHsnv3cL/WeSFrDTcUo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4CE3F34043;
+	Thu, 29 Jan 2026 08:47:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769676423; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ayXGorl1oZA4YurCNlc7iXC86LNC/WuwB8s/B5m+MTs=;
+	b=JLhsJCWyZj/bqxI9HrGk6is/Pa14mOfwDr5dzkveSKi5vguYOzYraVu2cJzXxIiRWgryFD
+	rbzcVCxQiRhQR480yR9BC1dneluERAsY4nxcfBPtaZNWqKVLsaZaNzhcHlfKpAgVRW0XCY
+	G5uq1j3sMRBeJX7QA6ieCcTINM4imKU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769676423;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ayXGorl1oZA4YurCNlc7iXC86LNC/WuwB8s/B5m+MTs=;
+	b=N6TMZz8dsfMRIB/BP7vTohjCq0I2IoB8cn+VDjvmG4PcC1bXCZQ+NfU60APmDsq7ayeHVM
+	afQN6JevmuEQKoBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1769676423; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ayXGorl1oZA4YurCNlc7iXC86LNC/WuwB8s/B5m+MTs=;
+	b=JLhsJCWyZj/bqxI9HrGk6is/Pa14mOfwDr5dzkveSKi5vguYOzYraVu2cJzXxIiRWgryFD
+	rbzcVCxQiRhQR480yR9BC1dneluERAsY4nxcfBPtaZNWqKVLsaZaNzhcHlfKpAgVRW0XCY
+	G5uq1j3sMRBeJX7QA6ieCcTINM4imKU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1769676423;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ayXGorl1oZA4YurCNlc7iXC86LNC/WuwB8s/B5m+MTs=;
+	b=N6TMZz8dsfMRIB/BP7vTohjCq0I2IoB8cn+VDjvmG4PcC1bXCZQ+NfU60APmDsq7ayeHVM
+	afQN6JevmuEQKoBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2D28F3EA61;
+	Thu, 29 Jan 2026 08:47:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wEqwCocee2ncdAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 29 Jan 2026 08:47:03 +0000
+Message-ID: <3317345a-47c9-4cbb-9785-f05d19e09303@suse.cz>
+Date: Thu, 29 Jan 2026 09:47:02 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 3389640002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [vbabka:b4/sheaves-for-all-rebased] [slab] aa8fdb9e25:
+ will-it-scale.per_process_ops 46.5% regression
+Content-Language: en-US
+To: Hao Li <hao.li@linux.dev>
+Cc: kernel test robot <oliver.sang@intel.com>, oe-lkp@lists.linux.dev,
+ lkp@intel.com, linux-mm@kvack.org, Harry Yoo <harry.yoo@oracle.com>,
+ Mateusz Guzik <mjguzik@gmail.com>, Petr Tesarik <ptesarik@suse.com>
+References: <202601132136.77efd6d7-lkp@intel.com>
+ <3dfb6857-3705-4042-9a30-da488434d9e3@suse.cz>
+ <rsfdl2u4zjec5s4f46ubsr3phjkdhq4jajgwimbml7mq6yy2lg@krjc6oobmkwz>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <rsfdl2u4zjec5s4f46ubsr3phjkdhq4jajgwimbml7mq6yy2lg@krjc6oobmkwz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CD6351A0007
+X-Stat-Signature: cbnedx6uu4ztzrkyzo4b5w4h6std5d8y
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8g6o7eerbmkcn1qerusdhig3dt9c6a9d
-X-HE-Tag: 1769676160-269507
-X-HE-Meta: U2FsdGVkX1/DlLEf0rUX14rwy7qzCldXctDEPSANhiMmsKa7hpRCcAc+6cE/j8Df2oFdJQSvX0EA/uZfSoPGVroePnqKm4/xddHBbvOC4NHkTSZh4m+XYG++YsbU+yG3wFWIxETn0Bu+XWyuoINe7fqQPZISBsh1+DJmyTZjvOJZI8ZFPbHyjzFV/3MMdTgCOOAgbS24yCnscQWZAc7V75yz1srDluJkk3xwS7ilqy4YPvI3vPL3u6AdLJoAK4oxXDJPAf+zf0Eit26RIo2UbjFfwJLhWF7T5JMNyNfDCp01+ERWkQGfOBJC1WdYEz+2yQ4ywZeaimrT6TYqxwazPa9UM7AIiybuhZ+P78wgrllirKrErnoPHtv5/S8S7aUzaYlTD86E6Sr1m9iJg4UUwBNFE+geuAHfMA/HE8yVo8irPWIM47bRwl5reF9V7Wlz/LM2DdMGmiw4yjKrcOfQKrqxupzIi6vzXuGLOuB7IJ8Z7IqP7fDn0FkwPv+rnAU8VnVcDmU1rpcDhjAYQdrWf996OQ8vD8y8v8JdEIt6CD/lM4BUVyH4LORF+2VTJw6hOTqphwaxfrdwhiV1j67fYX14N8qCDuWjHJ8YZT6z0RB0Up3TSqYPE+VBn3bA0cWEVhI+Gdjc5SOTUelEitI5Gu4D+EOoEJ6G/CL50kZpWb9o8cvZgwHc/yBblBXdefa/S3t9XIhIaAzgIf1z7RrIRS0SoGMkZkxqFPJI3ukFyQK8pZ2HmUy1kVrhMKQTLdm9ZwCpWWLjGLQSJhfqJw6WVcB+tqLggfpJcrPnaQRZ4Yh6n2UVBDdYviCDrEJv1G7YugDM25iLAUGE8ZL6xHBOkE/UFYzUHg1+2zN1CogSz27tWfJoVdOV/l7yolcSQh6tiBKG1UbGRmFLw0tVwTZWago0B5cJtwiLC8e3sclRwmOMsTervwIlTKUM6N93BlkNqumtC2JVnrfahQnTLQt
- D7bueI4J
- zkx68vlc/4WT/aaAAY5wGpGVL8bzhHbAuUw4ozX2oqSWsHNmHFpnbJ+u7OFgPyNQODN/W2ej8aev6/TpPhEJx5xtmPzbprl5xb+pAcAJFqzPhkccvZuk7wULLeJ55FMCJprSVL2DLYor2wRhBQf4/uM/PlR50hYwA32VOZamIcSKbMNAe1Awupl470U3e5v0XjpSVY7PCZGi/+Aadl7wLBheY51WZH+w8ShSBQataW8QNw6KBxx3KB2HQ5egjvDIF+xnz5/NjshYiKGST7vz+8gPT1n7peqEeDzlLuQY1qEvOEl3HzkwSPW8Np8tP4SG/ahonSCCtvR9v2mi4KCzynEtKhPJqIdRXIuy6ouFto3lXYkvgHnkLtvzeQw==
+X-HE-Tag: 1769676424-459124
+X-HE-Meta: U2FsdGVkX1+2gZAt+92aHGDChkAADSlqZs6eX43sghR504XB1TXMm2pNkQFNZHzdtgLYzIW8lbNs0OnMszqZRRvfpWespjRbg8C7jcXFlcyqeTeBwlKPUOwf5N/C+7eDszJWo7vsqDRoqCYXpvQ/GejKKn6P6e0eAs83zB8ChDsTAW99Xf2/NypLtC10ftU1RVWM/tXLF0rTGrvq/e2zQIYnal8/vNi4Av2jb9jaiwVomR6m1UTDPGSiR0KiKxrjDB7QHaYag5bcu9mFDVlp7HjrSZkUr5aeV32qQLj6uwS6+XQ6FRY3HBy5m8FNKElrmrDzxYrF/hXKQUtycFjDbWai/jnkqN7cHB3I4f/+sGKMitPbyqQTQ8s+g14Y8uzmWNdjDjzf0MPqRxhdbnjiyFUiN8EI68uTJCz6Y6yl0iIzQf3zP+5vQ7gXvNqjTtibC1z/fNRt8C4xZdZMbGLWV09t/XciHJay62Klt/9cQbHusBetaqKQCfafFcuzFA2/+cU/ygYeT7+Ou8U7C0F6LQmFvemkNUypA1ELQIeXExn6wnMrq+1jPPrOf/fog7yC20EQwa13T8RP991jHQj7A4Gapw1XF+drGuSHtC1pP0xWQTujFucKR8vlrzJ4rM4v/rjuK4ll2IELY+TqJ1P9sb0DS0auCQ30rfditONlDexs4k/KVljc7YHIso6mP9+NzoEXnJyqrlUg9wZ8Bg6JUeAgSVtKOJIia10xadVg5VcagDHzky3E+uq3BLpN2bMj6TX4PA3S2QJA5KT76qSuAy+Y2Ey74Ff8qifFnn8sT5MYg6jzxpbzTNFrOUVP3/W/B+SCZRqZIGmIYDi++9Cv1UjMqSvUUgyVmDJJeiG5SCpLN5QCLZokkqQSxC3EEl8RTd9O2CnbeZF4u8aeFfZZnlX/PzUTF72ZSf7tBgd8cDR/ATQFA3azUXzU2K+Iw/yTSZuXc6uXDEBmmeIlkpN
+ JLweChbT
+ JCbSNInyK1pUjJvAMhrSjfZZ3m/am7NAmPsuy1Xha62mMzcIgLKCmJgle1H/KmAhOQ+8jDEPN3VR6gva0TtVsWQRNfCdqsiTPkeduXJwcFY8N7lLjPgsBqTgn3MULS9aTobEgOdj5t1cgPKJG4NXpCQPsI5gSH176r9XBVVNNFY2xfKaxBRQ2/Xfuxe8RQ5j8MKhLaVCPtckW4r2ZlfAqfpG2hyDq8i/Yp9uGgLGf/P5LLCF2pueePf+5zeCLSHTG7sSrDH8mRRfWWg49B+9K4guCMInc5RxKDsfjQd87QLjKj75Mb5Tw4GUR6UF/oaIGNxAJ+ZUxff1lAnE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,52 +180,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, 
-
-On Mon, 26 Jan 2026, Deepak Gupta wrote:
-
-> Can you apply following diff on `allocate_shadow_stack` function in this
-> patch.
-> This fixes the bug that I earlier mentioned. We shouldn't be returning
-> location
-> to token and instead return base address of shadow stack. Userspace consumer
-> should be determining token location itself. This matches the ABI of other
-> arches. Sorry for being late on this.
+On 1/29/26 08:05, Hao Li wrote:
+> On Wed, Jan 28, 2026 at 11:31:59AM +0100, Vlastimil Babka wrote:
+> Hi Vlastimil,
 > 
-> diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
-> index 27b36034ea85..a8530e6afb1e 100644
-> --- a/arch/riscv/kernel/usercfi.c
-> +++ b/arch/riscv/kernel/usercfi.c
-> @@ -232,7 +232,7 @@ static unsigned long allocate_shadow_stack(unsigned long
-> addr, unsigned long siz
->  {
->         int flags = MAP_ANONYMOUS | MAP_PRIVATE;
->         struct mm_struct *mm = current->mm;
-> -       unsigned long populate, tok_loc = 0;
-> +       unsigned long populate;
+> I conducted a few performance tests on my machine, and I'd like to share my
+> findings. While I'm not an expert in LKP-style performance testing, I hope these
+> results can still serve as a useful reference.
 > 
->         if (addr)
->                 flags |= MAP_FIXED_NOREPLACE;
-> @@ -245,13 +245,11 @@ static unsigned long allocate_shadow_stack(unsigned long
-> addr, unsigned long siz
->         if (!set_tok || IS_ERR_VALUE(addr))
->                 goto out;
+> Machine Configuration:
+> - CPU: AMD, 2 sockets, 2 nodes per socket, total 192 CPUs
+> - SMT: Disabled
 > 
-> -       if (create_rstor_token(addr + token_offset, &tok_loc)) {
-> +       if (create_rstor_token(addr + token_offset, NULL)) {
->                 vm_munmap(addr, size);
->                 return -EINVAL;
->         }
+> Kernel Version:
+> All tests were based on modifications to the 6.19-rc5 kernel.
 > 
-> -       addr = tok_loc;
-> -
->  out:
->         return addr;
->  }
+> Test Scenarios:
+> 0. 6.19-rc5 + Completely disabled the sheaf mechanism
+>     - This was done by set s->cpu_sheaves to NULL
+> 1. Unmodified 6.19-rc5
+> 2. 6.19-rc5 + sheaves-for-all patchset
+> 3. 6.19-rc5 + sheaves-for-all patchset + list_lock contention patch
+> 4. 6.19-rc5 + sheaves-for-all patchset + list_lock contention patch + increased
+>    the maple node sheaf capacity to 128.
+> 
+> Results:
+> 
+> - Performance change of 1 relative to 0:
+> 
+> ```
+> will-it-scale.64.processes  -25.3%
+> will-it-scale.128.processes -22.7%
+> will-it-scale.192.processes -24.4%
+> will-it-scale.per_process_ops -24.2%
+> ```
+> 
+> - Performance change of 2 relative to 1:
+> 
+> ```
+> will-it-scale.64.processes  -34.2%
+> will-it-scale.128.processes -32.9%
+> will-it-scale.192.processes -36.1%
+> will-it-scale.per_process_ops -34.4%
+> ```
+> 
+> - Performance change of 3 relative to 1:
+> 
+> ```
+> will-it-scale.64.processes  -24.8%
+> will-it-scale.128.processes -26.5%
+> will-it-scale.192.processes -29.24%
+> will-it-scale.per_process_ops -26.7%
+> ```
 
-Thanks, this fix has been rolled into the queued patch.  The Reviewed-by:s 
-and Tested-by:s have been dropped.
+Oh cool, that shows the patch helps, so I'll proceed with it.
+IIUC with that the sheaves-for-all doesn't regress this benchmark anymore,
+the regression is from 6.18 initial sheaves introduction and related to
+maple tree sheaf size.
 
+> - Performance change of 4 relative to 1:
+> 
+> ```
+> will-it-scale.64.processes  +18.0%
+> will-it-scale.128.processes +22.4%
+> will-it-scale.192.processes +26.9%
+> will-it-scale.per_process_ops +22.2%
+> ```
+> 
+> - Performance change of 4 relative to 0:
+> 
+> ```
+> will-it-scale.64.processes  -11.9%
+> will-it-scale.128.processes -5.3%
+> will-it-scale.192.processes -4.1%
+> will-it-scale.per_process_ops -7.3%
+> ```
+> 
+> From these results, enabling sheaves and increasing the sheaf capacity to 128
+> seems to bring the behavior closer to the old percpu partial list mechanism.
 
-- Paul
+Yeah but it's a tradeoff so not something to do based on one microbenchmark.
+
+> However, I previously noticed differences[1] between my results on the AMD
+> platform and Zhao Liu's results on the Intel platform. This leads me to consider
+> the possibility of other influencing factors, such as CPU architecture
+> differences or platform-specific behaviors, that might be impacting the
+> performance results.
+
+Yeah, these will-it-scale benchmarks are quite sensitive to that.
+
+> I hope these results are helpful. I'd be happy to hear any feedback or
+
+Very helpful, thanks!
+
+> suggestions for further testing.
+
+I've had Petr Tesarik running various mmtests, but those results are now
+invalidated due to the memory leak, and resuming them is pending some infra
+move to finish. But it might be rather non-obvious how to configure them or
+even what subset to take. I was interested in netperf and then a bit of
+everything just to see there are no unpleasant surprises.
+
 
