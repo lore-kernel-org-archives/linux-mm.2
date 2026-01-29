@@ -4,108 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A495DD6100C
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 12:22:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72FF9D61011
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 12:24:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 860CC6B0088; Thu, 29 Jan 2026 07:22:12 -0500 (EST)
+	id BDBE66B0089; Thu, 29 Jan 2026 07:24:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 838836B0089; Thu, 29 Jan 2026 07:22:12 -0500 (EST)
+	id B88D96B008A; Thu, 29 Jan 2026 07:24:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 744446B008A; Thu, 29 Jan 2026 07:22:12 -0500 (EST)
+	id A614F6B008C; Thu, 29 Jan 2026 07:24:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6680F6B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 07:22:12 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0752E1A0220
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:22:12 +0000 (UTC)
-X-FDA: 84384913704.14.6C373E8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 59584C0003
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:22:10 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XztRNY84;
-	spf=pass (imf10.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769689330;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 909396B0089
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 07:24:32 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 274E45BE16
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:24:32 +0000 (UTC)
+X-FDA: 84384919584.17.A169E6B
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2812FA0002
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:24:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cG1eXBV+;
+	spf=pass (imf15.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769689470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Lh1cp5MZd9weWPg43KyYIt/vK0mobwQtnuR43/F/UM8=;
-	b=rdSOBvpyJNtxXUfcpE4uArRiFcNN6cOxf9/dGhHaxhKBfytlfAnW2DXTACoRN4hlz3uRFR
-	kLRtvLblGjvdNdClpa4vanPcxM9i3erGFl/edyRwcFvTJvNVKebX0LJrtoZ9G8Rd4XudNk
-	PKXykL7iHlnNBPW+Ju0GG1Nj2G6qlQk=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XztRNY84;
-	spf=pass (imf10.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769689330; a=rsa-sha256;
-	cv=none;
-	b=SJe1b/xlKXDjqRURLYGE2kpb1F61MepbiUxBsg38vyrvBY26AG1OlZFgDgJuPEwzJByTqO
-	TDWywz/duyOO/t64BhCq2m8ZFA6QKzP0bkAuAR+7d7GOIub2K70IrZ3fOMWu9bxADI7Vlh
-	c+sH7uh5fBEmjMomGPyRuyDJr74gWo4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BBDB36001A;
-	Thu, 29 Jan 2026 12:22:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C4EC116D0;
-	Thu, 29 Jan 2026 12:22:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769689329;
-	bh=u0mH2caXTtzlMetoMGj0YZL3OyKWg4rqxepJQNCPAH8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XztRNY842nKIzlwsrZ2zmz2O2SC5CuFYr0PFbxneGq54Q9YEkUGZqhjUouXUqn7WY
-	 gu1u0BgbBqV0y/KKINI7F5mpGY23/Z1wyz0AX6gqB3PYmrqkLLFGGS4EnkK8LzItWL
-	 11f6uCX/vWjK70v646N607UAo/vVw126ju602qaPhWROGFWFzHGliwwbe0bGkyN8bU
-	 Acd+AAyS3ayDZvQUmfewqIGTfM3AH37KGvXYDyYWxYbz2g9I/rDMZC0+UWoqpqCDFw
-	 Lxxyi+CZsOVT6AaieoFJ0pwzNkpS0FTPF5Y/yE+6lVAbtyKypL1z5/miAPJQBjjHOe
-	 sMX7/pXFwwB7Q==
-Date: Thu, 29 Jan 2026 14:22:02 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-	oliver.yang@linux.alibaba.com
-Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
-Message-ID: <20260129122202.GF10992@unreal>
-References: <aXPEFdEdtSmd6AzF@milan>
- <20260124093505.GA98529@j66a10360.sqa.eu95>
- <aXSjm1DXm6yP62tD@pc636>
- <20260124145754.GA57116@j66a10360.sqa.eu95>
- <20260127133417.GU13967@unreal>
- <20260128034558.GA126415@j66a10360.sqa.eu95>
- <20260128111346.GD12149@unreal>
- <20260128124404.GA96868@j66a10360.sqa.eu95>
- <20260128134934.GD40916@unreal>
- <20260129110323.GA80118@j66a10360.sqa.eu95>
+	bh=Gi378VSufP6R0w8KNQPQBwzIrR72NX7nC7xLrdysx7g=;
+	b=HBPB4OApwfy2fUrx0wY+CeCtAowMCY2+BQgbaElHpB1OB7QFmjerQA7hmgkn3PIlBFm60+
+	47PYUqYpL1HKp5gRwbC4550JHBQXMABXx2U8TOelCWP8/7DZEyOcuTdqrhCWFYhQ+1X5j5
+	KAnRkR5R3/Hx5Se0g0DwGLxbpWuRPUc=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cG1eXBV+;
+	spf=pass (imf15.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.171 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769689470; a=rsa-sha256;
+	cv=pass;
+	b=hHJ5V7Sbxe2l7NVfg2xEKSNuBngv9FZ/nZZgmgK8let4YWT/2WQYDZZbxA7plnJnePDPlO
+	GvHBN5PrZSDcCuN4nGxAgSAEBHyfVfP4lB27vKVEYzOFP1q5x+wqqAcQyt81iQb20R5jph
+	ZlPs7rs066S0XRB2tD4vbuphrOBOew8=
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-385e7cafef9so6973191fa.0
+        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 04:24:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769689468; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eRy06smfqZqoM2ndLTM1bVh/v6ttaTqnYhMvqEOCLi8W/aXOWEiWWxmfu7BnrdXjoK
+         pKdHk0ETKEo4CYIXkjwOU6mnN4JU+dE7RIGeyBTB9ZcOqJczAi1lFpnYEOJHXxR7hX8b
+         NlnCRnUUS/h7XxWMSjEkCt1B1f4SKxZ5RRYqDNE0SFLqqs2ppgs1MNo901ErQvQBYryG
+         it001H2J7Mh7cnr+TYrU5QoyNI/b6k0nJV583Io5f/4kD10XH1a2pN2pfJ1yD6HMy+L6
+         /dWgu6jxd073UKtggQI0iBCxctFcDkuCSgAm0VwUPzhklIdWfCPXKKcWnjNy3t5/bZOR
+         QsiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Gi378VSufP6R0w8KNQPQBwzIrR72NX7nC7xLrdysx7g=;
+        fh=axh3yBTGQvfrf6EpHyJktaMV2zpclwurKXoGNMx0J4E=;
+        b=fef97akfbfO7eaPPJsbo2ufVdXZaqT/Seyi5ypQRIWm5CLksWCMDkZVmFv2As7Jmrk
+         qUe0KzRwSdoWCLx+QSeeMPous4gVt/nRuY2xd2rUgvNT8nfrPmUvG3H7+4paj4XH+Bis
+         VfnIcEd/3XEbQqya1wX2C6YMyDYMHRWit89Te78ZmBxvFs6ClLHWe5Bm9PHGy7mTHcd+
+         yiG3TgkAf6NWMhRkS5/Wr/wk3bLPI56PeoJ/BjZuFFetz49J5ch2bxII36h5wwVhL495
+         EpTtfcpxHMXQs8/0suhITAYfOm5KW9IH+PVoprmuvFOkkIBhwKQkHWUcAArheJucKQ8H
+         jROA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769689468; x=1770294268; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gi378VSufP6R0w8KNQPQBwzIrR72NX7nC7xLrdysx7g=;
+        b=cG1eXBV+tBsOt2LSaKYhukkNO+Vq1lyimn6m9+5XHMc6g9DBsvvf2RwQctIqtg1OV9
+         cKAw96Sjgisz0x0Zzx3qyya+t3fnwgEN0qeaybmYiECaTb1sTIFojn14CQpcZeInspRR
+         A5oVCizJljAr3Tbra4HC7DVs9lW8ftHB9A2Pv8dXeSwyRbwwjvyTxx5EwkkV3/vgfcpL
+         RVK4lDmcUEzwKk+GEv8Ux0WHpis2sYphKM7jOOG1gFOnmSg7raoJ5m3wRMQacFR/VmB1
+         IVDnFeHiB++5T154J8HCRbmY2zvwczba8GkX5IbdJ+uPmZyNAnVBeYrAmSZu0IHosShQ
+         74ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769689468; x=1770294268;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Gi378VSufP6R0w8KNQPQBwzIrR72NX7nC7xLrdysx7g=;
+        b=lVqLfnC4PFSE/MjRbBUbeCcKZydy/ToQvK9eWodq3j0Ue8tfTBvnBdiNVx0ZGgSjPD
+         M4pIvqGHAVUGGNDmp3TkSmwBNVYvsLAfsMs1p99NFo7solUgwbCuQ2VzlY84XOSer+6R
+         mdOn+5TOwL/69AtdVPwqSHpjSlzzfZpd1zIQ7jiJVCoLTJjrC3vFGrE7gqZg53f6Axyl
+         fWPJvUDdLk6cSq0Fotc6nWCvF71VYKx+LbdlG1sX4P8Y4uXsd3RATgGgyg6hsmCbtAfi
+         vxE6K8KK5EHDqUFgGgk779NZo++RFd0BDIJ0LJrUYJQLHfUBKtEhDWW0WlMwLG5UsPNN
+         l4Zg==
+X-Forwarded-Encrypted: i=1; AJvYcCXQiRz63s+1hkGwZLtqULM9ElBV4h6uwfy6DdMD2/m7URmHoXIITFWCMkrWXJwSeEscezISNlLn9Q==@kvack.org
+X-Gm-Message-State: AOJu0Yw1nQ4AqJ6RUSusnxzesFb4kN6dZCdhS8k3Bit4huGRYH+DLnWh
+	iL6lwZoG9BmbZqapmZ3jodXAfw+P5WVv4pnTF346azGzRkuNttz4DfGOv+01Ctsv9amE0/Hh3EK
+	UTsW0IjsUEvMdmnQqmLMRZ/dx7v6dfyo=
+X-Gm-Gg: AZuq6aKRxsMQ2+AC5TNdk8JD/xLBp9mBC8GJplnAnuv8g+hL71r7ekR6iVnkOCyomjU
+	uK8aa+7SQ0Iw8mytoFElqx8D3cSLyBED33TNAD08CNPuSlmlqK1zPiZZIIURgN4cZdiS6haHd+x
+	BP0j7i3nx+CfyCBBVln4G2b0mC+f9NXTsUPvQkjUGfBrcbBmrabAY0M4cLLYR9EGlI/i5zfiOK1
+	oN7A6jePZapp8O0AtmbA5r907+p86s8LN1uu1tcN2Jbn5KCx80RArUWZQZyscfnjlsy0Kkp9Fya
+	Ro9sIXQ=
+X-Received: by 2002:a05:651c:2205:b0:37b:97b7:a049 with SMTP id
+ 38308e7fff4ca-3861c85b3aamr38828881fa.9.1769689467768; Thu, 29 Jan 2026
+ 04:24:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260129110323.GA80118@j66a10360.sqa.eu95>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 59584C0003
-X-Stat-Signature: 6ur7b4yopb49k3ssh56if5rpnartmd6d
+References: <20260123082232.16413-1-vernon2gm@gmail.com> <20260123082232.16413-3-vernon2gm@gmail.com>
+ <72dfd11f-dca4-447e-89c5-7a87cb675bda@arm.com> <4exllw7pf4yfhfzpyg3ictsnznf5lepv5tjd7zvycldjwmh6jm@j6rara3ogrux>
+ <7c4b5933-7bbd-4ad7-baef-830304a09485@arm.com> <gzhittxi6dn2o6a3wf4qx4fafkdc2pumfuz3xtprh3ifs2t47q@slsfcb6kqqcr>
+ <dab88ab4-2580-444b-9ea2-579005de71ac@arm.com>
+In-Reply-To: <dab88ab4-2580-444b-9ea2-579005de71ac@arm.com>
+From: Vernon Yang <vernon2gm@gmail.com>
+Date: Thu, 29 Jan 2026 20:24:15 +0800
+X-Gm-Features: AZwV_QgCm_qUWXIevjF6S9ifwEiu5F8yYa0kQ32R7XGDwTwd6hCqXNzQa4rcjbg
+Message-ID: <CACZaFFNGXDK7S82q2bCbMt_0UOa--xi85kwJFcj5NtNpwmW0pg@mail.gmail.com>
+Subject: Re: [PATCH mm-new v5 2/5] mm: khugepaged: refine scan progress number
+To: Dev Jain <dev.jain@arm.com>, lance.yang@linux.dev
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com, 
+	ziy@nvidia.com, baohua@kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ix1r1q7ckiye1piefd45jqf69hup5etm
+X-Rspamd-Queue-Id: 2812FA0002
 X-Rspam-User: 
-X-HE-Tag: 1769689330-656099
-X-HE-Meta: U2FsdGVkX19VwGAhXL+HjgGPb9QYg5HOEAL/FPt9prxuv+BWrFjlNmaMw87pxsxsJrUHbvO+boXhDWDADzIp0j2i57KYP+SQnVWq5kI5Umm8pUqJhqx3ICccAXe1Ri/pAO6G9vkscUD8EapVkLJ9Oqaqv9dvoPnSoEy+UuJWtih1UiUBO8afRvhO3MkADYuWPtN6pZP9aTupT3qnRK/NqlTFABqJM32iRg9qUkvYWdUJmBYeHqQ1pLJnQlzc7AHGxJHbu86FKGSWlwiPX8MXQEbh2KvLrVUg1lpxuKtSdX97VYt7EwNFrjtt5esvcWjRxfNnHHojb7JlmI1VoncD6HyLTmCOka5RTdxKm+HW943ANpwXzdCoDda1MNAeryVNKQCqj/JDo4j5ipK94p4C4N/IIsXk8IPVUw8cFfoANjtgR4J21p7t4m4YUWA3JfjW8iA53fxbhKbTeRNDsq/FPyhAUWe8Km9BB1YCj1HLWPDj1miVVebUs1Xnqi2EVSn3bF8ALRzP1ZBwKFyJlms5zDNqmtWUG3LFnB7oCPBnazgN/lQlWkJXoK6GTzmZAkcWSwrW//EcS9j13qMbJOeyoVlRC9mmesVJKeG/SXXWtrYtCRlX+gAJ/hyaYnwzflnKxfQ0QVefs0NXrgTHnadCfHQteOWoClQFvVHZrCrqslUlSHZ7dtnmd4wDQZEp6xSTl/k4vnD/+7gmm4JwFF5deMWlqeb0UHMGjSatTxn5NOfpZ4ZlaDnVp7RrMdl0Of9876ednIqYgSvVsv7b0zFcbxhJaUVODrbO36biuUmSC/pJL5jxgc8ejXg9vO+lNDtvUeVhxsX5fWJn+bXhJdfrxiZ+sTi+V1mkVkKTF71GUTco7rAAMrASJ+fBCuepK0z/JbSwEVIsIjiNKyxf8q9k5E2YHN1OOLay/QsNxTcr6CLpPW/G6npvgQrmt8StFWqdunlScFqoRVy0zQKfQ1n
- SXzlJ8Bn
- lDmDjaZnRC+U7Ja70k4SZYwaxcXGeqOdIyCxjTRSwO8vA6dlpVznwm1QQzkuLwYSPhN5mGMnyDDtvzYDbQTF7PMF5KdydpusLG6oo3V1B3CpFp76AoZBelKoXOD3AIsDutah6OWBiNy0HnSCyATgWm//84sminhdVV58kFZdAMD6ncoaaD0Lin58PWE8DLDLNkDi/rBx4k069lVejOAkDX8/ZhZqLllETojvU+qsYykOuY4I47RaEPugdihfjGWHsERTOYPBAJ9J1A2gMef2/37BEiaw3SSWPXHQNuQYW++LgepPf1gPgUBv2KiPpXVEPYJFFXJeHX4u77qjpv91yWPDki1RXJHO9gt9MfrAjSAs9siZKSPQjGQThKw==
+X-HE-Tag: 1769689469-585096
+X-HE-Meta: U2FsdGVkX1/7DE0U3se9L2nZr81FYpB4NT+fqgISWMXN8zxtzAs3sSASmy83W0nL+xYXYevvRnxKNWzL+5ElEcUpgCfFVGLaCuGUvgSFjZhx4UW/VZraI26PQ+v/SNagb6qdRMoPGjyhDRSN1SMm9JvHQMSUP99WiDcqBpM5l3U8q7wvaZGFhSZYLZPYCtlD00VFGfX9tIhEEgUY7XXSc48RWo7p8s4Di0C855WIvz6sTSDEVCJh70W/WKvwl8B2bxuFRxWbmuPigKSmtgC5k8Yk3WA+L0/pq3iHnu5w7Mpxf9Vvx4Bq/AlrH65KdvkoRnZ7WuoxvZ0E6jolLX/Jufd8cQI9e+n0bJeZiKP0TK5oYwgQZufs2E4j9GoDosT6SNdl7K2w/RmaUAuhE6DgDq76ruK/WwvzPIOjaaFPl3ZVFwVAlPCNlZl56xa3zvAZ5lnUk41Z/WPJUhzIlBAaRH1t0de/6bYVEw/6ni7ktw39aQYksU93kGpIyqUyz9OlryBahV3th3azj5Wg/2mAubD7XZhJ+p55Wgb5U6vomhGG3BKGHSWGZqNPiDG4qhBi72h0D5zOpOa5/gqSmaOKLjz4Fl6snvqwrz0RtRXF1oAs0une9LNO7bJBnqYjY855nTrPaDvlPTAmbJkEMmvv6h/sw0GLDn69GkoxW9jkFRC9dVaeibWX95EEhHrvMK3Ktb3erLH1sJQrdhRRVeBoNd+9etItutiwVoxnZ8AJJZr/mR5ZoDfCFaeq/PIwu5XpN2Dtco3Du9RYrp5jo2AX6uNRZh9o96I8HjmhRN9EYYMjQwXU5NkfH4DFvgxt5t85Dcv13J1yKqN2KkC7qDsungHBnSV7NzcgZgoGSgWJatfYgd7KoTNvpvxLnh9QmWr2eIxY2wbTbtZ1gQxSnA7kdGFWf0zSitGS6gHFXD9FXtS1k/bEt229LynXSjWuCd9eOsHNXfdY6DnBu8B4SCB
+ AG0i542h
+ NXQMNGKlXOb6wEBvanwht9gPf0a25cg6tTGPbTJAzu8SbxqDq/g1fNg4tRA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,155 +143,516 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 07:03:23PM +0800, D. Wythe wrote:
-> On Wed, Jan 28, 2026 at 03:49:34PM +0200, Leon Romanovsky wrote:
-> > On Wed, Jan 28, 2026 at 08:44:04PM +0800, D. Wythe wrote:
-> > > On Wed, Jan 28, 2026 at 01:13:46PM +0200, Leon Romanovsky wrote:
-> > > > On Wed, Jan 28, 2026 at 11:45:58AM +0800, D. Wythe wrote:
-> > > > > On Tue, Jan 27, 2026 at 03:34:17PM +0200, Leon Romanovsky wrote:
-> > > > > > On Sat, Jan 24, 2026 at 10:57:54PM +0800, D. Wythe wrote:
-> > > > > > > On Sat, Jan 24, 2026 at 11:48:59AM +0100, Uladzislau Rezki wrote:
-> > > > > > > > Hello, D. Wythe!
-> > > > > > > > 
-> > > > > > > > > On Fri, Jan 23, 2026 at 07:55:17PM +0100, Uladzislau Rezki wrote:
-> > > > > > > > > > On Fri, Jan 23, 2026 at 04:23:48PM +0800, D. Wythe wrote:
-> > > > > > > > > > > find_vm_area() provides a way to find the vm_struct associated with a
-> > > > > > > > > > > virtual address. Export this symbol to modules so that modularized
-> > > > > > > > > > > subsystems can perform lookups on vmalloc addresses.
-> > > > > > > > > > > 
-> > > > > > > > > > > Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-> > > > > > > > > > > ---
-> > > > > > > > > > >  mm/vmalloc.c | 1 +
-> > > > > > > > > > >  1 file changed, 1 insertion(+)
-> > > > > > > > > > > 
-> > > > > > > > > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > > > > > > > > > index ecbac900c35f..3eb9fe761c34 100644
-> > > > > > > > > > > --- a/mm/vmalloc.c
-> > > > > > > > > > > +++ b/mm/vmalloc.c
-> > > > > > > > > > > @@ -3292,6 +3292,7 @@ struct vm_struct *find_vm_area(const void *addr)
-> > > > > > > > > > >  
-> > > > > > > > > > >  	return va->vm;
-> > > > > > > > > > >  }
-> > > > > > > > > > > +EXPORT_SYMBOL_GPL(find_vm_area);
-> > > > > > > > > > >  
-> > > > > > > > > > This is internal. We can not just export it.
-> > > > > > > > > > 
-> > > > > > > > > > --
-> > > > > > > > > > Uladzislau Rezki
-> > > > > > > > > 
-> > > > > > > > > Hi Uladzislau,
-> > > > > > > > > 
-> > > > > > > > > Thank you for the feedback. I agree that we should avoid exposing
-> > > > > > > > > internal implementation details like struct vm_struct to external
-> > > > > > > > > subsystems.
-> > > > > > > > > 
-> > > > > > > > > Following Christoph's suggestion, I'm planning to encapsulate the page
-> > > > > > > > > order lookup into a minimal helper instead:
-> > > > > > > > > 
-> > > > > > > > > unsigned int vmalloc_page_order(const void *addr){
-> > > > > > > > > 	struct vm_struct *vm;
-> > > > > > > > >  	vm = find_vm_area(addr);
-> > > > > > > > > 	return vm ? vm->page_order : 0;
-> > > > > > > > > }
-> > > > > > > > > EXPORT_SYMBOL_GPL(vmalloc_page_order);
-> > > > > > > > > 
-> > > > > > > > > Does this approach look reasonable to you? It would keep the vm_struct
-> > > > > > > > > layout private while satisfying the optimization needs of SMC.
-> > > > > > > > > 
-> > > > > > > > Could you please clarify why you need info about page_order? I have not
-> > > > > > > > looked at your second patch.
-> > > > > > > > 
-> > > > > > > > Thanks!
-> > > > > > > > 
-> > > > > > > > --
-> > > > > > > > Uladzislau Rezki
-> > > > > > > 
-> > > > > > > Hi Uladzislau,
-> > > > > > > 
-> > > > > > > This stems from optimizing memory registration in SMC-R. To provide the
-> > > > > > > RDMA hardware with direct access to memory buffers, we must register
-> > > > > > > them with the NIC. During this process, the hardware generates one MTT
-> > > > > > > entry for each physically contiguous block. Since these hardware entries
-> > > > > > > are a finite and scarce resource, and SMC currently defaults to a 4KB
-> > > > > > > registration granularity, a single 2MB buffer consumes 512 entries. In
-> > > > > > > high-concurrency scenarios, this inefficiency quickly exhausts NIC
-> > > > > > > resources and becomes a major bottleneck for system scalability.
-> > > > > > 
-> > > > > > I believe this complexity can be avoided by using the RDMA MR pool API,
-> > > > > > as other ULPs do, for example NVMe.
-> > > > > > 
-> > > > > > Thanks
-> > > > > > 
-> > > > > 
-> > > > > Hi Leon,
-> > > > > 
-> > > > > Am I correct in assuming you are suggesting mr_pool to limit the number
-> > > > > of MRs as a way to cap MTTE consumption?
-> > > > 
-> > > > I don't see this a limit, but something that is considered standard
-> > > > practice to reduce MTT consumption.
-> > > > 
-> > > > > 
-> > > > > However, our goal is to maximize the total registered memory within
-> > > > > the MTTE limits rather than to cap it. In SMC-R, each connection
-> > > > > occupies a configurable, fixed-size registered buffer; consequently,
-> > > > > the more memory we can register, the more concurrent connections
-> > > > > we can support.
-> > > > 
-> > > > It is not cap, but more efficient use of existing resources.
-> > > 
-> > > Got it. While MRs pool might be more standard practice, but it doesn't
-> > > address our specific bottleneck. In fact, smc already has its own internal
-> > > MR reuse; our core issue remains reducing MTTE consumption by increasing the
-> > > registration granularity to maximize the memory size mapped per MTT entry.
-> > 
-> > And this is something MR pools can handle as well. We are going in circles,
-> > so let's summarize.
-> 
-> I believe some points need to be thoroughly clarified here:
-> 
-> > 
-> > I see SMC‑R as one of the RDMA ULPs, and it should ideally rely on the
-> > existing ULP API used by NVMe, NFS, and others, rather than maintaining its
-> > own internal logic.
-> 
-> SMC is not opposed to adopting newer RDMA interfaces; in fact, I have
-> already planned a gradual migration to the updated RDMA APIs. We are
-> currently in the process of adapting to ib_cqe, for instance. As long as
-> functionality remains intact, there is no reason to oppose changes that
-> reduce maintenance overhead or provide additional gains, but such a
-> transition takes time.
-> 
-> > 
-> > I also do not know whether vmalloc_page_order() is an appropriate solution;
-> > I only want to show that we can probably achieve the same result without
-> > introducing a new function.
-> 
-> Regarding the specific issue under discussion, I believe the newer RDMA
-> APIs you mentioned do not solve my problem, at least for now. My
-> understanding is that regardless of how MRs are pooled, the core
-> requirement is to increase the page_size parameter in ib_map_mr_sg to
-> maximize the physical size mapped per MTTE. From the code I have
-> examined, I see no evidence of these new APIs utilizing values other
-> than 4KB.
-> 
-> Of course, I believe that regardless of whether this issue
-> currently exists, it is something the RDMA community can resolve.
-> However, as I mentioned, adapting to new API takes time. Before a
-> complete transition is achieved, we need to allow for some necessary
-> updates to SMC.
+On Thu, Jan 29, 2026 at 4:32=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+> On 29/01/26 1:29 pm, Vernon Yang wrote:
+> > On Thu, Jan 29, 2026 at 11:05:36AM +0530, Dev Jain wrote:
+> >> On 28/01/26 8:04 pm, Vernon Yang wrote:
+> >>> On Wed, Jan 28, 2026 at 01:59:33PM +0530, Dev Jain wrote:
+> >>>> On 23/01/26 1:52 pm, Vernon Yang wrote:
+> >>>>> From: Vernon Yang <yanglincheng@kylinos.cn>
+> >>>>>
+> >>>>> Currently, each scan always increases "progress" by HPAGE_PMD_NR,
+> >>>>> even if only scanning a single PTE/PMD entry.
+> >>>>>
+> >>>>> - When only scanning a sigle PTE entry, let me provide a detailed
+> >>>>>   example:
+> >>>>>
+> >>>>> static int hpage_collapse_scan_pmd()
+> >>>>> {
+> >>>>>   for (addr =3D start_addr, _pte =3D pte; _pte < pte + HPAGE_PMD_NR=
+;
+> >>>>>        _pte++, addr +=3D PAGE_SIZE) {
+> >>>>>           pte_t pteval =3D ptep_get(_pte);
+> >>>>>           ...
+> >>>>>           if (pte_uffd_wp(pteval)) { <-- first scan hit
+> >>>>>                   result =3D SCAN_PTE_UFFD_WP;
+> >>>>>                   goto out_unmap;
+> >>>>>           }
+> >>>>>   }
+> >>>>> }
+> >>>>>
+> >>>>> During the first scan, if pte_uffd_wp(pteval) is true, the loop exi=
+ts
+> >>>>> directly. In practice, only one PTE is scanned before termination.
+> >>>>> Here, "progress +=3D 1" reflects the actual number of PTEs scanned,=
+ but
+> >>>>> previously "progress +=3D HPAGE_PMD_NR" always.
+> >>>>>
+> >>>>> - When the memory has been collapsed to PMD, let me provide a detai=
+led
+> >>>>>   example:
+> >>>>>
+> >>>>> The following data is traced by bpftrace on a desktop system. After
+> >>>>> the system has been left idle for 10 minutes upon booting, a lot of
+> >>>>> SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full sca=
+n
+> >>>>> by khugepaged.
+> >>>>>
+> >>>>> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+> >>>>> @scan_pmd_status[6]: 2           ## SCAN_EXCEED_SHARED_PTE
+> >>>>> @scan_pmd_status[3]: 142         ## SCAN_PMD_MAPPED
+> >>>>> @scan_pmd_status[2]: 178         ## SCAN_NO_PTE_TABLE
+> >>>> Could you elaborate what is [1], [6] etc and 1,2,142, etc?
+> >>> These 1,6 are value of "enum scan_result", you can directly refer to =
+the
+> >>> notes on the right.
+> >>>
+> >>> These 1,2,142,178 are number of different "enum scan_result" from
+> >>> trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file.
+> >>>
+> >>> as example, SCAN_PMD_MAPPED has 142 times during a full scan by
+> >>> khugepaged.
+> >> Thanks. Can you please mention this in the patch description. You can =
+simply
+> >> right it like this:
+> >>
+> >> "From trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file, =
+the
+> >> following statuses were observed, with frequency mentioned next to the=
+m:
+> >>
+> >> SCAN_SUCCEED: 1
+> >> SCAN_PMD_MAPPED: 142
+> >> ....."
+> >>
+> >> and so on.
+> > LGTM, I will do it in the next version. Thanks!
+> >
+> >>>>> total progress size: 674 MB
+> >>>>> Total time         : 419 seconds ## include khugepaged_scan_sleep_m=
+illisecs
+> >>>>>
+> >>>>> The khugepaged_scan list save all task that support collapse into h=
+ugepage,
+> >>>>> as long as the task is not destroyed, khugepaged will not remove it=
+ from
+> >>>>> the khugepaged_scan list. This exist a phenomenon where task has al=
+ready
+> >>>>> collapsed all memory regions into hugepage, but khugepaged continue=
+s to
+> >>>>> scan it, which wastes CPU time and invalid, and due to
+> >>>>> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait fo=
+r
+> >>>>> scanning a large number of invalid task, so scanning really valid t=
+ask
+> >>>>> is later.
+> >>>>>
+> >>>>> After applying this patch, when the memory is either SCAN_PMD_MAPPE=
+D or
+> >>>>> SCAN_NO_PTE_TABLE, just skip it, as follow:
+> >>>>>
+> >>>>> @scan_pmd_status[6]: 2
+> >>>>> @scan_pmd_status[3]: 147
+> >>>>> @scan_pmd_status[2]: 173
+> >>>>> total progress size: 45 MB
+> >>>>> Total time         : 20 seconds
+> >>>>>
+> >>>>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> >>>>> ---
+> >>>>>  include/linux/xarray.h |  9 ++++++++
+> >>>>>  mm/khugepaged.c        | 47 ++++++++++++++++++++++++++++++++++----=
+----
+> >>>>>  2 files changed, 47 insertions(+), 9 deletions(-)
+> >>>>>
+> >>>>> diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+> >>>>> index be850174e802..f77d97d7b957 100644
+> >>>>> --- a/include/linux/xarray.h
+> >>>>> +++ b/include/linux/xarray.h
+> >>>>> @@ -1646,6 +1646,15 @@ static inline void xas_set(struct xa_state *=
+xas, unsigned long index)
+> >>>>>   xas->xa_node =3D XAS_RESTART;
+> >>>>>  }
+> >>>>>
+> >>>>> +/**
+> >>>>> + * xas_get_index() - Get XArray operation state for a different in=
+dex.
+> >>>>> + * @xas: XArray operation state.
+> >>>>> + */
+> >>>>> +static inline unsigned long xas_get_index(struct xa_state *xas)
+> >>>>> +{
+> >>>>> + return xas->xa_index;
+> >>>>> +}
+> >>>>> +
+> >>>>>  /**
+> >>>>>   * xas_advance() - Skip over sibling entries.
+> >>>>>   * @xas: XArray operation state.
+> >>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> >>>>> index 6f0f05148765..de95029e3763 100644
+> >>>>> --- a/mm/khugepaged.c
+> >>>>> +++ b/mm/khugepaged.c
+> >>>>> @@ -68,7 +68,10 @@ enum scan_result {
+> >>>>>  static struct task_struct *khugepaged_thread __read_mostly;
+> >>>>>  static DEFINE_MUTEX(khugepaged_mutex);
+> >>>>>
+> >>>>> -/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+> >>>>> +/*
+> >>>>> + * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or v=
+mas
+> >>>>> + * every 10 second.
+> >>>>> + */
+> >>>>>  static unsigned int khugepaged_pages_to_scan __read_mostly;
+> >>>>>  static unsigned int khugepaged_pages_collapsed;
+> >>>>>  static unsigned int khugepaged_full_scans;
+> >>>>> @@ -1240,7 +1243,8 @@ static enum scan_result collapse_huge_page(st=
+ruct mm_struct *mm, unsigned long a
+> >>>>>  }
+> >>>>>
+> >>>>>  static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *=
+mm,
+> >>>>> -         struct vm_area_struct *vma, unsigned long start_addr, boo=
+l *mmap_locked,
+> >>>>> +         struct vm_area_struct *vma, unsigned long start_addr,
+> >>>>> +         bool *mmap_locked, unsigned int *cur_progress,
+> >>>>>           struct collapse_control *cc)
+> >>>>>  {
+> >>>>>   pmd_t *pmd;
+> >>>>> @@ -1255,6 +1259,9 @@ static enum scan_result hpage_collapse_scan_p=
+md(struct mm_struct *mm,
+> >>>>>
+> >>>>>   VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+> >>>>>
+> >>>>> + if (cur_progress)
+> >>>>> +         *cur_progress +=3D 1;
+> >>>> Why not be a little more explicit, and do this addition if find_pmd_=
+or_thp_or_none fails,
+> >>>> or pte_offset_map_lock fails? The way you do it right now is not rea=
+dable - it gives no
+> >>>> idea as to why on function entry we do a +1 right away. Please do ad=
+d some comments too.
+> >>> If this way is not clear enough, we can directly add 1 in
+> >>> find_pmd_or_thp_or_none() etc, BUT it's a bit redundant.
+> >>> Please take a look at which one is better.
+> >>>
+> >>> case 1:
+> >>> as the V4 PATCH #2 [1] and #3 [2], only hpage_collapse_scan_pmd().
+> >>> [1] https://lore.kernel.org/linux-mm/20260111121909.8410-3-yanglinche=
+ng@kylinos.cn
+> >>> [2] https://lore.kernel.org/linux-mm/20260111121909.8410-4-yanglinche=
+ng@kylinos.cn
+> >>>
+> >>> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >>>             struct vm_area_struct *vma, unsigned long start_addr,
+> >>>             bool *mmap_locked, unsigned int *cur_progress,
+> >>>             struct collapse_control *cc)
+> >>> {
+> >>>     ...
+> >>>     result =3D find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+> >>>     if (result !=3D SCAN_SUCCEED) {
+> >>>             if (cur_progress)
+> >>>                     *cur_progress +=3D 1; // here
+> >>>             goto out;
+> >>>     }
+> >>>     ...
+> >>>     pte =3D pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+> >>>     if (!pte) {
+> >>>             if (cur_progress)
+> >>>                     *cur_progress +=3D 1; // here
+> >>>             result =3D SCAN_NO_PTE_TABLE;
+> >>>             goto out;
+> >>>     }
+> >>>
+> >>>     for (addr =3D start_addr, _pte =3D pte; _pte < pte + HPAGE_PMD_NR=
+;
+> >>>          _pte++, addr +=3D PAGE_SIZE) {
+> >>>             if (cur_progress)
+> >>>                     *cur_progress +=3D 1; // here
+> >>>             ...
+> >>>     }
+> >>> }
+> >>>
+> >>> case 2:
+> >>>
+> >>> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+> >>>             struct vm_area_struct *vma, unsigned long start_addr,
+> >>>             bool *mmap_locked, unsigned int *cur_progress,
+> >>>             struct collapse_control *cc)
+> >>> {
+> >>>     ...
+> >>>     result =3D find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+> >>>     if (result !=3D SCAN_SUCCEED) {
+> >>>             if (cur_progress)
+> >>>                     *cur_progress +=3D 1; // here
+> >> Let us be more explicit and set this equal to 1, instead of adding 1.
+> > LGTM, I will do it in the next version. Thanks!
+> >
+> >>>             goto out;
+> >>>     }
+> >>>     ...
+> >>>     pte =3D pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+> >>>     if (!pte) {
+> >>>             if (cur_progress)
+> >>>                     *cur_progress +=3D 1; // here
+> >> Same comment as above.
+> >>
+> >>>             result =3D SCAN_NO_PTE_TABLE;
+> >>>             goto out;
+> >>>     }
+> >>>
+> >>>     for (addr =3D start_addr, _pte =3D pte; _pte < pte + HPAGE_PMD_NR=
+;
+> >>>          _pte++, addr +=3D PAGE_SIZE) {
+> >>>             ...
+> >>>     }
+> >>>     ...
+> >>> out_unmap:
+> >>>     if (cur_progress) {
+> >>>             if (_pte >=3D pte + HPAGE_PMD_NR)
+> >>>                     *cur_progress +=3D HPAGE_PMD_NR;   // here
+> >>>             else
+> >>>                     *cur_progress +=3D _pte - pte + 1; // here
+> >>>     }
+> >>> }
+> >> I will vote case 2. In case 1 I don't like the fact that the if (cur_p=
+rogress)
+> >> branch will be checked each iteration - and I don't think the compiler=
+ can
+> >> optimize this since the body of the loop is complex, so this check can=
+not
+> >> be hoisted out of the loop.
+> >>
+> >>
+> >>> case 3:
+> >>>     current patch, and add more comments to clearer.
+> >>>
+> >>>>> +
+> >>>>>   result =3D find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+> >>>>>   if (result !=3D SCAN_SUCCEED)
+> >>>>>           goto out;
+> >>>>> @@ -1396,6 +1403,12 @@ static enum scan_result hpage_collapse_scan_=
+pmd(struct mm_struct *mm,
+> >>>>>           result =3D SCAN_SUCCEED;
+> >>>>>   }
+> >>>>>  out_unmap:
+> >>>>> + if (cur_progress) {
+> >>>>> +         if (_pte >=3D pte + HPAGE_PMD_NR)
+> >>>>> +                 *cur_progress +=3D HPAGE_PMD_NR - 1;
+> >>>>> +         else
+> >>>>> +                 *cur_progress +=3D _pte - pte;
+> >>>>> + }
+> >>>>>   pte_unmap_unlock(pte, ptl);
+> >>>>>   if (result =3D=3D SCAN_SUCCEED) {
+> >>>>>           result =3D collapse_huge_page(mm, start_addr, referenced,
+> >>>>> @@ -2286,8 +2299,9 @@ static enum scan_result collapse_file(struct =
+mm_struct *mm, unsigned long addr,
+> >>>>>   return result;
+> >>>>>  }
+> >>>>>
+> >>>>> -static enum scan_result hpage_collapse_scan_file(struct mm_struct =
+*mm, unsigned long addr,
+> >>>>> -         struct file *file, pgoff_t start, struct collapse_control=
+ *cc)
+> >>>>> +static enum scan_result hpage_collapse_scan_file(struct mm_struct =
+*mm,
+> >>>>> +         unsigned long addr, struct file *file, pgoff_t start,
+> >>>>> +         unsigned int *cur_progress, struct collapse_control *cc)
+> >>>>>  {
+> >>>>>   struct folio *folio =3D NULL;
+> >>>>>   struct address_space *mapping =3D file->f_mapping;
+> >>>>> @@ -2376,6 +2390,18 @@ static enum scan_result hpage_collapse_scan_=
+file(struct mm_struct *mm, unsigned
+> >>>>>                   cond_resched_rcu();
+> >>>>>           }
+> >>>>>   }
+> >>>>> + if (cur_progress) {
+> >>>>> +         unsigned long idx =3D xas_get_index(&xas) - start;
+> >>>>> +
+> >>>>> +         if (folio =3D=3D NULL)
+> >>>>> +                 *cur_progress +=3D HPAGE_PMD_NR;
+> >>>> I think this whole block needs some comments. Can you explain, why y=
+ou
+> >>>> do a particular increment in each case?
+> >>>>
+> >>>>> +         else if (xa_is_value(folio))
+> >>>>> +                 *cur_progress +=3D idx + (1 << xas_get_order(&xas=
+));
+> >>>>> +         else if (folio_order(folio) =3D=3D HPAGE_PMD_ORDER)
+> >>>>> +                 *cur_progress +=3D idx + 1;
+> >>>>> +         else
+> >>>>> +                 *cur_progress +=3D idx + folio_nr_pages(folio);
+> >>>>> + }
+> >>> The "idx" represent PTEs number already scanned when exiting
+> >>> xas_for_each().
+> >>>
+> >>> However, the last valid folio size was not counted in "idx" (except
+> >>> folio =3D=3D NULL, "idx" equal to HPAGE_PMD_NR), which can be further
+> >>> divided into three cases:
+> >> But, the number of PTEs you account in these three cases, are *not*
+> >> scanned, right? So we can simply drop these 3 cases.
+> > No, these three cases are the last scanning folio to break, I think we
+> > need to add them. Imagine that if we trigger HPAGE_PMD_ORDER folio
+> > firstly, "idx" is equal to 0.
+>
+> If you hit a large folio and break, you don't consume any extra iteration=
+s.
+> The number of iterations is completely determined by xa_index. This is ki=
+nd
+> of analogous to SCAN_PMD_MAPPED - in one "iteration", you decide to stop
+> scanning, and set progress to 1.
+>
+> In any case, the problem which you describe in the patch description is
+> completely solved by setting progress to 1 upon failure of find_pmd_or_th=
+p_or_none.
+> So anything else which you do (like counting iterations in hpage_collapse=
+_scan_pmd
+> or hpage_collapse_scan_file) is extra and it is not clear if it has a pra=
+ctical
+> benefit. The patch benefits us because there are a lot of SCAN_PMD_MAPPED=
+ and SCAN_PMD_NONE.
+> Will we practically also encounter a large number of SCAN_EXCEED_PTE_SWAP=
+, PTE_NONE, etc?
+>
+> I tilt towards keeping the other bits of the patch, if they can be simpli=
+fied, and
+> because this patch is relatively harmless. Just like you count the number=
+ of iterations
+> in hpage_collapse_scan_pmd(), you can do the same here using xa_index.
 
-I disagree with that statement.
+The semantics of hpage_collapse_scan_pmd() _pte and hpage_collapse_scan_fil=
+e()
+xas.xa_index are different.
 
-SMC‑R has a long history of re‑implementing existing RDMA ULP APIs, and
-not always correctly.
+Let me give a detailed example :)
 
-https://lore.kernel.org/netdev/20170510072627.12060-1-hch@lst.de/
-https://lore.kernel.org/netdev/20241105112313.GE311159@unreal/#t
+xas->xa_index represents the starting address of the last folio when exitin=
+g
+xas_for_each().
 
-Thanks
+Assuming each folio size is 32KB, when we iterate "folio1 -> folio2" and br=
+eak,
+xas->xa_index equals the starting address of folio2, so "idx =3D 8". Howeve=
+r,
+folio2 is not counted in "idx".
 
-> 
-> Thanks
-> 
+In reality, folio2 has been scanned, so we need to add the folio2 size, mak=
+ing
+"idx =3D 16" the correct value.
+
+There are two ways for folio2:
+1. shmem swap entries (xa_is_value), breaking out of the xas_for_each loop
+   due to SCAN_EXCEED_SWAP_PTE.
+2. Normal folio, breaking out of the xas_for_each loop due to
+   SCAN_SCAN_ABORT/SCAN_PAGE_LRU/SCAN_PAGE_COUNT.
+
+Move Lance suggestion to here.
+> if (cur_progress)
+>       *cur_progress =3D max(xas.xa_index - start, 1UL);
+
+If we use the code suggested by Lance, we will miss the folio2 size,
+the result is "idx =3D 8".
+Is this the result we wanted? If Yes, Lance's suggested code is perfect.
+
+Another more specific scenario is when the first iterated folio is
+HPAGE_PMD_ORDER, "idx =3D 0", Yep, we can directly set "cur_progress =3D 1"=
+,
+it's simple enough.
+
+> >
+> >>> 1. shmem swap entries (xa_is_value), add folio size.
+> >>> 2. the folio is HPAGE_PMD_ORDER, the memory has been collapsed
+> >>>    to PMD, so add 1 only.
+> >>> 3. Normal folio, add folio size.
+> >>>
+> >>> Is the version below more readable?
+> >>>
+> >>>     if (cur_progress) {
+> >>>             *cur_progress +=3D xas.xa_index - start;
+> >>>
+> >>>             if (folio) {
+> >>>                     if (xa_is_value(folio))
+> >>>                             *cur_progress +=3D 1 << xas_get_order(&xa=
+s);
+> >>>                     else if (folio_order(folio) =3D=3D HPAGE_PMD_ORDE=
+R)
+> >>>                             *cur_progress +=3D 1;
+> >>>                     else
+> >>>                             *cur_progress +=3D folio_nr_pages(folio);
+> >>>             }
+> >>>     }
+> >> Yep, this is unneeded complexity. This looks really ugly and the benef=
+its of
+> >> this are not clear. You can simply do
+> >>
+> >> if (cur_progress)
+> >>      *cur_progress =3D xas.xa_index - start;
+> >>
+> >>>>>   rcu_read_unlock();
+> >>>>>
+> >>>>>   if (result =3D=3D SCAN_SUCCEED) {
+> >>>>> @@ -2456,6 +2482,7 @@ static unsigned int khugepaged_scan_mm_slot(u=
+nsigned int pages, enum scan_result
+> >>>>>
+> >>>>>           while (khugepaged_scan.address < hend) {
+> >>>>>                   bool mmap_locked =3D true;
+> >>>>> +                 unsigned int cur_progress =3D 0;
+> >>>>>
+> >>>>>                   cond_resched();
+> >>>>>                   if (unlikely(hpage_collapse_test_exit_or_disable(=
+mm)))
+> >>>>> @@ -2472,7 +2499,8 @@ static unsigned int khugepaged_scan_mm_slot(u=
+nsigned int pages, enum scan_result
+> >>>>>                           mmap_read_unlock(mm);
+> >>>>>                           mmap_locked =3D false;
+> >>>>>                           *result =3D hpage_collapse_scan_file(mm,
+> >>>>> -                                 khugepaged_scan.address, file, pg=
+off, cc);
+> >>>>> +                                 khugepaged_scan.address, file, pg=
+off,
+> >>>>> +                                 &cur_progress, cc);
+> >>>>>                           fput(file);
+> >>>>>                           if (*result =3D=3D SCAN_PTE_MAPPED_HUGEPA=
+GE) {
+> >>>>>                                   mmap_read_lock(mm);
+> >>>>> @@ -2486,7 +2514,8 @@ static unsigned int khugepaged_scan_mm_slot(u=
+nsigned int pages, enum scan_result
+> >>>>>                           }
+> >>>>>                   } else {
+> >>>>>                           *result =3D hpage_collapse_scan_pmd(mm, v=
+ma,
+> >>>>> -                                 khugepaged_scan.address, &mmap_lo=
+cked, cc);
+> >>>>> +                                 khugepaged_scan.address, &mmap_lo=
+cked,
+> >>>>> +                                 &cur_progress, cc);
+> >>>>>                   }
+> >>>>>
+> >>>>>                   if (*result =3D=3D SCAN_SUCCEED)
+> >>>>> @@ -2494,7 +2523,7 @@ static unsigned int khugepaged_scan_mm_slot(u=
+nsigned int pages, enum scan_result
+> >>>>>
+> >>>>>                   /* move to next address */
+> >>>>>                   khugepaged_scan.address +=3D HPAGE_PMD_SIZE;
+> >>>>> -                 progress +=3D HPAGE_PMD_NR;
+> >>>>> +                 progress +=3D cur_progress;
+> >>>>>                   if (!mmap_locked)
+> >>>>>                           /*
+> >>>>>                            * We released mmap_lock so break loop.  =
+Note
+> >>>>> @@ -2817,7 +2846,7 @@ int madvise_collapse(struct vm_area_struct *v=
+ma, unsigned long start,
+> >>>>>                   mmap_locked =3D false;
+> >>>>>                   *lock_dropped =3D true;
+> >>>>>                   result =3D hpage_collapse_scan_file(mm, addr, fil=
+e, pgoff,
+> >>>>> -                                                   cc);
+> >>>>> +                                                   NULL, cc);
+> >>>>>
+> >>>>>                   if (result =3D=3D SCAN_PAGE_DIRTY_OR_WRITEBACK &&=
+ !triggered_wb &&
+> >>>>>                       mapping_can_writeback(file->f_mapping)) {
+> >>>>> @@ -2832,7 +2861,7 @@ int madvise_collapse(struct vm_area_struct *v=
+ma, unsigned long start,
+> >>>>>                   fput(file);
+> >>>>>           } else {
+> >>>>>                   result =3D hpage_collapse_scan_pmd(mm, vma, addr,
+> >>>>> -                                                  &mmap_locked, cc=
+);
+> >>>>> +                                                  &mmap_locked, NU=
+LL, cc);
+> >>>>>           }
+> >>>>>           if (!mmap_locked)
+> >>>>>                   *lock_dropped =3D true;
+> >>> --
+> >>> Thanks,
+> >>> Vernon
 
