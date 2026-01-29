@@ -4,241 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0C14D358E8
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 09:16:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 169F4D358E8
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 09:18:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4113E6B0088; Thu, 29 Jan 2026 04:16:57 -0500 (EST)
+	id 4D3A46B0088; Thu, 29 Jan 2026 04:18:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BF256B0089; Thu, 29 Jan 2026 04:16:57 -0500 (EST)
+	id 494636B0089; Thu, 29 Jan 2026 04:18:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24B926B008A; Thu, 29 Jan 2026 04:16:57 -0500 (EST)
+	id 3A0B46B008A; Thu, 29 Jan 2026 04:18:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1159D6B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 04:16:57 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8B9FAC2DA6
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:16:56 +0000 (UTC)
-X-FDA: 84384446832.15.EF9FC37
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 4F74A16000B
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:16:53 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AQgnJAjV;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Nr1zqcGn;
-	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769678213;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 266DC6B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 04:18:51 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C115B1408FE
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:18:50 +0000 (UTC)
+X-FDA: 84384451620.25.E7022BE
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BF304140003
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:18:48 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wlkICQ//";
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769678329;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c7k9UuCUHC+8MKMfsH/3rh0f6FcXQ9DYr5ca0mHBBiI=;
-	b=dJCI4T86MfqkgwkP+SE1+T3z6KZ4f9n+naiw68FlRs+dNBGbJZ1q7mt01eIZArjN5an2f+
-	Xym/fmPz4Lo2K/2gZbD53zl2sVvqaKOILCASAvckhDxTYYG+Vrk/6mE9yIFWjc9tA8E2a0
-	8CYNF0vxmOQ0AahwE9cAWvQVjj/ev94=
-ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=AQgnJAjV;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Nr1zqcGn;
-	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769678213; a=rsa-sha256;
-	cv=pass;
-	b=0uH0o4vnpVE97s+E+xrooJ4hdjFASodbzFp+g1l6ysXsav5rxB4ZA9Vo3d/HPCKvyxMwuE
-	tRwc0p9e0KQeshIL6n2y7797KF1hIkGLWlXx9cOw0b0zBNkwtKSwbEC6XJDDPRPM/1i3as
-	G1R4yfUS5H3in6Txhie7Ro51eP3+bLM=
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60T6Hh3e1232018;
-	Thu, 29 Jan 2026 09:16:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=c7k9UuCUHC+8MKMfsH
-	/3rh0f6FcXQ9DYr5ca0mHBBiI=; b=AQgnJAjV2vtalSJLWRtEMTWRFWzUTLAHS2
-	ykDinKCbUGFPYbildQI5oLWrgJp+oYN4MBiSg9X81ZPAT0cgMv9Rw9dDzapQZiRq
-	RrlaH4wqtFLb7Tdl2S+UhQ+lTYZbACnV2QPuEn1aR13KXADcRRz9HK6pUikeva1h
-	uwGLVj7x2jzZ4M7Z+3Y7AEVchkDXTEbo70J5+PSXvd0zQcaE2iwXD2DdHdp7JHh3
-	VWcusMY1d51vLJ86te466u9vGlfvX9L4JFHnw9mS7IR/jv5MDhwhFc+vCjCVG/mD
-	lNruUHMdNbmJPE11DkgiDX9FFe9rQDjsXvz+G26m/1nkA6RKUsqQ==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4by5t6ajj2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Jan 2026 09:16:45 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60T7AHXu036075;
-	Thu, 29 Jan 2026 09:16:44 GMT
-Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012058.outbound.protection.outlook.com [40.107.209.58])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmhrcc44-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 29 Jan 2026 09:16:44 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VBXxDnM5887pZQ1AsOpbW/agSWZDvXU/puS+fcQ4ippeZ92Nbw0pQ5jrFtOaOtl16lOaIITTeESlXYJ0veu+pjzFEhFnYKMnLXJFHBQmFPNyKt5POqcab8it2jhawv5I2nWjhrN/vGZ3kEgLe81dzFsP0IvaMgHMDJf0H+tUdsJpaFeTNEwrzJ2LCupBNv6cqoZoHKJEqyRsfjJUIoosUpRpn7Pj1ii5IGWmTdNPom97QudaSNvVUrL7sW6SzVeX5egpTFUT1o0ax1O+wWPcfz8Pj5oyfgMvBqKNsDcD69qtkNd96JG8aHmiQrauldfTr5JXid79IXFcml0JPVw+iA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c7k9UuCUHC+8MKMfsH/3rh0f6FcXQ9DYr5ca0mHBBiI=;
- b=C1M9nMF7JyGu43odKSXXKFQrpNJ8S8wTIMQx5yNvtG/LEbfjjToAM1I3JyDYbNr1CQwuDthsbJXd1IY+E2zrlwLJyHFqTz6dakSYQ85fbpgQitKvM2CzUayQ4XSJik/bc68jQRF1iXUimlGDoy664z64KHJDFvOI3wUN4HYOeRKkjc0+udUycT+TLKMEuDUwaMj8GnLX0HoY0kvnRRr1j4gBTEwn0vJehIBgFuOTSDAM3pupbXl3NKlSoFb026OwV7xunPgKAW2P8x0cKOlBA0o5ISpQaXmGjkG3KHQmGKwmqtrv9k8DXJAUY9eNPGlVQLl7/CSkKog4NHdc/I4JDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c7k9UuCUHC+8MKMfsH/3rh0f6FcXQ9DYr5ca0mHBBiI=;
- b=Nr1zqcGnXQHx0bn+syHZBkw8dTRG7JxrfdxQF+XowcF2mBmeJlmYQIDt++tgoySwJoFalt7MFLioH9h6UNR5H9aRB44TLDb/anNzUwmCkQhh8hoBQAjdhOgqpn3+9PJDep5w/pGITSKNDrKNzrbklWzfdNDb8Z6tvgbKLRRT3ho=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by DM4PR10MB5966.namprd10.prod.outlook.com (2603:10b6:8:b2::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Thu, 29 Jan
- 2026 09:16:40 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9564.006; Thu, 29 Jan 2026
- 09:16:40 +0000
-Date: Thu, 29 Jan 2026 18:16:30 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
-        bpf@vger.kernel.org, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v4 18/22] slab: refill sheaves from all nodes
-Message-ID: <aXslbsUK1LXfx510@hyeyoo>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <20260123-sheaves-for-all-v4-18-041323d506f7@suse.cz>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260123-sheaves-for-all-v4-18-041323d506f7@suse.cz>
-X-ClientProxiedBy: SE2P216CA0060.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:115::11) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	bh=FgKOp/1UIU/SbIK6o+WBT2cNTYn8wxY0OTA6VkD3/l8=;
+	b=FRwsVz2y6ga23BAFZg58ref9cntUm/CqLKH6fWD/Ptly0oJ1Uf40xh40Vl5z1bxljDKQeA
+	cJbCHPrub+ukBdK+5L75BRiMnr9iQcESefJPn0oTors63A79ZT/ashF+kW1s7ol5KiwP2L
+	QDl9AuVgcDu3GoRG9w9KHD2JFjngujQ=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="wlkICQ//";
+	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769678329; a=rsa-sha256;
+	cv=none;
+	b=mfyn0IHxsdepoQrpF4M/CTN8u/n7knsnwelb5eEY1uOPM3xfqr3OMCb29hnbmRo0VWFW7O
+	5u4YifdlgoNaUc44U3xyF9/6fDbdQ4rMIAsN49DN5x/k8v6b3BDO7eb9FaflDYGEJNaOXj
+	CItIqHIR5yLAIjgR/6NP22Zblnbu6gg=
+Message-ID: <d719e478-4849-4c5f-9e6c-f45d9771b37b@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769678324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FgKOp/1UIU/SbIK6o+WBT2cNTYn8wxY0OTA6VkD3/l8=;
+	b=wlkICQ//uF4lTsovrNGtkBbaLGwvaco9datftfKAy5LMDtB+LWNv4R9XULkXS+PD0bOsZV
+	Wr/XxEcMkDTUIcBiHQB/oCUZrkm0RUQ/niqx2smRNgPQpmhQTCFuq428ohsBnTQCJOosA6
+	wS6hcFKZQN2bC0/7JBHLaCrKUBrSsLM=
+Date: Thu, 29 Jan 2026 17:18:37 +0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DM4PR10MB5966:EE_
-X-MS-Office365-Filtering-Correlation-Id: b268a218-4c2c-4839-c181-08de5f171cbe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uhU6hyiqkC2okzsrwgL3Gz41Obn8ZhwLXVPPO+IG+iEsdbqfQ+DAK+txWiGO?=
- =?us-ascii?Q?bb0t09FpmKGNf4xAt0pvZFMjdZgWz/yuCryLFVJ6KJ2kh48p2NOavZJCFv9u?=
- =?us-ascii?Q?27pfRXf8Qn5mNyaMx9JfJ1S4Lff795Pq2dNXuPhQgoKZqlABW0dXNq8YnBsY?=
- =?us-ascii?Q?v7AhqW7H+Vd/baWLVXzlgdI0yUijTgnvo9c9J2PEv2IoAeeZx8q61K9oIY5T?=
- =?us-ascii?Q?q2mrZVnGRksheZC6rKnA9U0ykv/teDvvUvUgAsFXbXIR877BgG2Kcva7LTkx?=
- =?us-ascii?Q?wQJgQub2C7jTkMjoS8SWtY8rKlN1e3vlCn+8N9bGhNtZZYXnE9tQdZ5QsAut?=
- =?us-ascii?Q?GYlWnXOAeF4KghyEQuEk9N9DVHxDhpwosiLD1GXyUwQIGnEVPCINb0T5UcjU?=
- =?us-ascii?Q?yLz3ZnqUFQquPmUFItrQ/bieGj2I+4h312yfeJur9xfnVm/9AO6dCeVzsJS6?=
- =?us-ascii?Q?CrmOmW2/AyLoXGIAkXNFmQ4I2+DzSixprNghBqe98pbOswNuSVXtxJxavDe1?=
- =?us-ascii?Q?RuobMoQGvgDEP5fzXuGxiqZQ6sSgfM4chRo3TSVgXU0DS1NjpzBWLS8cLxpX?=
- =?us-ascii?Q?SPFrEDF0xh1hUz49vaOl52XhsiqxR8A2taWiGuo0+KyVXn+3GDsKwPpvpPuk?=
- =?us-ascii?Q?ZOal/Y+u4UWtCa77aUFjcR5x7tjYjYxSZC50bGZkK4ulwsitrFdZJdvjh7dI?=
- =?us-ascii?Q?l3B87N/GjOGKQRvA2jMTLpwi0gk/DdENa4S21YuapKgC9ZCHujf1EwbkC77C?=
- =?us-ascii?Q?ayQaQdNX/53SDD+k+JGEEJ6M3LrFCTwhSYKCb4LgRoco9qoAM5975oUvcymq?=
- =?us-ascii?Q?hVN+bL/uMvrpjZNt1PDtFkLCmCO8qX1cFzRF76RXE1Eo5vF7p9JLiRt6b9Z2?=
- =?us-ascii?Q?rk6+jkGBQip0puxzw2dUuWiCAARd7dWN1b4DPC15gfjaHff02Tm1Fw6mFExN?=
- =?us-ascii?Q?cgT9Vov1qywfTLrmy5haa7PXUU1hirQaNPnKzUVJaoU0wNXrZbIlB2fIsq+G?=
- =?us-ascii?Q?UslPOk/LOYFjdVidNppXQQTe2TKW4C3kfoGWuLbnvVgbfIC/YqiosGfCLVl3?=
- =?us-ascii?Q?uzimEVj4skuYjahyMhoKpQxIJFtC+zdmkIXabyjFXZLCehJnqWYziEk4dzsl?=
- =?us-ascii?Q?X4AbJkHSZCCQS6T9ZqnGJY2/NXvhbafxVgJF6CO58YRyFYEubb2mGxGo28Ue?=
- =?us-ascii?Q?SR5ZIkva0rTubOsGvDYzkWt1e9TdvE0LB3Tc+mDdUT8+mSsl2XBMSw3XcSc6?=
- =?us-ascii?Q?Z8TBLL6NLzhzS+KOXI7SKFiAfazgz+qQG4jlxG6rtLbjw/Nb72DmAegtlvtQ?=
- =?us-ascii?Q?hsx0006M+Vz3GoQUxjluNJ9ZTDmLKdJedLeV5XcQaHizMqLwfDLgNZdCdW0+?=
- =?us-ascii?Q?o/qce7ZmT7NNHrQANTgggQvl19ZC/D/LUIHOK12Xc8EBfAnTuxSIBr1KFLAe?=
- =?us-ascii?Q?sznIoKew1ynbT8yAG+2zli8PnWm5ecxGZkqhpxIZ+Gj1mF/tF7fimRCMrAc1?=
- =?us-ascii?Q?rjOZvyVsytOWj/x6C+WBf0geGNgweu+/qR74Z3tUWWYD22V7l530C0A8CfOv?=
- =?us-ascii?Q?dn+e5Mk6SKodWcrRSeA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3iVI+azNZyxhVAo6Hm6VFApMvFzDAlEGoizFoFKALIveq2bIittHfL+e7Xwa?=
- =?us-ascii?Q?UtfEYj8lldJ/NdmIlP0CKnv5OC84mgO2t8sniarflVSn3PUVl5mrlhEg2hk8?=
- =?us-ascii?Q?4kheY39UJBxvnVD31VWHdZIGhKvPYMan/inrUBwrARCCCIljUg+GzZ9xQpsG?=
- =?us-ascii?Q?hP/eVOGLNlNlTcmxJi47kDOCR9qlIea8H78p2W9vfQ/P4sebw8jtG+ZHBP7M?=
- =?us-ascii?Q?p7de3aqL8fU4j8ic4DfKp/bBeQ6RBWs87QEdn80tXTmZL8DLP7dS142bEwd5?=
- =?us-ascii?Q?3UbQuLtDbs6P1v+w1055vIdQS0/fzgEhoFx/25q/x/XyftZL6YnH+Wkj3OlG?=
- =?us-ascii?Q?KzA8k+4WDRnheQ/OVwT4zncOon003qB0xyz0XxdvyZDjYMAZBK4QYS7dwaSc?=
- =?us-ascii?Q?JHBV1XgO0+BA5O/eB4etyawSRL+f7h5diosdQ/ves2rBPmVL5WdyUQE8SV0o?=
- =?us-ascii?Q?9/je+XYAMVsKDBza2vUJ0NSo1n2GRhvPDkBx058noqDLy7I//1SqtDN0g9rb?=
- =?us-ascii?Q?490FR05QUpa+tDzhWGf2N7pAm+AI8GdGfqzKGEkbyjlp8Lj8CGoMWIrW1BwS?=
- =?us-ascii?Q?lqFcr1B0ISkgPMNUCdvLWFtg/Ar+L3hmrlY/bvRH6E2ujP8XnfdNLCd5ZAKE?=
- =?us-ascii?Q?wv4dh1Y9zy9gUA8+mXn628viydVvB5LUcm6E3RhfTCuOhO1u6RIlOejeVXWX?=
- =?us-ascii?Q?McZO/qPd82CmjzYO2V7J99Lm7zQViZuOPHYxy/8derIH5U18r2XGMiKlqsid?=
- =?us-ascii?Q?cLWOhinqZBnKIapkqjlDkXCTL5gl4w/yJp+mAajehYfwopBcmEpBebvuo+/j?=
- =?us-ascii?Q?TGOlLkMdgXvhxe+K9m8qUW10YIWSE8UrJfWbS8LqPM2EplsLqXqgz3d1Fovg?=
- =?us-ascii?Q?H3cFh9W1gLvNTrpR+GzQLKtNMfOPsXsEqc9hoU8KFT1ulAMCOKuPRnYrI1Ab?=
- =?us-ascii?Q?OQdxIb/AF8Evb203xcQgriEyNL1FQyvyjFHxXYmCTFdtLUYgp8eJ+IQr5fSU?=
- =?us-ascii?Q?xaMPTup+CAyZkNX/PJYWOFomuvolMT5ypc6bhkbM6g3wVy7YOar8RGfuKoNc?=
- =?us-ascii?Q?Z9fiBcSnArDNR2XOJc3Y+uWMD5RJtlwqbAa7VVSqjZFXYUs2wIsAxsrKXM0t?=
- =?us-ascii?Q?OW02d8aZYmOx4Ih4pF8YnNMvzSGPjjf0Tw3TJEj7KsfPeU2rMhuyvmysiSYb?=
- =?us-ascii?Q?A7ASSVLWKENkNAuQlt/Wydx7tsDssPrMVOlLDnTUgT7uzlCURDuWHvO1wHIy?=
- =?us-ascii?Q?qPr1HlNt4EN3Mgo6mSQMkc4i0kYPDu4LyTQBLH3BhqQOA9glYyJNInNVA1vN?=
- =?us-ascii?Q?qkQgtA3YA0JlHO4t1FqrwYVcujBDAz1H7tAItO9MjlltR+5iJBcAAQsSLpMV?=
- =?us-ascii?Q?AMs1IBsFjlCjkzD4H4hjrDDpwt6S+960HYQJCEzSjCPkxo5qQKjoErDTy8rX?=
- =?us-ascii?Q?Km+dJEYgz/Mo9KTYDInuB8W6Tbn/m/Xqh9UsTvVHC1D4XCVzV0/SJeBPXWcY?=
- =?us-ascii?Q?bHsqIUu6dzl/6oKYs6PJngJosjLc5Lsn8xF6r8Sx+V5zBX99HKh0/TK0cWm4?=
- =?us-ascii?Q?pEEVIr/iDoc9Cq74/F6uDfUB0x1hBeDir5yEiYpKcLA6GiTOp4iVUu6vYjL2?=
- =?us-ascii?Q?nAFsMI3SvMV891kfOWMGBYPc8Hy4DiKd3b/++DhB+x9M8eCCQXMlTAVFS0Ak?=
- =?us-ascii?Q?Wvb+Q7epjruvlcPEKCdmY5CQ3LSf6i+YxT8bNb+3sEdNFZHqN7GosgxC7grn?=
- =?us-ascii?Q?JC5CMG/P+Q=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	BsqeqUc/p1v+jlWPj6gpj5eMdjoQur4UNZ4mXOSUwXS5xfmP+1bPLn4MRW/IKgQY48M6kdQO3ctZla1NLSBt0Qz1mlRY/Y83rhDRuKGsy04TrZEZ3lx7S5L7zc+snxtAUGI81d9kRp8yLtyuhEsw2DlcHojgTox1us/oD8fnJqW8wAnxPLqrk+l6qsV4Oo9ueP6P249piNu53Vv8OJx4JvFRjVzIke0U2ZPK/v2BRZsPs5vvd0NFYihe7uNO0y77Wts0getz4uUJzwG9WYo++8671EmVwfEKEvDAsmb6GcUhM0hec7oEntcbHucmQ4HDcxn0XKAxX+harns8vAl+yx8GXC596DU7KF5XGNx6i911Jm6o2MLWAFUo77p0udlCFDM91UTqO1CRw3/2OM6RRcAI8TObMm7VPVIpuTsrHfGGYADF+HVd6PbtZHuJjJryYF4a1wQ2BBNKkq253gDuKnnkY4uc1Kbmo+xnhMpsFFOORs001d9EkYaTLk7877hCJOyvaTNp+5Z+vXWbsnwJnbXdBC+JZC5jQvExTr6Fl6zxw6bAkPFKsjXr+WCav17QVqrJhHYwrMKVWPUhTl+/pktgSFnvrbJV4bAYn+zx464=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b268a218-4c2c-4839-c181-08de5f171cbe
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 09:16:40.8287
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gH5UVRKVK00LcNS/o1iy8GOIKP27tiD+ypODtACbe2Bz/3OR8G3np8CASfMnfq6XyGBtnCvECjFDMqjCTJn5bA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR10MB5966
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-29_01,2026-01-28_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 bulkscore=0
- mlxscore=0 mlxlogscore=886 phishscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2601290058
-X-Proofpoint-ORIG-GUID: hmc3tpE8Ew6vowrNd5uieps5_YkpchUT
-X-Proofpoint-GUID: hmc3tpE8Ew6vowrNd5uieps5_YkpchUT
-X-Authority-Analysis: v=2.4 cv=IIcPywvG c=1 sm=1 tr=0 ts=697b257d b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=1XWaLZrsAAAA:8 a=yPCof4ZbAAAA:8 a=JuDMzERyrGprox_VUIoA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12104
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI5MDA1OCBTYWx0ZWRfXxZwSFitjTIea
- xOZGQPwegVZ7xhrqIYOcwAjfjfKX7bF+q4c9QIiPxGKQVnups/kkBvzVGO9LM8afYfwKSvf3rLt
- aZFQToF1z3+kL3Xw0+/NaTfkezu4189qufPxrn16RsMAy8V5f626I1kmZjgfn96xMHxOpF+Oiae
- 7uzh/O6UhYrWrBjrQWT/7bK/CspHCeBqjlyinDhFR1KErqO9CM4SkUQsMy7h9vhkjwNPwKEPS6Z
- DVWUYaUZ57tGhLjZMhUeUneokuwOtaMp58PpeA3XfrFVUq6Wvid86Koc18eXLN1KdZ6BnmB+YAz
- 3mQA0Olj1drnG4dwS3tCmuTkz2clK6F+xnM5jbeMDbmSsVc4JG7mgjooNjdTI+s/Tsq/PkKiuFg
- MuLE9bNXk3iHVBFbkw+dWmi7hnb/dVTdEVOnWJCRHvdGqcoL0wLnrCXpGOGB9VXyZqNklYyHKZH
- ZG/8XDVj3IuhSXURXYpINoiMiYf4Dj3i1oAjUAfo=
-X-Rspamd-Server: rspam11
-X-Stat-Signature: a8u63km9o9f66u3uuo1ifsqfantfqzzo
+Subject: Re: [PATCH mm-new v5 2/5] mm: khugepaged: refine scan progress number
+Content-Language: en-US
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, baohua@kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Dev Jain <dev.jain@arm.com>,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260123082232.16413-1-vernon2gm@gmail.com>
+ <20260123082232.16413-3-vernon2gm@gmail.com>
+ <72dfd11f-dca4-447e-89c5-7a87cb675bda@arm.com>
+ <4exllw7pf4yfhfzpyg3ictsnznf5lepv5tjd7zvycldjwmh6jm@j6rara3ogrux>
+ <7c4b5933-7bbd-4ad7-baef-830304a09485@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <7c4b5933-7bbd-4ad7-baef-830304a09485@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: yoiw77n9mxr9e3zzpb9rbtutc1be7iz5
+X-Rspamd-Queue-Id: BF304140003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F74A16000B
-X-HE-Tag: 1769678213-296458
-X-HE-Meta: U2FsdGVkX1/IDjDQwCbsaCdlyoPWNki9LfxEoq+4GDkuDDxv2vgB/zABicEu6RLyrA49B47f60d/gGEFgMtFJh3FvqLnM6r5p5XBt7+uuNFRcZxQCoxi3Sy1sYk3Tq3oq98OVdx/JQDchkkYO4QJYOR/lb8ZITF1ELQBBqg5Kr8WnlnIy+TqA0YQonKKinOZhezMybp9KIA6XsbggEO+Yw7Cj0/GI8hG4x1fdkDw1App9u0ONdhkNbKSdo82m8SiEAPfcBMqw18akpFFBvnuug5zgz2WNA2FwaJL7wcNEd++rvAAKOciAN+FgwkcnxS1N2YaaX1qXqEMy+H8ZGniE4MVu0JCAgX8L70Ob/SeXq0nh3oirTdbcl2u8oy4U21GiwDYMaWh7LkoY92A4Gs02ZNcYLH/kcHrvJUF6tLP5VM5EMqsdsNPXXkAXUlpvc0PYcXR5X7ySKMS8ezaE1h3vJGaCGvl2y4ilkHFr8EZtchVzBidQ27cGTsbm9ZjHcCTfRi+5Hks/QUPnWhps+koailzSve8AF7QSk8wXiq8WhzYlI56xmlyrJPumGtXINoRxnDyFJvZCVBB4ub3009JfN5umaehMwrk+rpR+rhU2xpWsyV6L0Ob1w5MM2KxaipAJHAX12RC9fSlLE6PLSFTmY21Jb46vmRGwz5cBujoCtMBIGFIEPq0PEQ8LnpdkBOC0zevxKXHVLA9W8+zxcqOlFhOzFAyPbOP1oHGeo8CYBwrXFxsmCu9dmqOkyURdQE8L/23q++mBfuHDEamTbINd6+SNiKIcBOYB32R8zpZ+Jrcp3rGAKszvWyurZltz5DnbgIZy4UGXyPcI9YRFrABBXLDALRnYPnikM24JrMgpUljUH/Etd1hP0XPYFdYcD0dN0013DZN1KB67cabDl/s+uppcRlpWvHHW/PLW6q8II7HbYJwxEjGXVzdf+5aqnVBmca1s6P3T5EcykR9rJ2
- yH/I43cK
- kySq2bfkkhfIcC1Q+M/YMdaqJsnys9bYYt9MywI5bpz7hqAhJWzDIlS3Lif5aKwMJRdgRMKdIGGZ7e0E=
+X-HE-Tag: 1769678328-234239
+X-HE-Meta: U2FsdGVkX1+bidY2fSNwAI4KEuFzfi7rjJaokG7m3wCvZRG05i5EdDfjFh+E6iaVGIv4lurcbgKOr8fQ4HImJ4+q5Sv+k2TMp1NYN+OdIdxxn02Px3QnDJcVL4DTdO3FFeH5pgbJzACHaZe4VXd5TIlkRIrFB42XOJ6nOCMIsW9bt289Fd/m4GeO10FEt4S3QOc6m3H/DYJLSFhrqsoZem/b2JTBxGqjTRFYEwK9oQASASSVOoQ6y4bmM2k8xf8Bof7cWtJHgwU765hwt826BO3CZzxhXPsGHe+XMWY0IJ1vG8ywOp83urvl1tLpnJOTMiv7f/3peb6xrSTp0Xugh0U1/cqx8XiuOIBU2TG68lSZ+whsbmE2TZKcReg0p6SWTzw54FMISJlVG1DxvkkPwKBiq5nXD7dtQY6r/fLcTCP++6o+qjVgnJXTNpRLxDkunCOwEFpowHIMlS+tqwFkLYZugEegJzUMXC4Q1gFWvpXZCK99ZR0M8ojAvTZMQ42wSyMTKPs3BaITe1CvAQVwG5VY+XzVZn1dAnQxDAmhhk0+TwDfWVhApcdSn4JDOY5hEFAzXaMeY7pME4a0vpHdZMUNHWfW/ynrUkHDxpiGLoiskiXR5VxUgHPAU7941yp+UVWNcCk+kmzcm7ZC2ynNWsWyK4Om+Cpt1WiDP14WixFCvJLfjVDzMrAYryJpvjck2l1CBXz/oVJ7f5JInI+Q+zq/72RKLyR35P4L6UkSpuezthK00a/QDb9MguDxfL89KPfCsIWhenq3iRfTrLnLmAmnn/Ae+yDBptB+YrbF61HbuiZ3f/wR64b9Xqi28GJWNsdMZ0n+W1ngezY/gQN/vDrCVumCS5qHozx3QJRqw5K7u0lFZbqXs2bkQT3of0Smk1LYJUdhTPFBzNz+mMAep8eeze0BV3nFylKRZ9do5fSuRsMfZwp35Z6AEkcyoJCuXWL5HxEyD8UZ7siV362
+ twQNJ5v0
+ qCH978lNNG11lfxXbP+m5VO3KAWh0OA26w9GJ8XzFYorY07+6TSGa2rKsiEVO+yXOA6fpQOAzEsuyjCUapQEg/x52b4srPLN3Rc3d/qpAfkwZUzLcLx985woT5kqtM64RrNhl4hToN133L58ODaDlH+uqXUxjD2ZaqHBBzTKBQ7j+fvJS5Oelsrux5HDzoeRZA5llez5a9kluDZoUmvjo+L8je6sFeUQdcqg/dBwMOc1sCKc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -247,44 +96,342 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 23, 2026 at 07:52:56AM +0100, Vlastimil Babka wrote:
-> __refill_objects() currently only attempts to get partial slabs from the
-> local node and then allocates new slab(s). Expand it to trying also
-> other nodes while observing the remote node defrag ratio, similarly to
-> get_any_partial().
-> 
-> This will prevent allocating new slabs on a node while other nodes have
-> many free slabs. It does mean sheaves will contain non-local objects in
-> that case. Allocations that care about specific node will still be
-> served appropriately, but might get a slowpath allocation.
-> 
-> Like get_any_partial() we do observe cpuset_zone_allowed(), although we
-> might be refilling a sheaf that will be then used from a different
-> allocation context.
-> 
-> We can also use the resulting refill_objects() in
-> __kmem_cache_alloc_bulk() for non-debug caches. This means
-> kmem_cache_alloc_bulk() will get better performance when sheaves are
-> exhausted. kmem_cache_alloc_bulk() cannot indicate a preferred node so
-> it's compatible with sheaves refill in preferring the local node.
-> Its users also have gfp flags that allow spinning, so document that
-> as a requirement.
-> 
-> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-> Reviewed-by: Hao Li <hao.li@linux.dev>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
 
-My only concern is that it allows sheaves with remote objects
-to be returned back to the local barn by freeing local objects to them.
 
-But the impact of that should be limited because remote frees bypass
-sheaves layer anyway and we can revisit it if it causes a real problem.
+On 2026/1/29 13:35, Dev Jain wrote:
+> 
+> On 28/01/26 8:04 pm, Vernon Yang wrote:
+>> On Wed, Jan 28, 2026 at 01:59:33PM +0530, Dev Jain wrote:
+>>> On 23/01/26 1:52 pm, Vernon Yang wrote:
+>>>> From: Vernon Yang <yanglincheng@kylinos.cn>
+>>>>
+>>>> Currently, each scan always increases "progress" by HPAGE_PMD_NR,
+>>>> even if only scanning a single PTE/PMD entry.
+>>>>
+>>>> - When only scanning a sigle PTE entry, let me provide a detailed
+>>>>    example:
+>>>>
+>>>> static int hpage_collapse_scan_pmd()
+>>>> {
+>>>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>>> 	     _pte++, addr += PAGE_SIZE) {
+>>>> 		pte_t pteval = ptep_get(_pte);
+>>>> 		...
+>>>> 		if (pte_uffd_wp(pteval)) { <-- first scan hit
+>>>> 			result = SCAN_PTE_UFFD_WP;
+>>>> 			goto out_unmap;
+>>>> 		}
+>>>> 	}
+>>>> }
+>>>>
+>>>> During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
+>>>> directly. In practice, only one PTE is scanned before termination.
+>>>> Here, "progress += 1" reflects the actual number of PTEs scanned, but
+>>>> previously "progress += HPAGE_PMD_NR" always.
+>>>>
+>>>> - When the memory has been collapsed to PMD, let me provide a detailed
+>>>>    example:
+>>>>
+>>>> The following data is traced by bpftrace on a desktop system. After
+>>>> the system has been left idle for 10 minutes upon booting, a lot of
+>>>> SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan
+>>>> by khugepaged.
+>>>>
+>>>> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+>>>> @scan_pmd_status[6]: 2           ## SCAN_EXCEED_SHARED_PTE
+>>>> @scan_pmd_status[3]: 142         ## SCAN_PMD_MAPPED
+>>>> @scan_pmd_status[2]: 178         ## SCAN_NO_PTE_TABLE
+>>> Could you elaborate what is [1], [6] etc and 1,2,142, etc?
+>> These 1,6 are value of "enum scan_result", you can directly refer to the
+>> notes on the right.
+>>
+>> These 1,2,142,178 are number of different "enum scan_result" from
+>> trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file.
+>>
+>> as example, SCAN_PMD_MAPPED has 142 times during a full scan by
+>> khugepaged.
+> 
+> Thanks. Can you please mention this in the patch description. You can simply
+> right it like this:
+> 
+> "From trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file, the
+> following statuses were observed, with frequency mentioned next to them:
+> 
+> SCAN_SUCCEED: 1
+> SCAN_PMD_MAPPED: 142
+> ....."
+> 
+> and so on.
+> 
+>>
+>>>> total progress size: 674 MB
+>>>> Total time         : 419 seconds ## include khugepaged_scan_sleep_millisecs
+>>>>
+>>>> The khugepaged_scan list save all task that support collapse into hugepage,
+>>>> as long as the task is not destroyed, khugepaged will not remove it from
+>>>> the khugepaged_scan list. This exist a phenomenon where task has already
+>>>> collapsed all memory regions into hugepage, but khugepaged continues to
+>>>> scan it, which wastes CPU time and invalid, and due to
+>>>> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+>>>> scanning a large number of invalid task, so scanning really valid task
+>>>> is later.
+>>>>
+>>>> After applying this patch, when the memory is either SCAN_PMD_MAPPED or
+>>>> SCAN_NO_PTE_TABLE, just skip it, as follow:
+>>>>
+>>>> @scan_pmd_status[6]: 2
+>>>> @scan_pmd_status[3]: 147
+>>>> @scan_pmd_status[2]: 173
+>>>> total progress size: 45 MB
+>>>> Total time         : 20 seconds
+>>>>
+>>>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+>>>> ---
+>>>>   include/linux/xarray.h |  9 ++++++++
+>>>>   mm/khugepaged.c        | 47 ++++++++++++++++++++++++++++++++++--------
+>>>>   2 files changed, 47 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+>>>> index be850174e802..f77d97d7b957 100644
+>>>> --- a/include/linux/xarray.h
+>>>> +++ b/include/linux/xarray.h
+>>>> @@ -1646,6 +1646,15 @@ static inline void xas_set(struct xa_state *xas, unsigned long index)
+>>>>   	xas->xa_node = XAS_RESTART;
+>>>>   }
+>>>>
+>>>> +/**
+>>>> + * xas_get_index() - Get XArray operation state for a different index.
+>>>> + * @xas: XArray operation state.
+>>>> + */
+>>>> +static inline unsigned long xas_get_index(struct xa_state *xas)
+>>>> +{
+>>>> +	return xas->xa_index;
+>>>> +}
+>>>> +
+>>>>   /**
+>>>>    * xas_advance() - Skip over sibling entries.
+>>>>    * @xas: XArray operation state.
+>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>> index 6f0f05148765..de95029e3763 100644
+>>>> --- a/mm/khugepaged.c
+>>>> +++ b/mm/khugepaged.c
+>>>> @@ -68,7 +68,10 @@ enum scan_result {
+>>>>   static struct task_struct *khugepaged_thread __read_mostly;
+>>>>   static DEFINE_MUTEX(khugepaged_mutex);
+>>>>
+>>>> -/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+>>>> +/*
+>>>> + * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+>>>> + * every 10 second.
+>>>> + */
+>>>>   static unsigned int khugepaged_pages_to_scan __read_mostly;
+>>>>   static unsigned int khugepaged_pages_collapsed;
+>>>>   static unsigned int khugepaged_full_scans;
+>>>> @@ -1240,7 +1243,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>>>>   }
+>>>>
+>>>>   static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>> -		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
+>>>> +		struct vm_area_struct *vma, unsigned long start_addr,
+>>>> +		bool *mmap_locked, unsigned int *cur_progress,
+>>>>   		struct collapse_control *cc)
+>>>>   {
+>>>>   	pmd_t *pmd;
+>>>> @@ -1255,6 +1259,9 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>>
+>>>>   	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>>>>
+>>>> +	if (cur_progress)
+>>>> +		*cur_progress += 1;
+>>> Why not be a little more explicit, and do this addition if find_pmd_or_thp_or_none fails,
+>>> or pte_offset_map_lock fails? The way you do it right now is not readable - it gives no
+>>> idea as to why on function entry we do a +1 right away. Please do add some comments too.
+>> If this way is not clear enough, we can directly add 1 in
+>> find_pmd_or_thp_or_none() etc, BUT it's a bit redundant.
+>> Please take a look at which one is better.
+>>
+>> case 1:
+>> as the V4 PATCH #2 [1] and #3 [2], only hpage_collapse_scan_pmd().
+>> [1] https://lore.kernel.org/linux-mm/20260111121909.8410-3-yanglincheng@kylinos.cn
+>> [2] https://lore.kernel.org/linux-mm/20260111121909.8410-4-yanglincheng@kylinos.cn
+>>
+>> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>> 		struct vm_area_struct *vma, unsigned long start_addr,
+>> 		bool *mmap_locked, unsigned int *cur_progress,
+>> 		struct collapse_control *cc)
+>> {
+>> 	...
+>> 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>> 	if (result != SCAN_SUCCEED) {
+>> 		if (cur_progress)
+>> 			*cur_progress += 1; // here
+>> 		goto out;
+>> 	}
+>> 	...
+>> 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>> 	if (!pte) {
+>> 		if (cur_progress)
+>> 			*cur_progress += 1; // here
+>> 		result = SCAN_NO_PTE_TABLE;
+>> 		goto out;
+>> 	}
+>>
+>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>> 	     _pte++, addr += PAGE_SIZE) {
+>> 		if (cur_progress)
+>> 			*cur_progress += 1; // here
+>> 		...
+>> 	}
+>> }
+>>
+>> case 2:
+>>
+>> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>> 		struct vm_area_struct *vma, unsigned long start_addr,
+>> 		bool *mmap_locked, unsigned int *cur_progress,
+>> 		struct collapse_control *cc)
+>> {
+>> 	...
+>> 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>> 	if (result != SCAN_SUCCEED) {
+>> 		if (cur_progress)
+>> 			*cur_progress += 1; // here
+> 
+> Let us be more explicit and set this equal to 1, instead of adding 1.
+> 
+>> 		goto out;
+>> 	}
+>> 	...
+>> 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>> 	if (!pte) {
+>> 		if (cur_progress)
+>> 			*cur_progress += 1; // here
+> 
+> Same comment as above.
+> 
+>> 		result = SCAN_NO_PTE_TABLE;
+>> 		goto out;
+>> 	}
+>>
+>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>> 	     _pte++, addr += PAGE_SIZE) {
+>> 		...
+>> 	}
+>> 	...
+>> out_unmap:
+>> 	if (cur_progress) {
+>> 		if (_pte >= pte + HPAGE_PMD_NR)
+>> 			*cur_progress += HPAGE_PMD_NR;   // here
+>> 		else
+>> 			*cur_progress += _pte - pte + 1; // here
+>> 	}
+>> }
+> 
+> I will vote case 2. In case 1 I don't like the fact that the if (cur_progress)
+> branch will be checked each iteration - and I don't think the compiler can
+> optimize this since the body of the loop is complex, so this check cannot
+> be hoisted out of the loop.
+> 
+> 
+>>
+>> case 3:
+>> 	current patch, and add more comments to clearer.
+>>
+>>>> +
+>>>>   	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>>>>   	if (result != SCAN_SUCCEED)
+>>>>   		goto out;
+>>>> @@ -1396,6 +1403,12 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>>   		result = SCAN_SUCCEED;
+>>>>   	}
+>>>>   out_unmap:
+>>>> +	if (cur_progress) {
+>>>> +		if (_pte >= pte + HPAGE_PMD_NR)
+>>>> +			*cur_progress += HPAGE_PMD_NR - 1;
+>>>> +		else
+>>>> +			*cur_progress += _pte - pte;
+>>>> +	}
+>>>>   	pte_unmap_unlock(pte, ptl);
+>>>>   	if (result == SCAN_SUCCEED) {
+>>>>   		result = collapse_huge_page(mm, start_addr, referenced,
+>>>> @@ -2286,8 +2299,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>>>>   	return result;
+>>>>   }
+>>>>
+>>>> -static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+>>>> -		struct file *file, pgoff_t start, struct collapse_control *cc)
+>>>> +static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
+>>>> +		unsigned long addr, struct file *file, pgoff_t start,
+>>>> +		unsigned int *cur_progress, struct collapse_control *cc)
+>>>>   {
+>>>>   	struct folio *folio = NULL;
+>>>>   	struct address_space *mapping = file->f_mapping;
+>>>> @@ -2376,6 +2390,18 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
+>>>>   			cond_resched_rcu();
+>>>>   		}
+>>>>   	}
+>>>> +	if (cur_progress) {
+>>>> +		unsigned long idx = xas_get_index(&xas) - start;
+>>>> +
+>>>> +		if (folio == NULL)
+>>>> +			*cur_progress += HPAGE_PMD_NR;
+>>> I think this whole block needs some comments. Can you explain, why you
+>>> do a particular increment in each case?
+>>>
+>>>> +		else if (xa_is_value(folio))
+>>>> +			*cur_progress += idx + (1 << xas_get_order(&xas));
+>>>> +		else if (folio_order(folio) == HPAGE_PMD_ORDER)
+>>>> +			*cur_progress += idx + 1;
+>>>> +		else
+>>>> +			*cur_progress += idx + folio_nr_pages(folio);
+>>>> +	}
+>> The "idx" represent PTEs number already scanned when exiting
+>> xas_for_each().
+>>
+>> However, the last valid folio size was not counted in "idx" (except
+>> folio == NULL, "idx" equal to HPAGE_PMD_NR), which can be further
+>> divided into three cases:
+> 
+> But, the number of PTEs you account in these three cases, are *not*
+> scanned, right? So we can simply drop these 3 cases.
+> 
+>>
+>> 1. shmem swap entries (xa_is_value), add folio size.
+>> 2. the folio is HPAGE_PMD_ORDER, the memory has been collapsed
+>>     to PMD, so add 1 only.
+>> 3. Normal folio, add folio size.
+>>
+>> Is the version below more readable?
+>>
+>> 	if (cur_progress) {
+>> 		*cur_progress += xas.xa_index - start;
+>>
+>> 		if (folio) {
+>> 			if (xa_is_value(folio))
+>> 				*cur_progress += 1 << xas_get_order(&xas);
+>> 			else if (folio_order(folio) == HPAGE_PMD_ORDER)
+>> 				*cur_progress += 1;
+>> 			else
+>> 				*cur_progress += folio_nr_pages(folio);
+>> 		}
+>> 	}
+> 
+> Yep, this is unneeded complexity. This looks really ugly and the benefits of
+> this are not clear. You can simply do
+> 
+> if (cur_progress)
+> 	*cur_progress = xas.xa_index - start;
+> 
 
-That said,
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+I agree with Dev here. The extra complexity in hpage_collapse_scan_file()
+doesn't seem worth it.
 
--- 
-Cheers,
-Harry / Hyeonggon
+Suggest:
+
+if (cur_progress)
+	*cur_progress = max(xas.xa_index - start, 1UL);
+
+Just keeps it simple, and handles the idx=0 case you mentioned as well.
+
+[...]
 
