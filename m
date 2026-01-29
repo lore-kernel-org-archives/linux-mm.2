@@ -4,81 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBA4DD73E84
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 17:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06E97D73E83
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 18:22:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 194F46B0088; Thu, 29 Jan 2026 12:45:17 -0500 (EST)
+	id D956A6B0088; Thu, 29 Jan 2026 13:22:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 143856B0089; Thu, 29 Jan 2026 12:45:17 -0500 (EST)
+	id D431A6B0089; Thu, 29 Jan 2026 13:22:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 041866B008A; Thu, 29 Jan 2026 12:45:16 -0500 (EST)
+	id C45A76B008A; Thu, 29 Jan 2026 13:22:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E30C16B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:45:16 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8308CD371A
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:45:16 +0000 (UTC)
-X-FDA: 84385727832.29.F8D4485
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CE79A180007
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:45:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0akjmG9r;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B2FF76B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:22:35 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51DE9B7361
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 18:22:35 +0000 (UTC)
+X-FDA: 84385821870.01.5A9A5AA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5CCC140007
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 18:22:33 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769708714;
+	s=arc-20220608; t=1769710953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=jsu3vaga3zLR1rmUEj0Yv2rMXLjU74nkvztJ9bQNAsQ=;
-	b=23ouVCjpxWndXzOTD+vOifjDS96ZLsEj8h75IEgrccjKfBtVHrR5LlIIvvsc4IDjpB9S2b
-	s3GzxfIJ13RmTk9rr0cmK3j9cSxdvgwLPS9ivtwZG5adB0kVO2jhvSN3H/B2RiXZ0x6vNA
-	KGMeTx98J4cLuRnhLHFnH0xLA5qozGE=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3INMSQtU8Wzky8Kr7Ft8lggZqVbamJ6pQ3F/X+7hSrs=;
+	b=h8dq5iNCu9vFO88Md2zfJaWnylg4QILAsKSrB/Xnvwis2uMMopMmz7bLNpLhZLf2jDaENT
+	Ng02wFbtPfieIqXj0dhlIUYpfoAwEOjucMVrcPE/oM2R8LSofNnHPauU3oAUv7oFHZJ+ZN
+	VJ9eKJKF+6YDNElDKxGZkYDr/nqEAm0=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0akjmG9r;
-	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769708714; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf17.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769710953; a=rsa-sha256;
 	cv=none;
-	b=hpAOem9qdV2YUDgp2i12YfW0XbqgMsNZw4+2GuRBxfiKzaH1wVXx+4opXWDW09Rq6+vojx
-	tINAuCI5gVGj5w5RmYelBbeQSf/vH/Hmf59D4M3kamLXq+rpRopyc+hBwF8kNYGFr9Sk7/
-	dliS1g4C6gXmsuzm1/FhEJ2es9AlDMQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2294660054;
-	Thu, 29 Jan 2026 17:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A625AC4CEF7;
-	Thu, 29 Jan 2026 17:45:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1769708713;
-	bh=/6Bij3SsXTuU2/orANe8p9+tCAYwwRciCDxFl8HVqdk=;
-	h=Date:From:To:Cc:Subject:From;
-	b=0akjmG9rb9fhX7DXzSBU9V/DaI4hjKXoHmSjI3SM1rSTiRMEyX5S4IKy9Fhffeds+
-	 IVWBA8nGrlSXZeN1bv4HsvZzaPpGnfzRaod8fMPivarkUNE0RIoahDVpo37Gg9KL/f
-	 6K0+FwY4CYKBLQj+w0UG/bWaqtSiasUp/ye751YM=
-Date: Thu, 29 Jan 2026 09:45:13 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- mm-commits@vger.kernel.org
-Subject: [GIT PULL] hotfixes for 6.19-rc8
-Message-Id: <20260129094513.621310717801e65dce692162@linux-foundation.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 6xmzka4i1mywfoxos35qorhq85g1im3r
-X-Rspamd-Queue-Id: CE79A180007
+	b=WRVwZT2K5IMBP9zCLL00wxd6KNzTa3LjYF5GjJTrDc4f1B6W9ezDj7BdbeNluN6R/DvHyq
+	ip+WTsKAa6jxlilzBniwqDxv38xFZ+9NxUxZYCZATPth/N5+RZuFH9tfnpV4cWv/BS8jAy
+	3T/BoS2DYnIAUaaYItMLUxeQEfP5buY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D45C2153B;
+	Thu, 29 Jan 2026 10:22:25 -0800 (PST)
+Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 772BB3F632;
+	Thu, 29 Jan 2026 10:22:30 -0800 (PST)
+Date: Thu, 29 Jan 2026 18:22:27 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, will@kernel.org,
+	zengheng4@huawei.com, ryan.roberts@arm.com,
+	anshuman.khandual@arm.com, wangkefeng.wang@huawei.com,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2] arm64: mm: fix pass user prot to ioremap_prot in
+ generic_access_phys
+Message-ID: <aXulY16Q16TYO06l@arm.com>
+References: <20260127090129.412084-1-tujinjiang@huawei.com>
+ <c78b76c5-8709-44d0-85c3-feccd41b2ddd@huawei.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c78b76c5-8709-44d0-85c3-feccd41b2ddd@huawei.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5CCC140007
+X-Stat-Signature: uzxkhkg8ayrkto5pbhbhqh496uco3tdz
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769708714-305128
-X-HE-Meta: U2FsdGVkX1/4DYlDwPT4MU7vcK4aj0UuZ75Lpe0CL1EzZpA3jd/r5Yt2rSUJpTR1DyXo3T/cLFXRATI9ep3vmQ6PgOhjzu4IacpO2/ZF/A3VqT5+r4wAcLydETE/XfLWG/AUmSx7Jsl+1j4MMwOHjR6WbyLL1oSuF2d6cV7QkT4PN+Nmj4celAKH5drEhpLHdH19khwRSG1lU2G6kMpm89QLvcdxjhv4q6B8yOaRs80znfTqwgMSFuTK2IQPBiy942pu3ve3fscfabSjwDqFLnR5GB3JeCKtPBsfgD7sUb2Ehjeo5PbEU9SKf9pJhoPef4Ebzmlnsqoeh9LkptUVGYRi53M4tbZennLiBrn3L5qDMicIGKLDMSP/I832uryNsR1ZBtZsYH4DOsy+p4MKw6OoH8pkecsH6WvPY/PZEXbgLegxR6ZrfzWGksB9au6GjecywrRfNLSF3seDiDwTwvi+VZ91GOCV/DFyuO75D+15rWYPlBT8+Wj2XsMxBMB4kYgDGbXGSDGbaVyiWrIy9pioo1Z9JN+CxPScEiUSsPBix3iqJrr2tdZHP5WWb5JaGaeX84TKJSFPGezpFc5kqWk5/Gw+KEswdWF6Xu+kdQnwkOFow0Ujd2lsLnAJCYppfNKXhSvoaJHvt3lII1AD3pIA66iOASzsn65SQEwOcqTxMwrSSLLo1mYetT0WGGB3mCFWGoDJP5s4pHl5M6ePa6Gc+7GP20PPM8z8r8xnoKBAhodg3UVMRBbzzupr1PI9Y1BE5hUu6+/u16yaTHrnJSoabwUEGtRNj2M4pKAmGcPsLlpk+mE31fcMF8kTifXTsOi+bX2Xhv7/CUnvx+u0rR8N2cY29zp4nRGkLIViZkr1LrEFvcBRllnMW0XDnYz6/NWjxm2FLNByI2vkrFrSnPVp2K7n+jdZPOKCSNUON1w2FyYCialTadaX9Pv08YWQv7xi68Ea7Bq64K22u3M
- vzvTNCK4
- 29aTK5n57faV707xgngsGAUM13Oo2Uiip0dv7imojrBpJ8ajXvN+ugJSjYdSZLuiumm2ediGuqTLhYehD/OQsj3kj21gX272RowBwGozGRVh8a6ed2Jq/wWSug+m49LtxhngKurhDo2J0/Zgkh7PhHtRqbZ+nkRYETph0ggUxRqiPOPoXYUPeJZGT6Z2eq3sa8dMBUH5b9HGfFmXNR0xLjS0Ory4vHW6G7yn0SapSJIrVsZyg5DuXdwnEG/IXA0C+lb0pgIgEsel9/C8=
+X-HE-Tag: 1769710953-73229
+X-HE-Meta: U2FsdGVkX1+0fSCiGRxm8+DPakeL3vRLlFMZB0U5f/y1mXXIbcpqpxP11FrTyvt8tKWsTlP5IBn6b83o3MXr973ulqSS5NqSl3We6nTtD8tcJOZ+hsntTwDqZSuqUml8nE5O7LzF6ig8ZKs363DBFUMxMWkZbNeHG4LYs9DDIigHZdhHU1ZpfrWRVcTgSvZmeHGUVL0zQ39NFMuYOSk/ECBA1raIVgRWnmvZWsbXxgKelkky9A9kK2wqIEqJSIpogGYdj2nkB34Iqeu0xWhzAIpjRMvXcHRF1GEJEhCW7jvKov6yq/7tS67shLlFNn8cDIEYsbiIBNdEYBFrDymVEE/2Upp4NVPyEsqbTumtzuDdG6dpkbwmfvOKwIoccx7JkaQPLphYK2vrZGG26b6JUp3v3Om0db/Fq0S4debD0dtZ0AK47T8f9Dht/h08R/ouIVTTCJQzVfJcECpgo4SPvcofBxICfAWFI8N8gUcN3VKducwKhWoO/gBqAk5Jswtn8Nac3Cgj/PBTANJn/8OQHsCPAir0TSMnnl1qm7VTW3Us2yNbx7o1Il/AQ3GgPg+bLmKxrO/wTIE3Vq9cPU1ZzYIL/uOQQm4LnBoeEtYcZ5c/I/WEH67ApYry9pENvWtZ4LypolccCXDjagxLJDaOpnyOqigNcWvXtShLTpa6EoOgwKlS7B5psuiprfphB2JS9cFwHxGSnPB5oAuEkkUuFt5EWiZshio5t1a5uNRx9unJcV2YdNA6sEHDlbok5zq1WHua8yR8t4JrkRI5eLVuQudeZ262QrQd8Ph1u9lSVulY1wzngPCht93IvejLU8u+/KjAb/02H93Ta4+u3pwAXixHnmsWT2ypTq6rTQCuHvq/0B0X1VsmPWWr8ui2Ykifw1lwyIJqjfuDFQQU9tArHX4jVgTQXDzhWegX9FVA8iIWGQUuqdQxQzEBMGxxMdT45wQ5++by5IqP7CLve63
+ 6mlWRtLm
+ JMJ9KmD00Ad69opfWRDIDmePjwCQ9u+EOuchvQ4JakeAdOdLt9euzoozzgHYPQNrAIepa3q0jpyYrd8oxmdquFqKX4SmMENFq5e/dlw53SF2ebyxG3H96VC9DH1jlffSePV5oGj/uolFzMEg3knHvs0m+qcyYZdM0zvg/h2HKoj348rrDCeUPlcOjeSNGdfCXq8VOLJ4WGoKi5SMm0msUDF+Lqg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,97 +88,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Jan 28, 2026 at 03:12:56PM +0800, Jinjiang Tu wrote:
+> 在 2026/1/27 17:01, Jinjiang Tu 写道:
+> > diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
+> > index 83e03abbb2ca..fe8607eafab6 100644
+> > --- a/arch/arm64/include/asm/io.h
+> > +++ b/arch/arm64/include/asm/io.h
+> > @@ -267,6 +267,17 @@ int arm64_ioremap_prot_hook_register(const ioremap_prot_hook_t hook);
+> >   #define ioremap_prot ioremap_prot
+> > +#define arch_mk_kernel_prot arch_mk_kernel_prot
+> > +static inline pgprot_t arch_mk_kernel_prot(pgprot_t user_prot)
+> > +{
+> > +	unsigned long kernel_prot_val;
+> > +
+> > +	kernel_prot_val = _PAGE_KERNEL & ~(PTE_WRITE | PTE_ATTRINDX_MASK);
+> > +	kernel_prot_val |= pgprot_val(user_prot) & (PTE_WRITE | PTE_ATTRINDX_MASK);
+> > +
+> > +	return __pgprot(kernel_prot_val);
+> > +}
+> 
+> I found I misunderstand the READ/WRITE permisson here.
+> If the pte is writeale, the PTE_WRITE is 1, and PTE_RDONLY means dirty or not (With DBM).
+> If the pte is read-only, the PTE_WRITE is 0, and PTE_RDONLY is 1.
+> 
+> Since generic_access_phys() have checked if the user can write with:
+> 
+> 		if ((write & FOLL_WRITE) && !pte_write(pte))
+> 		return -EINVAL;
+> 
+> So, maybe we could always grant writable permission, just as x86's ioremap() does?
 
-Linus, please pull this batch of MM and non-MM hotfixes, thanks.
+Yes, it gets tricky with the dirty/writeable bits and we may change this
+in the future. We have follow_pfnmap_start() already checking the
+permissions, so going for read/write access for the kernel mapping I
+think makes sense. Just do something like:
 
+	ptdesc_t mem_type = pgprot_val(user_prot) & PTE_ATTRINDX_MASK;
 
-The following changes since commit 6c790212c588fddeb0d852f2790840753bb604b1:
+	return __pgprot_modify(PAGE_KERNEL, PTE_ATTRINDX_MASK, mem_type);
 
-  Merge tag 'devicetree-fixes-for-6.19-3' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux (2026-01-20 15:01:15 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-01-29-09-41
-
-for you to fetch changes up to bd58782995a2e6a07fd07255f3cc319f40b131c9:
-
-  vmcoreinfo: make hwerr_data visible for debugging (2026-01-26 19:03:49 -0800)
-
-----------------------------------------------------------------
-16 hotfixes.  9 are cc:stable, 12 are for MM.
-
-- There's a 3 patch series from Pratyush Yadav which fixes a few things
-  in the new-in-6.19 LUO memfd code.
-
-- Plus the usual shower of singletons - please see the changelogs for
-  details.
-
-----------------------------------------------------------------
-Andrew Morton (1):
-      kho: kho_preserve_vmalloc(): don't return 0 when ENOMEM
-
-Andrey Ryabinin (1):
-      mm/kasan: fix KASAN poisoning in vrealloc()
-
-Breno Leitao (1):
-      vmcoreinfo: make hwerr_data visible for debugging
-
-Jan Kara (1):
-      flex_proportions: make fprop_new_period() hardirq safe
-
-Jane Chu (2):
-      mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
-      mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
-
-Kairui Song (1):
-      mm/shmem, swap: fix race of truncate and swap entry split
-
-Matthew Brost (1):
-      mm/zone_device: reinitialize large zone device private folios
-
-Pimyn Girgis (1):
-      mm/kfence: randomize the freelist on initialization
-
-Pratyush Yadav (Google) (3):
-      memfd: export alloc_file()
-      mm: memfd_luo: use memfd_alloc_file() instead of shmem_file_setup()
-      mm: memfd_luo: restore and free memfd_luo_ser on failure
-
-Ran Xiaokai (1):
-      kho: init alloc tags when restoring pages from reserved memory
-
-Viacheslav Bocharov (1):
-      mailmap: add entry for Viacheslav Bocharov
-
-Waiman Long (1):
-      mm/mm_init: don't cond_resched() in deferred_init_memmap_chunk() if called from deferred_grow_zone()
-
-robin.kuo (1):
-      mm, swap: restore swap_space attr aviod kernel panic
-
- .mailmap                                 |  1 +
- arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
- drivers/gpu/drm/drm_pagemap.c            |  2 +-
- drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
- include/linux/kasan.h                    | 14 +++++
- include/linux/memfd.h                    |  6 ++
- include/linux/memremap.h                 |  9 ++-
- kernel/liveupdate/kexec_handover.c       | 12 +++-
- kernel/vmcore_info.c                     |  6 +-
- lib/flex_proportions.c                   |  5 +-
- lib/test_hmm.c                           |  4 +-
- mm/kasan/common.c                        | 21 +++++++
- mm/kfence/core.c                         | 23 ++++++--
- mm/memfd.c                               |  4 +-
- mm/memfd_luo.c                           | 10 ++--
- mm/memory-failure.c                      | 99 +++++++++++++++++++-------------
- mm/memremap.c                            | 35 ++++++++++-
- mm/mm_init.c                             | 12 ++--
- mm/shmem.c                               | 45 +++++++++++----
- mm/swap.h                                |  2 +-
- mm/swap_state.c                          |  3 +-
- mm/vmalloc.c                             |  7 +--
- 23 files changed, 239 insertions(+), 87 deletions(-)
-
+-- 
+Catalin
 
