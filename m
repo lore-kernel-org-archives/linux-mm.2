@@ -4,130 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C4E2D358DC
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 08:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F056D358E0
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 08:25:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 693F26B0088; Thu, 29 Jan 2026 03:21:05 -0500 (EST)
+	id AC1F86B0088; Thu, 29 Jan 2026 03:25:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 641FE6B0089; Thu, 29 Jan 2026 03:21:05 -0500 (EST)
+	id A99A96B0089; Thu, 29 Jan 2026 03:25:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F92C6B008A; Thu, 29 Jan 2026 03:21:05 -0500 (EST)
+	id 9A2C16B008A; Thu, 29 Jan 2026 03:25:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E83F6B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 03:21:05 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA50D1A08E6
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:21:04 +0000 (UTC)
-X-FDA: 84384306048.20.8F124C0
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A4096B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 03:25:24 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 26E98C17DE
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:25:24 +0000 (UTC)
+X-FDA: 84384316968.24.A134472
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 652BE4000A
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:21:02 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="xR/0RAzK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mSJYd8uk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="xR/0RAzK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mSJYd8uk;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by imf17.hostedemail.com (Postfix) with ESMTP id BF05D40005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:25:21 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FmjRXzo1;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o3oFo3+g;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bBRYT+tH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8rjM4Lsj;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769675122; a=rsa-sha256;
+	cv=none;
+	b=fy5znynOpZlMHy16lo9Cprmn/9um6TZ8Bb97f6JZgYc0DUbzzPgLKav+76Hj6EtHjm7VeY
+	Nikd71khrvG2xqPkl94r6qdwq0G2ru2W2qDbP/bmagzr2D/2dtxPuoTcMDdrqoP/c11/SD
+	uOcZUjTtJMSP6+y5o273/R4Kjkqyygc=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FmjRXzo1;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o3oFo3+g;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=bBRYT+tH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=8rjM4Lsj;
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769674862;
+	s=arc-20220608; t=1769675122;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bnoAjIEBZE3yHj9Uu6+mVva3GLy2AXgvwJcLgSTdq2E=;
-	b=ZF6Neu44qL/HY8KJdk9Llg/XY2gI+yQ5EioyuEuTt9JaTJ7sNApyBUe/Vw9OT9vU+zj27S
-	ccD9WxTI/tludQyT4Nu2xHeOt9jLQgKMnlJoHyLclRZ+PahJchxzxRZbPDDL7aCPtOb/uz
-	0uh9Lxc1cmUvA/p+313u2Q9dNm8UxWM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769674862; a=rsa-sha256;
-	cv=none;
-	b=LFo7wQInKy5jQxldFYr0IljNcppy6XKELffSxH5X7w53xjNNcFdXu9C97NXjnXzPtFnnq7
-	d7OZlaACDDmEXkLI2K2OPRQHKQFrDOfhHcvXDqeytWZJ4hW7ZlSaalfjE2wyHP1mlbpmtU
-	hdx9RJgd2wyf00DlvG9/9c335sG/3vM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="xR/0RAzK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mSJYd8uk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="xR/0RAzK";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mSJYd8uk;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=CMS5emY52BtnPbbiJqj2WVHvnKPATN/p7rC618G6cXU=;
+	b=thIfdjTrvDs6ITPfieHepQ5QoidR9qoWLduRT/VxO0ZsEMQC24VcRlgOh4sesnxuKsi3NL
+	0jr74VdOzFg92hJU4lx6DpSFIoekKf+xm4hCWqVDxLoVMpxkhWPnD02KEEhHVc6dRQdyRp
+	2LaY0yEl/vLtNjZ4mc3qrNqq3OesHik=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 95ECA3402F;
-	Thu, 29 Jan 2026 08:21:00 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 01C403402B;
+	Thu, 29 Jan 2026 08:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769674860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769675120; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bnoAjIEBZE3yHj9Uu6+mVva3GLy2AXgvwJcLgSTdq2E=;
-	b=xR/0RAzKnFqnWlruxbJVJvad6opNrHcevj67zWV6VPMoX9jVYIeTlswHXjFJwv9VAt6+pj
-	3t71YrVfzR1V/0zcu0tT+aUS0ss/aA7wQyOe99xOkqEZResS7HTTIKsGhtKnMP5nQrCU9A
-	ujhOO4ydpwqAvLhRDbj8sQItQaefcBI=
+	bh=CMS5emY52BtnPbbiJqj2WVHvnKPATN/p7rC618G6cXU=;
+	b=FmjRXzo1wDOV/B5aFUs7XaHaqH1dJz/4U1KvfOE7aSgtgBHGTAFknLzd5EdYYFGxrEJXb+
+	Sj3r1gbG/4lrzsLd9vda0WqbXbCWe3IuHbPdc3cLqtYdUfAgMiuqBnRcBdDh8MmkKxTubb
+	8UyKCBuaobYrkHPcDSs9mEIlkUgQ+8k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769674860;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	s=susede2_ed25519; t=1769675120;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bnoAjIEBZE3yHj9Uu6+mVva3GLy2AXgvwJcLgSTdq2E=;
-	b=mSJYd8ukTSAUKe6oOB64FId+oEIgns3dvXQjzbQwwSL7gh2lcc7GwScRux0d5XrVmIRI1B
-	Qp2b0Xv+Lqf2FCDQ==
+	bh=CMS5emY52BtnPbbiJqj2WVHvnKPATN/p7rC618G6cXU=;
+	b=o3oFo3+gGwYGr8zY1+kbr3FcYMcFlrPO1DxtQZQiYalIpfVgIynAguV/81MYlQUzQulp9I
+	6KfG6fuffYvyulBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769674860; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1769675119; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bnoAjIEBZE3yHj9Uu6+mVva3GLy2AXgvwJcLgSTdq2E=;
-	b=xR/0RAzKnFqnWlruxbJVJvad6opNrHcevj67zWV6VPMoX9jVYIeTlswHXjFJwv9VAt6+pj
-	3t71YrVfzR1V/0zcu0tT+aUS0ss/aA7wQyOe99xOkqEZResS7HTTIKsGhtKnMP5nQrCU9A
-	ujhOO4ydpwqAvLhRDbj8sQItQaefcBI=
+	bh=CMS5emY52BtnPbbiJqj2WVHvnKPATN/p7rC618G6cXU=;
+	b=bBRYT+tH7bPSf52Ur+3FfDsk5sVxk1AzPIpP5uH6esgdVvs8VgLw0u4eKVX7Bzj0cEoTDO
+	FhjdpCGe27u08VpvTpZeVrHhmAXt4fywLKJQY2t+amUNviScoV3xfa5lZ6dKwEfB2WLXlw
+	kUiW0QaYz78gax4vB7O7Opf7v/6br+U=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769674860;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	s=susede2_ed25519; t=1769675119;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=bnoAjIEBZE3yHj9Uu6+mVva3GLy2AXgvwJcLgSTdq2E=;
-	b=mSJYd8ukTSAUKe6oOB64FId+oEIgns3dvXQjzbQwwSL7gh2lcc7GwScRux0d5XrVmIRI1B
-	Qp2b0Xv+Lqf2FCDQ==
+	bh=CMS5emY52BtnPbbiJqj2WVHvnKPATN/p7rC618G6cXU=;
+	b=8rjM4LsjtxxPTqr7R9cfk1bclBJ33YakLLmTqDlhAhBDtvYnbSrR+QgCp7lGAok+Mb6nuU
+	4KPnbWWzZyagt6Bw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A90E3EA61;
-	Thu, 29 Jan 2026 08:21:00 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C8D0A3EA61;
+	Thu, 29 Jan 2026 08:25:18 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BxCwGWwYe2mbWgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 29 Jan 2026 08:21:00 +0000
-Message-ID: <2cd89ed5-0c8e-43f8-896d-1b7dee047fef@suse.cz>
-Date: Thu, 29 Jan 2026 09:21:00 +0100
+	id HwewMG4Ze2n/XgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 29 Jan 2026 08:25:18 +0000
+Message-ID: <effcb710-122b-44b8-91d3-5cef727ad4fa@suse.cz>
+Date: Thu, 29 Jan 2026 09:25:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/22] slab: add sheaves to most caches
+Subject: Re: [PATCH v4 08/22] slab: make percpu sheaves compatible with
+ kmalloc_nolock()/kfree_nolock()
 Content-Language: en-US
-To: Zhao Liu <zhao1.liu@intel.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Suren Baghdasaryan <surenb@google.com>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
  Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com
 References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <20260123-sheaves-for-all-v4-6-041323d506f7@suse.cz>
- <aXsLKxukv60p3QWF@intel.com>
+ <20260123-sheaves-for-all-v4-8-041323d506f7@suse.cz>
+ <7dk5q3mbusqlklpk3ja57upbhkhhg3bpueh4nemuthesmwpgnk@zkk4fqug3cwx>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -168,16 +167,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <aXsLKxukv60p3QWF@intel.com>
+In-Reply-To: <7dk5q3mbusqlklpk3ja57upbhkhhg3bpueh4nemuthesmwpgnk@zkk4fqug3cwx>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 652BE4000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: habaki88mcba357sr39cy1n7urypx6ws
-X-HE-Tag: 1769674862-372742
-X-HE-Meta: U2FsdGVkX19cMCwjQUiz5XXAh9BfmwGYVpZptnl1N+TBADuElJBms3pH/i+jMCJdwzWlC+BdEu8npFlPbpc2iDJzGBQDnGE5HkCGw9Tl9KyucPTvOMvWVwPHIgXBEyFpgtwZgv9j/+GHDQWIclwE6yk/lj/MHOZVScChlzhHQiWTJlxiDWYWoaLTwdqXpm6XHqAkuEKeSiRKnlNJ21uM/V3U+9O4Zsj8bj6oAG6U+71JIJg+p5vcPAsdH5EJ8CUPexoqRQH1wy+tNIjanxD5fp1iKUNiPKYceMZLm32JkzQL9GPUCue3wd8o3uxvAvyzKf3t80TKMhULFsRjfvswVpWekiuhXjD2CGLRjZOTbBO9nHRZL/XmY179n+TENOMI71iW5BKn4zAw7pqC0HLytcCn0BEmFqoyuMKd8rjxEQ6d/BP/yf61dl9K2zsgq9+SXnjsgTA+O1H2anyTRKCU5NJkSH1O3CGE19u/5ErLZs3KtxwBeOPCgc3UciYxnpl2nddZzQnjcrv4DKJTk9/MTmsa0OTH6wVshy//EA789CTOKP7yFV368m1iZi5lHg2F+u2fCOFs68lnLKKTF7spoFs1M7wFAxAqjY6/tjmPeOByEMprZVWsh+z6Q9HsqRrpi/jb7DcsxfmjZt+il3A8r/BZnZNysxiJagqmkQOeLSEOO4AV92S+o8vj/pDccPc9EzfSd3ZDB2EUq6jWPg7I99lfDXIIZzFa55idHtxzaq8xm7e9E7kmIRWDS2J8ekOBXnxUD9HorDoiXbWOOIFH79bzzVJmCCeiGf3f4lBu+eONx4FIHQJH6PaVOK6kZaUU2Hm6jozpv1mYP8euARpFN9FVqDOni2xwuz/oGyMWiKErzSDDQyCvVAhef7lrKcnIODask04Syc9wovC4VxWNoyFWsCuP8x2im94r5L/5zFujB8agb74OxQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: BF05D40005
+X-Stat-Signature: d53muni6kd844o1jxer61bgt7z91bf6h
+X-HE-Tag: 1769675121-985762
+X-HE-Meta: U2FsdGVkX18Eod4KblAOsUOQUTSrFOX0bdBbE3nS9fmPpSfYHaGDh7qjHLhM4snrSOEXxeIdEbEdCsnqnZ7YzGFZ8+Ne8L42txFZuAtCdQjmFFPfhOycHt40qLklnDoBGlhklDwoWDYWlaP3JRBFfEsnuCIKXqDTcAFSNc8xWymCDIoUJfX1gRh2+d6f190kQxo5qqJDKLwJLsWk9/Uu2gOU08GBLmoQY3L3+l7fFVBcyj6JK88HB5JzcDiP9Z8V7mLPvsyckXl7X1Jg4EtnQKKDCV8f6om4mLDP6HCudYIh3aSRYhhtaM27u5jKgiqcLEIBVqyaltTFw+nY+UH5MJu6Sb53XFOH7nLQSHycolCdI9fl38GFdie1N/4svvQuRcfpNMAr+T+icD7n8sl5TxF/MoZN8rXjDptFd9Sdj8Xg1KvMvmOmsJIR9cHc+Gftq/8EeZufQFOkHx8jbSvBIHAWoxQzFB4TmQQrhfnhvRhh2FfeVWC8pS0/DLZ//ILw2XHI4D+AnB6hDkJMAFg3IVaE5I+qTOmYMtXb3w4Ce8CWj3Sr3+S1ELdwW2yqIVSUtgSD431GLOgDnz7rTZ1eesNIRm+vK0NhH9Q/4YVzH2kkvB+Fy6kDJRCVIVe3/dIAdS2MxOUBj51s6tlVcS0Z12tPbXVJOpfbgXFFqByxQB+i5r8JSbelioWj/J1/zfVNNz7cqjxzj4StgPq/416yte+svS1Skm4sRYSg1xFfEAS8Vq4q65JB4k3hXvzRq/CFA3RVCZ8rRUTvy4MY9egCdQCpd962ovaGOnqPTGNtIhy5Z+8hJKqYJc7wJIKp8btkWckLp1/rFaPpwmDgj4WZz14K2VKqN3C3jHGWD5jGQXmUXKP5nwfo44gslergN8GD8c3w56mM0b7ukJ8na2QdAysEbFNTxGEWFtcjYg0RmMcSfR02c51xR4YXtgujt5/bVZPCz8Q8mjeUYmEJ8XX
+ EM+ehyTN
+ LEibcq4ZnrwWJ/Whzy8v8jJP8Kq1T+Yx6SEqsgJEvQ6phgmM/TEdlyfA8B+hCs8pbyY5EvlJ2M8mBeTpa0K54HiPoo323z0na5hecfkCDKe2u0mv+eYDvXBQ5dNwQD4408yd4NHaV1yGueiyI4UW/ESy7c0ClKP+RxQzIP1X4WkXqJb8bJpdlm1LpjKl7e6eCqSwvMqE6srMCMAZafaYBZZlxiAh1adipeSk2HkNbbmFlwXLKmdKf2UIWdNEJARq/ru/AxsbhheZ+llGr1Pdf4kRslAiJZlsLf+uqrYu3DqECiAQ4iSrikkNY6BLdWrPXgh7D9esyhX7UQJk4F/TgGMgCroDEaMeXnC+0IudSCdIuBh6EeipQ8ZUxTcUHeRaUv6La
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,74 +186,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/29/26 08:24, Zhao Liu wrote:
-> On Fri, Jan 23, 2026 at 07:52:44AM +0100, Vlastimil Babka wrote:
->> Date: Fri, 23 Jan 2026 07:52:44 +0100
->> From: Vlastimil Babka <vbabka@suse.cz>
->> Subject: [PATCH v4 06/22] slab: add sheaves to most caches
->> X-Mailer: b4 0.14.3
+On 1/27/26 18:36, Liam R. Howlett wrote:
+> * Vlastimil Babka <vbabka@suse.cz> [260123 01:54]:
+>> Before we enable percpu sheaves for kmalloc caches, we need to make sure
+>> kmalloc_nolock() and kfree_nolock() will continue working properly and
+>> not spin when not allowed to.
 >> 
->> In the first step to replace cpu (partial) slabs with sheaves, enable
->> sheaves for almost all caches. Treat args->sheaf_capacity as a minimum,
->> and calculate sheaf capacity with a formula that roughly follows the
->> formula for number of objects in cpu partial slabs in set_cpu_partial().
+>> Percpu sheaves themselves use local_trylock() so they are already
+>> compatible. We just need to be careful with the barn->lock spin_lock.
+>> Pass a new allow_spin parameter where necessary to use
+>> spin_trylock_irqsave().
 >> 
->> This should achieve roughly similar contention on the barn spin lock as
->> there's currently for node list_lock without sheaves, to make
->> benchmarking results comparable. It can be further tuned later.
->> 
->> Don't enable sheaves for bootstrap caches as that wouldn't work. In
->> order to recognize them by SLAB_NO_OBJ_EXT, make sure the flag exists
->> even for !CONFIG_SLAB_OBJ_EXT.
->> 
->> This limitation will be lifted for kmalloc caches after the necessary
->> bootstrapping changes.
->> 
->> Also do not enable sheaves for SLAB_NOLEAKTRACE caches to avoid
->> recursion with kmemleak tracking (thanks to Breno Leitao).
+>> In kmalloc_nolock_noprof() we can now attempt alloc_from_pcs() safely,
+>> for now it will always fail until we enable sheaves for kmalloc caches
+>> next. Similarly in kfree_nolock() we can attempt free_to_pcs().
 >> 
 >> Reviewed-by: Suren Baghdasaryan <surenb@google.com>
 >> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+>> Reviewed-by: Hao Li <hao.li@linux.dev>
 >> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
->>  include/linux/slab.h |  6 ------
->>  mm/slub.c            | 56 ++++++++++++++++++++++++++++++++++++++++++++++++----
->>  2 files changed, 52 insertions(+), 10 deletions(-)
 > 
-> vm_area_cachep's capacity seems to be adjusted to 60 and
-> maple_node_cache keeps 32 as the args setting.
+> I'd rather have a helper that _mayspin() or something.  That way, when
+> we know we need to or don't want to, we avoid extra instructions.  We
+> can also avoid passing true/false and complicating the interface when
+> it's not necessary.
 
-Good to know. It is a bit larger.
-Hm I could have probably applied the args capacity before doing the roundup
-to make sheaf fill whole kmalloc size. Would add a few object for maple node
-I guess.
+Can you elaborate a bit more how the helper looks like and it's used? I
+don't follow immediately. We do have the helper for checking gfp flags to
+extract mayspin, but that wouldn't avoid extra instructions so you must be
+thinking of something else.
 
-> I still use will-it-scale to evaluate the impact of this patch, and
-> performance results appear to be on par with previous ones (*) - doesn't
-> have regression on my cases.
+> The way it is written works as well, though.
 > 
-> Based on the results of previous capacity adjustments testing, I think
-> it shows that the capacity of the maple_node_cache appears to have the
-> significant impact.
-> 
-> There may still be room for optimization in maple_node_cache. As a
-> general-purpose algorithm at present, I think it has achieved its
-> intended purpose based on my test results. So,
-> 
-> Tested-by: Zhao Liu <zhao1.liu@intel.com>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
 Thanks!
-
-> 
-> 
-> (*): The previous ones include 2 cases:
->   1) w/o this series, and directly based on the previous commit ("slub:
->      keep empty main sheaf as spare in __pcs_replace_empty_main()").
->   2) w/o this single patch, and based on the previous patch 5.
-> 
-> Regards,
-> Zhao
-> 
-> 
 
 
