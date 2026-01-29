@@ -4,184 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 285A6D358E0
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 08:29:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 414A7D358E2
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 08:32:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7888B6B0088; Thu, 29 Jan 2026 03:29:26 -0500 (EST)
+	id 81A856B0088; Thu, 29 Jan 2026 03:32:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75CF96B0089; Thu, 29 Jan 2026 03:29:26 -0500 (EST)
+	id 7C8106B0089; Thu, 29 Jan 2026 03:32:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6352E6B008A; Thu, 29 Jan 2026 03:29:26 -0500 (EST)
+	id 6A9AA6B008A; Thu, 29 Jan 2026 03:32:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 51F136B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 03:29:26 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 127AF1B1585
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:29:26 +0000 (UTC)
-X-FDA: 84384327132.12.70EE260
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4D39DA0006
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:29:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZTAUKNzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XEYImBHF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZTAUKNzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XEYImBHF;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5729B6B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 03:32:35 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 00E4A1A08DE
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:32:34 +0000 (UTC)
+X-FDA: 84384335070.26.C7A6942
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EBCC0140004
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 08:32:32 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769675363;
+	s=arc-20220608; t=1769675553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K71mXjgjkR+NiF1emSityIsaP4EVwHNubc2/9h7YqhQ=;
-	b=aKfMKz2juP/RWkzfZWAEe74wHB9keCikgZqLzVT3RRJ2pgZbfPVw3F6tk39qmKEK1JtwdE
-	zqQKh9lMa+Gesj5cotsCfxnaGnFkjjKvQFo2ewXRRSB9DNjwT+n7DSvj6SDpVwM2U6PAbn
-	TdpmYDQSBk0WPXQOzKkDSDySg3fczrc=
+	 in-reply-to:in-reply-to:references:references;
+	bh=RMgFspW6Nwfcfsqq4Oc5NDEiXldRyG4nB/iR8gxu9b8=;
+	b=xTR7c/2vcJPodatCx+ODcF5dEGEcuTN0IIKXYhZh/Hfy0wT4SZyu0+o7vLO6cKN188LluL
+	nVlspywbZWW8zyMHYlivcrFaFZoOiyaSb8BfiG7ZlnZ2bS6lp8sGRCp0p/Al4wVnzmPl5h
+	Tb2rE29BO/zveyQOCjAk9F1RLc5F/YE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZTAUKNzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XEYImBHF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ZTAUKNzf;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=XEYImBHF;
-	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769675363; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769675553; a=rsa-sha256;
 	cv=none;
-	b=VK4ZLaKHzjBPaabtARJflfQrXHqBseMgOPnW9RRUCL990mNhidoGJEFIVCG9NWPv9CbgrG
-	b3AgIQds0uzSynScirkgVdrxFKr9bCLDz5P+tFtk7FxKo19Jz0wX3hEEC+ZGdZJV5Wzo/m
-	j3q5McN7pjbuvMmcFdZRp8BJEtKQvDA=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B630C5BCDC;
-	Thu, 29 Jan 2026 08:29:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769675361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K71mXjgjkR+NiF1emSityIsaP4EVwHNubc2/9h7YqhQ=;
-	b=ZTAUKNzfep5Epo9C3B4J7FTkrKx2dTfMbPPNv8fekUPvi3ZEFlodHq+3ARRX+++oQpmqky
-	FA8bO5SZhTR0hXTRSh2FEDvTEOTZpCf6Ys+jME6RQdZcGGFegPY2EYR6njXTKlb2hgbc5t
-	zhnoExU9fcMhHCswEF0JQ+Ur5FGWTYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769675361;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K71mXjgjkR+NiF1emSityIsaP4EVwHNubc2/9h7YqhQ=;
-	b=XEYImBHFdPBVineJNXMW348jfK339Kk0tSF/jL1/7GPjZw/44alTSz5atiIZz88Ig8hHqJ
-	svLSE9RDDEM59BCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1769675361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K71mXjgjkR+NiF1emSityIsaP4EVwHNubc2/9h7YqhQ=;
-	b=ZTAUKNzfep5Epo9C3B4J7FTkrKx2dTfMbPPNv8fekUPvi3ZEFlodHq+3ARRX+++oQpmqky
-	FA8bO5SZhTR0hXTRSh2FEDvTEOTZpCf6Ys+jME6RQdZcGGFegPY2EYR6njXTKlb2hgbc5t
-	zhnoExU9fcMhHCswEF0JQ+Ur5FGWTYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1769675361;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=K71mXjgjkR+NiF1emSityIsaP4EVwHNubc2/9h7YqhQ=;
-	b=XEYImBHFdPBVineJNXMW348jfK339Kk0tSF/jL1/7GPjZw/44alTSz5atiIZz88Ig8hHqJ
-	svLSE9RDDEM59BCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8A8B23EA61;
-	Thu, 29 Jan 2026 08:29:21 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ua50IWEae2m/YgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 29 Jan 2026 08:29:21 +0000
-Message-ID: <b2508639-251f-40ed-9c0d-14b7b128f40c@suse.cz>
-Date: Thu, 29 Jan 2026 09:29:21 +0100
+	b=lv6dtKK/ctZtv9wg73HtFGPWxwsx1OHBste69a8LU7gVmELs4JjCd+eQUW5L6OH48CrEfX
+	PZy6iqbPrDbF4+4ctegtFEbN729Oqg2FXyWqhB7LcZV6BipobV2Dl4N9XnjSYNx9ZvEkhR
+	LRBJARGtcZNzA3WoCWzbYrFt/shUzlQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 477B21516;
+	Thu, 29 Jan 2026 00:32:25 -0800 (PST)
+Received: from [10.164.18.94] (unknown [10.164.18.94])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B96173F632;
+	Thu, 29 Jan 2026 00:32:28 -0800 (PST)
+Message-ID: <dab88ab4-2580-444b-9ea2-579005de71ac@arm.com>
+Date: Thu, 29 Jan 2026 14:02:25 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/22] slab: add optimized sheaf refill from partial
- list
+Subject: Re: [PATCH mm-new v5 2/5] mm: khugepaged: refine scan progress number
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260123082232.16413-1-vernon2gm@gmail.com>
+ <20260123082232.16413-3-vernon2gm@gmail.com>
+ <72dfd11f-dca4-447e-89c5-7a87cb675bda@arm.com>
+ <4exllw7pf4yfhfzpyg3ictsnznf5lepv5tjd7zvycldjwmh6jm@j6rara3ogrux>
+ <7c4b5933-7bbd-4ad7-baef-830304a09485@arm.com>
+ <gzhittxi6dn2o6a3wf4qx4fafkdc2pumfuz3xtprh3ifs2t47q@slsfcb6kqqcr>
 Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Hao Li <hao.li@linux.dev>
-Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <20260123-sheaves-for-all-v4-10-041323d506f7@suse.cz>
- <jgmmllqopl4rpihfe4jdnuifzexlffef5gehsocdcdu2xdj62j@xuz56etxseza>
- <aXsPoPXvAWoSizCq@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aXsPoPXvAWoSizCq@hyeyoo>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <gzhittxi6dn2o6a3wf4qx4fafkdc2pumfuz3xtprh3ifs2t47q@slsfcb6kqqcr>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Stat-Signature: mrtp5f41oufzqcs5bybiuo9ptsshpzn3
-X-Rspamd-Queue-Id: 4D39DA0006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: buoee67txh1c9io7u3uo34i79efsobpo
+X-Rspamd-Queue-Id: EBCC0140004
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769675363-964196
-X-HE-Meta: U2FsdGVkX186ph2YBZP66QbsdnZnI4uOfjnge68K3h3vxkQbCtWqdSWYXsAzjnZ0qvk6CRrOiCY03uAMzMx0I6A1BMh9zeA6MKBqaDl3jmA0rauc1K626TaYJtLN9Eg0R1lj+x2gC2xwK4b8HBWBE9bD/K5vp3UEM6ghsuUkOBUMsT0RYBzQqXcXEvoO6wi/aoEITXUuVRsKXxI1mcVHEfchsBoivo157YlsZf0VSwu4XECxq0hIF+YllBKrA4viytcxym3ajKOPOn+174AuDE9zd5oZHaf4G6444S0HyIUsowjvuy9eJaCQ87/dB2BliE8F3ofIr7f12s/yun1Mj0olcMdzfI0uyuokyem3RgzdUxFFa4MbAP4LlYcEdt3NeX7seyjTgNAM/Q0ujbDGEknF9jLL30TBBcaUb4VUjQvoWdoo+YRvNeZng2X4sr//OV0KGyKx2f6RM21LKkXStaaBWsj7Zi0opVP6OCkDLzs39+ifkMKb+c0yImravVssWj8Fme6QuskRAMdHRvkzgjKyqnxMsJv3S39+enByujbVPQCLyU0L9Km47ZouEn+Ap32OfVfXHmLgZWt3soRO6QTBYuQyMZuNxLd2ZM4cJ4LJokT222sfIgo40D8cRFIoUHUKgk4Q3djCpHAUagtgn00XwK+5vLLFf7yhS7dQR5pwV7DLcfvymqKUw0F/YTaWwhSQz6FiotMyX1yGryvtBP+VAzLDmDoity34Lth1Otb8/TtWMPRWco+899mQroAUGCW5XKoI8dSkKRZqIhTln18nly5cXBwopm4w2WYKn8mHlpI7og30Agw/71sofELb/C+I7kWLxgOOBF4yJqVcG3tKKjn+hcvM6j4FYkd5dhs6EB3Mj+D0Vlzn3qEajxrzvzPGCf/10yfmW9q+rCZknZyYpnKECjRv9ZfpjyH/48j/1Eg3dWp3mUs3CsLrNkcjTU3pJHmyqx2aEfozW1h
- pMDeeDFR
- X6jraL2noG91TBocaXc8gp5Q7xq0Non13QPE0ZqATGlMczzd6Po7Cp1NR9NzsqdTbH32ztog6qyHyXEkazTuqxNPCGYuDCJCLU2SjBF4OUhniWTWVJ/BqPVZkPSQc0dzXps2LYinmPG+T3vgSXcxoJ73CNhS6fpoQJ34C1uYDdd4aRj0YK4KRXtFw3dXLKZR8doF9viO3rWZAxo3dvYs1Zpchhd+DX5aabVVxD4ofQJGm4PP0kn8fYwXIYH0+6qAqHztBVaHDCstxVKfvR8uBmghFIqpO8xhN2WoI
+X-HE-Tag: 1769675552-726892
+X-HE-Meta: U2FsdGVkX18NPvK2cyIqrT4/AAiuUKVa3Qx5NC1lOZJL0I+bkjevgeWPg23iqyT7Up9EmzWOHvzsY1SBItLo/R8Us/n478RmTCHGYZc9UybmiU7qnpM7xLP3cNuNISVFuyWQGuF+BDkHH58IgZAvsaOes4EKY3tbqIvSCmsTO4Jdx8w2izaVP8817u1M3n2qJ0gR2RZZvMpDJbTqP8leOj4FUmKaQkQWN8Nuo6h+3J7SMMgJldvOM8Cr+qqX21GLbk+anCsfdD1v3rOhUmh3VqNKdCDrvKiY3OjDgcc47G06ncPKc0TUI1dSKTbj4ezYJ0l8Pu8facL+GgfX8WGbtDH+bnFySOqzkyYcCvj0hokl4CtfvmqDZNDpXOgvigI1CtuHrHfd7C4f53KrjULJXo4VeFzZPH4RUD3qGrdWEXQhLApEA+2Qc7xBB1orB4EU+J90nwaL54Ucn9GvNhvvCoKZtEXUFYr9e9ZMZE6T5ml2GcC0FqkxMysTXqHACEqprl9/jn//UZRAvqgDP+onq0tBtEubm5AkFmME+EaAYwifOP/mZP6x3VHv14xSjczmyGiWWpa49Nn2JkQk0tqiERqMdmf6M7ebr+S87g0yJmzCz72SJoqTtr8ndV8WxsR1fk3Bhjemzky08QdRm6VJ8LKCIDa9a+UQEikbC9Ae+uT9OEieKPkalisCxdRtga9XRGZmqk4TVaBWAb+Jrgr/TUAcUVrl5ymI4/tR5qFHxX6iBt1MG+2Rw0xgeqRvnVVfk1RKRscKO8ICPk1jmgXEt8AHUCj87T+vyD1FphJUFCKqKug2zxs5CMsR+6w2n9IjGeNtwEhZ3zpL0YcR9A3gwaTmRX6yS70+4G8A1VpRCGR12MsxTj02MCo6BjM/Nzb0+YKYprtZMjriep11uNiH1bqY78Gof2RMeHuA4q0srmsiCcPoPRRo3eXcatchvyGHvjjR6QfGe9ufOAv21NF
+ CkuJ0naz
+ V/Tf8dsjUNCX81FIJuGBSMnh4puT+a9LWykecGaimJ53E0+8aOpmApmyxin0dCbIOKvH1wyLjrwIyimfX2DJTAAikBVddOxlH5oPNHtlVABOKLAWYP0R5/p5qA27PhgrRyEiNL/Fwi33vCrVUXI6rRyQ6fY58c30lJsGY
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,15 +91,403 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/29/26 08:43, Harry Yoo wrote:
-> On Mon, Jan 26, 2026 at 03:12:03PM +0800, Hao Li wrote:
->> On Fri, Jan 23, 2026 at 07:52:48AM +0100, Vlastimil Babka wrote:
->> 
->> Should this perhaps be WRITE_ONCE(slab->counters, new->counters) here?
 
-Ooops yeah, thanks!
+On 29/01/26 1:29 pm, Vernon Yang wrote:
+> On Thu, Jan 29, 2026 at 11:05:36AM +0530, Dev Jain wrote:
+>> On 28/01/26 8:04 pm, Vernon Yang wrote:
+>>> On Wed, Jan 28, 2026 at 01:59:33PM +0530, Dev Jain wrote:
+>>>> On 23/01/26 1:52 pm, Vernon Yang wrote:
+>>>>> From: Vernon Yang <yanglincheng@kylinos.cn>
+>>>>>
+>>>>> Currently, each scan always increases "progress" by HPAGE_PMD_NR,
+>>>>> even if only scanning a single PTE/PMD entry.
+>>>>>
+>>>>> - When only scanning a sigle PTE entry, let me provide a detailed
+>>>>>   example:
+>>>>>
+>>>>> static int hpage_collapse_scan_pmd()
+>>>>> {
+>>>>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>>>> 	     _pte++, addr += PAGE_SIZE) {
+>>>>> 		pte_t pteval = ptep_get(_pte);
+>>>>> 		...
+>>>>> 		if (pte_uffd_wp(pteval)) { <-- first scan hit
+>>>>> 			result = SCAN_PTE_UFFD_WP;
+>>>>> 			goto out_unmap;
+>>>>> 		}
+>>>>> 	}
+>>>>> }
+>>>>>
+>>>>> During the first scan, if pte_uffd_wp(pteval) is true, the loop exits
+>>>>> directly. In practice, only one PTE is scanned before termination.
+>>>>> Here, "progress += 1" reflects the actual number of PTEs scanned, but
+>>>>> previously "progress += HPAGE_PMD_NR" always.
+>>>>>
+>>>>> - When the memory has been collapsed to PMD, let me provide a detailed
+>>>>>   example:
+>>>>>
+>>>>> The following data is traced by bpftrace on a desktop system. After
+>>>>> the system has been left idle for 10 minutes upon booting, a lot of
+>>>>> SCAN_PMD_MAPPED or SCAN_NO_PTE_TABLE are observed during a full scan
+>>>>> by khugepaged.
+>>>>>
+>>>>> @scan_pmd_status[1]: 1           ## SCAN_SUCCEED
+>>>>> @scan_pmd_status[6]: 2           ## SCAN_EXCEED_SHARED_PTE
+>>>>> @scan_pmd_status[3]: 142         ## SCAN_PMD_MAPPED
+>>>>> @scan_pmd_status[2]: 178         ## SCAN_NO_PTE_TABLE
+>>>> Could you elaborate what is [1], [6] etc and 1,2,142, etc?
+>>> These 1,6 are value of "enum scan_result", you can directly refer to the
+>>> notes on the right.
+>>>
+>>> These 1,2,142,178 are number of different "enum scan_result" from
+>>> trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file.
+>>>
+>>> as example, SCAN_PMD_MAPPED has 142 times during a full scan by
+>>> khugepaged.
+>> Thanks. Can you please mention this in the patch description. You can simply
+>> right it like this:
+>>
+>> "From trace_mm_khugepaged_scan_pmd and trace_mm_khugepaged_scan_file, the
+>> following statuses were observed, with frequency mentioned next to them:
+>>
+>> SCAN_SUCCEED: 1
+>> SCAN_PMD_MAPPED: 142
+>> ....."
+>>
+>> and so on.
+> LGTM, I will do it in the next version. Thanks!
+>
+>>>>> total progress size: 674 MB
+>>>>> Total time         : 419 seconds ## include khugepaged_scan_sleep_millisecs
+>>>>>
+>>>>> The khugepaged_scan list save all task that support collapse into hugepage,
+>>>>> as long as the task is not destroyed, khugepaged will not remove it from
+>>>>> the khugepaged_scan list. This exist a phenomenon where task has already
+>>>>> collapsed all memory regions into hugepage, but khugepaged continues to
+>>>>> scan it, which wastes CPU time and invalid, and due to
+>>>>> khugepaged_scan_sleep_millisecs (default 10s) causes a long wait for
+>>>>> scanning a large number of invalid task, so scanning really valid task
+>>>>> is later.
+>>>>>
+>>>>> After applying this patch, when the memory is either SCAN_PMD_MAPPED or
+>>>>> SCAN_NO_PTE_TABLE, just skip it, as follow:
+>>>>>
+>>>>> @scan_pmd_status[6]: 2
+>>>>> @scan_pmd_status[3]: 147
+>>>>> @scan_pmd_status[2]: 173
+>>>>> total progress size: 45 MB
+>>>>> Total time         : 20 seconds
+>>>>>
+>>>>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+>>>>> ---
+>>>>>  include/linux/xarray.h |  9 ++++++++
+>>>>>  mm/khugepaged.c        | 47 ++++++++++++++++++++++++++++++++++--------
+>>>>>  2 files changed, 47 insertions(+), 9 deletions(-)
+>>>>>
+>>>>> diff --git a/include/linux/xarray.h b/include/linux/xarray.h
+>>>>> index be850174e802..f77d97d7b957 100644
+>>>>> --- a/include/linux/xarray.h
+>>>>> +++ b/include/linux/xarray.h
+>>>>> @@ -1646,6 +1646,15 @@ static inline void xas_set(struct xa_state *xas, unsigned long index)
+>>>>>  	xas->xa_node = XAS_RESTART;
+>>>>>  }
+>>>>>
+>>>>> +/**
+>>>>> + * xas_get_index() - Get XArray operation state for a different index.
+>>>>> + * @xas: XArray operation state.
+>>>>> + */
+>>>>> +static inline unsigned long xas_get_index(struct xa_state *xas)
+>>>>> +{
+>>>>> +	return xas->xa_index;
+>>>>> +}
+>>>>> +
+>>>>>  /**
+>>>>>   * xas_advance() - Skip over sibling entries.
+>>>>>   * @xas: XArray operation state.
+>>>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>>>> index 6f0f05148765..de95029e3763 100644
+>>>>> --- a/mm/khugepaged.c
+>>>>> +++ b/mm/khugepaged.c
+>>>>> @@ -68,7 +68,10 @@ enum scan_result {
+>>>>>  static struct task_struct *khugepaged_thread __read_mostly;
+>>>>>  static DEFINE_MUTEX(khugepaged_mutex);
+>>>>>
+>>>>> -/* default scan 8*HPAGE_PMD_NR ptes (or vmas) every 10 second */
+>>>>> +/*
+>>>>> + * default scan 8*HPAGE_PMD_NR ptes, pmd_mapped, no_pte_table or vmas
+>>>>> + * every 10 second.
+>>>>> + */
+>>>>>  static unsigned int khugepaged_pages_to_scan __read_mostly;
+>>>>>  static unsigned int khugepaged_pages_collapsed;
+>>>>>  static unsigned int khugepaged_full_scans;
+>>>>> @@ -1240,7 +1243,8 @@ static enum scan_result collapse_huge_page(struct mm_struct *mm, unsigned long a
+>>>>>  }
+>>>>>
+>>>>>  static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>>> -		struct vm_area_struct *vma, unsigned long start_addr, bool *mmap_locked,
+>>>>> +		struct vm_area_struct *vma, unsigned long start_addr,
+>>>>> +		bool *mmap_locked, unsigned int *cur_progress,
+>>>>>  		struct collapse_control *cc)
+>>>>>  {
+>>>>>  	pmd_t *pmd;
+>>>>> @@ -1255,6 +1259,9 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>>>
+>>>>>  	VM_BUG_ON(start_addr & ~HPAGE_PMD_MASK);
+>>>>>
+>>>>> +	if (cur_progress)
+>>>>> +		*cur_progress += 1;
+>>>> Why not be a little more explicit, and do this addition if find_pmd_or_thp_or_none fails,
+>>>> or pte_offset_map_lock fails? The way you do it right now is not readable - it gives no
+>>>> idea as to why on function entry we do a +1 right away. Please do add some comments too.
+>>> If this way is not clear enough, we can directly add 1 in
+>>> find_pmd_or_thp_or_none() etc, BUT it's a bit redundant.
+>>> Please take a look at which one is better.
+>>>
+>>> case 1:
+>>> as the V4 PATCH #2 [1] and #3 [2], only hpage_collapse_scan_pmd().
+>>> [1] https://lore.kernel.org/linux-mm/20260111121909.8410-3-yanglincheng@kylinos.cn
+>>> [2] https://lore.kernel.org/linux-mm/20260111121909.8410-4-yanglincheng@kylinos.cn
+>>>
+>>> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>> 		struct vm_area_struct *vma, unsigned long start_addr,
+>>> 		bool *mmap_locked, unsigned int *cur_progress,
+>>> 		struct collapse_control *cc)
+>>> {
+>>> 	...
+>>> 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>>> 	if (result != SCAN_SUCCEED) {
+>>> 		if (cur_progress)
+>>> 			*cur_progress += 1; // here
+>>> 		goto out;
+>>> 	}
+>>> 	...
+>>> 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>>> 	if (!pte) {
+>>> 		if (cur_progress)
+>>> 			*cur_progress += 1; // here
+>>> 		result = SCAN_NO_PTE_TABLE;
+>>> 		goto out;
+>>> 	}
+>>>
+>>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>> 	     _pte++, addr += PAGE_SIZE) {
+>>> 		if (cur_progress)
+>>> 			*cur_progress += 1; // here
+>>> 		...
+>>> 	}
+>>> }
+>>>
+>>> case 2:
+>>>
+>>> static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>> 		struct vm_area_struct *vma, unsigned long start_addr,
+>>> 		bool *mmap_locked, unsigned int *cur_progress,
+>>> 		struct collapse_control *cc)
+>>> {
+>>> 	...
+>>> 	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>>> 	if (result != SCAN_SUCCEED) {
+>>> 		if (cur_progress)
+>>> 			*cur_progress += 1; // here
+>> Let us be more explicit and set this equal to 1, instead of adding 1.
+> LGTM, I will do it in the next version. Thanks!
+>
+>>> 		goto out;
+>>> 	}
+>>> 	...
+>>> 	pte = pte_offset_map_lock(mm, pmd, start_addr, &ptl);
+>>> 	if (!pte) {
+>>> 		if (cur_progress)
+>>> 			*cur_progress += 1; // here
+>> Same comment as above.
+>>
+>>> 		result = SCAN_NO_PTE_TABLE;
+>>> 		goto out;
+>>> 	}
+>>>
+>>> 	for (addr = start_addr, _pte = pte; _pte < pte + HPAGE_PMD_NR;
+>>> 	     _pte++, addr += PAGE_SIZE) {
+>>> 		...
+>>> 	}
+>>> 	...
+>>> out_unmap:
+>>> 	if (cur_progress) {
+>>> 		if (_pte >= pte + HPAGE_PMD_NR)
+>>> 			*cur_progress += HPAGE_PMD_NR;   // here
+>>> 		else
+>>> 			*cur_progress += _pte - pte + 1; // here
+>>> 	}
+>>> }
+>> I will vote case 2. In case 1 I don't like the fact that the if (cur_progress)
+>> branch will be checked each iteration - and I don't think the compiler can
+>> optimize this since the body of the loop is complex, so this check cannot
+>> be hoisted out of the loop.
+>>
+>>
+>>> case 3:
+>>> 	current patch, and add more comments to clearer.
+>>>
+>>>>> +
+>>>>>  	result = find_pmd_or_thp_or_none(mm, start_addr, &pmd);
+>>>>>  	if (result != SCAN_SUCCEED)
+>>>>>  		goto out;
+>>>>> @@ -1396,6 +1403,12 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>>>>>  		result = SCAN_SUCCEED;
+>>>>>  	}
+>>>>>  out_unmap:
+>>>>> +	if (cur_progress) {
+>>>>> +		if (_pte >= pte + HPAGE_PMD_NR)
+>>>>> +			*cur_progress += HPAGE_PMD_NR - 1;
+>>>>> +		else
+>>>>> +			*cur_progress += _pte - pte;
+>>>>> +	}
+>>>>>  	pte_unmap_unlock(pte, ptl);
+>>>>>  	if (result == SCAN_SUCCEED) {
+>>>>>  		result = collapse_huge_page(mm, start_addr, referenced,
+>>>>> @@ -2286,8 +2299,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>>>>>  	return result;
+>>>>>  }
+>>>>>
+>>>>> -static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+>>>>> -		struct file *file, pgoff_t start, struct collapse_control *cc)
+>>>>> +static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
+>>>>> +		unsigned long addr, struct file *file, pgoff_t start,
+>>>>> +		unsigned int *cur_progress, struct collapse_control *cc)
+>>>>>  {
+>>>>>  	struct folio *folio = NULL;
+>>>>>  	struct address_space *mapping = file->f_mapping;
+>>>>> @@ -2376,6 +2390,18 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
+>>>>>  			cond_resched_rcu();
+>>>>>  		}
+>>>>>  	}
+>>>>> +	if (cur_progress) {
+>>>>> +		unsigned long idx = xas_get_index(&xas) - start;
+>>>>> +
+>>>>> +		if (folio == NULL)
+>>>>> +			*cur_progress += HPAGE_PMD_NR;
+>>>> I think this whole block needs some comments. Can you explain, why you
+>>>> do a particular increment in each case?
+>>>>
+>>>>> +		else if (xa_is_value(folio))
+>>>>> +			*cur_progress += idx + (1 << xas_get_order(&xas));
+>>>>> +		else if (folio_order(folio) == HPAGE_PMD_ORDER)
+>>>>> +			*cur_progress += idx + 1;
+>>>>> +		else
+>>>>> +			*cur_progress += idx + folio_nr_pages(folio);
+>>>>> +	}
+>>> The "idx" represent PTEs number already scanned when exiting
+>>> xas_for_each().
+>>>
+>>> However, the last valid folio size was not counted in "idx" (except
+>>> folio == NULL, "idx" equal to HPAGE_PMD_NR), which can be further
+>>> divided into three cases:
+>> But, the number of PTEs you account in these three cases, are *not*
+>> scanned, right? So we can simply drop these 3 cases.
+> No, these three cases are the last scanning folio to break, I think we
+> need to add them. Imagine that if we trigger HPAGE_PMD_ORDER folio
+> firstly, "idx" is equal to 0.
 
-> Agreed, this should be WRITE_ONCE(slab->counters, new->counters);
+If you hit a large folio and break, you don't consume any extra iterations.
+The number of iterations is completely determined by xa_index. This is kind
+of analogous to SCAN_PMD_MAPPED - in one "iteration", you decide to stop
+scanning, and set progress to 1.
 
-Thanks both for review!
+In any case, the problem which you describe in the patch description is
+completely solved by setting progress to 1 upon failure of find_pmd_or_thp_or_none.
+So anything else which you do (like counting iterations in hpage_collapse_scan_pmd
+or hpage_collapse_scan_file) is extra and it is not clear if it has a practical
+benefit. The patch benefits us because there are a lot of SCAN_PMD_MAPPED and SCAN_PMD_NONE.
+Will we practically also encounter a large number of SCAN_EXCEED_PTE_SWAP, PTE_NONE, etc?
+
+I tilt towards keeping the other bits of the patch, if they can be simplified, and
+because this patch is relatively harmless. Just like you count the number of iterations
+in hpage_collapse_scan_pmd(), you can do the same here using xa_index.
+
+>
+>>> 1. shmem swap entries (xa_is_value), add folio size.
+>>> 2. the folio is HPAGE_PMD_ORDER, the memory has been collapsed
+>>>    to PMD, so add 1 only.
+>>> 3. Normal folio, add folio size.
+>>>
+>>> Is the version below more readable?
+>>>
+>>> 	if (cur_progress) {
+>>> 		*cur_progress += xas.xa_index - start;
+>>>
+>>> 		if (folio) {
+>>> 			if (xa_is_value(folio))
+>>> 				*cur_progress += 1 << xas_get_order(&xas);
+>>> 			else if (folio_order(folio) == HPAGE_PMD_ORDER)
+>>> 				*cur_progress += 1;
+>>> 			else
+>>> 				*cur_progress += folio_nr_pages(folio);
+>>> 		}
+>>> 	}
+>> Yep, this is unneeded complexity. This looks really ugly and the benefits of
+>> this are not clear. You can simply do
+>>
+>> if (cur_progress)
+>> 	*cur_progress = xas.xa_index - start;
+>>
+>>>>>  	rcu_read_unlock();
+>>>>>
+>>>>>  	if (result == SCAN_SUCCEED) {
+>>>>> @@ -2456,6 +2482,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>>>>
+>>>>>  		while (khugepaged_scan.address < hend) {
+>>>>>  			bool mmap_locked = true;
+>>>>> +			unsigned int cur_progress = 0;
+>>>>>
+>>>>>  			cond_resched();
+>>>>>  			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+>>>>> @@ -2472,7 +2499,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>>>>  				mmap_read_unlock(mm);
+>>>>>  				mmap_locked = false;
+>>>>>  				*result = hpage_collapse_scan_file(mm,
+>>>>> -					khugepaged_scan.address, file, pgoff, cc);
+>>>>> +					khugepaged_scan.address, file, pgoff,
+>>>>> +					&cur_progress, cc);
+>>>>>  				fput(file);
+>>>>>  				if (*result == SCAN_PTE_MAPPED_HUGEPAGE) {
+>>>>>  					mmap_read_lock(mm);
+>>>>> @@ -2486,7 +2514,8 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>>>>  				}
+>>>>>  			} else {
+>>>>>  				*result = hpage_collapse_scan_pmd(mm, vma,
+>>>>> -					khugepaged_scan.address, &mmap_locked, cc);
+>>>>> +					khugepaged_scan.address, &mmap_locked,
+>>>>> +					&cur_progress, cc);
+>>>>>  			}
+>>>>>
+>>>>>  			if (*result == SCAN_SUCCEED)
+>>>>> @@ -2494,7 +2523,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>>>>
+>>>>>  			/* move to next address */
+>>>>>  			khugepaged_scan.address += HPAGE_PMD_SIZE;
+>>>>> -			progress += HPAGE_PMD_NR;
+>>>>> +			progress += cur_progress;
+>>>>>  			if (!mmap_locked)
+>>>>>  				/*
+>>>>>  				 * We released mmap_lock so break loop.  Note
+>>>>> @@ -2817,7 +2846,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>>>>>  			mmap_locked = false;
+>>>>>  			*lock_dropped = true;
+>>>>>  			result = hpage_collapse_scan_file(mm, addr, file, pgoff,
+>>>>> -							  cc);
+>>>>> +							  NULL, cc);
+>>>>>
+>>>>>  			if (result == SCAN_PAGE_DIRTY_OR_WRITEBACK && !triggered_wb &&
+>>>>>  			    mapping_can_writeback(file->f_mapping)) {
+>>>>> @@ -2832,7 +2861,7 @@ int madvise_collapse(struct vm_area_struct *vma, unsigned long start,
+>>>>>  			fput(file);
+>>>>>  		} else {
+>>>>>  			result = hpage_collapse_scan_pmd(mm, vma, addr,
+>>>>> -							 &mmap_locked, cc);
+>>>>> +							 &mmap_locked, NULL, cc);
+>>>>>  		}
+>>>>>  		if (!mmap_locked)
+>>>>>  			*lock_dropped = true;
+>>> --
+>>> Thanks,
+>>> Vernon
 
