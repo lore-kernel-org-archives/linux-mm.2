@@ -4,151 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34F41D73E81
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 17:40:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBA4DD73E84
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 17:45:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 730C56B0088; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
+	id 194F46B0088; Thu, 29 Jan 2026 12:45:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DE696B0089; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
+	id 143856B0089; Thu, 29 Jan 2026 12:45:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C01C6B008A; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
+	id 041866B008A; Thu, 29 Jan 2026 12:45:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D58E6B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1996BD369F
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:40:01 +0000 (UTC)
-X-FDA: 84385714602.10.21FDC16
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D203C40012
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:39:57 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c87GBSyX;
-	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E30C16B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:45:16 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8308CD371A
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:45:16 +0000 (UTC)
+X-FDA: 84385727832.29.F8D4485
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CE79A180007
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:45:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0akjmG9r;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769708399;
+	s=arc-20220608; t=1769708714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
-	b=wKM1ZgApRdyG99tAm5ZKkpwoThjKdTZOt+nu9Dijwm50vZFn5+EnDcFzXuItxqkF6TBz5z
-	nfG3IlqvaVKVNQojgYtZVlP0RyAmuuvMz5d3xF4Xyx7gRK2+Qj9QMzA00XzCvFQ81bctK7
-	jgYm/T/9jwU1Ta4iFDhO2YjD+QASeIE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=jsu3vaga3zLR1rmUEj0Yv2rMXLjU74nkvztJ9bQNAsQ=;
+	b=23ouVCjpxWndXzOTD+vOifjDS96ZLsEj8h75IEgrccjKfBtVHrR5LlIIvvsc4IDjpB9S2b
+	s3GzxfIJ13RmTk9rr0cmK3j9cSxdvgwLPS9ivtwZG5adB0kVO2jhvSN3H/B2RiXZ0x6vNA
+	KGMeTx98J4cLuRnhLHFnH0xLA5qozGE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=c87GBSyX;
-	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769708399; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=0akjmG9r;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769708714; a=rsa-sha256;
 	cv=none;
-	b=qnuaxXnPzW/VC98nkWHN42Kns0HW9b+lweC2EJkHx/dvz/kFJA8pnCMk3iBsXh3TX3w2Cc
-	4p0Bi2pMfMAFPOXd0QPC/6Ybd7FDdEQt2EqgnekjCe+63jlsnkCRXfYr4h6g/bsKqFqb6M
-	VRRRqkqcQ+0PvdVbwwfihFcBqgTbjoQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769708398; x=1801244398;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
-  b=c87GBSyXyr6zGdno3CdDl8vGzIhz+Jout9+0+RPZhnG6zriFMZClKbx4
-   N0p5HSfgWX70BFNwWbA/SoOs/xU+RHFEJzsZFCjdNw0gZ10IOWQfJ4rF4
-   qKkkae/uQllsGf2Hl6RVzc2PNsDtNhzkxw4o9zQe0D2VxeEcTWQ2fFGr0
-   pS5v7RU85VwQhOzv+mNJYl6FBbmZQuFfQ3FxlPCmAsHET39MkXz3nouNR
-   cOUXwQQZw7nuJijvW5mMQkhFg8+eOhZuwm8MMFHUs/ogaGg6m6XPvp5XD
-   iBvelq4HJA8fRhEFV1YxjGrY6cBFHc4jQENOrEaELwj65YDo/G7xB9NAe
-   Q==;
-X-CSE-ConnectionGUID: wjLgOzCvQNyL34g8kETn2Q==
-X-CSE-MsgGUID: P+gFuhvyTyy2UYD8rRF6eQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70928869"
-X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="70928869"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:57 -0800
-X-CSE-ConnectionGUID: m1QRk3fZTkyWcEM9VM/MFw==
-X-CSE-MsgGUID: DGQPX5d/SC26JL5PZLjNmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
-   d="scan'208";a="239364563"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.19]) ([10.125.110.19])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:56 -0800
-Message-ID: <b7cbc2f4-6fef-44c2-a0f4-2d6895c0fd74@intel.com>
-Date: Thu, 29 Jan 2026 09:39:55 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
- hot-remove
-To: "Pratik R. Sampat" <prsampat@amd.com>, Kiryl Shutsemau <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
- akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
- thomas.lendacky@amd.com, michael.roth@amd.com
-References: <20260128204105.508855-1-prsampat@amd.com>
- <20260128204105.508855-3-prsampat@amd.com>
- <16aa84a9-83ce-4748-bc73-ccf5cb6ce376@intel.com>
- <aXs4DTXCbI_c0JPO@thinkstation>
- <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
-Content-Type: text/plain; charset=UTF-8
+	b=hpAOem9qdV2YUDgp2i12YfW0XbqgMsNZw4+2GuRBxfiKzaH1wVXx+4opXWDW09Rq6+vojx
+	tINAuCI5gVGj5w5RmYelBbeQSf/vH/Hmf59D4M3kamLXq+rpRopyc+hBwF8kNYGFr9Sk7/
+	dliS1g4C6gXmsuzm1/FhEJ2es9AlDMQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2294660054;
+	Thu, 29 Jan 2026 17:45:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A625AC4CEF7;
+	Thu, 29 Jan 2026 17:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769708713;
+	bh=/6Bij3SsXTuU2/orANe8p9+tCAYwwRciCDxFl8HVqdk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=0akjmG9rb9fhX7DXzSBU9V/DaI4hjKXoHmSjI3SM1rSTiRMEyX5S4IKy9Fhffeds+
+	 IVWBA8nGrlSXZeN1bv4HsvZzaPpGnfzRaod8fMPivarkUNE0RIoahDVpo37Gg9KL/f
+	 6K0+FwY4CYKBLQj+w0UG/bWaqtSiasUp/ye751YM=
+Date: Thu, 29 Jan 2026 09:45:13 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ mm-commits@vger.kernel.org
+Subject: [GIT PULL] hotfixes for 6.19-rc8
+Message-Id: <20260129094513.621310717801e65dce692162@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zwcrsxzc6f57habf1sgpe7r8eaymodty
-X-Rspamd-Queue-Id: D203C40012
+X-Stat-Signature: 6xmzka4i1mywfoxos35qorhq85g1im3r
+X-Rspamd-Queue-Id: CE79A180007
 X-Rspam-User: 
-X-HE-Tag: 1769708397-290312
-X-HE-Meta: U2FsdGVkX1/g5rEsNXT+KDvERCHcbF/PqeOxq9hAdIJnxnHYPwUl3gGvZwM6coulywbOT90ZcX7ePQHD2k+tksnSuGZaCcc0PhswC5nWbBv2LLLeyUFEf1+xmic+DnXZroLb8a5m6/fonMTpqH1AIF/mQyHB4Ti3D2xh9lLdtKaX2p2VxrAto9NTxTl8HugJcUYxFnfYMHnz69S0rEmlXofIX0IC8h7dy2viHHAY9N8U6JS0t0SFW78icLeymdNh6TjGgxGosJCu59K4G3XBfXjgheSyg5MQzdJIselgbxm52JSB53h6KkC4Q994vKP6W1DqPt5NXY8z2V4CO0wYWXvONSVTICsHUs2t1Ji0Sq168cieqENW40dH9NT+UxnF4+gKbZnwnZtousuPE6ErESHqF3OiKIjDNGux5HIwRwMzsoYM+mqd9qrCEe3AQvij0CfT8w1q1sdqBYFjsil2UpYbFFpn76/aUkwCbvSnC5pLeZIVflekbhN/fjHTrV1gXdcFy6DT2Bxxbbi0JIDiaUtDoRqjkGeldlFszDmjcDThYPWc/TjxPMumQo9jXDY/sNTnkZswkUIL44+S5ZAB/ItYiuoL5JXcZr36xc/Faxu4vdy8qy9vsxm+bIK7BeXzLqdwT3oN0Uv9y21/ARA614qjAPcUftEM9V3JKNtV1/8cQQLMHb6P/qyaq+qIXZIOYeSGaQPo6yiCLF3ydxvs3cSbjhBMz44YX6y6tIC7mUCl1ggOVe7bEfM8aOk3AdHspI6geihoZPAAi9yut8vXTMVTUXAhoMi8UGUX1VeiCXNg91szOeyY9/Oy53MbWNLvYD15sr+DDOb5V4Jjcyglu87XAfqO/CQ9lPCcjcc1XRoCZm3VL1iEtadt0ZuXKWeCJA8EzwrmfC2rF/saKG1g/x7D+ITFYbolooE7qAa+S4OGAOLcX2rNfgG1VLV3FHqPyLRWULLiGgF01+Ix9SP
- AWabV5GW
- szfkggfD9XfKr9JRjOvhW9dcxJ/bVtXyob84Y2MfjGEIS6QCtYzOfTi/1Xwzc1HeXX54Q53otWS5xurKo3O635AX9VuDPMLBcbFuo/XM+N7OZDZMf3VXEgDjggGsPeqdVvTAnjw0CJJRZ+aNdyLprOOgdA4BzMKvL9X1itju33V/TydkraH9hT9WjJlfQbfhUUmt/Zqwl6YJZqJI=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769708714-305128
+X-HE-Meta: U2FsdGVkX1/4DYlDwPT4MU7vcK4aj0UuZ75Lpe0CL1EzZpA3jd/r5Yt2rSUJpTR1DyXo3T/cLFXRATI9ep3vmQ6PgOhjzu4IacpO2/ZF/A3VqT5+r4wAcLydETE/XfLWG/AUmSx7Jsl+1j4MMwOHjR6WbyLL1oSuF2d6cV7QkT4PN+Nmj4celAKH5drEhpLHdH19khwRSG1lU2G6kMpm89QLvcdxjhv4q6B8yOaRs80znfTqwgMSFuTK2IQPBiy942pu3ve3fscfabSjwDqFLnR5GB3JeCKtPBsfgD7sUb2Ehjeo5PbEU9SKf9pJhoPef4Ebzmlnsqoeh9LkptUVGYRi53M4tbZennLiBrn3L5qDMicIGKLDMSP/I832uryNsR1ZBtZsYH4DOsy+p4MKw6OoH8pkecsH6WvPY/PZEXbgLegxR6ZrfzWGksB9au6GjecywrRfNLSF3seDiDwTwvi+VZ91GOCV/DFyuO75D+15rWYPlBT8+Wj2XsMxBMB4kYgDGbXGSDGbaVyiWrIy9pioo1Z9JN+CxPScEiUSsPBix3iqJrr2tdZHP5WWb5JaGaeX84TKJSFPGezpFc5kqWk5/Gw+KEswdWF6Xu+kdQnwkOFow0Ujd2lsLnAJCYppfNKXhSvoaJHvt3lII1AD3pIA66iOASzsn65SQEwOcqTxMwrSSLLo1mYetT0WGGB3mCFWGoDJP5s4pHl5M6ePa6Gc+7GP20PPM8z8r8xnoKBAhodg3UVMRBbzzupr1PI9Y1BE5hUu6+/u16yaTHrnJSoabwUEGtRNj2M4pKAmGcPsLlpk+mE31fcMF8kTifXTsOi+bX2Xhv7/CUnvx+u0rR8N2cY29zp4nRGkLIViZkr1LrEFvcBRllnMW0XDnYz6/NWjxm2FLNByI2vkrFrSnPVp2K7n+jdZPOKCSNUON1w2FyYCialTadaX9Pv08YWQv7xi68Ea7Bq64K22u3M
+ vzvTNCK4
+ 29aTK5n57faV707xgngsGAUM13Oo2Uiip0dv7imojrBpJ8ajXvN+ugJSjYdSZLuiumm2ediGuqTLhYehD/OQsj3kj21gX272RowBwGozGRVh8a6ed2Jq/wWSug+m49LtxhngKurhDo2J0/Zgkh7PhHtRqbZ+nkRYETph0ggUxRqiPOPoXYUPeJZGT6Z2eq3sa8dMBUH5b9HGfFmXNR0xLjS0Ory4vHW6G7yn0SapSJIrVsZyg5DuXdwnEG/IXA0C+lb0pgIgEsel9/C8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,12 +87,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/29/26 09:32, Pratik R. Sampat wrote:
-> In that case a fall through for TDX (with a comment explaining why) and
-> panic for rest may be the way to go?
 
-No. panic() is an absolute last resort. It's almost never the way to go.
+Linus, please pull this batch of MM and non-MM hotfixes, thanks.
 
-What else can we do to ensure we never reach this code if the platform
-doesn't support memory un-acceptance?
+
+The following changes since commit 6c790212c588fddeb0d852f2790840753bb604b1:
+
+  Merge tag 'devicetree-fixes-for-6.19-3' of git://git.kernel.org/pub/scm/linux/kernel/git/robh/linux (2026-01-20 15:01:15 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-01-29-09-41
+
+for you to fetch changes up to bd58782995a2e6a07fd07255f3cc319f40b131c9:
+
+  vmcoreinfo: make hwerr_data visible for debugging (2026-01-26 19:03:49 -0800)
+
+----------------------------------------------------------------
+16 hotfixes.  9 are cc:stable, 12 are for MM.
+
+- There's a 3 patch series from Pratyush Yadav which fixes a few things
+  in the new-in-6.19 LUO memfd code.
+
+- Plus the usual shower of singletons - please see the changelogs for
+  details.
+
+----------------------------------------------------------------
+Andrew Morton (1):
+      kho: kho_preserve_vmalloc(): don't return 0 when ENOMEM
+
+Andrey Ryabinin (1):
+      mm/kasan: fix KASAN poisoning in vrealloc()
+
+Breno Leitao (1):
+      vmcoreinfo: make hwerr_data visible for debugging
+
+Jan Kara (1):
+      flex_proportions: make fprop_new_period() hardirq safe
+
+Jane Chu (2):
+      mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
+      mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
+
+Kairui Song (1):
+      mm/shmem, swap: fix race of truncate and swap entry split
+
+Matthew Brost (1):
+      mm/zone_device: reinitialize large zone device private folios
+
+Pimyn Girgis (1):
+      mm/kfence: randomize the freelist on initialization
+
+Pratyush Yadav (Google) (3):
+      memfd: export alloc_file()
+      mm: memfd_luo: use memfd_alloc_file() instead of shmem_file_setup()
+      mm: memfd_luo: restore and free memfd_luo_ser on failure
+
+Ran Xiaokai (1):
+      kho: init alloc tags when restoring pages from reserved memory
+
+Viacheslav Bocharov (1):
+      mailmap: add entry for Viacheslav Bocharov
+
+Waiman Long (1):
+      mm/mm_init: don't cond_resched() in deferred_init_memmap_chunk() if called from deferred_grow_zone()
+
+robin.kuo (1):
+      mm, swap: restore swap_space attr aviod kernel panic
+
+ .mailmap                                 |  1 +
+ arch/powerpc/kvm/book3s_hv_uvmem.c       |  2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  2 +-
+ drivers/gpu/drm/drm_pagemap.c            |  2 +-
+ drivers/gpu/drm/nouveau/nouveau_dmem.c   |  2 +-
+ include/linux/kasan.h                    | 14 +++++
+ include/linux/memfd.h                    |  6 ++
+ include/linux/memremap.h                 |  9 ++-
+ kernel/liveupdate/kexec_handover.c       | 12 +++-
+ kernel/vmcore_info.c                     |  6 +-
+ lib/flex_proportions.c                   |  5 +-
+ lib/test_hmm.c                           |  4 +-
+ mm/kasan/common.c                        | 21 +++++++
+ mm/kfence/core.c                         | 23 ++++++--
+ mm/memfd.c                               |  4 +-
+ mm/memfd_luo.c                           | 10 ++--
+ mm/memory-failure.c                      | 99 +++++++++++++++++++-------------
+ mm/memremap.c                            | 35 ++++++++++-
+ mm/mm_init.c                             | 12 ++--
+ mm/shmem.c                               | 45 +++++++++++----
+ mm/swap.h                                |  2 +-
+ mm/swap_state.c                          |  3 +-
+ mm/vmalloc.c                             |  7 +--
+ 23 files changed, 239 insertions(+), 87 deletions(-)
+
 
