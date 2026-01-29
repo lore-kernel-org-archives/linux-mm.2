@@ -4,144 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97123D46C16
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 00:59:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78BCED46BED
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 01:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C397E6B008A; Wed, 28 Jan 2026 19:59:12 -0500 (EST)
+	id C0D716B0088; Wed, 28 Jan 2026 20:03:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE39C6B008C; Wed, 28 Jan 2026 19:59:12 -0500 (EST)
+	id BE51E6B0089; Wed, 28 Jan 2026 20:03:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A9A736B0092; Wed, 28 Jan 2026 19:59:12 -0500 (EST)
+	id B0E636B008A; Wed, 28 Jan 2026 20:03:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AC886B008A
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:59:12 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 499ACBB381
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:59:12 +0000 (UTC)
-X-FDA: 84383192544.02.265543E
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 433EDC000D
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:59:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yZhNplu8;
-	spf=pass (imf28.hostedemail.com: domain of wusamuel@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=wusamuel@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769648350;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FFCD6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 20:03:32 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5BD11160863
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 01:03:32 +0000 (UTC)
+X-FDA: 84383203464.28.115BDFC
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 9DEB040005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 01:03:30 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nEfkhfJL;
+	spf=pass (imf07.hostedemail.com: domain of 34bF6aQYKCIIykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=34bF6aQYKCIIykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769648610;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ho5qTXSu2PZYffnzQVL+2Xc6poCFB6UxCVa5s6rbRlA=;
-	b=ur5prI392z68dar466BIStK5g50uUTS9LRX8sh6yzIzXAUUrwpbXSaeUdU+TXC0o4Skg2z
-	BzR44oq3cUOEZCTt7rarulhrBlZjgzyR6uc2WePyF1o5Cg6JW/KJrimBYmg2+pEUINHtC2
-	+5zC5HmOKwwZ67YukJG+Wvw9HDlw6V8=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=yZhNplu8;
-	spf=pass (imf28.hostedemail.com: domain of wusamuel@google.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=wusamuel@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769648350; a=rsa-sha256;
-	cv=pass;
-	b=nkSamQN27GBCBgxeKybMkaJRz4dp7r4JG4vnHmwI2tm2O/xV9yINGQ+I6YcqEcqsEdTjyl
-	YVUs0QAHbQoM/TE9eRoV5s4BWL/7ZjnBZz+w/Ewt6cJch/a/Tflr+QA5H3T8JZXwQhJ+ZJ
-	CugIoeHxSBtc6h/icLWNoL1JP6I7vKc=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-658cc45847cso422443a12.0
-        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 16:59:09 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769648348; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lmBrOfH6++1Mo+OAPqOm6rvBDDPW2/Z+f7tCXRFLLkoFBy1/hxT6ZNya+/vTw23Ri6
-         lvhJUD+T0n6jA/nniPbLSZLPx4I/UKy/a3XJ4GesYCt7YXZ4uj7kOPTxqrBh1Vx/n0Ob
-         EuOl6ogJ8W11O6ns3XTNpoI2LSGapuhCnHgF88HyPl7chy/VDFsuVIfsDB79uQz41wye
-         ae54eutYU5Mz7srhVIOlBBrRTRkKdN7K6BLI9/axWLDJrqRWHlk1xtUbwrKlDcMgjnqX
-         +dV4qDAsoGI31aS7uF3wwUvSa06V2qlKpn/e14csYWMuZpmaoZwO5JeGzwoKNGvV0ZkO
-         fsng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Ho5qTXSu2PZYffnzQVL+2Xc6poCFB6UxCVa5s6rbRlA=;
-        fh=lsjemU2qJG9Tk2D3I4YrPfN6wABgLH2sJutnZhatSdE=;
-        b=e5QVwZCYFnb2FRcJaEuXy2jQuPan4CI485AzmNfLHK0XTrmRDWUE0j3XTvOS086fOv
-         DaWSntGsAq511CsWghU/zkj0muAzoSX0wwK57U5JX8xCmhOkc3dksxkLzx++irHNbuUf
-         2I94tUeYu+mfaGJnYhqPQ/t66BLqPNaMpwz4cZ2JLaT98aXmNpxnwgeTzca8hEuXCk5S
-         8HkPZOQLDZIRvsdzLCmY5f60/CncalM0LKs5aY2LhIh7U15+gm816imEJ32i+QH0rsFw
-         35JXVI7SdjBlmBTRLgHtDJrOrm5FNGmfB9zmkvKaBx3wR/rQvd06BHys6twtpa3UV2LC
-         vSsw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=19yGyDu7FA79ZAJBhihksbqQH2oSVrmD3QatKOHHT0Q=;
+	b=d8l674spjlFvoEhSXIdPYCiLJckSx7oD+RQ3lw1SBOLAwFCHPLMJ7MquBBE/qgeKFc3+Vz
+	7HVr5u41loND6z3t407ii4r5rHhTtEDEUhXt0s1ZH42UNtdRL5uhzQuaMjufwaEPRs8rkF
+	AyTQ01Kr9l2vtQ7EO5cEWh3E+SRgwos=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=nEfkhfJL;
+	spf=pass (imf07.hostedemail.com: domain of 34bF6aQYKCIIykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=34bF6aQYKCIIykgtpimuumrk.iusrot03-ssq1giq.uxm@flex--seanjc.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769648610; a=rsa-sha256;
+	cv=none;
+	b=pBt5ebY7P/oiA9FYe7uoef+aBE/r9s0aTHSiMM1EDDGEvzMn4VRsgqx3W8pIH9JS0v3SRy
+	wsAgqZDqnxf5dcv4lOjvMr/KA6yXIHODb54qPo3biMKDnPqu3IsHt5FvAvYPnhH1GUUKlw
+	QY4nLtqzSsQZEh8wVL2LQCGSR0x9ZmY=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a0b7eb0a56so3224955ad.1
+        for <linux-mm@kvack.org>; Wed, 28 Jan 2026 17:03:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769648348; x=1770253148; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ho5qTXSu2PZYffnzQVL+2Xc6poCFB6UxCVa5s6rbRlA=;
-        b=yZhNplu8+DkDLTKgFYy+xtYtWJKpryVOZTdPDGO8l3vWNfSwwluQlX6+7vdIdYeCAf
-         KSmXR4kBmCu51y6ONjZsZtLhgZwqyqXtvGiqKJEm6N0C/adotGrMrDGoarNfq5N4K3PK
-         m6huPbp+6r1/S+sYuT9CNu+jiQsONmt2RhSrbuQfQVeSsdaATa8KgaPTvT61uDtVwjdK
-         5RsfG+o+glqdjU4bBxhmhx0WCdOSrYZAH9RcFPdPgHuoNEPtOHaZJRNEdNH7IRYCLQJG
-         DaIaJzWYIY9HLIA+3kVg6C9uuKrzUAvjqaA2LxSQPQ/VZSPdDAjCARtsSKrOCnglHp6Y
-         Y47A==
+        d=google.com; s=20230601; t=1769648609; x=1770253409; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=19yGyDu7FA79ZAJBhihksbqQH2oSVrmD3QatKOHHT0Q=;
+        b=nEfkhfJLs1OJZgbd+8I7VbXZniaTcVmiOUP64INiKRY71FlrpzObKyKyYZ17FiB/vr
+         vZsj6Aq1ri+y8Nt+V8BlNVpwnUfm1MyTcpM4okHuJsoR6AtZGk4IU4XE+6zJl39kNILU
+         /pqpGVNc4Mta/+y426aR2ko8rZwUCR0evIfg9d/ISx1E8SoZ5VZNPCSUA2YQ9+/ENzdU
+         2HNBVJTGG0Drpbnp1llm9dO1gvgIFw2koigL8FNTk0umv3sL+7aw+VBiMo/ai06/8FMi
+         iE8Vx5NK5Ut1xlUE4flQ0KNtXs8t0hDZWviB2o4z4QZwE1PI5scMQVau/znryRpHVFFT
+         jSaQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769648348; x=1770253148;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ho5qTXSu2PZYffnzQVL+2Xc6poCFB6UxCVa5s6rbRlA=;
-        b=FrgdohkkosGGDnWrVVcs8DbsFvHkh7rksnOINX3nnNdkv3e3Iy8xUsHKN9ayf2h3dc
-         JfIAVhR5uzIEZq+4+VsmmlmIf6wMYepoERCe8zlTJaosnUuPRdh9+OKsSlgwuMglnO9b
-         XE3nbufb6sp7aMiInD+KwmZNMPKGPMUmeZKqxyhNfP6vNgD1TW4mj5yXde/5bNlkGtc0
-         vwzLDJlFUht0paWIV1g8FITeBhgnjQI2+LLTq/dvpUCMOALmaKa62jPDanhjRRGWa07q
-         cwlk01ZmYEGH/P0OK84JVWJZymaSXb5dUeoSvrB2sF+tZbbrOYWZ1WUzcNz5z63939G5
-         Vc7A==
-X-Forwarded-Encrypted: i=1; AJvYcCUyiFBQz9MBDvK+0TLEcpt8T3HPscH8H8+mg40xjyqeUs1quH4Lz3lzwYqUoE4O0Vosfzqj1oGS1Q==@kvack.org
-X-Gm-Message-State: AOJu0YwomMw5gFi2hdBZa8BiMqb7UMQMgZ+osH+kVpl6A1O4+Zut5BdJ
-	JdevHBlqignww+enpxXOJhr7dauGdhk5UT85RaEG1kbzV7d31N6Q9dMXkW+syxapmSgwBwQLOil
-	AAcEhFRCtwQOYWHSAPWf6ifxbjrzYE2huYN+kqG1f
-X-Gm-Gg: AZuq6aIELjUK3NanzoEhthXoQtofpXsgTvY722V9Qt+phkon2e/+9jB7nZA8EGIW4xo
-	S3dRXRL675ZHrAXdDXE3Qxd1q2KUc6wJXQOjRs3ItdxL5AfnAvaVi7eJBaWKzxNeF2NHR18oxgw
-	wVEzf6G1QHi8WFfIOTSbJmJIEd8WYkcGlVfvT+c6s9xwyvnrtNjCguAWqwZFIhhvgBj/0DfbZuA
-	FkTFPK4rdJYmbsBOkDqkhG8+qCCtKmlLxUj50KbrXJhkxjO+QKDDszvItk7kqFJkYbVq09A4iGl
-	IeAGGOmtamwtdWF6+X2jEkIV/4Jj+g==
-X-Received: by 2002:a17:906:f585:b0:b87:d722:f824 with SMTP id
- a640c23a62f3a-b8dab3cf66amr455166566b.63.1769648348337; Wed, 28 Jan 2026
- 16:59:08 -0800 (PST)
-MIME-Version: 1.0
-References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
- <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
- <2026012715-mantra-pope-9431@gregkh> <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
- <20260128045954.GS3183987@ZenIV>
-In-Reply-To: <20260128045954.GS3183987@ZenIV>
-From: Samuel Wu <wusamuel@google.com>
-Date: Wed, 28 Jan 2026 16:58:57 -0800
-X-Gm-Features: AZwV_Qg5mDXEWLmzjtDFHSng8MB2HQLUBKHQ6Wr860X_lRTmL3Z_ZmvOjLnN07o
-Message-ID: <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
-Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Greg KH <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org, 
-	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
-	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org, 
-	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, 
-	borntraeger@linux.ibm.com, bpf@vger.kernel.org, clm@meta.com, 
-	android-kernel-team <android-kernel-team@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: sxu1rtih66r8dkuf8nzk6s19r676j1jg
-X-Rspamd-Queue-Id: 433EDC000D
+        d=1e100.net; s=20230601; t=1769648609; x=1770253409;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=19yGyDu7FA79ZAJBhihksbqQH2oSVrmD3QatKOHHT0Q=;
+        b=LtT0TbC5mQQINhLS/6jCBeCbZSTzu1t3q0SbaTQHsyj9Jet8qX1LbnUt8/+8Clmec4
+         vsxdgwyUuTVASnbyfKZZJZzuSnGAip2OEu8iM91kJDSitr1dfZoDrqWIiGppZmQs6xSj
+         e5GIyQdIM2XohVRiPHa+kZdwfaV6TO4m74Nwbo/oYnRa9KeUl1UUzlmosFhutHSu84Xe
+         tUKryxGnUgZkbV8qgqurG21a0u7/q1hb0CD+2xe5imOlh2Esc9KR0Xa6gWK2HzMLt9RM
+         R+oGejOlYGhzD/7l8XUupWWePDB5v919WjYBK7wJG48upRER4KmpBlxcVthk+zXaMWH4
+         ZqgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXMjktw1YvXqHV0bYNrSjGgczhwU1WhpvZ4ONHjUn8faQ7fH4aOcZz1kfn0KfAO9a3NMwHEbTkv4Q==@kvack.org
+X-Gm-Message-State: AOJu0YwAk5iqOJZydcBIAYjVd1dsEPpk8Pbh8urCY5YaASu95d8IoABJ
+	xoABrDjLJbkgZLvqbL/FaeVjXeQ9P2NR19bczkWT7yty0s+njm2jN7KmnFnQFLNSyn+/mSsScDY
+	b5p4q1g==
+X-Received: from plbky6.prod.google.com ([2002:a17:902:f986:b0:2a0:84dc:a82f])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d4cf:b0:2a7:dd37:6e20
+ with SMTP id d9443c01a7336-2a870e34d04mr70308785ad.30.1769648609015; Wed, 28
+ Jan 2026 17:03:29 -0800 (PST)
+Date: Wed, 28 Jan 2026 17:03:27 -0800
+In-Reply-To: <20260129003753.GZ1641016@ziepe.ca>
+Mime-Version: 1.0
+References: <cover.1760731772.git.ackerleytng@google.com> <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
+ <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com> <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
+ <20260129003753.GZ1641016@ziepe.ca>
+Message-ID: <aXqx3_eE0rNh6nP0@google.com>
+Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
+ kvm_get_memory_attributes() to per-gmem attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Ackerley Tng <ackerleytng@google.com>, Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
+	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de, 
+	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org, 
+	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com, 
+	david@redhat.com, dmatlack@google.com, erdemaktas@google.com, 
+	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org, 
+	hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com, 
+	isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com, 
+	jarkko@kernel.org, jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de, 
+	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com, 
+	keirf@google.com, kent.overstreet@linux.dev, liam.merwick@oracle.com, 
+	maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name, 
+	maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org, 
+	mhiramat@kernel.org, mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, 
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au, 
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es, 
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com, 
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com, 
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, qperret@google.com, 
+	richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org, 
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com, 
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com, 
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com, 
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com, 
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org, wyihan@google.com, 
+	xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com, 
+	yuzenghui@huawei.com, zhiquan1.li@intel.com
+Content-Type: text/plain; charset="us-ascii"
+X-Stat-Signature: 3k3qkrk3jb56xhcecg1zb7eehueekskk
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769648350-530577
-X-HE-Meta: U2FsdGVkX18MRAJJewur66pvo6drQbo5Zuq8ECGTX5HnM85imBq4AK62867v0JzeKsDQLVnqNh+yqWlKaWJ5jLnbEzE34LokQ/bqCZC3lbYIp7vNlPjqKPTY4E9AkUpbw1+v/02wvNsLe9r1ECka2mUtlZrWoU3s6STnEixCDAIvYeWr5AISfLLYQcSuLM+vr3+Uyn1ilAvo5fClNwmMsMcDgFz7y8SPjChYEZJLglDyUSk0V9/PtiKJUT0a1EewdqFoNZPiT5Gosm8qmEHdnr3qeYUOyhcKbaM7VlBFqish4pYwWsRpp/I0JQY6RoKlM2/QuNAQd15z/xvn4xxCQbM2QTJYUDOKWVAUoZJ9FRrdkm6lP2R9BnGl9qPNMuIJAifUrvvlKmSa0YqViTiekUoFLhpEPKg62fz/64tHvsnfnt1bpXMrkJTkfvtHiLBsIvASeRGzLlX73H75JcP7WHHTRkis1NvYRyCP8m21llvxU+C4rE+Q7mQLqxbcczQlmXN6dVWqlBCoGF34HLLFvCxUnUWG/3NxtpHZau+j3EDgOg77H9tFJTAF69QWt066xV+GPX/UWYWUPa+WdVwN4NAPStyyMzewSH0pFrVJAMvhu1n7y2f4iFTkSb0uKVLg+4vUEj4NVok09REIEEMyxsdHhWW6/slVsT+aCFLIFOLfM85zy6pBJ2YWhe1szEhzZb0xJLUi4Pkok+TmRk9fptwzLoEI40qc8OiVbVfCAefQpuadjoTHnUQFYViibuZVP4bQ1ycs8EojNweBGKS/aT3MUHOkaXvAyW4VpSii+1uYygee5sm2fShHr9cgYn7LLoF6FIxDz2oAg9l1+aFdZAhmFoKXRWAxlPQrr94F/ygiufMb2RTKMdlqswQl8KBAyG8s4aXu+gZX4iEQa6vePxppKjKsnI2JRLAdYWKI565HFSsjNKPMZPBoz78jIOZnQTJdDGfITes8Xa30wrZ
- s/YcILPL
- X5+5cGoendn8QDd+zZeNEBLmbslS+XMtDFnyM00enREur4pxOQXOSr80D+JlMPEjsdcnZhvtVl7AVZuGnC8ENQaSUAPJ0jCU7hxd4oquh9JsZIHwG5rAUnUd3xLMKPgj3lV8XQF44B3kPUad5waY+edadf06xkUAMGny7n8cVwArnHE5hRDWqRmBw1UoJg1BUrcVH5yZUoaWb3jA+FtUgi05aPc4RhPRD7piJFxJoGu95wqbktdbymJGAvUMjUob4o4jyLek8Tdf0QmGr4pJbsYDqwj7XRGOoaI7IADOtlGVAanFMBtFDT212TrTgVdt9gSJRLHsmPMFWqwhPl4qOjaecUBFJsJ7upzGrueqg7WCYRYDoDr9VdwgltJsZsd83RDGr
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.043263, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9DEB040005
+X-HE-Tag: 1769648610-343438
+X-HE-Meta: U2FsdGVkX19IpsAPpSZvNYgkWzblbA3Xua8c9wiNGiPUw4kjrqd0zNihqGTbZ+gPxGHJvQl5coQ9g54YUzbOvnyCVl83mvSMIlKq9W9Xr2txoLIwrs980o4XOlAjAcNVJuCWkigGgx+ZyU3GZebgRPCb1RosC/DcdoYWUByshlIrVqE0miCISjy6DpYyByMw3qI9TYudMdT9+9dpW0uUb8wj+yxSnoU9yUD/dJb0yep+9GZdpbQQ+heaf61X9TJ4OBSBpaJVijwF3gbswS7u/maoonfTrm2gV1EBKuluIkYDMHCvKxqMJp/eSKico7tu9lAWwVGFzJ2OwOIY3j9fmDhdENJvmcZ/LlgDheGk4vDa5Fkgp9gI4wonxpzeMcUZKnve7o6NzwufVcw7EANIgCudOK4BGoxwkOjzhLP0yZo7MsQnQNyFJCtyxtQxzDbxcrTVVwnigoOS1fLbT+tg00QPyVOLxm/DPOfZzM3LxdpSTadVtHcH1mw0ODmmFppWP1veuOSOxWkg+K4ksOJN7iLVnMulOAUa80YEkSymrvXcl/D+MR3hi6FSXqegn2l4k5gJ0f4CFCnhxFTMIiAWhQZlOH1e5hQpz+tF4W8CtVpsceFKZuUVd+4NQXILm/mK+43e3zt/faqDjTzU+KThDkYNxrAhhPwuIflxneK4tzgrEviVkoTrTRo9fxtMdtG64zL9V+kl0LWVyyLAyk4jxeBmv4NFyr/WF+D7gyq4Xxa77clySYWY1ozqie26GZrAXqYPZHg+QyYdjphhxlhNwQ15y5QoTgrm/N/frCLIy9tqPbnjsTaP5n62FXtjDOHwFA2elu8PcX85iT4aWWpCfph5qX+bt6mpETOT7+Lj7oXFs+6zcbiTf7UM9UcbWRW6PwdNg/8puBUKNYeRUn9HF1greIDJXWe1r1VXoaDHelc6VjBP0Wn6gA9iIgl7M89Dg41cxrFWdcshy51IHWL
+ RNmwXwSb
+ cRAvDPgbdQOUAfSCjUsHPFkg98sc59TbTTlWSUgWFqWJDka7mV7OqN5Ko8pZPb1+X7ExPHiS3I32qFHLsIyS8hFf3QPfc/v+BmXrUHzWX9FaAIDxK0yHi5dpcYZd0VYfF1FdZSLC7YRqVtElsBXwi8ASt2JBXktog+JXi6fiHRVNToFMrvT+p11fY+bfw66Fkp42lMExi5r9Xpqc8/sQOC4GMuH+H7rNKqF8w1MWvkVkseLxqt3V4Gfohuh4IIPDqmUlob8BQrODbLYUcTTM5CtR88W4n33O/++0DmiP0yhSYPoqM6kacgngTKJvAhJx1T+a2gyhY3SUglh4CIRx4WZxBEEKh1XPQOkTgwyMxxOv1JTHst4KN9qMvmyJeh/BnJawrvgnh8+zd+gxCuqeC7Rx8sdo0oblQ3BB5IUqZItsLXTDUUmdd5usZyWvrAbbaZitncnyFaejztpdvFCCkwT1PxqQnPPtCJVOCx/cMVsKW92uzTPx+mdI+mIrXp3xL+7rc75rp4GmBdk2jAU0OP6iN8ptkOG4Q5RJlFAVcBMLAphJ0VSJOOaWXoagxg05HhlgYw89ROpbwmM/kNBpHgUSEjtPul4kj1zLsLvTWknHfH0Hg72OoOHpQ5Sy2lh64RTAz6vMY99+dFXwby8nti4U9jtbCH+sMDwM2qdyjuLf9fXesS/d0t6UmATU1+N2VkwwYZT7ixCwTRO/c52nppxjDJvXMlrDRkkrF
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,14 +139,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 27, 2026 at 8:58=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
-rote:
+On Wed, Jan 28, 2026, Jason Gunthorpe wrote:
+> On Wed, Jan 28, 2026 at 01:47:50PM -0800, Ackerley Tng wrote:
+> > Alexey Kardashevskiy <aik@amd.com> writes:
+> > 
+> > >
+> > > [...snip...]
+> > >
+> > >
+> > 
+> > Thanks for bringing this up!
+> > 
+> > > I am trying to make it work with TEE-IO where fd of VFIO MMIO is a dmabuf
+> > > fd while the rest (guest RAM) is gmemfd. The above suggests that if there
+> > > is gmemfd - then the memory attributes are handled by gmemfd which is...
+> > > expected?
+> > >
+> > 
+> > I think this is not expected.
+> > 
+> > IIUC MMIO guest physical addresses don't have an associated memslot, but
+> > if you managed to get to that line in kvm_gmem_get_memory_attributes(),
+> > then there is an associated memslot (slot != NULL)?
+> 
+> I think they should have a memslot, shouldn't they? I imagine creating
+> a memslot from a FD and the FD can be memfd, guestmemfd, dmabuf, etc,
+> etc ?
 
-> Very interesting...  Does 1544775687f0 (parent of e5bf5ee26663)
-> demonstrate that behaviour?
+Yeah, there are two flavors of MMIO for KVM guests.  Emulated MMIO, which is
+what Ackerley is thinking of, and "host" MMIO (for lack of a better term), which
+is what I assume "fd of VFIO MMIO" is referring to.
 
-Reverting only 1544775687f0 (functionfs: need to cancel ->reset_work
-in ->kill_sb()) does not fix the issue. With 6.19-rc7 as baseline, the
-simplest working recipe at the moment is with 6ca67378d0e7,
-c7747fafaba0, and e5bf5ee26663 reverted.
+Emulated MMIO does NOT have memslots[*].  There are some wrinkles and technical
+exceptions, e.g. read-only memslots for emulating option ROMs, but by and large,
+lack of a memslot means Emulated MMIO.
+
+Host MMIO isn't something KVM really cares about, in the sense that, for the most
+part, it's "just another memslot".  KVM x86 does need to identify host MMIO for
+vendor specific reasons, e.g. to ensure UC memory stays UC when using EPT (MTRRs
+are ignored), to create shared mappings when SME is enabled, and to mitigate the
+lovely MMIO Stale Data vulnerability.
+
+But those Host MMIO edge cases are almost entirely contained to make_spte() (see
+the kvm_is_mmio_pfn() calls).  And so the vast, vast majority of "MMIO" code in
+KVM is dealing with Emulated MMIO, and when most people talk about MMIO in KVM,
+they're also talking about Emulated MMIO.
+
+> > Either way, guest_memfd shouldn't store attributes for guest physical
+> > addresses that don't belong to some guest_memfd memslot.
+> > 
+> > I think we need a broader discussion for this on where to store memory
+> > attributes for MMIO addresses.
+> > 
+> > I think we should at least have line of sight to storing memory
+> > attributes for MMIO addresses, in case we want to design something else,
+> > since we're putting vm_memory_attributes on a deprecation path with this
+> > series.
+> 
+> I don't know where you want to store them in KVM long term, but they
+> need to come from the dmabuf itself (probably via a struct
+> p2pdma_provider) and currently it is OK to assume all DMABUFs are
+> uncachable MMIO that is safe for the VM to convert into "write
+> combining" (eg Normal-NC on ARM)
+
++1.  For guest_memfd, we initially defined per-VM memory attributes to track
+private vs. shared.  But as Ackerley noted, we are in the process of deprecating
+that support, e.g. by making it incompatible with various guest_memfd features,
+in favor of having each guest_memfd instance track the state of a given page.
+
+The original guest_memfd design was that it would _only_ hold private pages, and
+so tracking private vs. shared in guest_memfd didn't make any sense.  As we've
+pivoted to in-place conversion, tracking private vs. shared in the guest_memfd
+has basically become mandatory.  We could maaaaaybe make it work with per-VM
+attributes, but it would be insanely complex.
+
+For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
+is all or nothing, and can never change, then the only entity that can track that
+info is the owner of the dmabuf.  And even if the private vs. shared attributes
+are constant, tracking it external to KVM makes sense, because then the provider
+can simply hardcode %true/%false.
+
+As for _how_ to do that, no matter where the attributes are stored, we're going
+to have to teach KVM to play nice with a non-guest_memfd provider of private
+memory.
 
