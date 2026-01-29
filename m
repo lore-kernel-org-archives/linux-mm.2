@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AABED46C01
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 00:45:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91F4ED46C15
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 00:47:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F3D86B0088; Wed, 28 Jan 2026 19:45:52 -0500 (EST)
+	id 005B56B0088; Wed, 28 Jan 2026 19:47:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79E536B0089; Wed, 28 Jan 2026 19:45:52 -0500 (EST)
+	id EF5936B0089; Wed, 28 Jan 2026 19:47:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6C7C56B008A; Wed, 28 Jan 2026 19:45:52 -0500 (EST)
+	id E015F6B008A; Wed, 28 Jan 2026 19:47:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E3756B0088
-	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:45:52 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id C9C2F6B0088
+	for <linux-mm@kvack.org>; Wed, 28 Jan 2026 19:47:48 -0500 (EST)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CAE768C5EB
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:45:51 +0000 (UTC)
-X-FDA: 84383158902.17.7B42381
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 986DC160357
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:47:48 +0000 (UTC)
+X-FDA: 84383163816.17.861EC69
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5EAFB180007
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:45:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qkw6C1bg;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2CFD240011
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 00:47:46 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H2wFOWTM;
+	spf=pass (imf04.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769647550;
+	s=arc-20220608; t=1769647667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K+0wVWPrWHMCGRbxLyFhZBgzDO6Q+zXVgZL3MyqtlYQ=;
-	b=doQC9fjD5UVMO3TQ6RyZ1lV7kHpDEL8aa4AUcJy3DZ+wEsYYnn64A5Aw+xUFjTeX0YhBMv
-	lSGoaayZchWnBOaA7ONav8lzkWxb/KdW4Gmm4v/H/h4us7429hJOVSVcDQz/8TEn7QPAIo
-	/RiUyJdjRsKirZaQ9KHBIZMW0GX5S94=
+	bh=95hS9JjkjMlSys5J/q3kfQrZl+9w91aYtQWMCKAi+Z4=;
+	b=zVRW4Z3uyLoABZQeX/xENf+lwiWztoxPXETd2haebNuplXXqNdNxeQiS0pxtX0Qkjo0ixs
+	z3fvUlFnHEipE/zCoQUq1G5ko16kKJFELCQCH1cAtIx3YD5yt3MZTcCZ39XdgAIeRJhFzh
+	9mClCIhhkCljNTYHR0A5jDp8ypEUfjI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qkw6C1bg;
-	spf=pass (imf06.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H2wFOWTM;
+	spf=pass (imf04.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769647550; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769647667; a=rsa-sha256;
 	cv=none;
-	b=Wy8vBwaH60HEzETjfNeYmC7RSMpwLopE6lhWnydHE9xHvH2AxtEEDr8DsZpc7pHP+ZTvQ/
-	ErqFSH4JtrBHqMh6Zg614aHJODYiD3BUa4uJMGiUOA192JxUonPVakNY6UAMPoV3V4Vwni
-	7KbvajBqDFQoRYxtY9050033WoVKnQ8=
+	b=8IsT8/cK0xL5HzMpI+vGqOviziUjIB5ZHpNkkwQh+4wRGXR8yjUzfMZSwPdPT9dN+Oq84t
+	q+zkNQCqlWkPisTsQIrxOFG2rrLCvi/QzvUeQsPkLaW6c2Kpt5DanTZCncacMUCykweJCL
+	Ii3tjS/o58htFNP8FTdTVT/oarFI2nE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A399960126;
-	Thu, 29 Jan 2026 00:45:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 542C5C4CEF1;
-	Thu, 29 Jan 2026 00:45:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6BC4B60126;
+	Thu, 29 Jan 2026 00:47:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCFBDC4CEF1;
+	Thu, 29 Jan 2026 00:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769647549;
-	bh=521PB98LoQFeuzDL2y570ukegXohZNWvlq4XD6gGUZQ=;
+	s=k20201202; t=1769647665;
+	bh=79HatW7wzep6sdlj/zotqs1dVxY3UNi7aebf5KrPHR8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qkw6C1bgR0YIMU/zkUe+tRHdDbV35uLOcxW6te6qYu1/CKpSxonhKeEtZs0FTCmb2
-	 Nzor5bkcAJYlBk/eUA+gi85CY3bVIfB4ZgrVV71iHKKaVNsIUC95bofSmGo6Df05W4
-	 VlZDGL4GV+zSIn5X/dI1zcHO5sjJsHQVjgooXShytu4Qn423C04pcaKW0w7gfDgWF8
-	 fuozlF2hduYUZ3YT5CqP4ASngpHf29aIOYswugnWnJY8zhiZRF3S+mdZ1LXVEu8BJc
-	 OcuU9S7oxoNN9+s4jOr6Viu8WHiWLwa2D6pV/vHocRDyqUpBinm8f+2mAVFvX9BJY/
-	 ZYtfME5TmowVA==
-Date: Wed, 28 Jan 2026 16:45:48 -0800
+	b=H2wFOWTMwXnJONNciKNdXhjKStW9jkG5iLaO9EtX71yy7Ye1gthzH5SI9dXKLWYkr
+	 8Y8yrdEnTtN0+OJtvpx40wdBLR1DqmbzxQbAIKgBlwPOpYebdBPoxSTTSxSqFR+tu3
+	 uskw7bhYB7my30G0BlINE6R1Q3GdQymQ+0g2HROWPjJZt+Jj3xU/o3j5MUHoAIX8U8
+	 32joMiaNmmgp/Fw19QjDXx82fe/x+CtT/daAx45otmmxfRZTQgajXEQWeIxJQ6wMZZ
+	 M8/3Swg6kh55iN6FL5drVRvkxqIj0uzviBP4UGQBceC2XCKp3O0J3B6rtq0BBiQtWS
+	 l4gv88XOeoKHQ==
+Date: Wed, 28 Jan 2026 16:47:45 -0800
 From: "Darrick J. Wong" <djwong@kernel.org>
 To: Kundan Kumar <kundan.kumar@samsung.com>
 Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
@@ -73,24 +73,24 @@ Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
 	cem@kernel.org, wangyufei@vivo.com, linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org, linux-xfs@vger.kernel.org, gost.dev@samsung.com,
 	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v3 2/6] xfs: add helpers to pack AG prediction info for
- per-folio tracking
-Message-ID: <20260129004548.GB7712@frogsfrogsfrogs>
+Subject: Re: [PATCH v3 4/6] xfs: tag folios with AG number during buffered
+ write via iomap attach hook
+Message-ID: <20260129004745.GC7712@frogsfrogsfrogs>
 References: <20260116100818.7576-1-kundan.kumar@samsung.com>
- <CGME20260116101245epcas5p30269c6aa35784db67e6d6ca800a683a7@epcas5p3.samsung.com>
- <20260116100818.7576-3-kundan.kumar@samsung.com>
+ <CGME20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79@epcas5p2.samsung.com>
+ <20260116100818.7576-5-kundan.kumar@samsung.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260116100818.7576-3-kundan.kumar@samsung.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5EAFB180007
-X-Stat-Signature: uqw4kcay6aqxybkkr7xh61c3ayss89i3
+In-Reply-To: <20260116100818.7576-5-kundan.kumar@samsung.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2CFD240011
+X-Stat-Signature: r5wnapb3yhgg7gqn4fe3yoknnue6b333
 X-Rspam-User: 
-X-HE-Tag: 1769647550-254458
-X-HE-Meta: U2FsdGVkX1+dL0pGvc4UhFIMb+Xb4BKrwgxMDk01XmoouC8Er8x6HzyR0wT4sJ3bzE9bmC5k0xthcyY1wzk2V51AsyTfT51IOHt4O/48lzJltyL2gsFhADDI11cKMKVGmjyCCzouBfkEiYqT/ZX0speyKzAr2HExA4dLHS8Er8guSFamNIQONZndKwQusqlLeGVkVc3kRQF1Tmjf83Z/EemEdm7NZxDi+290XEujOzjxQ416LujdEd9rZxuDgKKxnL+Uz3aixfqVjitKRoAHRSYZ/kG7bT4fUAap53nAN8yrEAO98O+fk+EJfyxyVGzRZbykPEqVepzMFrtLpFpKk3gmyvo94D8kIeS7/L/RsCqwPDU2gUTKL6XQz5s9jjHI3/m1lNog2p1NmQtS33bpLwYFbJ7B+isIVcLTTLsRLYb1rG1Zd85mUt5pHEkG7+2ipKrwHBegQzFYA/aRMuT/WC+iQXM5zeAusYyhyeH58hdnC9Tg10VFpSSK18BgltImSY2Ba1LtMyfVJw12ww86l+Z0T5+AcuFuY023ty8v3yTfEu3PogMkIsET55Qfr5+XAHjG4kblRwZh7LXOjk+fX377n014/ePSfW1z6/wgB5kN2nHWmDi1sGuCpV6onQpCZPA1mAilqzcNUU51OAl7oPLvB83Rz1576sBeu4H7Ef4m9hYZOTjVn7NgR/nSKrW/I0ax+17rSCUsJsuCMLM1wv9lhKHcePeSgLgZSiuaXg/nRCNtmtqDaPtQrZnzsmM3AZYxy5cw8YKGdZ0lxjFWO+mS/FwZfrhM3OJ+XSf6Ig1dIRRvB0ZTOriwnWcQQvYijURRMjVYw9oAwnMg61Ja4RswzqAymiV5+dJUdXjKYpCKFNlLWxGJrg99XbOaK/zJvuCkq5aNukjnHbMKvMP06Z2e42xXXq1th2dmOSNzIwMFwTToAjp2x9aJP0KkXsadfw1D27p9ADur6yCZPpr
- jL+IB985
- WB4KU/VHnamT55rJ5yZDad9x2ug==
+X-HE-Tag: 1769647666-272533
+X-HE-Meta: U2FsdGVkX18jx1Tc48EFiWSXe5qR5fma6one4qn2pMeQoG83gfz31xooyVg87QUoAgVFp87sf1FQS0sTWUgN8XyM4HMBdjarp1zyMiw7tjMorgWRVXs6wYtrV5lc6lKixlqR/HXUHvIdlB1VLIvzP1FTsygdLSbmc6R4iqNiVS9rKrsZDE1nP9CwvmzDhSBx6tN6oJxRIge0eCVu2YS7i/F8oSKQh9B+jt9k+nONDOf+xQS1tmAGZk3SxVX+m+VMCIgskzacKLMVYAdfxxazyT7SkMdUJ4zzKSfXlArZ22WqCz2vG02KUFkFIAtA4WuoZRmlpeOgDa0GsRRvQAk6VUi6ey49wlJ1NCGeT9OlABcTVl4V3ZiYqyj9xPf47gQZS4HZs5YbK8RIkSWwdrjjwSNXjm8rOyIY/yiU3H3FYSGfN8132cTMaY6xvy5f+1D/bfuTxS1fy1C2U3A5jdcpD148Kv2y6Ir4RR1LwZxIl4GFxZzuKYTrVaPmIVniti+HBw4fRwQzcUA7Cw3fMFXUu4khuxwVQ4blhuDujuXsm1Kn0B59U/Ba9ZKzFfFDxGVd2SUEEIICpxnzqNQgV0wYqyh/BQLHBASnnav2jNCP7D6Pi8EqdSt9ENSPXbTvbLmACwsg6nYX9dGB+vK7q9KSYZLcTw5jo3BBWMpCvcg3+6zc72WBfs20UccgDbJDyKNWVMV75YzRwk2CqQro7qriTOsnGvYpvTfbzwpz2osP6W061rWG41QfItmB4ZCAQPRJ2la9qSBC7zsSsxHe7951DfesEl8a1f+GcGg6s3WVKj8va0SkMBPXKkISYuG6iXLx8ZJjbQjGIS9zspE6IULMCoH+8rmWltxeaAqOetmjdyYyuxnd2EZ/5Dcvp1CiQQv2EoHwMsGIA4C+jZ2Z3OTTipEPTM/5q2CjJNY4L8YzywzMLCrKuG/UDI/mKwzoj4J9Kt5jQWQu+rg0bZkHTR4
+ rWxzhEB1
+ jEQUEmXF/qfEwxz9YrM0V1IQScQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,71 +99,163 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 16, 2026 at 03:38:14PM +0530, Kundan Kumar wrote:
-> Introduce helper routines to pack and unpack AG prediction metadata
-> for folios. This provides a compact and self-contained representation
-> for AG tracking.
+On Fri, Jan 16, 2026 at 03:38:16PM +0530, Kundan Kumar wrote:
+> Use the iomap attach hook to tag folios with their predicted
+> allocation group at write time. Mapped extents derive AG directly;
+> delalloc and hole cases use a lightweight predictor.
 > 
-> The packed layout uses:
->  - bit 31	: valid
->  - bit 24-30	: iomap type
->  - bit 0-23	: AG number
-
-There are only 5 iomap types, why do you need 7 bits for that?
-
-Also, can you store more bits on a 64-bit system to avoid truncating the
-AG number?
-
---D
-
 > Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
 > Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
 > ---
->  fs/xfs/xfs_iomap.h | 31 +++++++++++++++++++++++++++++++
->  1 file changed, 31 insertions(+)
+>  fs/xfs/xfs_iomap.c | 114 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 114 insertions(+)
 > 
-> diff --git a/fs/xfs/xfs_iomap.h b/fs/xfs/xfs_iomap.h
-> index ebcce7d49446..eaf4513f6759 100644
-> --- a/fs/xfs/xfs_iomap.h
-> +++ b/fs/xfs/xfs_iomap.h
-> @@ -12,6 +12,37 @@ struct xfs_inode;
->  struct xfs_bmbt_irec;
->  struct xfs_zone_alloc_ctx;
+> diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+> index 490e12cb99be..3c927ce118fe 100644
+> --- a/fs/xfs/xfs_iomap.c
+> +++ b/fs/xfs/xfs_iomap.c
+> @@ -12,6 +12,9 @@
+>  #include "xfs_trans_resv.h"
+>  #include "xfs_mount.h"
+>  #include "xfs_inode.h"
+> +#include "xfs_alloc.h"
+> +#include "xfs_ag.h"
+> +#include "xfs_ag_resv.h"
+>  #include "xfs_btree.h"
+>  #include "xfs_bmap_btree.h"
+>  #include "xfs_bmap.h"
+> @@ -92,8 +95,119 @@ xfs_iomap_valid(
+>  	return true;
+>  }
 >  
-> +/* pack prediction in a u32 stored in xarray */
-> +#define XFS_AGP_VALID_SHIFT 31
-> +#define XFS_AGP_TYPE_SHIFT 24
-> +#define XFS_AGP_TYPE_MASK 0x7fu
-> +#define XFS_AGP_AGNO_MASK 0x00ffffffu
-> +
-> +static inline u32 xfs_agp_pack(u32 agno, u8 iomap_type, bool valid)
+> +static xfs_agnumber_t
+> +xfs_predict_delalloc_agno(const struct xfs_inode *ip, loff_t pos, loff_t len)
 > +{
-> +	u32 v = agno & XFS_AGP_AGNO_MASK;
+> +	struct xfs_mount *mp = ip->i_mount;
+> +	xfs_agnumber_t start_agno, agno, best_agno;
+> +	struct xfs_perag *pag;
 > +
-> +	v |= ((u32)iomap_type & XFS_AGP_TYPE_MASK) << XFS_AGP_TYPE_SHIFT;
-> +	if (valid)
-> +		v |= (1u << XFS_AGP_VALID_SHIFT);
-> +	return v;
+> +	xfs_extlen_t free, resv, avail;
+> +	xfs_extlen_t need_fsbs, min_free_fsbs;
+> +	xfs_extlen_t best_free = 0;
+> +	xfs_agnumber_t agcount = mp->m_sb.sb_agcount;
+> +
+> +	/* RT inodes allocate from the realtime volume */
+> +	if (XFS_IS_REALTIME_INODE(ip))
+> +		return XFS_INO_TO_AGNO(mp, ip->i_ino);
+> +
+> +	start_agno =  XFS_INO_TO_AGNO(mp, ip->i_ino);
+> +
+> +	/*
+> +	 * size-based minimum free requirement.
+> +	 * Convert bytes to fsbs and require some slack.
+> +	 */
+> +	need_fsbs = XFS_B_TO_FSB(mp, (xfs_fsize_t)len);
+> +	min_free_fsbs = need_fsbs + max_t(xfs_extlen_t, need_fsbs >> 2, 128);
+> +
+> +	/*
+> +	 * scan AGs starting at start_agno and wrapping.
+> +	 * Pick the first AG that meets min_free_fsbs after reservations.
+> +	 * Keep a "best" fallback = maximum (free - resv).
+> +	 */
+> +	best_agno = start_agno;
+> +
+> +	for (xfs_agnumber_t i = 0; i < agcount; i++) {
+> +		agno = (start_agno + i) % agcount;
+> +		pag = xfs_perag_get(mp, agno);
+> +
+> +		if (!xfs_perag_initialised_agf(pag))
+> +			goto next;
+> +
+> +		free = READ_ONCE(pag->pagf_freeblks);
+> +		resv = xfs_ag_resv_needed(pag, XFS_AG_RESV_NONE);
+> +
+> +		if (free <= resv)
+> +			goto next;
+> +
+> +		avail = free - resv;
+> +
+> +		if (avail >= min_free_fsbs) {
+> +			xfs_perag_put(pag);
+> +			return agno;
+> +		}
+> +
+> +		if (avail > best_free) {
+> +			best_free = avail;
+> +			best_agno = agno;
+> +		}
+> +next:
+> +		xfs_perag_put(pag);
+> +	}
+> +
+> +	return best_agno;
 > +}
 > +
-> +static inline bool xfs_agp_valid(u32 v)
+> +static inline xfs_agnumber_t xfs_ag_from_iomap(const struct xfs_mount *mp,
+> +		const struct iomap *iomap,
+> +		const struct xfs_inode *ip, loff_t pos, size_t len)
 > +{
-> +	return v >> XFS_AGP_VALID_SHIFT;
+> +	if (iomap->type == IOMAP_MAPPED || iomap->type == IOMAP_UNWRITTEN) {
+> +		/* iomap->addr is byte address on device for buffered I/O */
+> +		xfs_fsblock_t fsb = XFS_BB_TO_FSBT(mp, BTOBB(iomap->addr));
+> +
+> +		return XFS_FSB_TO_AGNO(mp, fsb);
+> +	} else if (iomap->type == IOMAP_HOLE || iomap->type == IOMAP_DELALLOC) {
+> +		return xfs_predict_delalloc_agno(ip, pos, len);
+
+Is it worth doing an AG scan to guess where the allocation might come
+from?  The predictions could turn out to be wrong by virtue of other
+delalloc regions being written back between the time that xfs_agp_set is
+called, and the actual bmapi_write call.
+
+> +	}
+> +
+> +	return XFS_INO_TO_AGNO(mp, ip->i_ino);
 > +}
 > +
-> +static inline u32 xfs_agp_agno(u32 v)
+> +static void xfs_agp_set(struct xfs_inode *ip, pgoff_t index,
+> +			xfs_agnumber_t agno, u8 type)
 > +{
-> +	return v & XFS_AGP_AGNO_MASK;
+> +	u32 packed = xfs_agp_pack((u32)agno, type, true);
+> +
+> +	/* store as immediate value */
+> +	xa_store(&ip->i_ag_pmap, index, xa_mk_value(packed), GFP_NOFS);
+> +
+> +	/* Mark this AG as having potential dirty work */
+> +	if (ip->i_ag_dirty_bitmap && (u32)agno < ip->i_ag_dirty_bits)
+> +		set_bit((u32)agno, ip->i_ag_dirty_bitmap);
 > +}
 > +
-> +static inline u8 xfs_agp_type(u32 v)
+> +static void
+> +xfs_iomap_tag_folio(const struct iomap *iomap, struct folio *folio,
+> +		loff_t pos, size_t len)
 > +{
-> +	return (u8)((v >> XFS_AGP_TYPE_SHIFT) & XFS_AGP_TYPE_MASK);
+> +	struct inode *inode;
+> +	struct xfs_inode *ip;
+> +	struct xfs_mount *mp;
+> +	xfs_agnumber_t agno;
+> +
+> +	inode = folio_mapping(folio)->host;
+> +	ip = XFS_I(inode);
+> +	mp = ip->i_mount;
+> +
+> +	agno = xfs_ag_from_iomap(mp, iomap, ip, pos, len);
+> +
+> +	xfs_agp_set(ip, folio->index, agno, (u8)iomap->type);
+
+Hrm, so no, the ag_pmap only caches the ag number for the index of a
+folio, even if it spans many many blocks.
+
+--D
+
 > +}
 > +
->  int xfs_iomap_write_direct(struct xfs_inode *ip, xfs_fileoff_t offset_fsb,
->  		xfs_fileoff_t count_fsb, unsigned int flags,
->  		struct xfs_bmbt_irec *imap, u64 *sequence);
+>  const struct iomap_write_ops xfs_iomap_write_ops = {
+>  	.iomap_valid		= xfs_iomap_valid,
+> +	.tag_folio		= xfs_iomap_tag_folio,
+>  };
+>  
+>  int
 > -- 
 > 2.25.1
 > 
