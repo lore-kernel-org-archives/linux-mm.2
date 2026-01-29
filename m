@@ -4,108 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDF74D73E87
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:22:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6722D73E87
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:33:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 40C6B6B00AA; Thu, 29 Jan 2026 17:22:05 -0500 (EST)
+	id DCBC16B00A7; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E0E56B00AC; Thu, 29 Jan 2026 17:22:05 -0500 (EST)
+	id D7EB76B00A8; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30E1E6B00AD; Thu, 29 Jan 2026 17:22:05 -0500 (EST)
+	id C23AC6B00A9; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 213CC6B00AA
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:22:05 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ADC2C1AE8
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:22:04 +0000 (UTC)
-X-FDA: 84386425368.25.3470DBD
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A470616000F
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:22:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=JFbmvvQb;
-	spf=pass (imf08.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B04016B00A7
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:33:23 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 85FB71A0323
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:33:23 +0000 (UTC)
+X-FDA: 84386453886.09.E25C1FC
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 983A14000C
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:33:21 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=WZpqvLXw;
+	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769725322;
+	s=arc-20220608; t=1769726001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l69U1dIrB2ccHzImzegm889MzCj0l8Bz/N1WHXvfoHo=;
-	b=yqAOiVqyUVjHxbmmCmQoHG3TdHaJQdwDw9zhZ+n2QPqVqKpnHywWzvdB+RcM03VvmZPSgj
-	76t4pkt0MCpv/XOn3Cf2CJ0TfKzIzIYCilx5wr+Gy3pOdCvuQVAv0Uo3PgMYT9OsvnOSNA
-	jpvFpzga1hhpvLPQ5TNwvSSku/TvsSw=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=JFbmvvQb;
-	spf=pass (imf08.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769725322; a=rsa-sha256;
+	bh=dBZ3PFz9KqTT7KdM5e4cMtXwD446xZIZixlzxugjwak=;
+	b=GBXRXbaXpaySAb6cPY/Kt8tOlCf1SMRcSuto++VHNY7TP+CqhiYX9JV6V3o6LtXCyzK2wj
+	CxT7yb7IylYjOMANmkfF5UMuhnsdmgSJFsFyERdzfOTAYNqYnWxdidS9KsB6ojFjnyLik7
+	mRQ+g8AIuGeXbegjtDkU51rmSz+voiI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769726001; a=rsa-sha256;
 	cv=none;
-	b=Nrvgyfpi1y4wM14IGoYvOfMn3sTCxFOr77hlKNdUhdoBkvLREUzsZvNfD82UwdTXYTFtWL
-	MoU+15g7qviCedRP2r7aRLf5tlCNdAdcWIj/3l2nNtvFfo2xvd8YNGlY9G7O8NRF25+epm
-	5TjysXrgeBwN9U33YO/yAvr/A5NHQQw=
-Received: from localhost (unknown [40.65.108.177])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 5D12120B7168;
-	Thu, 29 Jan 2026 14:22:00 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5D12120B7168
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1769725321;
-	bh=l69U1dIrB2ccHzImzegm889MzCj0l8Bz/N1WHXvfoHo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JFbmvvQbSZuWgKtGygvkszx2JeEWdtJpgkKy9JrbMd/Wd5/9p+qh8F8DQZUL3TZRu
-	 2F9IotVi63Q1+5xtXPAj5Z5VpgM5SnxXvlYLMhpARcjtNuquJ02rdkhqPezl4x+bzG
-	 YQ4Gy7p2dGglcG8jvPE5kn+665aOMwS0WLDY/OxQ=
-Date: Thu, 29 Jan 2026 14:21:58 -0800
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran
- <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro
- <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, Andrew Morton
- <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, David Rientjes
- <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe
- <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke
- <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
- kexec@lists.infradead.org, kvm@vger.kernel.org, Leon Romanovsky
- <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, "=?UTF-8?Q?Mic?=
- =?UTF-8?Q?ha=C5=82?= Winiarski" <michal.winiarski@intel.com>, Mike Rapoport
- <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta
- <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
- <skhan@linuxfoundation.org>, "Thomas =?UTF-8?Q?Hellstr=C3=B6m?="
- <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>,
- Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy
- <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu
- <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+	b=w0OP6M3GR8f1bcoDrVfsjK6YHuaCmhCw3DY35LKvsyU6r4CVckEsMZ4Li+H+ezMgGRDmir
+	jA+VhlzU0pjVpA/M73rr7Ug47lQKZXTVI2BPzu4q9fJnithRUlX7FTx60qUOVHBwXN8FMo
+	L0jSkEQOSyt/lJdeGnff54Gc34pGn2c=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=WZpqvLXw;
+	spf=pass (imf11.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8230c33f477so699060b3a.2
+        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:33:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769726000; x=1770330800; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=dBZ3PFz9KqTT7KdM5e4cMtXwD446xZIZixlzxugjwak=;
+        b=WZpqvLXwXtcnRyz/tZxZ417QR7EEoUGbwKBSt8e0+gtLYP5En1OLxdaBn/H89CkfOT
+         8IxYcdNVInLO0KrBV+cHVAWf9iyYLZ1JTussHp7fmzAnq7/Ks9lnLj42Pbjgk8wDW+Iw
+         8mrU0LkmGIPyUUaxI3T2AjiANyWp9DUkDeNXTEv6eILgJotaWzq2dQnSom/OiaMEwFrG
+         Kspxp7FJAVh2NlTu71AGping0vPpZmrZBmO2Rf1/oF/7RjLrgjLM/7M0Qskb4YftzoO3
+         kXXFnxWdZHhGxaGSq8wUCNqlnd4pk9eIpiK4/dPfoEWE397oQeetTAUsQKCbJXF4kH6w
+         68Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769726000; x=1770330800;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dBZ3PFz9KqTT7KdM5e4cMtXwD446xZIZixlzxugjwak=;
+        b=TVPg2aENISI2nimI0cA8d+cne/LjvKrS6lrWmprjmexX0FsJoMKfFmol9LsKPPZWNP
+         OJR+Hb51Q7v6Hxl0w/i+58EISvyPlFOBrtMHpkeWDjczmFeSVbRlO8pxRp9jCueEZvfF
+         s9I5/feKezGCvadx4CwDJf9jtKwZkAOt/l4LxrCwBBwyO6yWKCJinE5vA5zLtYzaSka6
+         lW6PWrNlowUmHuRwDfy01ZKVqx18Cd8d3P6y/nr0Ypp/zl6M7glVXEAXSMuvr9v3yogd
+         uOGd7kyqSqYMhxXbTH5rH8uDR5l0oKng0idgfA9a4IYclez4G1XW2pkOsKQnkPytjg6D
+         tFTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW4Ii0K+xOE6IeQ++nk6CEPDx5idKZu2kHN8w/EgYDos+hI/g72gBqFeT4yhaccS8tt8JkCRBE43A==@kvack.org
+X-Gm-Message-State: AOJu0Yzs5W7jewOkYH5Ftt71zTtH8Ug8fJ1gDyway5gRlJJPuNPLyoCE
+	uKQrrVMxzI1Hu82AD/xXmx/NW8h/qRIFMHgVV4ntZKbe2M0hA9lMrwNEGBSQrcu9aw==
+X-Gm-Gg: AZuq6aKcNIUyxwnTAbp49w1i6umH1oGkRU+BBz0XS8AtEZ9xL881CU0aHJXRa2cHgxL
+	h0nf9yawsWqfrSv7s0Nf0/2do0YnwlD0qt/VHXYS5LH25vidTdG6srwvqS0GqJAuJmGnLtX6ovU
+	aE63yP5rfkb25n0ETjIw2f+NikQz8LYyFOcRYifU4TK2A6YvNH01RfdnuQG0QS57ARuVRzBaOk3
+	HYPm9JJaJWEfgSSkt8RisG/CnnjXqsXxnK3aMjsr3fRhHOl/DnxqVowCgA9bhNIv5n3rnAQefCv
+	lIxjBeQECMoEbP64agV6el9N4BhLSO1xF8kbaRTH3EzI9ZIfk6BYtq+Uef8WhNBRbZhtKytk7GM
+	CUXoDIZChwEqI1u3MGUSzQnSoY3lAkfaAEIOAXMnb9x9SlWoJdB6SXU1FN0kS/bNtzSmFNDi9Gw
+	Wj7/8D/ipJ4AG2cGA10kVGI1cF8L0MLf4iI5BLtHKj9ZDiithSIw==
+X-Received: by 2002:a05:6a00:1f0d:b0:81f:5ec1:8bcd with SMTP id d2e1a72fcca58-823ab684bffmr621422b3a.20.1769726000049;
+        Thu, 29 Jan 2026 14:33:20 -0800 (PST)
+Received: from google.com (79.217.168.34.bc.googleusercontent.com. [34.168.217.79])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379bfd797sm6165100b3a.43.2026.01.29.14.33.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 14:33:17 -0800 (PST)
+Date: Thu, 29 Jan 2026 22:33:13 +0000
+From: David Matlack <dmatlack@google.com>
+To: Jacob Pan <jacob.pan@linux.microsoft.com>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>
 Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
  Live Update
-Message-ID: <20260129142158.00004cdc@linux.microsoft.com>
-In-Reply-To: <20260129212510.967611-11-dmatlack@google.com>
+Message-ID: <aXvgKRrbfymW5NKb@google.com>
 References: <20260129212510.967611-1-dmatlack@google.com>
-	<20260129212510.967611-11-dmatlack@google.com>
-Organization: LSG
-X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
+ <20260129212510.967611-11-dmatlack@google.com>
+ <20260129142158.00004cdc@linux.microsoft.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A470616000F
-X-Stat-Signature: wpnu4w9qni1q3fxdxrkeuknbgkhqshi9
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260129142158.00004cdc@linux.microsoft.com>
+X-Rspamd-Queue-Id: 983A14000C
 X-Rspam-User: 
-X-HE-Tag: 1769725322-401480
-X-HE-Meta: U2FsdGVkX18jMxz4PLQj7T60z2g3fiuT4J0lp1UX2KMl/TQQAaAC2ZFi9V44j6pOSWsTW5z8e+0iZoW0XqbgVTKIkg3U//SNxlKRUfzqHXvJoSUinnt/8kfsPmGw4xQ9ehI029sIQyVuj3tr96kTZ7S6xKqZrQkj+pf4ZlYoIR/Jht7ij4LacOg1/IOkaF0KjPB2QjhoN3hESeOlqF5t2wtKfZaeyvU8hXHZv2ruZO4+EfD/fejMUHBglQi8RlYe9BwoLsxP/01cQfw63WSs4sEwQ4i7hez5Ytt5Wns2YHc1969QRQUqRTkOThXL/vkAepl99h7sgZNmPN55bKNE1Jbi4FsZJdYYtIfD9iwawmhpgEM8ccwx92f7FLahUCeJ1NhwBK78Zn5FOassLpOC+AWwmHwduPlWhRoUS4Gu5hOkRCSvrGqedIEuRDpjadxBTFljDiDXs/GzI9YQq4EhPcOGXN1xO4UGUCNCHpe6Gak8H5iecbZymqJIRaqXzk75jUCBupqDAWQj2iJc4DjWqy8IFUSZGSTThZViw2myIZz7qegXMQbHLaBeeQqkWcbbj3yFpUq/qlC8I7DWRr7N7oDppO40NtQuZEKHZ7iZDTKAxGWFnyKDSLZTPpbkDjPvEBbFYm0YUYjtFnOLK/QkgQzE5cGirTbkU1+ASrL5m7voHGsXRBkXVNMnM+LVDluLLN1h+L0OFkl4t6xchb/IZTvN7K/YQEe3i4cIeQo+SJJLnYiz0H6i0u3hoq33puZS8WmYg1VO91FsFoyMoOR9gzQJhZiXvOXHVu+DPenmRxtWccHfBJDs4JCWoTWH2qHxshiqpnDEkRnY0dnDrKpPrqz7iYosv7QxrVoI6w2bxb+6VSKxyVrsxXzs/E44c+V17T49gOlAaqsmM1bpCH+zbrbYOLZTynhZFogWXzAfILO5IpmCeCZTud7o2+6HXQ7Sea32xSGaQTGd7pkENYb
- G+qEcvaJ
- DTLBPUS/XGebKv+M5EzCODRxof2OwWggJdEKXJUF0+TWx70sFuoIQWfk4CfdRCF6sjEG8sTegynuhRJ2libRFovIf9MYtYQtAu6O7wRC0drG58jMvutwgrPxPsOOmZH5eVvbiFjTQy+aSr9q9jg59aYpcAbey6U48hBdEYVlZBRFVRJ7oJ5YgF53jAbPaPsMH8n4NtiwDi2gRctdu3++mn+dah8+DxWGNNYcqU3CEerIr1p8zCnhPuPF1LCYhFWld6UgpKAQOFY9olc+440NlKpjTkeIy3izRYA8ar5XZRf4bpdzNq278/q9kZtL5tKrFdsxW3tnlK6euQn6rEyvchhjtVmZ1ueLOBD6DhNOc9lZT3dRCxefimSyA0weHJL6oK9K2
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qfh5d4diqmh3jz48ohdjctimx1ux7jfr
+X-HE-Tag: 1769726001-157058
+X-HE-Meta: U2FsdGVkX1+goaR2Ntf4qSEBRPUrBri6NUAIPC6ipvZQRpZfhkJAEvyfexX0KTd2u6LgqSuOpOpWMhUuqAsSTUdsZffUGMr/o5rOa3rEjbWoGW6YKi5DK907USgPblK4iuyPuCdOfLZdzSUDic52uCOu4mFQvekd8gRpywOabZeKfLpzQiFgenxicohmfJvBfJasM0S6Zs0MFwQQIImSqyatG9op8UmJ2tfmu1Is4iXE36BjnYuU2kmfl54ZaioEHnwNWWmHwhH4OyK0/rolxmlrCCQPSRdWfY+pi9PEq+Da2cwdAqm3YTgpRU5aQ38QMxrzrXdg1ze1/1SE2HhuRha4siDplXF6fFEUo+yzeYBtzs/kXYx8mNCKcmz5cqOPa2vftXK1+AzXeAb7FQ6yKG0nLKJvnigRoBqOMnubxRQZxfxcBXib1sm2Ip5ey/IUlhwpyGb+ntLd4SIAnBbo79a2IEvekavU38zPckyqvGJAYN6M661qNXOt4v8zOzu7mvJGRClbo1NhF/+/qPWkXpuw/aLWWHQhk8JHJZwTFYHwkq/eDCoUZP5ENvgiqUIGgCu/2ESnKwl+6nOgGnlLo8AGlErjVNlaZ+VtJ4+o7Aa0ZAIgYrsC74MIc+ltKaLIid/Q390Vxhf68GvzgzNhFIkrR+zygvy9ERkz7XvZCscSrufVdz9AhrjM9DfuO7Iv79aez0rgjtyEOgeUvsSHxX68eA9EVtF6neugPoj9fuwrjR+bDBpQ0WLtz8Nn0geBE+X6ijVysiCshzl+Qw0z6EHvhs3UhTM8g9srjqlO2nC26YdC2b276/sKLaMlHy3gmiHsoLPCrXjP93Tgv6IBu/Ew9JfNLr9zLkNyIzNjC7Mzgq7S/sKbYLJXVEX/AldO4p1whQY44IFdKlf9OFkU4zpoqC1xzPUiHId+/Yqf8LhPkVRkKqFRaVgEmEmYG4O1Uqm8r0/F398T4VuxdaR
+ tYzgcYZ8
+ 5Ad3SWSa0Y7xqDdK+z0xqqMqvweVPtp03mpg/4U5zGdzG9BeM5DRMZp1vNSPoXWmKlmrFytgTx7PPjBgpqjhePV+SKcgiX0WyoLm1MYf1W/ok4cnhfj54zZyjGGRi8CUcGFWOjLGRJr95z9NdadAHSXKTBpVMaZsZL9Tb6Ww2MRSqCGp+pFsrV+3EI1Mr9905Hw/desg18qNcAO3waWvKVYB+JfjqGagtHNOQ43z+TYEZ4LIFbmBvAt++6zm8KplvreSUkCfGHjgQcg2Qi2wW1F0njBsNNKUYKrhoA2V66Va1ytx8+h9Kfi9Zo6LEJu18jB9sQ0LkLhblAn9GhXS1sGPtbWOaFlrwAUXKKDME0zQS+OmUuXevTM4jMcYMUgTcUqUX5UCvF13+YMAq07uHNNaPDm09FalIzph8KJe0pVQlm6gNl2HeQg31955T+HUuqxbMuovl19wRyuQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,114 +153,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On 2026-01-29 02:21 PM, Jacob Pan wrote:
+> On Thu, 29 Jan 2026 21:24:57 +0000 David Matlack <dmatlack@google.com> wrote:
 
-On Thu, 29 Jan 2026 21:24:57 +0000
-David Matlack <dmatlack@google.com> wrote:
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c
+> > b/drivers/vfio/pci/vfio_pci_core.c index b01b94d81e28..c9f73f597797
+> > 100644 --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -515,12 +515,24 @@ int vfio_pci_core_enable(struct
+> > vfio_pci_core_device *vdev) if (ret)
+> >  		goto out_power;
+> >  
+> > -	/* If reset fails because of the device lock, fail this path
+> > entirely */
+> > -	ret = pci_try_reset_function(pdev);
+> > -	if (ret == -EAGAIN)
+> > -		goto out_disable_device;
+> > +	if (vdev->liveupdate_incoming_state) {
+> > +		/*
+> > +		 * This device was preserved by the previous kernel
+> > across a
+> > +		 * Live Update, so it does not need to be reset.
+> > +		 */
+> > +		vdev->reset_works =
+> > vdev->liveupdate_incoming_state->reset_works;
+>
+> Just wondering what happened to skipping the bus master clearing. I
+> understand this version does not preserve the device itself yet; I’m
+> just curious whether there were specific difficulties that led to
+> dropping the earlier patch which skipped clearing bus master.
 
-> From: Vipin Sharma <vipinsh@google.com>
->=20
-> Do not reset the device when a Live Update preserved vfio-pci device
-> is retrieved and first enabled. vfio_pci_liveupdate_freeze()
-> guarantees the device is reset prior to Live Update, so there's no
-> reason to reset it again after Live Update.
->=20
-> Since VFIO normally uses the initial reset to detect if the device
-> supports function resets, pass that from the previous kernel via
-> struct vfio_pci_core_dev_ser.
->=20
-> Signed-off-by: Vipin Sharma <vipinsh@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c       | 22 +++++++++++++++++-----
->  drivers/vfio/pci/vfio_pci_liveupdate.c |  1 +
->  include/linux/kho/abi/vfio_pci.h       |  2 ++
->  include/linux/vfio_pci_core.h          |  1 +
->  4 files changed, 21 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c
-> b/drivers/vfio/pci/vfio_pci_core.c index b01b94d81e28..c9f73f597797
-> 100644 --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -515,12 +515,24 @@ int vfio_pci_core_enable(struct
-> vfio_pci_core_device *vdev) if (ret)
->  		goto out_power;
-> =20
-> -	/* If reset fails because of the device lock, fail this path
-> entirely */
-> -	ret =3D pci_try_reset_function(pdev);
-> -	if (ret =3D=3D -EAGAIN)
-> -		goto out_disable_device;
-> +	if (vdev->liveupdate_incoming_state) {
-> +		/*
-> +		 * This device was preserved by the previous kernel
-> across a
-> +		 * Live Update, so it does not need to be reset.
-> +		 */
-> +		vdev->reset_works =3D
-> vdev->liveupdate_incoming_state->reset_works;
-Just wondering what happened to skipping the bus master clearing. I
-understand this version does not preserve the device itself yet; I=E2=80=99m
-just curious whether there were specific difficulties that led to
-dropping the earlier patch which skipped clearing bus master.
+Hi Jacob,
 
-> +	} else {
-> +		/*
-> +		 * If reset fails because of the device lock, fail
-> this path
-> +		 * entirely.
-> +		 */
-> +		ret =3D pci_try_reset_function(pdev);
-> +		if (ret =3D=3D -EAGAIN)
-> +			goto out_disable_device;
-> +
-> +		vdev->reset_works =3D !ret;
-> +	}
-> =20
-> -	vdev->reset_works =3D !ret;
->  	pci_save_state(pdev);
->  	vdev->pci_saved_state =3D pci_store_saved_state(pdev);
->  	if (!vdev->pci_saved_state)
-> diff --git a/drivers/vfio/pci/vfio_pci_liveupdate.c
-> b/drivers/vfio/pci/vfio_pci_liveupdate.c index
-> 1ad7379c70c4..c52d6bdb455f 100644 ---
-> a/drivers/vfio/pci/vfio_pci_liveupdate.c +++
-> b/drivers/vfio/pci/vfio_pci_liveupdate.c @@ -57,6 +57,7 @@ static int
-> vfio_pci_liveupdate_preserve(struct liveupdate_file_op_args *args)=20
->  	ser->bdf =3D pci_dev_id(pdev);
->  	ser->domain =3D pci_domain_nr(pdev->bus);
-> +	ser->reset_works =3D vdev->reset_works;
-> =20
->  	args->serialized_data =3D virt_to_phys(ser);
->  	return 0;
-> diff --git a/include/linux/kho/abi/vfio_pci.h
-> b/include/linux/kho/abi/vfio_pci.h index 9bf58a2f3820..6c3d3c6dfc09
-> 100644 --- a/include/linux/kho/abi/vfio_pci.h
-> +++ b/include/linux/kho/abi/vfio_pci.h
-> @@ -34,10 +34,12 @@
->   *
->   * @bdf: The device's PCI bus, device, and function number.
->   * @domain: The device's PCI domain number (segment).
-> + * @reset_works: Non-zero if the device supports function resets.
->   */
->  struct vfio_pci_core_device_ser {
->  	u16 bdf;
->  	u16 domain;
-> +	u8 reset_works;
->  } __packed;
-> =20
->  #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
-> diff --git a/include/linux/vfio_pci_core.h
-> b/include/linux/vfio_pci_core.h index 350c30f84a13..95835298e29e
-> 100644 --- a/include/linux/vfio_pci_core.h
-> +++ b/include/linux/vfio_pci_core.h
-> @@ -16,6 +16,7 @@
->  #include <linux/types.h>
->  #include <linux/uuid.h>
->  #include <linux/notifier.h>
-> +#include <linux/kho/abi/vfio_pci.h>
-> =20
->  #ifndef VFIO_PCI_CORE_H
->  #define VFIO_PCI_CORE_H
+There's several places where bus master gets cleared that we need to
+eventually eliminate to fully preserve the device.
 
+ 1. vfio_pci_liveupdate_freeze() clears it during shutdown when it
+    restores vdev->pci_saved_state.
+ 2. pci_device_shutdown() clears it during shutdown.
+ 3. vfio_pci_core_enable() clears it when the preserved device file
+    is bound to an iommufd after the Live Update (in
+    vfio_pci_core_enable()).
+
+I think it would be safe to skip (3) in this series, since that's very
+similar to how this series skips resets during vfio_pci_core_enable()
+for preserved devices.
+
+But I don't think it would be safe to skip (1) or (2) until the attached
+iommufd is fully preserved.
+
+If you are just asking about (3) then I agree it could be skipped and I
+can include that in the next version.
 
