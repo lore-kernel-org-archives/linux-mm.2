@@ -4,112 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34330D73E84
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 17:35:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34F41D73E81
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 17:40:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D6396B008C; Thu, 29 Jan 2026 12:35:21 -0500 (EST)
+	id 730C56B0088; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B88E6B0092; Thu, 29 Jan 2026 12:35:21 -0500 (EST)
+	id 6DE696B0089; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9D066B0093; Thu, 29 Jan 2026 12:35:20 -0500 (EST)
+	id 5C01C6B008A; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CD0846B008C
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:35:20 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 73A02B73C3
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:35:20 +0000 (UTC)
-X-FDA: 84385702800.24.0DB2ED4
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 71E641C0011
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:35:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=snai.pe header.s=snai.pe header.b=LxNJm8iJ;
-	spf=pass (imf18.hostedemail.com: domain of me@snai.pe designates 209.85.221.54 as permitted sender) smtp.mailfrom=me@snai.pe;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 4D58E6B0088
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 12:40:01 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1996BD369F
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:40:01 +0000 (UTC)
+X-FDA: 84385714602.10.21FDC16
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D203C40012
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:39:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=c87GBSyX;
+	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769708118;
+	s=arc-20220608; t=1769708399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Phc9qAk4f5Y7siOZluWOGyZS8E5U/JFAMjIiUncQyU=;
-	b=5tfXtFycY9zzKM4uTQlHgJJ3vKr3CFugMINFZh2g6JYHUfYgPQ0eWq+uO6m1IudxuxHUnZ
-	w/6bCa/4iS0mzdkB5Y2h94R33Rxfv/yEnOqhR+YAHV4XK2dSSfm6vNsBfgzI0mkQI5msf5
-	qHJCvK41qlIPh0ueCo5Oh7wC2ak4/zU=
+	bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
+	b=wKM1ZgApRdyG99tAm5ZKkpwoThjKdTZOt+nu9Dijwm50vZFn5+EnDcFzXuItxqkF6TBz5z
+	nfG3IlqvaVKVNQojgYtZVlP0RyAmuuvMz5d3xF4Xyx7gRK2+Qj9QMzA00XzCvFQ81bctK7
+	jgYm/T/9jwU1Ta4iFDhO2YjD+QASeIE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=snai.pe header.s=snai.pe header.b=LxNJm8iJ;
-	spf=pass (imf18.hostedemail.com: domain of me@snai.pe designates 209.85.221.54 as permitted sender) smtp.mailfrom=me@snai.pe;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769708118; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=c87GBSyX;
+	spf=pass (imf17.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769708399; a=rsa-sha256;
 	cv=none;
-	b=e/4jY5E+3Kh2rx3Z9h25wN79BVVoKuqKZGArOshlvdVKOSUBf6mPuyig7mnjUy6X2p347D
-	1Uh7/ivU9r13zImOHQB23CVo9HsDW04Mp39hpLP/mUoz1w5CKvCLK4ImMXyw3FcIlDVVTy
-	H4Q/tfjcgo30gvb5JszgaEivpas04V4=
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-42fb2314eb0so1118162f8f.2
-        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 09:35:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snai.pe; s=snai.pe; t=1769708117; x=1770312917; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9Phc9qAk4f5Y7siOZluWOGyZS8E5U/JFAMjIiUncQyU=;
-        b=LxNJm8iJHlfJDnMm4Vu+exF0VpaBy+YGyGN/hcTz++1PD4/7FlwJf+hv7dq9FGz5wp
-         hkqTxhKff7Oefqx+fJG+NiwEcG+DxFRsQaA7jANTD+caYlp9GUk2JDO6IMkEhuCVjX+3
-         DDYGp7DVTaKF72olOjZBd8YfIx0n1QncIot4p1Ucy2W/NUdqj9HnDj6eEm/Xl3wNg+Pj
-         FYq8ALuLdtnFJ38hxRBqCKVsLh+4VcOHb+b6ajWeJo6UX7YzeNXsZ+DeY82q+X+aANdO
-         acpfyNkfnepDjHCnKjaiktCWVFLAWCQ+aUvIlNdfclleMCJ05q2pTrtvc2FUywfZvMQi
-         FAXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769708117; x=1770312917;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9Phc9qAk4f5Y7siOZluWOGyZS8E5U/JFAMjIiUncQyU=;
-        b=djfq8EKPdiw/ojzP5hE+cWFkK5xI7bm9VlU8Hcy3fWf5fwWoM2YEFP/Q5kLB31JNt7
-         u4pJZ2dpSuC1nS9uXnHGvOAoPDaTZThoRJbQh36A9T5Me1BxCP6jaINI4B8A8ZYlCVa5
-         QQBhakWNYfR+9ntlp/sjyGRfHjfoGiXgyYq6m0J7kjzn2/0YMJcY5XHDzO0ABcJDMv+S
-         7zA4pZZXagK7ouKqOV+Xvw1KH54o+QSNdrgnwcG3bn0yZfMQmRG1h+evk32ZvZTxeiZQ
-         ywCWrnvBiPZSi2x5Y2+ps9kVdASEerpLu1StDxw6zREybgKAi8736LcFTKLMpXz8AZvR
-         aP7Q==
-X-Gm-Message-State: AOJu0Yz29yetPX2tOYyqmkHdA0fA5h60peRHIvoyHGViyGdMwJ652wa6
-	252/2KtL6rCrpfL1WaSZ61JtaZrLkEBHzjv/nXuJ8tm35h/CSpvEOwiNwOA3mG6VY2OYe8Nl35U
-	8j21U47o=
-X-Gm-Gg: AZuq6aLwi66m+qP6OKSzD0MTI4dCCzZA4dzK12DX3VEx1EBZsRAsV7jSYb9ssgbYMt0
-	xrj6Mdld/oDtR6Gj+/BDlPZYUXv3JSk1932D5CrRJIPn7CHnT+OzMkfEdW13ze6EoXSNpslktnS
-	7iD2IyFB4lDmz+KEoCemhvGqTu8DHyzhgjFZNjjhP5i8ZcQ1DSfQaP/54s6rgL7Iv8XNsiTRCMJ
-	iW/qKs1sD197PLqy6dR9KwBIh2Hy7qLcAuHlDtM2E0F4nXD1O/GcFR0va9GMeBFgdKdrEJlx6sb
-	H1G9snwUaqnVBBwOjtZa+kxGvtMOAfh59xxFnXIDyU5WQAwFBYS5Ziba+T9mxg0JFQ2SpNRZakH
-	z2yQwm62FGABkih+s0hT+pyVgnUYVXxMf0BVZ17TAnw5aWu8PzlHSF+s8aTymJld1P9OM/AJn51
-	KxPwkwBc5qtn/B8pMhSJM3F9eERuPRhyQI7M8GQaJAmHzYnStqilRjoKSHMoXu8m2NJ9Y6ftXwn
-	dRU6QRS6X5MVQ==
-X-Received: by 2002:a05:6000:4007:b0:435:a2f8:1515 with SMTP id ffacd0b85a97d-435f3a62efamr583681f8f.10.1769708116859;
-        Thu, 29 Jan 2026 09:35:16 -0800 (PST)
-Received: from snaipe-arista.aristanetworks.com ([81.255.216.45])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e131cf16sm16904163f8f.22.2026.01.29.09.35.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 09:35:16 -0800 (PST)
-From: Snaipe <me@snai.pe>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-mm@kvack.org
-Subject: [RFC PATCH 1/1] fs,ns: allow copying of shm_mnt mount trees
-Date: Thu, 29 Jan 2026 18:35:15 +0100
-Message-ID: <20260129173515.1649305-2-me@snai.pe>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260129173515.1649305-1-me@snai.pe>
-References: <20260129173515.1649305-1-me@snai.pe>
+	b=qnuaxXnPzW/VC98nkWHN42Kns0HW9b+lweC2EJkHx/dvz/kFJA8pnCMk3iBsXh3TX3w2Cc
+	4p0Bi2pMfMAFPOXd0QPC/6Ybd7FDdEQt2EqgnekjCe+63jlsnkCRXfYr4h6g/bsKqFqb6M
+	VRRRqkqcQ+0PvdVbwwfihFcBqgTbjoQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769708398; x=1801244398;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9/EHeULcqZbnKkCfvS7FIf8N1dbPW5VY16eMrhzC/k0=;
+  b=c87GBSyXyr6zGdno3CdDl8vGzIhz+Jout9+0+RPZhnG6zriFMZClKbx4
+   N0p5HSfgWX70BFNwWbA/SoOs/xU+RHFEJzsZFCjdNw0gZ10IOWQfJ4rF4
+   qKkkae/uQllsGf2Hl6RVzc2PNsDtNhzkxw4o9zQe0D2VxeEcTWQ2fFGr0
+   pS5v7RU85VwQhOzv+mNJYl6FBbmZQuFfQ3FxlPCmAsHET39MkXz3nouNR
+   cOUXwQQZw7nuJijvW5mMQkhFg8+eOhZuwm8MMFHUs/ogaGg6m6XPvp5XD
+   iBvelq4HJA8fRhEFV1YxjGrY6cBFHc4jQENOrEaELwj65YDo/G7xB9NAe
+   Q==;
+X-CSE-ConnectionGUID: wjLgOzCvQNyL34g8kETn2Q==
+X-CSE-MsgGUID: P+gFuhvyTyy2UYD8rRF6eQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70928869"
+X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
+   d="scan'208";a="70928869"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:57 -0800
+X-CSE-ConnectionGUID: m1QRk3fZTkyWcEM9VM/MFw==
+X-CSE-MsgGUID: DGQPX5d/SC26JL5PZLjNmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
+   d="scan'208";a="239364563"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.110.19]) ([10.125.110.19])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:39:56 -0800
+Message-ID: <b7cbc2f4-6fef-44c2-a0f4-2d6895c0fd74@intel.com>
+Date: Thu, 29 Jan 2026 09:39:55 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 71E641C0011
-X-Stat-Signature: ieemo3onndsigpig4irfhzpuqxaychcb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] x86/sev: Add support to unaccept memory after
+ hot-remove
+To: "Pratik R. Sampat" <prsampat@amd.com>, Kiryl Shutsemau <kas@kernel.org>
+Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
+ linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
+ akpm@linux-foundation.org, david@kernel.org, osalvador@suse.de,
+ thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20260128204105.508855-1-prsampat@amd.com>
+ <20260128204105.508855-3-prsampat@amd.com>
+ <16aa84a9-83ce-4748-bc73-ccf5cb6ce376@intel.com>
+ <aXs4DTXCbI_c0JPO@thinkstation>
+ <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <097a4980-9d10-40d2-9667-d07bf19e7b86@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: zwcrsxzc6f57habf1sgpe7r8eaymodty
+X-Rspamd-Queue-Id: D203C40012
 X-Rspam-User: 
-X-HE-Tag: 1769708118-91137
-X-HE-Meta: U2FsdGVkX180Y/qmmUXwJ5xtOl/bS4nTtsB6uVbratuYe8oxSlDnxPYjy+aHIC6yaMy8BMAHXPxOWPH9ldl7cvBJmGlDk5AUhDPQDkC0SWCTNdKd0xASZkRTh+pOFCwxUjc/e5Nn0z6icT9GJsuaAqEbbxW/rlLDfj0aTsdwS6ph1qPH8ixfiCY9PDhOIeqQHJbBtAqb6LclkM4erRF8NmawVqykwscMQZaVlTi4lvKn8+8YAB7Cc59MfASIPInAVRMtHtV8vODNP5ySFaMT0TqWK6K+UXDt9p0iUAa/3RRoA7MmxS1u785jmH744LuWvpLykDWOiGJSV0hp+pXx2R7TwitSU/w7JqLYp+j5doCic+qBAevwj9DWXBl2ouCjpJ2O+E1STI0FMz9BFF9FZlHoEgn+G1VbWvcv4VsmbLc9I380rAvIsROEkB2Kq2ZUQcJVwZ0RHmt0j/QmT6YWGkE8ex36sI7DUkYLKyE/l5AnwsKnR9kpeU/xToQM9YOm1017NxlNaJAL3CkAVPl0RV+KM8+gsAxIbvkL7E1zKUB3iB44nq8Fi8NgLWJ44MuZHPIduFWDKqsHE05SkJTnVqh06YG7LVn8F0x4WEvS3/IHWqrndAd21XzJeieQbkoaR7QLfHx5Et5wwPLhx4BLvYpEbyfgfo8V4gC6KAXEWa5BF9uB1xTelbyFEThZGIpbmb6s+7otTlfdhhVnBqrB04hwoeEEDflh0NDXPDUDI76amcSKO/SJWjcbUPT9Q3HK0tlwFW3+yd48QgZCFjofE6VfMadl7JsT6Z/chLYcZK3auuBGT/bzcIfTDbwt1CIZypMm7qihlhjET4AtpxFcq4E9Ex3ED0q3blCBtTNssO0i9y9aTzY/e47PBwUFY1SHe3acARXkdH7Mj/GRs+WXFNEIoKhb8Z1wDrWgGzAY0/5qCtEebI0gx7vHmwDj0i8dHd24cNulWjvvhUhhs6H
- qcK/Cm95
- j94Por3q4j5IUHadFT97R4b/D6AL5qVGA/tZkEyQ2ZazhNq5nTPKi22K5Oc8xIDpfQeJGOj2Gt4VThK95luUNnVIETN9qv//64Qc9HSPVHtMELFqyX/Az1gR3GbSpvizyRmaYCmM0lS1OE8ePPbFzYThP4wAdmrUbvM2oXYkrbQBGJY/TuHhUA8ypZddcJBQBsMTswL4DAd291ejS/flYGBSfBnqxCVA6U3R/e1gwH8OW/RC4/1FVyFdsgFg1sCCujcMLYNixxAAOlieBu9SwsySaIQ==
+X-HE-Tag: 1769708397-290312
+X-HE-Meta: U2FsdGVkX1/g5rEsNXT+KDvERCHcbF/PqeOxq9hAdIJnxnHYPwUl3gGvZwM6coulywbOT90ZcX7ePQHD2k+tksnSuGZaCcc0PhswC5nWbBv2LLLeyUFEf1+xmic+DnXZroLb8a5m6/fonMTpqH1AIF/mQyHB4Ti3D2xh9lLdtKaX2p2VxrAto9NTxTl8HugJcUYxFnfYMHnz69S0rEmlXofIX0IC8h7dy2viHHAY9N8U6JS0t0SFW78icLeymdNh6TjGgxGosJCu59K4G3XBfXjgheSyg5MQzdJIselgbxm52JSB53h6KkC4Q994vKP6W1DqPt5NXY8z2V4CO0wYWXvONSVTICsHUs2t1Ji0Sq168cieqENW40dH9NT+UxnF4+gKbZnwnZtousuPE6ErESHqF3OiKIjDNGux5HIwRwMzsoYM+mqd9qrCEe3AQvij0CfT8w1q1sdqBYFjsil2UpYbFFpn76/aUkwCbvSnC5pLeZIVflekbhN/fjHTrV1gXdcFy6DT2Bxxbbi0JIDiaUtDoRqjkGeldlFszDmjcDThYPWc/TjxPMumQo9jXDY/sNTnkZswkUIL44+S5ZAB/ItYiuoL5JXcZr36xc/Faxu4vdy8qy9vsxm+bIK7BeXzLqdwT3oN0Uv9y21/ARA614qjAPcUftEM9V3JKNtV1/8cQQLMHb6P/qyaq+qIXZIOYeSGaQPo6yiCLF3ydxvs3cSbjhBMz44YX6y6tIC7mUCl1ggOVe7bEfM8aOk3AdHspI6geihoZPAAi9yut8vXTMVTUXAhoMi8UGUX1VeiCXNg91szOeyY9/Oy53MbWNLvYD15sr+DDOb5V4Jjcyglu87XAfqO/CQ9lPCcjcc1XRoCZm3VL1iEtadt0ZuXKWeCJA8EzwrmfC2rF/saKG1g/x7D+ITFYbolooE7qAa+S4OGAOLcX2rNfgG1VLV3FHqPyLRWULLiGgF01+Ix9SP
+ AWabV5GW
+ szfkggfD9XfKr9JRjOvhW9dcxJ/bVtXyob84Y2MfjGEIS6QCtYzOfTi/1Xwzc1HeXX54Q53otWS5xurKo3O635AX9VuDPMLBcbFuo/XM+N7OZDZMf3VXEgDjggGsPeqdVvTAnjw0CJJRZ+aNdyLprOOgdA4BzMKvL9X1itju33V/TydkraH9hT9WjJlfQbfhUUmt/Zqwl6YJZqJI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,95 +157,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: "Franklin \"Snaipe\" Mathieu" <me@snai.pe>
+On 1/29/26 09:32, Pratik R. Sampat wrote:
+> In that case a fall through for TDX (with a comment explaining why) and
+> panic for rest may be the way to go?
 
-The main motivation for this change is to be able to bind-mount memfd file
-descriptors. Prior to this change, it was not easy for a process to
-create a private in-memory handle that could then be bind-mounted.
+No. panic() is an absolute last resort. It's almost never the way to go.
 
-A process had to have access to a tmpfs, create a file in it, call
-open_tree on the resulting file descriptor, close the original file
-descriptor, unlink the file, and then check that no other process raced
-the process to open the new file. Doable, but not great for mounting
-sensitive content like secrets.
-
-With this change, it is now possible for a process to prepare a memfd,
-and call open_tree on it:
-
-    int tmpfd = memfd_create("secret", 0);
-    fchmod(tmpfd, 0600);
-    write(tmpfd, "SecretKey", 9);
-
-    int treefd = open_tree(tmpfd, "", OPEN_TREE_CLONE|AT_EMPTY_PATH|AT_RECURSIVE);
-    move_mount(treefd, "", -1, "/secret.txt", MOVE_MOUNT_F_EMPTY_PATH);
-
-Signed-off-by: Franklin "Snaipe" Mathieu <me@snai.pe>
----
- fs/namespace.c | 8 ++++++++
- mm/internal.h  | 2 ++
- mm/shmem.c     | 2 +-
- 3 files changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/fs/namespace.c b/fs/namespace.c
-index d82910f33dc4..f51ad2013662 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -38,6 +38,9 @@
- #include "pnode.h"
- #include "internal.h"
- 
-+/* For checking memfd bind-mounts via shm_mnt */
-+#include "../mm/internal.h"
-+
- /* Maximum number of mounts in a mount namespace */
- static unsigned int sysctl_mount_max __read_mostly = 100000;
- 
-@@ -2901,6 +2904,8 @@ static int do_change_type(const struct path *path, int ms_flags)
-  * (3) The caller tries to copy a pidfs mount referring to a pidfd.
-  * (4) The caller is trying to copy a mount tree that belongs to an
-  *     anonymous mount namespace.
-+ * (5) The caller is trying to copy a mount tree belonging to shm_mnt
-+ *     (e.g. bind-mounting a file descriptor obtained from memfd_create)
-  *
-  *     For that to be safe, this helper enforces that the origin mount
-  *     namespace the anonymous mount namespace was created from is the
-@@ -2943,6 +2948,9 @@ static inline bool may_copy_tree(const struct path *path)
- 	if (d_op == &pidfs_dentry_operations)
- 		return true;
- 
-+	if (path->mnt == shm_mnt)
-+		return true;
-+
- 	if (!is_mounted(path->mnt))
- 		return false;
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..aa45c5576b16 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -24,6 +24,8 @@
- 
- struct folio_batch;
- 
-+extern struct vfsmount *shm_mnt __ro_after_init;
-+
- /*
-  * Maintains state across a page table move. The operation assumes both source
-  * and destination VMAs already exist and are specified by the user.
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b9081b817d28..449d6bc813ae 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -43,7 +43,7 @@
- #include <linux/unicode.h>
- #include "swap.h"
- 
--static struct vfsmount *shm_mnt __ro_after_init;
-+struct vfsmount *shm_mnt __ro_after_init;
- 
- #ifdef CONFIG_SHMEM
- /*
--- 
-2.52.0
-
+What else can we do to ensure we never reach this code if the platform
+doesn't support memory un-acceptance?
 
