@@ -4,88 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ED35D73E9B
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 21:53:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A37FD73E9C
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 21:58:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 596506B00B0; Thu, 29 Jan 2026 16:53:53 -0500 (EST)
+	id CF0BE6B00AF; Thu, 29 Jan 2026 16:58:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 543F86B00B1; Thu, 29 Jan 2026 16:53:53 -0500 (EST)
+	id C9EAB6B00B1; Thu, 29 Jan 2026 16:58:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4465C6B00B2; Thu, 29 Jan 2026 16:53:53 -0500 (EST)
+	id B7FFA6B00B2; Thu, 29 Jan 2026 16:58:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 326906B00B0
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 16:53:53 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E91A0B904A
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:53:52 +0000 (UTC)
-X-FDA: 84386354304.12.1528DDA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 975EDA0009
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:53:51 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPhRv87U;
-	spf=pass (imf15.hostedemail.com: domain of andrii@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=andrii@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A7DAB6B00AF
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 16:58:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5FE94C1D66
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:58:22 +0000 (UTC)
+X-FDA: 84386365644.17.C4D3799
+Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 788BEC0007
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:58:20 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OerDB1dC;
+	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769723631;
+	s=arc-20220608; t=1769723900;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=Y5b5kc7UYSmyW4+WPAPre+I7YSl4GAjE0FlW7f56DoU=;
-	b=RnEWVvi8/jpahmhgE142pOlW5RK/MmdADZyuz7youeDUuna0D6aKi+uQTxmDKgRBwYuJL2
-	tqxyDoSkjkqUVtLEdxM50i1PsWAs+C33DWg/w1DjZ2O22kgKyWgZ8vAhQXQlNL6zhrVYi6
-	XQbjA1SQQKYiSW2NDaY0+m4VcQOJ2rw=
+	bh=C7ZtJvE3dpFWqwjZMa9omEQRwNhNuc19ZVJnJ8avCkY=;
+	b=k7ig71yzjLXRbT3YXXIS9TyevJElc6yS38QMy1g00tx9UQKHdLvtDRF0K1u+c5aW5rg+3q
+	JZzXF/E6BjkMbsT4c6f4l29aiC1pB9YdZ7+4N1pgZMpAG4eQ95uDimoYZd/+SGL4k3ycP6
+	Ya4aiRSuSnlqOJegB8eUI9bl0f1hifY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPhRv87U;
-	spf=pass (imf15.hostedemail.com: domain of andrii@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=andrii@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769723631; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OerDB1dC;
+	spf=pass (imf22.hostedemail.com: domain of ravis.opensrc@gmail.com designates 74.125.82.65 as permitted sender) smtp.mailfrom=ravis.opensrc@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769723900; a=rsa-sha256;
 	cv=none;
-	b=i2x6kuTWwmXa6ecZLS+dRncz//Dx+Ey6tHq4ynV0pviFe56c9ldUenmhdFjOLr/eLzZnuF
-	3JbB6trRc+3Gyip6gT7VpI5jPvLtVtOrZFbcjGeEBo+gF1OR+dyRzJ1v87/kFGayncpRgd
-	75EnsPTlsMAKJPmNwruPRN+J5x/Y55E=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CC3266001A;
-	Thu, 29 Jan 2026 21:53:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A7CC4CEF7;
-	Thu, 29 Jan 2026 21:53:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769723630;
-	bh=wZhSeqTw09iSOExRe/tEpbezwNUiIYxVudwBu58Ttmc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=VPhRv87Uq+eLWzzGCn7R7S9xIafqbprcJAOGGrYNTc4MMFFjqTl15AU93Lp0KrxZN
-	 OJUaQJMhx7W9jM56IXD4CF6R5eqYw9wvfZU67Xp/R9HZSSxBJBOof9bm+Wp/0eoaco
-	 BEzFIkMPWLG5kKBDdcV8zwTMoZXt8uW6XnsL8MMKzDGRMPizgGDQq9CIubf3VAmKHe
-	 hjgB9cFIj93y7pFV88jVMlJSyKeIixHYpa4/hpnHsoueXtkpwYlthv8jCSLvqr2n3Z
-	 zSpeoR9GED/0BwOGk4l/fOip8nt3gX9TKDOYnAB4O031QSIiyusG7s7rDzHk4uwLKg
-	 yP70L5T9MhKZw==
-From: Andrii Nakryiko <andrii@kernel.org>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	surenb@google.com,
-	shakeel.butt@linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com
-Subject: [PATCH v2 mm-stable] procfs: avoid fetching build ID while holding VMA lock
-Date: Thu, 29 Jan 2026 13:53:40 -0800
-Message-ID: <20260129215340.3742283-1-andrii@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	b=PKZIXEMNUNIaOd5Y3M2jMce8ULr8lqIaDnMdOR8HdYaVmaj8O6N3acvmfOxdN5UHbfkD1g
+	B7OiXq25PmKmVF1IF4U1+6GKt3vKKvstr95RQRrLDA6qhZ111QRcV4gQ4/Jp7/lY9iu/Ea
+	8s55Gy5lO3mgyLk/5++z0ihc20Jzais=
+Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-1233c155a42so2488077c88.1
+        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 13:58:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769723899; x=1770328699; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C7ZtJvE3dpFWqwjZMa9omEQRwNhNuc19ZVJnJ8avCkY=;
+        b=OerDB1dCfnotDai71l8ucw338M+EnJbdUzpLS60PxE1nIlMc4ZOvl3d2SjHZH+cMlT
+         jTU8fkAFr+Kik5ZCBfR9Xst0vb9XF1+VoNYik2KbtxkMk1GxAflAkOhVqg7RDjDDy7jq
+         1VU14MEJiP/zRCXmHNJ1GR8FosKfBrjKgIPgf1/ucVkWa8xVnnYYDMKGkgwnpIxXk2Qd
+         czdIdSAWVUK880xCHrMIQxwf6fvp6iDj5iRXqz31iaEnIikinx0jcdvN6f4/mzV1xYr9
+         fKyUhHPs9sdyX2mM2X+sKkKaKRnzG0yxrZhKnTOr3+shh/ZfThJ1lWeHh5g4jCBXxvmv
+         937w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769723899; x=1770328699;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C7ZtJvE3dpFWqwjZMa9omEQRwNhNuc19ZVJnJ8avCkY=;
+        b=kJzqFvzD4rGRRVCz1bDAKsbSZJ15MdObdkLVBay+8QNIhqmNP8ZHDOWNti0JUmInnF
+         +0KaOhB5T6vBOhXMBEWmIGSCwMut25Fi/3G13HRDGbrCNFcPFwJDxJw5+qoQTDvL4uNG
+         wx8sAfSetZd2wPNCYP/QDNCqgkakZn+Zy2bQs1Azaq8JbDmQnYHPjBSxmVZcENKVUhzQ
+         DPShPuarYTkRX9zwpD2v+VP5D3PeFTIdRT5eWzylYr3LzAvN++Pfc5OA6T7z4JTdjU0i
+         7s9m3rFCT1HvmZXzxYs1be9euGi7Vc/hyy9AGhd1ZVIsQ2QetDPy1NRLwrz+FfT1VUEI
+         W4sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVr2cEtIkjiuV2WoPenB25P+clr0W72Y7jUVZSMhSPqHJaEfAJ9ECWAyl9bLtseHRdITSPxiiY4lQ==@kvack.org
+X-Gm-Message-State: AOJu0YzjyjdhbEVinTabcNwJ4m2ZgOh+iW0nIfxbNY3M+8LxlnV64TuS
+	0fA1R/qvC6/GiGFi2BQH58BAeZnL9ix9n93d5WpnzN9VyHbi58oZXCU=
+X-Gm-Gg: AZuq6aJBTdXIvfDuA26DO3opzAA6iYb+9yV8XJz5kdN0LmDBDqZGGlmCClpTCXXGMzE
+	25jCGthomGVjkSX+HJLyP6n3M67HvM1eAisjn9qFvM1NJDJP0DjI22YzFvIVL1d/ghXFR6O+rpY
+	S9HPlSb08g+tdNN+NEMLQee0SeXPp4+q36nqKmTnjoXB+3El6U/bqwL5Tn6O9LYTQmDrxKNrQIr
+	2OLWPxQ7u7auPeIzl6uCue+45HTbh8Y8hJT2rtLGItIigN/lGJXebMYGL7o44y1xa4NnOU6rKML
+	ogCsjTzBcZDtbopkbJI7+CRB72yO5UUfV40h46PPX/fEiR81w4aAQPdAl7qtimUhbt/ThuJxdNY
+	uNbXSIeHos/CPK3Afv4UbN2L95VT8IolmRgtrzyWwD3VMcOnzHGWxukWHEV9HhBmmnR2MDEjMlt
+	Vg3ayoTC9obw==
+X-Received: by 2002:a05:7022:68aa:b0:124:a610:62f6 with SMTP id a92af1059eb24-125c1006e73mr427951c88.44.1769723899034;
+        Thu, 29 Jan 2026 13:58:19 -0800 (PST)
+Received: from localhost ([137.201.204.52])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a1af8a7bsm8593035eec.34.2026.01.29.13.58.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 13:58:18 -0800 (PST)
+From: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+To: sj@kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Subject: [RFC PATCH v2 0/3] mm/damon: Introduce node_target_mem_bp Quota Goal Metric
+Date: Thu, 29 Jan 2026 13:58:11 -0800
+Message-ID: <20260129215814.1618-1-ravis.opensrc@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ce37zgnf6ddy61tz1c45p3j4x748pe1j
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 788BEC0007
+X-Stat-Signature: dth98ja1c1sockzbg4ujhoffba3g6w8g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 975EDA0009
-X-HE-Tag: 1769723631-81879
-X-HE-Meta: U2FsdGVkX1+lWcYNJfHOB9eVCUpG2Vg6zIAwjbsO5gR83YK22vRZh6tu1GsxET7D4CMRM3sIdKQ45Uzeji9Kx1HrufvpIg6vHkuuYe5hp0408kpskTrgCEsqyupGTD2Wuw1rNB2vxpBRbyQlsRKBa3kinfJqvc5gU6TXRCBIttAl0RfK5HtefFf8y9mjUcZcR35XfInNsEEK14D6ijIxxn7s/DiZtZOymkJSevBLTmn9YsnfjJOQEC+NC5UmPF7SM79GMY20rWcDVAyyv5RM+XKNDn2AXxczRUkAgI0QWDAJ10caotCo6Eg9aMEQFV+y1EBX9mm8VRbFwrWPBvcRTvzbw6LWT0M94Zg/staGh9LULVvnyQCBBa51hxLHWRogiVpgk1orJTzqhMtpd/4EqtUTo0WI4MBzVbM7ALwDIHf/G3RmbEDaHAn7PU28uG/swdP/bVZBOVUtBRt3weXyNqfY5xV/mkakRaw1tYiSd1OBR0fC+qlIRVyzPqpRoon8xFN+WLVeZj9WQz4OugsO9AhD4xkPqGFP7i7gW7OHnRYC2rNSQFatZtbW82pMxMhguW3NZSKuLdqdCHmUizQcr727hZXo2NTeVsgv47shklSCRKe7bJ7DsU3Z7YhJNXi7yWzjCxEGXbppb1GSFKIOs/3B7qhfatzybg4JKHmGP96eyVQi+bRDRhtohBUH9oNAHSbeGcYnQlM3JwE38A0lmTghC02HY9yS2qHoytKRh/Csw9ifTZEFkMCMEs9rATXmSju1/sYO2oyxJspspmHArXRkPBdTI3otzsQtPLxFGN2anuGyGMSRewwHqxlIk8O6Wfby7Fb3Iysz4VU1KnCRQJ1dM+PNEeumjO01cJOOengwo1hioDDodwgg0tnsmVD71G7xRDx87C9jgqek4GgQw+mN1qgIk7jutrn7JNG1IlfOaDKOJi8Z/ZNGQYnJtIS+eqETS2t9tYfse7eefK2
- IQS+arSg
- Rmqnqo1Tcse6g/2L4C/zKKCqs6mfc8vm1Uf9Yq11hOKgG1C/wfSb/7tEjPg==
+X-HE-Tag: 1769723900-257045
+X-HE-Meta: U2FsdGVkX1/PkPul3HCOXZueBYIlpXP9ZrWYHeeQC1rq+KBng8wYa93/INnHzf7iiYufF+7e3bq74NkHIZkqTRnsRMM09kFcs44CBwjg2ySw7Ny2GUf+uJfwrIIifHSTk6/Dfc0XiS+bo/6S0UBk+8PmCYUwse/7V6sHEwDn/gPF1Lcrt6xb5BAVhK7qZBDnFHFFLMPntb+jL/WRZqrEdxbVpcS9+Lbuv+GwTi3pLOxrQQOW/jisn8PXtHzVowa0dZjDKNQzrSS11i0syCG8USBSYZ2DdCKpy8tsa6w4+dYPhZQOYfsBIXtMOQ2ErPbW0MhqRVRHsW/h+R//TIsImk6+Ju31x+JaNJq7s6urMTUf/tbBngyEJQU/B0/QighcqeRzvKgfHVn8hdxJFm296Sy2xq18X5VCuBaVtN+WtrdgULlQc2z/sMFKfzHiw80cLMiQ/do46qrC87BT4YVMAi3fUvd2cbw7P1HXQKCKBMty5uz2j3efgXbEEjB1l2Xku5BnDAqWGMtpZvSwq9DdIeQFd+VQBpMCWYk1otiHyWchyBcYShN/eM3/GYbbn0N1b6UPwEPbTe0e9PTNUUqdx1wkahbLsL1j55kcr9ORghEcbFHWyG7Zt7ff8mMB9nDYEs8K9nVOUKGDTWTBWqaglZX1GEMDVBTz/3dcWpLbSxgiBzGSPQGFP1WguoUPDkkn3uyIcy3wylZhWYEx8+NE+7KIwA0kVj6DNhsa1jzq76A0Td0aIUhgC3GVc/SrLnEjA/lbrTmYYcciF+HsfMhzM4oz2/C63pPvpiksvC/UJpiLk9ea0eirrKxbN9a66TgXNAH6yK3bkTd7vPOz+P/QWqmQHvqUV91P4w7fQmO7/FLKalVG+Zo8KpGJp/OwCiW5I+5BtwCUPiSLWhQOO9e0yZy6RtrtUtcfEXj7VdDgITr/0DHERPQfMlwP9VWxCtdyhsH5ssXhKvk3esdpaVS
+ ar3nC3wP
+ BYGZy/XyXnKeoeCIsCzI+uYkY1PjZJrcxhdTPe2vRl0vtCiWntoXf/h7yc9osbCC4dBEJ2RPr2fXn+WgWUhg8Q+pwq5HU2s39WepBXkw0TSjbPtxZafBaMnpN/dpzbTQ7Dx0dvwj3pyWLDRuGFJbm/6LHs0raQFzcxY0V2ix91HV4YvdLIHcQ0VHZvBmyRkWy1+TrnB9eWb1uCKoz+DvVR5te53b7zxU8GQ6sBdVOOcLcNIsVUO3AWDcYSjb11MOMURm8FbU+EZ224tuAhMZdxmpbOhynDjTnDjEoPnkpc3bdvESRg2kcfdJa1KoyaSLkE397DRnALHydjflEJ3WCN3qt0Glr+b9F2iLLG3457gaMVVZ4x0xWwRzSdvvWXN1Kq1cmlqsHS9IQKcGaExHpc/OaAnX+EH2S0f1i83hTMPpJsCcvmUKZNOwPOmlD4QTOd01kYBQD2O+wfmZ1as6qXKniQBFODmW2gWWSizNHnkdVwtBtmlZ9D+ZjJ1pxWSQgj/OP/0iZ4dENnQy8wgoO05N4hGpxByWOVnD1dSYQt9DVyakEi7KzGPvTuXHazVy003i+X+PhoQxTJIoznKHaTAULnIR0Tg3FKOU9K4fp9pQdNTkXBXXnSb5FHALSxL9hZuZVvIroXwEtNzdSLX4YQktS1HLVJY6fnaBYhH+6Ws+ZS7PXH8n0sIRszw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,225 +124,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix PROCMAP_QUERY to fetch optional build ID only after dropping mmap_lock or
-per-VMA lock, whichever was used to lock VMA under question, to avoid deadlock
-reported by syzbot:
+This series introduces a new DAMON quota goal metric, `node_target_mem_bp`,
+designed for controlling memory migration in heterogeneous memory systems
+(e.g., DRAM and CXL memory tiering).
 
- -> #1 (&mm->mmap_lock){++++}-{4:4}:
-        __might_fault+0xed/0x170
-        _copy_to_iter+0x118/0x1720
-        copy_page_to_iter+0x12d/0x1e0
-        filemap_read+0x720/0x10a0
-        blkdev_read_iter+0x2b5/0x4e0
-        vfs_read+0x7f4/0xae0
-        ksys_read+0x12a/0x250
-        do_syscall_64+0xcb/0xf80
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+v1: https://lore.kernel.org/linux-mm/20260123045733.6954-1-ravis.opensrc@gmail.com/T/#u
 
- -> #0 (&sb->s_type->i_mutex_key#8){++++}-{4:4}:
-        __lock_acquire+0x1509/0x26d0
-        lock_acquire+0x185/0x340
-        down_read+0x98/0x490
-        blkdev_read_iter+0x2a7/0x4e0
-        __kernel_read+0x39a/0xa90
-        freader_fetch+0x1d5/0xa80
-        __build_id_parse.isra.0+0xea/0x6a0
-        do_procmap_query+0xd75/0x1050
-        procfs_procmap_ioctl+0x7a/0xb0
-        __x64_sys_ioctl+0x18e/0x210
-        do_syscall_64+0xcb/0xf80
-        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Changes since v1:
+=================
 
- other info that might help us debug this:
+- Renamed metric from `node_sys_bp` to `node_target_mem_bp` for consistency
+  with existing node-related quota goal metrics (node_mem_used_bp,
+  node_mem_free_bp) as suggested by SJ.
 
-  Possible unsafe locking scenario:
+- Fixed the metric calculation:
+  * Numerator: Now correctly counts only scheme-eligible bytes (regions
+    matching the scheme's access pattern criteria).
+  * Denominator: Now uses node capacity instead of total system memory.
 
-        CPU0                    CPU1
-        ----                    ----
-   rlock(&mm->mmap_lock);
-                                lock(&sb->s_type->i_mutex_key#8);
-                                lock(&mm->mmap_lock);
-   rlock(&sb->s_type->i_mutex_key#8);
+- Removed the get_goal_metric() ops callback. The implementation now
+  resides in core.c, following the existing pattern for other metrics
+  that have ops-layer dependencies.
 
-  *** DEADLOCK ***
+- Removed the early-exit optimization patch. As SJ noted, this would
+  introduce a behavioral change for existing users and should be an
+  opt-in feature with a properly designed interface. This can be
+  addressed in a separate follow-up series.
 
-To make this safe, we need to grab file refcount while VMA is still locked, but
-other than that everything is pretty straightforward. Internal build_id_parse()
-API assumes VMA is passed, but it only needs the underlying file reference, so
-just add another variant build_id_parse_file() that expects file passed
-directly.
+- Removed capacity clamping logic (was tied to early-exit behavior).
 
-Fixes: ed5d583a88a9 ("fs/procfs: implement efficient VMA querying API for /proc/<pid>/maps")
-Reported-by: syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Tested-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
----
- fs/proc/task_mmu.c      | 42 ++++++++++++++++++++++++++---------------
- include/linux/buildid.h |  3 +++
- lib/buildid.c           | 34 +++++++++++++++++++++++++--------
- 3 files changed, 56 insertions(+), 23 deletions(-)
+Background and Motivation
+=========================
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 480db575553e..dd3b5cf9f0b7 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -656,6 +656,7 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- 	struct proc_maps_locking_ctx lock_ctx = { .mm = mm };
- 	struct procmap_query karg;
- 	struct vm_area_struct *vma;
-+	struct file *vm_file = NULL;
- 	const char *name = NULL;
- 	char build_id_buf[BUILD_ID_SIZE_MAX], *name_buf = NULL;
- 	__u64 usize;
-@@ -727,21 +728,6 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- 		karg.inode = 0;
- 	}
- 
--	if (karg.build_id_size) {
--		__u32 build_id_sz;
--
--		err = build_id_parse(vma, build_id_buf, &build_id_sz);
--		if (err) {
--			karg.build_id_size = 0;
--		} else {
--			if (karg.build_id_size < build_id_sz) {
--				err = -ENAMETOOLONG;
--				goto out;
--			}
--			karg.build_id_size = build_id_sz;
--		}
--	}
--
- 	if (karg.vma_name_size) {
- 		size_t name_buf_sz = min_t(size_t, PATH_MAX, karg.vma_name_size);
- 		const struct path *path;
-@@ -775,10 +761,34 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- 		karg.vma_name_size = name_sz;
- 	}
- 
-+	if (karg.build_id_size && vma->vm_file)
-+		vm_file = get_file(vma->vm_file);
-+
- 	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
- 	query_vma_teardown(&lock_ctx);
- 	mmput(mm);
- 
-+	if (karg.build_id_size) {
-+		__u32 build_id_sz;
-+
-+		if (vm_file)
-+			err = build_id_parse_file(vm_file, build_id_buf, &build_id_sz);
-+		else
-+			err = -ENOENT;
-+		if (err) {
-+			karg.build_id_size = 0;
-+		} else {
-+			if (karg.build_id_size < build_id_sz) {
-+				err = -ENAMETOOLONG;
-+				goto out;
-+			}
-+			karg.build_id_size = build_id_sz;
-+		}
-+	}
-+
-+	if (vm_file)
-+		fput(vm_file);
-+
- 	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
- 					       name, karg.vma_name_size)) {
- 		kfree(name_buf);
-@@ -798,6 +808,8 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
- out:
- 	query_vma_teardown(&lock_ctx);
- 	mmput(mm);
-+	if (vm_file)
-+		fput(vm_file);
- 	kfree(name_buf);
- 	return err;
- }
-diff --git a/include/linux/buildid.h b/include/linux/buildid.h
-index 831c1b4b626c..7acc06b22fb7 100644
---- a/include/linux/buildid.h
-+++ b/include/linux/buildid.h
-@@ -7,7 +7,10 @@
- #define BUILD_ID_SIZE_MAX 20
- 
- struct vm_area_struct;
-+struct file;
-+
- int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
-+int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size);
- int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size);
- int build_id_parse_buf(const void *buf, unsigned char *build_id, u32 buf_size);
- 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index 818331051afe..9fcbf139bd3a 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -279,7 +279,7 @@ static int get_build_id_64(struct freader *r, unsigned char *build_id, __u32 *si
- /* enough for Elf64_Ehdr, Elf64_Phdr, and all the smaller requests */
- #define MAX_FREADER_BUF_SZ 64
- 
--static int __build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-+static int __build_id_parse(struct file *file, unsigned char *build_id,
- 			    __u32 *size, bool may_fault)
- {
- 	const Elf32_Ehdr *ehdr;
-@@ -287,11 +287,7 @@ static int __build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
- 	char buf[MAX_FREADER_BUF_SZ];
- 	int ret;
- 
--	/* only works for page backed storage  */
--	if (!vma->vm_file)
--		return -EINVAL;
--
--	freader_init_from_file(&r, buf, sizeof(buf), vma->vm_file, may_fault);
-+	freader_init_from_file(&r, buf, sizeof(buf), file, may_fault);
- 
- 	/* fetch first 18 bytes of ELF header for checks */
- 	ehdr = freader_fetch(&r, 0, offsetofend(Elf32_Ehdr, e_type));
-@@ -332,7 +328,10 @@ static int __build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
-  */
- int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
- {
--	return __build_id_parse(vma, build_id, size, false /* !may_fault */);
-+	if (!vma->vm_file)
-+		return -EINVAL;
-+
-+	return __build_id_parse(vma->vm_file, build_id, size, false /* !may_fault */);
- }
- 
- /*
-@@ -348,7 +347,26 @@ int build_id_parse_nofault(struct vm_area_struct *vma, unsigned char *build_id,
-  */
- int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id, __u32 *size)
- {
--	return __build_id_parse(vma, build_id, size, true /* may_fault */);
-+	if (!vma->vm_file)
-+		return -EINVAL;
-+
-+	return __build_id_parse(vma->vm_file, build_id, size, true /* may_fault */);
-+}
-+
-+/**
-+ * Parse build ID of ELF file
-+ * @file:      file object
-+ * @build_id: buffer to store build id, at least BUILD_ID_SIZE long
-+ * @size:     returns actual build id size in case of success
-+ *
-+ * Assumes faultable context and can cause page faults to bring in file data
-+ * into page cache.
-+ *
-+ * Return: 0 on success; negative error, otherwise
-+ */
-+int build_id_parse_file(struct file *file, unsigned char *build_id, __u32 *size)
-+{
-+	return __build_id_parse(file, build_id, size, true /* may_fault */);
- }
- 
- /**
+A previous patch series [1] added weighted interleave support for DAMON
+migrate_{hot,cold} actions for vaddr schemes. That approach requires VMA
+offset information to determine target nodes, which for paddr schemes
+would require costly rmap walks.
+
+This series takes a different approach for PA-based migration control
+using basis points (bp) target-state goals instead of weight-based
+action rates, avoiding the need for rmap walks entirely.
+
+What This Metric Does
+=====================
+
+The `node_target_mem_bp` metric measures:
+
+    scheme_eligible_bytes_on_node / node_capacity
+
+expressed in basis points (bp, 1/10000).
+
+"Scheme-eligible bytes" are regions that match the scheme's access pattern
+criteria (size, nr_accesses, age). This allows users to specify goals like:
+
+    "Migrate hot pages until node N contains X% hot memory"
+
+Unlike weight-based approaches that specify ACTION RATES, this metric
+specifies a TARGET STATE, which naturally prevents oscillation issues
+that would occur with weight-based PA migration without rmap.
+
+Two-Context Setup for Hot Page Distribution
+===========================================
+
+For distributing hot pages between two NUMA nodes (e.g., DRAM node 0 and
+CXL node 1), two DAMON contexts work together:
+
+    Context 0: monitors node 0, migrate_hot -> node 1
+      goal: node_target_mem_bp, nid=0, target=6000
+      "Migrate hot pages out when node 0 exceeds 60% hot"
+
+    Context 1: monitors node 1, migrate_hot -> node 0
+      goal: node_target_mem_bp, nid=1, target=4000
+      "Migrate hot pages out when node 1 exceeds 40% hot"
+
+Each context migrates excess hot pages to the other node. The system
+converges when both nodes reach their target hot memory ratios.
+
+Complementary to Existing vaddr Migration
+=========================================
+
+This series complements rather than replaces the vaddr weighted interleave
+migration:
+
+  vaddr migration (weight-based):
+    - Per-process control
+    - Fine-grained interleave patterns via VMA offset
+    - Deterministic placement based on weights
+
+  paddr migration (bp-based, this series):
+    - System-wide control
+    - Target-state goals for node capacity management
+    - No rmap overhead
+
+Patch Organization
+==================
+
+1. mm/damon/core: add DAMOS_QUOTA_NODE_TARGET_MEM_BP metric
+   - Adds new enum value and documentation
+
+2. mm/damon/core: implement NODE_TARGET_MEM_BP metric calculation
+   - Adds damos_get_node_target_mem_bp() function
+   - Updates function signatures to pass ctx and scheme through call chain
+
+3. mm/damon/sysfs-schemes: expose NODE_TARGET_MEM_BP metric
+   - Exposes metric as 'node_target_mem_bp' in sysfs
+
+Status
+======
+
+These patches have been compile-tested but have NOT been tested on actual
+hardware. Feedback on the design and approach is appreciated.
+
+References
+==========
+
+[1] mm/damon/vaddr: Allow interleaving in migrate_{hot,cold} actions
+    https://lore.kernel.org/linux-mm/20250709005952.17776-1-bijan311@gmail.com/
+
+Ravi Jonnalagadda (3):
+  mm/damon/core: add DAMOS_QUOTA_NODE_TARGET_MEM_BP metric
+  mm/damon/core: implement NODE_TARGET_MEM_BP metric calculation
+  mm/damon/sysfs-schemes: expose NODE_TARGET_MEM_BP metric
+
+ include/linux/damon.h    |  5 +++
+ mm/damon/core.c          | 66 +++++++++++++++++++++++++++++++++++-----
+ mm/damon/sysfs-schemes.c |  5 +++
+ 3 files changed, 69 insertions(+), 7 deletions(-)
+
 -- 
-2.47.3
+2.43.0
 
 
