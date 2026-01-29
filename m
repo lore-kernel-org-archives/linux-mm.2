@@ -4,127 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE64FD73E9E
-	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 419C9D73E9E
+	for <linux-mm@archiver.kernel.org>; Thu, 29 Jan 2026 22:51:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 595B06B00A0; Thu, 29 Jan 2026 17:49:32 -0500 (EST)
+	id A69666B009F; Thu, 29 Jan 2026 17:51:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53FA66B00A3; Thu, 29 Jan 2026 17:49:32 -0500 (EST)
+	id A16E46B00A0; Thu, 29 Jan 2026 17:51:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 417BE6B00A4; Thu, 29 Jan 2026 17:49:32 -0500 (EST)
+	id 94D1B6B00A2; Thu, 29 Jan 2026 17:51:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 337BA6B00A0
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:49:32 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C24BC140397
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:49:31 +0000 (UTC)
-X-FDA: 84386494542.28.6BC5187
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AF9DA4000B
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:49:29 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cgVc50Ch;
-	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.65 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 80CA36B009F
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 17:51:40 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E3938B46B
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:51:40 +0000 (UTC)
+X-FDA: 84386499960.15.7B22212
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 4858E160004
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:51:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=V1CO8pm5;
+	spf=pass (imf08.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769726969;
+	s=arc-20220608; t=1769727098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MHnhQSU7iuKe1wvcKkKvWgrmHsO0QtdxT1/2Mr9iW+U=;
-	b=L9TOQ/fIAIcKQjWanNemS9yB3sF9FgoBk7i2JQfOr3EQWsm/5WzoyLZtN8assVVwTJXfTN
-	9/CcAAg93awRnbSyLjysIhbX5ZtWxeK4IXH3CyzI8OcKSeP9yUeplhAk2d+ByG6HXbK+93
-	HOi5qcaXVnGAWTUm5pMJb4xrEvpUJfI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=uEP+gJiAzlwp00B1A4dOGcokvvRCbpgoelaDUUk+rQc=;
+	b=mpp04rCROcrX4l/9qj05xN6R3yBiR1ImL6Ea/RYB1Y1B6QYj3USjJw6Gx5E2vMUD2SKJyy
+	8Dbw83DE04Xfge/FbdCXBIf6rZK5zVJkZ/PHfBvV+6l2vrOi5yNFfemZviegCWOPmXfTYi
+	vflnMrn6A83ZHaGbetOJxAJIZqJfRjU=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cgVc50Ch;
-	spf=pass (imf01.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.221.65 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769726969; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=V1CO8pm5;
+	spf=pass (imf08.hostedemail.com: domain of paul@paul-moore.com designates 209.85.219.42 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769727098; a=rsa-sha256;
 	cv=none;
-	b=f6U9PJDJMcbS5VqOM6G56rGtZv4LZL5J0jkaGwUHKNRp3eN02WTiUpZD29tRjuiQQSHzy3
-	W95OYTj5b8hhw5veJFtGVX/HhENEy1GDW0wgz9TP8mk//4EhlfcvTh5RMof47fWuQuTuAv
-	SvERuMd01zolwI7+ZQKRBKnF42dgPBE=
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-42fb2314f52so906493f8f.0
-        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:49:29 -0800 (PST)
+	b=nh1YcNYXoTGwtcLmIskqBS286KwH6rwctPwAiKgSPU7Gof1b+7y/V31jnwioRHec91Qs5b
+	oDs8z5hJ1/uJlBQ6XMpPnBvMqK58ioFt1thGS8iB2/+T9129iE7fimurFxaKprVAsTQS34
+	j0VKWqQUkaCqm8OIX/onBzTvIj0I4h0=
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89461ccc46eso24594946d6.2
+        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 14:51:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769726968; x=1770331768; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MHnhQSU7iuKe1wvcKkKvWgrmHsO0QtdxT1/2Mr9iW+U=;
-        b=cgVc50ChHZ2F4C2gQqpP4o/m7Ox5utbUhXgmWWrx2WTgnNF05oZaNU856nt02qLLhy
-         uiL2Gyj5NXoLBJj9TrKDG5hexeDktgGGDBFtZ4rA9uZ97Vbh7e0X2yvldffYGnw31Rt2
-         vR1/QutqRFEsBVGsOZjdEVUXna1o7RrxnizWYS/V/Km3Ysg4mAHA2mmQs4kEewKc8A+w
-         BgVz8uBTv5Oo8x0viCuBGs0jZ/ndX53FT58CW80v6wWh2/jvUYTkqp3i/p+ap38abz2o
-         boiscc6+oRExjKhoGAh3L2//ORFIfWQ5d4wv5dH+ZOs67qedbZfx4VcdWTeFg6QT19DT
-         Nhrg==
+        d=paul-moore.com; s=google; t=1769727097; x=1770331897; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uEP+gJiAzlwp00B1A4dOGcokvvRCbpgoelaDUUk+rQc=;
+        b=V1CO8pm5lx1ubcg0WXW9eTdLB9AlbkVRWSHBGzQpB6ThfyNkTzCJloM3Mcj18NjJXQ
+         FRXtcaWWNjYV5L/u5QXCGeMmhNvbyWv1aG/MImKKUq0Ki/mutU7jQ8bktYfw5jOHINDr
+         9uN1ooWN2ByYyV5cjIPRsBOyUqRe/r4z0yVm5ebbU8O7g3Hhcxg7cyjV4hhkPzBSDZx2
+         QfaJ/r4UItAf948asnnEavpcH0+YXVvcRdytyQdiYWEMFGC/eqCaX+1E8NVPpQzygsVx
+         oLKh1+SRfncSusgUJ/T37jtd5TFEfGDU7blaaxjRppVPAG+rY4555kxXoUrn0f5v9TmH
+         T8CA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769726968; x=1770331768;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MHnhQSU7iuKe1wvcKkKvWgrmHsO0QtdxT1/2Mr9iW+U=;
-        b=Iop27n8g7mHLeYiTwAbloI2TDAGedIL9m+QhyXyR8WK5te6/fu7muT9pyyOtnD0wf4
-         MXwiLJ5k20d16X62ZgVwJkTpx6zZpOdSUXliXMZBmX9IBezmBtXgF0bieNz4RPOkZwa5
-         mTLVnaDsD8UdhuRdgKXNvfZRhw7lohpp2YENId1WW4U8t1nRxeaiV3PLZU/ffbJe4tNT
-         BR1U9qH7Q34jiE951ABUmPFaOzqiyMbK65KfxBdu503iOe0MrAd3h7HGvlFuwe8zWuBt
-         EcixE2YXD9DlBw8YPMEOYV/jGQzKkrbLqUwanUYMzy6/k2k6E4lSCCSdKL7119WlDTFY
-         FE+w==
-X-Forwarded-Encrypted: i=1; AJvYcCUN3/D4btwzeW9mvAKfVkDQSrOyHNWUObzjHZwiewRwUI9xvTW5isQocPMUxPJM3rUUmV03dSqJ6w==@kvack.org
-X-Gm-Message-State: AOJu0Yxv1OLsxbV5FmawcGOrVZKW+MpHz7D7vXOTWG6L8S+Fcn1po76o
-	c5UPJ6LzAdYUAXDY9svsBrcbq4DU5rzwKLZXE3IUW34mKvC3BxvFehb8
-X-Gm-Gg: AZuq6aJtHAV8yWxjCgy3xtrKL47UwKaDApRi6nsZcnTI1/LWuxUBym8fc1TTt1faSEa
-	KY/OS6fK6bTp8d/GgWL+sPpMAsOUjZDjQCiD1XcgPbLr2sAfz03nBBaZ738IDsY8avgc+2vm/SO
-	I6zbVieNFS5RdL+nug12GaRBiq1Tu2+P8rw8sxp3gMLAJ6P/Lt+B0+9A7DqXoEcg26r02CSiQij
-	r6/7rOfAEwbA2Skn0ShQOTJXyCy9IWjg+Up7pl9gLD5iGuwoGzMELKImatgcjs1bjUVpNcOVhzm
-	wKICHvp1MY8MsFlJr/5JBx5IapWiFfbQPWG3y0kQy2ihA1Ch6FF3T9iIglX2Tg4pvMtMRzs28jy
-	bvDMc+aiU4o8MRio49gKUCHwfrfZrOlJMbdP7xYAS8T6GDwEldETsJrYhT1wGQ/McOcB+7Dn9/w
-	vtWrrPpi8m7tD4scvtrjMyrZLMzqF5RMcEHeo39nzQjCM3o1TfGlY0Vsl269/hjQIRFwkDv2ikj
-	0/L33d60JxGRXo=
-X-Received: by 2002:a05:6000:26c9:b0:435:9756:d4c4 with SMTP id ffacd0b85a97d-435f3a7bcd0mr1743299f8f.17.1769726967582;
-        Thu, 29 Jan 2026 14:49:27 -0800 (PST)
-Received: from ?IPV6:2a02:6b6f:e752:5600:1cf6:3834:b349:c738? ([2a02:6b6f:e752:5600:1cf6:3834:b349:c738])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e1353ac2sm19060165f8f.38.2026.01.29.14.49.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jan 2026 14:49:26 -0800 (PST)
-Message-ID: <fd9d20c3-1bc0-4bad-bc5e-7d9549ddf8fa@gmail.com>
-Date: Thu, 29 Jan 2026 22:49:26 +0000
+        d=1e100.net; s=20230601; t=1769727097; x=1770331897;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uEP+gJiAzlwp00B1A4dOGcokvvRCbpgoelaDUUk+rQc=;
+        b=FnbdMy7NLjq4R9GntqPHSNhT92mzyb6xY85G1f9elvpYzElBm/AYEH8VPYgoLaVpmw
+         FqMe3b3lUVJatsJtOSFHclZ8CdvKvLevxgSMvp7giul+aDKk5WpCSb1iB3Dxshe6LV5+
+         JsTxB11HUuECuTNH0XzaZ8ywxXsB3Pv7leh3QLXY4V5jPKBIyDSFDuAE/DcJegD4aBoV
+         fZCfB+9XQR2JK6jb1Zm1iWtvk2yJBn0Rw9EYs+8XHVDxwrVs5ne3uwqrKDk3Xq7vuO1N
+         V6av25JiZj86clCMuZ2EK/bAwKDeJ8xKeUabft3IkJj6m3IfTyJVL/frPi4bnwJEFvG3
+         g9Wg==
+X-Gm-Message-State: AOJu0YwfJo/KUVNkTPAV+RpRV+HKq483uiDsppMvsXBPanbKRZ1bGDcZ
+	D1c8vuf+ISicWWKbd1TB73wPWBTdfNjCRtferhVITMvJOpphSnbALxT0fANkHoyYkld1SEpdexN
+	qG630eA==
+X-Gm-Gg: AZuq6aIHBk8uVyqpb/rYOhZxMNigSL8JmYflqxr+fV4cVUcck5hxSss9uxjLWs0yIrx
+	mvfiHKnITlXqE/wcAjfFlS8OLolGIuwS2Q5Wkq+5YhalmY7+iES77XhXQZGy/2phthpsuqE4RQX
+	iOfkbGZyRcTpkvhds+iG4ADDKvQvmtusCgG8W6Y5d1SoSF7yTsa+DoGRNeZNNlwSsgHUKHkO/I/
+	aBUDHtwgAiegsC/JeoJn1kAM5FLFOBjaRTcVDrPOP2Cr66d8NqSiI1sTljfwlCEmvp9eQ3uXHqd
+	Zx/M+fNXIMJfGt2Hzp6VCFaRzXemnCV9mx2H5O2onRgcSwjxuPmLp7sX1yqdOASK3wRuJtST8ke
+	b9vnbK1p0+RKPxqk19uH4fIgGlTP4cuFiphV2Doy44rz+LunCJ6bSu2krowBJlyfxbllekfZSeV
+	t1/m+dray79pNLI1MQmkGRLqWuNwfCd5gd6NSFlpU06eneanKBpwUhhOwM
+X-Received: by 2002:a05:6214:29e2:b0:894:6c8e:ed10 with SMTP id 6a1803df08f44-894ea0618b5mr17277646d6.47.1769727097273;
+        Thu, 29 Jan 2026 14:51:37 -0800 (PST)
+Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711d47f92sm493658085a.42.2026.01.29.14.51.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 14:51:36 -0800 (PST)
+From: Paul Moore <paul@paul-moore.com>
+To: linux-security-module@vger.kernel.org
+Cc: linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com
+Subject: [PATCH] lsm: preserve /proc/sys/vm/mmap_min_addr when !CONFIG_SECURITY
+Date: Thu, 29 Jan 2026 17:51:33 -0500
+Message-ID: <20260129225132.420484-2-paul@paul-moore.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: khugepaged: fix NR_FILE_PAGES accounting in
- collapse_file()
-Content-Language: en-GB
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Rik van Riel <riel@surriel.com>,
- Song Liu <songliubraving@fb.com>, Kiryl Shutsemau <kas@kernel.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Meta kernel team <kernel-team@meta.com>,
- linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260129184054.910897-1-shakeel.butt@linux.dev>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20260129184054.910897-1-shakeel.butt@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: fco4xehts3jqgctna6y39tq1aaouax13
-X-Rspamd-Queue-Id: AF9DA4000B
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2528; i=paul@paul-moore.com; h=from:subject; bh=jNcQkI5lVA7LwC9/vCuDXRmjKKHFGdLPOmtZAer45UI=; b=owEBbQKS/ZANAwAKAeog8tqXN4lzAcsmYgBpe+R0dStdMaTc8Lfm5qFDGpBQfKxtHEEtyER/O XUTmwfdj8GJAjMEAAEKAB0WIQRLQqjPB/KZ1VSXfu/qIPLalzeJcwUCaXvkdAAKCRDqIPLalzeJ c9afD/9DxXkYDZT/uoxwuPoLhwd+ey5hAd8FJbSnOKPAf+CyWIKU7uUdeGuwRzpaCN9DhzmF2Oh pcac3xMhz0nLUewgQ2H0WNuQX2yYAiPqumoj3Ap9DfLNCT+CDGoyUYjJ7PmXHyc67DDlo35SRek /R5yDaed34LudFzTfc1XRX8Xkbb8tcKngy3snRd3RQTpLpikgZ8pqchNtSPJIt2ELQZKAK/pcgT UBkF0SCOjL38785FGqiFWPzcDtzoYOIoWJhDHGALcxJ5/C/WEy/mLRB2szX9+QeHatepYjnMIrd mKjt45TisSfPIXizI1F24dKnGHbrLPmm72bXT68ZC1sbHnK3RQvi7NDrW8VDhSxEXVFgd8sOTxX HzDiAZxaY7I2tb4IH4/8vha8r4pfklG7OtcNmbj4EdjwdUBcFjqCCbGbzfCY+xn+4I85l14404T M5kEJLyKzg+snlv5ew0PnfMtyXWM4Y/SJQw6PRohgNBq/GeFnllmevAJdE/lNtVQ16eqA/magEu Xvf6r9jSxp83obf/q/oiEBi6cIyhXEzRD/Kwhz9ad9Q8IDcKI+4Si6CmmuE4eZP59scaDzseW4k 0bu6Ai9AnBl8z6PmxPht9bwVBu++iQTKaqbDzIMBvP/L2f9m4ccSoQpYl3Hq4zt2OJuh34D6Z4G KOR7Gpa1Clfw
+ cBA==
+X-Developer-Key: i=paul@paul-moore.com; a=openpgp; fpr=7100AADFAE6E6E940D2E0AD655E45A5AE8CA7C8A
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 13b4td3k8ddu5ebtdhosmq78eww6y4f1
 X-Rspam-User: 
-X-HE-Tag: 1769726969-868401
-X-HE-Meta: U2FsdGVkX19pKFlR329UjVk5EBN3XziCBDgcgrVvS7bwI5DVais5tPPeWiPYZqnV03rTd36Qvy5T3cVu293ifSDZUxwsk9jroXy5nZ1yk5X1Wr1P2+o6d0VWdSZcGs3ruqfKT8WtHQfB4g4/3XBuJhK6rK3sanGzmaMPdltsQ6gbxmULTBpD1byuDPbd1lHbCE4sY9jrzGze5olN25jEEYIdCYWDrBShsCoRoq1ByKcv9seFrkhjdNXHuz6dmlFBUmps0GfhOvz6gDcVfBA+3lCHfPFvr+JWLcE90zw5xnJj3lBRM33WQUSvWe+nm+Z9aFm0DUMPlRENNmB8j9dxagobTCgwjnNp9dtuvR/F9LqwilxNVyMJY7Gn1sqqkpHxXY7dqLrSGWkWz0SE3q67A4ZAPhPEkYfelKrnSkFh9Glstyt7efXkEwnuYjXkxrSYY8jgyg95ETqdCOHZ/bg8xs2tk2nm7HDjSMn8OyWO5e/O6Qc7sNaDvQ30whk+ExX8n8Lw97djBP17ZfWpHRj7DX8d0HOLojDqm6T7KyiUKm8W+CkM9sy8aeBfutDZBQClcL2bL+uP+F4B/dLVH6ubxzUM1fNzzQYdefbDwGx7BykzZz/ynN56gdJPMMf1aqiSx0oqK4vjqeAFs1N1+iZuiVCIcIGdLSATdP9EFDyznH/kIud+d7jBgbsxzWrCbbDqEz9xMdJaSBr97AvzoSXPB3QhQkQ1a6WT6NErp8pZNaH3XB4MLnerWgSZSArXcJ0Wdl3YrQm10EgVHcrYOvbxtIPI3cXE2XnRihytp05tijEyF42lEM/tEYdWI911Fu0+MSxEan88+Frn4FmxZ7lr5aCA0hAj9CvKJL0Cf+vruj5ewzAwi8QCtSGB2ideTf6F+UzYRcHhLFFvEEr5rf2hSyoua80p2gptON/rIxlkolQJSSoNWvLTpYbNYXy/6W8XibmE6JFeuuz/Z++1wdJ
- CP9XD2p4
- J2g2oXXToJbkMbV2UjQWMRYHSdxowwKdOtCV9lobaUnCKQteNL/7OeMC9XwgY6bUes7/ZrqTDYw5s/03zdnIHne79MxwBCjAJB+sWJUCPtbFtTrUb34N+F4cW0nYT355pc+kfu9jdJJ+EQN7rvUe0XOm8TP8a+XEui8BcMywZN7OqPipCEmiCmvQuKqWGfeEgKGCrT3zsPudzZoCzj5hE7CamoXgDyrRCitIDM5uIIKi2WzGfGGI0vxvbh1X0DQM/Yc0gABs0Pa2dXuxurh+4MZeWltCldeCA6KzLsJP+beUQNInfdJDxRcwpSlMFAQMDqOCFWlvDif5SR8gL0CojDZIPirHP2xAjdppQOyEp4iG93Cr3QH2j8xhT35QMPxJFYAZRetux0W4uVIMywCpvG5yeoCViiLbNZUAst/vjn7p7L2HXsKgweiuhK+aDtz00SVukyXvuUnOIosw0OMccvMeH6hzaBd8ZgfHiCmYkzhE3ItVHc1nl1ZbxUln1bUZrPhC0OJfb3iJy8Iz5bL9XRU6zc0fkjEcL/0DA
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4858E160004
+X-HE-Tag: 1769727098-660647
+X-HE-Meta: U2FsdGVkX1+MeKd8WpHOmTTBn1E/UyNCyY6m4I9ON9VVrvNmxk25Y1LIAzXPmbtibOa7QUJ/FjRjyFRuFWikJANOJmRP6W2ooXZoUblRvTp6KiycGKD3+9BDy8k4rZgDzghyvo5EOs8u2LEAEuEpdSszJ6wOhQ77fo77JX0XPrk1yVEWbjHYg2F+D+k85K2Fpy7NyOejevP7BkFKG7Yu8l6uuTAKqWOF57eWCGHTrp66DJrsuIoV4XTq+tsN2uqoGwTx8FNWdjd2IeCHtKTw3bxfDyMgaNwrO+j6v8sw4Oeoz1aqOhERZ4TI5aSa+8MKLF2qJHqqQefqEwEPo6L2h7w6vrJ1eY6+Yhz06aIzs2eekK+xBr6iXOdd1diu4GuK0HB7emRZrVs1RZ/tIl5rlIHgwNOmS7AVLz+4kOJtWaTnjjV0bm7So7mVGC2AuGPT5Da8vBN7+FAyCoQeD8S2Eh4tnOwKFiRofuzbWDexQYisD2pnHvxLelNLHb4oCsCqTbCAWZFNdL5UrksusbjJD8hlFzX7bADgn5t9W16jbPpZGaKX+k3a6XNhs11YKQDI+pNLq/UFQtZGN0U+FOOE8zdOOW6HOCVCYz9CKCKqgmGI9LzXlXqOvF5UUmvP+xJl6k1UUd4hnXvflNNwDYBp8C+iElMnjFenXo92j85UoQU2IMMFFXeUqZIfq+nX0HGitbzXZvSJCZh8B05AvvfvCYAgQFerAeMn3Rsymf4XA1vNWz6ifLZ8GI4+GFLl8RhWrr2GvGD6w/d0IWPspuqNOh+Y49ZrmHRlzAu9reQAOLFIyAeVo316oyu0UNQCQR2lll4cAgfHxNg+QeClBspaxZT/Tma5R13niQAUF2k4SuI2rl+hU66jm7mocJlzsIo2P80IGLga33qINjWTmSok3PCVf7VrxNov8iPd5nO0n+1dHOEG5lvZ22B/s0xkxcv8g/AzpUmai6/O+RfBigH
+ +QgqsWQW
+ pIcUAuI4UI55mLTqMcaDWc6xQjnfvT1NIsH6T24T26qHIApKerQxaC/d+h8MFVHYdhyp5UrftYimMA3Sq4Hv3KYFtcgu3URnaBD+1yt2qA/nHTQkVVVcZ+92Sb2L70FPAQ3mcKxsQ0IDyGTNSCISv2MNU11/ZkVJhfQbQtlNoBjNVB5vj8sJskou1BUUpR//hCEdps+L84tqoauYZyJXumurISIfgOeM0CqVAgYzVlsxQ+BtRZvDvdRsbKqBOUekoYUIBCReIDkifw9Fbiv3o3iDv0Xxpftx//qakaieTAovWCWk4GX0pnsqDknHg1l44d5yTZEbhpaULBJqP/tRrcbCPgdWfZPnJ8z8XZnJxuca3PPVC6gIlX9TduDaLvCM2rxGSnkXThA2/MsZrRoXpQEcQAVOH1RsKP2CIz69RV6Xp9JDlMSsUSsj0fRsWqTY2jsNCgHpXe63QPubEzuYxdVGxt+Dosbe7dV9mW6n602Yo/BKB7t6AZASmFw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,73 +118,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+While reworking the LSM initialization code the
+/proc/sys/vm/mmap_min_addr handler was inadvertently caught up in the
+change and the procfs entry wasn't setup when CONFIG_SECURITY was not
+selected at kernel build time.  This patch restores the previous behavior
+and ensures that the procfs entry is setup regardless of the
+CONFIG_SECURITY state.
 
+Future work will improve upon this, likely by moving the procfs handler
+into the mm subsystem, but this patch should resolve the immediate
+regression.
 
-On 29/01/2026 18:40, Shakeel Butt wrote:
-> In META's fleet, we are seeing high level cgroups with zero file memcg
-> stat but their descendants have non-zero file stat. This should not be
-> possible. On further inspection by looking at kernel data structures
-> though drgn, it was revealed that the high level cgroups have negative
-> file stat which was aggregated from their children.
-> 
-> Another interesting point was that this specific issue start happening
-> more often as we started deploying thp-always more widely which
-> indicates some correlation between file memory and THPs and indeed it
-> was found that file memcg stat accounting is buggy in the collapse code
-> path from the start.
-> 
-> When collapse_file() replaces small folios with a large THP, it fails to
-> properly update the NR_FILE_PAGES memcg stat for both the old folios
-> being freed and the new THP being added. It assumes the old and new
-> folios belong to the same cgroup. However this assumption breaks in
-> couple of scenarios:
-> 
-> 1. Binary (executable) package downloader running in a different cgroup
->    than the actual job executing the downloaded package.
-> 
-> 2. File shared and mapped by processes running in different cgroups. One
->    process read-in the file and the second process either through
->    madvise(COLLAPSE) or khugepaged on behalf of second process
->    collapsing the file.
-> 
-> So, the current code has two bugs:
-> 
-> 1. For non-shmem files, NR_FILE_PAGES is never incremented for the new
->    THP because nr_none is always 0 for non-shmem, and the stat update is
->    inside the "if (nr_none)" block.
-> 
-> 2. When freeing old folios, NR_FILE_PAGES is never decremented because
->    folio->mapping is set to NULL directly without calling
->    filemap_unaccount_folio().
-> 
-> These bugs cause incorrect per-memcg accounting when the process
-> triggering the collapse (MADV_COLLAPSE or khugepaged) belongs to a
-> different memcg than the process that originally faulted in the pages:
-> 
->   - Process A (memcg X) reads file, creating 512 small page cache folios
->     charged to memcg X (NR_FILE_PAGES += 512 for memcg X)
-> 
->   - Process B (memcg Y) triggers collapse via MADV_COLLAPSE or khugepaged
->     scans B's mm. The new THP is charged to memcg Y.
-> 
->   - Old folios freed: NR_FILE_PAGES not decremented (bug)
->     New THP added: NR_FILE_PAGES not incremented (bug)
-> 
->   - Later, THP removed from page cache: NR_FILE_PAGES -= 512 for memcg Y
-> 
-> Result: memcg X has +512 inflated pages, memcg Y has -512 (negative!)
-> 
-> Fix this by:
-> 1. Always incrementing NR_FILE_PAGES by HPAGE_PMD_NR for the new THP
-> 2. Decrementing NR_FILE_PAGES for each old folio before clearing its
->    mapping pointer
-> 
-> For shmem with holes (nr_none > 0), the net change is still +nr_none
-> since we decrement (HPAGE_PMD_NR - nr_none) old pages and increment
-> HPAGE_PMD_NR new pages.
-> 
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev
+Fixes: 4ab5efcc2829 ("lsm: consolidate all of the LSM framework initcalls")
+Reported-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+---
+ security/lsm.h      | 9 ---------
+ security/lsm_init.c | 7 +------
+ security/min_addr.c | 5 ++---
+ 3 files changed, 3 insertions(+), 18 deletions(-)
 
-Acked-by: Usama Arif <usamaarif642@gmail.com> 
+diff --git a/security/lsm.h b/security/lsm.h
+index 81aadbc61685..db77cc83e158 100644
+--- a/security/lsm.h
++++ b/security/lsm.h
+@@ -37,15 +37,6 @@ int lsm_task_alloc(struct task_struct *task);
+ 
+ /* LSM framework initializers */
+ 
+-#ifdef CONFIG_MMU
+-int min_addr_init(void);
+-#else
+-static inline int min_addr_init(void)
+-{
+-	return 0;
+-}
+-#endif /* CONFIG_MMU */
+-
+ #ifdef CONFIG_SECURITYFS
+ int securityfs_init(void);
+ #else
+diff --git a/security/lsm_init.c b/security/lsm_init.c
+index 05bd52e6b1f2..573e2a7250c4 100644
+--- a/security/lsm_init.c
++++ b/security/lsm_init.c
+@@ -489,12 +489,7 @@ int __init security_init(void)
+  */
+ static int __init security_initcall_pure(void)
+ {
+-	int rc_adr, rc_lsm;
+-
+-	rc_adr = min_addr_init();
+-	rc_lsm = lsm_initcall(pure);
+-
+-	return (rc_adr ? rc_adr : rc_lsm);
++	return lsm_initcall(pure);
+ }
+ pure_initcall(security_initcall_pure);
+ 
+diff --git a/security/min_addr.c b/security/min_addr.c
+index 0fde5ec9abc8..56e4f9d25929 100644
+--- a/security/min_addr.c
++++ b/security/min_addr.c
+@@ -5,8 +5,6 @@
+ #include <linux/sysctl.h>
+ #include <linux/minmax.h>
+ 
+-#include "lsm.h"
+-
+ /* amount of vm to protect from userspace access by both DAC and the LSM*/
+ unsigned long mmap_min_addr;
+ /* amount of vm to protect from userspace using CAP_SYS_RAWIO (DAC) */
+@@ -54,10 +52,11 @@ static const struct ctl_table min_addr_sysctl_table[] = {
+ 	},
+ };
+ 
+-int __init min_addr_init(void)
++static int __init mmap_min_addr_init(void)
+ {
+ 	register_sysctl_init("vm", min_addr_sysctl_table);
+ 	update_mmap_min_addr();
+ 
+ 	return 0;
+ }
++pure_initcall(mmap_min_addr_init);
+-- 
+2.52.0
+
 
