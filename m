@@ -4,141 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B67D4D49C9E
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 23:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E1ED49C9E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 23:56:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C12D66B0088; Fri, 30 Jan 2026 18:53:36 -0500 (EST)
+	id ABCB06B0088; Fri, 30 Jan 2026 18:56:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9C186B0089; Fri, 30 Jan 2026 18:53:36 -0500 (EST)
+	id A3D076B0089; Fri, 30 Jan 2026 18:56:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A78936B008A; Fri, 30 Jan 2026 18:53:36 -0500 (EST)
+	id 969BD6B008A; Fri, 30 Jan 2026 18:56:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97F6D6B0088
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 18:53:36 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 60872585FC
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:53:36 +0000 (UTC)
-X-FDA: 84390284832.04.F5B0B1B
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 54076C0006
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:53:34 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UjWF0Fh1;
-	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769817214;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 87EF76B0088
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 18:56:03 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3E8E21B1B14
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:56:03 +0000 (UTC)
+X-FDA: 84390291006.27.8CE909A
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 3DF7A140008
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:56:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="AO+G3MI/";
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769817361;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cpyhaZCJSocKMuUNCmXQ+BzRs5Ft9MPVuo2ivTHAMnE=;
-	b=jFJNfhc9TFwojbxBFnTDroEb9uLcPYGcdW7N6hb0M6KaZS4GwnzOBpKwjHi+nh9zamt4fS
-	n5RY5B6co5kk1s+E7Hnt3FKT6TdFyaRCXCCO1p/HGJXfJ87Kcf/fObX6OF7T3agP4sEP/L
-	11ncneMbJbHUkveihEU318mfZU8l67M=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=UjWF0Fh1;
-	spf=pass (imf10.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769817214; a=rsa-sha256;
-	cv=pass;
-	b=jlk4fQ0deIdLlaj/+ja7HyrYE4ctkvzar+TKb0IHGFivDD/grKukJTNK4Ryjto9Z2QMpLa
-	5FlqVBJtL7D4XSJkQAt7L3u1+j2ujdL4Ab+xnpxi5SRBFv3fgiiOpp8sNsNJRXk0Kiiu5v
-	lQ3SkENVyZDBAmAnj9PoyRDyv0s6Q0k=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4805ef35864so22216955e9.0
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:53:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769817213; cv=none;
-        d=google.com; s=arc-20240605;
-        b=M+ZVxDtTI/8uQm2SI856GoJNVcH6nn56VbZD2THx8fodAquiF07VMisA1/rh/MexMs
-         IP8wLxBCJb4YsTwk89y7HYXGdm4ZNqaDYc1Ng8Zu5aO4Zj9jf7sir06TSRZcga1H3k+l
-         Rv83+IzQgil3o6xkw8y1Yz7HxJhcoq7N/PosyFS4JRHFU1aXo7poKiwBvF4EZsIm47sl
-         OjOPeHVAID2HmrkGJw4nUbFUFE2r5vDbQ7j0rUtGN0lESDkB++cG+xuchqqGwER7kH07
-         bnMzMkvEEcSYB+ZlZf2yOLBLLthVOwOP2I43KOxA1Iz00vSrhpCjbwrDsh/P1QzrBKBx
-         Wumw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=cpyhaZCJSocKMuUNCmXQ+BzRs5Ft9MPVuo2ivTHAMnE=;
-        fh=El0TSN2MYfPABeW0L2vMQ9W3BeUQa0mm0zruG2OZU6Y=;
-        b=GK6yKj/hyuuRoaYAGtUaXnfKNEDEPDS5NeUg6X8tu8RP9QtsPqaCMpRRboJtViKlp9
-         8YWvvSBX7TzgqTBOCtwmG0Awo+Nfxs22/aWBhjVKCY8nDrIQ3ZOirUshxCGuiZWGo9iZ
-         dLfT2OCtRZgMcPlXrokY3mm8eUN6jCAElpFTphDqGOG20nAG7wVk7HmSc2ADFR5geFb+
-         yER2jLVe1KvnaBvYOV7vwNm7vBZOsgVnhgNlEB0WZL1QpkyewiT/KC7NwHXxe7k/lVx9
-         n5VWpvyzf3/yOp4ixgtVFl72/wloWtOP9AtEHSjbrFdvLpZSCSiirjlF/6NwM5KSBamA
-         cgvg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769817213; x=1770422013; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cpyhaZCJSocKMuUNCmXQ+BzRs5Ft9MPVuo2ivTHAMnE=;
-        b=UjWF0Fh1phSh7FJFXsSK7j2wDXCOYw576XoZh7qfR0iyWTpvODuWiT0GKKMmHuVkPG
-         B5sWTQGv1U5tskb7HlciLfzA3UAPeNZG4KaLsYAzbV0TLTNvuOhdE990ezRwmKmatw+D
-         xM72eDYc8iH42At5LcWIA770tYxCW8cTNNOWD0OpzTEMe42mPyaAwHY9JPEd39VubIDY
-         pql899yu3uUbbfv9rM9G3e33UdW8GlWWXuIa8oX/w3Y+a4wGGytbHkS9RvMgqKh3iAft
-         rOkGJuPWwBItw3J7WhIw0LV46yOhFhi1V904TF8ucxTuewVGZKlSGYYheFnYJj7FpIk2
-         rnjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769817213; x=1770422013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cpyhaZCJSocKMuUNCmXQ+BzRs5Ft9MPVuo2ivTHAMnE=;
-        b=OfY7MAwpuvuGFx64x9aGO3TFhbLKPWcet2l7b6u4fthw8yFoaikVPlGgj3Bnb4PWiT
-         YBCKRd1dPTu1KQSw0jF0Y53W8QKgOLEkA7UCucdjHZDSYVu6ZwPpUAKEXuXlouEm3Z/D
-         T73P63WgyK7YGnfsFkWpHFNd9roQPfwGVopCZDY0Md0ne+9mdsdjq6AMYnuWEweWmPhY
-         T0kFMFlivR2FoF2SQpWA7xTBcCgsJL6UVY6zB7X8x2dwTc+bhgb2lkJiVikcoTUAiejI
-         /f1k6C4oy+0cCdIN5lj6EDyYWyMDJFG1ABQeDbA7cjjAOniq0aphy2MyH41lTMncvvT1
-         Bh1g==
-X-Forwarded-Encrypted: i=1; AJvYcCX4IrXGlPstLQjr6N2Vq65kqSAEmv3ARySk5VlNjNf562Zul4D2fTuBPmeS2ffANsniCEZiUMdA7w==@kvack.org
-X-Gm-Message-State: AOJu0YwAkzmVecMAw7tKa1oCm8lFELK/zrO9Gnr3YSSG0boMVCyG5YFz
-	iHR048JBGCKdPb09g0n4W+v5Q6bmOq0IJZPUAnX6F9W9LuSJ/gjcOo0tR9f2avzruiuKaxHgYlt
-	LYRraaZQaWFDnWE7cC9GGPhGHpAs5mY4=
-X-Gm-Gg: AZuq6aIzpO7o6iu442CgE7ajNlAaq+vVtUJkL0Pm/QtgEudBhPxjVjqE2ZHQfIsdVVX
-	E9ST8ROBs7KUZhyd3r6sfNP8MCwB8Uk5yfxP0FBFAz0M4dDkbTIhAIY6z23pYJPKftLE5Uu6gG+
-	pgRwbSk6WUVBANfOReUeC4LCWwwX5AYRVmBpc+ugrPoyWnhsCkx1k/J2kwgCx7lxSViNh1X4C41
-	C+CYUmM9B3OPBGgcj3Lw6BktsaakwydA0jnewxySFX6mWxmh3jOSwMRmADd2JYZEX7LwO8sEfwV
-	HoaDZhoclC0=
-X-Received: by 2002:a05:600c:34c1:b0:47e:e2ec:9947 with SMTP id
- 5b1f17b1804b1-482db491eecmr58235085e9.33.1769817212473; Fri, 30 Jan 2026
- 15:53:32 -0800 (PST)
+	bh=WunDx0fb3GW0z9IYkcolqOlpoStL9vS1z9b/3h7/9sA=;
+	b=HazXmKm5E8Ek30ybPPkuMhWRgCl9IPi0pdkDoC0UC6/lcFKdTSFFbCxjrRNR3BAxn94xo7
+	o7CskTpqCE61FGmwuLvDGI3jV7+oUegy2gaXN+jz6fD3gtFbOC77fAEeKVp6eu9XD61paf
+	iJs/9PS1U/AXllVwUa0gHjmwd7W9oac=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="AO+G3MI/";
+	spf=none (imf26.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769817361; a=rsa-sha256;
+	cv=none;
+	b=oUS99k6orWqQ7GB+cPAIbThjJp5/aD8S8mkeskIGi1Ed/svnbkVgBsxfIQOZWsYbwVvjSL
+	oSF+jrKMt1cvFHICf537NRlt90hE+n9l/5j+Dikv6/PtcC28Ufuo8qIKWAlNn4LcSCQ3pW
+	RgduM0eIBg21IbqzYcFSZaH4xeZojvs=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
+	bh=WunDx0fb3GW0z9IYkcolqOlpoStL9vS1z9b/3h7/9sA=; b=AO+G3MI/5/op50vRQvZ2KSjky2
+	o2ePb5Zukk3sXqeoNldFFJbSdw+Qp7uPktsF7JIRKDMKPcu/acltZPsnYWSewa2lLpyc2Gx9MlnMF
+	O3a5gu9xLnoZ1RZqF9iA05zLoPaHp5rsq+K1gR3L76DF8WbF9zlg8f6xM6E2G1VQAn9TaPm+Tk5Y2
+	s5bwYJffBoYET1FOa8HR7vJwT9oiZweshSD1mXBXH7uapwklcxfNchd2/QTs+ZWS3FHEhaI0q2NAO
+	4iOY76PwJp8GPEtE84eZvCDEagFHnDbFvVFgCapOv8se+c1FU82xSEGXvHZNGQbgXWrdNVN6O9s2V
+	gVLXLJfQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1vlyMx-0000000ChF7-0kg1;
+	Fri, 30 Jan 2026 23:57:43 +0000
+Date: Fri, 30 Jan 2026 23:57:43 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Samuel Wu <wusamuel@google.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, linux-fsdevel@vger.kernel.org,
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, clm@meta.com,
+	android-kernel-team <android-kernel-team@google.com>
+Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
+Message-ID: <20260130235743.GW3183987@ZenIV>
+References: <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
+ <2026012715-mantra-pope-9431@gregkh>
+ <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
+ <20260128045954.GS3183987@ZenIV>
+ <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
+ <20260129032335.GT3183987@ZenIV>
+ <20260129225433.GU3183987@ZenIV>
+ <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
+ <20260130070424.GV3183987@ZenIV>
+ <CAG2Kctoqja9R1bBzdEAV15_yt=sBGkcub6C2nGE6VHMJh13=FQ@mail.gmail.com>
 MIME-Version: 1.0
-References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com> <20260125033537.334628-25-kanchana.p.sridhar@intel.com>
-In-Reply-To: <20260125033537.334628-25-kanchana.p.sridhar@intel.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Fri, 30 Jan 2026 15:53:20 -0800
-X-Gm-Features: AZwV_QhoRCJFgeduCa2tipPOIslOoLlL1iXAkLMz0pxK4ueLAQLeijerNFt9390
-Message-ID: <CAKEwX=OL1Lt88tToA7pxDAJ4QkxV=PpGZ0zAVD=oexQbEArEZA@mail.gmail.com>
-Subject: Re: [PATCH v14 24/26] mm: zswap: Consistently use IS_ERR_OR_NULL() to
- check acomp_ctx resources.
-To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org, 
-	yosry.ahmed@linux.dev, chengming.zhou@linux.dev, usamaarif642@gmail.com, 
-	ryan.roberts@arm.com, 21cnbao@gmail.com, ying.huang@linux.alibaba.com, 
-	akpm@linux-foundation.org, senozhatsky@chromium.org, sj@kernel.org, 
-	kasong@tencent.com, linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, clabbe@baylibre.com, ardb@kernel.org, 
-	ebiggers@google.com, surenb@google.com, kristen.c.accardi@intel.com, 
-	vinicius.gomes@intel.com, giovanni.cabiddu@intel.com, 
-	wajdi.k.feghali@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 36jahs67zkngqip5mf33gkrfocp1s9b1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG2Kctoqja9R1bBzdEAV15_yt=sBGkcub6C2nGE6VHMJh13=FQ@mail.gmail.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: i1957xmky5syhmenjsn45difwgwp13jr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 54076C0006
-X-HE-Tag: 1769817214-246809
-X-HE-Meta: U2FsdGVkX19uy3Yc9iADPS0at07fTgIK3xOAUzG0OHLh8Q+FpWuGpUx9QullClffjOTMtzeu8/wdtWxoSZdD6Y0Q0JnkkBPcyuyP2l1KncXWaqnJ//2TZlrpujaHmxCCtnY3a9BP5gFxWbxWtY1W3fUGYnc1QOEFyfssU+rTOdogJaMbfhK73ciEalYg8RiA7XzDebKeMM8rrpsR+t69UPH00L21GrMhv27JRXQRHEU1YdmZa4oq2l+/mX2GLf8P/J+xddFwtBNZRzTHLcx/2h4tI0cxL3al9fk2mvzgkzuDq7htD40v9H+pDui7ln84MZVkb2xpeKDpuhBkOTgOPsh0f+uca4KzLyOSr1+CDjaXpvVGwtr4csKgjba126gjCSwyVGsOAwOa/7oAuOnAzyAm71Ur8VJhSrc3oCUZIL9/iusaEL9zLsYdHg68nmZ6L6a8lGuQGOABLV04OHsIEeuM0CICXwiGK0we/TrFzRXW0PKAzsgNcTGVEaMukfHh1CBhPyPd4LTv+hQ6Cp0rDMkscXoQUiDXp2hbsfgwG2qtNXW0xsMCmG9LZNYbp/qA4G1t0AybMoCa3g4C4dDsVadNMMSnjqV9QS6qPtt+PNUCBXvwNR3RI28puZOWZwCriu3olH9bI8xmLZPYKGHBdPRNH4uIYjGUxDcwrdFw/pMu/LtmVJx+35X9t+teRVsEQMJzHM5Px/2GpweLkfrnH8Q4xfB6SzFXXpJrEZrQr/B+5rGF/BK3BvH2xx4PYBnPrOGNrsqfLQUOu4NHb7fwiwL/ng2q1C5MSBuo4bb58NktuL855FWC2kNwGIz+WMxC7JQx+B1Dmm0+8OTsjBS6IfdQl+eGJmS00+Q6uTviBWWpDtS2pp/mtQnCjReFpnBBrU4uk0hbjdLsNvkUV9j8++7bT5eVRE3pjQMtsHZsDoL8y7Lk7uxRraywIUBXavgtzeD2WX4nALxvm8wYEV2
- RBkjfcNF
- s/9F07RpmG2SGbzFoJo8XYm17swapw8K0XyFJWbzqmg0YxBxSSvocO3GvRYiJMU7CtjUxOs0dvWe5/hreLWJazKA0wAVcLHaLHfT89oEDUFWNv8TTBnzHDx/uCDbIM1zuK0EnprVizBDjhjmNrd7K3aQlSmm+i8ucZkWnRaND3PVYibV0mbmzhyURYbQoTRP0gFA6pcyy24QcCe4pz8YaFoh+Puq2QvhrKsJgjqjiDGjbzpk3EJVks6spC38d286E9JejPqoTtptnXCn2lfcs92tKUQor0xszKuHM3XIs31O2c472mf8mKkHv6msl+UGNijifVHKgmpazJ4bq5AACrEzpNbf/IUrgpFfcSDS+0pz2EIxB6fbhyef4AkhNGt8OuMvgo20QI02a1dBt19n19VIHG40P76ADtwzF2yqFzMhvvLiRhtby7Lxl4uQYFNRYkghcRxyZ9b2AGk5ipH7T6xYRljkgO55vZgxDtXPoo9vCSqjT3OqXqKvtAA==
+X-Rspamd-Queue-Id: 3DF7A140008
+X-HE-Tag: 1769817361-302602
+X-HE-Meta: U2FsdGVkX1/f88PE1ohZdCKcCg6K9k0qKGl9BO1tU2DNQV0zQd/6wgjxnXUIZ5LRV5tsGR3rzVx+oBP/RvJ/zJ60VLnvb2fdhyP1K5Ey91QUyNXAc8d6rB4gMgmwbRN312skeipe4H8VQns5S0pbYl3+3FbcGZDnbKYY3TvND6dReUiKp1QiWpfDYq0b+iMG6lBnV71xYlWXRZQkvW/od29012hLStARCUFgB6Ml+q+RPcGpLQD/gKcr1y+TsDMN02+0AvW1/z1g5UEAibIy/9HaJFvS/XYQ8D0W7vaGl/dAFKeyYBUvjd+JovCpUUvuTgPibDQAEIdaywyLbY6txRMjsbmzzmEPAENSbp8jomxxB53zKtLiar/W6cwF4x6/C183maxgE0hCZyHs/IjXjsRMgceUavlV6HPewRQRxCcEC0EdI7pay2a/oGBcxE1wLRS5k2QJZhTYYinNCSUNPqTLbWboILbyedDh9W8Y3C+7DhPIMfxjE6Vsw7N24acJSKcFRmtRFHZiKNuSsT0Tt17dLBwbz+Up6xKIH6RP3Quh7Foqd2zNNkrYQKbqc+lydqJzrhCCkcU3O7+uT0gT6SB5pvm0SZ7VEygCAu2uC8kpGgDQ2N5eKyW+DcqZjIIrIbpbCtipK0VvckUfPQqFCQVtRHGy2iep011Xt4NDLSltdsc5rjDBQgYtNPH51uxo+ACmDqkBtivz3h4tYyGab/+lsz8PAE54bInnBRgd8aoGH5/CssrQujRPk3OD/hYQz0Abx01fRUtKNlH5IqRMpZeUnScSujEaEzdk4/7iIrpLs48lIXhL2ybWpc1NddM9V3tgeUGv/iEKAauKx9iN+EFgE8v5M+5vkv/+QBBs/qL6bS/lorQ0T3UAe3oNyu8MfIzFmjZlPiExhoYT81W11MnDiNH8+zV0OuA5Rlrrx0jionHIqn0nJ6sdsDam5x8n8G/2AMKB88jc+m8ex5p
+ z5DBJOQC
+ zua1C5+auOiudwhSN3QZ/YV/N4G94zT9qNGSSvqLkl+AS4LUqaTgTmqHfDuDo9IcXin9koOWaJjLB1W7D8OYRUaMWyyEOOO02/zwgABHo9zYrM07lSFCK5/tl+L1f2QWNMYZVBbXXLT71Fs/sL2JrsYV/vChHw2wHHFCx9js3/mFPTbAuJhfstWvSaznkkNsLRstn1zhbSvyp5hENXPkKgMrGj+uUkPyx5dgP/dkxWzMv0lyfxJdTP83wG6AW73Ohsi2xe8+C8ciJG7OmumOhCVJnrMzrjWvN4+SP6cfVbgwGJpvnbqJ5aoNi6oMV0CLegIGwUr0CVMW2kFRXltEuvxTwV6flDV42qLfw85l72uviFO44FvyaWU+/AYUz/TLifeOI1sGjHVJq7N8QsO/dPrLnCP7HqdPOrx+x8S3J6VDHRaPUPvne24eMEVowAFr0eYhJwOujMzh9sIoMnWBq0QUkPHHJ8NphLLiAh4Ry93P7n6QM9o3DixjaB2T6MDcg2LP+y2FWvfGVr7F0vgLohHcqv/cWsCKJe+F8xOWYYRCaynI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,20 +109,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 24, 2026 at 7:36=E2=80=AFPM Kanchana P Sridhar
-<kanchana.p.sridhar@intel.com> wrote:
->
-> Use IS_ERR_OR_NULL() in zswap_cpu_comp_prepare() to check for valid
-> acomp/req, making it consistent with acomp_ctx_dealloc().
->
-> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-> Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+On Fri, Jan 30, 2026 at 02:31:54PM -0800, Samuel Wu wrote:
+> On Thu, Jan 29, 2026 at 11:02 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
+> > OK.  Could you take a clone of mainline repository and in there run
+> > ; git fetch git://git.kernel.org:/pub/scm/linux/kernel/git/viro/vfs.git for-wsamuel:for-wsamuel
+> > then
+> > ; git diff for-wsamuel e5bf5ee26663
+> > to verify that for-wsamuel is identical to tree you've seen breakage on
+> > ; git diff for-wsamuel-base 1544775687f0
+> > to verify that for-wsamuel-base is the tree where the breakage did not reproduce
+> > Then bisect from for-wsamuel-base to for-wsamuel.
+> >
+> > Basically, that's the offending commit split into steps; let's try to figure
+> > out what causes the breakage with better resolution...
+> 
+> Confirming that bisect points to this patch: 09e88dc22ea2 (serialize
+> ffs_ep0_open() on ffs->mutex)
 
-LGTM. I wonder if this is technically a fix?
+So we have something that does O_NDELAY opens of ep0 *and* does not retry on
+EAGAIN?
 
-Also, considering submitting this separately if the patch series stall
-- so that you don't have to carry one extra patch around every time :)
+How lovely...  Could you slap
+	WARN_ON(ret == -EAGAIN);
+right before that
+	if (ret < 0)
+		return ret;
+in there and see which process is doing that?  Regression is a regression, 
+odd userland or not, but I would like to see what is that userland actually
+trying to do there.
 
-Anyway:
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+*grumble*
+
+IMO at that point we have two problems - one is how to avoid a revert of the
+tail of tree-in-dcache series, another is how to deal with quite real
+preexisting bugs in functionfs.
+
+Another thing to try (not as a suggestion of a fix, just an attempt to figure
+out how badly would the things break): in current mainline replace that
+	ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK)
+in ffs_ep0_open() with
+	ffs_mutex_lock(&ffs->mutex, false)
+and see how badly do the things regress for userland.  Again, I'm not saying
+that this is a fix - just trying to get some sense of what's the userland
+is doing.
+
+FWIW, it might make sense to try a lighter serialization in ffs_ep0_open() -
+taking it there is due to the following scenario (assuming 6.18 or earlier):
+ffs->state is FFS_DEACTIVATED.  ffs->opened is 0.  Two threads attempt to
+open ep0.  Here's what happens prior to these patches:
+
+static int ffs_ep0_open(struct inode *inode, struct file *file)
+{
+        struct ffs_data *ffs = inode->i_private;
+ 
+        if (ffs->state == FFS_CLOSING)
+                return -EBUSY;
+ 
+        file->private_data = ffs;
+        ffs_data_opened(ffs);
+
+with
+static void ffs_data_opened(struct ffs_data *ffs)
+{
+        refcount_inc(&ffs->ref);
+        if (atomic_add_return(1, &ffs->opened) == 1 &&
+                        ffs->state == FFS_DEACTIVATED) {
+                ffs->state = FFS_CLOSING;
+                ffs_data_reset(ffs);
+        }
+}
+
+IOW, the sequence is
+	if (state == FFS_CLOSING)
+		return -EBUSY;
+	n = atomic_add_return(1, &opened);
+	if (n == 1 && state == FFS_DEACTIVATED) {
+		state = FFS_CLOSING;
+		ffs_data_reset();
+
+See the race there?  If the second open() comes between the
+increment of ffs->opened and setting the state to FFS_CLOSING,
+it will *not* fail with EBUSY - it will proceed to return to
+userland, while the first sucker is crawling through the work
+in ffs_data_reset()/ffs_data_clear()/ffs_epfiles_destroy().
+
+What's more, there's nothing to stop that second opener from
+calling write() on the descriptor it got.  No exclusion there -
+        ffs->state = FFS_READ_DESCRIPTORS;
+        ffs->setup_state = FFS_NO_SETUP;
+        ffs->flags = 0;
+in ffs_data_reset() is *not* serialized against ffs_ep0_write().
+Get preempted right after setting ->state and that write()
+will go just fine, only to be surprised when the first thread
+regains CPU and continues modifying the contents of *ffs
+under whatever the second thread is doing.
+
+That code obviously relies upon that kind of shit being prevented
+by that -EBUSY logics in ep0 open() and that logics is obviously
+racy as it is.  Note that other callers of ffs_data_reset() have
+similar problem: ffs_func_set_alt(), for example has
+        if (ffs->state == FFS_DEACTIVATED) {
+                ffs->state = FFS_CLOSING;
+                INIT_WORK(&ffs->reset_work, ffs_reset_work);
+                schedule_work(&ffs->reset_work);
+                return -ENODEV;
+        }
+again, with no exclusion.  Lose CPU just after seeing FFS_DEACTIVATED,
+then have another thread open() the sucker and start going through
+ffs_data_reset(), only to have us regain CPU and schedule this for
+execution:
+static void ffs_reset_work(struct work_struct *work)
+{
+        struct ffs_data *ffs = container_of(work,
+                struct ffs_data, reset_work);
+        ffs_data_reset(ffs);
+}
+IOW, stray ffs_data_reset() coming to surprise the opener who'd
+just finished ffs_data_reset() during open(2) and proceeded to
+write to the damn thing, etc.
+
+That's obviously on the "how do we fix the preexisting bugs" side
+of things, though - regression needs to be dealt with ASAP anyway.
 
