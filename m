@@ -4,86 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3412D73EAA
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 01:31:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E9E3D73EAA
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 01:48:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96A1C6B0089; Thu, 29 Jan 2026 20:31:46 -0500 (EST)
+	id 3B9936B0005; Thu, 29 Jan 2026 20:48:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 917F16B008A; Thu, 29 Jan 2026 20:31:46 -0500 (EST)
+	id 367976B0089; Thu, 29 Jan 2026 20:48:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82AAB6B008C; Thu, 29 Jan 2026 20:31:46 -0500 (EST)
+	id 294186B008A; Thu, 29 Jan 2026 20:48:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DC3B6B0089
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 20:31:46 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 194336B0005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 20:48:12 -0500 (EST)
 Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 118661B14A8
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 01:31:46 +0000 (UTC)
-X-FDA: 84386903412.26.C22D9A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7238320005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 01:31:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W8waZ2ss;
-	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BDDAD5897C
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 01:48:11 +0000 (UTC)
+X-FDA: 84386944782.26.527C20A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6356DC000C
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 01:48:10 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HX91BYHK;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769736704;
+	s=arc-20220608; t=1769737690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=orhcYQFl+8+GbMKPpo4Ol2P1+lFUXQlAlTXx9mfMEek=;
-	b=miH7TFuV2M3daM5JTA4KROMv/fTtjhZ+7RsCZWHrAyBIThZJ0mLT5/8xvZA/f5BYys8Pwl
-	xyyCzl6x0zABSOQRpxFWaQ6CZO9wG2NL1eka7kqxOp2+vZ6xDhPdpEZSFc/lJRLccOkH5O
-	zrJJ+AEG8XPDNeyJtvZFMPIgJPOTC4o=
+	bh=IQ77gamuGnsA4t0Fh7OKsUnl08uszJJqAJk/+LqoPCo=;
+	b=MFU8JC2woD7bLZ1h+0O/wtsPNe0T3aeRzaYEl2oEEJu14Fu0QdecV2b4PKmrUjwqSFeG/3
+	Z4qMfcFQLhD6p2n0qk2o8CBuqDucX6qbmkeL/RNpqRJcsVFSKe8eyyCs31WIqHyFTH6UKd
+	BbLyFIeXC0KMCLV/3HNoVp7h3ADL0WQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W8waZ2ss;
-	spf=pass (imf13.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HX91BYHK;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769736704; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769737690; a=rsa-sha256;
 	cv=none;
-	b=BF7oCK6CXE6ZW1NqJWTOfEc2AZ/8Q9Zjpvq6f9EuXnNDX9l3Q3etdDka1MHFWKtE7yeDwY
-	ccyu8wHA54UrIjMybfyHW8bqkwqpLiRWqHRnq1+A6p8DPSUyUjlBajGQ0XXi3TrWk3bnBy
-	BLU0IAEnRWCmUJGmjq/xmKTManoJwTM=
+	b=baOGGWcoPkjuOd+kkIDcdw3TvlekSJMDCAot6oLFlKewLEXj6p95W8RZisM/Wd++CxITXN
+	clpcVwa25cBDu2GoaoLgEfY7T3nbvELpnKwwNE5IpJjX30RLAO6unkFMB809Ml90mIJCnw
+	JSYLa3+PfdOt8hfBryRiFuARsiDUs0k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 461BE4031A;
-	Fri, 30 Jan 2026 01:31:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254BCC4CEF7;
-	Fri, 30 Jan 2026 01:31:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6FB936001A;
+	Fri, 30 Jan 2026 01:48:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24C6C4CEF7;
+	Fri, 30 Jan 2026 01:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769736703;
-	bh=8cKq9AUozNFDXxvISOg02yWkfQ7EXvQvA0V9S9ELwWA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W8waZ2ssLE2mo86qQyqJx1jIYseMIoKmqdeKhqgBjTisvD6JjmovazsvkCaQD3SPO
-	 Oyc4XHPvIrQQ5Rs3tAUaQEGu33G3lNKHlxwgUDCC4WIMgZd48CqUaKdjssr0kwOuHg
-	 xZ03Wx3Ulkb7KFqFYGg0QNf7tJjMX5685hWMHnDX5qItlpF/qngrddtN82JBiA3wcV
-	 pKAYnzDZxAth8PBVh+lIAiReXY2EBCC/HTmcXKJ5NJ8kg126eGgXE7YVHDKY1Us4wZ
-	 06piOKS8Asrw5pa1goM5lu8X4TyOlkhn4EG1O/f6VVT8HitALTO0PTOlDDCLP3gKBU
-	 3v8PvXzd2/3cQ==
-Date: Thu, 29 Jan 2026 17:31:42 -0800
-From: Kees Cook <kees@kernel.org>
-To: Paul Moore <paul@paul-moore.com>
-Cc: linux-security-module@vger.kernel.org, linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com
-Subject: Re: [PATCH] lsm: preserve /proc/sys/vm/mmap_min_addr when
- !CONFIG_SECURITY
-Message-ID: <202601291730.45120C1A@keescook>
-References: <20260129225132.420484-2-paul@paul-moore.com>
+	s=k20201202; t=1769737689;
+	bh=Qp2XJsJSzR2HivcPBisgAW6pcIdQNbhAEoYuN3tXdWY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HX91BYHKqza58LPQh+8Noaz73VeKmnqk7ZH8OWntuzqueow/LiO8XZ2iInOfpOKsu
+	 OHtGiYJzEWcLEFTAwLe8bLhETHiRjT3R2R+TqrcBChFR1sFNbnAQeIMJL5QG0cKbWW
+	 RoA2gxzsGQbw9ILCTNjK/pl1izyLQ4anOi9CHhvMpUd6lvl7QQVPFOBtgr8YFkmBUx
+	 BYHC/n/6bozMuRjn3+vGTXY7XTlojHGQj1+ENJf8l5V96LjWvqlJHJyeulptACeDMu
+	 juhneVGupDYOQIG8owouYTQHKquiKdItqHRimW02gbjceL+X/dlOwSNKH21s7ivKri
+	 z2Uuq/yNjSgDA==
+From: SeongJae Park <sj@kernel.org>
+To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com,
+	honggyu.kim@sk.com,
+	yunjeong.mun@sk.com
+Subject: Re: [RFC PATCH v2 0/3] mm/damon: Introduce node_target_mem_bp Quota Goal Metric
+Date: Thu, 29 Jan 2026 17:48:06 -0800
+Message-ID: <20260130014807.51302-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260129215814.1618-1-ravis.opensrc@gmail.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129225132.420484-2-paul@paul-moore.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7238320005
-X-Stat-Signature: 5ur56mu4dw5jofut3tio17s35ofpp5gq
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: q3jdt845xfrfe3yh3bpw5cfppejcg1p5
+X-Rspamd-Queue-Id: 6356DC000C
 X-Rspam-User: 
-X-HE-Tag: 1769736704-967917
-X-HE-Meta: U2FsdGVkX1/6XrLFY/+mXApzNFjE5TS4LBMOk3o3C2UId+AVFyMagdIttgJ+JvTUvHJrx4tU1SVfU3IuM44Jj7tS4eyOjgBq42W/2SRkg8TMFBagFNMyIgQoEGGPO6fNCA3xGkUI2/gZfPSXaFb3F2rqlBo8eC6qh8LYFQQrzobK8wq8YAMvkhi9ZOusl40w7xZD/XdJBom79jYjAeI0v8h4Ih4di+0708njENyodN7g5gFOu+zBXUKY5dHYuxW0JGNbKauNEyICxtiiGC0Pd8PxYjWgLDaCJrEJ1eU1hw/7PJ6cJknAiRhvjVdDXAIvM7gr1UO3jAWnelWzAXCOjmcGnzDF8kMq3ZhCPMCxJpgPDScx2zQZNqZB370vxGKxPXJDUBS+H2B4Ufi3HnuMRt8qkQ+LZbJnV0XiG3V/hbsCZp9x3tTYL2WpMyddWTdwuqviUtMKpT9MsJmy6liuWXxDreBkleicirkDQzjzh38p8AVCL2G/PleOsxgF6J0GGbNgRYsXXI6Va7rghMtxrS903Q4dBLrezKwuz5SeyxJqEMGqyB3z2BPwm5TzC4dWjTO2BiCjUhLdzK7yjs+BaOQPV1hCOlt9d1mJBoZeRDyDcG8UuLaDSVRimWHOTDEWhi1M/JJ+vcYhk8D1ZifqASe2xWA42CNGxoglk1/d9SfhSimieXWzOM/NHIjDotSbXDdpbTAw13RvD9jxsQnMu0rut4jKF8L50J5w4D3xfyJ/3fIJdYi/z6tzSMnluzMb7zbpm+9izO96PykWNk1kc1GxyPnpzBiFrgNhUzbfXwwunDsMJzpPYjd5SWeyIm8EYudY00QsxwTNWyxomULcD72TFw8MvPXMgJGXKhEnI59QTBY2kdvHVUB2kLNRIdfBYF5i6dUMcGVtbEGULR5YMNOHQjXIk2svU0+LRcekM496adahsMY1D6hMV8Vtp6EMJH1Ibjqpb0pwaB9xCJI
- EqY3Mip/
- k2+arV0Da8Quzkg02EV994uWlJHlqVjsv3f2McambEMU2Azk=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769737690-852383
+X-HE-Meta: U2FsdGVkX1/rrHzSH9eBW4wjZKkVoAhELIP0YE6uNWOoputKcRcymBz6J6eoGoVqocfWCgoTcAsmQi4mNkgMfbz9Vj926g+0tdGW2adu+zjRFoHYx6TzQNwki7WJ0CC5NNK2ZHmQBBwrRAowwLzlGemyyE+bzu7xBpkDjRKtXuFSsJaEU9XT9wuB5bJPVlQOxldD4tQQeokETbyE6UVjR5xsG2GNP97ifZKdlqVgzMPDQRkKH6Lp6ix0I55pfD8X6oOGtLgYvczCNYFZo01xEl/oUQyj/WWhuYuEQ6GYLrSy2b+RDnHgDNpXW/8QcI4yXA4ooaWtdB9LDQvkkiAEaNLX/RlFFDAgCt3G/nqqM36YEU5Shg8NplJDT+Lr13p7ivjkQA/VPkbqRR2kbX2Jpr2ciM+rVBa8AkpxMHvrRezS4/fkHEq38W7OfqR13wps+0bxFsZuzs2+ri1AYUPgC1R00cqlLXn5WlD9uR3dMhg5ditXEER7lHSD63WZw62KtrPNa+/lssf9Nvz49GoqbzJ+Za6WHJKJInMzm45uiw6Ke1m96VzzumNvhTgM6mzN4GEdbCn/BAC8nE73rTsLwDzyXqJjsuELIUL73AMxWFBJVsF0uI78qhwmoeJs7miL37h29S1OKcFapJ3/yfLG7hU3SGH5k1o9KcfoGpdQz4vLElZ+giLeFGFfLJq22G8fUVEFRaSkPnTgI7vx3xlaFeQGBq77CSdZxU1XHGxT4xEA7MQFSMBVpqOU1YKxZ0RnOgaWVEByaN9a8xXqVy9vPctE/m3VOVzWHdxiai/A4INzv3XKN6jEMNrEC04WcwxUbIgndeDLCA/hWHH+n0hxsDdOB7tCWdaeO4ArPbN1E5UEDcs2vUAJAHpG2c3N7uvR4ll/JTGLdSYwkYc8HZF6F32A0gAC7jraywTOotdfWCLOC8bkKTu6/aTJyl8MvwslrmoMBwMsPY5PB6Y20gM
+ AMftETW/
+ u9+xEVA73/i8esD20LIEmvpHbJ06YyJueg3DaJG/bp3BwZIQ19S0220GjCDk7M+No9N+9uKflnt5yDMw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,102 +100,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 05:51:33PM -0500, Paul Moore wrote:
-> While reworking the LSM initialization code the
-> /proc/sys/vm/mmap_min_addr handler was inadvertently caught up in the
-> change and the procfs entry wasn't setup when CONFIG_SECURITY was not
-> selected at kernel build time.  This patch restores the previous behavior
-> and ensures that the procfs entry is setup regardless of the
-> CONFIG_SECURITY state.
+On Thu, 29 Jan 2026 13:58:11 -0800 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
+
+> This series introduces a new DAMON quota goal metric, `node_target_mem_bp`,
+> designed for controlling memory migration in heterogeneous memory systems
+> (e.g., DRAM and CXL memory tiering).
 > 
-> Future work will improve upon this, likely by moving the procfs handler
-> into the mm subsystem, but this patch should resolve the immediate
-> regression.
+> v1: https://lore.kernel.org/linux-mm/20260123045733.6954-1-ravis.opensrc@gmail.com/T/#u
 > 
-> Fixes: 4ab5efcc2829 ("lsm: consolidate all of the LSM framework initcalls")
-> Reported-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Signed-off-by: Paul Moore <paul@paul-moore.com>
-
-Good catch and fix!
-
-Reviewed-by: Kees Cook <kees@kernel.org>
-
--Kees
-
-> ---
->  security/lsm.h      | 9 ---------
->  security/lsm_init.c | 7 +------
->  security/min_addr.c | 5 ++---
->  3 files changed, 3 insertions(+), 18 deletions(-)
+[...]
+> Two-Context Setup for Hot Page Distribution
+> ===========================================
 > 
-> diff --git a/security/lsm.h b/security/lsm.h
-> index 81aadbc61685..db77cc83e158 100644
-> --- a/security/lsm.h
-> +++ b/security/lsm.h
-> @@ -37,15 +37,6 @@ int lsm_task_alloc(struct task_struct *task);
->  
->  /* LSM framework initializers */
->  
-> -#ifdef CONFIG_MMU
-> -int min_addr_init(void);
-> -#else
-> -static inline int min_addr_init(void)
-> -{
-> -	return 0;
-> -}
-> -#endif /* CONFIG_MMU */
-> -
->  #ifdef CONFIG_SECURITYFS
->  int securityfs_init(void);
->  #else
-> diff --git a/security/lsm_init.c b/security/lsm_init.c
-> index 05bd52e6b1f2..573e2a7250c4 100644
-> --- a/security/lsm_init.c
-> +++ b/security/lsm_init.c
-> @@ -489,12 +489,7 @@ int __init security_init(void)
->   */
->  static int __init security_initcall_pure(void)
->  {
-> -	int rc_adr, rc_lsm;
-> -
-> -	rc_adr = min_addr_init();
-> -	rc_lsm = lsm_initcall(pure);
-> -
-> -	return (rc_adr ? rc_adr : rc_lsm);
-> +	return lsm_initcall(pure);
->  }
->  pure_initcall(security_initcall_pure);
->  
-> diff --git a/security/min_addr.c b/security/min_addr.c
-> index 0fde5ec9abc8..56e4f9d25929 100644
-> --- a/security/min_addr.c
-> +++ b/security/min_addr.c
-> @@ -5,8 +5,6 @@
->  #include <linux/sysctl.h>
->  #include <linux/minmax.h>
->  
-> -#include "lsm.h"
-> -
->  /* amount of vm to protect from userspace access by both DAC and the LSM*/
->  unsigned long mmap_min_addr;
->  /* amount of vm to protect from userspace using CAP_SYS_RAWIO (DAC) */
-> @@ -54,10 +52,11 @@ static const struct ctl_table min_addr_sysctl_table[] = {
->  	},
->  };
->  
-> -int __init min_addr_init(void)
-> +static int __init mmap_min_addr_init(void)
->  {
->  	register_sysctl_init("vm", min_addr_sysctl_table);
->  	update_mmap_min_addr();
->  
->  	return 0;
->  }
-> +pure_initcall(mmap_min_addr_init);
-> -- 
-> 2.52.0
+> For distributing hot pages between two NUMA nodes (e.g., DRAM node 0 and
+> CXL node 1), two DAMON contexts work together:
 > 
+>     Context 0: monitors node 0, migrate_hot -> node 1
+>       goal: node_target_mem_bp, nid=0, target=6000
+>       "Migrate hot pages out when node 0 exceeds 60% hot"
+> 
+>     Context 1: monitors node 1, migrate_hot -> node 0
+>       goal: node_target_mem_bp, nid=1, target=4000
+>       "Migrate hot pages out when node 1 exceeds 40% hot"
+> 
+> Each context migrates excess hot pages to the other node. The system
+> converges when both nodes reach their target hot memory ratios.
 
--- 
-Kees Cook
+Thank you for adding this example use case!  This is very helpful for
+understanding how people can use this feature, and if there is a wrong
+assumption.
+
+I think the use case idea is nice and making sense to me.  Nonetheless, I find
+a DAMON's devil in the detail.
+
+DAMOS quota autotuning assumes applying the given scheme action more
+aggressively (increasing quota) will help increasing the quota goal metric.  In
+other words, it believes the aggressiveness (tuned quota size) and the metric
+value are proportional.  Hence, for the first context, DAMON will migrate hot
+pages of node 0 to node 1, when the hot pages in node 0 is less than 60%, and
+start gradually decreasing and eventually stop the migration after hot memory
+portion on node 0 reaches and exceeds 60%.  A human readable interpretation of
+it would be, "Migrate hot pages out when node 0 not exceeds 60% hot", which
+makes no sense for your use case.
+
+To make it work as you described, you may implement another metric representing
+the ratio of scheme-uneligible memory on the given node.  Say,
+'node_ineligible_mem_bp'?  To borrow your above nice notation, it could be
+calculated as below:
+
+    (node_capacity - scheme_eligible_bytes_on_node) / node_capacity
+
+Using this, your above use case could implemented like below:
+
+    Context 0: monitors node 0, migrate_hot -> node 1
+      goal: node_ineligible_mem_bp, nid=0, target=4000
+
+    Context 1: monitors node 1, migrate_hot -> node 0
+      goal: node_ineligible_mem_bp, nid=1, target=6000
+
+And I'm not very sure if that is really what you want.  For example, if node 0
+has 30% hot memory and node 1 has 20% hot memory, no migration will happen.
+
+I think you might want node 0 to have more hot memory, but no more than 60% of
+the node.  DAMON-based auto-tuned memory tiering [1], for example, use this
+kind of approach.  If that's what you want, you could use node_target_mem_bp
+together, like below.
+
+    Context 0: monitors node 0, migrate_hot -> node 1
+      goal: node_ineligible_mem_bp, nid=0, target=4000
+
+    Context 1: monitors node 1, migrate_hot -> node 0
+      goal: node_target_mem_bp, nid=0, target=6000
+
+I'm not still very confident if I understand what you want, because you
+mentioned dynamic weighted interleaving was the major motivation of this
+project.  In the case, you might want only hot memory be distributed across
+NUMA nodes in a specific ratio.  In the case, you may want the denominator be
+"scheme-eligible memory of the system" instead of "node capacity".  To borrow
+your notation again,
+
+    scheme_eligible_bytes_on_node / scheme_eligible_bytes_on_system
+
+Let's call this just node_target_mem_bp2.  Then, if you want node 0 and 1 to
+have 60% and 40% of hot memory, you could setup DAMOS as below:
+
+    Context 0: monitors node 0, migrate_hot -> node 1
+      goal: node_target_mem_bp2, nid=1, target=4000
+
+    Context 1: monitors node 1, migrate_hot -> node 0
+      goal: node_target_mem_bp2, nid=0, target=6000
+
+[...]
+> Status
+> ======
+> 
+> These patches have been compile-tested but have NOT been tested on actual
+> hardware.
+
+It will be very helpful!
+
+> Feedback on the design and approach is appreciated.
+
+So you might need to change the definition and name of the metric, and/or add
+new metrics.  But the basic theory of the requirements, the design and the
+implementation approach of this patch series looks good to me!
+
+> 
+> References
+> ==========
+> 
+> [1] mm/damon/vaddr: Allow interleaving in migrate_{hot,cold} actions
+>     https://lore.kernel.org/linux-mm/20250709005952.17776-1-bijan311@gmail.com/
+
+[1] https://github.com/damonitor/damo/blob/next/scripts/mem_tier.sh
+
+
+Thanks,
+SJ
+
+[...]
 
