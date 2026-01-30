@@ -4,101 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E496FE6BF25
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 16:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665E6E6BF2A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 16:40:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B0D26B0005; Fri, 30 Jan 2026 11:20:29 -0500 (EST)
+	id 67F0E6B0088; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 034916B0089; Fri, 30 Jan 2026 11:20:28 -0500 (EST)
+	id 6231F6B0089; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E82A16B008A; Fri, 30 Jan 2026 11:20:28 -0500 (EST)
+	id 504E76B008A; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D974B6B0005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 11:20:28 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78B99B8788
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:20:28 +0000 (UTC)
-X-FDA: 84389142936.28.F7FD56A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D74A8120003
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:20:26 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qFvAoLrE;
-	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769790026;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3C8AF6B0088
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BC95A13B6CB
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:40:01 +0000 (UTC)
+X-FDA: 84389192202.11.B0D637F
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010052.outbound.protection.outlook.com [52.101.61.52])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E276040007
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:39:58 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ucbSE9Kd;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769791199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kKFfO/cajjyvgKi+/84bcQRNcsqj6qTseOulOIdchzM=;
-	b=mUuMl3PzWmDveFuYarOIfB0BzZT8SaHrygSM7aWNj/HO03Fl5SruNEaNk7Vlche9/lQuAC
-	a2csES40pxWSsU2wCVjW6rdmr344TYCmg8OWRMrUcoM5jVKkVLkvzIMwzj2ugywI9Z9EwY
-	88sc7wi1ehIbKQhxrDNt3zM1+V7PB7U=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qFvAoLrE;
-	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769790026; a=rsa-sha256;
-	cv=none;
-	b=mmrXwN34JsmVMGl46dWNqvOa5sIO9I20E9Cn1ctwIvoIQFI1tWgsDIWv4roP9PXQJ81VEP
-	r/YrJwMSgiBCd+kBl+FbC7Nr8tPere9XUIq338+8MCx2quDxtBA0a2mgKUIvtb1PF3Jrng
-	YkbjVNbtRQ1IsQAMfhZcq4B6DWOH7eA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3B94960146;
-	Fri, 30 Jan 2026 16:20:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328CAC116C6;
-	Fri, 30 Jan 2026 16:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769790025;
-	bh=5xly92bMzMLkHZHjcbUH0bBICud3S1llkxSwO5zFSQ4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qFvAoLrEzX3VFixqSdBDcxKh+/2NIaHvXgp6QXJ/XVe75zpRgJgXFh0wm9MYkpJG3
-	 exncHf0mRDjc5o86zn8NuKcy8dGqpdC8jiriSLXsN8T94SMrYxlkjiAXC65Tk0rqcQ
-	 Umuk6SbPqU9oHiTOFv9ixSpmkXXKg/7OKKfC/8CeP5Bz0D4ons6ChlSlFUu0YgZPpX
-	 TLtLs4CmYN/VbzigeXhN9mTa/+ARJMXy0sDxLKwGzhzrTl1XNKi0h72UQSMjXKe/PZ
-	 Cta+H9PIDwNcZHOsLQm+e04NVOuswttseFYkwso870MJ75DEVGZXpfkaJViZbkRECx
-	 gS+b3kYySBrYA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Alice Ryhl
- <aliceryhl@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-In-Reply-To: <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
-References: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
- <eGcGSx_-fgeLHkPmdfbWgLGhzEcmXunLzIAvS1-X3GqwyFOny9Frz1xN29-fj99sHxxa5_1WrcPxuSSZKxCHhA==@protonmail.internalid>
- <DG1Y5V810II1.1HE2T0HDBLNXI@garyguo.net>
- <877bszrz37.fsf@t14s.mail-host-address-is-not-set>
- <a8nHDdzac5l20akcxjjf9w7huObjn4eIHjUI-A17aKEwWl1N-4vvLBiVdqTQbBHwypMIA6gNkzm8YFXmMl44ew==@protonmail.internalid>
- <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
- <874io3rwl3.fsf@t14s.mail-host-address-is-not-set>
- <iFJVkpTMbd-NR24OHYTJj8lr4dw7MwCQ9rJWiuRZFgK3JRDhIIAcpf5Z24viL5qHhkrPzpnKfvX7JS6X_VO2vg==@protonmail.internalid>
- <DG20LKAHMXMZ.262Y7NAC1A1Z9@garyguo.net>
- <871pj7ruok.fsf@t14s.mail-host-address-is-not-set>
- <-9VZ2SJWMomnT82Xqo2u9cSlvCYkjqUqNxfwWMTxKmah9afzYQsZfNeCs24bgYBJVw2kTN2K3YSLYGr6naR_YA==@protonmail.internalid>
- <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
-Date: Fri, 30 Jan 2026 17:20:11 +0100
-Message-ID: <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
-MIME-Version: 1.0
+	bh=HUGGo+36f7qwsFsPL5VjqY0jYr2eh/0L5rr/8TMI5s8=;
+	b=V18osPlylChak/mXf08Epeje7Q/6mLU85EoGLQY3XelyfafYWGROMT3UrcPgecWodsS1FZ
+	nENAjBUcjOokzS+ztD+PdKNj7BWQjMJrMNUyWggieQOc+Pb8pLNl9FXtwful6KNgGMQnx5
+	8+UMim2CtK4XYK/5EJztMHjDBQmbaHU=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769791199; a=rsa-sha256;
+	cv=pass;
+	b=2zMAewURplAAbWJC8G/IX+eJhSqST/ZTrY4Fcmr+1LGvnjjadPlgFEV0j7jwDEDNfkV5fA
+	9YjpofnYV+4dKDtkrKSMZAFci/7Z7gCCja3P/fqLRxcttWQ0e+wQI6N/a+Jy39LxGL/hDQ
+	dHLkDk4z2vasBchOlVN/4o97X1BLSrs=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ucbSE9Kd;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Oqpf03Qljrtp1oelbqD6NU8XgmAVenbLZDO5QQ9G5v3x6jwCwfe5wg5wEk6zXBtfhpnIcBFT5998fv7/FxNAjUmg1sWNciYrZoxShDNQ4hEPrHEAaMrGggP0Vz9uo/1USxmJcoG/hN1rJWXJtbDIAfrlFkEpEeybe/i0QwjQJHCj7Lgj344fGBcAy0ClalURHKSlp6IqDmC2co/8Wz60ewDmZMpLSOHEmvhJ5Zg4DfFrArgjahpRHx3SZU9uutn6IRwe/jGi0qXw6H1KV/u+x1Bz4ugdPKj/MgyDy4Mv88sAUEYJ9FSRmQaXcNno1P4lLXHuakrWBUji1DoRNoIYVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HUGGo+36f7qwsFsPL5VjqY0jYr2eh/0L5rr/8TMI5s8=;
+ b=bdDrRxnPqZtbfce9QJNAHWrufM/1X95aTYf1zykjCJ4kMz3sXgILmbTrzkp3jmiVKIOoqurHPx2cjCggxmuS+Dx9eCi+Cr+05ikPLXpVRQRK6vPVCr6fqowJAzsjCpAO3R7+68EPYvaecdRtAltu3t9pOVASMTTmDCpKetYtgYjGIddY4rVrK+ALTy1Qzwl3Nbh4+FKI06bMhEry/rSdCp1fzsZDXIaYBodgRMuf1WtWaDXfo3GoNCpyUIFEot3MiI0o2jwmcPsuaQwFVhahVWem6BP+SV4eIDWbHWgUH9FekFc1lmymLAs+/pAYDzqrv3i4OU6ioOFILnbookaUYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HUGGo+36f7qwsFsPL5VjqY0jYr2eh/0L5rr/8TMI5s8=;
+ b=ucbSE9Kd6ejhtWRV4Nb9+cHFwTl2SbDWPJgDzAkty5iT+Wr2j0b6yoL2MhF4Bg/f3k+5HD9kCm/z/L+260dROmMFWjhcRY87WZ570RQWM79SnSXOlqOYD9RC1Y7WlSFswjw1p0+O79XyxwFXOeBU/nwYnJbyUdEB5bqhA8Dfsopb/fym0yp9FWfAXXC11TVQ8kMfe5S2qzqpMfUyuhmFe3o1mEDln+LpyvExgi3+jAOFx5/+CgS20Q8+UJUNLLekz3EEF7L/waQtSeimlLaKhhkN5Gm5oFzD7qvtxGuL2v66qO9clE1F+uG5Z/oQ/F83Cw/yuiapXb7XCVSPUXG4og==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ LV3PR12MB9402.namprd12.prod.outlook.com (2603:10b6:408:213::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
+ 2026 16:39:49 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
+ 16:39:48 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: syzbot ci <syzbot+ci7f632827e1b1c91b@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, axboe@kernel.dk,
+ balbirs@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ david@kernel.org, dev.jain@arm.com, hannes@cmpxchg.org,
+ io-uring@vger.kernel.org, jackmanb@google.com, jgg@nvidia.com,
+ lance.yang@linux.dev, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
+ muchun.song@linux.dev, npache@redhat.com, osalvador@suse.de, rppt@kernel.org,
+ ryan.roberts@arm.com, surenb@google.com, vbabka@suse.cz, willy@infradead.org,
+ syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Subject: Re: [syzbot ci] Separate compound page from folio
+Date: Fri, 30 Jan 2026 11:39:40 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <2A678D66-2516-4130-A34B-6A0B3549EEA7@nvidia.com>
+In-Reply-To: <697c68b3.a70a0220.9914.0032.GAE@google.com>
+References: <697c68b3.a70a0220.9914.0032.GAE@google.com>
 Content-Type: text/plain
-X-Stat-Signature: 7sge75uw65iobq7qhz74qdcc4fe1bbpx
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR03CA0114.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::29) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|LV3PR12MB9402:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ed83828-0bbe-4aef-dead-08de601e2e91
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?PoRsv9AVYuCIcpmoG+bn0g+WnTs/gghYD+SjbYQ/12AjhKJW4Loh8nnSo2LM?=
+ =?us-ascii?Q?bIJ6dWxCURdTNFYToR3JxkEwD+J9eVC+Ezjio9j7DXfJAicV6nNd77LrZCuN?=
+ =?us-ascii?Q?Ptu7lEtDL3ENQ0unkMhAPc3XOpqvn8vJYxiHNjx7jX1zywxLhTYEJGgflX3Z?=
+ =?us-ascii?Q?XhLgFAej/6zSgclAbIvbgElzgRIrj6TdNMrQMQKyLerizwWdrsHL5cr/n4Tg?=
+ =?us-ascii?Q?iZyUL4fjZuYuIx9Yul0LqW7HkbUtsy0m8izXMY5FNxg10rh1lxcNGupsgR9X?=
+ =?us-ascii?Q?NbzDaqm9/5guujDaNYAmYpsiE1muXIyQUSK26IECHT8EhivZn7OYDHax4IoN?=
+ =?us-ascii?Q?MfZdX+2YIlSTjLEMjNv2otNzDij5NXNsdglMSyex3d2S8sdp0VxtLTVGorBb?=
+ =?us-ascii?Q?Dj3yULnQQGlyWO1hgk+fHCBHQ98MWpXvbwFG76oithX96ai7NvbcN50q3tpm?=
+ =?us-ascii?Q?DJICmeGbZytV+bBLm/Kte/Yhvt1rQuVLPWh7CKmfvd1vJykmBAXCSDqHI/sv?=
+ =?us-ascii?Q?tibypD6fxDR0V0v85hr7mYtH9AassDwEAkvG9bEutxUUWPgqnyfnjVhY5gmK?=
+ =?us-ascii?Q?1YDvoQera/tjrUtvCgrWDhtCsbJma8wqIqMYNgSxN99xaKqHU9yCuSfy6YXK?=
+ =?us-ascii?Q?Vqtvr80u6W8J1zWVeAal4ZK5Nne3jZQyQ8LfpHzgziDdYXS7Lu9STJ7HjE77?=
+ =?us-ascii?Q?dHaunJMhkboof3R1thgo8DF7QqYSdb7wKmN/wwwETY4IBZhjr/pAdaGu+nA7?=
+ =?us-ascii?Q?ZLr34Ad7DNuocUnbC1Kz5MV7leypejq1/warWMVaJUzNUr4Tbn5iBFABTQ9l?=
+ =?us-ascii?Q?AnKaDMDsrw3APMER3Vg3aNcqqHFQL6hyA0ASzDCgY9Qai/uaQw9Egd/CoPlJ?=
+ =?us-ascii?Q?SDHP+RQyz88ILg1aqc5lkKwO2Ii1S/zJH6SBRH+NpyiaDw8NT6jODPG1Gtvz?=
+ =?us-ascii?Q?Q79p/ohqB8eOELOidHc3YcXVGTWG7CPfCk9meO7iYRA28k//4x4lZhcFDO9n?=
+ =?us-ascii?Q?n6BWRG0TptcPuyzRZltzTH9OiHjyhai9NuQMhDuNtLyuQpJ14IEKEDTMHhVr?=
+ =?us-ascii?Q?GIgav8dawZw9S+umTpVd6Pqq/U+z0vLvy9qnipog/ZB7sYAZCvpNu7EUL287?=
+ =?us-ascii?Q?glZOmOclga8XLFnYg7DgDMn0buFU9Tbd7kGSWfF0hXrt4qIAq0pdtUiijWbz?=
+ =?us-ascii?Q?Q/xCPU05aR4syl/TmXf/bd1H7y3y7MKvTTauJZFnkY8dnPhfN/J412Qr/QP4?=
+ =?us-ascii?Q?HZhVk1f2m0YSNXrIfYYGLTFFgD8dZGRWRNRQ0CPAExpOhVe+/0ODNmfxyGKE?=
+ =?us-ascii?Q?MxVcTIRHeHuZyKyCOhmEnmLjOynS7n0jvDule4MKgr8yc69xKVv2sEV/87rT?=
+ =?us-ascii?Q?JAMY4GyVKujfaKuw3BSkbFewHmhgUeFQKEGi9B5asTP5A3wweHvbSYRUli1e?=
+ =?us-ascii?Q?E0gtE8EXIU+zK5LFrFX0Kngfpiiivjut9cGGkVdt0K9fDKjubBo813PPTE66?=
+ =?us-ascii?Q?mP4Wa7cK4qpZ9W+NRtI8ltslhMJQR5xyZsFjVdSEH9DJ+P2Zo3FmFEKubfvb?=
+ =?us-ascii?Q?BHhOzBiiIizo+Lu9hs8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vDBSl3mDDge9rtpYBmF9KPPN4R2ilyRmVtstRm1qelO7BoqRrbdAtPTcKwdH?=
+ =?us-ascii?Q?PT+3H2INePTSndPuuUY0MoXw8HF2nUVYeewtIGDU/zRbb3Ncw5HRqi7pdtwm?=
+ =?us-ascii?Q?UzTSqVqD2UCMYY5S86D13J3RwJVGkPTXqTd2IXywTYIqqXmmsMmEGaEt7V/T?=
+ =?us-ascii?Q?eTB5BiyCcw86uFd9KfCHdrB/2DbCyWGmu8WdGFx7cdn5JbBe8CopfFlSrkFq?=
+ =?us-ascii?Q?XMJGaSWnjqR8/z31hvu0ZJidZZS8svXkmt6uuCMOTM+/P/TLBUsGdzPejmUC?=
+ =?us-ascii?Q?DV+aHyv8Pgm5BnnKt4Nfy/zxukxnKTOnMbhrt+G3l+/ljUToNXpbKbxlNjIf?=
+ =?us-ascii?Q?/vbUNdPy3TLMndr/rrAFm7LU+8aEin804wGyWvmnbL3iT8PifCv++7W2yuLA?=
+ =?us-ascii?Q?FPo0WvuOXKkMQMMGq+Aryi5VDMjlqgh1Qb3a44t0hsGEtN0P8OhZVNXJw7aW?=
+ =?us-ascii?Q?DP1Ii6garj/1O/HiTyW5L3SetlD2Aanc4GQ22WTWDryUUqlXEGek2Cs5MKmQ?=
+ =?us-ascii?Q?q/NVshT2+cY2JIWoV6hUyyGXSyCY8BX6IBeY/8mA00J/vVNeix0ZpYN2k2rt?=
+ =?us-ascii?Q?XE4lhbHo8vwdDsCfkpARvWSQzXjHdcOa8uWGBlttMEvQ13LzbqafgUr7YjcD?=
+ =?us-ascii?Q?aMEu6D2NIlve1/+Mx3diQ2Va2CTQTGqEgxM5HlG29xb3xMCWf7Gg/86XMrgK?=
+ =?us-ascii?Q?yXbL6gZjjkIn1Xos0pBEtz+Us45KMYwWzPhV5uA2YUvjF5plGWqRuuE80rb8?=
+ =?us-ascii?Q?MPo3JF1CsxfO5N/pR3NTnqrd2EjHa+L6e84HNRYLwzy1Eb20UDuJBsrKem+h?=
+ =?us-ascii?Q?SEwxUGVm8c/qCtNFdXdUAHTnrb037kpQAjGeFmYxTv+COGwOTzJo1Yltw1+V?=
+ =?us-ascii?Q?PTJL4UdaTd/hmyGY+7yXlWPechCMsrl3D1ht14+cvLK4FOSUSbZ+dL+VbsCk?=
+ =?us-ascii?Q?Tfry47k7WJ4igemAg1s8l4QOz3bA86kQuINsNEl5CChTwz63SdPndRriF3pv?=
+ =?us-ascii?Q?ifQwzbekTQiP6+M42zuCEiHSBDISgB177C/L/GqlAYuv5F+TtkTvGMmXKXbN?=
+ =?us-ascii?Q?6cTQ0woCkQBIxES2487yF2Ox5NSWM0qmVACBQy+OTS9fhaKHIM1qh5Iaaoyv?=
+ =?us-ascii?Q?aGRQqLxGg3qVJhotHDTbJGaGv9fLzB/cwq6eT3gYbhak/ga9uqcTLRJPYF4g?=
+ =?us-ascii?Q?xH1lgwvoi8kwKqvUbcUhiBHuiRfh01j4CSrEM2QTycstBP3jozUnWaNZqm6i?=
+ =?us-ascii?Q?JV3PfBqaUvOdwjPSvFQ5C5Eg9Kwahb7Pyb/8oHkdo1YJ3xyrd2liYd9Fn/NR?=
+ =?us-ascii?Q?sbruD7NiNmyRoD/2GFnbJRF/RfjryRtaFj9UgRqMdks3LTc9P8Iu85C5rpmD?=
+ =?us-ascii?Q?lxBhuaQaDNWOs1n2XbFfNlSNkfggRKBpjx8bo3KSUqgK9waHL4sbxHcXOzSL?=
+ =?us-ascii?Q?jUfXUlUFoYuVBbfIC3/BPwwyEDwwPCRmIy0hCq28VvUnwe6XOJxHnURoONhl?=
+ =?us-ascii?Q?nleWKtWXWYSiadzuuBQNAPUmh9XmHY5rVtPxpent3OHlKW+Q93gwdqBFe2yq?=
+ =?us-ascii?Q?JNt5Nn54OaGJD0xN5iB2ESeQH5tDoJPXzvW9UkpRIkwp+xrukCQs0avMpx8V?=
+ =?us-ascii?Q?udsbyPh8WZjnxuO97bGFubuQ4M+865RyDrcWYlXGC+Gz8fKupyAU8GtkNxSh?=
+ =?us-ascii?Q?w/LCoiUjdux/M/UgHhJ58YTjmh6/u9+3YiBxiC+8DCaiWC4ru6RFmOaouJHr?=
+ =?us-ascii?Q?nkpglx8l4g=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ed83828-0bbe-4aef-dead-08de601e2e91
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 16:39:48.1480
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yggb7pthLG5XMZIrayrui370kiccGaUcu6AFOdNb6B1T1p1NThZYY6MCTptNTfyz
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9402
+X-Rspamd-Queue-Id: E276040007
+X-Stat-Signature: cgtp1mhy1gyk1teieeb5p5kihobcept4
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D74A8120003
-X-HE-Tag: 1769790026-843820
-X-HE-Meta: U2FsdGVkX197tVrnxUB3QuJuf13xZ+uJiwtuJb9CmuyqhOK40ygxbz03zm+W3uBiOsXa7h3xB7xqrJwPdGPcFiYSxIYkHbhuDYpql6oXxgBWhQp81oOPxfCtID28Yjp1hqWUHlaeXBUzkzb4wG+En6Q/IGltv1SlBiN4gA5RpAAIn2Hp+VButqu/kjjhFK/HtiB+msSypB1HtCwP8RpciduzAefNeOakhzWS7XjUiR6i87pQ3JMWKu+bTtcT+MTFnf1SVf8fahAsaxXNU6S09aGICzR44ewBojMQ4c2SecTEZJWQz186jyzcs84Yu3gGSJ0vbys0LnuRDtDIv45e9xJDDKy9+5ETBE1YgWmfDqWhpWMPag3akOIHbzyXYbmAnFiY/o3FFdfxFUkN6uVLSRKGLD5Fjf07DJ+KxqmdjQFfauM59WmACQ9prh/unZKAqF801R0h8Ez/pEyaxgFntz/8Ly6fNARqKERHAopdf8iAAxd25EIBOJpMiHrZUwTstPiwZBNcvNDdfHd1HYJuwryZz5VBwnFD6/4rPDoJiugan+S9jvqpm+fWph8+l2VRaF9G9g5LO9eq+kvUv65zNjM4czmjJ4/5/dFfyaQgmCYmHEIYPzxGDgxRDl1v9GgWcH/rCbQ14T+S4xz3IUNj3USjbKAPGCitu6uU2O0h9aF9TuIEoGVFxIPqLuUV2+xbKzgYiooqmWLIYqFrN24DUvMvNP4xALXmMJKpp+BBs0MZvndoCNBbYDFAW0hRTXJIwA5/MS2iukoDbDc+HbL01LsunZmU6PG6KxMcfgSn1WDiqCgqiHBNg4nMPYc8lwYzf77BFF8+RjzRC8aR6JO2+MOPOk30e5f98cgbrzI4huWkuzprn522nLKWSn3UM84KRhv4iMJwv6oGaSfsztK0xVdCXk+NKgQwIrQ255tCdZQ5oeC+hEoBARUrwnFXt6cxtQVLORKa+xfetK1s1xO
- MU5a5ePs
- q5PsoaxSvYZMYEsDAwzYDgDQSh49TqitkWjO+lsUy8gWTw49wsLGNSnMYBHVaZfRKLr8IiZX0DmjalyWpUvyfCdMv1fCjnjT6xkM5dEuD/bQDRQ3yeJdWypemS5KOcMdiR+bkOe37FWomQNeZEZ8phbcovJ+fQDF2iGDUzCWxnQIlwecdmioBvYw7BqCTmBnxsVxpyUav8RvDt0NLMVJtLzt09Sl0iBlUTK8zPf/i6vvEakaOQRaW+gJEN6LsHebpCfSVHkcgpV22a7mjFfVz1yKgWxopd1llvPTwtN458sJDwHBugunAjnDZ49srv+xmRXwj
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769791198-975777
+X-HE-Meta: U2FsdGVkX19Ms2sZiW62M3KxGuHdkKsALOM9ofBBJsfcAQtbojJPTapzMAqM0Ymhk527H/AzJRZz8f0Ns1tTP3hUdHrpkrTinC2cNrnJb+BRZEUzZqblpTW+uiV9dbjfF8uA3cDf4CRdSbJ3OMUrY41ELaZgmKzieSFOnMX9HRLMBrf/ARjbOORZy9b7jbGsQlvJtNbnPYjzTqUREK7EU+89YqDX6Rc3H0uWBBNdds9UrEbVjkV5CLyjZVEkdzLCE07A7gdM+D2FaZ3IcFkt9bBocxHJ7BTNtt9/zDrKxmq95SPXzDvzTnUZ8fz/WV/SrHWSb3/NXEFjjbaXx5GXIysHG7gfVVvU4QyA/wTH5xeO5gVvBGItikUxlKfRBrMg0/DV1RUpcPnz52pkSc/drQc8vi8ZMctbyNa2QfE6vXBBscki55sHWY9CDF/3NPlpyV/TZuaqTLw9MI9tmRVcohz1vqb0PatqB6TnLZbFPw76FcCB8SjYlfww05Q+okOFwG0hCtxyTokveSrBHOArMI9yGKdvv8zQIRa8dpTRsugpsjPsx5xAdNVZS9nfBUR/yGZAjr5EosDp/6nJduO3YTNRr45ppUjf0owF8invTOQic3FQ/O0e5jbMc0tQfXKi6xYsb3dPVrUrvHVDS1kjILd9rqncJY4ihozlaiT5H6XT+fpLFi7IxcfOdV35RB0sJIL2PQN55YDNWbL4rAP8KQQ05hg7pwRCf7iFAdrZv+CamvBZuOJvn7gMt8WwWu5hQ7NUDN5dAthTeuq2LI3RaIYH9ygBkTpQW5JHQE5/Drq2NqxN8jTKOOlX2RGsqcNc4sjeybb5GuP8g5jO6TGD0kCuBqewSJ83RRwNFD74J1Srk49VeDDGj1GhREMHTY7YKc+3fOM4MiNbOyOxBixqI8fc914QOgwbEKXmD5csOndZ6Yxgxh93U5YS9cqPHE/SGOfvcho3601dp1eGXx3
+ koS+0iRT
+ Ks4QseSjnjTYb8lt6k0rdKZuwh5TsQ0yVGpVkA5An9WEuSlFN5jWDRH62O+P/8sos/R+caJlWksSCseQ3yUH5VInAnEnqR/irrDJQt2dCt8vBVqY7D0CPEm1707C/Gz3wc+Yashli+uK94fmkKqP45rKvpS0kw6vMYM/nHbXk6CIJBH0BrBFgo9wmIVaRs8giG57u1NhZvfBSAAsHpMH9eDM4FWGNyBOvKwPrJKWSTdk2MbsknGpz43y6PaiyIbziPXO0e24X8Ltw7V2wuHYd9bUbX7NKM6Ha2J+1lortRu7c4aHyuX/XZ1fJguphDfUz9B1kQi+WsvMzXkV+MgXBsZm6UaFkRJqCmn90DDceUE0jMxblvoinuJhiJgjEkDvOq6gEPcstiUBAxBEhzkIdW6z7RRrsoIQWtvDUcFxGnTI0hOMwbw0uX89N+ihnBau0m1FeCZDV7odLLeFV8V182WajO8AntkKzQbsWOloOn/xuI6WB5/3abcj+V8By2czFaqfr1wLkGe4xK1F7wuX89yOZtbLRN15CtnMxHs/Uxs8WfuJXXz4xMmC81z2kL1NMJS4CGByXJ4fft0Bd6kCWrpBETw3/lx4MmtHZhcqU0iU9wq5E+FtpaBapyc90deD9jtpka+P1bgt4/c6bWD5QAqpXWukosJcws7iyAnC7BiyufAB272iivjWPIEAnecnyFpTcoKOQJ9EiH+KgwB0BbnhB3f0OzrRc3y9cGZxCm9M07BQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,168 +193,143 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Gary Guo" <gary@garyguo.net> writes:
+On 30 Jan 2026, at 3:15, syzbot ci wrote:
 
-> On Fri Jan 30, 2026 at 3:23 PM GMT, Andreas Hindborg wrote:
->> "Gary Guo" <gary@garyguo.net> writes:
->>
->>> On Fri Jan 30, 2026 at 2:42 PM GMT, Andreas Hindborg wrote:
->>>> "Gary Guo" <gary@garyguo.net> writes:
->>>>
->>>>> On Fri Jan 30, 2026 at 1:48 PM GMT, Andreas Hindborg wrote:
->>>>>> "Gary Guo" <gary@garyguo.net> writes:
->>>>>>
->>>>>>> On Fri Jan 30, 2026 at 12:33 PM GMT, Andreas Hindborg wrote:
->>>>>>>> When copying data from buffers that are mapped to user space, or from
->>>>>>>> buffers that are used for dma, it is impossible to guarantee absence of
->>>>>>>> concurrent memory operations on those buffers. Copying data to/from `Page`
->>>>>>>> from/to these buffers would be undefined behavior if regular memcpy
->>>>>>>> operations are used.
->>>>>>>>
->>>>>>>> The operation can be made well defined, if the buffers that potentially
->>>>>>>> observe racy operations can be said to exist outside of any Rust
->>>>>>>> allocation. For this to be true, the kernel must only interact with the
->>>>>>>> buffers using raw volatile reads and writes.
->>>>>>>>
->>>>>>>> Add methods on `Page` to read and write the contents using volatile
->>>>>>>> operations.
->>>>>>>>
->>>>>>>> Also improve clarity by specifying additional requirements on
->>>>>>>> `read_raw`/`write_raw` methods regarding concurrent operations on involved
->>>>>>>> buffers.
->>>>>>>>
->>>>>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>>>>>>> ---
->>>>>>>>  rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>>>>>  1 file changed, 53 insertions(+)
->>>>>>>>
->>>>>>>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
->>>>>>>> index 432fc0297d4a8..6568a0d3b3baa 100644
->>>>>>>> --- a/rust/kernel/page.rs
->>>>>>>> +++ b/rust/kernel/page.rs
->>>>>>>> @@ -7,6 +7,7 @@
->>>>>>>>      bindings,
->>>>>>>>      error::code::*,
->>>>>>>>      error::Result,
->>>>>>>> +    ffi::c_void,
->>>>>>>>      uaccess::UserSliceReader,
->>>>>>>>  };
->>>>>>>>  use core::{
->>>>>>>> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
->>>>>>>>      /// # Safety
->>>>>>>>      ///
->>>>>>>>      /// * Callers must ensure that `dst` is valid for writing `len` bytes.
->>>>>>>> +    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
->>>>>>>> +    ///   destination memory region.
->>>>>>>>      /// * Callers must ensure that this call does not race with a write to the same page that
->>>>>>>>      ///   overlaps with this read.
->>>>>>>>      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
->>>>>>>> @@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
->>>>>>>>          })
->>>>>>>>      }
->>>>>>>>
->>>>>>>> +    /// Maps the page and reads from it into the given IO memory region using volatile memory
->>>>>>>> +    /// operations.
->>>>>>>> +    ///
->>>>>>>> +    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
->>>>>>>> +    /// outside of the page, then this call returns [`EINVAL`].
->>>>>>>> +    ///
->>>>>>>> +    /// # Safety
->>>>>>>> +    /// Callers must ensure that:
->>>>>>>> +    ///
->>>>>>>> +    /// * The destination memory region is outside of any Rust memory allocation.
->>>>>>>> +    /// * The destination memory region is writable.
->>>>>>>> +    /// * This call does not race with a write to the same source page that overlaps with this read.
->>>>>>>> +    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
->>>>>>>> +        self.with_pointer_into_page(offset, len, move |src| {
->>>>>>>> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
->>>>>>>> +            // it has performed a bounds check and guarantees that `src` is
->>>>>>>> +            // valid for `len` bytes.
->>>>>>>> +            //
->>>>>>>> +            // There caller guarantees that there is no data race at the source.
->>>>>>>> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
->>>>>>>
->>>>>>> I feel that this should be a generic utility that integrates with our IO infra
->>>>>>> that allows you to copy/from IO to a slice.
->>>>>>
->>>>>> While that might also be useful, for my particular use case I am copying
->>>>>> between two pages. One is mapped from user space, the other one is
->>>>>> allocated by a driver. No slices involved. Pasting for reference [1]:
->>>>>
->>>>> Then what you need is a byte-wise atomic memcpy, not memcpy_{from,to}io.
->>>>
->>>> Can you elaborate on how you get to this requirement?
->>>
->>> Memory that is possibly mapped into userspace is still normal memory, it is not
->>> I/O. I/O accessors (and IO memcpy) are specifically used for MMIO, and you
->>> should not be using them for userspace memory.
->>>
->>> For memory that can be mutated from userspace you can just treat them as a
->>> potentially concurrent accessor hence all accesses should be using atomic. When
->>> tearing is acceptable, byte-wise atomic is sufficient.
->>
->> I would treat them the same as DMA regions and MMIO regions. As these
->> regions are outside of any Rust allocation, if we never make references
->> to them and if we only operate on them with volatile operations,
->> behavior of the copy operations like these are defined, as far as I
->> understand.
+> syzbot ci has tested the following series
 >
-> I don't find the argument about these being outside Rust allocation very useful.
-> Apart from MMIO, I view all other types of memory still within purview of the
-> abstract machine.
-
-From the discussions we had on reading memory that may incur racy
-writes, what I picked up is that these are OK under the conditions that
-the regions are outside of any Rust allocation (whatever that means),
-and they are only ever accessed by volatile operations. That is why I
-think it is useful to consider these allocations outside of any Rust
-allocation.
-
-A similar argument to the one I am trying to make here was made in
-`UserSliceReader::read_raw`, which delegates to a C function that (after
-mapping and setup) ends up in an assembly implemented memcpy.
-
+> [v1] Separate compound page from folio
+> https://lore.kernel.org/all/20260130034818.472804-1-ziy@nvidia.com
+> * [RFC PATCH 1/5] io_uring: allocate folio in io_mem_alloc_compound() a=
+nd function rename
+> * [RFC PATCH 2/5] mm/huge_memory: use page_rmappable_folio() to convert=
+ after-split folios
+> * [RFC PATCH 3/5] mm/hugetlb: set large_rmappable on hugetlb and avoid =
+deferred_list handling
+> * [RFC PATCH 4/5] mm: only use struct page in compound_nr() and compoun=
+d_order()
+> * [RFC PATCH 5/5] mm: code separation for compound page and folio
 >
->>
->> In the last discussions we had on this, the conclusion was to use
->> `volatile_copy_memory` whenever that is available, or write a volatile
->> copy function in assembly.
->>
->> Using memcpy_{from,to}io is the latter solution. These functions are
->> simply volatile memcpy implemented in assembly.
->>
->> There is nothing special about MMIO. These functions are name as they
->> are because they are useful for MMIO.
+> and found the following issue:
+> WARNING in __folio_large_mapcount_sanity_checks
 >
-> No. MMIO are really special. A few architectures require them to be accessed
-> completely differently compared to normal memory. We also have things like
-> INDIRECT_IOMEM. memory_{from,to}io are special as they use MMIO accessor such as
-> readb to perform access on the __iomem pointer. They should not be mixed with
-> normal memory. They must be treated as if they're from a completely separate
-> address space.
+> Full report is available here:
+> https://ci.syzbot.org/series/f64f0297-d388-4cfa-b3be-f05819d0ce34
 >
-> Normal memory vs DMA vs MMIO are all distinct, and this is demonstrated by the
-> different types of barriers needed to order things correctly for each type of
-> memory region.
+> ***
 >
-> Userspace-mapped memory (that is also mapped in the kernel space, not __user) is
-> the least special one out of these. They could practically share all atomic infra
-> available for the kernel, hence the suggestion of using byte-wise atomic memcpy.
+> WARNING in __folio_large_mapcount_sanity_checks
+>
+> tree:      mm-new
+> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akp=
+m/mm.git
+> base:      0241748f8b68fc2bf637f4901b9d7ca660d177ca
+> arch:      amd64
+> compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1=
+~exp1~20251221153213.50), Debian LLD 21.1.8
+> config:    https://ci.syzbot.org/builds/76dc5ea6-0ff5-410b-8b1f-72e5607=
+a704e/config
+> C repro:   https://ci.syzbot.org/findings/a308f1d6-69e2-4ebc-80a9-b51d9=
+dc02851/c_repro
+> syz repro: https://ci.syzbot.org/findings/a308f1d6-69e2-4ebc-80a9-b51d9=
+dc02851/syz_repro
+>
+> ------------[ cut here ]------------
+> diff > folio_large_nr_pages(folio)
+> WARNING: ./include/linux/rmap.h:148 at __folio_large_mapcount_sanity_ch=
+ecks+0x499/0x6b0 include/linux/rmap.h:148, CPU#1: syz.0.17/5988
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 5988 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT=
+(full)
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-=
+1.16.2-1 04/01/2014
+> RIP: 0010:__folio_large_mapcount_sanity_checks+0x499/0x6b0 include/linu=
+x/rmap.h:148
+> Code: 5f 5d e9 4a 4e 64 09 cc e8 84 d8 aa ff 90 0f 0b 90 e9 82 fc ff ff=
+ e8 76 d8 aa ff 90 0f 0b 90 e9 8f fc ff ff e8 68 d8 aa ff 90 <0f> 0b 90 e=
+9 b8 fc ff ff e8 5a d8 aa ff 90 0f 0b 90 e9 f2 fc ff ff
+> RSP: 0018:ffffc900040e72f8 EFLAGS: 00010293
+> RAX: ffffffff8217c0f8 RBX: ffffea0006ef5c00 RCX: ffff888105fdba80
+> RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
+> RBP: 0000000000000001 R08: ffffea0006ef5c07 R09: 1ffffd4000ddeb80
+> R10: dffffc0000000000 R11: fffff94000ddeb81 R12: 0000000000000001
+> R13: 0000000000000000 R14: 1ffffd4000ddeb8f R15: ffffea0006ef5c78
+> FS:  00005555867b3500(0000) GS:ffff8882a9923000(0000) knlGS:00000000000=
+00000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00002000000000c0 CR3: 0000000103ab0000 CR4: 00000000000006f0
+> Call Trace:
+>  <TASK>
+>  folio_add_return_large_mapcount include/linux/rmap.h:184 [inline]
+>  __folio_add_rmap mm/rmap.c:1377 [inline]
+>  __folio_add_file_rmap mm/rmap.c:1696 [inline]
+>  folio_add_file_rmap_ptes+0x4c2/0xe60 mm/rmap.c:1722
+>  insert_page_into_pte_locked+0x5ab/0x910 mm/memory.c:2378
+>  insert_page+0x186/0x2d0 mm/memory.c:2398
+>  packet_mmap+0x360/0x530 net/packet/af_packet.c:4622
+>  vfs_mmap include/linux/fs.h:2053 [inline]
+>  mmap_file mm/internal.h:167 [inline]
+>  __mmap_new_file_vma mm/vma.c:2468 [inline]
+>  __mmap_new_vma mm/vma.c:2532 [inline]
+>  __mmap_region mm/vma.c:2759 [inline]
+>  mmap_region+0x18fe/0x2240 mm/vma.c:2837
+>  do_mmap+0xc39/0x10c0 mm/mmap.c:559
+>  vm_mmap_pgoff+0x2c9/0x4f0 mm/util.c:581
+>  ksys_mmap_pgoff+0x51e/0x760 mm/mmap.c:605
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f5d7399acb9
+> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89=
+ f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f=
+0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffe9f3eea78 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
+> RAX: ffffffffffffffda RBX: 00007f5d73c15fa0 RCX: 00007f5d7399acb9
+> RDX: 0000000000000002 RSI: 0000000000030000 RDI: 0000200000000000
+> RBP: 00007f5d73a08bf7 R08: 0000000000000003 R09: 0000000000000000
+> R10: 0000000000000011 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f5d73c15fac R14: 00007f5d73c15fa0 R15: 00007f5d73c15fa0
+>  </TASK>
+>
+>
+> ***
+>
+> If these findings have caused you to resend the series or submit a
+> separate fix, please add the following tag to your commit message:
+>   Tested-by: syzbot@syzkaller.appspotmail.com
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
-I see. I did not consider this.
+The issue comes from alloc_one_pg_vec_page() in net/packet/af_packet.c.
+It allocates a compound page with __GFP_COMP, but latter does vm_insert_p=
+age()
+in packet_mmap(), using it as a folio.
 
-At any rate, I still don't understand why I need an atomic copy function, or why I
-need a byte-wise copy function. A volatile copy function should be fine, no?
-
-And what is the exact problem in using memcpy_{from,to}io. Looking at
-it, I would end up writing something similar if I wrote a copy function
-myself.
-
-If it is the wrong function to use, can you point at a fitting funciton?
-
-
-Best regards,
-Andreas Hindborg
+The fix below is a hack. We will need a get_free_folios() instead.
+I will check all __GFP_COMP callers to find out which ones are using it
+as a folio and which ones are using it as a compound page. I suspect
+most are using it as a folio.
 
 
+#syz test
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 2194a6b3a062..90858d20dfbe 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -5311,6 +5311,8 @@ unsigned long get_free_pages_noprof(gfp_t gfp_mask,=
+ unsigned int order)
+        page =3D alloc_pages_noprof(gfp_mask & ~__GFP_HIGHMEM, order);
+        if (!page)
+                return 0;
++       if (gfp_mask & __GFP_COMP)
++               return (unsigned long)folio_address(page_rmappable_folio(=
+page));
+        return (unsigned long) page_address(page);
+ }
+ EXPORT_SYMBOL(get_free_pages_noprof);
+
+Best Regards,
+Yan, Zi
 
