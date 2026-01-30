@@ -4,96 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16DDFE6BF1E
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:23:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92554E6BF1B
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:31:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 360206B0005; Fri, 30 Jan 2026 10:23:39 -0500 (EST)
+	id E78976B0005; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E37F6B0089; Fri, 30 Jan 2026 10:23:39 -0500 (EST)
+	id E4FD46B0089; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1EFAE6B008A; Fri, 30 Jan 2026 10:23:39 -0500 (EST)
+	id D5C026B008A; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 09E1A6B0005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:23:39 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C7BE1404E9
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:23:38 +0000 (UTC)
-X-FDA: 84388999716.06.B81666B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BF99140003
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:23:36 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=efzWWnfp;
-	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769786616;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C40CE6B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7CB1BD4B5F
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:31:15 +0000 (UTC)
+X-FDA: 84389018910.29.2C2A252
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5E77B10000D
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:31:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zg4f90t8;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769787073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/nzdfpegwfeLD+KOCGb3BdCA+3tJfxh5lC+dRbj10Cs=;
-	b=fQWTzH74F2zJgYXoLvLlUPJBiTu5rJfGfMuquW7dyCy9pNfdVW/Tz68x9BQxn/Y06BdIKD
-	RKYo4vQr1lyanzSsp8uTvOY2+N5kyOATEwVi5+H5cyqIh7R+iA1MyQlryTg0ltOcUj2PWu
-	eKV1GTrdW7WoRIohbnj3TjHf3qkbRfY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=efzWWnfp;
-	spf=pass (imf12.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769786616; a=rsa-sha256;
-	cv=none;
-	b=ZhYhECGeJoKSlWx9V7awx2sky0EqChisck8Cawpn0ZX/yqBplYmQMbbWKy9oxCMpEt+s7Z
-	AWjR+cCsGi/FnppJQobA9BiXWyWZcFGAkrVdui9Ye91yZPZGNsYVPFA4O0hbaXreAjBW47
-	6F05dre6DEwvLYxBO94DcwCskxZ+bhc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A33176013A;
-	Fri, 30 Jan 2026 15:23:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C549C4CEF7;
-	Fri, 30 Jan 2026 15:23:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769786615;
-	bh=OfAxn43cAaKhhypDUQkzSI0HnPDRUKLR4w1dCB/YkXM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=efzWWnfpB6hvpZ13uEX2LOjlyqmi9mUPIy9EUBRjwa7fJK+OB1TAAT96WQXBzmHde
-	 vkIA8v++kEio9KB5TzGwGKalRuUEM56+5v9UUbmZt7ktk1xKVkq5UXnyz4z5mZi94q
-	 OBhgxdtIVKfG2HHsR+YUbL/fO1W+k6kTQR74Hkn0rokbxjk2jE78GbdPAwJPQN6e3x
-	 dRTbKM2ROSuhSFi0AGrgV7jwx7Lll1LWV+/jIPK7yZB5FgoWYFBOcNyo1qp3Q6Rifr
-	 T5wh2SeEdGrhO78RgGpYIiodXEZ6A5dkw3B/kZryw/7ZbAXkjMMk9rY1A+aTDxayhg
-	 f6eccGO1Ks+IA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Alice Ryhl
- <aliceryhl@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
- <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6?=
- =?utf-8?Q?rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
- <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
-Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-In-Reply-To: <DG20LKAHMXMZ.262Y7NAC1A1Z9@garyguo.net>
-References: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
- <eGcGSx_-fgeLHkPmdfbWgLGhzEcmXunLzIAvS1-X3GqwyFOny9Frz1xN29-fj99sHxxa5_1WrcPxuSSZKxCHhA==@protonmail.internalid>
- <DG1Y5V810II1.1HE2T0HDBLNXI@garyguo.net>
- <877bszrz37.fsf@t14s.mail-host-address-is-not-set>
- <a8nHDdzac5l20akcxjjf9w7huObjn4eIHjUI-A17aKEwWl1N-4vvLBiVdqTQbBHwypMIA6gNkzm8YFXmMl44ew==@protonmail.internalid>
- <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
- <874io3rwl3.fsf@t14s.mail-host-address-is-not-set>
- <iFJVkpTMbd-NR24OHYTJj8lr4dw7MwCQ9rJWiuRZFgK3JRDhIIAcpf5Z24viL5qHhkrPzpnKfvX7JS6X_VO2vg==@protonmail.internalid>
- <DG20LKAHMXMZ.262Y7NAC1A1Z9@garyguo.net>
-Date: Fri, 30 Jan 2026 16:23:23 +0100
-Message-ID: <871pj7ruok.fsf@t14s.mail-host-address-is-not-set>
+	bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
+	b=unw5KTMA1JeaS/GqErC1IQp/jt8ms+jIM7VBfMGH2mW3MHbH/Q5QDv1pH7AifYwIzvzvaA
+	3VJNLsiPdiqEeQk6vTXMyr0gh0hdzL/QgiQhsUgI9Z3L+XJrL117mzIjw7FJb6AFOwovzY
+	OgwmfUOpjZHWgd9Mb98GsCcLLbKeIAE=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zg4f90t8;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769787073; a=rsa-sha256;
+	cv=pass;
+	b=Nv8yanbq8zx1ug8ZWeenwgW1i9Hjr0WyntoXepeRbIJSEL4ppObDV7ST4yWIy2Lvyghy3y
+	t75uo+9Z8sySPw73ObKQl+eWJWr36O9JAKGmtGp4bTrrldKUHXU4QrhVpkifZcAe+8N1nr
+	MO9VGyXLQOp04f0CXztO7HB9N7DuE1M=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso4382808a12.0
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 07:31:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769787071; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EPxkb6ghyTBfZgliMHVV88SSekwDilYpYNgUFK2mvlkk5Xupx2Zzfl2zJJR7+Ew0xT
+         WLI6Lq4rMriRVmTtA8grQYlWFtX5qvaEpFMyVgLBz6e5FGwOsjW7ypN8Xz+lpEl6ch2V
+         09EgIzt1K48s/4dV/wZYEeZxFIxi8jhUniJBjhJKrshOalHPBkgdNDIBv/rbsKZKNvtx
+         DD7S/H9aTm3TvLog80Dy9HPncAOSO9TQZYG74bc90+Ph26opEf6R4QHQsGI8ZJ4BfhIU
+         D8o2oPv12fvpPz+fF5CY6ZxQnZFB6l8wUOx35klG/DfAuO9zIayfe7L+QNW4PwQ68NTt
+         Ve4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
+        fh=93kFg1MXbW0hqR/MdQOhZfZq85DQQ5oy4J3th1gwT+Q=;
+        b=Ly8+5lH9qD42O1aAEzVIszYYfV9CU+eVOKeWxrd/RrLuw7q+EPtd9lpHM1G5eNTR87
+         Ln/63DMhT12So6Tt6RbtJUC6Eir5mlB0xsGGSAT8cg6I51Oa2AUtJjRl6zOQENEfUE+i
+         g1roxLEIC5H6TTCSGMpDnqzvk9XenPz6EblMgl82xg1gidZd66lBcWXd/mT/erqzEGkW
+         a2qsVlGfGTynpqjJ/YCk8F3FOV8vVX2G6cXxsBxnZI7uQ20jzQuGReMuQnf6GDd96CEr
+         IHF/en5/Mmmn5lgVgZfeE/Pqb2aWe6VH+LZPLuM7j6Ts2iKGKgNwcl3FD+S3X9x3vy10
+         tkfA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769787071; x=1770391871; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
+        b=Zg4f90t8S0IxP05vEiE/LTAyGyM9qse2OrW45AtAJQPf75wT9ksUFS08jqNpcEM3Gb
+         mv+VVhM9Kj2k4arQ7CLIz7j+484r95FeX+x2S4mn4zmW3gxKsS3szwO84O17RoOV44U8
+         ngWR1pxKUl1TTc2tp+QF8OqbSIqx927hzGYHsvTx37cFF5v78Ao6ZkPin6ESUae/+hWb
+         iEwYRNtZD1v9yC8sRn/DSeRTFDtq33YTErtSEVopJOqHW+TyFgxjkClj5MyhuDSypO97
+         BPAJFVzZOKPcEWBy4v7XYomv99vj4BJ93dzq3ZrRov3njt5kbCEWHeQLG646YYZ42YRz
+         pl4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769787071; x=1770391871;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
+        b=UViNU2VkgBqd3RK6Iia17I7ZBx70luqrr4ZtcsIL5hI0hlWwNmvUPXG9GOQPZktuDB
+         wNxVLR06MOVjyG67MEZM+xcb5zdQwVVuJJlBy/+tOWHvTed6jL4lZavdhh+iqPdHDkb0
+         3hQtLIKa3V8GyfBBi3CwzjeS+xRQCYp9ichLRkxDUHrqz8q8AcdEtIVYPthm3bQ7MO9U
+         Isy9iHXscyh5n30ylviF1QZ2GSsU8YK/6sT5edRHd3GXWQUW+4GuzZiQtI2/u9o8VbmE
+         4c0aeX/x/DdAJcaxhJBBthO02Gl7YBjKAVRsP9ZIl4nMytSLciMb/5d36ZKH/pNyNZ56
+         ATAQ==
+X-Gm-Message-State: AOJu0YysmTdDNlb9dD09qGbdp/ODelrLae4sU3X4exXqFYDphz/R8n8x
+	Hfv88hPFmxPYvMfkUSoPtzVKYWqb3Xl6kfsSQT2Eyw17mhC3hG7r7ZRmW+IHh/s5UwrA/mIew/X
+	kG4xwgtTDJleEHfMIpy6Sf98Ne5ZI8LE=
+X-Gm-Gg: AZuq6aKtPphIyPhp8tCuaKX4DXLKSDDNE35gi5LhJPphVuE0RZjA+brzbRCIFAMVbf5
+	I6zKtfk1Hyga/or8mV6Et4DWLH/tB0mFLYlylVszy1L9RzTTMWzwToN7SeFwKVcSTDybT/xXIV2
+	QI5ftHnmt1eiskMGotMhrtacJNRtfoXFOp0QXH7kDkGcEBzJvGcOIseZiWC3DpcB0CsUvpHQttO
+	Ku7lDGjF7YMq6e9hJWvirl80ozygLQ96Lw55ZNzyuWZRdQzPU/T8uUi4eUP+RjtA748POqsanzs
+	2D6/KB+b6FciNLCafSLnKSDgtssl
+X-Received: by 2002:a05:6402:2742:b0:658:17fb:4890 with SMTP id
+ 4fb4d7f45d1cf-658de557b0dmr1730004a12.9.1769787071346; Fri, 30 Jan 2026
+ 07:31:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <CABXGCsNqk6pOkocJ0ctcHssCvke2kqhzoR2BGf_Hh1hWPZATuA@mail.gmail.com>
+In-Reply-To: <CABXGCsNqk6pOkocJ0ctcHssCvke2kqhzoR2BGf_Hh1hWPZATuA@mail.gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Fri, 30 Jan 2026 23:30:33 +0800
+X-Gm-Features: AZwV_QjZMhJBI_R2y_49oonNj5dH1wKo6ACntyZadlvml6XsHGu9IjdeEIvs-NE
+Message-ID: <CAMgjq7BM0QFvk3_D4qyggjJ4W_+nHAupQnpAYehGq50CYNJV7w@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/page_alloc: fix use-after-free in swap due to
+ stale page data after split_page()
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux List Kernel Mailing <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, chrisl@kernel.org, Hugh Dickins <hughd@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ikxbjxtasyq97cjq33x7gspdabu1dj1u
+X-Rspamd-Queue-Id: 5E77B10000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF99140003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ywqgda6wqhorqz4uhm4gxuebjy4qdg6n
-X-HE-Tag: 1769786616-779024
-X-HE-Meta: U2FsdGVkX1+tpStnrd7CEpJILrSFJdrYUyo1WSdIgNZlee24Z7X68ZYsUGiqTdNpbvGuztbQBKMxtdjiY1wqEreh5NIBLdwCcpIUL50N9TQKvOOHXfvTqvm3k3L2ZW0dU+z4GfWIAj1liBn4EAILfjv/TfMeHx/3TnTvCqycHWY2Ui04l8N315I4FifVpN33RXePQCY4aE+/s9mdByTEWWUmap42tLww9pGlBJwtW2cyfIG2Kq/znLdWeCrU6t31i0Xh67EYxl0KRlqXTzPiOrRKs8PgmkWGXg+IuDAiUK1dgEx7Q1nBnTMDCXVSo8KplppWwWV/yaMwQVBYz31ezYgElE743LvMdxVRCIrke3l/7ikBVEEkMjcWeTL+gOC33rkyoMdZmwEZINWr2dP0i24o7RMtagM5i/QEUlZmi8NEAEBjh+i0yvZ5DkxKqkjBaxhRtanCZwlIei6gol93Wzx50zpxsMh1PDVkvCLC1zVCk4+oH2wwOZgiHOC8Pnm80rEDtUWoxWaPokRhRXAFe/DQmKJzBv7W1SWxfnO2rBapWns62PLTjAKH2piEl7SAKPNIVE6Q3HwaxabS6urrYqgVaqjE841fq8nNFfiDZuPv5pZd19wAiTLFhWSObMrVZm/yWT8o35qvFOlUKT4hbCjtA8y7AOdIgImcfKCPbBWc9yxwJLmcJNdHzyfIVzI/ckLRvGdZ1uEfEsdEHO5X2rHWsOc2VcKCLRO+PiIodd/F8WQEZQ8sYYmomqtqHAqjBZNrj9Ymy5B/ocCSfyIZ8dto0lZJlu9Uzk4ZeWEOO4+L5657dLzv6rRAdP+c8JPoOhrNaNyV/PqkxjOWZ6RsGRdKs+PSOKBwMkMI8JgKpq4ytz8dKFiuU/C56o8nmSMVp1zNwYW0sdlMkpxrgXF4ZAVoJ5fTYZE+32Rc0FoCQbtLvTq9HLWlltdbJum6wjQcqNdFA8Of4us=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769787073-502514
+X-HE-Meta: U2FsdGVkX1+yA1VinTg1y+GacigS5iG1SU7EER1JWXWgmLL/W7gyrm6H8jMxVns94owi94YiRP4i8dQ2k3eDmBnV5wqp6iuuANqGftQ/oihEla7v9Xba4+qWLgfwht9ghWsOXZmoA7abVPHp0rzly5irF+Bu/R10nbtccFctKACNNXDgCqFKShj/DkeoYV3I4E8XDdaHD1oat0GXwLKqyXC4BRTzJhyzvickXKBeABIGt6aWAsV+tqF/kEqfgUiWrZSnSWuVe6LxKaOTde+sv+6eU5tlChOhkC5WVMg9lio2MQcbm0jY5fIclMPALo4TYaqdvgV8J15Do1zhJNf9lpZ8wTeeUaAFsQRphjHwQYHtjZQAQuOxUMZTP8gTKB/PlwcRVWntpcZ/wXHB+jw2bpZWrED13DwRnruJ78Y7J94M+4fn0Om13uS3mFliWViELLylkHhmwYTku3+dTRrRrkifUSC3OOOSeClWAr84a3/hvXkS3viYgIS5/9NSAkOcbQF1SuNEh334dLr4JRfMGzK6TdrKn0UL5IR5DO0psc0qVu8P7PwPfQNr2C9d2ltW2mXWKaOPh3ItI8QJ89a1GXWgzFlQAJJCGvLiMxktJKAHre/DHfHEMD0ePAQiwPtwpb5aKWn+gYxV0g26sCYoA/6GwpFprfUuUXAMauKm5HhRrVVgyGwPvQjxDL76v23EyAB9flydk70zKzvikbsaTkXJFURnvuP5ty2jRZvfoHN+Pfn1f6Mk+0QjWhOm0T0QK2eFoJ1Hik2kSAjIJFu4n71V9RsrwFKZHIr7d0GnnVSJC3f68Um+CgGMuif8kNYkP/RBDT4DSRSamdxm8N/XslPNmK/fUHJvi7ROsOuiHs6MnYc3xh6a6UTSDrSLdULWa4naKkMFJvnnyWL2XA2tE8tCJKLFuhTPkl+hajlfo/f/5UPr8c9uPaqY3L5S3AIfvDz/OIeXDIPgTN2z66U
+ L3Hjkh6Z
+ HG7UDWt8+ciYLd5WrB8OjHGc7CDEiQjFcGzNd7IkugJwra5qsLfqDifI+xz/XjaEZvKU9ikhWhReTD5Y+ckmmsnaS6JB8HlPRzBALPP64uSuz8DYBPdyoOH5DLMkVBHoSr6d+Ved/iftyfQoNUAmUg5ZdOuX8Ini8SW20DToyZRyAV3xCwQQJs/AWsainZ3hSC6e/yQLWCR6EXLPCKwsWKctzNmR5RhSqzxrOIT8yGKFpQPQwoonQYpWcWuwmIWJ0Jh/F7SBZ3dxwEuC8GGBwe8WSvaGjonvkvghEIxSA2NfFaxRRIrp59BhtooPnJReqkPrC4jpXkhYCG0uqpFA1FedZKM52PBYbGnnKcLHFelHATdFJ9o1sfYSLnlTp+lfj5GmEJSsz9tNNHtC5KjWBByyLNnRIeUxdNwNt9tqGOkGb+OW9RF4np2lKgLPdbj3O9N0wyebtgxG7eWIkxFoNJfjPQUQIPwYueSPJcmf/XEyt1GWX/FVKJm+3kzFvEV4CGAmf/f7ixjyiteYdjnJnetmK2k8FWLg6PCZuIeVDbN5Pm5GbGHu9wP4dtp/1Y5Dp7C7SyblEbIXhPFpabHnKLr4EzdUvA/rUEPc0Jwa7Romz9kvBpesyygK6xg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,122 +140,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Gary Guo" <gary@garyguo.net> writes:
-
-> On Fri Jan 30, 2026 at 2:42 PM GMT, Andreas Hindborg wrote:
->> "Gary Guo" <gary@garyguo.net> writes:
->>
->>> On Fri Jan 30, 2026 at 1:48 PM GMT, Andreas Hindborg wrote:
->>>> "Gary Guo" <gary@garyguo.net> writes:
->>>>
->>>>> On Fri Jan 30, 2026 at 12:33 PM GMT, Andreas Hindborg wrote:
->>>>>> When copying data from buffers that are mapped to user space, or from
->>>>>> buffers that are used for dma, it is impossible to guarantee absence of
->>>>>> concurrent memory operations on those buffers. Copying data to/from `Page`
->>>>>> from/to these buffers would be undefined behavior if regular memcpy
->>>>>> operations are used.
->>>>>>
->>>>>> The operation can be made well defined, if the buffers that potentially
->>>>>> observe racy operations can be said to exist outside of any Rust
->>>>>> allocation. For this to be true, the kernel must only interact with the
->>>>>> buffers using raw volatile reads and writes.
->>>>>>
->>>>>> Add methods on `Page` to read and write the contents using volatile
->>>>>> operations.
->>>>>>
->>>>>> Also improve clarity by specifying additional requirements on
->>>>>> `read_raw`/`write_raw` methods regarding concurrent operations on involved
->>>>>> buffers.
->>>>>>
->>>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>>>>> ---
->>>>>>  rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>>>  1 file changed, 53 insertions(+)
->>>>>>
->>>>>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
->>>>>> index 432fc0297d4a8..6568a0d3b3baa 100644
->>>>>> --- a/rust/kernel/page.rs
->>>>>> +++ b/rust/kernel/page.rs
->>>>>> @@ -7,6 +7,7 @@
->>>>>>      bindings,
->>>>>>      error::code::*,
->>>>>>      error::Result,
->>>>>> +    ffi::c_void,
->>>>>>      uaccess::UserSliceReader,
->>>>>>  };
->>>>>>  use core::{
->>>>>> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
->>>>>>      /// # Safety
->>>>>>      ///
->>>>>>      /// * Callers must ensure that `dst` is valid for writing `len` bytes.
->>>>>> +    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
->>>>>> +    ///   destination memory region.
->>>>>>      /// * Callers must ensure that this call does not race with a write to the same page that
->>>>>>      ///   overlaps with this read.
->>>>>>      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
->>>>>> @@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
->>>>>>          })
->>>>>>      }
->>>>>>
->>>>>> +    /// Maps the page and reads from it into the given IO memory region using volatile memory
->>>>>> +    /// operations.
->>>>>> +    ///
->>>>>> +    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
->>>>>> +    /// outside of the page, then this call returns [`EINVAL`].
->>>>>> +    ///
->>>>>> +    /// # Safety
->>>>>> +    /// Callers must ensure that:
->>>>>> +    ///
->>>>>> +    /// * The destination memory region is outside of any Rust memory allocation.
->>>>>> +    /// * The destination memory region is writable.
->>>>>> +    /// * This call does not race with a write to the same source page that overlaps with this read.
->>>>>> +    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
->>>>>> +        self.with_pointer_into_page(offset, len, move |src| {
->>>>>> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
->>>>>> +            // it has performed a bounds check and guarantees that `src` is
->>>>>> +            // valid for `len` bytes.
->>>>>> +            //
->>>>>> +            // There caller guarantees that there is no data race at the source.
->>>>>> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
->>>>>
->>>>> I feel that this should be a generic utility that integrates with our IO infra
->>>>> that allows you to copy/from IO to a slice.
->>>>
->>>> While that might also be useful, for my particular use case I am copying
->>>> between two pages. One is mapped from user space, the other one is
->>>> allocated by a driver. No slices involved. Pasting for reference [1]:
->>>
->>> Then what you need is a byte-wise atomic memcpy, not memcpy_{from,to}io.
->>
->> Can you elaborate on how you get to this requirement?
+On Fri, Jan 30, 2026 at 9:49=E2=80=AFPM Mikhail Gavrilov
+<mikhail.v.gavrilov@gmail.com> wrote:
 >
-> Memory that is possibly mapped into userspace is still normal memory, it is not
-> I/O. I/O accessors (and IO memcpy) are specifically used for MMIO, and you
-> should not be using them for userspace memory.
+> Hi,
 >
-> For memory that can be mutated from userspace you can just treat them as a
-> potentially concurrent accessor hence all accesses should be using atomic. When
-> tearing is acceptable, byte-wise atomic is sufficient.
+> I've been debugging a use-after-free bug in the swap subsystem that manif=
+ests
+> as a crash in free_swap_count_continuations() during swapoff on zram devi=
+ces.
+>
+> =3D=3D Problem =3D=3D
+>
+> KASAN reports wild-memory-access at address 0xdead000000000100 (LIST_POIS=
+ON1):
+>
+>   Oops: general protection fault, probably for non-canonical address
+> 0xfbd59c0000000020
+>   KASAN: maybe wild-memory-access in range
+> [0xdead000000000100-0xdead000000000107]
+>   RIP: 0010:__do_sys_swapoff+0x1151/0x1860
+>
+>   RBP: dead0000000000f8
+>   R13: dead000000000100
+>
+> The crash occurs when free_swap_count_continuations() iterates over a
+> list_head containing LIST_POISON values from a previous list_del().
+>
 
-I would treat them the same as DMA regions and MMIO regions. As these
-regions are outside of any Rust allocation, if we never make references
-to them and if we only operate on them with volatile operations,
-behavior of the copy operations like these are defined, as far as I
-understand.
+Hi Mikhail,
 
-In the last discussions we had on this, the conclusion was to use
-`volatile_copy_memory` whenever that is available, or write a volatile
-copy function in assembly.
+Thanks for reporting this issue.
 
-Using memcpy_{from,to}io is the latter solution. These functions are
-simply volatile memcpy implemented in assembly.
+> =3D=3D Root Cause =3D=3D
+>
+> The swap subsystem uses vmalloc_to_page() to get struct page pointers for
+> the swap_map array, then uses page->private and page->lru for swap count
+> continuation lists.
+>
+> When vmalloc allocates high-order pages without __GFP_COMP and splits the=
+m
+> via split_page(), the resulting pages may contain stale data:
 
-There is nothing special about MMIO. These functions are name as they
-are because they are useful for MMIO.
+So the problem starts with `swap_map =3D vzalloc(maxpages);` right? Will
+it be enough if we just pass GFP_COMP here?
 
+And worth noting, mm/swapfile.c already have following code:
 
-Best regards,
-Andreas Hindborg
-
-
+/*
+* Page allocation does not initialize the page's lru field,
+* but it does always reset its private field.
+*/
+if (!page_private(head)) {
+    BUG_ON(count & COUNT_CONTINUED);
+    INIT_LIST_HEAD(&head->lru);
+    set_page_private(head, SWP_CONTINUED);
+    si->flags |=3D SWP_CONTINUED;
+}
 
