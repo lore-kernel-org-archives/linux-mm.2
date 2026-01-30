@@ -4,134 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92554E6BF1B
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:31:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94AE7E6BF1F
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:37:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E78976B0005; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
+	id BB00E6B0005; Fri, 30 Jan 2026 10:37:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4FD46B0089; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
+	id B463E6B0089; Fri, 30 Jan 2026 10:37:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5C026B008A; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
+	id A488C6B008A; Fri, 30 Jan 2026 10:37:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C40CE6B0005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:31:15 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7CB1BD4B5F
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:31:15 +0000 (UTC)
-X-FDA: 84389018910.29.2C2A252
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5E77B10000D
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:31:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zg4f90t8;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769787073;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 91C0E6B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:37:31 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 34F8BC20B2
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:37:31 +0000 (UTC)
+X-FDA: 84389034702.22.DADE2A2
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 67F1740003
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:37:28 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FXneCOsu;
+	spf=pass (imf12.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769787449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
-	b=unw5KTMA1JeaS/GqErC1IQp/jt8ms+jIM7VBfMGH2mW3MHbH/Q5QDv1pH7AifYwIzvzvaA
-	3VJNLsiPdiqEeQk6vTXMyr0gh0hdzL/QgiQhsUgI9Z3L+XJrL117mzIjw7FJb6AFOwovzY
-	OgwmfUOpjZHWgd9Mb98GsCcLLbKeIAE=
-ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Zg4f90t8;
-	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769787073; a=rsa-sha256;
-	cv=pass;
-	b=Nv8yanbq8zx1ug8ZWeenwgW1i9Hjr0WyntoXepeRbIJSEL4ppObDV7ST4yWIy2Lvyghy3y
-	t75uo+9Z8sySPw73ObKQl+eWJWr36O9JAKGmtGp4bTrrldKUHXU4QrhVpkifZcAe+8N1nr
-	MO9VGyXLQOp04f0CXztO7HB9N7DuE1M=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b92abe63aso4382808a12.0
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 07:31:12 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769787071; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EPxkb6ghyTBfZgliMHVV88SSekwDilYpYNgUFK2mvlkk5Xupx2Zzfl2zJJR7+Ew0xT
-         WLI6Lq4rMriRVmTtA8grQYlWFtX5qvaEpFMyVgLBz6e5FGwOsjW7ypN8Xz+lpEl6ch2V
-         09EgIzt1K48s/4dV/wZYEeZxFIxi8jhUniJBjhJKrshOalHPBkgdNDIBv/rbsKZKNvtx
-         DD7S/H9aTm3TvLog80Dy9HPncAOSO9TQZYG74bc90+Ph26opEf6R4QHQsGI8ZJ4BfhIU
-         D8o2oPv12fvpPz+fF5CY6ZxQnZFB6l8wUOx35klG/DfAuO9zIayfe7L+QNW4PwQ68NTt
-         Ve4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
-        fh=93kFg1MXbW0hqR/MdQOhZfZq85DQQ5oy4J3th1gwT+Q=;
-        b=Ly8+5lH9qD42O1aAEzVIszYYfV9CU+eVOKeWxrd/RrLuw7q+EPtd9lpHM1G5eNTR87
-         Ln/63DMhT12So6Tt6RbtJUC6Eir5mlB0xsGGSAT8cg6I51Oa2AUtJjRl6zOQENEfUE+i
-         g1roxLEIC5H6TTCSGMpDnqzvk9XenPz6EblMgl82xg1gidZd66lBcWXd/mT/erqzEGkW
-         a2qsVlGfGTynpqjJ/YCk8F3FOV8vVX2G6cXxsBxnZI7uQ20jzQuGReMuQnf6GDd96CEr
-         IHF/en5/Mmmn5lgVgZfeE/Pqb2aWe6VH+LZPLuM7j6Ts2iKGKgNwcl3FD+S3X9x3vy10
-         tkfA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769787071; x=1770391871; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
-        b=Zg4f90t8S0IxP05vEiE/LTAyGyM9qse2OrW45AtAJQPf75wT9ksUFS08jqNpcEM3Gb
-         mv+VVhM9Kj2k4arQ7CLIz7j+484r95FeX+x2S4mn4zmW3gxKsS3szwO84O17RoOV44U8
-         ngWR1pxKUl1TTc2tp+QF8OqbSIqx927hzGYHsvTx37cFF5v78Ao6ZkPin6ESUae/+hWb
-         iEwYRNtZD1v9yC8sRn/DSeRTFDtq33YTErtSEVopJOqHW+TyFgxjkClj5MyhuDSypO97
-         BPAJFVzZOKPcEWBy4v7XYomv99vj4BJ93dzq3ZrRov3njt5kbCEWHeQLG646YYZ42YRz
-         pl4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769787071; x=1770391871;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/jp1htw/IG7UbxjDHjIbmKBbWBaGSqz56m/AljuJYxs=;
-        b=UViNU2VkgBqd3RK6Iia17I7ZBx70luqrr4ZtcsIL5hI0hlWwNmvUPXG9GOQPZktuDB
-         wNxVLR06MOVjyG67MEZM+xcb5zdQwVVuJJlBy/+tOWHvTed6jL4lZavdhh+iqPdHDkb0
-         3hQtLIKa3V8GyfBBi3CwzjeS+xRQCYp9ichLRkxDUHrqz8q8AcdEtIVYPthm3bQ7MO9U
-         Isy9iHXscyh5n30ylviF1QZ2GSsU8YK/6sT5edRHd3GXWQUW+4GuzZiQtI2/u9o8VbmE
-         4c0aeX/x/DdAJcaxhJBBthO02Gl7YBjKAVRsP9ZIl4nMytSLciMb/5d36ZKH/pNyNZ56
-         ATAQ==
-X-Gm-Message-State: AOJu0YysmTdDNlb9dD09qGbdp/ODelrLae4sU3X4exXqFYDphz/R8n8x
-	Hfv88hPFmxPYvMfkUSoPtzVKYWqb3Xl6kfsSQT2Eyw17mhC3hG7r7ZRmW+IHh/s5UwrA/mIew/X
-	kG4xwgtTDJleEHfMIpy6Sf98Ne5ZI8LE=
-X-Gm-Gg: AZuq6aKtPphIyPhp8tCuaKX4DXLKSDDNE35gi5LhJPphVuE0RZjA+brzbRCIFAMVbf5
-	I6zKtfk1Hyga/or8mV6Et4DWLH/tB0mFLYlylVszy1L9RzTTMWzwToN7SeFwKVcSTDybT/xXIV2
-	QI5ftHnmt1eiskMGotMhrtacJNRtfoXFOp0QXH7kDkGcEBzJvGcOIseZiWC3DpcB0CsUvpHQttO
-	Ku7lDGjF7YMq6e9hJWvirl80ozygLQ96Lw55ZNzyuWZRdQzPU/T8uUi4eUP+RjtA748POqsanzs
-	2D6/KB+b6FciNLCafSLnKSDgtssl
-X-Received: by 2002:a05:6402:2742:b0:658:17fb:4890 with SMTP id
- 4fb4d7f45d1cf-658de557b0dmr1730004a12.9.1769787071346; Fri, 30 Jan 2026
- 07:31:11 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XDQLDt4mN6BL/JQ1/gXfRWLzjV6DeuG8IAbUOps0l8g=;
+	b=CE2uTdUt1DDNaPLikhPFqwS1/5NK7cs9bJrzpC1XLh5D9V2rnU01uBz7yDwsfTHTJGoMPZ
+	6ozsDtjd4LNzQI0KYsxNp1w6bU5MGd0c9Y5MlrvmGwqiLiJR1SgBY07eRF4e1XIvUBbKfE
+	MSUJ0isDqHW+Z8kDHECIGfFSnEMQnLs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769787449; a=rsa-sha256;
+	cv=none;
+	b=syC73rtg7ZnAhBPaSIr0KVa6K4XJrGUuPmSKAvYI0hcy9+3w7tHTRh/AmR1aZWZiFwmMuu
+	Uj6BrHk0uZTAetvwG7eBOWHcfvPuR+xNUaV57qZCO9Q3TxdKcJlh5c/cvVykaALJ7fkXTX
+	Tf/v1oPIcxP+TeXL9HQL2oYheKZL/3s=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=FXneCOsu;
+	spf=pass (imf12.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769787448; x=1801323448;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uSb4t7pnsOqvxu0VMSD/Ba2NeQ5REWSQ7aHHa7N/Xzs=;
+  b=FXneCOsuQvAHH5DO/pfsz9RFdw0kUhsuBxV+zfajt9rl5Me6RXzBzlUt
+   3je1sMfXhOd5LsZgbTbqEIeIpHdsSEOuwpfYhU8uzEvgxwyHKXyty2DsA
+   6jWX8OPAwkQ1vvLJ/DcsjfqwB26x/LrhVjrPiihD0+NfX98xQfLR8pOiN
+   zuO1VRCuUzKdogfyNUxddumMCxERNfGGNivSY6wVcESRiTKUBLXQuK6PH
+   lYmGtTSq//JQmwRrkhcH2nZY9rtfdThMVAMN0pRHNRO3qDWD/Fxh2nbZT
+   Uqls2P/mWz9z0FVQA/OGQvHSWCdLKJ2BzDqK7lLy/mVaVPS2GedI+PYfs
+   w==;
+X-CSE-ConnectionGUID: urFyNmFEQQ+zs2usNkARfQ==
+X-CSE-MsgGUID: kKJnQZUQSaaNXqSK9DLyTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="71124502"
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
+   d="scan'208";a="71124502"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 07:37:26 -0800
+X-CSE-ConnectionGUID: Ur4XIj3iQpOTBSjjx52ftA==
+X-CSE-MsgGUID: v0WOKj+IRwSyuIgLO9agLg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
+   d="scan'208";a="208989042"
+Received: from linux-pnp-server-27.sh.intel.com ([10.239.147.41])
+  by orviesa007.jf.intel.com with ESMTP; 30 Jan 2026 07:37:24 -0800
+From: Tianyou Li <tianyou.li@intel.com>
+To: David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>,
+	Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>,
+	Tianyou Li <tianyou.li@intel.com>,
+	Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v9 0/2] Optimize zone->contiguous update
+Date: Sat, 31 Jan 2026 00:37:54 +0800
+Message-ID: <20260130163756.2674225-1-tianyou.li@intel.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
-References: <CABXGCsNqk6pOkocJ0ctcHssCvke2kqhzoR2BGf_Hh1hWPZATuA@mail.gmail.com>
-In-Reply-To: <CABXGCsNqk6pOkocJ0ctcHssCvke2kqhzoR2BGf_Hh1hWPZATuA@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 30 Jan 2026 23:30:33 +0800
-X-Gm-Features: AZwV_QjZMhJBI_R2y_49oonNj5dH1wKo6ACntyZadlvml6XsHGu9IjdeEIvs-NE
-Message-ID: <CAMgjq7BM0QFvk3_D4qyggjJ4W_+nHAupQnpAYehGq50CYNJV7w@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/page_alloc: fix use-after-free in swap due to
- stale page data after split_page()
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux List Kernel Mailing <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, chrisl@kernel.org, Hugh Dickins <hughd@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ikxbjxtasyq97cjq33x7gspdabu1dj1u
-X-Rspamd-Queue-Id: 5E77B10000D
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 67F1740003
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769787073-502514
-X-HE-Meta: U2FsdGVkX1+yA1VinTg1y+GacigS5iG1SU7EER1JWXWgmLL/W7gyrm6H8jMxVns94owi94YiRP4i8dQ2k3eDmBnV5wqp6iuuANqGftQ/oihEla7v9Xba4+qWLgfwht9ghWsOXZmoA7abVPHp0rzly5irF+Bu/R10nbtccFctKACNNXDgCqFKShj/DkeoYV3I4E8XDdaHD1oat0GXwLKqyXC4BRTzJhyzvickXKBeABIGt6aWAsV+tqF/kEqfgUiWrZSnSWuVe6LxKaOTde+sv+6eU5tlChOhkC5WVMg9lio2MQcbm0jY5fIclMPALo4TYaqdvgV8J15Do1zhJNf9lpZ8wTeeUaAFsQRphjHwQYHtjZQAQuOxUMZTP8gTKB/PlwcRVWntpcZ/wXHB+jw2bpZWrED13DwRnruJ78Y7J94M+4fn0Om13uS3mFliWViELLylkHhmwYTku3+dTRrRrkifUSC3OOOSeClWAr84a3/hvXkS3viYgIS5/9NSAkOcbQF1SuNEh334dLr4JRfMGzK6TdrKn0UL5IR5DO0psc0qVu8P7PwPfQNr2C9d2ltW2mXWKaOPh3ItI8QJ89a1GXWgzFlQAJJCGvLiMxktJKAHre/DHfHEMD0ePAQiwPtwpb5aKWn+gYxV0g26sCYoA/6GwpFprfUuUXAMauKm5HhRrVVgyGwPvQjxDL76v23EyAB9flydk70zKzvikbsaTkXJFURnvuP5ty2jRZvfoHN+Pfn1f6Mk+0QjWhOm0T0QK2eFoJ1Hik2kSAjIJFu4n71V9RsrwFKZHIr7d0GnnVSJC3f68Um+CgGMuif8kNYkP/RBDT4DSRSamdxm8N/XslPNmK/fUHJvi7ROsOuiHs6MnYc3xh6a6UTSDrSLdULWa4naKkMFJvnnyWL2XA2tE8tCJKLFuhTPkl+hajlfo/f/5UPr8c9uPaqY3L5S3AIfvDz/OIeXDIPgTN2z66U
- L3Hjkh6Z
- HG7UDWt8+ciYLd5WrB8OjHGc7CDEiQjFcGzNd7IkugJwra5qsLfqDifI+xz/XjaEZvKU9ikhWhReTD5Y+ckmmsnaS6JB8HlPRzBALPP64uSuz8DYBPdyoOH5DLMkVBHoSr6d+Ved/iftyfQoNUAmUg5ZdOuX8Ini8SW20DToyZRyAV3xCwQQJs/AWsainZ3hSC6e/yQLWCR6EXLPCKwsWKctzNmR5RhSqzxrOIT8yGKFpQPQwoonQYpWcWuwmIWJ0Jh/F7SBZ3dxwEuC8GGBwe8WSvaGjonvkvghEIxSA2NfFaxRRIrp59BhtooPnJReqkPrC4jpXkhYCG0uqpFA1FedZKM52PBYbGnnKcLHFelHATdFJ9o1sfYSLnlTp+lfj5GmEJSsz9tNNHtC5KjWBByyLNnRIeUxdNwNt9tqGOkGb+OW9RF4np2lKgLPdbj3O9N0wyebtgxG7eWIkxFoNJfjPQUQIPwYueSPJcmf/XEyt1GWX/FVKJm+3kzFvEV4CGAmf/f7ixjyiteYdjnJnetmK2k8FWLg6PCZuIeVDbN5Pm5GbGHu9wP4dtp/1Y5Dp7C7SyblEbIXhPFpabHnKLr4EzdUvA/rUEPc0Jwa7Romz9kvBpesyygK6xg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 9nj51y4p3yr8q94gykt41spsjobcuixf
+X-HE-Tag: 1769787448-389768
+X-HE-Meta: U2FsdGVkX19R55MnNqIDyXQptfFXtai+sFuif7rIcJjoICVB0bbzFomS23ugPUbRBLmTRu/5b8u+ndA0BL72tsxyGi2Cg0iwTFfwsqnr7CY6Wfrn0+L4HajlIktz6thj9qoGAdBLAcE6gx9Hv2L1oK21mLbbeYsnbtfySP01ahxO2zuN2LRxNFuV8D+0Xs9GC5Img6YtSeRDnJMIHGUGL371yG0W7RcwL3UtRNMatCkn9fAINAZqD94wWh/+5Qy83heikuxEYHstX31uy5RVb07xreCPP/gn+PYR+cLHWQeCRJ0mfZYZyBMHPFF+uItJ/zi6Jp8MOBhNUyDiPAIyourTG+JF0Xb6JpNKU8+ZkfutityYm9T9u8s+I3uSAyzpLQ1mmIP/flFGKzAFyg73UbkGrUG2iGEXjTcT839pXf4v73DHGf12wuSVaQfT+NHk9cwAbo8rRyQIewgmBVcgUpLf07F3aN3ihfgB1lPgLRpUkasYaKdtAjRrDwniyZShJmRuHy3+i6kgtAv+CATLTD+oE2qb5RllVZdeQw+6s7kLKwi2EWqD6AYrP0vaJ3f1jufPfop4d3SKpuZUoaFuvdYYwJDTVkXzVtaSDA/RPUVKM3OrfW0Tt7j6GjyIQsA/G3TM1aX9pGYP4RiW+KOHjtOwx6h9lUsWAAk718VpDk6ABMZLQOgTRMHHvXIo3qdKQjp6vTCsbLsYfgRA2wIw1tJpiT4GkckcENKswxzComerh10xvaXaOpEduaGaVvt5Tk/VMM0FGUjZmyWAdN1TN0NsImakg440qUfsGcrNUkE3IUVk0SPz9o8hFL12hghnd+pRKRh0cpeppV+CUOJDweX9nnCyx9I4xR8oboRJn0QzDoAYBr9UlgKK9loKw+D9SeG3lm/BXPLpvPYCjx5AdPqqTu59Hi8u3/VNjC6Q+Omi7bDjqIFtcZmngQJCkOY8+bYXq2PEt5MsQHL9Cej
+ F6TiPJrw
+ QlAeRFNYYMrBkKSPvAOKojXfE/kxGEGOlXJ6lt5tZ51b5xl4zIVOS/KSKV/XIdgQ97TiEiErDKWSDf9qR8w+DYKuR45tDozMX6VT0ou2WVZHtKBnBINV9zZxFqfl0V8GD3bG4tlCkGEZi/27CZsCpBsb8ec4yFxfBWctvTg2aqlFVlubmN4hiAmMT0agzAC8ULQFNIP+L91abt/16vGDv+Jv737qKJR7BeOm7waTjID5mARR1C6hEZmZAXZFqr0ye22PIlzxcvbyyfKezvtat9H/g4A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,61 +114,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 30, 2026 at 9:49=E2=80=AFPM Mikhail Gavrilov
-<mikhail.v.gavrilov@gmail.com> wrote:
->
-> Hi,
->
-> I've been debugging a use-after-free bug in the swap subsystem that manif=
-ests
-> as a crash in free_swap_count_continuations() during swapoff on zram devi=
-ces.
->
-> =3D=3D Problem =3D=3D
->
-> KASAN reports wild-memory-access at address 0xdead000000000100 (LIST_POIS=
-ON1):
->
->   Oops: general protection fault, probably for non-canonical address
-> 0xfbd59c0000000020
->   KASAN: maybe wild-memory-access in range
-> [0xdead000000000100-0xdead000000000107]
->   RIP: 0010:__do_sys_swapoff+0x1151/0x1860
->
->   RBP: dead0000000000f8
->   R13: dead000000000100
->
-> The crash occurs when free_swap_count_continuations() iterates over a
-> list_head containing LIST_POISON values from a previous list_del().
->
+This series contains 2 patches. The first one encapsulate the
+mhp_init_memmap_on_memory() and online_pages() into
+online_memory_block_pages(), the mhp_deinit_memmap_on_memory()
+and offline_pages() into offline_memory_block_pages(). Then
+move most of memory_block_online() to the new function
+mhp_block_online(struct memory_block *block) and correspondingly
+memory_block_offline() to mhp_block_offline(struct memory_block *block).
+The second one add a fast path to check the zone->contiguous.
 
-Hi Mikhail,
+Changes History
+===============
+v9 changes:
+   1. Separate the bug fix and optimization into two patches.
+   2. This patchset depends on the https://lore.kernel.org/linux-mm/20260130160938.2671462-1-tianyou.li@intel.com/.
+   3. Refactor the code to move most of memory_block_online() to
+      mhp_block_online() and correspondingly memory_block_offline() to
+      mhp_block_offline().
 
-Thanks for reporting this issue.
+v8 changes:
+   1. Rebased to 6.19-rc6
+   2. Add online_memory_block_pages() and offline_memory_block_pages()
 
-> =3D=3D Root Cause =3D=3D
->
-> The swap subsystem uses vmalloc_to_page() to get struct page pointers for
-> the swap_map array, then uses page->private and page->lru for swap count
-> continuation lists.
->
-> When vmalloc allocates high-order pages without __GFP_COMP and splits the=
-m
-> via split_page(), the resulting pages may contain stale data:
+v7 changes:
+   1. Rebased to 6.19-rc1
+   2. Reorder the patches so that the fix will be the first in the series.
 
-So the problem starts with `swap_map =3D vzalloc(maxpages);` right? Will
-it be enough if we just pass GFP_COMP here?
+v6 changes:
+   1. Improve coding style.
+   2. Add comments.
 
-And worth noting, mm/swapfile.c already have following code:
+v5 changes:
+   1. Improve coding style.
+   2. Fix a issue in which zone->contiguous was always false when adding
+      new memory, leveraging the fast path optimization.
 
-/*
-* Page allocation does not initialize the page's lru field,
-* but it does always reset its private field.
-*/
-if (!page_private(head)) {
-    BUG_ON(count & COUNT_CONTINUED);
-    INIT_LIST_HEAD(&head->lru);
-    set_page_private(head, SWP_CONTINUED);
-    si->flags |=3D SWP_CONTINUED;
-}
+v4 changes:
+   1. Improve coding style.
+   2. Add fast path for zone contiguity check in memory unplugged cases,
+      and update test results.
+   3. Refactor set_zone_contiguous: the new set_zone_contiguous updates
+      zone contiguity based on the fast path results.
+
+v3 changes:
+   Add zone contiguity check for empty zones.
+
+v2 changes:
+   Add check_zone_contiguous_fast function to check zone contiguity for
+   new  memory PFN ranges.
+
+Tianyou Li (2):
+  mm/memory hotplug/unplug: Add online_memory_block_pages() and
+    offline_memory_block_pages()
+  mm/memory hotplug/unplug: Optimize zone->contiguous update when
+    changes pfn range
+
+ drivers/base/memory.c          | 115 +-----------------
+ include/linux/memory_hotplug.h |  13 +--
+ include/linux/mm.h             |   6 +
+ mm/internal.h                  |   8 +-
+ mm/memory_hotplug.c            | 208 ++++++++++++++++++++++++++++++---
+ mm/mm_init.c                   |  15 ++-
+ 6 files changed, 228 insertions(+), 137 deletions(-)
+
+-- 
+2.47.1
+
 
