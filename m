@@ -4,95 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80DBED73E86
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 03:07:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C035D73EBA
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 03:38:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A642C6B0005; Thu, 29 Jan 2026 22:07:17 -0500 (EST)
+	id 478156B0005; Thu, 29 Jan 2026 22:38:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A10E86B0089; Thu, 29 Jan 2026 22:07:17 -0500 (EST)
+	id 3FB8A6B0089; Thu, 29 Jan 2026 22:38:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9473E6B008A; Thu, 29 Jan 2026 22:07:17 -0500 (EST)
+	id 3072F6B008A; Thu, 29 Jan 2026 22:38:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 84A1F6B0005
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:07:17 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 342EF13AFDC
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 03:07:17 +0000 (UTC)
-X-FDA: 84387144114.29.5E9BDB7
-Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 450772000F
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 03:07:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=OSReZxRq;
-	spf=pass (imf03.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2129C6B0005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 22:38:54 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 535EE5871C
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 03:38:53 +0000 (UTC)
+X-FDA: 84387223746.28.B43FE25
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7AAEC1C0002
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 03:38:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o+vNnYoK;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769742435;
+	s=arc-20220608; t=1769744331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=doBblbOwHdShc4Ks1wKLoAH6Jx+hawhblsEzVk31/Ac=;
-	b=Jp6XIh6BxH0wVJnPC3MGXyHr+/xwA83xsmqKllSrlcT+zdj1zpUNfzCJLC31f02sbRGLu0
-	ERHC+B/hbwMzjAoIWOENoQgK8xS2pPa/Wghr4+HiPCE+q6RIddcUvSz38nwwwtZGNzO4TJ
-	nYXMUnuUG114KaIeQHlMYcerdBwTjCc=
+	bh=i0hy2STFvDAOLZFnt95zmIQcmb4aCFwsUiotZK26ksI=;
+	b=pM/x/QeCHJ6ufoUYrH8Wjc9nGEtKLTICQRKHul2AJpcxIhBzb1UXIehmsvt+RwM2KQaHiI
+	NwEJniT4HpPB2/uqsNQTd3T1in0Y7gvHm6qozqpzYD0hHkaTSJD2d6lyA++04OI69ptmbb
+	oElwbCtFy4tuueFysWNoT1hC3Qinth8=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=OSReZxRq;
-	spf=pass (imf03.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769742435; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o+vNnYoK;
+	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769744331; a=rsa-sha256;
 	cv=none;
-	b=jCKiuDVJcjY6I4w8KYFIIUq3m0cTFi7tHmTlrlbGgr2nId/YErJWCm7ZWj90uvmOMTOwi2
-	ujFoMl80uP4N2q4ChROnS09Z5WYZrN3OVnAy9S1TpBdskotWWHs4v1FVXiniaRaCqaOG9h
-	QR0TzUs/KEejrFY27vRQ4P2ZcTpmnAc=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=doBblbOwHdShc4Ks1wKLoAH6Jx+hawhblsEzVk31/Ac=;
-	b=OSReZxRqks6Mn+4xZc/BGDtgA59KlnSpys1LAlyeyCDRs0CZLytsQPzK2cJ+3MZyX175minF6
-	3gCTz2appOma9TEGWjcaEExiVmR3CWOpjrAY0n3tfxvzIe3lLibNn0031sRfHSRz6h0SyL/dYKs
-	qhyg/ULFl3IFSFttv8/qlws=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4f2LRm4ZnxznTVF;
-	Fri, 30 Jan 2026 11:03:16 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8A6C64048B;
-	Fri, 30 Jan 2026 11:07:09 +0800 (CST)
-Received: from [10.174.177.149] (10.174.177.149) by
- dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 30 Jan 2026 11:07:08 +0800
-Message-ID: <71e02d8a-94b7-4b9c-877e-5efd4f7aba44@huawei.com>
-Date: Fri, 30 Jan 2026 11:07:08 +0800
+	b=Y2DOVWkqVBstgWXIoBRR2DyAx0H2ZROjbMti7PYGZvbeqKayi1/mW+JOP34dMdmg8D7JZd
+	0P5Sazwmh7OdXHM7+P2XpJlW1o7h4DHMm0lz0Uews+P+35lwhrevr2jHNXw2/LC+TDTK5C
+	ox8pnA5AHAPXI0jK6OT63FXo1U7sdfg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 57D6540491;
+	Fri, 30 Jan 2026 03:38:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADB5C4CEF7;
+	Fri, 30 Jan 2026 03:38:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769744330;
+	bh=PcU4J+1T8KCZw9aj5ccmBmFCCv5uz3Z87kxcvNbBpmg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=o+vNnYoKX83+BZ/wrxS60O9cONAosp/uo1vSJBonytXxClVKjSFgEgx3RfADWJBks
+	 AiuKWttCkk6fsIIGrCZvosh4VUoQuiGHiArQU8ObOa5ceZNdDVwFmfAj1C7YKih2nk
+	 ihU9jOWvwc9jjvDwuwJDFoasPenrWZ8UioojNaLJtB/BOEYOx9gLWhxwlVEX7nb9QW
+	 hU5aNCBij6uzl5MQM0jGgz+GZANhqqb/syOk6DgMz3h8+fTsL158y/4D6dKwP4r7Uf
+	 K6fSEei4xoRSPuocW2Pb6Lc2CISLuMMwsI4DGTOsMCWAZqTFKXENHxdKmPCsKvZuVF
+	 1RJx1tfeEOFzg==
+From: SeongJae Park <sj@kernel.org>
+To: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	enze.li@gmx.com,
+	sunnanyong@huawei.com,
+	Enze Li <lienze@kylinos.cn>
+Subject: Re: [PATCH] mm/damon: unify address range representation with damon_addr_range
+Date: Thu, 29 Jan 2026 19:38:45 -0800
+Message-ID: <20260130033847.52289-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <71e02d8a-94b7-4b9c-877e-5efd4f7aba44@huawei.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon: unify address range representation with
- damon_addr_range
-From: Quanmin Yan <yanquanmin1@huawei.com>
-To: SeongJae Park <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-mm@kvack.org>, <enze.li@gmx.com>, <sunnanyong@huawei.com>, Enze Li
-	<lienze@kylinos.cn>, =?UTF-8?B?5Lil5p2D5rCR?= <yanquanmin1@huawei.com>
-References: <20260129161029.48991-1-sj@kernel.org>
- <d6f2b111-bb42-4437-9711-bf06cf9afefa@huawei.com>
-In-Reply-To: <d6f2b111-bb42-4437-9711-bf06cf9afefa@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.149]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- dggpemf200018.china.huawei.com (7.185.36.31)
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 8h8h33jt1grjgz95xnnno3dq91wpoemz
-X-Rspamd-Queue-Id: 450772000F
+X-Rspamd-Server: rspam11
+X-Stat-Signature: qws6i6zrcisqpo4rxpdom6q71wcu6nna
 X-Rspam-User: 
-X-HE-Tag: 1769742433-601347
-X-HE-Meta: U2FsdGVkX19qKebXX1XJ7Ur5CDo0HIu0qBYDumNbvkSgutQOJhFUGSO9RmC5yyszMq49UBtJGMSzI50SzU/7GOD76ZnyFir7eugaruPs5QgkAOsVYIn/L5eWxfopTz5MAjqCnyeNG0uWu0ZOmoC+h1XWt2Gnn8BLHKSxXOGQfb59hTKRSotUltlxbllzip3YfC5wdz3FP4rcN7bUcgjExqxnvHQQCAzpLrfizqUIsZ8i6M62lHka8kEUXA6DGEyTAknEN6oLPb24bgIbdxLot0qS8EFSYbGmz8BY9IzGORu3NJkOuj2oNbHrYf9qO7b2OFw03kOFPYXiVfd4ixlLL4elyrwZrAG3a9m7DZ1hwVAJjrCyK5sWFnXZj0igCpF0ce7W9pFhYxux8CcNNIa0K4ti04489FvhrMmxLgM9IaMCnukkezJcfPXklCNbKthobDLtrOM9+SycLiK3jjCFAUTmovFfnqJd3cDod/24yMwn/IOTGGMuitNnajHDG/we1P8tn2pwzWUUa269FkOeCJ4vCiFiP+BJotkQEpxv6SHxXfOhz8Exj5+dQrmNEJ+KLYohgPRE4TThK1XyX6RU3VSvANi32+CvN1XQRm+6ymw5smD0c8CviZ/sAusmi01chlgpvpYB9XMddqbKt2FA35B5zqjzl9MCQF74/FpHEWSjLiI/TkrlbyMsOjBzrDYMXgw0j/BirM2pd+cqNbl/szweQWRdZLM89IcohSx2MAXcPmpvk/qsh8BM0SkOYDtErznC/CmWxSY2q5VHPIyqETARkrmgxWAoTWS2yVXbBoRqJkzwh851S4Q3DisT4jZA4w1GGxx4sfBJGJ50Ok26zd+z1A71SOW/3T+YUkTQoiOtOtNZLwNYLkAveerJ9OBRfiFpAD9tMeoGvCjPyTSwd4aeTWPPzWeSDCdD/nf7RPqPDKbI7d40aY7Y4TcMJJAgTQZxdsN+XxqtOjy929u
- wZmRovCG
- FLu42PSjq3jW/notJHQ2lHqYJQw4C0tfKqPldxqQlK+56eiCpWGE1asGoHhkSVctbLIXWt98HXuMcBaHjt19+0aWzNJa7NHEVSeZSWo/YmHI5x/p6lc7wtwRYVzv4seTbRfowqG6R91RKJUHqOZtRozT+CzEt5NqRTFYgH4IzljoWpq5oAiCACo5Aet2UCj6Kj0WauPdLLkdRteE9PsA1HV6E0EWg6MoEJ1gGl5yYSI76fbA9bFPQkxeJn9oejMU6EGzOJugl/6Ti7gWmpq5XxtogRGQAW7he3N97msmqj0UbsBGQLB1uZW18t9MwYq/iCsni9elFBV2aU+K8pfLKOFzyHGpYn70NNIdh8dkC36VbKdQ4I6H3d6d9h9RN+aLsOcEe
+X-Rspamd-Queue-Id: 7AAEC1C0002
+X-HE-Tag: 1769744331-701637
+X-HE-Meta: U2FsdGVkX19G0khOMvWooKYQqZO1MUnylPlJ8XePYJbbDxIwArXQzv/2zVcJhFmjCjTDsAGIN82oUDbeWE28P4u2XD20fmiUt9h0lULrqQhu5w/VL0mRz/du4s+Xo8ZYk/XhBFTqFTCdXsDBSrICZ29u2NTX+WnCR+tabtYlBS3HS+qqWcwDj4zFCi/+vtApNQzNnqHK1Ckjgw86yVu1/xpPKeFjO+Ejl/mYBag7E5BB0V/lW98AnXR2pQ4Tkn+uegHhzny1g2d8Hn0eswEq75Kjz634zVzbcKx5F6qrL3qXtMuXTglR8tTkREuIY5l3e5Jvlxkx4y+A1q2NBcg1o+acoul/uvrzAPpbeeyGgiWbjr9dDsI2vK94pe65tfrQO30zHn0wy2h/IqcNLZoEECC91Qe5wdZfotGGAxl8QMdkVDiAuAIb6/IZCxbs0+nHPOddu1koMMXl1QtDtNRgwUbhVb2TETlDhrgXWRO0/1sSvShdT9DgKj79fY2sVGv1A8CuzO01cbmWKnrGJVJus0E3q8o89+MKqTgYXp5P+DKvsq/hSZ2EiZc4H1uR4QiAKHUcnbWw1aoDWpewdRbbrQq41L1E8q0XWwfvQbyso6cyB64a+1ZMN7pc1nS8mNhA5d58D5fuEACT6+Ddt3VLtb6u/8hxgZ52RBk1QFtdNXj5cYJBX3DcqkiaUG+DYTcmFMkttXYxzkauuQY5V6OkLmcIBNQrFjBrWQ/6xt1Kod0woMrPWNcDfCkwXKC2nnhpE+8WWMc26sVPvTs0R0Cm/gQo56/Nbaur/uVVXIHB4h5OFmzlIAOjEX8jhb/AYUAZ8t6kQgcSaizMNx5FpvstFBkpdhiB2tScKV1DzmNNLl4ZxxVZ0q9pqGzQgtRoB8E9pjHN+ZkKyxvKrHrBqcKovGYvKLFZXRUARPO5doTl4cXPcUB5s8KZ9YK9XV1Ec4jZqT0Smpr7Lpw7lwBY6Jr
+ 3pexdv9F
+ Lufu9babg8eawgtnNFX32gecYwZvczaHjuy+QGApIIg5L9BoinDkErOeHqMzvOrcaUEoDfHoDrpwiCiRC7HmRw83xJYs+vipPwMbe8gs2J4/8La4MN2jW/nQsDTLOJNSuYjX8h8igvAke70GJO7PPs9sQCSjZLC/+eK3woa+VTJLFrs2vYC5Z3p17G4YH5VrtKxNz10PZG0GkWElZhoAUm3rnbaX54x/39et/KGsnClhkFey+jjrNCZ5zaI/Rfj9HfkTn2USBgwKNd+uAvwC+OblaCO24FimJJty1BS4Ny8IGNMsrMM56BL/KTDFEMZu+XYKF95B5E9frhaVyeTvKdQ93dQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,53 +98,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2026/1/30 10:26, Quanmin Yan 写道:
-> Hi SJ,
->
-> [...]
->
->> Actually, there is another bug that need to be fixed.  Nonetheless, 
->> that's
->> orthogonal to this patch, so it is not a blocker of this patch in my 
->> opinion.
->
-> Are you referring to the scenario where, on a 32-bit system with LPAE 
-> support, the biggest System RAM address found exceeds the range of 
-> unsigned long? Actually, DAMON only actively searches for the biggest 
-> System RAM address when the user does not set a monitoring region. In 
-> this case, we always reset addr_unit to 1, which essentially restricts 
-> DAMON’s monitorable address range to 0–UL. Therefore, the described 
-> situation does not occur. For details, please refer to commit [1]. 
-> However, we could perhaps further optimize this by finding any biggest 
-> System RAM address, setting damon_addr_range, and dynamically 
-> adjusting addr_unit. However, there are currently no specific 
-> requirements for this, so this work has been temporarily put on hold. 
-> [1] commit dfc02531f413 ("mm/damon/reclaim: use min_sz_region for core 
-> address alignment when setting regions") Thanks, Quanmin Yan
->
-> [...] 
+Hello Quanmin,
 
-(Sorry there was an issue with my email client. I am resending now.)
+On Fri, 30 Jan 2026 11:07:08 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
 
-Are you referring to the scenario where, on a 32-bit system with LPAE
-support, the biggest System RAM address found exceeds the range of
-unsigned long?
+Thank you for jumping in and giving great comments!
 
-Actually, DAMON only actively searches for the biggest System RAM
-address when the user does not set a monitoring region. In this case,
-we always reset addr_unit to 1, which essentially restricts DAMON’s
-monitorable address range to 0–UL. Therefore, the described situation
-does not occur. For details, please refer to commit [1].
+> 在 2026/1/30 10:26, Quanmin Yan 写道:
+> > Hi SJ,
+> >
+> > [...]
+> >
+> >> Actually, there is another bug that need to be fixed.  Nonetheless, 
+> >> that's
+> >> orthogonal to this patch, so it is not a blocker of this patch in my 
+> >> opinion.
+> >
+> > Are you referring to the scenario where, on a 32-bit system with LPAE 
+> > support, the biggest System RAM address found exceeds the range of 
+> > unsigned long? Actually, DAMON only actively searches for the biggest 
+> > System RAM address when the user does not set a monitoring region. In 
+> > this case, we always reset addr_unit to 1, which essentially restricts 
+> > DAMON’s monitorable address range to 0–UL. Therefore, the described 
+> > situation does not occur. For details, please refer to commit [1]. 
+> > However, we could perhaps further optimize this by finding any biggest 
+> > System RAM address, setting damon_addr_range, and dynamically 
+> > adjusting addr_unit. However, there are currently no specific 
+> > requirements for this, so this work has been temporarily put on hold. 
+> > [1] commit dfc02531f413 ("mm/damon/reclaim: use min_sz_region for core 
+> > address alignment when setting regions") Thanks, Quanmin Yan
+> >
+> > [...] 
+> 
+> (Sorry there was an issue with my email client. I am resending now.)
 
-However, we could perhaps further optimize this by finding any biggest
-System RAM address, setting damon_addr_range, and dynamically adjusting
-addr_unit. However, there are currently no specific requirements for
-this, so this work has been temporarily put on hold.
+No worry!
 
-[1] commit dfc02531f413 ("mm/damon/reclaim: use min_sz_region for core
-address alignment when setting regions")
+> 
+> Are you referring to the scenario where, on a 32-bit system with LPAE
+> support, the biggest System RAM address found exceeds the range of
+> unsigned long?
+
+You are right.
+
+> 
+> Actually, DAMON only actively searches for the biggest System RAM
+> address when the user does not set a monitoring region. In this case,
+> we always reset addr_unit to 1, which essentially restricts DAMON’s
+> monitorable address range to 0–UL. Therefore, the described situation
+> does not occur. For details, please refer to commit [1].
+
+Again, you are correct.  There is no user scenario that can trigger the
+problematic situation in the real world.  Nevertheless, assigning
+'resource_size_t' value to 'unsigned long' storage makes no sense, so I'm
+calling such things a bug.  Not impacting user world, but still a bug is a bug.
+In my opinion, all bugs are better to be fixed unless it makes maintenance
+overhead increased too much.  Also, who knows if I will introduce another code
+calling it with >1 add_unit.
+
+> 
+> However, we could perhaps further optimize this by finding any biggest
+> System RAM address, setting damon_addr_range, and dynamically adjusting
+> addr_unit.
+
+I agree.  I think we can fix the function first, and later consider further
+allowing users to use its full power.
+
+> However, there are currently no specific requirements for
+> this, so this work has been temporarily put on hold.
+
+You are right.  As long as there is no requirements, there is no reason to
+expose the full power to users at the moment.
+
+By the way, one thing that may better to be clear is that I requested you to
+make the implementation in this way.  Nobody should be blamed, but if someone
+has to be blamed for the current shape of the code, it is only me. :)
+
+> 
+> [1] commit dfc02531f413 ("mm/damon/reclaim: use min_sz_region for core
+> address alignment when setting regions")
+
 
 Thanks,
-Quanmin Yan
+SJ
 
+[...]
 
