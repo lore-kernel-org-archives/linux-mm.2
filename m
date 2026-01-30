@@ -4,91 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0022ED73EA9
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 00:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00222D73E85
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 00:51:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26B1B6B0005; Thu, 29 Jan 2026 19:48:21 -0500 (EST)
+	id 63BFF6B0005; Thu, 29 Jan 2026 19:51:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 235DE6B0088; Thu, 29 Jan 2026 19:48:21 -0500 (EST)
+	id 5E67F6B0088; Thu, 29 Jan 2026 19:51:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 16CAF6B0089; Thu, 29 Jan 2026 19:48:21 -0500 (EST)
+	id 4E8976B0089; Thu, 29 Jan 2026 19:51:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 061866B0005
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 19:48:21 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9E6D5C1C44
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:48:20 +0000 (UTC)
-X-FDA: 84386793960.23.5A3A36F
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AFB391C000D
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:48:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NfitKoMr;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B6E26B0005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 19:51:07 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D2E2C13ADD7
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:51:06 +0000 (UTC)
+X-FDA: 84386800932.10.9BB8349
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 2A8F6140006
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:51:04 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Z/FaQ/kg";
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769734099;
+	s=arc-20220608; t=1769734265;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3A7pdALAafDL6kVov9I53Tgt62PET1/OP4Y8CWDvMKY=;
-	b=7EIEGzFDRhg9r9Fw/C+1y1nJqIHSAC6KQ6aOjZhtBvLsraxe2UM/Z73dUF/os8IyHukFtL
-	yTfxw0+Dngyeda+kp9uOpYW2uPKumIWgSJOFQEYQI9n/HHMmsWcOPHz3YRwzr5U9JIJ0O7
-	0ZmwjMTfzr9Gh4zA2J8hsNMUGlt//EQ=
+	bh=3beR78siDEEmK2spAD/HgnCu/E4OotAxU6+k9E99kQg=;
+	b=0JcR5fKs0d9e6S/6KsyRTTHTseUb9CQl4fWjlG9NoNF3quWgdY1aeFEZ6D+Ft5xoqNPFw3
+	WkxtPBHO2ly5jSCZtH0ofbf6MxuCJl1pcMc9xkVONHPJPgmWTa7Vo88ls9Uj0m9oiPkoGM
+	ekTLdjuQoo3sCseNw0b6/KU8b+DCQBM=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NfitKoMr;
-	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="Z/FaQ/kg";
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769734099; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769734265; a=rsa-sha256;
 	cv=none;
-	b=iDQBKGLO8BldDmaHqGA9X55jUx1A+HLLMZWlmSv1ksrxLiPDv1OYY3PZ5F94QVFHasLgdY
-	e+k2/lSt/uGvNk09SA6wNPZQSvDHioRR7AVLNzvfM41qyehz/OvcXw+6oYWTZS4w67TmlP
-	U0b/AjV8O1nCUcGZGuumoifTXVQIjqs=
-Date: Thu, 29 Jan 2026 16:47:52 -0800
+	b=bgdcuy2peKY8unyy+hgngz2khnYXwDq48Wq/9Nq8rheNeA80AQANaju5FacBtLdZPmI26B
+	AS+Crf3HD/hdkE0mNHbssZ+Oa+1q2mBkJncs9ppS7pjFcePr51SSZUZywEs5+fXL1E/L1m
+	EfyoS5AayhyejsgqsK4NPjQ00vK+1kU=
+Date: Thu, 29 Jan 2026 16:50:57 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769734094;
+	t=1769734262;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3A7pdALAafDL6kVov9I53Tgt62PET1/OP4Y8CWDvMKY=;
-	b=NfitKoMrfWHJEnK3FhKbb+oShyVAZTBfjwr8XLV9TIyZokJxCNMF4keXeuZcm+Q1s3ZApR
-	e0DX89ObAsutfv9yR9T+itV6cEKczkWp7+oz69T01XjFU4hWx10VmRx2m9MHnEtzVaek3r
-	ZdzYZNot83emT4Xfld8CCUaVEqEFJBo=
+	bh=3beR78siDEEmK2spAD/HgnCu/E4OotAxU6+k9E99kQg=;
+	b=Z/FaQ/kgxOCkIdV9pj9isA31VgQFflC/MoNR38FryrcwIrK5Mas3RvcmCHNpwvvJWp4BSU
+	u1jPf1N0mdSlIcRcEclZA5y4KSScu2Y3nwpAt87BQPqOY1spg5dQd3LjSS2HtQs5A6NZsX
+	JDGHWhKyhKG9PMhWjxlqmTcvcshg0Ig=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matthew Wilcox <willy@infradead.org>
+To: Johannes Weiner <hannes@cmpxchg.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Rik van Riel <riel@surriel.com>, 
-	Song Liu <songliubraving@fb.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Usama Arif <usamaarif642@gmail.com>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Rik van Riel <riel@surriel.com>, Song Liu <songliubraving@fb.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usamaarif642@gmail.com>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] mm: khugepaged: fix NR_FILE_PAGES accounting in
  collapse_file()
-Message-ID: <aXv_HI8JM9mZCr4-@linux.dev>
+Message-ID: <aXv_5Gl6L-1eXYQd@linux.dev>
 References: <20260129184054.910897-1-shakeel.butt@linux.dev>
- <aXvjdArhPpUNF8BI@casper.infradead.org>
+ <aXv8DjjJ3zqZEsgQ@cmpxchg.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXvjdArhPpUNF8BI@casper.infradead.org>
+In-Reply-To: <aXv8DjjJ3zqZEsgQ@cmpxchg.org>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: AFB391C000D
-X-Stat-Signature: xhr51pcnewy7caywko8ohcn9tnd6z8aq
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ydh17oqfefxqrpziifeeze9tdxxdk385
 X-Rspam-User: 
-X-HE-Tag: 1769734098-275401
-X-HE-Meta: U2FsdGVkX18UyGlkxQpq+VeehtDS3YxVNmUwc1Axu50X5nbvPBwYtacZcmU5jIi6RB3OXMOiuLoBczrlIdSJyRMIo2X8+pXVjBhlQ224uvBtdFSkMZGXOKrXst/27lFeVIjTKMtW3jGm0JiWh/CanL9m6xzE9wil4RrlIXHmZLODEIaotFZh8arHkqj1oob1jrC+NZ1zATpUGlVBm2Bzo20CczXn5tZ+VOWz30tlE6mW8ly7sOLMQxobszkmgB9Bst9xi7B6oOLo6ML0JQt4+2o6cXCZpBc5uzsviGXmfyIn6COpSjQVjNxoKv2aeTo8lj0aVIPUffr5IDrfDD8WK6rurULOQzj+BCwNDTkgh0/sHDoi5lsNe5+dmqKzxqtGZ6TlMAOLD4gYe5WPts9ezbloV/+5Utfh//Bkbuc0vMd/JEnREzSJKxDAoFQtMzTSmPRdR0bmEJvVggZloBew1S2KVQrXY8gvRg7T+e0vT0dLXtaAoAMqpXptt7fbXg1bpFqJAjDiwsYpF6b9Vgl56noBH5f+4BwXNUhs2XavfZ0oIq75qsjWxXLRB3e/Mzl1jCkEgofv9uP27lC09eUydZR7d8w+CZiDkJwjpjh7uTTV04PfjdtFpG+W4qiKWvOKcSxLfbMygrDpypm+rIQfp+ox+71aVPDyMtWEhK8shVl5O3q9VwNIuLgqoBOlM2m7uaIGN15uIyUYY4AWEEec7sHnQDEJFqFCqlDXNlT22EDKlKJYnGebpfte6www5KZgNyweP2PmCKiFv/ukj9hwUnwGZYCLA0hTJrINMPhGyC//TjOuBxbT9OxzIXibMsV/6FLpqq9L0q2xXkYNM6jEKx0O9cDv8ynL+O+Y9oaERAFlVs9HNJIoQCxMhdblihCYQ9lb90EDRhhSEVh/CGuvfJ9NwQtr5aIZZNAZsvnZW8rmnXF49UiXATth6jDjcHTU/30PHr6HA2rxAQnKHFi
- mPkw+ONq
- BAmcrcj20Z2k1X3eAoVuutlIpGlckuRpwGYZRD2kzuk3hhfYZn2n58BuLWQFeL90YmfYkFM+UFWG7JzRWcuwjIgON+iwMmkovO9O2grUUlfpBGD4PHvgAcUSoG3wb1LEJec39cM0hb+yPgu8FR60JoXAaPqoOhgfbOFvvZP9tBfu1awVQqHhaOYrj16FFk16lflHIF5ZsRfFKDcJO9XNkKskkXjVv7aId+4nHJo1wXuPjHQ5i1OTg3e4Ef9Fq1CuzySxO
+X-Rspamd-Queue-Id: 2A8F6140006
+X-HE-Tag: 1769734264-177306
+X-HE-Meta: U2FsdGVkX1+2ALtIWrZ48G3jofnhyC1tWvvUDr0U97kh8RmjjI23lp/7vGP9Ficif2qN6F1P2hfJwjt46oquq7loga2LjmTrvIInRx5+F+yzVGQMbZMD6SMJ3In5l687S83DwPaYi+OZqjY7vZyToGesSKfQd/IuNTt8mljcLhW9GW9QUk9n59E3A+8fshT5DvG3fywsFwTH3F3dc4p3ZnGR2wxO5M3bdOLMnRBQKBH+n7yzSkdAfh9iP5IA2QNFc9xon0UG7RFypbRmya2QgdtFPSv8Jf6HxN5QNUJo4tOOJABGlVGqAkNzapWczr7Y6RlHmIxULtCeVC9nQHkrXuZGv6D8xa1oLZJLkjQdfqkdhHalh12jyyWJUUcZgKS8ZROgOGIVZd/1mAcIWeItNHqY+Z0nFcxw88OeQd2KuPdLuZBqdwzpwvXimD5Ia7Cr/3fIEjyIVeuyeGny6WIbGnatik0wDYTRAeLX2xEPdLx7d4qnX5NXck3s02LlzU+j/iz3VlS6iWQplu1c7sJsG84hCt+v7cIHbYzv8eJrBCangbKMkjV0s0bjRhUxNDuRQxKANKNqwFXsIa5WQnQWVmNPOzy0A0S8pDM/fD6hxy1dTxuz0HUvmCBiU/rot3icIzN/LOSPI4qNT5OGWV9/hWlxrZHMQ7Dzk7pQcO94bkY1aADC/ttUbqvNX+W+Zb5nqyy0926rD/YYeMyqn6x6i1MFgAVBjvcKWxXNKFUtNWzCQ4lSc6enPiv/pcGgbAHO8+Zj7mpwabsiFz03djJCugb7BBt3Rd8lSn/sRzcQcGaisaP5gWuQwLpDfFuqqiCU7IUdM82Ya7GcBN4hSn+yeD5ku/QzW0edsA2PjTaPZ3Uzh041Ky50qKFy6x9xlo4UbWaQEMRKfy273Wy5XAvFNkjAsMkG7I4SMxNzn4FQKZG1D7+5jrwWtpbYzg/6gi0z9vt2WGE+efJtw//YRHx
+ kw/deSoj
+ i/iXNxjh2FuoDncsz4hrun36tc2FFUUgQpzGA1EVgr75y5Gb3012xecq/9v5UFmrWLWJDXD8R02/PIWF9AAYVjbSCTI4Ncmy4VJGPOrthMqnJEiu9XMr7rKcsk7+3h7/N0c18MInRl9mhAFPAeHmbkkmiIYNWLG0wKTkyTipjcqvDJVXVhIYEdh4jllWmLqJri5KCJtzEjtbjPVH35q/L8n9dZTUbcLQyZL8FkY68fkFGoVgvaU5WoA5TfLC/cVhoJ4za
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,41 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 10:47:16PM +0000, Matthew Wilcox wrote:
+On Thu, Jan 29, 2026 at 07:32:14PM -0500, Johannes Weiner wrote:
 > On Thu, Jan 29, 2026 at 10:40:54AM -0800, Shakeel Butt wrote:
-> > Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+> > @@ -2200,8 +2200,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+> >  	else
+> >  		lruvec_stat_mod_folio(new_folio, NR_FILE_THPS, HPAGE_PMD_NR);
+> >  
+> > +	lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, HPAGE_PMD_NR);
 > 
-> Are you sure this is the right Fixes?  99cb0dbd47a1 wasn't cgroup
-> aware:
-> 
->         if (nr_none) {
->                 struct zone *zone = page_zone(new_page);
-> 
->                 __mod_node_page_state(zone->zone_pgdat, NR_FILE_PAGES, nr_none);
-> -               __mod_node_page_state(zone->zone_pgdat, NR_SHMEM, nr_none);
-> +               if (is_shmem)
-> +                       __mod_node_page_state(zone->zone_pgdat,
-> +                                             NR_SHMEM, nr_none);
->         }
-> 
-> b8eddff8886b added cgroup support:
-> 
->         if (is_shmem)
-> -               __inc_node_page_state(new_page, NR_SHMEM_THPS);
-> +               __inc_lruvec_page_state(new_page, NR_SHMEM_THPS);
->         else {
-> -               __inc_node_page_state(new_page, NR_FILE_THPS);
-> +               __inc_lruvec_page_state(new_page, NR_FILE_THPS);
->                 filemap_nr_thps_inc(mapping);
->         }
-> 
-> which would seem like the right Fixes: to me?
-> 
+> The memcg breakage is more visible, but I think this has been broken
+> for NUMA stats even longer. new_folio could also come from a different
+> node than the subpages, after all.
 
-b8eddff8886b is about different stats NR_SHMEM_THPS & NR_FILE_THPS.
-However as Johannes responded this code was broken even before memcg
-awareness for NR_FILE_PAGES and NR_SHMEM.
+Indeed you are right, so I should blame Kiryl instead of Song :P
 
-I will send v2 with correct handling of NR_SHMEM as well.
+> 
+> >  	if (nr_none) {
+> > -		lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, nr_none);
+> >  		/* nr_none is always 0 for non-shmem. */
+> >  		lruvec_stat_mod_folio(new_folio, NR_SHMEM, nr_none);
+> 
+> So AFAICT NR_SHMEM needs the same treatment.
+> 
+> It looks like that's been broken since f3f0e1d2150b ("khugepaged: add
+> support of collapse for tmpfs/shmem pages").
 
+Thanks, I will send v2 with correct handling of NR_SHMEM as well.
 
