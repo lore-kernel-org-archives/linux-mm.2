@@ -4,122 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38650E6BF1B
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:55:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53BB1E6BF1F
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 16:13:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 76BCC6B0005; Fri, 30 Jan 2026 10:55:56 -0500 (EST)
+	id 7BFCE6B0005; Fri, 30 Jan 2026 11:13:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 723466B0089; Fri, 30 Jan 2026 10:55:56 -0500 (EST)
+	id 7437A6B0089; Fri, 30 Jan 2026 11:13:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 622116B008A; Fri, 30 Jan 2026 10:55:56 -0500 (EST)
+	id 61B526B008A; Fri, 30 Jan 2026 11:13:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5335D6B0005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:55:56 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1EB11604B1
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:55:55 +0000 (UTC)
-X-FDA: 84389081070.16.93F0BE3
-Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D076A100005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:55:53 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=upm61rgr;
-	spf=pass (imf05.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.41 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CFB66B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 11:13:10 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E138B13B01E
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:13:09 +0000 (UTC)
+X-FDA: 84389124498.17.70DB751
+Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CAD634000A
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:13:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=lnBhz4LO;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.195 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769788554;
+	s=arc-20220608; t=1769789588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4lWqgXH8a8eOxRrwfmqGJmpBJIu/eoT2SMMiuVC7jWk=;
-	b=AbSlarGfr8IEaY/IrvR4fZpI8Ky4bCwahStJ8d05Up/+dr/R92cvZxZtrItX1b7tWmISSM
-	iKnpzWOof1wy6oVBfiQ7xK3qXyxoNlykKpOCrxVxCD916Ajd6DQiv9iLt8c71PsN2hpHTM
-	UVrsLPEk6MGLydy/BedP6NbkhYbS9+s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769788554; a=rsa-sha256;
+	bh=QG90dLm8lMXI0BfNfS8WSlG5utZKp+E9ek/YEYpHTH0=;
+	b=Ka4bEbJRuQbjr5JDRczKj//G3zuzAvfKSRUgqgxZQhQMsFx+FvF//odaJpRmnU5vnxO+Co
+	XvFj2jXzl0Q5kyvnho8B5kGDBFBioCwIQUXlLfUhQf2XL2/yYrPhkbbxLD9YSc2CjebnPn
+	hITsA2EH7bPtP0rqBJdwioAy58ssDIc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769789588; a=rsa-sha256;
 	cv=none;
-	b=8ROTgNdVJa24Cp/x06+K5cBGTh2fctpyqL6tchy4A0esJS1MQxbphtKtuEAmLkDvgcMh64
-	fgukFCbAbhckWQl3wok5sR5irqPfLglVYJktz/veN3LtcRn4V4b7Xwq7lAlHUOce/MoR7r
-	vPi/tAs8ir6HEBorIVIjL89oELzPI/M=
+	b=IBv0OCt2XAYgpOySVOHaM9BKdFyUdHeCK1YARVLphNrq+ckpqz4r8V6sWuVUZJ/jWSm9Fb
+	V63ybZD8vciDetxd1HjWp4KLzs3C4CwWWHLwTEOVreD5iJcq3q9sXboC/Z62oHGojIqHFQ
+	j2HYVPIfA4WvwtKfbRbwtkulOmuGGA4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=upm61rgr;
-	spf=pass (imf05.hostedemail.com: domain of axboe@kernel.dk designates 209.85.160.41 as permitted sender) smtp.mailfrom=axboe@kernel.dk;
-	dmarc=none
-Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-408778a8ec4so1459990fac.0
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 07:55:53 -0800 (PST)
+	imf07.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=lnBhz4LO;
+	dmarc=pass (policy=none) header.from=cmpxchg.org;
+	spf=pass (imf07.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.195 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
+Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-8c07bc2ad13so177410785a.2
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 08:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1769788552; x=1770393352; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4lWqgXH8a8eOxRrwfmqGJmpBJIu/eoT2SMMiuVC7jWk=;
-        b=upm61rgrNi++CnoQtqKxRwX7EG8WfLyp+2d4TYRSAoxK0dxiLsoVflhMVCHiJ1zjS9
-         WAFI5TfRZ5QHZ+NccOxOKPbc8Pq8XF8n84FPrStDCtmMrQimAtM6BU4BUCL0RwTOPwpY
-         L14j7RTaGQz0ciz/CYE6f/AHv0/54qeqzK+f3MILwH5uv8XcUq2xyeKXtatFeh3nkhtk
-         hnjy8l7IrCLOdoXrSmA7V4WLX+CddU9Kd3oqj2hMEURtxf3Pik4ynt+GK3sr2VLM5U3t
-         dFTCfReoWQbVbOeuaj78Re5T9WgJsj6SqOXAYbjof20zw7w269sjf2B5nJHg++RQBJ/J
-         OKDg==
+        d=cmpxchg.org; s=google; t=1769789587; x=1770394387; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QG90dLm8lMXI0BfNfS8WSlG5utZKp+E9ek/YEYpHTH0=;
+        b=lnBhz4LOLlciitLio1dBzBlMGM+tie3vymdjY8++lRelcoVSX/XVnaox1Bs9mg/O8K
+         DqwaOp+E3pynnnDP7SarjGdVtK4duB8/vNj239d++VQcT8EYaoo/lQfUkRhw/1JFMqkd
+         7RVBR17thIdi6olxPwhPg2HlKGEVM4oXyKSG1PG8IFkQUYZ60yBYmID/n2+eSx/nXu9S
+         BNnmzQRBKk94/A3BoL3FOI079GI+OwMEiwZiMsWhEIk1++FIRJDNhz0VAqzDgdJ5yiha
+         uafESiZCJ+F+cXLjSDwmBb+qMYsXaLmjIj5T47cJ7Ucq14RjdCGkAfchcdZtWVlpjolL
+         6jPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769788552; x=1770393352;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4lWqgXH8a8eOxRrwfmqGJmpBJIu/eoT2SMMiuVC7jWk=;
-        b=baSk3wDqpmLEuD95F1T3Am7nL9Lvmmz+3zQlFfimhmWZ0QOC1NNeFbkkREaHZNs6h5
-         DFmWKbnfmaaw/ofsnYRcVOCt18d4+SRUlPsd4Ivd7EkPfgIDL585OTUTWNhHZHWCJsRS
-         bUDbzuELXppPEIQJUFTR0Bmhnnz9OzPrkkAx/Biry/g6keezizQyK4aHwX2zup0yTALw
-         4JIqnY6XBANfCl1/anoMTnir9Vm5fUdoPnBMH5/kGaUnsU0lJx15F9mg3zgF2wjuX9t6
-         iHdl7k7SSciduYX5ohjFD+saBR/Vp7Jkv1EGQ7ukN37pRUy9LWOdAZdOYHjd5BghmF9u
-         Gi2A==
-X-Forwarded-Encrypted: i=1; AJvYcCWf0CoZHqkG1Ivfbadi7R4nJYys8biyCUhjJrbIIIdw3KB2PEOgOK5mQR7f8MEKoQMkWj8v8YfUEQ==@kvack.org
-X-Gm-Message-State: AOJu0YwdCmDzweQOoTkS8v5bwzdLKItUpmOZouGMyga17wKoZpySgf/I
-	EeurWUAu2pjCU2+4kSUwa11RuvBR9NkwWtTv1SMAsHm/0WrBBZb7gNJUWo9KQeplUL8=
-X-Gm-Gg: AZuq6aJ+pfEEaF0PlEBQ47hezK4fh5NUKd610mK51KAoE4Lal00RQcPFyj6X1nRUpHx
-	ydl15htg1gxH9ylNfJO2RLSQiPXpFUoTMr3R2DzMQhk5eNdGVIaIr3dCfTtXv0s8yeCe3rfaGwb
-	mvkJyJxodI2mxWq7hduPxCG8mST+0w/c/GdjHQBR+cD5kL2J1oEavihKfblTF68vgOi7RjN0Ki5
-	usSGCmbGpHrPz24QEodCmwysGudgIER8YEXL2weKenf68ZxIETaxcAW8IxYHeMQO9aWPqi2nlEy
-	a0FwnsjPx2szUOm27+5+pScBM2Goo2SWjTzXvCM+3YC64ZQVv0Qh7AZ0wokXIgiqr11sZDZjVKK
-	8+FfRJs3veltXY1uAvdQ9CFN9qSwfOc8lgUPVZZb3oEAteyMzH8hFZmIrq4kjxLlcqLfHSaoPB3
-	/1fH+eY0BPAyEdSdDxDXpjr1utsFDaydtKlTFF664BiwhX1KWU+YbM4d0zct2ImFh1jv/x
-X-Received: by 2002:a05:6820:f014:b0:663:46f:603f with SMTP id 006d021491bc7-6630f02bd9dmr1550651eaf.22.1769788552396;
-        Fri, 30 Jan 2026 07:55:52 -0800 (PST)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-662f982703fsm5202672eaf.0.2026.01.30.07.55.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Jan 2026 07:55:51 -0800 (PST)
-Message-ID: <efa7714d-565d-41c4-af85-d7a89e7fa399@kernel.dk>
-Date: Fri, 30 Jan 2026 08:55:50 -0700
+        d=1e100.net; s=20230601; t=1769789587; x=1770394387;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QG90dLm8lMXI0BfNfS8WSlG5utZKp+E9ek/YEYpHTH0=;
+        b=WJuwE2a0dq6lqw3xgPaLtNa5PKI97HG0VuUM4l4f1iykJmpD9fXhu0fxG6cyaUr30N
+         nSU2IEYxh5dYLpIedF3zoer2l0GmcJPMC6iT1CNc3Sp6TIikFx3f+DBzjZj4D4jsY8/Z
+         vuhlI/fM4m4Ipb6bTZJVUU9d5m7Fg3DOjEbkfKBnavLE4MH09aehkrtz0WpnZTp6y2d8
+         BmlZD2rCjDkskJZMSGhOHdYI5mWE2wUUvSwYt4K8l9AzBurNUz0gjxvcqU72zxbfQqrQ
+         ChKuAlsfEKHiGvB2V3GF5ukUZ2mXN8MgpnLaz7OPhMtyImxbib8vKj4ZU2t+HZ76bVPu
+         CjoA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0dP/LEkBmi5GRVy7uMimf+QW6hbXKnAWV9nrrdM8KhLCB4kemI6oGEUEqUHCyeRI6ZQQWixaY5A==@kvack.org
+X-Gm-Message-State: AOJu0YyxPWEA1VT69SBQ45kIIIGv5tIxW18SvA+pOVitbX0ciASiWBR/
+	SGz+jQMbia+9EUYYCTXVUpLdyrstvw4PgMJeurIT0K3k9DnOYijzoozsm6f774YrsuQ=
+X-Gm-Gg: AZuq6aJ1iLDxHbXMLTPLvs9b1UySBFAxnR6h+0eNG3xTMyHfG6Hz2YMFX/1G3QP8idt
+	js5CmaIpQUHURHpigkqY8mDBsNBOdn9pzCTMDkGrpQ5dqwRXVSoTOaEnXSjxFwvjgjmrfb0M05n
+	CY8oxyRGS+sFjWTttSYl7kiHFq7HrNsuaoAXqOxuDyNYjoJfAwvgZVKiX/K+o1rcCkv4L7GLVBF
+	9gJuNX162OB2Kvx7xsgi1I3IgTSCQOc3EN5d9b/EEkIcc64r7MdUR3ugOsOchX1Gqmfi9p5dXb8
+	fSdgU4TopCLS/lZAzaHWYm3sikNz2c7fl08ySo5grFFCeUCsHc3PEts9VtTi8bfrxBvr6x8DyHZ
+	ZgNYC7NC1P6OyKb2DTr4Q2Zevv9ew1UXhMyoL7sUU7SZmWLTBlda/OyrmHIGrkBVgyzOKYE7w89
+	0gDwKbv9o+MQ==
+X-Received: by 2002:a05:620a:4103:b0:8c6:e37f:ec2c with SMTP id af79cd13be357-8c9eb227cf2mr476327685a.1.1769789586691;
+        Fri, 30 Jan 2026 08:13:06 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d3740c86sm59598226d6.34.2026.01.30.08.13.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 08:13:05 -0800 (PST)
+Date: Fri, 30 Jan 2026 11:13:05 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Rik van Riel <riel@surriel.com>, Song Liu <songliubraving@fb.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Matthew Wilcox <willy@infradead.org>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: khugepaged: fix NR_FILE_PAGES and NR_SHMEM in
+ collapse_file()
+Message-ID: <aXzYkeJWUvEzp7oU@cmpxchg.org>
+References: <20260130042925.2797946-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] io_uring: introduce IORING_OP_MMAP
-To: Gabriel Krisman Bertazi <krisman@suse.de>
-Cc: io-uring@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org
-References: <20260129221138.897715-1-krisman@suse.de>
- <20260129221138.897715-3-krisman@suse.de>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20260129221138.897715-3-krisman@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: D076A100005
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260130042925.2797946-1-shakeel.butt@linux.dev>
+X-Rspamd-Queue-Id: CAD634000A
+X-Stat-Signature: 88x86noph5fcsm4dkmpjtuair4d6ur19
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1gr447fik4ypfhni5c1qywtbubkg9st3
-X-HE-Tag: 1769788553-233887
-X-HE-Meta: U2FsdGVkX1/0WBDLPy1OncOsEm4yarAPgGybJstGyyNNz+SaJfTh/w3gqiDUsJcTSpm8tgwJWibUsvpwAuM8UrH8iIeSc4LJdrOKoFwZiQakpRBu650K8zneBjnCupIbtwj4jdrk2xSok6+UDBl9n4n5O5NxjjGpTCOTvOuGmUJkuLiWEFIdtgg1iBYkuCSEzG7iXb+Sk3pdHZQyVgSpK8wZyQMl5ErESHx9gRS77aexgQmdfxqJd7AEw662fSMgZrX7gsQAiQXV5kYy9esTMN+Iyw84IzK6n06DmY2SeRQzIsFlozvNKpaB0/YQT+w4hFug4j2Ha9q99ZqrLtaRYWfHNUnr97Jm8sbwlpzw5YFS3XtpNVsKLWF7D0NSre9XtZn2JMws4W7BkgfR8kbbNkObyEhtrZSjSdG/a2M/ulgzt1GrFemUx4bJx5wnS+bcsEdN6srCkaOVvTD39+uRgOYyg8TtDDqQ4KTuq/WsSPXCFYO3VRQ3Ul4yyAz4I33h3iZ5xF+ZImtZehDiSP2kmw3L4flVf7KftFBt5t8w0s8Ju+3Az8BYP+hUGOyc5qbCKPR8KeXxcgxxhgnbUVJU1JRiir+O8kLSfqjrMjfUE+gsWVLsiBfUonXaWaKwmxiSSXI86MY2iFIC/EIRGmLXMtmSxG3j3Rr5HUxOi9ZPbjGUWFkAlCseHhJWk35PiT44m3xh1Q/xr+5KfVB9kzc0IPnXIfRUgczb7x4tK0MrYY+xqCsWkwmaeXMHLH/tNICpgL0Ojw8TIvLBj2ZRzQxXOy9u11l91yxUWs3AS/qnybe6hI2OJIenqv2SWBbjQKUi7/TheiX+dAwyDsluUBZQpAwrR1Te2x13M4ERGxegUjp6N+eUFf+j4gbIXN24C0TrRafxKmUjjKGzddT2NwNAmoV/GUZXia/a5GJR72DFNfJc3xmNJaDeWXUPZiPcmbHqYgtBSEWE71q5yZFTSom
- hrl9/nYK
- QLXg179mdQhi9Y0z60ZjRDQvhyQiNfJE1LpJ3dVWf2uEujtmsHF0ihtNfkuPgm04XiSC3y7VhIjGaMF3hKD8kdqAAa1Qtr2yS+PIYdv7L1AlkJIw=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769789587-385385
+X-HE-Meta: U2FsdGVkX1+BnttvsLUvnDtylO5AKdT24IF9Jaaet71Uxg/Y+wED3hlmxSPCdYUC5uTfGh94wADo5BZ6FK31eSl2BhJQQpNf6/xgH9w4hSX0yUU1cq+61l7hhqmVVngjq4fVaT6TbT2V/UIphDbZeotT24wpaxFfXIQFYmCtggdHDKKkGJ+9STWssGKM81ySelaU5PpBzTJMb6WgrbDdsYvQ/y7rpDmAfgE6SZhUfrgZ1jyCbPiqMDXf9/GAMrfGTc6Wy3pMtmWwQoWpSg+erseQgdFrmxVJcAhau4w3Yp/+msZuWGi8AosHdunn47gqikdpjliHBMS7JX3PVHPpiyzmkvbB3MXVDaHyUvFYghZwiKJaENscOkE76ShIgzu1/JaSDV3OLwsLPHfoFTkwhLi4DCvFCeJwkJN82oz7B7Uor062nl43uAfn080R2egj/LrkHd6DqRaMddFjNOsIvoWpInsBVYS+mZNpr+R9JfvEGAYBmZhu00YxDyNUaQF1bScI86CgVoCa0jcSLlc2rpdunAdf/2ChJuT63ztenuChHukMoRV+2rVExFkNM3hB+TNLX2TZhN1dHfDtet7lKKpdeXTCukUmc/1RNAO+0MhrhkGsl1FV9THcr8TKNS7NYEiqsQpQFQN5pY20dW/xKUvDOFCRPjJJQ7o9Xos3YFH8hp6k9TGxfbBFpUckSvdoMYOmrQTSvDELyuLx8pT7vSwBdQLEbp8/iZ5zT3sNYlvlEmYjpX6dQ9q1ujqLlT3fqy0Chk813SMQaK5fFfByJGMpOeZKCTAd5nK+TJgVAk630hq9wzhAwfFhg6hiUHyUMDpL03PgR2OU7V5cqyiu6xx429LGs6LqPkzezdlhfxkXdndCisXcAZa7/2p64WBLyi8FUEpEfVqx6E1LKN8wMjVCPyDqI696LqgJJAfeM0KPLi/JpVAEW16bDcgTOYZX5aFBaXcLy3EtRa0uUhb
+ U0of1+jX
+ EvNqjEs84YBVcyQRC+tf4VUV3rlHHdlL0gtRpHm4JBgtIX7jPodGHpFo5e6RO60PkPuJcTwaWD0wu0YvD6nwETzvzXEtBa31SRb+1oF81w+pd1BmdNaczoCkK8rFPIxL8zl8BqLKIF0D2KN0IjsJnrKfs4pJRvT+9RMelwwR3u9s7CWlT9/bbZEfJr7ypM0ad50+iUY3RwN9hGhIi96iWjisuhwTiYz7EaSr5owEHKSsnWOUo3rwRLpUBD0MxxCSGA5rpSkowxIXbrFuiDFc3hPUc6blpg9kzhlmTSjlg30rHSVGnxj0irEeTOE6QEFmFM8cUKkEh/NEcRbyWubgPMxIFJm6gMjgV1tBpe9ujaDd5yrYRsCyoG3kJyucffYKusX/QJaLI78NX3TQvB7sXMnahjrOaw4M7EkJfdNmhMxCTOX7IrWqXe+X3gjKQ+Vx4AWGqaJ5B0QGj7GufbXNPuHIvpf07iU71vEFoMyceaTMFLxEc/Da34Wm3Da4m5z5AJG5X/Isqv5p25agDXYYfiobUKzHDryngW9KKeYa9V/B+Y5oKkjWVCK/T9w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,113 +131,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/29/26 3:11 PM, Gabriel Krisman Bertazi wrote:
-> diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
-> index b5b23c0d5283..e24fe3b00059 100644
-> --- a/include/uapi/linux/io_uring.h
-> +++ b/include/uapi/linux/io_uring.h
-> @@ -74,6 +74,7 @@ struct io_uring_sqe {
->  		__u32		install_fd_flags;
->  		__u32		nop_flags;
->  		__u32		pipe_flags;
-> +		__u32		mmap_flags;
->  	};
->  	__u64	user_data;	/* data to be passed back at completion time */
->  	/* pack this to avoid bogus arm OABI complaints */
-> @@ -303,6 +304,7 @@ enum io_uring_op {
->  	IORING_OP_PIPE,
->  	IORING_OP_NOP128,
->  	IORING_OP_URING_CMD128,
-> +	IORING_OP_MMAP,
->  
->  	/* this goes last, obviously */
->  	IORING_OP_LAST,
-> @@ -1113,6 +1115,14 @@ struct zcrx_ctrl {
->  	};
->  };
->  
-> +struct io_uring_mmap_desc {
-> +	void __user *addr;
-> +	unsigned long len;
-> +	unsigned long pgoff;
-> +	unsigned int prot;
-> +	unsigned int flags;
-> +};
+On Thu, Jan 29, 2026 at 08:29:25PM -0800, Shakeel Butt wrote:
+> In META's fleet, we observed high-level cgroups showing zero file memcg
+> stats while their descendants had non-zero values. Investigation using
+> drgn revealed that these parent cgroups actually had negative file stats,
+> aggregated from their children.
+> 
+> This issue became more frequent after deploying thp-always more widely,
+> pointing to a correlation with THP file collapsing. The root cause is
+> that collapse_file() assumes old folios and the new THP belong to the
+> same node and memcg. When this assumption breaks, stats become skewed.
+> The bug affects not just memcg stats but also per-numa stats, and not
+> just NR_FILE_PAGES but also NR_SHMEM.
+> 
+> The assumption breaks in scenarios such as:
+> 
+> 1. Small folios allocated on one node while the THP gets allocated on a
+>    different node.
+> 
+> 2. A package downloader running in one cgroup populates the page cache,
+>    while a job in a different cgroup executes the downloaded binary.
+> 
+> 3. A file shared between processes in different cgroups, where one
+>    process faults in the pages and khugepaged (or madvise(COLLAPSE))
+>    collapses them on behalf of the other.
+> 
+> Fix the accounting by explicitly incrementing stats for the new THP and
+> decrementing stats for the old folios being replaced.
+> 
+> Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-You can't use pointers or unsigned long or unsigned int in a uapi, as
-they'd be different sizes on 32-bit and 64-bit. And then you need compat
-handling. It's much better to make this:
-
-struct io_uring_mmap_desc {
-	__u64 addr
-	__u64 len;
-	__u64 pgoff;
-	__u32 prot;
-	__u32 flags;
-};
-
-and then generally also a good idea to have a bit of expansion space
-there, so you don't need a new desc down the line.
-
-> +int io_mmap_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
-> +{
-> +	struct io_mmap_data *mmap = io_kiocb_to_cmd(req, struct io_mmap_data);
-> +	struct io_mmap_async *maps;
-> +	int nr_maps;
-> +
-> +	mmap->uaddr = u64_to_user_ptr(READ_ONCE(sqe->addr));
-> +	mmap->flags = READ_ONCE(sqe->mmap_flags);
-> +	nr_maps = READ_ONCE(sqe->len);
-> +
-> +	if (mmap->flags & MAP_ANONYMOUS && req->cqe.fd != -1)
-> +		return -EINVAL;
-> +	if (nr_maps < 0 || nr_maps > MMAP_MAX_BATCH)
-> +		return -EINVAL;
-> +	if (!access_ok(mmap->uaddr, nr_maps*sizeof(struct io_uring_mmap_desc)))
-> +		return -EFAULT;
-
-Does this access_ok actually provide anything? We're copying it in later
-anyway, no?
-
-> +static int io_prep_mmap_hugetlb(struct file **filp, unsigned long *len,
-> +				int flags)
-> +{
-> +	if (*filp) {
-> +		*len = ALIGN(*len, huge_page_size(hstate_file(*filp)));
-> +	} else {
-> +		struct hstate *hs;
-> +		unsigned long nlen = *len;
-> +
-> +		hs = hstate_sizelog((flags >> MAP_HUGE_SHIFT) & MAP_HUGE_MASK);
-> +		if (!hs)
-> +			return -EINVAL;
-> +		nlen = ALIGN(nlen, huge_page_size(hs));
-> +		*filp = hugetlb_file_setup(HUGETLB_ANON_FILE, nlen,
-> +					   VM_NORESERVE,
-> +					   HUGETLB_ANONHUGE_INODE,
-> +				   (flags >> MAP_HUGE_SHIFT) & MAP_HUGE_MASK);
-
-This looks like it dips into vm_mmap_pgoff(). More on that below.
-
-> +		desc->addr = (void *) vm_mmap_pgoff(file,
-> +					   (unsigned long) desc->addr,
-> +					   len, desc->prot, flags, desc->pgoff);
-
-One concern here is that vm_mmap_pgoff() ends up doing:
-
-mmap_write_lock_killable(mm)
-	grabs mm lock, can block, for a long time?
-
-which could potentially stall the io_uring pipeline for a long time.
-Ideally you'd be able to do something where you try to grab the mm lock
-from io_mmap(), and if it fails, then either fail the request (if it's a
-killable thing) or punt it with -EAGAIN to let an io-wq thread handle
-it.
-
-I'm not so sure simply wrapping vm_mmap_pgoff() either directly or
-indirectly via the hugetlb stuff is going to be super useful, if we can
-end up blocking for a long time on these operations.
-
--- 
-Jens Axboe
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
