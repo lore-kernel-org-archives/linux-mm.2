@@ -4,105 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53401E6BF39
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 19:56:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DBF2E6BF37
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 20:11:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 519CF6B0088; Fri, 30 Jan 2026 14:56:41 -0500 (EST)
+	id 4B7736B0088; Fri, 30 Jan 2026 15:11:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49CD16B0089; Fri, 30 Jan 2026 14:56:41 -0500 (EST)
+	id 4649F6B0089; Fri, 30 Jan 2026 15:11:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A8ED6B008A; Fri, 30 Jan 2026 14:56:41 -0500 (EST)
+	id 2F2106B008A; Fri, 30 Jan 2026 15:11:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B80D6B0088
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 14:56:41 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5EF11406DB
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 19:56:40 +0000 (UTC)
-X-FDA: 84389687760.17.8AC566F
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CD524A0006
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 19:56:37 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GdiWQHry;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769802998; a=rsa-sha256;
-	cv=none;
-	b=tBHk0pWzlhBrUob8yyCjVxRzCaX17tgfGWnk6mn4hg823MslFadurmPs8earNJRuqHNShi
-	/SlG+BJM2gvCCI4zP1mFLUrN6pzX6eNJmlUCb/UD8maz4fAXd61+oPdcmf2QrfzOcMl5Jz
-	e6gEorGXebKkAmRj/XzklBp2Zza54Ic=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=GdiWQHry;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769802998;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B7CF6B0088
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:11:48 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62B641607D1
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 20:11:47 +0000 (UTC)
+X-FDA: 84389725854.13.3E9EF6C
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 72C6920015
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 20:11:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O8Rl75P+;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769803905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M44fOx6FNQYPjEqcJJZHN8cHNALOFrmA6XG3KTJNz3I=;
-	b=Y7FKVPbd+hgdzC5VZ2IgyITfdUoDaLHI9nvPd3jM7GKQo6KpgfRZfPYQ90ZJfb0hnzniZX
-	5t4nQBzhgGv7qvdPZ++YGjW1oIuCWzssINdpCHOm7JM8Nf08GzlFBw4yhiJY4avmdbf5ks
-	MZijPv/iaOs6D7P8xNQaorzagR1eyJg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769802998; x=1801338998;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=worejeHHsq1ziRWfoviB7RGwOnlqO7vcDzzLdGwlVXo=;
-  b=GdiWQHry9FEyKbkKzu1eMwy5uxGuE1fvDWjJMiVGTHgWFPfKgp0yVvUj
-   jgbBigZMpPT7zYTzQvgebHaRbOCa8Bjdi1RQFVoWNxIjeQ9/UW91CYgsi
-   jF/arLfia/acFY88h/LN8ZYhGTcZWbIlaEXaVZ9QDfrKI8yqgAO/SOxeh
-   9pwe4Ub8xQUT6LIPORMkL3Y2PA6Tb4nhgUi5fwPVekYfCQClrpKYI0Re5
-   B/tk7PdHA1sX/8tSFUfUX07KVeuk+BPoEePGS1EVIujD9SzQ0F3Wgseq/
-   sI85SSi5fQ5Lua/h2DjY3W0TEo/y476gNzIbvsfpek1ILO2oT7tqcNMHs
-   g==;
-X-CSE-ConnectionGUID: LiYHzYruTIWXWNqXtxEdwQ==
-X-CSE-MsgGUID: BsZJ123/SPyGgzg19FQybQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="70776044"
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="70776044"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 11:56:37 -0800
-X-CSE-ConnectionGUID: nM5QeG7ATpaADUZTOayMgQ==
-X-CSE-MsgGUID: 9tIorAgaQku43phLFmJqtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="208735691"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO [10.245.244.13]) ([10.245.244.13])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 11:56:33 -0800
-Message-ID: <b9dd97e7d9e62ebc33c4dfef53a9fd3f51352d3a.camel@linux.intel.com>
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>, 
- Christoph Hellwig	 <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, Jason
- Gunthorpe <jgg@ziepe.ca>,  Leon Romanovsky	 <leon@kernel.org>, Matthew
- Brost <matthew.brost@intel.com>, linux-mm@kvack.org, 
-	stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-Date: Fri, 30 Jan 2026 20:56:31 +0100
-In-Reply-To: <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
-	 <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-Organization: Intel Sweden AB, Registration Number: 556189-6027
+	bh=KqTERH/+2h6DWpnL/jhYC24xZ6zypIXUC8x2yGcNW24=;
+	b=Cmno7I8zIMqGOm2PNVEbkWtBUjw3t2sJ5qPhQI4jCMZYKucBSwWikeL5YJ94/5G9prm/KV
+	0SW7R4kKuE9Hv38xOcxktMLXHX6yeDxboFeWV3f2EFkJjsC8lVG5nBjjj1tQE0PdASDsPO
+	ZE/Ow9NpmS+mIbnyBirRLVzmFX83UDo=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769803905; a=rsa-sha256;
+	cv=pass;
+	b=VJnMEb9lkdj4mBnxAUNpsTgK4kS11/kRbe8VYUfWYvIcuzhsxiVQNe1HNQzH66SJc9qIjP
+	V3toVYmY0brWaSHfNIDmxDBjBKJXd5+jotJqPHXcLQ8Xq9yVpG9nbe8a7qdQyS4aYE8XGe
+	FehmszI3n1fd8xlfQKVbKejiRHSQyrg=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O8Rl75P+;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf13.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c93e0269cso2188838a91.1
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 12:11:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769803904; cv=none;
+        d=google.com; s=arc-20240605;
+        b=MZ+jNhiiF3jT58imMazwvnEmE8hV1g+x6NwpSEOsDLongyUWwo/RrHqaP3b51+ED/J
+         7Dk2fzPXkPwHmlNQEeboSfRL0PO23DnALiw1KTZqOWCaTvhxpedG9szGtw3i6KzL8xYZ
+         zUJKo6IXMe0XxikexW7Fvfalw0+PO+hQa5kj2kwJwfcbaGM2D26R/ZuA1fBo0sLiOYeH
+         F6iJZtFgaQKoqqW5pXXWN+ZXHOByJjQM9J2Cd/dZs5D6rioH6EdK8qX7E119Nt1J4Ayt
+         oi23HVH/ij65RXf7YyorsOSfDl4CezP1DB+UW7OgeX6GmKA34Mt0s1tEGVlhJoJfZfb0
+         lBFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=KqTERH/+2h6DWpnL/jhYC24xZ6zypIXUC8x2yGcNW24=;
+        fh=KzDcromgYX7bva+7UFiQdmxpUe+wYJya3vElXjcP7Jk=;
+        b=B12RfG+5HxiSxvbEyHl/Iu4/T/dR9P0/rc7je33CiDPdMvd4+ibN4IbrSie6kM9V87
+         mOoJ2HBTd9YaPfpfrxpL16xuqtBXKKYIHbyGZqM7BbceLNPAz1w/U90GakVwoDbVR1Ek
+         gmnvq+E/7B948fDj0jt+uhI/WX6SCVUu1DxWyv3qPLqGsgjYY/HbkI/cbQviPGjJdDaN
+         MGBYHbjEwH4MLPcpBUhTd1RTVNFO/pSnp4515CM9ZBBsD6fSANAaF91DifGvLclsOe8y
+         BYBVyAambLMyW8zou9yLxJf0xrcF3knHHKh0CtzGqkBpedXBbqdHlINxf7Obuy9D7fp3
+         +gIw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769803904; x=1770408704; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KqTERH/+2h6DWpnL/jhYC24xZ6zypIXUC8x2yGcNW24=;
+        b=O8Rl75P+ePEUWHrlSDOA/J3+PeKBY9gmt9zrOYYWNZFvODEOlEQYsfseden9NlU4/G
+         nGXhsPpQARx732CYovQp+iqrxzivsYB1xgJumnO2jwf6zcHptQQ++ZoNor3Gwy5V+t+U
+         WdwKdUr/RTGuB6AGQzIu/HS86PYVa8Hcy8gM7tYwGMluYaXjmsXaNr5TwlQyeaUpV5xF
+         J/bSwQwb+F5uZZxsDA2uzvptjLgpPhp/nkWkav+EFKZmRibJyAGhDAotWMXcHP4ArUgr
+         ARSBoycEI51AB03VcgRsXkttu0hstRRCXJX6xnaUqPCIU1sihZY5CMjl9EAIYObTS9sA
+         99vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769803904; x=1770408704;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=KqTERH/+2h6DWpnL/jhYC24xZ6zypIXUC8x2yGcNW24=;
+        b=dN86LEYH66n5x8IhubpXAterg6/acHDxSYJu3scBsykr1tJnVd2L/DX1V5lzDPNHs3
+         MQlGsR5P5cT7gCRDfb2cpbiaq8TJAsr7/DKPNWyyb+IEDS137CewOTLVznpHZbyZg2Vn
+         /1E2l3Ykc/HMK8Pck7I6ll3S+Y9VTPRzJ1b4Z0bF8DI3TVCdMZIownU/KmDDQjDQs9rU
+         LsNG8Yd5tSyjmMnyzm2/KNU9AveUEYe5nTwy+XK6zKKgDJ52re1YMy7YZPJ5Ags/Fv3n
+         5AzWycViYrcy0RjfHeJwEWMuTz9zlrdnOBo932yVB7I4QbGU+0u5Cl1hx7yPSiOApF4L
+         QSvg==
+X-Forwarded-Encrypted: i=1; AJvYcCWChXUrMm3PQp+JwxqcfYKbmQ0fFvpK8h/OhMmn0BH/nK68GxFaC/gah6LoTT2J1IQ2r6eAzsHxqw==@kvack.org
+X-Gm-Message-State: AOJu0YyuTOryrt73vhFxM4zVThFvDq4M8tqfhmiQlIZvWpC+1O8sejCo
+	XsxuiHFILJk33G/9TcNLOPi3i5fS5uRhx9hv39X5qbglfeE5a35Fhh1dStyVKC7V3HfZyE9DdcN
+	KM5P1gcYf6+6AgfE72GSBq6Wj/ohNaxQ=
+X-Gm-Gg: AZuq6aLtcUEOuwJBLLqtcD4zbAFxYDJYq36EgGEPt7ofUpBhiolqimV8h2/UVEslKXh
+	j84lXbiejaReaiyH8OXBkxdHKCK7H5V1Rskio9Jiq30W7fXIVoF02fYWmwHlxw7tLFypsnDJPP8
+	mB912s+Uey6syfiRnpMTG9+S4eMHioDKTxadg3o/Gs8XdZC/zHo2288GpSaLAKZ4qgHZDRS4FMp
+	gLd39kygsYtCd328lTA7SJMuapc+qLb9QzWaDl88J2+yJkphf3zuIwQP3oDRFENww4XTVnXAAhZ
+	D7SbFSHKJj0=
+X-Received: by 2002:a17:90a:d2c6:b0:34a:a16d:77c3 with SMTP id
+ 98e67ed59e1d1-3543c3a6c21mr3874104a91.2.1769803904268; Fri, 30 Jan 2026
+ 12:11:44 -0800 (PST)
+MIME-Version: 1.0
+References: <20260129215340.3742283-1-andrii@kernel.org> <202601301121.zr5U6ixA-lkp@intel.com>
+In-Reply-To: <202601301121.zr5U6ixA-lkp@intel.com>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Fri, 30 Jan 2026 12:11:31 -0800
+X-Gm-Features: AZwV_Qj7wDya2OBtNs7PUmH8JcxUTODcuVx2e0LmJSjVryNSnlC4sk5utSn3GV0
+Message-ID: <CAEf4BzZthAONGByqvk3pHRT3GaA8=fNbz+d1V1CY1N8sHEcsjA@mail.gmail.com>
+Subject: Re: [PATCH v2 mm-stable] procfs: avoid fetching build ID while
+ holding VMA lock
+To: akpm@linux-foundation.org
+Cc: kernel test robot <lkp@intel.com>, Andrii Nakryiko <andrii@kernel.org>, linux-mm@kvack.org, 
+	oe-kbuild-all@lists.linux.dev, linux-fsdevel@vger.kernel.org, 
+	bpf@vger.kernel.org, surenb@google.com, shakeel.butt@linux.dev, 
+	syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
-MIME-Version: 1.0
+X-Rspamd-Queue-Id: 72C6920015
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CD524A0006
-X-Stat-Signature: dqytoiqsscwf11u4zxmd4p86jum95o3j
-X-HE-Tag: 1769802997-497928
-X-HE-Meta: U2FsdGVkX1/bA9zvQDQR2P/HIJ+G9OY7YdITT8WJ5GdpppP3CQtF4KtX5ez6Wl/HHxmkwBfr23tSEorNR6arH7AcvrdANcZ4QG8OZoQoCxPXssh7eYe1K5iCEdI/1n3fIiihyCwcfpXToqbE8tDW3wOCsLZcpuDt/0UFAXPztknfCEb6CHZxeE2anGIWGG6bjfLaXBMYT0aJO3IFp/vVI/8g4w5Zq9Edjqp85WmT2Pq6ozt67RREWtxFJShSloiIwDngHuPO1aLA4wSO7pEtc/paplXoLlNzSCpswmNiCmUZihTBqc9aWO8on9SehljhG7g5PlUCmzXXRsR/GJUv9j92ZPzcsMcLTTH7gijZ7XnNCNyhE9vpEgRFW2nEdhSFTY10uzpd8RX6oGz1oobkLIlnVCk3tdMAShu02f84U50zD+9cVazeM1pBl6CC16HuldtX7tC7ngDhY33G2OfqHlBmJ6zQTHVq1rLf52UstKBa6q+m/2KybWbp7qQaB3V8qu60Xn5i8pwx5/z+0UJjE1nYh54ODUgA407k/3avrys2lIdBzmR54Wnft/+CxM9SnGhsX9x+G4X4rMWbzI5TB3QKRdbmtY53+e6M9AchSadZdDQmeLlRaEhRPhd47rZvt3hTp15GP62C702U/iuN4R4h+PtFvBmXgCkX4TqR8y55tSvE3p52s0Q+cOCKvTPd7US4PzGik3lFvlgkJXH9ZJx5JxbSa74u/BzBBOcP/UN5s0hDbyoXcimUy2dg5t8deRTr8DgjYa0taUm+QsslTFRTpDqCZ4Q03KJEEwQl8z1PLU32B6TfEerASxCuybnWjH17MIHTgsLrJT/ei4Ht3wbdtWGgDw4phEEzBxyj0IqMtKlKlAmk9jtJQK2BHy8rG2ikASqQMfNG0DFclrIo67RQKEOrrVC01V+Q/zAC+ifDp+Ca1XdWQw9cXR0GhsrLXO9xDXOLs5qEfpXyFqp
- 3eIwuoQu
- g4VVWInA0C2AlRtkptgkrAp8Vg52H12Xng+IRKBcg1h0ev0HcKmneiRvL/bjDhlLyjFheYnrvwEB/BPldWvnvSEcx9pBauvpa+9q1hmxssPEIN3eRaWoDwQBFUugvnzpj9K6z8lnRUhZgEr1+zWFiyD2h0ZQpMkghmIxHAQYjb6o7nS5+bydVCmqYKeVE67C5fMw9AtCdShgBJE4aJJt5xRGqDKDad5+u9wu79MClnqEJ15Ex3fam2tihIMUnu5wtuc1Doj1TEljFq0VmbZI/yVl0NZITj5n853huzOaUMvpN4YxiSgyc6RWRKCP/PeJ1qp44
+X-Rspamd-Server: rspam05
+X-Stat-Signature: d7ee77sc7brquf1za596bg3fwtdhtsu8
+X-HE-Tag: 1769803905-186900
+X-HE-Meta: U2FsdGVkX1+2xiSgvf4Cj5f3UQPjulXtlFDojS7OS9Sw34zJ8GEzRCCUiuUb7i1q/ZPI8CmsnSs9xh0dtmX1z4eeQ6eKh6n2/KJLk26czxuMorBe2UkfQ7NnJmgu0WzrYLjBKVl2IeTPe0M5nkeYwlsmxFtB4WzNA6svKuBG5B3TGoc4EIYtP+x/B3Bjti1+7Cjy0KaS9webFSGXfTxr8MpFgmAFEJlndWbyicnJ27bimVErXMexlhvISWDDkXr8HrolTJw9kIA88dhPiCVDAMsyXqdrww5euSO+NbNubP5LMB6D1PZ4KU2kWvLDG7qFU4Xr3eJ2Kuw+BQbY7xAnRK1KBE2kGSFEfmzY3hC3Sj4yIFfQhhpSTv2XKwtxHkrQtebUUFdl1qQms7nxOuYbAXRXLp+r2KDE5f8FDsbEcqSecRn5fOEftX74oJSOKwsUylql85ZPtJYtawvyON+QITE3wA1XGYhS9cMvMXokLdc572rg69ELPppa9jsO0Hk8AEelTR/zaREPsSXSn1qMWLXH9Ha9UIf2JTARmw+6ECUm0d5/hdHIwDWYBJBN6zio6yrZAZxERx5Zfn+O7jdC66w22XJvTakC35vWS+/cU5Dvm5Y7l3JYIf7RicCdUdwoWrEjs2Vp/VLi+aJSAplbROgz4FfO/Vzfm4VHvFamdo4GF5kNhdTZDVae1K8faKrOeUzP+LGVkFHgAmJ2N4+zSvxJEQ21zNbVmAn6DExPQiNtntV9EDBKzgJDxa38Shz+4ndAZeAxcUTd3Hbm1L8Nx9i/82Mx7txB0RVbr9XXLSU4C34BUEHa9eOaCEncFl22sjBYcAUZnmEs3PGgbvmylyfqBbRuXjKq1WuiHT2o2nUmiZy4eBs4kQhspsa99AUADe8s7pBiYwO7XiT4FR4u4pPxxYHZZcQGeyiIP7g6eYZD1M6rYa34V5pgM7jplM1FNb9b2UQtsTssDcZx7Qi
+ B20IL9T0
+ UzvQLbUqexP6WyHDaOgrBSKyLEkfS76mqUGoX/o6Fn9a/qDNt52k8QVzXqypyPFkB120nnchXw+EJG7HeBIAPuCpaYLwdep7FWRjc9GNHHh92pzgMR0eRXW8F0Y//6hFQKPBVORGGn38SHr9wx0wO6z5bRfbHHsuQNDXrSMvpt9jQ6gbxyh+7UB3VVc205MTKtTzq02MPOv5aIwKtVb8bXN5XZIxYEj0620KUvNXsR36FUJ+phs4DXEJp1szobb32ovFKwuhQdolVFDEcJQEH13P1voYI85U3Zgdp9B6SovmkbbCHxgoZgLPHr3s0cq67PURxHCu5Fc2LVGZG/KexRCX6kKuwZ4eEocrF5xRRYsiAHjqdqLsZPanJUiXNfW0R1ggCdAcZPwZUOEYhtrwhvkvzGmvV5pE24jJtBnm/WzC56oq53HAcHwBcAfGgFxQjk8LyPYw3k1zWAhgxnW67sRxA9Agg8bzHI4MwvyEjTDAu6I3COurvCgPHCu9ukmFeg6Qz/sAMTLqgw/pVCxCrMLRyt0xwqXckq/dFRl18RunrIzF/K3dlaMLqsiNCLUI0rq4kVYgtG2bPIJrwv0u/e8zZBsVxfFr6alS0f/cXZQroU6q+6GG6h7Chqb8/IwibjZg2eD4BGjagKRc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,95 +142,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-01-30 at 10:00 -0800, Andrew Morton wrote:
-> On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellstr=C3=B6m
-> <thomas.hellstrom@linux.intel.com> wrote:
->=20
-> > If hmm_range_fault() fails a folio_trylock() in do_swap_page,
-> > trying to acquire the lock of a device-private folio for migration,
-> > to ram, the function will spin until it succeeds grabbing the lock.
-> >=20
-> > However, if the process holding the lock is depending on a work
-> > item to be completed, which is scheduled on the same CPU as the
-> > spinning hmm_range_fault(), that work item might be starved and
-> > we end up in a livelock / starvation situation which is never
-> > resolved.
-> >=20
-> > This can happen, for example if the process holding the
-> > device-private folio lock is stuck in
-> > =C2=A0=C2=A0 migrate_device_unmap()->lru_add_drain_all()
-> > The lru_add_drain_all() function requires a short work-item
-> > to be run on all online cpus to complete.
->=20
-> This is pretty bad behavior from lru_add_drain_all().
->=20
-> > A prerequisite for this to happen is:
-> > a) Both zone device and system memory folios are considered in
-> > =C2=A0=C2=A0 migrate_device_unmap(), so that there is a reason to call
-> > =C2=A0=C2=A0 lru_add_drain_all() for a system memory folio while a
-> > =C2=A0=C2=A0 folio lock is held on a zone device folio.
-> > b) The zone device folio has an initial mapcount > 1 which causes
-> > =C2=A0=C2=A0 at least one migration PTE entry insertion to be deferred =
-to
-> > =C2=A0=C2=A0 try_to_migrate(), which can happen after the call to
-> > =C2=A0=C2=A0 lru_add_drain_all().
-> > c) No or voluntary only preemption.
-> >=20
-> > This all seems pretty unlikely to happen, but indeed is hit by
-> > the "xe_exec_system_allocator" igt test.
-> >=20
-> > Resolve this using a cond_resched() after each iteration in
-> > hmm_range_fault(). Future code improvements might consider moving
-> > the lru_add_drain_all() call in migrate_device_unmap() out of the
-> > folio locked region.
-> >=20
-> > Also, hmm_range_fault() can be a very long-running function
-> > so a cond_resched() at the end of each iteration can be
-> > motivated even in the absence of an -EBUSY.
-> >=20
-> > Fixes: d28c2c9a4877 ("mm/hmm: make full use of walk_page_range()")
->=20
-> Six years ago.
+On Thu, Jan 29, 2026 at 7:55=E2=80=AFPM kernel test robot <lkp@intel.com> w=
+rote:
+>
+> Hi Andrii,
+>
+> kernel test robot noticed the following build warnings:
+>
+> [auto build test WARNING on bpf-next/net]
+> [also build test WARNING on bpf-next/master bpf/master linus/master v6.19=
+-rc7]
+> [cannot apply to akpm-mm/mm-everything next-20260129]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> url:    https://github.com/intel-lab-lkp/linux/commits/Andrii-Nakryiko/pr=
+ocfs-avoid-fetching-build-ID-while-holding-VMA-lock/20260130-055639
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git =
+net
+> patch link:    https://lore.kernel.org/r/20260129215340.3742283-1-andrii%=
+40kernel.org
+> patch subject: [PATCH v2 mm-stable] procfs: avoid fetching build ID while=
+ holding VMA lock
+> config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/202601=
+30/202601301121.zr5U6ixA-lkp@intel.com/config)
+> compiler: nios2-linux-gcc (GCC) 11.5.0
+> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
+ve/20260130/202601301121.zr5U6ixA-lkp@intel.com/reproduce)
+>
+> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
+ion of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202601301121.zr5U6ixA-lkp=
+@intel.com/
+>
+> All warnings (new ones prefixed by >>):
+>
+> >> Warning: lib/buildid.c:348 This comment starts with '/**', but isn't a=
+ kernel-doc comment. Refer to Documentation/doc-guide/kernel-doc.rst
+>     * Parse build ID of ELF file
 
-Yeah, although unlikely to have been hit due to our multi-device
-migration code might have been the first instance of all those
-prerequisites to be fulfilled.
+So AI tells me to be a proper kernel-doc comment this should have been:
 
->=20
-> > --- a/mm/hmm.c
-> > +++ b/mm/hmm.c
-> > @@ -674,6 +674,13 @@ int hmm_range_fault(struct hmm_range *range)
-> > =C2=A0			return -EBUSY;
-> > =C2=A0		ret =3D walk_page_range(mm, hmm_vma_walk.last,
-> > range->end,
-> > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &hmm_walk_ops,
-> > &hmm_vma_walk);
-> > +		/*
-> > +		 * Conditionally reschedule to let other work
-> > items get
-> > +		 * a chance to unlock device-private pages whose
-> > locks
-> > +		 * we're spinning on.
-> > +		 */
-> > +		cond_resched();
-> > +
-> > =C2=A0		/*
-> > =C2=A0		 * When -EBUSY is returned the loop restarts with
-> > =C2=A0		 * hmm_vma_walk.last set to an address that has
-> > not been stored
->=20
-> If the process which is running hmm_range_fault() has
-> SCHED_FIFO/SHCED_RR then cond_resched() doesn't work.=C2=A0 An explicit
-> msleep() would be better?
+* build_id_parse_file() - Parse build ID of ELF file
 
-Unfortunately hmm_range_fault() is typically called from a gpu
-pagefault handler and it's crucial to get the gpu up and running again
-as fast as possible.
+Andrew, should I send v3 or you can just patch it up in-place? Thanks!
 
-Is there a way we could test for the cases where cond_resched() doesn't
-work and in that case instead call sched_yield(), at least on -EBUSY
-errors?
 
-Thanks,
-Thomas
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
 
