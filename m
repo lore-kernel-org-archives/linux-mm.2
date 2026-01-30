@@ -4,99 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C60D73E87
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 00:29:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 760A7D73EA9
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 00:31:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D5D76B0088; Thu, 29 Jan 2026 19:29:13 -0500 (EST)
+	id 6BFC26B0005; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88CE36B0089; Thu, 29 Jan 2026 19:29:13 -0500 (EST)
+	id 643046B008A; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7AC5B6B008A; Thu, 29 Jan 2026 19:29:13 -0500 (EST)
+	id 54F206B008C; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C5BD6B0088
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 19:29:13 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F747B9559
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:29:13 +0000 (UTC)
-X-FDA: 84386745786.17.158F8E0
-Received: from out203-205-221-192.mail.qq.com (out203-205-221-192.mail.qq.com [203.205.221.192])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5862E20009
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:29:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="Fw8nxr/n";
-	spf=pass (imf03.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.192 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 429426B0005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C618F160429
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:31:57 +0000 (UTC)
+X-FDA: 84386752674.06.6782793
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0BE0E40007
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:31:55 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=eEaDTQq+;
+	spf=pass (imf01.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769732951;
+	s=arc-20220608; t=1769733116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aCbldkPWDDDUKUh1xdZelu6yUIrmPWNqD/yMJVqg5Mk=;
-	b=oSp0xwPlwZgfs/yZc/01wz7sdDalM4EGCNYCIc//H9xBSccYMZKbzMTgmbY/a5QXLqBSMs
-	w/V46A2wZUq61YnW3/Sc4iN/nQ7A8bhiswfNZRRH5xPxJr84U6T2u+irU+oP4na3yrRtx2
-	r0G/D7TkWnbH/p4YD9eHARItaS5gG5c=
+	bh=5QTLnbHZvfOsZm6P1XTvKuZKL+X4Zqmm8W+hY1sTkg8=;
+	b=yORi5zKoWcLMm+CJy9EX3MFvaxnD4idz91EmW4H/eN/qIFDBnOCps1X7a38KHEnRc8J0aN
+	R6sL/u5Hot/l5JlJz0OjL8ynobO6hoIHhyqDIdeWnKIzPU6CWRBSodk0AT+GquLQyWwUXW
+	77m39G9UA/hmkMiH+NKfmBLykJhaxLA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=qq.com header.s=s201512 header.b="Fw8nxr/n";
-	spf=pass (imf03.hostedemail.com: domain of shengminghu512@qq.com designates 203.205.221.192 as permitted sender) smtp.mailfrom=shengminghu512@qq.com;
-	dmarc=pass (policy=quarantine) header.from=qq.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769732951; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.microsoft.com header.s=default header.b=eEaDTQq+;
+	spf=pass (imf01.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
+	dmarc=pass (policy=none) header.from=linux.microsoft.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769733116; a=rsa-sha256;
 	cv=none;
-	b=OKZrTtaO3SZXtDytQp0oJXWEH8avEUbc9yMmFykuhr5KvtbpgZFQDpnOEH99w223BQv5Ce
-	ZOLG0K5L1NSUc1tvAzCGj708mScuczTmfanWCy+zav+f5PObdO0h/4LT5HwDiDm7jpOz3n
-	hpB5UurVkV/vS+wueq0AsGMtVS+LFNE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1769732946; bh=aCbldkPWDDDUKUh1xdZelu6yUIrmPWNqD/yMJVqg5Mk=;
-	h=From:To:Cc:Subject:Date:References:In-Reply-To;
-	b=Fw8nxr/njtdTLGUlUxzwBI0NjCI060JS0/eA+iTPZ3ecOjw+6rtd+vCoIQOADMOgr
-	 /QcSlj2zK1a+8X3Q5SrZfxBvhHv5QC0JKoGig8bKP8CJRzWsDt076SvKJZ9+ynF+wi
-	 cRQf+adeAZ6LtuBM8eTMtpAocZv8Qy2wlDnG5IfE=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-XMAILINFO: NjP9ocx9gc745POsmID55Q4NoR2YxCUys2mSSg1rBGt/aYCfikevtI7y3RoQ/q
-	 LP+GIsugKmbTRMntkTUDzxTSxHaQLx0azrs1H7h86X6pxNHYSV+TNnTZN7G+shTmNGObl5MBhuPS9
-	 R8PlhjrCu9yRdNF+9giDBh8LBvdXz4EKwgTewUddBZvqoGXLrA2NoUrmpBpndz8pRmNo9W75+ktiG
-	 QXizrPu366qw3VznR6YPfYJe9RyrDnlcT7ZM/I2gO3V2F/5aqk1FN6cWWky3bb2IDlNerUbCbhAI2
-	 hWwhAncnNlflLIFbSvDdlFOF5vQ/u3Tk6E054dNsppTuNs5XvESb7JOgJQn+flpv9Bma6qvkG6tAz
-	 tomuhCSgeb2wNtBGrZQkgJ+MikB6wwjZMefxbAJRBnjidmX2CO94HHyQ2R28BuPM1ONBdmc9y3OTh
-	 XEmj+OhzvIGxqzwEcGnuCrbpfyK8VSf+zfQ+zzQWCUaPR9IUiL5VEyRB8HGRNKRlKkedlD6sJtwQ5
-	 HI4EGZDWveWWWA5QUnIrBFCDuABaqlOKM2Y1Ce/s9BzkB4uwD0UZpnkR1e3qzqcr2ldB9vUxGw8fQ
-	 YCW1FBDUaXF9ut1rrbuN4H5HyFBk5KvAkoSIvmwybQbvT2ThVdCcQtDjUx6qk2lhcWxDpFzY0kEzl
-	 yVEPDBlJ0CdGcePY0vT9Ux8U0LfsNvDUNkPzp58PE7mSKHTvkw3nisD51BaTa7FK3xAQeGizoMDd/
-	 +csbWsgbKBxItwdyJXKr9IKA3IFd1Jfk2y+IU/LE0OOI/xQ2wA3qBdWkVxpc/UyX04mRjbuYeDjcg
-	 pDvdXH/5MtQEgdNkl0J7e3u7kBL6e4xDiEIlQ8n/XCXuPGt2BSXUt8T/8UWqnS8+UrkSzOPFJdgTU
-	 zu/8AB7T+EJTwX16JqXG6XUjCAPeRaxSk1CHd7BriOjmCa3OB10s6PJKu6KnbEZ5QIi8ksZfKSm6x
-	 WLSU7Cn9ZbQgDbx9cHNfkOIC9YUjlnnOfshuKJWGZ7G1AVbFv9y9TdYo2ESlsPCpwwPrzCJN6u7An
-	 pQ3cHwYW6WeGJv3ZZg0BiEh0M2Q==
-From: "=?utf-8?B?c2hlbmdtaW5naHU1MTI=?=" <shengminghu512@qq.com>
-To: "=?utf-8?B?QW5kcmV3IE1vcnRvbg==?=" <akpm@linux-foundation.org>
-Cc: "=?utf-8?B?dmJhYmth?=" <vbabka@suse.cz>, "=?utf-8?B?c3VyZW5i?=" <surenb@google.com>, "=?utf-8?B?bWhvY2tv?=" <mhocko@suse.com>, "=?utf-8?B?amFja21hbmI=?=" <jackmanb@google.com>, "=?utf-8?B?aGFubmVz?=" <hannes@cmpxchg.org>, "=?utf-8?B?eml5?=" <ziy@nvidia.com>, "=?utf-8?B?bGludXgtbW0=?=" <linux-mm@kvack.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>, "=?utf-8?B?aHUuc2hlbmdtaW5n?=" <hu.shengming@zte.com.cn>, "=?utf-8?B?emhhbmcucnVu?=" <zhang.run@zte.com.cn>
-Subject: Re: [PATCH linux-next] mm/page_alloc: avoid overcounting bulk allocin watermark check
-Mime-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: base64
-Date: Fri, 30 Jan 2026 08:29:05 +0800
-X-Priority: 3
-Message-ID: <tencent_BAE640F74B4B0434E930276D1AD12E67FB08@qq.com>
-X-QQ-MIME: TCMime 1.0 by Tencent
-X-Mailer: QQMail 2.x
-X-QQ-Mailer: QQMail 2.x
-References: <tencent_F36C5B5FB4DED98C79D9BDEE1210CD338C06@qq.com>
-	<20260129141057.b577100c834c726f01a602b9@linux-foundation.org>
-In-Reply-To: <20260129141057.b577100c834c726f01a602b9@linux-foundation.org>
-X-QQ-mid: xmsepub7-0t1769732945tq0l74hr5
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5862E20009
-X-Stat-Signature: xc176wjkfpqz4dzu87qc1r1g9h3iz3ta
+	b=Heyclm6Yz+LFMpZr1MDJt8vqrNq4dTGobjKKzAhuwh/JJRT2PbvHRnjhnRuX5JtURJxANv
+	vigOMJChDPR14/F49lglBe9bjh6m5mFOcs3t1rz8gdF5DXhUmRS/Trq6OmTg79dci1QwLp
+	BFB2+/o7Wt0Bt4keukFuhOZiVEDg9pk=
+Received: from localhost (unknown [52.148.140.42])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 02ED820B7167;
+	Thu, 29 Jan 2026 16:31:52 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 02ED820B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1769733114;
+	bh=5QTLnbHZvfOsZm6P1XTvKuZKL+X4Zqmm8W+hY1sTkg8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=eEaDTQq+Esr/RUhilvTOCceWy537iSweTVrOCQF87LN7ewfzzEyzyd4RUlTpzT2bW
+	 kg7uIcbs9tYpacoilvpa5mW4vUKyQ+xSa6CjgGAzcB47rSlnza3XRXVmL0xeyblupb
+	 26ODqz1MAroYBEfMeqzG7EalDwPpbFYk2tLsdDZs=
+Date: Thu, 29 Jan 2026 16:31:50 -0800
+From: Jacob Pan <jacob.pan@linux.microsoft.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran
+ <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro
+ <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Bjorn
+ Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, David Rientjes
+ <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe
+ <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke
+ <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
+ kexec@lists.infradead.org, kvm@vger.kernel.org, Leon Romanovsky
+ <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, =?utf-8?Q?Mich?=
+ =?utf-8?Q?a=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport
+ <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta
+ <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
+ <skhan@linuxfoundation.org>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
+ <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>,
+ Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy
+ <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu
+ <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
+Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
+ Live Update
+Message-ID: <20260129163150.000059a2@linux.microsoft.com>
+In-Reply-To: <aXvgKRrbfymW5NKb@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+	<20260129212510.967611-11-dmatlack@google.com>
+	<20260129142158.00004cdc@linux.microsoft.com>
+	<aXvgKRrbfymW5NKb@google.com>
+Organization: LSG
+X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 9fhfaaurdkuobcat6qizfd9hrxmmkaqc
 X-Rspam-User: 
-X-HE-Tag: 1769732950-734509
-X-HE-Meta: U2FsdGVkX1+PJp6X28QmQQutBC02/TjxoeV5GWfgfpismYkP4KqRapSIeIRBSLo+eXE5W2UNjy2CJJGjvUXp76hvA8ZbKs3cIXePXulIK+Q11fpIHEDXoPZ72THxZ/ZJtpmb5SBA2g9Z2cmzWRGf2CdKnj2jXkZ4U0sh9gOU15kx5qTvi9sdhtlmL5PN4UYD6sVkVq+5swVal/k5o4+1aYrV/zADRbkdixHENT84KeZKGzTIL9qy//BD6dL9FNP6M7lV4+z8cEl+jiSfqONQ4dAMAAPhkr5w1k0tdR1xofz4vtiQYvjyqcBK92gIUrSuVbN7fe+T4jjYpBnLv1oYxPGY2h/iYObjMQgz4hr6Tq226aDTTiLU/7oZcmPaONlHmXmW83N2C3Ftx/z5VA4A5VLOcHGkgaEJgtuXs50/MczKabqDrQrGkqcdZ3CZoN+WCuy/zKrRpdvwSfc7HPkTckpvuolEllrRDX/4ifqUiQ6cFCaguAXAwjJou6Z0qeS1Gn8yAOUGHbU/Q27HnB4oInjCU9ExDIcAbBdCczP6MIzxUzcni7AsZHLpgLWxizYJ3tti19xVAnyZ6JLq9thgOgzOhx/AIgeognd/GzG9fbbngerScrPWqNeduoklj0phBfORK1Ecux3UlbiQfWDnRDWNQgKz93WdDtXE9DXq6cgO0fVVILnfyjwJgnWNk2lGmzZfRw+t4v4cFDi9sX9CBnQsidLglsA8VocUIqKtsm4Bp8hO6TnRrSCEH/AskqO6dTflZ6ZcPb9l5EFEyAG7oqlYd6mosMbmBw37rbupw7iq/UgahkPOmopWfuVMhc7UJRdNNNbAfLWPrsv9ZiNl2gEPP9s+tS2UUaV80Nf3YEqHSe2X3zapE7uI9Br5Xtr7bR0chm8O6L0LulTVuHwq7UIAypSPeSHBae27dJxLHblCfC0ZfVFxwWKH+TPsRDbckOpH3icWiXZRN2Tq0aA
- xlBUilRQ
- P2eixHg6qod3LS1PbXbOeQ8/q1B9YxsG9Hw3x3eue2TuxN6JgT5dSFTIUH0gVEgYYUF/uQ8SEMx0SJW7xYhMfhBovvE7PP/sObLCZXIr2+9TyGBDrotgLrisuNJhWINRLgovR1a1hPLy+AIU=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0BE0E40007
+X-HE-Tag: 1769733115-52442
+X-HE-Meta: U2FsdGVkX18L/fkDRdJXfqU9YVw2jXlH1K6F1UBzE1vILWvP6qwN0g3CScH6R3/kaYD9rWn9IKoe7f7NT6yp0Tp4s11GXkLb9fFazoawWS51isJPLRCsWNA2thH6H/L1nWzxd3eTACiNmWvrBGNWYYh6370qxA2AZIWrgKqlkTYdKWjPRRpSsH1+kvmIPxQp81CndjzMXlUEDmMEdUiN1b9JC0MHHrTdIcrFvhk5VbQhQHuvmPM0D4/HTCXZh0B1BSqxJwl3udLM1B+YM9hbh/ujlywPRXCZCNQCNWxhdI8YBOkdktMtHEW24DlW4akWXxtTCEOgsG+eHqCWkFGh8Z5/s37UDfR3RtovSnQFNdHYS8gFbXxyPPl2DrYUlkBem3fVtUGDzaLRLeR8jzrdSsE5l5a+/8GBSlz89boIoVo1nr7UEDtoCY+hbkHfnRo0gVst67hOcLYwkLvQb+IOx7+ws/7u4iE7W6IvoBAOp9tY8WM+3f3k41NEyIPpmJY34ELG9ISv2ZKItO56UBVtJ5fDM3qhkcZMdAEvzwCILzLhZ7P7gA653fMb1OFzwj0ho6dAJMBbWmLO41r0UTbnaHJZKkw/dlDm2oXwzU5DrJDO163UxI9Y6JfRAz3HAMV7OmGRdYBUcQ5w1tQjCS40BdV5MMGc694GY0Vyow0h2CMC1UYLl2yewq8GSgexKnIMLhHWknbkuiF0VvlMjvAgfCtvUvQvWCS99mFLE1GIJVmJjVqhz9sugr5FBJnaiW3aYrBK8RiSFCA3mo8YW6zYWlBkXsfEJow9ty+RvWhpUYoVjtBl91l1OU90ArlayJ04v4iqKJG4pWEOvFTg9fOPg3aaniKAxje4791b3xYz7kwK7l5KeatgKxIDi+qbNA8NQ7ok9osu5qOqUeMsRuFw64M2SZx+rGkKS6UQsFeydVUz3zcSQl2SWfLWnjqf7Y9guRp5z7rPSTOE9hvGMrp
+ pXwYSIuG
+ But/wh0xAsIN2VvhM++o9+tmTo8B/dF1FQLiCOm1Q7Dttz2RxtL+Yxu7E8iDELD/nG12M
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,33 +116,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-PiBPbiBUaHUsIDI5IEphbiAyMDI2IDIyOjM4OjE0ICswODAwICJzaGVuZ21pbmdodTUxMiIg
-PHNoZW5nbWluZ2h1NTEyQHFxLmNvbT4gd3JvdGU6DQo+IA0KPiA+IEZyb206IFNoZW5nbWlu
-ZyBIdSA8aHUuc2hlbmdtaW5nQHp0ZS5jb20uY24+DQo+ID4gDQo+ID4gYWxsb2NfcGFnZXNf
-YnVsa19ub3Byb2YoKSBvbmx5IGZpbGxzIE5VTEwgc2xvdHMgYW5kIGFscmVhZHkgdHJhY2tz
-IGhvdyBtYW55DQo+ID4gZW50cmllcyBhcmUgcHJlLXBvcHVsYXRlZCB2aWEgbnJfcG9wdWxh
-dGVkLg0KPiA+IA0KPiA+IFRoZSBmYXN0IHdhdGVybWFyayBjaGVjayB3YXMgYWRkaW5nIG5y
-X3BhZ2VzIHVuY29uZGl0aW9uYWxseSwgd2hpY2ggY2FuDQo+ID4gb3ZlcmVzdGltYXRlIHRo
-ZSBkZW1hbmQuIFVzZSAobnJfcGFnZXMgLSBucl9wb3B1bGF0ZWQpIGluc3RlYWQsIGFzIGFu
-IA0KPiA+IHVwcGVyIGJvdW5kIG9uIHRoZSByZW1haW5pbmcgcGFnZXMgdGhpcyBjYWxsIGNh
-biBzdGlsbCBhbGxvY2F0ZSB3aXRob3V0DQo+ID4gc2Nhbm5pbmcgdGhlIHdob2xlIGFycmF5
-Lg0KPiANCj4gVGhhbmtzLg0KPiANCj4gPiAtLS0gYS9tbS9wYWdlX2FsbG9jLmMNCj4gPiAr
-KysgYi9tbS9wYWdlX2FsbG9jLmMNCj4gPiBAQCAtNTEzMCw3ICs1MTMwLDcgQEAgdW5zaWdu
-ZWQgbG9uZyBhbGxvY19wYWdlc19idWxrX25vcHJvZihnZnBfdCBnZnAsIGludCBwcmVmZXJy
-ZWRfbmlkLA0KPiA+ICANCj4gPiAgIGNvbmRfYWNjZXB0X21lbW9yeSh6b25lLCAwLCBhbGxv
-Y19mbGFncyk7DQo+ID4gIHJldHJ5X3RoaXNfem9uZToNCj4gPiAtIG1hcmsgPSB3bWFya19w
-YWdlcyh6b25lLCBhbGxvY19mbGFncyAmIEFMTE9DX1dNQVJLX01BU0spICsgbnJfcGFnZXM7
-DQo+ID4gKyBtYXJrID0gd21hcmtfcGFnZXMoem9uZSwgYWxsb2NfZmxhZ3MgJiBBTExPQ19X
-TUFSS19NQVNLKSArIG5yX3BhZ2VzIC0gbnJfcG9wdWxhdGVkOw0KPiA+ICAgaWYgKHpvbmVf
-d2F0ZXJtYXJrX2Zhc3Qoem9uZSwgMCwgIG1hcmssDQo+ID4gICB6b25lbGlzdF96b25lX2lk
-eChhYy5wcmVmZXJyZWRfem9uZXJlZiksDQo+ID4gICBhbGxvY19mbGFncywgZ2ZwKSkgew0K
-PiANCj4gU28gdGhhdCBsaXR0bGUgb3B0aW1pemF0aW9uIGhhc24ndCBiZWVuIHdvcmtpbmcg
-Zm9yIGZvdXIgeWVhcnM/DQoNClllYWgsIGxvb2tzIGxpa2UgaXTigJlzIGJlZW4gY29uc2Vy
-dmF0aXZlIGZvciBhIGxvbmcgdGltZSA6KQ0KDQpJdCBkaWRu4oCZdCBicmVhayBjb3JyZWN0
-bmVzcywgYnV0IGl0IGxpa2VseSBtYWRlIHRoZSBmYXN0IHdhdGVybWFyayBjaGVjaw0KbGVz
-cyBlZmZlY3RpdmUgYnkgb3ZlcmVzdGltYXRpbmcgZGVtYW5kIChjb3VudGluZyBhbHJlYWR5
-LXBvcHVsYXRlZCBlbnRyaWVzDQphZ2FpbiksIHNvIHdl4oCZZCBkcm9wIG91dCBvZiBgem9u
-ZV93YXRlcm1hcmtfZmFzdCgpYCBlYXJsaWVyIGFuZCBoaXQgdGhlDQpzbG93IHBhdGggbW9y
-ZSBvZnRlbi4NCg0KLS0NCldpdGggQmVzdCBSZWdhcmRzLA0KU2hlbmdtaW5nDQo=
+Hi David,
+
+On Thu, 29 Jan 2026 22:33:13 +0000
+David Matlack <dmatlack@google.com> wrote:
+
+> On 2026-01-29 02:21 PM, Jacob Pan wrote:
+> > On Thu, 29 Jan 2026 21:24:57 +0000 David Matlack
+> > <dmatlack@google.com> wrote: =20
+>=20
+> > > diff --git a/drivers/vfio/pci/vfio_pci_core.c
+> > > b/drivers/vfio/pci/vfio_pci_core.c index
+> > > b01b94d81e28..c9f73f597797 100644 ---
+> > > a/drivers/vfio/pci/vfio_pci_core.c +++
+> > > b/drivers/vfio/pci/vfio_pci_core.c @@ -515,12 +515,24 @@ int
+> > > vfio_pci_core_enable(struct vfio_pci_core_device *vdev) if (ret)
+> > >  		goto out_power;
+> > > =20
+> > > -	/* If reset fails because of the device lock, fail this
+> > > path entirely */
+> > > -	ret =3D pci_try_reset_function(pdev);
+> > > -	if (ret =3D=3D -EAGAIN)
+> > > -		goto out_disable_device;
+> > > +	if (vdev->liveupdate_incoming_state) {
+> > > +		/*
+> > > +		 * This device was preserved by the previous
+> > > kernel across a
+> > > +		 * Live Update, so it does not need to be reset.
+> > > +		 */
+> > > +		vdev->reset_works =3D
+> > > vdev->liveupdate_incoming_state->reset_works; =20
+> >
+> > Just wondering what happened to skipping the bus master clearing. I
+> > understand this version does not preserve the device itself yet; I=E2=
+=80=99m
+> > just curious whether there were specific difficulties that led to
+> > dropping the earlier patch which skipped clearing bus master. =20
+>=20
+> Hi Jacob,
+>=20
+> There's several places where bus master gets cleared that we need to
+> eventually eliminate to fully preserve the device.
+>=20
+>  1. vfio_pci_liveupdate_freeze() clears it during shutdown when it
+>     restores vdev->pci_saved_state.
+>  2. pci_device_shutdown() clears it during shutdown.
+>  3. vfio_pci_core_enable() clears it when the preserved device file
+>     is bound to an iommufd after the Live Update (in
+>     vfio_pci_core_enable()).
+>=20
+> I think it would be safe to skip (3) in this series, since that's very
+> similar to how this series skips resets during vfio_pci_core_enable()
+> for preserved devices.
+>=20
+> But I don't think it would be safe to skip (1) or (2) until the
+> attached iommufd is fully preserved.
+>=20
+> If you are just asking about (3) then I agree it could be skipped and
+> I can include that in the next version.
+
+I was just asking about (3) and trying to understand the asymmetric
+handling compared to reset. I don=E2=80=99t have a strong preference since =
+this
+is temporary=E2=80=94thanks for the explanation.
+
+I=E2=80=99ve been testing my noiommu cdev patches on top of yours, and so f=
+ar
+they behave the same as with a real IOMMU. As you noted, however, final
+device preservation still depends on iommufd.
 
 
