@@ -4,110 +4,199 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32AA6D49C92
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 10:29:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46638D73EB1
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 10:51:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 59C9C6B0005; Fri, 30 Jan 2026 05:29:20 -0500 (EST)
+	id 047CC6B0005; Fri, 30 Jan 2026 05:51:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 574096B0089; Fri, 30 Jan 2026 05:29:20 -0500 (EST)
+	id 0289C6B0089; Fri, 30 Jan 2026 05:51:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 480156B008A; Fri, 30 Jan 2026 05:29:20 -0500 (EST)
+	id E19B16B008A; Fri, 30 Jan 2026 05:51:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 35B236B0005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 05:29:20 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B890BD47DE
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:29:13 +0000 (UTC)
-X-FDA: 84388257786.30.FED1A27
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C0C7220010
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:29:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JN0IcRLF;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769768951;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CEFB46B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 05:51:10 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6B0FC1B171E
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:51:10 +0000 (UTC)
+X-FDA: 84388313100.11.CF8C04D
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012017.outbound.protection.outlook.com [40.93.195.17])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A317840006
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:51:07 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="a6E/7NyM";
+	spf=pass (imf12.hostedemail.com: domain of jniethe@nvidia.com designates 40.93.195.17 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769770267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pKF8X3pE882cWr/4cWrmRouYmpeno5NPBDdmWMasVKE=;
-	b=LdCtsACFCBdtaN00GW5TfjpIDZfvAlCm0yXgUf1kr0PqShQ98GarmPgrbqMlyVsDx8Zx9K
-	sgK0iJD1aZunjVOPNGj7Wd9yxJyQxLFJG6BYYRXHfAnn2h1Y/SWKuAipqQNpKR86lTWrZH
-	INSWzZmJiSVQ6fglXjIvoRfFTTFJCFc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=JN0IcRLF;
-	spf=pass (imf03.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769768951; a=rsa-sha256;
-	cv=none;
-	b=Ip3ftTqzxkqUL8rT/V5D4vJyjdWA8f55g4i42mu7I0TwukXt09Ravpitn0Ad27DFfLT3mC
-	YTa5Wco303+2Dl2GCLjlid1a2eYfTrGLo3kXspncyMOvp1LGuM/HdRaHbUe/hlW7yQ5xaH
-	RMPIq8J+inpEjRs6DW2Fq0X4UKXAX6A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769768951; x=1801304951;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FHGMwOuDMyqUbdmwF7i7VTLEoZIkyO/zzJwWJ2VhDBI=;
-  b=JN0IcRLFbl3WAOSuHhd+3pspxLo2JDnZXmOAsuzYIqMHfE3PdJCvyHxB
-   7qVGWRWl9RraSrBfRJ6F5ZiQfoSPUkABSH5Pvq/eYC4RBKwMJ0Gb47gpw
-   1bRCJkFFLPEQxMrCr1E0n9V9VXUJBZTMcM9ux43B5L4B59tQIu6yc4YbC
-   hCN0lf/tIRTf+DTH9Q6f57FJSW53Jpy+cehHdpl1lDpRmvfNlToSYoPpP
-   gSmhRKQ1R7bTUO9MAerPLFJEDQhiTo6plmH6EFqLQ+hCZC8AqatsHsPDc
-   n34XUXUwOn9aCNfE5i1j5XWghjr23m/4680/4mrgCp2ebMX+Ij5w+Ozvj
-   Q==;
-X-CSE-ConnectionGUID: pokTKTAFQKeAshoburRwww==
-X-CSE-MsgGUID: 30sqU1I+Ta61JkGhz9CVgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70996991"
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
-   d="scan'208";a="70996991"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 02:29:09 -0800
-X-CSE-ConnectionGUID: map7TzjeSMuclFBRztNn6Q==
-X-CSE-MsgGUID: vo+SFuKvQPyHGzrU5yiCCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
-   d="scan'208";a="208418862"
-Received: from igk-lkp-server01.igk.intel.com (HELO afc5bfd7f602) ([10.211.93.152])
-  by fmviesa007.fm.intel.com with ESMTP; 30 Jan 2026 02:29:05 -0800
-Received: from kbuild by afc5bfd7f602 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vllkN-000000002Tv-1g7X;
-	Fri, 30 Jan 2026 10:29:03 +0000
-Date: Fri, 30 Jan 2026 11:28:47 +0100
-From: kernel test robot <lkp@intel.com>
-To: Jason Miu <jasonmiu@google.com>, Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v8 1/2] kho: Adopt radix tree for preserved memory
- tracking
-Message-ID: <202601301107.1CQsWeRT-lkp@intel.com>
-References: <20260130005739.3163049-2-jasonmiu@google.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=HKWjn5EM/PqHwR2jXeRG0vgE89Hlu18YuCCcgql3Ya0=;
+	b=fzIufNbWHnln0THQds27zO/v9DISf8ZWmtaoM9YGc6YgNUbocXDd0jUd3k4iSOe+70dh+e
+	pU3m1+0uJjU3wF9ruBcsHk/VSFZhDobHAAD91QfUBNhHxqKXk/ozIgw66pIfqCdrDWeX37
+	lrBo9AmVzH4NtDybdf56eKYX19oBupY=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="a6E/7NyM";
+	spf=pass (imf12.hostedemail.com: domain of jniethe@nvidia.com designates 40.93.195.17 as permitted sender) smtp.mailfrom=jniethe@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769770267; a=rsa-sha256;
+	cv=pass;
+	b=ubZSo0VzczwhTMVhOBuGQ1H+mkMkle+TYaYxrisc6gZ6AbKmp7KhycVL9AIibPSvyaxhxX
+	ZjkPpmYfTxK/jngvtGSEuzF2uDkVWB92JvTEWWM7deQk/sfeOggqCB/BWxaYaXC0E53qSW
+	IRL36Jf9NOLLoRkr/tEqkAzLZoxPz6k=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Kalnv7njngZKI4/qyJ455P/uEtTp4Jl5pOHVysOZX9gKsxIP38py3sGUQ80v75e0/FM1HMMzjAPSt29PeoxlRbde/aLi4uDlfuDM/KtDcialH0TOWftrCSy5m27KQQrlmhwQHJJvBQhJnCpbpExOdLxdY5Tx8AN9jIQBz8bWc+PaMt4dVYMuGiGD5lXD8v/L+CU6Ww127EQZdIpKMEbNCt21DZNbD0ig5tpJKsVDxTcGIkOH647knu7Jt0KAKHFcTimExzr+U1531PfgptaohOr4klzjqbg9tch3SBbAUoK41K9cJTcgPVtmxujg73YZW0S7pPSSYFcPqwxaVYoiXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HKWjn5EM/PqHwR2jXeRG0vgE89Hlu18YuCCcgql3Ya0=;
+ b=XrCA+wjwt24VVVIY0KoH06ZeXD/VhyhxIt/6hpBYuCcdlxARtefQWBBeNhbrcHrKQrOxiKD5w9wj/41ixYofCCgbA0p/LnFHl+hFQ/7tcNdw4l+4WaD37cZhilkl7YqKQLLCklPhJiOPYjiNuh9j7oziuy0NR8+C55giMlE9QE0ZUV2eZ024nklqvM9f9Dtq7140E1Ou3gmFH0omhYukZKPrj3RWlOTSbTGe4K5q0YpEURdDPRRM2252syUth70EBsO3I4AXaFDo+jPhhDhawQfLPMcY6WacQ5qUqyZh5WVlBHaSyWs6QD8NNm+chxdq/E8GDibLq7U6KVRlMO+EBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HKWjn5EM/PqHwR2jXeRG0vgE89Hlu18YuCCcgql3Ya0=;
+ b=a6E/7NyMUC9PVUL6ZsnBAeVGpyV9V1qYRcBVl0Pi+cCOZaqM5cA1rPqpi4832W8ydqq4kaRFFfRlTEI6t1Ro8rPSq+EkXbKm0MVHeyCu69JmFrcdWJRwXCCnzhre+3s/y077YlHKwGr4uUC3Q0a0HrrcBD7mUReBfwJ8RTtzbXyvrkoPMK4d6l3Xh5p+PuIl01VGak4z7KnnlCBS4QJxBPbB+94xudfL3r6Cuz39FandSWgH3Rp+1IuvEAQ+eSiOHREUtc4/Vf/4GV/1Kpme8Gjwgbat0mobcX+I4V4Z3vrQNsJoxxk08JQrkOW/RsjZ5APo2J0N+mXkXvAFTmvbDg==
+Received: from DM4PR12MB9072.namprd12.prod.outlook.com (2603:10b6:8:be::6) by
+ CYYPR12MB8730.namprd12.prod.outlook.com (2603:10b6:930:c1::15) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9564.11; Fri, 30 Jan 2026 10:51:03 +0000
+Received: from DM4PR12MB9072.namprd12.prod.outlook.com
+ ([fe80::9e49:782:8e98:1ff1]) by DM4PR12MB9072.namprd12.prod.outlook.com
+ ([fe80::9e49:782:8e98:1ff1%5]) with mapi id 15.20.9564.013; Fri, 30 Jan 2026
+ 10:51:02 +0000
+From: Jordan Niethe <jniethe@nvidia.com>
+To: linux-mm@kvack.org
+Cc: balbirs@nvidia.com,
+	matthew.brost@intel.com,
+	akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	david@redhat.com,
+	ziy@nvidia.com,
+	apopple@nvidia.com,
+	lorenzo.stoakes@oracle.com,
+	lyude@redhat.com,
+	dakr@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	rcampbell@nvidia.com,
+	mpenttil@redhat.com,
+	jgg@nvidia.com,
+	willy@infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	intel-xe@lists.freedesktop.org,
+	jgg@ziepe.ca,
+	Felix.Kuehling@amd.com,
+	jniethe@nvidia.com,
+	jhubbard@nvidia.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au
+Subject: [PATCH v4 00/13] Remove device private pages from physical address space
+Date: Fri, 30 Jan 2026 21:50:46 +1100
+Message-Id: <20260130105059.51841-1-jniethe@nvidia.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR05CA0060.namprd05.prod.outlook.com
+ (2603:10b6:a03:33f::35) To DM4PR12MB9072.namprd12.prod.outlook.com
+ (2603:10b6:8:be::6)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260130005739.3163049-2-jasonmiu@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C0C7220010
-X-Stat-Signature: kjgfr5518urf1cmfqfaj9t9ygewmam8i
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB9072:EE_|CYYPR12MB8730:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1b94061-b125-493a-f551-08de5fed7614
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?GzCWbY532AMxrGEBQnp11bkmBfSJxEXe9JOBCfefS1zKC3LzH8oiN7xX5HAh?=
+ =?us-ascii?Q?wPLhQUeV6A1z0MLUp4+u0D7qHchsx/Rn8/9z8ii0dGmpWGwOxzKhnIcNqDj5?=
+ =?us-ascii?Q?7sDV1KGg6TmSFHKUSxgUjP9pFNzR1l97cO3tKDU/mqpo+JuvHJyF7ojylVb8?=
+ =?us-ascii?Q?JtQDGhMZbs78XMdH2mApE4+yIOYiQBo2QTXUfG0uCOnH5oHdRyQm0mCmmQWi?=
+ =?us-ascii?Q?BfZkMf9cv5aeEm51pLI1uTh2zq5aR7gfh5MXkVmPnm4wCXbf2G6PygtXDruP?=
+ =?us-ascii?Q?YtlSoycZ/tNyOvltng9SqAIgqVqbZVo7o9XbstZFDwLvnTux7qOrMcEo8EJ0?=
+ =?us-ascii?Q?/dGF3UHNdZ6MkvuAMH6rbl+RXgMZSPiHtZzIThY1MhQZtw4x8IQ2tm850IA0?=
+ =?us-ascii?Q?6TDhqJQySBArno3T3hbWqU5X5p4i2r+cFvZBOmLiF68bPG+gZgAqcUNdCAbq?=
+ =?us-ascii?Q?241U220gVEUXo1/4tNIznAor41S1XWRxWP0fzP5EmlAYSaTL1mRGj8n1PVt3?=
+ =?us-ascii?Q?X7Z9MEVlIi1U3QwsJOrx3mVjQXnFPbDXP15c4Aeihi31vMw+JgIFLXl0CNmU?=
+ =?us-ascii?Q?T0/Sd+SYyqNxOShcQ8wp7Ag+BhSZAh4o/7MHQxLNQhUrCyvRhEybc6rHdqWS?=
+ =?us-ascii?Q?UDWMwyJUMnGJ7ZRb8CaZgkKG5PBNRDgluFvEPBGmCybRX3QNlZm1/Ob264dQ?=
+ =?us-ascii?Q?HdBWi9aYHTCS7/wkJn0inTdNlXWEChegUmJAo+ngS0YPlglxyaOINH2rgHSK?=
+ =?us-ascii?Q?hvovneELOvk/YRrxcvzgQvl2wT6xy49SB8DW9qqZUQL+T3PRHmvgOpIr/U+1?=
+ =?us-ascii?Q?hsexJ7tmIu63/WtVSb2GvNXPCBmxGYX94YrRSduIbflMgiRSofNgKLUodUif?=
+ =?us-ascii?Q?cT2dGg91PlA5m7NVPjgxGiZh8J/VWBSvlIr7ZjLv0tO4xRh6iH+DmcLRHLNe?=
+ =?us-ascii?Q?/1Hx6AaRg/ZtgJiVAhdDsCyQXa7ylVTkUei8rVYkkh1m1H0+M4WUGCyYWkEk?=
+ =?us-ascii?Q?gk8Ha/KbRggCVgoDUoDhryXXut5L0/NtcQzSJFVujDO/jXsetk+Bn9IpYnz7?=
+ =?us-ascii?Q?GM+UIYzm8GHjDdpfkUGKD3OJFCUB344/ZDROAu0uG8cxael0V+DNX+mZTlNt?=
+ =?us-ascii?Q?39sZURnj4eorVDeOJjKEVZRV5hC2bvtTb0DPxEIGT6iE9qPUthMysDbockmf?=
+ =?us-ascii?Q?FsGV+c3KsuvYz6ke4rregAvY4yjYshZeYOIKf1ObxMfHtNMb+GjTE6JiuO/U?=
+ =?us-ascii?Q?exR4naVR0bxQ9YLKHy4Ye4pS28TTSpP52PgPi53SRh7BweL6QFrv34QlkdMp?=
+ =?us-ascii?Q?KjlushWVWHuobQt6rIwZGXUetx5WZD0MJCCHtsyJJdZkTTiwQ/8Ysz4FOlt3?=
+ =?us-ascii?Q?55T+0nVrOFvSxt7AJartXi4sosgpL698c9szbO15RZr0lsaVMqHUs9v7cTSY?=
+ =?us-ascii?Q?E0+578d0RUJLu7CzyqFx7lkkfHF19qJT5gFC2zN8hvbkK4IH/kEOS1rXssGD?=
+ =?us-ascii?Q?6DLB2FVUIelzUx6fqGsP90FnF+nOfApDFHdqu+4gdGPavMHVPRwVBgNp+qG4?=
+ =?us-ascii?Q?ZDyB+SpwrPWX1tH++Ro=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB9072.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Dff4DjT3Ng33Oj/giLya97bLDJfOAOgJj5lFv93AV8Adj1ancW5N0AkDTu/G?=
+ =?us-ascii?Q?7B5scX8G+RBJxWrh0RHylVpoI2rnt7wP8AExrexaUgJ1LkyAafwpEVC333J4?=
+ =?us-ascii?Q?pOaLA1EXh8+qTsBpOYu4CnU8A4fq755kuvCzDlXDKK1hCu42pq4RkRYi/AXl?=
+ =?us-ascii?Q?YHUCJEqN4KK4xU77Zy8VTh7sWlrj9UC/n2Z89pmoLz5gQHiPT3ziHD7vqHSh?=
+ =?us-ascii?Q?69LIbLYNm5Bg8zLAhFxKRDoqzcgAkonzhPplQ/Y5cEk62u4U5hneOQoSTs3y?=
+ =?us-ascii?Q?2xZGUze/V0FKEDD9RZWgjGbpYCryH7RWM/0xeJAwRRihH044p3QurJu/qy3E?=
+ =?us-ascii?Q?i1MNer9TY/Gfe419l88zD7/+xplyBatfK+gbPdEWcb/vBdUlOvuhpfhXEk/d?=
+ =?us-ascii?Q?6XZhAjC+314Q0z1MzfX1bNIrGEH/YTIAOPbNjrxtySNdttVGwW8o5UF6gZnb?=
+ =?us-ascii?Q?u4dgl/5Xi7mcw6pQEisVlFR9JGAQ7WxSKLpe76+j8c5OUBHJcsF1Odad9oPo?=
+ =?us-ascii?Q?g1dn/4zqXdf5QxlKxmh6VaWaTyP7MU7mvwUjSnqXiyrePXS/jyM6bYl7qJrq?=
+ =?us-ascii?Q?xV7EhTfqXF8BHZQfdjYLeaUubRNU9AG8vmiEd9fN0596oONEcwKVD2Hdk7dh?=
+ =?us-ascii?Q?e9FYR4vOacaR35zdj4Dz7WFWmzYi8CdsDEOUOFVSGlncosuMYBlPUh0qQWqC?=
+ =?us-ascii?Q?NQ4kY2zhIRkyjYRNDN9I4cXOJN29FE9Gky/OOK0I68ye4EWtzxrHJ1rkFEC8?=
+ =?us-ascii?Q?olTLp2dwdAelwizgTEozY+XzexRN2DfcaIJXxo/UsutUpS+qnOR3CDhj1zRp?=
+ =?us-ascii?Q?VEZ0lOsgtbFbQAebl9gh//3bkLdRXTc+978opQEwy85tQn00n5/rTHf1lwYB?=
+ =?us-ascii?Q?lbDPYvAsHLLL8v3AlSnpRS7uiQBOGINTA8o79FBeMJ/DoWq3ZuBZJqDkUpkY?=
+ =?us-ascii?Q?lb6nPHuRYkPKVcVbvgvsDsu3poXLW5uFY+99ltgP0BcuTqF0FLam1oi3DILZ?=
+ =?us-ascii?Q?GYN1PCdDqwJ4aHuaXkoZPkmd8ad7i9mNQizh3SSit0VNcwCNloWEna9jsW7z?=
+ =?us-ascii?Q?ltve1K+3satmB1xRwzgipU+YgdY88n8AXPd47x8DPYx5TWcMbSePjnJeycoH?=
+ =?us-ascii?Q?1ZVMEDqb3jayAshcfeX5Uoh3jjhxqQHabbEDKpNgP1HlURCkgt4ULeZlQtwM?=
+ =?us-ascii?Q?BxUoiVpZh4LHb+p1/606EjbUtRHqf0srSVunHINFY58Jixr1hlIEt/zMvRfA?=
+ =?us-ascii?Q?AhWgDr1pRzLUxW27YS8/SFWqy/mWTi9lTjQ0mqxmqzjTxmePmk4V6NNcB6ut?=
+ =?us-ascii?Q?upFAs0bfIYR80Sf9tlI5RL1RAMAM1eMsG1ii4LsxDCKxmGlYl7aue4tOR/2u?=
+ =?us-ascii?Q?Bf64xiQPCGHp7+PaL4bJ51EUfTiL4KyXoogHOGgnUu9YX+lp/oeUQXHUv/VK?=
+ =?us-ascii?Q?T9vUqnoCwPV061zBbF8UALKkZstoMVYKb9Jv79MpeOKke1eN0PKMvEviOeJN?=
+ =?us-ascii?Q?cekhLTyBm8GdNR52rdVwDj2RRz0XuxLmygZcUBVhaAb4Zm4/s0ADT3RbGcmq?=
+ =?us-ascii?Q?0WNL39Le58VNmzPcpYJvQ32wGpSiUs18xJztPD3l3BknCS53hWsafGsyZq4M?=
+ =?us-ascii?Q?Eyb/S2jMiBPi2hTQv34Jrc3jN2VgrGeX0RPTkhfUeogCUry0YSbYaiRKcnZb?=
+ =?us-ascii?Q?A3d8oksVgq+Oo2/tcvxVy8OPMM/dJzKM5yaOoPiyVgPZGi1lKUaNQKykri7V?=
+ =?us-ascii?Q?RJQ9kshqTQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1b94061-b125-493a-f551-08de5fed7614
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB9072.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 10:51:02.8389
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TrHRCAA4SCUHlXJxFfBPbauePc3kVgONNdfCAX0Nth6SjFrGPbCbeGGNN4UTwB7KhqLZfXRK0fXk9aGopd+w0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR12MB8730
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A317840006
+X-Stat-Signature: 46rjae9bnyn65m6ieaas7srzjsu9n39f
 X-Rspam-User: 
-X-HE-Tag: 1769768950-111230
-X-HE-Meta: U2FsdGVkX1/pZLX7fTjHQC1MmWdwIX+1BA2VMThTvFpEA6XMJBxp2m6e+n4gaFQrrAHCBTmFsjgvxadQjMD9rpFEjhSzdorVnw7gZpa0yyIN/zOwgACzXDEYUJTO8LcVcvuTt/afgq5uWTNaaqJLFDCDE6QPQvecca4F01J3JvuH+oWswiHki+4SQnfOECPNgrlCqpj3zPMieactAp6E7Q15BsZtLAbk+XZE1Cgb/y9RhdSQEMm7R222/wWzXIs/XgXaHkdUJtHZTIoTM4ijzNvRV2GIX32AgtJODtCkYXYUJOx305/gXvxwdsREXWnYerwtqnIuQJwD6eCAI+GpuHisQb8xCt2XqsnkZM79UNIrPijy76WemcofEvcoFH0XdlQ1+9ntA9HB5/3lM6xex6fBR3vKoUs3zeBSKcRy381GZQgC5DrVTSee7iDjVGRhk9TpipJBsTd7uNrRpwCjC0gabVi+W9a/kr3NCkQdTP7emeVUPpfr1k0NICEkz/tNj8t/QbpdpjQJdOz8IRTDekYXDB7ksmlZ7JjI7w/caFObK/RhAgfLe3NM2sDLDfUv1j3Ohp6CrsBA2Vb5F1/brW6SKT9j0FRm543pjfAHLuuCfsH6pMu0zvXaHTNKHwL2Rw9eI3Fs7TFmn1DAnAKWsSUbHgoF52gMiVreHRKtQEMAK/nJCPuUf+Pg68NwHfX1I/tE8tp9cmveRKlgbD8T4MinxyTOGflcmKVqPT8JBr1LB1V1p7fUu/1Su6cHSTq3jDoZ8UiQswMS5m4v7K/d0YM2QYJykzDRzWso0gzO3K4GuYMDgc5K6RmdHXKImwVwgCeiig8VGHwvxSdKfncNc/dNhP08O/JwyNQRcnzTtuCRB6StDMiv8rtFEb96DCqhj0Fjm3tlAONqdjHrLuboJhdVGpIFe3nDIFPEVGrtNsWPEjGxHWFhBapu54cWalZIfTahU9FfNypuxPyBpYJ
- XnSc8u9X
- miNV1cb1OV4nX1hWE1qNBo2Hk+aaD0Ke/Sx1RHUOHVlK/2v3BMDkJ2LUe6pCrx2o+O1RAFAg9sLhPLfqOlm4ayuJOp4JvaZKylELx+lqFmOzd+o6fCZSGfex3Dyn/pgcOOsoaIPe/aIJJ/ubEwmoV/2/tc7AbtnLQhq2ahTYOHdf7sg7qkD6Zzsjnun+GcH+KfJnrTbVFS8fINC3A8sgjgBLfu9bBATwB60RpuQP8oiMJDTkY1IiyX3m7YMo95NQG3D6Uc4lV9BSGk3dHwQUgdBAS785mU01dX5WNtsDprX0JD1HNpBi4uf0L5ARi+G/94IPldefTqlHBFEligtBjtpxjVlPivRTZyYiE
+X-HE-Tag: 1769770267-469642
+X-HE-Meta: U2FsdGVkX1+O3fkalg5m3eq73p9wlhw3mmj0Gsg35BZ3lRMoMraMKFYXpb4I+PvzsGAANg/zNozo7VoVIAUCRQ5lHSnSddkW9fJr1O3S3AL7/b1GNNpFK915bv29E7aK45AmMdFOyDE/7fGEV93zz0UpaELTKUFd77GaMBOOxUZyIPez1u6dqcUZ3j/zI5XLrzIeApYWe18plCyEU8O1oysQ0dO3KipRu3WmsuWpAXjj5O/d1udJ4a+jcCoha2NAj+xZxrRLg7iOJ+VXYdkM3W/FOle/QhQj5AvalcngcrhX0VBxWVW/zwLPeXGEfWF4GwkRfmnet+yYgxmOk0m2DfJjlX/p9AOm6vzVuBgYG2IaYUuffJy2y2H4RFqhkZg2xpETToGU60P2cQD4FskHDJb6RPqJ+73Skh3tUtWlEHF4hBB3J3/QitwK/dqTcJChcxFjo1GfYDYQ4SF3uQlsmz/OBDN/wtLl5Xx4FJUF8JQz9vumedHlBPjqxuxHuCtKYGsq5RgOIqZhX1LADnveutzdQec6kEL15aA1VFjYq6eMyeFz97/gI7WyZfzqekl5OhLjHxHvaINoOI1tM6/rknOhCCcqGSaWqNubVCaekV8Nmb4eSx97K+ikKZm14DKbpUBVq5zYCqBn6uwk61TaBBs0kxVXkq2IVGsL8/09qhXXiKb5bTLnAhJizNMuzMGrCaYg3iCrtV6URe4SccZfEKoDnTG9Olz8OpK/12NUrMj62TBrfaVlIn95RXn+a+ku4gfUkkrcRu01YAl6ZUrbhekl6pZUbNQYkQaQM73il6gHJWbWm6IY84TUItd3r8TTw6sEfQHUifSwvceKp65TQOWnfiRPC71jP6THfAbEROCLcvKjBMeyPA2yOhlg93SJzTJsnf//6VyvfnLDFXRdD30KrXoLse7BjGIkeQBdeY1Pm94IVW+eoV7OM4/f0l7+ErtQ0y1FoN8ERuKvkLI
+ QQ13KHgW
+ xUNALu5XviaZhSEMgNXaoHOY6vA/udU4PaZK3DEb4xJJybxaPI2svcydPZRV1pMcCviTW73bg1GTqNkszgcRXOvlEM/inTCqNpNBqYcwvnqXmg7zAU4aXJ5yLzWePygptttrIbGTDand8V2V54AzB4iH5sgaYi62cqv9JW/1ulkhf/ajFsDgx1xV0RagxPdbTQxZvOuYA2vlLcrJI8t0TlU7ELkBq/1tNe4ukYphHSo4SJ+SeSz2lcioAnMj87p7FxkvqfO9D3Fkl/dSmpiQz9Jp+iTuHQ+npqSRNHC1zUa3Vae2hqeOIK3GvGwBGKtGDEsa5mJXFG90ozusos6EUwx+68swr0P3aNxtwac13Rw79qNY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,38 +205,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+Introduction
+------------
 
-kernel test robot noticed the following build errors:
+The existing design of device private memory imposes limitations which
+render it non functional for certain systems and configurations where
+the physical address space is limited. 
 
-[auto build test ERROR on 33a647c659ffa5bdb94abc345c8c86768ff96215]
+Limited available address space
+-------------------------------
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Miu/kho-Adopt-radix-tree-for-preserved-memory-tracking/20260130-090027
-base:   33a647c659ffa5bdb94abc345c8c86768ff96215
-patch link:    https://lore.kernel.org/r/20260130005739.3163049-2-jasonmiu%40google.com
-patch subject: [PATCH v8 1/2] kho: Adopt radix tree for preserved memory tracking
-reproduce: (https://download.01.org/0day-ci/archive/20260130/202601301107.1CQsWeRT-lkp@intel.com/reproduce)
+Device private memory is implemented by first reserving a region of the
+physical address space. This is a problem. The physical address space is
+not a resource that is directly under the kernel's control. Availability
+of suitable physical address space is constrained by the underlying
+hardware and firmware and may not always be available. 
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601301107.1CQsWeRT-lkp@intel.com/
+Device private memory assumes that it will be able to reserve a device
+memory sized chunk of physical address space. However, there is nothing
+guaranteeing that this will succeed, and there a number of factors that
+increase the likelihood of failure. We need to consider what else may
+exist in the physical address space. It is observed that certain VM
+configurations place very large PCI windows immediately after RAM. Large
+enough that there is no physical address space available at all for
+device private memory. This is more likely to occur on 43 bit physical
+width systems which have less physical address space.
 
-All errors (new ones prefixed by >>):
+The fundamental issue is the physical address space is not a resource
+the kernel can rely on being to allocate from at will.  
 
-   WARNING: No kernel-doc for file ./include/linux/kho/abi/kexec_handover.h
-   ERROR: Cannot find file ./include/linux/kho/abi/memblock.h
-   WARNING: No kernel-doc for file ./include/linux/kho/abi/memblock.h
-   ERROR: Cannot find file ./include/linux/kho/abi/kexec_handover.h
-   WARNING: No kernel-doc for file ./include/linux/kho/abi/kexec_handover.h
->> ERROR: Cannot find file ./include/linux/kho_radix_tree.h
-   WARNING: No kernel-doc for file ./include/linux/kho_radix_tree.h
-   ERROR: Cannot find file ./include/linux/kref.h
-   WARNING: No kernel-doc for file ./include/linux/kref.h
-   ERROR: Cannot find file ./include/linux/rslib.h
-   ERROR: Cannot find file ./include/linux/rslib.h
+New implementation
+------------------
 
+This series changes device private memory so that it does not require
+allocation of physical address space and these problems are avoided.
+Instead of using the physical address space, we introduce a "device
+private address space" and allocate from there.
+
+A consequence of placing the device private pages outside of the
+physical address space is that they no longer have a PFN. However, it is
+still necessary to be able to look up a corresponding device private
+page from a device private PTE entry, which means that we still require
+some way to index into this device private address space. Instead of a
+PFN, device private pages use an offset into this device private address
+space to look up device private struct pages.
+
+The problem that then needs to be addressed is how to avoid confusing
+these device private offsets with PFNs. It is the limited usage
+of the device private pages themselves which make this possible. A
+device private page is only used for userspace mappings, we do not need
+to be concerned with them being used within the mm more broadly. This
+means that the only way that the core kernel looks up these pages is via
+the page table, where their PTE already indicates if they refer to a
+device private page via their swap type, e.g.  SWP_DEVICE_WRITE. We can
+use this information to determine if the PTE contains a PFN which should
+be looked up in the page map, or a device private offset which should be
+looked up elsewhere.
+
+This applies when we are creating PTE entries for device private pages -
+because they have their own type there are already must be handled
+separately, so it is a small step to convert them to a device private
+PFN now too.
+
+The first part of the series updates callers where device private
+offsets might now be encountered to track this extra state.
+
+The last patch contains the bulk of the work where we change how we
+convert between device private pages to device private offsets and then
+use a new interface for allocating device private pages without the need
+for reserving physical address space.
+
+By removing the device private pages from the physical address space,
+this series also opens up the possibility to moving away from tracking
+device private memory using struct pages in the future. This is
+desirable as on systems with large amounts of memory these device
+private struct pages use a signifiant amount of memory and take a
+significant amount of time to initialize.
+
+Changes in v4
+-------------
+
+Thanks all for feedback and suggestions on v3.
+
+The only major change is using devm_memunmap_device_private_pagemap() in
+xe_pagemap_destroy_work.
+
+Note removed previous discussion in the cover letter relating to aarch64
+and memremap_pages() as this was actually already addressed in commit
+eeb8fdfcf090 ("arm64: Expose the end of the linear map in PHYSMEM_END"). 
+
+Details:
+  mm/util: Add flag to track device private pages in page snapshots
+    - style: move logical continuation to previous line
+  mm: Remove device private pages from the physical address space
+    - Use devm_memunmap_device_private_pagemap() in
+      xe_pagemap_destroy_work()
+    - Replace ^ with != for PVMW_DEVICE_PRIVATE comparisions
+    - Minor style changes
+
+Jordan Niethe (13):
+  mm/migrate_device: Introduce migrate_pfn_from_page() helper
+  drm/amdkfd: Use migrate pfns internally
+  mm/migrate_device: Make migrate_device_{pfns,range}() take mpfns
+  mm/migrate_device: Add migrate PFN flag to track device private pages
+  mm/page_vma_mapped: Add flag to page_vma_mapped_walk::flags to track
+    device private pages
+  mm: Add helpers to create migration entries from struct pages
+  mm: Add a new swap type for migration entries of device private pages
+  mm: Add softleaf support for device private migration entries
+  mm: Begin creating device private migration entries
+  mm: Add helpers to create device private entries from struct pages
+  mm/util: Add flag to track device private pages in page snapshots
+  mm/hmm: Add flag to track device private pages
+  mm: Remove device private pages from the physical address space
+
+ Documentation/mm/hmm.rst                 |  11 +-
+ arch/powerpc/kvm/book3s_hv_uvmem.c       |  43 ++---
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c |  45 +++---
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.h |   2 +-
+ drivers/gpu/drm/drm_pagemap.c            |  11 +-
+ drivers/gpu/drm/nouveau/nouveau_dmem.c   |  45 ++----
+ drivers/gpu/drm/xe/xe_svm.c              |  39 ++---
+ fs/proc/page.c                           |   6 +-
+ include/drm/drm_pagemap.h                |   8 +-
+ include/linux/hmm.h                      |   7 +-
+ include/linux/leafops.h                  | 120 ++++++++++++--
+ include/linux/memremap.h                 |  64 +++++++-
+ include/linux/migrate.h                  |  23 ++-
+ include/linux/mm.h                       |   9 +-
+ include/linux/rmap.h                     |  29 +++-
+ include/linux/swap.h                     |   8 +-
+ include/linux/swapops.h                  | 100 ++++++++++++
+ lib/test_hmm.c                           |  87 ++++++----
+ mm/debug.c                               |   9 +-
+ mm/hmm.c                                 |   5 +-
+ mm/huge_memory.c                         |  43 ++---
+ mm/hugetlb.c                             |  15 +-
+ mm/memory.c                              |   5 +-
+ mm/memremap.c                            | 196 ++++++++++++++++++-----
+ mm/migrate.c                             |   6 +-
+ mm/migrate_device.c                      |  76 +++++----
+ mm/mm_init.c                             |   8 +-
+ mm/mprotect.c                            |  10 +-
+ mm/page_vma_mapped.c                     |  26 ++-
+ mm/rmap.c                                |  59 ++++---
+ mm/util.c                                |   8 +-
+ mm/vmscan.c                              |   2 +-
+ 32 files changed, 783 insertions(+), 342 deletions(-)
+
+(drm-tip for intel-xe CI)
+base-commit: 344db0fba38920be64a429c64a8ca0531572896c
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.34.1
+
 
