@@ -4,131 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE363E6BF1B
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:47:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE49E6BF1E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:47:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B2C16B0089; Fri, 30 Jan 2026 10:47:24 -0500 (EST)
+	id 861956B008A; Fri, 30 Jan 2026 10:47:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 060176B008A; Fri, 30 Jan 2026 10:47:24 -0500 (EST)
+	id 843646B008C; Fri, 30 Jan 2026 10:47:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA4286B008C; Fri, 30 Jan 2026 10:47:23 -0500 (EST)
+	id 71B7D6B0092; Fri, 30 Jan 2026 10:47:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DC8FD6B0089
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:47:23 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7FC9FB98BA
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:47:23 +0000 (UTC)
-X-FDA: 84389059566.27.A87500B
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 4377EC000B
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:47:21 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Cw3UOH+/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JqFgkRcF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Cw3UOH+/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JqFgkRcF;
-	spf=pass (imf22.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769788041;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 63C606B008A
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:47:55 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 23E4D16072F
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:47:55 +0000 (UTC)
+X-FDA: 84389060910.28.1B048F0
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 6BA1114000B
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:47:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O8212qwq;
+	spf=pass (imf26.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769788073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pK0lObbqbQw2n0nbFh4iKLS82/TwVrSfO51QZsG0HBc=;
-	b=xaQul421fM8ejB6fco6gTuuFVVh+L3kl4I1VSEUjs7Mv0zIUaN7iUtbOJOG6jfILbLnzdK
-	vwGqiwamwv2L4IrOM9dAHiLELIlJZpNEgGp8jruEA3+k0MD5I565Bb3qo9t0XPULvPSAXY
-	aJUl5boBOZkkAImDxu89VsASNzlyxBM=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Cw3UOH+/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JqFgkRcF;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Cw3UOH+/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=JqFgkRcF;
-	spf=pass (imf22.hostedemail.com: domain of krisman@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=krisman@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769788041; a=rsa-sha256;
-	cv=none;
-	b=JUFSIau9YLB6xtRKSAM1wnDxkvOY0cILWWycAjZh1v9ZvSvlyRA3G4E9A7tHpqwNCBAR5E
-	4u/4ovtIrdPdQ3qD5mpzyEvaWU61HxF6wCcajwJWH6T2do3sU+OB+pF10uIs5EYzEI5MCL
-	lRgqd0350mvs+SBOkvxlX3JbU8lJFrE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 67FD15BD64;
-	Fri, 30 Jan 2026 15:47:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769788039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pK0lObbqbQw2n0nbFh4iKLS82/TwVrSfO51QZsG0HBc=;
-	b=Cw3UOH+/2ms7XaX+KU2dyn8olZ5Hrjg+sA91wgglanSC2nFz/sQYEIiR+/AqFD6h/igNrL
-	wAUBe4VYdX2OMMIYxs0h14+xRhntyfX9Ean6tL9oYxTebrD5fgd28MkAJTWU9NQHrwaQ37
-	N+pynTkF5m7A+DBrV7Vv2fLftMK862s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769788039;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pK0lObbqbQw2n0nbFh4iKLS82/TwVrSfO51QZsG0HBc=;
-	b=JqFgkRcFNWULZfVAJNUvh7UbsUYkDLfHad2EKGcoDxLJb/5Za5n6jbUe6Aq8P+rfc4aZNO
-	icitgW7EMonznaDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1769788039; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pK0lObbqbQw2n0nbFh4iKLS82/TwVrSfO51QZsG0HBc=;
-	b=Cw3UOH+/2ms7XaX+KU2dyn8olZ5Hrjg+sA91wgglanSC2nFz/sQYEIiR+/AqFD6h/igNrL
-	wAUBe4VYdX2OMMIYxs0h14+xRhntyfX9Ean6tL9oYxTebrD5fgd28MkAJTWU9NQHrwaQ37
-	N+pynTkF5m7A+DBrV7Vv2fLftMK862s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1769788039;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pK0lObbqbQw2n0nbFh4iKLS82/TwVrSfO51QZsG0HBc=;
-	b=JqFgkRcFNWULZfVAJNUvh7UbsUYkDLfHad2EKGcoDxLJb/5Za5n6jbUe6Aq8P+rfc4aZNO
-	icitgW7EMonznaDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2156D3EA63;
-	Fri, 30 Jan 2026 15:47:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id pkRFOobSfGlmHwAAD6G6ig
-	(envelope-from <krisman@suse.de>); Fri, 30 Jan 2026 15:47:18 +0000
-From: Gabriel Krisman Bertazi <krisman@suse.de>
-To: kernel test robot <lkp@intel.com>
-Cc: axboe@kernel.dk,  oe-kbuild-all@lists.linux.dev,
-  io-uring@vger.kernel.org,  Andrew Morton <akpm@linux-foundation.org>,
-  Linux Memory Management List <linux-mm@kvack.org>,  David Hildenbrand
- <david@kernel.org>,  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-  Vlastimil Babka <vbabka@suse.cz>,  "Liam R. Howlett"
- <Liam.Howlett@oracle.com>,  Mike Rapoport <rppt@kernel.org>,  Suren
- Baghdasaryan <surenb@google.com>,  Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 2/2] io_uring: introduce IORING_OP_MMAP
-In-Reply-To: <202601301341.PTetVieu-lkp@intel.com> (kernel test robot's
-	message of "Fri, 30 Jan 2026 14:03:20 +0800")
-References: <20260129221138.897715-3-krisman@suse.de>
-	<202601301341.PTetVieu-lkp@intel.com>
-Date: Fri, 30 Jan 2026 10:47:17 -0500
-Message-ID: <87jywz9k6y.fsf@mailhost.krisman.be>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=pxOhs+WyOFBYP4PFdYY37ifiIeS/JU2+awwr69rdPxQ=;
+	b=h7CStPxsoFivwzqfkw+QtXe4XUtZNQHltB67hEYNtv0NWgVXVpLm5yjbwu2ZpFDO4VoOR9
+	M9pjzbc4EyBD4WKE2mT3DQSaQVYg9yYe2brcdSCWlYWDXlUb2nZkoy/VasWuiUw1vveWff
+	0u/koAJIfqsT2+GR/MgTn227TTIZsqo=
+ARC-Authentication-Results: i=2;
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=O8212qwq;
+	spf=pass (imf26.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769788073; a=rsa-sha256;
+	cv=pass;
+	b=i6JZ9xwhqSgsJOrsmEPOlGMGEJlOhHQOL9rzWwQ4yryX1qRVt4hMWgKycho4YHG4gkFu4l
+	Sh4UAjjUiL6kM5C36iRejZAlhw3xHvuGFfjN4BXb5sjEcrvymqEclit6wXlQFq/FZbCTSU
+	kpBCnieeGD3W9/yyF+LRd1tKJRlmgfk=
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d15b8feca3so2248062a34.3
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 07:47:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769788072; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gMquZF8+m4M1IJ4EDVVRTzyyl9aI3XtACogfwbL4q5Uz8U08ki13/+/ceyu5t99K9s
+         t+nV41EnpL5T3n+G9jNKFNaGmuzxS6o7/pdyuIOVoRfBFzRbsMoyska2hSIP+I2C2b7q
+         BEd+ByziSFCab0tdMiWMGDMqrAQ9dh725/Gy0o2u8HIkwphi85iutPZg4xYKz23tgomk
+         ZZhmf1k5jsYqEwKFwDXX7sEecDWSamaBaHt3GdrKEhhzmx42gCl4YzrizDl3f0PDFjCB
+         XOXsVk+zkcdQP86MLWXZWDk/wcxz7JCQoTpA8OiIsKkxEigLxIy6I0nJrDNgf8QJuHgw
+         JQqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=pxOhs+WyOFBYP4PFdYY37ifiIeS/JU2+awwr69rdPxQ=;
+        fh=tbeQlM8hLPIR0hT3CckfjQxRq1i4wHTdIY5Cq+hVZj8=;
+        b=SbyMlFNHdFQyMbSqE9h/RmRNrKh3V/TMRtt4H7JTz0OE1bs/pb/O8Ep2pY381FKJqT
+         wKX/Axo9fsqCH9dWBfapfcCJCYyyxIwmRgCSLXLlXoMbvkLsKE1RkUpKT0wELZ3BK007
+         Q6AUY9F/sctG8fA7KOMHrLjaSnzNrOJmSyuW27nFHGzQdC0BJGszP0gfLCG3+cCuF8oi
+         0/RE1FZ3ONYWW+mqHs0D867Yio1SWCIY4WcO805n4NjBVb7+/SifJuQCVNLPxRom/ULT
+         EwZW+SOOJtVqQQpHwbmcoS0mLwsXx5dxl2gyjAyqU2z6eQDTILnWaYVUP01OGdxmih+6
+         8Onw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769788072; x=1770392872; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pxOhs+WyOFBYP4PFdYY37ifiIeS/JU2+awwr69rdPxQ=;
+        b=O8212qwqCWSuFl/bwu8tc9T/wodtW13RJeTI2KgDHfYGR5FtwIMAKrs59kUAT2aesF
+         yYZsZruHgmX19yMH1WLGTdD58lXT31RjEO63QHkRCSDQLOxBHbwP6LdDKaDPsYVtAxE1
+         V6MyL1OPW84IYASHwP16EJh9Iio/3HWbOC90rhn0FhLt2efDXqIJl+ACiCgvvxwT/kug
+         VoBVr4ULwg26BfAECEnXz6mbPgXr1RwhcKBlBBpQvbTHuFm2ob0pVgBejbFTyCAKWP64
+         j7a+MzG9YLRMx7Gfd2E6t9Z2X0y9geeguamzZYM80UrQ6z6+FDk23x+/JwS2NkTLxWwI
+         Gk6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769788072; x=1770392872;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=pxOhs+WyOFBYP4PFdYY37ifiIeS/JU2+awwr69rdPxQ=;
+        b=c7x52a2YRxdvHk46Ub3Z4lPrbZjNszvfP8jTyzflk0WmtQe5y/EisLkKxAbHLiEsgh
+         8X01LuEagVpGKGHdsThJFbmBOcPch4XVa9A+bq86LD5j6wfgt4AC8johDGC+ldE6GGoF
+         DwCcigvwMssDq34kx3HYa2+TIWW0bTB8iYI3kKVId7d6utrLk+2srtZf5D16jAmUkzsA
+         uxjszs/SfdSoosxhpgPC3HZsMOds8w4dMdgQSpFDMRpzz7xgqyyCH2vbVg3NamVKKBGg
+         unhS2vUpuF4GGGXXXIBg4nqnDtzCwjP0baM3Yma3PDq8voUNm3WSI68SwnPYcuWkScpm
+         5jtg==
+X-Gm-Message-State: AOJu0YwTs1KJG7Em1GsvcON5VvkUVZCLJ/yY3B92XQH2y5JYl2ckIW1i
+	J0CXKzy8JfFlOeQujh66hWlGCnTjB7ZzwCQgw5vAIRhKTemzAvWrxIz79kZ5ZAQSUnh6QJ2NM6f
+	hljtRKqkCuKAzFfjR7YDd8i4jqmjtCLU=
+X-Gm-Gg: AZuq6aLcjK7v+vRHcA4+WLx1FXcjnhTdf2a2MAMyd+W2Pkoojg2+avYxm4KovFKeKB6
+	9j57xXn2QyeVFBKQueVhxTiArSZZh9E3Zi4MFd3dKCRf3xIX6fRAwfI1LgkuMgwJkfJXXjR8w7s
+	GR6jD19dQItYIollWR8OxrrjDcXypiEaKQ+yvrotZhigtvMNkUtxadVWuw24J8oQH0S3BgL9p85
+	fZWELkT3LUGS97kHFVHr1MCNOFZxnVWr30SqESXxs7dDkXINKWv+4WCa5WhG+6hJztqAmjp8Q==
+X-Received: by 2002:a05:6830:3103:b0:7cf:d168:1f3e with SMTP id
+ 46e09a7af769-7d1a52a738bmr2227022a34.3.1769788072280; Fri, 30 Jan 2026
+ 07:47:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4377EC000B
-X-Stat-Signature: yr6mmy59e8tmaus76spe7od19uzkpn8e
+References: <CABXGCsNqk6pOkocJ0ctcHssCvke2kqhzoR2BGf_Hh1hWPZATuA@mail.gmail.com>
+ <CAMgjq7BM0QFvk3_D4qyggjJ4W_+nHAupQnpAYehGq50CYNJV7w@mail.gmail.com>
+In-Reply-To: <CAMgjq7BM0QFvk3_D4qyggjJ4W_+nHAupQnpAYehGq50CYNJV7w@mail.gmail.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date: Fri, 30 Jan 2026 20:47:39 +0500
+X-Gm-Features: AZwV_QjCsm_Ku_IZQSnm8GMCRxWJL4TOWjpCGiPhq9KD-_1KYwdgqG5WXEBv7FE
+Message-ID: <CABXGCsPrpLubmjt5vGacPcmQnOYj1EVei3G3=L_2X_-Wfa3kcA@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/page_alloc: fix use-after-free in swap due to
+ stale page data after split_page()
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux List Kernel Mailing <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, chrisl@kernel.org, Hugh Dickins <hughd@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 81hsm7ghasq5femgqd6mfapupq9hgbd6
 X-Rspam-User: 
-X-HE-Tag: 1769788041-446304
-X-HE-Meta: U2FsdGVkX19n4oUftnvi8sYr+CTEi0CbsQnfrKsTVi3XgtBj9R7m8X3Ie1tlLtLOVcR6aTkuwcCgehCTKEP5QGs3Xpavqh8h5HlJHiegWC52jkZ2e9HG+gunG7KPWAGEH3KxUWpxc2OzPGUP3QHooPtKsaS5NiO0tUQh0yYAUuQoRpFSRy8R+ZLEUD9lHwGf7Ph2qRALe3MRYe33R4VCS4U3pS50SNH4ElKlApWS0ydJLFvLaClQ+Bke135k6sHiEVh8ekfRLyNdTPpUaffTpYuFVcofwdCfx0K9+zW6TdOw5d9bKxDgCSVOk8tju7rK3JzHwsvYiIZfQBGdXQKETyn7jYUQwg7NmSqrti5tjAHDkOvpKW13ItHkdjfcYF343XKhHdr4Qj/K06mb20S/oppapnZqn42xXLd0ZTMdmgx85nELs8OHHrhMCIrzFKnXgemoBRKS9AZekpHZewUWhRwDtjU+mBRLWrjpIcWkFJLCFu0qrxsAqU2wdLt9f+rwonq6okEgxhGmLiERFktT1twdLjqsTaQJl0cEvbyGCAHsPctsq2FoRqd74A979LNnRAitf6zsf4zJ8KCWQ2SgANsmxb5lWGuHHSoE2M/kICRWovFe22jjeiYX+mIay5Kk3ReRNJfONgdIBiKs/vWm6Rgd9bqmJdYRBg8JekiuNDzgQbkvQgYlDw84U4rLnFWpyVK3Z2SvNGze6dPd+8E02ioMTT92B42o8Uq0OUL89Nxc/z5203Aq5Hk3WVZ/Y73g0HSXxnVzOmdLFy1xNYM96Lrz/QSAE8lMFUwBRDLPN9RuXLlRcxr1lc4QsGyogvpDqudbt/RLSdqFqwI05T8SrA4575NPJ4SEO/3kTZnaBW7KqnLf+M2+GAp6DDilKqugsZVs7XtA8oXRziGShJv/6UyfsUeeB29yZiJuOOanUUK0rN9mAFipXJ35+sWSxfM4xaoFQF7NT4sQXcoeD84
- Qi+4kdDC
- 4Pr0Avalrxpk4mOAgFi+y8iADbUuGdf9rpEgx79j1cD0ie22mVa7IeD0EZrZTgpJILRUweZeFzfzU7Fty3B4Ud/JRdB3Oq7MNaVvPqDqKN3DYsVVyIMPPiTjYif1F4fIcl69v2h4ygOD9JQbwHhK3au9Vu6beybHtIlnTg3NS2bMNgEWJUmLWABNhbbxm3fFEnkdADWzO61xuLSNcmoRS07dukZhFIZ94YCv8sF5HB7q9CfiYyMmGCVckQbdsnF5rpQGcuGA/64PM9hw3C7YqHWKmxc/h4EVuIHuWsc2LsIoUIsHWYaIR7OC+EGx6wqfC0FtJkuK7nfbjH6e5YtSMD3cJGaE3Zk35n/NhUPKw3IqCTKUwNxavHiLGUal6CyaCElDjVyvf8+kbBzASHLohyT8BSA==
+X-Rspamd-Queue-Id: 6BA1114000B
+X-HE-Tag: 1769788073-774094
+X-HE-Meta: U2FsdGVkX18ai4WENQgOOnoQpYYiikPwOzp3vdd7ceWbBZnmZxU3+2hC+sPmJNX0eHvTpPYd92fL6LsH1wpCeIK2yNA/Otd3bYlwKfMumqP8Bepcyr4uwD1ol9+zJ8OTMEYZjJ5DzCl60E+/kwxV0/BHkWPdBGjGNQg9KB22Jt2vHLcc7lvo8B99Yw5VMKQvlw5RpSV9A54zfMttYhGiClgKqEvBFYgh1xivhwiWEuh3oeR2VPtpWWGK7u9XJ6NT1TFdJAf8Mr3HXEbNT0a7I23wqwLrvB0DdXgkZeV03rOx6OjlVQrs6eG6+2KtjDTAzXtvPnYWqa/h2J863H7eTROGcmkZ6/gMylCAvq4+Mlxtu5wySA2ulcl3VEZ0yRTmuFqw/NUBp0ccPkNEXi9iQkgNEk6iZzBYUv9DxbU8h0ctajfLcROW7uxL1nsyygHSHnKoPt9DwZBgO3OkbStP6DXtyMW9kI5N7pL61rw6+52m2rK53yhRcSdH6ZkR4yxa28P0W7Lxv5oWSFnN5Xry4qWnlIviUO5wEX/yLMfb/uEYh8/rFJJaKyGnv3nMBUCP8FXutA5RGca8KpjW980SOFJW/l85rHQewxw6a4OjJqpoPquFoHeZa1YX+ADsvny75u18AgeWTKY5HldxLiNh6wJRjp0fSgAANqZo7iW4bOGAFppyE+HPoyojvHng4EcyGPrO0gesmeupbLXPU0uxWRpE6pEXHxp2IJ0A3EgiVAuaS/IjHL00vrIwFEk3xNvZZatEIr65JVlljwSOwh6QtBxTildUiL6IVWn+sdjBHMZRQy9KDrm3H3yABl+YZN2B1UZPOtnXy4/991SH+c8I4FOZZM6kySvXiTLfCq3fyQKs3izSlb2Hm4pGCSmVdHVLK0ZTptpr7LNERlvXAXGfJt1Uq0ZzRz1c8BxnrcJMQzeFEMSYjLMZAUARQPUUyujs7mp/+pJUooRmJXBIFjX
+ wTSMx2kF
+ jtgvm/fEembDBDN+y7/tEDrzDVWVchfA5WfsQ9pYEQAmmR5pYAgcWRt7qqpL6iXsc3uGrkvhzBtxLjNHPX48cOsktHHcDjheql/4Nea9LqSkc8zDr7JjXbFEKp+KQjtdUrR+3ZDi8n74h/rU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,48 +140,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kernel test robot <lkp@intel.com> writes:
+On Fri, Jan 30, 2026 at 8:31=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> Hi Mikhail,
+>
+> Thanks for reporting this issue.
+>
+> So the problem starts with `swap_map =3D vzalloc(maxpages);` right? Will
+> it be enough if we just pass GFP_COMP here?
 
-> Hi Gabriel,
->
-> kernel test robot noticed the following build warnings:
->
-> [auto build test WARNING on v6.19-rc7]
-> [also build test WARNING on linus/master]
-> [cannot apply to axboe/for-next next-20260129]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Gabriel-Krisman-Bertazi/io_uring-Support-commands-with-optional-file-descriptors/20260130-061445
-> base:   v6.19-rc7
-> patch link:    https://lore.kernel.org/r/20260129221138.897715-3-krisman%40suse.de
-> patch subject: [PATCH 2/2] io_uring: introduce IORING_OP_MMAP
-> config: m68k-randconfig-r122-20260130 (https://download.01.org/0day-ci/archive/20260130/202601301341.PTetVieu-lkp@intel.com/config)
-> compiler: m68k-linux-gcc (GCC) 8.5.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260130/202601301341.PTetVieu-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202601301341.PTetVieu-lkp@intel.com/
->
-> sparse warnings: (new ones prefixed by >>)
->>> io_uring/mmap.c:116:36: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __user *addr @@     got void * @@
->    io_uring/mmap.c:116:36: sparse:     expected void [noderef] __user *addr
->    io_uring/mmap.c:116:36: sparse:     got void *
->    io_uring/mmap.c:125:44: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __user *addr @@     got void * @@
->    io_uring/mmap.c:125:44: sparse:     expected void [noderef] __user *addr
->    io_uring/mmap.c:125:44: sparse:     got void *
->    io_uring/mmap.c:130:28: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __user *addr @@     got void * @@
->    io_uring/mmap.c:130:28: sparse:     expected void [noderef] __user *addr
->    io_uring/mmap.c:130:28: sparse:     got void *
+No, __GFP_COMP won't help here. vmalloc always calls split_page() for
+high-order allocations to treat them as independent pages (see
+mm/vmalloc.c around line 3730). The compound page would be split
+anyway.
 
-FWIW, for reviewers, these are false positives.  The issue is I'm using
-"void* __user addr" to either return a pointer or the error code to
-user.  It is properly copied back through copy_to_user, but sparse still
-complains.  I'll look into silencing it.
+> And worth noting, mm/swapfile.c already have following code:
+>
+> /*
+> * Page allocation does not initialize the page's lru field,
+> * but it does always reset its private field.
+> */
+> if (!page_private(head)) {
+>     BUG_ON(count & COUNT_CONTINUED);
+>     INIT_LIST_HEAD(&head->lru);
+>     set_page_private(head, SWP_CONTINUED);
+>     si->flags |=3D SWP_CONTINUED;
+> }
 
--- 
-Gabriel Krisman Bertazi
+Yes, this comment is the root of the problem - the assumption is
+incorrect for vmalloc pages obtained via split_page().
+post_alloc_hook() only clears page->private for the head page
+(page[0]). When split_page() breaks a high-order page into individual
+pages, tail pages keep their stale page->private values.
+We could fix this in swapfile.c by always calling INIT_LIST_HEAD(),
+but that would only fix swap. The comment in vmalloc.c suggests other
+users also rely on these fields:
+
+"Some drivers do their own refcounting on vmalloc_to_page() pages,
+some use page->mapping, page->lru, etc."
+
+So fixing it in split_page() seems like the right place to ensure all
+callers get properly initialized pages.
+
+What do you think?
+
+--=20
+Best Regards,
+Mike Gavrilov.
 
