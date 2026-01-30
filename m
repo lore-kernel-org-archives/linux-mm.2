@@ -4,110 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 760A7D73EA9
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 00:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6586D73E87
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 00:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BFC26B0005; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
+	id 4B4B06B0089; Thu, 29 Jan 2026 19:32:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 643046B008A; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
+	id 488F66B008A; Thu, 29 Jan 2026 19:32:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54F206B008C; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
+	id 3B5C56B008C; Thu, 29 Jan 2026 19:32:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 429426B0005
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 19:31:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C618F160429
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:31:57 +0000 (UTC)
-X-FDA: 84386752674.06.6782793
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0BE0E40007
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:31:55 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=eEaDTQq+;
-	spf=pass (imf01.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2D20E6B0089
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 19:32:22 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EA92A1BEE1
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:32:21 +0000 (UTC)
+X-FDA: 84386753682.19.7655A7E
+Received: from mail-qv1-f66.google.com (mail-qv1-f66.google.com [209.85.219.66])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B11AA140008
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:32:19 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=O8DUAnGr;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.66 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769733116;
+	s=arc-20220608; t=1769733140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5QTLnbHZvfOsZm6P1XTvKuZKL+X4Zqmm8W+hY1sTkg8=;
-	b=yORi5zKoWcLMm+CJy9EX3MFvaxnD4idz91EmW4H/eN/qIFDBnOCps1X7a38KHEnRc8J0aN
-	R6sL/u5Hot/l5JlJz0OjL8ynobO6hoIHhyqDIdeWnKIzPU6CWRBSodk0AT+GquLQyWwUXW
-	77m39G9UA/hmkMiH+NKfmBLykJhaxLA=
+	bh=JPUXRmfIX+IoXHHYz7SljCky5Hdp8sH/+/BEOo2u/kE=;
+	b=HYftsnoaH461pxlcPRAKmt7DfOZMa7wJ9yLIBH9029bLr1hsEdRdVvGk6Hn1as3U4YUcaL
+	R5F9cb1m1z0abQMIdW7jcVEDgSPRwQ8K9GXZ/mzdyjk2yfcHpMhvAE62whFMgavt7ZJBPI
+	HYXqwnc92CxHqmK6ci+hdVAtklniILY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.microsoft.com header.s=default header.b=eEaDTQq+;
-	spf=pass (imf01.hostedemail.com: domain of jacob.pan@linux.microsoft.com designates 13.77.154.182 as permitted sender) smtp.mailfrom=jacob.pan@linux.microsoft.com;
-	dmarc=pass (policy=none) header.from=linux.microsoft.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769733116; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=O8DUAnGr;
+	spf=pass (imf26.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.219.66 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	dmarc=pass (policy=none) header.from=cmpxchg.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769733140; a=rsa-sha256;
 	cv=none;
-	b=Heyclm6Yz+LFMpZr1MDJt8vqrNq4dTGobjKKzAhuwh/JJRT2PbvHRnjhnRuX5JtURJxANv
-	vigOMJChDPR14/F49lglBe9bjh6m5mFOcs3t1rz8gdF5DXhUmRS/Trq6OmTg79dci1QwLp
-	BFB2+/o7Wt0Bt4keukFuhOZiVEDg9pk=
-Received: from localhost (unknown [52.148.140.42])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 02ED820B7167;
-	Thu, 29 Jan 2026 16:31:52 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 02ED820B7167
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1769733114;
-	bh=5QTLnbHZvfOsZm6P1XTvKuZKL+X4Zqmm8W+hY1sTkg8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eEaDTQq+Esr/RUhilvTOCceWy537iSweTVrOCQF87LN7ewfzzEyzyd4RUlTpzT2bW
-	 kg7uIcbs9tYpacoilvpa5mW4vUKyQ+xSa6CjgGAzcB47rSlnza3XRXVmL0xeyblupb
-	 26ODqz1MAroYBEfMeqzG7EalDwPpbFYk2tLsdDZs=
-Date: Thu, 29 Jan 2026 16:31:50 -0800
-From: Jacob Pan <jacob.pan@linux.microsoft.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Alex Williamson <alex@shazbot.org>, Adithya Jayachandran
- <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, Alex Mastro
- <amastro@fb.com>, Alistair Popple <apopple@nvidia.com>, Andrew Morton
- <akpm@linux-foundation.org>, Ankit Agrawal <ankita@nvidia.com>, Bjorn
- Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>, David Rientjes
- <rientjes@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe
- <jgg@ziepe.ca>, Jonathan Corbet <corbet@lwn.net>, Josh Hilke
- <jrhilke@google.com>, Kevin Tian <kevin.tian@intel.com>,
- kexec@lists.infradead.org, kvm@vger.kernel.org, Leon Romanovsky
- <leon@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-pci@vger.kernel.org, Lukas Wunner <lukas@wunner.de>, =?utf-8?Q?Mich?=
- =?utf-8?Q?a=C5=82?= Winiarski <michal.winiarski@intel.com>, Mike Rapoport
- <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, Pasha Tatashin
- <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>,
- Pratyush Yadav <pratyush@kernel.org>, Raghavendra Rao Ananta
- <rananta@google.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, Saeed Mahameed
- <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, Shuah Khan
- <skhan@linuxfoundation.org>, Thomas =?utf-8?Q?Hellstr=C3=B6m?=
- <thomas.hellstrom@linux.intel.com>, Tomita Moeko <tomitamoeko@gmail.com>,
- Vipin Sharma <vipinsh@google.com>, Vivek Kasireddy
- <vivek.kasireddy@intel.com>, William Tu <witu@nvidia.com>, Yi Liu
- <yi.l.liu@intel.com>, Zhu Yanjun <yanjun.zhu@linux.dev>
-Subject: Re: [PATCH v2 10/22] vfio/pci: Skip reset of preserved device after
- Live Update
-Message-ID: <20260129163150.000059a2@linux.microsoft.com>
-In-Reply-To: <aXvgKRrbfymW5NKb@google.com>
-References: <20260129212510.967611-1-dmatlack@google.com>
-	<20260129212510.967611-11-dmatlack@google.com>
-	<20260129142158.00004cdc@linux.microsoft.com>
-	<aXvgKRrbfymW5NKb@google.com>
-Organization: LSG
-X-Mailer: Claws Mail 3.21.0 (GTK+ 2.24.33; x86_64-w64-mingw32)
+	b=O7qkWIF/thFlD8dRkijQcyhRfRbZunRAd3qwgb3kWnD1VRRRLD2UMhi9W6wc+KGVk0encJ
+	cFD2IWGfTjrKdA/HvrfUvplkPFuWaMZZKf5DgSiJjV1veF9RXadOMoZtM1lKW2kVZPF/fa
+	WSwZFFk356mHqHksLqQZmDIXNifFeR8=
+Received: by mail-qv1-f66.google.com with SMTP id 6a1803df08f44-894638da330so15757646d6.1
+        for <linux-mm@kvack.org>; Thu, 29 Jan 2026 16:32:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg.org; s=google; t=1769733139; x=1770337939; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JPUXRmfIX+IoXHHYz7SljCky5Hdp8sH/+/BEOo2u/kE=;
+        b=O8DUAnGrC/ranWglXMNgh0TiS1Mj0p87ATNTH9PvR9UOBNSxvA2+io0ZX56o1B8lJr
+         FLZMYOkDUYThIN5jhk6PnLWxUSAr8QWwb5PYu4wPPzts/Yn8g38gj1SzdS6bkAFBTby9
+         QRkgyKOWA68jP31Ag3A1KTF/GAugMNMgfSHOjLk+6SxcmcNd2oXGYGJQsGrf85WLXJc6
+         PvucktQoZL9AkP6WHznyVfe7doYoGSvuxM7d2DzE1NlOx4kEcNZ568TPW+e5mgOH08b6
+         7Y7aunT+lhdsYPXD8qbrkHKj3QMemyug73YfXm2vB0dE636KCtWyFBfyva0FfHAYkwbf
+         pLWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769733139; x=1770337939;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JPUXRmfIX+IoXHHYz7SljCky5Hdp8sH/+/BEOo2u/kE=;
+        b=Wafz0nF50cbMYmszFfY3cdzwSAXf262uUmVYMa5Ez2HEzg+3nHNuiVGVMKiHoeryqW
+         xft4kTKcdRaqME8zPQy/lc0GkPLP6mE6/nYAr39FWjbPSlhG33c5Dyu+UM682hlaHpGA
+         oT88/oGhlwkanAL6v3dP9VLLwU2/nBlq54YZgpJm114psFr2qM61ed7U2P0PbDHewsSm
+         V9EzCXOY4d1PwgRHdGAu6l5dP4U+8hdq+rMQyEOStKF9MbC17km4NBnajcB7ln+0uMRm
+         jIS+UFqBeH6Uh3jk4IbedPru7D+w6xgo9B032mBVpq/alvnH+zL0Y0Cd/60ZkDnAuNGT
+         cu1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWGRqLBMzNXv2iFovTBs11eOaybTlpGUCJ+vTqreZG9cu/uVRqtrq0SjNJfzYK9E7t/2iuyO+JEaw==@kvack.org
+X-Gm-Message-State: AOJu0Yzmr9nGqwL6tJDFyaDzezoOFihco02oIehu9KthBeHXWS7Nsa6f
+	j9JLHFuSuxAzavQg1dkCjhYUqmPdDlPkz9+7W6WYIgWf1QqYbgaAJlDJBl9w2sgqG08=
+X-Gm-Gg: AZuq6aL3oqUxA+35KoarkGRC1ou1Ig+fShJQc5whE2a4lg+bXy0XOMbmZUo7rz74HYM
+	Z1P4/hvWTfUBUjmLGrVaD31+iqs3a+uLbN/rWSvedU7VxtIYDEOu+tz6Vz36Uif5ErfbX159Hc0
+	2KDZBthAzP4HDx0ZxxILNYUvIoDY3XIHQh9z0hm2FYbTJCkAIqj87qvYR0TZiHU8J1PsNkN6LyY
+	3o4giJYYz9Vpp2waZzFel1NFCtePO+FhkPSsYd8xpdb6GmKghHwBpb8QBzN7AFZTvO/0DulAf7N
+	oZ/KTol5u1RcN8aTlTB03TeauIKkhBGanpUVBumTA3vjRnM7bbzfvX3Wdrn40z7pZOgaMb3IXX8
+	Kx5Ad3qFpASExlkcFd2DFKBDqhFBYE19SLFK7pcuf2i85Qot56t6wBIllJCkZ1NCNJwi469RE7k
+	6pEgygag+FTyWEypgLQulX
+X-Received: by 2002:a05:6214:410a:b0:80b:11b7:210b with SMTP id 6a1803df08f44-894ea058f0amr21222026d6.43.1769733138680;
+        Thu, 29 Jan 2026 16:32:18 -0800 (PST)
+Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d36c448esm48949356d6.14.2026.01.29.16.32.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Jan 2026 16:32:17 -0800 (PST)
+Date: Thu, 29 Jan 2026 19:32:14 -0500
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Rik van Riel <riel@surriel.com>, Song Liu <songliubraving@fb.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: khugepaged: fix NR_FILE_PAGES accounting in
+ collapse_file()
+Message-ID: <aXv8DjjJ3zqZEsgQ@cmpxchg.org>
+References: <20260129184054.910897-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 9fhfaaurdkuobcat6qizfd9hrxmmkaqc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260129184054.910897-1-shakeel.butt@linux.dev>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: maan8r9d7kmg4fz88wjggbwxetc3a3t5
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0BE0E40007
-X-HE-Tag: 1769733115-52442
-X-HE-Meta: U2FsdGVkX18L/fkDRdJXfqU9YVw2jXlH1K6F1UBzE1vILWvP6qwN0g3CScH6R3/kaYD9rWn9IKoe7f7NT6yp0Tp4s11GXkLb9fFazoawWS51isJPLRCsWNA2thH6H/L1nWzxd3eTACiNmWvrBGNWYYh6370qxA2AZIWrgKqlkTYdKWjPRRpSsH1+kvmIPxQp81CndjzMXlUEDmMEdUiN1b9JC0MHHrTdIcrFvhk5VbQhQHuvmPM0D4/HTCXZh0B1BSqxJwl3udLM1B+YM9hbh/ujlywPRXCZCNQCNWxhdI8YBOkdktMtHEW24DlW4akWXxtTCEOgsG+eHqCWkFGh8Z5/s37UDfR3RtovSnQFNdHYS8gFbXxyPPl2DrYUlkBem3fVtUGDzaLRLeR8jzrdSsE5l5a+/8GBSlz89boIoVo1nr7UEDtoCY+hbkHfnRo0gVst67hOcLYwkLvQb+IOx7+ws/7u4iE7W6IvoBAOp9tY8WM+3f3k41NEyIPpmJY34ELG9ISv2ZKItO56UBVtJ5fDM3qhkcZMdAEvzwCILzLhZ7P7gA653fMb1OFzwj0ho6dAJMBbWmLO41r0UTbnaHJZKkw/dlDm2oXwzU5DrJDO163UxI9Y6JfRAz3HAMV7OmGRdYBUcQ5w1tQjCS40BdV5MMGc694GY0Vyow0h2CMC1UYLl2yewq8GSgexKnIMLhHWknbkuiF0VvlMjvAgfCtvUvQvWCS99mFLE1GIJVmJjVqhz9sugr5FBJnaiW3aYrBK8RiSFCA3mo8YW6zYWlBkXsfEJow9ty+RvWhpUYoVjtBl91l1OU90ArlayJ04v4iqKJG4pWEOvFTg9fOPg3aaniKAxje4791b3xYz7kwK7l5KeatgKxIDi+qbNA8NQ7ok9osu5qOqUeMsRuFw64M2SZx+rGkKS6UQsFeydVUz3zcSQl2SWfLWnjqf7Y9guRp5z7rPSTOE9hvGMrp
- pXwYSIuG
- But/wh0xAsIN2VvhM++o9+tmTo8B/dF1FQLiCOm1Q7Dttz2RxtL+Yxu7E8iDELD/nG12M
+X-Rspamd-Queue-Id: B11AA140008
+X-HE-Tag: 1769733139-593961
+X-HE-Meta: U2FsdGVkX1/Z1aNe/fgLpfpRxO0KBOjlBslOCpXWGbhTwFXDPU6ljwpjqJfLkvVuuK4DetbnyZRVyompADfJqc9rhMBHZdYiC1BWM03sfnscYgAgUlnPeCRQLFj+zMBr32YLBg7Tsxlydy+v20//dAS8qjmcHYhEDF8lehgfOCzv5UWiV7gYtFYVm3yFlX3oiRLVJEVx2DLfCiH7joTowNIa7hz+0cm2ANOU0UYteSJ1MzuUbrfRVd8syHkyYuNnBhrKmNx4fOfvV98ypw8q/aJSEWwni9pS2b6uTGiYopiM6tSNjRAnIXucBo/iuFStKs4ofpNBImp9hL7pc3aEnX6nSc4aU2pRJPMo5ovmQDj4slEqnjvMprDFInI6CCaxlX/kQbO4TF8bNUJolymd0QO/KvzzyntmrxFlRcz8vJU99v8ODQ7LbX+v7X5musUj66YMpnuSX1AhMfldmUc5JdSQlEgQYFPO/XHgw6XeOCY8gBaf4bsdnT4pn7/apV4xjYaK78FOfVHv4uo+19pPYAz5LNx0XTUR6TC+u8Jy/gdOxpNGT+HTM05W4nwkWafD658TPjArBtPVzn5gJfo0Q/5l34Jg2l64mkkSbKkJdd7GlzSgAUvAZuPRo0wWP6uKCMjHCiZGiWkREgWuzJ0meexGdvmBJanJeQ7UC3rPIjJH4MPb71yAOEzRJ6VYwUTJoRCQaFnxDXrtCG+o11muAM8h0Q3zf/oLx8K1FsiNWELYqTBTiwvr5sKfpDh7nybsMs5SBOPv0HNascH6N07AuHQTJASUKtm/p/cWittsse3MFkYk93C8UaJE/3/aV0QknnfpkNKfNBFR5XzN5F4Fk4C9bXorXpyKM/qYNPCIZfl/VrA/h7vjuhV7IR02+b8WYCHOmNU1ABIIyl+ZpixONC2CmLYhWyNmXS/3i2Df82EeA5w+ho+rneeF+X5o4khPDlGk2u/N5JxKDTmp5Zg
+ h/5BmuYf
+ BfqBcjhIrukDdNaqVio63obBv6lMjqe1/AIkCAr+RdmF3AefV6V1ustJ1KcgvZgZH/xrsMXERJXygRcILz2Em3sgX9tuztX9teIwa4z3mxL7UxFYNSGmQpN83y6eQWoOesf4/IBh310C3gYo7enEA/68AX4A3vJ8SYHiRsvvNy0jLOvg2Kz3LtizdEwmaTnFAjWJ61/fLqJFEVPpvVQ6N3ZcZmOaywk2I/fwjJ5Q+CBf3mYisagLHNOKQbM5gbtc2fxKGOHAxvHuCVhQQ8MJWdWrze1Q+qXmMFsDF1BjmgWtKFIYS/42YCQZ2FAk3DOrwznJi2x8v8z0MpZpyeH9v/q9eODrwr4kzwi4Ii70XYF/4gZUDgb87BIgidJkroP+kYTXvTFKd2UkF0HNdsCxlRTK99Kjv0y3R35Pm7oM/boIKl62AQduFCKPegaelTxUdFVYczfpYiaAFAwTl8QkgmXBVvUJVCBudadzBQY4Lg/MqCbDXxxMD7AzdHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,73 +130,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
+On Thu, Jan 29, 2026 at 10:40:54AM -0800, Shakeel Butt wrote:
+> @@ -2200,8 +2200,8 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	else
+>  		lruvec_stat_mod_folio(new_folio, NR_FILE_THPS, HPAGE_PMD_NR);
+>  
+> +	lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, HPAGE_PMD_NR);
 
-On Thu, 29 Jan 2026 22:33:13 +0000
-David Matlack <dmatlack@google.com> wrote:
+The memcg breakage is more visible, but I think this has been broken
+for NUMA stats even longer. new_folio could also come from a different
+node than the subpages, after all.
 
-> On 2026-01-29 02:21 PM, Jacob Pan wrote:
-> > On Thu, 29 Jan 2026 21:24:57 +0000 David Matlack
-> > <dmatlack@google.com> wrote: =20
->=20
-> > > diff --git a/drivers/vfio/pci/vfio_pci_core.c
-> > > b/drivers/vfio/pci/vfio_pci_core.c index
-> > > b01b94d81e28..c9f73f597797 100644 ---
-> > > a/drivers/vfio/pci/vfio_pci_core.c +++
-> > > b/drivers/vfio/pci/vfio_pci_core.c @@ -515,12 +515,24 @@ int
-> > > vfio_pci_core_enable(struct vfio_pci_core_device *vdev) if (ret)
-> > >  		goto out_power;
-> > > =20
-> > > -	/* If reset fails because of the device lock, fail this
-> > > path entirely */
-> > > -	ret =3D pci_try_reset_function(pdev);
-> > > -	if (ret =3D=3D -EAGAIN)
-> > > -		goto out_disable_device;
-> > > +	if (vdev->liveupdate_incoming_state) {
-> > > +		/*
-> > > +		 * This device was preserved by the previous
-> > > kernel across a
-> > > +		 * Live Update, so it does not need to be reset.
-> > > +		 */
-> > > +		vdev->reset_works =3D
-> > > vdev->liveupdate_incoming_state->reset_works; =20
-> >
-> > Just wondering what happened to skipping the bus master clearing. I
-> > understand this version does not preserve the device itself yet; I=E2=
-=80=99m
-> > just curious whether there were specific difficulties that led to
-> > dropping the earlier patch which skipped clearing bus master. =20
->=20
-> Hi Jacob,
->=20
-> There's several places where bus master gets cleared that we need to
-> eventually eliminate to fully preserve the device.
->=20
->  1. vfio_pci_liveupdate_freeze() clears it during shutdown when it
->     restores vdev->pci_saved_state.
->  2. pci_device_shutdown() clears it during shutdown.
->  3. vfio_pci_core_enable() clears it when the preserved device file
->     is bound to an iommufd after the Live Update (in
->     vfio_pci_core_enable()).
->=20
-> I think it would be safe to skip (3) in this series, since that's very
-> similar to how this series skips resets during vfio_pci_core_enable()
-> for preserved devices.
->=20
-> But I don't think it would be safe to skip (1) or (2) until the
-> attached iommufd is fully preserved.
->=20
-> If you are just asking about (3) then I agree it could be skipped and
-> I can include that in the next version.
+>  	if (nr_none) {
+> -		lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, nr_none);
+>  		/* nr_none is always 0 for non-shmem. */
+>  		lruvec_stat_mod_folio(new_folio, NR_SHMEM, nr_none);
 
-I was just asking about (3) and trying to understand the asymmetric
-handling compared to reset. I don=E2=80=99t have a strong preference since =
-this
-is temporary=E2=80=94thanks for the explanation.
+So AFAICT NR_SHMEM needs the same treatment.
 
-I=E2=80=99ve been testing my noiommu cdev patches on top of yours, and so f=
-ar
-they behave the same as with a real IOMMU. As you noted, however, final
-device preservation still depends on iommufd.
+It looks like that's been broken since f3f0e1d2150b ("khugepaged: add
+support of collapse for tmpfs/shmem pages").
 
+Anon pages avoided this, because their accounting is done in rmap.c
+when the pmd is mapped and the ptes zapped.
 
