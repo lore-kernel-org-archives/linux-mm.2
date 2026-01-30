@@ -4,187 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 665E6E6BF2A
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 16:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B63E6BF2A
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 16:41:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 67F0E6B0088; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
+	id 35BD26B0089; Fri, 30 Jan 2026 11:41:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6231F6B0089; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
+	id 309876B008A; Fri, 30 Jan 2026 11:41:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 504E76B008A; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
+	id 1E1B76B008C; Fri, 30 Jan 2026 11:41:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C8AF6B0088
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 11:40:02 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B2A16B0089
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 11:41:56 -0500 (EST)
 Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BC95A13B6CB
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:40:01 +0000 (UTC)
-X-FDA: 84389192202.11.B0D637F
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010052.outbound.protection.outlook.com [52.101.61.52])
-	by imf27.hostedemail.com (Postfix) with ESMTP id E276040007
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:39:58 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ucbSE9Kd;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769791199;
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 855341404E4
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:41:55 +0000 (UTC)
+X-FDA: 84389196990.11.4F1F4FD
+Received: from mail-oa1-f69.google.com (mail-oa1-f69.google.com [209.85.160.69])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C4D5D100003
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 16:41:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf05.hostedemail.com: domain of 3UN98aQkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3UN98aQkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769791313;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HUGGo+36f7qwsFsPL5VjqY0jYr2eh/0L5rr/8TMI5s8=;
-	b=V18osPlylChak/mXf08Epeje7Q/6mLU85EoGLQY3XelyfafYWGROMT3UrcPgecWodsS1FZ
-	nENAjBUcjOokzS+ztD+PdKNj7BWQjMJrMNUyWggieQOc+Pb8pLNl9FXtwful6KNgGMQnx5
-	8+UMim2CtK4XYK/5EJztMHjDBQmbaHU=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769791199; a=rsa-sha256;
-	cv=pass;
-	b=2zMAewURplAAbWJC8G/IX+eJhSqST/ZTrY4Fcmr+1LGvnjjadPlgFEV0j7jwDEDNfkV5fA
-	9YjpofnYV+4dKDtkrKSMZAFci/7Z7gCCja3P/fqLRxcttWQ0e+wQI6N/a+Jy39LxGL/hDQ
-	dHLkDk4z2vasBchOlVN/4o97X1BLSrs=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=ucbSE9Kd;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.52 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Oqpf03Qljrtp1oelbqD6NU8XgmAVenbLZDO5QQ9G5v3x6jwCwfe5wg5wEk6zXBtfhpnIcBFT5998fv7/FxNAjUmg1sWNciYrZoxShDNQ4hEPrHEAaMrGggP0Vz9uo/1USxmJcoG/hN1rJWXJtbDIAfrlFkEpEeybe/i0QwjQJHCj7Lgj344fGBcAy0ClalURHKSlp6IqDmC2co/8Wz60ewDmZMpLSOHEmvhJ5Zg4DfFrArgjahpRHx3SZU9uutn6IRwe/jGi0qXw6H1KV/u+x1Bz4ugdPKj/MgyDy4Mv88sAUEYJ9FSRmQaXcNno1P4lLXHuakrWBUji1DoRNoIYVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HUGGo+36f7qwsFsPL5VjqY0jYr2eh/0L5rr/8TMI5s8=;
- b=bdDrRxnPqZtbfce9QJNAHWrufM/1X95aTYf1zykjCJ4kMz3sXgILmbTrzkp3jmiVKIOoqurHPx2cjCggxmuS+Dx9eCi+Cr+05ikPLXpVRQRK6vPVCr6fqowJAzsjCpAO3R7+68EPYvaecdRtAltu3t9pOVASMTTmDCpKetYtgYjGIddY4rVrK+ALTy1Qzwl3Nbh4+FKI06bMhEry/rSdCp1fzsZDXIaYBodgRMuf1WtWaDXfo3GoNCpyUIFEot3MiI0o2jwmcPsuaQwFVhahVWem6BP+SV4eIDWbHWgUH9FekFc1lmymLAs+/pAYDzqrv3i4OU6ioOFILnbookaUYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HUGGo+36f7qwsFsPL5VjqY0jYr2eh/0L5rr/8TMI5s8=;
- b=ucbSE9Kd6ejhtWRV4Nb9+cHFwTl2SbDWPJgDzAkty5iT+Wr2j0b6yoL2MhF4Bg/f3k+5HD9kCm/z/L+260dROmMFWjhcRY87WZ570RQWM79SnSXOlqOYD9RC1Y7WlSFswjw1p0+O79XyxwFXOeBU/nwYnJbyUdEB5bqhA8Dfsopb/fym0yp9FWfAXXC11TVQ8kMfe5S2qzqpMfUyuhmFe3o1mEDln+LpyvExgi3+jAOFx5/+CgS20Q8+UJUNLLekz3EEF7L/waQtSeimlLaKhhkN5Gm5oFzD7qvtxGuL2v66qO9clE1F+uG5Z/oQ/F83Cw/yuiapXb7XCVSPUXG4og==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- LV3PR12MB9402.namprd12.prod.outlook.com (2603:10b6:408:213::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.11; Fri, 30 Jan
- 2026 16:39:49 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
- 16:39:48 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: syzbot ci <syzbot+ci7f632827e1b1c91b@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, apopple@nvidia.com, axboe@kernel.dk,
- balbirs@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- david@kernel.org, dev.jain@arm.com, hannes@cmpxchg.org,
- io-uring@vger.kernel.org, jackmanb@google.com, jgg@nvidia.com,
- lance.yang@linux.dev, liam.howlett@oracle.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
- muchun.song@linux.dev, npache@redhat.com, osalvador@suse.de, rppt@kernel.org,
- ryan.roberts@arm.com, surenb@google.com, vbabka@suse.cz, willy@infradead.org,
- syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot ci] Separate compound page from folio
-Date: Fri, 30 Jan 2026 11:39:40 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <2A678D66-2516-4130-A34B-6A0B3549EEA7@nvidia.com>
-In-Reply-To: <697c68b3.a70a0220.9914.0032.GAE@google.com>
-References: <697c68b3.a70a0220.9914.0032.GAE@google.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: SJ0PR03CA0114.namprd03.prod.outlook.com
- (2603:10b6:a03:333::29) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=DjcBVY8mJqbGJnCRObWENCx0c6xRt7QNzm9li1dg71c=;
+	b=B4n6e0Pig3c3Y2uAjnfMUD97ZOttegVCne4qYsN1dQumiLnBqLmkCE2UIEcM0mKM0+Vl/I
+	OxbE97Aa9RO4cEWJ1+kTesmN6+UhWagEoF1gDlPsp0gTSUghgASi8OZnKFN4s6wWHCL4C6
+	JmFEGUhVKpK6rMKnv0wG3NG07UA07R8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769791313; a=rsa-sha256;
+	cv=none;
+	b=EcFG8PvzHFQ49en/ryy7HcAXmGZ8MMGGa3IGydJe8twXU62t3pHm7zsOVxoe7k3641l2mI
+	CmaWf71rerGAsHzosvn3ppwt+s1H3V37GEG624wszqlHe/z43FdW/sSwMURoTWLJ8lPqJl
+	2LaT31fObVvokzyfP/wEO3HckHPzJrs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf05.hostedemail.com: domain of 3UN98aQkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.69 as permitted sender) smtp.mailfrom=3UN98aQkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f69.google.com with SMTP id 586e51a60fabf-4040acebf22so6078208fac.1
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 08:41:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769791313; x=1770396113;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DjcBVY8mJqbGJnCRObWENCx0c6xRt7QNzm9li1dg71c=;
+        b=nU8anW+AKaU0PscMPMnsENCx0XNYAI1j5QZC26AA+Z3/Oa6tDBhturqFptSLOz4KvH
+         nHJN6p/fg69THIkgZ3+LVodJBYherdXBsA/uwRRrT3OrnpqZOgR7yBOX4lGEBO/tOmgs
+         B72e+hLIsPf38mfpGTpS706UVsIgtfmCyVcS4ghUJHo/XQ1RIdPnzLo9+yKnSvU4uDAi
+         torllCx/JUiW7OHexoL6eEcZ8SC4cXvwnHKRYnYA39eEu0DdwvGC9pyDZEmYVVvDJNi4
+         78c/5YyU/si8t284LzsSAodzz/6VPzHVIon8T+V4ZgOb66BfTKQxNAKRD4I1ULXp3euB
+         AdDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmxPIQxFmijIY8HU1l+676B++3WjS7cFD6300KEPSt6kdNObMyJnjOCFb2xqw21/sc9enVOdDuxQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy4AMJq+AAAlp1JCd3AXjtPpP0oCQWAq3JfuFQFbHiHRWiReSV8
+	hR9183Rh637AjfJ4AUZ6R2RyDDCZY4pldzQxnPj5NtL7B5MQxDE0tLi/yolOav9slNuAuuOjasp
+	OW84TDW6Hf9JsMSjGwqRGamSgz5lBMZNIjHfXP3VRmuaiwt/7/mCzTezw+6Q=
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|LV3PR12MB9402:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6ed83828-0bbe-4aef-dead-08de601e2e91
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PoRsv9AVYuCIcpmoG+bn0g+WnTs/gghYD+SjbYQ/12AjhKJW4Loh8nnSo2LM?=
- =?us-ascii?Q?bIJ6dWxCURdTNFYToR3JxkEwD+J9eVC+Ezjio9j7DXfJAicV6nNd77LrZCuN?=
- =?us-ascii?Q?Ptu7lEtDL3ENQ0unkMhAPc3XOpqvn8vJYxiHNjx7jX1zywxLhTYEJGgflX3Z?=
- =?us-ascii?Q?XhLgFAej/6zSgclAbIvbgElzgRIrj6TdNMrQMQKyLerizwWdrsHL5cr/n4Tg?=
- =?us-ascii?Q?iZyUL4fjZuYuIx9Yul0LqW7HkbUtsy0m8izXMY5FNxg10rh1lxcNGupsgR9X?=
- =?us-ascii?Q?NbzDaqm9/5guujDaNYAmYpsiE1muXIyQUSK26IECHT8EhivZn7OYDHax4IoN?=
- =?us-ascii?Q?MfZdX+2YIlSTjLEMjNv2otNzDij5NXNsdglMSyex3d2S8sdp0VxtLTVGorBb?=
- =?us-ascii?Q?Dj3yULnQQGlyWO1hgk+fHCBHQ98MWpXvbwFG76oithX96ai7NvbcN50q3tpm?=
- =?us-ascii?Q?DJICmeGbZytV+bBLm/Kte/Yhvt1rQuVLPWh7CKmfvd1vJykmBAXCSDqHI/sv?=
- =?us-ascii?Q?tibypD6fxDR0V0v85hr7mYtH9AassDwEAkvG9bEutxUUWPgqnyfnjVhY5gmK?=
- =?us-ascii?Q?1YDvoQera/tjrUtvCgrWDhtCsbJma8wqIqMYNgSxN99xaKqHU9yCuSfy6YXK?=
- =?us-ascii?Q?Vqtvr80u6W8J1zWVeAal4ZK5Nne3jZQyQ8LfpHzgziDdYXS7Lu9STJ7HjE77?=
- =?us-ascii?Q?dHaunJMhkboof3R1thgo8DF7QqYSdb7wKmN/wwwETY4IBZhjr/pAdaGu+nA7?=
- =?us-ascii?Q?ZLr34Ad7DNuocUnbC1Kz5MV7leypejq1/warWMVaJUzNUr4Tbn5iBFABTQ9l?=
- =?us-ascii?Q?AnKaDMDsrw3APMER3Vg3aNcqqHFQL6hyA0ASzDCgY9Qai/uaQw9Egd/CoPlJ?=
- =?us-ascii?Q?SDHP+RQyz88ILg1aqc5lkKwO2Ii1S/zJH6SBRH+NpyiaDw8NT6jODPG1Gtvz?=
- =?us-ascii?Q?Q79p/ohqB8eOELOidHc3YcXVGTWG7CPfCk9meO7iYRA28k//4x4lZhcFDO9n?=
- =?us-ascii?Q?n6BWRG0TptcPuyzRZltzTH9OiHjyhai9NuQMhDuNtLyuQpJ14IEKEDTMHhVr?=
- =?us-ascii?Q?GIgav8dawZw9S+umTpVd6Pqq/U+z0vLvy9qnipog/ZB7sYAZCvpNu7EUL287?=
- =?us-ascii?Q?glZOmOclga8XLFnYg7DgDMn0buFU9Tbd7kGSWfF0hXrt4qIAq0pdtUiijWbz?=
- =?us-ascii?Q?Q/xCPU05aR4syl/TmXf/bd1H7y3y7MKvTTauJZFnkY8dnPhfN/J412Qr/QP4?=
- =?us-ascii?Q?HZhVk1f2m0YSNXrIfYYGLTFFgD8dZGRWRNRQ0CPAExpOhVe+/0ODNmfxyGKE?=
- =?us-ascii?Q?MxVcTIRHeHuZyKyCOhmEnmLjOynS7n0jvDule4MKgr8yc69xKVv2sEV/87rT?=
- =?us-ascii?Q?JAMY4GyVKujfaKuw3BSkbFewHmhgUeFQKEGi9B5asTP5A3wweHvbSYRUli1e?=
- =?us-ascii?Q?E0gtE8EXIU+zK5LFrFX0Kngfpiiivjut9cGGkVdt0K9fDKjubBo813PPTE66?=
- =?us-ascii?Q?mP4Wa7cK4qpZ9W+NRtI8ltslhMJQR5xyZsFjVdSEH9DJ+P2Zo3FmFEKubfvb?=
- =?us-ascii?Q?BHhOzBiiIizo+Lu9hs8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?vDBSl3mDDge9rtpYBmF9KPPN4R2ilyRmVtstRm1qelO7BoqRrbdAtPTcKwdH?=
- =?us-ascii?Q?PT+3H2INePTSndPuuUY0MoXw8HF2nUVYeewtIGDU/zRbb3Ncw5HRqi7pdtwm?=
- =?us-ascii?Q?UzTSqVqD2UCMYY5S86D13J3RwJVGkPTXqTd2IXywTYIqqXmmsMmEGaEt7V/T?=
- =?us-ascii?Q?eTB5BiyCcw86uFd9KfCHdrB/2DbCyWGmu8WdGFx7cdn5JbBe8CopfFlSrkFq?=
- =?us-ascii?Q?XMJGaSWnjqR8/z31hvu0ZJidZZS8svXkmt6uuCMOTM+/P/TLBUsGdzPejmUC?=
- =?us-ascii?Q?DV+aHyv8Pgm5BnnKt4Nfy/zxukxnKTOnMbhrt+G3l+/ljUToNXpbKbxlNjIf?=
- =?us-ascii?Q?/vbUNdPy3TLMndr/rrAFm7LU+8aEin804wGyWvmnbL3iT8PifCv++7W2yuLA?=
- =?us-ascii?Q?FPo0WvuOXKkMQMMGq+Aryi5VDMjlqgh1Qb3a44t0hsGEtN0P8OhZVNXJw7aW?=
- =?us-ascii?Q?DP1Ii6garj/1O/HiTyW5L3SetlD2Aanc4GQ22WTWDryUUqlXEGek2Cs5MKmQ?=
- =?us-ascii?Q?q/NVshT2+cY2JIWoV6hUyyGXSyCY8BX6IBeY/8mA00J/vVNeix0ZpYN2k2rt?=
- =?us-ascii?Q?XE4lhbHo8vwdDsCfkpARvWSQzXjHdcOa8uWGBlttMEvQ13LzbqafgUr7YjcD?=
- =?us-ascii?Q?aMEu6D2NIlve1/+Mx3diQ2Va2CTQTGqEgxM5HlG29xb3xMCWf7Gg/86XMrgK?=
- =?us-ascii?Q?yXbL6gZjjkIn1Xos0pBEtz+Us45KMYwWzPhV5uA2YUvjF5plGWqRuuE80rb8?=
- =?us-ascii?Q?MPo3JF1CsxfO5N/pR3NTnqrd2EjHa+L6e84HNRYLwzy1Eb20UDuJBsrKem+h?=
- =?us-ascii?Q?SEwxUGVm8c/qCtNFdXdUAHTnrb037kpQAjGeFmYxTv+COGwOTzJo1Yltw1+V?=
- =?us-ascii?Q?PTJL4UdaTd/hmyGY+7yXlWPechCMsrl3D1ht14+cvLK4FOSUSbZ+dL+VbsCk?=
- =?us-ascii?Q?Tfry47k7WJ4igemAg1s8l4QOz3bA86kQuINsNEl5CChTwz63SdPndRriF3pv?=
- =?us-ascii?Q?ifQwzbekTQiP6+M42zuCEiHSBDISgB177C/L/GqlAYuv5F+TtkTvGMmXKXbN?=
- =?us-ascii?Q?6cTQ0woCkQBIxES2487yF2Ox5NSWM0qmVACBQy+OTS9fhaKHIM1qh5Iaaoyv?=
- =?us-ascii?Q?aGRQqLxGg3qVJhotHDTbJGaGv9fLzB/cwq6eT3gYbhak/ga9uqcTLRJPYF4g?=
- =?us-ascii?Q?xH1lgwvoi8kwKqvUbcUhiBHuiRfh01j4CSrEM2QTycstBP3jozUnWaNZqm6i?=
- =?us-ascii?Q?JV3PfBqaUvOdwjPSvFQ5C5Eg9Kwahb7Pyb/8oHkdo1YJ3xyrd2liYd9Fn/NR?=
- =?us-ascii?Q?sbruD7NiNmyRoD/2GFnbJRF/RfjryRtaFj9UgRqMdks3LTc9P8Iu85C5rpmD?=
- =?us-ascii?Q?lxBhuaQaDNWOs1n2XbFfNlSNkfggRKBpjx8bo3KSUqgK9waHL4sbxHcXOzSL?=
- =?us-ascii?Q?jUfXUlUFoYuVBbfIC3/BPwwyEDwwPCRmIy0hCq28VvUnwe6XOJxHnURoONhl?=
- =?us-ascii?Q?nleWKtWXWYSiadzuuBQNAPUmh9XmHY5rVtPxpent3OHlKW+Q93gwdqBFe2yq?=
- =?us-ascii?Q?JNt5Nn54OaGJD0xN5iB2ESeQH5tDoJPXzvW9UkpRIkwp+xrukCQs0avMpx8V?=
- =?us-ascii?Q?udsbyPh8WZjnxuO97bGFubuQ4M+865RyDrcWYlXGC+Gz8fKupyAU8GtkNxSh?=
- =?us-ascii?Q?w/LCoiUjdux/M/UgHhJ58YTjmh6/u9+3YiBxiC+8DCaiWC4ru6RFmOaouJHr?=
- =?us-ascii?Q?nkpglx8l4g=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6ed83828-0bbe-4aef-dead-08de601e2e91
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 16:39:48.1480
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yggb7pthLG5XMZIrayrui370kiccGaUcu6AFOdNb6B1T1p1NThZYY6MCTptNTfyz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9402
-X-Rspamd-Queue-Id: E276040007
-X-Stat-Signature: cgtp1mhy1gyk1teieeb5p5kihobcept4
+X-Received: by 2002:a05:6820:4613:b0:663:cb2:d67d with SMTP id
+ 006d021491bc7-6630f04c2bamr1438160eaf.37.1769791312692; Fri, 30 Jan 2026
+ 08:41:52 -0800 (PST)
+Date: Fri, 30 Jan 2026 08:41:52 -0800
+In-Reply-To: <2A678D66-2516-4130-A34B-6A0B3549EEA7@nvidia.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <697cdf50.050a0220.371857.00e6.GAE@google.com>
+Subject: Re: Re: [syzbot ci] Separate compound page from folio
+From: syzbot ci <syzbot@syzkaller.appspotmail.com>
+To: ziy@nvidia.com
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, axboe@kernel.dk, 
+	balbirs@nvidia.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, dev.jain@arm.com, hannes@cmpxchg.org, 
+	io-uring@vger.kernel.org, jackmanb@google.com, jgg@nvidia.com, 
+	lance.yang@linux.dev, liam.howlett@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com, 
+	muchun.song@linux.dev, npache@redhat.com, osalvador@suse.de, rppt@kernel.org, 
+	ryan.roberts@arm.com, surenb@google.com, syzbot@lists.linux.dev, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz, willy@infradead.org, 
+	ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: C4D5D100003
+X-Stat-Signature: 5u7f7sxcd8pd7kigxo7igngiu11m6dy5
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1769791198-975777
-X-HE-Meta: U2FsdGVkX19Ms2sZiW62M3KxGuHdkKsALOM9ofBBJsfcAQtbojJPTapzMAqM0Ymhk527H/AzJRZz8f0Ns1tTP3hUdHrpkrTinC2cNrnJb+BRZEUzZqblpTW+uiV9dbjfF8uA3cDf4CRdSbJ3OMUrY41ELaZgmKzieSFOnMX9HRLMBrf/ARjbOORZy9b7jbGsQlvJtNbnPYjzTqUREK7EU+89YqDX6Rc3H0uWBBNdds9UrEbVjkV5CLyjZVEkdzLCE07A7gdM+D2FaZ3IcFkt9bBocxHJ7BTNtt9/zDrKxmq95SPXzDvzTnUZ8fz/WV/SrHWSb3/NXEFjjbaXx5GXIysHG7gfVVvU4QyA/wTH5xeO5gVvBGItikUxlKfRBrMg0/DV1RUpcPnz52pkSc/drQc8vi8ZMctbyNa2QfE6vXBBscki55sHWY9CDF/3NPlpyV/TZuaqTLw9MI9tmRVcohz1vqb0PatqB6TnLZbFPw76FcCB8SjYlfww05Q+okOFwG0hCtxyTokveSrBHOArMI9yGKdvv8zQIRa8dpTRsugpsjPsx5xAdNVZS9nfBUR/yGZAjr5EosDp/6nJduO3YTNRr45ppUjf0owF8invTOQic3FQ/O0e5jbMc0tQfXKi6xYsb3dPVrUrvHVDS1kjILd9rqncJY4ihozlaiT5H6XT+fpLFi7IxcfOdV35RB0sJIL2PQN55YDNWbL4rAP8KQQ05hg7pwRCf7iFAdrZv+CamvBZuOJvn7gMt8WwWu5hQ7NUDN5dAthTeuq2LI3RaIYH9ygBkTpQW5JHQE5/Drq2NqxN8jTKOOlX2RGsqcNc4sjeybb5GuP8g5jO6TGD0kCuBqewSJ83RRwNFD74J1Srk49VeDDGj1GhREMHTY7YKc+3fOM4MiNbOyOxBixqI8fc914QOgwbEKXmD5csOndZ6Yxgxh93U5YS9cqPHE/SGOfvcho3601dp1eGXx3
- koS+0iRT
- Ks4QseSjnjTYb8lt6k0rdKZuwh5TsQ0yVGpVkA5An9WEuSlFN5jWDRH62O+P/8sos/R+caJlWksSCseQ3yUH5VInAnEnqR/irrDJQt2dCt8vBVqY7D0CPEm1707C/Gz3wc+Yashli+uK94fmkKqP45rKvpS0kw6vMYM/nHbXk6CIJBH0BrBFgo9wmIVaRs8giG57u1NhZvfBSAAsHpMH9eDM4FWGNyBOvKwPrJKWSTdk2MbsknGpz43y6PaiyIbziPXO0e24X8Ltw7V2wuHYd9bUbX7NKM6Ha2J+1lortRu7c4aHyuX/XZ1fJguphDfUz9B1kQi+WsvMzXkV+MgXBsZm6UaFkRJqCmn90DDceUE0jMxblvoinuJhiJgjEkDvOq6gEPcstiUBAxBEhzkIdW6z7RRrsoIQWtvDUcFxGnTI0hOMwbw0uX89N+ihnBau0m1FeCZDV7odLLeFV8V182WajO8AntkKzQbsWOloOn/xuI6WB5/3abcj+V8By2czFaqfr1wLkGe4xK1F7wuX89yOZtbLRN15CtnMxHs/Uxs8WfuJXXz4xMmC81z2kL1NMJS4CGByXJ4fft0Bd6kCWrpBETw3/lx4MmtHZhcqU0iU9wq5E+FtpaBapyc90deD9jtpka+P1bgt4/c6bWD5QAqpXWukosJcws7iyAnC7BiyufAB272iivjWPIEAnecnyFpTcoKOQJ9EiH+KgwB0BbnhB3f0OzrRc3y9cGZxCm9M07BQ=
+X-HE-Tag: 1769791313-283886
+X-HE-Meta: U2FsdGVkX19dbe9ijxKWmyCA1N5bLwdBzIuExa9cl1WQL1jGZ0c/KYr3P2I1U6YVHrSw8rGrDyM/zz/vQNK0OIzy7RV10lGhioBpXY7ziai4ibJa/jf1nEVgcQWTaw/WCFyF4NMyWIB91muZalbjAlKuoryMdkjZVx7k0MNlVUR6IM0l74ayCM+H0tYTvSRgpQbTo9RcMBfdMc4l4nbJUbpRq2ooIs5345W4HyWPrWknQZt7le2oeDyvF59oMVCkhby+tZwL93c4AJz3+/XPBSZ1RWcpfh8If9KvEjikK6xOHPnYL+pCTBLB66yDThoqtq1ssvK57kD70lACkBOSS/XeBJV5KgrHQZ60czFHsaYQqFJpzSYWRB4itlnoKsNFgnFHHb0Hlb3oU2Fa5epljaEV77HgDA6ikoNkMqKgcnvG9/Ro14BUYJMyWAdr2RWysaFnXdmOaTKaPBMpF3Rq6AJQYpCAOLv79O/B+wuLP8Lg9y3mutY7H16QQWzgYn+xo9PAqn8o7CkVzSlS746Qfc61vKwQBK8sRVoh4m+k83oisK8m5gkpF5YsyRzco//rfC3EtBfO60ntI6Uh6RVAE9SNHvYgwotoTtJtn2+HhbxtWxmKollI3QxolUO5lL3nsIZ361AXbGEmeQD55v6wgutG/+AdhVjjDDTnSk669MhO2Ega6TdBT1XgfQytYwzm0xMNkikKrlbyRqf3n5xofBNOEtNXBSPAgX8gwFipdBtRZ5YNVGqQWCUdifxdvKx5hXWEJ73W5WlPTD97xGKdrdskhdJKQmNz1yepF40wat4eXvVyKyfeQP1DBvCvpm3j315tF3RcpdMEzq+yxRtncghJgHnrVhFeVWfMCp7Et+vvvRaXw6ggwwCnNRCv6FMCQpaToKB7gIfWMkhAc3dooViAqmyFtodNc3FfLdXJoTdE7MLlsWb8AC7Xn/YNaM/2gSL3luRP5gh9VLJOtGl
+ G+O/Djf/
+ RsCQ8qnIQi6FfH8EKzWCDMaIvHYkoCMcTtm7cVEOa2EZKHwo0U//4DyhUA32YSrl1wwXGvbDTWo0BqQxDtiY9YuzwWCBOCo5gHilepeVff/t7KUi747S7bXwLcgn2+ZXDc+pLor7HTUPikzh1Rmi+c0luk7AG+FX+WZpObDwYHnR+OtoVHo1L0t/QZciBKLmHuUr88QWbrv9ZHXwFeELfH4sdG/9YsEBbIHNIX7a7vHct/m3lJzihS6V7OxhU+kq+wdsgKeLXDcUM4V6MG8/PHQl2ub938GomBS8dIL0wulwU1b8O1byLf99ltNa3PEhcADy+pEor6pst9UYzHvJQkj1jdhe/IGCyMcBwshDglZPihWf+oEPRZKH1NAodwWs9bkrggV1Qkq/VyJj1fGzLBtbfXMr471NUP4dgmq1oqlRjPTgebOg2F105VaLIsM1j9m+GrWdQwLJB7FzFyerC+/KKYWo9IM0yd1+S3Q7vXObWZT71sgjLZKAAhcmYASW4pY/ndBbr9idN7nv67enFXXmFUyuVOLrvYWG26dvJaegpBj++VC9Mtz8E/pdB+j9AEbssWI6ziySZupcJ/LKMZrvWTXIjnvWB1R+bll9klxZLKTTU+bUqFnniLevhA/zQqwr6izsZlyrKbA8mHOGCNUIgFG+zMS3GKidUzT8dD3CJWVVLDc9IEaWGDdJfw0UONlDZSPyvmq/eUyXQmsjTJBUQDSa+s3gzC8uxcRFl/VsdIPfFMqyk2NFZBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,143 +104,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30 Jan 2026, at 3:15, syzbot ci wrote:
 
-> syzbot ci has tested the following series
->
-> [v1] Separate compound page from folio
-> https://lore.kernel.org/all/20260130034818.472804-1-ziy@nvidia.com
-> * [RFC PATCH 1/5] io_uring: allocate folio in io_mem_alloc_compound() a=
-nd function rename
-> * [RFC PATCH 2/5] mm/huge_memory: use page_rmappable_folio() to convert=
- after-split folios
-> * [RFC PATCH 3/5] mm/hugetlb: set large_rmappable on hugetlb and avoid =
-deferred_list handling
-> * [RFC PATCH 4/5] mm: only use struct page in compound_nr() and compoun=
-d_order()
-> * [RFC PATCH 5/5] mm: code separation for compound page and folio
->
-> and found the following issue:
-> WARNING in __folio_large_mapcount_sanity_checks
->
-> Full report is available here:
-> https://ci.syzbot.org/series/f64f0297-d388-4cfa-b3be-f05819d0ce34
->
-> ***
->
-> WARNING in __folio_large_mapcount_sanity_checks
->
-> tree:      mm-new
-> URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akp=
-m/mm.git
-> base:      0241748f8b68fc2bf637f4901b9d7ca660d177ca
-> arch:      amd64
-> compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1=
-~exp1~20251221153213.50), Debian LLD 21.1.8
-> config:    https://ci.syzbot.org/builds/76dc5ea6-0ff5-410b-8b1f-72e5607=
-a704e/config
-> C repro:   https://ci.syzbot.org/findings/a308f1d6-69e2-4ebc-80a9-b51d9=
-dc02851/c_repro
-> syz repro: https://ci.syzbot.org/findings/a308f1d6-69e2-4ebc-80a9-b51d9=
-dc02851/syz_repro
->
-> ------------[ cut here ]------------
-> diff > folio_large_nr_pages(folio)
-> WARNING: ./include/linux/rmap.h:148 at __folio_large_mapcount_sanity_ch=
-ecks+0x499/0x6b0 include/linux/rmap.h:148, CPU#1: syz.0.17/5988
-> Modules linked in:
-> CPU: 1 UID: 0 PID: 5988 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT=
-(full)
-> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-=
-1.16.2-1 04/01/2014
-> RIP: 0010:__folio_large_mapcount_sanity_checks+0x499/0x6b0 include/linu=
-x/rmap.h:148
-> Code: 5f 5d e9 4a 4e 64 09 cc e8 84 d8 aa ff 90 0f 0b 90 e9 82 fc ff ff=
- e8 76 d8 aa ff 90 0f 0b 90 e9 8f fc ff ff e8 68 d8 aa ff 90 <0f> 0b 90 e=
-9 b8 fc ff ff e8 5a d8 aa ff 90 0f 0b 90 e9 f2 fc ff ff
-> RSP: 0018:ffffc900040e72f8 EFLAGS: 00010293
-> RAX: ffffffff8217c0f8 RBX: ffffea0006ef5c00 RCX: ffff888105fdba80
-> RDX: 0000000000000000 RSI: 0000000000000001 RDI: 0000000000000000
-> RBP: 0000000000000001 R08: ffffea0006ef5c07 R09: 1ffffd4000ddeb80
-> R10: dffffc0000000000 R11: fffff94000ddeb81 R12: 0000000000000001
-> R13: 0000000000000000 R14: 1ffffd4000ddeb8f R15: ffffea0006ef5c78
-> FS:  00005555867b3500(0000) GS:ffff8882a9923000(0000) knlGS:00000000000=
-00000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00002000000000c0 CR3: 0000000103ab0000 CR4: 00000000000006f0
-> Call Trace:
->  <TASK>
->  folio_add_return_large_mapcount include/linux/rmap.h:184 [inline]
->  __folio_add_rmap mm/rmap.c:1377 [inline]
->  __folio_add_file_rmap mm/rmap.c:1696 [inline]
->  folio_add_file_rmap_ptes+0x4c2/0xe60 mm/rmap.c:1722
->  insert_page_into_pte_locked+0x5ab/0x910 mm/memory.c:2378
->  insert_page+0x186/0x2d0 mm/memory.c:2398
->  packet_mmap+0x360/0x530 net/packet/af_packet.c:4622
->  vfs_mmap include/linux/fs.h:2053 [inline]
->  mmap_file mm/internal.h:167 [inline]
->  __mmap_new_file_vma mm/vma.c:2468 [inline]
->  __mmap_new_vma mm/vma.c:2532 [inline]
->  __mmap_region mm/vma.c:2759 [inline]
->  mmap_region+0x18fe/0x2240 mm/vma.c:2837
->  do_mmap+0xc39/0x10c0 mm/mmap.c:559
->  vm_mmap_pgoff+0x2c9/0x4f0 mm/util.c:581
->  ksys_mmap_pgoff+0x51e/0x760 mm/mmap.c:605
->  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
->  do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f5d7399acb9
-> Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89=
- f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f=
-0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-> RSP: 002b:00007ffe9f3eea78 EFLAGS: 00000246 ORIG_RAX: 0000000000000009
-> RAX: ffffffffffffffda RBX: 00007f5d73c15fa0 RCX: 00007f5d7399acb9
-> RDX: 0000000000000002 RSI: 0000000000030000 RDI: 0000200000000000
-> RBP: 00007f5d73a08bf7 R08: 0000000000000003 R09: 0000000000000000
-> R10: 0000000000000011 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f5d73c15fac R14: 00007f5d73c15fa0 R15: 00007f5d73c15fa0
->  </TASK>
->
->
-> ***
->
-> If these findings have caused you to resend the series or submit a
-> separate fix, please add the following tag to your commit message:
->   Tested-by: syzbot@syzkaller.appspotmail.com
->
-> ---
-> This report is generated by a bot. It may contain errors.
-> syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+Unknown command
 
-The issue comes from alloc_one_pg_vec_page() in net/packet/af_packet.c.
-It allocates a compound page with __GFP_COMP, but latter does vm_insert_p=
-age()
-in packet_mmap(), using it as a folio.
-
-The fix below is a hack. We will need a get_free_folios() instead.
-I will check all __GFP_COMP callers to find out which ones are using it
-as a folio and which ones are using it as a compound page. I suspect
-most are using it as a folio.
-
-
-#syz test
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 2194a6b3a062..90858d20dfbe 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5311,6 +5311,8 @@ unsigned long get_free_pages_noprof(gfp_t gfp_mask,=
- unsigned int order)
-        page =3D alloc_pages_noprof(gfp_mask & ~__GFP_HIGHMEM, order);
-        if (!page)
-                return 0;
-+       if (gfp_mask & __GFP_COMP)
-+               return (unsigned long)folio_address(page_rmappable_folio(=
-page));
-        return (unsigned long) page_address(page);
- }
- EXPORT_SYMBOL(get_free_pages_noprof);
-
-Best Regards,
-Yan, Zi
 
