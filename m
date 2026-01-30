@@ -4,108 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2873E6BF1D
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:09:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83C58E6BF11
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:16:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1939E6B0089; Fri, 30 Jan 2026 10:09:15 -0500 (EST)
+	id C4B856B0005; Fri, 30 Jan 2026 10:16:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 141626B008A; Fri, 30 Jan 2026 10:09:15 -0500 (EST)
+	id BF9756B008C; Fri, 30 Jan 2026 10:16:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 022DC6B008C; Fri, 30 Jan 2026 10:09:14 -0500 (EST)
+	id ADB2D6B0092; Fri, 30 Jan 2026 10:16:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E4A4C6B0089
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:09:14 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85E53140665
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:09:14 +0000 (UTC)
-X-FDA: 84388963428.14.B94B191
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 623AD40007
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:09:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eGxqSab4;
-	spf=pass (imf27.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B3FC6B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:16:42 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3568C24E0
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:16:41 +0000 (UTC)
+X-FDA: 84388982202.11.E08FB1F
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C6767A000F
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:16:39 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=eV8qRC1G;
+	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769785752;
+	s=arc-20220608; t=1769786199;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=tzTC/YRi5F2hd1Pl/RqKe1MRTNrskbzbigksVfGUnyE=;
-	b=RLbX19tY5qJEFcmIWM01RSADx1TAXQdT/aeEh78tUuBEdhu0FQtLsEJcH5OJpLPJ7blYLP
-	LIzsKSva2X52bgl2zEGXCXNwpisuc3Rnxojq83enonJERw2aa9neLVh3HxYMYE/R+CbY++
-	Bd4IvY+yo61vzoWKw+5m+GHFGA81HP4=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=9si664lpAABtSRH5NCDTNiWW5Zo1E2FOdd2kZn8cRsw=;
+	b=lRfVW0lvwF6MKIHUybB3UaCso88RXhjbT0juy1IWDbj6xLy15LCxnWyg/UM95Ce3sZIZ/Z
+	em43WdA0qydI2OjUg1pwyX7cjpEPouMn9qHVnx0xk94+H1r7jn5v9PXyk8JO6umL4M9Q0j
+	jNRwogVxQr5wSargPckKpyqq1xEpB9k=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=eGxqSab4;
-	spf=pass (imf27.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769785752; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=eV8qRC1G;
+	spf=pass (imf25.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.41 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769786199; a=rsa-sha256;
 	cv=none;
-	b=I6uC05fryGaMEVU5UznthzI9yy7nETbrilcwnzoiHvPi5UyQcDZTys3YE1S540iTQsQmC0
-	x4omD6EyXWZTQdkRL2Nb7FDyKgEPP8rH38YSG9mb5i4UbLPhwYU7HbnJS4UkOqzAfNsHJi
-	8k2hURh4hINheGxLQYX8kjSKmUrygao=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769785752; x=1801321752;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vFZM82pSaymmTWBe40lRSwnDX7vpqqmpLiq/Cb19+88=;
-  b=eGxqSab4kR3kNQLOR9FXEb11j7xIr9OBgt68HmMbBahy6j0qGsD6/Bzv
-   Px7LTWNb88fVseKXoEqSIY2ia9Wlk+lXH+K+nG5/Ia+PcsOTRkczV8+pN
-   ydYkmmTl0pSH2v+aAOLDbEiaI8iCT++eI/9F1yjfZG9ojw+ezaaeNV+zZ
-   fdpiswGz0iqd7LxB+6dSqn3IHUw6GtRauWoNohLvJkipd0aTt4+lI7h3R
-   cvUanaFiC0qSkHlAQpM1dacN12x50x+bfJvPItFw8IceN9qGUGnXgEuQt
-   LVZKgzTWPKa0ZEQKhukuoltW4KGMq5xgh3UFIWtM0wSwmUOtOS425Vc0A
-   A==;
-X-CSE-ConnectionGUID: hEhjcD/hQ4WEopfExoQkLA==
-X-CSE-MsgGUID: SXGYu5ZiRDeuBGUW24eAVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="74659848"
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="74659848"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 07:09:11 -0800
-X-CSE-ConnectionGUID: AdpxE0LwSkGuKfBxrwrP3Q==
-X-CSE-MsgGUID: FC6X6yZ7QyuuUFA60B2CoQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="212950008"
-Received: from linux-pnp-server-27.sh.intel.com ([10.239.147.41])
-  by orviesa003.jf.intel.com with ESMTP; 30 Jan 2026 07:09:07 -0800
-From: Tianyou Li <tianyou.li@intel.com>
-To: David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>,
-	Nanhai Zou <nanhai.zou@intel.com>,
-	Yuan Liu <yuan1.liu@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>,
-	Tianyou Li <tianyou.li@intel.com>,
-	Chen Zhang <zhangchen.kidd@jd.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/memory hotplug: Fix zone->contiguous always false when hotplug
-Date: Sat, 31 Jan 2026 00:09:38 +0800
-Message-ID: <20260130160938.2671462-1-tianyou.li@intel.com>
-X-Mailer: git-send-email 2.47.1
+	b=fFh7+vRq+z0eT/p+bTdoM6s/yZP6H9pvvkGcxIUyq6yBXgYCGhmJ/gCY/h2fWVBkdP9USs
+	fNYBgHeZ0tOTlM6FAutPC9usAYDK6qpPMTFwnAcmrsCvQ22HioyXnPrdAOHJEV+qm0aDeQ
+	IDbSaBUHAL8qr0zPv95YGQpkpflga8Q=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-88a2e3bd3cdso26809376d6.0
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 07:16:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1769786199; x=1770390999; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9si664lpAABtSRH5NCDTNiWW5Zo1E2FOdd2kZn8cRsw=;
+        b=eV8qRC1G9Sc08PrsiJELUbqU1p5QcViBW7S6Rop037pkA0L6QE1JzbOHEuGN5lBaus
+         fz5ATZIQmKIKBVWFDlkq0jjejeu6o2C+kAcbzPgnC6VqTWxeMt90I8cIPBI4b3fw7jPn
+         dU3f8/4qsTfJ7eFK+2aLcuPadNFyA5N/lhlrBNRVCmDnS3H1G8zxXlhn1ecF6FA6AewX
+         82atkSIm+BrIxSOtMmyLxrwKhmO2iADX20yLQz4wbZ4113m5Ad4mAKh/jTVRbSqogYLG
+         cQ/KjNj2SuVLskJZ7tl/asHXb8oXMY018HqkaNtmeptQ/NsXVhDcEoWcT3IQnTBOFDDP
+         1Xgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769786199; x=1770390999;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9si664lpAABtSRH5NCDTNiWW5Zo1E2FOdd2kZn8cRsw=;
+        b=Q1iTmwu2tA2GC5rRxXpb6gx3RulGBSKDxTvzM8CIze6R5tsQJAZkByE9SfVMF0ZMt6
+         295H7Oxo9MnJLRh28OVmCQgzuzQwT9scjz3GA5Hp/f04M8UQChzvCWOHyWJ8dwZYsigU
+         CugyJLw+RY95ExhxMs730DGqIY7YK47hlZBkvPJHLaua/m9ZoIlwUSxy8jwFfqW94nWw
+         Z4WXQMnDq2030nmDM0kNJ1xJB6YQrPJ0FrH7T0YrXt5T1XZ943uHTYz1U5y450isVfHt
+         cXvqqN+l43LlIGt1IglWlsSS30OvYmG4kdIrro+v6imkdQRVSVtQtbyUC+j4SH2MPt24
+         FVfg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPHwRYJwS9qe1B8WX0zmcdoFm1aq32vJW+NA0/EpAJi4pb6xxBG34lQb4ZYO4uqD3aesTFP3LbjA==@kvack.org
+X-Gm-Message-State: AOJu0YwoOzXoKAOp5npvlPMwe11WkJM+xPUrHxywBQE/1NvKVdn1uJg7
+	0rzgzolvk7MokoU331HQBu7h+8zLZpwWWI+NpCt9a+jHtOPNqq6b0rCarzkHEUq86tk=
+X-Gm-Gg: AZuq6aJcjLAM+4GWnGp3bnINmiDw8qQhYafnJ7aJcl0+nZLcc20pRiidgHeJ15pwLQj
+	OYDQYTrc/bEFmTKgn5tDliaIJoPoq28DhynaP5qeTz6CLjAPP9U7PhDu4/L0YHOHfWf8BFB4GOY
+	mDvQx4gVAPMEcr7yVYzfSHBUaSzymZ1NZ0B0C5pMM5zKjAOkYNUQkxTwTfNVq/0/sQOeyVZg9U1
+	n8M1n1ozR+bSldtBmc6T59wr5ONdY+s9ZJ4RJJFQ+6p7WjNZzlvfIcl4U3m92iAOEGb/19Ns4Wr
+	pgs7ZJDZqMrHOAONoMN3Myvly6r9OI1kMDNb65HpHtRaW69VtuWYN0BhSiM5b7rSxGm45AccudG
+	wsxBbMgaJ2U4sNSgLXLYib8az2/ngvDhrGmbrJ0CwQMW8c3z+mkEJ/Aav0On0J5wrsrbNRSxTih
+	JGctRDUygQgdFHhwfWH4XPzrM8ssBroWSr1q5KyU4AdwjCEV8HlevkZM1z4OOTrfJXUF4=
+X-Received: by 2002:a05:6214:501d:b0:88a:4c50:3be0 with SMTP id 6a1803df08f44-894df970109mr86470926d6.6.1769786198441;
+        Fri, 30 Jan 2026 07:16:38 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5033745c5d4sm58414081cf.3.2026.01.30.07.16.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 07:16:37 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vlqEe-0000000BAef-38VG;
+	Fri, 30 Jan 2026 11:16:36 -0400
+Date: Fri, 30 Jan 2026 11:16:36 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Uladzislau Rezki <urezki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
+Message-ID: <20260130151636.GF2328995@ziepe.ca>
+References: <aXPEFdEdtSmd6AzF@milan>
+ <20260124093505.GA98529@j66a10360.sqa.eu95>
+ <aXSjm1DXm6yP62tD@pc636>
+ <20260124145754.GA57116@j66a10360.sqa.eu95>
+ <20260127133417.GU13967@unreal>
+ <20260128034558.GA126415@j66a10360.sqa.eu95>
+ <20260128180629.GT1641016@ziepe.ca>
+ <20260129113609.GA37734@j66a10360.sqa.eu95>
+ <20260129132058.GC2307128@ziepe.ca>
+ <20260130085131.GA122673@j66a10360.sqa.eu95>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 623AD40007
-X-Stat-Signature: frcg3boncnm1e35hhssju7o88ssqfcm7
+In-Reply-To: <20260130085131.GA122673@j66a10360.sqa.eu95>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: q79th16u4p1s6bifdxaf8p1qghddpe6b
+X-Rspamd-Queue-Id: C6767A000F
 X-Rspam-User: 
-X-HE-Tag: 1769785752-838976
-X-HE-Meta: U2FsdGVkX18Kqpf2/l8Mi7cTHlktKvwUt9wAYU5LpR+b8rMWFKE40Au3+scHFDwAf3ZpGl+fgpCuou4NdcpylJIFc2Ftl6y4S61bbVRUuXqkNLzvIbmRHBQ4XpX6tsWQT3ePyVDrCBUIlP9TBhYTJ8OPeXTwsQvmFPvk26Xo0H3nm2cvUXkKGcSxaU96a8ECBMtIRP2Uhho2lQKw26tCRLCzebYD/S47HrLbFZOW4Tnj8/OnC9i24lldAzvmhHI0qB4mGyyYxnZo2ijLHu85+WGf92KYR5+ydbk4z8mMpiT33ScbE60WXdq1Ok8Acj05kdIyuKcqm6eCrcpBRDvTrUfT8idz+UtwMPLcgYAYaR378CIOEB/12svoqNHbLN+BkVnDRM0vxNrH4HsVILsSn4LSiC8Db8t2adJCsIBI6aLKf3eWEfSF6+fy/3vhCddmkNIeJhUz0C2OiBMnoYkB/7AOEqSAi9RwMvcewNAJy6SVYOcBhEHHsNTgziYOVxynDyHDPXH3Qi2epkq0unPkOYMWO6gI4WXQozMWEM1d8Et213erHKx2FWjtsHzNNHBHxF1pwsyzCWjSvsgr/8VQ8u0OP0l5uDIY/eIUNYX86dY2XbRrkH4D/L8AVhnDzqIOp+mm54tx85fV3itQAO/HkQ5AonrcWNwTJgd4Bhx65+Z2xMMN4/yxAe7zkXhtbzXi7/6Hwl0E6ErVjlpRpwrBNQwFx3QVMPpje64yVYvdsdcMEcZFLsg4hIKeC2rvfC2kEaMZ6A2ThK0nCsUx/ytddO6Uve/EDROF0wTFrvImfJPk2qcT3wpYsKagUngP5tT6kMLPG8RZYefrtnLuIySWduft2uWkhvjjW12EXNul5pZsGwLfh/pxEc9mmGkpIo3qVYcho3MZGv8edK2gs+O7JrKeXfjI20rmoxWYXTW/YnxHF1Yl+YoAEXzLtMOAJkrUJd/Ui/vDeA3nzsNPGc5
- q0zeAhJ9
- K/N8EBzj5/++BP+7A9DBJ5WboC0RHXUiIJVb3lUuLQJzmHAHqxBhlJ3e8dS62mZSa/zg9NmOgpUE9Pv20auCjYrWA6A8jGvzg5WwPqU9tiUEuGYbcU0SHf79dbN/HQMccjN7Y2dQYDURyEaAppf5QjyROXJKGuBO+a2ptP4/IMO1MpbR99JHWPfrg5MNfSd8nmdfCS1LQOD7PShUEsJVLl+zOZFbCVenYQCKyGaGxlrElh/MSe7XpLBMyeYH3csXwEkB+tPeohnKN1zaIF6HBLVxwCJb31nu6Kp+Ygq9KrKXLsiqP/UjDyK53AZnAPlxWX+GNJF7+swtxK3M=
+X-HE-Tag: 1769786199-428242
+X-HE-Meta: U2FsdGVkX1+3KGMqEGZgyVVvW4bpqL5qy2W2zYEu2S/bnlIgq/c+1JlqsIotHfnGG9J3qlZ44AfdoQ/PWvT7dwZ8GXl4AsXIgjXdbXyTBSQpTEw7Gx1Bb175DqNHrwQo1WwZIN3K9Zghgo9kgimaKzsxHADGzkHQL+PjWlsX103Vww0XXtoArkXyJ9r4LdaMyom2Xcbr7wycJnyQyanSt9SUOFhkkEOoAr2qnoilsTLZ5wlB2qigC8o76SnYXwFXwiMC9l4HuvlWTrsu7I6BfgJoXhk6l4lFlDomeZnPWglLub2rTO1rk8OUuXmSym/1XxvgK7zcOHl6CUpm4/1b2gkheQ1YfDeFk7JZs+dWYfymt91R9VJrKBRyvLozjfB3CLr1Cl7gT4KW4gMLneR47xTGIpYh4t7G5rIUqHgLk0rry9DEvQENBAgIjCm6htanQYC1blTmE1kCd36v+ZSbD7MDMblh0eVoR3/TyCFjVdwJ9Dp6Hh9jL1u3n+fFEYchC5HGzKoqLZKBo0eXObSwyd24pEcappBCMjnLTOhkbbXAHH/yxXWgOKhOqVE66Vays7qA1WKfy9qMwAWxqV3VXtKd1fgozrhov63GJi2oF8b82EF4//xbT8rv4lRZq8s2bjrw3CCJrNJQgdi1OgQv/lzXi+ZXGUGxrEwbU7pTleGFM7rwrp08Xuo5jobwqEbwsANKFW2gNgpyHsqOnZCv2jNR7DLkeXU7/FBtcFZsVmE+rZFv8K1qcefW2NGAAaQgwq01W6F8HrS6EYY/qkTqY8hHL79IZXVfs97RUwGDyI0AnwLH+BTH3BU7styX+tCSyO6NViQmS0PUx/zVJ0ji5LfCkB3wqIyOAxrzROXdsQRW+GusI5qQG8RIJSbzobAWZgaeN+Q+DAE45xqbfrx8NocGI/S7hlP3XotHDxKl7zbpW03Ip+5UvxdFr62gKF/Sjj6WkJpH4MKAETmY6gR
+ kA1vcmk/
+ lpS3iKy/dVZT1+QOMUDJLsCUPmxHzf3hOUCGLQG1BPX6Q3rvMlA8b8GD1tcNMNGJoRta7wJ0CTuOGnOTVyDHuKn9NOcK2S7vOIwYmBpx41Kyo1Ow/QPmwuymVdFKuCIGN/8yQmjD3Fo2KBo0s/eqkOqvgfcGqAu49X5/1APkFr1O/mYU7rZk0MQoE8zkRahJkhgxrxOfppO1lXMUvVVHkl3MiGPdP9hyv11BO2N40WFne13Z6mP6Ywj+UbAgH5UJiEZAapLjZbm88NzqL6x6/k0/n8wbC0OwMJtcUuf59hdLp8WIYuBL2MHX6eiswU9/E6JB5Dy7+KuGttmOfKffyKnkJ+027Q0hggzMqcw1dxwN4qq2nz3/Pc9nBllz6u7UyR4qWv75F/H9pLkwlVQBykj6jlAbt5BKUiNH/qar4sdiD3Wl47eFFBBDHdi7AY7LcRg+g
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,66 +145,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Yuan Liu <yuan1.liu@intel.com>
+On Fri, Jan 30, 2026 at 04:51:31PM +0800, D. Wythe wrote:
+> On Thu, Jan 29, 2026 at 09:20:58AM -0400, Jason Gunthorpe wrote:
+> > On Thu, Jan 29, 2026 at 07:36:09PM +0800, D. Wythe wrote:
+> > 
+> > > > From there you can check the resulting scatterlist and compute the
+> > > > page_size to pass to ib_map_mr_sg().
+> > 
+> > I should clarify this is done after DMA mapping the scatterlist. dma
+> > mapping can improve the page size.
+> > 
+> > And maybe the core code should be helping compute the MR's target page
+> > size for a scatterlist.. We already have code to do this in umem, and
+> > it is a pretty bit tricky considering the IOVA related rules.
+> >
+> 
+> Hi Jason,
+> 
+> After a deep dive into ib_umem_find_best_pgsz(), I have to say it is
+> much more subtle than it first appears. The IOVA-to-PA relative offset
+> rules, in particular, make it quite easy to get wrong.
+> 
+> While SMC could duplicate this logic, it is certainly not ideal for
+> maintenance. Are there any plans to refactor this into a generic RDMA
+> core helper—for instance, one that can determine the best page size
+> directly from an sg_table or scatterlist?
 
-set_zone_contiguous() uses __pageblock_pfn_to_page() to detect
-pageblocks that either do not exist (hole) or that do not belong
-to the same zone.
+I have not heard of anyone touching this.
 
-__pageblock_pfn_to_page(), however, relies on pfn_to_online_page(),
-effectively always returning NULL for memory ranges that were not
-onlined yet. So when called on a range-to-be-onlined, it indicates
-a memory hole to set_zone_contiguous().
+It looks like there are only two users in the kernel that pass
+something other than PAGE_SIZE, so it seems nobody has cared about
+this till now.
 
-Consequently, the set_zone_contiguous() call in move_pfn_range_to_zone(),
-which happens early during memory onlining, will never detect a
-zone as being contiguous. Bad: the fast path relies on the zone
-contiguous state may skipped.
+With high order folios being more common it seems like something
+missing.
 
-To fix the issue, move the set_zone_contiguous() call to a later
-stage in memory onlining, where pfn_to_online_page() will succeed:
-after we mark the memory sections to be online.
+However, I wonder what the drivers do with the input page size, 
+segmenting a scatterlist is a bit hard and we have helpers for that
+already too.
 
-Fixes: 2d070eab2e82 ("mm: consider zone which is not fully populated to have holes")
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-Signed-off-by: Tianyou Li <tianyou.li@intel.com>
----
-Separated from: https://lore.kernel.org/linux-mm/20260120143346.1427837-1-tianyou.li@intel.com/
+It is a bigger project but probably the right thing is to remove the
+page size input, wrap the scatterlist in a umem and fixup the drivers
+to use the existing umem support for building mtts, splitting
+scatterlists into blocks and so on.
 
- mm/memory_hotplug.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+The kernel side here has been left alone for a long time..
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index a63ec679d861..c8f492b5daf0 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -782,8 +782,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- 	memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
- 			 MEMINIT_HOTPLUG, altmap, migratetype,
- 			 isolate_pageblock);
--
--	set_zone_contiguous(zone);
- }
- 
- struct auto_movable_stats {
-@@ -1205,6 +1203,13 @@ int online_pages(unsigned long pfn, unsigned long nr_pages,
- 	}
- 
- 	online_pages_range(pfn, nr_pages);
-+
-+	/*
-+	 * Now that the ranges are indicated as online, check whether the whole
-+	 * zone is contiguous.
-+	 */
-+	set_zone_contiguous(zone);
-+
- 	adjust_present_page_count(pfn_to_page(pfn), group, nr_pages);
- 
- 	if (node_arg.nid >= 0)
--- 
-2.47.1
-
+Jason
 
