@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DACFBE6BF1B
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:06:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2873E6BF1D
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 15:09:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BCAA6B0089; Fri, 30 Jan 2026 10:06:03 -0500 (EST)
+	id 1939E6B0089; Fri, 30 Jan 2026 10:09:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35FF66B008A; Fri, 30 Jan 2026 10:06:03 -0500 (EST)
+	id 141626B008A; Fri, 30 Jan 2026 10:09:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 283206B008C; Fri, 30 Jan 2026 10:06:03 -0500 (EST)
+	id 022DC6B008C; Fri, 30 Jan 2026 10:09:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A1646B0089
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:06:03 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BD2A614054C
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:06:02 +0000 (UTC)
-X-FDA: 84388955364.15.0355A77
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EACC380004
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:05:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YZZza7zn;
-	spf=pass (imf02.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E4A4C6B0089
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 10:09:14 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85E53140665
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:09:14 +0000 (UTC)
+X-FDA: 84388963428.14.B94B191
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 623AD40007
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:09:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eGxqSab4;
+	spf=pass (imf27.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769785560;
+	s=arc-20220608; t=1769785752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=PlZKUYH3q0zF+5pbmKMuyT//gcd58UDPHVNa2LFC7Qk=;
-	b=nYACz1CeES6GyXKCdLKASJpYJ03EENFqfx9JZ9vAe2TRG4txTnV7+mL8wGx8PF41mI8b6K
-	zqD1KHxPRH7yqMHr2JtT7m5TqSkvRjyOmYJMXL+OrQrwDsFP5bJdWk2MtMWIy926GINjGl
-	zqR1ZtNwpCNo8c4MNNtzLyPiYLvNi4k=
+	bh=tzTC/YRi5F2hd1Pl/RqKe1MRTNrskbzbigksVfGUnyE=;
+	b=RLbX19tY5qJEFcmIWM01RSADx1TAXQdT/aeEh78tUuBEdhu0FQtLsEJcH5OJpLPJ7blYLP
+	LIzsKSva2X52bgl2zEGXCXNwpisuc3Rnxojq83enonJERw2aa9neLVh3HxYMYE/R+CbY++
+	Bd4IvY+yo61vzoWKw+5m+GHFGA81HP4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=YZZza7zn;
-	spf=pass (imf02.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eGxqSab4;
+	spf=pass (imf27.hostedemail.com: domain of tianyou.li@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=tianyou.li@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769785560; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769785752; a=rsa-sha256;
 	cv=none;
-	b=rJoqrwCOl0d3X0vejaz0kIIUydhjbkTM4LqOCM+FSxw24JF5sgL3q7R03LhDhUux5RJtLS
-	dPMdf7gTi5fYkCWhG4NtJJW9+YtsGICaylZRtvzNBBMNzRbdfXxFnFM3Bcp9WKeIRgwgaw
-	IDlhMpJ9FhfUYDjB/QaeZU7LwPm1DlE=
+	b=I6uC05fryGaMEVU5UznthzI9yy7nETbrilcwnzoiHvPi5UyQcDZTys3YE1S540iTQsQmC0
+	x4omD6EyXWZTQdkRL2Nb7FDyKgEPP8rH38YSG9mb5i4UbLPhwYU7HbnJS4UkOqzAfNsHJi
+	8k2hURh4hINheGxLQYX8kjSKmUrygao=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769785560; x=1801321560;
+  t=1769785752; x=1801321752;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=z4itQQ8EdTou0Lagf7D+EwlyGfKDCiq3jLuL7LgiGg0=;
-  b=YZZza7zn69QUVfN3C+ZQ3BkT4UHqxUlmrvxY5+k29r8YkvSmuSyYXyaK
-   TuYxRAZWX9huCWkAdh2NU0mhxipAd86IMyWjV9DinbpyKCMZ2epNf5+Lj
-   1GHdeX3AfElAkYZr11vTrJYAUCt7dU9/LrYvzMwj/1gTBnU6ROBCqtaVy
-   b+3zHB0cMsKGNQA9Rd+SIo2c42uLYx3cbIoJrVMyuIaLv3xyHsoPGs7nw
-   mWMI4U1rJcHP0yWmggVmyt70/nymcCm5uK+Jv6ldIv4ViAU9MX53flR0j
-   AF3e5ghfpSYxqEs9gLM4nGce1+K+a1PwYnkSsr6hSi4E5FAyFCKh+iIVf
-   w==;
-X-CSE-ConnectionGUID: w4Stl5uYRxysntjyfdQpPw==
-X-CSE-MsgGUID: ftZlyFCeTGKulV2ZQhQVBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="71013655"
+  bh=vFZM82pSaymmTWBe40lRSwnDX7vpqqmpLiq/Cb19+88=;
+  b=eGxqSab4kR3kNQLOR9FXEb11j7xIr9OBgt68HmMbBahy6j0qGsD6/Bzv
+   Px7LTWNb88fVseKXoEqSIY2ia9Wlk+lXH+K+nG5/Ia+PcsOTRkczV8+pN
+   ydYkmmTl0pSH2v+aAOLDbEiaI8iCT++eI/9F1yjfZG9ojw+ezaaeNV+zZ
+   fdpiswGz0iqd7LxB+6dSqn3IHUw6GtRauWoNohLvJkipd0aTt4+lI7h3R
+   cvUanaFiC0qSkHlAQpM1dacN12x50x+bfJvPItFw8IceN9qGUGnXgEuQt
+   LVZKgzTWPKa0ZEQKhukuoltW4KGMq5xgh3UFIWtM0wSwmUOtOS425Vc0A
+   A==;
+X-CSE-ConnectionGUID: hEhjcD/hQ4WEopfExoQkLA==
+X-CSE-MsgGUID: SXGYu5ZiRDeuBGUW24eAVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="74659848"
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="71013655"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 07:05:59 -0800
-X-CSE-ConnectionGUID: OS+Ay1+8STmH7nrELmRnXw==
-X-CSE-MsgGUID: VSHojw0JQHm9OFBmlmf1kg==
+   d="scan'208";a="74659848"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 07:09:11 -0800
+X-CSE-ConnectionGUID: AdpxE0LwSkGuKfBxrwrP3Q==
+X-CSE-MsgGUID: FC6X6yZ7QyuuUFA60B2CoQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="231798299"
+   d="scan'208";a="212950008"
 Received: from linux-pnp-server-27.sh.intel.com ([10.239.147.41])
-  by fmviesa002.fm.intel.com with ESMTP; 30 Jan 2026 07:05:55 -0800
+  by orviesa003.jf.intel.com with ESMTP; 30 Jan 2026 07:09:07 -0800
 From: Tianyou Li <tianyou.li@intel.com>
 To: David Hildenbrand <david@kernel.org>,
 	Oscar Salvador <osalvador@suse.de>,
@@ -92,20 +92,20 @@ Cc: linux-mm@kvack.org,
 	Tianyou Li <tianyou.li@intel.com>,
 	Chen Zhang <zhangchen.kidd@jd.com>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v9] mm/memory hotplug: Fix zone->contiguous always false when hotplug
-Date: Sat, 31 Jan 2026 00:06:35 +0800
-Message-ID: <20260130160635.2671167-1-tianyou.li@intel.com>
+Subject: [PATCH] mm/memory hotplug: Fix zone->contiguous always false when hotplug
+Date: Sat, 31 Jan 2026 00:09:38 +0800
+Message-ID: <20260130160938.2671462-1-tianyou.li@intel.com>
 X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: EACC380004
-X-Stat-Signature: jzho688on3jn464bdtaf7r9ywhtao9fe
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 623AD40007
+X-Stat-Signature: frcg3boncnm1e35hhssju7o88ssqfcm7
 X-Rspam-User: 
-X-HE-Tag: 1769785559-580183
-X-HE-Meta: U2FsdGVkX180AbeF54ayus02LnJc5qjMyUtrVrcIXD+IKlcrIQHJEKR+qCElnIPY/1odFFPnxR+ansAvPqx7+0sI6GfN8XgprgJqG9D+W023uYFfwPrHQ+RPsLtXEPRZqTPny0nChaBswNxzNSPt4LuaM1sPHsevWINOv6NJ4Cc/3dSlFXsL8M+Ukxz/pf37s1fypxPkPPPlN2i/80JvVVQtDxALUMfUPaHuHFv8Sx1nFsI9QPrX+dLi8t3irH8gsPH4vwefHkxIimfrpY8qwt5NriWMk62sm+MIDmEIGIWZiqNSQSs0MgrBJAwRTFIqti9WbL0bB3GZrqDtwXeuLBP2FHGG+L6ihssQJv0bk8MYxriLBNL0R7+/zT2jOHfRfij2ou2Tz3JY2V8OsIj0Pols3El3WFDaItGqWliwZiWGPP1SfTP+bTl5x73rj6waxFqD7OSMRtvUMi+2fS6mUqlLi5K6Raa46ULm4DCi1krpGP/tm5B0fdmZpE4NpbOWPs8f8v2/OYELnI7bi7ZeWflG97iTjWrs7/clDYrQ/WIFeYXOSiPF7zUeCieSBylWbPPv44GQb+PKJ6Tz6DytxTZw21WfX/MuCzk342w7eAgvBIsjkwzkndYC04hkW4/1iMEodeceMAkWB1P5dCxIO69TLRPAou1x6b2dOBG1Ikwrk1kNIua3ba7VbVHJh52ixIETZZ3alxnQSnfp/Psv7ZETLMA1+/RPWpGXjyvxYpiCFQQXLtzQb4VVX4o3b8c8lirVghtwp0r9hBa/xqZpjEyJRlFIOKrWoF650cbF1H8P2ZSXJoSgy1TuieXL6pM7A65m+As0WsOKSephzpiwHjEorGOYxy0o7i1thpavVKolv6kGOFy9EyIetsQb/PWFnz3h18lg+3735SORrM/V2uuy73OotDKdU3TygB2pPjdDHwoqVgXiSTooLF9w4XML58sCIWR91HXBoUYhZiN
- GNl6wN53
- DhI2N6c/TsBsgPMf/Dw9po1CgnBMfN3EgbEtE7735Nye4NrfEjXEbLDqnhBwApuSl+bZw+bIW6BhJ1Hj0lMCuqvkGAkLDxHEQ/FvKoFbvYTS9biQpwnXt6ICRJfYsvMKvrZ3btlVprvgRk6Y9X8rKFNxGSvfEl8MCXPz9eU96ER1da+FoWc5Mvvwj9ZAEaLnBZlpl7Rb7y77HFpYJgiLsbqcZqTtLW3eaeWZSyw7WSSHicjz8Xm4kxVPG9dtaKetCFgp+Kat0+pgIu5pb79V79cPW//JFXbN4PklX263HcTZ3Ir6oMk5IVoJCRhYn4CuVTBCWEwtK7uW+zzo=
+X-HE-Tag: 1769785752-838976
+X-HE-Meta: U2FsdGVkX18Kqpf2/l8Mi7cTHlktKvwUt9wAYU5LpR+b8rMWFKE40Au3+scHFDwAf3ZpGl+fgpCuou4NdcpylJIFc2Ftl6y4S61bbVRUuXqkNLzvIbmRHBQ4XpX6tsWQT3ePyVDrCBUIlP9TBhYTJ8OPeXTwsQvmFPvk26Xo0H3nm2cvUXkKGcSxaU96a8ECBMtIRP2Uhho2lQKw26tCRLCzebYD/S47HrLbFZOW4Tnj8/OnC9i24lldAzvmhHI0qB4mGyyYxnZo2ijLHu85+WGf92KYR5+ydbk4z8mMpiT33ScbE60WXdq1Ok8Acj05kdIyuKcqm6eCrcpBRDvTrUfT8idz+UtwMPLcgYAYaR378CIOEB/12svoqNHbLN+BkVnDRM0vxNrH4HsVILsSn4LSiC8Db8t2adJCsIBI6aLKf3eWEfSF6+fy/3vhCddmkNIeJhUz0C2OiBMnoYkB/7AOEqSAi9RwMvcewNAJy6SVYOcBhEHHsNTgziYOVxynDyHDPXH3Qi2epkq0unPkOYMWO6gI4WXQozMWEM1d8Et213erHKx2FWjtsHzNNHBHxF1pwsyzCWjSvsgr/8VQ8u0OP0l5uDIY/eIUNYX86dY2XbRrkH4D/L8AVhnDzqIOp+mm54tx85fV3itQAO/HkQ5AonrcWNwTJgd4Bhx65+Z2xMMN4/yxAe7zkXhtbzXi7/6Hwl0E6ErVjlpRpwrBNQwFx3QVMPpje64yVYvdsdcMEcZFLsg4hIKeC2rvfC2kEaMZ6A2ThK0nCsUx/ytddO6Uve/EDROF0wTFrvImfJPk2qcT3wpYsKagUngP5tT6kMLPG8RZYefrtnLuIySWduft2uWkhvjjW12EXNul5pZsGwLfh/pxEc9mmGkpIo3qVYcho3MZGv8edK2gs+O7JrKeXfjI20rmoxWYXTW/YnxHF1Yl+YoAEXzLtMOAJkrUJd/Ui/vDeA3nzsNPGc5
+ q0zeAhJ9
+ K/N8EBzj5/++BP+7A9DBJ5WboC0RHXUiIJVb3lUuLQJzmHAHqxBhlJ3e8dS62mZSa/zg9NmOgpUE9Pv20auCjYrWA6A8jGvzg5WwPqU9tiUEuGYbcU0SHf79dbN/HQMccjN7Y2dQYDURyEaAppf5QjyROXJKGuBO+a2ptP4/IMO1MpbR99JHWPfrg5MNfSd8nmdfCS1LQOD7PShUEsJVLl+zOZFbCVenYQCKyGaGxlrElh/MSe7XpLBMyeYH3csXwEkB+tPeohnKN1zaIF6HBLVxwCJb31nu6Kp+Ygq9KrKXLsiqP/UjDyK53AZnAPlxWX+GNJF7+swtxK3M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,9 +140,7 @@ Cc: stable@vger.kernel.org
 Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
 Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 Signed-off-by: Tianyou Li <tianyou.li@intel.com>
-
 ---
-
 Separated from: https://lore.kernel.org/linux-mm/20260120143346.1427837-1-tianyou.li@intel.com/
 
  mm/memory_hotplug.c | 9 +++++++--
