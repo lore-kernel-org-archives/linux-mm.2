@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 673F5D73EB7
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 04:50:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25C1BD73EB7
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 05:47:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EAD76B0005; Thu, 29 Jan 2026 23:50:30 -0500 (EST)
+	id E35CD6B0005; Fri, 30 Jan 2026 00:47:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 798AC6B0089; Thu, 29 Jan 2026 23:50:30 -0500 (EST)
+	id DE37A6B0089; Fri, 30 Jan 2026 00:47:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A4CE6B008A; Thu, 29 Jan 2026 23:50:30 -0500 (EST)
+	id CEFDC6B008A; Fri, 30 Jan 2026 00:47:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ADCB6B0005
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 23:50:30 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BB0016B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 00:47:10 -0500 (EST)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F077B8BE4E
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 04:50:29 +0000 (UTC)
-X-FDA: 84387404178.20.B1D24F7
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 98D08A0009
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 04:50:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MTZFazTp;
-	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 039AE13A56F
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 05:47:09 +0000 (UTC)
+X-FDA: 84387547020.20.41C9C41
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CA226140006
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 05:47:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WMI9hY1q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769748626;
+	s=arc-20220608; t=1769752028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o0LolDkIeVgydx+lUvvnJuU5rTPe49ECMjoBW0cqVvs=;
-	b=1sAnthQe8Wch0nJO2U0Q7s9tqTAMQUjZKbI4YQryB+dD9G2LQkUt2nf5tcWxRFaFMfxJiu
-	qWKOWpVgdvIEhZG05UErblhZ1IzF7a3tyHwRRl0J/7d3cxeqqQhvGRkSY5vw3IfSDQm+pU
-	0qcWY5wyYcUQKafBdJ3vyAKNNowkyvc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769748626; a=rsa-sha256;
+	bh=77Nrg4O5LoXp8ea1NF3SV8uU8VwqaIAVT4aaN0oPDq8=;
+	b=Rc+gVcanERQapHztdnTnnDSJJMcI1uL3UoZy3O7MhGr29WIdRj4eYQHvr8vaYWjQq7wqd+
+	osuZyaNxVMmmptMh+d2zlu23AxQ4iaLwQ9d+Bfun9B76gkfiKJCK8gEavL8O1qOTA13Ek7
+	z6qDUhhIuQ28naomtY8PpEqjkugQdhA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769752028; a=rsa-sha256;
 	cv=none;
-	b=cw93tEqs7G/6LohvZTGGWhvcJEQBi8RWG43K47N0IJ4p1nbtVv5uje70H8BOYmepd1i8PO
-	VeK0p0Gi/aD7joE+2yNcdwIpw3oURc7rpICY8h4fEWg/G8yQzGeiL0WUPv9uGIEH3bF2JI
-	0mPrBrJgn3RiCvpmaavwXzmCzinh0z8=
+	b=B4UC002/pbFICCX+EwRE+X6DGtk2knZ0xJuL7yNRCoN/7r97MKiJnvQKn5nrA7ZxiT2uJu
+	RCNmxlwQwcer4+TFjoaUsRRTlcQZmEB6saAfNNUMJQbnG/jUUZHaC7lCpfbL2bIwJsGgVT
+	dlyluzC0CyL5Ej4RsTaPUG0vKSU4sxI=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=MTZFazTp;
-	spf=pass (imf25.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Fri, 30 Jan 2026 12:50:14 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769748624;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o0LolDkIeVgydx+lUvvnJuU5rTPe49ECMjoBW0cqVvs=;
-	b=MTZFazTpwQLBt1p5zzHs+rma+lbyv5QWgJkSiS9D4crkD4svGk6zMNRkBBOlfbtGIM7EBl
-	x3t9H03Th8ZE0Qej3gyM1d7zBQMDVKS4xaOXnWVv32LGA+bR+zq9bmeU3zks099YfXMfZN
-	kTbWJy/VQ4TwieXIANt3LxLHCreyKqM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>
-Subject: Re: [PATCH v4 00/22] slab: replace cpu (partial) slabs with sheaves
-Message-ID: <pdmjsvpkl5nsntiwfwguplajq27ak3xpboq3ab77zrbu763pq7@la3hyiqigpir>
-References: <20260123-sheaves-for-all-v4-0-041323d506f7@suse.cz>
- <imzzlzuzjmlkhxc7hszxh5ba7jksvqcieg5rzyryijkkdhai5q@l2t4ye5quozb>
- <390d6318-08f3-403b-bf96-4675a0d1fe98@suse.cz>
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=WMI9hY1q;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf26.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769752023; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=77Nrg4O5LoXp8ea1NF3SV8uU8VwqaIAVT4aaN0oPDq8=;
+	b=WMI9hY1qCP4M3Jf/mN1vNukwdcL2LGZBKpFvu5r99pUH/W7dAYIwYl16Q46XeaBIcdm7hhMjDjL398gxVNOrLAx25Aai60A3qF2HzTmv7zWx69LNt0lj5xS8WlUacCcmoWyHAd/bh6dEAEcMGq4EHHCNO8bkDZ05tyVQxFP2WOQ=
+Received: from 30.74.144.133(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wy9eGt5_1769752021 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 30 Jan 2026 13:47:01 +0800
+Message-ID: <98256ecd-2b1f-42e9-9569-445909a1d223@linux.alibaba.com>
+Date: Fri, 30 Jan 2026 13:47:00 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <390d6318-08f3-403b-bf96-4675a0d1fe98@suse.cz>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 98D08A0009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: khugepaged: fix NR_FILE_PAGES and NR_SHMEM in
+ collapse_file()
+To: Shakeel Butt <shakeel.butt@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Rik van Riel <riel@surriel.com>,
+ Song Liu <songliubraving@fb.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Usama Arif <usamaarif642@gmail.com>, David Hildenbrand <david@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260130042925.2797946-1-shakeel.butt@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260130042925.2797946-1-shakeel.butt@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: CA226140006
+X-Stat-Signature: n7oot61gg8qor7iqjm3piuyspfptorfo
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: gqcz5k8t1juzefcqtunccwjmsnfnyfeh
-X-HE-Tag: 1769748626-693333
-X-HE-Meta: U2FsdGVkX19e49bV3g55Dbji+kNJ7xdfgwbo2R2ixjkV1uSUHdaI0/zFkC+PCp/y2t5b/hef+ZoZ6ohuz65dhv2MCNpaAOfNdf7ENhLABHI0YmtKoyiZOPZBSM4oUwxU0KCcIadhIFRMCRDX8jiDriXVrB4bC/SLGYG6zvvnB7ZRO6MERdyurvmP4e2LRXTPIrJuFFeSKhA70vHMAmv6rlXXCpDGYtDW2O7oG8478J/ZM/w9mlC9/OXbrW1A4EFFwVFAdq0+iB35A05OEIZeXN9Fp1MeMOxXwK2bYojwudYA2OKeRqIB3i6a/B1Nc980lmLAqbgHQPJfHA1ljEOZAG6C42RUrP+jtwgytrL11MksGNSqOAKCxlWVj2Y5IBq4K4dkUNZBTX7sutpsZ065xAwrWaXC1HHD8vZaRN/xro+KVg91pAFMbxL1opMl6r5Tl1iR2fG9DpRoQ091HCGXNPSgHGgRotEVx4myL2iqXIDBB1xd1oPFp4YAjSi8KpPu08+XuruAUxnDrTN82b8KiGIfYh+NYxYvlq3AIq6qWGQScm/nzM7ne8uHDseAlvOKWIDMLa0HbWzmQ+I5RmJX4XpytytUJfjbAtD4onUJfyIqvCpA9+fd3DCJcOEz1EydlVWr6kZyxEODv7acw2dtqcuDKDJWAPyfzWLyvmcJeStbnJa796De+9SyjVqi0/XpCGf7upKl65odYlTr+NC5AeR2VwJ17JaeiM9yTLUhxgOjh7gn5I6W8+d8YF7XRWSRxygPbOqJghBN0kAVNa6zn5rMx0asutVjV4tg0VN7kWezRbe5iJHaDtuRz8b98h4fVxtb+5dqv/ZL875//JFkfiWT9R7AGiflhJwbUYnglbNJc1QZkD6qS1YRAZSXGS2saSOv+91Neyzhh2AtlUoE0nzy3/bFti/ozM/gar17MlYPH4z1jGxYkLkbcQj22nRmWMfspt8C5PjL7HOTEa0
- w2ZhoY/k
- WmvqzMXegXrFvtmR0kxXOC5tl1IfowA/mctidUQD7BSnQTj4seVHpuNqFIgj/W4fVQRv+epeHZcv+IJuvgsrho1uBGBzKYCQjCTtrv0gUhXXgus2iukpQfpXOXpnZN1oBBXnVIIlslpNUf5SGyyImm0BK2/ZcquCaHyP8KtNHNGkrz03NM4JSL4xke5DC0rcB7Y3RAcezj0CGsVY=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769752026-230206
+X-HE-Meta: U2FsdGVkX18LpqBSDWybNngQnchfT16g4UQCkqks2ZBTvsYpRzLN4IeW/NOZYQt3bEzmdxrFQj+SdMSGIy9bujQmvaiWPFlj9eY7YZC2m4RStRYLu/jCq7qRI6tEKir4kraAeWoMLSbiyAn+aT5ScH2UPkH4hYedMsNrE4gyu1rHHjJoXRl19WCpsLiJlShxmX6pD8VG6euvVsSg/EwAjTg6tstIBphp1lGuVCyA6Hdj+S7S7+gWh6PH8fUDFM+ptb3RzkkfEg2zfhu40R5qMzQ8ybfhA9PNKMfUssHbwsYV4MLGr7AlukfvWZW6JA+eqBtfl2J6sKWk+fGHYpK/TPDOmgYSVGlwQEikKzgG+kPb0HPufc099JbilSgFJf/86eK5q+Cf1LuQR0X4rXHeD6bQlrc3o5GZIuoyo2rvsmMrs9rh3dIF0MJm/ia7vRipE0iye1XvBcaboPNrEqAMA0ty97QKJz7sz6mfZ1FGpdOWDpofjxCWFqcWtW2e5/ygHYd4Cvs2aV0dWSRxvJPRcctxRNpO/4sxPniRndJdnKvzWirtTrRUy+HoV4z0guVjGvu3OZBSiNPPRDvKNqeJk5dIR1AbRAai9ocG7kQPVBoVk4i3W3FwN0f28SrAJS5XLBT6DbXycXxahtpHpQ6PRTGbGPukaAIoli0EuFtfzbtZWx+pwI7ssLIXOdvyP1CdlOxHJOIX2p6S1poJwmOhcGYxT2GqcAwypF9kWm2gLMJUm5pNYrWQi0HNTiRW7Pu55iLIqCeixZMgVdGb6Uxd7zmhTGQRqbsNCN20YDg1UeL111qemFdMGxsR41jhT63bx6hTiR2IPEi1ScdAdqOr+0GWHWLF1wpE8sHQzkEVnYvGGoY1k3MuUmYWQiHWjX04peYfASPLSu0IHsOU1BdeREFYPe2kPDHaeDesVzjLftQ6gWrD77Gd+tU5xzHmfaUOTlGoIFii7TJXNLFq9jv
+ 6LmaswoQ
+ mXVnk3TkmWK6xu7wpX5u8xqBAwiN49Ev7JKF3dSDrFKIuhP6L9AMDjNPxFsp3tuBL6cWkoKnFJtJ1FKUP8mBS3dUxoS8r5koqwqhS/NhAlZLeakCpGb+58M3IG9Myg23cPsn2b5zs9ZyLcehXbWyKGid0kVeooGBSF6eg6aL0XNIVPs1S32CgBInxh1rDFSxLtaWT86xaFTkTwf10UTVYydMktza8Zi2fOQu2WPyV1dOLOau8lhTJi+zGbL+tKixIg9KD+icBggvKasg3azZcrAzDRv/lFqafxoDzr2mqAVh04Bbqe25FBFoRfCfvn9kfY353RX7qYpw+mSyuRT1/TF5IAz7tSdvFNklM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,58 +96,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 04:28:01PM +0100, Vlastimil Babka wrote:
+
+
+On 1/30/26 12:29 PM, Shakeel Butt wrote:
+> In META's fleet, we observed high-level cgroups showing zero file memcg
+> stats while their descendants had non-zero values. Investigation using
+> drgn revealed that these parent cgroups actually had negative file stats,
+> aggregated from their children.
 > 
-> So previously those would become kind of double
-> cached by both sheaves and cpu (partial) slabs (and thus hopefully benefited
-> more than they should) since sheaves introduction in 6.18, and now they are
-> not double cached anymore?
+> This issue became more frequent after deploying thp-always more widely,
+> pointing to a correlation with THP file collapsing. The root cause is
+> that collapse_file() assumes old folios and the new THP belong to the
+> same node and memcg. When this assumption breaks, stats become skewed.
+> The bug affects not just memcg stats but also per-numa stats, and not
+> just NR_FILE_PAGES but also NR_SHMEM.
 > 
+> The assumption breaks in scenarios such as:
+> 
+> 1. Small folios allocated on one node while the THP gets allocated on a
+>     different node.
+> 
+> 2. A package downloader running in one cgroup populates the page cache,
+>     while a job in a different cgroup executes the downloaded binary.
+> 
+> 3. A file shared between processes in different cgroups, where one
+>     process faults in the pages and khugepaged (or madvise(COLLAPSE))
+>     collapses them on behalf of the other.
+> 
+> Fix the accounting by explicitly incrementing stats for the new THP and
+> decrementing stats for the old folios being replaced.
+> 
+> Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> ---
 
-I've conducted new tests, and here are the details of three scenarios:
-
-  1. Checked out commit 9d4e6ab865c4, which represents the state before the
-     introduction of the sheaves mechanism.
-  2. Tested with 6.19-rc5, which includes sheaves but does not yet apply the
-     "sheaves for all" patchset.
-  3. Applied the "sheaves for all" patchset and also included the "avoid
-     list_lock contention" patch.
-
-
-Results:
-
-For scenario 2 (with sheaves but without "sheaves for all"), there is a
-noticeable performance improvement compared to scenario 1:
-
-will-it-scale.128.processes +34.3%
-will-it-scale.192.processes +35.4%
-will-it-scale.64.processes +31.5%
-will-it-scale.per_process_ops +33.7%
-
-For scenario 3 (after applying "sheaves for all"), performance slightly
-regressed compared to scenario 1:
-
-will-it-scale.128.processes -1.3%
-will-it-scale.192.processes -4.2%
-will-it-scale.64.processes -1.2%
-will-it-scale.per_process_ops -2.1%
-
-Analysis:
-
-So when the sheaf size for maple nodes is set to 32 by default, the performance
-of fully adopting the sheaves mechanism roughly matches the performance of the
-previous approach that relied solely on the percpu slab partial list.
-
-The performance regression observed with the "sheaves for all" patchset can
-actually be explained as follows: moving from scenario 1 to scenario 2
-introduces an additional cache layer, which boosts performance temporarily.
-When moving from scenario 2 to scenario 3, this additional cache layer is
-removed, then performance reverted to its original level.
-
-So I think the performance of the percpu partial list and the sheaves mechanism
-is roughly the same, which is consistent with our expectations.
-
--- 
-Thanks,
-Hao
+Thanks for the fix. LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
