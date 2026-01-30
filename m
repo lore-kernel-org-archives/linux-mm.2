@@ -4,135 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78ADEE6BF17
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 14:18:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE0B0E6BF11
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 14:42:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE32B6B008A; Fri, 30 Jan 2026 09:18:37 -0500 (EST)
+	id B63696B0005; Fri, 30 Jan 2026 09:42:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A64C76B008C; Fri, 30 Jan 2026 09:18:37 -0500 (EST)
+	id B10DF6B0089; Fri, 30 Jan 2026 09:42:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 939F66B0092; Fri, 30 Jan 2026 09:18:37 -0500 (EST)
+	id 9F2BD6B008A; Fri, 30 Jan 2026 09:42:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 81DA56B008A
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 09:18:37 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E1E81A04E4
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 14:18:37 +0000 (UTC)
-X-FDA: 84388835874.12.F55AE59
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
-	by imf21.hostedemail.com (Postfix) with ESMTP id E74EF1C0004
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 14:18:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=snai.pe header.s=snai.pe header.b="o8mLdw/f";
-	spf=pass (imf21.hostedemail.com: domain of snaipe@snai.pe designates 209.85.128.181 as permitted sender) smtp.mailfrom=snaipe@snai.pe;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769782715;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F3166B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 09:42:37 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D2505909A
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 14:42:37 +0000 (UTC)
+X-FDA: 84388896354.21.7305696
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id A6D4440013
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 14:42:35 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrC9r4HM;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769784155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fVl/DuPjpWBTzeLaOSIU4kHMwzFTVV5s3STIHrfTBKU=;
-	b=v/YvvFIWcQPipMPOc8uSC3WE4GyPs7KOAm7Sc9Y3fSrkAyBtSviyA47Y7To7T5ZvLHVgSc
-	bVY1cVxy/txe9sB1tf2BgXQ8UikVlFI1JnWuSywv6R0yafAyukNbCuGZaL4tbh0ZxOgAE5
-	+tbq7MuyGdtC34kCVJ4oJJgzEK7hamI=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=snai.pe header.s=snai.pe header.b="o8mLdw/f";
-	spf=pass (imf21.hostedemail.com: domain of snaipe@snai.pe designates 209.85.128.181 as permitted sender) smtp.mailfrom=snaipe@snai.pe;
-	dmarc=none;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769782715; a=rsa-sha256;
-	cv=pass;
-	b=JmG2QLfPufD9YTcci2FNOD2SYdY7Ivdxl0qzN1vn5fXWQMv5KhoXNrCmv79bPx2jM/CRBu
-	pCdth5CaI+f12bHArs4mKQ57yqAqkIL2Ho2PzkBD09hgUTVps0p5TwNWoWwvogmnh1OJ4y
-	hLN+uIGSXIoOyDqbSDt483mT13rLySM=
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79273a294edso21275247b3.3
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 06:18:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769782714; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TulquSlDnMKAoKHTIQfMPMzIUzgytkltWKrXH5hC3aTmlFclR2DMxnGHj2KqxNToMf
-         i0dCp7wIFswfUqdnWnQBqk080imejGCWAkh7jqXCdGlBvPMtf2GJ273bcwSeN4TcALLe
-         giaZKjl5rSAvIx8uLr2cJ2hu19+8NpmlhOJ9gdBHU5yEv904I7oT1PoVcVt5m8w4CxQ+
-         edYbZxdLoGTt96Rj0WOENO+hfTc3Z5kMtfxq8rHYjVtjfpzfU08DSwTqgn8ctO9JmGFE
-         L7ak+hUa1j+ud6+OsOMW6hWMfkrnPVASNDedgBdQkWXFq53p7bbl02MgP0zsqJSK8dOF
-         c2Qg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fVl/DuPjpWBTzeLaOSIU4kHMwzFTVV5s3STIHrfTBKU=;
-        fh=M4h29L9i71Z+al3+Vhy+70POrW7Ry0B/HpxaIwYM2e8=;
-        b=SmLbZnoxFrFfSzFl/CN2akRrKVXnbkFaemI2ulxE1hf6IUPQSvrBJGvuxvmjhG8yLg
-         xsbyhHPv8tQtJDJy1di+jsEsUDrfO3WEGufQ31OxnFZxWWlAR4jORg1CL6fOaU+jizuP
-         fbsLjWtay33wEDkjpkaprP5xtZtOmfq3TevhnHiUtVuX9+g1lmzhd/iBC7cASbSVnDfv
-         R2LO8BUDdouIQXga3E472oarWBCvRepcos1jEnpq1NK/WvLEkH4Uu4DTvbmeb/I+0xqB
-         pJVNLGCbkWV7e2G28sGarC3jYtH64yzguT5wCReiDhCpsFx2NrPZsJyZNQPC41ClOdyv
-         Mttw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snai.pe; s=snai.pe; t=1769782714; x=1770387514; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fVl/DuPjpWBTzeLaOSIU4kHMwzFTVV5s3STIHrfTBKU=;
-        b=o8mLdw/fI3470yNvRZ9ftNEPif8tyfkmY1PZKEkncnMr8hH5nvy48zgqvclpe/es5K
-         62tl7P2rsDcqAPoVAYONinZCkerFdEc+qaiqZkMr1TYKadPL1AT8bgHnjdkVIjRFSgst
-         +VEYtH0dDmDAMVY3Tb6sGrgnMBc7dqC6FcIyAeOzh4mDMyNHF68eg4dX5M2UVnwxY7Up
-         vTXH5WC6GOQdv/CqN+nj2gohas7k+Z0nth6sXPCuG6b3n6vPnO9Yb59TcvJVxAhwk1pO
-         /1XEuBu6SQe6DvsfoOwwc0AqWEjVM1VNGznZXInrKUdYPo8ZjJPtppZjU7MOmSpj96H6
-         wguQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769782714; x=1770387514;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fVl/DuPjpWBTzeLaOSIU4kHMwzFTVV5s3STIHrfTBKU=;
-        b=U2cbiDlxqE6n1BfhMpb48jnRZkLXTqRKb+LVJS6HCtz+BjlACUbdi5znQnZ5UxWbSB
-         P3lHJKsEv40SF3+1mLV9vfE9J5sp3k/Hr5ebNDjhA74XarblWxvn9Vxn3AkEFOBojnPL
-         Q51AMZh7RHpVXQq49lfTbbC/JSzbJTc621Dxg2oJsDPBSKT1ufk10Swt/2oflJn4z/76
-         Cy1PwBWrLDYHsiyMFqEvcHODvfOUrA33/VvWpGyimn2D9hfMkUqS4LdRvrWDMdbFjVyj
-         +vD8zenv8o3NJO17cvwaDS84nLsdhfwdGgUXK8SS8cNGTAm8hcamayIelPTJsH5s0p/Y
-         KN4w==
-X-Forwarded-Encrypted: i=1; AJvYcCXjekCtIg8qoBdTDCbuK1ZeMCqEKaqiadS44hCeIUc4ppF1ZJY/DJMcuTzcsV1QIiOedG3QWzi+Eg==@kvack.org
-X-Gm-Message-State: AOJu0Yz41ANmy1ptSsewMYgkEDLPkmBlEM4vytl8DVqLqGpOJ20vTPpl
-	eYkYilUw9bmb4YTWzdGdqivYY2lr/YYsuL6QjbKc6K2PPJBCGw7kE1SmhwnLz8aHFBkAhv0vntM
-	jfJd5i5R76W7k7gnwRw0Rsr8MqiBfxyXRrqgFMMBuyg==
-X-Gm-Gg: AZuq6aJOhqnD8cOet3FpG68ZO6CJIZhFMLeOED4Xmi51DBDijellu9dfqKENyiDcgWS
-	aECJSHq5wC0QoXKSFZ35y3cYau8UAw9tkuDCE+Rf0dSHfqJR+KCghT/Cffss/ICovxIJDl9K6AB
-	JkuRXGKiaSb0415vt3UVDf95vNtHLP4R6A8jg3KbQWF9oDW2chlr5SSSzfW+/CajRLeONK9dDHS
-	jhOA83ThuF67mQ1ZWbM2YbYOQlgxD/iNDNHbStKRR+437qEqMDUn+9U7/SveFYm8YMSDzyfxDP2
-	z1WEZLdUs4tmSReCjZ2OdWhE+XTCi0GcT4ZcRY06txL9Jo1DYFJ7ouP8Rg==
-X-Received: by 2002:a53:d017:0:b0:649:612e:3f38 with SMTP id
- 956f58d0204a3-649a8525a37mr2096730d50.93.1769782713797; Fri, 30 Jan 2026
- 06:18:33 -0800 (PST)
+	bh=1V5tkWqceW7iuWY4rIVEPEaRO5kWUEPFXCRY+2vlZbc=;
+	b=eBtwPydDahEOqHMY690lubi4DcMiH3M2YHcNQYU+KJumSV2chx8XlnF9kCOGFhA5UNgNMA
+	uHexPzXj5GCZ1AdsDZaUH6PlnlmsMw22iXqyl5B1f7UnYYZfw9ZEr/M5ad86awrzomDWTq
+	gKktdPnnh9VRIogFNmoVyMZaks0M1IA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KrC9r4HM;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769784155; a=rsa-sha256;
+	cv=none;
+	b=trPlUIstTkRgZljUEWHKrD8kHv+rrqsEII0vsrvp6UOSkW7y+IKSaFTBsnAYgJjbrjPV5L
+	f5gXeXr9N72U2chBufD6A9D9DTMy3BKlkT9Q81a+XEZj/MQT6OHUGmUQ/4dz/nSchVeBIV
+	BnUiOSM2vnpLx557SCNG06qLmVIYv1M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 94E1743C69;
+	Fri, 30 Jan 2026 14:42:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365C0C4CEF7;
+	Fri, 30 Jan 2026 14:42:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769784154;
+	bh=JPzOLHG40jPLavhTwN68d9iWIrexHiP3vBrSv5OwBgw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=KrC9r4HMnWBD5NWXRF1Rcd+cMLpLxZWGDYIl/rGJH733cpkH+1a+mCQfZUhv8Zkmu
+	 EiV7BRpFpg5VZmrhHsy1BS6bElq9gs+WO4Fd6NITl99Bk+L66JZWK7rUZGr/ntCJ4K
+	 WtxlSHwgF0Pdgw+sfOk3hhcCG1ThvxQPOJQd7Dv1Mrqi+zBgrkYft/Tm5C1LGpgqtI
+	 2hfNwVrETY/LHUW9pIJ8Y9w/DRcQNwK/RlC5znRe0jR6XPWwxJ/O51iNOqc3z4xMb9
+	 5AZlwe4U/Lp9s8YegmCFGQ+HtfbqPMuAoMZ5xUOMEPYp9gp9NE9m+rRPxQtfkl/jF7
+	 KnrcipdYUfM4w==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Alice Ryhl
+ <aliceryhl@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Miguel Ojeda
+ <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6?=
+ =?utf-8?Q?rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Trevor Gross
+ <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: page: add volatile memory copy methods
+In-Reply-To: <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
+References: <20260130-page-volatile-io-v1-1-19f3d3e8f265@kernel.org>
+ <eGcGSx_-fgeLHkPmdfbWgLGhzEcmXunLzIAvS1-X3GqwyFOny9Frz1xN29-fj99sHxxa5_1WrcPxuSSZKxCHhA==@protonmail.internalid>
+ <DG1Y5V810II1.1HE2T0HDBLNXI@garyguo.net>
+ <877bszrz37.fsf@t14s.mail-host-address-is-not-set>
+ <a8nHDdzac5l20akcxjjf9w7huObjn4eIHjUI-A17aKEwWl1N-4vvLBiVdqTQbBHwypMIA6gNkzm8YFXmMl44ew==@protonmail.internalid>
+ <DG1ZJ1350EMS.1S1360PA496QG@garyguo.net>
+Date: Fri, 30 Jan 2026 15:42:16 +0100
+Message-ID: <874io3rwl3.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-References: <20260129173515.1649305-1-me@snai.pe> <20260129173515.1649305-2-me@snai.pe>
- <60f683fa-bd25-4656-ae53-fc247962bac7@wdc.com>
-In-Reply-To: <60f683fa-bd25-4656-ae53-fc247962bac7@wdc.com>
-From: Snaipe <me@snai.pe>
-Date: Fri, 30 Jan 2026 15:17:56 +0100
-X-Gm-Features: AZwV_Qjt4KKY3U0TehHyeXb0kQJInVupAcf9pqh5qn3uwMjTD9tSxhXopaIQL_Q
-Message-ID: <CACyTCKj_=U-upyY+p_8ns9EpDp0utNJjN-ozCV8=m6tEoOPeoA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] fs,ns: allow copying of shm_mnt mount trees
-To: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: wtjubbqrysgxomeu7htim3n7e6t7jiqr
-X-Rspamd-Queue-Id: E74EF1C0004
+Content-Type: text/plain
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A6D4440013
+X-Stat-Signature: zhioowmjju99tqrgjgsdutma9jtagxqe
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769782714-961882
-X-HE-Meta: U2FsdGVkX1/lDhac9bSjBbV31CNvAx6rh9CCxgOpI/VnQXWW7wplu9LnH4Y+Zt7F5R+9w5HsYFf0v7qZW9wLAVwUrNdfD683lVjfZ6/tByQlK0xZygXi0Agbi9o0o/bJ2EpKcuzbKAhTKKp0gkxmNll/NSLuiPHqcKwJh/bLZe4KUF6KW02aE1nybcQSd0YENkAw2iYh1eNH5pKKVSbuLdkiTGkmQLOAYzONzBXluul9ONwjrjJVGg8I712LCZODTabBnAKKpjeSKqv6WYp92Um1u2FxbUeLbB3EdU36WSqeGfLDCU7veQZ+mwAnQRycvnx0DCpI5pykNsjMYn0upXY6o1xCjDZWv50X7A2/hVVXhbx96OngbjPgUP5leKCXbY+Z58QaxVY/EeIcvSTf1A34tX9ZHWYB9WyYQJfKM9pxgygx1VVyfpQd4Qy5yRtaMZgWKP54OunEckc6Xm+HsyplGZ8Vz0z41aibd8NFsjwUoVZ6f0OQGOOJa90CnBLsAfDMmLAcSPamkwQMW6sHWvQfnllTsrF+5fzJJRtSgh4TTv3mO/7G+p2OM281xYvRIl/EcHGgvwDIuIGawLbKm5SSskMhThhQZWsjEiZAWWHKCEE/N+WDGd9G2FBCWjFdemzZqnt1oERJ3VsEaP1ZExMgW0Dx3ACghXSgdH7ND5yHc8hXQ3ppawoD354DZ3r1GTfMb5G+9fQwAXjQGA7+KvLCh3O5eEo8NbF9FybWhopJR8q8hw2j56McVuGxYW+np1PSgP1R4ZpydIgqq2Iz/lI1rNEXbVy19eVTxyVlDVK8y9lTg8uktjn+WMDZdwQ7ZaLO9dS2V4St8Z2+BpCcPHklNKcCXa71U4NHYeE1oJOqwwmFkidyp9al5vURJHlF/SthyRI7Ed2f7nDPGnP76INSrvckfX5oTk9yji0FSXkltOrmWIQG6HCIfK/taYMOOFkQndZstUG/kYCXVWx
- Zlr9oY9M
- 8f/pyrlRDhI913viJo9osGidPTg/ug0rNp3PhNJzYH239iPx0wGa9uaf5KCBKQC7CMbt76Ug/65/Gy4IQpa3GWAk43kx+Cc7x3aVSzVVItelAL2ONiQDNG/X9QTuHeOJ6lrHoRULPIoVACLMaAjdqyOAxvoGfCco8Z+codZ4zSwFjmayUhhkru2xehbDXEOddwe0XXN2qh6iuid4eR9Snum0l6c5fCYe2wNuHA5NggBzMj+bxUhhW3IagTbB6Corq9b7BXCCSQjjy3RgEFpqlTdPxrVFJo9z3wM4hGMpWpnSll8F5m5EF002+bi8zvnM3SUSuC4yUzCCSGgPhQnIIVFtckOYie7xiodUdvqsiwURMroc7AvFS4wgINvaZ+geJpinG/1pfPHhj7KMxdE9G7KYJ7+eH8GBtc2nQKGCb1ntf135FvMpoRm91fsIKDWWPnXknPtN/A9/0PxXPJ6TX5cka+g==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.019383, version=1.2.4
+X-HE-Tag: 1769784155-442511
+X-HE-Meta: U2FsdGVkX18xKXeuCpRxdOhD98N47Ah8RcOtfgwFQLMZ05rDwVmhDDXGVeitlPRDNx3CpaImj3T/nNj7B5FbTvYmI7XEgNG9XfAbk1QqZAlKTbBvp7+XmCcBbuBZses5sNJH8gZEkQapOk8vSATn3ljdgCfeGrYBYmrK18KVHaH0+dFAvm17JPWUezmOzjnoVJUBFcEWhR7ge9vZITBAFk7LQiqx1hTOetoPQ9UcOT/NVrqq8sjvRRmIvdfzDWngwbsQ4t2jfEUlH8xzpLfFMMTH1v1Zi1CDiLbu+nk8c5W+mH9sjbAx1Swr+Nz8KuxrvWK62FiDPBKQbb/VtxEpLPzOsfoKo9ArRTRsOifj/tLD0ZBKpe3+OM6ys7Z91uPtJZw86Z2mkHOIm4I+GECvjK70y+ysJmAddWMeSfhmXEy3408v1DaSptw6Uu05p2QJH/RkdjPDeJ1U8faUGnmbRqsrakh6Ejcw/6n3MwVspYT7l/2WYYnND9pibbHW9mb7pTdTzGg+ZxpFN/F1lUIaCUaZyNMJ/YgEMLGPyQn2AgY4QSrLebO/bzzHcuGsSTJrvcH3dswaaGNabChyxDZ9/WoW1utB554sgpmutkL4WHtdESies09l2TRQgf5Bj3arV2Xt8YihkR9YrbfDurJ9xe43RVbOpSKrQ6UYX9spD69aQ7UbwYJOQ8mS3aRneRZ0PgVzPEUE4qnlpcYCSYDcu2zlxrB+r12pqMY9MbPKEsU4hY8Mw0o1Lak0TzfoeW1Y5vlQEbCsNmvHFPwaas4TQmPLnbQEBI4pOZKA6xQHvfv+V7TGEABTv6Qv/qdThmC7WjiqB7GEwc60/bqVt7gGB7Kh/vmGuDThmC19lCrqRqpvzhBmCN6vciUw312KJOpdYjZeLXXEbZAes4VG8WcUs9HuY79NgkgHASIXdRuTY3MRFKdENYMDXOZ+y1IBc31fvirEaKJBLaeNI1cC2s9
+ Wn1xdjZ9
+ irryhTFITeIOZ0z1vqgnAOi7qV0ebLrU+zl35pmM0m2R9IkE3+KRj22OnauMToCpY11uZO2VJDnXbgyB+/TRzwoPmC/ZRZxkRyCk6Ygp1NM78Ff5qf05mVka+ZTp8aOWJECXuXIJCqMvgTYhpEob03oQLg+NU6uxwq2x1Qkr3mnsQSDqd57GszBYkz/2ms2ULt+V7grGeaRIXadIby98h848Mboc0RNofWGnnMJXsGD8S+grBpx8uyeAEIUMfnaut4nGC4p3lkS+Mnw/J6m1r3CfW8LbKIrROpS9m+8nlWAW2HPF2m142NXcgj4d5VpcPBxZn
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,36 +101,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 30, 2026 at 9:39=E2=80=AFAM Johannes Thumshirn
-<Johannes.Thumshirn@wdc.com> wrote:
->
-> On 1/29/26 6:39 PM, Snaipe wrote:
-> > diff --git a/fs/namespace.c b/fs/namespace.c
-> > index d82910f33dc4..f51ad2013662 100644
-> > --- a/fs/namespace.c
-> > +++ b/fs/namespace.c
-> > @@ -38,6 +38,9 @@
-> >   #include "pnode.h"
-> >   #include "internal.h"
-> >
-> > +/* For checking memfd bind-mounts via shm_mnt */
-> > +#include "../mm/internal.h"
-> > +
->
-> Hi,
->
-> I don't want to comment on the rest of the change as I don't know enough
-> of the subject but this screams layering violation to me.
+"Gary Guo" <gary@garyguo.net> writes:
 
-Yes -- which is why I was a bit uncomfortable to do this. I tried a
-couple of other approaches before this which did not involve including
-mm/internal.h and poking at shm_mnt, but they ended up not working.
-The only reason I ended up settling on this is that there is precedent
-in including mm/internal.h in other parts of the kernel (fs/exec.c
-being one example). This may be a bad justification, but if there's a
-better way to do what I'm trying to do here I'm gladly taking it.
+> On Fri Jan 30, 2026 at 1:48 PM GMT, Andreas Hindborg wrote:
+>> "Gary Guo" <gary@garyguo.net> writes:
+>>
+>>> On Fri Jan 30, 2026 at 12:33 PM GMT, Andreas Hindborg wrote:
+>>>> When copying data from buffers that are mapped to user space, or from
+>>>> buffers that are used for dma, it is impossible to guarantee absence of
+>>>> concurrent memory operations on those buffers. Copying data to/from `Page`
+>>>> from/to these buffers would be undefined behavior if regular memcpy
+>>>> operations are used.
+>>>>
+>>>> The operation can be made well defined, if the buffers that potentially
+>>>> observe racy operations can be said to exist outside of any Rust
+>>>> allocation. For this to be true, the kernel must only interact with the
+>>>> buffers using raw volatile reads and writes.
+>>>>
+>>>> Add methods on `Page` to read and write the contents using volatile
+>>>> operations.
+>>>>
+>>>> Also improve clarity by specifying additional requirements on
+>>>> `read_raw`/`write_raw` methods regarding concurrent operations on involved
+>>>> buffers.
+>>>>
+>>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>>> ---
+>>>>  rust/kernel/page.rs | 53 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>>>  1 file changed, 53 insertions(+)
+>>>>
+>>>> diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
+>>>> index 432fc0297d4a8..6568a0d3b3baa 100644
+>>>> --- a/rust/kernel/page.rs
+>>>> +++ b/rust/kernel/page.rs
+>>>> @@ -7,6 +7,7 @@
+>>>>      bindings,
+>>>>      error::code::*,
+>>>>      error::Result,
+>>>> +    ffi::c_void,
+>>>>      uaccess::UserSliceReader,
+>>>>  };
+>>>>  use core::{
+>>>> @@ -260,6 +261,8 @@ fn with_pointer_into_page<T>(
+>>>>      /// # Safety
+>>>>      ///
+>>>>      /// * Callers must ensure that `dst` is valid for writing `len` bytes.
+>>>> +    /// * Callers must ensure that there are no other concurrent reads or writes to/from the
+>>>> +    ///   destination memory region.
+>>>>      /// * Callers must ensure that this call does not race with a write to the same page that
+>>>>      ///   overlaps with this read.
+>>>>      pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
+>>>> @@ -274,6 +277,30 @@ pub unsafe fn read_raw(&self, dst: *mut u8, offset: usize, len: usize) -> Result
+>>>>          })
+>>>>      }
+>>>>
+>>>> +    /// Maps the page and reads from it into the given IO memory region using volatile memory
+>>>> +    /// operations.
+>>>> +    ///
+>>>> +    /// This method will perform bounds checks on the page offset. If `offset .. offset+len` goes
+>>>> +    /// outside of the page, then this call returns [`EINVAL`].
+>>>> +    ///
+>>>> +    /// # Safety
+>>>> +    /// Callers must ensure that:
+>>>> +    ///
+>>>> +    /// * The destination memory region is outside of any Rust memory allocation.
+>>>> +    /// * The destination memory region is writable.
+>>>> +    /// * This call does not race with a write to the same source page that overlaps with this read.
+>>>> +    pub unsafe fn read_raw_toio(&self, dst: *mut u8, offset: usize, len: usize) -> Result {
+>>>> +        self.with_pointer_into_page(offset, len, move |src| {
+>>>> +            // SAFETY: If `with_pointer_into_page` calls into this closure, then
+>>>> +            // it has performed a bounds check and guarantees that `src` is
+>>>> +            // valid for `len` bytes.
+>>>> +            //
+>>>> +            // There caller guarantees that there is no data race at the source.
+>>>> +            unsafe { bindings::memcpy_toio(dst.cast::<c_void>(), src.cast::<c_void>(), len) };
+>>>
+>>> I feel that this should be a generic utility that integrates with our IO infra
+>>> that allows you to copy/from IO to a slice.
+>>
+>> While that might also be useful, for my particular use case I am copying
+>> between two pages. One is mapped from user space, the other one is
+>> allocated by a driver. No slices involved. Pasting for reference [1]:
+>
+> Then what you need is a byte-wise atomic memcpy, not memcpy_{from,to}io.
 
---=20
-Franklin "Snaipe" Mathieu
-=F0=9F=9D=B0 https://snai.pe
+Can you elaborate on how you get to this requirement?
+
+
+Best regards,
+Andreas Hindborg
+
+
+
 
