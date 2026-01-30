@@ -4,118 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6891CE6BF0B
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 13:27:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F503E6BF0E
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 13:34:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55F976B0005; Fri, 30 Jan 2026 08:27:07 -0500 (EST)
+	id 61AC56B0005; Fri, 30 Jan 2026 08:34:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50DEB6B0089; Fri, 30 Jan 2026 08:27:07 -0500 (EST)
+	id 59E816B0089; Fri, 30 Jan 2026 08:34:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40BF56B008A; Fri, 30 Jan 2026 08:27:07 -0500 (EST)
+	id 4A0B36B008A; Fri, 30 Jan 2026 08:34:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 313B86B0005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 08:27:07 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BB9401A043E
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 13:27:06 +0000 (UTC)
-X-FDA: 84388706052.24.28D8FBA
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F1061180004
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 13:27:04 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XY+wmZYG;
-	spf=pass (imf16.hostedemail.com: domain of sef1548@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 386F46B0005
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 08:34:52 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id AEAC9D4492
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 13:34:51 +0000 (UTC)
+X-FDA: 84388725582.17.C837446
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D428540010
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 13:34:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="KT/rqX0Q";
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769779625;
+	s=arc-20220608; t=1769780089;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=PdMWH4EwKYdreFVm0OlBuzPW+/8AM8W7g3EmYmFW6tA=;
-	b=yxmKx+8IZ8ABkOxtAEhnd7Yf7DWx0+42m6YQO6SJ0IqC5kxRklYjHVycgPwJDyO9Z3N869
-	FO0BNPSHOJKbgHWQ1YLdBMI4wO5OmkHgCjP88WQMsH9oESnHzCoik5GkhCLvmLTJwZ+Bmr
-	/8Ls1fohDDX5gDnVMjz4quDs9J3oBVw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IBlsa1vr6ZeB2QvpQ71ZYV6glQGH5Ds/8UMAFBywU/c=;
+	b=I0pbL/Gk3FNB1109huktgOF1a+htZoCdWAH/mSXUQUtkkpWPpw70guvU4JA+uKTZ9CVjEx
+	jYREsNkRUxAepiMN92LhEwlpbWueVDTf2ucjCkJNhnT3mUcebWPtRRUhPvQbTpJh9dfgh4
+	cxldW5MnWSeQakD0OtgmkgVNzxjKEgU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=XY+wmZYG;
-	spf=pass (imf16.hostedemail.com: domain of sef1548@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=sef1548@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769779625; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="KT/rqX0Q";
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769780089; a=rsa-sha256;
 	cv=none;
-	b=HZp8CGHYgYrTWTYiofS8TxU0VqiDxCwiVtrrmqTQcwpLT44QtL/jMWZLBKujY1/tKFjAqg
-	syZlPMq/wWD0/+Y8GKSfJyQ01HFisgjAcqU7ChvJx+Y28RM6/2xSXBzZd2COHTUbaWgyNR
-	16HuCHfKijINKJbgNfBrfWdFumLullU=
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c61343f82d7so844350a12.1
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 05:27:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769779624; x=1770384424; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=PdMWH4EwKYdreFVm0OlBuzPW+/8AM8W7g3EmYmFW6tA=;
-        b=XY+wmZYGQ0kQAiL1CioLoBaUg4mlOhQ6Fpta2w/1DQqbf+Q3tCy+TAx53vea0vy/WK
-         +oV+lkMmBFmSymPhb4GZ1+9wdJZAxe/pwjEqSIOM7Nofu4WPh89c4gzwtNypHxTthIIt
-         4V4WSz9snYuUWl550JmuKUqGyxE60zuFSeYRb7i/7vtwBtWNi1UrYyduZlj9qRfPzUET
-         JW2GnUeJ67c8OOmwgBW8mrUgX16tPN9IDEMkvf1ZJITaexB1sW2haUNCALhtm6ANe0T8
-         +FzEwhe8o2YK6qtGMxRObxPvi+Gz+HpHjH59JM8pPMM0zPtG4IzjM89Mjj4GF8jPkv7o
-         F6Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769779624; x=1770384424;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PdMWH4EwKYdreFVm0OlBuzPW+/8AM8W7g3EmYmFW6tA=;
-        b=UkBOg9R1gVaL/gUMgaRVlYjMAik5+wef4hpXuyZ9DVboWwHIDOry2MWs4gNtbspjA5
-         64YIkTxqIS42px+6hROmtYhK4c2M23HAJT9IWrVdjGaTu5G5nctSuVmPiVo7J1w19w8V
-         VfKjJNv+tfVp0oIV8kXEPWa3pe2OmWCLnNE6sjBKQbAPHrj+0IqqEFKvNcknY5oJC0bL
-         v8EOGiSl1rxsQSNmpuTojHBm4qUYnYZTFwMNyrfrDTwSvPg0VQBXvpuY43QDN5rPDFnX
-         Eh2dqVz+vMzbbqXiKG7nITXSkp4Q1dEpaoN5mhhnlMqOIWnf05CybPsdzGlgcfe06Nbt
-         t1uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVAnszu3QAc3ioLMZGGGqPQ5fzPJ2l8eudkOY6TxeI9B4hXWz5lOeIihnjoLYdQD8Qa9G7XuDpeWw==@kvack.org
-X-Gm-Message-State: AOJu0YzDbPvSZBMEFNsLEmpdE2hNMBDtBxRgn6zA6RswenYG24fV5R1K
-	eni4ep8g7uRIlWEx92IyfV+Kjj3jWNsiEtEG+6pbX+EWO66KY34rbS1K
-X-Gm-Gg: AZuq6aLhH31IgkNSUUL1k7YFa01mqGAZPFKqMPbEauQJj5/lAQ5vyxzqr3uQZGnDS0Y
-	sIYqEDBLINgmQexhqHtYGuh/YEU7Itw5b3YQTuZ2HnzvAhfcdD2btTBlRTuVQlF1dzjsvuOCEVl
-	IVIZACNciLhSWoqscTS7N2VreUk41SwUcu4BzZNELP4Ksaqk7NObu/s1/FElDybKDAqjZJj/ojw
-	hvuy6APbAsJSF5Io7upUYSZdVh9APttfhvQ4JLHsJKkeokOSCx2Wrs2GKcJXfT+7XnccyE6FEIc
-	NIPn6b80xKqiD8RdwNTrcfrXLwg8JTGLUA21VER6wSe/zuDcSMqxs7z3N2/X8IEddFhqlaY4W/i
-	qFhFxSEMYcxM1pTK/Ca2yJvLsYtj4mefOTn9CaUnUNOHvT8IyzJtQpsp8WmgYwEjQO8F/yvPr+L
-	9DYlXsHvvdZ0CnhVUd9ahccPxm6DcP0HTyxfLKYlw5ePJIg9t9UF9pLumOt/HyZgoVNUE1iUJYu
-	5RZg58Q
-X-Received: by 2002:a17:90b:6c4:b0:352:f2a6:334 with SMTP id 98e67ed59e1d1-3543b31aba1mr3644123a91.16.1769779623666;
-        Fri, 30 Jan 2026 05:27:03 -0800 (PST)
-Received: from nickhuang.. (2001-b400-e2d2-709a-e1b4-814e-9913-0d22.emome-ip6.hinet.net. [2001:b400:e2d2:709a:e1b4:814e:9913:d22])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3543d603474sm988748a91.11.2026.01.30.05.27.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 05:27:03 -0800 (PST)
-From: Nick Huang <sef1548@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Nick Huang <sef1548@gmail.com>
-Subject: [PATCH] mm: fix typo in MMF_HAS_PINNED comment
-Date: Fri, 30 Jan 2026 13:26:55 +0000
-Message-ID: <20260130132656.1917-1-sef1548@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	b=k9Udp6lYBHVFTzLMgtOAYoKecaL4rrCWXvYJiKzzehFN04clhU3Tc7Ks6hjebl79hbm4w9
+	KD7pujihRuAdg7eVDFGoPpWTmt7k4BTDmVsBz0odF1jjVcydclAe1jETeg35JlnJbb86IV
+	okGimCzL5FsMYMSUJCIGNeG16Xvn+1I=
+Message-ID: <b62d0a63-624f-4822-b0b3-07e75d97721c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769780086;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IBlsa1vr6ZeB2QvpQ71ZYV6glQGH5Ds/8UMAFBywU/c=;
+	b=KT/rqX0Q1rH5fQrJsOvYoaGjogI6RddJi+9rCtaewr/0tgz/SMGbybWw/IYOyxs1XiP4TN
+	Xu3bblr5El/xMJUdM4Px7qCtcaKe0SmuDphEJJP0PjpBkye4qZUKb73WYI7wGHMClnpEvb
+	W4AALt8EBn6nd7JEsA1WycJFXDZi0fk=
+Date: Fri, 30 Jan 2026 21:34:21 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 38k3eep5awi6dxh9cedmmqdi6kffrm66
-X-Rspamd-Queue-Id: F1061180004
+Subject: Re: [PATCH v2] mm: khugepaged: fix NR_FILE_PAGES and NR_SHMEM in
+ collapse_file()
+Content-Language: en-US
+To: Dev Jain <dev.jain@arm.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Rik van Riel <riel@surriel.com>,
+ Song Liu <songliubraving@fb.com>, Kiryl Shutsemau <kas@kernel.org>,
+ Usama Arif <usamaarif642@gmail.com>, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
+ <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Barry Song <baohua@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260130042925.2797946-1-shakeel.butt@linux.dev>
+ <1a33fe3e-b0dd-4553-95b4-89619b9229d2@arm.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <1a33fe3e-b0dd-4553-95b4-89619b9229d2@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D428540010
+X-Stat-Signature: 8eth7zncyjwsdttys3yry78yjhcdbhoc
 X-Rspam-User: 
-X-HE-Tag: 1769779624-461898
-X-HE-Meta: U2FsdGVkX19pRVmgAUeLX0SZJZBuahahIJccGifpmpu8TcShpVuklRXdFQcT8tpzFNYYbnZNOB0ArRDA9sljlGsRFYIfHtmIOVFQHkuRAGvG7sndrXJN5Fj3vwog41OIyOZVCv3hWcbfMPVZgrWuXpa7hSEq3gM4UZ1y4m2QszxXkBDwfFs5eedX083byMHlqRdglUr8ZE97hJ5GMWB6BkJB/SL6czN0xLWNF/qrHLNaFmqzM7CyhgusGwbonClNUmrXCH6aOH0NPsLw65c2+/ivHLlQwM52gdkKMmYQ/PzMRT9bUC6xFy6CsgDy9WGGPiliD9/D1N8xiJBZ1mb7x/S0rE9b/0L6IB8z0fmbtQ0Y46bRLh5FMhcufcNrPhYboE09L/mnQyJPEigyWrHvXApNrGMChXEDs2fUMVw7cQUp0z7xuXwkZsYW8ge4nVP4Zz69HtjFtsSWh4WVKpehp3MeUPJ6JL4WRJRR89ckwCAVzVrhojsvXtEto//WqjKCjojxwJEr0ZO+kOfVX95smzyVn5DXrt9Ae0WBdBoDOp27V3NcisQ87/UtfX+hCMtnn+BPd9CLI+NBKjLFyTIJ1PHCr32nHmbONo5trYUTSk/46OcFjaOgaOCGyiDpYbFOkUE3i7X47k86MdFhtO0yY455kqFRkvYmqOBJMWx+ESAfZNUgbhD8SePrLiFLFWQUshCbI166I3av0OqtTnPfmf8i5dclTXdUbqHaLtyzboPsh/AfLXz2CrULtHebJalFpqHYoeC/SBK5LvboTQT4u2G373Ysfgfp6j2WkboscJK97XrAohWQtTChMhRs23jR83NaRXohQ5pOSxKj6V2lEbnMLP/dh+GJfIVIdEVNsafsGK1LrTiiA3KFKPTnQ+nrFZj0QoYj0Q19DBg4jG3uy1w7RJb9GcM+O3bMy1dZT0qIqiSNc24g8R/zwo8x8QviQ+8scYDmNsf6J2GTi4Y
- M7BBJnHn
- mxqRCTCG40+Km3RXNGfXkxe495/yQqksJd0/zsFKWrFjb7HTusG1yahKePB/lHcMb7XNWUFgVmCy/zcbqZXi3QSQM1c9ndtwVh9lIhdvavqZN/UzyswuIBwylGT7n3QZ/37le/llRqt2LZ5li7mf0jUAZNStefFZwHh8LYgRvYVgxsB1HCjdRHQNE2480/LKjkTX2I3F0yagZttiKrv7nTNRdwMsIJa/uaQ7BadpVhtAoTgjeK790H4OR9e2ZeIalZjqVs3Ef2jEAt7GNV0arP40aYdr5lJqzEWp7DY/s54t7skHULnZc5IqUmo/d3IdUwoAd2NIEu0PESlHQLublr/D+HMTRxGzw0wYz5FVbwZOj0DddzcUgiamhe8kctrhV0N9epvxo93wwcWXpelvR665q9SO7M8mRdB1W4rNdZ4fAal7miUKMOhOF5x/GkCKB7RWhjJmFjeObxUhq18F3iJHgYN91B9gPhIyZY/A43q/40dhTLWXqg+jRgg==
+X-HE-Tag: 1769780088-41891
+X-HE-Meta: U2FsdGVkX19aB8p7ONDctbuUeZza146PfEEOsCQTflQIK2FLu37pTv/TFrqKjtoxjQltQ/pfWzFJ1cHMn01quvt63ML2fE20oVZlZik9PjTxFmzGMms78GFWacFlyDzkroHsWDKKtEx7fSdJ7vhpu35KFo5g/fRAk4Ga0zGucufT0OSWIq1kzkDjgPzbq7GX9UWV5tV09maQIFygiWfbnmDDRABtFbePkT60EgZv67qlltgoFfTra0+XMBG4FmnD3z7Is2dKv8xEyWd1M3DzPlD6qAtDRkk/qqfBcdtWBSQ81JcVjZnmpxooRbKdjQqew5bi9dzd7Z/qQT3FWTKhmBX/sb365NjUBB71badlFOgYUDtFYDZJw5hl+yqhHOcAGJwK1jeipnwgY05AKGEGdGw3vj0O3ea4xmltoUeVOjuOxbvzHmaiEiLxqdQyACITN1L55lAAlcU4VdnjM7pky2g9sm8AblY+TB6X9nPZ4Z5nLHWHKdvCF6JZX7RaFYBdjw96UgTrrFWt8APpTeJPp/8YuRE8Oa5YvjN174FApSJUugj56udEXU4+OkM1PhlGlTQ41nMjv39+nYejwbwI+N6OhuDOe5hJCE5SlmGeKlLnk46E+mLSgszPeZKFwXrWj1EhvrmOtMp2bYSL6g3tehBOpxsKVeKCVPJNib35WdGmH/zoBjR8U13kQhd9WwAwRoY4NuG4D/QjpE4EJ9ZEL1N6t/bcA8en89ZQllDOBGLcH6bsY4SAyxen+Y5WFyArFppDgGrHxnRercVAknsYoeJWSMrz1zO2LScBs/OBbaKrcyLsxzGZqtFQ1mrsiBgaBVE/VzhgafxijhNhT5QgE+re088CUxMR8iANkjd0wvMMCbU8swpBMXoqTZHLtQ58N9uPmYQ6AEqfy8spQxTu5KTtMTf9S6JxcYI0enGb4am2IIhPvULsm0DpE2RSt/1/QforxjOzoPBu/hTMhpy
+ YPntglDC
+ z/4oWmdEEME6qj3GVcy6PvU0rOPPNAMNcTRC2A34m0I8LwnXJKPJO/tRpqjX68Jn56VaGpbxpkKPv+iOHkGRdR9NLhPALiz+k6yivZ4PRnDQlKQWkIaeZ5LRbpkWlOfasStphHNI300aXI4ZKrUfWOvZCZevXtL2VTA/6pOb5QWOL+XJaAiBovFurv1v+X3oKhFYQUqvSDpFGLxNr9rBF+/DrfJpeyuvXKwFzeF+9M5eZix41LX7zRkvXqTH6kWDve6jAi/QhtyNIUlrszSVb/JnVcQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,27 +102,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix a spelling mistake in include/linux/mm_types.h.
-Change "aggresive" to "aggressive".
-Signed-off-by: Nick Huang <sef1548@gmail.com>
----
- include/linux/mm_types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 42af22929..674c7cd1e 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1845,7 +1845,7 @@ enum {
- /*
-  * MMF_HAS_PINNED: Whether this mm has pinned any pages.  This can be either
-  * replaced in the future by mm.pinned_vm when it becomes stable, or grow into
-- * a counter on its own. We're aggresive on this bit for now: even if the
-+ * a counter on its own. We're aggressive on this bit for now: even if the
-  * pinned pages were unpinned later on, we'll still keep this bit set for the
-  * lifecycle of this mm, just for simplicity.
-  */
--- 
-2.43.0
+
+On 2026/1/30 16:10, Dev Jain wrote:
+> 
+> On 30/01/26 9:59 am, Shakeel Butt wrote:
+>> In META's fleet, we observed high-level cgroups showing zero file memcg
+>> stats while their descendants had non-zero values. Investigation using
+>> drgn revealed that these parent cgroups actually had negative file stats,
+>> aggregated from their children.
+>>
+>> This issue became more frequent after deploying thp-always more widely,
+>> pointing to a correlation with THP file collapsing. The root cause is
+>> that collapse_file() assumes old folios and the new THP belong to the
+>> same node and memcg. When this assumption breaks, stats become skewed.
+>> The bug affects not just memcg stats but also per-numa stats, and not
+>> just NR_FILE_PAGES but also NR_SHMEM.
+>>
+>> The assumption breaks in scenarios such as:
+>>
+>> 1. Small folios allocated on one node while the THP gets allocated on a
+>>     different node.
+>>
+>> 2. A package downloader running in one cgroup populates the page cache,
+>>     while a job in a different cgroup executes the downloaded binary.
+>>
+>> 3. A file shared between processes in different cgroups, where one
+>>     process faults in the pages and khugepaged (or madvise(COLLAPSE))
+>>     collapses them on behalf of the other.
+>>
+>> Fix the accounting by explicitly incrementing stats for the new THP and
+>> decrementing stats for the old folios being replaced.
+>>
+>> Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
+>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+>> ---
+> 
+> Thanks.
+> 
+> Reviewed-by: Dev Jain <dev.jain@arm.com>
+> 
+>>   mm/khugepaged.c | 16 +++++++++-------
+>>   1 file changed, 9 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 1d994b6c58c6..fa1e57fd2c46 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -2195,16 +2195,13 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>>   		xas_lock_irq(&xas);
+>>   	}
+>>   
+>> -	if (is_shmem)
+>> +	if (is_shmem) {
+>> +		lruvec_stat_mod_folio(new_folio, NR_SHMEM, HPAGE_PMD_NR);
+>>   		lruvec_stat_mod_folio(new_folio, NR_SHMEM_THPS, HPAGE_PMD_NR);
+>> -	else
+>> +	} else {
+>>   		lruvec_stat_mod_folio(new_folio, NR_FILE_THPS, HPAGE_PMD_NR);
+>> -
+>> -	if (nr_none) {
+>> -		lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, nr_none);
+>> -		/* nr_none is always 0 for non-shmem. */
+>> -		lruvec_stat_mod_folio(new_folio, NR_SHMEM, nr_none);
+>>   	}
+>> +	lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, HPAGE_PMD_NR);
+>>   
+>>   	/*
+>>   	 * Mark new_folio as uptodate before inserting it into the
+>> @@ -2238,6 +2235,11 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>>   	 */
+>>   	list_for_each_entry_safe(folio, tmp, &pagelist, lru) {
+>>   		list_del(&folio->lru);
+>> +		lruvec_stat_mod_folio(folio, NR_FILE_PAGES,
+>> +				      -folio_nr_pages(folio));
+>> +		if (is_shmem)
+>> +			lruvec_stat_mod_folio(folio, NR_SHMEM,
+>> +					      -folio_nr_pages(folio));
+> 
+> I notice here that we don't need to do accounting for NR_SHMEM_THPS or NR_FILE_THPS -
+> but the following bit:
+> 
+> if (folio_order(folio) == HPAGE_PMD_ORDER && folio->index == start)
+> 
+> in the khugepaged code, seems to suggest that we can reach this stat accounting path
+> with a PMD order old folio, if folio->index != start. But this condition should not be possible;
+> a folio is always order-aligned within the file, which means the folio->index here
+> is PMD-aligned. The entry of collapse_file() asserts that start is also PMD-aligned (guaranteed
+
+
+Yep, good catch! There are checks in __filemap_add_folio():
+
+	VM_BUG_ON_FOLIO(index & (folio_nr_pages(folio) - 1), folio);
+
+and at the top of collapse_file():
+
+	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+
+guarantee that any PMD folio in the scan range [start, start + HPAGE_PMD_NR)
+must have index == start.
+
+Converting this to a VM_WARN_ON looks good to me :)
+
+
+Cheers,
+Lance
+
+> by thp_vma_allowable_order in khugepaged_scan_mm_slot). Therefore start must equal folio->index.
+> 
+> If I am not missing something here, I'll send a patch to convert this to a VM_WARN_ON.
+>   
+> 
+>>   		folio->mapping = NULL;
+>>   		folio_clear_active(folio);
+>>   		folio_clear_unevictable(folio);
 
 
