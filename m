@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 745CCD73EAF
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 01:49:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE8D0D73EB2
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 02:27:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCE056B0089; Thu, 29 Jan 2026 20:49:51 -0500 (EST)
+	id A81DF6B0005; Thu, 29 Jan 2026 21:27:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D6EBE6B008A; Thu, 29 Jan 2026 20:49:51 -0500 (EST)
+	id A2FDF6B0089; Thu, 29 Jan 2026 21:27:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9BED6B008C; Thu, 29 Jan 2026 20:49:51 -0500 (EST)
+	id 911496B008A; Thu, 29 Jan 2026 21:27:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B57776B0089
-	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 20:49:51 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4C2B01A04B2
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 01:49:51 +0000 (UTC)
-X-FDA: 84386948982.25.4A32B54
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9279C40006
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 01:49:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PkrIXiuG;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 801726B0005
+	for <linux-mm@kvack.org>; Thu, 29 Jan 2026 21:27:03 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CACE6140312
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 02:27:02 +0000 (UTC)
+X-FDA: 84387042684.29.52498EB
+Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+	by imf21.hostedemail.com (Postfix) with ESMTP id AFA771C0004
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 02:26:59 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ut3ycEYo;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769740021; a=rsa-sha256;
+	cv=none;
+	b=JnZRnw7kplur2/Z+LEDl6IYDj22kZqo6MBAzAzJqpSzukBwOzFAFOo9knAbK67OxniMj0Y
+	KaE7m5GIHSl4GBcmpgcwv2lmHdyfag6KbwI5anP/gN1zByoLnnUeXxOGO3VEcF2X0ZfIHy
+	CrNEy4zRcK5LqniZGf4RAkTSoThhcpM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ut3ycEYo;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf21.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769737789;
+	s=arc-20220608; t=1769740021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ae7qiu6MaAb9fAtYbHWOp6kcdwoLHNeaFGHkq1+v+5M=;
-	b=EFBXCd3QENzni17G+dnCiu4KFJb8W4wfboIaJAoWT808FFDN3vXM+kHRNaneVaoMlUvCCD
-	PqQE0/rSYfT1gwmbHX9qY0m5uAEHtLTHsj5MdT2a/rKD7eYELN+4VUIydnuW0UNCY3++zZ
-	ATDfdx2S/eI7eHWaJijjn1Y0qjI7E6M=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PkrIXiuG;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769737789; a=rsa-sha256;
-	cv=none;
-	b=ggeOMasMzEN3bh6CZnStcL5r2jyWvvMCY0lNOVWliaolKTuNSwEiCocQIlaERAGfMZmpi4
-	9xryE8Cw4cVsaeWXEyC6suN93iFfy1e0lphqzCzy/8CyIm/Dr6/rupTumPQwb3iZzqRVv1
-	9DqUvK1j4jUK/cbQkchhEURX7dr/Yig=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 804FC417B9;
-	Fri, 30 Jan 2026 01:49:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF0EC4CEF7;
-	Fri, 30 Jan 2026 01:49:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769737788;
-	bh=+O3oU11p7vlRhXMV+aih4qEsfTLVMG95zNWLgADSuHE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PkrIXiuGbLxJG8ZqMHTviK6n2FyqIjagYGwqzQwgwlsRgH+04PztC6s0aU11TVb7I
-	 B2qSHtwKzrpbdCKoeUGDZfmzxvQ2uXxqpY9FnuhGsdX65Ae9P2/dNmTPK77sh8xIdK
-	 uo1ycSHc12fFbdPiYgFa8X+X8it8rPZUW5FBvxpAQme1x+L1l5ERAardjcj35bl1ak
-	 6KZqqSVUPJeJlvyzFq0wHpj1SwuQUAUj0Gb+Q75XAvTHXz6QEyZj7zxIfUNXGBSYU6
-	 EoBo+IwcLJxbZ/Lsf8mr8Ct3mkRH/QDAizUj3TYIJEB+8hsGEJhTXoaswpEa/27bEc
-	 tJgtkS8Er4qYw==
-From: SeongJae Park <sj@kernel.org>
-To: Ravi Jonnalagadda <ravis.opensrc@gmail.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: [PATCH 1/3] mm/damon/core: add DAMOS_QUOTA_NODE_TARGET_MEM_BP metric
-Date: Thu, 29 Jan 2026 17:49:44 -0800
-Message-ID: <20260130014945.51416-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260129215814.1618-2-ravis.opensrc@gmail.com>
-References: 
+	bh=oX5hyRJHR6Lithb+eoy4CxIJ3KMmionEVlpg+rommN4=;
+	b=uqaYRzzcAOZqGIVeICpl8mWAKLoxbB3eQ3RJvi2Y7dw5cgB/zgTmy4A/RB7rEpEUK5uBYT
+	6bKcYIy/FKCVVY10ChKYLTHT2PhO0nv5smrhDQIdPmOloa8Ddbkvas4U7vQ/vtFoMcjLHY
+	H8JAJUM2T8PKXrxTNRJlCkjykTw9weM=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=oX5hyRJHR6Lithb+eoy4CxIJ3KMmionEVlpg+rommN4=;
+	b=ut3ycEYoJmVAo6Qx+NQKqYKGkKnkLAnn9jaG7L45bmFmL0lQtBsrZa3YmfldSSmg4SVIAvFG+
+	Ej3b6AcXRgYa7/wIRM8KMGksV6LGfVK+znI8jMo6cOqVRiPqegvS5lx2x3vsE1R0fED10ck9hBO
+	isssANONAnZ15xqnvweTygo=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4f2KYp5BKSzLlXs;
+	Fri, 30 Jan 2026 10:23:26 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1D2DC4048B;
+	Fri, 30 Jan 2026 10:26:55 +0800 (CST)
+Received: from [10.174.177.149] (10.174.177.149) by
+ dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 30 Jan 2026 10:26:54 +0800
+Message-ID: <d6f2b111-bb42-4437-9711-bf06cf9afefa@huawei.com>
+Date: Fri, 30 Jan 2026 10:26:53 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon: unify address range representation with
+ damon_addr_range
+To: SeongJae Park <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-mm@kvack.org>, <enze.li@gmx.com>, <sunnanyong@huawei.com>, Enze Li
+	<lienze@kylinos.cn>
+References: <20260129161029.48991-1-sj@kernel.org>
+From: Quanmin Yan <yanquanmin1@huawei.com>
+In-Reply-To: <20260129161029.48991-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rhd3qprsz6cw1eznmekuob35ukpff5gk
+X-Originating-IP: [10.174.177.149]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9279C40006
-X-HE-Tag: 1769737789-765191
-X-HE-Meta: U2FsdGVkX1+OsPJhlkCQavpAaM+wh4QJjFlmLg/rSAEbb3HBeKPkZKpT4DKzQ2WkBHioUbIcHOmN5qigMEsKuQxwJuvmwQYl+B4QHHYjf1bCUZ/DkYIT2kzFO2GJub8KslPVZXrX4wpFeJmhVk/2df/XGQ1Qy03ihr8hrum9VJUWLF+7z1Dj7UQhX2Xd/LlU5AvlOcY9cYhixnBB2ILZ0mtiuiKUmRGkYYB+LHrP62EEm1yPv9e0sA7VfvTOpRD1uN3CSI9sTfpBgPHlx8xCbw2eGJqOdp0JZShEm09igwse1uR8Yf0KoqjAD0wDbCPVtzcV9L7iJ/Lm9c50szSfLJMw4Se3ZyFS06JzeZ9XokqixLM59aYYuwPH4KZJ04N78mUT1BypWEsNQdBd/XmjNVc9FL2dvMtzgsjKXt9oBU0SOy7aJ2MqHZNqPAkpuxxiJXELBjT2loJGF0L+bY1TOxpWRSHMcNeTtWL7vUBp3vxYsh8/t9JZCMJlqCVXkzn0/DKsMEXot5KoHnoQ+01o9ii4dW7SWaMyRcrEOcSNNymwxRtPnfgzn4OdNZob4L/Fe/7zZaw5Aw3GvhlfQut0tMAJS0S7Qbgbdv+te4k6Y3LbhPph/2bd8TO9889gagt1P0QELIy5Y/9/8Yt25RQfkMNESL6Q2p7XHRmvRyrjVTySFx/wR9uU+ZfY6WP50TYZqCb1W1pK8Hvn55miX3vHPaqMBt5bC8rKR714gulWce46szIJjaubKJU2Vi4ONknFqpowd0ZEtMtnmi1P1O28GDHKe4SuiiJ+oyi64ZIWTyJzU/3r8qLeFLV6OGZZGGhmpfQpCGhcFUlsDs2Y8o9t6DdkOdbQWIlxWHWi8t05SRz3vjkVa7v+yzNNPWUNJiwNBo0h6o6t/PkkGG05TZyxCEijh080u55OroIbtd51OWr2E/xy/e7G1E/RtJukh4WknIVqTpoWVUxNQVCAyw9
- b0k0hwqv
- k3keHdmp/qHI6Ja4mQq6EFtSv0zGw0VyMgxI+9C3cCwVGhOKwgX+mitow7Ffgv9c0ebkhA5NyUXwciQKiQAjdooqoHVkMBkiu5TaWfsZuWqDBRMpJIoVDMBdW0OecF4JIJkS9n690+9jjXYXhMTjtXxWOsTk/La+ZaUmoC0+3qozdJQ7uCNZsEN8/GeEFihbZqds6L889G8Oj+x+J4WI9hak6QlqCeRfvA7i96GYDXAd/sQZ/cNxAEsy43GOXUip/rp36HOiuienylRBGIzMjySEv+WQIVrmbHnzMKNVK1MeKA1PSVjOhKnaKioJ8qqL7X2J5snLTQoF1CQc=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AFA771C0004
+X-Stat-Signature: yp7qt66rknd894pw3m8h6484rz7so97h
+X-HE-Tag: 1769740019-206495
+X-HE-Meta: U2FsdGVkX19q5vkahng//us8twh220wzSOFwe94tC3GjdXOTzTQnnVWbvu5Q71SUdy8nyGaqUZvtToH5t8taK/OnWZNgiCIkDnjqAkRMEJkDSx/ukKbpFHf0gC37TVt0uizURpDoMLE8naAAdI8TEyvt+ZJumtZqbQGLMLskU9DXn/P9smgzK7qJLPEaUGruDUo/2vI7MZHKDO2NT4oacoKkTbb5lDKoJDzrwkuwdnjZw+USdL3iMYvRDPmc9+MYJ3AiWag1z3CsjoArgtYjAyqLIwcYq5JTrkBYwyhYUrpgvrYFWRcpZJtk3SPt4f3tKQBnomAGsU1Cy623ZOdgOswthPmWnS0uN4J3UmWlCbT0aCj2BWvQ2GFCciFawOMM1cNTpGuW3KMW6KD4+DP5syLbI0oi+W6kD3cT4HG9e5BcJLmEFnRf3v59jWkT7BP3sn4+AhcEOej+DryYsxxTzkF85sqe/j2gKHe+rGbw9mcCVdpzG5ULERQH/Iud415yaXwYgQyV8Xoxxv2APVBfJdFYOWyCgTLFyoh6UohjkhvMVHFIzWrVL9JliUmI7xTW/m1VDKLr6bTuj9ZESmf23kvAk4ygSOPi5zzTj0ckXFqtxS7YWsve/evVcXawq2JxRYggN7wB35fOy8iqV4ExzfJOCHZzkPjcpVIF8Dp101BN92DkjXRtORCZT7hDIK9al3DCF2k6WyeGB5+xe36LGdl2CAZrWs9oz00YeMdNX90ZQFmFlxzwm5ZHyQeKCObs9+ni6t0k+n53vy4Xg++S81Cu1426Cr48GLnVQ/2RHXomNG8QZXRhHdu2D7rraplPJwdzP1Yz5r6BCUEIZF2adsEamkNFe8ebv4d8AMqpVU/CDxFSlBn60mQsvHOgQ2U87L8sN7k0c2Cp2qOrDZZYx/h8pNdHrrrbIE2PygB9/XWCbBract/NkEWcY1SvkTrILpPXw2bxu3v47lxuv1g
+ WSrp4BNP
+ J3spoxGKRxcdcvWN+G7kVep2/lmLVMkyfCIrrRs+qTUs9kSnV/LN4+cUhoe9fvXGSq64Kqi/K2A3BaD/lnzbcGs8bB5dH7zgArk3Si80USft6QKINp3lHkty9ZRxj9qY+GL/m7ZGl7X069usxY+pVOlH1NNtziThJIQ29S7PeVpyQ108Bsx+BIwWadcXmAsgb8I8ZS4VEFEBhb8JNcpKnsyQAevcyrFPBl69LhTaKWv01M1NGDrOOJEdDtOSTv2U9Jlb9D1YxczZqGvNBXO1CqJ9rG8m5+F94Oh5hzdIGcycnTlIKzoc8IEs/+Y4b/sF2a7EqdUB2Ccy5T5Bhwm1ZDUp5KP4xo/2OIQ9CTqY7BbZk3rh9r3KIr7z6xIxX1p8WTO4C
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,14 +100,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Please keep "RFC" on the subject consistently.
-
-As I mentioned on the cover letter, other parts including the design and
-impelmentation of all patches look good to me.  Thank you for doing this.
-
-
-Thanks,
-SJ
+Hi SJ,
 
 [...]
+
+> Actually, there is another bug that need to be fixed.  Nonetheless, that's
+> orthogonal to this patch, so it is not a blocker of this patch in my opinion.
+
+Are you referring to the scenario where, on a 32-bit system with LPAE 
+support, the biggest System RAM address found exceeds the range of 
+unsigned long? Actually, DAMON only actively searches for the biggest 
+System RAM address when the user does not set a monitoring region. In 
+this case, we always reset addr_unit to 1, which essentially restricts 
+DAMON’s monitorable address range to 0–UL. Therefore, the described 
+situation does not occur. For details, please refer to commit [1]. 
+However, we could perhaps further optimize this by finding any biggest 
+System RAM address, setting damon_addr_range, and dynamically adjusting 
+addr_unit. However, there are currently no specific requirements for 
+this, so this work has been temporarily put on hold. [1] commit 
+dfc02531f413 ("mm/damon/reclaim: use min_sz_region for core address 
+alignment when setting regions") Thanks, Quanmin Yan
+
+[...]
+
 
