@@ -4,115 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25668E6BF3F
-	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 23:01:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBC8AE6BF3C
+	for <linux-mm@archiver.kernel.org>; Fri, 30 Jan 2026 23:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 681CF6B0088; Fri, 30 Jan 2026 18:01:06 -0500 (EST)
+	id CCD9E6B0088; Fri, 30 Jan 2026 18:29:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 653586B0089; Fri, 30 Jan 2026 18:01:06 -0500 (EST)
+	id C638B6B0089; Fri, 30 Jan 2026 18:29:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 580126B008A; Fri, 30 Jan 2026 18:01:06 -0500 (EST)
+	id B6F5B6B008A; Fri, 30 Jan 2026 18:29:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4406A6B0088
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 18:01:06 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14995160505
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:01:06 +0000 (UTC)
-X-FDA: 84390152532.03.839EB62
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6A99B160015
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:01:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=W0SpJ8wU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769814064; a=rsa-sha256;
-	cv=none;
-	b=MxxcstWcdj2+frv4S2SKlCA7eiKRjmNXDRpAU2ZJBnasxp6Uzw8cLj6cCVooYFwS9XUvSD
-	Z2c6O642yiDgIKuursORhovX2zw7o5wOnYyDETFdPuTvV/bHTWS9MoBgQ4AHwpQMCKWiNf
-	Ntx+H/ByHMGnTPUHO6gvKwBe4H3dPEU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=W0SpJ8wU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A359B6B0088
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 18:29:45 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 58CBAD4CEF
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:29:45 +0000 (UTC)
+X-FDA: 84390224730.06.628D249
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6549F4000B
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 23:29:43 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TjWkndFH;
+	spf=pass (imf12.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769814064;
+	s=arc-20220608; t=1769815783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=XpzJMKrnIvJPiY74TgzeTlKt0Hvq5aWJIdiYlnsoQHE=;
-	b=Fmjjz4yopoAPaLpV+wHtg+UTrSJtL1VbyxbddHbwWevgeNqBDhErEMDYYd5o6iMbsquD5S
-	p0d2WMRygQoth8eSuR79PjED9E4dDegDjqFxHhhmLUa3TJlfK2P02doBPcU2vXbobs34n/
-	94cGhAjGxgscpNn2iYck7Q09bnDaR5Q=
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b8838339fc6so490340466b.0
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 15:01:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769814063; x=1770418863; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XpzJMKrnIvJPiY74TgzeTlKt0Hvq5aWJIdiYlnsoQHE=;
-        b=W0SpJ8wU+XxGaIlzkU21AJzVyHhJJGtw3qGKV8Y4ryQTKmWlzI5I4DpvxKbDX0FNS3
-         kz5bJCSgXQNglD4+yKRmM4t4N/szit7MmD89SuzXHBtlJQoFs9tZeAL9bQnOx+gajZwA
-         MJE60n8/6o6yCFNzopPO+ChrTk2cNmQgFkRQGmGez1/cLxXEwR+U6LW+AvmbkpnvPvYF
-         rW6p2uJODdQSsEOH14j6CVEKGLlXdak+myxxCEIaWpChgifkL61pqK7KfL5PHWwwjisn
-         AOshplSGpZEDD2odZZVCKBWqOWGAlC/d8jmdUfVYnLeOCQ6qM3RLfQfLwnImD8QF8FuU
-         czqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769814063; x=1770418863;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XpzJMKrnIvJPiY74TgzeTlKt0Hvq5aWJIdiYlnsoQHE=;
-        b=VzvoElM71/m82YE4hswttkFturpU7byo3ovl86+m+r5N00QURaQ8nM87SO0qiJJ6u+
-         6cLzVcy/Ra27CILrTFD+MOG1MU7ZxRB3kuNaBwMlTwUxpi54bYVc6gvzDyy+TP+6TcOS
-         augHipsclKHj/TDty5MpHurle4BLUK8dv4GOs1jedytICKJwnJ8zn//3yHPLaVUKG5Lq
-         ZDgQrcGZK+UETEVuMpr6MP7DHhetTVCcEymEq57bwKFYOd/JYHDiwiCUR6ClW+FV6n43
-         XiZBV6gCZEhn48nse9TH30D8wb8b//SWjjwQtFcQdg2g/tjtCVaiXMzt0SSBnNUcBuUB
-         JtVQ==
-X-Gm-Message-State: AOJu0Yx2HGuPzNLVOQokvA0H6+OCFz+xwM9EWPm3Ccat/tZIcRClZfNo
-	IE7y7fZ9NCuUQu+NmGV1x1zIKYhwV8Gskjd9eCItdKiP9PFQIs0PS2H4
-X-Gm-Gg: AZuq6aJmYP1JWxTxmNmRO1vPknzkBLExf1iBMKehdDXSC02aZSlgBUi46UC8aRyWLtY
-	thzKm4G69nZBqkDMT00s/kvDH6iWTqIxLssQvkkmi86Jv/naLrH/kPpYLlDXPD9rM/YTIg49Km6
-	QYxSSzkq6/sTqQ3DLOh0MfS90YI8cSpl0PC9cWKUxVysj44dV2/8K99C6Jy3MXnSCQczhIcevnv
-	x9Dzum+HwC3kxGqVJTsIMtKUQx8moQcjgNuGoKWUyogkCMMoKwZgw+yS2MTsxl3l+cjBcECEcS8
-	wf6uQPB1uK1K6UhUuVHGADxfddwAV3+mSaAJbNNPAkc+cnUdizACOUN84ZETekdkohMH4iqkpt2
-	rNipUOyJPvq33lFpZbXWwypbQmrYcE7BIKJdfAjdNQifOt5PPd7DjOGPzGsPFhOgMCarGieOMOL
-	mxtjb0rL2svg==
-X-Received: by 2002:a17:907:2d0e:b0:b88:1e2:ed49 with SMTP id a640c23a62f3a-b8dff22f549mr298811466b.8.1769814062665;
-        Fri, 30 Jan 2026 15:01:02 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8e0a5a3b1asm152556866b.57.2026.01.30.15.01.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 30 Jan 2026 15:01:01 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	gavinguo@igalia.com,
-	baolin.wang@linux.alibaba.com,
-	ziy@nvidia.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared thp
-Date: Fri, 30 Jan 2026 23:00:58 +0000
-Message-Id: <20260130230058.11471-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=QysXvGg4/WNW7ja6nSUtrR5V1p3ZPUnXLANtyVmNAWk=;
+	b=ZX32V9y3h9yUrw1003J1eZgiqHGPdQVazPFE8CbDH0mSpTc/ZSEEMGEsOK6AVk14dZa/Xc
+	6bffbF8j76vJOpZnJnVwMqWfzM5eKxJQNy5qPiYYWoe0M9YRy9HXvkxQbFEDnl2/Dp49jh
+	LmZtGhcD/q+zzTvu+ePlWkEKPW+mvxw=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=TjWkndFH;
+	spf=pass (imf12.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769815783; a=rsa-sha256;
+	cv=none;
+	b=ygr/qT2A9i6tp3iPqsUkuPXmKf7P2VXyb6arwM9kIz7RRbF4eObBpE+TEL6qITYnNyOuPl
+	aEtP/sjBrCuDHqVS1Zz0TaY+bbwLstTjOF/zapdo8EhTUXm+eRQWpuFEQ5Ju9rc4fXba/e
+	BG9FO54jFLCYsALkdD8o0zwptiEuxKw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1769815780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QysXvGg4/WNW7ja6nSUtrR5V1p3ZPUnXLANtyVmNAWk=;
+	b=TjWkndFHiWZPZypvlOjbUssQQgegJB0Nfm3nOT80hMMy13dBfusfFGYnpRGONiSv1yN0lD
+	SOewWKlHjvaWx49VelxWNXVO0qyWnB64CoFNizdUo2Hn6h8EvksuLB79egcpIPIddpryBk
+	TDn/BX27H7dQGZR92+4SXjhPN1cdBEI=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Michal Hocko <mhocko@suse.com>,  Alexei Starovoitov <ast@kernel.org>,
+  Matt Bobrowski <mattbobrowski@google.com>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  JP Kobryn <inwardvessel@gmail.com>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org,  Suren Baghdasaryan
+ <surenb@google.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Andrew Morton
+ <akpm@linux-foundation.org>,  bpf@vger.kernel.org
+Subject: Re: [PATCH bpf-next v3 07/17] mm: introduce BPF OOM struct ops
+In-Reply-To: <9483528f-83dd-4a30-9489-cf0fac4de5f7@linux.dev> (Martin KaFai
+	Lau's message of "Thu, 29 Jan 2026 13:00:11 -0800")
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+	<20260127024421.494929-8-roman.gushchin@linux.dev>
+	<9483528f-83dd-4a30-9489-cf0fac4de5f7@linux.dev>
+Date: Fri, 30 Jan 2026 15:29:31 -0800
+Message-ID: <87qzr6znl0.fsf@linux.dev>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 6549F4000B
+X-Stat-Signature: fjguod5kdgutrqw3qsnw56bgmq5mu3sy
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6A99B160015
-X-Stat-Signature: 34zbri3hmdh7h4ufrfxm5whensfzbecc
-X-HE-Tag: 1769814064-333549
-X-HE-Meta: U2FsdGVkX1/24kmTwmECBxZyXpARkr1ZIa+87MOMrXUZgGiymJOJKM6h87o2X30EMpZReiZ6lI5zvyxF01b8jIOhbIEnmh8pV2v2vUz6igrRrhxKTSjv/b/3PgmzWKbtWmT0gKqWTIHQvd0CQGNoAon1oufcbaeZNarMeihz9Hza4GzGL2ZwYB/fTNShyZGfYZZ0AY76hh2jR2CP2jsOzo+y8sI4/rpFuCyEeLpDAP06smjCGKTGiETtqwXeLda1gJ3ZmAaAEz05yUQ5ar745/8yx/oF8pMSWO2mSAnLXztHLFpL64P4vOXjFBFUHesfRNWpa2zxFSKvYfaW7ZK1DBBv9axwTFOG5jLj2bGGfb1cU8SWigWVAdYJkwv4bXUcrXp/38MU99WT8RezEZGn5HYxbBrEItV0PvbftexyMQJ98OO1smt4USAlTuE3j8QOJL1jqwhfPkUU0vBQ+MdQ0+r56Bwggvz9YKYfa2k/qQe2iTecrSRT48sLi+6dWx0aWbi3s/o2vgCswbdGvQ5fY+VtzMn4hJG8GTVpM8eKNh0ToCDKTc8F1KyDr+bHgkKjkisPiQBm/Bk7He3jlWLIAw/RtVAfNRoWXFvChnfnWv/Kn0Vrs/aCHBCj5o2h7Kkvt0yil1T/QsYZrJzs7sBT/A39V8ccb+usUFnZvnwyPMelfO6lpWKis/2ESJdQAhvGmIXhHrCkHeGXO7HUYXdknNEccaiMHihRlflwF7GvP8Q32kCz74HMWiu3plKntQcHLlyeIcmIqTWPjihfoLYegUJiibeUKzVsFBTrernYF/M9ndzn6ZZIsT7fS8sPUvbsHbgsrFiWuYeuorgYIof17DGXpcM2vAlSy3v68aLus60Yixx50VdCmCujdtKQmN+yMVszpGyVhFfFbXm1CnShg9GQsGw140BEPvm0tlSIk25gJy9xCY61Wv2EqpVBTw2TaFTjyn5B8pYK5bmGUSA
- jdY1Wunb
- Ny9Pb4OFkMDnJAmUWwsuSuYz3Ridx8IlRPROZQPKRrciA3+9ZK4Qcvgg9UCW72pbEQ/as28iApYdX30wQ0mLrsUO1bb6clkr/rJBt2SUQN7xziSu7pWwCn77x8WE6M66e3190s2muVHYU9D2SM/cb1bBDdqFuB3ykQkkAI/yQI9vl9epgVINYVNQiOUO65+aHwaJ6G/Bn3/9Pw95U3AgOncE7Ymzrd9IqadMU3Ek41R+jybdY+icosM50VtZX0nOPp2VSMsCXVClgLidgk5W/xQ5V6TRUEygU+LiXTi6d2ICd5t1T+do9OpBMrq8+08EIjNziFodHbPnfAv127Sos2LclBI9Hb2IqkdZUK3qJYGrEyGsCxCNPCJzOLBxNv4YRImbHfhWT1cHzoD9u5WUVr0hLHD9kRF/PQe3QD0JAGebShAhQTiXzweQklJNNEfBuZKDyv/u40T6zOWnkNQA5BGN0u8fjUifZ/gOAej6dO0QEoSqGUUuW2Ur87EXyvQXQpxAXpwY6LO2bNYmSzycdRIlglq4zLm7/ZgqrYEnj6HdX7gEUHIgvrc/wK7GQbktWfkrXyuWIpJ1B3O61/Z5d8J1Yh7Es6Sa9v1uWe8YYarI/eXrFyde9sOWWCIC0Roe1buaRO8X/nXjFIE5HU8jyX00of5cGfLvkg3M1yKgyVA4YhSKNIZKy4jefEHf+pJPk2hQllPA5KVZL5gxttlE2yzkWFsA4TlgkE80KODdWgK5IYWUoSetD1HkH83p6kgTjyHYPUMALX43XS8gQJU/TbndfVB8C2+WRra9+
+X-HE-Tag: 1769815783-342351
+X-HE-Meta: U2FsdGVkX1+51rC1mcBeCq57JhvVrxhsQ0laqufNmYIVDGGIhgr1WnFX5AU6dJEJ2+f0RuOa9cm0a1L5LM9MGB2AMuAxeBbZAE7dJUwmNJbaNg2vcMdTbwZmqqs5NkjwcPmdvGM+2JCQyAnexmvIYy0hE4+81XmVdwfoFzVvhxJtLxxE/F5SGLX6Ad2Ep2eo2pbMuErOfOk+mfSYSdJN6GtDU69/uB7sACif8FxwEhOL1G8boZPKoip2eQOZKVQ2ZdS5Sn7RPEGfz1+44EuLHVjqSbxBx/Ziti1bLFOVwV1qup0cakSJjLJ+VB3Nmkw4iVWyt5hreqWytSZcY2alquazuff0hbmFaECfJZSawE9jBrZilAY0ZrOVoIcFSryeto7UhXVhzFiDz5VfZS8S7/fAQinb8Ihuq2nOxRDW4RnwfCv5fuTC8cR0cRoYqdXltrTKP+Ju07IINKJXx4c7N5MCCjIbtP+6ayYBw7y8hI1GFHt5QJX9aB3Zpnp4AJFA2DX1EKw7hBI6dfy4p2zg+wz1wx6a4HBpqrgThZ5fF0Xa9jOX/BPitEEH1i6nzUr3iwh+SigSjiNmiAGZcuc8zXsB2w9Q/T//HU023HpiZrWD3hO3mf/466U1hRtNeOtwj+F0rci7wr218bRB3SGhvpR4rBHCboEOe4By1ZDxWpZUF97uTrVZMK++wVekCWws/fXfgAVzUkDjdzaxvJ5NS09UeIBiH+lSYzDbcSX6CYik2CTYNIZsQQnbJeT+sTZLTAy+l7b5yDitHOYq5ypa9YXrGhKEzog0meA29mausOH9ACs/VvecUhfaduf1R+6/vXocLiyvdM+h5gJyt/6WSHj9ZKRweZUfAuU7wHa5R8xMaBtWdOTW0sdhjiwiCmdd7Ylcl0USIdr2QEqPuMtru7uDaYmBr5YKFIcr42DKLj1LifEj/OBjSZ112TK5WhNrSNw9nysu7X1cvFle1M8
+ QQBoUFzz
+ vSEedohkIv65TNd0TNZ+W2aDmLqmIh1gH/PAzJVKuqFayMokw+ClegCtd++7QuNuntGhdABmweLU4REVrsrw79/r4KRI8uBWVZ6GiIKEt2unmTCkj1lOAjk9KYcaz3q9rg40Z8Nj+m2Mme4fTaPi7z2rfQiczDo79JrmN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,60 +93,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-split_huge_pmd_locked()") return false unconditionally after
-split_huge_pmd_locked() which may fail early during try_to_migrate() for
-shared thp. This will lead to unexpected folio split failure.
+Martin KaFai Lau <martin.lau@linux.dev> writes:
 
-One way to reproduce:
+> On 1/26/26 6:44 PM, Roman Gushchin wrote:
+>> +bool bpf_handle_oom(struct oom_control *oc)
+>> +{
+>> +	struct bpf_struct_ops_link *st_link;
+>> +	struct bpf_oom_ops *bpf_oom_ops;
+>> +	struct mem_cgroup *memcg;
+>> +	struct bpf_map *map;
+>> +	int ret = 0;
+>> +
+>> +	/*
+>> +	 * System-wide OOMs are handled by the struct ops attached
+>> +	 * to the root memory cgroup
+>> +	 */
+>> +	memcg = oc->memcg ? oc->memcg : root_mem_cgroup;
+>> +
+>> +	rcu_read_lock_trace();
+>> +
+>> +	/* Find the nearest bpf_oom_ops traversing the cgroup tree upwards */
+>> +	for (; memcg; memcg = parent_mem_cgroup(memcg)) {
+>> +		st_link = rcu_dereference_check(memcg->css.cgroup->bpf.bpf_oom_link,
+>> +						rcu_read_lock_trace_held());
+>> +		if (!st_link)
+>> +			continue;
+>> +
+>> +		map = rcu_dereference_check((st_link->map),
+>> +					    rcu_read_lock_trace_held());
+>> +		if (!map)
+>> +			continue;
+>> +
+>> +		/* Call BPF OOM handler */
+>> +		bpf_oom_ops = bpf_struct_ops_data(map);
+>> +		ret = bpf_ops_handle_oom(bpf_oom_ops, st_link, oc);
+>> +		if (ret && oc->bpf_memory_freed)
+>> +			break;
+>> +		ret = 0;
+>> +	}
+>> +
+>> +	rcu_read_unlock_trace();
+>> +
+>> +	return ret && oc->bpf_memory_freed;
+>> +}
+>> +
+>
+> [ ... ]
+>
+>> +static int bpf_oom_ops_reg(void *kdata, struct bpf_link *link)
+>> +{
+>> +	struct bpf_struct_ops_link *st_link = (struct bpf_struct_ops_link *)link;
+>> +	struct cgroup *cgrp;
+>> +
+>> +	/* The link is not yet fully initialized, but cgroup should be set */
+>> +	if (!link)
+>> +		return -EOPNOTSUPP;
+>> +
+>> +	cgrp = st_link->cgroup;
+>> +	if (!cgrp)
+>> +		return -EINVAL;
+>> +
+>> +	if (cmpxchg(&cgrp->bpf.bpf_oom_link, NULL, st_link))
+>> +		return -EEXIST;
+> iiuc, this will allow only one oom_ops to be attached to a
+> cgroup. Considering oom_ops is the only user of the
+> cgrp->bpf.struct_ops_links (added in patch 2), the list should have
+> only one element for now.
+>
+> Copy some context from the patch 2 commit log.
 
-    Create an anonymous thp range and fork 512 children, so we have a
-    thp shared mapped in 513 processes. Then trigger folio split with
-    /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
-    order 0.
+Hi Martin!
 
-Without the above commit, we can successfully split to order 0.
-With the above commit, the folio is still a large folio.
+Sorry, I'm not quite sure what do you mean, can you please elaborate
+more?
 
-The reason is the above commit return false after split pmd
-unconditionally in the first process and break try_to_migrate().
+We decided (in conversations at LPC) that 1 bpf oom policy for
+memcg is good for now (with a potential to extend in the future, if
+there will be use cases). But it seems like there is a lot of interest
+to attach struct ops'es to cgroups (there are already a couple of
+patchsets posted based on my earlier v2 patches), so I tried to make the
+bpf link mechanics suitable for multiple use cases from scratch.
 
-The tricky thing in above reproduce method is current debugfs interface
-leverage function split_huge_pages_pid(), which will iterate the whole
-pmd range and do folio split on each base page address. This means it
-will try 512 times, and each time split one pmd from pmd mapped to pte
-mapped thp. If there are less than 512 shared mapped process,
-the folio is still split successfully at last. But in real world, we
-usually try it for once.
+Did I answer your question?
 
-This patch fixes this by removing the unconditional false return after
-split_huge_pmd_locked(). Later, we may introduce a true fail early if
-split_huge_pmd_locked() does fail.
+>
+>> This change doesn't answer the question how bpf programs belonging
+>> to these struct ops'es will be executed. It will be done individually
+>> for every bpf struct ops which supports this.
+>>
+>> Please, note that unlike "normal" bpf programs, struct ops'es
+>> are not propagated to cgroup sub-trees.
+>
+> There are NONE, BPF_F_ALLOW_OVERRIDE, and BPF_F_ALLOW_MULTI, which one
+> may be closer to the bpf_handle_oom() semantic. If it needs to change
+> the ordering (or allow multi) in the future, does it need a new flag
+> or the existing BPF_F_xxx flags can be used.
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-Cc: Gavin Guo <gavinguo@igalia.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: <stable@vger.kernel.org>
----
- mm/rmap.c | 1 -
- 1 file changed, 1 deletion(-)
+I hope that existing flags can be used, but also I'm not sure we ever
+would need multiple oom handlers per cgroup. Do you have any specific
+concerns here?
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 618df3385c8b..eed971568d65 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2448,7 +2448,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			if (flags & TTU_SPLIT_HUGE_PMD) {
- 				split_huge_pmd_locked(vma, pvmw.address,
- 						      pvmw.pmd, true);
--				ret = false;
- 				page_vma_mapped_walk_done(&pvmw);
- 				break;
- 			}
--- 
-2.34.1
-
+Thanks!
 
