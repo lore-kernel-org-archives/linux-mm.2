@@ -4,135 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F298D61037
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 16:43:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1414BD49C9E
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 17:29:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 226FC6B0005; Sat, 31 Jan 2026 11:43:42 -0500 (EST)
+	id B5E406B0005; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D4106B0088; Sat, 31 Jan 2026 11:43:42 -0500 (EST)
+	id AE1CC6B0088; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B6026B008A; Sat, 31 Jan 2026 11:43:42 -0500 (EST)
+	id 9EDB06B008A; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EB5C56B0005
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 11:43:41 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 763108B9A3
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 16:43:41 +0000 (UTC)
-X-FDA: 84392830242.25.D4C3562
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 66A6240007
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 16:43:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="BYq4A/ip";
-	spf=pass (imf04.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A67C6B0005
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E57471A037E
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 17:29:03 +0000 (UTC)
+X-FDA: 84392944566.02.CA5F7DE
+Received: from cvsmtppost105.wmail.worksmobile.com (cvsmtppost105.wmail.worksmobile.com [125.209.209.75])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B4172100009
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 17:29:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=worksmobile.com header.s=s20171120 header.b=t99Ppe5M;
+	dkim=pass header.d=korea.ac.kr header.s=naverworks header.b=JIEzisgH;
+	spf=pass (imf05.hostedemail.com: domain of ingyujang25@korea.ac.kr designates 125.209.209.75 as permitted sender) smtp.mailfrom=ingyujang25@korea.ac.kr;
+	dmarc=pass (policy=none) header.from=korea.ac.kr
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769877819;
+	s=arc-20220608; t=1769880542;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ttju5LlL5zdhb37KHUj0FM7pbym9mVVA43AsH5WDWBY=;
-	b=27ZKbSCdQJ0SOKsCcI7piHeght92fwkuXbgSDUTBDgKC/L9Yg8KZiHBiNNrABN+lzSXtE5
-	uCyl5O4784BPleou0sMj51/jWMod0WBSQoWhAs/ob1uiZ47eKyDGsnykYrqQPKXS+C6upV
-	Xm14JqigcJ17tpCbFM8pUmi/ojBG41Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="BYq4A/ip";
-	spf=pass (imf04.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769877819; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YG4ly5XkBm7xH0RH1Wx27oM70Xf9pgUF0+jNK/Xq1W4=;
+	b=NA9XUD+vqLKALLJryNwlFicVW0oYY4DjqmLJIH/kQLLxnbSL1h/1iQdCxNE0pwodJdNYM6
+	fUFb7W+yxdQO4OW+624kC6dpTWBhgVuT0dVR79WU5ejy+mHer7gP3gqxv3WDCHSrC3SFaP
+	X8k/ju/4v7dh3LS0SwyPlHQgkzsAnX0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769880542; a=rsa-sha256;
 	cv=none;
-	b=k3drG5Iueuz1pxHDdvbzvhwS7Kc26Sk8XghAFEEwl03zcO9pKG9PmD9TbCiA0cIfu+CHye
-	hGEKsneOou9YMHeIqeCwqiJJsZ9TUQ9JcSQ9pjwGahrCL+DabFajMdEIbFi/3pZWpfzL/h
-	9kCkL/Zq+ckkGMrWcbXUvKvxFAXAuMk=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 44AFA444E2;
-	Sat, 31 Jan 2026 16:43:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABF55C4CEF1;
-	Sat, 31 Jan 2026 16:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769877818;
-	bh=3KsRMh2lSbZ0pMfa0RXuQSsgQEmLwpq0wiIfPG6cAFk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BYq4A/ipaHf3dHpGjF0pF8iKcg5Kb6tWnuXulr75Yw55DTt54QEG3BYJRELJzgRtQ
-	 Q2Iq8DK0oxTQiSktzhFIjJQ4gvu8k9iukFR61/Pna9On67EmC/omIPKsV7ZefvEhG3
-	 UiQdc9twdYo7qqF4PyAfA5hHYp4ixPo2rS5twS6aUkKJB59Zi5j8mb8eO5f7LqilQv
-	 n9mchh9on7iaP53F7zLvlfA6qllEJZ4tPI9yAHnQH+OufoY0CoIw7LJomL06Y25fgj
-	 hJxnAPsvImekF4ULkLPQJJfH0tMUomBFj/Vv3Qj5g9AANMa3PvXMydXRWLCX3Qgqgi
-	 L9u8F7+TM1hZA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id AAD7DF4007C;
-	Sat, 31 Jan 2026 11:43:36 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Sat, 31 Jan 2026 11:43:36 -0500
-X-ME-Sender: <xms:ODF-aS7fLp9NqI9O5kEN0lfRG7QIsLOhkxLUnsrrMnQ_GFZFj0Ntbw>
-    <xme:ODF-aWRvFQ0S4Ea3xsokT4IlwaTtax6R7pzqH-61-_JdnBGysy8yb15Wm_O8T5O9h
-    urpQYZfQWocDgbMOmqIEtABBk9stYUQy-2f6Wx4ASseAR_mkBt42q0>
-X-ME-Received: <xmr:ODF-aXnlKunrZGPDNbW4hjgTNTb8gys5uWdLWnyF1nkK7niCzK-98H3KefKC0bmqDb-nSCitfB23nvuBVqJLc9a0Kkmw5hmq>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujedvgeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ekgffhhfeuheelhfekteeuffejveetjeefffettedtteegfefftdduteduudfgleenucev
-    lhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnod
-    hmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieejtdelkeegjeduqddujeej
-    keehheehvddqsghoqhhunheppehkvghrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpd
-    hnsggprhgtphhtthhopeduhedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprgdr
-    hhhinhgusghorhhgsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrh
-    ihghhuohdrnhgvthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtgho
-    mhdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdrtghomh
-    dprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpdhrtghp
-    thhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepsghoqhhunhdrfh
-    gvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohht
-    ohhnmhgrihhlrdgtohhmpdhrtghpthhtoheplhhoshhsihhnsehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:ODF-aaSOYWbSj1OGZNm8fCIwn_BzmjJQy6VZN1JiqEKA7yjdpQ1OjQ>
-    <xmx:ODF-aesYDIkwIhBDCvQGTzXwB6WHvc1LjqkCtq03GaCG3ZZPnMXbLg>
-    <xmx:ODF-aT4x2C7uyY6Q6KW-H83nL9pi049yDYzzyzBULueZRmWP1nuC2g>
-    <xmx:ODF-aZgbVrivNY_fJzfSmtB1XX8K2Bw5Ij6dQIzdlNX4VSifTTe3vg>
-    <xmx:ODF-aVkfJnCYYZ5erED0jlnT85y7jEy9KTaZe5Vh_9aG89YWQq75d-kc>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 31 Jan 2026 11:43:36 -0500 (EST)
-Date: Sat, 31 Jan 2026 08:43:35 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-Message-ID: <aX4xNxsF5Qs0CTPW@tardis.local>
-References: <874io3rwl3.fsf@t14s.mail-host-address-is-not-set>
- <iFJVkpTMbd-NR24OHYTJj8lr4dw7MwCQ9rJWiuRZFgK3JRDhIIAcpf5Z24viL5qHhkrPzpnKfvX7JS6X_VO2vg==@protonmail.internalid>
- <DG20LKAHMXMZ.262Y7NAC1A1Z9@garyguo.net>
- <871pj7ruok.fsf@t14s.mail-host-address-is-not-set>
- <-9VZ2SJWMomnT82Xqo2u9cSlvCYkjqUqNxfwWMTxKmah9afzYQsZfNeCs24bgYBJVw2kTN2K3YSLYGr6naR_YA==@protonmail.internalid>
- <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
- <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
- <-5tKAwUVrj6fo337a8NWsHQBepB07jKIVI-VafwW1zp0vsGTCkBTuI5nCBniftYJePZy8kb7bhWptJ2Gc_B-kQ==@protonmail.internalid>
- <aX0lcVngRcRwqgd5@tardis.local>
- <87pl6prkc6.fsf@t14s.mail-host-address-is-not-set>
+	b=e19+3FZ8QoD6qzTbbDJ7yujkNCQBrCNh+A/GyOVsLtW9zkV+kR6cAnqagrweGvyLo/UAae
+	bUPzf0t0QH4c8LE7pLW8UBOYq2AXrsvW/LvJsudMou+rStyyeCZxbGyGQGKVAPyQO8QHUv
+	bsMcAuxi5HyTS5A5u0xgZbkZZjfNiWg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=worksmobile.com header.s=s20171120 header.b=t99Ppe5M;
+	dkim=pass header.d=korea.ac.kr header.s=naverworks header.b=JIEzisgH;
+	spf=pass (imf05.hostedemail.com: domain of ingyujang25@korea.ac.kr designates 125.209.209.75 as permitted sender) smtp.mailfrom=ingyujang25@korea.ac.kr;
+	dmarc=pass (policy=none) header.from=korea.ac.kr
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=worksmobile.com;
+	s=s20171120; t=1769880536;
+	bh=xLdOzvJThZW5sBs7HVwMvfK8GTU5iAi2zlBS65q5Jrg=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=t99Ppe5Mvj8Sdqs/7W79q3UMcRMhlMrZlidlHFUMWJYxa+hEs0e1DmBHoIdxOQ2Tn
+	 biCgYBpKbvfIvtvaJRBN/sen5CabeAeXz2e9N/yr3/ffNAxlg+qEaNHnJ1102WxeWn
+	 yoE8a9ju4fcDbuShN4/DvBwSwKFe/f0ruOIvyjsjSv6uaMjkz/y+Ko35qqZllbVKjC
+	 +2JpTsr6AOqYa3B8D0gcozKuEVuXiow/Wuxby0w6xQaOPV7VDF9aZxo0/F1GDgLOmx
+	 BmDiEOs2o6lSnP8lyxp01dU6PzWe5TT3UBuuKvU60IbR7ZoxAbGWjykjlIm4S1DDuy
+	 AmFynLp4cbTBg==
+X-Originating-IP: 163.152.163.130
+Received: from cvsendbo004.wmail ([10.113.20.173])
+  by cvsmtppost105.wmail.worksmobile.com with ESMTP id DocsLqBlTVOoLPlysr7fZg
+  for <linux-mm@kvack.org>;
+  Sat, 31 Jan 2026 17:28:56 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=korea.ac.kr;
+	s=naverworks; t=1769880536;
+	bh=xLdOzvJThZW5sBs7HVwMvfK8GTU5iAi2zlBS65q5Jrg=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=JIEzisgHXU72ifYP4yf5mJWAkn4OdPaF3kd+vF6N8926ff2wc+moHS4ytFQwFWtdd
+	 IvF3VJ7tatDF4fsKdud9d8Rsx3rgDwIqbfDMMm5qdpRRD4HAXoZHl7tjQ+kssjYZml
+	 spccO314otHOzgrOLssP6+7YInPb0GdnoyqNAdGE=
+X-Session-ID: GogdYXx2SUC-hottws6UZg
+X-Originating-IP: 163.152.163.130
+X-Works-Send-Opt: EenqjAJYjHm/FqM9FqJYFxMqFNwYjAg=
+X-Works-Smtp-Source: AqndaAvrFqJZ+HmrKqu/+6E=
+Received: from s2lab05.. ([163.152.163.130])
+  by jvnsmtp401.gwmail.worksmobile.com with ESMTP id GogdYXx2SUC-hottws6UZg
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Sat, 31 Jan 2026 17:28:56 -0000
+From: Ingyu Jang <ingyujang25@korea.ac.kr>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	Ingyu Jang <ingyujang25@korea.ac.kr>
+Subject: [Question] Dead code in copy_pud_range() for copy_huge_pud() error check?
+Date: Sun,  1 Feb 2026 02:28:54 +0900
+Message-Id: <20260131172854.3370590-1-ingyujang25@korea.ac.kr>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87pl6prkc6.fsf@t14s.mail-host-address-is-not-set>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 66A6240007
-X-Stat-Signature: gy73wyq1osfibmj3h3bf71jedhq1fg36
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B4172100009
 X-Rspam-User: 
-X-HE-Tag: 1769877819-320294
-X-HE-Meta: U2FsdGVkX18541duyQal5VIIBTv2Urz4cN8VLkaoXTgz+kRli8Sg2KXqFGN3y5efIZDS5nlkZbry7OlfuwKDyAwmMS+W7dpqU3Z6TVXzk+W22HegLQm8QNXd3qSCLksESxUibcDreMZQJ8qy/W9KPOz7PSekDS9O7y4hEMi4D0b8BdyPT6emhPNun6IEOWvx/67tkqShRgx3r/YwIbIFtlakGpu+KCVY3c4tFnwOp/lNlh5Smu9obxftuRKpUEMWKJ5ACWmJwicEjfsTTJF9UkDQjeYR6rfWe+2F/Wxj7kPSKQyRZv7garvraDpWn4lCrE04IfW2dDthoelbLKaKr61wtqwrEIKuJVWjKumG/rgD3mS3OXilM5UUWo8EVPy9kfSYT/Nl5Q3hfFXiTYRssqVwm9XY9eIP1Wl+rwM3vUboyoZE+34pIOLFbuB8qQPCH41tFvWvHtZ9JDI6Lp52lGnfNywLuNDsqXRHCMNgnkINumIa137iqjk3LiJRaa8D8mGCLqBptSGDoPiMkQrClzZWA+8HOshpMA1IFzTDmf2E+qqtLDguRzDe3G93GxFGU0V1+yYm8Ntrhp9I4JFsoCQPLVrYSXA3CyNBBX3nYBbpmMQR0pftejJrd0F96uuzSkcHhgyj1gRnwhCi+22sTruKLdVd0JBHhofKLO6gwtRmXeEInCv6FrQHA0pEWXG1TanJuy4BVpWcKCXvoffSBuj9bL6qnKGg4KMJ4lhJRLULOUj1owuu+oumyo/ZlRoU4/8uoenDVyZ5MvwdbgolL98zRFi+QCrJ/tcYmX//L3sGcDSU0doy0DdxV4z3BdlCEGdRVRYslW+BcbAna0r2YgNIjhZAZdB0AsqQMau8fvsxPMzzYhbhcZSve14cMnRK0qXMDbVvzruGouUm6TV3I3Xs9xumKdCP0awRwrG9wEPRit/d9bX0dXzu1ynRVvGcsRyy0FtuVsnomzf2tlC
- TuaqtRjF
- MLb+cdB2qDDduOJ6+cneF+0BUxlVSI8q0Tn6SUxbJQfWM3I/1X71c6qv8AL7dTJPsttcKHdIGeC9CSMpL1rO64X8waceX1XCGd6ktpaoEr4h71GSFGtJ9zbEwT+FpFA8tMVVBgzhIfypos7Mt9FGaVEvLZ1QED6Aqe+L+QhMsz8rdFchX+NS9xF6ktVUDblRh5ICHSWt95H67yOitgXYxDcHhXdR7d4/lYCcsUNAUyzOL3qor+Jk7qGL+4jJjcAdQHI7gI4icoR6In9IuKB0KSpuKuv/Y3L658Q0CcZuT/n8JQxGP+VvtGsyQ8Q==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4qcsnw4qxrd1booiaxfnbbiwyxsumrqk
+X-HE-Tag: 1769880540-520224
+X-HE-Meta: U2FsdGVkX19HLv2gL30yr+iKZSKPLTPlBQIZ8+jXACMcUva2y8xe7tePVJDTT9tLss5KMFGkUXfC8qRBmyOCOTDxf9cqpt24oYC5vdvilTT09g9fyqVBezbUQ/ot85INS7ZBgMAYTTA1l/XnNxVgsTYcbfRmzBXZi+JGW2QmREhjjOV2kzYI7GEOLbZqtwfkv159IoeGPRo9ScB/fIaEc2LECgGdsWEJYrpxMYGjdFgUh/N/573M1I/GA3FELK6hGw7cs+mcJVqi+MmYne0gux/PgHPhqq16E/i7IOytw+i+rus3fpvFWQsxhywPwDjG8wEGOUH66hsTrsaT1VpZpZFgg3aQKvkLMxY2ueKaQ5y+gmx1dn3ThDQ48wk/vrhEN6yI/PHGCGgNnKyW3KQlSZfl0TT7vBSNLkQMmCBjw0HBF3gCsYii9xNQo8Ob9Xwk8z5HDIWP3oBgJl2gzU3Q1+8FQ2yi4YoqLuk+Nbm8r/mPFbtrjbTphWqwmRWAzkoG+dtGvDIGtCGUezBGujMAtHwS/611d3aHwwRB/UlXOG9I9gtnYfky6zw+eWFcjyVGGLgzEqu38Igq5XUkk5C/Ljp4OaAAPC50uEg8hhwv1Z6Dp84cJklvXswcawRpUCDMhB9f6YZfQR0nuznPWlbi8kdfiW92jvWO2uNoxCilzugkBcjv5BOsCmiR7hzojD9Pe7+55swgL/VTVJ4q87vFQhaUQf6wUY3KK1n5oyLYAsIavAF3eY98IsFgOfDj8yKc8pEeXKzS848mVJhN76LKREEZ1w1rcBq+fiX0YwaBBuxIvLkIpWWEGwkBRr+R+DtkK+4XhhoeiNjuvsP6nd21m+r49FcGaMoO60qOvY1FIErR7iSY6xzeJ0PXl5W9Kj0Se6Tj2wKl/AjjzCpV0sBbzjAp3fZ0o3fCDm0w/7tRVf+t6MRcgfH6PxtxMqjiSZPhMz6KUlQRRNc57YspEZ/
+ Hyg4+rdr
+ 9rBDqJWoWHUcE0UurFbc6ygXLCbAiUuJkdVXtHxTzqoO6CLKIm00D+ofn//p9C9IQ7l4Ean5jZk4pnLnKRNWp9aZ0fUlGkzOmb9BeqYRQvvAw4yq3fm3vTMxNk7eJXyxbALCGG+RGSZNSqRFYuHXuBvne6h8CE2UfUgrBA8nuxTFViQ0=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.245724, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,39 +110,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 31, 2026 at 02:19:05PM +0100, Andreas Hindborg wrote:
-[..]
-> >
-> > However, byte-wise atomic memcpy will be more defined without paying any
-> > extra penalty.
-> 
-> Could you explain the additional penalty of `core::ptr::read_volatile`
-> vs `kernel::sync::atomic::Atomic::load` with  relaxed ordering?
-> 
+Hi,
 
-I don't understand your question, so allow me to explain what I meant:
-for the sake of discussion, let's assume we have both
+I noticed that in mm/memory.c, the function copy_pud_range() checks
+if copy_huge_pud() returns -ENOMEM (at line 1421):
 
-	fn volatile_copy_memory(src: *mut u8, dst: *mut u8, count: usize)
+    err = copy_huge_pud(dst_mm, src_mm,
+                        dst_pud, src_pud, addr, src_vma);
+    if (err == -ENOMEM)
+        return -ENOMEM;
 
-and
+However, looking at copy_huge_pud() in mm/huge_memory.c (line 1966),
+it only returns two values:
+  - 0 on success (line 1994)
+  - -EAGAIN when !pud_trans_huge(pud) (line 1978)
 
-	fn volatile_byte_wise_atomic_copy_memory(<same signature>, ordering: Ordering)
+There is no code path that returns -ENOMEM, which means the check
+"if (err == -ENOMEM)" at line 1421 is unreachable dead code.
 
-implemented. What I meant was to the best of my knowledge, when ordering
-= Relaxed, these two would generate the exact same code because all the
-architectures that I'm aware of have byte wise atomicity in the
-load/store instructions. And compared to volatile_copy_memory(),
-volatile_byte_wise_atomic_copy_memory() can bear the race with another
-volatile_byte_wise_atomic_copy_memory() or any other atomic access
-(meaning that's not a UB). So I'd prefer using that if we have it.
+Is this intentional defensive coding for potential future changes,
+or could this unreachable error check be cleaned up?
 
-Regards,
-Boqun
-
-> 
-> Best regards,
-> Andreas Hindborg
-> 
-> 
+Thanks,
+Ingyu Jang
 
