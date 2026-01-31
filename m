@@ -4,105 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1414BD49C9E
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 17:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E590D73EB5
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 19:00:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5E406B0005; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
+	id C45E86B0005; Sat, 31 Jan 2026 14:00:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE1CC6B0088; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
+	id BF41F6B0088; Sat, 31 Jan 2026 14:00:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EDB06B008A; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
+	id AAB576B008A; Sat, 31 Jan 2026 14:00:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A67C6B0005
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 12:29:04 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E57471A037E
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 17:29:03 +0000 (UTC)
-X-FDA: 84392944566.02.CA5F7DE
-Received: from cvsmtppost105.wmail.worksmobile.com (cvsmtppost105.wmail.worksmobile.com [125.209.209.75])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B4172100009
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 17:29:00 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=worksmobile.com header.s=s20171120 header.b=t99Ppe5M;
-	dkim=pass header.d=korea.ac.kr header.s=naverworks header.b=JIEzisgH;
-	spf=pass (imf05.hostedemail.com: domain of ingyujang25@korea.ac.kr designates 125.209.209.75 as permitted sender) smtp.mailfrom=ingyujang25@korea.ac.kr;
-	dmarc=pass (policy=none) header.from=korea.ac.kr
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769880542;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 95F0B6B0005
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 14:00:35 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2C5341B1D33
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:00:35 +0000 (UTC)
+X-FDA: 84393175230.20.6919199
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DE80D140009
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:00:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=exJbZnkP;
+	spf=pass (imf09.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769886031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YG4ly5XkBm7xH0RH1Wx27oM70Xf9pgUF0+jNK/Xq1W4=;
-	b=NA9XUD+vqLKALLJryNwlFicVW0oYY4DjqmLJIH/kQLLxnbSL1h/1iQdCxNE0pwodJdNYM6
-	fUFb7W+yxdQO4OW+624kC6dpTWBhgVuT0dVR79WU5ejy+mHer7gP3gqxv3WDCHSrC3SFaP
-	X8k/ju/4v7dh3LS0SwyPlHQgkzsAnX0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769880542; a=rsa-sha256;
-	cv=none;
-	b=e19+3FZ8QoD6qzTbbDJ7yujkNCQBrCNh+A/GyOVsLtW9zkV+kR6cAnqagrweGvyLo/UAae
-	bUPzf0t0QH4c8LE7pLW8UBOYq2AXrsvW/LvJsudMou+rStyyeCZxbGyGQGKVAPyQO8QHUv
-	bsMcAuxi5HyTS5A5u0xgZbkZZjfNiWg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=worksmobile.com header.s=s20171120 header.b=t99Ppe5M;
-	dkim=pass header.d=korea.ac.kr header.s=naverworks header.b=JIEzisgH;
-	spf=pass (imf05.hostedemail.com: domain of ingyujang25@korea.ac.kr designates 125.209.209.75 as permitted sender) smtp.mailfrom=ingyujang25@korea.ac.kr;
-	dmarc=pass (policy=none) header.from=korea.ac.kr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=worksmobile.com;
-	s=s20171120; t=1769880536;
-	bh=xLdOzvJThZW5sBs7HVwMvfK8GTU5iAi2zlBS65q5Jrg=;
-	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
-	 X-Works-Security;
-	b=t99Ppe5Mvj8Sdqs/7W79q3UMcRMhlMrZlidlHFUMWJYxa+hEs0e1DmBHoIdxOQ2Tn
-	 biCgYBpKbvfIvtvaJRBN/sen5CabeAeXz2e9N/yr3/ffNAxlg+qEaNHnJ1102WxeWn
-	 yoE8a9ju4fcDbuShN4/DvBwSwKFe/f0ruOIvyjsjSv6uaMjkz/y+Ko35qqZllbVKjC
-	 +2JpTsr6AOqYa3B8D0gcozKuEVuXiow/Wuxby0w6xQaOPV7VDF9aZxo0/F1GDgLOmx
-	 BmDiEOs2o6lSnP8lyxp01dU6PzWe5TT3UBuuKvU60IbR7ZoxAbGWjykjlIm4S1DDuy
-	 AmFynLp4cbTBg==
-X-Originating-IP: 163.152.163.130
-Received: from cvsendbo004.wmail ([10.113.20.173])
-  by cvsmtppost105.wmail.worksmobile.com with ESMTP id DocsLqBlTVOoLPlysr7fZg
-  for <linux-mm@kvack.org>;
-  Sat, 31 Jan 2026 17:28:56 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=korea.ac.kr;
-	s=naverworks; t=1769880536;
-	bh=xLdOzvJThZW5sBs7HVwMvfK8GTU5iAi2zlBS65q5Jrg=;
-	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
-	 X-Works-Security;
-	b=JIEzisgHXU72ifYP4yf5mJWAkn4OdPaF3kd+vF6N8926ff2wc+moHS4ytFQwFWtdd
-	 IvF3VJ7tatDF4fsKdud9d8Rsx3rgDwIqbfDMMm5qdpRRD4HAXoZHl7tjQ+kssjYZml
-	 spccO314otHOzgrOLssP6+7YInPb0GdnoyqNAdGE=
-X-Session-ID: GogdYXx2SUC-hottws6UZg
-X-Originating-IP: 163.152.163.130
-X-Works-Send-Opt: EenqjAJYjHm/FqM9FqJYFxMqFNwYjAg=
-X-Works-Smtp-Source: AqndaAvrFqJZ+HmrKqu/+6E=
-Received: from s2lab05.. ([163.152.163.130])
-  by jvnsmtp401.gwmail.worksmobile.com with ESMTP id GogdYXx2SUC-hottws6UZg
-  for <multiple recipients>
-  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-  Sat, 31 Jan 2026 17:28:56 -0000
-From: Ingyu Jang <ingyujang25@korea.ac.kr>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	Ingyu Jang <ingyujang25@korea.ac.kr>
-Subject: [Question] Dead code in copy_pud_range() for copy_huge_pud() error check?
-Date: Sun,  1 Feb 2026 02:28:54 +0900
-Message-Id: <20260131172854.3370590-1-ingyujang25@korea.ac.kr>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UoUx94ANXeUXuRx1lERovDhjbekEj2rYali425EFaxs=;
+	b=2aNbtSpqu7/N3KrqLfLYo1rubv8z1i+Tme3xjuRQnufQ7W/U/qmF44OVgOarhZXpxnD5PA
+	iU6kYG4vu5dofNwM0iZMn35gO010LcBbL6Z4AGocgGasmFLvfBDuu2/UeNVHabzSQq65i8
+	3ABGkgiut6EgWHbX/ef+wVWshOv/rq4=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=exJbZnkP;
+	spf=pass (imf09.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=matthew.brost@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769886031; a=rsa-sha256;
+	cv=fail;
+	b=vK179JAccpEYkZqPihSIn7pmmsFTcWkB3OUvo7xrZYJrEE/N/CartQkVfWuxyee8qqdzDq
+	xjk9HguWBewBEfUjSkvzVmwFyR3vfqpXNXil1/G1Xt8GduNsja2ZWVp2sICcAPCcsTMhO2
+	CWJFij7TaKJRUaNRfoMUVwWSCag0ofE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769886031; x=1801422031;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=W41hjTLtee3ziabilnwLBcFUaR7VbpI/RJLXmXOZ/SQ=;
+  b=exJbZnkPKKoxM+Qo3fPyD8RxMlHEHbduJ9XhVq5G6VIuKdUsVAx19Y3/
+   vRqwwlPIcs4D2neeLO7qTmve4ucWG6GVr29bUcjOpBGrM27Iap1mp9Fd8
+   4R0Oh9N1Md8UPD0QvQnj87FuyBxsRr1qnrgpY3xcWZ4M1/+33ldhBzyUD
+   C2P3mcCgbdMDZy3CZwSJ3m/YHXXnNor4CcpLAr8dOCjx/ubzN4vDTcaMW
+   t2wMKZEV6eYg+xPdr7kiA6YWgIPlErJrR9BrPwbWpTMdjguB099VXRJGj
+   QhlGWSdEmTnGu6wiLszN0jWkZggzSgtxkp5x9FuB/Oj1z7JLvJVklLp+R
+   A==;
+X-CSE-ConnectionGUID: ZcIVQR0BSUmpByWZc7liRQ==
+X-CSE-MsgGUID: cdtlcq3OQceKHc517hRYjw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11688"; a="96566900"
+X-IronPort-AV: E=Sophos;i="6.21,265,1763452800"; 
+   d="scan'208";a="96566900"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2026 11:00:29 -0800
+X-CSE-ConnectionGUID: 1JbS1dJ+QKm6H+6LFsUvDg==
+X-CSE-MsgGUID: F9T/yTemQsyD4j6pWt3nmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,265,1763452800"; 
+   d="scan'208";a="209523961"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2026 11:00:29 -0800
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Sat, 31 Jan 2026 11:00:28 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Sat, 31 Jan 2026 11:00:28 -0800
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.48) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Sat, 31 Jan 2026 11:00:28 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qon5kzjGkxlFo1L6zrjc82gjWnTo6qCIffibK75C/rbqsLDVa+jCzzy6nhHlAwVujmPYNE8LAlkpwQJJyerhcX1+Adcy3ttvQaeHK2wgd/xDco61+Q6kmY5ET41pPeZK7SxJAkyijmpCDavt1s3EWtPCcEXJJFcKHzVSxlzAM785eJXNX8Lx2eU9fvYFZ9Q7PJo5wvOQylv+SA8Xi42QdVNBViRlrFHWa5uV4UFR0G1KCTpZ6YMuinUn2ClpaF4epa+jkzus2tt503aPA4m++Io/VQgFvphym+81AqwpwQNBgnWNR+ieF7tsx/9UfAsa9sBWbZd/4HSKg85su3AEsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UoUx94ANXeUXuRx1lERovDhjbekEj2rYali425EFaxs=;
+ b=FZ7BciMUBTZ437Tg3ZAaCMScbC2gnFdGVyB3Y9xuKAS97FNTIzaZYdBMIQR9YwmqOv3uQpLMIJPBKR6hdKD+KCwA2wf2YqTApZ+9DCeYVfcrpc31hB9f6HW4g51UDOmhbr6hPrhqoeUSBOzr0AAxq7BYu6F9UGE9hBgPT7a5EhN9AtOSzX01A9h9mxavRDCShxveMhBkK1Oy3j8kRjeKP2rJLxWg8SQW0lOGC1v2uUoAZiNjisYDCAbeQIWIHtost30FwFB5WOvZlyczEufsI22+wj7X2ZjCc/tHN3iX7/bsEdsiiyZIHDMmzsOA3fYVOeBTrlqnbofzAGIuH2B5Xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by CH2PR11MB8815.namprd11.prod.outlook.com (2603:10b6:610:284::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.15; Sat, 31 Jan
+ 2026 19:00:18 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%6]) with mapi id 15.20.9564.014; Sat, 31 Jan 2026
+ 19:00:18 +0000
+Date: Sat, 31 Jan 2026 11:00:16 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+CC: John Hubbard <jhubbard@nvidia.com>, Andrew Morton
+	<akpm@linux-foundation.org>, <intel-xe@lists.freedesktop.org>, Ralph Campbell
+	<rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>, Jason Gunthorpe
+	<jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
+	<leon@kernel.org>, <linux-mm@kvack.org>, <stable@vger.kernel.org>,
+	<dri-devel@lists.freedesktop.org>
+Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-ID: <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
+References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
+ <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
+ <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
+ <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B4172100009
+In-Reply-To: <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
+X-ClientProxiedBy: BYAPR01CA0057.prod.exchangelabs.com (2603:10b6:a03:94::34)
+ To PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|CH2PR11MB8815:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0eb4aa8f-923f-4b80-867d-08de60faf9ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?RXpPblhyTHNzRC9ibEF2UlltVyt4TDRBM25hWW8vdlpsRzJMS1dTZ1VpV3hq?=
+ =?utf-8?B?Mjd2aFdWOUgvZ01XcWRlZ014U2xHREd3V2gzcUNsckMrdGhjbFVZK2o4SWRr?=
+ =?utf-8?B?QnFrUllpYnY2VzJ1aFVPc25tYW9vQ2RUblVCdVpyTDFFKzlYaHlrMHd3cmh6?=
+ =?utf-8?B?RzNUNVpUUlo5QnNvUEFid2Irclp1SE9XbStKem9wUjBqSzV3L3BnL2lzUSsx?=
+ =?utf-8?B?NnNBbFBTL3ZYRWNKOEdzYlhpTDc5VklueE9QY3pGa01HTnVRNzUwZTdKc3F4?=
+ =?utf-8?B?U1ZvYUR2T3A4YXJUS3RieDJLOGRUb24rZUhzcWUwSGlEU2NNV3QwNWQ5WTJF?=
+ =?utf-8?B?OHlkSDRqMUhUeUROY0NGaXRKWm0yTFpNUmx0bVE1elZuV0dlbEZ2WUQ2V0tG?=
+ =?utf-8?B?eS8vbnI4UEg4N2pETU5xYyt5cHBtc2VWSFEwbld4NXkrUFB2dlJwQ3ZPbFZX?=
+ =?utf-8?B?TEtXV2h3V1RldmYvb2x3SXRzMnR4NGhEdDNQTWRqek5qcGZpUjZOZUp6QkVO?=
+ =?utf-8?B?SlVZVEsvUllVT1JUR293WjdLeTFnb285QXRBbjZsOUNpb1BDVnkzalVkTGt4?=
+ =?utf-8?B?ZzNTSENPZ2tWSHRpSU1YL1FJd1VJOWo1Z0NMcW1Uenl1UkVzS08rUlMycWZn?=
+ =?utf-8?B?RG5BNmxGWDRnLzA2c1ZJM1JIT3hZa20wUzhYaGNXVHF1NUJmK0F0aURWMDlX?=
+ =?utf-8?B?d3l1dWxxWlJkS2thY2E2NTNkWjd3VlB0YW0rNnFISUU1YUZXdmN4TE05MGdt?=
+ =?utf-8?B?ZUpVVU9HdnBGU05BUVhMVFdna2NkaUtkUTgrWktNcmdlVXBucjA2RFJlVnZB?=
+ =?utf-8?B?aHNqaURHeTd0UWMxVjErRlEwYkh5enJDazM1S3AzS1N6OHlYUTJha0FFU29w?=
+ =?utf-8?B?QlNPbmhscFZxVFo2NHk4RjlrZzh2aUNlMkswTjl5bzcrWkZzLytZaFgyc3g5?=
+ =?utf-8?B?MXcrSFRYVFlSM1RiVE1rbE5aWGd3Z1FGeTQ0UFd4eUJuNmdGWmVFYzE1aTVJ?=
+ =?utf-8?B?N3JkcVRrakNleCsxZjVkMkVPVk43RUtZZm5IaVIzalhoNlp3aFhyMXFybUdO?=
+ =?utf-8?B?NVBMcDVuWmRCdlNZa041b3FQVUJKT2JSTU5GSWkzRm9xY3FRaS94ZUlLMjc1?=
+ =?utf-8?B?QXNicTAvMFdTNUlJMXdiT2Z1VUxaVVB4UW5VR3gvMVY3cXQ0cFJNRWhoSjcx?=
+ =?utf-8?B?Z1RSTXV0R2VjTWg1LzN6VmFOeitrcitBNFR5OUpENEh1Qk5TanUzMTIrWGdj?=
+ =?utf-8?B?ZkcxYzVwSDdMUThjWFdVZ3pMaTd2aWY2V0FRTEF6UGtETVBuTlBuRjNBd0p1?=
+ =?utf-8?B?bXp6R2EvYjVabjVQeitqYU5rNWw3UFVsajZDOWI5SlVTeDg2SWNLbmpzOVIw?=
+ =?utf-8?B?L05Rckg2a1BSZW5QVnZUWmZLWTJNL0VHTW8xRFlQdy92ZlJvcTNiNjFlaGNw?=
+ =?utf-8?B?WVFoZ25QK3hUSzdtMWZmSUdCRnZVVTJQRUVZMmlSY09HRXJvUThJeG8wTG9w?=
+ =?utf-8?B?TkRIeW16cGM3RmlkTi9tNEtBMXhQRzJaVXFDMFRYOUI4b2EzeTArYXAzNmtU?=
+ =?utf-8?B?SFpzdkJrSk40K3dDN2grWlZIQkxQRVdrQnZRN1VkYjZzN0RRNUhEUEx5cC9V?=
+ =?utf-8?B?VS9Icmw1YTJOU2JKOE5EWHRDWG9ybjFVdW9QRk5TdzU3dUtrY2svRUYxWlFH?=
+ =?utf-8?B?dk5oeVJpRnlhazRlQ2NzQ0tHR1dlcFNqY3ZVYktaUGtRdW9NOSt5VG1yZHI2?=
+ =?utf-8?B?YmNITm04cFAwUVA1aFRxWVdobVU2UDE1UkhvbFRkYy9Ya2VndWhyVk1uUDAw?=
+ =?utf-8?B?RXNvR0pPOWpPRXNlVHBOR3J0Q0tobXg0T3hyeXpsTlQ0RE51SWlMWEJISnVB?=
+ =?utf-8?B?NWpjU2hzamhnZkVSRnJKOE9ZMDVWOHhRRWVvZ3NvbGVWbEM4NEJtMEQyVFF0?=
+ =?utf-8?B?R21kU3NLcVNvWXBRRG1NWnNSVXpmWlZNdkg3TUJxS3dGNE5YdmZnSld1elRS?=
+ =?utf-8?B?SStOalNnVGxnRmhJVlB0eGhmazhRU3Q2RGFoYnIzY1owMHh3YXBldjQwV2V4?=
+ =?utf-8?B?UHFpeHM4RGxTeEQ1SWRXNXpMSDMyZUo2bmQzazUvVWJHZzRFemo0MDRIQU8y?=
+ =?utf-8?Q?YJ5o=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZkhOVGYrUjRSdStiNTY0UDlYZFpYa3h3eStKYWVFN0Q2VTJsU1VuTkl3SzVD?=
+ =?utf-8?B?NUtDQTBUZy83WkF4TG1TczE4cE5nYnd5N0w3TjVaZVVyOHdmaTZyZEd4OGRZ?=
+ =?utf-8?B?TDlRM1k3cFplOGhqaHUwcTZTbFVhRndGanVVVXpBVUlMQ0IzT3ZqanRsSUJX?=
+ =?utf-8?B?ek41MkREQjJJaTBOZjNVTDdWWW9hOWcxTjhXdzJacnJZdDZsbDhUVUp2TmZB?=
+ =?utf-8?B?RWVZS0dxYXgwaTdUSjJvaWRjQU8zaFVUMmlDeThoa05qT0c3b0JXT2ZOL0li?=
+ =?utf-8?B?a0lNSWVUK0wxNWtVbzFjMDYvMTV0QXNxb0xqd3pPWWtyeDBYaXJDcU5yL2Nh?=
+ =?utf-8?B?YXQ3U0M3NXFjQkMva3gyaytDT2kxb3M2ZlFJQW9XWUpqSlRCSjJmNzk1Z3ha?=
+ =?utf-8?B?NmdpQlpxLzFFMzNxNWRHaHlZWWd3SGwwbzNSRURETHdwMmRzU2o4U2dKb0ZM?=
+ =?utf-8?B?alg2bjYvL3NWMWU1MkNJUW8wQnFsN3BuSko1aEl2Z0oyNG1ObzF1QlJZd2o5?=
+ =?utf-8?B?elJqTXNvSk10K0w5QlVTQ0FCRG5pQjB2UHZmZFZrZlJUbjY3MG1ETlFyZlJK?=
+ =?utf-8?B?Z2t0VE42Uk1adWNLeVdkQTRhUzhCLzEyM1JmVGFCV2hHUjA2NG1EMUVBbUhn?=
+ =?utf-8?B?QlQvbDlRbXpybUpPaWtuOTFvclUzZ0hwSkJzQU1VRHZlelVWbnVvUUVPNmVE?=
+ =?utf-8?B?a29FZ3R6alY2SHJpcmJxN0NMUCsyNnVHV0szWGprWDV4VHRINnhkNFRnbDQ2?=
+ =?utf-8?B?ZHNQNS9QcWNHbTF5Wk1PZGJzeE1OMGFGYkNwckdZT2d3R0J6Tnh3cjhlL2Va?=
+ =?utf-8?B?WngydmpiejdhbFR2U2VOV2hyb2lOOHlKWTgzcnEyUWVlck90TGxpbTlXUDRF?=
+ =?utf-8?B?LzN4ODd6ZjBVSFV3WmxNdFRFb1VjT0ZqRnpuZDlLV3VkalJFaXFRUEhqVjQr?=
+ =?utf-8?B?WUJIQTN2aXhsWWpXOFFvSElJNk92bERtNU1NK2lGdExNdDg4UUN2OFpSMlVJ?=
+ =?utf-8?B?d0IrZTVBK0hHcW9PUTFuVVlZUGdCMnVLZ016UkVNZ1c5cWVydDdVZklXVlJi?=
+ =?utf-8?B?ZmE1YjFobHZwYmgxbklmVHNwUHA0aTJCRHByV3JkYkZxakQ4RDU2L0hYTEJV?=
+ =?utf-8?B?OU5KMnQ2WW5VSUgwQS93WHhEOVo2MDcxNFZ2QlR4NHltQmpqaS9mbDlkM1pI?=
+ =?utf-8?B?UkhoZE9pWnRZVWF4LytlZlNXM1MxQllJa1dadk9kdll6RkVmYVF6VTEybHVW?=
+ =?utf-8?B?MXdEZGEvc0w1UzlwWE9VWFR0TFk1Qk4xSlZTK0xDZE1uUHN3RkhkTWV0d0Nh?=
+ =?utf-8?B?OGFmYW9FcHBkTm40T3dpZHVhOUMwMlZCalpIaUNJS0dGMUMzU0ZaMlViOWgy?=
+ =?utf-8?B?OWdmenJwV2xER3cxSGgvakdmdGo1YXM0SDBPeDRiaHlwMHlKVzNlWU0xdHRW?=
+ =?utf-8?B?bGVQYng2Z3hkR1c0ZjYxV2FNcVZRWVhhNzVjTzZFcUxyc2hiaHk1Zjl0VEVK?=
+ =?utf-8?B?cFgvRXB6NWhDVElmMGRaYi9MVU5TRlc2MDZFMzBZK1o2K3EzLzdDUDM1M2hm?=
+ =?utf-8?B?RGJ5TGFsZ0NtdC8wN2hXK29oSnpaMHdsYU5HcUNheE9MWTNycWV0OUQ4M09O?=
+ =?utf-8?B?YjM3RUlMQUtabVpKd1VTUTdIQWNVU0VVcWhwZkE1aE9yajNBakhpaFJ4SFJk?=
+ =?utf-8?B?QkcrNlUzeXMzbkE1YUszUzlhSjE5aTVzNjZKNEhOYkhMb1JoQjErZnR5aU5M?=
+ =?utf-8?B?YnhBZUhrd3U2dU5TSDExcEJtdi9rVmlVL0t6a1k4SksxUzRGVGY1ZTBYNGZi?=
+ =?utf-8?B?TWdRUml6K1pXQkxmMGNvb2Z1dzR0R3E5aHZPa1hCL3BXSENhM3hNd0FKVnA5?=
+ =?utf-8?B?SEZhMXpINlJUcEtQNXdBemFZanBjSkFzU1dUdzljL3YzeUtka3BvWG9FZkFL?=
+ =?utf-8?B?ejU2N1JDRzRsS3FYYjg3RXRhR04zaXlRTmI3dUhleXp3bnp1Sm5GS1RqUkdu?=
+ =?utf-8?B?cW9mNGd2QktQaE9nd3VNQnpUSDZUZ1dKS2pmU25TT2MvUlBwbjhtblJGeVN5?=
+ =?utf-8?B?YXIwZWIxb3hKWG5FZnFVdjd3NzAxcHZBZkl1Wm92ZUZHOEFQTGo2NnZSS25H?=
+ =?utf-8?B?ZjF4ZHZqaEY4OExDSEd3eTg1M3dRclpqc1NkdW1XdEVyQkFCUUNrckNYV1U4?=
+ =?utf-8?B?ZEFXSzNwOXdWaHlwU1d6aEVZR21sZFJpd2d3c0NUZDJJbnlDaCtoRGQvSXNk?=
+ =?utf-8?B?elpBQnpvWEZTd0tSeC9UNVdTdm9QdGxuaEI3QzhRcEV3NS9vM25wYlJKbXln?=
+ =?utf-8?B?Q3B4eUplNk05WHp2bmxENC9CY2NvRjdWc2djWDhURklNSlVnRUhyQT09?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0eb4aa8f-923f-4b80-867d-08de60faf9ec
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2026 19:00:18.5934
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EB3NK8S8OasDwyXatOctVAgNoq3OBQz7lqyRiUrYjyDie2Juy+GKRUbj9kU6GdLtRjGmCXuyRugVYJqnI116Hw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8815
+X-OriginatorOrg: intel.com
+X-Stat-Signature: n4hm96bhk5c9pgyj1ermnx3ihi6g3drr
+X-Rspamd-Queue-Id: DE80D140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4qcsnw4qxrd1booiaxfnbbiwyxsumrqk
-X-HE-Tag: 1769880540-520224
-X-HE-Meta: U2FsdGVkX19HLv2gL30yr+iKZSKPLTPlBQIZ8+jXACMcUva2y8xe7tePVJDTT9tLss5KMFGkUXfC8qRBmyOCOTDxf9cqpt24oYC5vdvilTT09g9fyqVBezbUQ/ot85INS7ZBgMAYTTA1l/XnNxVgsTYcbfRmzBXZi+JGW2QmREhjjOV2kzYI7GEOLbZqtwfkv159IoeGPRo9ScB/fIaEc2LECgGdsWEJYrpxMYGjdFgUh/N/573M1I/GA3FELK6hGw7cs+mcJVqi+MmYne0gux/PgHPhqq16E/i7IOytw+i+rus3fpvFWQsxhywPwDjG8wEGOUH66hsTrsaT1VpZpZFgg3aQKvkLMxY2ueKaQ5y+gmx1dn3ThDQ48wk/vrhEN6yI/PHGCGgNnKyW3KQlSZfl0TT7vBSNLkQMmCBjw0HBF3gCsYii9xNQo8Ob9Xwk8z5HDIWP3oBgJl2gzU3Q1+8FQ2yi4YoqLuk+Nbm8r/mPFbtrjbTphWqwmRWAzkoG+dtGvDIGtCGUezBGujMAtHwS/611d3aHwwRB/UlXOG9I9gtnYfky6zw+eWFcjyVGGLgzEqu38Igq5XUkk5C/Ljp4OaAAPC50uEg8hhwv1Z6Dp84cJklvXswcawRpUCDMhB9f6YZfQR0nuznPWlbi8kdfiW92jvWO2uNoxCilzugkBcjv5BOsCmiR7hzojD9Pe7+55swgL/VTVJ4q87vFQhaUQf6wUY3KK1n5oyLYAsIavAF3eY98IsFgOfDj8yKc8pEeXKzS848mVJhN76LKREEZ1w1rcBq+fiX0YwaBBuxIvLkIpWWEGwkBRr+R+DtkK+4XhhoeiNjuvsP6nd21m+r49FcGaMoO60qOvY1FIErR7iSY6xzeJ0PXl5W9Kj0Se6Tj2wKl/AjjzCpV0sBbzjAp3fZ0o3fCDm0w/7tRVf+t6MRcgfH6PxtxMqjiSZPhMz6KUlQRRNc57YspEZ/
- Hyg4+rdr
- 9rBDqJWoWHUcE0UurFbc6ygXLCbAiUuJkdVXtHxTzqoO6CLKIm00D+ofn//p9C9IQ7l4Ean5jZk4pnLnKRNWp9aZ0fUlGkzOmb9BeqYRQvvAw4yq3fm3vTMxNk7eJXyxbALCGG+RGSZNSqRFYuHXuBvne6h8CE2UfUgrBA8nuxTFViQ0=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.245724, version=1.2.4
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1769886030-245360
+X-HE-Meta: U2FsdGVkX18g6g4m4dkdHlaelinWTsh+pfh0Jar8YeBIfk/AGUIwwUST7eMIgPLksNsUKPW7VxTD3yCUZPTBLMUzEPnXe4dCCjkvnu+TRCv8eJrKqy4tnPp/qS9lk8ceucVTyM6hftvcAF/Hgon9SkNBSg9PPpUjktrdV2paHtGVhtfoJXY79hLL01N19NWVahlU0vLt0SfU2Nt0ytWEa+GLY8TE7IAN5iZs6KqfcLYNNaMosWdECKEW+iEcxEO97SlBBzMcoQ1GzD/g8y0i6bDLwXf+CzC7f5iG1Oj/Vde+djRMuucTmc/MczyoA4pXioIUwzyvQiOPGes8hP/3BRoiAGY8E8KWMH5t0iSJbx0XUl/J4SNx+Enw/EUKEyrbbL48isBuox+PUzKhvEjfqB0bRQiQ6eDzV7wy/1D+AW19eQV2S1eAP+mGmVmQOVWMmpW52Ue37IqSjJioUgdRFh7en5rO3LZWHbukApvArmYzGu0Du4OfmSTDhHh/tkWz4Fxo973UzINZWLojkb/x+OWZcFqcz0QW2zCa6+R1q0DV1cXRVJxmFFX/py8H0CtaZBNALs71C/Nf3Z4nu0NJGOFzXI0retpvLOX2jV86x0VfJLmu2PJKgzxgCWb9Zi6L8xuIuDN84t5C4mCJhIwL/8wc9buAC7bRyviYBt/lvI2ZuU7iv+unsQ2Bme+1AC5h4t7jrhKWiWMUu6PtGOrB5S7iH6vrz/yKnSbAtsjvvmEPbcipVukcyXiX8l672KKQNKllU0/ig0K7YGjp6hUBKO3x1oVnTfyWJGMUPytgS1T+ZRMIXNxXgr1IJ4jZSZBD+YopQkvvoOhzRrB1oyMYZJQpR9oZU7C94S5Lb8BTgPWEvCBX/11XDnsGDZjqOpHe3gTBbZRRzDace5/1ABQQxPTFG3MOpaMkAFLCCL0GtspG24oHlOjpy8mOcCfNLxV/ICB0xPUo3EcQ6nvkg8B
+ m6Mv7ORS
+ qeXGCRPUvRvbKIPH0VDiZV3LAWI5XDi1yPNCz2qRpaeBIkBjUoVvIC69f2yeaQeP7za17TzDUdjHq/3+J3QfbSa53kaxDUadjilFBwqF9FaXPE5KfrFDkPkla2U8a9eZqreVT+k/9hSr7MqWNiNHgnqkzTG1h5gOZSVJx2yAqDLXiLnEXTFJPy9RyZL/TaDTB9AJpqXbpRO0DKhm3qvZarXeum2+FfGicMn37USy5I5Z/gu54k7ImWPOg4axidxHTvyKkWroKXsed8KHaSUFzcQPVwZ8IcSkkdxSBeOGvdc2elXt0nO6b3DSoVZcXPsYUW/U+USfKnBtZdO+9ooq2cwKyEzpdEBhCTcvmhC7Dgrz39D/xPL7KMubgdLu5NEiL7z6KnTBR5hTzvdFkGOBjhoSgKCoDBx7iF493UtRPMri3TruEw+THgPFhaFFZf5/Z7vDGnQa/Od62NmCuUbxAbt+2fu+8qKXarYZvpNKM9xcRXSljbngqCMbZ1fI1qAh/D2BLxSc2f5kgaaQpzxfCqHZV3wPtgUMR9l9Y
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,27 +242,212 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas Hellström wrote:
+> On Fri, 2026-01-30 at 19:01 -0800, John Hubbard wrote:
+> > On 1/30/26 10:00 AM, Andrew Morton wrote:
+> > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellström
+> > > <thomas.hellstrom@linux.intel.com> wrote:
+> > ...
+> > > > This can happen, for example if the process holding the
+> > > > device-private folio lock is stuck in
+> > > >    migrate_device_unmap()->lru_add_drain_all()
+> > > > The lru_add_drain_all() function requires a short work-item
+> > > > to be run on all online cpus to complete.
+> > > 
+> > > This is pretty bad behavior from lru_add_drain_all().
+> > 
+> > Yes. And also, by code inspection, it seems like other folio_batch
+> > items (I was going to say pagevecs, heh) can leak in after calling
+> > lru_add_drain_all(), making things even worse.
+> > 
+> > Maybe we really should be calling lru_cache_disable/enable()
+> > pairs for migration, even though it looks heavier weight.
+> > 
+> > This diff would address both points, and maybe fix Matthew's issue,
+> > although I haven't done much real testing on it other than a quick
+> > run of run_vmtests.sh:
+> 
+> It looks like lru_cache_disable() is using synchronize_rcu_expedited(),
+> which whould be a huge performance killer?
+> 
 
-I noticed that in mm/memory.c, the function copy_pud_range() checks
-if copy_huge_pud() returns -ENOMEM (at line 1421):
+Yep. I’ve done some quick testing with John’s patch, and
+xe_exec_system_alloc slows down by what seems like orders of magnitude in
+certain sections. I haven’t done a deep dive yet, but the initial results
+don’t look good.
 
-    err = copy_huge_pud(dst_mm, src_mm,
-                        dst_pud, src_pud, addr, src_vma);
-    if (err == -ENOMEM)
-        return -ENOMEM;
+I also eventually hit a kernel deadlock. I have the stack trace saved.
 
-However, looking at copy_huge_pud() in mm/huge_memory.c (line 1966),
-it only returns two values:
-  - 0 on success (line 1994)
-  - -EAGAIN when !pud_trans_huge(pud) (line 1978)
+> From the migrate code it looks like it's calling lru_add_drain_all()
+> once only, because migration is still best effort, so it's accepting
+> failures if someone adds pages to the per-cpu lru_add structures,
+> rather than wanting to take the heavy performance loss of
+> lru_cache_disable().
+> 
+> The problem at hand is also solved if we move the lru_add_drain_all()
+> out of the page-locked region in migrate_vma_setup(), like if we hit a
+> system folio not on the LRU, we'd unlock all folios, call
+> lru_add_drain_all() and retry from start.
+> 
 
-There is no code path that returns -ENOMEM, which means the check
-"if (err == -ENOMEM)" at line 1421 is unreachable dead code.
+That seems like something to try. It should actually be pretty easy to
+implement as well. It’s good to determine whether a backoff like this is
+common, and whether the backoff causes a performance hit or leads to a
+large number of retries under the right race conditions.
 
-Is this intentional defensive coding for potential future changes,
-or could this unreachable error check be cleaned up?
+> But the root cause, even though lru_add_drain_all() is bad-behaving, is
+> IMHO the trylock spin in hmm_range_fault(). This is relatively recently
+> introduced to avoid another livelock problem, but there were other
+> fixes associated with that as well, so might not be strictly necessary.
+> 
+> IIRC he original non-trylocking code in do_swap_page() first took a
 
-Thanks,
-Ingyu Jang
+Here is change for reference:
+
+git format-patch -1 1afaeb8293c9a
+
+> reference to the folio, released the page-table lock and then performed
+> a sleeping folio lock. Problem was that if the folio was already locked
+
+So original code never had page lock.
+
+> for migration, that additional folio refcount would block migration
+
+The additional folio refcount could block migration, so if multiple
+threads fault the same page you could spin thousands of times before
+one of them actually wins the race and moves the page. Or, if
+migrate_to_ram contends on some common mutex or similar structure
+(Xe/GPU SVM doesn’t, but AMD and Nouveau do), you could get a stable
+livelock.
+
+> (which might not be a big problem considering do_swap_page() might want
+> to migrate to system ram anyway). @Matt Brost what's your take on this?
+> 
+
+The primary reason I used a trylock in do_swap_page is because the
+migrate_vma_* functions also use trylocks. It seems reasonable to
+simply convert the lock in do_swap_page to a sleeping lock. I believe
+that would solve this issue for both non-RT and RT threads. I don’t know
+enough about the MM to say whether using a sleeping lock here is
+acceptable, though. Perhaps Andrew can provide guidance.
+
+> I'm also not sure a folio refcount should block migration after the
+> introduction of pinned (like in pin_user_pages) pages. Rather perhaps a
+> folio pin-count should block migration and in that case do_swap_page()
+> can definitely do a sleeping folio lock and the problem is gone.
+> 
+
+I’m not convinced the folio refcount has any bearing if we can take a
+sleeping lock in do_swap_page, but perhaps I’m missing something.
+
+> But it looks like an AR for us to try to check how bad
+> lru_cache_disable() really is. And perhaps compare with an
+> unconditional lru_add_drain_all() at migration start.
+> 
+> Does anybody know who would be able to tell whether a page refcount
+> still should block migration (like today) or whether that could
+> actually be relaxed to a page pincount?
+> 
+
+This is a good question. AFAIK this is probably a leftover from the
+original device-pages implementation, and it could likely be relaxed.
+But I’m not really convinced the folio refcount is relevant to this
+discussion (see above).
+
+Matt
+
+> Thanks,
+> Thomas
+> 
+> > 
+> > diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> > index 23379663b1e1..3c55a766dd33 100644
+> > --- a/mm/migrate_device.c
+> > +++ b/mm/migrate_device.c
+> > @@ -570,7 +570,6 @@ static unsigned long
+> > migrate_device_unmap(unsigned long *src_pfns,
+> >  	struct folio *fault_folio = fault_page ?
+> >  		page_folio(fault_page) : NULL;
+> >  	unsigned long i, restore = 0;
+> > -	bool allow_drain = true;
+> >  	unsigned long unmapped = 0;
+> >  
+> >  	lru_add_drain();
+> > @@ -595,12 +594,6 @@ static unsigned long
+> > migrate_device_unmap(unsigned long *src_pfns,
+> >  
+> >  		/* ZONE_DEVICE folios are not on LRU */
+> >  		if (!folio_is_zone_device(folio)) {
+> > -			if (!folio_test_lru(folio) && allow_drain) {
+> > -				/* Drain CPU's lru cache */
+> > -				lru_add_drain_all();
+> > -				allow_drain = false;
+> > -			}
+> > -
+> >  			if (!folio_isolate_lru(folio)) {
+> >  				src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
+> >  				restore++;
+> > @@ -759,11 +752,15 @@ int migrate_vma_setup(struct migrate_vma *args)
+> >  	args->cpages = 0;
+> >  	args->npages = 0;
+> >  
+> > +	lru_cache_disable();
+> > +
+> >  	migrate_vma_collect(args);
+> >  
+> >  	if (args->cpages)
+> >  		migrate_vma_unmap(args);
+> >  
+> > +	lru_cache_enable();
+> > +
+> >  	/*
+> >  	 * At this point pages are locked and unmapped, and thus
+> > they have
+> >  	 * stable content and can safely be copied to destination
+> > memory that
+> > @@ -1395,6 +1392,8 @@ int migrate_device_range(unsigned long
+> > *src_pfns, unsigned long start,
+> >  {
+> >  	unsigned long i, j, pfn;
+> >  
+> > +	lru_cache_disable();
+> > +
+> >  	for (pfn = start, i = 0; i < npages; pfn++, i++) {
+> >  		struct page *page = pfn_to_page(pfn);
+> >  		struct folio *folio = page_folio(page);
+> > @@ -1413,6 +1412,8 @@ int migrate_device_range(unsigned long
+> > *src_pfns, unsigned long start,
+> >  
+> >  	migrate_device_unmap(src_pfns, npages, NULL);
+> >  
+> > +	lru_cache_enable();
+> > +
+> >  	return 0;
+> >  }
+> >  EXPORT_SYMBOL(migrate_device_range);
+> > @@ -1429,6 +1430,8 @@ int migrate_device_pfns(unsigned long
+> > *src_pfns, unsigned long npages)
+> >  {
+> >  	unsigned long i, j;
+> >  
+> > +	lru_cache_disable();
+> > +
+> >  	for (i = 0; i < npages; i++) {
+> >  		struct page *page = pfn_to_page(src_pfns[i]);
+> >  		struct folio *folio = page_folio(page);
+> > @@ -1446,6 +1449,8 @@ int migrate_device_pfns(unsigned long
+> > *src_pfns, unsigned long npages)
+> >  
+> >  	migrate_device_unmap(src_pfns, npages, NULL);
+> >  
+> > +	lru_cache_enable();
+> > +
+> >  	return 0;
+> >  }
+> >  EXPORT_SYMBOL(migrate_device_pfns);
+> > 
+> > 
+> > 
+> > 
+> > thanks,
 
