@@ -4,130 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42231E6BF33
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 01:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A17B4E6BF3C
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 01:12:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81B776B0088; Fri, 30 Jan 2026 20:12:02 -0500 (EST)
+	id 153816B0088; Fri, 30 Jan 2026 20:12:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C88D6B0089; Fri, 30 Jan 2026 20:12:02 -0500 (EST)
+	id 130E06B0089; Fri, 30 Jan 2026 20:12:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D4F16B008A; Fri, 30 Jan 2026 20:12:02 -0500 (EST)
+	id 04A976B008A; Fri, 30 Jan 2026 20:12:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 59FA56B0088
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 20:12:02 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D648F160859
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 01:12:01 +0000 (UTC)
-X-FDA: 84390482442.08.12FA963
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E84A1180002
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 01:11:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=VEQEGAhH;
-	spf=pass (imf16.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769821920;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E9FC16B0088
+	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 20:12:50 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7A4211B19BD
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 01:12:50 +0000 (UTC)
+X-FDA: 84390484500.24.6869D83
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6F904140003
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 01:12:48 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LGGfchQc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769821968; a=rsa-sha256;
+	cv=pass;
+	b=A+5KaEgWtYcbaRfXiwAJPk+yldHQv4K/aDnlM0zCct6e32r5E/HleHx8TqCzJW1Jik3brR
+	dZqYLWa0kbSv/oZmvnoC7YNSGFKTVamovf3ra1s3GNkMGvP+urXLbAcn3XdYY81B3MDzBH
+	FSpK7lV6Gfyg4+wbOq4DAlf0tPIxwqA=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LGGfchQc;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf09.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769821968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EPpl6A64UKlYlKR2j1fRkib4LdNnz2WqgktVIjm2uzU=;
-	b=S3PMV8w9vs0kPlKheQv35YTW+QXJAmYGJ+5ABFGgM9mlBxys9CxOvP4hjx5LIbVV54NDeg
-	hu43Qjqw/m1Vnj/yp4D6wYiGPTq0KCJkK3TUb3qfSQWwuFzFKPuvRDMjToHX+lbY0Pzicg
-	ghPttzCiAjJWfQdvrd08/jqZivfzUmI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=google header.b=VEQEGAhH;
-	spf=pass (imf16.hostedemail.com: domain of torvalds@linuxfoundation.org designates 209.85.218.52 as permitted sender) smtp.mailfrom=torvalds@linuxfoundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769821920; a=rsa-sha256;
-	cv=none;
-	b=nMN7Zfu7aT8s4NCWKXtKuRmDay5QfiF8A2zsYpQH9H6E6Xbwvf2Q64FhAY+t3CXReB2EOz
-	ZqKSV6qn5V5HQfsdx7juBM4q+RXoBTTxK7TrSrVSadYKLUPGPbHYHnvXzO4gKE9rSmlQ75
-	cbzbd2Z6aUK6HO1R2UHCptNdpOiBfes=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b88593aa4dcso389401766b.3
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 17:11:59 -0800 (PST)
+	bh=H0wUdGyOvUQ3EWuJ6iMCj9BrJpVFkngcT6qZTlbtbSY=;
+	b=OgQrf+qRGLiO12ng8mnMJrnXWxQLIjC5ZGsjqrjLjdRuor3sicCuOmEcbvWbJctVYeHoCr
+	nI2UTd8YJWw+LFcA5evg5pCGKy0SNpmWgqTjQ+bkcJEqyOTqlwEVib3XKoPaV3mAChLWTo
+	DLTZFtoQ1Aj/DJvN92mWKLgWFJLxl6E=
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-42fb6ce71c7so2220807f8f.1
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 17:12:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769821967; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dJ+oYv/ul+c80iV8N/te49Fxjr5mbZj4ICc+v7qXaPeERhBnD+JdwI5TL6tn2eaAUp
+         k0fE9JQObvhUhnT+HJfa5N+51UVZqgfsPnfh2mlP+9tM0jbf67qboeJQGxydqtogEtSL
+         kc5ys7ple2HtyIG4jqrLxlt8YkxqNm1oBEsI1zxsbn/RuBpbu92oTOxhM3B+qEPTohKN
+         RshoVv2URnwzSevDWSY43aifJjrXc2xyuSw5NkIwr7QX7d3UQ2FqgLhSoI4ebbWaFsuI
+         4AobN6TKHzIokH2Fg4/RXPxvXlEKkQnAC/g4R3C9vy+Y0D4sv4ijcfq7vfHCQAanIeQo
+         Klzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=H0wUdGyOvUQ3EWuJ6iMCj9BrJpVFkngcT6qZTlbtbSY=;
+        fh=IrzF1plp77Drh8zvmiArZa/LkNViRC6TgDFkSUjCWFs=;
+        b=BhfkaDhNUPFMmcoFyoTKeS5BLcUBl8rwlxHfbPg+S5LQfSr6GO9XcZbFazW9Nt57J8
+         3Zhv3Qmo1SjLErLzHcrafpb/A8zLLKo983Ss350a6su426cZVE52tPWH4rwLSn7e6rDf
+         UQerLs/1+oxmTnUKao3vG1i1rr8jvdARx/mE9shzCkeo5CXA0OONEb26XbzEcISEuudF
+         cvtFgbWD4WKK4PolXGaXbMMfcJJZZq+TXkzCGE6ZBQXRJCEyDwz9Em0P2gXpupxxltR5
+         d4jKC7sChoc6vnr2ADF4Ni++KgFFPKVWHQe+ELKIRBdgr48F0JPrgXfaCpszw71XDC0d
+         waNQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1769821918; x=1770426718; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=EPpl6A64UKlYlKR2j1fRkib4LdNnz2WqgktVIjm2uzU=;
-        b=VEQEGAhHsajGsCBoP+oapB98hXBSI6CU7iOiYcg6wyekNRMD+gM262m+iR8Orvwf4q
-         w3gNAY9gsqVbSZCN0tlUbi+xKahgMvopcXl7rAnmMqE1e+h5DnjRsDxQ4dYlkbLBSume
-         RooJ2RjLk8eqVvqH6Jadgh24A17Zwq/2hXeZk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769821918; x=1770426718;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769821967; x=1770426767; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EPpl6A64UKlYlKR2j1fRkib4LdNnz2WqgktVIjm2uzU=;
-        b=iqMHTSoyXPW6lE2R0L7jEYBaOVkX5EK4f7OfASORwFV/2y8uiOSUyU0mhr0YY+YX5h
-         BSWLrPaBSGgGt56yV+le+W40HzTQK+vZi3RoQ5AUiBRqYzr0DR4fwZFh2B2Dle7fmiel
-         aKHQjSHGnSyCVSkSeqdR5YbWdal2Vq6n7eCsfOkabyhU6rvfaNT7Ye0WDP9hDNzjYiN+
-         pBEAk2vyVc2ZrwFRvu9G6WuTkQuDxLV4vO3YkCDI6yTSPLZFMpEH1rFPL+uzHqnXWdPH
-         RsjsYA9McjIPlsvP8dQwG+sdPjSt0CJxuAVoNo2W8kmZswBph8KaS7N8bYQyJ3geRiVO
-         6HRA==
-X-Forwarded-Encrypted: i=1; AJvYcCWRpjiyL8rDQn/n7pVx6MOGxSr3cYA5ZcKwlY5tnMp26vnsVELeyF9lmhSXJ2wWzT+jQ/x/AqmyFQ==@kvack.org
-X-Gm-Message-State: AOJu0YzYSsTSvVnWOp/N+eGRmQv+u84/0ykK7ZUckptcw9Zm1FbGIlMX
-	vfJHz9cKsWHIvVyI0mW8k1A2aNC3sFWRbpqZQBA/Q9YYlFqjI8Rc/YTF7ZusuXseS+OfP5V8diW
-	ePsDySM4=
-X-Gm-Gg: AZuq6aJLkauIYnAtF90MBkJIDhjBHVFWwd+ngkDCpu6GGhBwj4x/83YCZ3vQfEE2LEr
-	YJWfob7eE/MGTHFtDl6ND90jrOrgmcfN01AkloXZe75QNtov+Jd9CFEbBHTX8gUUrFy+LgsqClw
-	qFCWQ2ixckSp80kA74lv6v9KAYS0C3PgFS2nfZbzxfJUdZyfXRxNQ5JRXlAF4tXa0wpMSLG5e2C
-	rsJBjIYdq3CKp/96wP6VlN3AnfLrzR8h2wgManEp6x4jkSsnITY17xQ9+xVxjmUF0onNNvz3Y0p
-	5TF+D0b00qi/FrmcIni4/yYslAFzoAXI+/ReNOJycf+fyYgjt0j/31oLzPWIDdu95uOHWCWZ7uq
-	n9GqRXFl1sqp/fbbZK3XxZ+Cbi9HddRxd32XkXVXwMz1cGvVnBXTt5EvX4cgP0vuJklnc5wGejp
-	zdSls5U7PI8AoefDgxX6KRjFDz5OaW0I/8QUf1yTTtjQlx/2JrQe3ba7TjvUjC
-X-Received: by 2002:a17:907:709:b0:b73:8d2e:2d38 with SMTP id a640c23a62f3a-b8dff797237mr298043166b.50.1769821918283;
-        Fri, 30 Jan 2026 17:11:58 -0800 (PST)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbefc667asm507728766b.22.2026.01.30.17.11.56
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 30 Jan 2026 17:11:57 -0800 (PST)
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-65808bb859cso4124179a12.2
-        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 17:11:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUjSRW4zm8p3jRuREenjF2LKm63oO9MX3qXfgKb136yG8IsRa+8kSFpkPFwo1YWct6+4VV4NBPvLA==@kvack.org
-X-Received: by 2002:a05:6402:35c7:b0:658:ba49:96c2 with SMTP id
- 4fb4d7f45d1cf-658de54e61dmr2863591a12.6.1769821915767; Fri, 30 Jan 2026
- 17:11:55 -0800 (PST)
+        bh=H0wUdGyOvUQ3EWuJ6iMCj9BrJpVFkngcT6qZTlbtbSY=;
+        b=LGGfchQcxXd1b30vJOJ4+XPNa4QMaaFbgNa2wg5sZRwYiDPIjHJodrI1Ch6Bc9oogM
+         +2rprOL3Hu1AwRc8IGyXJmlgOz+d58517nZCoM8+3YaOdaeOxaldY9mFqzuaxFHgLtzr
+         sfe7VSvv2lqnFi7VdRCB3Gb/1e2Q/f8C89D9cNBc0QgRGK3VQ/IP9yj94OFtjTym5Naf
+         LQsrHk28slTBIDrI4F4v19f0CudtwJojxVgR2kg78bpna6nCessc7zFyTuaQRz2+whoI
+         bLMGDrBDEmUe2jPSAzYAfL5dfLSSgZjqmlXDNddRXWtxcK5kCPPqnvg0p/UEM78wPhhj
+         A2fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769821967; x=1770426767;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=H0wUdGyOvUQ3EWuJ6iMCj9BrJpVFkngcT6qZTlbtbSY=;
+        b=ExydgvjSsu4Vz/FAb/fW+K3s+wa7tSnsaFBFXqIXh+GrHiwWk3UlA9/5LU/fdrA4pU
+         A5HJm0F92Ra9vX4cyw6s51+h0J6XTf5Hz7KFbqgI6Dv1d0+OC91k8zOARP9bUxtRxD/6
+         8yt/5ua1oeYpQN8k9V95w14qfFpEqIW7+VZ57RImUugFTnktK7SViNwRLOjnyf3fhiAC
+         iyw0/3XpsoVkQh6V9yBHUPXkCZ5dGq0zVP0WPi6dOXjUejH6uPijB+KOY+bd2EhG89HQ
+         TL6dAuqiUyikPi141xpTsqLWod866MdXWyZG/uGpv09pBXxu41EWBdRvwy2SdySUhPv2
+         vKEg==
+X-Forwarded-Encrypted: i=1; AJvYcCUvNX6V4pPsEiyPA9TZ+dXhHqT/TnFY6/ySF5tYIRR6219nMrIwXvh1uZzh4bEcT+lRofVlyJVAKg==@kvack.org
+X-Gm-Message-State: AOJu0YyCjnpbNRkMu2e1KKkoSzoGbpPwXQ0iskGb5xsBpU1ZMHKFF+81
+	10JbP4haUJlCnwv4qt8P8gINIdYf06vmOuz6Met+YikAeEldWmysSnUYZ9HtZGYhfjGyyQ4r9k9
+	AZgSLXmP2rEWvboaccqmca7CJp+9Z++8=
+X-Gm-Gg: AZuq6aLpPRhopykTV4ADcArD51E7xpEUCQdGSEh5ozv40zFbAhDcwntgM+wKJnXdtsx
+	l9X5L5W4JHg16d2duSkN3YmLGk8z6XV05vkTuY+q+nqsPYQ3f9UnSrQ2NOP0bVFkWjEvRttYE+5
+	XHc9SsSMAK8PmIRFWnMpgbFhcaE8tA35TwGI0WWsDFfqJ7e4pnL8MGl8fq3dsp9O8ZorXZcsqWJ
+	igJpjtjin9jYRztERW0kbDzXeAeRiRz5qlOQ+1xRsHsQ8gT89fdDUKxCjb4notpKH1DaABCYG6K
+	fUgMVAudxI8=
+X-Received: by 2002:a05:6000:1786:b0:435:dd81:4f4d with SMTP id
+ ffacd0b85a97d-435f3a7bf2fmr7914254f8f.26.1769821966655; Fri, 30 Jan 2026
+ 17:12:46 -0800 (PST)
 MIME-Version: 1.0
-References: <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
- <20260128045954.GS3183987@ZenIV> <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
- <20260129032335.GT3183987@ZenIV> <20260129225433.GU3183987@ZenIV>
- <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
- <20260130070424.GV3183987@ZenIV> <CAG2Kctoqja9R1bBzdEAV15_yt=sBGkcub6C2nGE6VHMJh13=FQ@mail.gmail.com>
- <20260130235743.GW3183987@ZenIV> <CAHk-=wgk7MRBj4iwQLHocVCa94Jf0cMEz2HzUAS9+6rGtnp4JA@mail.gmail.com>
- <20260131010821.GY3183987@ZenIV>
-In-Reply-To: <20260131010821.GY3183987@ZenIV>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Fri, 30 Jan 2026 17:11:39 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wiXq-bPyKywNOw7z6ehrVReyS-hSPuQkJvuhJWfXGFm=A@mail.gmail.com>
-X-Gm-Features: AZwV_QiG_nByRrd83VYAdhaCU5_carsYUlImGLyJR9w-28CTqo3phlyWLRwFL8I
-Message-ID: <CAHk-=wiXq-bPyKywNOw7z6ehrVReyS-hSPuQkJvuhJWfXGFm=A@mail.gmail.com>
-Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Samuel Wu <wusamuel@google.com>, Greg KH <gregkh@linuxfoundation.org>, 
-	linux-fsdevel@vger.kernel.org, brauner@kernel.org, jack@suse.cz, 
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
-	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org, 
-	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, 
-	borntraeger@linux.ibm.com, bpf@vger.kernel.org, clm@meta.com, 
-	android-kernel-team <android-kernel-team@google.com>
+References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com> <20260125033537.334628-27-kanchana.p.sridhar@intel.com>
+In-Reply-To: <20260125033537.334628-27-kanchana.p.sridhar@intel.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 30 Jan 2026 17:12:35 -0800
+X-Gm-Features: AZwV_QjYxdL4I1ZK8ZPI34ugtzfZA8QnQmmf1QCbQU_ZqeQWkHXfgCnIwUe2Q8Y
+Message-ID: <CAKEwX=PS7mjuhaazydkE2TOVa5DWQu9521FqH4aXi0yptZQaeA@mail.gmail.com>
+Subject: Re: [PATCH v14 26/26] mm: zswap: Batched zswap_compress() for
+ compress batching of large folios.
+To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org, 
+	yosry.ahmed@linux.dev, chengming.zhou@linux.dev, usamaarif642@gmail.com, 
+	ryan.roberts@arm.com, 21cnbao@gmail.com, ying.huang@linux.alibaba.com, 
+	akpm@linux-foundation.org, senozhatsky@chromium.org, sj@kernel.org, 
+	kasong@tencent.com, linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au, 
+	davem@davemloft.net, clabbe@baylibre.com, ardb@kernel.org, 
+	ebiggers@google.com, surenb@google.com, kristen.c.accardi@intel.com, 
+	vinicius.gomes@intel.com, giovanni.cabiddu@intel.com, 
+	wajdi.k.feghali@intel.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E84A1180002
-X-Stat-Signature: zn7bz4xa456ntqoztuuoziytrkuyt598
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1769821919-405636
-X-HE-Meta: U2FsdGVkX1/7sZswNNKIwsOZiMquwEC+b0adMruck3tgx3QvcVmTyVfkTl3GHBa9c11VgR80LLrclNX2Vs6i1J7HtNAgVu5wISO/fBG1gQMb8FVQBxz+X1T9Pihovkm3IsX4CSNdaVdERO1/NDClOudd89x6Vmm/Yza4iLeXwkCMP8KplXIGThoWevGVvkdUM9oMr6MdAMpVY03xj/UAXOfJ9faEDGh6Vs1aoC3f3WUoV8z6cV2FlGCsdLlSkAg0K5LxDc2zxN8KQSyvvSr79c3AeTeg/j6+HQlqxHHcM5UELWD79rLBDWXzyg6g1b2B1LbIZk3+idst+Quy6pW+nqXjTnFiQIqaE8cGc0MffMWZn7dAlcIRxsksjXcGKXML+GYxVxBO09YEV++itkR5ddccd+tarzvHBbw2W4CR7WOQUF0dEjW5HiWhOZdI1n6GFy/MfCCza4kKga8OAB9zdv/QYYrZyx9nsUeRM0uCOuMNxSUdFJNyAcyQ1DMbAJproXgnL5dlLHwboSDztvjNQbA8mStaDpfJgjvvm09ChwG3odP9sSJWGMno9lIJpUQRoFL1dQy00UMF1yII0JPlVmzhIxlpAu+bQjjRQB3+O1V15TgHJxzvf9qCPQU+hq278t2+8BpXW7O2Uu9yqqyBNjvji9ck7g8/B3mcFagnFk8HIx+EG2mEw/1OwE/pQRXIH1I7hnFMOVcsC3xO+uRmKt6qfi1gx9mT9dneH7iEYYwOMKunim+3rzfOl/P8gbvtHB5JBn7t6DiiKoM6wg+ZvmdqMzvTLS6rouzfQr/nZpqoLjVawL6lEeZyp/LZNHeOeW7IdI72vgrOzWpfwNqccZZT+YFmteTA8pF1+v4yrpla6FjsMYbGyhrRPrghDpQBi5mjJv1ZjtlvVN1+P6PXzzq3kIassZKUBrhqNpUuyuMeZ0PAOO/pt9w6XnxwRJXrbGyHt/dP3wfk6K4JVXG
- FF4mesfo
- rb/h6kNSJYIR3R1NWh1e7Gk0cStK4MIuFxG+8tmu2nc0fkzUqKx6DkLADX1wGDNi2IBlshH5P2c+0g1HBiUkILQkYaracG1hK+HxtIv2aV3ovNe0MtKORqGyUV4wmcwinceO7MOmgFgSxzBTw/xpLi+1eyBC93a5fJTrJcctO2FU7+ONr3EblDB/XyiYwn02ubuJtatRMmR82xqZaY8lxkWjUKppi4dPPI+jxB8tW6V4+MXPQQKYj/NDpTOvI8kN22BgGjAZcGi19Z4KG81oAN6N9RnBqyq9kTaWSmnYEihviddc9jM91N8KbcA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6F904140003
+X-Stat-Signature: hnkuherdyrwjystkbe7tpr9j4wcgwied
+X-HE-Tag: 1769821968-561310
+X-HE-Meta: U2FsdGVkX19RiW2Fx+8zyIkjQ7leiMs5Nmp9mqzeId5IjNESe/m392KoQH6gRYZNrIs/7gTDAN9H6EtcLiZE90kBhlFoz3eNA9VqgEbnqm9CZHFYLqdGRuMTSS7Uat26SdxcR2CjzLYsRgA7t2mf/R1LXgCl2/IrBvKU1H7PebC1XPY6Jh4LAcPwhX9fBGDa1TOX/ezc96nna8ABl3cIaqKXtRO71/ABoifYWUvyM1dfNkUF6HdQlkUGLkvxdAwyESB63WK4uqFzj+owNI2C757gcDowdzaF/uJBh8V8b4vgmTld1ugiJZm9wVd29fdUtT9hG1mkfRQr9h+tgZ9XETj8YVh3btNGNj8sYlZC4bY1k/BHJyNwqOJbcmeYx9ZFwj4EtwZRmIRxn5FtpNxyv3+Kg/e/8pXrsMS8GIZUO5OREDaK/2MqxVQB5AajJfnYoN++SIowRpn+wfkOCyP4wLu40D8JMZaPDFKCAzRgP6kFtNusviQDNyMU2LI9EJZQJuPVsn90X8IW6JClyEx9ziqesG8rkXJNQ/7aqqSqrdhNSgikTLQsnEr+wWMczRtKjM3syzO09q1N5s25tlDOMnFWMCGw4l1gEq8ocXlwh7Nq2NYYljo+51V1SqlUbkP0LUGu50dhy8kHM4EkP6fZ0dLOKmll0x8LNybq4dmttPuB0em4Ao3SzDSeIbWZ2YYIQkoXt/X2wAENH06fz6CJ12YGnipppuZ2BidGXUXeKUaD/UcPpjln/VK2VKhQHmmNm71cn/yMLhYYqWlG4R7kzPPaZNqqsDAloyWqKeaS0jRcp2aCHh5aRT7dbwRDPqpfjcliEOTAzSFi2F8Qpd8U/qSg9REc+EcjS/7Hpl+E2TS23yNAp+b8raveYgvqe/CcL7mY4mP2TBsS+J22iNsxjffUCtZw3/avZq2Qsh/8DcRT0uh3EKKamp8ya3Wjh1ZQOKO6p7fhkl+CwXHmuf1
+ xNi4MKqi
+ 0xiKlkqmEGSJFA/1OgP9EPMASyN8VFZlsBzVAzIMo7FFDshzUlvvUdl4mfWE143y/2tmQ4i1XFlHHk67ZAO9GP1oATJMDo68rbyh2saZv5TUelg9crAhnqSv8HOiPDcYOtq6CElT9Q/YinbJX+W2+rpGTopjSH4z6o+DlPloUnhhPy4UGpxXk1z4qNFLsvxM78NYPoH8mwOqTD9mw1filrltwo8GPM6dc2EeMaUZXOMf7PjlqR068ET6AilyFxE+U1UDsp37LYGILOQkZkB1ngsMJ6fPYT3Qp6RJTd1E9OmxG8AfMq62rVhKmZD6qHC1znIxB1OAz8mC+KPado1Vju/j3336mT1P2ujuQP3OqE56skMG9YCeB9zuKm33QWvnieF0I8ixzOs+Gwd6r4NkBT69fww2RsQjBqyPpJR2AbrO6qBAqQCGzQO3R+kqpa7GuE1mvCIiVCVT/oSxXDwtdlxJbyIBhfTwdoY30T9X6Zea8qiWGX5+Ex84Vu8xIGhyHrZc4tp1uvKoDkzXLxNAtM89TlHwVB/vl9cxwWynrmT1PO7k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,15 +147,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 30 Jan 2026 at 17:06, Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Sat, Jan 24, 2026 at 7:36=E2=80=AFPM Kanchana P Sridhar
+<kanchana.p.sridhar@intel.com> wrote:
 >
-> I'd rather go for a spinlock there, protecting these FFS_DEACTIVATED
-> transitions;
+> We introduce a new batching implementation of zswap_compress() for
+> compressors that do and do not support batching. This eliminates code
+> duplication and facilitates code maintainability with the introduction
+> of compress batching.
+>
+> The vectorized implementation of calling the earlier zswap_compress()
+> sequentially, one page at a time in zswap_store_pages(), is replaced
+> with this new version of zswap_compress() that accepts multiple pages to
+> compress as a batch.
+>
+> If the compressor does not support batching, each page in the batch is
+> compressed and stored sequentially. If the compressor supports batching,
+> for e.g., 'deflate-iaa', the Intel IAA hardware accelerator, the batch
+> is compressed in parallel in hardware.
+>
+> If the batch is compressed without errors, the compressed buffers for
+> the batch are stored in zsmalloc. In case of compression errors, the
+> current behavior based on whether the folio is enabled for zswap
+> writeback, is preserved.
+>
+> The batched zswap_compress() incorporates Herbert's suggestion for
+> SG lists to represent the batch's inputs/outputs to interface with the
+> crypto API [1].
+>
+> Performance data:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> As suggested by Barry, this is the performance data gathered on Intel
+> Sapphire Rapids with two workloads:
+>
+> 1) 30 usemem processes in a 150 GB memory limited cgroup, each
+>    allocates 10G, i.e, effectively running at 50% memory pressure.
+> 2) kernel_compilation "defconfig", 32 threads, cgroup memory limit set
+>    to 1.7 GiB (50% memory pressure, since baseline memory usage is 3.4
+>    GiB): data averaged across 10 runs.
+>
+> To keep comparisons simple, all testing was done without the
+> zswap shrinker.
+>
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   IAA                 mm-unstable-1-23-2026             v14
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>     zswap compressor            deflate-iaa     deflate-iaa   IAA Batchin=
+g
+>                                                                   vs.
+>                                                             IAA Sequentia=
+l
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  usemem30, 64K folios:
+>
+>     Total throughput (KB/s)       6,226,967      10,551,714       69%
+>     Average throughput (KB/s)       207,565         351,723       69%
+>     elapsed time (sec)                99.19           67.45      -32%
+>     sys time (sec)                 2,356.19        1,580.47      -33%
+>
+>  usemem30, PMD folios:
+>
+>     Total throughput (KB/s)       6,347,201      11,315,500       78%
+>     Average throughput (KB/s)       211,573         377,183       78%
+>     elapsed time (sec)                88.14           63.37      -28%
+>     sys time (sec)                 2,025.53        1,455.23      -28%
+>
+>  kernel_compilation, 64K folios:
+>
+>     elapsed time (sec)               100.10           98.74     -1.4%
+>     sys time (sec)                   308.72          301.23       -2%
+>
+>  kernel_compilation, PMD folios:
+>
+>     elapsed time (sec)                95.29           93.44     -1.9%
+>     sys time (sec)                   346.21          344.48     -0.5%
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   ZSTD                mm-unstable-1-23-2026             v14
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>     zswap compressor                   zstd            zstd     v14 ZSTD
+>                                                              Improvement
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  usemem30, 64K folios:
+>
+>     Total throughput (KB/s)       6,032,326       6,047,448      0.3%
+>     Average throughput (KB/s)       201,077         201,581      0.3%
+>     elapsed time (sec)                97.52           95.33     -2.2%
+>     sys time (sec)                 2,415.40        2,328.38       -4%
+>
+>  usemem30, PMD folios:
+>
+>     Total throughput (KB/s)       6,570,404       6,623,962      0.8%
+>     Average throughput (KB/s)       219,013         220,798      0.8%
+>     elapsed time (sec)                89.17           88.25       -1%
+>     sys time (sec)                 2,126.69        2,043.08       -4%
+>
+>  kernel_compilation, 64K folios:
+>
+>     elapsed time (sec)               100.89           99.98     -0.9%
+>     sys time (sec)                   417.49          414.62     -0.7%
+>
+>  kernel_compilation, PMD folios:
+>
+>     elapsed time (sec)                98.26           97.38     -0.9%
+>     sys time (sec)                   487.14          473.16     -2.9%
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 
-Yes, that's the much better solution.  The locking in this thing is horrendous.
+The rest of the patch changelog (architectural and future
+considerations)  can stay in the cover letter. Let's not duplicate
+information :)
 
-But judging by Samuel's recent email, there's something else than the
-open locking thing going on.
+Keep the patch changelog limited to only the changes in the patch
+itself (unless we need some clarifications imminently relevant).
 
-          Linus
+I'll review the remainder of the patch later :)
 
