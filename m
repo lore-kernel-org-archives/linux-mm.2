@@ -4,94 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5801E7C6E2
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 19:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 552DDE7C6E2
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 20:11:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2602C6B0005; Sat, 31 Jan 2026 14:54:22 -0500 (EST)
+	id 314476B0005; Sat, 31 Jan 2026 15:11:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E3CB6B0088; Sat, 31 Jan 2026 14:54:22 -0500 (EST)
+	id 2EBF46B0088; Sat, 31 Jan 2026 15:11:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F03C6B008A; Sat, 31 Jan 2026 14:54:22 -0500 (EST)
+	id 1C03A6B008A; Sat, 31 Jan 2026 15:11:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F34FF6B0005
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 14:54:21 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 938B28BA12
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:54:21 +0000 (UTC)
-X-FDA: 84393310722.26.2394E7D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D7A3F180006
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:54:19 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pmUnRFIC;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769889260;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 04EFD6B0005
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 15:11:25 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9062C1D83
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 20:11:24 +0000 (UTC)
+X-FDA: 84393353688.13.2FF6192
+Received: from relay.hostedemail.com (unirelay07 [10.200.18.70])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 6618740008
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 20:11:22 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
+ARC-Message-Signature: i=3; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769890282;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UBQ1MrImHCg1PThp7hd1qGQ8qJRDOrGBXwa3bWOP7Ik=;
-	b=Im+Zujs8JV+NIQVkM6TnPwO2JICdC4MRhcV4+RB1YnQVSSVQ8g7ipFp9345CNiUlYzBZWA
-	NmQ2VXAu33L2cuMGEH5bkeN5V9a6iRb+TMRcC4u91N86jHuBpCnseBFlp8wlxRGXUt0AHU
-	eIqp9n9p6h40xYQQugKoOtwdL77Byc0=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pmUnRFIC;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769889260; a=rsa-sha256;
-	cv=none;
-	b=fBpOfAi9N+gbzpNqGWQb0J4zeW/Ju0Y8padzWWDt0hlJEcRs0lWg+YkSsao3+xecSz/TNj
-	q59g0w6FEqYHIL3GXLiK0SczUhzszeo+/Plr63yWciWoVXK7NyQr+AJCCiVFrpDNhH7s/p
-	bmW8lEyViojo7fJdwR8QGbb9s9yBL/k=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E5D8A43CB1;
-	Sat, 31 Jan 2026 19:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84E10C4CEF1;
-	Sat, 31 Jan 2026 19:54:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769889258;
-	bh=N8vKGMyccUxrYrqp4qY0jWMxA5NCQ/73rs9xDcCS5Y4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmUnRFIChWDWwhJxLVO7VzYaEr21cBFNt5vFZXdhn4hObmhuEZeGNgIE2xBQtHO7Y
-	 d5ZZJ7TXwa7VPq234F5zPHdhKgUlTj0F+0IB6tVM5myIW687yeM9UYiF/m32ANpAEP
-	 i+RYt6T6RcWdWDvIexlbj83YEY+wcLLYzL3yzOtv+U3B0xbla+LlXYGAaZmdpplDyS
-	 z3qmrmg1fjO0e5X3z3s4NyZEP6dff+b6jLa6wJBKD1rm5QpzIqap+czcoXm6ESQXFa
-	 k1SFj6BWJjtYmzDUEuDMdL2RlDRBGJxjVAB8h1wYuR/HiksHxVR0twjwIrzLcIrIcj
-	 L2J4bDpA4UaYw==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com,
-	honggyu.kim@sk.com,
-	yunjeong.mun@sk.com
-Subject: Re: [RFC PATCH v2 0/3] mm/damon: Introduce node_target_mem_bp Quota Goal Metric
-Date: Sat, 31 Jan 2026 11:54:07 -0800
-Message-ID: <20260131195408.66514-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260130014807.51302-1-sj@kernel.org>
-References: 
+	bh=rL+Su5x/WeCqYgfxZztlYQTOnKf9OKjLga2LNBzR/Ds=;
+	b=KPbQAcfjVqCrLtdRidCwEHgalbgtScfBzQbXsCOIcP52+xzag0yqKcEMtxk3X8m+p3wFN+
+	iRc7rY8D7slWRGyUtYXYtzdiAxWlr6tOo7EZ0Ct3vcV5Q5TAA5bq21EcCG7uFPFKCROZtP
+	YtDQdq9GFO+T9kxZop3Yz/DqJg1un+E=
+ARC-Seal: i=3; s=arc-20220608; d=hostedemail.com; t=1769890282; a=rsa-sha256;
+	cv=pass;
+	b=ZwehPTuPCtTyttyiXdszcT1TUPUNEGVpV/SyORwETL5ReisvwdXVBZ6VPCl+3iETMskg4g
+	CGOEVG0xI0cwpEg/VpNh5257f7ebwEqQig8SI3r52K0ic5KzacdhVCsYdlL/lqQo2/WfF+
+	CKTleZDNHpd5JmN5pIp8S5k9WDbowgE=
+ARC-Authentication-Results: i=3;
+	imf07.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=2")
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E57E5160894
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 20:11:21 +0000 (UTC)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA49ED4FAF
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 20:11:21 +0000 (UTC)
+X-FDA: 84393353562.24.50005B8
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id ACEE0160004
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 20:11:19 +0000 (UTC)
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769890279;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=rL+Su5x/WeCqYgfxZztlYQTOnKf9OKjLga2LNBzR/Ds=;
+	b=xu6/weCx/PTRvOxp77R94lI47lzAxYjkDMBfSb4WXjyO6my+6tPY+tY9tEuahHN/PEiFkf
+	dDmLW8umzIywCCWRFOpv4x1cOtd9MRFU4ZIJauvrrABVi2DWiO8vIXUv0uA7KDvfQ5cvMi
+	erj/ebPrGfqRZAnE2N+Yxgy24bdt8Bg=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=qWihSs9j;
+	spf=pass (imf08.hostedemail.com: domain of wusamuel@google.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=wusamuel@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769890279; a=rsa-sha256;
+	cv=pass;
+	b=8qZC8tkS0IUFS7RYMsiw9NvxjoL89PfEKndP06jcl4mbPFasEpHYf0AUypmIqsi9RsDhg9
+	141HTX5wLNOFrIof5AOLRvk7KKiDZek23nxhlhWawSphNufh+wDSbpM4MpCVsd55hnx48f
+	bHD64qJEoCfXn0hCo+BRTBRm8iBTPm8=
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-64d1ef53cf3so4016261a12.0
+        for <linux-mm@kvack.org>; Sat, 31 Jan 2026 12:11:19 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769890278; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NtXm1w2mPJumVvrDcge0LVtHdVcFF9qpzxMY8hp6OyKR+RhQyKf8lIFVUK9S1+3m5X
+         /QGa5bykcwGTEXx8clGTKHT8PvA6vsruM4N3VnoEnBXQ+9sP18vk/nDxy3CJKcUUh85h
+         nVa+7bNNMfJCr5lT3vaXiBKZB5jmoyJsxTEpp5eC/zguOezEZQQCz466sZkiYvRWAOs+
+         t63rMS9cQTgq8GbchA46hA+UF7POtSUI78dzcTtn51w/c5wE1LmPwM3scHlDk3ZgcfZ7
+         OH+zqRKPEyAd7nRNChyZrCVLQJd9OEd3BL+w0fl6Mj9vrVqZJv7hGsAOfUFXxN0yr+Uq
+         cF0g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rL+Su5x/WeCqYgfxZztlYQTOnKf9OKjLga2LNBzR/Ds=;
+        fh=GUQcNry/DFj2I8FpI3IyY0NomaW9oAT22nq5cvWi1ww=;
+        b=eKkVqN9DhbchQHjkASw6mYfLDQiQiR1gmLgd8TFT8ecJkDRQoAT1ZGPWlqlrOYhdz9
+         2CLVA3bPFO9GAgRc6jvsYU/XVSwzR/fnGf43v95uJUF8Uulv1t+ZWz3bCmd/T9YeyyCX
+         ftg+BTsv7uogjz+GdvNwCmRhghyWWwfToRVJdaE6ZR9DIs3KMFEcI3JMaNZsBBm2kNXh
+         VRzIOPL3ejxxsccupLMO35ANHB+Ab0Q13Hz5oOulgKPapZph7GdzWIoylnoWlR9f6oNd
+         DJOSeN9jSaYt4akpycAjKDpAow2p9/zObDbAhEZp1Lk9TD1WvLTLIRApYIhsk2N3iymN
+         9Mfg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769890278; x=1770495078; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rL+Su5x/WeCqYgfxZztlYQTOnKf9OKjLga2LNBzR/Ds=;
+        b=qWihSs9jVyWIIohYlXQ7RRnF3PGCYgbXkaGwFZw9ykL14u9xu7qaXVhZxifm5Ufbfx
+         Hsxu4u+5FnUpCRzfSbCqzTC9S41ecpho62rl+XuSUUZcgGwgP7epDhMQbXeBL6+xYASI
+         QL56J+WbosjheOMu0ejhjav3oOdmB1Y4GB9VFDp3qDFMNvYPMDEMB84uBhEW9ccf35Et
+         m8RmAgsXMPgSsipOCQxpE5wLGmF/cKEdDpaRjUbI/AMrXj7jB6sQ7eUkih0POKfXsMBb
+         I8uIS4ima9NI3ZUhW0M8VkaqjxVk7DUqU1lCKRu+JuaKVB5bxJplOX4qyN8i3d4/aI9S
+         aIaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769890278; x=1770495078;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rL+Su5x/WeCqYgfxZztlYQTOnKf9OKjLga2LNBzR/Ds=;
+        b=Gdr/6J10Ca9HeH6qHRy2oCrD1SkXmb+TeSpiNjEKBKwcC21Ice6QuKdeg37rOZruXO
+         Rp4suY9jRaUvIQUjhQNMSeWnNVjaRZmXwLABzjNqIkuPiIExwdEwQgQ20Kd2awe5wWAI
+         EhpYNa1tRcelBYmmty8x/ctOAe3EhHFeZpAoxzptjrO/xrVzkiKTk9wKu4dS/oM7DsPu
+         XBoWvW1ZrNTkfZh5UcuKO6TrM7So6lQZBsJ9KVQR9h8vHuvkV7wsk9sV7Sx+JHUxxOXx
+         22JnG9Hup4UDJpGFEUxQWNZb2IFujaDk2FJ4TfGKxN3n6n70LuvTU1MOS3VTCMSrojLs
+         XqCw==
+X-Forwarded-Encrypted: i=1; AJvYcCULtfvyTUPln5hRMqRcDgLmOHMD6Rt9zYHk9X2oWCcbDHwCI4MoZL+zzk5l0FyV4DfYfIDsTlRvMg==@kvack.org
+X-Gm-Message-State: AOJu0YxI60SZ7zrOCl7S42gW2Ip7w1aRM2EJGevPe/7XwLzKqEdjHQwu
+	raRrd2l9POWhN2tfKGz4fvzNewtkqJT1QY8AxuUrqSGNbtUjZzop82bBdbpUQcV0zUQueOxiADD
+	Fe8JiUkAD1N83F3t+V7svqD04Yc6nJhShH8jn9mHqk6KvyM+ZqS0zrLp40a8=
+X-Gm-Gg: AZuq6aIMe6w3q85sK1VtGqdht/OLOlj9qxvxat0kLQaxIYpMNIErjx2pwUUOV91OW/M
+	SK53oQb7hL5bY7aRWi5X1rfXJdYKn0xAh4XH66EBEUJQOREBNXqUxqeFdhIYbuzbP4Hsnsx2FNp
+	8TsSemB4kDqlJnaYrf7bIMYfC6jS1QcQywD0Lgj5+lmK6g04LyG/ctLgDSMb2pA6i9LfhqtRmHD
+	9gWX7TpyjjpqWDmP4SOdOwP/pSFArIFNlWueO32e7cRi4PEd98mA7CM2DHwGJZU9hqXW76annZW
+	0aY=
+X-Received: by 2002:a17:906:d555:b0:b87:2675:9eaa with SMTP id
+ a640c23a62f3a-b8dff56a89dmr396045166b.15.1769889782950; Sat, 31 Jan 2026
+ 12:03:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e3hgq1sfzhyj4gqah1w4c5yaaystrw7x
+References: <20251118051604.3868588-1-viro@zeniv.linux.org.uk>
+ <CAG2KctrjSP+XyBiOB7hGA2DWtdpg3diRHpQLKGsVYxExuTZazA@mail.gmail.com>
+ <2026012715-mantra-pope-9431@gregkh> <CAG2Kctoo=xiVdhRZnLaoePuu2cuQXMCdj2q6L-iTnb8K1RMHkw@mail.gmail.com>
+ <20260128045954.GS3183987@ZenIV> <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
+ <20260129032335.GT3183987@ZenIV> <20260129225433.GU3183987@ZenIV>
+ <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com> <CAEiyvppoiL2EiSmVvNV3DEkr7wwyC1Fbwhm14h7Rfus4Z8uP7g@mail.gmail.com>
+In-Reply-To: <CAEiyvppoiL2EiSmVvNV3DEkr7wwyC1Fbwhm14h7Rfus4Z8uP7g@mail.gmail.com>
+From: Samuel Wu <wusamuel@google.com>
+Date: Sat, 31 Jan 2026 12:02:51 -0800
+X-Gm-Features: AZwV_QhcEbOb_GQTelufeNwJJCU6MsAWKA6Gjz0fMmR9BpLj1Kmi7hMzQGebBBY
+Message-ID: <CAG2KctoHRG+4J0ujC9162n-Ndgn3nKMu_s5jh0-c-B_P6EOk6Q@mail.gmail.com>
+Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
+To: Krishna Kurapati PSSNV <krishna.kurapati@oss.qualcomm.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, Greg KH <gregkh@linuxfoundation.org>, 
+	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
+	neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
+	rostedt@goodmis.org, linux-usb@vger.kernel.org, paul@paul-moore.com, 
+	casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
+	john.johansen@canonical.com, selinux@vger.kernel.org, 
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org, clm@meta.com, 
+	android-kernel-team <android-kernel-team@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-HE-Meta: U2FsdGVkX18zEI2dueOrRqYC00SwAZtlyEIVGGcvp/rHxZwP123O20bVe+T9y8HoAmpNrYHP2X7Ho97gWhe8DIJsXVR8Qc+74ZwrM2FXy/0NOpCbXTyQ38R2sxOw7YvB+ctuydBtQ7ZcglFj78Ot2yqkMEetpGq9NhwdLU9tHg5Q1krbL6De92O66kGpa/BhFpMTM5PS+LETKpSAoECAWO56q02tS8FyXpj2ZqBL45fBL4wXZo2YLSPFcrJkqmK4vazfpNBwVmw+l3UzbGzUAbvWKfOgx118gZFWQDDhTcyWa6wpyKPjz13TxvP0a79e5gJrofw5Y/VHkzVojlFRCT6pqbet5FpuN67P1BxscLSOVNX/CUp2uX6po+u2ghZ1Vtqp6O3FwOyjQs2LCa2gfcfUh/AaeM/GXQoz21Lcnxgdo/1Q9Di4sfi3Hp5tGJ00r52pgI52g0yeiqo67kjr+Y1LlPvGeuk1n5pR4vwMgnA6MbaoGMCuKtXv0ULgPsIimtF4uw43s0KGNpyQo7l7C9UpXLW5KBFXo8afsv/CyC+0nDuELGel2k554E5wPTY5QEJZcJery34UX8FfvLlWtg1XXUD7IQh7AP5jMOadNQu3L2+GGfPBKUnkoSImS93aEO1VZUYyN0ulv1Ekej035FLZQ5Dtofy32NCBdIMX6zad/Dx/NN0jai8gyZBY2JlGtW7ZBz2XiXWNoRSfPTTfAyhgTnhM8QpFt2V1GkdaV6Nl1AP8CBe7aR0LXFkP1H0QZaqQ1n2UW1drgYBRZ383gZ2MYZsSvQivWmadpTraiYlEXDa9kikETMC4i5fkdprLXfd1m6PdZOEUwqvAevKsJpvycKpXiiShYl4cFndNYTTNr6Go6I/kCtXy8wGgUKOsUIPcYJEw6A+lMt0jQhS22ZEt+VPRS2Pxc7ZXqPPejGxDVYvXKE0J+ZVEd5DfbPdh1wTla4JNZhNp0Ox/Key
+ ZNp7iVCG
+ 3y8M/xogua4rZOgqGarWUwY67XTFCM+3TE72x/By4Y+A7uIYZ3Qp2j3QrCAikujImmqiBD6FALi2+W7c9dR8wJSab0gN91cT3WQGZwyI36IPiP796IDjkFAQA87ibf/6BkJm5nEGuMuoK7aII+9BfOXcweNUNJ/C0PTjXCa2TPm7+UwgchQs61I1PUYuKWVI1r2+gj/R2qZ8+bHT5uKdygKOxYp7XyeP0oIZQH6frBJ2tV8SK6YHwkNRWQKtxB3nJlKxBMr2ZtUmLyxse0dTlLCovwMT6RIX6lW+gsUYhuGLkrjFcluNI0lSX2Tu3FuSSuaWAFZT2uY4n2S3LWUjc7fmry+vHXyPxtsaG8LldcfOCW57BtpvziAYKDTlFtlG6tBYq5gXJUG90GKUviRYLyM4iyhN9tUg6+R5CcveRogLohY86qnlvMpMKocicoQbZ3SwQIwgjHx1GPs8=
+X-Rspamd-Queue-Id: 6618740008
+X-HE-Tag-Orig: 1769890279-58105
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D7A3F180006
-X-HE-Tag: 1769889259-723205
-X-HE-Meta: U2FsdGVkX19J7RH7htic2cMptPhYkxKLKZVsdt/Uk471WZIEqtDnPnZDA7NnU72+mt71JA0ww65scKhcy9LmRxCUXf/GxbKExgPl1SXSeo6rTOAWHbO0VFID9dJ/nQURBwQGc0mlNMiBYfV6/6awX+LqYSLcMKGwx3TRQqhskNgZ5tjxWvrkfLvYQ/g+BY6noGDZR4IbsTwMyfZLn84u/ykKvDtw9yDHSjgSFR9zJ6jxrLMRm5unLY+9EKy4Gyt67TC06SK69aotiOam1zgB66ZgK/SxYvbBsu+8JHI094gD0yvhxuxx+r9YqS63CLOs+NPeQQQ4Yzs9KU3tT6g3X86eO7h/RbLxo35DwBgBm5GmDcQtrWL3vYBqUiem+Ws5+B21UkfVJUibmLQfxP1FvoOtDnPDONYx1Zd/Dsd6n91W4bq9BzuIO5foU+pOSIMTO7TTsdUyqYi2wKSCq1baFW4hRSp2TwgrwyTTqxOWDGJaPhb1GhrqoUl0RxpEy2zADOrvsmZp84O+rEJTkm0i7D1JvMAqrPWp2eH0LEldIUPqCYmJkp/SP3S4+5wBHU4mWzsum5J7X3vgm3b33u9QcG8xdpzE/aK/B1jzVs7CjHpSewrYpAZKNoQ0da6S7e7dDeAcCiAsLCpRzGCsKunB2ugFmFXs4Pdf751h/nfREtbl1MId02IjYXXLJ74LL8VoZ6JCLWS5JG0+FBPQlk7a5PSd+FfJsjHxvpaTyIFd0F/ZmHI8St8zf28ELxar38C7BR6w6pxKw16hLKuMAsMrQnn7HOGPESYI3naKkJmnX6Dcts/X1yYeDFmx+rVlqYPneVuaYpAxai6st2GFWA5mrxNMfSn7j5RTsYgEttRwJBBKvtB7XnhJe2I78erD9I5V0QsZMyhpOI7gJf2+201MXz1qaiKCvGMIO053mcPF5Lo3bLQkV8YO59rFqNrSrvFRRirYBokp2GahQfScEv6
- tqrqpxn2
- dIAUu9xjWaiENu+ycBX2rZnMiP6t1/nBRiJQlI7gBQy7xv96GwvLWHzvucatdOHMY1i4wkJxpfMB6amMCQeoQHvBOSVr81m8oO/jeXe1B0ohbT+xg53MOfpiidSWwmKTypWsmXdp1Tw3oapOD9JtCyot86Y4HPqSEF/s1V5vTJ3RZjI5s9Mepg46CQoS3UHqN8oIP4zB3oOt5dAE/6WXvQQuyN9aOOD2GGVVAnR4z0PvcZ/WmPEBzpLUUmLLGoCchCR+Q36cRthu8rGjITz/TC9FenpkaU+L0w3siXYe46vQbNuTngpeOD9ZTanF5TzfFklzSk/X0Txk1qXusLzxAzz7DNmvuKy9kuT/CuRdZ7SdAL6hZmhGWXrFBMQ==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: da3da4g9budm8scec9egy4s489u5psth
+X-HE-Tag: 1769890282-972600
+X-HE-Meta: U2FsdGVkX1+AjwWu75/qejotTshCRj0a1AFt+OiJRJ+XDGIngWbkpxaGfhV2hB49kc2XlDlfKEyaj9YQTQ4DEnF5RbqLzrCX+d+cCFMoZr7sHDkBT35rT4xw8pU7TXtKtL/YYRfaVqWmcof0sb5uqrSFklCu8QtmvFE8IlIcBWREjpuQixAJ4K6hoSeS95kfMC5zF2MB+qy/gBOguzkWZRD8vdPW1WxnVEBP9v0WMfYu/cnC7wWqHP2L0RC0I7i08+o5yjapoevxDBi+e4uZB1BiJSwlw9c5qglvO1/w1ftHszqXVligesXO28eaDnOA3PYRozgUVruweX1Nuve9h/0s2SPCTyJtiqy/KLoHFApgNn3wBnkiWCzp7M+xhxq3C8FzXChO29BeLfTq+IylsZxvupAWW/qN2ng7qy0k3UKqnBjq8OD4t2Kye35vZDv8Ju7Xde+31038FwHnSHVEGYfUowG66AXkkj8OewFcvS1/LKPZrLZq4FAksE4oadSux7yhjhVbA/xsD8i/ad2jHwyGwpyrrGHCsz7do1HcKGtPL581J2oaGmw9wuOMSi1RGE7eAha9ePrJ0ONgjH8Gd+njULHb2QZwx/Dli9r73oE7gBK1ESzjORZf3nU14yWBfIZTxA0Vxy3JQ/fsRleLkkAtBHeWHLj3iv6aUdMLVXbbR91AVs1+jsO021NqpEda/5nUDc9Yo6RIzkj9dNNtX06ULIpr4dAWrf4IbfNVdGdaIBwXIgUPT9Vsg0SK9d0JMtYTuviIuOVxua6bX4O5eBFaiDL/SBA6kvMHUBUsvrRN+U2Go65mRyDCD97eGIapLVv2dmkfoSbIiVFE27UkEs0DXAMhmBIOdT6IjJ8tpdIuM/8KXdXXIlEM5kdxtcp6tStCGtrYBDsiV1N7lHrsbOykaoaeGmbZsTCXbkf6f0mqeHt1rVBr/SZHuuxMrLjv20X0HggFnzaGdCpfkfd
+ DDi1P7uq
+ ZU6TlHgR7j/b443+qynXX/V/lo9Cc4CUn8xKg72tsgvQteBW4o+com+dCy1nPOpfJtDNXZEewDq8x0MlMgCmIRMOXN+9vAjMhO9wJ5WojoVVIAWWIJZ8f/EpaOXMZ6yuQfteUGLwx2TXv+400hmo4uFpzdXqYMNLtUO2wvsWlfhsM/p47ss3n3htUDrfMnLb9/9roYZxCsn2U3x8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,43 +182,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 29 Jan 2026 17:48:06 -0800 SeongJae Park <sj@kernel.org> wrote:
+On Sat, Jan 31, 2026 at 6:58=E2=80=AFAM Krishna Kurapati PSSNV
+<krishna.kurapati@oss.qualcomm.com> wrote:
+>
+> On Fri, Jan 30, 2026 at 6:46=E2=80=AFAM Samuel Wu <wusamuel@google.com> w=
+rote:
+> >
+> > On Thu, Jan 29, 2026 at 2:52=E2=80=AFPM Al Viro <viro@zeniv.linux.org.u=
+k> wrote:
+> >
+>
+> [...]
+>
+> > I'm exploring a few other paths, but not having USB access makes
+> > traditional tools a bit difficult. One thing I'm rechecking and is
+> > worth mentioning is the lockdep below: it's been present for quite
+> > some time now, but I'm not sure if it would have some undesired
+> > interaction with your patch.
+> >
+> > [ BUG: Invalid wait context ]
+> > 6.18.0-rc5-mainline-maybe-dirty-4k
+> > -----------------------------
+> > irq/360-dwc3/352 is trying to lock:
+> > ffffff800792deb8 (&psy->extensions_sem){.+.+}-{3:3}, at:
+> > __power_supply_set_property+0x40/0x180
+> > other info that might help us debug this:
+> > context-{4:4}
+> > 1 lock held by irq/360-dwc3/352:
+> >  #0: ffffff8017bb98f0 (&gi->spinlock){....}-{2:2}, at:
+> > configfs_composite_suspend+0x28/0x68
+> > Call trace:
+> >  show_stack+0x18/0x28 (C)
+> >  __dump_stack+0x28/0x3c
+> >  dump_stack_lvl+0xac/0xf0
+> >  dump_stack+0x18/0x3c
+> >  __lock_acquire+0x794/0x2bec
+> >  lock_acquire+0x148/0x2cc
+> >  down_read+0x3c/0x194
+> >  __power_supply_set_property+0x40/0x180
+> >  power_supply_set_property+0x14/0x20
+> >  dwc3_gadget_vbus_draw+0x8c/0xcc
+> >  usb_gadget_vbus_draw+0x48/0x130
+> >  composite_suspend+0xcc/0xe4
+> >  configfs_composite_suspend+0x44/0x68
+> >  dwc3_thread_interrupt+0x8f8/0xc88
+> >  irq_thread_fn+0x48/0xa8
+> >  irq_thread+0x150/0x31c
+> >  kthread+0x150/0x280
+> >  ret_from_fork+0x10/0x20
+> >
+>
+> Hi Samuel,
+>
+>  Not sure if it helps, but Prashanth recently pushed a patch to
+> address this vbus_draw kernel panic:
+>  https://lore.kernel.org/all/20260129111403.3081730-1-prashanth.k@oss.qua=
+lcomm.com/
+>
+>  Can you check if it fixes the above crash in vbus_draw.
+>
+> Regards,
+> Krishna,
 
-> On Thu, 29 Jan 2026 13:58:11 -0800 Ravi Jonnalagadda <ravis.opensrc@gmail.com> wrote:
-> 
-> > This series introduces a new DAMON quota goal metric, `node_target_mem_bp`,
-> > designed for controlling memory migration in heterogeneous memory systems
-> > (e.g., DRAM and CXL memory tiering).
-> > 
-> > v1: https://lore.kernel.org/linux-mm/20260123045733.6954-1-ravis.opensrc@gmail.com/T/#u
-[...]
->     Context 0: monitors node 0, migrate_hot -> node 1
->       goal: node_ineligible_mem_bp, nid=0, target=4000
-> 
->     Context 1: monitors node 1, migrate_hot -> node 0
->       goal: node_target_mem_bp, nid=0, target=6000
+Tested above patch, and it didn't fix the device enumerating on
+lsusb/ADB issue. Seems like usb dwc3 lockdep was a red herring.
 
-In offline, Ravi enlightened me that using a single context with two schemes
-instead of the above two contexts setup can be more efficienct and useful.  I
-agree that.  It will be able to only single kdamond, and there could be more
-flexible use cases that can use the whole-memory access pattern.
+I'll respond on that thread with what I'm observing.
 
-That is, we can use single context with the two schemes, but adding a core
-layer DAMOS filters for applying the schemes to only memory of node 0 and node
-1, respectively.  Similar for memory tiering use cases.
-
-But I was recommending the multi contexts approach to people because the
-current implementation of DAMOS is not efficient when both quota and core layer
-filters are used.  I was actually working on making it improved, and just
-posted an RFC patch series [1].  After the patches are merged, hopefully the
-single context approach will be useful and effcient enough for varying use
-cases including the memory tiering.
-
-[1] https://lore.kernel.org/20260131194145.66286-1-sj@kernel.org
-
-
-Thanks,
-SJ
-
-[...]
 
