@@ -4,205 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B161D73EB1
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 03:01:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5F0ED73EBB
+	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 05:22:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 37BAF6B0005; Fri, 30 Jan 2026 22:01:33 -0500 (EST)
+	id 963646B0005; Sat, 31 Jan 2026 00:22:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35CD16B0088; Fri, 30 Jan 2026 22:01:33 -0500 (EST)
+	id 911806B0088; Sat, 31 Jan 2026 00:22:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25EDB6B008A; Fri, 30 Jan 2026 22:01:33 -0500 (EST)
+	id 7E52D6B008A; Sat, 31 Jan 2026 00:22:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 136926B0005
-	for <linux-mm@kvack.org>; Fri, 30 Jan 2026 22:01:33 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 68EE16B0005
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 00:22:11 -0500 (EST)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4BB11160792
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 03:01:32 +0000 (UTC)
-X-FDA: 84390758424.10.E8EB1AE
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010003.outbound.protection.outlook.com [52.101.193.3])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 602421C0002
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 03:01:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rAcNXItA;
-	spf=pass (imf20.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.193.3 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AEE461604AF
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 05:22:10 +0000 (UTC)
+X-FDA: 84391112820.10.ABB4CF3
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 820B2140009
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 05:22:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZEVzGvUC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf23.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769836928; a=rsa-sha256;
+	cv=pass;
+	b=mogMIogenMkL/WBdXLYwbpqfI9tQDGexwXpJZEvZ3ZNgmSTVX3KD9MTIc6gEF9l9mStmT4
+	xRU0GeHjZVmvFWA5dT08iMlRI7n9XQIqjZZylMvTljfmFbNml73YBQP/etO5knAzswv0wu
+	fXqyo7U115ZV0FzDqNEb65iAnD5/2Uo=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZEVzGvUC;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf23.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=jiaqiyan@google.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769828489;
+	s=arc-20220608; t=1769836928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VXXgolPotg+N0ILa+3OBCMeuxPWl3FAeZcugG6mexnw=;
-	b=J9KHobmys8DCySAXKKINJf3QcKipfIzvijf6hrjvEQSm5eQrueMDcxPS8GgddRlX2BdgPs
-	SqZUNNgn5sp/bmspsWJ3INwkwdpIUxYTh7aSyf7mSyyNlrce0EhusHdQsJ5mh10kvZVCrR
-	xsAtDDJDW/9RxBlxBFboYCfK62CZceI=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=rAcNXItA;
-	spf=pass (imf20.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.193.3 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769828489; a=rsa-sha256;
-	cv=pass;
-	b=6cgBJwy3QSqqIieqsvQF40zCNEmE0IkDYN/Nued25ECo+3XfQo/TASK4cwH8xcCY1qJLhV
-	schhvpwNg2amkiqEC7dcSYma5ihZ6Pj6IwFcx+zHXzYfoDh8mXrcYG+AGWeJlqSdCHpyfJ
-	JCABE7Dz38hrSHxlFDXcTTvF+N5cKg4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gtH3ShsN4Su7O6K5cWBsLCxC2d9KwrVqB+joarlzIcVGajZxv3dGuScnGtKC915Jn9Xke5wSfmESReCLgXSXXU/eSXsPeK7EYfywVgIwtY/Lo57Fq2xO24Vyb7rSZQc9VRLwQpg9wJ0JsvWeXfsKCMQ19ttR0HhOYIajkpE7I6EdOP1QIE7C6JITEwZOHqHr6feKeJWiQj6Fc/T9VSE7WchrZRO2LGEJ6B6eS4ifA/G7HIiOwgQRGhlKCR4IheXuOIyNLVD+6BTWq6kbTrTU00xjbQOlW/N8MjZ6XPgrHUhkDqA/ceHRZVYxEXW166IXpJ0tdHb8Fe8aFFP8jPxplg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VXXgolPotg+N0ILa+3OBCMeuxPWl3FAeZcugG6mexnw=;
- b=Hkm0Frsh+sTLkDWVDq5H6MvC6P/Z18eCYul9BH6Q/OaMJIMoY2Lqo5jLmYV6lhRm1ek/6kkd/q3vqTU7Fb82RuFDTfKJ4Ac6IYJAQmPBa3wMyVsy9Vvup9kF1ceUMM2iT+bfKoOh8zIa3pCeQJuJ7T1xcqSuhR6n3k942PFx+f4RWnkA6Q4DT3bX/rwxR4CMX+mSnA1hKLXxsGoPq85QJQnblkU8jMWxu69742NL900MS1l106x/RBmwKCyVRg9ujCRfUiAFlU77fbV3e/FHzFU8CZSwWcnLRulUGiIH/7rJpY1AowT3cx8NoQPWiiDibimIiDJhHksLuFOxov6F2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VXXgolPotg+N0ILa+3OBCMeuxPWl3FAeZcugG6mexnw=;
- b=rAcNXItAZScbEKf+r2cCYcXnxh30vpaLOExxZeL/2jrz7iYX+0ILjOixw3W/nS76aJxBaVyHh9Xdx7I0uZjSKSrOUhes6ABEI4vosf7eFMklmuVegoVH7ZI0FPz1vwCk5dnTSKjfQdixqA3go5H5V30Xsxpw4xb9XLQp3KwnXLQqODz7S/TssRMsnOLa9p3sOdq7qwmelg+rHNrS7qcCWAmiDzOQOUkhQ9MMzCFf0uXQVltaWS/Y7IZvDHw3ZaXmULeb00shGOnSec6IVuukudDFoHhsVXFxBxvxp2loxoIRioBiNevtHvz755BpU1j8cYXGvOwdkWTmi7jslNOWuw==
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- LV2PR12MB5989.namprd12.prod.outlook.com (2603:10b6:408:171::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.11; Sat, 31 Jan
- 2026 03:01:25 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9564.013; Sat, 31 Jan 2026
- 03:01:24 +0000
-Message-ID: <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
-Date: Fri, 30 Jan 2026 19:01:00 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-To: Andrew Morton <akpm@linux-foundation.org>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>,
- Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Matthew Brost <matthew.brost@intel.com>, linux-mm@kvack.org,
- stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
- <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0196.namprd05.prod.outlook.com
- (2603:10b6:a03:330::21) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	bh=rVmcHOkfAgmMukrR8Ac5vQ5gZbrTc9ghNV4+NJ/SnHA=;
+	b=TaJQRtlA5Nvvrn9pbiYLY2S5zhP5w3KNqIXea53yTgu21J35R1ugwIEVvXxMY6wWwD2SbM
+	JjBDdWBHPWMrSpLn8sf9EqAMJTUsb29IK8BpzGTiadLLFHENyzqcFWsANYYgdTkujW/jUX
+	fxJVfgKFN62T3LzO5IAaK585qurHPzg=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47ee730612dso22945e9.0
+        for <linux-mm@kvack.org>; Fri, 30 Jan 2026 21:22:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769836927; cv=none;
+        d=google.com; s=arc-20240605;
+        b=B0RN6YCjI5l7k1dNH8sg5Wz6Yt/HxNlJCh8NHjbhBrm29NdRO5Te/YYj1I0LwCsTc6
+         LqQOctvksL7woinOEM/8DrIjxKpEbX7KMgfSIQwLg99Oe5kwNStfyA4YOT50LKqjpumm
+         cogUEw+vZrNv5q6ce+p5H6F0FtNyjd/ooby+/pDcnwdNzhyv7vVKW5wrZB1f6iw48yg+
+         LFb+Nl747JXUyp2o5V3aEzY2bOcN+2nauS9qoHkyknKUz2/4Z46GTy8dom/DAf4kN9cb
+         217AEuI0aOj66EWfBrtdRLqAxOw6wnGt9J+BOCwspnhAlz0z/U02TWI5tWXTd8JbC9qk
+         zkgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rVmcHOkfAgmMukrR8Ac5vQ5gZbrTc9ghNV4+NJ/SnHA=;
+        fh=ttk4MVZufeZRJHkQFVJPPs7OVsFtLDS2o146tSOysCY=;
+        b=d9q5GINsLGeZnOvzjO8uj7X6fp7w7SLFH6Ie6AsYunnX5AYkMJo1djNBnde+5CVCOW
+         4bRqgO+hBusTNKmVF2E/M37gw0Ntudim2yHiSetc8y1uIoWi6Bh8EB325J5A2SMNFBxV
+         CPRoCwbwoF7aJWvvi9rezTHZWEJwpD8aiQe0FT1z4bnKjLaZwf/Ksh1DBRIlhc6R2OOy
+         qa28N4qF6JbF2yEb0VZBvFOcmILWKV85YE5N5H0BzyCnoFIWXabLGUdqpeOMcPv4IqzM
+         OcwtOrrQEyzbgkc8bvmilJgxdMjJtug05Y1sluU2+Qx1XTb0kwwbeOP7oxp09ou2vBZT
+         ed5w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769836927; x=1770441727; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rVmcHOkfAgmMukrR8Ac5vQ5gZbrTc9ghNV4+NJ/SnHA=;
+        b=ZEVzGvUCeU9QbMwXYS0WnOSbRA+sNH0Of5WgSwZpUxM2TO77OErajtBGBCRxAYt6Nk
+         UjJKbK82OvoOiQBPjD0EBL1QgYF8km3nbDKqEySna0mx5Lr6JIqRUZmqRAAMXnZq1nBc
+         tr86kIIoEL7KiOly7nlTu7O/QX7d7J5nJsvaIMUrj/QhkDz160cJvsEAQ/sZU1RP/PBC
+         M0IKHdFr3aJV0yZnRzFgw1aO5kDZF5eL0lwncKiABIl4uf79RZ6fYCLUttbf9ErWO3Jj
+         +/rhMpIP7CR9FzNlSwJjV+0SXL3G1Q5gRco+bvVn3CHDDxcFAmytJmZbtiiL3uczuXF0
+         ulag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769836927; x=1770441727;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rVmcHOkfAgmMukrR8Ac5vQ5gZbrTc9ghNV4+NJ/SnHA=;
+        b=f/ChIfcd7PDPxbKSZh1194xVn5iQ7ChUZkF1q9QYhK4O1nPsfrduLqDL/SrLRZ5WyP
+         gVjt0yN5HajAui4OCUBV8aZ6T3TPojbaPA+fuKXiVCeohk+zKJvJ5fUbfanjendjcEnS
+         RRge7tMJM54rcCULEqd2yRxY6PrpYEmJwXkv/+pBkLmDke+IuaO8YrmK5hu0vziCDqOP
+         uFojYWJLzeQdrHY5MpRPIIUfaCdTkZywUuMMkFqbnvhgFeDsGIKJaJE91uNQYvCas/5C
+         pPNKln8dA/e1NcGCBvN+Gjuo6XMeX+1lZAkalEV/NIxJUJoUy81uG6rIUt1U4Oz60AeI
+         uMGw==
+X-Forwarded-Encrypted: i=1; AJvYcCW0d3qJeEV+7cgwLJZAo0nwnO8gfA2q/xAbTLx7qZgEZiwlKGkwriEH2ywM3Eqg+pvoXwigb/OVoA==@kvack.org
+X-Gm-Message-State: AOJu0YyA3+ukXWDx2ZDyVkiRMKBi9OOQe8sU3b3C+e4tVsuplWNddXOD
+	3QXKbmgFCygZdiXRMOS0e+8edTYUyA6aaJ7/nPquHpQXlZeFGfAQnVkx9dSN77QQXJ28ok5ajqv
+	TDtPofiWhi2eQBeWst4wv5D01QYtdis45m9thxPiI
+X-Gm-Gg: AZuq6aLAZUioiUhc26wp2fXFEPSPjBh6UEdcyj7A2ee5i2xxJbjz+Q6zLDf964uQLk9
+	HCi+pZb8nO9lCqhPCD5BUXimhwtr39pcNCseJ9QUb46zhSZc6kUAGfp+SToUXJHpqJa9BwEWetD
+	c+32EX0vdtdbrH7iHpTG3KSDMVMWeSdA2g7Vo93yerXxCeaxBk6a0I9xBbK/qBNOsp25ANjgTod
+	Udqx7583GdmdrzJ/CJjHlVDZrIQ6YBJyJGreyWpF7eybtpAIPzZOMpvdnv7MadHDBmim3BP5JMe
+	c3gfCaU9r59Tw9qblPobNYtBDkR3
+X-Received: by 2002:a05:600c:8a09:20b0:477:95a8:3803 with SMTP id
+ 5b1f17b1804b1-482ea466dd7mr175575e9.13.1769836926634; Fri, 30 Jan 2026
+ 21:22:06 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|LV2PR12MB5989:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3d1b117-4f0d-4041-fdf5-08de60750504
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bnZpVG1veXlHUTVSM0RKNWlSSWEzTkZCOGlEZDVTb0c2aFFMWHQxWGxMckJv?=
- =?utf-8?B?TmU2eUJkM2FOUTh6bjZyNzhUdHAzK1gyNVJ4UFZsem45dG9FTmovcWRrdDE3?=
- =?utf-8?B?TC9BbVN1bkUxWkVMSUx0eWJmZUdnNGc3T0dBa2R4SWxEYWJNZzRvdjRvMnNl?=
- =?utf-8?B?U2tzZ1RtK1RiaW1JSFQ1U0Z4SlJGSFR0alRrRnJXSEpMYWt5bXp0SHZJaHgz?=
- =?utf-8?B?Wmp3MEZlZWMyZThDek1UVGFQQzh2d2VpT2RvZFJ1eWtPMUFGdWp2YlR5UVdy?=
- =?utf-8?B?Mjh6RWJuMWR4dW5LZGZ3VHVTZDVnZ0RQMzcrV1Q3eUZrV3Y4ZlhLbyswdmZG?=
- =?utf-8?B?VG9ZSllGRDZGSVp3OTM4UG9ZYnNHQnJsMUM2dHRBWUZVNzR4dDIrK0xBMld0?=
- =?utf-8?B?TFREcjN0cXZuMGU1OVRxS2QvT29lVVBqTXVUTTYxZlVqc1V5UUNob1FzeWts?=
- =?utf-8?B?cHNVbEwrOUJjZmdWVzdrWWFSV2w5dGRGSnhrR2tFYjFucEVZK2Y3STV5dFEy?=
- =?utf-8?B?d0l6eU9YemNjVlFuV0tKOVE1Y29LWVdBZXpUcm9Ca2MvY3pJNXlDOU9qNE9D?=
- =?utf-8?B?elRlNEJaR1RWSHByM0lvbzlsM0xhd0JqR04yMzNaVkZYcEwyZXNLaWxjcUJG?=
- =?utf-8?B?VHVjLzUzNUxlaXBZYWZVZEdYSU5WUXNKVlVNK21YRGI2TFJRd1JQbzdyQjlq?=
- =?utf-8?B?eHVKd2V0Yk9jMnFLS3dzT1REVFBDaTFFM0ZhZEtxS3J0ckJ6Vi9zcHFvWE41?=
- =?utf-8?B?UU0wL3dFbmJ6T1hhc3dRTHNsRXYvc0NLRWloeFhRbG1YNVlZNzRzaGpTeEQ1?=
- =?utf-8?B?Y2xHamxmdSt6akRmTzhOcElnV0JPZWN2WXBSQXpWc1NLdU5sZ29FUUNVLzdR?=
- =?utf-8?B?ZW0wclBpcFdLc2tLeWsreWc2YThVZG1aTmdiMStsakZuOG4zaCs0SjVqRmJ3?=
- =?utf-8?B?TU1BMDc0WXpUVnlTZUI4TVZWRzV4ZVpQRzUwLzVBRFlUYU02akdVN2lVUENj?=
- =?utf-8?B?dlZMK1B4SjFYU3JDd0lCZjIvYjJadkxvSFBqRzNKZnlqdlFrTytjY2xaUTU1?=
- =?utf-8?B?SkVXcUQzZVNRcUQ4THk4allzWGtJNDhHSmZvTzFKdmU1VWNXWHpxR21tZUQ4?=
- =?utf-8?B?MDhLUDJmMEQ4RW1pUEU5dU9Md0E2WFgwTzdIdXBWQ3RrYmVEY21lblBTbWlO?=
- =?utf-8?B?Q3MvOE1YWFpiZEtLUDdNWnBSV1NPN3hrY091TEhUUkdvWW5kVFd5Y0JDdDhk?=
- =?utf-8?B?bFFFSmhmS1VhZVhQaFhiMU5JTmNYV2s2YUtiSUQvSjNoSWlUZE04aDVUZXJU?=
- =?utf-8?B?VEE3djJqaWF6QisyMHV2V3hUTUZHbytlMGFaY1BPUisrclFQOExuWk9VY1Fk?=
- =?utf-8?B?T2thV3pxZU1oSTM4UW5DTHZzNHBLZFJqV05kUFhVSWNId1lXRWxuZWZWUmVQ?=
- =?utf-8?B?c085U0E3MGI5RE1tWjNQS3N1V0lHQ2tjQW1XbmloN1lnYlVwYmRPVHhYRGx2?=
- =?utf-8?B?ckU2bUxrNkoweW54ZjZCOWJWTzdKOVBvc0tBSkRuYWdhU09zSU5NdjZQbW9Z?=
- =?utf-8?B?ODFneWxQSlBNYVY4TUxkT1NUYXlwYnZ3czFFN0szMDJXVjVjQW9lN0wxY0F6?=
- =?utf-8?B?cFJFRzl2UE01K3JBWDZlZW1TQzZTcmRQZ2hBNW5aMnEyd1Jkc3E1QUI3V3RF?=
- =?utf-8?B?ajhnQWpITDRwQjE5RForQWZIUm9OSmxKWnBlWXpIU3pNRWY1L0ZaOHBsVnF2?=
- =?utf-8?B?dUpRNG1IaVpzcUxWNDJwOXVrcklUSW13ZzFpZzQ5ekR5Y2h6WHh3ZmRpdkd5?=
- =?utf-8?B?eGRTZ0dOUG5XdlRPandWS0xnM2x3QXlsckc5TXZQVmRQTFpQS0xlSDV2Nk5R?=
- =?utf-8?B?NmF4dC96M2RpWUw0elVmM3BZOXRvc1QvSXVzbTE5R0ZUNHltQi90bWx0WTht?=
- =?utf-8?B?QlFqVnBYc2FPQXVmeEVZNVpWM05yUVR0djE2WXlCbktxckxoVFc4S0U2KzdQ?=
- =?utf-8?B?SFVZR1VlMXcvRUZBOU95L3RWc3hUTXdSSGRLb1M3VnlDZ0dDUjBqMjROSlpM?=
- =?utf-8?B?d0VORERJeTZhQUZQb21oTnQrc29Gb1I3Z0h0RGQwZWVOYnJJbFdiQjdSNWxi?=
- =?utf-8?Q?RxpU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?MXJiRzRGUlhXajJRS2JJZ3BJeVFSMTNsSTh0dGs0dDRncENBOS9BM1NvNWVM?=
- =?utf-8?B?VTlFdVNteXZTZlUwaXJmZ2xpK1hBU0J5UlB5VlIyRjZCM3J3ejdSMGF6UEI4?=
- =?utf-8?B?STBMTFpPc2tnZmtVdzMxUHBvKzBqZytIc2VvMGRtdGEzNWpUa3lRejRzd2sz?=
- =?utf-8?B?aWNUZURoc1NVTUZRV2Vkbm9JVVJHK05uU3c5RWFxbjh2WE90bFRMV2JUNmZ0?=
- =?utf-8?B?YVU1eGFGTkFXbEpvTWxiYmR2VkxDYmJLcUtDbWVxZ1dYVXk4dHhxR0dZekNY?=
- =?utf-8?B?ZXdGOXR3YllUdlIvcVBFeFZsLzlXaG5QK1RTSk1zOXkxUk44cTEwWmlnWisx?=
- =?utf-8?B?NGpFSnFyb3Y1ZkJqdldWY1YxMndJa2J1Z0s0Q082T1pMRTNCVXFkZk9QMXIr?=
- =?utf-8?B?RDgwUm0vaGhNYy84OEFLOTJZekNBTEZGbm1Cdlg5VHprY1BSVFZnNGJZT1VZ?=
- =?utf-8?B?VjczTyt1NkRRMEJhTDM2Yk1RYk5kRlJlZDFMUFhmRUYzMDZldVc1TnJqVXdo?=
- =?utf-8?B?OG5oaGRUTjkyeEhkNGh3U3ZsT1ZWTXNhOEE2SytiWjI3Z1U0Vkh5VmY0ZDFv?=
- =?utf-8?B?aHRtUlM5bnRTcE5kSTlnZDRQa3hQdG10dlBMNlFGR2J3WVlkWm1ueUV5S1Qz?=
- =?utf-8?B?clgzSHZUVDduKzZLTjFYTjh3MkgwNTJ2RnVEV1VGcWhLckVZT1c0a3V0UUo5?=
- =?utf-8?B?NW5hLzljSDdhbnNOU2x4WXJ5TDdLWHorMURtbnBZOHBwL1AvQ21zYmlsNnZa?=
- =?utf-8?B?a3RwbHdYMm9HNE5pbW03ZmlDQ3lZQjJvRHorUU5WaFQxU3J1TDlEWmg4VWRS?=
- =?utf-8?B?RjR6cWJqandOdjU1eU5uNFpkVXlUUnZLZGp1enBCbzdIeWliRTBpQ0JhR3B4?=
- =?utf-8?B?cEVRQXhTMk96T2t2b2I5SSt1MVQzWHBuWU5hYTdHcUc5cEVSa3BkUU5ZSklp?=
- =?utf-8?B?anh4WGNNVm42SzZ6ME53NTdrZk9HOGtNNnhBZDZUQlpoK3NkREtnRmMweDBC?=
- =?utf-8?B?YzlQRk5PS0RLZE5vdjN4djdCVmZhZEFLTzVJQ00vcXdoZHRvT3BxYXdaSkRh?=
- =?utf-8?B?RmswUjdwVy8xTWZIL3B3d0JlV04yMW0waFJ5WlBjY3VNOS9xa0dycTJiSnJR?=
- =?utf-8?B?YXIvWWJMeUNaNDIrMzVjb3dUUnZNMEhjWGlxMi83SkhrVmZIUjV2aDk3OHkr?=
- =?utf-8?B?UUtsVHRGR3BzNHpiOHQ4M0NnWDlJNUtxNTNQbktNQkpxOGFTS01SdVNQMURU?=
- =?utf-8?B?SzdGMlBGRTNDd3RJYVVTNG5ZSXVkV3dNZWFsMExUTitya0IrWGQ4R0JwUjY4?=
- =?utf-8?B?YXpwZzE5ZGZKREhPcUQzY3FGM3ZZeW1Nb1dHTVdDbmhTZGJIRTFtcHdzcmt5?=
- =?utf-8?B?Uy8zTFZsUUpINEx5YldoYVhLemFtbVVVaHNMamlUT0I4bitESW1Cb2owWXYy?=
- =?utf-8?B?OE5xelFyWFBTOVc5UkRqY2pUMEVPckF0VDFrdHJiOXQ3U3BXM0NEdktUZnhr?=
- =?utf-8?B?Ty9pZWliMGdiN1JFd0MwYjlScmdrSXUxZzMzK05sVk1keHFBRGFYWDRibThI?=
- =?utf-8?B?V1NHZGxUMzkweEM0SzJkdHFHK2cvZnI4cjhhOTVjQ2xRVEJpajh0L1pvV2VM?=
- =?utf-8?B?Y2hQQ3JDdXd1M0FKa2NkbU03aHl5OUpxdHQzdytYNUVibFRwLzM5V25rekl1?=
- =?utf-8?B?V2F6SlZlT1hGSWllMEd1bVo1NUd0RFB4T3JSSjRKZlhtZEsxWEp0TldvUkR4?=
- =?utf-8?B?cnNHR2NqZEFVVThnOGUxRWc5ZVpyQVRGQ0JiaStxVXZmNzQ0dGhhbUIrUmdr?=
- =?utf-8?B?Mm9rdjZSWEp5ZEdkWWU1SDNsSVBxVzV3UHlQaEd1VzdUT2o0Y3dKSm51V1pU?=
- =?utf-8?B?aTNRQm1ZR3pxMmVRVGx4NTRRakJDeWMzME9VM1ovcUNoWFJxQjloVGNzcTEv?=
- =?utf-8?B?MHBLcHpLdUdFVHRadXJnbkJjVkV3ZE5Nc3Jad0UzUGc4dEdXNGpJTFc2b0Vp?=
- =?utf-8?B?Y2xiUCtqbjRmL0pDL1d1MzBranc5WGVYd2Nxa2ZqeWJjbCt6NjNOTkcxd1dQ?=
- =?utf-8?B?cXRhVUlIY2RlTXJnaHFERm41OG94THY0YmJrd0lxbE9WajM1TlJxQlZnRjJo?=
- =?utf-8?B?dGNWQ2djYm5xeXNrTkcvT1hmbHRkV2k0TTQwZDVDMWJ1ZjAvVERMcUhrRS9T?=
- =?utf-8?B?U3hMYUJQZU5Xa0VMTEI5c1FpWjZBaWZhZDE4MUgzeTBPWkZXUlBpV0pvZDZL?=
- =?utf-8?B?aXFKZkc1V0x0dUlmc29Va2prbXRkYVhjbHZpeVZsMktmTFJ5S1lvbFdSanRC?=
- =?utf-8?B?dHVNODBQVFhsYUtyeld6Wk9kSUVOZjhhOGUvdnhXVktSb1JuVWhEUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3d1b117-4f0d-4041-fdf5-08de60750504
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2026 03:01:24.6303
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SdQVve67o7fuuFzUe7S7XKTJ8gM2DMFx58AxYj2CFElF2ADXLin1cazAfusUSOUCMxC6M+Ez3nvWEr0EO29rMQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5989
-X-Stat-Signature: tz495se4bbew9u33g6rn3nonjn37ukyt
-X-Rspamd-Queue-Id: 602421C0002
+References: <20251116013223.1557158-1-jiaqiyan@google.com> <20251116013223.1557158-2-jiaqiyan@google.com>
+ <7aac28a9-e2d3-454d-bb6a-2110565f0907@oracle.com>
+In-Reply-To: <7aac28a9-e2d3-454d-bb6a-2110565f0907@oracle.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Fri, 30 Jan 2026 21:21:54 -0800
+X-Gm-Features: AZwV_QhsBQPQ8so8VFi51hacsCT2syq1CWK-MSKp3zSPQMYxY43vjvpxfvitPNs
+Message-ID: <CACw3F51pThWzNWav-80LK-Rk=qFbe5SZCP7KVsmM8Sp0243BUA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] mm: memfd/hugetlb: introduce memfd-based userspace
+ MFR policy
+To: jane.chu@oracle.com
+Cc: nao.horiguchi@gmail.com, linmiaohe@huawei.com, william.roche@oracle.com, 
+	harry.yoo@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
+	willy@infradead.org, akpm@linux-foundation.org, osalvador@suse.de, 
+	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
+	jgg@nvidia.com, ankita@nvidia.com, peterx@redhat.com, 
+	sidhartha.kumar@oracle.com, ziy@nvidia.com, david@redhat.com, 
+	dave.hansen@linux.intel.com, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1769828489-987939
-X-HE-Meta: U2FsdGVkX19Ofnx3Y+X8BNwtN/il3HJc+iTW947GcEkYC4Uzyc62SD5c8YqGFPHgz1XcL7WG/ReK3FVygXJn3K5DRJqFJDhOTugH6fpOcaFcpz9xGnytOntoLEqA8375n5xSTXJErI2zXkocMbiV8enHuU9hswTk79RrEYcosUbzRwGQURwXqrn80J8VnR6Su4URpzHP9JuRKouE+V21VNHkUmACC5zZ/B6IcEnngGJ8//1ccAm/nNtAcj82gBcm+7OfWsbX8LS/3v5+QmuN2u+12jyQz0QH/rciXbfuQRiy0cFlyWIn/21IbtyfZ40IiOWKDGVz8+5uOaxA2atfqOPD6xKMRDn1OvyQFH1H0TKl0zBSOIQ9/sd72aNmav9tbjGVQdbkyYD3cpm6TWNMrrV0hSFUqdAGLVr3DqKm+r2vEw3YwvVcjCNgU1w5FMBnSWBD8VkN+FipKgZ9NgFoLGxXliARX51n1+zA+OWGBvw7BLBlLHP7b2eVyZaPXfgadJ+pfJo6YeoKvxigU9YZtnPhgZICnGEDSiDuuVFzbREf28sDQVeL3+TeMdGg78iraIiyR/MCACI/hXtTtcURpxTUnTeE+Ujb4ViqCMm6AaAY6RfgtP9baSQsFAZxehaxQtEwhklOLjMJm3Q9+LdqcSMg8XxlHQsnMPH6vm5WnNWA77DiJYfT/XO9B1Sk5WTFr5g8iItQ4QGAOb/VgxM37nePIBHSG04taR/j+MYf1VIKSzrTyV39M5AFpU6jxxoh0ZAFa3zNi3rFzgy2lC2knR4T97wFMmB8w81F23VHYLQkm54LQS4gFpTe62aY/8atk7u9mYlI1S1nh3Ot8ZnGEmmGAAlkHdIl7MEIrWmatnKqTqhhca6npvTYdnencJf5tv/Uv9JYfbGED0GDE9QmouP+DhQnDbyNUPnZU8LaZbFh2JM7+KyjQ/DZPPMLLQ2KYF9Zo57zhbDM7LI8f3d
- ebfkLzIo
- Q1aMQpjyIcM/+j8QXxlYjXFK2tOQW8GYHHrZXyN5gsRRdCQHhjb+12l/nY/3a+fjQUWXX2nBt3oyD38H/JLBnskvQDtOQM1RPNu3V17BXMr8xbo1plme/tpSEv22yLHeGnD2hyGhPAiZVGUEov7CxRtZxyaWxvauWBcnwDRgKAnNvzNE8dN0JauTZHHY3jkwPeDjOW80Z1vzkhtqy5hgDraDQcx2U6H6Y1PHnxJNhftqzwcYqxxTRNKvTro6gDgrHUieeQauIi913b69IPRjZ3XFfExGCxGIq4BHb5gPncKuuWKRHDnWeNEPucgkfipBOJ0XtefR5mlDIsk/BK0XqAXayGpHh6W3YPr8kV1DfGlM27iW4k7DwszNoRQYA25yGtejocYQgKa3qFsezXj0aFtpgI4COuPnz32O3f5Ee7RJz0N1/FcSvYRZbEVxglYprrNH1VrSDGQagoRCJc2/M8XH73A==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 820B2140009
+X-Stat-Signature: uepsc7rbrcqei9honsmmn7z5wk8oak98
+X-HE-Tag: 1769836928-50787
+X-HE-Meta: U2FsdGVkX1/2f0ff3VYh9gcm9eqyvxseSDyQ/Chj7GyCqzP7e/6YHW54WFUU4SbUtkxs+In6U1auHn8HyUQX7DJJPDXLzwHKnGroksFARhujCCsw9noNyHN46DHdL2G3qd6mXS91sJIhdor8XbwJO4FmY2kW4jjX/jNZ2wj79wywADXBvmLs82/NNbovpuVvFPla3z/GPmiGgCfJgeiTr3Yk4nisf7PeNPV4IuTwcsiZycfMGF6XZ2EBM3rEri+EkBYuEPBE+PqCF0dbATwpo7YLK6K0lYsOYezIyrH415optg+w6lQV5DUkYoHCxGjFNcBJjALm3fBKq1y5jVZ+MIZrYXkkhzu/9r4KkVdoL3F6Euhb1sqJIjNYQpp5BrY2x/mlXCDztcI0ORQDVAaAMtf99fCs/E3cIHY1wdT6nAKoO31F7WVfBNRObiY5KGgxijXbhR7MpXBOyTPw8WYWlHf5yFNKnUxCbjUD1ZjauolBElfOiObGNsAaMiZMzvW6LzxYIlABXAWurpve3SNESSs1xeGWcB5OuH8MqV9uUIaFduBRbpN7jWtLfoOrsm5TQxkvPyv3JMeI8xSaCKg9mCso4K+DVpCkCBZ7FPPlrxF+SWQ/gjuUxDiYbcaTtwvzGBELoBOZ1InkuvWHVzLXZhxTpsbQL/xhjKu6B12zrg+YMscJVJoFxngpFwGw/y0eZxEr92/Lx544MyEKDDP7GybPFP9mtxmh++209L1UVmxzhipSRS+x7tM9SKj8oJYzOCwizXu5uplkgpj49QZ/51R6wNMgWF3NZWXwB159jI/AHQAEEKElYykZMzJc20S5QQJl+2PV3aExIzyTpvF16PZTZvQTma+67+XcjFif0LTfn3kmJ3nN7kJ95uR38yWgzS7t9g+lR/faYj+P5Eg3cflyMm8B3IcjfInha6pOiLugs7KlgLB4NG+OYgFItikJCuMxcLEvtAGpfX2G6LM
+ /zTj1/Kz
+ +m9z+39F1npWjBUQy68TEdchXe+LFVIiMRYyOhzWfNZSSoXQf6flEg9TvQyX5VtSyUjULqetqpWShdsn5EWIzW9P5Yai/ksdPFpWYzOCg032NoLPZb/itpmAgGcxrbH3Qlp5xOqgtQNYzd/bDi0ue8KZXxhlPPEmWUzX4RDmDrxvYM3VdNQcpFpvOQjR4XyYdn1l1OoIjInMu2M+uVPxjcFoT+bCVfHqxn5JRxQ835ePbTdRlPBMxmN/K5NsxgAZEly/HLgaFSWLzpugDH2ycJcM6g9ZLP4rsU5xy5VQHtv0RtiPj5G2rtk0I4PE/Rt7j66HMUNx9XQUTYychCKLzvC83q+NN3Ep7bJpVtQMB1M7yvCI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -211,111 +147,655 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/30/26 10:00 AM, Andrew Morton wrote:
-> On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellström <thomas.hellstrom@linux.intel.com> wrote:
-...
->> This can happen, for example if the process holding the
->> device-private folio lock is stuck in
->>    migrate_device_unmap()->lru_add_drain_all()
->> The lru_add_drain_all() function requires a short work-item
->> to be run on all online cpus to complete.
-> 
-> This is pretty bad behavior from lru_add_drain_all().
+Hi Jane,
 
-Yes. And also, by code inspection, it seems like other folio_batch
-items (I was going to say pagevecs, heh) can leak in after calling
-lru_add_drain_all(), making things even worse.
+Thanks for your reviews, I should be able to address your comments in v3.
 
-Maybe we really should be calling lru_cache_disable/enable()
-pairs for migration, even though it looks heavier weight.
-
-This diff would address both points, and maybe fix Matthew's issue,
-although I haven't done much real testing on it other than a quick
-run of run_vmtests.sh:
-
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 23379663b1e1..3c55a766dd33 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -570,7 +570,6 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
- 	struct folio *fault_folio = fault_page ?
- 		page_folio(fault_page) : NULL;
- 	unsigned long i, restore = 0;
--	bool allow_drain = true;
- 	unsigned long unmapped = 0;
- 
- 	lru_add_drain();
-@@ -595,12 +594,6 @@ static unsigned long migrate_device_unmap(unsigned long *src_pfns,
- 
- 		/* ZONE_DEVICE folios are not on LRU */
- 		if (!folio_is_zone_device(folio)) {
--			if (!folio_test_lru(folio) && allow_drain) {
--				/* Drain CPU's lru cache */
--				lru_add_drain_all();
--				allow_drain = false;
--			}
+On Tue, Dec 2, 2025 at 8:11=E2=80=AFPM <jane.chu@oracle.com> wrote:
+>
+> Hi, Jiaqi,
+>
+> Thanks for the work, my comments inline.
+>
+> On 11/15/2025 5:32 PM, Jiaqi Yan wrote:
+> > Sometimes immediately hard offlining a large chunk of contigous memory
+> > having uncorrected memory errors (UE) may not be the best option.
+> > Cloud providers usually serve capacity- and performance-critical guest
+> > memory with 1G HugeTLB hugepages, as this significantly reduces the
+> > overhead associated with managing page tables and TLB misses. However,
+> > for today's HugeTLB system, once a byte of memory in a hugepage is
+> > hardware corrupted, the kernel discards the whole hugepage, including
+> > the healthy portion. Customer workload running in the VM can hardly
+> > recover from such a great loss of memory.
+> >
+> > Therefore keeping or discarding a large chunk of contiguous memory
+> > owned by userspace (particularly to serve guest memory) due to
+> > recoverable UE may better be controlled by userspace process
+> > that owns the memory, e.g. VMM in Cloud environment.
+> >
+> > Introduce a memfd-based userspace memory failure (MFR) policy,
+> > MFD_MF_KEEP_UE_MAPPED. It is intended to be supported for other memfd,
+> > but the current implementation only covers HugeTLB.
+> >
+> > For any hugepage associated with the MFD_MF_KEEP_UE_MAPPED enabled memf=
+d,
+> > whenever it runs into a UE, MFR doesn't hard offline the HWPoison-ed
+> > huge folio. IOW the HWPoison-ed memory remains accessible via the memor=
+y
+> > mapping created with that memfd. MFR still sends SIGBUS to the process
+> > as required. MFR also still maintains HWPoison metadata for the hugepag=
+e
+> > having the UE.
+> >
+> > A HWPoison-ed hugepage will be immediately isolated and prevented from
+> > future allocation once userspace truncates it via the memfd, or the
+> > owning memfd is closed.
+> >
+> > By default MFD_MF_KEEP_UE_MAPPED is not set, and MFR hard offlines
+> > hugepages having UEs.
+> >
+> > Tested with selftest in the follow-up commit.
+> >
+> > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> > Tested-by: William Roche <william.roche@oracle.com>
+> > ---
+> >   fs/hugetlbfs/inode.c       |  25 +++++++-
+> >   include/linux/hugetlb.h    |   7 +++
+> >   include/linux/pagemap.h    |  24 +++++++
+> >   include/uapi/linux/memfd.h |   6 ++
+> >   mm/hugetlb.c               |  20 +++++-
+> >   mm/memfd.c                 |  15 ++++-
+> >   mm/memory-failure.c        | 124 +++++++++++++++++++++++++++++++++---=
 -
- 			if (!folio_isolate_lru(folio)) {
- 				src_pfns[i] &= ~MIGRATE_PFN_MIGRATE;
- 				restore++;
-@@ -759,11 +752,15 @@ int migrate_vma_setup(struct migrate_vma *args)
- 	args->cpages = 0;
- 	args->npages = 0;
- 
-+	lru_cache_disable();
-+
- 	migrate_vma_collect(args);
- 
- 	if (args->cpages)
- 		migrate_vma_unmap(args);
- 
-+	lru_cache_enable();
-+
- 	/*
- 	 * At this point pages are locked and unmapped, and thus they have
- 	 * stable content and can safely be copied to destination memory that
-@@ -1395,6 +1392,8 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
- {
- 	unsigned long i, j, pfn;
- 
-+	lru_cache_disable();
-+
- 	for (pfn = start, i = 0; i < npages; pfn++, i++) {
- 		struct page *page = pfn_to_page(pfn);
- 		struct folio *folio = page_folio(page);
-@@ -1413,6 +1412,8 @@ int migrate_device_range(unsigned long *src_pfns, unsigned long start,
- 
- 	migrate_device_unmap(src_pfns, npages, NULL);
- 
-+	lru_cache_enable();
-+
- 	return 0;
- }
- EXPORT_SYMBOL(migrate_device_range);
-@@ -1429,6 +1430,8 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
- {
- 	unsigned long i, j;
- 
-+	lru_cache_disable();
-+
- 	for (i = 0; i < npages; i++) {
- 		struct page *page = pfn_to_page(src_pfns[i]);
- 		struct folio *folio = page_folio(page);
-@@ -1446,6 +1449,8 @@ int migrate_device_pfns(unsigned long *src_pfns, unsigned long npages)
- 
- 	migrate_device_unmap(src_pfns, npages, NULL);
- 
-+	lru_cache_enable();
-+
- 	return 0;
- }
- EXPORT_SYMBOL(migrate_device_pfns);
+> >   7 files changed, 202 insertions(+), 19 deletions(-)
+> >
+> > diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> > index f42548ee9083c..f8a5aa091d51d 100644
+> > --- a/fs/hugetlbfs/inode.c
+> > +++ b/fs/hugetlbfs/inode.c
+> > @@ -532,6 +532,18 @@ static bool remove_inode_single_folio(struct hstat=
+e *h, struct inode *inode,
+> >       }
+> >
+> >       folio_unlock(folio);
+> > +
+> > +     /*
+> > +      * There may be pending HWPoison-ed folios when a memfd is being
+> > +      * removed or part of it is being truncated.
+> > +      *
+> > +      * HugeTLBFS' error_remove_folio keeps the HWPoison-ed folios in
+> > +      * page cache until mm wants to drop the folio at the end of the
+> > +      * of the filemap. At this point, if memory failure was delayed
+> > +      * by MFD_MF_KEEP_UE_MAPPED in the past, we can now deal with it.
+> > +      */
+> > +     filemap_offline_hwpoison_folio(mapping, folio);
+> > +
+> >       return ret;
+> >   }
+>
+> Looks okay.
+>
+> >
+> > @@ -563,13 +575,13 @@ static void remove_inode_hugepages(struct inode *=
+inode, loff_t lstart,
+> >       const pgoff_t end =3D lend >> PAGE_SHIFT;
+> >       struct folio_batch fbatch;
+> >       pgoff_t next, index;
+> > -     int i, freed =3D 0;
+> > +     int i, j, freed =3D 0;
+> >       bool truncate_op =3D (lend =3D=3D LLONG_MAX);
+> >
+> >       folio_batch_init(&fbatch);
+> >       next =3D lstart >> PAGE_SHIFT;
+> >       while (filemap_get_folios(mapping, &next, end - 1, &fbatch)) {
+> > -             for (i =3D 0; i < folio_batch_count(&fbatch); ++i) {
+> > +             for (i =3D 0, j =3D 0; i < folio_batch_count(&fbatch); ++=
+i) {
+> >                       struct folio *folio =3D fbatch.folios[i];
+> >                       u32 hash =3D 0;
+> >
+> > @@ -584,8 +596,17 @@ static void remove_inode_hugepages(struct inode *i=
+node, loff_t lstart,
+> >                                                       index, truncate_o=
+p))
+> >                               freed++;
+> >
+> > +                     /*
+> > +                      * Skip HWPoison-ed hugepages, which should no
+> > +                      * longer be hugetlb if successfully dissolved.
+> > +                      */
+> > +                     if (folio_test_hugetlb(folio))
+> > +                             fbatch.folios[j++] =3D folio;
+> > +
+> >                       mutex_unlock(&hugetlb_fault_mutex_table[hash]);
+> >               }
+> > +             fbatch.nr =3D j;
+> > +
+> >               folio_batch_release(&fbatch);
+> >               cond_resched();
+> >       }
+>
+> Looks okay.
+>
+> But this reminds me that for now remove_inode_single_folio() has no path
+> to return 'false' anyway, and if it does, remove_inode_hugepages() will
+> be broken since it has no logic to account for failed to be
+> removed folios.  Do you mind to make remove_inode_single_folio() a void
+> function in order to avoid the confusion?
 
+Aha, looks like so. Let me do it in a new commit for clarity.
 
+>
+>
+> > diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> > index 8e63e46b8e1f0..b7733ef5ee917 100644
+> > --- a/include/linux/hugetlb.h
+> > +++ b/include/linux/hugetlb.h
+> > @@ -871,10 +871,17 @@ int dissolve_free_hugetlb_folios(unsigned long st=
+art_pfn,
+> >
+> >   #ifdef CONFIG_MEMORY_FAILURE
+> >   extern void folio_clear_hugetlb_hwpoison(struct folio *folio);
+> > +extern bool hugetlb_should_keep_hwpoison_mapped(struct folio *folio,
+> > +                                             struct address_space *map=
+ping);
+> >   #else
+> >   static inline void folio_clear_hugetlb_hwpoison(struct folio *folio)
+> >   {
+> >   }
+> > +static inline bool hugetlb_should_keep_hwpoison_mapped(struct folio *f=
+olio
+> > +                                                    struct address_spa=
+ce *mapping)
+> > +{
+> > +     return false;
+> > +}
+> >   #endif
+>
+> It appears that hugetlb_should_keep_hwpoison_mapped() is only called
+> within mm/memory-failure.c.  How about moving it there ?
 
+Yep, will do in v3.
 
-thanks,
--- 
-John Hubbard
+>
+> >
+> >   #ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
+> > diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+> > index 09b581c1d878d..9ad511aacde7c 100644
+> > --- a/include/linux/pagemap.h
+> > +++ b/include/linux/pagemap.h
+> > @@ -213,6 +213,8 @@ enum mapping_flags {
+> >       AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM =3D 9,
+> >       AS_KERNEL_FILE =3D 10,    /* mapping for a fake kernel file that =
+shouldn't
+> >                                  account usage to user cgroups */
+> > +     /* For MFD_MF_KEEP_UE_MAPPED. */
+> > +     AS_MF_KEEP_UE_MAPPED =3D 11,
+> >       /* Bits 16-25 are used for FOLIO_ORDER */
+> >       AS_FOLIO_ORDER_BITS =3D 5,
+> >       AS_FOLIO_ORDER_MIN =3D 16,
+> > @@ -348,6 +350,16 @@ static inline bool mapping_writeback_may_deadlock_=
+on_reclaim(const struct addres
+> >       return test_bit(AS_WRITEBACK_MAY_DEADLOCK_ON_RECLAIM, &mapping->f=
+lags);
+> >   }
+> >
+> Okay.
+>
+> > +static inline bool mapping_mf_keep_ue_mapped(const struct address_spac=
+e *mapping)
+> > +{
+> > +     return test_bit(AS_MF_KEEP_UE_MAPPED, &mapping->flags);
+> > +}
+> > +
+> > +static inline void mapping_set_mf_keep_ue_mapped(struct address_space =
+*mapping)
+> > +{
+> > +     set_bit(AS_MF_KEEP_UE_MAPPED, &mapping->flags);
+> > +}
+> > +
+> >   static inline gfp_t mapping_gfp_mask(const struct address_space *mapp=
+ing)
+> >   {
+> >       return mapping->gfp_mask;
+> > @@ -1274,6 +1286,18 @@ void replace_page_cache_folio(struct folio *old,=
+ struct folio *new);
+> >   void delete_from_page_cache_batch(struct address_space *mapping,
+> >                                 struct folio_batch *fbatch);
+> >   bool filemap_release_folio(struct folio *folio, gfp_t gfp);
+> > +#ifdef CONFIG_MEMORY_FAILURE
+> > +/*
+> > + * Provided by memory failure to offline HWPoison-ed folio managed by =
+memfd.
+> > + */
+> > +void filemap_offline_hwpoison_folio(struct address_space *mapping,
+> > +                                 struct folio *folio);
+> > +#else
+> > +void filemap_offline_hwpoison_folio(struct address_space *mapping,
+> > +                                 struct folio *folio)
+> > +{
+> > +}
+> > +#endif
+>
+> Okay.
+>
+> >   loff_t mapping_seek_hole_data(struct address_space *, loff_t start, l=
+off_t end,
+> >               int whence);
+> >
+> > diff --git a/include/uapi/linux/memfd.h b/include/uapi/linux/memfd.h
+> > index 273a4e15dfcff..d9875da551b7f 100644
+> > --- a/include/uapi/linux/memfd.h
+> > +++ b/include/uapi/linux/memfd.h
+> > @@ -12,6 +12,12 @@
+> >   #define MFD_NOEXEC_SEAL             0x0008U
+> >   /* executable */
+> >   #define MFD_EXEC            0x0010U
+> > +/*
+> > + * Keep owned folios mapped when uncorrectable memory errors (UE) caus=
+es
+> > + * memory failure (MF) within the folio. Only at the end of the mappin=
+g
+> > + * will its HWPoison-ed folios be dealt with.
+> > + */
+> > +#define MFD_MF_KEEP_UE_MAPPED        0x0020U
+> >
+> >   /*
+> >    * Huge page size encoding when MFD_HUGETLB is specified, and a huge =
+page
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 0455119716ec0..dd3bc0b75e059 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -6415,6 +6415,18 @@ static bool hugetlb_pte_stable(struct hstate *h,=
+ struct mm_struct *mm, unsigned
+> >       return same;
+> >   }
+> >
+> > +bool hugetlb_should_keep_hwpoison_mapped(struct folio *folio,
+> > +                                      struct address_space *mapping)
+> > +{
+> > +     if (WARN_ON_ONCE(!folio_test_hugetlb(folio)))
+> > +             return false;
+> > +
+> > +     if (!mapping)
+> > +             return false;
+> > +
+> > +     return mapping_mf_keep_ue_mapped(mapping);
+> > +}
+> > +
+>
+> Okay.
+>
+> >   static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+> >                       struct vm_fault *vmf)
+> >   {
+> > @@ -6537,9 +6549,11 @@ static vm_fault_t hugetlb_no_page(struct address=
+_space *mapping,
+> >                * So we need to block hugepage fault by PG_hwpoison bit =
+check.
+> >                */
+> >               if (unlikely(folio_test_hwpoison(folio))) {
+> > -                     ret =3D VM_FAULT_HWPOISON_LARGE |
+> > -                             VM_FAULT_SET_HINDEX(hstate_index(h));
+> > -                     goto backout_unlocked;
+> > +                     if (!mapping_mf_keep_ue_mapped(mapping)) {
+> > +                             ret =3D VM_FAULT_HWPOISON_LARGE |
+> > +                                   VM_FAULT_SET_HINDEX(hstate_index(h)=
+);
+> > +                             goto backout_unlocked;
+> > +                     }
+> >               }
+> >
+>
+> Looks okay, but am curious at Miaohe and others' take.
+>
+> To allow a known poisoned hugetlb page to be faulted in is for the sake
+> of capacity, so this, versus a SIGBUS from the MF handler indicating a
+> disruption and loss of both data and capacity.
+> No strong opinion here, just wondering if there is any merit to limit
+> the scope to the MF handler only.
 
+Are you suggesting to prevent hugetlb_no_page() (when a hugepage is
+not yet faulted) from faulting in a known HWPoison HugeTLB page?
+
+>
+> >               /* Check for page in userfault range. */
+> > diff --git a/mm/memfd.c b/mm/memfd.c
+> > index 1d109c1acf211..bfdde4cf90500 100644
+> > --- a/mm/memfd.c
+> > +++ b/mm/memfd.c
+> > @@ -313,7 +313,8 @@ long memfd_fcntl(struct file *file, unsigned int cm=
+d, unsigned int arg)
+> >   #define MFD_NAME_PREFIX_LEN (sizeof(MFD_NAME_PREFIX) - 1)
+> >   #define MFD_NAME_MAX_LEN (NAME_MAX - MFD_NAME_PREFIX_LEN)
+> >
+> > -#define MFD_ALL_FLAGS (MFD_CLOEXEC | MFD_ALLOW_SEALING | MFD_HUGETLB |=
+ MFD_NOEXEC_SEAL | MFD_EXEC)
+> > +#define MFD_ALL_FLAGS (MFD_CLOEXEC | MFD_ALLOW_SEALING | MFD_HUGETLB |=
+ \
+> > +                    MFD_NOEXEC_SEAL | MFD_EXEC | MFD_MF_KEEP_UE_MAPPED=
+)
+> >
+> >   static int check_sysctl_memfd_noexec(unsigned int *flags)
+> >   {
+> > @@ -387,6 +388,8 @@ static int sanitize_flags(unsigned int *flags_ptr)
+> >       if (!(flags & MFD_HUGETLB)) {
+> >               if (flags & ~MFD_ALL_FLAGS)
+> >                       return -EINVAL;
+> > +             if (flags & MFD_MF_KEEP_UE_MAPPED)
+> > +                     return -EINVAL;
+> >       } else {
+> >               /* Allow huge page size encoding in flags. */
+> >               if (flags & ~(MFD_ALL_FLAGS |
+> > @@ -447,6 +450,16 @@ static struct file *alloc_file(const char *name, u=
+nsigned int flags)
+> >       file->f_mode |=3D FMODE_LSEEK | FMODE_PREAD | FMODE_PWRITE;
+> >       file->f_flags |=3D O_LARGEFILE;
+> >
+> > +     /*
+> > +      * MFD_MF_KEEP_UE_MAPPED can only be specified in memfd_create; n=
+o API
+> > +      * to update it once memfd is created. MFD_MF_KEEP_UE_MAPPED is n=
+ot
+> > +      * seal-able.
+> > +      *
+> > +      * For now MFD_MF_KEEP_UE_MAPPED is only supported by HugeTLBFS.
+> > +      */
+> > +     if (flags & (MFD_HUGETLB | MFD_MF_KEEP_UE_MAPPED))
+> > +             mapping_set_mf_keep_ue_mapped(file->f_mapping);
+> > +
+> >       if (flags & MFD_NOEXEC_SEAL) {
+> >               struct inode *inode =3D file_inode(file);
+> >
+>
+> Okay.
+>
+> > diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> > index 3edebb0cda30b..c5e3e28872797 100644
+> > --- a/mm/memory-failure.c
+> > +++ b/mm/memory-failure.c
+> > @@ -373,11 +373,13 @@ static unsigned long dev_pagemap_mapping_shift(st=
+ruct vm_area_struct *vma,
+> >    * Schedule a process for later kill.
+> >    * Uses GFP_ATOMIC allocations to avoid potential recursions in the V=
+M.
+> >    */
+> > -static void __add_to_kill(struct task_struct *tsk, const struct page *=
+p,
+> > +static void __add_to_kill(struct task_struct *tsk, struct page *p,
+> >                         struct vm_area_struct *vma, struct list_head *t=
+o_kill,
+> >                         unsigned long addr)
+> >   {
+> >       struct to_kill *tk;
+> > +     struct folio *folio;
+> > +     struct address_space *mapping;
+> >
+> >       tk =3D kmalloc(sizeof(struct to_kill), GFP_ATOMIC);
+> >       if (!tk) {
+> > @@ -388,8 +390,19 @@ static void __add_to_kill(struct task_struct *tsk,=
+ const struct page *p,
+> >       tk->addr =3D addr;
+> >       if (is_zone_device_page(p))
+> >               tk->size_shift =3D dev_pagemap_mapping_shift(vma, tk->add=
+r);
+> > -     else
+> > -             tk->size_shift =3D folio_shift(page_folio(p));
+> > +     else {
+> > +             folio =3D page_folio(p);
+> > +             mapping =3D folio_mapping(folio);
+> > +             if (mapping && mapping_mf_keep_ue_mapped(mapping))
+> > +                     /*
+> > +                      * Let userspace know the radius of HWPoison is
+> > +                      * the size of raw page; accessing other pages
+> > +                      * inside the folio is still ok.
+> > +                      */
+> > +                     tk->size_shift =3D PAGE_SHIFT;
+> > +             else
+> > +                     tk->size_shift =3D folio_shift(folio);
+> > +     }
+> >
+> >       /*
+> >        * Send SIGKILL if "tk->addr =3D=3D -EFAULT". Also, as
+> > @@ -414,7 +427,7 @@ static void __add_to_kill(struct task_struct *tsk, =
+const struct page *p,
+> >       list_add_tail(&tk->nd, to_kill);
+> >   }
+> >
+> > -static void add_to_kill_anon_file(struct task_struct *tsk, const struc=
+t page *p,
+> > +static void add_to_kill_anon_file(struct task_struct *tsk, struct page=
+ *p,
+> >               struct vm_area_struct *vma, struct list_head *to_kill,
+> >               unsigned long addr)
+> >   {
+> > @@ -535,7 +548,7 @@ struct task_struct *task_early_kill(struct task_str=
+uct *tsk, int force_early)
+> >    * Collect processes when the error hit an anonymous page.
+> >    */
+> >   static void collect_procs_anon(const struct folio *folio,
+> > -             const struct page *page, struct list_head *to_kill,
+> > +             struct page *page, struct list_head *to_kill,
+> >               int force_early)
+> >   {
+> >       struct task_struct *tsk;
+> > @@ -573,7 +586,7 @@ static void collect_procs_anon(const struct folio *=
+folio,
+> >    * Collect processes when the error hit a file mapped page.
+> >    */
+> >   static void collect_procs_file(const struct folio *folio,
+> > -             const struct page *page, struct list_head *to_kill,
+> > +             struct page *page, struct list_head *to_kill,
+> >               int force_early)
+> >   {
+> >       struct vm_area_struct *vma;
+> > @@ -655,7 +668,7 @@ static void collect_procs_fsdax(const struct page *=
+page,
+> >   /*
+> >    * Collect the processes who have the corrupted page mapped to kill.
+> >    */
+> > -static void collect_procs(const struct folio *folio, const struct page=
+ *page,
+> > +static void collect_procs(const struct folio *folio, struct page *page=
+,
+> >               struct list_head *tokill, int force_early)
+> >   {
+> >       if (!folio->mapping)
+> > @@ -1173,6 +1186,13 @@ static int me_huge_page(struct page_state *ps, s=
+truct page *p)
+> >               }
+> >       }
+> >
+> > +     /*
+> > +      * MF still needs to holds a refcount for the deferred actions in
+> > +      * filemap_offline_hwpoison_folio.
+> > +      */
+> > +     if (hugetlb_should_keep_hwpoison_mapped(folio, mapping))
+> > +             return res;
+> > +
+>
+> Okay.
+>
+> >       if (has_extra_refcount(ps, p, extra_pins))
+> >               res =3D MF_FAILED;
+> >
+> > @@ -1569,6 +1589,7 @@ static bool hwpoison_user_mappings(struct folio *=
+folio, struct page *p,
+> >   {
+> >       LIST_HEAD(tokill);
+> >       bool unmap_success;
+> > +     bool keep_mapped;
+> >       int forcekill;
+> >       bool mlocked =3D folio_test_mlocked(folio);
+> >
+> > @@ -1596,8 +1617,12 @@ static bool hwpoison_user_mappings(struct folio =
+*folio, struct page *p,
+> >        */
+> >       collect_procs(folio, p, &tokill, flags & MF_ACTION_REQUIRED);
+> >
+> > -     unmap_success =3D !unmap_poisoned_folio(folio, pfn, flags & MF_MU=
+ST_KILL);
+> > -     if (!unmap_success)
+> > +     keep_mapped =3D hugetlb_should_keep_hwpoison_mapped(folio, folio-=
+>mapping);
+> > +     if (!keep_mapped)
+> > +             unmap_poisoned_folio(folio, pfn, flags & MF_MUST_KILL);
+> > +
+> > +     unmap_success =3D !folio_mapped(folio);
+> > +     if (!keep_mapped && !unmap_success)
+> >               pr_err("%#lx: failed to unmap page (folio mapcount=3D%d)\=
+n",
+> >                      pfn, folio_mapcount(folio));
+> >
+> > @@ -1622,7 +1647,7 @@ static bool hwpoison_user_mappings(struct folio *=
+folio, struct page *p,
+> >                   !unmap_success;
+> >       kill_procs(&tokill, forcekill, pfn, flags);
+> >
+> > -     return unmap_success;
+> > +     return unmap_success || keep_mapped;
+> >   }
+>
+> Okay.
+>
+> >
+> >   static int identify_page_state(unsigned long pfn, struct page *p,
+> > @@ -1862,6 +1887,13 @@ static unsigned long __folio_free_raw_hwp(struct=
+ folio *folio, bool move_flag)
+> >       unsigned long count =3D 0;
+> >
+> >       head =3D llist_del_all(raw_hwp_list_head(folio));
+> > +     /*
+> > +      * If filemap_offline_hwpoison_folio_hugetlb is handling this fol=
+io,
+> > +      * it has already taken off the head of the llist.
+> > +      */
+> > +     if (head =3D=3D NULL)
+> > +             return 0;
+> > +
+> >       llist_for_each_entry_safe(p, next, head, node) {
+> >               if (move_flag)
+> >                       SetPageHWPoison(p->page);
+> > @@ -1878,7 +1910,8 @@ static int folio_set_hugetlb_hwpoison(struct foli=
+o *folio, struct page *page)
+> >       struct llist_head *head;
+> >       struct raw_hwp_page *raw_hwp;
+> >       struct raw_hwp_page *p;
+> > -     int ret =3D folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
+> > +     struct address_space *mapping =3D folio->mapping;
+> > +     bool has_hwpoison =3D folio_test_set_hwpoison(folio);
+> >
+> >       /*
+> >        * Once the hwpoison hugepage has lost reliable raw error info,
+> > @@ -1897,8 +1930,15 @@ static int folio_set_hugetlb_hwpoison(struct fol=
+io *folio, struct page *page)
+> >       if (raw_hwp) {
+> >               raw_hwp->page =3D page;
+> >               llist_add(&raw_hwp->node, head);
+> > +             if (hugetlb_should_keep_hwpoison_mapped(folio, mapping))
+> > +                     /*
+> > +                      * A new raw HWPoison page. Don't return HWPOISON=
+.
+> > +                      * Error event will be counted in action_result()=
+.
+> > +                      */
+> > +                     return 0;
+> > +
+> >               /* the first error event will be counted in action_result=
+(). */
+> > -             if (ret)
+> > +             if (has_hwpoison)
+> >                       num_poisoned_pages_inc(page_to_pfn(page));
+> >       } else {
+> >               /*
+> > @@ -1913,7 +1953,8 @@ static int folio_set_hugetlb_hwpoison(struct foli=
+o *folio, struct page *page)
+> >                */
+> >               __folio_free_raw_hwp(folio, false);
+> >       }
+> > -     return ret;
+> > +
+> > +     return has_hwpoison ? -EHWPOISON : 0;
+> >   }
+>
+> Okay.
+>
+> >
+> >   static unsigned long folio_free_raw_hwp(struct folio *folio, bool mov=
+e_flag)
+> > @@ -2002,6 +2043,63 @@ int __get_huge_page_for_hwpoison(unsigned long p=
+fn, int flags,
+> >       return ret;
+> >   }
+> >
+> > +static void filemap_offline_hwpoison_folio_hugetlb(struct folio *folio=
+)
+> > +{
+> > +     int ret;
+> > +     struct llist_node *head;
+> > +     struct raw_hwp_page *curr, *next;
+> > +     struct page *page;
+> > +     unsigned long pfn;
+> > +
+> > +     /*
+> > +      * Since folio is still in the folio_batch, drop the refcount
+> > +      * elevated by filemap_get_folios.
+> > +      */
+> > +     folio_put_refs(folio, 1);
+> > +     head =3D llist_del_all(raw_hwp_list_head(folio));
+> > +
+> > +     /*
+> > +      * Release refcounts held by try_memory_failure_hugetlb, one per
+> > +      * HWPoison-ed page in the raw hwp list.
+> > +      */
+> > +     llist_for_each_entry(curr, head, node) {
+> > +             SetPageHWPoison(curr->page);
+> > +             folio_put(folio);
+> > +     }
+> > +
+> > +     /* Refcount now should be zero and ready to dissolve folio. */
+> > +     ret =3D dissolve_free_hugetlb_folio(folio);
+> > +     if (ret) {
+> > +             pr_err("failed to dissolve hugetlb folio: %d\n", ret);
+> > +             return;
+> > +     }
+> > +
+> > +     llist_for_each_entry_safe(curr, next, head, node) {
+> > +             page =3D curr->page;
+> > +             pfn =3D page_to_pfn(page);
+> > +             drain_all_pages(page_zone(page));
+> > +             if (!take_page_off_buddy(page))
+> > +                     pr_err("%#lx: unable to take off buddy allocator\=
+n", pfn);
+> > +
+> > +             page_ref_inc(page);
+> > +             kfree(curr);
+> > +             pr_info("%#lx: pending hard offline completed\n", pfn);
+> > +     }
+> > +}
+> > +
+> > +void filemap_offline_hwpoison_folio(struct address_space *mapping,
+> > +                                 struct folio *folio)
+> > +{
+> > +     WARN_ON_ONCE(!mapping);
+> > +
+> > +     if (!folio_test_hwpoison(folio))
+> > +             return;
+> > +
+> > +     /* Pending MFR currently only exist for hugetlb. */
+> > +     if (hugetlb_should_keep_hwpoison_mapped(folio, mapping))
+> > +             filemap_offline_hwpoison_folio_hugetlb(folio);
+> > +}
+> > +
+> >   /*
+> >    * Taking refcount of hugetlb pages needs extra care about race condi=
+tions
+> >    * with basic operations like hugepage allocation/free/demotion.
+>
+>
+> Looks good.
+>
+> thanks,
+> -jane
 
