@@ -4,135 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48D53E65298
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 17:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCD8BE65298
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 17:47:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 015266B0005; Sun,  1 Feb 2026 12:46:21 -0500 (EST)
+	id 2F6246B0005; Sun,  1 Feb 2026 12:47:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F052A6B0089; Sun,  1 Feb 2026 12:46:20 -0500 (EST)
+	id 2B6C56B0089; Sun,  1 Feb 2026 12:47:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE6B26B008A; Sun,  1 Feb 2026 12:46:20 -0500 (EST)
+	id 1C6BD6B008A; Sun,  1 Feb 2026 12:47:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CE1E96B0005
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 12:46:20 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 530455A213
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 17:46:20 +0000 (UTC)
-X-FDA: 84396616920.12.5C10FEF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9463D1C0005
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 17:46:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PVPaFd/g";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 090196B0005
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 12:47:51 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95DDD5BC37
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 17:47:50 +0000 (UTC)
+X-FDA: 84396620700.11.49D03A7
+Received: from mail-pf1-f193.google.com (mail-pf1-f193.google.com [209.85.210.193])
+	by imf04.hostedemail.com (Postfix) with ESMTP id A054B40002
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 17:47:48 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hK9DHf8h;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.193 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769967978;
+	s=arc-20220608; t=1769968068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bOX4/ODUKUTlFGDVlvyRKKVq4gvvLfiZV+uMntdCnig=;
-	b=0VfXDzaQpepYucwvKp/UduM9vwGa71lUz5QOvWNflm566thhQS+qQD6wedlHLgEeO0bkh9
-	LoeSk/XnP0LKRTamYqa1SaFNaghZMYXJD8UfxYZIm0VcqdAyPsxzSMYyJgWop2ns139ooF
-	TWI6Zx4XEaxQsxbzGpHuYQCYiXCyDkQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769967978; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Qs+0PjG7we/2y/IeweOE2VC49SWcJ6UpvgcbMN4J8Kg=;
+	b=D0UcAuaVc+9KVeVRhgnaV5SPZ9DAleWtZ+6/ujwEPHEgNHqlk9cwPb2tw6BdNd5gFyYRN8
+	yKqhkw0r5vPMfGzCwiYH5R74MBWC3mvmIYlnX19lgAMYjIsMm95Ez04thJE/vWsWFLOmLO
+	Asud/xo0D+/Hm4dDuZr01cjtpDba0sc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769968068; a=rsa-sha256;
 	cv=none;
-	b=e+GSD3sOvbSUu8MzyVljgFRYvZEtiFPVnW0EFvZ2/UQUmhRVjTiReXj+NXWoFxq9af2Ys2
-	wfH7cxTHme58RPsuw8EJghLmj4iE1AWFw28Wv34G2oi/g8WJprdnRP5TusOWPruS8VDPeR
-	SXSktOXoAiwJlEdZXHu9jzh4nNictag=
+	b=AuAU6YvXpZhmtyPg1/apdTzo3XB+vjOf6AjHJDP4jkshSRlkjAuj3nnIM9mMAc1rW3zWDh
+	IC9u7hJF6yJKKfiq0mXz42jGpiW5gQo5SPQeATVDkAImUMhbQH860k7TuobtS41aPo05hS
+	GfeQjvS0t4UbTQbQ1rBAW8fl1hTU+b4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PVPaFd/g";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C14D560008;
-	Sun,  1 Feb 2026 17:46:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09918C4CEF7;
-	Sun,  1 Feb 2026 17:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769967977;
-	bh=l6ZBA1ZIFg4qQN8CtXfdhYL8+YT5fKsLYePGHf66xyY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PVPaFd/gaqzyxs7/kb57FnDTE69lwsxthEqPTn3ES0tz6SAATzeDuNRtTekB5RasD
-	 VwmGVlKHsgr71cetBdvSPI18qKcZ0Gmbsrszm3mGvg+GiI2gaISI92ua/uizvF8Y//
-	 yuKAwmu79UIdHViikdGqB9Xq51w2WITwXGCgyWGyJ6M6J8dSgolor4iWu2pD3AINr2
-	 sS87sBwaH+RY87GlvnplmPqtOZ/GaW2YWe+5Ov5eePr1O7JaFTQAzIZL861GqmfPMG
-	 ZuIUfM+PO/YfcGQIyjEmfop9NHoDn4DXkBcQBTofnOT73Cg/X75Ofn+2YECiMwdoty
-	 VG2q5MeNg4+Ow==
-Message-ID: <62d5954b-8ad5-4674-986b-c1168771429b@kernel.org>
-Date: Sun, 1 Feb 2026 18:46:12 +0100
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=hK9DHf8h;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.193 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: by mail-pf1-f193.google.com with SMTP id d2e1a72fcca58-8230c33f477so1549243b3a.2
+        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 09:47:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769968067; x=1770572867; darn=kvack.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qs+0PjG7we/2y/IeweOE2VC49SWcJ6UpvgcbMN4J8Kg=;
+        b=hK9DHf8hWkKNYed8mpNmBGkLiruYLbxtlbZK9RFlk2859jjEmOhR5Z+ZfA5tHWDCUp
+         CeIJZNmeYk8iUOVNTBzux4+bGGWWYc/Eis/h9SxWAzZ37N41wb10bttuoHv5QmSSlzAA
+         RXOAxOv10+aVDRzsA+qnNqhghopCyDgIkANOiDMkRbiioh32gA05XuIXIGu0z2W481a5
+         bep7/fT82PyhI6HkcsdmVlsGjy+Ttpre91em6U0HnEmUVeBuvFO444yxr9ddiiuAiKwJ
+         JWRmmtWalbNB7Y/L08sewQwt3bP3O8rJ7DFR6DcSG7F8pphBSQ0Z7FhhtQxghEsVgcSn
+         +LYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769968067; x=1770572867;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Qs+0PjG7we/2y/IeweOE2VC49SWcJ6UpvgcbMN4J8Kg=;
+        b=eun9VPjSaNyy9PdDz0OIlRqmn5TjmktR258rXBTYXmE8kXXizmL+nK8GKCII3eazsv
+         qYS/8cxZMrjzwlJkv1VZBirMd0m7jrsocFfknhEZVLySLQHGcpFe1x73Aiz/FrEvwJeG
+         forpbyJYo5gnMLwq57k47oeXZzidNulp5p4ak0PPOzxoxl6xfOxikjXBflQW9RpYOVQZ
+         BWx62oDH4cpryzjzPDQmn+zs1Si4TQFefUK+WlinX7Ot89b4e8OTVb+lDGILMQOqSWs3
+         GSkItxT4P+aooEo2X0MYJnFMFNvJy/nKCn7Ktl1YwLyRuK1XBdXxotpX/rHDZht0x81R
+         orfw==
+X-Gm-Message-State: AOJu0YzXi+gNTmi5vKgl2I96mEoa+7cx5zr++NTk3BudUkAJcsUmW1d9
+	y+o1HkMZCBInxNQoIO+vq9/LQPNHtr7azk5ywDFxVIl26G9cuNObCIy4
+X-Gm-Gg: AZuq6aJCG8uhMWIZxE1XlTHvQQ8QfqJcIGzJrZgdH1O/SDt5Pjcq21c+i55wWkpICtl
+	j44VwAd3DBxIT7gK4iJe5p2Q5HsEpCOKPEv0cqsuE0VC8Xk2Gc47OnPZ6LgvGgTr/s7TlBOXGFI
+	oId/z+4U0nMQFrA9WFsj2A1eRfeZq7Bz7SB5gCsNydjMLSzXaH7yvb2LlwkPL/bJ9JjcnjHaW3/
+	wd9U+NVEYIT6GZDnGPJqaMxQ5svfZA0s3mD7pxjzH+dcXVQvMjXZboYhMhZXVSOoLlWO9uiKc07
+	k69rGX7hBT74KjmRgRePinCwGwqArIoOmAixb82xTZE/w2+GAjyo872FjpM2q1VumapUwzAotBC
+	HueN1jv2gUH7BRRr3DAvULkQZYDw418eZ3/KaNu9D9ICfmOt/WT2AD6Cy1sJcIIEBeP6V/r2LXU
+	eWkAQpYmo+RrFS18JYGSDfNRjfaDpFWkaEVQBL+vKEGoJVCsRD
+X-Received: by 2002:a05:6a00:1ca1:b0:823:167a:4790 with SMTP id d2e1a72fcca58-823ab6bb713mr7915396b3a.26.1769968067356;
+        Sun, 01 Feb 2026 09:47:47 -0800 (PST)
+Received: from [127.0.0.1] ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379bfd8desm13596758b3a.33.2026.02.01.09.47.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Feb 2026 09:47:46 -0800 (PST)
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 02 Feb 2026 01:47:32 +0800
+Subject: [PATCH] mm/zswap: remove SWP_SYNCHRONOUS_IO swapcache bypass
+ workaround
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] Introduce IORING_OP_MMAP
-To: Gabriel Krisman Bertazi <krisman@suse.de>, axboe@kernel.dk
-Cc: io-uring@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org
-References: <20260129221138.897715-1-krisman@suse.de>
-From: "David Hildenbrand (arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
-In-Reply-To: <20260129221138.897715-1-krisman@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 9463D1C0005
-X-Stat-Signature: 587jsxjwtpkuwir8zdp8x9ohinmxxaih
+Message-Id: <20260202-zswap-syncio-cleanup-v1-1-86bb24a64521@tencent.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDIyMz3ari8sQC3eLKvOTMfN3knNTEvNIC3UQD0yTztGQzQwuDNCWg1oK
+ i1LTMCrCx0bG1tQBq9LFhZgAAAA==
+X-Change-ID: 20251226-zswap-syncio-cleanup-a05b7fc6180f
+To: linux-mm@kvack.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+ Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, 
+ Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769968064; l=2359;
+ i=kasong@tencent.com; s=kasong-sign-tencent; h=from:subject:message-id;
+ bh=ErqyaqA8QnNQl+WnQiuzCLJFhc1Lwvr1urzWqbT1kt0=;
+ b=QKR3/i4gsNjHNsEGMaO5PSlKr36As5/kOAviyuIt1z9Rc7llhDlVcFS52ClbzxG3P7ei6NF9g
+ Uqd6l8vHd1zCKuadFoGKYcX9Pgxn+sndThGpjseiGXTInEAOQnBp0Fq
+X-Developer-Key: i=kasong@tencent.com; a=ed25519;
+ pk=kCdoBuwrYph+KrkJnrr7Sm1pwwhGDdZKcKrqiK8Y1mI=
+X-Rspamd-Queue-Id: A054B40002
+X-Stat-Signature: 7rggzj7drsjkboju1fc78e5td4iam8e3
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1769967978-495474
-X-HE-Meta: U2FsdGVkX196Qig22h5Cf3x6/uA4D4KTkexBnOtg4XXUwVa8axjvRwrc60pJJDfjuKUGbEJ30XcFAmVjOqdq2U9q35lHgM4dpgYXhGa27TQa1wL42wBaqMgV/WPB1MxXQW5hsMwaPsBptV824F4XKEf4o4uoI8O25P9LpgJSHjDfjzXdbHCw6Kqt01H81zpJt0jCLUGncpAkCPnQHbBAWDRmGNCMmmlsVPdeIxaTZdVLFPrXX+Eg2DYjPZ21umLzMqKfQ71TwknwIBlkpL6ug6+lZ7JJ0RiYcrWlFUfelRzicGS1QaV13AKcO1YDwMSe1i9Hl3ZpabI5srYE6Tr+1qRoKfgEbQ6rd7s8o9FrwHe4cuWqWH/NtC/fWGoNIuFGEmY0Ez9EBUAEf2vDgp5U431+AKMK0NlgnY9NhBIKfqS3CImcwR7fhPNC2kYWDWhCeLsJkfiDYYDt/zfEOoaVhWQmXziwhH2mxdhxeinMM/BxB3BmOa4KAtj24QqVCv+0cQ3gAnR6tSfUlOMFtIfZSMgOow+fXvhmyZ3dTTz9FCyw0lNYNFA2IHwDBjBp5dcDMG2+COnRIe53CL83NNcBPmBdW4myWTI6a9kNlA7pV3Do2+OhNlpMM62Zv9xxHel7/0zMEHRWUXThk6euKlsYSr8ndqDjNnO89kZzQ89xtswlhrJJGQIuvtXhlLWF8HN5pmsw5W/Pff/buvHHaVtPoziz9rEM3WO/e0UhX4i26S4wBlm/+m/FRCxdvwVsxuc8Pw12rWzOufcAwaSDpVBJyAhG61AD8OVF1PIoOY2EaFkeWdXlbA5MW2hxT4/Rym6p6xmYg4TbOcwffSqlHdX6f2sc+fKuyL13mDFk8rkTMzCGbQGAil/C3VrOykoO9N/AQCmC/UhdctZpqgdLMjy8s0IqT4dne451LEwmro6dgyrwfRxudAfp+YUqHe/cps36++cEDaWzpRv1db7doEf
- L2Ow44/B
- GaSEGUygmle2WNKMcicgHG/vzznOoYYL5XHVrGvWOWcVWnWCuQGl7oPq+yNAqXahlZ5j0c1HMaVcLJ7nx8DQmqQzXgogeXQuEdiCu7qEuiQG2+h3mWdbQKsNsrCAcCBh+il7MInOkoubtH46bXpLuTSv3eDck8+S/RjpVDJJdiU7yUcJ7OA7ckFvnCQRI3RCHxx6gSC21TXf/7uBjcL6Pfd67ltNqYHuwMUR38+SxXbVFHVtBE8cE04dlJEdunZ2UgwQL5jXFlJ8yZZvtZ6P0GuYKA715gvzxF1ZEzwWigFNg/rAhZckDBAkmdw==
+X-HE-Tag: 1769968068-135304
+X-HE-Meta: U2FsdGVkX1+ctv4+FCvXSacIKymuS9WLfApbJY1El0ofHJldzrOdCUvHcgKf76te2IWJWoBHPSScC/VEAqZzs2Fl5nQdyAX4HTFdeyE5V9au4YkNT3bV5AJybjfcF5EAOOw/T+m5hTASpcy2zyLf0GH6SSUDY0H6Z2yQ93uW/wU/GD6o1swZSRNb4o65uUyhBAaLbnI8MSPUMqhDHEeyQawvHbHZRNTHms8HlEkbMQZIYfIOMnXirEG932Y02RLI9Lb8aFy6V7Ix+VR/8IruZwkItmer9vsYH6HGSisJo3pBnePngV1UadDTOVhAD2kF1KR5K0zV3cka6mxyuhbZ3Om1APqVw3mjv4YxmfZ0Fv59Z+7E6TSHB68EzyL92bNIv0Am0B4Zl+uML/oh6lZ5W3+au8Elj9PgFqmEPcxibivQnBgRl/CuWMXL1X6Wbgh7WZbHE6Evgy8Et1LZqtYCZ34B0PthI0xMIw+AeagEpOyqRiTkXbPT3kos3Ex9DLKq2lPaMEpig4zbsxYVfsPXYHQYQr1XGxCM0SrJDw2C6JwqxEuouweCP4bxLNG0/S7TJWmFicTJC5czSAwjr3Wbk7kHgNF8ZHTCZdMmV6Aw99PIeO6SkrO3gpupY/sYX0eDBc8dbTaxd+u8DGoMwJ5Q9K5vNQlJ6RLWHe3A8Ig+bnRA9k4qgyblzYhFpTxmEtjlRn/tOEcaS+7sjO9DDQ1SW3x5CCAT9Nq8Fg1/c4YoQ5JQ5NPRFRcmopS4XkubKpBCkzykGVRn/Czc7DL0sn1kLLXV1+PwJK8j+kkpkZiscXl0kRB/Tlv/ER6fFAX2jLhlhkflex2JJwx246wEzZIXw4hpwySBUUH7LzodM3dTNXNHWk40qvtwYCiUyrRbyvR+UcWpB7rBPaKMaE1nYzSQo7tCyohPNDTu0T5lsnefGaSF+0DPpw2V1Ao3IZz2WLzIvn8oNq7yzTfKtor6KWF
+ HPt15i6B
+ rUnTi6Ytpw/yj95W5khihvuzcc9xbifQZuYpuNNY8R9juzwH2HZqU5X65fYlB83FbXux4DsxsNLk9nJBd0+HDqyjtK/Irf75hBqqTdRp67zD+jljUXoIfharf61SyqoU8Xest/s6tBVxDOG6I+9D9BtL/NWLVsgubNYznRR012wqsaNA0uw2L45ItIUBUXlem5jGHrvFaUbo3XR3O8B/+MfEychQO4U5+dABqpcUvQrGq/y/zFVRadmg2OiVdu+p8YkPEyRPODXvL/T5XNsyTIG3E7xTc5Nrz8XIV72m+hRD2n6aNk0i1gPg9KAIKQlbCONyJ0WkCPE61tYVBYN1zDkt5L3K2vVH+lojvo/90rcExio9qwJWc53kN8uIaeUSTUKnUV3+s2Xt/nlTAouI7+8E76e0l6KYCpGn/0E8CLNhWseKOqQHcQn13S/5Vj646aujrV/wlNvEkztgRMWN/ZbYm99j1oHThZLzrpoOthE7O315epQbtzCf8MF6sxVSWYbOy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,40 +131,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/29/26 23:11, Gabriel Krisman Bertazi wrote:
-> Hi,
-> 
-> There's been a few requests over time for supporting mmap(2) over
-> io_uring. The reasoning are twofold: 1) serving as base for batching
-> multiple mappings in a single operation 2) supporting mmap of fixed
-> files.
-> 
-> Since mmap can operate on either anonymous memory and file descriptors,
-> patch 1 adds support for optional fds in io_uring commands.  Patch 2
-> implements the mmap operation itself.
-> 
-> Note this patchset doesn't do any kind of smarter batching in MM.  While
-> we can potentially do some interesting optimizations already, like
-> holding the MM write lock instead of reacquiring it for each mapping, I
-> wanted to focus on the API discussion first.  This is left as future
-> work.
-> 
-> liburing support, including testcases, will be sent shortly to the list,
-> but can also be found at:
+From: Kairui Song <kasong@tencent.com>
 
-Just a general question: why do we unlock each syscall individually, and 
-not in some intelligent way, all syscalls at once? :)
+Since commit f1879e8a0c60 ("mm, swap: never bypass the swap cache even
+for SWP_SYNCHRONOUS_IO"), all swap-in operations go through the swap
+cache, including those from SWP_SYNCHRONOUS_IO devices like
+zram. Which means the workaround for swap cache bypassing
+introduced by commit 25cd241408a2 ("mm: zswap: fix data loss on
+SWP_SYNCHRONOUS_IO devices") is no longer needed. Remove it, but
+keep the comments that are still helpful.
 
-I assume supporting arbitrary syscalls could be rather hard (or am I 
-wrong? :) ).
+Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+ mm/zswap.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-I also assume that we might want to block some syscalls (do we?), which 
-could be done in some generic way (allow-list, deny-list etc).
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 3d2d59ac3f9c..8cd61603ff79 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1589,11 +1589,11 @@ int zswap_load(struct folio *folio)
+ {
+ 	swp_entry_t swp = folio->swap;
+ 	pgoff_t offset = swp_offset(swp);
+-	bool swapcache = folio_test_swapcache(folio);
+ 	struct xarray *tree = swap_zswap_tree(swp);
+ 	struct zswap_entry *entry;
+ 
+ 	VM_WARN_ON_ONCE(!folio_test_locked(folio));
++	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
+ 
+ 	if (zswap_never_enabled())
+ 		return -ENOENT;
+@@ -1624,22 +1624,15 @@ int zswap_load(struct folio *folio)
+ 		count_objcg_events(entry->objcg, ZSWPIN, 1);
+ 
+ 	/*
+-	 * When reading into the swapcache, invalidate our entry. The
+-	 * swapcache can be the authoritative owner of the page and
++	 * We are reading into the swapcache, invalidate zswap entry.
++	 * The swapcache is the authoritative owner of the page and
+ 	 * its mappings, and the pressure that results from having two
+ 	 * in-memory copies outweighs any benefits of caching the
+ 	 * compression work.
+-	 *
+-	 * (Most swapins go through the swapcache. The notable
+-	 * exception is the singleton fault on SWP_SYNCHRONOUS_IO
+-	 * files, which reads into a private page and may free it if
+-	 * the fault fails. We remain the primary owner of the entry.)
+ 	 */
+-	if (swapcache) {
+-		folio_mark_dirty(folio);
+-		xa_erase(tree, offset);
+-		zswap_entry_free(entry);
+-	}
++	folio_mark_dirty(folio);
++	xa_erase(tree, offset);
++	zswap_entry_free(entry);
+ 
+ 	folio_unlock(folio);
+ 	return 0;
 
-Again, just curious.
+---
+base-commit: 2c263046cbe6d9d5fce3dfeba063f199f7e6298f
+change-id: 20251226-zswap-syncio-cleanup-a05b7fc6180f
 
+Best regards,
 -- 
-Cheers
+Kairui Song <kasong@tencent.com>
 
-David
 
