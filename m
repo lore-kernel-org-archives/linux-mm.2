@@ -4,128 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAED2E7C6F9
-	for <linux-mm@archiver.kernel.org>; Sat, 31 Jan 2026 23:59:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2663E7C6F9
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 00:09:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 911926B0005; Sat, 31 Jan 2026 18:59:08 -0500 (EST)
+	id 026946B0005; Sat, 31 Jan 2026 19:09:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BE916B0088; Sat, 31 Jan 2026 18:59:08 -0500 (EST)
+	id F15696B0088; Sat, 31 Jan 2026 19:09:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A0596B008A; Sat, 31 Jan 2026 18:59:08 -0500 (EST)
+	id E13DD6B008A; Sat, 31 Jan 2026 19:09:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 675416B0005
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 18:59:08 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0F5AA1B1DC9
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 23:59:08 +0000 (UTC)
-X-FDA: 84393927576.23.9F1AF73
-Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 537824000E
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 23:59:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nWz5WBRE;
-	spf=pass (imf04.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.196 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D07F76B0005
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:09:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 680361B1DD5
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:09:46 +0000 (UTC)
+X-FDA: 84393954372.22.243C216
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 610D2180009
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:09:44 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="um/7tYvp";
+	spf=none (imf06.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769903946;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1769904584;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YtBPPhj1ayBDt09op5lwhUL/PZ+SFYgWzXzV09l+lfI=;
-	b=6OSGSW6lZInlCpC8u6rQKGTNYRVkKeBxd+hAoyJJmPYLrV5xQUI7iQy/DfRW6NcNVicyiv
-	CQuIoC6jkRDrAE40ogfDr/S1Yjd7Emk31Umk3v07xZ9BowB+qf7fv80PjCvHGIGcURX46L
-	GHz48MG1RKial2dAamPusQSiN4Yt/5Q=
+	bh=Ee6tnw7Bye5CGO63GyRbRK+g1RsPEEK7xU3KsikleH8=;
+	b=ZgLBKIvkGz9ura40Xtpym/lIKsGvYxHaUfI6bqVa8xmZCohWan7wFNjX5LMUDfsKdDUUy9
+	VVwpin2JUdvAcPsqoOixwLS09qQlnmCGGXtqGOiZ2J5AsYbgz/ayTosKVHwK2a9JWXICZc
+	O+q4/rnDMBfd5rlwLBe0i56bxYn/1dE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nWz5WBRE;
-	spf=pass (imf04.hostedemail.com: domain of bingjiao@google.com designates 209.85.214.196 as permitted sender) smtp.mailfrom=bingjiao@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769903946; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="um/7tYvp";
+	spf=none (imf06.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769904584; a=rsa-sha256;
 	cv=none;
-	b=D0/8XpmQV+1SJFvUntL9/vrKiu0HcymvWtBhclac5GKhZ5zqIRUsov3BV0Y2ZywgbHaB2D
-	K8B2rahyajDYope5+1eqVbVXKLput7GpRwcjOjl+uOMmOR6IOHtpnTcwqvKwTTB2XX2e3s
-	Ih/q5AA/czgqAI6Rm9IezUCa5itLbOg=
-Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2a1462573caso61415ad.0
-        for <linux-mm@kvack.org>; Sat, 31 Jan 2026 15:59:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769903945; x=1770508745; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YtBPPhj1ayBDt09op5lwhUL/PZ+SFYgWzXzV09l+lfI=;
-        b=nWz5WBRE9YcGsQ3gPXfJ8A2RgZFKKZ0aXaI1u3NMFy4Lq25ZQJAYVPU/i24E1tu2Wk
-         Ecng1fCyvUvKfOmHPHeFuvxXwILgQucrfSdaWtJ2hDL8Z3LjpgPedGDT+Ta6uynvxam3
-         D7KYDul7E0hhpoinvQ6aFTa/4OFfYCOCA3ZeM7PVIF70rrG8mNQeV5bj3MBkJM0Ck0JM
-         MzmnAD9DSeZLf0Otp40PXr+g/jqfPkTkSpHqYFF71vU6VQMvkfUTcfzewMP9AalKMLmW
-         KE8VmsfKtNnhrnDcvmlcoKzao/SaGIXRz0qGb1goCygzj7IPVf70xsJ6bjXp9ZnkIYMr
-         r8hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769903945; x=1770508745;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YtBPPhj1ayBDt09op5lwhUL/PZ+SFYgWzXzV09l+lfI=;
-        b=J11IA1frQpbAi4lUvGTA94HynVHum3IWd5ub1MeyS2Nxm9xXKVoP4bkYUtgGd+PnYD
-         ETB2Wqj18l7y3Nfz85fcr/8dBixeBLz5zqM9rvV7JsUoUnK6bHypnk5/u+cAW7mLMQaG
-         Q4XRUPkXhsIqP4v/5L5kqOLBpF+bFPda7mpWIW8ewzh+ie7JKtJlM+d7gtJ0buKJ1/qP
-         +5hk3WsydIxZ/OA47RuSiA31CrGFC9/0kvYpgpgTebrdLkg6nKt+WFnCpQqf1rWwYv8r
-         jr7lT/fPhHyNZuLMkyNDqRhXZzk5DxIS1+IH2khDdzIh/eRXNPH4SHXee32JHKxbh1DS
-         hASg==
-X-Forwarded-Encrypted: i=1; AJvYcCU1eN6fkzdDb5http0mzo2Eggir7EW7COSdy7JymWfB/GLaKE2x6GYMSiygKWHsWT5vODFLcla49Q==@kvack.org
-X-Gm-Message-State: AOJu0YzdnisAuKQ3Op5ZAndIfNWr6fFX2LH3d3M2JeaWDOBw0k3Lqd26
-	tmcA7roK0Xtp3TwJs7TerdNbdKQkaJQfeW12WsgdZrghN/M1W+IsKc911GsIk/b+HA==
-X-Gm-Gg: AZuq6aJRhWANeid0v99c3W1eI+VMe3oMeOGQQBrSswwY99ARPG1yLSrfQVbIur/omPL
-	ISc+d1FJVLKwFzEKIV29yCh2isbi/D9MMAThti1s13BYNVniTVtUGFkfnMNctU94ZsXqzMtXjJR
-	Acm9e2Jmru+0FeIiIQizs0mbuRysZ5AlMTOy25EKW7PdjWCShARJ+ko8EtDDu0vHbcxpsS+hWCA
-	wSllTyQpiJlwUloMpMchf6q7BuHD1Tj8wA5/NykGPjpZfRrqA5vSkd1qfOvB11Yh6J4sV9hbtvs
-	KhModBbgbelBFno6kPv+7FN6nBvnJ+fXTeQg5QhKgsCfZYf7YbC0KWIWIf3CtaOCjAP/XAw0rs4
-	A70TY8mbAAvtV3Pk8W6R28D4vT0CRIg1Cx2im1T4OmEULx78dLr+gygQb4DC2sx9yUVWjAxGXPt
-	lxmcx7ZrM5PGjEDffX1bt7lvPynWFdJrc5KOI3AYwwjQCkLGHh/A==
-X-Received: by 2002:a17:903:110e:b0:2a0:867c:60e2 with SMTP id d9443c01a7336-2a8f50d2ee6mr1807895ad.19.1769903944481;
-        Sat, 31 Jan 2026 15:59:04 -0800 (PST)
-Received: from google.com (130.15.125.34.bc.googleusercontent.com. [34.125.15.130])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6427da8441sm10057645a12.9.2026.01.31.15.59.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 31 Jan 2026 15:59:03 -0800 (PST)
-Date: Sat, 31 Jan 2026 23:58:58 +0000
-From: Bing Jiao <bingjiao@google.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Gregory Price <gourry@gourry.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, muchun.song@linux.dev,
-	roman.gushchin@linux.dev, tj@kernel.org, longman@redhat.com,
-	chenridong@huaweicloud.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v9 0/2] mm/vmscan: fix demotion targets checks in
- reclaim/demotion
-Message-ID: <aX6XQmBncndLdu1X@google.com>
-References: <20260114070053.2446770-1-bingjiao@google.com>
- <20260114205305.2869796-1-bingjiao@google.com>
- <aXlY04m0FuX-9LRE@linux.dev>
+	b=AsyPwnstiMrQuN3wottsoejVj1Pqpfpzp3hU3ndqHrjwPTFlDjrjx0CzXg5ufE1EwFcy8f
+	6ArFcZoHeAvK1htgoy/E3Q/HKd8V2WoMRSbqu059Jp8IXJ4sNl4hqUTp8M7Lc37kzxQOLD
+	IHHS5r25aadLzyUT8UXgl43lgBl6pjM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ee6tnw7Bye5CGO63GyRbRK+g1RsPEEK7xU3KsikleH8=; b=um/7tYvp1GwLTW+4jRFFt6i8Lh
+	43+Al7pZaW8xn1fwVBPpbz7wu/Qa0kqfQL3yLfYZjWpvUebDL6v1WuuYzgLT5w/sIHpyv3RP8j3Kp
+	N9llJmy6Lkpvli4Hp7vFM+wjNB6whhI64AS2pDbFpn4N9zZsW+AusmBuL48iVTxuJAUCVaakYKofV
+	1XwFvR+XGpvEMS645jPz7tx5kf5bMRoG5DFmrpYbhwSHQeFs4PJlwyszIEYMXAzd6Nu+TsJP67x/m
+	hdO5SxFSlZQlDmnN2Z4gVsMIRpKMJXa8o+DQCKtQF7JJjLgnNFe4Rn2ou7zF7kgHnOMVJWn8+TDON
+	24jRK0YQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1vmL3p-0000000218W-0fSi;
+	Sun, 01 Feb 2026 00:11:29 +0000
+Date: Sun, 1 Feb 2026 00:11:29 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Samuel Wu <wusamuel@google.com>, Greg KH <gregkh@linuxfoundation.org>,
+	linux-fsdevel@vger.kernel.org, brauner@kernel.org, jack@suse.cz,
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
+	a.hindborg@kernel.org, linux-mm@kvack.org,
+	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org, clm@meta.com,
+	android-kernel-team <android-kernel-team@google.com>
+Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
+Message-ID: <20260201001129.GB3183987@ZenIV>
+References: <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
+ <20260129032335.GT3183987@ZenIV>
+ <20260129225433.GU3183987@ZenIV>
+ <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
+ <20260130070424.GV3183987@ZenIV>
+ <CAG2Kctoqja9R1bBzdEAV15_yt=sBGkcub6C2nGE6VHMJh13=FQ@mail.gmail.com>
+ <20260130235743.GW3183987@ZenIV>
+ <CAHk-=wgk7MRBj4iwQLHocVCa94Jf0cMEz2HzUAS9+6rGtnp4JA@mail.gmail.com>
+ <20260131010821.GY3183987@ZenIV>
+ <CAHk-=wiXq-bPyKywNOw7z6ehrVReyS-hSPuQkJvuhJWfXGFm=A@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aXlY04m0FuX-9LRE@linux.dev>
-X-Stat-Signature: t8j7o9oes1zinaffzsykis6dqbetp11e
+In-Reply-To: <CAHk-=wiXq-bPyKywNOw7z6ehrVReyS-hSPuQkJvuhJWfXGFm=A@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: oy7fgthqk6awzmhhx3s5dqwnd4bfuk9f
+X-Rspamd-Queue-Id: 610D2180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 537824000E
-X-HE-Tag: 1769903946-146836
-X-HE-Meta: U2FsdGVkX19JgdfROeAEE8RB6p/Y55yl12js+6mmtBugmgfzwxrk7KbVkkbk7eqEf7Hl2j2aE8vGZCpQ5F8jSkn+UEYdszx2xr34glbVV3DqprwuDej35KbM7h9JsUA9P2ocHugSArg83OFajGhU2VCE++rhQof+CYec5gtvzeUklBuNajhGEr5TgrzxKBFLKIHrDY3cAJ0cHeiv//ZmZuKWjHn4A2OngADUvLfFCHE7Moxx722cPBZHuE0JjYZK2VXvWITUJB5GRge0M1M4n0198KOpv/MS1bh4H2sIeCTmWcdmhUs1sVQKC8q786gskv1C1LsK6QiTTBUjKdA9C1TtDOauiE8r7GFCYg2+uotOb/15z6Nem9iDOi4rKhyt1eH932ckSKb+Rli2Ez5TnmYrGer6qT+kfXKroDaOMgpsp7c9KiHI3fH1kBEmEREmyATVx1MpkP169opp5hwgmSgJ63ygnjxpMc5OIOcmZpGAFdhF/xOR5YwHwe4cJBnxOmEhOZN6m0SmNGnimvVMNIIQSUcUccBvek208LXruDltK8lyU5F0/XOIuxdpK32/RxnTGgAu9S7ykE/Utw5bSA4mWQPx3zQT9bM4k4SKvxvNfnTFVCh7wIbDn9VjZnMx8BqLY0Os6NPy5RN0q3/bQWT2YcGlt7Tg+3xJ6JQ/7hqnBU+T3BFikE6Wxov27qEjrM4VNeYRyE5w7mk9CTCan+RCNHKYqThYZDp+ct5aBYAtyP+6VNDQc35lmF+s6VJ8mo0gx7i1D0t/QiEQkvs50AkkvRuHjQcoXAzGrb3XLuEM85L/pl4vt6LbtkRn1GnbFOriS1vkGsOfLA3RRtKWVlhhT7YW1spa+8xfqSfTnSVZpZjkEpP5DIsGF3A0fU3O5ifwTRNLrMcEcaUQQw+lHJmrl63HVcDKWopzIk9zpzPhglRFOKnT9ySgARndoGlN9q7cmXqNbYjn7pO2GoH
- ctjRbRPy
- CME6/kG4owGQ0WJI/RR86RbyhmhubAsq5sC7XtyXoT329VMayDN6NlKdoNWCGXLgdh10d37fwKrDA12vPmiHTmMcTyrS5i6CeArf/Peq7aw6LmwUSGw9EAsv57MlkDWoBPwBpAAz6bY6DkophducIsI5v3sVCwzxO7LYAb/4uk3x4nxKLreea3CzD7w==
+X-HE-Tag: 1769904584-668483
+X-HE-Meta: U2FsdGVkX18mB8IMWlkvDhh/fg9bw1BYTm4umeoJZPgknt5B0RGDhL6hjeJHFG47LYpnX5prwsTFzdYh3drKcT8pgiI/mc5kXDCydV/LH9m3xedS5mC5nz7vKjdoETqIsTopLb6Yvzxtj1LVe3l1CNI7mhidPjZaVS00fb/OZ9HFBYz3xiYaYlwrfbWUZEr+PUaXfx/0QYil1EOywoxsr1o94wm9oNEEX9ChbAQPddDUxSjSZnvvncBKsCmEJoQjlV/Buxh/QTqVZbVD+BN2LUJWsjJnvNrdbb/qrAVSyQR/Q/KG7banuoxSkFYurQ78Otkn/ygTPnPNKxVlJ5fFBqGHf6tv8iv+6Ga7QmQbzq6IIp0BzP/ojWYEJ03mVtVU9uBmXN9D/x6LMdgiVs1+lvelSp2bLXwkaSg+umUg1cr5aCefRSbzuU12C+NDpbQQVkY12SwuLVlILuOcTZ6ceTtSI6m3LUqmpy+B5vaE1dbvBtkdT7xLOmEqMqrNML+mcuvqnuUYjbpw00lO2wMhm1qfX9qiJkkexM2yBrlA9wP1Sia2CPuAeWLNWkRPnlBC7+RgKq0wktXB9WYfcfIF3PvilgViNpWhjrPauDfsPScbvReAh9n9TGavx8+mHo9BJAE01g9uq3o1Qs5nY5jFOXykXk8qvn/G7jK38541FDqlqii6dT4pE8Qt0BXVlTRhYouhRh/uap+AHJ/mGrDU0MH4GVLolajPskO6bgzPZUnZPHQsYv5BIxSebcWP5+9nEKYjEqxmKAG9KkrFQJE9D4kX9LpcnXyIwUVyIav27sCrkWwtQuLRYNUbtEmYNK6MUvACCrfKXspmIlBUH2KyktRPddpf/h5mcD6RTX8dOMCGzVEOJgDZsGhAbm7DrojHZDKpg1pCnDbpVQbM7McFq5wE/mB31jr0O6w2FAcZL6mwgdValSBa//B2ku/eTcXSdKREbiAUB2KOOT6CWGF
+ H5gYlguu
+ x6THU6nVGb34pwWF44LEgLKPaoexR0E/yr87t/NDj6g5uhoyMVtRotYqkn2aejxkGyRjvZib3tMA21LDzY6X/X3eReEL1L4e6KMGfthDZQCSGp1/GzxOAH655Y5MLLVTVJjya+Adc5TfODbRUD034vSPljp7ebl/uiby3ex+JTaHjRh9/62I2r+AQK2QYuaVkQRGYL+ZttyZh6VyNAhXI0sD5NcOaEtztrWoL0n+jBgn3NzLhtNwXCcqgL5PdFtunrw1D7eoGVjEP0txmq/UMZKVjvn3uBX2lQUYokfacnoBBeidhDdqRqEsSatunNT+TjHUEqVkirOjW9eTMru3Q5tx5BNiwD5h1JNj+aXSyBLVJxtxUOyV08IZn1MQKpeTkjTaEotHeBYJhF8UpyQvAiLxbQ61LFPQpx7xuZh66AKMjCij8JJ+O86+MSaGO9yBFGj5TWj7rvLYXjgXfPq42U8vF8z/m5g2iNEbTsAEH2swzbkqUSWdqzp3A2hHZrGrDMxOhfrsiTFdXFOuzIgVnneO+WQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,56 +107,317 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 30, 2026 at 03:35:26PM -0800, Shakeel Butt wrote:
-> Hi Bing,
->
-> Please don't reply (i.e. use In-Reply-To) to older revision of your
-> series. Send each revision independently.
->
-> On Wed, Jan 14, 2026 at 08:53:01PM +0000, Bing Jiao wrote:
-> > This patch series addresses two issues in demote_folio_list(),
-> > can_demote(), and next_demotion_node() in reclaim/demotion.
+On Fri, Jan 30, 2026 at 05:11:39PM -0800, Linus Torvalds wrote:
+> On Fri, 30 Jan 2026 at 17:06, Al Viro <viro@zeniv.linux.org.uk> wrote:
 > >
-> > 1. demote_folio_list() and can_demote() do not correctly check demotion
-> >    target against cpuset.mems_effective, which will cause (a) pages are
-> >    demoted
->
-> pages to be demoted
->
-> > to not-allowed nodes and (b) pages are failed to demote
->
-> page fail to demote
->
-> > even
-> >    if the system still have allowed demotion nodes.
-> >
-> >    Patch 1 fixes this bug by update
->
-> updating
->
-> > cpuset_node_allowed() and
-> >    mem_cgroup_node_allowed() to return effective_mems, allowing directly
-> >    logic-and operation against demotion targets.
-> >
-> > 2. next_demotion_node() returns a preferred demotion target, but it does
->
-> does or does not?
->
-> >    check the node against allowed nodes.
-> >
-> >    Patch 2 ensures that next_demotion_node() filters against the allowed
-> >    node mask and selects the closest demotion target to the source node.
+> > I'd rather go for a spinlock there, protecting these FFS_DEACTIVATED
+> > transitions;
+> 
+> Yes, that's the much better solution.  The locking in this thing is horrendous.
+> 
+> But judging by Samuel's recent email, there's something else than the
+> open locking thing going on.
 
+I've put the following into viro/vfs.git#fixes; diff is identical to the
+one that is reported to fix things on top of -rc7...
 
-Hi Shakeel,
+Objections?
 
-Thank you for taking the time to review this patch series and for the
-helpful corrections. I also appreciate the reminder about the patch
-replying rule and will make sure to send future revisions independently.
+commit 99a706fa47949ece1fb02b5b1206efd4fb031d25
+Author: Al Viro <viro@zeniv.linux.org.uk>
+Date:   Sat Jan 31 18:24:41 2026 -0500
 
-Have a great weekend!
+functionfs: use spinlock for FFS_DEACTIVATED/FFS_CLOSING transitions
+    
+When all files are closed, functionfs needs ffs_data_reset() to be
+done before any further opens are allowed.
 
-Best,
-Bing
+During that time we have ffs->state set to FFS_CLOSING; that makes
+->open() fail with -EBUSY.  Once ffs_data_reset() is done, it
+switches state (to FFS_READ_DESCRIPTORS) indicating that opening
+that thing is allowed again.  There's a couple of additional twists:
+	* mounting with -o no_disconnect delays ffs_data_reset()
+from doing that at the final ->release() to the first subsequent
+open().  That's indicated by ffs->state set to FFS_DEACTIVATED;
+if open() sees that, it immediately switches to FFS_CLOSING and
+proceeds with doing ffs_data_reset() before returning to userland.
+	* a couple of usb callbacks need to force the delayed
+transition; unfortunately, they are done in locking environment
+that does not allow blocking and ffs_data_reset() can block.
+As the result, if these callbacks see FFS_DEACTIVATED, they change
+state to FFS_CLOSING and use schedule_work() to get ffs_data_reset()
+executed asynchronously.
 
+Unfortunately, the locking is rather insufficient.  A fix attempted
+in e5bf5ee26663 ("functionfs: fix the open/removal races") had closed
+a bunch of UAF, but it didn't do anything to the callbacks, lacked
+barriers in transition from FFS_CLOSING to FFS_READ_DESCRIPTORS
+_and_ it had been too heavy-handed in open()/open() serialization -
+I've used ffs->mutex for that, and it's being held over actual IO on
+ep0, complete with copy_from_user(), etc.
+
+Even more unfortunately, the userland side is apparently racy enough
+to have the resulting timing changes (no failures, just a delayed
+return of open(2)) disrupt the things quite badly.  Userland bugs
+or not, it's a clear regression that needs to be dealt with.
+
+Solution is to use a spinlock for serializing these state checks and
+transitions - unlike ffs->mutex it can be taken in these callbacks
+and it doesn't disrupt the timings in open().
+
+We could introduce a new spinlock, but it's easier to use the one
+that is already there (ffs->eps_lock) instead - the locking
+environment is safe for it in all affected places.
+
+Since now it is held over all places that alter or check the
+open count (ffs->opened), there's no need to keep that atomic_t -
+int would serve just fine and it's simpler that way.
+
+Fixes: e5bf5ee26663 ("functionfs: fix the open/removal races")
+Fixes: 18d6b32fca38 ("usb: gadget: f_fs: add "no_disconnect" mode") # v4.0
+Tested-by: Samuel Wu <wusamuel@google.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+index 05c6750702b6..fa467a40949d 100644
+--- a/drivers/usb/gadget/function/f_fs.c
++++ b/drivers/usb/gadget/function/f_fs.c
+@@ -59,7 +59,6 @@ static struct ffs_data *__must_check ffs_data_new(const char *dev_name)
+ 	__attribute__((malloc));
+ 
+ /* Opened counter handling. */
+-static void ffs_data_opened(struct ffs_data *ffs);
+ static void ffs_data_closed(struct ffs_data *ffs);
+ 
+ /* Called with ffs->mutex held; take over ownership of data. */
+@@ -636,23 +635,25 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
+ 	return ret;
+ }
+ 
++
++static void ffs_data_reset(struct ffs_data *ffs);
++
+ static int ffs_ep0_open(struct inode *inode, struct file *file)
+ {
+ 	struct ffs_data *ffs = inode->i_sb->s_fs_info;
+-	int ret;
+ 
+-	/* Acquire mutex */
+-	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+-	if (ret < 0)
+-		return ret;
+-
+-	ffs_data_opened(ffs);
++	spin_lock_irq(&ffs->eps_lock);
+ 	if (ffs->state == FFS_CLOSING) {
+-		ffs_data_closed(ffs);
+-		mutex_unlock(&ffs->mutex);
++		spin_unlock_irq(&ffs->eps_lock);
+ 		return -EBUSY;
+ 	}
+-	mutex_unlock(&ffs->mutex);
++	if (!ffs->opened++ && ffs->state == FFS_DEACTIVATED) {
++		ffs->state = FFS_CLOSING;
++		spin_unlock_irq(&ffs->eps_lock);
++		ffs_data_reset(ffs);
++	} else {
++		spin_unlock_irq(&ffs->eps_lock);
++	}
+ 	file->private_data = ffs;
+ 
+ 	return stream_open(inode, file);
+@@ -1202,15 +1203,10 @@ ffs_epfile_open(struct inode *inode, struct file *file)
+ {
+ 	struct ffs_data *ffs = inode->i_sb->s_fs_info;
+ 	struct ffs_epfile *epfile;
+-	int ret;
+-
+-	/* Acquire mutex */
+-	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
+-	if (ret < 0)
+-		return ret;
+ 
+-	if (!atomic_inc_not_zero(&ffs->opened)) {
+-		mutex_unlock(&ffs->mutex);
++	spin_lock_irq(&ffs->eps_lock);
++	if (!ffs->opened) {
++		spin_unlock_irq(&ffs->eps_lock);
+ 		return -ENODEV;
+ 	}
+ 	/*
+@@ -1220,11 +1216,11 @@ ffs_epfile_open(struct inode *inode, struct file *file)
+ 	 */
+ 	epfile = smp_load_acquire(&inode->i_private);
+ 	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
+-		mutex_unlock(&ffs->mutex);
+-		ffs_data_closed(ffs);
++		spin_unlock_irq(&ffs->eps_lock);
+ 		return -ENODEV;
+ 	}
+-	mutex_unlock(&ffs->mutex);
++	ffs->opened++;
++	spin_unlock_irq(&ffs->eps_lock);
+ 
+ 	file->private_data = epfile;
+ 	return stream_open(inode, file);
+@@ -2092,8 +2088,6 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
+ 	return 0;
+ }
+ 
+-static void ffs_data_reset(struct ffs_data *ffs);
+-
+ static void
+ ffs_fs_kill_sb(struct super_block *sb)
+ {
+@@ -2150,15 +2144,6 @@ static void ffs_data_get(struct ffs_data *ffs)
+ 	refcount_inc(&ffs->ref);
+ }
+ 
+-static void ffs_data_opened(struct ffs_data *ffs)
+-{
+-	if (atomic_add_return(1, &ffs->opened) == 1 &&
+-			ffs->state == FFS_DEACTIVATED) {
+-		ffs->state = FFS_CLOSING;
+-		ffs_data_reset(ffs);
+-	}
+-}
+-
+ static void ffs_data_put(struct ffs_data *ffs)
+ {
+ 	if (refcount_dec_and_test(&ffs->ref)) {
+@@ -2176,28 +2161,29 @@ static void ffs_data_put(struct ffs_data *ffs)
+ 
+ static void ffs_data_closed(struct ffs_data *ffs)
+ {
+-	if (atomic_dec_and_test(&ffs->opened)) {
+-		if (ffs->no_disconnect) {
+-			struct ffs_epfile *epfiles;
+-			unsigned long flags;
+-
+-			ffs->state = FFS_DEACTIVATED;
+-			spin_lock_irqsave(&ffs->eps_lock, flags);
+-			epfiles = ffs->epfiles;
+-			ffs->epfiles = NULL;
+-			spin_unlock_irqrestore(&ffs->eps_lock,
+-							flags);
+-
+-			if (epfiles)
+-				ffs_epfiles_destroy(ffs->sb, epfiles,
+-						 ffs->eps_count);
+-
+-			if (ffs->setup_state == FFS_SETUP_PENDING)
+-				__ffs_ep0_stall(ffs);
+-		} else {
+-			ffs->state = FFS_CLOSING;
+-			ffs_data_reset(ffs);
+-		}
++	spin_lock_irq(&ffs->eps_lock);
++	if (--ffs->opened) {	// not the last opener?
++		spin_unlock_irq(&ffs->eps_lock);
++		return;
++	}
++	if (ffs->no_disconnect) {
++		struct ffs_epfile *epfiles;
++
++		ffs->state = FFS_DEACTIVATED;
++		epfiles = ffs->epfiles;
++		ffs->epfiles = NULL;
++		spin_unlock_irq(&ffs->eps_lock);
++
++		if (epfiles)
++			ffs_epfiles_destroy(ffs->sb, epfiles,
++					 ffs->eps_count);
++
++		if (ffs->setup_state == FFS_SETUP_PENDING)
++			__ffs_ep0_stall(ffs);
++	} else {
++		ffs->state = FFS_CLOSING;
++		spin_unlock_irq(&ffs->eps_lock);
++		ffs_data_reset(ffs);
+ 	}
+ }
+ 
+@@ -2214,7 +2200,7 @@ static struct ffs_data *ffs_data_new(const char *dev_name)
+ 	}
+ 
+ 	refcount_set(&ffs->ref, 1);
+-	atomic_set(&ffs->opened, 0);
++	ffs->opened = 0;
+ 	ffs->state = FFS_READ_DESCRIPTORS;
+ 	mutex_init(&ffs->mutex);
+ 	spin_lock_init(&ffs->eps_lock);
+@@ -2266,6 +2252,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
+ {
+ 	ffs_data_clear(ffs);
+ 
++	spin_lock_irq(&ffs->eps_lock);
+ 	ffs->raw_descs_data = NULL;
+ 	ffs->raw_descs = NULL;
+ 	ffs->raw_strings = NULL;
+@@ -2289,6 +2276,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
+ 	ffs->ms_os_descs_ext_prop_count = 0;
+ 	ffs->ms_os_descs_ext_prop_name_len = 0;
+ 	ffs->ms_os_descs_ext_prop_data_len = 0;
++	spin_unlock_irq(&ffs->eps_lock);
+ }
+ 
+ 
+@@ -3756,6 +3744,7 @@ static int ffs_func_set_alt(struct usb_function *f,
+ {
+ 	struct ffs_function *func = ffs_func_from_usb(f);
+ 	struct ffs_data *ffs = func->ffs;
++	unsigned long flags;
+ 	int ret = 0, intf;
+ 
+ 	if (alt > MAX_ALT_SETTINGS)
+@@ -3768,12 +3757,15 @@ static int ffs_func_set_alt(struct usb_function *f,
+ 	if (ffs->func)
+ 		ffs_func_eps_disable(ffs->func);
+ 
++	spin_lock_irqsave(&ffs->eps_lock, flags);
+ 	if (ffs->state == FFS_DEACTIVATED) {
+ 		ffs->state = FFS_CLOSING;
++		spin_unlock_irqrestore(&ffs->eps_lock, flags);
+ 		INIT_WORK(&ffs->reset_work, ffs_reset_work);
+ 		schedule_work(&ffs->reset_work);
+ 		return -ENODEV;
+ 	}
++	spin_unlock_irqrestore(&ffs->eps_lock, flags);
+ 
+ 	if (ffs->state != FFS_ACTIVE)
+ 		return -ENODEV;
+@@ -3791,16 +3783,20 @@ static void ffs_func_disable(struct usb_function *f)
+ {
+ 	struct ffs_function *func = ffs_func_from_usb(f);
+ 	struct ffs_data *ffs = func->ffs;
++	unsigned long flags;
+ 
+ 	if (ffs->func)
+ 		ffs_func_eps_disable(ffs->func);
+ 
++	spin_lock_irqsave(&ffs->eps_lock, flags);
+ 	if (ffs->state == FFS_DEACTIVATED) {
+ 		ffs->state = FFS_CLOSING;
++		spin_unlock_irqrestore(&ffs->eps_lock, flags);
+ 		INIT_WORK(&ffs->reset_work, ffs_reset_work);
+ 		schedule_work(&ffs->reset_work);
+ 		return;
+ 	}
++	spin_unlock_irqrestore(&ffs->eps_lock, flags);
+ 
+ 	if (ffs->state == FFS_ACTIVE) {
+ 		ffs->func = NULL;
+diff --git a/drivers/usb/gadget/function/u_fs.h b/drivers/usb/gadget/function/u_fs.h
+index 4b3365f23fd7..6a80182aadd7 100644
+--- a/drivers/usb/gadget/function/u_fs.h
++++ b/drivers/usb/gadget/function/u_fs.h
+@@ -176,7 +176,7 @@ struct ffs_data {
+ 	/* reference counter */
+ 	refcount_t			ref;
+ 	/* how many files are opened (EP0 and others) */
+-	atomic_t			opened;
++	int				opened;
+ 
+ 	/* EP0 state */
+ 	enum ffs_state			state;
 
