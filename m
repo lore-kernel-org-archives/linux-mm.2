@@ -4,93 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 538E2E7C711
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 05:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FC0BE7C70D
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 06:35:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 550096B0005; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
+	id 767486B0005; Sun,  1 Feb 2026 01:35:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531DB6B0089; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
+	id 713C56B0089; Sun,  1 Feb 2026 01:35:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 430936B008A; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
+	id 5F6256B008A; Sun,  1 Feb 2026 01:35:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 30A6D6B0005
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B94C713A80A
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 05:31:31 +0000 (UTC)
-X-FDA: 84394765182.16.7DC13E1
-Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 125BF1C0003
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 05:31:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D0A16B0005
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 01:35:53 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 80C5F13BCB8
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 06:35:52 +0000 (UTC)
+X-FDA: 84394927344.20.AE18DAF
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B009780004
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 06:35:50 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dahkxK/5";
+	spf=pass (imf02.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769923890;
+	s=arc-20220608; t=1769927750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=ZW4f0rXeJpGepXMy39mLGrGmbt04aLNLgRNvAwsNfo4=;
-	b=3Zu9neCrOECxYg7fEm3dlhSYCBnRHOM+El8rz2D7vkZ1Jl++NghaaX4Zs/LNYN9R7MxwC1
-	D/PteUpxaI1ZANsFgK6v+9yXgj1PnGcE0vGVh8EjPyBcjobCZj5kO9NsOH7I1kVGoSbk85
-	8mIsIj9/16Xy8HNtTv4LPkZYPEKv0Po=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6+k5sDfrzGc/t0c0Zqa3NksQEBMmv727qk80IVOuHas=;
+	b=RS0jKrESCJHBF5cYDIv2J58baRAPeVQEPWFl9fpW6ijMiKZaj2FwwizluiriurMi2jI6Gp
+	5Ur256WSlUnuKewu9u3KBXqCKvd1Cmnz7ybTqWwnQbpSA7Abf7Ai80pAv9/8/C5fsQvzWV
+	xGG54ow0Yl/diEtBNCmb3JZuTpVGTKw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of 3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769923890; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="dahkxK/5";
+	spf=pass (imf02.hostedemail.com: domain of pilgrimtao@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=pilgrimtao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769927750; a=rsa-sha256;
 	cv=none;
-	b=dGJYJ4af+cVEmT3oijUyJUI5M9VTja6Ahe5gNjuRGtlMTnMg303xfwh4w6jN/LztVkqnou
-	M4TVZwaDmmpmgUiCzgu1mzkA5VvhistvWvPtzjfjfG/FMkjLlheMWUaskwuD3fdp4YQae4
-	uT058L0SprzIQsbn57+5jyVfgi4ajNw=
-Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-66485ced4cdso5120572eaf.1
-        for <linux-mm@kvack.org>; Sat, 31 Jan 2026 21:31:29 -0800 (PST)
+	b=uyTk2gJxgbAk7V7kt/AziLStFL7t0OWRSFPdZR7aJiLuW4L7bQYKRwrSHWUNGbVzLjqHpu
+	3wKW7hgU1XQknXGIVnDlUHYkzqPjvceJr3eVvIqirqOWmPSJKdS59Sl8LSGRPUpq08uS2P
+	kxLBvsIQ0j+nvblRaapxJAzIo204xsM=
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-823081bb15fso1772229b3a.3
+        for <linux-mm@kvack.org>; Sat, 31 Jan 2026 22:35:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769927749; x=1770532549; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6+k5sDfrzGc/t0c0Zqa3NksQEBMmv727qk80IVOuHas=;
+        b=dahkxK/5zAFBeYuKHu397I3DMVj0aABCS7o44OrJn61WKjSZyp6ey96aLNaynvwH3k
+         2BgTJbq1JlKYWY6TxVahD+x6fWhR2xt0DnxTTuF2hEPGKTkz6ThepE7C87LY895xPBpd
+         Zvi+zCVwRB4Ve2cy0zK6WLHl6s4hwxMojJWkBWIkfsQo1FYjZox9OZtKEaZMqRaxMwpw
+         6lbuvMO6OQTV2cbW96OnCTYDy/tDMXFgK/xo+81qfm5i5DaPYoZQoFSSvQjeEmlXiwkk
+         WnvDDOY2LKiPbU6/ivvHrVX2mufOmCIKeRzTz/exTgonGQtO1nWRnJx/j+fuYXhj8ZBj
+         g5FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769923889; x=1770528689;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZW4f0rXeJpGepXMy39mLGrGmbt04aLNLgRNvAwsNfo4=;
-        b=R4E3gu8V+WSiBiL5aASd8SlEFw8Bw7tsZwspl/V4GVWDJg6DozzosRhrOdeSh7nh2A
-         sXyys8Sqx1iNkiebXs3ddxQ/HD5kUjl1RJQExa7DWlhh8hWDYcZJwbykN3UiC2HQqmbE
-         7lthNRS9iOsQb6oFUiEkqncDJQT3eL2ppOFfwmj+LbquXtYsEb0/Yyoer7zrNaPKFRnw
-         6mcPCyR4MDUe3AgZKtLYdDj7loEJFffa3Z6qqh8x27aPy4KkK3wMwf/GdJy2VNSjw5lI
-         bOcbH5vw5ZCkyy5F6h26T6Sn3PXE3gzTc14HcdpxhVW/93Qulj895Pww/MGcTJaJK/Cp
-         Qgjw==
-X-Forwarded-Encrypted: i=1; AJvYcCVONkhOVuOKgSB/dUzfNfMDmab7hmnML0/gYW+R72BGLFVsuOGenCqXoXukHx3VJy0Zh//J72CfNw==@kvack.org
-X-Gm-Message-State: AOJu0Yz+vQ+yQCjJ7vk/nNn/xR7lqbeOtwli3PpvH+EepqQk4BHCG34B
-	O/l/0NOrLG+2hHaO+eYJEW3O13KUg3ILlZE7QkGMs6qRkztl2RiCFkZYSkAUZDxYqAgSC7QScDW
-	Zb8w3gJG6HoJ2VnjAf/m8zdBZffmS9+ZHXCRdhd9bY+z8ZVEcyiTrv7pX/j0=
+        d=1e100.net; s=20230601; t=1769927749; x=1770532549;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6+k5sDfrzGc/t0c0Zqa3NksQEBMmv727qk80IVOuHas=;
+        b=uz5856P1hBp3FirWvI2DwefdXsbhBvPCjUuDpxBZNZ7Gpxcdt5NzUHrL9zcz/0dCxF
+         EYaTyWO5ijGbfRRtFaxXPNtOdJyzoqh1Xx0QHhCvD+wvxb5dfoAUYbg5cwKOs+3644Zl
+         tJsVPY+1ktSBgWdlERaWR46yl9RqAPI8ZWD5cCNY1PMd2IwtN88Nztxya+jpOf5cp+A8
+         SVHb9GjuIyg6ZXQVhnrm0EBJN8g32aU+uiTE9Vps+rbzJGHP3OKI3wHbGAYgVQW2Romp
+         DNrxaiSKbdTXxQsSWedvJo3ZLjUQ9Z5ZR/QIZ5n321a3pwtrJfQRg/C+cAciV37o+9As
+         LRjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVdmBcobeq5g4vcumsIk+zKehdsQK55wc5gfteQN6Zeqm3Se4TQqE2R5fL9JNAYu90saJBpbDpsKQ==@kvack.org
+X-Gm-Message-State: AOJu0YyMAVNr50FSGoTg9SqIm6rCy3jconGpaD/gwp3RgT9rFAhTSyWr
+	LVRyLc58KACF/FOQ8uYtCK77i2mzLKcmlxxRklHGSJxi2fmnGjgxAqbs
+X-Gm-Gg: AZuq6aJ7ms/wOc3Z8ofjvUXJvNMuvt4suDpYiPsuzUgUUUBsjhmQ5Em3Ir0Vr92rjzb
+	ou2fWjVl976kix7bxmhKQsY5zQ95iGo/lHDF53Apxcly1Cg8WlXhd6lO8fyynOhwhkL9754W2O4
+	kXE/q9BIkhIX5iBz3XbBu8Aykz2IGGOQ2Cva7Kogncz+oxNN1/wN5dNZz1oeNhyt2dX3EwBa9aw
+	UzKABjv6px0vl3KdoZr4mJ7spQGm2KN1SedQ+aHGZH/R6X/2KGY2aQYLoZNm8WXQ8nEtRBley+v
+	9HudSs9neqA8oerzQirddiAwIwvkpC54FoAJX4Yvmjrg3t7duSCLoUPGeP/ZO8dJc8nRnSCQOJZ
+	tZm4l6fC/F1hJDRatH1A0BBbkocKh07E3yS1x1mhh8+AHsZjgEZM8r1ETWzf316Q+SpnpPPY0n8
+	WFdJq7GmA6NKSv1GZ387vcIlRA1q/uLzOpHb6uC4t5vw==
+X-Received: by 2002:a05:6a00:4b46:b0:821:70e7:b10a with SMTP id d2e1a72fcca58-823aa40d7e9mr9263325b3a.8.1769927749584;
+        Sat, 31 Jan 2026 22:35:49 -0800 (PST)
+Received: from localhost.localdomain ([113.218.252.120])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b6b2bdsm12149294b3a.30.2026.01.31.22.35.44
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 31 Jan 2026 22:35:49 -0800 (PST)
+From: chengkaitao <pilgrimtao@gmail.com>
+To: davem@davemloft.net,
+	andreas@gaisler.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com
+Cc: kevin.brodsky@arm.com,
+	dave.hansen@linux.intel.com,
+	ziy@nvidia.com,
+	chengkaitao@kylinos.cn,
+	willy@infradead.org,
+	zhengqi.arch@bytedance.com,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v6 1/2] sparc: Use vmemmap_populate_hugepages for vmemmap_populate
+Date: Sun,  1 Feb 2026 14:35:31 +0800
+Message-ID: <20260201063532.44807-2-pilgrimtao@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260201063532.44807-1-pilgrimtao@gmail.com>
+References: <20260201063532.44807-1-pilgrimtao@gmail.com>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:814:b0:663:b86:493 with SMTP id
- 006d021491bc7-6630f03726cmr3488940eaf.33.1769923889108; Sat, 31 Jan 2026
- 21:31:29 -0800 (PST)
-Date: Sat, 31 Jan 2026 21:31:29 -0800
-In-Reply-To: <68f848cf.a70a0220.3bf6c6.000e.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <697ee531.050a0220.16b13.0098.GAE@google.com>
-Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in shmem_file_write_iter (3)
-From: syzbot <syzbot+f172d48953db0cf91855@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
-	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
-	ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: B009780004
+X-Stat-Signature: 58h6gyoorf6oheqkx81aisndh57rkkdw
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 125BF1C0003
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ah8esqs1tico371afceh5fafb4msfqk9
-X-HE-Tag: 1769923889-196317
-X-HE-Meta: U2FsdGVkX1/DhPYYdisCqQGSIdkkq6mG50XFpOn78qpEPBDfRGcYH6+DE/bQlDPLMspjS5JZiuv8Uvm4GEZlAMySmM/xd+AC6D9t6at0a/4iHHa+WSJhCBZ1Ty33sIJxCh3W4nAEp4EL99G3iUciL9Cf3rUnJ4omAS/+ueyLiTplMNY5EOJne48wtKkaB6CYKfHIX+NAwRKmX1Uv1NRgZQ9FpVFgjoWKlj0oC0poKDmb02yrng9fpOW7TIyKWH82r7t+UpUjVWSx854cR029e0Ya4zg3vf61xT/UYRFPAG28wYa7w+NsOBmaa0Tmlxo6JMnjphj7OIci0uyAK3wvoiodl4bvqtjeCiXFhxAvffBBitPDS+HDrDp3CUzlUfObKKqFhL/fGxMPCjxT1XhFNkfCcRUgTia6gULCtMje+Q3jk1rG51dDuCQJ2CU6KnNxzlQDTSRiYTEBofFk68DCHtxl7tRPfvUMzQfQyHKHKo/ujbhlHz4QGJiRZo0wPpj5Yk4FOSgEeVT+UItEwDcnvJrmbo5mp7YA4C4wuVH1Khvqs4w5BCzCcA5y+w5gbXhwANKlzqAeEOLAELgyH4Jv7U87yxnuyfXIsAmofVyw7xl+05VcVn7E1h7gMvqnj9YVQ+IuJ8vjfXR9ZlzNCvfhj1kViEZtmSvsPOKXKH2nh1WMztaWOu2QsfHpOPlbZmyvQT9Ae1RIaplpmR5ZGQQLxPgy5y5YuB+JD6RiUAcgPba30Uh/yYdMz+OzkDrsYoe68+IHB2yLFGbngJyjrH+u2+K0Elwm06gVzrqwFA4XBcA4FOANZWyYha/Svd18K+5xCKhzHgKi9aCPY+bwmat2WP/IMqfTPpO43JVm1I/qWdZj+EnNjYtkb9PnF0NSFRJPQa5FhBdvkug8zOjBFdyAS5ilFw2TOOlx5SbwLzBEBS9PGz88hvdOg59Wt5qeDJzTZd3MBk0bVgvQ3Z8I5jC
- laqHFrNp
- x2T/aYDWf26g0KCXOzbgPR9NXdNdt3paQvEvKzwdnaztd8Pm2cwwKzfmP8xNw+5sMvo6nOWXm2mWgmTRGS6XBePP8tdUE5Ktg5NCgNB5n6Iz9e8jbCG7mKJymY6lL+tb6wwY0c9vUMJHtFu5ImhxuCdCrxo1v1OgF3+tBoftn9zUR4EpptPGkey1rJ8yhcfZFlAboNTA3UMEoV1WuRTZ5Zuh6rs6h4JQqyJV7Of3CrpgbzbycnjlGZT/3/LdmaKXGR2oEGpizBJwy4hL+L1u9MyUGceQAf/w+Mn4q1vKV01jhBlXmU3Dtr9Z9wS0fmHbkppT8xV+FiWQ1RDN+GPenn8ev/2AtgMDZQvmggpIC577tAsiRK02HEg6S1AN04O1nUCfs3F9nw2hrklpmvfa7JsKrh31QPNWSE9o+mPd4WbksE749MsqFfaWId3fnS5e9qZgGWiWiJYJ4mYOKrKmhaaI1TA6h703J/SIfP27FVCaHLPrfplpRmEzryhNT4gpG0Mxb1BTs/IjsWT4VCXsN1Ae2rkwk0vcEctleo0EVKnE0j+4RizkJN7q/NzS9W0cz7xsoUYmsBYZcOoL6D+4Nt9ohADBfbDhb+c+I20+Lnx6gVc1mlxEpfQDQgWH9fqWETJGJ3EzjlbkLTD82EmWp0BklMVYif9eKOAent1QHZzOwhc6cXM/EcVVpdBY+byp+2BObsplTjkBXHrdsEDX5fjJZD+CUe+OzkIvAqON8k90V1pF/1ee1GghYvRUhGBlbPWww12e5FK0jn7qEUqGDbWxj1hQTjlcdClA4MH8CvWpXjEfmabL0VW44ngMvLGAsT/yLINIjk0peYWLoonhSjtMq2yeukDETR0C2UlsHB08bhG39rnplvLysu980QF46/kCLQldT4UPJKEiG9sUmSrJfZDsvk6Cs/EzGCAbrVG97oF+0m/ahV6tpNrx2oQ4SijkLWWRmN4ZOVfytPxcg6qfDnCZQ
- wxlCWgMo
- 1eEnXcHjk6Sytyge9F0n/6oHZVj6aEdCVxCmml/SA6QTHLHoqDbNKymYNuzg7NZPAQFh7jjGM3Bcd++gTkmvm+ClB45UyLSwLAiRz+/1E2n/FF9CVkXNDI3UnsczAA0ymRwjag+oHQhtnXoAeLa7mFR58oC6qFhEzCGT+j3lF2fcUMg85uB0KYUApD4M+VePmkh37J4AyfX3nnk198oRhyxC5JwTC2R7AxLipGg5ccdBCxgUYJoWG20t8LqBNWdfFwAJqTofEv/gU5PdK2OUIQJ8t8i2WUYrZ8KN0JgVf91KC4Mel4sFcVHduwUSohn/SzklA052w9cb8APnstiBc4i+tJ6Kmaaw
+X-HE-Tag: 1769927750-989445
+X-HE-Meta: U2FsdGVkX18FYYjr1OklnFWk9tdjW63sOKs7wLckBZm39LBH5258m045CA/oyFh0j3KLa93saHnmr50IPYMlwX4fVmdy3qh6URIzFEaO6S4dWMk6HnRPZHHR+ZgzXioXPoxwB2I3VHPdLmOZgZh5oP3AEiDlvaijyw51J8wXI9beXrwlnEyLpPi0Ag38A84bz7mNhataem4mQvMpGtYGnz2mzGzm8KSy2+DZnwpLJjRzwZy+0b3ZSgH5f+ZXwrAgaPFy4AuGSA11237GKiALmKRIM2ZlMuyMG6irPR9mCCYCPzTbZUd6uPei95JlAJWWTmRG91oFJcPiGXlsUn658FecBLBL5oqgGYKLw74c+lhlwLKCqv0EiNJUPJNi0ZXBt/RqFFVWdqFgDFoSaKYH/7WxD6nvIUY5VowyoiWFyDXOZ/YBT9KqYG3/AaSow8wZD+0TqEtpeHovzIhhrripdNj6s+e7zV2rMnimNCPKlGZI+OrMLM23BIMkQQHaVWeri7C+2xFSzbmFsFAIHaouWIeo+uuxlG2K3JisIeN/2CK/LkZOM5+UmNgpbjLPior4bd8t7fI9UrTRrLpkdvgoh13AvdbcIqoW8uPOKiCP3tAJT2eglVQel9VBrLwL/t9EC845gayja3uFhjU28Wh+dsu+wnM/sYEThDFq/Qba+VdoLuyyxWxoBDFya+TZkn+cGxtNtS3QIMHGOLgxctum307k90SqLfjh5XOVy3X4+GPfDyzGE3/bTjbIVpnzfb4Qu27vnp26iqPN3sbSdZDTH3cocumrFlf6qWUkM/ZSQRZoRFacS0M8At6R3w9/bTUJ18QgUg+xgX43LpzFBfYLU1uC9gqWMSxaE5LjEy/AQgnYqqea8yYEgVM3FjVbiiS4UzxLSHd5ut6DTr9cFPR10heSVNgO8n9WW5VkVA55mRT1THyzX6Ih9Jf/hMcEES6XujNokwD0q5A1g+1o9uL
+ QiiVsFJs
+ baqU/J0YrTsJs79ndxY6VpTcOrOLmLPbWW4ITu30T29aB5L0C43tbx+qCdBaJU6xePt4D2CuqyL38l92FQkQmAQX7iVk5TqaqBpP7ilpVJYsaO10eQUOVY11iM6ARbeiDAcoPFYWizj13q7Ih8dSqN4n+da40biiznOkSFpMwHcbnL+FPysEl7ZW+tNw+xj/Qqf7Nda/k4w84EXocm2K3eDOOga8BcMC9VBbvg1Ubp9G3csRRLUIGJBJ4KWlqLDbGllzWP6+JoHk7bspC5dSDZMFrmyBA6sKHWue+2ytHXJApxzlWJj34MSR9ZqYMsE0Jq8J1N5g2+sc/N1c73xYRON3tx8u+KF8blOhSSdYHaUkRoXsNFubx5uVHnnGTRQY/ZPNwtANbaNfyKvEvVK6IYaPSHRHUi39ANKqZsyBKhMHsp6jq6NDrNX5BGDEGLKY0hhWjZ6lXwKx5315za8Zt9DS8gDCUxHrFfi0lfXerPkzNUUVHre4lzkkJPWxanWR9Z6WpsH4J3zF9JNedkQp7RevI3w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,138 +134,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
+From: Chengkaitao <chengkaitao@kylinos.cn>
 
-HEAD commit:    162b42445b58 Merge tag 'iommu-fixes-v6.19-rc7' of git://gi..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=175f845a580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=4aae00ac5a9d2645
-dashboard link: https://syzkaller.appspot.com/bug?extid=f172d48953db0cf91855
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1458d322580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12dabbfa580000
+1. In the SPARC architecture, reimplement vmemmap_populate using
+vmemmap_populate_hugepages.
+2. Allow the SPARC arch to fallback to vmemmap_populate_basepages(),
+when vmemmap_alloc_block returns NULL.
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-162b4244.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/d7fb932fd633/vmlinux-162b4244.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/0008cacaef76/bzImage-162b4244.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/e800ad00fb07/mount_2.gz
-  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=14699c52580000)
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+f172d48953db0cf91855@syzkaller.appspotmail.com
-
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-0): P5973/1:b..l
-rcu: 	(detected by 0, t=10502 jiffies, g=33977, q=94 ncpus=1)
-task:syz.5.221       state:R  running task     stack:25112 pid:5973  tgid:5973  ppid:5485   task_flags:0x400040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5260 [inline]
- __schedule+0x14ea/0x5050 kernel/sched/core.c:6867
- preempt_schedule_irq+0x4d/0xa0 kernel/sched/core.c:7194
- irqentry_exit+0x597/0x620 kernel/entry/common.c:216
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:__rcu_read_lock+0x31/0x60 kernel/rcu/tree_plugin.h:416
-Code: 8b 1d bb 01 49 11 48 81 c3 84 04 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 0f b6 04 08 84 c0 75 18 ff 03 8b 03 <3d> 00 00 00 40 7d 07 5b c3 cc cc cc cc cc 90 0f 0b 90 eb f3 89 d9
-RSP: 0018:ffffc90003b170c8 EFLAGS: 00000202
-RAX: 0000000000000001 RBX: ffff8880526f8484 RCX: dffffc0000000000
-RDX: dffffc0000000000 RSI: ffffffff8200ea42 RDI: ffffc90003b171a8
-RBP: dffffc0000000000 R08: ffffc90003b17270 R09: 0000000000000008
-R10: ffffc90003b171f8 R11: ffffffff81afb170 R12: 1ffff92000762e35
-R13: ffffc90003b171e0 R14: ffffc90003b171a8 R15: ffffc90003b17b20
- rcu_read_lock include/linux/rcupdate.h:865 [inline]
- class_rcu_constructor include/linux/rcupdate.h:1195 [inline]
- unwind_next_frame+0x9e/0x23c0 arch/x86/kernel/unwind_orc.c:495
- arch_stack_walk+0x11b/0x150 arch/x86/kernel/stacktrace.c:25
- stack_trace_save+0xa9/0x100 kernel/stacktrace.c:122
- save_stack+0x122/0x230 mm/page_owner.c:165
- __set_page_owner+0x8d/0x4c0 mm/page_owner.c:341
- set_page_owner include/linux/page_owner.h:32 [inline]
- post_alloc_hook+0x228/0x280 mm/page_alloc.c:1884
- prep_new_page mm/page_alloc.c:1892 [inline]
- get_page_from_freelist+0x24dc/0x2580 mm/page_alloc.c:3945
- __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5240
- alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2486
- folio_alloc_mpol_noprof+0x39/0x70 mm/mempolicy.c:2505
- shmem_alloc_folio mm/shmem.c:1913 [inline]
- shmem_alloc_and_add_folio+0x445/0xf80 mm/shmem.c:1955
- shmem_get_folio_gfp+0x5a9/0x1670 mm/shmem.c:2579
- shmem_get_folio mm/shmem.c:2685 [inline]
- shmem_write_begin+0x16c/0x330 mm/shmem.c:3338
- generic_perform_write+0x2e2/0x8f0 mm/filemap.c:4314
- shmem_file_write_iter+0xf8/0x120 mm/shmem.c:3513
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x61d/0xb90 fs/read_write.c:686
- ksys_write+0x150/0x270 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f1ef735b78e
-RSP: 002b:00007ffc44ca3b98 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 000055558e4b7500 RCX: 00007f1ef735b78e
-RDX: 0000000001000000 RSI: 00007f1eee400000 RDI: 0000000000000004
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000004
-R13: 00007ffc44ca3cd0 R14: 00007ffc44ca3c90 R15: 00007f1eee400000
- </TASK>
-rcu: rcu_preempt kthread timer wakeup didn't happen for 10497 jiffies! g33977 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
-rcu: 	Possible timer handling issue on cpu=0 timer-softirq=24428
-rcu: rcu_preempt kthread starved for 10498 jiffies! g33977 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:I stack:28784 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5260 [inline]
- __schedule+0x14ea/0x5050 kernel/sched/core.c:6867
- __schedule_loop kernel/sched/core.c:6949 [inline]
- schedule+0x164/0x360 kernel/sched/core.c:6964
- schedule_timeout+0x158/0x2c0 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x312/0x1560 kernel/rcu/tree.c:2083
- rcu_gp_kthread+0x9d/0x3b0 kernel/rcu/tree.c:2285
- kthread+0x726/0x8b0 kernel/kthread.c:463
- ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-CPU: 0 UID: 0 PID: 1314 Comm: aoe_tx0 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
-RIP: 0010:_raw_spin_unlock_irqrestore+0x47/0x80 kernel/locking/spinlock.c:194
-Code: f7 e8 dd 47 05 f6 f7 c3 00 02 00 00 74 05 e8 80 b5 30 f6 9c 58 a9 00 02 00 00 75 27 f7 c3 00 02 00 00 74 01 fb bf 01 00 00 00 <e8> 64 13 f7 f5 65 8b 05 cd b5 57 07 85 c0 74 18 5b 41 5e c3 cc cc
-RSP: 0018:ffffc9000858f788 EFLAGS: 00000206
-RAX: 0000000000000006 RBX: 0000000000000286 RCX: 0000000000000202
-RDX: 0000000000000002 RSI: ffffffff8dccfc9a RDI: 0000000000000001
-RBP: dffffc0000000000 R08: ffffffff8fef3f77 R09: 1ffffffff1fde7ee
-R10: dffffc0000000000 R11: fffffbfff1fde7ef R12: 0000000000000000
-R13: 0000000000000000 R14: ffffffff9a3421a0 R15: ffffffff8edf0cc0
-FS:  0000000000000000(0000) GS:ffff88808ccea000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f6c1dbf8000 CR3: 000000005495c000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
- uart_port_unlock_irqrestore include/linux/serial_core.h:788 [inline]
- uart_port_unlock_deref drivers/tty/serial/serial_core.c:91 [inline]
- uart_write_room+0x3b0/0x840 drivers/tty/serial/serial_core.c:647
- handle_tx+0x163/0x610 drivers/net/caif/caif_serial.c:212
- __netdev_start_xmit include/linux/netdevice.h:5273 [inline]
- netdev_start_xmit include/linux/netdevice.h:5282 [inline]
- xmit_one net/core/dev.c:3866 [inline]
- dev_hard_start_xmit+0x2cd/0x7f0 net/core/dev.c:3882
- __dev_queue_xmit+0x168f/0x3850 net/core/dev.c:4832
- dev_queue_xmit include/linux/netdevice.h:3381 [inline]
- tx+0x6b/0x190 drivers/block/aoe/aoenet.c:62
- kthread+0x1e0/0x3f0 drivers/block/aoe/aoecmd.c:1241
- kthread+0x726/0x8b0 kernel/kthread.c:463
- ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-
-
+Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+ arch/sparc/mm/init_64.c | 47 ++++++++++++++---------------------------
+ 1 file changed, 16 insertions(+), 31 deletions(-)
+
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index df9f7c444c39..f1981adc99ac 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -2581,8 +2581,8 @@ unsigned long _PAGE_CACHE __read_mostly;
+ EXPORT_SYMBOL(_PAGE_CACHE);
+ 
+ #ifdef CONFIG_SPARSEMEM_VMEMMAP
+-int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+-			       int node, struct vmem_altmap *altmap)
++void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
++			       unsigned long addr, unsigned long next)
+ {
+ 	unsigned long pte_base;
+ 
+@@ -2595,39 +2595,24 @@ int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
+ 
+ 	pte_base |= _PAGE_PMD_HUGE;
+ 
+-	vstart = vstart & PMD_MASK;
+-	vend = ALIGN(vend, PMD_SIZE);
+-	for (; vstart < vend; vstart += PMD_SIZE) {
+-		pgd_t *pgd = vmemmap_pgd_populate(vstart, node);
+-		unsigned long pte;
+-		p4d_t *p4d;
+-		pud_t *pud;
+-		pmd_t *pmd;
+-
+-		if (!pgd)
+-			return -ENOMEM;
+-
+-		p4d = vmemmap_p4d_populate(pgd, vstart, node);
+-		if (!p4d)
+-			return -ENOMEM;
+-
+-		pud = vmemmap_pud_populate(p4d, vstart, node);
+-		if (!pud)
+-			return -ENOMEM;
++	pmd_val(*pmd) = pte_base | __pa(p);
++}
+ 
+-		pmd = pmd_offset(pud, vstart);
+-		pte = pmd_val(*pmd);
+-		if (!(pte & _PAGE_VALID)) {
+-			void *block = vmemmap_alloc_block(PMD_SIZE, node);
++int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
++				unsigned long addr, unsigned long next)
++{
++	int large = pmd_leaf(*pmdp);
+ 
+-			if (!block)
+-				return -ENOMEM;
++	if (large)
++		vmemmap_verify((pte_t *)pmdp, node, addr, next);
+ 
+-			pmd_val(*pmd) = pte_base | __pa(block);
+-		}
+-	}
++	return large;
++}
+ 
+-	return 0;
++int __meminit vmemmap_populate(unsigned long vstart, unsigned long vend,
++			       int node, struct vmem_altmap *altmap)
++{
++	return vmemmap_populate_hugepages(vstart, vend, node, NULL);
+ }
+ #endif /* CONFIG_SPARSEMEM_VMEMMAP */
+ 
+-- 
+2.50.1 (Apple Git-155)
+
 
