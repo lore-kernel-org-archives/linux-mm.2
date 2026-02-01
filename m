@@ -4,97 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DE6E7C6F9
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 00:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C7F3E7C6F9
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 00:43:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86F236B0005; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
+	id 9CD346B0088; Sat, 31 Jan 2026 19:43:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 819206B0088; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
+	id 950BA6B0089; Sat, 31 Jan 2026 19:43:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71B5D6B008A; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
+	id 84F716B008A; Sat, 31 Jan 2026 19:43:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 607456B0005
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F06EB13BBF5
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:10:54 +0000 (UTC)
-X-FDA: 84393957228.30.6F4DBCE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3DCD9140002
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:10:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HZPRwdjq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769904653; a=rsa-sha256;
-	cv=none;
-	b=0pBpoJ4rfqVswB4sWa50YW4LF8sxTpMcfYgkMgWzTAqjpDK2vndPPhMGJukOoWlaK3du9o
-	p1j8QoCDxjh/ymWJC6ujwt30cIlKXFfM+vLV8yMH/48iws0knJ6yKZnojohIsdMBMf5L2i
-	/EWX6RKA3nFSTULUsJQx7nRrIj+ty8s=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HZPRwdjq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 756C06B0088
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:43:14 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BFBC713BA63
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:43:13 +0000 (UTC)
+X-FDA: 84394038666.27.4B3F50A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0BEF21A0002
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:43:11 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BbpBcpEz;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769904653;
+	s=arc-20220608; t=1769906592;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b+9nH2SfyPpXQdVSnM33OFp4xaFDuvRVZPTBd7l7Hu4=;
-	b=V40EBpu8Y6JgAgV6DLyQVJc5XlKJc8nxgAqrmJ9S5XYAL3pwg/iEgLXS8Ka62YDDSFR3XP
-	guE2e/33gtVi1yxD3QKOfXntYgdyvL0vnULhNtxSDtznehkVtlC/DAJTPISD8fC9P3NsK0
-	iTtONmrPP67NGmB0zGAB/sdHOAYwUiU=
+	bh=1/N2TX5w7TG0/ptW8V2UL9YErPH+kKWXCN3zQqvUn74=;
+	b=qV4AVsdRF0sCmGXPiXoz56DctEyOBE1G8JqJBGwDk1uUwjpl3onNshAAzDSyPojY+rLijV
+	giyud+U/1hRkCL52N0nM2uLo12O74vR79YhVm+Wp6+E1lY++L3po6qLgvtM/JAQR2Ex0OG
+	oan02QWzxRoQZmZU8ObvRSUXMoLNoj0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=BbpBcpEz;
+	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769906592; a=rsa-sha256;
+	cv=none;
+	b=EF7aTybj3yYQFQI9IK15+TgwVNonrojfULV6W4NheTIIFZC+IIm6vFzW1/hYFRPGz02dPP
+	b97r2ABnHWXTKE4sDRZthAQgiM+1/TqP4kazmFlcIzIOywuAsPurD5QxOtw+CwAJbDdSf8
+	OibTTySkJHH0it7Cq2pO7QVxDexASG0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 06100436FF;
-	Sun,  1 Feb 2026 00:10:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85585C4CEF1;
-	Sun,  1 Feb 2026 00:10:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769904651;
-	bh=kQPODrUPiUY8ypJn9UfaCgFiYZn8Bv06jSOIpi+1vNk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZPRwdjqd7n51HsggBZHcRVQhVZcoHGaVm/A76ifsFWXIUgfeox9jNYRIygd5ZJmi
-	 fRMOOnUIhuwoxNnA4s1OmUx0ClDPHqwpjmlzAcw0/HhxWXu4cYdUWwUx+6lWw3geZq
-	 I0XWjzYWi5teATSCzv42KzGXruNdU74PSejVu28MQQiR7mhV0nuUHWb19epJSReB+V
-	 wNMOBuGBUelGqLxbYZOIw1E5KrNsCulOhaoc2/BRVwnlNRuE0TvEKyAQEiMxhRjKgC
-	 M4dxaW5TukrVdoWMgUYxEDUu8rLZ02GfpWHZPbTDRPmsQSQknv5xHShNv0dpchRYj9
-	 A+y4cc1DxZ6eg==
-From: SeongJae Park <sj@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Suren Baghdasaryan <surenb@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Christian Kujau <lists@nerdbynature.de>
-Subject: Re: [PATCH v3 21/30] maple_tree: Add cp_is_new_root() helper
-Date: Sat, 31 Jan 2026 16:10:42 -0800
-Message-ID: <20260201001043.88706-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260130205935.2559335-22-Liam.Howlett@oracle.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	by tor.source.kernel.org (Postfix) with ESMTP id 1071460053;
+	Sun,  1 Feb 2026 00:43:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F288C4CEF1;
+	Sun,  1 Feb 2026 00:43:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1769906590;
+	bh=N/bSjHB232qPSoeOv44GNd40TFrJjRkIvnqNHWcNv5Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BbpBcpEzEMUAjgQatMPJP9qosblFzD9GPc34UqKsewAuZAK+oFHn/byEpK6W+U77S
+	 sTD/U0Nxf0Y3jHQmCE3CsrjDpNh98N9qP8FVu/11R9UEPqKeIU9z03w3+SjvogAkDB
+	 ZAvx54CfyNNwAVm4XPi/6CsBkv5hZscANmbR74ZU=
+Date: Sat, 31 Jan 2026 16:43:10 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Kevin Lourenco <klourencodev@gmail.com>, linux-mm@kvack.org, Kevin
+ Lourenco <k.lourenco@criteo.com>
+Subject: Re: [PATCH] mm/fadvise: validate offset in generic_fadvise
+Message-Id: <20260131164310.048caf9636063986a8b517e6@linux-foundation.org>
+In-Reply-To: <1690da61-412a-457a-9bb4-1135838135da@kernel.org>
+References: <20251222141817.13335-1-klourencodev@gmail.com>
+	<961095cd-59d2-454a-9b97-493d12f296a1@kernel.org>
+	<CAFveykO9tAhGnKCnSD-2_wt3QxMTNF3sW20NGwnPK-3yMd__yA@mail.gmail.com>
+	<1690da61-412a-457a-9bb4-1135838135da@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0BEF21A0002
+X-Stat-Signature: ap36j6dikt6kaecc6enyb36g5di3eux8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3DCD9140002
-X-Stat-Signature: pu4dpjefbsb16xp8knbemn7uesni5a3t
-X-HE-Tag: 1769904653-543793
-X-HE-Meta: U2FsdGVkX19EohTsEl66gcMnJI/c6ZPCSAfZfF5v8qjhTnYhW7axfmNWQkktQph2RPJDrlJfRGQDbqzMXdXg5Lzkd7i8hVG8FRaJxXSgVpJcPk02TNC6j50RMymInCqyHs+4WfkTg0ZTm2rjElnP9KMrJ9W61T9QgSG39awtNj741q5nSArDQrk0RqIufN+l3yupvcAAfG0RqG2VDLEmFqLbp5bi/zCht3IuQLET/3kF34EqzMR8nMygdeP3jN1Pmvzr01mR3IbAJPvWM5kTY1yVIP7KnJCTppamY2yXrooGB7jQl4MWTi7bcOVbC/WD+C34hH9RuHEcRuYNlrWk4Tv3rKN5sI4yollhTl6iNoS1w4z3CTe7aR98FUa9NmDDOIzjuyb1/IlwoNUvwWQRHjVEt1P5LhxSdDSpk34WivuTePC/HSEmFkmNlnxc9ZdeEq7qKMAyESmtJYW1D3IMiayfb/vI+Lez1tt4e+6J1m+46YCo4ypZELrz66xgk57/NITrHpIh4QE3m3ssiUfzRIzIVFkcupiQP35xA56JZ65QxXZpnivLYQYBRZGCy9pOZt2JiQ1EHIyEPq2mvp3dMwdHGqBaMM1boiZGs34LTHQkPLdX6T9C1kG2RRQTSr4NZnkj2mXigL0DalKdqNbN2r0wTNCPj9TjUZbMePIQJaB3AHyVSzGT5RY35E/geZ+AmDOUPkRXYov6KGKSTnd6MJggOY/B+JNrTUEmuI7oX1o4l5gokfDGCPNbJYjfpSP2AnQZdrad3PjTJOTPXAC+G5sZ5xMFn7JqGinolLtApl4b2u7UuvDOkYaGUneluoiCg7Bg6CQzthLoW43tzYEqdqqPUlY6e+WGR2elndp/B8GUi3MNH7vRydVajW+w81p7AsKmFWKlEfJJU+5tp3hwkcjmD+2nMDqVb8F3JYlSxznRN/hPQZWp4kyKsYcFY4k7V7YDHrmiHaCNs/apcbs
- jjfgFV8q
- AqrpJ2p/3cEnFU58mkZo9Zwp7gXOCl8AGpYhLYqqJEyXVN/EcBY0hkVBuCl05Z3VUblPxC6NzEuj1NKwAcNoD/0bQnb7tYDstpiSmOEtIuHf5gWerVPCrlgLmwdGYAnoS63THVV/7owgMABh53oOoMUiucJUG2bXT+Ty/gSu9BbFj59bsYPd93xTEJfxk3UYtA9rlSf3Np8g0+OfQA4UoNoNORqhCNDwLGbx5kzZXBruy5zKZ4abKR3SCfiLuE3GhxdsocK3pt0v+nCBFlsJ6StbA/j5TECfnYA5RG2qq8l3lvXw/K983BlYOYw==
+X-HE-Tag: 1769906591-53967
+X-HE-Meta: U2FsdGVkX1+N5xPuV8YT1h7dUGBLX6oatHX/XWmmnQTQv3Jegq4wrGHr79RcsCdxJs24Inx5FROf2uz5M6mwTIG7nubsMbvHE15TWqkh9aKv6OGnFBEQc9aptD/Mot0QMLbCpAKGuvptorfcBtqNThTRi9Rt/vd38N0TQKYLxbTOI38veEpxCpV89621X0AvPRwUlM5GxBZrpvyQDyPhARG5YfOcrfln8x5IzlTWann3slG4qJf3szwfJOeF9rpeR+/+UoWqsXFAl+WBXMbuPxwJw2pSO3XIUkTII7LWRB8AMc4+MvXQiU4y8iwzgjnfziDOwn1E1ghyZyPExb7N/iyjKkmsR65/UyaNDo9qVz4ccmMiPobWwjkX2YfPtXf7VoVWP7eS9jHpsjvxn5AAsR+ZkF5BbX12SY8mRgdzrZRb9Nb9vPzo1kHrZO5DUBRXx9FZc6JT6NT+QF+7Ms3jX0TAY5GdAOOGbn6UYSQ+4IED/wtuNbdqGY9TPts7eSNSu3zRzWbU4rBhpiQ5kchMm3pF05LFsCUrgLlaUD1kxFnMAr7+ZdBtaHT/5FoeyMiUgFjV6Y4AoQPayFiC7U+9rFIDpY7VtIyQ6dRKFuFHXEWVDlADQ9ZI5CzfWtaUIAuI0yim2R9RPNmB4tM5LUgf6c3saL2Lg0Py7mTmb8ip/JkS2pHjo56f5TKzuK/FH2Jh9sBaKFTJuIKxU8IDDA5/yMNXwVv7RHp6lXYg84ctQUxBuaHaQmpfTk2Yxbnv4rJMba7hU2fpzIObzAWVFIFkdsMsK2nz8kWzEJU0YHB45fgkCwgCRNKErhw+FfXUnr3JutQXjoQ2BqC5cBxT4RSyVblrqZTvEaeky9ERBwbRBhfwGXPm9OHKCGizFKtdp0el1rrP8Dp3ZlDRj7kDnqtny3e9JX3uOxoFBmBRKLixwQWxCMLPTNH5XT+KsYI+BmJDXraBtJI7ru94J8SXOP9
+ mPiRkrq/
+ Ma7uF+Q8KcQJfdeb4jvAg/vdGSePLkzR23tbimutyH+A1xPTW2KejvtpoXwwSfoEyFA3B43kx0PDrw5BhNoYnkkRb8+mm0Px0iPOQSEYQXQeF6XFeymVxR2Pmy6ZpNrbHWw3p134bdMlnPnIUndutvyY9bfKQcDnv5k+zwjh3c+5I8zkwyR4YWGgmCSqsqji6bEhSSYtHgqZGBGKdVB0fK6SqzqbfYkH/Oa35X8c73ZS1BJRv4wNmYbTcBrFg9q1//KYm7HiBP/gwnhMG6Dn5WfqRwxfIpKjPu07Adf65MwXSvPpuiZoLsAvebb7eWx9zsVLK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,116 +93,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, 6 Jan 2026 20:46:14 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
 
-On Fri, 30 Jan 2026 15:59:26 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
-
-> Add a helper to do what is needed when the maple copy node contains a
-> new root node.  This is useful for future commits and is
-> self-documenting code.
+> > Since I think nobody intentionally passes negative values and since
+> > that makes no sense semantically speaking, I think we can consider it
 > 
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> ---
->  lib/maple_tree.c | 70 ++++++++++++++++++++++++++----------------------
->  1 file changed, 38 insertions(+), 32 deletions(-)
+> Well, then why document negative length? ;) We should be as clear as 
+> possible in the documentation.
 > 
-> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-> index 5280fa6d2d6ec..42038e42a4c7e 100644
-> --- a/lib/maple_tree.c
-> +++ b/lib/maple_tree.c
-> @@ -3337,6 +3337,43 @@ static void mas_spanning_rebalance(struct ma_state *mas,
->  	mas_spanning_rebalance_loop(mas, mast, count);
->  }
->  
-> +static inline bool cp_is_new_root(struct maple_copy *cp, struct ma_state *mas)
-> +{
-> +	if (cp->min || cp->max != ULONG_MAX)
-> +		return false;
-> +
-> +	if (cp->d_count != 1) {
-> +		enum maple_type mt = maple_arange_64;
-> +
-> +		if (!mt_is_alloc(mas->tree))
-> +			mt = maple_range_64;
-> +
-> +		cp->data = cp->d_count;
-> +		cp->s_count = 0;
-> +		dst_setup(cp, mas, mt);
-> +		init_cp_src(cp);
-> +		node_copy(mas, cp->src[0].node, 0, cp->data, cp->max, maple_copy,
-> +			  cp->dst[0].node, 0, mt);
-> +		node_finalise(cp->dst[0].node, mt, cp->end + 1);
-> +		/*
-> +		 * Warning, see cp_leaf_init() comment and rcu_assign_pointer()
-> +		 * documentation.  Since this is a new root, there are no
-> +		 * read-side operations that can view it until it is insert into
-> +		 * the tree after an rcu_assign_pointer() call.
-> +		 */
-> +		RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
+> If POSIX would have been clearer we wouldn't have this discussion :)
+> 
+> > unnecessary to update the man page right now and only think about it
+> > in the future if a negative offset gains a new meaning, for example.
+> > 
+> > Wdyt?
+> 
+> Likely we should really update the man page to reflect reality. 
+> "Starting with Linux v7.0, posix_fadvise() will fail with ...".
+> 
+> Given that FreeBSD rejects negative offsets I guess we are good.
 
-I just found the above makes my build test using an old version compiler fails.
-Fortunately, seems it is same to the one we discussed before [1], and same
-mitigation like below attached patch works, at least for my test setup.
+I'm still not sure what to do with this.
 
-[1] https://lore.kernel.org/dwhxxuil4zkesmyj6xviyyyfedrcd65h6qd4bplmcrsg36purj@f523i7t6nxag
+Kevin, would you have time to update the changelog with the additional
+things we've discussed: linux manpages, POSIX, freebsd etc?  Then
+please resend, cc'ing linux-fsdevel, Jan Kara and anyone else we can
+think of ;)
 
-
-Thanks,
-SJ
-
-[...]
-=== >8 ===
-From ecc4e468d72c431d53043c8a61fddb6ddf2ecf7c Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Sat, 31 Jan 2026 16:02:56 -0800
-Subject: [PATCH] lib/mape_tree: temporal build fix
-
-Without the fix, build with old compilers fails like below:
-
-  CC      lib/maple_tree.o
-In file included from .../arch/arm64/include/asm/rwonce.h:67,
-                 from .../include/linux/compiler.h:380,
-                 from .../include/linux/array_size.h:5,
-                 from .../include/linux/kernel.h:16,
-                 from .../include/linux/maple_tree.h:11,
-                 from .../lib/maple_tree.c:56:
-.../lib/maple_tree.c: In function 'cp_is_new_root':
-.../include/linux/rcupdate.h:555:36: error: dereferencing pointer to incomplete type 'struct maple_enode'
-  555 | #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
-      |                                    ^~~~
-.../include/asm-generic/rwonce.h:55:33: note: in definition of macro '__WRITE_ONCE'
-   55 |  *(volatile typeof(x) *)&(x) = (val);    \
-      |                                 ^~~
-.../include/linux/rcupdate.h:1046:3: note: in expansion of macro 'WRITE_ONCE'
- 1046 |   WRITE_ONCE(p, RCU_INITIALIZER(v)); \
-      |   ^~~~~~~~~~
-.../include/linux/rcupdate.h:1046:17: note: in expansion of macro 'RCU_INITIALIZER'
- 1046 |   WRITE_ONCE(p, RCU_INITIALIZER(v)); \
-      |                 ^~~~~~~~~~~~~~~
-.../lib/maple_tree.c:3364:3: note: in expansion of macro 'RCU_INIT_POINTER'
- 3364 |   RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
-      |   ^~~~~~~~~~~~~~~~
-
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- lib/maple_tree.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index c522419e99f4e..eb2855269332a 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -3361,7 +3361,8 @@ static inline bool cp_is_new_root(struct maple_copy *cp, struct ma_state *mas)
- 		 * read-side operations that can view it until it is insert into
- 		 * the tree after an rcu_assign_pointer() call.
- 		 */
--		RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
-+		RCU_INIT_POINTER(cp->slot[0],
-+				(void *)mt_mk_node(cp->dst[0].node, mt));
- 		cp->height++;
- 	}
- 	WARN_ON_ONCE(cp->dst[0].node != mte_to_node(
--- 
-2.47.3
-
+Thanks.
 
