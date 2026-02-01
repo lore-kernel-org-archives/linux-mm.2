@@ -4,119 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C9DAE7C71B
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 12:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E7E5E7C71E
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 13:04:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B1C566B0093; Sun,  1 Feb 2026 07:27:03 -0500 (EST)
+	id 31F8C6B0005; Sun,  1 Feb 2026 08:04:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC6A66B0095; Sun,  1 Feb 2026 07:27:03 -0500 (EST)
+	id 2CD4C6B0089; Sun,  1 Feb 2026 08:04:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E0526B0096; Sun,  1 Feb 2026 07:27:03 -0500 (EST)
+	id 1D8F06B008A; Sun,  1 Feb 2026 08:04:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9015D6B0093
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 07:27:03 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4FE76C29D6
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 12:27:03 +0000 (UTC)
-X-FDA: 84395812326.21.F78BD9F
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7368480002
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 12:27:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=B71BNnXB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EC066B0005
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 08:04:03 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC56913BE68
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 13:04:02 +0000 (UTC)
+X-FDA: 84395905524.01.A5ABFB6
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 03A6120002
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 13:03:59 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="lsd28/01";
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769948821;
+	s=arc-20220608; t=1769951040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nLkYdcrr/V75vjPKPAtmOhxaUd8xlxxQ6DkPLWqUmvU=;
-	b=wxT2Aj5VB+rS0RZ2JLAJxb9086cRJQYus+GBBvUeq8TTgQqgyRqx3iUAPggL4GKoer2AMe
-	d482C6/SZLs8NvMqtFTTfY4g9Dor73i/Z9zrG1z+PWCyP2yKJpAW1NdruyxcXe9D3gYMSi
-	btpiPMzjYtCYc0hWnh86COTobbTKCOI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769948821; a=rsa-sha256;
-	cv=none;
-	b=ld1UoVswdbiABTXa3zGKMsaUIpGLy5AbXDuaHgNlXl6gHdZqF56Kz/e5qogiHgfQBv/b5H
-	CJvOF4we1t3hNXq85m6jvzhwvdvvLT6bvSJES/R939MraXHdp6vbJzD56qpBXSGwzfP8hj
-	3/rOZaiQ1UHQ9RZe82TGXN6OjhImrdc=
+	bh=k1PWc9/54O7DPE1urxqdZHaylpF5xEjc39oqRVstw+I=;
+	b=36OteNcjzV15n/bBiC+0F8q/gL/mMNnIM3/IAlcWxkV/0nJhV+Yzot+b4TTVg7BMz+B2wf
+	ZAgwbsIOWSZAd97tmtG4gWj4LeDxU9Uv72h8xpU/nR6pB5qN7eWUl7Pz7WKJwaJsdYtIVT
+	Do0ewpmWXRlUJm3B/1ygFgSvPVNQHw4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=B71BNnXB;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a7d98c1879so22446635ad.3
-        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 04:27:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769948820; x=1770553620; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nLkYdcrr/V75vjPKPAtmOhxaUd8xlxxQ6DkPLWqUmvU=;
-        b=B71BNnXBMaPWLlxwdZ5n0KhzQf+Kb/+i3VjAwuBurFI19PClLpP4FF8I7hnmU8ORTW
-         uoD5XxEM5CNoL9YsrkvgDf9GsXctaZSMbsPj6Tn5rK3+wg5hNM34Lk+nT2l6kxH6awr7
-         yqjIkILF4jGOH3Ru3FYHOvqPkhPfbYe7jBWZMCweqwapsy6fW4jpGLP4A/Ls1D3yaGoy
-         U0GldO8VToWy/Nz/6rXbYP1CXjTCJ8i9jagdIPPYLUXz6ZXQjbsdDDjKeybThoXnEtwC
-         cQ0nwpGE58rbUQL4qk+o3u9g9Wpa4BwltwHGLvK8n3r9uInev800ma0LzcNLUXCHTxPD
-         P8Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769948820; x=1770553620;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=nLkYdcrr/V75vjPKPAtmOhxaUd8xlxxQ6DkPLWqUmvU=;
-        b=iSQaHaKzrDpRsPR+nPhTfiXj7ZRDTL8zx8DdzMuNgHkdp7cGrRkIBx+HkdmP7dQukd
-         a6Tbapmiwpti9a+VJub1qCBC5X7hginoCdFkxmxGNgG8W31UNrJn7akkXuS6Dr5F1xFv
-         Jpi8e2hKZ7i31WOmrcWulKA3BsaNc7A9fgwB/XjED+bieJrZdgroBFRS61vN5JnrRxtD
-         8BIUjJXiWAjR16CbPVg4lG+N9pI5wq+R1xcC8tWnAt0vxLdg35gnlqS1dUvn3cjXrz1X
-         0InG3EIxGf1021i744MSNKhYvty0LoRbIuZxYdsBVs9/s4BobqiA3Pns0Qe9+NyyRm33
-         6XFg==
-X-Forwarded-Encrypted: i=1; AJvYcCUMqiXV0/OzPODSdI251uOrTESgDnn7+0KNd0dhqTU135CHCKAij0ke6BcktzcLqW6+Lzx1q0HcWQ==@kvack.org
-X-Gm-Message-State: AOJu0YwqiHGNr3Gc4rGUI+TotcG7WTOUFtvvPpOrVSssAwKGo9ZGKAFD
-	JO8EGLPVQh3GIXIqaj17/FyJeAGEZJIVScWjpyg0uSY3WMBCd6RrN7BU
-X-Gm-Gg: AZuq6aKWLTDg00VsfxW5Jf9Tp1WQOUJRdNuITSeLKXnPm2UdIt22ENbcd1i8Z8ADgOM
-	GETGjo0QnBR5LX0X1m4lDcmVL2aqD1VF/KicAQfJuSjBhOdENBMA7X5A4p9azs7+oMmmcNXrCW5
-	4ofB9MJ+76e9vsc6U3mIRpMYBNOfULskYZVPjS/xrhqRvOgS35c5nxr4X+ckHovDKl7pMHb5QNm
-	e/QFzb43e6WJMnVtPRsoynjrmkIpFDq5LVTVAuhGEyS1V8mYnh5YTsiUwxHqEK6ONRI2XP48t/a
-	vrfABzSaTTp4rDwmNGaFC9A8ykeTUapt9rlOoBR0yItYqQoOCh7F1WxRFyvaBPV+olGo+4vaxNG
-	rQliKWJYU5SJHNJtgQd84dY1fbuW4VXj+4Fi4iXrPeEkzFSJvRjkwTjUWiJ9xWb2vnrF7bISDVZ
-	d1Kh35yFjbM9QlSAjTGi3jKkp1
-X-Received: by 2002:a17:903:2442:b0:2a7:9da7:d21d with SMTP id d9443c01a7336-2a8d9a75759mr89932075ad.56.1769948820242;
-        Sun, 01 Feb 2026 04:27:00 -0800 (PST)
-Received: from localhost.localdomain ([114.231.118.96])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b6e5ac4sm116941185ad.86.2026.02.01.04.26.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 04:26:59 -0800 (PST)
-From: Vernon Yang <vernon2gm@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: [PATCH mm-new v6 5/5] mm: khugepaged: set to next mm direct when mm has MMF_DISABLE_THP_COMPLETELY
-Date: Sun,  1 Feb 2026 20:25:54 +0800
-Message-ID: <20260201122554.1470071-6-vernon2gm@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260201122554.1470071-1-vernon2gm@gmail.com>
-References: <20260201122554.1470071-1-vernon2gm@gmail.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b="lsd28/01";
+	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769951040; a=rsa-sha256;
+	cv=none;
+	b=JAeP9CVjbUs0rG+3GQYDPPbXckWIpQ3w0U9iwTEAM9ahTyIHGm0wk9FaA48KRi/En5THuH
+	sFODSzeqvlgU0ny97Xq4GJIP0XgnZaqH07B22/tBR3tpfGpf8dPhkkSjhoFB/Nq4GUBztw
+	uBOxU7azyejJ8t6g4KkGrVgKCRVK2+w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769951040; x=1801487040;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JxRbL3UiA7chywZx7s/1NhqsSsDE4+0tIBI21pQzhp8=;
+  b=lsd28/01GUkLQxwaU1QyfEiFFdTNclCyENPb/09+Eeh3spWvMIXBfPSD
+   hpvbNq99F+/8zPgk/+rBlqg/HrRrCDHjkKC/LtJLGifAUkLt8xR6AB2TE
+   +UgiQ0XqsTxa1bWZhzVmHuNi5ckkCbmJ3p1nnDwc0efCm9VF45e8WYR34
+   zmirikPUIE3DABtAqMvzaWFjc2UXdB8A1mkSy9x257HwoDxWqihhQCXIp
+   vF5kbGiL9hXLBNC0N/gGfCHgOQoellAkQrzoAFf+kl9i3UQ9efeAgdl8f
+   ce6O4Dj7HvtUUCoWq4WNGMl7LHAj47KbT6fkOeUq0yotWdeK9hPgrUW89
+   A==;
+X-CSE-ConnectionGUID: VyKcKuV+TlqKadpXfjVtzQ==
+X-CSE-MsgGUID: 2J5Vn24wSa+3PRFNfcRbqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11688"; a="70149722"
+X-IronPort-AV: E=Sophos;i="6.21,266,1763452800"; 
+   d="scan'208";a="70149722"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2026 05:03:58 -0800
+X-CSE-ConnectionGUID: 3kWg8PvUTxuKPPw4OIctOQ==
+X-CSE-MsgGUID: TrdnJnaNRvGEGGazG0k4kQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,266,1763452800"; 
+   d="scan'208";a="209048462"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 01 Feb 2026 05:03:52 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vmX7F-00000000elw-1KtL;
+	Sun, 01 Feb 2026 13:03:49 +0000
+Date: Sun, 1 Feb 2026 21:03:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, balbirs@nvidia.com,
+	matthew.brost@intel.com, akpm@linux-foundation.org,
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	david@redhat.com, ziy@nvidia.com, apopple@nvidia.com,
+	lorenzo.stoakes@oracle.com, lyude@redhat.com, dakr@kernel.org,
+	airlied@gmail.com, simona@ffwll.ch, rcampbell@nvidia.com,
+	mpenttil@redhat.com, jgg@nvidia.com, willy@infradead.org,
+	linuxppc-dev@lists.ozlabs.org, intel-xe@lists.freedesktop.org,
+	jgg@ziepe.ca, Felix.Kuehling@amd.com, jniethe@nvidia.com,
+	jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au
+Subject: Re: [PATCH v5 13/13] mm: Remove device private pages from the
+ physical address space
+Message-ID: <202602012037.jpAjBFBa-lkp@intel.com>
+References: <20260130111050.53670-14-jniethe@nvidia.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 7368480002
-X-Stat-Signature: ndqbjf7nimi7u4ckm5ff6e53k1i7qssj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260130111050.53670-14-jniethe@nvidia.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 03A6120002
+X-Stat-Signature: 37duk5n9amn4pbafr7n8fremkgzhsjzg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769948821-863603
-X-HE-Meta: U2FsdGVkX193jCYEErpTq4pOtKHfWHpvoQd7JzqDn3gqyEvcqQxtHwnMexn2PvAakGxaHu7oK5KW7xtEvqpIwsYxWug5rO4U0Qy9Xi95bDudYKTG1jlfMkmAUB8M28Uo23e8angqi1XLXbjfMNy9sbLHKzS6TAqTznfFAAJaD8DadYvz4kvNxFZ+8QAJNiWk4J+uQKC2V9YG+9eqRWht7tQQczqSFoBwofqqzsxCNrT3PAO/baH44HHI81F5q8/2hMxJzdFHfUaIfoczSpYKEJTWiMz2e0gMhC9VtMnTPEOqeFoWvKbX0oYOVoNuO5zefdjECTOxvdGwRoILOoajqtrI52GfJiYkswG5v5j3Hk4bHAmhroj9MLECQt2SMpKoEx8TQvbO7yJYrLT+qpVgvC4AB8gRC+kMPfdz3j045l3keBmIvIeNOFNKD70K+CQ1O/bonD4uzl76ci5tcZvCNrksEd2qZrNVJfDykxQLpXXWwxrFCvoY3D2/GE9/dZhEu90yykXYOrTVRyeYr39BGz4vUzwHN6dckmWOMY6sY0ZTEX3xDxTvPCbVDI6btedhJTm9v/3DklkPuVlUWg3jajlkz7HvONi38xyBQm45zihJxUrw7Jrunq97906phJww3kHlulQeIknv16WdxXDJGcU3VujdV/xj+j+GqNTn/kNq54rCvJL73aFtjA0mHnz7qE3J1nq/swUFIow3GRgCJ75nYBIgKsf/T0Nmv0ac6xyWUEhGrdvXROIE5y/9BTCcWHqFkDeW/ZlQMX9c1Zoh+nS+TRn1A43H4PO5bRPK79eTYZv202JV3h4wkDvzPY92m71afaUK7iX7phGybONPJ0O06ygQKzGDHiI5c/dTHCuzJquV6BzQumdjUFP+1hMCZtClQ7msyk9T6rkkjfcqtExTop5y0Tz+AhgnloUuOy628g1BpUL6UONFw/LI25nqS8yOfOAi8hLaAYU7R5K
- oH4lMtu9
- TGCUf2XfrJPvvo6RAVBHT+NywYwOhWHDkHHl0VStHRojuhQjl41B9jiEcVQ1EZMO2aaSY9e/FzYt8avd3WPqZeH5v5t9IIoBlXy0SHRKdYcicxlA7+AnQWqjdQIbIaPSRU8Y7Bx9Or5AGxrIkPhSmt+u9U1lBN2EXwhnbGuk35riafqC2754IOZMMs00mmfXKhtqL9p3WunVhlugUMexf3ZQeDhZOkltCJE296ICr52u8FvsYOG1UC7XxdGk5c1S9fa2k0Vg0hDCiT/FC8NCdk6NWTlkxzPmLWQXZohiJHN185Cgg3bx+itLCcEzjPZCEcUE5D1UG/DFyK4NOU6nRsRYTj83D4icdXW1/0uk/w9kHb+u8GaDUqidKGw1NI+01vynEaJReEORxsPB5uBr6ZvAxFnAIm3Dvv7wDJg10UqK41aEh+LQFxFlv9Tw9m5yratQxvLa0hhT1mz/+0tMx8Cr/+ZLizKsFNj8NwVrc4zAO85udGFHgqhcowFNoD//rxpuR0WglZdw1+v1Q3cMElAhhw94+x8h5wCeJec1+MbIdmSaRB9ba2ZZds/uGjsIghwZaN9uYZxcCm0ozzihnxDsIrw/KelqROyl813lSE/jHp6Of4crFauj3cJEczWa8gbF9/Mn4MihM2mUyu6vmCtgVDOQcm2zanDuC
+X-HE-Tag: 1769951039-516634
+X-HE-Meta: U2FsdGVkX188d0nDnJwfJkC6QOJwnYZAP35FDG0OnhRBWqXcpRfuC7n6TccZmt/yVGwMN0EGGz2v+l7BPCjVM3McX6SJUIvcRMYr8bW46L1eMc0fPU1n286XIrGOpgNX431oi235tZL5IZPF3a7uScxCkue1rVOWQKRFId9ttWaTToi2XLUk+TsZ43pScKJrDD2k8Xbb0oCAD70fVNL9XmCasq9ueFNAjiYCLG7rP88ONZDZGt2yTEsn253IPyY1A2r4Gg5MTY+qirOxYcKUYsoWkyKzR9OLH2huZJ1pE3L8RrYiAYI6Cf/l3XG3+M3K9DbBkECxcw8unqG7eVFB4RuZs9L+jOvENFtAGtVE4Qog+I6lns6vQJ9c1WqkSA+69871XYJCTuKKe5gi5Ga2+fWPxGB+s4fNrOzKG9sD1oGPhCn9kVuMwYpUqlosWkfWXA+K9G0De346hhAQbm5tMHrOe39ewK1uN0gOqWLAKPFIl2vo7+bslDU3CCL/+rFhnaX1XPR3tzKgPzx1/809ugt8jsooRctqMpmqkJygErkFIiTZkJGg/q5SHrphCAFh5ZQhWKByGph1JyTRpMJEh0Glpuo4vJKzkdrZq69aa/V5Qrks5oh69nH5GGBVEtjNh3WzG5dZA+zr+5Iz1UbdMIi3XsAVf0i0er66kWIchiQgawUODd4E4BBV2r0l6stcv+czgvDSDq053wfldFqzpw87zzXBz5D8nlpHxYPyEWae7r2K1TImcBV7BSX9DzyegdYNwPufBkrD0NengRX4yHA7l/dtL8gZtPFpQbow/WNyADlL05hTQk0oCMS5/OnNL5KtG58g1VqiekxeY6FdrzXJhqL32aqydGpM5WGyS2ew8Ieqdl8HaO6R4cZGRVwS6J1r/fE2gMkh1Tp/D35o7zO5HbhR2MS307NPY0+9CxupLj3+cvMUOMybBHFjMG8xY2K4+famwiF5ThUgQnC
+ lpoDAw+4
+ ULknMtk1MyvRPh05NBqXF3w8pNYkoC8QVCEvbZ2h6lfAB3t2LFjM/EQcOZtSrOMJ+WfpX4Gtx23ywrreBJ/swTIziMGAnqEQ+IozxwwyZFGupr2bbUbX9/pw2jeeb6f5pycqr26EUvyz4WD/ZUgAGMpH6nFgJNk1LsJUWrpEKgPCXo6le2JSM85YLHn4aonn0HJn1gY+t8lxMaKONUnEjMjRLVbZZdqQAKAjjLXRgYUsbwHZ+8fxRvJe/GuTNyQrclr2KJlUxmz9kDypMpz5oIYUE2pZOfAq0UgJmBCE/3sG2sGq2TjztuLHHjrN1RlbThqD9td2/djn3L6Z+5yzybL7Z2iJihbqVT3B2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,44 +116,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vernon Yang <yanglincheng@kylinos.cn>
+Hi Jordan,
 
-When an mm with the MMF_DISABLE_THP_COMPLETELY flag is detected during
-scanning, directly set khugepaged_scan.mm_slot to the next mm_slot,
-reduce redundant operation.
+kernel test robot noticed the following build warnings:
 
-Without this patch, entering khugepaged_scan_mm_slot() next time, we
-will set khugepaged_scan.mm_slot to the next mm_slot.
+[auto build test WARNING on 344db0fba38920be64a429c64a8ca0531572896c]
 
-With this patch, we will directly set khugepaged_scan.mm_slot to the
-next mm_slot.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jordan-Niethe/mm-migrate_device-Introduce-migrate_pfn_from_page-helper/20260130-191416
+base:   344db0fba38920be64a429c64a8ca0531572896c
+patch link:    https://lore.kernel.org/r/20260130111050.53670-14-jniethe%40nvidia.com
+patch subject: [PATCH v5 13/13] mm: Remove device private pages from the physical address space
+config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/20260201/202602012037.jpAjBFBa-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260201/202602012037.jpAjBFBa-lkp@intel.com/reproduce)
 
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
----
- mm/khugepaged.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602012037.jpAjBFBa-lkp@intel.com/
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index b4def001ccd0..94cd064f79a5 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2549,9 +2549,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
- 	VM_BUG_ON(khugepaged_scan.mm_slot != slot);
- 	/*
- 	 * Release the current mm_slot if this mm is about to die, or
--	 * if we scanned all vmas of this mm.
-+	 * if we scanned all vmas of this mm, or THP got disabled.
- 	 */
--	if (hpage_collapse_test_exit(mm) || !vma) {
-+	if (hpage_collapse_test_exit_or_disable(mm) || !vma) {
- 		/*
- 		 * Make sure that if mm_users is reaching zero while
- 		 * khugepaged runs here, khugepaged_exit will find
+All warnings (new ones prefixed by >>):
+
+>> drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1071:7: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    1071 |                 if (IS_ERR(r))
+         |                     ^~~~~~~~~
+   drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1075:6: note: uninitialized use occurs here
+    1075 |         if (ret) {
+         |             ^~~
+   drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1071:3: note: remove the 'if' if its condition is always true
+    1071 |                 if (IS_ERR(r))
+         |                 ^~~~~~~~~~~~~~
+    1072 |                         ret = PTR_ERR(r);
+   drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c:1035:9: note: initialize the variable 'ret' to silence this warning
+    1035 |         int ret;
+         |                ^
+         |                 = 0
+   1 warning generated.
+
+
+vim +1071 drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_migrate.c
+
+  1028	
+  1029	int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
+  1030	{
+  1031		struct amdgpu_kfd_dev *kfddev = &adev->kfd;
+  1032		struct dev_pagemap *pgmap;
+  1033		unsigned long size;
+  1034		void *r;
+  1035		int ret;
+  1036	
+  1037		/* Page migration works on gfx9 or newer */
+  1038		if (amdgpu_ip_version(adev, GC_HWIP, 0) < IP_VERSION(9, 0, 1))
+  1039			return -EINVAL;
+  1040	
+  1041		if (adev->apu_prefer_gtt)
+  1042			return 0;
+  1043	
+  1044		pgmap = &kfddev->pgmap;
+  1045		memset(pgmap, 0, sizeof(*pgmap));
+  1046	
+  1047		/* TODO: register all vram to HMM for now.
+  1048		 * should remove reserved size
+  1049		 */
+  1050		size = ALIGN(adev->gmc.real_vram_size, 2ULL << 20);
+  1051		if (adev->gmc.xgmi.connected_to_cpu) {
+  1052			pgmap->range.start = adev->gmc.aper_base;
+  1053			pgmap->range.end = adev->gmc.aper_base + adev->gmc.aper_size - 1;
+  1054			pgmap->type = MEMORY_DEVICE_COHERENT;
+  1055		} else {
+  1056			pgmap->nr_pages = size / PAGE_SIZE;
+  1057			pgmap->type = MEMORY_DEVICE_PRIVATE;
+  1058		}
+  1059	
+  1060		pgmap->nr_range = 1;
+  1061		pgmap->ops = &svm_migrate_pgmap_ops;
+  1062		pgmap->owner = SVM_ADEV_PGMAP_OWNER(adev);
+  1063		pgmap->flags = 0;
+  1064		/* Device manager releases device-specific resources, memory region and
+  1065		 * pgmap when driver disconnects from device.
+  1066		 */
+  1067		if (pgmap->type == MEMORY_DEVICE_PRIVATE) {
+  1068			ret = devm_memremap_device_private_pagemap(adev->dev, pgmap);
+  1069		} else {
+  1070			r = devm_memremap_pages(adev->dev, pgmap);
+> 1071			if (IS_ERR(r))
+
 -- 
-2.51.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
