@@ -4,184 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9FDCE7C6FA
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 03:39:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 538E2E7C711
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 05:31:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B77BE6B0005; Sat, 31 Jan 2026 22:39:54 -0500 (EST)
+	id 550096B0005; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B25A26B0089; Sat, 31 Jan 2026 22:39:54 -0500 (EST)
+	id 531DB6B0089; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FD256B008A; Sat, 31 Jan 2026 22:39:54 -0500 (EST)
+	id 430936B008A; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8A5016B0005
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 22:39:54 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B05A08C734
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 03:39:53 +0000 (UTC)
-X-FDA: 84394483866.21.51A2A25
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012025.outbound.protection.outlook.com [40.107.200.25])
-	by imf18.hostedemail.com (Postfix) with ESMTP id BB9C01C0009
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 03:39:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fbbS6wk7;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.25 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769917191;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 30A6D6B0005
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:31:32 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B94C713A80A
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 05:31:31 +0000 (UTC)
+X-FDA: 84394765182.16.7DC13E1
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 125BF1C0003
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 05:31:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of 3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769923890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kALlBuIcTaA75hrPIwfgEn/gYjSO8L3kht/E+eK9s5U=;
-	b=I/5UT7V6oj077Oi54K0AXDN+rg7vvzhPdpZ84wjtFMFIhNfgdz4uK5KwqAtFrRTD7ybW1t
-	yV+dXiTDMwT+yWJRjrZexOx7QUA4xyRK17RAygnNYKIGdTqLduW8EZFjRZf/ay/CdqbGLH
-	mY+JkkgwZQHC5KjfhbIUUbPYlVc0eq8=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=fbbS6wk7;
-	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 40.107.200.25 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769917191; a=rsa-sha256;
-	cv=pass;
-	b=fgMQ6/D5vOFpFpx2G6vomfCvNdcWrRshfg82E4u8swqtja7UGGq65fpn+DXX59cRPB80Vs
-	tPezghh1c4XsB1oCy1XvKJGQ2FS/IqjzZrR0hXKiehTOyTFl2nuziSnCk11zKmCbtZk6Iv
-	m9UBjBTZVXYdK45pYpmfZzhTCXO6b3M=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zArnZCiSIg8lTqZvm1zagMlQ0qSSPzJtVHne21TH+rFkDbr/7nnWScLYe0YCja7JyDzDhODr3SItc7R0lQJsD7aIp3WrCCnsPZK8Y4O3qWKL6ACiqPkZCwBMF7DwWjbfbuUv4sRngheLptxFd2iD6PpvgVzFo1tVVXma5gGPY+ApGZV/nuZhgNOYoN2TOV7g+xyFh7vsMb9fvaWxz9WZq3+kvNlxWn4ygZd+PgFGCogiWH84Ets170blhFd/g45iTLRJdaDMJ9w5/sZ9V30++t7uBMKbw6YE3+CkS3CXbCj7O/dKuY4utGfZmira+WNJWPH9rAZROEPmtEpRrGKilw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kALlBuIcTaA75hrPIwfgEn/gYjSO8L3kht/E+eK9s5U=;
- b=BVllS+kS5mjYrMgBAN3T3kp8hs3iLD82qJFuO619qMWM7dmO1Srhj4NXCQArooE4nxVHfEb1q3EgLA2SsPu90p9mKtvrHrfd9eAD1tVtgPr3zIMuXB4y99YAmtUuDdf5DkoWAP+ZmMRRx1lLeBU7pxpN4i84t6265k1cZxFyGRZX4wLOo68kq+iJqwVyweGlM0O9jm8sDv4OqhzPrXM6e+0pxthe1UkyyCTtIoywvmOT8SqE4begwwn/525ylp1WHUnSWeRFVcE1cVINHyboieLCLOoqO6Z/tdQPFmF/VxMnvlcNoQ8RBGlY4JFpeQBL+8YWkyEJaoYZMLSzaRJBLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kALlBuIcTaA75hrPIwfgEn/gYjSO8L3kht/E+eK9s5U=;
- b=fbbS6wk7jfI6yGl7S9AeUm1HLehOHHTM2mCC4n5+BW4VDMplhrg2aqCodsfut3SiHqUFdFGDPqpXb5pOeEkyszYC3Er3HQ2AZFmytL4Ve0JVOZGp5AMdiVRH9/08Hcqf/5kq5hfegikcqLjOBTnZAIpZXs2pCw0HJod4xvpY7v5nDqeCY2Q4orombWhAOY7DCSGpQO06hhT40otPjGB8HWtH9HiPbUkO9Br89OzuKXdmuh2mvSSNukv1LYoJ5DB1H/QzbsVVvdY9auJ3JkxXKc3keiXPCBTWDamva/KQDK5omP6CzzW2y+X/+Ibeo8Hv9PdSsLQKVfPWlXWeLYJUUQ==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH3PR12MB9097.namprd12.prod.outlook.com (2603:10b6:610:1a6::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.15; Sun, 1 Feb 2026 03:39:42 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9564.010; Sun, 1 Feb 2026
- 03:39:42 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Wei Yang <richard.weiyang@gmail.com>, david@kernel.org
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, gavinguo@igalia.com, baolin.wang@linux.alibaba.com,
- linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/huge_memory: fix early failure try_to_migrate() when
- split huge pmd for shared thp
-Date: Sat, 31 Jan 2026 22:39:40 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <C620202F-685A-4B9E-B51B-078EBE5BF0C4@nvidia.com>
-In-Reply-To: <20260201020950.p6aygkkiy4hxbi5r@master>
-References: <20260130230058.11471-1-richard.weiyang@gmail.com>
- <178ADAB8-50AB-452F-B25F-6E145DEAA44C@nvidia.com>
- <20260201020950.p6aygkkiy4hxbi5r@master>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BLAPR03CA0076.namprd03.prod.outlook.com
- (2603:10b6:208:329::21) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=ZW4f0rXeJpGepXMy39mLGrGmbt04aLNLgRNvAwsNfo4=;
+	b=3Zu9neCrOECxYg7fEm3dlhSYCBnRHOM+El8rz2D7vkZ1Jl++NghaaX4Zs/LNYN9R7MxwC1
+	D/PteUpxaI1ZANsFgK6v+9yXgj1PnGcE0vGVh8EjPyBcjobCZj5kO9NsOH7I1kVGoSbk85
+	8mIsIj9/16Xy8HNtTv4LPkZYPEKv0Po=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	spf=pass (imf20.hostedemail.com: domain of 3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3MeV-aQkbAEo4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769923890; a=rsa-sha256;
+	cv=none;
+	b=dGJYJ4af+cVEmT3oijUyJUI5M9VTja6Ahe5gNjuRGtlMTnMg303xfwh4w6jN/LztVkqnou
+	M4TVZwaDmmpmgUiCzgu1mzkA5VvhistvWvPtzjfjfG/FMkjLlheMWUaskwuD3fdp4YQae4
+	uT058L0SprzIQsbn57+5jyVfgi4ajNw=
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-66485ced4cdso5120572eaf.1
+        for <linux-mm@kvack.org>; Sat, 31 Jan 2026 21:31:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769923889; x=1770528689;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZW4f0rXeJpGepXMy39mLGrGmbt04aLNLgRNvAwsNfo4=;
+        b=R4E3gu8V+WSiBiL5aASd8SlEFw8Bw7tsZwspl/V4GVWDJg6DozzosRhrOdeSh7nh2A
+         sXyys8Sqx1iNkiebXs3ddxQ/HD5kUjl1RJQExa7DWlhh8hWDYcZJwbykN3UiC2HQqmbE
+         7lthNRS9iOsQb6oFUiEkqncDJQT3eL2ppOFfwmj+LbquXtYsEb0/Yyoer7zrNaPKFRnw
+         6mcPCyR4MDUe3AgZKtLYdDj7loEJFffa3Z6qqh8x27aPy4KkK3wMwf/GdJy2VNSjw5lI
+         bOcbH5vw5ZCkyy5F6h26T6Sn3PXE3gzTc14HcdpxhVW/93Qulj895Pww/MGcTJaJK/Cp
+         Qgjw==
+X-Forwarded-Encrypted: i=1; AJvYcCVONkhOVuOKgSB/dUzfNfMDmab7hmnML0/gYW+R72BGLFVsuOGenCqXoXukHx3VJy0Zh//J72CfNw==@kvack.org
+X-Gm-Message-State: AOJu0Yz+vQ+yQCjJ7vk/nNn/xR7lqbeOtwli3PpvH+EepqQk4BHCG34B
+	O/l/0NOrLG+2hHaO+eYJEW3O13KUg3ILlZE7QkGMs6qRkztl2RiCFkZYSkAUZDxYqAgSC7QScDW
+	Zb8w3gJG6HoJ2VnjAf/m8zdBZffmS9+ZHXCRdhd9bY+z8ZVEcyiTrv7pX/j0=
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH3PR12MB9097:EE_
-X-MS-Office365-Filtering-Correlation-Id: f0a04882-460f-414e-b28b-08de61438938
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?n1W5QtPdmHPu8s+T0dMMIcMJA0Wuhp0afDyWvheudsnv4/Dll7KIoliZsWhq?=
- =?us-ascii?Q?WtfglnSHI2bR3ftrTl1kroaCe1Q1A6M3ouXp4fZX2FIpKs+S4MaxTOCMSYDr?=
- =?us-ascii?Q?q4ktpF0IqYAv3SumGswS7oiMnLSQ7dDCWDzH5cpLKFl/WiBjx66ZIFEdDHY7?=
- =?us-ascii?Q?J8Rd9BK3fFVDpZ4g8JqjJIb5X5JtkUwoh/eJIXIcSWoO8Du/ARgkRIYFGJ4Y?=
- =?us-ascii?Q?NjGBErdQUcIsAsn9cvy5XmELWt+lXlHlRWLLqL5abhuNWDddjylSLZB5PU2U?=
- =?us-ascii?Q?s89Aogy2zwXpLHIq99s+uhDaJSIQiYNmUYJSFDrUNZ2FoQ9b/28TYU01xjuD?=
- =?us-ascii?Q?l1s0sWnscopd9C0yl6sM+n3SNjyC8suz05q1t9dy1M72rjVBZlbNcoKCq0CA?=
- =?us-ascii?Q?RURFkzef0hbr4ERivI4OVpmngfus4yXWEPD0eBlhQVREa4tTxn49asRB4ttn?=
- =?us-ascii?Q?8RTs7dEqsGPdU3Y65PmCn76JYHyTGib4BhcWdKlRej+Y6nMFLOo365wHvSOm?=
- =?us-ascii?Q?w68SnnPtww4l+JrM0nMwOAT9vpastZDU/tiWK7Auwbmn/3EIcN5ZnvyKAl9h?=
- =?us-ascii?Q?1elSOvSfpDu+1h/ZgRl5avF9xgCEBx9NX4lI10hPxcNnpBpb7CaYQgoLSJQy?=
- =?us-ascii?Q?WD2IWRpuFAnruKPrcV+PHVn+8JqFzsGbYyrbKtkcNAAY8KA8BGSHoeo0TWi9?=
- =?us-ascii?Q?DG4hCdcCwQzpEFZvAKLTQMoqMT//WduYwInNwLCIT2CHQcK1pJEqenn9LXow?=
- =?us-ascii?Q?zsi0jtEUkXwnDOSJDbFBSCCXLBj1Wsy1/is5uXvc/qrhYVcoXiney1ppc1j/?=
- =?us-ascii?Q?kW3TKCSZiamz3tNvpDxLXtDbSFNCRZ/hXcCFQdjl/ipaJ8rGxcxZzgncXdZY?=
- =?us-ascii?Q?nLxNMHqD77MVW972Xg4lj8PJAbDRZx3ZoA7LGJUJ4PvaAvsRs29P2QNkV6z0?=
- =?us-ascii?Q?4mMf5VT0GrHRk+AgEcm7KydQG3ROeDoYj1aydxDw2UDDoUIPn260zVguaRbR?=
- =?us-ascii?Q?Z/En5eUSqkhxx56aGBTHdLcvDBee/afnOiHYH9aWluJnNtugMG02Ky2EZ83q?=
- =?us-ascii?Q?QaAlAFL2A1jxtXK8ZVP/5xqYwJrIVFlZGGSl2MzLvOHfj2zFKiMkCqRHX1hP?=
- =?us-ascii?Q?sP/wakRYRiQ86iy5ywAQzMv19YakIjLrPjbT8AH8u7KBun8F4Qmf3sdKAXyd?=
- =?us-ascii?Q?O0hfa5qEWdX3LJJ6EVUQzuWfRFPEk1zsW6DdsC5co+jST1Yy0F96GzEvwaKO?=
- =?us-ascii?Q?YnP47TRw3VzxMYceoP/hM5m1Yo44vJBhch58iQliAejsEOQ0xqkcDjQha7av?=
- =?us-ascii?Q?PlaBUpKPNFJNuOEs2b6NjGk057/2cpkey0pZpIwj0NuxglJGub+eTO5YF4qG?=
- =?us-ascii?Q?lBr5ZfH60OPzn4YW0I1Fsa5++Zf6N/MMZJ0ZpeqfVIYTn0aQPruK1ZM0rVDE?=
- =?us-ascii?Q?TpE62T5YpeZWQLO8fAUmu4IjzkUY3yvF9RChk0ZKvHTeaJ0VBhWxc0NfD+iX?=
- =?us-ascii?Q?rRMusxX4ZsOfE6vCr0IKgAJVEn1YfDBK89w1b0yB7gJhFTQ4X8187mZMkkBI?=
- =?us-ascii?Q?ETqhusi0MWVcbVcRtPo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dZJgwNB01NSplWqCmsGI4aysMnIX/lRIMvP4/CqjZ5MUduhwtyBtqo3UCHve?=
- =?us-ascii?Q?7nw36pSM6AoG6/bbzimvPC+E8ASiBqGn60ocnYGCVYAXxW/nmjLQBmspZ39G?=
- =?us-ascii?Q?+Z8r9NaPSrrrIGZiHk+TXeIoRuMLSVbYO51Nd2VUaflYTKenCO1GXEs6rm8K?=
- =?us-ascii?Q?fta9MtaecGw3i50wrQH1U4ear5qiYQkaDq6uBZ9uPpTMyKOAyzB4VOf28KUf?=
- =?us-ascii?Q?RM5aAKofHwWI07r/LJ0ZJCp6xmcRfA//ov89Q90AR0j6kdD8nAbbYSjYiuZ0?=
- =?us-ascii?Q?Khlbj2vHXBdPlRiaRZNHdTuq/dCI/eUubyNvVqF+82CsiQtdOBf4/fPaIC5Z?=
- =?us-ascii?Q?Cgd8ap1wlEo3lv82ivPJME3v/NLl5tLFoTtEX72/BkomGXo29WFBdy2/exUC?=
- =?us-ascii?Q?X4FxnA2JGrp6/jw42ARwwP9+TStnAl8+qmoatQMTgavXMr9mtQrZTLDXDS4k?=
- =?us-ascii?Q?0YizLNE987pmIfNGq3SUO0bVPBo4c79EpqXntHyER17PDpX620Mt3PJXrTJX?=
- =?us-ascii?Q?YW7IHZG2n8CxqrV+PGl4bEykXqsibxspDpBckZdR8B7f8rKrm85TIxzl3T67?=
- =?us-ascii?Q?G0quXqllBsG9gwmkKwXeqIo774xDV9aEaLtjI2BW8PdnVW7n6LkqLvKsVxxQ?=
- =?us-ascii?Q?r8dCrH2nn/BeJ1qx1Krzey+xmWKPR6bc+WH5gz4OFXyKu9Ea+9AFYzjgVFiQ?=
- =?us-ascii?Q?tFiO2MEfCuwulyUsYUlxMj32BsTnNkyCNkHXSdkL89JVygyW5zRmYWv8jFIb?=
- =?us-ascii?Q?dSFGyLTYTaHdCxHznJLbw8pFWoeowSU+0R41H8I7rhtnc+3QDbDtFuK6IIwy?=
- =?us-ascii?Q?DYqm8g8ezX49pi041BDpOeQnoePNFO4r+X7eJYiabVS6q15UGtlEN/ThqwI3?=
- =?us-ascii?Q?LgDKUGoSw3JrpNFUJuBJrAG2a4PQaHBA5KlIWTVDVMjFL6LUDzarZFIgSWXF?=
- =?us-ascii?Q?glfA+WkqoEks6OcOp7dXjI2kI00D3tGmK1QtSgm7GzwlKJ3HWk4rnBX+IxIC?=
- =?us-ascii?Q?QyYLVzDtXdlqZ0f5ksLXx6/cIY90EWiipAiCLzKDiU/beBEbyD72MYSPjzCX?=
- =?us-ascii?Q?7mX1cTXo4TPI0rc961g3Kk+VK0LVILgEPwYcqwzJAq4Qd9PoEa45AJHwyFK7?=
- =?us-ascii?Q?ifQMVOvZbpv/3ssohOUDB+MCICDW7heljh+/DuThHWdu/ABMynKk/tr3U8BH?=
- =?us-ascii?Q?yJEUvRJs5YF6NE2CoAg/y3+pSjxJLU6H9v6zr0wW6riYsAr/RRzDGt/PYfZM?=
- =?us-ascii?Q?zhIsxwajwDtB3l88IX6JTgS2iOWgvjSHqvLAJDh9R3jEYR7mNWVkHcFipt3b?=
- =?us-ascii?Q?sBNE2JaIf/Fd2WR2kYbe2Has5WF/cSE1ZHS4/Lyo+9xsq3/BwKr7b41wH+D3?=
- =?us-ascii?Q?3mvHoekrDwenwkCwxWbs4D5NYXpWLYBl+inyKN/o/+sWy6r64LzlYiodbJD8?=
- =?us-ascii?Q?OPSMWVBaCoIDeqkAKYuLgBjWoHEMai9RDRVpMB9eBk4Ppk4jYZKfFg7HpHFL?=
- =?us-ascii?Q?9IOhonhHng/AesPvClwcLNpZgaBqfwcylr45sFY11aeoOWXEL6yXskvgas/6?=
- =?us-ascii?Q?16zBVL5ryIneUM9mROieIxMaobxgKxYgMzHIYy5GDVCfGynyra8HJ0/YY3xQ?=
- =?us-ascii?Q?7+4sPiRxpL7mlYswgoY4MTeIdlBGFnrsRIehExF6vP9tTqXml/wjKBTCamaV?=
- =?us-ascii?Q?3NIiXRY0CKe6W3VhTgySVHQNiQ0IhuVnB/UL7NQamfh7sH63?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0a04882-460f-414e-b28b-08de61438938
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2026 03:39:42.7224
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sNmxlaftx3pECG+355O4VW5m41Y4uHZVouKmoq1At/O0IPqem1jr7bwOGcHy6gts
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9097
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BB9C01C0009
-X-Stat-Signature: iokcrypg9bj3z9kyzja6eszrfedchocj
+X-Received: by 2002:a05:6820:814:b0:663:b86:493 with SMTP id
+ 006d021491bc7-6630f03726cmr3488940eaf.33.1769923889108; Sat, 31 Jan 2026
+ 21:31:29 -0800 (PST)
+Date: Sat, 31 Jan 2026 21:31:29 -0800
+In-Reply-To: <68f848cf.a70a0220.3bf6c6.000e.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <697ee531.050a0220.16b13.0098.GAE@google.com>
+Subject: Re: [syzbot] [mm?] INFO: rcu detected stall in shmem_file_write_iter (3)
+From: syzbot <syzbot+f172d48953db0cf91855@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, hannes@cmpxchg.org, jackmanb@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@suse.com, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
+	ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1769917190-360544
-X-HE-Meta: U2FsdGVkX1/SFg9rtBOUBPsyyqwHy31Fr2OjGr5hJzZ3dXoA51zuGyRTsICIWTxtHOlc1u0sJmKZRP8bB9ekWkMkGc2CGPTIpldQCutqmWTcdfllm/6upUyV1MgwmvnW23S1sdk0qz98ASCiAGApcEIy4ofBfPAKIOfvNgateOB2lhq/2ktYvmeNVpp+I1FICoChYP7OLDpWtwHyNjINu1N6BvjGpho/u2X1M3mn7Ih1byQftrFEBxm2Wrv3DdwfcCmsnfe8Op7MQ0waTbtNcp3CsMwoxm2ELv3Vg75L0xrWLckkV2wGHSpnh+AyDazQir2XBshmbIzymf4fnI8K1lOF/9KmzSQKmLo/6B72XxkeM9fj1NN68uuUBjbozxVE+oRN/XPJIvXdxshM34YOOeJGLttqupA/hGNqW6oHIUg1HkbHm9X/zSeMqeMsrTtPWMwgIAwHWpF3oOBIKnRDntzi40KT0Rk57FSz48i1z22CjC0YN15sGJGnE9hNIP6dRuLnqVMKF0PZRPSUVI6BUNxXAXtzDK/4jARf9zsnJkXl+uZ3TicE3ddZ2ZlJHxncJGQ1RisJDZlAb48S4OY64lOV5ZUBvICEJ0RFimwTDUoQFYdcb13EMuqYHZcuAhiii/EANX5ZxNyxuQ4sLOnRG/p781/fVIMQVnW0LXa2LCI3MPnHIHnng+uTCfsZLV4WhVfrQeKpa3lEPc8Q+aFS7gsR4Gun49LWNvg42A6aYSWOhjxzcwo13awP+PDVtI5EXhgonr3lzpdh8ZhXPI+VEvWBEqDvaWhCxczj/c0izC1gHmS06ex3lAezaAoenQbJhD2TOWLvlZ3acA1EfPDM9cNhfOaJEhBIXWRedirow314y9nq/CniUKLMcOWNAdAQuQEdUWy6/CIAEUQF1EPz7n8PIVFE2uqjmG3vED8WJXLJoqE9jNTeAHLhI1dVX/6KNwo2MW2ck40XFs1c9Ix
- 8urFtB72
- 4j4cv/U+cPxRxpMKpavvsjZ6YicCT9UYKy3A/TrNra3qtBLzW1+Bti/f+VrtCtcdkhz2b2tY2O/dYNRALNlMrFRY317uh/Z83MxkNTynjZyBC53LvOIcCmN9pcVFNW1BQfRmHLHQFP5RCADqsSXOzxestdAlIt1YMdjzRm1Xpx91RuyltkfyBIMh867VLcANyN0L/tg11uFI9hMkA21WpWyaBlnF2p4LOxZyGXSQFxNGtWRzGlKnBCHviP2m4/yJqf8NtIW8cd3PioRjeSoVFAEWe+0pSUgR7fCGqguwBMmbZAaWmhCPOa0QM7lVhGNG+sHqZC9d+fFuNg0nZWh6KlalicI+pDI2qs47yupEKiN8Mu99tiK2Y9x1rOHsoxbDN+0fHTZslCgnwiUu4hf3zW4YBBirFsijthpV1XLmkIb7hFQvXll5njYV47jNyKXr73idnqeIF7uzzsymMFLGZpTwFoMordGIkNDJigOBumUpTGni2sxcIYSWyv5+Robu2ZoVVX+TXNi20oTmCAZmV+rr9wG/lbGI54TXI3ciSwBpoiTPCQ9AZp4AD0wmFEs2B0Kmn7QuxjWgwLJ4OgrJKD1IdMXbfgu1J4ZZUYX5CNHcae5H/uD8/ik9FPVcj7CQKSewt
+X-Rspamd-Queue-Id: 125BF1C0003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: ah8esqs1tico371afceh5fafb4msfqk9
+X-HE-Tag: 1769923889-196317
+X-HE-Meta: U2FsdGVkX1/DhPYYdisCqQGSIdkkq6mG50XFpOn78qpEPBDfRGcYH6+DE/bQlDPLMspjS5JZiuv8Uvm4GEZlAMySmM/xd+AC6D9t6at0a/4iHHa+WSJhCBZ1Ty33sIJxCh3W4nAEp4EL99G3iUciL9Cf3rUnJ4omAS/+ueyLiTplMNY5EOJne48wtKkaB6CYKfHIX+NAwRKmX1Uv1NRgZQ9FpVFgjoWKlj0oC0poKDmb02yrng9fpOW7TIyKWH82r7t+UpUjVWSx854cR029e0Ya4zg3vf61xT/UYRFPAG28wYa7w+NsOBmaa0Tmlxo6JMnjphj7OIci0uyAK3wvoiodl4bvqtjeCiXFhxAvffBBitPDS+HDrDp3CUzlUfObKKqFhL/fGxMPCjxT1XhFNkfCcRUgTia6gULCtMje+Q3jk1rG51dDuCQJ2CU6KnNxzlQDTSRiYTEBofFk68DCHtxl7tRPfvUMzQfQyHKHKo/ujbhlHz4QGJiRZo0wPpj5Yk4FOSgEeVT+UItEwDcnvJrmbo5mp7YA4C4wuVH1Khvqs4w5BCzCcA5y+w5gbXhwANKlzqAeEOLAELgyH4Jv7U87yxnuyfXIsAmofVyw7xl+05VcVn7E1h7gMvqnj9YVQ+IuJ8vjfXR9ZlzNCvfhj1kViEZtmSvsPOKXKH2nh1WMztaWOu2QsfHpOPlbZmyvQT9Ae1RIaplpmR5ZGQQLxPgy5y5YuB+JD6RiUAcgPba30Uh/yYdMz+OzkDrsYoe68+IHB2yLFGbngJyjrH+u2+K0Elwm06gVzrqwFA4XBcA4FOANZWyYha/Svd18K+5xCKhzHgKi9aCPY+bwmat2WP/IMqfTPpO43JVm1I/qWdZj+EnNjYtkb9PnF0NSFRJPQa5FhBdvkug8zOjBFdyAS5ilFw2TOOlx5SbwLzBEBS9PGz88hvdOg59Wt5qeDJzTZd3MBk0bVgvQ3Z8I5jC
+ laqHFrNp
+ x2T/aYDWf26g0KCXOzbgPR9NXdNdt3paQvEvKzwdnaztd8Pm2cwwKzfmP8xNw+5sMvo6nOWXm2mWgmTRGS6XBePP8tdUE5Ktg5NCgNB5n6Iz9e8jbCG7mKJymY6lL+tb6wwY0c9vUMJHtFu5ImhxuCdCrxo1v1OgF3+tBoftn9zUR4EpptPGkey1rJ8yhcfZFlAboNTA3UMEoV1WuRTZ5Zuh6rs6h4JQqyJV7Of3CrpgbzbycnjlGZT/3/LdmaKXGR2oEGpizBJwy4hL+L1u9MyUGceQAf/w+Mn4q1vKV01jhBlXmU3Dtr9Z9wS0fmHbkppT8xV+FiWQ1RDN+GPenn8ev/2AtgMDZQvmggpIC577tAsiRK02HEg6S1AN04O1nUCfs3F9nw2hrklpmvfa7JsKrh31QPNWSE9o+mPd4WbksE749MsqFfaWId3fnS5e9qZgGWiWiJYJ4mYOKrKmhaaI1TA6h703J/SIfP27FVCaHLPrfplpRmEzryhNT4gpG0Mxb1BTs/IjsWT4VCXsN1Ae2rkwk0vcEctleo0EVKnE0j+4RizkJN7q/NzS9W0cz7xsoUYmsBYZcOoL6D+4Nt9ohADBfbDhb+c+I20+Lnx6gVc1mlxEpfQDQgWH9fqWETJGJ3EzjlbkLTD82EmWp0BklMVYif9eKOAent1QHZzOwhc6cXM/EcVVpdBY+byp+2BObsplTjkBXHrdsEDX5fjJZD+CUe+OzkIvAqON8k90V1pF/1ee1GghYvRUhGBlbPWww12e5FK0jn7qEUqGDbWxj1hQTjlcdClA4MH8CvWpXjEfmabL0VW44ngMvLGAsT/yLINIjk0peYWLoonhSjtMq2yeukDETR0C2UlsHB08bhG39rnplvLysu980QF46/kCLQldT4UPJKEiG9sUmSrJfZDsvk6Cs/EzGCAbrVG97oF+0m/ahV6tpNrx2oQ4SijkLWWRmN4ZOVfytPxcg6qfDnCZQ
+ wxlCWgMo
+ 1eEnXcHjk6Sytyge9F0n/6oHZVj6aEdCVxCmml/SA6QTHLHoqDbNKymYNuzg7NZPAQFh7jjGM3Bcd++gTkmvm+ClB45UyLSwLAiRz+/1E2n/FF9CVkXNDI3UnsczAA0ymRwjag+oHQhtnXoAeLa7mFR58oC6qFhEzCGT+j3lF2fcUMg85uB0KYUApD4M+VePmkh37J4AyfX3nnk198oRhyxC5JwTC2R7AxLipGg5ccdBCxgUYJoWG20t8LqBNWdfFwAJqTofEv/gU5PdK2OUIQJ8t8i2WUYrZ8KN0JgVf91KC4Mel4sFcVHduwUSohn/SzklA052w9cb8APnstiBc4i+tJ6Kmaaw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,210 +99,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31 Jan 2026, at 21:09, Wei Yang wrote:
+syzbot has found a reproducer for the following issue on:
 
-> On Fri, Jan 30, 2026 at 09:44:10PM -0500, Zi Yan wrote:
->> On 30 Jan 2026, at 18:00, Wei Yang wrote:
->>
->>> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and=
+HEAD commit:    162b42445b58 Merge tag 'iommu-fixes-v6.19-rc7' of git://gi..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=175f845a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=4aae00ac5a9d2645
+dashboard link: https://syzkaller.appspot.com/bug?extid=f172d48953db0cf91855
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1458d322580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12dabbfa580000
 
->>> split_huge_pmd_locked()") return false unconditionally after
->>> split_huge_pmd_locked() which may fail early during try_to_migrate() =
-for
->>> shared thp. This will lead to unexpected folio split failure.
->>>
->>> One way to reproduce:
->>>
->>>     Create an anonymous thp range and fork 512 children, so we have a=
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-162b4244.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d7fb932fd633/vmlinux-162b4244.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0008cacaef76/bzImage-162b4244.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/e800ad00fb07/mount_2.gz
+  fsck result: OK (log: https://syzkaller.appspot.com/x/fsck.log?x=14699c52580000)
 
->>>     thp shared mapped in 513 processes. Then trigger folio split with=
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+f172d48953db0cf91855@syzkaller.appspotmail.com
 
->>>     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio=
- to
->>>     order 0.
->>>
->>> Without the above commit, we can successfully split to order 0.
->>> With the above commit, the folio is still a large folio.
->>>
->>> The reason is the above commit return false after split pmd
->>> unconditionally in the first process and break try_to_migrate().
->>
->> The reasoning looks good to me.
->>
->>>
->>> The tricky thing in above reproduce method is current debugfs interfa=
-ce
->>> leverage function split_huge_pages_pid(), which will iterate the whol=
-e
->>> pmd range and do folio split on each base page address. This means it=
-
->>> will try 512 times, and each time split one pmd from pmd mapped to pt=
-e
->>> mapped thp. If there are less than 512 shared mapped process,
->>> the folio is still split successfully at last. But in real world, we
->>> usually try it for once.
->>>
->>> This patch fixes this by removing the unconditional false return afte=
-r
->>> split_huge_pmd_locked(). Later, we may introduce a true fail early if=
-
->>> split_huge_pmd_locked() does fail.
->>>
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and=
- split_huge_pmd_locked()")
->>> Cc: Gavin Guo <gavinguo@igalia.com>
->>> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
->>> Cc: Zi Yan <ziy@nvidia.com>
->>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> Cc: <stable@vger.kernel.org>
->>> ---
->>>  mm/rmap.c | 1 -
->>>  1 file changed, 1 deletion(-)
->>>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index 618df3385c8b..eed971568d65 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -2448,7 +2448,6 @@ static bool try_to_migrate_one(struct folio *fo=
-lio, struct vm_area_struct *vma,
->>>  			if (flags & TTU_SPLIT_HUGE_PMD) {
->>>  				split_huge_pmd_locked(vma, pvmw.address,
->>>  						      pvmw.pmd, true);
->>> -				ret =3D false;
->>>  				page_vma_mapped_walk_done(&pvmw);
->>>  				break;
->>>  			}
->>
->> How about the patch below? It matches the pattern of set_pmd_migration=
-_entry() below.
->> Basically, continue if the operation is successful, break otherwise.
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 618df3385c8b..83cc9d98533e 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2448,9 +2448,7 @@ static bool try_to_migrate_one(struct folio *fol=
-io, struct vm_area_struct *vma,
->> 			if (flags & TTU_SPLIT_HUGE_PMD) {
->> 				split_huge_pmd_locked(vma, pvmw.address,
->> 						      pvmw.pmd, true);
->> -				ret =3D false;
->> -				page_vma_mapped_walk_done(&pvmw);
->> -				break;
->> +				continue;
->> 			}
->
-> Per my understanding if @freeze is trur, split_huge_pmd_locked() may "f=
-ail" as
-> the comment says:
->
-> 		 * Without "freeze", we'll simply split the PMD, propagating the
-> 		 * PageAnonExclusive() flag for each PTE by setting it for
-> 		 * each subpage -- no need to (temporarily) clear.
-> 		 *
-> 		 * With "freeze" we want to replace mapped pages by
-> 		 * migration entries right away. This is only possible if we
-> 		 * managed to clear PageAnonExclusive() -- see
-> 		 * set_pmd_migration_entry().
-> 		 *
-> 		 * In case we cannot clear PageAnonExclusive(), split the PMD
-> 		 * only and let try_to_migrate_one() fail later.
->
-> While currently we don't return the status of split_huge_pmd_locked() t=
-o
-> indicate whether it does replaced PMD with migration entries successful=
-ly. So
-> we are not sure this operation succeed.
-
-This is the right reasoning. This means to properly handle it, split_huge=
-_pmd_locked()
-needs to return whether it inserts migration entries or not when freeze i=
-s true.
-
->
-> Another difference from set_pmd_migration_entry() is split_huge_pmd_loc=
-ked()
-> would change the page table from PMD mapped to PTE mapped.
-> page_vma_mapped_walk() can handle it now for (pvmw->pmd && !pvmw->pte),=
- but I
-> am not sure this is what we expected. For example, in try_to_unmap_one(=
-), we
-> use page_vma_mapped_walk_restart() after pmd splitted.
->
-> So I prefer just remove the "ret =3D false" for a fix. Not sure this is=
-
-> reasonable to you.
->
-> I am thinking two things after this fix:
->
->   * add one similar test in selftests
->   * let split_huge_pmd_locked() return value to indicate freeze is degr=
-ade to
->     !freeze, and fail early on try_to_migrate() like the thp migration =
-branch
->
-> Look forward your opinion on whether it worth to do it.
-
-This is not the right fix, neither was mine above. Because before commit =
-60fbb14396d5,
-the code handles PAE properly. If PAE is cleared, PMD is split into PTEs =
-and each
-PTE becomes a migration entry, page_vma_mapped_walk(&pvmw) returns false,=
-
-and try_to_migrate_one() returns true. If PAE is not cleared, PMD is spli=
-t into PTEs
-and each PTE is not a migration entry, inside while (page_vma_mapped_walk=
-(&pvmw)),
-PAE will be attempted to get cleared again and it will fail again, leadin=
-g to
-try_to_migrate_one() returns false. After commit 60fbb14396d5, no matter =
-PAE is
-cleared or not, try_to_migrate_one() always returns false. It causes foli=
-o split
-failures for shared PMD THPs.
-
-Now with your fix (and mine above), no matter PAE is cleared or not, try_=
-to_migrate_one()
-always returns true. It just flips the code to a different issue. So the =
-proper fix
-is to let split_huge_pmd_locked() returns whether it inserts migration en=
-tries or not
-and do the same pattern as THP migration code path.
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-0): P5973/1:b..l
+rcu: 	(detected by 0, t=10502 jiffies, g=33977, q=94 ncpus=1)
+task:syz.5.221       state:R  running task     stack:25112 pid:5973  tgid:5973  ppid:5485   task_flags:0x400040 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5260 [inline]
+ __schedule+0x14ea/0x5050 kernel/sched/core.c:6867
+ preempt_schedule_irq+0x4d/0xa0 kernel/sched/core.c:7194
+ irqentry_exit+0x597/0x620 kernel/entry/common.c:216
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0010:__rcu_read_lock+0x31/0x60 kernel/rcu/tree_plugin.h:416
+Code: 8b 1d bb 01 49 11 48 81 c3 84 04 00 00 48 89 d8 48 c1 e8 03 48 b9 00 00 00 00 00 fc ff df 0f b6 04 08 84 c0 75 18 ff 03 8b 03 <3d> 00 00 00 40 7d 07 5b c3 cc cc cc cc cc 90 0f 0b 90 eb f3 89 d9
+RSP: 0018:ffffc90003b170c8 EFLAGS: 00000202
+RAX: 0000000000000001 RBX: ffff8880526f8484 RCX: dffffc0000000000
+RDX: dffffc0000000000 RSI: ffffffff8200ea42 RDI: ffffc90003b171a8
+RBP: dffffc0000000000 R08: ffffc90003b17270 R09: 0000000000000008
+R10: ffffc90003b171f8 R11: ffffffff81afb170 R12: 1ffff92000762e35
+R13: ffffc90003b171e0 R14: ffffc90003b171a8 R15: ffffc90003b17b20
+ rcu_read_lock include/linux/rcupdate.h:865 [inline]
+ class_rcu_constructor include/linux/rcupdate.h:1195 [inline]
+ unwind_next_frame+0x9e/0x23c0 arch/x86/kernel/unwind_orc.c:495
+ arch_stack_walk+0x11b/0x150 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0xa9/0x100 kernel/stacktrace.c:122
+ save_stack+0x122/0x230 mm/page_owner.c:165
+ __set_page_owner+0x8d/0x4c0 mm/page_owner.c:341
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x228/0x280 mm/page_alloc.c:1884
+ prep_new_page mm/page_alloc.c:1892 [inline]
+ get_page_from_freelist+0x24dc/0x2580 mm/page_alloc.c:3945
+ __alloc_frozen_pages_noprof+0x18d/0x380 mm/page_alloc.c:5240
+ alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2486
+ folio_alloc_mpol_noprof+0x39/0x70 mm/mempolicy.c:2505
+ shmem_alloc_folio mm/shmem.c:1913 [inline]
+ shmem_alloc_and_add_folio+0x445/0xf80 mm/shmem.c:1955
+ shmem_get_folio_gfp+0x5a9/0x1670 mm/shmem.c:2579
+ shmem_get_folio mm/shmem.c:2685 [inline]
+ shmem_write_begin+0x16c/0x330 mm/shmem.c:3338
+ generic_perform_write+0x2e2/0x8f0 mm/filemap.c:4314
+ shmem_file_write_iter+0xf8/0x120 mm/shmem.c:3513
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x61d/0xb90 fs/read_write.c:686
+ ksys_write+0x150/0x270 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f1ef735b78e
+RSP: 002b:00007ffc44ca3b98 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 000055558e4b7500 RCX: 00007f1ef735b78e
+RDX: 0000000001000000 RSI: 00007f1eee400000 RDI: 0000000000000004
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000004
+R13: 00007ffc44ca3cd0 R14: 00007ffc44ca3c90 R15: 00007f1eee400000
+ </TASK>
+rcu: rcu_preempt kthread timer wakeup didn't happen for 10497 jiffies! g33977 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
+rcu: 	Possible timer handling issue on cpu=0 timer-softirq=24428
+rcu: rcu_preempt kthread starved for 10498 jiffies! g33977 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=0
+rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:I stack:28784 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5260 [inline]
+ __schedule+0x14ea/0x5050 kernel/sched/core.c:6867
+ __schedule_loop kernel/sched/core.c:6949 [inline]
+ schedule+0x164/0x360 kernel/sched/core.c:6964
+ schedule_timeout+0x158/0x2c0 kernel/time/sleep_timeout.c:99
+ rcu_gp_fqs_loop+0x312/0x1560 kernel/rcu/tree.c:2083
+ rcu_gp_kthread+0x9d/0x3b0 kernel/rcu/tree.c:2285
+ kthread+0x726/0x8b0 kernel/kthread.c:463
+ ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+rcu: Stack dump where RCU GP kthread last ran:
+CPU: 0 UID: 0 PID: 1314 Comm: aoe_tx0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+RIP: 0010:_raw_spin_unlock_irqrestore+0x47/0x80 kernel/locking/spinlock.c:194
+Code: f7 e8 dd 47 05 f6 f7 c3 00 02 00 00 74 05 e8 80 b5 30 f6 9c 58 a9 00 02 00 00 75 27 f7 c3 00 02 00 00 74 01 fb bf 01 00 00 00 <e8> 64 13 f7 f5 65 8b 05 cd b5 57 07 85 c0 74 18 5b 41 5e c3 cc cc
+RSP: 0018:ffffc9000858f788 EFLAGS: 00000206
+RAX: 0000000000000006 RBX: 0000000000000286 RCX: 0000000000000202
+RDX: 0000000000000002 RSI: ffffffff8dccfc9a RDI: 0000000000000001
+RBP: dffffc0000000000 R08: ffffffff8fef3f77 R09: 1ffffffff1fde7ee
+R10: dffffc0000000000 R11: fffffbfff1fde7ef R12: 0000000000000000
+R13: 0000000000000000 R14: ffffffff9a3421a0 R15: ffffffff8edf0cc0
+FS:  0000000000000000(0000) GS:ffff88808ccea000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f6c1dbf8000 CR3: 000000005495c000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
+ uart_port_unlock_irqrestore include/linux/serial_core.h:788 [inline]
+ uart_port_unlock_deref drivers/tty/serial/serial_core.c:91 [inline]
+ uart_write_room+0x3b0/0x840 drivers/tty/serial/serial_core.c:647
+ handle_tx+0x163/0x610 drivers/net/caif/caif_serial.c:212
+ __netdev_start_xmit include/linux/netdevice.h:5273 [inline]
+ netdev_start_xmit include/linux/netdevice.h:5282 [inline]
+ xmit_one net/core/dev.c:3866 [inline]
+ dev_hard_start_xmit+0x2cd/0x7f0 net/core/dev.c:3882
+ __dev_queue_xmit+0x168f/0x3850 net/core/dev.c:4832
+ dev_queue_xmit include/linux/netdevice.h:3381 [inline]
+ tx+0x6b/0x190 drivers/block/aoe/aoenet.c:62
+ kthread+0x1e0/0x3f0 drivers/block/aoe/aoecmd.c:1241
+ kthread+0x726/0x8b0 kernel/kthread.c:463
+ ret_from_fork+0x51b/0xa40 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
 
 
-Hi David,
-
-In terms of unmap_folio(), which is the only user of split_huge_pmd_locke=
-d(..., freeze=3Dtrue),
-there is no folio_mapped() check afterwards. That might be causing an iss=
-ue,
-when the folio is pinned between the refcount check and unmap_folio(), un=
-map_folio()
-fails, but folio split code proceeds. That means the folio is still acces=
-sible
-via PTEs and later remove_migration_pte() will try to remove non migratio=
-n PTEs.
-It needs to be fixed separately, right?
-
-
->
->> #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->> 			pmdval =3D pmdp_get(pvmw.pmd);
->>
->>
->>
->> --
->> Best Regards,
->> Yan, Zi
->
-> -- =
-
-> Wei Yang
-> Help you, Help me
-
-
---
-Best Regards,
-Yan, Zi
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
