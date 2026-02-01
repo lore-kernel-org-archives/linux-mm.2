@@ -4,101 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2663E7C6F9
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 00:09:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DE6E7C6F9
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 00:10:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 026946B0005; Sat, 31 Jan 2026 19:09:47 -0500 (EST)
+	id 86F236B0005; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F15696B0088; Sat, 31 Jan 2026 19:09:46 -0500 (EST)
+	id 819206B0088; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E13DD6B008A; Sat, 31 Jan 2026 19:09:46 -0500 (EST)
+	id 71B5D6B008A; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D07F76B0005
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:09:46 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 680361B1DD5
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:09:46 +0000 (UTC)
-X-FDA: 84393954372.22.243C216
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 610D2180009
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:09:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="um/7tYvp";
-	spf=none (imf06.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769904584;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ee6tnw7Bye5CGO63GyRbRK+g1RsPEEK7xU3KsikleH8=;
-	b=ZgLBKIvkGz9ura40Xtpym/lIKsGvYxHaUfI6bqVa8xmZCohWan7wFNjX5LMUDfsKdDUUy9
-	VVwpin2JUdvAcPsqoOixwLS09qQlnmCGGXtqGOiZ2J5AsYbgz/ayTosKVHwK2a9JWXICZc
-	O+q4/rnDMBfd5rlwLBe0i56bxYn/1dE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="um/7tYvp";
-	spf=none (imf06.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769904584; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 607456B0005
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:10:55 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F06EB13BBF5
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:10:54 +0000 (UTC)
+X-FDA: 84393957228.30.6F4DBCE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3DCD9140002
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:10:53 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HZPRwdjq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769904653; a=rsa-sha256;
 	cv=none;
-	b=AsyPwnstiMrQuN3wottsoejVj1Pqpfpzp3hU3ndqHrjwPTFlDjrjx0CzXg5ufE1EwFcy8f
-	6ArFcZoHeAvK1htgoy/E3Q/HKd8V2WoMRSbqu059Jp8IXJ4sNl4hqUTp8M7Lc37kzxQOLD
-	IHHS5r25aadLzyUT8UXgl43lgBl6pjM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Ee6tnw7Bye5CGO63GyRbRK+g1RsPEEK7xU3KsikleH8=; b=um/7tYvp1GwLTW+4jRFFt6i8Lh
-	43+Al7pZaW8xn1fwVBPpbz7wu/Qa0kqfQL3yLfYZjWpvUebDL6v1WuuYzgLT5w/sIHpyv3RP8j3Kp
-	N9llJmy6Lkpvli4Hp7vFM+wjNB6whhI64AS2pDbFpn4N9zZsW+AusmBuL48iVTxuJAUCVaakYKofV
-	1XwFvR+XGpvEMS645jPz7tx5kf5bMRoG5DFmrpYbhwSHQeFs4PJlwyszIEYMXAzd6Nu+TsJP67x/m
-	hdO5SxFSlZQlDmnN2Z4gVsMIRpKMJXa8o+DQCKtQF7JJjLgnNFe4Rn2ou7zF7kgHnOMVJWn8+TDON
-	24jRK0YQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1vmL3p-0000000218W-0fSi;
-	Sun, 01 Feb 2026 00:11:29 +0000
-Date: Sun, 1 Feb 2026 00:11:29 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Samuel Wu <wusamuel@google.com>, Greg KH <gregkh@linuxfoundation.org>,
-	linux-fsdevel@vger.kernel.org, brauner@kernel.org, jack@suse.cz,
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
-	a.hindborg@kernel.org, linux-mm@kvack.org,
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	kees@kernel.org, rostedt@goodmis.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org, clm@meta.com,
-	android-kernel-team <android-kernel-team@google.com>
-Subject: Re: [PATCH v4 00/54] tree-in-dcache stuff
-Message-ID: <20260201001129.GB3183987@ZenIV>
-References: <CAG2KctqWy-gnB4o6FAv3kv6+P2YwqeWMBu7bmHZ=Acq+4vVZ3g@mail.gmail.com>
- <20260129032335.GT3183987@ZenIV>
- <20260129225433.GU3183987@ZenIV>
- <CAG2KctoNjktJTQqBb7nGeazXe=ncpwjsc+Lm+JotcpaO3Sf9gw@mail.gmail.com>
- <20260130070424.GV3183987@ZenIV>
- <CAG2Kctoqja9R1bBzdEAV15_yt=sBGkcub6C2nGE6VHMJh13=FQ@mail.gmail.com>
- <20260130235743.GW3183987@ZenIV>
- <CAHk-=wgk7MRBj4iwQLHocVCa94Jf0cMEz2HzUAS9+6rGtnp4JA@mail.gmail.com>
- <20260131010821.GY3183987@ZenIV>
- <CAHk-=wiXq-bPyKywNOw7z6ehrVReyS-hSPuQkJvuhJWfXGFm=A@mail.gmail.com>
+	b=0pBpoJ4rfqVswB4sWa50YW4LF8sxTpMcfYgkMgWzTAqjpDK2vndPPhMGJukOoWlaK3du9o
+	p1j8QoCDxjh/ymWJC6ujwt30cIlKXFfM+vLV8yMH/48iws0knJ6yKZnojohIsdMBMf5L2i
+	/EWX6RKA3nFSTULUsJQx7nRrIj+ty8s=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HZPRwdjq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1769904653;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b+9nH2SfyPpXQdVSnM33OFp4xaFDuvRVZPTBd7l7Hu4=;
+	b=V40EBpu8Y6JgAgV6DLyQVJc5XlKJc8nxgAqrmJ9S5XYAL3pwg/iEgLXS8Ka62YDDSFR3XP
+	guE2e/33gtVi1yxD3QKOfXntYgdyvL0vnULhNtxSDtznehkVtlC/DAJTPISD8fC9P3NsK0
+	iTtONmrPP67NGmB0zGAB/sdHOAYwUiU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 06100436FF;
+	Sun,  1 Feb 2026 00:10:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85585C4CEF1;
+	Sun,  1 Feb 2026 00:10:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769904651;
+	bh=kQPODrUPiUY8ypJn9UfaCgFiYZn8Bv06jSOIpi+1vNk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=HZPRwdjqd7n51HsggBZHcRVQhVZcoHGaVm/A76ifsFWXIUgfeox9jNYRIygd5ZJmi
+	 fRMOOnUIhuwoxNnA4s1OmUx0ClDPHqwpjmlzAcw0/HhxWXu4cYdUWwUx+6lWw3geZq
+	 I0XWjzYWi5teATSCzv42KzGXruNdU74PSejVu28MQQiR7mhV0nuUHWb19epJSReB+V
+	 wNMOBuGBUelGqLxbYZOIw1E5KrNsCulOhaoc2/BRVwnlNRuE0TvEKyAQEiMxhRjKgC
+	 M4dxaW5TukrVdoWMgUYxEDUu8rLZ02GfpWHZPbTDRPmsQSQknv5xHShNv0dpchRYj9
+	 A+y4cc1DxZ6eg==
+From: SeongJae Park <sj@kernel.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Kujau <lists@nerdbynature.de>
+Subject: Re: [PATCH v3 21/30] maple_tree: Add cp_is_new_root() helper
+Date: Sat, 31 Jan 2026 16:10:42 -0800
+Message-ID: <20260201001043.88706-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260130205935.2559335-22-Liam.Howlett@oracle.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHk-=wiXq-bPyKywNOw7z6ehrVReyS-hSPuQkJvuhJWfXGFm=A@mail.gmail.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: oy7fgthqk6awzmhhx3s5dqwnd4bfuk9f
-X-Rspamd-Queue-Id: 610D2180009
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1769904584-668483
-X-HE-Meta: U2FsdGVkX18mB8IMWlkvDhh/fg9bw1BYTm4umeoJZPgknt5B0RGDhL6hjeJHFG47LYpnX5prwsTFzdYh3drKcT8pgiI/mc5kXDCydV/LH9m3xedS5mC5nz7vKjdoETqIsTopLb6Yvzxtj1LVe3l1CNI7mhidPjZaVS00fb/OZ9HFBYz3xiYaYlwrfbWUZEr+PUaXfx/0QYil1EOywoxsr1o94wm9oNEEX9ChbAQPddDUxSjSZnvvncBKsCmEJoQjlV/Buxh/QTqVZbVD+BN2LUJWsjJnvNrdbb/qrAVSyQR/Q/KG7banuoxSkFYurQ78Otkn/ygTPnPNKxVlJ5fFBqGHf6tv8iv+6Ga7QmQbzq6IIp0BzP/ojWYEJ03mVtVU9uBmXN9D/x6LMdgiVs1+lvelSp2bLXwkaSg+umUg1cr5aCefRSbzuU12C+NDpbQQVkY12SwuLVlILuOcTZ6ceTtSI6m3LUqmpy+B5vaE1dbvBtkdT7xLOmEqMqrNML+mcuvqnuUYjbpw00lO2wMhm1qfX9qiJkkexM2yBrlA9wP1Sia2CPuAeWLNWkRPnlBC7+RgKq0wktXB9WYfcfIF3PvilgViNpWhjrPauDfsPScbvReAh9n9TGavx8+mHo9BJAE01g9uq3o1Qs5nY5jFOXykXk8qvn/G7jK38541FDqlqii6dT4pE8Qt0BXVlTRhYouhRh/uap+AHJ/mGrDU0MH4GVLolajPskO6bgzPZUnZPHQsYv5BIxSebcWP5+9nEKYjEqxmKAG9KkrFQJE9D4kX9LpcnXyIwUVyIav27sCrkWwtQuLRYNUbtEmYNK6MUvACCrfKXspmIlBUH2KyktRPddpf/h5mcD6RTX8dOMCGzVEOJgDZsGhAbm7DrojHZDKpg1pCnDbpVQbM7McFq5wE/mB31jr0O6w2FAcZL6mwgdValSBa//B2ku/eTcXSdKREbiAUB2KOOT6CWGF
- H5gYlguu
- x6THU6nVGb34pwWF44LEgLKPaoexR0E/yr87t/NDj6g5uhoyMVtRotYqkn2aejxkGyRjvZib3tMA21LDzY6X/X3eReEL1L4e6KMGfthDZQCSGp1/GzxOAH655Y5MLLVTVJjya+Adc5TfODbRUD034vSPljp7ebl/uiby3ex+JTaHjRh9/62I2r+AQK2QYuaVkQRGYL+ZttyZh6VyNAhXI0sD5NcOaEtztrWoL0n+jBgn3NzLhtNwXCcqgL5PdFtunrw1D7eoGVjEP0txmq/UMZKVjvn3uBX2lQUYokfacnoBBeidhDdqRqEsSatunNT+TjHUEqVkirOjW9eTMru3Q5tx5BNiwD5h1JNj+aXSyBLVJxtxUOyV08IZn1MQKpeTkjTaEotHeBYJhF8UpyQvAiLxbQ61LFPQpx7xuZh66AKMjCij8JJ+O86+MSaGO9yBFGj5TWj7rvLYXjgXfPq42U8vF8z/m5g2iNEbTsAEH2swzbkqUSWdqzp3A2hHZrGrDMxOhfrsiTFdXFOuzIgVnneO+WQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3DCD9140002
+X-Stat-Signature: pu4dpjefbsb16xp8knbemn7uesni5a3t
+X-HE-Tag: 1769904653-543793
+X-HE-Meta: U2FsdGVkX19EohTsEl66gcMnJI/c6ZPCSAfZfF5v8qjhTnYhW7axfmNWQkktQph2RPJDrlJfRGQDbqzMXdXg5Lzkd7i8hVG8FRaJxXSgVpJcPk02TNC6j50RMymInCqyHs+4WfkTg0ZTm2rjElnP9KMrJ9W61T9QgSG39awtNj741q5nSArDQrk0RqIufN+l3yupvcAAfG0RqG2VDLEmFqLbp5bi/zCht3IuQLET/3kF34EqzMR8nMygdeP3jN1Pmvzr01mR3IbAJPvWM5kTY1yVIP7KnJCTppamY2yXrooGB7jQl4MWTi7bcOVbC/WD+C34hH9RuHEcRuYNlrWk4Tv3rKN5sI4yollhTl6iNoS1w4z3CTe7aR98FUa9NmDDOIzjuyb1/IlwoNUvwWQRHjVEt1P5LhxSdDSpk34WivuTePC/HSEmFkmNlnxc9ZdeEq7qKMAyESmtJYW1D3IMiayfb/vI+Lez1tt4e+6J1m+46YCo4ypZELrz66xgk57/NITrHpIh4QE3m3ssiUfzRIzIVFkcupiQP35xA56JZ65QxXZpnivLYQYBRZGCy9pOZt2JiQ1EHIyEPq2mvp3dMwdHGqBaMM1boiZGs34LTHQkPLdX6T9C1kG2RRQTSr4NZnkj2mXigL0DalKdqNbN2r0wTNCPj9TjUZbMePIQJaB3AHyVSzGT5RY35E/geZ+AmDOUPkRXYov6KGKSTnd6MJggOY/B+JNrTUEmuI7oX1o4l5gokfDGCPNbJYjfpSP2AnQZdrad3PjTJOTPXAC+G5sZ5xMFn7JqGinolLtApl4b2u7UuvDOkYaGUneluoiCg7Bg6CQzthLoW43tzYEqdqqPUlY6e+WGR2elndp/B8GUi3MNH7vRydVajW+w81p7AsKmFWKlEfJJU+5tp3hwkcjmD+2nMDqVb8F3JYlSxznRN/hPQZWp4kyKsYcFY4k7V7YDHrmiHaCNs/apcbs
+ jjfgFV8q
+ AqrpJ2p/3cEnFU58mkZo9Zwp7gXOCl8AGpYhLYqqJEyXVN/EcBY0hkVBuCl05Z3VUblPxC6NzEuj1NKwAcNoD/0bQnb7tYDstpiSmOEtIuHf5gWerVPCrlgLmwdGYAnoS63THVV/7owgMABh53oOoMUiucJUG2bXT+Ty/gSu9BbFj59bsYPd93xTEJfxk3UYtA9rlSf3Np8g0+OfQA4UoNoNORqhCNDwLGbx5kzZXBruy5zKZ4abKR3SCfiLuE3GhxdsocK3pt0v+nCBFlsJ6StbA/j5TECfnYA5RG2qq8l3lvXw/K983BlYOYw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,317 +103,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 30, 2026 at 05:11:39PM -0800, Linus Torvalds wrote:
-> On Fri, 30 Jan 2026 at 17:06, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> >
-> > I'd rather go for a spinlock there, protecting these FFS_DEACTIVATED
-> > transitions;
+Hello,
+
+On Fri, 30 Jan 2026 15:59:26 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
+
+> Add a helper to do what is needed when the maple copy node contains a
+> new root node.  This is useful for future commits and is
+> self-documenting code.
 > 
-> Yes, that's the much better solution.  The locking in this thing is horrendous.
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> ---
+>  lib/maple_tree.c | 70 ++++++++++++++++++++++++++----------------------
+>  1 file changed, 38 insertions(+), 32 deletions(-)
 > 
-> But judging by Samuel's recent email, there's something else than the
-> open locking thing going on.
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index 5280fa6d2d6ec..42038e42a4c7e 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -3337,6 +3337,43 @@ static void mas_spanning_rebalance(struct ma_state *mas,
+>  	mas_spanning_rebalance_loop(mas, mast, count);
+>  }
+>  
+> +static inline bool cp_is_new_root(struct maple_copy *cp, struct ma_state *mas)
+> +{
+> +	if (cp->min || cp->max != ULONG_MAX)
+> +		return false;
+> +
+> +	if (cp->d_count != 1) {
+> +		enum maple_type mt = maple_arange_64;
+> +
+> +		if (!mt_is_alloc(mas->tree))
+> +			mt = maple_range_64;
+> +
+> +		cp->data = cp->d_count;
+> +		cp->s_count = 0;
+> +		dst_setup(cp, mas, mt);
+> +		init_cp_src(cp);
+> +		node_copy(mas, cp->src[0].node, 0, cp->data, cp->max, maple_copy,
+> +			  cp->dst[0].node, 0, mt);
+> +		node_finalise(cp->dst[0].node, mt, cp->end + 1);
+> +		/*
+> +		 * Warning, see cp_leaf_init() comment and rcu_assign_pointer()
+> +		 * documentation.  Since this is a new root, there are no
+> +		 * read-side operations that can view it until it is insert into
+> +		 * the tree after an rcu_assign_pointer() call.
+> +		 */
+> +		RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
 
-I've put the following into viro/vfs.git#fixes; diff is identical to the
-one that is reported to fix things on top of -rc7...
+I just found the above makes my build test using an old version compiler fails.
+Fortunately, seems it is same to the one we discussed before [1], and same
+mitigation like below attached patch works, at least for my test setup.
 
-Objections?
+[1] https://lore.kernel.org/dwhxxuil4zkesmyj6xviyyyfedrcd65h6qd4bplmcrsg36purj@f523i7t6nxag
 
-commit 99a706fa47949ece1fb02b5b1206efd4fb031d25
-Author: Al Viro <viro@zeniv.linux.org.uk>
-Date:   Sat Jan 31 18:24:41 2026 -0500
 
-functionfs: use spinlock for FFS_DEACTIVATED/FFS_CLOSING transitions
-    
-When all files are closed, functionfs needs ffs_data_reset() to be
-done before any further opens are allowed.
+Thanks,
+SJ
 
-During that time we have ffs->state set to FFS_CLOSING; that makes
-->open() fail with -EBUSY.  Once ffs_data_reset() is done, it
-switches state (to FFS_READ_DESCRIPTORS) indicating that opening
-that thing is allowed again.  There's a couple of additional twists:
-	* mounting with -o no_disconnect delays ffs_data_reset()
-from doing that at the final ->release() to the first subsequent
-open().  That's indicated by ffs->state set to FFS_DEACTIVATED;
-if open() sees that, it immediately switches to FFS_CLOSING and
-proceeds with doing ffs_data_reset() before returning to userland.
-	* a couple of usb callbacks need to force the delayed
-transition; unfortunately, they are done in locking environment
-that does not allow blocking and ffs_data_reset() can block.
-As the result, if these callbacks see FFS_DEACTIVATED, they change
-state to FFS_CLOSING and use schedule_work() to get ffs_data_reset()
-executed asynchronously.
+[...]
+=== >8 ===
+From ecc4e468d72c431d53043c8a61fddb6ddf2ecf7c Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Sat, 31 Jan 2026 16:02:56 -0800
+Subject: [PATCH] lib/mape_tree: temporal build fix
 
-Unfortunately, the locking is rather insufficient.  A fix attempted
-in e5bf5ee26663 ("functionfs: fix the open/removal races") had closed
-a bunch of UAF, but it didn't do anything to the callbacks, lacked
-barriers in transition from FFS_CLOSING to FFS_READ_DESCRIPTORS
-_and_ it had been too heavy-handed in open()/open() serialization -
-I've used ffs->mutex for that, and it's being held over actual IO on
-ep0, complete with copy_from_user(), etc.
+Without the fix, build with old compilers fails like below:
 
-Even more unfortunately, the userland side is apparently racy enough
-to have the resulting timing changes (no failures, just a delayed
-return of open(2)) disrupt the things quite badly.  Userland bugs
-or not, it's a clear regression that needs to be dealt with.
+  CC      lib/maple_tree.o
+In file included from .../arch/arm64/include/asm/rwonce.h:67,
+                 from .../include/linux/compiler.h:380,
+                 from .../include/linux/array_size.h:5,
+                 from .../include/linux/kernel.h:16,
+                 from .../include/linux/maple_tree.h:11,
+                 from .../lib/maple_tree.c:56:
+.../lib/maple_tree.c: In function 'cp_is_new_root':
+.../include/linux/rcupdate.h:555:36: error: dereferencing pointer to incomplete type 'struct maple_enode'
+  555 | #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
+      |                                    ^~~~
+.../include/asm-generic/rwonce.h:55:33: note: in definition of macro '__WRITE_ONCE'
+   55 |  *(volatile typeof(x) *)&(x) = (val);    \
+      |                                 ^~~
+.../include/linux/rcupdate.h:1046:3: note: in expansion of macro 'WRITE_ONCE'
+ 1046 |   WRITE_ONCE(p, RCU_INITIALIZER(v)); \
+      |   ^~~~~~~~~~
+.../include/linux/rcupdate.h:1046:17: note: in expansion of macro 'RCU_INITIALIZER'
+ 1046 |   WRITE_ONCE(p, RCU_INITIALIZER(v)); \
+      |                 ^~~~~~~~~~~~~~~
+.../lib/maple_tree.c:3364:3: note: in expansion of macro 'RCU_INIT_POINTER'
+ 3364 |   RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
+      |   ^~~~~~~~~~~~~~~~
 
-Solution is to use a spinlock for serializing these state checks and
-transitions - unlike ffs->mutex it can be taken in these callbacks
-and it doesn't disrupt the timings in open().
-
-We could introduce a new spinlock, but it's easier to use the one
-that is already there (ffs->eps_lock) instead - the locking
-environment is safe for it in all affected places.
-
-Since now it is held over all places that alter or check the
-open count (ffs->opened), there's no need to keep that atomic_t -
-int would serve just fine and it's simpler that way.
-
-Fixes: e5bf5ee26663 ("functionfs: fix the open/removal races")
-Fixes: 18d6b32fca38 ("usb: gadget: f_fs: add "no_disconnect" mode") # v4.0
-Tested-by: Samuel Wu <wusamuel@google.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 05c6750702b6..fa467a40949d 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -59,7 +59,6 @@ static struct ffs_data *__must_check ffs_data_new(const char *dev_name)
- 	__attribute__((malloc));
- 
- /* Opened counter handling. */
--static void ffs_data_opened(struct ffs_data *ffs);
- static void ffs_data_closed(struct ffs_data *ffs);
- 
- /* Called with ffs->mutex held; take over ownership of data. */
-@@ -636,23 +635,25 @@ static ssize_t ffs_ep0_read(struct file *file, char __user *buf,
- 	return ret;
- }
- 
-+
-+static void ffs_data_reset(struct ffs_data *ffs);
-+
- static int ffs_ep0_open(struct inode *inode, struct file *file)
- {
- 	struct ffs_data *ffs = inode->i_sb->s_fs_info;
--	int ret;
- 
--	/* Acquire mutex */
--	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
--	if (ret < 0)
--		return ret;
--
--	ffs_data_opened(ffs);
-+	spin_lock_irq(&ffs->eps_lock);
- 	if (ffs->state == FFS_CLOSING) {
--		ffs_data_closed(ffs);
--		mutex_unlock(&ffs->mutex);
-+		spin_unlock_irq(&ffs->eps_lock);
- 		return -EBUSY;
+ lib/maple_tree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index c522419e99f4e..eb2855269332a 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -3361,7 +3361,8 @@ static inline bool cp_is_new_root(struct maple_copy *cp, struct ma_state *mas)
+ 		 * read-side operations that can view it until it is insert into
+ 		 * the tree after an rcu_assign_pointer() call.
+ 		 */
+-		RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
++		RCU_INIT_POINTER(cp->slot[0],
++				(void *)mt_mk_node(cp->dst[0].node, mt));
+ 		cp->height++;
  	}
--	mutex_unlock(&ffs->mutex);
-+	if (!ffs->opened++ && ffs->state == FFS_DEACTIVATED) {
-+		ffs->state = FFS_CLOSING;
-+		spin_unlock_irq(&ffs->eps_lock);
-+		ffs_data_reset(ffs);
-+	} else {
-+		spin_unlock_irq(&ffs->eps_lock);
-+	}
- 	file->private_data = ffs;
- 
- 	return stream_open(inode, file);
-@@ -1202,15 +1203,10 @@ ffs_epfile_open(struct inode *inode, struct file *file)
- {
- 	struct ffs_data *ffs = inode->i_sb->s_fs_info;
- 	struct ffs_epfile *epfile;
--	int ret;
--
--	/* Acquire mutex */
--	ret = ffs_mutex_lock(&ffs->mutex, file->f_flags & O_NONBLOCK);
--	if (ret < 0)
--		return ret;
- 
--	if (!atomic_inc_not_zero(&ffs->opened)) {
--		mutex_unlock(&ffs->mutex);
-+	spin_lock_irq(&ffs->eps_lock);
-+	if (!ffs->opened) {
-+		spin_unlock_irq(&ffs->eps_lock);
- 		return -ENODEV;
- 	}
- 	/*
-@@ -1220,11 +1216,11 @@ ffs_epfile_open(struct inode *inode, struct file *file)
- 	 */
- 	epfile = smp_load_acquire(&inode->i_private);
- 	if (unlikely(ffs->state != FFS_ACTIVE || !epfile)) {
--		mutex_unlock(&ffs->mutex);
--		ffs_data_closed(ffs);
-+		spin_unlock_irq(&ffs->eps_lock);
- 		return -ENODEV;
- 	}
--	mutex_unlock(&ffs->mutex);
-+	ffs->opened++;
-+	spin_unlock_irq(&ffs->eps_lock);
- 
- 	file->private_data = epfile;
- 	return stream_open(inode, file);
-@@ -2092,8 +2088,6 @@ static int ffs_fs_init_fs_context(struct fs_context *fc)
- 	return 0;
- }
- 
--static void ffs_data_reset(struct ffs_data *ffs);
--
- static void
- ffs_fs_kill_sb(struct super_block *sb)
- {
-@@ -2150,15 +2144,6 @@ static void ffs_data_get(struct ffs_data *ffs)
- 	refcount_inc(&ffs->ref);
- }
- 
--static void ffs_data_opened(struct ffs_data *ffs)
--{
--	if (atomic_add_return(1, &ffs->opened) == 1 &&
--			ffs->state == FFS_DEACTIVATED) {
--		ffs->state = FFS_CLOSING;
--		ffs_data_reset(ffs);
--	}
--}
--
- static void ffs_data_put(struct ffs_data *ffs)
- {
- 	if (refcount_dec_and_test(&ffs->ref)) {
-@@ -2176,28 +2161,29 @@ static void ffs_data_put(struct ffs_data *ffs)
- 
- static void ffs_data_closed(struct ffs_data *ffs)
- {
--	if (atomic_dec_and_test(&ffs->opened)) {
--		if (ffs->no_disconnect) {
--			struct ffs_epfile *epfiles;
--			unsigned long flags;
--
--			ffs->state = FFS_DEACTIVATED;
--			spin_lock_irqsave(&ffs->eps_lock, flags);
--			epfiles = ffs->epfiles;
--			ffs->epfiles = NULL;
--			spin_unlock_irqrestore(&ffs->eps_lock,
--							flags);
--
--			if (epfiles)
--				ffs_epfiles_destroy(ffs->sb, epfiles,
--						 ffs->eps_count);
--
--			if (ffs->setup_state == FFS_SETUP_PENDING)
--				__ffs_ep0_stall(ffs);
--		} else {
--			ffs->state = FFS_CLOSING;
--			ffs_data_reset(ffs);
--		}
-+	spin_lock_irq(&ffs->eps_lock);
-+	if (--ffs->opened) {	// not the last opener?
-+		spin_unlock_irq(&ffs->eps_lock);
-+		return;
-+	}
-+	if (ffs->no_disconnect) {
-+		struct ffs_epfile *epfiles;
-+
-+		ffs->state = FFS_DEACTIVATED;
-+		epfiles = ffs->epfiles;
-+		ffs->epfiles = NULL;
-+		spin_unlock_irq(&ffs->eps_lock);
-+
-+		if (epfiles)
-+			ffs_epfiles_destroy(ffs->sb, epfiles,
-+					 ffs->eps_count);
-+
-+		if (ffs->setup_state == FFS_SETUP_PENDING)
-+			__ffs_ep0_stall(ffs);
-+	} else {
-+		ffs->state = FFS_CLOSING;
-+		spin_unlock_irq(&ffs->eps_lock);
-+		ffs_data_reset(ffs);
- 	}
- }
- 
-@@ -2214,7 +2200,7 @@ static struct ffs_data *ffs_data_new(const char *dev_name)
- 	}
- 
- 	refcount_set(&ffs->ref, 1);
--	atomic_set(&ffs->opened, 0);
-+	ffs->opened = 0;
- 	ffs->state = FFS_READ_DESCRIPTORS;
- 	mutex_init(&ffs->mutex);
- 	spin_lock_init(&ffs->eps_lock);
-@@ -2266,6 +2252,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
- {
- 	ffs_data_clear(ffs);
- 
-+	spin_lock_irq(&ffs->eps_lock);
- 	ffs->raw_descs_data = NULL;
- 	ffs->raw_descs = NULL;
- 	ffs->raw_strings = NULL;
-@@ -2289,6 +2276,7 @@ static void ffs_data_reset(struct ffs_data *ffs)
- 	ffs->ms_os_descs_ext_prop_count = 0;
- 	ffs->ms_os_descs_ext_prop_name_len = 0;
- 	ffs->ms_os_descs_ext_prop_data_len = 0;
-+	spin_unlock_irq(&ffs->eps_lock);
- }
- 
- 
-@@ -3756,6 +3744,7 @@ static int ffs_func_set_alt(struct usb_function *f,
- {
- 	struct ffs_function *func = ffs_func_from_usb(f);
- 	struct ffs_data *ffs = func->ffs;
-+	unsigned long flags;
- 	int ret = 0, intf;
- 
- 	if (alt > MAX_ALT_SETTINGS)
-@@ -3768,12 +3757,15 @@ static int ffs_func_set_alt(struct usb_function *f,
- 	if (ffs->func)
- 		ffs_func_eps_disable(ffs->func);
- 
-+	spin_lock_irqsave(&ffs->eps_lock, flags);
- 	if (ffs->state == FFS_DEACTIVATED) {
- 		ffs->state = FFS_CLOSING;
-+		spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 		INIT_WORK(&ffs->reset_work, ffs_reset_work);
- 		schedule_work(&ffs->reset_work);
- 		return -ENODEV;
- 	}
-+	spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 
- 	if (ffs->state != FFS_ACTIVE)
- 		return -ENODEV;
-@@ -3791,16 +3783,20 @@ static void ffs_func_disable(struct usb_function *f)
- {
- 	struct ffs_function *func = ffs_func_from_usb(f);
- 	struct ffs_data *ffs = func->ffs;
-+	unsigned long flags;
- 
- 	if (ffs->func)
- 		ffs_func_eps_disable(ffs->func);
- 
-+	spin_lock_irqsave(&ffs->eps_lock, flags);
- 	if (ffs->state == FFS_DEACTIVATED) {
- 		ffs->state = FFS_CLOSING;
-+		spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 		INIT_WORK(&ffs->reset_work, ffs_reset_work);
- 		schedule_work(&ffs->reset_work);
- 		return;
- 	}
-+	spin_unlock_irqrestore(&ffs->eps_lock, flags);
- 
- 	if (ffs->state == FFS_ACTIVE) {
- 		ffs->func = NULL;
-diff --git a/drivers/usb/gadget/function/u_fs.h b/drivers/usb/gadget/function/u_fs.h
-index 4b3365f23fd7..6a80182aadd7 100644
---- a/drivers/usb/gadget/function/u_fs.h
-+++ b/drivers/usb/gadget/function/u_fs.h
-@@ -176,7 +176,7 @@ struct ffs_data {
- 	/* reference counter */
- 	refcount_t			ref;
- 	/* how many files are opened (EP0 and others) */
--	atomic_t			opened;
-+	int				opened;
- 
- 	/* EP0 state */
- 	enum ffs_state			state;
+ 	WARN_ON_ONCE(cp->dst[0].node != mte_to_node(
+-- 
+2.47.3
+
 
