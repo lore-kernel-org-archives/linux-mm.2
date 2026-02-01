@@ -4,150 +4,194 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74ABAE7C6F9
-	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 00:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 778AAE7C6F9
+	for <linux-mm@archiver.kernel.org>; Sun,  1 Feb 2026 02:05:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D4606B0088; Sat, 31 Jan 2026 19:48:59 -0500 (EST)
+	id 5648D6B0088; Sat, 31 Jan 2026 21:05:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 782496B0089; Sat, 31 Jan 2026 19:48:59 -0500 (EST)
+	id 513426B0089; Sat, 31 Jan 2026 21:05:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 663316B008A; Sat, 31 Jan 2026 19:48:59 -0500 (EST)
+	id 3C9266B008A; Sat, 31 Jan 2026 21:05:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0AA6B0088
-	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 19:48:59 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E9F2E5B791
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:48:58 +0000 (UTC)
-X-FDA: 84394053156.09.D2EDE65
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CE6B7180006
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 00:48:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LEo89UNX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B3606B0088
+	for <linux-mm@kvack.org>; Sat, 31 Jan 2026 21:05:05 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7C4F7C2C2A
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 02:05:04 +0000 (UTC)
+X-FDA: 84394244928.04.56E9E95
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010010.outbound.protection.outlook.com [52.101.193.10])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 930E6A0003
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 02:05:01 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=unVPThiU;
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.10 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769906936;
+	s=arc-20220608; t=1769911501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IxzRN1GvYKcSA1myNnRhFl1/mDOmpAJaN3X4Z/70v0Y=;
-	b=6JPJ71IJ0Eq1SD8Gym6IePuUCBC7LFMDYW9AJf6uUt3fZOGCgbRoz9Kd8ZatYsHC6Dr5yh
-	Q/reRCkF5JHeWyLGxRcR1liYeX/7tltupLWJpoRQVWjdr3QV8GRoe1fnB6GJijgnOUsrLs
-	2df0zwlad+B9PsZMcSa73kiqKI6EGiY=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769906936; a=rsa-sha256;
-	cv=pass;
-	b=po9QAEENqEpHuNLAwiJAA5Ewa5rM/aYlHKGx0J/4KKLnisT7T5OVXQxSw7WjSFQFZChWiI
-	b1ZszmZNPShtUQ7VeEBkaoZOZJQCFDiqqZprddHnZjh1oBBF93Hb74RtWeUad8VaSgWLXB
-	66iAH3fPIsU2bH0E0L1fV0TR2HiL1O4=
+	bh=J+HxjVzWLqxjln6wTaGrk/5SNzJlaDilJHpG/gjcCgc=;
+	b=27JvCGCVLf0CRzkceqzpDF860OvuwAsaHDLfs8AElDishP38Py4N8c3cjd2K/80uLnW6MD
+	KA9uKc1+JgjZvrJQhkXa1SSj1ZPQ6baxBytgW2vZjXUsz4zmdKdTF2HH+uLW7YXtzuBedD
+	02xTvHssAZVmgain/nyjDQBRhl8D2AY=
 ARC-Authentication-Results: i=2;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=LEo89UNX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-42fbbc3df8fso2506917f8f.2
-        for <linux-mm@kvack.org>; Sat, 31 Jan 2026 16:48:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769906935; cv=none;
-        d=google.com; s=arc-20240605;
-        b=N3OuZ35dMZn+DzRq96cjrFZOFZUKBX7T9hvhq17RtJ4SorBa6MIH+RSvoJzL6EDInn
-         8/oXXwH4ZRio4V2NS8kjzAYp5WS3A0ePPnEKa4e7+U6IZtOKq2dbvl/ibhXVhF7Fl3Ha
-         ruW5U6oQpDVNQrFx44+X80Z6Mx6+jnyReBfRQFIvjDlN1yeGNhiGav+/3bQx9aZB5lir
-         AbJZ3fYJWQ8u5+WFNwvDVlsps84aiiNzJussz4GPBdMnBT86m4AU04ldOwKP0uIfS/F1
-         RMk1klkhQfgN6BvFSjWlst4+Nw2w6RgimszZ3KwWuq8itVS1WFsZ9a/mb1zQOWw0CoOU
-         N/rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IxzRN1GvYKcSA1myNnRhFl1/mDOmpAJaN3X4Z/70v0Y=;
-        fh=uEurEZN1fKnteFQFjrjkR0bkGDlh63lZr8G8muYKTeA=;
-        b=HcrzrBvzoU+A+l+xEYZNB+gMxfD0Xe6/g1bRNnxC6oDweeklUAmZVzPmkIqc5je+UE
-         7pS8NmAIksQGazJPeiNIVqmPhoY9AUcaIG15LvwECSah3snc5lS3kqhm4W+VQbGK1jWj
-         9mC/MaWtOMavgiRZuHKp/4VHiCUD7ccKwQc68Vf4VUPBw0cPSd6voYusatKJ/a5vvPm0
-         DL6c2yd4sr8JsIgej2VG2dLjdIBny6cFfjslS27+TWgrs7SMw/RJLwiTQmx38JsFqIF6
-         1OqAhLrZzvi20vrsrObPevnSyeVEAJp7lJtMKYc6fpaoaOaDocUgobe6cOcJ60OivBgM
-         wb6A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769906935; x=1770511735; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IxzRN1GvYKcSA1myNnRhFl1/mDOmpAJaN3X4Z/70v0Y=;
-        b=LEo89UNXyEEzZYBbTZGkwOPKN5xAJ8d0UmsmKnTbaaizeqUdzE5uoHJO1etaQcgmUs
-         R+4NixPu0B6qiNdUzrbzKsXNGjjwn/7DpknjdIbbt2+VrnEzPHLKhTOxSZ2qfZqMUk2d
-         VhZWXx0AJQbrkraZD3dsx4IexJ5ESLaWu36t6+lIaveYsuIRUIdMUNeKh7C2xUCia3PG
-         0HU6NZA13g6j/XXD4/w4tC3swGNNATNkaIeTEWJDspoufLNuZlo9awjM1mCNfm/jQfwI
-         VaeNqgxdJkYe7gGuFuLhlRx0HHBwu3CpyKQl02FWNPYxZdkEfT4yrRI1xRX5hPnUpffC
-         +cHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769906935; x=1770511735;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IxzRN1GvYKcSA1myNnRhFl1/mDOmpAJaN3X4Z/70v0Y=;
-        b=TH7fCO3COUoaDD3aRIrah3Igv88SQH5yeF2Gz42X67KD7C0ARXAHe12y7c+TVQLlzK
-         G3doFTy3HTrgg39jISWQ1iZ6M/4mZtCuqUlT/ot/9T2T2IfehIirUwBKqYBdJ6EORt9o
-         ftxUZ5Glmofbih4rrbu/gx0lWvM5WqYD1a0vt2PFn4kQvOlYoC362DgxhcyNNi9Ltpb6
-         nc/pyROt7qWj77pNCCi2FZF80SDcrISZBOhnSqfR6lIUbMWcAmCD3Ws9vQ3XnnehUPi5
-         CVBYo/SXmUB/VpaPQuG04B7r2ycwff4FyCP4REbC19K+i3yU74v7fLfFjnyI24pmsOdV
-         1Osg==
-X-Forwarded-Encrypted: i=1; AJvYcCVnTmM2jAFfmJ9V+fy+rDM6sTXoRCP3hOv+DNmE8GJ7mso73lEzPnB/vfumotfNnqWuagznEVaaJQ==@kvack.org
-X-Gm-Message-State: AOJu0YwDsx6ASXFr3rDS+2O7S1bSfHBdDnywRxb0zz8HM+AppqO66dAN
-	ivR/cXQYIPOvNGEkXAVD+oSRy59s+Gp4I0j595SQLOd8jGCp9eS/1or9BIJhO3IKt12KD3kPyoq
-	z6ZmYdF78fItA1WH28+z8FT0/24Tiz7s=
-X-Gm-Gg: AZuq6aJogfVdZ6igPW6MKhTPA0GeSDD0fh89sPtwkezSCcnImYKO4XxFQ5Jq7nL2DgD
-	UmcorPtx8T3ShnEVwLVpGmD1zdkxFppphSQDOedqbEFt/7qsjoyYrF5uDTcau/EXu0hJ6xPmyLU
-	Q11JK3DbIbbHMXp9yTbj0TlzaRKUjiGjMuTDI1ojxiD+m14ajOqpVIw5lTJ4LP5P71OrpRTEc64
-	pxyMKo9tHjB3WcwnJlbE6qust4UXcApA/liZAHuNeyTAoy+pldygrm4wgZQAzsLuFHz9Q==
-X-Received: by 2002:a05:6000:2c01:b0:435:8ec5:d27b with SMTP id
- ffacd0b85a97d-435f3a7bfecmr11333484f8f.26.1769906934865; Sat, 31 Jan 2026
- 16:48:54 -0800 (PST)
-MIME-Version: 1.0
-References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
- <20260125033537.334628-27-kanchana.p.sridhar@intel.com> <CAKEwX=PS7mjuhaazydkE2TOVa5DWQu9521FqH4aXi0yptZQaeA@mail.gmail.com>
- <SJ2PR11MB8472E5DC16759FFE6E23EED0C99CA@SJ2PR11MB8472.namprd11.prod.outlook.com>
-In-Reply-To: <SJ2PR11MB8472E5DC16759FFE6E23EED0C99CA@SJ2PR11MB8472.namprd11.prod.outlook.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Sat, 31 Jan 2026 16:48:43 -0800
-X-Gm-Features: AZwV_Qi4WDbYOooIOPZu2Ppua8Lejwpek0DNwYJiKSz_rJv0IVeNCuN7p921l5s
-Message-ID: <CAKEwX=PqWQ_39BuApc_bT1WKQMJyNPDs+Gv0JAU5cTa1KNDj9g@mail.gmail.com>
-Subject: Re: [PATCH v14 26/26] mm: zswap: Batched zswap_compress() for
- compress batching of large folios.
-To: "Sridhar, Kanchana P" <kanchana.p.sridhar@intel.com>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"hannes@cmpxchg.org" <hannes@cmpxchg.org>, "yosry.ahmed@linux.dev" <yosry.ahmed@linux.dev>, 
-	"chengming.zhou@linux.dev" <chengming.zhou@linux.dev>, 
-	"usamaarif642@gmail.com" <usamaarif642@gmail.com>, "ryan.roberts@arm.com" <ryan.roberts@arm.com>, 
-	"21cnbao@gmail.com" <21cnbao@gmail.com>, 
-	"ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, 
-	"senozhatsky@chromium.org" <senozhatsky@chromium.org>, "sj@kernel.org" <sj@kernel.org>, 
-	"kasong@tencent.com" <kasong@tencent.com>, 
-	"linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>, 
-	"herbert@gondor.apana.org.au" <herbert@gondor.apana.org.au>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"clabbe@baylibre.com" <clabbe@baylibre.com>, "ardb@kernel.org" <ardb@kernel.org>, 
-	"ebiggers@google.com" <ebiggers@google.com>, "surenb@google.com" <surenb@google.com>, 
-	"Accardi, Kristen C" <kristen.c.accardi@intel.com>, "Gomes, Vinicius" <vinicius.gomes@intel.com>, 
-	"Cabiddu, Giovanni" <giovanni.cabiddu@intel.com>, "Feghali, Wajdi K" <wajdi.k.feghali@intel.com>
-Content-Type: text/plain; charset="UTF-8"
+	imf15.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=unVPThiU;
+	spf=pass (imf15.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.10 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769911501; a=rsa-sha256;
+	cv=pass;
+	b=e5QYf+dgT6sr5Web23FjSCXNbYtXGgk6cJ8451F7hxcibpaEhEpFfXv8yMuNpuvr3dhGcv
+	rB6e8uFMTT9qr080rP5fLX+h49ZRNo/psMVOSOcFCEwHCB+TvKSr9Rjd+JxMSAkKqEfNpb
+	Nl4ocQc5NlLrKoZfw6ZgJY8v6tuTYmE=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=oQPklptp/MuRjJsp/iD/UbT7kl/KPzH6yjREvxGqbSb5tu51HhVYyRr9Cyg6jMs8Of4E16RHQJtTCACOUzq/a6wVQp6yi3Gdo2xlEQXhLVhFqiFZQ/i1E33Cr7UL448lPDt7Yd8eppAh3X7Lj3+6kAj0EBtmL3TZIZqgjBxFA6zokCVGqSiEbFsNcY9C6f2kpdAMxwuAhcbUpZKoB8Up6uZrXJgMj1ckOqIe+zZsniPkiChP6BxetkLp5nVFNN5ofw8VQWxSBoI2Jkt7nmo3g7ikjZtvoN3+mYrZIh45R9PhNNMK2gNXGYo9vHEWoCg3zv6svFzCql5i9RJMaULFNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=J+HxjVzWLqxjln6wTaGrk/5SNzJlaDilJHpG/gjcCgc=;
+ b=hvERO5cSjM12XLrJDy62QwhKur1SJs14RgbxG0L+afrXX0wCtWMtiJZLWM26oPgQgnt8cHB2Y85nONALM3tqs0kqdPpYO761mt3Xn8zKo8jLj63qKN4j8Xolys0eJfNMKJTf6yhprOyU1b3xbcJojSLhlZjYusaY1TnKOOK1QtU17S927tOC8wR3asM35iSGkGCmOcueM0ZnCLOMBiHtNk22O7V1uYE7jxwtKR3CGski5qdYOFOIClhxLj13mrQRw8VkU6DWuZMjdjEwHAYpCeMaWZCptn/11NnRcgb4eKJdEbLoBJ4DR/4GtPkK2CrdrotszEb66TBRVxuBJFdg5A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=J+HxjVzWLqxjln6wTaGrk/5SNzJlaDilJHpG/gjcCgc=;
+ b=unVPThiUzzorfiRSlryOnZchOwQE+ajGNfliCwBsIEn4GDQQQN3MCmP6VnL112kEYwgL8PZs28vSD6RNcLeOvYCFHoeWT6MdS5KEN3GSXH3Yl4k4GYQY5VHTzv5KzTHDnDInAAscYTnWhIDlp7GDEo0u+bNl41gVhwW+vlXIfSBC49Ljc0cOs7b+fibwAHtJC9feB3hYgMI4xvPdicrLrh8PE633pd5ZIqw75/I4pSvG6bp6BWl6MO+B7fwwqHGOJlBgW+o5AGLJ1OtqKgtYdY3DwCGBhKtjjHFARM3zF6RkDv3vxOK1UQRrbvDXSO9aGx9+U2rntmxd6WqZtyJZ6g==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ SA5PPFCAFD069B8.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e1) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.15; Sun, 1 Feb
+ 2026 02:04:57 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9564.010; Sun, 1 Feb 2026
+ 02:04:56 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Suren Baghdasaryan <surenb@google.com>,
+ Jason Gunthorpe <jgg@nvidia.com>, Michal Hocko <mhocko@suse.com>,
+ Jens Axboe <axboe@kernel.dk>, David Hildenbrand <david@kernel.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
+Subject: Re: [RFC PATCH 1/5] io_uring: allocate folio in
+ io_mem_alloc_compound() and function rename
+Date: Sat, 31 Jan 2026 21:04:53 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <01AA2C89-9E6B-4C9D-9072-147FAA5DE7C1@nvidia.com>
+In-Reply-To: <b37f990b-cb70-489b-849e-202eae190c37@linux.dev>
+References: <20260130034818.472804-1-ziy@nvidia.com>
+ <20260130034818.472804-2-ziy@nvidia.com>
+ <b37f990b-cb70-489b-849e-202eae190c37@linux.dev>
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CE6B7180006
-X-Stat-Signature: 1conezn9iqf4jss3t7iux39ap6thziyj
+X-ClientProxiedBy: BL1PR13CA0133.namprd13.prod.outlook.com
+ (2603:10b6:208:2bb::18) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|SA5PPFCAFD069B8:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7beaebc6-8a3e-4c04-23cd-08de61364bdf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?I9badF+sr9QzFaMmjCtCIGCbjPDfSPr5gzi3W50MeWfjkURvaN5lX0M0sRLP?=
+ =?us-ascii?Q?b3SUv4azHDXEFFQ77l72qz3h5Y8B6cyoMG8Ee6tKg6YsnKZELc04hNd51ylO?=
+ =?us-ascii?Q?Eeek8um4j5QnOF4GGvUBqXvgWoY1g7xTpqRKODTDcVC/Z6/VHlEJjHbCdxit?=
+ =?us-ascii?Q?KrF99M12qzZJEVyjgyfPr7Np/sVGiGBcPTJaVgYB/AxvfmcF/rqqIeI0uKo9?=
+ =?us-ascii?Q?AbF4WmVKrNe5gAPFcd7Yb7KZkJeDAxzCQkka1pbApHvmwVsZAKHw2iQ95dRv?=
+ =?us-ascii?Q?+V7GEGHE9WnCo+UJrisiwQvpvZdTdYDBHV4YBIGydE9gTqBQ4Z/txNu0zvvM?=
+ =?us-ascii?Q?uQzKruEl3wWeFpIf+tuqihJj4acPNCsAyY316r0zYQzgrtckoIcSVPj4AXzy?=
+ =?us-ascii?Q?u5s5Q9fiJWetjMBKKKPhUMh/pe34X2AUJMf5s27Gwg92K766gZMw3LgBPxLg?=
+ =?us-ascii?Q?qkU+XJbqgKfNTpECzp7ZVsBUFcHwrcqzUEsGIzQvYnlfwTMGjY6WeuVgHn5Y?=
+ =?us-ascii?Q?H1nxaKVf/nhBI/umDBAW0McmnNjE6o8+BW8st8vJVcJVBhKQD0hPi2d4GsPW?=
+ =?us-ascii?Q?GNVJUCu4W1zjX5PE32yy4K/qccLshUBIU7aLgClS3IM7HvwzeoHLpWXuBGfz?=
+ =?us-ascii?Q?1otwsqYbY5yDAiPhnbiGSCsf2ngeG6Khu53PYa/01RkIT+u85AyFr4MEklHb?=
+ =?us-ascii?Q?yBU5cwKQMBaxgdkTqYhDjPN501xXL+BwYRWQxft8XoWMIRAO2Zf3ZNMTBeV3?=
+ =?us-ascii?Q?DvoJ8pCdx+IXkX8Ccgcp07bNfCju1sSqyIi6dBr9d1pYKsbqC7yn4fW9/VH7?=
+ =?us-ascii?Q?xXTJgxBKGQH/dnVDp8WU1NaoOESYPfxn9q8fuQ+Zacz7yeiMq/MrZopBkcUj?=
+ =?us-ascii?Q?qnNKdKNTBfuDZcSYgrfEdoBx/Xj1gsM93TXGlHyUsIYhQENVT+BHX37ZYSsl?=
+ =?us-ascii?Q?7Oo5uJ+GJzK3Qeh2abEqbiEPxg85/kq5i+cliIs8KvAcPHy7rSwdl/EZowgv?=
+ =?us-ascii?Q?k8/HRFSioFmPSkzC1JFovae0Z5CVcIx2FADrvJ+L3JXHVBnrn+3vundaHg3Q?=
+ =?us-ascii?Q?ycXrAiLOvXvyASPSX8w0m7dnaf1Ck3t9MsVxdq5pDilSngcYK+fxEKWbVCjE?=
+ =?us-ascii?Q?V40sA0kxnVz0Z84aF8Id3AacOnXWbG9YQ8Q2Yu0Q34V2cm7CzqyjfLHYPisn?=
+ =?us-ascii?Q?w82w0tNiz68OiXyBTO9neTah955eRqAqsp2acYSNQF0aiqeAsHBtTE/zwkuF?=
+ =?us-ascii?Q?4QQqttngeQNwXrm2N6FSSvvuSD2sCyCehYaPFa4KQdklBT377h+PXbgbzyY5?=
+ =?us-ascii?Q?hG+9wZKlcNcNX4qeYuO2reGSsgFG0AbqFnWXU0GrEbST5jQL0YECRGvVgXx1?=
+ =?us-ascii?Q?vncu/o3UVX1f7ER1ihw8AY/QD9vVJL3duwgFAzeAPA4ENrvq//Rz6xcw6fc3?=
+ =?us-ascii?Q?Zh9xTUxCD0uNO8Ln9Q92e1oVk7YSr40VbFhwHaTmWuAR32QoHqsbW1GCv+tN?=
+ =?us-ascii?Q?IssuySzpzWMIFTXzPYoK0vToVxVIJIJqUwj+5e+DuXgDkDpqA/m62/skTbva?=
+ =?us-ascii?Q?eZRdqM6Tq2bgrCPaynI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dBXaQLFxDd/TVc026mOWY0XsPOUoBZUga+FVK1aWgv5OM4B7nbS9Y7ZGhYgK?=
+ =?us-ascii?Q?csm6zIMrasVfWVxiMEX99c2Bs0o0xlRvAnwhoKFTB8N+QCF5uKKhq77Wceb3?=
+ =?us-ascii?Q?LoNJtsFypA6EjjQxrW8gRLHnLNMh08mpXwokcIjDH1QqG+J0HX3n2gXPUNOn?=
+ =?us-ascii?Q?BFSthFhuHam694N3jrSnI//VlcJT5I/Ns8kOMOC1LZhCrNx2zebWNAcqxPZB?=
+ =?us-ascii?Q?G6fAZN/FAxoaADolvtZHIN4UDbMhqDzBeYkwlMVGT/gAunc+DgeMnhfwISCO?=
+ =?us-ascii?Q?GCNl7NQEi406BGk2HsGJBkwqvqP7NsBN19OSy8I1K+jzFPBjcQPqAdkNYElC?=
+ =?us-ascii?Q?9f+Y5X5s03xnC6tBRF1PHxZbiP8y2A0jnp3kl/vDD2sY7zWBdZszjkKESn5K?=
+ =?us-ascii?Q?wuEaLH472u1BTha7yBLsZ4ZVoTPKh5W6CqKdkTHd1jlYzaB+BJvJzVLCq2uH?=
+ =?us-ascii?Q?YxNvm7hh15m2gMWgeVzAKGX8c2JNd/0vqOIWxUIgezXkE0Fg3HgU+Vnfy4yV?=
+ =?us-ascii?Q?dv7qAhNBD61JWWJrOPL69vaL2k++ZIsLpOitTpWPQt5jSHCCangYt4T7SO2E?=
+ =?us-ascii?Q?g15YEgl605f/KFt9RLilIfoUrA5+bdWoCcBXXTYQJDse0/WedyykqMqpbI/x?=
+ =?us-ascii?Q?rQXNXNmQC9N3grzHTFkhwNwF5sqdA1ONAJL8LLkvLOWdn1nWrKLMj4Ahp7mQ?=
+ =?us-ascii?Q?rQ4HIuho1AmT5BlwEnC3lmbixf/NcRnd9fqzNan/g6ic1hAR5EAI7Rlcwmmr?=
+ =?us-ascii?Q?6P5mkd4QriPCkgPIhBFowQLzCorXnOBoc3nvRm6VFByGxFFwxPub+GVw48F2?=
+ =?us-ascii?Q?lREKUQLdjIILEwIv+VlYGEqaEFg8tybEGen10IDZBsX1aPd/lyb4fBO0txje?=
+ =?us-ascii?Q?aCSCutVUKQ4LKTJF+wckPCRWg8rkx4CjetASWGmexpJyH7vHglnEZwPNH04Q?=
+ =?us-ascii?Q?Xf43WtfYfaFZuXGr2LHxKvK/izRWMRE294zy6nmHCmCMhu8Dj5E9i6WQ7snK?=
+ =?us-ascii?Q?G0SllNin+KeYxjkRna4vHojQXAKfSwrenEymLSFLwPWbv+1KZo6rr6nLY+Md?=
+ =?us-ascii?Q?HVIgedW6WajtYq/3Z/Kwui+5gNCNZQif4s9ouUkCP8n55fCB0GIPqzW4goQg?=
+ =?us-ascii?Q?7tpTJHI4tRvcC4SUhb9qzOFaWz7h+u7TYddBK9kZbygy8IIyLK16AfhrfaAk?=
+ =?us-ascii?Q?mBN00cgjthegRQSDQpgFBQ28CchjraQW1dOzZlmChhoeSA5fvbwdTeJ5MnD/?=
+ =?us-ascii?Q?Zv+vrak2NKIKHuHFUYGucrK3NtvcvuqM9icL7ABAXGxgX/rl7cQzpfBCZONi?=
+ =?us-ascii?Q?oWZQSTXhejdPvwc8LTEnYo6wuRnFV777NrgSsbL1cfFuedALHUmiOacOhdoc?=
+ =?us-ascii?Q?4pr/X0dlgzsR+2b78EXDdudXR8h4UBZXS1oMeRqc/xWA7u1v95jANbfYA1FG?=
+ =?us-ascii?Q?uuY4WCk0umG3lqIhQaLJVT6e8tBG+7IAhdovEnlHwEyxgd+R6iJHWoNwvQhb?=
+ =?us-ascii?Q?rqDunEnTcK6MDE8pAKGAHm7TsbnmKIbS3gUw958cf3BSQdhyc3CWptkwwSCZ?=
+ =?us-ascii?Q?MNWZBYSAdeGEaUAD0OjbOosDAHcfYcU7j0+OxTWnkpJ+SNmJ6BkeGK/5u1V+?=
+ =?us-ascii?Q?I3EltgSkz/x9vlfvEI9mq64yww+N8CClf4BZ1MJjvxu0clhVTwxeawAtSSAz?=
+ =?us-ascii?Q?EdLHxDbPSrboPAx8LoSZ1U3nVNtflIWGrKH+QcN7GA2Cg/X/?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7beaebc6-8a3e-4c04-23cd-08de61364bdf
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Feb 2026 02:04:56.3615
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: AOXA+SAyuLIxlcyeDHwvy6B5bMEzNru+gfnoO4mTQ5qzW3aJWuzhYnOHqa67ieo1
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFCAFD069B8
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 930E6A0003
+X-Stat-Signature: jpwfnhmb5xknyoju5zzn1tjznjwuabx4
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1769906936-272164
-X-HE-Meta: U2FsdGVkX1/9gbpj2rL4MQMBxHiBvgTi130cbCwA8daJvxyFx2r8PQtDcHdWPIsT0xytftpoeMrEL826xeD4p9mnhR0YlYudPjrVnQDntaq9MHrzaDpcjfs2SsBfeZG/2HK8395hSj0YburwAV5WBpLVVsjMLJpe/Zm1FK6lf544WEI4dtVKJA1enG9Xq+iAGAG9IcdcT+XKBxjc5Q3xVT4lstAukgq0fHG755OW4Ztcry3F3wLJXHyYdPz+rtXVVtIGkaEFJ43MOQsEY3Jfq/BCiQVNN4Jk8ClZFMivuVS9PZ1ydHGcv4pqPfDuf7AK15NDBup4KJRS/l2K+7uaZsIyaN0xwVR/jADd7+f3mYYLdHzXAXeYNjoPbYqK8L2xnRBMYC2+dccFuwwNtgPKwP8yl2KkN7rxjcrMaQfnH/dtW7GF3AigV5N3Evi3b092I8R1UP7V2uhYP7Okadp6oksg9mv3JBj6SouJ4Qf+ncVNTq8t12wNkF5lwb3PpDpUFmPEx5sZAdGosDn3JJq8VK/cWraoOjALJhjWxYilmuYlGjfuCyvO47+BzhvQCJvXs/XBt/1ZVcqSBoPnrYxuXrFBXWpNUZvqDDI2Atv7Xlyj2fV1/hmYWAtRjMFNDxMUFdz29e5xaX3GBSTe/sERYvsTaSwO0ZEMUWrM2fA55DkKqUZ6GtwzmQGqyiG+J1AbwnSQO+DhpU9BMtoNczLzW37bO6V1QWCPd1baUcS8Vt5EGM6JN+Jlo+hUDsVZJy8ilFC3fNT/XfR5EpDHRkpDMEjJU00Q24hbhpWXx3iIxXeR+oMExKwj6GGWfb0gooGznIj7pxRKmTs15TdwVZr3z1HO1sbT7U/pOGqgiZqOX1hrhybO2kQAbD3a/A7Mx4H+yQpWY6j4WoUmLwavgR9Vgt/b8Z3u1dbZ24mm0G4TuBntniiz2ScCGy5ZNHMNW3vcSeisYlqEMVsuC5tWEOE
- 1VSfjuUB
- tURDUw+LCjTIyHNbCm/7AC92sIpD54yE+itoaxxwYFYVNyYOCTH1gsnJ2IcSQVnxxv4u5efvxBy7ovlkGH+RTqpXpsSmCSKFZwdjkoWDXPG6Zre0yQWq3886UIuC6MfWNaGLDukZ3C6Sr4ABQuhUOGaN2qCW7rJt3HA43iOLPR/BEC2klrO6x+BCVp/Bm5XirlaAaLdhGd5e4EO6GVUasMt6+p7JqUdA+7fMJo/R7ENOc9OLk6SMbXtyTGoroaZTSyesEvVVU5KXldJg6pFYpG2Uwrs7vtKyne52gTSBE3OxPteYtPgMNyt6q237ZL1MlehflSToXWW/fVsyvwujSdmv/P35G99f/qSDa/3sEU99xBZRfehFEGlr3BV/BElHAcY7ueETUe9Zm3LtS9pkZciGSebKV8xLvoxxn/FtP1tY8l0dMqVlySrHX13EXginN0mp4OuEl1VK3HktoOI4i+xsXst3cM+/s/r2+b0fF6o74XVOUpw6MeUPPvBOI5M/x9x7YVqZ8Fdmf4LGqBSjAzJKMCzTNn3VKey4XrtaQ+teBlGUTODCENM/UO0OJR5ScGcMSnSQDcCS6pKcMy85tewVHUrSfQB70hwQREQGWbfP86BjL83GZyUShLaHx6zSnWtWFRH9VK4J8MgZ8LBzRZXkiJR5o5tJX86og0W1qmjqnAd/COVmzZsebzmdTVKmyHimmJy7LQG5kaivUH5MtseRwD1Jorj3/2jx3W+6dOUY5bVQmLEXwrzq31qe93Up8mN6eOwj3gApMn8Gpivg74d5W6HWN0gDpi1Fn9IR+ag+tN0N59rx6n4FT6+oZ99i0bWluF1L1HXUQgWU1cY7uAFLVdnT2IBdqhS2o/2Mei3oVMBDiM4tEg2pTzEODxnFuKKn5faqqzy3PEU2jjR58GqquA3qdOAE6gDc+zoKzS4xo/gbMwbYlfgvpbbyunPcrtbRdzd07xCXMlGkfUee/HWwNFbXq
- jQeYjiuh
- JQ5RQg8AUOi1zwALGZOHBsKvgXoVADYoWizWeGSP7yoWJwlKqADG5c2sxLpdxp5wvLt0vTK4IfG9/uRuUgAJn5xDghNoRLyYi9yO/m3DFo9WnIp84zaYUSOPFCGi+Za9NfLYxhN90OqTU5gmPWPsbg5vDAer9loTwspBK62OqV0=
+X-HE-Tag: 1769911501-249051
+X-HE-Meta: U2FsdGVkX1/W2sDOtLLEJ6HJ8FOxLk2o9MjPAZdgm/S5zDi4Hrn7yq+zGF9AcaBL5d7FIM1Nm3ByR41kFPwigpLJRmGtNc2GaSCKcfykb2M5CrLj26E/0q3Rm1uByIkHqe0xm7KEM8G64M7bODoK0US8oOzg4eb2mE/OFK1RTGBiGrcjoxogIf8gs50Ut+296Mn7XP902lIm74zmWpo72q8q+H0wXbrkv0V6tuhL0SmQa6qcugBJJbPYEX93xWX91RaDdgE9i4lm5Bzlt7bO603QjWs05TdDqCIE3ixm6Lwg3QsonM6h8Muqwfb6Gkc69O/6uWXhn145AvXjzr5V+Pqt/dm/ItuOlw6ae/EppQ3KMygVh6hJzHtbfwy3DFhnQoEr3OdFYa41m22f2CsmvHpy8+jQuW4YjoxQOA8Ip1k4MFRJi0FEUCMJBWWpqGhJAL3mzHkBXW6AO00EXmptMurrAw0x/+3pE+GX4LyOURrFEO3Fj1zhUTG4RuLlfxiOP4xXhf6Bxrv+1opmhUtHgKRLH2F3CFJBtF7js6o8rMzcLHJoYUdaVcos9R2mfFvUHuagVRG87Cj6UpGe3Atb0E3wCLELx7e7sYd5Cvt+Uuoom5/+Sjhrl+W852BH8mf1/oS0azJpomFUJuXQ36hloe/FkQJR/KiRsIbA9eo3kbsRYVTVkf560T8VbpifxguiOrKv0HVZLK5g4vQZSZhdicK+sWxzvnKk7XXqzFjgThdDzWyVQzcGp+7/n/qNrfemiwjgKc2VqoCjVUdciFQKUZOFMNZ9gVGDAQ7FNE+FEZGdkB6RiUIo9+zCzeiw2k4U0PMD7mQ8/FPsU8M+mR2BtajFwHV6R4Y85T7fomw94ft+SeKSNRi6Rd7CWr8+8HKLOAUMr7hEmDdmOUzYYWgJBxM5KX0rc9jSehhEvolz3xXmdQ2P5sNIibUCHkWd39Sjt+pet5O7w6O21Rq7HMt
+ 6zo0Pjaq
+ FwfsI7/4HeP/Qt6KeDT3fOS/jW1tKccoNuDe5MdDDzoKT5kezDP+GAEWVhuZVny+xFoiaatvYNADo3arIr473ol5g5KekTlmg/gSZdEE4lY9pai4pLDnTjfVoT1SEzPy9/TGZt+QgBFVRrZ23hjc4JZp87KbfvC2cf7kELsVy5BHqy3qb0aSqJKApd+DB405FdLGcKonsFQdz97HM/teVSfpV7McxuqhmADjf41XrDO/PljgGLzj7Vop2JokWl2QGM+Ml13eZ4TFhxA0KgIYkEU0zpuo0sEzEkz9omiJ0Zx22CUWWxwXYqfHbDzvlU6lQpA6Ak1l9UrGPli7K2sVCXY1EwS2QttZrzTyHDIkEzSIDKZfAWugkmX/yfwd6YCrE0SzZdMNQTFLlO9YMafVGovIBW5smxli+QeU+MXhCjp41c8QboHw1Z3iEQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,205 +200,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 31, 2026 at 12:32=E2=80=AFPM Sridhar, Kanchana P
-<kanchana.p.sridhar@intel.com> wrote:
->
->
-> > -----Original Message-----
-> > From: Nhat Pham <nphamcs@gmail.com>
-> > Sent: Friday, January 30, 2026 5:13 PM
-> > To: Sridhar, Kanchana P <kanchana.p.sridhar@intel.com>
-> > Cc: linux-kernel@vger.kernel.org; linux-mm@kvack.org;
-> > hannes@cmpxchg.org; yosry.ahmed@linux.dev; chengming.zhou@linux.dev;
-> > usamaarif642@gmail.com; ryan.roberts@arm.com; 21cnbao@gmail.com;
-> > ying.huang@linux.alibaba.com; akpm@linux-foundation.org;
-> > senozhatsky@chromium.org; sj@kernel.org; kasong@tencent.com; linux-
-> > crypto@vger.kernel.org; herbert@gondor.apana.org.au;
-> > davem@davemloft.net; clabbe@baylibre.com; ardb@kernel.org;
-> > ebiggers@google.com; surenb@google.com; Accardi, Kristen C
-> > <kristen.c.accardi@intel.com>; Gomes, Vinicius <vinicius.gomes@intel.co=
-m>;
-> > Cabiddu, Giovanni <giovanni.cabiddu@intel.com>; Feghali, Wajdi K
-> > <wajdi.k.feghali@intel.com>
-> > Subject: Re: [PATCH v14 26/26] mm: zswap: Batched zswap_compress() for
-> > compress batching of large folios.
-> >
-> > On Sat, Jan 24, 2026 at 7:36=E2=80=AFPM Kanchana P Sridhar
-> > <kanchana.p.sridhar@intel.com> wrote:
-> > >
-> > > We introduce a new batching implementation of zswap_compress() for
-> > > compressors that do and do not support batching. This eliminates code
-> > > duplication and facilitates code maintainability with the introductio=
-n
-> > > of compress batching.
-> > >
-> > > The vectorized implementation of calling the earlier zswap_compress()
-> > > sequentially, one page at a time in zswap_store_pages(), is replaced
-> > > with this new version of zswap_compress() that accepts multiple pages=
- to
-> > > compress as a batch.
-> > >
-> > > If the compressor does not support batching, each page in the batch i=
-s
-> > > compressed and stored sequentially. If the compressor supports batchi=
-ng,
-> > > for e.g., 'deflate-iaa', the Intel IAA hardware accelerator, the batc=
-h
-> > > is compressed in parallel in hardware.
-> > >
-> > > If the batch is compressed without errors, the compressed buffers for
-> > > the batch are stored in zsmalloc. In case of compression errors, the
-> > > current behavior based on whether the folio is enabled for zswap
-> > > writeback, is preserved.
-> > >
-> > > The batched zswap_compress() incorporates Herbert's suggestion for
-> > > SG lists to represent the batch's inputs/outputs to interface with th=
-e
-> > > crypto API [1].
-> > >
-> > > Performance data:
-> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > > As suggested by Barry, this is the performance data gathered on Intel
-> > > Sapphire Rapids with two workloads:
-> > >
-> > > 1) 30 usemem processes in a 150 GB memory limited cgroup, each
-> > >    allocates 10G, i.e, effectively running at 50% memory pressure.
-> > > 2) kernel_compilation "defconfig", 32 threads, cgroup memory limit se=
-t
-> > >    to 1.7 GiB (50% memory pressure, since baseline memory usage is 3.=
-4
-> > >    GiB): data averaged across 10 runs.
-> > >
-> > > To keep comparisons simple, all testing was done without the
-> > > zswap shrinker.
-> > >
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >   IAA                 mm-unstable-1-23-2026             v14
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >     zswap compressor            deflate-iaa     deflate-iaa   IAA Bat=
-ching
-> > >                                                                   vs.
-> > >                                                             IAA Seque=
-ntial
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >  usemem30, 64K folios:
-> > >
-> > >     Total throughput (KB/s)       6,226,967      10,551,714       69%
-> > >     Average throughput (KB/s)       207,565         351,723       69%
-> > >     elapsed time (sec)                99.19           67.45      -32%
-> > >     sys time (sec)                 2,356.19        1,580.47      -33%
-> > >
-> > >  usemem30, PMD folios:
-> > >
-> > >     Total throughput (KB/s)       6,347,201      11,315,500       78%
-> > >     Average throughput (KB/s)       211,573         377,183       78%
-> > >     elapsed time (sec)                88.14           63.37      -28%
-> > >     sys time (sec)                 2,025.53        1,455.23      -28%
-> > >
-> > >  kernel_compilation, 64K folios:
-> > >
-> > >     elapsed time (sec)               100.10           98.74     -1.4%
-> > >     sys time (sec)                   308.72          301.23       -2%
-> > >
-> > >  kernel_compilation, PMD folios:
-> > >
-> > >     elapsed time (sec)                95.29           93.44     -1.9%
-> > >     sys time (sec)                   346.21          344.48     -0.5%
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >   ZSTD                mm-unstable-1-23-2026             v14
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >     zswap compressor                   zstd            zstd     v14 Z=
-STD
-> > >                                                              Improvem=
-ent
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > >  usemem30, 64K folios:
-> > >
-> > >     Total throughput (KB/s)       6,032,326       6,047,448      0.3%
-> > >     Average throughput (KB/s)       201,077         201,581      0.3%
-> > >     elapsed time (sec)                97.52           95.33     -2.2%
-> > >     sys time (sec)                 2,415.40        2,328.38       -4%
-> > >
-> > >  usemem30, PMD folios:
-> > >
-> > >     Total throughput (KB/s)       6,570,404       6,623,962      0.8%
-> > >     Average throughput (KB/s)       219,013         220,798      0.8%
-> > >     elapsed time (sec)                89.17           88.25       -1%
-> > >     sys time (sec)                 2,126.69        2,043.08       -4%
-> > >
-> > >  kernel_compilation, 64K folios:
-> > >
-> > >     elapsed time (sec)               100.89           99.98     -0.9%
-> > >     sys time (sec)                   417.49          414.62     -0.7%
-> > >
-> > >  kernel_compilation, PMD folios:
-> > >
-> > >     elapsed time (sec)                98.26           97.38     -0.9%
-> > >     sys time (sec)                   487.14          473.16     -2.9%
-> > >
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >
-> > The rest of the patch changelog (architectural and future
-> > considerations)  can stay in the cover letter. Let's not duplicate
-> > information :)
-> >
-> > Keep the patch changelog limited to only the changes in the patch
-> > itself (unless we need some clarifications imminently relevant).
->
-> Hi Nhat,
->
-> Thanks for this comment. Yosry had also pointed this out in [1]. I have
-> been including the architectural and future considerations in this change=
- log
-> since Andrew had asked me to do so. I hope this is Ok?
+On 31 Jan 2026, at 10:30, Lance Yang wrote:
 
-Ah hmmmmm. For some reasons I was under the assumption that usually
-Andrew would concatenate the patch cover letter and the patch
-changelog before merging. Oh well.
+> On 2026/1/30 11:48, Zi Yan wrote:
+>> The page allocated in io_mem_alloc_compound() is actually used as a fo=
+lio
+>> later in io_region_mmap(). So allocate a folio instead of a compound p=
+age
+>> and rename io_mem_alloc_compound() to io_mem_alloc_folio().
+>>
+>> This prepares for code separation of compound page and folio in a foll=
+ow-up
+>> commit.
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>>   io_uring/memmap.c | 12 ++++++------
+>>   1 file changed, 6 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/io_uring/memmap.c b/io_uring/memmap.c
+>> index 7d3c5eb58480..8ed8a78d71cc 100644
+>> --- a/io_uring/memmap.c
+>> +++ b/io_uring/memmap.c
+>> @@ -15,10 +15,10 @@
+>>   #include "rsrc.h"
+>>   #include "zcrx.h"
+>>  -static bool io_mem_alloc_compound(struct page **pages, int nr_pages,=
 
-If Andrew prefers including that here then I'm fine with it.
+>> +static bool io_mem_alloc_folio(struct page **pages, int nr_pages,
+>>   				  size_t size, gfp_t gfp)
+>>   {
+>> -	struct page *page;
+>> +	struct folio *folio;
+>>   	int i, order;
+>>    	order =3D get_order(size);
+>> @@ -27,12 +27,12 @@ static bool io_mem_alloc_compound(struct page **pa=
+ges, int nr_pages,
+>
+> Nit:
+>
+>>   	else if (order)
+>>   		gfp |=3D __GFP_COMP;
+>
+> Since we're switching to folio_alloc(), which already adds __GFP_COMP
+> internally, the "else if (order)" part above can be dropped while at it=
+=2E
+>
+> IIUC, for order =3D=3D 0, __GFP_COMP gets ignored anyway:
+>
+>  - prep_new_page() won't call prep_compound_page() (since order is zero=
+)
+>  - page_rmappable_folio() sees a non-compound page and does nothing
+>
+> So no behavior change there :)
+>
+Sure. Will update it in the next version. Thanks.
 
->
-> [1]: https://patchwork.kernel.org/comment/26706240/
->
-> >
-> > I'll review the remainder of the patch later :)
->
-> Sure.
->
-> Thanks,
-> Kanchana
+--
+Best Regards,
+Yan, Zi
 
