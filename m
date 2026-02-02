@@ -4,86 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 539C1E7DF11
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 18:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B813E7DF0F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 18:46:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E9386B0089; Mon,  2 Feb 2026 13:42:04 -0500 (EST)
+	id D35246B009D; Mon,  2 Feb 2026 13:46:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796926B00A3; Mon,  2 Feb 2026 13:42:04 -0500 (EST)
+	id CE2FB6B009E; Mon,  2 Feb 2026 13:46:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A21D6B00A6; Mon,  2 Feb 2026 13:42:04 -0500 (EST)
+	id BEE8F6B00A3; Mon,  2 Feb 2026 13:46:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 550296B0089
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:42:04 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E4CBC13B6
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:42:04 +0000 (UTC)
-X-FDA: 84400386168.16.2012CDA
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 25A2E40007
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:42:01 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=hYC2BZfq;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE0DE6B009D
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:46:18 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 64192B73C1
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:46:18 +0000 (UTC)
+X-FDA: 84400396836.11.008B0C7
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 91EFEC000C
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:46:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf10.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770057722;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1770057976;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uAtv739Fm81yOnDk6gg6D9jyBN9kXpflK4sUDsIicis=;
-	b=0baOTscMOYTh8X8CYyVuwMIPnKKELlCFiK7bkxQODP8yPSuBtIwMPGRSAPd3JOHcqVJC2W
-	XYlVKcGrlO3qIApudjwboJrFR1MRBNmhnLp6+EZu8Z5369H0KicxgJrMh6ZB1Pl/bxGkR7
-	qyoGWQZbuypugkc9u8EI7mAMgQn58po=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FFHniYltMMBLNkB8k789ARXuKpdZq5GB0BhK3NPyc48=;
+	b=5PlBzx+YQfwfMVNyb/9OlNqKGHyjusCHpSv9vvVVknP9gfr3xwS0/8JElKNnVf8ZRJEg6n
+	kfjoCrx4T474q92VB4pdN+N4iOqX6I6KZr5q7e1w45y5UDKwWnTgmjAv8o0p3JU6lrmyLP
+	ekrmvOn365kvr5C8VaxBANcPy7ZMdtg=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=hYC2BZfq;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770057722; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf10.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770057976; a=rsa-sha256;
 	cv=none;
-	b=3Tm3hFYMp4pxCN+jjHq3kdYoMGmmI4Kft+dREoBrPr6M259MROhyookBNbFIZlqzr1GJW2
-	6DDuI4DS85VW2Uf1NZ33G9dO5Pvm1BYJwsPM/9F4EDnu0OfPe95mH3vLIgLuCT2ntEtOtD
-	5IZXsNgJvyBGTh+/OfvcR7Lt2qXVzok=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=uAtv739Fm81yOnDk6gg6D9jyBN9kXpflK4sUDsIicis=; b=hYC2BZfqAR1mxw6GyS+HzD/dL6
-	Fu0X5tDfReMe7mTS0jzm6j8FijBdR+cBotrURA8yIHAs0aWloUFkhSWA35EiBG0vzSoPc4ErZFUtp
-	rnKgZUh6Mr8htEMrq9x2JlQyoFJRmXkqdwqqXVy0943zDpg5UxCEeZX6FF5y/40t2F3re14nwkpCU
-	EcWbOBLC1njTOB91nz38wKXQ8zLxYHAsICfK5+7AmhIOFYyZFfZ+6+Cp7BNYAf0R2WVHs16hGB3jA
-	ZYzeBKc7S7N3ePoDG0c2WKgFSJZ+799RxLZ+Ns0TvfOaeh+Am3k2c8lsPiqgQQ81jop2Fykx3Leol
-	cOjJ4mbA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1vmytw-0000000C1To-1T8e;
-	Mon, 02 Feb 2026 18:43:56 +0000
-Date: Mon, 2 Feb 2026 18:43:56 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: Orphan filesystems after mount namespace destruction and tmpfs
- "leak"
-Message-ID: <20260202184356.GD3183987@ZenIV>
-References: <aYDjHJstnz2V-ZZg@thinkstation>
+	b=elrgPXwD5t8OyDVHlaiV+EFlVDhRHyXwsKQ4csgnZaiU2hEM2z/h3XXeZ9HWugzyDE85ST
+	OG9k99zruxhlS/MmKoUmkznO8hQny6Meq6YAxmG3gvvWEHJhHZiK70mbJ0+K1/no3HIZMT
+	TqYxf35M1ZzXgDA6FcfCJCk4YJTnN3M=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f4bCV0H9xzJ467X;
+	Tue,  3 Feb 2026 02:45:26 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 30AC040565;
+	Tue,  3 Feb 2026 02:46:12 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 2 Feb
+ 2026 18:46:11 +0000
+Date: Mon, 2 Feb 2026 18:46:09 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Gregory Price <gourry@gourry.net>
+CC: <linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>,
+	<nvdimm@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<kernel-team@meta.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>, <willy@infradead.org>,
+	<jack@suse.cz>, <terry.bowman@amd.com>, <john@jagalactic.com>, David
+ Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Andrew
+ Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 2/9] mm/memory_hotplug: add
+ __add_memory_driver_managed() with online_type arg
+Message-ID: <20260202184609.00004a02@huawei.com>
+In-Reply-To: <aYDmor_ruasxaZ-7@gourry-fedora-PF4VCD3F>
+References: <20260129210442.3951412-1-gourry@gourry.net>
+	<20260129210442.3951412-3-gourry@gourry.net>
+	<20260202172524.00000c6d@huawei.com>
+	<aYDmor_ruasxaZ-7@gourry-fedora-PF4VCD3F>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYDjHJstnz2V-ZZg@thinkstation>
-X-Stat-Signature: ghku3cwwi7a1r1huchm7ckd1dy431hw8
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Stat-Signature: 1uoymyk6oyk1b5q5s43cj19te7deeegk
+X-Rspamd-Queue-Id: 91EFEC000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 25A2E40007
-X-HE-Tag: 1770057721-289660
-X-HE-Meta: U2FsdGVkX19sTB5ij5m0l3TBrCpCCBVIrXk9BJcCocf3iSSRki9cFMrasd5TGJu2o3MFajOtV8Cb7iNjUB4q8aGarsKuCmb8yEOc/4EVb4jOIVnQCuFe6l6J4SiUFP+x+x8glgy879uHmgKVzYAIpplMuivNjcK4aWKKZMpJCFNIxuFUR9Dy4pWjiSJrbBna1UIAN5SLv1LWBtA0E9KO+TiNVYHl855Nb5poM9BsnRucUk7+Ms38HW+RlfZG89NVseicynx00gzdyw+bnD4wJqS5n0vo7q+ZL+h/q0o3c+DfkeuBYTA5sGJJtn7SGkIWmBHWrpdfa3gV5ppPYGnymA/KN70GahigQj+GJOvRiuvzlkHAHd854wW7vqBKzqOctYyOYGtxPs+5FV0OnBWRoOSZ9lKaTMnl0DhvnI4J1cr0C0COjlgngzwiWE8LLoWQfGceovYpTykvWbwvV4XsENJ61asPQFxvoQbEPAT8N34UW7V2RSvjKl3v7xSuDIefoQUPXMzyEoNkD7Ps4ot8zfIDe/iQs9U8QTypNa3P5aFBxYWAbS7l1PnPpnFDFTcgW8RY+camXgwg/KgDpNoH5UiJvYRNg7vXlwjHxK0pP42068qr98R52Orx6WWH2X7FoNDvS+7r1lo/X7ZTlMQw1bvS0ItEvw4cpmfl/CYnBVURyPk7y4JDxP8XhEiVW4k6g6c8WbWZtriOGfLCvlyFeKx0+K7Tn6LGB6EJbOHCopR3AzFPJ9wLEH8fWHrKlC3Ub5h/kdAeD/XUgpsY5PuGsvU83c3cg2U5rCUKOJ8KlyjvGCk94gnAbe4BzWsPYpkYPoQrdtxsWz9GLc9L1l283Yo4HjQtPf6rfEYyYBfAHDSGLwh70izX9AEl9yI5MBrrQORD39Rot5jLjz992twOlQJCQc4xsWG1IaC7sUDgK4sstVB7JRhKSUA41nj8CkPIvqzVQ7GdIBfAeVKbx8A
- LnCRMj6o
- DMCAlQcwQTXkfS+BowhR9jRymzfztntiwZi7lkorFttFFRWduu1ejrkjeiWf49CFdeN1EGmMDNK6epDtp40yDiHqmeUQTK+ZXpMY796Q4a+Qu85PPk/0AlyDSh2LfdDCd9xKnkCDsPZj69BOWeLgVazADw0i+YZgxq0dQuDYsjMtrSNTDkb2J3N+QZ0AvwH2hG2xMLSobS2nVcRswNM/cARQp2kTBtDLnoTAW2mjIU9HMGHVepKBkE3uoyJYzcxUmtUSzYWKFLA6Gi5I0xq0z9ECfOGdm6exFiHVIbcrgaLYVN99z1eAsrmeulOywEju3QX/ytEEqHOQt0raC1hyzgVP7R/WGCQef9DlULtQl7g6f+wqkwI8O7HAEMqxnRweoPtk2TvcI2kJjt1+LKVXwlqmlQdskx3xRHuVv+EVRWFpPPhkDEPbgq2f8oA==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770057975-118419
+X-HE-Meta: U2FsdGVkX18cRFV1FP8IFEX6vH+2aQOwT/Im9ppzx5VMull4hyEv5ETbec1GFEDUusTdvJYcsN/acgeLohMgjbXNnq2eWeqDWbPgk2cja3bRiQfnDK6OKfU9RMOxkQZtl0LxV3OVzC/sNRFq+wSNS5ESsoxLDu+nYDvl8sCDqqC5hpcnjAvg3teSBTJWW8yKrRU5K5x++o07w/c/mbxT8pJjJhGi0cGB+hL3JqnPqK6SZFQC8kvo4/Fe57Y4feuy9ohZKgmqSpsUjJi3UwSes3tGoCuBAuUKeBTIGsygsV0bXUE+dtc+1L9dnNAzMBd89tauoDV4R7X/5J3f6N0IjKv1SRtZbZd0IJLVCZSgXLWLGs/b9CkhI2lWxoOPWTtSPYbOKmBcMvD0hQAiWJFlDybqeURY9zNJwL5ajRzBOx3prGHc3ptTg6YYvxK9pUvRSBrkuq2u2MWkYxn+pQZJOyieqxB7u2gVsM3AyKQHvTldArqA2dAeigxLYiwyLfbkA8Y8po2xrtmgM4tXFQw0RtyuE8Zpzf/Cz98TLcliwTPQFJXur24pGKVPY7oeRz1i/mima493gnGVSEzdapbneXG/eLwToDb9RrXiiu+SOxwy4L8QvXynB9nxeaMIUtkgu3TYI9bBkKM5F4Hxa1rJFtsYWok0FAImFQpfZMcRzmbLMNQz3aOk2izpMJ+f3x9AgEwwEZvyxorpAgk3FsS6/qhmIug3RiDhbDr3qDGt4zxSX+mLNodMHR/NKvUj818jLLnP1tz5FwvuuksnU5BUpIMpAzYoOHelHzaBdwdts+S7iR1iZkJRxTPMRsDdi2YbkiZVILwgrsIX48q1f+WjNqOMgWACjYAcKt+wVi2pGHcYFUERrxVFdqwsumupwynTRMR3j3pdAKncXUrQF+UGZLo8nrD3o/RSZAF7A4TdrzE+VpePdEs8iUXSlZpeUmfucx0QGrU7NC3dJ5S2Zez
+ DKn4CmAD
+ AlbUmg+6tDkRANsPtzSSKb1iXxxcsuRl8Yn8+lmpe5dsjVTEmpU+lDMfQbnOY4UhxmMoW7DPLpV4mgZZptKJLyVMhfQ8h33/ey7z37slMdAjSITvt9dojesmu+JrRi3iWuR+K+hKIzm2HIRDi9Vyv8yuwEHtZ9CaFGi63F0iVqrE4/QVNUP0XdyDsyc5OG5KLpojOACiQUx+3usLqwszy3DYaB8C5he139iLS0acKC0/wKe6gum+Z278tnyc9YZMlekCV8MIgq5DsbKNrUvWd8KSXo9u3c+ezps3edUXDGg+DDici2/VSnVl/PVpfBryvmh4D7+vEA7hnqUU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,69 +102,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 02, 2026 at 05:50:30PM +0000, Kiryl Shutsemau wrote:
+On Mon, 2 Feb 2026 13:02:10 -0500
+Gregory Price <gourry@gourry.net> wrote:
 
-> In the Meta fleet, we saw a problem where destroying a container didn't
-> lead to freeing the shmem memory attributed to a tmpfs mounted inside
-> that container. It triggered an OOM when a new container attempted to
-> start.
+> On Mon, Feb 02, 2026 at 05:25:24PM +0000, Jonathan Cameron wrote:
+> > On Thu, 29 Jan 2026 16:04:35 -0500
+> > Gregory Price <gourry@gourry.net> wrote:
+> >   
+> > > Enable dax kmem driver to select how to online the memory rather than
+> > > implicitly depending on the system default.  This will allow users of
+> > > dax to plumb through a preferred auto-online policy for their region.
+> > > 
+> > > Refactor and new interface:
+> > > Add __add_memory_driver_managed() which accepts an explicit online_type
+> > > and export mhp_get_default_online_type() so callers can pass it when
+> > > they want the default behavior.  
+> > 
+> > Hi Gregory,
+> > 
+> > I think maybe I'd have left the export for the first user outside of
+> > memory_hotplug.c. Not particularly important however.
+> > 
+> > Maybe talk about why a caller of __add_memory_driver_managed() might want
+> > the default?  Feels like that's for the people who don't...
+> >  
 > 
-> Investigation has shown that this happened because a process outside of
-> the container kept a file from the tmpfs mapped. The mapped file is
-> small (4k), but it holds all the contents of the tmpfs (~47GiB) from
-> being freed.
+> Less about why they want the default, more about maintaining backward
+> compatibility.
 > 
-> When a tmpfs filesystem is mounted inside a mount namespace (e.g., a
-> container), and a process outside that namespace holds an open file
-> descriptor to a file on that tmpfs, the tmpfs superblock remains in
-> kernel memory indefinitely after:
+> In the cxl driver, Ben pointed out something that made me realize we can
+> change `region/bind()` to actually use the new `sysram/bind` path by
+> just adding a one line `sysram_regionN->online_type = default()`
 > 
-> 1. All processes inside the mount namespace have exited.
-> 2. The mount namespace has been destroyed.
-> 3. The tmpfs is no longer visible in any mount namespace.
-
-Yes?  That's precisely what should happen as long as something's opened
-on a filesystem.
-
-> The superblock persists with mnt_ns = NULL in its mount structures,
-> keeping all tmpfs contents pinned in memory until the external file
-> descriptor is closed.
-
-Yes.
-
-> The problem is not specific to tmpfs, but for filesystems with backing
-> storage, the memory impact is not as severe since the page cache is
-> reclaimable.
+> I can add this detail to the changelog.
 > 
-> The obvious solution to the problem is "Don't do that": the file should
-> be unmapped/closed upon container destruction.
-
-Or remove the junk there from time to time, if you don't want it to stay
-until the filesystem shutdown...
-
-> But I wonder if the kernel can/should do better here? Currently, this
-> scenario is hard to diagnose. It looks like a leak of shmem pages.
+> > 
+> > Other comments are mostly about using a named enum. I'm not sure
+> > if there is some existing reason why that doesn't work?  -Errno pushed through
+> > this variable or anything like that?
+> >   
 > 
-> Also, I wonder if the current behavior can lead to data loss on a
-> filesystem with backing storage:
->  - The mount namespace where my USB stick was mounted is gone.
->  - The USB stick is no longer mounted anywhere.
->  - I can pull the USB stick out.
->  - Oops, someone was writing there: corruption/data loss.
+> I can add a cleanup-patch prior to use the enum, but i don't think this
+> actually enables the compiler to do anything new at the moment?
+
+Good point. More coffee needed (or sleep)
+
+It lets sparse do some checking, but sadly only for wrong enum assignment.
+(Gcc has -Wenum-conversion as well which I think is effectively the same)
+I.e. you can't assign a value from a different enum without casting.
+
+It can't do anything if people just pass in an out of range int.
+
 > 
-> I am not sure what a possible solution would be here. I can only think
-> of blocking exit(2) for the last process in the namespace until all
-> filesystems are cleanly unmounted, but that is not very informative
-> either.
+> An enum just resolves to an int, and setting `enum thing val = -1` when
+> the enum definition doesn't include -1 doesn't actually fire any errors
+> (at least IIRC - maybe i'm just wrong). Same with
+> 
+>    function(enum) -> function(-1) wouldn't fire a compilation error
+> 
+> It might actually be worth adding `MMOP_NOT_CONFIGURED = -1` so that the
+> cxl-sysram driver can set this explicitly rather than just setting -1
+> as an implicit version of this - but then why would memory_hotplug.c
+> ever want to expose a NOT_CONFIGURED option lol.
+> 
+> So, yeah, the enum looks nicer, but not sure how much it buys us beyond
+> that.
+> 
+> > It's a little odd to add nice kernel-doc formatted documentation
+> > when the non __ variant has free form docs.  Maybe tidy that up first
+> > if we want to go kernel-doc in this file?  (I'm in favor, but no idea
+> > on general feelings...)
+> >  
+> 
+> ack.  Can add some more cleanups early in the series.
+> 
+> > > +	if (online_type < 0 || online_type > MMOP_ONLINE_MOVABLE)  
+> > 
+> > This is where using an enum would help compiler know what is going on
+> > and maybe warn if anyone writes something that isn't defined.
+> >  
+> 
+> I think you still have to sanity check this, but maybe the code looks
+> cleaner, so will do. 
 
-That's insane - if nothing else, the process that holds the sucker
-opened may very well be waiting for the one you've blocked.
+I'm in two minds about this. If it's an enum and someone writes an int
+I take take the view it's not our problem that they shot themselves in
+the foot.  Maybe we should be paranoid...
 
-You are getting exactly what you asked for - same as you would on
-lazy umount, for that matter.
+J
 
-Filesystem may be active without being attached to any namespace;
-it's an intentional behaviour.  What's more, it _is_ visible to
-ustat(2), as well as lsof(1) and similar userland tools in case
-of opened file keeping it busy.
+
+> 
+> ~Gregory
+> 
+
 
