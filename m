@@ -4,212 +4,224 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6993EE7315D
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 12:27:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB96E7315E
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 12:29:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 925F36B00C6; Mon,  2 Feb 2026 07:27:02 -0500 (EST)
+	id 534CA6B00A5; Mon,  2 Feb 2026 07:29:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D3246B00C7; Mon,  2 Feb 2026 07:27:02 -0500 (EST)
+	id 50D3D6B00A6; Mon,  2 Feb 2026 07:29:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 77D696B00C8; Mon,  2 Feb 2026 07:27:02 -0500 (EST)
+	id 3C34B6B00AA; Mon,  2 Feb 2026 07:29:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6105B6B00C6
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 07:27:02 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B188A160154
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:27:01 +0000 (UTC)
-X-FDA: 84399441042.18.A0350C2
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013040.outbound.protection.outlook.com [40.93.201.40])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D2B401C0010
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:26:58 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iIPHvEib;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 28E576B00A5
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 07:29:38 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C68811BCA0
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:29:37 +0000 (UTC)
+X-FDA: 84399447594.24.5E8235C
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021083.outbound.protection.outlook.com [52.101.100.83])
+	by imf21.hostedemail.com (Postfix) with ESMTP id C06A51C000E
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:29:33 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=0X0mbuQp;
+	spf=pass (imf21.hostedemail.com: domain of gary@garyguo.net designates 52.101.100.83 as permitted sender) smtp.mailfrom=gary@garyguo.net;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of apopple@nvidia.com designates 40.93.201.40 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	dmarc=pass (policy=none) header.from=garyguo.net
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770035219;
+	s=arc-20220608; t=1770035374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DYIkC9g/6TaedTao90qX6FVFx+t3iRutqpxe5/dE8dE=;
-	b=YQp6CV6MMCtcv1SeViqNZ9e9HMHLwZGTBRKDkGXh2iFFSRI3chie20cs33W9i0fIX7xzsL
-	2L8Su4Lq6dZyNwJt3F4OojZIxeupu0Fgub7rlxKcz8FRDGbG8x2jFoSOiXp/X1Lx3+Tuf/
-	Od5Jzx297n0AQUmXm3HLxJLewzp3CeM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770035219; a=rsa-sha256;
-	cv=pass;
-	b=S9GmFFN0KolINu2pRI/W7ms/6yTqEabXra6Hi8o2ZnYNVDPRYbxBxZIzrms7mJZQ1Y0mei
-	bPFNAWXfr3yAROq7xCBVtpanWR8MwWiFwn2QMCVviEftx9rkIEwblo8KXAjx78m0ERoOr2
-	0q0jS6EbOVY68BK9FokjgEIbqkNusDY=
+	bh=rz/EY4KH3M+xF+iXiCZ6IRfUWPnwmZjwYsOm5pHELm4=;
+	b=MJEGSPeh0TVtYc6nXYZx6zsAbL2sijEd2u5lR9hWFY2cehuYRY61xvpctan4YYCGNC5fRF
+	gq9rc8RmBgvVMjbVTd9mCAMcS3nXgRiOqLXrg0NKZvNyOesDiTi6ZVsDWhFrExOGGjMufQ
+	C4A0J/hHHeX9s+9lrgGOhgoQ5NOKCyw=
 ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iIPHvEib;
+	imf21.hostedemail.com;
+	dkim=pass header.d=garyguo.net header.s=selector1 header.b=0X0mbuQp;
+	spf=pass (imf21.hostedemail.com: domain of gary@garyguo.net designates 52.101.100.83 as permitted sender) smtp.mailfrom=gary@garyguo.net;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf20.hostedemail.com: domain of apopple@nvidia.com designates 40.93.201.40 as permitted sender) smtp.mailfrom=apopple@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
+	dmarc=pass (policy=none) header.from=garyguo.net
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770035374; a=rsa-sha256;
+	cv=pass;
+	b=OIJBF+ICC2EV9sOyo6R2z464jMKpVBncyfqDRAmBIpVvrNSSKUAGeAa2VFcey/HUeU9bJE
+	FXbpo5D4Ev6oECNSoz0+WJvMg2tih3u8mlqG/LWd4Vu41aCDon8b6kNIHOsHINAR4gp+zc
+	x6FI9IPILgtJhO3OLtXpHSZ5ZOp2Tac=
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x3Oictw3uL3GzluoMWeh/iYGq5Kk/zAeSqjqETxjCUwgmN9l1cvUz2A1XJqilyCnU/4oksc+si0j/yxx38EcfUsuPHAjSpftrGufFsY4NmAHCNvIBEX6rJq26NattUtN3zdr5cyQE290ew+k22IbrQHzAVyQXZNvpYF9DXfzC/oQ8qESmDCZY4FuDpdtkcxgR9by81mUExDhyYNj3jkL0X3J8U3GX2Mj2GVI13cRzp5ORFAFgnKtAARVmqAVDQ5auN1eXVxIqvYPDbemLXGdxKdtqZ7lBOCLVDTXAwzlqQoW3I+hU+lOWoK5pSdm4/9lBnFMcyuDAfF0+wd3pvdHaA==
+ b=yoiAxIvtVpLwLVHJmnZfyOPZTLwMInv/fgL41T7ui1oyJJGLMgSMSMMMxK5yk0PUbQVl3uvK5n9/drrTrGRMZlv2psSs9aKNxvUfJ8FqcelFPNWGhQRzC9H+WxmCxai8PVz46SpJsmjXOgWt6XiA7WtYimsFbaHoDjAFbL7+Zol1nfcg8PF7N7NxvDJR5zffh802DRsVHRK8BXQjigD63UAWVfBEWlnhTW/qkdQI43BYJ0KWMjoD9maJuipxvgthxWRHqhUKvoPcK0kCqV5adl+iFJ1RSNl35uIC4pfY5Pnrh+EICFqdxEvTF43NMCzn/n92wDbEfhFCJbjaluOKaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DYIkC9g/6TaedTao90qX6FVFx+t3iRutqpxe5/dE8dE=;
- b=rBdbjlzUfOQp8fGTSkVw6z+OZDVqQ/1p/eyXLFjHD0kX8td3eEhDTln2LcMdX77kNI5+ry5s5S++xmt1rF2C2g4lYVYK9xNXkpXRUJq2mSln+ds6U0EmR2L9qFTr24Pqs/+oP8JOIwq1hfss70GuTRNax5bKBXdVp5/B4ihyoCTeiKc6XLm+fzoiLoC6XCybIuL8t2mGgl25BqWZq0WXa/5NRhdiYtjIz7cWAN9RCMQ0i67JZd07JCiMzHeXn/r2KLS0pXqoM0IhECjzrkIwUSPT/3ifTu2XGR0ja8+hYIpLidxsYtcrCQH7hWSVFHFO6Gg4x7U9GYwWZ1ikN4YcgA==
+ bh=rz/EY4KH3M+xF+iXiCZ6IRfUWPnwmZjwYsOm5pHELm4=;
+ b=Zy2aYlAgagm7mAQAlAyeH6vMCqhK6l7YU0uDvF8GTSojTVRyLayJAnM+xEBrkPwx1HwaxfPXFXrvuMNJ2boEYegSzfujL3fQ2VF8V+l9KWbiu/8T4WN6wMnFDhK9rVnYOvnfbrO2kT+Alb6B1X8dTQ6XoT7Q14ubhWxU5K9H8CIPyk9BVK6Law6ybks7VbbBD1bjVh+PDi6XdEwzMqHg+Aje56a9HKZG7DhU6JVLokmDqtM1gR0dm9MgdV8efW0jk2JWoIeMxGsg8QgRmRAMQyhbCpflsjHc2IZueEFZvfkYjCU/XoQTdvTjJHko07LRxQBzAUcy2iGh3BD6MNsvIQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DYIkC9g/6TaedTao90qX6FVFx+t3iRutqpxe5/dE8dE=;
- b=iIPHvEibkqfw3ZtOaHP+iVUxp8snva6dHXdrh0LK5wGq+q5SO/skyD4jtHvWqKp5TAxLpKMnUwOZi9OEpu2afnOIvto7mfP8HSa/r+ooVIIWBZqnOgpDTKwiUudWFCMxKvItMUxwDTxMxqhdeAI+diaKcS5Z7Dj4sJStIf8RIaHY3H6VqxXDkJAsQvihVeg3cpVQnzqr9WPhDAr2tdbJLICgEErl8Qf/rtSGLJfAX+D5hj3UFeQNCDCNhFJwVTlpsxPGmRfa5t9dstJEjh+to7X7nnJT3s8d4uE4K02v3Hbj2jCGyY9hNH7fJAwJWcTMb21Ik/9rW/IPOtEi5aQ9og==
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- CY8PR12MB8268.namprd12.prod.outlook.com (2603:10b6:930:6c::16) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.16; Mon, 2 Feb 2026 12:26:53 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
- 12:26:53 +0000
-Date: Mon, 2 Feb 2026 23:26:46 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>, 
-	John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>, 
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, linux-mm@kvack.org, 
-	stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-Message-ID: <nvajpou3j7osyx553ktafdc3qx3v6hisygho42swkzm6xdbwvt@bg6d25otpqj3>
-References: <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
- <aX+oUorOWPt1xbgw@lstrano-desk.jf.intel.com>
- <81b9ffa6-7624-4ab0-89b7-5502bc6c711a@nvidia.com>
- <aX/AgHAZ7Tl4iOua@lstrano-desk.jf.intel.com>
- <lbqqmohxpeynsrunbdyvod2fm4tinzq5coueh2mq6weubste5x@y4f5weqvwszg>
- <f48e3d818c6e20d6ea7a7fbd6b1741f25df17a78.camel@linux.intel.com>
- <ymg5yawktqtw7vfgt77iciqzxhjlsnqrwnjx3xmkflbjqbmq5s@jcxzcymqq2af>
- <d8c02e59a4cdd2d02b41aa5ce8dcd36a94fbba86.camel@linux.intel.com>
- <ewowxagab6ej5xldwsewfvg4wgpmelps2dgqj7efmcnhks4nqg@nqdhfedzlvjb>
- <aaffa3f1bbb97e61d86c0e4ac474cdc8b983b85b.camel@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aaffa3f1bbb97e61d86c0e4ac474cdc8b983b85b.camel@linux.intel.com>
-X-ClientProxiedBy: SYBPR01CA0153.ausprd01.prod.outlook.com
- (2603:10c6:10:d::21) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+ bh=rz/EY4KH3M+xF+iXiCZ6IRfUWPnwmZjwYsOm5pHELm4=;
+ b=0X0mbuQp5WcQGVv033AWCHPqkGdJ0NC4SkWKh4S8xhVZFYZQ+/6x/Co0Od7p2V3xbNMBh6EbLEsPzI+qmxRBVwUEJoR6FMEkk5O8AfNQ6fytc1cuCHJezXTJHsZK3qbcJGz4DNlRVoEBhB16Um7SPkmJ9JxMRErMmQodXdZamb8=
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
+ by LO2P265MB5469.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:25c::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
+ 2026 12:29:29 +0000
+Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
+ 12:29:29 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 02 Feb 2026 12:29:28 +0000
+Message-Id: <DG4H66NZ5ME0.3M9CQY1ER4Q0X@garyguo.net>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Alice Ryhl"
+ <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Benno Lossin"
+ <lossin@kernel.org>, "Danilo Krummrich" <dakr@kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Maarten Lankhorst" <maarten.lankhorst@linux.intel.com>, "Maxime Ripard"
+ <mripard@kernel.org>, "Thomas Zimmermann" <tzimmermann@suse.de>, "David
+ Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>, "Alexander
+ Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>,
+ "Jan Kara" <jack@suse.cz>, "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, "Viresh Kumar"
+ <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen Boyd"
+ <sboyd@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, "Paul
+ Moore" <paul@paul-moore.com>, "Serge Hallyn" <sergeh@kernel.org>, "Asahi
+ Lina" <lina+kernel@asahilina.net>, <rust-for-linux@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-block@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, <linux-security-module@vger.kernel.org>
+Subject: Re: [PATCH v13 1/4] rust: types: Add Ownable/Owned types
+From: "Gary Guo" <gary@garyguo.net>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Gary Guo"
+ <gary@garyguo.net>, "Oliver Mangold" <oliver.mangold@pm.me>
+X-Mailer: aerc 0.21.0
+References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
+ <20251117-unique-ref-v13-1-b5b243df1250@pm.me>
+ <20251201155135.2b9c4084.gary@garyguo.net>
+ <87343jqydo.fsf@t14s.mail-host-address-is-not-set>
+In-Reply-To: <87343jqydo.fsf@t14s.mail-host-address-is-not-set>
+X-ClientProxiedBy: LO4P265CA0040.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ac::9) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:488::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CY8PR12MB8268:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ff8936e-eb98-4bb9-1f3f-08de62565891
+X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO2P265MB5469:EE_
+X-MS-Office365-Filtering-Correlation-Id: a65cfe18-98fe-417e-3147-08de6256b5f8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007;
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|10070799003|7053199007|3122999021;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?bUgyQnFhZzQwdGk2Sk95bGlUb3VRdnhiOE41dHVoeVN2OXdObndFYWsyd2xr?=
- =?utf-8?B?cEl3WVE1eEg4UXV6V3RrRVJ5bXViZ2FUUy9QR0l1ajFERjNzRkNGSUFXYmNk?=
- =?utf-8?B?OC9lK1NHcjZYR2hoMnprUFhiOGpTb3ZiYXJNMGdsaG5ta0RRWXBhUXVqdzFF?=
- =?utf-8?B?aDZmMXNaT3YwT1o5WjZ2bjFlZ3RMTENyZGNmR2RrQzZRdkpDS1NVMVE5cEdV?=
- =?utf-8?B?SWUvdElTR3lCbi9OekxTUUx6K3R4b25hRElSeTZTZTQ3bUpNdW9HaHhZc1Av?=
- =?utf-8?B?K1pMYkZPMDN1L2R0dDJ4L0ZZTDcyaWRUN3NOMGduVTBwZ2VSaVJDc2RCemx6?=
- =?utf-8?B?N1o4R0xpTkZkUU1IMm9rOG1KRW5Xejd0MmFEYmp6eVhDaVF4TlRSZk9BYTV4?=
- =?utf-8?B?VlVveWpNUUIybUFrYkROTnVBaTU1cHhKSllmR29RNzVlTkVYRzFRWWltMTBN?=
- =?utf-8?B?VC9LSlpIaXRZWERYUjNsNGJna3U0TExIMjRIWmVZTEJodmF2NnkzdHBidWJU?=
- =?utf-8?B?NEJodmttb3RXMnJ6OUVNelMzY0dieFRoZXVST3pFZmZodjlrWU9nK1dZZnRW?=
- =?utf-8?B?VVUxZ0FsTWtvZlAxUmRmMEdaWHR2T2RxNjRFcyt4YTd3eXJyVWdIbzd3SldK?=
- =?utf-8?B?VlRxdFJQbnJjcXEzZytzK0oxZXJDYmRjbWl1NG84aTVnS2Z0Q2tMVWIxdWxD?=
- =?utf-8?B?R29zcXZlNFhaZ1VCMXdsOXVEWlRad25EbkpQQys5VnRTMURFQktGWHJIUkdv?=
- =?utf-8?B?TUE0S29WM3FEOVRvemZ2alczMEVPVW9uMHdPSTBBR0JVRWVWTVduZDRzQTlV?=
- =?utf-8?B?OXBQbEFNeG93clgxNStsM216d0pJRThqb2lHRXV3L2dzTmxBa2VvTjIvWmRH?=
- =?utf-8?B?UEtqaWZFQm1iSFJ1NVBiY1kxaVFVMVgxNklGRW50T0RiS3BlQSszdVBDUjUx?=
- =?utf-8?B?WnhEbWtXLzBjYUl3L2Z2eXlncDZocERyRWVIdXJxN1dDdmFnc1IyeGpiYkti?=
- =?utf-8?B?ZVVESHM2QjlCVlNYaUVtNlJ4VVpKaGo1S0YvYjI1Uk5oRGR3T3hBMmhIUG1U?=
- =?utf-8?B?b2Q3c3RGa3ZqbTJUc2R6M3Rzc0ZTM20rSWdBcExwSDBmdmUrUEVvVDNkMTdB?=
- =?utf-8?B?K3VtOHFsQXRRZnl3aE1LRUliSnBycVExSGVLcDVDSTU2ZFlRVDlaQzdVY3hz?=
- =?utf-8?B?WGNXN1ppYVdRdTY4OVNJcGVGNlVXem9pajdJUHhGNWp1RStnUmw5YS9iaTRu?=
- =?utf-8?B?Yk93QWVhaVRDU3lmYVRZQ3o2dnBCQmNwZ01temk0MXVvMzZEVHlQa1BQeUlm?=
- =?utf-8?B?cTJpa3pPcDVsTndpaVIvMlhSZjJMRlJkaUx5d2J0TXdURVphQm5Qb2RjNDFK?=
- =?utf-8?B?YTdSUHlLSWhXOTU5Q0VrUG8zZEd1SlJLeGFrTG8vaUZEVjZPMGY3NTIxNFN1?=
- =?utf-8?B?dDRZL2g5RW80bE9lWEk1cEhBM1B5YlptR0ZFTlhHVndCc0VNSDJzTURTb3NO?=
- =?utf-8?B?SzhGMWdzbk80VmZaWk9LRzdPOXhEYUk1WHRqVlpDYnRuV2NuTi9CVkhNYjdK?=
- =?utf-8?B?VnovNmlaZHJMazFYMkxDWkt2L2VsVGpJYm1BV0wyQ1VHTXZuckwxcG5WVDBk?=
- =?utf-8?B?VVBsRWdmN2ZsU2J5WHhJNTJLaGNDTDZRS3BtN29MbldTdlpTSTJvWWZpZDhv?=
- =?utf-8?B?UGJIaGtycjlUeHFsVnVFZy91dXpJNTQ4TDNWSnhkaWFEeU4rSEthUnd3Mm41?=
- =?utf-8?B?UVZ1cDRPN09rSmhnMFkwdmhybUJpNCswMzBrdXVyMm1RaVFvSlE0TUpFSE1G?=
- =?utf-8?B?d08zVXBSODJlcms0OVdkTTJBMUo1d1VrdU1xQytyYzcrMnYxRVNOTFZsU0I3?=
- =?utf-8?B?UVEySWFRT1pXcFhVak40eFFQUmw5c3JjSThGRkVsejhNV28vWkoxMHF0UXI4?=
- =?utf-8?B?RVE4RGJuWFRsUjdXL0pDbWtENEViWjk0aGlrVGM1Uk9hMG14MVp3QkZGbnBu?=
- =?utf-8?B?UU9sYlM0Y21EbXo5eVF0Wm9wYTByOUlwNVFkSHkxRHc2WUVUL2hBa2RtdVNZ?=
- =?utf-8?B?NWlRZG9YWHR3RURoVERSMnp0M1E0aDZ0U0ZOYUVsV1FXQTNqTHArOU5KMlUv?=
- =?utf-8?Q?vUbfaPvxDfYfoFEHR+7/HA4md?=
+	=?utf-8?B?TWRwNTNadkJISktPRklVdWFlQVc1d0h1QWNkU0ZTSHFXREsyUmxsN3UyOGdm?=
+ =?utf-8?B?TmtDOUYvTkZndUFJMlFYREFZNmt2Tkt0UDc4VktPSGdNczMybkRpKzlSV2Vw?=
+ =?utf-8?B?NEp4U2wwWC9Rd200dlFDOGhWVDVsbm5qYkUyQTJuSWJnSEs3eTNMNTV1bDVL?=
+ =?utf-8?B?YldIeHNtUEFxQmtnQVFMNXpLTkZOdTIvdW9OTE9TKytpNUNWQ1pGYk9HN3FZ?=
+ =?utf-8?B?VmM3Q3orbkw5WUpPM3pMcHhCUVFZVGxoSllWVFh5N1RpUWdVY3ZWa2tLd3o1?=
+ =?utf-8?B?L2dXKy9YSTB1N1EvRDluNGw3d2JqUWRFQVRKU2I3Vi9DMlBNZHZpd3NkcFFk?=
+ =?utf-8?B?QnlhcU5WeUU4cjFXK3JrOG43ajJUSHZsRTFWakhmbllOcndYaGlPRE5ZVU9E?=
+ =?utf-8?B?T29tUHJJbFI4dEFNaDRldVFLRDZzOFUzS1p4WVI4YzhQdHNiK094T2J3Yk1o?=
+ =?utf-8?B?NnVoSEZWRVdvQlZycllVYzJGemRYb3VsbHVMdThzUys2ZTUvVGxJajgzMDRL?=
+ =?utf-8?B?eXBaRUZ2SXFhSGdGczhLTUNLSTFickdyd2lwTFcwaCtYNzBaK242ODNjWEg2?=
+ =?utf-8?B?cnJQRElKL0MvUFR3QzBJUnY5YjY5Y2JqZ2pGUTJhRUsvN3dIdUgzSXRmVm5Z?=
+ =?utf-8?B?OWVyVlB4d1NvWkRCRVdVSUkvVXRRYWNXNklxZFdTOGVDeEpWSFFMcEtGdXU2?=
+ =?utf-8?B?ajNTK052ckx5RnVkZFBId0RjSGgrQ1JuWkdFeVdJTEluaFczSnkzay9NcEUy?=
+ =?utf-8?B?T1lLbTkzQU1hSlV0REJoem52QVJvZDg5L2cyamgvdE1YOFlkVVdTSTBnK2ds?=
+ =?utf-8?B?VVArNTRGQ1RFUWp5ZEhpSXVIeWhTZTJVYTl5V2xQVGxIM2tyTTJJMGg1cXdz?=
+ =?utf-8?B?L2xnbWQwVzZXeE9tUHJ2MHJZWm43M2phaVg3QVJIaFNNUUF2Rng3U2JhOTBL?=
+ =?utf-8?B?SHlLeGxNMFF1RUFVQ244cGc3SlYyTzhqcXhxZDdPNE15dkYxblU1VE94OS9j?=
+ =?utf-8?B?RGhxNThMeDQ0bVBBYWhndjMxWkl6SkZlTWVvWWpvbFU5cVpaT0RDVDlyZ244?=
+ =?utf-8?B?S1J1WmlmMGM4cmhXVGhteGNqR2kxWHlxTDFzNGtIZkY4eUlNQzBTQ1hpdTVS?=
+ =?utf-8?B?ajJRQ011MnNsTkRRSmd5ZHJRaFhaaHQ2RG8xTjdTSnZrcVZmY1hIbVA4NGh6?=
+ =?utf-8?B?cmlGbW9ZQkN5TlVBTEU3VlRnZE9ON203eFpkZ0lXU216NzRVR1NkTEtUZFBI?=
+ =?utf-8?B?anFVWi9IaVJCcGdtKzdtdSszTW5neVZ5Mi9yUVNZckVVYmpDV2xzNHJTRkI1?=
+ =?utf-8?B?S0FlNGFCa1hlRS9XYk40SHJ4S04vbzZHUTBVUlQwelZQOTNNbjNWd2twNjNl?=
+ =?utf-8?B?L2NzSWNSbmVXTDZJV214Y2k1VW14dWhaSFl4SXZvNHJ4ZVB5Uyt3cERZZ2dq?=
+ =?utf-8?B?a3hublFYQ0ltTUFJcVB4cU44cUh2b1BSaUkwRWdIaE1OdDc5ekZuYVdvaXAx?=
+ =?utf-8?B?cDZWeFMvM29XZlo3YnprV2h5cjIwY2kvTy9lSmFVS3VUQUk4QXAyQnRxL0hu?=
+ =?utf-8?B?VEw1RFBERFZzS3FhS3NrdU5zMExDS0lBSkdvVldEdmpDTkZvS1MzR2l3eXBB?=
+ =?utf-8?B?emJYMmxwK042SjBZYzBJNHg4enZGYUhSQXQ1TjRnbW5JV2U1c1ZhV1laNUlC?=
+ =?utf-8?B?NFNVeTlHMWsxdmZJZ00rb25CejAyMUd5UHpDaEtYOEVjamhoVmVjWVVYQWY0?=
+ =?utf-8?B?OWFvL2djc0lHbTJLOFNUeE8rQk9EMmc4UGpPWWVRcG1adFc4QnoxODVJVnA1?=
+ =?utf-8?B?Q1Zta1AwaFZCZ2pYQUMrWXNhdEFMMk1uNFpMWTNzUmtMdzg3SFBNUDNKSW1G?=
+ =?utf-8?B?bUdTZ2I1Z2N0aENCMm1jWjQxRVA3b08xK1pMMlZiTlN0NXdMQ0hUQi95L0s1?=
+ =?utf-8?B?Nit4TDFkZncwbzNZOVNXckNudnBBeENMUFltSTkxZi8rTGwvYkZDdnhKb2tM?=
+ =?utf-8?B?bVBXVGR5UXR3cENLMC9DVDZkczFOUVA0ZlNWMFRDdWlacGVpYXNOVUd3VHZJ?=
+ =?utf-8?B?NE40aVV6d1BHNldxQ09iWXZrdG5IZ29ybFZoc0JhZTRkN3FBbVpvcGJ1WmtD?=
+ =?utf-8?Q?nObg=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(10070799003)(7053199007)(3122999021);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cjNVZVlQcHdCbTc3OFRyM29zeFd1L0UraHdzNzV1RytsSmFUUzV3UTRqS1dY?=
- =?utf-8?B?QXUybVBSWWRVNWNZZUdqaGt1b1ZKenBFS3EzV2ZCb3ZCK0RQc2RkMjJvZVBX?=
- =?utf-8?B?S01uaU5tZ3NvZ1JPOUROYWl1WTFURC8wd0R1MklDSnNIdS9BR1grc0lxQWpy?=
- =?utf-8?B?eEh2RkcwbERnT2UzUVpKZGFhYldzbHR4KzhJaFQxT2dwRG1Lb2tNVXE0cndF?=
- =?utf-8?B?akdEcVN0M2diT0ZJTFlndUQ5YmNPellpd2FPYmhqMkczZUY2VlFJS0ExNml0?=
- =?utf-8?B?K0J6WXdzc3prdkNnUjdDbTZhVkFLSmx1TFRCRVUwRE53VGJBdkw2U1kvWFB4?=
- =?utf-8?B?ZmZaTGREcTZZZTlSTGRLalFmUFhpSlJOYm1VRHhveTFnbGtLdUdRd2RDQnR2?=
- =?utf-8?B?ck5HTndXOXc4SnRISENoV0xZb2NOVnl1cm5JRS9KVTlSQVdKOG1Yd011T0hh?=
- =?utf-8?B?YlpsTnNmUUh4YjNSbENDd3ZUVnBKVExSLzBsRjJzK3Q5VzMrcFM1TUtzZ3dU?=
- =?utf-8?B?OHoyUVgzWkRvR0kzVDc1WU1tOExlTGZUbnArNForVGk4cVh4QVA5c1BvcUdw?=
- =?utf-8?B?RVdpZjVlNi9vcUk0U2FwOHYrR0I2RVd3bmV1eU02QUhoWjlNT1lYS0YxZ1ha?=
- =?utf-8?B?Q0Y1TDIxRkJwMUxvQ1RzV2poZFRZUlEwdkRERU5VL3lIZE4xclg4TTRnYWk0?=
- =?utf-8?B?WUcxZmRIeTNUK2E0eVJNUW9NcmlSdWU5MDdiN2hCa1c5dVZnTnNxMlJja1dI?=
- =?utf-8?B?d0NNY1hhSmYrSFlwR2hSb0VWblR2WWp2QUpob3NsdTY5VWJEY0tXR1N4dURn?=
- =?utf-8?B?UkhMd2pyTGIrSGQ5d0t4NUhPSitvT2RvRnZUSHZvSWlmZW9hbU40UFFpVVlK?=
- =?utf-8?B?VFIwTEh3YXpYMlV0MU5DR0VNbnFQbHpXd090QkgyRjVtWVliMUNmRWMzeHdM?=
- =?utf-8?B?cC8xRHNycTVaWWdUNnpUSHdldHVpSnhaTkN0NmxPS3BqZCtnSGc2ckV0ajQ3?=
- =?utf-8?B?aWNqb0kyL2pndjRwTE5OQjczWnVnMnUyYnhMeGduRnhySnp3MThvaTVxbDhY?=
- =?utf-8?B?RFM5ekx4MTdRZUpHeGhkcnozT3BFYkE2UVhYeDdYMERaaUhkU0wxY2NJM3dX?=
- =?utf-8?B?ZGhwWm04dG00WXhnOEpMOGI5SEJVZmtWNVd3UWtiWVkrWXdQa05ub09kbTVO?=
- =?utf-8?B?SnYwYURVRkJsKzBHVUU5cmJYNm9KaDZvNnYycmh0ZHlnS1RnL2NmSitDaHpu?=
- =?utf-8?B?ZVlxUXVHZUl6WFJhVFR4KzVyTFQ0TGxaWUZIU0dTSVdJeVZyTHdsT3lYT2ZO?=
- =?utf-8?B?YlhTR3ZwNlF5VHQ4UExLNWtDL3N1MURXK1JLUE1RcTNQRmpXN0puUThqVWhS?=
- =?utf-8?B?eTUvVWQ2T0gxL29KejZlc3BSOUxtVkt6TGlLYzB4bE5iMjU3dmVvbjk1UTBD?=
- =?utf-8?B?eTlsWTFKdm1uR3ErQXNiQkI3aFkvcUdWd0xnNDNSd1U5WC9Wd2pQeGlEL0Ir?=
- =?utf-8?B?V3ZHeHVheDl2bHhMdGJkS3NsQlVLWDAxYXpWRldkNWpmRVMrVFhEZ0o0SWJo?=
- =?utf-8?B?NDBEUlc1RHFZMzliTXJMczBOeUdjdnlreldKbWJQZVptcGVpRnNLN1U1VmJG?=
- =?utf-8?B?SFB1UnN6ZjRjS0loS0RuMG1uVUFST25ORmlHdmlqcEt5MEEwWGoxMUdBWUNF?=
- =?utf-8?B?enl3clJoT0cwdU15dFh0NVkvRVpyRjUva0VvNW4zTVJYVTVRNWRBTHQyRmxk?=
- =?utf-8?B?RUd2dUtvZVplK0Z5VE9qcm1oWmVXTVBidEc2eC9GZisyVzJZRnBHbXYwTXVQ?=
- =?utf-8?B?dVBqSURNS1NuOUNKczZDSmhUR1V1V2k0SWVrS05nNGFzSm1iUmF1K2JuQWJD?=
- =?utf-8?B?QTBKRERvWElSRWlzWEVoRjJLaWhMNmwwbUJFT2JnaklRV0pJZC8zSm1uRjF4?=
- =?utf-8?B?cktNSkdEcWtWUmxUOU0za0J6ZmZPeUJMK3JxQ1VzWXQ5MzZNZTJhK1pjandG?=
- =?utf-8?B?YWpNSjRKWlloS0VFcVVMcmV2UnFUUmwrT0NCeWRidnBlVUFIbE5LcVhYdmZJ?=
- =?utf-8?B?ZWpiM1RkeTBYTWdreTMzY2tmd0h6NFlCTjRNSFZaT1VvenFaVjMwSGtVbzNm?=
- =?utf-8?B?MmJrbllhK0l6MVJhMjRpM3NnU0JmdHc2Y1JyU042OHpaS2FjOFV4WGxHUWty?=
- =?utf-8?B?ZU5pMTRWeVQvclFOblVOSEpicHFpQXpRS0tCdENNbm9wQ2J1ME5pYnNQRjNq?=
- =?utf-8?B?amhQbU1FYTg2VkErY1dPUkR5R2IyRGk5Ynk4YzF2a0VWRDhjYmp1d3c4djlH?=
- =?utf-8?B?S1ExM0c3UTJQRVdFc29hZHNhWWZHNnBJNzNHRW5MZTVlN3dFV3JXUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ff8936e-eb98-4bb9-1f3f-08de62565891
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+	=?utf-8?B?Rkd4SDBuaGtPYm9reDdrTS8xdkJCRExQek5IaUFvQUlkUk95VEo3TXNyL3lQ?=
+ =?utf-8?B?ZFZGbkFxRjhTekhsbStkSmhDc09nYTRSeW1rN2pDNWE4UWVPNGRUdUhvVDgy?=
+ =?utf-8?B?OWxNUDJPTzQzVE0reEh2QzAvaWRhdWp0QStlaGk1VnFJdGFnemVOYTBVcnRs?=
+ =?utf-8?B?YWp2OGxoZUUzTHVUZk91Z1JMaFlGRVFWWW1kNG9CSGNKSVlaRWVIY2ZYQUNa?=
+ =?utf-8?B?eGM2bGN1R3d3UktPNDlwVWNOSlVsYzJ4NkZGQ1c2UWlVaWc1WDBkNjkxS3FL?=
+ =?utf-8?B?S1B3a0N3a1E1c3VsaDJCK1BUaWJvcHNwZXJDd3plK20vWTVjU09ZVldIa2Zt?=
+ =?utf-8?B?dGdZU3dIb2d6MGVYT0VxNXdXL1BCUXpTS3VtYTQ1QVBIb0Z2MHBXSGZrTGds?=
+ =?utf-8?B?WHAwY3h3OVRCaDlpbDV5Rjh0ZjR1c1BHSVgwMmRCNlE5S1hKY3RTTUt4aGxh?=
+ =?utf-8?B?Zks5aTZIVVUwalpXdWkwU0dlN3d1RzYzTXE3d3d4NGU3WHROVlIzNEl2UzJq?=
+ =?utf-8?B?N3Brek1uc1FUQzJQNGI5eEVaQ2xjYVE3emdVME5MSHZDSmxXUGxKNCtzM3Fx?=
+ =?utf-8?B?aHN3dmp5R25Ed1A2ZnNiQ0E3eElUVGlrSGQwand6NzVhSWpFR0hnVWNTN2dM?=
+ =?utf-8?B?ZnQ3VjZacTZhdXVoUnpKTVNvaDVqSHB3aEdNekxNNmpQeE81TFJ3QjZBWUNj?=
+ =?utf-8?B?L3NHMHdoS0dvVmFLVVY1NVJsZjVHSnZyTDE0eFYrcXhGWlBleXdYaXRoWlJW?=
+ =?utf-8?B?RUJFVWhWVHlNTHJraGd2S2dXQisvM0JIbW1DbVFZb0ZwbEp4Zzc1L0NNZk9K?=
+ =?utf-8?B?b0UwU1F1eEhRWlY3SDdqaTl2R0lMUWI0RjhDRDdOK0ZqNU9SVkc3WFIxMUxQ?=
+ =?utf-8?B?SWU4WXFkRjh6L1BZTHIyT3RscHpvRFFpSXIyRmtuSmJKSHZzSy93bkYzWnc3?=
+ =?utf-8?B?WjdxbG1qdWVVclE5VTVrV3BidlQ5Q1hnUXIyWTBNMkpzVldmczZEdXh5anVN?=
+ =?utf-8?B?Wm9zVXBha2xlWHVnOXl2bldrWG1IWEZsbHVHOG9YejdhUVZFMEMrb01oQzZp?=
+ =?utf-8?B?Nm9CNWtTNWVsLzBYdVExcENLVFkvbElHajVaS2hHcFU1elN2NTBaQ1NBNlM0?=
+ =?utf-8?B?TU9VRjVYNHV0UzI1U3poOGNDWVBYNWZmdHBTNjlGTnQrKzBaRS9vUkdCQ25W?=
+ =?utf-8?B?Um9oR3Z6Y3dWdysyeXByYWJCRmNXekFrTjFYVk04bHJIV1BqWGVQMzBhL0Q2?=
+ =?utf-8?B?elZ6ZlZLb2dKQXFYYXhkTnZ4VDBKMjdVWGk5M0FkQ2F6RDl1MlRFdVdsTmVr?=
+ =?utf-8?B?dDV3QzMzMDVWdUxiUm5sekFIamVrd2pna3RvZWJGVWFPSS9CRTREeXBJVU5Q?=
+ =?utf-8?B?NkVHS0ZpYmVraXdTcFpoMzZ6OHhSQ3VPWCtIaTFnWlpxRVQ5cGthSjZGN0p6?=
+ =?utf-8?B?TXNxZCtDUERJTzU0eEwwRWxuUy9qdHQzY3RQNlJZOGdraG5vcWJrS0NsR1lT?=
+ =?utf-8?B?M05yQ2piRHhDaEcwOGVCRVkxWXdGVlJVYVZLUjYwSWdVMUgrY3NsM1VqbE9l?=
+ =?utf-8?B?UUFqcngxVDhRUkRma25pc1Z1QTlQMnMyUUYxbXMvZE5sTGFVV2UwY3djcm9B?=
+ =?utf-8?B?TERGWGtEb2lXQndFVWpVRFNHOXB1aGRnOFVIVWF4ZnovL1ZoR0tybVZ2c0NZ?=
+ =?utf-8?B?YmNBTWFRVTVUcGM4S21YYWVTdzdrY1dIYUI1YmxrWi82bEx0Q2E2eG5rYkRz?=
+ =?utf-8?B?M3R1dHZGT3gwdjBVV0dFa3g1Q29nU2FrVS9vdjYzejBLeDVOUE1MalBWVVNM?=
+ =?utf-8?B?elQrZi9aYVBTR1hpR2lmdnNUOGR5ODNvWXJwc1lhd1BDdm0zR0ZBeDNEYWZa?=
+ =?utf-8?B?RTNRRzBGZG1SRWxoYUlrNHlvQ3dwMDFudXlVM3A0TzBHOG9UbFdReWJlVnlI?=
+ =?utf-8?B?eGJoTkNLaUdVeENpci94L3IzTHV3Qm10UjlMV25PNitKRnl6SC82eUMwL1R6?=
+ =?utf-8?B?K0k5cGw1Zno5UElsdE9nVGRjWjdmMFpmcFZQS2h0S0R6TUpFVXdGNW90clFM?=
+ =?utf-8?B?YllwUVRxNE11c3l3VkVOWkpOYUJnREp2dzlWam4yTVVKN2hzZFZETkRWUUVa?=
+ =?utf-8?B?eWo1MGhxUTkwTXAyOE0rcGpUQnFHNHFuSHh4dnRSbUg2ZDUwK3JjeWNLVVRI?=
+ =?utf-8?B?MnhzSHdTL2RMZGxsVUs4NytjSG1uaDlsMEkyWWloTEgvMWxYeUtiSzBncnly?=
+ =?utf-8?B?eGloWXd4M0JNU3RtWWhZNUtkWGdRQXYreWgvYUtEL3hoMTRFSkxzb0U0cURs?=
+ =?utf-8?B?T281RWFINmc1TFlRVUZYVFNUdFF1UE9OYU9iY2ZkWGg1OTNKdThvQT09?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: a65cfe18-98fe-417e-3147-08de6256b5f8
+X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 12:26:53.0344
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 12:29:29.4701
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Y8E5qGbWIiyYN3/I0LXhB6yCkUnjtGIq1nGBvOFJzkqRTIFwpT492QU+wDWWb8ge83fAVZa/zzICnv/vxis/Eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8268
-X-Rspamd-Queue-Id: D2B401C0010
+X-MS-Exchange-CrossTenant-UserPrincipalName: gB7f8qgRlyBGh+RQx7Xbx1aFzlKPl+4erOte/9RDAQmyLmYs9r4lXW/4T+AOYSSwNEy9GVohdBbLpF68iTJ1wA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5469
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C06A51C000E
+X-Stat-Signature: ypd5qhwzj4oz5aifjctw47dbchnr5hks
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: t4iacjcwt7kzm554mr8g3y9efk7kmhgs
-X-HE-Tag: 1770035218-870867
-X-HE-Meta: U2FsdGVkX199C7qSnjN/Y4MHvYPdEWQRmA5UVUy9wgyId7nz4G2adzSWtPUrb398TZFQs8Cm0e0O9Ornx17M8l7UkvosS9XPqyNUS3BaOHWCZiGMquUyJJzhtQ/SiXdF+Uyh274jaLmHGeThWm8WTpTlb36/q8Wh+9y/Xgv6WuUK47PN4jmWvlrFP6uEbY3LNgyV92gfJWUGFnJ0MgCkptMnQnf0jMkOyxg1zNmDOE6oaMrgLkLA+tSMaaqM2MRw4PM5M9QU7Gm/lGUq8Hm4GUf88PbdnXPIMqJ24JVkQUXczTxi29f2D+CAADDYpWo4X7D68K1INnJlzqGChfP0Gtih2/MizZzNCOmdgBS7QwVH5/tY9NRYymYe7nZrUD6Lc2W5UtPm4Fjuhjb7iqEKDhNI2TFaqLevJ8sQyb1BIQUVdm/h9hZHCntiHEIPRg9V/2SEmmPeyUFSoFlM2p24Dnsg9HKque5FLzCJDeMQitG/uCZIAJF8g82pA22D3WwjKfvWX2FNjTqOMPhQJK9SROsNMPuuUN89slRo4Le9OiK7TT9+ITR7zYQuMsvaqaJScn3pncZvPB8y5QG4WEzdoFdnEaQMokTbzTR6akkDDvtcYeypDqDhdVYoNosq76/NKrUGUNGDB3uInIPGcrLPqypk8ACUE5QPlMJUJqxcI7yEI+hv3rZ2o2PAUrPT7h+SI4RUvceug2OtgXM1r0nb52t0+YR8BSuaiuP/853rhTu0ly5Yv2tfaMW9p22xDkgtDFeR3WmFw00fP0ddBLEokp9yrFK78kOjArPXcSpG76FBcqjlmauj4Ieo95Ex+jQOgeJy/Gb0PSjCdGkoTcjAGq+gYSZBl6Awlkg2Qs0zpY0Jco/8nSHsGBc4IDrzedTYdyK+X92nizhYxl6V793CHQgMi+z00WmFVrfKHsW2wb18G/YCAnN1aGSGbtuKfp8ptACjNdxkC7KAvgptAFO
- Jbuya9H6
- Hi9P6ZWMF3zel9TsHVaVSe8kxzt+fb8QydXh/W4BNo5KprHIrY8eyiKJc01DXqSNtK3677fenGTH5PEkWKlj28qdI5T8aaOGXKJcSV1ydX3iNt7bpsz1uZcrhWFtzWZLRaVRD/CNn6Xgf5JU2LcTBn+VmXRka39LZq5G1/oazFIWBmo2oHX7oHIbBUjLjtLqWHIxT+i9Vtpx+oX2pUgdEcEXZQSRtxXjsbnDAKdrDLyA040On8ZY1dBBuep+gse+w/CtxDJhVIoEbrVOpQBotvfqwZJRK2la5HGCcfe38K3IFJM0t8zVgw/cZe07maG/9bMr2x0a2E9HpSw5RF8vgfhDrRH9t4gLSFVI91aJV6uTqELDYl53H5hFYK6S+Z6Hl01+mt26IkO06h1p+YoVfq9DwS5JyDiDrJNP9qMM/mwF01JEAIRMzDpZQWqditD1WzwVYhzCfwnBTFzEjhcLkKAiERuym51GTFUUC/nReUQ8bMMNf+PGNmyDD8wBqUKbuRU8Ks3HstHX3A1e/bof8yramMI1KP+46zt6Kl2JB4aJrUKU=
+X-HE-Tag: 1770035373-176891
+X-HE-Meta: U2FsdGVkX1+n+a/O/m6kiJ+LWZQpGH4jhdons4GgXzKHllbkRkGgREn7u/IHOIcAqI2r0whSrz3mfsK0fjlp47/qxRbKH6A+zjKlGrhA2PRMqj4yDjcKUxhs/6ZGWk33wou3Pqmo9Zzb/3PQz0UFCeRAFytUS3yMoUbFqz72gbL8Ae7X1Ygf33fCQksUps2mhlmENBqLkvUfHycikbHtfwBL5oAlWVo2ee1JRHEC6cHtf2VaNFT7X3NUZd2ZTPtP3yM5sRCCn+3SkUjKIPd1DbgLrwo9PKeLNdv6hu/MFEm+c6sD9y7E1L2VQ63Mb8rYv0BxXvnZJPNnnWKK35GeP2aeuNTYVv8GEalAGRyDMDWN/7EzjV505TdyKordKDnSJ4skSwtSW1uMarQ/YLMVQ7+/K4prl8gw3Gai9dmX5pNzEg7C/onUfcb9k/TMzwH1aGeLLNH9pCIivrAeNk+CjjKxuHDajCn+2gCsKt6ruKddkX++gYB1lFi7v1q9B2gaRSbOXgTlPhcxgWkinYNFzR0FwrZsrUjaCmuymEeVW7wTDOpjtMyaYRvEPXXhsCeDlTUhegTbWdNvz8p4+nBJV+GUV+jK4sR983qBWznd7lTUMMycDpEXE85vRm55ckS0yEGbHKBKzt2aJfaOfylLsFas4bt7ORHaUdFQJ4upHc2nuvB/GY4H8yL2k3+dHP5rGz84rZFdwFS4eEtGKv8w6fjAEFAFFA7zBM7fyPRaZXfk92+muW7vmvoYEy6NF5qyH6WJ0XsP5sb0HTi92jxEdjEnrLrtwrz3yhzn1i12HwTHLJmga6KYZgModSk7ViaSKPGnS5VfaP2XXzPxqAbUv7kPLzadKJvSZAnr43gIScA05FEXbw9zj0cFsXyJ6HuRIo8aTAOFsFbCat2D5ivDT50Bb/HSaFb3M32JIeGJDwooh7uBf5IoIIw9kktakN4CgbOH1luHqFLzGjQ+wim
+ Gz+gjbDL
+ W4c3mVsKP9EqJJYQLMPmI3BHW15y1KYRlETRSxRLAgVQH8j8V57aVkXE+4sh/z/gKQefh8n9TPcNRJ2Qt7uddqjQPNqL4jT8rNTY5MOP35jnlcYbjn9EYx7e9OXqg38RBIo3vfqW18kjfv85q6Tp19C0HIqAKgGYgqzp1ro+hIGn2iRuTa5uISGWHMcDp2/T8ykxmrpNjt6T5FwIGhqv8H5q661mflXFTZSdqHpkHgyCl+Di9FLBtTu0tnQfkJQb5c91ABUXUJ2L7aZ69mh1IVSn7vZnY8g18uwXFtKKB2Jd5ZT9JUkd3I1BIRlXRHRTYcRIlcysB3rf7MreneCmdLK08FBUXkwiMf6Ls7hb6gnDWGFb+VEdXhtpSh9It0Uvvi7hetOZTJKFU0ke1wcKsTB7xiue3cHoM97Ofiwo6KKXCUnfuZvYEvIv1iS3df5kHlk+vg8+khDC9ZgHMbYotwYEAbUQacB4m+CzXWrvU6mB5zGYDZAjVoaW0SM38nIDj0j+a+0qjmgf1Jm0mxwgZw4eu1hMmK5XqeRnKNo+EpJJX85p9O0iQ4tNFWXr9LXtX7js84EIpEvuQs+p0d4WSPEcVjkTPu6oqfE3kUaLFT8u/GZGU7tWnYl8ZXg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -218,314 +230,389 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-02 at 22:44 +1100, Thomas Hellström <thomas.hellstrom@linux.intel.com> wrote...
-> On Mon, 2026-02-02 at 22:22 +1100, Alistair Popple wrote:
-> > On 2026-02-02 at 21:41 +1100, Thomas Hellström
-> > <thomas.hellstrom@linux.intel.com> wrote...
-> > > On Mon, 2026-02-02 at 21:25 +1100, Alistair Popple wrote:
-> > > > On 2026-02-02 at 20:30 +1100, Thomas Hellström
-> > > > <thomas.hellstrom@linux.intel.com> wrote...
-> > > > > Hi,
-> > > > > 
-> > > > > On Mon, 2026-02-02 at 11:10 +1100, Alistair Popple wrote:
-> > > > > > On 2026-02-02 at 08:07 +1100, Matthew Brost
-> > > > > > <matthew.brost@intel.com>
-> > > > > > wrote...
-> > > > > > > On Sun, Feb 01, 2026 at 12:48:33PM -0800, John Hubbard
-> > > > > > > wrote:
-> > > > > > > > On 2/1/26 11:24 AM, Matthew Brost wrote:
-> > > > > > > > > On Sat, Jan 31, 2026 at 01:42:20PM -0800, John Hubbard
-> > > > > > > > > wrote:
-> > > > > > > > > > On 1/31/26 11:00 AM, Matthew Brost wrote:
-> > > > > > > > > > > On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas
-> > > > > > > > > > > Hellström
-> > > > > > > > > > > wrote:
-> > > > > > > > > > > > On Fri, 2026-01-30 at 19:01 -0800, John Hubbard
-> > > > > > > > > > > > wrote:
-> > > > > > > > > > > > > On 1/30/26 10:00 AM, Andrew Morton wrote:
-> > > > > > > > > > > > > > On Fri, 30 Jan 2026 15:45:29 +0100 Thomas
-> > > > > > > > > > > > > > Hellström
-> > > > > > > > > > > > > > wrote:
-> > > > > > > > > > > > > ...
-> > > > > > > > > > > I’m not convinced the folio refcount has any
-> > > > > > > > > > > bearing if
-> > > > > > > > > > > we
-> > > > > > > > > > > can take a
-> > > > > > > > > > > sleeping lock in do_swap_page, but perhaps I’m
-> > > > > > > > > > > missing
-> > > > > > > > > > > something.
-> > > > > > 
-> > > > > > I think the point of the trylock vs. lock is that if you
-> > > > > > can't
-> > > > > > immediately
-> > > > > > lock the page then it's an indication the page is undergoing
-> > > > > > a
-> > > > > > migration.
-> > > > > > In other words there's no point waiting for the lock and then
-> > > > > > trying
-> > > > > > to call
-> > > > > > migrate_to_ram() as the page will have already moved by the
-> > > > > > time
-> > > > > > you
-> > > > > > acquire
-> > > > > > the lock. Of course that just means you spin faulting until
-> > > > > > the
-> > > > > > page
-> > > > > > finally
-> > > > > > migrates.
-> > > > > > 
-> > > > > > If I'm understanding the problem it sounds like we just want
-> > > > > > to
-> > > > > > sleep
-> > > > > > until the
-> > > > > > migration is complete, ie. same as the migration entry path.
-> > > > > > We
-> > > > > > don't
-> > > > > > have a
-> > > > > > device_private_entry_wait() function, but I don't think we
-> > > > > > need
-> > > > > > one,
-> > > > > > see below.
-> > > > > > 
-> > > > > > > > > diff --git a/mm/memory.c b/mm/memory.c
-> > > > > > > > > index da360a6eb8a4..1e7ccc4a1a6c 100644
-> > > > > > > > > --- a/mm/memory.c
-> > > > > > > > > +++ b/mm/memory.c
-> > > > > > > > > @@ -4652,6 +4652,8 @@ vm_fault_t do_swap_page(struct
-> > > > > > > > > vm_fault
-> > > > > > > > > *vmf)
-> > > > > > > > >                          vmf->page =
-> > > > > > > > > softleaf_to_page(entry);
-> > > > > > > > >                          ret =
-> > > > > > > > > remove_device_exclusive_entry(vmf);
-> > > > > > > > >                  } else if
-> > > > > > > > > (softleaf_is_device_private(entry))
-> > > > > > > > > {
-> > > > > > > > > +                       struct dev_pagemap *pgmap;
-> > > > > > > > > +
-> > > > > > > > >                          if (vmf->flags &
-> > > > > > > > > FAULT_FLAG_VMA_LOCK)
-> > > > > > > > > {
-> > > > > > > > >                                  /*
-> > > > > > > > >                                   * migrate_to_ram is
-> > > > > > > > > not
-> > > > > > > > > yet
-> > > > > > > > > ready to operate
-> > > > > > > > > @@ -4670,21 +4672,15 @@ vm_fault_t do_swap_page(struct
-> > > > > > > > > vm_fault
-> > > > > > > > > *vmf)
-> > > > > > > > >                                                        
-> > > > > > > > >  
-> > > > > > > > > vmf-
-> > > > > > > > > > orig_pte)))
-> > > > > > > > >                                  goto unlock;
-> > > > > > > > > 
-> > > > > > > > > -                       /*
-> > > > > > > > > -                        * Get a page reference while
-> > > > > > > > > we
-> > > > > > > > > know
-> > > > > > > > > the page can't be
-> > > > > > > > > -                        * freed.
-> > > > > > > > > -                        */
-> > > > > > > > > -                       if (trylock_page(vmf->page)) {
-> > > > > > > > > -                               struct dev_pagemap
-> > > > > > > > > *pgmap;
-> > > > > > > > > -
-> > > > > > > > > -                               get_page(vmf->page);
-> > > > > > 
-> > > > > > At this point we:
-> > > > > > 1. Know the page needs to migrate
-> > > > > > 2. Have the page locked
-> > > > > > 3. Have a reference on the page
-> > > > > > 4. Have the PTL locked
-> > > > > > 
-> > > > > > Or in other words we have everything we need to install a
-> > > > > > migration
-> > > > > > entry,
-> > > > > > so why not just do that? This thread would then proceed into
-> > > > > > migrate_to_ram()
-> > > > > > having already done migrate_vma_collect_pmd() for the
-> > > > > > faulting
-> > > > > > page
-> > > > > > and any
-> > > > > > other threads would just sleep in the wait on migration entry
-> > > > > > path
-> > > > > > until the
-> > > > > > migration is complete, avoiding the livelock problem the
-> > > > > > trylock
-> > > > > > was
-> > > > > > introduced
-> > > > > > for in 1afaeb8293c9a.
-> > > > > > 
-> > > > > >  - Alistair
-> > > > > > 
-> > > > > > > > 
-> > > > > 
-> > > > > There will always be a small time between when the page is
-> > > > > locked
-> > > > > and
-> > > > > when we can install a migration entry. If the page only has a
-> > > > > single
-> > > > > mapcount, then the PTL lock is held during this time so the
-> > > > > issue
-> > > > > does
-> > > > > not occur. But for multiple map-counts we need to release the
-> > > > > PTL
-> > > > > lock
-> > > > > in migration to run try_to_migrate(), and before that, the
-> > > > > migrate
-> > > > > code
-> > > > > is running lru_add_drain_all() and gets stuck.
-> > > > 
-> > > > Oh right, my solution would be fine for the single mapping case
-> > > > but I
-> > > > hadn't
-> > > > fully thought through the implications of other threads accessing
-> > > > this for
-> > > > multiple map-counts. Agree it doesn't solve anything there (the
-> > > > rest
-> > > > of the
-> > > > threads would still spin on the trylock).
-> > > > 
-> > > > Still we could use a similar solution for waiting on device-
-> > > > private
-> > > > entries as
-> > > > we do for migration entries. Instead of spinning on the trylock
-> > > > (ie.
-> > > > PG_locked)
-> > > > we could just wait on it to become unlocked if it's already
-> > > > locked.
-> > > > Would
-> > > > something like the below completely untested code work?
-> > > > (obviously
-> > > > this is a bit
-> > > > of hack, to do it properly you'd want to do more than just remove
-> > > > the
-> > > > check from
-> > > > migration_entry_wait)
-> > > 
-> > > Well I guess there could be failed migration where something is
-> > > aborting the migration even after a page is locked. Also we must
-> > > unlock
-> > > the PTL lock before waiting otherwise we could deadlock.
-> > 
-> > Yes, this is exactly what the migration entry wait code does. And if
-> > there's a
-> > failed migration, no problem, you just retry. That's not a deadlock
-> > unless the
-> > migration never succeeds and then your stuffed anyway.
-> > 
-> > > I believe a robust solution would be to take a folio reference and
-> > > do a
-> > > sleeping lock like John's example. Then to assert that a folio pin-
-> > > count, not ref-count is required to pin a device-private folio.
-> > > That
-> > > would eliminate the problem of the refcount held while locking
-> > > blocking
-> > > migration. It looks like that's fully consistent with 
-> > 
-> > Waiting on a migration entry like in my example below is exactly the
-> > same as
-> > sleeping on the page lock other than it just waits for the page to be
-> > unlocked
-> > rather than trying to lock it.
-> > 
-> > Internally migration_entry_wait_on_locked() is just an open-coded
-> > version
-> > of folio_lock() which deals with dropping the PTL and that works
-> > without a page
-> > refcount.
-> > 
-> > So I don't understand how this solution isn't robust? It requires no
-> > funniness
-> > with refcounts and works practically the same as a sleeping lock.
-> 
-> You're right. I didn't look closely enough into what the
-> migration_entry_wait_on_locked() did. Sorry about that.
+On Mon Feb 2, 2026 at 9:37 AM GMT, Andreas Hindborg wrote:
+> Gary Guo <gary@garyguo.net> writes:
+>
+>> On Mon, 17 Nov 2025 10:07:40 +0000
+>> Oliver Mangold <oliver.mangold@pm.me> wrote:
+>>
+>>> From: Asahi Lina <lina+kernel@asahilina.net>
+>>>=20
+>>> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
+>>> (typically C FFI) type that *may* be owned by Rust, but need not be. Un=
+like
+>>> `AlwaysRefCounted`, this mechanism expects the reference to be unique
+>>> within Rust, and does not allow cloning.
+>>>=20
+>>> Conceptually, this is similar to a `KBox<T>`, except that it delegates
+>>> resource management to the `T` instead of using a generic allocator.
+>>>=20
+>>> [ om:
+>>>   - Split code into separate file and `pub use` it from types.rs.
+>>>   - Make from_raw() and into_raw() public.
+>>>   - Remove OwnableMut, and make DerefMut dependent on Unpin instead.
+>>>   - Usage example/doctest for Ownable/Owned.
+>>>   - Fixes to documentation and commit message.
+>>> ]
+>>>=20
+>>> Link: https://lore.kernel.org/all/20250202-rust-page-v1-1-e3170d7fe55e@=
+asahilina.net/
+>>> Signed-off-by: Asahi Lina <lina+kernel@asahilina.net>
+>>> Co-developed-by: Oliver Mangold <oliver.mangold@pm.me>
+>>> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+>>> Co-developed-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>>> ---
+>>>  rust/kernel/lib.rs       |   1 +
+>>>  rust/kernel/owned.rs     | 195 +++++++++++++++++++++++++++++++++++++++=
+++++++++
+>>>  rust/kernel/sync/aref.rs |   5 ++
+>>>  rust/kernel/types.rs     |   2 +
+>>>  4 files changed, 203 insertions(+)
+>>>=20
+>>> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+>>> index 3dd7bebe7888..e0ee04330dd0 100644
+>>> --- a/rust/kernel/lib.rs
+>>> +++ b/rust/kernel/lib.rs
+>>> @@ -112,6 +112,7 @@
+>>>  pub mod of;
+>>>  #[cfg(CONFIG_PM_OPP)]
+>>>  pub mod opp;
+>>> +pub mod owned;
+>>>  pub mod page;
+>>>  #[cfg(CONFIG_PCI)]
+>>>  pub mod pci;
+>>> diff --git a/rust/kernel/owned.rs b/rust/kernel/owned.rs
+>>> new file mode 100644
+>>> index 000000000000..a2cdd2cb8a10
+>>> --- /dev/null
+>>> +++ b/rust/kernel/owned.rs
+>>> @@ -0,0 +1,195 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Unique owned pointer types for objects with custom drop logic.
+>>> +//!
+>>> +//! These pointer types are useful for C-allocated objects which by AP=
+I-contract
+>>> +//! are owned by Rust, but need to be freed through the C API.
+>>> +
+>>> +use core::{
+>>> +    mem::ManuallyDrop,
+>>> +    ops::{Deref, DerefMut},
+>>> +    pin::Pin,
+>>> +    ptr::NonNull,
+>>> +};
+>>> +
+>>> +/// Type allocated and destroyed on the C side, but owned by Rust.
+>>
+>> The example given in the documentation below shows a valid way of
+>> defining a type that's handled on the Rust side, so I think this
+>> message is somewhat inaccurate.
+>>
+>> Perhaps something like
+>>
+>> 	Types that specify their own way of performing allocation and
+>> 	destruction. Typically, this trait is implemented on types from
+>> 	the C side.
+>
+> Thanks, I'll use this.
+>
+>>
+>> ?
+>>
+>>> +///
+>>> +/// Implementing this trait allows types to be referenced via the [`Ow=
+ned<Self>`] pointer type. This
+>>> +/// is useful when it is desirable to tie the lifetime of the referenc=
+e to an owned object, rather
+>>> +/// than pass around a bare reference. [`Ownable`] types can define cu=
+stom drop logic that is
+>>> +/// executed when the owned reference [`Owned<Self>`] pointing to the =
+object is dropped.
+>>> +///
+>>> +/// Note: The underlying object is not required to provide internal re=
+ference counting, because it
+>>> +/// represents a unique, owned reference. If reference counting (on th=
+e Rust side) is required,
+>>> +/// [`AlwaysRefCounted`](crate::types::AlwaysRefCounted) should be imp=
+lemented.
+>>> +///
+>>> +/// # Safety
+>>> +///
+>>> +/// Implementers must ensure that the [`release()`](Self::release) fun=
+ction frees the underlying
+>>> +/// object in the correct way for a valid, owned object of this type.
+>>> +///
+>>> +/// # Examples
+>>> +///
+>>> +/// A minimal example implementation of [`Ownable`] and its usage with=
+ [`Owned`] looks like this:
+>>> +///
+>>> +/// ```
+>>> +/// # #![expect(clippy::disallowed_names)]
+>>> +/// # use core::cell::Cell;
+>>> +/// # use core::ptr::NonNull;
+>>> +/// # use kernel::sync::global_lock;
+>>> +/// # use kernel::alloc::{flags, kbox::KBox, AllocError};
+>>> +/// # use kernel::types::{Owned, Ownable};
+>>> +///
+>>> +/// // Let's count the allocations to see if freeing works.
+>>> +/// kernel::sync::global_lock! {
+>>> +///     // SAFETY: we call `init()` right below, before doing anything=
+ else.
+>>> +///     unsafe(uninit) static FOO_ALLOC_COUNT: Mutex<usize> =3D 0;
+>>> +/// }
+>>> +/// // SAFETY: We call `init()` only once, here.
+>>> +/// unsafe { FOO_ALLOC_COUNT.init() };
+>>> +///
+>>> +/// struct Foo {
+>>> +/// }
+>>> +///
+>>> +/// impl Foo {
+>>> +///     fn new() -> Result<Owned<Self>, AllocError> {
+>>> +///         // We are just using a `KBox` here to handle the actual al=
+location, as our `Foo` is
+>>> +///         // not actually a C-allocated object.
+>>> +///         let result =3D KBox::new(
+>>> +///             Foo {},
+>>> +///             flags::GFP_KERNEL,
+>>> +///         )?;
+>>> +///         let result =3D NonNull::new(KBox::into_raw(result))
+>>> +///             .expect("Raw pointer to newly allocation KBox is null,=
+ this should never happen.");
+>>> +///         // Count new allocation
+>>> +///         *FOO_ALLOC_COUNT.lock() +=3D 1;
+>>> +///         // SAFETY: We just allocated the `Self`, thus it is valid =
+and there cannot be any other
+>>> +///         // Rust references. Calling `into_raw()` makes us responsi=
+ble for ownership and we won't
+>>> +///         // use the raw pointer anymore. Thus we can transfer owner=
+ship to the `Owned`.
+>>> +///         Ok(unsafe { Owned::from_raw(result) })
+>>> +///     }
+>>> +/// }
+>>> +///
+>>> +/// // SAFETY: What out `release()` function does is safe of any valid=
+ `Self`.
+>>
+>> I can't parse this sentence. Is "out" supposed to be a different word?
+>
+> I think it should be "our".
+>
+>>
+>>> +/// unsafe impl Ownable for Foo {
+>>> +///     unsafe fn release(this: NonNull<Self>) {
+>>> +///         // The `Foo` will be dropped when `KBox` goes out of scope=
+.
+>>
+>> I would just write `drop(unsafe { ... })` to make drop explicit instead
+>> of commenting about the implicit drop.
+>
+> Agree, that is easier to read.
+>
+>>
+>>> +///         // SAFETY: The [`KBox<Self>`] is still alive. We can pass =
+ownership to the [`KBox`], as
+>>> +///         // by requirement on calling this function, the `Self` wil=
+l no longer be used by the
+>>> +///         // caller.
+>>> +///         unsafe { KBox::from_raw(this.as_ptr()) };
+>>> +///         // Count released allocation
+>>> +///         *FOO_ALLOC_COUNT.lock() -=3D 1;
+>>> +///     }
+>>> +/// }
+>>> +///
+>>> +/// {
+>>> +///    let foo =3D Foo::new().expect("Failed to allocate a Foo. This s=
+houldn't happen");
+>>> +///    assert!(*FOO_ALLOC_COUNT.lock() =3D=3D 1);
+>>> +/// }
+>>> +/// // `foo` is out of scope now, so we expect no live allocations.
+>>> +/// assert!(*FOO_ALLOC_COUNT.lock() =3D=3D 0);
+>>> +/// ```
+>>> +pub unsafe trait Ownable {
+>>> +    /// Releases the object.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// Callers must ensure that:
+>>> +    /// - `this` points to a valid `Self`.
+>>> +    /// - `*this` is no longer used after this call.
+>>> +    unsafe fn release(this: NonNull<Self>);
+>>> +}
+>>> +
+>>> +/// An owned reference to an owned `T`.
+>>> +///
+>>> +/// The [`Ownable`] is automatically freed or released when an instanc=
+e of [`Owned`] is
+>>> +/// dropped.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// - The [`Owned<T>`] has exclusive access to the instance of `T`.
+>>> +/// - The instance of `T` will stay alive at least as long as the [`Ow=
+ned<T>`] is alive.
+>>> +pub struct Owned<T: Ownable> {
+>>> +    ptr: NonNull<T>,
+>>> +}
+>>> +
+>>> +// SAFETY: It is safe to send an [`Owned<T>`] to another thread when t=
+he underlying `T` is [`Send`],
+>>> +// because of the ownership invariant. Sending an [`Owned<T>`] is equi=
+valent to sending the `T`.
+>>> +unsafe impl<T: Ownable + Send> Send for Owned<T> {}
+>>> +
+>>> +// SAFETY: It is safe to send [`&Owned<T>`] to another thread when the=
+ underlying `T` is [`Sync`],
+>>> +// because of the ownership invariant. Sending an [`&Owned<T>`] is equ=
+ivalent to sending the `&T`.
+>>> +unsafe impl<T: Ownable + Sync> Sync for Owned<T> {}
+>>> +
+>>> +impl<T: Ownable> Owned<T> {
+>>> +    /// Creates a new instance of [`Owned`].
+>>> +    ///
+>>> +    /// It takes over ownership of the underlying object.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// Callers must ensure that:
+>>> +    /// - `ptr` points to a valid instance of `T`.
+>>> +    /// - Ownership of the underlying `T` can be transferred to the `S=
+elf<T>` (i.e. operations
+>>> +    ///   which require ownership will be safe).
+>>> +    /// - No other Rust references to the underlying object exist. Thi=
+s implies that the underlying
+>>> +    ///   object is not accessed through `ptr` anymore after the funct=
+ion call (at least until the
+>>> +    ///   the `Self<T>` is dropped.
+>>
+>> Is this correct? If `Self<T>` is dropped then `T::release` is called so
+>> the pointer should also not be accessed further?
+>
+> I can't follow you point here. Are you saying that the requirement is
+> wrong because `T::release` will access the object by reference? If so,
+> that is part of `Owned<_>::drop`, which is explicitly mentioned in the
+> comment (until .. dropped).
 
-No worries. I'm somewhat familiar with it from updating it specifically so it
-wouldn't take a page reference as we used to have similar live-lock/starvation
-issues in that path too.
+I meant that the `Self<T>` is dropped, the object is destroyed so it should=
+ also
+not be accessed further. Perhaps just remove the "(at least ...)" part from
+comment.
 
-> That would indeed fix the problem as well. Then the only argument
-> remaining for the get-a-reference-and-lock solution would be it's not
-> starvation prone in the same way. But that's definitely a problem I
-> think we could live with for now.
+>
+>>
+>>> +    /// - The C code follows the usual shared reference requirements. =
+That is, the kernel will never
+>>> +    ///   mutate or free the underlying object (excluding interior mut=
+ability that follows the usual
+>>> +    ///   rules) while Rust owns it.
+>>
+>> The concept "interior mutability" doesn't really exist on the C side.
+>> Also, use of interior mutability (by UnsafeCell) would be incorrect if
+>> the type is implemented in the rust side (as this requires a
+>> UnsafePinned).
+>>
+>> Interior mutability means things can be mutated behind a shared
+>> reference -- however in this case, we have a mutable reference (either
+>> `Pin<&mut Self>` or `&mut Self`)!
+>>
+>> Perhaps together with the next line, they could be just phrased like
+>> this?
+>>
+>> - The underlying object must not be accessed (read or mutated) through
+>>   any pointer other than the created `Owned<T>`.
+>>   Opt-out is still possbile similar to a mutable reference (e.g. by
+>>   using p`Opaque`]).=20
+>>
+>> I think we should just tell the user "this is just a unique reference
+>> similar to &mut". They should be able to deduce that all the `!Unpin`
+>> that opts out from uniqueness of mutable reference applies here too.
+>
+> I agree. I would suggest updating the struct documentation:
+>
+>     @@ -108,7 +108,7 @@ pub unsafe trait Ownable {
+>         unsafe fn release(this: NonNull<Self>);
+>     }
+>
+>     -/// An owned reference to an owned `T`.
+>     +/// An mutable reference to an owned `T`.
+>     ///
+>     /// The [`Ownable`] is automatically freed or released when an instan=
+ce of [`Owned`] is
+>     /// dropped.
+>
+> And then the safety requirement as
+>
+>  An `Owned<T>` is a mutable reference to the underlying object. As such,
+>  the object must not be accessed (read or mutated) through any pointer
+>  other than the created `Owned<T>`. Opt-out is still possbile similar to
+>  a mutable reference (e.g. by using [`Opaque`]).
 
-I don't follow how this solution would be any more starvation prone than getting
-a reference and locking - here the winning fault takes the lock and any other
-faulting threads would just wait until it was released before returning from
-the fault handler assuming it had been handled. But it's been a while since I've
-thought about all the scenarios here so maybe I missed one.
+Sounds good to me.
 
-> I'll give this code a test. BTW that removal of unlock_page() isn't
-> intentional, right? 
+>
+>
+>>> +    /// - In case `T` implements [`Unpin`] the previous requirement is=
+ extended from shared to
+>>> +    ///   mutable reference requirements. That is, the kernel will not=
+ mutate or free the underlying
+>>> +    ///   object and is okay with it being modified by Rust code.
+>>
+>> - If `T` implements [`Unpin`], the structure must not be mutated for
+>>   the entire lifetime of `Owned<T>`.
+>
+> Would it be OK to just write "If `T: Unpin`, the ..."?
+>
+> Again, opt out is possible, right?
+>
 
-Thanks. And you're right, that was unintentional. Serves me for responding too
-late at night :-)
+When the "mutable reference" framing above I think you can just drop this p=
+art.
 
- - Alistair
+>>
+>>> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+>>
+>> This needs a (rather trivial) INVARIANT comment.
+>
+> OK.
+>
+>>
+>>> +        Self {
+>>> +            ptr,
+>>> +        }
+>>> +    }
+>>> +
+>>> +    /// Consumes the [`Owned`], returning a raw pointer.
+>>> +    ///
+>>> +    /// This function does not actually relinquish ownership of the ob=
+ject. After calling this
+>>
+>> Perhaps "relinquish" isn't the best word here? In my mental model
+>> this function is pretty much relinquishing ownership as `Owned<T>` no
+>> longer exists. It just doesn't release the object.
+>
+> How about this:
+>
+>
+>     /// Consumes the [`Owned`], returning a raw pointer.
+>     ///
+>     /// This function does not drop the underlying `T`. When this functio=
+n returns, ownership of the
+>     /// underlying `T` is with the caller.
 
-> Thanks,
-> Thomas
-> 
-> 
-> > 
-> >  - Alistair
-> > 
-> > > https://docs.kernel.org/core-api/pin_user_pages.html
-> > > 
-> > > Then as general improvements we should fully unmap pages before
-> > > calling
-> > > lru_add_drain_all() as MBrost suggest and finally, to be more nice
-> > > to
-> > > the system in the common cases, add a cond_resched() to
-> > > hmm_range_fault().
-> > > 
-> > > Thanks,
-> > > Thomas
-> > > 
-> > > 
-> > > 
-> > > > 
-> > > > ---
-> > > > 
-> > > > diff --git a/mm/memory.c b/mm/memory.c
-> > > > index 2a55edc48a65..3e5e205ee279 100644
-> > > > --- a/mm/memory.c
-> > > > +++ b/mm/memory.c
-> > > > @@ -4678,10 +4678,10 @@ vm_fault_t do_swap_page(struct vm_fault
-> > > > *vmf)
-> > > >  				pte_unmap_unlock(vmf->pte, vmf-
-> > > > > ptl);
-> > > >  				pgmap = page_pgmap(vmf->page);
-> > > >  				ret = pgmap->ops-
-> > > > > migrate_to_ram(vmf);
-> > > > -				unlock_page(vmf->page);
-> > > >  				put_page(vmf->page);
-> > > >  			} else {
-> > > > -				pte_unmap_unlock(vmf->pte, vmf-
-> > > > > ptl);
-> > > > +				migration_entry_wait(vma->vm_mm,
-> > > > vmf->pmd,
-> > > > +						     vmf-
-> > > > >address);
-> > > >  			}
-> > > >  		} else if (softleaf_is_hwpoison(entry)) {
-> > > >  			ret = VM_FAULT_HWPOISON;
-> > > > diff --git a/mm/migrate.c b/mm/migrate.c
-> > > > index 5169f9717f60..b676daf0f4e8 100644
-> > > > --- a/mm/migrate.c
-> > > > +++ b/mm/migrate.c
-> > > > @@ -496,8 +496,6 @@ void migration_entry_wait(struct mm_struct
-> > > > *mm,
-> > > > pmd_t *pmd,
-> > > >  		goto out;
-> > > >  
-> > > >  	entry = softleaf_from_pte(pte);
-> > > > -	if (!softleaf_is_migration(entry))
-> > > > -		goto out;
-> > > >  
-> > > >  	migration_entry_wait_on_locked(entry, ptl);
-> > > >  	return;
+SGTM.
+
+>
+>
+> Thanks for the comments!
+
+Best,
+Gary
+
+>
+>
+> Best regards,
+> Andreas Hindborg
+
 
