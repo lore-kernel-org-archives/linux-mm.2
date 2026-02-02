@@ -4,119 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C680D172C3
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 04:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67CF0D172CA
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 04:09:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D1E76B0088; Sun,  1 Feb 2026 23:06:41 -0500 (EST)
+	id CD0CD6B0089; Sun,  1 Feb 2026 23:09:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 480356B0089; Sun,  1 Feb 2026 23:06:41 -0500 (EST)
+	id C54686B008C; Sun,  1 Feb 2026 23:09:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38BD96B008C; Sun,  1 Feb 2026 23:06:41 -0500 (EST)
+	id B562A6B0092; Sun,  1 Feb 2026 23:09:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2440F6B0088
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 23:06:41 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B93E8D51D1
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:06:40 +0000 (UTC)
-X-FDA: 84398180160.17.65C9F8F
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BAC4F20009
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:06:38 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="O/Kn3rTg";
-	spf=pass (imf03.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id A3C1B6B0089
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 23:09:52 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 39982D4EA8
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:09:52 +0000 (UTC)
+X-FDA: 84398188224.24.74BF972
+Received: from out199-7.us.a.mail.aliyun.com (out199-7.us.a.mail.aliyun.com [47.90.199.7])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8E5B7180006
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:09:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=qfNItAW0;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.7 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770005198;
+	s=arc-20220608; t=1770005390;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2NDqFnN3Ud68GoysowUDYBirFmO+BcmQLVFrXirUD0A=;
-	b=mjS4bCifMwThRusEXRto59PodXcWfMlb3cRX1VD77AHVEylxxuCjhCx3rccf7jalOjcr1J
-	2Yp7yA0Dr6tVddwxoGQWRn2vSFoQ/XK65yh87TLAIZSpJPqR6XcrlBbJ+HdY4/FsRqypYD
-	fWUCAYSwzdl8xaaK2MqWXnQedrNfOJk=
+	bh=YLNM8XwLs6ZfkN2Ffdw20cH4cfsACOxpWucxMWKeiyY=;
+	b=pVXXx1VcRh2YE38AGqqcT25Bg+hZXfDRjUQAJFp3Z/8LMPCn/NzAUDemFqlZ4HfCvFBhNz
+	moB6+LheHghgB4qpnPMnSiu5RxWxIyh3KMu3gv8GElLhOgsa1mL0XFfwt5tTWWEympVLjW
+	hF9q61bWHNG3K+pRoeJUzL8v1Xjn9DM=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="O/Kn3rTg";
-	spf=pass (imf03.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770005198; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=qfNItAW0;
+	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.7 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770005390; a=rsa-sha256;
 	cv=none;
-	b=tToh+TgwGlU1Btu41YnjRjiy1THAUs2EM8nru3J3U+NvH6sTbN5Xcuu6LaIO6ONCqPyENx
-	aeTiHjgLeR60OD7xcQeti/2uY5CHkqmHWz5DeKJGtYiuQZxmUQrFwp2xEWS1HV7IjHxG7A
-	7RQ1+5YJoUIr16sI8kiyn8AWAMJeHYs=
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6505d3b84bcso5044456a12.3
-        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 20:06:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770005197; x=1770609997; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2NDqFnN3Ud68GoysowUDYBirFmO+BcmQLVFrXirUD0A=;
-        b=O/Kn3rTgo3wj/ZFEqV7bJB7G0P1ukJC0611YzpltVbXCcj41nPHiQ0Ib0HOl+EQUYy
-         n3IrSmCrPYg44riDe81usUd2Rhwyc3D1OoQqu/AYZK6BikQ0vLFIgRTX3m8apMz1wByV
-         g222sSkz/3Ungnd16/nm3FClly00ZUHHcoelX+105O4eKrqHpDa2UogBr/VMK5GJVvVP
-         W+25rAkPwdJ8T/oasRAirxgmstH78WTHEMxPdEttz09u/3rjroAhEGkVfVnCnMeJZio1
-         bJYVEfkgRlO+NBMk6qY+MdecMwpKwxDND1UT2wevfXU8BRKicleslb8RZDpKXHXlrPX4
-         mByA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770005197; x=1770609997;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2NDqFnN3Ud68GoysowUDYBirFmO+BcmQLVFrXirUD0A=;
-        b=QnGrHl9LIH+BZjQ6Wfg12Z6AxNGfFeZr4+CuuHDvWeRb7SMMfwIVnk11OjLmGPfdSs
-         zvTrkb3dNAH0cOfmgWRR493d1RrQfbdBBybSFgVrhw2Q0EDRv9Gy/x+7I7HGggPeQuiS
-         stSO9nfPYTgXFsgrh02WEASdKAECTgC77/trmPs+mSarYIet7G0wALo2d7nfsY2UMyYh
-         y70JPaLpjk2ilq35cGc5vgi4OGG1yk8L1qQtjV48SgUMF5w1nHmA2b+4ldORljaq+wRu
-         eg3PN88YUrDxLjnDRf75+r4H8V4fHJLCA2HnrM8TOwYHi0zFWu3uy2JEOh46AOtGEDbk
-         FwlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJSh73E17IcA+m/F4q4AtTOaPBv3fEaGrlDuIwhHmPlJ8nWEegijIFyu9B429S7xHUpBwNksw8Qw==@kvack.org
-X-Gm-Message-State: AOJu0Yz0Csc/QSbXgnIMxV4j3anTNSCnOqlmnysnbeGo3iAC+OYSyrnP
-	Lx1kKyTGERhmuZG3jlTsjiBIF2aWLcDdwAjgEAzi7f0phY3cIvYOvbVRMNpirxaQ8Q==
-X-Gm-Gg: AZuq6aKbYYdsfdLJRdW5ozWmlMoGHUFplCURpIunkfAabjRAzhrn1c8iGDeXBZH8+sL
-	uNbFbQDLGpsDzZelYDg7Ol5HLwfV3QPHOqDXFQMeM/DXRVe9h81F7peB3FYcFFlpbt+y8O6fDSM
-	eaBlA1QE6IPBcCHmyvX2QdbNxozufNpUoOSV3l51MK6nXxugIX6uySZbDGabmVvLnQCouMIDOAr
-	4JkHUGcfSey6NvQDMlmu9fEgyODUrdcnHV32ABi/ni3Jo72/oDtisiaavZEd52gEZ8lDn4kWRwu
-	0pHTw+ovhWk1jCLwDwJMzvAnaTvUyMFCp04kQJJPzHXcHk8wTlpK6x12e4xjnrqAuXlEjkJehpp
-	Ipk7P0Xj+hTYS8Ox1tmrp6R2U027LJEgXGL1iFVsgs1zVWo6l2MMGJccIdTLVMN3PuAeJ8ce86E
-	cBNuJD/hB5gSCxNrWPBoHYzUO7QIBIalw36w+4Wap+cPyPey1Mml1w351KqPhG6g==
-X-Received: by 2002:a17:907:9814:b0:b87:1590:d528 with SMTP id a640c23a62f3a-b8dff7225cemr576539466b.40.1770005196652;
-        Sun, 01 Feb 2026 20:06:36 -0800 (PST)
-Received: from google.com (93.50.90.34.bc.googleusercontent.com. [34.90.50.93])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbf184e5dsm822058166b.43.2026.02.01.20.06.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 20:06:35 -0800 (PST)
-Date: Mon, 2 Feb 2026 04:06:32 +0000
-From: Matt Bobrowski <mattbobrowski@google.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>, bpf@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 07/17] mm: introduce BPF OOM struct ops
-Message-ID: <aYAiyKE-LWjQG3Se@google.com>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <20260127024421.494929-8-roman.gushchin@linux.dev>
- <aXiHok-3SKqLncCf@tiehlicka>
- <7ia4tsw6hi93.fsf@castle.c.googlers.com>
+	b=I5/89q5CdcTvg+LkMpzBo8syypvjO/Tv5sttvdqBL/BaoOFVobDRa+nQWSJVKeRGe7aPmH
+	D5RZnrTgJlJLXlLR1krMI8/neTB8VbaPUiL0rxv9PIIv36md6cWAkFyv8/LGBB58y4nPBH
+	70E0d/E6P3DIu3hmV0HNUoxWxXfnPTc=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1770004782; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=YLNM8XwLs6ZfkN2Ffdw20cH4cfsACOxpWucxMWKeiyY=;
+	b=qfNItAW07rHVoTvY11QvkHsTdURIsJf+ZPFKD5do8PpZhS5YMUovESvPHglnZTy/w8eqe9VKYtFt2ZmiokjP5YZO45lw3vGlgpmgQpatmEw2JzmO+BXgtnvbdjoNEV1uLEktRLnRAkkpfnoOg+C5najBP0yisS2TCXLKuFLicx8=
+Received: from 30.74.144.134(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WyJ0bcv_1770004779 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 02 Feb 2026 11:59:40 +0800
+Message-ID: <5aefd2ea-8eba-49ed-bc21-f84dbab8cf3b@linux.alibaba.com>
+Date: Mon, 2 Feb 2026 11:59:39 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ia4tsw6hi93.fsf@castle.c.googlers.com>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 84uq34p76tit5ewayzg4fn5h8rukjsmc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 3/5] mm/hugetlb: set large_rmappable on hugetlb and
+ avoid deferred_list handling
+To: Zi Yan <ziy@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
+ David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>
+Cc: Alistair Popple <apopple@nvidia.com>, Balbir Singh <balbirs@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jens Axboe <axboe@kernel.dk>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
+References: <20260130034818.472804-1-ziy@nvidia.com>
+ <20260130034818.472804-4-ziy@nvidia.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260130034818.472804-4-ziy@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8E5B7180006
+X-Stat-Signature: ye9msgjtcgq76ooe4iwwe5io5iad8usp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BAC4F20009
-X-HE-Tag: 1770005198-117235
-X-HE-Meta: U2FsdGVkX19gJyI5XmRNci0L0oyOE/TOp66YLoFSopLBC5Bkf1bw9XHBtxbvprHDdfWSPDU9jIawNjtxvXWdvCBWwjDk6d84BUy7gf+891NQUfHqOT/KczuzpC0wOcvIzX1BSAhcbOkECQL83xoW9gF2uzsJG3ReYtsaElO3q7iyK1cBj/T/lxqtY9IbtuCWPp3QHWlW9tp6uNsnUw+RMYlmhI0OGRRi2UllPcLLN01nQmBsGwvwFQT6d+EbXmE+paenmxQKddACMTRJkMW26GnXHZINZbgMtyqyhML1r0GOIlREA89rlwKz02648ruQM1lctEAfv+jlHKkAYqCRLdkCmK+1xBOcTHp7s5Oux3w6r1TdXVW9ExGgIyb4YLwRd8vBl+nrn/Ga1rFBKl5yRr7X7pc9JLYq1SoKaOGDjC8E/wDX4qavIcAu52K5OA9DAlMNb/ZXBZj97Tj2fK8dsPugy7X6hR4tAxHSl/3FASnaZ8pPFygCiwdFx+/aquklWmcfnKr9yGDLj4cs9UIdZLzqPzk5Lb1fYfomfsiA6glzq7+Ju4k2Iq0TgxvCzam1QZE4v8eu3Jn6m7eFr9+drnmqwuauaz3rMg0Bmb2U7Uyd2NY0xjM9m1e1KysncI6zPXvtYsW0iuno5PwC3QJfKbyJB55Iy1r273PHcaxI+DkK9ouD2FIDtlJJVX8DIbzX8dKC1oNJcQj0rRExPxY0FyfKRZ2asSLcHVNAsjBu0up9aZv4ft9zi1Z4zpvS6Xm7ZZcJCDL9CCmQkSJOPWkW/vG/CN4YtgnKImpyfh4xlB/Z92aAxQtuCZ0VD8i6EUj8QPsmlNa0zq00QWiyxiZsniBMWL49TGgOvxkvPYcFfIZGwbohrIgOi7Uq2/keixFc5md/KX2597PxmojYEbxh7S3IsgP8TMSEkmIallsabS4xCZd1nW16ixBRbQgI5kcx/8AnQ0J4NtzdJ5ZIfRn
- mPSGFBqV
- mFkfsnoOWximw+xQKlNBN2JBOijRR7odm9NT4ylS1RMbqMeZf7afLRO2jNvRvjSjTs6iKHi+WR2mHzfoCMOhaV98R5ccAkMAUZKrgR9W/TeCm6+HwZQVCyaKr1GXTtH/yGRFPX/+2JKh8zHvgIFYU4mo8WMPZrU/sl1RvfIO9hnSxgMXRGJp44SGxfKqWPnFtViIdA5atO9lDJpCExoTcdaol4+NW8ZJwgmxWvEJQHkIGMQ5nwp1srIrRvOZO2Jwb/HNyMJjwFeEFFmxGkS+14IIGLhh/ZD6pkC8gysMsDbSknn8YUAe+4RPApEM2GrZH2pyg4Ity4TTQa5thjpJTsyNzoT5DvR4EUtJKeYW4ktC6NKhN8DU97xMgmjx2T6Wa5xA7zHZYW1Qbqo7DgAGJpWdmOldH3JQOlVLuy4LgHnOQewRBeHlQ2eXYkDPHF8bN3eWq3vgbODFf4MESHAD8WPRMwLIaVyYMS8RdoeZUhdve6WBQ60tDV07CDYEFkgP8dXKi
+X-HE-Tag: 1770005389-187712
+X-HE-Meta: U2FsdGVkX191S93ofdUMWxEMGyh7TuLdOKnZnQg8KAItBaGWCpIUgN4ieB29W5/7YT0XmIRzmt39kXYScXohzMFT3f1egGfUvTt8WwQKz6UiCTQDDS+x6fuGux2o3zpWKZ/8eMnQlDuQSgivntV/fBYSpBQp75nibAsOfIVX8AFqTs5X0KC1HxebNnaGOyEoDl2zKCr13iC9VUkBptJIs04DF/eQ7viL1PalPANNJvVs8Y3Cgs24jM9W1TtpzWhhDsmPinvK80ZHo1K+4KJIKq7qGKtrTvgS9AV2pPGlEtNL8kUDf9WymG4Xigga2N/yeBWiPSMdbduxN7Ps9XpQIMrocwzjc06j+4P5OGNt816e+mZjl825bm3BmxEV6i1wo5UPniJmvHNUzncUDHgP1Ds+M5T3wcIob81sOgEH4eDNKo1zy6uA8ubYW+lZGXUuutSL8NZbtAg48Z0uTtoLMp05IhFmyAEX4epNIE4TlInkY3h2vdCmqQXR0v8j66GVesXo2wHwysyuzbZNB/Ey15KRLfK4ofw3m0dohTloxn2bRyUv+rTyx4no8k/N7MLxoas85d+XXefNOr8b3f3V2BSIXL0pWgeA4Xlv7zaGAugnLjGmMu5r4XBM9VoLzxRKzJnORmP8XMKXo3uh5IY2mkizJH9X9e2pOdujhW8H5KmusuiV0PEZbskykdWv/CXrbde0CMvXCkV6iG+4D0Ju3HiATA12+r+NxWBM8OluFkY/FKl3DfPtvNLQqhTMS0TzX9vsX2MuC39cttEikQ1+fC35oyLiLvERGCAaFiHiNQTR2OMbx5tpj6lQX9Z1rx5NgbZRFXpYyIjNYZ1TzJLydPXVkRFWVjQ0K6a+Qg/qcHjg6h5yOdHR+npvAgSlZ9ghZAQDw5cWKCaFKe4zGngVLOrL9CWvTCU8hn/WyQ9PpKXd20NqvEMBHX6xM2zp9jD+Tiog5zCXOXcoSyA+KXC
+ HwWXdSZ8
+ kL+yaaZ90qZvj0OT9B7tuAJ5wVj8INlA8XYBiYVk+pCWDNirrd8V7bBQeGh/2Jp2au2o+oKyJoxd7ABQKY8VVp7SqPZ4ksozegjWXayaiK0H0AF3s0IL9Mm8hec+iGtGWQiCq5f1BQpsiA4sPheo6fJp3dIrmVinbUuZWZKWhfMB0sFIly5k0oULPAZurYtaf/YYlIGnxQ+Sb9eyALOv4v4MOXpBvHFFGuKXYSulSsOOSf2/09B426GbKHh+2FpKmqu4yXUPG7VGe+bivgV0NNQ/Pv+eudz07rCelVrFmdFCQHPlwHn65iQ8YMynyDjlt0fvH0PBlTuA8BhafsxmoCqE6RZ4Fx6Smn6eKK4LO9b1xv9eKd7JITnyv2ferPvQZgfI8gJLSI18fiUFoK3T0Zvt2qlsVZBuls7cC+F/6fSE6G8vPvteYhx6pFxiXmgL9+RQV2qNt4qyJDtoCrX6DKU0Cwn8ciOFd8CqwD1cV1kwOivR5fyrqCbcJuolaTHfdM2jEmu8XDuEUWD0E1rQ5hVPH+odX08kEbXntVyzYMlVcVCXIinen6DGPuNY7gpsVBnPrefsvDHMvHsA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,58 +99,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 27, 2026 at 09:12:56PM +0000, Roman Gushchin wrote:
-> Michal Hocko <mhocko@suse.com> writes:
-> 
-> > On Mon 26-01-26 18:44:10, Roman Gushchin wrote:
-> >> Introduce a bpf struct ops for implementing custom OOM handling
-> >> policies.
-> >> 
-> >> It's possible to load one bpf_oom_ops for the system and one
-> >> bpf_oom_ops for every memory cgroup. In case of a memcg OOM, the
-> >> cgroup tree is traversed from the OOM'ing memcg up to the root and
-> >> corresponding BPF OOM handlers are executed until some memory is
-> >> freed. If no memory is freed, the kernel OOM killer is invoked.
-> >> 
-> >> The struct ops provides the bpf_handle_out_of_memory() callback,
-> >> which expected to return 1 if it was able to free some memory and 0
-> >> otherwise. If 1 is returned, the kernel also checks the bpf_memory_freed
-> >> field of the oom_control structure, which is expected to be set by
-> >> kfuncs suitable for releasing memory (which will be introduced later
-> >> in the patch series). If both are set, OOM is considered handled,
-> >> otherwise the next OOM handler in the chain is executed: e.g. BPF OOM
-> >> attached to the parent cgroup or the kernel OOM killer.
-> >
-> > I still find this dual reporting a bit confusing. I can see your
-> > intention in having a pre-defined "releasers" of the memory to trust BPF
-> > handlers more but they do have access to oc->bpf_memory_freed so they
-> > can manipulate it. Therefore an additional level of protection is rather
-> > weak.
-> 
-> No, they can't. They have only a read-only access.
-> 
-> > It is also not really clear to me how this works while there is OOM
-> > victim on the way out. (i.e. tsk_is_oom_victim() -> abort case). This
-> > will result in no killing therefore no bpf_memory_freed, right? Handler
-> > itself should consider its work done. How exactly is this handled.
-> 
-> It's a good question, I see your point...
-> Basically we want to give a handler an option to exit with "I promise,
-> some memory will be freed soon" without doing anything destructive.
-> But keeping it save at the same time.
-> 
-> I don't have a perfect answer out of my head, maybe some sort of a
-> rate-limiter/counter might work? E.g. a handler can promise this N times
-> before the kernel kicks in? Any ideas?
-> 
-> > Also is there any way to handle the oom by increasing the memcg limit?
-> > I do not see a callback for that.
-> 
-> There is no kfunc yet, but it's a good idea (which we accidentally
-> discussed few days ago). I'll implement it.
 
-Yes, please, this is something that I had mentioned to you the other
-day too. With this kind of BPF kfunc, we'll basically be able to
-handle memcg scoped OOM events inline without necessarily being forced
-to kill off anything.
+
+On 1/30/26 11:48 AM, Zi Yan wrote:
+> Commit f708f6970cc9 ("mm/hugetlb: fix kernel NULL pointer dereference when
+> migrating hugetlb folio") fixed a NULL pointer dereference when
+> folio_undo_large_rmappable(), now folio_unqueue_deferred_list(), is used on
+> hugetlb to clear deferred_list. It cleared large_rmappable flag on hugetlb.
+> hugetlb is rmappable, thus clearing large_rmappable flag looks misleading.
+> Instead, reject hugetlb in folio_unqueue_deferred_list() to avoid the
+> issue.
+> 
+> This prepares for code separation of compound page and folio in a follow-up
+> commit.
+> 
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>   mm/hugetlb.c     | 6 +++---
+>   mm/hugetlb_cma.c | 2 +-
+>   mm/internal.h    | 3 ++-
+>   3 files changed, 6 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 6e855a32de3d..7466c7bf41a1 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -1422,8 +1422,8 @@ static struct folio *alloc_gigantic_frozen_folio(int order, gfp_t gfp_mask,
+>   	if (hugetlb_cma_exclusive_alloc())
+>   		return NULL;
+>   
+> -	folio = (struct folio *)alloc_contig_frozen_pages(1 << order, gfp_mask,
+> -							  nid, nodemask);
+> +	folio = page_rmappable_folio(alloc_contig_frozen_pages(1 << order, gfp_mask,
+> +							  nid, nodemask));
+>   	return folio;
+>   }
+>   #else /* !CONFIG_ARCH_HAS_GIGANTIC_PAGE || !CONFIG_CONTIG_ALLOC */
+> @@ -1859,7 +1859,7 @@ static struct folio *alloc_buddy_frozen_folio(int order, gfp_t gfp_mask,
+>   	if (alloc_try_hard)
+>   		gfp_mask |= __GFP_RETRY_MAYFAIL;
+>   
+> -	folio = (struct folio *)__alloc_frozen_pages(gfp_mask, order, nid, nmask);
+> +	folio = page_rmappable_folio(__alloc_frozen_pages(gfp_mask, order, nid, nmask));
+>   
+>   	/*
+>   	 * If we did not specify __GFP_RETRY_MAYFAIL, but still got a
+> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> index f83ae4998990..4245b5dda4dc 100644
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -51,7 +51,7 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+>   	if (!page)
+>   		return NULL;
+>   
+> -	folio = page_folio(page);
+> +	folio = page_rmappable_folio(page);
+>   	folio_set_hugetlb_cma(folio);
+>   	return folio;
+>   }
+
+IIUC, this will break the semantics of the is_transparent_hugepage() and 
+might trigger a split of a hugetlb folio, right?
+
+static inline bool is_transparent_hugepage(const struct folio *folio)
+{
+	if (!folio_test_large(folio))
+		return false;
+
+	return is_huge_zero_folio(folio) ||
+		folio_test_large_rmappable(folio);
+}
 
