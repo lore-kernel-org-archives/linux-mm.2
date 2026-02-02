@@ -4,75 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62776E7DEFA
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 15:56:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E5E7E7DEF5
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 15:57:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6DFD6B00F3; Mon,  2 Feb 2026 10:56:57 -0500 (EST)
+	id BA4BD6B00F5; Mon,  2 Feb 2026 10:57:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEE1C6B00F5; Mon,  2 Feb 2026 10:56:57 -0500 (EST)
+	id B5BDB6B00F7; Mon,  2 Feb 2026 10:57:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFD986B00F6; Mon,  2 Feb 2026 10:56:57 -0500 (EST)
+	id A4B026B00F8; Mon,  2 Feb 2026 10:57:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 993526B00F3
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 10:56:57 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 49446D3A75
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:56:57 +0000 (UTC)
-X-FDA: 84399970074.18.6E2C72E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3249B140007
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:56:54 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ltgGZ4SC;
-	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 910476B00F5
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 10:57:06 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 312851AF4CD
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:57:06 +0000 (UTC)
+X-FDA: 84399970452.05.BA7D6D6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3EAF68000D
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:57:04 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WF69RSX9;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770047815;
+	s=arc-20220608; t=1770047824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y7vzDxChpsKg03+NYp1xjpS8xJER5E5J5vzhRbxMT7k=;
-	b=gkj7Li1xrXZy1XHNmcOvFDe9tlkc3aEOgHhYd6R69qcYi0czcHvE5V1DKgL9R0ftbpP641
-	TKlgaPOonod/nquCmkV1efnFLNeWo8bswWGQwQAyDMkW/BTky5f/uVofmgbVvzXDpMGT/1
-	gcxh9GfCy63ncBTu7b3mOIRYlj7FrZs=
+	bh=Y5e5iwTp+f3jWT7S32k9xFcVhvH57uT1HjF7k5BDo14=;
+	b=I4sjK0otOuod3RosG40ZOYvwUw/NVHpY/fWZ+IJbmfHJH13gBQSs3byWSJoXEWQxmunGKQ
+	QEflsHhgatzYqVO0rCFzm0TmDy6xbS7ywMehuYH6ZUlLk6/j0W1vZhNi+QvNBpCa175yW3
+	FjVXzIBpv5ohnuzM+MLD5LkxAtU0VcU=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ltgGZ4SC;
-	spf=pass (imf09.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WF69RSX9;
+	spf=pass (imf30.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770047815; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770047824; a=rsa-sha256;
 	cv=none;
-	b=siEnuzvlsf4sjgw2XhJz/gXOwFOrCXGqWbbT0EjrIHSasxS9ju8C2TtXKX9W+V0fRknAbF
-	hS4lGdYMB5IefVvEoBiUkt85S4RD2R9mCq+lHz4Zo5/nHZ2qVfd1FL/ZsTgVeLVLcw+PYW
-	MuFz8xZ75aFmG+JV7+esA9mgoTsyZbM=
+	b=Rx8aL+/dZjIKN9lpRoPK/yIHuQy21fdRUe3ADKIB7lufWtWty+k15a3xmXoTLv0IO4GngP
+	iXCYMBtbZnXqZl86CBqWwJolYL4I6W4m23Woc7vJI12upmJhc7nq1t6yM6Qk8eQT3oJsDX
+	hzuO2omZtYoQHrwYlcYq+v5kY5Gx9F8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E8958402E4;
-	Mon,  2 Feb 2026 15:56:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C176C4AF0B;
-	Mon,  2 Feb 2026 15:56:53 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AEDB960010;
+	Mon,  2 Feb 2026 15:57:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C81C116C6;
+	Mon,  2 Feb 2026 15:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770047813;
-	bh=AAnIadXhZxE/xw6Xd6felYchHz0PQHYO69+c3YSZCe8=;
+	s=k20201202; t=1770047823;
+	bh=6ogOaGvnMTPbWSZ/3tAo/tMV4QN8NO6XYhjt/aFJtlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltgGZ4SCXFUov6HvDevQtFcFhGRD2uyoQ7feb4gdTcRZ/I9TmUkdepKWOb6Jicnav
-	 BJ1oAZTPYv5UmtqweWFFl3iXtO2hKC1iM3GqpuFpsq+Ji9AS9NQCP3029lkvLBq6i1
-	 QvblSMkfGUMHJ4eN8CRlB1onJBDYHKV0836fzcY8ZyhsXUiz6EEROaw0EtRJiNL4WW
-	 ZKmnxXz0rb6ZAkITd8vFtwr/QrNBhezEisrNqtcKvXaYfWMllKilZm6ZbY9GfU0sLK
-	 KnbJABN3dKFdQ0EVuoKnqqGns1koTjjQ6GlxrICRLoFPFNTXeZEMYTcvWbYdYCjskP
-	 FFE/Bs8yMLLLA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9B01DF40069;
-	Mon,  2 Feb 2026 10:56:52 -0500 (EST)
+	b=WF69RSX9f+mKWCabnqaYZF5sNHFC3uvixKlWuQFydyTQfTYpnLJRGuLALJe4g6SCy
+	 Z7Bev3jJyKP5dkM3ePpm1j+cWEcQBQk7XNrosYUsOdBUZFMGDf8Gx5VdCmBl577KZA
+	 H8+wByJDmnFL0dHkGkUofLeF5vv/qSzmwGhwAF4FKYncIaqSbTNyzh0yN8yd6OEcr0
+	 aOJcDqCtAnfDSquMy6kiIisKQ4pYRhR646y+3V4VHKCOVx3pYmvm4L6C3etZAraJRw
+	 mtpuy8MFqZMCl3NyXM8s9prA7E+yFcWlI4uy0mLwVyuuFKW/ZLmxoQ0l1oyHnT/UG1
+	 918w+RG4bnXBw==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9F3C5F4006A;
+	Mon,  2 Feb 2026 10:57:01 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Mon, 02 Feb 2026 10:56:52 -0500
-X-ME-Sender: <xms:RMmAaZ4vhPcb7sP9kiqfqIfDeldi64XfuBJEfPgmBT2rfX7sce7y_w>
-    <xme:RMmAaXAawH3yQ9DHeaMzL84__JhTR_tp1bUCZ8idXndy1RCiA0m4pBgLTGnz-704-
-    63Fby9_qHmipplMmmSngzNP8hY034nn79uxXXrG3AtFZQdOOJJB7mc>
-X-ME-Received: <xmr:RMmAaeQ_opyOhrKK5LcaKh-LhRC-K3O42p1t_cRN7Ey16kaH5ktBdxOuKOZukg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeektdehucetufdoteggodetrf
+  by phl-compute-08.internal (MEProxy); Mon, 02 Feb 2026 10:57:01 -0500
+X-ME-Sender: <xms:TcmAaYjOJrq73uxB93s_1BKc0eXQYx_nn7nFRgDmIi_RLU-icKTkBQ>
+    <xme:TcmAaaMpJcV04hdcBqMV5JCrO0-4FS84Iyyan2CQIXCWAuNUojgJowCJ6F8CIs8Cc
+    Ohz9aZVPmxiJjEPzrfmX9Uv0JDFynwCwIeMH_T4zyisAAHoNEkaEg>
+X-ME-Received: <xmr:TcmAaaMNLQ6cUoLUPbsnxRut7Yuf8XTPl6gSVFX3WYZtom9LfBf2cdVkJ0mwFg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeektdeiucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomhepmfhirhihlhcu
@@ -81,7 +81,7 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeektdehucetufdote
     necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
     hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
     qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdelpdhmohguvgepshhmthhpohhuthdprhgtphht
+    hnrghmvgdpnhgspghrtghpthhtohepvdekpdhmohguvgepshhmthhpohhuthdprhgtphht
     thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
     epmhhutghhuhhnrdhsohhngheslhhinhhugidruggvvhdprhgtphhtthhopegurghvihgu
     sehrvgguhhgrthdrtghomhdprhgtphhtthhopeifihhllhihsehinhhfrhgruggvrggurd
@@ -89,14 +89,14 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeektdehucetufdote
     tghpthhtohepfhhvughlsehgohhoghhlvgdrtghomhdprhgtphhtthhopehoshgrlhhvrg
     guohhrsehsuhhsvgdruggvpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
     rhgtphhtthhopehvsggrsghkrgesshhushgvrdgtii
-X-ME-Proxy: <xmx:RMmAaWZLoagEu_EMnI49bcGxRGAdZaG8l_6ThTEYNgMMdQ4wmmy4_g>
-    <xmx:RMmAabVsjAZGaVKFtdctyHi3-UAOPG9NZjEAP19kfOb1GIfovn5g4A>
-    <xmx:RMmAabXa1s9AOlNx0H34Q6mvchAeSh5pzWdxFOODTaj3SsNsnnYvWg>
-    <xmx:RMmAaV_jR_-BLSFrPptejodkRwpJXcXTZM7wmigOvJreB9qRbo0L3Q>
-    <xmx:RMmAaQorCj8SrIygf8oG6HXC5NCW7lCS1vAPY5UoutPQDbm8B8i3Q594>
+X-ME-Proxy: <xmx:TcmAaaKT1qy77U44vFiWXE8gk1b0ceZszD7whfv03MucIMbGIJNyEQ>
+    <xmx:TcmAaRtSE9qGIf1q5QseHThLiCvJ0RZb3JnQOGGWNUFLdVU1FlHYmQ>
+    <xmx:TcmAaUG7Lc0mgm530I0Bo9Pyjy719LFOhnRcY1esid_-c2vfijYIdw>
+    <xmx:TcmAaYOIBp0AIdUaK3Rtnn0Zs3kXq3uF9LacjMNexwXsakmoAAn5Gw>
+    <xmx:TcmAafGxOZuXYbhcWnujikyIb9CCuSz6CHe6QSpg7yOBxcruif0N5p8L>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Feb 2026 10:56:50 -0500 (EST)
+ 2 Feb 2026 10:56:59 -0500 (EST)
 From: Kiryl Shutsemau <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -125,24 +125,23 @@ Cc: Oscar Salvador <osalvador@suse.de>,
 	linux-doc@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-riscv@lists.infradead.org,
-	Kiryl Shutsemau <kas@kernel.org>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: [PATCHv6 01/17] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
-Date: Mon,  2 Feb 2026 15:56:17 +0000
-Message-ID: <20260202155634.650837-2-kas@kernel.org>
+	Kiryl Shutsemau <kas@kernel.org>
+Subject: [PATCHv6 02/17] mm: Change the interface of prep_compound_tail()
+Date: Mon,  2 Feb 2026 15:56:18 +0000
+Message-ID: <20260202155634.650837-3-kas@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20260202155634.650837-1-kas@kernel.org>
 References: <20260202155634.650837-1-kas@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 3249B140007
-X-Stat-Signature: pg78fb7p4mpfa3kx47ehbr3k43tqcy19
+X-Rspamd-Server: rspam11
+X-Stat-Signature: m8ishogzoobic863h5uwshp4643o5m1t
 X-Rspam-User: 
-X-HE-Tag: 1770047814-445953
-X-HE-Meta: U2FsdGVkX1+oIFzc1d7oGM05JOKs4VUIq3vxOBbDj7QeuqZ2ldJ95+sfSTIm1fm/pT6RGVr4wlAcitHs8HbChIEq+U/47+NOcdh2NsRCpmWcTPdQYGSj/8eUM+cFQbIPMSlTxS2B0g0BGtvAUZSfWdBDSnry7XOk1Gwn0qNTPGCs+0VTom0oRzfWnES3mVcAuOAH57LdsHqdu+JtBqEVSaIphFBih1i13aQQvZTipIKYaXKW6eWnujNNu7e3DdjQFPjM8VsLG5JUmz/+xZjxucPruOBjZpZb3wN8Hdv+kGPkqd7EJYiDjpD7M3Yn7DvAEU0urx2l4Mg15JXHi9kYXaIm5OBzyw7iOmAiQdbwfSdws7NP+q22HmLd3avJKV2IZ632+AF8YUpBgM6kg43QcDrAQmLmmKIG89SGbzH/zP7YF34OvA/f0VL01cJqm8k63qEzt4pIitj8zwINnqsUIXPc8n9WlVGz+0GOG5I+B/pvBTbqVy+t5trnQkmUi73AeTnMwDsgNAESLsrnv5rBBIM1a60EJqoP8scM/MH2kiZVpbxMhpqN5u6dRMgt5YaTfQyzGMk/QZlLF56Q7V2lMBUaZvQIZQ+FE5vC1DS9SQCUmHQZaSTu0o6wP77u/TXsg2hkuH/zCFErT47Q8QVjfstw5sznNu19MGEEEz1kcKY0mAfbUe0Y53jbpKTnhQ7CpI+eN4kjJ6t/TD6s0XcLQIalYy5Wpq6n6a92xsYxYb+l121rOT1RflDssicwBsi6fs/45Rg22hgbHCllqXjGyJ/jRAKmKrdxH/m751V3LtE0v/3+IO7UvUbzaBYYUyAgMC6vgN9wne5BxRwAjGWsBETBy17S3T6eydyDqN8NlHP5e5KH0rZqNdPoUCrojQWSVLoRPKKhaOG5ExbcoZWfKKiRYl7pUJ1MaTmEq1Jf8rRPNWrp6su6I2oRjYZ6v0vZeRPZERmmyCbeDIrsB+A
- M1pgjmmQ
- VD+812cJNqg91YnuXmGf6WFFJ3D8ltGe3dT79WdOOrmJeIfkmTeK4V8Hj18741pq79h0Z75Y5ikZygD9N9UTKFbwk9dBzifpkcUpJnOVyK7jJGSMH+hOIusUHdiTrpLUSHxTXsfl8Okhih1zSdOqKu4lrljib99HRqLH/zfgvcELOKB0QPJDTxmz2ykABr+1k0hKjtBvAD1hQKGjMYvqSUDqPeMPqL6ZnaG7oviGA06sQ8RR+PvSW6y+0N0LHpc0FeihhVZ7zs00UV8H5FIw/tBMSG20l0slaTndnJaA1x8ivAiwbqHH3JcBf9JmykVj24hXfnFCnljs3cUEX6d4/osFHvzMh8UOidLp2joUpqvXF3/U=
+X-Rspamd-Queue-Id: 3EAF68000D
+X-HE-Tag: 1770047824-956100
+X-HE-Meta: U2FsdGVkX1+srVBYKGWEpFVX1evbfLl43qqml/Cj3snSlX8WVTV6/0YjfyoJy6QEUJ1nd95AvS/KlT2gkwQTAljMNkYtOErn8tJaUHJX5RXewwvFqMg37EzjgiKS18eGhSTMp90jIHfLNyPvgIkWzXQ0sl/ySjy4qaM4PY4j8sN7V4599Aa/nMYV6a0Or/+lBq1ouhaZzpR9E6RvRpJbk3mxxzUQawexftcxjD2u1TB7mePtEdwUhkquH2g8O1yqjJ33O33eYWSTR34z/LMKOsi6AJeKf7zulvWLGU/e46KR2428u9lDTTiKlOTXT9O/cfypw+EgJ373T9DO8E0j2QkZv/ta46opYVjzG3TgZ4zgX1+JME1V6uN7ss+hy8OIoK3vmmF+1zEE9+Lo6GOPjMUWY2cNyuYuPTTFSA+fD0KhWcbZm0D/06X6QzmFm3e1FLWbmLhGx4dbgoBVyDD7K00XvnoIkM0eQC0k1hWxy0fahuLxytgOs2HeFpq9f6DyJNVEA5wDnQxjCNvzFRVVqYAQDbaZmt9sZulmoCH5Q9pugmqZLESbVuk204WeD/BY06GcP5p4K9nP0Dfh5ZBU9BQHe9EAXJicXVXSM8WiDkXMCQqJf4OaA3m3Wal59pDGsD1tMV52sAy1o50wfr74grlPyeWRRf7/mWAo2ofDpyIDGoJijpyCReQTPUwUYwVL7a6eHeiB8CQeWvjUyaznoxNSVufP8Oy/wUN8rtjhuHEBzx36raMN+nQGU8sxQTdk6NsNPGzk+LL52aN6JilFn+F7oXEIFIGV3etUITsl4h/+dNnHhxGLSlOdQazjeHHj40O+ShWP1nmRTTqus61QwfU4c6wwFDYcULnk8v3vQdPDxiwyEJkJfARfj+mDEiWPJgH56zYEI8Dhuoe/M+Mss6AmlaFKBm4pCDuXYFIucGx0XCwaSrRSFWcGXDZsyd0sOuQK/4FmJDIAz7bwi4Y
+ PX5U0Ahn
+ UoTruzJQK7y/niQ2C7mFILDVl0vHTqHg2ZvrxfDUlHs/c416+XggPoYgHUnXhivzyKdz/OBJo5St0haFoT6HW7TCxVQBjTFgSgx87NMOiSiEZ9AbypmS8a5ctbmXpkZz3PSfNF13r66/UBlsWZ04DBng33YAVqxWrlEtqVbGW/dFhCykq4e3aMB5Tf354+VLUWYHhP7Jfs9tFHxRRVu7YRCsYYD9mDTqQ2EBrqq7XL2jg3y3Cu1uQWZPGIwonyT3i1hthaVKvg2EGEGVighN5qw2HfEOFNUeskwNezz3j+lTwSk9z6ylLCkIhhj+kNmZ3VED3jPunweIogiE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,118 +150,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
+Instead of passing down the head page and tail page index, pass the tail
+and head pages directly, as well as the order of the compound page.
 
-This is preparation for adding the vmemmap_tails array to struct
-pglist_data, which requires MAX_FOLIO_ORDER to be available in mmzone.h.
+This is a preparation for changing how the head position is encoded in
+the tail page.
 
 Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 ---
- include/linux/mm.h     | 31 -------------------------------
- include/linux/mmzone.h | 31 +++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+), 31 deletions(-)
+ include/linux/page-flags.h |  4 +++-
+ mm/hugetlb.c               |  8 +++++---
+ mm/internal.h              | 12 ++++++------
+ mm/mm_init.c               |  2 +-
+ mm/page_alloc.c            |  2 +-
+ 5 files changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index f8a8fd47399c..8d5fa655fea4 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -27,7 +27,6 @@
- #include <linux/page-flags.h>
- #include <linux/page_ref.h>
- #include <linux/overflow.h>
--#include <linux/sizes.h>
- #include <linux/sched.h>
- #include <linux/pgtable.h>
- #include <linux/kasan.h>
-@@ -2477,36 +2476,6 @@ static inline unsigned long folio_nr_pages(const struct folio *folio)
- 	return folio_large_nr_pages(folio);
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index f7a0e4af0c73..8a3694369e15 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -865,7 +865,9 @@ static inline bool folio_test_large(const struct folio *folio)
+ 	return folio_test_head(folio);
  }
  
--#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
--/*
-- * We don't expect any folios that exceed buddy sizes (and consequently
-- * memory sections).
-- */
--#define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
--#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
--/*
-- * Only pages within a single memory section are guaranteed to be
-- * contiguous. By limiting folios to a single memory section, all folio
-- * pages are guaranteed to be contiguous.
-- */
--#define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
--#elif defined(CONFIG_HUGETLB_PAGE)
--/*
-- * There is no real limit on the folio size. We limit them to the maximum we
-- * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
-- * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
-- */
--#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
--#else
--/*
-- * Without hugetlb, gigantic folios that are bigger than a single PUD are
-- * currently impossible.
-- */
--#define MAX_FOLIO_ORDER		PUD_ORDER
--#endif
--
--#define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
--
- /*
-  * compound_nr() returns the number of pages in this potentially compound
-  * page.  compound_nr() can be called on a tail page, and is defined to
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index 3e51190a55e4..be8ce40b5638 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -23,6 +23,7 @@
- #include <linux/page-flags.h>
- #include <linux/local_lock.h>
- #include <linux/zswap.h>
-+#include <linux/sizes.h>
- #include <asm/page.h>
+-static __always_inline void set_compound_head(struct page *page, struct page *head)
++static __always_inline void set_compound_head(struct page *page,
++					      const struct page *head,
++					      unsigned int order)
+ {
+ 	WRITE_ONCE(page->compound_head, (unsigned long)head + 1);
+ }
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 6e855a32de3d..54ba7cd05a86 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3168,6 +3168,7 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
  
- /* Free memory management - zoned buddy allocator.  */
-@@ -61,6 +62,36 @@
-  */
- #define PAGE_ALLOC_COSTLY_ORDER 3
+ /* Initialize [start_page:end_page_number] tail struct pages of a hugepage */
+ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
++					struct hstate *h,
+ 					unsigned long start_page_number,
+ 					unsigned long end_page_number)
+ {
+@@ -3176,6 +3177,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+ 	struct page *page = folio_page(folio, start_page_number);
+ 	unsigned long head_pfn = folio_pfn(folio);
+ 	unsigned long pfn, end_pfn = head_pfn + end_page_number;
++	unsigned int order = huge_page_order(h);
  
-+#if !defined(CONFIG_HAVE_GIGANTIC_FOLIOS)
-+/*
-+ * We don't expect any folios that exceed buddy sizes (and consequently
-+ * memory sections).
-+ */
-+#define MAX_FOLIO_ORDER		MAX_PAGE_ORDER
-+#elif defined(CONFIG_SPARSEMEM) && !defined(CONFIG_SPARSEMEM_VMEMMAP)
-+/*
-+ * Only pages within a single memory section are guaranteed to be
-+ * contiguous. By limiting folios to a single memory section, all folio
-+ * pages are guaranteed to be contiguous.
-+ */
-+#define MAX_FOLIO_ORDER		PFN_SECTION_SHIFT
-+#elif defined(CONFIG_HUGETLB_PAGE)
-+/*
-+ * There is no real limit on the folio size. We limit them to the maximum we
-+ * currently expect (see CONFIG_HAVE_GIGANTIC_FOLIOS): with hugetlb, we expect
-+ * no folios larger than 16 GiB on 64bit and 1 GiB on 32bit.
-+ */
-+#define MAX_FOLIO_ORDER		get_order(IS_ENABLED(CONFIG_64BIT) ? SZ_16G : SZ_1G)
-+#else
-+/*
-+ * Without hugetlb, gigantic folios that are bigger than a single PUD are
-+ * currently impossible.
-+ */
-+#define MAX_FOLIO_ORDER		PUD_ORDER
-+#endif
-+
-+#define MAX_FOLIO_NR_PAGES	(1UL << MAX_FOLIO_ORDER)
-+
- enum migratetype {
- 	MIGRATE_UNMOVABLE,
- 	MIGRATE_MOVABLE,
+ 	/*
+ 	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
+@@ -3183,7 +3185,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+ 	 */
+ 	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
+ 		__init_single_page(page, pfn, zone, nid);
+-		prep_compound_tail((struct page *)folio, pfn - head_pfn);
++		prep_compound_tail(page, &folio->page, order);
+ 		set_page_count(page, 0);
+ 	}
+ }
+@@ -3203,7 +3205,7 @@ static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
+ 	__folio_set_head(folio);
+ 	ret = folio_ref_freeze(folio, 1);
+ 	VM_BUG_ON(!ret);
+-	hugetlb_folio_init_tail_vmemmap(folio, 1, nr_pages);
++	hugetlb_folio_init_tail_vmemmap(folio, h, 1, nr_pages);
+ 	prep_compound_head(&folio->page, huge_page_order(h));
+ }
+ 
+@@ -3260,7 +3262,7 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
+ 			 * time as this is early in boot and there should
+ 			 * be no contention.
+ 			 */
+-			hugetlb_folio_init_tail_vmemmap(folio,
++			hugetlb_folio_init_tail_vmemmap(folio, h,
+ 					HUGETLB_VMEMMAP_RESERVE_PAGES,
+ 					pages_per_huge_page(h));
+ 		}
+diff --git a/mm/internal.h b/mm/internal.h
+index d67e8bb75734..037ddcda25ff 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -879,13 +879,13 @@ static inline void prep_compound_head(struct page *page, unsigned int order)
+ 		INIT_LIST_HEAD(&folio->_deferred_list);
+ }
+ 
+-static inline void prep_compound_tail(struct page *head, int tail_idx)
++static inline void prep_compound_tail(struct page *tail,
++				      const struct page *head,
++				      unsigned int order)
+ {
+-	struct page *p = head + tail_idx;
+-
+-	p->mapping = TAIL_MAPPING;
+-	set_compound_head(p, head);
+-	set_page_private(p, 0);
++	tail->mapping = TAIL_MAPPING;
++	set_compound_head(tail, head, order);
++	set_page_private(tail, 0);
+ }
+ 
+ void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 1a29a719af58..ba50f4c4337b 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1099,7 +1099,7 @@ static void __ref memmap_init_compound(struct page *head,
+ 		struct page *page = pfn_to_page(pfn);
+ 
+ 		__init_zone_device_page(page, pfn, zone_idx, nid, pgmap);
+-		prep_compound_tail(head, pfn - head_pfn);
++		prep_compound_tail(page, head, order);
+ 		set_page_count(page, 0);
+ 	}
+ 	prep_compound_head(head, order);
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index e4104973e22f..00c7ea958767 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -744,7 +744,7 @@ void prep_compound_page(struct page *page, unsigned int order)
+ 
+ 	__SetPageHead(page);
+ 	for (i = 1; i < nr_pages; i++)
+-		prep_compound_tail(page, i);
++		prep_compound_tail(page + i, page, order);
+ 
+ 	prep_compound_head(page, order);
+ }
 -- 
 2.51.2
 
