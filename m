@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D74D172AE
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 00:55:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADDF9D172AB
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 00:55:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E27086B0099; Sun,  1 Feb 2026 19:55:40 -0500 (EST)
+	id 185AD6B009B; Sun,  1 Feb 2026 19:55:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E120D6B009B; Sun,  1 Feb 2026 19:55:40 -0500 (EST)
+	id 144FE6B009D; Sun,  1 Feb 2026 19:55:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C08B46B009D; Sun,  1 Feb 2026 19:55:40 -0500 (EST)
+	id DB0FC6B009E; Sun,  1 Feb 2026 19:55:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id ACBF36B0099
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 19:55:40 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67B6FC3068
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:40 +0000 (UTC)
-X-FDA: 84397698840.22.8BA0355
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8A1F118000F
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:38 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rc6MbYDC;
-	spf=pass (imf06.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CC2C86B009B
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 19:55:41 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A16E2160A02
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:41 +0000 (UTC)
+X-FDA: 84397698882.17.D42E4DB
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	by imf03.hostedemail.com (Postfix) with ESMTP id C343620010
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:39 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LZPBoAPd;
+	spf=pass (imf03.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.160.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769993738;
+	s=arc-20220608; t=1769993739;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hqkhJdlpK1W1XSQ5YW44EIDdLoQmf+hCCGZAHvEFwYM=;
-	b=7GgtvRLQEIbpzS/iepO22Z54Y0ofR4KMx9gq7KcMnpJsgJxt+QrVlMVydEd6qF6t67zGbW
-	u6rCI1VkZ0YlXxcO1HXYiV3q4HEeLU+pW/tYCjZTPKmxOm41UE8YHaq1sN/Af8NQKPESBS
-	62FrNREVyi/sFb5+BFbs89dq7Dvpamg=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Rc6MbYDC;
-	spf=pass (imf06.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769993738; a=rsa-sha256;
+	bh=I8vQRA+06SerFEKUWpG9738UD1yc3kHqwB4W4DvkIi8=;
+	b=fYda6HMqL+kN3Ln24y3OeoVW60nyrZL4S3B+it0YtxuubImQGzHjnX49XMKAl7Leau6bI/
+	RYelpuyOR3QbELAEpjWEehkcBq5nfyDs4yDT1stDOPDcGP3xygXAqdx/TXFf6Hdn/xXvSF
+	88WgOEoUX//p4EUjxS9SPSsdLcIsFyQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769993739; a=rsa-sha256;
 	cv=none;
-	b=DGi+20nnjWeHQkRZ0mnBuoQ5ZTvqamR3XE0vljTHLe5I3vnZix2vzJYCfdR/eGCzcISUTG
-	n9dPGCb//lqOjpzH3v6jjytIk/oWU5bL6OsX222+ViITqgKSz+KTvANYJSEb0yc78804vX
-	pvQgCtdeLZQukhvv7dMPlPhBpDLIdRM=
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7d196a2334fso3445592a34.1
-        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 16:55:38 -0800 (PST)
+	b=nu2oRUsQno1mpjegcCGelUnfNcfCjcTrWEpX7WP6RpnzIZ4Mzd237CzUgjaO1VVuYvqsDW
+	vVsBFPXcmivHbHkweVGUvI6v2N3HyvKeMLHVxYCMY9nbSsIUirmWmm0Jx4pWfsY4h3i95P
+	iuCScofFYGP5J/IuvCVZtgbLAnuFoK0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LZPBoAPd;
+	spf=pass (imf03.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.160.43 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-40423dbe98bso1770804fac.2
+        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 16:55:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769993737; x=1770598537; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769993739; x=1770598539; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hqkhJdlpK1W1XSQ5YW44EIDdLoQmf+hCCGZAHvEFwYM=;
-        b=Rc6MbYDCvuVIF3TX3LzBv62bi+p9U2Gd1nYA36W2ue5wd2b1j+fVEeajkMFYWQU5TQ
-         udvb+aMDYQsxvTyIdkT2NyOUQZyNxqu4MY2jCXHl38hmitklN9Y73y3AjUOkRHaHVEaB
-         RY4WgpuTaVVMrpgGoP/k/epgHysLHErXDGhYpIvZ8qADKmiFkFz/BGKK3jVWTxYVCxYi
-         VuCKbtVSzV8+KYZQmm2X36pUwoaJbZu+s24VMwpkOW335RgZQXiCcjYeXox0LBa6Tr7r
-         z3xoCW9yzZBSjr+DFJJDoQOl8repWVGvxzBNqxopUMtzvcLCHlqLF5aRElW9fPi/AFeB
-         HddQ==
+        bh=I8vQRA+06SerFEKUWpG9738UD1yc3kHqwB4W4DvkIi8=;
+        b=LZPBoAPdceO9oyg81UoOUxA36Ra7HVFoL0VhliovJnkUO7VXuiKxT4cpOlbrTVM4FY
+         aZvBhxPQAp2spOBqgaRMTH93uuTV5zA29y5HG1dDATdJCqMzoB/YhiRWuV8HoyiwZGXN
+         jL4Q1SwPg9bvluVle9bpUigdc0XDefj8qXLeX5hs60sLtURRuC6E/hstroSAB5/r3V2b
+         Zpx05B33ftWwIs+i0RaNBTWixKnS5FBSgVJzpCVTQzkl65PJIq8IXPc3Dv6rosRMC0po
+         l7dIXflEBOTUvJkbJkJnKW1VRkLf1HhOStqdoxd7L+ANVeHwU/tQbxSIw6kFXd7LvgTw
+         OknA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769993737; x=1770598537;
+        d=1e100.net; s=20230601; t=1769993739; x=1770598539;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=hqkhJdlpK1W1XSQ5YW44EIDdLoQmf+hCCGZAHvEFwYM=;
-        b=RFlqIsHeJAoxy2u9ao+B1skCIokhPMd08N5zf9oW/+A5901aQwUplcTDFgyEKbjtmE
-         m27lUlft2GJMGpkxDA5Na1tS24fJ7UjzwB1znztSdmm1suIWbNWkkM/g04EV1EepZgYQ
-         mvA0L7noTjjAFf50lBMokd/hPSg1mE1e1431hafzeUeP8blRN24adoNnJMVEuttZmDeT
-         APQzdFJhUcuT75TGnDUDUhkVVgUfd9HUo85hD+AhHOG6vkcQSjAxWFGzLTMCavI+CTrZ
-         lDZifdce2kIkh3y3bKqd2Ne8tPmCQ7jv6QELjGGx9HecsrKeClXn/jc4liZOFDW+QHKm
-         w/qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVef+y35Ufhf1D4KmeHVoJmZIYSOYWOMzjAz5COzjeHd7aMAYCtdb3nnotre5vdPodVojMN78n0sg==@kvack.org
-X-Gm-Message-State: AOJu0Yy2aJpBTU/GMBsRMACPKePcfeQAW18FSlsPXaO8FrOz3yzo1PYz
-	qBqsLwqFNGaVRO/mgLZBT5uEEY9qNu4oc4D873nGa6Yoblcm5zdv/yDe
-X-Gm-Gg: AZuq6aJ26dhP+th5u8p3ehjgVRGHrcPbxLOyNx1B+7gxDLa/gmpDv4S3yf29W3kAEzP
-	fyxDeg82L0HOLEXmAXoM0gCTYw7t5yqMTIrzlxF12BF5iKzsuY8grF1JoHmEEos/MxRJp1uX2uW
-	sNkh2klGVy9eKsU9i/9T7nYq5kAu7ro800OeGPiqxmqeB+YjYbG92SnKR4/fW1MZNM6Sn3gu2/y
-	7Dl+6fy600jABQlDKxCqjBGOyvcWBV+xXxZIQ7K5tQ/aBS9hqOz4poe5MOWDUMv4t2r/BJ6ltQp
-	mGijMNbb6qhi+Emm18aJKnx4747dBZAbweNi1lMJgkMmk02rhy1B09MDcb6wwxVIGdqRLZp1DRH
-	PFhBXRdhyOi2WSaAAg2NtaBu6daAaSRqEgpcaZMmVmNK/90ige0p+fMer6tZxYG6XdCfNc6K9MX
-	UDgA5XoJVC
-X-Received: by 2002:a05:6830:6aef:b0:7cf:d2d4:8013 with SMTP id 46e09a7af769-7d197077d08mr7671450a34.5.1769993737664;
-        Sun, 01 Feb 2026 16:55:37 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d18c825bfdsm9605006a34.29.2026.02.01.16.55.37
+        bh=I8vQRA+06SerFEKUWpG9738UD1yc3kHqwB4W4DvkIi8=;
+        b=G8jTRivktoA4oTsSC/QQ1vkg8/5sK0+UfEXyAApTCDsomFK581o1565g4UG7QM0SOO
+         3ycn54Vz6qxkZGBTuLqyry1V+4myHyweSCZ1p1P7iOBGxIm53qDMTqqIN2c0a5QzTnt2
+         5O4xiTfbB7Iz+oeYuFYMY7p1d90D2fU54cmQ7onI9trEu1KGCtYb3QIAMgcG4tl5RpXq
+         5iVwH7nsXkCYoadL3pQhkfBITx5fDtg3DSRIKHaP1+RioJCcIZB5i7Bsd7vh8ul5BI3L
+         hzTk92hyNhS3vnpKRZr/jbkng7HUdXV5RNa5w+dBsXjiJ9pt1UPjuR3+xW/vEENdQmZD
+         CAzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpym50gmee/t8d4XDYMhCDi7lhPqBbBNaXZZNGw6xaJERhaFVoEpaHGG/b4A13ruy/JITnBXnUvw==@kvack.org
+X-Gm-Message-State: AOJu0YwtSAE0UxD0y6PFSSZdHaWVc43jI//P0JJBXJzpi6LHt3IeCcX/
+	NpwaVxiTUnbd75TvEfakOeAYIJ+h6mkETo9KNgeQOGLA808nROnQNKlL
+X-Gm-Gg: AZuq6aIBK7fh33QY6j2JV8YSS/rQwL8LZNWiglS0kI5S2qRoB5kf/DsYaWlzqBYqAY5
+	aUH2JxCgCUGvlppvhMT31epqYOnvm4vLjvnnGj1zeX5Y69h2dIzupH0cy5ssZeF0U010A+EcwkC
+	y09IIaC0ZLvMC9xZ7odWhtV+weEnOCh+pxdoySvJW1WLvnzaCPxOlSKf6DD/HFiTvY9lNK2nUHX
+	r/uCxqP/6yuI8/4S1e3NmhAwkhkjBTB4pTSb4fVQOln0USX4HCe+VGgV+Pw2tLCiKOoQmOyGEbo
+	VR6L/K1oQtnsFULuOA1wI5xPix32V5ZtK4Av3CW0LpsyxD86VyGv0R+U66ch9nYMO1rQKrBCYlI
+	ZzEMsbK2177tt5vdmYTSxnlGetgpNr9esqkjgmE1o5HxoUM2d61yNWbq8+gVtyG3F+6ogADeQZ6
+	lEeImSWST/
+X-Received: by 2002:a05:6870:890f:b0:409:47c2:bea with SMTP id 586e51a60fabf-409a6f87b2fmr5052931fac.41.1769993738683;
+        Sun, 01 Feb 2026 16:55:38 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:72::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4095752ef7bsm10547305fac.16.2026.02.01.16.55.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 16:55:37 -0800 (PST)
+        Sun, 01 Feb 2026 16:55:38 -0800 (PST)
 From: Usama Arif <usamaarif642@gmail.com>
 To: ziy@nvidia.com,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -111,22 +111,22 @@ Cc: hannes@cmpxchg.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usamaarif642@gmail.com>
-Subject: [RFC 08/12] selftests/mm: add PUD THP fork COW test
-Date: Sun,  1 Feb 2026 16:50:25 -0800
-Message-ID: <20260202005451.774496-9-usamaarif642@gmail.com>
+Subject: [RFC 09/12] selftests/mm: add PUD THP partial munmap test
+Date: Sun,  1 Feb 2026 16:50:26 -0800
+Message-ID: <20260202005451.774496-10-usamaarif642@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260202005451.774496-1-usamaarif642@gmail.com>
 References: <20260202005451.774496-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: C343620010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A1F118000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 5k91q41351tq779jcq64x4gatef9aub8
-X-HE-Tag: 1769993738-114023
-X-HE-Meta: U2FsdGVkX19CtvxQs6R26Y6O6U89eGn1o6gPSdmRBXyjBo0yAAcLvIlyGWRem/OA/rXDnsYPGzLF0sL/iYVQvjYcgskUtRgv3P/2wprfkGt1kPfnUe4vATx7amVxhVjwL5GPAtfd5H3g8/MmsmdQaNU35lf+M8AZEvUQGvoJ1APVoPsg++wY7bbpgVbATVPhtmNvTsoHMsycnmKQAe04WtFz2HXKmk2eJVNA9ZdMw6KZB5WmPaCqeUYQ+GSm/KVAizqjvLJRr7HrigG1pKvYw+0bRQnN+4OxnyGGNa1+EtI1a2rLSKiya6AtDcMlMcvtXNKiFBvJ+YyC4KBDQ6lLT027A0tOYUOuuulZRjVWnDDa6DWtBjZRb8paqUGR5giOmDJa0wxeuLe+klk8vq1a5kDgchDMTmizMDS+mnBgwae5CamcRTSqmDjfdL7FVTcDcM8B+xbV4bzkXQRadswwMjGxuugK/rzbPxqD+KPeHsCKHIBTcptf3+iXASISEc5NtOZDDHWkf92tI4RBmSRB/M83CyNfQ1TtIkpmXUKtn7ja2h5hPsjabeFxDqAL3zILZ7vNn/HTqBXCiBJjpRv0mQq9WshdzKB6ZMqXZy7qqrLqNHSTda/asIVqnD1eN+Qy/DBIOSY6+myfEmCDu8QrWOPKyB+Q5bAavukPSUF2Rhr6liNlCubLjDRSfyKCgeG9v/NDVL491DFXKZe8iQC2aVQESpB0idMwk/kD5t3uKpxP2RqAXBcmgRUSOmPS4Pt9J+/w6vWiI7b7vIydlP8Re6PkFJHDKL/DKGurdHQCA8NDuU+9jduVGMYoM4vrqBoVothSe/3sfLgFT0d23HiOHxLTWZTkgDYLMrmVwKEs+Ion492cWSpWwG2/o5abjYDQrY2C83+zvnENsjLlrulhQ9Y46lVsluBsJgXJzB3Dx272BiO9gaAvCJQ8eNKVKqr2ZaqBefI73ZWkaywJ9HV
- 7PMgYocR
- o1zxdu5dO9hy3K2IflOWRXUu8tjq69HDAityq4Y6OcsxYiD5omi9r33FAL/zOgSI9VZ+ToNq67o/2T1rTJknlqVMe9MyPW1zYofrhotdvfDjt0gNLwNfrq0gB99jQ2ffd2xIqvZguWUg+zqTQcO/hAwLtpmadLfuQecJjQA4Kg5vr+qvtms10RvqbolvKKm3zUvE1PwLnG/WYCkQkRPYnfirpBXtYjlQDWaxqqxmadVtPBXeqwCIGLXBXNrFqSZhP+0dnIX80KWX0fXFYm0pmjbyA/0NfHt7GshLM9Cx4dqokrkgXdEXA4RtmxG245rzVCwViAFfCSDGxwMxsUCDK6GGC/LiX+1Mi+G9XIPV4GuHl5Xf4XaPNc6woFnXvB5LuENRllD13Atz6LNadYTj9LTRcUb5+/kFEJDIS4Gqk1qHh7J6Zdyv3fZOWzGsGPWir/qieOA/TDQZZXFm62X5/IBdwptLMLQ5ncKP+L5krqcFcO1+qqx7Dn8TC0Q==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: u3x71bkr8soeecx9iy8aw987mrzwdkcu
+X-HE-Tag: 1769993739-37044
+X-HE-Meta: U2FsdGVkX193s3nO5QgtPUP5tHY/NW+ZsMHah7D2UfA/SBvWAxRqTkmsSQSHiPi6MaIx1MfW2p/i9s7NRzTJ0c8wtUFZlP7UhRXxQ/1ClMBNiWTxDqkHi7GZYLqPB8rhWSE4KP5dYfi5I0BR9GF9RW73g7VM+uocWXNtUrmVEbj8g4oeblg0YkxUkqXMsgV9VCvUvVu6qxU7AkPJffai1xBTT0arkCZWE+BjV+0WFNoDz+5gFYWgdb9NDMZreufUud4DkN4tOCsDUx3kn+rmzSKCpTjFZ3z6/nAHJ0j0holwV0H3VSMZmlAKHNqUz56FCU1QNR9S1YqmKXiiVc4EpY77/o+XzpNR0nKi7ImkFnNmb6wo2+NFPaOZbitIUSY3y93V+cQyvbvkh4ww76GVq7YwCBFuuqXmXkm+f/owB2zLTLL0vZpM8dNQ5MWFwXY2T6HHkLyrZIU/iuf2gVDT4VdVsjL8VaSdo4Lx2dZw3GGyolrWsw38ZkHbfg1oCgtNDmtH1HSqQ9YFTMug0LFj65iwICgCD6rspxF7XPnwvUKvlcVFu10V8b1XHGL7LfJ15jzlmf4P+4eUEyejWa+yREA2/eUHFGhkybMz2xGHssv74xJDoQ3gyGF6xwEVrnf6SRXT174yX2vbJgEYrA+EXzKpDajCX4v371mrEHj5n8mk+Vecqlqytp4pOj0l6F26Swj4EldTyvjRJfTxbb1aYl4PqHbvG59NVSr4OfnPJ0JQQvTchLYcR2wNM9N2qn5Xmxa0zMd6biFuWgIxFQyUGDwQIHaZoGN95p5D5e2L0Wc1bGqtQp4vju79DqOmgFIewDyVddjtEeXI1Dhc5BJRZPl2Hs8tFkdYz7eBKZWFpY6gFpcAsQrAUQm9Lhd0MaxyT3RJ2xXLNl2qmUD32ilZtDGKw+WLdoaFn2NNKnf7NUkdJ39yyqD043I03PHmAD2BLGI6vcV6sJIgwstbCDZ
+ yEttB03n
+ ZT58MwP6PDa0VdP9yJoYHOxawrIS6iWM5cTCrLI7u+8ic9HNZjcjp0dQD5CVJ9CJTJJgF+7h1IPlLYgxP736wGrHDQWRUniRxWCBgfyM9bKl3e0O05KuXjb1cGgbQjiDqY9DSb39Pb0pmtid0IoLYlWCHUOAaJSOjpK5ce9IFwmTl3MAnu8EsLQMH3HdjSsjU5dRefMQOf30lWg27nL6TKkJHgfuzf+Pz5NtgqeTOKt3/Um5X25Dxv0L9ccpcEYVCEQ0nG1D4eBloVpDl33ibZ8QD27L4t3GZI1iyoe1jBZznv3BYu+Y+pYja5s1b69JtMaxW31kwv3dpsW0CYh/Hfup+LFWi4bbiTvAPMhDplsxzl9qUA7Qt7Xyw2XuqUBxIi/N8o+8s7/RtGNd8vfPp5bDbQsWYzRj3o+Fc6xcMFEojJJrS9onAvNf9yFUCWRb5nJ6/GQMnjsHcr0yDcgSFZe64r4bm01saeq7KVDwqFdVXVm7oiRXia6ZvMQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,65 +135,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a test that allocates a PUD THP, forks a child process, and has
-the child write to the shared memory. This triggers the copy-on-write
-path which must split the PUD THP. The test verifies that both parent
-and child see correct data after the split.
+Add a test that allocates a PUD THP and unmaps a 2MB region from the
+middle. Since the PUD can no longer cover the entire region, it must
+be split. The test verifies that memory before and after the hole
+remains accessible with correct data.
 
 Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 ---
- tools/testing/selftests/mm/pud_thp_test.c | 44 +++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ tools/testing/selftests/mm/pud_thp_test.c | 31 +++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
 diff --git a/tools/testing/selftests/mm/pud_thp_test.c b/tools/testing/selftests/mm/pud_thp_test.c
-index 7a1f0b0f81468..27a509cd477d5 100644
+index 27a509cd477d5..8d4cb0e60f7f7 100644
 --- a/tools/testing/selftests/mm/pud_thp_test.c
 +++ b/tools/testing/selftests/mm/pud_thp_test.c
-@@ -181,4 +181,48 @@ TEST_F(pud_thp, read_write_access)
- 	ASSERT_EQ(errors, 0);
+@@ -225,4 +225,35 @@ TEST_F(pud_thp, fork_cow)
+ 	       self->split_before, split_after);
  }
  
 +/*
-+ * Test: Fork and copy-on-write
-+ * Verifies that COW correctly splits the PUD THP and isolates parent/child
++ * Test: Partial munmap triggers split
++ * Verifies that unmapping part of a PUD THP splits it correctly
 + */
-+TEST_F(pud_thp, fork_cow)
++TEST_F(pud_thp, partial_munmap)
 +{
 +	unsigned long *ptr = (unsigned long *)self->aligned;
-+	unsigned char *bytes = (unsigned char *)self->aligned;
-+	pid_t pid;
-+	int status;
++	unsigned long *after_hole;
 +	unsigned long split_after;
++	int ret;
 +
-+	/* Initialize memory with known pattern */
-+	memset(self->aligned, 0xCC, PUD_SIZE);
++	/* Touch memory to allocate PUD THP */
++	memset(self->aligned, 0xDD, PUD_SIZE);
 +
-+	pid = fork();
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		/* Child: write to trigger COW */
-+		ptr[0] = 0x12345678UL;
-+
-+		/* Verify write succeeded and rest of memory unchanged */
-+		if (ptr[0] != 0x12345678UL)
-+			_exit(1);
-+		if (bytes[PAGE_SIZE] != 0xCC)
-+			_exit(2);
-+
-+		_exit(0);
-+	}
-+
-+	/* Parent: wait for child */
-+	waitpid(pid, &status, 0);
-+	ASSERT_TRUE(WIFEXITED(status));
-+	ASSERT_EQ(WEXITSTATUS(status), 0);
-+
-+	/* Verify parent memory unchanged (COW should have given child a copy) */
-+	ASSERT_EQ(bytes[0], 0xCC);
++	/* Unmap a 2MB region in the middle - should trigger PUD split */
++	ret = munmap((char *)self->aligned + PUD_SIZE / 2, PMD_SIZE);
++	ASSERT_EQ(ret, 0);
 +
 +	split_after = read_vmstat("thp_split_pud");
-+	TH_LOG("Fork COW completed (thp_split_pud: %lu -> %lu)",
++
++	/* Verify memory before the hole is still accessible and correct */
++	ASSERT_EQ(ptr[0], 0xDDDDDDDDDDDDDDDDUL);
++
++	/* Verify memory after the hole is still accessible and correct */
++	after_hole = (unsigned long *)((char *)self->aligned + PUD_SIZE / 2 + PMD_SIZE);
++	ASSERT_EQ(*after_hole, 0xDDDDDDDDDDDDDDDDUL);
++
++	TH_LOG("Partial munmap completed (thp_split_pud: %lu -> %lu)",
 +	       self->split_before, split_after);
 +}
 +
