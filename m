@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62CAFD172AB
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 00:55:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EACF7E65298
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 00:55:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE7E86B0095; Sun,  1 Feb 2026 19:55:36 -0500 (EST)
+	id 9C6B66B0096; Sun,  1 Feb 2026 19:55:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C73DD6B0096; Sun,  1 Feb 2026 19:55:36 -0500 (EST)
+	id 99B686B0098; Sun,  1 Feb 2026 19:55:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF8C66B0098; Sun,  1 Feb 2026 19:55:36 -0500 (EST)
+	id 8096A6B0099; Sun,  1 Feb 2026 19:55:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 94CB56B0095
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 19:55:36 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 62053160A02
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:36 +0000 (UTC)
-X-FDA: 84397698672.24.4CFC057
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 802AA140002
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DkLtRXEw;
-	spf=pass (imf26.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 728666B0096
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 19:55:39 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 036215BEED
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:38 +0000 (UTC)
+X-FDA: 84397698798.04.3F7BB78
+Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2776212000A
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 00:55:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fxo9j8Xy;
+	spf=pass (imf29.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769993734;
+	s=arc-20220608; t=1769993736;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DxuUiLfYi20Fha3ulkW2hqwY4wzmXAQF/uDuddDWXP0=;
-	b=SDvgc0H+/PBXaG75dAkvfGrbEHr4baakt6gw+HjIru5TvyUJbApFuUsJKCbSwH99cyeoTm
-	rQO6j/kVA3JBMwphTI38KqvZelJrqbwHmcjrbSRr4Pn4S6Fh4wxgmMZ4thFAoN/oflglKI
-	I4cAsVrmfTrumOKG+aUkILScZynfceQ=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=DkLtRXEw;
-	spf=pass (imf26.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.210.54 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769993734; a=rsa-sha256;
+	bh=4Sqbiib7KB6vkBOddWWUPu9R4jigpGCUz2K/91JUCWs=;
+	b=FH7ZJRV1/zGX11eJAhQ091MGNaP2r5MX9Uv5+0p7X8e+qpN7eb34s9hXS3P7S0JFCucmrh
+	BazpTFJmSDEhgRT1+icXpA4M2yM4Vvauu0gIjqZStfpbGhbHNnR/gXMPhnfHXhGygNszas
+	wPQubG8qKOrpchWsQzcaHn3T6l8gWxU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1769993736; a=rsa-sha256;
 	cv=none;
-	b=jQW6z/DTr+og8avLhu6nvmJOaXiJhq4sUq+yBS861j+d2gpdzIslCJXTH2hjXXjbQOf+Oa
-	ibB/PqIeIBjWIt3QHXTe/43jLXxKvdTJ9NM2AQZF6mrZ+2nGfXm0ErdBYE/b6hTu9WT3dX
-	IIA68aF6HCeDrbd6K/H4Jr9svp/VSDU=
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d1890f7cefso3323850a34.3
-        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 16:55:34 -0800 (PST)
+	b=795NGHQOjBSws4bMG3sLvlbFmrCEauP3E5i10TcgI+kn+S35Dg4jfnEoX9AwDdmO7Wpi06
+	eS5I3HkBqE65wMPxiPGv2/rosYb2nK8AY1+nZQq3SXT23FvdVdVE4Hhzvl/B2T5sUAkmDg
+	vmKeKUJohULqXC8xTKDeJwOaJ9wlrzk=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Fxo9j8Xy;
+	spf=pass (imf29.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.161.47 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-662f74f653bso2240120eaf.3
+        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 16:55:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769993733; x=1770598533; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769993735; x=1770598535; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DxuUiLfYi20Fha3ulkW2hqwY4wzmXAQF/uDuddDWXP0=;
-        b=DkLtRXEwKWCRGZ0SidvK7fb08HQdBrRzFx/PfEMQzGRUlzQAKXZ2CABIUrazWfIsZo
-         4DH1pkzWy4dpveMns/26npmL5RbceFf56pfc2j8E0pJB5Mfa8FRAn2jcDnSi59dBDyou
-         lkNFXZdPb1hzpc1Xh520+YryD3RIMJwY5dxAZOVVA1DRJcvzFiOtHUvU+bLfzLF1/qvi
-         WoaLQ0xOAaNkPkkmIR7aFeOlglXSRyFKacqEoIzNpUcYb7rGn86kzwxUDbRdUoruhRKr
-         zguHO39WL745TSCswtMoqakHnkdkC25eNnnnHxip6lHT5YxA4p1otNsTTBAK/PZ8zehh
-         r26w==
+        bh=4Sqbiib7KB6vkBOddWWUPu9R4jigpGCUz2K/91JUCWs=;
+        b=Fxo9j8Xyc77TqyS919+FBxAn2ESw1vTUDfsmAy5HNZ+lmBVQWiUu0WV9oTfJ0U76r8
+         aO8Edk99YaMSzF35L40bfktZXhxpWkqzdtx3nZS1JVDzQKneO1JPReoUMMgEBhkVkT5+
+         LpNxllBl5LQyOsOOL8UPSTU77rzI40lndWzrg/PZqPfP2pMZxhAkFzw9+/sWUomh3W4K
+         KthEl0wu/R2eLpDswmq0BiICMiOVuaP0MCZYV1oaM8GBqPAWRy1qJH6EogStmVNY6hoT
+         dCZOUgXbl9HAWEmri+e7jkS8vfbndocZpkDLIrYmDvLzyvHfEIx9MbUC/eJIAW98tL7j
+         2q6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769993733; x=1770598533;
+        d=1e100.net; s=20230601; t=1769993735; x=1770598535;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DxuUiLfYi20Fha3ulkW2hqwY4wzmXAQF/uDuddDWXP0=;
-        b=iTNPzyKGlD23zGabF1X7jUiZ5zLn+BcKaqHjquET1xg7L67Q6m9giUL14psxsU9qCC
-         Hi/ayyM0VeeDa8ZX+zCpEQyxDxr0Jm0rAGPwsFgjEbG/0j4EwZml0CJM9bpdP89qcrHs
-         q4K9gTzRvfL7QwtI/LmA2OdtL+Syr/lks/tFK8M8S8A5bs+o0tNDl7LZrfFJml6G2TRB
-         w/bq7pn0mLpLOAY/MPKS3hCi107A1O6anQCS4kgICdxi8NbIxFs0PbvFTbXG0o9ypb7z
-         ukPH+VcMTF450NhC/Mce/APpYXsdD1bpdLo0gEbq2YBAh0JRKOR7MTZSLtObJ9HTMKW8
-         S6/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVilovo2zM9vuD2fr3h2cblMGAmbesDkOLw7PxiVGQVla17Q82etHN677rrYCHp9AK310OZugbHpA==@kvack.org
-X-Gm-Message-State: AOJu0YwXh8+Z5GUeWIKFOXbm4XZJlj8JH9fG3Z0lI55H9Nc/BmcK3V2D
-	vlsPe16BcmLs8ki4I7OZAjMglG2O0kaB3CTbGA+qgSM2RtGzY3YvEjGZ
-X-Gm-Gg: AZuq6aKOLian/QwC/Q3EBNWBAIQKbqo6eUEdZsEUB1AWq3FLr18eIZv7h+GQdHjb35t
-	50Jn0mqxhHh9SvuzYLMchfcwu5+900uYqTTJSAnpqJOiKmM+HShSo5dPr6ULWmUrK3Ljxln+9+h
-	PA0lBzuzAZFH/kr6+Ik8fEbugKndsTfD3f53K45tKdzJEO1kj55qmqeBE9j/pK3YYfPpi02k4L7
-	6qMbGnaSv/8sPVkkRufyCkqdTCgI+9xAmxN7yEe866v9PFfh4iB0l/63JIi4uX9uH2PP/vcMGpx
-	iHCSXRCK/pEpXByoYiJizvX1D5G+PMXhTITsuc9KdEuim2IWA1IQLJ/9a5MIyxQT41LiV1pBecv
-	hDnARmlQu0djPhSighCLzioUQqBk5Pg7eLyF1uWL25EYjjIddc6gg/arQgxviXDNy9N5spYVp1a
-	f8v4FouCIF
-X-Received: by 2002:a05:6830:3112:b0:7d1:4d70:736e with SMTP id 46e09a7af769-7d1a535482fmr5803898a34.35.1769993733426;
-        Sun, 01 Feb 2026 16:55:33 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d18c69bf4csm9760188a34.9.2026.02.01.16.55.32
+        bh=4Sqbiib7KB6vkBOddWWUPu9R4jigpGCUz2K/91JUCWs=;
+        b=SLfgZ644sMOf4MRI4M2drs/+XcirX4Lf1O4eBvZ7t1yHKC2Q9e6RWN6ZXciIYcIz7+
+         sgs/7hoV7d0Zykkn8j1WiP3UJ/fmr3rqBqmlJ2Au1roSQU3fUh/z1BmsIJxJaCdF+fWA
+         dRod+yK3Rn/51DalPsQTSaqvAR28MQ/+Fub/nzwVfFNtqqMdf0lXsyL3127VDohE2w6M
+         MPP2kF/2mSedIp1Ai2K65jzoefvPg1YFVGsaQwX7UWbtExPsfSaLRKZk2zUKbLkDMXYL
+         Z+B3vLZQ+9ZYqtSJh1Uxc1PKYNnei2f/KKRx8a3uYxwYXrHu2IlQ5oHYwholEIT6ddci
+         7tOg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPEidiLiSreCsE5zNjEaZddiMAvustEoPnIWLhK3mBV5/oIeElzNxUqFBJiZ7ly+WvY9U/CUneZA==@kvack.org
+X-Gm-Message-State: AOJu0YyMAD3AH1Yt4oy7ay/kN625JyK+B0W/qwqg3AiTjOwKH94mKhUs
+	0dyvK0h6bL+RYW0yFGXFLdP8BSdCh8Wob5Rm510TjPbRkCMd8HFlPrd6
+X-Gm-Gg: AZuq6aIdO8tCnCggFTBkazxZ4YkDrLO5/D965bVPY+xDgpFwa92obsdvJdYrP77VxfM
+	7Jyaynk79tCKh4yOg0iX2h3w5MYRoNWebU1qzEcoDMu3Z4R+UeLGqC+uMnx9T9EUgxP9uad2xSl
+	aYmVfYGQvQN459RHTcLuPvgAPVwlZhP4AHcTLYsla7tELrZSUKQ1p77PeYJQ+Q9LdOvsy+tGeBO
+	ptn5liV9Qqe5a2Lug441HZqeDEZJ+/pLt4JC8urTuXc+wpNxbnfeCm+I3DS9E4/ez5I6ibRgITn
+	obES04xqVd6BXT9i5EJkInMmB6VrNNud9UCw+prPfmjshKqkKBHe+0E0bCKrd38XZWHbu3qdL7a
+	28cfe6BdCvBILCIHPM1xI+9SWgCPRRwNfp2Uoutw47uu5lq/d5h1dZABeWPuL5142fOkDHxccH4
+	r8oZ/bYUc=
+X-Received: by 2002:a05:6820:2213:b0:661:167b:72db with SMTP id 006d021491bc7-6630f35f037mr4965770eaf.38.1769993735072;
+        Sun, 01 Feb 2026 16:55:35 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:2::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-4095753b347sm9566016fac.17.2026.02.01.16.55.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 16:55:32 -0800 (PST)
+        Sun, 01 Feb 2026 16:55:34 -0800 (PST)
 From: Usama Arif <usamaarif642@gmail.com>
 To: ziy@nvidia.com,
 	Andrew Morton <akpm@linux-foundation.org>,
@@ -111,22 +111,22 @@ Cc: hannes@cmpxchg.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com,
 	Usama Arif <usamaarif642@gmail.com>
-Subject: [RFC 05/12] mm: thp: add reclaim and migration support for PUD THP
-Date: Sun,  1 Feb 2026 16:50:22 -0800
-Message-ID: <20260202005451.774496-6-usamaarif642@gmail.com>
+Subject: [RFC 06/12] selftests/mm: add PUD THP basic allocation test
+Date: Sun,  1 Feb 2026 16:50:23 -0800
+Message-ID: <20260202005451.774496-7-usamaarif642@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260202005451.774496-1-usamaarif642@gmail.com>
 References: <20260202005451.774496-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6k7kexk936fsz3bbke8ms1b1rms4ksba
+X-Rspamd-Queue-Id: 2776212000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 802AA140002
-X-HE-Tag: 1769993734-746568
-X-HE-Meta: U2FsdGVkX19ideA0QjVtW8pyz8j3CjcJy9HrMHJncKy8z+RR9AK+vvgn/3j45NMdho55ve6PlvrMmCpX9VntHTc9pieBSe7q3VrwWYRxzNO80B5UvvanGtlCKuy/uDfjvN/rRqAHoygeXjFP4ewSjJ5c7M7IpjpdLNjwoqHIZXgr+n0h7DcQ9E3bgeSWCSJEckqF6g8ROUflWsInIo7trwrHR4fLysjJ016g+7zqECSKj1gwHVhTEVBQJeWoBUIxDcDhWEqQQbZRnNT1grFY31wIOA24LMdXSz/nQJcDcHU1tKFIfp5eL3BR99cPUoRVp2EYOhC0Uy5+0qa/CXj5mI06DooIpFHKAwh5iU421K8ZD1NUlqT5sHaxRb+r3IevuVFUK//UuYFlYEVUNVknVryIDj1A4qwhPKgZzf1IbGiy4p0ZbthTC86arUd2RC/F7tIY6v7ZEGWAauHf2WjZbKGPikvcYQf+3Ep+cfKN1XkpbkJSK6KPRvynxENevJR97Ztyg4UQk36zCEQ0Dg+ZiHzl8xiRxf0f5+WSKvQVCweFDi9wpaECVTykdE3kqRtv3gSh0SN5T5WEAtCKZpVY5pZJcj+ePb89aa79IZeYHOjJhg0yFnVJjDE65DaMYO6+uA5wEr259yWkS3uexkuRM4Le9grWdS/alymuC9DqRXWO2FVw38Mbl701Wpdj44Xot98O+DnK6k2uoTd+mi9gUp8YdmF+y5SSHaszNbrMsDeLJhuKjPiwKgn4iJtEJ1svOdQqxTNCI6KyrLHnt0aqUQV2z/HO7KJBLbAGqzFM8qu2xb8ct0OLj+F7oXNBtOInR7VyYnzKpWXBY7YT771E9vNnn48uvYb/X0r/5ALKDSSGzSoj6buVKxYkhIQD7uzFSRyQhV76x4OKBXxhEIcXslsH9vARdKqa6pEWj6RT2TpbxUa+KnIAcGPSC+DxwvEwIZ5C63ZbuFrt0FOYMoe
- 2n9gDIHd
- Hxp0RVvAFRCR47w43or1MwrK0SMlN7puVJYB2efcjqN00ZW3cM/WVwW9mq617kG1N21yPTvgoRTCCu9MO+wCCzKYl/1JFkH5ZbYPwcdDNuqYKCXdyfYxFHPrHk5366nW7DPhC8bCazItLPc2MyYmEX7B9DZtcuFybBuy7gP/ZJhMrxiPVy4vAQA2tyMqI/G4fM2AvIxKgshORwb9liLT2oV/QDjfR/LyPHjJhQZar54tYmdP1nEFWJGcNWyoOx1Uk83VfwVWK7gjCur9S1wHyuUUCxULReBrOfMFCUtr94dpe/9HBgoawdHIVn0TJQWCf1lS+RXLDgIMWr4ua5sRkPCfCmzmMf64E1nWpaAm+y3soNJNgUOBmGTZyqnGMD7AFaX/4+/UVUiA0QyKEuhboAPfnRhITJrM/TcrgKlM+QL5/NY6f4+J4hXv3RX89Tar5qNE0G6Sg0mjhcX3FsQ+OrwmEoZFUuYz298jHNShX8kUP+SqUBcxbgVU4gw==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 5ojr8serodqsc9x6i4ut9mcu9u6f798j
+X-HE-Tag: 1769993735-305732
+X-HE-Meta: U2FsdGVkX18SMIdR2Gl+9v0fVtqIjmsAbpR3y5e6Bbh6xvDl0ThBrxpWquxmlyoJhUv6ALsL36dXQkXoXyX8IrCfI1gD7u6cvfaBU8/i8gqlXrUEJgEUwbreP+uqsMvlAvNBFIJxK9fK1ynuEYKvJ9kIoeR6ZREUJqB4ZtC1YYhB6IIEnzsY/qzxc4SVNsugeMrRaxotIneNLflVTY64sBDzzc60jr1VIGNoYK8pEV3KIol6rcoCf9OcJFPdeqKu+oN5JwhRB0Rb6PXg506rfaXm02WnXw2mrJ8jxoADqRerAZVMqvX3qXIY4P2ewK1d3+pO3Dxcir9chXCvmn9lLN4c5aaeWpXpZieEZwceLRNn4SEEpnKdKYMPxvOwWLV3WyzWH72M6/guAhMoGPvW1Rj1lAyQel9Jp5juANXKNEt7CVVQVdgssNJwVBBUXs0AG12sIaPKnbbseffRjH5kZBbX2GQkWBI0csm6XZEl9aKHrd9hWsnlIldGYwFuIeC+AnrXIILmw3VpYC47jLmIz9xyAMwKXP6um7uOQk+eZR37XyXSXWyxWOkkBTEeCvJ/i/MZgyQmlgAQNxd+vwRgWV+UkpRGIZZrfitzK/wftC08hUcmw/MCnYXni2gF4FwOD5blAw8qhCuBsbUDlJ3yd0PDQLsYL4wl8tBb6ImKtmbJlMlPej3t/IfD2Ldz8kszNSDlPn38zraOWLLyfWPD7wAq+L+LRjBsU6c14kfs1dj8EnH1870b+D0qQPd4pZY1wkAMdmtEZvUgPYew+ng7Oh//kK1gjeHBOxV4ZXr3QoFOlLtST+iUulQeqZPh6tvgrff/W3IXfuFA0jEDmPh4Wi5eJFmiTRWxCcPIgFkPvLIgytO5QLytst1CFrnzppby+oJ1SiXwXUML5lgOY4XGMZiPaq00ABwBZQuYsNp685nAt2rCPKhtwiCwzQk1Fy0ufpEx9P239GNghoZgFx8
+ 5IYuEJQB
+ I3Be187+/Zo/F/4tz2argqSVDOXtyd0Ocgp6rZ5QfqZ0afN4OrI1uoQxWsILhMJZwY3pANSgKZ8tPI9rONKjhe7sETIT7pA9FXvlunAIUDOHmctAqaNhcn28n7DdLoKqcPECdrQHU71Acu4cI/dVtOuto5zotGXK7TMatWhCPo5RdXuhtB/rOFNxUG3W1Bxwa/fcOi4W51ZiSVNr4bjGC5p+PjDlDGkf9On76CwUFvq8QfUkxhBZf+Lkhk0A23hQjlVRmeKXUVF6eIvGcp1Z8FWnL67Tf+va/EfVCC6IIR5Io2KQOPOFcg7inGV13TjcQRHqWn6cwknGNC0xwXC0peASkccmnI1H9l577TSiTZ34uPJST4iqq+rBmfL2AnOVRGVBQIz10yh5VjBy6xpy5nz2l9nJfGwdnTkBvz5jaVGlRjntdm2gqgt/rlpl/J5qgal+AcsOqlMBdQtzhcLQHcgJPOVXMl3K6IYm7SzgigIjUiarfoIX7CaUStw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,238 +135,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Enable the memory reclaim and migration paths to handle PUD THPs
-correctly by splitting them before proceeding.
+Add a selftest for PUD-level THPs (1GB THPs) with test infrastructure
+and a basic allocation test.
 
-Memory reclaim needs to unmap pages before they can be reclaimed. For
-PUD THPs, the unmap path now passes TTU_SPLIT_HUGE_PUD when unmapping
-PUD-sized folios. This triggers the PUD split during the unmap phase,
-converting the single PUD mapping into 262144 PTE mappings. Reclaim
-then proceeds normally with the individual pages. This follows the same
-pattern used for PMD THPs with TTU_SPLIT_HUGE_PMD.
+The test uses the kselftest harness FIXTURE/TEST_F framework. A shared
+fixture allocates a 2GB anonymous mapping and computes a PUD-aligned
+address within it. Helper functions read THP counters from /proc/vmstat
+and mTHP statistics from sysfs.
 
-When migration encounters a PUD-sized folio, it now splits the folio
-first using the standard folio split mechanism. The resulting smaller
-folios (or individual pages) can then be migrated normally. This matches
-how PMD THPs are handled when PMD migration is not supported on a given
-architecture.
-
-The split-before-migrate approach means PUD THPs will be broken up
-during NUMA balancing or memory compaction. While this loses the TLB
-benefit of the large mapping, it allows these memory management
-operations to proceed. Future work could add PUD-level migration
-entries to preserve the mapping through migration.
+The basic allocation test verifies the fundamental PUD THP allocation
+path by touching a PUD-aligned region and checking that the mTHP
+anon_fault_alloc counter increments, confirming a 1GB folio was
+allocated.
 
 Signed-off-by: Usama Arif <usamaarif642@gmail.com>
 ---
- include/linux/huge_mm.h | 11 ++++++
- mm/huge_memory.c        | 83 +++++++++++++++++++++++++++++++++++++----
- mm/migrate.c            | 17 +++++++++
- mm/vmscan.c             |  2 +
- 4 files changed, 105 insertions(+), 8 deletions(-)
+ tools/testing/selftests/mm/Makefile       |   1 +
+ tools/testing/selftests/mm/pud_thp_test.c | 161 ++++++++++++++++++++++
+ 2 files changed, 162 insertions(+)
+ create mode 100644 tools/testing/selftests/mm/pud_thp_test.c
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index a292035c0270f..8b2bffda4b4f3 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -559,6 +559,17 @@ static inline bool folio_test_pmd_mappable(struct folio *folio)
- 	return folio_order(folio) >= HPAGE_PMD_ORDER;
- }
- 
-+/**
-+ * folio_test_pud_mappable - Can we map this folio with a PUD?
-+ * @folio: The folio to test
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index eaf9312097f7b..ab79f1693941a 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -88,6 +88,7 @@ TEST_GEN_FILES += pagemap_ioctl
+ TEST_GEN_FILES += pfnmap
+ TEST_GEN_FILES += process_madv
+ TEST_GEN_FILES += prctl_thp_disable
++TEST_GEN_FILES += pud_thp_test
+ TEST_GEN_FILES += thuge-gen
+ TEST_GEN_FILES += transhuge-stress
+ TEST_GEN_FILES += uffd-stress
+diff --git a/tools/testing/selftests/mm/pud_thp_test.c b/tools/testing/selftests/mm/pud_thp_test.c
+new file mode 100644
+index 0000000000000..6f0c02c6afd3a
+--- /dev/null
++++ b/tools/testing/selftests/mm/pud_thp_test.c
+@@ -0,0 +1,161 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Test program for PUD-level Transparent Huge Pages (1GB anonymous THP)
 + *
-+ * Return: true - @folio can be PUD-mapped, false - @folio cannot be PUD-mapped.
++ * Prerequisites:
++ * - Kernel with PUD THP support (CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
++ * - THP enabled: echo always > /sys/kernel/mm/transparent_hugepage/enabled
++ * - PUD THP enabled: echo always > /sys/kernel/mm/transparent_hugepage/hugepages-1048576kB/enabled
 + */
-+static inline bool folio_test_pud_mappable(struct folio *folio)
++
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++#include <sys/mman.h>
++#include <sys/wait.h>
++#include <fcntl.h>
++#include <errno.h>
++#include <stdint.h>
++#include <sys/syscall.h>
++
++#include "kselftest_harness.h"
++
++#define PUD_SIZE	(1UL << 30)	/* 1GB */
++#define PMD_SIZE	(1UL << 21)	/* 2MB */
++#define PAGE_SIZE	(1UL << 12)	/* 4KB */
++
++#define TEST_REGION_SIZE	(2 * PUD_SIZE)	/* 2GB to ensure PUD alignment */
++
++/* Get PUD-aligned address within a region */
++static inline void *pud_align(void *addr)
 +{
-+	return folio_order(folio) >= HPAGE_PUD_ORDER;
++	return (void *)(((unsigned long)addr + PUD_SIZE - 1) & ~(PUD_SIZE - 1));
 +}
 +
- vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf);
- 
- vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf);
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 39b8212b5abd4..87b2c21df4a49 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2228,9 +2228,17 @@ int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		goto out_unlock;
- 
- 	/*
--	 * TODO: once we support anonymous pages, use
--	 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
-+	 * For anonymous pages, split to PTE level.
-+	 * This simplifies fork handling - we don't need to duplicate
-+	 * the complex anon rmap at PUD level.
- 	 */
-+	if (vma_is_anonymous(vma)) {
-+		spin_unlock(src_ptl);
-+		spin_unlock(dst_ptl);
-+		__split_huge_pud(vma, src_pud, addr);
-+		return -EAGAIN;
-+	}
++/* Read vmstat counter */
++static unsigned long read_vmstat(const char *name)
++{
++	FILE *fp;
++	char line[256];
++	unsigned long value = 0;
 +
- 	if (is_cow_mapping(vma->vm_flags) && pud_write(pud)) {
- 		pudp_set_wrprotect(src_mm, addr, src_pud);
- 		pud = pud_wrprotect(pud);
-@@ -3099,11 +3107,29 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- {
- 	spinlock_t *ptl;
- 	pud_t orig_pud;
-+	pmd_t *pmd_table;
-+	pgtable_t pte_table;
-+	int nr_pte_tables = 0;
- 
- 	ptl = __pud_trans_huge_lock(pud, vma);
- 	if (!ptl)
- 		return 0;
- 
-+	/*
-+	 * Withdraw any deposited page tables before clearing the PUD.
-+	 * These need to be freed and their counters decremented.
-+	 */
-+	pmd_table = pgtable_trans_huge_pud_withdraw(tlb->mm, pud);
-+	if (pmd_table) {
-+		while ((pte_table = pud_withdraw_pte(pmd_table)) != NULL) {
-+			pte_free(tlb->mm, pte_table);
-+			mm_dec_nr_ptes(tlb->mm);
-+			nr_pte_tables++;
++	fp = fopen("/proc/vmstat", "r");
++	if (!fp)
++		return 0;
++
++	while (fgets(line, sizeof(line), fp)) {
++		if (strncmp(line, name, strlen(name)) == 0 &&
++		    line[strlen(name)] == ' ') {
++			sscanf(line + strlen(name), " %lu", &value);
++			break;
 +		}
-+		pmd_free(tlb->mm, pmd_table);
-+		mm_dec_nr_pmds(tlb->mm);
 +	}
-+
- 	orig_pud = pudp_huge_get_and_clear_full(vma, addr, pud, tlb->fullmm);
- 	arch_check_zapped_pud(vma, orig_pud);
- 	tlb_remove_pud_tlb_entry(tlb, pud, addr);
-@@ -3114,14 +3140,15 @@ int zap_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		struct page *page = NULL;
- 		struct folio *folio;
- 
--		/* No support for anonymous PUD pages or migration yet */
--		VM_WARN_ON_ONCE(vma_is_anonymous(vma) ||
--				!pud_present(orig_pud));
-+		VM_WARN_ON_ONCE(!pud_present(orig_pud));
- 
- 		page = pud_page(orig_pud);
- 		folio = page_folio(page);
- 		folio_remove_rmap_pud(folio, page, vma);
--		add_mm_counter(tlb->mm, mm_counter_file(folio), -HPAGE_PUD_NR);
-+		if (vma_is_anonymous(vma))
-+			add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PUD_NR);
-+		else
-+			add_mm_counter(tlb->mm, mm_counter_file(folio), -HPAGE_PUD_NR);
- 
- 		spin_unlock(ptl);
- 		tlb_remove_page_size(tlb, page, HPAGE_PUD_SIZE);
-@@ -3729,15 +3756,53 @@ static inline void split_huge_pmd_if_needed(struct vm_area_struct *vma, unsigned
- 		split_huge_pmd_address(vma, address, false);
- }
- 
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+static void split_huge_pud_address(struct vm_area_struct *vma, unsigned long address)
-+{
-+	pud_t *pud = mm_find_pud(vma->vm_mm, address);
-+
-+	if (!pud)
-+		return;
-+
-+	__split_huge_pud(vma, pud, address);
++	fclose(fp);
++	return value;
 +}
 +
-+static inline void split_huge_pud_if_needed(struct vm_area_struct *vma, unsigned long address)
++/* Read mTHP stats for PUD order (1GB = 1048576kB) */
++static unsigned long read_mthp_stat(const char *stat_name)
 +{
++	char path[256];
++	char buf[64];
++	int fd;
++	ssize_t ret;
++	unsigned long value = 0;
++
++	snprintf(path, sizeof(path),
++		 "/sys/kernel/mm/transparent_hugepage/hugepages-1048576kB/stats/%s",
++		 stat_name);
++	fd = open(path, O_RDONLY);
++	if (fd < 0)
++		return 0;
++	ret = read(fd, buf, sizeof(buf) - 1);
++	close(fd);
++	if (ret <= 0)
++		return 0;
++	buf[ret] = '\0';
++	sscanf(buf, "%lu", &value);
++	return value;
++}
++
++/* Check if PUD THP is enabled */
++static int pud_thp_enabled(void)
++{
++	char buf[64];
++	int fd;
++	ssize_t ret;
++
++	fd = open("/sys/kernel/mm/transparent_hugepage/hugepages-1048576kB/enabled", O_RDONLY);
++	if (fd < 0)
++		return 0;
++	ret = read(fd, buf, sizeof(buf) - 1);
++	close(fd);
++	if (ret <= 0)
++		return 0;
++	buf[ret] = '\0';
++
++	/* Check if [always] or [madvise] is set */
++	if (strstr(buf, "[always]") || strstr(buf, "[madvise]"))
++		return 1;
++	return 0;
++}
++
++/*
++ * Main fixture for PUD THP tests
++ * Allocates a 2GB region and provides a PUD-aligned pointer within it
++ */
++FIXTURE(pud_thp)
++{
++	void *mem;		/* Base mmap allocation */
++	void *aligned;		/* PUD-aligned pointer within mem */
++	unsigned long mthp_alloc_before;
++	unsigned long split_before;
++};
++
++FIXTURE_SETUP(pud_thp)
++{
++	if (!pud_thp_enabled())
++		SKIP(return, "PUD THP not enabled in sysfs");
++
++	self->mthp_alloc_before = read_mthp_stat("anon_fault_alloc");
++	self->split_before = read_vmstat("thp_split_pud");
++
++	self->mem = mmap(NULL, TEST_REGION_SIZE, PROT_READ | PROT_WRITE,
++			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ASSERT_NE(self->mem, MAP_FAILED);
++
++	self->aligned = pud_align(self->mem);
++}
++
++FIXTURE_TEARDOWN(pud_thp)
++{
++	if (self->mem && self->mem != MAP_FAILED)
++		munmap(self->mem, TEST_REGION_SIZE);
++}
++
++/*
++ * Test: Basic PUD THP allocation
++ * Verifies that touching a PUD-aligned region allocates a PUD THP
++ */
++TEST_F(pud_thp, basic_allocation)
++{
++	unsigned long mthp_alloc_after;
++
++	/* Touch memory to trigger page fault and PUD THP allocation */
++	memset(self->aligned, 0xAB, PUD_SIZE);
++
++	mthp_alloc_after = read_mthp_stat("anon_fault_alloc");
++
 +	/*
-+	 * If the new address isn't PUD-aligned and it could previously
-+	 * contain a PUD huge page: check if we need to split it.
++	 * If mTHP allocation counter increased, a PUD THP was allocated.
 +	 */
-+	if (!IS_ALIGNED(address, HPAGE_PUD_SIZE) &&
-+	    range_in_vma(vma, ALIGN_DOWN(address, HPAGE_PUD_SIZE),
-+			 ALIGN(address, HPAGE_PUD_SIZE)))
-+		split_huge_pud_address(vma, address);
++	if (mthp_alloc_after <= self->mthp_alloc_before)
++		SKIP(return, "PUD THP not allocated");
++
++	TH_LOG("PUD THP allocated (anon_fault_alloc: %lu -> %lu)",
++	       self->mthp_alloc_before, mthp_alloc_after);
 +}
-+#else
-+static inline void split_huge_pud_if_needed(struct vm_area_struct *vma, unsigned long address)
-+{
-+}
-+#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
 +
- void vma_adjust_trans_huge(struct vm_area_struct *vma,
- 			   unsigned long start,
- 			   unsigned long end,
- 			   struct vm_area_struct *next)
- {
--	/* Check if we need to split start first. */
-+	/* Check if we need to split PUD THP at start first. */
-+	split_huge_pud_if_needed(vma, start);
-+
-+	/* Check if we need to split PUD THP at end. */
-+	split_huge_pud_if_needed(vma, end);
-+
-+	/* If we're incrementing next->vm_start, we might need to split it. */
-+	if (next)
-+		split_huge_pud_if_needed(next, end);
-+
-+	/* Check if we need to split PMD THP at start. */
- 	split_huge_pmd_if_needed(vma, start);
- 
--	/* Check if we need to split end next. */
-+	/* Check if we need to split PMD THP at end. */
- 	split_huge_pmd_if_needed(vma, end);
- 
- 	/* If we're incrementing next->vm_start, we might need to split it. */
-@@ -3752,6 +3817,8 @@ static void unmap_folio(struct folio *folio)
- 
- 	VM_BUG_ON_FOLIO(!folio_test_large(folio), folio);
- 
-+	if (folio_test_pud_mappable(folio))
-+		ttu_flags |= TTU_SPLIT_HUGE_PUD;
- 	if (folio_test_pmd_mappable(folio))
- 		ttu_flags |= TTU_SPLIT_HUGE_PMD;
- 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 4688b9e38cd2f..2d3d2f5585d14 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1859,6 +1859,23 @@ static int migrate_pages_batch(struct list_head *from,
- 			 * we will migrate them after the rest of the
- 			 * list is processed.
- 			 */
-+			/*
-+			 * PUD-sized folios cannot be migrated directly,
-+			 * but can be split. Try to split them first and
-+			 * migrate the resulting smaller folios.
-+			 */
-+			if (folio_test_pud_mappable(folio)) {
-+				nr_failed++;
-+				stats->nr_thp_failed++;
-+				if (!try_split_folio(folio, split_folios, mode)) {
-+					stats->nr_thp_split++;
-+					stats->nr_split++;
-+					continue;
-+				}
-+				stats->nr_failed_pages += nr_pages;
-+				list_move_tail(&folio->lru, ret_folios);
-+				continue;
-+			}
- 			if (!thp_migration_supported() && is_thp) {
- 				nr_failed++;
- 				stats->nr_thp_failed++;
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 619691aa43938..868514a770bf2 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -1348,6 +1348,8 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
- 			enum ttu_flags flags = TTU_BATCH_FLUSH;
- 			bool was_swapbacked = folio_test_swapbacked(folio);
- 
-+			if (folio_test_pud_mappable(folio))
-+				flags |= TTU_SPLIT_HUGE_PUD;
- 			if (folio_test_pmd_mappable(folio))
- 				flags |= TTU_SPLIT_HUGE_PMD;
- 			/*
++TEST_HARNESS_MAIN
 -- 
 2.47.3
 
