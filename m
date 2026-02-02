@@ -4,135 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56FBDD172BE
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 03:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADB46D172BC
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 03:26:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C16816B0089; Sun,  1 Feb 2026 22:18:39 -0500 (EST)
+	id EF46A6B0088; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B9F806B008A; Sun,  1 Feb 2026 22:18:39 -0500 (EST)
+	id E77FF6B0089; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC3416B008C; Sun,  1 Feb 2026 22:18:39 -0500 (EST)
+	id D59886B008A; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B1DE6B0089
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 22:18:39 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4936B160A49
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:18:39 +0000 (UTC)
-X-FDA: 84398059158.09.A81F2D6
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5C4E12000F
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:18:37 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hR18QGyg;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770002317;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C35066B0088
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B4EEBC524
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:26:15 +0000 (UTC)
+X-FDA: 84398078310.06.5F4B1A0
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7F6E9C0007
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:26:13 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AgREkh37;
+	spf=pass (imf22.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770002773;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WcIkuTCnSvaZXRrX+rXO8+4cHF1+iTfZ6q0AXxSYTGQ=;
-	b=YSth7vj6BUXNSWFjJdJLpNbEZ/4XZYVfQVdME9CUKVL2MjXgFcJcnmj9My1jHqfJ1PkHYC
-	h5qxJLAVkqKE9bHeoDMdcunlLF5qGf43sBkyHaDNig/ORTucOcdBkytCcf5nOaomXPx0WI
-	ARajLSUDKptKGxHj1inRFL1kbcAP2GA=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hR18QGyg;
-	spf=pass (imf03.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770002317; a=rsa-sha256;
-	cv=pass;
-	b=P7YUSrH1rVDdBvb7IgVvPgiGXENvvcgEpGtCW6MN7Yq+GhRBfZdNslO3czkalxnGi3zQ+V
-	1K9ZN6kYKFquolXcYQtEzbf47cUooglkxTVQ6jfX5oaHFy/foBUlg9YD0M89UTWJkfLMJc
-	PU5Fh4Zn+PrJXTBWTlN8jymw59YaUCk=
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-c61343f82d7so1557829a12.1
-        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 19:18:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770002316; cv=none;
-        d=google.com; s=arc-20240605;
-        b=iEeFnpSMCGgU+IHK66wKnliFZqmzV5dyAxyPYZBUqurTQegCt5xrwtOdd1bjQC2+/R
-         fiAikZzUWjfjOAu+RHd+XgFeZIull9Z8WVr8TjEhQxkqcON0AqUG0x5fiuQcIoO2TcHt
-         UhM3YatbY2XQfwTNXa19ISkKUhGuSxjiIIxJvdHEfCLBepoEMhQFi2CCypKuPINoiX2M
-         Znp3Y40D+Q8qns4YTogHyI0WSdwqqGNIA+d66Ex8ZO+eyDXxEKarVsVuPpBh056u1U6i
-         M5wnZQiSBS19+1ubgsNfMYl3D9GH9j7RBoluFkD+A9+m+0QgcIxmcm5QrhK2VY2p4VeR
-         fsBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WcIkuTCnSvaZXRrX+rXO8+4cHF1+iTfZ6q0AXxSYTGQ=;
-        fh=93kFg1MXbW0hqR/MdQOhZfZq85DQQ5oy4J3th1gwT+Q=;
-        b=jNbt4mQ7WD9vx3Dh/7QluUrq0w7+FHv91Xcygu87EAgzSTZHepk26mNKGMjrlOxtK9
-         j4eOnSPVoIJZHXSEOP4uDpeOBgcAH9xB7FxKnlkqNYrgoQUzRvXVZ90rmWWfyqmLms9q
-         CgMRplfebmvIwNpIfpLvzK3U8U8e6J9ObWMcrItWLblQY+NJe+hIj23k/6/5h1KI7p3V
-         ABR2ctiC4+hF5iolea85olT7NJuNplU221cUsT97T7SLpUu58xB6u3FHML4k99GSbDD5
-         LgHzsaS9zJ12UGx62LPFVa/zBw6FxCeSKL0VBNojQtl/oxLSq8C8bUiYAoZGVLLk2qOp
-         fOsA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=8y1tSjszHwNi7K6C6xGA7ozYqT29UdTx9KR8G4VZTuc=;
+	b=Jtkdg00nEgf0i5jkuA9o7EwuOXsBdgcUoyLRKlp5I6Cc4aYXxPAtI4b3pJAHiFrEtKc16N
+	FEZ6QcoKVuCpbhxgyiRYUaHRwGEMH6XztNZgZFQqegWMKOu+Yb5j8UvXqFh6DKG6jMWnUT
+	htjaxtUt3+y26an1TLwSdXYjm0xrMco=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AgREkh37;
+	spf=pass (imf22.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770002773; a=rsa-sha256;
+	cv=none;
+	b=M2JPCdYu2m3y6EYGdW/cb32zVPyzwbn+/Az85mMe2o2HvIiM+KmZBlAdAVdH3HTTmhA9l3
+	xk4Md8ucCEAXIC5MLgzw9Wc5HjqpKaP8LLsJSr//ZW7KD7BO9aOfHC7a5CMQXPGdjW9jRk
+	Gq1eNa0B+F+NjCjxH/oeFB36oY413ZQ=
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b8838339fc6so734026766b.0
+        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 19:26:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770002316; x=1770607116; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WcIkuTCnSvaZXRrX+rXO8+4cHF1+iTfZ6q0AXxSYTGQ=;
-        b=hR18QGyg+CY6mexnpQlvmccsEjPDZX1H9Sc/4ok1Fp1XYfblGeIM33qEwyNyXcAQ30
-         MK8m8NdniHWnGS1onHEm/Lu9IYXP2UmmUB9r7fNxN/l9RrTqFHa+lRkAwlJLypEpzlik
-         fVXW0eicB5AKmrCosnKYWV/m+ksIWTPAe352wcSM5YdeE2Zm78ZbM1UjzpP7+tK1NCBv
-         er1Ubk5BcMhcagzKzjdHh/aK296DyMymw0xpqTs9Ln+oDgJBhh+HPD91mSJ30rxwz6ob
-         RSpc38RPAfLgTmuGwn0Lxg4ixyn6sGmBQKrCS1tqNYIncaZaaPvjbsZB+G/fslwFy5ym
-         +cLg==
+        d=google.com; s=20230601; t=1770002772; x=1770607572; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=8y1tSjszHwNi7K6C6xGA7ozYqT29UdTx9KR8G4VZTuc=;
+        b=AgREkh37bkXhcz8uqosAHZumyDuBJh9nMtGSOvBHsDUhkHjTlZMKUJOco/LpcDyCtC
+         7VZeW4KDc469eMKDCG0yAv5vB5EGskb2tX68I03EOAnyfUAvZAA0xx9xZZMbDCnAnOjA
+         NLP7XFe1vh31T9JXEIr8Cq5TX7PYn5+63VrTFvSK2wI2bTN2hFZUzc+fdpvsmHnim8ac
+         kfg7BvB+hoMU3NgDCY8EG8n5Z4OfakEVxOLo8hiDcz4K4+wKjAGZyAAE1mQ80bAyLeK3
+         S5SWf2FEoHCYWu5djHHncjLSZVuUrrecvCCA/XiClogtqZdOZXnUFV/v5IRKEg0AVIbp
+         RrRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770002316; x=1770607116;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=WcIkuTCnSvaZXRrX+rXO8+4cHF1+iTfZ6q0AXxSYTGQ=;
-        b=JkUeJfOuomUTAoC2BgLUAa5bQXlUzNOsyfO5FPsLufjDhnJi4mb49I//kJwBh3+2vr
-         ttkjRxgF5/hJK4U2vrHH+2G0g8cFRH0dMQ/LUU7/Ecnu5ztoiZtLW3m3+LrMDRzMT39v
-         YIFtx+SEkZch69GfOGAd7dv6ck7zPcxY6KSOyDOzSQird9c8PtqaNKyuJXZNffrDnUES
-         G6C7XzVXWyJv0Ruz3dc/1Drc9gEMsSYdd9BfU5XOBewZdQyrleokzFsdSr0C3miXo334
-         sx7jHumXVoMfnvWV6MRvIL5CjiwPvrPlSq6C6OjKQK7AwBNVlBdOtg73Rej8vO6iFxBc
-         uYEw==
-X-Gm-Message-State: AOJu0Yygo9cROwBLXJOHMca9CaSa1MrmnbAEjTs3AKekAEecS43taspa
-	tW6nzE23Glrm3AP/+klUl0JeKkE3q2xAI5uDswf4p3rrZkYhjrQvsC6ihJdnd+IRoyIPhB1FbVK
-	V0J60QZa6kpqqIlsi5uhhuLxbIEqXZGA=
-X-Gm-Gg: AZuq6aKjpiUQE9VsRpqxvyosgyMIU+BR6qtCAhQ/QOU5LI7bybQQER+VEipInxdM2uS
-	B0Crfl381ohy/r41rcLFX0zCqJQw1G+/GbeyjGrgA4ggHsC3ofWh6+7tscyicpqXUq5myu8Zr8b
-	Yu5Kesbg1r1U5QjTzIT8VNE6ueGDJN0+i/IyDZ/WAEEAJq9Ef3d2RgKxSwsLlE0LrOWhrwK/Z5Q
-	gKDWFHSaHXhJ/VI6UIb4radlBSpZ9GZlljjsGLRfRiRG8YsVNVFyhInXXYYGNq8t42a4vVwMja/
-	D47+Ceq2kghBA4xsroXFr9pwzZuw
-X-Received: by 2002:a17:90b:3d4c:b0:343:c3d1:8b9b with SMTP id
- 98e67ed59e1d1-3543b396543mr9861836a91.19.1770002316051; Sun, 01 Feb 2026
- 19:18:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770002772; x=1770607572;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8y1tSjszHwNi7K6C6xGA7ozYqT29UdTx9KR8G4VZTuc=;
+        b=YKYYUx9LcQuPxDjJOX8vjn8+xWvfO4KfzfjRPJa7r8fHHeazaAIls4v25fRUBvWdFm
+         8oKdnx5/0R8jBjB9q2OphJXTRtelvnQSnucvWw6MrZAW28Je/JjPqAQU0Hq8CovHdEn5
+         R+bviP5xBD+bp4wKTWrY2k7TGqn2ziuQLcxmxvlQL+9JAsE1y8Eey8LNoDjJ7PN7MI6X
+         rXV/zqedM0XNy78Zx9C31C3WDHFnyYjxpBCtAB6wTXoUrNu1EM6U7eSEldWYA3w6h2+U
+         Pmjuka/R65oOB4KThkWghSqStdwBmgHyOAaFyNp4NqMMpf5dZCzmzZU87deQ5EnrpR7Q
+         MVAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUytBxFRLA4tYmJRxwHTtO709x2KNRi92HfM+MtQUUcFpVnPr1JeXXQ0QqoitY6FFfxQWDH7tGqMQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyi93F7TyH2U9sA1PmPQbPm8QB7lKgRuO7RdV1jU1QKsgAhVIg0
+	vZYRV9m7/aI5uzYQ9XhksUHWydzHkrY8WllFyu0N9dmr0815OC10aUpq3BDWgc+G4Q==
+X-Gm-Gg: AZuq6aIjKTyQTnixWG6hi91iawEDUkUBg6jGpShJduQr+XP1daKLHhpVZ2fOkwYg0Di
+	FBZe2JiEAb+uqCLoZ9UTk5vxeejIVODXVGNMa14bRrfPkOVVMqCl7S8SY0mkaS3y+WyBGhmnVYK
+	Prp4+qql4ubTNCCFEiUpsbzKspl9oHrmuZHjE4F0e8HVz3lYc1ETsYlyqcLESsNGZsIZBpIGGVb
+	xAtan1Gt6NsOy5Ilr3JXZwoZyuUwR8DGCxCXvI21/vtb+WL4lajJEyli6N+Ish1noGl1ZHd/b86
+	HrQuDj/4UCrPSyMt9IfkBRKw4BpcDwZUdDNn13YsXjylUWF3oyEk5D5Sxv3DDo6y1nwqyNHz6aS
+	ciq5WFGeiOdAkc3mOvu9gcyEaguYYFI8CQlsR+ZoqcizYx3Imho+cBiSSI76Ackd8LRYXpYEkHi
+	ZieUMytvReVVVGferreBBAOfUWRMj+2Btb3/5timgfF3ILduVnmnw=
+X-Received: by 2002:a17:906:f049:b0:b87:6839:6175 with SMTP id a640c23a62f3a-b8ddf84586fmr869883966b.10.1770002771786;
+        Sun, 01 Feb 2026 19:26:11 -0800 (PST)
+Received: from google.com (93.50.90.34.bc.googleusercontent.com. [34.90.50.93])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-658b46abb3esm7161539a12.32.2026.02.01.19.26.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Feb 2026 19:26:10 -0800 (PST)
+Date: Mon, 2 Feb 2026 03:26:07 +0000
+From: Matt Bobrowski <mattbobrowski@google.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Michal Hocko <mhocko@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>, joshdon@google.com
+Subject: Re: [PATCH bpf-next v3 00/17] mm: BPF OOM
+Message-ID: <aYAZT-ZZSKdiChfd@google.com>
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+ <aXh_LpTzDhvv20uB@tiehlicka>
+ <7ia44io6kbwj.fsf@castle.c.googlers.com>
+ <aXnDdkYmtipGwSjK@tiehlicka>
+ <CAADnVQ+ghTc5FtJCjm4ya3y3xVpSuJe-7ctdT-thowqWguc1pA@mail.gmail.com>
 MIME-Version: 1.0
-References: <CABXGCsNqk6pOkocJ0ctcHssCvke2kqhzoR2BGf_Hh1hWPZATuA@mail.gmail.com>
- <CAMgjq7BM0QFvk3_D4qyggjJ4W_+nHAupQnpAYehGq50CYNJV7w@mail.gmail.com> <CABXGCsPrpLubmjt5vGacPcmQnOYj1EVei3G3=L_2X_-Wfa3kcA@mail.gmail.com>
-In-Reply-To: <CABXGCsPrpLubmjt5vGacPcmQnOYj1EVei3G3=L_2X_-Wfa3kcA@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 2 Feb 2026 11:17:57 +0800
-X-Gm-Features: AZwV_QhAVIlsdfdnEgy0Zx9Okq4QjKYmKd4H-76ds82wyEEZmhSB2oBUu6YQpLo
-Message-ID: <CAMgjq7BpeaDU9_DhXYvLMadTgDq_ObJeBb+ndfMygzz7n_FjTg@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm/page_alloc: fix use-after-free in swap due to
- stale page data after split_page()
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux List Kernel Mailing <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@suse.cz>, chrisl@kernel.org, Hugh Dickins <hughd@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5C4E12000F
-X-Stat-Signature: bi4cnyi6wh4999e1mcadryspgbf498x7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAADnVQ+ghTc5FtJCjm4ya3y3xVpSuJe-7ctdT-thowqWguc1pA@mail.gmail.com>
+X-Stat-Signature: r7zmiyxbyi9cpjgnbfgq4s3khfbhje99
+X-Rspamd-Queue-Id: 7F6E9C0007
 X-Rspam-User: 
-X-HE-Tag: 1770002317-467324
-X-HE-Meta: U2FsdGVkX1+cFZNpcUqlcrE77nhB6GOERQNJ1+AeQCBS2ZriPoEr7aqXe+Err4IO4Wpu3zvngqaPZd//Rfip4/7PEVkaKFmD/A62AWiA8PA/GaCAnNkvW3PryGSyHOFzFYvmp6MTAp3pHmRQkhikLso8GcB0EOr8MfISO9k8GTsa7iiTjg4GKaLulSENkUj/lSg4hgFzxgXLVt5NllCLrKqYeo84UYD8KUjdjskGK7F9wpTC1dgkyFNTLIE/uqqMEig3m7Q7NK5MPK6YmsOzmdfQXDGznEJiW9+oaCUcRT78APRg5l/614XeMpfu52dcvJwcXOv1vmxrM3S02MNBGKzfPusG/klt6q0Tgnn2bwzXT813wJ8IQfnh8eocFZI6rgXArny68AmciY0Rpft2S1/E2iRVsCDttgDtoL3QM/1b6MhaGrqq+KbbWCUERr8rlXhqajSsQA69OJ6b5ZpNGhOM1yNUN62EmYVathTEQ1RjL0Z/w6tynr4Rm5k0lcS6n0G3jtiftFmmLriD2q+b9Y1ifgi63Xp5r1etUoQ+73XrXIUR/X86efst+8abSVgbJFxG+pzh4rQfn/cL0EP2wAusZF+dKOSmkxm409jbJz1Unm4ISpGU6OW2Urfems8chWsDFYl56D+NK+5RjKpetxDx6zCOqpXfiPhCaOwnORoAsjDqCbZkruZjD1Pmej+Uzx9EZa56xrNSub1/yrJaFTqlBCQXfBXfe0tT6m2XovpLTwmh6wjtrk1uP8IGOwJ5c45OIYrRFccfHLaiydMR15u/SbKyi13e5LNEcYJBMmsHknrrgsVn6x95Hla/ZmcVH6sUnMBr79BmzNhBGrNPIiVLEL54X8W6a0d/Oj6HCgYNy0hfR+bNEypPy7cTP6Vw72/vDjaBBLeWN9dboyWz9OF+W9judcjIMvfTtVxHScwNWNKgqTx5cF6oHxb899xFVKeYh1cTsOURyi+xDqA
- g/RYqoEL
- 5EdlxoHlOYNP4rwGSc6blO9x44bVpGT+RoaDA3SEGwOLjArEFph03adso3MTFaL2e4aqA1KBFPI4OIS3oIaha8ys4x9IyTORyW2Q9lNQq5JWPkpi3OuZPELsoL4tIU1mdQukFPMnVeNALGkRRa1TV4yC9wl3q09ikBpNGQ1UOQMG42iu3vhhz9wdEoGI6Z0TotKq1IAbCzj9Vsi4FcihlLfjxrt1d0o4RHeBcwJ7ILDfwRRU1pAVe+8qrUBjEqfO+Og4OxZD75dVFH4bxHAG8SxlJZOEnt0Zh0WBvBhKZYiXugfHeUgp8UDqD8k2WZ2/WDssjang9gtjvZnkbX6wVrlJM8Tp0OSvbs2FiS7vwDxDhzKaHFjPSOPjO5TnqpUeK5+BQbWPqA2Xfz5zYHLDfyKqhLO9ObbO8oelHdG5QcTF4IuTDq9dI0xFIfwkxGUQRyK1CMtVi+VQCGGjLVrDtRiKHo1Hh5ExYw+ouQJsm7dJ7Z5RKXs0IH9YqOpRz7KcH58uCUZelnIIcSwaAS/3zt0/MCMeMjC2KIN3f
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770002773-214630
+X-HE-Meta: U2FsdGVkX1/CKIeIg4Fdfs2ivwmqD+AL446TKfbFuQbLjLsHHn/3Dv8OWsBjUxLO28YzlYz/TvzIAz9a8UPns2zYVtxtSGp2Sb41OGWPJJPuxlp6Exq+asAZxMnCCput4fgeDHt8z7bsPccnlk6jRAnRFgfegvU4QWHkZVuvbH4g+W6grjH6TznW66X7eGNS6xEF1kialeFBAWipv8VuFJsp1XFTyTnrdFvrTSUBkyOZUeKCxQ1w42hVbtfv243g2vevpFrUKYYzDgaIm931o5YUv3BPNhDElOlh4f7uDBGSEQfD/nAwxTk0RxOCxVsBln5d69S00r+bFy/ike9CdtD4vSpYdjD1UPuq5eHb6ZMwRDg96FOjXV6Jf2wbR7tO2XYYrfW3fCqpJvazbKR7TQubBNkAfeZJD2NBsweJavKNNESMoVB6t8v1nzUFq6SAB7cSyt7Gd0FksHuXRe7jqjbyLH6TrYLdSFsAnQxlSXqqqC6xFRAGCdyaffIb1NejrCpRwxINTMlwGqRyZmDqusl8UJumrNheVlx5ZfdZTlNqE3R0D8yhgvQ3Lz4V0CXZKgGwGYNfTLvsWvqN+7E9l+YiYrcoDwAKaZqNuegdhurv8zbb1WZ8iBY/j0kS7vgQcVWzQdrPMkeeYux5xGOammtf5nurqJYAm/tT2zlOK52NQkt8a2W1VVMZmEjAxL++ifFtJpiQTPMJSb9bn4Ry0frG5+TxjMvJZEEVlFV15CnDws05NWXsmJ2ZBua9G4af+hZXptBPPAu8nLhSP30kkw6nGhpzx4mqFsvGf+t+SnzG9QYJp4KhYc+/qVdlZTf0XofB6lBXnnla0uwmvIR0hRwAclIJDK1hfh5v6zkyTLDzR2rG75xitmk61TD4gAqEqfPoC/JWK/3mfDoOYGiF/hmjZ5iirBGH4oNRJN5BOxJ3BPP28bxDajd7RoaLCktQzor1jangvtl9ipwA+uZ
+ qwH6DIjn
+ lJVX0b72JwVQY0Qf1wqNNueXIEaHJw1C/AZ06p74HKGTmC/Eo9wPGX4KgX9/KGvN8ORL+6Q0+fBCSxWOXjnDnlv2XBYS2QejDvUp3papwafEo7t/fjTmdK3X87rlbKfEeiwcv+2D/eYbbOn4+6QxT1GRRjN3U4jt27W3DKOG5gYdj5Us4dTVgPdijKXr7V0utMWfUK2mEZrYrFD+da7u7kpGuDsxZi+u9xXtDPJweu5toU7c9TPorrh13Zw80GOd4Vl9BZWjPjP0tKVXC+TfguMtSsC3Jt5oPZvb21hAv6vGs3zA2enATOtA1NKuLc2F2vcPBDJv5QZbGZcBls6obdNDRGL0iN8mJ41X8S0De+nCAD4pc2HNqGFDXCvFjC5jYzkhDxa0LZYN6qJHRKJrCN2J81nQ7qrAoC98Y/PsLto9p52ZeI1K8hAx28fAN/4CQ4BBoz0fBNksv6BbSZog7Nnbz2RwnlQbXdO4yZ3SU6K9XPGt18zpd3DOSaHNf504IATWyg/0Re0Zfcs7g/VuJU6a3qdIHg0BCrmiM2AX/FvGLGNcm2PmyfjaSMkcZ1nAjR91XfQP2C4cWCVFfTJtFjItlH+mGqyqENbyT
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,66 +131,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 30, 2026 at 11:47=E2=80=AFPM Mikhail Gavrilov
-<mikhail.v.gavrilov@gmail.com> wrote:
->
-> On Fri, Jan 30, 2026 at 8:31=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wr=
-ote:
+On Wed, Jan 28, 2026 at 08:59:34AM -0800, Alexei Starovoitov wrote:
+> On Wed, Jan 28, 2026 at 12:06 AM Michal Hocko <mhocko@suse.com> wrote:
 > >
-> > Hi Mikhail,
 > >
-> > Thanks for reporting this issue.
+> > > Another viable idea (also suggested by Andrew Morton) is to develop
+> > > a production ready memcg-aware OOM killer in BPF, put the source code
+> > > into the kernel tree and make it loadable by default (obviously under a
+> > > config option). Myself or one of my colleagues will try to explore it a
+> > > bit later: the tricky part is this by-default loading because there are
+> > > no existing precedents.
 > >
-> > So the problem starts with `swap_map =3D vzalloc(maxpages);` right? Wil=
-l
-> > it be enough if we just pass GFP_COMP here?
->
-> No, __GFP_COMP won't help here. vmalloc always calls split_page() for
-> high-order allocations to treat them as independent pages (see
-> mm/vmalloc.c around line 3730). The compound page would be split
-> anyway.
+> > It certainly makes sense to have trusted implementation of a commonly
+> > requested oom policy that we couldn't implement due to specific nature
+> > that doesn't really apply to many users. And have that in the tree. I am
+> > not thrilled about auto-loading because this could be easily done by a
+> > simple tooling.
+> 
+> Production ready bpf-oom program(s) must be part of this set.
+> We've seen enough attempts to add bpf st_ops in various parts of
+> the kernel without providing realistic bpf progs that will drive
+> those hooks. It's great to have flexibility and people need
+> to have a freedom to develop their own bpf-oom policy, but
+> the author of the patch set who's advocating for the new
+> bpf hooks must provide their real production progs and
+> share their real use case with the community.
+> It's not cool to hide it.
+> In that sense enabling auto-loading without requiring an end user
+> to install the toolchain and build bpf programs/rust/whatnot
+> is necessary too.
+> bpf-oom can be a self contained part of vmlinux binary.
+> We already have a mechanism to do that.
+> This way the end user doesn't need to be a bpf expert, doesn't need
+> to install clang, build the tools, etc.
+> They can just enable fancy new bpf-oom policy and see whether
+> it's helping their apps or not while knowing nothing about bpf.
 
-Right, but with __GFP_COMP, prep_compound_page clears the tail pages'
-private too, so the code snip I posted will clear their lru on use?
-
->
-> > And worth noting, mm/swapfile.c already have following code:
-> >
-> > /*
-> > * Page allocation does not initialize the page's lru field,
-> > * but it does always reset its private field.
-> > */
-> > if (!page_private(head)) {
-> >     BUG_ON(count & COUNT_CONTINUED);
-> >     INIT_LIST_HEAD(&head->lru);
-> >     set_page_private(head, SWP_CONTINUED);
-> >     si->flags |=3D SWP_CONTINUED;
-> > }
->
-> Yes, this comment is the root of the problem - the assumption is
-> incorrect for vmalloc pages obtained via split_page().
-> post_alloc_hook() only clears page->private for the head page
-> (page[0]). When split_page() breaks a high-order page into individual
-> pages, tail pages keep their stale page->private values.
-> We could fix this in swapfile.c by always calling INIT_LIST_HEAD(),
-> but that would only fix swap. The comment in vmalloc.c suggests other
-> users also rely on these fields:
->
-> "Some drivers do their own refcounting on vmalloc_to_page() pages,
-> some use page->mapping, page->lru, etc."
->
-> So fixing it in split_page() seems like the right place to ensure all
-> callers get properly initialized pages.
->
-> What do you think?
-
-I took a look at the history, commit 3b8000ae185c ("mm/vmalloc: huge
-vmalloc backing pages should be split rather than compound") dropped
-__GFP_COMP and added split_page, that's the commit added the comment
-you mentioned.
-
-Fixing it with this patch you posted seems could result in other
-issues, e.g. split_free_pages / split_free_frozen_pages would call
-split_page while the page is on a list, so at least clearing head
-page's LRU seems incorrect?
+For the auto-loading capability you speak of here, I'm currently
+interpreting it as being some form of conceptually similar extension
+to the BPF preload functionality. Have I understood this correctly? If
+so, I feel as though something like this would be a completely
+independent stream of work, orthogonal to this BPF OOM feature, right?
+Or, is that you'd like this new auto-loading capability completed as a
+hard prerequisite before pulling in the BPF OOM feature?
 
