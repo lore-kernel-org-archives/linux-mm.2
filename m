@@ -4,104 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADC98E7DF13
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 17:37:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C74E7DF11
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 17:39:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E82ED6B011A; Mon,  2 Feb 2026 12:37:06 -0500 (EST)
+	id 514E06B00C0; Mon,  2 Feb 2026 12:39:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E06356B011B; Mon,  2 Feb 2026 12:37:06 -0500 (EST)
+	id 498556B00C2; Mon,  2 Feb 2026 12:39:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D28AC6B011C; Mon,  2 Feb 2026 12:37:06 -0500 (EST)
+	id 39B0F6B00C3; Mon,  2 Feb 2026 12:39:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BFCAF6B011A
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:37:06 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70AD9140146
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:37:06 +0000 (UTC)
-X-FDA: 84400222452.20.0FA7EAD
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C78C62000E
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:37:04 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=eopOXT95;
-	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770053824;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2669D6B00C0
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:39:23 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DE75DD3E1D
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:39:22 +0000 (UTC)
+X-FDA: 84400228164.02.A3F6167
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E20EE40013
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:39:20 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=cbm36RDH;
+	spf=pass (imf07.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770053960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=Zxkngtuq35HTzxqeFUrhct/sRo7IwSyEooPYTzLXoP0=;
-	b=oO09bG+Ttur+QKG/NLxfJmtTmM1g7po6+LOVWz91y8UNEQJwcCBA2N99v/iv5IrwgftgC6
-	47Nu8jJcFOuS7S6k/Ji01/XU+Kj5fNCcEe0b9fPE2vQjzXVJtoB/3V9smvoHAYLFpWpzTG
-	rVSEQsl9pnrVz1XIqWWWYxmGKqgElDY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=eopOXT95;
-	spf=pass (imf03.hostedemail.com: domain of paul@paul-moore.com designates 209.85.222.170 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770053824; a=rsa-sha256;
-	cv=none;
-	b=1e4vw9RpITW9i1WPjVV7cW2EWfNOnCqwK/emw0ffdfSopZyfZ6HouWqrr2bs531qOTxgoF
-	Hwwz4Jp3+4tzopGmydwrpzrH6HkJtquabN6Y1gwibnEFIW7Dp1JLILS4HOS8A6iI0eQbtp
-	XHpqS2CM6PlQ8ikQ3glWXNVF8gVDH8M=
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8c532d8be8cso476432085a.2
-        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 09:37:04 -0800 (PST)
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IRXzbgEycFnDgk09JzlrIl+9d+Uh4VqfyN7u/QWr/ao=;
+	b=oNacswdiNbMh4PCo/hZ48vw01u9Ahw+V9uEoRZ2m3vcETugO7Wrlpq71xDTWT4i6k++nJx
+	bKzNjvS/NA4ZAGyE0VGSjjVGsMUF5ULr/gK+d/heNj4T6ifHhzgC/I2+XH73F2n3nzF/s8
+	0yqRaG60yec4n5xsPpX8p17dkprTQwk=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=cbm36RDH;
+	spf=pass (imf07.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770053960; a=rsa-sha256;
+	cv=pass;
+	b=UEB3aYRV6mkgeT8F/ZcNQ2n8AGiVGSrn8JpsMbjfZnOFPMweHUNTbnEzwJOmoc5G5RxnL7
+	VDUHn9piaevcO400utTtcJbpcY1Xzi+L4MQi0Ra4b6dw2xjewjmpdNM2bokbfplWLXD2VB
+	uxXPRfa2yLd8JYfwXMN2OOfK9tPbIxg=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34abc7da414so2939915a91.0
+        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 09:39:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770053960; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hfHfTTSbJjuHDiIV8ISBtYKJXPhspsFXLHFMjrIvW9zlLlQGzXovXgQXHOfqkG3Jfz
+         6TlScBAAi0Vshuurk0QJklxhel/bMmjHvYfuJ11s+eHPFAWJ/2yOsVERwWo+6oQ2OqGT
+         nM/DrvJ0XjlUgKHaD79SmpkabR+gcLryNkFCfUJWBfY+7scJFe306lsKTdvYPSi65wUk
+         8WGfoyW7wA30Ah7dwE/H5kao2z+ppF41WuNR3AVl2HFEYiN1K9GPTcH6srBGIOpECoYE
+         gNimgRl6SkaKB3acFpFktXocNvdOU9yMnpaPCSQkDIX2wtpbfvOpxEDosdpNmEcdsYGl
+         okSw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IRXzbgEycFnDgk09JzlrIl+9d+Uh4VqfyN7u/QWr/ao=;
+        fh=BHmCwmdL/pnA8xzzpnCivKE2YoN+h/fuG4dc0ju7PJo=;
+        b=LSpxm7cLmlopSBiQoyQ5RZAqEKIdMuACYRtFC6uW5kGMlnf7X2P07sB10L8q+05y3y
+         i+kHHmdD6slPPZ9vgzQE6/TBi076wD+eaa4lcQ3vkB7uFwIWdeQ53ZzuuoeJed0ZuFNz
+         3pTIBQpbMxZqDGJu0iZPcU9Nw6n0cjEgz6EODbAk0CcN9cMn12BZ7U3/mC6cYxeLf6/q
+         p7UVCZj7EU1DbJex5l3uGd4NqkYAFiE3XSWP/4/gb93dqm/mR5NJqMXXM6yrqXE9RGGN
+         UPUdXWhpFr0dyURwbRxSOGDea/R0ogZ+8e9QNdLdMI+c+NzPuuz+N8i05mL0PD4g9f/R
+         6hDw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1770053824; x=1770658624; darn=kvack.org;
-        h=subject:cc:to:from:message-id:date:from:to:cc:subject:date
+        d=paul-moore.com; s=google; t=1770053960; x=1770658760; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Zxkngtuq35HTzxqeFUrhct/sRo7IwSyEooPYTzLXoP0=;
-        b=eopOXT95dV44syJgzMcQySa4XJ9cjh75r/nu80/WzerSqt0E6RNOS5yM4qud0Vq7Ez
-         UrSDGc8cqhNYmRfiRKm12YMG5egyegvzZkSOLl5/iNJHNS3x4xAN7BcMUSkapRvN9JJd
-         PmK+mTKS8CUtCMl1EwLUJqciE5lIfd1wMxmT7ztOXAEfV+Y8CCzhtw6lXcUCOwWcDc+n
-         G+fcNivG0c3mIzk0POtlSvlyDyuo/gsOvbml0KNmocRn/VQNWDqISv1gdfdLto3P6Twa
-         ZjAil85eNVfiNW43k2YszXZvhZ07tleXSV8MQN9756DjYYjmCYYfo/o3/mQ8G85+wj53
-         ZFuw==
+        bh=IRXzbgEycFnDgk09JzlrIl+9d+Uh4VqfyN7u/QWr/ao=;
+        b=cbm36RDH2FIkTBylCSr6xT76/u33/m2L9fu0JLQ3kFe/D1PENSZiAC+UCRWxigH3NF
+         z2d6bcOhFgROo+YTrN2FxAEH34fu/KuQVgbQSe/nZsca3BKlqfgcevjxf3ONhSXFH5gY
+         4Grwa1wZiLCE8UrEKanGnSHYp4I8X6euGjs9CNcqOt+H9Krm6muZOdQI2/TsAaUj1H7p
+         9HetosBt4fcmqfPGuDtxfmj263MlEMebKR0l5ZlpZwS7/5G/4vuIdi3+oMxt7I05M8dA
+         JCTbTvwCIJR+vp0Feh4fSdnTfH/9LkR+xx+XLKOpBS7zHzvvJFfIou5zQMAlbLjDNwNa
+         FVfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770053824; x=1770658624;
-        h=subject:cc:to:from:message-id:date:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770053960; x=1770658760;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Zxkngtuq35HTzxqeFUrhct/sRo7IwSyEooPYTzLXoP0=;
-        b=qL6C6SXAY/c9Fo0yxB8vW0XHeg3U8fubVmASD5RvAoYFQvZox35n7vRMO6b8Wq1Kr8
-         FbO1qSD3EGK18wCkaNx+0BVNoLc0QijwmPVmQDzvwpedqdQkZAVtao2bJqVxReQk/SyE
-         lxOdKWWooorFAxuHBT+9W72oCmgmqq/Lxz+SZ9flVD3jqKQKfoKhgw9/XmMs/V4xeERs
-         rKN8poD97gSB8TJoKMRaPBQEvQ40ErTO7gVdpLSiH5xZ2iYI2YukX3BiwfYgpHC0nXRK
-         +0gV+Xq0gRFLmBwg6qgtFrudXrtGpIGN+Ydhb+VIioJoDt467qSmx/xQ5D1cBXujGUNy
-         KJyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWtQt2/Tdl4IbgDI48KvSMvUeb8exRhS7/l1ImHeG4sZK/uJ+twavbzhoKDfVxWRy+jEKFt/tl7Vw==@kvack.org
-X-Gm-Message-State: AOJu0YwHIwb3wb3Kuc79RyrorWkXScdsUkBbQ5Emo3q8Zh3VZmNuVIdW
-	nQvaQbXnAKANbLtDNYjxgCOorHo0HAVTvChzcPZim+gv+VKcqcJDeO1D54/ErKVw2Q==
-X-Gm-Gg: AZuq6aKj8dr10niKmRU3fU6NPJMSMtAlztfK+oh+1VufFl1UKHYti9RuxXiZeEk9rl/
-	tX9qFlraxSnJ4xJgILm61sp5NWQCb5Wn10BXdy2ShQa2Yt0avki3pCTEjVoEgdxskd6/AyHQDpj
-	b0e41nzc+Mgzj0ZENhRYbYHcT7lduiNBR6UiqaZLcLdP9eTUSaQ8pJ0HuHdAaX60nxsBKjCqnK4
-	nxcJxO84HK1NaktRBGOiIOuU4q3/PAq+hpeusuVwpH8NeJbrlDY+8o2n98pCBHRCTAMMeP3cfx4
-	9R3m1VOEcMPDP6weK9N5KYqDOwCY7LktWEcu920+vin3rGhME2eDQmBH/dyW5phxmofMf1PEWUr
-	Fd/8jK9Y1WaJOb2TD0bFZ3c6kXeJ+9vcyKEYG0d4B0AlYw2KJxRRVPHFBcMx7muz5yaYaymCyVb
-	T/UtpKw5sqAOGYxMkJbIbsmMT774amrkLneRP0/8XG0QMYR/jDJylEmqH9
-X-Received: by 2002:a05:620a:1a8c:b0:8b2:dcde:b670 with SMTP id af79cd13be357-8c9eb329006mr1561201685a.70.1770053823814;
-        Mon, 02 Feb 2026 09:37:03 -0800 (PST)
-Received: from localhost (pool-71-126-255-178.bstnma.fios.verizon.net. [71.126.255.178])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-894d3740e62sm118773246d6.26.2026.02.02.09.37.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 09:37:03 -0800 (PST)
-Date: Mon, 02 Feb 2026 12:37:02 -0500
-Message-ID: <1840fe300392f962e0bd444941c24969@paul-moore.com>
+        bh=IRXzbgEycFnDgk09JzlrIl+9d+Uh4VqfyN7u/QWr/ao=;
+        b=p5T44CUEMNrfPUCaanlBPpLSWk11ToxdFtNY+QKNdhurP8/sViEtmoLAo3dn7Icxxg
+         rR2yMhmCrstEtrSsRN/vW707EY8s7dQXkrNAd0OCoL0F1UEj3t462neaX8eEmsyHc7Bw
+         qK0Mgd/mRZUk4Fzydd7WuqW/4yayT7RbvtRXeFAgBHKxa0zw5WBqpJJHJIOPH3q4I6/r
+         9Q4wWDdmzvWLQO/8uv2j4BvLwVkfSwoVHLgEl0x9mCJLA9QkkL4rKCPiPx7EuDNl37CE
+         dQ+4o8rvk6Oh368dU4Iv/FWphctV4lbq5MBo51z/5ae44Tqu0bmbEMGgasr0PRT87CDA
+         hkyg==
+X-Forwarded-Encrypted: i=1; AJvYcCUu+kZ4p2twxfvP4Fea33iRCPqQP2ei0DW9gW3XHaSYnlsLxFo5/5+bR3/Qhr1+t+x+i0sY0/8GKQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx6hsW2xWFBEQwrZxn3DRfZBanOmwp3py/OPXLFM7NSgFb9qcZ6
+	iCY++X2Dj4YqId/OYOOcoPrKSHSMGvtv8Ipd4zFrSigQQmQS/wvg5M+BiCAPAAMA1YWDRu6u3Tz
+	FIwkAzyG/2aOSjJbyezNU7FdS4U/ztnFydsIeYXK8xgrWRP2FvQZXog==
+X-Gm-Gg: AZuq6aLelS7lqmBPvkfkY0E5qvD5R1PEF0VIdnWUW3KRyKR7KYqmW2vxMDbcOLZsW/q
+	Hy1VhlKm/BEgHcvRL0ACn962nh6KtdJUihVqLJ7R6+OuiwjP7Rd9947taLVKBPzzPpVw+NK5YTq
+	BQbqVbE/XnX/dOvzgMlwTYdepQKohDcjfKEVhq9v/i87N/xzlt54HnyO0pWRzMx7dsXzpFgjHF+
+	RP+UyfGuTIAEJOL3oUyBOpaUP6id05AX/OHUmr6nwuoO9hlCe6JK+X6zL8XXdDVDRkcfN0=
+X-Received: by 2002:a17:90b:3a48:b0:34c:aba2:dd95 with SMTP id
+ 98e67ed59e1d1-3543b3d1056mr12185565a91.26.1770053959750; Mon, 02 Feb 2026
+ 09:39:19 -0800 (PST)
+MIME-Version: 1.0
+References: <1840fe300392f962e0bd444941c24969@paul-moore.com>
+In-Reply-To: <1840fe300392f962e0bd444941c24969@paul-moore.com>
 From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 2 Feb 2026 12:39:08 -0500
+X-Gm-Features: AZwV_QiBQLAbglCMvo2tNwGlwgJGTW-pFRFhiaXYWcBtkktHOGbkuygW9A4h3fY
+Message-ID: <CAHC9VhR80ZipmG8PGTdfvY-GpUsvX_UzND-XV6s844hbmO3BTw@mail.gmail.com>
+Subject: Re: [GIT PULL] lsm/lsm-pr-20260202
 To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-security-module@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] lsm/lsm-pr-20260202
-X-Stat-Signature: uaz4jw3fsh9suue1cirq4cpoh5q4qf3m
-X-Rspamd-Queue-Id: C78C62000E
+Cc: linux-security-module@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E20EE40013
+X-Stat-Signature: n6hioteojccm1mk1ztqiifmph1siwncg
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770053824-486044
-X-HE-Meta: U2FsdGVkX1+PK/mEmtecuNq+Hc6blfBfSNvU1wGUG9wXPgfC/H6DOCgPbrvpG90GfExY/9fLWqvNmeL1BLR23s6hmUyePlm/oHH56p6OARmCQDqvh16TL5RgqDlsZyJJJTma0/3lpiwviYAbuF1/X+IVguQjpWexB9yA8NBnAHNh5bgRO64oWIWAdbGxiq4zEgxVUGWxZq5SgyzfjrhvGe9a64reSvnLfBcbVgEYwBq133ZXg0c2gr45wJK2x+6Kdy7kjK6YgjPwjmqY35MloGBQPMEwHVsPKOx/MQdyRoU211XKUTZ8Q5otLMzDlkQhr+zrKia3q9Jsc1F81/wqsUWHEABwn04tPpKViOEVw8/eqbCTticVGw3jp2Nrfm+PYECmdhIf2TdQtwwDc7o8vIvHobX2UIMZl/KKsR+0dl4LGfck08AIiOIsdJaFX5wWImjtQYr2lcYt9I1BkXz5vv2b4AQFtxMKBFncaCNQUKXbUiRrS4wo+ENkzmGJ3zZ8RshocOHpJxvI+ejG8Co5d+W/oidY/Nmqm4yFsn4ZvSw0cJ/qDvPsB8gG7OuxAEZvec0+nEA4sHC25gExEK5jCIrd1OaAnsNkxpJwMV9EKtHPcYZHnvhCs2wlBOhurJPFWqVoU10ecY9siRq0ZYZ1YVqu3ThDotEtX+qrEaE9pnBOiKgBfqkkw/VHJKPmwsh5xuC3UBjZZoVtFCodWKsF6YVIROwQBB+gfdnD6cwGpPt5+pbIMQGELc9zNEUfDmHIh88+9sHI1IViV1AO4OOsJ0qWaTZnMcPjwy4nFAxlaHXWiVM2z0eke47KCSu6mjWWr8M8Ubvho5U4hSJ3D71l0YrEJ5AHuscrxMKct8pT6soxCfYU0JRl8FAu3O0XCAGTOQ/mKB7fGVzvjjEAuAs3jgAKTBHvYuYtbBBUEYCpcPBlOQGIG0tsFAzjPmlO/M6+/ed02nL1cnoFmgJ3RAu
- DpLTHhQH
- kHT/0k3ji6+yinM/jpzvvHc08Ng8Hkuc69Be6+Vg6f3VB98iAPUfWbldCB19xsK6hlt4d0/ZSZ2oFxinHS8fvdmtgbVGGlS0xKf5jiCGZ598KHtylf6jey9qNmwn3SkoIhoAlVaP6P+MDh1iedVnAXORDMbLVComIqjjRxj6+4h1i8Aax6j5LhVrEQkG/a7Mk6pTsyeCEhWZl8dlZkE0KMlith0hCCsXsH6ALMZAif/Jn6vtI012THdX3HwDV15qs8awjuNFEXnwnzvmHsiQ3DZ3dyoS/KehRsWrlmOpYWq5VVlaaMr/trOYhJZukuQqPmfb0/ceeTeywzsnJrO9DtbWW8G2a4gQbpIQkZutg35mcmBtdShNh4q8u9Ak2v3WfILhRgNvP0oNtLZNxgi31jjzDuA==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1770053960-974408
+X-HE-Meta: U2FsdGVkX1/tlwOM7Olhmk7hNHDu32II75voK+p12rxDSiTuZrZuUOQNEdo3Mw0s8qwgCfFumYDeb+3bku+nod/OggwetEcFWdIg4Wr+XicVhdAhIPD66A/Y7xZ/ElF3D1XGFAPWg3AiHTarTAtGR1WYHsdQbUqACSNMg1583+djNjd5EbhIyB+NvcIIAHdvZTeOzDSgtLV1FBGe1qygu8hm28UuERlr6n3tmY3WExz5vKvV60cFssTL6xwA+lzPiZj7bZzU8ck2oZU+vb3arwgwl6cUwwexhdEjcopiNeAF6YO3WMfl06NdzgDN2Il/sDbW8kpsbVuelg2scGKL+TaeGO3df38PX4yHCRYFUQL3J6Az3Jj8toFXMHlBtCFeymgMHFBixQMbJzqjkAfYGxcw+o16vuYebgYHmEqTh/EXIk7dMX3NBbgt3ziHo2pkP8vPR8A9MwCEZqdyXEOHm2XWD86LIO4YAxAwsYo/mL4GmoL6C1xM+KpUwKedYSdRZ8IAWoZ1iGRoUqym1d9h7TYbgzmf4O7aUMaduhNCsxZVLPSMiJ5ECRTwHvrSCZoKaLkDJ00ug2DnmQjqvBRRXZ7nNj4mpr4ZW07bwwGUy64jGU0DzAsHuDEgLTfm45Z/xMr6xlPpV1ctsORr9XEEMJNa7PsdiUrUVtsx/jGpL/Z/DDDDfJJ3bLYHLuEZIwUMCxt7kbesg/0SApVtEMpZ+72wqr82qF5tW91b8jbqLhwZuKFF50AF1T1WmPm1AP0Ug7MObiZMjK5qVBJeFMPDAizI3WPzw3rYxsfs09OCAJDpFg13pZQbYW6Kd3uJxi+bXYnFlWvLJMgyXjltN7+ccgQ8Ocafluyw7MxwfU7F6GFonx8gZj0IuLHPpvXJoUkNp9S++/v9ONuArapwB9oOBbuW1FO1feWeJbQE9FwmTJdrf0a09Z1BWoeH8A8rCvPLM/8xYeVt/foYfoaED1O
+ fd3ml7/B
+ DXKlY4uPtweJ1Xj6F2TEtpotXnjFZ9Kn0QIJXhUBCa4rB4ZN9QNnxIRR5tpKq6qMDmgdx20i2cOuk0FQga37pzYrlVP0ck9DYqp8gWZBqVD1Bc7EnTykot+fwArqLYsT6GbsvhG3CjZ4K1Ike9CHtQ9zz0a3QM/xTr0vGhGLdv4+ostwyo1OsM5SimV4CZgbZ3W6aF+0xHdUyPHszn0FOjcvIVl6U2Md7FoRju7zQgJQUeRcN2Wnm7Me26vcIiZ/n9D9Do7WowFXW+PAOp7vOGjFFLvU2XuTAKNkQonrhRb+mbb0P+YZGcpYaRaazCWQuubefjJMBYQnY0Dk=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.030543, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,44 +138,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On Mon, Feb 2, 2026 at 12:37=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
+>
+> Hi Linus,
+>
+> A small LSM patch to address a regression found in the v6.19-rcX releases
+> where the /proc/sys/vm/mmap_min_addr tunable disappeared when
+> CONFIG_SECURITY was not selected.  Long term we plan to work with the MM
+> folks to get the core parts of this moved over to the MM subsystem, but
+> in the meantime we need to fix this regression prior to the v6.19
+> release.
 
-A small LSM patch to address a regression found in the v6.19-rcX releases
-where the /proc/sys/vm/mmap_min_addr tunable disappeared when
-CONFIG_SECURITY was not selected.  Long term we plan to work with the MM
-folks to get the core parts of this moved over to the MM subsystem, but
-in the meantime we need to fix this regression prior to the v6.19
-release.
+I forgot to add, you'll notice a forced push on that branch, but that
+was simply to add some additional reviewed-by/tested-by tags this
+morning that I thought were worthwhile given we are currently at -rc8.
 
-Paul
+> --
+> The following changes since commit 63804fed149a6750ffd28610c5c1c98cce6bd3=
+77:
+>
+>   Linux 6.19-rc7 (2026-01-25 14:11:24 -0800)
+>
+> are available in the Git repository at:
+>
+>   https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm.git
+>     tags/lsm-pr-20260202
+>
+> for you to fetch changes up to bdde21d3e77da55121885fd2ef42bc6a15ac2f0c:
+>
+>   lsm: preserve /proc/sys/vm/mmap_min_addr when !CONFIG_SECURITY
+>     (2026-01-29 13:56:53 -0500)
+>
+> ----------------------------------------------------------------
+> lsm/stable-6.19 PR 20260202
+> ----------------------------------------------------------------
+>
+> Paul Moore (1):
+>       lsm: preserve /proc/sys/vm/mmap_min_addr when !CONFIG_SECURITY
+>
+>  security/lsm.h      |    9 ---------
+>  security/lsm_init.c |    7 +------
+>  security/min_addr.c |    5 ++---
+>  3 files changed, 3 insertions(+), 18 deletions(-)
 
---
-The following changes since commit 63804fed149a6750ffd28610c5c1c98cce6bd377:
-
-  Linux 6.19-rc7 (2026-01-25 14:11:24 -0800)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/lsm.git
-    tags/lsm-pr-20260202
-
-for you to fetch changes up to bdde21d3e77da55121885fd2ef42bc6a15ac2f0c:
-
-  lsm: preserve /proc/sys/vm/mmap_min_addr when !CONFIG_SECURITY
-    (2026-01-29 13:56:53 -0500)
-
-----------------------------------------------------------------
-lsm/stable-6.19 PR 20260202
-----------------------------------------------------------------
-
-Paul Moore (1):
-      lsm: preserve /proc/sys/vm/mmap_min_addr when !CONFIG_SECURITY
-
- security/lsm.h      |    9 ---------
- security/lsm_init.c |    7 +------
- security/min_addr.c |    5 ++---
- 3 files changed, 3 insertions(+), 18 deletions(-)
-
---
+--=20
 paul-moore.com
 
