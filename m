@@ -4,123 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A1AAE7FDEE
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 21:37:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEFAE7FDE0
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 21:49:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD5EB6B0088; Mon,  2 Feb 2026 16:37:11 -0500 (EST)
+	id 5B8BB6B0005; Mon,  2 Feb 2026 16:49:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6CF76B0089; Mon,  2 Feb 2026 16:37:11 -0500 (EST)
+	id 566906B0088; Mon,  2 Feb 2026 16:49:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7C376B008A; Mon,  2 Feb 2026 16:37:11 -0500 (EST)
+	id 4476E6B0089; Mon,  2 Feb 2026 16:49:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9610D6B0088
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 16:37:11 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 63D3389650
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 21:37:11 +0000 (UTC)
-X-FDA: 84400827462.09.1D8175F
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8A04680005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 21:37:09 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mWG2j6r0;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 357416B0005
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 16:49:05 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D2A761602B9
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 21:49:04 +0000 (UTC)
+X-FDA: 84400857408.11.FBC8DAB
+Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1A6B540002
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 21:49:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AFXrGoLX;
+	spf=pass (imf04.hostedemail.com: domain of 3zRuBaQ4KCFwDIL74HLC6B4L7MAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3zRuBaQ4KCFwDIL74HLC6B4L7MAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jordanrichards.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770068229;
+	s=arc-20220608; t=1770068943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8laAOVGcrjt3grREBpdlanB8iPI5gP36V5MB+/CpDTw=;
-	b=CMtaaXFjH8cJ/a/4ncyJfvt42KrLvJUcXZZrJNKRnovcNRWS6faglcxez4FDJuBy2ISj9K
-	8fKQa9NQshCWRhw8RwAmPMxd0BFJeVOKCDkmij6Taiw75WYhRoshQn0mD8lkLAuTqIRHXB
-	uIKO8XPFmghvfBgutSpnL5ZFfwtUCCs=
+	bh=CGd6G1Vb/3CvX2kkVP9M1fJHJsx1i2LSzEHZHyKjpyk=;
+	b=cx+mu2mAOeuJfZvoOMDQz9mBpPSJ/+FSVpBqe2alc9xLkfE6A5N4GM9PRUijbICPoZdwPH
+	M0eu//3R0ak8TObbTACr4tygncjatm4iDIi+01AHzIdyn4er49ukTWiivJOy3QX1XIwsdQ
+	w6Ex2FKuEc0qxppqm+nWzi/4kx0JI5E=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=mWG2j6r0;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.181 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770068229; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AFXrGoLX;
+	spf=pass (imf04.hostedemail.com: domain of 3zRuBaQ4KCFwDIL74HLC6B4L7MAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3zRuBaQ4KCFwDIL74HLC6B4L7MAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--jordanrichards.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770068943; a=rsa-sha256;
 	cv=none;
-	b=X7p+clL9WueD91IUhYDaXqKdaeMqhNr0rBbgldmbsurdM36giu7X1L3ShWxk7Dn6ersX9a
-	TronGFwVJ/j4MusAvE6eWX/t/JeKlrexdWfOkXMNagndsL5b4yfgvpaK1j8Fn84hYq4oiv
-	YUucK4i9R07oY2Khd0T/zgLaJjlWbGw=
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-8c7146b0854so558812085a.2
-        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 13:37:09 -0800 (PST)
+	b=AKXSD4qKb0rRQYn4kwX/aZSYDWxbWmRdM6zvfoZ5AW5QQI7pXoHQE1ZJ6P8h+sg3GxnyvB
+	3qHiqSduzvlQM3oy/Qe+ZI341u1SozcPwKjQAJr3rBgb8goHuUETPmZLtwFYfg8iQXklTz
+	Jlb5v7Yqj3ylo6pKFM7fIBPa/ROTkyU=
+Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b7ef896edcso9011665eec.0
+        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 13:49:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1770068228; x=1770673028; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8laAOVGcrjt3grREBpdlanB8iPI5gP36V5MB+/CpDTw=;
-        b=mWG2j6r0EZL0gwQBCPizG7VwhUvDU4le3AjWCbQATfoaYRFv7GIKvM9bTyD5WXzyUm
-         8OhxhhcUEpPVEgMAYJa576PpJU/UMdSev3M8VwN2d4Iy/4csjqlau/3cFhq1xMZaVVzA
-         qvbWIjTzGsAC94Z34dbqU5u1jqlJZT+fmFIpDP6bVDutUYTpaHVGPt+PTT71YdHszLlk
-         WElx7MhG27EVJED6EVqAggxABl6O+h1Fnyf6LBeo8UVVz4X6gRdfkLYsfWvzUkB33IA1
-         KEhp3BW2Ms60NTRzYjb1Cq1wvLwYv3XJmo+ZAmTkBhSdjeRvfib/grnzvKAU/5wK8ZY8
-         4grw==
+        d=google.com; s=20230601; t=1770068942; x=1770673742; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=CGd6G1Vb/3CvX2kkVP9M1fJHJsx1i2LSzEHZHyKjpyk=;
+        b=AFXrGoLXIkuixvfmd0FccQdUiyr06JooPs2uUdFn1+ocT8QMsreotDyhojCaKdY3GO
+         M8oSmoWwTJ0ownT8cn/U8aaa8LENDnjZoQ//1eohRoKMi80Q8/H6wC7g0oIOjKP4ISRD
+         P0j9yj88wFsdNwe/vFw80MoBNliGvcnwF9bFH2YP3Xk3L9r8jYGOhtuIyfhV0urWRdOk
+         lbItTIvGa1VlPhFZx3PbJfePPixLrVRAD7hn7bcRgwTES2Bxc3Yn3uls2ttpaDUiZNcF
+         d3ARlQAdYidmOoyG6SnAmbakRTF1q8gNRdtXQ6+zF8bnWmfkb/kvhceX0ILzouMa02d9
+         h1Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770068228; x=1770673028;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8laAOVGcrjt3grREBpdlanB8iPI5gP36V5MB+/CpDTw=;
-        b=lHpvPwnrD9N3Lr4Ojholjx5lVlStYOAJ3TykQnnDg341o7CDc/rtt+zaxwTaiUaY39
-         ZsNr3GNgMWzeZ2nqRWH2siYTxBQudXEY7uliEya3SK6uidF9VyIQT+uWEusF6zi+VQTE
-         CC5HPAVWy6lrPi9fkOtU39y37skHWerdzHJD+YDoC7tZssurYZn8Hhnin6UcR0JsRWXJ
-         Ukk5G+zzwZMFJloyoWPk6IOsoe+wGCvT7IFhIwLC619wk21B/lnn/Zws6tKx3yWqZ6Uq
-         /ErBkIpucD4yJrYQUfUddVgt3ZIG6/DWSjMxyWX4g31oEXPYl+3px265eUt/QO8RpiOQ
-         7LvQ==
-X-Gm-Message-State: AOJu0YybqipjXfPTN34jCxgQVy58JX4u4KfXSVebZaZtuj1X4Fllw7zv
-	jaD4oW0zyaak2X3M4q4NGPp7dgfrHmLMfk2e5xWbTZTgk8QhHDxTVveER0/TNtBZQKM=
-X-Gm-Gg: AZuq6aKwxlldtDmIGMV/zTSUJjgcsDePEOpyq0pfjA4U+FKV6xQRCxgAefr7urMiSed
-	H3cZzOa6iSmPy5n4SOiC/pMuS4qxXftK+IgIoJI+K/P26+lOnew6MuUfve5k6AoXkh2JFQfSzFJ
-	fiEq6h4w/fx1/ojL76+CXyiwOKeHuk/eRMNoWUO/fqAvOwiICstuSNpvOcuRvaudJhIZ/QSebMr
-	z6v0DtoswTnARMHSBHIyuuFbqxEm9+yFw8J0alPVShRxiyCXHoCPwBBACeE0nNAoJ4ldwKHz8xZ
-	pzAAvnwyfEQKZiKLlO/RYLmUYJIdg++NVX04OrLFsGaTAugw30lEiqa4E2aE29wG09dWmdTbIVU
-	zrvKjCkKrnVirbswxza7lXDOXsAN2/+TyqFGWRfRHwQR/InoF9jf3ltPI90KwcVHlOOPKfY9QKP
-	X7WRieH0HYdhYXZBTuePMaHAXF4Hf4V6K1KdO7tbvAPh0e+X1uaO4rcuGn03b3Q5qE4e6Vcw==
-X-Received: by 2002:a05:620a:46a6:b0:8c6:e22b:25f7 with SMTP id af79cd13be357-8c9eb1fc204mr1562950785a.18.1770068228565;
-        Mon, 02 Feb 2026 13:37:08 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711d61c6fsm1317392985a.47.2026.02.02.13.37.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 13:37:08 -0800 (PST)
-Date: Mon, 2 Feb 2026 16:37:05 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, kernel-team@meta.com, dave@stgolabs.net,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, willy@infradead.org, jack@suse.cz,
-	terry.bowman@amd.com, john@jagalactic.com,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 2/9] mm/memory_hotplug: add __add_memory_driver_managed()
- with online_type arg
-Message-ID: <aYEZAUJMLWvaug50@gourry-fedora-PF4VCD3F>
-References: <20260129210442.3951412-1-gourry@gourry.net>
- <20260129210442.3951412-3-gourry@gourry.net>
- <20260202172524.00000c6d@huawei.com>
- <aYDmor_ruasxaZ-7@gourry-fedora-PF4VCD3F>
- <20260202184609.00004a02@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260202184609.00004a02@huawei.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8A04680005
-X-Stat-Signature: uzoi6aqytq4mgdzgkkeh5rxqquimbjx4
+        d=1e100.net; s=20230601; t=1770068942; x=1770673742;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CGd6G1Vb/3CvX2kkVP9M1fJHJsx1i2LSzEHZHyKjpyk=;
+        b=h63mQ+w1PsNe7VJWFuO/upmkjlZP/3t2sMWmwKMWcDQLYXqi5WCAd40Uirfsa1X+Ut
+         i5LVd8DlZFe1o4LfzbPL92AwrHCV3jfhrqGkVxrN6FpHnRwJnDMOPTLUO9BRwtdTlcc0
+         g2vjc0kEgEy6LzuVwidaQdcgEBTmEEIqec6M6Y9eQjem5gRWMymaSpszm2xYBEhryq/E
+         G/7RcZoPFxO+8NYUpEZqBrqOQOyB517gFc0IOuDuJkY11Q4Y2twrz07F5srMQUsJlNs/
+         im+ozoa/a9dq5TLfPNWkrwfgUZfw9S2TC5HCFw3j2BipkgT2V2PF4GmrORylg9VKKcs5
+         jAdw==
+X-Forwarded-Encrypted: i=1; AJvYcCXA2803wkTGBUlv2dyV50bjBJJADfVx4zuC8jmO3tJE6ykATtugCeAN+o5nDaGePZ0dOaLsBzeNJg==@kvack.org
+X-Gm-Message-State: AOJu0YwckyyKxm28WQAVl6se+ddmGgBkDYN9cdqn3nWq2CQ0fmVyvQ5O
+	ejh6pgUAVjlI4M/kbIzkkXaFSDC2RHRD+s81AawaD+cI+vutF7e4Vp39tsOAar8aVaKAUrRcm5e
+	Y3gBhfqdDCBVdbBlpv21DPMtzJlsUMtJjasIrqg==
+X-Received: from dybnk15.prod.google.com ([2002:a05:7300:cf0f:b0:2b7:b47b:2f2f])
+ (user=jordanrichards job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:3d15:b0:2b7:2dac:5853 with SMTP id 5a478bee46e88-2b7c8626756mr5756175eec.2.1770068941732;
+ Mon, 02 Feb 2026 13:49:01 -0800 (PST)
+Date: Mon,  2 Feb 2026 21:48:59 +0000
+In-Reply-To: <aXj28ZAsPhp7s5sm@kernel.org>
+Mime-Version: 1.0
+References: <aXj28ZAsPhp7s5sm@kernel.org>
+X-Mailer: git-send-email 2.53.0.rc1.225.gd81095ad13-goog
+Message-ID: <20260202214859.662889-1-jordanrichards@google.com>
+Subject: Re: [PATCH] selftests/liveupdate: add end to end test infrastructure
+ and scripts
+From: Jordan Richards <jordanrichards@google.com>
+To: rppt@kernel.org
+Cc: dmatlack@google.com, jasonmiu@google.com, jordanrichards@google.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	shuah@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1A6B540002
+X-Stat-Signature: scgaadbzi1sjn55s68qbqq3i8ubz6s4e
 X-Rspam-User: 
-X-HE-Tag: 1770068229-5762
-X-HE-Meta: U2FsdGVkX1/n9iKzLKNh08kSbpbyc/Mb2saIKEzc3sY2gGKcwhK6L7+olzuH4uLyqNeCILqe2XiCAQzC2dE+WCSwhxvVUUJAzNXY9kxapShzqTeVCRNP3sKUfINDXGhIbCOyo5oiVh1a2NNRWt342WhkwsIvy04Z5E2vTzAPgkHdrnuC/bR2s+XWevt4BI7PcWDNh9A0ATNleBx/6k0fg/xM0NYxrBfufrf2L7jA22o4mVFV+vCEkzombWCPt1X9l/xAlpVT7iN7WRw+quKSu0U0lKolKt1HRsybzQxOjptQMMtmVqkj7lkmSuJusCMSzdH1XEdioQ4iBtp+S4tj2La44VYD1fVX+18BNwgOTUvBULUqQbDC9xKZnqA1PtTD5JqEvm9F/cTkFTNRXqnrssdsRBU4Wz524Qdg7hFyXmtwkBSI03ZQBesh1gFUBFNdNuaJVpyXZgBMBZfhe6Oc0eGCh95mMif1Kez3Est1mbU9ckxZBveAMUd5rxamWK9HauKvJ6vRuPj58e92jC86Gvk+BU5Ys5vba7UF7r2QxquClKnEZHIBXwAQdrbVeQzLDVmb4YQlBFpB64KhYd85Y4f6jxm44XJniTkedxgxbfbVd62CpwTB0iGH7FEitwB1poub1uUu6mnNwV9/KQ9qi7PtzdwIrnN5sNIkajvW+K2qGZA7MDlMGmo++rogde7K6q/8oBUurqg+kOH11v/QIpOgz7MXFsY8bFNBrD+ZXOiezug8dE5S90JHwU+p0FRkIvIjPxCaCcebX3Uo0rfE5bL+FUGe2HYvjJ+09lKh+DuXxlyCr0w4Aoq+upuGawEX8CbzaJGfCs3+grAww9dddl2L17YAqF2tCyy7r9/qcK5yQNwd1fa3Hiv6y5je4r+7GTXZm87TZLfwIsOzELrGlivVL4TnintpMV3lhiZ9Phg+UxUmxHqu3JuLQp85aNWs43/WFnbnfupKIKB8HA7
- k7PYTXMi
- RfwUHx9ZUsFICH3unqX6KJFp/RulFOK0C9mjwi0n5QgENnz6q3bOXSnSTH3XZhEE5echZHimb3uclRxiKJHzBDuIOqSHXK+2Rb1UESDBkwgC2eKOgYy42PKXRBF9WH++e1rAjMsCLnlvFuNcVYFg56MeIy1Xiy9GO1MvRf0HeBl65yaHOZG81u0Jro8pGFGJvaDmUdPwk+vNJ1g2YLybJZXwKKrafRup2FVl02pTz+8o2yyXa7Iryf3AAVFjXILTfo1Sc6Z+knJr1oOw1PCSUmLvUhf4A8lXMdEiE2piDq/TBO8y44OY0WgDVLcinj8jmiQHDV+pEJ52ukTDJWdV9LhT8y9qzXzuUa2ldzrvgOylNb00rRCmd4WUVQg==
+X-HE-Tag: 1770068942-428531
+X-HE-Meta: U2FsdGVkX1+RCpmKRnmujk9bXcmYCUT8L3hHtK4D8qpPrOo6lyPI5QBKX1XTXCHMbvhd+v+b3ykZY6ZOHS1Ml698f4M0vAXO89N4CqAeNss1AZHXh7gOIAgvP8EFOTRanRSWEovMIIdBkpKgKrkThnQ1QgWWlQJlWK5MKAfV66nVzWfe98wuRDtftBzeiRH7+oht6TkB8RGrI2ci9d22suTI9DDthQKXpKjcraxgjfCMenZn/NAtYEkEeH1tfixJ7nwhcXmCbnz+HennCSWpzjup4E4SqRT9KeCz7r7znPU59cAkdbNAy6Y3mML8/3w6Y8lNFDT1kwodF9cIuWA9TwgE3AgCW/WUXcr7fUwqDyd2OJsoyHzV0iJu0EQWgrF1YmuDbOQaNtBf0LqiXAt8fGsySTl/U+BS7HNxHugs6KLLg0F/ue8kctXlbVDdgMZPbm+YtAfx9SwRVeCfe2fIaI5dGLDUI7Dvf9XVyg39kQUMa0ZV3UDVTG42efa9Tj2yHNzFkMPAL1kny/k3w/DjOIdJrbi8tbmC/Jcq2Ex7qsqcpENRgemjSbMvhHMOGaEYvVIW3fp/V67zONzBdK2fhsaNUoPE0ASsqjr3sZBtfY8cj+KYWAyLSD48KCV3RvKpk3mAcQsAvkEJS1HzPAJFIWjuS27XFCDaPWtYszMCeaAZiFpEHHdd/naqQHtyNlNn8ydeYA1UulgUIsms60rRAjhaJqAZis0TNYB+2v30OKd7OLkhcKY+2VGiTu671va8XxKXIXFwK1mJ9i99g48Olnih3NT2STYt333GGDBpVwp16npMxES/U+lT5FCguxMtxbEgn78kyH4NKgjVYkiu2Jcl0EqxTDfE1zPi5BhFhOC3EUGXtXmoD16OWi9ralvnk+CpUQJY/K3DoBJ1+osNHgYI5rspknvp1UvUu8vYb4rnA5XArMBsJHyc1+dIQTHYniS04L0o6NwjIOINKNH
+ vYE3+WyU
+ YujaiWkTo0Oyqr3mKL/HNIzEOYo0C95Nq5Z4DCwbV4cEwKbv1MDJwZ43vpE5Z/PLodxrfchGqYWYFvu8tJsJEIRrEI/iMI9f5toUJYm3Jbs/GOf2NvQneySm5P3k926KtpZqzhNVlC8POnk9jgaT6jYkKbgCxfDdcE8CmRSk0RWM8zwGPopf8XcbR9iUcEi1X6EuN7KMfJiL2+xAhEl7kvT7P0tleHR6Mg+hV3QviVIXlrvuYBhxNLP6PsfroDSy4KhoUJDUoA6zWNU9RC4hLox4zTjQQkeaJLYOgY4HrXnpf4j8btgbSyYOfZ2dc7DPZ9Or+/9q93qOZmOI2eqq4A8yNkOw2iGeFGFOH2vT3A791GQ66/yeS6w9oFgvLeiCg4usSYzQ5m04g92RqsrMoD0PRWna9GCUldmiuWm0UMeHcZAgKX3ybj/NOvEbAPRNZlAgGXbvhoMDhD5gExT2R3lY4vn15LAezEn5bu10D9v9FDnjLYZ2QlcNL6jX4Y+Pl7qI0rI+g8fKpT548WWOmydGhXUJczIw56zPJVWllzMFpKHT9UcAtW0bpIE+RRO26ZR870rXYnaqXXHd1USAOwXsNWLqzSMGiiHjg08Y5UfJIhXD5r+kPm1A3w2S0CB7Ys/epEgDJG9NUfEQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,48 +111,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 02, 2026 at 06:46:09PM +0000, Jonathan Cameron wrote:
-> > 
-> > I can add a cleanup-patch prior to use the enum, but i don't think this
-> > actually enables the compiler to do anything new at the moment?
-> 
-> Good point. More coffee needed (or sleep)
-> 
-> It lets sparse do some checking, but sadly only for wrong enum assignment.
-> (Gcc has -Wenum-conversion as well which I think is effectively the same)
-> I.e. you can't assign a value from a different enum without casting.
-> 
-> It can't do anything if people just pass in an out of range int.
-> 
+Hi Mike,
 
-Which, after looking a bit... mm/memory_hotplug.c does this quite a bit
-internally - except it uses a uint8_t
+Thanks for the feedback.
 
-Example:
+>> +int sys_ftruncate(int fd, off_t length)
+>> +{
+>> +     return my_syscall2(__NR_ftruncate, fd, length);
+>> +}
+>> +
+>> +int ftruncate(int fd, off_t length)
+>> +{
+>> +     return __sysret(sys_ftruncate(fd, length));
+>> +}
+>
+> These should be added to nolibc I suppose.
 
-static int try_offline_memory_block(struct memory_block *mem, void *arg)
-{
-        uint8_t online_type = MMOP_ONLINE_KERNEL;
-        uint8_t **online_types = arg;
-	... snip ...
-}
-
-int offline_and_remove_memory(u64 start, u64 size)
-{
-        uint8_t *online_types, *tmp;
-	... snip ...
-        online_types = kmalloc_array(mb_count, sizeof(*online_types),
-                                     GFP_KERNEL);
-}
-
-So that's fun.
-
-I'm not sure it's worth the churn here, but happy to do it if there are
-strong opinions.
-
----
-
-David do you have thoughts here?
-
-~Gregory
+I notice that nolibc has its own tree. If I patch nolibc/sys.h,
+will those changes make their way there? Or should I avoid modifying
+nolibc/sys.h and keep this local copy for now, to be removed if/when
+ftruncate is added to nolibc?
 
