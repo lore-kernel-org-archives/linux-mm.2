@@ -4,99 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98C05E7DEEE
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 14:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 863E4E7DEEE
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 14:38:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ACBAF6B00B2; Mon,  2 Feb 2026 09:38:07 -0500 (EST)
+	id ECD186B00B5; Mon,  2 Feb 2026 09:38:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A79246B00B5; Mon,  2 Feb 2026 09:38:07 -0500 (EST)
+	id E642D6B00B6; Mon,  2 Feb 2026 09:38:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 985A36B00B6; Mon,  2 Feb 2026 09:38:07 -0500 (EST)
+	id D4FF96B00B7; Mon,  2 Feb 2026 09:38:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 83E616B00B2
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 09:38:07 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2219B1401BD
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 14:38:07 +0000 (UTC)
-X-FDA: 84399771414.17.B233077
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 3A8DA18000F
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 14:38:05 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UgCRKXtO;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C664E6B00B5
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 09:38:16 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6228C8730D
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 14:38:16 +0000 (UTC)
+X-FDA: 84399771792.16.7490818
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 46155C0004
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 14:38:14 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JfS3nwmJ;
+	spf=pass (imf28.hostedemail.com: domain of aris@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aris@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770043085;
+	s=arc-20220608; t=1770043094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+YuikHIpXYtVLQeTjpDEpyPPM+rwsAsIsRE/N+8+UvM=;
-	b=A4FIPpHQ3IkGR/74UwrzEbcgpm7yYwpYCq4rw3AQmlUdU2e97k4rFlurabotBa1bkfCrgk
-	Yq1KhxqQ2k0xjpEN2Uca/nKiOLBa8BPsLDZ31kd3qz844tvZDPPzS+jE4eOHLOgg82+9/g
-	CpgcxX01tTQWCdsVb4UMzvItE8NwVjU=
+	bh=LLPSi3nvHTn4l+eMte4lOVK2lLpRjSH202e/Dy3d0DM=;
+	b=qLUt30CtzUhTNK0ifLN7URvHfH4sATpVDHgQtCs5nFz6Twml1myZD4js+R1lz+J5Le9fj6
+	P0rnzbWZVESul9ZTeU2yRlHsyim0Pu912FUn9OWo6ivv3gfOA+fYKENCbgfocIk3V5zusu
+	T5BRoIIR7LphwBLY7oLowGPr6g1QeQE=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UgCRKXtO;
-	spf=pass (imf06.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770043085; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=JfS3nwmJ;
+	spf=pass (imf28.hostedemail.com: domain of aris@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=aris@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770043094; a=rsa-sha256;
 	cv=none;
-	b=LtxFVbtQNoXXeoYdfNzzOTFF9cgN0b3MiEywLr/RVo7eVLasU6m4n2k8mR/iBKYSUkx1wF
-	ENNO0sTUIrK/gj9tojgswl4/baIWlohRqhjflsUzqxI0DYd9XomPAlCfPEOsjAWSSZAiAy
-	wT19sdSj6n4036cNLu9uwFSnZXy/BMU=
-Message-ID: <540adec9-c483-460a-a682-f2076cf015c2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770043082;
+	b=F1zGfu1WmIB+d8jwxEcbjdOAK+DPcL9Fle7mHGP1Ev8MRnzY6MDR+S7Uoux7dGAAnF+JOK
+	O1Q7aDDbHvsjv8PGUezpv0IXd24QpvHY8Rm6xykbcwpEBGIIKIIMWlLMPjBW+XfV4iLC5b
+	L21FFxyh+wtmeAMYQUCC+OFif8hOCVc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770043093;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+YuikHIpXYtVLQeTjpDEpyPPM+rwsAsIsRE/N+8+UvM=;
-	b=UgCRKXtOZlfN+/7cORPTlSVzR8UJHh7JqxgK0CfCBKekoSTHFgghh9HracXNSrSC3awjkU
-	H+AQz66kUh63gKnKZVfMkiJJ+X9mVe1TcLsZJJK3NjU7aPXYAA3puXscll30N4PFjBYfdj
-	QKaUx6BxL4dSPBiJMateUtbngiHNtnw=
-Date: Mon, 2 Feb 2026 22:37:39 +0800
+	bh=LLPSi3nvHTn4l+eMte4lOVK2lLpRjSH202e/Dy3d0DM=;
+	b=JfS3nwmJR1jWsbcU5dV7pNOb3vpeoBM1U5grgbktLWgB0y7eoKJN1yxWpL2NE1uhE9eBCo
+	YwdAaaGUl0yJ2tIbOnWmSQ71Lf8BQF5EYAvenEn4A9ejcxWZ7AFUKcsnEIvPn3xVx9Nm8i
+	SaPtY+dNxvsBQwLSGkR3XeeyQD9/ea4=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-523-cm_R2a_KNMOfV1SOjTvf4g-1; Mon,
+ 02 Feb 2026 09:38:09 -0500
+X-MC-Unique: cm_R2a_KNMOfV1SOjTvf4g-1
+X-Mimecast-MFC-AGG-ID: cm_R2a_KNMOfV1SOjTvf4g_1770043087
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3DA2B1800371;
+	Mon,  2 Feb 2026 14:38:07 +0000 (UTC)
+Received: from napanee.usersys.redhat.com (unknown [10.22.66.39])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6752030001A7;
+	Mon,  2 Feb 2026 14:38:06 +0000 (UTC)
+Received: by napanee.usersys.redhat.com (Postfix, from userid 1000)
+	id C9644C197F; Mon,  2 Feb 2026 09:38:05 -0500 (EST)
+Date: Mon, 2 Feb 2026 09:38:05 -0500
+From: Aristeu Rozanski <aris@redhat.com>
+To: linux-kselftest@vger.kernel.org
+Cc: Aleksa Sarai <cyphar@cyphar.com>, Shuah Khan <shuah@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, liuye <liuye@kylinos.cn>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-mm@kvack.org
+Subject: [PATCH] selftests/memfd: use IPC semaphore instead of SIGSTOP/SIGCONT
+Message-ID: <a7776389-b3d6-4b18-b438-0b0e3ed1fd3b@work>
+References: <7888ed77-da89-41b2-a73e-09038b7c9285@work>
+ <20260131132315.62b0b029dc1dd03febe97481@linux-foundation.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
-Content-Language: en-US
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- aneesh.kumar@kernel.org, arnd@arndb.de, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, boris.ostrovsky@oracle.com, bp@alien8.de,
- dave.hansen@intel.com, dave.hansen@linux.intel.com, david@kernel.org,
- dev.jain@arm.com, hpa@zytor.com, hughd@google.com, ioworker0@gmail.com,
- jannh@google.com, jgross@suse.com, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mingo@redhat.com,
- npache@redhat.com, npiggin@gmail.com, pbonzini@redhat.com, riel@surriel.com,
- ryan.roberts@arm.com, seanjc@google.com, shy828301@gmail.com,
- tglx@linutronix.de, virtualization@lists.linux.dev, will@kernel.org,
- x86@kernel.org, ypodemsk@redhat.com, ziy@nvidia.com
-References: <20260202095414.GE2995752@noisy.programming.kicks-ass.net>
- <20260202110329.74397-1-lance.yang@linux.dev>
- <20260202125030.GB1395266@noisy.programming.kicks-ass.net>
- <c6fda7c2-ad54-416a-a869-1499c97c7bd7@linux.dev>
- <4700e7ba-8456-4a93-9e28-7e5a3ca2a1be@linux.dev>
- <20260202133713.GF1395266@noisy.programming.kicks-ass.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260202133713.GF1395266@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3A8DA18000F
-X-Stat-Signature: 174834r93r5if4io48mq1jpg6nkpzzhh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260131132315.62b0b029dc1dd03febe97481@linux-foundation.org>
+User-Agent: NeoMutt/20241114-35-62db1e
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Rspamd-Server: rspam12
+X-Stat-Signature: tddxmqkwnjnruic5ihbwry3ipt1ez5zp
+X-Rspamd-Queue-Id: 46155C0004
 X-Rspam-User: 
-X-HE-Tag: 1770043085-850966
-X-HE-Meta: U2FsdGVkX19jbzwaKjcLBNpRuSibQzLAZdkWv+KMNYIqiI7Dxb8shmhjmAYt2YYdovQgHz7/You9RoNH+8fUJKck2hqh2fvyYdDnJnia2WdK7pSgwr7zLIQSpGRDmQQ1rjACoEwTfJj4aJKPaAgXSYiiAVSvtyfWHvjAvC24Lhs9AhV6TRW0j+AmyNQ99Zb+6WS+16lEoUXruDWX+FsTxxxU5ZQ2IbIKK4y52gWFKvSOjA2eIv0qCdz3E7B4KPOYVjnysmZIwz7uVHkJVoO58XGgLmasibw0MGt0XWvoHryTNFcNZqqhE2Wn8f+v2CHvPdL/D9Q+Xw5NOkomLWnVAhLJL+reMonPDclBnAufj1SMXNViE7XKlZvOYVBd7P8NbGeCYC10rJRj6YDaX4p0rn93Z4CuWjQovsKUaOdUw+FLWCM1/FK5QiZe/9KvlVyojtU4rsKKgtUWD+RZQzi/rBwAkB44a/m9rsYASEUkA0qi3G16mXRFhHVp7KnLOfHdu2pqrip+bmAnFb6/tnpZ4oZJXiZN9SmMBHf5DAIewpGN1rnjGA9ZA68EZ43qsY5aVxpYqQ+DEj+lKnmk1c9BnVEOGBL0txiBItZ9kmYf8c/lq/HDze8Wmmuozb2KWkBGr+Sg8J3tq3VcxBcAhiOsU9SpW4fvQn5PVp7H7BM0m9bDO060/gVczjpq3KKd2Q+GgOecwBkjDNDeAt+rnWXcmmPwHgrBcqpikvKy3L/KDJLJpcRtqBFEJQEagUEVjU23vukYLOTPNMn9du+Ck9alaqm4e1uQrkmXvZ6YkSfXrd/o1iu6/fmc7v+aEoaG/wwtsjb7rNuuhn7wTWEK5q7vvnQMOy6zC4vUJBqk0fvWS9OxV2qIilBclkWUf7KYSU8wLCqZcjxj6nX/HTtzx5/IzS7We+LMYNlI1r1g9oadQMLNcjsmaqNu4vpoj9MeWNtqWKaASNGthLnRrqGIcvN
- h8Luma9u
- G8/YaawoweLw09AqqWsFgjwlrW0xhmp0JjbJqEPeO6K4AoW86BEDshAp8IRbw5jrszG95d6wKs21TsFoS6QU5qp3+gBMQUp7pyTf2s7G29MtGJigx8YoYxaXgQISwT2KxRlxeAylWY7vqRsMr4MMjSwtsMkgR7lEl281TbKa2gqoR0PzFb7CdmA7E/3LCr4QkVFB/
+X-HE-Tag: 1770043094-483951
+X-HE-Meta: U2FsdGVkX19lHknz71AmPeGEqwq43yxUVaXiwAmf8DP4FBjB5kSAHjN9bHqXHXrfZu0cO5zjx+d4mS9XRbHKCmVXyvs6FaToUfsAjRrtFa4EB9VFtx1V2exobdf1Bz0C//RG5l08u1ZPuZ0OZ/pV3K1I73kMumQw+LQdpsOotZNLYMkjxcG5cxxDL3Bjj1Qa66QGcVwerwgNsA2Tftalffie8vphLHWYTevAttSyQNI/ML5Kqil9VBPdlDi/QMD1qwijmL9n0E/6dhwD39jfc+XfGv/p0kw3J70bHiW89F2Ps89J0Jor70SXBD0N7KKTtcmnGYMPI2WZbFNaMbmxPRsetqsS2wF2TxN9fleSaMwKMhZR7OefxBF1VqBuIzMCbgkZeM8mQ4sHuEepx4raxxJqT3Kp1jFFEz2bt0zQnuZtc1H0CJV4r2kNGAjhES9XnQpp4UZ3ElSN/H3F2Y/cDgHlzoxvFBM28aT5U9JHakNoNlBUpAZA0DA2BhFEghAO60AQjzGHJAZb5Gs9lvGDwHUdQgE6p3Qxqd11Kt3QuQRiXu1Z6NKeBSPlNHLMoGic66sdfE+qwJx4RPWHbVRssOOJQlTyzevCVjo2ec7sga26nBD+vqeYo6wY78LQoptUC3oN//rulxXxf+kGuiuc5f3jg9VafBS/7no+ywxvMqpkZfuHz3Q4zo+EX96pjzHZCzOyTOuWfip0/flQA2GbUoEQoyD+mJGj86z0ePOY9IIGXItGsxF4joCkNeydtM16nJHxtH3l7upxb94a2+u+oButaJEGPsJgqnN5g93pUs0V1l+BLuocH70dPl9vHxaObw3u8qkK0WYkzZ7wqriZz8pz6TWZjkKpHHcRHc1Friz64KyP6P3jslGwHfY++yuZmZv1oKohg5Wjd4pVMQNn30EqedqBT3AQhiu3vkfSpf0hi4EC2quDCt2tk2KY8yL+Nv7VZXjS7ktqQK9UpvA
+ SyNyi5SO
+ nb7VpOnKvYaA2izYI8837JSEEjQjZQo37rg73hCp2h6U9Z8oGh/Qvf9v/lhsYhnxwLSJYrHMHlHEov56+7uuWJ1HPbafa4/J04gJvB55R3fg/p/WrcTdvZd24hg+ZWCOmjhFmJC1BMGK47m1AuqGxeLoUfH3uBjeQzqJjpXrn8YTUEKAUVL765x5DRhBdExf/bHmOeCEn+O9ltY937iqH++wxG/1lJc0TwNM30AHkrlDGBYK1RXGuP+9cBvqQEr7Odznx4oFj/w/dX6ax52mDa8PhL1497ctB8i3OpX9x1/TrXcYyz/mgrv/w6uIWrsZwXukLRKAyhrKDNv1D0Wnfpb4+3U18CeGeEbIhlNU/isafxte8AxIgO+TTSa6fGiVh8mHlNCcXWfh0SifZyHEJNxzbYgMCEC37eKGZ+/RVsmivAHotj/HZidxmZ7W43otbdlbqmXuVcLFWA+XD9C067l/RUPbNUVfYJaBcE8Pg1Zhy3cWirfvjkE/jUmHUTwZa0rxpkXZ5ySnIK5pXMfGCmX2ZAA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,40 +107,233 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+selftests/memfd: use IPC semaphore instead of SIGSTOP/SIGCONT
 
+In order to synchronize new processes to test inheritance of
+memfd_noexec sysctl, memfd_test sets up the sysctl with a value before
+creating the new process. The new process then sends itself a SIGSTOP
+in order to wait for the parent to flip the sysctl value and send a
+SIGCONT signal.
 
-On 2026/2/2 21:37, Peter Zijlstra wrote:
-> On Mon, Feb 02, 2026 at 09:07:10PM +0800, Lance Yang wrote:
-> 
->>>> Right, but if we can use full RCU for PT_RECLAIM, why can't we do so
->>>> unconditionally and not add overhead?
->>>
->>> The sync (IPI) is mainly needed for unshare (e.g. hugetlb) and collapse
->>> (khugepaged) paths, regardless of whether table free uses RCU, IIUC.
->>
->> In addition: We need the sync when we modify page tables (e.g. unshare,
->> collapse), not only when we free them. RCU can defer freeing but does
->> not prevent lockless walkers from seeing concurrent in-place
->> modifications, so we need the IPI to synchronize with those walkers
->> first.
-> 
-> Currently PT_RECLAIM=y has no IPI; are you saying that is broken? If
-> not, then why do we need this at all?
+This would work as intended if it wasn't the fact that the new process
+is being created with CLONE_NEWPID, which creates a new PID namespace and
+the new process has PID 1 in this namespace. There're restrictions on
+sending signals to PID 1 and, although it's relaxed for other than root
+PID namespace, it's biting us here. In this specific case the SIGSTOP sent
+by the new process is ignored (no error to kill() is returned) and it never
+stops its execution. This is usually not noticiable as the parent usually
+manages to set the new sysctl value before the child has a chance to run
+and the test succeeds. But if you run the test in a loop, it eventually
+reproduces:
 
-PT_RECLAIM=y does have IPI for unshare/collapse — those paths call
-tlb_flush_unshared_tables() (for hugetlb unshare) and collapse_huge_page()
-(in khugepaged collapse), which already send IPIs today (broadcast to all
-CPUs via tlb_remove_table_sync_one()).
+	while [ 1 ]; do ./memfd_test >log 2>&1 || break; done; cat log
 
-What PT_RECLAIM=y doesn't need IPI for is table freeing (
-__tlb_remove_table_one() uses call_rcu() instead). But table modification
-(unshare, collapse) still needs IPI to synchronize with lockless walkers,
-regardless of PT_RECLAIM.
+So this patch replaces the SIGSTOP/SIGCONT synchronization with IPC
+semaphore.
 
-So PT_RECLAIM=y is not broken; it already has IPI where needed. This series
-just makes those IPIs targeted instead of broadcast. Does that clarify?
+Fixes: 6469b66e3f5a3 (selftests: improve vm.memfd_noexec sysctl tests, 2023-08-14)
+Cc: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: liuye <liuye@kylinos.cn>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-mm@kvack.org
+Signed-off-by: Aristeu Rozanski <aris@redhat.com>
+---
+ tools/testing/selftests/memfd/memfd_test.c |  113 ++++++++++++++++++++++++++---
+ 1 file changed, 105 insertions(+), 8 deletions(-)
 
+--- linus-2.6.orig/tools/testing/selftests/memfd/memfd_test.c	2026-01-29 16:22:56.094182500 -0500
++++ linus-2.6/tools/testing/selftests/memfd/memfd_test.c	2026-02-02 09:35:04.887782294 -0500
+@@ -18,6 +18,9 @@ // SPDX-License-Identifier: GPL-2.0
+ #include <sys/stat.h>
+ #include <sys/syscall.h>
+ #include <sys/wait.h>
++#include <sys/types.h>
++#include <sys/ipc.h>
++#include <sys/sem.h>
+ #include <unistd.h>
+ #include <ctype.h>
+ 
+@@ -39,6 +42,20 @@ #define F_SEAL_EXEC	0x0020
+ 		    F_SEAL_EXEC)
+ 
+ #define MFD_NOEXEC_SEAL	0x0008U
++union semun {
++	int val;
++	struct semid_ds *buf;
++	unsigned short int *array;
++	struct seminfo *__buf;
++};
++
++/*
++ * we use semaphores on nested wait tasks due the use of CLONE_NEWPID: the
++ * child will be PID 1 and can't send SIGSTOP to themselves due special
++ * treatment of the init task, so the SIGSTOP/SIGCONT synchronization
++ * approach can't be used here.
++ */
++#define SEM_KEY 0xdeadbeef
+ 
+ /*
+  * Default is not to test hugetlbfs
+@@ -1333,8 +1350,22 @@ return 0;
+ 
+ static int sysctl_nested_wait(void *arg)
+ {
+-	/* Wait for a SIGCONT. */
+-	kill(getpid(), SIGSTOP);
++	int sem = semget(SEM_KEY, 1, 0600);
++	struct sembuf sembuf;
++
++	if (sem < 0) {
++		perror("semget:");
++		abort();
++	}
++	sembuf.sem_num = 0;
++	sembuf.sem_flg = 0;
++	sembuf.sem_op = 0;
++
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		abort();
++	}
++
+ 	return sysctl_nested(arg);
+ }
+ 
+@@ -1355,7 +1386,9 @@ sysctl_fail_write("0");
+ 
+ static int sysctl_nested_child(void *arg)
+ {
+-	int pid;
++	int pid, sem;
++	union semun semun;
++	struct sembuf sembuf;
+ 
+ 	printf("%s nested sysctl 0\n", memfd_str);
+ 	sysctl_assert_write("0");
+@@ -1389,23 +1422,53 @@ sysctl_assert_write("0");
+ 			   test_sysctl_sysctl2_failset);
+ 	join_thread(pid);
+ 
++	sem = semget(SEM_KEY, 1, IPC_CREAT | 0600);
++	if (sem < 0) {
++		perror("semget:");
++		return 1;
++	}
++	semun.val = 1;
++	sembuf.sem_op = -1;
++	sembuf.sem_flg = 0;
++	sembuf.sem_num = 0;
++
+ 	/* Verify that the rules are actually inherited after fork. */
+ 	printf("%s nested sysctl 0 -> 1 after fork\n", memfd_str);
+ 	sysctl_assert_write("0");
+ 
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl1_failset);
+ 	sysctl_assert_write("1");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	printf("%s nested sysctl 0 -> 2 after fork\n", memfd_str);
+ 	sysctl_assert_write("0");
+ 
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl2_failset);
+ 	sysctl_assert_write("2");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	/*
+@@ -1415,28 +1478,62 @@ sysctl_assert_write("0");
+ 	 */
+ 	printf("%s nested sysctl 2 -> 1 after fork\n", memfd_str);
+ 	sysctl_assert_write("2");
++
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl2);
+ 	sysctl_assert_write("1");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	printf("%s nested sysctl 2 -> 0 after fork\n", memfd_str);
+ 	sysctl_assert_write("2");
++
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl2);
+ 	sysctl_assert_write("0");
+-	kill(pid, SIGCONT);
++
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
+ 	printf("%s nested sysctl 1 -> 0 after fork\n", memfd_str);
+ 	sysctl_assert_write("1");
++
++	if (semctl(sem, 0, SETVAL, semun) < 0) {
++		perror("semctl:");
++		return 1;
++	}
++
+ 	pid = spawn_thread(CLONE_NEWPID, sysctl_nested_wait,
+ 			   test_sysctl_sysctl1);
+ 	sysctl_assert_write("0");
+-	kill(pid, SIGCONT);
++	/* Allow child to continue */
++	if (semop(sem, &sembuf, 1) < 0) {
++		perror("semop:");
++		return 1;
++	}
+ 	join_thread(pid);
+ 
++	semctl(sem, 0, IPC_RMID);
++
+ 	return 0;
+ }
+ 
 
-Thanks,
-Lance
 
