@@ -4,211 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A4C2E7FDF7
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 22:29:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 533A0E7FDF5
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 22:42:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 665146B0005; Mon,  2 Feb 2026 17:29:10 -0500 (EST)
+	id 285AF6B0005; Mon,  2 Feb 2026 17:42:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61BBC6B0089; Mon,  2 Feb 2026 17:29:10 -0500 (EST)
+	id 233836B0088; Mon,  2 Feb 2026 17:42:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51F306B0005; Mon,  2 Feb 2026 17:29:10 -0500 (EST)
+	id 13F466B0089; Mon,  2 Feb 2026 17:42:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D8B16B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:29:10 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E132DD32BF
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 22:29:09 +0000 (UTC)
-X-FDA: 84400958418.05.C4D8E4D
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012070.outbound.protection.outlook.com [52.101.43.70])
-	by imf02.hostedemail.com (Postfix) with ESMTP id EB46580002
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 22:29:06 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iBrlx5Zb;
-	spf=pass (imf02.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.43.70 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770071347;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0186E6B0005
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:42:33 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8103857DAD
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 22:42:33 +0000 (UTC)
+X-FDA: 84400992186.04.2596CE7
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	by imf16.hostedemail.com (Postfix) with ESMTP id DFD79180004
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 22:42:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iId8sGpc;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770072151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9UMkVDOK9Y8CUvegwBRMip4lcBr6e/wy2g/gsCW/JzA=;
-	b=fGYl6ZnOUaPaVskMPSYUwJOJ/nz54ioptGSe3BAWmcSv/V1qDCRerqdi6XGLpdFQkAXJ9g
-	gP2ENF902T6aHPFGnlykvEhDWyI2IHRsMpY0QAWOjYIf1Vaej661+WmtGbv4CHF0kLMIIH
-	FURyFQQa7ZHbQ1uFExw3dGCsfd4Z38Q=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iBrlx5Zb;
-	spf=pass (imf02.hostedemail.com: domain of jhubbard@nvidia.com designates 52.101.43.70 as permitted sender) smtp.mailfrom=jhubbard@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770071347; a=rsa-sha256;
-	cv=pass;
-	b=sy7L5bbpfveQvVV5W3xn2d4+DywI0HlzgYg0vES870+YYs8gSKA+RIH9JaGCF2gYJPUcFQ
-	/2ig8McJQ5YElA1QtD8GWNwnUByBUW0Ymzb5QcM2EnpmwBhRbmKeKt6AyDhdDc4mbJCVbX
-	3ss/08L9LnUQoWOLvybYETWk+BP4xc0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XfEmHX04zu3/A6g8K3E3NyOKqY8JFhC0PYlnf9GJrFbDDcP1lzc9t6QWBDtsah+Eszmf6d1tsDGYx5ZcuPSGc7VCE05x+NOOYBOUmGDnIeAFwI0RAO/K6OjvJWy8lgphw3F5gZIH2rJOnlP7CUzCbQYauIF+StyGLofnAeWy6fCNDw+Y8uLDWAxyiPc8d1v+at29KRFpWd8B8NLATERcWrj0I9eUwrlOHhZ94ZGQD9bKhIyLmd/X5qy2hVg78oO3rrD5T8zyov1ZEc333wHXnhfKoIby+qMd5zR7XeTSBXJgB5H/X94p9aBCEWZarZFwSMtsCLKXoDqP8uE1b6Kmlg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9UMkVDOK9Y8CUvegwBRMip4lcBr6e/wy2g/gsCW/JzA=;
- b=nNVe2ChK5oFH09TlALgQOsiWlBuf+LGKgRqkwy8H38TftTW7SEBH42AhuIJc7olHZDM3FrxVzDe8DI5YBMMZikKvdiG240XcbwVcp4J06GlTMryPJ3uXXM1L5BC6YYcUqX5CNU8Y2AsBAH6oJwm6oXOC0LBIPLTDvPw7dnq2qOkeUjYa/L1Rn6qGIN/aQ4VUXFOdxNCxAivnbrNI4OeH/iSKsNoHpVVR2c8pZ8IGY46NFojKYYiF8ODJOSrdzlBUw8HqZ9DlsWy5roNsC9oVYo8iWbU3n/auPWurGn8A+gyMTGqr9ikmGVhhWv/ONT571A5920HZTcV1083TLDd15g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9UMkVDOK9Y8CUvegwBRMip4lcBr6e/wy2g/gsCW/JzA=;
- b=iBrlx5ZbOgpz/a+PBAwF+JH9dQAbNa757fkN8LpNNdU23XvKRKopoItLYU0+FsCGb+F3lXv+NjDPHuDQ+yVdr2BpAowp4Shi6MlNE1E2I3EvnXOKt8nTD+1buCAy6ggk6MP0srRB81zOroCQ/RUpWKODzURFKZrm4P5oJDabRAsjOKF6qdWwAt5J6id0A/0EdhOODG8scu9fA8sqwNVR4gJge0qWOoKIMWPO48EzoNYtDM/B6Y3ar2gjaKiXEW6UoJvBVgN/xDro+8Z+Sl04R03TzfAT2E1I50IlmKpvi1R49O5iQqrWYRj7JUTTztj8D+Esv+j1Opfi1+2Xas6Ocg==
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
- MW4PR12MB6827.namprd12.prod.outlook.com (2603:10b6:303:20b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.15; Mon, 2 Feb
- 2026 22:29:00 +0000
-Received: from DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
- ([fe80::8cdd:504c:7d2a:59c8%7]) with mapi id 15.20.9564.016; Mon, 2 Feb 2026
- 22:29:00 +0000
-Message-ID: <a5b71dbc-9e3a-4098-8821-21a9a02ec235@nvidia.com>
-Date: Mon, 2 Feb 2026 14:28:56 -0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/hmm: Fix a hmm_range_fault() livelock / starvation
- problem
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- intel-xe@lists.freedesktop.org, Ralph Campbell <rcampbell@nvidia.com>,
- Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- linux-mm@kvack.org, stable@vger.kernel.org, dri-devel@lists.freedesktop.org
-References: <20260130144529.79909-1-thomas.hellstrom@linux.intel.com>
- <20260130100013.fb1ce1cd5bd7a440087c7b37@linux-foundation.org>
- <57fd7f99-fa21-41eb-b484-56778ded457a@nvidia.com>
- <2d96c9318f2a5fc594dc6b4772b6ce7017a45ad9.camel@linux.intel.com>
- <aX5RQBxYB029/dkt@lstrano-desk.jf.intel.com>
- <0025ee21-2a6c-4c6e-a49a-2df525d3faa1@nvidia.com>
- <a459f147b461c6e6e806282956b7931f74a0aa93.camel@linux.intel.com>
-Content-Language: en-US
-From: John Hubbard <jhubbard@nvidia.com>
-In-Reply-To: <a459f147b461c6e6e806282956b7931f74a0aa93.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY5PR16CA0005.namprd16.prod.outlook.com
- (2603:10b6:a03:1a0::18) To DM3PR12MB9416.namprd12.prod.outlook.com
- (2603:10b6:0:4b::8)
+	bh=cqluN3IeGiKz19EWdx5yzxUwOQbuVaFyDwRFN3XnmtM=;
+	b=lPEcNJQa+HqEwN3Bmi8n5DKOmh/y7Y2i64pMYJTvaVruU6IrNYcgYY1/mMC30Lln+sXF3D
+	AsFe9v93IUqH4u1jpxZmltBb2gTeB0R5sgulO4Few0Z2YBXbxiRa+9vDEyGG1KIL33tqVJ
+	v755QONhWY8ODdLqh9TXsArnwdWItAw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iId8sGpc;
+	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770072151; a=rsa-sha256;
+	cv=none;
+	b=ER7V1sJ4xYnGUGSzru7Mtzlo2xZlb25msGZ1C+1XzYKctG842mox3zhhV+iLWQxyxYGLF4
+	URJduJ7BSxi75FU/US+ootvKvyw4vtT6rTo3QDBor58Cdh83aA5Ml35z793H43HhjSlShH
+	3a/FEZ3tTTW3dwSNhaL8rWziHA5CSHc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770072151; x=1801608151;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=dJqBhnCjv+ARNxGhcymEd/bUx+NAcoEk6SIjpgJXcgs=;
+  b=iId8sGpc5Op8QVj2I+/CU/skncxSRHjPZ269Hl7p1dwFE9UhWXK6+pSG
+   N+Lv1IOmV2U7HH3ZTqcmb6bE1MwmrzFaCvnpK5fb8pbukqYAqgrJfVnH1
+   2nVvp7ZijT/muBuSfPOAViYa5+EpM6A3mAtZ1cxPMu5iGCjpI3JkFE00o
+   hnEsYrTJf3Ll1b5jnedvqLfLlqcjLNqipJMJu/cSLWeJWGphREH32MaTv
+   NBplmITi/mbTR1KUkLwUINcXrtrPJLZQ4tWnfHdCof8FgA2mUYxhnyeNv
+   sOB+1LMsqsf5dZSZ7z1+8cvlzyPv1nzxsN5czOiQQdqeNlbdtk2vAyEFq
+   A==;
+X-CSE-ConnectionGUID: PXDilvBYQey8SRQbDh9sAA==
+X-CSE-MsgGUID: fSK93hR0SoCqs21V2vDHew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="71146541"
+X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; 
+   d="scan'208";a="71146541"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 14:42:30 -0800
+X-CSE-ConnectionGUID: JhZZAtqiSYqHdWP/GEBTXw==
+X-CSE-MsgGUID: fyKoC9HGSS6KG6Ysdwb7mg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; 
+   d="scan'208";a="214175101"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 02 Feb 2026 14:42:28 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vn2cj-00000000g1k-2F2s;
+	Mon, 02 Feb 2026 22:42:25 +0000
+Date: Tue, 3 Feb 2026 06:42:05 +0800
+From: kernel test robot <lkp@intel.com>
+To: Ryota Sakamoto <sakamo.ryota@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org,
+	Ryota Sakamoto <sakamo.ryota@gmail.com>
+Subject: Re: [PATCH] lib/tests: add KUnit test for argv_split()
+Message-ID: <202602030650.7n64kb2g-lkp@intel.com>
+References: <20260203-kunit-argv_split-v1-1-0d3545314a41@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|MW4PR12MB6827:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2970fdf5-a87f-495e-26c5-08de62aa763f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?L1k4UkFPbFdTTDYzYmJ6RndaQTV5dTlZbFYzODJ1OFJaeXFjY0U4L3AxTzVq?=
- =?utf-8?B?T0dkMUlhbGtkejJOV1pXYkJqMmpnS0VGeEo3RVJlWmR3Tk9QMHlWb2N3aGQr?=
- =?utf-8?B?amNNRUh6VVErRTFHV1BmUTg4TXpVd1kzWFdITmJRdTJXSGRiTXhoKzBmQXJV?=
- =?utf-8?B?aXhZWlgwTStJelRvOHpYaVZyN2VZSit0Z0YxREN6SmlSMkVpQkpXa0pSZzI4?=
- =?utf-8?B?K2hLM2VOcmtNOVZhQUVLbWpFR3htdXRhMWQ4bXFuNkNLTGVRR3BydEYyd01y?=
- =?utf-8?B?eURWTVhyNkFUUWlCWTBoSFJ4VTNsR2g2SEJwQjZhZTJKODlpY3U4Z1VTWEY3?=
- =?utf-8?B?Yk9Wb2V4QUhjc00vblNxSmlTczJsbWkrNG5tU3NkUmZZSUVGclN1WFhSMlpv?=
- =?utf-8?B?MjdRbUkrWVdQQ2FoNlQ4ZGJUdTZOSGVJY2JOazlaQm52SVhWRDNwbmNBd0Ir?=
- =?utf-8?B?WCtQV3BNOTdyYmgzSzlPeFJ3bUFhVXRPZW8yb3N1OS9HNXFadkFNT3E0VmRL?=
- =?utf-8?B?ZDdRSVBYTThQd1o0S2MyYi9PSXA2eG9za1FTM0o0N3J6SnlEa2FnTnRDcGNZ?=
- =?utf-8?B?bllIUXd5UU9YRElnQ2FQaEhQc0x6Z1pwclI2Q0dwQm9kUWJBMWQ0ejUrNHVu?=
- =?utf-8?B?cFFPZzdTYkgyUUtmallKM0dubDN6amtyblgySmN2Ync2TmVZMlRMSGtCcmlv?=
- =?utf-8?B?dUUrR0JHcllGRTZpdjB4KzVmL0tmajFIc25La3VJa0R6TXJabUQzcXpSdjE3?=
- =?utf-8?B?dFNiNnRCRVNCblFVM3NOUzJVNUxsSlQxZW03NWZUY211Q2VxSDZGc2ptNnVU?=
- =?utf-8?B?Ymo0WmZZTUFOT285MXdldVljbllaNHcyNmc1K0NzRjJ3MzM2clRwdWNhNUd6?=
- =?utf-8?B?TTltQlhYN1RJeXRmeFRJTjlWNlZuZi93SlA3OEdzZmVvYWoyMVFuWXpmRnFY?=
- =?utf-8?B?R2hzcElYSTBYR0JHL3JTQTJhOC9BSWpiQ28zaktQS1F4dHJHblFoRXFwY2JH?=
- =?utf-8?B?UmQ3ZjBqWjM5S3VzcnNNMlBCdFZsTjFQbXNTN2tUalJqR1NMTkFCb2lseWFW?=
- =?utf-8?B?YzRaNncveUFOOEk5OFMySEZoaitWTFNReTZtNGQzdnZIeHRyM3k4TVVUUzhK?=
- =?utf-8?B?REFkNXJidWt2eGNwVUhFb1F6aDNOa2NBSllVblVGMWJ4cWtSMmhKMDl0M3Q5?=
- =?utf-8?B?S1hqbGJNSGtZTERFTjBtaXY0STBtcHNLUTR4Vlh6QzR1czF1ZW5SbVRwYVR4?=
- =?utf-8?B?Vk01ZU92TzhlZW8rYS9QTlNHTEhtTGdPQzByOENJTVJTWVV4ZDlXVmprTFJP?=
- =?utf-8?B?c3pMOEZ6c3RneXo3OHZmdm5FZkZOamRIeWJ1Sk9rZUFaN0xmVW1OUm5SZWdL?=
- =?utf-8?B?SThzZXBHQnpCaTNXblViSEdqS0laUndDVmxiblNqZGpTdGFxakFld3QxT0ds?=
- =?utf-8?B?cEFNLy9OcEJOTzA4Y0xRM3RCcnU3YXlQUlVxMS94VjNZU1BUNHJEdCtkdzVW?=
- =?utf-8?B?RGtCYklOcG1taHlmNDcwejFFSW9aQmZLcndRRW9wekFYcWNpWmNmTkdzREJB?=
- =?utf-8?B?L1h1bDNjNUVBa0ZSUG1Vd0VFWFQvemYyS1l5OHRIdUkwVENnUHl1L3NWMFls?=
- =?utf-8?B?eGxoRHVYbEsrd0RtUXN4K0hBRnFpMHpkNUFpS2hlY0xDVDFVMkJaanNucjJE?=
- =?utf-8?B?Y0xiUHl6OWoyeUtjWGo4dXhDcENucFp2b2s1VWtRTzhnc1AwVmlpWkhUT2ln?=
- =?utf-8?B?bDBFUmVrWU42M1RNN0hoc3FrSVE5WlY5bGF0Q0FVNUorc2NHWFJxdk5EUWpx?=
- =?utf-8?B?Y2dYd2JlM0YzYlpUamluZllmWkVBTlAvTW5ubmJLLzZ3VSt5ZVRwVmhLUldv?=
- =?utf-8?B?UzlYa0JkNUplVmFieHJrdnpqV1NXcXhYZ2cva2x1SUhkSk5ld0tQQXJhNlV3?=
- =?utf-8?B?R0J4YkNEZTdCZXAxNWljNWFvY2ZEU3grZVU2SG5wZUZIeXV6MlU0aUJjcnJq?=
- =?utf-8?B?THNVZjJTM3BUaU1SMlJ2TzcreGZ1NzRmT3hSRmhiLzlXSldUZUNOMGZiUE5p?=
- =?utf-8?B?b0tqSElNN2NRZnR1UzBmZ3JRdnRsSWFOQ1hleFRCOUpZVEtOU0VTd0loZ2pX?=
- =?utf-8?Q?vhXE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wm4zMHpjenNOb3BCVTQzWkJtb0NHSm1XVDRCMlM3ZjMzQzZENEVtRTF2RFVt?=
- =?utf-8?B?d2duallnWStqbStmK2JaOXpCVlFWL3RzRUQ2SC9NR2RlUU5WWUsrT3ZVQXRn?=
- =?utf-8?B?NVMvMlhMM2NMQkZKVkJBMjFqZC91dktvL0dQazFtZUVMMndlY1g5VURXWk1q?=
- =?utf-8?B?Z0hqT3l0SGhVZXhVczVBeGlKL0ZwaXBCYXpCTUFZTHFIL1BVd2VOTnBLNmdH?=
- =?utf-8?B?bXd5TnVXL0tDd1pYRjVHQmRtMGdkNWJkcnhjV1JlZ2NCODdzaUhmaCtKMHlU?=
- =?utf-8?B?QVp1NGQ5VVVoYzQ2TlZ4QWUzMTlDZnpCVTBwbXI4L0h3eHlReGZLdEtNblhw?=
- =?utf-8?B?RUg3MVRLbjlNVFptM0IwenZIMlVZb093ajYwY2FVOUJLVmR1SW5TcnEzNHBF?=
- =?utf-8?B?d01ZU1hQbkdpWFZnbTdKa2xZZjVPQ1lsdkVXaDRBTGp3c0FUb29TdkdlMWJU?=
- =?utf-8?B?ZVF2TUxKNUpoR1lBSDZUUDBNWWlaMTVjdDNjbUt6SVJoN3g5OG1veEtvWnRa?=
- =?utf-8?B?UllwUDJaNUMrWnp5Z093UUFVWjc1emx3V1FWTlJ4NWczNndsdmhJZUFucUJs?=
- =?utf-8?B?RFpBZXhyWTBCNFpDOGdNOUMzOGdQQmEvVFVxNTM4MlhiVmdieEFRTHdtQmFV?=
- =?utf-8?B?eEpCY0ZOb1Y1MHpKQTZhTS9kOUc1UEZ6dDlLS3l4cVJQbW5RbDk3SGpNeTZT?=
- =?utf-8?B?b1Y5WlZxSDl3MVBRZmhSZk5sOEQralowVGdaRHdkNEpMRGJvZUZtK2Q3WVFM?=
- =?utf-8?B?cm1BT3A2VFhCS2tScHpmV1hlcWFsdSt6TlFKbFdXNjJCNm1kRlNhcUtmdVp0?=
- =?utf-8?B?OUdDUFZqUFQydVZwaHdEVksxV1p1ZmlaMEU4MGhaZXhxWHJOSW5UU2ZHMUtz?=
- =?utf-8?B?TVhzajdTd1pqL1gxZENmUExacUJSUmU3Y2F2bHhteEltTUFUdzdtYjRMY0RL?=
- =?utf-8?B?czF5V2MxSURvZndFNUIxZ29iZlorMHpYbi9zMml5Q1k2ZTFBL3EwM1dCcWx5?=
- =?utf-8?B?QVJkWkpQbzhGc2lUczQ4UTZPMEFiT3VNMXZMUkd3b3BCa1ZUVzBJN2k3S1Q3?=
- =?utf-8?B?OENQL0ROVDI5T1Z4RHhtRmNUR29zWG9NUVNvclBBSGdlVEY1djQxZEt1RWVW?=
- =?utf-8?B?VTI4NFBDeW55eTJYZmlDMzVkNHE0cDJvdlZUL25HR1lhL05zSm9GcHNFSytB?=
- =?utf-8?B?NXl2cmEyektIOE95RVdTTTZpeksycEdnTzAreWlwNU1xQjhzd1lmOUkydGow?=
- =?utf-8?B?c0toL0J4UnNNWDAxajFIUjNIODU0OWNWUGJKcUFQeEIwSWpqcXRMT0VueDNa?=
- =?utf-8?B?SlMyalpUYmkxSXBjY2JFNzIxekhvTEl1Q1BSMHVBbnhvYmZ4MWJJT0p3MDFk?=
- =?utf-8?B?aWMzektRU3Fuc0JHdkY4WmNpWCs4VEF5cGEvNVFOYm5mMzVxVE9HRFFBMVFP?=
- =?utf-8?B?SUxGZE1HL2FvVFJsV1JmVVQwUFB5VG5mT014ZWdGcXh3a3cvVmRYYlprcGth?=
- =?utf-8?B?cnlKakR6RTRZQ3FGZHpwU2hBTW80dmRtNFh3WmI4aDg3N0Z6QXFuQjNnMVFL?=
- =?utf-8?B?bjRrbWYrdjF2NklWMTlCU1dmZHZVZGlsNnh5WE9Md3R1NkllVDEyZU53blR4?=
- =?utf-8?B?MHM3SDduSHdFNnJ3U3l5T2Q2dG5CYlNYaFFzY2RadnV5Y2dLZEVOendvWnZt?=
- =?utf-8?B?VVQ0YlRBL3RYV1d3N1Jrc3UyYUM4QVQzbkNxNVc3RGFSbVd6NnI3eU9qR0ph?=
- =?utf-8?B?TlpJYWhwd0NsdGdnQkM3cUZIQVBoZFFmV0xNWXBhSnZjWDVqdlNUbjZlT0Iv?=
- =?utf-8?B?MVlGV3diYjBIRGFON2E5QXpua1Y0dHhYV25JMmgwTkRJVE96YU5lTm50ZmR2?=
- =?utf-8?B?ZUhTUk1yTWhGc1pkNi9WWXpjTHlTZzRjOXQyM2VYZS80V0ZQYml2WjBUbWZq?=
- =?utf-8?B?bVZLKzlid2dwaEpHY2tjeDNFM1BFS0pDNGl1cFgzOVQxM3FoRWNVOE1xMDVt?=
- =?utf-8?B?cUl0ci9wa0JYRGJJYnZiTndFN1hFcnhmUkY4MWJoeUdGMWdGeEo3VVpQUksz?=
- =?utf-8?B?dUpIOGlEckVESlkxZHB4RWpsUHZwV0tVeTZZakEyeEo3ei9kVjUxeVg1Y1J2?=
- =?utf-8?B?Zys2VVhXVmIwYi9xamt0dmpiWE9NVy9iQkFhRkE2c1VGTHFmK1B1RUw2NUI5?=
- =?utf-8?B?UXdaSVJrRU8wNGV3b2ljNHpKL3BSODlhNWE4NnVPZHN4ZEZPcys5TjdqYVo2?=
- =?utf-8?B?eVE1UmZzWGp0V24vczhzaDgzSE5SMG1zMHJoclhpblYvQnJEaEZDRHdpRHV0?=
- =?utf-8?B?SCsvcUlSc1NnNjlVWXA2T1hHLzQvaVY1U1dvZWt2UExPUStPaTVYUT09?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2970fdf5-a87f-495e-26c5-08de62aa763f
-X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 22:29:00.2818
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zwi6FGeMNyWnG5rSsJUFPRhIKtot/3yiVQaRlDV9eHdspy/Q6fHp6YgL/T5AT9hbkKqtj2GHHxdFP6yYMANGRg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6827
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EB46580002
-X-Stat-Signature: 68r3x55ubuqcnwo77je1nrygjndos9s5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203-kunit-argv_split-v1-1-0d3545314a41@gmail.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DFD79180004
+X-Stat-Signature: cgy5fmgemiwnnsb46woxwsecth4js79k
 X-Rspam-User: 
-X-HE-Tag: 1770071346-280197
-X-HE-Meta: U2FsdGVkX18gie43dI+SZdDxt1gsfTDysIth4WgwnSCoN0IX1G1h56um2cK3y39shoa+0y3pQjD7D+mixz6l+ivKtvoQ3RGvc4AfMOD/Ff7XX8/70aDTC/f0DMJPw9c3RzgNSpxvqVw+SWTZb5Sqe9/9+lQ2klcVKek3jroK7GynopJkjr8vnfuv9J1k5s0+s40N1l2mX4JlGrPKlrBck1VLNRgn87Cu+joRN/FDYGtLvFT8RfKH0p0zBlMh+Ku3K1X5XdyZduQxvkKRX2aNVstvkN7UMmahQgSD2Lh2lIiXhp6bW0mETrmrpr8MTeDvP5VNqaFU62WlbrwH/YSnhPE0AcUd/pGrbHnkYgKjZJBm29E0bL8dVBoDjXMNxTTw6llXO3USPIU4jmq0lSm7e9OoYBlLyvf8ZJAP/WC98Z9thUsmZws9+XVXLU5mu7cebzS33aI2i1mMxP2tg1kFAsopVwzp1mTb5eR1v3kM4+IW49FgycTJoYUKmbOsqofJI7cOFdnhv33Xg5lpwGNwZyFXwvuvyG5I3QeIK33oxzS/xioc0rZdoahGE2iVFoCUAyWzpFFEODOnadE4lrJtkOS4qn7bypoM33D5aiSeedx272Q7K1+BUj6X5CFegUq8VcM38qFhzx6hAxGLdmDmfbha1lOYGi5dJ35EnmYWcoCZFjnYQfudY2V0Tu0YVmSdDbmyG1Xx6cC4qlQ8DUE4b+mcsuKI91QzHYonK66JShPWKzr8qaWumgM/Quxi9X+llnYiCioEaHCW1Oh0XDzolfl99FauC+R1Mxj5CnyEtrSfEKXBWh5ke5SnadQjy0wwYkW3az592l2mdXupW0PoJ+S7lAwh934mHm1L9pcBlRbrdxqeFOobOfJEvofX2c3IcuWtHRRlpxQk5Tv6OuZ6aQPRYSNIRJps/nnzTYUl+xsof5aDOsH2Cp2/fTev32CKuK6G6kBXQC/xCICi1AL
- c7A4fNQc
- VWyAad3lBcrUztagd6kAb0uVL2vleaotQVmmEumliSvgoiuFTTifN8Eowq+k6guHddRPNrfZ+4hsjs/2d0Bh993Enlckd+UZOQnrX5DLvKSH9LvYCbDwAizq3D+e2cFpyo9kCTAW+dAzyhSqnrAHMtF4ztSwCYSSLcr9n8QIZbbXZGgQiehymjri0P7N3DJ1Bjm37WRFJAtDlRpD9YpRPwaBxM+4rSwrz6sAiaLF48Wh0sUwxGUNdVIyeNe+t9t0z5tITXmPHb85ergGmqw3yIj36DbXe6SUlkd9DiSxR62waHNASEuLWHUkmfakFBvBXG1aNLCvHpplK6/ukr2JjCeZEgREg1t84lFviofEX4et3s5nrf7tVCMOlLtPyy7LHFSbdsMc3XtsjTeDk+72/WBsWEP9PCGvth5j0con5bfxKoXAD0OhjcBibgGEXwQqdwsD0cy+GvLeAjMeRFVJp8zk6gmsyztP0IrGn3V/WO0b/cineq+D4i9NqmMr3y0u8fFyR
+X-HE-Tag: 1770072150-995809
+X-HE-Meta: U2FsdGVkX19xdVdvjt+Fmk+uFfCKA9cb8ZwRu5MfHYI9TBZc86wPY8V5aDABhWa5DXx4MyIWXSwd8JaOASGcI4X+h1GewW1H6ffRHL+/aSU51sLvREBjf0YEkK3ckLR9ZhS9xh9xWRdkf53gUflEUa0PiO+74e4zSk1wP7NqWL/9Tk/P6ZFLUan6HYW3NSLr9eSBGu29YwL/QOA1e5qMGvii3eGlYn97v4IR3Wr/2gHsnYWcrQQK0CwuDjzZ2YTKSpy7SlCLEV+OoRIM81vMjAZD8cSkge0MpQypZGiPWID8fdWbJl1Wk4XZYGQImY0sn5WUOEGQUBVL74kdEGRorj74zInJy4CCAV0EaCNr4+j2kQljiIlr2NTb+9QePCeNP4qqOIydU0OAFnbqmKMvRFDypSP0dK6oNdq9Lu87Uw6WV8oNgDvgAJ0p7QG+muXazK0K/iFgoKh8k/AkdAuqHqbTpuLzK2/mMG9Tc0oRqFLxNNsJZAbO1kRbcL51/7p/bQEs/5k7xRp5eL+u8w74hcL9EqEn0mensDIQGsR7fo2R6oh6+TLUeMAvRtfmTbQtjjLBtMa/hEiItkwSlQXHqtDtjZNvverRBjN8aJV+zak/WYYmmaTkURxDMVv6keOBwIa+rwbHZddIFIWMpIFIvjh0SSGrSQvnt0VtNfjA0FVOqjIOrr5RLJqTUe4rqq/Yc3ntXeq8CGS8AdRKnLWXtSFvaXZYiqTCbD78P4khsSmkCXzdXZfpIPfup5eXHOGkhf/yc/a/LveyOqSnbebUhV7TqPkc4PiaSvIr1nQ4zZKwPcOjHxUDuo8MfMVJQCU3klBEojSJyU98Opns0Bwrsm01sROTZ5TlpZLtZbB5LDmdj3sXdiB/yJFPys0psQKbMy5MUsy927RoSSndGCKcNoGEjMYVb1lTAqZ2yslxlObgcGPtLym98b4Ue45d02f96Rnbtf1pBij5yhFfjui
+ dLZQWKfK
+ 8BaZxbFgUDlq0DdiRAv7jxkt25xQKubq/MW9J+e+t3pLOcyE7/e68NHcPdmTobTFPOy3tsUp7+oA0tymZMimKYeXKmdP7mFAHcvfp8UGQVf+fQhs9pcKO61W8HyEp+BWwSQDRWubZ2+F2Em4WDcyuU0we8N/goJt8+bouSvLuIiK7hMKmDBBK42oNFswNEl36TH4LjMJnwqwVvtLk7Vor/KQpjSXgEsH/Z/borsEihdqbwPU7G9YoPA/CxyQmqL95ux7p/zTu7q97PoXa4AAALj6fkHPMTfyK0D+/iGwGSLC1CXZo8J0UaNdOKSEaLzoibr4DqUgrStRnWAjF33naGfcYAfzy0wYGpt7Fu9+JwnB2zPZVnKG/dcV8XVA8aNNh2ylWGadPMK1N0WLLQni+P2DYfYVhDY640U7+ZNTv8u+Z4wG/x+HZQ5tKTgxc4+3bfVKEezzK9ncB8wIXQCsJu9u9pw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -217,65 +110,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 1:13 AM, Thomas Hellström wrote:
-> On Sat, 2026-01-31 at 13:42 -0800, John Hubbard wrote:
->> On 1/31/26 11:00 AM, Matthew Brost wrote:
->>> On Sat, Jan 31, 2026 at 01:57:21PM +0100, Thomas Hellström wrote:
->>>> On Fri, 2026-01-30 at 19:01 -0800, John Hubbard wrote:
->>>>> On 1/30/26 10:00 AM, Andrew Morton wrote:
->>>>>> On Fri, 30 Jan 2026 15:45:29 +0100 Thomas Hellström
->>>>>> <thomas.hellstrom@linux.intel.com> wrote:
->>>>> ...
->>
->>>
->>>> I'm also not sure a folio refcount should block migration after
->>>> the
->>>> introduction of pinned (like in pin_user_pages) pages. Rather
->>>> perhaps a
->>>> folio pin-count should block migration and in that case
->>>> do_swap_page()
->>>> can definitely do a sleeping folio lock and the problem is gone.
->>
->> A problem for that specific point is that pincount and refcount both
->> mean, "the page is pinned" (which in turn literally means "not
->> allowed
->> to migrate/move").
-> 
-> Yeah this is what I actually want to challenge since this is what
-> blocks us from doing a clean robust solution here. From brief reading
-> of the docs around the pin-count implementation, I understand it as "If
-> you want to access the struct page metadata, get a refcount, If you
-> want to access the actual memory of a page, take a pin-count"
-> 
-> I guess that might still not be true for all old instances in the
-> kernel using get_user_pages() instead of pin_user_pages() for things
-> like DMA, but perhaps we can set that in stone and document it at least
-> for device-private pages for now which would be sufficient for the
-> do_swap_pages() refcount not to block migration.
-> 
+Hi Ryota,
 
-It's an interesting direction to go...
+kernel test robot noticed the following build errors:
 
-> 
->>
->> (In fact, pincount is implemented in terms of refcount, in most
->> configurations still.)
-> 
-> Yes but that's only a space optimization never intended to conflict,
-> right? Meaning a pin-count will imply a refcount but a refcount will
-> never imply a pin-count?
-> 
-Unfortunately, they are more tightly linked than that today, at least until
-someday when specialized folios are everywhere (at which point pincount
-gets its own field).
+[auto build test ERROR on 18f7fcd5e69a04df57b563360b88be72471d6b62]
 
-Until then, it's not just a "space optimization", it's "overload refcount
-to also do pincounting". And "let core mm continue to treat refcounts as
-meaning that the page is pinned".
+url:    https://github.com/intel-lab-lkp/linux/commits/Ryota-Sakamoto/lib-tests-add-KUnit-test-for-argv_split/20260203-004209
+base:   18f7fcd5e69a04df57b563360b88be72471d6b62
+patch link:    https://lore.kernel.org/r/20260203-kunit-argv_split-v1-1-0d3545314a41%40gmail.com
+patch subject: [PATCH] lib/tests: add KUnit test for argv_split()
+config: sparc-randconfig-001-20260203 (https://download.01.org/0day-ci/archive/20260203/202602030650.7n64kb2g-lkp@intel.com/config)
+compiler: sparc-linux-gcc (GCC) 8.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260203/202602030650.7n64kb2g-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602030650.7n64kb2g-lkp@intel.com/
+
+All error/warnings (new ones prefixed by >>):
+
+>> lib/tests/argv_split_kunit.c:55:3: warning: braces around scalar initializer
+      .argv = {},
+      ^
+   lib/tests/argv_split_kunit.c:55:3: note: (near initialization for 'argv_split_cases[5].argv')
+>> lib/tests/argv_split_kunit.c:55:11: error: empty scalar initializer
+      .argv = {},
+              ^
+   lib/tests/argv_split_kunit.c:55:11: note: (near initialization for 'argv_split_cases[5].argv')
 
 
-thanks,
+vim +55 lib/tests/argv_split_kunit.c
+
+    19	
+    20	static struct argv_split_test_case argv_split_cases[] = {
+    21		{
+    22			.str = "basic words",
+    23			.input = "foo bar",
+    24			.argc = 2,
+    25			.argv = (const char *[]){ "foo", "bar" },
+    26		},
+    27		{
+    28			.str = "single word",
+    29			.input = "foobar",
+    30			.argc = 1,
+    31			.argv = (const char *[]){ "foobar" },
+    32		},
+    33		{
+    34			.str = "leading/trailing whitespace",
+    35			.input = "   hello  world ",
+    36			.argc = 2,
+    37			.argv = (const char *[]){ "hello", "world" },
+    38		},
+    39		{
+    40			.str = "mixing space",
+    41			.input = " \t foo \n bar   baz",
+    42			.argc = 3,
+    43			.argv = (const char *[]){ "foo", "bar", "baz" },
+    44		},
+    45		{
+    46			.str = "quotes are treated as literals",
+    47			.input = "ls \"my file/\"",
+    48			.argc = 3,
+    49			.argv = (const char *[]){ "ls", "\"my", "file/\"" },
+    50		},
+    51		{
+    52			.str = "empty",
+    53			.input = "",
+    54			.argc = 0,
+  > 55			.argv = {},
+    56		},
+    57	};
+    58	
+
 -- 
-John Hubbard
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
