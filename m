@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23700E7DF11
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 18:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4A9CE7DF11
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 18:31:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 482A46B0005; Mon,  2 Feb 2026 13:31:21 -0500 (EST)
+	id 116E76B0093; Mon,  2 Feb 2026 13:31:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 430616B0093; Mon,  2 Feb 2026 13:31:21 -0500 (EST)
+	id 0C2276B0096; Mon,  2 Feb 2026 13:31:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 331376B0096; Mon,  2 Feb 2026 13:31:21 -0500 (EST)
+	id F308D6B00A6; Mon,  2 Feb 2026 13:31:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E9A46B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:31:21 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AD78AB71D8
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:31:20 +0000 (UTC)
-X-FDA: 84400359120.10.6E12871
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 885FA180007
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:31:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bn7iJS0a;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E00266B0093
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:31:58 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B3C48ABEB
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:31:58 +0000 (UTC)
+X-FDA: 84400360716.12.4B591ED
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BB6D5A000D
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:31:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z64+NLzU;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770057078;
+	s=arc-20220608; t=1770057116;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=t9+bvfBQEkjMCoKn8hDaUbiuNsVex6DewVLWBe/jPYU=;
-	b=zwDzmIQVyskIjHytvuo/+arFWA74bfk+g6L0TjJ8T5q8f8yjE+d+WH+OJ9xTItTPa/m1bE
-	tWx54XUStcLj1pOQyv2fKleGgsHXqxs7ka/6mqorZsm7cFkZB7B/Xocptk6YD58IQQcR16
-	mJmEQ0WLQNDpyCGVo/X6+SSudTug6AY=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7xyo78MBxU8zUsEU7U2GUhsC/82MXVnewvubqA7hX0k=;
+	b=etnK91F4EplxIqpK55IsbUYR4ksuH/JGxyhhqs3ArKe0Xz8S7fY7qjqsEB2aiRpHJkp/eF
+	ODUfqPmh0czxGAXtDpimLSGMBKmgG+FlZ6dG9b6uUtmDPS2OWbXgTMl+IftltSO+dQE2Kv
+	NUjxI4dtvIZPGlcg1BDpVGYV72g+fWs=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Bn7iJS0a;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770057078; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z64+NLzU;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770057116; a=rsa-sha256;
 	cv=none;
-	b=pKRVEUyKYcV71/Y5IkNb0ssZUXcCtcySgHGiUBvbhhIW6NRUtydpPwDrpwiUfbRve/Ylcp
-	n+xovCCt0pkymqptZFoauSfAPk7hiVVKLh3rBLw4XER7njo8ioilrU+1OO027q4/SbGxd7
-	SrQcz/CKJ1L2E6jr47epahyWB6TBTd4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770057078; x=1801593078;
-  h=date:from:to:cc:subject:message-id;
-  bh=uB6mQ73vPdis808q5Avpb+ZRr7P4BPyr+2R+PpDzip4=;
-  b=Bn7iJS0aysRggHekvrykYRepG1YlWyP0mWd7SWs+FPD6OfKXj5Nyc0iK
-   o/mSl08AV454swuSbzRq135VnLYXEKry755KSuPHZEBA5/c1GYT/p4nX7
-   wGb1j+/zhRG7FR9i6y12f8ugXF8kvFb2Qi657Ue3HS/ezE9y2MaOWJ3wH
-   sCiQ7zmUSffDW5VFiWWBGYJwLZzZKxwajSVWuIomfjv5Igix1JwlAcR1C
-   OIb8ERLmh7WKMe90BWqX0YZq47MBY1KIw7XuwQ606n/YnHCpwlTggaSva
-   9MuExvANJdx5hlISYjlHuS4Y11e7XXyMwpTQmAhtMbuYnI5zv2Nj0ZEN7
-   A==;
-X-CSE-ConnectionGUID: qY0SyfzDT7O/oJa5KHj4+w==
-X-CSE-MsgGUID: SGE3DTdHTWuvXeM27uunSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="71203008"
-X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; 
-   d="scan'208";a="71203008"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 10:31:17 -0800
-X-CSE-ConnectionGUID: pv8upkzvT0GeLrs6FgP+0A==
-X-CSE-MsgGUID: zAbjVh03SrC3YwPTOqPwiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,269,1763452800"; 
-   d="scan'208";a="209603443"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 02 Feb 2026 10:31:15 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vmyhc-00000000fqS-10gZ;
-	Mon, 02 Feb 2026 18:31:12 +0000
-Date: Tue, 03 Feb 2026 02:30:31 +0800
-From: kernel test robot <lkp@intel.com>
+	b=r62L+y5XmXmCe50K8x2QUJLzjeMbC7ulOpp/ZNHOp+nfXF+PZfzN/ZwaAxMsln7Kl+3WC/
+	dcGva6TiRDthfU4h6Svt5MOUALpvVydZVUUUfv/hf97uY3OKDZ1mO6D2tOQD0vzlx2snv+
+	1MoUN2w1OSU3qxVZsd0cYxUbcJEp57Y=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B78074184E;
+	Mon,  2 Feb 2026 18:31:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256D0C116C6;
+	Mon,  2 Feb 2026 18:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770057115;
+	bh=R2DT4HWeigHMNhgXBru6V1V2CvzOd5jlqJE3cgcmIZ0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Z64+NLzUOnziLDC4Sju+bVTSPN/lMfQrg7oFTnaaBLAO0pfvCEOFbN2LWoEgFHGQb
+	 tuwQPYYbGfuo4lQ9HuycGTPl8nkp4sf91QenGm+rx7Z+tyvh/fXmAbw37wUAg2C1Or
+	 Qi/EJUYhDDtxpdb+E0p9xZap6Of+aB5bn+CIhc0E=
+Date: Mon, 2 Feb 2026 10:31:54 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
 To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 10788/11220]
- include/linux/rcupdate.h:555:36: error: dereferencing pointer to incomplete
- type 'struct maple_enode'
-Message-ID: <202602030233.gZQAuAMc-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 885FA180007
-X-Stat-Signature: q798nnweda6swg85aiawjkndz34ei5sy
+Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Sidhartha Kumar
+ <sidhartha.kumar@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Alice Ryhl
+ <aliceryhl@google.com>, Kuninori Morimoto
+ <kuninori.morimoto.gx@renesas.com>, Geert Uytterhoeven
+ <geert@linux-m68k.org>, Arnd Bergmann <arnd@arndb.de>, Christian Kujau
+ <lists@nerdbynature.de>, SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH v3 00/30] maple_tree: Replace big node with maple copy
+Message-Id: <20260202103154.ad1aa05611c79d21b070a861@linux-foundation.org>
+In-Reply-To: <2erbnreqpkyzezjn6ake744bw2avcnb6wjalvwh25desdw2lde@bahzqodw4xsy>
+References: <20260130205935.2559335-1-Liam.Howlett@oracle.com>
+	<20260131122724.ce19aa2f8260530bd3dee102@linux-foundation.org>
+	<2erbnreqpkyzezjn6ake744bw2avcnb6wjalvwh25desdw2lde@bahzqodw4xsy>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BB6D5A000D
+X-Stat-Signature: 8a3ac6wish6aizwtskbfsnfenz4ei35z
 X-Rspam-User: 
-X-HE-Tag: 1770057077-332410
-X-HE-Meta: U2FsdGVkX1/T6cqLDhEvhlQ4sD6tqY86iiUT21Fp83/De1GQ21s7HXQaqmMUgAuRQMIeIJJbP2hPoA4TSzNgXvat85gSd9SNEVHCq8EBnpXE5iJhpKc1ycVlcDoQKjtxrHaEjepL0/rE+94di2LDRb4XCgPMUzyLtDlb8y97cj17cb8GpfYJaXvRE5+HPzG93CLA6WJvtyxm/+PDuKlgjJ6w/65PKy5PCDJb3tI6Hr1z7G3pUPXuWM23pFSeRYQwgpctP5C5yXuWly4y8GvAbCCztVWdqWbDPCIRn2EIPxSzcK5X00G3dKoBW8A0CUYkCe/ekGR92PBryCiMgyStvU02n2Ew09wdGZLm3OdzOsYWN+YprV3x3PKm5JFvPdBSAVH9iaOpT8YSx1sQl3I4YDLKP7H5ihpB+jFt8SRfiZtCHskLZ+2Uk9yH2byTWk9E94H5YUkZlY6EK+l1OvwdLljN1iuHwV08zl6g4hlQ7qlUQKyhU5RWD2WuAH5qXts3Qu5SD1mX6RS2YyMP5Hib5Em26VD5u0zOp04gcKbvhAOO08lTE7mhi5qMvW4yOmmJwwdwnckiuXriIc2XFKndx9miXaHNoPLhGff6+ygLJ6N651mdR7+lRcakI1wQlndAJ/F/oHeGjNzgn/vlnxPY+iatmgHKDN263qPyGnY82YmzeUZ41x5ym8hqcEYnyz2oWJRSLntuWOeEaaemqVBD8yvp0Yn9Ib8DDfD/xD8ZIfneHMYHg2Uc9AYq3V1yI6rgWIqw7h0K6K5lFbKyZnsx+DsRF239O/2Hg5r3r2/EGuagfL3czaxXHm7++dxK4V766SSkoauEH0fftXDCVvaLZ6tboOR0lgcrAgr7hSEjQTeMqtnVtjtFd3R/9fpxKecwIKiTq7/dM5NUt2BIJUjp5BBWErVrPbEsct781bpJNC/3uCIMrA11CdG9RdvppFd6t4Qg9ZWFdAWDave3RL0
- it0MmHQn
- CT/qGbUY+NJwJsxj+HvioITMfWHjKEyqdBalPcouExqGtU2BoYGzVzoIISDCz0KNK0RzDYKqhUVpJcIrk/m9Lxkess1Fv6xijp6jTQcxuLDjqg5mur9FQ4/RB/L4XFEdHxe7fnCMNYImm2Uiw6g6ipQ/sSadxzXpTNce4q86Z3beVgmcz8M4JG5QvtpGKUjkG0NTj7dLGyl3aL6v7uoimlfSIX7O+04rC8mUloZILnMoF5JR7r26jXxoTsKDNUqXuUO4ngFZ/BPyfGKaTD3oo3JB+LkKDr521knBquKsPUIiVyGimuHlvS/ycOIX5ybtUVGe3asm2kuewClN84SdlY74h9YG15qzvriMr
+X-HE-Tag: 1770057116-262443
+X-HE-Meta: U2FsdGVkX19gzwFvA6xDQ7ExSDtvyK4E9dVjcWxJOjpMp+XDW+/gQUARRvwztHBUjy872/bootxtRJh5C7+DUbD0ej3Co+Ob6C8tpo+zkuAmknzaIUHhHdWkHmIiLByST7TAqEgs3+g/9tr0OlwBCWT6GDUcKV4xtX6LQBnHs5rRw7wIFZCd7TzKjoS3BhfzVFuPzd9tt6qjCpcvnJFuMbaBupxwgkgG+qKWjeYAuJqCXwPHhh00hL45M0l5gJfalySWUjf1qlCxpdT3XJGWY9V032CiIhOWoKUHMS8XBS1zpSnk9+jZHd4FTCEKQjzfpqqyuPD31PBGg3KGU0syTDS/1IehHk2050lLalj2sLAk2nvwsetBtpATHOZKjYY+ZtKDYdwSQIkxRsudGQc8GnA38mk4LzyUV7U+nJoEOxeLz9Obi/HIFB61U6HdQtitozVaPIzcgPjTrfiKW8W+ve1M5JintWVPxu+1tJ+rXiVaFbxPMEeoQWU6WyByTIEa8hSPn+3+uiCepNUDXbFEt7oj3RnV4ifeZQmh6M32ghae9KRp/oag3Bvn8EgDoIVK+b5e/bJZjfGVW/qamCmv67vZf7ZT+QS6lKZutY4gpqeRAgXca/Li5YpqpvhXIEUJ4x/tGCuKedm3ITE3d+UG7xhDOubpskypGAgOC3HmUhMOhPc0vwgIWs/HBKCcGz55ZDjk15OHDZW4xGruTIRHgD2ejBmy+KO3htdJF1L7QhVc9n3ksfALinUpwg8cZ5CeKG9kYXqV6rfqWVg9dqQO6eJkeRxzSkwr5Ejs/bQm6PgR6At/xNGgvhZo+TJaqSHDk2xhR67UCAS4GZ3ED5Ph13R7JqCgoQuhPL03odpH/XYAymdoxrYnd94JOlrqPhPE6f5nvsXejxWZ7wCJjJKuA0C9aneCv2pWaeCcJnFp78mxJPTIyn0s3+jT5NoXeT2h6I4gnlDk3GlXpKmndQr
+ Wq2vvJw3
+ pGKq+zVW095KtqjCOVdjGxz9rQVFOt33o70uSOwAuMDXyPZAsibMWh3lh6SPSEAnY1rQeOXozyAHnaDdFr4R96p5WRFqQGxnsE0147b7DJXWKoImspAi7lt6D0ftU6FJeC5z6QBuW5T2MaBt7EM+kHG7YuJB+sFanXaMULaR9PY2r8YQ0Tn1TU2R8fg4H9ZrPG/tGl9c3GwAul7qVIJePCSlqJJzzkBjoAVE/nE6NJb2nYiXVQgqSwfGmwQVLQXEJDsN/UfVDsKOdIQ1W/44wbeAp1XjuRVhXV3F+C9F9C+0TSFXVD2Z0Wc8YKVnEcfnowod45uMctlLdAlJ56eqyfioqbkYWOwhHSgLbE2RpjygLyhdYsJIjZe/7NcSwuXxYRZ9U
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,61 +98,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   193579fe01389bc21aff0051d13f24e8ea95b47d
-commit: 60d8a8eb080e2f6927add49f47625574b39d3072 [10788/11220] maple_tree: add cp_is_new_root() helper
-config: parisc-randconfig-002-20260202 (https://download.01.org/0day-ci/archive/20260203/202602030233.gZQAuAMc-lkp@intel.com/config)
-compiler: hppa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260203/202602030233.gZQAuAMc-lkp@intel.com/reproduce)
+On Mon, 2 Feb 2026 10:40:06 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602030233.gZQAuAMc-lkp@intel.com/
+> * Andrew Morton <akpm@linux-foundation.org> [260131 15:27]:
+> > On Fri, 30 Jan 2026 15:59:05 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
+> > 
+> > > The big node struct was created for simplicity of splitting,
+> > > rebalancing, and spanning store operations by using a copy buffer to
+> > > create the data necessary prior to breaking it up into 256B nodes.
+> > > Certain operations were rather tricky due to the restriction of keeping
+> > > NULL entries together and never at the end of a node (except the
+> > > right-most node).
+> > > 
+> > 
+> > Updated, thanks.
+> > 
+> > What are your thoughts on adding this to 6.19?  I'd expect to move it
+> > into mm-stable Feb 17ish.
+> 
+> I think the chance of making 6.19 has passed.
+> 
+> Can we please target getting this into testing in linux-next as soon as
+> 6.19 ships?
+> 
+> The priority for me is to ensure this is rock-solid prior to release.
+> My concerns are corner cases and arch specific issues, which I can only
+> do so much to mitigate on my own.  My hope is that linux-next exposure
+> will help with those concerns.
 
-All errors (new ones prefixed by >>):
+Sounds good, I'll push this back into mm-new until -rc1.
 
-   In file included from ./arch/parisc/include/generated/asm/rwonce.h:1,
-                    from include/linux/compiler.h:380,
-                    from include/linux/array_size.h:5,
-                    from include/linux/kernel.h:16,
-                    from include/linux/maple_tree.h:11,
-                    from lib/maple_tree.c:56:
-   lib/maple_tree.c: In function 'cp_is_new_root':
->> include/linux/rcupdate.h:555:36: error: dereferencing pointer to incomplete type 'struct maple_enode'
-    #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
-                                       ^~~~
-   include/asm-generic/rwonce.h:55:33: note: in definition of macro '__WRITE_ONCE'
-     *(volatile typeof(x) *)&(x) = (val);    \
-                                    ^~~
-   include/linux/rcupdate.h:1046:3: note: in expansion of macro 'WRITE_ONCE'
-      WRITE_ONCE(p, RCU_INITIALIZER(v)); \
-      ^~~~~~~~~~
-   include/linux/rcupdate.h:1046:17: note: in expansion of macro 'RCU_INITIALIZER'
-      WRITE_ONCE(p, RCU_INITIALIZER(v)); \
-                    ^~~~~~~~~~~~~~~
-   lib/maple_tree.c:3364:3: note: in expansion of macro 'RCU_INIT_POINTER'
-      RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
-      ^~~~~~~~~~~~~~~~
-
-
-vim +555 include/linux/rcupdate.h
-
-ca5ecddfa8fcbd Paul E. McKenney 2010-04-28  550  
-462225ae47d717 Paul E. McKenney 2013-11-11  551  /**
-462225ae47d717 Paul E. McKenney 2013-11-11  552   * RCU_INITIALIZER() - statically initialize an RCU-protected global variable
-462225ae47d717 Paul E. McKenney 2013-11-11  553   * @v: The value to statically initialize with.
-462225ae47d717 Paul E. McKenney 2013-11-11  554   */
-462225ae47d717 Paul E. McKenney 2013-11-11 @555  #define RCU_INITIALIZER(v) (typeof(*(v)) __force __rcu *)(v)
-462225ae47d717 Paul E. McKenney 2013-11-11  556  
-
-:::::: The code at line 555 was first introduced by commit
-:::::: 462225ae47d7175f886281d8a91708550cd5178c rcu: Add an RCU_INITIALIZER for global RCU-protected pointers
-
-:::::: TO: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-:::::: CC: Paul E. McKenney <paulmck@linux.vnet.ibm.com>
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
