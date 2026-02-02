@@ -4,90 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFC6E65293
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 04:15:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9391EE65293
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 04:26:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A18656B008C; Sun,  1 Feb 2026 23:15:16 -0500 (EST)
+	id B646F6B0088; Sun,  1 Feb 2026 23:26:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C64C6B0092; Sun,  1 Feb 2026 23:15:16 -0500 (EST)
+	id B11F56B008A; Sun,  1 Feb 2026 23:26:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D2AD6B0093; Sun,  1 Feb 2026 23:15:16 -0500 (EST)
+	id A3E0F6B0092; Sun,  1 Feb 2026 23:26:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 794EA6B008C
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 23:15:16 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DBA3013BF86
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:15:15 +0000 (UTC)
-X-FDA: 84398201790.30.72258B1
-Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1FEBB40002
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:15:13 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bZlNb6GN;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 947C96B0088
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 23:26:41 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC67DD505C
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:26:40 +0000 (UTC)
+X-FDA: 84398230560.11.771DA8B
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 45CF6140006
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:26:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="WK4WO/Vx";
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770005714;
+	s=arc-20220608; t=1770006399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zvtlAMLtgHm63VCI0lv5mAl1ZFv8A9Ibz2DahGIKhtQ=;
-	b=FbASyBj6GIW3Ceo1EQu3JLMAM0iB5Ydexy5qsW7YRRpfUMwH0Cwtzc2tzBYfjkEFOISDrO
-	HGuKZ6KhRHbL0B154l7ypNRhr7y36DtT6LwcUY6x21S0jrpIUnb9yv0bUcWh1VbXqzqn/m
-	vqRG8B/SUUWeV/oDy2f1QsvM/UrNbKM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770005714; a=rsa-sha256;
-	cv=none;
-	b=q7hEt13RaBCa6i0Jv/bb1/YmGzi2M9/N4wwnLL6HH4mRBumhIGuBjRXsWxw480fkVR2aRc
-	hGUgQqrtZq1loP2kXbEc3MceziQwYrG64k8yKZMoW6qjxK/kTLP8gdvMO3opals+TpYB1k
-	lJurJzH21QnKWqKDFLt2w32RKHvAKhc=
+	bh=RX4DYoaFUx1Q/wII/CNEigIzDOhmkDv7YtwkWo/GjWA=;
+	b=GbC7uj0V5ENH9uf4gevZ1p8p8Vq10LJlaCc+GKX/pcfqmkPIexlFu26y785BuNIjMOdtur
+	YDPnvN8xx17G2f+OGif5briBeUykOCFspew56kFtmMjnKvi/sHepg/xa0louNoVUxLOjLN
+	b1O1ixvsFhtUhrfSnwGUPkIYVzByPes=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bZlNb6GN;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="WK4WO/Vx";
+	spf=pass (imf23.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-Date: Sun, 1 Feb 2026 20:15:00 -0800
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770006399; a=rsa-sha256;
+	cv=none;
+	b=Ja6pz3+7/VmbjJPXqkrVTjJbZgt1Ozh9kCHNX5ZykYk/3uIC2chI/AFZRMdSoo0jYcojXM
+	EBHUAA//8jdJ4oHnF0VZHqlvK+oMzYAcEvlpl+fzYwAkYGm2xS/QUxDdhyVlv7mfBb4ybf
+	OvWf3Z7NGeJMPd9/2fcm67dcSbFOmrk=
+Date: Sun, 1 Feb 2026 20:26:30 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770005711;
+	t=1770006397;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zvtlAMLtgHm63VCI0lv5mAl1ZFv8A9Ibz2DahGIKhtQ=;
-	b=bZlNb6GNNV/QTypPFLHskbMbyUuYpJXjrBAvd2OIlM6KKtLhufwy08CcTMwVumVlTqlXXW
-	3Upk6ZTmHjt1ZYCw2nmoz+AELoMAyW4BA49n1b8r+sohZns5a0EcBeyDXA5gE4DLCJUybx
-	AFIVdhd4xYJ2m7dyU/j1rhBqRW1GPaI=
+	bh=RX4DYoaFUx1Q/wII/CNEigIzDOhmkDv7YtwkWo/GjWA=;
+	b=WK4WO/VxIDlhyJ7Yt7tThvk8vTVtZPlexdarCKgavf04ztFMlFdK22LNttf1+FdeZ7uO8h
+	TwOYJJ4QnchiuFoX/L04ZlJXsUcv+92qRcVIUtqXiNPnEzyTVnX94MjWVnh61MOGLiOymt
+	+lENuKBBYW9WdNa+dWqXd1PpTrpmSI4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Bing Jiao <bingjiao@google.com>
+To: Dev Jain <dev.jain@arm.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, tj@kernel.org, longman@redhat.com, chenridong@huaweicloud.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v9 1/2] mm/vmscan: fix demotion targets checks in
- reclaim/demotion
-Message-ID: <aYAkqsItdd1x0jEE@linux.dev>
-References: <20260114070053.2446770-1-bingjiao@google.com>
- <20260114205305.2869796-1-bingjiao@google.com>
- <20260114205305.2869796-2-bingjiao@google.com>
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Qi Zheng <qi.zheng@linux.dev>, Vlastimil Babka <vbabka@suse.cz>, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
+Message-ID: <aYAmGc6lu973jRwu@linux.dev>
+References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+ <20251110232008.1352063-2-shakeel.butt@linux.dev>
+ <1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260114205305.2869796-2-bingjiao@google.com>
+In-Reply-To: <1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 1FEBB40002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 5xopeyjn6eu6nij8y5j894ado9ri9r9h
+X-Rspamd-Queue-Id: 45CF6140006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 33erec5foziumon6ww7uruqya58xxkq5
-X-HE-Tag: 1770005713-850292
-X-HE-Meta: U2FsdGVkX18y7rcF12IKOXuSIoeFKVn7mGDErExndpN/K4isXBIQVR+4KlVYoPbJKX7uojE3L/96X/wdLSTiV/4q5EoYYCaBiUUTh1pVXneDZqUmkQ6AaM0i3UL2FUs9jqMme/5E576OLGQ+APpTr3haK6Yy6oEJrQ9Cyyh537tBj8X3+VKZMZD2JwIrJfMffmkSuLJCHjrUy9Kjp7ZN2IBv76nJquSUu+dBFEZNFgrtLOIp0ouqocEOeO7EtJKjJY+5ZHgpJb5Ueq1r1SdJl/P73M/Nxz9vsTVR485hQfbQYKSw97xskyygL+8YsyarN+psffy+ZNygTnC6yuB8+4yvc5H8yybTuxIB2EJh2m+itAf3EVg8shX/Lwgs9mas1B3QSDeHnF9/GsFMxs6ni6yOVpopR/ogjbSvyjWcrsZy8fiJT0/7KWeFNUB0wXrT+8tmdrceA1Voy4MzlwVnDMLsb+uj0BB2sKOqQl2ltyS+psytXfc0W5G2/A1u1Pc1d8hvl7RrmzS9NyX4T9GfeCyVq4sZGb9w064wbog2oxp0WPOo/ne/56lBpVQN61X17cnHEzr99shqW7o7NzOrrKk+d81MWhOpqkEMth0q6kNnh9aNQvvZwRKzaDYK5TSwqXXhGnDMLmFefu7AMcWUAakz2IfYStROPRtw9sDucr1tKwuhUkdeyzATSSLgaC+QQPtfAHG3oIv6nIEbS7Bh7KYUtBpf2s0WkksrJIhXCcTFU2xeHmrjqTxPlwftfgCA3RBwzWaOqB/mHX1MeExqwCWgTrBetwGoGd9JKqP2taJD4QdQj6bl37O2ELOinjnJugiSw3obKsVUyeLUU1rtxnyqDw0PUJdoLP5hRAsWsohLwBtaFpxIksBIbNh8Pw7em+dcVJm3zoAFcy6cYCQiaj9tCasNW1Yjj44tr1ozEfZ5mkUUFvgZ0sjHnVjI2yMi
+X-HE-Tag: 1770006399-976839
+X-HE-Meta: U2FsdGVkX1/aBcG2Uw2JmcfRF/UcwLYPGzfhM9m3d7BzNa5OMKa2vCYmGFf4NRP+YnzED7rbeb+iKx7/KE45B7/JWKKlBUcoqJhSn91bQtuv5o1bVeZYCnN6Jqt6tt2RjPM4Y5oMzZB5nK56qXbTuDX9y0drNKVBn1I/ur3EHMtTHXBGWTz7p7W72btQytSB7hVhdOV+f3ZJ079n8JK5pywLb6vpqf7kmPl6UpDU5kj4BNYJ1N0SQyJu+woz66myUclZ9FKUVhRKeLISSw3naidtVb25I90RMOSBIsUqlK0yCxqXnnhAxSxqrx8o4vBkVg0kX3XGUd5b6fFHEVGiRqQBcbPQD2/y3OArOq8E/xRqn0z0s44XSvVFyqyuYlDz4YNBrqAJCcZvbdno9JChcwkefp/kjLXlJVpTYd32MbPETpivGyGyraPlENVSm/ENNBaUvLnB2gnQKLReNdqKJkobo2yBNi12wFTmiUYck862NMzWbltan5/29RbYiWvZOGccUBODlRX+AhHdmptzfwvCFRlQZWSnnuSpwpUETOt8BJRQ2DFwV/tBMjfeEhGejFiDDQzOvy1EiUFlqT02BaisCKOLVQK6JtDxLYPQbkwTLJ5NeeOo8/ou20QASKM1OxycbWFAxMzwLwDodpFRy04NU0cxNgXXxD/4mqrX7uxp2e7zSsjn3ZkKK5Swt+5+93WqRW93yS6XdsBaGtm+AOrd8hT61QtCa9exQYBVlCrqA3ebIsnH+ObwkToj62zsTHuqvkHInG8JCxAUL1CvmM4ofqGrLPOpUONhxOLZBrreuK2zqCoTM5C3wqcww53f6QXlQ2xRCqrPtvktUXNd84Oq1ILVVa54zi1EcajBikaSIHSqj+LTXMkM2RjhQk2M+oVv4VgSMFNROnmaenGvu4qSj+FYQ7pK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,66 +91,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 08:53:02PM +0000, Bing Jiao wrote:
-> Fix two bugs in demote_folio_list() and can_demote() due to incorrect
-> demotion target checks against cpuset.mems_effective in reclaim/demotion.
+On Thu, Jan 29, 2026 at 06:35:21PM +0530, Dev Jain wrote:
 > 
-> Commit 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
-> introduces the cpuset.mems_effective check and applies it to can_demote().
-> However:
+> On 11/11/25 4:50 am, Shakeel Butt wrote:
+> > The memcg stats are safe against irq (and nmi) context and thus does not
+> > require disabling irqs. However some code paths for memcg stats also
+> > update the node level stats and use irq unsafe interface and thus
+> > require the users to disable irqs. However node level stats, on
+> > architectures with HAVE_CMPXCHG_LOCAL (all major ones), has interface
+> > which does not require irq disabling. Let's move memcg stats code to
+> > start using that interface for node level stats.
+> >
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > ---
 > 
->   1. It does not apply this check in demote_folio_list(), which leads
->      to situations where pages are demoted to nodes that are
->      explicitly excluded from the task's cpuset.mems.
+> Hello Shakeel,
 > 
->   2. It checks only the nodes in the immediate next demotion hierarchy
->      and does not check all allowed demotion targets in can_demote().
->      This can cause pages to never be demoted if the nodes in the next
->      demotion hierarchy are not set in mems_effective.
-> 
-> These bugs break resource isolation provided by cpuset.mems.  This is
-> visible from userspace because pages can either fail to be demoted
-> entirely or are demoted to nodes that are not allowed in multi-tier memory
-> systems.
-> 
-> To address these bugs, update cpuset_node_allowed() and
-> mem_cgroup_node_allowed() to return effective_mems, allowing directly
-> logic-and operation against demotion targets.  Also update can_demote()
-> and demote_folio_list() accordingly.
-> 
-> Bug 1 reproduction:
->   Assume a system with 4 nodes, where nodes 0-1 are top-tier and
->   nodes 2-3 are far-tier memory. All nodes have equal capacity.
-> 
->   Test script:
->     echo 1 > /sys/kernel/mm/numa/demotion_enabled
->     mkdir /sys/fs/cgroup/test
->     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
->     echo "0-2" > /sys/fs/cgroup/test/cpuset.mems
->     echo $$ > /sys/fs/cgroup/test/cgroup.procs
->     swapoff -a
->     # Expectation: Should respect node 0-2 limit.
->     # Observation: Node 3 shows significant allocation (MemFree drops)
->     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1
-> 
-> Bug 2 reproduction:
->   Assume a system with 6 nodes, where nodes 0-2 are top-tier,
->   node 3 is a far-tier node, and nodes 4-5 are the farthest-tier nodes.
->   All nodes have equal capacity.
-> 
->   Test script:
->     echo 1 > /sys/kernel/mm/numa/demotion_enabled
->     mkdir /sys/fs/cgroup/test
->     echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control
->     echo "0-2,4-5" > /sys/fs/cgroup/test/cpuset.mems
->     echo $$ > /sys/fs/cgroup/test/cgroup.procs
->     swapoff -a
->     # Expectation: Pages are demoted to Nodes 4-5
->     # Observation: No pages are demoted before oom.
->     stress-ng --oomable --vm 1 --vm-bytes 150% --mbind 0,1,2
-> 
-> Fixes: 7d709f49babc ("vmscan,cgroup: apply mems_effective to reclaim")
-> Signed-off-by: Bing Jiao <bingjiao@google.com>
+> We are seeing a regression in micromm/munmap benchmark with this patch, on arm64 -
+> the benchmark mmmaps a lot of memory, memsets it, and measures the time taken
+> to munmap. Please see below if my understanding of this patch is correct.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Thanks for the report. Are you seeing regression in just the benchmark
+or some real workload as well? Also how much regression are you seeing?
+I have a kernel rebot regression report [1] for this patch as well which
+says 2.6% regression and thus it was on the back-burner for now. I will
+take look at this again soon.
+
+[1] https://lore.kernel.org/all/202512101408.af3876df-lkp@intel.com/
+
 
