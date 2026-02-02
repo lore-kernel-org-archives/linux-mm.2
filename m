@@ -4,132 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC800D172B0
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 07:44:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 463E3D172B0
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 07:46:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87E786B0088; Mon,  2 Feb 2026 02:43:59 -0500 (EST)
+	id 74CE46B0089; Mon,  2 Feb 2026 02:46:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82C766B0089; Mon,  2 Feb 2026 02:43:59 -0500 (EST)
+	id 6D0506B008A; Mon,  2 Feb 2026 02:46:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7380C6B008A; Mon,  2 Feb 2026 02:43:59 -0500 (EST)
+	id 5CF016B008C; Mon,  2 Feb 2026 02:46:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 64D6E6B0088
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 02:43:59 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EDB1413A2A0
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 07:43:58 +0000 (UTC)
-X-FDA: 84398727756.11.6B57EE5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D62AF1C0006
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 07:43:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HVcBQxLT;
-	spf=pass (imf20.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 480146B0089
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 02:46:33 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id ED303D5261
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 07:46:32 +0000 (UTC)
+X-FDA: 84398734224.23.B90FC66
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 11A0C160004
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 07:46:30 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wosxrHeY;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770018237;
+	s=arc-20220608; t=1770018391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8kpHK17s1Z6xz3JjVRVavy0ExWhOFP+85VyJ3RdlE4w=;
-	b=2XgcXUIqiIhCgFxsDpeqO8usN01RmLAzwMr6f90d83VD5NwNRa0DvXPTGomUjoe50bTtkA
-	aB0tj5HnP+WwAGRwYgzdE9yukxhPvWagsXVACTpQqUAw4xmyRmghHb7nW8rHESlugJVUkg
-	NMxFwAZQGqIsdFofq3Ty7eMQ38qDdP8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=YYvAr2zSKhz9oURt6YezfDRfsalBr4ckW+gKtHKbiDk=;
+	b=XF5e1bbl/lwHXcb/f+SxwfyW2XV3U1pO4FPt88Fs4E6nyiMiJ/zNxgM9DZFs7AupUHuBoS
+	kZ+VsApClorGyl0F0y9yhRb3mMM2txJUf8T8S2OjF/vkznUu6dUs5vkpfckQUWk5MKDeRw
+	Ld3bbkmry3lkhh34PK6K0u5kdF/bdME=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HVcBQxLT;
-	spf=pass (imf20.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770018237; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wosxrHeY;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770018391; a=rsa-sha256;
 	cv=none;
-	b=1LN/R1qgPt14fMTb+HBFfFaynUcGJ2oLrw8xKoMxRZM4+Yj49ptu9m9K84L3JDgByzFmom
-	1hoTZnl3+O++NzKB24hzIGWd+eoFJa3A5+qL+jboLRZ+pPRQMR3mmGPbB1xsqOhwifrr4R
-	ejz6ToMLrc1550+pirpcpIsvPscXHaE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A178241A49;
-	Mon,  2 Feb 2026 07:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46641C19421;
-	Mon,  2 Feb 2026 07:43:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770018235;
-	bh=Wx6zDnajmZZdgiHVlWIKBs8yudA1QP5iyWHbsFAQdLQ=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=HVcBQxLTn4UjZnq7J+5Fs086qlBUOTmwv7OeLyww2/ZP9HTfRqVIzU4MbogF/6VJK
-	 FgrMjRkWSai0c7nyHtgK168o+hUiMKPXL0E+z165pmp0qg1fuvFZQ38ewrq1IJJNmm
-	 6lG6p131ma9B+4EfA/Y5DERj+RODI2MNXbxm6Ya8hIpQKxKYB1qWzpSbvzzFHDAJbm
-	 uNmcN5RJCYGUw4W7oFb5uKjfs1K3BxV6GtetPuP98VeubJZb4lt76xz9KHcvflZ1Zr
-	 cKUjxYwQa8atrrj9ss3YAFhPrt+mAso0zAYmP3A+fsq9fiZXEbLV8HMn46vvVCZ6Dz
-	 pk4HUFy1KZ3Zw==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 54B85F4007C;
-	Mon,  2 Feb 2026 02:43:54 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-01.internal (MEProxy); Mon, 02 Feb 2026 02:43:54 -0500
-X-ME-Sender: <xms:ulWAaStlknjTrDUWdERH9gRRoaSapAK41Km3o1tsqdI_p5u8sj4TPQ>
-    <xme:ulWAaSSJbEbY2KvtploRNTV2Y62CJO9JctCpTAzZg71odj0SkBYa2i1c1uv4Qps4H
-    T2Ln-zTC3qC8ia_kjsEctQEv4Di-UwQoBHIoDRRvqPuyEuhnS7_Yn1k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeejtdejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrugcu
-    uehivghshhgvuhhvvghlfdcuoegrrhgusgeskhgvrhhnvghlrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeetkeehudehiedufefhjeeiffeugeeltdfghfdtffeftdeivdehhfefieeu
-    tedttdenucffohhmrghinhepphhrohgtrdhssgenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegrrhguodhmvghsmhhtphgruhhthhhpvghrshho
-    nhgrlhhithihqdduieejtdehtddtjeelqdeffedvudeigeduhedqrghruggspeepkhgvrh
-    hnvghlrdhorhhgseifohhrkhhofhgrrhgurdgtohhmpdhnsggprhgtphhtthhopedugedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrsh
-    esrghrmhdrtghomhdprhgtphhtthhopeguvghvrdhjrghinhesrghrmhdrtghomhdprhgt
-    phhtthhopehrhigrnhdrrhhosggvrhhtshesrghrmhdrtghomhdprhgtphhtthhopegrrh
-    hnugesrghrnhgusgdruggvpdhrtghpthhtoheptghlsehgvghnthifohdrohhrghdprhgt
-    phhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmh
-    hmsehkvhgrtghkrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgu
-    rghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslh
-    hishhtshdrihhnfhhrrgguvggrugdrohhrgh
-X-ME-Proxy: <xmx:ulWAaXd-c82xllHkjEfnMapa4yE-fDVMzEQNGOXkNVE_WY6yEmkAhg>
-    <xmx:ulWAaXnXtIzo5E2r4L2IbfA2fKc1x4AXhdXQUznZ3koN8Fh6qn7cdQ>
-    <xmx:ulWAaWoU6aCVYlM8hYFj2rZAQiQXmVJV0_WLy5mvAKNNASWViRJdvA>
-    <xmx:ulWAaUERtMTwuQR4-pmODvqa5YD-RYmzqvjCIEQ5PQLRvVBCt1uN7Q>
-    <xmx:ulWAacTDQmKAc3SsySmM-bxpbQhloUzG_f89gqScbXpnqzC-tu8C4Lja>
-Feedback-ID: ice86485a:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 28379700065; Mon,  2 Feb 2026 02:43:54 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	b=wouCuQVfS4X4iXlfQyKXzg0bcTZAy9t6ulKrxtdB/mK+NedZwW0+Pte6BOiz323JJX7XGh
+	7VWF8CDPSl5cR9OiN6Ht7Tx1kTDcmRhVByXy87YKA6IkmV1qYBzPJ7ZO7RBaZsyy0fIJ39
+	cJl5c5qbutLvZf1DE743q3QCcFM3BUY=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770018388;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YYvAr2zSKhz9oURt6YezfDRfsalBr4ckW+gKtHKbiDk=;
+	b=wosxrHeYuzwDZibEFFnXesvD5X7Y36t3WcKsgiDyoJ2SLGHe1hgNHCCdxP+y1kkOmpUxuA
+	ne4uNUPl7BldrNTKnxZey7beFJS2CLXaR6wQX3nM0I3kAsyzGEv9vQkbHRFw3xVf7CIkzp
+	OkP3H2EUOnHpoEgzNH1DFhkFAlP2nGs=
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: david@kernel.org,
+	dave.hansen@intel.com,
+	dave.hansen@linux.intel.com,
+	ypodemsk@redhat.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	x86@kernel.org,
+	hpa@zytor.com,
+	arnd@arndb.de,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	shy828301@gmail.com,
+	riel@surriel.com,
+	jannh@google.com,
+	jgross@suse.com,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	boris.ostrovsky@oracle.com,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ioworker0@gmail.com
+Subject: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table walkers
+Date: Mon,  2 Feb 2026 15:45:54 +0800
+Message-ID: <20260202074557.16544-1-lance.yang@linux.dev>
 MIME-Version: 1.0
-X-ThreadId: AF_iGlW-huzg
-Date: Mon, 02 Feb 2026 08:43:32 +0100
-From: "Ard Biesheuvel" <ardb@kernel.org>
-To: "Arnd Bergmann" <arnd@arndb.de>, "Yang Shi" <yang@os.amperecomputing.com>,
- "Catalin Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
- "Ryan Roberts" <ryan.roberts@arm.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "David Hildenbrand" <david@redhat.com>,
- "Lorenzo Stoakes" <lorenzo.stoakes@oracle.com>,
- "Dev Jain" <dev.jain@arm.com>, scott@os.amperecomputing.com,
- "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Message-Id: <bf94fb74-d391-440c-a90e-1346312328c4@app.fastmail.com>
-In-Reply-To: <fd18c462-60ce-4dc1-9877-2a1d162d5879@app.fastmail.com>
-References: <20250917190323.3828347-1-yang@os.amperecomputing.com>
- <20250917190323.3828347-5-yang@os.amperecomputing.com>
- <fd18c462-60ce-4dc1-9877-2a1d162d5879@app.fastmail.com>
-Subject: Re: [PATCH v8 4/5] arm64: mm: split linear mapping if BBML2 unsupported on
- secondary CPUs
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: D62AF1C0006
-X-Stat-Signature: ia65hu4g1mupw198fdaec9ygwjpzqef9
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-HE-Tag: 1770018236-702952
-X-HE-Meta: U2FsdGVkX1/QMKbJwHzubuPfPzc1C/l4s48PVkOdUMlBYB1I7UvK9WJl+8dB/Fr4q1ANeeDNP9UMWBEWQ80VzayaQ2asMFzr6Gr0tnQOp8wIK5CPbxSLoir/oh4wQAEpPsm2bXJ/U9OzrzEWn0s/D535dAEFbFWTuLYuoYx5VF9iSRfJvTQpOd/ti2BJDVH4h21JeU+DeLqVx5f4yahxr9wcPq4SA+8zzn1i3Vc7U0aZvpM+iWG2ffIGO4XfHadzMiA66bC+jXC9KgTTwmQ2kuBuaVrsOqzExOwIbv+WED+3GpZmkVH3aKEcQTW8l6sHBOpvF5Ym17+PZEn8E+MNafLOpQPcrCtxhMVVxqh+0kpKvifzBoHrewx2r93an03i0UtLvvNka1Wx25+JpHv8igY6UzU8DAGdYxu6ouu64Sr7udIstIwj5ih4AoJss1mUrYxL3QC4nlI8AaKy5yeRPzhLF+f7RZZpMPC9WsSe4+elrn7YkvqcnwFPdJJ4Mly4Zm7NxpvFlRhTcqjhip+jPMEmaW64uBZmmPdktCOXd5lcWruXIb2lFFgI0+t3ZJPPnJIqMXEu0HfeqCyXf5/UBZ0/w3fQglZWbr1WSPD+cVJ471Sm/j+fbrs3lGPJDDdrjBuN4BlfNA54Tk5sTleHirt4bBZ4dlvtFPCxlyXkQGN7vacvpk6VpK4r6hrYET/dOg0nvUoNg/3mUlRkljfDFtFdRz9fWejpJ0AcwXu+XRz2WFkX2WTjFCrEzdQ+vxsBEg1dIfnnIG+LDDNpQ3P9vCKJ7/wSUiqh/Van1sZrLKHkj2fv8ySPJ2UHACmFW+LrWlyVG893xn2B0Rrm1WJ1CdlFnLZZcEH9XCBkb5d5LE9UZIKAtrOhbj91+Yvb0tXKxTzGnuY5RBwMDjcu0CIP7L/elWl5A2rChmICtu1ece2cL35kgGRbuTxT18KK7X+S0Bo8sdrWaSbx7F8fXXF
- Vw1oIhYA
- zpftKdPH/Hk7yJWph8Rl4NF3yE80lI2SbjhvK+8gz/Q/R3CTf7C28IqT5eGemMEU+BYShEjStD+Bxns3z/YxA48C2xSWTR8TOEr9bJSx96LrpNyIoiJzYBq0TXwTXkYdJsFc/GgXj/bm6sBPm7ladEBUHurjCLzBaNClbgsi/zBWVTjuoXGWh1kam6S7aKKgzRYDU
+X-Rspamd-Queue-Id: 11A0C160004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: sfdnypifhzoy7zob1eo1h9jnqaqq7wj4
+X-HE-Tag: 1770018390-686880
+X-HE-Meta: U2FsdGVkX18F9FUFzE30dqmlAg2uwe2lcYjaOQlN6COYMPR8UODWYrKt0tVdTT2LbqRlS+vLq3QaaNYV+LoCOnLqY69uf6n4j/k/eVy9JDMmEn8ienIBtrPtk6EsYd9A/kKY5CMBufXZLty7kZYQiwvllxsRVDd7ThykgkA+AWR+cv8ntuPqfareyXlUnl2uNk+j0mYj2fmg7spF5Qtf+8fYEubBH9mdC7RiCUVFDz1rpA0pgProRmusMtvsnv5EMIhKh5mqhSUltwLPidw9RzvVpp+l6drYRpP+1t51v+o55rB6qzsXmll4XyXrITatOUcTkcZ0cEI8lxKZO3o2g6enI3cvTWuP9Gqi2bngikjoNO/H7t/kEaBeQ2fpUvMAADyBmAAvWe6podAGyRkc/hmsA4zfBew24RP6+l7gKLuhAyE94806m1fhPE/hitoDMihj/j7ocqDe+YZNZkQlpWIzlJpF+Jqh5QrEuEcdjjAW8R5GIjWrCIjoDzX+CMA0U4oPmcXqriehfPNW8cyKuZUJJyfYjwbjkSsxB5QaaGTfFKC1Xa64occ0B/OW86aJPk+T7yvyVddYCv2C2EhvyAtpP0ISuJQdT+6lCVbSwWEgWLT5/HW4fpDd0Qlgc27r/rN5FxvKq0El0bNdLhY3M+nZuhzhbq2IVHE7moqWKKRBgHFUXWGte6zzaR9/GWz4sonKkcJe7rI29StfrzjTG15yg8hqGf5R6bpuulKY04VJgqHjyJ4UgVkCOWtk+qDJoMUikrP8WWP6V8xPVouzcCYpc80jzOBJ0uneqGGjZffzz7o/shGeK9bnEUoJdYA/3bAUckBC5SjFuB6SgKYwtwxa3wZCxzIyYUeLLZrlWugGMOiPWZEvmRoeiZ5tRg/Yc2hb09ZoHjt/mcfnGSMPbWykQmE4WyBgxFVjl2eNMBVAHO2PjCM3GBDuqEn19XgzNqnlX3kSRPmM3ZH6BkU
+ ya0n2mMk
+ oCzsdmkAtmc6CpwmloV6OTI85B+X7C+z3+W4mK3/su4kaBKyQfq+bO+VNelAIMqZwydsf3cU/3fY86OplvQCEvz63N+pyN873RKO75fNiRLGY9Y5XzYFMrLU3qqqyeRDfREl2rcy6mK0LGJYQ4UDsG65wGsWw+O8JXH4mk4di3/DNWtD+J8lkYyUtIujnLg/B6IaaennmMNKAps0Vb6no5r1U8rcnrDx9J10D/OFsJJVxoTaGRfgF27jjrA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,44 +118,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+When freeing or unsharing page tables we send an IPI to synchronize with
+concurrent lockless page table walkers (e.g. GUP-fast). Today we broadcast
+that IPI to all CPUs, which is costly on large machines and hurts RT
+workloads[1].
 
+This series makes those IPIs targeted. We track which CPUs are currently
+doing a lockless page table walk for a given mm (per-CPU
+active_lockless_pt_walk_mm). When we need to sync, we only IPI those CPUs.
+GUP-fast and perf_get_page_size() set/clear the tracker around their walk;
+tlb_remove_table_sync_mm() uses it and replaces the previous broadcast in
+the free/unshare paths.
 
-On Mon, 2 Feb 2026, at 08:18, Arnd Bergmann wrote:
-> On Wed, Sep 17, 2025, at 21:02, Yang Shi wrote:
->
->> +	.pushsection ".idmap.text", "a"
->> +SYM_TYPED_FUNC_START(wait_linear_map_split_to_ptes)
->> +	/* Must be same registers as in idmap_kpti_install_ng_mappings */
->> +	swapper_ttb	.req	x3
->> +	flag_ptr	.req	x4
->> +
->> +	mrs     swapper_ttb, ttbr1_el1
->> +	adr_l   flag_ptr, idmap_kpti_bbml2_flag
->> +	__idmap_cpu_set_reserved_ttbr1 x16, x17
->
-> I'm getting build failures here, using CONFIG_CFI using clang-21:
->
-> ld.lld-21: error: undefined symbol: __kcfi_typeid_wait_linear_map_split_to_ptes
->>>> referenced by arch/arm64/mm/proc.o:(.idmap.text+0x298) in archive vmlinux.a
->
-> I can get it to build by using plain SYM_FUNC_START() instead of
-> SYM_TYPED_FUNC_START(), but I have no idea if that makes any sense:
->
-> --- a/arch/arm64/mm/proc.S
-> +++ b/arch/arm64/mm/proc.S
-> @@ -439,7 +439,7 @@ SYM_FUNC_END(idmap_kpti_install_ng_mappings)
->  #endif
-> 
->         .pushsection ".idmap.text", "a"
-> -SYM_TYPED_FUNC_START(wait_linear_map_split_to_ptes)
-> +SYM_FUNC_START(wait_linear_map_split_to_ptes)
->         /* Must be same registers as in idmap_kpti_install_ng_mappings */
->         swapper_ttb     .req    x3
->         flag_ptr        .req    x4
->
+On x86, when the TLB flush path already sends IPIs (native without INVLPGB,
+or KVM), the extra sync IPI is redundant. We add a property on pv_mmu_ops
+so each backend can declare whether its flush_tlb_multi sends real IPIs; if
+so, tlb_remove_table_sync_mm() is a no-op. We also have tlb_flush() pass
+both freed_tables and unshared_tables so lazy-TLB CPUs get IPIs during
+hugetlb unshare.
 
-This is not the right fix: the indirect call from linear_map_split_to_ptes() will be instrumented, and so it requires the CFI annotation to precede the function entry point, which is what SYM_TYPED_FUNC_START() is supposed to emit.
+David Hildenbrand did the initial implementation. I built on his work and
+relied on off-list discussions to push it further - thanks a lot David!
 
-The typeid symbol is injected by the compiler into every object file that takes the address of the function in question, and so the fact that it is missing seems to suggest that linear_map_split_to_ptes() has been optimized away entirely. Could you double check arch/arm64/mm/mmu.o if that is the case?
+[1] https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+
+v3 -> v4:
+- Rework based on David's two-step direction and per-CPU idea:
+  1) Targeted IPIs: per-CPU variable when entering/leaving lockless page
+     table walk; tlb_remove_table_sync_mm() IPIs only those CPUs.
+  2) On x86, pv_mmu_ops property set at init to skip the extra sync when
+     flush_tlb_multi() already sends IPIs.
+  https://lore.kernel.org/linux-mm/bbfdf226-4660-4949-b17b-0d209ee4ef8c@kernel.org/
+- https://lore.kernel.org/linux-mm/20260106120303.38124-1-lance.yang@linux.dev/
+
+v2 -> v3:
+- Complete rewrite: use dynamic IPI tracking instead of static checks
+  (per Dave Hansen, thanks!)
+- Track IPIs via mmu_gather: native_flush_tlb_multi() sets flag when
+  actually sending IPIs
+- Motivation for skipping redundant IPIs explained by David:
+  https://lore.kernel.org/linux-mm/1b27a3fa-359a-43d0-bdeb-c31341749367@kernel.org/
+- https://lore.kernel.org/linux-mm/20251229145245.85452-1-lance.yang@linux.dev/
+
+v1 -> v2:
+- Fix cover letter encoding to resolve send-email issues. Apologies for
+  any email flood caused by the failed send attempts :(
+
+RFC -> v1:
+- Use a callback function in pv_mmu_ops instead of comparing function
+  pointers (per David)
+- Embed the check directly in tlb_remove_table_sync_one() instead of
+  requiring every caller to check explicitly (per David)
+- Move tlb_table_flush_implies_ipi_broadcast() outside of
+  CONFIG_MMU_GATHER_RCU_TABLE_FREE to fix build error on architectures
+  that don't enable this config.
+  https://lore.kernel.org/oe-kbuild-all/202512142156.cShiu6PU-lkp@intel.com/
+- https://lore.kernel.org/linux-mm/20251213080038.10917-1-lance.yang@linux.dev/
+
+Lance Yang (3):
+  mm: use targeted IPIs for TLB sync with lockless page table walkers
+  mm: switch callers to tlb_remove_table_sync_mm()
+  x86/tlb: add architecture-specific TLB IPI optimization support
+
+ arch/x86/hyperv/mmu.c                 |  5 ++
+ arch/x86/include/asm/paravirt.h       |  5 ++
+ arch/x86/include/asm/paravirt_types.h |  6 +++
+ arch/x86/include/asm/tlb.h            | 20 +++++++-
+ arch/x86/kernel/kvm.c                 |  6 +++
+ arch/x86/kernel/paravirt.c            | 18 +++++++
+ arch/x86/kernel/smpboot.c             |  1 +
+ arch/x86/xen/mmu_pv.c                 |  2 +
+ include/asm-generic/tlb.h             | 28 +++++++++--
+ include/linux/mm.h                    | 34 +++++++++++++
+ kernel/events/core.c                  |  2 +
+ mm/gup.c                              |  2 +
+ mm/khugepaged.c                       |  2 +-
+ mm/mmu_gather.c                       | 69 ++++++++++++++++++++++++---
+ 14 files changed, 187 insertions(+), 13 deletions(-)
+
+-- 
+2.49.0
 
 
