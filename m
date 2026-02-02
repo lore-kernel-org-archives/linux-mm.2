@@ -4,140 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D911FE7DF13
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 17:50:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24D6EE7DF0F
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 17:50:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F5916B00B5; Mon,  2 Feb 2026 12:50:21 -0500 (EST)
+	id 8F73E6B00CC; Mon,  2 Feb 2026 12:50:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A39E6B00CC; Mon,  2 Feb 2026 12:50:21 -0500 (EST)
+	id 8C1476B00CD; Mon,  2 Feb 2026 12:50:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2AEAB6B00CD; Mon,  2 Feb 2026 12:50:21 -0500 (EST)
+	id 7B6436B00CE; Mon,  2 Feb 2026 12:50:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 16A196B00B5
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:50:21 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DA178139FF8
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:50:20 +0000 (UTC)
-X-FDA: 84400255800.07.4CD3FDD
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D853040006
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:50:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WUBIuzE0;
-	spf=pass (imf01.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770054619;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 66FFB6B00CC
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:50:44 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0836513A074
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:50:44 +0000 (UTC)
+X-FDA: 84400256808.19.5C42B98
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E0F651C000E
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:50:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KdR2g8AT;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770054642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SqHEa2lIJ8aAbOSZMjCmc3C/32OqZQFOZt8cIZMm4X0=;
-	b=0HWqub3JXds5kwV5+2og25sidAlhAxY108GPtMzPjAgzRoWtf7f17vnpN7rRMGuSAWkPtb
-	bU07voULwsIcaKPoIdFjsmHmcg9aEPh3VC6HwmGoSnKyy7qYeA+1VTepm1VQyWqZl5O0p9
-	sWalYlr0YXb0OiirWUpPatNjqL2Q3zY=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WUBIuzE0;
-	spf=pass (imf01.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770054619; a=rsa-sha256;
-	cv=pass;
-	b=7mrnIpabX8xwMV8ZuGng+XmqcPFsjAzpYG1TgmOkpv/fzt7NsoaL/KCp33EjzKyC/Tv2u9
-	DQyOZhJBxDkU7JAS77J/mprf5ollU4ZFMhpz+BjFtUSskhAVoLvOkCuRyBkFq6x4W6HqBB
-	bs+P9/0NAUl6ZMLxJr5gR/5nYs8u7o8=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4801ea9bafdso20301485e9.3
-        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 09:50:18 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770054617; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Lm+9N6hKgf3taD4S7S4G1LTisi6KxNMHEAPRj6oDxjVygC9aZ7s4gxLQO76eLdoaVv
-         vKAp3dvrIXuYJzo5nLAtC68Y/qiKkAkqgC2NfnghZvGSORCxuCoYEdxIzHLLQGbj8pkG
-         sqUuso0SOsd9PF83KQi+dCps9/gnkPwOtZWaSRArlMQN2ZV69/dvS0fQRasKy8KD/wwd
-         smjr1MIYQgSRyaMABDVsthkwtttK5hs4lHLiP2FpN5ONw1V/FnO9ivb5avxNqTdQb2i+
-         Q9ZVyLsj2R1KiqAlz23ib6c2dy9vK0eQ2jg0Jy3xM/vsL07nYoaAdXorT3VEIX5pGhlg
-         HGDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SqHEa2lIJ8aAbOSZMjCmc3C/32OqZQFOZt8cIZMm4X0=;
-        fh=E+M/FZqN875+mMM+QcjcVLYmCjVFMMtcPyta/Vo9O9A=;
-        b=JHkNeTHEdFxTKZIbkkLnAFyYL8VZ8mGF05KfuFzptn/SSYkxo6kv5cd6cYrjt5H32h
-         vURtYvpCjX/bCsnH/pQtv3w8M7tfiP4bkP4Ffwy0oRTKy/a6PMrkPqDdB9mn/+aqEJjN
-         HD4Cqt2NuN8y3ZptQ81qp/0UtoEMENwHJJ3XRTvREo9ujWDnCaSjqkjZF7U45jBBXkPt
-         74tzX1e4wEuIJ3peK5ceiSzCsGm2ZsfSrKpMAEmeGMld/BXgXPw2Vh+H9jTjrTYscKx8
-         Z83OOFBY6DJ0ayM050fzxRwU/Psb6QA+styiYOpUKFTCP5rOG6SycReZDXq20XSYWEzS
-         iKeg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770054617; x=1770659417; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SqHEa2lIJ8aAbOSZMjCmc3C/32OqZQFOZt8cIZMm4X0=;
-        b=WUBIuzE0f4KRJVsXu6hO8d1CG9nLeIhTSzHpgiQzAxaScTUtU3YT4nlxUpth6AVMWv
-         m/8kXxSBLjo1KMKM3J3qAgba4H22jX/cjPq0So+F/BwpUWQDHgwxf5ttIWXO2b+b430G
-         aXURzXUlKA+jqmoD6irrmkzLfiCUnCogfhab27HHr7LquuYe3S+waTdoKBn1ILoZ8j/p
-         Q3GFMPV1JJiSlsbWS3lLirGvHsPF82x2xiGiH/FWyFW83OwXulBT01YOLh4P1k/Udx/f
-         DrE31P+UFJ9AMl9kIKhl1EE3YJrybmvcVNlc9RsXQGLDcgtwtjIAVPUmauvue+5BiDvW
-         Hypg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770054617; x=1770659417;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SqHEa2lIJ8aAbOSZMjCmc3C/32OqZQFOZt8cIZMm4X0=;
-        b=R8XxxGfLJuORwRFKe2O061O6rE9OhXQn4udHtc0s/2esjOyZMukIUkH19GxObOTGPm
-         QNBTKA4ps+co07Jer1vR+PVnsdo3z7jGgh7NIKy5HzNjWRkm9ujt6ZAV+m3vqhC3F4Uz
-         hq1VTwbBt6FAEGHuxBWrpEZprMVdFqN1w9raGTXo7LLRSMhUBrw33QYrutaRNmHwSxky
-         gDC91gVq213JlarsiK1KCpgXFe+4pUvi3+51HFV/O3sOjEEgCQr1N01xoy9PuV3G4TeA
-         MxkcFf28THfuhQHjC44rVNBkd3ajuh9t9s+sTIDmZE4xy1/OGMuGKpTNIqxwYhz/X/bA
-         qDyg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ9ky3J9iLiuuYky1JRBHY5ypI0C5BoQ/v4uGGtSHJXe8buD+1sxLiYQv/MlnO4yx/MAcZnPbf2g==@kvack.org
-X-Gm-Message-State: AOJu0Yz/UacxLHopnvSOuG6OMyCKQdXvx3VoDsmrSMI2MV5llEuMtkYv
-	4x7IZFQoznDSNMipXDPR5y7Sd3M/TCjqhQx+Q+pkPRapwih9/zK59aJxLNLVxIQ81fQ80rBorKn
-	G5elGpn9o1FgJA8JJm3Gz57Ay8xF4byI=
-X-Gm-Gg: AZuq6aK+FD3G+CdIlWRNWn77r+b6/QuwNHyvFYuMN97oZQyWJyN81kLhCcm5fibIMpL
-	+zi8tBtivU7KgJATBWO1BRA/79Enc1uqn8xem1Rws+noL+dN9x5Nlz0zd8m5x0SrfTy2v1XPfiS
-	DgUJS8T8V32C8vHMSvnGv/PAJxaZ32fbyp8upWy70iUb8sUg/HwU+K1Qvigs/PFMBWLrnEBErXf
-	UMkgdldgSQPN8mURLeVvlKkvcLnZHhBQrvZmBavnDLyWCGZ5hxvpEokMgxxpV2FdjA0hqHhsAtd
-	XyO7WKKoa+08UvtNE++Zas+F7LKmO2G99V029x5kKx47TL4CV6XIkfTgZiu6LD0eWdMhRSZQ
-X-Received: by 2002:a05:600c:628d:b0:480:1c75:407c with SMTP id
- 5b1f17b1804b1-482db4577f3mr151208365e9.2.1770054616976; Mon, 02 Feb 2026
- 09:50:16 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1c5poQRup3YXuAN3Jt7CXVp0hwqqt2q83Twq2hwFWP0=;
+	b=sY4GRTfHZECAAbTz1s6MoIHbj2RfPxlvXpdl/wFWxy/uDaDNv3tGZPS9CIImGamT7TnR8y
+	sKem5vNRXeDJFxeW4F0stxvSopghEbmDg75nX7Rs6eJBtTDDCpQPknggzPZIKbW6b8yU+u
+	qDsHpCB9Io5BYI0a8zfl3QQhxtEfWcU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KdR2g8AT;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770054642; a=rsa-sha256;
+	cv=none;
+	b=RpEYtUR4pJW8jl5QsKMP4hYWxk5kLbC4spEvr5j50zydBsHhnufUaugu5HY5gku4Z9vP/6
+	IHJY513Q/SdpqpS5lygLIqJUFydDoakKCOFBO8+s9YbG4XY+bUD/VLynag+3CXLTjE7C5y
+	A9FV/lKVDp57QmMClYOPozQOoCBWQSk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A7D424447F
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:50:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE7AC2BC87;
+	Mon,  2 Feb 2026 17:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770054640;
+	bh=1sO4SKx86mkHcoOMUXgtGHCRc6KnJdnIPMym5JQh9XY=;
+	h=Date:From:To:Cc:Subject:From;
+	b=KdR2g8ATI5/bXDxYtVz6qOO4VHiY4CeNr6fr2pl+aCb5nQl/sM0caP2ZI0ImYOMLC
+	 EX0u4UwSCtp0TrZ0htwoqggetW/4NeCszvfda50mvDcjMFaTDtD+EeAYqv/FdLrtTH
+	 jBmJXRiFq8ncRaclMUNns22R64apj3bcxsVE0aqeBgLrHPsw2ng7KZri+XnnsgkH3M
+	 HTkb3sSFv/iij0e+UMwDlwg9Isx6WONwhKgiSjIWzhB9wNJHyhB9omPUI044WqzfcH
+	 bobYUIgtdU91jTZZw/o5Y2ytU0DWCCZirTP03s2U0K1UFHT5tcpRxzehJLwEng1nxe
+	 WeCG5R/BjP9QA==
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 51B67F40069;
+	Mon,  2 Feb 2026 12:50:39 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-07.internal (MEProxy); Mon, 02 Feb 2026 12:50:39 -0500
+X-ME-Sender: <xms:7-OAaYZxzeFyZP9fOQN03vJkJHuozO4bimEtg7nx2iL_Yn6fxablaA>
+    <xme:7-OAacJVKDHr3xRyTm8tULuhm-zvdnyyPnIpqC-Nku7Mk39xl29zEXskJo-mfjDN8
+    Hr-bgX_95XSGMbCUMPrRD7wxm02rOzRrNvwewzgZDcKBk4WRhWuHQ>
+X-ME-Received: <xmr:7-OAaRrvr8Cd_loyMoHZcJrzG-epcWax6CNYhy2FKGvKpIdn-5kNLt-Nc11Q0A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeekvdelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkgggtugesmhdtreertddtvdenucfhrhhomhepmfhirhihlhcuufhh
+    uhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epvdevudegkedvgfffjeejteejueektedttdekkefhtdeuveeliedvudevgefgvddunecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirhhilh
+    hlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheehqddv
+    keeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrdhnrg
+    hmvgdpnhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthho
+    pehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthhtohepsghrrg
+    hunhgvrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhgrtghksehsuhhsvgdrtgii
+    pdhrtghpthhtohephhhughhhugesghhoohhglhgvrdgtohhmpdhrtghpthhtohepsggroh
+    hlihhnrdifrghngheslhhinhhugidrrghlihgsrggsrgdrtghomhdprhgtphhtthhopehl
+    ihhnuhigqdhmmheskhhvrggtkhdrohhrghdprhgtphhtthhopehlihhnuhigqdhfshguvg
+    hvvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgv
+    rhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:7-OAaVDBzHX41GcX-OlD7tAtq4go3k2hxzu05NMsvnw6drCXK0hCPw>
+    <xmx:7-OAaXfuUk8M-Hq0Gwa0T6aFjlkkS4rl-r4FrgFamN3_lQKMLY_KEQ>
+    <xmx:7-OAaVIpOVSxuwbLH3YEJRATTyovgLc3whHimPHemdcaUchgAWhgSA>
+    <xmx:7-OAaXtNtIDXl4x3ykYRUVQVDsiEHuQKg5m7Xlf1755O8flCKYEI4g>
+    <xmx:7-OAafbcqPb7IztY10j8byc90_YJ7U8S46VALWIeLba52O5z_qDvHxEF>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Feb 2026 12:50:37 -0500 (EST)
+Date: Mon, 2 Feb 2026 17:50:30 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Orphan filesystems after mount namespace destruction and tmpfs "leak"
+Message-ID: <aYDjHJstnz2V-ZZg@thinkstation>
 MIME-Version: 1.0
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <aXh_LpTzDhvv20uB@tiehlicka> <7ia44io6kbwj.fsf@castle.c.googlers.com>
- <aXnDdkYmtipGwSjK@tiehlicka> <CAADnVQ+ghTc5FtJCjm4ya3y3xVpSuJe-7ctdT-thowqWguc1pA@mail.gmail.com>
- <aYAZT-ZZSKdiChfd@google.com>
-In-Reply-To: <aYAZT-ZZSKdiChfd@google.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Mon, 2 Feb 2026 09:50:05 -0800
-X-Gm-Features: AZwV_QgWPO6tVqI8Q3ClAr2Pk2pa3uETsu08TgeuX6MtqSwq_qFHAQc7YZ591MI
-Message-ID: <CAADnVQL3+huSAwoYRexoSDaLRK+nEsY6UUnVSmhk_sGYUYsO7Q@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 00/17] mm: BPF OOM
-To: Matt Bobrowski <mattbobrowski@google.com>
-Cc: Michal Hocko <mhocko@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, bpf <bpf@vger.kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	JP Kobryn <inwardvessel@gmail.com>, LKML <linux-kernel@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Josh Don <joshdon@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D853040006
-X-Stat-Signature: qtakkkokq9aayhxpi6a859ok56ggy5x3
+Content-Type: multipart/mixed; boundary="odh3srnjw53gxerh"
+Content-Disposition: inline
+X-Stat-Signature: kfxzqdx8xkad8gc7iz1jewh3ppj47gsr
+X-Rspamd-Queue-Id: E0F651C000E
 X-Rspam-User: 
-X-HE-Tag: 1770054618-645979
-X-HE-Meta: U2FsdGVkX18lg4RWC2a9jpOuhEdBlA6vXbED2akrnMEZ4MAIs0MLZPvXT7C94I43jfphCpOh2wNxlyDZ+WLdII64F4c/Nu1sXXb2MzVJ4LION1B2P15SJfIQleHk0StSB1M1QO6nFtDDM/lsPUT3YbYhZcN1RFB1tbttedou8YuLHbj8O9KulPznwSl/y6177aUW7HIWfIZ4jCp/aJQcWcSVdSO60Ai88Bs3c7dhG/gJf+a9xJJ0xbJxMN7Mf2y8tXVWFsXlEIJAqercFTTA2f2V1WVBR5WeA/S1YKCU5tdNzBBqclKgksTmNlKePGE38eZ5olnRZMIqhN1ohR0KjMNxoltHlReu2nqegAmjfQkRMuVnmP2Tq0FYojew2aBPUMfGHrkx4hmDFLNYWmX2B7ztpeP9XPDfnttWhPUlylVmmMBNWAP8fmEVwYdDFGuJQf+7iGvITzNaHtqWF9Yf+XPNk97/L9qhYihGtUqrR+L8HaLW1XcPAYNuakyxD1en+jUaqRY6bG1rP/FVeKTaLqcRmVCxN38BglkBHnJKn10M7Wy831kJmGGSbIpwOyFr8r3FMkKdaTPWbW1sAyolCxLBz2jxE62FbNV7VU8kuUzbCQFRDa2aGSe1DCaXAGkSg14fyiB3YJIFFHmQLdecK5bbVEnGVyAr/fIQRqZUpttthIiM1M2HojmPiK7Vb01mNjpiFbxnNe57xGFy75bMbVcGz9yYcIpg8MOuwbbwT7b4hzeb8QBY7/JY68AhMI9nfaxu6nnO5/bR0IEGTNNN7L+3sUmS9deP2eJMXb++Tvomgx3mCQqZDDiSJRnn1fd6dkQCZ0JiOQWKQ9e1omvELk3PSARsib6G89OzMsvDPF1NHGaPFGiA6C1ajMm9F5o/EjLYtizFiX1sc7g1blw9YB6Ww4dYoFu3eRHDVi/aMOddtAqBdYjwHrSvCzt4yD1bGx6wmLA5clslWVDcpXE
- GnnWnDqr
- xMTCEDumqOMn/mFtD03GbviP0gApLc6LSzEuprB1n4RGoTBcGa9mdd2iRc4uDyx1s51XTeWqPsc1hhcboOqPikeNwfnH41IQlcyB41QkNMk/MlHezC1YIYGnFIO/aIS+hRDfg1I7rmr4s3SMAUDdypp7HdWIiEA6+VQPl7AEWD8QcopsvaXYZOv9mMpDw9CvzxFr3/Jh3H149fTZHuLJWxjKmWuAu6HOgi4s5lP9jNMqF+wWmiclFB5+ZmBqQvx7DTEt14Q0ekzE+ATX+qmZ+PY8XSVmkaqM9DwAaPc4tGsoPGQrGqAZUJaVnY30zpXKdzyTFM2hKFCWFXAgZnzzaIkHe+cVVbsklvr+QcQJkrnwA310Ka6g2AwCD8gelhEwkuQR5HILlgCKicIDma7f8/RiKs0849DrLnQktUSy+cZehI4SQQ4W/UCkhwfS7+pHWTlrgSD82aXouBfwEXgeCgBLx1zy5GtYt1FTNFa0rRMIVd4PiFCxQ+F5g6gg21PG9Kso0
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770054641-416528
+X-HE-Meta: U2FsdGVkX1/HezMGst1kaaWA7lFuLhSgIg5PWtlFoI+Y/iZtZqmzrEe1oDXEMECASPUWxsKxExI4XomnR+/VzUSuQTElGkPDbbwOY5fEl2jDsO+6vdpSUVJ/foFEfTh45Q2nzql1WAzLJw44um2iRSXECFI10Up6O+tcLMclhpcyxDJxhO4yQPjFb5djufuibcaGQRWax4Ky76+fmPxCourW3ZeBwWgQzPMkx+frnCCqOKMjkYVVYTUL7pCVtf/A8uSjHRnB7Y0pWaeXwLeCT/WDMpNM8QxZwA/2YhBtKuXgJ2CiKRDW+ogfF25DWIFWvkG8CcWRspLTlAjZroMbRWDBlgo5dh2oGOshK4Aa3MBhf86Bbr+o207yTpoT4G+qJ/CV6lB0FNTeCT7Dt+J3xS68WjAUXlny4Sx9q2IyC/N5OnmHouZDEshM8VuffdmgrfBm0CDq0uw+SerocP4KKLL31zM1Eqw8imRxr/YidSYfCiwezA6z/mIaow6uHqkn42S+QOu5QJu6NB5SHvtu99pmx5sdbAfkfJlmmyBwW2ngRifR8eF/QP3MhTqmI5lch06uJDjxUnFtPb9Fxgs36TdLWMirTnhqrFv3CGV6A5ady44kmP0y/qmC7RPNojPPoxIVJRTAzFihL8HuqsbCpYiNKL29CZ3EAlaMnSfgTQAemIde4H3Oj+z/LvFKx5QHAw5uhzzVB1dPGsvT0H2Dsrod0f343/Z1YD5yeVGkSfHGlPD8VLCA4n3voMoFRJ5M6f3/FJJfQo8jdWULQyMQ2SDRmR6DGV6Vi38RFA3CQpivsh0cuivI35TTfgFSK8hRShr8FOEpZW9cyL68+Oe0dCdjdhHgrORn3sTZiOqDyjlu7YEBK2i9Sk9X+UoqKxP9VxjWjAcdNMs+VmeXbWAEY0WXf4jGq3gEiUke7SGtmkXHdBj5shI8fnvcm4GH6kCKyQ7AM9XOOycbZzk1T0F
+ DimtkQA+
+ 30vACYc8ndYQT9wevzrjkEN9RqLr7pmAiy9Azb48xzsG5uxY8ou7Nk7oTUGwi2ktn5RmomoDFQ817wLi3RtI7dV5foHdn2dFG9o9ojqo3xsu774kI3pgr6X8JCYZfPdoWzQQUmGPnaCYhGcSK6lWb/QNxx048HdjWe/JdfzmHAY/OxmKkT6lzJPcwql5MQraH011sUDVP8uSy81NFzoJD4AaC40r/sBdv4Rr/igFWY/+o1o3GyCHQBULgrxT68YdIwshmxJwB8lV9ZRNx10af5jy4eFIZByTl+r1E6nJjIVsmQba7vPZlvDPv53fyVYSalhSMrdI6U/DnJ3cldxG30yX2nL7REwBjxSXB7zrfF7ZiATBk58P5baoFIbMGNRXQb+EYWsJjMNfJzZZwExOFkwxvbp+RPN0XxS6bwqyLu/vACRIaRlxbEI/rzhtyh9ePnNOqLfXJ9hOjNgMe7i8a7sVmzdbO/mu5VbMV6UqIrBN2nJC7pwj+XwcF2AP92k6DxJNhmALVlueLDZ4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,81 +124,286 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 1, 2026 at 7:26=E2=80=AFPM Matt Bobrowski <mattbobrowski@google=
-.com> wrote:
->
-> On Wed, Jan 28, 2026 at 08:59:34AM -0800, Alexei Starovoitov wrote:
-> > On Wed, Jan 28, 2026 at 12:06=E2=80=AFAM Michal Hocko <mhocko@suse.com>=
- wrote:
-> > >
-> > >
-> > > > Another viable idea (also suggested by Andrew Morton) is to develop
-> > > > a production ready memcg-aware OOM killer in BPF, put the source co=
-de
-> > > > into the kernel tree and make it loadable by default (obviously und=
-er a
-> > > > config option). Myself or one of my colleagues will try to explore =
-it a
-> > > > bit later: the tricky part is this by-default loading because there=
- are
-> > > > no existing precedents.
-> > >
-> > > It certainly makes sense to have trusted implementation of a commonly
-> > > requested oom policy that we couldn't implement due to specific natur=
-e
-> > > that doesn't really apply to many users. And have that in the tree. I=
- am
-> > > not thrilled about auto-loading because this could be easily done by =
-a
-> > > simple tooling.
-> >
-> > Production ready bpf-oom program(s) must be part of this set.
-> > We've seen enough attempts to add bpf st_ops in various parts of
-> > the kernel without providing realistic bpf progs that will drive
-> > those hooks. It's great to have flexibility and people need
-> > to have a freedom to develop their own bpf-oom policy, but
-> > the author of the patch set who's advocating for the new
-> > bpf hooks must provide their real production progs and
-> > share their real use case with the community.
-> > It's not cool to hide it.
-> > In that sense enabling auto-loading without requiring an end user
-> > to install the toolchain and build bpf programs/rust/whatnot
-> > is necessary too.
-> > bpf-oom can be a self contained part of vmlinux binary.
-> > We already have a mechanism to do that.
-> > This way the end user doesn't need to be a bpf expert, doesn't need
-> > to install clang, build the tools, etc.
-> > They can just enable fancy new bpf-oom policy and see whether
-> > it's helping their apps or not while knowing nothing about bpf.
->
-> For the auto-loading capability you speak of here, I'm currently
-> interpreting it as being some form of conceptually similar extension
-> to the BPF preload functionality. Have I understood this correctly? If
-> so, I feel as though something like this would be a completely
-> independent stream of work, orthogonal to this BPF OOM feature, right?
-> Or, is that you'd like this new auto-loading capability completed as a
-> hard prerequisite before pulling in the BPF OOM feature?
 
-It's not a hard prerequisite, but it has to be thought through.
-bpf side is ready today. bpf preload is an example of it.
-The oom side needs to design an interface to do it.
-sysctl to enable builtin bpf-oom policy is probably too rigid.
-Maybe a file in cgroupfs? Writing a name of bpf-oom policy would
-trigger load and attach to that cgroup.
-Or you can plug it exactly like bpf preload:
-when bpffs is mounted all builtin bpf progs get loaded and create
-".debug" files in bpffs.
+--odh3srnjw53gxerh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-I recall we discussed an ability to create files in bpffs from
-tracepoints. This way bpffs can replicate cgroupfs directory
-structure without user space involvement. New cgroup -> new directory
-in cgroupfs -> tracepoint -> bpf prog -> new directory in bpffs
--> create "enable_bpf_oom.debug" file in there.
-Writing to that file we trigger bpf prog that will attach bpf-oom
-prog to that cgroup.
-Could be any combination of the above or something else,
-but needs to be designed and agreed upon.
-Otherwise, I'm afraid, we will have bpf-oom progs in selftests
-and users who want to experiment with it would need kernel source
-code, clang, etc to try it. We need to lower the barrier to use it.
+Hi,
+
+In the Meta fleet, we saw a problem where destroying a container didn't
+lead to freeing the shmem memory attributed to a tmpfs mounted inside
+that container. It triggered an OOM when a new container attempted to
+start.
+
+Investigation has shown that this happened because a process outside of
+the container kept a file from the tmpfs mapped. The mapped file is
+small (4k), but it holds all the contents of the tmpfs (~47GiB) from
+being freed.
+
+When a tmpfs filesystem is mounted inside a mount namespace (e.g., a
+container), and a process outside that namespace holds an open file
+descriptor to a file on that tmpfs, the tmpfs superblock remains in
+kernel memory indefinitely after:
+
+1. All processes inside the mount namespace have exited.
+2. The mount namespace has been destroyed.
+3. The tmpfs is no longer visible in any mount namespace.
+
+The superblock persists with mnt_ns = NULL in its mount structures,
+keeping all tmpfs contents pinned in memory until the external file
+descriptor is closed.
+
+The problem is not specific to tmpfs, but for filesystems with backing
+storage, the memory impact is not as severe since the page cache is
+reclaimable.
+
+The obvious solution to the problem is "Don't do that": the file should
+be unmapped/closed upon container destruction.
+
+But I wonder if the kernel can/should do better here? Currently, this
+scenario is hard to diagnose. It looks like a leak of shmem pages.
+
+Also, I wonder if the current behavior can lead to data loss on a
+filesystem with backing storage:
+ - The mount namespace where my USB stick was mounted is gone.
+ - The USB stick is no longer mounted anywhere.
+ - I can pull the USB stick out.
+ - Oops, someone was writing there: corruption/data loss.
+
+I am not sure what a possible solution would be here. I can only think
+of blocking exit(2) for the last process in the namespace until all
+filesystems are cleanly unmounted, but that is not very informative
+either.
+
+I have attached a Claude-generated reproducer and a drgn script that
+lists orphan tmpfs filesystems.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
+
+--odh3srnjw53gxerh
+Content-Type: application/x-sh
+Content-Disposition: attachment; filename="tmpfs_leak_reproducer.sh"
+Content-Transfer-Encoding: quoted-printable
+
+#!/bin/bash=0A# Reproducer for tmpfs leak via external file descriptor=0A#=
+=0A# Scenario:=0A# 1. Create a "container" (new mount namespace) with a tmp=
+fs=0A# 2. Create a file on the tmpfs=0A# 3. Process outside the container o=
+pens the file via /proc/<pid>/root/...=0A# 4. Container (mount namespace) i=
+s destroyed=0A# 5. tmpfs remains alive because external process holds a ref=
+erence=0A=0Aset -e=0A=0AWORKDIR=3D"/tmp/tmpfs_leak_test_$$"=0Amkdir -p "$WO=
+RKDIR"=0A=0Acleanup() {=0A    echo "[cleanup] Cleaning up..."=0A    # Close=
+ FD 3 if still open=0A    exec 3<&- 2>/dev/null || true=0A    jobs -p | xar=
+gs -r kill 2>/dev/null || true=0A    rm -rf "$WORKDIR" 2>/dev/null || true=
+=0A}=0Atrap cleanup EXIT=0A=0Aecho "=3D=3D=3D tmpfs Leak Reproducer (Shell =
+Version) =3D=3D=3D"=0Aecho ""=0Aecho "This demonstrates how an external pro=
+cess holding a file descriptor"=0Aecho "to a file inside a container's tmpf=
+s can prevent container cleanup."=0Aecho ""=0A=0A# Step 1: Create a "contai=
+ner" process in a new mount namespace=0Aecho "[1] Creating container with n=
+ew mount namespace and tmpfs..."=0A=0A# Create a pipe for synchronization=
+=0Amkfifo "$WORKDIR/container_ready"=0Amkfifo "$WORKDIR/external_ready"=0A=
+=0Aunshare --mount --fork bash -c '=0A    WORKDIR=3D"'"$WORKDIR"'"=0A    ec=
+ho "[container] PID: $$"=0A    # Make mount namespace private=0A    mount -=
+-make-rprivate /=0A    # Create and mount tmpfs=0A    mkdir -p /tmp/contain=
+er_tmpfs=0A    mount -t tmpfs -o size=3D10M tmpfs_device /tmp/container_tmp=
+fs=0A    # Create a file on the tmpfs=0A    echo "Secret container data - P=
+ID $$" > /tmp/container_tmpfs/secret_file.txt=0A    echo "[container] tmpfs=
+ mounted at /tmp/container_tmpfs"=0A    echo "[container] Created /tmp/cont=
+ainer_tmpfs/secret_file.txt"=0A    # Signal ready (write to pipe)=0A    ech=
+o "ready" > "$WORKDIR/container_ready"=0A    echo "[container] Waiting for =
+external process to grab FD..."=0A    # Wait for external process (read fro=
+m pipe blocks until written)=0A    read _ < "$WORKDIR/external_ready"=0A   =
+ echo "[container] External process has FD. Exiting in 2 seconds..."=0A    =
+sleep 2=0A    echo "[container] Exiting now - mount namespace will be destr=
+oyed"=0A' &=0A=0ACONTAINER_PID=3D$!=0Aecho "[main] Container shell PID: $CO=
+NTAINER_PID"=0A=0A# Wait for container to be ready=0Aecho "[2] Waiting for =
+container to set up tmpfs..."=0Aread _ < "$WORKDIR/container_ready"=0Aecho =
+"[+] Container is ready"=0A=0A# Find the actual unshare child process=0Asle=
+ep 0.5=0ACHILD_PID=3D$(pgrep -P $CONTAINER_PID 2>/dev/null | head -1)=0Aif =
+[ -z "$CHILD_PID" ]; then=0A    CHILD_PID=3D$CONTAINER_PID=0Afi=0Aecho "[+]=
+ Container process PID: $CHILD_PID"=0A=0A# Step 2: External process opens f=
+ile via /proc/<pid>/root=0Aecho ""=0Aecho "[3] External process opening fil=
+e from container's tmpfs..."=0A=0APROC_PATH=3D"/proc/$CHILD_PID/root/tmp/co=
+ntainer_tmpfs/secret_file.txt"=0A=0Aif [ ! -f "$PROC_PATH" ]; then=0A    ec=
+ho "[!] Cannot find file at $PROC_PATH"=0A    echo "[!] Trying with contain=
+er shell PID..."=0A    PROC_PATH=3D"/proc/$CONTAINER_PID/root/tmp/container=
+_tmpfs/secret_file.txt"=0Afi=0A=0A# Open the file and keep it open - save c=
+ontent for later=0Aexec 3< "$PROC_PATH"=0AORIGINAL_CONTENT=3D$(cat <&3)=0Ae=
+cho "[external] Opened FD 3 to: $PROC_PATH"=0Aecho "[external] File content=
+s: $ORIGINAL_CONTENT"=0A=0A# Signal container we have the FD=0Aecho "ready"=
+ > "$WORKDIR/external_ready"=0Aecho "[external] Signaled container"=0A=0A# =
+Wait for container to exit=0Aecho "[external] Waiting for container to exit=
+=2E.."=0Await $CONTAINER_PID 2>/dev/null || true=0A=0Aecho ""=0Aecho "=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D"=0Aecho "[exte=
+rnal] CONTAINER HAS EXITED!"=0Aecho "[external] Mount namespace should be d=
+estroyed"=0Aecho "=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D"=0Aecho ""=0A=0A# Show we still have access - use /proc/self/fd/3 to=
+ read=0Aecho "[external] But we still have FD 3 open!"=0Aecho "[external] R=
+eading via /proc/self/fd/3:"=0Acat /proc/self/fd/3 2>/dev/null || echo "(re=
+ad failed - but FD still holds reference)"=0A=0Aecho ""=0Aecho "[external] =
+FD 3 details:"=0Als -la /proc/self/fd/3 2>/dev/null || echo "(fd info not a=
+vailable)"=0Areadlink /proc/self/fd/3 2>/dev/null || echo "(target path - n=
+ote it's a deleted/orphaned file)"=0A=0Aecho ""=0Aecho "[external] The tmpf=
+s superblock remains in kernel memory!"=0Aecho "[external] Even though the =
+mount namespace is gone, the superblock persists"=0Aecho "[external] becaus=
+e we hold a file reference."=0Aecho ""=0Aecho "[external] Holding FD for 10=
+ seconds to allow inspection..."=0Aecho ""=0Aecho "You can check with: sudo=
+ drgn monitor_tmpfs.py"=0Aecho ""=0A=0Asleep 10=0A=0Aecho "[external] Closi=
+ng FD 3..."=0Aexec 3<&-=0A=0Aecho "[external] Done. tmpfs superblock should=
+ now be freed."=0Aecho ""=0Aecho "=3D=3D=3D Reproducer Complete =3D=3D=3D"=
+=0A
+--odh3srnjw53gxerh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="monitor_tmpfs.py"
+
+#!/usr/bin/env drgn
+"""
+Monitor tmpfs superblocks to detect orphaned/leaked tmpfs filesystems.
+
+Run with: sudo drgn -s /path/to/vmlinux monitor_tmpfs.py
+
+This script lists all tmpfs superblocks and shows which ones have
+NULL mount namespaces (orphaned) or are otherwise in unusual states.
+"""
+
+from drgn import container_of
+from drgn.helpers.linux.list import hlist_for_each_entry, list_for_each_entry
+
+def get_mount_info(sb):
+    """Get mount information for a superblock"""
+    mounts = []
+    try:
+        for mnt in list_for_each_entry('struct mount', sb.s_mounts.address_of_(), 'mnt_instance'):
+            try:
+                mnt_ns = mnt.mnt_ns
+                mnt_ns_addr = mnt_ns.value_() if mnt_ns else 0
+
+                # Get device name
+                devname = mnt.mnt_devname.string_().decode('utf-8', errors='replace') if mnt.mnt_devname else "?"
+
+                # Get mount point
+                mnt_mountpoint = mnt.mnt_mountpoint
+                if mnt_mountpoint:
+                    name = mnt_mountpoint.d_name.name.string_().decode('utf-8', errors='replace')
+                else:
+                    name = "?"
+
+                mounts.append({
+                    'mnt_ns': mnt_ns_addr,
+                    'devname': devname,
+                    'mountpoint': name,
+                    'mnt_addr': mnt.value_()
+                })
+            except:
+                continue
+    except:
+        pass
+    return mounts
+
+
+def main():
+    # Get the tmpfs/shmem filesystem type
+    shmem_fs_type = prog['shmem_fs_type']
+
+    print("=" * 80)
+    print("tmpfs Superblock Monitor")
+    print("=" * 80)
+    print()
+
+    # Collect all tmpfs superblocks
+    tmpfs_sbs = []
+    for sb in hlist_for_each_entry('struct super_block', shmem_fs_type.fs_supers, 's_instances'):
+        tmpfs_sbs.append(sb)
+
+    print(f"Found {len(tmpfs_sbs)} tmpfs superblocks\n")
+
+    orphaned = []
+    normal = []
+
+    for sb in tmpfs_sbs:
+        sb_addr = sb.value_()
+        s_dev = sb.s_dev.value_()
+        s_active = sb.s_active.counter.value_()
+
+        mounts = get_mount_info(sb)
+
+        # Check if any mount has NULL namespace
+        has_orphaned = any(m['mnt_ns'] == 0 for m in mounts)
+        has_normal = any(m['mnt_ns'] != 0 for m in mounts)
+
+        info = {
+            'sb': sb,
+            'sb_addr': sb_addr,
+            's_dev': s_dev,
+            's_active': s_active,
+            'mounts': mounts,
+            'has_orphaned': has_orphaned
+        }
+
+        if has_orphaned and not has_normal:
+            orphaned.append(info)
+        else:
+            normal.append(info)
+
+    # Print orphaned superblocks first (these are the leaked ones)
+    if orphaned:
+        print("!!! ORPHANED tmpfs SUPERBLOCKS (potential leaks) !!!")
+        print("-" * 80)
+        for info in orphaned:
+            sb = info['sb']
+            print(f"Superblock: 0x{info['sb_addr']:016x}")
+            print(f"  s_dev: {info['s_dev']}")
+            print(f"  s_active: {info['s_active']}")
+
+            # Try to list some files
+            try:
+                root = sb.s_root
+                if root:
+                    print("  Root dentry contents:")
+                    count = 0
+                    for child in hlist_for_each_entry('struct dentry', root.d_children, 'd_sib'):
+                        name = child.d_name.name.string_().decode('utf-8', errors='replace')
+                        inode = child.d_inode
+                        if inode:
+                            size = inode.i_size.value_()
+                            print(f"    - {name} ({size} bytes)")
+                            count += 1
+                            if count >= 10:
+                                print("    ... (more files)")
+                                break
+            except Exception as e:
+                print(f"  Error listing files: {e}")
+
+            for m in info['mounts']:
+                print(f"  Mount: {m['devname']} -> {m['mountpoint']}")
+                print(f"         mnt_ns: 0x{m['mnt_ns']:016x} (NULL = orphaned)")
+            print()
+        print()
+
+    # Print summary of normal superblocks
+    print("Normal tmpfs superblocks:")
+    print("-" * 80)
+    for info in normal:
+        devnames = set(m['devname'] for m in info['mounts'])
+        namespaces = set(m['mnt_ns'] for m in info['mounts'])
+        print(f"0x{info['sb_addr']:016x} s_dev={info['s_dev']:<4} "
+              f"active={info['s_active']:<3} "
+              f"mounts={len(info['mounts']):<3} "
+              f"devnames={devnames}")
+
+    print()
+    print("=" * 80)
+    print(f"Summary: {len(orphaned)} orphaned, {len(normal)} normal")
+    if orphaned:
+        print("WARNING: Orphaned tmpfs superblocks detected - these may be leaking memory!")
+    print("=" * 80)
+
+
+if __name__ == "__main__":
+    main()
+
+--odh3srnjw53gxerh--
 
