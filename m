@@ -4,111 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF1AE73164
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 13:05:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19B0DE73164
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 13:07:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 777736B00D0; Mon,  2 Feb 2026 08:05:17 -0500 (EST)
+	id 7FE476B0095; Mon,  2 Feb 2026 08:07:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7258C6B00D1; Mon,  2 Feb 2026 08:05:17 -0500 (EST)
+	id 781676B00AA; Mon,  2 Feb 2026 08:07:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65BF86B00D2; Mon,  2 Feb 2026 08:05:17 -0500 (EST)
+	id 683A96B00AD; Mon,  2 Feb 2026 08:07:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5134E6B00D0
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 08:05:17 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F2E91BC6E
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:05:17 +0000 (UTC)
-X-FDA: 84399537474.20.20BA1B6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7BBBCC0014
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:05:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FdM2WSOE;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 533E36B0095
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 08:07:30 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1831C1386F8
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:07:30 +0000 (UTC)
+X-FDA: 84399543060.03.1F1F5D6
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 42F3212000B
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:07:27 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="D+aw/TuK";
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770037515;
+	s=arc-20220608; t=1770037648;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J7QljuPFQ7fz61T1NeHMKksjlqrS3vnTQcCwOj8e0Jo=;
-	b=UR7h9W53J+H/xcGVfsePag2lIgaKqV7LbYil6QZNwmMOk6O7QryYzVPFWGnoo3/yUbJtb3
-	LuRxmGp+18r0IfBww1USco8VBSIUW7dwWhxGzm4B429QR4fWd0Te043i7rOk6kQhhWQOJu
-	grikKuyJMibrYzdJmBhl0neExu4fzXo=
+	bh=rtRt2J+NteIme3evuIB2m7Zz3ToxciDgZMFuOP2gieE=;
+	b=XM6lCc608E/+xtEf+Q62fJe4zx9NTmjPX/K2030MbCt0IwFindGBfbQf4uj3n13AH5FYNq
+	yUxYHdVgSoOnviVivmenmvb0vsm+PMFzbevNWSrxdbk8a/qfCUZ8TURLsAFAYPcpUzyXKm
+	AWUGts3KzIxhPj7UGY+sxpENPZuyTeY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FdM2WSOE;
-	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770037515; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="D+aw/TuK";
+	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770037648; a=rsa-sha256;
 	cv=none;
-	b=8NMNWJYfv2Y7dkO/fJWUmmK/9iR1/6+3nKpzpkJzQFqUHItlfQTDnz0z9PvWC3KjBkEqeI
-	BCU5aFqdpqZ31BzHK7j460lspuKPIvUrRREDrCLTPyY13w8zmaHiFc9d4PQB3k2nES2Y14
-	UGbzNcwYogoV+LOZuc1bFlVeZLgfU+8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63AC5600C3;
-	Mon,  2 Feb 2026 13:05:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5443BC116C6;
-	Mon,  2 Feb 2026 13:05:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770037514;
-	bh=EA8qmHxvlMjKBeqgsh6FoAR2kX5IcYCMu3Q/fDbz/zg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=FdM2WSOEpeVQ0G9EyU21z1S0Lc0i5nKom3jrdf4XT0vgxVkmSvVv01d7Bbqzor4Fr
-	 CKetcy6KuujlK1hofUqZhdONhdECK3R68Fs7v//6QJguXupZST0CUs8zTOP9DioDPT
-	 IUnmq8kMggsi9hM/2sWsGOulgfdLPcK393LWYJkIgu+PxzntGjJR8JkaKZmODhjqMr
-	 4Ea8+agyrb3fZaidYMXZ95Vvnc/vkji4291P5tmXEeFMR/upeh++8DYO0R1c5Phm5z
-	 UTz1+AHlfwlF8f9Wzh344oXZckqGRPiIKrhA4666Jd7Zkj638nJsu/G51PO4f0Yq98
-	 RRwcBhArrCJpQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Gary Guo <gary@garyguo.net>, Oliver Mangold
- <oliver.mangold@pm.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor
- Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>, Danilo
- Krummrich <dakr@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
- <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
- Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
- Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan
- Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam
- R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar <vireshk@kernel.org>,
- Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kwilczynski@kernel.org>, Paul
- Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, Asahi
- Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v13 1/4] rust: types: Add Ownable/Owned types
-In-Reply-To: <DG4H66NZ5ME0.3M9CQY1ER4Q0X@garyguo.net>
-References: <20251117-unique-ref-v13-0-b5b243df1250@pm.me>
- <20251117-unique-ref-v13-1-b5b243df1250@pm.me>
- <20251201155135.2b9c4084.gary@garyguo.net>
- <87343jqydo.fsf@t14s.mail-host-address-is-not-set>
- <rHWhMe7C5fnwgGCnKS4N7G90SrX0Ao8332cwKPH2o-Em_lCBG3lm_erDn9dtg55SpjMFQQoJ_hhDU3bKOdYfAQ==@protonmail.internalid>
- <DG4H66NZ5ME0.3M9CQY1ER4Q0X@garyguo.net>
-Date: Mon, 02 Feb 2026 14:04:56 +0100
-Message-ID: <87o6m7pa87.fsf@t14s.mail-host-address-is-not-set>
+	b=ztPi8v5Qurl2IIamdabW4obAxmcKCmGH1k26y6NJNNu5kZsALzMHDH3Y3jh/Vswbeiogwl
+	iZeJ7yOOUNzpaANW0kOSa6pOABzl5iYOfXbDe4WF1KhTO4V7qp8cWpSpYqKrsEqG+ODcE7
+	vS/oAPDbGQzmQSt8O8ceO48L2NNNM+g=
+Message-ID: <4700e7ba-8456-4a93-9e28-7e5a3ca2a1be@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770037646;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rtRt2J+NteIme3evuIB2m7Zz3ToxciDgZMFuOP2gieE=;
+	b=D+aw/TuK5ROJABoMvBj2zE/534Oz1vKJLXvEAqHUd4MV1pSHSiClseUddZQv0N7Sxaau3Q
+	dQpodJOsye1tbDd5fadW9kkIegNhZA6SVB/dPRmMyzPBNi+yMtnIdGQPmP78O1gnJpVdUY
+	tn9W9eJ65ExTWgYCt0d9CDAUtzFC4bs=
+Date: Mon, 2 Feb 2026 21:07:10 +0800
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7BBBCC0014
-X-Stat-Signature: sb3w9nhbnexiaef4kxj748g3aiz4m997
+Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Lance Yang <lance.yang@linux.dev>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ aneesh.kumar@kernel.org, arnd@arndb.de, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, boris.ostrovsky@oracle.com, bp@alien8.de,
+ dave.hansen@intel.com, dave.hansen@linux.intel.com, david@kernel.org,
+ dev.jain@arm.com, hpa@zytor.com, hughd@google.com, ioworker0@gmail.com,
+ jannh@google.com, jgross@suse.com, kvm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mingo@redhat.com,
+ npache@redhat.com, npiggin@gmail.com, pbonzini@redhat.com, riel@surriel.com,
+ ryan.roberts@arm.com, seanjc@google.com, shy828301@gmail.com,
+ tglx@linutronix.de, virtualization@lists.linux.dev, will@kernel.org,
+ x86@kernel.org, ypodemsk@redhat.com, ziy@nvidia.com
+References: <20260202095414.GE2995752@noisy.programming.kicks-ass.net>
+ <20260202110329.74397-1-lance.yang@linux.dev>
+ <20260202125030.GB1395266@noisy.programming.kicks-ass.net>
+ <c6fda7c2-ad54-416a-a869-1499c97c7bd7@linux.dev>
+In-Reply-To: <c6fda7c2-ad54-416a-a869-1499c97c7bd7@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 42F3212000B
+X-Stat-Signature: ro1wuwxztfatrkafm67741s9qt9656ja
 X-Rspam-User: 
-X-HE-Tag: 1770037515-242004
-X-HE-Meta: U2FsdGVkX1+q6DDyBAsDyrGNNN4lYx0wo2tMVk7jrN0nBvCJD3rtvQbBWO3t6s4oaY1VZymuRwus4fQ67QuwjQuVL5A5I7ZxlMbhg1atfk1c1imj8e2+ZrHIAxPxafD9PnPEsu9iCXoJCz4zZiZ+dt7eOwDKObY1jB3tdSQQGVeq/+c4phiT/vCS5apQHhcw908Y6wBdc5kj1Spg29ZGff75roErqhnSbJ46RVgJUt8o/q250Pn1JoRyqChlCSMywYFjwXclRqWRI164rQC2IgpGB+mnh2Pihkx8N4SoM9ecUl4xxKTAdwZ3YV2AeFNC/LEA8Xr4gbhAh1pFbMyFwZNnw6agN+NukvMYXhSt0P4TwLEjp3YH1TKWOGyOdeRn5SHCj2D6kNZAB9JH1liM6tAvzgOIvn0GcWJCcV31s0ZWiUGVMVsSnsz/6Lir7HVie+daSIPtLjJ6MjDubRXQj6c21sZpIpIHXgxcAqgK/Qd/l3ip8kNpCWHGJsC7aCvkwMIqngmX8ZrbigEx4hVFhzu5SsL3JUtgQLT9c2W9U2CVXrzaZ2vrNpJHGbGT53GoOxOX+F9F1EmiAePlMmlgmJ8Jh+4xQNqx0deoGlWqAdb1CuLjoZR9CCUSiIqIDtYle+/UjCbJdtlxf76kU7aNANrLFdXCEo5CnnxlS8sU3pn9cd60QqoAQjE2B2+E0qA1LppaqcXOXDnpXprCToZOw0DTEXU2w6dsZVe3YxM1a0utsL0MGDgx1T0NW3FWYdLvRsyZi4XvXUB+K3cqClFLycWraNxsd3nUOhrtwMZFXT4MLHEMrZrHO31gpeZnWWP222h51OiYFG5s1Az+bLGyhn8xzHIFY7nGql3Nt4nmhfoNy3DJAghGS8RSao3neLUcATpRnGJMnwdRFcXlsc2JqWIeOP35pNwFR1QalrIgEW4RpVW1bGj7h6S8mPxMxb9gMmBuC9KC/2PliLkiZ3d
- 0wbNYjRr
- Wp3l6qR3LP4FWdlozRvb3JrpJhK7hWcMqiTJOzdrKBIDyWavoOA9lf2uDp6XV8T5UY3LUng18hMKbLkftfJif4EctoxrS2CoPzeDo+ckW1LLPTK/S91n2L2AsDHuty4Y18hSyXySdJbH69FcEn8TeF9Wm6Ss6dpCP4zlSh+JHAWGbN4m3ERZeiWl5TBC9vOyvOVYGktyLwXf9YfHFPn4D/MYWflM2teYtAA0LjA2dL/z58S5pdcq5JdcnVf+0WoRGOsKgp/swum2fjfQ05iwa4oJSkQu6x1nnCRPsWwDfAG+NmrxD4iCX/IBc76BlR5rwmuBk4QI3zNSj8iJ6Z3UOOk3G/bkYpThvuuKMrMG2FaV/z2Y=
+X-HE-Tag: 1770037647-373689
+X-HE-Meta: U2FsdGVkX1+LIMT9qx2qy80qi+U+sBQJ2GC9iZsIrPO6/Y2R8Q9kpaF3MfzaBOFv4yWiLamaytl+JKV/ExMO6jxGcQvxYJxIFK0ehIlfshFby8MJx3Kx3L5ev3cSGIDI/mvJb/jV1A2YfudD02W9qTc4LzWFGQdWZB0fQj7UIYFViKrVkJLVn2u7uKdw827+0q2RFkID4uBmHp92oCRCPTZZ65N+DJ6zs3g19LN9o/9f9gmj0fZYQaiZF2M7r2S+4DwyKtAWFybeBt0weS3MFrnT43bOgBhkj7fWHR1Sdi9LcAv4xjZmb23dP//1H7KRdKQePceVp0U79Feh4lImdMe7zT8kig/rlYHuAlI9jnmOLUNPm1hKbBEK6o5I2wT+hd7HeYAO1njjtfI137ts9uHDB92sxaWsbfCXutMtlYIntxRlYDoguBQQ5luoqz0jFL1xw5tDz6fxAQ05A4KXH4ozZoByxsrDJ0JVakKDxsZVU2QIfjhj6E7PAUvLi8kyWSZrzFnKdttZULaeRKjJfD6LT+FZQrLEg5bA3y4bpV+7y95FadozaT3S/hJWGrWHVzsqN9bm1SvGXS8QjqhcYSyKTyAhor1vnDRE0Z8Y4ItU7vu03IPij/z5EnD2HxoKt99Fc5xD32wGURwjIdOtlxXnDfFDJfCMY0ryyMtTnGL8yhpQCoOpfKHHngbDSqQkuzbfHSh5G07blk2mw8RQ/JHhnOgjHp29inbvABLqZt1wprYLZbei6tuyecRWhhwXVhqm2IR2cejheyihnOISp7Q+GRYOkLHgDHzxvPrHm6JYTvWDpWXHhmaq665X3WWwf+vq2h1UCTPU2DTBw6v4XGKiBOD9EUoyTmsxoTlBQMMf38cvzy9YoqcnSCN3A0MUaOYhVWMyEX60AjYNQsREbobhYfhIx5sRNaZ+bm4qGmLIHXdVf6n3QzqIrafx2xtJ/ily7vluUuwmppQFnH3
+ Z//YWO1w
+ Vu/sBFd88GJaNggxKq1+zblKPpKxgUqmyaPr9waS2TUcTaOZVSeZXmJ5Ei5aSpOV9lAY2d6uKHTxE65FCoRqsekgOct8n+oE25Ol7QYZbUFQlN631OOWbPfHJeLi7Znf8kMNJyEN3V4FqHjMZBDaP6DL7RCCeJrCmhOX25rvAxgFDKn3IeN2O49GIm4vw7zQwAIo7WWUX90UlUTDWU3ZizJcmAlx7jeohHzzODSYnkI+dsrs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,158 +103,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Gary Guo" <gary@garyguo.net> writes:
 
-> On Mon Feb 2, 2026 at 9:37 AM GMT, Andreas Hindborg wrote:
->> Gary Guo <gary@garyguo.net> writes:
->>
->>> On Mon, 17 Nov 2025 10:07:40 +0000
->>> Oliver Mangold <oliver.mangold@pm.me> wrote:
+
+On 2026/2/2 20:58, Lance Yang wrote:
+> 
+> 
+> On 2026/2/2 20:50, Peter Zijlstra wrote:
+>> On Mon, Feb 02, 2026 at 07:00:16PM +0800, Lance Yang wrote:
 >>>
->>>> From: Asahi Lina <lina+kernel@asahilina.net>
-
-<cut>
-
->>>> +impl<T: Ownable> Owned<T> {
->>>> +    /// Creates a new instance of [`Owned`].
->>>> +    ///
->>>> +    /// It takes over ownership of the underlying object.
->>>> +    ///
->>>> +    /// # Safety
->>>> +    ///
->>>> +    /// Callers must ensure that:
->>>> +    /// - `ptr` points to a valid instance of `T`.
->>>> +    /// - Ownership of the underlying `T` can be transferred to the `Self<T>` (i.e. operations
->>>> +    ///   which require ownership will be safe).
->>>> +    /// - No other Rust references to the underlying object exist. This implies that the underlying
->>>> +    ///   object is not accessed through `ptr` anymore after the function call (at least until the
->>>> +    ///   the `Self<T>` is dropped.
+>>> On Mon, 2 Feb 2026 10:54:14 +0100, Peter Zijlstra wrote:
+>>>> On Mon, Feb 02, 2026 at 03:45:54PM +0800, Lance Yang wrote:
+>>>>> When freeing or unsharing page tables we send an IPI to synchronize 
+>>>>> with
+>>>>> concurrent lockless page table walkers (e.g. GUP-fast). Today we 
+>>>>> broadcast
+>>>>> that IPI to all CPUs, which is costly on large machines and hurts RT
+>>>>> workloads[1].
+>>>>>
+>>>>> This series makes those IPIs targeted. We track which CPUs are 
+>>>>> currently
+>>>>> doing a lockless page table walk for a given mm (per-CPU
+>>>>> active_lockless_pt_walk_mm). When we need to sync, we only IPI 
+>>>>> those CPUs.
+>>>>> GUP-fast and perf_get_page_size() set/clear the tracker around 
+>>>>> their walk;
+>>>>> tlb_remove_table_sync_mm() uses it and replaces the previous 
+>>>>> broadcast in
+>>>>> the free/unshare paths.
+>>>>
+>>>> I'm confused. This only happens when !PT_RECLAIM, because if PT_RECLAIM
+>>>> __tlb_remove_table_one() actually uses RCU.
+>>>>
+>>>> So why are you making things more expensive for no reason?
 >>>
->>> Is this correct? If `Self<T>` is dropped then `T::release` is called so
->>> the pointer should also not be accessed further?
->>
->> I can't follow you point here. Are you saying that the requirement is
->> wrong because `T::release` will access the object by reference? If so,
->> that is part of `Owned<_>::drop`, which is explicitly mentioned in the
->> comment (until .. dropped).
->
-> I meant that the `Self<T>` is dropped, the object is destroyed so it should also
-> not be accessed further. Perhaps just remove the "(at least ...)" part from
-> comment.
-
-Right, got it. The "until.." is in place to allow reuse of the
-allocation. There is no requirement here to drop `T` via the `release`
-method when an `Owned<T>` is dropped. Implementers are free to implement
-schemes that reuse the object without drop and re-init. This can be used
-in object caches such as for the block request cache.
-
->
->>
+>>> You're right that when CONFIG_PT_RECLAIM is set, 
+>>> __tlb_remove_table_one()
+>>> uses call_rcu() and we never call any sync there — this series doesn't
+>>> touch that path.
 >>>
->>>> +    /// - The C code follows the usual shared reference requirements. That is, the kernel will never
->>>> +    ///   mutate or free the underlying object (excluding interior mutability that follows the usual
->>>> +    ///   rules) while Rust owns it.
->>>
->>> The concept "interior mutability" doesn't really exist on the C side.
->>> Also, use of interior mutability (by UnsafeCell) would be incorrect if
->>> the type is implemented in the rust side (as this requires a
->>> UnsafePinned).
->>>
->>> Interior mutability means things can be mutated behind a shared
->>> reference -- however in this case, we have a mutable reference (either
->>> `Pin<&mut Self>` or `&mut Self`)!
->>>
->>> Perhaps together with the next line, they could be just phrased like
->>> this?
->>>
->>> - The underlying object must not be accessed (read or mutated) through
->>>   any pointer other than the created `Owned<T>`.
->>>   Opt-out is still possbile similar to a mutable reference (e.g. by
->>>   using p`Opaque`]).
->>>
->>> I think we should just tell the user "this is just a unique reference
->>> similar to &mut". They should be able to deduce that all the `!Unpin`
->>> that opts out from uniqueness of mutable reference applies here too.
+>>> In the !PT_RECLAIM table-free path (same __tlb_remove_table_one() branch
+>>> that calls tlb_remove_table_sync_mm(tlb->mm) before __tlb_remove_table),
+>>> we're not adding any new sync; we're replacing the existing broadcast 
+>>> IPI
+>>> (tlb_remove_table_sync_one()) with targeted IPIs 
+>>> (tlb_remove_table_sync_mm()).
 >>
->> I agree. I would suggest updating the struct documentation:
->>
->>     @@ -108,7 +108,7 @@ pub unsafe trait Ownable {
->>         unsafe fn release(this: NonNull<Self>);
->>     }
->>
->>     -/// An owned reference to an owned `T`.
->>     +/// An mutable reference to an owned `T`.
->>     ///
->>     /// The [`Ownable`] is automatically freed or released when an instance of [`Owned`] is
->>     /// dropped.
->>
->> And then the safety requirement as
->>
->>  An `Owned<T>` is a mutable reference to the underlying object. As such,
->>  the object must not be accessed (read or mutated) through any pointer
->>  other than the created `Owned<T>`. Opt-out is still possbile similar to
->>  a mutable reference (e.g. by using [`Opaque`]).
->
-> Sounds good to me.
+>> Right, but if we can use full RCU for PT_RECLAIM, why can't we do so
+>> unconditionally and not add overhead?
+> 
+> The sync (IPI) is mainly needed for unshare (e.g. hugetlb) and collapse
+> (khugepaged) paths, regardless of whether table free uses RCU, IIUC.
 
-OK.
-
->
->>
->>
->>>> +    /// - In case `T` implements [`Unpin`] the previous requirement is extended from shared to
->>>> +    ///   mutable reference requirements. That is, the kernel will not mutate or free the underlying
->>>> +    ///   object and is okay with it being modified by Rust code.
->>>
->>> - If `T` implements [`Unpin`], the structure must not be mutated for
->>>   the entire lifetime of `Owned<T>`.
->>
->> Would it be OK to just write "If `T: Unpin`, the ..."?
->>
->> Again, opt out is possible, right?
->>
->
-> When the "mutable reference" framing above I think you can just drop this part.
-
-Agreed.
-
->
->>>
->>>> +    pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
->>>
->>> This needs a (rather trivial) INVARIANT comment.
->>
->> OK.
->>
->>>
->>>> +        Self {
->>>> +            ptr,
->>>> +        }
->>>> +    }
->>>> +
->>>> +    /// Consumes the [`Owned`], returning a raw pointer.
->>>> +    ///
->>>> +    /// This function does not actually relinquish ownership of the object. After calling this
->>>
->>> Perhaps "relinquish" isn't the best word here? In my mental model
->>> this function is pretty much relinquishing ownership as `Owned<T>` no
->>> longer exists. It just doesn't release the object.
->>
->> How about this:
->>
->>
->>     /// Consumes the [`Owned`], returning a raw pointer.
->>     ///
->>     /// This function does not drop the underlying `T`. When this function returns, ownership of the
->>     /// underlying `T` is with the caller.
->
-> SGTM.
-
-OK.
-
-
-Best regards,
-Andreas Hindborg
-
-
+In addition: We need the sync when we modify page tables (e.g. unshare,
+collapse), not only when we free them. RCU can defer freeing but does
+not prevent lockless walkers from seeing concurrent in-place
+modifications, so we need the IPI to synchronize with those walkers
+first.
 
