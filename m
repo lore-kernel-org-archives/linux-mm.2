@@ -4,125 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADB46D172BC
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 03:26:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9B97D172B9
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 03:28:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF46A6B0088; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
+	id 4A2F46B0088; Sun,  1 Feb 2026 22:28:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E77FF6B0089; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
+	id 48E186B0089; Sun,  1 Feb 2026 22:28:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D59886B008A; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
+	id 3906D6B008A; Sun,  1 Feb 2026 22:28:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C35066B0088
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 22:26:15 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B4EEBC524
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:26:15 +0000 (UTC)
-X-FDA: 84398078310.06.5F4B1A0
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 7F6E9C0007
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:26:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AgREkh37;
-	spf=pass (imf22.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770002773;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B3CD6B0088
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 22:28:04 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A3DD4BC524
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:28:03 +0000 (UTC)
+X-FDA: 84398082846.12.A733D09
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A79D1100008
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:28:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mw3bNWaZ;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770002881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8y1tSjszHwNi7K6C6xGA7ozYqT29UdTx9KR8G4VZTuc=;
-	b=Jtkdg00nEgf0i5jkuA9o7EwuOXsBdgcUoyLRKlp5I6Cc4aYXxPAtI4b3pJAHiFrEtKc16N
-	FEZ6QcoKVuCpbhxgyiRYUaHRwGEMH6XztNZgZFQqegWMKOu+Yb5j8UvXqFh6DKG6jMWnUT
-	htjaxtUt3+y26an1TLwSdXYjm0xrMco=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AgREkh37;
-	spf=pass (imf22.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770002773; a=rsa-sha256;
-	cv=none;
-	b=M2JPCdYu2m3y6EYGdW/cb32zVPyzwbn+/Az85mMe2o2HvIiM+KmZBlAdAVdH3HTTmhA9l3
-	xk4Md8ucCEAXIC5MLgzw9Wc5HjqpKaP8LLsJSr//ZW7KD7BO9aOfHC7a5CMQXPGdjW9jRk
-	Gq1eNa0B+F+NjCjxH/oeFB36oY413ZQ=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b8838339fc6so734026766b.0
-        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 19:26:13 -0800 (PST)
+	bh=9Xif1Y3fqgLS+V98gEIZsrXiCSs9ChcJ9ZmM8s1HPd4=;
+	b=ufuwRMe3jgwIDi4xR2CdLPP6Gkw7UkOJEo1gmBk+MIQrU2dFeHS7cP/KdgSwxyt+5v8FB1
+	QqRcRQVtOhOCkS9Uxw9z6aqecLOiMYUoermGsbg+xEReKIedv4THq3v2d9aZuvH3daQ6Td
+	Rgw54mnHdCkraQeA5oVQIJyl0oYnFIg=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mw3bNWaZ;
+	spf=pass (imf14.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770002881; a=rsa-sha256;
+	cv=pass;
+	b=FTV1ROjYSoQdxFXMzsOjiTP5G8x67rI2AzT+hL+h+lIAS88XP0gKXrieSjMZlnB2jyGZe/
+	ebygJSctESDnBV5P4aJ8R1L+Lqm30LQ64cpLnloytKJoAKcCnEisxe4vR89QO1UtXclW/f
+	o1z49PO8HUGlULOxG9oFAdxYz6ra3oI=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-64d1ef53cf3so4908209a12.0
+        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 19:28:01 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770002880; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BGVvRSQXFIo6UIRni69WMDOne7+QR7IOcUfWIHcLjVCsIopB5eHOgdnMjIjQoAFDmV
+         woasydqct5feT5IM2ODlF5PWMXGNQHmQQtYnNKSTX4R4FdTUBhgLa4D7Wx88ByutlfZC
+         d4vGuW/ltJAXLARQSX+UNn1DXBtV+wrSQHJU1w0jjvwcfhIgG6/OGBhmULIJy7nG/QNd
+         HMpYvWQEVA+VHT6jMXzfB/0In1wg33JeBYbyCv9Yq3IwqHpS16wl5SRlTJDul97GRhqo
+         E6u/CSR9WW7rVh5aFsvAMd8xH9U/W8LIs51mOu1DDaDsPfBZzVeVtoxOpvx7xoCyCcDZ
+         Q8zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9Xif1Y3fqgLS+V98gEIZsrXiCSs9ChcJ9ZmM8s1HPd4=;
+        fh=/M6izUITbQHV51XpAlhPrY4uuarulwks39xuCYuWN1E=;
+        b=NGmR6mf+6yeSsmOtOcY2XjqNp4yYV0QLgMgepk1F3WWt3Z0RLeY3yLx8CCXZ5aYDLu
+         iRXO1PSl7rJPE3j+3LRpeZwnghlYpRLXzeoh3FyEltzb1Ta9kkLXQMj3lwUkluk+0XPj
+         jHVxWZsR03UU019HTNZ2KLvc6fQFkNFwlV51mbW7gemN6Z51G9jArS3WnRfMOTcMDzVe
+         diykLU3WVIMJetoY7ztaGHKkUokmRWmDHarOQpwtHeNvWRfXniC4BSFqBDBGyFd64T4y
+         mehvv7O6JfT2J17rl4vJqw/1ewuuwGRvw74b5+Lsk2BbK0uZAqp/upUJhlQbd/K1NkBF
+         YTMA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770002772; x=1770607572; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8y1tSjszHwNi7K6C6xGA7ozYqT29UdTx9KR8G4VZTuc=;
-        b=AgREkh37bkXhcz8uqosAHZumyDuBJh9nMtGSOvBHsDUhkHjTlZMKUJOco/LpcDyCtC
-         7VZeW4KDc469eMKDCG0yAv5vB5EGskb2tX68I03EOAnyfUAvZAA0xx9xZZMbDCnAnOjA
-         NLP7XFe1vh31T9JXEIr8Cq5TX7PYn5+63VrTFvSK2wI2bTN2hFZUzc+fdpvsmHnim8ac
-         kfg7BvB+hoMU3NgDCY8EG8n5Z4OfakEVxOLo8hiDcz4K4+wKjAGZyAAE1mQ80bAyLeK3
-         S5SWf2FEoHCYWu5djHHncjLSZVuUrrecvCCA/XiClogtqZdOZXnUFV/v5IRKEg0AVIbp
-         RrRw==
+        d=gmail.com; s=20230601; t=1770002880; x=1770607680; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9Xif1Y3fqgLS+V98gEIZsrXiCSs9ChcJ9ZmM8s1HPd4=;
+        b=Mw3bNWaZVctV60X42eS0y+Pv3v34w2pE5/aripEo6kk+BAifbiBuyRiDs/UEmNVPeA
+         6XWtFiRYoKlK5qvyPSgxdbHuXV+TSxMHgyAq5LZ19+Xsi/xWtP9g/AC1GVO9iBkjuzz+
+         z9LyW/f5J4iX0wkfJ+S8tjuvK+OIyGeQOdYhXo3dRSvKqPNA3j2oF4CDhjvEwdchG7kE
+         QFA3aAdV4cooyejFmltwvMkmdvy1uWkeSj9WSV4rQ6X8wI9avsOBtUGct4whbm+gezFc
+         e9sKrtL/drkYCMiPkEeL0SkAfd3vPr4cptTIyWbXkF5VSOgbh43n0ioxLMqQlCkUjHBc
+         Np4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770002772; x=1770607572;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8y1tSjszHwNi7K6C6xGA7ozYqT29UdTx9KR8G4VZTuc=;
-        b=YKYYUx9LcQuPxDjJOX8vjn8+xWvfO4KfzfjRPJa7r8fHHeazaAIls4v25fRUBvWdFm
-         8oKdnx5/0R8jBjB9q2OphJXTRtelvnQSnucvWw6MrZAW28Je/JjPqAQU0Hq8CovHdEn5
-         R+bviP5xBD+bp4wKTWrY2k7TGqn2ziuQLcxmxvlQL+9JAsE1y8Eey8LNoDjJ7PN7MI6X
-         rXV/zqedM0XNy78Zx9C31C3WDHFnyYjxpBCtAB6wTXoUrNu1EM6U7eSEldWYA3w6h2+U
-         Pmjuka/R65oOB4KThkWghSqStdwBmgHyOAaFyNp4NqMMpf5dZCzmzZU87deQ5EnrpR7Q
-         MVAg==
-X-Forwarded-Encrypted: i=1; AJvYcCUytBxFRLA4tYmJRxwHTtO709x2KNRi92HfM+MtQUUcFpVnPr1JeXXQ0QqoitY6FFfxQWDH7tGqMQ==@kvack.org
-X-Gm-Message-State: AOJu0Yyi93F7TyH2U9sA1PmPQbPm8QB7lKgRuO7RdV1jU1QKsgAhVIg0
-	vZYRV9m7/aI5uzYQ9XhksUHWydzHkrY8WllFyu0N9dmr0815OC10aUpq3BDWgc+G4Q==
-X-Gm-Gg: AZuq6aIjKTyQTnixWG6hi91iawEDUkUBg6jGpShJduQr+XP1daKLHhpVZ2fOkwYg0Di
-	FBZe2JiEAb+uqCLoZ9UTk5vxeejIVODXVGNMa14bRrfPkOVVMqCl7S8SY0mkaS3y+WyBGhmnVYK
-	Prp4+qql4ubTNCCFEiUpsbzKspl9oHrmuZHjE4F0e8HVz3lYc1ETsYlyqcLESsNGZsIZBpIGGVb
-	xAtan1Gt6NsOy5Ilr3JXZwoZyuUwR8DGCxCXvI21/vtb+WL4lajJEyli6N+Ish1noGl1ZHd/b86
-	HrQuDj/4UCrPSyMt9IfkBRKw4BpcDwZUdDNn13YsXjylUWF3oyEk5D5Sxv3DDo6y1nwqyNHz6aS
-	ciq5WFGeiOdAkc3mOvu9gcyEaguYYFI8CQlsR+ZoqcizYx3Imho+cBiSSI76Ackd8LRYXpYEkHi
-	ZieUMytvReVVVGferreBBAOfUWRMj+2Btb3/5timgfF3ILduVnmnw=
-X-Received: by 2002:a17:906:f049:b0:b87:6839:6175 with SMTP id a640c23a62f3a-b8ddf84586fmr869883966b.10.1770002771786;
-        Sun, 01 Feb 2026 19:26:11 -0800 (PST)
-Received: from google.com (93.50.90.34.bc.googleusercontent.com. [34.90.50.93])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-658b46abb3esm7161539a12.32.2026.02.01.19.26.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 19:26:10 -0800 (PST)
-Date: Mon, 2 Feb 2026 03:26:07 +0000
-From: Matt Bobrowski <mattbobrowski@google.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Michal Hocko <mhocko@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>, joshdon@google.com
-Subject: Re: [PATCH bpf-next v3 00/17] mm: BPF OOM
-Message-ID: <aYAZT-ZZSKdiChfd@google.com>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <aXh_LpTzDhvv20uB@tiehlicka>
- <7ia44io6kbwj.fsf@castle.c.googlers.com>
- <aXnDdkYmtipGwSjK@tiehlicka>
- <CAADnVQ+ghTc5FtJCjm4ya3y3xVpSuJe-7ctdT-thowqWguc1pA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1770002880; x=1770607680;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9Xif1Y3fqgLS+V98gEIZsrXiCSs9ChcJ9ZmM8s1HPd4=;
+        b=tZfrKhp6KuLLbdAYWNgvozDskK20AIq07q3+DVNn6tGUFLIWcr01cX6E5Qc6X5sU/I
+         b0ifxPNqbR0KvMCAPSu0c6OhS9gq558yJ/TJi51i4CzkN/PG/Nfs0jdiLzd/h2Hx68VF
+         GZDNA/sLcYl8/BEhTaSOad526zbs+MP25HWsyELq0MY95XWe3tZzsa/kr7USkaTbw/y3
+         ohtUbLxEA3UBqZPNePFFinZqDLbFLajmNk8mzqS7pH7XfrtDVjlgTaPhOQFQgf3YlssG
+         IGq1p6MIVnoh6LhjAa/2uUO4OKyOpNyT2/7DqcDGe2ZYh3KzxR/axGU60QNSSBsbsevK
+         qTlA==
+X-Gm-Message-State: AOJu0YwQdikB0TM9zXOlvFrrM5TAP82Wta/ri2BVuieprjfe/pclvXSm
+	ZYAj/yfXM19gZ3F81h2AOEED47KTrg0F3lVoGoFXSlqe11E8aEy7luJdZoV1DVeWFXXxI+y6rVW
+	E7T4eLg4y/JxWdRyYXVR0CoCs1D0HwyQ=
+X-Gm-Gg: AZuq6aIV9RjHImrUQOPgnJVVf+LydJJALsDT1/wAIJLg2XcZ/KR+TLZhxAKD9nwxEMI
+	OBqbD6oBxYh1n5XaEpMca+SNMIINBCvOL2gWq9RaaMGeUrNv/MIrPf64ObzS+Iyxwebs5qfr64Y
+	ldXJvs6EFqHoEt67do4KOvif+/1/yyuK3CYGyyqElkThTk58YsAjUiZ9RklxnQv/lKc84yXiEX8
+	kmzFi5fBKTI3m+IT8BwaPfJa1k9EeyvxfPdQbSpGd1zVdtXyVUk83dVBkB1ioppQ1btNmrIo5Vs
+	u/Q6qcMTIrCmvfCkHozY6v0Mv81p
+X-Received: by 2002:a05:6402:27cd:b0:658:2e84:1b48 with SMTP id
+ 4fb4d7f45d1cf-658de5a9083mr5402330a12.24.1770002880022; Sun, 01 Feb 2026
+ 19:28:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAADnVQ+ghTc5FtJCjm4ya3y3xVpSuJe-7ctdT-thowqWguc1pA@mail.gmail.com>
-X-Stat-Signature: r7zmiyxbyi9cpjgnbfgq4s3khfbhje99
-X-Rspamd-Queue-Id: 7F6E9C0007
+References: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
+ <20260128-swap-table-p3-v2-9-fe0b67ef0215@tencent.com> <aXsaNsUFCiHYrECk@yjaykim-PowerEdge-T330>
+In-Reply-To: <aXsaNsUFCiHYrECk@yjaykim-PowerEdge-T330>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Mon, 2 Feb 2026 11:27:23 +0800
+X-Gm-Features: AZwV_QjihFrmvSHuJVYd8nzxllaeJzYJZVz2nfD4iMpNamhxeay10_o-S_ay6UI
+Message-ID: <CAMgjq7BYp8XwzzRiFDs39QDs3ZnK5p=ZZ+4i5Pne846OSfbqRw@mail.gmail.com>
+Subject: Re: [PATCH v2 09/12] mm, swap: use the swap table to track the swap count
+To: YoungJun Park <youngjun.park@lge.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770002773-214630
-X-HE-Meta: U2FsdGVkX1/CKIeIg4Fdfs2ivwmqD+AL446TKfbFuQbLjLsHHn/3Dv8OWsBjUxLO28YzlYz/TvzIAz9a8UPns2zYVtxtSGp2Sb41OGWPJJPuxlp6Exq+asAZxMnCCput4fgeDHt8z7bsPccnlk6jRAnRFgfegvU4QWHkZVuvbH4g+W6grjH6TznW66X7eGNS6xEF1kialeFBAWipv8VuFJsp1XFTyTnrdFvrTSUBkyOZUeKCxQ1w42hVbtfv243g2vevpFrUKYYzDgaIm931o5YUv3BPNhDElOlh4f7uDBGSEQfD/nAwxTk0RxOCxVsBln5d69S00r+bFy/ike9CdtD4vSpYdjD1UPuq5eHb6ZMwRDg96FOjXV6Jf2wbR7tO2XYYrfW3fCqpJvazbKR7TQubBNkAfeZJD2NBsweJavKNNESMoVB6t8v1nzUFq6SAB7cSyt7Gd0FksHuXRe7jqjbyLH6TrYLdSFsAnQxlSXqqqC6xFRAGCdyaffIb1NejrCpRwxINTMlwGqRyZmDqusl8UJumrNheVlx5ZfdZTlNqE3R0D8yhgvQ3Lz4V0CXZKgGwGYNfTLvsWvqN+7E9l+YiYrcoDwAKaZqNuegdhurv8zbb1WZ8iBY/j0kS7vgQcVWzQdrPMkeeYux5xGOammtf5nurqJYAm/tT2zlOK52NQkt8a2W1VVMZmEjAxL++ifFtJpiQTPMJSb9bn4Ry0frG5+TxjMvJZEEVlFV15CnDws05NWXsmJ2ZBua9G4af+hZXptBPPAu8nLhSP30kkw6nGhpzx4mqFsvGf+t+SnzG9QYJp4KhYc+/qVdlZTf0XofB6lBXnnla0uwmvIR0hRwAclIJDK1hfh5v6zkyTLDzR2rG75xitmk61TD4gAqEqfPoC/JWK/3mfDoOYGiF/hmjZ5iirBGH4oNRJN5BOxJ3BPP28bxDajd7RoaLCktQzor1jangvtl9ipwA+uZ
- qwH6DIjn
- lJVX0b72JwVQY0Qf1wqNNueXIEaHJw1C/AZ06p74HKGTmC/Eo9wPGX4KgX9/KGvN8ORL+6Q0+fBCSxWOXjnDnlv2XBYS2QejDvUp3papwafEo7t/fjTmdK3X87rlbKfEeiwcv+2D/eYbbOn4+6QxT1GRRjN3U4jt27W3DKOG5gYdj5Us4dTVgPdijKXr7V0utMWfUK2mEZrYrFD+da7u7kpGuDsxZi+u9xXtDPJweu5toU7c9TPorrh13Zw80GOd4Vl9BZWjPjP0tKVXC+TfguMtSsC3Jt5oPZvb21hAv6vGs3zA2enATOtA1NKuLc2F2vcPBDJv5QZbGZcBls6obdNDRGL0iN8mJ41X8S0De+nCAD4pc2HNqGFDXCvFjC5jYzkhDxa0LZYN6qJHRKJrCN2J81nQ7qrAoC98Y/PsLto9p52ZeI1K8hAx28fAN/4CQ4BBoz0fBNksv6BbSZog7Nnbz2RwnlQbXdO4yZ3SU6K9XPGt18zpd3DOSaHNf504IATWyg/0Re0Zfcs7g/VuJU6a3qdIHg0BCrmiM2AX/FvGLGNcm2PmyfjaSMkcZ1nAjR91XfQP2C4cWCVFfTJtFjItlH+mGqyqENbyT
+X-Rspamd-Queue-Id: A79D1100008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: bsujq8dgqwoios6ofbw536amrtsnxyok
+X-HE-Tag: 1770002881-557904
+X-HE-Meta: U2FsdGVkX1/E/qQl1YF9Fw9QyaKDQwzIoJWjnWU9Q/Oj9Kz2gucjdlkoVlcPZKiomJiGCP04v9DwOvwUwBh84A0MPf7cqQJWwsvPoPr+oMZ8MkGOOwbqKaO1Bz3/5nGTMTreIJixRz+Q+I4AWKbYJGOoYoBAvkPDhO+iM/kt6vtGlgiqdjrvqXpKMbFbEYpBCYWMlNYyDdyRyxTRtbolVZwDaY2fQP3PltRcsvxZkVcYW+kWhfCuegnVqVEkHwv2DY4WugJZFJqP2JwkaaWLnv/BIxGetA8eFdIl4oJ38g98kTg3Heqk8DNdUTXzeOqWuyecnVVHzqYrOykZXRqXqxHYjfQUWJB+zIQ16Fai6udlJu2ezncf4Gi1+AqBz/Prht8/T1QmLfwmQdrh2At8iZNQQ2cubxPDkA8Jym4pGVaWzqOXu7KXfBDVIn5WVoqHfS2p0geUYzRN1aLd0gaTutzpYj5Xmo3fm8KaLerL3t+wDmEu5764SskQNSLaFSu001JotaPr2aTZSKNntMfMTd6KxzVAZdDwl9WRS3g+2QRrPpCXYlo7yKoqxZVGxPpIHmbggsC3ogx0w2jWXL4s6Q5VjRth6ZdzoGy/Cmmuf4Zdg86mYRGmnDyGtTFE+ed8gK0OjaO65GqyCeuZCXKSIbDcmK7xdzzpUoJAiHNyEycwO4BS5N5eExadRWX6M1QTi6RuaYYoFWq+rpgxRYf0jCitEBwb5RI7Os88gJEc7dOfarAbDnAUnO+jTLSDkIIyTELaLvs8H37LNASraX6RfUuD9wKTTL3S7azaradAYT+cG57YouXloEuE+4SycGiADxFFecHtt9DIk1suGNm7JEx83UfjC79h7szlb4klewltv1Wf+0cikYNvZ0O1MJZaX4HGnY70O9iEENlYDc5nowf3RuXPbbNs8qLAPMfGSxq7kemdcqlPfQNCTEtVVtEi6JsrhiYdaNjncwjIS89
+ R1I5MPhS
+ LBovTLN+mV5o5ZzMDhnY+LdUBsIo1OGoIyIJn4HzL8Vu/LpsaCfxYmZtukBUoSFRAccZFcw5lK/42L/szRCFqkE42lWJYwfRz0eqL3wXSIuoJbpwOKcqV942pBgQ3TwOFgad1ty3i4bv+a4JJkSQZJIBPQHmLGbVz6v9pIY0Q2Z5eP4I/dc7n60EkWpG+1/lilXN0DIFYCRULg07d7EfJ4y7IG4uM8Mw3ffLNvHynUMD7T8rBIGH0SfcYvkSoQ41R8YCRBvtuiBBylIJIrkJVjIp/5Ix3DZQoNLxgM71vJaP/PHtJyr3Qc1UWtEKfa0jml7G7xtGeDu0dQQLH7oRAPAZtUm2GgqMIrOLpLmdAc9GZBgaTqirAsE5wI3VvjGnPDAp03vmauZvLjymURsNWFftLUcb2bPt6o32snTCWVZffNzzqUpy6moTxaYoWqKtMHHGQtxlk7Yp3yvNHEtMjSfcIqMLrJdR9tWJdRNcaIHqHhzGsDf1nkSk92rhmOSxkV18CG9MPqXOh8VJnlnTyZ3NO5VF+cFHEm4gU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,47 +142,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 28, 2026 at 08:59:34AM -0800, Alexei Starovoitov wrote:
-> On Wed, Jan 28, 2026 at 12:06 AM Michal Hocko <mhocko@suse.com> wrote:
-> >
-> >
-> > > Another viable idea (also suggested by Andrew Morton) is to develop
-> > > a production ready memcg-aware OOM killer in BPF, put the source code
-> > > into the kernel tree and make it loadable by default (obviously under a
-> > > config option). Myself or one of my colleagues will try to explore it a
-> > > bit later: the tricky part is this by-default loading because there are
-> > > no existing precedents.
-> >
-> > It certainly makes sense to have trusted implementation of a commonly
-> > requested oom policy that we couldn't implement due to specific nature
-> > that doesn't really apply to many users. And have that in the tree. I am
-> > not thrilled about auto-loading because this could be easily done by a
-> > simple tooling.
-> 
-> Production ready bpf-oom program(s) must be part of this set.
-> We've seen enough attempts to add bpf st_ops in various parts of
-> the kernel without providing realistic bpf progs that will drive
-> those hooks. It's great to have flexibility and people need
-> to have a freedom to develop their own bpf-oom policy, but
-> the author of the patch set who's advocating for the new
-> bpf hooks must provide their real production progs and
-> share their real use case with the community.
-> It's not cool to hide it.
-> In that sense enabling auto-loading without requiring an end user
-> to install the toolchain and build bpf programs/rust/whatnot
-> is necessary too.
-> bpf-oom can be a self contained part of vmlinux binary.
-> We already have a mechanism to do that.
-> This way the end user doesn't need to be a bpf expert, doesn't need
-> to install clang, build the tools, etc.
-> They can just enable fancy new bpf-oom policy and see whether
-> it's helping their apps or not while knowing nothing about bpf.
+On Thu, Jan 29, 2026 at 4:28=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
+m> wrote:
+>
+> On Wed, Jan 28, 2026 at 05:28:33PM +0800, Kairui Song wrote:
+> > From: Kairui Song <kasong@tencent.com>
+>
+> > index bfafa637c458..751430e2d2a5 100644
+> > --- a/mm/swap.h
+> > +++ b/mm/swap.h
+> > @@ -37,6 +37,7 @@ struct swap_cluster_info {
+> >       u8 flags;
+> >       u8 order;
+> >       atomic_long_t __rcu *table;     /* Swap table entries, see mm/swa=
+p_table.h */
+> > +     unsigned long *extend_table;    /* For large swap count, protecte=
+d by ci->lock */
+>
+> I assume using 'int *' is to save memory on 64-bit architectures (8 bytes=
+ ->
+> 4 bytes per entry), which aligns with swp_tb_get_count() returning an int=
+.
 
-For the auto-loading capability you speak of here, I'm currently
-interpreting it as being some form of conceptually similar extension
-to the BPF preload functionality. Have I understood this correctly? If
-so, I feel as though something like this would be a completely
-independent stream of work, orthogonal to this BPF OOM feature, right?
-Or, is that you'd like this new auto-loading capability completed as a
-hard prerequisite before pulling in the BPF OOM feature?
+Right I used long as I'm not very sure if we will ever have a counter
+larger than int, but folio's refs are int already, so using int*
+should be enough here. Thanks for the suggestion!
+
+>
+> Regarding the extended reference table.
+> While I agree that a simple array is better for speed, readability and so=
+ on, the
+> 2KB overhead (assuming SWAPFILE_CLUSTER=3D256) might be significant in
+> constrained environments when only a few entries overflow SWP_TB_COUNT_MA=
+X.
+
+Indeed, but note before this change, we also have a 4K overhead if
+only one or few entries overflow CONT_MAX in a given range. That 4K
+covers a larger range though. And entries with very large counts seem
+very rare in practice.
+
+>
+> Have you considered using a resizable hash table(example. or something ot=
+hers)
+> instead? I am curious if this approach could be applicable
+> as a future optimization after the current code is merged.
+
+Yeah I do have several ideas about how to optimize it :)
+
+Currently using a single plain extended table simplifies things a lot,
+and I tested some common workloads with SWP_TB_COUNT_MAX =3D=3D 2, the
+memory consumption and performance overhead is looking good.
+
+A later idea is that we might be able to move the swap count into
+folio struct for cached folios, and remove anon shadow completely to
+only store the count for swapped out entry. That way we'll always have
+zero overhead even if the swap count is super large. That requires
+some tweaks for the LRU side.
+
+Or if that's not doable we can use other ideas like you suggested.
 
