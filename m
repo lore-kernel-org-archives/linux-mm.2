@@ -4,121 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74E53E6528B
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 02:31:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86297D172B8
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 02:32:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E0EA6B0005; Sun,  1 Feb 2026 21:31:33 -0500 (EST)
+	id BBF866B0089; Sun,  1 Feb 2026 21:32:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 28ECE6B0089; Sun,  1 Feb 2026 21:31:33 -0500 (EST)
+	id B69E16B008A; Sun,  1 Feb 2026 21:32:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 166A46B008A; Sun,  1 Feb 2026 21:31:33 -0500 (EST)
+	id A79436B008C; Sun,  1 Feb 2026 21:32:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0628A6B0005
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 21:31:33 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 916D9140A36
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 02:31:32 +0000 (UTC)
-X-FDA: 84397940424.30.E296BA4
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 58A74140002
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 02:31:29 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 9A1356B0089
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 21:32:10 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5649C160A39
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 02:32:10 +0000 (UTC)
+X-FDA: 84397942020.02.3DECEE2
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 56360140006
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 02:32:08 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AP0JSBHQ;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nKFcBUke;
 	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1769999490;
+	s=arc-20220608; t=1769999528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0R0s9vfE0bIBviBc0aSDI6a/pNvYjpmbLNEjNXyfVKo=;
-	b=DK0greixj42BiLiv3lnj03NJ5LK+N0oET9kQIj3f7bZZVrMhELQIPryulkD//YYHzOv5nh
-	ph0PwlofaMAsfL1IDsxEREdSegFqBu4C2F28TF+Jjm35NqZh5RVF3QNdhsxkUXaiutdZ6s
-	YmUcNfpxEGriwdSvYfMCdgDmuAJoTC8=
+	bh=Jbco1y0UrJcFafKpyZkOGmfOlXkZOI9UM8bDBWoaJ5o=;
+	b=yVRiUKqxc0TO2RGKOFpir6GVJnJ9+ZxC41EnBk6/xxtf1cq/g3vl8/gdITo0FSdzCo0kE6
+	FY7PpfCLGIBTrPN7xKBwXNRAelmKeUhcxn9Tz+KgIm/MSm6++KkkDPaluofDkeoizKZdDA
+	dCIzMKA7gTGEX8ErVhUD56L2e1MmW6s=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769999528; a=rsa-sha256;
+	cv=pass;
+	b=DAcHXb4YA/2BOqV4sH+4IX6MxnavUWAWaKf7g1Dq6jbzIbJ1YzJg6OMmOeAGb7oMAV5dES
+	KdMENvMFFXto/3ogfvq5K2Y7tfnLvuvKfY556l7ilcL4+QtD1MOebFiiBWGqyklhlcuktR
+	9zOSv41DHMih5lAP4oWi//ebjtFzzDQ=
 ARC-Authentication-Results: i=2;
 	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=AP0JSBHQ;
-	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nKFcBUke;
 	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1769999490; a=rsa-sha256;
-	cv=pass;
-	b=58+fcS016Ft+3rRDy52wUKaobgWxj805YXS07DkaNAeH6i34Fk3lAXMm/2EdwPLj0LdvuH
-	mwU/2MMHbVPNJA5iWZF+LcHk6OvEqV6F2Ckfa3A8CpJF1NhSqbLaKbIDiRWgUvHR5tIRVk
-	AM69JCTCLUHWtRwnpw7iKWZfOCzRVj8=
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64d1ef53cf3so4875419a12.0
-        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 18:31:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769999488; cv=none;
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b884ad1026cso626991866b.2
+        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 18:32:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769999527; cv=none;
         d=google.com; s=arc-20240605;
-        b=kGI9Jc5smtXq+WS8/uYC/HJYj7OeJRFFf6X7bfsbnXfNcvELRuz+y+HFuCgTJBSpcE
-         C46JLwCpQtedNYOSWi/3nBT9KhrF4f4yQ7Ew6CDwwPAZFhqxaiiT7PMbzEOkiECURC1H
-         6eQ2onEFEMJym87lTCz3d85qO4F23BmIB+Uh79eoP6WPSk3/NMx54I/kizXVYui8QO2i
-         FZJDm0otLXMoHhX7NdaVzLs3DUhkkmCx8llrvq6dh++Pe8XoN3bI3H3gGckJnN8Y1UQY
-         YpUaYHK6W0A3Za3tzJLhkzNwOUEqKnBHlOZCzQnP7cizBNbQSGLs8bwR5EFWxI1HAAc8
-         8I2Q==
+        b=ahVp9RJ6PUMRTniSIAnW1LVTs/M2JwdkmdRAalfSS+Prv3xvE7h+ZMBuowpCzlgijB
+         WH0WilnIR+RGHfFqEJN2Amy8RBWjz1chcX3+JUHC+6eIS6x4dK9DbQFU7oXMwhUZINcM
+         H5Q8It/cOvR9GEsyD/WzveRfbJimog+Pbeaq98+ODQ14vlJf27Rb8Fucdy5JRQ/XVfF9
+         7DETisFsU+LFAiDFwHl6aKQl3+2W5dyjTZ8p81VD4wr++cZ3c/G45PiYsBuRu2x0n9k2
+         UnUE7hvJOCEV0t5q9Acx87xHPZp1G3PVcvuR8S1n9bqtsH6LE2YP2KdNlqN+9DhkWjcI
+         /sPg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=0R0s9vfE0bIBviBc0aSDI6a/pNvYjpmbLNEjNXyfVKo=;
+        bh=Jbco1y0UrJcFafKpyZkOGmfOlXkZOI9UM8bDBWoaJ5o=;
         fh=/M6izUITbQHV51XpAlhPrY4uuarulwks39xuCYuWN1E=;
-        b=Xg2BCRgPfDKPIk4HIu4/VBOhiR+vXkZsi74SunXLKcRPdj4wCZvDSTimVk5msEX7Aq
-         1BvMeDHxkgyKJqll0oBuFTY8wPIpVA33hOfdSfgqJ9bMC5Et+j8u3N7tEYei9RC3LO6r
-         0ixXaGKFSBJ0TWIm/7JH6z+eEYo0UiH0z4W7thaGj3dg8SE0tO0CLYOS8g9VzhR+XN7w
-         pI5J0kuPX6uaHQvSSC1ngRpnAl644aBRwdNi+9Zv0AUeiufQJ9FLtW8DRW0Y5HntQpoA
-         1+aI9o8hiciQ35ccG4mjn9qiXsnkushqjFK3m38Bv7jtfnfOONC38jIjvZia/33rQKGy
-         +jhA==;
+        b=R9dJhUm1jVTPzbNaR6XFd5OTnt3HvSO/szlXIdh/PFoYmSMJ2gfkNGN+CLbo9mIPWt
+         FFhExbDavFJuGTop2b54Oz5zeERDnizJOKkdVo/Z94NdhI+m6VxjxDk5VZfgC3B0YeX5
+         UAwzrruNElWIhKekxxSAwC/0MROcihQ5dN7ItZN6vk/4i6JvO87gpk4owoyO3R/v3fsS
+         tnF/rnRRk+CmQ5abbcldKVtdbIuzkqyjpMEqAtrttxIcqhvcGeAcDKKjJbGT9/BNQtuU
+         7FJBJmcD+DzlNBB4k3F8QURMBqlvaaalDtn/1fwMtACerKRnNatj2nkZ73eJ2e+NQwUp
+         XQBw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769999488; x=1770604288; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1769999527; x=1770604327; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0R0s9vfE0bIBviBc0aSDI6a/pNvYjpmbLNEjNXyfVKo=;
-        b=AP0JSBHQ67NSy7/9ihEMYNul4XQeX/hjLe8cGTGSB8jVYcBaFed578ONeCwlCeQ9aE
-         OsgcFrU/wWYyPjku4yWd3XxAFWbCYBXeJryZtDWiwtC3yNVGy2Hg6bCcW89RcPCNgPnL
-         HoiIcL8kv8SdWM8+A4gWTtOOqFFmECFIMabVv1Juy97sObzL5mBVYggbocX5ekd2dDGs
-         eU3BkjpwTyiIehFAntFROWFe+TbtRaOLwawGQNpv/sDFJjcaMmJxXo/XEa8WWJ4wJUNH
-         gjdZEG7sEDbHnOslIqMPXuxzbvksbyxSKQsBnRkMIT8v4U9XLRHJi/QnDk7Z/IRrs2DK
-         ZgsQ==
+        bh=Jbco1y0UrJcFafKpyZkOGmfOlXkZOI9UM8bDBWoaJ5o=;
+        b=nKFcBUke7c2l69V/XMeXSClmQ3V62VtwWG4mQpgIJDQwJcg8PDMNdws9B/Xio8CKbu
+         59b/gEg3aQAeuymMLJgRBMBUUW8ihMHJ2QU+p1uMHF6XapdGTm5Zs4N7UuriLQgv44rZ
+         ZtZP9hCi3OEs5MmoXVEBXt8IZBxK2e3JA7HJJvt+esVeeEe87yyqhGgo6LrsJzh/zRlh
+         JjMI7V6Rajzb21DJmv1MDX80YhsCgwWBo+h9Gvm+vx9aEUIyXDM1ZrwIr1h8j6AYaSpj
+         tftsLYhMSCL7r79nhDw16X9OKdKp3zpHFdljau/xu+HRtJ9A+GVSmIi0IvXu1mq7tkJp
+         X9gA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769999488; x=1770604288;
+        d=1e100.net; s=20230601; t=1769999527; x=1770604327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=0R0s9vfE0bIBviBc0aSDI6a/pNvYjpmbLNEjNXyfVKo=;
-        b=WPah0PgUaLxYFR+LfNbHqATA8Jzi5sensVoIVtjdScdJwKhcNbu/XFgpog5Ywzy+QE
-         4tm/eQv1ehucc2TEepWv3kd8KEokQ4yI9uaSyb68iXgVM/4g0CAj/YKO6mMraXhmsjCj
-         mrX8bWuU761qqiS5VykwN/ZrIm0TMqfqH6ABPhC1AVH2I+EOvDTaNH9bqVXQ7yU3BVX+
-         PNkdbaNtYSgjS/eA0NfJDj6ytK0P52N2EAl4FktrASOngoLXwMMYw9TMigMdiG3K2Y8D
-         OWpB8YlzTLQAGR8ftNrAXP+iltQYcsCvBfeVVOVmHPJgI3afVpRYjA5nA3IPXNdCkZCo
-         tV/w==
-X-Gm-Message-State: AOJu0Yyq+coz+GXLJn0boifpbVKnosu/not6XtgRc7FQs97HBf/uxJ9Z
-	8M6dnjY5jrZ+HTD0OcgHBaVHgFzcl10Q0h2vq+C2Kw9JNVqwKMS7mo98n4w9CXWQGT3NWT37Ywr
-	6VZZv7zilkZ1mfjOMTOpsvmDimXQKXqs=
-X-Gm-Gg: AZuq6aIfMR0u0cHlXRjf7XG/1W/8jQRnvvGECt6iXpVD34jsET2MVNqDdfvqdlSmtHd
-	HRbvK0mOez9B5YpkEnCtkjJgs+SI5Y9Cn/JBsvIw7Wn/6By/xRnXit6xeG5FGRXSzd9osm07x9O
-	IVwf+WWnujQ4AAwAaFeMXDI7hNNWAQy5JzMGjCmbHiTj/di+cgPGajioasbF5DxCtixZoxSYLUi
-	ZUNPRFXsefosj6qRxWa+Y5uMqcdd/8gQXZjOFWMF1Sw1e/xwguN20n8PFs6x+OOUmWftqYcSr38
-	Hp+BEYEqt48Ricxm6KTLPrjhaZlX
-X-Received: by 2002:a05:6402:399c:b0:658:bc1d:a5cd with SMTP id
- 4fb4d7f45d1cf-658de568630mr4904459a12.13.1769999488114; Sun, 01 Feb 2026
- 18:31:28 -0800 (PST)
+        bh=Jbco1y0UrJcFafKpyZkOGmfOlXkZOI9UM8bDBWoaJ5o=;
+        b=LC0V1eLT/MO46wk5Iqn2kG20g/B4e7/hYia0H9fMz1X2TAVEwae78wfmW8GTqBACuG
+         TUEWqNQeB1dCcFNrlqZF3lCLKGAHB/ol4NL7XxzQ28eCr/Bjw+bYtYMh36z13TSbtu7U
+         UTimFHYsAIcw2aVmL9NLs46WRx5xRDkUqZRL3i7Sn2T9E30lMRbgnCcs5rHJ5AfrYy7m
+         eMDRhBS11iBhJKN9+HSbwM1hj0l1rDGueUfX1JvsoN273MRsepvIEHKvVsXimAu1xLKL
+         TU7L7jX27fw+fXhZDFSaJmbNbug7duhT/M67e71tXWWO0CurL3VrbkVn/UXzW2DYl1oc
+         nkcQ==
+X-Gm-Message-State: AOJu0Yz/jRRuOLSDK9j0CUXCfqp22gvTE4LrCLOBp5waVbynXQkHh4Pg
+	5b775335eEIYlLT7q09GVPb52apvfupibRZvSAJrFY7EMXz06/49DNMHuHx/J/6djn59Dhp+BaI
+	QsGliJt+wS4YSAxGV+LWYuhCwBVM1Q1o=
+X-Gm-Gg: AZuq6aIR0ld5mmpwnJnVhFADSHbq6Vhh+MMgb6HavgoqbWp9VOEzG0BX+HBDlJpMmQi
+	16wina+T3sfQXP5fB88A7rdzJScfqjjL6r/hMhc67SgbOuZwBshkN3ROin2kpjC1/ZpXyLJe72p
+	VFP5DV8j9lJ3OlAcl10n1dqgmp/RQXGjrSfnraqb8/0hLZlOqDHaZ21Axbr1NiyP5zpA3Cwm9QB
+	8XVFI27K5ZjPeqO6UMNqmA87YIz04wP97NmzuheLRLRNRkeTWO5AUnxqkC/lnr69/yLdy/wye89
+	QmnYwO2iLKLFShrFz2dRnFzLjLBf
+X-Received: by 2002:a17:907:8e95:b0:b89:9631:2425 with SMTP id
+ a640c23a62f3a-b8dff59afd3mr555512966b.19.1769999526445; Sun, 01 Feb 2026
+ 18:32:06 -0800 (PST)
 MIME-Version: 1.0
 References: <20260128-swap-table-p3-v2-0-fe0b67ef0215@tencent.com>
- <20260128-swap-table-p3-v2-6-fe0b67ef0215@tencent.com> <aXsMHy0rNreGmnLS@yjaykim-PowerEdge-T330>
-In-Reply-To: <aXsMHy0rNreGmnLS@yjaykim-PowerEdge-T330>
+ <20260128-swap-table-p3-v2-2-fe0b67ef0215@tencent.com> <aXsb7tBiG8mZ57NJ@yjaykim-PowerEdge-T330>
+In-Reply-To: <aXsb7tBiG8mZ57NJ@yjaykim-PowerEdge-T330>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 2 Feb 2026 10:30:51 +0800
-X-Gm-Features: AZwV_QiUDvJZ3Ov0Fyw1B-9Z0WMw8IDrK2KIT-1QRD_5rjs13jRowQVbYSaoAnQ
-Message-ID: <CAMgjq7C3fTUfCAUYPQY5x_7gsM8TJ5Vw+rFSLgDZ7NOyTyyKOA@mail.gmail.com>
-Subject: Re: [PATCH v2 06/12] mm, swap: implement helpers for reserving data
- in the swap table
+Date: Mon, 2 Feb 2026 10:31:30 +0800
+X-Gm-Features: AZwV_Qhhcf0KSNAcJiashxyMBuVydoegWpdcN5PnenD9-1oJHlZKgn6RFYo42As
+Message-ID: <CAMgjq7BLE5mMxR1GcBVps83afxx5g7N_yWKR1T7YfsMZN4zJZg@mail.gmail.com>
+Subject: Re: [PATCH v2 02/12] mm, swap: clean up swapon process and locking
 To: YoungJun Park <youngjun.park@lge.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
@@ -127,14 +126,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	linux-kernel@vger.kernel.org, Chris Li <chrisl@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mabb8a555adogypymuwh815z3ubgqce8
+X-Rspamd-Queue-Id: 56360140006
+X-Stat-Signature: pi793judbmqiakob86s8zpx1pb4wmgfa
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 58A74140002
-X-HE-Tag: 1769999489-929069
-X-HE-Meta: U2FsdGVkX18ezKdIECXIsxLU8zVtSCO4v7ly6F6zV+fyn5PSdBvYRX7imgypxmr5cMFGLqMVgZRwkSxdZR3e+z8JUISVOJ5x+ESRySdUH+UcpLgXs170GMEKgwav/lWM3GcWnsk07brHk5bx9b3dHoF8D6cN9aZ+VdTMtfzznN/EOl59wlUJQcltG19ns5859UXGiBCr6lsaU+xRwuHsViBxtr7teGRG/gjWAb7/6Dap079vkF6yKPxcC7160/ktmC2/6OunX/r4Q9EeI9C005PD8NIXfW68Y+81Zl5Z3W6tb+iEaOe7uONfdymF2vTOqGQYK8Aw5zTFUNCf3+HG5AD+dHnpQU/JEF/aCwPnrVuhH3P+d2t709RU5ujwnYFoSFJeGK5VilBJ4FbZTSp4CaE+yzI3WdTvHx7ROQEljwJlpBGa0xT27bDAsemfxsffJKUnDYpIO+2bvH9H6l3FStH2btRt1fH+zXprhgKpxdsYQ4EYviBJAcPThD/iniIApsE96JmGbXj/hRCdI2GChU80COTc8MO88AQ+lsn80Qm6fw1ZoapuFm5qPa2xhKhN8fwBFybdmqVlc2vBdy6lejzPe61d+ZLpNm/WfAD4mrArr3NV239LPL384gekKdvc4zgFhidRa1aFGdLskLPbQV5+G/p+u2q6/caaCokmx3iiyiFDswdDJkjXYOMv00wZPxm2g0yB3OnbE1nTfXC/Dl7t4J7emhoAPg6ci/2bMPxpvifEhyD4LsS3vPjYSyaFRnaH7g4N7sm7eBe60XBqOWpcx1PLoA2435/6Xj7c99sCtP0e49IyE7eTJHpGOPdqogVKqLnzu7HHuHH4NNDxhm46BoXKF0jujBPDLdmZUR3dztoN2mQP02C+nkGuHAf+r6iOYPqIUk3UkcuYH0R1+KSaQZVpotQrNuO/RNlpRlm02q0rnh32bc1UvvEImtpZYBI27Cv1jMpcq+IyU78
- iOsdR7rc
- 3Juuuk7FKwGDQpDm0i1At/JuF1zH8mvNNwVA70BV6IqzwcONIMsC2w7H0hCO7PMOmsSisER6TmkdlTf+pV3b8maFW78P2Hy/5V5rIwpoF9tmzXDqP2LyB/9gSSsut0UgghEtR9veN3q4CDFxCf52hAZO1T37DaKW4CqMKfU16AxeXrrRPDOkmY1ls8xl+8/cwe3tH/JEDsvsBhHBgd7/n4rNNZB3inHvAiSdzaJ5u2DSMOPFgEmiH/F4nWQYO74o+TE/yt9bFBz0QYjf+5WLpiGIdU1iOFLEAoMBs7QnjDRybYvFgJRbQwD4hy1erRwz0hRbnCtBkKam4gHdT2DytgAZ7cljOr0X6AkeALci6aZXmeByK9ZMp8C2BewLp/w0PSujJ2O6k4Dg3y68kvL8TisVKngzi63n7KPSK/3Ysfv+FX+v0AVEDF1hnAazM1Y+C6ntt
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1769999528-925284
+X-HE-Meta: U2FsdGVkX1/WRWWNNxPWK1ePlq0WTB+gzKqi/vzYPqTO3fQiYKvfbRK87+cbQNFFL5NO8mCnZTfZiVQwZR2P9gFIO3EiEL38WE3X+wskCPkUCOx90XH+fpJVIi1/JfvLOszd8nF4n+6UDZNeK3kMlfklI6R+gbJay+XnZLcCtfg+/Ne6fGisLFd8F0+vXhT6fOM7RXRe67vLVWSpRA+kOrq05iHosKZ7vfvXfsauBtEUDiae1pt1VebOxHVUWy0ocKbshZwQRZVM7Kn0K6CmM2FlhNPFpWXZ9j89Bbm+RHCw0ZExABIhh1SsIK0VUjqpXqJZS0JUGFZWqG7c+6WhPLxGGLYCrthnWQiA6kZtnqz4VYK+VRoPUqmabhzdnEqEjsEEHFiFlKQIg9Cbg7ffQdboYyWmvuBAX2nwhe5rle+CuOOuM+gznyvd3jTxrp6M20zO/oZjmYPPbBQxh2lq5i69vFDXpmd6qbV/oajbnlPH3+JvvRnUyneDMO1yLD/zlmQvgB3tFG5H9X1/nLU5NKn3m2r527tfMGGFoNpSBSmc94ghSXpEkO+A+LaG86YoWaeGwLrM7Go4TnwXyC3W07E5x1RDleuAFdSEpcQKnyIxVsIUDKUXQUDTDPnMWP5MyyrKJGhbYgn0/wvT8edV+pZFa+oD0svtxVSbAQONKZ5QHQGlp/J/SfmIVLAixEkoWGGlf5IyNneNjpwXTlL5GzOew7xIBcXEX5dSmg5VkVJUuA6HDEFcFhlDhXRrFuJEf5W1xSUbNBAEcnvWdIe7BY+Rs4jJO4m1E64QSloZiei9UrWWYd1jwZR5eFwj7P/XMiM0e45tXEA36EofNAcepp3gZ6kockCQz8Ka3NS8aLCXYQTFzD0dorqF5+qMSKo+RnREQ4rOmtuIq1mERf2sTYZMPqLFXjGxAohAZDX2Ejoq4yZw8AoeGZp8d0PAarWJdu7cm4BKiw/6lMAxJ20
+ dvqZVYZv
+ 7CEHAlBk+PNvboX/okMR+GVnd4KyGD3bkULB3+51iTIqTj3QX/VRJIQ0jKRGPL+1cAmpf88nQG05HZauLeJtm/XZtYK1DAy81CfC7tSon2nlOCsgLfm6DvfJ4GePqSIZfSzhU1nSUOQRgVBvF7Wb61nawkxHg9CgYGi5g21GcnFKSufgE5hGzYwdp+cjqJpP41phyllORAIOH1Gtcn2uiz3m50CmJYepdV5tgqD5/8AL5GD40mQCdCT3Ji57uEF4hdND0YQM9DPVZ1kphR+ZrctXXRMhYbBw+fcJivOr0aw2vuKJIQeyrGSvUTzw4F2V2jtFpN9ntpzSHARq2QTMuSepI3MZyqRklbl9+7wMX6cISZOFG1SAoJRQl+3FEsO8cop073rGH+BV70sxN66ofAEnpk5oFKOk0QbMpgx6Vgw9kRYf5gGug21dYkuW7UhrP1MX++MQndfzuSJNSI0rglwTyFvLWeaJUeExYbdjXRayod1PAiB4PHlrWhFiY9an6MBpSQCbdtMV31ZFeTwavklzAuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,54 +142,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 3:28=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
+On Thu, Jan 29, 2026 at 4:36=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
 m> wrote:
 >
-> On Wed, Jan 28, 2026 at 05:28:30PM +0800, Kairui Song wrote:
+> On Wed, Jan 28, 2026 at 05:28:26PM +0800, Kairui Song wrote:
 > > From: Kairui Song <kasong@tencent.com>
+> >
+> > Slightly clean up the swapon process. Add comments about what swap_lock
+> > protects, introduce and rename helpers that wrap swap_map and
+> > cluster_info setup, and do it outside of the swap_lock lock.
+> >
+> > This lock protection is not needed for swap_map and cluster_info setup
+> > because all swap users must either hold the percpu ref or hold a stable
+> > allocated swap entry (e.g., locking a folio in the swap cache) before
+> > accessing. So before the swap device is exposed by enable_swap_info,
+> > nothing would use the swap device's map or cluster.
+> >
+> > So we are safe to allocate and set up swap data freely first, then
+> > expose the swap device and set the SWP_WRITEOK flag.
+> >
+> > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > ---
+> >  mm/swapfile.c | 87 ++++++++++++++++++++++++++++++++-------------------=
+--------
+> >  1 file changed, 48 insertions(+), 39 deletions(-)
+> >
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index 521f7713a7c3..53ce222c3aba 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -65,6 +65,13 @@ static void move_cluster(struct swap_info_struct *si=
+,
+> >                        struct swap_cluster_info *ci, struct list_head *=
+list,
+> >                        enum swap_cluster_flags new_flags);
+> >
+> > +/*
+> > + * Protects the swap_info array, and the SWP_USED flag. swap_info cont=
+ains
+> > + * lazily allocated & freed swap device info struts, and SWP_USED indi=
+cates
 >
-> > +static inline bool swp_tb_is_countable(unsigned long swp_tb)
-> > +{
-> > +     return (swp_tb_is_shadow(swp_tb) || swp_tb_is_folio(swp_tb) ||
-> > +             swp_tb_is_null(swp_tb));
-> > +}
-
-Hi YoungJun,
-
-Thanks for the review.
-
+> Nit.
 >
-> What do you think about simplifying swp_tb_is_countable by just checking
-> !swp_tb_is_bad(swp_tb)?
->
-> Since this function appears to be called frequently, reducing the number =
-of
-> comparisons would be beneficial for performance. If validation is
-> necessary for debugging perhaps we could introduce a separate version for=
- debugging
-> purposes.
+> Typo: 'struts' -> 'struct'.
+> Also, using 'swap_info_struct' instead of "swap device info" would be
+> better??
 
-There are already two variants for getting the count of a swap table
-entry: swp_tb_get_count and __swp_tb_get_count. Ideally callers that
-know the swap table entry is valid can just call __swp_tb_get_count
-for lower overhead, swp_tb_is_countable is less frequently used.
-
->
-> > +static inline int swp_tb_get_count(unsigned long swp_tb)
-> > +{
-> > +     if (swp_tb_is_countable(swp_tb))
-> > +             return __swp_tb_get_count(swp_tb);
-> > +     return -EINVAL;
-> >  }
->
-> Or, could we simply drop the check in swp_tb_get_count and call
-> __swp_tb_get_count directly?
-> If we define SWP_TB_BAD to have 0 in the count bits (MSB), it will
-> naturally yield a count of 0.
-
-One reason I used `countable` and not `bad` is because I'd introduce
-other type of swap table entries soon, i.e. hibernation type for
-hibernation only usage. Calling swp_tb_get_count on them returns
--EINVAL or other error code, which I think is looking good. I'm open
-to suggestions on the naming and design.
+Ack, thanks!
 
