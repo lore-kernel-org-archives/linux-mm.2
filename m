@@ -4,119 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17753E7DF16
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 17:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70DADE7DF11
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 17:25:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A6966B00C8; Mon,  2 Feb 2026 12:20:27 -0500 (EST)
+	id C1E356B00C5; Mon,  2 Feb 2026 12:25:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 73CAB6B00CB; Mon,  2 Feb 2026 12:20:27 -0500 (EST)
+	id BCC856B00CD; Mon,  2 Feb 2026 12:25:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4FEB86B00CC; Mon,  2 Feb 2026 12:20:27 -0500 (EST)
+	id AD8EE6B00CE; Mon,  2 Feb 2026 12:25:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FDF06B00C8
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:20:27 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7AF45139FF8
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:20:26 +0000 (UTC)
-X-FDA: 84400180452.10.301471E
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9800C140008
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:20:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=a7ZT0qH0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9D7EB6B00C5
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 12:25:33 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B67B1A026E
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:25:33 +0000 (UTC)
+X-FDA: 84400193346.16.CB4E70D
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf01.hostedemail.com (Postfix) with ESMTP id ED0BB40012
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 17:25:29 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770052824;
+	s=arc-20220608; t=1770053131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=utHr5Hk4Pmw7AlX0/QS7v9ZBDUDXlcYDE/CS8IUJBFk=;
-	b=PpcvWdQTAW95prhZCs9CRJQXMHTi16jsdOmPbaxgWcoemBFY5seIiteAdfljtBOaSxb9Q3
-	/d4GDuY7AW9fxvVTLaIzeUXcn4QiRE5/uu8+Lb5hbcHM7ZBZ1P0u3E8SanhUNtU/pidh9m
-	KWyDfqRjxjf09w21qh++LUwre4VP39g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770052824; a=rsa-sha256;
-	cv=none;
-	b=7HY8/SjcBHMuoJ0TOkvrgQMbOFpPai6r2kl07FECK5Xz5tVJ8m5iK4PC3YxPOzlNLQVzHK
-	bJX/lP6NfXJKfwJ49jka1Kg4DccWmoQPWgdwACz6AZYeEPnB3eCYv8xcDOcdDcyP6jAMrI
-	XlLcTl4F6mwStAgJ8z7XLXQMF7pFGYw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dzEKyp5YmfGgPBn7/Ws5MxF+hdGkWdnn37yaUGro19o=;
+	b=QDqc6lOKniVisAS+S+rkm2Ryhv2XI5OCBbBpxvIN6/5YC1mOo5c6XetMMvACsy/qKvleSY
+	QJo4Imf3WWGBqmeV84YYq53k+iOs1YCbhCuU5j0iwgKOTQwQTdWjplfKr8NsJo4a1kRMj3
+	ml/7T6pOz39po9fjrTepC6f84eadEHM=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=a7ZT0qH0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-12460a7caa2so7204766c88.1
-        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 09:20:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770052823; x=1770657623; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=utHr5Hk4Pmw7AlX0/QS7v9ZBDUDXlcYDE/CS8IUJBFk=;
-        b=a7ZT0qH0Pf7mqNQrrDNSFCseRMjNK8JmZ6YQ02Xx+KCctsoLRiO3Jrh/Q1vBAewqL7
-         AomzZ6i7wRFoxHGehCyFZpu53XJOJbfqyhG7Ammm2pzSToFTWfK5szmf5akuJhTud2SJ
-         JA0S5gZCyz2vebb+UxfXxf634zCCHAll8t2Lew8CtV24znHF52rrkhXdPWshrZW3mIkC
-         +Y/qG/ZTNiBYkfwvRz8Ko3jPk2BlZU1RLM82MTj785q2loiX9dMHBw3eRYRwjIz/1+q7
-         SZW0BIWs6CdBY3sGLjBuPk03nU0Tlt6tSt0EMeGoSk3s1cIsziPmen0FinxH/4lqRE5B
-         qRkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770052823; x=1770657623;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=utHr5Hk4Pmw7AlX0/QS7v9ZBDUDXlcYDE/CS8IUJBFk=;
-        b=g4YEZwCvZ3BddwUjREHVm7+KijQxqSXmYBT/24Pc/A/NojCrCt0f/BN/96MBZlFZ8W
-         EqyH+cnkg0EuYtuNiDZ8mb5zKNiEdCM3x/VdPPSEqzchxAi/bYEjSDJqYLgOP+0nsvZl
-         iiqcZrnEeCmJeUPp9xAaZhh/+vMBYrq/MmjEbICL/C6mhmELNToMgK5jHM1cujs0OSUu
-         lHFzosUhmnAjVF/rkhZYD2teBhx1tvnk5+MLDb/SKt+vh6JKHHCT7D5jPi4tLW09LuDB
-         G0hO0C8C0SDJwJtIwlr6zhh/17ukcfBpER3xAC/PmvScbb3iRr4bJdvDKfaB6ABLkcRC
-         +RGg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSr6F0PnkQkcIi0gpseto/3a9aZ7QUmfpA01BglSSzo6PZGjywRMhJ/+K2JzeXaWW0B/Nzk1qeKA==@kvack.org
-X-Gm-Message-State: AOJu0Yz9Lq48oEGMLKlXp1dCrQRPHibLyDC/a9WweGUJwshqcwysvHED
-	0F/5PeE8i++VnHOIx6C7ecpIwTAe9usz+er01V5eBdnijIAmmg+pK74O
-X-Gm-Gg: AZuq6aKw9Mdba2hp+xpDIOegcLUpW2rL+VdUJ+DMrPOwo03+WqWjR7cZs0CQiLTaiz+
-	Wq9NMbDvMuUk+/N0nlRYNu00WvVmsWW/Ymmeqf1mvnmQM+tPHOuEO7UQykCCBFSu3YxNhNII5z4
-	ZR6Mg986bd+abr6Chf9mBcO6ZAPvo6FlVtlNkmqHTxYCAVXzHwI/6IeoXDaEKQl/dRsFV0F/KM6
-	ssHbwkD+ygH258Vx/YWUUOdhxeC6drbOUHDgXJFY9SdjrmYkV7lEWeB49H/ts4Maw2JVqcRz0aF
-	bcQiaGL8E91mEUFJf10BiaEAXd6T8lWzzGL6Tx6Lgq02pWLdafgb9lO+l/1S7iyrC2WygMBtOcs
-	xdvqJfcRS/x4gC95Jg/Z6tOjJZxCJ1gkUArsg2LU2V2BKXYdKT3hJQwz9uto9JWMdpoUmDlj5Wl
-	irp3YQlnNOYBsvU1kld8fdz53tkSAvFNiY5yM98mHgza8obwn0UX1WcxuQu5w=
-X-Received: by 2002:a05:7300:d51b:b0:2a4:3593:c7ca with SMTP id 5a478bee46e88-2b7c864e335mr4588938eec.10.1770052823241;
-        Mon, 02 Feb 2026 09:20:23 -0800 (PST)
-Received: from fedora (104-57-70-139.lightspeed.sntcca.sbcglobal.net. [104.57.70.139])
-        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-2b7a1adef97sm20129902eec.29.2026.02.02.09.20.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 09:20:22 -0800 (PST)
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	x86@kernel.org,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: akpm@linux-foundation.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Subject: [PATCH v3 3/3] x86/mm/pat: Convert split_large_page() to use ptdescs
-Date: Mon,  2 Feb 2026 09:20:05 -0800
-Message-ID: <20260202172005.683870-4-vishal.moola@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260202172005.683870-1-vishal.moola@gmail.com>
-References: <20260202172005.683870-1-vishal.moola@gmail.com>
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf01.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770053131; a=rsa-sha256;
+	cv=none;
+	b=lhT1Qi48uSqwC9jt/ekobiCKYfLGNvZpSrVZOw1nGOiTKHYf49VlfOdJCw+MdsaC5hOfy8
+	p9jBiMUYQ8MUI7rGRak9hLdsdTme7nNb4DBx8Ur5h66C1ZQ8nEv2SHXjBh5dLcYgjDc0sJ
+	f7kzqMvwprrTBiKday44cInTUE9sfyE=
+Received: from mail.maildlp.com (unknown [172.18.224.150])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f4YQ50dSKzHnGhY;
+	Tue,  3 Feb 2026 01:24:29 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id D095B40539;
+	Tue,  3 Feb 2026 01:25:26 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 2 Feb
+ 2026 17:25:25 +0000
+Date: Mon, 2 Feb 2026 17:25:24 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Gregory Price <gourry@gourry.net>
+CC: <linux-mm@kvack.org>, <linux-cxl@vger.kernel.org>,
+	<nvdimm@lists.linux.dev>, <linux-fsdevel@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<kernel-team@meta.com>, <dave@stgolabs.net>, <dave.jiang@intel.com>,
+	<alison.schofield@intel.com>, <vishal.l.verma@intel.com>,
+	<ira.weiny@intel.com>, <dan.j.williams@intel.com>, <willy@infradead.org>,
+	<jack@suse.cz>, <terry.bowman@amd.com>, <john@jagalactic.com>, David
+ Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>, Andrew
+ Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 2/9] mm/memory_hotplug: add
+ __add_memory_driver_managed() with online_type arg
+Message-ID: <20260202172524.00000c6d@huawei.com>
+In-Reply-To: <20260129210442.3951412-3-gourry@gourry.net>
+References: <20260129210442.3951412-1-gourry@gourry.net>
+	<20260129210442.3951412-3-gourry@gourry.net>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9800C140008
-X-Stat-Signature: tmkq7qqkbxquxwp3h5i1o6crjmeasscn
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: ED0BB40012
+X-Stat-Signature: c778mmeba4i5wuqqrzz9ggm1k99bjy7s
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770052824-528514
-X-HE-Meta: U2FsdGVkX1/TtjPzK+tp7iFYJCfJyLYdS/uojkueFxYUhCo86Ae7JpRa1/OX4gP0y9Ni5RGRZnsqCp6uzMU3phLDSgNE5MXGgT3HtCQ1HFXZYlL6LD2KQSRx+C8q5/ly3egKLlzF4t2LUbK7EbM2nPC8Dx0bvimUfYMpF1yO2WtmJbArx9LK6en2F7ip68CO4v1yUgsQWMD0MymX+rAwn4QesvKr8qr4RPqa7xcdwmzaQ8uf+yTZ9HJD/HtBVP9jXzCpRWHUNN88pzkbj2PEAqOBS9DoZiYXJOw+RybFxtf6dlcatEQ1wr4gmUGu0WdI7GVucRTB9TtoZzQWc8tY/HYnMTdp4zLkmb3qvC2NP1K8FMe0jlJsH16u68oRXTkgTCZrWsrWBt//p2vMlRPHQg6DbAJXnrMdP8cIC/vz7hmUPsimsOt2dtxpFr/E8UlrtJ+T3gjhWvU99oBJVEc5OV01XZf8IPPYIgbdEAigVgQgiVWXe7CE/MRa5wC2x4jozTg/uni78x4/H+BdmDw/lsh8lwMe4PC2SkRDaN7o+yc4b8+eLMPgjmAn6TF7DCTa441HXhp0dML58D6I+IdDa8YVsQ9+PF31fJ7EJ78gJslWOK8JXufkNDk9r4L/Y07o6MWU0xhdbK1w9RTvwTFz0E/XV9TisGYl/hMry6+JsqIhAGB6m6YFLQATZr0hR4S0wqjGaJWHXMn7qo+hTFvAUy7KAW7RouXqUem7O9gSq2GmUFoJWZBAMCn81ktj8784qrnq9HkQr0gI/wN2529o3FeKVBVNc1cX0ZPCUzsbjSi722aewGGrQNREpojjIOXgmm3OaCPMXf0nE/9g0lxYbsqX5+S8UkDFUFhH4koDglrFs+/Z6Ec2+511odEGLlrfFNRYimdNK4zOBHCzF2aQckjRV/+kASWn233YAFz6PHrE6oe483ctt4r3+JtaM4ehohur4dmOppBzCF2HrCa
- l4Zv0M4e
- lIPBsM/sZfn6pY6nGEusLxNst4RuC0yEIn02OP8Zf/YnnbmBL7s8f5O/k2GCVCb/IRDUo2kC74ps7nJu1r+Evla2Pi+aH+Zb7/fXhLUB3NQps6FG7jNWk5TV7GQJb3t/zbaEJv6Q9OTW+wYhNoIpNm+YkSVzgfgyvCWjLzFgzk6/MtuhR9TcQulcz3Y/x9ac7tahIgt6BuHoy0h7I5iwTfNNR/TDVIA58uqkJJXe0WEpqrnipKrHCiTYNu7MToOrRANUA6UkMItmGM/x0Issjr4dKpEQWqrfUYN/PA8ZT7EdcdyxGTgt5Z41V6YxP0fT9rAd8KRYu8YUYFI/aMTc2yNV3WzXDSOnehZ7J0co2kNUQtzhS5riGbzXLoCqqueKNp7GzynhJisMKf/giKyO22vyWa56WfGu+jqB1gmf0lsP/DiPeVm0yMyTzh65nnOh7+BGFjxSRKHhfN05gXm4sgksXfLczGIs84AY3sJ17g/t0RV76RJasQ+aB6w1ci92s1vtGWj41CWQcyzFnc1JLi+/NO3C8/urwS/b3/TfJFkSf+Uwx+NRl7I9FsA==
+X-HE-Tag: 1770053129-414104
+X-HE-Meta: U2FsdGVkX18OLl52SOWLs3XfOENr3vN362tSI6/6vIUZh8Av1kL5SGTuhY9OUwC7agxPwwwtsPZjO0PiNEHjJTpQEq0k6xpZHP0I9KKzJ7u8z2+Bo8hMG/b1Xx9nfafCDKXoLiqObH3rqg+/dvRBUEX9nPA0GnkujwHsZNB9B9upVI9M/ltGpCfnXFrOEwMq9cOtCZen50+23ZxgnVNHQYa2s5X2i9fg84/9+1GsWc9RInhtCUQXOlSzn8TDDdkp6nm3Fq9Wj3Qy1gvkQtxt5s6b1vQUTX+JMkYk/C1JB6LKhbohTM7GjuIj/GvnXVnmyPLWfwuH0EYAq9OSJXV4eroeZK000fot8XNGygupUzfmoAieAsm1Ge1mPuRxiTKkH/sBobg9+loFkehHHIxNO0XIX0fs0CYF1StC4sbuWpdoItkNA6WKWDzRcFsUj2IlF4yL1xv59BwllPwcFzj2iRrpTjZ0uP1OhUsuf93LS5jl3paxqDNQSgQyL6bd1zjZi1K8SM5CHTvW+ptgpHWpSMbaZ/zJpW4DPCusZMUUpZpc72g6ED6vDzIWbXLr0nTxkb63KBbG98jR816EpjH0KXjAvg75V2ZRWIWVdMaKJrA8XRFveyWydtvVn8CpnF2s6cIIjOFTRW2l8RnQxsRD9/OYVQ8l9JouRkAfzUlbOI7PTeA7nQ3i5Um0p39Lpxi6qxt4oWEKSdWD8cFYYdsNzqONg3Dk/j2TaYSVG5vS44f5RosVGclnoM8wdgdMK9Y85LNJLBI2U3x5HcUmpyIqxeORkj01s0nxquQ8lEOOSqEGn1s8+LTtDtCFyoIPdaOSwQj4RIgVuyohT1VBFa3rnw+bl7THW5DADiiNaWXnd+xrlRFfQij7NSnBZTfkgciKIWp+5TZ+zQC0Nsmpq95uo1vCIcnob9mJIs7LSLCO8beLcCgP1jVEQk9Kdp4hmRzYhVo3Y6TX9zZei13zdJ5
+ bvhMk85t
+ Y0l52/K6SPYS9yJCV3Brkxe12NKNCNGuJexGN80Kw76TuSWhWen7LnPdZXFcCB5EswM5PkBg7uhKiR55q8zXYBAt1aIGCDZM+AzUyuMzrLabgPjNWPeyXoVk32CWnQ/crr7sbq0Lcd0KZrPutr2ey7hiJyH9MMm+9zbxm+hi4bE43bl26MrkRod6Qjow0ZOXWujz2ocw5UkQM+JLCps8uVNE31CN1wj6YM85e+LTjnG7A6epfAI8Yudf1SLDPKVy7R3SYHWYMAXhPRVZvl1mjZqsdkZx2JuPVxgouS1CKZzgB22jt0I05TSpicclOatMuWpt6UdfNyyhUAxAZUs0U1j6flpEUB4ntEg25U9emlbS6Ip8UKqZGGCGHQqIUE5rV0J0kv9mRkX/RSF/Cp3Gc7NGQARaSjAVykfe+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,58 +100,246 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In order to separately allocate ptdescs from pages, we need all allocation
-and free sites to use the appropriate functions.
+On Thu, 29 Jan 2026 16:04:35 -0500
+Gregory Price <gourry@gourry.net> wrote:
 
-split_large_page() allocates a page to be used as a page table. This
-should be allocating a ptdesc, so convert it.
+> Enable dax kmem driver to select how to online the memory rather than
+> implicitly depending on the system default.  This will allow users of
+> dax to plumb through a preferred auto-online policy for their region.
+> 
+> Refactor and new interface:
+> Add __add_memory_driver_managed() which accepts an explicit online_type
+> and export mhp_get_default_online_type() so callers can pass it when
+> they want the default behavior.
 
-Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
----
- arch/x86/mm/pat/set_memory.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+Hi Gregory,
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 9f531c87531b..52226679d079 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -1119,9 +1119,10 @@ static void split_set_pte(struct cpa_data *cpa, pte_t *pte, unsigned long pfn,
- 
- static int
- __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
--		   struct page *base)
-+		   struct ptdesc *ptdesc)
- {
- 	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc = 1;
-+	struct page *base = ptdesc_page(ptdesc);
- 	pte_t *pbase = (pte_t *)page_address(base);
- 	unsigned int i, level;
- 	pgprot_t ref_prot;
-@@ -1226,18 +1227,18 @@ __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
- static int split_large_page(struct cpa_data *cpa, pte_t *kpte,
- 			    unsigned long address)
- {
--	struct page *base;
-+	struct ptdesc *ptdesc;
- 
- 	if (!debug_pagealloc_enabled())
- 		spin_unlock(&cpa_lock);
--	base = alloc_pages(GFP_KERNEL, 0);
-+	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
- 	if (!debug_pagealloc_enabled())
- 		spin_lock(&cpa_lock);
--	if (!base)
-+	if (!ptdesc)
- 		return -ENOMEM;
- 
--	if (__split_large_page(cpa, kpte, address, base))
--		__free_page(base);
-+	if (__split_large_page(cpa, kpte, address, ptdesc))
-+		pagetable_free(ptdesc);
- 
- 	return 0;
- }
--- 
-2.52.0
+I think maybe I'd have left the export for the first user outside of
+memory_hotplug.c. Not particularly important however.
+
+Maybe talk about why a caller of __add_memory_driver_managed() might want
+the default?  Feels like that's for the people who don't...
+
+Or is this all a dance to avoid an
+
+if (special mode)
+	__add_memory_driver_managed();
+else
+	add_memory_driver_managed();
+?
+
+Other comments are mostly about using a named enum. I'm not sure
+if there is some existing reason why that doesn't work?  -Errno pushed through
+this variable or anything like that?
+
+> 
+> Refactor:
+> Extract __add_memory_resource() to take an explicit online_type parameter,
+> and update add_memory_resource() to pass the system default.
+> 
+> No functional change for existing users.
+> 
+> Cc: David Hildenbrand <david@kernel.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
+>  include/linux/memory_hotplug.h |  3 ++
+>  mm/memory_hotplug.c            | 91 ++++++++++++++++++++++++----------
+>  2 files changed, 67 insertions(+), 27 deletions(-)
+> 
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index f2f16cdd73ee..1eb63d1a247d 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -293,6 +293,9 @@ extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+>  extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+>  extern int add_memory_resource(int nid, struct resource *resource,
+>  			       mhp_t mhp_flags);
+> +int __add_memory_driver_managed(int nid, u64 start, u64 size,
+> +				const char *resource_name, mhp_t mhp_flags,
+> +				int online_type);
+
+Given online_type values are from an enum anyway, maybe we can name that enum and use
+it explicitly?
+
+>  extern int add_memory_driver_managed(int nid, u64 start, u64 size,
+>  				     const char *resource_name,
+>  				     mhp_t mhp_flags);
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 87796b617d9e..d3ca95b872bd 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -239,6 +239,7 @@ int mhp_get_default_online_type(void)
+>  
+>  	return mhp_default_online_type;
+>  }
+> +EXPORT_SYMBOL_GPL(mhp_get_default_online_type);
+>  
+>  void mhp_set_default_online_type(int online_type)
+>  {
+> @@ -1490,7 +1491,8 @@ static int create_altmaps_and_memory_blocks(int nid, struct memory_group *group,
+>   *
+>   * we are OK calling __meminit stuff here - we have CONFIG_MEMORY_HOTPLUG
+>   */
+> -int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+> +static int __add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags,
+> +				 int online_type)
+>  {
+>  	struct mhp_params params = { .pgprot = pgprot_mhp(PAGE_KERNEL) };
+>  	enum memblock_flags memblock_flags = MEMBLOCK_NONE;
+> @@ -1580,12 +1582,9 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>  		merge_system_ram_resource(res);
+>  
+>  	/* online pages if requested */
+> -	if (mhp_get_default_online_type() != MMOP_OFFLINE) {
+> -		int online_type = mhp_get_default_online_type();
+> -
+> +	if (online_type != MMOP_OFFLINE)
+
+Ah. Fair enough, ignore comment in previous patch.  I should have read on...
+
+>  		walk_memory_blocks(start, size, &online_type,
+>  				   online_memory_block);
+> -	}
+>  
+>  	return ret;
+>  error:
+> @@ -1601,7 +1600,13 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>  	return ret;
+>  }
+>  
+> -/* requires device_hotplug_lock, see add_memory_resource() */
+> +int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+> +{
+> +	return __add_memory_resource(nid, res, mhp_flags,
+> +				     mhp_get_default_online_type());
+> +}
+> +
+> +/* requires device_hotplug_lock, see __add_memory_resource() */
+>  int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
+>  {
+>  	struct resource *res;
+> @@ -1629,29 +1634,24 @@ int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags)
+>  }
+>  EXPORT_SYMBOL_GPL(add_memory);
+>  
+> -/*
+> - * Add special, driver-managed memory to the system as system RAM. Such
+> - * memory is not exposed via the raw firmware-provided memmap as system
+> - * RAM, instead, it is detected and added by a driver - during cold boot,
+> - * after a reboot, and after kexec.
+> - *
+> - * Reasons why this memory should not be used for the initial memmap of a
+> - * kexec kernel or for placing kexec images:
+> - * - The booting kernel is in charge of determining how this memory will be
+> - *   used (e.g., use persistent memory as system RAM)
+> - * - Coordination with a hypervisor is required before this memory
+> - *   can be used (e.g., inaccessible parts).
+> +/**
+> + * __add_memory_driver_managed - add driver-managed memory with explicit online_type
+
+It's a little odd to add nice kernel-doc formatted documentation
+when the non __ variant has free form docs.  Maybe tidy that up first
+if we want to go kernel-doc in this file?  (I'm in favor, but no idea
+on general feelings...)
+
+
+> + * @nid: NUMA node ID where the memory will be added
+> + * @start: Start physical address of the memory range
+> + * @size: Size of the memory range in bytes
+> + * @resource_name: Resource name in format "System RAM ($DRIVER)"
+> + * @mhp_flags: Memory hotplug flags
+> + * @online_type: Online behavior (MMOP_ONLINE, MMOP_ONLINE_KERNEL,
+> + *               MMOP_ONLINE_MOVABLE, or MMOP_OFFLINE)
+
+Given that's currently the full set, seems like enum wins out here over
+an int.
+
+>   *
+> - * For this memory, no entries in /sys/firmware/memmap ("raw firmware-provided
+> - * memory map") are created. Also, the created memory resource is flagged
+> - * with IORESOURCE_SYSRAM_DRIVER_MANAGED, so in-kernel users can special-case
+> - * this memory as well (esp., not place kexec images onto it).
+> + * Add driver-managed memory with explicit online_type specification.
+> + * The resource_name must have the format "System RAM ($DRIVER)".
+>   *
+> - * The resource_name (visible via /proc/iomem) has to have the format
+> - * "System RAM ($DRIVER)".
+> + * Return: 0 on success, negative error code on failure.
+>   */
+> -int add_memory_driver_managed(int nid, u64 start, u64 size,
+> -			      const char *resource_name, mhp_t mhp_flags)
+> +int __add_memory_driver_managed(int nid, u64 start, u64 size,
+> +				const char *resource_name, mhp_t mhp_flags,
+> +				int online_type)
+>  {
+>  	struct resource *res;
+>  	int rc;
+> @@ -1661,6 +1661,9 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
+>  	    resource_name[strlen(resource_name) - 1] != ')')
+>  		return -EINVAL;
+>  
+> +	if (online_type < 0 || online_type > MMOP_ONLINE_MOVABLE)
+
+This is where using an enum would help compiler know what is going on
+and maybe warn if anyone writes something that isn't defined.
+
+
+> +		return -EINVAL;
+> +
+>  	lock_device_hotplug();
+>  
+>  	res = register_memory_resource(start, size, resource_name);
+> @@ -1669,7 +1672,7 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
+>  		goto out_unlock;
+>  	}
+>  
+> -	rc = add_memory_resource(nid, res, mhp_flags);
+> +	rc = __add_memory_resource(nid, res, mhp_flags, online_type);
+>  	if (rc < 0)
+>  		release_memory_resource(res);
+>  
+> @@ -1677,6 +1680,40 @@ int add_memory_driver_managed(int nid, u64 start, u64 size,
+>  	unlock_device_hotplug();
+>  	return rc;
+>  }
+> +EXPORT_SYMBOL_FOR_MODULES(__add_memory_driver_managed, "kmem");
+> +
+> +/*
+> + * Add special, driver-managed memory to the system as system RAM. Such
+> + * memory is not exposed via the raw firmware-provided memmap as system
+> + * RAM, instead, it is detected and added by a driver - during cold boot,
+> + * after a reboot, and after kexec.
+> + *
+> + * Reasons why this memory should not be used for the initial memmap of a
+> + * kexec kernel or for placing kexec images:
+> + * - The booting kernel is in charge of determining how this memory will be
+> + *   used (e.g., use persistent memory as system RAM)
+> + * - Coordination with a hypervisor is required before this memory
+> + *   can be used (e.g., inaccessible parts).
+> + *
+> + * For this memory, no entries in /sys/firmware/memmap ("raw firmware-provided
+> + * memory map") are created. Also, the created memory resource is flagged
+> + * with IORESOURCE_SYSRAM_DRIVER_MANAGED, so in-kernel users can special-case
+> + * this memory as well (esp., not place kexec images onto it).
+> + *
+> + * The resource_name (visible via /proc/iomem) has to have the format
+> + * "System RAM ($DRIVER)".
+> + *
+> + * Memory will be onlined using the system default online type.
+> + *
+> + * Returns 0 on success, negative error code on failure.
+> + */
+> +int add_memory_driver_managed(int nid, u64 start, u64 size,
+> +			      const char *resource_name, mhp_t mhp_flags)
+> +{
+> +	return __add_memory_driver_managed(nid, start, size, resource_name,
+> +					   mhp_flags,
+> +					   mhp_get_default_online_type());
+> +}
+>  EXPORT_SYMBOL_GPL(add_memory_driver_managed);
+>  
+>  /*
 
 
