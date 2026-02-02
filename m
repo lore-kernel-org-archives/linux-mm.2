@@ -4,101 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54C9DE7DEF5
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 15:52:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7627E7DEF5
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 15:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A13706B00B5; Mon,  2 Feb 2026 10:52:50 -0500 (EST)
+	id CBAC26B00F0; Mon,  2 Feb 2026 10:56:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 997326B00BD; Mon,  2 Feb 2026 10:52:50 -0500 (EST)
+	id C3E3E6B00F1; Mon,  2 Feb 2026 10:56:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 899176B00BE; Mon,  2 Feb 2026 10:52:50 -0500 (EST)
+	id B49F36B00F2; Mon,  2 Feb 2026 10:56:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 755C66B00B5
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 10:52:50 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06B0813929A
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:52:49 +0000 (UTC)
-X-FDA: 84399959700.24.673263A
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DD8EE1C0010
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:52:47 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LHO+UJ4a;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A4F786B00F0
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 10:56:38 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5FB611B0B6F
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:56:38 +0000 (UTC)
+X-FDA: 84399969276.27.45ABED6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id C84A6140007
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:56:36 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qfGQ5fKA;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770047568;
+	s=arc-20220608; t=1770047796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PduxyDODlH9YHL0rneveZmMdter31WXHAeGzrsiCre4=;
-	b=GoAuUpza0lLZsrtlPF0LOO2RQ3RqjAZYgLm4WZxrEHMD1D2rhNU7Xc3bIS1k6makR5vwf+
-	zIeJs9bU0sIW0s4SpCoc5QN+yTVZMpRmHBzaN+7462Uj1JG6kOjrgyka4UWJxetvxZI+1T
-	k2G3qYPNPlXmNrJdp3OuBdYHmQpEju8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770047568; a=rsa-sha256;
-	cv=none;
-	b=k//Cg0wzoSYz5hsi3PZS93AqCIiDqX2ZnPvOu404m5ooMNAnHlz0HxsDbp/0btD17HJN+n
-	bZ3YRyfb1Rc3MFCEKCoZSYUkNvfT5tPjvVvTRqncopylbyv8zCLMiEP3Lw05Wuns5FgRvx
-	Xmw5mxa1BkdwMr5EkSUa/KnJUVWFGgQ=
+	bh=9ZJLRv1pXFSMyf2cbWMlfUGwHZIbsadPUeid9JOpYl0=;
+	b=16tdT3sYU/jQ4iqku+n+D3PvGewFQq1meC/22DOqLNNwnpf2ogJRxuGgYHbzXFOQsSI9WS
+	Ik6rsmQ6Hkb+wb6RkA33zSQPqtdTE5DAtKSBBFQLV6hWyAGlxrXPVii97YmjYBpbFLI/3f
+	9fAqvgEnBHSx6gwrg/ySUHCYw1YhTHY=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LHO+UJ4a;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.186 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
-Message-ID: <d6944cd8-d3b7-4b16-ab52-a61e7dc2221c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770047565;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PduxyDODlH9YHL0rneveZmMdter31WXHAeGzrsiCre4=;
-	b=LHO+UJ4aR+t9zhuFaEeNktv85tisbUgqgGP+452qgxwu8pe3VAbJyWwRwIMkIkhrW3CiiU
-	amX509lg1rXTP7Wtltg3TnQsfApgqjp0Blp35vsPn2YE5n3hsGAPY5Q6ckZZXKljWJkLo7
-	a+vSwZ8/xCaiyucTyGL4QbFRUgmLY+s=
-Date: Mon, 2 Feb 2026 23:52:31 +0800
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qfGQ5fKA;
+	spf=pass (imf09.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770047796; a=rsa-sha256;
+	cv=none;
+	b=qfZosfl+X+XmknWzFsF43vmJehq2u2wuXJYgIZccfrgDqgM0o6VYMJVrFmHDjBEWJP1aTd
+	khAbbVZPa7SNsZfa/bkPclqiK02fl/0LUEHULpr7m9Qbdb/fVENM1EohB+yycul8Oh0KFr
+	0vp7du3C56Psua0GB4VGx/z1FynZNK0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 12B5260010;
+	Mon,  2 Feb 2026 15:56:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754F6C116C6;
+	Mon,  2 Feb 2026 15:56:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770047795;
+	bh=hNDa3sPMRbQqIrx0iC5mD0U7XJ3SPWGjdDKQECVmjnw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=qfGQ5fKAjtAnf8SCxBo3XoXmfOT7aJZX4lP3fmIeV4yGB0iPPvZRom052l0PlOjGw
+	 6h9/TKh+nV3GDuerIpiZiI4fJhz2NI141ENt15p7eV4x2Llyn/cwiZx5VqU/RvvTsP
+	 84t199KpoVpqiElR/sZvYuzCmFw2bU8sNoRtCSelR/4JFjFN14HjjpwW6eD7lupIdt
+	 u/BqFijK5MqzkJ2WVMx6fLIae740lcZL6a+QEnssuO3hNVm2QIBwtzMbbWqDIxFG2x
+	 ANF/q3BK/pF7f8szX/frdAWGwMkjeTsuaYgQT/7svY8elg6m/HmRjsbQSQSQw/a2ib
+	 xI8krE8JJEbKA==
+From: SeongJae Park <sj@kernel.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Kujau <lists@nerdbynature.de>
+Subject: Re: [PATCH v3 21/30] maple_tree: Add cp_is_new_root() helper
+Date: Mon,  2 Feb 2026 07:56:26 -0800
+Message-ID: <20260202155627.16416-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <hdmikz55tn5gwbl6y2bxwo4gyt4dc6bc7u57oidwbotncfexeq@efa6s2xpgkz7>
+References: 
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
-Content-Language: en-US
-To: Peter Zijlstra <peterz@infradead.org>, david@kernel.org
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- aneesh.kumar@kernel.org, arnd@arndb.de, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, boris.ostrovsky@oracle.com, bp@alien8.de,
- dave.hansen@intel.com, dave.hansen@linux.intel.com, dev.jain@arm.com,
- hpa@zytor.com, hughd@google.com, ioworker0@gmail.com, jannh@google.com,
- jgross@suse.com, kvm@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mingo@redhat.com, npache@redhat.com,
- npiggin@gmail.com, pbonzini@redhat.com, riel@surriel.com,
- ryan.roberts@arm.com, seanjc@google.com, shy828301@gmail.com,
- tglx@linutronix.de, virtualization@lists.linux.dev, will@kernel.org,
- x86@kernel.org, ypodemsk@redhat.com, ziy@nvidia.com
-References: <20260202095414.GE2995752@noisy.programming.kicks-ass.net>
- <20260202110329.74397-1-lance.yang@linux.dev>
- <20260202125030.GB1395266@noisy.programming.kicks-ass.net>
- <c6fda7c2-ad54-416a-a869-1499c97c7bd7@linux.dev>
- <4700e7ba-8456-4a93-9e28-7e5a3ca2a1be@linux.dev>
- <20260202133713.GF1395266@noisy.programming.kicks-ass.net>
- <540adec9-c483-460a-a682-f2076cf015c2@linux.dev>
- <20260202150957.GD1282955@noisy.programming.kicks-ass.net>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20260202150957.GD1282955@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DD8EE1C0010
-X-Stat-Signature: suqywqzub8tmbg8rk3rpjisaf7iiziag
+X-Rspamd-Server: rspam12
+X-Stat-Signature: jopwobzjr3se4pt7dnzc9ryhhf1ujynb
+X-Rspamd-Queue-Id: C84A6140007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770047567-194619
-X-HE-Meta: U2FsdGVkX1+Zj5/1SHFijVgRI+p0vWG1lvoeB2vRyblk5kzVAudcB2iEVv2zIWUQeqCLAt7zIfA92IReF7d2hcZZAnje/MaO/cZYts8UrOMkbjtVOsAhRpVGo1+j1KthfKGmYlH5e4Wd+sKFbLKxoVIdp/myLr3EB1HD+3o2FLhRCc+EBBPyF04pvSnAAZwLJyiwBJHnPW8+x0EqOyR9SDaok65rsMUU97hN7m3AJJBtaysNUe9/IGxN747NmCuvNfVYLxVHlgAS73AOhOdCytFiSjGyX4rrXpY3xn50bV57Yq3z/axuCijtQSxGK0m09fIoc0wOhCgWIxwTYcS0ewKFUXNXckyVylsNl4akTDyPm13btu8FMhaR3Nta90quNeuyxx/e6X4OWN+pivTcv2onNeXLLz0+f+r3z1s9gyMSzGiiGCAR0kg0kqaHCXVuct+9EzF0q6dY4uj3AWEQ4WdGvBKLg/Zcokwdyp7yTLmvi31fzk6v3jHv7jLw1iQRg0TAhp+/Irx6Us8NbBeouxSFj+ws2/WRF84q5jsbfeHAxlBS7PfnQt4Gg7hpVRTxQNSSCvdT2QYzfNGqa1ckrKx7aTdZv7er7jo7dyxOsJG4qQrVOm3MKluRvAW9Frqhcu0CLXEEtZMjRhrT2WKyYnOClWHcYJxL8CtY+J90vraFltVOKTbCTwKjXi08aC8HJieYIczmz/tzImwu6lYK6T2sGhEsktfLE6lrR9qxA1cnSYjjpSk5pu1So1nD20ti/GMeV7xlsjMr4Tmk2mNP2wHftaVy/XQLYUDNaMYEXxJ+JHEDzLVB2xD+zMSMwbeyUSUPCqVHUMH0YdZZFVeOfjv2M5XRPTvX8gMR4DsWXzwExlCXbFfJ50blv8vtG2z9ZuHz3Qzp/ryQvp76CGeMxUNyznMcOD27zMFVuCuNiKAPcYtbdfN8m2wuS+CBolJs0Z3m2EDo9U+UECpu909
- I26tOuKa
- jf3lArktEfMvuc+4iWAsyxrKDWwku6Y1CK/jtkgIghhwuAgicb+QKLMuW6XMfnvwWqy/B6JbBT2gLzZS+FqwiDPgCDFh9nQrsc7+xZKMSNpKvB/EGlX+CWY6NgEOa816194/v+vHf/WPMr8u6HvO1lgCRTPWTWkeryb/ElS5Y81IzUJU7HSm7kSEgo3WFAZzkEC5S3KhmU3woh3G9gs+mlg5UBkbvd3/0BxJud+Uat6MXZ5s=
+X-HE-Tag: 1770047796-91829
+X-HE-Meta: U2FsdGVkX18bgwcYjgpgneT8ZAA9kH/c8bXEW1VlaenjaL6s946XT8MfA8M22Qck8VKGYxIy4ZM8PM83JVwuspmfVUiKPBvO4IVHDE5rqxpU1T+3yeyomdW2t9/t6bJz0cG2VoZunnpujH3JBqKtuqVj2CwMKy/mZtgs+0rz49LfZdt0DW47Dkalnuep6BOtLm92hIzI5SnIPKVhkBaIfXW85anjZ4VsVX+Bmqg32rj1mqJ87oESmzZK3PVK8k1rGiurHEnL5fVmoB01g8chF6atnJQ0Ms4+Gcbo/ntyhXIBikiL6Ak6ILr9YqzxwwOGvP2gpHQuhgFuE45JVZW6HbWyqkJ152G5IFVZ+pOKYt3nVFpURrFK6IA/ykVBueNq5wcpvFrzRX2+YNk60Gbvwum3vpLHTDE3jqB5ruDrbVikBIweQzqjDzf6WnACxuF2K1Jss4nNjweiYZFqd3PZmPycaShz5o0CSDCTUehe6NuqhddAGFpt59FHcI70xsXOkCkGsXX7sDWGwFgDLe7ohSwIH1eVqi35osfq4ULiOOnAatA0c/gzMjwmDciISLaJ6hTRpJg2swItwDpnCpJ51USfDt9bmwKyPLExBJy2snAvtyqFqgy7PlSasbfCN/DBcR0jRy0xAwXNL/DKkaGQZSbmJvqfqeLxIctyT1TtMxYoEA1ceyAkJhOh8vQtCOqty0McidJvVv1eMugO/tlJiF5HdgKTEFpCczdB+5cygtdOXZVhrsdjpePV0rouT3TySv+W32uzplhBZXd3zKk5y2bS9HPQUVqLrqJkBs6/6E2VqmGqYHzBS0wQITemfIalc2DqVBEqHDPwCJE9KKCZCMrjZMcRsmMHj3qewSGmUghLn6voT/KtTh1CHlHccWF335a69StFrNlfQBGLvl516fD3F7o8qVBXoV16hRDZeJbn0GzQed5LtY4/eo51z9m9zvQbCh0MyieoW2Uqqkl
+ cTHBtMs2
+ SCweIr7TpeABqutQ/ryv7VMdJrmmdcHvS9blf9NX4wtatfk78dMMpqpJClhGfPkrMPki1UQpVRWe3BSyITgFMaC7kHkao4YwudMDsTPuiBxhcs3kaBWI3zv8Wia0MF66iSRcNLI80v9DCxOWo/MyAgcTw7gbwOfqepCGBFGWX2AnQNzVB3GU9R/JH8efgM73OFbbs7VCb4WvFQhTZ5O1Iel9KzstmGGT3GBSumbW8wsUBMHiqSM298M67Id7Tw+os+v6uFxkPO/FIsxqihFLpAutwJuWX9QO7xEEAz4dFzxtDnGN04Vx18FDYij5jsWoP46h1G/Pj5QthSpEcwnJH6Wbc/8AP/Kezj3oC7ZReg5FA3jo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,76 +103,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 2 Feb 2026 09:58:31 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
 
-
-On 2026/2/2 23:09, Peter Zijlstra wrote:
-> On Mon, Feb 02, 2026 at 10:37:39PM +0800, Lance Yang wrote:
->>
->>
->> On 2026/2/2 21:37, Peter Zijlstra wrote:
->>> On Mon, Feb 02, 2026 at 09:07:10PM +0800, Lance Yang wrote:
->>>
->>>>>> Right, but if we can use full RCU for PT_RECLAIM, why can't we do so
->>>>>> unconditionally and not add overhead?
->>>>>
->>>>> The sync (IPI) is mainly needed for unshare (e.g. hugetlb) and collapse
->>>>> (khugepaged) paths, regardless of whether table free uses RCU, IIUC.
->>>>
->>>> In addition: We need the sync when we modify page tables (e.g. unshare,
->>>> collapse), not only when we free them. RCU can defer freeing but does
->>>> not prevent lockless walkers from seeing concurrent in-place
->>>> modifications, so we need the IPI to synchronize with those walkers
->>>> first.
->>>
->>> Currently PT_RECLAIM=y has no IPI; are you saying that is broken? If
->>> not, then why do we need this at all?
->>
->> PT_RECLAIM=y does have IPI for unshare/collapse — those paths call
->> tlb_flush_unshared_tables() (for hugetlb unshare) and collapse_huge_page()
->> (in khugepaged collapse), which already send IPIs today (broadcast to all
->> CPUs via tlb_remove_table_sync_one()).
->>
->> What PT_RECLAIM=y doesn't need IPI for is table freeing (
->> __tlb_remove_table_one() uses call_rcu() instead). But table modification
->> (unshare, collapse) still needs IPI to synchronize with lockless walkers,
->> regardless of PT_RECLAIM.
->>
->> So PT_RECLAIM=y is not broken; it already has IPI where needed. This series
->> just makes those IPIs targeted instead of broadcast. Does that clarify?
+> * SeongJae Park <sj@kernel.org> [260131 19:10]:
+> > Hello,
+> > 
+> > On Fri, 30 Jan 2026 15:59:26 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
+> > 
+> > > Add a helper to do what is needed when the maple copy node contains a
+> > > new root node.  This is useful for future commits and is
+> > > self-documenting code.
+> > > 
+> > > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > > ---
+> > >  lib/maple_tree.c | 70 ++++++++++++++++++++++++++----------------------
+> > >  1 file changed, 38 insertions(+), 32 deletions(-)
+> > > 
+> > > diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> > > index 5280fa6d2d6ec..42038e42a4c7e 100644
+> > > --- a/lib/maple_tree.c
+> > > +++ b/lib/maple_tree.c
+> > > @@ -3337,6 +3337,43 @@ static void mas_spanning_rebalance(struct ma_state *mas,
+> > >  	mas_spanning_rebalance_loop(mas, mast, count);
+> > >  }
+> > >  
+> > > +static inline bool cp_is_new_root(struct maple_copy *cp, struct ma_state *mas)
+> > > +{
+> > > +	if (cp->min || cp->max != ULONG_MAX)
+> > > +		return false;
+> > > +
+> > > +	if (cp->d_count != 1) {
+> > > +		enum maple_type mt = maple_arange_64;
+> > > +
+> > > +		if (!mt_is_alloc(mas->tree))
+> > > +			mt = maple_range_64;
+> > > +
+> > > +		cp->data = cp->d_count;
+> > > +		cp->s_count = 0;
+> > > +		dst_setup(cp, mas, mt);
+> > > +		init_cp_src(cp);
+> > > +		node_copy(mas, cp->src[0].node, 0, cp->data, cp->max, maple_copy,
+> > > +			  cp->dst[0].node, 0, mt);
+> > > +		node_finalise(cp->dst[0].node, mt, cp->end + 1);
+> > > +		/*
+> > > +		 * Warning, see cp_leaf_init() comment and rcu_assign_pointer()
+> > > +		 * documentation.  Since this is a new root, there are no
+> > > +		 * read-side operations that can view it until it is insert into
+> > > +		 * the tree after an rcu_assign_pointer() call.
+> > > +		 */
+> > > +		RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
+> > 
+> > I just found the above makes my build test using an old version compiler fails.
+> > Fortunately, seems it is same to the one we discussed before [1], and same
+> > mitigation like below attached patch works, at least for my test setup.
 > 
-> Oh bah, reading is hard. I had missed they had more table_sync_one() calls,
-> rather than remove_table_one().
-> 
-> So you *can* replace table_sync_one() with rcu_sync(), that will provide
-> the same guarantees. Its just a 'little' bit slower on the update side,
-> but does not incur the read side cost.
+> Thanks SJ.
 
-Yep, we could replace the IPI with synchronize_rcu() on the sync side:
-
-- Currently: TLB flush → send IPI → wait for walkers to finish
-- With synchronize_rcu(): TLB flush → synchronize_rcu() -> waits for 
-grace period
-
-Lockless walkers (e.g. GUP-fast) use local_irq_disable(); 
-synchronize_rcu() also
-waits for regions with preemption/interrupts disabled, so it should 
-work, IIUC.
-
-And then, the trade-off would be:
-- Read side: zero cost (no per-CPU tracking)
-- Write side: wait for RCU grace period (potentially slower)
-
-For collapse/unshare, that write-side latency might be acceptable :)
-
-@David, what do you think?
+My pleasure :)
 
 > 
-> I really think anything here needs to better explain the various
-> requirements. Because now everybody gets to pay the price for hugetlb
-> shared crud, while 'nobody' will actually use that.
+> This is still with gcc 8.1.0?
 
-Right. If we go with synchronize_rcu(), the read-side cost goes away ...
+Yes.  The test code is available at GitHub [1].
+
+Nonetheless, another test [2] that is using 9.3.0 was also failing.
+
+
+[1] https://github.com/damonitor/damon-tests/blob/master/corr/tests/build_m68k.sh
+[2] https://github.com/damonitor/damon-tests/blob/master/corr/tests/build_arm64.sh
+
 
 Thanks,
-Lance
+SJ
+
+[...]
 
