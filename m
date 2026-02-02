@@ -4,118 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B5AE73159
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 11:04:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DED04E73158
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 11:14:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEAF66B008A; Mon,  2 Feb 2026 06:04:28 -0500 (EST)
+	id F13066B008C; Mon,  2 Feb 2026 06:14:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D98326B008C; Mon,  2 Feb 2026 06:04:28 -0500 (EST)
+	id EC0B86B0096; Mon,  2 Feb 2026 06:14:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA40F6B0096; Mon,  2 Feb 2026 06:04:28 -0500 (EST)
+	id DF6F66B0099; Mon,  2 Feb 2026 06:14:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BA9496B008A
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 06:04:28 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85E55BCB40
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 11:04:28 +0000 (UTC)
-X-FDA: 84399233016.10.79BC0E6
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id AEA2380006
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 11:04:26 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VcHreQ2z;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CF7DC6B008C
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 06:14:05 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 83AED160B65
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 11:14:05 +0000 (UTC)
+X-FDA: 84399257250.28.5A35775
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E555B180012
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 11:14:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gJ7L66OP;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770030267;
+	s=arc-20220608; t=1770030843;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RZEap9olFo7mT2sNYk1w5rpD3JOe/VQuaiSKjgwHkTY=;
-	b=IaKS2DalR+IXZzZ23HNxHGkA7hB/xq879icm7578eX0KHaht/a0kj9aNkm/sR35qFbHp9z
-	cXo9I+9xKwV97o6K/8uf4IxVja2zzlF5AvN+bSgYnBMpGJs8TwP3zbSa5RSiUrHAdT50aZ
-	XO+8kBvdqOpc0FC04Y8ZNCxmGV3PiI0=
+	bh=CbfvVs0qu7Uc8AuPw+57sFfgDNE6r6zOJCt7LaSliKs=;
+	b=elPk9evM9S626f+CwH2DSu7GVU5rXdKUBN7DAIxRJpuWQO9eJ8BXWePgG5eRR9l4MvEHEz
+	MVuAN7311eCfQsAbpwXx02+hYdqP2HMRQTyLvq1kvvyjA9mPwB3VnF5QG2eNOL/5+hdfmn
+	cRwL4wpk1csZ/nYGgUPrkrlXzCVFDHU=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VcHreQ2z;
-	spf=pass (imf02.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770030267; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gJ7L66OP;
+	spf=pass (imf24.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770030843; a=rsa-sha256;
 	cv=none;
-	b=zURBDKPR+nOW09pGD7GQc5NMKAMYng66g2NFSU4LmOH0wfWJ7PIE8dma4e14ZULQK72cTy
-	UtugXzeeA9OGnrP9qPnYJhXxD6Ztdd6vyjy6X84oIhTnsS28nQzhD3AbfOQllqAhkwPySO
-	fyQH8BtSowV/CkQ8B8lI3H/uG3XNets=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770030262;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RZEap9olFo7mT2sNYk1w5rpD3JOe/VQuaiSKjgwHkTY=;
-	b=VcHreQ2zTk7FVhSAZ6GgUVFwokNTeD4Qx5X8cU/BISIGZVGpdy7EuBWbXiewHlZJITBq1v
-	h/0NPTey/RmvLR2J0f+PVlOVl0tKua0+75bhoCb7KXd8iwLBkGedJYaf/5skYt6MUHgfFl
-	4MeXi+ZucQEe1Qgwzqawa5cry7k29lc=
-From: Lance Yang <lance.yang@linux.dev>
-To: peterz@infradead.org
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	aneesh.kumar@kernel.org,
-	arnd@arndb.de,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	boris.ostrovsky@oracle.com,
-	bp@alien8.de,
-	dave.hansen@intel.com,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	hpa@zytor.com,
-	hughd@google.com,
-	ioworker0@gmail.com,
-	jannh@google.com,
-	jgross@suse.com,
-	kvm@vger.kernel.org,
-	lance.yang@linux.dev,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	mingo@redhat.com,
-	npache@redhat.com,
-	npiggin@gmail.com,
-	pbonzini@redhat.com,
-	riel@surriel.com,
-	ryan.roberts@arm.com,
-	seanjc@google.com,
-	shy828301@gmail.com,
-	tglx@linutronix.de,
-	virtualization@lists.linux.dev,
-	will@kernel.org,
-	x86@kernel.org,
-	ypodemsk@redhat.com,
-	ziy@nvidia.com
-Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
-Date: Mon,  2 Feb 2026 19:00:16 +0800
-Message-ID: <20260202110329.74397-1-lance.yang@linux.dev>
-In-Reply-To: <20260202095414.GE2995752@noisy.programming.kicks-ass.net>
-References: <20260202095414.GE2995752@noisy.programming.kicks-ass.net>
+	b=BBsBJA84jNTdw8+8y46ShtRPHCN46rGSgI/Xlz8BxoTRCfb9ARCLCD6IBHK/S3JKWEvpnP
+	7Aiy9tZ2kGbeVM3JtcULdNpMSP+/WITsBFKnq/s2FFFCMcaIQXzDKYzgYsxMJ+c8m+zUMC
+	e8843dd9nbonmye6M6aUGVhACqzYlsk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 19EFC60125;
+	Mon,  2 Feb 2026 11:14:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA24DC116C6;
+	Mon,  2 Feb 2026 11:14:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770030842;
+	bh=gdslb81gtLt2TMFtb7dneZ/Ac6aZj0W0zEgWfWUAcU0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=gJ7L66OPr1yuzQpNxQQHYwTEkgzE0OARBNuA24P8pJPlZrtl05mzoGkwnqzIR37Z2
+	 Sief+o2UwhkzAKhSKYOafVOaHNJVEzdsB9lcBBLK3XwQ+0aMOY1/pY4XmmDgVIUalt
+	 OKL7B6i6GBg+hIGESmchrf0FoIIC0cg7LK+LetnizD19pyO6Rd7KwZeoRFRX25Exkk
+	 iOnjyKsyP/1gK+MgZOQFhfdKUBWx4f80gJw9Pk8PpgugQhrA+ElMiyVU7xdOtul8iA
+	 0dEkuXQlTku0J0Eu67IigULEf7S0b09/UmCbdDtWiD60its9fOm8OAZvlux7QXSFpi
+	 JzXnxSmkzTkXA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Pasha Tatashin <pasha.tatashin@soleen.com>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] liveupdate: luo_file: do not clear serialized_data
+ on unfreeze
+In-Reply-To: <20260130115004.b530155b27d6d15929bcfa63@linux-foundation.org>
+	(Andrew Morton's message of "Fri, 30 Jan 2026 11:50:04 -0800")
+References: <20260126230302.2936817-1-pratyush@kernel.org>
+	<20260126230302.2936817-2-pratyush@kernel.org>
+	<aXnwvkuTBL1NLt7f@kernel.org> <2vxzv7gj7wv7.fsf@kernel.org>
+	<20260130115004.b530155b27d6d15929bcfa63@linux-foundation.org>
+Date: Mon, 02 Feb 2026 12:14:00 +0100
+Message-ID: <2vxzqzr38kjr.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: AEA2380006
-X-Stat-Signature: ag1xnpxb5613hardo6zk6655i3yqe7j1
+Content-Type: text/plain
+X-Rspamd-Server: rspam11
+X-Stat-Signature: w558wpick67cr46qc3o48cfe7os13wu4
 X-Rspam-User: 
-X-HE-Tag: 1770030266-238930
-X-HE-Meta: U2FsdGVkX1980Rnsj4WOWk4CqCNNxZaVaq6YGbb6X8h0W1GWtOqFMVCFHQlYktp3gTVcC8r0d3cZldTdBdtYOjFVo3DjaOzwGYm8hOp6SCHu0b4lDJfFJjBJ8GDv761fA5ETHpisSaPd/MrbL9NA5tGX29nkyoy8j+Iptt+49y6YZTTckpy99bZC80fED4VdelzLZnbG0OUjSd/870PrmBziMrNEWfi5PS3dmEaMaoYrtU/lcBLEVdn9v9I8T8QIYK55+l1dW5sQG08VBWW7FdeE4pkdoRJYTArXsCthDo6taNSfTRNK+TQxNcatL0zjEn8tzqxjC8g6Sl/Sg15m82BRjckAM6LFYkGk4KoztxB/csbvetOTeB47KbzYf/tiJzImiNUTseksjOUmZ68shK2QstN/YtX7C4CE6NoXVf87Dt6li2MfYL8Xg18lbrOU17a+SnCE8Wj/KXLXvVNItOO1otuoBGYk3VRw8PTbH+mYjKJa7fd7cKiEfD7vAqfQV7LC28QuFlFgntPmxccjV3w7x4kaGlv5Yb8hIsBYmJXuYnddGxEE6bJUgZQCS5j2Ocx97ww7dOlKWvRPNHE4fGy+llkrwBzcoMongXGAANQl6YzSDa1xWhFiQI/g/e+7pTNFtq1aMyOelA3ZELyetpZb+OTLrRd5fqRmqAI9g8UqMc31h0ak+2m5yf4dVM29Ikx22/2ham8XYZhBKX/h6JxrbgkD/X7ytA7q0uYWQCgNtLTjOgnYjfxH1W+GwE+/CxcwyHuFOjOMBP6beVC+e0cQxSAzfGSYb/HnmpE72hiXiuBJk0t86CEVUv0i+tOCNBMKwCreEdjPiYFNc6uy/yhs43nJK5BjJWI+ev7RfG859CF4L7Va0OZu0KXyGMnRz1W9KOvABng7cz5rzMXS/dkejNtNoSkORK930aPO8lbO//i9vx6QLp1brDm7lX1W+NWT1T0HV78v2UVl719
- JshJP4EJ
- 3rbBxAe1MNAE1QxEwO73wREseNM6XaDOxseyWaujCh1gDL17d8+qaB3O5wcuUnv3W7Vrqfqx9XBs6PCAsEr/QbZsmMOSGlK5HclG3ZpITQtptbJVM6wUtLB8RClhttds11WE+EpLszRryWYk/xja0AnNo41sGpt1V5J0I4cagy8IvnQMOVxuuII5VZoCUiX4scV2XYoxzZCZCakU4HUjC65r598YzQeEEt3cjqI+IaAw2bhA=
+X-Rspamd-Queue-Id: E555B180012
+X-HE-Tag: 1770030843-997802
+X-HE-Meta: U2FsdGVkX1/XIMhXdp1OXnNALfWH5SqSZr78p2cg9uqK7q8U/qTc2FqVJ7Hed7gWdfDS3Bb5Lugr0jbksUEQTGpV5s09BgCdleBuAsSoUP0EynbFC9Oz4odmZYBQmBMcYx9YxzIL9tXLcOKlYJMYN76JvqSrhfBGp3DwwpgXQzRGBeS+q7vMaSmH86KaWpD2+3l1OEyIn6lrQah2YP+Ad9NZ4u157k7hOkHe6gkC1kMtLf+rBNjfkkjCZWMKb2cufG2iCgwgcrlkYuGQ8lyJpXyvqbKjSz8VbkO1vnRrldnXroHdFdXbVSCvVOPElosa1osBduTnfTpE7QtF389ozH4XlCWrFymyeAdnumy71Z0KpywkC/RJmJeRKfQrcHuWb1XZiSEtpep+tdXSWxGX4cVDsUgRsWsFhTvWBjUaZtvc6/jHDzWu55i8uYu5gQKc4ZfRTyX/wBwmxJ2bqHT3qF9qGBTCRvpdYn9yKb0CKhlwXO8Y86KEY1hXu9l3wVs0dbCSoVkauo3pvvIBuY/ni2OIQeYtM/tnUXRbJ/0ILLkASsmHxbvUPORoiA53FiClOaClVN9+tQEo7OOQbIji2mDe6+9YcOPZUTNsy86fedhLSsc3xJ+/oxg0I7p6nw6r/KkkH6+WhyjsdjxaabqkSbB/QT+/+so4DptKsBT7Z63wBsuCUA5R6+V86DhOvUjeHEFQC1G3c8H+dujpFNaWw33ymebkmUYQjCq9EOOAT7sQh8+hKhwn2gHhQdMQlusRUwFjXhdOO2SOrP8+89uD0nu1nQh9ZoB1cWL12wfmO++IO/8XHFHjoSwJOwwKDhPuXs30v2ZAQUV08sjTx6KmrSoxZIJXUoGoC+aEhCdr8R2SbaA8FTfgH73GPcMRJxX/x2kIxmSOG/LJyd8c7zyzrO8DmWHfaNBC4llkYpWCPNHmvlW3bnLgVcs4c5Ucg+T3ePq6NiFFHPppolkVVZ2
+ wQbd0Ei0
+ mG5WOFUKKXYof5/KPk8WGKqfbXp4wcE7lzLnKYcQii6qFppfrExuftLcROHflbMNSN7jIHu2LxCoatbhWztLc3mm8l6PCWrjnhzebPld5UUQUyisVvm9Rs4ViToHsfVIaoSBnrjivaTQPob3+Kzh1rrfEg8jHzx9rS6xYBtA6ODD29N4w8EC/TFhPcK4x2LbmgXGoNsLB69jT1ggAXx2B7oVjLzDTgLjbeCIuI15NTQTxLLQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,39 +97,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Jan 30 2026, Andrew Morton wrote:
 
-On Mon, 2 Feb 2026 10:54:14 +0100, Peter Zijlstra wrote:
-> On Mon, Feb 02, 2026 at 03:45:54PM +0800, Lance Yang wrote:
-> > When freeing or unsharing page tables we send an IPI to synchronize with
-> > concurrent lockless page table walkers (e.g. GUP-fast). Today we broadcast
-> > that IPI to all CPUs, which is costly on large machines and hurts RT
-> > workloads[1].
-> > 
-> > This series makes those IPIs targeted. We track which CPUs are currently
-> > doing a lockless page table walk for a given mm (per-CPU
-> > active_lockless_pt_walk_mm). When we need to sync, we only IPI those CPUs.
-> > GUP-fast and perf_get_page_size() set/clear the tracker around their walk;
-> > tlb_remove_table_sync_mm() uses it and replaces the previous broadcast in
-> > the free/unshare paths.
-> 
-> I'm confused. This only happens when !PT_RECLAIM, because if PT_RECLAIM
-> __tlb_remove_table_one() actually uses RCU.
-> 
-> So why are you making things more expensive for no reason?
+> On Fri, 30 Jan 2026 19:56:28 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
+>
+>> >> Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
+>> >> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>> >
+>> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>> 
+>> Thanks.
+>> 
+>> Andrew, do you mind taking this patch in v6.19-rc8/v6.19 hotfixes?
+>
+> Yep, that's where it was.
 
-You're right that when CONFIG_PT_RECLAIM is set, __tlb_remove_table_one()
-uses call_rcu() and we never call any sync there — this series doesn't
-touch that path.
+Thanks. I didn't realize there was going to be an -rc8 and I didn't want
+this patch to miss the final cut of v6.19 in case you were expecting a
+re-roll of the whole series.
 
-In the !PT_RECLAIM table-free path (same __tlb_remove_table_one() branch
-that calls tlb_remove_table_sync_mm(tlb->mm) before __tlb_remove_table),
-we're not adding any new sync; we're replacing the existing broadcast IPI
-(tlb_remove_table_sync_one()) with targeted IPIs (tlb_remove_table_sync_mm()).
+>
+>> The
+>> second patch needs a re-roll and I don't think I would be able to do it
+>> this week.
+>> 
+>> This is an independent fix and I see no reason to block this waiting for
+>> the other one.
+>
+> OK, I moved "liveupdate: luo_file: remember retrieve() status" to
+> tail-of-everything and added a note that a new version is expected.
 
-One thing I just realized: when CONFIG_MMU_GATHER_RCU_TABLE_FREE is not
-set, the sync path isn't used at all (tlb_remove_table_sync_one() and
-friends aren't even compiled), so we don't need the tracker in that config.
+Sounds good. I'll try to send out the new version in the next couple
+days so we can include it in v6.19 final.
 
-Thanks for raising this!
-Lance
+-- 
+Regards,
+Pratyush Yadav
 
