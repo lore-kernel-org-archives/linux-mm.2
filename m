@@ -4,92 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4A9CE7DF11
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 18:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 279F9E7DF11
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 18:32:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116E76B0093; Mon,  2 Feb 2026 13:31:59 -0500 (EST)
+	id 83D976B0096; Mon,  2 Feb 2026 13:32:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C2276B0096; Mon,  2 Feb 2026 13:31:59 -0500 (EST)
+	id 817476B00A6; Mon,  2 Feb 2026 13:32:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F308D6B00A6; Mon,  2 Feb 2026 13:31:58 -0500 (EST)
+	id 73E6C6B00B7; Mon,  2 Feb 2026 13:32:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E00266B0093
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:31:58 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B3C48ABEB
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:31:58 +0000 (UTC)
-X-FDA: 84400360716.12.4B591ED
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BB6D5A000D
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:31:56 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z64+NLzU;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 601ED6B0096
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 13:32:21 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D5E5189F88
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:32:20 +0000 (UTC)
+X-FDA: 84400361640.23.73A2139
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5DEE510000C
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 18:32:17 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XDpTVO53;
+	spf=pass (imf14.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770057116;
+	s=arc-20220608; t=1770057139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xyo78MBxU8zUsEU7U2GUhsC/82MXVnewvubqA7hX0k=;
-	b=etnK91F4EplxIqpK55IsbUYR4ksuH/JGxyhhqs3ArKe0Xz8S7fY7qjqsEB2aiRpHJkp/eF
-	ODUfqPmh0czxGAXtDpimLSGMBKmgG+FlZ6dG9b6uUtmDPS2OWbXgTMl+IftltSO+dQE2Kv
-	NUjxI4dtvIZPGlcg1BDpVGYV72g+fWs=
+	bh=J2I5Xirz3pQC5OR2RcgNO55sGAXhl5cmAGqNiApg/lM=;
+	b=RVKWrC9CTLfYDOre1hDxcXzayLPDgVEyA5k4ECvBLWkomzk2++EMyPX52lnvZ8w1/EyM2u
+	doaDZlX8YWznpmMNd18RywVjYNqOKT6+Ogzbh4Sa0p+Va70IW6yBXNkmOlCx1C1GZiaktO
+	LYPmT3Xz1c1GdUFFoH+/pOMFe0miTyA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Z64+NLzU;
-	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770057116; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XDpTVO53;
+	spf=pass (imf14.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.180 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770057139; a=rsa-sha256;
 	cv=none;
-	b=r62L+y5XmXmCe50K8x2QUJLzjeMbC7ulOpp/ZNHOp+nfXF+PZfzN/ZwaAxMsln7Kl+3WC/
-	dcGva6TiRDthfU4h6Svt5MOUALpvVydZVUUUfv/hf97uY3OKDZ1mO6D2tOQD0vzlx2snv+
-	1MoUN2w1OSU3qxVZsd0cYxUbcJEp57Y=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B78074184E;
-	Mon,  2 Feb 2026 18:31:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256D0C116C6;
-	Mon,  2 Feb 2026 18:31:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770057115;
-	bh=R2DT4HWeigHMNhgXBru6V1V2CvzOd5jlqJE3cgcmIZ0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Z64+NLzUOnziLDC4Sju+bVTSPN/lMfQrg7oFTnaaBLAO0pfvCEOFbN2LWoEgFHGQb
-	 tuwQPYYbGfuo4lQ9HuycGTPl8nkp4sf91QenGm+rx7Z+tyvh/fXmAbw37wUAg2C1Or
-	 Qi/EJUYhDDtxpdb+E0p9xZap6Of+aB5bn+CIhc0E=
-Date: Mon, 2 Feb 2026 10:31:54 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: maple-tree@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Suren Baghdasaryan <surenb@google.com>,
- Matthew Wilcox <willy@infradead.org>, Sidhartha Kumar
- <sidhartha.kumar@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Alice Ryhl
- <aliceryhl@google.com>, Kuninori Morimoto
- <kuninori.morimoto.gx@renesas.com>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Arnd Bergmann <arnd@arndb.de>, Christian Kujau
- <lists@nerdbynature.de>, SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH v3 00/30] maple_tree: Replace big node with maple copy
-Message-Id: <20260202103154.ad1aa05611c79d21b070a861@linux-foundation.org>
-In-Reply-To: <2erbnreqpkyzezjn6ake744bw2avcnb6wjalvwh25desdw2lde@bahzqodw4xsy>
-References: <20260130205935.2559335-1-Liam.Howlett@oracle.com>
-	<20260131122724.ce19aa2f8260530bd3dee102@linux-foundation.org>
-	<2erbnreqpkyzezjn6ake744bw2avcnb6wjalvwh25desdw2lde@bahzqodw4xsy>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: BB6D5A000D
-X-Stat-Signature: 8a3ac6wish6aizwtskbfsnfenz4ei35z
+	b=C6nBqIlr5J84zIoi+kovEyGL6HCSte1bHo5cnG9rNHwsZoZIRnMSCOkax3zUcsjqElopPP
+	4xTe77BnfTumF3bPPIo1UaklO/5jRyR3a+uwKxQBEuwkf6RKr/8gvaYiOxvp77JDRdNS+U
+	cPCjZJAHvYiT8wTVLnqDWMTX9jhFdsI=
+Date: Mon, 2 Feb 2026 18:32:04 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770057133;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J2I5Xirz3pQC5OR2RcgNO55sGAXhl5cmAGqNiApg/lM=;
+	b=XDpTVO53XUXfn3U+M/5MazYPP75mXuLOUQTdB1sSlKsoL6uk/w4tS/0ViizWTh2VmtrwRt
+	XH5OMQVk7wQ6nOIcC+K/9LOJMyZ8Mg7DVpCoo7ZXuko5M8TGMRQIckxLTXsSyoKBMR8g/z
+	EA27A3lAUSaUBlak2xvMAadgsTHa228=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Chris Li <chrisl@kernel.org>, linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH] mm/zswap: remove SWP_SYNCHRONOUS_IO swapcache bypass
+ workaround
+Message-ID: <h334qa735tm7ejbamm4ki2zw73j2juvc4jg5xqxogcyqqvju5p@f4e73b3gqjlo>
+References: <20260202-zswap-syncio-cleanup-v1-1-86bb24a64521@tencent.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260202-zswap-syncio-cleanup-v1-1-86bb24a64521@tencent.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5DEE510000C
+X-Stat-Signature: 4d1xso33jre6xzoqzh4jqofsoanmmoeb
 X-Rspam-User: 
-X-HE-Tag: 1770057116-262443
-X-HE-Meta: U2FsdGVkX19gzwFvA6xDQ7ExSDtvyK4E9dVjcWxJOjpMp+XDW+/gQUARRvwztHBUjy872/bootxtRJh5C7+DUbD0ej3Co+Ob6C8tpo+zkuAmknzaIUHhHdWkHmIiLByST7TAqEgs3+g/9tr0OlwBCWT6GDUcKV4xtX6LQBnHs5rRw7wIFZCd7TzKjoS3BhfzVFuPzd9tt6qjCpcvnJFuMbaBupxwgkgG+qKWjeYAuJqCXwPHhh00hL45M0l5gJfalySWUjf1qlCxpdT3XJGWY9V032CiIhOWoKUHMS8XBS1zpSnk9+jZHd4FTCEKQjzfpqqyuPD31PBGg3KGU0syTDS/1IehHk2050lLalj2sLAk2nvwsetBtpATHOZKjYY+ZtKDYdwSQIkxRsudGQc8GnA38mk4LzyUV7U+nJoEOxeLz9Obi/HIFB61U6HdQtitozVaPIzcgPjTrfiKW8W+ve1M5JintWVPxu+1tJ+rXiVaFbxPMEeoQWU6WyByTIEa8hSPn+3+uiCepNUDXbFEt7oj3RnV4ifeZQmh6M32ghae9KRp/oag3Bvn8EgDoIVK+b5e/bJZjfGVW/qamCmv67vZf7ZT+QS6lKZutY4gpqeRAgXca/Li5YpqpvhXIEUJ4x/tGCuKedm3ITE3d+UG7xhDOubpskypGAgOC3HmUhMOhPc0vwgIWs/HBKCcGz55ZDjk15OHDZW4xGruTIRHgD2ejBmy+KO3htdJF1L7QhVc9n3ksfALinUpwg8cZ5CeKG9kYXqV6rfqWVg9dqQO6eJkeRxzSkwr5Ejs/bQm6PgR6At/xNGgvhZo+TJaqSHDk2xhR67UCAS4GZ3ED5Ph13R7JqCgoQuhPL03odpH/XYAymdoxrYnd94JOlrqPhPE6f5nvsXejxWZ7wCJjJKuA0C9aneCv2pWaeCcJnFp78mxJPTIyn0s3+jT5NoXeT2h6I4gnlDk3GlXpKmndQr
- Wq2vvJw3
- pGKq+zVW095KtqjCOVdjGxz9rQVFOt33o70uSOwAuMDXyPZAsibMWh3lh6SPSEAnY1rQeOXozyAHnaDdFr4R96p5WRFqQGxnsE0147b7DJXWKoImspAi7lt6D0ftU6FJeC5z6QBuW5T2MaBt7EM+kHG7YuJB+sFanXaMULaR9PY2r8YQ0Tn1TU2R8fg4H9ZrPG/tGl9c3GwAul7qVIJePCSlqJJzzkBjoAVE/nE6NJb2nYiXVQgqSwfGmwQVLQXEJDsN/UfVDsKOdIQ1W/44wbeAp1XjuRVhXV3F+C9F9C+0TSFXVD2Z0Wc8YKVnEcfnowod45uMctlLdAlJ56eqyfioqbkYWOwhHSgLbE2RpjygLyhdYsJIjZe/7NcSwuXxYRZ9U
+X-HE-Tag: 1770057137-660323
+X-HE-Meta: U2FsdGVkX1+UG1YbpIV+/penOQ5PDCpsSSh3nzEzKZ5f83Tb6qAkjoaZbybKxmGcz5mZcx9zrqD6p6K7IwdR1C01v1eGMLtuiZp8bD9JiyYpJPKumR/hEUzPRrdh5gfjk1dc+fHXjywr2Wydlf67r70fltZX2y3LJCIvAZhS6ZVezs1kDBkd+RX3h5UIXSH5B5EzxoMUz8sRmAem+OXRPj/M6BmbsloPtt+Ol/UmgjH+TGcDATvepso/nYyzbMTFLXRQODgUEkdIXHf3S0SI54zLwgLmrIjXon3dbYY4t/rm4mU4zwt/d9fGGvsL9JMX61uASpNX9Gyd6PIsUqqulaMqn0iJUkhQ5OI2Rk+GbLoEOKixe/Glhuxa256GID4OawrhsT9gS34dFq6R1m/4Hvie6JHXl0tusMy+/6vgfkB3mGt42qqD6/lftFpMwiaQknCD1za15ikcceoPNXP+b0xa4oVz5/Yu3Mqvm4zdwbfdDyJG/SGgRiAyXakXUWUhLTh1rvtnsXkFBT4jM5vwsOJY+GOqPAeMxVwQyxYffVdPTokHvDd9D7w410I4u4SX0JeFv6h0pLNrG0cCznYXTvg/BlAt+MJR3P9KKwmcWlSK0t6Kpd0LchdFcrfiwk7LYWhRGRPGE/x92J3fmgQpwTjQcXVYCPpCPI3DlUJ+uYq0AkB8vyd6pnR2a/UAsKHgYQPsZey4b0EzQVS6kgSS8UqWQV861n4kjp3U9uLj8q3570XneSZkAVNMtAqjA9r83scx3HwfFq597ILzY2ow/XJyXi5Jt1cE6MKbB62I4rs9LHNkImSiBTFYUjJoPACJIvmZe1cLPuq/lXpY0Bl6YyREjNHYau45kyA3AVaikAjv1gz+66n8aKuD2/WJloZKOpp7rlXaMLUK+Fczk8q2Jda/asyoomoHcJTVe619OPT5dKgn6RMz6WdK6aw7/iADp3N9MAW/oqCMjqpFtn3
+ BwfQ2PBB
+ /jBIWzyAX/c5BxpFWUiuME73Uu3K1hA3CBUSTfecZGlNFm/UlmAYVPkgu9iELNSpJLxR09konhQuSJ9PJRrxm9Oa0BJXoomYGnBXpgKB4r3qHdeYbcP2GZx9i5bo1+hhcX67so7zPTh8U+WYAVLoLPSdIZnxM+KeOdmoLl3wISivme1XZYShio0XL3R8GNHsYu5kbHfKhnEvkpy3eK3eWYEkhSTXROVjMpbCZHi9khXCp15OY0D0FTPDNz/R1HI+2ekv1OVw0RYQ43ymyxZPjfIQFQ8k85xf2AH+A3hJsJBiZFNoZis1HCh6wig==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,34 +90,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2 Feb 2026 10:40:06 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
-
-> * Andrew Morton <akpm@linux-foundation.org> [260131 15:27]:
-> > On Fri, 30 Jan 2026 15:59:05 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
-> > 
-> > > The big node struct was created for simplicity of splitting,
-> > > rebalancing, and spanning store operations by using a copy buffer to
-> > > create the data necessary prior to breaking it up into 256B nodes.
-> > > Certain operations were rather tricky due to the restriction of keeping
-> > > NULL entries together and never at the end of a node (except the
-> > > right-most node).
-> > > 
-> > 
-> > Updated, thanks.
-> > 
-> > What are your thoughts on adding this to 6.19?  I'd expect to move it
-> > into mm-stable Feb 17ish.
+On Mon, Feb 02, 2026 at 01:47:32AM +0800, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> I think the chance of making 6.19 has passed.
+> Since commit f1879e8a0c60 ("mm, swap: never bypass the swap cache even
+> for SWP_SYNCHRONOUS_IO"), all swap-in operations go through the swap
+> cache, including those from SWP_SYNCHRONOUS_IO devices like
+> zram. Which means the workaround for swap cache bypassing
+> introduced by commit 25cd241408a2 ("mm: zswap: fix data loss on
+> SWP_SYNCHRONOUS_IO devices") is no longer needed. Remove it, but
+> keep the comments that are still helpful.
 > 
-> Can we please target getting this into testing in linux-next as soon as
-> 6.19 ships?
-> 
-> The priority for me is to ensure this is rock-solid prior to release.
-> My concerns are corner cases and arch specific issues, which I can only
-> do so much to mitigate on my own.  My hope is that linux-next exposure
-> will help with those concerns.
+> Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-Sounds good, I'll push this back into mm-new until -rc1.
+Acked-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
+Thanks!
 
