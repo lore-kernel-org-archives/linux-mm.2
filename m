@@ -4,80 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EE2AE7314A
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 09:06:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F5CE7314A
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 09:09:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D0E1B6B008A; Mon,  2 Feb 2026 04:06:25 -0500 (EST)
+	id 6B71D6B0089; Mon,  2 Feb 2026 04:09:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF96E6B008C; Mon,  2 Feb 2026 04:06:25 -0500 (EST)
+	id 68F166B008C; Mon,  2 Feb 2026 04:09:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C05976B0092; Mon,  2 Feb 2026 04:06:25 -0500 (EST)
+	id 592836B0092; Mon,  2 Feb 2026 04:09:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AF8436B008A
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:06:25 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5D864C34C4
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 09:06:25 +0000 (UTC)
-X-FDA: 84398935530.07.85C067D
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4812B6B0089
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:09:45 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F059F140B32
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 09:09:44 +0000 (UTC)
+X-FDA: 84398943888.15.68398BF
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AE9664000F
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 09:06:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z6Sej69s;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3F6F5180009
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 09:09:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="h2Jlry/o";
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770023183;
+	s=arc-20220608; t=1770023383;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Hiw8i5iYt8AiyMW28MWPQXYMSmeX1sWRuuFd/pjsj4=;
-	b=x9yoD1NYhYRmJrszJsGW6O4aZYOAdcWM1kDlo0p9YVPiy9fVlGbJpZ1k8Y2jVFtEigoG+D
-	uDxUmFmDbueYsd2oD6dTdncI0iGMOj1NCzZcRAYVksamSBCtjjICf685i0scWYpVNwp1rC
-	Zs0QntHvJjhIddMA2mUEOZJS4rSE0hc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770023183; a=rsa-sha256;
-	cv=none;
-	b=fU0iRSt97Kh97yD1swnb7kyhQnDqtaGrYhm1QCZDQiH+4XM50RUzP2bCMofSLbO68GWvw6
-	MhrgaJK9jtwYRw5MF9n+lwNGK0lWcKHtISulQbwTFbkOwrfgE2Fe6GMMfxuIahvjpcuEYP
-	Cdfi0/KZ+IacYu3kKSZo9rAf4zQ4AjE=
+	bh=y34vlxSNSXkMqi3b2+JMXqTHLOgE0Q9zF32I92J1OJY=;
+	b=FAWtyEw06ZGrXixLSCtfSoV6a9JtW0bHITm5FfECAFdtODE+9PtWezlvWt6PA5Gt9wa7la
+	sQYWFgw9I1Yqz0vOzP3EZQnxg2ZEB/OfQ5Wssk1G0FYJj4nGKSK7nPXX0yLWoKl0YulZBu
+	XcmXOk+vJQoKHzNzNwHlsCeiQb4bKC4=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Z6Sej69s;
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="h2Jlry/o";
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770023383; a=rsa-sha256;
+	cv=none;
+	b=1ie5mYYbIIvGMYiYhpvp/AfL/4XU6fg5WiithlxtzEfAwrUDofX+WeeDg4T9Cdga9hAneC
+	SA1hod40EU1/4U+y66x5KoQyW2aFd/dsXRd11XEgT1RGTAA3WSOxybujiex0GmZM7T3YHl
+	UzfBzgco3cSjvtoHPgtoalmkk4HA1xo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0294A600C3;
-	Mon,  2 Feb 2026 09:06:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E406EC116D0;
-	Mon,  2 Feb 2026 09:06:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 84B9360008;
+	Mon,  2 Feb 2026 09:09:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B39C116D0;
+	Mon,  2 Feb 2026 09:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770023182;
-	bh=fo6NhVGIQqemKxe9ZZvK/jM3T+1bXA+BAOzWhjoeDDA=;
+	s=k20201202; t=1770023382;
+	bh=tzRWv83z8SL/77gP46NHWBt2YcXJqWX7YiNGdoNtyAU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Z6Sej69s+w0LKQ7FeIhvn14r/S0dGDexKBfNsmeHk3uxLqUHNGoQ6kEIkr0h4oZwc
-	 Pyf4oI0ugpOf2JX5nNqZX8924gTOz0R1RuYxvGlOI3V0fqwunYaWtV2Rlw8TxJ5xBg
-	 y17ILG1K8GAvIQPs57v5vZcnHibO9/Rw+1y3RLcvseydilQELD0QTxYztH5pK050Pf
-	 uY6Msd30koKvgN2IqgDJowVjzlIEVSqxVWYFAtepjM8Eh/au41QpmBbuwHj7EtLKwX
-	 A+jAXKPhbbIFfcAxcXuY0wRdFxqlHn9C1bNpr7pFSre12YGPIvJrv1ODSabL4/UtIv
-	 5Jdc4GtLF6jug==
-Message-ID: <7d6f5fd3-9652-4e9d-89af-e81ce20df8ba@kernel.org>
-Date: Mon, 2 Feb 2026 10:06:14 +0100
+	b=h2Jlry/ohP8dzQOZoHxsJtmBk0XdTeScDtlbSXxXpInJ5t90c+siTOJcF74sg66cn
+	 2+bvOFA8THcQzmzmmqFzIoJOHTjWQzadFrmNjUrZcDFZgnoarAkxaF8zAhV/t6RdjL
+	 lYdsnwCHuSrXhmpsHvEsvbkZzbEywLaHP7oGCC2zv3mgCbX7b2XNYkH0OKXrzAFusj
+	 RuZDsksdZAEqKoX4hYVePddWRENNczyyA5+fYtDfX2xmnJf4Q4Zt0i06GMB4HPT82G
+	 p910uUpPYs7dSd0IgHwa/Aj+KzCrO25w1CwEnTL0t3ctOcWNzvnzROj2M9bCxpfMfm
+	 eY/VDWSUskusQ==
+Message-ID: <32968e10-a29e-4b9f-b68c-529ffd8c6132@kernel.org>
+Date: Mon, 2 Feb 2026 10:09:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 00/12] mm: PUD (1GB) THP implementation
-To: Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>
-Cc: ziy@nvidia.com, Andrew Morton <akpm@linux-foundation.org>,
- lorenzo.stoakes@oracle.com, linux-mm@kvack.org, hannes@cmpxchg.org,
- riel@surriel.com, shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org,
- dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
- Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
- lance.yang@linux.dev, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260202005451.774496-1-usamaarif642@gmail.com>
- <aYAhRjI2xNdtdvWY@casper.infradead.org>
+Subject: Re: [PATCH v6 2/2] mm: Convert vmemmap_p?d_populate() to static
+ functions
+To: chengkaitao <pilgrimtao@gmail.com>, davem@davemloft.net,
+ andreas@gaisler.com, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com
+Cc: kevin.brodsky@arm.com, dave.hansen@linux.intel.com, ziy@nvidia.com,
+ chengkaitao@kylinos.cn, willy@infradead.org, zhengqi.arch@bytedance.com,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20260201063532.44807-1-pilgrimtao@gmail.com>
+ <20260201063532.44807-3-pilgrimtao@gmail.com>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <aYAhRjI2xNdtdvWY@casper.infradead.org>
+In-Reply-To: <20260201063532.44807-3-pilgrimtao@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AE9664000F
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rht6fqgqdrd9qb98mg3m9jaq6ceiemjt
+X-Rspamd-Queue-Id: 3F6F5180009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: bua5pjbakhopgkfg36a1e8utrok8rgzx
-X-HE-Tag: 1770023183-910767
-X-HE-Meta: U2FsdGVkX1/ttw0hQid5nQKGGA5tUB/817UjbcGWcAq4WSa68u7BXRq4DPEYLZuvw82sc/bzWHFEQzGayf9M3k3Lv/YXGs7CmnG/rPMbqfiAqcoDNUp1OKo8Fj1K1xVY8ZQHTMtiZL1fJ/AjzU8iEM8jQ7rrR2IdxGMndm5DKheVjUmdasd8FAf/hlLh2N3NZvn2/yjuoKNCYVqjERps9apxImvtfaQPHm+Jwr3Qd2TQaFbfW/hyQ7kPuyuZ37Ld6HtSGql+3/A3Y2mRd9qXvl/y56yTihMHGBMqxW/LFhWK2ddZWqBhrlYiQoEzS9Dv8kWlpGX7rNDGO8+TV7oztmzBUm6oyc8wL2sgbcvcFLuilsOE4wFmKCWasYO2/O0gE+hVxhqvIe8DFbQDOzJcIMvxZoKPWbiCAJvcNin8BP8WOzEQnbb6NwzK/c9YwDYIJChOnkPt76KbwIS6w3Qvt2wGE9ug/Of2M0IH3KOauWru3DF4OV+7HYtTHW4tr/UyCSLeCCaIk+/kSKq5hzGzAPznX0EcDQBLXfhbHwp+g2rtcwUnF4spx4VxLbC1yDaLSL//n1BkuwN5nHq5Ai17pwS7tslv16lRknpP9BbADA1TB3LdkXpFdJ6oyXXH9W27kn/CUZOHsmYg858Y1/+/i0+fhX4SiWxqRGIp6uQ/bqKDsopVfEtGP3yZcSu5DnHcBiVLDKvEO7NDZ/UhrU+JFgOQgfCAGnY8EJpz4SdMhdjCPOiLWxwQLhU/vfYSW37YJCo75wY2iI8EZcS6/tiSx++v45Cumd5ru+XC3QT6BFD6uBEEZ35TPGtBFAqCzBAJ8KyJ8fzou6kU9D64jXj76bjqVnG2mj5wCvxuBrfOYS+DsNRK/Nfd8jfnhH50Sr/9pzcqw3oB5SqFDX2kd7aMHw9Vi3VnGMBZkO/4AzRlPeqDkBCuehCGfwYmO3dW3arePj2MOlDpJINR5zHNMgJ
- LxPSYp54
- OiNpLLr2yMz0CT3/Cg8wbZrM36Hzt1zt29dJorVbRyZyQ3nOCivjANAuP6mLqKvByD8ubtYcFQ5qqFUJXklVBDoC6Lb7Q+h99NUNtbHmh9QlVd6S4gIbk8q3us2VgfVeTBOgvizRgMUFibjgXhSG2k+xAT/yhpUH5En1jIPNVPoh8nWd6PFrscJRMrjVvZpkedSSsC6GkqfilD/hfowGoqJHiwohCHN9mvDO0CCk7lE183RIXQdRR7IkaVbSKfQoUfAoR
+X-HE-Tag: 1770023382-543702
+X-HE-Meta: U2FsdGVkX1/TgTswA5EXyQDudauCmwdsKBFhPQmOM3eGv7B1Tjb9kXwRvVlZtyEQ8C4cyWzUsUoIFtGe5WJ2D0nJGKWWcegaJjXSG7VWPT34tZIWByNEaKgnRAUbMdVcde9ydutzukvF+iev+9/42nFbHqe8Gw9UOXnpkrIA4CQMa8a2f6PLqhaLZrNNulPALbafph21vzBHrfiXqPgK6eGdKICrOTPc9tLFEplsNNek40baauejIXIfuJtAbD23Da1JXAMhwTNv/Pps15aUiBcm/JsG9zLm6K0F9zc+RLdVXFk4dQPgRnrQi7U1QO+YnsxaHsyoZASCzQKgjH+AhxdODUGV6ZyguXmta8MfNBVHv7lqhcKaj81OjH7TdirjhYi9OZ0tHYmnilNlYcvKkYSOfT1AuMCsoQXVXjzz2LYT84HDYZOlqpOgf0Ehxqs64IvzXi+rpm5WpmBWPMKeoddiSSLijD+RLCuAcCn2c4O+t3w8HVa6nupNxS6kq2uA154tJJVcJf+yqrMYNdYsJeLGe2h6OPhjgzvb3DcgWds5bm4NHVRq9ZhD2nDVMrzU+D726ZWdqzLapcg7GGpmXacBKV1scZ/cajhIjgCEus2sGdbpokuxxOQpbG8N4k2PnBWFU+66EgI0TZfIxL3JhWljKgcjNGa3MCa5JgNI1aLUAKIJm7X2YkEdiBmxq6oIOCdS4oi2BJWclgFrpVr6Q5iTgliYpgX1Wo0CN/nKV3V4How8fdz7/jrylm9SimIRv0kjFPzO6ueSvbeCFqtsz/TlZJ1bR7+PRaj7mwuQILuJ3WT7XkI9r+YLU2/V09Ti9BSWsmRwexQkxoZ9p32q6BzUH/9C7knlBK8uIJ/b5AhSi9o5c7toU4P/s8SFUUVQtXU+gmL8289iebcF5B8WQhSVSN2+zDGyxtDoom7TJp1MLsc/zr6v3eOyD+quv23WRVyNkGH0yV/xze4soAu
+ orx714bJ
+ KjTLfexYpSsCQfmK9SegTCYp/QVruv6oRdRT7qdhA5OHz8hs7iaZsb0ppoxtLA5hQ7gxOsL9IlsAdSgg032eqzvZF2xFGEc0XzsoQYxgN0E5Uu8h2YkiIM8LYB05ofiFUzQQIL/KuRbVHGtxPv8xfvjMj2uM0PgTd7FxkY+XZpyVnbQd/6Fs1fKZngWkFdxqTLAwUkOeLkUQnZkwSAn9Kwbr87lzJFkowfL+hdMI5+WNfMzjONKeHm5aOsyIlbv0Pckc+o7C+7BpGIXTuWOi9zdo5X1WPwh83VDJa9LUFtoegTPRyVzS5nZyQoIegh117J1d/JlaoFng55M/GSCd61RzBsMlNMlTowhICJn6DYnuPrdV9U8lILYTakA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,23 +143,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 05:00, Matthew Wilcox wrote:
-> On Sun, Feb 01, 2026 at 04:50:17PM -0800, Usama Arif wrote:
->> This is an RFC series to implement 1GB PUD-level THPs, allowing
->> applications to benefit from reduced TLB pressure without requiring
->> hugetlbfs. The patches are based on top of
->> f9b74c13b773b7c7e4920d7bc214ea3d5f37b422 from mm-stable (6.19-rc6).
+On 2/1/26 07:35, chengkaitao wrote:
+> From: Chengkaitao <chengkaitao@kylinos.cn>
 > 
-> I suggest this has not had enough testing.  There are dozens of places
-> in the MM which assume that if a folio is at leaast PMD size then it is
-> exactly PMD size.  Everywhere that calls folio_test_pmd_mappable() needs
-> to be audited to make sure that it will work properly if the folio is
-> larger than PMD size.
+> Since the vmemmap_p?d_populate functions are unused outside the mm
+> subsystem, we can remove their external declarations and convert
+> them to static functions.
+> 
+> Signed-off-by: Chengkaitao <chengkaitao@kylinos.cn>
+> ---
 
-I think the hack (ehm trick) in this patch set is to do it just like dax 
-PUDs: only map through a PUD or through PTEs, not through PMDs.
-
-That also avoids dealing with mapcounts until I sorted that out.
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
 
 -- 
 Cheers
