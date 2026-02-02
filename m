@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42534D172C0
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 03:50:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75B1AD172C4
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 04:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3BCF56B0088; Sun,  1 Feb 2026 22:50:58 -0500 (EST)
+	id 7647D6B008A; Sun,  1 Feb 2026 23:00:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 340946B0089; Sun,  1 Feb 2026 22:50:58 -0500 (EST)
+	id 711AB6B008C; Sun,  1 Feb 2026 23:00:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24C736B008A; Sun,  1 Feb 2026 22:50:58 -0500 (EST)
+	id 61DAA6B0092; Sun,  1 Feb 2026 23:00:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1602D6B0088
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 22:50:58 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A5D6513BF75
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:50:57 +0000 (UTC)
-X-FDA: 84398140554.09.240659B
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BF50110000C
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:50:55 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SQQRCSOn;
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 519816B008A
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 23:00:18 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C84D85BF57
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:00:17 +0000 (UTC)
+X-FDA: 84398164074.27.DA5ED3A
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 347FB1C000D
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:00:15 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BLEOsNzJ;
+	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770004256;
+	s=arc-20220608; t=1770004816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o/nclWki/7xNBiIlkN5lOVwIekiG827g6kvt71oYAjY=;
-	b=LxacVqlIrJOfA0IUbEErlBn2RjZjOxOSyqS5bdbz2hhxVYcf4IVNmIwRD8BqGAEXOA8yFb
-	8iVClaqbXZYnG3zeuor9sFW3NC/Pl8gxsQShPnn0JHdmntfD931lpr1ktwrb9+az1JPLFV
-	8Jcx/JUIJnBzbp/ZAd5D4LrCM3uTlJ8=
+	bh=JeLi+++sNjhzFxRCz6+mszRfMSyeWN8oOxvNTn+LIXo=;
+	b=VCITfMGv2Wrk+QR2MRnJ2Ypn6fJ6C9HShrq6CsRNF4CFBxhP4WBgYWBdYFKet6I35eXKWl
+	g1hbK7eR/cMfQjRrsXTVY4HvJSEG6LOJwfaqGKC0oDnN84ZbV6OMKhkxYQm5rD0DVgIQ5v
+	+3UVfGsg1d5M5tHDStR4mbJRcxV3g34=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SQQRCSOn;
-	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770004256; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=BLEOsNzJ;
+	spf=none (imf18.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770004816; a=rsa-sha256;
 	cv=none;
-	b=xVSUPoLtMEcfewNPncej1y9pSlawrYy/ppkkwlGx8oOYAB7Hxm0K5JnW65QkZ/kEWFt8gI
-	0m3pFoAwBS1XbknRWo1q7EBVb+Yt72gwdLmFB2Oc5ybuECgXi31YozwnCCCrMWwBvYKUKI
-	EcfgwgeH4RJZ5nLN8o24g9OK2Pey00U=
-Date: Sun, 1 Feb 2026 19:50:48 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770004253;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o/nclWki/7xNBiIlkN5lOVwIekiG827g6kvt71oYAjY=;
-	b=SQQRCSOnhRwyBJOGTKoC6hpkHmmhG9xPQf/BGFGZU5QS93z7dnK2JuOTM4uh6b2K6vOsB2
-	vKlJ7azzBawiw2ZNaSlUuW6LfkngfvK8vfVulMeJ+dad6OPIMrCb7EulMaQfMvkednXjqA
-	LwC8zYdx1iieZpj4bLmKk2/eqwkIiEA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: bpf@vger.kernel.org, Michal Hocko <mhocko@suse.com>, 
-	Alexei Starovoitov <ast@kernel.org>, Matt Bobrowski <mattbobrowski@google.com>, 
-	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 06/17] mm: define mem_cgroup_get_from_ino()
- outside of CONFIG_SHRINKER_DEBUG
-Message-ID: <aYAeex9xM89Bj0jd@linux.dev>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <20260127024421.494929-7-roman.gushchin@linux.dev>
+	b=HMAfzuyGejZSF5OhN5Be98Rs04Y2/dN9LR6dVIxSXh5LONygW8uOyrJhI2fu1EEEqp+zvV
+	/7YD2lMTG3fT1NdwTD7dHZz4WID+yU+Q70CAMljynKYS364ojSIVgd8vXlhEiRHKEDadpj
+	/6LQzkVZ2U7T01+0tZW7TZp+NW1qvHw=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=JeLi+++sNjhzFxRCz6+mszRfMSyeWN8oOxvNTn+LIXo=; b=BLEOsNzJcFx+z+XmosJ7jyuHyA
+	g7OH8XGXY5FvmWZIdyIQfqeFPzML95Q4iRmYRHbrjj4JCq/t13U7NunG4oeVgoOqPAOMGe/yTT7Qk
+	gmGAkc+swShdpxD5FOpHTXwkDBt3UONFMneslGhkw7ScI7dwVcxvFADQMLPj1rDKGaFQ7Usrj48cD
+	zE5NWyNZqpEaGjmBJ8KRQJIUjMS0fp/yl/Ie9wx+61NpxF/G8bUSjzVnbC9dUWSJl0yEDgqvAaNRV
+	178WQFBC9GUJsHT1Ul0CBmoGZzdgx/3qr3+5cL3aWQw+7QwqzC58sYLjVII5iuwI/WM5OZUMkhziS
+	JFp9fQHw==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vml6c-0000000Fvwl-43vx;
+	Mon, 02 Feb 2026 04:00:07 +0000
+Date: Mon, 2 Feb 2026 04:00:06 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: ziy@nvidia.com, Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>, lorenzo.stoakes@oracle.com,
+	linux-mm@kvack.org, hannes@cmpxchg.org, riel@surriel.com,
+	shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org,
+	dev.jain@arm.com, baolin.wang@linux.alibaba.com, npache@redhat.com,
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, vbabka@suse.cz,
+	lance.yang@linux.dev, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [RFC 00/12] mm: PUD (1GB) THP implementation
+Message-ID: <aYAhRjI2xNdtdvWY@casper.infradead.org>
+References: <20260202005451.774496-1-usamaarif642@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260127024421.494929-7-roman.gushchin@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Stat-Signature: pmm6sib8wk8pmtmo675ctagrymoagsae
-X-Rspamd-Queue-Id: BF50110000C
+In-Reply-To: <20260202005451.774496-1-usamaarif642@gmail.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 316pdrdgr976q4cpddbsgigytsur95yg
 X-Rspam-User: 
-X-HE-Tag: 1770004255-506795
-X-HE-Meta: U2FsdGVkX18EFDSVphZL/zbOnnnpxs+921f0bkwYFXnMe6qgQ/sioFRw+YXXcIN+ZAtrCp+xbt9ZEktYSK/aGdOB6JQkJzBtaVVMQxbpc1HuSrmRpz6fJfxcSPEbua92xXYE5xiNGchnoaZPYsdIm4l94amJCa9/4vwoH/xZ6UVud2SFzgPu3WTuwvyqDDNvL5oAy5OZfRZg81qGzDbv4O1mEVQF+RrlNGIi7EYo2yNe6yCAzpy1r+HF37DslJzjUd/nMwnsskCi7otzWyMW/xykRDFeEFZev67jIAcV9iD7NPg1C1XmzwZy9k5IarZO6oPzjcNxgZjPJxvzMM8ncSOxj6iULcTkcE3AMuL9rmi6HELfICYfFT+CJBXo2kXsTiZg9boRuq81iwO9Q5+q2OsKcg7Vu78HUsiEvsOhO2ZO9+4ga9sP23RkWXOKpyC5Vv1LhKY7pVHBT9vjJdWDFYO5e8LAK24G0c1fRskrrFo8N6dc47tZjQpAQpBS8RtsxWgmgZxtI9MHulcY9n37Tvx0Utq39hdsuig7SwLagoKzPr9Gn0LFcNvv7Wa3SGKQ7euSSqo13jp/nbABeQc5/34XvwHqp9QgKxGYOpphjDEJoDbylhujhxD27nP2cIpckj1212JSWJHXg0gPQ6xVbo6JcDqnf5pp4lOPySKwVb7wk2sovMslmKyIu1jpeDcydqcwaf+P0aIwnuLSfZvJqtA2FhMaFT9OQiPWCaHbhSMyn17VFucC+agmcpej8BZ9HK+qWg0BjNlozj5x5JjdigW8G0pH1qv87Pvk8wV0Sx0jAvo/HKWfEGG9/ZlDMhnYPzsYX5SpUcPHeLwdWvMTsvcBs6d3sQk82m1MrU0PI1Mny4sl3gjH7flBdUgh+Ykec49PWI2epMiR2+YVD0Y/GC1SEJhuRyqXB7NL0AsDQphJY/8eCodxIkdaFe+B04q9ggLyaBR0TsACLCawPEY
- /CevMbvC
- 12obz0dRuvUJuOWO2w1G9N8S6DhIN8ifTs3reZ+LObDllvIEGAiyAd59cRyrgopnwqFmGNXbf7S6ZOHJmnXZBagEr1NIZEUFnv1AJPBtgKKWfWf0YtZrS4fbHljBBP7QoovjkpO6mf6nTcLFFADg5nMbxUUm4xCnZPp1p+52HDPqaRhBhw/kS7FkCVP5HGl+ITpWuQ1ML6IbJ+bLT5Y3a62gFYmEIhyJwioSj+/vpwHxKEWg7O0abB+wx1c6PpA47QaBEesqDvifVZkYlg04xFN9R4CRuCIFE4oh47mzyQM3pS13ClacUyuFAqe3T12a4TAPz
+X-Rspamd-Queue-Id: 347FB1C000D
+X-HE-Tag: 1770004815-504946
+X-HE-Meta: U2FsdGVkX186CHVZxjWAc7y0RjrkEou1+YPHamoJ+7JQzHdb9dCo1u23kRWs2FCUEkyblWiqsRZ+FY1ifqExedhE7iWRJzvSEV/wBMk5+1xwRC3Aq9os4UjOR/85l8lZXk/r8Wn1R2h5uAI8nKTF6Gzj9ILV2okNy11UZZe+Y91HlLUy5UC1NfZ2svWLd+mh86E3F6OLAfEi2pipmmi102xcbOr7PqHb0FxMcuZ4wtlxqk8sdQq3CR4lAS1T5lZ0vRqc2eZlKUw7t2kZmINmON162MBFDqoKetgArR+0vruK5YrPsNivyzjgIkEZLRHq1a9Exrqr8o3QPAFI8MdvYQT4HLbzDe1osoBZ8Qu4balQTbvDSmBD79/jOcLkOccGjXnklPZhOj9Vf6UTSZ74GJ4e73nfRFSVw0d5VisAkwLGPXFx113Eg8468sVLICOHh3hGWf91bGcL8cpMKowa2j/U/+f1XfQZyxZC5Rau5KLcsG0PX5A811gG4uDHnyVttiRIZfgiPsAmJOSRtF1NArKUaA2TYf6Jh4OuwP8FAdxIDq91UcSMhlY5bgbNfVFey7bQZJlLAD2UBpEuI3wgH3IXbV8fJJeRQ6ecboa/1/169PTJyfwLIEekCijxHs5ImdNSEBzVYxBvQrQOsE7DJKGMSEn2mRdGeDXy7yoWP3DFo4eU8Iau9Pff961xV5NfEjy3LeYZYebqMwIm51tVaFJF2zBjodlop/gyxuLgY1Oc5h4YiBzySE3TdJQlOYlJYHPleB2TvsAE1LpK2viMmOtekh95yu8UJU7aocOu3YHoQZaF6ZSd241KEvF6xwyob5DI9rJ44t0mzA9zNK/jdmydDaLdwFHemZFRAa71xIjN/O5JeKJi8FV0zGP6L8mizumaMNBBYmaL734f0SCjYI009vL7/A3oEMIDs7nZyT0u1Pmi603ftCkvljT5O242dRIoeRw9CvusWov7KdW
+ DPmjK8A3
+ 1ioX5ljKsxbNWI6r7eS/tv9PhuAmIN4BxX2IaeR3PWHf7y1iivmjb+a/D9t+At/j4rpzcssrUUlpdfqYKk58o7Tfzb5J7o7PKh2b1xnzQutqem3MWQx+MiT46y+3K8UbDS74qBLGsFQFouEkp+qZRzwf5238q29t2rah15GFngdBhdEU9lXyKUqIIDNlbfZ/iX6XSEArP3hxp5n+dc8SjvGyR6h8c35jeK5tvcRJBoxFACjkeiUCEoddfPVU2U+S5YQUV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,13 +95,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26, 2026 at 06:44:09PM -0800, Roman Gushchin wrote:
-> mem_cgroup_get_from_ino() can be reused by the BPF OOM implementation,
-> but currently depends on CONFIG_SHRINKER_DEBUG. Remove this dependency.
-> 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Acked-by: Michal Hocko <mhocko@suse.com>
+On Sun, Feb 01, 2026 at 04:50:17PM -0800, Usama Arif wrote:
+> This is an RFC series to implement 1GB PUD-level THPs, allowing
+> applications to benefit from reduced TLB pressure without requiring
+> hugetlbfs. The patches are based on top of
+> f9b74c13b773b7c7e4920d7bc214ea3d5f37b422 from mm-stable (6.19-rc6).
 
-This code has been changed in the mm-tree and you can directly use
-mem_cgroup_get_from_id() after changes in the mm-tree.
+I suggest this has not had enough testing.  There are dozens of places
+in the MM which assume that if a folio is at leaast PMD size then it is
+exactly PMD size.  Everywhere that calls folio_test_pmd_mappable() needs
+to be audited to make sure that it will work properly if the folio is
+larger than PMD size.
+
+zap_pmd_range() for example.  Or finish_fault():
+
+                page = vmf->page;
+(can be any page within the folio)
+        folio = page_folio(page);
+        if (pmd_none(*vmf->pmd)) {
+                if (!needs_fallback && folio_test_pmd_mappable(folio)) {
+                        ret = do_set_pmd(vmf, folio, page);
+
+then do_set_pmd() does:
+
+        if (folio_order(folio) != HPAGE_PMD_ORDER)
+                return ret;
+        page = &folio->page;
+
+so that check needs to be changed, and then we need to select the
+appropriate page within the folio rather than just the first page
+of the folio.  And then after the call:
+
+        entry = folio_mk_pmd(folio, vma->vm_page_prot);
+
+we need to adjust entry to point to the appropriate PMD-sized range
+within the folio.
 
