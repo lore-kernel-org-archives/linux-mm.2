@@ -4,118 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70083E7FDCB
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 20:03:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E0C7E7FDC0
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 20:22:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 976366B0005; Mon,  2 Feb 2026 15:03:20 -0500 (EST)
+	id AB2666B0005; Mon,  2 Feb 2026 15:22:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 923C46B0088; Mon,  2 Feb 2026 15:03:20 -0500 (EST)
+	id A35446B0088; Mon,  2 Feb 2026 15:22:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 830196B0089; Mon,  2 Feb 2026 15:03:20 -0500 (EST)
+	id 90D996B0089; Mon,  2 Feb 2026 15:22:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 701B36B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:03:20 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 27CB7B7A41
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:03:20 +0000 (UTC)
-X-FDA: 84400590960.24.810E9DF
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 206D2140011
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:03:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="lqpe/cZc";
-	spf=pass (imf09.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770062598;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CAD86B0005
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 15:22:26 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2D0A3D4832
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:22:26 +0000 (UTC)
+X-FDA: 84400639092.07.C684E39
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 443F24000D
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:22:24 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BjSst25d;
+	spf=pass (imf07.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770063744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oeyy3A9F0h68gai95rKC/WKtYz02tqXoxrCeMHYnONw=;
-	b=FwUEnMky1VFiLzvi3JF8+NAhhW4jnv1f5ABQJt3kHeVFCU+Z9pLc/Lo4x25PdvZ3BV6nDw
-	O8QkaADsdQRDvGnhf7w9POdUxnE++tm6ajwDreSH1UqkpTtcXmbeiKTiHxzfoCIOM/Q3HP
-	leZqjo3JCblAxb263r40vZpor2KJFU8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="lqpe/cZc";
-	spf=pass (imf09.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770062598; a=rsa-sha256;
-	cv=none;
-	b=o7edOKB40tudJM1hTmvJCXcWPILJlU51Rm8BGNV8R9na7h1s8I04Golwyqg1GFxXR5hAht
-	KjUODD38m5rnI/81T53qmg2CGak9OviCV6N0Dwz5aUCAIclwPYXFCskq7UYsrM4NMiqTzb
-	xOhVqb9VRWrFRXzl1QNeXWdRBoAF8iE=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-480142406b3so36167965e9.1
-        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 12:03:17 -0800 (PST)
+	bh=9Qp+ri2CwCplmezMlD8wd81VWXRd3dPdXJOxCp4XY2A=;
+	b=zuO9i/WNyE8oUGx3uDfHRZ4ermoRFs08HTjXls7j11pDLkhHFWakIyo9WfA8X1LxM5H1Ze
+	vgGYBdeO476Ba0EVzwy61zigTov+/8mAEYnbxkwYZ33LI/O3NPJo0kF/PRXTy72aMj8BVM
+	I5T9WNhMBPiOF5HWR95ftlgS1SIZxi4=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BjSst25d;
+	spf=pass (imf07.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.44 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770063744; a=rsa-sha256;
+	cv=pass;
+	b=z+uzcorv1HLWlhurnlLszRn5qhUL6ytAP+KxRxWtNuIC7N3s9vtXhV18pLLLKZx1QaGnhX
+	MV+7vYVUGp4ULNe1mFAboEY37PuV5NFSwavu8aI5aOdRF8sw0JNSR+5vApsE/vMgpIY802
+	EYPSUy10UjMEvTy00fAS23gbpqUTI38=
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-7d18d9503eeso3670657a34.1
+        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 12:22:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770063743; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GGWX11J/mezva/avfUEaQsAt20dh+0vTKZRslHB/YZr9jLFeiH8+YMa7VYGCWvA+zI
+         wohedLWGZKfevEs2P4NLcz0yhYFujtlJBixgtcEE8VcvRm9nCMfm3jra82vXLPqSvRzW
+         u1MsjRJYU53FYXM1GIPanabyWeWrEX4XD68vDi+nXzGtGs1AX1NC2hfjdhpdN2WpZyhk
+         g8z6bSnilIaciSHYRh8JASPKSy9fnbeLAZTydlgoCqvL1Q9Z1JO8d3hFXIwG8VXRqPdh
+         MTBq99+4Ce4RyVpnc4Z/itsi/6x7bXJi43wd8kl0HA+ViOkDMbGxTTrmNfyKsjNt/yIh
+         x/fg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9Qp+ri2CwCplmezMlD8wd81VWXRd3dPdXJOxCp4XY2A=;
+        fh=tbeQlM8hLPIR0hT3CckfjQxRq1i4wHTdIY5Cq+hVZj8=;
+        b=BiaWQ9esrIzR8NmJ+zpPOIISado3nM8GdoClcUtjkQ237w3Wg6eFxGWmh4Dac8FE4G
+         +MSn/9scsV+gKRF6xNG/t6ZXol5565/97mOL1O1yt2Qz8zTPkozYbHourHK4DO6ha4CR
+         1LNbS8xpKGbHUu7VnMhDhgo9JAqY5W6+rfoamR5sdv7fsLeLF3/xeQZ2ACnU5lJbG/w8
+         +pXVDAmEsy980r78rEzrSMeYQCnY0JsBRZgXm17OZ4Z5O6aZbO6fSuHj76vnIEmQVxUl
+         UUe6ZAjFR6xmJelwhHpovaQ+NaMlgO7eIqyAm5uX0hi+uyBH5PoOMETP9z2Hd8bMj+zw
+         hbPQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770062596; x=1770667396; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770063743; x=1770668543; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Oeyy3A9F0h68gai95rKC/WKtYz02tqXoxrCeMHYnONw=;
-        b=lqpe/cZc3Anrq62tCdMvb9hXArwxsvgcD6LmHu0CYgw3jd/SuOt8VTXgocZ6fWwc8N
-         02FPuxIBCFezoRi0sbYvfGDJlh2mFTW42FD6GO79wjvmxnx5NttzOhwSLxuuzpmdsEBi
-         r6fAg7ahZ2vL8RqpEkeFh0fXJ1IdMfy1RnH/PubRCzstwT6lj0SMi3wjFTvrFWw47WDP
-         nAYQTvr8ZkE9FDCLsQN2UFL8XvACcPdYp8u9yzOa8r7rASTTvUmBIIGwfmm2fxUcEboL
-         qXS1HbGL6+5A7jdfhvXr0fKX1dxIvDxuzYvvii89UskRVqR9Kq2g7qycd3VGB1XSTuqC
-         TUHA==
+        bh=9Qp+ri2CwCplmezMlD8wd81VWXRd3dPdXJOxCp4XY2A=;
+        b=BjSst25dBRHVgLwJ//d3THtBQkkLJPfpkBPK+7eZXa1w8X1WXkWQ1mwZo2NAq8+xNo
+         d1l/vvlVe5jHX+EGv1BHqMmaDn/W8b4+/6uT0P/WiGFfxT70KTc9OuM5cYIq752Jakto
+         3nBcRaNo+PArwTS/PC5GkATZMrcJ+gkf8004JQkNwOGQY4lbv8xXk2Gpr9PnGL1g5DKm
+         vikv/9XPZncInV6TZLlipJGy8sMlXtf0mzY4WFjflr7aVY//uXPR6bObFNq8AInQ0cyn
+         qOFfiEKsA4G8W6jqlfCX1lp6u3az1fco15T8dDdWKTJtEybJ66Wplg11mRkD4C3PcEc9
+         aOgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770062596; x=1770667396;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770063743; x=1770668543;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Oeyy3A9F0h68gai95rKC/WKtYz02tqXoxrCeMHYnONw=;
-        b=SE+Xy/FDsLlkdcZL+z367Dw/yP6Sm7jEvD6Rskno6XUQ8gme4b3yCyGYtm8Zu1v2/j
-         Smi+rI2W49Dl9plWkJbwXwco3Vr6YzMOV1modVrAmslOeP6erfK9LAoeFPCK2JobQPVH
-         yF0T1hAE0MFNfPWJUd0zlQKeW+8GKQcuuR+/714lmWB0fBnnMrC8x0MOTS7LSnyJtC7J
-         NMAUBgpAup/I20E2WaZF5VVf7wMGN1mKug8KM3Kd8Y3+biYJ4D/1WYIv3vquQ5S0d6rs
-         6MveWFG/EPOcZ675cocYsNyVftx+6W8dzIIPH+zNIG/OsJGUlqsyD6hdLGka+KrpLAKK
-         MDjA==
-X-Forwarded-Encrypted: i=1; AJvYcCXH1tJ/ymYQWBQIXN7Rbo/e2CjQNxiqtEHAenitjMsgs6R4H1c9pFfZ4WZjZcztaYix5rphInnXDA==@kvack.org
-X-Gm-Message-State: AOJu0Yw1SmT5v8D66XHGK1ZnFdKmJiIZMInQ8rvhO5YFb1VjJzQnHvzk
-	LsLrbSnwfgMiD+NAOKtE1LuTwWjd47m3ODqq++npewCcnebXBZLAV2zn
-X-Gm-Gg: AZuq6aLD+SaJX/k3x2JItrJ9oMjMMZBMoPnIC7KoBoLlT0cVD9uaFXl4kq9cs9ZtAID
-	nuOkf5pLgvsRuQKGO7vMK6b3KtF0on1Bqiq/27kT/QhF+eHJxLVC6Tu5HU2XkZV5MSBUgHqHh6c
-	iuv6kMXHPWEQRG3Vk5y12JicbSNxtWUGf/nSBYzvAi8D3a3AssqyMbcPGewopQbnQNhPmG/BhFf
-	TaOnnd8Z9b+imjUoQTeyo2472Hw9KeaVL53TeXqWBkV3Vpp3A7oRHJSLCV/FB9jS2LwQdiinaDh
-	6xk0PBIBLFyRhF0GcMe6FsDojU+7OHVdTWyWbrQf2ejWeT3VXoiKZADLTxI6Cb0CCLff9uk1v/k
-	KnWcCP+EHk0+L7zpP6lrZxyUrBgMHtplkAqL6msQlsb2vQpMDnfifpewaIUlYeVth5WYdC4j8dE
-	wDI8dREFM=
-X-Received: by 2002:a05:600c:4507:b0:480:39ad:3b7c with SMTP id 5b1f17b1804b1-482db45e244mr170114895e9.16.1770062596185;
-        Mon, 02 Feb 2026 12:03:16 -0800 (PST)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-483051626c1sm9918025e9.13.2026.02.02.12.03.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 02 Feb 2026 12:03:15 -0800 (PST)
-From: Askar Safin <safinaskar@gmail.com>
-To: kas@kernel.org
-Cc: baolin.wang@linux.alibaba.com,
-	brauner@kernel.org,
-	hughd@google.com,
-	jack@suse.cz,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	viro@zeniv.linux.org.uk
-Subject: Re: Orphan filesystems after mount namespace destruction and tmpfs "leak"
-Date: Mon,  2 Feb 2026 23:03:00 +0300
-Message-ID: <20260202200300.2719301-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aYDjHJstnz2V-ZZg@thinkstation>
-References: <aYDjHJstnz2V-ZZg@thinkstation>
+        bh=9Qp+ri2CwCplmezMlD8wd81VWXRd3dPdXJOxCp4XY2A=;
+        b=m6HEE8scGyJh4DGRXBkLyL54mcvGKh7ex5u5AkYtfoSSwlIOSEdmeDtZy2vOe/v67R
+         mq9+A5kzOIj5/HkX9TSaPf7wF8WhylQy4pRuXvET6JMsDfB+RN5muttpfGRPkrgtNlhA
+         KIzq9aa3cEEJZZyFFMgPR7HS+YHdTB9nsbYUYApK6JVJLr0WdFHGYkAHi0S0BTXXd8oI
+         t/etwggFxZ5Hkh5cAsyBInwi87JpeHXcOqovVXwW0AsuaXkb+EsbsiIeM5AukT1TQybD
+         kLWsQQrwivK02pDTlagOX1/TeCIamAVa2TeGVy/JqALKaybuNXMHgOalibswpfmSVrvU
+         g+RA==
+X-Gm-Message-State: AOJu0YyOyr9qXqs/20BOvFmTEQkhVyVCR+GmDjHyIvk56FONzz9K4UrY
+	YkuEP97dXDOfPa8wyCvrCiVZSGWZX6/54pyQB0NhoiYEYHJ83DPyp3+df+OUqNxVPWVedQ9B130
+	ezE1DnuqZD3KpCLMr9MuDpaClgYZHTKk=
+X-Gm-Gg: AZuq6aIa70lRJUJtCHXcjx6T6aiGSEo3yDBsot+AE0TEcJceW+Ms/4zGrGjkXKwR30O
+	aT9C8euyEO2cdq+qnRxuz2p5YL3wr8De2AyrF7Dg9/csOTfAVCAEru9azIxEcUopPr0Zb6TJvYf
+	a2p0pj177HkViYnIr6h5veGnj0gB8RJL9nQ+Ni3atHwDdVvbxPFA+f4wKIMbHZy7rByBEb93OGN
+	poD4rNSYTX+KYEu7Jm3h6qLeUzQHmXJbuAl0Dxsa7DD0NKNEqGaxheCxAEK9q8MCF0TYlcImA==
+X-Received: by 2002:a05:6830:3814:b0:7af:1d61:1055 with SMTP id
+ 46e09a7af769-7d1a531b736mr5778758a34.21.1770063743047; Mon, 02 Feb 2026
+ 12:22:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 206D2140011
-X-Stat-Signature: t17h9kdcto7rrh5chznp9efmcqjqpdzs
+References: <CABXGCsNqk6pOkocJ0ctcHssCvke2kqhzoR2BGf_Hh1hWPZATuA@mail.gmail.com>
+ <CAMgjq7BM0QFvk3_D4qyggjJ4W_+nHAupQnpAYehGq50CYNJV7w@mail.gmail.com>
+ <CABXGCsPrpLubmjt5vGacPcmQnOYj1EVei3G3=L_2X_-Wfa3kcA@mail.gmail.com>
+ <CAMgjq7BpeaDU9_DhXYvLMadTgDq_ObJeBb+ndfMygzz7n_FjTg@mail.gmail.com>
+ <CABXGCsPwjTNfT0eYMJqQ7UaiEMObpvLh0BOmev9HGFAqomNpBg@mail.gmail.com> <CAMgjq7COo_-xJwXvy4sLjRHmb6VohMHub0TctS3M+gKwrfjPSg@mail.gmail.com>
+In-Reply-To: <CAMgjq7COo_-xJwXvy4sLjRHmb6VohMHub0TctS3M+gKwrfjPSg@mail.gmail.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date: Tue, 3 Feb 2026 01:21:30 +0500
+X-Gm-Features: AZwV_Qj-EaCs3ogS-dOlu8OSNYufMbrt6fwLgkGJRfdI_Ht8VQ5xgbAd78WIMAI
+Message-ID: <CABXGCsPPeKCqj4KB3Cp0r=rWd+0KLdDZhNKkNziqCnqFu1vwag@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/page_alloc: fix use-after-free in swap due to
+ stale page data after split_page()
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Linux Memory Management List <linux-mm@kvack.org>, 
+	Linux List Kernel Mailing <linux-kernel@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, chrisl@kernel.org, Hugh Dickins <hughd@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 443F24000D
+X-Stat-Signature: y46c8gxzz8kierkaq315yu595ndign6d
 X-Rspam-User: 
-X-HE-Tag: 1770062597-118631
-X-HE-Meta: U2FsdGVkX18AvC86VBacQqdTIAGbeVcvZkKKq2KPJbH7ukxnXAqTbgdN0+vuOdk+5Q+80QfuD2LJRHHk6g5UHecoZGIpGIDdjZXg/x4NbH6WPsHL/fAOLVeu/ZmrWU5yrMA2kB/esffG5QvqINMh35V3XtIi9c3jauJrLEqyuD//QMtRuWLSUXDucIxOJrikkE5pzgCQ73VdPeUHC4Jzwrh9vx4IVkRIOrcHcD+5hUY5LvGANCD/d3cACfboKRY20JaDjbtxqLyJYq77r0atXDo2W2qXg4JV6mCthWtnhe1llqvptXhUhccz2FjzP0KLqGHNYWmNkIjulxgXJR0Aq3++HjBYufqWTAS9kwiWLp0RSFPPLXQ4uJ6VxpyDQuK1jU3b9dl5e1puk4SfIQ02GV4YlUq7kCtUbPaYBSZyXTx/xLNoeHeQZwrx1/tGvoXSrdnIDwLhQVfvTT7pIrNzUGpLyKugvSE6fq3B/x0B0JRoCd4l2oyvHTroORm797qAw9elYlB3jmZd1mOVErDcvvzjFYEZG1Zacu40BIDwHnDkjuOLKcY0G4Q3TKCsvZNaz58Xbv3qKQxJ5pULHGZKA7HPWJY4gLpEiQkjjQYfVgkiAojYGT/BK36y0QIXgfAK0bgXGzLzDyD47muNnFb6OXeC77oTZEzNoxiTGX+QFH0MnfpyProyUIfCVnlPqnPIKL6G2jTiDfAfaAkWfAAhoObcBpA9uvyaw8shga5Mz/oQ42QlNj+mF7nS3fYYw/v0mbMZR7xunD3oHdvpXDVAnz1jEFUGvDMCKTbzahANgmGDH8brbWMaitBGlfqlbBZoG8voasAJgvsHCogzFCwsyJC0o9K74jVf8AjC3XfkRbl/1IBigHar9GJIfyPMpEDyMoYnz+evmkDesfZ6YPshykamBBoqbgjhgr8sO7pd9907UXuunEFBazB6U0dRHJyNectWofWnW6FcJO+lQbk
- 7gI30H7K
- aiD4xef5sxXMus1x7+uMXKqTATnoyWshE3GJ7NVP6kRcxgsX5yDh5DdCy5kNqDm97vinEyTGUSgUNCANiphzwdLDqJTkKr0U15VyLm34wi/fvZpexG3s9JueGShqNKyOoaXIaK2XGSMI9TuM2ua9QxNBNYALsSpJa+ZwxBcQ47PRqbMeebV9mYJI4W7vqM+ntEREXDi/r51TBhbO+3J/soWsRWxjP2IClObKKkmPNUWwwzP9T8aHVwNzJtS4+RLvyzcdzxHGllB2Jym7i3pPeV5XeOBJmJim52CA4Ckw7VV0DrirWyYJjeCmOeG4TfomAnVrl6DqTonXcDxKoQxFkm/inDVQWIJSC5OyV7fjU6t9++X0nmA4cV7VSVhXYbOVIa1wG
+X-HE-Tag: 1770063744-176726
+X-HE-Meta: U2FsdGVkX1+9oMRyFnT9vIGgHcL8O1NGyjgUrUUOYXrYxAzl+49r7uXfE+UUywmXU2As/kpFYMPnoouioffG9CmIGSW1kfy6d7zCmB55hA1Z9LkHEXIKp/0UunaS0rquty399gp1NIgOvx9jPqHafHSXa/Kx0YEbKHPwJ1eLNc+l8SLlmiEzd+FuKPzTPYBfO8e2HSvIrmBw7mAKO83yQpNotKcTx3ATYK/hB6orD8gZqzVtd1oJig/fgsbQB8zruqkIJaH0VYoQmlS1Y7ERSw+KlXcBbO/uSSTT99K3ajKFvM8KN4lGRZJcaFus+De9H9FFK5yRHZJxAZ344fo+VQtlKdEHAhZwG+JiL2ixKgf7HMC0/wQl9CjtkZO7svSS+oB/vkt7iFY0S9sZ991BpCL4j6U2YeglCcLAoTPyX6xIE/on6UBkE2zgfVH4mgJPVBLlao1SmsPgODNkMHknVbegdVZ+a9ezE4aRHyyZ0ZA7jGUFDlBeAX87aG7w3qgV4qyVq5SoWxmFQlYIWcOA4oi7WPD/rgja00eA4i/0Kri4hYrkvaeaDWJqgi0dQcX+schORaEsIfCfvI3DtyFRw0ra4eA5DX1jcVFIqAARlDOKj6P9kt2s7aiOl7HpF2AouGiHqblNOiKwqRsOoYcTJEyQZArjx+8iKqCxIkbUlabi2+HSPNv7UENipv2LsjDkxwwXzEovyeCED0SR0FjkRZAdxfBX76uSTN4aTFzfmBhayhBpNHZGRQM1D+plL4I6HU2/qfv0KzuwWc3EwsfVaeQFdITwn9zlDFXulQHoavyhQ+6peKR3l6DTLbvYkh+QkbTIXyBQqAfohRC04m7XvY93+V/4tFA+S6fzgtlUgFAlFuju8xO32aSQQl2Ohv1sTSKCkFforx14K7rkPOyDUq52JzBddOz7KZ+6Fas3wqsd2o8vGbavUIl72GJ/i0ISQppExu6HBLOKEab/Qpb
+ IsZddVF4
+ bULZ2Y070ZlH5hn6BLiZlD38QaUG+x/M9XVkGydBXtyqdTtDHKUesP/h/JjPlrgPQIOB/a3v87B2kFQnHPblgQVm71YJ91ki4h5N86n99qHXhUa5iS9Br3Bimq8gUzbAxewPoEs15+R9IVMwjMBeucKlQTkmFxsgFCtlDHZQMvBkWMgouxjGL72g89YO2rtV18EFxcd828njkCD/rhBzqapJkc5iBp7/7Cj9hO5GA67InZSWoJmxkXBxsTOM4+pWyL0j8wWzn2uZKkQevcWm+DX/kuSR43TDVdmXUDNTf1mHxr8bxMANVMUS5WPaPN4rGOYjoVtMgIP5wAoipeORf7PMCPM2ZNajFWEKroXxWk/vcYppn+oXpegyibEPYzwvJNAzz5voVNbL1lW4U1SlNeG2/9qCmwDQchvc8vE3+g2PLlf6/6mwQCLpts7Vl03Ty6jRw+7SBEOOXJ5VoPoodhWLFmjP7EWRqxjBJ4N9KwoEZnWMSlBRfZEiENQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,32 +143,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kiryl Shutsemau <kas@kernel.org>:
-> Hi,
+On Mon, Feb 2, 2026 at 10:55=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> Right, then I think we need a Fixes tag, and is swap really the only
+> victim of that change?
 
-I think I know how to fix the problem.
+Good question. The comment in vmalloc.c mentions "some use
+page->mapping, page->lru, etc." but I haven't found other concrete
+examples that would hit this bug. Swap seems to be the only one
+relying on page->private being zero.
 
-The problem is in your container manager. It seems that the container
-manager doesn't unmount filesystems or unmounts them with MNT_DETACH
-(i. e. lazy).
+> Or maybe clean page->private instead? The problem is triggered by
+> free_swap_count_continuations which checks page_private to tell if the
+> page has list data, and ignores the list if not. So the pages should
+> have their private cleaned upon allocation.
 
-What you should do is to make your container manager actually iterate
-over all filesystems and unmount them without MNT_DETACH.
+You're right. Looking at swap_count_continued(), it already checks
+page_private(head) !=3D SWP_CONTINUED, not page_private(head) =3D=3D 0.
+The fix in swapfile.c should use the same condition in
+add_swap_count_continuation():
 
-Of course, this will not work in your scenario. "umount" call will fail.
-But at very least you will actually get failing syscall. I. e. you will
-get fail instead of silent leak.
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 46d2008e4b99..f131494d4262 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3859,10 +3859,11 @@ int add_swap_count_continuation(swp_entry_t
+entry, gfp_t gfp_mask)
 
-You may go further: if umount on tmpfs fails, then simply go and remove
-all files in that tmpfs. And then unmount it using MNT_DETACH.
+        spin_lock(&si->cont_lock);
+        /*
+-        * Page allocation does not initialize the page's lru field,
+-        * but it does always reset its private field.
++        * Page allocation does not initialize the page's lru field, and
++        * vmalloc pages from split_page() may have stale page->private.
++        * Check for SWP_CONTINUED not just non-zero.
+         */
+-       if (!page_private(head)) {
++       if (page_private(head) !=3D SWP_CONTINUED) {
+                BUG_ON(count & COUNT_CONTINUED);
+                INIT_LIST_HEAD(&head->lru);
+                set_page_private(head, SWP_CONTINUED);
 
-In fact, this will not remove all files. This process will remove all files
-it can remove. I. e. exactly what you need! I. e. it will remove whole
-47 GiB of data and just keep 4k, which are actually busy.
+This handles both cases:
+- page_private =3D=3D 0 (normal fresh page)
+- page_private =3D=3D stale non-zero value (vmalloc split_page bug)
 
-Feel free to ask me any questions.
+And the comment should be updated to reflect that vmalloc pages may
+have stale page->private.
+Should I send a v2 with this approach?
 
-
--- 
-Askar Safin
+--=20
+Best Regards,
+Mike Gavrilov.
 
