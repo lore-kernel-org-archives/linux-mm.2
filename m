@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBD3E73146
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 08:54:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2404E73146
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 08:55:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBF406B008A; Mon,  2 Feb 2026 03:54:32 -0500 (EST)
+	id 25FB86B008C; Mon,  2 Feb 2026 03:55:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8A216B008C; Mon,  2 Feb 2026 03:54:32 -0500 (EST)
+	id 22A016B0092; Mon,  2 Feb 2026 03:55:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D95E96B0092; Mon,  2 Feb 2026 03:54:32 -0500 (EST)
+	id 135AB6B0093; Mon,  2 Feb 2026 03:55:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id C5FA96B008A
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:54:32 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 593738CD01
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 08:54:32 +0000 (UTC)
-X-FDA: 84398905584.11.D3051A6
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0262C6B008C
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 03:55:39 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B57B51604F0
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 08:55:39 +0000 (UTC)
+X-FDA: 84398908398.20.5239833
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7CBBB80005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 08:54:30 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qcBNFCom;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id E03C1100003
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 08:55:37 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qj4t1a7p;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770022470;
+	s=arc-20220608; t=1770022538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MPhUceXo37yyQ+zV+eFKfIu+AQ7o+/D2Vd+1IyyChqw=;
-	b=TPkADH4SALWuHLXh+eWNmb20RJc/U92CsPz66D2rjDN3ZY0bRWu3rRPbIWxVPfmn8qzOx8
-	UkU5EtyJRombi/O6/UhJEdvmnLLGIpU5HflZCS2lLCJfU8JO9NjJzAoAcBVL704ddR5eGn
-	zd5wrzZ42qmaKDFsHhVzwgRMA+fG6zM=
+	bh=wXy0RfaqOoDKiVan2YzXLhJ3luqHhsG4xawRw1SGW5A=;
+	b=1aZPZrR4OHQCLIbQQ7p2GR8+nWiL+KM+ycCnuIzUDn0MlTqM81pklLDgfhRb4lxCDrTn8J
+	XhAD+V4oxpHGoeGvKqX8OoRU9KNec4AawITabOQ3x61sapnNz/u/USiJ4kddd4YFwvJbLo
+	8Fxgh1xXHSY3UiMDrcvIxXFxZPTxfno=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qcBNFCom;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qj4t1a7p;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770022470; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770022538; a=rsa-sha256;
 	cv=none;
-	b=gwd/4xHmzRPP142ctaNH5q1Ro57pi/mLaI9R7Cqy3k6GKImDK0A6Jn9vntHJRFUjc7N1lf
-	DYVDLgJU5puXg0JINU5r/bteaMgbdwxQZxk6o6U+/oB9wWZsrm6dBYo9F2sXFpgtjjw+yu
-	ATmmXsI4M4i3OX+yuAipOkf5REE5sOo=
+	b=c+a6ghLup+i6gUh7eRlppqVS/AsH/o+o4Uze+L405FaBtmL1pryuDb84vhymSJKVY5Mzzj
+	/2pI8SOzCxgr2qb3WvkfShkqKhNh3XH1CMdMal9nNr4Taf4pCVctQlIVi3EaHEn4x1B3Fk
+	RpxevzFXMN1L80LlsvehhS0Ny3dAIFI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4A8B744074;
-	Mon,  2 Feb 2026 08:54:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5749C116C6;
-	Mon,  2 Feb 2026 08:54:24 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C2966442B5;
+	Mon,  2 Feb 2026 08:55:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F611C116C6;
+	Mon,  2 Feb 2026 08:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770022469;
-	bh=MQ//LRuRwIOcuIdtbZVPm+JV7pTg2KFfd8sRxJWPxA8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qcBNFCom2YKxtvDr5sWJo4j8GKmxq0ElE/v7IWinJfipbyDOuouxfnCz2AtIe7RNh
-	 SkFGm9CCSCmuUCOgac3BTVJfYnn5Pa7IB4OA07iT/PCZGixe10UkY9N0+ZDAhcBDt8
-	 4VMphSJslcqbSsdZrQW6rqJuH1nowgPWN0e6XjN0umv+O+6+jLnFOuBq8oJ6rcn9wV
-	 K4UeIWmADalAgc7zztRfw2TQMpUed2ZIqR96v0i0dxyi/Fqecc5iKhJtum3TNp73ya
-	 BC2vvMeScPd0DtmME4k8qIiUeXuLXdKu7Az8hL96nrbC3A/+DW6xP+e0k/mL0yhwTx
-	 iYkTsHUJ3lNig==
-Message-ID: <10e483b2-2aa2-48a9-bc96-2cfb8125824d@kernel.org>
-Date: Mon, 2 Feb 2026 09:54:22 +0100
+	s=k20201202; t=1770022536;
+	bh=BDzkEXTSn4OsyMImxJsTqnJmwvMEHbv2lChkyPpJg2U=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=qj4t1a7p41f5H39L2b4xDJNgIgNDKQHW0XEb1YYzmWWL6Bx3POHiVAaLh0VnLIhY/
+	 6QXOQo5d7NsaJ1qW2UW0NS+n8+clnWz7Oe0jfjFWT297upD7mB0F4nuPOeDAYJ7k1r
+	 R8vF6RnWBNr0T314Ow+Kk6ZHWmPxFpltzGwZhl44s2ACnsxMQ+2ykoKEunETDBgGge
+	 VoI52D2RtMqu17s6fIkZKLrCuPJlsJnGw4XiyC9WGJyqTKexrvhEkr3CsxOkhrEwU4
+	 FTwCbTIPOLMHk+xGMwJzUFIMGZMdk2iSpIVWyZauTTL9GoCvcMyd59CJsY9nN7eGol
+	 0HG9TSYTjo9Mw==
+Message-ID: <3edb394e-ecc4-4bee-973c-a801aa6e7282@kernel.org>
+Date: Mon, 2 Feb 2026 09:55:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] mm: khugepaged: fix NR_FILE_PAGES and NR_SHMEM in
  collapse_file()
+From: "David Hildenbrand (arm)" <david@kernel.org>
 To: Shakeel Butt <shakeel.butt@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>
 Cc: Johannes Weiner <hannes@cmpxchg.org>, Rik van Riel <riel@surriel.com>,
@@ -84,7 +85,7 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>, Rik van Riel <riel@surriel.com>,
  Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org,
  cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20260130042925.2797946-1-shakeel.butt@linux.dev>
-From: "David Hildenbrand (arm)" <david@kernel.org>
+ <10e483b2-2aa2-48a9-bc96-2cfb8125824d@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -129,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  cFAM8nBWrEmNU2vvIGJzjJ/NVYYIY0TgOc5bS9wh6jKHL2+chrfDW5neLJjY2x3snF8q7U9G
  EIbBfNHDlOV8SyhEjtX0DyKxQKioTYPOHcW9gdV5fhSz5tEv+ipqt4kIgWqBgzK8ePtDTqRM
  qZq457g1/SXSoSQi4jN+gsneqvlTJdzaEu1bJP0iv6ViVf15+qHuY5iojCz8fa0=
-In-Reply-To: <20260130042925.2797946-1-shakeel.butt@linux.dev>
+In-Reply-To: <10e483b2-2aa2-48a9-bc96-2cfb8125824d@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7CBBB80005
-X-Stat-Signature: bnnx6xkugzxzm5x9zr9zure46jyko8t7
+X-Rspamd-Queue-Id: E03C1100003
+X-Stat-Signature: z5u6sebu4yowib53dfh4b886rouf59gm
 X-Rspam-User: 
-X-HE-Tag: 1770022470-808486
-X-HE-Meta: U2FsdGVkX188t3UTCfDd5LRDewvG1esUFwx6sz7bbMWGtZjbiP1/03ADZwd2KgyJvzqNlbapxMThKYonwd3CIetBefRkpryj+2rSYA9+E+JQzqKoPlwWAjU+rHJlsWJ4cqqExsgwsIZLZpzffcl7VN2bjU1saI0pwrhDyyOP2e3YsKphe/maaqVYsZotP9o6YMTZ2QK9zOk3URWRIMWrkofann5Aya4JHzLLZvoxEnkrE+uL77fd18eUz5GJrn6sHiU1ehA7s4GrwFwL7EtUL8gObFZfnsZHNhQIHyQdFkr+dEbjKpgPImn+lCmMaFytPuJVT+xa/P+kXe7mPXscAhjyKutkZpq5BSUtetEgFnklSiA4Q2Zw53lCP0604z8jY6KcihI6Hpc6Gm02nJAKnwi6BV4cHaFyOF14t40tFotT5hYh/qFyBE5DPAnaxnT35xq392FQ3ZymQIKO4F7XXCQ+37Xy1pZxADaQ/JOzG+N4bGFpmuPy4EItyc7rhc8HcD06sJf0h4yfU61m+i1DvXB2UqH7X/fLYbgEDXWQHHmdK163LeJnm5VPKgcnifRqDEckcAktc9ORMt6x2zMzO9avKTx4wXG/03Z0Z3ZJy7bFLlIYNZaWMI3AWcqraKRpuyVN6ehFE8PwWvsXJAzfe4q0DoD8BApn/4xHg6YZL+B/Wc2EDz43HzaxhZCFj3JRtEdopyZcNedu43v21QyFtm3Az4JsZlW7bKMi9QJo/0CAnZykFGJkqsMnRyKdgcNEFG8t4QAVSF58IuZv7mXEcp9BpTXksFLIpDwExjwm0/BhrTF6DSU2Lt/Wp8lXcdi3M9MyA7rODduOiybT5hqYmDoza9PTHOit+Ds3H3DjFFM+sMC5vk9bWHWjPjDEW+mX12xGO4C01OZ4tNHhZN8KD/LV90I3J9E5fIdMKTwUmJL55HhzQnPR3et859T1FBK5eJALNkzEeNVH9bSSJ/4
- lFuokZXr
- eajUeQePLbd2nCoZ2xXty0+a2gnzv3PvI4i0pS4zXUDoUaIXfPCQQ3UWeca0QVjV/hXd4go5uZ6QIcSBkck7+avvRmkj2+K5VgWSuROYY5xr7465cjSa/+Lez3kTShtdYAXFlXkusbhRaD5wLUyhQSWkttWETWyHjf38SWKcwFL6JlzNU5pIRntUuZe4CYx5S7B/JLYoQ0pNiyjx9E9+00tDwJiN98Ps8aNrxTjUDdGlK2/8phmXaUANof7fGOjN1BYi7hR+FsltlzCav6nVfnWqd16K4u8Bdew8/Vuj9/BLb5152Nwn1SsU2auW787ZomEuk+bfedW37ODE=
+X-HE-Tag: 1770022537-751203
+X-HE-Meta: U2FsdGVkX1/gVbH8cuJcLrS6Str6yqmCLYUBgCilo2iK9PvV2MnxFX643hIVe6+1ivASgOqHA3FIGoqJcX+cNA5pWikV0Mcp46yCi+gyIIHJRT9sYzlqUV/Zxm+qyHaHP3LSzAU+mlHeah82pKpvRQVOXjqqCK9S9y0UlsxntqzLEu6TtoK3S7M5ZH9vfGGcR0f+R8ufKQRJig/CSSKiL1z4cNIm/KOo30z/Z3YTOo3fMWGyG09yVjixd39EWczMpPznVDVqUhpICb3lIFdmh4RkAs9qVnqz8tYNrrp9n+a8jWTiHRn/+KypDjIrTI/diSJNy/dNUD+Aef0wHqwDATBw18veff+sPJrJ+xA4Zn2dN2MPbabXStlbKegYgeUejXnkCfypTVNN0Q0u61Sf+qG81ooKY5E12spV3NEyITko2HhuNjJD9F0fRl1FvgxqPU3CVusjvivTYiQ28Z7JOwWXpHTbYjSBkAnuZ+7c0jpBxF/tgY+C/tJgc3gZPFILbVO1yjKpc2NbC9tQRFZMpaz29a3MNoLeDses0wqwS58U1FRq8xdzPD8Vw7nn04s0gK9MooFjCKqY0KnnsdjxolwQogTd8s618YCh+Z588cHWQJ8IOAdzJHP+iHo4d1JW3IuyygemG9wXsNJUU7xURnQ7uCe/lI8E81QnnxtuR4DoD+j8+XG2NuSk5BST/nQ3VaGXcbn13XPvhD/6r2aIZgAtWss55bo9zS/x7Cud+AF9iPEWkBM8+TLYsY9rIOdT1ZtfomR8HhvAB20YQYBh91hhLb0g3/2cXQK6kuNUwv3VLmmnosztqh5RQ3fFf+POPMZg6++xtrBkLUgRMyfXFnZksk6nB7o1uJmp0QL5csJnz41jZZzvsFqE5s622o6h9Sl93nghQiJ209Vk87IHXAb7d7jLOy6aDPxigJeWsrApijMjgjWODDk3XM60nNNAHD/zdSQzOAZUM/l7V4s
+ Qd6Cq9Xr
+ cQ09Fsm0g69cc/0+uFt2s7CjxDEtFEXLMEpmpudROgauMdYm9pT4V7tYkO4YMQdcAQm4dFWmL4GjaqkUM1HLUi0ecgr7gh4UVSVPivhxqrksoiwjFVVxYJjSicFhM5Cm0Im664zJ+TDIrzYDOzFCJkf6qyEhFvL+G0NYknnsFvhyyaEsupz/3npCx2HkyZDUh1SKgjfxOY4XJ6ovE1SoBgTOLFQ+T8OuaHDYdRUatHz6h0Ijlvvln2A/6MouclEgUYlujk60RhuXSXpSLuuToWyzetVmGhw9Di3Q8g/swn5cweHCcq1dikT957YqaKhlR5v2EnlmXJ7prJrg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,39 +149,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/30/26 05:29, Shakeel Butt wrote:
-> In META's fleet, we observed high-level cgroups showing zero file memcg
-> stats while their descendants had non-zero values. Investigation using
-> drgn revealed that these parent cgroups actually had negative file stats,
-> aggregated from their children.
+On 2/2/26 09:54, David Hildenbrand (arm) wrote:
+> On 1/30/26 05:29, Shakeel Butt wrote:
+>> In META's fleet, we observed high-level cgroups showing zero file memcg
+>> stats while their descendants had non-zero values. Investigation using
+>> drgn revealed that these parent cgroups actually had negative file stats,
+>> aggregated from their children.
+>>
+>> This issue became more frequent after deploying thp-always more widely,
+>> pointing to a correlation with THP file collapsing. The root cause is
+>> that collapse_file() assumes old folios and the new THP belong to the
+>> same node and memcg. When this assumption breaks, stats become skewed.
+>> The bug affects not just memcg stats but also per-numa stats, and not
+>> just NR_FILE_PAGES but also NR_SHMEM.
+>>
+>> The assumption breaks in scenarios such as:
+>>
+>> 1. Small folios allocated on one node while the THP gets allocated on a
+>>      different node.
+>>
+>> 2. A package downloader running in one cgroup populates the page cache,
+>>      while a job in a different cgroup executes the downloaded binary.
+>>
+>> 3. A file shared between processes in different cgroups, where one
+>>      process faults in the pages and khugepaged (or madvise(COLLAPSE))
+>>      collapses them on behalf of the other.
+>>
+>> Fix the accounting by explicitly incrementing stats for the new THP and
+>> decrementing stats for the old folios being replaced.
+>>
+>> Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
+>> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+>> ---
 > 
-> This issue became more frequent after deploying thp-always more widely,
-> pointing to a correlation with THP file collapsing. The root cause is
-> that collapse_file() assumes old folios and the new THP belong to the
-> same node and memcg. When this assumption breaks, stats become skewed.
-> The bug affects not just memcg stats but also per-numa stats, and not
-> just NR_FILE_PAGES but also NR_SHMEM.
-> 
-> The assumption breaks in scenarios such as:
-> 
-> 1. Small folios allocated on one node while the THP gets allocated on a
->     different node.
-> 
-> 2. A package downloader running in one cgroup populates the page cache,
->     while a job in a different cgroup executes the downloaded binary.
-> 
-> 3. A file shared between processes in different cgroups, where one
->     process faults in the pages and khugepaged (or madvise(COLLAPSE))
->     collapses them on behalf of the other.
-> 
-> Fix the accounting by explicitly incrementing stats for the new THP and
-> decrementing stats for the old folios being replaced.
-> 
-> Fixes: f3f0e1d2150b ("khugepaged: add support of collapse for tmpfs/shmem pages")
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> ---
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Heh, forgot to adjust the shortcut
+
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
 
 -- 
 Cheers
