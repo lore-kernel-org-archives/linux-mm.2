@@ -4,93 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A759AD172C6
-	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 04:55:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 851B3D172CD
+	for <linux-mm@archiver.kernel.org>; Mon,  2 Feb 2026 04:57:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 988C26B008C; Sun,  1 Feb 2026 23:55:04 -0500 (EST)
+	id AD6D26B0092; Sun,  1 Feb 2026 23:57:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90C1E6B0092; Sun,  1 Feb 2026 23:55:04 -0500 (EST)
+	id A843F6B0093; Sun,  1 Feb 2026 23:57:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8188C6B0093; Sun,  1 Feb 2026 23:55:04 -0500 (EST)
+	id 9868D6B0095; Sun,  1 Feb 2026 23:57:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 70D1C6B008C
-	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 23:55:04 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E2B868CAE2
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:55:03 +0000 (UTC)
-X-FDA: 84398302086.22.1505729
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf06.hostedemail.com (Postfix) with ESMTP id DA00B180009
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:55:01 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K7xHFaVH;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 858896B0092
+	for <linux-mm@kvack.org>; Sun,  1 Feb 2026 23:57:05 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 39EB1D51B7
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:57:05 +0000 (UTC)
+X-FDA: 84398307210.29.6C8BE35
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 5268D1A0008
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 04:57:03 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Zt6AZJRt;
+	spf=pass (imf19.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770008102;
+	s=arc-20220608; t=1770008223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iQMGuhj4v1Wf/hZq+ihAsexgXJVjJdPHN5MjuTUGtm4=;
-	b=TzBQi7Pc+P7vOARSYjYeP+SpOEhN3DlSB8JDh1PPaW7AD7fAdPlW+sxUX60he7i0Wn6hZJ
-	LjGmw0j768czGkf8H5qCZME/p75jCIA/KNs17HGsm8pHRdNEWV7nUXtoul2CpPpPpp8U9x
-	gD1h3NbcTF6n0zAvljT+B6iEAjFHp7I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770008102; a=rsa-sha256;
-	cv=none;
-	b=F1Kf0cy4fdlGQhZEvuOgG9gghZx9MKei3li8HA+t1IVfdzG0PMWwDLDSu12vW+QoLBewae
-	9ZYm3WGBucg3JhU2eQkIG2WYHznIvmTXw6vY7cvxg9wMlkzKim1WCgIGPLjFDCvYbkqCbl
-	6aF3NjiCqphbo6Ll3RhkGWnz/YGt/Io=
+	bh=wPRgTQwJ4jsKG4M4C4YQuYvDcSDNXuHtRvocKp3Ffdk=;
+	b=CdLLAFVugOPEx89CY7raXfcxCBcCs1v3QWIflmVT8Ly6qLxLlMdZf9uliK9OhroKwuKfGE
+	r6mq1WH2nDzqNPxCDcNt/wZkmMK265ej/cZDbhPudDDbuVF0S+zcAQPzXv1tN2bFpCuv6r
+	RQMqQKskbk1QCtr587eWgaxqfSkNxsc=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K7xHFaVH;
-	spf=pass (imf06.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=Zt6AZJRt;
+	spf=pass (imf19.hostedemail.com: domain of mattbobrowski@google.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mattbobrowski@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770008223; a=rsa-sha256;
+	cv=none;
+	b=jxbTIQSNdz1kTvel8GEBL04m9ZH1mnBq7o3X/jEufBnO1nRLpPFS5H33Uv26+vMPoIc7Yn
+	SV6o7KwuO5a35kbYSxSCwN/eSvy+UelQX0wLZwrvDyrfYUHOLdbumzShjUe/M6gZTS51tr
+	oyGkgIR+yHtCTbBi9WdvaezhUVMHQvc=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b8845cb5862so630153266b.3
+        for <linux-mm@kvack.org>; Sun, 01 Feb 2026 20:57:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770008222; x=1770613022; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wPRgTQwJ4jsKG4M4C4YQuYvDcSDNXuHtRvocKp3Ffdk=;
+        b=Zt6AZJRtRsYX2BJQOMWRjTvld5kSTIj/WVgJqd4UvNxhVl43b3bHOdUSniC5J/FunM
+         dQ+VsgR3B3mG/wCdORwSmueB0JzUkIKoJxmG1vLPCocQmudFcVUr9tMxx0vwm4s5uUAJ
+         fuHNABbOBvVeSJAkQjQ2w7szgEOgPMYfVaY9yUNpSL+/JiachzrMSiNkPiANTPITDsqy
+         16twZwWvQGA2x6gKxMfEZNOAiH5wAAdY6cccM1u+/wvClbDMLW69yiB8YhunjvSH69vq
+         QcVQK/GFDc0Ainn6SY+E4UQdMbU9rdaxmoWdZ/KzUr+7J5D83kMwOkwGkafaI2Fe829F
+         GT9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770008222; x=1770613022;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wPRgTQwJ4jsKG4M4C4YQuYvDcSDNXuHtRvocKp3Ffdk=;
+        b=eVdXqO7MpKQBMEsBFHkSA+/umODLGe50sCeQhtkbIE1mUCE/hVdYCk4aEtexjNwF8t
+         YneDgwcwXJR78m2/g8YR4Q+FLot9MuJM+k6MK8T/rCD3bcHEqe64ye8uENZuc9wvHNmP
+         wGS60kocPQdOJCubfDAtAIOndh9nex0nt7HxO16t7eYIk059UXWCRLmYJYcyCukIk3Cs
+         N8F3SXon9zv36VbdsOO3flOog/PbwgqutU9QJwW3yahZ7vePTO4INlh4h00sTK+vGRhK
+         ZPx7n/sSxpJ/c/wK9i24XzVRY1+O2ddMAm/4l2V1aCCFcWIsfYz0e+PraZ2foqLpYEIp
+         jCiA==
+X-Forwarded-Encrypted: i=1; AJvYcCUF6wJaKWQEgAG2CuuPDqzBKBKE5f6/S52K3RXpT85oAs1QF44fgGoNWE/ZatJ+AT4pbOrPWAOHpg==@kvack.org
+X-Gm-Message-State: AOJu0YzaLHEZQh1DcozpjMSaA12n+G+EivhmTAc7BNhvZqgRBNIZqI1I
+	HAD5QAc9R8bNRoxOMS9GyjubV5ipPkUN97aVffMc5j1S1wQ+jCpahANo+XXQGI7K1w==
+X-Gm-Gg: AZuq6aJqDnLSEdGAoq1rQZjnnO2u0VqmbWBK7xSWB8jE2e51C5AWC5o2gcC+aGltZPJ
+	x0OCr9VblJueaMGEAUBsE9rdX8NJj+jUGOWmYtwyVJ7slp1cOKYBA8hqs/LFXjDqS0VhamWxJZW
+	eRGRe0jvL6J5LRHIv5Fj1gXVl6b34JinoMQZyncti9Db88JiXiZDpmskEchyaNik3BckRs9OhWG
+	ixovR+T8MguqaZGUdcZvl0s1mt0gcue7+b2x5otgKDCkXcJoF25y2RKUKHDCbkIorwD0DS6Oq0i
+	0tFlynTx11AsuF15ZaMHpbu9FonwWwzGH5m88TTfEvJ/t31AAeAnimEtAMfqX1jV9oKQesPCcsZ
+	ueK9IYpPmc/IHyoI1H2ny50wozouNXgAqy/osmSiOjclOHzsqoPD0NbTwocxsPEitjRiXhQPkWJ
+	dW8a479kbzCPGubi/2KhSRxzfTdbDewdhxrOsNPEOFBiBJ59wbedw=
+X-Received: by 2002:a17:907:1b20:b0:b86:f558:ecad with SMTP id a640c23a62f3a-b8dff5260f2mr573103666b.7.1770008221605;
+        Sun, 01 Feb 2026 20:57:01 -0800 (PST)
+Received: from google.com (93.50.90.34.bc.googleusercontent.com. [34.90.50.93])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbf2e0868sm802341666b.58.2026.02.01.20.57.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Feb 2026 20:57:00 -0800 (PST)
+Date: Mon, 2 Feb 2026 04:56:57 +0000
+From: Matt Bobrowski <mattbobrowski@google.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bpf@vger.kernel.org, Michal Hocko <mhocko@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Subject: Re: [PATCH bpf-next v3 05/17] bpf: mark struct oom_control's memcg
+ field as TRUSTED_OR_NULL
+Message-ID: <aYAumaqJ_MwJ3Tkk@google.com>
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+ <20260127024421.494929-6-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770008099;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iQMGuhj4v1Wf/hZq+ihAsexgXJVjJdPHN5MjuTUGtm4=;
-	b=K7xHFaVH9oPc1Yh/xCOEHjVjZmuhacqZUTn0fta11OA0WnR0Dr+LIqDT7D0B84IMh2J6Gw
-	T3unqGruLGEy02l4zvf1P4muxuoHYLbqQR9gEqrO6tXdtQ2j6CPXKIiRg6/EmZcUIB8x5F
-	k/F2dWJsb0YCvxzTEmk8H8uxDGq5He4=
-Date: Mon, 02 Feb 2026 04:54:56 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Shakeel Butt" <shakeel.butt@linux.dev>
-Message-ID: <51819ca5a15d8928caac720426cd1ce82e89b429@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
-To: "Dev Jain" <dev.jain@arm.com>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Johannes Weiner"
- <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Muchun Song"
- <muchun.song@linux.dev>, "Harry Yoo" <harry.yoo@oracle.com>, "Qi Zheng"
- <qi.zheng@linux.dev>, "Vlastimil Babka" <vbabka@suse.cz>,
- linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Meta kernel team" <kernel-team@meta.com>
-In-Reply-To: <2638bd96-d8cc-4733-a4ce-efdf8f223183@arm.com>
-References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
- <20251110232008.1352063-2-shakeel.butt@linux.dev>
- <1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com>
- <aYAmGc6lu973jRwu@linux.dev>
- <2638bd96-d8cc-4733-a4ce-efdf8f223183@arm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: DA00B180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260127024421.494929-6-roman.gushchin@linux.dev>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 5268D1A0008
+X-Stat-Signature: 1be5gia1k4fpqncfctq6qmcyau7r1bqa
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4heq35iuwtyqqws49xsng41a6smkaz7r
-X-HE-Tag: 1770008101-787698
-X-HE-Meta: U2FsdGVkX1+sJ4LqS1ocDy51QhzNm0hqPAh3arKcu7a5m7j5ztOcAyIlc+5HdGY1sDDoMhc66YZNSxpx1IMhEVhOwbCJKGc5fDZAwyVXGK9TpgzFu5ull6IDy1ZoIjVOYyvV+REiZ7sWReV6w2aYCGzSZ6rBX6cjvpTqP6Wk4Ju2NttnT10G/J0lh9NKPw0BeqilJXwSsmWxXAsAYhBG38Ns4bRTfu+RkdUOeHy09077s0crkfKB6OBo+9wBP5HWXyCr0XJ8/dzn52Ht3Ziax2bufqVPul0VW2RpzhnjAS/oh+BAKSSo/ZbrJ5vChi6Otzv3h78Rbdz74h4J6//FvOEf7xBqGTJyz93Pj76nGeqWncd45anM7nskTclY7y2PplhfXqyirLlt5r7728kHPNx6b6TjBeRRdxNVOEnh9Yr+NKHaP+6gmlIoRE1ZlLQ5TicKDhkomsVtuDXzBtIdexzLFThciuGQhdaCCufXd2zoYK2KrmBz7LALqmF6eq7ikl5oAM7hh4TfcWHg4UTVt89Wmd+WwBOWjsiXjO28v+4Frf70F89UInhXjN4PYY8A74yvTmeMkwi9D7Ovo7cHn6HG8Pj370j0VnZmQuIDAeku0DgNYnOTyofHPnajiQQT6o6xiLPDsoxSU3inrK+s+iQk0fPoSRV49nyPr1KD675e4eSHx+iPg/QeZdVu+08eedk68yxIV6nEOCAhRNudrh4ijP2nDw6pVtrebDAGODgLcj3trXYLqY+ACKTI7xZZBMCTnquIhFA9bIUMzVexVXtgSYU31daCxJ3EiChUpjLxnWRjhFfzVSBlWsHIpO/FlqqkMqHgyobQKAdIhSg3O45z/zLP8z9UreTv3VvEj7/hF+dQ2nZWsYWNB+CBp1DiMWUshtuqoAh+RF3QuGdx90yllGYlh0dLm9JAkGE0h7pq8Dy5u8099nWhJZ7Y4as7EOiSryoTyAYtPpMmxEv
- 42sBPFYv
- lW88/YjkugfrAtRMj5B4owtY5Mm3uJWU0NWiJWYneifGVnLViikGntS7EBt0D2HwgsP/sQLLJQ5pEmicKDITaEPeP6HmNg2CTSzfDzSIrqQN3D2McR8b1AmY5SinSRO3z7tabdf42W/MwMudAepoTE2UJamoHYO0MQoDghuFVJGOh/bnjxnrOHpkSasiSWd0oRUZ1JAp3xq/0iNTO88WF6Rx6bYCfzQnnwwkwP9vkTc3y3/mbk2o6lFk0O/P5zB4F0HMY
+X-HE-Tag: 1770008223-27815
+X-HE-Meta: U2FsdGVkX1+8alF8UKVxKMb6rYjsWIBeo7jzKOy3+reo7HX7c6OpcNUDni8STRtauQ1tAUjw6Zs5R0baX0d26MatN4Dj9NRAxQebbp1IvFuzGYi1PBvgCAWcr0gHnbhuSvOvI5pXdQtlGEiGmeCIoi8Thfc3EBG3QYeS2JKJQA0JbClFkw781MOe1CTqlwLeHdPQ5fcMGXTbyYDc29kaqgsOHdMXrNhgu32oZifpa3dTv1Vu5qv2yAlsK19rIbHeXuHIHniFp5jrUty6uHrvsgeWMavpvxShIVxGTQsjD3fnA4IDy/gcGUgPk4Pv216EE4qa/Yx0Wbbr3dd9WjqnjQtPLJmJOo78V0yo2+ZYiUsAmN1TDkUzzpACDWKcbGQF7KnClaoIHDUskgEnQ0QkbUVrubzwQIGiqCRvgNRK0TJbCjq1FwSVCOj+sTr5eGwkashUuUvdkOtTnhHvbz4Qd/sUF/cCrlwmeACSKreX2aAFEmDbS9lo3zW7mcB4ZCtBflH8zccLLtaptru4NkUooSSWB5yPNWwYoHOXGH/Ftzb58UiSrhzSFHsPsmSgJoeASBXnCcX7gWy7BQ0BLWWTQo5bRxGaICsfR0dFt1iQKUeOSJXuyiJYbQKGND4FUV8qn+mpBcigYHbrA1zJFrKBP5G5hGZBaunvp/bX1PxAiTG/m5bT5G23/1+N7HISk1kZnQK/x8kWi6GJqdjH2HiAQ16vfeMlwNzB63xSCjmMlaqk9BTqh8Xq4nQqkLZwZy9r48eO5sd1i85dh2Vu202zcpXH7NKUvOBA3VAOA6Jqx37Y45YS2clwjbHFCUkBjBY1KK4veuY2VX5qu1o0UensfLV0tKneGTJYbuS74oRcZZ+JO8YTdZc0JGmgWbRMuqnHgsTv8KgxVzurHixDKc8OEjyoAZ2s2ZVmfdFofrSW6zNuL4+IFPprjjf86o+GNAxK3kvqGiZYwpDW0eQHwML
+ spOlRIMQ
+ 2Otah+rZe3jikDEzU/Q5rmxQh7TgRKItTlkpPnGH6/hfu/o+mNUwunGTwAMuZVLO70xd7vSLJeeqoxaVBU3I3L0Uu299N+q8T3qqnu3z+q57NXVkGyHDUwmvg1GfzelrkaIONj78bZoh6dCXvQt93NAt9MQJO1FLnOpM6Da/BcS6ab1wlYjlaR99efeiLlPehngy5cbR6XPuR4C5vKNYp7QQCcS4oVrfM81SGS9Bhav7FNi4Atd7u9YzvYhOdEUp+4HXNJADcqZxp4PtfKe/Lu2niGi5CMsxTwsYS1TveY/NYBymsFiHUpwiohXwPcs2dpVvibgOqSsxNqRfZ7/uNJhbtbNf4eRlnasiPJhLKdxTNTd6s8SNIgnHtPqmEp1YGuqdjfcd+OfJLA/4EB866IDXNUAQg+/zkOtDaNEuZGVOQ5bA+4ljFxaiBCMaKgkX6xfxhv1ISBq0qNU4PinC0LUm1C5mbMpbTSe3qD1qIVyh86g7pRPCJut6nxBFr9fDMzpAU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,32 +125,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> >=20
->=20> >=20
->=20> > Hello Shakeel,
-> > >=20
->=20> >  We are seeing a regression in micromm/munmap benchmark with this=
- patch, on arm64 -
-> > >  the benchmark mmmaps a lot of memory, memsets it, and measures the=
- time taken
-> > >  to munmap. Please see below if my understanding of this patch is c=
-orrect.
-> > >=20
->=20>  Thanks for the report. Are you seeing regression in just the bench=
-mark
-> >  or some real workload as well? Also how much regression are you seei=
-ng?
-> >  I have a kernel rebot regression report [1] for this patch as well w=
-hich
-> >  says 2.6% regression and thus it was on the back-burner for now. I w=
-ill
-> >  take look at this again soon.
-> >=20
->=20The munmap regression is ~24%. Haven't observed a regression in any o=
-ther
-> benchmark yet.
+On Mon, Jan 26, 2026 at 06:44:08PM -0800, Roman Gushchin wrote:
+> Struct oom_control is used to describe the OOM context.
+> It's memcg field defines the scope of OOM: it's NULL for global
+> OOMs and a valid memcg pointer for memcg-scoped OOMs.
+> Teach bpf verifier to recognize it as trusted or NULL pointer.
+> It will provide the bpf OOM handler a trusted memcg pointer,
+> which for example is required for iterating the memcg's subtree.
 
-Please share the code/benchmark which shows such regression, also if you =
-can
-share the perf profile, that would be awesome.
+This is fine. Feel free to add:
+
+Acked-by: Matt Bobrowski <mattbobrowski@google.com>
+
+> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+> ---
+>  kernel/bpf/verifier.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index c2f2650db9fd..cca36edb460d 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -7242,6 +7242,10 @@ BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct) {
+>  	struct file *vm_file;
+>  };
+>  
+> +BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct oom_control) {
+> +	struct mem_cgroup *memcg;
+> +};
+> +
+>  static bool type_is_rcu(struct bpf_verifier_env *env,
+>  			struct bpf_reg_state *reg,
+>  			const char *field_name, u32 btf_id)
+> @@ -7284,6 +7288,7 @@ static bool type_is_trusted_or_null(struct bpf_verifier_env *env,
+>  	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct socket));
+>  	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct dentry));
+>  	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct vm_area_struct));
+> +	BTF_TYPE_EMIT(BTF_TYPE_SAFE_TRUSTED_OR_NULL(struct oom_control));
+>  
+>  	return btf_nested_type_is_trusted(&env->log, reg, field_name, btf_id,
+>  					  "__safe_trusted_or_null");
+> -- 
+> 2.52.0
+> 
 
