@@ -4,171 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6F8CE8305D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 08:44:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9884E83062
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 09:10:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 49F636B0089; Tue,  3 Feb 2026 03:44:15 -0500 (EST)
+	id EDB616B0005; Tue,  3 Feb 2026 04:10:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 449696B008A; Tue,  3 Feb 2026 03:44:15 -0500 (EST)
+	id E5E4F6B0088; Tue,  3 Feb 2026 04:10:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 338596B008C; Tue,  3 Feb 2026 03:44:15 -0500 (EST)
+	id D3F816B0089; Tue,  3 Feb 2026 04:10:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E3B26B0089
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 03:44:15 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E852D58C4C
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:44:14 +0000 (UTC)
-X-FDA: 84402508428.17.C51EA69
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9AB35100003
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:44:12 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Fns0K84g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=z7X6tqni;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Fns0K84g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=z7X6tqni;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770108253;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C3AF16B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 04:10:30 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72DDE1A0423
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 09:10:30 +0000 (UTC)
+X-FDA: 84402574620.28.EDB1558
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 698001C000B
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 09:10:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VP0nnDJw;
+	spf=pass (imf18.hostedemail.com: domain of ahacigu.linux@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ahacigu.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770109828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UwAPr09xyBevgF3++iKXrEQPjPRavUX5waQDeAooNGA=;
-	b=iA9MTS23QluOXIDCDO1XsHj9Lad4j/7AdUewJMhJKU8jh3U5oKUap07MiJF7NK90ZE19OF
-	DM9j6CG7SNU5xQdgRE3Jx/6KQyZHO8NNuqTLfs505LCp+opqIizA94mAaFQXhui9qdyrKO
-	61VJJvZ6SylbmvOjBvQiqF3vtPqI5KY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770108253; a=rsa-sha256;
-	cv=none;
-	b=gdE8oQmVHPvu0BnqPsZY/iY3v8DbW6quHaZrBxAhIt5x+9ZkALxAELELuhI3IDNaUXl5EX
-	hixaU8PrqlBEFF5A/hUtbGEld7Y1FseMFlN4Dai2xZE+6yyNxnkEZEJFhIFts6f5cCxiov
-	aF8SoDXVQJ3VoYjRJdbILEcOr9Emh8M=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Fns0K84g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=z7X6tqni;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Fns0K84g;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=z7X6tqni;
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DD47E3E6C2;
-	Tue,  3 Feb 2026 08:44:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770108250; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwAPr09xyBevgF3++iKXrEQPjPRavUX5waQDeAooNGA=;
-	b=Fns0K84gGADWdXyuIzxx5GLYPTCh8IuTmiK0LMmCWKYto1ovMDvB5ofUtHlvsXP3AYCka1
-	SXtuBPNKCIv2FD64IHkQKbX9oJk2M2SYZ8saqQBWngwT7AzGW7eYnIwXv/Fr0iFi8qqZka
-	eCoeUn5YnT7LUDVh6njsAsVLrhSDl6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770108250;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwAPr09xyBevgF3++iKXrEQPjPRavUX5waQDeAooNGA=;
-	b=z7X6tqniEThCjuNgx1r72u5ogssNYw7dHhoWRVae4drpdfmmWeX63h6Ei4/p88rjHJz9Ik
-	vcAfAZogXqmNHdDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770108250; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwAPr09xyBevgF3++iKXrEQPjPRavUX5waQDeAooNGA=;
-	b=Fns0K84gGADWdXyuIzxx5GLYPTCh8IuTmiK0LMmCWKYto1ovMDvB5ofUtHlvsXP3AYCka1
-	SXtuBPNKCIv2FD64IHkQKbX9oJk2M2SYZ8saqQBWngwT7AzGW7eYnIwXv/Fr0iFi8qqZka
-	eCoeUn5YnT7LUDVh6njsAsVLrhSDl6I=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770108250;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=UwAPr09xyBevgF3++iKXrEQPjPRavUX5waQDeAooNGA=;
-	b=z7X6tqniEThCjuNgx1r72u5ogssNYw7dHhoWRVae4drpdfmmWeX63h6Ei4/p88rjHJz9Ik
-	vcAfAZogXqmNHdDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BD55C3EA62;
-	Tue,  3 Feb 2026 08:44:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /ObcLVq1gWkucAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 03 Feb 2026 08:44:10 +0000
-Message-ID: <4b321435-3681-4593-a5d6-c3bbff0f31cc@suse.cz>
-Date: Tue, 3 Feb 2026 09:44:10 +0100
+	bh=YufSbN8rzwF9dXWtPAZkMmBI0fMomtuTdBXoSaaILsc=;
+	b=w1oupcv72FVpcRgjU/m/+Drnlm9cV6UX83KCSc+QaSdS9/gn+VA34z1mN+O0x+JgC7fbhR
+	IafeJT6A2QpmS+cLSnNrvJ07EU2zAzMUu+cqpTl3b5O41vWk8pW/2uRuVZLCuaLUpHE2fa
+	nZMMdLPaO4XE1hqfEfMi6sNMrvSyN9o=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VP0nnDJw;
+	spf=pass (imf18.hostedemail.com: domain of ahacigu.linux@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=ahacigu.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770109828; a=rsa-sha256;
+	cv=pass;
+	b=yUfsEFSR7WXtfA/C4Lik0ZkhJ4dx3VlLG5XbhvsWD5QDNSQAtMOdENJt004bXDVKWtU2GM
+	e0ntxBH0r1tZhisZDxxyd9FIS/NFRIWcQl4p8/mPuYDlmffhvOJvV1UG1YLQ5YluzV8gBH
+	ny6f7McqucPMMB6ZdcELW6WAYXSxoFY=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4359a16a400so4607941f8f.1
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 01:10:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770109827; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ihq0lZWq0nIRusT3Ck2Wd6O4g6fry01gpzJ9bNsVQZIGGzRv2/A7l8txySMw74cmQ1
+         UamjEgyop6HG79BPNxfaFLBhvF5Uf7oti3oL/owYhA30Bj9yyakyYVjZx/ziRtP1Ddbv
+         oiWZ3O3w+zH90WA/98lJbDhlOhOaps+I83Z1ghTHKrLkPAWx7Wm3VX+LLJqsdycHCeB3
+         Fn1xTRJombCx4OVOVAT//LURkf3Wc+zOSKH9PMEKZNjmDQ4gAmQevdAmRAUCLae/yYYp
+         qqZqq9gxdqXyYyIYW0nCDTKPMhqKO5kpLspxxJ0bUOLWX0Cj85KdcMyjLoLosuFvVXvR
+         H17g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YufSbN8rzwF9dXWtPAZkMmBI0fMomtuTdBXoSaaILsc=;
+        fh=3HgnvO52m6JTBv9hYhI9+jgXdbxtryPg2iFKyRDOffc=;
+        b=g/DnLvgecUyCGS6/TVnPJqmD+Lbta5Ia1XKVQ6YH8JNAbJKo4zjRoS/ScrwqzFYAUs
+         42py8pTYpXya/BxAFYdVC+HLchgugP3VP85Q7bGtjMYN2AznRFg4PsLCHRWfxiIAiO9Y
+         OZT5G32sPkI9kBzRsBS1HQmpmGrg/1Z5Rd1D7zSZN236PwYFCGQfKZMZ+aoGh9PuU2A9
+         k8vP7TcLqCAGYCTonEesbUvUUrkI/fuDRb/gtAM/kO7f2nEaIB6rKaKiBKncJktRWCc9
+         xklYFXLW1KDN+4I2R/vfm6xNIY60P23UDX+f4yAAXgI6iRx2yP/h9zd2E+Ckxao1QnK+
+         peSQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770109827; x=1770714627; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YufSbN8rzwF9dXWtPAZkMmBI0fMomtuTdBXoSaaILsc=;
+        b=VP0nnDJwET0pPN5vcbAyY7p1EifjCSl9fBbQstbuAsUrXNOY2NejlkQJ6h7VUB196L
+         QkGqAezc1mTs2Bk0ZFWyfiGMRTsUqRgeNgaiG0E37EfV4EoVEf5M7wbhBi2Dr+ahEt4w
+         Sl45rQMOcAI3z5KC6RoojqqgzQhzLXoRjtyVo3DUY3b+BoMPjixqgt72W2GidJXgoWZh
+         6eeNnppxTPkULyMBmj3z1btLnHGfhjVr1blXmfLFGnU+uABYN90Dz3E7yGobls79MCDU
+         AEuZSE0GOjIvOAPwV0oXqtXc+Kd4pyNJPeQjMjjf8QJlBemuO1iGzwnu3ItuGyEdT8Ww
+         xJkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770109827; x=1770714627;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YufSbN8rzwF9dXWtPAZkMmBI0fMomtuTdBXoSaaILsc=;
+        b=a9p3UeqtXXipXQJe0nF/97rFk073UMbBXKIWCpYCsdx5g1A2HiXJx6ZRsFGw/D8Neq
+         7WzrFAIGF3EoyqnDrVAxdxZgIDvrA8FR88XTlHyji0OOHTwpyXlyvO0dy9iuh3I9AybS
+         Aiqz6RBChM8Qy1M7qPHfbnz7TO/++K83RoEQXLr5Xe+1ngTSNq88v3d729ODvTXWNTRd
+         u2M+TGdeiUwZshlpCOf0Qc9f1GZ84AHMxfQ28XNjZGQlLACBiet6i0Kj28qEekg4EGK2
+         aNaoXfbNB2yBInwLf/zOWiz8Yvo/BZ6yVjWeVVjOMSXcwyP8RuwPt8DxThvfSBlFEN8v
+         FVdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUTjPoC9zP5lZO1LxVs3pd1c9gchso/vyZ5lAfcGe35xp9e3MykgQkw2iJaplUz9kDAmpIW7VjU1Q==@kvack.org
+X-Gm-Message-State: AOJu0YzMQulqatwqTrb2MEOykyHBVNIY3Vqp66Cn3M75aNyAQ7EcECkx
+	DsjF69YK06CL7GQuf2ga/CF2PUFjztw9HSTkCKDwCg8sxYWDC8nGhX2dQkSTxQ3BM6oiMbgZGn6
+	1v6JZ7QNlsHwSq4UAxwhvs3VSNscGFdo=
+X-Gm-Gg: AZuq6aIC9vPNf31XksHt06M2m3Dcqb953xZuVPFIUdvmiAzo5vctcYqaoJHEElnhDzE
+	N5ygT6kp987QfheARk30CsthMLE0qO7Ke7XVSu8cR/+AL0JmvrxQx8H+4Vze8AzS1cWIND0DApM
+	Y6eQUg2vGwFrWmBNpYN2UXWjPv7FpuQtSP28JgLCzLc36jJ7kKoMOEWrvLp4oH5lz651iPwRodQ
+	21TYYFifF57bPZDEs1J+hjf9KwPfnB+9luBom4G+OPzbmEM4ogDZBc+uWPUWj0oUDbDpAc/hNoS
+	bqg875cWOyEbeP1SwzKOpKWu2mM=
+X-Received: by 2002:a05:6000:2304:b0:430:f742:fbb8 with SMTP id
+ ffacd0b85a97d-435f3a92266mr19654828f8f.21.1770109826689; Tue, 03 Feb 2026
+ 01:10:26 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Kernel Bug] WARNING in mempool_alloc_noprof
-Content-Language: en-US
-To: =?UTF-8?B?5p2O6b6Z5YW0?= <coregee2000@gmail.com>,
- syzkaller@googlegroups.com, akpm@linux-foundation.org, cl@gentwo.org,
- rientjes@google.com, roman.gushchin@linux.dev, harry.yoo@oracle.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <CAHPqNmwK9TY5THsXWkJuYCdt7x+mZHPq65AUOLZJeMp-FdAMvA@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAHPqNmwK9TY5THsXWkJuYCdt7x+mZHPq65AUOLZJeMp-FdAMvA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 9AB35100003
+References: <20260203073757.135088-1-ahacigu.linux@gmail.com> <3e59ca4e-2301-48a7-bb8e-d028f07b1446@bytedance.com>
+In-Reply-To: <3e59ca4e-2301-48a7-bb8e-d028f07b1446@bytedance.com>
+From: Altan Hacigumus <ahacigu.linux@gmail.com>
+Date: Tue, 3 Feb 2026 01:10:14 -0800
+X-Gm-Features: AZwV_QjHN2f1dqEKp-oNFWKTebxMCyw9kDZeWtR0aZqGJ_jsA4ifzgI5DrnO9oc
+Message-ID: <CALjTKDkir0WvFKCfJquwxO-qfYa6CT+5ECa49SbRiUrexRpyrA@mail.gmail.com>
+Subject: Re: [PATCH] mm/shrinker: Fix refcount leak in shrink_slab_memcg()
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: akpm@linux-foundation.org, david@fromorbit.com, roman.gushchin@linux.dev, 
+	muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: qj731mprixc5bubo61gt7xq5n14ud3rz
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: x1zkq338gymmrejx6e4dfy73z1f8ritx
-X-HE-Tag: 1770108252-515018
-X-HE-Meta: U2FsdGVkX1//O5TNGqTczBeYJNJFy+mnSZg5/PVPAQuO4fXPEm2Pr+2Sik2D1z3qz7lSZ5uMSsHtt+d3gY7KTZLvDElFALyylYjp84MZA+WZLsEvCBrjpjZU3r5JAJNnU7Jz3rUtQ/NunSjahTJ7ibEzPZ4P0JUxBXtYPwfl/B78uG7eS9Q3M1rMVOTiES8GpbpygbmOC+UdxgyQFwd2v3Qd8eSoiSMaQjCx5U5VBCdYKURjEXQEp8D/6AGDno72PV1l0rbupOXNNOSiqzLaRV7QT0IvMrlKhNCB0UUgkBgJsoIxSaZF9C6u7pmcRxAEH7EAP7WKLy0kFm/no7Mwvs3Drtj86lPK7JcK0YIJ2S7K8MBuiV1Hnbx0q4ZhygsGDtkqfroTBewr45mpIrjcaESGK1TFW9RzYybMGuhCITPYy+OgLUBpE99AggeZVKanD6GcjSnXi0gZXFsBy1zrZhj6vyUFKZJGJ6meLVWju4ne8NKqt7yQJCbzEihX8o73R1j/h8hqGUR0HHTPkAioe4gmhyp52pJGWDiDs7Pva7bLbwhBdZDK2blkqhqlV5DaPgzsW+tIkMHbjUkHXCKFhPey5JQgFxJfvRQk3oCeVyE6A52n0n2Y1ymqzi8x4goYPOC8b5P7LRacfknT8bEBSdJW5a5MslwvyCWQnokqHqE5OlhUmX0uelnOju37lKTiNyGtHI9+jf4WIsxX3euM9Km3T/wIe/z5Wrkig1TQ6TawdlsZwq+cpxwtGUcSqes3cxgMPcxs8HfXi3b+yH8NP+TttsAsnVqhQOYto44TC4AN1KM0nj5I1/PQtJ91XrcBBtgIWezXfAiAPzrEiuZw7KNJeyzWMG46tA+8nIeu6rR5+kZZJsLk1x8QIt9nq1k6xTieZtPyRb+2tj6I9/wNC4jHnmCJiCD9Y/5JNZn2TWv8MzNyS51yOffHbS2ESCiMbKOh7bKDFfZ6fKL4k8z
- oVYTqe3f
- nMH6x6/2pE1nDhbbsSZhUWVN4bfaN5+GsVoTrlK/qYh8ZdeRgZPxrF5+KTAb3Jbx2sFXUVCaJjstRTNmLeHEJcN2r9xyMaA1J/hSJCEu2olyCoLmaW/zsuYK1NT7hyVoXPgxpVJrtrx0uv/hqj33EKUfZMoOBwNQ3ABMjSoiNikbP8paT7+rrojdfKgyr9PewwrumjWDdA+NjDtvT0wEizeE1g8caJ99A9Qa5vhblkykVAty+5osRLgzmDz4k2cp65bL11mpyJSq+KsE4kUzyiVU924zaNrZOs73wfUi2hMEAK3Tu+KhMUcXYMPmbB0G9D7ki/mMTYKDN0ncSMVG4evZTsay0BV/BSryv
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 698001C000B
+X-HE-Tag: 1770109828-529283
+X-HE-Meta: U2FsdGVkX1/cF9QMKfdvgPec5apMvJynbn40FCEi6TNohkg4BYuiBwqPbeGFGQgDkhqWsWXrzRxzKy1cgFmITjfJddLdhQMxzmObo75ltJFrjslOLXT889w7is0ID3ZRIn2uUSKao9tUkqri48PE1+9FzXTLVM1yy/oAsShdxM18ryeu92UtgFo8+3JRGfXC3872gN3Ml0d5Gac1WJmKNqUMJQFMYS3UtOT8GiBkwNzZVSVmpEK2XVYywPM5YCsv3MuAIG4y8TwoETwrfdgNOmcFuodpdbnHLpD8HIbdNfJr70lGr7AuqTljUEMOZLYOp4xUF8B67TG1pBRAeX+PPsKaOzECK5BJBB+v9CiNxA8CDzdhTh290DsThN65LC6mhG9VnCiF0bERXN+KbOYjMazbuf+SMdkGTOkn88TBJOrVTTjOadIzp9mgOTVj+5cA8g+GOymMCa8WLG8Qe2/sg3nSqArhpXlwp/PZsCxS0hvWls7gOIbroy61pRR76nFJkLyQbdtInFF5Ks0GE7imySBI/tQAz0dcwWIEFeW4v/Ke5Yg+nnDWkPXTV+akmM5KL6rz6PPZrwQ3APylB0Gne1gf5pqteyNJRgNajblBWoP4RoBFDv+h3dRVMGr3Zr+V7idxi6SxjUwadWaobt3SFeoMKy4Q528mg//G9fsUO8MZkCBEe3vQaXqIUZQktBBxPRBdTlJvl1F6U3YiSG2NgAoU7ZH5NNIehMp44YJa0xPOvSWD8bbVbC9RIhU7CPxpuN0jEBMv6p/vDYbAF4e8LuWsjZ0EyxWP1GMIzmgZDh9sBekfsMYAXu/PAvbWCLUa+/9/p7LQKiBlEvZXENnThK20Z7SrnZBOZKwNgotkjzraKBclCH/xJqbR7qMs6zDMAMvKExDoe6f9NnPvVajI4O7M/8SN7KA4m5d3PJXgcanuKUDO3z6a0gW4iC0VsbEVvr8rfln7PszrW90f9H+
+ gLHm5HXZ
+ LSEi46ZHht2jXd1xKJSz98wOdLnykKbfXX1vCmaap2mwB/W1UnnCuolUIKwXLpIKy7Hbt1mvUmbHVqUc9L4jG0lzYI3dU5gkA2asPagZk4tfii6n4i0nGddJB0eD9WeHY9cTygzmewzd6cuaUtSnQ7hXN25wIt2xfFBTEiQXYPpR00wpr4VDYyHyoNlZ+fV2Tg5oJxoqyefHBi9/Ch7QcZTvteckE++CswBj+Ssd9HO1kf9zVCB8bLMSzsb+nC+0XT6mZjVx7WwtFtsjMBU1aNFsqVeDJUWfc/G9ljNEn+0PMugGu6x4bY193P7jIz32n9VO0X/p96iP+whcU7WOsm1ZkvV9f/qKver/KGNhw47ZapS/P0jF/8pWbdT8oL6Cj5/Lvo+wPlfG37lwrqsIkKfTUtzcPhBzowzRdVywqaSJK3KIOlOtpFs1qTrrmAg0xtE4ta6dwT0hKrHtryPA+OaDpSih2NGJvYY0bx9CnzXAsiys=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -177,22 +139,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 07:40, 李龙兴 wrote:
-> Dear Linux kernel developers and maintainers,
-> 
-> We would like to report a new kernel bug found by our tool. WARNING in
-> mempool_alloc_noprof. Details are as follows.
-
-Hi,
-
-> Kernel commit: v6.12.11
-
-that's a very old version and your reports could get dismissed - in this
-case you were lucky. Please use bug finding tools on recent versions.
-Ideally even rc kernels (now 6.19-rc7) so new bugs can be fixed before a
-final kernel is released.
+Sure, makes sense.
+Will send a v2 with the bitmap clearing.
 
 Thanks,
-Vlastimil
+Altan
 
+
+On Tue, Feb 3, 2026 at 12:18=E2=80=AFAM Qi Zheng <zhengqi.arch@bytedance.co=
+m> wrote:
+>
+> On 2/3/26 3:37 PM, Altan Hacigumus wrote:
+> > When kmem is disabled for memcg, slab-backed shrinkers are skipped.
+> > However, shrink_slab_memcg() doesn't drop the reference acquired via
+> > shrinker_try_get() before continuing.
+>
+> Good catch!
+>
+> >
+> > Add the missing shrinker_put().
+> >
+> > Fixes: 50d09da8e119 ("mm: shrinker: make memcg slab shrink lockless")
+> >
+> > Signed-off-by: Altan Hacigumus <ahacigu.linux@gmail.com>
+> > ---
+> >   mm/shrinker.c | 4 +++-
+> >   1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/mm/shrinker.c b/mm/shrinker.c
+> > index 4a93fd433689..d0be120488b4 100644
+> > --- a/mm/shrinker.c
+> > +++ b/mm/shrinker.c
+> > @@ -544,8 +544,10 @@ static unsigned long shrink_slab_memcg(gfp_t gfp_m=
+ask, int nid,
+> >
+> >                       /* Call non-slab shrinkers even though kmem is di=
+sabled */
+> >                       if (!memcg_kmem_online() &&
+> > -                         !(shrinker->flags & SHRINKER_NONSLAB))
+> > +                         !(shrinker->flags & SHRINKER_NONSLAB)) {
+>
+> Since memcg_kmem_online() and shrinker->flags cannot be changed
+> dynamically, it's best to remove this shrinker from the bitmap:
+>
+>                                 clear_bit(offset, unit->map);
+>
+> Otherwise LGTM.
+>
+> Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>
+> Thanks!
+>
+>
+> > +                             shrinker_put(shrinker);
+> >                               continue;
+> > +                     }
+> >
+> >                       ret =3D do_shrink_slab(&sc, shrinker, priority);
+> >                       if (ret =3D=3D SHRINK_EMPTY) {
 
