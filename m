@@ -4,122 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A9FE8307C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 10:17:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A009E6E7E6
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 10:27:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B9C96B008C; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
+	id 974DB6B0088; Tue,  3 Feb 2026 05:27:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 363B46B0092; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
+	id 9225C6B008A; Tue,  3 Feb 2026 05:27:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2525E6B0093; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
+	id 84F1C6B008C; Tue,  3 Feb 2026 05:27:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1347B6B008C
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC21014041B
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:17:17 +0000 (UTC)
-X-FDA: 84402742914.07.103DCDF
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BA080C000C
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:17:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=lUAE2uVq;
-	spf=pass (imf22.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 73FA06B0088
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:27:27 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1D43A140423
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:27:27 +0000 (UTC)
+X-FDA: 84402768534.27.799964C
+Received: from h3cspam02-ex.h3c.com (smtp.h3c.com [221.12.31.56])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 96282C000A
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:27:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	spf=pass (imf28.hostedemail.com: domain of qin.yuA@h3c.com designates 221.12.31.56 as permitted sender) smtp.mailfrom=qin.yuA@h3c.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770113835;
+	s=arc-20220608; t=1770114445;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bIz4RVwkv6KARy4MwQOhUdd22JeZFr0fFrNF7J4bRPM=;
-	b=6mtqhtKnFrtKfw+sG0O0LyCAptmP4WVquNC6zIOeJSpoqlWMbodB7h8GLZQTtHiz0E4bdt
-	iWxHN6Pc5rK7jQM0Nv7dNLr7R7DRcXn1GJF16b9WTes/ZmKGXe9jcj7GgDKA5kyZuPfovr
-	Y1gDbF1327aPUjX5dnzSvUeJdyeH2Ws=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=Mew4Zn4Xmax+wTeUkTn8AbZtoeXWnjxXVAssVALqdyQ=;
+	b=n3VydY1LF9vv0cO0kGLCKo7AVekgcV/fih9h1WL9/ZQLUMJuQm1gT0vZV1EEkrlDPG2cFh
+	1ZydTCLo8fgjktcpkqBLvdc58JCZFy9+Z/A1U7zSt+l6nIxv1+uf/j5bn9PMZ1u/GAIl0O
+	q8TUpe0LXkfOFQuA3NpR/dqBIEsbqo0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=lUAE2uVq;
-	spf=pass (imf22.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770113835; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of qin.yuA@h3c.com designates 221.12.31.56 as permitted sender) smtp.mailfrom=qin.yuA@h3c.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770114445; a=rsa-sha256;
 	cv=none;
-	b=xWDmd13cV+PtaJ/lXtgmCFp1Xv+MBbd7pl6di3FuJO+gRMxE/iGOsOctT03nAvnAeTBluE
-	7bhZ3gSmTubXPmSWOcLhWKsAfWI9t+32aZsf23RE8g4Qe9N58DMN2T3zzkuiUK2zGgV8pz
-	sJ8S0pCNJ6vZEhc0RR+JAsyrEA0yzzI=
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4f4ztd00Nsz1FDXZ;
-	Tue,  3 Feb 2026 11:17:13 +0100 (CET)
-Received: from [10.10.15.18] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4f4ztY1CK4z1DHbc;
-	Tue,  3 Feb 2026 11:17:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=simplycom2; t=1770113832;
-	bh=bIz4RVwkv6KARy4MwQOhUdd22JeZFr0fFrNF7J4bRPM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lUAE2uVqAzYhZ1sm97fYuqy+vlFYURoO/ESgRDOLYwoPcj+AJLYcKftxzXr+4y/HX
-	 2YOyDda3zoXt+26+AX8pMM7QHh5T+XJuM4W03HRzJukix5g8rdsb/fjilKm09oxzSx
-	 tBwy+nern6bg1a50/KfLMYddppMeG7txUbC4/AmsAXT1tuu3+smPwBXiUUqokjSpVv
-	 UUsrhLX04O7HNQNLLVmIA6iNk0y72m91fWDt4UXVjn71WutyJfQfTM3K8uFvvtoUBz
-	 jIXUHdgIYTlrZQBjHS4KV4lgMsEWYt8Uw9Kgk+K14XLmF28umAniXCSL8090kqia/S
-	 lC0jknJm/j/RQ==
-Message-ID: <ec965a79-dad8-4358-a8e9-ebc9f330b67b@gaisler.com>
-Date: Tue, 3 Feb 2026 11:17:08 +0100
+	b=IadxGu04y7u2SFMFQMnORhsEvGssFcEwEk2KcJ/2yxyr3TubTRtToaltiqWTtKlppKYhuK
+	s7Gk2AbM4uYGrKPnJjZ7OCH+xtdB3KsiRgNjl3DR0E3ZLJpLkJzohcuyrE5Kf8hE700+5t
+	XX8ZIVC6ojYK1V9+2/fPWqSpu7bC+Q4=
+Received: from mail.maildlp.com ([172.25.15.154])
+	by h3cspam02-ex.h3c.com with ESMTP id 613AQrv9096806;
+	Tue, 3 Feb 2026 18:26:53 +0800 (+08)
+	(envelope-from qin.yuA@h3c.com)
+Received: from DAG6EX08-BJD.srv.huawei-3com.com (unknown [10.153.34.10])
+	by mail.maildlp.com (Postfix) with ESMTP id 868702011874;
+	Tue,  3 Feb 2026 18:36:39 +0800 (CST)
+Received: from localhost.localdomain (10.142.164.51) by
+ DAG6EX08-BJD.srv.huawei-3com.com (10.153.34.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.1258.27; Tue, 3 Feb 2026 18:26:53 +0800
+From: qinyu <qin.yuA@h3c.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>
+CC: <linux-mm@kvack.org>, qinyu <qin.yuA@h3c.com>
+Subject: [PATCH] mm/page_idle.c: remove redundant mmu notifier in aging code
+Date: Tue, 3 Feb 2026 18:26:49 +0800
+Message-ID: <20260203102649.2486836-1-qin.yuA@h3c.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable] arch, mm: consolidate empty_zero_page
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
- <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
- Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20260124095628.668870-1-rppt@kernel.org>
- <2157220c-0394-40fa-9918-a8514171bd10@gaisler.com>
- <aXj_x5CyUeys7ONM@kernel.org>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <aXj_x5CyUeys7ONM@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.142.164.51]
+X-ClientProxiedBy: BJSMTP01-EX.srv.huawei-3com.com (10.63.20.132) To
+ DAG6EX08-BJD.srv.huawei-3com.com (10.153.34.10)
+X-DNSRBL: 
+X-MAIL:h3cspam02-ex.h3c.com 613AQrv9096806
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BA080C000C
+X-Rspamd-Queue-Id: 96282C000A
 X-Rspamd-Server: rspam07
-X-Stat-Signature: mbkkq3gutm5uytow1mkqchbnyj9ca7x1
-X-HE-Tag: 1770113834-367313
-X-HE-Meta: U2FsdGVkX1+gBpTWX+CQGX96+Vz8aaFiobAZV8uSyGIty1G7NE5f8kH70XYffavCdhJs4wpi8N0Of5dThZn1XOHjSZKr83mc19hIFDcVLZysa4E1w7MJSyfeTGjhZ0BSevGhTRyTw/NtdJoUFNY6nJq+1LX03GZXwayXUW3XPKG5oyChDoQS6dZAwHuPYUWi+8fCozS6O2B5UEJmimlajIiOEWKAP+A+INqcESK2c+qh0vb5n29qgVTTT2NUJmKP9plHlrXnBiQXbOe14yfA8O4tXTsFqZvJvU3S88pBG/haAntNNshnbb19pXrlEd4z9VW+QyQ59D1vXY6XMnKYKT6AKb+CvFA53LC88c2/B8nADTwUYXVpDnGXSrJuOElpAySGrQqUUD0MUlMxWwww915ddzbRN7ykVw4mBfWtHMC5zoa8CH8t00jnbpp9hDZuFhh7PVkyHGMhIBC7ZeEmBH29o1nzWuuVaSazbnMZewM2g9unfKDPBvbuD8QtQT4rZvLVeFA5jRaPSzN3AtdAz1Q8WezkzgDXNV8leZdV0pUQ5wQemMYMk+lJ3f41WTPnlDLPBwHFsAdcTixWdJce1B2tqlOdVXQDtR43Xe22KVgfnEvyREOJRXnpF9ekLYK9LrgOhJ2ZFDDR+Rn406gdSDa7VP3TeIx/b5FGKLdgZwFEBqtceO1psHSs5mvcJwezjJ/XokUk0M7Bv/MdKBRTemihsdxmOuOb85njxtyo+5G8SWtiGHE4MJfg631ZGwjU1/KZStbCzS0l3SU1/q8oOMMcdiwSahmYOLovAri6YwjOFWXeC2XpNniM+LEZy20LWkhF4nvjwIeSM+9PZLpS65z3MbzwpKRDZeIbKFFPmDTMPG7hp+FPm44KHdpak2uLuCHFo0tzr5j1JezjOJlP2D51R0wXagqDEZftUy+VHW7LGeQnNXmESr/jFU2whscykCEoSHr7Vc+bMuxhBx6
- +Z+B/ay2
- lOdNTRot0P65xqtSnNnyEID0LBfgEal4Fhr5ZAZ1YIeENsUK7jmWbNRH8mB3B27ZLTBKz1FOeLNzg+ndUoTNG4kHUNH79gutU93PoHv7r1hYOoBaCiFX6imqXETPXj0qDF0y8GUWQAQd/dP4bkR8FjWT7OPc5G35O+xmgqj69FnMfC06Ej/OmhW8nE0hXOfzK51gFdgAmiWT6szqEtxyrBOP3OHgx0V4COrVZdAZ1rR4l2aG8/fbn6T3T/ZdBlrUhcevgZAC7+VR8c2m5fywiF4o6GiP97jJGgJS75P7MhNBDjaD09JXrug/Br/8JNSnaV4w4H5VTLJYNeNU2HCTRlfJNl0QAAGOw9qrH
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Stat-Signature: kfc7tc6ibkuek6dikwkxp9hm1fksc1fn
+X-HE-Tag: 1770114442-394696
+X-HE-Meta: U2FsdGVkX19ZpDRebM4OuG2HiMuXmp5r2G0PpRPKOeTWUlOsjwgQIVqf8G9s9z9PxQtycYhBu/9VMiJEy0hq71I15S/SivDqmpV2rzN6chR+QspQ4xZF6resj/2kMm/DoT1EtHcokwq76rnSoGB6smJHj+fG809FACDuTMGMYu+87MPQV17IxBrEb5iNZnnJvPzSMhHhlUBObonKfFb1gN4jIcnIZJUmkh0G06qsDpdSOcZstUSoOTyHfYpjs/arZzmqL8xvT3Ln6QlZi6MrznmdOnBcR4lbliZsBkMe1IF6H9Z+pSjkfUYPUZaw+TxafShZDsv8dANxbiAR/L/3KUTvipN6dpBNu1Exss3fPAbwTcyYoqw1dSBzqXxREE9PVNe1ZWehTmkkkmsTvLFHznJL2OeBwWg3l8he2tyENF8znmRrsZKY8+m5HAbVsBHJOY13rshaSHX6mSsjjhM5Cq0vMVTgab7BvGcsiSEVEZECvb24wUOYxHVhTmTBmv8aCzmVDzH6ykir2xTkO1a210Dryqhvqn/eWXQF6jwpksmHEhdL7ixi4Hr1ZCjmncAVf9PRAAN3lxn1GV0MFgXi1hzArK/93ifGz38MO2JWos2gsfhDUdi25kwu8jqyXEOoiAgxUfcHnUy9xAdDw/tUTJHYBf01A2+3AlVmZXKW1PDIHyVPEBXKCh7JHbxb1BIh1NcP4yNPkHIil3a9Yz76Z3OWIczkJIEMSv3vOcSVsvKpHFA9bqmtL3tLKKw6ZJvVefaGNHuBCiPMgI/5M4gd70mR4yfdUDqPL7lYFEfgQARfk4yQJcrT9co24Pk2gZ3mdvly8oXpzYsdmCxAGJkJE/Eq8LC2Tp1u1RXswQe61lZvrb/1N6mTFneXeK7o/oY0GniM0TBj8UtfRsnHl52DCP0+WIMeJ5hrsO7CY4GULq7xLBypengnepN44G0410NTNo9IGkHTVCq3yoa4zzc
+ ZetQmQex
+ ofoDA7c6LmtRoun1/4TC88jn+OkdFUSIPu8O/6zf56UXC+UwmZt/c4HWq5YvwN6rKMbxlfOaNB6kb8rBN4BKqhMFXeCgLsfWeNA6nt0TdxuxXhurEcshvE4HDETYN4qqdfpC+ffoqQsKIWQVzlqoARGe/frDA+SLVnSGCfkg2HZU7dwLZkhL2aaAJxCcvpelsAtPEAWsHGsDKUGY=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000007, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,124 +88,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-01-27 19:11, Mike Rapoport wrote:
-> On Tue, Jan 27, 2026 at 05:02:39PM +0100, Andreas Larsson wrote:
->> On 2026-01-24 10:56, Mike Rapoport wrote:
->>
->>> Every architecture defines empty_zero_page that way or another, but for the
->>> most of them it is always a page aligned page in BSS and most definitions
->>> of ZERO_PAGE do virt_to_page(empty_zero_page).
->>
->> Running this in an LDOM on an UltraSparc T4 sparc64, the entire LDOM
->> hangs after a while during boot.
->>
->>> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
->>> index c2d19c9a9244..2bd99944176d 100644
->>> --- a/arch/sparc/mm/init_64.c
->>> +++ b/arch/sparc/mm/init_64.c
->>> @@ -177,9 +177,6 @@ extern unsigned long sparc_ramdisk_image64;
->>>  extern unsigned int sparc_ramdisk_image;
->>>  extern unsigned int sparc_ramdisk_size;
->>>  
->>> -struct page *mem_map_zero __read_mostly;
->>> -EXPORT_SYMBOL(mem_map_zero);
->>> -
->>>  unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
->>>  
->>>  unsigned long sparc64_kern_pri_context __read_mostly;
->>> @@ -2506,18 +2503,6 @@ void __init mem_init(void)
->>>  	 */
->>>  	register_page_bootmem_info();
->>>  
->>> -	/*
->>> -	 * Set up the zero page, mark it reserved, so that page count
->>> -	 * is not manipulated when freeing the page from user ptes.
->>> -	 */
->>> -	mem_map_zero = alloc_pages(GFP_KERNEL|__GFP_ZERO, 0);
->>> -	if (mem_map_zero == NULL) {
->>> -		prom_printf("paging_init: Cannot alloc zero page.\n");
->>> -		prom_halt();
->>> -	}
->>> -	mark_page_reserved(mem_map_zero);
->>> -
->>> -
->>>  	if (tlb_type == cheetah || tlb_type == cheetah_plus)
->>>  		cheetah_ecache_flush_init();
->>>  }
->>
->> This just removes the mark_page_reserved(mem_map_zero) without 
->> replacing it with something corresponding to that. Perhaps part
->> of the problem?
-> 
-> I don't think so, empty_zero_page is in BSS now an it's reserved as a part
-> of the kernel image.
-> 
-> I suspect that virt_to_page() does not work BSS symbols on sparc64. Can you
-> please try with this patch:
-> 
-> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-> index 74ede706fb32..0578c5172d4e 100644
-> --- a/arch/sparc/include/asm/pgtable_64.h
-> +++ b/arch/sparc/include/asm/pgtable_64.h
-> @@ -22,6 +22,7 @@
->  #include <asm/adi.h>
->  #include <asm/page.h>
->  #include <asm/processor.h>
-> +#include <asm/vaddrs.h>
->  
->  /* The kernel image occupies 0x4000000 to 0x6000000 (4MB --> 96MB).
->   * The page copy blockops can use 0x6000000 to 0x8000000.
-> @@ -210,6 +211,11 @@ extern unsigned long _PAGE_CACHE;
->  extern unsigned long pg_iobits;
->  extern unsigned long _PAGE_ALL_SZ_BITS;
->  
-> +extern unsigned long kern_base;
-> +#define ZERO_PAGE(vaddr)						   \
-> +	(virt_to_page(empty_zero_page + ((unsigned long)__va(kern_base)) - \
-> +		      ((unsigned long)KERNBASE)))
-> +
->  /* PFNs are real physical page numbers.  However, mem_map only begins to record
->   * per-page information starting at pfn_base.  This is to handle systems where
->   * the first physical page in the machine is at some huge physical address,
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index 2bd99944176d..d2d724ba4f83 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -170,6 +170,8 @@ static void __init read_obp_memory(const char *property,
->  
->  /* Kernel physical address base and size in bytes.  */
->  unsigned long kern_base __read_mostly;
-> +EXPORT_SYMBOL(kern_base);
-> +
->  unsigned long kern_size __read_mostly;
->  
->  /* Initial ramdisk setup */
-Hi,
+now we have mmu_notifier_clear_young immediately follows
+pmdp_clear_young_notify which internally call mmu_notifier_clear_young,
+this is redundant. change it with non-notify variant and keep consistent
+with ptep aging code.
 
-Unfortunately, that does not help. The LDOM goes down in the same fashion.
+Signed-off-by: qinyu <qin.yuA@h3c.com>
+---
+ mm/page_idle.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-In QEMU, with or without this extra patch, I get this:
-
-[    3.310674] BUG: Bad page map in process mount  pte:ffffc800016436b0
-[    3.310778] pgd:027dc000 p4d:027dc000 pud:027d8000 pmd:0269a000
-[    3.311686] addr:000001000020a000 vm_flags:00100077 anon_vma:fffff80002688548 mapping:0000000000000000 index:8000105
-[    3.312449] file:(null) fault:0x0 mmap:0x0 mmap_prepare: 0x0 read_folio:0x0
-[    3.313622] CPU: 0 UID: 0 PID: 46 Comm: mount Not tainted 6.19.0-rc5-00269-g28acabacf9b0 #22 VOLUNTARY 
-[    3.314056] Call Trace:
-[    3.314182] [<00000000005e822c>] print_bad_page_map+0x10c/0x260
-[    3.314375] [<00000000005e9f30>] vm_normal_page+0x70/0x80
-[    3.314400] [<00000000005ea5a8>] unmap_page_range+0x4e8/0x13c0
-[    3.314421] [<00000000005eb54c>] unmap_vmas+0x2c/0x120
-[    3.314440] [<00000000005f781c>] exit_mmap+0xdc/0x440
-[    3.314457] [<000000000047193c>] mmput+0x3c/0x100
-[    3.314477] [<0000000000479e94>] do_exit+0x1f4/0xa00
-[    3.314494] [<000000000047a83c>] do_group_exit+0x1c/0xa0
-[    3.314511] [<0000000000489b28>] get_signal+0x8a8/0x8e0
-[    3.314529] [<000000000043be24>] do_notify_resume+0xa4/0x5a0
-[    3.314549] [<0000000000404b48>] __handle_signal+0xc/0x30
-[    3.314687] Disabling lock debugging due to kernel taint
-
-Cheers,
-Andreas
+diff --git a/mm/page_idle.c b/mm/page_idle.c
+index 96bb94c7b..9c67cbac2 100644
+--- a/mm/page_idle.c
++++ b/mm/page_idle.c
+@@ -74,7 +74,7 @@ static bool page_idle_clear_pte_refs_one(struct folio *folio,
+ 			pmd_t pmdval = pmdp_get(pvmw.pmd);
+ 
+ 			if (likely(pmd_present(pmdval)))
+-				referenced |= pmdp_clear_young_notify(vma, addr, pvmw.pmd);
++				referenced |= pmdp_test_and_clear_young(vma, addr, pvmw.pmd);
+ 			referenced |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
+ 		} else {
+ 			/* unexpected pmd-mapped page? */
+-- 
+2.33.0
 
 
