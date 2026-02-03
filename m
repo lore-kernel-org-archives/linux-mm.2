@@ -4,135 +4,234 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27639E7FDF3
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 01:08:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69AF7E7FDE0
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 01:08:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3B076B0005; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
+	id B69526B0089; Mon,  2 Feb 2026 20:08:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1C5E6B0088; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
+	id B33136B008A; Mon,  2 Feb 2026 20:08:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1E6D6B0089; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
+	id 9F46D6B008C; Mon,  2 Feb 2026 20:08:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BF3646B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 50422B7EBD
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:08:03 +0000 (UTC)
-X-FDA: 84401358846.04.A1B625A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4206620007
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:08:01 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SfeQ7DxL;
-	spf=pass (imf03.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770080881;
+	by kanga.kvack.org (Postfix) with ESMTP id 8A8126B0089
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:08:39 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5ACF658693
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:08:39 +0000 (UTC)
+X-FDA: 84401360358.21.D73FF06
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010044.outbound.protection.outlook.com [52.101.56.44])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 76D11C000D
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:08:36 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XvFI94bJ;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf22.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.56.44 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770080916;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pklA4l1gbwBdIUo+VXBOk+H640IbUsMrACe8G8jp5sQ=;
-	b=FgYWT+FrX32DUl/c6BQZjNRhwyvMtFongz1/uggHfU35v1BhVv3YWmocm4iIORdcdpa+9c
-	bpvFNnkKNsYOvCDQYADvQ4eBu/Bm3WZhNwz635fwmvv3yFKgFs1Xd7FAkUtoiYOgVwKDtJ
-	Q4djV/WcSMhP25Zr6ko1rnuPH7vnWC0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SfeQ7DxL;
-	spf=pass (imf03.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770080881; a=rsa-sha256;
-	cv=none;
-	b=fvFEofTf6hDwdckdFVQ85zas1bikCRBbDCJWel5Y744arzklHxQX7EnggjI0cwJVHTT8Kn
-	qHRDkKH7tq8o1yiKCFoHTFl5gKkQoEPgUkFrtL7Yv0hMY6x+jXZsKITseTcF8GGV5sftf+
-	iEEp4HoGzTLYWeSHXYp6SFfuZCtXthc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id EACB644040;
-	Tue,  3 Feb 2026 01:07:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532E2C19421;
-	Tue,  3 Feb 2026 01:07:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770080879;
-	bh=Lxv8UzOQzU0hdXe1SMCeEUPqA0rLHi/CHvbVzHJtmmw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SfeQ7DxLGWwVh9J3Q/pdW7E5dDWg7Z0Q44LLKtN+r5gJGE4iOYrS8cxB0IgO0s2hh
-	 3fC5OP/W0WQWmFqpD0v1MF6WRye6y/WPjBjJNl65a/txRw4EoWq04ZIgT9onuhB9+t
-	 2CnmwCxKUXBgaExTERYYUP+VxqHHDlc5ghOPkPXxv8+ROVsuc3ortqwOvT3NzK7mv2
-	 cKT/60zGCu/7P58YJXBwuoJhc70oIfaQr1McGAdZQgFHNSyGkUvFle+Jo3kknFMR8f
-	 grbROcTiZ/3mStKTQ5gvM8vpz19oq3fMHzioUiS3qNbN6fQ7+fM+PejsfkLRITMaNL
-	 OdZ+eeaRkP9uA==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 607D1F40068;
-	Mon,  2 Feb 2026 20:07:58 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 02 Feb 2026 20:07:58 -0500
-X-ME-Sender: <xms:bkqBaSIIzc9CiBpspt8UhCoUtDgnoWXvTa7ZZfrw_XJmkmmBonA0vg>
-    <xme:bkqBaUgXKDLua8HTwBnDAip1stjhYjirNxQvt5249q-w5ulGII7aYdBDdetBz9Uo8
-    X7V83KPWtF6w_NmQuYJn4c64tYRVYL-bsZM0YMnT8lqzR3uebwJGg>
-X-ME-Received: <xmr:bkqBaY05I_OKjVrTwTShSNOsIzF_nGh4NasNUJ8MvEZHazPTE-cXr-9MiHq7ANO0cg4xH3bEygsfT4S5fvg-dltKY09IDiNB>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeeludeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ehkeeijeeggeehkeehtddthfdtgfejueefleeutdefjeegvefhhffgueeiteekfeenucff
-    ohhmrghinhepohhpvghnqdhsthgurdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
-    ohhnrghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkh
-    gvrhhnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthht
-    oheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhorhgvnh
-    iiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhirghmrdhh
-    ohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnh
-    gvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdp
-    rhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtph
-    htthhopehlohhsshhinheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:bkqBaShTF5tlaJntCfmXlvSAgPCe5HMcV3NnFEo81xeA2sraB0a98A>
-    <xmx:bkqBaR9dr-qnQ7G2wBqCX_0bTLM8d0PInNyNB8GHRBduKlWwXYzA3w>
-    <xmx:bkqBaWLzkmixNEwSeZo8yVC1ZS-sHIgckaHLhzbVMkWeLJFhVmC_xA>
-    <xmx:bkqBaewcd0hqWG56bd1dFiJgAlAh7zBh7gfPvoXE9nxHG-H2xkvYDA>
-    <xmx:bkqBaR0o1YbFxMuSpT12D16E_9w8l6Al8tEVaVZ31CW8odarUlu-lc_S>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 2 Feb 2026 20:07:57 -0500 (EST)
-Date: Mon, 2 Feb 2026 17:07:57 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-Message-ID: <aYFKbWfQmTInYy91@tardis.local>
-References: <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
- <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
- <aX0lcVngRcRwqgd5@tardis.local>
- <SEV7bR_nyQNtvtgoO8X80HMkMTPLW_6roBSxJ-MpKHHNmkZQyVxSS9k1iFV7-bgAlHSLM566L8EqtRBnht65uA==@protonmail.internalid>
- <aX2tyn9nBUEKM-SN@tardis.local>
- <87ms1trjn9.fsf@t14s.mail-host-address-is-not-set>
- <gKLHFGuJqzRyjCupif-LFYn2ZY6OmhkyYj6idYTOnN4zMmNacFLBD1G9zzsYpTJn13GGvL0i-7JA-lIlBgakgQ==@protonmail.internalid>
- <DG2WLWJD8V5W.2I24LZKS6JG6Q@garyguo.net>
- <87bji9r0cp.fsf@t14s.mail-host-address-is-not-set>
- <878qddqxjy.fsf@t14s.mail-host-address-is-not-set>
+	bh=pRv4awzZUpkAgVIhHnGbZNIl/KYZLak/QzA+7W9gdkI=;
+	b=D6ysIPuUrdWTrQYzOA+ZYrX9GeezSPz1TCY1KlS4jNEPXEp5DS2IB4EJQuGQb86u4PMafd
+	RdXH/PNeOYl6jEWiab2wgayc7iHeaEzxP/1PTPWfqneQIdR3c02fALA+WXweqIYIJ9zF6+
+	+gMCydHWtkipawRVUGCFepZCMeUO+IY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770080916; a=rsa-sha256;
+	cv=pass;
+	b=uYDDM6QKyZVULJEe+iOidCvYSJh9tUnGeOcOhip+GaAUHAkeGQ0csUdRCvQGBBPxhdjMy2
+	ZNy0C9WV7thynEj1AWvuyGfpqW8o7ZKJfrFZ1deitWgXdeXOjYJm26sopuCbXm7DVvy8SW
+	E9o6ShTux7VDIRPSHYisIWDL3ssz80A=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=XvFI94bJ;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	spf=pass (imf22.hostedemail.com: domain of Alexey.Kardashevskiy@amd.com designates 52.101.56.44 as permitted sender) smtp.mailfrom=Alexey.Kardashevskiy@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P5j87YXSjb+ie12E+2MHrKMqVk+cA1TZiM0BCaasPVXLJmK8BY0HHn6bm5nbu8VUFxCeYoY7IMio6RGdDT1UDQhehzJD+Ocwptz9Bc/Ulp0bMGlFs2lOr/Ys8FxuyFIG6GLdx4TDDZXfFR9atkxMo3JqxlxREfuz1LQpISScpSGov7GKRJV4AwMXciZbKkhZ4A6K7mXxK19r0sJp5MaVQlEt5UHuDsovl7S4vek1eExpwSXZeZswBrsSa2Y68KRhG+YyvR1bFUFJyOazQXO8v+sWMcnEZMQXcmvg59BzcFgWNgDOftkSjuxLzjoM3X9zSvS36rX9cMCe3eflfPY6Fw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pRv4awzZUpkAgVIhHnGbZNIl/KYZLak/QzA+7W9gdkI=;
+ b=GiEectbnpUaVwcA607EBAk0xRm9EkORsxHgdQt2uYIQ908eZW3106qowQ9iIIjekzQM2eOrYwD1qeVdP0kXYuPSUM5Cab14VEJYHqSGXr/a0fVwtXkY57iqgkPV4Dl//H1Xo8OffKk4ekDDqAeM4pbdzLlrzKc2KrFv0FKnX0ii8Hyf64vRkOZ1bR+Kht9cD0fIQ3IkVCZWNFn/8SV11lsE2tD8pUB5a1aS4H+H1dtjxnUSH3wPAZcM0sVQLjrmnnIjuQom/0HXl1oWyJwWzV7QndrqBoobM57WCaZMt8HPBcNOJchaBQJJw+xRunLew+nT8y7hVg2+hEXAJe2vzlA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pRv4awzZUpkAgVIhHnGbZNIl/KYZLak/QzA+7W9gdkI=;
+ b=XvFI94bJ0QSUF1mMzAylJX6G+51dAp7eiKMGOPi8ie+WEPAmioEmz349i7APseC9E/elpz2f6KXnzZUKa/kO5/wjSeFLyuThBBTPXxsActFv18QrIyl3bmB+Nh9+4mT543bkb2+3l67UcEh+FSA4dY04fQtkuB3r8XNF3s6R1mY=
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by CH3PR12MB7691.namprd12.prod.outlook.com (2603:10b6:610:151::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.15; Tue, 3 Feb
+ 2026 01:08:29 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee%4]) with mapi id 15.20.9542.010; Tue, 3 Feb 2026
+ 01:08:28 +0000
+Message-ID: <586121cf-eb31-468c-9300-e670671653e1@amd.com>
+Date: Tue, 3 Feb 2026 12:07:46 +1100
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
+ kvm_get_memory_attributes() to per-gmem attributes
+To: Jason Gunthorpe <jgg@ziepe.ca>, Sean Christopherson <seanjc@google.com>
+Cc: Ackerley Tng <ackerleytng@google.com>, cgroups@vger.kernel.org,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+ akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+ brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+ corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+ david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+ fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org,
+ hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com,
+ isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com,
+ jarkko@kernel.org, jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
+ jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
+ keirf@google.com, kent.overstreet@linux.dev, liam.merwick@oracle.com,
+ maciej.wieczor-retman@intel.com, mail@maciej.szmigiero.name,
+ maobibo@loongson.cn, mathieu.desnoyers@efficios.com, maz@kernel.org,
+ mhiramat@kernel.org, mhocko@kernel.org, mic@digikod.net,
+ michael.roth@amd.com, mingo@redhat.com, mlevitsk@redhat.com,
+ mpe@ellerman.id.au, muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
+ oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
+ paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
+ pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, qperret@google.com,
+ richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, rientjes@google.com,
+ rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
+ shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+ steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+ tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+ vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
+ wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
+ wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
+ yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
+ <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
+ <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
+ <20260129003753.GZ1641016@ziepe.ca> <aXqx3_eE0rNh6nP0@google.com>
+ <20260129011618.GA2307128@ziepe.ca>
+From: Alexey Kardashevskiy <aik@amd.com>
+Content-Language: en-US
+In-Reply-To: <20260129011618.GA2307128@ziepe.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY5P300CA0046.AUSP300.PROD.OUTLOOK.COM
+ (2603:10c6:10:1fe::8) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <878qddqxjy.fsf@t14s.mail-host-address-is-not-set>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: xw49ac1dxsxharg6su4157jmzgsh13gj
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|CH3PR12MB7691:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd19a724-65bc-4134-5c62-08de62c0bd6b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WFE3QnVRQ3dKdmd5YmduU2NZR0ZSWDVLNFl3UU1ISGVPMnk2VDdjN1RmMTFL?=
+ =?utf-8?B?MjZSR0VQZkoxcUljekRrZVI5T1daZTZKVWhCZURiMkRQZjB4aWJ3VXJ4QmFQ?=
+ =?utf-8?B?K3Y2MEowV25mc0k0LzNIU1Q2Y0hIN3dEVVVRYnlYZFNwQ1NWU0RlbnhpZURk?=
+ =?utf-8?B?TkRYQUMzR0ZKaGVCZ25xb1BDVDRSZ0RjOXI5R1JqUFNVVUFSaTJESHZ1Q0xU?=
+ =?utf-8?B?VFBHWTkxT0REV3pqdnRNTVp0YmQ0Nk9tTUFnRzFrYnRUQTJrYUJPYWxzWGYy?=
+ =?utf-8?B?L294alB1ZkRDTk0rT2hKbElaclJxNDVSRzlFNWFWeHRpeVNpWlZGNG5BRHJH?=
+ =?utf-8?B?eDJPMy9iMmhma3VoaGh4ZFhaQmo5S3FydVkzSVdQVTVJbGZWcngza3ZIeHFv?=
+ =?utf-8?B?UCtHSXBKMWRxVklNeldhS2xrdTZBcFhKUE1mK25lTllOQUlIQ3FNV0V4Yjk3?=
+ =?utf-8?B?bXQyRHJKSFpscFl3Z1N1SktaeXZ3Vks4WWlmV3poSmhOcHNqK2tyd3FHVm5Y?=
+ =?utf-8?B?d2oxNWRBaWVNS1RBTlFiSUVQdmxlTEhHQ0I1QUZZRTBwMG9qVi9CUmtIYzVr?=
+ =?utf-8?B?eENoZklqRUVVOXpzNis0YlU3QmNHZFpTNHA0Q1NQbDRCQlljK2N6MktEWWs2?=
+ =?utf-8?B?WlJ2TXB2bGIxV2ZZV21sNjVlUjBxT1VSNi82c2tjdlV4VmlTUmlCNWJiaEFC?=
+ =?utf-8?B?VWtweGNnL3ZHZjBiRGVYejZ0MndVL0R1OXlIVndlRnZvRjRQc3g2ME54UHl2?=
+ =?utf-8?B?VXpydlpUVXplQmNKNTBZNHN6QUsydXFnOXYrOFppSzZJdlBsMzZvQmhXcGNX?=
+ =?utf-8?B?ZDZ0V3F6STJXdUdPbW5DUDRXdmpCSjUyUytJRW4rU2Q2a1FCWG9abGZMeVpr?=
+ =?utf-8?B?MW5vZTFWZU1zYjZaRWhMSzdEbTNxdEd4d2x2aE1OelBMMUF4ZUxIZnNZSlNN?=
+ =?utf-8?B?amM5NjR3ZU1YZXJXYTZyemQvb0FmNWFpOHFpRGJhRkw2ZVlOZ0ZoUGcyMFQ1?=
+ =?utf-8?B?NnVjRXM1cStYaEdHdmRxMkN2ZXI0bWpzNjl3dU43NHdGUE00OVpGd043Y2pl?=
+ =?utf-8?B?REgvNWx3MXRVSjVQRHdHVW5MVHowejdiZXlHNFJWcVJLcXBSRVlOT0plR0o3?=
+ =?utf-8?B?RmR5Q1lGbWFoUVZYNjFvK0VuQjBteUN5VHpQcGNaaUJtSHhqVkxDSThheUU2?=
+ =?utf-8?B?dGEyQXRuOVdOSTkrQlZ0ZTFJVEhPM0hxTjRnVFltalV5YzJDanJLMW1PNTFC?=
+ =?utf-8?B?eGw1a0J3QTV2aGZBd2ZhYTc4VlBJdXZ0RlIraml4K0oxTUZxczUrT0NhOE5a?=
+ =?utf-8?B?K1gvSExmb3N3MmNKM0EyN1o3UjFBUVF3MlI1NjdkUDh4bGhMVGI5VzlOcDJE?=
+ =?utf-8?B?N3hWL2dTbzNEbkg0WFZ4bTNSKzNMRll1UE1hb29yZ25qRnFZVEZLaEFYTm8z?=
+ =?utf-8?B?N2grc21jYm1tQ0REWThHcWJkM2tuMCtJaXdxRWNsZURuNllZTk1Ic3ZkSkFu?=
+ =?utf-8?B?YmU1RFJpbmpvZW5qODR5Z3VnOVhyN3YreURtbldEcm9FSUtEQ3hMVytqS0E4?=
+ =?utf-8?B?L2JrK0NZMkk2MGJsNlh6N2dXSzRoSnF4dTM2Y2pRa3RFNjJIZWY5OWZrUjNm?=
+ =?utf-8?B?NFhKV2czcXpTc1dDM2RsNVZQSUJlQTdVaUJ2QjVEUEx4UFUzejZoOEZ6UVY4?=
+ =?utf-8?B?bHBHVVlybmJ2eWRvV3BuSk5tYW5Xa0pybjI5MzRIVTNZbEJwRkMwL291RTZl?=
+ =?utf-8?B?RHphdXBSL3NmMXBaajFBNkRpcHl1cUVrREcwa3BwclpNczhYUlNiS3FjU2Ev?=
+ =?utf-8?B?UWdmbnNPQUJjSitlQUZobW9aU3ZsTDl1K3FTYkxTQXNZTG9oNFhJcnh1U2FD?=
+ =?utf-8?B?T3lQNVJXaXZvaGV4RU9tb3Fnc2xHdmFQdWwwbUwzNFdKK1drQ0hrbHpwcVZK?=
+ =?utf-8?B?Q0VieXlhNDBqWWJrdWUwYmhqYXVDRElvOTgwQTFqNjlDZXVxY0hEZ3FIbVlo?=
+ =?utf-8?B?T3JDWTZtZW5KRkFKUFlldDFnZElNMFUvU093OWoyUlZjRnRvNzVlT2NlVTFn?=
+ =?utf-8?B?dlFEa2xtd01pMmVPeWZYVm13NDJvR1IyVGFyMENDYzZac3pvWHNHWXVzTWhE?=
+ =?utf-8?Q?U0yE=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?V2NKYVhVQ2pPSk53LzJGV3FVSFFxM2ZEMHdZRk1sd3VnQW9KK01KOWZBSkxV?=
+ =?utf-8?B?WkxMNVhFdFYyclFoK21qUHFmNzI4L2toSm92MHJTY2xqbXNPVmVYT0VaSW1Y?=
+ =?utf-8?B?Y25PWTltT3cxUllaVGJmZUxHNW8ySUlaYWdvb3BxZUlSVmFpTXNkaE8wWUxE?=
+ =?utf-8?B?TXZYeTRaRjZLQWYwaHJtZFk0Rk5kdEJZeUw2MExNcE56d3JvU1dVS1BSdTY5?=
+ =?utf-8?B?dW9hSHl6TG9naHF6OTl0REtSOTQ0dDQyN3hSRkdaOXMva21jMFVrblNjNCtB?=
+ =?utf-8?B?Qm5ZUTYrSUFtUVRkZXpGVW5ETm1QR1lNZlN0aU5GYlY4Vmtnb0xYRTE5WmR3?=
+ =?utf-8?B?bjgrYjdCRXdKUFdRdEtnZVBGbU51cGhOSVJuSE8zZ0lIc093NGd4Y1ZMVEl0?=
+ =?utf-8?B?RFV5WnBFMUc5eWJDN3dBQlJvQ3ZsUlZsUWVmUC81cDZlYk5POW1Dejh0Ryt2?=
+ =?utf-8?B?LzFvNkhxNjlYUEhnbzVocXlvekZkdlRwcEpLQlViVFI5ZjVpTEVzVG9CZkI2?=
+ =?utf-8?B?eW1kQURsVmppbU9raHlLVUVBZWZNakxzbXA0VEk2QmNKb0Z3eUdhYWYwWFE5?=
+ =?utf-8?B?VXJueW1FV24wakJtL3Q2OURrV0Q0Z1ZZM1FDczVCYStWUUZ4T3ZFRXFNWjlp?=
+ =?utf-8?B?U2hTc2ozdzRHZlljcFhQdVR0ZlRwQXJhNmNSV3owNjNvWGZzcEVxOFFWTDVm?=
+ =?utf-8?B?MUhnZGF0Y2F4ZEV6Tjk5QlJXU2VTOTJPNzZkQ2VjMHF1bmV3Smx3bTYrcnZJ?=
+ =?utf-8?B?aFc2aTdwY2MxcGZhenI1NHZyZGFPazdadENwYlBPSW45cU5vWkJkeTFaem1F?=
+ =?utf-8?B?QXI0N2xrU0xTdW9HYVlHc0VUNE5GaGJycHlHRUZPcEhoeUFxcGJ3eVVVY3BU?=
+ =?utf-8?B?SE4xTUZTMGt6RnN0d0JvV0FRNXRqM1VJcmJQNDFQazBwbW1ENGlyWFNXNWQr?=
+ =?utf-8?B?N29KMXdJV2o1Q20wS3haelkwL2xjVjZPd05lTW1EMURnd2V0ajlVRythV1R5?=
+ =?utf-8?B?S2dpWDRhaUxBNHJ6NXNOcnZIL09oQkkyV0tueFVmTEkyVW8vVXQ2V1pQOHVp?=
+ =?utf-8?B?WXFIMjdnZFU4eENtb1lXRityeW9IejhaWGlqem9sTExlZTAwZXA4RE5WYnhz?=
+ =?utf-8?B?Z2R4N3JKR3p2cjBBSXQyamFoQ3QydkVreUt0b0NNVGZ4RGlxOFYyWkdiS0Rr?=
+ =?utf-8?B?RzQwYjV5ZUR4REZmcWlhWXZBWmhrdUNXMnNBd2hsOENIdWI3Ry8xRTNXQmJK?=
+ =?utf-8?B?WkFVOGhjcU1HQ0xGMVRuWTc0TEhhQVJTWE9td1FQeUwzSU9BODBQckpXV3Bl?=
+ =?utf-8?B?R2dFU0lvUkJTbTVJTHhMVDNybkFCR1ZZSmtMdEwvckNjWlZaN2V2NmdhN2tq?=
+ =?utf-8?B?WVZzUDkyY1ZDWVc3NzdXRXRsRytQRjRtYkp5VGFEWmM4TkNtQlp4cllEaFBO?=
+ =?utf-8?B?bVlzNUZYdDFDZGEvcEppMVBSTjhQZUtmRUJMZTlDd2piaDJ0c2d0bmRCTmlj?=
+ =?utf-8?B?OHdOeVpzdFVQTDZ4dTBFRDVKV1NaSm1NVmtoWUNYbU10bURUVWpqUVluTWJP?=
+ =?utf-8?B?WEUvczZCZVZSZnpBc1FhUndoaE9RZ3dybzdzR3lPQ0U5SEhGVTFDZEhvOWJt?=
+ =?utf-8?B?ZVpTdElCYk9XbWVHSStVSXlIaEdwM1JldnF3aTNuU0VZZE0vbmUzRWV5eUo4?=
+ =?utf-8?B?NWdzYnlXNEx5TnZBOVFEV1lOVS9iZXN2cndES3YwTnUrZWtqUmZGSmNJUkxy?=
+ =?utf-8?B?L2JkelV4S29kMWFjQWtFUVRoclRXK1k0WXg1d2hmWHlTZnFFY1Q0czlQVFVa?=
+ =?utf-8?B?ZW1vbTM0eWFrM0E1NDVjWDkxakdYTzZESXFZNVU2VXBXdlhzNFliRVJEbWFo?=
+ =?utf-8?B?TDJVZ2wxaGJyRGRCNnMrL1NlYmQ3WmVkSHVZZ1RwbnVyOStrdTIxQVVhRjNV?=
+ =?utf-8?B?Z3RMcExKdlhKcFhhZkVPZW11RG40eXhpYnNDYmxQSXlXaUdhOFp0ZlJtYW1K?=
+ =?utf-8?B?UlI3UFArTWVmdDUzWXJkSnplVHU3WWRBb3JxVGxnbzIvY3dwNElNRFlpeXJR?=
+ =?utf-8?B?VnBmMXpQVlNoZnZIS29ORjc5UmZpYmY1K09RZUJZbExLSWNCSTJJYjZBUWdj?=
+ =?utf-8?B?MjNzZVhvUkxITTFlNXpFbnBjV3pCNGtKRUN5R3BKZDF0MGlUNWpjRWZrT3N3?=
+ =?utf-8?B?WjUydHQ3d0ZpVkYyeFF6SEZsaW9rWU90UEZaRGVXd0tHWklSeXY3VUxHOTJR?=
+ =?utf-8?B?VWpaTTkvMmhsc0M5ZG94ckJjemQrNFFTVmFPVlE4U1g2aEZLdnpGZ05JSTJx?=
+ =?utf-8?B?LzVBVU5mMU9LdHZXTFNQaVBtQWRaUU1uSEZkSHlqTDRycWU1S3dmQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd19a724-65bc-4134-5c62-08de62c0bd6b
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 01:08:28.7209
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Gb5XMbprqJC5WppHHEya2m0hVrcV7TnoKUMKhHrWuHmplaMRtYpkQ14E4gpzvefd8gvN9EXRX2F4h1qfD502HQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7691
+X-Rspamd-Queue-Id: 76D11C000D
+X-Stat-Signature: 5ffgyiybecmhm9g8hkbqs7cnjndqkatq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4206620007
-X-HE-Tag: 1770080881-718683
-X-HE-Meta: U2FsdGVkX18x98b4BMW1s5ftwKuwLkal67qJEkmevBN+XexqjoSahj1qJuXRkhHhMoEFxSzayP8uei12q6YQQ3/PI3h3y4kBdRZBinksn3Xded0S46/RhsOX5g/8cr3O05SdNlF3UiB/DxO/KdY8+CXuIkaqQBsvJQy6XUqh3IIe7LwK3L+qYzjvlE64FYeB2l6PodOzYrjZABaibbWFH2XM3uZsqcWGMsZFNL2APiwqOxszq3tw9CRNQhxcF70CNwVvVOh+ouBJpNSPWjRn+dE92pFkOSVuRKy/IU6NpJlL8tQEqELuzCT+B3H94RYB3wzUik+1dPgO2317hEBAC3Jpv6D3W20bBJ8zLubn+ZEyH8VQC7yxAvVoS0vZCQVbHriYcGUlIOyVQTHbWun5+Evbgz8F4eypEPNrzqA36WMnvkwAkGyM+4k/7HkL6rM+VEr/NzvNaFBiRoNlblwBXTT9A0QffBT/1yqL5fe/F/mRzCu16O69DEoi3bkZZWn4AYBuxcMqLZ2QegisMfbS6nG+K61yFcqFu6ZckkalCA9H3S8T+ZR0k46UcuhDY/8eDtYGh9NNG3QcAEKJig6tEqSw3Z2IGnw83/KQEPlxl/W0cq9+KFjfjdEUNaDrWyAOgyWTpJ4fXoY3qC26bMwa8trwG1fgfIxWxGtTfye/583CqafWqcUJPw5tGZuFLa627drxHFRneIJ0aO7D2lvSfckBv6+syxMwIEIZQND8Avtm1M2gw9Vwsx86dBEBNd6fTFzWA6qjjYIjmXxHC3f+C5MuLfwh/2BmW0drcmLCSBLEQ5o2eJUcXdFuxuVgIkVUy5cuo7nKwCp27OPGF5qdia1q47UbokfihZ8GHIyakkfCNF9hWNh2PETE5TfwCefZ3ZY4EvBnuTwo0gNJlV3aQ7JxDC6ephcuEWQQ4ZVKGXhlYTuxOF0e/xCasyvFOyY0lGwNcHFhpa1p/ZtruiF
- 5VFzg9Is
- y4ePkUisEjVLglyy/JbNE3DsLEc3hqZaRBz5S2Eanp2rFvEONPtC2I4LtJrUYn3g9e052ghF6jIiVt9Qtg8unG3RbU8n2NLOaCcgVBWvYObmsGEEjiH9pyKEF7rBx2V2likH2cDHWX8tiyhA6fpKzwugaLHgnqMbTViwHy+Cf8qjqSfm8YCakHfskos9y7qdgZG8fTbKKDKaI0fYIsff998iUTL2wzBLbHHKC4KEecnHYDGJ9w/LVNKYAjCQrT++2Lw7M7KdMHKV8EgI5JedtsQHIICyxR/0td8mMQhY69hckpWWxnAvrU4OUTPotxaj47dwrxC/u+TzpKjhRa4ZYf6SQmlM9rqu9f6gW5LJlHF6YvK1I13ZFMkt3nGZ5Sc1bCtnu87LC70ycwG39rcMW9Sj6pdwmU+cS5CBlD/fX4ah8PPI=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770080916-423007
+X-HE-Meta: U2FsdGVkX19ZoLKTl3p0zHdbSKJwMhACXwP0EEyHxcSOVso3RUKeMtESQeCUdNw6AFaE3y3bT4AdLOgnbFixDNYqs+XMc0i6OLnZNpzAa2NnQo9ikR/R0nEslVGJN1BfdlM9NQjYXnHPHlkqn/Nyz/XXVCsOQeilNjjPf10beLzEa6o4A7qba1LVBTI1rCFi4777i1PGpNxbTHlx/KOBJEfIAME6tKGqpEtp4QhmGfgvLBllW8GIHMKPVLM/lWpEr23OAnznY85x5tnaEnlj2P+kk4p2IMWftYfq1Mf0qs7pSEbyHDJvheE3mJND7s932cLF4tV1ovB7SNiUVRLOitrv5KhcJogI7Vv3Ml0QCRVXagTgVFQbF/dmF1ASlssqGp0RwRkB9dhLZ/4yKcXibYdmQF9OTnhwzneV6tncZ1gcshU4FR0S1sXdSHG0F9a2Hd34VfZpqZE2PagHEa8FFHYWJP27l39Vx6ZsYa/dm9PIqM0QMopTQj/s1wLJgsI0k1DbpffLqX/ZCIpWLSwAZTOg2YMTzNWg5Ni7V//AemOZo4keWgg5SDkUVJj0ZQ3/gKDljtZ7utn5Naf9HYFhDC0JUGEFApMUL7I+9lDZcuTvihA/2UebPP0vKVlwEifDQtwtjH5tFBG5sGIqO5c0R5VWpG6LifDGvyqn1EOW74hHrLb7vLcZIbSaDHcNuhmxXaA0jOam1WI34PXixIayt4ae2ZCd2XLqu8E/YffHk3XB16NJ7BssYRzGlPG74XPl44xjKM8gO6mkV4Lxrb3a9ViGb5I+iliGNaFQC7dfhNMZ+VNmsvDIBAvD+T1kJC1zIX/m0DMsmTYK6M1O3d3HxUqIDRI1QuZiFxXy+TPuiWvU1T/OcWqziY6nnFl2AsBNHMyRUWON/PQDEF04e3I5vAsAzaRHRdCbUtmdWBX0UXy24s3I6eqTfCV2S19o11hEdMt3GcjOZxnHzHvvEKW
+ RQ6vgmVE
+ IC2MFK+XLujvMhBH2z4asB6XQbjClLru9Fj8vauZtmaLoX8mu6Cv1xFzneKc+8D8MBwESXsHQ/+SbNZG5yR+p7DJPM/H8cVnCT4GgY97axtv151fSZiSWoMK9Off6RBut/iFVDwSy4L65zdPPpn8ThpDZOJ6jGrgq9CQweQKn1oXLcvMDcIODFf2/q8Go3+D32F3h8i+YzAwW+Njup830nFvK+bd2cv6f4wJf6E04OZ+Rx3p8cgB/i/hVR2xbDP6xHfxXRrwGIKYQ7drTFLXwioPzB2pp8jP8UcPaHTUkA0J+1PVEFZpzL/Qx55xYxJGgpW5EbXNHMIDUNvzfg27RFzxVeZsNrhsPKePvWwxIrKKpm8ifS8yvBhWlGUw2YAWBxc7iikECg/Axt7nK/a3FXJtCwgxh2VKaVwkyp8+LXWRvtNjTeFYDwT6/qg0mFDn7MWwJvyAX6h0CsKIJJmMeyzfEZqw0EFVEJNPCAZD+JbK09lrhojrctXqbU4anSMEOcnDXphPdyjWHAoXnGpbj/EJP8/OeYptQtApC2WmWoCtdm0lytf1JhV+lbEQtG4VLviFPpckahwBYpAJBdapSnbBNz26gxb9J23IC6ahAutKYdAIHWG/UlNnQvU+27e2gUCg06wieicC1ofM+t3uNYkQSMRfI2b2w3Nzb9b/sUu1+6Syb7Lbu2bJQoCkljgPxcH33CxjjR4p/vcs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,62 +240,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 31, 2026 at 10:31:13PM +0100, Andreas Hindborg wrote:
-[...]
-> >>>>
-> >>>> For __user memory, because kernel is only given a userspace address, and
-> >>>> userspace can lie or unmap the address while kernel accessing it,
-> >>>> copy_{from,to}_user() is needed to handle page faults.
-> >>>
-> >>> Just to clarify, for my use case, the page is already mapped to kernel
-> >>> space, and it is guaranteed to be mapped for the duration of the call
-> >>> where I do the copy. Also, it _may_ be a user page, but it might not
-> >>> always be the case.
-> >>
-> >> In that case you should also assume there might be other kernel-space users.
-> >> Byte-wise atomic memcpy would be best tool.
-> >
-> > Other concurrent kernel readers/writers would be a kernel bug in my use
-> > case. We could add this to the safety requirements.
-> >
+On 29/1/26 12:16, Jason Gunthorpe wrote:
+> On Wed, Jan 28, 2026 at 05:03:27PM -0800, Sean Christopherson wrote:
 > 
-> Actually, one case just crossed my mind. I think nothing will prevent a
-> user space process from concurrently submitting multiple reads to the
-> same user page. It would not make sense, but it can be done.
+>> For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
+>> is all or nothing, and can never change, then the only entity that can track that
+>> info is the owner of the dmabuf.  And even if the private vs. shared attributes
+>> are constant, tracking it external to KVM makes sense, because then the provider
+>> can simply hardcode %true/%false.
 > 
-> If the reads are issued to different null block devices, the null block
-> driver might concurrently write the user page when servicing each IO
-> request concurrently.
+> Oh my I had not given that bit any thought. My remarks were just about
+> normal non-CC systems.
 > 
-> The same situation would happen in real block device drivers, except the
-> writes would be done by dma engines rather than kernel threads.
+> So MMIO starts out shared, and then converts to private when the guest
+> triggers it. It is not all or nothing, there are permanent shared
+> holes in the MMIO ranges too.
 > 
+> Beyond that I don't know what people are thinking.
+> 
+> Clearly VFIO has to revoke and disable the DMABUF once any of it
+> becomes private.
 
-Then we better use byte-wise atomic memcpy, and I think for all the
-architectures that Linux kernel support, memcpy() is in fact byte-wise
-atomic if it's volatile. Because down the actual instructions, either a
-byte-size read/write is used, or a larger-size read/write is used but
-they are guaranteed to be byte-wise atomic even for unaligned read or
-write. So "volatile memcpy" and "volatile byte-wise atomic memcpy" have
-the same implementation.
+huh? Private MMIO still has to be mapped in the NPT (well, on AMD). It is the userspace mapping which we do not want^wneed and we do not by using dmabuf.
 
-(The C++ paper [1] also says: "In fact, we expect that existing assembly
-memcpy implementations will suffice when suffixed with the required
-fence.")
-
-So to make thing move forward, do you mind to introduce a
-`atomic_per_byte_memcpy()` in rust::sync::atomic based on
-bindings::memcpy(), and cc linux-arch and all the archs that support
-Rust for some confirmation? Thanks!
-
-[1]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1478r5.html
-
-Regards,
-Boqun
-
+> VFIO will somehow have to know when it changes modes
+> from the TSM subsystem.
 > 
-> Best regards,
-> Andreas Hindborg
+> I guess we could have a special channel for KVM to learn the
+> shared/private page by page from VFIO as some kind of "aware of CC"
+> importer.
+
+Yilun is doing something like that in (there must be a newer version somewhere)
+https://lore.kernel.org/all/20250529053513.1592088-1-yilun.xu@linux.intel.com/
+
+
+> I suppose AMD needs to mangle the RMP when it changes, and KVM has to
+> do that.
+
+True.
+
+> I forget what ARM does, but I seem to recall there is a call to create
+> a vPCI function and that is what stuffs the S2? So maybe KVM isn't
+> even involved? (IIRC people were talking that something else would
+> call the vPCI function but I haven't seen patches)
 > 
+> No idea what x86 does beyond it has to unmap all the MMIO otherwise
+> the machine crashes :P
+
+When it is in the hypervisor area, there is no "x86" :)
+
+The "AMD x86" does not crash if there are mappings which won't work, it faults/fences when these are accessed.
+  
+> Oh man, what a horrible mess to even contemplate. I'm going to bed.
+>
 > 
+> Jason
+
+-- 
+Alexey
+
 
