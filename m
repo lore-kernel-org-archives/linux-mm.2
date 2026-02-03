@@ -4,110 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 017B5E87852
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 18:02:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2BFAE87854
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 18:13:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4512B6B00BB; Tue,  3 Feb 2026 13:02:08 -0500 (EST)
+	id DED266B00AD; Tue,  3 Feb 2026 13:13:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43C176B00BC; Tue,  3 Feb 2026 13:02:08 -0500 (EST)
+	id D694A6B00B5; Tue,  3 Feb 2026 13:13:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 351EC6B00BD; Tue,  3 Feb 2026 13:02:08 -0500 (EST)
+	id C3E156B00B8; Tue,  3 Feb 2026 13:13:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CB1C6B00BB
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:02:08 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B9C0B1404D5
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:02:07 +0000 (UTC)
-X-FDA: 84403914294.02.EC3BE76
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D61B214000E
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:02:05 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hhspMFym;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of titouan.ameline@gmail.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=titouan.ameline@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A9B996B00AD
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:13:26 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C8CE13B3C3
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:13:26 +0000 (UTC)
+X-FDA: 84403942812.11.5E98BE4
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6ED0D14000F
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:13:24 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=hCXDLOFt;
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770141725;
+	s=arc-20220608; t=1770142404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YXc3W5SqIxCE88AxHg63lKvEoA8CGK5fuYGcFDH8spM=;
-	b=G1UU5z3J+yuz05pt256C0jjdg2WE1+A7Zn6pL0LX9ZWNAJDVS7Jaw9MEl3IKhUYf7J6BJC
-	iiPR9aRCKTiFCSUltZGALEaI6J+TXsC4qxcpGZ9JGO4gWzQnLINnwmwf8zXjIV5qHKPyCI
-	9GLTLxPiUGZXY7sQ2+ZF3Xtby2XQuL8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770141725; a=rsa-sha256;
-	cv=none;
-	b=DV4T/ObKM/GM1bXfL31csv4BfVwbk+x72oAsOqoMX3k2GiVRN1Za/i/s6ciJi/5xqPPW94
-	HK7JYDi+jYqYZEjWTCOiM3K52CRv1yEp7bJ1gRJ68weKUTiM506cQkv3awi1joljRFp9qH
-	JD1g0n6Ezq/LW8/f0WPpQmMHgL+jeZk=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6rLJUepMBePw2/6rYXVBVUlKVexPKPCi+MRpKxp95Xc=;
+	b=AjD2plxRJvHWnAs42sayP3l3m6tOtG4Ji/jT/0cnipJ5D3q0UxfQ51fgDvEK4O8dU15mnq
+	JcVYds24UamqLk1GUPM770dSNc7MdQOyRxvtPASi+1RrSFy/lH1Yw/6FUHOraAQj12TLoh
+	QP9Thj18iWW/nf7BcyiHgjKEbO0pua4=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=hhspMFym;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of titouan.ameline@gmail.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=titouan.ameline@gmail.com
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-47ee76e8656so79561735e9.0
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 10:02:05 -0800 (PST)
+	imf23.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=hCXDLOFt;
+	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.174 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770142404; a=rsa-sha256;
+	cv=none;
+	b=Bo+AZJizOwIrBx5YvI4SIq0LgsvAAOcDmxqIf4oCSoE8Mgrpk34/G+yx1I+ZC5l/WwQL4Y
+	X+WK/8SDoGM8sLFAiS+GB69KK4khkmbuypMELKMUe4EN0N1N/+0tjC9UzFnuTR/C7fWc+i
+	3JdIGluQO/pJ3VBHmlU6BEfrbJT7pqw=
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-505a1789a27so30771181cf.3
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 10:13:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770141724; x=1770746524; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YXc3W5SqIxCE88AxHg63lKvEoA8CGK5fuYGcFDH8spM=;
-        b=hhspMFyml9EpeRA6BznONVCJcYfQ23PYivZT4j2Wm1QFIX4iVvPA1evc1CRvrULgos
-         uFgE9p9ZoqTSUGDRtuD6q8eDFIYdVVN/QDndJz4ybfZ3NaJKlb07KutGGlLoAwu2Qys5
-         dwNbga+eusG/z95EuaQjJ/Tf6TmJFwu1UxcA/gZYzQrU1NDeupA0uvPHkKnc20BFA/wj
-         KJchS0Gjp4zsK+dNTLGVflgLTx4rc5r9NLiRRfnd4dBGyOGA5IVq3xwc1Cr7ise0RAH/
-         GsYjIiz+T4iFH9+8iadDkp1RP35Q2pKQU4RiiFcK0f2LfGnRPohKtZWWyjM9INxdPO6U
-         DJYA==
+        d=ziepe.ca; s=google; t=1770142403; x=1770747203; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6rLJUepMBePw2/6rYXVBVUlKVexPKPCi+MRpKxp95Xc=;
+        b=hCXDLOFtBj8LN3UhmqJ21QRBbJ0x47PR/bwpANXhaPrpkyLTk832xKiGkG3sPB1MGL
+         /tb3Qgn7t7hKzlcujhd1pwCFbZPuyCTD4Le+j4rhK8AtGQ9jJNuKleJBrSdetUa7ye1v
+         7ntY21lhVEQUlisvJxpna+LmueO4AvDFZyLDQuNu0oD+6kulcDH0Y4ClD75IqdPAF0Ls
+         aN870zU4DFuQ+QYoFQpxV4FYKk4tRqCKFfmupxNFBEDVQRrYvgYG66Ny5OEXvcKGpptU
+         aZ2gKAECx7TMHLWfB4ks6EmxIhuEr0nhxuT9K2bL2yo3cZZNzGinomNbnKSqusERx4qM
+         QNiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770141724; x=1770746524;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YXc3W5SqIxCE88AxHg63lKvEoA8CGK5fuYGcFDH8spM=;
-        b=SWtjyOpb36dopZirOaISYB0w4GZKAfEtCNK2CxvKm39ew2ATXhIWmqmnObwU/LmmO2
-         tqXy6Q8NFdDghomhZgQj+rg/emGVrrQn6h4IQtTuAjJpprWVulbDHN7Hahx4Q5fvRtAR
-         SeLhcI5dyM6Z0tOaWpS9l2rivYqryL5X2gDru69kHq4sMw0GeVtzx3PDHThnZeNzJFxY
-         rKTF+ECEwC4N6Kpu/4ScZGC7Af3VVT55JMT4DXR0/OMDkcdUsRwK7kEqvGCxjuUqQ4tY
-         6gIdnU0qV51gWEFl4TVn55R1befw9yyUsP9Hi0eRJISFo6XutjIVtGjGMd3Ra0jA4AdQ
-         eyhQ==
-X-Gm-Message-State: AOJu0YwXonDjJksZPjR1Af6ZZhi5q3KsRp7rMXhbJq/uQyuRtnjV9n2m
-	fEUKnejxTNtZuDB9QfqJfPyDPx+piZFJsPmbtcDTUeEawDhwcDfY5zoW
-X-Gm-Gg: AZuq6aL2uFXbRlwkd2EBFyNGAtFd1YdXDw6TAQiXKbXZPAw+W0y+SKlx2E8NyNfR54o
-	9ldo8ZyQVuG4yAta17hMJoXN5YWIX/oJnIoDWWHloAgjCuPQy5VBEBHcb9UvlrMma2e2pTblFPu
-	wo2S4hPhTxKl4fx4YQ/5wjvtmcgQhNxamS8RrwZNdhTD0vlkiGIX8O37BvlmPvq6wyt8iFBcM5F
-	CckzCPBLDIucXt77F+gU32VfoD9oSsN1xzAa0JkSYxIjekm2tt3bkWcnmYHZ4tuJRAJNdUPN2Pl
-	pId+OxtY74xS0u6puBl2GO+HFLi5S7xbXTO8IVBb5wuuZfGrfjR3riv3C7QexC+OO8dJuWIEeUV
-	6G0ukb1Y/4VwKEtHDQsv110g9sJ3Vhrdr806QTrkrj+9yCBH7/for3Rvk/Bw2N3J9gaucCEf1JP
-	Lh0VRPdIIPPKGSS8GEM0PhBlFTCRbq+nXYvRyPmX/tGo5HXg==
-X-Received: by 2002:a05:600c:4fd0:b0:482:f564:d60f with SMTP id 5b1f17b1804b1-4830e93049fmr7040775e9.15.1770141723941;
-        Tue, 03 Feb 2026 10:02:03 -0800 (PST)
-Received: from nixos.numericable.fr (38.42.3.89.rev.sfr.net. [89.3.42.38])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4830eb352a4sm5021695e9.11.2026.02.03.10.02.03
+        d=1e100.net; s=20230601; t=1770142403; x=1770747203;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6rLJUepMBePw2/6rYXVBVUlKVexPKPCi+MRpKxp95Xc=;
+        b=PB60C61CX9Vi4dvGe7dkMAxnHKIKNAW50qAiNSXvuZV8hf2wZj9TCa2zh3l/7+ytw/
+         5mBwa8ia/bWoS0G4LL0rI3c2NafMsVOwsTDsCRj8OsUxZDCEOoLNq58cx/1IyyIC3Hxv
+         LJOxZ8q+LLYaA/Ch0PaD88QvU77Nqtmo9fZlZZPPUPIgnAhH/Wf6CWqe1yv8waJwq/Dq
+         m6Gxihic1ffXnX4wSRwZmv+Hc5j/6CVVM9JpzHuXtzT8GyHAA7ipstrHRC90LRuMWzvo
+         VTeNGUjFDDp+vXrl/tqf0Acb9T3mtT/UC/E4NC1tsfElUjGBrS2T/I2tZebojAVR4Y/p
+         ShCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWYnztuCkP9Cg5gHhdcwHEV/Zqsf0JYz5WrgbgOWj1EpUr7gmEdsY8govpykYbt8nzr0A5qW4Dnhw==@kvack.org
+X-Gm-Message-State: AOJu0YxH0hGgK2ZGtw8dy+yoA38XnW13kiba8BfPBAiZEZidrj7Ngu0U
+	4NdR3RudhQYP0tSCaXGmBHSoSoOcHxflMPEr8I3VeSE5RdpexIu8jhOkuKH4RIT4Ek0=
+X-Gm-Gg: AZuq6aI2AvFHJTe6/l9D5ZiNOi7a6hZ5CO2yGf4tGbi5ca7PU/kfaKjCsOdfKaBW3jp
+	Zy3FnEz+l4fRJjfa4L0GhdbUiR3UyH7DA3o319ePasrH9PF+AdyMkK+IGQqc4anPKqidHK6dkm8
+	OTx3TLicMhVOjt/KtI0kew2b4ATRiJDTlxmrve3mr60nqxQLE0SnjeW9Z3f2PVlcdQjE2ee1BOi
+	LC34+XDLyPZtI9SqX9nTFySb1rlzEYDJnwnnLDfoGu30DPdHccQpOQTXT37nSe2qln9+iwpR0eH
+	rKffAMYoV8+lSLZ9JPkDKTuSnSj00FbjAUG2Sx1D92ZJvJG/qiQ9c9nPWDIOnEywjviHvmVzLO7
+	RAjz5XLn5DB/cmvNXRAxVb+C+ZC29mnE9yC4llfpjxwKCFXWu/C52zV1coBvoM3i3AP2lAnrp2R
+	s23OezeEOrTOGpj78aIzdHdAvqG/VbBR8/0njNHxULGpUgTnOiuvrQIzb7LtFIEyoSFXs=
+X-Received: by 2002:ac8:1402:0:b0:4ee:42e6:a5 with SMTP id d75a77b69052e-5061c1ae28dmr1930741cf.57.1770142403217;
+        Tue, 03 Feb 2026 10:13:23 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ca2fa55983sm22226185a.10.2026.02.03.10.13.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 10:02:03 -0800 (PST)
-From: Titouan Ameline de Cadeville <titouan.ameline@gmail.com>
-To: kees@kernel.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Titouan Ameline de Cadeville <titouan.ameline@gmail.com>
-Subject: [PATCH] fs/tests: exec: drop duplicate bprm_stack_limits test vectors
-Date: Tue,  3 Feb 2026 18:59:50 +0100
-Message-ID: <20260203175950.43710-1-titouan.ameline@gmail.com>
-X-Mailer: git-send-email 2.44.2
+        Tue, 03 Feb 2026 10:13:22 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vnKtt-0000000Gaft-0KdL;
+	Tue, 03 Feb 2026 14:13:21 -0400
+Date: Tue, 3 Feb 2026 14:13:21 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Alexey Kardashevskiy <aik@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Ackerley Tng <ackerleytng@google.com>, cgroups@vger.kernel.org,
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
+	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
+	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
+	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
+	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
+	keirf@google.com, kent.overstreet@linux.dev,
+	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+	mail@maciej.szmigiero.name, maobibo@loongson.cn,
+	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
+	qperret@google.com, richard.weiyang@gmail.com,
+	rick.p.edgecombe@intel.com, rientjes@google.com,
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
+	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
+	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
+Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
+ kvm_get_memory_attributes() to per-gmem attributes
+Message-ID: <20260203181321.GX2328995@ziepe.ca>
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
+ <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
+ <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
+ <20260129003753.GZ1641016@ziepe.ca>
+ <aXqx3_eE0rNh6nP0@google.com>
+ <20260129011618.GA2307128@ziepe.ca>
+ <586121cf-eb31-468c-9300-e670671653e1@amd.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: D61B214000E
-X-Stat-Signature: wacnsng4o53fpzz1inax16jahht358jf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <586121cf-eb31-468c-9300-e670671653e1@amd.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6ED0D14000F
+X-Stat-Signature: 8xiiwtjnky6j3tyxke1ijxgsfibysszs
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770141725-861954
-X-HE-Meta: U2FsdGVkX1/kU+Ndh2kEu2SoljkUixxMU45S/TsRz6PEQlbrnJd3CG+ndZ47dFPUb+Rf+OPta//7jPs3jFMBoKyBTz4BbOt7bWSi4aC5ieqQ9F/Jix6Dq+ZBnk8Mznz8T2S5/25wtME1JQ7hc+YRbUswOXT8wR5Dtlol5VaCGiVD2by9gHwwZ8MOyj9kaPYRgKJ2kxduVA2gx9IONdafe5vM+rY0YcenxZJ+fwwtPyLSKDm6qD52pwU4C8QXtcHnuk65dItztHLqUgD6It4qGLNOHgLswHnbTmfpX/mte2ffZogcnMlQpGTn/GR9Vihs2I31yS8F/+ndrdG/37tc94OfvoFWg5UpUUbqfXaaV7CHsJMxoNn442DjGNPDC6xgZkIfY+q/ILr9AkRjSsy1J0Snrlxm5FcEfWTfBTkbEWPZBIkRoE7x7HHS4TD0t7MLH6VD4NoVk+pFdMWh9ygFy276TNzDhDREl4HlgFq4UZeb5A8DMu9NTpbf89g88wKBCP3GFhetrCmKl2LPYEPfWrHSNlcnDXa3vh6hjun5KUDD59NzYwbAoXBXFjychFn2qV91IdzcCUvElvhVWiMM8lf7xwfMwPVzBt48jRj3LoLDRfKSWGPQSst4E/l/sq/YRxyupURICkxBnVRTJkTlD77c8Sy9zrEq7guv046HBFLLWI3yYEBJBjrAPK06pFVkSfABhKKMCjiRW4TYQOZx9OGlUZBjQpei9vNQbW4Um3PQdGszSpCqFOT9G7bWq7SMg0+T4uGxcaso5gE2pgJxyRqyJkZMnEXRaU4Xnc3DlTGwPjZtBLq1mrQpkZrr+0/eSJSEn8qrK3jE1TFldIqITb1PnC1YGsT9I30qWKTJOm0N/DbAEgx33L5YPRTQPfQj3Sg30H1BowNFfzxAbEvTeM+P+korBpXhUpmVgpmsd68bEZD+GrkGIBUm15NBvYDrJuQl9w/6GalcshKIzry
- fYDq2F5q
- 29irZjClhdlrn5DDMt85hse3RInem0r4wBZpY/YUBb9SPZH2MrqNAxsK1sYm+NvSoFgLxEhb7YKaLeJDjy0SaSptw9ck/cTrT/uGnvzJ8/Lz0xLfs29FFT2SiBY2lMGwL9Mp8k347c/214ylQtqjqB7R/iLkXik66oOCz9QBe27idRUnEitEAOAS7NsYXpy4+nGCzQvA4ufknfX3cs5biQMf2d1T2w1eJZV5rX6fsKF5zVr5iU/3zmQzQGUoehRM8xdju1tBfvrMivIwO3rmbsgcHgBY26eJnQvh7NjA2SLsCtJuY3moPRq7sPGnKxUD2eMVDk7gu3pnZTUqo8xwLH5zx+05ttsfHXdGh2M6clfuFOewBs4Bhoh9MwqJJ/0rS5GCP+JtZcyD/AYxXGo7LL5U3+ZLxeRFmMTgSLUv3c+yetCD7TsvagtrMsOHxTYK4NckoTqht1NAjnCT+83xCu6wjGK6r6TDPg4grE5mKzuOCjVSRsOjEVwRIII5CkhTi4NxNyvTH5gzc2sqB7c/rwWfYH5AlEvjofFQetFrcR5qwT8tjIg74cBXhrZfPvcjxHn1jPvF3ZYWvbXrRpUEC2ySO34sQ5CXaiUj7GQaGMSk1CRgecPgqzOkIRy3zRW6IhzxOgB/va/h52sA=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.033930, version=1.2.4
+X-HE-Tag: 1770142404-236249
+X-HE-Meta: U2FsdGVkX18AZrdxraefe3V8ynb7M6/JRGhs6D/ma6Gb7ZbaNHz5WvUdU5bPl5WfsRwq6/nPzakFj59V+5o9SYQwQlXnLDoJrd9M3c+1OLscvv3h+tqKr1H+tKnLk+NSH9SaQqHbcaEynbFOZWSPnxr4WRqDlt2SHjLbvAA/S21jqUTInPlnAX+ggXPzbFOdayP8B6XnGMZVM7y2sSDoSX2q5kgNTJW3t1XG+Hu5ZCPXyAe1BntzKBoN5mofqB9UrUtmA/WrmJFqWGyeSKW+BuUIDrrKmKj0c9USzBcjGjqKSgKrHhniTDxw8S99agZ+M7nL0FgI2TrOQgKorsWQB3HauMMxrrkgLimRlHARepZoOzvvbymTXu3vOZc83KO7GUy1BgmpatUDrSXP1lFkxWzk1uyDPUAnXImmVLqbQO4xPtjN8NhGJkg7RvxVdkQe7QCgCOoEMU1GchlqrhIPyyLp7ItEOf5UTk3E0AQF/4BKGuTy9nQaq1v/mrGIE0RmHnCWJjYnEhMynUNtJs7lTW0KHHSTxfcapGlOKMBXRtUW2gE168f3xHyF3d0BiBROFoUaEhCotOHX3gkMK0S0r1B3JNTWRuxQEuc66Hakh0k7QT/pO/8w43KmrY2JmwLvUxML+dzAGhLQOIFtnGmtT6m8I85oeaXa0ZVluR6gdNIGEJ0D7ReBOxpfVuCkpPU0EurU3nKk9XuIhVHduHdWaE4OFHar3Lg+BcPAxAluU/Gg2/H9RzB7MNALeUBPmWamf55Jj5p8IdHRfzR2W0q2mmlgdDn38hO9kmddenKPAVik3CRMPyY/MyJuxAy0cmUl7/dRnvvap5q4S1WGHT6fEKEDRxe44kK9Fyo1cAdBQPHJfvWeegKDiVmLC0zVaIcii/FiVkFOyl/OzwLLElKzU2mQXCQ4AVK+9Lz1+WEmyyspkRFEsk95P5M8ahsc1TwvKtB/sw3RSGMolbJR7wI
+ kdHWgvqB
+ CKPs8Tm5SoMcnwHibpNNBo+jWAujR+52GsAgR3SuYsSd2VotXIXaxAr4BZQuJOJ252W3F/4ed0QgpS7fbMYyLlZ0p2vTVxkplLT1tOTr6nH+XpQ64wTYfyOZe6ppTDpliORuytPakui4tC5IaJxFxuNVCy1MdMk0P95V9bX5e02/Ox/4b61evQPRRj1B5VDn6zXm/HqgsRWxO4UCza/ikreXQ+HKyuAl3TfxIDeA0eoXUw5tNgDYwOWhgLD3+6RY6EP6otebBOzJ20M2DiHrM0hRjOcpy4g1gTlkqN2Y9peRNT1toVScWc4ga2Lou6zYK7/eYuhqvzti//481UQdiA8mkG68PPj/4ik/sOmAvbKOSvCpj6HxXej2CTDpsB0ApAWKKheJCDwwG0DP/sLmG4AC9Nw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,39 +163,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Remove duplicate entries from the bprm_stack_limits KUnit test vector
-table. The duplicates do not add coverage and only increase test size.
+On Tue, Feb 03, 2026 at 12:07:46PM +1100, Alexey Kardashevskiy wrote:
+> On 29/1/26 12:16, Jason Gunthorpe wrote:
+> > On Wed, Jan 28, 2026 at 05:03:27PM -0800, Sean Christopherson wrote:
+> > 
+> > > For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
+> > > is all or nothing, and can never change, then the only entity that can track that
+> > > info is the owner of the dmabuf.  And even if the private vs. shared attributes
+> > > are constant, tracking it external to KVM makes sense, because then the provider
+> > > can simply hardcode %true/%false.
+> > 
+> > Oh my I had not given that bit any thought. My remarks were just about
+> > normal non-CC systems.
+> > 
+> > So MMIO starts out shared, and then converts to private when the guest
+> > triggers it. It is not all or nothing, there are permanent shared
+> > holes in the MMIO ranges too.
+> > 
+> > Beyond that I don't know what people are thinking.
+> > 
+> > Clearly VFIO has to revoke and disable the DMABUF once any of it
+> > becomes private.
+> 
+> huh? Private MMIO still has to be mapped in the NPT (well, on
+> AMD). It is the userspace mapping which we do not want^wneed and we
+> do not by using dmabuf.
 
-Signed-off-by: Titouan Ameline de Cadeville <titouan.ameline@gmail.com>
----
- fs/tests/exec_kunit.c | 6 ------
- 1 file changed, 6 deletions(-)
+Well, we don't know what the DMABUF got imported into, so the non-KVM
+importers using the shared mapping certainly have to drop it.
 
-diff --git a/fs/tests/exec_kunit.c b/fs/tests/exec_kunit.c
-index 7c77d039680b..f412d1a0f6bb 100644
---- a/fs/tests/exec_kunit.c
-+++ b/fs/tests/exec_kunit.c
-@@ -87,9 +87,6 @@ static const struct bprm_stack_limits_result bprm_stack_limits_results[] = {
- 	    .argc = 0, .envc = ARG_MAX / sizeof(void *) - 1 },
- 	  .expected_argmin = ULONG_MAX - sizeof(void *) },
- 	/* Raising rlim_stack / 4 to _STK_LIM / 4 * 3 will see more space. */
--	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * (_STK_LIM / 4 * 3),
--	    .argc = 0, .envc = 0 },
--	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
- 	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * (_STK_LIM / 4 * 3),
- 	    .argc = 0, .envc = 0 },
- 	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
-@@ -103,9 +100,6 @@ static const struct bprm_stack_limits_result bprm_stack_limits_results[] = {
- 	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * _STK_LIM,
- 	    .argc = 0, .envc = 0 },
- 	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
--	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * _STK_LIM,
--	    .argc = 0, .envc = 0 },
--	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
- };
- 
- static void exec_test_bprm_stack_limits(struct kunit *test)
--- 
-2.44.2
+How exactly to make that happen is going to be interesting..
 
+Jason
 
