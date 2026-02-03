@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35782E87846
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:18:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB564E87842
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:22:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8750F6B00A7; Tue,  3 Feb 2026 11:18:41 -0500 (EST)
+	id 0AA166B00A4; Tue,  3 Feb 2026 11:22:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 826256B00A8; Tue,  3 Feb 2026 11:18:41 -0500 (EST)
+	id 058A36B00AA; Tue,  3 Feb 2026 11:22:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 721DE6B00AA; Tue,  3 Feb 2026 11:18:41 -0500 (EST)
+	id E98856B00AB; Tue,  3 Feb 2026 11:22:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F2766B00A7
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:18:41 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1DEB113B268
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:18:41 +0000 (UTC)
-X-FDA: 84403653642.04.EBAA2C6
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id CE4896B00A4
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:22:48 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 743B5B9559
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:22:48 +0000 (UTC)
+X-FDA: 84403664016.14.9B1A828
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 7BC5F180011
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:18:39 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EPw9Yz2e;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id D871CC0008
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:22:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g8tx6q1m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770135766; a=rsa-sha256;
+	cv=none;
+	b=G6P8bocPc5tWGu2eUdr6EEiJyb0QAyM7Nve/DStyYjss3dqFV2rxJhX2p11hPauSCNRTNF
+	GGnENtwxWe7VGJtBzUb39dwu/auOHqvAiZdeUp2UnEFBv/foMOxT6EV76mgnJxX91iVd8y
+	pncK8n2Vi9/bJK6G4jO8iOcHutXoaFQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g8tx6q1m;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770135519;
+	s=arc-20220608; t=1770135766;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6T3Az5ve4UBbIJhUKrG9rATlOgWfWRksnYXGgxKSvYE=;
-	b=RCaX3EquIcLpNLg+HgvYIqrI4GZQqKTY5F0gV6yzsKpYEvmr2SIeJ+eje55q/qqU+aEISy
-	/Wkzsraw4HevaWo5p2Ej/w/I7wV2TZ1xMXXtOYakuN/0D0N4qSdYX9oFydIet9Bp3Pciv1
-	w8z1m66hGm2FFkWb8Qgdrf7Zx1IAf2g=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=EPw9Yz2e;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770135519; a=rsa-sha256;
-	cv=none;
-	b=Ekwfnd/gOKjNv4OaaLvj80cxFAveYrisSxqbZqpt2J20bZsYbJNgdjCSib0NDo1swGy+iC
-	ohUa6T+Gf+kTJ7Yg4rvoCiS1WHiYwNJSJj9pnNxAmXc8eln1ztZwiTELC8uRKYnst2PRUD
-	sBnuEaGxBmTmYJ4UdeKADkrPb0CeRVA=
+	bh=ZeZ0MgyO1fyDscEfAG6lz+HAP/ww21XmDgQOMzqN3E8=;
+	b=hm5am4jdK23MX0WEIgyGDiNmaZYgpmxmcwAZ/oHiXo9AE/hFjKQ8hw7ctvxW6f1JUxlqFB
+	VrjYWRk8luBVxu4EtRUmxffwE2JPvMypbQ2oeCUFl5kI5NfKh8Y0Ag5RDMmZxs+Ajnypoa
+	i2Llx1oeK6o3ITUegnyMfoD+pUtfseg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CBCCB601E4;
-	Tue,  3 Feb 2026 16:18:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A752C4AF09;
-	Tue,  3 Feb 2026 16:18:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4BF5B60143;
+	Tue,  3 Feb 2026 16:22:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D756AC116D0;
+	Tue,  3 Feb 2026 16:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770135518;
-	bh=t+xsjeWFVLSKurDj7D5PeSnLdx1mHlEer5mWWhx0m+4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPw9Yz2ewWsZC74qCWy79KV4zsVshB9Iq/hOHPwXPkby4iTb1vviUNVI95rFWf+uW
-	 d3hT1L6a1m6W6qTyXU2sKIn7mU8YNOXSr6UJBWZ7KLLSeda6byFvzEaWEmiQnFtR5I
-	 FcwctMmaiENipUcr0hLmua/ZZmMFm1FoGCiTdB5aZDdGvML7fHQsnp6HZMZ2EliVjp
-	 //DSe/t+woW8eO9F0uWmzJEixjW5kYCuzIAO6mLNPnFVKrsUNsMQEb3y5deWlcCSNU
-	 Pw374nkEBvZmDZYfQgxTpcCkTT8upXMyHcnw75bd8l9gRG5Yo1itUkBqUWxeH7kMaF
-	 oeQ9nePc6dLqw==
-Date: Tue, 3 Feb 2026 18:18:30 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Jason Miu <jasonmiu@google.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v8 2/2] kho: Remove finalize state and clients
-Message-ID: <aYIf1hOQzG6xuTAA@kernel.org>
-References: <20260130005739.3163049-1-jasonmiu@google.com>
- <20260130005739.3163049-3-jasonmiu@google.com>
+	s=k20201202; t=1770135766;
+	bh=1oyZKFwjfIKHh6YeT0LaiF3S2saMqK9ByktcAWWIavs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=g8tx6q1mPUSf1sJXgzbw92G3rlDMhAkfEXATLVPku582tk/LtlNIenhVOB2H5bFEL
+	 TAfh/begikCvK3c8XBf5qXD6iYsx84tWXMpfsNNFo32z2Q0ccGzKzUVgryVAsjPxUX
+	 FmA93KD1+YcSmT6S1wWrVGMX1kHCN+tEmdFRzPGIU/Vjt10UNyBMSsdYk/3vgpSY40
+	 nAnMGtBI0Zdj12UpMkEW93pf1gLHRLiKNLeTZZHnlDtlaJl5PW7eI7D1hDeujyoQrO
+	 28zvS2EdH+ytwUZTrC9Nsj8f/WM3ZcFyQP2SCSfY6Hly4/YnLp3qsxqLnhpML3AG1a
+	 wxTh30Z8+rOkw==
+From: SeongJae Park <sj@kernel.org>
+To: qinyu <qin.yuA@h3c.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm/damon: remove redudnant mmu notifier call in pmdp mkold
+Date: Tue,  3 Feb 2026 08:22:41 -0800
+Message-ID: <20260203162242.46851-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260203095400.2465255-1-qin.yuA@h3c.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260130005739.3163049-3-jasonmiu@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7BC5F180011
-X-Stat-Signature: 13i33ywm1ysutxuyunhna5eftpo5gzsd
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1770135519-481840
-X-HE-Meta: U2FsdGVkX19rI0ZYRAX6d8LPCP+n64opSz4Hxhe9ruhCSQ3ORo6k4BAlPmbwu4IcHbT5jyHNSW/YkER5NchoeZTcB3eoe8BSjhu9pGnLz5tPCV4XSpOpmEKwKlaTyG71553Hzq3FKlObqf9tup6IY4AAa6WXNdYCkfjp7DGbqzeYuGGVMnJCHPz5JOLR4oCQUf+/f/BKRckOYUFuRG4yj2lKBvNESvLjDfr2z8J0xkCxlcDenL9fY/WV5HsN7NiCBGcj7xmLKJmq1zM/qGkMVF0eoIdHsGcR4IPrlMdHN8WVcjPT/DCTU4QCDrIeHUwKLtsrdQu7rm8nGPSv72Fuk5GazUqyqEaqEyC07gd5GCfDFzohCy0rGH31l6/G4NuTukb5+2yLNaD6WVzOjF6ClwDYLM8mqqZ4SA7n2qEhvjQNg1Bz06bXOxepo061rtk+f+MTsiF6IXsOiVo/qj0q5yyKPOfGJUdCBsJ28Dlpx0A1JBgR8ELYgJ7OhXHkqpxBz0Q/EI5ft1Mh5Nbr5AO0iFifFiip/9qEShsVoy/BnqYCDqH4PHCQsCiKMgz2iMilGu3LZbwvVEMHaFx/uX5aj8G03XL3RvjifaGQIiKpYWO1UqbOO2nv24aTrXU5R7DpORK8EyvORv3McB9sG6By/6mHSGjBliUrL9ecADJHu0+Q5ND0sgBc13rCXwzljSTmT5Bfo4v2nZg51DljZqtBj/kJ1nkyMY0hC532YP/VLdiEueBXUJlJlAnj0S8WWWp7dWHizvylZ1hSHFfXMpCGag7eI56TvzsnazdI15BQsDoZqQERzCzEDvsg9MRHTLVMEcncqZ6s1GrTBcBh/LpL6ylqmDHoq7k4nOPLP+j9l6rcHJqwyWzYaw9aTrPb0GsttikVMh0yRasiYQKY7uhWjnncBu0OWpjxKOlA9c1MKkC19iI39xlzUi+nNi0Qywsu1udKTBYgjME9tI2bhpL
- ut3a2VXZ
- 7WpbUznOpZGygZoFcI/aanFT7TlALFUZLWvYOFF9kvtOJn/8lt60Ydq69eScVBKqG9LCoved4vtQtrEnKGAUnRXKsu+9Zt9yLkgM6jS9P/+/RKx/OapEQvwJoKZ08xyNOa3E3IkaeCz0NeQY0BaZojLOifx7AsLprRjFSEFMGgjMi1hUDZtq3Tb7fWLxbXdN95YbPHTesl09Mr3YOZa5V+evgPE3UmrqPx7oekYY3GJtovX6pxNbb56WF20Mbs8ARP1TmTK5QTbI636ts5tGobW+3JZ5p2LVStC9oiaY5eYNpKEQ=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D871CC0008
+X-Stat-Signature: ac84tmko9hkfpbikmczbowok913ddayx
+X-HE-Tag: 1770135766-607546
+X-HE-Meta: U2FsdGVkX195K0EFwdRufSmbcHpGiTtHOOV2FzECY+QDYiFU4dRurRokIq3C3S9QIJwYk5hipMD2p4SpPV3ZAedfl+scEs9O1boYUJ1E3UxmC3Cebfj89TwdbLcqODNcfYI0KGiKwWIyDxb1C7m1x03ekIxLVRRdaFx1EWqscNuUkk5klyW/hB88jldZ8ymnCUExBjPlsAK+Jw98sZh6hhwXli1OvSEwCZLdd4J4jkHKu6D5OjVebnLrIzXS+oQ+mY7+GudabmiphUTTKdNe5l1d0QN6kpwmMmJV8wqa5hkgkXMHickBH3AGdoU0GgvYaD0T/Y8n2VscK5/hfpKcembH2NTfnJW+3spCuUNOiaoaIZg7HQJTifd1kikYQc9xlA398glF+iLAZWcAerHOKe1VIUTpKY0zaprvE/qBJylkZ3z8DAQCBmI5GZ7GnXhEVxh653KsD8jQiixDZoHLAdwrEKmbTauFikIsx9AGHDWGvJbFyceF1qp4rVXYrsXb6yvdKyt33YwLepssmU943Ud/z1v5Hn0idtRweflmC7vz6xj8rAi0QeQJf1G7XAtreNp9ySK9dB03XzEz440RE7cOIldP07O86lXnH1WoMySBtEIVvpChaQRJABajpgNrV9TpSeJaU7KNZdEArrgBVTHqcmQcJ63wFTz3fjIgV9F07550DtbXN7LPQst80H2Q/yv1fcf/wbQRCijawtPFhXxNqZOMm9c/mJIAOfNHM0lGGS48ynbML/f/TNxqxAVCqLqHvEbLwhkC42AJTEr28oT1tyiLmZWj8udZTfb/HxSEozdMtm7UHWHkrVtsJBanRn4CfUbgunMl9j4wx1qbZZIvJ7bOhtQSyUu6/aSPpOhu8zWRWIfhl+nhl6GEC9IYvxqudr9oQIn7salT0QhXd6RyNgCozzq8PrTxzGuUVmdsLya6668nKXNUceRFzSPtaCKhbOAVHoHytq57RWx
+ hOqwiiF2
+ fpOdxKCjPSxsWo6Hh0Gv5sAR2K2FU8rmFp7nN/BDRMdcjpfCcmUmZBbshk0ssGGyRgwHzB0vhgyiyxlCMcP1AzuScuqWkluvAjOmbKpsxAaPNLlw2ksQCCEDhsHCtxtbv7LLSeFLC/0lvy/K5fpuXAe230UqGQ9ZPqWdaQ7oF+KIqXhoMCbLyXxjUcGrEf/AfxeYfk6gcWZ+8SYVl9Y6DMO9ZUYHk4vYvU+Qzv5h8kQlELneIw6kRF5oshjkFlnepDCSQn+f6HAdsGbygNMTQ7kocueZAGFV5L+agQtUZjinu2uJXPqlzx0+9HPhK7PO9YyhNvqrkmgejXb2hMy6O8eTOLhg9KiezR/LkOH65Igx0UPU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,26 +93,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 29, 2026 at 04:57:39PM -0800, Jason Miu wrote:
-> Eliminate the `kho_finalize()` function and its associated state from
-> the KHO subsystem. The transition to a radix tree for memory tracking
-> makes the explicit "finalize" state and its serialization step
-> obsolete.
-> 
-> Remove the `kho_finalize()` and `kho_finalized()` APIs and their stub
-> implementations. Update KHO client code and the debugfs interface to
-> no longer call or depend on the `kho_finalize()` mechanism.
-> 
-> Complete the move towards a stateless KHO, simplifying the overall
-> design by removing unnecessary state management.
-> 
-> Signed-off-by: Jason Miu <jasonmiu@google.com>
+Hello qinyu,
 
-I think I already added RB tag :/
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+I'd recommend to use "mm/damon/ops-common:" as the prefix of the commit
+message.  Hopefully Andrew will make the modification when he adds this to the
+mm tree.  For a case that Andrew might not since he must be busy for next merge
+window, I will keep this patch in my tree with the subject change for a while
+and repost if it is not picked up by Andrew for a while.  So you don't need to
+repost this patch for the trivial change :)
 
--- 
-Sincerely yours,
-Mike.
+On Tue, 3 Feb 2026 17:54:00 +0800 qinyu <qin.yuA@h3c.com> wrote:
+
+> Currently, mmu_notifier_clear_young() is called immediately after
+> pmdp_clear_young_notify(), which already calls mmu_notifier_clear_young()
+> internally. This results in a redundant notifier call.
+> 
+> Replace pmdp_clear_young_notify() with the non-notify variant to avoid the
+> duplicate call and make the pmdp path consistent with the corresponding
+> ptep_mkold() code.
+
+Nice catch, thank you!
+
+> 
+> Signed-off-by: qinyu <qin.yuA@h3c.com>
+
+FWIW, Linux disallows anonymous contribution, and this tag should use a known
+identity [1].  I was thinking about recommending to use real name, but I found
+there are a few patches that using this identity (though email is different),
+so looks fine to me.
+
+    $ git log --author qinyu --oneline --pretty="%an <%ae>" linus/master
+    Qinyun Tan <qinyuntan@linux.alibaba.com>
+    qinyu <qinyu32@huawei.com>
+    qinyu <qinyu32@huawei.com>
+    qinyu <qinyu32@huawei.com>
+
+[1] https://docs.kernel.org/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  mm/damon/ops-common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index a218d9922..8c6d61342 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -90,7 +90,7 @@ void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr
+>  		return;
+>  
+>  	if (likely(pmd_present(pmdval)))
+> -		young |= pmdp_clear_young_notify(vma, addr, pmd);
+> +		young |= pmdp_test_and_clear_young(vma, addr, pmd);
+>  	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + HPAGE_PMD_SIZE);
+>  	if (young)
+>  		folio_set_young(folio);
+> -- 
+> 2.33.0
+
+
+Thanks,
+SJ
+
+[...]
 
