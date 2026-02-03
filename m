@@ -4,157 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C957BE8784C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 18:16:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6947EE87852
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 18:23:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EF4B6B00E2; Tue,  3 Feb 2026 13:16:23 -0500 (EST)
+	id 93E136B0005; Tue,  3 Feb 2026 13:23:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29DA46B00E3; Tue,  3 Feb 2026 13:16:23 -0500 (EST)
+	id 8EB2A6B0098; Tue,  3 Feb 2026 13:23:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 19BD26B00E4; Tue,  3 Feb 2026 13:16:23 -0500 (EST)
+	id 795B56B00A4; Tue,  3 Feb 2026 13:23:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 00E276B00E2
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:16:22 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C37E0D5262
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:16:22 +0000 (UTC)
-X-FDA: 84403950204.27.3FC5052
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf02.hostedemail.com (Postfix) with ESMTP id E28DC8001A
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:16:20 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=AHwBL1zE;
-	spf=pass (imf02.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.46 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 653616B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:23:52 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8EF16C2166
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:23:51 +0000 (UTC)
+X-FDA: 84403969062.08.BAA189E
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 28A76100005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:23:49 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=CLJMZHam;
+	spf=pass (imf14.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770142580;
+	s=arc-20220608; t=1770143029;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mu1la4UZlbEX7cvXzj/Z/hgnRFrqjHU+qKtYtW0dmkY=;
-	b=iHzlRdxJYvmeNChbXiheOCwQrQOBB+oTkoPsVKogcK0DdeoY8DaVcgzOf6vG9sZFdX31Nn
-	7LyRbFCv8vMYWZnW+FO1MVQnSjrHOhbVS1oUYHL0HcnKDongxY9cUpzGYl1QXBsylCwIQU
-	82evDJMLzbGcsAriGqz9BD0Iv0bznVk=
+	bh=97sz3ptFn+IzHWBAcS9kZLGRT230Lzf5igUm2viuSR8=;
+	b=NTy/PN1eP2ygI9dMhdKXqBcXhizaNVqrHURelQqg1OtrmR0TPrbbrGkRMB0N+SykCdiS5v
+	NAVGPLWnM/G4Be9jvEppp5eFKcf/lBpBBtxOh4gsTR2PBtHYiF+4bQdSVZNGzYrNhR6R0A
+	964iLpaOIw5T09bjzee+gYZ0WoAnzpo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=AHwBL1zE;
-	spf=pass (imf02.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.46 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770142580; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=CLJMZHam;
+	spf=pass (imf14.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770143029; a=rsa-sha256;
 	cv=none;
-	b=VpRqxXDP9MCSEtHjOvJovd/JYxm/hdrVhzqzgPb0tH/h5jH3SQM7gtOyq+PUE9np8lknZS
-	R++g/QF0Cg1TXX03UfHFt8b7jes+tBqG4O3wnI42uBeQsOWtGL7lGK68uPa6ab3g2rg0zI
-	Lk2BLfXYtNkdriUomLsryAfJUakTEoI=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-8947e6ffd30so70834926d6.0
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 10:16:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1770142580; x=1770747380; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mu1la4UZlbEX7cvXzj/Z/hgnRFrqjHU+qKtYtW0dmkY=;
-        b=AHwBL1zEUUMbLLEkD8fKkPMrRTj/PudT2zZ4QCLmdoosnUNwcShKRPyhIIRbJZ7EV6
-         3HdWrHArhLEDk44n0/AugZGiVZ+gLEIxEAnzmJpLXEpM7YKVx6PfqgkbM6F6NINx/Y2u
-         XHaThYnALHvxPKmE908g5eXmgP1OIK3jGGLKVS6SsJmAOdLmu5/Z68Cs5n8PO0aR1W5w
-         FDtk83FBjz/d3HptluMyfIc4+oc9qTIV+hTfyBVNJhcLVjxpTxLrQRwDO+5piXMmbvZK
-         SVBmLvavm3IxK6fRzeEFMmhfcLhpLG/yWicUBbwVyOPPNw0CtInN2CinC8vZEaeZPkN+
-         T9kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770142580; x=1770747380;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mu1la4UZlbEX7cvXzj/Z/hgnRFrqjHU+qKtYtW0dmkY=;
-        b=eSNAPIH4JOG8WkJEew2Dsz793Mm3g8xeqtIGUSTg4aPfuufI0d7C8316MsMHraUmF2
-         vItwFwhudzBNdpAZIjRd3wHViEQM4ckCfGGZo2/7rwatrVCixOWViIweuxLHMPTLlpoL
-         FsU7gkCoUbO38vNxQafH5nA+c5feUkpWnuTMEZhYnARI5Cd+RA8hmuE2nokWXVMZ0zIQ
-         kE36ejRLi6OqQYeCZyG5wfi01xeN6/kaAM/s0b4RP8dBVWbMMi2m5eTFGa5W9En9+fMI
-         ybkLrrgY2Ms+bJLy/9TgWnIU/K/OHBqCglyJ8pbRuEfVVtgC9LJSoxLqrKEODN8ehNNB
-         g5oA==
-X-Forwarded-Encrypted: i=1; AJvYcCVPWEgILctGdb2myorJ/z3/n5EjGmCWs/XkybCDfE2YoJUImXUQUZvQUxaGCgNXwVBJwekd3dTtHg==@kvack.org
-X-Gm-Message-State: AOJu0YyzEYLSVpj1RBz5OPFIC+KtztSA51Qgd5bVjTdWDX++DOTEoRhO
-	djJheLOPkhAhTN7DSJLZJcUDDAwGny/ujgNm+sbSs6tow5h8p0YZ7N24ERJKdrCVRhM=
-X-Gm-Gg: AZuq6aL4Tf0O30Dx0iGiKSEspRwcmU/bDoPNqh7h3TMcP7v1XlQx6Td36Tu/MoB4hq3
-	ZFFrfkhtRIn2yU6WY41a7/m890p3iZ3lvxNf6khlCQUOAFzoYc7S4JSUpynUbWaRDqpkEMoXPR/
-	7AU1Mq16QaNJx7RsEBvMq6HAyTAU9R2SlIErtutvLcj3FsOxScwiGKV/3GvmqOEww79BadMzbf8
-	Kbo1UW6KiSdjuqqUH0R5QLa4td+AyRTXkYJLDVvXzymZuJH8DHBK0PSK1mbkQ9YMv164zjgqwo1
-	aGJyvuVoo5EJ3gFzaKlV7cOr09m0E80Jdt8GWhHfhhRjCZQ+43L2UnSOVOIoF5Wu8SqOQZ1gbUZ
-	tcom7+Zv/SZBc9YNbcWi2miDQAOmbKH1zcxEwDB+DzxkVDdgrhf26xL0S5X94U2wX0dd8wx/ADL
-	fzdBzZCZE8SxRNKzvJEaeGlMOBCaWwBfTOFK1IDM1Fg+m157krWz4iKxlPhdc4s05bpFQ=
-X-Received: by 2002:a05:6214:20ab:b0:87c:22f9:dac4 with SMTP id 6a1803df08f44-8952210b4a5mr5192876d6.15.1770142579616;
-        Tue, 03 Feb 2026 10:16:19 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89521c00173sm2728446d6.12.2026.02.03.10.16.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 10:16:18 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vnKwk-0000000Gah4-0kfw;
-	Tue, 03 Feb 2026 14:16:18 -0400
-Date: Tue, 3 Feb 2026 14:16:18 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
-	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
-	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
-	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
-	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
-	keirf@google.com, kent.overstreet@linux.dev,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maobibo@loongson.cn,
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
-	qperret@google.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
-	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
- kvm_get_memory_attributes() to per-gmem attributes
-Message-ID: <20260203181618.GY2328995@ziepe.ca>
-References: <cover.1760731772.git.ackerleytng@google.com>
- <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
- <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
- <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
- <20260129003753.GZ1641016@ziepe.ca>
- <aXqx3_eE0rNh6nP0@google.com>
- <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
+	b=vdHU2841S/a/biHbqyDMB3f5SpQ8RUnY3d1T0X3iarnQvKhL4DwaBUXt052njYT9olaYaf
+	vjSMjxa2Crvpg3Qel8+1hTMt2sBb8m3sC+F0yiWJ5sTez8QrDoau3l19+5jXZ9DjoTHpTh
+	7h2Kndh887Ms76LCRfLRJ6fasFF1FLc=
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 613A2Qmf032157;
+	Tue, 3 Feb 2026 17:20:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=97sz3ptFn+IzHWBAc
+	S9kZLGRT230Lzf5igUm2viuSR8=; b=CLJMZHamVeUwlwmSezu0m9G1P6ZZ6GaeU
+	MXALycuUT7U9tveqU8//iJWVp60uuX9rwSYe2WVXERbf0OcyCGe8bsHpEgp87Ri1
+	6kAY1CGZKF200gLLe6tfkw2njgx/dkeJBYCY0J9lylBnI6ipq7EFr9leXQ40OtOn
+	t1OfZeX49t6nhRYEm0Kv6Q1C7ueaKuJKNcs4sb0yuacUu7a/UetaXRL4DToUKUF1
+	6jI5iLUU7d82DaKeZUxSaTiwCUvExT10Xq/FHOzNcWLN5SBBW0ni/BGZbXTgryF4
+	tskDbS+C7pv4ZELaaLLAtdCeYUyO4iYsmW1Szhr5RmnJxOs5kEuhA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185gv7nm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Feb 2026 17:20:07 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 613HK6ia029023;
+	Tue, 3 Feb 2026 17:20:06 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185gv7nc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Feb 2026 17:20:06 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 613Fbld6004466;
+	Tue, 3 Feb 2026 17:20:05 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1wjjsx6t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Feb 2026 17:20:05 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 613HK1ND30474818
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 3 Feb 2026 17:20:01 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F3AD20040;
+	Tue,  3 Feb 2026 17:20:01 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8DA7420043;
+	Tue,  3 Feb 2026 17:20:00 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  3 Feb 2026 17:20:00 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH v7 2/6] x86/asm: Avoid emitting DWARF CFI for non-VDSO
+Date: Tue,  3 Feb 2026 18:19:53 +0100
+Message-ID: <20260203171958.1522030-3-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260203171958.1522030-1-jremus@linux.ibm.com>
+References: <20260203171958.1522030-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E28DC8001A
-X-Stat-Signature: cy7uttxbncnzu1dfpaixrss5s3d75nqg
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=UdxciaSN c=1 sm=1 tr=0 ts=69822e47 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8
+ a=VnNF1IyMAAAA:8 a=zOOTxvlrTZNIKiBVQswA:9 a=2JgSa4NbpEOStq-L5dxp:22
+X-Proofpoint-GUID: CdJzKKERM1cgzByuDAecuye1eel0i3hN
+X-Proofpoint-ORIG-GUID: VM_mh-_OuVHLOIbilB5VYZVhiJKMZNsL
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDEzNSBTYWx0ZWRfX7CArlsFbCu+1
+ HqBB7Pre1iPR2aaiF5OSlVS4me7QW8KFWjJomiQH+GOgksOG++KYZWq1aaDsELyVQ8pbPPcZNd4
+ Xz/uKAFbXXVssFxjKqZQdMTU4gjynSse090TByxowdLCJrSGAKdKbUw2ft4+M4bYh79VTMHBYMa
+ ct4PD3FJBF9big/bR6R5KfX42+3vvosqJC+CiIjgSufIHHQmFcJzTsMoBPMUGpjQINr4fl3dhu+
+ ZxB4iHmUJ5g10qHLSV9FHp6yVaJn9dbPnb4z8UcUlZFxOxxX9Dft445qpW2mRvI/kfzr2tcN4fV
+ tKCNZub4xfZiu8hc63cqVp6zgCdIhPa+jX3oYl7nQgh2u3izoEcYwgPD9VuCGnKX5iT0W5w4ydU
+ ITfL370VtFuHgCeurOaL9F7tmkmy4QdYHwhaW1JVE2WuxUwMkRwDpnNVXclBRX+e5U3sNOmz8dO
+ i2fXTFnMeMqaCKT+62w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-03_05,2026-02-02_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 spamscore=0 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602030135
+X-Stat-Signature: pq1a8sqzruycq8b3q9akad8sz6g7nfmt
 X-Rspam-User: 
-X-HE-Tag: 1770142580-663761
-X-HE-Meta: U2FsdGVkX19wklhlJ4UTlmzdGuhKur+Df/yxxdHaU3+Z1NqtlZ5veqmOFxfGoN38kG24h85cH1FlSoP/kriX88wFEqXYv80486xELO8CF+w5k4+clwlG8gMM0LDJg132gmB/qyt9cm5DsPTwGdSIqk7Fpnkc2rqiX3/ilypkz9lTkqkK/Ku7cIDmCkzztOKjDCBomeCFafQUhw5ds8gehxngka6Mt2MrMMFQr3z7nRC9b91DngLg2nSssK9GkcsJiw5QWrTIruwZ+lv0mejT4p/X1+aqIfNtzXyy/3AmwEFY4WqKcigyq4qBBgUuANOt8DWl0IJnCE+/K7C3BaskF0Gq/UlB44DCtfLTL4cNpPB5mVnsZ7hz8HotIpdC/o9QIzf/zTN6d6lYFh53eosthA48H9jyMq4CL0UB1Nd7gTJHiYaKZlfreqBIpU1BfWp9RA612fFvtQG0g3Fs4jkMapVE3tSkbL0hYnkHIkAs5NCuJyH1LwLhQ1e0NvSCpk2o9hjczFvQLQz62ay738KjvblBwFdEMnnY181nktx9aWKWDaZADVSf7r/G+Vczl14lYPCM60nMWi3HY0twC+91D7sEn8HTS/Ey6qhQXMZ7EZPvWFbFbj14YrSde6T5klxxo8ToBxTW7lQ0P3fllZR1lPt/a0lynUqvQr/JCGPS+0BpHDGlW8zUwOhrbRIpDRU8oci5Y9fuqqkxdKwalELq1/PTTNp0nmhYnvFhCfeNDLnlcQGARo5sv9qZbHd6L5ofNU8Ju238V12yKeV47zhfeEedlZ8iQOOGrrF9AnxA6DIWggWcb21pmLD03WUEpuRu0IQEW/hW8eCuTKrs/a2PWaA/za+uzKolueO3DzVJdta9NsBqxSZCdH96I3V1yOS0TZFAvvuZpheCHlqjYxkUmJ9r8nilw13Nl7rxNXzEWpP0r4S8Q5kzh31Y0v7eDRUJGcnIdbEeetVugcbAaKj
- CJxheSMu
- D/ZMKoyRSK9rpEd+FcAsdwdTMlKhgJ96yZ2lqsOxgdJZ8NlOYv0Iq1OO/aexPSeBDej7gtvzmzy5Dnc+tSbzkIGucORlrEztvOurLKB6k/Flgktm+oQXr/M8p/2PEHy5E3ZDUhz49nCjP6qI9JaFwMfS5xtoHiZdQWS6w3wWbPYNLg0RkpPUgR5ryDM43gtXoVI+JpbkPJiJ8SNJapUzRy+Zi6Wv2MS/F6WfkTJYuwFqpHR1kN8Xn5rsp29pd7kACeHfPr7u7vFpUegiqBJExgLrqp9XtG6Z7ODiIqWWICnmuwBornvMh3ue1l9d7FaaqLQHCtdUbMBh23dwGKerHrPRbpocjVRxUt7xgiDgmNqcmWQHT0MrnkrdVpAYFmQcdRMy5I0L/YS58SCg+G+9hOqgxIA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 28A76100005
+X-HE-Tag: 1770143029-510768
+X-HE-Meta: U2FsdGVkX18gE86LLkZVZjmreKu8Kcc3L6/HrihQl1ERa8WnYNXSgMflezVjC4JpR/Y/NRV9rQKbHgjZRod36znXc5QrrnKe5p6E8BuIsY4wG/zJ4UE3e6olR89BgqWbZieuxwr4Y/J9IRl/s1g/mcH9VHf314uK7sQUu6Umqxuq6funGZRgZQl/9PD99u/gONejg46tRaYy9juPWpUp/D5VSYfrVcidTOyHmYgJF4TO+/KMcMjt7PorgV/OlmfSG2vWIOdDJfBaglvKaUiFFL05+pMAa2kdnFf/qP5g059ob1vM9u/8Qg/slVvCyb7+B1FKDrIVRx+Yv4F3LJf6/2Me1CgS/g8g+O8Jw+889IQ1p1ijcHWzNFu8SmTUNHdhxaxpvx4ZeZVxyhQd1ox9L+n8OaRTvLH8p7ihRSnKWHhflv5KnYFPPmrNPGVI8snQdRgPnGlewI24AA/W8TOBu35SIOHd/gm8XdXo5vOcK7xzMhIefMCp0NLMiZlLwVZCu1GRfTe4RwWAeliiioA2aC7NNWFgW1rWM8daneyandTCETV+vllmrZQpZC40h7eJGXRXRqwWLHYVXTTaUbWh3DteSr5MekqTK7T+tZWlxe7quQ5IQPPFewLHw75yM04ARyodjgXbJlbhkIupggo6GXWQU+eKcHrO5Vrd8KBZv+Csc88tsAjiKmmthMNkAKkr+HHR/zLo4k/2k62Q4Lsx89gqE4FElmR2ZkhUpZT+860QEvbARvohVFLU1esuOQlLHaJvpCw5Z0lXbHgk+TyYA/C9PCYtvGLR7Y7BLbwI7/n4ipayAmRVKny+egRfhC6BOFRcaiccMY+BGflcJbsGl3wwjT7R9iyn9dC1V7S5oOSNvVGRlxFo2z82NQaVw4wc22eYZwigCvOvjwGemS6Sz1X7mkUuEB0Rz7rcYWT1zRjWezG+mE/zTi9dT+4p7mudjDUcnpw+sDMZhWkSYBu
+ glCLIhrM
+ v8EFPp6wtj84UXemCCVbA1Rn05HVT1/XS/vofmJM04XlS+9EB50oaJU/qokB6PFCtYy4eG4T0znw13NrYmwBy0S7xs905kqvzyjNFhO0v8BFDst7l2cNZBGaYtXYvYYrzAfWSHUT8Fs2ijfoDwt6bdsu0krb4f7WaleiRvA4G4bfewm+svT6tq8/RpkOuQExkMHxtjNS331N/0/MabnLjWt6bhOgtPH+8k0QKFGB9EmwFJq1S0qTcUc6tXQgBNlp9/Bp0PFXKlQxsq75Pze8dGIfVX+7dHqurc4Y+LEHZ0edEwxbAmpLjYV+zFINb7JWZ4Uk4u9j9i4rLb7A2qkCn6hU8hebmarjY9GSHw06Dr66EhX0Ppw3I3RF0potwljVEWExM9ASWeA5zkiyJ86B3M9983tQ5ri8TlFIG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -163,47 +169,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 03, 2026 at 05:56:37PM +0800, Xu Yilun wrote:
-> > +1.  For guest_memfd, we initially defined per-VM memory attributes to track
-> > private vs. shared.  But as Ackerley noted, we are in the process of deprecating
-> > that support, e.g. by making it incompatible with various guest_memfd features,
-> > in favor of having each guest_memfd instance track the state of a given page.
-> > 
-> > The original guest_memfd design was that it would _only_ hold private pages, and
-> > so tracking private vs. shared in guest_memfd didn't make any sense.  As we've
-> > pivoted to in-place conversion, tracking private vs. shared in the guest_memfd
-> > has basically become mandatory.  We could maaaaaybe make it work with per-VM
-> > attributes, but it would be insanely complex.
-> > 
-> > For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
-> > is all or nothing, and can never change, then the only entity that can track that
-> > info is the owner of the dmabuf.  And even if the private vs. shared attributes
-> > are constant, tracking it external to KVM makes sense, because then the provider
-> > can simply hardcode %true/%false.  
-> 
-> For CoCo-VM and Tee-IO, I'm wondering if host or KVM has to maintain
-> the private/shared attribute for "assigned MMIO". I'm not naming them
-> "host MMIO" cause unlike RAM host never needs to access them, either in
-> private manner or shared manner.
-> 
-> Traditionally, host maps these MMIOs only because KVM needs HVA->HPA
-> mapping to find pfn and setup KVM MMU.
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-This is not actually completely true, the host mapping still ends up
-being used by KVM if it happens to trap and emulate a MMIO touching
-instruction.
+It was decided years ago that .cfi_* annotations aren't maintainable in
+the kernel.  They were replaced by objtool unwind hints.  For the kernel
+proper, ensure the CFI_* macros don't do anything.
 
-It really shouldn't do this, but there is a whole set of complex
-machinery in KVM and qemu to handle this case.
+On the other hand the VDSO library *does* use them, so user space can
+unwind through it.
 
-For example if the MSI-X window is not properly aligned then you have
-some MMIO that is trapped and must be reflected to real HW.
+Make sure these macros only work for VDSO.  They aren't actually being
+used outside of VDSO anyway, so there's no functional change.
 
-So the sharable parts of the BAR should still end up being mmaped into
-userspace, I think.
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
+ arch/x86/include/asm/dwarf2.h | 51 ++++++++++++++++++++++++-----------
+ 1 file changed, 35 insertions(+), 16 deletions(-)
 
-Which means we need VFIO to know what they are, and hopefully it is
-just static based on the TDISP reports..
+diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
+index 09c9684d3ad6..7cc30500c095 100644
+--- a/arch/x86/include/asm/dwarf2.h
++++ b/arch/x86/include/asm/dwarf2.h
+@@ -6,6 +6,15 @@
+ #warning "asm/dwarf2.h should be only included in pure assembly files"
+ #endif
+ 
++#ifdef BUILD_VDSO
++
++	/*
++	 * For the vDSO, emit both runtime unwind information and debug
++	 * symbols for the .dbg file.
++	 */
++
++	.cfi_sections .eh_frame, .debug_frame
++
+ #define CFI_STARTPROC		.cfi_startproc
+ #define CFI_ENDPROC		.cfi_endproc
+ #define CFI_DEF_CFA		.cfi_def_cfa
+@@ -22,21 +31,31 @@
+ #define CFI_ESCAPE		.cfi_escape
+ #define CFI_SIGNAL_FRAME	.cfi_signal_frame
+ 
+-#ifndef BUILD_VDSO
+-	/*
+-	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
+-	 * The latter we currently just discard since we don't do DWARF
+-	 * unwinding at runtime.  So only the offline DWARF information is
+-	 * useful to anyone.  Note we should not use this directive if we
+-	 * ever decide to enable DWARF unwinding at runtime.
+-	 */
+-	.cfi_sections .debug_frame
+-#else
+-	 /*
+-	  * For the vDSO, emit both runtime unwind information and debug
+-	  * symbols for the .dbg file.
+-	  */
+-	.cfi_sections .eh_frame, .debug_frame
+-#endif
++#else /* !BUILD_VDSO */
++
++/*
++ * On x86, these macros aren't used outside VDSO.  As well they shouldn't be:
++ * they're fragile and very difficult to maintain.
++ */
++
++.macro nocfi args:vararg
++.endm
++
++#define CFI_STARTPROC		nocfi
++#define CFI_ENDPROC		nocfi
++#define CFI_DEF_CFA		nocfi
++#define CFI_DEF_CFA_REGISTER	nocfi
++#define CFI_DEF_CFA_OFFSET	nocfi
++#define CFI_ADJUST_CFA_OFFSET	nocfi
++#define CFI_OFFSET		nocfi
++#define CFI_REL_OFFSET		nocfi
++#define CFI_REGISTER		nocfi
++#define CFI_RESTORE		nocfi
++#define CFI_REMEMBER_STATE	nocfi
++#define CFI_RESTORE_STATE	nocfi
++#define CFI_UNDEFINED		nocfi
++#define CFI_ESCAPE		nocfi
++
++#endif /* !BUILD_VDSO */
+ 
+ #endif /* _ASM_X86_DWARF2_H */
+-- 
+2.51.0
 
-Jason
 
