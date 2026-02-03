@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CF2DE87850
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:20:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D367E8784E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:20:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E83386B00AD; Tue,  3 Feb 2026 12:20:45 -0500 (EST)
+	id 55B556B00AF; Tue,  3 Feb 2026 12:20:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E166A6B00AF; Tue,  3 Feb 2026 12:20:45 -0500 (EST)
+	id 43B9A6B00B1; Tue,  3 Feb 2026 12:20:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C92C66B00B0; Tue,  3 Feb 2026 12:20:45 -0500 (EST)
+	id 2F32C6B00B2; Tue,  3 Feb 2026 12:20:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B330D6B00AD
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:20:45 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 82FDDB9E8A
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:20:45 +0000 (UTC)
-X-FDA: 84403810050.20.507C7A0
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 32521100010
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:20:43 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=GvWYwwug;
-	spf=pass (imf05.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A2EA6B00AF
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:20:49 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC2BB596A6
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:20:48 +0000 (UTC)
+X-FDA: 84403810176.17.C551F44
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 446C040010
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:20:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UkVOeiSo;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf12.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770139246; a=rsa-sha256;
+	cv=none;
+	b=la0iifFKi+m4kCxw5zrbDqSySZ6B7ejxKe+Zc3r2bXFHbjgF1gnPWIJNBUSm/QfDa0gIoV
+	LEcaeOfCam/IO3z7ejviv9m+XaUow6FasMgqAsOV7MEcorgibrJf+UYgTNCHKb9HnkgEY8
+	hHMz3kcvIQ61fWZXhUERGwUh3z3SkHM=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=UkVOeiSo;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf12.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770139243;
+	s=arc-20220608; t=1770139246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pPI9EWmq7u3u+RGtTd5A6ZQ46pFppN0FQBTU9jL6e0E=;
-	b=s8cNfvHuOK1/k7s4V9TidHcA6V0ls4uuHU60TIQXXW8rCnq1VyYFIaX7BL3knvmjA3xIHr
-	KKLNKFiPKJym4pDibLOV5rqwnjcPZpYq09VyPfo1T4woBueRZcKO2SG4r/Y9iUZymShw5F
-	P30X3Og/gBxRaTQeBBXbVkkEpWdPgGU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=GvWYwwug;
-	spf=pass (imf05.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770139243; a=rsa-sha256;
-	cv=none;
-	b=fzMmpxkhxTER4B4GdZPB6u7Rm7rL7ZxthyK4QvDgDjunCMheT81vybn8/PeNlESySWLwgp
-	gsiryb7x3TtOR/2HL38vd2fSNPlbjANM5J6vfFED/Q44ScgPcaO8RYJkVmftiv1bVTHJHP
-	0UIopqU2wF+2J3XdR5JlUTQ10ZctFpw=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 613GSWWx011631;
-	Tue, 3 Feb 2026 17:20:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=pPI9EWmq7u3u+RGtT
-	d5A6ZQ46pFppN0FQBTU9jL6e0E=; b=GvWYwwugR3MXWeh4Vh5v9BF7SaRZThKEh
-	1VdsoQOVsvqhuesAaWtQOPU7J4KdAasGTM+Fy4CAMatb4CHBY0jTqKcxDZ0HkPPm
-	W4Ikdlwi/f1Uln702N86J1X7LOQ9pj4JeczUIhY4XZAphPicmp2+m9sCGmgWLr4z
-	RDI/V8hhSDc8BkORGbG1JE4HirMtIPSKGh6f/hm+NFKNUVGf3cE/i3m6w/axFnFL
-	HXpw0Fg+qxujSyxjZVVmJAUmLjRnbirwM+F8WSBdbLXo5ommoD9nst8qS1UgWZdm
-	PVJGKjMAinTjdC3wcO0wfYAIf71YusdJtPvoymqLPemQ0rqJlpzng==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cw4307-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 17:20:08 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 613HK7FI032712;
-	Tue, 3 Feb 2026 17:20:07 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cw4302-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 17:20:07 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 613GWNTM006033;
+	 in-reply-to:references:dkim-signature;
+	bh=holsj/DH/vmC4w5up1pgT5Wl04Hxp/1NxOAJ2YohSC4=;
+	b=q4pUMJIumZ31iTiFOP4d3PtER3fCyjnYmfjZjGLPQxsOgq+rj+IHZceKszHHnUXnqR3noN
+	YT3W+EnnuKEokfmFbG/qM90nuuyRZsZ+Z8X+QA5eXfobe3eF4QhBIImLkUBWF0kpY0Yndn
+	yVXXkrI6IvcxdxmPePz0OeszSQaTgcQ=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 613A7nar003180;
 	Tue, 3 Feb 2026 17:20:06 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1x9j9rhy-1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=holsj/DH/vmC4w5up1pgT5Wl04Hxp/1NxOAJ2YohS
+	C4=; b=UkVOeiSo7tVC74Oe4tQmg82tutN7L1QEpLOw+VqWhNXiosKH7+1ZBrsDj
+	mktPrpytoAL/1BrAiCbQNdbTOpl+aZGCnlNY9iRRLJwLoxRNCXT2DDtpLiFHsCx3
+	rXCHHeR2dUUj02eOp+UgQZRKUmsa6DFeMRCAjpn+wPEQzVjXzMFWjVFuhx7itUIm
+	8JKKQdfCi5zklM5T+9QS6rp4p9pzjOfjMaqNItWBLuDRvcnIU2rQLaZ5CVdAkbIT
+	9WTr0eLxUXon93XVGiaATInhNWd6pNsriy9RowevBU7x5QA3ktKYzhw+nLx2TnI1
+	bP2IRpH0sJjXnShKdvdDXWwXtxYKQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19f6ehys-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 17:20:06 +0000
+	Tue, 03 Feb 2026 17:20:06 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 613HK58c013988;
+	Tue, 3 Feb 2026 17:20:05 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19f6ehym-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Feb 2026 17:20:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 613EZQwX009152;
+	Tue, 3 Feb 2026 17:20:04 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1vey23j0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 03 Feb 2026 17:20:04 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 613HK2L342795462
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 613HK0ic59441638
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Feb 2026 17:20:03 GMT
+	Tue, 3 Feb 2026 17:20:00 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CB1BB20040;
-	Tue,  3 Feb 2026 17:20:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id EB95820043;
+	Tue,  3 Feb 2026 17:19:59 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 49D542004B;
-	Tue,  3 Feb 2026 17:20:02 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 64B0C20040;
+	Tue,  3 Feb 2026 17:19:59 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Feb 2026 17:20:02 +0000 (GMT)
+	Tue,  3 Feb 2026 17:19:59 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
@@ -119,48 +119,45 @@ Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
         Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>,
         Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v7 5/6] x86/vdso: Use CFI macros in __vdso_sgx_enter_enclave()
-Date: Tue,  3 Feb 2026 18:19:56 +0100
-Message-ID: <20260203171958.1522030-6-jremus@linux.ibm.com>
+        Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH v7 0/6] x86/vdso: VDSO updates and fixes for sframes
+Date: Tue,  3 Feb 2026 18:19:51 +0100
+Message-ID: <20260203171958.1522030-1-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260203171958.1522030-1-jremus@linux.ibm.com>
-References: <20260203171958.1522030-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDEzNSBTYWx0ZWRfX3EI2DlfpE23k
- v5I/pwewTWpERmI7m882YrVSrKAVP7PRYZxaxeHC3sziMQdhkr7EZo8PfT9lsIfhiUDcLjjRTA+
- /BiNYQLCYi1EPKBKyI+4fJKnAdKSsbnigI3n6SEZwRL+KqwJUEStPV1ZUuggmoOO0+vwpg4Q4Wc
- hQKTqGStolz926/Y6JzSV2A9Yb8S1q9u2ShEq84srBxGBhgewWi/aJICtli9LqKm90Ff/FcUl2C
- JX0KWHdwRQerEo3+Y0J8mpW1EdJYLg4rSMqEEsMbdF3zSGg6RCm3KMZ495uoe1LWql5HLGI1qob
- WI5FLi09szJEp11hAC2Km1e7+RpTOMkKUEucFqFjnYo3YTdQaIsU7j30tJSXWGjbTJFHRZ4lUmN
- WOpEZtU5KaJ3oc3kT0fEqYOWpKqHPy9mIYUylVo88onO4biP7Ycymd77AZiu0Un7YPV6nTyI5PS
- mQr0WDhNkSvCafErldw==
-X-Authority-Analysis: v=2.4 cv=UuRu9uwB c=1 sm=1 tr=0 ts=69822e48 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-GUID: AvCe0Lizk_qNOQPcgj5xw0f4cpi6WqAy
+X-Authority-Analysis: v=2.4 cv=drTWylg4 c=1 sm=1 tr=0 ts=69822e46 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8
- a=VnNF1IyMAAAA:8 a=UlpOIAycHnb1QmJiUioA:9 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-ORIG-GUID: khcPwzs2dvqSOa5gE7bJJBkBKOjeb5bh
-X-Proofpoint-GUID: 1J-H7T4m2VdrwjLemy4_14tDYKVzjIOM
+ a=VnNF1IyMAAAA:8 a=Iv64z9_ZCafLdlMPf8wA:9 a=2JgSa4NbpEOStq-L5dxp:22
+X-Proofpoint-ORIG-GUID: xZBc5_zw3IOyV4v_T4s7DqJ9T8UhHJ6y
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDEzNSBTYWx0ZWRfX47xopohdQhDA
+ saX1Kkcbkz1w+ABI7KeZuWK3heQjLj/i3ALX+l44OQ+Fvuji/agkjKrp+HOVKsC6EeZz0A72Ram
+ oR+e3pJ+5PX6zzKT7XlMlmBTTmo0/hxiTolQo7NqRj9FhE6QrudKvSCU6TtMRc2opRtxe3h36+Y
+ +BjaP+uuM6BRP0bbOOgiD37el298K/R68dUmem6thsTAzcnFDOUB7wSO7fIlsH3mf4d3lc66grK
+ l4qrLhNYFbZIVakWULDM+P/WJAEi84WnTnRHlNF/tsfuG7Di4nwvVOJwiA6G4mqpiRjwLLexjdw
+ e4Io0DCE4Fm7MuNo+jHczsBzst2kdOgjNCO3U0GTdU2Lwk1HhC+Ox3LPv7cJ2ZrpXq0tz50ZT9e
+ MoxxElSVPjBS7e9An27AnuDwORa8owHVNFjf0tP3xfRAQq4FnUfIIOPMHpAGti1GWCC2TkN6/Bn
+ C+pjIR550Lixs0e0o+Q==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-03_05,2026-02-02_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ suspectscore=0 clxscore=1015 spamscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
  definitions=main-2602030135
-X-Stat-Signature: g6i8mshzxerk1sug6qo6r5egcif1f3o4
-X-Rspamd-Queue-Id: 32521100010
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770139243-598738
-X-HE-Meta: U2FsdGVkX18uM34mbbeVA2z7A5EPBuMkX/ncNUDnEIh8YnAsmSrWVMnhiZ94I3Xx1X0g1rnvg1mLTiwLVuobLow6nCtoEOTEUyojLvX+gvtinAUsT8zHHOdRvm4s5zLHKPj6I37n13+Hhk7PU42OLBuiSVuL1CUxSXuUxUAtk3SYaQE9AWbVh4eyN+3v3cniFu6nRHNXSPoPFs3QipJUg/0AKnQR7q7PBU7OvWnGzkNsmwW1ZKLr8fFwPPLpcfqJ/nTGIfBYxR7P/yU1ee9MXedTQYrDnevtMguea/J6V8aNeAnkHMQdgrEhWgMqepiNXpY49OtLt3uoFR9ihuh/ccsXIN0OzebsdpTGpg+PxUpNw3s4vXQgsB/UaB3eurWh1xbjtel1b/0v+OTGxQ1r2eHGyy8jk8fScbinkPtl+NJKbK0Nb10igEO6UA6q7V89mlY9L2K+RBGmc+7Uaf1xxTVJB5y3xB5ZbDPYoRPCnoPzU4lBcb2nvljg/X5G2OrEGVCqw8B4jAQ7KBjJWEATi4AALkkL4AWAqFBNW5X0G5cDz0Q0+JvisFjvcoLRpKcFKKduNg/lq2VEekkbEFsZmzIW0LYRQ95UMk8vFnKvSOhhd9eM4DP/UPc4zDwOUHkyYkLsvro2JdL3JCRf8TdTvCfKN7t6xb4dPCiNhVG8mI/nuJ0EK2StisQc/JbkqqWa3pJSxHHp/T3LFix/LyGUlPS5Gk5E2hyerKb9wn6XkHXfT/fPAV59SUvaLl+WGsI+yFkC5CiqYC562m80ZMAL+ACEzSB0lJXO7Sxi9qXLXPO6/4A43zD+y8WRvwT5Enp3Ok65UOjUZqpfF1s0BR3zw+u8u+S3IzX1Z8Voi/D/Vj9wzaBtHTuy+sJVC4Dt+CNkvQUUMtWBSRNUvXedWgMjLABf1R8oV6DhNUbtRibARxnPL3Nsh05pHpg/GgCf5XCT/m9rA1qogydXMkFdF3C
- tRh90Aq1
- vWoSrpyF+hwb+POcb8Dzx/SrLirP/G7mizP4WAjX2pkSnVxbXJ7edEqLwu2wy2glQALOmILVzA//2bVtZq2SgpKo3XPYjzU5qc1ubHziGWPhcfwrlMNpVLNPgggFwDE+rTjw6bKFsVpl/CfuxTS7zwrcwPDJyxpxTafXjimp7GXlGqi2/xdVsELitidxcQW40DdsD4H62V3YWN265lFhks52HmGWJ62PS4P976p3M1CHQTiellroCvAORzSfBzWRNMpCA08DJ0iFBAroyafWXOeOElUwLReiqleoCeMoF8RR/0mLiWzpzcMd6Q9DYHO/8SCWDlp62qSfPCG11ohdDIvpL8+VUPimdBLfe5yODpmLGXT/BRKOKLCq/mXS3GNTVJ9RUhn5k9doCxPjXziYzrHaIM7BrvwYvvJn3IHoZccnsaBk=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 446C040010
+X-Stat-Signature: bcw1god4kt9x314fmt5i5xeb3nbkx5wp
+X-HE-Tag: 1770139246-139503
+X-HE-Meta: U2FsdGVkX1/HBQ0vSfmUtGR04g0pw+QJ3flGXHFR0rW6z+n7BMp9vSH3gavgRoO/x9PhI004cF4tFICWj1N1niOVmSRmFnFMczFDruleYWqfCNWx702YIqAcU4vxZeVUwOzcIliST2XpP/esoG7iEksaOnuJR8z3plmj5UsZ7GIjOY7qX2e4ClpzhEHN24FL4x/cfNG+PLDHm4NDV0mEikzsF1EoM7trlzHhg4CaKozG3Gw2Awj5jpQ12LHoIDbVghe/3qR0OPZd7ui1EjubhG3SBvbwcwGVXjLw5ZV+XkEnTwqUbD2Mt1lRXsOcaHYnWf/5UGQWkc9d4Fz7FPfKmMLs+pDY35P7Jmnnq31+znHq7/xwygKeOunQ33atP2oEBQ+1i2K5EOsY50FnE/Hyit6Ud0rwwXh4e6CASWzIbC1iLR5no7SpEW9jfkUS4o4ynhpyPxzRJxyQ1P3sYowFM/8C0pyvYlECl27+hr+8mfyWVhC5uui3AZSTmBkb45mXXhdCP4QXy3aF49UN4+l2BcdDletztoU8jv1aO66XFK78THpQbykIay+JIH9S6AJNY1+gazPhZ5Jbh7SgRuOUJ8nZ+boypYpw1h8/b7urB3dofDTCbsuRk+wg8pss8ygFi8Dbj8knuN8jlXjKWtY5fjKlsoIRxHUTh11M+msf1rswlhTae6L5UH7sbqJypbWoPKeCAT90hKtErWzbM1BtOYgqnTNamS3WUW3Z14yDHoGAliQX749/CK19WR6smupMbO2/mPqhJsSfzeunt3x0IU4fFXKx5h8pHp4wsHSFIFSTmwXI+SrfPsWzbhw4CClbZnT6637g80XxerWPLG7SmkA6diGFhH4vq36CEl78gLaGC4QkRay3vDU0UMLGdB0j29kbP43kjmJjRxNdp5mrz5oy8qO4zCB8zmXVi+SHqthZZU2fl1LD1kKKAfkTO4b91cUbztabZluTxT7K+6N
+ 6A1DOZmc
+ z1fWBDpfdnWjV6LstlqBucv+rZeYCaX5t7Wll2XUE8M8G4p5AWKFbBkbZxmzquqgYKb5FDGLuRRWh7mWRmiOzvMbxGbzAv0H2mXBsDGvRW0il3GUsShe19YpMl3XXyJ1fJoLSIvSOfdyiJ6klrlVI4vJgjD85vJvY97zvkRv0Bu1qJTfoqh/NJwrPQsgQ/OwVCGjAwLvixplix5vnnGz3VJXrdxYmcCImOY5Y4TJGT8IfQrm5+0RbAzDx+cK37zlKhE7Qsk+CN1vZypYFYoLwylqqv43fGM0PdULR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -169,59 +166,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+This enables generation of SFrame V3 stack trace information for VDSO on
+x86-64.  It's a continuation of Josh's and Steve's work:
 
-Use the CFI macros instead of the raw .cfi_* directives to be consistent
-with the rest of the VDSO asm.  It's also easier on the eyes.
+   https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
+   https://lore.kernel.org/all/20250422183439.895236512@goodmis.org/
 
-No functional changes.
+This series focuses only on the VDSO code. They are helpful fixes
+and updates that doesn't rely on sframes (although the last patch
+is sframe related).
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Jens Remus <jremus@linux.ibm.com>
----
- arch/x86/entry/vdso/vdso64/vsgx.S | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+This series applies on top of tip:x86/entry:
 
-diff --git a/arch/x86/entry/vdso/vdso64/vsgx.S b/arch/x86/entry/vdso/vdso64/vsgx.S
-index c0342238c976..8d7b8eb45c50 100644
---- a/arch/x86/entry/vdso/vdso64/vsgx.S
-+++ b/arch/x86/entry/vdso/vdso64/vsgx.S
-@@ -24,13 +24,14 @@
- .section .text, "ax"
- 
- SYM_FUNC_START(__vdso_sgx_enter_enclave)
-+	SYM_F_ALIGN
- 	push	%rbp
--	.cfi_adjust_cfa_offset	8
--	.cfi_rel_offset		%rbp, 0
-+	CFI_ADJUST_CFA_OFFSET	8
-+	CFI_REL_OFFSET		%rbp, 0
- 	mov	%rsp, %rbp
--	.cfi_def_cfa_register	%rbp
-+	CFI_DEF_CFA_REGISTER	%rbp
- 	push	%rbx
--	.cfi_rel_offset		%rbx, -8
-+	CFI_REL_OFFSET		%rbx, -8
- 
- 	mov	%ecx, %eax
- .Lenter_enclave:
-@@ -77,13 +78,11 @@ SYM_FUNC_START(__vdso_sgx_enter_enclave)
- .Lout:
- 	pop	%rbx
- 	leave
--	.cfi_def_cfa		%rsp, 8
-+	CFI_DEF_CFA		%rsp, 8
- 	RET
- 
--	/* The out-of-line code runs with the pre-leave stack frame. */
--	.cfi_def_cfa		%rbp, 16
--
- .Linvalid_input:
-+	CFI_DEF_CFA		%rbp, 16
- 	mov	$(-EINVAL), %eax
- 	jmp	.Lout
- 
+  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  x86/entry
+
+Like the unwind user sframe series [1] it depends on the upcoming
+binutils 2.46 release to be used to build the VDSO with SFrame V3
+stack trace information (using the assembler option --gsframe-3).
+
+[1]: [PATCH v13 00/18] unwind_deferred: Implement sframe handling,
+    https://lore.kernel.org/all/20260127150554.2760964-1-jremus@linux.ibm.com/
+
+
+Changes in v7 (see individual patch notes):
+- Rebase on H. Peter Anvin's vDSO changes on tip:x86/entry. (Peter)
+- Simplify adding assembler option -Wa,--gsframe-3.  Add for vdso64
+  only.
+- Align to .eh_frame and mark .sframe as KEEP in vDSO linker script.
+  Note that GNU linker 2.46 will mark .sframe as KEEP in its default
+  linker script as well.
+
+Changes in v6:
+- SFrame V3 support (SFrame V2 is not supported).
+- Prevent GNU_SFRAME program table entry to empty .sframe section.
+- Integrate v5 review feedback. (Josh)
+
+Regards,
+Jens
+
+
+Josh Poimboeuf (6):
+  x86/vdso: Fix DWARF generation for getrandom()
+  x86/asm: Avoid emitting DWARF CFI for non-VDSO
+  x86/asm: Simplify VDSO DWARF generation
+  x86/vdso: Use SYM_FUNC_{START,END} in __kernel_vsyscall()
+  x86/vdso: Use CFI macros in __vdso_sgx_enter_enclave()
+  x86/vdso: Enable sframe generation in VDSO
+
+ arch/Kconfig                                  |  7 +++
+ arch/x86/entry/vdso/common/vdso-layout.lds.S  | 13 ++++-
+ arch/x86/entry/vdso/vdso32/system_call.S      | 10 +---
+ arch/x86/entry/vdso/vdso64/Makefile           |  1 +
+ .../x86/entry/vdso/vdso64/vgetrandom-chacha.S |  3 +-
+ arch/x86/entry/vdso/vdso64/vsgx.S             | 19 +++----
+ arch/x86/include/asm/dwarf2.h                 | 54 +++++++++++++------
+ arch/x86/include/asm/linkage.h                | 33 +++++++++---
+ arch/x86/include/asm/vdso.h                   |  1 -
+ 9 files changed, 95 insertions(+), 46 deletions(-)
+
 -- 
 2.51.0
 
