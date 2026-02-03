@@ -4,85 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3832E8305B
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 07:31:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FBFFE8305B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 07:32:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 527836B0005; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
+	id 3F20D6B008C; Tue,  3 Feb 2026 02:32:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D21E6B0088; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
+	id 3DD8D6B0095; Tue,  3 Feb 2026 02:32:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E8816B0093; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
+	id 2FA166B008C; Tue,  3 Feb 2026 02:32:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 275A36B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF049C17AE
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:31:11 +0000 (UTC)
-X-FDA: 84402324342.23.647AAE7
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	by imf05.hostedemail.com (Postfix) with ESMTP id C6055100009
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:31:09 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ePlgGes+;
-	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 1CEBF6B008C
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 02:32:23 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C4ECD58B11
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:32:22 +0000 (UTC)
+X-FDA: 84402327324.10.F168BE1
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 088FC4000C
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:32:19 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="rhK/m23P";
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf27.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770103940; a=rsa-sha256;
+	cv=none;
+	b=mns5s/UQkaEQ1oOf8IFl5mJOICcZgK8xkGwvfXq72gxls5Yt3h61Se6nl9GtX9wjHeQeZf
+	fjWZmgKxLtI/qWNaUm9NJzqKUI0sbsjFAS+BEVBy1eHrFURU8F+tA8qcqBjkdvea8C5DQN
+	XUu6WidlYmjw/JFo/UFItE7zEl5BDi8=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b="rhK/m23P";
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf27.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770103870;
+	s=arc-20220608; t=1770103940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dlNLgFWBIF4EB9/p/k8at4vL0T3zQ15KzGeAj0aiQj8=;
-	b=Qw912nf5roEhDidekUC1BktIZIhlp2zHCPEUphLbJnf+WqploeRKZ8Lo9bXKJlTyHV+N3s
-	Z64vYUVx31G+LLv0Vz2JsHH2isRxA5Rv20fBlO4D1uW6SEVUVY0EOiw5/AqhqfK/juskUl
-	Fcf6Yxq1cOMV35rqatDyvmDt1+KmHi4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ePlgGes+;
-	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770103870; a=rsa-sha256;
-	cv=none;
-	b=V59vCgPxO58WPiLPFMXEs/Pdfpdd6ZNwsWDxvcSOO3qIEOEZk3TpdmDVhGg7yJN75BwpWy
-	693lFk9rOq4jhPPoxaUht+pHv390ryDwuqpwuu6CWNl2bfRkKp31YICEN3EV/dW1ojtQn7
-	PzK5u0Nm/NWlj6P52aU/12dWdxh/9JA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770103867;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=dlNLgFWBIF4EB9/p/k8at4vL0T3zQ15KzGeAj0aiQj8=;
-	b=ePlgGes+KgT1A6EzhO6gbVgdLyoTFjz4CIFLx1CC3lXfvsbMckC288SfC3t+hpa8zf0KBw
-	gp3izTms3bmyJBHrbA0xTe3nZlHpvzexw9InlzA11qal7XdGrVpxWvbMMkcp1ZN36QM/Yo
-	f2wy6Ku08oZso2ofP//CVsaCVSx4JWo=
-From: Hao Ge <hao.ge@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Ge <hao.ge@linux.dev>
-Subject: [PATCH] codetag: Avoid codetag race between same slab object alloc and free
-Date: Tue,  3 Feb 2026 15:30:06 +0800
-Message-Id: <20260203073006.151710-1-hao.ge@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GEM5n02Ulac7TkOC/loRAoXQMHBkMvS2O9ly7ncfHrg=;
+	b=iFl99E0VxLRGXGC4FXdCjoMR+VAr/QPvqB4eAhKT6UTqREZducm9JW0IzkG2TCuPTk9LE0
+	0+2QnqORb99Kzzw5/TuH3+UijG5QWkGcijntcyrdl2/jVmgROOZio7f+kmCSsbLoCx2wFy
+	zXe5zJkfNWbwiNwOoz4BQ76L2uk87Zo=
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20260203073216epoutp03ff9b34b4dd20e9a6465132fa1d40cd5b~QrCbkZzqb1873518735epoutp03Y
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:32:16 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20260203073216epoutp03ff9b34b4dd20e9a6465132fa1d40cd5b~QrCbkZzqb1873518735epoutp03Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1770103936;
+	bh=GEM5n02Ulac7TkOC/loRAoXQMHBkMvS2O9ly7ncfHrg=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=rhK/m23PowM1nvJnnEqBrXM3kQfiI18uUCyb+2P1FnGCPmCJFxa4sFzr34TmiaV+E
+	 F9peggOOQ34fnfe21sNA1Sw74VYQ5YqrqbOKciB7ISroW0vIWbRTGDGK1nkafOqua5
+	 rPCKQ8WFpIMT1soqaBoneQRTL/57hluean9KPWzs=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260203073216epcas5p10e212c450887dfeb2d262b56ad02c9e2~QrCbDxKYE1157711577epcas5p1Z;
+	Tue,  3 Feb 2026 07:32:16 +0000 (GMT)
+Received: from epcas5p1.samsung.com (unknown [182.195.38.90]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4f4wDG6Lxzz6B9mD; Tue,  3 Feb
+	2026 07:32:14 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260203073214epcas5p27d7fabd36d5f2751902539f0c5618805~QrCZPje9k2053520535epcas5p2V;
+	Tue,  3 Feb 2026 07:32:14 +0000 (GMT)
+Received: from [107.111.86.57] (unknown [107.111.86.57]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260203073210epsmtip1d1b85e69ec1468536e5beea7c27bbf70~QrCVdv_iT2822828228epsmtip1w;
+	Tue,  3 Feb 2026 07:32:09 +0000 (GMT)
+Message-ID: <1d750771-84cf-4af5-bda8-4feef110276e@samsung.com>
+Date: Tue, 3 Feb 2026 13:02:08 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/6] xfs: tag folios with AG number during buffered
+ write via iomap attach hook
+Content-Language: en-US
+To: "Darrick J. Wong" <djwong@kernel.org>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
+	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
+	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com,
+	dave@stgolabs.net, cem@kernel.org, wangyufei@vivo.com,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com,
+	vishak.g@samsung.com, joshi.k@samsung.com
+From: Kundan Kumar <kundan.kumar@samsung.com>
+In-Reply-To: <20260129224002.GF7712@frogsfrogsfrogs>
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C6055100009
-X-Stat-Signature: rynquqj5i1dnnwg4nrkqykadbxqrbg3a
+X-CMS-MailID: 20260203073214epcas5p27d7fabd36d5f2751902539f0c5618805
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79
+References: <20260116100818.7576-1-kundan.kumar@samsung.com>
+	<CGME20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79@epcas5p2.samsung.com>
+	<20260116100818.7576-5-kundan.kumar@samsung.com>
+	<20260129004745.GC7712@frogsfrogsfrogs>
+	<20260129224002.GF7712@frogsfrogsfrogs>
 X-Rspam-User: 
-X-HE-Tag: 1770103869-56057
-X-HE-Meta: U2FsdGVkX1/aYsnR7HoS73O6gZs8EWg0TwIq/jWw/eCUE1Txsm+2NvfsdO+9qxQJ/9mmWArRY/jzuYwL/lvcf0dt6TubF9mgedsRKbMa5v3iVahzOot9CuOEjXDPyF0Bs6n9iXEBD/DUzIIpq6rp9+VAxT+KXQ/slTxcnpGo1UegpMQr/ag54KVzMQJssNlQeEp3hYXTa3C1wylhitxvkJGOkq5UFS5SiDxh7pddfi7exDnjpnBeXwappaEEyw8eq2t+4eBZDILMsrGJfqAz6dPYk+LTFs6FvYQBVzpCgJZ6N75SCnMWZOvAqdDljPMnVBac34bzzLxMUf3ur7ApNuvJJlIJAPVBjLfcWy1keP7VQR86Ped29PI7VDhM0d37rHlfOALSxEFs1ge5uJZic/jP0/KovTRwEtcAJh6kghKn4LWzsO/FrN5uHZsQoELWSLAX2M9BslFLCubczWPDCEwE2U071X4xXqcPEXJGDGZT46Q+mtXKHRx0dclsI8hi7Ms/6+CWI5sWCh7X6JWBhImooU5ihjOg+6EUAKEXTifnu+28u56pHXkPYzrKMuf6+0J1zLNJkVuZb5DFzw0qoDYwfQFx/AFpx54tnJWy4XjC57v4cjWFYs9dpdvvQJfj/17MNE5KEeXY4rPjr3BEk9l5MjiaijAZbHDf8c7aAkGB0n/LL2QqMRlgeh+wh8TDg1nC19ILKLJ9gCWC71dahk36++m5Yr4OHQMzf+JHpUC3sNV0pnP0FR4W0/ahZK1hEyYhGQ5V1VMvtROachSjheHK6t4CzzF/eMJWfE572HQV3yuaWuZieBGzcWglDrsfJWGF6IAANVD+mrVrdNPI6lCgpoKQzWLwnEDIKhuhy57CNCH0R8CxBlkdI8XzgHFbGzocEH4qSH1EYknVz1tHQdm+Snzd3Cf5SdyGP5KEJ0IF0bcfVRFGC8dbZvbnV5+pe/al9BW3oBb+stBWARh
- Ct0AbJZG
- cMjkBE8Vrw3gAXp3h9tgmQ7GiB+dqM3V3e4+sqr5wqszcIU1pzw0l4+M01GT/pIj5hktLxO+vE/83vWDbf0kt6JF30vakt8Zrh6Kk76HXYCyqjY1Eho770Om2CW2f7JyqnnbVLe+0Wy90bXwe0pgRHxQqBcmxs8zqbofbKOVLIkfomiYEloqPmabszHSf1y7Ht3h/
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 088FC4000C
+X-Stat-Signature: 6yqdf11yk4jfcwroxja7zugyxw1ug9w5
+X-HE-Tag: 1770103939-560420
+X-HE-Meta: U2FsdGVkX1+zZQMOS1OTcnKjqPbq+5I/xZRafFFO2OKKRI7PceEg1/0tUi6OrDof0pjRvwhH5Y6bNI4YiwQHwvnPj9df09m4wBU+9u94dqi4arA7GTSENH6E+mnKcIajA5h7ypvExLhE9McPyhyzPfK7TWLyOlRFimKB+EqPRuvuJf2TCd70Mai+w/RUjS7wmZl4Rt3NORoCxNeVfJJ7CwM6RnO/gf/Bh7fnwOMAsdLsqFDdjcDcwaX+DeEsnOFeWw/HD303rW4rObTy8V8imx0xmwdW21pxWOK1fWY3NlgeumqHr3K3lbZ0foeYOHpUiK7n0YlB6ap8sF9M2icCnjv9eNvxQP+dEo1s3T3fbTQxKsdJ67cdBycXVUseo+RLzMJG3k+sdL2i4v2/1m+eLOupjCjN/wttKsRSFMJys8rWdxIzkItS8fFpXqJ6brbuq4o7UpHvGu+CHBC+C47yA0X6NkMKgdNJfckgtqKJ9WD//kQub8/a93N/64FTh/ULpyDQhFQP0/91mW1+8WmpBL3FeP5I4vWJSKVkgKNWI9a/m20NR69/4fdD2azs6EmJ9viVxKU482RXDGRk6HvLq4sGUj9Dopz2gHQ0ZNUezMzAvty4aN+BBuzqxk4geuW9cwEvPSqqVb1wx/NVlq/FQZU7pvoDhQCq38xncK5ts7xSG5UyY4m1Mq5Hds5yotyXLJ4NaH1sjPrC0Oik3t6wHccdCmeX188q5PpflBwsfeK0YC4E1ahZfPMlbmelz9XIpCnOnXcsI83cCOfOpjGEyLDma5/WDVLbQJMK/BQLUYFHx8Q1bW1wgX/cPMaY+GYUSQGb22v4zghoo5KydYgn27glajs2F6uhimLJt3qFgbGD+vr3H6BUaths6bWAdsnacI7ZZr1GxwNTTRHA+2KKaWYS40MHlG3k6tOH4aDTiwJQFUibmeZu63GGfjOsER2Uc9MtB5RgbJu53GBdwUS
+ sAsmvFLO
+ nm6aHUZJZ02UTt7jyIzbDsQNL+Hl6x9K4/KBjfxyHjHBvi41Ze+YiH/s89h+ouWJpaWJhswONSStYWlCHdnCktegO35Vb0NkpS6g6iUgZqvWYb2OD4HZYbIsOeAPJskL3liKN8IH7emlvdu4UWNmgSIaP/yI6xnzPOdrZJns70ztud2Eoqf8eVavSl3ebOsrgjhDkKPUS6XrFJZs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,102 +121,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
-may be noticed:
+>
+> Also, what happens if this is a realtime file?  For pre-rtgroups
+> filesystems there is no group number to use; and for rtgroups you have
+> to use xfs_rtb_to_rgno.  The i_ag_dirty_bitmap and the m_ag_wb array
+> will be the wrong size if rgcount != agcount; and also you probably
+> don't want to have in the same per-group writeback list two inodes with
+> folios having the same group number but writing to two different devices
+> (data vs. rt).
+> 
+> --D
+> 
 
-[ 3959.023862] ------------[ cut here ]------------
-[ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
-[ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
-[ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
-[ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
-[ 3959.024182] Tainted: [W]=WARN
-[ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-[ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[ 3959.024199] pc : alloc_tag_add+0x128/0x178
-[ 3959.024207] lr : alloc_tag_add+0x128/0x178
-[ 3959.024214] sp : ffff80008b696d60
-[ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
-[ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
-[ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
-[ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
-[ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-[ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
-[ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
-[ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
-[ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
-[ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
-[ 3959.024340] Call trace:
-[ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
-[ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
-[ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
-[ 3959.024369]  xas_alloc+0x304/0x4f0
-[ 3959.024381]  xas_create+0x1e0/0x4a0
-[ 3959.024388]  xas_store+0x68/0xda8
-[ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
-[ 3959.024409]  filemap_add_folio+0x16c/0x7e0
-[ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
-[ 3959.024424]  iomap_get_folio+0xfc/0x180
-[ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
-[ 3959.024441]  iomap_write_begin+0x198/0xc18
-[ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
-[ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
-[ 3959.024461]  blkdev_write_iter+0x38c/0x978
-[ 3959.024470]  vfs_write+0x4d4/0x928
-[ 3959.024482]  ksys_write+0xfc/0x1f8
-[ 3959.024489]  __arm64_sys_write+0x74/0xb0
-[ 3959.024496]  invoke_syscall+0xd4/0x258
-[ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
-[ 3959.024514]  do_el0_svc+0x48/0x68
-[ 3959.024520]  el0_svc+0x40/0xf8
-[ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
-[ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
-[ 3959.024540] ---[ end trace 0000000000000000 ]---
+For this series I’ll explicitly exclude realtime inodes from AG routing
+(skip tagging / fall back to normal writeback). Rtgroup-aware routing 
+would need a separate rg-domain (separate worker array/queues sized by
+rgcount) as follow-up work.
 
-This is due to a race condition that occurs when two threads concurrently
-perform allocation and freeing operations on the same slab object.
 
-When a process is preparing to allocate a slab object, another process
-successfully preempts the CPU, and then proceeds to free a slab object.
-However, before the freeing process can invoke `alloc_tag_sub()`, it is
-preempted again by the original allocating process. At this point, the
-allocating process acquires the same slab object, and subsequently triggers
-a warning when it invokes `alloc_tag_add()`.
-
-Signed-off-by: Hao Ge <hao.ge@linux.dev>
----
-Hi Suren
-
-I'm not sure if my solution still has any issues, so I'd like to
-get your suggestions on it. At the very least, my understanding is
-that READ_ONCE and WRITE_ONCE should be used in pairs.
-
-I look forward to your suggestions.
-
-Thanks
----
- mm/slub.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index f77b7407c51b..0d84fc917a89 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2261,8 +2261,13 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
- 	 * If other users appear then mem_alloc_profiling_enabled()
- 	 * check should be added before alloc_tag_add().
- 	 */
--	if (likely(obj_exts))
-+	if (likely(obj_exts)) {
-+
-+		while (!READ_ONCE(obj_exts->ref.ct))
-+			cpu_relax();
-+
- 		alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size);
-+	}
- 	else
- 		alloc_tag_set_inaccurate(current->alloc_tag);
- }
--- 
-2.25.1
 
 
