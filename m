@@ -4,141 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8275E87842
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1FAFE8784B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:55:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D7886B00AA; Tue,  3 Feb 2026 11:31:36 -0500 (EST)
+	id 107AD6B0098; Tue,  3 Feb 2026 11:55:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08EEC6B00AB; Tue,  3 Feb 2026 11:31:36 -0500 (EST)
+	id 0D68D6B00A5; Tue,  3 Feb 2026 11:55:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA81E6B00AC; Tue,  3 Feb 2026 11:31:35 -0500 (EST)
+	id ECC836B00A8; Tue,  3 Feb 2026 11:55:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C99CD6B00AA
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:31:35 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7179C139322
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:31:35 +0000 (UTC)
-X-FDA: 84403686150.21.2C24FC5
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 45B2B14000A
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:31:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SM+DPqiB;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770136293;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D30676B0098
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:55:33 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3AEC9B9E3F
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:55:33 +0000 (UTC)
+X-FDA: 84403746546.09.ABCB0F0
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf18.hostedemail.com (Postfix) with ESMTP id AF0AB1C0013
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:55:30 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vnOxzGke;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kzx4JW5y;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vnOxzGke;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kzx4JW5y;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770137731; a=rsa-sha256;
+	cv=none;
+	b=pD33W22jSTSkYX0ccGu+mQhfZuO1TVQgrjl9S3nP7nuekvJarHylewYYZDZzRkUohcg3WK
+	qw8x+zFQMkZtdjktIpUezw7GOqQrM0Ctkd44wx49NZJsLtOvocqStQDq9u2pjsqsvnXQrm
+	YkTjrFloNklI2SRoxCYP17rFPAHaNqo=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vnOxzGke;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kzx4JW5y;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vnOxzGke;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Kzx4JW5y;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770137731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DDXM1QX9aKS9kUkXf1pGpmDmgRr97TT7vac81474lko=;
-	b=G9mpA/jk8jsg1fT5rAx9++aM8X5zQO45zFlP2hV97IhvsIu7y/7yOVDJUM3Np5iDK0sH4a
-	7BZuf0j1JtBxUMB/MziZ927EVqu1cB5xst155IBiJcVXWs8H6vQEse7p6RqwEajGd/XfEI
-	cujlfVbRfaGr+BK46Q0zRYMhHO3Rpo0=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=SM+DPqiB;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770136293; a=rsa-sha256;
-	cv=pass;
-	b=kMGX4DPMKqB7TOFk0eGEeX3F2xnIWcTIcyILIvePqZ8ezeUv0Tel4S9zbvrtd24BFeGj/B
-	KQKUW+LMb+Jxd/Cd/AMz4pNLApGxG3Q9LvCTFB+gDlG4kcyjmcgiE5tklbHs9RPU5j7aBG
-	Z4A6Ftw1VcbqutWXvTZjlGN7AIzYphM=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48068127f00so49912345e9.3
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 08:31:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770136292; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ALebt5dQuMl1scK/AhRqUCjLPSKzTz2+xzmkF/b9GLfgfYh8U64fsyQfd+OzJ4Oyrp
-         ZgMtD1xFt/+nwiOsl975MNHkOrMLqnjr9yxVGuUxvuEW6GPN4NBiyND/syj6gC5WYM8Z
-         gvr0bRP3/6YVxB2+kEP91/5hK2CwMb0X06UdGtCl9i3RHxKkIgK9K3mlBnvLwTCGeq4x
-         sbokOernjJEDXSqCZfsIZHaIAj80qDnz9r9yXrbOWJiLgQh/J/bQ88qoIKeYNd5+ItDK
-         CZ8O9gDctoj7kD/Vljn/K58seIdfoWEuIyfPY8CMciOjDD+CWSGcNJJrUdVKcMXHqYQa
-         Vw0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DDXM1QX9aKS9kUkXf1pGpmDmgRr97TT7vac81474lko=;
-        fh=kZ920d1niXkDa6okL3Avh1qs+9phTkR1xlicjkQ/o2U=;
-        b=gnjlfujMM7uOsC2x3SxLxfeUtdO49oq/8tibByqwy2MBznGaZ7lHfQTfV02XNsqEIA
-         HxkLw3Cz25v2i0/pRVZDFiV7B9ZwVXeUAQdD7bslsFHekT/sRd8ySizby8YLxueJgH2U
-         yfdHg5o8A8gSn7QjcfO+X1nplluXSqd8oNs6x1oZ+hPM+wYi8CGbfjdxSDvostOpEiYL
-         fliYA16eE2SIcx1TwdV1SMQMz5epCl46LKO2GZlty/md56I04TXhRs9sjK14O8RvByxq
-         W/XzZvS1MsnDq/JFGQoYtWhSlJyRUx7izYLdtDDbvDKq6uLKPXR6vCue8ftIMXQUQ9kA
-         3AjA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770136292; x=1770741092; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DDXM1QX9aKS9kUkXf1pGpmDmgRr97TT7vac81474lko=;
-        b=SM+DPqiBSZrQoUAysLUc8hkQw1xUfuaXZ8lImI9lNVkdpmAASjjhcO5QwcskWVPLjs
-         yKulO3afP5HEuKVXsBZtwifIXRfhBeS6clf/fAo7vm81CXvhb4C3l2Az9mruEheCOK9w
-         iJxXKhCRflOCnikwhrRgvLGMd5jV3bVJRkdLrfFtbMNfTiplnLrrccNBw/PisabMPdBA
-         uCXqD32/+DDxSflIac5sQdKHvkg/CskDBnOCNhFEVQspVbmr0eZrvinomwc1oo3PYHI3
-         FqnNzWS90W44C2wEp6gHF33lHYjUrC0jbGMEixkYtQ6EJzgKJhEutNp+NrVu2yugHEHW
-         DOLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770136292; x=1770741092;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DDXM1QX9aKS9kUkXf1pGpmDmgRr97TT7vac81474lko=;
-        b=DvjqTweVxWSbLnpasUwypUkAdVU3YZ8enyAiXGNF0ciDf72oe5sTLDvv/pDIt8FCb2
-         d40kzP6mL7+JFN5tv81jxa32hpruAGfre7B6owHJMOhqmCdl63NH73FwgKPIoK2vEAxm
-         z/Hp3CildHoeWGs203jED8tV8yrvQEaJ5Ab31U7YSLrP/P8Hx9P85xAvP0uAzk2TAYPF
-         FWzhLWEi6QBWbtMdseFhfX4Rj5FmMv8MmLgoK9C8nI8c5D13DFISU0UI8cNxLUZgawJC
-         WdBci8RhNeW90qLcy6vrAw+3zditJae4pntg8KFVv/aQxrTPYW/lxg84WNEAJvpMVBqz
-         p3Mw==
-X-Forwarded-Encrypted: i=1; AJvYcCVI8J7+TlhYz/3t75YFE2TFfDRIMbrDV6Qo+Ts3rai7w29/CHUQImkaEgRO8s0xUSxn/UupUvITyw==@kvack.org
-X-Gm-Message-State: AOJu0Yxqu2w4H3skPtQyceiA9wLft/xUKyMYyYGjTPKhEu9dO55/2Csy
-	kf6j2Ok6CyjnmehmxZar+Q+Nf1IN0UZDNGPQQ73POZXAGWRLbZdpTa0YZLsvJyQGYnJh3FNkuHq
-	l1djw9XdkGunxWx1Tr1f+QC4F999uTtM=
-X-Gm-Gg: AZuq6aKZYfs3mH8/nBr4umNSfGXwvCH9J+c+fnSNZmz+k0jQKEqCGDpiLstYBgYOjzV
-	TSzXaLw9+xIOrCgFfIzgRC+jqwfm7BYFXrbgLRDPl2EtiulV/pXuWd+lb3wO83r4QvCFFH1H6mB
-	zpyKPvQhpxKPeQWg9WG4t5GNpnxrXPtXZ7IqEo3nJQxnaewzRNncPhM7+JZufPD9yjSBSxls/xb
-	+ZbpYR2/gCYVllj4iClYb8+lStZf/6XCeoQo5ggVqipYQGzHcBG+wZ7rvmZ/31ls559jPwjfsz4
-	0LDSWEtZU1IP5mLp1fO4n2gXHMg3u0UOCD5C7lprPjmEVqs9On6dyqm5SSPQPLqMII+UG91mNva
-	DD9eS
-X-Received: by 2002:a5d:5f54:0:b0:435:95c9:6895 with SMTP id
- ffacd0b85a97d-435f3a72dd1mr23007611f8f.18.1770136291408; Tue, 03 Feb 2026
- 08:31:31 -0800 (PST)
+	bh=tAsMcsDcP+60ZFI1po9ogSRlrXLckgTXhc7SCnWEk0o=;
+	b=dzvR8/Ph7dYsXVWJnUupMAGcWPROnhYfrXXYB5QUCX4gz5X4UW5mwWO+QT4MPTM+YSHRR7
+	QgA23GiGVVJ3v805XoUtWbz15sJ/lI1wL7wMrP7lS9INnjWANt39Qy7yifqBN8nlPFFdYh
+	gSSNcHa7oC8+ewipOHRHwtoLxtvGUGg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C9AB43E6E1;
+	Tue,  3 Feb 2026 16:55:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770137728; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tAsMcsDcP+60ZFI1po9ogSRlrXLckgTXhc7SCnWEk0o=;
+	b=vnOxzGkeFq4s65we7tF5VsBboxg8j06dAdLkjRtLdzagGNB/fMyAOCSUXWTfKYtcQOQOxD
+	q7ecZdBL8tbfdIQv+VZi0V8Z0D/rld/jERxF/X47e4UTWHeo+GvXyRtX9Ufww7cwqxIgp1
+	IwvCW5QrfLCTtnJ5jm8NZMiflMtV07I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770137728;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tAsMcsDcP+60ZFI1po9ogSRlrXLckgTXhc7SCnWEk0o=;
+	b=Kzx4JW5y/ra38hAu1aC/dkz5RDJbezpERGLZ1aZkcdOa3a5yoPq99H/J7Jvkh1UsDnavrK
+	V8BVSvrBN6ISIdAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770137728; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tAsMcsDcP+60ZFI1po9ogSRlrXLckgTXhc7SCnWEk0o=;
+	b=vnOxzGkeFq4s65we7tF5VsBboxg8j06dAdLkjRtLdzagGNB/fMyAOCSUXWTfKYtcQOQOxD
+	q7ecZdBL8tbfdIQv+VZi0V8Z0D/rld/jERxF/X47e4UTWHeo+GvXyRtX9Ufww7cwqxIgp1
+	IwvCW5QrfLCTtnJ5jm8NZMiflMtV07I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770137728;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tAsMcsDcP+60ZFI1po9ogSRlrXLckgTXhc7SCnWEk0o=;
+	b=Kzx4JW5y/ra38hAu1aC/dkz5RDJbezpERGLZ1aZkcdOa3a5yoPq99H/J7Jvkh1UsDnavrK
+	V8BVSvrBN6ISIdAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CD2B53EA62;
+	Tue,  3 Feb 2026 16:55:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id SgO1MX8ogmmkPQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 03 Feb 2026 16:55:27 +0000
+Message-ID: <6f5881df-0e0b-4278-808b-7c0cffa12a30@suse.cz>
+Date: Tue, 3 Feb 2026 17:55:27 +0100
 MIME-Version: 1.0
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <20260127024421.494929-11-roman.gushchin@linux.dev> <aYA4pH_nIBZ-ZhLL@google.com>
- <CAADnVQL5g8imKNGbHGQ4HA8_qNT4MYwM8P3aCTFUG7uwiuTeuw@mail.gmail.com>
- <87jywuwumq.fsf@linux.dev> <aYH21HhwNvWnFB8O@tiehlicka>
-In-Reply-To: <aYH21HhwNvWnFB8O@tiehlicka>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 3 Feb 2026 08:31:19 -0800
-X-Gm-Features: AZwV_QgPYD_QDDRHAxK8hl8lHjXdNa7m94_zYgqz9AxBSjsI0Bt6TxB1mrjzf8o
-Message-ID: <CAADnVQ+uF4cTVYYOYBEDWrkLXJJkru_FaRttFskHRUpamktMJQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next v3 10/17] mm: introduce bpf_task_is_oom_victim() kfunc
-To: Michal Hocko <mhocko@suse.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, Matt Bobrowski <mattbobrowski@google.com>, 
-	bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, JP Kobryn <inwardvessel@gmail.com>, 
-	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 45B2B14000A
-X-Stat-Signature: zat4gxr8rbykbciesrntco311x9pb4y8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Kernel Bug] WARNING in mempool_alloc_noprof
+Content-Language: en-US
+To: Christoph Hellwig <hch@infradead.org>, Harry Yoo <harry.yoo@oracle.com>
+Cc: Vernon Yang <vernon2gm@gmail.com>, =?UTF-8?B?5p2O6b6Z5YW0?=
+ <coregee2000@gmail.com>, syzkaller@googlegroups.com,
+ akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
+ roman.gushchin@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <CAHPqNmwK9TY5THsXWkJuYCdt7x+mZHPq65AUOLZJeMp-FdAMvA@mail.gmail.com>
+ <aYBiza9L1hmhmXbb@hyeyoo>
+ <fwutwpejyptpo6gqv75zanqciv3fmxvillomwcjvtz4auebbc2@vazub2ct7pa2>
+ <aYHFZ5OxfL4j-_ze@hyeyoo> <aYIh1wPm7BrId9dk@infradead.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aYIh1wPm7BrId9dk@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1770136293-716621
-X-HE-Meta: U2FsdGVkX19OZpjmYccOKf/4wo01K5Fb1oqpLRsSv060a/SxD+wktfluLZwThbt3f1XKZJvYjCW8v8w/0P1BTdlcl8oUJKG8/MnlnQbHDbT2EKHrL5LBlK4jBDMtGqNH3O94w/ZXHI+yLfdvctrZSwcLHeHBZIuOTqiZy4gsQfBN6P3meZAaD+SCtX5+JoFawMD/E7+RKMQJh3/zE2h++jy0F4VRylmygonRx0MkIhJ9H6t30bs7s1AqI8gV6krmB6j1sIe//kj+mJNBZwoQxGvdpUh568wQU7DrVPZaV8UNT8iKqSINYT48Gx5sXX8/y/2TelT/XN+dXukmSXNPyenMvZMK4EkS4t7p6qx8o/uGZdEia031+jOStTypSAIQbK4uA605tsXF4RTBJF102QvL0iUXcZb84jRQaXxGQ/+veclUDDYtb7eFcMrWFjVSF9s4I0qUon3Xe8BlLdZ+r+buAi7ze8UfeEYE2Sm1dtyOvrBRQaqozod79JGNXpdfHy1zTc4//iIWKQKHj/2umnRVOur6/lX1qjZC9VmGmTI7ENeWEdmmDCtsoq1vRkgcWyaw+Axg0nfO9gIhR9jqUNNh50pVv6+pyjduTOddH0MI/303rj1pMwrCGcWUAmMIA/aYR/2AZ8f68pCrytkENkEr/86ChTxJzmCEZyxEvx+JKHJ4nh9Rx7rAI4fg5vQa0g3ERrcm/VDQqapvpfxP6vC0ZADF0/u5mhH/19vHNb4YTswem/9JuCUDRaI8GN8ClP++gOFfbOew3RCbaEzyeNDNJ4zy97RhTkGEoVOKsv6MVW1DuCMHe5VnQis0V66rcD9bahmVZPEesvUYwmFTLDBuFC3u1V6AhBP5SP3SFaJU3nvuTw72z61GUQBfE71AqLNkfGyFvx5ZIHlfTXgxOkcrtkFAReXCiVGyHpmHyw0ex+8K70htDzuQ7sudsYWgBTwugVUcjSWd/kWaA1H
- LUSnKOXB
- 9QIe8th/j0hWSSHy5glagDxw+pogDisailDOJWOVWLWYFsqfpkhyNyOvY+r2+deNhEeXtFh2BcqbDTPVzs927oXVGiO+o3MQWWoH/zC9fcBxCEMlwevP9NE4GlaEXcRwZaJBO5k80Yb871VNyXxUr4AxNtAxxM9xD2W+ZnmW6reDKJjDL6Ihc2btcsb37aHBeAwFJ2F5UzmEmRCXs/agtWHAh5XqvZJdJKLozyEOauex+ZpwyMyfPUVM4EpHm/mRuNYP9IXFU3s5tYwLFqGP1KAiKlCZkxrzKiUv6f+IgS/4Qx5/azAE6EM5xvz2Ow7LUPPNYZw0PlMMkDWzB2sqyRkRnXgkNJNmdrl3adi8Jtq1Vc911NYToZFMd/3x7Md1MqjODm6NuQiihqDLOpWp76nxNvst2nE3q3h496u+MYmNVla+4DTQs5huRVCtvir6lh3BYeXdWGLKizoYDGyTA6FW90n0FUC2iUG3N8wZekHb4gDdAh3nnQ8jaad3AR5vEAaLtHbYcxQ11ka/e1Lr+6veQC6KKELnDTdGu4PtM8PD6BXipN1jmVWH3FhFm7ZwOYephPnjTmQwfJyg=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AF0AB1C0013
+X-Stat-Signature: uctxe3x73wow1mic1zfs7cj83yfqmb1a
+X-HE-Tag: 1770137730-511614
+X-HE-Meta: U2FsdGVkX1/ALM+kfs2xWd4ENmomtj7bYt0jXCgn8LrXeek1Bh7u1k8C2ulS1XSfk/J/VSXkGn/LeSar73r9ywgiWxB5BI+Z0dTQMu5fDbPjiYU4yCB4VEwSfqIMkbGzVd6vmL8FfyaIhWMg2sP5g3JBBViMUjnCG5/iK4/ZksheOSaIbp9mBeFyDHk3aP5pYm92WFxzu7mDdRo4aXJygdQKh4nXVXFIs9qodpFUitpy4vFZ2PMXchICxnzoZNb3yG+z2dfGP5+iGC9RXaaQII4CYluPf2GCs+XFE5/vcfMCHsdCiokKTTzYE06jQ/8qSHLp+g/fdlMbNJp57qIKhdiHyyM27OikiucysnkbxEmi3mAG+uvVokSZnBphe++FVdoCbBTeyx+q4BGDmfnUYFt3y+sEl3ztLPTVggLh9J+dm9CPS4uUUT+K6Im+JHfHxi2r9z/N1AS0r2c/1kCk+kvejud2Cvyw0lDEzvYu7h1PQmdbV2FtIWg/GaCiv4HEbgNaJXYPKKMEV/dITcs1nJyzhsfgcBNxzq89ZdKa5qeL9OXdm/xrnz7xdnDXl5w6W1JbAZMLrHBh3vS6X9S3mUfy73RrKt0ZKVWb8Jnihyz+LJo5F1w6znINApRAmazMmmJ4mQ7PNbVg3hvcZJ5Yw/z6PwYuo2yXhSs8wkt14sGP//lSdYmsBxGMpURHa2mRMMP+S6VGcNw2N2QJfKu4O5YcP9iozfAeoeaQO47Ae1z872Lf57TV6H75odghqkoSfT4cbJ8lj5AFHV0FriA0JRh8VwFMEwb3mCCVDE1XhO2ArIJsrgt9dbiP2vFqxJRTRVr6zPLYhGzhvuFsaGp/hP8VSwVc7/y2U11ihY898OJWKsGDHZJalw0lGf3NpFoBBjX7g95Do4+x8mDAzhqy4NNK0Mg8mSM2tty2wb0uywO5aSeNvHk1b14NqA2/MWseKTnowrwELVYwRcuz/9e
+ fEVuiKLp
+ 6yLqpUR+fxzBpl43a7Y8JTQm7zdR9Etp9IG9vXGdt88sk6ozNxEFkbBQ12PzBujBENk2NP4AnkIVux4Eq2UfCtU2DpSMOfaV1jP90rF8pXBEGHH5yGSL1GTVvMpM2ScmLd+8mZ/lFFzfQ91/p8r9XOJuYAsg9+srJuJOnmbCX9InuQa64wY6HyvWTkLgStmHckq2ZSPWjdf2Nf8XOHW/xoeh0ppVOGZvI6nvNQ8J4RQ2cf/2sIDhTWWpImZk+5QT/nL55b3meWoX7t+EzbRFyp4JxoPqwj1u8vaZu6EgbqTLkwpFhWBxKE5u6X5CQuoXsC1aChhIamEevqek=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,99 +181,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 3, 2026 at 5:23=E2=80=AFAM Michal Hocko <mhocko@suse.com> wrote=
-:
->
-> On Mon 02-02-26 16:14:37, Roman Gushchin wrote:
-> > Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
-> >
-> > > On Sun, Feb 1, 2026 at 9:39=E2=80=AFPM Matt Bobrowski <mattbobrowski@=
-google.com> wrote:
-> > >>
-> > >> On Mon, Jan 26, 2026 at 06:44:13PM -0800, Roman Gushchin wrote:
-> > >> > Export tsk_is_oom_victim() helper as a BPF kfunc.
-> > >> > It's very useful to avoid redundant oom kills.
-> > >> >
-> > >> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> > >> > Suggested-by: Michal Hocko <mhocko@suse.com>
-> > >> > ---
-> > >> >  mm/oom_kill.c | 14 ++++++++++++++
-> > >> >  1 file changed, 14 insertions(+)
-> > >> >
-> > >> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> > >> > index 8f63a370b8f5..53f9f9674658 100644
-> > >> > --- a/mm/oom_kill.c
-> > >> > +++ b/mm/oom_kill.c
-> > >> > @@ -1381,10 +1381,24 @@ __bpf_kfunc int bpf_out_of_memory(struct m=
-em_cgroup *memcg__nullable,
-> > >> >       return ret;
-> > >> >  }
-> > >> >
-> > >> > +/**
-> > >> > + * bpf_task_is_oom_victim - Check if the task has been marked as =
-an OOM victim
-> > >> > + * @task: task to check
-> > >> > + *
-> > >> > + * Returns true if the task has been previously selected by the O=
-OM killer
-> > >> > + * to be killed. It's expected that the task will be destroyed so=
-on and some
-> > >> > + * memory will be freed, so maybe no additional actions required.
-> > >> > + */
-> > >> > +__bpf_kfunc bool bpf_task_is_oom_victim(struct task_struct *task)
-> > >> > +{
-> > >> > +     return tsk_is_oom_victim(task);
-> > >> > +}
-> > >>
-> > >> Why not just do a direct memory read (i.e., task->signal->oom_mm)
-> > >> within the BPF program? I'm not quite convinced that a BPF kfunc
-> > >> wrapper for something like tsk_is_oom_victim() is warranted as you c=
-an
-> > >> literally achieve the same semantics without one.
-> > >
-> > > +1
-> > > there is no need for this kfunc.
-> >
-> > It was explicitly asked by Michal Hocko, who is (co)maintaining the oom
-> > code. I don't have a strong opinion here. I agree that it can be easily
-> > open-coded without a kfunc, but at the same time the cost of having an
-> > extra kfunc is not high and it makes the API more consistent.
-> >
-> > Michal, do you feel strongly about having a dedicated kfunc vs the
-> > direct memory read?
->
-> The reason I wanted this an explicit API is that oom states are quite
-> internal part of the oom synchronization. And I would really like to
-> have that completely transparent for oom policies. In other words I do
-> not want to touch all potential oom policies or break them in the worst
-> case just because we need to change this. So while a trivial interface
-> now (and hopefully for a long time) it is really an internal thing.
->
-> Do I insist? No, I do not but I would like to hear why this is a bad
-> idea.
+On 2/3/26 17:27, Christoph Hellwig wrote:
+> On Tue, Feb 03, 2026 at 06:52:39PM +0900, Harry Yoo wrote:
+>> Maybe the changelog could be rephrased a bit,
+>> but overall LGTM, thanks!
+> 
+> 
+> No, that does not make sense.  If mempool is used with __GFP_RECLAIM in
+> the flags it won't fail, and if it isn't, GFP_NOFAIL can't work.
 
-It's a bad idea, since it doesn't address your goal.
-bpf prog can access task->signal->oom_mm without kfunc just fine
-and it will be doing so because performance matters and
-static inline bool foo(task)
-{
-  return task->signal->oom_mm;
-}
+So that means as long as there's __GFP_RECLAIM, __GFP_NOFAIL isn't wrong,
+just redundant.
 
-will be inlined as 2 loads while kfunc is a function call with 6 registers
-being scratched.
+> So if there is any work in mempool_alloc it's that it should warn about
+> GFP_NOFAIL.  The fix is in the callers to not pass the flag, assuming
+> current kernels still do this.
 
-If anything changes and, say, oom_mm will get renamed whether
-it was kfunc or not doesn't change much. progs will adopt to a new
-way easily with CORE. kfuncs can also be renamed/deleted, etc.
-You're thinking about kfuncs as a stable api. It's definitely not.
-It's not a layer of isolation either. kfuncs are necessary only
-for the cases where bpf prog cannot do it on its own.
-
-"internal thing" is also a wrong way of thinking of bpf-oom.
-bpf-oom _will_ look into oom, cgroup and kernel internals in general.
-All bpf progs do because they have to do that to achieve their goals.
-Everything in mm/internal.h have been available to access by bpf progs
-for a decade now. Did it cause any issue to mm development? No.
-So let's not build some non-existent wall or "internal oom thing".
+We could just tolerate the redundant. The code would be simpler too. But I
+don't feel too strongly about it.
 
