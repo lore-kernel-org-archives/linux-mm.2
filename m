@@ -4,77 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A404E8784C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:50:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0024EE8784C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:50:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8E106B00AB; Tue,  3 Feb 2026 12:50:04 -0500 (EST)
+	id 25C996B00B0; Tue,  3 Feb 2026 12:50:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5FB56B00B0; Tue,  3 Feb 2026 12:50:04 -0500 (EST)
+	id 21AAF6B00B6; Tue,  3 Feb 2026 12:50:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D173E6B00B6; Tue,  3 Feb 2026 12:50:04 -0500 (EST)
+	id 0673B6B00B7; Tue,  3 Feb 2026 12:50:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B50526B00AB
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:50:04 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6BC90B9E28
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:50:04 +0000 (UTC)
-X-FDA: 84403883928.15.4664251
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013065.outbound.protection.outlook.com [40.93.196.65])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 523DC1A000A
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:50:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ZW0+WarZ;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E06536B00B0
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:50:12 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9C439B9E79
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:50:12 +0000 (UTC)
+X-FDA: 84403884264.04.241C2D7
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010002.outbound.protection.outlook.com [52.101.193.2])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 88D7840006
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:50:09 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=EQFwfj1g;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf19.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 40.93.196.65 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
+	spf=pass (imf11.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 52.101.193.2 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770141001;
+	s=arc-20220608; t=1770141009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8NymC7Mj9AobvqmWhKZcegXFJMRLFRzlgPumSsWOszY=;
-	b=mKqejaU5twFGlSQT7BCKnZ+k3vra8Bg0FP87DYKMcLEkxcUGBXqa8r43iLIXoYNP5jYf05
-	shsS/4+LJ13+eATfcedSYm9V9BoiODsZIIbxaZleyE0pup+PiAMR/xG0ZRXgGcBHoxB/JV
-	vuiIKuOstmsqpkGyOJhDsP+yPKefc/E=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770141001; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+XYDwwfKs1xLCt/9o93NAUKEdzyyyti1OLGKwH3XgXg=;
+	b=JYvAFsrWDv06XZuU0vP3Ds3Srw7mdTI1jt+/r1QS0FTp46UO9EIBQ+gxahV6O+g3GxLu9z
+	Cg1D2ik2lp9sMGk85fy+vk57xO40DRptgECe5PccYPcnh6KkAhKnzqPytvvIG1uFfeyg9c
+	JuNOuPj+GoSaT/vYHIFsGpPtN+LWJkw=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770141009; a=rsa-sha256;
 	cv=pass;
-	b=3gXkSRQwFf8TGCWzkY6akSTftTIcFjJ6ldw3h4qWQnNtysmDiFyrs6/51CaULuVuxBGcxC
-	ogL2wKVrtCdxld1GJ5Eg66BQhGWsgLiktRZp3KeYC6nQXGZ8OcxSxJ704QLRXK7ggr+15A
-	0Tl1yJFLiw+ZBRL6V6qOvQSzCQ58Mao=
+	b=CrW5Wao5HEDDPPmLc0wCujhqrG3ZmdWtEjp3XzyRquyJsic6weuiq7SBrJoy18w19WfrmD
+	fRvSbd0IZIVxrpHuGPqHHqb2F7xPa1whi+QKujThnAgsX0NL7ZdIqC3jLc7IJToJb52ndF
+	bQqPh9AOord76UsuhJkShKR1APArFvk=
 ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=ZW0+WarZ;
+	imf11.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=EQFwfj1g;
 	dmarc=pass (policy=quarantine) header.from=amd.com;
-	spf=pass (imf19.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 40.93.196.65 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
+	spf=pass (imf11.hostedemail.com: domain of PratikRajesh.Sampat@amd.com designates 52.101.193.2 as permitted sender) smtp.mailfrom=PratikRajesh.Sampat@amd.com;
 	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RmUQYPN3cdAVeSsKCSf9ZN+xttlbM/n0zcl3CkNPTXf5S9flNwROVYBeBTDWZXQWw33j1BsxcG+2TCdOgnpDRQSbqAQq1n0UW51tdjEFndnNMfNVMsGeIbLxON3xPG3h4S6Hljk9u8NdwUWu92MwSjVY098R+ggikDNBtghAmfnU+Ng0Z61SZGcioXi7K2inTRt155JXab2urT/4r4Qgk5Cdu2eRGWMlYaRQAn8gtGcHPxoLkF79sn770b/QThHCRnz/cNND5EDi0YzTTYYqL8P/XpoeLkSNmrLgHLbuKdw9tGAeYcF9E73MRQeYOIt24j5Gz/4Jj0vflP7mZjkhnQ==
+ b=n+uVz8v9ImFdNWFmVSydDfpb7n+AGIJqJa/B5ZLXz7vtZ/NUVAqvVWAawdjA8uYunRtz1VHf/l+hiYOYjw323RxhvbiV5JYj+XTCDzB4JokLKYI6DXmQ8gJdPsTSjTM8oj7L5QoyQwvKUupmgRGaFQuiMpLnxfNmuLkL5XgNUnav+HH0WfiFk1L8H+xVsP4gK/ktJAgLJmgoCcOVYm68ue7uAlqvU8q6kCExHBYLRsrJxbtAl/BJ9QeFdRTqwZRtOvUZW/paa6knf74+iIxvdBYWWSJKNUOTHcZrBE5hEVzAqY6T/xtNpBCIMMMqiLlmaldqbFWGxrrjftByIVGfBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8NymC7Mj9AobvqmWhKZcegXFJMRLFRzlgPumSsWOszY=;
- b=UOYQSn3DSGm/HK37+i31fQ2nNZpu7S9jv6l6gSvD6HtjIDoCMSoHiIFxRgN961pCzPFTi/MSCcUEm1uJerwLe9scWXN6DsJWc5qq3ySAyuT3RGCCNK05bj4MrR1n+5yUvu9gwOut/l5uhQ6/7wbK0FbeaS4yZXtAqkVT9NycBst+czaS7vlXHnio8QHKvPo2VPLaSVWjHOBfGV5rBDaF/4e+69B8WjEv1fTZxlkR62dZiNEFYm4RNEhQ4tBcAV3KN65l2KwVHhjDQzVchrF5ulmmj2SgWsFpND6X1RK3d1kJjv/xZibtTrC8uQrbFCMmmYSLpO22GXy7QwZng4MZdA==
+ bh=+XYDwwfKs1xLCt/9o93NAUKEdzyyyti1OLGKwH3XgXg=;
+ b=NbtjwlzOrTvvzrgcwKBYDTBiQMdRDu38my3WIxcFsyJBFEZQbXE3NeMv4hkZBpU0stiHOqnlgYspEQBZwwjo/qGH7IjncnRTbMf9cWU1vUv+Sl3wAfFP4sG6BBE9raPuGWSb+SL7Dra1BIryWK+w3BGB2Tk+mUCnWj9Eoe67W8eMvSLBlWKciHQvTRjYMp9FCLQDBbXRNC8UTijOH1yKP1bBc4r0pQKwXDzL6+BYp4Z2iJwyidAV09EVbbhGSb9dLXcnFDi9GrvNBejn/hueCZofTLPfJ6dfzt+LsdeWGWvvAAdvBlqTEluLWB8qUIIOGk5o1cDXFy3OZc87bs8uzQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=kvack.org smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8NymC7Mj9AobvqmWhKZcegXFJMRLFRzlgPumSsWOszY=;
- b=ZW0+WarZbHFLbbGUrL7/AmDCOref1HMYHhEyrYGxVqqXxB/BqcBm1oCD3w1nLBNUsUMwj3hnoJ+wTOlSDDPVZsnmpQiUsNP4CoOSshyY2IfAUsuk0ddkT6J7gOJHxysUbufr8tm0h+sxw2UNFvHM5WSXrwomwPBF5A4zdYfKk5Y=
-Received: from BN0PR04CA0097.namprd04.prod.outlook.com (2603:10b6:408:ec::12)
- by DS4PR12MB9610.namprd12.prod.outlook.com (2603:10b6:8:277::15) with
+ bh=+XYDwwfKs1xLCt/9o93NAUKEdzyyyti1OLGKwH3XgXg=;
+ b=EQFwfj1gSsQw8AdpPKgHWoddFLmwuAEFjbeCGq+OmeXMzuuuw/E5MQYoBdK4gQ3L6H8jHOL8Uz9+2dME8O2Top7XhiIVkoWQw1JobINbnQkvBIear/xQRryTObx450zgbdknWA4ZEIkh8a8WUWylVwmlWNewBJURO0qgnt8er1A=
+Received: from BN9PR03CA0283.namprd03.prod.outlook.com (2603:10b6:408:f5::18)
+ by DS0PR12MB7584.namprd12.prod.outlook.com (2603:10b6:8:13b::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 17:49:53 +0000
-Received: from BN1PEPF00005FFF.namprd05.prod.outlook.com
- (2603:10b6:408:ec:cafe::ed) by BN0PR04CA0097.outlook.office365.com
- (2603:10b6:408:ec::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Tue, 3 Feb
+ 2026 17:50:05 +0000
+Received: from BN1PEPF00005FFE.namprd05.prod.outlook.com
+ (2603:10b6:408:f5:cafe::b) by BN9PR03CA0283.outlook.office365.com
+ (2603:10b6:408:f5::18) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.12 via Frontend Transport; Tue,
- 3 Feb 2026 17:49:52 +0000
+ 3 Feb 2026 17:50:05 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -82,13 +83,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN1PEPF00005FFF.mail.protection.outlook.com (10.167.243.231) with Microsoft
+ BN1PEPF00005FFE.mail.protection.outlook.com (10.167.243.230) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Tue, 3 Feb 2026 17:49:53 +0000
+ 15.20.9587.10 via Frontend Transport; Tue, 3 Feb 2026 17:50:05 +0000
 Received: from ellora.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 3 Feb
- 2026 11:49:52 -0600
+ 2026 11:50:04 -0600
 From: "Pratik R. Sampat" <prsampat@amd.com>
 To: <linux-mm@kvack.org>, <linux-coco@lists.linux.dev>, <x86@kernel.org>,
 	<linux-kernel@vger.kernel.org>
@@ -96,10 +97,12 @@ CC: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
 	<dave.hansen@linux.intel.com>, <kas@kernel.org>, <ardb@kernel.org>,
 	<akpm@linux-foundation.org>, <david@kernel.org>, <osalvador@suse.de>,
 	<thomas.lendacky@amd.com>, <michael.roth@amd.com>, <prsampat@amd.com>
-Subject: [PATCH v4 0/2] SEV-SNP Unaccepted Memory Hotplug
-Date: Tue, 3 Feb 2026 11:49:44 -0600
-Message-ID: <20260203174946.1198053-1-prsampat@amd.com>
+Subject: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory during hot-add
+Date: Tue, 3 Feb 2026 11:49:45 -0600
+Message-ID: <20260203174946.1198053-2-prsampat@amd.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260203174946.1198053-1-prsampat@amd.com>
+References: <20260203174946.1198053-1-prsampat@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 Content-Type: text/plain
@@ -108,66 +111,66 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFF:EE_|DS4PR12MB9610:EE_
-X-MS-Office365-Filtering-Correlation-Id: 29e566f9-510c-4b15-0465-08de634ca302
+X-MS-TrafficTypeDiagnostic: BN1PEPF00005FFE:EE_|DS0PR12MB7584:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17954940-4f4e-4357-446b-08de634caa16
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|82310400026|36860700013|1800799024|13003099007;
+	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?n4VsYW15ZgLeBR4aDh7Q4BdI7MQ+PhhMPfC9I0lgUH6ESkYcbCexpH4aFDIg?=
- =?us-ascii?Q?AlUH5pjRN0tCYNK6Yy/UfSvrQdgZNzZBG8U32qB6Hu/MhtJvXshtAZhsCWqY?=
- =?us-ascii?Q?MsvPfG+70RYR8IPyxN56lVI+GWfOAaiuZi1yTC2ZQBvP+rUCLQJZbApEHT4C?=
- =?us-ascii?Q?Ibg0O15YGgSQCxhQM5qDs1LI/QFkrPVbW3hLNa8rg/lyPQalLH1nFu+OZCPd?=
- =?us-ascii?Q?Azjn83ULcvh5v7K1Hi1HuxmzTKoxe6MzCDkGqhItlKtY2WjgbFw19RGezR3Z?=
- =?us-ascii?Q?hYOenb3bauLWGU6woClfaqJFZJ/Wf4atPv2lA05W3FcpBDces6tgTjpKlQqW?=
- =?us-ascii?Q?+l+MLQtRv7PenscEc0XcPUXcjy1ir1fWxG9X3UvJOND/wPi7N2hnNcegmqJI?=
- =?us-ascii?Q?l1XxVAwsc85ARqjxDARniJxxdgQCuYuk0ml4dFjDhNEC1ngB6aFjykf6ijd1?=
- =?us-ascii?Q?O8h9iC/tLvLwlQiM8K8+ZtcwxQ6A0D9ykTUWzuSuDV9L+Q6qLSFh5y2tEsRX?=
- =?us-ascii?Q?2V5N62K5NjKxDQ/chiIKjkDtXVXspnIj8pm/+fW9UWAzBe05DQUa27BqLGGo?=
- =?us-ascii?Q?+Q+PSr661UkaELm36oVMIqnYtShY4sm2E8rMctonRXG4Et1+Co1WpDBiTdgu?=
- =?us-ascii?Q?8SdVVJK1E0q3+4T5rEtOsDXURsi1hMBKpjFE9kKS8YG77GSDRBcRcROkVpS7?=
- =?us-ascii?Q?WIZdW6oYD4j7Fz5pAz7pqOGiC8D4LhnwkM+KgTPnNfc5WSKmpWtc6S9i+3dX?=
- =?us-ascii?Q?XZ2q//h2XkAEmznmpmLAJLS/ZVvpMpCI1PTDKY6CqiFC5nvxr/z2oieG/0V3?=
- =?us-ascii?Q?nqEq1gQmqsxkVYQs0Q0itq4Js5v3cD47tSAZktFx+tme3Q38Y2KUWmAO0iAD?=
- =?us-ascii?Q?iFGW1dPjmAYSJnaa4sCWQCOIyHNSsb/f6ALNxe+FyZYNoOcDM8e7H13DA8kI?=
- =?us-ascii?Q?TcpSA6jeMEHdz3dtoMDy87Uv1KDcZaZPBZpNbnAyB+4Zwa0h23fFyGQn9vJR?=
- =?us-ascii?Q?MwfP02m3Y9vW3iL+q9RcPB6g6ZMAkzP+zAoCp3OOT4BQPkEs6dLs7VSJSIen?=
- =?us-ascii?Q?fx+DBXxKfe26HsKsLJNkRNIlXiBqNWwqiBtF/vwkgz/qGMhJ3HsP6bKjO/mc?=
- =?us-ascii?Q?hdxU/nxP20Vs1pL+rbqYPGfRT+hsOuz5s1IJyEhpb6t7MrRfytrn+NEmymM4?=
- =?us-ascii?Q?gLPfQ4h5MtXA1r9OAtTsHQw1/m5tqog2mfUtaEpj4OTWJTfgFS2gt4PFkSTk?=
- =?us-ascii?Q?hTYi/9Kcgt89tHsgkWjxNas4j4/J8QfAJeZ1HUW8mPWwzXWZwAUX+6jvu1LC?=
- =?us-ascii?Q?STlyX2RqMLOnn3TageP7DJ+OXkrnDBHDouD3UYWmp1v6MKLTeGJ2UeXLmMsA?=
- =?us-ascii?Q?Td4IdM+RoetVR4Mjylowal8Y6rEimtWvlFfGppcOEQuW0bmEcI2IDXeZz1un?=
- =?us-ascii?Q?rUD4urP7xZha//O7p5EX7funJH0QZXhdIbRYA+j/+9O8/YuLLSUEEkGRjNZc?=
- =?us-ascii?Q?Cu0faZHAaPYl7ZSDHeA9qILrXKz/txDAfRFMG1c/42A+na3mfLQOConT8ip5?=
- =?us-ascii?Q?TqtO/Ib7E1XP/a7/gaNn8mo0pFMdcyIs3YFvNFZ2BGouTp8BCj789HqaFWNy?=
- =?us-ascii?Q?7yndruP+n4AZo0BUnWZ8x8HO/m341Y/4P6fggDet/8rPtF/NUZF6Ctyk5dFa?=
- =?us-ascii?Q?Ss0AvHaUlP3m3cR28nk3Hv5l1dk=3D?=
+	=?us-ascii?Q?uKTSCHHu4pXllR0zeRnpIaRGr2+zDiwFtDVzVTxvvv+IrVkJWIX0VPm9swbU?=
+ =?us-ascii?Q?7+/k1Zu9iRrkJCtbB2aApNABXG3LegzhgHoIwwTK0iv5Bwa/4QqrGK/2cIbn?=
+ =?us-ascii?Q?H5LKn9Qe7TSWmo+eqX/VaboEVUcIs4MWAktOUTc31b/I1t65WmcNqL9CU6WW?=
+ =?us-ascii?Q?IkG6Rzhh1yQ99CqmYy3jQREP+v76xp0+3I47QcwRW1+/JD3lHbs4xtuFt0zv?=
+ =?us-ascii?Q?Oyt6fcwmWy7hmEZotOzUphEiJrHzukJUfndyHdlD+LVcWdnwufA+zG1qMLVj?=
+ =?us-ascii?Q?5403SciN8OBgYw8783f6h84sD3+Muaq1wyvSkp1Q6vmtMZXayjlwGFgekng/?=
+ =?us-ascii?Q?sSMcq97eoZcc+PUt5MrCbuz5SvHIwiBYE3vaqGRnfFItAqouG+bEpa8vUADO?=
+ =?us-ascii?Q?uVl4RWWTcSpyqqzHYUctLJ6P6iKzH6fPJRUoPTL3+Snz0KP6Bo5kJQ1zTJsX?=
+ =?us-ascii?Q?LQ9DIJhUenbXclaTc/rtN7Ad09uTdOQzQ0+Z90Vmz7JNafVpbxlTB4m+SfKq?=
+ =?us-ascii?Q?exRIIuJaN9uD0XiaoKICjQDzy/ms0oE15yaIQBkZbBXSuhqSKaFofHZEBred?=
+ =?us-ascii?Q?aeRxax37NU5vNQzBXo3dxKMnOl7uOL2rIwhajT4x0g+KiQpvaBDl47J2CySF?=
+ =?us-ascii?Q?MlOc0GxMkuj80jm0AM6Ri+zQZAZkY+b2frzGjReYkE6JBmMqwFSkkUeBLu/N?=
+ =?us-ascii?Q?ZabinOYlF4bwmVhYqhNRXL6EAJRjlVz5vSOAjcOlOEG0cBRgfvQbKRkuLn2+?=
+ =?us-ascii?Q?94A0pgyWlePMfKO+lfWiOHSo1s0r2X8TQwtcczQETkqvzDODYPwfyViVHR6u?=
+ =?us-ascii?Q?gsI08h6FNPWN3FlWCAk7rhWZhtBYaqSJFWI9ZSve5QNyxUJ3nTGFQS2GJ7Hi?=
+ =?us-ascii?Q?Ldm/2euSKhd6+bJWWj6DAOprgwTpGc4L3B2onyO6C2W3maFhx7Z0UHnC9pji?=
+ =?us-ascii?Q?C4SOtBUsbNlPpdaehb9dkiY4Mg0AUUEizc37NwpyJs0imDgIm1kxLeCmoQAQ?=
+ =?us-ascii?Q?G4A9KAowK8TZTuvmFO3f8ARW34xUU4HC3Gaa/nEHmexRxDUPE+FIfF486u0n?=
+ =?us-ascii?Q?Vk85xFDiWnTgz84zXBujOFkXNryLZyMGMwDG6A1EE/hwqAWSzM+em/Dalq54?=
+ =?us-ascii?Q?dZ3mti/3hV3c4W0k8uTXZRMdcm5doDBoVXMjuGL9qnuoFHXxRu8TOlyUARRS?=
+ =?us-ascii?Q?Vqa58PERenn5woCGmDszySeMKsAU1eyzwAe4K9cC8tokoTROXu+a6NBFU0br?=
+ =?us-ascii?Q?82bL31lFAzGL58aoH54nbnUFXpp9SG//LqjwEINGJtLR7S+0u6AXw1PCqLTV?=
+ =?us-ascii?Q?7rHCm0A5wPadUry9dvhaXSsMUwsvdjFJd0BCqQIh0dECYkjwvdoQvAhHcy1W?=
+ =?us-ascii?Q?5dYGqHVFVqNUipBW9mx0BwG0iuE/vdPeevgyhtra7QV6DiWBjOEgrIL57zAt?=
+ =?us-ascii?Q?x5aWgsG3ENmfXhdWmTsH9HHLKE6DDjmNHcOAxJtp6XKvSU6SiZ41pSfVFXgB?=
+ =?us-ascii?Q?2vq73pvmORXxLaPtkHS+u0SJ3duJrSDAHCJ9eZXRtYuiZUmKkcDK4Z7dQrSM?=
+ =?us-ascii?Q?0sLENpmxutAc2x3ySusX3/ERePTfDpVrVgaO5yjS3tZWb2N+Nt1BzJEsD7N5?=
+ =?us-ascii?Q?YtfFX672Koiosy7AteFzHZfbaMY1O5af7UFymvydCbWyWV/egUgqKgwNYHOx?=
+ =?us-ascii?Q?HmMIeA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(376014)(82310400026)(36860700013)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Q8jIHeXisRi1Y2GXUwm8exsdDNKPHdKBeBg8snfoZL03U5WPrjcVZoObzrpgYIDTOGOGFAiIyo9Q+6z/orWhVjvgQ01d2ojs5rkZF9K04/7DHDBnBrhruIjFZe1+uomtq7gb+2+VgJ6eypjr9nF+jDzvM5qOb9FhkT0WjfhSYakHZPhHL2uZMxennFIZR5l6Q3P0JpJKyQo/S9Jbma8tTR+0sFJQbUVTZgqmYMQ57T+UUEWz8GPEAhIplOuBCt+SKaZSHyvvq3KFU9L5bD75iTPB97bjJCE1R5dGswWPO17SKtx5DSv9lZmfNRG21f/u/agYDshyS/Z901bkgCwy3wKzThDlffyMC44sv0ZuQ6np+b0sBRky14ceJjOQ7N4XpN4nnULcRS2W1tJFiv2aFhgSF8U1DLjd+8lutrED8ChUUEj8AfL3Wo+tJpY4V/Ox
+	9YLnC7bCuc9vQDMcUnUYU7fwkyRHcwmn9j6wlQqG3weObohHmmD3TQTK0ylvJOSTExhWZdB/JaeF4Gx8P9esl3TEPK1cXYum5Kw4XWvAdMxhIrWaiPEtig+CKIkt+4yMDs5D301nH6niD52avFyAYNrb+jnyVtXU2PoOys+xP0m/j5rTmv95Gi79ocnI5ni961upMLjcfAW2gtlr0hllblGhITwxoHdEuzqBwa1rKkc0a7gizsaWLuOYqIUlWqDeVv760osNeJ6gxXx7Cm8v3M6h3XNhvXYHVYDvkeqAAMTbI7mVzXv8M04D97BcHbrhM/MvbvUkFKAGwJe9YOpTjsz5beyaiREOGaDJPd4Hpro6I6+4Y888IlgkoQOD6/Tea0855wDt3DjDGYIAHU9X35yK+HjGMZAwOdU6SVxW0sd7wONGHlDR44AQZ290dyW5
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 17:49:53.6251
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 17:50:05.4998
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29e566f9-510c-4b15-0465-08de634ca302
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17954940-4f4e-4357-446b-08de634caa16
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF00005FFF.namprd05.prod.outlook.com
+	BN1PEPF00005FFE.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB9610
-X-Rspamd-Queue-Id: 523DC1A000A
-X-Stat-Signature: ce7ax3hskork6ufr49zzwjb3ijgct56x
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7584
+X-Rspamd-Queue-Id: 88D7840006
+X-Stat-Signature: hayk5zqz5sk3sgwxfxdonnzar1ok71xu
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1770141001-478594
-X-HE-Meta: U2FsdGVkX1/fIxKSo5G9B9fVQ6b7L6HMVe5CgYbPYPKns721K+j5oQydu+XGNl+j8QhlMNmvwlY9ZMpn1L+iO4wUNv2cYOqM+QnHDm1ZY9XvTZ3lF7VcBHsg0t4AUyU4Rwe1mqQ4bckG+bz+eGL8L8Z97AbS12FLiVrGv7AGphqGea/4wHkg+t8xA2GEfjbY91d65f3Oy/vnzebnvmL4NCeUbhAXNbdUJ21N3u0WWcXvvQ1r3lYsmaI5Rm306HcqelRGfTllFjjYJPZDOVXJ2nwoWayTqHuqlutf4XfRzm8cwHyMuBbS5B4JTIY+KNcn3aN0S2L2blkoraQQocHWXKTJ1M/+dx4qiTa2ciiZdFnsYIBxDZ7/8GeJty+n+lUfqpl3RXj85BgJtuV9f9kYWApUykdmCm4zJ47oJg7vu3KjP+8NXVURcO6lbgSsLKjqsBEpalUXEKVH0wnSxgkmq1vZZusfGFxMgnPcYlgqIO0hqUx0ALwtFlnzQSY0oki3H0iyZJuuk4Yzo7TXt1wxjuWRCilvWJd69x+v/Jmr5Zj7yjQb3ZtcFQSITc06mpyhxnF15pPHmpzqn7z0pY5sevg/W5pR8gL+YFU9LamWJxSn8quSyVOhSXWR9+17TGGUdF8anhPpkwaw+FRRyjAUgs5hMt3p7MO+vQ9rP0I4rp1kEFgkSAWUqpRnG3qb9hzyr9J5PN1oQlcnfE6JC4LS+Xrmyc7qGWqwBUKbcX3IYQRKDS8omYKthQm6Kmu2T4KAvU8Q3QiNmbAx3iLZRSFPN48OlKsAZO8CA4JyETVMiMmYtegpQDwuZ0TtZvolpm+eShDfGKTBw6skiBd6uRxhDEis9z22Ojjrv/sf0AWPw1XuuhBhRUVKpLnXDfyYGJ70UWaTBJ0HA71EknQoGZCTs26yIr8ZvvSzSdiqFSgYr/3p33Lq2o6FZ+bgQ6C5dZGY4gRebl1w6iVcrkJRGAA
- T3NuN3fA
- NBe8KOnObzm1hzG7aslecjxGngHB4bvQ681B1F72tuaTMXQZaJA2xViqBl6tNw+fU7weUEDQHR3YYQA/+jxuFfzAdKHCBnOGcc5h/Xvpp3xjwPCq4Hgdya2S8BVhFEIQzHaUml4Yxd3QptWqGfnIb1O65TakaqgWnRwnmyetLlx8F8VFtVSr0ffA13EXLW1AcdFMD2oDdJK5tvfayg04jCPN4ogn1g6/OGFbfNhfe9UGlkQxAZxfprF0Fk0AyCjPXwkWBtNmRSIJD8bblTpXRuDOCFaj7EcRZtrFKXt9F7xJRspOMgo7MrcCdtZZmtvVlGfbMnTvgHWhJWbE9X5kEqHsjVC0yhBuXsdGVbG7WZMz2xwwkNtmctsJnhHT18IUJy4izedKplvTU9Br9zUznkR1fVRAsV6quDyHNSLiSHHrePiX/Qc7KqkFCpIa1/g5kC2AP7WM7h3Gg1MzHZFJXgRjY88QZ3z0g8Afctl36iaBFDd+7EhZ356QvwNH9y5TBcaXWQk/b5Bp2OuE4y9sFKJ+1vG6QYawiOxbPQ4U3tpgHxSqw3i9AsyMGBT/hv01Sb1/FK91paV0rjlw=
+X-HE-Tag: 1770141009-430491
+X-HE-Meta: U2FsdGVkX18WFlfu+LZa9p4NBfyEVL0T2vy4cLEE7ZjwK+X3UwM+gnvsAmsew/rT8dH73GLNCVgAzSNXtFiIjR/PoauIjY1jSjvXFT7xOwYuxxt6adis/DauFIBBtFKQpyw12HN2Fd1/n73diGu6IvOQaWKD24qblcNS89bKBLcLMITU2KLxC/QEdG0Z3Kuqy/cwoqZuQh+DQwdgCGymxPPdvh7c8kghjQ1tsxXcjZrKooRQzw1XsBOILU59u5+E/c3TGMk/5geliZY+PwiaIYWEYrtS6LDoDTA/oMqHxkCT+1xNn2+ZzMkmT+5R+NMlfkjtZPN9TM/8j36qql5v0Vf7FTAfIb5tXB0+QEJk4IKJDUZdxTgPM6wmXrwDYcRFNYtsrgzustrOkTAGmpbOttievf65S/IuidWBGqDTKBueJQpE0QrI10VBdUJIp2crF9iulINixObB7R2rgUr4Nsg6L9m4H2vNsaKCIO6zuoYQM++mHkYBBAnVoX5S8cbINisvaAo683YjTrnAzrqY1pvrLluaZ3QlG6dAu4LwVK8sHyQjtjqu6qmvCAPKbfX7ahlTO3fs0gPJ9wLM/38n91Z9RecNbB16K2JqeP/bk3zNaVLFK5crFQ1WSM3OVX3fMvVdoIN4wHCN2FQAaJhrHCu+uWbxZ2/kE5A6B5jUx/sfASqjs2VSMHW10bblZxDeawGUMJRShm3d+1GrIojNQA8K6UisiedRCa5d6q2HmMZfsKaj4+zZryhZh9v3KWRyi6MS2W20eVhqaGLBzB989ZKrTEu/IPDwMIKd8+FPzSBu1P4dZIJVlcwmLI1gmicR6SebIOUrkbEaNMCB4zaAszpTbB9TDDInuPtQipbQDoPTjAxjrV2Mve4mEF0bFQhj450DOpPru3AsSR3npNzIHCL66ZvG1ffBma6iu68Ou6bF/mgLpc/ubCUwsifyLIRZPxzyrO2loI/iy0trUWw
+ J4BNYGkS
+ q0cnzskXI00JofIjRFi05FX1NvdhboUSN32LZu3M9iYvG/UKheeFBTmTIKfjM6M1Nsl78EAeh4cX4wnRyMOHtUhFm76nu/RS1BIl9GoN88ybROaVGGB7w/n6kE99Wi1hX428/+N/HvgPAxwmGtYikidL3niR4GisIl/UO8OLCJCrnK3S7aDuwM8/tProj3tcobZoxNFVzaGkq7i+lRuQFsy0e/+0QYmqRFBpzKzPgjMeoYaxU7Z3SP1sFFFO32AHlMRxB3Q+caUdvVlWEmJniSyXWdVrXd3z2SDgzNqlNj4DXcoXx4BTAfeX4HVeK0l/FO6j+fxsE7OdlYFGFSZc85brWHiFL2hRY/ih9zHrx/DXZd5lRWdLlUhNk9Caxgdp6+fAiupujPWNzlmHTu89RMHVRG2z0Zy0wNMMWOIxsv2Fi1vjGAILmFg+eKixW7Q36u6EYjJWQmbpCFGUwgzgddPAf+W2zHt2XfBVL/0UytXOuv6ofwwkj2wSovJ4WlPIicygnF/Q/zGNRhBp+R/LtDPPznSod+qju+ozKjfnvYlff8QzWgd7I1pEg9Sfa5MIaPN1EV+ugzL5W89atObYhVI540O79T1yd7xQw2kQEuphxGj9mSQzcM90qgWAlKUjFI/yzONuo4/2u1pPb2VUWUX5RFqxJt3E3eEu7SetvxGZP2Wo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,98 +179,115 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Guest memory hot-plug/remove via the QEMU monitor is used by virtual
-machines to dynamically scale the memory capacity of a system with
-virtually zero downtime to the guest. For confidential VMs, memory has
-to be first accepted before it can be used. Add support to accept
-memory that has been hot-added and revert back it's state for
-hypervisors to be able to use the pages during hot-remove.
+Confidential computing guests require memory to be accepted before use.
+The unaccepted memory bitmap maintained by firmware does not track
+most hotplugged memory ranges apart from system memory annotated to be
+cold plugged at boot.
 
-Usage (for SNP guests)
-----------------------
-Step1: Spawn a QEMU SNP guest with the additional parameter of slots and
-maximum possible memory, along with the initial memory as below:
-"-m X,slots=Y,maxmem=Z".
+Explicitly validate and transition the newly added memory to a private
+state, making it usable by the guest.
 
-Step2: Once the guest is booted, launch the qemu monitor and hotplug
-the memory as follows:
-(qemu) object_add memory-backend-memfd,id=mem1,size=1G
-(qemu) device_add pc-dimm,id=dimm1,memdev=mem1
+Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
+---
+ drivers/firmware/efi/unaccepted_memory.c | 47 ++++++++++++++++++++++++
+ include/linux/mm.h                       |  5 +++
+ mm/memory_hotplug.c                      |  2 +
+ 3 files changed, 54 insertions(+)
 
-Memory is accepted up-front when added to the guest.
-
-If using auto-onlining by either:
-    a) echo online > /sys/devices/system/memory/auto_online_blocks, OR
-    b) enable CONFIG_MHP_DEFAULT_ONLINE_TYPE_* while compiling kernel
-Memory should show up automatically.
-
-Otherwise, memory can also be onlined by echoing 1 to the newly added
-blocks in: /sys/devices/system/memory/memoryXX/online
-
-Step3: memory can be hot-removed via the qemu monitor using:
-(qemu) device_remove dimm1
-(qemu) object_remove mem1
-
-Tip: Enable the kvm_convert_memory event in QEMU to observe memory
-conversions between private and shared during hotplug/remove.
-
-The series is based on
-        git.kernel.org/pub/scm/virt/kvm/kvm.git next
-
-Comments and feedback appreciated!
-
-Changelog Patch v3..v4:
------------------------
-https://lore.kernel.org/all/20260128204105.508855-1-prsampat@amd.com/
-1. Unconditionally accept all hotplug pages and set bitmap for the ones
-   that are in the bit range (Kiryl)
-2. Fix implementation similarly for unacceptance and merge
-   unaccept_memory() implementation within unaccept_hotplug_memory()
-3. Use max()/min() when clamping memory ranges to operate in the
-   bitmap (Andrew)
-4. Fall through arch_unaccept_memory() for TDX platforms (Kiryl).
-   However, retain the panic() similar to arch_accept_memory() since
-   it is a can't-happen scenario for other archs.
-
-Changelog Patch v2..v3:
------------------------
-https://lore.kernel.org/all/20260112202300.43546-1-prsampat@amd.com/
-1. Account for cold-plugged memory at boot and introduce proper handling
-   of the unaccepted bitmap during both hotplug and remove. (Kiryl)
-2. #include<asm/unaccepted_memory.h> within memory_hotplug caused build
-   failures on non-x86 archs (Andrew). Instead of introducing
-   #if-deffery to have arch agnostic fall throughs, create hotplug
-   specific helper functions since we now also need to take care of
-   managing the bitmaps due to 1. as well.
-
-Changelog RFC..Patch v2:
-------------------------
-https://lore.kernel.org/all/20251125175753.1428857-1-prsampat@amd.com/
-Based on feedback from the RFC, reworked the series to accept memory
-upfront on hotplug. This is done for two reasons:
-1. Avoids modifying the unaccepted bitmap. Extending the bitmap would
-   require either:
-   * Dynamically allocating the bitmap, which would need changes to EFI
-     struct definitions, or
-   * Pre-allocating a larger bitmap to accommodate hotpluggable memory.
-     This poses challenges since e820 is parsed before SRAT, which
-     contains the actual memory ranges information.
-2. There are currently no known use-cases that would benefit from lazy
-   acceptance of hotplugged ranges which warrants this additional
-   complexity.
-
-Pratik R. Sampat (2):
-  mm/memory_hotplug: Add support to accept memory during hot-add
-  x86/sev: Add support to unaccept memory after hot-remove
-
- arch/x86/coco/sev/core.c                 |  13 +++
- arch/x86/include/asm/sev.h               |   2 +
- arch/x86/include/asm/unaccepted_memory.h |  15 ++++
- drivers/firmware/efi/unaccepted_memory.c | 106 +++++++++++++++++++++++
- include/linux/mm.h                       |   9 ++
- mm/memory_hotplug.c                      |   4 +
- 6 files changed, 149 insertions(+)
-
+diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+index c2c067eff634..359779133cb4 100644
+--- a/drivers/firmware/efi/unaccepted_memory.c
++++ b/drivers/firmware/efi/unaccepted_memory.c
+@@ -209,6 +209,53 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
+ 	return ret;
+ }
+ 
++/*
++ * Unaccepted memory bitmap only covers initial boot memory and not the
++ * hotpluggable range that is part of SRAT parsing. However, some initial memory
++ * with the attribute EFI_MEMORY_HOT_PLUGGABLE can indicate boot time memory
++ * that can be hot-removed. Hence post acceptance, only for that range update
++ * the unaccepted bitmap to reflect this change.
++ */
++void accept_hotplug_memory(phys_addr_t start, unsigned long size)
++{
++	struct efi_unaccepted_memory *unaccepted;
++	unsigned long range_start, range_len;
++	phys_addr_t end = start + size;
++	u64 phys_base, unit_size;
++	unsigned long flags;
++
++	unaccepted = efi_get_unaccepted_table();
++	if (!unaccepted)
++		return;
++
++	/* Accept hotplug range unconditionally */
++	arch_accept_memory(start, end);
++
++	phys_base = unaccepted->phys_base;
++	unit_size = unaccepted->unit_size;
++
++	/* Only update bitmap for the region that is represented by it */
++	if (start >= phys_base + unaccepted->size * unit_size * BITS_PER_BYTE)
++		return;
++
++	start = max(start, phys_base);
++	if (end < phys_base)
++		return;
++
++	start -= phys_base;
++	end -= phys_base;
++
++	/* Make sure not to overrun the bitmap */
++	end = min(end, unaccepted->size * unit_size * BITS_PER_BYTE);
++
++	range_start = start / unit_size;
++	range_len = DIV_ROUND_UP(end, unit_size) - range_start;
++
++	spin_lock_irqsave(&unaccepted_memory_lock, flags);
++	bitmap_clear(unaccepted->bitmap, range_start, range_len);
++	spin_unlock_irqrestore(&unaccepted_memory_lock, flags);
++}
++
+ #ifdef CONFIG_PROC_VMCORE
+ static bool unaccepted_memory_vmcore_pfn_is_ram(struct vmcore_cb *cb,
+ 						unsigned long pfn)
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 15076261d0c2..2d3c1ea40606 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4504,6 +4504,7 @@ int set_anon_vma_name(unsigned long addr, unsigned long size,
+ 
+ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size);
+ void accept_memory(phys_addr_t start, unsigned long size);
++void accept_hotplug_memory(phys_addr_t start, unsigned long size);
+ 
+ #else
+ 
+@@ -4517,6 +4518,10 @@ static inline void accept_memory(phys_addr_t start, unsigned long size)
+ {
+ }
+ 
++static inline void accept_hotplug_memory(phys_addr_t start, unsigned long size)
++{
++}
++
+ #endif
+ 
+ static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index a63ec679d861..549ccfd190ee 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1567,6 +1567,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 	if (!strcmp(res->name, "System RAM"))
+ 		firmware_map_add_hotplug(start, start + size, "System RAM");
+ 
++	accept_hotplug_memory(start, size);
++
+ 	/* device_online() will take the lock when calling online_pages() */
+ 	mem_hotplug_done();
+ 
 -- 
 2.52.0
 
