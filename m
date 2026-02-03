@@ -4,170 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEA19E8784E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02ED2E8784C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:23:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C67E56B00D6; Tue,  3 Feb 2026 12:23:14 -0500 (EST)
+	id 6CA556B00AA; Tue,  3 Feb 2026 12:23:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C15EA6B00D7; Tue,  3 Feb 2026 12:23:14 -0500 (EST)
+	id 682656B00D7; Tue,  3 Feb 2026 12:23:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE9FE6B00D8; Tue,  3 Feb 2026 12:23:14 -0500 (EST)
+	id 577906B00D9; Tue,  3 Feb 2026 12:23:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 94D296B00D6
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:23:14 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BBF6D5110
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:23:14 +0000 (UTC)
-X-FDA: 84403816308.04.23B9AED
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A25DF40012
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:23:11 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=K1sQJ++W;
-	spf=pass (imf17.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 39A786B00AA
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:23:53 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D646A13B12F
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:23:52 +0000 (UTC)
+X-FDA: 84403817904.13.804C488
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1B72DC0010
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:23:49 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bG8ykAp2;
+	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770139391;
+	s=arc-20220608; t=1770139430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CnWoYOdHFi1HilfZZLKuTxOQwNFfkM0hR+YIehVIffE=;
-	b=xy03fXIYO26rgrxqu4yoqwneuQyeWb6JkhqaRHpnxpXPra2thpLpM4aAjFN4ARC1hB/Ygo
-	lEIM/FwxkEsU6hBnY9Nja7l0AuBxny4I5lVnyLV/el3seQCQQooRPnZkxketdhJOwXwsZ5
-	CDo+9Nj8CVKU+oOzmXoJRb4ikQw5MlI=
+	bh=2gqtPihjuX/XM6FNJdgDuZvJBw/sKRlJWVeSPr7iTbo=;
+	b=dgmmLvlWph1eOimDak/WDsrQkjGbJ4aYdf9AZOWH2aPsRIjv7aGMyIN8COGW/sobfwy5gd
+	HZsdfv8YQIiol1uc1EOFs/rpmeGzpjMwr6tayBFgBqgP/rA8N02or4nFd6d6Jt367iCZRz
+	jtSKLQ/jdOt7rmntvlQbtda5DsExdaE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=K1sQJ++W;
-	spf=pass (imf17.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770139391; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bG8ykAp2;
+	spf=pass (imf28.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.13 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770139430; a=rsa-sha256;
 	cv=none;
-	b=SeOWKiI9RIrdPbzmQ1S4/SlA4qYoj1ShoXs2DH6CP9wRVUTqPNGYLTM3hoT79uacF9e3YQ
-	vN22o+Qksu1Aaz8CO01+1MZbhAT2g1izAs/cmxZvszTRcCIUDyLYVbgKbDfOmft511QgML
-	uZSE0tav3SUT0jqIenmKEFcavs0Y7t0=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 6139ScWr027933;
-	Tue, 3 Feb 2026 17:22:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=CnWoYO
-	dHFi1HilfZZLKuTxOQwNFfkM0hR+YIehVIffE=; b=K1sQJ++W8uy17wl/eEnoea
-	fNCoj4q9pjEwAxKnq45sEdDpPrhWc+vgFP4Zc8wpH5b1C4RC0wNQNEse0A88BFAs
-	l/2xWxKy6z9RHcpV1FZnbFg9p4+LyMnFlrJPHMfMaPOLB5KYSMD0BbvfHNds1W9k
-	CXYcICcm9UXkgpGorCuMa0fWdmORKQ9gUVhpGc/D7NDflpm59O8wdqag0ZoVSfkj
-	WRWT9hnmF7Pybg1MsE7jcKnlLfoD8hGUJckcwv+ZblcUV1le2hTujtE6+4UX25PA
-	5cFm3nOyft2WTD2BHpDZuWaYl3+fYHz5AQW8J8VG8yzIg/fMw6oPH0e/Y/6oltrg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c175mvbm9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 17:22:52 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 613HJYI3002446;
-	Tue, 3 Feb 2026 17:22:51 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c175mvbm5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 17:22:51 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 613F9Hfd029064;
-	Tue, 3 Feb 2026 17:22:50 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1v2sa4h0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Feb 2026 17:22:50 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 613HMkGQ49545670
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Feb 2026 17:22:46 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90B4C2004B;
-	Tue,  3 Feb 2026 17:22:46 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B67820040;
-	Tue,  3 Feb 2026 17:22:45 +0000 (GMT)
-Received: from [9.111.139.54] (unknown [9.111.139.54])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Feb 2026 17:22:44 +0000 (GMT)
-Message-ID: <afd7d47f-82d8-4b29-aff6-605960f64757@linux.ibm.com>
-Date: Tue, 3 Feb 2026 18:22:44 +0100
+	b=Uq+xT6PlJ3ysw0V8xhDGwVVfZ59BzS9ag9vxbyjOmlqMkyQCfR108QWn6M2QP/ypVxnK00
+	EhXMuorznEPChcwCqFLjjUTt9EUknv+0tbpjg0S0xjYKg3x9YzozIe/9Oubg9KlW6cvRkX
+	mkMd7pcRiNbmD18WDCrqTBenSReoxSo=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770139430; x=1801675430;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=J1w16axMFsOQYxllHsypOcSm33mJbwB6ajTl5ntTt1o=;
+  b=bG8ykAp2v1umMTapFkSECWzIHzmfFwWh5S5l+RNUmMvNsKqRO7kfoJVM
+   35TjEA41qLkj7SAbBSOQbYDdfRu8zn26GSSnj83KrupUGTioQyDSU3hfN
+   znZB9foypAAkxUdauszNL2T43q64cWYB/U5uxA99ds/6wHQkGRkm6gtCv
+   YsUQ39YkgP5CdCbkLTVxMneSLAy9jAyJtCzQNyQ/Ofx2uHK4rFdT3CmPM
+   E5XiS/S9cF3RsMubGrehf3hoqFV86ZCb0nbSZxic3nlmDODpqPBs3d+KJ
+   nBUk4T6/UJNkSNVaBn17dcQ6NmTyoaFdB3UWqycFFj26RUke39IkUNxkK
+   g==;
+X-CSE-ConnectionGUID: Aw+N5Z1YRBaSLNsYP9NIUg==
+X-CSE-MsgGUID: O51not2DRMadUClJXyoTTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82427809"
+X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
+   d="scan'208";a="82427809"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 09:23:48 -0800
+X-CSE-ConnectionGUID: kGTu9zFWRbeIBuSpKoHtmA==
+X-CSE-MsgGUID: MFQpLX83TsKMGlma5QVdRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
+   d="scan'208";a="210012973"
+Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.110.207]) ([10.125.110.207])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 09:23:48 -0800
+Message-ID: <e029f69b-6d99-4029-94f5-caafb5eb767c@intel.com>
+Date: Tue, 3 Feb 2026 09:23:47 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/6] x86/vdso: VDSO updates and fixes for sframes
-To: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-References: <20260129112726.892340-1-jremus@linux.ibm.com>
- <B1CDD538-668D-48E3-A937-740B7D6575FA@zytor.com>
+Subject: Re: [PATCH v3 1/3] x86/mm/pat: Convert pte code to use ptdescs
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+References: <20260202172005.683870-1-vishal.moola@gmail.com>
+ <20260202172005.683870-2-vishal.moola@gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-From: Jens Remus <jremus@linux.ibm.com>
-Organization: IBM Deutschland Research & Development GmbH
-In-Reply-To: <B1CDD538-668D-48E3-A937-740B7D6575FA@zytor.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260202172005.683870-2-vishal.moola@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 1RNeFjye9XQ2Fwo7nGuZWqe11dNYv12b
-X-Authority-Analysis: v=2.4 cv=VcX6/Vp9 c=1 sm=1 tr=0 ts=69822eec cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=VnNF1IyMAAAA:8 a=LFt20mCCc4CE-LtB3JUA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-GUID: KeLrE5dJXpA6vYgjBDeZ4Ic5-NwvD2yo
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDEzOSBTYWx0ZWRfXwUo6lcJE1Ffh
- llct2qDpO79y6S40lWcrdflidPGemTRXFUeYRVaUUNInoKRunyTTXgZJb6ijipEeL7FJwOPbYdt
- QzJIH0ve4Z7wZHt4EIWrt4LtOMrAQtTZFt7eJ+vIy+u6tgM2AjAfkt6yKxthLWFXak2wFo1VoS7
- BHHTrMiZuIpQIQZr49B0xcuhGoQCvZJXVhoXutTZrVgKkbjkB1bIqrJzC6SFfP/1I05PZKPJNIU
- V0Faq2BJI1AaC/xMJv9LpH4X1jwofwdDX9uCH2kT8gxzkpyu9lGnKQl77yElTU5+etX+jv9rGK7
- 9fwJg0Xh1rV/qctBadRHOiHNAosNqlDGc2mAo+I8lfQKW2Fe667BfTLH/A1qiDZCVNKJGuPNOo+
- gFgub+Kjw5wj2mov/DPK+HcqqkCyiBoV0s4YR756ImCoZm3Vu1L6gZsrkZeSbHa3mlQGOSoZfYR
- sOH5G/cj8YYfTDSjHOg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-03_05,2026-02-02_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 malwarescore=0 suspectscore=0 spamscore=0 adultscore=0
- bulkscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2601150000 definitions=main-2602030139
-X-Stat-Signature: any3zz48oi77y17aatr96zn5cj1gfueg
-X-Rspamd-Queue-Id: A25DF40012
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1B72DC0010
+X-Stat-Signature: gztkhmrgkcy9sr3tkhmr8mx51bppc18e
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770139391-747485
-X-HE-Meta: U2FsdGVkX1/19alUnhaaiDOAPPVSf9yx3VIK0Ip3j672aBfbhoBHoTmYDLvBZXxcVweBfccD1oVSVOjT6qSvnpr6Urdelqf5PYBHpYiGUmXN4gXC2yCZFrZ9O46HQ2+Zm4+/t7KcXjfUDNI90iqcT8f3JjnWknFER5+cNslxff7rIE7fQR+I2FUQiKLt/Ro3un0D8Isoc8W4MiJ8+/QPhdkynHhAuSrYYuqfylmPu7nTVdWQE5qzO4MfM8UnhgbCTImIIUITCK2MKu5CPs60tA6Zy9E/qyxPwR1y6EKV41ZL1VpXaCG+aAIsuiDnMmFOZQuZ+ChHC+EvWFZoylYtkqQJMrD9cBhe2H/Ep+BtPG7oXkbVFSB14gmUSxp5hJMa5LCULXzznzJpD9QlbDrAW32gWOJLiJPS81nP7mTizE2fnZ0MPDz12uy6oxYYvEG31IdrGb3imB/ySnryjlQUyqjMJ0DP4acwF3nnNUEgh6G0bgaTG/kqNr2B5nFag0/rJMMR362agXclE+/S12Pi8YDlAGpiw6czuudqnwNWfXBuug1Es4Q+AnxOs12W6IifmMrvqYwkpwAdJPx+Hv6A2WVBBwJSe266yt8HT15T77YQOzOa2nLSFLe7uGWQA5piHYfypABEt5M57wRC5Zxe7HQclpvMflLMZIFUyUa4PR/BGILibcQT9eXDra1/3k2U0yp4ZnI1IthIy3nOUr8zM1iSYDYdKr5GdhejrjWuELzQgp+HDpTYj1cYWXtPqKzhjfkZnlmhy7CQZ0FsWS3gugF/AfeYGlhpUJGqT2GsUiwdDK+MGEZlzLr84Lk1yeVwo9dkiMJGlO0BsgIKrXryni2o8BuPZEvvvONzKXILpg/54l2Biq9QrbGi52XN+qDmLlTpXBJefP+SazfcXKDZyxc8JRJaqfze6hM4iBCRLxHJ7Bug7pvEKmUqC/WrZ9PKIdbR1l7oleFZLwbm6Qc
- /Wmor/fu
- n7aRhY5Oo3P13t6yH2pgTsWBYvMV3c4kt+YJAQjYdGR0uZYgLSBolrNKXCImRgL8keU7D1JppRGuDDO8Tmrayxwj+MVAvl7FpBH8nDvHvnHZbN0dWuJa/dNDqaKQIMKc8K764caZ7iJV5BgnQ7llbvPmgm2iQt7RhzrWrXW2oao5rtcTO0riWiQhHy2AadcTSOKJsfYsDAX1AwiSNDEt2xesxEhMO/aC8Sfs60jiruI0T/74hBbwz8nFT/czHdQQP5j0X5pXaf3MDDp0zWN2nTvfQ+l35eJT+p/6PuMt36JVI0QjprGzwn80rYjI9485Mb8e/VOoIUSroa3skQveKpBKwOJMpFhJZ/jyaf0khlVj1yAFbrB1lOElunimUYfuJAMqyzWNR3qRt6eaoAu1eVvGf8LuI1a6YjmK/5a169PUuW6NicVNbERm+uus+uryu5zdRNLyuKJWc9LOD5PAKDkGg3NOLrzxZj5oRJkte5EhH+ig=
+X-HE-Tag: 1770139429-533098
+X-HE-Meta: U2FsdGVkX19gVSVVjRfLPCsXH9U9GIAm+N/9K9hNs743ZpDoVQjsmuCy5wKVXT9oPwT3reih6/YcyRQ/MgcGblBLhmAvFWFsfJ541KAcfRJoLHHvwJfZYHn//tTbprECVEq0kEoiMaP2IfWrt85Ltr1kp/yLdEgjfPR+R/XxCp68pJnPZjAa/kTABxm04pIOoyNhz270B1MLW76CamfjXLLOcV0VkBWQz1Q3sFpVrS30kHy/DTiiBNVr/Tt7/cCqRjPoQe3Tdd451RUsmI1vf5QQwye0KzOzTMXhYTXdt6TLeySoBOVE212cso9eIJaXgesNuhcss1D9IjevWDfY1rGOmU3TNkHpZjLj3+MAsCPWKuU1usWB094wfcFuBW5SwsO2ukkf/Nb98vp+JxufGv1L6PgDd23MWAZ9/2xbQR9/ja/0aQFYEcbfMljuab/3uf7yWVLrn5uO1cqN4hGL/8/m+cJcSkkmHREcSmRDQJ2nORgGJIaZgVulKzY1UZOcYTEXsYoWuLRzNkhrPU2x+EIijzEtvk4Dqbz3rGhfXfFRgWeSCFFE7Ua4smwQpRAd/mgGN1dCtB4RtQWtrEzCvSmwMEbmzuTIyJXS3q2qW0hxM31JLG+RgC41RanC2OY+lK8Unc63zxSJkVSG8vnrjoWeG/heaa4Jak1dmrhiqPCI3pgEm9WRNing3G0VhjyqXKFRrhVOCZwgZJDvsk6371R3ZnPc1rNNyMTPUKWCMYpmtUqMps0YmeuY+Ndbz8vkoafThf+5XGMgvAD8z3IonaRTnfLNfMq2K9/RD/AlAd2vS57zDKrMMvNNqYVRWIvgSkmQdVhFZI96KFDzo+st5HpA10Ry1szOj2ve6dYmJLryi5BlLNo2jeZA+o4j7V6kqxMjycilMZzpZQwq6TQmKPWLr5rPfkVG76PjPTtQ44O1/c2f9hyqIIpsnCclP1p8oUblpAcAKgZXEd1T14E
+ zPPyBczX
+ mQSgWgKPQjOSvr6Pz/Vv7oR5Gv/t+skx4tXgtxvy4G6bw98/bpCNetZac1YyELyoup5TZreodTBiXFQJYDTMvywc4wznPJklEdqmdExESPmftbU+opqKKVX5njsYnMaGIbcrt6CN24H2E6h+m50SFw8VGJznrfhTazFJl9wc/IcurrlbD0RiEG38nJ6hsoR9ZF0p0lckII/yx61A5gxtohIgiGakwQEM//Azzu9EDAGhVDLDJKDdaX6EAgtkWjPCmrEWr69s+Sfvp+f067UUoJiCACA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -176,62 +153,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/1/2026 9:23 AM, H. Peter Anvin wrote:
-> On January 29, 2026 3:27:20 AM PST, Jens Remus <jremus@linux.ibm.com> wrote:
->> This enables generation of SFrame V3 stack trace information for VDSO on
->> x86-64.  It's a continuation of Josh's and Steve's work:
->>
->>   https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
->>   https://lore.kernel.org/all/20250422183439.895236512@goodmis.org/
->>
->> This series focuses only on the VDSO code. They are helpful fixes
->> and updates that doesn't rely on sframes (although the last patch
->> is sframe related).
->>
->> This series applies on top of the latest unwind user sframe series
->> "[PATCH v13 00/18] unwind_deferred: Implement sframe handling":
->> https://lore.kernel.org/all/20260127150554.2760964-1-jremus@linux.ibm.com/
->>
->> Like above series it depends on the upcoming binutils 2.46 release to
->> be used to build executables and libraries such as VDSO with SFrame V3
->> stack trace information (using the assembler option --gsframe-3).
+On 2/2/26 09:20, Vishal Moola (Oracle) wrote:
+> In order to separately allocate ptdescs from pages, we need all allocation
+> and free sites to use the appropriate functions. Convert these pte
+> allocation/free sites to use ptdescs.
 
->> Josh Poimboeuf (6):
->>  x86/vdso: Fix DWARF generation for getrandom()
->>  x86/asm: Avoid emitting DWARF CFI for non-VDSO
->>  x86/asm: Simplify VDSO DWARF generation
->>  x86/vdso: Use SYM_FUNC_{START,END} in __kernel_vsyscall()
->>  x86/vdso: Use CFI macros in __vdso_sgx_enter_enclave()
->>  x86/vdso: Enable sframe generation in VDSO
->>
->> arch/Kconfig                             |  7 +++
->> arch/x86/entry/vdso/Makefile             | 10 +++--
->> arch/x86/entry/vdso/vdso-layout.lds.S    |  9 +++-
->> arch/x86/entry/vdso/vdso32/system_call.S | 10 +----
->> arch/x86/entry/vdso/vgetrandom-chacha.S  |  3 +-
->> arch/x86/entry/vdso/vsgx.S               | 19 +++------
->> arch/x86/include/asm/dwarf2.h            | 54 +++++++++++++++++-------
->> arch/x86/include/asm/linkage.h           | 33 ++++++++++++---
->> arch/x86/include/asm/vdso.h              |  1 -
->> 9 files changed, 97 insertions(+), 49 deletions(-)
->>
-> 
-> This patchset clashes *hard* with the changes already in tip:x86/entry.
+Imperative voice, please.
 
-Thank you for the hint!  I have rebased the series on top of
-tip:x86/entry and sent a v7 for review:
+> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> index 6c6eb486f7a6..f9f9d4ca8e71 100644
+> --- a/arch/x86/mm/pat/set_memory.c
+> +++ b/arch/x86/mm/pat/set_memory.c
+> @@ -1408,7 +1408,7 @@ static bool try_to_free_pte_page(pte_t *pte)
+>  		if (!pte_none(pte[i]))
+>  			return false;
+>  
+> -	free_page((unsigned long)pte);
+> +	pagetable_free(virt_to_ptdesc((void *)pte));
+>  	return true;
+>  }
 
-[PATCH v7 0/6] x86/vdso: VDSO updates and fixes for sframes
-https://lore.kernel.org/all/20260203171958.1522030-1-jremus@linux.ibm.com/
+This looks wrong to me, or at least that the API needs improvement. Most
+callers are going to have a pointer that they've been modifying. They're
+not going to have a ptdesc handy.
 
-Regards,
-Jens
--- 
-Jens Remus
-Linux on Z Development (D3303)
-jremus@de.ibm.com / jremus@linux.ibm.com
+So I think this needs to look like:
 
-IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
-IBM Data Privacy Statement: https://www.ibm.com/privacy/
+	pagetable_free(pte);
 
+You can convert to ptdescs internally or do whatever you want with
+ptdesc sanity checks, but the API needs to be on writeable pointers. If
+the API takes a const pointer that requires callers to cast it, I think
+the API is broken.
+
+> @@ -1537,12 +1537,15 @@ static void unmap_pud_range(p4d_t *p4d, unsigned long start, unsigned long end)
+>  	 */
+>  }
+>  
+> -static int alloc_pte_page(pmd_t *pmd)
+> +static int alloc_pte_ptdesc(pmd_t *pmd)
+
+Why change the name? Nobody cares what this is doing internally.
+
+>  {
+> -	pte_t *pte = (pte_t *)get_zeroed_page(GFP_KERNEL);
+> -	if (!pte)
+> +	pte_t *pte;
+> +	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL | __GFP_ZERO, 0);
+> +
+> +	if (!ptdesc)
+>  		return -1;
+
+This also looks wrong.
+
+What kind of maniac is ever going to allocate page tables without
+__GFP_ZERO? __GFP_ZERO really should be a part of pagetable_alloc(),
+don't you think?
+
+> +	pte = (pte_t *) ptdesc_address(ptdesc);
+>  	set_pmd(pmd, __pmd(__pa(pte) | _KERNPG_TABLE));
+>  	return 0;
+>  }
+
+Why is there a cast here? ptdesc_address() returns void*, no?
+
+Also, if there a ptdesc_pa(), this could be:
+
+static int alloc_pte_ptdesc(pmd_t *pmd)
+{
+	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+
+	if (!ptdesc)
+ 		return -1;
+
+ 	set_pmd(pmd, __pmd(ptdesc_pa(ptdesc) | _KERNPG_TABLE));
+ 	return 0;
+}
+
+This *should* be a very common pattern. After you allocate a page table
+page, you almost always need its physical address because it's going to
+get pointed to by other page table or hardware register.
+
+To me, it doesn't look like the ptdesc API is very mature yet, or at
+least hasn't been expanded for ease for actual users. I don't want to
+grow its use in arch/x86 until it's a wee bit more mature.
 
