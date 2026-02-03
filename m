@@ -4,125 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC78E8B367
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 22:07:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F53FE8B37E
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 23:01:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC94F6B0005; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
+	id 6DB716B0005; Tue,  3 Feb 2026 18:01:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C76E36B0088; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
+	id 6889B6B0088; Tue,  3 Feb 2026 18:01:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B7B7A6B0089; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
+	id 587356B0089; Tue,  3 Feb 2026 18:01:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A34726B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 08D581B1BF2
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 22:07:31 +0000 (UTC)
-X-FDA: 84404532702.22.8FFF35D
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0E195140011
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 22:07:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KgBFra7d;
-	spf=pass (imf23.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 429A66B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:01:30 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6122B160602
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 23:01:29 +0000 (UTC)
+X-FDA: 84404668698.18.529A5E7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id C9FD64001E
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 23:01:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L5yZ+41L;
+	spf=pass (imf01.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770156449;
+	s=arc-20220608; t=1770159687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AOxus6Q+k+UFCDyHcbF/F78h7JC9Gdvh77//dMnEmMI=;
-	b=WVN8j6LadO6BrIbbr1AnjirtDxXnlwJqRYOKLozO9UZ7dDJ1aMP7KSL4/a6RERIhc6Quga
-	XX4Q/gGf7CLcwkYkXqDUwj4y0bZGRRQPkwgaMyIb7b++a9Ri38DKbj//xllHuhiIqMJ7Bd
-	X/+Kg0Uj0p0Uy+uBtwNTspF4wtHiAGk=
+	bh=Kte147V4yHmLnX7PSerPack63O9JN9FG1nzBfVGN0QU=;
+	b=RCDx0JJ3OxxXBuM91CjixyK3DAtXWY/4urtgOEmuNWNjP0Csfi3i1/sGId/g3LDoD6jnUF
+	TLlAhuNKQ41o0E16F8hrpYm12xHHLgBkf1M5duhkjSIf2BwmHtV+TIiR6NoEmqKl/JR3DB
+	hMt1QjHfW9eT0td3e8d1Z2/7RGfplTQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KgBFra7d;
-	spf=pass (imf23.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770156449; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L5yZ+41L;
+	spf=pass (imf01.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770159687; a=rsa-sha256;
 	cv=none;
-	b=Fve19GJaUBYZm3YHxKyQhXmoRo7qmINUsA/zqu5jEUVu8rS8OYv1dcgDNsz+4ghFvFcMMK
-	11jrtAuiJjRYJ/iiXMVM/UcJyEv3RKQpR3leAIXY6NXZlqpFS2Z/UVALhK/1XazN5g60Up
-	Z3ST9ZL9oPNpmHHtdClIKRJTItDgICg=
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-124a95e592fso632095c88.0
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 14:07:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770156448; x=1770761248; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AOxus6Q+k+UFCDyHcbF/F78h7JC9Gdvh77//dMnEmMI=;
-        b=KgBFra7dadN8jfvvTmj3PmZdbOgExEDdLB40r6Tgdbqf1v7j5wWqcA7eQ46DITnFzj
-         +XSLuKSJCW4+a2sPu/TfbwOTuDxg8n8gcmxRDgkcDVAn5/JMgamifgWNzyWP0vzgNPIf
-         7NTgepVv5meilNyJR4n/3RFGpubWQ6R/6tvlr5Ct8TeamHOCScuC32bKERvv+iOPj0N5
-         lXVYgZaiGbGMfTCqwmDMwUWEijutn9g6ih3DVy6n2YPVt/fKUzGxoKZejSiYP5SKLfu6
-         KIiSAoPw2cemKBdOfrfdpxZH5GHtjfEtIh2QmZX/0dh7vRdv3t0NikpKhRPKiXIIfjd4
-         Nzlw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770156448; x=1770761248;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOxus6Q+k+UFCDyHcbF/F78h7JC9Gdvh77//dMnEmMI=;
-        b=B9NPQUfpHPe9dVu4d0jUOf5bYt00/QLBWTGNkoba8wS2nHx/pzPGXlqhw1lJ/bUbgo
-         WX/Y3sjSw54/fKH4rpmf+2p4niCyXTJtElfiMszrSHy6i9Kx/AaqjJQgOKvNH9InUT36
-         IEpoCZd/xxEB7mgywhE0owG5L0ZSa2tApujh61pRpUjLx89eGSdO/5jq91YoJvXGbEgC
-         hn3rh4ogvSFiWCNnabMtWrqAzDBetgpTTWHEzntvuRAhYtcFtUTrItHXPE79M+8MJj4/
-         rUS72+mlpWFRXjYnk247LEqQLecnADYDzEJLetDs/YqZNo6kBPkTlKtZ7rmJjQ/iGj0W
-         au0g==
-X-Forwarded-Encrypted: i=1; AJvYcCW/7H++gZZv49GmnqZg0UhmDdpD0d8KYULjTAiezrXQVeCvU0glOFqRDEfr64KsaSMpge2xsgvOTw==@kvack.org
-X-Gm-Message-State: AOJu0Ywr9HRdA3CMRZjjpUG+heCGDpCslok58okEY3OgKm5QPoD3/kRc
-	Qq9GjXzGQ7gjCpxEjhxkAEBjVXktGjFuBWmAATGk2g7/98MRmnj8PXAR
-X-Gm-Gg: AZuq6aIs+kVEx1wIGq9p+ioMBwqeudRmEBa/Uyf16vm0EMcjmuHoDyTGhK6CrehKCYH
-	tHFZBAQrnZxwBDxYtDOEZ8Boq4643pkdkBLBajKYsAKYJWzegrC7JcdnqXcf8A8PtwNTZiz2PwW
-	8Ext2G0t0oYNmd6NHJN65SrnAt4R+6QiumbBFN92VfW6OYXdyRTZal5IhBGhYJA6jSzPB2rgXXO
-	fBndLzx9kVEfLc7X6K+rhKQH9xfdpfz0VrFav0cEZAs2hmVqIhS/ybkEW8NRIasp+sEGjK0zgnT
-	o+Co7sFJwfS/1jRSL+jVD921rlNgiLYSYvzGlTy2616PHyVQDejdwByZOEyKocGAEbuTYa7fxJW
-	JfokN6YKQKBhhN6GxFCf6aDsEfzme5RDn0KBL3lfrhhiNAQ9nO/xKivx89cAP2Y29/fs0OC6Iru
-	4nNOkFBmMlH85MQvVRp9Cytfz1U6vXF2214ml9QJ4RzsALWJZUaFH8uMgwLHg8U18=
-X-Received: by 2002:a05:7022:6b9b:b0:119:e569:fbb2 with SMTP id a92af1059eb24-126f47cfbe2mr536040c88.33.1770156447603;
-        Tue, 03 Feb 2026 14:07:27 -0800 (PST)
-Received: from ?IPV6:2a03:83e0:1151:15:1cc5:26fe:6b00:bcef? ([2620:10d:c090:500::21b0])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-126f503d0fbsm454159c88.13.2026.02.03.14.07.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Feb 2026 14:07:27 -0800 (PST)
-Message-ID: <05d5918f-b61b-4091-b8c6-20eebfffc3c4@gmail.com>
-Date: Tue, 3 Feb 2026 14:07:25 -0800
+	b=ippQ1Brh1Xw0egUCB4sCilDOGjfhaAde2qpMJdpEGN6kWzJe0teGbpaL+ehTpl9I/obYEp
+	vlQ1wVUe+OIhpjZIOJV4pMfFy1YLeL5KCY+tkoYKJq/tgtm5IyJAreSKvPEBh5ZeNkZ8/V
+	1Vms2nGCG65se7Pes6wQ/f1hOLoajTo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E81176012A;
+	Tue,  3 Feb 2026 23:01:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03C7C2BC86;
+	Tue,  3 Feb 2026 23:01:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770159686;
+	bh=6+OC8xqFJ8Ra/JiM0dVaFvJDlj+ZOH9NPyD2sp5CHvc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L5yZ+41Lkhu4k67GeeWfmbzf7Bese7xS9DR+H7NtUWfk91m1eJVADLP2RVyzrG+Ct
+	 rgh1e0VvKFsqLRGyjoYNtTZFT7YqajHJ0wSLMJcfhM5ZPrSHdzGFxnyc4B0PaU6kW9
+	 rJy05Vubc9PFZSKul5Xp55uXRpbD2FSJXhZEnL2RCcqWCSURqndssF/HGVX2B1XJmf
+	 8U17Twn+xWoR4ftCuLkx+aEvjAjfWHNPaYD6hPOXSpPwVfs+QwPXjiwrxEHVhfHe1Y
+	 kaG1r7vgEzvrEjWXW1Lm8XwAsdwwRTcPpbQMVWvxRWMYfQFuHmjXOpJjPj9wpxjX/l
+	 EMOw47C5+xn5Q==
+Date: Tue, 3 Feb 2026 23:01:24 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christoph Hellwig <hch@infradead.org>, Harry Yoo <harry.yoo@oracle.com>,
+	Vernon Yang <vernon2gm@gmail.com>,
+	=?utf-8?B?5p2O6b6Z5YW0?= <coregee2000@gmail.com>,
+	syzkaller@googlegroups.com, akpm@linux-foundation.org,
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net,
+	"Theodore Y. Ts'o" <tytso@mit.edu>, linux-fscrypt@vger.kernel.org
+Subject: Re: [Kernel Bug] WARNING in mempool_alloc_noprof
+Message-ID: <20260203230124.GA1161785@google.com>
+References: <CAHPqNmwK9TY5THsXWkJuYCdt7x+mZHPq65AUOLZJeMp-FdAMvA@mail.gmail.com>
+ <aYBiza9L1hmhmXbb@hyeyoo>
+ <fwutwpejyptpo6gqv75zanqciv3fmxvillomwcjvtz4auebbc2@vazub2ct7pa2>
+ <aYHFZ5OxfL4j-_ze@hyeyoo>
+ <aYIh1wPm7BrId9dk@infradead.org>
+ <6f5881df-0e0b-4278-808b-7c0cffa12a30@suse.cz>
+ <aYIpVq-jTKyTQE8G@infradead.org>
+ <d9dc2ee1-283d-4467-ad36-a6a4aa557589@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 01/12] mm: add PUD THP ptdesc and rmap support
-Content-Language: en-GB
-To: Zi Yan <ziy@nvidia.com>, Kiryl Shutsemau <kas@kernel.org>,
- lorenzo.stoakes@oracle.com
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
- hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
- baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
- npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
- vbabka@suse.cz, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-References: <20260202005451.774496-1-usamaarif642@gmail.com>
- <20260202005451.774496-2-usamaarif642@gmail.com>
- <aYB75cWO2nnTx2ch@thinkstation>
- <63D23D5F-AF35-4199-B52E-DFFC16DFDF91@nvidia.com>
-From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <63D23D5F-AF35-4199-B52E-DFFC16DFDF91@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0E195140011
-X-Stat-Signature: qjf6ea9ba43u6fz3iw9c7snzu8oqmz5o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d9dc2ee1-283d-4467-ad36-a6a4aa557589@suse.cz>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: nnbzeydtt89d3ascsuz86uk347sjtyfe
 X-Rspam-User: 
-X-HE-Tag: 1770156448-604660
-X-HE-Meta: U2FsdGVkX1/H+DaBs/FJA5Qz8sTHnT449s0YYTa+8H+f277D1p0uT2RFlO+ArBEU81264WPQPE6chaa0F8U7XGgd24bIc0707NMEHCvDtYTDZOvNmYm9Si6g/ptAlnjXo9ZxONpl7VrBvmzYMXOOhIFzqBlWEpkos7kkQ2ZWxdXGaXMbm92Wq8dqTZ007PFF/SsOnOmf7yAF0isjFDoQcOvKE3i3nX95M+Rr5GMLWZR8i/bNiEy6g1g52xnTOCTqFiEW4LHHPzGRTVLOnH8umUAsg2pAsGA/ULBqci4OiJYD0E1woo0K7qydzSS4GN2LI+Ty7xiwtz8Zjgc9KBvrPG/VcmhvFBH9v7mnyZ2focRM5A+nTNlmEtTxDsJmbaaRT0AfR3+TIX9ac34LyOOUvRbap0vRfco2S+OThIufrSapZNrgS/PULHhrv9g/Q7wwcR5JNHdJD/K+E2i52yHR4VNWtX5J5DuefeaSj2UObL2yXj4Mmq7O50bk2yTGXjpdEz+qhnHchpnm+F5P/9crKKttqfXs1c9dYT4x75AAvmN8WdpDUR9Ywfy5C0FTzvazNyEYSRsTwpnf+0wKw80sjX5Bbu6aYjPw0GygUPa9hCMEno3LliRbQ8YHkI2BRKG54hkghAxLJhy5NBNjQnfU8CkrrBvJRgj5GGJ4QX1RPp+pw19ytmGt3TBeFUff7/Xelte99Pniy710XGwkSH4G93K5Qnvtqx3eSatTiMGhMYjBjoYLLBppyfMks+vwkfFfzZRxN3yR5yZnetVm2ujgq/9jBta237RbW6nNtEQQYDiqEDipL+4pzmyRS5gWwkt+TuqcDYI8PyrjNpJIiC4PLOFN+jdRqv3dVmoFtWNMyw4tfy1fIkFcUD7X/8QKq5glgKuYfEO6Uv313xpVIcD+ic6Zv82/AIYKXCtDuccuKjxa6/DhPiKZ1jiFpJgBuDurtkR/Y2X53658Y/ACGpW
- Cs8NT4Jm
- MNRJs14rEyqi6IGkyvFA7VknpAIRab5J31IbgWMBGwUR5ea3aO0sPBVMG/TSfHP1jV4bGHgh4moukaNYEFGp52hXMzL1Sd7t+RqnQBbdJldT1i/YkKLD7zijPMzNeBFMrrlfJIJ+m4W1/vi273BURstn5E0QKMpX1n1khD72aLtuFOgAk5DE5V8FJDJyDK7FopprNxLTVJvFTiKj067dtf3sA8MIx6jkDZsqD+h91LwhWlYrahlRoJyA9Mvp4MWQc+lBkNUOVg9o/ctg4XRf4+fEaIPkh+vBQUrCoeHRR01FxerhQko+fNC0fFG8aaeN+08Vz2nWYnr0P8BgDFNZ8XxPkrUQLtLGOgfnyb9smlZazQ8dXVpKwq8x0JjFdfNaLox5ORPL19BRaUbWBXtR6sjDWk72XO8vnbc5L4mNLqvx9wmSXSrJyo2qEwsAGTSliRaOZGa5Cz8Pk7kolDmLEbOGIEInKB4trINgPNDXt4CoP+gg2ByAaxPqLQHSYFO3U33AkJAfE186rEC3o5q6uORr+udlRdbfRhPOIfvBAijav1lM+cM8TAECx1AJLq719lu/mhFj/dv4nW8WHEvIq2A3/OC27raRLkkJcKnxbx1/ZgKTRyIs68+wblCG6piSyjHa7
+X-Rspamd-Queue-Id: C9FD64001E
+X-HE-Tag: 1770159687-341115
+X-HE-Meta: U2FsdGVkX19SCtuZH5CFxSIopqt19SgfMsKE0WYxQVlJhrmucHNOXxj5jTztB+khy/5Vj0dla2UGkvLyph4L3sYcqs+c9j76wV8IW3QXmLADqgCRJ561bQEMy7YUUnA3AQ8hxd2bTFs35bUPGEqhrR2YVbCZUEfn2Ob52p8MN7n6R40MUjmqBLxU30aPsfzq2GPd2v2HOR6FuRya43uUgkYXqHRp7YCegK1qjRqS6KgODClKex0lSpTxXAJwc4jDOZMkSvzUxrm4rU1KDL4b8H3ijiwTMABmMuNtUtMbu50G/VLXDDfJBMS9SIq7kqHWIGaJfewgD6UX9pRe4DFCu/VM4LLN53M1klLi9PY1dvyU1ArQcbF+StGNzpwVlauhtqI6NOcHRIxIWG7F3Sj6nZCY9Tc9PDmNZkBdMsdY1T/SMq6mqAXfHOxwRWODSdj/NquAL/z4pKcMiMbLrMZrWZBHikRJw+a8dMJOVTgOGIKXCXAYIhiYKZaj4B8AUNnJwzNYWBRRdBkXrNQ3OzxYkWmqowVMAyaT0CPzncCAdsk4jhTBWOLxz7KmASvDUkoqPIhkzj2N1Sf5LNqNaqW0hrzzT4Qcq6eQlumHpJx3eerExJF1xwM8sFlUO8ZrYi4qXwGrjeNPjcZgOyIpTKf+krsYgqYBc/sFg7bPFrQbnlxz11AehOjPz1Y6PBaYNNlDKITD5vPlAeaP3BqRpbmuBFJ3YsanvbLdlT3BBsA2J8QP11r8WLSKlSl1D9rBxeCfmXIAeMxyVCq5LHphWKLvd6qOvBeKpVL/xWTDIvFNzwI3ynQyCEhHfJgn0n9bR2sDpUDBoP8wKELdb1+58c2RWa/7WN4PHgMRq16xY4lndTDw7tjgVuGSivMCTqcb/S5oiZSwKUBglGiXOuCzBVAPiMOut8mkDVT9dsu/A3S4AeMuUq0XDw4JbQA7NOf3eRg3EwddsoE58QPkS60RMmT
+ P0vi0XIA
+ xi80KEYAhegTw+Gd4YbGRcinSFY/hE+sYVU5GhaeUPohS7JOhr6tOMVC3R+NXRGUEV4FT5Z1F9zDQSfIA8RVtARj8BfyrO1N30NKRW23Deq7k0FKmcWKjDqC6pPOP/NlV65MHmi+lGsf3RcuEFtR221vSkXsVGWHyQhfzsygcrdttCMUkOlpoMFDdSnwiyznCtiyS7qJJoqYIUTEIiPEPafCfqSFCJeI/3IOIbPm2tNisJ7gUX20SvftL7WqhIn/W/Z7yan4/ajNgjlTcqtb/fYLWIA8kNh1s6azBQjxFC2F73iROdX0NkQPQuptmiNcJPMzYJE7f9l9kuys=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,157 +105,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 02/02/2026 08:01, Zi Yan wrote:
-> On 2 Feb 2026, at 5:44, Kiryl Shutsemau wrote:
+On Tue, Feb 03, 2026 at 07:30:07PM +0100, Vlastimil Babka wrote:
+> On 2/3/26 17:59, Christoph Hellwig wrote:
+> > On Tue, Feb 03, 2026 at 05:55:27PM +0100, Vlastimil Babka wrote:
+> >> On 2/3/26 17:27, Christoph Hellwig wrote:
+> >> > On Tue, Feb 03, 2026 at 06:52:39PM +0900, Harry Yoo wrote:
+> >> >> Maybe the changelog could be rephrased a bit,
+> >> >> but overall LGTM, thanks!
+> >> > 
+> >> > 
+> >> > No, that does not make sense.  If mempool is used with __GFP_RECLAIM in
+> >> > the flags it won't fail, and if it isn't, GFP_NOFAIL can't work.
+> >> 
+> >> So that means as long as there's __GFP_RECLAIM, __GFP_NOFAIL isn't wrong,
+> >> just redundant.
+> > 
+> > Given how picky the rest of the mm is about __GFP_NOFAIL, silently
+> > accepting it where it has no (or a weird and unexpected) effect
+> > seems like a disservice to the users.
 > 
->> On Sun, Feb 01, 2026 at 04:50:18PM -0800, Usama Arif wrote:
->>> For page table management, PUD THPs need to pre-deposit page tables
->>> that will be used when the huge page is later split. When a PUD THP
->>> is allocated, we cannot know in advance when or why it might need to
->>> be split (COW, partial unmap, reclaim), but we need page tables ready
->>> for that eventuality. Similar to how PMD THPs deposit a single PTE
->>> table, PUD THPs deposit a PMD table which itself contains deposited
->>> PTE tables - a two-level deposit. This commit adds the deposit/withdraw
->>> infrastructure and a new pud_huge_pmd field in ptdesc to store the
->>> deposited PMD.
->>>
->>> The deposited PMD tables are stored as a singly-linked stack using only
->>> page->lru.next as the link pointer. A doubly-linked list using the
->>> standard list_head mechanism would cause memory corruption: list_del()
->>> poisons both lru.next (offset 8) and lru.prev (offset 16), but lru.prev
->>> overlaps with ptdesc->pmd_huge_pte at offset 16. Since deposited PMD
->>> tables have their own deposited PTE tables stored in pmd_huge_pte,
->>> poisoning lru.prev would corrupt the PTE table list and cause crashes
->>> when withdrawing PTE tables during split. PMD THPs don't have this
->>> problem because their deposited PTE tables don't have sub-deposits.
->>> Using only lru.next avoids the overlap entirely.
->>>
->>> For reverse mapping, PUD THPs need the same rmap support that PMD THPs
->>> have. The page_vma_mapped_walk() function is extended to recognize and
->>> handle PUD-mapped folios during rmap traversal. A new TTU_SPLIT_HUGE_PUD
->>> flag tells the unmap path to split PUD THPs before proceeding, since
->>> there is no PUD-level migration entry format - the split converts the
->>> single PUD mapping into individual PTE mappings that can be migrated
->>> or swapped normally.
->>>
->>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
->>> ---
->>>  include/linux/huge_mm.h  |  5 +++
->>>  include/linux/mm.h       | 19 ++++++++
->>>  include/linux/mm_types.h |  5 ++-
->>>  include/linux/pgtable.h  |  8 ++++
->>>  include/linux/rmap.h     |  7 ++-
->>>  mm/huge_memory.c         |  8 ++++
->>>  mm/internal.h            |  3 ++
->>>  mm/page_vma_mapped.c     | 35 +++++++++++++++
->>>  mm/pgtable-generic.c     | 83 ++++++++++++++++++++++++++++++++++
->>>  mm/rmap.c                | 96 +++++++++++++++++++++++++++++++++++++---
->>>  10 files changed, 260 insertions(+), 9 deletions(-)
->>>
+> OK then. But I don't think we need to add checks to the mempool hot paths.
+> If somebody uses __GFP_NOFAIL, eventually it will trickle to the existing
+> warning that triggered here. If it's using slab then eventually that will
+> reach the page allocator too. Maybe not with some custom alloc functions,
+> but meh.
 > 
-> <snip>
+> This f2fs_encrypt_one_page() case is weird though (and the relevant parts
+> seem to be identical in current mainline).
+> It uses GFP_NOFS, so __GFP_RECLAIM is there. It only adds __GFP_NOFAIL in
+> case fscrypt_encrypt_pagecache_blocks() already failed with -ENOMEM.
 > 
->>> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
->>> index d3aec7a9926ad..2047558ddcd79 100644
->>> --- a/mm/pgtable-generic.c
->>> +++ b/mm/pgtable-generic.c
->>> @@ -195,6 +195,89 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
->>>  }
->>>  #endif
->>>
->>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
->>> +/*
->>> + * Deposit page tables for PUD THP.
->>> + * Called with PUD lock held. Stores PMD tables in a singly-linked stack
->>> + * via pud_huge_pmd, using only pmd_page->lru.next as the link pointer.
->>> + *
->>> + * IMPORTANT: We use only lru.next (offset 8) for linking, NOT the full
->>> + * list_head. This is because lru.prev (offset 16) overlaps with
->>> + * ptdesc->pmd_huge_pte, which stores the PMD table's deposited PTE tables.
->>> + * Using list_del() would corrupt pmd_huge_pte with LIST_POISON2.
->>
->> This is ugly.
->>
->> Sounds like you want to use llist_node/head instead of list_head for this.
->>
->> You might able to avoid taking the lock in some cases. Note that
->> pud_lockptr() is mm->page_table_lock as of now.
+> That means fscrypt_alloc_bounce_page() returns NULL, which is either the
+> WARN_ON_ONCE(!fscrypt_bounce_page_pool) case (but the report doesn't include
+> such a warning), or mempool_alloc() failed - but that shouldn't happen with
+> GFP_NOFS?
 > 
-> I agree. I used llist_node/head in my implementation[1] and it works.
-> I have an illustration at[2] to show the concept. Feel free to reuse the code.
+> (Also the !fscrypt_bounce_page_pool is therefore an infinite retry loop,
+> isn't it? Which would be truly a bug, unless I'm missing something.)
 > 
+> Ah but fscrypt_encrypt_pagecache_blocks() can also return -ENOMEM due to
+> fscrypt_crypt_data_unit() returning it.
 > 
-> [1] https://lore.kernel.org/all/20200928193428.GB30994@casper.infradead.org/
-> [2] https://normal.zone/blog/2021-01-04-linux-1gb-thp-2/#new-mechanism
+> And there theoretically in v6.12.11 skcipher_request_alloc() could return
+> -ENOMEM. In practice I assume this report was achieved by fault injection.
+> But that possibility is gone with mainline commit 52e7e0d88933 ("fscrypt:
+> Switch to sync_skcipher and on-stack requests") anyway.
 > 
-> Best Regards,
-> Yan, Zi
+> I think the whole "goto retry_encrypt;" loop in f2fs_encrypt_one_page()
+> should just be removed.
 
+Indeed, fscrypt_encrypt_pagecache_blocks() (or the older code it was
+derived from) used to do multiple memory allocations.  Now it only
+allocates the bounce page itself.
 
+Also, the intended usage is what ext4 does: use GFP_NOFS for the first
+page in the bio for a guaranteed allocation from the mempool, then
+GFP_NOWAIT for any subsequent pages.  If any of the subsequent
+allocations fails, ext4 submits the bio early and starts a new one.
 
-Ah I should have looked at your patches more! I started working by just using lru
-and was using list_add/list_del which was ofcourse corrupting the list and took me
-way more time than I would like to admit to debug what was going on! The diagrams
-in your 2nd link are really useful. I ended up drawing by hand those to debug
-the corruption issue. I will point to that link in the next series :) 
+f2fs does it differently and just always uses GFP_NOFS.  Yes, that
+doesn't make sense.  I guess ideally it would be changed to properly do
+opportunistic allocations in the same way as ext4.  But until then, just
+removing the retry loop sounds good.
 
-How about something like the below diff over this patch? (Not included the comment
-changes that I will make everywhere)
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 26a38490ae2e1..3653e24ce97d7 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -99,6 +99,9 @@ struct page {
-                                struct list_head buddy_list;
-                                struct list_head pcp_list;
-                                struct llist_node pcp_llist;
-+
-+                               /* PMD pagetable deposit head */
-+                               struct llist_node pgtable_deposit_head;
-                        };
-                        struct address_space *mapping;
-                        union {
-diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-index 2047558ddcd79..764f14d0afcbb 100644
---- a/mm/pgtable-generic.c
-+++ b/mm/pgtable-generic.c
-@@ -215,9 +215,7 @@ void pgtable_trans_huge_pud_deposit(struct mm_struct *mm, pud_t *pudp,
- 
-        assert_spin_locked(pud_lockptr(mm, pudp));
- 
--       /* Push onto stack using only lru.next as the link */
--       pmd_page->lru.next = (struct list_head *)pud_huge_pmd(pudp);
--       pud_huge_pmd(pudp) = pmd_page;
-+       llist_add(&pmd_page->pgtable_deposit_head, (struct llist_head *)&pud_huge_pmd(pudp));
- }
- 
- /*
-@@ -227,16 +225,16 @@ void pgtable_trans_huge_pud_deposit(struct mm_struct *mm, pud_t *pudp,
-  */
- pmd_t *pgtable_trans_huge_pud_withdraw(struct mm_struct *mm, pud_t *pudp)
- {
-+       struct llist_node *node;
-        pgtable_t pmd_page;
- 
-        assert_spin_locked(pud_lockptr(mm, pudp));
- 
--       pmd_page = pud_huge_pmd(pudp);
--       if (!pmd_page)
-+       node = llist_del_first((struct llist_head *)&pud_huge_pmd(pudp));
-+       if (!node)
-                return NULL;
- 
--       /* Pop from stack - lru.next points to next PMD page (or NULL) */
--       pud_huge_pmd(pudp) = (pgtable_t)pmd_page->lru.next;
-+       pmd_page = llist_entry(node, struct page, pgtable_deposit_head);
- 
-        return page_address(pmd_page);
- }
-
- Also, Zi is it ok if I add your Co-developed by on this patch in future revisions?
- I didn't want to do that without your explicit approval.
-
+- Eric
 
