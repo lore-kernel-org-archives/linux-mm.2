@@ -4,87 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB564E87842
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:22:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 637B9E87842
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:27:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AA166B00A4; Tue,  3 Feb 2026 11:22:49 -0500 (EST)
+	id 992846B00C4; Tue,  3 Feb 2026 11:27:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 058A36B00AA; Tue,  3 Feb 2026 11:22:48 -0500 (EST)
+	id 916CE6B00C5; Tue,  3 Feb 2026 11:27:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E98856B00AB; Tue,  3 Feb 2026 11:22:48 -0500 (EST)
+	id 815276B00C6; Tue,  3 Feb 2026 11:27:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CE4896B00A4
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:22:48 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 743B5B9559
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:22:48 +0000 (UTC)
-X-FDA: 84403664016.14.9B1A828
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D871CC0008
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:22:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g8tx6q1m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770135766; a=rsa-sha256;
-	cv=none;
-	b=G6P8bocPc5tWGu2eUdr6EEiJyb0QAyM7Nve/DStyYjss3dqFV2rxJhX2p11hPauSCNRTNF
-	GGnENtwxWe7VGJtBzUb39dwu/auOHqvAiZdeUp2UnEFBv/foMOxT6EV76mgnJxX91iVd8y
-	pncK8n2Vi9/bJK6G4jO8iOcHutXoaFQ=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=g8tx6q1m;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 696756B00C4
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:27:10 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D1AA1A02A1
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:27:10 +0000 (UTC)
+X-FDA: 84403675020.19.2D34E6A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E556518000D
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:27:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=TCCIYGAo;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf24.hostedemail.com: domain of BATV+86a917d310add611ad46+8199+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+86a917d310add611ad46+8199+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770135766;
+	s=arc-20220608; t=1770136028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZeZ0MgyO1fyDscEfAG6lz+HAP/ww21XmDgQOMzqN3E8=;
-	b=hm5am4jdK23MX0WEIgyGDiNmaZYgpmxmcwAZ/oHiXo9AE/hFjKQ8hw7ctvxW6f1JUxlqFB
-	VrjYWRk8luBVxu4EtRUmxffwE2JPvMypbQ2oeCUFl5kI5NfKh8Y0Ag5RDMmZxs+Ajnypoa
-	i2Llx1oeK6o3ITUegnyMfoD+pUtfseg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BF5B60143;
-	Tue,  3 Feb 2026 16:22:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D756AC116D0;
-	Tue,  3 Feb 2026 16:22:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770135766;
-	bh=1oyZKFwjfIKHh6YeT0LaiF3S2saMqK9ByktcAWWIavs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8tx6q1mPUSf1sJXgzbw92G3rlDMhAkfEXATLVPku582tk/LtlNIenhVOB2H5bFEL
-	 TAfh/begikCvK3c8XBf5qXD6iYsx84tWXMpfsNNFo32z2Q0ccGzKzUVgryVAsjPxUX
-	 FmA93KD1+YcSmT6S1wWrVGMX1kHCN+tEmdFRzPGIU/Vjt10UNyBMSsdYk/3vgpSY40
-	 nAnMGtBI0Zdj12UpMkEW93pf1gLHRLiKNLeTZZHnlDtlaJl5PW7eI7D1hDeujyoQrO
-	 28zvS2EdH+ytwUZTrC9Nsj8f/WM3ZcFyQP2SCSfY6Hly4/YnLp3qsxqLnhpML3AG1a
-	 wxTh30Z8+rOkw==
-From: SeongJae Park <sj@kernel.org>
-To: qinyu <qin.yuA@h3c.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH] mm/damon: remove redudnant mmu notifier call in pmdp mkold
-Date: Tue,  3 Feb 2026 08:22:41 -0800
-Message-ID: <20260203162242.46851-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260203095400.2465255-1-qin.yuA@h3c.com>
-References: 
+	bh=ihGhxkBey6kFkwXRM9ITv8oPknMKk924ge/1joU7ljM=;
+	b=xA5FM1xbUnSqpJo/2vuvNOVaKO3a6UMa3OTAXZPUHoB0GNpe3xjcRSwAocvhINvIEFad7u
+	zansxQUJmX3B8ob4XjJrxNS5f6U6FeXreSNoMkTJVC3enxLs8N2Q/Kwbr8zmgHbU9zF5zk
+	zYjVKwIPSboBDUIEj1XgUR4oUi5ytFo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770136028; a=rsa-sha256;
+	cv=none;
+	b=55S5h+OnxgyviNLkW7PLM7CNPPKsN9E+I8HHTXfaBh3pKqXjr7xteoKuAjyWosKmNdlXNq
+	yQjVZbM+71/DMNXhGA3lRYFKUpUwsETV6fioyrFttfd+7IGSnVESELo3krJxOmnY1EJJdK
+	LslEE6Y010p4Sgqkrya9R2xKYmogcBE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=TCCIYGAo;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf24.hostedemail.com: domain of BATV+86a917d310add611ad46+8199+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+86a917d310add611ad46+8199+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ihGhxkBey6kFkwXRM9ITv8oPknMKk924ge/1joU7ljM=; b=TCCIYGAoplBTxL6XkOxRvOvNi2
+	UlLDnjKkx/25zsC+QoCIOgNcPp5da1kybz4nlM06M5gCgJtrZs/yPGT0MIg5/mMjFxeZU4k6iQgj7
+	rGlgB6Yq8EYJYaAY9s0Jx0uNvYpqM9xz+jYofGDNotF7yr/Lb1PNv7E37bfm93rX7dhO09n9kYlUZ
+	N9BlXspmYgizFF/m2xp2LMbdOv1JPWigOKkhXbb8bKt9BgulFyGnchxLc2+flp4lxc7h2V7WdQExw
+	DL63UjGshaGMhxPRfERbSnW23i2MG6lstrdmrotBjHGJohLb/VjLATOpysG1lLmstp/nKtO7yNodT
+	eowXEsvw==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vnJF1-00000006wqF-0RFm;
+	Tue, 03 Feb 2026 16:27:03 +0000
+Date: Tue, 3 Feb 2026 08:27:03 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vernon Yang <vernon2gm@gmail.com>,
+	=?utf-8?B?5p2O6b6Z5YW0?= <coregee2000@gmail.com>,
+	syzkaller@googlegroups.com, vbabka@suse.cz,
+	akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com,
+	roman.gushchin@linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [Kernel Bug] WARNING in mempool_alloc_noprof
+Message-ID: <aYIh1wPm7BrId9dk@infradead.org>
+References: <CAHPqNmwK9TY5THsXWkJuYCdt7x+mZHPq65AUOLZJeMp-FdAMvA@mail.gmail.com>
+ <aYBiza9L1hmhmXbb@hyeyoo>
+ <fwutwpejyptpo6gqv75zanqciv3fmxvillomwcjvtz4auebbc2@vazub2ct7pa2>
+ <aYHFZ5OxfL4j-_ze@hyeyoo>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aYHFZ5OxfL4j-_ze@hyeyoo>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: E556518000D
+X-Stat-Signature: d5mtag484tn5bodsgcujctronbcrs8rw
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D871CC0008
-X-Stat-Signature: ac84tmko9hkfpbikmczbowok913ddayx
-X-HE-Tag: 1770135766-607546
-X-HE-Meta: U2FsdGVkX195K0EFwdRufSmbcHpGiTtHOOV2FzECY+QDYiFU4dRurRokIq3C3S9QIJwYk5hipMD2p4SpPV3ZAedfl+scEs9O1boYUJ1E3UxmC3Cebfj89TwdbLcqODNcfYI0KGiKwWIyDxb1C7m1x03ekIxLVRRdaFx1EWqscNuUkk5klyW/hB88jldZ8ymnCUExBjPlsAK+Jw98sZh6hhwXli1OvSEwCZLdd4J4jkHKu6D5OjVebnLrIzXS+oQ+mY7+GudabmiphUTTKdNe5l1d0QN6kpwmMmJV8wqa5hkgkXMHickBH3AGdoU0GgvYaD0T/Y8n2VscK5/hfpKcembH2NTfnJW+3spCuUNOiaoaIZg7HQJTifd1kikYQc9xlA398glF+iLAZWcAerHOKe1VIUTpKY0zaprvE/qBJylkZ3z8DAQCBmI5GZ7GnXhEVxh653KsD8jQiixDZoHLAdwrEKmbTauFikIsx9AGHDWGvJbFyceF1qp4rVXYrsXb6yvdKyt33YwLepssmU943Ud/z1v5Hn0idtRweflmC7vz6xj8rAi0QeQJf1G7XAtreNp9ySK9dB03XzEz440RE7cOIldP07O86lXnH1WoMySBtEIVvpChaQRJABajpgNrV9TpSeJaU7KNZdEArrgBVTHqcmQcJ63wFTz3fjIgV9F07550DtbXN7LPQst80H2Q/yv1fcf/wbQRCijawtPFhXxNqZOMm9c/mJIAOfNHM0lGGS48ynbML/f/TNxqxAVCqLqHvEbLwhkC42AJTEr28oT1tyiLmZWj8udZTfb/HxSEozdMtm7UHWHkrVtsJBanRn4CfUbgunMl9j4wx1qbZZIvJ7bOhtQSyUu6/aSPpOhu8zWRWIfhl+nhl6GEC9IYvxqudr9oQIn7salT0QhXd6RyNgCozzq8PrTxzGuUVmdsLya6668nKXNUceRFzSPtaCKhbOAVHoHytq57RWx
- hOqwiiF2
- fpOdxKCjPSxsWo6Hh0Gv5sAR2K2FU8rmFp7nN/BDRMdcjpfCcmUmZBbshk0ssGGyRgwHzB0vhgyiyxlCMcP1AzuScuqWkluvAjOmbKpsxAaPNLlw2ksQCCEDhsHCtxtbv7LLSeFLC/0lvy/K5fpuXAe230UqGQ9ZPqWdaQ7oF+KIqXhoMCbLyXxjUcGrEf/AfxeYfk6gcWZ+8SYVl9Y6DMO9ZUYHk4vYvU+Qzv5h8kQlELneIw6kRF5oshjkFlnepDCSQn+f6HAdsGbygNMTQ7kocueZAGFV5L+agQtUZjinu2uJXPqlzx0+9HPhK7PO9YyhNvqrkmgejXb2hMy6O8eTOLhg9KiezR/LkOH65Igx0UPU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770136027-410948
+X-HE-Meta: U2FsdGVkX18LgA9p8qT/F7aASsBTu706J0dDQwaqpg3hlosxhoPJsiboWD8I9kcGtspWGeFlhp4ZN/T4oCiD3OTPC9hB7XR1ShX4NR3T/yuNcwC6+LtpxlIpOxVm6XYJ/d05cEyJ4Z5+d1+oV5J5IJ5sPDcHFR1X7oG3BfFrHlmhWAsgBtLvrxJ+qQ4vMW+1y7IKIUjucZygMHNDhGKE7u+usUMpYzOo/Nqq66Pg+YQk7VQgphOgUUWVRQ5VHEg0A329K++vIbZoqvCvQPrHE2B/xKHBVY8iUiQJfmToIV8fkJyaTtzAN04eO53arf2SUmfPxO+PAnY+kVU9DDQ2WXNauxx2vkh8Bn6Ev4NpFK7DDH/iLXtCcrHAfj5Ce7/AWkFc8pmlHxRlTIQgEORzfRJyungCEmvUAsKT4Cd9hKci8Ei7H1aaxTw5EI+BuxiBMttPuvr5bVJM7gz2UiQTHGRhuMU/SzDFwfu2TKbjgPRW1cIrGnhmlQyQ1j832OntjxqfDmmqMPcPcTMXq2J0jXoxnCGdK/8kP3cZ3ILIaCpelM+mFz2qHIRie3vFF6AiIVsh9NKPi59p7veBNwf3v0woRrKstHpE+LvEYRivRSE3qv7lhBb5wPU1DYTwVFDAugp+k+jmCvRac/X+//Bqk4/q2DWGnIve1pCZfbtEIC155ez6s7B44/1eB76CqSwwxoI8wEJA29SM1LVlaguUVbAC5QoAbvApCfvWq5rNti+zpwO/pZJ7t4B908N5vEIhGq2HMgM075K5Vl2ys5XUrZq1wmoU8ytGCBQ0YfZAkXH3TnZV9mNeEbvpMdQrFSQWC8g8fOxk+WQcC6813v8AJELekjJxb62KD9uamjpuXfAObhW3UGMp/MlZwpOWnOCTr5Ezv7h+9Alc9UbAtwefSCWpsrK4X4DvfO1Bo3yBnHLs5FhCWoK6iKH679urHesHn1uKyg9FKU38DhpeB0S
+ pmczMBSa
+ uANhG9mEWgLr5yYtx+wThkYlerBNNu7gL5kFymTulV973B3oiNAgAssVYZGb0/NwH8D2ykWAPQiSAHa9O0MZ+j4JywKsS/pS/LDrK9zNiAd4aA1c2aYpXEzspGo9StG32l5n2nMO0CJBnd3j20TQca/AMADrqOT4NEkEyNOYRRpvihYw9KJRTp6ra1AcpFIIZeu8PDX8u7W74xz0/A1oui/2PxLmq8SNxoUJmVQGiXqQdco1W7ajEVh2hI3LF45qnEWUgfNDYO24+7ksxKyjMHrLk9Tep2tLE0geefxCcv3MSMXHtmtwJaM6Azc9RTtTufBjqAq8Qz/c3fhIKq1AKXknRJ/m0jLqDWzspL4ArIk1VMkMUOB3xZg4ncj+MYS6tEbdKY1vjnjBOBbiw8P+xVr1uCE62PyFyq9mutZoOefcR/E/Uno9oMZ1xyiP2gbKKWO5GmQ3Avbln09vQRWrBgpy1RvU67KiLN1fBPpwgNJiqtfOM0iwdzgy+sisoqq2cTQzqXuAbt04Z/b2mwp2drPOIRH6Wj4/M/o6Fb0ZJFf5GShY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,69 +97,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello qinyu,
+On Tue, Feb 03, 2026 at 06:52:39PM +0900, Harry Yoo wrote:
+> Maybe the changelog could be rephrased a bit,
+> but overall LGTM, thanks!
 
 
-I'd recommend to use "mm/damon/ops-common:" as the prefix of the commit
-message.  Hopefully Andrew will make the modification when he adds this to the
-mm tree.  For a case that Andrew might not since he must be busy for next merge
-window, I will keep this patch in my tree with the subject change for a while
-and repost if it is not picked up by Andrew for a while.  So you don't need to
-repost this patch for the trivial change :)
+No, that does not make sense.  If mempool is used with __GFP_RECLAIM in
+the flags it won't fail, and if it isn't, GFP_NOFAIL can't work.
 
-On Tue, 3 Feb 2026 17:54:00 +0800 qinyu <qin.yuA@h3c.com> wrote:
+So if there is any work in mempool_alloc it's that it should warn about
+GFP_NOFAIL.  The fix is in the callers to not pass the flag, assuming
+current kernels still do this.
 
-> Currently, mmu_notifier_clear_young() is called immediately after
-> pmdp_clear_young_notify(), which already calls mmu_notifier_clear_young()
-> internally. This results in a redundant notifier call.
-> 
-> Replace pmdp_clear_young_notify() with the non-notify variant to avoid the
-> duplicate call and make the pmdp path consistent with the corresponding
-> ptep_mkold() code.
-
-Nice catch, thank you!
-
-> 
-> Signed-off-by: qinyu <qin.yuA@h3c.com>
-
-FWIW, Linux disallows anonymous contribution, and this tag should use a known
-identity [1].  I was thinking about recommending to use real name, but I found
-there are a few patches that using this identity (though email is different),
-so looks fine to me.
-
-    $ git log --author qinyu --oneline --pretty="%an <%ae>" linus/master
-    Qinyun Tan <qinyuntan@linux.alibaba.com>
-    qinyu <qinyu32@huawei.com>
-    qinyu <qinyu32@huawei.com>
-    qinyu <qinyu32@huawei.com>
-
-[1] https://docs.kernel.org/process/submitting-patches.html#developer-s-certificate-of-origin-1-1
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
-> ---
->  mm/damon/ops-common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
-> index a218d9922..8c6d61342 100644
-> --- a/mm/damon/ops-common.c
-> +++ b/mm/damon/ops-common.c
-> @@ -90,7 +90,7 @@ void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr
->  		return;
->  
->  	if (likely(pmd_present(pmdval)))
-> -		young |= pmdp_clear_young_notify(vma, addr, pmd);
-> +		young |= pmdp_test_and_clear_young(vma, addr, pmd);
->  	young |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + HPAGE_PMD_SIZE);
->  	if (young)
->  		folio_set_young(folio);
-> -- 
-> 2.33.0
-
-
-Thanks,
-SJ
-
-[...]
 
