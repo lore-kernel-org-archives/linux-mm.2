@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C45E8E87821
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 13:05:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A94E8782A
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 13:05:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 309D26B0088; Tue,  3 Feb 2026 08:05:18 -0500 (EST)
+	id 790E56B00A5; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C83C6B00A4; Tue,  3 Feb 2026 08:05:18 -0500 (EST)
+	id 765FA6B00A6; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CA2C6B00A5; Tue,  3 Feb 2026 08:05:18 -0500 (EST)
+	id 6682F6B00A7; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 07BEF6B0088
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:05:18 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A1430C1ED6
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:05:17 +0000 (UTC)
-X-FDA: 84403166274.13.6D5319E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B8F16B00A5
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0410A1B1D5B
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:05:19 +0000 (UTC)
+X-FDA: 84403166400.20.08845B7
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf09.hostedemail.com (Postfix) with ESMTP id CC2FA140007
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:05:14 +0000 (UTC)
+	by imf09.hostedemail.com (Postfix) with ESMTP id B67C1140013
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:05:17 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QxvHjmKy;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WdTywgbw;
 	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770123915;
+	s=arc-20220608; t=1770123918;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IAPMUDNgKLrPwHo/m+Lq2rBP9PMOZPTYyGGBSoKlUGw=;
-	b=nx2hGd3xqF/cxR0urJdQ0JlpHPFzxQ9hxfIajxjbUJC0FifdffwTr/dlWSNqbkCm92SNNb
-	lTHRY61ljQmgjnwzQGefwwDkrfe8bk+E8qcwk5I43arhjUX9ubjp80JKp1tJmtYz2M362Q
-	K2NnxLK27dvZ636PAhKIt8QC80y8Zb0=
+	bh=DSh2Nqzzh10/u2IJA+YX2OL4R4kNfmoLKZfwXuXuglU=;
+	b=In940n4cx0lVh+ESZDE13quXW4OQ+X3CnXRbV/z8XTTnmkqFz7CWK5nGYOiaMqZSVUew10
+	ns2GXSiWzJcmH5NInIQWZD6gkNulOuEQ3m+eqAzhFBc8dtsm+2o+DdQ+NbxofvRmmrdl2A
+	8cMiGXYeM3uYmFzyoYf/VMiJGzWfxnY=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=QxvHjmKy;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WdTywgbw;
 	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770123915; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770123918; a=rsa-sha256;
 	cv=none;
-	b=tr88M1Acrtvgg/rxqckji1sATPIj6Mum3rwOZUWSBNzoaMVBgejvaiTMX55EwZ30Dk5fQB
-	cXVnobvD5RIyf0JWWgeU3C4oha1+nHCwgJ4SAPMiz1DP+LnJsIgkgWrddTYc24PX+0LHCE
-	g8gwv/LmqPmEVfrn0auuQjQc7wUxpXI=
+	b=Di1KXIgAhKt9ki4/a+Q7r+CrCuvE3GLUTjl/3y54NKem9S2vQkfupXW5I9nGFV/YrNEM0O
+	d6ytPVIkQ+a4uCcBAGv3+Tfk02I1n9HCc4np1Bph0Q4vtPYnW1D0TKfe8xG3XtDU2BvPd/
+	rEZmDwmc34L7T+8/ukjTIhZ/23frnQg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770123915; x=1801659915;
+  t=1770123918; x=1801659918;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=kn3C6M/TSejjaUN/E6ZMHb6KaBqL5MF8BD7HrMgd0CI=;
-  b=QxvHjmKyfc+80WNk9xGMHIsbh8FFsPIW0b83GrKYSxDo8YfFbjg6K5Qx
-   8HFCUiy2YUBsIJCDZ0WdiduRg22yKXckBr4CKYouxp6bKu7Kjg1qfS2Q9
-   3qhj8Y6vyb7ZGottQTPO143fxZCFsDy4TFgyJ7iBfVC3NEvZ7btRutIu4
-   WI3vOd2na5szbSOCCbaib+vyUV6lkOqCuvlQc2Hk5iySROB4aFZKb8Ig4
-   Rj4rsyWAoIkGYn31XYe3tEkW1ElWC0yZ9XVns4lbjbO3O/a3OqKM9QPrB
-   evsBMjEb0U0PbCH9ktvdbovG/zrhXt74+QQoMGhU/4TX2XFqvPJM+GAXr
-   Q==;
-X-CSE-ConnectionGUID: tekx13rfSb2YgA67NDX2/g==
-X-CSE-MsgGUID: h3NJYyFIRSWIpguz3K9wPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="93945546"
+  bh=eAOTahntRImrik38mnsnViDi0PjENZgxrqEs53AMudI=;
+  b=WdTywgbwq9GCIH0QdfndB+w4Nk3a5OkbHliZG5pYy9q0HByLs4UQKIXs
+   w81QsY2XTmzc2KSlytMIL0ScSRLxTZoX0McYlVVBI2WoYsVgYWHbbNEK3
+   QP/MoUdfWZuO7NlpNwo1pPqRXTEG795xuF4Gntn25GwU1W4LUYa9m3m7K
+   2uYJI/zIOqf7+689pkf0DrBzjRABDKf5EqNzGKCE3oaqGfeyhQSqqrScs
+   /Afp3uG9bl2Dxe3Y0oMvo8SUtOVcaj6dJYYumhmRQ0S1VFIanWo4XdRrB
+   cCyOCu8/jG90TEKhh/Rhg0G7WyDQGT4ujmfohDXvW5P38toPN+qoJHos7
+   g==;
+X-CSE-ConnectionGUID: aykZy9VrRXq06yw3URy1Uw==
+X-CSE-MsgGUID: cPkghKvdR5acDBzjRIpoqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="93945554"
 X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="93945546"
+   d="scan'208";a="93945554"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 05:05:13 -0800
-X-CSE-ConnectionGUID: kNfuwGaxQDib9rOdY46bLw==
-X-CSE-MsgGUID: R3noAhp2TNytBWA9/xTLwQ==
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 05:05:14 -0800
+X-CSE-ConnectionGUID: NUmFSuM4RTG8P55q95+ARw==
+X-CSE-MsgGUID: nLLd4nr8TfSH1xmlM01hPA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="240516119"
+   d="scan'208";a="240516124"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
   by orviesa002.jf.intel.com with ESMTP; 03 Feb 2026 05:05:10 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vnG5b-00000000gfc-1XXY;
+	id 1vnG5b-00000000gfe-1dla;
 	Tue, 03 Feb 2026 13:05:07 +0000
 Date: Tue, 3 Feb 2026 21:04:47 +0800
 From: kernel test robot <lkp@intel.com>
 To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
 	intel-xe@lists.freedesktop.org
-Cc: oe-kbuild-all@lists.linux.dev,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
 	Alistair Popple <apopple@nvidia.com>,
 	Ralph Campbell <rcampbell@nvidia.com>,
@@ -96,20 +96,20 @@ Cc: oe-kbuild-all@lists.linux.dev,
 	stable@vger.kernel.org
 Subject: Re: [PATCH v2] mm: Fix a hmm_range_fault() livelock / starvation
  problem
-Message-ID: <202602032021.bgMlVqDp-lkp@intel.com>
+Message-ID: <202602032123.zvKd7G8W-lkp@intel.com>
 References: <20260203104532.98534-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20260203104532.98534-1-thomas.hellstrom@linux.intel.com>
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CC2FA140007
-X-Stat-Signature: nhixyxfgxmnygbgnn1345gy9jf94338t
+X-Rspamd-Queue-Id: B67C1140013
+X-Stat-Signature: gju73hnwoainn3co1pg6gps3nnij445r
 X-Rspam-User: 
-X-HE-Tag: 1770123914-908601
-X-HE-Meta: U2FsdGVkX1+9l7lpyofrvY/9zUxbpZ7YNKmSKwQnRosc+8+FG8LWlfs+IjE834iEWabiXBk5agDclBZjMntp7IoD4f/iOevQcs7/+Z5LPc+ohJ0UjPmnA5z2GHnRP2sRAVCfvCELlopDOjT8MEmFKAdCFKu+bJA+4CzElbdyDNlHNhKR/9hRORp9WyFO0XfAW/xDly5hrVZ79//ba27CzhO0Mu+ij6AoKtocRacjfWySBQPJXubzV9lzuXWiUvipJ+JCmIWP4B1fNWIJMjgtGzbOgGillMOeG8XCyRLjF7Jaiogk7RNQel2eFLLeSwBSMDDGzET9uk+vSU84/kjlJyosW3Mk8SZqmeewHcxu7J5Y5aue9ZwhK2KXQnmgpjSJx4sm41Yiyam2GxK3+37fSPIqrbt0WKIM+6SJLfq3rHIK684CQUFQ/L+bPSyD82mVmT7ints8LFmRzBP2Y9rEJ0zX69m+B0/vSzWOdb1LGfRUTR8OWF9YMLW8Xp/bRVnY9ZgEhNLyFYpz6pg808T+9ME9aAhg04Cbtv5v7wgo4GuZknRQMcKAKqc/u2ya2GEWeQQxNosggWQ8wls8Kc+v23DdpJr5zlLn4yCQu1MB45toMRi0/y8FYBNo5+KWwr4nKIFQvl0B1LTltVnrEK/l11/jBp9+VxpSQWkFF/AEYRmLi2X+GSD3SqfitY/N60W9tM8Z4mLmRMwVGI8AaX9CJREBc826MNbzdVKN6d1nprxZvWVZ+XHaf8Hn/OPWF4Tnpx/y5w6o6wvRDRS6FRMrzeCTT0eVlsrw5Y3JSVeo7Ue+SebhNbwm7h5J4K+MIDznvJjf2JkshghD+odPT0hjaLJpYrGXy6CjQuOsdNMent2BvN7pRBtjVF6pw7NQZBEaPzEKgaUXVLfankP3wRQRUGDHrmZ4+m7bvmgd2oSU8B2EgNVmxXgB0Cuo2+dV/0TxskydRrT6MklK7Qh+EtF
- brID+8Oa
- YZAO+qa4tzKULfUFrWMGjwyRLMc/D4vxVVYm5TcHxUjq7TAbf/OkWaqc0aHh7q32RngfN5uHWrH4yPxO+KHG6mRAINzRgdvhTFTmAicIezksBdrRkmR3RL0y39wLJgOdQxj0yOlfqHg/7U0BL0WSNCIpkBxStCUSUJsBjRymH2ChCUHhV2Wc9yusoinuHQlw7qDxHidYqP8x9EvcszSwTtDPwhn1dg+x5O5+khKvFhg+Koh/rcQPnx+Cs3NwNYbK9bUAkFh68uLlnqabj0uXmj/bjVPH+Kh3v3wfgFBxU4Z8fc48HNKRoDlWAnq/7J6V7exZDIxVbl5T6vqwb/g0/hqwYtCsNezlYZV0K7E2ExH8/adMOvYBU4B8XVg==
+X-HE-Tag: 1770123917-617102
+X-HE-Meta: U2FsdGVkX1/Ypa+/pR8tCZTL0avscWwN6omilhgYucUzwkPodz5ZgBy7MXqmEPfMnPXQ/0UoV+egBmby/3ZS2v+SvnSlKK9TIdyredCHyil2E2bdag/eTBC3exhV/tn6jIxSFmwE0EsMUA/HZNC+naGheK/h3gVC0feFmuKZz0yElqKwE5iWxDKAgF3hK32xyiu4ZIxawen3nPyH+f7xxgspBEVNnbnmsK0sT0WNEH6ruuDZY07P1ioQZDgg7k1+xU+CU0SPjwJgdzUeGKb7EfUeMfspt4Nk0CR6p/ZCcKGOv4jleA9xGpeLkZFbJ8ycZEWac27LiG7m34HAcXGu3AxAtrqNrex8Sp05liTcVf7FyAKRDvpTxdyaa+P1Cp5QZbfatymfeAgXyIe5+JpOPvcXiQyLSWoIk58x5l9W8pFrunOeInh85zCjs88CsCjCUwsohQk3ce66Z4XkPlotjbqZr3t9ZQmVI/z+/MHeO6nGBS8xhjBsE+vnNeeZ0zHC2cnXiqJGpCytlZOkEtFub+ZSZyQzW6eSVPgtPHQk4pSGsWXFAiJu8l9MUaxHh0lP3aKitwUWNdnw6zqAKkhwJ70ePWpwAJn3mfrI9SAyQtKH+JVlukH+PFpZD4SJk9GPD7riWIsDam9Mk2Fl0PQEDoyoVkpWCRIcTLTiF39ZPwVPYm+KDlVGH9gNMR/p5ke5l8y6Hv2iWtuYx5jRkBfjGp++nGluKchGnfYLQSi0iHsqLs3c6rN4cdX4P/N2ktAJDwSLZHBItN50vF9o/QZ0irHAXu0LKOfpCXnYbIbIxLU64p6++0g9jFcCQ3O9Sje9vZAM5WeKuxUkQHuyP7MWsB0DXlDE12Sn3wCFN+aKc/MEsDE2Zn0ukmXOQwr34bbXuWkR+U0XPiSminJnELgerisOrvrtLOKgXEBZQThZZZjioaxzw6t/EhV85XNJJrJEMbUjkmWLMtUDNArV7E+
+ J8Wd3zZx
+ anH07/jkWT3lhqlivqkq9z0ODatsQjotQxFOX/LKPZQuygPq9Y2ooZRbgYMUoUgCVIfH1200u5HkrTVseA9I6YCtLrfM9PX8C4bq5BDoOfALyVQx0fYqqz759USMIB/81ei5ioiOxDHWgnkheMN4lmjY0TwMGm8rJ5/bcG55ghvv33SdUBCVZx597YN7lzjUn7Vp9iU5KQK7q/DDowkKcK49rOUByL0t30nbRYYtvpOW6+VEyEop96MtGWpckdX7VEGr770SROoImIa1JuditdQHRbLVA1A0Oj8DaZpg3GweWz6h8986H4yMid/2g3pPFXVm5eHnol7FZisXBq8IIGB84/jHTn07U+erwZfrIPS0oQMl3GBfvB2UHuw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,25 +128,28 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Hellstr-m/mm-Fix-a
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
 patch link:    https://lore.kernel.org/r/20260203104532.98534-1-thomas.hellstrom%40linux.intel.com
 patch subject: [PATCH v2] mm: Fix a hmm_range_fault() livelock / starvation problem
-config: alpha-allnoconfig (https://download.01.org/0day-ci/archive/20260203/202602032021.bgMlVqDp-lkp@intel.com/config)
-compiler: alpha-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260203/202602032021.bgMlVqDp-lkp@intel.com/reproduce)
+config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260203/202602032123.zvKd7G8W-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260203/202602032123.zvKd7G8W-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602032021.bgMlVqDp-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602032123.zvKd7G8W-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   mm/memory.c: In function 'do_swap_page':
->> mm/memory.c:4769:33: error: implicit declaration of function 'migration_entry_wait_on_locked'; did you mean 'migration_entry_wait_huge'? [-Wimplicit-function-declaration]
+>> mm/memory.c:4769:5: error: call to undeclared function 'migration_entry_wait_on_locked'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     4769 |                                 migration_entry_wait_on_locked(entry, vmf->ptl);
-         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         |                                 migration_entry_wait_huge
+         |                                 ^
+   mm/memory.c:4769:5: note: did you mean 'migration_entry_wait_huge'?
+   include/linux/swapops.h:237:20: note: 'migration_entry_wait_huge' declared here
+     237 | static inline void migration_entry_wait_huge(struct vm_area_struct *vma,
+         |                    ^
+   1 error generated.
 
 
-vim +4769 mm/memory.c
+vim +/migration_entry_wait_on_locked +4769 mm/memory.c
 
   4699	
   4700	/*
