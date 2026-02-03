@@ -4,91 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E15AE73143
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 01:23:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17992E83041
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 02:39:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C11E6B0005; Mon,  2 Feb 2026 20:23:15 -0500 (EST)
+	id B713F6B0005; Mon,  2 Feb 2026 21:39:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 796366B0088; Mon,  2 Feb 2026 20:23:15 -0500 (EST)
+	id B1EC66B0088; Mon,  2 Feb 2026 21:39:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A14F6B0089; Mon,  2 Feb 2026 20:23:15 -0500 (EST)
+	id A2AAF6B0089; Mon,  2 Feb 2026 21:39:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 58DED6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:23:15 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 100C8B8100
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:23:15 +0000 (UTC)
-X-FDA: 84401397150.26.DC6D46B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 64621180007
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:23:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U8Mv14IQ;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 925E16B0005
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 21:39:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2449F8B5AA
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 02:39:22 +0000 (UTC)
+X-FDA: 84401588964.17.B685B7D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 7F30C140009
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 02:39:20 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wIupbiN5;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770081793;
+	s=arc-20220608; t=1770086360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G4h3UlD0UOQX5hsaUQsHVAZQOi8G+AVztfEKELY+wlk=;
-	b=yqIa1Qnjen3zp59bz8i42lXGcyF0eLgrVQBeFLCI4Qx+YkjyDhqqMomuKXKH2RlwZS8j2o
-	LNaZLbR/vgYRVKRL7u7AZKTgYv79/wZ4JUPYfwB7lVn1GKeAud48Bgs5dk6cwsgnnDnbOm
-	1M0d2/sVgUn0Pn6iYlUSbs9go8ev/68=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770081793; a=rsa-sha256;
+	bh=QjvuVAfKIvaRTnlIDtmXz96gVY7SMTHuAJjjhHoeDUI=;
+	b=4ZmFKiZR8PTUjYIV0LMrOGc3IxIlud65LgvSiTmbkAZytvqwvdrhsnchGr+nTvLpx88/Go
+	YZTRhAuUNbcvw/tIc9iQes+C+0gJts+sFIu51/05TMbysyFwu8c1CVGBHdFo2PHbIMAkYe
+	B+upU8OugZaoWk5sqlaQg9j2+r2FB0I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770086360; a=rsa-sha256;
 	cv=none;
-	b=5oEgLn1Msz6CH+q9noZIA1KLhdvxTJneVjuuBFAhMqVC8bnXcIxBIIbh0ASSNKQ8pEyuK/
-	o2GBrfza7HVjFwuaDxbkfvZQHOZfvj/1kOB4HQwNWmrlmzdD6Pv519+pJ6ph1XKVXe9SG9
-	0nbDfA1VjM2a2aRstLEwPoB5y/9W9RA=
+	b=dduyrk3rJo0QYWjDu3UYxzXPN+2XxUhCtdel9NQO4OnAGvwyk0Fm92LTSwtFa4lkcIE/RS
+	/eg9KNjUhbR0Fvnsw4Z9BnxrX9V+klQithd1ygMqftagfVYU3sHVWIWovHpY4mlqPEqwy3
+	U5SVwrMAzYvCmrzRaTUc+HSNSkZp628=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U8Mv14IQ;
-	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=wIupbiN5;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5C5E741824;
-	Tue,  3 Feb 2026 01:23:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03677C116C6;
-	Tue,  3 Feb 2026 01:23:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770081792;
-	bh=IgpK8TNN+i/1sHRlMuthVmqs5VzwjRwumGrfu+Q/0aQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8Mv14IQttEktkk7rT3/Ou6g3Z5Y34x2R8lMALQaNWDhmZquidqCuCpFoPn99pwLi
-	 EMyPPfo0Yl1wXzj4Stk1e1dmRpir2Q3ugdwwSy1xm7//2OzAyKXc6Cuu/pSXQhm/t6
-	 PonfpXnSpk/BuU2lt0jcRMkZQe/Pqj90mRoUSm3TIcmSVU+LBVEDyB2+TBD/K4/a7V
-	 hd4UeVk/XQMzjJNIaGTyscYO78Vg/RNw2Wf5KTmwSEoEDkBBhT8N12XVn3e40BTEvc
-	 Py8Zcj9HRxZb8vN7KQH42f0d8tTK43Vk5T53rnjDjt6eKlN9HwsaWPzB9mDRDmp6QR
-	 Y+iNSJ9LUu9qg==
-From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 2/4] mm/damon: Support for synchrounous huge pages collapse
-Date: Mon,  2 Feb 2026 17:23:04 -0800
-Message-ID: <20260203012304.67686-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260202145650.1795854-3-gutierrez.asier@huawei-partners.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 64621180007
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F09760010;
+	Tue,  3 Feb 2026 02:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9A9C19425;
+	Tue,  3 Feb 2026 02:39:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770086359;
+	bh=PFouNFmJPcItJkoCjf2nW+gBfA1Uk2K5fhShN0MNegw=;
+	h=Date:From:To:Subject:In-Reply-To:References:From;
+	b=wIupbiN51G8pvhpGQEtZRLIGcxFA1YurL9mL8e+20w7tnXqaOn2GY8VihVfXh9HQx
+	 u0BTBD/1GWs7VkQAjwe9tnM2Mvl2+wkI1HaekzWae1XaYUXoLMq+kR+MzT9sU6OkbP
+	 9v4uevy6Zw0lZEmHCbh8/OunQ1Zn22Lu9ekbz6AE=
+Date: Mon, 2 Feb 2026 18:39:18 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>, David Hildenbrand
+ <david@kernel.org>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, Wupeng Ma <mawupeng1@huawei.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
+ kernel-team@meta.com
+Subject: Re: [PATCH v2] mm/hugetlb: Restore failed global reservations to
+ subpool
+Message-Id: <20260202183918.057dac34b3a1819328814fc9@linux-foundation.org>
+In-Reply-To: <20260121094754.8a30b7f7fcff34f579883e40@linux-foundation.org>
+References: <20260116204037.2270096-1-joshua.hahnjy@gmail.com>
+	<20260121094754.8a30b7f7fcff34f579883e40@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 7F30C140009
+X-Stat-Signature: 16obs64kncetpch6conwa1u8pii3isju
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: mgjffchkzoofbt1k8do5oom8ga4bosrc
-X-HE-Tag: 1770081793-919231
-X-HE-Meta: U2FsdGVkX1+1fqDWxeLVSqPAFFb8rNjkajVNEEfdWkTEqeD2sX+d7jOYMDKf6lJaBmmuU0c+MWvZZNc2wCteWF20vt8wXHhLsfvzxwhIFqMR2LwS/dIKQG1nOC1ct/v13lNLMp5NepGCCZU44/nqS2kW1TV6SQ1ItQfKFk7xaBgrCGNLuWFh7Hi73wm/puuPVO1v13xJ2QDGV8K8YAnxOZ/Xy9VHo5YINxGMb5iRT6GLnGL2STgiqPV5ELbU0mN8BHK6BtODaYATBmeBqFdUp750Co+u7iabyM/qMBv8/HogllgtBD3oJhN8LwSsBJKCdEk7MJi8EE3xongVVZWRMl/XvVF3A5QSQgrIXTWP832DX4Q7KSNVX0SMh0s/xhw8Pu05GDfh2LQOBICtO7xEOGejHf4Dagx6iM83b91LdGixSGp7FqY0ldFHQOnHuj2gZdpUrLgSbhrWzD9mrdgy4Rdzz41ghUfpztoaACQozTpxfpvs2NfdjzbTegjwq2JsTHcIJ0PrttSzpHqu2ANj7R75YIyYgL4WyCcRuE2PGYTEkksTZmaXVCxk5pvUnaSUqR+ECA6VrxBcHTLtMrV5NA1AzwePlHopn96lVdtKN6hlkn/i2BE8RLGRR5ebQuDJiOqYE2w8M/dS3MURrTdjaDWL521cTuaLgq3OMvEhRmHwq6AcORkscePeB6K6rYm7GuNin5KpoqPbvQuDGHBhA7kagnHiQlE7q8iNjnKg9IqPgV/zSz/Gsy2nK0YjEbnnmfPEWjJ/T/06vNz0iYdyQTeURbYa/tYJfHGgRvKqEzDZPOwBV+JFPQEnTCGgLCgYXVwGMRsjBskmZ0oEtcsLOTmKC3MQB3yK34yz69P4WdpZGoow5L1oj+E2/UdBwlwDflszgoxVKM3gx5O+u4hr4ygu39r8vIuc/r4mmh61kZWdreVS+Vbquw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770086360-747982
+X-HE-Meta: U2FsdGVkX18Sil/OWwNyqtpdp9PPCFbFMITOWe5mu3swoOESk2wpxFDlxDQ91lKwkvaR3gesLt3ex5rJ7VmJqF8HlO2vrGI5Q+phYVui7onzAgfaelRm4dlob8/szw+p5v3rto6ZHh3c5WZrK6LugyK0z+aVehppnDqT22D+uBocyGT8MHiMkUgCbA9HWvw4g71KJIXpHAdoE5ySyhMLpy1P8JheQwZTvONVWQy6txxWN9lACCwezshaaiY0Fhp4YqNsGIXQHybcm8UoR7AX4YUPE0MV5jE6wIzJIeDktBJv5OMaes5NmwTt8ueLxFXjRfTMVWV3A+6sus4Yiu0/1dbr4Amgcty2NsjFQFSdskRjmn2Z7FMayF39hgMU8TK+z5t4dutEvDuw/fMvaJ6M0hZdAqY/2wryGm81N5bcJkcbTdFA6x/nCGw4fYYRvDVXM+3sWuABzCBgKbWXa4mwJIoIsTaCWzI86jo5KFN0ZJQMTHBohSBDVXTdlEd07jTb1wdOxLSY4iAngngprhyp2lHL13BhP63MUEm7IFxbR0zlpL2oHz9/FNQtjb7eP2+Zc1Gk4mjsu1o9HUotw7mz9TW6HzGgpBgeLajOLhvdx1LLCB4FChjuWPFcoR5ZbxhehLxvTJpiMNhtdo3TR3C+tNLv1M+VfxEcviIBN0prMD1NtPdUYBliZ1Qkr1zILFQSrjxW41zg9IF6zXUORFYSgp5hoLhCSZdi2W2O1KOgVOVpiYwoFR8PlmUNOkgA8nROICCU8gvHzasovBhNvPlHbaAZib2WBHXCXWBNe7+cU2y2K0vI7lFFWG3fgeIJu58EQLeDT9dlz7D8xjWl/Q2Ppg3983gRnOA2JUgvGJndyhk7CTvO5ibLAbASMC0bLXfu5T4tmuWT0dZDZmrYR4x7vrH9EuES+Gjgk44Xa+qBtfoMbh6WNSpt1PznZL59hGoqXfP+HzfewoyBxgxhzoZ
+ C63P0043
+ JyScrv+Tul/sVgnBMOjRbxq2obEEbYT0Uhe2ova9wGTHEQSMDoSbTFP22TCkU+7xCVrSmb5Htn4Z5Af1fpZ9mTnhyYW6GPTbPUDOvghfi8DAbHgA8/HLu2Gj0GcHK7M4tbkz2IDRNziHt/ZYEkyjNyHDnsr3Ff23r3GJdX4TPa3mA4OUgagZslDix+AwEpWegAcrgPSXBIrP1HzK+SUOYfkOq8Vg6mVWAO/eM9pjxw+NubXRt7o0e8YheaI8qL8+u5RDq5nFLibtM1G0pr7TDyPKCrM5RLjLuBcNwJbm1hVvnYF599S+qL5kSI4Y7S9jmHBlkPoa24bVfvRws8F04HQHAOmY+VGNiEGCZTukc4Gt//u4AKC4q56dt9VHX9BIJ7NAAiy/3ZLZqJj108NEIRGXBrkZmhBhQTFf/Wu3URBsJ9tE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,96 +94,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 2 Feb 2026 14:56:47 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+On Wed, 21 Jan 2026 09:47:54 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> On Fri, 16 Jan 2026 15:40:36 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
 > 
-> * Support for huge pages collapse, which will be used by
->   dynamic_hugepages module.
+> > Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+> > fixed an underflow error for hstate->resv_huge_pages caused by
+> > incorrectly attributing globally requested pages to the subpool's
+> > reservation.
+> > 
+> > Unfortunately, this fix also introduced the opposite problem, which would
+> > leave spool->used_hpages elevated if the globally requested pages could
+> > not be acquired. This is because while a subpool's reserve pages only
+> > accounts for what is requested and allocated from the subpool, its
+> > "used" counter keeps track of what is consumed in total, both from the
+> > subpool and globally. Thus, we need to adjust spool->used_hpages in the
+> > other direction, and make sure that globally requested pages are
+> > uncharged from the subpool's used counter.
+> > 
+> > ...
+> > 
+> > Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
+> > Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> > Cc: stable@vger.kernel.org
 > 
-> * Include the new module for compilation
-> 
-> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
-> ---
->  include/linux/damon.h | 1 +
->  mm/damon/Kconfig      | 7 +++++++
->  mm/damon/Makefile     | 1 +
->  mm/damon/vaddr.c      | 3 +++
->  4 files changed, 12 insertions(+)
-> 
-> diff --git a/include/linux/damon.h b/include/linux/damon.h
-> index 3813373a9200..de5a994f92c2 100644
-> --- a/include/linux/damon.h
-> +++ b/include/linux/damon.h
-> @@ -142,6 +142,7 @@ enum damos_action {
->  	DAMOS_LRU_DEPRIO,
->  	DAMOS_MIGRATE_HOT,
->  	DAMOS_MIGRATE_COLD,
-> +	DAMOS_COLLAPSE,
+> This (simple, cc:stable) patch presently has no reviews, if someone
+> could please be so kind.
 
-Please update the kernel-doc comments for this new action, by the time you drop
-the RFC tag from this patch series.
+Oh.
 
->  	DAMOS_STAT,		/* Do nothing but only record the stat */
->  	NR_DAMOS_ACTIONS,
->  };
-> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
-> index 8c868f7035fc..2355aacb6d12 100644
-> --- a/mm/damon/Kconfig
-> +++ b/mm/damon/Kconfig
-> @@ -110,4 +110,11 @@ config DAMON_STAT_ENABLED_DEFAULT
->  	  Whether to enable DAMON_STAT by default.  Users can disable it in
->  	  boot or runtime using its 'enabled' parameter.
->  
-> +config DAMON_HOT_HUGEPAGE
-> +	bool "Build DAMON-based collapse of hot regions (DAMON_HOT_HUGEPAGES)"
-> +	depends on DAMON_VADDR
-> +	help
-> +	 Collapse hot region into huge pages. Hot regions are determined by
-> +	 DAMON-based sampling
-> +
-
-Apparently you wanted to introduce the above change on the next patch, but
-mistakenly added here?
-
-I'm also feeling the name might be better to be simpler.  What about... say,
-just DAMON_HUGEPAGE?  We might want to extend that for general access-aware
-huge pages.
-
->  endmenu
-> diff --git a/mm/damon/Makefile b/mm/damon/Makefile
-> index d8d6bf5f8bff..998bddc17819 100644
-> --- a/mm/damon/Makefile
-> +++ b/mm/damon/Makefile
-> @@ -7,3 +7,4 @@ obj-$(CONFIG_DAMON_SYSFS)	+= sysfs-common.o sysfs-schemes.o sysfs.o
->  obj-$(CONFIG_DAMON_RECLAIM)	+= modules-common.o reclaim.o
->  obj-$(CONFIG_DAMON_LRU_SORT)	+= modules-common.o lru_sort.o
->  obj-$(CONFIG_DAMON_STAT)	+= modules-common.o stat.o
-> +obj-$(CONFIG_DAMON_HOT_HUGEPAGE)	+= modules-common.o dynamic_hugepages.o
-
-Ditto.
-
-> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-> index 23ed738a0bd6..4acbc1a6a5be 100644
-> --- a/mm/damon/vaddr.c
-> +++ b/mm/damon/vaddr.c
-> @@ -970,6 +970,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
->  	case DAMOS_NOHUGEPAGE:
->  		madv_action = MADV_NOHUGEPAGE;
->  		break;
-> +	case DAMOS_COLLAPSE:
-> +		madv_action = MADV_COLLAPSE;
-> +		break;
->  	case DAMOS_MIGRATE_HOT:
->  	case DAMOS_MIGRATE_COLD:
->  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
-> -- 
-> 2.43.0
-
-
-Thanks,
-SJ
-
-[...]
+Joshua, it's unclear from the changelog - what are the userspace-visible
+effects of the bug?
 
