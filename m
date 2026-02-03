@@ -4,127 +4,251 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09BCEE6E819
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 11:34:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73DB3E6E81C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 11:36:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B14AB6B0096; Tue,  3 Feb 2026 06:34:30 -0500 (EST)
+	id D7D196B00A0; Tue,  3 Feb 2026 06:36:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADC456B0098; Tue,  3 Feb 2026 06:34:30 -0500 (EST)
+	id D2AEA6B00A1; Tue,  3 Feb 2026 06:36:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 994AB6B0099; Tue,  3 Feb 2026 06:34:30 -0500 (EST)
+	id BB8016B00A2; Tue,  3 Feb 2026 06:36:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 89BE16B0096
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 06:34:30 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2934E58E29
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:34:30 +0000 (UTC)
-X-FDA: 84402937500.11.34C4982
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3850120003
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:34:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Gvoxrocz;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3Qt2BaQkKCFczA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3Qt2BaQkKCFczA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770118468;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A94336B00A0
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 06:36:13 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7EC041A0466
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:36:13 +0000 (UTC)
+X-FDA: 84402941826.15.852DBCC
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3200340016
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:36:09 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ozdFIvRi;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ew/mvlmR";
+	spf=pass (imf07.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770118570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aE0I4qCeFvAhyrBrsfU7k4O+fmQQ+xM6mESOeLTMWYY=;
-	b=RsUmCUhxM1CuNkdyOZ8K6SPAISgz93D9mXIxDJLDi4oyWZCiJQaNQer0xoq64z7Q0oVjhU
-	8JUxi+qxEUo0w0Ord+F/IlbJ2IGuCXXtr3TxYguavNjd0XvTNRh3MEDUK6lyI1P3i0lc4s
-	kykhY5dvuBZPIXrEbVqqOyGJtT/wYE0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770118468; a=rsa-sha256;
-	cv=none;
-	b=QyZ2gQe0kd0wbKEiNGsVsjRMBFdVVL3eUd7qWGogwQPfM0OIXx62D1/1XIkXhxtNJz5lX/
-	tpoGegx5tI31pTdr70kpqugBp0iVRCFl37cgsjUQV/U4jUdDUP1jVPmB3aT9phSypyV58c
-	+piHASs8YbNc3Xls2yt5r0cg4JwqGh0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Gvoxrocz;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf13.hostedemail.com: domain of 3Qt2BaQkKCFczA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3Qt2BaQkKCFczA713GN6A5DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--aliceryhl.bounces.google.com
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-430f57cd2caso4347100f8f.0
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 03:34:27 -0800 (PST)
+	bh=S8Qpmgj9YlGxgvj64VOxE/M2nemFQz/A+4VD3fpXkJo=;
+	b=KSBNgZeGEso/XmwBaQ7QoOaOgO5iXdodxwlU1cD3xC/qP8AYvNyfEPjO3QzenO3ASco7BM
+	wEjJlUOTBzWcf2SMf9LTFsXXxjTc2RrVkgFIYcjQceGbLOonH93NW8biodFzZHxC2o4Asw
+	q7yARscCPL8vSN9SXotlDoXrb7tV/j4=
+ARC-Authentication-Results: i=2;
+	imf07.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ozdFIvRi;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ew/mvlmR";
+	spf=pass (imf07.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770118570; a=rsa-sha256;
+	cv=pass;
+	b=XH8791ZiC4QdStqo0ZTCJt27jnj7e0Po8bPAp5z0WG3N9ZNAnX6tG+JAXrNSJSlXiKlxFf
+	Hm0q6iWQVBQb4glNFAgg5Dj3rJRGsGEeug6LPEk86dHNLgjhVk18URSceNAkwXZE62XO1e
+	emRM/msMz0ccC3UwiRpOrq8nRGtQAmY=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6138vQwI3652502;
+	Tue, 3 Feb 2026 11:35:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=S8Qpmgj9YlGxgvj64V
+	OxE/M2nemFQz/A+4VD3fpXkJo=; b=ozdFIvRiYRSeqsvotuOfCNIjqzFtJykxKv
+	E6iL4YHzpsJQn9aRrlYmmeDdiLIcNVA9kZhbSzot2E12Opscm+hQ6KSJMYZ9mDtI
+	9q4B1XreOe4OuMO5k5LZwfhXAYol5CCnFPbEItOkQA8cvS8COItnOi4P3zfKvl1q
+	2Lqy+/kcvsaFXAih1a3eggNZW6YacsXdRuGLjsHdRUFVoSy2VEP4TZu1xLq/bnFW
+	65y6cNakB2x3n9qc3Sm0HbVg+6WWHfCpwrucmjssa6MLWiS5+yLudRPVQxRCBZfy
+	Ra+JEB3Rt+VmX2WD51trxNeo313ci0Ehfc1DX/JVQWpTnSqWgUrQ==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c1as3bvnw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 03 Feb 2026 11:35:32 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6139F2Lh025884;
+	Tue, 3 Feb 2026 11:35:32 GMT
+Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010029.outbound.protection.outlook.com [52.101.56.29])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c2578at4e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 03 Feb 2026 11:35:32 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pspEuNGFa6g7eP8ZXHVqj+Raoa7tPhc9rkxSEpJNNfHzXCP9wBv8Iv3xA0n+TSDI8M875uvcBH7qYgpUY1yCNIMfyBSbig1jKcJohTHx11zAmgY94ypGXfUbDNEZaztQPh1XzGfbFT3URO96Cb4vdCAh8kl+hCoIWiOLUo8C1Vanew/IvycDaXSI8kKqrko4n/Ps1RI0Ab8TrMYGVnNjtCZXlinfNLw3Ey2ZAXmOvUDRgsFa2q6eQy0DgJgc7aImwKSFRTwvoIRCgni4pSdH0fjFBhSNViySmU+5pMe5MegCxpvdNUmjjCDS8USa1I4CfYzq7xHacYwmwFQJ3DCWPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S8Qpmgj9YlGxgvj64VOxE/M2nemFQz/A+4VD3fpXkJo=;
+ b=W4ZBOg/5fT9G1iYUHitVv5gXw98JbyoPBASuc7+LPhdA+o1Tx7WVsJC8tjq9gAb+k2LJGFb8UBrogA7gV7fuBIauQS3wvULznQElzE7loQX3y77amNxFpEXVycOc+1FhGvcLdy3wLvxv4DaO46Fvpt5CsOZKlto/R2Lo/HwJA0n/6rJXLeIyO1cyi50g7q8MxBuZlJxWhdn4LarU5pHdDZQhIr8DHM+9gR8akHRFQw/LykmrnsC/q2U8cP45tGRHMLWtr2UUv2CVc0TP6Jspx/yerwoITYUwW2mGV8crgIUMMumZCa0n6bizMAONquIZ607U8qb8JQ+bJ88hrayByQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770118467; x=1770723267; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aE0I4qCeFvAhyrBrsfU7k4O+fmQQ+xM6mESOeLTMWYY=;
-        b=GvoxroczY5oB/4jFkOV0v5RQCyAR+zvIR4bMOcqCLfRu7SNPilBqcR+FyRC9pRdI+Z
-         U/rgusj7BLzxzx42izcW+5z2QdYZFLQgRpELmg0XxplTt+NcB+unN4OToVIt7Vcdrdw6
-         gyBdbaU+yzwQaEQ3pbm2Z/BDSbIe37ViXVGQbr/9L2qQNxoHjr07VGIF/DU5Tq63eUTl
-         B83ribQ1XmbfTO0D8zvi5D5Po2tFrq7P7ZzUTxifqNOZsPcE7dpMKrmhOQ6bQVQ7A0p0
-         5qccnsNeaygWczMRopKgFZTmfMU24LEVw7WJBO6Is5w+yYak6X8i/gtuxeiCFn2dX+Ch
-         PrTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770118467; x=1770723267;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aE0I4qCeFvAhyrBrsfU7k4O+fmQQ+xM6mESOeLTMWYY=;
-        b=AMrUgKT4YOZ0679+BUHZfI7zmpdEjN0L5UllvEloC++k12sj/q9SCKm0aeY0H5HsAv
-         k6iSTiYR4/CL3od9NYDrpXJxWmEBDdoer+ccLkyxg5ElzmAQAoIuCvd6GXjL9TXC/aFq
-         avkBJOE6pKg9u06pk3kFr9j4SlSKXd86ld/Jrgpq7D+zKr9VMIdDeam7JBeCLS31XVm0
-         QkpkYc/WnR9QJCbNBVXnxFdmheedY6K9v+4Yznu+pmOfCfTGEyyuAhaLu/J2rI7dHton
-         gJ74vwsXwvlQiFMt8hwppmwbWMFTDxeLum0+g50bGuYsS9FLH1GVz7CphIzXdEEaDf+e
-         M6HQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWGvF1qzaVySVNw0hmLZwyzYRVVhVy0y3TcHrvuJHSZaTOrPt5e7lHeHGyd/yXTae78bArxFfdRSg==@kvack.org
-X-Gm-Message-State: AOJu0YyNTJ9g1oqj1eW0hKjS4ZaTe9H/gFTeAALU7T+gAOkFbPwkBSTt
-	CI826x4L/gd16wCLoMd0V3f9RBjPhou0rT0zcP+X49YZ2squ5MF5JjRJbBPdDH4HeXYxWhR1ZAn
-	TQ8OVhneRmrv4NPscFQ==
-X-Received: from wrfu10.prod.google.com ([2002:a05:6000:38a:b0:436:1564:8b38])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:26c6:b0:435:a815:dd81 with SMTP id ffacd0b85a97d-435f3a6a9e4mr23351106f8f.11.1770118466723;
- Tue, 03 Feb 2026 03:34:26 -0800 (PST)
-Date: Tue, 03 Feb 2026 11:34:10 +0000
-In-Reply-To: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
-Mime-Version: 1.0
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9996; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=ccYqFunpYUJ3E9tFyGaM8o4GOz90mNx5YokAm40heqc=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBpgd09hi110q+7UOnBQB1eL+5EOe+WuCfuQr49U
- unbqQxlHpmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYHdPQAKCRAEWL7uWMY5
- RmdyEAC8Gb4J7AKABnGI1ESN5mKs8wfRAVbeEptQbCRE5TG56C8/CwBu3BxngSIJaR/jsj4cg+v
- 7E0sKl/e97o+ZFQ1e9+FgXjFE7mVT12T4WUYBVqLBjTCamAok2TTrixp+zYddUq+ccwGolxU2MY
- wBGy5AIj3hlrdI1XTXv0NYJa4I4Glhfer2cK5LuX/6pkbjv7AQywMBrJtEapUtDvygG+cs0Uz4n
- zHRznz9Xh6RSnlT17RKc8EABqA3R7Z/Y1TfSPuiYNT+i1vFhkHNGluu0cxtkBL/PEZd15dIpN9B
- CXvT+lZRPcrEVVL2fuqYe+gQgP56/sgeJvjD7jcfyJI3zXMfQpMyFC8pB+rbFKJIVG7GNB7L0Rt
- 4WqgYZBp0kM9WfQ+cmN7CaAFLaSsq6PDDnQFm61oEIBCoup6Q5tW2ceX6RNTUETpSUxy80qbzu8
- Rhm7tuiSWxxpbMg+aRVGw5nFrxnliAzu/PFfSdq7Ro9SOo045XuS6+UKMlWE9o9WbFN/DB0TD9L
- w8uffrD51wqql0njRGx4d6VDYm6dS3Zi9JOQVznM/Z2AIqWquCTTwpocObwK8qDoX6PwKhb9ix/
- H5C5Hb9A4mUHv16LwURptoWOxXnWZP3I9pTQEulcrf6CnuKSZ9eQszFn5hXt60Q4x6yPGd9DXBd EsK/t8LslrkpMww==
-X-Mailer: b4 0.14.2
-Message-ID: <20260203-inline-helpers-v2-3-beb8547a03c9@google.com>
-Subject: [PATCH v2 3/3] build: rust: provide an option to inline C helpers
- into Rust
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Will Deacon <will@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
-	Nicolas Schier <nicolas.schier@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org, 
-	Alice Ryhl <aliceryhl@google.com>, Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Queue-Id: 3850120003
-X-Stat-Signature: 88xuz39uf7oscnj41fx5f8x8zb1ez8zz
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S8Qpmgj9YlGxgvj64VOxE/M2nemFQz/A+4VD3fpXkJo=;
+ b=ew/mvlmRqcDTYfeVXZZDosaEIgSkxIyBnLFL+q8Tn9gRd00aJDsFV6Z5itKAuBgXSkDV1H18kCzVTT1wCvVRWw9SXfHuhohJFTg74S/Q0OvTLqbJujAZA5fj5gIzbaMREVsHmYeCz/wifrX88Jumz4bHL9T5EDu91uZs1YJ2sO0=
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com (2603:10b6:208:4e6::14)
+ by MW4PR10MB6560.namprd10.prod.outlook.com (2603:10b6:303:226::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
+ 2026 11:35:27 +0000
+Received: from BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582]) by BL4PR10MB8229.namprd10.prod.outlook.com
+ ([fe80::552b:16d2:af:c582%6]) with mapi id 15.20.9520.005; Tue, 3 Feb 2026
+ 11:35:27 +0000
+Date: Tue, 3 Feb 2026 11:35:25 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+        baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+        ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+        lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org,
+        surenb@google.com, mhocko@suse.com, corbet@lwn.net,
+        rostedt@goodmis.org, mhiramat@kernel.org,
+        mathieu.desnoyers@efficios.com, matthew.brost@intel.com,
+        joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com,
+        gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
+        jannh@google.com, pfalcato@suse.de, jackmanb@google.com,
+        hannes@cmpxchg.org, willy@infradead.org, peterx@redhat.com,
+        wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+        sunnanyong@huawei.com, vishal.moola@gmail.com,
+        thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+        kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+        anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+        will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
+        cl@gentwo.org, jglisse@google.com, zokeefe@google.com,
+        rientjes@google.com, rdunlap@infradead.org, hughd@google.com,
+        richard.weiyang@gmail.com, David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH mm-unstable v14 03/16] introduce collapse_single_pmd to
+ unify khugepaged and madvise_collapse
+Message-ID: <1f6327bc-bb44-42e6-aff3-1964f9685f2d@lucifer.local>
+References: <20260122192841.128719-1-npache@redhat.com>
+ <20260122192841.128719-4-npache@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260122192841.128719-4-npache@redhat.com>
+X-ClientProxiedBy: LO4P123CA0536.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2c5::16) To BL4PR10MB8229.namprd10.prod.outlook.com
+ (2603:10b6:208:4e6::14)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL4PR10MB8229:EE_|MW4PR10MB6560:EE_
+X-MS-Office365-Filtering-Correlation-Id: 03b2c7a9-df1c-4893-b541-08de631853aa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?mQTYZmWJrwKhWNTf9z9agZbS1TAjDDhQAPxcOimCaBtQtd2FJVaNyBasanBK?=
+ =?us-ascii?Q?W6YjI164HrzHp1dfcRxxAtqJlGaVV42gZqHV7d/BwVN+y6G4Lg8fe6GihWsa?=
+ =?us-ascii?Q?g/Kpv2RmcsGW7IRb9ihrtAbNdYoGxcLsNWywUi3XtCpADBpjks5WPKTmvsZc?=
+ =?us-ascii?Q?7lJgTA71rvGGtUf7qwIdI808FbF2TwOdgsbPmP4too6rTy71YNuGmh3ma5Jg?=
+ =?us-ascii?Q?/SolbLIPW4UemxpYRU7a8uNY8IDq8KscVogHPGocNv/Ml4US19h7KqaqO7hi?=
+ =?us-ascii?Q?tLrx+El8LKuz6VO9OkWJlGHEVK7bKyKjfwT5k6BEWrlYJY54/U+p3JZHhDOA?=
+ =?us-ascii?Q?HI1DyAGv7Qo4MH+mr+kGh9iHkZn5HWg2Q5thkFhzWrBpnn3fwvw0hqgxBL9q?=
+ =?us-ascii?Q?Opzx7oB75tBjV+jfG1dCTKI38niDTFBR0bXZEIdc+HPYBu2AcFmrVIi2Hmu0?=
+ =?us-ascii?Q?8qjxuLd7AVDcrS6JXAC97+pRz9Q0iNbiXJ5RUk69zKbm0PdRMDic0kbdoMn0?=
+ =?us-ascii?Q?R/0xkUX+ejJKfGCqc+cELryihyQuQDKmInzj5w6hGNYokWbwTJkx1+vM00VB?=
+ =?us-ascii?Q?Lo/vdcAAmwhd2IQC6Bzq7Mn2mpmyaUJ1TCnbw97FZLhrOPXffA/Zhg7No8yj?=
+ =?us-ascii?Q?daHILS/qHyoRSvTa96Iwdl/DSSmfomihWrWUEf34MJ7kiOfz6uv8J40y8dKj?=
+ =?us-ascii?Q?uPRFEN+Z/YXHPLP29hYa1l5a8iwrfrtLCbRKBYHYjO3sDzDNUHx00srMphVv?=
+ =?us-ascii?Q?YRywgCCejiKdBKBTnkm1yAEADhanZtiSJaP8jQl6fFX+8+TveY3fOeDVOO2H?=
+ =?us-ascii?Q?0b+f4POSKuo/vcXI+UwbE4PTjD2nSid7cbZSp2aHgLslH8Ix/p5J4u4ZAehh?=
+ =?us-ascii?Q?oNpHRfbliwlp8ggKIdhSyuR78CIH/jlz/4Ro2bV+2uZ8ROuEPl7jIvCFxlKt?=
+ =?us-ascii?Q?UH812Fg0kdd5g4xYs0y1/B6kPcWO43PRhgY1PJ2+JkKMtvajFqWRODUMXn5Y?=
+ =?us-ascii?Q?uzEmYowGsIOIt/3BuA2fp3+EFMrVckmmnBgo9sJ81/VNZ0qf4BUvPBt+H7Yl?=
+ =?us-ascii?Q?xnUMqbfHFJmxrSac18AOvE4smdbiMZlwBtpAuCgd+z2VGQb2CB6FpFfDiAka?=
+ =?us-ascii?Q?5qIO4I66Ki3Qwo9kQd+BXX+JYTaDSfJu92Mlp9rQm3FjK0VXX513S6OHMND6?=
+ =?us-ascii?Q?NcXWCu9FPPOPrgu1TOci0pCqa+Fx5TMtUzurMe/KQjhhCYewSprY8nK+vBKL?=
+ =?us-ascii?Q?a+KH3SJ2b4X1kguarqmClhUqclpvW9GcdaFwO/bWR0wSb5cyTHjTeeZouCfC?=
+ =?us-ascii?Q?vyzYzu4rSgcK08skJyc3dY6pZeGa6dc6tZEhwt2Tfr+JHCIMqe5mGQ4Xxebu?=
+ =?us-ascii?Q?mv1tyUJjHkcWyazVW11L++S8xDK64fHiPO6Wn0pZEEQk+uYndC/swvM5VNDB?=
+ =?us-ascii?Q?gxDw8qZ74fXlWeSz9f5+ky/4nNlX7Od4gCbdfAyNuren2YQHpbataZF8zfQq?=
+ =?us-ascii?Q?dlvPnRYQ8CK3xVl97X9YoSf/DQvQGlj2Uz/ng8KwW44MsoAUGRJtCwYvP33b?=
+ =?us-ascii?Q?i1agvh4cRUV4+zuCaME=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL4PR10MB8229.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?uxGDbmZENnDe15+8IAck07X8lgALpAp9jOb0Ob6jNFZsAyeitUqSbI86msEF?=
+ =?us-ascii?Q?MLqkYeR/tv62evMPdjg8HZ6cwj4SqSco5Li3bvEg6vkv8doh8n9TCuS2laM/?=
+ =?us-ascii?Q?SMvKC10ASBVPEWIFBgdHQUhYjGhLwH4DLrLa2vEjarzz5mIBBuzO7khzY0mB?=
+ =?us-ascii?Q?qrEU/EUViHeL+o5vSqJzvgTxlEboQiXYdKCF/xfXDsiixQqIyr2gUWdfVrmM?=
+ =?us-ascii?Q?Ifwxgk6v2siXounCk7UkvnoIfSQwaWHKGr0/vZ5MbSPzklygjwLtiKrffCLe?=
+ =?us-ascii?Q?2CHgz5P+tCHlXtIXCaAKA7b76mdh49SQgkyHMFRrT/n1dwBNDM2jUDrsWv2z?=
+ =?us-ascii?Q?JtNNvwhRj/ieJfC/YMeEKAVmcFUv56/b0co2mZc8bazGYO/r4ExyZts6NWvl?=
+ =?us-ascii?Q?KuStybstcddKjS/ErZm4kPE1lQjd3tOBt5C+8WWFF8zfSH+jYe5GZDDVzDg+?=
+ =?us-ascii?Q?ipl/lYhGj6NWtKBAWG8KjScoO5arfjiA1m2V8vqWhvncXAJacPUOe1AEv8C1?=
+ =?us-ascii?Q?5XTjxuQ0GJfqUEcBkZmSfvy2Fzv05/LNGdLwofEZaYLAZsGK2rZqE9jFfNj0?=
+ =?us-ascii?Q?iXcFPHla24iCX88jYV3YVZMa0zTy+QnHjYG2w+IxTiOjEfGyyooXg8GfdPYO?=
+ =?us-ascii?Q?tmuUHmgb8/tx16C2KX2fLdiXNERwdpM0mguxjLV57mhntCZeN0kk/m5uOkjb?=
+ =?us-ascii?Q?ea3Ade35i3xGuD70LVH38tSqwNtx0zKOSdO8bykoV3AgdPYJ1IvaGo/hiuC3?=
+ =?us-ascii?Q?+LIZO39Phovq4mpMEsfqhigLvBy/ccaJficoiqDpj1kP27b9mFFm0TFY3u6u?=
+ =?us-ascii?Q?eQFwsgMXS48BUs1twY6u5Pf1MR3D9UP44EQKLBIo+xBtqG9FDCUGd81LYjiW?=
+ =?us-ascii?Q?N5rZDxjUKE4r6HrsaP76aAVRU215NKOk9zhBPBorBZ3Og62sUS4B9yBTtrgV?=
+ =?us-ascii?Q?Km1YspBoQV5F66N63k4r2jZbh0rQrJZGjKhkp560NxzSpCjgkdIAihB1n6B8?=
+ =?us-ascii?Q?ihzS9008FrAKGJ5CPHhnpbJ9hPQZtYcQMm/TnbJAfOkENS9GGHe/jagSUijZ?=
+ =?us-ascii?Q?7WOOwZYrNZBQgUsNWUnz0KdbdHJtH3fNFfPTGkBBKAd8HI7pNeLzUTgcjRah?=
+ =?us-ascii?Q?5FaunEMPFZQjGG4eOLOiPljbPsTSUxn17jXtkKGgbceJZRqzr6SYytiOwP0g?=
+ =?us-ascii?Q?E3Oa+xEJq0sKjjRrbIIitl+rndZsJ2J7t3bOsDUUBGicaUKGJ8MWhBGvbeNp?=
+ =?us-ascii?Q?TrP4omOxsjLAI/yfiPz4hX3kl94EGsgCkLTqKgguwNw8nflhM7kow1Fyx0ld?=
+ =?us-ascii?Q?TEtXPeiJWePZ3cL0FJBQVa0QBykhmg7VNpsTuo6RhEr48LNllLhG6Abtri+D?=
+ =?us-ascii?Q?leLY+2RyTUeuQr5azBjjxw03AEfSApEz4T+cFTDOtMVRwwSdkarG28Z1XNtd?=
+ =?us-ascii?Q?p0DEHhvFPDSi/xs+Y1yI+dnnWKZGHLes6I0Wbyk1/OTFPzLHt2v7gfnFQPvG?=
+ =?us-ascii?Q?6JGAgToeoIvGUOoDCiXlk14K7BiBGz2a/3XR0ypEir/GzP4M/hdSaizIP7km?=
+ =?us-ascii?Q?6DkaXxJH0mA4Ss7qyVlHi8DpDXnZ4RlbSuqHjv1VaiXzFe56onvduq3ZLWdX?=
+ =?us-ascii?Q?5WCPHR4bmD6ECKJQaMQSavWZrLnPNwALVw1alHKvyYSXCIEHHJlZi3iPnS0Y?=
+ =?us-ascii?Q?Jdi/OUwML2PCWONdlsVm2TSIXJ65JFb+uMpTzPTkXyyzGmvlRr+I4KB92GO7?=
+ =?us-ascii?Q?E30taExh5g8zyyovSBzZo8OEjHPu+ls=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	Z5Du/orJG+sIVtWPBmLukeFa6Uo++CRTf501GNCGl4/iNld7Ld5xtVuoUin2kHQ1orLit7QgsLfp3wfCJL8jEnH2AsC8ozVWBkNPPu9v4I9X/OtopndhMAM33CrXKfKkhyKftloGrSEa8to4B47KTXHtLcNZ8mfCcS6ux0XgXxpXiPHYfXyDdJglAekMVwviF8W7WkW9R9Y0QjmWleDg+Mi4EqmZC8LMsgFNlannmGldlRqxG1B+AAru2eOkhMMe7KX5dp/HAymWb1QgL3vLbAdTxed1QdG/HNGLkEezWHJkPsy+m+YD8w+bcexLxx9UNl5Q7rp0lMmLU2MzZsdJXcjT7Qknj0GvkR/0BIF6/yLwxSOuxqzkMj7RW5s5B/GuTWA+BNI5cTieWnR0SrdW6zcGNBkqtDqvMrh1qtqGMwJEpsPg8c7zLa6Z5ryoMoztY04CuO43ZkTiSdnA5ryLge7hQOnk0/kN8N3cV9oIHXzBIMRNgrQOpPYcr/DgQ1k8zjziHbcwBc/FS2NXAWq/PPMM6ldIRKtAUvJKkHy2nqP72WEKYkucJzf5D1g57DtyKvyY1JS9KCfrQwTvLmlK+Zkz+OOYtza48N19g1gi3Q4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 03b2c7a9-df1c-4893-b541-08de631853aa
+X-MS-Exchange-CrossTenant-AuthSource: BL4PR10MB8229.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 11:35:27.1558
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jk8mLCuR3Vsu7ykQncNrERICIO1qQ6G2ON4O2JKYyMWWWayGeg2io2HNINqSyaokPoJoVyvW7g73KtBsF98Ov5LUrw2yif+AtbMQJPDtN5M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6560
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-03_03,2026-02-02_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 adultscore=0
+ spamscore=0 bulkscore=0 mlxlogscore=543 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2602030092
+X-Proofpoint-ORIG-GUID: hLycPueqslweNztzP_0MmFh3PMNoSrhh
+X-Authority-Analysis: v=2.4 cv=Sq6dKfO0 c=1 sm=1 tr=0 ts=6981dd84 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=wPt-YyNiS12psKYWXW8A:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:13644
+X-Proofpoint-GUID: hLycPueqslweNztzP_0MmFh3PMNoSrhh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDA5MiBTYWx0ZWRfXyLvqQYQpNn8+
+ jRHOC9HIF/YA6vzAa2nPyljukkBqJIWH47l48C74nxiFkCqIUfjJDRapcsSYK1FDdx9lu0iNU8b
+ RQMZTdKNYrXeIjttvPz7ktFoBCcTW0kL8ETTF7NxLfAjCNdQqyFfletsYvq8Z23b14EX1PR2X0Y
+ GFTKIxLtXobKBG5ri6goYMiaMl+UC3JKPDwQCq8AHc+pc8SJD6/mnF1dS0JGN8+BixOlJQ1ylBW
+ A0ipJZAoE8wytx09+WAInqHM/V2/v1yY17Dv3yMkBt8PhXxCq2mizI3AgV5BOHSSLpXJrP07wb0
+ +mg8LFvhM0efM+Ux8s8OtufnVmbMkuPxnz0WOiLoOrF/lQoZIKIyb9dHpz8jZSFmCu1LyfP5qV9
+ zOAJhFAB/5d50iwXdqBtTEPi3tjvaDo3QFoTByhJ/6lPsaNzCOhKQgKSbpFEkj8F8NI4TccsxbP
+ eHxbkJdO5KqSosRmwEqx840PgSY98WovpTwWR2Mg=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 3200340016
+X-Stat-Signature: fbkb6enzcc6noeybhdz9wherst8ipzha
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770118467-945939
-X-HE-Meta: U2FsdGVkX1/CafR3sMTgfBl2qr9quLTea/NwUf2FjaeoIJhFqyvaolae6wCjXj1jFgSZaeW3S7ghrwDzdEuqOAdEMQABe6qswLBQzTKIpEvFMGu7UuOM7pAUpXwgMP0nwMEgcwOP4gLmaKKnMJIx7X0ZPGz4WohEQ+gWKSFoJdfjMGzzX5UcDWHBmDG6ETNDjgbaYBpVKqXVasXfBYX04X2cfOpvH+BIwIIbGti0fVPg23yhI/9v4Z+RasojXkU90Yk30qDGmkbb+K4yUHBUu5FmgyEU0iF4v35v1WgEm3ZPmmY4yq6NO6HjLttLZLPY6idVrASx1GubYeEdFbRxlOh5gMTINi15DgI6fx+oAQ9SFweoucgKucv352PONEpGT1ojV8ukbcJo6fya5+2U6xSg3gYfNLOW5xKWTlj+oD/zbM+opJZBMeW5rrOnIXTS3vfGQ+U9poSXfjcTdzGwAnJf3AUuo6Euf7fKkTgf8nMLYyUeZszxVtaNeuOvvW3y0Hn/R+1uyJQxTUptKamPtXa7vkC4xjza7paQYR+EAd8tZu3S++BIydonSVDuFDe2mJT0UJi9V19lNJyhNJcdssWte9Xeb7XmaSpprIxfT1T6o8NG99bWXpF0edgmFgbqmQc5ZLNA4iLujjYz+untiiAzPX53pwE5m8BkhW5cPO01VnjARsFbJGWegh+dWI83dHsDwEOqVtjp5FPsaMTDFhtAkOJAilASLVVTIquuXor3nrTMpA757Px5XS1bzzlxNhFzrPN2XWUUAthoGE8o9sL3/6aIXAuQTz/PLFr6rAQb0/5exdSxxLJvubQda22O7pcfiN1ZZeUPa/AXkbHjMyTcpIoPJ1Gqjp9dD6KnFPBhM4cXdVAB1631yToKdNrhQMVqFwlQh9kZ7YXoL2PuOSNAsxtScWQlrEQOJSb5obHqeUn2l3xCngYWwI0VgIZj74n4BYajA5E1h0ZDYON
- V23eebd2
- m7eZjdusAU6TA23Js3t96dNMNmvlQITkJdHU8rc4yizAKLi7gnN4XGLLj9pG8VLIHNvN1kmWLvGbFmF6Mnz9rGgbLyp3HEThP0Eua8qQbTN4TEbicVCg4EEIYow5HBsBnPxsEVOCGCibQPtaHR0G5ANnG86JSwuvgC2cGSo/fu5fAF8itnPOnVQ80uWHyxJGAkid2G6Aq8/x4FJNZJ9DadKwXuUTnVp05GDeozhMuozhSD4KD6ktoLTxmRXLR0aitnNxpWViD+v/+9J6s08EF6wicF1l7Y+IuCOK1R7TNrvBvnyO5QYv2Ny0UPchICnJyaQxCjjsoXuCC7dAs86vp2Yw4fmFJ/pe1i9z3FSGHZC1AqIiAMZTyImgm8e+0mAcLABZmf/LkPi+vltOJyaKPbEZMtbWUcxGAY6ugoY07xMk3M452HEQhWv/INs12hFQsJXWETuPNHLhwIIpGES/LbcjUYD5jV57RIj3aeM81+b1B0ZF0m0CanFcXPfJXTX8DBYxkTwAys/8B2ftxGrHGYcB5HEDG16u5298N8uVoIPYp7iXfReLAdTSaX18j1b5SRJlp2Q5XeuAKR9quoVR0FGbw0R4Yl/zDoqIOpHBTfBPbOnO+HURXpvfzrJcSwgj2I5EDpB7DVysb5+n2UWHVjAUEPwY/qc/p/5XTqNRA4mZJ5g13nQHZuEuGOprLr1E9qZhqT4AX9d6tcniUqnBhNgQf+FgFxoKDnRB/XS8rxVQM7r0evygKnl4UFw==
+X-HE-Tag: 1770118569-536826
+X-HE-Meta: U2FsdGVkX1+mKaPZ/HNHIQ/QO8xSk5R3eFr1uy0oilMyxMsgxtpxhcrhIY3Aw7o8+8iBsJ13H8inNdmWsuOC5SfCD70c5knGWOuDw/kPFmvlPWLflvRN/g2RuTYpQTggKsseAyunDAr1XKuG6hdoWlT63RP+RAZ+UafCpb6pTSOTNM5zgWVLGbU+a9FvhQq9QywYGf7m97w69VM2aYBJp8MDJtX5/Nm0AaYWZU4E4aWvichej+qD6ruj2X7DqYvRllZxBzAdnBJsjvsPGU8SEr0yId2gOuE0yl5bv7y2+MHZvXW9JF2LuyrZohgcsMqHrJaBmuBYWRHlLFQOFdHxjse1SeJ1/dHtnXJhUSqNDpi8q5RUWrTiyF4XC7w9ETZy/oNI+lWLsn+uTT6Y1cF7Bq8HHJGJCXOjo6o+bMg7Z4mI3VZBzPJabo6vO/c/VMhzFy0GeGEIXjEMxfSkY+koXFeFfF95ZGqoNbYBGteyzjV8pQ6kMUsFu1FGnGw3u5TfbzB/VGwg8a1host8nY432cTF1BKMSmdnzHYscmeH6y7XXiUu0haeMXCzstuS4XS4FdVYU5UcvAhFRdre5RHJQbCVvaSSiAL45haMMg0mYToj/PiAVb3cPovvXYZMnvy/qZdEbjVFfdEwdqwxTAHRWkNM3aZg4oDqA97PjW6DFx29o2oaPSA42LXWLWhRqusLMfxV6rf2GQ+uO7UF5U3nsA7P5PYDMb5UfoFg7t1fXdPlG/coGCQ/1Q7cST/OTboUxQ11EDg03oVbbGCTjf5FtOUqjgzY9WJwWP2zhBgh1Co39haBtFEvkIbwrXjb5yUkUzFEG6mkfyFElIeDVJpu/ApwHHNK/mxJZOL9uPU6SEwp/+qbVKkY7JMpfXrlZ4+8Ud3lZ21CIzSGCn18Bm/GZNDNloc0OAO60OIg5zpo6AUnqttL92RS6HS5KA+j/PiPotDCKsW7Z8e+d7ng8oH
+ eiMUOWGf
+ FK5Qqvf98jSlK19YEDLXAM6gX+R15acBsI4O9dRAxJaynu2p4Re+WY6xu3osDk3LlnRKsDzQTLGAHi5ADDNyo2IEkbD94pnUQYpa95RmoQhtJ+Xyrbnj6LbvXnvD4/4IqRbCZ1L1i0wLpnpGXhwW+5lsUU4TgYyNvttFJJUOfAKXFMJd2Mb3NCHW/Z2lrB2P47SfUSd/k6h+dwo0d+pcUZ0PY8c3kHsvcaa1KQoCcqjlif+6ZtG21fg2QZ2dVKLUSVE03fxFlhphXGGybsHRAmJQcevRdrKHjMssNmxTWgmW7ph13gnOUUA06OQIIarjRxI+B3oZL6Eu9W937hd1cq8z8XPkzUtaibJqBxpw5TR3whe3W2rnWA7ggjM+m61qrq2JjGWrKxdGMjUWfUyKhYDvP60pLzsy8ic5EqiZcwOuW+yYQ2D6VeR9KzVBwiTK+CGnwcsdsApGtxzz5HPmDYF6UJMgv4abtTj6T0HrCm7PunG297daqEWzH8Pa1+Wuj5duAmV/LSxoqZurT9YL3Re6fxUJFx0TQ8KVTjggr2ckHyl2V2/ou7AIuRyoGyC3ZBAY0sONofNbifNnFOjNiItZJMdbKp/nHQfAiQ2UTFFTtK4vK+iur1Mpd3A6svHG5ZCvqL2+k9E6Uk/tqaIJWxeuFtkULYFx7EZwLrOSVKpyTyzvY0eOP4zv+Q4b3iZ6eyLpouNDHqSzCs5vmym9VWrBgWC1KLuv88kQgA4/u7KnQcyA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,224 +257,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Gary Guo <gary@garyguo.net>
+Another trivial point on this one, you're missing the prefix in the subject
+here. In general I think better to say mm/khugepaged: rather than
+khugepaged: also.
 
-A new experimental Kconfig option, `RUST_INLINE_HELPERS` is added to
-allow C helpers (which were created to allow Rust to call into
-inline/macro C functions without having to re-implement the logic in
-Rust) to be inlined into Rust crates without performing global LTO.
-
-If the option is enabled, the following is performed:
-* For helpers, instead of compiling them to an object file to be linked
-  into vmlinux, they're compiled to LLVM IR bitcode. Two versions are
-  generated: one for built-in code (`helpers.bc`) and one for modules
-  (`helpers_module.bc`, with -DMODULE defined). This ensures that C
-  macros/inlines that behave differently for modules (e.g. static calls)
-  function correctly when inlined.
-* When a Rust crate or object is compiled, instead of generating an
-  object file, LLVM bitcode is generated.
-* llvm-link is invoked with --internalize to combine the helper bitcode
-  with the crate bitcode. This step is similar to LTO, but this is much
-  faster since it only needs to inline the helpers.
-* clang is invoked to turn the combined bitcode into a final object file.
-* Since clang may produce LLVM bitcode when LTO is enabled, and objtool
-  requires ELF input, $(cmd_ld_single) is invoked to ensure the object
-  is converted to ELF before objtool runs.
-
-The --internalize flag tells llvm-link to treat all symbols in
-helpers.bc using `internal` linkage [1]. This matches the behavior of
-`clang` on `static inline` functions, and avoids exporting the symbol
-from the object file.
-
-To ensure that RUST_INLINE_HELPERS is not incompatible with BTF, we pass
-the -g0 flag when building helpers. See commit 5daa0c35a1f0 ("rust:
-Disallow BTF generation with Rust + LTO") for details.
-
-We have an intended triple mismatch of `aarch64-unknown-none` vs
-`aarch64-unknown-linux-gnu`, so we pass --suppress-warnings to llvm-link
-to suppress it.
-
-We add $(cmd_ld_single) before $(cmd_objtool). Otherwise objtool fails
-to parse the resulting files as Elf when CONFIG_LTO is enabled.
-
-I considered adding some sort of check that KBUILD_MODNAME is not
-present in helpers_module.bc, but this is actually not so easy to carry
-out because .bc files store strings in a weird binary format, so you
-cannot just grep it for a string to check whether it ended up using
-KBUILD_MODNAME anywhere.
-
-Link: https://github.com/llvm/llvm-project/pull/170397 [1]
-Co-developed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Co-developed-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Gary Guo <gary@garyguo.net>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- Makefile               |  3 ++-
- lib/Kconfig.debug      | 15 +++++++++++++++
- rust/Makefile          | 29 +++++++++++++++++++++++++----
- rust/exports.c         |  5 ++++-
- scripts/Makefile.build |  7 ++++++-
- 5 files changed, 52 insertions(+), 7 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index c97f06ee0dda1c922aa23bd5249052591d528eb6..155db03cf489d931eefdb4bd7e3b93e5aa3ea2d6 100644
---- a/Makefile
-+++ b/Makefile
-@@ -519,6 +519,7 @@ OBJCOPY		= $(LLVM_PREFIX)llvm-objcopy$(LLVM_SUFFIX)
- OBJDUMP		= $(LLVM_PREFIX)llvm-objdump$(LLVM_SUFFIX)
- READELF		= $(LLVM_PREFIX)llvm-readelf$(LLVM_SUFFIX)
- STRIP		= $(LLVM_PREFIX)llvm-strip$(LLVM_SUFFIX)
-+LLVM_LINK	= $(LLVM_PREFIX)llvm-link$(LLVM_SUFFIX)
- else
- CC		= $(CROSS_COMPILE)gcc
- LD		= $(CROSS_COMPILE)ld
-@@ -627,7 +628,7 @@ export RUSTC_BOOTSTRAP := 1
- export CLIPPY_CONF_DIR := $(srctree)
- 
- export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
--export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN
-+export RUSTC RUSTDOC RUSTFMT RUSTC_OR_CLIPPY_QUIET RUSTC_OR_CLIPPY BINDGEN LLVM_LINK
- export HOSTRUSTC KBUILD_HOSTRUSTFLAGS
- export CPP AR NM STRIP OBJCOPY OBJDUMP READELF PAHOLE RESOLVE_BTFIDS LEX YACC AWK INSTALLKERNEL
- export PERL PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 7570a694d54e6170ae6738634218b37e38a4b76a..c44c08b49f3a3c2e06fca42adeb9e04304e7a869 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -3551,6 +3551,21 @@ config RUST_KERNEL_DOCTESTS
- 
- 	  If unsure, say N.
- 
-+config RUST_INLINE_HELPERS
-+	bool "Inline C helpers into Rust code"
-+	depends on RUST && RUSTC_CLANG_LLVM_COMPATIBLE
-+	depends on EXPERT
-+	help
-+	  Inlines C helpers into Rust code using Link Time Optimization.
-+
-+	  If this option is enabled, C helper functions declared in
-+	  rust/helpers/ are inlined into Rust code, which is helpful for
-+	  performance of Rust code. This requires a matching LLVM version for
-+	  Clang and rustc.
-+
-+	  If you are sure that you're using Clang and rustc with matching LLVM
-+	  versions, say Y. Otherwise say N.
-+
- endmenu # "Rust"
- 
- endmenu # Kernel hacking
-diff --git a/rust/Makefile b/rust/Makefile
-index 63464bd2c1e9734cd6e659f7ee3db58bf995d6dd..a6839f2d39feefcfea497384ae202a7c6b475942 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -6,15 +6,19 @@ rustdoc_output := $(objtree)/Documentation/output/rust/rustdoc
- obj-$(CONFIG_RUST) += core.o compiler_builtins.o ffi.o
- always-$(CONFIG_RUST) += exports_core_generated.h
- 
-+ifdef CONFIG_RUST_INLINE_HELPERS
-+always-$(CONFIG_RUST) += helpers/helpers.bc helpers/helpers_module.bc
-+else
-+obj-$(CONFIG_RUST) += helpers/helpers.o
-+always-$(CONFIG_RUST) += exports_helpers_generated.h
-+endif
- # Missing prototypes are expected in the helpers since these are exported
- # for Rust only, thus there is no header nor prototypes.
--obj-$(CONFIG_RUST) += helpers/helpers.o
- CFLAGS_REMOVE_helpers/helpers.o = -Wmissing-prototypes -Wmissing-declarations
- 
- always-$(CONFIG_RUST) += bindings/bindings_generated.rs bindings/bindings_helpers_generated.rs
- obj-$(CONFIG_RUST) += bindings.o pin_init.o kernel.o
--always-$(CONFIG_RUST) += exports_helpers_generated.h \
--    exports_bindings_generated.h exports_kernel_generated.h
-+always-$(CONFIG_RUST) += exports_bindings_generated.h exports_kernel_generated.h
- 
- always-$(CONFIG_RUST) += uapi/uapi_generated.rs
- obj-$(CONFIG_RUST) += uapi.o
-@@ -480,6 +484,14 @@ $(obj)/bindings/bindings_helpers_generated.rs: private bindgen_target_extra = ;
- $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
- 	$(call if_changed_dep,bindgen)
- 
-+quiet_cmd_rust_helper = HELPER  $@
-+      cmd_rust_helper = \
-+	$(CC) $(filter-out $(CFLAGS_REMOVE_helpers/helpers.o), $(c_flags)) \
-+		-c -g0 $< $(if $(filter %_module.bc,$@),-DMODULE) -emit-llvm -o $@
-+
-+$(obj)/helpers/helpers.bc $(obj)/helpers/helpers_module.bc: $(src)/helpers/helpers.c FORCE
-+	+$(call if_changed_dep,rust_helper)
-+
- rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__(pfx|cfi|odr_asan)/ { printf $(2),$$3 }'
- 
- quiet_cmd_exports = EXPORTS $@
-@@ -561,12 +573,16 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
- 		$(filter-out $(skip_flags),$(rust_flags)) $(rustc_target_flags) \
--		--emit=dep-info=$(depfile) --emit=obj=$@ \
-+		--emit=dep-info=$(depfile) --emit=$(if $(link_helper),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) \
- 		--emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
- 		--crate-type rlib -L$(objtree)/$(obj) \
- 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
- 		--sysroot=/dev/null \
-+	$(if $(link_helper),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) \
-+		$(obj)/helpers/helpers$(if $(part-of-module),_module).bc -o $(patsubst %.o,%.m.bc,$@); \
-+		$(CC) $(CLANG_FLAGS) $(KBUILD_CFLAGS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@) \
- 	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
-+	$(cmd_ld_single) \
- 	$(cmd_objtool)
- 
- rust-analyzer:
-@@ -696,4 +712,9 @@ $(obj)/kernel.o: $(obj)/kernel/generated_arch_warn_asm.rs $(obj)/kernel/generate
- endif
- endif
- 
-+ifdef CONFIG_RUST_INLINE_HELPERS
-+$(obj)/kernel.o: private link_helper = 1
-+$(obj)/kernel.o: $(obj)/helpers/helpers.bc
-+endif
-+
- endif # CONFIG_RUST
-diff --git a/rust/exports.c b/rust/exports.c
-index 587f0e776aba52854080f15aa91094b55996c072..1b52460b0f4eeef6df9081abb9b7e054a28c3c21 100644
---- a/rust/exports.c
-+++ b/rust/exports.c
-@@ -16,10 +16,13 @@
- #define EXPORT_SYMBOL_RUST_GPL(sym) extern int sym; EXPORT_SYMBOL_GPL(sym)
- 
- #include "exports_core_generated.h"
--#include "exports_helpers_generated.h"
- #include "exports_bindings_generated.h"
- #include "exports_kernel_generated.h"
- 
-+#ifndef CONFIG_RUST_INLINE_HELPERS
-+#include "exports_helpers_generated.h"
-+#endif
-+
- // For modules using `rust/build_error.rs`.
- #ifdef CONFIG_RUST_BUILD_ASSERT_ALLOW
- EXPORT_SYMBOL_RUST_GPL(rust_build_error);
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index 0c838c467c764e14a51ad132444544373e90a84c..7176d997ecab7c3ffd1e00400a8a79a8309485e1 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -343,7 +343,12 @@ rust_common_cmd = \
- # would not match each other.
- 
- quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
--      cmd_rustc_o_rs = $(rust_common_cmd) --emit=obj=$@ $< $(cmd_objtool)
-+      cmd_rustc_o_rs = $(rust_common_cmd) --emit=$(if $(CONFIG_RUST_INLINE_HELPERS),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) $< \
-+	$(if $(CONFIG_RUST_INLINE_HELPERS),;$(LLVM_LINK) --internalize --suppress-warnings $(patsubst %.o,%.bc,$@) \
-+		$(objtree)/rust/helpers/helpers$(if $(part-of-module),_module).bc -o $(patsubst %.o,%.m.bc,$@); \
-+		$(CC) $(CLANG_FLAGS) $(KBUILD_CFLAGS) -Wno-override-module -c $(patsubst %.o,%.m.bc,$@) -o $@) \
-+	$(cmd_ld_single) \
-+	$(cmd_objtool)
- 
- define rule_rustc_o_rs
- 	$(call cmd_and_fixdep,rustc_o_rs)
-
--- 
-2.53.0.rc1.225.gd81095ad13-goog
-
+Cheers, Lorenzo
 
