@@ -4,89 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A53CE83070
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 10:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC30E83071
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 10:15:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0F31B6B0089; Tue,  3 Feb 2026 05:03:02 -0500 (EST)
+	id 191E06B0005; Tue,  3 Feb 2026 05:15:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0D4B36B008A; Tue,  3 Feb 2026 05:03:02 -0500 (EST)
+	id 146356B0088; Tue,  3 Feb 2026 05:15:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F367C6B0093; Tue,  3 Feb 2026 05:03:01 -0500 (EST)
+	id 04BB66B008C; Tue,  3 Feb 2026 05:15:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E27556B0089
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:03:01 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96D8D1B1C68
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:03:01 +0000 (UTC)
-X-FDA: 84402706962.20.5FA3203
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A71E280002
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:02:59 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KJJ/HFdx";
-	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E8E3A6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:15:31 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34DEE1B1C53
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:15:31 +0000 (UTC)
+X-FDA: 84402738462.08.950162B
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B6FA7100009
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:15:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WecfiqfN;
+	spf=pass (imf05.hostedemail.com: domain of yilun.xu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770112980;
+	s=arc-20220608; t=1770113729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+2g6Z0yGmC4MIHJGze/C1qp5+vJvLw073QARgKXQMGY=;
-	b=HVIUr/ku3zI1wavHyLQcEgY/ogI/wX+yvaQYdKBj4HcG2uHktbgUvcHfs1Z+rkXhp3MO48
-	gSJbAKnGckAIkP/DKxZkLLPtHNlj7xXOhWM57Ce9hw1tDxPimo0Ani9HOvsU5gl68d9Dgm
-	ADbkiOHFkaETGwnPKKOpyD7YiBHcFHA=
+	bh=Qo0LlT3R6FZA/L6tL7OikHZG2iaBEOMkaq9rfc+AsKE=;
+	b=vklw8zKDbnmqV7DpzjvTjsKkYGEvYKORU2ta7kC1uj1jYT09W2SoBqQwZPjPlTX/bzkiRK
+	WWfhurfy6DSCQAst6wtNIh1oXC504rVb1eDbHHp8rncELufD7ipSoI/MPqRQV/Hkkieqmh
+	JPsq50IPZ/Nw2hc8Ow2H93n4yUwPh3o=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="KJJ/HFdx";
-	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770112980; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WecfiqfN;
+	spf=pass (imf05.hostedemail.com: domain of yilun.xu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770113729; a=rsa-sha256;
 	cv=none;
-	b=iTUZ2vdY8nhMF5pf348NlDXwZcA1LnDjVQVD2k3mT94OQYQgQhfqsJTH7IFtnpYaSniXqH
-	QnPr39HWq6sDQoD359JnpGuwEqIlaibBBOzeP85CGlgLYy9unAf3aPn/iTl3uQQFcdPxOw
-	3KvN9ky3oyKabIRKLmGX+OhPUrQzFJQ=
-Message-ID: <5b8e12d6-269c-4979-b99b-b3b4177aa00f@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770112977;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+2g6Z0yGmC4MIHJGze/C1qp5+vJvLw073QARgKXQMGY=;
-	b=KJJ/HFdxLHsNVhsKhMQn7wWf0GQEalVKIKBtWtZReK8naV9BJRB/XjQNpvU75pnl2ZVhth
-	Ws0EUEFHIYy3uG6iD8AIkMwhug+TZ/FixZoLqhgRLM8zrjTIa1NfPZ/0a/BAoxWsOHjH9M
-	udTrW8d2dFWLsSkoVNX+pxo6aUi+0EQ=
-Date: Tue, 3 Feb 2026 18:02:07 +0800
+	b=X5csRkAAC/ONgaaALyF9SZ5n3xFMDmxPM7YWZeuzdyF9NK0kGyOUVRWXp2MDXCmAf5uYM6
+	HIzlwp1Wm4YueclxGwfzy4LA6cWwAn/43zwmDJFWMfWEktRDg/vrZKktTAcfQGu267cjaq
+	u/Tv9pm4hVafPVDeG3mqkYoZuEQyxNg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770113729; x=1801649729;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ltTqItvs5DEbQAayR00+PqL/+NRtgJq6ixieEinQSY4=;
+  b=WecfiqfN3+4HFolw1eDY6s8izhfOKd5mIlACq4SNyLDdV7LZdJGup/dh
+   dF4RTtswcYMDTBlXyKBJNlxWJKjLHBK1Jijr1pS4tXJ+B2m3HnH5pqXCD
+   3KSKwZyfPgHYxd+BuzRQsrGHC7969OAFfinYkL6jAkAFhxdCDbu9skHRK
+   glr5iLRGVf6YyeJaav+Ow6h3rPGosVKqBaBd6ARl6v8gYA0EUDNDa+NZR
+   RP8rGyw+YQ4SDzY2XB9TZlIJUJAmRpOv+4d5HibA6P7RtbffylkKdyggK
+   E22AVdJ3ySq+v6b4ojEYV1aUl87JkcAQj5kODenzgBIHHGEp8jV4AROFg
+   Q==;
+X-CSE-ConnectionGUID: yRUH+GSTSEqb5phzuWvVIA==
+X-CSE-MsgGUID: lFf70l+hTQecmpxkVSTfQQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="96738262"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="96738262"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 02:15:27 -0800
+X-CSE-ConnectionGUID: QSwRDmD1RvONYQUf1EbLaA==
+X-CSE-MsgGUID: +XVLnH3CSfiSKxpDX9/BtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="209093662"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by orviesa010.jf.intel.com with ESMTP; 03 Feb 2026 02:15:05 -0800
+Date: Tue, 3 Feb 2026 17:56:37 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Ackerley Tng <ackerleytng@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
+	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
+	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
+	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
+	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
+	keirf@google.com, kent.overstreet@linux.dev,
+	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+	mail@maciej.szmigiero.name, maobibo@loongson.cn,
+	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
+	qperret@google.com, richard.weiyang@gmail.com,
+	rick.p.edgecombe@intel.com, rientjes@google.com,
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
+	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
+	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
+Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
+ kvm_get_memory_attributes() to per-gmem attributes
+Message-ID: <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
+ <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
+ <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
+ <20260129003753.GZ1641016@ziepe.ca>
+ <aXqx3_eE0rNh6nP0@google.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH] codetag: Avoid codetag race between same slab object
- alloc and free
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260203073006.151710-1-hao.ge@linux.dev>
- <aYHDMvMUfKj4_eDe@hyeyoo>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <aYHDMvMUfKj4_eDe@hyeyoo>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 4rhor8b8ko66m5isopdxshbcz93f37gj
-X-Rspamd-Queue-Id: A71E280002
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aXqx3_eE0rNh6nP0@google.com>
+X-Stat-Signature: 6eih6wru63f1qho7gj9b51k7cq86x6gu
+X-Rspamd-Queue-Id: B6FA7100009
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1770112979-406222
-X-HE-Meta: U2FsdGVkX1+osCZYptPwyWqhNh+t4JVzPA+Z+gYb9XASdgiDyfbrtgl5R0y6oKDEwVNtzb6H/nojblNOqFBvbsmbE4uwhQeXFyd8OzJFEMQuq7Wg2lb00GEb6xnlJvjp6Ch4BPykFn06QkfjfixzAhDIFUMl6rEuV9pNLOywBNxf8cRMtRgft1gOwNjK5+GxlK5yqWTxUDB2t/0JnnL53dUfaStc+FRRmXnih1IKMHwdFMWqSYkBQBCXPF0rdbnaXpRjjAjw9VLkOxu/+oliXa3G5KVFIVEEQK0C/iO+80cgfSvh5CQcdpsQ0a6DrRfdcuGsQlxfIRqHQ+l0QoslEiBFE4+brRnW0rXW9l/s+lI4hDy9Fsaw/d+dYLBk6nIi+VPM9hIl4y/Q9hntkLA5+wvhJyTHB4oohZ19L1LZX5jAfR4Xxtu2996SadlHFLoVEl7QihVvKH7oMh/W8laKQf1ofFK8o8LOAm59ShpdROZwePUQGXghe+pK7Oux4LJePHGSV/vL/p0O2t+1nrSCRiorh90/8Me3JrKVe9AKwx8v5kz1OkidiXSwY4eboDAxCwh7fn8S1rBnX417daQSiEz8rPcDPtwp0XNuYM9MkZMmIPklURVWO8NaoRLY31NSSy02KW7hLC8I8dFPM5JWL4ansvWkbLgbimmzDws+mgAFU87z0AxqOnQicS35GtPN//9VmmHHfa09oJ4RBQwbMGkH31Rzc727PAMsyxChu06HGmm8c4EaqjvL/+xQI7iZ0Seic5h5rgbHc9mYbULbbNJ0DvZfmEoa7DyL+JsXzHmrra4/MYBsKegWCb0Iyh6lqyqqlyJXMxhdn4TV7UdgWxNTmXqOfV/F2z9doosdiFHkdCtueyD0M++Q/OeU0BWGyGxjtPBjQzGUymrI+tiiGVr2+6ivlxulMZTMor+PM9IJ6stOsOUB6GpG2dQmd+Tj3eXnSGuq2E2qzxbFVJR
- dQ04pWts
- SaMPYaK+OyUkAXI5cSinT0yBBr0bW4OhUhGL0syx//0DJ5EM4xwcJTsV/CH6Wy42/y66D/8mi6BIAe6xyOCHQK6Ai5c+2m8baqAyAwJek/oLJTniNCYdmLshHqcmllAchoddD54jnXD9o9csu+t9OtD2ReDRZPEGGkAw8tdrQ9cIPM5M64qW9QzlaawqzZFN/xpDQ2sQ8lBliDqY6eVlBGUr17byh6f6QMs6ZZbOVF9jZbxQ=
+X-HE-Tag: 1770113728-582042
+X-HE-Meta: U2FsdGVkX18TWkGUKGrPO286+WPidptZ2pNP90/b+q8d5/a23aePJOHKnUojkHqG7W0ADSyqC68MqhttjoWXOTT5iDvWl0gqH3KleeidRWpPkudcbGlTlsGQjQ3j2xzAs2Gw/L+T2ROsT3KspX50HvERHZEmjajglTAVwpIutZE48pRVwBhrEUcy5uz5U6jSAFUIZHMB6qV2t3Q4BoaiXNcAEtRQhGD6mt3z8GNr0T5EQ7Q+NNxteZIctx3PU61R9GOV+A5rTM4jKYSAgR7sPnZsDhgRznqfFsJblrBM0ZylqwM23Z9sI5+rTmIwukKfqhQ9d4SdJisAfPXQjS8Iu9hGlLTJLPiDQ9mTZODPNsq+9UwZD0h88WLnFJOXFijKbw6k2EViLSDg+nntk0R9Dor4alRoNBOT3egLcDHTIVhY9+v3ZH6yUnVuQ0nihAXgZjQVdd+B+GMdN3AXVme8602Bn3fm+sd5wR8BhjBWvff2b+5NTntyxq36FAtL6h4yBLVATWFcpKNCUgKGw3zgNotF62zWve5/b/TiZpwxgvpDAM8NEMnOzmGVrmXvG8cXmiNnIj06jeyGhh88OuTI9mh7kYx1u6iPHV5TT5cIdXdJicGK1RYjSOCaFT0fq1bbmK03ZvSIWAaWZ9RIs0T+leiQKjcp4kzmNjPuXEX7jLhB+TeDiRzqwo/3AakBuMwWa6iY7n8i7BvrkiXWVwUUgNZHxDN1EtpMNNEODjUEDkpt+/kmnGG2HqLJLNjrONzkGc7hkIc3UYRe+oG1lBUkVaOz6qUoqAako8boZaRE3IMTnOPGtteWwqKlGaVTm6NGhFIHQRPFZR5gdt1maLfxKS4PdlRhRVYOThIGM21euI5r//RIuq4rVI4RI+wFNFRkdchFdotgV+g4t20zmj2Divr84yWF2Cbn6qDo8Z5MdNuu239sx9kdVFQPoxk7Mn3sAYP5OK1IaJjjN5OWjJr
+ +S5eawPZ
+ 1RMASkWj7VBINzWczFgyIgVRaMZxZ9p7J/Get1db2yluFtNHmdrrp14iKQBkYUvVoIZrFG3eIga3FvHANNBnF8CJ5c/m0jMb/sveWDK/Jr71kFPu7kQUG1DL7lct+wy9LVAVUGWLLeD382NuZ7srf8e89a3rgkms0/K2Ha+Z/MKZZOToJUI9YtcpM3z4qeJfTHBVUUF7mKpQOdQtdbRvxIoQRR9HqI3t+AXItcyAv64HYYPzaEWb9S2HOERKR7+9OptPzYMmytMXxALAlZ3mYWh8Z8X9vY+fw1USPVueRKg3GgKCuhhCpE8e7OheugPpidmyP+dMHdlmWCuajJwRhSEdy9nc2QZlUuSqS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,136 +143,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Harry
+> +1.  For guest_memfd, we initially defined per-VM memory attributes to track
+> private vs. shared.  But as Ackerley noted, we are in the process of deprecating
+> that support, e.g. by making it incompatible with various guest_memfd features,
+> in favor of having each guest_memfd instance track the state of a given page.
+> 
+> The original guest_memfd design was that it would _only_ hold private pages, and
+> so tracking private vs. shared in guest_memfd didn't make any sense.  As we've
+> pivoted to in-place conversion, tracking private vs. shared in the guest_memfd
+> has basically become mandatory.  We could maaaaaybe make it work with per-VM
+> attributes, but it would be insanely complex.
+> 
+> For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
+> is all or nothing, and can never change, then the only entity that can track that
+> info is the owner of the dmabuf.  And even if the private vs. shared attributes
+> are constant, tracking it external to KVM makes sense, because then the provider
+> can simply hardcode %true/%false.  
 
+For CoCo-VM and Tee-IO, I'm wondering if host or KVM has to maintain
+the private/shared attribute for "assigned MMIO". I'm not naming them
+"host MMIO" cause unlike RAM host never needs to access them, either in
+private manner or shared manner.
 
-On 2026/2/3 17:44, Harry Yoo wrote:
-> On Tue, Feb 03, 2026 at 03:30:06PM +0800, Hao Ge wrote:
->> When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
->> may be noticed:
->>
->> [ 3959.023862] ------------[ cut here ]------------
->> [ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
->> [ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
->> [ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
->> [ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
->> [ 3959.024182] Tainted: [W]=WARN
->> [ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
->> [ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->> [ 3959.024199] pc : alloc_tag_add+0x128/0x178
->> [ 3959.024207] lr : alloc_tag_add+0x128/0x178
->> [ 3959.024214] sp : ffff80008b696d60
->> [ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
->> [ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
->> [ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
->> [ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
->> [ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
->> [ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
->> [ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
->> [ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
->> [ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
->> [ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
->> [ 3959.024340] Call trace:
->> [ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
->> [ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
->> [ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
->> [ 3959.024369]  xas_alloc+0x304/0x4f0
->> [ 3959.024381]  xas_create+0x1e0/0x4a0
->> [ 3959.024388]  xas_store+0x68/0xda8
->> [ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
->> [ 3959.024409]  filemap_add_folio+0x16c/0x7e0
->> [ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
->> [ 3959.024424]  iomap_get_folio+0xfc/0x180
->> [ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
->> [ 3959.024441]  iomap_write_begin+0x198/0xc18
->> [ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
->> [ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
->> [ 3959.024461]  blkdev_write_iter+0x38c/0x978
->> [ 3959.024470]  vfs_write+0x4d4/0x928
->> [ 3959.024482]  ksys_write+0xfc/0x1f8
->> [ 3959.024489]  __arm64_sys_write+0x74/0xb0
->> [ 3959.024496]  invoke_syscall+0xd4/0x258
->> [ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
->> [ 3959.024514]  do_el0_svc+0x48/0x68
->> [ 3959.024520]  el0_svc+0x40/0xf8
->> [ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
->> [ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
->> [ 3959.024540] ---[ end trace 0000000000000000 ]---
-> Hi Hao, on which commit did you observe this warning?
+Traditionally, host maps these MMIOs only because KVM needs HVA->HPA
+mapping to find pfn and setup KVM MMU. Now we have FD based approach so
+with dmabuf fd, host no longer needs mapping. Does that give confidence
+that KVM only needs to setup MMU for this type of MMIO as private/shared
+according to guest's intension (which is fault->is_private)?
 
+We don't need to track private/shared in VFIO MMIO dmabuf, only to keep
+them unmappable.
 
-I've actually encountered this a few times already – it's been present 
-in previous versions,
-
-in fact – but the occurrence probability is extremely low.
-
-As such, it's not possible to bisect the exact commit that introduced 
-the issue.
-
-It is worth noting, however, that all the call traces I have observed 
-are related to xas.
-
-
->> This is due to a race condition that occurs when two threads concurrently
->> perform allocation and freeing operations on the same slab object.
->>
->> When a process is preparing to allocate a slab object, another process
->> successfully preempts the CPU, and then proceeds to free a slab object.
->> However, before the freeing process can invoke `alloc_tag_sub()`, it is
->> preempted again by the original allocating process. At this point, the
->> allocating process acquires the same slab object, and subsequently triggers
->> a warning when it invokes `alloc_tag_add()`.
-> The explanation doesn't make sense to me, because alloc_tag_sub()
-> should have been called before it's added back to freelist or sheaf
-> before other threads can allocate it, or am I missing something?
-
-You are correct. Likely mental fatigue on my part – I cleared my head 
-afterward and found this scenario does not exist.
-
-  As you noted, alloc_tag_sub is invoked first, then the object is added 
-back to the freelist, so the race condition I described is probably 
-non-existent.
-
-Therefore, we may need to revisit our assumptions and take a closer look 
-at the code corresponding to XAS.
-
-Thank you for taking the time to review this with me.
-
-Thanks
-
-Best  Regards
-
-Hao
-
->
->> Signed-off-by: Hao Ge <hao.ge@linux.dev>
->> ---
->>   mm/slub.c | 7 ++++++-
->>   1 file changed, 6 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/slub.c b/mm/slub.c
->> index f77b7407c51b..0d84fc917a89 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -2261,8 +2261,13 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
->>   	 * If other users appear then mem_alloc_profiling_enabled()
->>   	 * check should be added before alloc_tag_add().
->>   	 */
->> -	if (likely(obj_exts))
->> +	if (likely(obj_exts)) {
->> +
->> +		while (!READ_ONCE(obj_exts->ref.ct))
->> +			cpu_relax();
-> I don't think this is acceptable - it shouldn't wait forever even when
-> there is a real bug that doesn't clear the tag.
->
->> +
->>   		alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size);
->> +	}
->>   	else
->>   		alloc_tag_set_inaccurate(current->alloc_tag);
->>   }
->> -- 
->> 2.25.1
->>
+> 
+> As for _how_ to do that, no matter where the attributes are stored, we're going
+> to have to teach KVM to play nice with a non-guest_memfd provider of private
+> memory.
+> 
 
