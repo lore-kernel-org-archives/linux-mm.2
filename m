@@ -4,93 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77988E7FDE0
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 00:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27639E7FDF3
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 01:08:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CA8D6B0005; Mon,  2 Feb 2026 19:14:49 -0500 (EST)
+	id E3B076B0005; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8786B6B0088; Mon,  2 Feb 2026 19:14:49 -0500 (EST)
+	id E1C5E6B0088; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 75A226B008C; Mon,  2 Feb 2026 19:14:49 -0500 (EST)
+	id D1E6D6B0089; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 622A66B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 19:14:49 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BF3646B0005
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 20:08:03 -0500 (EST)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCC07B7F14
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 00:14:48 +0000 (UTC)
-X-FDA: 84401224656.04.9BE12A7
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CB5DF160007
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 00:14:46 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=spFvYM5S;
-	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 50422B7EBD
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:08:03 +0000 (UTC)
+X-FDA: 84401358846.04.A1B625A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4206620007
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 01:08:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SfeQ7DxL;
+	spf=pass (imf03.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770077687;
+	s=arc-20220608; t=1770080881;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UL5TkTKpwfsk57GsEmn4YJixM6/oQfn+MbPgW31S17c=;
-	b=vcYVc3bqf6smkXCi6431gAGJML08wuDR0O9wbQaxo/crH6TmFJgeykn+8MiaT0zQb8W+TS
-	RAh/l/xKGWEOE1KgoTMpPW+OUn4BjU3bSNvxvBxRqwT1kycxY6LPQ+mlfqaBox9l1dm4mL
-	WdJoDAhSjjerAgb2GXwZnhee4fryTKc=
+	bh=pklA4l1gbwBdIUo+VXBOk+H640IbUsMrACe8G8jp5sQ=;
+	b=FgYWT+FrX32DUl/c6BQZjNRhwyvMtFongz1/uggHfU35v1BhVv3YWmocm4iIORdcdpa+9c
+	bpvFNnkKNsYOvCDQYADvQ4eBu/Bm3WZhNwz635fwmvv3yFKgFs1Xd7FAkUtoiYOgVwKDtJ
+	Q4djV/WcSMhP25Zr6ko1rnuPH7vnWC0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=spFvYM5S;
-	spf=pass (imf08.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770077687; a=rsa-sha256;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SfeQ7DxL;
+	spf=pass (imf03.hostedemail.com: domain of boqun@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770080881; a=rsa-sha256;
 	cv=none;
-	b=WS3KBXS3KqkLE1TiKwXIa0vW75hzd/a/d6n4W3NQNP2uoXI6yNgQrNGeyFlDILWOsV9c8V
-	Lamvf6JzC++M2q5+sqHYt/ftBnaECSoN0d4IlrMxD5sfzEzWgCN7CeUS0G4FN+48WvRPEM
-	I4hhjGccXPr8b8hbDHXq9BYr33oRiSo=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770077684;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UL5TkTKpwfsk57GsEmn4YJixM6/oQfn+MbPgW31S17c=;
-	b=spFvYM5SuR1aK33Y9Zg7Cn9Xqh/rBPTDdvWHRoUiFbG0+KEXd75LEfzQmvuXRAP0CEMz74
-	3OTta24r/6f555bLCbR79g70lZ2gIrFcrmQ6HQs8FkOmG6Ttzq3obI4umAEhraTtmKL+Om
-	y2jvsjD0kO2WoqE56etQ/rIYmN1/njA=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>, Michal Hocko
- <mhocko@suse.com>
-Cc: Matt Bobrowski <mattbobrowski@google.com>,  bpf <bpf@vger.kernel.org>,
-  Michal Hocko <mhocko@suse.com>,  Alexei Starovoitov <ast@kernel.org>,
-  Shakeel Butt <shakeel.butt@linux.dev>,  JP Kobryn
- <inwardvessel@gmail.com>,  LKML <linux-kernel@vger.kernel.org>,  linux-mm
- <linux-mm@kvack.org>,  Suren Baghdasaryan <surenb@google.com>,  Johannes
- Weiner <hannes@cmpxchg.org>,  Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 10/17] mm: introduce
- bpf_task_is_oom_victim() kfunc
-In-Reply-To: <CAADnVQL5g8imKNGbHGQ4HA8_qNT4MYwM8P3aCTFUG7uwiuTeuw@mail.gmail.com>
-	(Alexei Starovoitov's message of "Mon, 2 Feb 2026 09:30:23 -0800")
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
-	<20260127024421.494929-11-roman.gushchin@linux.dev>
-	<aYA4pH_nIBZ-ZhLL@google.com>
-	<CAADnVQL5g8imKNGbHGQ4HA8_qNT4MYwM8P3aCTFUG7uwiuTeuw@mail.gmail.com>
-Date: Mon, 02 Feb 2026 16:14:37 -0800
-Message-ID: <87jywuwumq.fsf@linux.dev>
+	b=fvFEofTf6hDwdckdFVQ85zas1bikCRBbDCJWel5Y744arzklHxQX7EnggjI0cwJVHTT8Kn
+	qHRDkKH7tq8o1yiKCFoHTFl5gKkQoEPgUkFrtL7Yv0hMY6x+jXZsKITseTcF8GGV5sftf+
+	iEEp4HoGzTLYWeSHXYp6SFfuZCtXthc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EACB644040;
+	Tue,  3 Feb 2026 01:07:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532E2C19421;
+	Tue,  3 Feb 2026 01:07:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770080879;
+	bh=Lxv8UzOQzU0hdXe1SMCeEUPqA0rLHi/CHvbVzHJtmmw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SfeQ7DxLGWwVh9J3Q/pdW7E5dDWg7Z0Q44LLKtN+r5gJGE4iOYrS8cxB0IgO0s2hh
+	 3fC5OP/W0WQWmFqpD0v1MF6WRye6y/WPjBjJNl65a/txRw4EoWq04ZIgT9onuhB9+t
+	 2CnmwCxKUXBgaExTERYYUP+VxqHHDlc5ghOPkPXxv8+ROVsuc3ortqwOvT3NzK7mv2
+	 cKT/60zGCu/7P58YJXBwuoJhc70oIfaQr1McGAdZQgFHNSyGkUvFle+Jo3kknFMR8f
+	 grbROcTiZ/3mStKTQ5gvM8vpz19oq3fMHzioUiS3qNbN6fQ7+fM+PejsfkLRITMaNL
+	 OdZ+eeaRkP9uA==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 607D1F40068;
+	Mon,  2 Feb 2026 20:07:58 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Mon, 02 Feb 2026 20:07:58 -0500
+X-ME-Sender: <xms:bkqBaSIIzc9CiBpspt8UhCoUtDgnoWXvTa7ZZfrw_XJmkmmBonA0vg>
+    <xme:bkqBaUgXKDLua8HTwBnDAip1stjhYjirNxQvt5249q-w5ulGII7aYdBDdetBz9Uo8
+    X7V83KPWtF6w_NmQuYJn4c64tYRVYL-bsZM0YMnT8lqzR3uebwJGg>
+X-ME-Received: <xmr:bkqBaY05I_OKjVrTwTShSNOsIzF_nGh4NasNUJ8MvEZHazPTE-cXr-9MiHq7ANO0cg4xH3bEygsfT4S5fvg-dltKY09IDiNB>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeeludeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
+    ehkeeijeeggeehkeehtddthfdtgfejueefleeutdefjeegvefhhffgueeiteekfeenucff
+    ohhmrghinhepohhpvghnqdhsthgurdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
+    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
+    ohhnrghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkh
+    gvrhhnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudehpdhm
+    ohguvgepshhmthhpohhuthdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthht
+    oheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhorhgvnh
+    iiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhirghmrdhh
+    ohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdp
+    rhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtph
+    htthhopehlohhsshhinheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:bkqBaShTF5tlaJntCfmXlvSAgPCe5HMcV3NnFEo81xeA2sraB0a98A>
+    <xmx:bkqBaR9dr-qnQ7G2wBqCX_0bTLM8d0PInNyNB8GHRBduKlWwXYzA3w>
+    <xmx:bkqBaWLzkmixNEwSeZo8yVC1ZS-sHIgckaHLhzbVMkWeLJFhVmC_xA>
+    <xmx:bkqBaewcd0hqWG56bd1dFiJgAlAh7zBh7gfPvoXE9nxHG-H2xkvYDA>
+    <xmx:bkqBaR0o1YbFxMuSpT12D16E_9w8l6Al8tEVaVZ31CW8odarUlu-lc_S>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Feb 2026 20:07:57 -0500 (EST)
+Date: Mon, 2 Feb 2026 17:07:57 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: page: add volatile memory copy methods
+Message-ID: <aYFKbWfQmTInYy91@tardis.local>
+References: <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
+ <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
+ <aX0lcVngRcRwqgd5@tardis.local>
+ <SEV7bR_nyQNtvtgoO8X80HMkMTPLW_6roBSxJ-MpKHHNmkZQyVxSS9k1iFV7-bgAlHSLM566L8EqtRBnht65uA==@protonmail.internalid>
+ <aX2tyn9nBUEKM-SN@tardis.local>
+ <87ms1trjn9.fsf@t14s.mail-host-address-is-not-set>
+ <gKLHFGuJqzRyjCupif-LFYn2ZY6OmhkyYj6idYTOnN4zMmNacFLBD1G9zzsYpTJn13GGvL0i-7JA-lIlBgakgQ==@protonmail.internalid>
+ <DG2WLWJD8V5W.2I24LZKS6JG6Q@garyguo.net>
+ <87bji9r0cp.fsf@t14s.mail-host-address-is-not-set>
+ <878qddqxjy.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <878qddqxjy.fsf@t14s.mail-host-address-is-not-set>
 X-Rspamd-Server: rspam11
-X-Stat-Signature: rjgrwkq6g1d4n6aj4cnawxd8fryij5nd
+X-Stat-Signature: xw49ac1dxsxharg6su4157jmzgsh13gj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CB5DF160007
-X-HE-Tag: 1770077686-33022
-X-HE-Meta: U2FsdGVkX19jqnb4DpGw4Ogz0ov4SG2SmDUFsSBzglgjuZjn5RpqfhkBht1gpTgxE6AoOQHnN9coXg90f7kcJTVTARgF+iUzA4v9vnckMIEbC3qrwDUiP6iDmxTZJLT/gZjB+HfikRb64w9rfG6sB26fblL0o6Y6efhEoHgDtano+gT8x9TLB93eFv+y2V1VFeBZZyDP+9g7ypA//O3DhloYKqKCSb18/GHDRkVD6Uyi8c8fB3H7sVV15pO3B5acyvxUjJPQC05ttVfAw6eFTIZvPWMyE1Y4tYtFvNkXhz406IRZojQaZ/idZyqlCpuel3ZTD4xcmsXXTDvnZ8v2VfcdOPMK1xXgoO/zM1a1/zYpyQakngP1wR5cN8niEeE3ba+Pa15zutdyY5U1p7FrelA9OldB9TSoECtI2nTYuFiFrPtLHlHCjEkI68KbQFjXXgcYob6PWM9Xzk3qYJWCDSisfHdj1oVu4XkVmnOcXvATx9CaLtPmuLBDWd8gq6L7VV920eglv2eBLkaujOHnbDE5XwDY6pJ+DjyQ4eymDDvAUZxMNrxBB4VWHuIz3q1J+vD2Dw7FDCmbQFUzHjfMGREqc4C8/zQ+32vncfbAFwu2XlroO41rOja2nnZun7H3pP+i059LV46lq9hkRFxnzyWH7perHSfVL5P2fuRgaHhq18UK6Jsgm/uIKuRczTDPIHc3o0fOJ9Mw8eaKlk400VMSUdOZzbMo2G3kAKLaKKGUuQ7J1ZcrRAI7wWbjrOGjXLMCulFgfVuYh0nHsxVz7WZYgX75IiMe7bOEe7slVM/4ae8wzBd+LyPek1pD1PFKbogO/R71W/aOMX139pWTs2aCHhUPqBuWMFoaccnKQcVcsFtWdxjPKtKfNuKzLbyvCbfddgld2XaNBf/RT8d5DhFCt6BHmLzPS0NoqKsovsVZeRH9VnC9ZbEfUd95UkX2vFQzDvS+6SHAg40U6ZH
- XP0ElvKE
- MLvtZ4ReZtcoapZL2ZhT86M3gFtAajf5hc/8QcdkO0aaVrGcTUghMu8dL85kYXlKBMy4SIelLBNTyQy2j469j+3olbhjZM/XRRWE/2/iyWNQsSMZIj7fRj3XQwWNraFQM+Pwdj4rvEeJwIZcy+Ikf8ilRyIHDvCE5C641rg7kO2JV1C66dQY2Ax7UXyDD2Bkm7cgPvQfJwg36F/0oSeoJQ9G062b5WpXpjeEIZ6hP/449Z+bnA7sNKtv+gR1ddVf9opvTg1Io9I1Mk/zE7JfF5waCVpaZ/l4Udu7IQ2SPec9jnVQ2sTz1UdB2fUt4N6moxzTM98k4H7o9Ten6uR58gAlG1sSIdLBWNtS1F3Zwti9eTWv0W26Rue06RoqA7qkEJKw4QNb+8hX3pFwiGsZooaY0rvhxwIzt+NEO907zTe8N3DZTSqV7Dknf5w==
+X-Rspamd-Queue-Id: 4206620007
+X-HE-Tag: 1770080881-718683
+X-HE-Meta: U2FsdGVkX18x98b4BMW1s5ftwKuwLkal67qJEkmevBN+XexqjoSahj1qJuXRkhHhMoEFxSzayP8uei12q6YQQ3/PI3h3y4kBdRZBinksn3Xded0S46/RhsOX5g/8cr3O05SdNlF3UiB/DxO/KdY8+CXuIkaqQBsvJQy6XUqh3IIe7LwK3L+qYzjvlE64FYeB2l6PodOzYrjZABaibbWFH2XM3uZsqcWGMsZFNL2APiwqOxszq3tw9CRNQhxcF70CNwVvVOh+ouBJpNSPWjRn+dE92pFkOSVuRKy/IU6NpJlL8tQEqELuzCT+B3H94RYB3wzUik+1dPgO2317hEBAC3Jpv6D3W20bBJ8zLubn+ZEyH8VQC7yxAvVoS0vZCQVbHriYcGUlIOyVQTHbWun5+Evbgz8F4eypEPNrzqA36WMnvkwAkGyM+4k/7HkL6rM+VEr/NzvNaFBiRoNlblwBXTT9A0QffBT/1yqL5fe/F/mRzCu16O69DEoi3bkZZWn4AYBuxcMqLZ2QegisMfbS6nG+K61yFcqFu6ZckkalCA9H3S8T+ZR0k46UcuhDY/8eDtYGh9NNG3QcAEKJig6tEqSw3Z2IGnw83/KQEPlxl/W0cq9+KFjfjdEUNaDrWyAOgyWTpJ4fXoY3qC26bMwa8trwG1fgfIxWxGtTfye/583CqafWqcUJPw5tGZuFLa627drxHFRneIJ0aO7D2lvSfckBv6+syxMwIEIZQND8Avtm1M2gw9Vwsx86dBEBNd6fTFzWA6qjjYIjmXxHC3f+C5MuLfwh/2BmW0drcmLCSBLEQ5o2eJUcXdFuxuVgIkVUy5cuo7nKwCp27OPGF5qdia1q47UbokfihZ8GHIyakkfCNF9hWNh2PETE5TfwCefZ3ZY4EvBnuTwo0gNJlV3aQ7JxDC6ephcuEWQQ4ZVKGXhlYTuxOF0e/xCasyvFOyY0lGwNcHFhpa1p/ZtruiF
+ 5VFzg9Is
+ y4ePkUisEjVLglyy/JbNE3DsLEc3hqZaRBz5S2Eanp2rFvEONPtC2I4LtJrUYn3g9e052ghF6jIiVt9Qtg8unG3RbU8n2NLOaCcgVBWvYObmsGEEjiH9pyKEF7rBx2V2likH2cDHWX8tiyhA6fpKzwugaLHgnqMbTViwHy+Cf8qjqSfm8YCakHfskos9y7qdgZG8fTbKKDKaI0fYIsff998iUTL2wzBLbHHKC4KEecnHYDGJ9w/LVNKYAjCQrT++2Lw7M7KdMHKV8EgI5JedtsQHIICyxR/0td8mMQhY69hckpWWxnAvrU4OUTPotxaj47dwrxC/u+TzpKjhRa4ZYf6SQmlM9rqu9f6gW5LJlHF6YvK1I13ZFMkt3nGZ5Sc1bCtnu87LC70ycwG39rcMW9Sj6pdwmU+cS5CBlD/fX4ah8PPI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,59 +141,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
+On Sat, Jan 31, 2026 at 10:31:13PM +0100, Andreas Hindborg wrote:
+[...]
+> >>>>
+> >>>> For __user memory, because kernel is only given a userspace address, and
+> >>>> userspace can lie or unmap the address while kernel accessing it,
+> >>>> copy_{from,to}_user() is needed to handle page faults.
+> >>>
+> >>> Just to clarify, for my use case, the page is already mapped to kernel
+> >>> space, and it is guaranteed to be mapped for the duration of the call
+> >>> where I do the copy. Also, it _may_ be a user page, but it might not
+> >>> always be the case.
+> >>
+> >> In that case you should also assume there might be other kernel-space users.
+> >> Byte-wise atomic memcpy would be best tool.
+> >
+> > Other concurrent kernel readers/writers would be a kernel bug in my use
+> > case. We could add this to the safety requirements.
+> >
+> 
+> Actually, one case just crossed my mind. I think nothing will prevent a
+> user space process from concurrently submitting multiple reads to the
+> same user page. It would not make sense, but it can be done.
+> 
+> If the reads are issued to different null block devices, the null block
+> driver might concurrently write the user page when servicing each IO
+> request concurrently.
+> 
+> The same situation would happen in real block device drivers, except the
+> writes would be done by dma engines rather than kernel threads.
+> 
 
-> On Sun, Feb 1, 2026 at 9:39=E2=80=AFPM Matt Bobrowski <mattbobrowski@goog=
-le.com> wrote:
->>
->> On Mon, Jan 26, 2026 at 06:44:13PM -0800, Roman Gushchin wrote:
->> > Export tsk_is_oom_victim() helper as a BPF kfunc.
->> > It's very useful to avoid redundant oom kills.
->> >
->> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
->> > Suggested-by: Michal Hocko <mhocko@suse.com>
->> > ---
->> >  mm/oom_kill.c | 14 ++++++++++++++
->> >  1 file changed, 14 insertions(+)
->> >
->> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
->> > index 8f63a370b8f5..53f9f9674658 100644
->> > --- a/mm/oom_kill.c
->> > +++ b/mm/oom_kill.c
->> > @@ -1381,10 +1381,24 @@ __bpf_kfunc int bpf_out_of_memory(struct mem_c=
-group *memcg__nullable,
->> >       return ret;
->> >  }
->> >
->> > +/**
->> > + * bpf_task_is_oom_victim - Check if the task has been marked as an O=
-OM victim
->> > + * @task: task to check
->> > + *
->> > + * Returns true if the task has been previously selected by the OOM k=
-iller
->> > + * to be killed. It's expected that the task will be destroyed soon a=
-nd some
->> > + * memory will be freed, so maybe no additional actions required.
->> > + */
->> > +__bpf_kfunc bool bpf_task_is_oom_victim(struct task_struct *task)
->> > +{
->> > +     return tsk_is_oom_victim(task);
->> > +}
->>
->> Why not just do a direct memory read (i.e., task->signal->oom_mm)
->> within the BPF program? I'm not quite convinced that a BPF kfunc
->> wrapper for something like tsk_is_oom_victim() is warranted as you can
->> literally achieve the same semantics without one.
->
-> +1
-> there is no need for this kfunc.
+Then we better use byte-wise atomic memcpy, and I think for all the
+architectures that Linux kernel support, memcpy() is in fact byte-wise
+atomic if it's volatile. Because down the actual instructions, either a
+byte-size read/write is used, or a larger-size read/write is used but
+they are guaranteed to be byte-wise atomic even for unaligned read or
+write. So "volatile memcpy" and "volatile byte-wise atomic memcpy" have
+the same implementation.
 
-It was explicitly asked by Michal Hocko, who is (co)maintaining the oom
-code. I don't have a strong opinion here. I agree that it can be easily
-open-coded without a kfunc, but at the same time the cost of having an
-extra kfunc is not high and it makes the API more consistent.
+(The C++ paper [1] also says: "In fact, we expect that existing assembly
+memcpy implementations will suffice when suffixed with the required
+fence.")
 
-Michal, do you feel strongly about having a dedicated kfunc vs the
-direct memory read?
+So to make thing move forward, do you mind to introduce a
+`atomic_per_byte_memcpy()` in rust::sync::atomic based on
+bindings::memcpy(), and cc linux-arch and all the archs that support
+Rust for some confirmation? Thanks!
+
+[1]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1478r5.html
+
+Regards,
+Boqun
+
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
 
