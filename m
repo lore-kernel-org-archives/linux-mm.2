@@ -4,83 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B8FDE87843
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F0BAE87846
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 16:16:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 725356B0098; Tue,  3 Feb 2026 11:00:00 -0500 (EST)
+	id 602996B00A2; Tue,  3 Feb 2026 11:16:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F4C06B00A2; Tue,  3 Feb 2026 11:00:00 -0500 (EST)
+	id 5B0616B00A4; Tue,  3 Feb 2026 11:16:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D2A36B00A4; Tue,  3 Feb 2026 11:00:00 -0500 (EST)
+	id 4AF7F6B00A6; Tue,  3 Feb 2026 11:16:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C0FF6B0098
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:00:00 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D1F65593C6
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 15:59:59 +0000 (UTC)
-X-FDA: 84403606518.08.F7CCBEE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 1DA3414000B
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 15:59:57 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EsVGlu9X;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf09.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770134398; a=rsa-sha256;
-	cv=none;
-	b=NUljcguDKNczACXc/t5a25aLnUXrlYH4yQ5XCSoxY9Pm7BkurFHFUdAkDI0rCtR8NwXfvz
-	kOoff8we5axfiLEkFoTDtPlJjYalcE3gm5qyW1zaVDvDeBOx8GaqeDBuEjeRkY2DR7XMK1
-	iq8Hw9++EXQcRk1r/V2ehVdyD3SewDM=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EsVGlu9X;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf09.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C2A6B00A2
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:16:17 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C0CA3138344
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:16:16 +0000 (UTC)
+X-FDA: 84403647552.22.CF75900
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id EA2E9A0003
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:16:14 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hXLLC34H;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770134398;
+	s=arc-20220608; t=1770135375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=YXeHjSiEvVcf53Wnft+MNxRo1UbL7P6nVDtesVFy8UU=;
-	b=PnMIqaY9VxYZJnPPoAkKPLoFc2YHNRX1G7pmb2moZXMsJNRmCvOvBPGP1CKCoF//14XWnL
-	tVsqbYNOvaubbcnZruNl8d9gVQLoq+AY+OF9cxYhPNlAidkLTEy3sJTX7rXbgzvuf3V/1D
-	p9TqQn4ErDaWVf0FUdl5YSIHQt1OIn4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+6iEfAwVowudD9440Eytyn2K8CBL+yodt/SON0xQjqw=;
+	b=jS6LuzYy8OZW5h9+e4yPPZDYJpIIUJpN3M7HFtm3UMlb0p5WsG769Bb1m229PK320/FbPZ
+	jRkRloyyF2mlZ2WQyiDRCKd9F9N7sLIqoxPIhv8pId7le5WSKIKtoxNUG3f/Z//DGhvwTY
+	Lzgn3cQppDd9FcU9CkPI6eOEYtO/t3M=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hXLLC34H;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770135375; a=rsa-sha256;
+	cv=none;
+	b=uAFtWxv5pgRGw3QpZaPNbesNHUeAFQuk8Cpw9ApAvqlWdP8zyGvsF5QhVa+FfGjsD+8fLg
+	ekEI70E0LLwC5hWhc0OOFzehov+UH5OofAZSCrWj0cvw6jujS+c+0GrwDmzaKUmJT+3/7+
+	JVFxGyZ9jWJvfM6881hojnIVC6+ww7s=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6086C60144;
-	Tue,  3 Feb 2026 15:59:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD0CC116D0;
-	Tue,  3 Feb 2026 15:59:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770134397;
-	bh=HYHjtaPvzbIb/wtXUUmIVpY8sOrq4uboL39HdupMVDs=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=EsVGlu9XVVYEeDI0ndyE25KQWlPG9+ISVNAgNaCJKauNbC39Pn54Z7EqL3BidATGo
-	 ogWkpn0I9OU15rP6uh3fDFYW5yvZWNuNvmLTVA3Fm8L2czyum9d8JeyNZBw+1/nPwR
-	 ilWFLssltL+4W1RVxyhJJvNW2SjtHYlJ226oacOE=
-Subject: Patch "Revert "mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()"" has been added to the 6.1-stable tree
-To: Liam.Howlett@oracle.com,akpm@linux-foundation.org,david@kernel.org,gregkh@linuxfoundation.org,harry.yoo@oracle.com,hughd@google.com,jannh@google.com,linux-mm@kvack.org,lorenzo.stoakes@oracle.com,pfalcato@suse.de,vbabka@suse.cz
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 03 Feb 2026 16:59:09 +0100
-In-Reply-To: <20260116033838.20253-1-harry.yoo@oracle.com>
-Message-ID: <2026020309-precision-uncork-1d24@gregkh>
+	by sea.source.kernel.org (Postfix) with ESMTP id C72A14151B;
+	Tue,  3 Feb 2026 16:16:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B490BC116D0;
+	Tue,  3 Feb 2026 16:16:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770135373;
+	bh=Lggy4kALKLaV7O6fLdE4+3yPKrZNAb1hhE+tXBQafR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hXLLC34Hyic6hTVqbQvX+x8C9ERdyKtNKrY6+MNR9b06xzRBHCvSqNkCZ7xinvGIP
+	 7Hd3ieYzcbZvn2/LrBLyPiqnUxRcPP2niRSceJ/CsiaFC+sBVRcJgy71mcNUfrJEWD
+	 ybgZiWVweo9yd1pBfJaBZ3YTCNSAcqh6faYgv8maTRlfDqe+QH35iazzaOFGhxOxDY
+	 uR2PZJ6ZMlTK5ICJd2Zu+dP+hlT1PXeym14O7DAZlWFUSDhWxCRazeE/YpgthdUkEr
+	 iIW/x2hf4lsc9tNn5ZWyX8aZr7ZTTFzRRpyGBAmYJTy/7AMBs52RKuFtbp4DMymukR
+	 6ml1F17rWEwRA==
+Date: Tue, 3 Feb 2026 18:16:05 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Miu <jasonmiu@google.com>
+Cc: Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v8 1/2] kho: Adopt radix tree for preserved memory
+ tracking
+Message-ID: <aYIfRa5fDBaLVR5y@kernel.org>
+References: <20260130005739.3163049-1-jasonmiu@google.com>
+ <20260130005739.3163049-2-jasonmiu@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260130005739.3163049-2-jasonmiu@google.com>
+X-Stat-Signature: c9xz64bpi3zdx14yj5cmtqi15sh37kf3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 1DA3414000B
-X-Stat-Signature: 8ebqg5cm4tz9ixjdw649uwrcp1c4dcz7
-X-HE-Tag: 1770134397-48454
-X-HE-Meta: U2FsdGVkX19m2b5Z8ltYBpv98CRs3LS5TpCdzarAkzic9zQHHTzg2gFHkG73FwudNnMyeoCVmchF2Jozmax1l7HLk5pTKtYWMRJ3X1UXrel4eVV7h5y2UVoY/3YYAKtxDAaqHA3WvuCleK2X0qyA2tZZalhFRFov6Ws3lxXU9r4dU6eqdUtOHc3Ua5l/MNlE0GcKI/StFaBols+bhRoASA3Us7PKWG9LxKnzuEKESsOjRj7el9OMUOrtVpzif/pjVmN8GgWdVsC3xPtNpmSUS3NwPPE4tZFn/1xKIgKkvaPzMrv8KLuqvk00E4Qvo5OqGVuf3j2SADwGPDH3plX8NDX3kfRJV5oCZmwlL9QU7tV2XmSeLLuUinWDsmctZfYx7ClLdE3okmcprloep/Jv781lHLMnJDVDz+VpBPbXaW5ff8HFNSrXHBN6jaHFHOK4JFpP6tH2tPzhAH1UFN05VfsYXvQzf12FlP/VrPNsC4baAU3iwSQo12opxNHAL0+jfUIuTKSGsOwMD1MunPX1qYnx5xYl3AI0LCFTy7JJt/7SmtiRk6rkNkCw1/w2yP9Rtr5OzECAZro8S82A+Co+5e0D0frpmogLuEYuFubsJ4lDqdNRcITUI+VWVfnkjcf8M8A+zGrKnPuHwfcndPl3TKCeu4Qav4ipMAtJVf9NIeQsZaXGxyl82fyb9ar1z/n9gFJRaIlMgrilW0yygBKDpPvTl0/iJK81yJhwgEQOjcRlLeyir/xQM8Az6zGuosmxf1ohyVBe2guQTNEqQVPE6vJa8G9uFrorrjDOuBLls5aeSy8iSzrPeUZBzQhNqWG+LXNi/u5ePJdJ8h3MSi5KOrcl32sVVe0gqQ9ynMzvXQRUHx1i0DyoHEBYiWbfcBW9PJhMXOz9IX0SiXTFF0aRy7BaF24C+mHnoJPikArWCU9uCMOfrQ3EdF0tcDA7zAREUC12S+G/OE5YD+tX9K/
- o3ogUH1J
- IYmGAKhkkTNxV/ycbojVwNTxCS5F6FqC47JyudgWjbICRMGblPB+GgjTSAgliL20PYS/NN7QwF0xiClTyXgRrcQIOI5/H//cHTGbZnz3pAi9UUsZoexFyKvLZqbIOBskUy4Jq5OyrULWy5zjJAcxbe85tuZSua+O8bsgw1/mblubjlvGz/IgY2hZP0bjKAk4xR5Mj1UaHutUQHQF9iBh2ja3TfC7CE08oxsS0M1KP8yHxhHKLPM57kT8A2N5GONDBIx4OdoVX0+SOQWGVWdH2XVc45FcEFlxNGgPuo0Tnl/hzlVvsvwMUtg3oxNn/Z494v0SBJ2+Rh2zeGaZMRSAGnwmMs2O+2SJ7LSrtt271rnoh5gEkInOOjlCHSjEiYmyeFA4WG/cVuSQ/kxl4oBqjpzEWsn/0bJT8X2z9bsxmef5magofgZ+g3M7glb8UD3rwpkHo1GqUUzxBZieZgotobo3tu5FAPO6WMqtWt6dDtTSdU0cFkwH7g1cSOuJIm6oQj2qyFVDNfTeUihIc/TxIibZ9Q5/4ADaWFmkrVW4g5J5o0C+k1zcR2yBVeKdaMQ8OZcimYXImPMwYAkRJMmeJ3wQBj7zl4nxdsQO+nTdr5KKgbbY=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EA2E9A0003
+X-HE-Tag: 1770135374-96308
+X-HE-Meta: U2FsdGVkX1/Eg84UQ2Qz1eTtH8gTFPcrFUWcRMusy20/vWNwvdmSPdc0h7786zvBibnaUZMKIh7sCekktzyIEffQjaQsRg8824V+5oFIlJbzf0NQx/l+nWcTZcEtps/N73HPJvlOUbiyWi0aMifOjXRHJ3/KmLBXSn+XFvuIGTx7D3JAA9YcVMGoezw8CDVfDX/f9CZlupY7qqw0izbgyBCJCZCk0+2a1p7mZLVuF5o2s95ONKIYKDzcUpjwUS33HC12jByMUMU1mMt8yX4OrlJNcVIQM2lchS/tV2b1VaFFvP5G1/zP9a/DGv+3pQH6CQZMF7zFGJeXOt7h9HN0n3x+DbfwRIKxT62UL99U+SlRxiEhh099113XUbTToyOZfTpNj8epxOFo5e+8n6rk1F6zD2MXWR+kMc3dFGdJ85BdXl/RSZtF+m5KPmH8zh1yuIs8hbG5J0POqk/W46o7KoTIOxJY1KXeN3efi5RVifYuUSsrTku5zcgb+ol8rVXIOJRLW9lvp8GP9Q4FLLjEvDLPTIqvAUPhcmw8A/kQGX1mmH7oxejofhHIYnN2nT3a1BlloKkpLy8GffBjk0vktMM1kVFQZEWqIxfE9f6kC6AEOVh7jsmKDC1aWaPyc7DgFMGJl1cieETvpzijNV4I3q31kJIRNyAk8EHq0lwyrbfCIbBpJUIJ8gAEPHu51LxTzpBbs5xS0QOVmV3m49cyypsSjxw28obEMvx+GHmokNtPzBLazqZvRSvo0gYYwTkZsRFuFmJFpN3im7baAvUSttpyuksDreocUxQr6K2kwwomBcVAPVTMyqRHuyYLOKM5a+T9nsO9NXzx/6ukHYEcFW2Af2TBgKDVfhaoII3THhgl4FLpBidR4V8kBWH+tvZvdnPTBhIBubDiMps8BoO9HQXzNklwOBYUPYcm84IlNmLOs5aelOrqIj0pxZrzZAlNg6hm37N/ruoZ+DXxxzn
+ f9y7xHkM
+ dctRAmC5ehxGxdhqEYEjXp95gEBlzm57DUWiBI6008XYGds9AG/WPl5zGhmn1VIzJiLrbnq7K+rcIsBmNKzb3elio5Fk0usZklCTf3dy45baZ4DwIIu/C39tMT5M7rwDtzdJBT+wdXIXw6lYp+gRu82UWs38RDFQcUc7HY2Cz7bFqwaF/IFhAEvVz+Wt/X8p0cH1PnVa/OlXDuhNsupxtPoueWpBBwZENQ2c4SxTvHu2mMfUqyXc92wfhKF5O0LvKA8rQZE7ZoLcYgm4lVF/Gi+y+U9qf2N7pJNWhjeXNGS4fVwI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,219 +100,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Thu, Jan 29, 2026 at 04:57:38PM -0800, Jason Miu wrote:
+> Introduce a radix tree implementation for tracking preserved memory
+> pages and switch the KHO memory tracking mechanism to use it. This
+> lays the groundwork for a stateless KHO implementation that eliminates
+> the need for serialization and the associated "finalize" state.
+> 
+> This patch introduces the core radix tree data structures and
+> constants to the KHO ABI. It adds the radix tree node and leaf
+> structures, along with documentation for the radix tree key encoding
+> scheme that combines a page's physical address and order.
+> 
+> To support broader use by other kernel subsystems, such as hugetlb
+> preservation, the core radix tree manipulation functions are exported
+> as a public API.
+> 
+> The xarray-based memory tracking is replaced with this new radix tree
+> implementation. The core KHO preservation and unpreservation functions
+> are wired up to use the radix tree helpers. On boot, the second kernel
+> restores the preserved memory map by walking the radix tree whose root
+> physical address is passed via the FDT.
+> 
+> The ABI `compatible` version is bumped to "kho-v2" to reflect the
+> structural changes in the preserved memory map and sub-FDT property
+> names. This includes renaming "fdt" to "preserved-data" to better
+> reflect that preserved state may use formats other than FDT.
+> 
+> Signed-off-by: Jason Miu <jasonmiu@google.com>
 
-This is a note to let you know that I've just added the patch titled
+With minor comments below
 
-    Revert "mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()"
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-to the 6.1-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> ---
+...
 
-The filename of the patch is:
-     revert-mm-mprotect-delete-pmd_none_or_clear_bad_unless_trans_huge.patch
-and it can be found in the queue-6.1 subdirectory.
+> +static int __kho_radix_walk_tree(struct kho_radix_node *root,
+> +				 unsigned int level, unsigned long start,
+> +				 kho_radix_tree_walk_callback_t cb)
+> +{
+> +	struct kho_radix_node *node;
+> +	struct kho_radix_leaf *leaf;
+> +	unsigned long key, i;
+> +	unsigned int shift;
+> +	int err;
+> +
+> +	for (i = 0; i < PAGE_SIZE / sizeof(phys_addr_t); i++) {
+> +		if (!root->table[i])
+> +			continue;
+> +
+> +		shift = ((level - 1) * KHO_TABLE_SIZE_LOG2) +
+> +			KHO_BITMAP_SIZE_LOG2;
+> +		key = start | (i << shift);
+> +
+> +		node = phys_to_virt(root->table[i]);
+> +
+> +		if (level == 1) {
+> +			/*
+> +			 * we are at level 1,
+> +			 * node is pointing to the level 0 bitmap.
+> +			 */
+> +			leaf = (struct kho_radix_leaf *)node;
+> +			err = kho_radix_walk_leaf(leaf, key, cb);
+> +			if (err)
+> +				return err;
+> +		} else {
+> +			err  = __kho_radix_walk_tree(node, level - 1,
+> +						     key, cb);
+> +			if (err)
+> +				return err;
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
+Nit: if (err) can be moved outside if (level == 1)
 
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/**
+> + * kho_radix_walk_tree - Traverses the radix tree and calls a callback for each preserved page.
+> + * @tree: A pointer to the KHO radix tree to walk.
+> + * @cb: A callback function of type kho_radix_tree_walk_callback_t that will be
+> + *      invoked for each preserved page found in the tree. The callback receives
+> + *      the physical address and order of the preserved page.
+> + *
+> + * This function walks the radix tree, searching from the specified top level
+> + * (@level) down to the lowest level (level 0). For each preserved page found,
 
-From stable+bounces-209984-greg=kroah.com@vger.kernel.org Fri Jan 16 04:40:33 2026
-From: Harry Yoo <harry.yoo@oracle.com>
-Date: Fri, 16 Jan 2026 12:38:38 +0900
-Subject: Revert "mm/mprotect: delete pmd_none_or_clear_bad_unless_trans_huge()"
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, david@kernel.org, hughd@google.com, jannh@google.com, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, pfalcato@suse.de, vbabka@suse.cz, Harry Yoo <harry.yoo@oracle.com>
-Message-ID: <20260116033838.20253-1-harry.yoo@oracle.com>
+Hmm, why do we need @level here? 
+Or it rather remained from the older versions?
 
-From: Harry Yoo <harry.yoo@oracle.com>
+> + * it invokes the provided callback, passing the page's physical address and
+> + * order.
+> + *
+> + * Return: 0 if the walk completed the specified tree, or the non-zero return
+> + *         value from the callback that stopped the walk.
+> + */
+> +int kho_radix_walk_tree(struct kho_radix_tree *tree,
+> +			kho_radix_tree_walk_callback_t cb)
+> +{
+> +	if (WARN_ON_ONCE(!tree->root))
+> +		return -EINVAL;
+> +
+> +	guard(mutex)(&tree->lock);
+> +
+> +	return __kho_radix_walk_tree(tree->root, KHO_TREE_MAX_DEPTH - 1, 0, cb);
+> +}
+> +EXPORT_SYMBOL_GPL(kho_radix_walk_tree);
 
-This reverts commit 91750c8a4be42d73b6810a1c35d73c8a3cd0b481 which is
-commit 670ddd8cdcbd1d07a4571266ae3517f821728c3a upstream.
-
-While the commit fixes a race condition between NUMA balancing and THP
-migration, it causes a NULL-pointer-deref when the pmd temporarily
-transitions from pmd_trans_huge() to pmd_none(). Verifying whether the
-pmd value has changed under page table lock does not prevent the crash,
-as it occurs when acquiring the lock.
-
-Since the original issue addressed by the commit is quite rare and
-non-fatal, revert the commit. A better backport solution that more
-closely matches the upstream semantics will be provided as a follow-up.
-
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- mm/mprotect.c |  101 +++++++++++++++++++++++++++++++++-------------------------
- 1 file changed, 58 insertions(+), 43 deletions(-)
-
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -73,12 +73,10 @@ static inline bool can_change_pte_writab
- }
- 
- static long change_pte_range(struct mmu_gather *tlb,
--		struct vm_area_struct *vma, pmd_t *pmd, pmd_t pmd_old,
--		unsigned long addr, unsigned long end, pgprot_t newprot,
--		unsigned long cp_flags)
-+		struct vm_area_struct *vma, pmd_t *pmd, unsigned long addr,
-+		unsigned long end, pgprot_t newprot, unsigned long cp_flags)
- {
- 	pte_t *pte, oldpte;
--	pmd_t _pmd;
- 	spinlock_t *ptl;
- 	long pages = 0;
- 	int target_node = NUMA_NO_NODE;
-@@ -88,15 +86,21 @@ static long change_pte_range(struct mmu_
- 
- 	tlb_change_page_size(tlb, PAGE_SIZE);
- 
-+	/*
-+	 * Can be called with only the mmap_lock for reading by
-+	 * prot_numa so we must check the pmd isn't constantly
-+	 * changing from under us from pmd_none to pmd_trans_huge
-+	 * and/or the other way around.
-+	 */
-+	if (pmd_trans_unstable(pmd))
-+		return 0;
-+
-+	/*
-+	 * The pmd points to a regular pte so the pmd can't change
-+	 * from under us even if the mmap_lock is only hold for
-+	 * reading.
-+	 */
- 	pte = pte_offset_map_lock(vma->vm_mm, pmd, addr, &ptl);
--	/* Make sure pmd didn't change after acquiring ptl */
--	_pmd = pmd_read_atomic(pmd);
--	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
--	barrier();
--	if (!pmd_same(pmd_old, _pmd)) {
--		pte_unmap_unlock(pte, ptl);
--		return -EAGAIN;
--	}
- 
- 	/* Get target node for single threaded private VMAs */
- 	if (prot_numa && !(vma->vm_flags & VM_SHARED) &&
-@@ -284,6 +288,31 @@ static long change_pte_range(struct mmu_
- 	return pages;
- }
- 
-+/*
-+ * Used when setting automatic NUMA hinting protection where it is
-+ * critical that a numa hinting PMD is not confused with a bad PMD.
-+ */
-+static inline int pmd_none_or_clear_bad_unless_trans_huge(pmd_t *pmd)
-+{
-+	pmd_t pmdval = pmd_read_atomic(pmd);
-+
-+	/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+	barrier();
-+#endif
-+
-+	if (pmd_none(pmdval))
-+		return 1;
-+	if (pmd_trans_huge(pmdval))
-+		return 0;
-+	if (unlikely(pmd_bad(pmdval))) {
-+		pmd_clear_bad(pmd);
-+		return 1;
-+	}
-+
-+	return 0;
-+}
-+
- /* Return true if we're uffd wr-protecting file-backed memory, or false */
- static inline bool
- uffd_wp_protect_file(struct vm_area_struct *vma, unsigned long cp_flags)
-@@ -331,34 +360,22 @@ static inline long change_pmd_range(stru
- 
- 	pmd = pmd_offset(pud, addr);
- 	do {
--		long ret;
--		pmd_t _pmd;
--again:
-+		long this_pages;
-+
- 		next = pmd_addr_end(addr, end);
--		_pmd = pmd_read_atomic(pmd);
--		/* See pmd_none_or_trans_huge_or_clear_bad for info on barrier */
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--		barrier();
--#endif
- 
- 		change_pmd_prepare(vma, pmd, cp_flags);
- 		/*
- 		 * Automatic NUMA balancing walks the tables with mmap_lock
- 		 * held for read. It's possible a parallel update to occur
--		 * between pmd_trans_huge(), is_swap_pmd(), and
--		 * a pmd_none_or_clear_bad() check leading to a false positive
--		 * and clearing. Hence, it's necessary to atomically read
--		 * the PMD value for all the checks.
-+		 * between pmd_trans_huge() and a pmd_none_or_clear_bad()
-+		 * check leading to a false positive and clearing.
-+		 * Hence, it's necessary to atomically read the PMD value
-+		 * for all the checks.
- 		 */
--		if (!is_swap_pmd(_pmd) && !pmd_devmap(_pmd) && !pmd_trans_huge(_pmd)) {
--			if (pmd_none(_pmd))
--				goto next;
--
--			if (pmd_bad(_pmd)) {
--				pmd_clear_bad(pmd);
--				goto next;
--			}
--		}
-+		if (!is_swap_pmd(*pmd) && !pmd_devmap(*pmd) &&
-+		     pmd_none_or_clear_bad_unless_trans_huge(pmd))
-+			goto next;
- 
- 		/* invoke the mmu notifier if the pmd is populated */
- 		if (!range.start) {
-@@ -368,7 +385,7 @@ again:
- 			mmu_notifier_invalidate_range_start(&range);
- 		}
- 
--		if (is_swap_pmd(_pmd) || pmd_trans_huge(_pmd) || pmd_devmap(_pmd)) {
-+		if (is_swap_pmd(*pmd) || pmd_trans_huge(*pmd) || pmd_devmap(*pmd)) {
- 			if ((next - addr != HPAGE_PMD_SIZE) ||
- 			    uffd_wp_protect_file(vma, cp_flags)) {
- 				__split_huge_pmd(vma, pmd, addr, false, NULL);
-@@ -383,11 +400,11 @@ again:
- 				 * change_huge_pmd() does not defer TLB flushes,
- 				 * so no need to propagate the tlb argument.
- 				 */
--				ret = change_huge_pmd(tlb, vma, pmd,
--						      addr, newprot, cp_flags);
-+				int nr_ptes = change_huge_pmd(tlb, vma, pmd,
-+						addr, newprot, cp_flags);
- 
--				if (ret) {
--					if (ret == HPAGE_PMD_NR) {
-+				if (nr_ptes) {
-+					if (nr_ptes == HPAGE_PMD_NR) {
- 						pages += HPAGE_PMD_NR;
- 						nr_huge_updates++;
- 					}
-@@ -398,11 +415,9 @@ again:
- 			}
- 			/* fall through, the trans huge pmd just split */
- 		}
--		ret = change_pte_range(tlb, vma, pmd, _pmd, addr, next,
--				       newprot, cp_flags);
--		if (ret < 0)
--			goto again;
--		pages += ret;
-+		this_pages = change_pte_range(tlb, vma, pmd, addr, next,
-+					      newprot, cp_flags);
-+		pages += this_pages;
- next:
- 		cond_resched();
- 	} while (pmd++, addr = next, addr != end);
-
-
-Patches currently in stable-queue which might be from harry.yoo@oracle.com are
-
-queue-6.1/revert-mm-mprotect-delete-pmd_none_or_clear_bad_unless_trans_huge.patch
-queue-6.1/mm-kfence-describe-slab-parameter-in-__kfence_obj_in.patch
-queue-6.1/mm-rmap-fix-two-comments-related-to-huge_pmd_unshare.patch
+-- 
+Sincerely yours,
+Mike.
 
