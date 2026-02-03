@@ -4,112 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A94E8782A
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 13:05:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B7CAE87823
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 13:08:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 790E56B00A5; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
+	id 816BF6B00A9; Tue,  3 Feb 2026 08:08:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 765FA6B00A6; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
+	id 7C4006B00AA; Tue,  3 Feb 2026 08:08:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6682F6B00A7; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
+	id 6A5676B00AB; Tue,  3 Feb 2026 08:08:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B8F16B00A5
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:05:20 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0410A1B1D5B
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:05:19 +0000 (UTC)
-X-FDA: 84403166400.20.08845B7
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B67C1140013
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:05:17 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WdTywgbw;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770123918;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 511B96B00A9
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:08:04 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1B36C1B1C09
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:08:04 +0000 (UTC)
+X-FDA: 84403173288.04.328E50C
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010046.outbound.protection.outlook.com [52.101.85.46])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EE4D11C0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:08:00 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kQM3wqiA;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770124081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DSh2Nqzzh10/u2IJA+YX2OL4R4kNfmoLKZfwXuXuglU=;
-	b=In940n4cx0lVh+ESZDE13quXW4OQ+X3CnXRbV/z8XTTnmkqFz7CWK5nGYOiaMqZSVUew10
-	ns2GXSiWzJcmH5NInIQWZD6gkNulOuEQ3m+eqAzhFBc8dtsm+2o+DdQ+NbxofvRmmrdl2A
-	8cMiGXYeM3uYmFzyoYf/VMiJGzWfxnY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WdTywgbw;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770123918; a=rsa-sha256;
-	cv=none;
-	b=Di1KXIgAhKt9ki4/a+Q7r+CrCuvE3GLUTjl/3y54NKem9S2vQkfupXW5I9nGFV/YrNEM0O
-	d6ytPVIkQ+a4uCcBAGv3+Tfk02I1n9HCc4np1Bph0Q4vtPYnW1D0TKfe8xG3XtDU2BvPd/
-	rEZmDwmc34L7T+8/ukjTIhZ/23frnQg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770123918; x=1801659918;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eAOTahntRImrik38mnsnViDi0PjENZgxrqEs53AMudI=;
-  b=WdTywgbwq9GCIH0QdfndB+w4Nk3a5OkbHliZG5pYy9q0HByLs4UQKIXs
-   w81QsY2XTmzc2KSlytMIL0ScSRLxTZoX0McYlVVBI2WoYsVgYWHbbNEK3
-   QP/MoUdfWZuO7NlpNwo1pPqRXTEG795xuF4Gntn25GwU1W4LUYa9m3m7K
-   2uYJI/zIOqf7+689pkf0DrBzjRABDKf5EqNzGKCE3oaqGfeyhQSqqrScs
-   /Afp3uG9bl2Dxe3Y0oMvo8SUtOVcaj6dJYYumhmRQ0S1VFIanWo4XdRrB
-   cCyOCu8/jG90TEKhh/Rhg0G7WyDQGT4ujmfohDXvW5P38toPN+qoJHos7
-   g==;
-X-CSE-ConnectionGUID: aykZy9VrRXq06yw3URy1Uw==
-X-CSE-MsgGUID: cPkghKvdR5acDBzjRIpoqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="93945554"
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="93945554"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 05:05:14 -0800
-X-CSE-ConnectionGUID: NUmFSuM4RTG8P55q95+ARw==
-X-CSE-MsgGUID: nLLd4nr8TfSH1xmlM01hPA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="240516124"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 03 Feb 2026 05:05:10 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vnG5b-00000000gfe-1dla;
-	Tue, 03 Feb 2026 13:05:07 +0000
-Date: Tue, 3 Feb 2026 21:04:47 +0800
-From: kernel test robot <lkp@intel.com>
-To: Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	intel-xe@lists.freedesktop.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Ralph Campbell <rcampbell@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	John Hubbard <jhubbard@nvidia.com>, dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm: Fix a hmm_range_fault() livelock / starvation
- problem
-Message-ID: <202602032123.zvKd7G8W-lkp@intel.com>
-References: <20260203104532.98534-1-thomas.hellstrom@linux.intel.com>
+	bh=pHaSaUQa8jBA1zCP/UbVW3JoEwphWiYQ25e52J6ldk8=;
+	b=j1h5IjBvKEkR2a2q2p+iSyxwPmACmOaGsnFDbGV42e7idLwv/AD2U+zaYQOPRxHdqjDj04
+	Z/MSFzK7AEwsWqNnhiSnzUZoxubp1e8KHf4akqk8HHrmVYgW4QRheG25ADlLXwyBbg+0DD
+	2gF4zjAonep7xREY1jpKmciBibxsMg4=
+ARC-Authentication-Results: i=2;
+	imf18.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=kQM3wqiA;
+	spf=pass (imf18.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770124081; a=rsa-sha256;
+	cv=pass;
+	b=hvoT4jl09FYfLfaYib2XtTEcNxjAQPjPYpTaXaq0/ww0B09rjf9OSSnfrV8mORC/xKxmUd
+	CqyDTzu60LRBdj4Y4wS3J5cVAn4f1LhJTMU5rG6XSR+fIuqFrSaWN0t7V/OvUpKXfijHy1
+	jGeVBH9EA2p8b7NAe19LBcpO8XSR4VQ=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dOc5QUsQUAgCI7YW6Y7ilOeoj9n6z/XvvthCp9B5ymXQezwzZbU54j9Nlh7RZCKVhZVAWi3OzOyzu8NGAcaXpgsJ3bNa7bVYnBGSgyXL1Y6IAf71LZxJg786uUp1E+rmW1tdK1V5Qc4fbtPK248uWpw3l0I0xYYZ+vyMYWAgJdcdXR8ANkIgxLIRl+3XzJqOs/WmFLtQdAo4dmt3S06+mSQp/WgXCO9FL+Yj6bi5KHWMjpLJcm2TgGzMvwGP3089q08R5pj1wvjpn3oG70CHpwPpsx4cmkrcfRGxbL8yfE5rvSLAGiiF7/c7C0R0riUHyJg1SyFx9wuBXeptriHLQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pHaSaUQa8jBA1zCP/UbVW3JoEwphWiYQ25e52J6ldk8=;
+ b=ZbuDKofct8OHS9Q/XXSvEjy1X837w4afe46JVlbsTuqZb1bjsXXXFe/N2jVGgT6ZYgYbZr7Q1u2Oh+VgF5fjZaniGVGntZmjZHyAWVd2QKNfc4FCxv5TnLKetGVd+EEXuaI2NyRRgxsTtamV/iVVXo/YJzX4fAbSCloGV8PbNoKKqwBzfDR+g6Xa+SS57Zxr64JXHNpUXZJLY1vBja70dD9zSU9qiRD0cpv0iTRKNzhH+cinj7zhJFNscokgUB+IAHwTjLemUfToqa1g9KWF/ZHrUizr9DDYvGCK5XOSlWZJS+QX7y7SZcXZTR1sld08Rx/CMGs8io1esALx+sQyqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pHaSaUQa8jBA1zCP/UbVW3JoEwphWiYQ25e52J6ldk8=;
+ b=kQM3wqiABKCk9RHy+QuIS21Hd20zhq1wh75T2Umz/VeARZ8vaxsYE2MeFnBxYjFFbZdHlHFtm2+fxq1/PPP71hhWKnv6wYqSVGS2S2xjYt5LQjovvhUHZU7GzQ6tZe1s/gtgX0JEc2+o+GNRZysyKYsiDewyASJU6AHOZQQhW3pQY+xJ8Qs5U66cJfSQ3LEHQohPfUoZ0CIgj5LmwWBXz5t1Xr6NLCIEhVNNXLRQY3fkiBc7K7e0WF/CPHw7Xx5I17H3TaMWd0DCgmq9caywk1b7mzSNhhOeusyuILcRhS+KISHzSdvbAv31su4eoYEgTLO6vpFYQ1i38+E6e0so/A==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ DS0PR12MB9323.namprd12.prod.outlook.com (2603:10b6:8:1b3::14) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9587.12; Tue, 3 Feb 2026 13:07:54 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9564.016; Tue, 3 Feb 2026
+ 13:07:54 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: Gavin Guo <gavinguo@igalia.com>, david@kernel.org,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, baolin.wang@linux.alibaba.com, linux-mm@kvack.org,
+ stable@vger.kernel.org, Gavin Shan <gshan@redhat.com>
+Subject: Re: [PATCH] mm/huge_memory: fix early failure try_to_migrate() when
+ split huge pmd for shared thp
+Date: Tue, 03 Feb 2026 08:07:49 -0500
+X-Mailer: MailMate (2.0r6290)
+Message-ID: <3172E2A7-EA3E-4F68-8067-96D72AE5D2C7@nvidia.com>
+In-Reply-To: <20260203130427.n2td43cb275ybi7j@master>
+References: <20260130230058.11471-1-richard.weiyang@gmail.com>
+ <178ADAB8-50AB-452F-B25F-6E145DEAA44C@nvidia.com>
+ <20260201020950.p6aygkkiy4hxbi5r@master>
+ <C620202F-685A-4B9E-B51B-078EBE5BF0C4@nvidia.com>
+ <08f0f26b-8a53-4903-a9dc-16f571b5cfee@igalia.com>
+ <4D8CC775-A86C-4D80-ADB3-6F5CD0FF9330@nvidia.com>
+ <20260203000035.opgq74myrja54zir@master>
+ <EF19148C-5365-4D00-AF21-B0D71E799740@nvidia.com>
+ <20260203130427.n2td43cb275ybi7j@master>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: BY5PR16CA0018.namprd16.prod.outlook.com
+ (2603:10b6:a03:1a0::31) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203104532.98534-1-thomas.hellstrom@linux.intel.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B67C1140013
-X-Stat-Signature: gju73hnwoainn3co1pg6gps3nnij445r
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|DS0PR12MB9323:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d5baecc-3208-4e73-1a06-08de63253e40
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?OaCuI8leLoQV05FoQIigoQx5MPFo4xt6yzSc+xLwyLgaIN/KbXrJs5fjValC?=
+ =?us-ascii?Q?Am47C+Km/l+UHdQqU04wkyKO697DCNIRrgC9jhfrLxfYUgPrOBqnE7LhfF16?=
+ =?us-ascii?Q?T1CD/lLrfXq4ETcs9fStmwjyYSWKTWW+E8F3be+K+nT/XlgJvuJJy+TI4bXf?=
+ =?us-ascii?Q?belglcHcc2MZyAD/32TDLyjbAuhQkfPWPliH+JnOoXFGq1FsPrKjrATz2CaF?=
+ =?us-ascii?Q?JEnX4QaUwyoyW3clM9EfRGD9uSk3Cg90eUbneB52nIUdHL6Pq92X+MUjUQ0W?=
+ =?us-ascii?Q?8zzMjz+ew5R6Ss3qqs5dlSQ7XKISIbL4Y+uGXZfRBWxEaNZPTDmwwVkrgyif?=
+ =?us-ascii?Q?2bQVWmgNoglPRpgdS7rWM8mZPwXN5O0ZTGOMFNPNYNR+eMw+wC3Dug2FrRql?=
+ =?us-ascii?Q?HqZ5GBX70Yrs7PkGQ6QBgJ5f0sn6AOG5j6+NrbwjrUb5ViUxXf7PUBF6ZLSA?=
+ =?us-ascii?Q?Rs/jYMyJsIiARU/1YP+LLZ5tjf/D+FAo0PUKxPRvAFqRJDbiDaWjZGXWPuto?=
+ =?us-ascii?Q?5fkmWNJrI0i6+TwrOpDubnJd5nD4lAOUATJ6mYfeP7c7MI8q+mKIZsST99Jm?=
+ =?us-ascii?Q?89Kygx/OXjq7imEnJTu8J6A9Qby+FDmV/nDDbgEmQN4RJaaIT0OrIqzVv2pf?=
+ =?us-ascii?Q?5v4fSa03ZIB/kotGhNkV9yEuXwjNt8LFFjDF2x3OjLBd36Ni9fcIIgaEJLHg?=
+ =?us-ascii?Q?9aH5tcVby4PdgRLYFZrCfZq9smygB1pKTyZ+IUj0dLhAh8YHR2AhEDyouoqk?=
+ =?us-ascii?Q?tyU6sIsOamoaFEXZ+n4Oqjwo0+gIwIPyU7RRluCrQrzzO6Q/TUVEwEnbVVh0?=
+ =?us-ascii?Q?wd7ej+vyh77YXABBQoxoZeN8fkzA/80UJlU7E1X1UAUZZt3gyrbHIFGrIB4h?=
+ =?us-ascii?Q?XgaCBalvVMwOpfyqDN7SDmE6wI+vFxSiz2VmFbDO6HakM4wwcS4NJiOzbMw6?=
+ =?us-ascii?Q?2fUXSJJfq34eN9ZIjPobOE216CiiEsqmYe6ncGjBzngye+VuEEhOSbCMF+c/?=
+ =?us-ascii?Q?4q/8RiI3ysMhOJ8VoLyI0jlltVexE6JHVrjq3DqhLe0+lYnmB231kCdX+UBd?=
+ =?us-ascii?Q?vDZQfSAh6/CD/xZ6JjcMKHCmViYJVC+UDY74OxuOHJ9y7//0L2kDegUTxTRJ?=
+ =?us-ascii?Q?DvKylcbw5KxD0FNKOmQRc1msTRki7OeJLL2B3WV7JXxmckiKm+H3T5nCJPIf?=
+ =?us-ascii?Q?lA1r6lJ+/p9MGziijq3H2MapGIo9pl7XtQzU446TcDvKPtCHamiTqoIdZSuw?=
+ =?us-ascii?Q?g1PR9A748hr/cexV6VhtRLTxdiesiWitNaoI6XwR8CBTzdqMwGWBl52GwkSO?=
+ =?us-ascii?Q?eym75QpMQ6U49+Li4eRiVuUDflEvXWgAXqtpnWkSejcB0es333dSZ4YVE7aC?=
+ =?us-ascii?Q?Zy1LHo45Q6YLtFZyZwdbPDT5Zl2/wRjey+8Nyudmj0BDZ2Ya9L2VUeYaZM3A?=
+ =?us-ascii?Q?qIqlDTtbyIkYrJazXhHgQN5EC6bt/heejKzTZ1WUKXSON7ezTCq0d+zGUQf1?=
+ =?us-ascii?Q?TnsCifRmU+z/BkF6eEcRG8xpEYwU3aILNnZzAzg6iDC8Si03CPyASYyQDPVl?=
+ =?us-ascii?Q?mbWnzU1t5LLKock11Gw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CmCuLR13DL/wVepZt9BxHE6Caj1aBheitjXhCALsyFax+ROxFpXLDYOEth+s?=
+ =?us-ascii?Q?arNpf5xOFlJ7AmbfmTQdFxoniM1zkjCzP4BU/W0rsOIxy5zoV32Il/oot9KS?=
+ =?us-ascii?Q?G+GFoV1fxumQt6hv5c4MRjHMl1BALIv3K3XIx1BvK+/eCJA0S7rm/uR5SSvz?=
+ =?us-ascii?Q?X/JiiVH8imTeARLIxsHW4HLkHdTkeO9Zhl7enj2RN65k7EhJ380uggj3lLfP?=
+ =?us-ascii?Q?vDg4EOzFDCg6AwhmI4VNkFyDTu/1Nf/h8yket53o4L1X/BsD0AyZ/10B0Pt3?=
+ =?us-ascii?Q?DEMX7Aelj/cgcjwtHVxDa5kRVXYVCFTPndV1jcVHrnf9FRSp4UzpbC/6G72n?=
+ =?us-ascii?Q?rLFwAzMWDk78lvZI7oPPDMDVTeDijT2hpjEhVAor936nRzp8WcEslYV1YnUA?=
+ =?us-ascii?Q?D+FbQ4SJCvQG1QJBCLvZuGfk/7y9poFDLm7Pdc8M9bfm0mxEX1Q6ei9vIoyV?=
+ =?us-ascii?Q?JEyeLtMxLhiMT2wb37gd5rw4l8a9fyDqUBrN0KXJ3WXWovAQVa+7KYhvJlyO?=
+ =?us-ascii?Q?NENjxqjdWpj2OBJJMGvmdpM1X2RfARNcpOUe/nrBqrdVxzAbIZR6JtvtFS2H?=
+ =?us-ascii?Q?cU9tyggsQPo8KIBOuuwe81MR1LJU8U99XrkoFmvoez1hlZ/XFKhdvIcEzGLn?=
+ =?us-ascii?Q?axGp0lOECAaogpy7mjUZCRjZonp4jma27jfxx+npJIxMgnifCIPvxodhYFFr?=
+ =?us-ascii?Q?TBOt+lBuqCMjxXEfT5asBcmYrNYnl8BR0K64P03GEY8x+3RGfHOCibWFaz06?=
+ =?us-ascii?Q?75Xl729nbugjViU88FJZu4XP4JCvqqktTNj7OThNJViOLu0IvVnWThH7JVxB?=
+ =?us-ascii?Q?jvtpWAR9cz7OUPOBYvNFaVi8wwc9btjo6YDXkABqQjXAs4x+tgVpUgeO8/UC?=
+ =?us-ascii?Q?mzfHufas2R6odXm1mAStOPCVE6Z6hG665lq3OSUYkNis/5yt289GP/iH7jJK?=
+ =?us-ascii?Q?lVBEPI5EMGye6TRxUtoZVtynJiCFvubimbXHSjbgnmIxaeXO0/iWYVbGMluC?=
+ =?us-ascii?Q?RUidpxvrl87r22od99ZNWRxmwS3YL3Qbe7TNzllWoH+huqwAe3Bu3qA4FcMk?=
+ =?us-ascii?Q?Ls91lUkngDnCF/L/T12byXxkgPyJSDUK+2XPSwUkbhT4hkUNY9D1RAYrSKcg?=
+ =?us-ascii?Q?XBiP9y81Rf7+ft1ABbBIVebBI6XbS/qg7iFPyt4T1323Sr1fjjag0Mo//BK3?=
+ =?us-ascii?Q?QwSbTRZ3ivLDLZ65aHZ0558L0KnnjohXRjfDpaQhdd9iT2cAXaHHbWAI/SO8?=
+ =?us-ascii?Q?+nAUcyUYqehMY2W9yH5YWbdT8mlotjpkNlNhT/obGW79um9qNOAXxR69Nxj4?=
+ =?us-ascii?Q?9BnrShPLewvhyNPzsgT/1o7Uiz2lIoJotCb3rjMJpAlSiPCO9ETUZr0EXR0A?=
+ =?us-ascii?Q?28VTPqwLlzMuAL/sQYLjmcTKqe78QwJg90bAU3zQKtzIY/MGbM7W+A7JVrNE?=
+ =?us-ascii?Q?ebQoHXmpUaS2dl0NFeAw+kAzbqwjycIDSrHeYPc13GTolJb+OfMpoQclijND?=
+ =?us-ascii?Q?GUuaa9NKoLNawt+g3n4tSAdy9RCBsYkGl4SNUk6L7c2KUIlzkqt7PBg82J8K?=
+ =?us-ascii?Q?TOHWn5Fl+jU0q/pIbL+EZEX1LgTbJl5B3j/G3KdOedjsrm+If0VIBbsiNJTz?=
+ =?us-ascii?Q?vZhRuXVXMLhnM3iirLwnud23UCvFo2UlenOYWY5JPxLp2LayiUNgj/uNfNUT?=
+ =?us-ascii?Q?M48zGdE0+stV8Mvf6rzhnXiAjmrZ2+smOxQRufAhSwLDnxLc?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d5baecc-3208-4e73-1a06-08de63253e40
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 13:07:54.3963
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5KK/azDZbBnfdDQDBqcQJVeZtLLaz1Rd+86o4j1umsyksOlXN7TtdqAN2kENS7lD
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9323
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ei9nxsn3w71p3ajffmz679jgzr9wf7cr
+X-Rspamd-Queue-Id: EE4D11C0005
 X-Rspam-User: 
-X-HE-Tag: 1770123917-617102
-X-HE-Meta: U2FsdGVkX1/Ypa+/pR8tCZTL0avscWwN6omilhgYucUzwkPodz5ZgBy7MXqmEPfMnPXQ/0UoV+egBmby/3ZS2v+SvnSlKK9TIdyredCHyil2E2bdag/eTBC3exhV/tn6jIxSFmwE0EsMUA/HZNC+naGheK/h3gVC0feFmuKZz0yElqKwE5iWxDKAgF3hK32xyiu4ZIxawen3nPyH+f7xxgspBEVNnbnmsK0sT0WNEH6ruuDZY07P1ioQZDgg7k1+xU+CU0SPjwJgdzUeGKb7EfUeMfspt4Nk0CR6p/ZCcKGOv4jleA9xGpeLkZFbJ8ycZEWac27LiG7m34HAcXGu3AxAtrqNrex8Sp05liTcVf7FyAKRDvpTxdyaa+P1Cp5QZbfatymfeAgXyIe5+JpOPvcXiQyLSWoIk58x5l9W8pFrunOeInh85zCjs88CsCjCUwsohQk3ce66Z4XkPlotjbqZr3t9ZQmVI/z+/MHeO6nGBS8xhjBsE+vnNeeZ0zHC2cnXiqJGpCytlZOkEtFub+ZSZyQzW6eSVPgtPHQk4pSGsWXFAiJu8l9MUaxHh0lP3aKitwUWNdnw6zqAKkhwJ70ePWpwAJn3mfrI9SAyQtKH+JVlukH+PFpZD4SJk9GPD7riWIsDam9Mk2Fl0PQEDoyoVkpWCRIcTLTiF39ZPwVPYm+KDlVGH9gNMR/p5ke5l8y6Hv2iWtuYx5jRkBfjGp++nGluKchGnfYLQSi0iHsqLs3c6rN4cdX4P/N2ktAJDwSLZHBItN50vF9o/QZ0irHAXu0LKOfpCXnYbIbIxLU64p6++0g9jFcCQ3O9Sje9vZAM5WeKuxUkQHuyP7MWsB0DXlDE12Sn3wCFN+aKc/MEsDE2Zn0ukmXOQwr34bbXuWkR+U0XPiSminJnELgerisOrvrtLOKgXEBZQThZZZjioaxzw6t/EhV85XNJJrJEMbUjkmWLMtUDNArV7E+
- J8Wd3zZx
- anH07/jkWT3lhqlivqkq9z0ODatsQjotQxFOX/LKPZQuygPq9Y2ooZRbgYMUoUgCVIfH1200u5HkrTVseA9I6YCtLrfM9PX8C4bq5BDoOfALyVQx0fYqqz759USMIB/81ei5ioiOxDHWgnkheMN4lmjY0TwMGm8rJ5/bcG55ghvv33SdUBCVZx597YN7lzjUn7Vp9iU5KQK7q/DDowkKcK49rOUByL0t30nbRYYtvpOW6+VEyEop96MtGWpckdX7VEGr770SROoImIa1JuditdQHRbLVA1A0Oj8DaZpg3GweWz6h8986H4yMid/2g3pPFXVm5eHnol7FZisXBq8IIGB84/jHTn07U+erwZfrIPS0oQMl3GBfvB2UHuw==
+X-HE-Tag: 1770124080-323276
+X-HE-Meta: U2FsdGVkX1/+Qzpz+qtXjoEOU0o6XbKjf0E/OCqA/kKW4v9bzXXbK3GAEH4lMB6P0y0QenLP+G/J0WS3/C5VJWUWI0WI2RvJLZcp/AgjTtSHUHmjRwSoqk3Gx3mD4XrETGRFq9efwMee2S0dRJtHsVVOsLh4pByDPk6kvruyPdPI/nmMswCIFx2qnXgjK5L87dzHzDQuSCH1n58bf6VMOAoq1qNHnmAchS6mLjCHmLlNT2d28gr7U+ZwsP6QJOJMjLoY2QLJxu50tvumm8TznmKG1mcL/Eyz4KawQwe4cxMN19uhZJjD6QTZ9MvleYE7CeKEUWg8PMJJeLRHfAW+iBW5LBb/FpNCdfMG7HH0AYQqC1c9254OOAgdFSLA7fgb1otzQC0Dn47pfyWggwEN1lt9VQYnKzRTzgncK2fQZ5WHogYix6VY1VlCaxH7XfpITUhfheybICjHo3NCsl7+fCIqKjT2gSSLP5RuGqBUiJCuhH/SJZPy3mOyCD/WiKRSDu+N8W2eFI8o710RRuuC0AJn7+osZeKffbWPrGBhjrlEpfqXYmgIIwQSGuafywkJFcrYMOk0vKykcn9Cqa2crj611nhStg5RxOErqSXN0PGUZJO31HTka6pDXBU4H7k0CMNj+fptGik39yS0iDQsKenUvpeZKktlsSQ+EyO13c/4arx/PMU3zkskewu/ngUNwwV0iV5iU1oIUlgJr9YqoNPf9I0lOC/SbV5cd/p80H7AnqjYm4dWPh5KaxYY/pTpqyDwqpvMNibXAEbu5nAAfI17hYLIZlA/UJjkZHzWUXMeyCib+G3pSajLHthoXUhZh3Tv5vt0bhus+NawLI3NHjTzBHeV/ZZgE+G37mFpRsIIz4ul/07Araxd6YI2tA4TXHPvhP1Hx9TGAqJTAr2SpCvWdYbdJ05/UWuhb0XPf69TeGAq4Q9PkcgSGgK2SIYckA4luoGDV38Btb0nBRj
+ bDqobkoD
+ bAS15r5xweVysO4JILYQl6qnyW8lx7kQVrPocy3DH8VcVjMO/9D0qFcNfvD6DbgJyvP5Im99kCmtubAYuNV2orT51mQJvYqfo0NKeyldykY8e3PzMrqZBz+7pgCBfovWrS9MWGqhbXq5FXziFl4lKn76l3eGNzECsrtg0AXmRENzy8X3gtLVTjdGfwxewU0uvNTQrDGnkC9TSUl6g+lQMEzSAhGOw+OGZyEb5wu3do8Cnrwb0C75QhQd7TCW42+k6dmzNo8uOTW2x9JNodToVNmSMZxKxB+oFtqTx3Pi6RoyByVySctldABaB+d/E9g5xc72XmXNKTR8ZJwbAPbEFWYWp8eDtH47/rKywFOmjXGu/s+bhIebgbW/Q0OnnE2TXaHnaM5gryS/Vp1ggFfsaogVZH1WeBpomI88ocTZqzhtPHzueOZlAtRUUCE2BCPnQHij1/iLkTtq79HAjmUPUj8tpxKDAeWMSDokT21rA6KbN8qNtbr05wMH/AJpJmCt1yxXHRmOrknTe5s1VLE04MNCU9DCD89VMJz8hgc+v1kkt5bGhNb7GE4gFY4nyLfjEsfXP4C7CHkys73V80O6asgNuoeOmPLfBVpWCoO5c76Wq64+Mm8vyFTWDCYmmbeQD43fS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,459 +196,260 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Thomas,
+On 3 Feb 2026, at 8:04, Wei Yang wrote:
 
-kernel test robot noticed the following build errors:
+> On Mon, Feb 02, 2026 at 07:07:12PM -0500, Zi Yan wrote:
+>> On 2 Feb 2026, at 19:00, Wei Yang wrote:
+>>
+>>> On Sun, Feb 01, 2026 at 09:20:35AM -0500, Zi Yan wrote:
+>>>> On 1 Feb 2026, at 8:04, Gavin Guo wrote:
+>>>>
+>>>>> On 2/1/26 11:39, Zi Yan wrote:
+>>>>>> On 31 Jan 2026, at 21:09, Wei Yang wrote:
+>>>>>>
+>>>>>>> On Fri, Jan 30, 2026 at 09:44:10PM -0500, Zi Yan wrote:
+>>>>>>>> On 30 Jan 2026, at 18:00, Wei Yang wrote:
+>>>>>>>>
+>>>>>>>>> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one=
+() and
+>>>>>>>>> split_huge_pmd_locked()") return false unconditionally after
+>>>>>>>>> split_huge_pmd_locked() which may fail early during try_to_migr=
+ate() for
+>>>>>>>>> shared thp. This will lead to unexpected folio split failure.
+>>>>>>>>>
+>>>>>>>>> One way to reproduce:
+>>>>>>>>>
+>>>>>>>>>      Create an anonymous thp range and fork 512 children, so we=
+ have a
+>>>>>>>>>      thp shared mapped in 513 processes. Then trigger folio spl=
+it with
+>>>>>>>>>      /sys/kernel/debug/split_huge_pages debugfs to split the th=
+p folio to
+>>>>>>>>>      order 0.
+>>>>>>>>>
+>>>>>>>>> Without the above commit, we can successfully split to order 0.=
 
-[auto build test ERROR on akpm-mm/mm-everything]
+>>>>>>>>> With the above commit, the folio is still a large folio.
+>>>>>>>>>
+>>>>>>>>> The reason is the above commit return false after split pmd
+>>>>>>>>> unconditionally in the first process and break try_to_migrate()=
+=2E
+>>>>>>>>
+>>>>>>>> The reasoning looks good to me.
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> The tricky thing in above reproduce method is current debugfs i=
+nterface
+>>>>>>>>> leverage function split_huge_pages_pid(), which will iterate th=
+e whole
+>>>>>>>>> pmd range and do folio split on each base page address. This me=
+ans it
+>>>>>>>>> will try 512 times, and each time split one pmd from pmd mapped=
+ to pte
+>>>>>>>>> mapped thp. If there are less than 512 shared mapped process,
+>>>>>>>>> the folio is still split successfully at last. But in real worl=
+d, we
+>>>>>>>>> usually try it for once.
+>>>>>>>>>
+>>>>>>>>> This patch fixes this by removing the unconditional false retur=
+n after
+>>>>>>>>> split_huge_pmd_locked(). Later, we may introduce a true fail ea=
+rly if
+>>>>>>>>> split_huge_pmd_locked() does fail.
+>>>>>>>>>
+>>>>>>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>>>>>>> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one=
+() and split_huge_pmd_locked()")
+>>>>>>>>> Cc: Gavin Guo <gavinguo@igalia.com>
+>>>>>>>>> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+>>>>>>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>>>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>>>>>>>> Cc: <stable@vger.kernel.org>
+>>>>>>>>> ---
+>>>>>>>>>   mm/rmap.c | 1 -
+>>>>>>>>>   1 file changed, 1 deletion(-)
+>>>>>>>>>
+>>>>>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>>>>>> index 618df3385c8b..eed971568d65 100644
+>>>>>>>>> --- a/mm/rmap.c
+>>>>>>>>> +++ b/mm/rmap.c
+>>>>>>>>> @@ -2448,7 +2448,6 @@ static bool try_to_migrate_one(struct fol=
+io *folio, struct vm_area_struct *vma,
+>>>>>>>>>   			if (flags & TTU_SPLIT_HUGE_PMD) {
+>>>>>>>>>   				split_huge_pmd_locked(vma, pvmw.address,
+>>>>>>>>>   						      pvmw.pmd, true);
+>>>>>>>>> -				ret =3D false;
+>>>>>>>>>   				page_vma_mapped_walk_done(&pvmw);
+>>>>>>>>>   				break;
+>>>>>>>>>   			}
+>>>>>>>>
+>>>>>>>> How about the patch below? It matches the pattern of set_pmd_mig=
+ration_entry() below.
+>>>>>>>> Basically, continue if the operation is successful, break otherw=
+ise.
+>>>>>>>>
+>>>>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>>>>> index 618df3385c8b..83cc9d98533e 100644
+>>>>>>>> --- a/mm/rmap.c
+>>>>>>>> +++ b/mm/rmap.c
+>>>>>>>> @@ -2448,9 +2448,7 @@ static bool try_to_migrate_one(struct foli=
+o *folio, struct vm_area_struct *vma,
+>>>>>>>> 			if (flags & TTU_SPLIT_HUGE_PMD) {
+>>>>>>>> 				split_huge_pmd_locked(vma, pvmw.address,
+>>>>>>>> 						      pvmw.pmd, true);
+>>>>>>>> -				ret =3D false;
+>>>>>>>> -				page_vma_mapped_walk_done(&pvmw);
+>>>>>>>> -				break;
+>>>>>>>> +				continue;
+>>>>>>>> 			}
+>>>>>>>
+>>>>>>> Per my understanding if @freeze is trur, split_huge_pmd_locked() =
+may "fail" as
+>>>>>>> the comment says:
+>>>>>>>
+>>>>>>> 		 * Without "freeze", we'll simply split the PMD, propagating th=
+e
+>>>>>>> 		 * PageAnonExclusive() flag for each PTE by setting it for
+>>>>>>> 		 * each subpage -- no need to (temporarily) clear.
+>>>>>>> 		 *
+>>>>>>> 		 * With "freeze" we want to replace mapped pages by
+>>>>>>> 		 * migration entries right away. This is only possible if we
+>>>>>>> 		 * managed to clear PageAnonExclusive() -- see
+>>>>>>> 		 * set_pmd_migration_entry().
+>>>>>>> 		 *
+>>>>>>> 		 * In case we cannot clear PageAnonExclusive(), split the PMD
+>>>>>>> 		 * only and let try_to_migrate_one() fail later.
+>>>>>>>
+>>>>>>> While currently we don't return the status of split_huge_pmd_lock=
+ed() to
+>>>>>>> indicate whether it does replaced PMD with migration entries succ=
+essfully. So
+>>>>>>> we are not sure this operation succeed.
+>>>>>>
+>>>>>> This is the right reasoning. This means to properly handle it, spl=
+it_huge_pmd_locked()
+>>>>>> needs to return whether it inserts migration entries or not when f=
+reeze is true.
+>>>>>>
+>>>>>>>
+>>>>>>> Another difference from set_pmd_migration_entry() is split_huge_p=
+md_locked()
+>>>>>>> would change the page table from PMD mapped to PTE mapped.
+>>>>>>> page_vma_mapped_walk() can handle it now for (pvmw->pmd && !pvmw-=
+>pte), but I
+>>>>>>> am not sure this is what we expected. For example, in try_to_unma=
+p_one(), we
+>>>>>>> use page_vma_mapped_walk_restart() after pmd splitted.
+>>>>>>>
+>>>>>>> So I prefer just remove the "ret =3D false" for a fix. Not sure t=
+his is
+>>>>>>> reasonable to you.
+>>>>>>>
+>>>>>>> I am thinking two things after this fix:
+>>>>>>>
+>>>>>>>    * add one similar test in selftests
+>>>>>>>    * let split_huge_pmd_locked() return value to indicate freeze =
+is degrade to
+>>>>>>>      !freeze, and fail early on try_to_migrate() like the thp mig=
+ration branch
+>>>>>>>
+>>>>>>> Look forward your opinion on whether it worth to do it.
+>>>>>>
+>>>>>> This is not the right fix, neither was mine above. Because before =
+commit 60fbb14396d5,
+>>>>>> the code handles PAE properly. If PAE is cleared, PMD is split int=
+o PTEs and each
+>>>>>> PTE becomes a migration entry, page_vma_mapped_walk(&pvmw) returns=
+ false,
+>>>>>> and try_to_migrate_one() returns true. If PAE is not cleared, PMD =
+is split into PTEs
+>>>>>> and each PTE is not a migration entry, inside while (page_vma_mapp=
+ed_walk(&pvmw)),
+>>>>>> PAE will be attempted to get cleared again and it will fail again,=
+ leading to
+>>>>>> try_to_migrate_one() returns false. After commit 60fbb14396d5, no =
+matter PAE is
+>>>>>> cleared or not, try_to_migrate_one() always returns false. It caus=
+es folio split
+>>>>>> failures for shared PMD THPs.
+>>>>>>
+>>>>>> Now with your fix (and mine above), no matter PAE is cleared or no=
+t, try_to_migrate_one()
+>>>>>> always returns true. It just flips the code to a different issue. =
+So the proper fix
+>>>>>> is to let split_huge_pmd_locked() returns whether it inserts migra=
+tion entries or not
+>>>>>> and do the same pattern as THP migration code path.
+>>>>>
+>>>>> How about aligning with the try_to_unmap_one()? The behavior would =
+be the same before applying the commit 60fbb14396d5:
+>>>>>
+>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>> index 7b9879ef442d..0c96f0883013 100644
+>>>>> --- a/mm/rmap.c
+>>>>> +++ b/mm/rmap.c
+>>>>> @@ -2333,9 +2333,9 @@ static bool try_to_migrate_one(struct folio *=
+folio, struct vm_area_struct *vma,
+>>>>>                         if (flags & TTU_SPLIT_HUGE_PMD) {
+>>>>>                                 split_huge_pmd_locked(vma, pvmw.add=
+ress,
+>>>>>                                                       pvmw.pmd, tru=
+e);
+>>>>> -                               ret =3D false;
+>>>>> -                               page_vma_mapped_walk_done(&pvmw);
+>>>>> -                               break;
+>>>>> +                               flags &=3D ~TTU_SPLIT_HUGE_PMD;
+>>>>> +                               page_vma_mapped_walk_restart(&pvmw)=
+;
+>>>>> +                               continue;
+>>>>>                         }
+>>>>>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>>>>>                         pmdval =3D pmdp_get(pvmw.pmd);
+>>>>
+>>>> Yes, it works and definitely needs a comment like "After split_huge_=
+pmd_locked(), restart
+>>>> the walk to detect PageAnonExclusive handling failure in __split_hug=
+e_pmd_locked()".
+>>>> The change is good for backporting, but an additional patch to fix i=
+t properly by adding
+>>>> a return value to split_huge_pmd_locked() is also necessary.
+>>>>
+>>>
+>>> If my understanding is correct, this approach is good for backporting=
+=2E
+>>>
+>>> And yes, we could further improve it by return a value to indicate wh=
+ether
+>>> split_huge_pmd_locked() do split to migration entry.
+>>>
+>>> Thanks both for your thoughtful inputs.
+>>
+>> Are you going to send two patches in a series, one is the above fix wi=
+th a comment
+>> and the other changes split_huge_pmd_locked() to return a value?
+>>
+>
+> Hmm... as the above fix is supposed to be cc stable and backported, I t=
+hink
+> separate them is the correct process. And for the return value of
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Hellstr-m/mm-Fix-a-hmm_range_fault-livelock-starvation-problem/20260203-184803
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260203104532.98534-1-thomas.hellstrom%40linux.intel.com
-patch subject: [PATCH v2] mm: Fix a hmm_range_fault() livelock / starvation problem
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20260203/202602032123.zvKd7G8W-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260203/202602032123.zvKd7G8W-lkp@intel.com/reproduce)
+Right. Andrew prefer this way. You can send the fix first and send the re=
+factor
+patch after the fix is picked up by Andrew.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602032123.zvKd7G8W-lkp@intel.com/
+> split_huge_pmd_locked(), I will take another look at all the call place=
+s. Are
+> you ok with this?
+>
+> Well, do you think we need to wait for David's comment? If not, I will =
+prepare
+> the v2 fix with the above change.
 
-All errors (new ones prefixed by >>):
+You answered my question. There should be no issue with existing code.
 
->> mm/memory.c:4769:5: error: call to undeclared function 'migration_entry_wait_on_locked'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-    4769 |                                 migration_entry_wait_on_locked(entry, vmf->ptl);
-         |                                 ^
-   mm/memory.c:4769:5: note: did you mean 'migration_entry_wait_huge'?
-   include/linux/swapops.h:237:20: note: 'migration_entry_wait_huge' declared here
-     237 | static inline void migration_entry_wait_huge(struct vm_area_struct *vma,
-         |                    ^
-   1 error generated.
+Thanks.
 
 
-vim +/migration_entry_wait_on_locked +4769 mm/memory.c
-
-  4699	
-  4700	/*
-  4701	 * We enter with non-exclusive mmap_lock (to exclude vma changes,
-  4702	 * but allow concurrent faults), and pte mapped but not yet locked.
-  4703	 * We return with pte unmapped and unlocked.
-  4704	 *
-  4705	 * We return with the mmap_lock locked or unlocked in the same cases
-  4706	 * as does filemap_fault().
-  4707	 */
-  4708	vm_fault_t do_swap_page(struct vm_fault *vmf)
-  4709	{
-  4710		struct vm_area_struct *vma = vmf->vma;
-  4711		struct folio *swapcache = NULL, *folio;
-  4712		struct page *page;
-  4713		struct swap_info_struct *si = NULL;
-  4714		rmap_t rmap_flags = RMAP_NONE;
-  4715		bool exclusive = false;
-  4716		softleaf_t entry;
-  4717		pte_t pte;
-  4718		vm_fault_t ret = 0;
-  4719		int nr_pages;
-  4720		unsigned long page_idx;
-  4721		unsigned long address;
-  4722		pte_t *ptep;
-  4723	
-  4724		if (!pte_unmap_same(vmf))
-  4725			goto out;
-  4726	
-  4727		entry = softleaf_from_pte(vmf->orig_pte);
-  4728		if (unlikely(!softleaf_is_swap(entry))) {
-  4729			if (softleaf_is_migration(entry)) {
-  4730				migration_entry_wait(vma->vm_mm, vmf->pmd,
-  4731						     vmf->address);
-  4732			} else if (softleaf_is_device_exclusive(entry)) {
-  4733				vmf->page = softleaf_to_page(entry);
-  4734				ret = remove_device_exclusive_entry(vmf);
-  4735			} else if (softleaf_is_device_private(entry)) {
-  4736				if (vmf->flags & FAULT_FLAG_VMA_LOCK) {
-  4737					/*
-  4738					 * migrate_to_ram is not yet ready to operate
-  4739					 * under VMA lock.
-  4740					 */
-  4741					vma_end_read(vma);
-  4742					ret = VM_FAULT_RETRY;
-  4743					goto out;
-  4744				}
-  4745	
-  4746				vmf->page = softleaf_to_page(entry);
-  4747				vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-  4748						vmf->address, &vmf->ptl);
-  4749				if (unlikely(!vmf->pte ||
-  4750					     !pte_same(ptep_get(vmf->pte),
-  4751								vmf->orig_pte)))
-  4752					goto unlock;
-  4753	
-  4754				/*
-  4755				 * Get a page reference while we know the page can't be
-  4756				 * freed.
-  4757				 */
-  4758				if (trylock_page(vmf->page)) {
-  4759					struct dev_pagemap *pgmap;
-  4760	
-  4761					get_page(vmf->page);
-  4762					pte_unmap_unlock(vmf->pte, vmf->ptl);
-  4763					pgmap = page_pgmap(vmf->page);
-  4764					ret = pgmap->ops->migrate_to_ram(vmf);
-  4765					unlock_page(vmf->page);
-  4766					put_page(vmf->page);
-  4767				} else {
-  4768					pte_unmap(vmf->pte);
-> 4769					migration_entry_wait_on_locked(entry, vmf->ptl);
-  4770				}
-  4771			} else if (softleaf_is_hwpoison(entry)) {
-  4772				ret = VM_FAULT_HWPOISON;
-  4773			} else if (softleaf_is_marker(entry)) {
-  4774				ret = handle_pte_marker(vmf);
-  4775			} else {
-  4776				print_bad_pte(vma, vmf->address, vmf->orig_pte, NULL);
-  4777				ret = VM_FAULT_SIGBUS;
-  4778			}
-  4779			goto out;
-  4780		}
-  4781	
-  4782		/* Prevent swapoff from happening to us. */
-  4783		si = get_swap_device(entry);
-  4784		if (unlikely(!si))
-  4785			goto out;
-  4786	
-  4787		folio = swap_cache_get_folio(entry);
-  4788		if (folio)
-  4789			swap_update_readahead(folio, vma, vmf->address);
-  4790		if (!folio) {
-  4791			if (data_race(si->flags & SWP_SYNCHRONOUS_IO)) {
-  4792				folio = alloc_swap_folio(vmf);
-  4793				if (folio) {
-  4794					/*
-  4795					 * folio is charged, so swapin can only fail due
-  4796					 * to raced swapin and return NULL.
-  4797					 */
-  4798					swapcache = swapin_folio(entry, folio);
-  4799					if (swapcache != folio)
-  4800						folio_put(folio);
-  4801					folio = swapcache;
-  4802				}
-  4803			} else {
-  4804				folio = swapin_readahead(entry, GFP_HIGHUSER_MOVABLE, vmf);
-  4805			}
-  4806	
-  4807			if (!folio) {
-  4808				/*
-  4809				 * Back out if somebody else faulted in this pte
-  4810				 * while we released the pte lock.
-  4811				 */
-  4812				vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-  4813						vmf->address, &vmf->ptl);
-  4814				if (likely(vmf->pte &&
-  4815					   pte_same(ptep_get(vmf->pte), vmf->orig_pte)))
-  4816					ret = VM_FAULT_OOM;
-  4817				goto unlock;
-  4818			}
-  4819	
-  4820			/* Had to read the page from swap area: Major fault */
-  4821			ret = VM_FAULT_MAJOR;
-  4822			count_vm_event(PGMAJFAULT);
-  4823			count_memcg_event_mm(vma->vm_mm, PGMAJFAULT);
-  4824		}
-  4825	
-  4826		swapcache = folio;
-  4827		ret |= folio_lock_or_retry(folio, vmf);
-  4828		if (ret & VM_FAULT_RETRY)
-  4829			goto out_release;
-  4830	
-  4831		page = folio_file_page(folio, swp_offset(entry));
-  4832		/*
-  4833		 * Make sure folio_free_swap() or swapoff did not release the
-  4834		 * swapcache from under us.  The page pin, and pte_same test
-  4835		 * below, are not enough to exclude that.  Even if it is still
-  4836		 * swapcache, we need to check that the page's swap has not
-  4837		 * changed.
-  4838		 */
-  4839		if (unlikely(!folio_matches_swap_entry(folio, entry)))
-  4840			goto out_page;
-  4841	
-  4842		if (unlikely(PageHWPoison(page))) {
-  4843			/*
-  4844			 * hwpoisoned dirty swapcache pages are kept for killing
-  4845			 * owner processes (which may be unknown at hwpoison time)
-  4846			 */
-  4847			ret = VM_FAULT_HWPOISON;
-  4848			goto out_page;
-  4849		}
-  4850	
-  4851		/*
-  4852		 * KSM sometimes has to copy on read faults, for example, if
-  4853		 * folio->index of non-ksm folios would be nonlinear inside the
-  4854		 * anon VMA -- the ksm flag is lost on actual swapout.
-  4855		 */
-  4856		folio = ksm_might_need_to_copy(folio, vma, vmf->address);
-  4857		if (unlikely(!folio)) {
-  4858			ret = VM_FAULT_OOM;
-  4859			folio = swapcache;
-  4860			goto out_page;
-  4861		} else if (unlikely(folio == ERR_PTR(-EHWPOISON))) {
-  4862			ret = VM_FAULT_HWPOISON;
-  4863			folio = swapcache;
-  4864			goto out_page;
-  4865		} else if (folio != swapcache)
-  4866			page = folio_page(folio, 0);
-  4867	
-  4868		/*
-  4869		 * If we want to map a page that's in the swapcache writable, we
-  4870		 * have to detect via the refcount if we're really the exclusive
-  4871		 * owner. Try removing the extra reference from the local LRU
-  4872		 * caches if required.
-  4873		 */
-  4874		if ((vmf->flags & FAULT_FLAG_WRITE) &&
-  4875		    !folio_test_ksm(folio) && !folio_test_lru(folio))
-  4876			lru_add_drain();
-  4877	
-  4878		folio_throttle_swaprate(folio, GFP_KERNEL);
-  4879	
-  4880		/*
-  4881		 * Back out if somebody else already faulted in this pte.
-  4882		 */
-  4883		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, vmf->address,
-  4884				&vmf->ptl);
-  4885		if (unlikely(!vmf->pte || !pte_same(ptep_get(vmf->pte), vmf->orig_pte)))
-  4886			goto out_nomap;
-  4887	
-  4888		if (unlikely(!folio_test_uptodate(folio))) {
-  4889			ret = VM_FAULT_SIGBUS;
-  4890			goto out_nomap;
-  4891		}
-  4892	
-  4893		nr_pages = 1;
-  4894		page_idx = 0;
-  4895		address = vmf->address;
-  4896		ptep = vmf->pte;
-  4897		if (folio_test_large(folio) && folio_test_swapcache(folio)) {
-  4898			int nr = folio_nr_pages(folio);
-  4899			unsigned long idx = folio_page_idx(folio, page);
-  4900			unsigned long folio_start = address - idx * PAGE_SIZE;
-  4901			unsigned long folio_end = folio_start + nr * PAGE_SIZE;
-  4902			pte_t *folio_ptep;
-  4903			pte_t folio_pte;
-  4904	
-  4905			if (unlikely(folio_start < max(address & PMD_MASK, vma->vm_start)))
-  4906				goto check_folio;
-  4907			if (unlikely(folio_end > pmd_addr_end(address, vma->vm_end)))
-  4908				goto check_folio;
-  4909	
-  4910			folio_ptep = vmf->pte - idx;
-  4911			folio_pte = ptep_get(folio_ptep);
-  4912			if (!pte_same(folio_pte, pte_move_swp_offset(vmf->orig_pte, -idx)) ||
-  4913			    swap_pte_batch(folio_ptep, nr, folio_pte) != nr)
-  4914				goto check_folio;
-  4915	
-  4916			page_idx = idx;
-  4917			address = folio_start;
-  4918			ptep = folio_ptep;
-  4919			nr_pages = nr;
-  4920			entry = folio->swap;
-  4921			page = &folio->page;
-  4922		}
-  4923	
-  4924	check_folio:
-  4925		/*
-  4926		 * PG_anon_exclusive reuses PG_mappedtodisk for anon pages. A swap pte
-  4927		 * must never point at an anonymous page in the swapcache that is
-  4928		 * PG_anon_exclusive. Sanity check that this holds and especially, that
-  4929		 * no filesystem set PG_mappedtodisk on a page in the swapcache. Sanity
-  4930		 * check after taking the PT lock and making sure that nobody
-  4931		 * concurrently faulted in this page and set PG_anon_exclusive.
-  4932		 */
-  4933		BUG_ON(!folio_test_anon(folio) && folio_test_mappedtodisk(folio));
-  4934		BUG_ON(folio_test_anon(folio) && PageAnonExclusive(page));
-  4935	
-  4936		/*
-  4937		 * If a large folio already belongs to anon mapping, then we
-  4938		 * can just go on and map it partially.
-  4939		 * If not, with the large swapin check above failing, the page table
-  4940		 * have changed, so sub pages might got charged to the wrong cgroup,
-  4941		 * or even should be shmem. So we have to free it and fallback.
-  4942		 * Nothing should have touched it, both anon and shmem checks if a
-  4943		 * large folio is fully appliable before use.
-  4944		 *
-  4945		 * This will be removed once we unify folio allocation in the swap cache
-  4946		 * layer, where allocation of a folio stabilizes the swap entries.
-  4947		 */
-  4948		if (!folio_test_anon(folio) && folio_test_large(folio) &&
-  4949		    nr_pages != folio_nr_pages(folio)) {
-  4950			if (!WARN_ON_ONCE(folio_test_dirty(folio)))
-  4951				swap_cache_del_folio(folio);
-  4952			goto out_nomap;
-  4953		}
-  4954	
-  4955		/*
-  4956		 * Check under PT lock (to protect against concurrent fork() sharing
-  4957		 * the swap entry concurrently) for certainly exclusive pages.
-  4958		 */
-  4959		if (!folio_test_ksm(folio)) {
-  4960			/*
-  4961			 * The can_swapin_thp check above ensures all PTE have
-  4962			 * same exclusiveness. Checking just one PTE is fine.
-  4963			 */
-  4964			exclusive = pte_swp_exclusive(vmf->orig_pte);
-  4965			if (exclusive)
-  4966				check_swap_exclusive(folio, entry, nr_pages);
-  4967			if (folio != swapcache) {
-  4968				/*
-  4969				 * We have a fresh page that is not exposed to the
-  4970				 * swapcache -> certainly exclusive.
-  4971				 */
-  4972				exclusive = true;
-  4973			} else if (exclusive && folio_test_writeback(folio) &&
-  4974				  data_race(si->flags & SWP_STABLE_WRITES)) {
-  4975				/*
-  4976				 * This is tricky: not all swap backends support
-  4977				 * concurrent page modifications while under writeback.
-  4978				 *
-  4979				 * So if we stumble over such a page in the swapcache
-  4980				 * we must not set the page exclusive, otherwise we can
-  4981				 * map it writable without further checks and modify it
-  4982				 * while still under writeback.
-  4983				 *
-  4984				 * For these problematic swap backends, simply drop the
-  4985				 * exclusive marker: this is perfectly fine as we start
-  4986				 * writeback only if we fully unmapped the page and
-  4987				 * there are no unexpected references on the page after
-  4988				 * unmapping succeeded. After fully unmapped, no
-  4989				 * further GUP references (FOLL_GET and FOLL_PIN) can
-  4990				 * appear, so dropping the exclusive marker and mapping
-  4991				 * it only R/O is fine.
-  4992				 */
-  4993				exclusive = false;
-  4994			}
-  4995		}
-  4996	
-  4997		/*
-  4998		 * Some architectures may have to restore extra metadata to the page
-  4999		 * when reading from swap. This metadata may be indexed by swap entry
-  5000		 * so this must be called before folio_put_swap().
-  5001		 */
-  5002		arch_swap_restore(folio_swap(entry, folio), folio);
-  5003	
-  5004		add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
-  5005		add_mm_counter(vma->vm_mm, MM_SWAPENTS, -nr_pages);
-  5006		pte = mk_pte(page, vma->vm_page_prot);
-  5007		if (pte_swp_soft_dirty(vmf->orig_pte))
-  5008			pte = pte_mksoft_dirty(pte);
-  5009		if (pte_swp_uffd_wp(vmf->orig_pte))
-  5010			pte = pte_mkuffd_wp(pte);
-  5011	
-  5012		/*
-  5013		 * Same logic as in do_wp_page(); however, optimize for pages that are
-  5014		 * certainly not shared either because we just allocated them without
-  5015		 * exposing them to the swapcache or because the swap entry indicates
-  5016		 * exclusivity.
-  5017		 */
-  5018		if (!folio_test_ksm(folio) &&
-  5019		    (exclusive || folio_ref_count(folio) == 1)) {
-  5020			if ((vma->vm_flags & VM_WRITE) && !userfaultfd_pte_wp(vma, pte) &&
-  5021			    !pte_needs_soft_dirty_wp(vma, pte)) {
-  5022				pte = pte_mkwrite(pte, vma);
-  5023				if (vmf->flags & FAULT_FLAG_WRITE) {
-  5024					pte = pte_mkdirty(pte);
-  5025					vmf->flags &= ~FAULT_FLAG_WRITE;
-  5026				}
-  5027			}
-  5028			rmap_flags |= RMAP_EXCLUSIVE;
-  5029		}
-  5030		folio_ref_add(folio, nr_pages - 1);
-  5031		flush_icache_pages(vma, page, nr_pages);
-  5032		vmf->orig_pte = pte_advance_pfn(pte, page_idx);
-  5033	
-  5034		/* ksm created a completely new copy */
-  5035		if (unlikely(folio != swapcache)) {
-  5036			folio_add_new_anon_rmap(folio, vma, address, RMAP_EXCLUSIVE);
-  5037			folio_add_lru_vma(folio, vma);
-  5038			folio_put_swap(swapcache, NULL);
-  5039		} else if (!folio_test_anon(folio)) {
-  5040			/*
-  5041			 * We currently only expect !anon folios that are fully
-  5042			 * mappable. See the comment after can_swapin_thp above.
-  5043			 */
-  5044			VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) != nr_pages, folio);
-  5045			VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
-  5046			folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
-  5047			folio_put_swap(folio, NULL);
-  5048		} else {
-  5049			VM_WARN_ON_ONCE(nr_pages != 1 && nr_pages != folio_nr_pages(folio));
-  5050			folio_add_anon_rmap_ptes(folio, page, nr_pages, vma, address,
-  5051						 rmap_flags);
-  5052			folio_put_swap(folio, nr_pages == 1 ? page : NULL);
-  5053		}
-  5054	
-  5055		VM_BUG_ON(!folio_test_anon(folio) ||
-  5056				(pte_write(pte) && !PageAnonExclusive(page)));
-  5057		set_ptes(vma->vm_mm, address, ptep, pte, nr_pages);
-  5058		arch_do_swap_page_nr(vma->vm_mm, vma, address,
-  5059				pte, pte, nr_pages);
-  5060	
-  5061		/*
-  5062		 * Remove the swap entry and conditionally try to free up the swapcache.
-  5063		 * Do it after mapping, so raced page faults will likely see the folio
-  5064		 * in swap cache and wait on the folio lock.
-  5065		 */
-  5066		if (should_try_to_free_swap(si, folio, vma, nr_pages, vmf->flags))
-  5067			folio_free_swap(folio);
-  5068	
-  5069		folio_unlock(folio);
-  5070		if (unlikely(folio != swapcache)) {
-  5071			/*
-  5072			 * Hold the lock to avoid the swap entry to be reused
-  5073			 * until we take the PT lock for the pte_same() check
-  5074			 * (to avoid false positives from pte_same). For
-  5075			 * further safety release the lock after the folio_put_swap
-  5076			 * so that the swap count won't change under a
-  5077			 * parallel locked swapcache.
-  5078			 */
-  5079			folio_unlock(swapcache);
-  5080			folio_put(swapcache);
-  5081		}
-  5082	
-  5083		if (vmf->flags & FAULT_FLAG_WRITE) {
-  5084			ret |= do_wp_page(vmf);
-  5085			if (ret & VM_FAULT_ERROR)
-  5086				ret &= VM_FAULT_ERROR;
-  5087			goto out;
-  5088		}
-  5089	
-  5090		/* No need to invalidate - it was non-present before */
-  5091		update_mmu_cache_range(vmf, vma, address, ptep, nr_pages);
-  5092	unlock:
-  5093		if (vmf->pte)
-  5094			pte_unmap_unlock(vmf->pte, vmf->ptl);
-  5095	out:
-  5096		if (si)
-  5097			put_swap_device(si);
-  5098		return ret;
-  5099	out_nomap:
-  5100		if (vmf->pte)
-  5101			pte_unmap_unlock(vmf->pte, vmf->ptl);
-  5102	out_page:
-  5103		if (folio_test_swapcache(folio))
-  5104			folio_free_swap(folio);
-  5105		folio_unlock(folio);
-  5106	out_release:
-  5107		folio_put(folio);
-  5108		if (folio != swapcache) {
-  5109			folio_unlock(swapcache);
-  5110			folio_put(swapcache);
-  5111		}
-  5112		if (si)
-  5113			put_swap_device(si);
-  5114		return ret;
-  5115	}
-  5116	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best Regards,
+Yan, Zi
 
