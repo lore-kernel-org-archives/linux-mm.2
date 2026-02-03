@@ -4,114 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FF27E8305C
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 07:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3832E8305B
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 07:31:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E30126B008A; Tue,  3 Feb 2026 02:28:48 -0500 (EST)
+	id 527836B0005; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E07BF6B0092; Tue,  3 Feb 2026 02:28:48 -0500 (EST)
+	id 4D21E6B0088; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D34546B0093; Tue,  3 Feb 2026 02:28:48 -0500 (EST)
+	id 3E8816B0093; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C1FCE6B008A
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 02:28:48 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C2F358AC2
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:28:48 +0000 (UTC)
-X-FDA: 84402318336.05.FDE2CEF
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 16BDDC0004
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:28:44 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=WX4Yqe79;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf28.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770103726; a=rsa-sha256;
-	cv=none;
-	b=QPwNP5sh4JDwAGuv7EZZrCs/7wyJtEBRN/dgLwAp1Z/R3pAIgjup+/pz+/6werOTjYaEcP
-	Mi/lt3/waPhgWLbpLSzBtP3uTt/BWGrxAnHpqbaaS9oU8VTxrpmQ3xXygahX/oJKnmw5BD
-	Z8yQ18Pk3q3Hry4Gq2Adl30SnRxZ1bE=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=WX4Yqe79;
-	dmarc=pass (policy=none) header.from=samsung.com;
-	spf=pass (imf28.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.24 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 275A36B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 02:31:12 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AF049C17AE
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:31:11 +0000 (UTC)
+X-FDA: 84402324342.23.647AAE7
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C6055100009
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:31:09 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ePlgGes+;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770103726;
+	s=arc-20220608; t=1770103870;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hVnXV5I1ungw4oMzJjmOhnnPWVP5XkxXpd/tF3zKk2U=;
-	b=gG0km+XfiizILjKn0lcStHeDNW2JbxysI+p1SaBsk/i0rKMwNJa9V4mFz/zvM/EBb7qGmw
-	Z7G494htqfOKh22nAwIeb0kDPEa7cbjq3SHeDgLRMGrGkf/cgNtCFjw8PuSjUmzhnv1pMo
-	T4busyVjRs/rU2LhRzc/tf3iWFpQtIU=
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20260203072841epoutp01d7f0e3d862b4c7e57d2dd6a8b86a5ff7~Qq-S-q2uP1056910569epoutp01e
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 07:28:41 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20260203072841epoutp01d7f0e3d862b4c7e57d2dd6a8b86a5ff7~Qq-S-q2uP1056910569epoutp01e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1770103721;
-	bh=hVnXV5I1ungw4oMzJjmOhnnPWVP5XkxXpd/tF3zKk2U=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=WX4Yqe79e+sqXjef+Sh+x/yUXP/GYVAitaXMBt05wbkhGni2dyzuxqIa/b+Io0X8l
-	 4BBr/zf2CGXlQqXqaA3y50iKZQwJRI9GQiq8wMipWYgdmHFIKDsWxMR3YfDyxKSNx4
-	 He9vfRFZhbgXyq+GLOz4Exfvzxo9R9auvz98CR1U=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
-	20260203072840epcas5p3b5d281879db8a64669f9c7123300df04~Qq-SYfO8L0974709747epcas5p34;
-	Tue,  3 Feb 2026 07:28:40 +0000 (GMT)
-Received: from epcas5p2.samsung.com (unknown [182.195.38.92]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4f4w872S54z2SSKb; Tue,  3 Feb
-	2026 07:28:39 +0000 (GMT)
-Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
-	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260203072838epcas5p1076f207b2f19cada65df4a04ead3408e~Qq-QP4EUR2252922529epcas5p1l;
-	Tue,  3 Feb 2026 07:28:38 +0000 (GMT)
-Received: from [107.111.86.57] (unknown [107.111.86.57]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20260203072835epsmtip1689fa13a25b0afd7d679874f42ec2e2e~Qq-Ndf7TL2522925229epsmtip1U;
-	Tue,  3 Feb 2026 07:28:35 +0000 (GMT)
-Message-ID: <7dc267e7-b6e0-4be2-a60e-9d90dcf472eb@samsung.com>
-Date: Tue, 3 Feb 2026 12:58:34 +0530
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dlNLgFWBIF4EB9/p/k8at4vL0T3zQ15KzGeAj0aiQj8=;
+	b=Qw912nf5roEhDidekUC1BktIZIhlp2zHCPEUphLbJnf+WqploeRKZ8Lo9bXKJlTyHV+N3s
+	Z64vYUVx31G+LLv0Vz2JsHH2isRxA5Rv20fBlO4D1uW6SEVUVY0EOiw5/AqhqfK/juskUl
+	Fcf6Yxq1cOMV35rqatDyvmDt1+KmHi4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ePlgGes+;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770103870; a=rsa-sha256;
+	cv=none;
+	b=V59vCgPxO58WPiLPFMXEs/Pdfpdd6ZNwsWDxvcSOO3qIEOEZk3TpdmDVhGg7yJN75BwpWy
+	693lFk9rOq4jhPPoxaUht+pHv390ryDwuqpwuu6CWNl2bfRkKp31YICEN3EV/dW1ojtQn7
+	PzK5u0Nm/NWlj6P52aU/12dWdxh/9JA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770103867;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dlNLgFWBIF4EB9/p/k8at4vL0T3zQ15KzGeAj0aiQj8=;
+	b=ePlgGes+KgT1A6EzhO6gbVgdLyoTFjz4CIFLx1CC3lXfvsbMckC288SfC3t+hpa8zf0KBw
+	gp3izTms3bmyJBHrbA0xTe3nZlHpvzexw9InlzA11qal7XdGrVpxWvbMMkcp1ZN36QM/Yo
+	f2wy6Ku08oZso2ofP//CVsaCVSx4JWo=
+From: Hao Ge <hao.ge@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>
+Subject: [PATCH] codetag: Avoid codetag race between same slab object alloc and free
+Date: Tue,  3 Feb 2026 15:30:06 +0800
+Message-Id: <20260203073006.151710-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/6] xfs: tag folios with AG number during buffered
- write via iomap attach hook
-Content-Language: en-US
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
-	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de, ritesh.list@gmail.com,
-	dave@stgolabs.net, cem@kernel.org, wangyufei@vivo.com,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com,
-	vishak.g@samsung.com, joshi.k@samsung.com
-From: Kundan Kumar <kundan.kumar@samsung.com>
-In-Reply-To: <20260129004745.GC7712@frogsfrogsfrogs>
-Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20260203072838epcas5p1076f207b2f19cada65df4a04ead3408e
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79
-References: <20260116100818.7576-1-kundan.kumar@samsung.com>
-	<CGME20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79@epcas5p2.samsung.com>
-	<20260116100818.7576-5-kundan.kumar@samsung.com>
-	<20260129004745.GC7712@frogsfrogsfrogs>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C6055100009
+X-Stat-Signature: rynquqj5i1dnnwg4nrkqykadbxqrbg3a
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 16BDDC0004
-X-Stat-Signature: 53nw6wig9b7rbuih8kumcnpceczqa7tk
-X-HE-Tag: 1770103724-675270
-X-HE-Meta: U2FsdGVkX1+vkYLhXsCg0ZXba+HTurdX7+R0ta+FHA5ORRwsAFp2UUS/AlydXPv0u1I5lyN8+WB/zhb2g6GeS5rjxNpb4H6e3dphm1fkRUyF9X2I75uJPVPwmiTpkwV8eH8w7MWvTpP1g3BW33IX5haR9kS/D6hybwx0eeYAn0wPYDfmowJ6+7gmJNstLI/tbN7P35tof+hnyU+K1CyFX2ivEwsHPQWmnxppSGe374F3pMrM5S+ZDn5yHFw0afoLddkstiw5PsX+nAU4DsOgfPsKCfAuMM8ofbAIiYMBkFTTnE6xFX0kIP9dDagEjGKqfSW12T6HRqhx9zMKft7a/+XN+puzdyDr+9syP2/dwjbijwEEFwwq4NxHCdjM40yOhbX+j/dZW5t/4XrJQiy14LPMeOgUIcHcWRAutDzMc8OIkszHo8V0YvGgZbvycU2xuyHfnCX1N/MIOsoymg+tOyhFQRS5A7YftGSY3mX4QiAse4+9wwvJ6Mrc+5eWSVblFATzHP1qJEvxdbZsM4aTlRe5svdDIj1cnfW3ZiA9TD59o0PV+Xn3Z8imLHHtlANbwb96b7kEfLJx/pAiR/4ZfkZnHpnwMpONrrIO6RJGWEZKOJ56lSnW47B/Y2qhv/Vdz4SGXNuK3wCVqIZ9UUh+aXOzON3jf1JAic5v3GAONYkuMraV4kVR+wBEdpt7VTrPzicAYhSUO2RYocK01iknGs1GdzK45mVUrf0NrNW7gdWmIuNZ+blFWqTrt8d/+tIeYygsP0rC9WmvjYs8IryLji/Y6YLsek5wxkTo/uhSkX/SfZR8dblAP/2fSDqfzJrQg4COK1UZ4hrlBMM/jqyy9favsXu9mVOmqXG0LdUQXcLD/oY78fwp2q7JmZvQf2joGHzJxPQg4JsRYe/Y/Lcz9zymqQhvA8K9p+0jhuj2WfOM9kfHfXUEPDEZRlYTv3/tTrYE1lqODuRa2MZcBPt
- Bx5eYIfF
- +sFhQxpYF4nerl86tVMFmKP5hbsduOuMcG/1/Sp9Keep3C0Gg+7wHIulHa/R9UK+M8lkO/fikzcbNj2wWsKi9gLaCRJ/CtaqHn3SmhPt3xBvYWiwxzt9rxJ5Vm5uGKoIsRPpGa36YkOZ3Y2eP62Fy4J/LvZefhPD6hkpVjedlJ9zSmv9aAFqpfhuTv4LODkn6M+iv+n3FVKAnBgs=
+X-HE-Tag: 1770103869-56057
+X-HE-Meta: U2FsdGVkX1/aYsnR7HoS73O6gZs8EWg0TwIq/jWw/eCUE1Txsm+2NvfsdO+9qxQJ/9mmWArRY/jzuYwL/lvcf0dt6TubF9mgedsRKbMa5v3iVahzOot9CuOEjXDPyF0Bs6n9iXEBD/DUzIIpq6rp9+VAxT+KXQ/slTxcnpGo1UegpMQr/ag54KVzMQJssNlQeEp3hYXTa3C1wylhitxvkJGOkq5UFS5SiDxh7pddfi7exDnjpnBeXwappaEEyw8eq2t+4eBZDILMsrGJfqAz6dPYk+LTFs6FvYQBVzpCgJZ6N75SCnMWZOvAqdDljPMnVBac34bzzLxMUf3ur7ApNuvJJlIJAPVBjLfcWy1keP7VQR86Ped29PI7VDhM0d37rHlfOALSxEFs1ge5uJZic/jP0/KovTRwEtcAJh6kghKn4LWzsO/FrN5uHZsQoELWSLAX2M9BslFLCubczWPDCEwE2U071X4xXqcPEXJGDGZT46Q+mtXKHRx0dclsI8hi7Ms/6+CWI5sWCh7X6JWBhImooU5ihjOg+6EUAKEXTifnu+28u56pHXkPYzrKMuf6+0J1zLNJkVuZb5DFzw0qoDYwfQFx/AFpx54tnJWy4XjC57v4cjWFYs9dpdvvQJfj/17MNE5KEeXY4rPjr3BEk9l5MjiaijAZbHDf8c7aAkGB0n/LL2QqMRlgeh+wh8TDg1nC19ILKLJ9gCWC71dahk36++m5Yr4OHQMzf+JHpUC3sNV0pnP0FR4W0/ahZK1hEyYhGQ5V1VMvtROachSjheHK6t4CzzF/eMJWfE572HQV3yuaWuZieBGzcWglDrsfJWGF6IAANVD+mrVrdNPI6lCgpoKQzWLwnEDIKhuhy57CNCH0R8CxBlkdI8XzgHFbGzocEH4qSH1EYknVz1tHQdm+Snzd3Cf5SdyGP5KEJ0IF0bcfVRFGC8dbZvbnV5+pe/al9BW3oBb+stBWARh
+ Ct0AbJZG
+ cMjkBE8Vrw3gAXp3h9tgmQ7GiB+dqM3V3e4+sqr5wqszcIU1pzw0l4+M01GT/pIj5hktLxO+vE/83vWDbf0kt6JF30vakt8Zrh6Kk76HXYCyqjY1Eho770Om2CW2f7JyqnnbVLe+0Wy90bXwe0pgRHxQqBcmxs8zqbofbKOVLIkfomiYEloqPmabszHSf1y7Ht3h/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,182 +91,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/29/2026 6:17 AM, Darrick J. Wong wrote:
-> On Fri, Jan 16, 2026 at 03:38:16PM +0530, Kundan Kumar wrote:
->> Use the iomap attach hook to tag folios with their predicted
->> allocation group at write time. Mapped extents derive AG directly;
->> delalloc and hole cases use a lightweight predictor.
->>
->> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
->> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
->> ---
->>   fs/xfs/xfs_iomap.c | 114 +++++++++++++++++++++++++++++++++++++++++++++
->>   1 file changed, 114 insertions(+)
->>
->> diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
->> index 490e12cb99be..3c927ce118fe 100644
->> --- a/fs/xfs/xfs_iomap.c
->> +++ b/fs/xfs/xfs_iomap.c
->> @@ -12,6 +12,9 @@
->>   #include "xfs_trans_resv.h"
->>   #include "xfs_mount.h"
->>   #include "xfs_inode.h"
->> +#include "xfs_alloc.h"
->> +#include "xfs_ag.h"
->> +#include "xfs_ag_resv.h"
->>   #include "xfs_btree.h"
->>   #include "xfs_bmap_btree.h"
->>   #include "xfs_bmap.h"
->> @@ -92,8 +95,119 @@ xfs_iomap_valid(
->>   	return true;
->>   }
->>   
->> +static xfs_agnumber_t
->> +xfs_predict_delalloc_agno(const struct xfs_inode *ip, loff_t pos, loff_t len)
->> +{
->> +	struct xfs_mount *mp = ip->i_mount;
->> +	xfs_agnumber_t start_agno, agno, best_agno;
->> +	struct xfs_perag *pag;
->> +
->> +	xfs_extlen_t free, resv, avail;
->> +	xfs_extlen_t need_fsbs, min_free_fsbs;
->> +	xfs_extlen_t best_free = 0;
->> +	xfs_agnumber_t agcount = mp->m_sb.sb_agcount;
->> +
->> +	/* RT inodes allocate from the realtime volume */
->> +	if (XFS_IS_REALTIME_INODE(ip))
->> +		return XFS_INO_TO_AGNO(mp, ip->i_ino);
->> +
->> +	start_agno =  XFS_INO_TO_AGNO(mp, ip->i_ino);
->> +
->> +	/*
->> +	 * size-based minimum free requirement.
->> +	 * Convert bytes to fsbs and require some slack.
->> +	 */
->> +	need_fsbs = XFS_B_TO_FSB(mp, (xfs_fsize_t)len);
->> +	min_free_fsbs = need_fsbs + max_t(xfs_extlen_t, need_fsbs >> 2, 128);
->> +
->> +	/*
->> +	 * scan AGs starting at start_agno and wrapping.
->> +	 * Pick the first AG that meets min_free_fsbs after reservations.
->> +	 * Keep a "best" fallback = maximum (free - resv).
->> +	 */
->> +	best_agno = start_agno;
->> +
->> +	for (xfs_agnumber_t i = 0; i < agcount; i++) {
->> +		agno = (start_agno + i) % agcount;
->> +		pag = xfs_perag_get(mp, agno);
->> +
->> +		if (!xfs_perag_initialised_agf(pag))
->> +			goto next;
->> +
->> +		free = READ_ONCE(pag->pagf_freeblks);
->> +		resv = xfs_ag_resv_needed(pag, XFS_AG_RESV_NONE);
->> +
->> +		if (free <= resv)
->> +			goto next;
->> +
->> +		avail = free - resv;
->> +
->> +		if (avail >= min_free_fsbs) {
->> +			xfs_perag_put(pag);
->> +			return agno;
->> +		}
->> +
->> +		if (avail > best_free) {
->> +			best_free = avail;
->> +			best_agno = agno;
->> +		}
->> +next:
->> +		xfs_perag_put(pag);
->> +	}
->> +
->> +	return best_agno;
->> +}
->> +
->> +static inline xfs_agnumber_t xfs_ag_from_iomap(const struct xfs_mount *mp,
->> +		const struct iomap *iomap,
->> +		const struct xfs_inode *ip, loff_t pos, size_t len)
->> +{
->> +	if (iomap->type == IOMAP_MAPPED || iomap->type == IOMAP_UNWRITTEN) {
->> +		/* iomap->addr is byte address on device for buffered I/O */
->> +		xfs_fsblock_t fsb = XFS_BB_TO_FSBT(mp, BTOBB(iomap->addr));
->> +
->> +		return XFS_FSB_TO_AGNO(mp, fsb);
->> +	} else if (iomap->type == IOMAP_HOLE || iomap->type == IOMAP_DELALLOC) {
->> +		return xfs_predict_delalloc_agno(ip, pos, len);
-> 
-> Is it worth doing an AG scan to guess where the allocation might come
-> from?  The predictions could turn out to be wrong by virtue of other
-> delalloc regions being written back between the time that xfs_agp_set is
-> called, and the actual bmapi_write call.
-> 
+When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
+may be noticed:
 
-The delalloc prediction works well in the common cases: (1) when an AG 
-has sufficient free space and allocations stay within it, and (2) when 
-an AG becomes full and allocation naturally moves to the next suitable AG.
+[ 3959.023862] ------------[ cut here ]------------
+[ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
+[ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
+[ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+[ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
+[ 3959.024182] Tainted: [W]=WARN
+[ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+[ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 3959.024199] pc : alloc_tag_add+0x128/0x178
+[ 3959.024207] lr : alloc_tag_add+0x128/0x178
+[ 3959.024214] sp : ffff80008b696d60
+[ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
+[ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
+[ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
+[ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
+[ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
+[ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
+[ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
+[ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
+[ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
+[ 3959.024340] Call trace:
+[ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
+[ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
+[ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
+[ 3959.024369]  xas_alloc+0x304/0x4f0
+[ 3959.024381]  xas_create+0x1e0/0x4a0
+[ 3959.024388]  xas_store+0x68/0xda8
+[ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
+[ 3959.024409]  filemap_add_folio+0x16c/0x7e0
+[ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
+[ 3959.024424]  iomap_get_folio+0xfc/0x180
+[ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
+[ 3959.024441]  iomap_write_begin+0x198/0xc18
+[ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
+[ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
+[ 3959.024461]  blkdev_write_iter+0x38c/0x978
+[ 3959.024470]  vfs_write+0x4d4/0x928
+[ 3959.024482]  ksys_write+0xfc/0x1f8
+[ 3959.024489]  __arm64_sys_write+0x74/0xb0
+[ 3959.024496]  invoke_syscall+0xd4/0x258
+[ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
+[ 3959.024514]  do_el0_svc+0x48/0x68
+[ 3959.024520]  el0_svc+0x40/0xf8
+[ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
+[ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
+[ 3959.024540] ---[ end trace 0000000000000000 ]---
 
-The only case where the prediction can be wrong is when an AG is in the
-process of being exhausted concurrently with writeback, so allocation
-shifts between the time we tag the folio and the actual bmapi_write.
-My understanding is that window is narrow, and only a small fraction of 
-IOs would be misrouted.
+This is due to a race condition that occurs when two threads concurrently
+perform allocation and freeing operations on the same slab object.
 
->> +	}
->> +
->> +	return XFS_INO_TO_AGNO(mp, ip->i_ino);
->> +}
->> +
->> +static void xfs_agp_set(struct xfs_inode *ip, pgoff_t index,
->> +			xfs_agnumber_t agno, u8 type)
->> +{
->> +	u32 packed = xfs_agp_pack((u32)agno, type, true);
->> +
->> +	/* store as immediate value */
->> +	xa_store(&ip->i_ag_pmap, index, xa_mk_value(packed), GFP_NOFS);
->> +
->> +	/* Mark this AG as having potential dirty work */
->> +	if (ip->i_ag_dirty_bitmap && (u32)agno < ip->i_ag_dirty_bits)
->> +		set_bit((u32)agno, ip->i_ag_dirty_bitmap);
->> +}
->> +
->> +static void
->> +xfs_iomap_tag_folio(const struct iomap *iomap, struct folio *folio,
->> +		loff_t pos, size_t len)
->> +{
->> +	struct inode *inode;
->> +	struct xfs_inode *ip;
->> +	struct xfs_mount *mp;
->> +	xfs_agnumber_t agno;
->> +
->> +	inode = folio_mapping(folio)->host;
->> +	ip = XFS_I(inode);
->> +	mp = ip->i_mount;
->> +
->> +	agno = xfs_ag_from_iomap(mp, iomap, ip, pos, len);
->> +
->> +	xfs_agp_set(ip, folio->index, agno, (u8)iomap->type);
-> 
-> Hrm, so no, the ag_pmap only caches the ag number for the index of a
-> folio, even if it spans many many blocks.
-> 
-> --D
-> 
+When a process is preparing to allocate a slab object, another process
+successfully preempts the CPU, and then proceeds to free a slab object.
+However, before the freeing process can invoke `alloc_tag_sub()`, it is
+preempted again by the original allocating process. At this point, the
+allocating process acquires the same slab object, and subsequently triggers
+a warning when it invokes `alloc_tag_add()`.
 
-Thanks for pointing out, I will rework to handle this case.
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+Hi Suren
 
->> +}
->> +
->>   const struct iomap_write_ops xfs_iomap_write_ops = {
->>   	.iomap_valid		= xfs_iomap_valid,
->> +	.tag_folio		= xfs_iomap_tag_folio,
->>   };
->>   
->>   int
->> -- 
->> 2.25.1
->>
->>
-> 
+I'm not sure if my solution still has any issues, so I'd like to
+get your suggestions on it. At the very least, my understanding is
+that READ_ONCE and WRITE_ONCE should be used in pairs.
+
+I look forward to your suggestions.
+
+Thanks
+---
+ mm/slub.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/mm/slub.c b/mm/slub.c
+index f77b7407c51b..0d84fc917a89 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2261,8 +2261,13 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
+ 	 * If other users appear then mem_alloc_profiling_enabled()
+ 	 * check should be added before alloc_tag_add().
+ 	 */
+-	if (likely(obj_exts))
++	if (likely(obj_exts)) {
++
++		while (!READ_ONCE(obj_exts->ref.ct))
++			cpu_relax();
++
+ 		alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size);
++	}
+ 	else
+ 		alloc_tag_set_inaccurate(current->alloc_tag);
+ }
+-- 
+2.25.1
 
 
