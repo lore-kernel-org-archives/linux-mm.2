@@ -4,135 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6735E8B362
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 20:56:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7119EE8B363
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 21:07:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7481E6B0005; Tue,  3 Feb 2026 15:56:18 -0500 (EST)
+	id 91A406B0005; Tue,  3 Feb 2026 16:07:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 71E1E6B0088; Tue,  3 Feb 2026 15:56:18 -0500 (EST)
+	id 8C78F6B0088; Tue,  3 Feb 2026 16:07:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F2EE6B0089; Tue,  3 Feb 2026 15:56:18 -0500 (EST)
+	id 7C6576B0089; Tue,  3 Feb 2026 16:07:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 45E026B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 15:56:18 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F29D16055D
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 20:56:17 +0000 (UTC)
-X-FDA: 84404353194.26.12C5650
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C252B4000B
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 20:56:14 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N3TcZ5xZ;
-	spf=pass (imf12.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 642116B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:07:49 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 056B58B5B3
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:07:49 +0000 (UTC)
+X-FDA: 84404382258.08.7F0B7AC
+Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0C78AA000D
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:07:46 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=g0mugnxq;
+	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770152175;
+	s=arc-20220608; t=1770152867;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OwRl5rPitk/eF4i9o9ZxWYkLMwqq6COPXHVuVOqJ7X0=;
-	b=trOmMXv7y8eVu/kKgGYK/uVJk/86BJEa03mlm4ydY+GxgGa/4NLg5ZpP2UAvaROu6Wourn
-	E/pYUi9nI+si2t55SNSxsuNsiBFnWzPg9rjgoMVy9SRLcczG3FsKFkUV3gRJnjA+XsQjhU
-	L8R5DYOzw4ahanLBFlT4/Ne5FOMzMrg=
+	bh=kanz66SrGPI1ONI9MQZAri2Pq2vYCluJgte+kOMKGfQ=;
+	b=pyiUJ5SwuaMgLc61g/5UEMdYWwzarUTKq0sHa+K/MKJwjycuzCc8ZqIHZeW61y4PQtEQ4K
+	+7JWgWcHV6zRDUSdw6S9Po2F0lHfEi0Wa7YtdtFDW9XKe8nNhXjb0ObDVgLB4qoF9f2D9t
+	X+dBELMwlD19poI82YyeUFVjgwSgB6s=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N3TcZ5xZ;
-	spf=pass (imf12.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770152175; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=g0mugnxq;
+	spf=pass (imf25.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.196 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770152867; a=rsa-sha256;
 	cv=none;
-	b=10YFdVyC/ERgvesu8//r0P4FIEiyOzurqNXONxUyvCREA8qvTK6n3ULVSDlDNfXebR3v4K
-	i3C/ZoQaByxADMXxZrxgvkMHv3VyO2f2LvEyjN/JKoGagPAMJwmQFKvTXz8JIujZaI7pST
-	ih9P0v5PWs7xwW0F3HUhDUZ6INio8jA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770152174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OwRl5rPitk/eF4i9o9ZxWYkLMwqq6COPXHVuVOqJ7X0=;
-	b=N3TcZ5xZw0mJjbpbxKP8+iHArSzuS2NqjEqMRSqzi1OmYM+tsI+HnXTo73RJvUD8I9KWBO
-	jLBoWxW4kg87QhePn/WS93CZ9kpxFi5FdS8+2j0g7Q8e2YYEHphCqoX5+STxKLzbMBDt2e
-	TCk8qqdo4D7+DBSP4+LU0Ail0+BZpW4=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-648-I2lu5y6yMXuEv32kgIW1AA-1; Tue, 03 Feb 2026 15:56:11 -0500
-X-MC-Unique: I2lu5y6yMXuEv32kgIW1AA-1
-X-Mimecast-MFC-AGG-ID: I2lu5y6yMXuEv32kgIW1AA_1770152170
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5014c472ad5so5186921cf.0
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 12:56:10 -0800 (PST)
+	b=s2UDJiOWOBe0bCUJEgn7OcxBxv8MxMq4FX1AN51wvfiPUpMond2N+4tm6iHaReP4KNeOUC
+	Hb4ZyYjQbmc6SS3AaM5S597pMX0CIuxZ7cVp5LcfxNy4TnB8T68JYrQTniLNtPbOCDo9qd
+	Yo1Mn0PDCq2gnNYg+5JRdmR5D5eJvI4=
+Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2b720e4dcb4so7115561eec.0
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 13:07:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770152866; x=1770757666; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kanz66SrGPI1ONI9MQZAri2Pq2vYCluJgte+kOMKGfQ=;
+        b=g0mugnxq+EGbpOn331+e/u9kp2qjV6zszmnLtH2g2H/2+M5pNyj6gRAgr4cswsxlbq
+         zfpP9/W4K6lN8q4/7zZVEBabzQyNWPRIaTd66P9ocY/jhVMGlFx9WRXTYhdZ/LswC9Q3
+         fKQrmNxA50ATTeIubTAyub4TgXjrmeUXHy2DGNrBF6rtX1hjxANMtV/tbGbKR2cwUr0y
+         9x/CNXDNTBRioYMrcm9oczug9IXbr2dZykRtsIdCT9RjAYIEodZGc/NBqGvfaiZfVwBs
+         xCK/xyhtBP0Lyh4ee+320XFgJCgvWFOQ1IkNHMP+Ahi+jK250GcPmP0UESBinP4hNV/l
+         vD8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770152170; x=1770756970;
+        d=1e100.net; s=20230601; t=1770152866; x=1770757666;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OwRl5rPitk/eF4i9o9ZxWYkLMwqq6COPXHVuVOqJ7X0=;
-        b=cHxbJLf+TVPI1Vt3cbr7TtHn5rv2B4poTM1mZg8mrvtgSniqvsgcCTR9K3uSv7DC62
-         iMBpyEUq8fY78TiQuO6R38ksp/VyzCFd+SVXhes6DpE2w0pT1DrFXB6yyuubw1KcT2Ka
-         DwANKMgEQQB5wA0ckjhelE3ZunTIbksqWnIxZIZDWNCXLHthBJqszEP0s+kmpOdY0yvE
-         kAtCq0PD7bvEAZKfjiQCFZ8iflNe6JDarzpQqDYE6cVTu8qOYhY8Q9W5wpvB/tMVc/tK
-         ii0XGYDfMTpPnv26B+o7kNl/lBGoCEr/TLShGg82Rxa9uOgVIDAM5c0Xm5cKbVpIHwrO
-         eGwA==
-X-Gm-Message-State: AOJu0YzNF450AtSah/QEpan94kgXJvf1hqqGDU8SGqqNZdCoeECHsQG4
-	32dayq/HyTvL1Og35NBCMX9NH5BAnDGkoeP+h75HRM5IxpBG4XTuBSb+vCvC/whpUjzYlsMRjwz
-	qzmMWc5Fo4EsxSCUyozVsPIx9PcrxvRHETLhtjxQAyV0tH5pD/BHE
-X-Gm-Gg: AZuq6aKxoqkrtT0qDMjChPZlEAksacTUyWYGATGuQtbHqeS9YxAEzccMjvYpb8JUbvV
-	Iky15MuCzswGP1G1sL1ai4XpcB1/FZ7fe7GWxFbjjx8FoZA0oUSRBc6nuK7Z0M8ASxi2dOR6/RM
-	sHDGVH5gBlnOrynUePy5P53gYDxGpx7Pg4pWFHzoyjQamej2Nyqnvd/5DoDVdLbJ0AJhGuIP2rH
-	JxtwnY+5MphO6rdLkfi8ke5b3Su8Yh3nolxY0S5LtJD/+Cfg4oGetKuOMHKy27lLN8oujz3+cxz
-	EXcnOF9HDZNe+QkEyDjvCrfP7H3yGdD1+efBGr7fR3ugtJKb7o9OAFZGxQwI3hvnPI9vPHP4bod
-	9V2U=
-X-Received: by 2002:a05:622a:1207:b0:500:f02d:1c55 with SMTP id d75a77b69052e-5061c1b7f43mr9598711cf.57.1770152170299;
-        Tue, 03 Feb 2026 12:56:10 -0800 (PST)
-X-Received: by 2002:a05:622a:1207:b0:500:f02d:1c55 with SMTP id d75a77b69052e-5061c1b7f43mr9598341cf.57.1770152169738;
-        Tue, 03 Feb 2026 12:56:09 -0800 (PST)
-Received: from x1.local ([142.188.210.156])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ca2fd41335sm47631285a.38.2026.02.03.12.56.08
+        bh=kanz66SrGPI1ONI9MQZAri2Pq2vYCluJgte+kOMKGfQ=;
+        b=u3u///VTBMW9k/J2RLLUty+KoL0xvnYLIkR5V43PChRUoTzp2hrrJxxgIYLf8OYCER
+         e5HyBZxjHWLEXi2P/VDtz2F8BJzjtdnhFWbAP9mwaRatwgeBrEoTM8JQTgx69WzVilKT
+         z4tsLqKuphS4jAV+9drMJwDg2mkvVcnOnSd0eiSndUEjwVYEGwzUSA8MKYMOkxI/x7ZN
+         BjRy9VRcg6obh3H9xZaLjRhfzzgo0PFb25fkuU++osZGif9CFigtckOT5Rj/w1Y0A96P
+         eDR2bVwG06JbMBoofcchQaKmHDiKzwT47SUbkkfjnTcVEWNQLctQTxN2w9lrx9IIsMwI
+         rB5w==
+X-Forwarded-Encrypted: i=1; AJvYcCUFOqDDA2QB6XA0KlY/cq5aPITTs4deAwTTGeLv0+96x0SlgPDluXPxv/lFhCYeua4A9VFSbk6T5A==@kvack.org
+X-Gm-Message-State: AOJu0Yx0DAX6N+j021IdBsQPThrPrE/e2QwbXLmGjln1qQzDxSLHp3Nq
+	dzoSAfxHrIibIOVO3o3Gxrl6OvwJ4BlmTMyZ1rRwpBhxy3dA3s9YJqiG
+X-Gm-Gg: AZuq6aL3csqB/HQ1e3YEKrJELit14bv6NcPuvW/NpiPrekIt7mVBCuDLjBmjCnCiFKK
+	h2kF9bQV1vjjr3mMK8lu8+4rYPNYkCZ9pGymXrslCEApzhcLD1MBVS9GWP7vZ9tVKte4mPNTRyV
+	nAJxR+9oFzyn6E16b4tAwPbSgn/uM30AEm+TGwdHIGek7faKQ3Whh0EEUpQRKrv5SMcqQZlYclq
+	K6FNdfL+gj/Olvuc0BZlqu47BxL2r+H/7Kh8EPeBFi0EygMWUKt6AUofTvT9fqp6qOvfdU1TNwn
+	xgFUuUkJeFbWfHIyg1dIBMsiz1w95P5DSi0UjhisnqNa+jqhQEr7jyNycsw9mFsF5iDsrLubRpb
+	5R+GonoUuHwwIIYZuBa3UUckK73Jq0lU90ePJE0D/W3F6RvQipARHVuEguvee1byMwjU0yI8Twj
+	zKmZeXD+UmnjudtMVxhgKimZh+DPp3MT+SUuA2R+SPVf62r5wRiFGKww==
+X-Received: by 2002:a05:7300:fb8b:b0:2b7:fdb6:ccfe with SMTP id 5a478bee46e88-2b83294ac2dmr373048eec.19.1770152865502;
+        Tue, 03 Feb 2026 13:07:45 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b832f8e987sm373629eec.18.2026.02.03.13.07.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 12:56:09 -0800 (PST)
-Date: Tue, 3 Feb 2026 15:56:06 -0500
-From: Peter Xu <peterx@redhat.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 00/17] mm, kvm: allow uffd suppot in guest_memfd
-Message-ID: <aYJg5lT9MG0BQFkG@x1.local>
-References: <20260127192936.1250096-1-rppt@kernel.org>
+        Tue, 03 Feb 2026 13:07:44 -0800 (PST)
+Date: Tue, 3 Feb 2026 13:07:42 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	akpm@linux-foundation.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v3 1/3] x86/mm/pat: Convert pte code to use ptdescs
+Message-ID: <aYJjnh6qI_bzfAo_@fedora>
+References: <20260202172005.683870-1-vishal.moola@gmail.com>
+ <20260202172005.683870-2-vishal.moola@gmail.com>
+ <e029f69b-6d99-4029-94f5-caafb5eb767c@intel.com>
 MIME-Version: 1.0
-In-Reply-To: <20260127192936.1250096-1-rppt@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: eGMipHZQzlp6_sbGmngKbsEaR3hUf8NAGKQturdwE0M_1770152170
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 8n1yobs34x5n5fnspzz4b5aoigmaxjgf
+In-Reply-To: <e029f69b-6d99-4029-94f5-caafb5eb767c@intel.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: qyexwp7ibt8k5zyyx4t6nqpndrokixyg
+X-Rspamd-Queue-Id: 0C78AA000D
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C252B4000B
-X-HE-Tag: 1770152174-214595
-X-HE-Meta: U2FsdGVkX19MWLXBzWBqk7Z0ZqClthAMoX1rIBKsurrHzJ+1Lb4MnYhqaEJRPxSG2wgW74E8mIxcBnu7ObPH1zoyo+vuSGg08ZeK7OBb9w+rBR6VvE355UmCwJqqajRHm+Hg3U75++BU1DXWPRtcl2aPJD8KiQzrcELqThTnaeBU1kdtRiISLlK61t1k3yiq2KDByl031KtepMIXi7NdVEKr+e5C2RGaNo8kdmpYlhuJTh+d9K7No5quzxmroGU42UWj24BykZykcH/Md0K5uGsyfq8sA62Ri0q7AnSEOyvyJNsPNEvZwEGqyFOt0vX7n0pxMk0iCF8hCAOXF8A/m/enApvDcYQQ8uyL1y1wY+4yPNWsNVVB1xcVOejXwizMXFVEH4WmF/zeMVqp34d7QcBkwLPlhzyOwzq19992eCeQRY0Q07KgArX9E7jeVZstTVym+85dr+z3uKoWYXOX4s6psTdmvbGRl8N01/wWDNEpC0MZUNOkNxuzlVFIHXlD37unBjp8Z7CIy8rm2fDK6hmo1Jr6ge2GEKGnO+dn5C8rbDHXUaUksWtahSGTvtLjLQ5r/9/r0Bzte2hhawkbr3SecM/NJsXMAS8YrN+IXWLuHSjVliz5KSTiCDzadkse36ANYpCUs6R4r/w5k7swatSi0kJwOB5Ruomiw8vYwHt+8HScBTIZ0LULOqxAjhMBNkScN1FT9KbWsTLZjHKOyQLSgBlEqAv4+foeuRe1tdIruAHtBgtOt2LOH0TMOKo1Qt0AR+hJ8EDt5H+wcmZFILOlVWMeKQr9ifss46p6ePsYqDX7G0F51FuW/edBQFQt2+in2VS5CW+6IALfLwyhCshD1eyYcbED/8jTZmWlGUUN4lSznZvrOQTeHTb/iXuEmbx1LOeNWU4o82pKOeQ1MJa+fC1fkqNX/y/cdt9iYsYzziVIs+nLwNHzqmmwHsy2OEejZmlbwYBCkPIOAT0
- DPtChEMc
- mQHB6p5aDp7uaaDG184ju0EUmsHQYQP3qCTlX5PzlgsZPfKdydnrLRwz6+IE0PlrUIrMJy8ZaaeT1dsdiBPZ4HLbNzCK5a/Zw8B3DnM1YSq7Yydm2fDTaGSbCVAqs4uv8x37HSqS5+AuR713a+KtmjP6Fd2ySZSW5t934bZuF1IKT1VztmqGyZBl8jq7g1t9fc2yUr1MkNM0JQyS9I1y4Jw+K0zbiYBzKBXLGMv+3hB7W2EVuh4iuMZWwzGIcCKzN9CmpA0KvWd/3L8QxiSIh4dbi9QNnAI2w11aTESQ5lda+VVoXZddXcwLDHRmx4kc3SPz8xREwCVvHTuwl2KjMfTvuEVxAp4FJXajfiBeMSJ+MZtBiqIiubHkqJB1Hbus25r+h0Hf1IyYRi5HZP5viHKtrCD5dKyrsyz+ewLDrhS3clOYy7yNvU/UG5rZcKCHgf5MIRum5X6QfrMtlje3mh7nJu5X/uKxQKy7T
+X-HE-Tag: 1770152866-848358
+X-HE-Meta: U2FsdGVkX19owH26DlVTfzRKe7E9nUI0+w4ma56kOlzV6GXei7c4Ah2WinFeQFk0YRgcfS8lg6P+mEmvSkTajeYa+2f84fk7kKFp9Q7F4+idHIR8WO77KP+QQy6xsqhxa+dML0VHJ+cIfrWxGP05n5Ag0BgQyCw3+pMkDyEaKvTHIK5tDWlLxSqH+4PpHdfRecg1w+ydVUM/Zb23vlt8i/qSrvGdji9guYM/pGZrw7s8bVCj5IiZfbQgriWlouzfP8uacCJSR4fOqR6OOw0FkQZ8GgpHU7nPOLW5od9ppyIkADP215XwVdMmYJcabfvUMMG4NlYU9PCGXdaSwhXz+43IeHsjPNlhlnfHKebFjlw6w+tA9Rka08ZdP3QEy1YS2MapAjqG5DV8h9Sb6NldgyByFloHFk17+cRNij6V1RpwgOL0qZKpF9ZXTWmwsj610z1LP9iH2p387t8HzOXVtzh5jtweu5zSM50AEct7SsS61BOUH48WxRX6CnEZUkctQsB4guY/JYlGBHxqYSt0bJvaE1uPYaBR/AMUjpGOLIxxspJyUGGeGWBSleeBjhcSCX3nbvnOd2yIZiJ5gOjPpJNfhZvmm/1zXIeIpLDL/Iu4DAzxkw8G0QK5TIypTg4P7SbKDhRVVFUKHny0w4JEQGWlOEeNBvi2ZIAu353Itrbmqg2o+HCQtf2xL6wVIOXk/qcUZVahFnV4Hq6wk7rf4pbzX4Leu+seIH8UdL1RbJrKVUWLoL+/jLDLnD96vRo4gvN46xXmcmJ0MKnT5rxcuXBmgmzUU0qUeQCUrBq7hLvdYNqDiLt1fA1qZGm91PlqVSHtgQS+eyBnqC050CEEE3Xi9fe5/T6X2njZi96rEfltd3hgmnS7v+6I42Ao17+Wf8eD/GGWwGehl79wzgcI0MwEanz5kNaLxIKgK1kcDbZoXabQ1c/LljH9v8iRRNimEqU0TipPf7FVFUHZYu5
+ kVx1g+3v
+ +NGg5o5CzcS/I4qPM01jAXpnsE62tQo010yVSlIKOYlEqMG9DrtTYwJfk1KxurQp+wQY6Vw4cLCl4o9M1+lOtkzGFxpw23RXNcWDLsejBppgJU4KaiGC/MBSLTUoR3ce7+jfYpdkV5FlZiMa1h9k2zyHnuLaVKtmZ3WSpTXOxb8fjZfbUAvhI47I2SMU6ul4+iJ3pe2200apGs/w1wJUSocczi2wmMoJ/PvCp+cyUdwAEi0mEaUhU59/QCkcE3WfYPAE0LOJEZK4SrJLImCMXFD9oFKOkfhdGXtqeh/jZ3/eDmkZnGk3pbFewjCDeETGlX1LsCreLYP+GQ5CG/dGVjzzfKoMpbATLrbFnFrluu7B+U+mmgasoufV1+B0YQM1KVWggRGDXzVNOOLkMk8JukPOXxHziMkXEqBN4X6PK7VnuqmtG4i0m/0ASfgFhvpDI2N6Y7MwN9QAOWY704UKwK8UXnU89Ag1SWlqoFGdmR4hKPjeoWasK9AxzyTdRVwuXw5qmDSfSd6DGohxZZBqI5aVktr/8XXWLb9deKv1cv/bdfI8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,313 +124,125 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 27, 2026 at 09:29:19PM +0200, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On Tue, Feb 03, 2026 at 09:23:47AM -0800, Dave Hansen wrote:
+> On 2/2/26 09:20, Vishal Moola (Oracle) wrote:
+> > In order to separately allocate ptdescs from pages, we need all allocation
+> > and free sites to use the appropriate functions. Convert these pte
+> > allocation/free sites to use ptdescs.
 > 
-> Hi,
+> Imperative voice, please.
+
+I'll fix it.
+
+> > diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
+> > index 6c6eb486f7a6..f9f9d4ca8e71 100644
+> > --- a/arch/x86/mm/pat/set_memory.c
+> > +++ b/arch/x86/mm/pat/set_memory.c
+> > @@ -1408,7 +1408,7 @@ static bool try_to_free_pte_page(pte_t *pte)
+> >  		if (!pte_none(pte[i]))
+> >  			return false;
+> >  
+> > -	free_page((unsigned long)pte);
+> > +	pagetable_free(virt_to_ptdesc((void *)pte));
+> >  	return true;
+> >  }
 > 
-> These patches enable support for userfaultfd in guest_memfd.
-> They are quite different from the latest posting [1] so I'm restarting the
-> versioning. As there was a lot of tension around the topic, this is an RFC
-> to get some feedback and see how we can move forward.
+> This looks wrong to me, or at least that the API needs improvement. Most
+> callers are going to have a pointer that they've been modifying. They're
+> not going to have a ptdesc handy.
+
+Yeah the API needs improvement. The initial API I wrote was very
+barebones back when I didn't understand enough about arch differences
+and similarities in page table implementation.
+
+> So I think this needs to look like:
 > 
-> As the ground work I refactored userfaultfd handling of PTE-based memory types
-> (anonymous and shmem) and converted them to use vm_uffd_ops for allocating a
-> folio or getting an existing folio from the page cache. shmem also implements
-> callbacks that add a folio to the page cache after the data passed in
-> UFFDIO_COPY was copied and remove the folio from the page cache if page table
-> update fails.
+> 	pagetable_free(pte);
 > 
-> In order for guest_memfd to notify userspace about page faults, there are new
-> VM_FAULT_UFFD_MINOR and VM_FAULT_UFFD_MISSING that a ->fault() handler can
-> return to inform the page fault handler that it needs to call
-> handle_userfault() to complete the fault.
+> You can convert to ptdescs internally or do whatever you want with
+> ptdesc sanity checks, but the API needs to be on writeable pointers. If
+> the API takes a const pointer that requires callers to cast it, I think
+> the API is broken.
+
+Your logic makes sense to me. I can add ptdesc-using-address apis.
+
+> > @@ -1537,12 +1537,15 @@ static void unmap_pud_range(p4d_t *p4d, unsigned long start, unsigned long end)
+> >  	 */
+> >  }
+> >  
+> > -static int alloc_pte_page(pmd_t *pmd)
+> > +static int alloc_pte_ptdesc(pmd_t *pmd)
 > 
-> Nikita helped to plumb these new goodies into guest_memfd and provided basic
-> tests to verify that guest_memfd works with userfaultfd.
+> Why change the name? Nobody cares what this is doing internally.
 > 
-> I deliberately left hugetlb out, at least for the most part.
-> hugetlb handles acquisition of VMA and more importantly establishing of parent
-> page table entry differently than PTE-based memory types. This is a different
-> abstraction level than what vm_uffd_ops provides and people objected to
-> exposing such low level APIs as a part of VMA operations.
+> >  {
+> > -	pte_t *pte = (pte_t *)get_zeroed_page(GFP_KERNEL);
+> > -	if (!pte)
+> > +	pte_t *pte;
+> > +	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL | __GFP_ZERO, 0);
+> > +
+> > +	if (!ptdesc)
+> >  		return -1;
 > 
-> Also, to enable uffd in guest_memfd refactoring of hugetlb is not needed and I
-> prefer to delay it until the dust settles after the changes in this set.
+> This also looks wrong.
 > 
-> [1] https://lore.kernel.org/all/20251130111812.699259-1-rppt@kernel.org
+> What kind of maniac is ever going to allocate page tables without
+> __GFP_ZERO? __GFP_ZERO really should be a part of pagetable_alloc(),
+> don't you think?
+
+I thought the same thing... Turns out some architectures do. I didn't
+question it, they might not even have good reason to do so.
+
+Regardless, I do agree with you. I'm tempted to include
+__GFP_ZERO as part of the ptdesc-using-address apis.
+
+> > +	pte = (pte_t *) ptdesc_address(ptdesc);
+> >  	set_pmd(pmd, __pmd(__pa(pte) | _KERNPG_TABLE));
+> >  	return 0;
+> >  }
 > 
-> Mike Rapoport (Microsoft) (12):
->   userfaultfd: introduce mfill_copy_folio_locked() helper
->   userfaultfd: introduce struct mfill_state
->   userfaultfd: introduce mfill_get_pmd() helper.
->   userfaultfd: introduce mfill_get_vma() and mfill_put_vma()
->   userfaultfd: retry copying with locks dropped in mfill_atomic_pte_copy()
->   userfaultfd: move vma_can_userfault out of line
->   userfaultfd: introduce vm_uffd_ops
->   userfaultfd, shmem: use a VMA callback to handle UFFDIO_CONTINUE
->   userfaultfd: introduce vm_uffd_ops->alloc_folio()
->   shmem, userfaultfd: implement shmem uffd operations using vm_uffd_ops
->   userfaultfd: mfill_atomic() remove retry logic
->   mm: introduce VM_FAULT_UFFD_MINOR fault reason
+> Why is there a cast here? ptdesc_address() returns void*, no?
+
+Yes it does.
+
+Personally, I view casts as human hints to make implicit conversions
+obvious. I didn't think it hurt readability so I left it in.
+
+I don't have strong feelings either way, I can remove the casts. The
+type is obvious enough here anyway.
+
+> Also, if there a ptdesc_pa(), this could be:
 > 
-> Nikita Kalyazin (5):
->   mm: introduce VM_FAULT_UFFD_MISSING fault reason
->   KVM: guest_memfd: implement userfaultfd minor mode
->   KVM: guest_memfd: implement userfaultfd missing mode
->   KVM: selftests: test userfaultfd minor for guest_memfd
->   KVM: selftests: test userfaultfd missing for guest_memfd
+> static int alloc_pte_ptdesc(pmd_t *pmd)
+> {
+> 	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
 > 
->  include/linux/mm.h                            |   5 +
->  include/linux/mm_types.h                      |  15 +-
->  include/linux/shmem_fs.h                      |  14 -
->  include/linux/userfaultfd_k.h                 |  74 +-
->  mm/hugetlb.c                                  |  21 +
->  mm/memory.c                                   |   8 +-
->  mm/shmem.c                                    | 188 +++--
->  mm/userfaultfd.c                              | 671 ++++++++++--------
->  .../testing/selftests/kvm/guest_memfd_test.c  | 191 +++++
->  virt/kvm/guest_memfd.c                        | 134 +++-
->  10 files changed, 871 insertions(+), 450 deletions(-)
+> 	if (!ptdesc)
+>  		return -1;
+> 
+>  	set_pmd(pmd, __pmd(ptdesc_pa(ptdesc) | _KERNPG_TABLE));
+>  	return 0;
+> }
+> 
+> This *should* be a very common pattern. After you allocate a page table
+> page, you almost always need its physical address because it's going to
+> get pointed to by other page table or hardware register.
 
-Mike,
+I don't recall running into this pattern much, but I'll take a look.
+It sounds sensible. If this happens far from the allocation sites, I
+definitely would've missed them.
 
-The idea looks good to me, thanks for this work!  Your process on
-UFFDIO_COPY over anon/shmem is nice to me.
+> To me, it doesn't look like the ptdesc API is very mature yet, or at
+> least hasn't been expanded for ease for actual users. I don't want to
+> grow its use in arch/x86 until it's a wee bit more mature.
 
-If you remember, I used to raise a concern on introducing two new fault
-retvals only for userfaultfd:
+I truly appreciate the review and comments :).
 
-https://lore.kernel.org/all/aShb8J18BaRrsA-u@x1.local/
+The use of struct ptdesc in cpa_collapse_large_pages() gets in the way
+of short-term (stop refcounting page tables) and long term (shrinking
+struct page) goals. Particularly the pagetable_free() call.
 
-IMHO they're not only unnecessarily leaking userfaultfd information into
-fault core definitions, but also cause code duplications.  I still think we
-should avoid them.
-
-This time, I've attached a smoke tested patch removing both of them.
-
-It's pretty small and it runs all fine with all old/new userfaultfd tests
-(including gmem ones). Feel free to have a look at the end.
-
-I understand you want to avoid adding mnore complexity to this series, if
-you want I can also prepare such a patch after this series landed to remove
-the two retvals.  I'd still would like to know how you think about it,
-though, let me know if you have any comments.
-
-Note that it may indeed need some perf tests to make sure there's zero
-overhead after this change.  Currently there's still some trivial overheads
-(e.g. unnecessary folio locks), but IIUC we can even avoid that.
-
-Thanks,
-
-===8<===
-From 5379d084494b17281f3e5365104a7edbdbe53759 Mon Sep 17 00:00:00 2001
-From: Peter Xu <peterx@redhat.com>
-Date: Tue, 3 Feb 2026 15:07:58 -0500
-Subject: [PATCH] mm/userfaultfd: Remove two userfaultfd fault retvals
-
-They're not needed when with vm_uffd_ops.  We can remove both of them.
-Actually, another side benefit is drivers do not need to process
-userfaultfd missing / minor faults anymore in the main fault handler.
-
-This patch will make get_folio_noalloc() required for either MISSING or
-MINOR fault, but that's not a problem, as it should be lightweight and the
-current only outside-mm user (gmem) will support both anyway.
-
-Signed-off-by: Peter Xu <peterx@redhat.com>
----
- include/linux/mm_types.h      | 15 +-----------
- include/linux/userfaultfd_k.h |  2 +-
- mm/memory.c                   | 45 +++++++++++++++++++++++++++++------
- mm/shmem.c                    | 12 ----------
- virt/kvm/guest_memfd.c        | 20 ----------------
- 5 files changed, 40 insertions(+), 54 deletions(-)
-
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index a6d32470a78a3..3cc8ae7228860 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1612,10 +1612,6 @@ typedef __bitwise unsigned int vm_fault_t;
-  *				fsync() to complete (for synchronous page faults
-  *				in DAX)
-  * @VM_FAULT_COMPLETED:		->fault completed, meanwhile mmap lock released
-- * @VM_FAULT_UFFD_MINOR:	->fault did not modify page tables and needs
-- *				handle_userfault(VM_UFFD_MINOR) to complete
-- * @VM_FAULT_UFFD_MISSING:	->fault did not modify page tables and needs
-- *				handle_userfault(VM_UFFD_MISSING) to complete
-  * @VM_FAULT_HINDEX_MASK:	mask HINDEX value
-  *
-  */
-@@ -1633,13 +1629,6 @@ enum vm_fault_reason {
- 	VM_FAULT_DONE_COW       = (__force vm_fault_t)0x001000,
- 	VM_FAULT_NEEDDSYNC      = (__force vm_fault_t)0x002000,
- 	VM_FAULT_COMPLETED      = (__force vm_fault_t)0x004000,
--#ifdef CONFIG_USERFAULTFD
--	VM_FAULT_UFFD_MINOR	= (__force vm_fault_t)0x008000,
--	VM_FAULT_UFFD_MISSING	= (__force vm_fault_t)0x010000,
--#else
--	VM_FAULT_UFFD_MINOR	= (__force vm_fault_t)0x000000,
--	VM_FAULT_UFFD_MISSING	= (__force vm_fault_t)0x000000,
--#endif
- 	VM_FAULT_HINDEX_MASK    = (__force vm_fault_t)0x0f0000,
- };
- 
-@@ -1664,9 +1653,7 @@ enum vm_fault_reason {
- 	{ VM_FAULT_FALLBACK,            "FALLBACK" },	\
- 	{ VM_FAULT_DONE_COW,            "DONE_COW" },	\
- 	{ VM_FAULT_NEEDDSYNC,           "NEEDDSYNC" },	\
--	{ VM_FAULT_COMPLETED,           "COMPLETED" },	\
--	{ VM_FAULT_UFFD_MINOR,		"UFFD_MINOR" }, \
--	{ VM_FAULT_UFFD_MISSING,	"UFFD_MISSING" }
-+	{ VM_FAULT_COMPLETED,           "COMPLETED" }
- 
- struct vm_special_mapping {
- 	const char *name;	/* The name, e.g. "[vdso]". */
-diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-index 75d5b09f2560c..5923e32de53b5 100644
---- a/include/linux/userfaultfd_k.h
-+++ b/include/linux/userfaultfd_k.h
-@@ -85,7 +85,7 @@ struct vm_uffd_ops {
- 	/* Checks if a VMA can support userfaultfd */
- 	bool (*can_userfault)(struct vm_area_struct *vma, vm_flags_t vm_flags);
- 	/*
--	 * Called to resolve UFFDIO_CONTINUE request.
-+	 * Required by any uffd driver for either MISSING or MINOR fault.
- 	 * Should return the folio found at pgoff in the VMA's pagecache if it
- 	 * exists or ERR_PTR otherwise.
- 	 * The returned folio is locked and with reference held.
-diff --git a/mm/memory.c b/mm/memory.c
-index 456344938c72b..098febb761acc 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5338,6 +5338,33 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
- 	return VM_FAULT_OOM;
- }
- 
-+static vm_fault_t fault_process_userfaultfd(struct vm_fault *vmf)
-+{
-+	struct vm_area_struct *vma = vmf->vma;
-+	struct inode *inode = file_inode(vma->vm_file);
-+	/*
-+	 * NOTE: we could double check this hook present when
-+	 * UFFDIO_REGISTER on MISSING or MINOR for a file driver.
-+	 */
-+	struct folio *folio =
-+	    vma->vm_ops->uffd_ops->get_folio_noalloc(inode, vmf->pgoff);
-+
-+	if (!IS_ERR_OR_NULL(folio)) {
-+		/*
-+		 * TODO: provide a flag for get_folio_noalloc() to avoid
-+		 * locking (or even the extra reference?)
-+		 */
-+		folio_unlock(folio);
-+		folio_put(folio);
-+		if (userfaultfd_minor(vma))
-+			return handle_userfault(vmf, VM_UFFD_MINOR);
-+	} else {
-+		return handle_userfault(vmf, VM_UFFD_MISSING);
-+	}
-+
-+	return 0;
-+}
-+
- /*
-  * The mmap_lock must have been held on entry, and may have been
-  * released depending on flags and vma->vm_ops->fault() return value.
-@@ -5370,16 +5397,20 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
- 			return VM_FAULT_OOM;
- 	}
- 
-+	/*
-+	 * If this is an userfaultfd trap, process it in advance before
-+	 * triggering the genuine fault handler.
-+	 */
-+	if (userfaultfd_missing(vma) || userfaultfd_minor(vma)) {
-+		ret = fault_process_userfaultfd(vmf);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	ret = vma->vm_ops->fault(vmf);
- 	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
--			    VM_FAULT_DONE_COW | VM_FAULT_UFFD_MINOR |
--			    VM_FAULT_UFFD_MISSING))) {
--		if (ret & VM_FAULT_UFFD_MINOR)
--			return handle_userfault(vmf, VM_UFFD_MINOR);
--		if (ret & VM_FAULT_UFFD_MISSING)
--			return handle_userfault(vmf, VM_UFFD_MISSING);
-+			    VM_FAULT_DONE_COW)))
- 		return ret;
--	}
- 
- 	folio = page_folio(vmf->page);
- 	if (unlikely(PageHWPoison(vmf->page))) {
-diff --git a/mm/shmem.c b/mm/shmem.c
-index eafd7986fc2ec..5286f28b3e443 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2484,13 +2484,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 	fault_mm = vma ? vma->vm_mm : NULL;
- 
- 	folio = filemap_get_entry(inode->i_mapping, index);
--	if (folio && vma && userfaultfd_minor(vma)) {
--		if (!xa_is_value(folio))
--			folio_put(folio);
--		*fault_type = VM_FAULT_UFFD_MINOR;
--		return 0;
--	}
--
- 	if (xa_is_value(folio)) {
- 		error = shmem_swapin_folio(inode, index, &folio,
- 					   sgp, gfp, vma, fault_type);
-@@ -2535,11 +2528,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
- 	 * Fast cache lookup and swap lookup did not find it: allocate.
- 	 */
- 
--	if (vma && userfaultfd_missing(vma)) {
--		*fault_type = VM_FAULT_UFFD_MISSING;
--		return 0;
--	}
--
- 	/* Find hugepage orders that are allowed for anonymous shmem and tmpfs. */
- 	orders = shmem_allowable_huge_orders(inode, vma, index, write_end, false);
- 	if (orders > 0) {
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 14cca057fc0ec..bd0de685f42f8 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -421,26 +421,6 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
- 	folio = __filemap_get_folio(inode->i_mapping, vmf->pgoff,
- 				    FGP_LOCK | FGP_ACCESSED, 0);
- 
--	if (userfaultfd_armed(vmf->vma)) {
--		/*
--		 * If userfaultfd is registered in minor mode and a folio
--		 * exists, return VM_FAULT_UFFD_MINOR to trigger the
--		 * userfaultfd handler.
--		 */
--		if (userfaultfd_minor(vmf->vma) && !IS_ERR_OR_NULL(folio)) {
--			ret = VM_FAULT_UFFD_MINOR;
--			goto out_folio;
--		}
--
--		/*
--		 * Check if userfaultfd is registered in missing mode. If so,
--		 * check if a folio exists in the page cache. If not, return
--		 * VM_FAULT_UFFD_MISSING to trigger the userfaultfd handler.
--		 */
--		if (userfaultfd_missing(vmf->vma) && IS_ERR_OR_NULL(folio))
--			return VM_FAULT_UFFD_MISSING;
--	}
--
- 	/* folio not in the pagecache, try to allocate */
- 	if (IS_ERR(folio))
- 		folio = __kvm_gmem_folio_alloc(inode, vmf->pgoff);
--- 
-2.50.1
-
-
--- 
-Peter Xu
-
+Would you be ok with taking these patches if I add these relevant apis:
+1) A function that returns and address (like get_zeroed_page())
+2) A function that frees by address (like free_page())
 
