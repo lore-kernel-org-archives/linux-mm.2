@@ -4,105 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A482EE7FDCF
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 11:49:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1E82E7FDCF
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 11:56:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B15CA6B0098; Tue,  3 Feb 2026 06:49:19 -0500 (EST)
+	id 2BDB06B0099; Tue,  3 Feb 2026 06:56:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE9EE6B009B; Tue,  3 Feb 2026 06:49:19 -0500 (EST)
+	id 268316B009B; Tue,  3 Feb 2026 06:56:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A171A6B009E; Tue,  3 Feb 2026 06:49:19 -0500 (EST)
+	id 1946B6B009D; Tue,  3 Feb 2026 06:56:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E66B6B0098
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 06:49:19 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49E66140414
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:49:19 +0000 (UTC)
-X-FDA: 84402974838.24.6A3E8F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8E26680012
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:49:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lXE8xwf0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 09D286B0099
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 06:56:43 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9DB9D1A0416
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:56:42 +0000 (UTC)
+X-FDA: 84402993444.21.7FB9C19
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9AF0A4000A
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 11:56:40 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kyUMnPpo;
+	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770119357;
+	s=arc-20220608; t=1770119801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h1c18SRLvnc5AeuNR31YPFtEP/qORyfNfe/vNc33tuM=;
-	b=1Il4Fgsz14WKqXkyBJkSycrDCf9300kOWRPCCNgmsFV9pKsfE3QS1Hi3B3JpNx31oqfnYW
-	Nu3BwlrvtJIHno0zCRbSBbWVpZrkBSz+ds3ExWEaM/sYe1uLtdo/SKq2rhcYREGJtHDwHJ
-	KYXRGoKTzR4ZzeWBZqmjWyAIBm42SPU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770119357; a=rsa-sha256;
-	cv=none;
-	b=inc+r3jfRTegmiyLnOmi2ZN46dqIjBX19ztYdsbKKqE4Akj/mAws7qzGcvyWWQ2MaBpnm7
-	e9asFODtk34obwLSwJIcwtPn0553/uD9XkIUzVPRkKSr09z/uDpleXJVcEGqHQVsVnBNUk
-	OM5VZH1Yrnn1g1IfYbfzRV+dD0ZI+8c=
+	bh=UWqw/j1gRTlIe46UH5f53YEvOj7+R72qSnwR1l4Nv9Q=;
+	b=YHrOakufFQIts7zp9QHyeKAPGVL9khChB4MexosPJJqW+oNPoGmXH7YkWhQdKTSZSVcQ2e
+	5e7Z5zv+rJ7Z1+3waWuO08RIX5FkzjJYD3lbLnh7MhG547JISat9u0lyyDwoOiAzu4CKRb
+	A5xwbnTsu3W+wlxNFtfIaPGsynVFm6o=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lXE8xwf0;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf30.hostedemail.com: domain of will@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=will@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 467BA44186;
-	Tue,  3 Feb 2026 11:49:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77BBCC116D0;
-	Tue,  3 Feb 2026 11:49:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770119356;
-	bh=7ILxXahiaRMCy7sKKUTza8oVYDmH7ThnLjrpTuldxdU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lXE8xwf0Zxg7pR6+SwMV7ZeqkDpDkpFRX72NUdtij1MSMa3eH1pD4d4O9NBz0c97d
-	 Zw0puwGCIdDoNCUr53faZV3Eqigm7YApD1DLt235tCF/X48vqHB39XlTPTcvOIGNui
-	 CVQj9IwB9GzGjEwGbBpIhsyxzj5VBzzvQVUwfTM2NpKnoEjsn5iREidDAhemHufU/i
-	 P3e9ywqpC3FU2jT6L/O0i55jYqnuKXN+3yqNmiva/WPCXVnAbi9IZPbHMoIwQicXy4
-	 vM4x3xccLWokfQ1mlHqS4/YtVcqaUFUvVA0d4gTFX4d4UJ1pzXm4eBBJewlTPQsQab
-	 Ot5sdSVYUgSKg==
-Date: Tue, 3 Feb 2026 11:49:08 +0000
-From: Will Deacon <will@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Nicolas Schier <nicolas.schier@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-kbuild@vger.kernel.org, linux-mm@kvack.org,
-	Matthew Maurer <mmaurer@google.com>, elver@google.com
-Subject: Re: [PATCH v2 1/3] kbuild: rust: add
- `CONFIG_RUSTC_CLANG_LLVM_COMPATIBLE`
-Message-ID: <aYHgtJ_xLeo5W-lZ@willie-the-truck>
-References: <20260203-inline-helpers-v2-0-beb8547a03c9@google.com>
- <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kyUMnPpo;
+	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770119801; a=rsa-sha256;
+	cv=none;
+	b=GfOcOxlHNIjbstMEiDvHDk1eUDVAa0jsPUDycjjjmcNPHyNMV20lzXMJjyKGWXVGkPrH4D
+	XGyb8aK7IKMpv2yXibpkRtg23X1dkPO22VYqfF0lJG4JkKbOHf+ioAGOze0mCl3ROfwifu
+	SOyJOZ7REdMN1gV8QMacwhOmyruvV4A=
+Date: Tue, 3 Feb 2026 19:56:16 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770119798;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UWqw/j1gRTlIe46UH5f53YEvOj7+R72qSnwR1l4Nv9Q=;
+	b=kyUMnPpomGjQmzJOIgQLWlsekzj4p31uxBZOyqU8+Iq0vrj008awc/B5WBV1Lso6S7agcq
+	7KIv3mdfGzjH1GOFpzDaXNQg6aJazfjCljPDGTBhNgI1GYh47DA8sD7OSXjURoU7LOej13
+	lp3ydX+XcWyF8o+p3nmm4bmKEBpKylQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH V1 2/2] mm/slab: only allow SLAB_OBJ_EXT_IN_OBJ for
+ unmergeable caches
+Message-ID: <by6wakewxlbsdypouzrxzns7ejkg2dsx7zgmbfcl772gpsrk4y@das2q2wrztbq>
+References: <20260127103151.21883-1-harry.yoo@oracle.com>
+ <20260127103151.21883-3-harry.yoo@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260203-inline-helpers-v2-1-beb8547a03c9@google.com>
-X-Rspamd-Queue-Id: 8E26680012
-X-Stat-Signature: 9mzaipt84w67o8o8iwpucjuj6796guyk
+In-Reply-To: <20260127103151.21883-3-harry.yoo@oracle.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: uwubze6yzbqxpo6nsa17omn667ufbset
+X-Rspamd-Queue-Id: 9AF0A4000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770119357-143554
-X-HE-Meta: U2FsdGVkX19oBJQMCWSmlfGr2bjrN/h21muUSZKsIITiBqSa2SGFFIvkV9ZHlu2pXIWSHsJCRlXGs/DzrLi4UKxBD8FVpk9dwAFlZ2403VnNxuwRbqeNVcFyHuy9rlP/Pi/5PSF+VlBgLAmLyksFGa2yARW3g7dhqeqSu0uZ2foMYuY7DsPPheBVApBsjDeERGVl9OXXuIwcH4KTWdnGWKWevMxGRXQYLrSNDXVTiJrUy8lyiea9NwBMm8NxWny8Qzxnd1r8TSl2Jgj8nvYHtRHdfECRnE0V9eqU7S8K4+smXNCIZ0qyjqMN+qxiCubdGwzO22QcJZQLbXUesZDiRgga0Ped6pKAvPe6zn4bC6REWMItabK7DPwdwlyuLGjSB9Tw5WiiwMgtiajMOgHbSP37UQNNP/+8I0sBAxYl+rZGLXSnRc8mCk4K0OJXPpwEzkzS2J9+9eSs7cv5B+sUy3vqIBeeSIpqKZoOynI1exyjY4kqBbIce03lG/feN2RVRS0T3PL4Qg7DNlfrmICzRxy+L31faHg2lM5JYXqRbeDy3g6vNjqTvN2x1WmBS55yhYMKJHHATrDSkluaUyQuso14BNlXpu4b7bSgkIZ0VmYH9n2/A5dVR++DYP0XiQUD2C+KUiwTYLKoeoPhJDhllGVRnKq7QLdkerQOEva7b3b+lvHARPYAGzsZE/hKm+k5l6cQdj3ztqtCNENPBrIry37kEYiA+OFI8h/ngxBum1X1hH7DfTEh2yDt0A7vuU0SEVFMyJRICr2gnN+0egDeWHNlFrOX9m9C9gMhzQ42Ny9PYCSGVmOonq12HSJVQa7WxxQCbxO2ID/8RfSpu17cuvZWyI/+pecGBHGK0Lk9TWnAR3hTqepS3YlmRoepeUMs+SHF/zBSM0MEoooYquTwXAjZVOtkSA1wts1OwtKED36yV1z9yqq9DN6HIwPoregMlIIplaKsMFs8VkhHUAt
- IXktwG1U
- cajqdCmS276O2x4TXujwEI5R0ETqBPhz3sS7zU/H/DR7FMFrqo86vIeZhd+nYfK/KiRRfhFhMIzjcazQF89ZNpFuE/5c1riClKqNQMRdhF/A7fVjDPJTlQi37sONwZ3R0aHWHQ8XKWfFug2n6JkZOGT7FSy7AMNy4P9eGuRJSZgilNJkoW/oDhhWZabhf5ZBC03SGGMNiT726sKso1ZdpeQKUMEdo7P/5M0Lj7SZxdPUdVhS98tSLCEL6FmwxBzDDr+Imehu57nZ+b4rLtN7DABgHh3Wk4Q3iaF4UxzUZYM/uyblhK/zO6pWsn606b2UVw+gdnJ4AV7z8g1p6PFH743qxEev1srlO4O3QB+yXUUWUEVInfQ+ndLi+j7Kr2aBXkDSxOAqOdXHBC4ullx2ITAWBABd1Lqq3xLAqmZbP5B/YFG575cJ9CC6yj25JWXttdqLwixspjVfeLPYVWm+Nr6IS+I0yHrnSALxTcZHJ+4cJaIVMlGAw6e2RYXhM9s9u+EGmq2tlmXHPDaxF+ObnPHGn8ZMEIlFGw09g2pQcXcq1bW83+gtlji2u8ixVEHjDw3iN
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770119800-914934
+X-HE-Meta: U2FsdGVkX1974RGPkbUrspKtGf6wqV2V9yEQE71ZoDXsN0PJjznbpwAa7dXgDcELFubN5O8inBmGyiOd1TvLv/2UMMRqUHNJXYJ4Zx3X0cRIASHHZQxgmmtBW+bXilIoECGMpawMMWlyUspEQxRzCQ+htAnu1Alz9QCvensdL/Etm0JkQtCMx+tznXBBaWrZtOQUGqgq2Q/LHtaVybEQj4IJOt+pkgYZX1rb9YQkuheAsZyoSY0TJfTwnXUV1DGDXcBs+7DxnEv4l40W0mSIRvO9WVDMUiMIGDojZxrpzmc/K8uKfiOgKu53121Tv54ge1KISlgnNyW1tOBudlelA/yEp1NqKygQVvw03bXmT8SXVYlRdGqVafBFZiq/I+NxagCOay3FSKU2jHnTycgPMX3skqWMFRXwddJF3wxkMGAUVDWl71Pvri1fDGPK1JKbdKjTjW/xuT3i/yId1oZ/rPLqEjx5Bawbz8Rqg6q4UcWXCzCtMC/OD0XjX9dJOT4JZCMUXCipU8efsr+lzyii8SyFkn8WQwNdniUGGyuGzYPEHUK/9La7EgOs2d+RLI3JFywiS0AQCl5DW4ZJs4YpgFSLUpQf7fx1Na7nHgOc8jt3QGsRg4GMlOJAVLlFAEIb6T3rffky8UOB47d4G1+bx++wU+kfV0sLdca5MnG5Zyqg3AxIuWaSy0lfM7yM6VMS0tEhjEjMnZeLmKQ5mZpYMmFewUPHqaiIKXcRCBPEBoUtizdYfVtUXCTsBHCihQh8XVbAMpqPzcQW+pYfW0u5u7CH8+dAb762Gv76NtIQnTUEWTp7v01NM/umHG76Ru3Tdjrw0vS8XCJ8eIl0l46z49tyll50br85lZZWIpisicpOTBTkzskIZeKFgcKUtWJ4fxGoTCbFaPaREiKUOp4mM1fyHYXV31r62dzG0bM0x0d+YkcfB45pYryigcYS16FlVfa3MDzlPpIwV6gu2EJ
+ UlRLbAX7
+ F+i+rjfMfpncByhfaW4PGTKN4gadZNTlEgVGyGUfPI95oJgE7aoYh5qOEq5WXIF+X0CBJFb0p8KdnIc5w2y29KIQc1IymaQxkZGmCz6w6VTYvvv4S9M53n3imYG49x4UH1pBnv/PvQ00agISvVuBLNKFo7n6yF2NlptetOUMg3A2U12z+beG832Hjs8pvctv8W4/crn00Ww4E01FXzjSglNA+ErEHwQ0Ms6c48zEHWm2FXTGDTASYnYJ7IAmj0l4KBlOPhlsTTDAX2oqg5HQqj/ljhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,53 +93,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 03, 2026 at 11:34:08AM +0000, Alice Ryhl wrote:
-> From: Gary Guo <gary@garyguo.net>
+On Tue, Jan 27, 2026 at 07:31:51PM +0900, Harry Yoo wrote:
+> While SLAB_OBJ_EXT_IN_OBJ allows to reduce memory overhead to account
+> slab objects, it prevents slab merging because merging can change
+> the metadata layout.
 > 
-> This config detects if Rust and Clang have matching LLVM major version.
-> All IR or bitcode operations (e.g. LTO) rely on LLVM major version to be
-> matching, otherwise it may generate errors, or worse, miscompile
-> silently due to change of IR semantics.
+> As pointed out Vlastimil Babka, disabling merging solely for this memory
+> optimization may not be a net win, because disabling slab merging tends
+> to increase overall memory usage.
 > 
-> It's usually suggested to use the exact same LLVM version, but this can
-> be difficult to guarantee. Rust's suggestion [1] is also major-version
-> only, so I think this check is sufficient for the kernel.
+> Restrict SLAB_OBJ_EXT_IN_OBJ to caches that are already unmergeable for
+> other reasons (e.g., those with constructors or SLAB_TYPESAFE_BY_RCU).
 > 
-> Link: https://doc.rust-lang.org/rustc/linker-plugin-lto.html [1]
-> Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
-> Signed-off-by: Gary Guo <gary@garyguo.net>
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 > ---
->  init/Kconfig | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+>  mm/slab.h        | 1 +
+>  mm/slab_common.c | 3 +--
+>  mm/slub.c        | 3 ++-
+>  3 files changed, 4 insertions(+), 3 deletions(-)
 > 
-> diff --git a/init/Kconfig b/init/Kconfig
-> index e95d43457851862afc8313389777e4dd9348c178..0e900d3d8be7874a33e0f44754a8d038e68d7e65 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -82,6 +82,21 @@ config RUSTC_LLVM_VERSION
->  	int
->  	default $(rustc-llvm-version)
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 8593c506cbf1..a5c4f981ee8b 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -388,6 +388,7 @@ extern void create_boot_cache(struct kmem_cache *, const char *name,
+>  			unsigned int useroffset, unsigned int usersize);
 >  
-> +config RUSTC_LLVM_MAJOR_VERSION
-> +	int
-> +	default $(shell,expr $(rustc-llvm-version) / 10000)
-> +
-> +config RUSTC_CLANG_LLVM_COMPATIBLE
-> +	bool
-> +	default y if CC_IS_CLANG && RUSTC_LLVM_MAJOR_VERSION = $(shell,expr $(cc-version) / 10000)
-> +	help
-> +	  This indicates whether Rust and Clang use LLVM of the same major
-> +	  version.
-> +
-> +	  Operations involving handling LLVM IR or bitcode (e.g. cross-language
-> +	  LTO) requires the same LLVM major version to work properly. For best
-> +	  compatibility it is recommended that the exact same LLVM is used.
+>  int slab_unmergeable(struct kmem_cache *s);
+> +bool slab_args_unmergeable(struct kmem_cache_args *args, slab_flags_t flags);
+>  
+>  slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name);
+>  
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 904414c3ebb8..d5a70a831a2a 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -174,8 +174,7 @@ int slab_unmergeable(struct kmem_cache *s)
+>  	return 0;
+>  }
+>  
+> -static bool slab_args_unmergeable(struct kmem_cache_args *args,
+> -				  slab_flags_t flags)
+> +bool slab_args_unmergeable(struct kmem_cache_args *args, slab_flags_t flags)
+>  {
+>  	if (slab_nomerge)
+>  		return true;
+> diff --git a/mm/slub.c b/mm/slub.c
+> index ae9af184a18b..0581847e7dac 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -7676,7 +7676,8 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+>  	 */
+>  	aligned_size = ALIGN(size, s->align);
+>  #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+> -	if (aligned_size - size >= sizeof(struct slabobj_ext))
+> +	if (slab_args_unmergeable(args, s->flags) &&
+> +			(aligned_size - size >= sizeof(struct slabobj_ext)))
+>  		s->flags |= SLAB_OBJ_EXT_IN_OBJ;
 
-Is cross-language LTO something we're actually looking at doing for the
-kernel, or is this just stale help text given what you're using it for
-in this series?
+Hi Harry,
 
-Will
+This patch looks reasonable to me. I just noticed a minor point that I
+wanted to bring up:
+
+It seems a bit self-referential that SLAB_NEVER_MERGE already includes
+SLAB_OBJ_EXT_IN_OBJ, but we're using SLAB_NEVER_MERGE to decide whether to set
+SLAB_OBJ_EXT_IN_OBJ.
+
+Do you think it might be helpful to add a comment here for better clarity?
+
+-- 
+Thanks,
+Hao
+
+>  #endif
+>  	size = aligned_size;
+> -- 
+> 2.43.0
+> 
 
