@@ -4,85 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D46EE87855
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 18:40:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 620AAE7FDCF
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 19:24:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6DC466B00A4; Tue,  3 Feb 2026 13:40:14 -0500 (EST)
+	id 309146B0088; Tue,  3 Feb 2026 14:23:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 673736B00AB; Tue,  3 Feb 2026 13:40:14 -0500 (EST)
+	id 2B7576B0089; Tue,  3 Feb 2026 14:23:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 589846B00AC; Tue,  3 Feb 2026 13:40:14 -0500 (EST)
+	id 1B62E6B008A; Tue,  3 Feb 2026 14:23:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 48A3D6B00A4
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:40:14 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E8DE88C07B
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:40:13 +0000 (UTC)
-X-FDA: 84404010306.18.1484B25
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 5C7E2180008
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 18:40:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pdN9vlEc;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 024086B0088
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:23:58 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 81E80596E8
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:23:58 +0000 (UTC)
+X-FDA: 84404120556.24.9CD28DE
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	by imf24.hostedemail.com (Postfix) with ESMTP id E610A180004
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:23:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bp8kfByU;
+	spf=pass (imf24.hostedemail.com: domain of 3S0uCaQgKCD4onfvn3fslttlqj.htrqnsz2-rrp0fhp.twl@flex--jiaqiyan.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3S0uCaQgKCD4onfvn3fslttlqj.htrqnsz2-rrp0fhp.twl@flex--jiaqiyan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770144012;
+	s=arc-20220608; t=1770146637;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cESLO7EPLjiYLM7kmKu59f6Z32mI6s3DLVo4D5WZgrg=;
-	b=8A9kL4TJcPVJa/G0vM/e06XMZkNqY4ZBev/yw2l+KSa8mO9wi0/MQr2OSJUAsVdyeQfAcZ
-	LqpuZ4la7mn0xFuS4tqHjSveKsdfL/ctQoM0Dv2xYKSOwQQ/RIzMZmpezr7LpDf5/fMWr7
-	PQ9R4ZUQYjIfPUnAvylaKrTQX7/VOSY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pdN9vlEc;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770144012; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=95Pw2DdmywMK3Koth7G2RTcpT3ER5Cfb3Bey9F5Hbow=;
+	b=P82hiavk/lX9xJmdntjy3l6pUj7gQz9T6ujNTXHxXXA7G2yHd6r2PavOdrDbNAmAEt6Wxj
+	/4yrMumdQ30TBC9PYorIZMZSReaZViznopYoLp6WXn/wktSMwkvwtTrflNJamfUUYVDljo
+	A1Y9bX+31+nBHwgD1dCMi17G9nfueJU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770146637; a=rsa-sha256;
 	cv=none;
-	b=fkPr5OWbqlEABoWNK0TzbjHE7AktJVD2jntOyTeFQp6lg4JNHOIBLP+8s7Jl6f+0hRDEqb
-	ePW7rXoYxIBuzuoIjcJ8WgzdJD4JoLZH0KLZDjZqr4CtiKt5iHc3xtcx0lGnJdU69TWAXA
-	ygZQCY2RR5+hDP8gGuvCfaZmCwzK8nY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C224360143;
-	Tue,  3 Feb 2026 18:40:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 818ADC116D0;
-	Tue,  3 Feb 2026 18:40:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770144011;
-	bh=4+/Y4bSWbE/KBeeVwbdY/YvPY6O1OYogfJvl/txSdP0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pdN9vlEcMTWS0IHz5XjIZbkBpAFlujj1SKURJZHhVtdeiWxUn2xAKOG9Cy8o2KGH9
-	 GXxEYEIeAs6jEuxdR88AQiTLOKv2KN3fXZvfVaZ2vfAXjpL0cpXVr7HB+ADp6cXXnq
-	 XhFO8i507bvvXpkv7lYSypQwlPsTDlk0FcWj874+U2fAR4RqN73uuLYX0NADaT6fA+
-	 Okg4XNhSXLDrTqKCHUrO9gRPWmnMbdqJ++U670kaCpSUTTl3jeCymZ5r4RtNNamA2Y
-	 F7c5ntkqIazuMFolCLiO7MadWq43eavGxzzLsmOdr3VJiPMeSdhPWPfqTDWv78I9qV
-	 Gvnecne7Ya7MA==
-Date: Tue, 3 Feb 2026 20:40:06 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: linux-mm@kvack.org
-Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct
- page
-Message-ID: <aYJBBs17B-SQXFqq@kernel.org>
-References: <ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: t5pez87d8fo55en15mttfsu6kw8b3gb7
-X-Rspamd-Queue-Id: 5C7E2180008
+	b=m+k/9SwvI1+zuTyQ19CR4peq1t01SmUtCq9Pe42uAfa42M/jWF1BuvLNN8079ugKLOtA09
+	MHr6l49PvNmrkrcrQqpjg+fDcUeXhK5N80aOB2FSS7fuZINhMbPHk2TZP7DO6YLNR3L3w4
+	cI/2ydyGa10hmL0Gn+yhkwJ06TecHJ8=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bp8kfByU;
+	spf=pass (imf24.hostedemail.com: domain of 3S0uCaQgKCD4onfvn3fslttlqj.htrqnsz2-rrp0fhp.twl@flex--jiaqiyan.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3S0uCaQgKCD4onfvn3fslttlqj.htrqnsz2-rrp0fhp.twl@flex--jiaqiyan.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c337cde7e40so3783517a12.1
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 11:23:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770146636; x=1770751436; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=95Pw2DdmywMK3Koth7G2RTcpT3ER5Cfb3Bey9F5Hbow=;
+        b=bp8kfByUFEDziDZcYOrJTEV0x8qjt0+gvcyEpqj0lwqyir233IY7NgzofuNYPn+5gz
+         J4i7xVnPMNoZNjX6MVsEixrvA5J7A7rIgzhy2bwqnL81MOHgAO7nYNGxB2KRqT44UnZp
+         O+Q4CzmZKnok/nOAjMf/5am4yox9ZJDiP3jG4FprbZSL1/1jZxMKnh7D3XFjx/hZZYif
+         rfI+TYsvyHFX6PcWlvkyplM2xyAO4NQENdSx3uqnHz0YUYMn7duEWfe5+T+5NuGf+HGH
+         z4zaZt7NI4Uo5jxw21eNtwyjAAAjNA7rWNfECh8LA9kAr9GO5inBJR0I6ayC32RVKJwg
+         BcYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770146636; x=1770751436;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=95Pw2DdmywMK3Koth7G2RTcpT3ER5Cfb3Bey9F5Hbow=;
+        b=apbm4ccnfMqU2ejcMoK2vzqiOMpO+59YAsMsU0h7EGFkhGTS4WkM9jVTFGuyxBDOD8
+         QFrbCb2CS36ekSp/w4uj6ytxVQDTlFqwHjASgQwgGkl9HSIJINukEHKoxyod3RhsTE53
+         pEHymEGUvrefNubmD0tpOKHo/0ZTajB99Xk0kwKsj+QSIZP17BX/yrhGcre0bejTxneV
+         1n+YA3VIkNyuQzDMgDpsVdKAdjzB47aMGXa/OtzoVZ5sywpmMMmNSxETG42Fa44kPDQO
+         VVs5oIMrah9mu1nvQjKW4yquLj9ZE81Y3VOMfsLNewePBJp0QCa/qOrvHobG1GQzEE3n
+         eRtg==
+X-Forwarded-Encrypted: i=1; AJvYcCWkfqHmt8PIjDUYEeCN9ct7GnienFUx3u9jxrJ9oYi7bVni+1gs50oT7Th+aNYbi9kxpmFk2StB1Q==@kvack.org
+X-Gm-Message-State: AOJu0Ywaz5OS/3AYHXwHKsxb81nkCO+s6UcBvOxdE+TVMoQ/qDYFsI4u
+	H+zNP3LFjQUFv24Bctidb+ud1xQmMOeOPLp3ztVL8H4K3Q2qZ+kYh/4/DdpuIMU00PeYEXJkMyB
+	x/S+s6tp8Q5lcJg==
+X-Received: from pgce17.prod.google.com ([2002:a05:6a02:1d1:b0:c66:bca:633d])
+ (user=jiaqiyan job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:6d9e:b0:35d:f625:7e87 with SMTP id adf61e73a8af0-393720d0461mr520709637.22.1770146635467;
+ Tue, 03 Feb 2026 11:23:55 -0800 (PST)
+Date: Tue,  3 Feb 2026 19:23:49 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
+Message-ID: <20260203192352.2674184-1-jiaqiyan@google.com>
+Subject: [PATCH v3 0/3] memfd-based Userspace MFR Policy for HugeTLB
+From: Jiaqi Yan <jiaqiyan@google.com>
+To: linmiaohe@huawei.com, william.roche@oracle.com, harry.yoo@oracle.com, 
+	jane.chu@oracle.com
+Cc: nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
+	willy@infradead.org, akpm@linux-foundation.org, osalvador@suse.de, 
+	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
+	jgg@nvidia.com, ankita@nvidia.com, peterx@redhat.com, 
+	sidhartha.kumar@oracle.com, ziy@nvidia.com, david@redhat.com, 
+	dave.hansen@linux.intel.com, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Jiaqi Yan <jiaqiyan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Queue-Id: E610A180004
 X-Rspam-User: 
-X-HE-Tag: 1770144012-936553
-X-HE-Meta: U2FsdGVkX1+45yKO2O2Kax//4GNR3qw3v4kcLwm+Xdg4wAIfArl8rgMdFj1HinV0VivwE64R2OkA4FJ3/FUVFuA5cnoCMSW//uj1Hx16K34DwzTlV8wP90dUZpQTSdjn/TnWrCNjwkPnCzVtb0XfWehkhxGKHDKCnz+S7O9SuAeSqEl7l32x1RmFJr6yiADrEExStY6wosMXIRGeT8pheC2fN/ExFkDooaQARtRdPVVpJ/MP65wqvxEXperNdvtVAQXfnSPLuosprJBVgKjum7Nb8JA6ObSA7Uq0PyzNxJXYEWn+hR7d/uLbUzmgeSFsDl48/GJSmTjzPI5ngtxwzc2O3tOUv7yWkBYM/hK9KrejI8DRloajeDaWD5uQGNqLIBuRyDcdJahHRln9CX1J89818iew0HE+GFC9oIoJgOeXqrFVfqV2P2nLpkd7DXEgOuqLkPwclQvSNdgCz0wSOuC+Xy+a7JxJNHdgnVCPsZyPTzamrSRrrXIDjBDrT0QS0h0U6kj+HV94lXl6u8dM/TMDu/mDNCVsklTNnfHlrOpWlFyLi96rL4fjwRwRvL92rTnzVj0QTdbmv0XZesGzF42EKhcEoU2B5W/+kkq63xDahX0Aa2GA9dXRCSQkkzKP8Yl1hXPXbZvI7rVhX2BlMYkn9twX3hWjALiqtQSjN7xmg0YAb+S3uNqFOzuodP8Et3smlSG+7B/bEGZgrmqBiyjzCFgAxIGmSRJmuqX/mDcacYWtOo02ihzFqt/j1smX+qAuwfpZBqR2iIWgGStFmnd27AMb0FnmmRlyK75XImzdFQP+tHglWaPf85Mh2ipRJRGkiQ7f+VxlCDtX3KFMozsceYHHXDxBJtwinKBbzIGimwM3+6Um536esF9KG79OtU/8ays5QrNNp6B6bnNl0KT0ljaVfTO1f/SKDEfuc7RGdHKVApRGr+09EfusXVw6IkWF6CV9H0rs71yvWG2
- QyD+9BvT
- TXk2T2UhYglI/I+9qbdYGMAPPnnbSr+tOavMpzhR5wCwaFRWYfrwfL/GRgW0wPjLwSysh3Vk8nwZ6KwIRJ1wdPjUdxluUXiygnkIR0kUX/8H3G+rkKMpoUE+yMszzHaySNA4saIjE8NUIdkx6/hLaUaaIQ6F3/+KNS8v/fC9ZemS5cksWNgkqZoylDPMC3jhPeMPZYgtBqbgTEZtXhIgpFpwbHYLMSbWu5J2mhGra+YkfAaTS8PAi/2gAitDr4Gvwv/KxWnHgj97c5gERAslb/Jz5aDgGAvBHL9gl0Ftgpt0IAswSzxH7iVR/Em6eG809dvvfhjQgvuB1BSROlxF8feUF8Fbukq9/ioPA
+X-Rspamd-Server: rspam05
+X-Stat-Signature: grpb3hinkwmxawnb3ic6i1eujhoqrqhw
+X-HE-Tag: 1770146636-327350
+X-HE-Meta: U2FsdGVkX19UvXCd05/qi2SAFXeUrNcNn43lVr9Rs2tLXex2isT9BBz1dVGXY0VJG7dLgRg8kNkwbgeA4G5ILmeIfKtHPcIO/ey5gqt/LBAw835nok01NCnQ6xoyQWYqswignhes9WEIgugEO+RJHxStq8NGHnH0RITpE+LtJWk/4oDvp8vPcUYk2vwLGgRoYvwRE+X1q0RIrNSvr3BDFuMrbUvkQ4pCEF9dM/OkA77Y//RzN7TxA8+80zHmVJUP+foieYy3Loe8/OLA65b5tECKYM90Ow26v9C0BEADFPF+hKnv2QWPCdJ979V5B3qd1KlNDarqIfZatnqVIpj5jEuzvK1JHgg3Saee+f7yxxuq9fwx2Cxfd92iQivd/Vg/Ucwzxk7FlBpVT4aaxqmB9uwZkuLm4XjVe8EublI6C2Nf3qim5wVueVza+nrYN7NSJ450aDRk2Elz5cyvgQ825CbCNwkzeSVXkiD4p/jkRyWrh3zvcH2U1qNRSq7rLhDm2UrQjoACzpNk8Gov9LsYx+YvqziqOfRBurmwokoZuQatRp7+6PCqZorxR0rxZYvHHngMk14OKisbvsoFzJKJHBccBX7DYMolRIZ9ipSvTB+IHtPq5OxtfopRfZZMlfn1F1hYivxXcQH01d1jB5u3+fzXojU66ya442KlJbil7ZtPlZJ6M4tSJVUTq7Jul2QtD4PnHiqGExQ/FawqhAxcgXUERFw4SnyKfcPhUEPN6cFhL23ScaPMKo7b0BBm3TnGypLYFMads4+Esucy8W1pXz3XAJq0P51SAO64KYEziNZL3BWHum7StIKk9x2l8BeU401cQujV2J0nj9IO1sHoSt2HK6BAIb0bMC9FJgoNVjkfE6x8vXuWhcx4ayBEY3iBI2wZBY1jvan9fqVmuY96o5aUdSfTU3PwZyuW94lry//m4zRgsnz1N+fgfhdbodMgZQJk68sJUQL1tA9hLhl
+ 2jgVWAst
+ ZX9jC9IymNVgrWSLE4bPCn6MPhzcFH0O1k1E1cveSdiKP8eNpZ+ssARUSqEhpLxCzdiGhSnakSVNrlQpoaBm4w9qHlWHmEU2bt+Uj5qr8/nas159XMqbG2Xo2hEYbdq6dY7Kv2xyOiPlVT0mDhwjaw8cArjHg4LH055iO0SQ/KwHNcUD1jOJpeVDgCu8Viy1ufivI2J+6bREOZaEFOIb/zl1L29P+oGqKy1JMor0wB5mrr7PCkUishrPprefMqJqFoSWj93By452uMSU7iozelqh/R9x6krZ3eums4tnGKtygL4kZvA4NH0OAfErNglMp2zkDpU/H7P8xI+XHUjsmN1HdpPM8Pq0cb9JYwQ8h5OFio3sJTDGZ/vixsn0vGAOqB2VOMJkBkYYypW8rLgC0TwdO4D2NBOTjDI9yhbESUBDNuM3qYT3t915hmA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,64 +112,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ben,
+Problem
+=======
 
-On Tue, Feb 03, 2026 at 07:02:08PM +1100, Benjamin Herrenschmidt wrote:
-> Currently, when using deferred struct page init, we may end up not
-> freeing the pages depending on where they are. Typically this happens
-> when efi_free_boot_services() tries to free UEFI Boot Services pages.
-> 
-> We can hit the !early_page_initialised() test in memblock_free_pages()
-> since the deferred initializer hasn't even started yet. As a result we
-> drop the pages on the floor.
-> 
-> Now, memblock_free_late() should only ever be called for pages that
-> are reserved, and thus for which the struct page has already been
-> initialized by memmap_init_reserved_pages().
-> 
-> So it should be safe to just free them normally and ignore the deferred
-> initializer, which will skip over them as it skips over anything still
-> in the memblock reserved list.
-> 
-> This recovers something like 130MB of RAM on EC2 t3a.nano instances who
-> only have 512MB to begin with (as to why UEFI uses that much, that's a
-> question for another day).
-> 
-> Signed-off-by: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> ---
->  mm/internal.h | 2 +-
->  mm/memblock.c | 6 ++++--
->  mm/mm_init.c  | 4 ++--
->  3 files changed, 7 insertions(+), 5 deletions(-)
- 
-...
+This patchset is a follow-up for the userspace memory failure
+recovery (MFR) policy proposed in [1] and [2], but focused on
+a smaller scope: HugeTLB.
 
-> @@ -2440,9 +2440,9 @@ void *__init alloc_large_system_hash(const char
-> *tablename,
->  }
->  
->  void __init memblock_free_pages(struct page *page, unsigned long pfn,
-> -							unsigned int
-> order)
-> +				unsigned int order, bool reserved)
+To recap the problem for HugeTLB discussed in [1] and [2]:
+Cloud providers like Google and Oracle usually serve capacity-
+and performance-critical guest memory with 1G HugeTLB
+hugepages, as this significantly reduces the overhead
+associated with managing page tables and TLB misses. However,
+the kernel's current MFR behavior for HugeTLB is not ideal.
+Once a byte of memory in a hugepage is hardware corrupted, the
+kernel discards the whole hugepage, including the healthy
+portion, from the HugeTLB system. Customer workload running in
+the VM can hardly recover from such a great loss of memory.
 
-I've been thinking about after more coffee after our chat on IRC, and I
-believe we don't need the bool reserved here.
+[1] and [2] proposed the idea that the decision to keep or
+discard a large chunk of contiguous memory exclusively owned
+by a userspace process due to a recoverable uncorrected
+memory error (UE) should be controlled by userspace. What this
+means in the Cloud case is that, since a virtual machine
+monitor (VMM) has taken host memory to exclusively back the
+guest memory for a VM, the VMM can keep holding the memory
+even after memory errors occur.
 
-Since the assumption that memblock_free_late() should be called only after
-buddy is initialized, all the reserved pages should have their memmap setup
-with PG_Reserved set. So we can use PageReserved() instead of passing the
-boolean.
+MFD_MF_KEEP_UE_MAPPED for HugeTLB
+=================================
 
->  {
-> -	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT)) {
-> +	if (IS_ENABLED(CONFIG_DEFERRED_STRUCT_PAGE_INIT) && !reserved)
-> {
->  		int nid = early_pfn_to_nid(pfn);
->  
->  		if (!early_page_initialised(pfn, nid))
+[2] proposed a solution centered around the memfd associated
+with the memory exclusively owned by userspace.
+
+A userspace process must opt into the MFD_MF_KEEP_UE_MAPPED
+policy when it creates a new HugeTLB-backed memfd:
+
+  #define MFD_MF_KEEP_UE_MAPPED	0x0020U
+  int memfd_create(const char *name, unsigned int flags);
+
+For any hugepage associated with the MFD_MF_KEEP_UE_MAPPED
+enabled memfd, whenever it runs into a UE, MFR doesn't hard
+offline the HWPoison huge folio. In other words, the
+HWPoison memory remains accessible via the returned memfd
+or the memory mapping created with that memfd. MFR still sends
+SIGBUS to the userspace process as required. MFR also still
+maintains HWPoison metadata on the hugepage having the UE.
+
+A HWPoison hugepage will be immediately isolated and
+prevented from future allocation once userspace truncates it
+via the memfd, or the owning memfd is closed.
+
+By default MFD_MF_KEEP_UE_MAPPED is not set, and MFR hard
+offlines hugepages having UEs.
+
+Implementation
+==============
+
+Implementation is relatively straightforward with two major parts.
+
+Part 1: When hugepages owned by an MFD_MF_KEEP_UE_MAPPED
+enabled memfd run into a UE:
+
+* MFR defers hard offline operations, i.e., unmapping and
+  dissolving. MFR still sets HWPoison flags and holds a refcount
+  for every raw HWPoison page. MFR still sends SIGBUS to the
+  consuming thread, but si_addr_lsb will be reduced to PAGE_SHIFT.
+* If the memory was not faulted in yet, the fault handler also
+  needs to unblock the fault to the HWPoison folio.
+
+Part 2: When an MFD_MF_KEEP_UE_MAPPED enabled memfd is being
+released, or when a userspace process truncates a range of
+hugepages belonging to an MFD_MF_KEEP_UE_MAPPED enabled memfd:
+
+* When the HugeTLB in-memory file system removes a filemap's
+  folios one by one, it asks MFR to deal with HWPoison folios
+  on the fly, implemented by filemap_offline_hwpoison_folio().
+
+* MFR drops the refcounts being held for the raw HWPoison
+  pages within the folio. Now that the HWPoison folio becomes
+  a free HugeTLB folio, MFR dissolves it into a set of raw pages.
+
+Changelog
+=========
+
+v3 -> v2 [3]
+
+- Rebase onto [4] to simplify filemap_offline_hwpoison_folio_hugetlb().
+  With free_has_hwpoisoned() rejecting HWPoison subpages in a HugeTLB
+  folio, there is no need to take_page_off_buddy() after
+  dissolve_free_hugetlb_folio().
+
+- Address comments from William Roche <william.roche@oracle.com> and
+  Jane Chu <jane.chu@oracle.com>.
+
+- Update size_shift in kill_accessing_process() if MFD_MF_KEEP_UE_MAPPED
+  is enabled. Thanks William Roche <william.roche@oracle.com> for providing
+  his patch on this.
+
+- Add a new tunable to hugetlb-mfr to control the number of pages within
+  the 1st hugepage to MADV_HWPOISON.
+
+v2 -> v1 [2]
+
+- Rebase onto commit 6da43bbeb6918 ("Merge tag 'vfio-v6.18-rc6' of
+  https://github.com/awilliam/linux-vfio").
+
+- Remove populate_memfd_hwp_folios() and offline_memfd_hwp_folios() so
+  that no memory allocation is needed during releasing HWPoison memfd.
+
+- Insert filemap_offline_hwpoison_folio() into remove_inode_single_folio().
+  Now dissolving and offlining HWPoison huge folios is done on the fly.
+
+- Fix the bug pointed out by William Roche <william.roche@oracle.com>:
+  call take_page_off_buddy() no matter HWPoison page is buddy page or not.
+
+- Remove update_per_node_mf_stats() when dissolve failed.
+
+- Make hugetlb-mfr allocate 4 1G hugepages to cover new code introduced
+  in remove_inode_hugepages().
+
+- Make hugetlb-mfr support testing both 1GB and 2MB HugeTLB hugepages.
+
+- Fix some typos in documentation.
+
+[1] https://lwn.net/Articles/991513
+[2] https://lore.kernel.org/lkml/20250118231549.1652825-1-jiaqiyan@google.com
+[3] https://lore.kernel.org/linux-mm/20251116013223.1557158-3-jiaqiyan@google.com
+[4] https://lore.kernel.org/linux-mm/20260202194125.2191216-1-jiaqiyan@google.com
+
+Jiaqi Yan (3):
+  mm: memfd/hugetlb: introduce memfd-based userspace MFR policy
+  selftests/mm: test userspace MFR for HugeTLB hugepage
+  Documentation: add documentation for MFD_MF_KEEP_UE_MAPPED
+
+ Documentation/userspace-api/index.rst         |   1 +
+ .../userspace-api/mfd_mfr_policy.rst          |  60 +++
+ fs/hugetlbfs/inode.c                          |  25 +-
+ include/linux/hugetlb.h                       |   7 +
+ include/linux/pagemap.h                       |  23 ++
+ include/uapi/linux/memfd.h                    |   6 +
+ mm/hugetlb.c                                  |   8 +-
+ mm/memfd.c                                    |  15 +-
+ mm/memory-failure.c                           | 124 +++++-
+ tools/testing/selftests/mm/.gitignore         |   1 +
+ tools/testing/selftests/mm/Makefile           |   3 +
+ tools/testing/selftests/mm/hugetlb-mfr.c      | 369 ++++++++++++++++++
+ 12 files changed, 627 insertions(+), 15 deletions(-)
+ create mode 100644 Documentation/userspace-api/mfd_mfr_policy.rst
+ create mode 100644 tools/testing/selftests/mm/hugetlb-mfr.c
 
 -- 
-Sincerely yours,
-Mike.
+2.53.0.rc2.204.g2597b5adb4-goog
+
 
