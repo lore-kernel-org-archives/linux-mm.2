@@ -4,126 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE5DE87829
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 13:23:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88DBAE87835
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 14:05:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2DA9D6B00B6; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
+	id 367D86B0095; Tue,  3 Feb 2026 09:05:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 288606B00B8; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
+	id 2EABD6B0096; Tue,  3 Feb 2026 09:05:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1698C6B00BC; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
+	id 1F2376B0098; Tue,  3 Feb 2026 09:05:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 059866B00B6
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B42F059146
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:23:37 +0000 (UTC)
-X-FDA: 84403212474.28.F3A5004
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AD917120006
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:23:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SLvfbpWw;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F2376B0095
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 09:05:01 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B5BAA59363
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:05:00 +0000 (UTC)
+X-FDA: 84403316760.25.779AA4C
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 38DC01C000F
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:04:58 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770125015;
+	s=arc-20220608; t=1770127498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X9jKCMLhYnPbhGwJQdPwGF6Ru9Db2nKOSg989VKRbuc=;
-	b=MoB740z7zDgqmsdh7NNiRl4XiXnsj7KYdkOcWeXvGVQBkrh3mVJv2w/Sfpa1b+A6RPHXnN
-	Lw2KG34CF+YhnSuvpcLvlyFcwYo6rpusm5xMSZeps/diyKeFV0Nd4klZc2wJ5uL/EkPIAd
-	YhNMf4KYU2DWgtzOEQVF/NqvfdzEQDU=
+	 in-reply-to:in-reply-to:references:references;
+	bh=up26p6fDjE4wjgeP+vCVpsEMhcYIRMGNR8TI0X1mnVU=;
+	b=ORDbkIth3XUWmPsjjdY9dE5S3CXpay2LqUgVsstFoUUfZYQIW159U6eGM4CQqaInVxhFV4
+	t0cIyQPsjMf8p7besdTGwU7eopeACLjptMrO8SAScFl5nItUrBrNl6vl7coX4Ro3EFCTs1
+	JeyAxa/HjCFI8qVpQPIwKAMpZKde920=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SLvfbpWw;
-	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770125015; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770127498; a=rsa-sha256;
 	cv=none;
-	b=bfE+9LlI2w3F2wVyUigH7HhsUiex0T/Gwdb5N+lEpADktYqwtNKcz8EdEh5/qfrEffJk6w
-	xJVK0QsbdabrPEfw0bNH4l5kcGavpY5+onSzjTFL5AIa1F7ZJQaqBMcMAUxS6SMX8bW5mK
-	MwAfL9CBo/dlnnY/H/+skJ0Xgbk9Uuo=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-480142406b3so41782205e9.1
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 05:23:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1770125014; x=1770729814; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=X9jKCMLhYnPbhGwJQdPwGF6Ru9Db2nKOSg989VKRbuc=;
-        b=SLvfbpWwB8hpCQEYWYIBFue6oyVK3QfAfzAlMQh6tUgB9Q/pJnYDFmFDCOAx4cAcIB
-         It293bZrsFl+XkPFcCHoStWT9FmcUOuJIvpbTdSMVtDWdmuXm/xjq5n+KS7bSTR4cZSk
-         P3TC6JylhagidP5jIkbOCZBjQLEXNHIY9Fc9nVrdq4ktnuAmo73YDmz+B1ZRBBrGIhIt
-         T6QuFCIK/0f3e07wJv0Z03QYKau8ctdGlbiuqCOGWfa004veqt2WPaaQd4al06vIMLfE
-         o+G8BZ7S0VrQ0O640fcLaxhBoZuUfzzVuYS3brS8URRhTHFmo7UYGenTKLxHJ0y3nRHT
-         WibA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770125014; x=1770729814;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X9jKCMLhYnPbhGwJQdPwGF6Ru9Db2nKOSg989VKRbuc=;
-        b=sFDf78q9jBJlY2ot1YjgF3SVne3X31alEZSuTXYAk8j9ZYQsitPIiFLpJzgm12GWo0
-         IcMlxrLzjW7KhcDCucuADIpXR2cRy3m1FsmRg0t8llbGHDL1ysRu/KKbXf37qToXGLZe
-         bTaiuQLJJrenfjeGyaBd35Znv4ezOpaVgwyg1nbUCZYSHJlI8+SSbLdZk8p3leCMzujk
-         K7zznVlJtBGdXne0/muP4bsVOrlWN575OCM8/TfOqy4xb49r9wRn9zheMtrL0efEa73D
-         XxRs+Kv31b7BUVLaSwxZJYklQjgOq9ap6DzBHWLI3CvHAvEcNGteh+qPeKLLoT2hfM3y
-         P+3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWYl86ocByJ3p0RRW4vMCqTurjOGkft3G5mxOP42Eed4pYR+nkZxi0rWesVIuKhQBAX1/KHjY6gtg==@kvack.org
-X-Gm-Message-State: AOJu0YyprzZ5tFb83CHasF76YRxcw7Hxdwv3NAC2/tc86WMhsj3QwBgC
-	lXutHgRKwOZnqM73wCmShlSQeoYMPwflR/EMDfoQwhcHYokAL5Bq+f7RW5D0ZpPE/+M=
-X-Gm-Gg: AZuq6aKw4Ili9MUbOmMf2RdLnNgbd4YCxYXkt+tDUySx0WKQc3LskmhYvSOEFazeDMG
-	esKjFgwsKXc7B+IAq2u3IiePgbX0qQ4YptIMguKty4sxOlK3Mn1huyPeh8X85xl3ufK6DI4iBuc
-	naAdHrrQ7tsLG+6ofPt0GfTRBg/GNM46+oYr6W7z0croLeAX4vttpq+fDKHz/6H1yyNCHI58kRu
-	31sPz0WYH9ddQsA/A3uasR8kTcYD6KznAQ8CJdcTiof4dt3Zo3kFJ1+jEifMFFidjwxjA/hzG0W
-	VV/K56hmTY9a9qVqahRXQwxQuZkxCluipKvKct3H0w19T4wuDWlMuQZPzRv0inDq2oWZT1kB4A2
-	XYTGTNLtiHoJiOgtKXWNFtc0W4LmzEDYi+fn5YToXvY+m//U4clqFUWjQ4oDYyk0R0CSa+ErqfR
-	8BDKQO5UlNGgGHVPb/E8fI6Eim
-X-Received: by 2002:a05:600c:a087:b0:479:35e7:a0e3 with SMTP id 5b1f17b1804b1-482db48f2ccmr215249685e9.30.1770125014093;
-        Tue, 03 Feb 2026 05:23:34 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482da903a30sm149018775e9.1.2026.02.03.05.23.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 05:23:33 -0800 (PST)
-Date: Tue, 3 Feb 2026 14:23:32 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH bpf-next v3 10/17] mm: introduce bpf_task_is_oom_victim()
- kfunc
-Message-ID: <aYH21HhwNvWnFB8O@tiehlicka>
-References: <20260127024421.494929-1-roman.gushchin@linux.dev>
- <20260127024421.494929-11-roman.gushchin@linux.dev>
- <aYA4pH_nIBZ-ZhLL@google.com>
- <CAADnVQL5g8imKNGbHGQ4HA8_qNT4MYwM8P3aCTFUG7uwiuTeuw@mail.gmail.com>
- <87jywuwumq.fsf@linux.dev>
+	b=7DTNb/pofhrUrB8xmcFu503T34NTRE9igQ00vNq78qbi/MxI/sianeXW3q2c/Nnsdk1POq
+	FwV3ZHsEoGXvdS8TYFSdyZrVjSxiO3YIYmU2IOQ9E0R5z2shfbhnsVQSjmlA3arHygAGkz
+	bYKGIFL2h2bWDlIdiGOjJlxzi9xMXVE=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f54wD03yfzHnGkL;
+	Tue,  3 Feb 2026 22:03:56 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 707E140573;
+	Tue,  3 Feb 2026 22:04:55 +0800 (CST)
+Received: from [10.123.123.154] (10.123.123.154) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 3 Feb 2026 17:04:54 +0300
+Message-ID: <5f4edc60-691a-4dbc-93db-794f11f7b942@huawei-partners.com>
+Date: Tue, 3 Feb 2026 17:04:54 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87jywuwumq.fsf@linux.dev>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AD917120006
-X-Stat-Signature: qkt57f9xztzu4h9zw3ozsfmg7k6x1gg6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v1 2/4] mm/damon: Support for synchrounous huge pages
+ collapse
+To: SeongJae Park <sj@kernel.org>
+CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
+	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
+	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20260203012304.67686-1-sj@kernel.org>
+Content-Language: en-US
+From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
+In-Reply-To: <20260203012304.67686-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.123.123.154]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 38DC01C000F
+X-Stat-Signature: js37ejij7bagtgttp8xygyr7z15xnxd5
 X-Rspam-User: 
-X-HE-Tag: 1770125015-954213
-X-HE-Meta: U2FsdGVkX18dIWXdg1OYxSW75bF5wK8O93TIoWexkzrPofUawCqUNRrGRvIvVjA+50szAl2fFqz4nbBH7f8scndYA1W9RvMUXFWTChisyahd2/LYIuCJczvmk9gykzNvfIOUuEHPwgZ7RMsKzEJb1R2C+WPtB1PjzqKHSL2LORJ2iC3hXAsUe/Vjc8n6Xq6x0l3PrH4kB7CZw86TiSEBxtWkGS8Nw0KtJpbVB/lgOkyLz/kq2NfHDOI5heEe2LbKbsmvml2b7j5PK/SaFzUyFLPv9+qyx+J26T0ecjRD5HT+kqf6kngxldGPUM4DXRDTEpIJKClb6pmI/b9Z3I8K4+hmtijafTmCBKonc8xcMq+vExxq6AHMkB9e73ugZAXXV27DSKdlcJLJsSyx/sS63UN8vrfV77lEOqDNwe7brsd/lno3/F4sdH3CCb84lgsJuvIZ3EI1FqNIz4GVsbt0X9NZ8LOOfXeBugRWGxcYqDzMdZMvRoOxyWnayrlcyXTg5hbXooEfxUJ4AfTZbe93jR735dbbnoSI7LsUKnt0AE4JzIj1uUArlu5giR6N7/Wra56wQtoW1oU1px2lyqrN7zI9lofe2Jh7rSsHxQMA0JSymYAowa5qxfc7SsJ9OfO+inlxuFVHDkgVPy+Ol5iVTwmJxFuM5mxLsd16ir/X0V4aWhCG6xq29t9OhMzuduXvTe7SI+Bmkr4NbLcrCzEo6DGUmo9UOUIvMupdJGcHKrXmPy+SURAmndsCPB++M1Ch2/jk1h/YtKPinSFOesJdqK+lEJsotCsv1Cs65dEJPZI/5//UH8pDf7wOzA1ZnS+kFdvFaCqDVPoUZUALOiVYkU/UvV1HOVuwO+lbaW2qzUu+MyrSkHWJcu37u1ZTtE/tjIoOqBJkNmjDJ0dTkdOsBvdwoQqgyGgZjnPVXDy+X1t2YZDDvvBBaDUsUh13wzWDKh5Pxkqa1ahdaREVUjb
- hvisaitr
- IfkcJEU66+uKwDpRSYK94LpKqS2Dqno2TrLNeS1Vx8ugDv9aZgI/9/km685OUdEO37oLIihgSmYU8Kdg559ueN+KmpJb6bNZMlJ1MZ+sFpcIqUHmItQOJeulrSL8jXQTzTVMQKSZENyG9XF7i7yGEj6QR0E4V/9wew4Ths7cgbejWyslEwYvkPSan8dWcioa+Nfg224RefBjHQ4GDPi0xTnSAYvbqx7kbE10+lYTMI+fj6UHfIGraLklaSNyx6NH8R+fai4EVT3tNys5UsP5q32v9hnRZG6evxcLBQSpulm+Ca2daRKfG/u/5/VtrqH7QRhyiCHeWpIMUYbiSc6GrVk+R9/Y+9JVLl7FWyOuzePznU2vm5UAIv86k7PA8zOvjAsrQU0i+/DWlIfQPNB8/gOekfeUKZaWvN0yVCTbYbYdux7RnjREZ4c6fC0swNfjK9ShLPurG1Ej8YDuscHKVw05bk4vD6wsrCENteWN7AnTohovhhA23dhXvHOp//wy0ZWchbG8SAaamPwSMhTIC3ds5kYS/2AbNzOhGTVL1CH1E+IwIh66hFUDDj02Ml8Bnrjg75f9Tc2j8emeO9I6KC+gdlN67AqaxEK65
+X-HE-Tag: 1770127498-66017
+X-HE-Meta: U2FsdGVkX18Wptb3tPkhF3ERBkd8snh90rMtOJ/hlNbMkiEA9H61RnTMqlIpFGt7RGiSMuD8piITM/GWHes9G0gp17dXx/bx5m0mriYHJYhsr2VZkdMRS9knD3JU9A4gPZkb92eGguIqkhdiYOgsl2+HpUohZgI47i8UqHMq9rF5pIHIdidRG7Qkm+mxAuTaMUjYeh7bO0MyTmMuf33Cyo9eFBDngDWCqT36yzteroMHx2sITo4jvpE7Yg9nbpYHxraUyqao6nNXNrxjH6a7EJ/6s0TDyGN7KFyxOWVpuBdRsFVZd1GoZ96D0VfePHILSv5TkpyCQtWfTp2AC7HJRTcdM7mlzpmG7lyXiIjJEtoGsaQ27nu/npqi4fSlZUNqdb5f9mLALsJSxGouNwbW1xXR9PaMiqB4/UP3Q5pEqqyu/j6krZ0kRe2Xo/OLDtLXnHjFos34OxhFh18SqdIzyeCb8wgl/dIRc2gkg//PajbqcRsXVfSDDiOKbyKLdwugK2s5UU3pmLB0Lo0oguZDp6Ykb1Hzgz5M5fw0CZG/2NzRwRSz3tz8jqpYIWWfTzlVzq1Tc+H3yfZ1VNJTBevbjYQt5t0W90JQKF0FIeTFmMb7027boJ84EMEI383bb/BVUB3RHpu1UppiT2K2XMrHlvlao91AcjdEH0FofXeiTPR6/rx0vopfUS5y2Ys7xfaW8JQT6UJ2xlWOE2vc11rmypxtFrp5PaJzoIGcwFl1ELGiSZ3b0x5+cap9WaNNy1ci1xQNOeSzSKz/5hz3D27C1QHAxh0VCU1iSFy+UwG91Wl/kXkRiThOA++4n8cr3IGYZWUpnk3QqCt+ZVFvCytK0AV3VS3G9vb60eCn4Nr6oI1z2LWAij+qZFfQPe9uhudD9CYcK575ut/u46D/e5fsdA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,69 +93,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 02-02-26 16:14:37, Roman Gushchin wrote:
-> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
-> 
-> > On Sun, Feb 1, 2026 at 9:39 PM Matt Bobrowski <mattbobrowski@google.com> wrote:
-> >>
-> >> On Mon, Jan 26, 2026 at 06:44:13PM -0800, Roman Gushchin wrote:
-> >> > Export tsk_is_oom_victim() helper as a BPF kfunc.
-> >> > It's very useful to avoid redundant oom kills.
-> >> >
-> >> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-> >> > Suggested-by: Michal Hocko <mhocko@suse.com>
-> >> > ---
-> >> >  mm/oom_kill.c | 14 ++++++++++++++
-> >> >  1 file changed, 14 insertions(+)
-> >> >
-> >> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> >> > index 8f63a370b8f5..53f9f9674658 100644
-> >> > --- a/mm/oom_kill.c
-> >> > +++ b/mm/oom_kill.c
-> >> > @@ -1381,10 +1381,24 @@ __bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
-> >> >       return ret;
-> >> >  }
-> >> >
-> >> > +/**
-> >> > + * bpf_task_is_oom_victim - Check if the task has been marked as an OOM victim
-> >> > + * @task: task to check
-> >> > + *
-> >> > + * Returns true if the task has been previously selected by the OOM killer
-> >> > + * to be killed. It's expected that the task will be destroyed soon and some
-> >> > + * memory will be freed, so maybe no additional actions required.
-> >> > + */
-> >> > +__bpf_kfunc bool bpf_task_is_oom_victim(struct task_struct *task)
-> >> > +{
-> >> > +     return tsk_is_oom_victim(task);
-> >> > +}
-> >>
-> >> Why not just do a direct memory read (i.e., task->signal->oom_mm)
-> >> within the BPF program? I'm not quite convinced that a BPF kfunc
-> >> wrapper for something like tsk_is_oom_victim() is warranted as you can
-> >> literally achieve the same semantics without one.
-> >
-> > +1
-> > there is no need for this kfunc.
-> 
-> It was explicitly asked by Michal Hocko, who is (co)maintaining the oom
-> code. I don't have a strong opinion here. I agree that it can be easily
-> open-coded without a kfunc, but at the same time the cost of having an
-> extra kfunc is not high and it makes the API more consistent.
-> 
-> Michal, do you feel strongly about having a dedicated kfunc vs the
-> direct memory read?
 
-The reason I wanted this an explicit API is that oom states are quite
-internal part of the oom synchronization. And I would really like to
-have that completely transparent for oom policies. In other words I do
-not want to touch all potential oom policies or break them in the worst
-case just because we need to change this. So while a trivial interface
-now (and hopefully for a long time) it is really an internal thing.
 
-Do I insist? No, I do not but I would like to hear why this is a bad
-idea.
+On 2/3/2026 4:23 AM, SeongJae Park wrote:
+> On Mon, 2 Feb 2026 14:56:47 +0000 <gutierrez.asier@huawei-partners.com> wrote:
+> 
+>> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>>
+>> * Support for huge pages collapse, which will be used by
+>>   dynamic_hugepages module.
+>>
+>> * Include the new module for compilation
+>>
+>> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+>> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
+>> ---
+>>  include/linux/damon.h | 1 +
+>>  mm/damon/Kconfig      | 7 +++++++
+>>  mm/damon/Makefile     | 1 +
+>>  mm/damon/vaddr.c      | 3 +++
+>>  4 files changed, 12 insertions(+)
+>>
+>> diff --git a/include/linux/damon.h b/include/linux/damon.h
+>> index 3813373a9200..de5a994f92c2 100644
+>> --- a/include/linux/damon.h
+>> +++ b/include/linux/damon.h
+>> @@ -142,6 +142,7 @@ enum damos_action {
+>>  	DAMOS_LRU_DEPRIO,
+>>  	DAMOS_MIGRATE_HOT,
+>>  	DAMOS_MIGRATE_COLD,
+>> +	DAMOS_COLLAPSE,
+> 
+> Please update the kernel-doc comments for this new action, by the time you drop
+> the RFC tag from this patch series.
+> 
+>>  	DAMOS_STAT,		/* Do nothing but only record the stat */
+>>  	NR_DAMOS_ACTIONS,
+>>  };
+>> diff --git a/mm/damon/Kconfig b/mm/damon/Kconfig
+>> index 8c868f7035fc..2355aacb6d12 100644
+>> --- a/mm/damon/Kconfig
+>> +++ b/mm/damon/Kconfig
+>> @@ -110,4 +110,11 @@ config DAMON_STAT_ENABLED_DEFAULT
+>>  	  Whether to enable DAMON_STAT by default.  Users can disable it in
+>>  	  boot or runtime using its 'enabled' parameter.
+>>  
+>> +config DAMON_HOT_HUGEPAGE
+>> +	bool "Build DAMON-based collapse of hot regions (DAMON_HOT_HUGEPAGES)"
+>> +	depends on DAMON_VADDR
+>> +	help
+>> +	 Collapse hot region into huge pages. Hot regions are determined by
+>> +	 DAMON-based sampling
+>> +
+> 
+> Apparently you wanted to introduce the above change on the next patch, but
+> mistakenly added here?
+> 
+> I'm also feeling the name might be better to be simpler.  What about... say,
+> just DAMON_HUGEPAGE?  We might want to extend that for general access-aware
+> huge pages.
+
+I will move the build stuff into a different commit for the next RFC series.
+
+I agree with the name change, I will do it.
+
+>>  endmenu
+>> diff --git a/mm/damon/Makefile b/mm/damon/Makefile
+>> index d8d6bf5f8bff..998bddc17819 100644
+>> --- a/mm/damon/Makefile
+>> +++ b/mm/damon/Makefile
+>> @@ -7,3 +7,4 @@ obj-$(CONFIG_DAMON_SYSFS)	+= sysfs-common.o sysfs-schemes.o sysfs.o
+>>  obj-$(CONFIG_DAMON_RECLAIM)	+= modules-common.o reclaim.o
+>>  obj-$(CONFIG_DAMON_LRU_SORT)	+= modules-common.o lru_sort.o
+>>  obj-$(CONFIG_DAMON_STAT)	+= modules-common.o stat.o
+>> +obj-$(CONFIG_DAMON_HOT_HUGEPAGE)	+= modules-common.o dynamic_hugepages.o
+> 
+> Ditto.
+> 
+>> diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+>> index 23ed738a0bd6..4acbc1a6a5be 100644
+>> --- a/mm/damon/vaddr.c
+>> +++ b/mm/damon/vaddr.c
+>> @@ -970,6 +970,9 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+>>  	case DAMOS_NOHUGEPAGE:
+>>  		madv_action = MADV_NOHUGEPAGE;
+>>  		break;
+>> +	case DAMOS_COLLAPSE:
+>> +		madv_action = MADV_COLLAPSE;
+>> +		break;
+>>  	case DAMOS_MIGRATE_HOT:
+>>  	case DAMOS_MIGRATE_COLD:
+>>  		return damos_va_migrate(t, r, scheme, sz_filter_passed);
+>> -- 
+>> 2.43.0
+> 
+> 
+> Thanks,
+> SJ
+> 
+> [...]
+> 
 
 -- 
-Michal Hocko
-SUSE Labs
+Asier Gutierrez
+Huawei
+
 
