@@ -4,117 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1548E8304A
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 03:48:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47E39E8304A
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 03:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F9A66B0005; Mon,  2 Feb 2026 22:48:32 -0500 (EST)
+	id 791F26B0005; Mon,  2 Feb 2026 22:58:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D19D6B0088; Mon,  2 Feb 2026 22:48:32 -0500 (EST)
+	id 73EBA6B0088; Mon,  2 Feb 2026 22:58:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D04A6B008A; Mon,  2 Feb 2026 22:48:32 -0500 (EST)
+	id 641796B0089; Mon,  2 Feb 2026 22:58:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 69F776B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 22:48:32 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 522756B0005
+	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 22:58:46 -0500 (EST)
 Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id DC68D160377
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 03:48:31 +0000 (UTC)
-X-FDA: 84401763222.21.3B6CC92
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 1A691A0006
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 03:48:29 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fwu+OLDJ;
-	spf=pass (imf15.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D04275663F
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 03:58:45 +0000 (UTC)
+X-FDA: 84401789010.21.7B18212
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8984F12000B
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 03:58:43 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b="NIQKq/zu";
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf29.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770091124; a=rsa-sha256;
+	cv=none;
+	b=7Xv2KqrPZOMvXXG5NqDF7eXsouqb0junTQdOmq55LEdIJxCBF3YuxKPwcNrsndqZncndUl
+	Qp2ZOSS1/jaY0YNPe76m4jLP26kCNZj/7mEVthdGQpdjnj7K1lDHbXFSi1Hcw2Ob/T6tYS
+	mjyYPgMgFD+j+feNhvao27P/gx16NZI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b="NIQKq/zu";
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf29.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770090510;
+	s=arc-20220608; t=1770091124;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S/YhbipGK3yzOWCZPNSR+5jNjtsi6pizEcTS8DCADz0=;
-	b=2oOICm7Kn/mX1v9WpDKJRI8m4XHAByqmPqSDxBzVDCc9S8ITJ4iJyiu/K33Hq45KPtaaiv
-	rK0WcsXWlOm24kSGDK1X7mGMHcTD95QySo7U/JyZAxRyV2mizPF++Iv3wqurQx7qVEvghH
-	zUZQsOtAZk5qo5e5tT4VR4OstdnTaG4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770090510; a=rsa-sha256;
-	cv=none;
-	b=uue6gqn6m1XbszUJhUJpZk1+IFwaTHNAmjgcUyMDq6kbG2LKpTIh37Rq8BirbT18W50sYy
-	jxE2MGnYqU/8WWSWwQAf+XtsAfla7/rqPkzixVsLY5zNO8mr62+sQNSZEyc9VYEU3UiBle
-	mZmm2S3LbLN1YYWsu5UXj/RzKwv28UA=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fwu+OLDJ;
-	spf=pass (imf15.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-c5513f598c0so2149751a12.0
-        for <linux-mm@kvack.org>; Mon, 02 Feb 2026 19:48:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770090509; x=1770695309; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=S/YhbipGK3yzOWCZPNSR+5jNjtsi6pizEcTS8DCADz0=;
-        b=fwu+OLDJDSFryfnoV+hCm2T1FwAPvKox6utx47Pfsyh+XIXCOkAqRKGQMwRbCQk0qf
-         RgFb3t04gD1tP6pT8iC83nyDcia8X2TewD6c2lK6b2PksJk9Aj4mKoQ9dFJZ2fdY5iOS
-         yjUGquLsk9R7oePbeYAj2RU4NF4VNFoTSMmhN9LQmsG0w6b3vbbkOIahGL9COa666mKO
-         309A4JQPmAGQ8igAOR90uUZBUWqwGeM/qA3bQtKU4yWFkiwkthXHnHdPHH6rJS/sVLO+
-         niGYGXM8gT9pyQin8s/17psLoxBFEGvlEozQ+NJW8ayOxQZU+O6YcgN5xwHsrzkPleeW
-         iz2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770090509; x=1770695309;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=S/YhbipGK3yzOWCZPNSR+5jNjtsi6pizEcTS8DCADz0=;
-        b=B1aNcgRdKXwiQ1Eefi3Q5uFTDYuc+pEpn/H1bjUA9TrDtLXC/szwDrQS0iat6lawtQ
-         3nGXfi9U+YpgjGgfBYcIzgD1dMHGkrjQ6bIi8qYgqwG5D1SJVnbIZHQYvzejZr0E5xsb
-         gs5lAVrmi+PQrnbm8FB8d7P/+fxamePu4RGwmjBhjuUbC8oNSRSRssPmM1Qd0eZYNXuc
-         oNvqi37vAavzWgzgYsBbzFI2rS3tOWtrjXCdKPHjEU8DdftlFsIoNJu3rsda+1JWwSAk
-         GlYR815DUU1gVA53gttfUWFVpc1Wq5fIY6kVbpOwzHe6iAIUn7+VWgI8gIhoWaV9N67O
-         +n2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWJEXIAMX6oi91+OUVHmYQJUQyJO/x5iPWLB5jqZA5Q0s39ra0VFyJ3g6FERKNnRBAy/liaYDCC2w==@kvack.org
-X-Gm-Message-State: AOJu0YxIeoEs6VtGqcOXNyu8pRWYrVHFeM4yhX3mELq/WOw3FKaSN5Lx
-	TCGcaITJJXVzWGot6VtQTg3zfLDbW6JshvbL91/fZRBcY2KjDPy9LhLo
-X-Gm-Gg: AZuq6aLTOx4tOna+aqWKSoMLUgZB9ygJZSaKRgKyo+FUmox1ugM3FxXIU6n6JhNhES3
-	7Xa761xtQGcprFVs1sixeBkRV06XJsb5b/BOsQn7RQCsTvvzXS3LHDo8saP6OoSPSViEvrVOWXs
-	gIYekcAVYmVudSvFtu5q4RU1bpvfFhOxsAN4Cj8gZ2GWFNpUKHePOcxioNTTXCepROSfcfR5qI+
-	eL+53g+6+uPTpDqc+E22Vwj1+0rZkYrUd6JukKtlpNlYHsI5Oq7i33layLNOkT4xq1BYx/8e0aj
-	8zFeNQFhMk0A/1IF1jVqmYwGo01tW652oJi0QYsRjeOyxzXMRY+McHiKzP1+kDPlXkohNimL3ck
-	l+lB2jf7dMEfB1AkEup25vDUMegCaVLix1FaekGhWBbBg2n0JVEIqBWZGccZFtT0P4h5+8tuNUp
-	f+AXKBfzTV25rcsOpDVH/Nc6o=
-X-Received: by 2002:a05:6a21:1709:b0:366:14ac:e207 with SMTP id adf61e73a8af0-392e018d2ecmr15054792637.69.1770090508715;
-        Mon, 02 Feb 2026 19:48:28 -0800 (PST)
-Received: from localhost.localdomain ([114.231.118.96])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642add55adsm15082350a12.32.2026.02.02.19.48.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 19:48:28 -0800 (PST)
-Date: Tue, 3 Feb 2026 11:47:46 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: =?utf-8?B?5p2O6b6Z5YW0?= <coregee2000@gmail.com>, 
-	syzkaller@googlegroups.com, vbabka@suse.cz, akpm@linux-foundation.org, cl@gentwo.org, 
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [Kernel Bug] WARNING in mempool_alloc_noprof
-Message-ID: <fwutwpejyptpo6gqv75zanqciv3fmxvillomwcjvtz4auebbc2@vazub2ct7pa2>
-References: <CAHPqNmwK9TY5THsXWkJuYCdt7x+mZHPq65AUOLZJeMp-FdAMvA@mail.gmail.com>
- <aYBiza9L1hmhmXbb@hyeyoo>
+	bh=kYNk1uESj2SdlyhEUgCh4uBoF2hsXCsmavJNLvewoyg=;
+	b=d6vQ/llPpFnt4H5SNr38JKtH2tfK3VnyRJuCon1mkZ2BImI3Y0qxRjC8b+YiNdBSOuuykI
+	3+odl2Bj64ZlD/wACzvdar6X1QEcXfxJQJqu5YdhOAa3Izz49x4RbdNnJoLkPH4PoTDtj7
+	7sCUJPUy2ZeH/ear1YjTLvoNpUStVm4=
+Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6133vk3W3170984
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Mon, 2 Feb 2026 19:57:47 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6133vk3W3170984
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1770091070;
+	bh=kYNk1uESj2SdlyhEUgCh4uBoF2hsXCsmavJNLvewoyg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
+	b=NIQKq/zu2+acVlOXWh6sSfEQ8JkbE+NqM13UYjoCRqOtnwEXlB/i9XR0vM71yA+q2
+	 yo6IE2xbl2AIGaxb4uCbdtgdzHjbjINGCySSmvT2BPogG3MWulce6FQSOv9JoTPcGI
+	 hS8NDD2tk0UcT+Lxf/Vd/1Nf+zhNNu+vuh2vs7626ZsBpsiK3SjI8WMXXh6UdHHjBW
+	 AL8W7E1fn0ou3GTzdQmIZVOEL06kICoWYk6oVjhQduLuxPl2IuNsthZlnNrm6kFEtY
+	 YC/VqQy2lD2fd/IchD2/NZHlYEzNbhZVJff5Ac7J9ZF+Mt+h3VfEJkcC4whVjLQBfG
+	 KclzhxHP7IGwQ==
+Date: Mon, 02 Feb 2026 19:57:42 -0800
+From: "H. Peter Anvin" <hpa@zytor.com>
+To: Jens Remus <jremus@linux.ibm.com>
+CC: "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Theodore Ts'o" <tytso@mit.edu>,
+        =?ISO-8859-1?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
+        Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>,
+        Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+        Borislav Petkov <bp@alien8.de>, Brian Gerst <brgerst@gmail.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>,
+        Nam Cao <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
+        Perry Yuan <perry.yuan@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-sgx@vger.kernel.org, x86@kernel.org,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        Claudiu Zissulescu-Ianculescu <claudiu.zissulescu-ianculescu@oracle.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v4=2E1_06/10=5D_x86/entry/vdso32?=
+ =?US-ASCII?Q?=3A_remove_open-coded_DWARF_in_sigreturn=2ES?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <223707e2-3231-4037-bd1f-490ddf6aeeb6@linux.ibm.com>
+References: <vdso-cleanup-patch-4.1@zytor.com> <20260106211856.560186-6-hpa@zytor.com> <223707e2-3231-4037-bd1f-490ddf6aeeb6@linux.ibm.com>
+Message-ID: <B4C09939-9216-457E-8C93-052521FFE96F@zytor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aYBiza9L1hmhmXbb@hyeyoo>
-X-Rspamd-Queue-Id: 1A691A0006
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: k514shtn3kk8pkuyzy65gpar9ip69wip
-X-HE-Tag: 1770090509-360737
-X-HE-Meta: U2FsdGVkX18rWOts3NfM3vZion8mOeq5XC1gJMWiie/Vevp6QlgOvTpZMHDEteOdiAclsXdWQcBQ32pws84NnmDnAj0dFZOhC+JhS9aWOvL1+eaApU+t50JJYZ3lcW88jeieQotpGxQotGMJpewfEwMRALssbftVn6GLKdooHgJlFWVip+ISNis4mvE3iA2ckGIqTN29fvc5ejMieVKTILLuuiW67qb4lB8pQ5+nH4vopchLY5dwoF4hmMjrjJKSY+2eElLXZMiRKNpT9HpUZEwUdqGQ1XRhnMTKI4iGjl7w3XSBLGLyXNsp60T9O8K1wfqf+YbAN+vF+w2Cb/EcwDt7aGBYI6MfGEse96+6tam6twe5D0I8L5MClW3Vmit/hFMN0ITinYqTWPWI2j4dCY9QVwjnb//UKlB1gATtAV4KcanpAAFt/1FJO1LPEhM9w8rxkvfIcEIUU8Hvsa37ffnd7zrEq5bVkM4cDooanPswuM2jNiyfg6LWJnFsjVpGUKmMZ/O65usjultiQyGfMLzkyv4ipWK/vgoSb3/bOu92De9jMAhLQ9jOrwDmvEc1vpGtA7wwq1Ui+UkQarfPgQgfJgZFCCIpFH7dxQp6nER85DU3zch6QW/tKg7pA1laqXxZKuxbN9wTT5ZcX+kjwo4sZbYANoya6sarbEiALeVPC3BY7uACGcljUbjYxtJtuaqlO6XN1ZefUfo5pM7rNCcs3qUCxHenx58o87UmgceXSNdBDb383yd4FisgshD0vojUrc0M7qtGnP3CYq06S+cHPCFNCqQA8/3f34VXgu5Ax8KfYr8B2+fQIrMEvGfRZylpwesmPP5AACZB+fR4wFFAq/74VAy/4ddwUyeAgitrgKmZWiHbUd5Gva6IP8Bx9S44EbtsZMDyayPHcwbwAfYp2BsxcIH+aAF6em1OrA6bCr5GZvemYVHovq9QMaDUYp9kcmB/WMLKCz7s15s
- D4+RsS1u
- qet1mIpoHC6qA9in3evsu6E02Sfz6q9zch2PPd56MUNnIO8JCc9vOyaHfw6Cuw+L3MIVhZP8Twa6r8Uxx2e77nFCTyioWevW6g4UzHZOXeFn4GgaGTg0g7HUfC6M2kvZuZfU1o6W0shnlpIgOxRqAAbJKhqxiBcjPuJ209+mj0gIqA76rJaF81yHjv8eKuvtpbWcz
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8984F12000B
+X-Stat-Signature: f98u4wtey1os66bap74746es3r3ykhu5
+X-HE-Tag: 1770091123-897769
+X-HE-Meta: U2FsdGVkX18jLrxUDCxcMkzkKbewCuHCbC86agd+Gou0w6PkTzHNLWpH8lWeP1SBM7rCB9KSVsVvcY6tye5z8vUK3Gn+uQrKx6K0ffcKvnI75VQKk7h7j2rwVbq4++iMjW756iT+x75pTcNLJElPCYzGkolXK9rxwR0Lp+z2a+krxtQO6iveC8Ul84gSLonwRmBR5/kJ8k/p0+9MROaHYZv1jvIfWA0jS70aDZgAYZjz9syoWihDGBLfEgOgCCaxNfbaNobAEr6XbS0XWzQol3p6dwMI/tANcq5UgY5JXDN9CA0+8rPMmFRKKXByMRAGBQfG86ypfFmizKsZp3EdT+jilvCrNcSsf+UT+J+6eGtD8cfFCmpLAXPnk7u55OTK4XRN3FJnXxFqFt7lSgyXjorw5/vTpbqeOHvo70IWhegeEbWswmBW5jW6CD+kjVJIojN6gDfFt/epAO7DvY8tR1PenU5zEugl0ICrkSTV9eO7UvTdM+132Y6qaglDhJNdJeIuIfVTXclyl7sFH2txma8YDIfaGyX42cw5SGOWIgyMgDWeEILLjQlEBdU6RnowbrnKf93UEpY3bIaQgBYJ/3uiiSWQFGGMN07Nu4lFqGiYaXtbRJBIyeL/e4palCom2ASczyUpzHed1Wzov1n7Djzf5axoOXuk5dB482xAvX39lLXrYzxuSx5hiMka9sh9DTgpCL6/rATRuiCYa+7von8pfI9RaumLV7MFwht3M2uo/nKyAGOKImCa3awv6wdXKBU8vWtnMeYzwwu5jpFX6Vnl36+97mgjpx3ZCnp11axK9I7hJqAFOtQXo+V6pbNlN7VF0M73Plxf268jg+JtK/EW2TJ0UDTwzxTEdO5IuWrbbN2Ch32h42Lqp2dtjW7sOXJ98L+hhagRcvrnTwMBx38DMZamuTtYW1JW2DCo5rbz1p/2MsHNeet0fCAo/J7YuYG7HH+Ym5wl56DFmO6
+ HaGcxlRJ
+ VV1I4Uh07BbWpmpcpwcPsDEunsHTGLA9+L0Uy06zjNxZt7tLYPDOnOfLAT91hMwPY+gi+fAfQYkMIEaefqqlaDURQ8V+FNojAeElh/n+LjgEuqAkUXbp8aUnRw7yrBA+c7ODmaESnpmFc90/Ng+IHJSjbKg7G7jvmzH/UWUXlLzg873qk2vvZhhrGYQinv2nyzn1P3QxeUZGxyPW8TikeLWLrD00l942shC6bpClSZB7tfVt4vgx/GwHjnh3XMRF7KCYXRb26HC53yN3DYpZRyNPJvUydIrWaLyzbakEYeyF+u8bALDWg5AbmxytpELljquWhZqVPCPAkzKinxmW/Z5UVQaIV89suiSVRcm+QXSkeMG7NM4/SLVuusk6igmtcrdtB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,151 +113,242 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-02, Harry Yoo wrote:
-> On Mon, Feb 02, 2026 at 02:40:14PM +0800, 李龙兴 wrote:
-> > Dear Linux kernel developers and maintainers,
-> >
-> > We would like to report a new kernel bug found by our tool. WARNING in
-> > mempool_alloc_noprof. Details are as follows.
-> >
-> > Kernel commit: v6.12.11
-> > Kernel config: see attachment
-> > report: see attachment
-> >
-> > We are currently analyzing the root cause and  working on a
-> > reproducible PoC. We will provide further updates in this thread as
-> > soon as we have more information.
-> >
-> > Best regards,
-> > Longxing Li
-> >
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 1 PID: 362734 at mm/page_alloc.c:4234
-> > __alloc_pages_slowpath mm/page_alloc.c:4234 [inline]
-> > WARNING: CPU: 1 PID: 362734 at mm/page_alloc.c:4234
-> > __alloc_pages_noprof+0x2025/0x25a0 mm/page_alloc.c:4766
-> > Modules linked in:
-> > CPU: 1 UID: 0 PID: 362734 Comm: syz-executor.5 Not tainted 6.12.11 #1
-> > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-> > RIP: 0010:__alloc_pages_slowpath mm/page_alloc.c:4234 [inline]
-> > RIP: 0010:__alloc_pages_noprof+0x2025/0x25a0 mm/page_alloc.c:4766
+On February 2, 2026 9:02:48 AM PST, Jens Remus <jremus@linux=2Eibm=2Ecom> w=
+rote:
+>Hello Peter!
 >
-> page allocator triggers a warning when __GFP_NOFAIL is set but
-> __GFP_DIRECT_RECLAIM is not set.
+>On 1/6/2026 10:18 PM, H=2E Peter Anvin wrote:
+>> The vdso32 sigreturn=2ES contains open-coded DWARF bytecode, which
+>> includes a hack for gdb to not try to step back to a previous call
+>> instruction when backtracing from a signal handler=2E
+>>=20
+>> Neither of those are necessary anymore: the backtracing issue is
+>> handled by "=2Ecfi_entry simple" and "=2Ecfi_signal_frame", both of whi=
+ch
+>> have been supported for a very long time now, which allows the
+>> remaining frame to be built using regular =2Ecfi annotations=2E
 >
-> > Code: 10 00 00 00 44 8b 74 24 48 41 89 c5 0f b6 c0 44 8b a4 24 84 00
-> > 00 00 89 44 24 28 e9 e5 f6 ff ff 90 0f 0b 90 e9 f1 f6 ff ff 90 <0f> 0b
-> > 90 e9 1e fb ff ff e8 2e a4 38 09 e9 5e ed ff ff 4c 89 f7 e8
-> > RSP: 0000:ffffc9003ce9e7d0 EFLAGS: 00010246
-> > RAX: 0000000000008000 RBX: 0000000000000000 RCX: ffffc9003ce9e8fc
-> > RDX: 0000000000000000 RSI: 0000000000000002 RDI: ffff88813fff99c8
-> > RBP: 0000000000000000 R08: 000000000000028d R09: 0000000000000000
-> > R10: ffff88807fffbc17 R11: 0000000000000000 R12: 000000000009a800
-> > R13: 000000000009a800 R14: 1ffff920079d3d0e R15: 0000000000000001
-> > FS:  00007f1784eff640(0000) GS:ffff888135e00000(0000) knlGS:0000000000000000
-> > CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > CR2: 000055bb25a85a28 CR3: 0000000096938000 CR4: 0000000000752ef0
-> > PKRU: 55555554
-> > Call Trace:
-> >  <TASK>
-> >  alloc_pages_mpol_noprof+0x2c9/0x610 mm/mempolicy.c:2269
-> >  mempool_alloc_noprof+0x176/0x390 mm/mempool.c:402
+>Hopefully Glibc developers will do something similar for x86-64
+>__restore_rt() in Glibc sysdeps/unix/sysv/linux/x86_64/libc_sigaction=2Ec=
+=2E
 >
-> the user of the mempool (f2fs_encrypt_one_page) passed __GFP_DIRECT_RECLAIM,
-> but mempool temporarily cleared it, but not __GFP_NOFAIL:
->    gfp_temp = gfp_mask & ~(__GFP_DIRECT_RECLAIM|__GFP_IO)
+>>=20
+>> Add a few more register offsets to the signal frame just for good
+>> measure=2E
+>>=20
+>> Replace the nop on fallthrough of the system call (which should never,
+>> ever happen) with a ud2a trap=2E
+>> diff --git a/arch/x86/entry/vdso/vdso32/sigreturn=2ES b/arch/x86/entry/=
+vdso/vdso32/sigreturn=2ES
 >
-> Hmm perhaps mempool should clear __GFP_NOFAIL as well when clearing
-> __GFP_DIRECT_RECLAIM?
-
-LGTM. I wrote a fix pacth, as below.
-
----
-
-From 9131e1b26b1ec55dd38ab08512ed6da0fa7a21f0 Mon Sep 17 00:00:00 2001
-From: Vernon Yang <yanglincheng@kylinos.cn>
-Date: Tue, 3 Feb 2026 10:51:45 +0800
-Subject: [PATCH] mm: mempool: remove __GFP_NOFAIL gfp_mask when first
- allocation
-
-page allocator triggers a warning when __GFP_NOFAIL is set but
-__GFP_DIRECT_RECLAIM is not set.
-
-The user of the mempool (f2fs_encrypt_one_page) passed
-__GFP_DIRECT_RECLAIM, but mempool temporarily cleared it when
-first allocate memory.
-
-    gfp_temp = gfp_mask & ~(__GFP_DIRECT_RECLAIM|__GFP_IO)
-
-Make mempool also clear __GFP_NOFAIL as well when clearing
-__GFP_DIRECT_RECLAIM.
-
-Closes: https://lore.kernel.org/linux-mm/CAHPqNmwK9TY5THsXWkJuYCdt7x+mZHPq65AUOLZJeMp-FdAMvA@mail.gmail.com
-Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
----
- mm/mempool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/mempool.c b/mm/mempool.c
-index c290e5261b47..679ab4a2cc5f 100644
---- a/mm/mempool.c
-+++ b/mm/mempool.c
-@@ -472,7 +472,7 @@ static unsigned int mempool_alloc_from_pool(struct mempool *pool, void **elems,
- static inline gfp_t mempool_adjust_gfp(gfp_t *gfp_mask)
- {
- 	*gfp_mask |= __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
--	return *gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_IO);
-+	return *gfp_mask & ~(__GFP_NOFAIL | __GFP_DIRECT_RECLAIM | __GFP_IO);
- }
-
- /**
---
-2.51.0
-
+>>  	=2Etext
+>>  	=2Eglobl __kernel_sigreturn
+>>  	=2Etype __kernel_sigreturn,@function
+>> -	nop /* this guy is needed for =2ELSTARTFDEDLSI1 below (watch for HACK=
+) */
+>>  	ALIGN
+>>  __kernel_sigreturn:
+>> -=2ELSTART_sigreturn:
+>> -	popl %eax		/* XXX does this mean it needs unwind info? */
+>> +	STARTPROC_SIGNAL_FRAME IA32_SIGFRAME_sigcontext
+>> +	popl %eax
+>> +	CFI_ADJUST_CFA_OFFSET -4
+>>  	movl $__NR_sigreturn, %eax
+>>  	int $0x80
+>> -=2ELEND_sigreturn:
 >
-> >  fscrypt_alloc_bounce_page+0x28/0x60 fs/crypto/crypto.c:59
-> >  fscrypt_encrypt_pagecache_blocks.cold+0x567/0x6da fs/crypto/crypto.c:202
-> >  f2fs_encrypt_one_page+0x187/0x630 fs/f2fs/data.c:2516
-> >  f2fs_do_write_data_page+0x7b4/0x1900 fs/f2fs/data.c:2706
-> >  f2fs_write_single_data_page+0x1454/0x1c30 fs/f2fs/data.c:2872
-> >  f2fs_write_cache_pages+0xd6e/0x24e0 fs/f2fs/data.c:3166
-> >  __f2fs_write_data_pages fs/f2fs/data.c:3321 [inline]
-> >  f2fs_write_data_pages+0x4af/0xdd0 fs/f2fs/data.c:3348
-> >  do_writepages+0x1a3/0x7f0 mm/page-writeback.c:2683
-> >  filemap_fdatawrite_wbc mm/filemap.c:398 [inline]
-> >  filemap_fdatawrite_wbc+0x148/0x1c0 mm/filemap.c:388
-> >  __filemap_fdatawrite_range+0xb3/0xf0 mm/filemap.c:431
-> >  file_write_and_wait_range+0xca/0x140 mm/filemap.c:788
-> >  f2fs_do_sync_file+0x2dc/0x1ed0 fs/f2fs/file.c:278
-> >  f2fs_sync_file+0x13a/0x1a0 fs/f2fs/file.c:395
-> >  vfs_fsync_range+0x136/0x220 fs/sync.c:188
-> >  generic_write_sync include/linux/fs.h:2871 [inline]
-> >  f2fs_file_write_iter+0x12ba/0x2370 fs/f2fs/file.c:5057
-> >  new_sync_write fs/read_write.c:590 [inline]
-> >  vfs_write+0x5ae/0x1150 fs/read_write.c:683
-> >  ksys_write+0x12f/0x260 fs/read_write.c:736
-> >  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-> >  do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
-> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> > RIP: 0033:0x471ecd
-> > Code: c3 e8 17 28 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48
-> > 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d
-> > 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-> > RSP: 002b:00007f1784eff058 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-> > RAX: ffffffffffffffda RBX: 000000000059bf80 RCX: 0000000000471ecd
-> > RDX: 0000000000000002 RSI: 00000000200003c0 RDI: 0000000000000004
-> > RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
-> > R10: 0000000000000000 R11: 0000000000000246 R12: 000000000059bf8c
-> > R13: 000000000000000b R14: 000000000059bf80 R15: 00007f1784edf000
-> >  </TASK>
-> >
-> > https://drive.google.com/file/d/17HbDTI_iPjA72SkV5MnO-_w7IQZ9HIHW/view?usp=drive_link
-> >
-> > https://drive.google.com/file/d/19pMiWedcVz8nFrj9jiJXuCjyPbNjYQqq/view?usp=drive_link
+>=2E=2E=2E
 >
+>>  	=2Eglobl __kernel_rt_sigreturn
+>>  	=2Etype __kernel_rt_sigreturn,@function
+>>  	ALIGN
+>>  __kernel_rt_sigreturn:
+>> -=2ELSTART_rt_sigreturn:
+>> +	STARTPROC_SIGNAL_FRAME IA32_RT_SIGFRAME_sigcontext
+>>  	movl $__NR_rt_sigreturn, %eax
+>>  	int $0x80
+>> -=2ELEND_rt_sigreturn:
+>
+>=2E=2E=2E
+>
+>> -	=2Esection =2Eeh_frame,"a",@progbits
+>> -=2ELSTARTFRAMEDLSI1:
+>> -	=2Elong =2ELENDCIEDLSI1-=2ELSTARTCIEDLSI1
+>> -=2ELSTARTCIEDLSI1:
+>> -	=2Elong 0			/* CIE ID */
+>> -	=2Ebyte 1			/* Version number */
+>> -	=2Estring "zRS"		/* NUL-terminated augmentation string */
+>
+>Note that the "S" in "zRS" is the signal frame indication=2E
+>
+>> -	=2Euleb128 1		/* Code alignment factor */
+>> -	=2Esleb128 -4		/* Data alignment factor */
+>> -	=2Ebyte 8			/* Return address register column */
+>> -	=2Euleb128 1		/* Augmentation value length */
+>> -	=2Ebyte 0x1b		/* DW_EH_PE_pcrel|DW_EH_PE_sdata4=2E */
+>> -	=2Ebyte 0			/* DW_CFA_nop */
+>> -	=2Ealign 4
+>> -=2ELENDCIEDLSI1:
+>> -	=2Elong =2ELENDFDEDLSI1-=2ELSTARTFDEDLSI1 /* Length FDE */
+>> -=2ELSTARTFDEDLSI1:
+>> -	=2Elong =2ELSTARTFDEDLSI1-=2ELSTARTFRAMEDLSI1 /* CIE pointer */
+>> -	/* HACK: The dwarf2 unwind routines will subtract 1 from the
+>> -	   return address to get an address in the middle of the
+>> -	   presumed call instruction=2E  Since we didn't get here via
+>> -	   a call, we need to include the nop before the real start
+>> -	   to make up for it=2E  */
+>> -	=2Elong =2ELSTART_sigreturn-1-=2E	/* PC-relative start address */
+>
+>Your version does no longer have this nop nor does the FDE start one
+>byte earlier=2E  Isn't that required for unwinders any longer?
+>See excerpt from dumped DWARF and disassembly for __kernel_sigreturn()
+>below=2E
+>
+>> -	=2Elong =2ELEND_sigreturn-=2ELSTART_sigreturn+1
+>> -	=2Euleb128 0			/* Augmentation */
+>=2E=2E=2E
+>
+>> -	=2Ealign 4
+>> -=2ELENDFDEDLSI1:
+>> -
+>> -	=2Elong =2ELENDFDEDLSI2-=2ELSTARTFDEDLSI2 /* Length FDE */
+>> -=2ELSTARTFDEDLSI2:
+>> -	=2Elong =2ELSTARTFDEDLSI2-=2ELSTARTFRAMEDLSI1 /* CIE pointer */
+>> -	/* HACK: See above wrt unwind library assumptions=2E  */
+>> -	=2Elong =2ELSTART_rt_sigreturn-1-=2E	/* PC-relative start address */
+>
+>Ditto=2E
+>
+>> -	=2Elong =2ELEND_rt_sigreturn-=2ELSTART_rt_sigreturn+1
+>> -	=2Euleb128 0			/* Augmentation */
+>
+>Excerpt from dump of DWARF and disassembly with your patch:
+>
+>$ objdump -d -Wf arch/x86/entry/vdso/vdso32/vdso32=2Eso=2Edbg
+>=2E=2E=2E
+>000001cc 0000003c 00000000 CIE   <-- CIE for __kernel_sigreturn
+>  Version:               1
+>  Augmentation:          "zRS"
+>  Code alignment factor: 1
+>  Data alignment factor: -4
+>  Return address column: 8
+>  Augmentation data:     1b
+>  DW_CFA_def_cfa: r4 (esp) ofs 4
+>  DW_CFA_offset_extended_sf: r8 (eip) at cfa+56
+>  DW_CFA_offset_extended_sf: r0 (eax) at cfa+44
+>  DW_CFA_offset_extended_sf: r3 (ebx) at cfa+32
+>  DW_CFA_offset_extended_sf: r1 (ecx) at cfa+40
+>  DW_CFA_offset_extended_sf: r2 (edx) at cfa+36
+>  DW_CFA_offset_extended_sf: r4 (esp) at cfa+28
+>  DW_CFA_offset_extended_sf: r5 (ebp) at cfa+24
+>  DW_CFA_offset_extended_sf: r6 (esi) at cfa+20
+>  DW_CFA_offset_extended_sf: r7 (edi) at cfa+16
+>  DW_CFA_offset_extended_sf: r40 (es) at cfa+8
+>  DW_CFA_offset_extended_sf: r41 (cs) at cfa+60
+>  DW_CFA_offset_extended_sf: r42 (ss) at cfa+72
+>  DW_CFA_offset_extended_sf: r43 (ds) at cfa+12
+>  DW_CFA_offset_extended_sf: r9 (eflags) at cfa+64
+>  DW_CFA_nop
+>
+>0000020c 00000010 00000044 FDE cie=3D000001cc pc=3D00001a40=2E=2E00001a4a=
+   <-- FDE for __kernel_sigreturn
+>  DW_CFA_advance_loc: 1 to 00001a41
+>  DW_CFA_def_cfa_offset: 0
+>
+>[ The FDE covers the range [1a40=2E=2E1a4a[=2E  Previously it would have
+>started one byte earlier (at the nop), so that the range would have
+>been [1a3f=2E=2E1a4a[=2E  This is/was required for unwinders that always
+>subtract one from the unwound return address, so that it points into
+>the instruction that invoked the function (e=2Eg=2E call) instead of behi=
+nd
+>it, in case it was invoked by a non-returning function=2E  Such an
+>unwinder would now lookup IP=3D1a3f as belonging to int80_landing_pad (an=
+d
+>use the DWARF rules applicable to its last instruction) instead of
+>__kernel_sigreturn (and its rules)=2E  Likewise for __kernel_rt_sigreturn=
+=2E ]
+>
+>=2E=2E=2E
+>00001a3c <int80_landing_pad>:
+>    1a3c:       5d                      pop    %ebp
+>    1a3d:       5a                      pop    %edx
+>    1a3e:       59                      pop    %ecx
+>    1a3f:       c3                      ret
+>
+>00001a40 <__kernel_sigreturn>:
+>    1a40:       58                      pop    %eax
+>    1a41:       b8 77 00 00 00          mov    $0x77,%eax
+>    1a46:       cd 80                   int    $0x80
+>
+>00001a48 <vdso32_sigreturn_landing_pad>:
+>    1a48:       0f 0b                   ud2
+>    1a4a:       8d b6 00 00 00 00       lea    0x0(%esi),%esi
+>
+>
+>Excerpt without your patch:
+>
+>$ objdump -d -Wf arch/x86/entry/vdso/vdso32/vdso32=2Eso=2Edbg
+>=2E=2E=2E
+>000001cc 00000010 00000000 CIE  <-- CIE for __kernel_sigreturn and __kern=
+el_rt_sigreturn
+>  Version:               1
+>  Augmentation:          "zRS"
+>  Code alignment factor: 1
+>  Data alignment factor: -4
+>  Return address column: 8
+>  Augmentation data:     1b
+>  DW_CFA_nop
+>  DW_CFA_nop
+>
+>000001e0 00000068 00000018 FDE cie=3D000001cc pc=3D00001a6f=2E=2E00001a78=
+  <-- FDE for __kernel_sigreturn
+>  DW_CFA_def_cfa_expression (DW_OP_breg4 (esp): 32; DW_OP_deref)
+>  DW_CFA_expression: r0 (eax) (DW_OP_breg4 (esp): 48)
+>  DW_CFA_expression: r1 (ecx) (DW_OP_breg4 (esp): 44)
+>  DW_CFA_expression: r2 (edx) (DW_OP_breg4 (esp): 40)
+>  DW_CFA_expression: r3 (ebx) (DW_OP_breg4 (esp): 36)
+>  DW_CFA_expression: r5 (ebp) (DW_OP_breg4 (esp): 28)
+>  DW_CFA_expression: r6 (esi) (DW_OP_breg4 (esp): 24)
+>  DW_CFA_expression: r7 (edi) (DW_OP_breg4 (esp): 20)
+>  DW_CFA_expression: r8 (eip) (DW_OP_breg4 (esp): 60)
+>  DW_CFA_advance_loc: 2 to 00001a71
+>  DW_CFA_def_cfa_expression (DW_OP_breg4 (esp): 28; DW_OP_deref)
+>  DW_CFA_expression: r0 (eax) (DW_OP_breg4 (esp): 44)
+>  DW_CFA_expression: r1 (ecx) (DW_OP_breg4 (esp): 40)
+>  DW_CFA_expression: r2 (edx) (DW_OP_breg4 (esp): 36)
+>  DW_CFA_expression: r3 (ebx) (DW_OP_breg4 (esp): 32)
+>  DW_CFA_expression: r5 (ebp) (DW_OP_breg4 (esp): 24)
+>  DW_CFA_expression: r6 (esi) (DW_OP_breg4 (esp): 20)
+>  DW_CFA_expression: r7 (edi) (DW_OP_breg4 (esp): 16)
+>  DW_CFA_expression: r8 (eip) (DW_OP_breg4 (esp): 56)
+>
+>
+>[ See how the FDE for __kernel_sigreturn covers the range [1a6f=2E=2E1a78=
+[=2E
+>An unwinder that always subtracts one from the return address would
+>lookup IP=3D1a6f as belonging to __kernel_sigreturn (and use the DWARF
+>rules applicable to the nop preceeding its symbol)=2E  Likewise for
+>__kernel_rt_sigreturn=2E  Or is that no longer true?  ]
+>
+>=2E=2E=2E
+>00001a5c <int80_landing_pad>:
+>    1a5c:       5d                      pop    %ebp
+>    1a5d:       5a                      pop    %edx
+>    1a5e:       59                      pop    %ecx
+>    1a5f:       c3                      ret
+>    1a60:       90                      nop
+>    1a61:       8d b4 26 00 00 00 00    lea    0x0(%esi,%eiz,1),%esi
+>    1a68:       2e 8d b4 26 00 00 00    lea    %cs:0x0(%esi,%eiz,1),%esi
+>    1a6f:       00
+>
+>00001a70 <__kernel_sigreturn>:
+>    1a70:       58                      pop    %eax
+>    1a71:       b8 77 00 00 00          mov    $0x77,%eax
+>    1a76:       cd 80                   int    $0x80
+>
+>Thanks and regards,
+>Jens
 
---
-Thanks,
-Vernon
+That hack dates back from before the signal frame extension=2E It is no lo=
+nger necessary=2E
 
