@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54FACE8784E
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:03:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A538DE8784D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 17:03:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A9306B00A4; Tue,  3 Feb 2026 12:03:13 -0500 (EST)
+	id DC93B6B00A5; Tue,  3 Feb 2026 12:03:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95CF66B00A5; Tue,  3 Feb 2026 12:03:13 -0500 (EST)
+	id D74D96B00A8; Tue,  3 Feb 2026 12:03:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8574D6B00A8; Tue,  3 Feb 2026 12:03:13 -0500 (EST)
+	id CA19A6B00AA; Tue,  3 Feb 2026 12:03:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E83A6B00A4
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:03:13 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1C6FA1B1BE8
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:03:13 +0000 (UTC)
-X-FDA: 84403765866.09.4B4338D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6FFBA180013
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:03:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pmq5xLiG;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B5C936B00A5
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 12:03:49 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6D62359757
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:03:49 +0000 (UTC)
+X-FDA: 84403767378.02.ABA86EB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A9C2D100003
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:03:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RdxzCnvF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770138227; a=rsa-sha256;
+	cv=none;
+	b=x+eMIBIKxfDsf0ThvXj7MvvHTheimNRK9RVrksl3zjqNjllPgso6SNXCrzMkkcARgPPLDH
+	WwvVcCVQQrNIR9PFqxlQuL9uv8/rRKhd7Q3Bmm5M8E3Nt+c3TqXLcahaN16dFiKWPa2Tbd
+	nH/1JhLf3NY/nLxRt/2WbU7ZKWZC0Is=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RdxzCnvF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770138191;
+	s=arc-20220608; t=1770138227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xg78Zlzv6tCd6rDkroXjM8IGqczSTy9xWZCY17OaMxs=;
-	b=YF+DogcPjHvwPnL66PnlX1Qy+b5Ltxc2mcYPurmCnAt/IVNsAc3OI3QVwaeS3CFcj3Bxzy
-	tdcjUmRIQTtUmO9yWUk2cELJlbCP4KpQ+KxfHVQ0WTTA+LTws/54fXppfsrpewgFTtPR2c
-	x0lZQyiVrITYN9KPtlyRWwY3G8dyCaU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Pmq5xLiG;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770138191; a=rsa-sha256;
-	cv=none;
-	b=e7SMrhOOP+LASaoOyZpgYkhwYxXV8bAkIdiqVLW+KgslL15XhxYeGx00TGMH/bTMdXaUG3
-	vKOoSTny3H7k0mfqjHIm9plS+Wvu2EehPNc7M0ET6s+MA+kCBY0Nw0IWcIbGogmcIj6pwI
-	eFItl2fFcYZNsWh1613o/QKRzk38Rec=
+	bh=mZBIMWogOdg/RnmZ59uwk044Dba8AFr35GQKwqqE3TY=;
+	b=ywxAFQOq5Ka9MDCpvSHpaL/1to5pck1B1Lga7HbnCIhMaPIAC08HM1M99pHJRYyZPNnzAe
+	7Ho9MdzLBbO64UvVTvum7u+ZUgoHjUR7t1i3+ymMrcUMMDCHE/LDKsEJ29rdAJU7pOtHNc
+	6UKX0B+aTCxokBueck39rh4sarUa2YQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B3627601E9;
-	Tue,  3 Feb 2026 17:03:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D29C116D0;
-	Tue,  3 Feb 2026 17:03:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 62A8C44193;
+	Tue,  3 Feb 2026 17:03:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 078B9C116D0;
+	Tue,  3 Feb 2026 17:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770138190;
-	bh=lzqVUIL/GcxvLpsHi8mMj4ZXKGp+p6qejMHEKZTTs1s=;
+	s=k20201202; t=1770138226;
+	bh=Rz1ZH7cwBMEcc8pY8rqoH/bXe+tMJW7kk/yerwU8P9Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pmq5xLiGQ2Czpjx1R1Ehs1xzVOdvVr+bJrRlmjHMX6D59vEEdkhzAFDwvDZsyrNAB
-	 j4xDnLid4B6JVHIaY6/hjh5ayHBKd5es08d/4fXgiN7CTbwAPkckG3IfO3zS5kejaY
-	 xquLc2+M/lp65y2NQv/ybC5ysovD/bjmsziVormpZEIsPR53n8LFqDL3IpO8NTrA/I
-	 XWbqy++n7VuJrjtsvH3Ry1uGFoByDNmWZA2v7kcW+aaQiGiCze5DpGVhRAZs1uzDrr
-	 yf8KyYsAM/OV1IWhZj59uV3c35Q4s3L6braZT/iXPd0aQDHNhpn0YKGSXwkRpdLN3f
-	 rCxNJxnapcP4Q==
-Date: Tue, 3 Feb 2026 19:03:03 +0200
+	b=RdxzCnvF9/9K4BIJpoa4VFdo4EKLFQj2KonO3t3fqpBr9IK0kXzCg6LjA/+5GGC2T
+	 CQFWYMMuYHqoTe+KyAXloSkpg5xjW1qvQamKc7clWJk17XPU4SESQ/zFYvHtWWM8Z+
+	 5/JEHZRh/JQCh2bbcBSJqinQi22QzstH+GvviE/nFDvvrdWYULyVvbsYFzLO5IapCO
+	 6aMeCj4Lx4fPfKJ9/xcvYcgxpD5jlQ0rSbOBYJxlf2f3c24f/Yp0jfp7wGH886EjCi
+	 JdGkipBOLrN6nQZlGFssROtYbt4cXeXH58eaFpL28fYRKDRVXb0rKFMntOkiaG9mN2
+	 7HMNlpf1YzyOQ==
+Date: Tue, 3 Feb 2026 19:03:39 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
@@ -72,22 +72,21 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v3 1/3] x86/mm/pat: Convert pte code to use ptdescs
-Message-ID: <aYIqR4Nh3sHfIVko@kernel.org>
+Subject: Re: [PATCH v3 0/3] Convert 64-bit x86/mm/pat to ptdescs
+Message-ID: <aYIqa6jxn0TnpuKN@kernel.org>
 References: <20260202172005.683870-1-vishal.moola@gmail.com>
- <20260202172005.683870-2-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260202172005.683870-2-vishal.moola@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6FFBA180013
-X-Stat-Signature: 3xqmzywud75njpt86ggfmq7nmmnxzw5d
+In-Reply-To: <20260202172005.683870-1-vishal.moola@gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1770138191-720233
-X-HE-Meta: U2FsdGVkX1/4/1paaptzJSpfJEGi6Tb7mxX/JiANPoHpmn2aEnC13zGM8v6b7uPhv1lqeeD6pYTffF+YCeiD8H2qYI1231RPxH5Fxh0ksi3uFArrdG+t+ISnoHX/TO4Pg5d2qGZgeDYHKerqVH8MgjUNv953+SrrRrc/koETlQSkQWLFPoi5GSsADWnRDsrKQrzTDyA7IehMD4Z+E4J1kJU4Ga1qoaTRFjJGDYhEG/vKjWqkrxiOiM31N+HFKaa3jwuf+aJWHt8XsPJ6qApEtwhcALVOd5te6YmZ8eIuRFapdevr8qVB7/GYHS997NGAbD4114Zf31l7VtjgA/qQdy5SznhSzKxRwyJbLRdvGRoQFrDHJjNAGTmGvY87GapXzqodx9l/1WMu75oMvrdShIj/ZHSYoKh2wrLBUPMD4ihMkoipVF1l/KANtC2PSYUllfl3pTAJFfs705U4TJ9Vp1QphiqHCDLubEk8xwx8TZ0nfAzmsNKANeLDCed+Nm9ErVNUJq/vRnIxDtH/tQZSxe1rrgZnqwShQfVNmJfWM1ELUm1iNl+oMYkwb7zPkEk6K1y+lSrgr10nW/uptEoGCG6ncNIXcCL/ok4FK/UIIPn6OM/W0gKiKltSuo2rsxle+ELtvKf4e7L59jFt8J4fw0f8NlV2/0SNM+WDzVFStevtVC22kjmHgREVIAnsvHQO5NM1KikrkaEBlVhkKupaC7GONh3UgIlXeC0b2OUoRvYcTtkymT102tWQoGq1VpG4fs8m5f7MGXjNcKUF9gvkZzBJ7ptCNo400WHegyUZIEYm7ACG0pyHULWvX027zoxBZ0C4Y6uWUxvt8AEbXOGo74umQI6S+lJmTmnvfMaAs9dYG98EbVRmQKFtxjflyRQqJLMgOZvKbY46ZwUjJDs7P7gn1XztW6g/kbRNhN9DmryHMahBpOVZDw7qogO4BEi2PrQYufWxlvBBWCwYKUz
- D/iQjTVq
- LiigVl+jmp+cihThQuQTorWu+iPUB1ygTVexkC7Gxdnao6/j6Aam/W2F5GmiNOMvmK1raOoK5KLvTUStXy+xKY2VXENB5KMxU3rxxF8hySZZIAZWEac1gh5k5Tw5qslCrAUa+j5m6p1aWhvajKUPE77sIzgeBnIXXz5b0muANdxaGY9zDftIhi62mOViszxPv6o8GYCUrakpQslFVslI2ATuBZjIJ9lnn9UO3lckBUl7tlbo2LQ0NO+GW4eJdG15xnKm7+W3sTO8GHiGVTZVU72vF/mOr9sFvLRVW1rbw8xpnzPEsoc8JzIatqt8sUwuBbmuJz6n+fAVrKLIVgV1pwAAxQeeHP/YnY9qa
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A9C2D100003
+X-Stat-Signature: rajbd3bzy99nz9k887iwgx7pat731rqe
+X-HE-Tag: 1770138227-946672
+X-HE-Meta: U2FsdGVkX1+EFiBjha1V1KbUsN4mraTFyV7fJyHSCZSn0rwx8rxngiwHVKFjWc3q4ZuzcQJYGPakGhm3o3znnaVqloeAI7JK+zwCPtS66BlTaQJKOwqVzzykd03ynHQTf3H/nuvBtWf+On+eXQUcBEA7qvoQsLse5xQbKf3E1QHuE3HmuFa6f9yM0k5OR7tvCK9VgV/7LjfqkQvUu498VtGA/eCwFTlPXxzDtkHIrX+Ux/72xZQ1bIZZniMFpn/KZMfwPVoh334pvK6VcyEp2EtLqQocMk+6P3ZFN++zmDyId4Zc8nDoz4tPXVvP1F8sZjEJipQVnmpoSX0mitJgCK6+dRsV1jj6bbt07Fd0zzrqXizqeRV9nhD4sdGSy+NYHk83s3IzEi/QzDrhe1LCV7iCOuvJMd+9s0ahjgwUxY7kZ6o9h6WUvF/NHGegxyZf/+kHk6+COBfob6BxkgYHaRBylzDbEY20xWVDe3KgW5xpvg5xJSW8drJr7UYixIk6xLU8a3cuNGjWNyctWlx/Gfzlp8kVPYsWqcuCJEsQ0eV4OPiyQ1sW6j78+2ldUF+6bFIrk8XZ7RZ9/WIHoEbo4BwFDB13eT8YmVieIubURCs6sulOMcAdmy2dnWXL28mbZ1biQ7qPINsKXwtIj8XNU8n9rikErQQ9qhlgufb07AIoDgDANckN1me1BCZplaFfSNfEEc2jgQRGCMBbYeR8aRdjswWqBdRS6Hd/DL3ifEqHzyyxUwXHOdcTfwYrp8I2kSTIx24VUztxWajWieEKViq1XbukY6ODY1Dh8pHPAYEzCT7DhN4/i1YdTAvD1cXv5/1BvEmUOlpp1YCYUTwAqhTGrXp5tlD8eiJqrW9Oo5EH/5B8QuFsMJKXqMV+lSLziLx+NcBIJ8cEOlyedEvzjEGoMphjgJjByuQUxYpZ1HsIBKOfoK1+0kw9PtWw3vNvptVXzYc4mG7sMqHN/kL
+ UNP308B/
+ p3qeSoYzk/C+x1nSS5SncTe9H+FDCGZVXtwg45u8AR/Ti16ABIq10z0atU7mcHt8y4Js0mFEHDU35/UGQz/PeX57Slhxm2sDkxOcsMgvgnKKPdin7ktUN/wV5ajlCGNSJLiIkv9iDJbDoYzv1gymeBFDb2ECJuHXeCc0KiBNHZBIo2O26CSl1CUiVXt4tqZrHtMAGKm/EJsyLBqVSZYrlTrqRjPVONGMy6QV9aLo0fvyDo4US/6p8m4VIYdBSLMxLyWLYomcwSfGqnS19RgTU/TYURaC3LkL7AM0kgjUKn8n6VcSID9Ge2XE7gRyYPRyR4rZu5gqxBAk+UZOWlbpAqXMNCTYDPq342Hki7XW8AG8vcEk7rD6u7PI8grbFFsSCMdCYF6Sq0ih2qINRcctnqxpjUQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,76 +95,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Vishal,
-
-On Mon, Feb 02, 2026 at 09:20:03AM -0800, Vishal Moola (Oracle) wrote:
-> In order to separately allocate ptdescs from pages, we need all allocation
-> and free sites to use the appropriate functions. Convert these pte
-> allocation/free sites to use ptdescs.
+On Mon, Feb 02, 2026 at 09:20:02AM -0800, Vishal Moola (Oracle) wrote:
+> x86/mm/pat should be using ptdescs. One line has already been
+> converted to pagetable_free(), while the allocation sites use
+> get_free_pages(). This causes issues separately allocating ptdescs
+> from struct page.
 > 
-> Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-> ---
->  arch/x86/mm/pat/set_memory.c | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
+> These patches convert the allocation/free sites to use ptdescs. In
+> the short term, this helps enable Matthew's work to allocate frozen
+> pagetables[1]. And in the long term, this will help us cleanly split
+> ptdesc allocations from struct page.
 > 
-> diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-> index 6c6eb486f7a6..f9f9d4ca8e71 100644
-> --- a/arch/x86/mm/pat/set_memory.c
-> +++ b/arch/x86/mm/pat/set_memory.c
-> @@ -1408,7 +1408,7 @@ static bool try_to_free_pte_page(pte_t *pte)
->  		if (!pte_none(pte[i]))
->  			return false;
->  
-> -	free_page((unsigned long)pte);
-> +	pagetable_free(virt_to_ptdesc((void *)pte));
->  	return true;
->  }
->  
-> @@ -1537,12 +1537,15 @@ static void unmap_pud_range(p4d_t *p4d, unsigned long start, unsigned long end)
->  	 */
->  }
->  
-> -static int alloc_pte_page(pmd_t *pmd)
-> +static int alloc_pte_ptdesc(pmd_t *pmd)
->  {
-> -	pte_t *pte = (pte_t *)get_zeroed_page(GFP_KERNEL);
-> -	if (!pte)
-> +	pte_t *pte;
-> +	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL | __GFP_ZERO, 0);
+> The pgd_list should also be using ptdescs (for 32bit in this file). This
+> can be done in a different patchset since there's other users of pgd_list
+> that still need to be converted.
+> 
+> [1] https://lore.kernel.org/linux-mm/20251113140448.1814860-1-willy@infradead.org/
+> [2] https://lore.kernel.org/linux-mm/20251020001652.2116669-1-willy@infradead.org/
+> 
+> ------
+> 
+> I've also tested this on a tree that separately allocates ptdescs. That
+> didn't find any lingering alloc/free issues.
+> 
+> Based on current mm-new.
+> 
+> v3:
+>   - Move comment regarding 32-bit conversions into the cover letter
+>   - Correct the handling for the pagetable_alloc() error path
+> 
+> Vishal Moola (Oracle) (3):
+>   x86/mm/pat: Convert pte code to use ptdescs
+>   x86/mm/pat: Convert pmd code to use ptdescs
+>   x86/mm/pat: Convert split_large_page() to use ptdescs
 
-AFAIR, x86 folks like reverse xmas tree for variable declarations.
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-> +
-> +	if (!ptdesc)
->  		return -1;
->  
-> +	pte = (pte_t *) ptdesc_address(ptdesc);
-
-No need to cast void * to another pointer type.
-
-Same comments are relevant for two other patches as well.
-
->  	set_pmd(pmd, __pmd(__pa(pte) | _KERNPG_TABLE));
->  	return 0;
->  }
-> @@ -1600,7 +1603,7 @@ static long populate_pmd(struct cpa_data *cpa,
->  		 */
->  		pmd = pmd_offset(pud, start);
->  		if (pmd_none(*pmd))
-> -			if (alloc_pte_page(pmd))
-> +			if (alloc_pte_ptdesc(pmd))
->  				return -1;
->  
->  		populate_pte(cpa, start, pre_end, cur_pages, pmd, pgprot);
-> @@ -1641,7 +1644,7 @@ static long populate_pmd(struct cpa_data *cpa,
->  	if (start < end) {
->  		pmd = pmd_offset(pud, start);
->  		if (pmd_none(*pmd))
-> -			if (alloc_pte_page(pmd))
-> +			if (alloc_pte_ptdesc(pmd))
->  				return -1;
->  
->  		populate_pte(cpa, start, end, num_pages - cur_pages,
+With some minor comments in patch 1/3
+ 
+>  arch/x86/mm/pat/set_memory.c | 56 +++++++++++++++++++++---------------
+>  1 file changed, 33 insertions(+), 23 deletions(-)
+> 
 > -- 
 > 2.52.0
 > 
