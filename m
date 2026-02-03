@@ -4,213 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 572EBE8304D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 04:30:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A57E83050
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 05:05:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 950796B0005; Mon,  2 Feb 2026 23:30:55 -0500 (EST)
+	id 455336B0088; Tue,  3 Feb 2026 00:05:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92EB26B0088; Mon,  2 Feb 2026 23:30:55 -0500 (EST)
+	id 403246B0089; Tue,  3 Feb 2026 00:05:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 806406B0089; Mon,  2 Feb 2026 23:30:55 -0500 (EST)
+	id 2E48A6B008A; Tue,  3 Feb 2026 00:05:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD8E6B0005
-	for <linux-mm@kvack.org>; Mon,  2 Feb 2026 23:30:55 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB97CC1889
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 04:30:54 +0000 (UTC)
-X-FDA: 84401870028.15.EC45369
-Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010046.outbound.protection.outlook.com [52.101.56.46])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 295A3140003
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 04:30:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mNPpq0JD;
-	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.46 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770093052;
+	by kanga.kvack.org (Postfix) with ESMTP id 1A8956B0088
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 00:05:05 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AE88B140365
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:05:04 +0000 (UTC)
+X-FDA: 84401956128.28.223607A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E9D46C000E
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:05:02 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=km26BteT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770095103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mwimN59QKgqmw2X9znNvhOpg7DCFJPUFUWSQ1UwM3/0=;
-	b=agXjBc/vAZHQSEHibLdODY6fNOmwesdz4zN2rbKsAXcuT23mWzE4kLsALJgWkF4rfbGaeh
-	OwGU/VjlVnzi8BA/Apw+AA+Kx3gSO7+RobcUIOpUp6pG4l/s243ks+xgfBrEZklkzjg3qg
-	6ipq49Fl6it+51Z3hlduoK3SCcy6Ajo=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=mNPpq0JD;
-	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.56.46 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770093052; a=rsa-sha256;
-	cv=pass;
-	b=IM5QWgUnmpj+okyYHYi13hSLRWqMLfCZvp04S5cg1+IT39btn+xTp6pEiD1TQ/ZMFm7lYI
-	JHDr5b8+9akzSrBD7IwYBN9djwhkuJC5bjR4AvXKKncM0WEiO2u9nVQXCGdM/nlFk/fPI2
-	dz8PPsA2g4W6ZmE9rfQ2hSwugk4CV+Q=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AdX6Xq+UjMYfmUJ3JPPX/UtE2poT5PpN6A/Cxp8OLrHr/p2ilZYnr4vrMY0Y4NnNFzjtax461L4TKw5jbfMcpo1RgNRdEIGwmR3JMgY8G1BLmEdoc2VlSHEpCVuX5fxXPue68DzwcfxYtSITUQ97PXXD/tEsKSo76qd/nkmwTvq9FRuGQPC7MVHFnZYrdEt/J7PwsMQHj41GIwpkmj4hwZ4VbS0CszFxUQP5qcc1+LXumySKuBcTWg9QK7tTqtZa1mM8SL3Azq1H06hgeVquMZwGrd8dvHlf0OF0FXpikszOUTBDwhMo7z7/Cu6FmCQ6K60qGJHZfkBT+ILUcwQjxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mwimN59QKgqmw2X9znNvhOpg7DCFJPUFUWSQ1UwM3/0=;
- b=oHmQWvJtq3CL+xY7vSSUrNUdiC9Y0j5Rog+TVpJTzRLw7y6k8XjzU2yMk6Iq6vI+SHK67PqmhlrS+vDRiEPp0nL56lrXQxIsB4Q1tiY5pFa6n5GK/RMdcznDWZxogAmpuRW1d/A+wrZmdAuRe/7TpEMFXds4zZ+g6bFz1ikUZaKYhrj1lZsJ4eK9p9wa8JhZkFl77/aYXppWuqWPiRiRsxkC1yMWm84U9VgFvruhnXmksuFi7apsU/ZvYBqdlEL3TO7B+xsBRSNwIvE7oy9RjmtkYpLhZN8cfC9s7RHhADFOoXniOiOnBT5r0ZBwRKFNVzBVS8qyadzfms02vMxr9w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mwimN59QKgqmw2X9znNvhOpg7DCFJPUFUWSQ1UwM3/0=;
- b=mNPpq0JD99Q9nWwhbIKgts28uuheWanpN/hAA/V/qKzyROt25mkhXBvqQHONdZ+2BoUjv0gbSThCuk99bO/x6VLjgEPmeTRdibdPWU4ycttXdV/9GruDnLi8V0hwnU06sx4q4JCh0wHhMbbrz9P5ktaBY9He+iNZt5Uw3uKK77Mr1dZDcM46kY5etVK77I7y/Tk85FOKnyBTekOBsmoaeIY+AEiu+nRICeEhguVJSrnyenOyf7K29V2pAiyjRaVP/ysgMUnPjDhaahLC36C8goFTipF6nc9RSAQQdJ7Immhb6Tm9tMbc/RYYGI15uPq0erpCwrwYC5cYxU//YVVaKA==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by BL1PR12MB5873.namprd12.prod.outlook.com (2603:10b6:208:395::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Tue, 3 Feb
- 2026 04:30:44 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9564.016; Tue, 3 Feb 2026
- 04:30:43 +0000
-Message-ID: <70e06ac9-5cbb-4616-b20c-33f5bc1601e6@nvidia.com>
-Date: Tue, 3 Feb 2026 15:30:36 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/5] Separate compound page from folio
-To: Zi Yan <ziy@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>,
- David Hildenbrand <david@kernel.org>, Matthew Wilcox <willy@infradead.org>
-Cc: Alistair Popple <apopple@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jens Axboe <axboe@kernel.dk>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Oscar Salvador <osalvador@suse.de>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, io-uring@vger.kernel.org
-References: <20260130034818.472804-1-ziy@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <20260130034818.472804-1-ziy@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0PR13CA0101.namprd13.prod.outlook.com
- (2603:10b6:a03:2c5::16) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=LhqwQ1GyMt8rXxPpNd4P5cklyUU5d5OEuikxzMs8h7Y=;
+	b=5GszoISqW89cFBrAChSjhHDPYj3jXbkqmxGyA75JK0UduaRtkUXb0c5MaOiIIAEl2JEJ4M
+	ZNNS3cAQn8VZJwUEmWdFO4jLni/Xpr9gQZwLz6EXIP0fa2jMmmropszKp7kRzPdqA9YnBI
+	kboeik4HG0iqy7S4kVoiwN2jW95Im8k=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770095103; a=rsa-sha256;
+	cv=none;
+	b=BiEDYYEpWyCvWtQK+hjKQiTXssWEV83BwTeUWTF2kc09dlJPn13z1ifrTXOGAqREjhzx0O
+	4KZEKDS0bflomehUcEe6zQ1Hh86mmQNj/4VD6JOMP6qXi2Pu4+4VmczLi92PxJZDDECkbw
+	lu3Qg064guJKyV3zgtAT/juXyvUzjsc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=km26BteT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id AB9744075B;
+	Tue,  3 Feb 2026 05:05:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F56C116D0;
+	Tue,  3 Feb 2026 05:04:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770095101;
+	bh=bmVtOnBLTLN+OzbUqF7EZxQlQGGm2e3FFNynpIQbNZ0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=km26BteT8/xjDYLpH3jF915gACbYEHixl2nF9yYJ+QAn/01hgt8A7igh0Iu3O0NpN
+	 ua9TfZS09ikMxxz+9ajeSdgp3/EPlV6eC2JjUVFij7vpGBBbUq5qQiLPL2DPX+gJJs
+	 ho6pZNZTbpLBim9PIyEEsh7TPia5jZ9Y+3JioQle+Ax1k5sCwFy6wla8/uYnvbiO8R
+	 C+TwVXNqe7zJ4rnoHL/m7Z9fq3Il3ebIOI5Je+t9E9Oin/91iqAM3dJgMQkehtrIea
+	 gLnE9u5CPH1fKf4b4EmdeMmQgk4GW64OlEivhMM11YthpUwjrD7OO9LmGkm/Mfakej
+	 kXMUIpkZ5lDIg==
+From: SeongJae Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 3/4] mm/damon: New module with hot application detection
+Date: Mon,  2 Feb 2026 21:04:40 -0800
+Message-ID: <20260203050440.68631-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260202145650.1795854-4-gutierrez.asier@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|BL1PR12MB5873:EE_
-X-MS-Office365-Filtering-Correlation-Id: f8040536-2003-4509-ff42-08de62dcfe99
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|10070799003;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eko2KzFSMk0vRTZLZm5NSHF2VDlscjBvdlF6M2hqWjdBVVRVREJJVlZCZzlW?=
- =?utf-8?B?ZFZFYkE3L0tGVVR3SUNNSEZMaVJMenNsYXJpajNzRWhuWm5LYXZFUGIzQUNG?=
- =?utf-8?B?bDVpeGlxcmxJMTVUYXZhdzNWLzNkMDlBMFVQa3RUOGlza1hTUHYvaEh1Mk53?=
- =?utf-8?B?MnVsbVA1dk9XTmRJWUpqSWIvSW5naEcwSXhZZTZLV3lnelQzUnpucys1Vk90?=
- =?utf-8?B?aDJaQ2c3RlRUMFBrU3pBR2laU1IydjdnVXA3bSsyN3h0aFp2ckhNSnB6Y3dj?=
- =?utf-8?B?L2diWXcrem42ZFRBL2J5SW5KZ2drSjBMbndZVGF6RzlHcG44N0doaVcxeEF4?=
- =?utf-8?B?K2g3dXFZeENzdnd6djNXQ2FDK1E3L0RYTzgzWnJTTkJuUkhTMmVUSGtRZWQ1?=
- =?utf-8?B?MXE5ZC9zNXpPbElKaDRmUTduMUdkNEdmcTBnbStUS3lqaFBxdjlYSEIzNUJG?=
- =?utf-8?B?eXZFZzZKVGhISURDbTF0WGxnRU1RSGJiL1BvblZEQW1mV1FiYjdxdjFkbUR1?=
- =?utf-8?B?YlRrQjlGS1dQWFdXUmxJR1pRRC9hNCt1ZnlOQktqUjNDV1M1ckxDME5RQmt1?=
- =?utf-8?B?bWhvWFdCNzNwY1RpUnphS2xKTXN2TXJYZjQxeUU1U1MzdnVWbDduOUNjaEJM?=
- =?utf-8?B?RytnTkJMb1ZIaU9yaHBta1dyWkllUmFyVlczL3Q2Q05KQkV1aitZcHoxWHhw?=
- =?utf-8?B?djdQcVQwY29keU84ZFBtMU9kYjNoV3BMVWFiSUpRWjBXR0I4Q2tXNHU3QUtm?=
- =?utf-8?B?L2F3cGJmNVN1QkVRRnBZTGJjeVl1amtVTWhZUDNwK3orMHJhS2RiUzFZd2lB?=
- =?utf-8?B?NW42Q3owWXQ3U0cwQzBiVVh3WkRRVGh4Skt2RjlCbzJUT053THczT0o2c3A0?=
- =?utf-8?B?NVZ6WFhCdDRpWUVZYTNMd3h3eXBldUFWOGNQckVYcTQ1QkpyNnRud2JYTktB?=
- =?utf-8?B?SkpNSTZGNzQyeHFGM1ZRRi94c0Y1Snp2TjVkbFpnSUErMG1vOGRaQitXZngx?=
- =?utf-8?B?elFpSnVmWjc0dUp6dVI2b2JyYW1tOGtKRU55QnVrTlFZYXQyV3FOTFVIeUcz?=
- =?utf-8?B?VnJQWFZSMnRCeGZZVDE1enlZN1lsanB6dW5JNjVIVXdaOGhycHRLMml3dkJG?=
- =?utf-8?B?cU9SVUU4NEZGT08xbkM4S2dUY0htaU45N2E4NmVqNXdualFuaUZpWDRiT3ho?=
- =?utf-8?B?cXFJUEMxQmVCank1TzdUd2VrOGk5cFpNbzVjWXRzaUNZZTdXbzV3VUtoYkxR?=
- =?utf-8?B?MjZCd0U5SXpjTkRUaktPeG5uZmtwNXFxOXpKTDFTS1o2YUdsZ1kzTFJTei9B?=
- =?utf-8?B?WmR0UHVONWNRSW9aVFBGZC9IVUpxTVJaUWZidjZHL293TkJSRWY3ZStKeWRD?=
- =?utf-8?B?aXBwanZ0QmN3SXc3eDY2LzIxLzJhdGg5QmJSZytWYjAvMEZlWDNDSVZnckdB?=
- =?utf-8?B?VU80dHZzMjVhZ1pDQ01oQ1FqdGVaN0pranVaYktLQjNXbWp1eHV5RnRsOGVy?=
- =?utf-8?B?ZVR5K3BXNzl6cG9tc001SmRFbStwanZFR0tVckhUeWhJV1lmSTNraGR2RGVB?=
- =?utf-8?B?c0JRczFvVlZrN2NDUXBiY2JUMi9VdGZhcjFFcllaMjBvUjgvcTNZVTc2K2Nk?=
- =?utf-8?B?RE8xb0FzRk1SUHVYc0V1QThoV1NyUXpObmJaU1UvL1JrWEtleGZlNGo4bWJN?=
- =?utf-8?B?anNwQkVSdDlYVE1yandRVWtjWDBiQm52Nk1ZK1diOXJtd1I0RElnQmp6cWZO?=
- =?utf-8?B?SXc0dEh6VVV0dFlGKytYNXBYUE5OLzJ2T3l4OVFWdVRERFBzQUtLdE00alli?=
- =?utf-8?B?UEoyZWE5UlBaaVk3aTVSckErbGJZVGVUQ2trRWhST3VuM2lyaTZseHAzUldF?=
- =?utf-8?B?WTJWNUNpS091MGp5aU9uUjVDOFFSUVN1Yjl0bldQYzFRelZ6cHVRLzV3dk9S?=
- =?utf-8?B?cEkvZ1lSazhwWmsxU0tKZWtsQmo5amVFNms0NFlsVmdJZU9RcUw5cTlpd0pi?=
- =?utf-8?B?N0Z6cGN5Q3MwRlJUaWIwdVIwUEdlblBJcEdINzdWN2pWZGNNNVE1REhqNVVn?=
- =?utf-8?B?TEdkSGpQL1V0QWFkWkROWndudjBlUlNsdkE1anZSczl1MzRPUi9DTnNNcENK?=
- =?utf-8?Q?A1lk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?YnA5dWpGL1RDUTRmYWVCeHJSL0crTDYvVHFWa3R5OEVacG9sTUh5c0xGeWNz?=
- =?utf-8?B?bVlPV2NuNlNpYUlXMVFLWituVDJQWVNTSlZXTmk3VUpsUjFpc1VWaGxxNEdt?=
- =?utf-8?B?YzdSTTNFNVk1NW9pQjRTRWRtQ2NFUk5lQUs4dkFFQ3RlSFFQK1RRUFpxazND?=
- =?utf-8?B?ODExM0JPcVUzSTl4TFB5ZnVGQjVEdkR2TTNyNENJaFNQU3d6d08ya2ZGZ3RJ?=
- =?utf-8?B?NFV4eXZ0eHpBWXpiY0Vxd05TVDVmTER1clplSXRMbFU1Rlg1SkhlZUQwZ25D?=
- =?utf-8?B?VVlhR3JVbnFQNlFmbnA4MXNhVXhrbnhtMjYvUVVMaFNWMHlPZFVlSDA4SG9p?=
- =?utf-8?B?SG92RGpWVEwzYkhoZG8xcXZjNG54VGpXTDJ0OTluVGJrOWRmT2lNT2NCdjd6?=
- =?utf-8?B?bGFIY3VVVVljS2NONWFzS1BJZUFpYjlLTjhxUnNHQ3UyRnE5elBqSE1tTWZl?=
- =?utf-8?B?YjkyWlErcm0xLzU5eHNVWUttRUxhSXZvVVdwSDRaMC9yWnhTdW5NNG9lYlFV?=
- =?utf-8?B?KzdBUVVSeGRwUTQrUFR3VWlyMGpnQmlkZVl1ZDNRRHBBdnhtTTRmSklBTnFE?=
- =?utf-8?B?Z2FxMUZscDBjcjI3S0pOdkE1anFqbUJCeXRrRUhmUG1vRXF0bXVJMkgwYlJY?=
- =?utf-8?B?SG9MZjQ5TXZ5TndUYms2c2tvZy9iVTBIS1hxOTNKSGJOTmg4QWMwVjFCaVhl?=
- =?utf-8?B?ZENUbkZDdGdENUgrU2UvSVpqYkdqeE9Tb2FWckJ2QTlzb3RRTnNGOTVGT2gr?=
- =?utf-8?B?aFNRY1FNemEyMkRkWEFqeG82QTZORGtqd0pkVkhoNXc1VERrS3gyM3JUekxB?=
- =?utf-8?B?bzR6L0ZQblVId09HaHJRaCtCbTFkdFluZE9MWXZOSE1UaEZHN0FYZFJISGI4?=
- =?utf-8?B?SWZoTGFMTk9seVhjT2hmdnJqTTQ5MlUwaHd6cFBsSkF3OVFlY1Z3RVJ2QURE?=
- =?utf-8?B?ZjNQbEQ4RnVBTTI2VERsUFhLc0ljUVlzS2N5YVd1MzZsOExyVWlSTFYra0l3?=
- =?utf-8?B?Y3dSeHFnRUU2Z0JlMmNZM1NzMUpPcFN0aTZsMDRueGl5RU05S3owWFd4eFBk?=
- =?utf-8?B?bG4wSVFqQXNHbXFCKzlEd21PcW5vSjBBUWdFdWFCWmFsMFpXL2FhcXQ2ZmFM?=
- =?utf-8?B?TS9qS01PRzZuc3hyclh6V0kzNTNCczRZK2RZRS9ISjBmbUZ1MlVhL0FrQjl2?=
- =?utf-8?B?OUdsemdSK0pOalFtRktoS3VBdms5Uk5OeDhFRTJzQm5VeHlQcGI4ems5TzNq?=
- =?utf-8?B?RWdOalVqUzVYZ09LNUl4QTJZS0FHQm4zRlJnVjNBZVFkd0NzWWhQbUI3WFBE?=
- =?utf-8?B?TnpLZVRIVzZQRDJwMXoyaXY2UnVEN2s0SmRNN3lIM21TenF2N2JBMGpTMDZk?=
- =?utf-8?B?SVFIM09LdGRQNkpCem5wdHhva0FDdnk5cFNCZzhRN0R5cE1rYXM5SEhuZTB6?=
- =?utf-8?B?Y0xDS1JxeTE0QmhhU0t5dkRSeXZpeFphKy9Fc2Qxcjc1YWF4VG9kZFNva3p5?=
- =?utf-8?B?SjVxaUZCa040OVBnQ0lKSzJuRi84ek1rUk9LYnVKdnZjYitYeEdwdFkzRUZv?=
- =?utf-8?B?UjBDbzVsNUwrRC9EYkUxNTVpWFd1dGlJRXVpQnZtUDA2TUdHUWIrZUh2ZCts?=
- =?utf-8?B?UmFjWU1vUkpaQXgvMjdNb0xLVDJmcVhpMmd6U3F3U3RVTCtjM2FDUjk2RUxj?=
- =?utf-8?B?WE5udjJ2ZkdxWlpQdElhUkwwUCtNYWdWaG9IOEVZaXEyU1VSUk8xcDljUW1s?=
- =?utf-8?B?akpWSnpKUkdpeEd1MUN5QUhGVWpwaEVvM0NDWmxDWmZwcE5mc254UFFiUVlJ?=
- =?utf-8?B?ZGZCbEVGQ3dZSnNzaDNZMEdDQm04MVdWU0hMaFNmZ0JPK3JFeE9HYVVKTFdo?=
- =?utf-8?B?UDI4N0k0RCtYZkdIdDdrbTBnTEdvUkJ3Z2l3cW4xYkpJOU9iT1JwVGJCUGVx?=
- =?utf-8?B?b0NjQWkzOTl4TTcrKzdjUW9xMStLT1NVZU9Fa2luVGxiMnQ5cmRVN0hMMTRP?=
- =?utf-8?B?dHB5STVhNHhjVHIwei95RjN1UGtJK1U0a3VzWWUwUDRGcEtrc1pZZDdmZUoz?=
- =?utf-8?B?ekVxZWdjZ2JlV3ZtK2lDd1JKYktZMDY2ZGVHR2w3N3lGRDBRbktDWVZmZVJB?=
- =?utf-8?B?ZjkvdnowY1UxZ3NXN052OE5waFM1T3JsVTMremo0QldNcGxzelR0ZFE3Z1lB?=
- =?utf-8?B?eC9oK3JmN3locitMZlRDYVptT3R3TUNrSnozVGhUVmwrdCswTmtob29CcWxK?=
- =?utf-8?B?YTZtY2p6YlE5NzlON0M2a3JQWC93dmRDeWw4MTlXL05QQWNYeGw2enI4b3I4?=
- =?utf-8?B?M1kwVmpLNW1XcndRalk2TDNPL0tlZVB0M05MUGJXWkZTNGx5aVIxM1ZwVVNE?=
- =?utf-8?Q?7Gjc2lTM54UVeRxSOt1jBJ+0qtGxLoK3VQTGP?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8040536-2003-4509-ff42-08de62dcfe99
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Feb 2026 04:30:43.8688
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: L857FWHR1zszBO/fEfZneCeE9UjQLhun7xJW15O6eUtYvtQqLNlsrcPmHcAqzCGEbwNAc4qijqV6D4W7PNOlEA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5873
-X-Stat-Signature: dgymzczx8bodhdrewn3qq4yc5wkuyqjq
-X-Rspamd-Queue-Id: 295A3140003
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: E9D46C000E
+X-Stat-Signature: dmrmbxm5y3b4b4bicrycok7gr6cnaz9f
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770093051-825397
-X-HE-Meta: U2FsdGVkX19m7EtTK6PE4XsyO8hLliGGL0OH/NZ3w84lP/0FBFVNclIZN5QDk1oJw7cNl6SaKpURtiiKqDFr9ayoTR/05cQpaZQqmtexbcLyiCtDAESO9DxMKiX72qEziZHQPZf+dScu4SE6Z4cP2JFYH6aj4Yqt7ZxdO7nXrlprmUo3JM3hzZcmK+gyShNRM/ris4ipiuO7c9V8r91rOLbe2eYfhnNXg0SHFIbJH+FQlNlmZyT4N74pHXaNtdlOTY/18r/O/sXsXKIssL2nsgWqzGaRtVbf8ogImlHK5apDrV/IvdINNkNJqTD0qDPYMoDD908D1wvLdwI2awKIKc42/cHCbb1XO4vZ80CDNqrYQgxqPWSZks4GURXlxZzDXJlTwjqhU48P94gqy5b78lfZ1xBHF3G0rY0PXdRaVGaeqgvx3PfOu1jSiAsa1mw2EVLc8QOveBWOP8mvrw3YloxsN+hKLZ6WcfQ8cmBdP03+PUV8YzcesIt9EzNW2w9+lJ2VeX0/7So3FsDSa5MvkT7ApxJqSj9xrb20+TM0b0gZ+EaocGahJV7strorkTK8VfhpdrSxPmwcMF6v00d+vkrcNk1SUnWL+mMrGUYyILizji+haW8OyKwNU1yTufmKh/iGaDB+PmKiOD0jVO7gQzcEIbapjKSOV70+Gcw0fWfwCDzeqh2W10o9hraSWDsv0DNzABlPtpY/aC3ULC+hUxBbAZsXvGfDbtKLCZ6vcGucKe3Dlpd4B8KziIu3VtKz2Bb0+QlVT+F06V0dTdHQHROsTPiwp8F2j5vP6L3bk0e6CvvOBPL3xI5IW7Ygcjo9t77iv5LuuQfq5wqTWazT8DV9EhLKT+O+/1/i+XpJT5qcB0KCdctnZo3MijcwoYkUEWUpPwOIGOWCK2PfKpRsL0w46sDkh/eTpW0gNCnRS0Ri8GEU7HkOMM0S7p3qM8Pdy8fIrcjNqLBBnXnC8dr
- U7YVG2vG
- uYxFUeFE8It5XuyIl8XzBJlDJW8PJBKbx9ME/KiHPNA2BzNdD1GUWrS1eiv5blrtzkVS+3ruJ9a3BPJFNpfK73alfKFhhN5dycS4XLF+vAiNmb8T0uOcoBz6muFy61ts1qu9ct+ellNFnycvhdzjFJHjIccUO3tUWNsvB6JIoeJQo5xTm5D8ASBiJKPt+IH9DWePS/SYm0uRJgRJYBDM5fNHdqAS/SFoVGnAJj67ayp3SPR59nSEpvlqJxplm4JNn2cgPJQfk65Ps2+ioTNXQq7JnVZBJG0vuCyQ7MHbjgj/VcFV3dBtmMrP6TKNuka5V0rLj04cJ5znCl6XFBZ2DlYJ3vf0+kYB6+aixSNMGYArJWaovT8zF3l9O60NJ0Kz6814OWnlokoxBkur9rH0Dg1e+XAKB5EbZdFzF4nkANfKtbkTE/zH250J9e7fayZZINDbs/kTVoY9HW8E=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770095102-628149
+X-HE-Meta: U2FsdGVkX1/97NFRsXVp19zeEztxpj5pf+G1WErEbfCpXGRainKQKiOHaOA2sptsh0woKkQ+7T/O+91JE6dQPzDouM7Ae0HMT/tde8hALgwwAT9xw4f83yPj5TqgE9xAztNLcq4QUbXmSkI0PuDJ1Hfd5fBqupb/LfF5f7OSQLEgP1o4DhOcU2rVWDQTJ8Fgf9K91AswMffNbdPHiYzImzhNPrWl/pXhoh48pWdVoh032rQa6VKtod/sOV5ACfSHSu+08lK1D/SCaIIDY01IcsVPM6MqmW25pWy9ZzrBKuhkc8NzGwWOLPyQEmF5B5tYNNzybBy/hV8Qdr6Qh4njSMW4tfJowwfxXHc7W+i7ahgvrQmHRqRKSUvKZtH0V6VSASGmPJQX/TJDebSVLfMKI3CcjJSyMHteIqJE4jhu7g3DARIqTKAjT26FiK4UvNZJp+xZ+nR5Z35M9r/urgvQ/IwUifvUfgsyQ9ipUFRZwSRFB5/ONGUnMnYDYYfdyrS0YmeHSadBKR+D1/ZSbH/vBJ+LEGF8fo+9zev8cB36Ltn95qeWA4fBqJ1tvjCoW2IfiS/P+M52rWETPF/IprLCDARBhuLb30UoYn9TC/Odl1zQHeRySSfWmkhTAnxxD9Xje5NqAjgppJOHdWJ6eFF06B5ND3TjphNWV6cIOFnakDDd40QObcWknF05pVsRcT09qZ8PYOf0AAWCN7W5nrqMy8KCvbSQOU9+IvhITZt29gUp7JlRbmGSajvoJIovLZctZWnKowjQy44NOrV9bJ2Y1WoNOjZ0lUcGT3PqTYy2RW1IVOveXxRCalj2lBLQvvZJkcg5CS7f8z/of2Ypkw07w0yJjmziNb59D+DkUGBSAz0Rjx8FNZNiRkDhLANo5IDw9/PUkef0KNJKzJUf8Vf4vNg/epdfuq9IlBvFkarI5A3nLZclbfC2Yfmk734aWuBa4CW9BS7BUyFfdyBiY4W
+ SLf8Ol5O
+ KoKr9OJEfVkBPEWknc21uf183Cozs0IkMy8/3Q90/fU2b56lEtw/HTF4Gv4CsUwpVqexMqDXuK0bj8bzH7VA5QuI6+2CUCShIBSJSrjNKGjPVmYqpdsR+aACL+jhIHw9TWjaAMVhixriyL1EAByTn/jXMA8XRKcrfls+9BMxEcuRtJY7c7dHSK8gRAhRI2nqk8+Fxxkt2gvHr+9F31dKxa6NH7fvjp5eMjxBSCpyC62R5HDESHwUlAw1NbqT/mtzwmuIdXdTqDf8KOIxjwdnxk9yPvtuzRJXYvgtNw64XVnPZfobweSS1rp8Xg4TFASJQD6mS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -219,86 +99,521 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/30/26 14:48, Zi Yan wrote:
-> Hi all,
-> 
-> Based on my discussion with Jason about device private folio
-> reinitialization[1], I realize that the concepts of compound page and folio
-> are mixed together and confusing, as people think a compound page is equal
-> to a folio. This is not true, since a compound page means a group of
-> pages is managed as a whole and it can be something other than a folio,
-> for example, a slab page. To avoid further confusing people, this
-> patchset separates compound page from folio by moving any folio related
-> code out of compound page functions.
-> 
-> The code is on top of mm-new (2026-01-28-20-27) and all mm selftests
-> passed.
-> 
-> The key change is that a compound page no longer sets:
-> 1. folio->_nr_pages,
-> 2. folio->_large_mapcount,
-> 3. folio->_nr_pages_mapped,
-> 4. folio->_mm_ids,
-> 5. folio->_mm_id_mapcount,
-> 6. folio->_pincount,
-> 7. folio->_entire_mapcount,
-> 8. folio->_deferred_list.
-> 
-> Since these fields are only used by folios that are rmappable. The code
-> setting these fields is moved to page_rmappable_folio(). To make the
-> code move, this patchset also needs to changes several places, where
-> folio and compound page are used interchangably or unusual folio use:
-> 
-> 1. in io_mem_alloc_compound(), a compound page is allocated, but later
->    it is mapped via vm_insert_pages() like a rmappable folio;
-> 2. __split_folio_to_order() sets large_rmappable flag directly instead
->    of using page_rmappable_folio() for after-split folios;
-> 3. hugetlb unsets large_rmappable to escape deferred_list unqueue
->    operation.
-> 
-> At last, the page freeing path is also changed to have different checks
-> for compound page and folio.
-> 
+On Mon, 2 Feb 2026 14:56:48 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
-Thanks for doing this! 
-
-
-> One thing to note is that for compound page, I do not store compound
-> order in folio->_nr_pages, which overlaps with page[1].memcg_data and
-> use 1 << compound_order() instead, since I do not want to add a new
-> union to struct page and compound_nr() is not as widely used as
-> folio_nr_pages(). But let me know if there is a performance concern for
-> this.
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 > 
-> Comments and suggestions are welcome.
+> This new module detects hot applications and  launches a new kdamond
+> thread for each of them.
 > 
+> 1. It first launches a new kthread called damon_dynamic.
 
-What does this mean for treating compound pages as folios, does this break
-code that makes any assumptions about their interop?
+I feel like the name is bit ambiguous.  What about something more specific to
+this module's use case, say, damon_hugepage_monitor or more shortly
+damon_hugepaged?
+
+> This thread
+> will monitor the tasks in the system by pooling. The tasks are sorted
+> by utime delta. For the top N tasks, a new kdamond thread will be
+> launched. Applications which turn cold will have their kdamond
+> stopped.
+> 
+> 2. Initially we don't know the min_access for each of the task. We
+> want to find the highest min_access when collapses start happening.
+> For that we have an initial threashold of 90, which we will lower
+> until a collpase occurs.
+
+As I asked to the cover letter, I'm curious if you considered using DAMOS quota
+goal.  Let's continue the discussion on the cover letter, though.
 
 > 
+> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> Co-developed-by: Anatoly Stepanov <stepanov.anatoly@huawei.com>
+> ---
+>  mm/damon/dynamic_hugepages.c (new) | 579 +++++++++++++++++++++++++++++
+>  1 file changed, 579 insertions(+)
 > 
-> Link: https://lore.kernel.org/all/F7E3DF24-A37B-40A0-A507-CEF4AB76C44D@nvidia.com/ [1]
-> 
-> Zi Yan (5):
->   io_uring: allocate folio in io_mem_alloc_compound() and function
->     rename
->   mm/huge_memory: use page_rmappable_folio() to convert after-split
->     folios
->   mm/hugetlb: set large_rmappable on hugetlb and avoid deferred_list
->     handling
->   mm: only use struct page in compound_nr() and compound_order()
->   mm: code separation for compound page and folio
-> 
->  include/linux/mm.h | 12 ++++--------
->  io_uring/memmap.c  | 12 ++++++------
->  mm/huge_memory.c   |  5 ++---
->  mm/hugetlb.c       |  8 ++++----
->  mm/hugetlb_cma.c   |  2 +-
->  mm/internal.h      | 47 +++++++++++++++++++++++++++-------------------
->  mm/mm_init.c       |  2 +-
->  mm/page_alloc.c    | 23 ++++++++++++++++++-----
->  8 files changed, 64 insertions(+), 47 deletions(-)
-> 
+> diff --git a/mm/damon/dynamic_hugepages.c b/mm/damon/dynamic_hugepages.c
 
+I think the file name could be simpler, say, hugepage.c ?
+
+> new file mode 100644
+> index 000000000000..8b7c1e4d5840
+> --- /dev/null
+> +++ b/mm/damon/dynamic_hugepages.c
+> @@ -0,0 +1,579 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Copyright (C) 2025 HUAWEI, Inc.
+
+Captain, it's 2026! :)
+
+> + *             https://www.huawei.com
+> + *
+> + * Author: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> + */
+> +
+> +#define pr_fmt(fmt) "damon-dynamic-hotpages: " fmt
+
+Again, I'd prefer simpler one, like, "damon-hugepage: "
+
+> +
+> +#include <linux/damon.h>
+> +#include <linux/kstrtox.h>
+> +#include <linux/list_sort.h>
+> +#include <linux/module.h>
+> +#include <linux/sched/loadavg.h>
+> +
+> +#include "modules-common.h"
+> +
+> +#ifdef MODULE_PARAM_PREFIX
+> +#undef MODULE_PARAM_PREFIX
+> +#endif
+> +#define MODULE_PARAM_PREFIX "damon_dynamic_hotpages."
+
+Ditto.  Maybe "damon_hugepage."
+
+> +
+> +#define MAX_MONITORED_PIDS 3
+> +#define HIGHEST_MIN_ACCESS 90
+> +#define HIGH_ACC_THRESHOLD 50
+> +#define MID_ACC_THRESHOLD 15
+> +#define LOW_ACC_THRESHOLD 2
+> +
+> +static struct task_struct *monitor_thread;
+> +
+> +struct mutex enable_disable_lock;
+> +
+> +/*
+> + * Enable or disable DAMON_HOT_HUGEPAGE.
+> + *
+> + * You can enable DAMON_HOT_HUGEPAGE by setting the value of this parameter
+> + * as ``Y``. Setting it as ``N`` disables DAMON_HOT_HUGEPAGE.  Note that
+> + * DAMON_HOT_HUGEPAGE could do no real monitoring and reclamation due to the
+> + * watermarks-based activation condition.  Refer to below descriptions for the
+> + * watermarks parameter for this.
+
+Do you willing to use watermarks?  Can you further explain how you will use it
+in your use case?
+
+> + */
+> +static bool enabled __read_mostly;
+> +
+> +/*
+> + * DAMON_HOT_HUGEPAGE monitoring period.
+> + */
+> +static unsigned long monitor_period __read_mostly = 5000000;
+> +module_param(monitor_period, ulong, 0600);
+
+What is the time unit of this parameter?  Documenting it would be nice.
+
+> +
+> +static long monitored_pids[MAX_MONITORED_PIDS];
+> +module_param_array(monitored_pids, long, NULL, 0400);
+> +
+> +static int damon_dynamic_hotpages_turn(bool on);
+
+Seems the above declaration is not really needed?
+
+> +
+> +static struct damos_quota damon_dynamic_hotpages_quota = {
+> +	/* use up to 10 ms time, reclaim up to 128 MiB per 1 sec by default */
+> +	.ms = 10,
+> +	.sz = 0,
+> +	.reset_interval = 1000,
+> +	/* Within the quota, page out older regions first. */
+
+You don't page out, but collapse, right?  The coment may need to be updated.
+
+> +	.weight_sz = 0,
+> +	.weight_nr_accesses = 0,
+> +	.weight_age = 1
+> +};
+> +DEFINE_DAMON_MODULES_DAMOS_TIME_QUOTA(damon_dynamic_hotpages_quota);
+> +
+> +static struct damos_watermarks damon_dynamic_hotpages_wmarks = {
+> +	.metric = DAMOS_WMARK_FREE_MEM_RATE,
+> +	.interval = 5000000, /* 5 seconds */
+> +	.high = 900, /* 90 percent */
+> +	.mid = 800, /* 80 percent */
+> +	.low = 50, /* 5 percent */
+> +};
+> +DEFINE_DAMON_MODULES_WMARKS_PARAMS(damon_dynamic_hotpages_wmarks);
+
+What's the point of setting watermarks here, in hugepage use case?
+
+> +
+> +static struct damon_attrs damon_dynamic_hotpages_mon_attrs = {
+> +	.sample_interval = 5000, /* 5 ms */
+> +	.aggr_interval = 100000, /* 100 ms */
+
+This means nr_accesses of each region can be only up to 20 (100ms / 5ms).
+IIUC, you are auto-tuning the DAMOS target access pattern's min_nr_accesses
+starting from 90.  If I'm not wrong, you may better to start from 20.
+
+> +	.ops_update_interval = 0,
+> +	.min_nr_regions = 10,
+> +	.max_nr_regions = 1000,
+> +};
+> +DEFINE_DAMON_MODULES_MON_ATTRS_PARAMS(damon_dynamic_hotpages_mon_attrs);
+> +
+> +struct task_monitor_node {
+> +	pid_t pid;
+> +
+> +	struct damon_ctx *ctx;
+> +	struct damon_target *target;
+> +	struct damon_call_control call_control;
+> +	u64 previous_utime;
+> +	unsigned long load;
+> +	struct damos_stat stat;
+> +	int min_access;
+> +
+> +	struct list_head list;
+> +	struct list_head sorted_list;
+> +	struct list_head active_monitoring;
+> +};
+> +
+> +static void find_top_n(struct list_head *task_monitor,
+> +								struct list_head *sorted_tasks)
+
+You ain't need to put that much tabs on the above line.
+
+> +{
+> +	struct task_monitor_node *entry, *to_test, *tmp;
+> +	struct list_head *pos;
+> +	int i;
+> +
+> +	list_for_each_entry(entry, task_monitor, list) {
+> +		i = 0;
+> +		list_for_each(pos, sorted_tasks) {
+> +			i++;
+> +			to_test = list_entry(pos, struct task_monitor_node, sorted_list);
+
+I'd recommend to use list_for_each_entry() here, if possible.
+
+> +
+> +			if (entry->load > to_test->load) {
+> +				list_add_tail(&entry->sorted_list, pos);
+> +
+
+The above new line seems unnecessary.
+
+> +				i = MAX_MONITORED_PIDS;
+> +			}
+> +
+> +			if (i == MAX_MONITORED_PIDS)
+> +				break;
+> +		}
+> +
+> +		if (i < MAX_MONITORED_PIDS)
+> +			list_add_tail(&entry->sorted_list, sorted_tasks);
+> +	}
+> +
+> +	i = 0;
+> +	list_for_each_entry_safe(entry, tmp, sorted_tasks, sorted_list) {
+> +		if (i < MAX_MONITORED_PIDS)
+> +			continue;
+> +		list_del_init(&entry->sorted_list);
+> +
+
+Ditto.  Unnecessary new line.
+
+> +	}
+
+Reading this function was not very easy for me.  Adding more comments making te
+code simpler would be nice.
+
+> +}
+> +
+> +static struct damos *damon_dynamic_hotpages_new_scheme(int min_access,
+> +						   enum damos_action action)
+> +{
+> +	struct damos_access_pattern pattern = {
+> +		/* Find regions having PAGE_SIZE or larger size */
+> +		.min_sz_region = PMD_SIZE,
+> +		.max_sz_region = ULONG_MAX,
+> +		/* and not accessed at all */
+> +		.min_nr_accesses = min_access,
+> +		.max_nr_accesses = 100,
+> +		/* for min_age or more micro-seconds */
+> +		.min_age_region = 0,
+> +		.max_age_region = UINT_MAX,
+
+Seems the comments aboe are not updated since copy-pasted.
+
+> +	};
+> +
+> +	return damon_new_scheme(
+> +		&pattern,
+> +		/* synchrounous partial collapse as soon as found */
+> +		action, 0,
+> +		/* under the quota. */
+> +		&damon_dynamic_hotpages_quota,
+> +		/* (De)activate this according to the watermarks. */
+> +		&damon_dynamic_hotpages_wmarks, NUMA_NO_NODE);
+> +}
+> +
+> +static int damon_dynamic_hotpages_apply_parameters(
+> +					struct task_monitor_node *monitored_task,
+> +				    int min_access,
+> +					enum damos_action action)
+
+Seems the parameters can be better aligned.
+
+> +{
+> +	struct damos *scheme;
+> +	struct damon_ctx *param_ctx;
+> +	struct damon_target *param_target;
+> +	struct damos_filter *filter;
+> +	struct pid *spid;
+> +	int err;
+> +
+> +	err = damon_modules_new_ctx_target(&param_ctx, &param_target,
+> +					   DAMON_OPS_VADDR);
+> +	if (err)
+> +		return err;
+> +
+> +	err = -EINVAL;
+> +	spid = find_get_pid(monitored_task->pid);
+> +	if (!spid) {
+> +		put_pid(spid);
+
+You don't need to call put_pid() when get_pid() failed.
+
+> +		goto out;
+> +	}
+> +
+> +	param_target->pid = spid;
+> +
+> +	err = damon_set_attrs(param_ctx, &damon_dynamic_hotpages_mon_attrs);
+> +	if (err)
+> +		goto out;
+> +
+> +	err = -ENOMEM;
+> +	scheme = damon_dynamic_hotpages_new_scheme(min_access, action);
+> +	if (!scheme)
+> +		goto out;
+> +
+> +	damon_set_schemes(param_ctx, &scheme, 1);
+> +
+> +	filter = damos_new_filter(DAMOS_FILTER_TYPE_ANON, true, false);
+> +	if (!filter)
+> +		goto out;
+> +	damos_add_filter(scheme, filter);
+> +
+> +	err = damon_commit_ctx(monitored_task->ctx, param_ctx);
+> +out:
+> +	damon_destroy_ctx(param_ctx);
+> +	return err;
+> +}
+> +
+> +static int damon_dynamic_hotpages_damon_call_fn(void *arg)
+> +{
+> +	struct task_monitor_node *monitored_task = arg;
+> +	struct damon_ctx *ctx = monitored_task->ctx;
+> +	struct damos *scheme;
+> +	int err = 0;
+> +	int min_access;
+> +	struct damos_stat stat;
+> +
+> +	damon_for_each_scheme(scheme, ctx)
+> +		stat = scheme->stat;
+> +	scheme = list_first_entry(&ctx->schemes, struct damos, list);
+> +
+> +	if (ctx->passed_sample_intervals < scheme->next_apply_sis)
+> +		return err;
+> +
+> +	if (stat.nr_applied)
+> +		return err;
+> +
+> +	min_access = scheme->pattern.min_nr_accesses;
+> +
+> +	if (min_access > HIGH_ACC_THRESHOLD) {
+> +		min_access = min_access - 10;
+> +		err = damon_dynamic_hotpages_apply_parameters(
+> +			monitored_task, min_access, DAMOS_COLLAPSE);
+> +	} else if (min_access > MID_ACC_THRESHOLD) {
+> +		min_access = min_access - 5;
+> +		err = damon_dynamic_hotpages_apply_parameters(
+> +			monitored_task, min_access, DAMOS_COLLAPSE);
+> +	} else if (min_access > LOW_ACC_THRESHOLD) {
+> +		min_access = min_access - 1;
+> +		err = damon_dynamic_hotpages_apply_parameters(
+> +			monitored_task, min_access, DAMOS_COLLAPSE);
+> +	}
+> +	return err;
+> +}
+> +
+> +static int damon_dynamic_hotpages_init_task(
+> +								struct task_monitor_node *task_monitor)
+
+You ain't need that many tabs.
+
+> +{
+> +	int err = 0;
+> +	struct pid *spid;
+> +	struct damon_ctx *ctx = task_monitor->ctx;
+> +	struct damon_target *target = task_monitor->target;
+> +
+> +	if (!ctx || !target)
+> +		damon_modules_new_ctx_target(&ctx, &target, DAMON_OPS_VADDR);
+> +
+> +	if (ctx->kdamond)
+> +		return 0;
+
+Please use damon_is_running() instead.
+
+> +
+> +	spid = find_get_pid(task_monitor->pid);
+> +	if (!spid) {
+> +		put_pid(spid);
+
+You don't need to call put_pid() with NULL.
+
+> +		return -ESRCH;
+> +	}
+> +
+> +	target->pid = spid;
+> +
+> +	if (err)
+> +		return err;
+> +
+> +	task_monitor->call_control.fn = damon_dynamic_hotpages_damon_call_fn;
+> +	task_monitor->call_control.repeat = true;
+> +	task_monitor->call_control.data = task_monitor;
+> +
+> +	struct damos *scheme =
+> +		damon_dynamic_hotpages_new_scheme(HIGHEST_MIN_ACCESS, DAMOS_COLLAPSE);
+
+Please break the line for keeping the 80 columns limit.
+
+> +	if (!scheme)
+> +		return -ENOMEM;
+> +
+> +	damon_set_schemes(ctx, &scheme, 1);
+> +
+> +	task_monitor->ctx = ctx;
+> +	err = damon_start(&task_monitor->ctx, 1, false);
+> +	if (err)
+> +		return err;
+> +
+> +	return damon_call(task_monitor->ctx, &task_monitor->call_control);
+> +}
+> +
+> +static int add_monitored_task(struct task_struct *task,
+> +								struct list_head *task_monitor)
+
+Too many tabs.
+
+> +{
+> +	struct task_struct *thread;
+> +	struct task_monitor_node *task_node;
+> +	u64 total_time = 0;
+> +
+> +	task_node = kzalloc(sizeof(struct task_monitor_node), GFP_KERNEL);
+
+It is more conventional to do like below:
+
+    kzalloc(sizeof(*task_node), GFP_KERNEL);
+
+> +	if (!task_node)
+> +		return -ENOMEM;
+> +
+> +	INIT_LIST_HEAD(&task_node->list);
+> +	INIT_LIST_HEAD(&task_node->sorted_list);
+> +	INIT_LIST_HEAD(&task_node->active_monitoring);
+> +
+> +	task_node->min_access = HIGHEST_MIN_ACCESS;
+> +	task_node->pid = task_pid_nr(task);
+> +
+> +	list_add_tail(&task_node->list, task_monitor);
+> +
+> +	for_each_thread(task, thread)
+> +		total_time += thread->utime;
+> +
+> +	task_node->previous_utime = total_time;
+> +	return 0;
+> +}
+> +
+> +static int damon_dynamic_hotpages_attach_tasks(
+> +										struct list_head *task_monitor_sorted,
+> +										struct list_head *task_monitor_active)
+
+Too much indents.
+
+> +{
+> +	struct task_monitor_node *sorted_task_node, *tmp;
+> +	int err;
+> +	int i = 0;
+> +
+> +	sorted_task_node = list_first_entry(
+> +		task_monitor_sorted, struct task_monitor_node, sorted_list);
+> +	while (i < MAX_MONITORED_PIDS && !list_entry_is_head(sorted_task_node,
+> +								task_monitor_sorted, sorted_list)) {
+> +		if (sorted_task_node->ctx && sorted_task_node->ctx->kdamond)
+> +			list_move(&sorted_task_node->active_monitoring,
+> +				  task_monitor_active);
+> +		else {
+> +			rcu_read_lock();
+> +			if (!find_vpid(sorted_task_node->pid)) {
+> +				sorted_task_node->ctx = NULL;
+> +				sorted_task_node = list_next_entry(
+> +					sorted_task_node, sorted_list);
+> +
+> +				rcu_read_unlock();
+> +				continue;
+> +			}
+> +			rcu_read_unlock();
+> +
+> +			err = damon_dynamic_hotpages_init_task(sorted_task_node);
+> +			if (err) {
+> +				sorted_task_node->ctx = NULL;
+> +				sorted_task_node = list_next_entry(
+> +					sorted_task_node, sorted_list);
+> +				continue;
+> +			}
+> +
+> +			list_add(&sorted_task_node->active_monitoring,
+> +				 task_monitor_active);
+> +		}
+> +
+> +		monitored_pids[i] = sorted_task_node->pid;
+> +		sorted_task_node = list_next_entry(sorted_task_node, sorted_list);
+> +
+> +		i++;
+> +	}
+> +
+> +	i = 0;
+> +	list_for_each_entry_safe(sorted_task_node, tmp, task_monitor_active,
+> +				 active_monitoring) {
+> +		if (i < MAX_MONITORED_PIDS) {
+> +			i++;
+> +			continue;
+> +		}
+> +
+> +		if (sorted_task_node->ctx) {
+> +			damon_stop(&sorted_task_node->ctx, 1);
+> +			damon_destroy_ctx(sorted_task_node->ctx);
+> +			sorted_task_node->ctx = NULL;
+> +		}
+> +
+> +		list_del_init(&sorted_task_node->active_monitoring);
+> +	}
+> +	return 0;
+> +}
+
+This is bit difficult to read.  Adding more comments and refactoring to be
+easier to read would be nice.
+
+And similar comments would be applied to below.  I understand this patch series
+is intentionally not very cleanly wrote, as this is an RFC for high level
+concept.  I therefore left comments for only things that immediately standing
+out to me.  If my understanding is not wrong, I will do more detailed review of
+code in the next version of this patch series.
+
+
+Thanks,
+SJ
+
+[...]
 
