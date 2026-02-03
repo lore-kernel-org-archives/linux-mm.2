@@ -4,148 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC3A2E8B365
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 21:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC78E8B367
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 22:07:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C42A76B0005; Tue,  3 Feb 2026 16:15:57 -0500 (EST)
+	id CC94F6B0005; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C23CE6B0088; Tue,  3 Feb 2026 16:15:57 -0500 (EST)
+	id C76E36B0088; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4CE66B0089; Tue,  3 Feb 2026 16:15:57 -0500 (EST)
+	id B7B7A6B0089; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A29A86B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 16:15:57 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F39DD53E8
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:15:57 +0000 (UTC)
-X-FDA: 84404402754.14.56E76B6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1CF391C000C
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:15:53 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Knk8SLhD;
-	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A34726B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 17:07:31 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 08D581B1BF2
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 22:07:31 +0000 (UTC)
+X-FDA: 84404532702.22.8FFF35D
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 0E195140011
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 22:07:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KgBFra7d;
+	spf=pass (imf23.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770153355;
+	s=arc-20220608; t=1770156449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Xp65GXgNTfcGoJPQUF5aSkgYeEu1LCeYms5bjM78M1Q=;
-	b=kpJjBjImkdHCIN2/Tzxeh+NEOEfxU727ALhH4mYYYOtky4wFLe927THdGV7VBGh4gTswEN
-	91gNqN0aZsZaUNWaJDTfzQnd25D7T31bcVs4H0SOxwH6zEl9qg9dyk+03hKz3Ci8p51KCv
-	Asl1ifZU0rZfl2qsCGDPsYPFnk79bkE=
+	bh=AOxus6Q+k+UFCDyHcbF/F78h7JC9Gdvh77//dMnEmMI=;
+	b=WVN8j6LadO6BrIbbr1AnjirtDxXnlwJqRYOKLozO9UZ7dDJ1aMP7KSL4/a6RERIhc6Quga
+	XX4Q/gGf7CLcwkYkXqDUwj4y0bZGRRQPkwgaMyIb7b++a9Ri38DKbj//xllHuhiIqMJ7Bd
+	X/+Kg0Uj0p0Uy+uBtwNTspF4wtHiAGk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Knk8SLhD;
-	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770153355; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KgBFra7d;
+	spf=pass (imf23.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770156449; a=rsa-sha256;
 	cv=none;
-	b=heg9onLMXd5HbIfsQuOs5KL3IZHb1FqgaDLhZBqcegfKynsJG2pUdiqEAX7AfuN7Y/gH7v
-	SahT4n6HGxhdzx+SMdOOdn0AM1G0vyqj9rxgU/YzzoA4xGOmpUYL8HbOgde7lGqHVNrvms
-	AoTWMwBpNHeTrdwmC8R1AQsC38gVv3E=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770153354; x=1801689354;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Xp65GXgNTfcGoJPQUF5aSkgYeEu1LCeYms5bjM78M1Q=;
-  b=Knk8SLhDcd4XWlltJZtb+xgDXsP+9dFwILhcF/HLUpWU3xTUJiGJxKpx
-   6J+wugWAAdxfJenyqbwBxHTidA8rR+gs0UtqcH0Qtqa1RrftgGNpM4Cei
-   Yv5AIGJ6KQ3UqzFZHQ3SrDoExjuHM6OB+PJj51OaH/jUBIt6N2KCC4Ihf
-   d1R+bwT9nh19gEyNx4+aJWJoGxmRqLOuQibUtpI4qCPeeYiGf4YZHRHJo
-   ouvLlcKbEpQDI8jdxQUAEV7t516iO1VgZvn+o0ybXIR0HCNTlZ1u78kHy
-   Q2oj6hqCijggA82W9UCj/C3ik9+mKnDu140nkpa/aA8xg8WFtVLjbqgu3
-   w==;
-X-CSE-ConnectionGUID: Y+zSJuusQ5i5iJK92D07NQ==
-X-CSE-MsgGUID: 1TnFmvUaS+aYbx71MhhOyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="81649910"
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="81649910"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 13:15:53 -0800
-X-CSE-ConnectionGUID: B1Zxac+dS46fBXj6mwD08A==
-X-CSE-MsgGUID: gWymDN+XSQeinnplnI287w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,271,1763452800"; 
-   d="scan'208";a="210065588"
-Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.110.207]) ([10.125.110.207])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 13:15:53 -0800
-Message-ID: <d477dc42-acde-41f4-926c-400a9ea02164@intel.com>
-Date: Tue, 3 Feb 2026 13:15:52 -0800
+	b=Fve19GJaUBYZm3YHxKyQhXmoRo7qmINUsA/zqu5jEUVu8rS8OYv1dcgDNsz+4ghFvFcMMK
+	11jrtAuiJjRYJ/iiXMVM/UcJyEv3RKQpR3leAIXY6NXZlqpFS2Z/UVALhK/1XazN5g60Up
+	Z3ST9ZL9oPNpmHHtdClIKRJTItDgICg=
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-124a95e592fso632095c88.0
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 14:07:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770156448; x=1770761248; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AOxus6Q+k+UFCDyHcbF/F78h7JC9Gdvh77//dMnEmMI=;
+        b=KgBFra7dadN8jfvvTmj3PmZdbOgExEDdLB40r6Tgdbqf1v7j5wWqcA7eQ46DITnFzj
+         +XSLuKSJCW4+a2sPu/TfbwOTuDxg8n8gcmxRDgkcDVAn5/JMgamifgWNzyWP0vzgNPIf
+         7NTgepVv5meilNyJR4n/3RFGpubWQ6R/6tvlr5Ct8TeamHOCScuC32bKERvv+iOPj0N5
+         lXVYgZaiGbGMfTCqwmDMwUWEijutn9g6ih3DVy6n2YPVt/fKUzGxoKZejSiYP5SKLfu6
+         KIiSAoPw2cemKBdOfrfdpxZH5GHtjfEtIh2QmZX/0dh7vRdv3t0NikpKhRPKiXIIfjd4
+         Nzlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770156448; x=1770761248;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AOxus6Q+k+UFCDyHcbF/F78h7JC9Gdvh77//dMnEmMI=;
+        b=B9NPQUfpHPe9dVu4d0jUOf5bYt00/QLBWTGNkoba8wS2nHx/pzPGXlqhw1lJ/bUbgo
+         WX/Y3sjSw54/fKH4rpmf+2p4niCyXTJtElfiMszrSHy6i9Kx/AaqjJQgOKvNH9InUT36
+         IEpoCZd/xxEB7mgywhE0owG5L0ZSa2tApujh61pRpUjLx89eGSdO/5jq91YoJvXGbEgC
+         hn3rh4ogvSFiWCNnabMtWrqAzDBetgpTTWHEzntvuRAhYtcFtUTrItHXPE79M+8MJj4/
+         rUS72+mlpWFRXjYnk247LEqQLecnADYDzEJLetDs/YqZNo6kBPkTlKtZ7rmJjQ/iGj0W
+         au0g==
+X-Forwarded-Encrypted: i=1; AJvYcCW/7H++gZZv49GmnqZg0UhmDdpD0d8KYULjTAiezrXQVeCvU0glOFqRDEfr64KsaSMpge2xsgvOTw==@kvack.org
+X-Gm-Message-State: AOJu0Ywr9HRdA3CMRZjjpUG+heCGDpCslok58okEY3OgKm5QPoD3/kRc
+	Qq9GjXzGQ7gjCpxEjhxkAEBjVXktGjFuBWmAATGk2g7/98MRmnj8PXAR
+X-Gm-Gg: AZuq6aIs+kVEx1wIGq9p+ioMBwqeudRmEBa/Uyf16vm0EMcjmuHoDyTGhK6CrehKCYH
+	tHFZBAQrnZxwBDxYtDOEZ8Boq4643pkdkBLBajKYsAKYJWzegrC7JcdnqXcf8A8PtwNTZiz2PwW
+	8Ext2G0t0oYNmd6NHJN65SrnAt4R+6QiumbBFN92VfW6OYXdyRTZal5IhBGhYJA6jSzPB2rgXXO
+	fBndLzx9kVEfLc7X6K+rhKQH9xfdpfz0VrFav0cEZAs2hmVqIhS/ybkEW8NRIasp+sEGjK0zgnT
+	o+Co7sFJwfS/1jRSL+jVD921rlNgiLYSYvzGlTy2616PHyVQDejdwByZOEyKocGAEbuTYa7fxJW
+	JfokN6YKQKBhhN6GxFCf6aDsEfzme5RDn0KBL3lfrhhiNAQ9nO/xKivx89cAP2Y29/fs0OC6Iru
+	4nNOkFBmMlH85MQvVRp9Cytfz1U6vXF2214ml9QJ4RzsALWJZUaFH8uMgwLHg8U18=
+X-Received: by 2002:a05:7022:6b9b:b0:119:e569:fbb2 with SMTP id a92af1059eb24-126f47cfbe2mr536040c88.33.1770156447603;
+        Tue, 03 Feb 2026 14:07:27 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1151:15:1cc5:26fe:6b00:bcef? ([2620:10d:c090:500::21b0])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-126f503d0fbsm454159c88.13.2026.02.03.14.07.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 14:07:27 -0800 (PST)
+Message-ID: <05d5918f-b61b-4091-b8c6-20eebfffc3c4@gmail.com>
+Date: Tue, 3 Feb 2026 14:07:25 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] x86/mm/pat: Convert pte code to use ptdescs
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, akpm@linux-foundation.org,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-References: <20260202172005.683870-1-vishal.moola@gmail.com>
- <20260202172005.683870-2-vishal.moola@gmail.com>
- <e029f69b-6d99-4029-94f5-caafb5eb767c@intel.com> <aYJjnh6qI_bzfAo_@fedora>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aYJjnh6qI_bzfAo_@fedora>
+Subject: Re: [RFC 01/12] mm: add PUD THP ptdesc and rmap support
+Content-Language: en-GB
+To: Zi Yan <ziy@nvidia.com>, Kiryl Shutsemau <kas@kernel.org>,
+ lorenzo.stoakes@oracle.com
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ vbabka@suse.cz, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <20260202005451.774496-1-usamaarif642@gmail.com>
+ <20260202005451.774496-2-usamaarif642@gmail.com>
+ <aYB75cWO2nnTx2ch@thinkstation>
+ <63D23D5F-AF35-4199-B52E-DFFC16DFDF91@nvidia.com>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <63D23D5F-AF35-4199-B52E-DFFC16DFDF91@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: up1do9k6wzmqaixhoe3xtnxtr3wk5b5b
-X-Rspamd-Queue-Id: 1CF391C000C
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0E195140011
+X-Stat-Signature: qjf6ea9ba43u6fz3iw9c7snzu8oqmz5o
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770153353-265980
-X-HE-Meta: U2FsdGVkX1/dJrv5IhVrjk3Z01OKj6KJKc1O5X0UO5tUH21F90lKaqQ6nfVCY1j9qhklZ6xtY/sHlwbuWPS77q7Sba0UlBA/dz2O0j6NxwggJunESDHjWR3oYOBGBOR8lvza7pi3t7d+5ry+j4f5kT39Zy3egZAZu5QPry+XIXjBAH8aYlk2odX5hGVquRwI7yJpYRz/Kn+g9V1LXdewd58XMjVGk9/DSvq+57Rx+g9w576qb1GUTYtMzIho75Mlu3fwhjT/EZHelYn4KTsfIVGlLbuQhzqABJLF0RL43dhF7VxFFTLFh/yRXewXNELV9Rh7t8a2d9bifA68w7Us/4j/hxLJRhlw0+jN/9gvAnnYtQNPuQDoEdrARrymEvtINE8exypcEIQvm3TLa0cffkIH6IvWnVApJfNHwF1KmAtF1xpbjyhwpGpmcKoLmzcClMDgvEoH9XgOpA/2AXylE1Vhl3tjMOxitArrXshb0aBGf++qnuo2uAFZJuVzDgOU8jpuYR0dqKJTsO1gHXqwhz1+s8cJlG7jhydpOOdd4Ao3wIWhYqj+8lIGUX4FtbFp06GaoAmzN1ksrgIBlLWtBVG5d14wHAWymsILLpuQZlSDd5G3WRc8X98dP6HXf5jm+B9Med1rVKSVWQwm/YdhARz5vw7gVFKC2gHDuxDPS7IxL3gh87W99OaOEHo27JRgaPoYPeWJrGlUc47nAuzd+PNrQVEjuR3Ykh3VJyokCSneAtJS7CqhL8kxpyg7MhgsKckqjzPJ1J+AoaPiNxnfJy/ga+D7jW5+zQC+ChGPDFdIYoO1yfu1/V0mh5rnGwmJsGN3nG0KTFjFQahYwqPAzIUO5BRtIWhA0CnYhN7ol0V2t3VzSfjrPC3k1VV0nANYqi/ESYZ76ROkpU29dOomESG4Wih/V/BHScQd0B/l0ke0BfkFq3JwTjUjQ4w1jUN4BRmdJzcLxnpcwqf6YPK
- R2qd1DLR
- 9NESp9plAvEkmf+lJvt2FH9fmqAC6NJ4Mawkifrtw8vEwj6zfrGPa6UzRWfN8jtAKowru+ybruwBjmklP2jDPQGmCuOU3sboTT7C9cIw4VpY+0preVpmWdZcdcsGktpEkSpxRQwctSCmxJ8TkpleLZ6gZKRaOsXAlvi3xoX4xUGULuR7187C+DU4hAioiZs1HcOIRSVvIqRySHLa64iHyFqYJ+52aNNDmT2uQJA6sIiWG2/Wz7w2luqnihYMAcTv74au03YSPM/X5yxnDC7jOnJ/fbw==
+X-HE-Tag: 1770156448-604660
+X-HE-Meta: U2FsdGVkX1/H+DaBs/FJA5Qz8sTHnT449s0YYTa+8H+f277D1p0uT2RFlO+ArBEU81264WPQPE6chaa0F8U7XGgd24bIc0707NMEHCvDtYTDZOvNmYm9Si6g/ptAlnjXo9ZxONpl7VrBvmzYMXOOhIFzqBlWEpkos7kkQ2ZWxdXGaXMbm92Wq8dqTZ007PFF/SsOnOmf7yAF0isjFDoQcOvKE3i3nX95M+Rr5GMLWZR8i/bNiEy6g1g52xnTOCTqFiEW4LHHPzGRTVLOnH8umUAsg2pAsGA/ULBqci4OiJYD0E1woo0K7qydzSS4GN2LI+Ty7xiwtz8Zjgc9KBvrPG/VcmhvFBH9v7mnyZ2focRM5A+nTNlmEtTxDsJmbaaRT0AfR3+TIX9ac34LyOOUvRbap0vRfco2S+OThIufrSapZNrgS/PULHhrv9g/Q7wwcR5JNHdJD/K+E2i52yHR4VNWtX5J5DuefeaSj2UObL2yXj4Mmq7O50bk2yTGXjpdEz+qhnHchpnm+F5P/9crKKttqfXs1c9dYT4x75AAvmN8WdpDUR9Ywfy5C0FTzvazNyEYSRsTwpnf+0wKw80sjX5Bbu6aYjPw0GygUPa9hCMEno3LliRbQ8YHkI2BRKG54hkghAxLJhy5NBNjQnfU8CkrrBvJRgj5GGJ4QX1RPp+pw19ytmGt3TBeFUff7/Xelte99Pniy710XGwkSH4G93K5Qnvtqx3eSatTiMGhMYjBjoYLLBppyfMks+vwkfFfzZRxN3yR5yZnetVm2ujgq/9jBta237RbW6nNtEQQYDiqEDipL+4pzmyRS5gWwkt+TuqcDYI8PyrjNpJIiC4PLOFN+jdRqv3dVmoFtWNMyw4tfy1fIkFcUD7X/8QKq5glgKuYfEO6Uv313xpVIcD+ic6Zv82/AIYKXCtDuccuKjxa6/DhPiKZ1jiFpJgBuDurtkR/Y2X53658Y/ACGpW
+ Cs8NT4Jm
+ MNRJs14rEyqi6IGkyvFA7VknpAIRab5J31IbgWMBGwUR5ea3aO0sPBVMG/TSfHP1jV4bGHgh4moukaNYEFGp52hXMzL1Sd7t+RqnQBbdJldT1i/YkKLD7zijPMzNeBFMrrlfJIJ+m4W1/vi273BURstn5E0QKMpX1n1khD72aLtuFOgAk5DE5V8FJDJyDK7FopprNxLTVJvFTiKj067dtf3sA8MIx6jkDZsqD+h91LwhWlYrahlRoJyA9Mvp4MWQc+lBkNUOVg9o/ctg4XRf4+fEaIPkh+vBQUrCoeHRR01FxerhQko+fNC0fFG8aaeN+08Vz2nWYnr0P8BgDFNZ8XxPkrUQLtLGOgfnyb9smlZazQ8dXVpKwq8x0JjFdfNaLox5ORPL19BRaUbWBXtR6sjDWk72XO8vnbc5L4mNLqvx9wmSXSrJyo2qEwsAGTSliRaOZGa5Cz8Pk7kolDmLEbOGIEInKB4trINgPNDXt4CoP+gg2ByAaxPqLQHSYFO3U33AkJAfE186rEC3o5q6uORr+udlRdbfRhPOIfvBAijav1lM+cM8TAECx1AJLq719lu/mhFj/dv4nW8WHEvIq2A3/OC27raRLkkJcKnxbx1/ZgKTRyIs68+wblCG6piSyjHa7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,11 +131,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/3/26 13:07, Vishal Moola (Oracle) wrote:
-> Would you be ok with taking these patches if I add these relevant apis:
-> 1) A function that returns and address (like get_zeroed_page())
-> 2) A function that frees by address (like free_page())
 
-I don't see any problems taking them if those changes are made. No
-promises, but I don't see any other issues.
+
+On 02/02/2026 08:01, Zi Yan wrote:
+> On 2 Feb 2026, at 5:44, Kiryl Shutsemau wrote:
+> 
+>> On Sun, Feb 01, 2026 at 04:50:18PM -0800, Usama Arif wrote:
+>>> For page table management, PUD THPs need to pre-deposit page tables
+>>> that will be used when the huge page is later split. When a PUD THP
+>>> is allocated, we cannot know in advance when or why it might need to
+>>> be split (COW, partial unmap, reclaim), but we need page tables ready
+>>> for that eventuality. Similar to how PMD THPs deposit a single PTE
+>>> table, PUD THPs deposit a PMD table which itself contains deposited
+>>> PTE tables - a two-level deposit. This commit adds the deposit/withdraw
+>>> infrastructure and a new pud_huge_pmd field in ptdesc to store the
+>>> deposited PMD.
+>>>
+>>> The deposited PMD tables are stored as a singly-linked stack using only
+>>> page->lru.next as the link pointer. A doubly-linked list using the
+>>> standard list_head mechanism would cause memory corruption: list_del()
+>>> poisons both lru.next (offset 8) and lru.prev (offset 16), but lru.prev
+>>> overlaps with ptdesc->pmd_huge_pte at offset 16. Since deposited PMD
+>>> tables have their own deposited PTE tables stored in pmd_huge_pte,
+>>> poisoning lru.prev would corrupt the PTE table list and cause crashes
+>>> when withdrawing PTE tables during split. PMD THPs don't have this
+>>> problem because their deposited PTE tables don't have sub-deposits.
+>>> Using only lru.next avoids the overlap entirely.
+>>>
+>>> For reverse mapping, PUD THPs need the same rmap support that PMD THPs
+>>> have. The page_vma_mapped_walk() function is extended to recognize and
+>>> handle PUD-mapped folios during rmap traversal. A new TTU_SPLIT_HUGE_PUD
+>>> flag tells the unmap path to split PUD THPs before proceeding, since
+>>> there is no PUD-level migration entry format - the split converts the
+>>> single PUD mapping into individual PTE mappings that can be migrated
+>>> or swapped normally.
+>>>
+>>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+>>> ---
+>>>  include/linux/huge_mm.h  |  5 +++
+>>>  include/linux/mm.h       | 19 ++++++++
+>>>  include/linux/mm_types.h |  5 ++-
+>>>  include/linux/pgtable.h  |  8 ++++
+>>>  include/linux/rmap.h     |  7 ++-
+>>>  mm/huge_memory.c         |  8 ++++
+>>>  mm/internal.h            |  3 ++
+>>>  mm/page_vma_mapped.c     | 35 +++++++++++++++
+>>>  mm/pgtable-generic.c     | 83 ++++++++++++++++++++++++++++++++++
+>>>  mm/rmap.c                | 96 +++++++++++++++++++++++++++++++++++++---
+>>>  10 files changed, 260 insertions(+), 9 deletions(-)
+>>>
+> 
+> <snip>
+> 
+>>> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+>>> index d3aec7a9926ad..2047558ddcd79 100644
+>>> --- a/mm/pgtable-generic.c
+>>> +++ b/mm/pgtable-generic.c
+>>> @@ -195,6 +195,89 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
+>>>  }
+>>>  #endif
+>>>
+>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>> +/*
+>>> + * Deposit page tables for PUD THP.
+>>> + * Called with PUD lock held. Stores PMD tables in a singly-linked stack
+>>> + * via pud_huge_pmd, using only pmd_page->lru.next as the link pointer.
+>>> + *
+>>> + * IMPORTANT: We use only lru.next (offset 8) for linking, NOT the full
+>>> + * list_head. This is because lru.prev (offset 16) overlaps with
+>>> + * ptdesc->pmd_huge_pte, which stores the PMD table's deposited PTE tables.
+>>> + * Using list_del() would corrupt pmd_huge_pte with LIST_POISON2.
+>>
+>> This is ugly.
+>>
+>> Sounds like you want to use llist_node/head instead of list_head for this.
+>>
+>> You might able to avoid taking the lock in some cases. Note that
+>> pud_lockptr() is mm->page_table_lock as of now.
+> 
+> I agree. I used llist_node/head in my implementation[1] and it works.
+> I have an illustration at[2] to show the concept. Feel free to reuse the code.
+> 
+> 
+> [1] https://lore.kernel.org/all/20200928193428.GB30994@casper.infradead.org/
+> [2] https://normal.zone/blog/2021-01-04-linux-1gb-thp-2/#new-mechanism
+> 
+> Best Regards,
+> Yan, Zi
+
+
+
+Ah I should have looked at your patches more! I started working by just using lru
+and was using list_add/list_del which was ofcourse corrupting the list and took me
+way more time than I would like to admit to debug what was going on! The diagrams
+in your 2nd link are really useful. I ended up drawing by hand those to debug
+the corruption issue. I will point to that link in the next series :) 
+
+How about something like the below diff over this patch? (Not included the comment
+changes that I will make everywhere)
+
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 26a38490ae2e1..3653e24ce97d7 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -99,6 +99,9 @@ struct page {
+                                struct list_head buddy_list;
+                                struct list_head pcp_list;
+                                struct llist_node pcp_llist;
++
++                               /* PMD pagetable deposit head */
++                               struct llist_node pgtable_deposit_head;
+                        };
+                        struct address_space *mapping;
+                        union {
+diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+index 2047558ddcd79..764f14d0afcbb 100644
+--- a/mm/pgtable-generic.c
++++ b/mm/pgtable-generic.c
+@@ -215,9 +215,7 @@ void pgtable_trans_huge_pud_deposit(struct mm_struct *mm, pud_t *pudp,
+ 
+        assert_spin_locked(pud_lockptr(mm, pudp));
+ 
+-       /* Push onto stack using only lru.next as the link */
+-       pmd_page->lru.next = (struct list_head *)pud_huge_pmd(pudp);
+-       pud_huge_pmd(pudp) = pmd_page;
++       llist_add(&pmd_page->pgtable_deposit_head, (struct llist_head *)&pud_huge_pmd(pudp));
+ }
+ 
+ /*
+@@ -227,16 +225,16 @@ void pgtable_trans_huge_pud_deposit(struct mm_struct *mm, pud_t *pudp,
+  */
+ pmd_t *pgtable_trans_huge_pud_withdraw(struct mm_struct *mm, pud_t *pudp)
+ {
++       struct llist_node *node;
+        pgtable_t pmd_page;
+ 
+        assert_spin_locked(pud_lockptr(mm, pudp));
+ 
+-       pmd_page = pud_huge_pmd(pudp);
+-       if (!pmd_page)
++       node = llist_del_first((struct llist_head *)&pud_huge_pmd(pudp));
++       if (!node)
+                return NULL;
+ 
+-       /* Pop from stack - lru.next points to next PMD page (or NULL) */
+-       pud_huge_pmd(pudp) = (pgtable_t)pmd_page->lru.next;
++       pmd_page = llist_entry(node, struct page, pgtable_deposit_head);
+ 
+        return page_address(pmd_page);
+ }
+
+ Also, Zi is it ok if I add your Co-developed by on this patch in future revisions?
+ I didn't want to do that without your explicit approval.
+
 
