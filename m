@@ -4,118 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7947DE8783D
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 14:45:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61D5FE87839
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 14:58:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3F4E6B0098; Tue,  3 Feb 2026 09:45:02 -0500 (EST)
+	id 9D0126B0099; Tue,  3 Feb 2026 09:58:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C2836B0099; Tue,  3 Feb 2026 09:45:02 -0500 (EST)
+	id 963366B00A2; Tue,  3 Feb 2026 09:58:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A5936B009F; Tue,  3 Feb 2026 09:45:02 -0500 (EST)
+	id 8487A6B00A3; Tue,  3 Feb 2026 09:58:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 78A846B0098
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 09:45:02 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1781E13B157
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:45:02 +0000 (UTC)
-X-FDA: 84403417644.13.B3CC1C4
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 10C6A1A0002
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:44:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=R80ZUupK;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf19.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.49 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 528576B0099
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 09:58:34 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EFA5D59160
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:58:33 +0000 (UTC)
+X-FDA: 84403451706.08.4DD61F1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 684A920012
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:58:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bUWbI5Uk;
+	spf=pass (imf03.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770129900;
+	s=arc-20220608; t=1770130711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hs7V6SWbek2ZeyeUQeiTszpmbvycBMvjXv7GzQyLNVk=;
-	b=Cvd2ww6Dgblv2LxdK+8ILpr/Djxe6TUf1cOJzOysh/YACmb6gwdioR8DlqL97aTdFW+n0Z
-	D+GzdwjBMcm4AzFQl5qoMKvGMu1YJ/0+TKb8pGTZTGr2TEcxI9Re00simcdZDI/V2lkqwT
-	CUTyPNMgdbp9ej6ZsiVMmWcKr7YfZ9g=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770129900; a=rsa-sha256;
-	cv=none;
-	b=0zO3VCvHz8PVh0K6qkhy+QmYGssxDvdJTtoBdjQWDIFl72lz3FPQ9fHNyA5juHAnYuRD4c
-	a5bx33EsKrhFvnWIvmYOdUf/Fo2AvvBMynLdeQWVnRYZPOOfvRbLSG4nzVnX0iX1utLr5d
-	zWJjIep+00nNrtsV4QWoIqFIs8rv8/o=
+	bh=J1HfUdPrrMh9TULkpQcZlfAxujJiWRO2oG3M94cIgm0=;
+	b=4ScXjeMutvVXOUOVvgm84/0kaBLTtzisReo2XSngjVxAspMVF8KV0U4/itQVOzIym+6mo3
+	oceZ9BXWNMxr9OOMRdn/dvUzFh0leMdVYVd245HqTbPPpz0okv4ESuqy0HxkxQJgHveWEK
+	FPbIHWIiKw4wyLCzG6/Tkgbak1daoKY=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=R80ZUupK;
-	dmarc=pass (policy=none) header.from=linaro.org;
-	spf=pass (imf19.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.49 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4806dffc64cso44139515e9.1
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 06:44:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770129898; x=1770734698; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hs7V6SWbek2ZeyeUQeiTszpmbvycBMvjXv7GzQyLNVk=;
-        b=R80ZUupKrTXvOYTJR/0m3x4FffKoCy0rH4yu31AO8w3IeHm0TujDVYbiMYqVvh3NsD
-         cBE32/G905eAsfZ8+9lSSRrYUfN/nsm2Lwf8SLSPt/x8mBOuwoBYiqd3PY1V1Dqj7LEb
-         ucS/nZQk6/fpdxbpzAmPVw6kD2n1cfcFR5G+6Rp5Or8LzQba9HLfNoha6to/5k5H85nV
-         ruSF0fk5wwdGmr9Wk5CkQqKYxCHSBczWL/iqQZvlzKJ1bibLrmVyu5CIPvFZldh6xezb
-         8wkKv3XkmAzJIMjm+bZ6TW//iuMI7dtuLRHcJ25tKJtSBZtaIOWbjczb8unRoyYWx4Mz
-         NNiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770129898; x=1770734698;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hs7V6SWbek2ZeyeUQeiTszpmbvycBMvjXv7GzQyLNVk=;
-        b=Bs9FeJKJ+l5KE4IU0wBU9Hi/+XwQBpAGUbdxygc8VbS6hdCVjcuKyMokccmK+AzJdK
-         hSlEMVNnXDM+dCr3kEGUN++m7U+uV1xMg2rLaKRgmQOx2z235zoebcY88cP9U8XQnZCt
-         u3VY5gyINBcCh5NaQmJVv+PwV9LAj3il3IITPmfIVdS9UUfLrXtteGlaT2cgu9I8xXpV
-         ysaCT/MyNLoVCYn0kkQE2MV5x49bw+XiMPc1kqf4IMTEfV4xoRmvDz9/6Mzbw3h7Prt0
-         iO+FtuwXfasVttXaIqYv2LW4uJ1sFizH9/ahRnHtaD5oj64geRbPbe5REsLZ0M9TOE3r
-         iQdA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWNeEOrvg3GY5TsvBkwbpa8k41McwpxHikUrYKILXPfBl2LNoaOVxxrtGL+U0rl0yZ1pCQIRjIxw==@kvack.org
-X-Gm-Message-State: AOJu0Yz1ZTjE4MyJYvUcJ3zd6vLkUGvAmSsqvfWmMDpamRT2YTlWR7ng
-	JQj1l8H0uO0BmmzXHTkvKoVgO69jFkMkHKSkcPuhy1aw/kpbrLPz5ysuoLz63c9KuWk=
-X-Gm-Gg: AZuq6aLaodry7XQf4o/1mesqMU4aMODydoOSISjoBxzCDsr5TGUf0olIpqS78zAwEwE
-	f8dTNOKdJMfI9L6IVIHYoHgSEHM2lHqpOBmhTeZHtjVFCMo3pIg/urn703sidm0St+SHwhLJ5tQ
-	kQ5XwgAEEmO3boT5+FU/KpcgTB4U9r78befTSWfYjtCHGVuIokpEPgtr2FXPKWybxh85HlpF/1w
-	wFPntGubqQL3ZizPR6BGNinwqqHrVRBS8RzaYd7mtS5zDCMJwOKVaoaBIBR7tBIHtkXfDF/n/MY
-	Q6WGR6KWew1K1HXZPjyum8bAmLO9i0ZdBUFndgqDUV/MHmiZc59u7HaKajwLOaNodSflxnNeIIH
-	wPIyg+oBFXHCrwCRQbenjsEGcn+nOa5b5rKiFR9+GLW4QauUusT4k9wtU2rmHxfPSv+lJ+bJFD2
-	e18F+/L+97UrFfBj6G
-X-Received: by 2002:a05:600c:818f:b0:480:49ce:42cc with SMTP id 5b1f17b1804b1-482db45f4b7mr193577785e9.9.1770129898159;
-        Tue, 03 Feb 2026 06:44:58 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482e04ed4d2sm121274235e9.7.2026.02.03.06.44.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 06:44:57 -0800 (PST)
-Date: Tue, 3 Feb 2026 17:44:54 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: oe-kbuild@lists.linux.dev, Alistair Popple <apopple@nvidia.com>,
-	lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bUWbI5Uk;
+	spf=pass (imf03.hostedemail.com: domain of andriy.shevchenko@linux.intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=andriy.shevchenko@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770130711; a=rsa-sha256;
+	cv=none;
+	b=gcTAtAt3T/VHreUcoVcCPoWYDwqr0C2Mdx3r78o/lW6dGeGS9k9acwAu1YqDsNnWgJ9O1T
+	rTfTVtjZWr54eVgULMWpn1r+aI73KBg8XZIJ44Qa6YWH1bFyYA9VBNM4V52klGHUxerO+i
+	8igWW/UdQYd/rqrQL/35tjmqK9DFAU8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770130711; x=1801666711;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=3OqK9oTeVR5lGSXtaWyFd41ZMpY3Io7T1BufEaZUCaQ=;
+  b=bUWbI5UkkRIOjJEnQ0EJ1wKgY2fbNpd9mJIDd79WVC/BS2uYpfWd6cqA
+   anfiPcI27IYvqWKvGou3wH69ddQaDeIOWwq+EZgXQsm1duvZ3F3Ef84V0
+   cQoenoNFpCHAFTNhgVBRxpzqTyj+qcvpSEtzdV9kXgSHkKulraJCltZsZ
+   1KmlYdFJL9Sao2aVj1agP70sLzRMjRbjTNlxUTw0TNY3YUBpv0sjzLvlz
+   d6QcsMVX6mZ4TaY65Lq7gUlHiqBXCedZGV1MhKwh12QkfN7taVXkuCuZr
+   KrRt/jb3EOPwLzi7rjS4udGjyGtZfCLVhqsrC2uF4/0etROUWhz1z+Csx
+   Q==;
+X-CSE-ConnectionGUID: l2GMulsgQS6T5hKgJsolxw==
+X-CSE-MsgGUID: ipsy89lmRu+EgtvbadAuuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="70319511"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="70319511"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 06:58:16 -0800
+X-CSE-ConnectionGUID: TEiuhvuxRciWAcrGKGfvVQ==
+X-CSE-MsgGUID: pMj6s6SHTVauTS8hT+TbVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="209901413"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.99])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 06:58:10 -0800
+Date: Tue, 3 Feb 2026 16:58:08 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: kernel test robot <lkp@intel.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Simon Horman <horms@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>, llvm@lists.linux.dev,
+	oe-kbuild-all@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Linux Memory Management List <linux-mm@kvack.org>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@rivosinc.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: lib/test_hmm.c:932 dmirror_migrate_to_system() error:
- uninitialized symbol 'ret'.
-Message-ID: <aYIJ5qttFNmL_Roq@stanley.mountain>
-References: <202601152125.McLpiKxS-lkp@intel.com>
- <ba7dea85-4bd4-42f7-be04-c23afff5b34b@nvidia.com>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Yury Norov <ynorov@nvidia.com>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH] tracing: remove __printf() attribute on
+ __ftrace_vbprintk()
+Message-ID: <aYINAPJS9zXlUGCw@smile.fi.intel.com>
+References: <20260202095834.1328352-1-arnd@kernel.org>
+ <202602032036.FQK7gJvV-lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ba7dea85-4bd4-42f7-be04-c23afff5b34b@nvidia.com>
-X-Rspamd-Queue-Id: 10C6A1A0002
-X-Stat-Signature: a4amm4e41gib883bjd78kjnsuj4ptogb
+In-Reply-To: <202602032036.FQK7gJvV-lkp@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ahy3pp1mspew5rfhwd688k15cmjc8iwp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770129899-887098
-X-HE-Meta: U2FsdGVkX1/pEAlNjcfBSS/md2uoHWNV8yLkXD7RP2EVn3vgkYl1dfL7rxYmFRhsIAkDNlgbXfH/Cn2uzSjRMBruCzIlo5v/AA2Xpc2T/2fQHUJ3sEo2zYoKTh30CQaqXojN4x4w/1KlyZ1vfsNhgA8S59x0BnldzIzcuD1GtHUmfWC8vHgrK4ThWobCiXMBN5oZLjFKTbYtmIjLD6hyoKUgxH84fbX7ChxZ7VCMinwNvL5psz3QWNhPaSfPh3U0SNPTlVTDtEyH4hH5Tyc31hRL1UDrwKEWmK691cpcbo36wUMak7vLLdywX25ywqMTl4+9sBnEIaN6REksxSN1Gs5Bi1jL3dmzxoGCZRG0504+6nQ/D2aoTz+iRUqn3ZltGO7IGVuMYJLhifgT3Yv/TqO6vFaLvQHOqo9IzhAuwBHMN3flPPLfOqz45VAmBarqJxmS1MwbDd1atddLvnei0OISSo3pPJOH/TgFv+juNNcwFD8TZrOU3s5uSuBKD6KO/gUo99tcKWw6qK9HtrFQ3jdmX5vVq4nZjFFUjo2SsxnMR2IkfKoUDqBROIOe+p2rTkTckphPAKNgfLJC1wYbmU3V23FhXjFZvuzQhsDPw3HDmQIygQrg/fg6AcJC8sPKSuRCtSw788bG4D1M9xjCzXBnYKSg+qrmMCBeoUL/j/MzRXiGFJK5YqbiyhzqhJeRLdVIdjAbAzhzycxEhs2MnV/2k6wLcOfGdeuFoYyXzv0Y1adIsMokZPP+pTIDybWlKvrGK24/4P3ElokZgoCFFQi6nOPz/u7BQy4q5zumV1c8+OhHZTef1FUty+UaSpbW+tD3CqIIm98e6VArzBuZqRrflJm6YdU6eIhIo9SQe6k9GMM3Lf07ILQlbCWGe5mRSpaJHQp4COdzzJjUMjXKHPhD7G+SFHvnhFzWrKNMJisrPF5mangEh+XZqwhhEUrbxkIcDQn4l7s3RIm9Yva
- vF2uGPZJ
- +848Hi4Z1Q60VURd2y8ynOe9BgEUsX/kvNDDPSEv0maeqVV4E2LL+Ef/xyqkaYv34c4eKmPN1IY4PohnKi5+ZSqHEKdp5mEadbctpsm12hmEnnooKoc+/Gls/PNGkk7RaljTuBijzL8cNWbdMXjxhvjXgEAdoTWks1MBPC+xyquyIdDhyhPm1LOTnc5ob20enkdhHRPpHz2T5EtZztKdDWHhel8U+CDORdzQ0YhoRgmMwy272QdmSC/1Z7lUob/UarnHEtPgu+NICipgY/tB9jOgFu798wqK8UWXQpHbGJQ+CHrJ8LNWv4RDeHOs5EiSUNcGMIHYaBf58OnLiHK2MednTVoX6/Gg04GJTFrhBdr8Psa0=
+X-Rspamd-Queue-Id: 684A920012
+X-HE-Tag: 1770130711-284091
+X-HE-Meta: U2FsdGVkX19EkWyX2PV7AGIYUFOwACjFs3POLt8e7qHNzRuetjQEV1wxVwWcIkDWYS5BRhzi2urgJGcGdrBFNQJTMbbjQYWl9vkPYk4QCqiY2/qZnUed5HQB1IV1L7+o8GNhaXuV7tmjJBBqxzuFEuCsabaAaYDu/D+uLPA8IcPASCaUym6gMxIsZ/UOBX2xZF21+I7k5/ls/aQXDv/nupcSa/74XLFSqJbYsWbOPIuAePZJ7m2wPgnJe3r2lCgZChcNn+7H5qaPE+8+eApszQDfJ6R7xFoDIn5rVClXaKImFveqg2xhMMUWszQIaVfxIHc5rLy0IEDUnzhx6CMobqcTXSgoxHRT39EBwdie8xtY6GtKFvMumBQwnQ4zexKjTybU+oPOrXIlNX7tbaptoMPEcfrnCvODcgmhgopKbrnNj+6aGcdl3u9j8TG0l7dYfAV1vVTfJCnU4Ks0QuWmPRPK3v3PVKh24QjlRYt10KzQvGAp3lLG7KjWLbGLBtAHQvmrb0IOXyHX1DkxYSlHsacTkwiTb3yqISyOWwVS2OATgrBYk293bKkysAt6biOs0TUh4n5HSZ8vwtCtf/94ao/SX1057ojxWTg9MxUL79nB/Zk1DBJJ5agdt9JtfhGAwilL7OXPxvpCcDLAUPGo90/3bf6Q8XdQPHZzWjm73Izs8vY/A0YOMOipTKTCo9LtMLjyj166kYNqabNPAM0L6yczt21X3JFaTMuUu48GwaxGwehmFgVykoC0667hzqMgMGxQbjJh5vnb1ttV12ut5kJVY6nf1adHI8sNWUI9RgK5xbrf/eSzmn8v2yP5zjlQ/stT/uwQJluvrKOl8+xfM0eza/Cy6DLjqFvWOtVdSpMsvs6L9EPagzzOfe+LD9urMmnRNps3eSIdKKgVVWgZWFzvBFv0+DEEYPckQqQh7e+DYFb+l0uKtAZbID9YF6u/Fxk4nrMsneexVzzowCs
+ Su7N0pUR
+ obqqZnOb5eDgX65kSq8FPxQ2dirBRr5mWVBdE5eOjI+nHXBfX5I/3+rLw3xGZSDitcfEoz7WQNJguX+32hf3ad00rv/9+bT9HIS7RPHLOZRfrRmz/UM0ut/9VcY5yGxbLiTwP0GoBxVjaHIgcQx8cHALMdOvSk7FeI9sGCeMVhyDpuOmxrBpHqu6KCuVjIASNgS/NReZ1Sv06OYoE2e/o8/tNNvV+tAc0GxXtzjywB7D+X73oo+ThMTAPc7WFgs63n8FtSA6QZrf9e0/7hQihxae2Pc9YHj8gUtXH+E8C/zAxUvZvTT1+ONXNIg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,22 +118,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 03, 2026 at 09:34:40PM +1100, Balbir Singh wrote:
-> > 4c2e0f764eb4444 Alex Sierra     2022-07-15  928  out:
-> > 4c2e0f764eb4444 Alex Sierra     2022-07-15  929  	mmap_read_unlock(mm);
-> > 4c2e0f764eb4444 Alex Sierra     2022-07-15  930  	mmput(mm);
-> > 4c2e0f764eb4444 Alex Sierra     2022-07-15  931  
-> > 4c2e0f764eb4444 Alex Sierra     2022-07-15 @932  	return ret;
-> > 4c2e0f764eb4444 Alex Sierra     2022-07-15  933  }
-> > 
-> 
-> The code looks older than the current top of master? The smatch warning is still valid though. I was wondering
-> did smatch get new heuristics to catch this?
+On Tue, Feb 03, 2026 at 08:12:57PM +0800, kernel test robot wrote:
 
-Sorry, I can't explain what happened here.  I had seen the warning before
-years ago and not reported it.  :(  I don't know why the zero-day bot is
-only complaining now though, or why it blames that specific commit.
+> kernel test robot noticed the following build warnings:
 
-regards,
-dan carpenter
+Yeah, you need to go for the full stack of these calls and mark the bottom one
+with __diag() to avoid these warnings. That's my understanding and what BPF people
+required. Chasing this one-by-one would produce unneeded churn.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
