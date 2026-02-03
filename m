@@ -4,96 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC41E87824
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 13:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE5DE87829
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 13:23:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A003E6B0005; Tue,  3 Feb 2026 08:20:25 -0500 (EST)
+	id 2DA9D6B00B6; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AE026B00AB; Tue,  3 Feb 2026 08:20:25 -0500 (EST)
+	id 288606B00B8; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88FFE6B00AC; Tue,  3 Feb 2026 08:20:25 -0500 (EST)
+	id 1698C6B00BC; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B1F16B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:20:25 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 46F258B65C
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:20:25 +0000 (UTC)
-X-FDA: 84403204410.24.B273927
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 22120100008
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:20:22 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gflWpeyT;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 059866B00B6
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 08:23:38 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B42F059146
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:23:37 +0000 (UTC)
+X-FDA: 84403212474.28.F3A5004
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AD917120006
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 13:23:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SLvfbpWw;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770124823;
+	s=arc-20220608; t=1770125015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fCN/KXyaNLhPpDlNl5DFscQc8m92nKiFKj5UwfM91fw=;
-	b=bOmwCccut7oTlbTz7UmMj6ctk9iOlTha4R+rizK3P4cHiMOnGQWe+5P+qTLAiXP5GZm8Tc
-	ZpoBVurn7FaI7Mu0bYXh22s41q31yrWu92wKfbDnSQaB5tvfAaPGCmAUrDezC3wiXi3Pu9
-	ncGzsl0Li4TToiHRHaje5E3t+s11NWM=
+	bh=X9jKCMLhYnPbhGwJQdPwGF6Ru9Db2nKOSg989VKRbuc=;
+	b=MoB740z7zDgqmsdh7NNiRl4XiXnsj7KYdkOcWeXvGVQBkrh3mVJv2w/Sfpa1b+A6RPHXnN
+	Lw2KG34CF+YhnSuvpcLvlyFcwYo6rpusm5xMSZeps/diyKeFV0Nd4klZc2wJ5uL/EkPIAd
+	YhNMf4KYU2DWgtzOEQVF/NqvfdzEQDU=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=gflWpeyT;
-	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770124823; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SLvfbpWw;
+	spf=pass (imf29.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770125015; a=rsa-sha256;
 	cv=none;
-	b=jjn4FWWrBbBO1j/OW4cSMs26Kkh5xN/NqFcP/PwzK60CR/fykl3MeBk/hvX1Y2/b5DUeP9
-	ChM8ZVt2qzW8Y+hOyuSwfM2v2N9gZvgSecFKJcihu960nU1ypZnSjF+GV+UWhVLGNliInZ
-	yr6l89/a0PUL+DokD/VpztCNHikgDEM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770124820;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fCN/KXyaNLhPpDlNl5DFscQc8m92nKiFKj5UwfM91fw=;
-	b=gflWpeyT9Lg77R9MOVQpSaX2p7Yr7DDMp8uR0kDuSKgWLkV5MBAkSMKiSBE5kxGEvgAWNJ
-	wP5vrTOVmc9aillHtjQEfC7arApsydjdQSRvrUm6z3N11eBctkialSeMbUsyV5+2QA6gfo
-	2EbOJTvieIp+5IqsUg88j2MSspz99Jc=
-From: Lance Yang <lance.yang@linux.dev>
-To: ziy@nvidia.com
-Cc: Liam.Howlett@oracle.com,
-	akpm@linux-foundation.org,
-	baolin.wang@linux.alibaba.com,
-	david@kernel.org,
-	gavinguo@igalia.com,
-	gshan@redhat.com,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	richard.weiyang@gmail.com,
-	riel@surriel.com,
-	stable@vger.kernel.org,
-	vbabka@suse.cz,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared thp
-Date: Tue,  3 Feb 2026 21:20:06 +0800
-Message-ID: <20260203132006.66958-1-lance.yang@linux.dev>
-In-Reply-To: <4D8CC775-A86C-4D80-ADB3-6F5CD0FF9330@nvidia.com>
-References: <4D8CC775-A86C-4D80-ADB3-6F5CD0FF9330@nvidia.com>
+	b=bfE+9LlI2w3F2wVyUigH7HhsUiex0T/Gwdb5N+lEpADktYqwtNKcz8EdEh5/qfrEffJk6w
+	xJVK0QsbdabrPEfw0bNH4l5kcGavpY5+onSzjTFL5AIa1F7ZJQaqBMcMAUxS6SMX8bW5mK
+	MwAfL9CBo/dlnnY/H/+skJ0Xgbk9Uuo=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-480142406b3so41782205e9.1
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 05:23:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1770125014; x=1770729814; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=X9jKCMLhYnPbhGwJQdPwGF6Ru9Db2nKOSg989VKRbuc=;
+        b=SLvfbpWwB8hpCQEYWYIBFue6oyVK3QfAfzAlMQh6tUgB9Q/pJnYDFmFDCOAx4cAcIB
+         It293bZrsFl+XkPFcCHoStWT9FmcUOuJIvpbTdSMVtDWdmuXm/xjq5n+KS7bSTR4cZSk
+         P3TC6JylhagidP5jIkbOCZBjQLEXNHIY9Fc9nVrdq4ktnuAmo73YDmz+B1ZRBBrGIhIt
+         T6QuFCIK/0f3e07wJv0Z03QYKau8ctdGlbiuqCOGWfa004veqt2WPaaQd4al06vIMLfE
+         o+G8BZ7S0VrQ0O640fcLaxhBoZuUfzzVuYS3brS8URRhTHFmo7UYGenTKLxHJ0y3nRHT
+         WibA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770125014; x=1770729814;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X9jKCMLhYnPbhGwJQdPwGF6Ru9Db2nKOSg989VKRbuc=;
+        b=sFDf78q9jBJlY2ot1YjgF3SVne3X31alEZSuTXYAk8j9ZYQsitPIiFLpJzgm12GWo0
+         IcMlxrLzjW7KhcDCucuADIpXR2cRy3m1FsmRg0t8llbGHDL1ysRu/KKbXf37qToXGLZe
+         bTaiuQLJJrenfjeGyaBd35Znv4ezOpaVgwyg1nbUCZYSHJlI8+SSbLdZk8p3leCMzujk
+         K7zznVlJtBGdXne0/muP4bsVOrlWN575OCM8/TfOqy4xb49r9wRn9zheMtrL0efEa73D
+         XxRs+Kv31b7BUVLaSwxZJYklQjgOq9ap6DzBHWLI3CvHAvEcNGteh+qPeKLLoT2hfM3y
+         P+3w==
+X-Forwarded-Encrypted: i=1; AJvYcCWYl86ocByJ3p0RRW4vMCqTurjOGkft3G5mxOP42Eed4pYR+nkZxi0rWesVIuKhQBAX1/KHjY6gtg==@kvack.org
+X-Gm-Message-State: AOJu0YyprzZ5tFb83CHasF76YRxcw7Hxdwv3NAC2/tc86WMhsj3QwBgC
+	lXutHgRKwOZnqM73wCmShlSQeoYMPwflR/EMDfoQwhcHYokAL5Bq+f7RW5D0ZpPE/+M=
+X-Gm-Gg: AZuq6aKw4Ili9MUbOmMf2RdLnNgbd4YCxYXkt+tDUySx0WKQc3LskmhYvSOEFazeDMG
+	esKjFgwsKXc7B+IAq2u3IiePgbX0qQ4YptIMguKty4sxOlK3Mn1huyPeh8X85xl3ufK6DI4iBuc
+	naAdHrrQ7tsLG+6ofPt0GfTRBg/GNM46+oYr6W7z0croLeAX4vttpq+fDKHz/6H1yyNCHI58kRu
+	31sPz0WYH9ddQsA/A3uasR8kTcYD6KznAQ8CJdcTiof4dt3Zo3kFJ1+jEifMFFidjwxjA/hzG0W
+	VV/K56hmTY9a9qVqahRXQwxQuZkxCluipKvKct3H0w19T4wuDWlMuQZPzRv0inDq2oWZT1kB4A2
+	XYTGTNLtiHoJiOgtKXWNFtc0W4LmzEDYi+fn5YToXvY+m//U4clqFUWjQ4oDYyk0R0CSa+ErqfR
+	8BDKQO5UlNGgGHVPb/E8fI6Eim
+X-Received: by 2002:a05:600c:a087:b0:479:35e7:a0e3 with SMTP id 5b1f17b1804b1-482db48f2ccmr215249685e9.30.1770125014093;
+        Tue, 03 Feb 2026 05:23:34 -0800 (PST)
+Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482da903a30sm149018775e9.1.2026.02.03.05.23.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 05:23:33 -0800 (PST)
+Date: Tue, 3 Feb 2026 14:23:32 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	JP Kobryn <inwardvessel@gmail.com>,
+	LKML <linux-kernel@vger.kernel.org>, linux-mm <linux-mm@kvack.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH bpf-next v3 10/17] mm: introduce bpf_task_is_oom_victim()
+ kfunc
+Message-ID: <aYH21HhwNvWnFB8O@tiehlicka>
+References: <20260127024421.494929-1-roman.gushchin@linux.dev>
+ <20260127024421.494929-11-roman.gushchin@linux.dev>
+ <aYA4pH_nIBZ-ZhLL@google.com>
+ <CAADnVQL5g8imKNGbHGQ4HA8_qNT4MYwM8P3aCTFUG7uwiuTeuw@mail.gmail.com>
+ <87jywuwumq.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 22120100008
-X-Stat-Signature: zz93qf6yqeksteqfi99x9bybgxh55ank
+In-Reply-To: <87jywuwumq.fsf@linux.dev>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: AD917120006
+X-Stat-Signature: qkt57f9xztzu4h9zw3ozsfmg7k6x1gg6
 X-Rspam-User: 
-X-HE-Tag: 1770124822-725024
-X-HE-Meta: U2FsdGVkX1+b+EzIzvZfq/XsL30TWW0Do+EQjCNuy/R/OcA1XZJeEElNYy1B61iXj6Ea6zN1SM9h7K9hGOks0MPulQ/1gmGXkqlAYUOJdJBZddsJ8NxLbLvRJeBeSXqdRhSjEJ8Y4SFVEhOn0TnWPEzsbEMtGPXmha/oI/4lLH4fw7HuUw2hhq1HOqCZ7uO7BVcy89ytJ1/1I8Ook8V2nGcxgatk6VvBwwRLCIAjbLxNvqq6b1soGps8AoH4aMdwfvnlifodf351KOJ9EbbVpFccLc63Fz8lqv3/c7UbK4/WgPinBMRjr78uLzdb6aJgSYHojHASY3t4AnwVVkf6hIW3IYX6DKEpg16HAVGuG2dtPoMnOeUMcp0yKjwDT71sJ2Th5n7D2oDJYfZzmdL7tYX+nxjqRx5By2FzGE+wGDh9Fmf2W40GtMzfpvIntCcEg0R1Xfu4SB/gXVOVNEQd19tscofKzBvzNs/ZOAEKiQ1iPcpFtKauLopH5Rk60iocBbGunzz8uxFR/KGKRg1dsJJEkpVexKUZ7bG0TtQrXSY3Di8RGnFDD5XiO54QyIEdiC7V5THIObJVxnFXI/QY9vz3tTFojPaEw5aC7N/tXgbnew0dfR1NBeO5HAnRD+yLdkuG6oGv7mzmxSpZhOYvyQLe65vaWctDrNN1fBg7fQmfncpjDI/o7aiS3/Fk15qK34GAeDRriKLJYciyaBdh0uzioCYmuhBO06+KvounVmY3PZAzrC2UXn9ZveIz9nBVZ7V8CkCiPuKojMVxbofDkLtIlaqMyaLnHfc7JZDihsiNrsqoUzPIk/MW7q5Jsp1+QkQi0k0wC43zJq5ZPhBlKc1mL75S2DFhKSiExApeW407xJKIzfGz27xCuST3O5CjfKNRl+PkYDnad/PlbMaWyIkyn5HX35DQfS8FhIaZ7JHasqWEdIuSZqRx3TQQ7QOE6uwzMEcnOA4F87MyDhP
- un2I2XtE
- uYZNr0+ixvUcRYY28L9XWsZAtvdgSn/hmbuaL7Y5mLMFBJWTn5WfDX2RhF3Au/mnGdxJctA8goyTU8N5RTwCfLKM504nh6ks9iwCJvei4mmt7YNpm0uYWV7RPmD6voY3srMMkqsqHGAcLrhdxarQQlJIxa1nfAERwxGH40clpPUVul1fjBu6fnfUVQSl7I6XKAVWIIT3xUHP7AYHOyIkYUjJb0NnfGY6+XzTkVWa0Kp5e33rYZH7qSKj5ZEi8XNeWVKbGwy71YM6HgM7wH3w8diV/3NF/tdzJ4GhDR1XvxOOyC675dCUy/uJWUHpGABjhy8Hans1jfsNgDXgr8rNxQmtKU9R+lVqOoHLt/i6LWu6gEzPPt3EBLQ9V/WhRpBminVrq03vERmL8m+b2cq/EgDSnLqRpsUlMT7B/cMkPPS20jumtGcLPkign9ITrAQnjP4E3DDbXmpmzfBJGorWxquSiQwC+tvl/MTTd/GbpOIex2lsUMHmOvhKe0S43XXaZvztv
+X-HE-Tag: 1770125015-954213
+X-HE-Meta: U2FsdGVkX18dIWXdg1OYxSW75bF5wK8O93TIoWexkzrPofUawCqUNRrGRvIvVjA+50szAl2fFqz4nbBH7f8scndYA1W9RvMUXFWTChisyahd2/LYIuCJczvmk9gykzNvfIOUuEHPwgZ7RMsKzEJb1R2C+WPtB1PjzqKHSL2LORJ2iC3hXAsUe/Vjc8n6Xq6x0l3PrH4kB7CZw86TiSEBxtWkGS8Nw0KtJpbVB/lgOkyLz/kq2NfHDOI5heEe2LbKbsmvml2b7j5PK/SaFzUyFLPv9+qyx+J26T0ecjRD5HT+kqf6kngxldGPUM4DXRDTEpIJKClb6pmI/b9Z3I8K4+hmtijafTmCBKonc8xcMq+vExxq6AHMkB9e73ugZAXXV27DSKdlcJLJsSyx/sS63UN8vrfV77lEOqDNwe7brsd/lno3/F4sdH3CCb84lgsJuvIZ3EI1FqNIz4GVsbt0X9NZ8LOOfXeBugRWGxcYqDzMdZMvRoOxyWnayrlcyXTg5hbXooEfxUJ4AfTZbe93jR735dbbnoSI7LsUKnt0AE4JzIj1uUArlu5giR6N7/Wra56wQtoW1oU1px2lyqrN7zI9lofe2Jh7rSsHxQMA0JSymYAowa5qxfc7SsJ9OfO+inlxuFVHDkgVPy+Ol5iVTwmJxFuM5mxLsd16ir/X0V4aWhCG6xq29t9OhMzuduXvTe7SI+Bmkr4NbLcrCzEo6DGUmo9UOUIvMupdJGcHKrXmPy+SURAmndsCPB++M1Ch2/jk1h/YtKPinSFOesJdqK+lEJsotCsv1Cs65dEJPZI/5//UH8pDf7wOzA1ZnS+kFdvFaCqDVPoUZUALOiVYkU/UvV1HOVuwO+lbaW2qzUu+MyrSkHWJcu37u1ZTtE/tjIoOqBJkNmjDJ0dTkdOsBvdwoQqgyGgZjnPVXDy+X1t2YZDDvvBBaDUsUh13wzWDKh5Pxkqa1ahdaREVUjb
+ hvisaitr
+ IfkcJEU66+uKwDpRSYK94LpKqS2Dqno2TrLNeS1Vx8ugDv9aZgI/9/km685OUdEO37oLIihgSmYU8Kdg559ueN+KmpJb6bNZMlJ1MZ+sFpcIqUHmItQOJeulrSL8jXQTzTVMQKSZENyG9XF7i7yGEj6QR0E4V/9wew4Ths7cgbejWyslEwYvkPSan8dWcioa+Nfg224RefBjHQ4GDPi0xTnSAYvbqx7kbE10+lYTMI+fj6UHfIGraLklaSNyx6NH8R+fai4EVT3tNys5UsP5q32v9hnRZG6evxcLBQSpulm+Ca2daRKfG/u/5/VtrqH7QRhyiCHeWpIMUYbiSc6GrVk+R9/Y+9JVLl7FWyOuzePznU2vm5UAIv86k7PA8zOvjAsrQU0i+/DWlIfQPNB8/gOekfeUKZaWvN0yVCTbYbYdux7RnjREZ4c6fC0swNfjK9ShLPurG1Ej8YDuscHKVw05bk4vD6wsrCENteWN7AnTohovhhA23dhXvHOp//wy0ZWchbG8SAaamPwSMhTIC3ds5kYS/2AbNzOhGTVL1CH1E+IwIh66hFUDDj02Ml8Bnrjg75f9Tc2j8emeO9I6KC+gdlN67AqaxEK65
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,181 +132,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon 02-02-26 16:14:37, Roman Gushchin wrote:
+> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
+> 
+> > On Sun, Feb 1, 2026 at 9:39 PM Matt Bobrowski <mattbobrowski@google.com> wrote:
+> >>
+> >> On Mon, Jan 26, 2026 at 06:44:13PM -0800, Roman Gushchin wrote:
+> >> > Export tsk_is_oom_victim() helper as a BPF kfunc.
+> >> > It's very useful to avoid redundant oom kills.
+> >> >
+> >> > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+> >> > Suggested-by: Michal Hocko <mhocko@suse.com>
+> >> > ---
+> >> >  mm/oom_kill.c | 14 ++++++++++++++
+> >> >  1 file changed, 14 insertions(+)
+> >> >
+> >> > diff --git a/mm/oom_kill.c b/mm/oom_kill.c
+> >> > index 8f63a370b8f5..53f9f9674658 100644
+> >> > --- a/mm/oom_kill.c
+> >> > +++ b/mm/oom_kill.c
+> >> > @@ -1381,10 +1381,24 @@ __bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
+> >> >       return ret;
+> >> >  }
+> >> >
+> >> > +/**
+> >> > + * bpf_task_is_oom_victim - Check if the task has been marked as an OOM victim
+> >> > + * @task: task to check
+> >> > + *
+> >> > + * Returns true if the task has been previously selected by the OOM killer
+> >> > + * to be killed. It's expected that the task will be destroyed soon and some
+> >> > + * memory will be freed, so maybe no additional actions required.
+> >> > + */
+> >> > +__bpf_kfunc bool bpf_task_is_oom_victim(struct task_struct *task)
+> >> > +{
+> >> > +     return tsk_is_oom_victim(task);
+> >> > +}
+> >>
+> >> Why not just do a direct memory read (i.e., task->signal->oom_mm)
+> >> within the BPF program? I'm not quite convinced that a BPF kfunc
+> >> wrapper for something like tsk_is_oom_victim() is warranted as you can
+> >> literally achieve the same semantics without one.
+> >
+> > +1
+> > there is no need for this kfunc.
+> 
+> It was explicitly asked by Michal Hocko, who is (co)maintaining the oom
+> code. I don't have a strong opinion here. I agree that it can be easily
+> open-coded without a kfunc, but at the same time the cost of having an
+> extra kfunc is not high and it makes the API more consistent.
+> 
+> Michal, do you feel strongly about having a dedicated kfunc vs the
+> direct memory read?
 
-On Sun, Feb 01, 2026 at 09:20:35AM -0500, Zi Yan wrote:
->On 1 Feb 2026, at 8:04, Gavin Guo wrote:
->
->> On 2/1/26 11:39, Zi Yan wrote:
->>> On 31 Jan 2026, at 21:09, Wei Yang wrote:
->>>
->>>> On Fri, Jan 30, 2026 at 09:44:10PM -0500, Zi Yan wrote:
->>>>> On 30 Jan 2026, at 18:00, Wei Yang wrote:
->>>>>
->>>>>> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
->>>>>> split_huge_pmd_locked()") return false unconditionally after
->>>>>> split_huge_pmd_locked() which may fail early during try_to_migrate() for
->>>>>> shared thp. This will lead to unexpected folio split failure.
->>>>>>
->>>>>> One way to reproduce:
->>>>>>
->>>>>>      Create an anonymous thp range and fork 512 children, so we have a
->>>>>>      thp shared mapped in 513 processes. Then trigger folio split with
->>>>>>      /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
->>>>>>      order 0.
->>>>>>
->>>>>> Without the above commit, we can successfully split to order 0.
->>>>>> With the above commit, the folio is still a large folio.
->>>>>>
->>>>>> The reason is the above commit return false after split pmd
->>>>>> unconditionally in the first process and break try_to_migrate().
->>>>>
->>>>> The reasoning looks good to me.
->>>>>
->>>>>>
->>>>>> The tricky thing in above reproduce method is current debugfs interface
->>>>>> leverage function split_huge_pages_pid(), which will iterate the whole
->>>>>> pmd range and do folio split on each base page address. This means it
->>>>>> will try 512 times, and each time split one pmd from pmd mapped to pte
->>>>>> mapped thp. If there are less than 512 shared mapped process,
->>>>>> the folio is still split successfully at last. But in real world, we
->>>>>> usually try it for once.
->>>>>>
->>>>>> This patch fixes this by removing the unconditional false return after
->>>>>> split_huge_pmd_locked(). Later, we may introduce a true fail early if
->>>>>> split_huge_pmd_locked() does fail.
->>>>>>
->>>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>>>>> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
->>>>>> Cc: Gavin Guo <gavinguo@igalia.com>
->>>>>> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
->>>>>> Cc: Zi Yan <ziy@nvidia.com>
->>>>>> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>>>> Cc: <stable@vger.kernel.org>
->>>>>> ---
->>>>>>   mm/rmap.c | 1 -
->>>>>>   1 file changed, 1 deletion(-)
->>>>>>
->>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>>>> index 618df3385c8b..eed971568d65 100644
->>>>>> --- a/mm/rmap.c
->>>>>> +++ b/mm/rmap.c
->>>>>> @@ -2448,7 +2448,6 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>>>>   			if (flags & TTU_SPLIT_HUGE_PMD) {
->>>>>>   				split_huge_pmd_locked(vma, pvmw.address,
->>>>>>   						      pvmw.pmd, true);
->>>>>> -				ret = false;
->>>>>>   				page_vma_mapped_walk_done(&pvmw);
->>>>>>   				break;
->>>>>>   			}
->>>>>
->>>>> How about the patch below? It matches the pattern of set_pmd_migration_entry() below.
->>>>> Basically, continue if the operation is successful, break otherwise.
->>>>>
->>>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>>> index 618df3385c8b..83cc9d98533e 100644
->>>>> --- a/mm/rmap.c
->>>>> +++ b/mm/rmap.c
->>>>> @@ -2448,9 +2448,7 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>>> 			if (flags & TTU_SPLIT_HUGE_PMD) {
->>>>> 				split_huge_pmd_locked(vma, pvmw.address,
->>>>> 						      pvmw.pmd, true);
->>>>> -				ret = false;
->>>>> -				page_vma_mapped_walk_done(&pvmw);
->>>>> -				break;
->>>>> +				continue;
->>>>> 			}
->>>>
->>>> Per my understanding if @freeze is trur, split_huge_pmd_locked() may "fail" as
->>>> the comment says:
->>>>
->>>> 		 * Without "freeze", we'll simply split the PMD, propagating the
->>>> 		 * PageAnonExclusive() flag for each PTE by setting it for
->>>> 		 * each subpage -- no need to (temporarily) clear.
->>>> 		 *
->>>> 		 * With "freeze" we want to replace mapped pages by
->>>> 		 * migration entries right away. This is only possible if we
->>>> 		 * managed to clear PageAnonExclusive() -- see
->>>> 		 * set_pmd_migration_entry().
->>>> 		 *
->>>> 		 * In case we cannot clear PageAnonExclusive(), split the PMD
->>>> 		 * only and let try_to_migrate_one() fail later.
->>>>
->>>> While currently we don't return the status of split_huge_pmd_locked() to
->>>> indicate whether it does replaced PMD with migration entries successfully. So
->>>> we are not sure this operation succeed.
->>>
->>> This is the right reasoning. This means to properly handle it, split_huge_pmd_locked()
->>> needs to return whether it inserts migration entries or not when freeze is true.
->>>
->>>>
->>>> Another difference from set_pmd_migration_entry() is split_huge_pmd_locked()
->>>> would change the page table from PMD mapped to PTE mapped.
->>>> page_vma_mapped_walk() can handle it now for (pvmw->pmd && !pvmw->pte), but I
->>>> am not sure this is what we expected. For example, in try_to_unmap_one(), we
->>>> use page_vma_mapped_walk_restart() after pmd splitted.
->>>>
->>>> So I prefer just remove the "ret = false" for a fix. Not sure this is
->>>> reasonable to you.
->>>>
->>>> I am thinking two things after this fix:
->>>>
->>>>    * add one similar test in selftests
->>>>    * let split_huge_pmd_locked() return value to indicate freeze is degrade to
->>>>      !freeze, and fail early on try_to_migrate() like the thp migration branch
->>>>
->>>> Look forward your opinion on whether it worth to do it.
->>>
->>> This is not the right fix, neither was mine above. Because before commit 60fbb14396d5,
->>> the code handles PAE properly. If PAE is cleared, PMD is split into PTEs and each
->>> PTE becomes a migration entry, page_vma_mapped_walk(&pvmw) returns false,
->>> and try_to_migrate_one() returns true. If PAE is not cleared, PMD is split into PTEs
->>> and each PTE is not a migration entry, inside while (page_vma_mapped_walk(&pvmw)),
->>> PAE will be attempted to get cleared again and it will fail again, leading to
->>> try_to_migrate_one() returns false. After commit 60fbb14396d5, no matter PAE is
->>> cleared or not, try_to_migrate_one() always returns false. It causes folio split
->>> failures for shared PMD THPs.
->>>
->>> Now with your fix (and mine above), no matter PAE is cleared or not, try_to_migrate_one()
->>> always returns true. It just flips the code to a different issue. So the proper fix
->>> is to let split_huge_pmd_locked() returns whether it inserts migration entries or not
->>> and do the same pattern as THP migration code path.
->>
->> How about aligning with the try_to_unmap_one()? The behavior would be the same before applying the commit 60fbb14396d5:
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 7b9879ef442d..0c96f0883013 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2333,9 +2333,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>                         if (flags & TTU_SPLIT_HUGE_PMD) {
->>                                 split_huge_pmd_locked(vma, pvmw.address,
->>                                                       pvmw.pmd, true);
->> -                               ret = false;
->> -                               page_vma_mapped_walk_done(&pvmw);
->> -                               break;
->> +                               flags &= ~TTU_SPLIT_HUGE_PMD;
->> +                               page_vma_mapped_walk_restart(&pvmw);
->> +                               continue;
->>                         }
->>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->>                         pmdval = pmdp_get(pvmw.pmd);
->
->Yes, it works and definitely needs a comment like "After split_huge_pmd_locked(), restart
->the walk to detect PageAnonExclusive handling failure in __split_huge_pmd_locked()".
->The change is good for backporting, but an additional patch to fix it properly by adding
->a return value to split_huge_pmd_locked() is also necessary.
+The reason I wanted this an explicit API is that oom states are quite
+internal part of the oom synchronization. And I would really like to
+have that completely transparent for oom policies. In other words I do
+not want to touch all potential oom policies or break them in the worst
+case just because we need to change this. So while a trivial interface
+now (and hopefully for a long time) it is really an internal thing.
 
-Right. IIUC, after split_huge_pmd_locked() we always have 512 PTEs: either
-migration entries, or present PTEs with PageAnonExclusive still set.
+Do I insist? No, I do not but I would like to hear why this is a bad
+idea.
 
-And try_to_migrate_one() doesn't use PVMW_MIGRATION. So when we restart the
-walk we're either seeing migration — then map_pte/check_pte() won't match,
-we hit not_found() and leave the loop with ret still true.
-
-Or we see present (with PageAnonExclusive still set) — then we drop into
-the normal PTE path, call folio_try_share_anon_rmap_pte() again, and set
-ret=false when it fails.
-
-Cheers,
-Lance
+-- 
+Michal Hocko
+SUSE Labs
 
