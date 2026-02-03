@@ -4,86 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C09EFE87839
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 14:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A13ECE8783D
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 14:35:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 285AE6B00B4; Tue,  3 Feb 2026 09:25:20 -0500 (EST)
+	id CB1BD6B0098; Tue,  3 Feb 2026 09:35:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2517E6B00B5; Tue,  3 Feb 2026 09:25:20 -0500 (EST)
+	id C5F366B00B6; Tue,  3 Feb 2026 09:35:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1677C6B00B6; Tue,  3 Feb 2026 09:25:20 -0500 (EST)
+	id B8BEA6B00B7; Tue,  3 Feb 2026 09:35:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 053A36B00B4
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 09:25:20 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 939921404EA
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:25:19 +0000 (UTC)
-X-FDA: 84403367958.17.4822599
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B045DA0016
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:25:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AA5D66B0098
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 09:35:22 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6E734C1D48
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:35:22 +0000 (UTC)
+X-FDA: 84403393284.24.D37717D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D5B21C0008
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 14:35:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ckCF3gUV;
+	spf=pass (imf28.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770128718;
+	s=arc-20220608; t=1770129320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mVP/It2tFjYqnbQaiYI9VXaDpG0AypbPTzyvuoIbiyY=;
-	b=BX78ZYjc69URTLNpKaoqxt1JdEFakEIkGTd9AfwKGhgd5dxK8okLDyHCKWcFRUToTNiTDa
-	PUnB/uwY2pqUZoR4HCQXMZkRkLbzWFz7jcEc3ZuBxKbDoF8rg/nVuwSlhkBxzJllqZ0dSo
-	Kx7LHyumEhOuRnGstLd9RO5Nh7dr4Qo=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=tllAnUT8mlRJORGwuMqeNqE59/4Exx2o4EGdpPTdzWs=;
+	b=PPWr8Hw4f3UTFA6isiFjYfg852F9EyFgipKHWBmuj3SFiM9VO7WADkbJO6BYZlL9JC9eQL
+	NGCvk31KRYcbEcwl6h3tL5WdSXrjYe257PSXsdGTJtDrz51y4OoraUudxTjCuL9BAFFbBs
+	iTQ851zkVD7A85OGpu5bm1gF6VmRgD0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770128718; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ckCF3gUV;
+	spf=pass (imf28.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.10 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770129320; a=rsa-sha256;
 	cv=none;
-	b=Xoy0MmZ+VrTqKkKSTctJ/Gw098w1kpHKug5Ux3feLuOpyK4A2HcyMrMbT11bVn0ea9duWx
-	JTv/dY52Qv8ILKJ8nX0dShC3/ld3lakF+Cc8fspuLK172x2ohplhvvqCdzoMjkGUVj/2hc
-	vl2so8LzuO8s4JcEHB4YiMxpXxy382c=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f55Ms2qPqzJ46CD;
-	Tue,  3 Feb 2026 22:24:25 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id DAA2E40569;
-	Tue,  3 Feb 2026 22:25:12 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 3 Feb 2026 17:25:12 +0300
-Message-ID: <af4f3e15-a306-4728-b5bf-1deaa700c99b@huawei-partners.com>
-Date: Tue, 3 Feb 2026 17:25:11 +0300
+	b=hOgyd4afFWqnHGCYN03rPNdf3ebYoKLgvyOa3NYLePNy90XKT2UYoD6lX+MZhuuA/Md/u0
+	J5n3vQcRpt6OI2gqSkzlfQEq1YxVHOdMB21HZZk80k2lnzLEgYbevZzp+OAxIyn0mQJ2FN
+	85lStRjjS5zb7w6Dq/ZkaLqg9i1MGvM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770129320; x=1801665320;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gHhxN6CXwkf40kYnaBa2r/QM0E1cp8eHB6SFVk3SDEs=;
+  b=ckCF3gUViI6BlpuSWfhqgC+TNg7LkTu41jCGAxPmAGqfwGMzIgF7uoCC
+   muA/Gq/JWb9KDVqXY82Kri9pk8u2BjPgWY5cHsHdfIZha6NRYvsRYYagw
+   98YGwAu2f3V/m7/A7sSbVxMjCaTQNIAF1bIsJPLXdC3kSKlQku4caFsM8
+   Cic3iJUWgsAxx4SgurA8olFGBpfXdPYcPT4da+dPWB1Fcu6pbgxOrLGCG
+   04IlMvd8E4MND8DV+ap3ZPN8i1shX/Hi9LZ8Hx0xu1waDGyeCF4j6j0Q9
+   fHMwBlgVSlt0vZe7rZ99TMwDDe/N1vgMETJT+BQyFX+0er183xpm/+MUS
+   Q==;
+X-CSE-ConnectionGUID: ntICuo4UR/CQ6pw+8oSuYQ==
+X-CSE-MsgGUID: yaEbKj3kSsiiCsx/PSONkQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="88722756"
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="88722756"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 06:35:19 -0800
+X-CSE-ConnectionGUID: ZwOGZvpDT8mZPEX1B4OqYQ==
+X-CSE-MsgGUID: lxzhFc3nRnyKll0zH2HsWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
+   d="scan'208";a="209574218"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO fedora) ([10.245.245.55])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 06:35:15 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Tue,  3 Feb 2026 15:34:34 +0100
+Message-ID: <20260203143434.16349-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 0/4] mm/damon: Support hot application detections
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260203011020.67357-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260203011020.67357-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam12
-X-Stat-Signature: kk9qbf4n3x9qyp88mo8b9by58ya3xr99
-X-Rspamd-Queue-Id: B045DA0016
+X-Rspamd-Server: rspam11
+X-Stat-Signature: hfgatjh6e4na1rykkwj8zu33g6tc4xh4
 X-Rspam-User: 
-X-HE-Tag: 1770128717-333928
-X-HE-Meta: U2FsdGVkX19KxW2aeGjwHM5fJVpfbwv2FPm0CxOyXCEYXiRdra1ORx+Lwgkoh+ypq7WvNWni72J+EK8MWH6f6x1cVZiEijb1ldfbU7YOljZnuyQc8HrQnD+bfC2zjQbD9qPJI4bomwOwAtGEFUaB2syVHIXlRs941dWpDzkUq3ZrXsGqPdy2VTaw8nuFCrJJ219rNQRa0WY0h859zV+ROey11Nv9bbUfKkQ/ELTKMG0GLgwTR+P7ZS0Kp+wzZl0fvTsLsfMpqeZoRLQPJdXo+tW5rGbUi5N77sz27EO187UI9936N4hlnQSC+r5vAY5NjjWQ4cLHcsDZ/K/X+d3H8lmVzzirGkcSnqSmWWtGiktx/f2Lix8LVahng34V0ppgxPUOlNtJfB+qvcZkklSnZYQglohWnaHwGiZl2j9cDOs8o1Z/bkkS9pzMb7olne1kUNAQxDSUQ80f9MWw0NbXfIliQzONGBOsrxKLEmJXskppO9SnsGxrGproUa9nKxadjAly96z4qFcb69I79JPGMyuogBXSkw4bTilh1rAeVukxu6ZDPW+WzCwLltY98nhZA6iqGdMcFn6FPP/mOjx7Pq28+Fw5Ev4QmhKA6heWtLV1j/c/DCYbWzUzbLMdixCm6VGKLJzAIlWTSzdEQbXe9ErQjjykqmZSvMatD2kcCi4nGGNXaDCKOiDEHr6ksL+7ZDoAr97eW0Av5eu28zPc/6WOVcFcSmjG9i0JhZZn/1vBnm20uEgnVDnNRBfW98WUELEVamAtyqRweAU5D6D9b4vsHRbnzM8TGvJaMeALe+y1Ou43AvTdrOcQDE+CJ5Yq5A5IQiRxubNFuH4Dq8UAEkrnTVjNv2YqrPMHnCgZB7So7b/5DvAY2I8tnanlKplAv3+n74adsRrkHep5QDhAzw==
+X-Rspamd-Queue-Id: D5B21C0008
+X-HE-Tag: 1770129319-489894
+X-HE-Meta: U2FsdGVkX19JSYRqcnUCgYiVxbjlVERK5tIDxASL+a9H2H2sSBBBKRKnV7R7tukKum8K6YRrG1ei7D0bozLk3JaDmD3T/to/JdGwlbCfoCBjNOkDdE0mX9Cg8gz7jm2kANKWVBIbQCWZLnFZiPWP+TETwAgIF9PCh4hoiuJHWn2DLcoSHNpzn2s8kKTFb0k4zbsWb91g3jKqpn6ARL6/ITrOJMOKAqBqid89zrpVtEErtcPKtJRgcDMonQHeiobqHesSU4auxGe/FkQob3Tkkx0PPsIGmz51wmow7pzFSpA1EZJr1wPeVbZyDIdsuNDmsykqmvwpI2bYqT0lli1Jza1XQyGD7Q0M79m5QBcHmX3VejN2vd8SLUsye/4b4uhYWzj19JsHqSLI0Tec6VSye04EjOQ2jrlP2QTU0JjPfkuuDphMr9hfnCf8wmtAOQAxLH+sPJFh7W8OXu/wbMrRJYponSZexDz7aqwZ4csxfGPejmqPCVmre05QsS7mQw2U4rr88+lSoeeEOqAZdmZxvKfVRAfmqJuRbD15vDhUQj0UIRBkT1vuEditoNjL3NT6z6ntKS3+8FHFMjdeb4XH7CrQNHVvu3aF05XMvg3lWI6+vhrw96Tu/vsdUPSHcGN+WjYhBOepJn/VgGWOUaAkg5VPjSczjzDnKNdoZ1QBUUzxxp4yVHm5hzVUIDyR1J0Y3EtUiULNrj9uT5wlWYy5HR9wxkaOc/01be4QC/ZUOaUHyCjRVj+cdZ5teIrV2f69HzpaZE2ORX4nHrEdUN4JqvT9HxAb1ke0Qm9Fx4Poi1AhOjNqMxqy6smhX0LbNsY4yaobBOfJl+RePrFErRf3q0MpMF0H3OUW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,119 +111,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-SeongJae,
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
 
-Thanks a lot for all the useful feedback.
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
 
-One thing that I was not sure about while working on this patch set
-is whether to have an external new module or adding the logic to 
-damon core. I mean, the hot application detecting can be useful for
-all other modules and can improve DAMON performance. What do you think?
-My implementation was module based because I tried to avoid changes
-to DAMON core for the RFC.
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+The lru_add_drain_all() function requires a short work-item
+to be run on all online cpus to complete.
 
-On 2/3/2026 4:10 AM, SeongJae Park wrote:
-> Hello Asier,
-> 
-> 
-> Thank you for sharing this nice RFC patch series!
-> 
-> On Mon, 2 Feb 2026 14:56:45 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
->>
->> Overview
->> ----------
->>
->> This patch set introduces a new dynamic mechanism for detecting hot applications
->> and hot regions in those applications.
->>
->> Motivation
->> -----------
->>
->> Currently DAMON requires the system administrator to provide information about
->> which application needs to be monitored and all the parameters. Ideally this
->> should be done automatically, with minimal intervention from the system
->> administrator.
->>
->>
->> Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
->> hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
->> fragmentation and memory waste. For this reason, most application guides and
->> system administrators suggest to disable THP.
->>
->> We would like to detect: 1. which applications are hot in the system and 2.
->> which memory regions are hot in order to collapse those regions.
->>
->>
->> Solution
->> -----------
->>
->>      ┌────────────┐           ┌────────────┐
->>      │Damon_module│           │Task_monitor│
->>      └──────┬─────┘           └──────┬─────┘
->>             │         start          │
->>             │───────────────────────>│
->>             │                        │
->>             │                        │────┐
->>             │                        │    │ calculate task load
->>             │                        │<───┘
->>             │                        │
->>             │                        │────┐
->>             │                        │    │ sort tasks
->>             │                        │<───┘
->>             │                        │
->>             │                        │────┐
->>             │                        │    │ start kdamond for top 3 tasks
->>             │                        │<───┘
->>      ┌──────┴─────┐           ┌──────┴─────┐
->>      │Damon_module│           │Task_monitor│
->>      └────────────┘           └────────────┘
->>
->>
->> We calculate the task load base on the sum of all the utime for all the threads
->> in a given task. Once we get total utime, we use the exponential load average
->> provided by calc_load. The tasks that become cold, the kdamond will be stopped
->> for them.
-> 
-> Sounds interesting, and this high level idea makes sense to me. :)
-> 
-> I'd like to further learn a few things.  Is there a reason to think the top 3
-> tasks are enough number of tasks?  Also, what if a region was hot and
-> successfully promoted to use huge pages, but later be cold?  Should we also
-> have a DAMOS scheme for splitting such no-more-hot huge pages?
-> 
->>
->> In each kdamond, we start with a high min_access value. Our goal is to find the
->> "maximum" min_access value at which point the DAMON action is applied. In each
->> cycle, if no action is applied, we lower the min_access.
-> 
-> Sounds like a nice auto-tuning.  And we have DAMOS quota goal for that kind of
-> auto-tuning.  Have you considered using that?
-> 
->>
->> Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
->> collapse synchronously and avoid polluting khugepaged and other parts of the MM
->> subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
->> which needs the correct vm_flags_t set.
->>
->> Benchmark
->> -----------
-> 
-> Seems you forgot writing this section up.  Or, you don't have benchmark results
-> yet, but only mistakenly wrote the above section header?  Either is fine, as
-> this is just an RFC.  Nevertheless, test results and your expected use case of
-> this patch series will be very helpful.
-> 
-> 
-> Thanks,
-> SJ
-> 
-> [...]
-> 
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
 
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
+
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in the do_swap_page() function.
+
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
+
+v2:
+- Instead of a cond_resched() in the hmm_range_fault() function,
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
+
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+---
+ include/linux/migrate.h | 6 ++++++
+ mm/memory.c             | 3 ++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..800ec174b601 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -97,6 +97,12 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ 	return -ENOSYS;
+ }
+ 
++static inline void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+diff --git a/mm/memory.c b/mm/memory.c
+index da360a6eb8a4..ed20da5570d5 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				migration_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
 -- 
-Asier Gutierrez
-Huawei
+2.52.0
 
 
