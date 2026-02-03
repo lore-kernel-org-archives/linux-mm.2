@@ -4,137 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC30E83071
-	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 10:15:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A9FE8307C
+	for <linux-mm@archiver.kernel.org>; Tue,  3 Feb 2026 10:17:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 191E06B0005; Tue,  3 Feb 2026 05:15:32 -0500 (EST)
+	id 3B9C96B008C; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 146356B0088; Tue,  3 Feb 2026 05:15:32 -0500 (EST)
+	id 363B46B0092; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04BB66B008C; Tue,  3 Feb 2026 05:15:31 -0500 (EST)
+	id 2525E6B0093; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E8E3A6B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:15:31 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34DEE1B1C53
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:15:31 +0000 (UTC)
-X-FDA: 84402738462.08.950162B
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf05.hostedemail.com (Postfix) with ESMTP id B6FA7100009
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:15:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WecfiqfN;
-	spf=pass (imf05.hostedemail.com: domain of yilun.xu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1347B6B008C
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 05:17:18 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC21014041B
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:17:17 +0000 (UTC)
+X-FDA: 84402742914.07.103DCDF
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	by imf22.hostedemail.com (Postfix) with ESMTP id BA080C000C
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 10:17:14 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=lUAE2uVq;
+	spf=pass (imf22.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770113729;
+	s=arc-20220608; t=1770113835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qo0LlT3R6FZA/L6tL7OikHZG2iaBEOMkaq9rfc+AsKE=;
-	b=vklw8zKDbnmqV7DpzjvTjsKkYGEvYKORU2ta7kC1uj1jYT09W2SoBqQwZPjPlTX/bzkiRK
-	WWfhurfy6DSCQAst6wtNIh1oXC504rVb1eDbHHp8rncELufD7ipSoI/MPqRQV/Hkkieqmh
-	JPsq50IPZ/Nw2hc8Ow2H93n4yUwPh3o=
+	bh=bIz4RVwkv6KARy4MwQOhUdd22JeZFr0fFrNF7J4bRPM=;
+	b=6mtqhtKnFrtKfw+sG0O0LyCAptmP4WVquNC6zIOeJSpoqlWMbodB7h8GLZQTtHiz0E4bdt
+	iWxHN6Pc5rK7jQM0Nv7dNLr7R7DRcXn1GJF16b9WTes/ZmKGXe9jcj7GgDKA5kyZuPfovr
+	Y1gDbF1327aPUjX5dnzSvUeJdyeH2Ws=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WecfiqfN;
-	spf=pass (imf05.hostedemail.com: domain of yilun.xu@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770113729; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=lUAE2uVq;
+	spf=pass (imf22.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770113835; a=rsa-sha256;
 	cv=none;
-	b=X5csRkAAC/ONgaaALyF9SZ5n3xFMDmxPM7YWZeuzdyF9NK0kGyOUVRWXp2MDXCmAf5uYM6
-	HIzlwp1Wm4YueclxGwfzy4LA6cWwAn/43zwmDJFWMfWEktRDg/vrZKktTAcfQGu267cjaq
-	u/Tv9pm4hVafPVDeG3mqkYoZuEQyxNg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770113729; x=1801649729;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ltTqItvs5DEbQAayR00+PqL/+NRtgJq6ixieEinQSY4=;
-  b=WecfiqfN3+4HFolw1eDY6s8izhfOKd5mIlACq4SNyLDdV7LZdJGup/dh
-   dF4RTtswcYMDTBlXyKBJNlxWJKjLHBK1Jijr1pS4tXJ+B2m3HnH5pqXCD
-   3KSKwZyfPgHYxd+BuzRQsrGHC7969OAFfinYkL6jAkAFhxdCDbu9skHRK
-   glr5iLRGVf6YyeJaav+Ow6h3rPGosVKqBaBd6ARl6v8gYA0EUDNDa+NZR
-   RP8rGyw+YQ4SDzY2XB9TZlIJUJAmRpOv+4d5HibA6P7RtbffylkKdyggK
-   E22AVdJ3ySq+v6b4ojEYV1aUl87JkcAQj5kODenzgBIHHGEp8jV4AROFg
-   Q==;
-X-CSE-ConnectionGUID: yRUH+GSTSEqb5phzuWvVIA==
-X-CSE-MsgGUID: lFf70l+hTQecmpxkVSTfQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11690"; a="96738262"
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="96738262"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 02:15:27 -0800
-X-CSE-ConnectionGUID: QSwRDmD1RvONYQUf1EbLaA==
-X-CSE-MsgGUID: +XVLnH3CSfiSKxpDX9/BtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,270,1763452800"; 
-   d="scan'208";a="209093662"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa010.jf.intel.com with ESMTP; 03 Feb 2026 02:15:05 -0800
-Date: Tue, 3 Feb 2026 17:56:37 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Ackerley Tng <ackerleytng@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
-	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
-	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
-	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
-	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
-	keirf@google.com, kent.overstreet@linux.dev,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maobibo@loongson.cn,
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
-	qperret@google.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
-	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
- kvm_get_memory_attributes() to per-gmem attributes
-Message-ID: <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
-References: <cover.1760731772.git.ackerleytng@google.com>
- <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
- <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
- <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
- <20260129003753.GZ1641016@ziepe.ca>
- <aXqx3_eE0rNh6nP0@google.com>
+	b=xWDmd13cV+PtaJ/lXtgmCFp1Xv+MBbd7pl6di3FuJO+gRMxE/iGOsOctT03nAvnAeTBluE
+	7bhZ3gSmTubXPmSWOcLhWKsAfWI9t+32aZsf23RE8g4Qe9N58DMN2T3zzkuiUK2zGgV8pz
+	sJ8S0pCNJ6vZEhc0RR+JAsyrEA0yzzI=
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4f4ztd00Nsz1FDXZ;
+	Tue,  3 Feb 2026 11:17:13 +0100 (CET)
+Received: from [10.10.15.18] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4f4ztY1CK4z1DHbc;
+	Tue,  3 Feb 2026 11:17:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1770113832;
+	bh=bIz4RVwkv6KARy4MwQOhUdd22JeZFr0fFrNF7J4bRPM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lUAE2uVqAzYhZ1sm97fYuqy+vlFYURoO/ESgRDOLYwoPcj+AJLYcKftxzXr+4y/HX
+	 2YOyDda3zoXt+26+AX8pMM7QHh5T+XJuM4W03HRzJukix5g8rdsb/fjilKm09oxzSx
+	 tBwy+nern6bg1a50/KfLMYddppMeG7txUbC4/AmsAXT1tuu3+smPwBXiUUqokjSpVv
+	 UUsrhLX04O7HNQNLLVmIA6iNk0y72m91fWDt4UXVjn71WutyJfQfTM3K8uFvvtoUBz
+	 jIXUHdgIYTlrZQBjHS4KV4lgMsEWYt8Uw9Kgk+K14XLmF28umAniXCSL8090kqia/S
+	 lC0jknJm/j/RQ==
+Message-ID: <ec965a79-dad8-4358-a8e9-ebc9f330b67b@gaisler.com>
+Date: Tue, 3 Feb 2026 11:17:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXqx3_eE0rNh6nP0@google.com>
-X-Stat-Signature: 6eih6wru63f1qho7gj9b51k7cq86x6gu
-X-Rspamd-Queue-Id: B6FA7100009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable] arch, mm: consolidate empty_zero_page
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
+ <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org
+References: <20260124095628.668870-1-rppt@kernel.org>
+ <2157220c-0394-40fa-9918-a8514171bd10@gaisler.com>
+ <aXj_x5CyUeys7ONM@kernel.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <aXj_x5CyUeys7ONM@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770113728-582042
-X-HE-Meta: U2FsdGVkX18TWkGUKGrPO286+WPidptZ2pNP90/b+q8d5/a23aePJOHKnUojkHqG7W0ADSyqC68MqhttjoWXOTT5iDvWl0gqH3KleeidRWpPkudcbGlTlsGQjQ3j2xzAs2Gw/L+T2ROsT3KspX50HvERHZEmjajglTAVwpIutZE48pRVwBhrEUcy5uz5U6jSAFUIZHMB6qV2t3Q4BoaiXNcAEtRQhGD6mt3z8GNr0T5EQ7Q+NNxteZIctx3PU61R9GOV+A5rTM4jKYSAgR7sPnZsDhgRznqfFsJblrBM0ZylqwM23Z9sI5+rTmIwukKfqhQ9d4SdJisAfPXQjS8Iu9hGlLTJLPiDQ9mTZODPNsq+9UwZD0h88WLnFJOXFijKbw6k2EViLSDg+nntk0R9Dor4alRoNBOT3egLcDHTIVhY9+v3ZH6yUnVuQ0nihAXgZjQVdd+B+GMdN3AXVme8602Bn3fm+sd5wR8BhjBWvff2b+5NTntyxq36FAtL6h4yBLVATWFcpKNCUgKGw3zgNotF62zWve5/b/TiZpwxgvpDAM8NEMnOzmGVrmXvG8cXmiNnIj06jeyGhh88OuTI9mh7kYx1u6iPHV5TT5cIdXdJicGK1RYjSOCaFT0fq1bbmK03ZvSIWAaWZ9RIs0T+leiQKjcp4kzmNjPuXEX7jLhB+TeDiRzqwo/3AakBuMwWa6iY7n8i7BvrkiXWVwUUgNZHxDN1EtpMNNEODjUEDkpt+/kmnGG2HqLJLNjrONzkGc7hkIc3UYRe+oG1lBUkVaOz6qUoqAako8boZaRE3IMTnOPGtteWwqKlGaVTm6NGhFIHQRPFZR5gdt1maLfxKS4PdlRhRVYOThIGM21euI5r//RIuq4rVI4RI+wFNFRkdchFdotgV+g4t20zmj2Divr84yWF2Cbn6qDo8Z5MdNuu239sx9kdVFQPoxk7Mn3sAYP5OK1IaJjjN5OWjJr
- +S5eawPZ
- 1RMASkWj7VBINzWczFgyIgVRaMZxZ9p7J/Get1db2yluFtNHmdrrp14iKQBkYUvVoIZrFG3eIga3FvHANNBnF8CJ5c/m0jMb/sveWDK/Jr71kFPu7kQUG1DL7lct+wy9LVAVUGWLLeD382NuZ7srf8e89a3rgkms0/K2Ha+Z/MKZZOToJUI9YtcpM3z4qeJfTHBVUUF7mKpQOdQtdbRvxIoQRR9HqI3t+AXItcyAv64HYYPzaEWb9S2HOERKR7+9OptPzYMmytMXxALAlZ3mYWh8Z8X9vY+fw1USPVueRKg3GgKCuhhCpE8e7OheugPpidmyP+dMHdlmWCuajJwRhSEdy9nc2QZlUuSqS
+X-Rspamd-Queue-Id: BA080C000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: mbkkq3gutm5uytow1mkqchbnyj9ca7x1
+X-HE-Tag: 1770113834-367313
+X-HE-Meta: U2FsdGVkX1+gBpTWX+CQGX96+Vz8aaFiobAZV8uSyGIty1G7NE5f8kH70XYffavCdhJs4wpi8N0Of5dThZn1XOHjSZKr83mc19hIFDcVLZysa4E1w7MJSyfeTGjhZ0BSevGhTRyTw/NtdJoUFNY6nJq+1LX03GZXwayXUW3XPKG5oyChDoQS6dZAwHuPYUWi+8fCozS6O2B5UEJmimlajIiOEWKAP+A+INqcESK2c+qh0vb5n29qgVTTT2NUJmKP9plHlrXnBiQXbOe14yfA8O4tXTsFqZvJvU3S88pBG/haAntNNshnbb19pXrlEd4z9VW+QyQ59D1vXY6XMnKYKT6AKb+CvFA53LC88c2/B8nADTwUYXVpDnGXSrJuOElpAySGrQqUUD0MUlMxWwww915ddzbRN7ykVw4mBfWtHMC5zoa8CH8t00jnbpp9hDZuFhh7PVkyHGMhIBC7ZeEmBH29o1nzWuuVaSazbnMZewM2g9unfKDPBvbuD8QtQT4rZvLVeFA5jRaPSzN3AtdAz1Q8WezkzgDXNV8leZdV0pUQ5wQemMYMk+lJ3f41WTPnlDLPBwHFsAdcTixWdJce1B2tqlOdVXQDtR43Xe22KVgfnEvyREOJRXnpF9ekLYK9LrgOhJ2ZFDDR+Rn406gdSDa7VP3TeIx/b5FGKLdgZwFEBqtceO1psHSs5mvcJwezjJ/XokUk0M7Bv/MdKBRTemihsdxmOuOb85njxtyo+5G8SWtiGHE4MJfg631ZGwjU1/KZStbCzS0l3SU1/q8oOMMcdiwSahmYOLovAri6YwjOFWXeC2XpNniM+LEZy20LWkhF4nvjwIeSM+9PZLpS65z3MbzwpKRDZeIbKFFPmDTMPG7hp+FPm44KHdpak2uLuCHFo0tzr5j1JezjOJlP2D51R0wXagqDEZftUy+VHW7LGeQnNXmESr/jFU2whscykCEoSHr7Vc+bMuxhBx6
+ +Z+B/ay2
+ lOdNTRot0P65xqtSnNnyEID0LBfgEal4Fhr5ZAZ1YIeENsUK7jmWbNRH8mB3B27ZLTBKz1FOeLNzg+ndUoTNG4kHUNH79gutU93PoHv7r1hYOoBaCiFX6imqXETPXj0qDF0y8GUWQAQd/dP4bkR8FjWT7OPc5G35O+xmgqj69FnMfC06Ej/OmhW8nE0hXOfzK51gFdgAmiWT6szqEtxyrBOP3OHgx0V4COrVZdAZ1rR4l2aG8/fbn6T3T/ZdBlrUhcevgZAC7+VR8c2m5fywiF4o6GiP97jJGgJS75P7MhNBDjaD09JXrug/Br/8JNSnaV4w4H5VTLJYNeNU2HCTRlfJNl0QAAGOw9qrH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,40 +127,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> +1.  For guest_memfd, we initially defined per-VM memory attributes to track
-> private vs. shared.  But as Ackerley noted, we are in the process of deprecating
-> that support, e.g. by making it incompatible with various guest_memfd features,
-> in favor of having each guest_memfd instance track the state of a given page.
+On 2026-01-27 19:11, Mike Rapoport wrote:
+> On Tue, Jan 27, 2026 at 05:02:39PM +0100, Andreas Larsson wrote:
+>> On 2026-01-24 10:56, Mike Rapoport wrote:
+>>
+>>> Every architecture defines empty_zero_page that way or another, but for the
+>>> most of them it is always a page aligned page in BSS and most definitions
+>>> of ZERO_PAGE do virt_to_page(empty_zero_page).
+>>
+>> Running this in an LDOM on an UltraSparc T4 sparc64, the entire LDOM
+>> hangs after a while during boot.
+>>
+>>> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+>>> index c2d19c9a9244..2bd99944176d 100644
+>>> --- a/arch/sparc/mm/init_64.c
+>>> +++ b/arch/sparc/mm/init_64.c
+>>> @@ -177,9 +177,6 @@ extern unsigned long sparc_ramdisk_image64;
+>>>  extern unsigned int sparc_ramdisk_image;
+>>>  extern unsigned int sparc_ramdisk_size;
+>>>  
+>>> -struct page *mem_map_zero __read_mostly;
+>>> -EXPORT_SYMBOL(mem_map_zero);
+>>> -
+>>>  unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
+>>>  
+>>>  unsigned long sparc64_kern_pri_context __read_mostly;
+>>> @@ -2506,18 +2503,6 @@ void __init mem_init(void)
+>>>  	 */
+>>>  	register_page_bootmem_info();
+>>>  
+>>> -	/*
+>>> -	 * Set up the zero page, mark it reserved, so that page count
+>>> -	 * is not manipulated when freeing the page from user ptes.
+>>> -	 */
+>>> -	mem_map_zero = alloc_pages(GFP_KERNEL|__GFP_ZERO, 0);
+>>> -	if (mem_map_zero == NULL) {
+>>> -		prom_printf("paging_init: Cannot alloc zero page.\n");
+>>> -		prom_halt();
+>>> -	}
+>>> -	mark_page_reserved(mem_map_zero);
+>>> -
+>>> -
+>>>  	if (tlb_type == cheetah || tlb_type == cheetah_plus)
+>>>  		cheetah_ecache_flush_init();
+>>>  }
+>>
+>> This just removes the mark_page_reserved(mem_map_zero) without 
+>> replacing it with something corresponding to that. Perhaps part
+>> of the problem?
 > 
-> The original guest_memfd design was that it would _only_ hold private pages, and
-> so tracking private vs. shared in guest_memfd didn't make any sense.  As we've
-> pivoted to in-place conversion, tracking private vs. shared in the guest_memfd
-> has basically become mandatory.  We could maaaaaybe make it work with per-VM
-> attributes, but it would be insanely complex.
+> I don't think so, empty_zero_page is in BSS now an it's reserved as a part
+> of the kernel image.
 > 
-> For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
-> is all or nothing, and can never change, then the only entity that can track that
-> info is the owner of the dmabuf.  And even if the private vs. shared attributes
-> are constant, tracking it external to KVM makes sense, because then the provider
-> can simply hardcode %true/%false.  
-
-For CoCo-VM and Tee-IO, I'm wondering if host or KVM has to maintain
-the private/shared attribute for "assigned MMIO". I'm not naming them
-"host MMIO" cause unlike RAM host never needs to access them, either in
-private manner or shared manner.
-
-Traditionally, host maps these MMIOs only because KVM needs HVA->HPA
-mapping to find pfn and setup KVM MMU. Now we have FD based approach so
-with dmabuf fd, host no longer needs mapping. Does that give confidence
-that KVM only needs to setup MMU for this type of MMIO as private/shared
-according to guest's intension (which is fault->is_private)?
-
-We don't need to track private/shared in VFIO MMIO dmabuf, only to keep
-them unmappable.
-
+> I suspect that virt_to_page() does not work BSS symbols on sparc64. Can you
+> please try with this patch:
 > 
-> As for _how_ to do that, no matter where the attributes are stored, we're going
-> to have to teach KVM to play nice with a non-guest_memfd provider of private
-> memory.
-> 
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 74ede706fb32..0578c5172d4e 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -22,6 +22,7 @@
+>  #include <asm/adi.h>
+>  #include <asm/page.h>
+>  #include <asm/processor.h>
+> +#include <asm/vaddrs.h>
+>  
+>  /* The kernel image occupies 0x4000000 to 0x6000000 (4MB --> 96MB).
+>   * The page copy blockops can use 0x6000000 to 0x8000000.
+> @@ -210,6 +211,11 @@ extern unsigned long _PAGE_CACHE;
+>  extern unsigned long pg_iobits;
+>  extern unsigned long _PAGE_ALL_SZ_BITS;
+>  
+> +extern unsigned long kern_base;
+> +#define ZERO_PAGE(vaddr)						   \
+> +	(virt_to_page(empty_zero_page + ((unsigned long)__va(kern_base)) - \
+> +		      ((unsigned long)KERNBASE)))
+> +
+>  /* PFNs are real physical page numbers.  However, mem_map only begins to record
+>   * per-page information starting at pfn_base.  This is to handle systems where
+>   * the first physical page in the machine is at some huge physical address,
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index 2bd99944176d..d2d724ba4f83 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -170,6 +170,8 @@ static void __init read_obp_memory(const char *property,
+>  
+>  /* Kernel physical address base and size in bytes.  */
+>  unsigned long kern_base __read_mostly;
+> +EXPORT_SYMBOL(kern_base);
+> +
+>  unsigned long kern_size __read_mostly;
+>  
+>  /* Initial ramdisk setup */
+Hi,
+
+Unfortunately, that does not help. The LDOM goes down in the same fashion.
+
+In QEMU, with or without this extra patch, I get this:
+
+[    3.310674] BUG: Bad page map in process mount  pte:ffffc800016436b0
+[    3.310778] pgd:027dc000 p4d:027dc000 pud:027d8000 pmd:0269a000
+[    3.311686] addr:000001000020a000 vm_flags:00100077 anon_vma:fffff80002688548 mapping:0000000000000000 index:8000105
+[    3.312449] file:(null) fault:0x0 mmap:0x0 mmap_prepare: 0x0 read_folio:0x0
+[    3.313622] CPU: 0 UID: 0 PID: 46 Comm: mount Not tainted 6.19.0-rc5-00269-g28acabacf9b0 #22 VOLUNTARY 
+[    3.314056] Call Trace:
+[    3.314182] [<00000000005e822c>] print_bad_page_map+0x10c/0x260
+[    3.314375] [<00000000005e9f30>] vm_normal_page+0x70/0x80
+[    3.314400] [<00000000005ea5a8>] unmap_page_range+0x4e8/0x13c0
+[    3.314421] [<00000000005eb54c>] unmap_vmas+0x2c/0x120
+[    3.314440] [<00000000005f781c>] exit_mmap+0xdc/0x440
+[    3.314457] [<000000000047193c>] mmput+0x3c/0x100
+[    3.314477] [<0000000000479e94>] do_exit+0x1f4/0xa00
+[    3.314494] [<000000000047a83c>] do_group_exit+0x1c/0xa0
+[    3.314511] [<0000000000489b28>] get_signal+0x8a8/0x8e0
+[    3.314529] [<000000000043be24>] do_notify_resume+0xa4/0x5a0
+[    3.314549] [<0000000000404b48>] __handle_signal+0xc/0x30
+[    3.314687] Disabling lock debugging due to kernel taint
+
+Cheers,
+Andreas
+
 
