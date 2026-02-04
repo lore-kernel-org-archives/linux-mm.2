@@ -4,141 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5F81E8B39B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 05:02:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C298E7FDCF
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 06:06:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E44E76B0005; Wed,  4 Feb 2026 00:02:17 -0500 (EST)
+	id ABADD6B0005; Wed,  4 Feb 2026 01:06:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFC016B0089; Wed,  4 Feb 2026 00:02:17 -0500 (EST)
+	id A67D96B0089; Wed,  4 Feb 2026 01:06:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFA776B008A; Wed,  4 Feb 2026 00:02:17 -0500 (EST)
+	id 9917E6B008A; Wed,  4 Feb 2026 01:06:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BD0296B0005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:02:17 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3CC0959031
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 05:02:17 +0000 (UTC)
-X-FDA: 84405577914.17.C7815C6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	by imf17.hostedemail.com (Postfix) with ESMTP id ACDF740009
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 05:02:14 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LNVUFYYp;
-	spf=pass (imf17.hostedemail.com: domain of yilun.xu@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 87F066B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:06:52 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B17F1A06DC
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:06:52 +0000 (UTC)
+X-FDA: 84405740664.15.E38E516
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 71D8240013
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:06:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k6pDqTIf;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770181335;
+	s=arc-20220608; t=1770185210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tuo+6Gy8WeMFzFJhqHPF7dzcm0Gg6EFx2BZCrPQPs2I=;
-	b=Etb9NPXZr/7pWZ7Juxo77Pze0qtMgu4qiCJStZhz/kG+ATeY44Nb9K8jZZc2qj/qsmsoBo
-	Yvlk31z2JRSpXNRG+NV3PewP/8nMRxsjvt4wIYnVt6Ty9argyzgipkZrb91zRhvgl2Mi9Q
-	ZFCSFgQd8W6NOOqzFeaY5k8Odedo7g8=
+	bh=NFDVggU2Y4zYIw5mPBf6KrhqPL/xBMVfQOvvo1nS1VY=;
+	b=nb02fdLvW+4sXlCKCluILF0Ddeaf1zxGOS4A+P7TK7vSY3Gy13Ltj0Ini4h2CHxT2rjgci
+	y6RlDxsC7SJ9uKVMhWEQtGgrWuQoz94MYtAAR96G5hXSwEUl/yUrNKF7EAGXve80qunfWM
+	/yExgXr4KnfYco1QXiX35Hauy4l2dME=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=LNVUFYYp;
-	spf=pass (imf17.hostedemail.com: domain of yilun.xu@linux.intel.com designates 198.175.65.20 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770181335; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k6pDqTIf;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770185210; a=rsa-sha256;
 	cv=none;
-	b=DPtQcnQHxdGtktvCOXxQyx7exYbqOJ0VrWnMFQ01vbfRROQtdWu2ZNL2/LoHMNP6TtW7Ot
-	stqnd6EDha/+GAiPg+Aue+UID3TUnHzXCFgchssBtGDK2IR73J/5K6RGOgQ8u5Vc1jdE5h
-	4kPOrWAhnfMWEhtV0fwNElhfwh+yY8U=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770181335; x=1801717335;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=BssClzJli42sqwnuhq7EEp2oGu8Z3L8cVPtpreDMGtc=;
-  b=LNVUFYYpXipxbPXrbeAzCeiRTXyfYIeKTrRuLXrJnbS6eGCtVWa6CQ9K
-   8B02HEL5D9ns0Kq9SqYqn+DRB/SAd8JfBrvn68ZLPTH6ywXjC60qFcNKm
-   rvuFgCi/5XFS24OCMVbPlP6R/xKLDq3dg1Al7v5vWkmHMgJNkfMThHnJ+
-   hkh2qfpzRNZAdSOcqy8appj2Ava8XaN7FADVtUT+zWqsHuqDlTbmKXWfT
-   8uxi778PpmJ25bqYl8SxqI+1Gz0E2WXSIF1R504rUWDCARHRf4cOKoi9c
-   oh3vNIadVXZoB0DW2Yzyp0mz0xrH/0D4sgFicSEtnFQPwrVE1iUQirNpF
-   w==;
-X-CSE-ConnectionGUID: 9BDKjFXPRIiZ4U3E0wVi+Q==
-X-CSE-MsgGUID: Xo1PauLmQ6eM1kwRzhjXvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71086396"
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
-   d="scan'208";a="71086396"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Feb 2026 21:02:13 -0800
-X-CSE-ConnectionGUID: r6WIlB3hRYOB1WMvBCSX1g==
-X-CSE-MsgGUID: 4L+xrWR+RMKF3IcyS644EA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
-   d="scan'208";a="240739427"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa002.jf.intel.com with ESMTP; 03 Feb 2026 21:01:47 -0800
-Date: Wed, 4 Feb 2026 12:43:16 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
-	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
-	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
-	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
-	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
-	keirf@google.com, kent.overstreet@linux.dev,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maobibo@loongson.cn,
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
-	qperret@google.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
-	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
- kvm_get_memory_attributes() to per-gmem attributes
-Message-ID: <aYLOZIZU0nwk+0UN@yilunxu-OptiPlex-7050>
-References: <cover.1760731772.git.ackerleytng@google.com>
- <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
- <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
- <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
- <20260129003753.GZ1641016@ziepe.ca>
- <aXqx3_eE0rNh6nP0@google.com>
- <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
- <20260203181618.GY2328995@ziepe.ca>
+	b=qMguHNmzas11bY/cxvXiBLSCBof5eVf5hBbQUiNdtOEx1IR3ZULTJFYxRhZOGhIu4p7fzq
+	Kx/avh7ZDWT6gNe1m3qCTB4KM6M5XxH0tBmY8FpqljYPdcqH18g4qxLUzoHdkFWfWzQBO/
+	nF+yjKhLNJJWthfQIizmGjRVg8soENU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 398C14088C;
+	Wed,  4 Feb 2026 06:06:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9261C4CEF7;
+	Wed,  4 Feb 2026 06:06:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770185209;
+	bh=YDx6StxtpDi58Lvtwkex+sore9y1zO7/lL+DfNC6Sq8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=k6pDqTIfKYSOHU297/fPjNP2NvQ2xMkHZOQq1eSZ1tF7slzQRnBqZSAx9mYGWMNTI
+	 aDngLHWLLoiXoqHGUhdRuHyDbRuNrJgxWYqT8TAU4x5KHzX9lYalnmB66IJxPn4QWH
+	 K14oTzSPh9cCeq9Yl4j9WgXaUD4G3zC5q0gwicfMNIjWmuW8v9rpHGL0XKeqD+9c9W
+	 0HJv99ge8aOev5BnLoYfuzMuj4Z7G5idL05MuBDsByOXgguTSzazN8od7p6lg6+fcQ
+	 QVxH6vkHAu+0zW+TsFySilcaTUZMRmRqtf0JyXDeJg/jLhPFAEheKsbVC7RNbdjv+0
+	 vJp1A34Yv4nxg==
+From: SeongJae Park <sj@kernel.org>
+To: Yunjeong Mun <yunjeong.mun@sk.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	honggyu.kim@sk.com,
+	kernel_team@skhynix.com,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com
+Subject: Re: [RFC PATCH 0/5] mm/damon: Add node_sys_bp quota goal metric for
+Date: Tue,  3 Feb 2026 22:06:40 -0800
+Message-ID: <20260204060641.97191-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260204022537.814-1-yunjeong.mun@sk.com>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203181618.GY2328995@ziepe.ca>
-X-Stat-Signature: iuacne3x6pt4637jhdusrddmfe6s47pr
-X-Rspamd-Queue-Id: ACDF740009
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: putsbudtrs1efn6mpdgqkpzd1drqnk4w
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770181334-21576
-X-HE-Meta: U2FsdGVkX196PqvRSdSFKaztkbJ8SWxJd04O/KFb1AIBwo6cWr0kUDXScy0vfhs+Zt8x0yYMq/+w/xhnOWmW5YoUzmrdWbAJrogNs06Vodjartmv8MZU0K85PE/KhHmdvW6T+Bkz4WzmoO8Y2POdPWDBlp0lXZ8YTd7s1GovdZfldPDtnOu0WQOL8ZOLpGe3oEXF3GEQVbxPNXoH+ma4n1cDgNdFOJ2WmpDuqbvgS1vRqjKP2cE+yGlbLBDYmu6us59SEczucV3sobDgY/ii7F8Pon9gUE6mjcnNfvvQ8wcNgO4VNbnCdQNPhqLSmYAxObV1pFY2MWWA0p9VDjvSHrwvCoHgMHCAzU23Mm5upvkTswrnocxbu3EAPxIl7QRaFlDCF9tMV1ZoIf0h8jGZD57ZWs0x39/FJh5Ejdymwk0ovqQVIENgh04PR6Ipks8n/uMSQv3sYtCdrfKe7toY04lgOPOo+KIa2ZV8EUl7WA49rLyh9DB5Y4or5vbb5RN6Av+47VWJHR891eW9o7z6AWrhtnZXMGCoA+0O7G8+2+VB1aDH5KaOaHaoCR0Xd+hBRUSJTi196NvPcVnKXguxD0OzOIXXe9yppe3HKGgU1d91BjjBz+er17NQYMDGNsuVCSeNP3f5EmNua5E8Rs5QL0+OuGf6y7gjrFW2kRgZF95qvNdWq52xmQpaId22nCdGYLYF6zNv1PbQz1Vte/pMOyh78BJaItSlYKSTtZavlBfxyfuVpe+uPgJ/gL4qkcMMGY4ORsK1/qWJYl09hKdUMLSOt4OX5scQFxXMuzpPfnQW4NQnunaiOcM46dpgAmvwNWZz7mRrVTlXmrdCYwYIVbgdoO5UErv6bQTLNv80tRtrog+nBKkxk8QmIvKSV2dunfNEf8QYI4y0zADD0CgQg+QsYIMJlA32w4fjlgOwCdSYZQoW9d/2SFTD2JSs+kPYlujpBtJ9l8iLr5IeXEz
- blE5Yf54
- tl+s0P7lyUSc0Cfzpykw5fMBxrcJSnBSZMuuzXL+y/ESF0sOdrakTZ7+Srg==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 71D8240013
+X-HE-Tag: 1770185210-156881
+X-HE-Meta: U2FsdGVkX18Llnm8vyacZbNnWRg7aJxFKRFG67pn7Zl/k6v/3Xcg+23vFNwHd2ccUy22GPsNn3Kk2pbIJ3iEZYMfkMaB8A4cAB5A07VWmoTDsVxb9ZfzBqSN8MtFVM7GiZcs0vVWJF5aeNeHYhHJp4fBTggHjGpuVdOLE3vRUmj8ppTbwx0Ew3rWtPhdWt0YEI7OjxnH9MNNQg0IWtd1J49+ZNkjK+NjHENGC0mBlIIWXALkII98yk65JgluBIBcBdDiiqC/mS0JyOTErfYFbyNgCjDYZ4xCv8IGWFT/uP0U7X/hjsbaD1zSxFivTF6Vp1AGXv6ItNV/YgobHfCiuq01y6YPn4DB0Fo7nkQ6V5C/UFUVtUVqI0OvD90NBDm7Z7OfBsg197ol7FixKzme3I+NnaQGYCEn9//FWnZbaanV4vvyFc6MkNps9HORw6UvhbfZ3EVAv0PdUehHUtAC/8CxV0R0ZxXJkkQW6qpmQHUfahn1qumQ94DnL2w2xRqivn97NGc90/yfg/gMu9Egcy/fWqGhldXwO3J2J7gEZ5u8u+4DhADrKjsctEjBn0IkzisOOn/WBxvbIbOrVLCTBUKjJuvGiOp+XMhJtAFua53qdaqqyVaX3y0Sm/8xLkwQIvp//o7vM1TiYg0Ap61ff1oldchGCilxuOh2h1jOEcF+TcuVWO44Z0D1detdGe8p47o0/gSpkQe9po0C04CVrryX8GUJybgTjItrvNdfWRmif8Jpu/qVh0LKkUh3VofaD8vpNq0RHKhXs93mD57PSYA/Cw5AN+zVZGSZgQbzQ3SLibC06flPPqDg4ZtjsV5yuoqEKS9o7rFGwozGEdm/04s8s17VPF8xFu23N6EjgsUtg5WNovW2npyFZgU8qHK8fIFx+2uYsBrogqrt4lo9sYFYGaqfUCV0RnyFj6WvAwUufukyEdHK9DxHiRrbA5mgqJrD+Z+PFkhWTLSr+ux
+ CxM+ADoh
+ +9aUylT3hwkJrFPURbwbSYz13G6x67ycnPrjz4VbCzyZ+AFz0rSfprvKmK4caRb5g1mk5EkAX+glZr21ODfcs6Y68gb44BkHqkBvJBK1NFwsMz0m10oZy37ocNrDsMws1R8ljdzSY5DY0ZrZDvTUebxlkSdhgZf8XOoi4Vbz7KuA6DfHcIC09mJ0vZ63SKO2O0uAn2mmhEmKgKAXKQ1SYiNCEFBvaPlHuKmygg3jhNqdfAcrQJxu9+xyNia5qI4XvkRfrlTqo5hnvJVRFGB9JjKZwJVNA1hbeSv6fBRkbSJ3tqg8t38PYdU/JcjcVgeMnMXF4Pmc1V2N8vh5lGykapogwMbDZnSXi8mcdgdE3qeISFrwU3JmWW7OTPbxYBtqPH2bp
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000016, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,63 +101,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 03, 2026 at 02:16:18PM -0400, Jason Gunthorpe wrote:
-> On Tue, Feb 03, 2026 at 05:56:37PM +0800, Xu Yilun wrote:
-> > > +1.  For guest_memfd, we initially defined per-VM memory attributes to track
-> > > private vs. shared.  But as Ackerley noted, we are in the process of deprecating
-> > > that support, e.g. by making it incompatible with various guest_memfd features,
-> > > in favor of having each guest_memfd instance track the state of a given page.
-> > > 
-> > > The original guest_memfd design was that it would _only_ hold private pages, and
-> > > so tracking private vs. shared in guest_memfd didn't make any sense.  As we've
-> > > pivoted to in-place conversion, tracking private vs. shared in the guest_memfd
-> > > has basically become mandatory.  We could maaaaaybe make it work with per-VM
-> > > attributes, but it would be insanely complex.
-> > > 
-> > > For a dmabuf fd, the story is the same as guest_memfd.  Unless private vs. shared
-> > > is all or nothing, and can never change, then the only entity that can track that
-> > > info is the owner of the dmabuf.  And even if the private vs. shared attributes
-> > > are constant, tracking it external to KVM makes sense, because then the provider
-> > > can simply hardcode %true/%false.  
+On Wed,  4 Feb 2026 11:25:35 +0900 Yunjeong Mun <yunjeong.mun@sk.com> wrote:
+
+> On Fri, Jan 23, 2026 at 05:50:43PM -0800, SeongJae Park wrote:
+> > Cc-ing SK hynix folks (Honggyu and Yunjeong) for quota auto-tuning behavior
+> > confusion (not stop immediately after satisfying the goal) I discuss below.
 > > 
-> > For CoCo-VM and Tee-IO, I'm wondering if host or KVM has to maintain
-> > the private/shared attribute for "assigned MMIO". I'm not naming them
-> > "host MMIO" cause unlike RAM host never needs to access them, either in
-> > private manner or shared manner.
+> 
+> Hi Seonjae, thanks for Cc-ing us :)
+> 
 > > 
-> > Traditionally, host maps these MMIOs only because KVM needs HVA->HPA
-> > mapping to find pfn and setup KVM MMU.
+> > Please note that the goal-based quota auto-tuning works in proportional way,
+> > preferring small steps and "eventual" goal convergence.  As a result, migration
+> > will occur a few more times until it is completely stopped after the goal is
+> > satisfied.  Unless there is another scheme that migrates pages into node 0, you
+> > may end up having node 0 having a bit less than the 40% memory.
+> > 
+> > > 
+> > >     No oscillation - migration stops when target state is reached.
+> > 
+> > So, little bit of oscillation could still happen.  Hopefully that shouldn't be
+> > significant, though.
+> > 
+> > IIRC, SK hynix people also confused with the behavior when they experimented
+> > migrate_{hot,cold} action with NODE_MEM_USED_BP goal based quota auto-tuning,
+> > but using only a single scheme that does migration in a single direction.
+> > Because this is at least second time it made confusion, if you need, maybe I
+> > can try to add a feature for making DAMOS immediately stops after the goal is
+> > satisfied.  Let me know if such new feature can be useful for you.  Cc-ing SK
+> > hynix people (Honggyu and Yunjeong) so that they can correct me if my memory is
+> > broken, or answer if the new feature I described here can be useful for them.
+> > 
 > 
-> This is not actually completely true, the host mapping still ends up
-> being used by KVM if it happens to trap and emulate a MMIO touching
-> instruction.
+> Yes, you're absolutely right. Currently, esz(effective size) starts from 0 and 
+> esz gradually increases as `current` approaches `target`.
+> Once `current` reaches `target`,  `esz` then begins to decrease.
 > 
-> It really shouldn't do this, but there is a whole set of complex
-> machinery in KVM and qemu to handle this case.
+> However, we observed that even after `current` hits `target`, 
+> migration still continues relatively aggressively - because `esz`  remains high, 
+> and it takes time for it to decrease.
 > 
-> For example if the MSI-X window is not properly aligned then you have
-> some MMIO that is trapped and must be reflected to real HW.
-
-In this case, the affected pages are not assigned MMIOs and KVM won't
-import them. Mapping them is just OK.
-
+> To address this, we previously suggested that initializing `esz`  at `target`
+> (or something suitably large value, rather than 0) and letting it gradually 
+> decrease as `current` gets closer to  `target`.  
+> This would allow for stronger migration when `current` is far form `target`, 
+> and gradually weaken migration as `current` approaches `target`.
 > 
-> So the sharable parts of the BAR should still end up being mmaped into
-> userspace, I think.
+> Such a feature would be useful for us to experiment with tiered memory system :)
 
-This does mean we can't make VFIO totally unmappable. But VFIO can still
-try to create unmappable dmabufs for assigned MMIO regions, fail dmabuf
-creation or fail mmap() based on the addresses.
+Thank you for confirming, Yunjeong.  I now agree this is what really need to be
+implemented.  And I agree your suggestion makes sense for the use case.  I want
+to take sufficient time for good design of it, though.  I will share update as
+soon as I get some idea.
 
-> 
-> Which means we need VFIO to know what they are, and hopefully it is
-> just static based on the TDISP reports..
 
-I don't think VMM need to check TDISP report. The only special thing is
-the MSI-X mixed pages which can be figured out by standard PCI
-discovery.
+Thanks,
+SJ
 
-Seems this doesn't impact the idea that KVM needs no implication of
-Private/Shared from VFIO, as long as VFIO keeps exported dmabufs
-unmapped.
+[...]
 
