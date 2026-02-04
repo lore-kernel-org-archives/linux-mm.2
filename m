@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C2DE8B387
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:45:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0410E8B386
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:45:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A050F6B0088; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
+	id B2DCF6B0089; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B2D56B0089; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
+	id ACDBC6B0093; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86A456B0092; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
+	id 905EB6B008A; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B1A86B0088
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B9A36B0089
 	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14CDE1B23E6
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 161B91A065C
 	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:06 +0000 (UTC)
-X-FDA: 84404929812.12.D31791C
+X-FDA: 84404929812.11.CD49318
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DB4471A0008
+	by imf21.hostedemail.com (Postfix) with ESMTP id DBC541C0004
 	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=A667aHHn;
-	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=GNRLYIoY;
+	spf=pass (imf21.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
 	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1770165904;
@@ -35,41 +35,41 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SfjcLG/RUmRtt9wxHxBQ6mL+sKk+V7CX7MeisYlYpJc=;
-	b=0BobNyGcLX+URtlgCnRnrEVRxGFMG5pr1vKJDFu2/uFaONhu9Pv1BlVZ8wcZqpvCyin3sb
-	On44Ss+kfaG8CNo46ACxNrFhFrZ8kWCVWXNs9+NRTxzsPTKkv2d/nYaCba/3sZhTamikld
-	iVq0kIWIBFPI3xphgJhnAWbY0md+9I4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=A667aHHn;
-	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+	bh=GRxhu1y96n3UH4hdO/qWkE190Cf2AF4FqJrGWR7q6xQ=;
+	b=O2I5aXyt2vRB3PC96r5hH4YM4rGOG9AGd6MnfyHQtj4tWiPgwExtFDaOJfxbMTWAL95LM3
+	uX2W1OV/cyyO+f4NxXQJRnuV1E8nd38pFd624Jmyi2j1IVbuplmza/xMh2BDrBetTcr0Kg
+	cp+gbFmWMwlzuedo7zEuuyg6SLtkXG4=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770165904; a=rsa-sha256;
 	cv=none;
-	b=m3Al/IUxF7pvRG1QqUdhu2GEr5fNKxfUYPN51ptqEgeP5wFbSkflUCgllXPHCwa3hJOld6
-	DmhRtW3+1WHClqoHQLY42qTNMg7tnEfbBLVA4uppfiCQooMOBYHRDAHJd+Mx6wYCdQAAEm
-	05hm1vDKc7OfSiuuIOeRFHUTao9bbTE=
+	b=1+zMkdEbt/N7qpIS2W1c1wbURPzXAQjFbNwub1/HIqMp3iHMJkPMKCsVx+anKZ4tDXXGSV
+	OUWkY/8DN70HIdmJqoUV2ygOE2q5J7wyuH+PV08/aT5Yx0xovkZ1PDSbTd6axSSaqIM27v
+	M/GxOlqyQ+cSpX5aKvtG9KvU9vwv+mc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=GNRLYIoY;
+	spf=pass (imf21.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 Received: from [IPV6:2601:646:8081:9484:7f27:8faf:e50:c87b] ([IPv6:2601:646:8081:9484:7f27:8faf:e50:c87b])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6140hAvH3684475
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6140hAvI3684475
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 3 Feb 2026 16:44:10 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6140hAvH3684475
+	Tue, 3 Feb 2026 16:44:13 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6140hAvI3684475
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770165853;
-	bh=SfjcLG/RUmRtt9wxHxBQ6mL+sKk+V7CX7MeisYlYpJc=;
+	s=2026012301; t=1770165855;
+	bh=GRxhu1y96n3UH4hdO/qWkE190Cf2AF4FqJrGWR7q6xQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=A667aHHnZjPtA3vHvH0jpqhwqdKf4X6/35CpgUlJSQSe8LQuTsAR5kPmP4uY2ByIn
-	 ifXxRqU5OoZ1IoPKwL2BVP5QUwz+R3SGHYL3uh11dVN2rYTroBzK1nnGRvaco9x3AV
-	 PJkukzXaZTKyfW4NdDv8FFAy72MvB3KMvFwpcfVVbCZ4l72ccV320HTpY/RDFTQiHJ
-	 0B5tAvHF0AYi85FhQDMbDhUuXXulb3MZHpeluT4WdNX/UDpsLb9qVSVz8Tvxd3EigZ
-	 2CCyraJ5yWcTjnGmIAjRCwmsIoillqKATqXgWxaHjK8wsBFZ/B/ylwPhstUWBamK/p
-	 FX9idc7SfXpvw==
-Message-ID: <bd2fdf83-e460-46ad-8617-16319bc55ca5@zytor.com>
-Date: Tue, 3 Feb 2026 16:43:44 -0800
+	b=GNRLYIoY9SpQilkizC8FaQUne5RT0+llizCOZTFclKFfPdeiVruz/e/sLFutiAuSm
+	 CbhmY4DWqyb2eVket35KKUR0JRXTX1QzXDZuc0L3iXQqLPpn8aXP1yP57jHp6rzR8B
+	 AruzaMp+6X5KvlBPyEZ6cYq9hU1oS//kFwKBgRzAQ5yvh0k0BZcTWT/cxpHnYJujRW
+	 IzxdYqSozkZr5Iu+H0ua7HgepLndfOUZzhCtQUihOTtcMA3sLUr+W7pA3g4mPb1/Sc
+	 32YOh37hNKxEOV4mEzkkd3UIkk3/gBO+RtGjItROA+lrtAId271Qld6A+9vrixxWYl
+	 U4jLPEQt9xhQQ==
+Message-ID: <b8d73b0e-c007-4556-960a-96ee3d74a9f5@zytor.com>
+Date: Tue, 3 Feb 2026 16:44:02 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/6] x86/asm: Avoid emitting DWARF CFI for non-VDSO
+Subject: Re: [PATCH v7 3/6] x86/asm: Simplify VDSO DWARF generation
 To: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
         linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
         x86@kernel.org, linux-mm@kvack.org,
@@ -102,20 +102,20 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
         Vasily Gorbik <gor@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
 References: <20260203171958.1522030-1-jremus@linux.ibm.com>
- <20260203171958.1522030-3-jremus@linux.ibm.com>
+ <20260203171958.1522030-4-jremus@linux.ibm.com>
 Content-Language: en-US, sv-SE
 From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20260203171958.1522030-3-jremus@linux.ibm.com>
+In-Reply-To: <20260203171958.1522030-4-jremus@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: qam7ciw6xgrg81nqyc8jt7dddhyzjfjw
+X-Rspamd-Queue-Id: DBC541C0004
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DB4471A0008
-X-HE-Tag: 1770165903-281249
-X-HE-Meta: U2FsdGVkX1+Tu4o7k/ISmg3pZi4oCPmbpTKzREjSdwGs1+j2eLP3vR5akYhU8faY6UWmxeY5MB31r9pX4lTPKRQH/KHvc8NxnNqEHT7P+Xz6rnzQ5fXKcBOeeOl9vH2I5xoDWHqRc0MnbTy3LOGn966UNVVETQ4cu0vS4DMPmslAPSrZuONP0aAIgeELCVSrNbU6+GLxL6qfW+O0xnK0EUt/i50UyEE7jKIsQgRxb0graGwqf38gA5uST3wtrb4dwwcTjpV/kR9ivSk+qkDiwTHY1lx24z8UlV6PU52sma0mh0v5WWxWY55uFRQsGcDxgpfSCNX5PQDVwCrcNJUlDaWuTWEa0ud1pMYrTxJPNLf7PLeY42cWePflZCKzV6cHQIeC72T5qpOX0751+aACDAeu+5HJM2jG8oreOk8HEzXpvPGspuKebjs5BHEz1KpshGRKbchcxgHPSLFprnJFucTf/rtUdOLfj2l/m1FmvvYMl9Q8PugjIo0Afd7nIi+Bzm+5Ri6dGo6sk1iie9aG3QN5p+RrFmwepgTaAa9bpYS7ncBPHLmdAURXLWZbaSFnlrjtG8/2sYBkL9OoFu3CtgDa08s6yNV1Jir0cRSYCBbJgLn/zL3CMCsKlj2WhxYY48pxW6QUXSPKQ+osGLqnM2E36gI8RNh4lxmknK4sG19kwfx7dVHBlQwgNSZ3OECZYXHA1b2XF6x9J/Sw2yh7Umf7L/TvMQtWYhIP4lNG67jYzejpv9LzviKkhQDrCy1x6ir3Gtmg0azN3GDLiG3FqV9whA2aoVIwgSJMom1yGTO1FiV8V1u8WoZ2oy051qlJ4+yiPLoU/ByurBGeJj20d64hlXeJS7Gbj8dxtyy0i/FFaaV3VreAHnJDraK1NsPCqxpGt3EAYV9z38r/3qqzzByTYCJen8BKUime12r1CZylEIeL9Aq3KvMhLophC0p9hwRHjSXU+hIF8mOWl75
- Ofo1Scjv
- D55kB6ComiZ1nKT6evRCXhTbRhePYcPDcEKeGyBo9Mctns5+PCs4kVSq+kbO3ovg6o4aC5mEC2gJoZM9/4ZaH6/GZ9wywE7g1rnnxStaOMZzHtRoag/TPd5ltQD6zoTrxQrXi859JScGyddeUrqtj5hdvEUg8R6QeBDhaGwic2xVdtVvpj66+elYX6sSM2LhV0wR9e2ylc3xLpQNcu9fvn6He7tzfPydCFPTDQ2x8ZpA/aoTFhSl0KZQo+8DEgzoM1H1zp2FTtO9bW0RJeAqUFPe7r99gvXhhS6/PX7OyhaEJ3+U8/yifdyAzxSXwl/QJlW5m+nmkiKIaio3izKgNc10UJeaGEnFnqWixK3KBz/JD5B63v/G1qJI71ajVACqDfqgU5mePdWg29AZ0g1ohMPrHGdc8aT/Isj4f7zQK0VEVbg8YqSV6ROkgLcl3ylD/sVgb/Wb6Oy4prj1MCWZ8rk9HwCmIZsNELM7QaGnKbFB5iNg58hclTxeW0QsorzcZCag8YCQ4rB3nS10Ezyk6yCFkBw==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: p619x9ngp6trmyqquergs38dedfa7rap
+X-HE-Tag: 1770165903-603063
+X-HE-Meta: U2FsdGVkX18VW1MjOvboOIooXeEWhYki/D6VPpml4+BeWvkY1lPrf1y7teZwk1R1j6Hs8DozUwD3lOwXHudmnqBI937C8aZrMHTM7nmfniRulpbSxRRHsFwnbJMNImGWAtPEkotuQuUFdTX5h0U2DVg7F3DFjvr7CtaPllHbogbHvffgBdOiT7K3BPpVK2HF4kI17VYrTQ1RBz4Nd7daIp2q6QZIoUJXR9Xdf1ZikBHpYiI2g9/9C5pSw3R2Q5MOygZEOnXibbgVVW0x6tOxNCf1vdJpJEc57RtffvDMa6dqbhCpUuyZWvCsBGw7/yAH8/9j7GCmLHpa0Rr5gUaOibQMpsP1ba+51aZYQl+Id73mAMqCJjRaqu2OWdN/ypiq46xWm6IVgCml1b/V4YYHBJUInX9JdFyUZ0MCm1q17KN2x7HWFEZW/D38ed5k++VaWY6qYvQiQVHsOZFDtYC17gtxKuSUc/LuzRsWf5VjUMV6bdGeeku2ifZkwnw/09fK8M+NZDZcqyP194gvXATSt4paYJSGkvjL5OYZN8XOsrw2hw1hEKiMScr2/yRyzolxQgR83U+qdFtwoxl7igwwOFI7wBNoHTo0MAKiV0tePdPmjilR2wFB4251c72ttrXdt79F8OHfl+7Oe1w4jfq2E92ScFgKuXom04qSWO0IPTM1OHSa30SEiQ5tiHqabkpWkXxTwkUfhkOVOXZCIG/PXSWpAcrcLss4iM457pT0g2NZFLsJu2xpk3Xzkuz+QCXPqyndXGhnjmey3XxkyOwDPEToN4cfZHIPPvppUh/hqarA/lY92mXe/I+uRI6EVblFbGBOBtMO/brxEDI6NadKCYyiUu62v0d2m5H2cc8k4cRVjv6KNkdhkyX6/Mh2qRvyA4IkI2DW1jQtgAJHlcKtAa2QH1foU+YSKy1zjR52ZHiPdqf8TujAg9lgUYBMTJHeiKjAG9A1VviDKlQO4E0
+ rhVPWokY
+ 7TO1hv2mS0qNITF/8UP3C/XlfBTEqUmOWMlS1723X1/3k1du04OwL/EW6bac92b+XMUEbUwdAKhfpoM1SCDP0Cge+HN+bY2CfEXlk4JddhMLqlD6uGpddUrhyBL2LzZ7phGTwsjJLqZ6QiFy/AtcPYs95SVlfEEfXt9w4s5fvThGmaZnPRmxaZMQjr2j8xpBofz5gVNI4oCgEmTU5KKfeEcfMnhnh0wh1Ue9col1lS/6ihPzlhmoF/mwos7XbKoAWwpNLCYCYUEmaW39jnubg1VuMl6i06xPeb6F16iTFv6Zj6j2xfGwn4d5mo95dQe5/NxDcnJrH5ZnPGTdHedKk0ChtOw45sHSXMPnbe6nKgZcI2AYKBFgzD0oHQ4z+IFJK21MHQk7nxMielpOw4mz7BGtPtAswt1JGADRD/gl3sslBsqnxjsKoHQOmdbLhBiLttbMK0MU6TJcumYO1KD8Jo9Le2iCf+tZ0qyjHf7Ia9nd2MeS9yuGywpP0F8dobq1p43ZUwBFBHXLTtYYcXqqZ5ZX+Aw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,93 +127,161 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2026-02-03 09:19, Jens Remus wrote:
 > From: Josh Poimboeuf <jpoimboe@kernel.org>
 > 
-> It was decided years ago that .cfi_* annotations aren't maintainable in
-> the kernel.  They were replaced by objtool unwind hints.  For the kernel
-> proper, ensure the CFI_* macros don't do anything.
+> Add CFI_STARTPROC and CFI_ENDPROC annotations to the SYM_FUNC_* macros
+> so the VDSO asm functions don't need to add them manually.  Note this
+> only affects VDSO, the CFI_* macros are empty for the kernel proper.
 > 
-> On the other hand the VDSO library *does* use them, so user space can
-> unwind through it.
-> 
-> Make sure these macros only work for VDSO.  They aren't actually being
-> used outside of VDSO anyway, so there's no functional change.
+> [ Jens Remus: Reword commit subject and message as suggested by Josh. ]
 > 
 > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 > Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 > Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 > ---
->  arch/x86/include/asm/dwarf2.h | 51 ++++++++++++++++++++++++-----------
->  1 file changed, 35 insertions(+), 16 deletions(-)
+>  arch/x86/entry/vdso/common/vdso-layout.lds.S  |  2 +-
+>  .../x86/entry/vdso/vdso64/vgetrandom-chacha.S |  2 --
+>  arch/x86/entry/vdso/vdso64/vsgx.S             |  4 ---
+>  arch/x86/include/asm/linkage.h                | 33 +++++++++++++++----
+>  arch/x86/include/asm/vdso.h                   |  1 -
+>  5 files changed, 28 insertions(+), 14 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
-> index 09c9684d3ad6..7cc30500c095 100644
-> --- a/arch/x86/include/asm/dwarf2.h
-> +++ b/arch/x86/include/asm/dwarf2.h
-> @@ -6,6 +6,15 @@
->  #warning "asm/dwarf2.h should be only included in pure assembly files"
+> diff --git a/arch/x86/entry/vdso/common/vdso-layout.lds.S b/arch/x86/entry/vdso/common/vdso-layout.lds.S
+> index a1e30be3e83d..856b8b9d278c 100644
+> --- a/arch/x86/entry/vdso/common/vdso-layout.lds.S
+> +++ b/arch/x86/entry/vdso/common/vdso-layout.lds.S
+> @@ -1,5 +1,5 @@
+>  /* SPDX-License-Identifier: GPL-2.0 */
+> -#include <asm/vdso.h>
+> +#include <asm/page_types.h>
+>  #include <asm/vdso/vsyscall.h>
+>  #include <vdso/datapage.h>
+>  
+> diff --git a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+> index cc82da9216fb..a33212594731 100644
+> --- a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+> +++ b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+> @@ -22,7 +22,6 @@ CONSTANTS:	.octa 0x6b20657479622d323320646e61707865
+>   *	rcx: number of 64-byte blocks to write to output
+>   */
+>  SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+> -	CFI_STARTPROC
+>  .set	output,		%rdi
+>  .set	key,		%rsi
+>  .set	counter,	%rdx
+> @@ -175,5 +174,4 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+>  	pxor		temp,temp
+>  
+>  	ret
+> -	CFI_ENDPROC
+>  SYM_FUNC_END(__arch_chacha20_blocks_nostack)
+> diff --git a/arch/x86/entry/vdso/vdso64/vsgx.S b/arch/x86/entry/vdso/vdso64/vsgx.S
+> index 37a3d4c02366..c0342238c976 100644
+> --- a/arch/x86/entry/vdso/vdso64/vsgx.S
+> +++ b/arch/x86/entry/vdso/vdso64/vsgx.S
+> @@ -24,8 +24,6 @@
+>  .section .text, "ax"
+>  
+>  SYM_FUNC_START(__vdso_sgx_enter_enclave)
+> -	/* Prolog */
+> -	.cfi_startproc
+>  	push	%rbp
+>  	.cfi_adjust_cfa_offset	8
+>  	.cfi_rel_offset		%rbp, 0
+> @@ -143,8 +141,6 @@ SYM_FUNC_START(__vdso_sgx_enter_enclave)
+>  	jle	.Lout
+>  	jmp	.Lenter_enclave
+>  
+> -	.cfi_endproc
+> -
+>  _ASM_VDSO_EXTABLE_HANDLE(.Lenclu_eenter_eresume, .Lhandle_exception)
+>  
+>  SYM_FUNC_END(__vdso_sgx_enter_enclave)
+> diff --git a/arch/x86/include/asm/linkage.h b/arch/x86/include/asm/linkage.h
+> index 9d38ae744a2e..9d7f90c57451 100644
+> --- a/arch/x86/include/asm/linkage.h
+> +++ b/arch/x86/include/asm/linkage.h
+> @@ -40,6 +40,10 @@
+>  
+>  #ifdef __ASSEMBLER__
+>  
+> +#ifndef LINKER_SCRIPT
+> +#include <asm/dwarf2.h>
+> +#endif
+> +
+>  #if defined(CONFIG_MITIGATION_RETHUNK) && !defined(__DISABLE_EXPORTS) && !defined(BUILD_VDSO)
+>  #define RET	jmp __x86_return_thunk
+>  #else /* CONFIG_MITIGATION_RETPOLINE */
+> @@ -112,34 +116,51 @@
+>  # define SYM_FUNC_ALIAS_MEMFUNC	SYM_FUNC_ALIAS
 >  #endif
 >  
-> +#ifdef BUILD_VDSO
+> +#define __SYM_FUNC_START				\
+> +	CFI_STARTPROC ASM_NL
 > +
-> +	/*
-> +	 * For the vDSO, emit both runtime unwind information and debug
-> +	 * symbols for the .dbg file.
-> +	 */
+> +#define __SYM_FUNC_END					\
+> +	CFI_ENDPROC ASM_NL
 > +
-> +	.cfi_sections .eh_frame, .debug_frame
-> +
->  #define CFI_STARTPROC		.cfi_startproc
->  #define CFI_ENDPROC		.cfi_endproc
->  #define CFI_DEF_CFA		.cfi_def_cfa
-> @@ -22,21 +31,31 @@
->  #define CFI_ESCAPE		.cfi_escape
->  #define CFI_SIGNAL_FRAME	.cfi_signal_frame
+>  /* SYM_TYPED_FUNC_START -- use for indirectly called globals, w/ CFI type */
+>  #define SYM_TYPED_FUNC_START(name)				\
+>  	SYM_TYPED_START(name, SYM_L_GLOBAL, SYM_F_ALIGN)	\
+> +	__SYM_FUNC_START					\
+>  	ENDBR
 >  
-> -#ifndef BUILD_VDSO
-> -	/*
-> -	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
-> -	 * The latter we currently just discard since we don't do DWARF
-> -	 * unwinding at runtime.  So only the offline DWARF information is
-> -	 * useful to anyone.  Note we should not use this directive if we
-> -	 * ever decide to enable DWARF unwinding at runtime.
-> -	 */
-> -	.cfi_sections .debug_frame
-> -#else
-> -	 /*
-> -	  * For the vDSO, emit both runtime unwind information and debug
-> -	  * symbols for the .dbg file.
-> -	  */
-> -	.cfi_sections .eh_frame, .debug_frame
-> -#endif
-> +#else /* !BUILD_VDSO */
-> +
-> +/*
-> + * On x86, these macros aren't used outside VDSO.  As well they shouldn't be:
-> + * they're fragile and very difficult to maintain.
-> + */
-> +
-> +.macro nocfi args:vararg
-> +.endm
-> +
-> +#define CFI_STARTPROC		nocfi
-> +#define CFI_ENDPROC		nocfi
-> +#define CFI_DEF_CFA		nocfi
-> +#define CFI_DEF_CFA_REGISTER	nocfi
-> +#define CFI_DEF_CFA_OFFSET	nocfi
-> +#define CFI_ADJUST_CFA_OFFSET	nocfi
-> +#define CFI_OFFSET		nocfi
-> +#define CFI_REL_OFFSET		nocfi
-> +#define CFI_REGISTER		nocfi
-> +#define CFI_RESTORE		nocfi
-> +#define CFI_REMEMBER_STATE	nocfi
-> +#define CFI_RESTORE_STATE	nocfi
-> +#define CFI_UNDEFINED		nocfi
-> +#define CFI_ESCAPE		nocfi
-> +
-> +#endif /* !BUILD_VDSO */
+>  /* SYM_FUNC_START -- use for global functions */
+>  #define SYM_FUNC_START(name)				\
+> -	SYM_START(name, SYM_L_GLOBAL, SYM_F_ALIGN)
+> +	SYM_START(name, SYM_L_GLOBAL, SYM_F_ALIGN)	\
+> +	__SYM_FUNC_START
 >  
->  #endif /* _ASM_X86_DWARF2_H */
+>  /* SYM_FUNC_START_NOALIGN -- use for global functions, w/o alignment */
+>  #define SYM_FUNC_START_NOALIGN(name)			\
+> -	SYM_START(name, SYM_L_GLOBAL, SYM_A_NONE)
+> +	SYM_START(name, SYM_L_GLOBAL, SYM_A_NONE)	\
+> +	__SYM_FUNC_START
+>  
+>  /* SYM_FUNC_START_LOCAL -- use for local functions */
+>  #define SYM_FUNC_START_LOCAL(name)			\
+> -	SYM_START(name, SYM_L_LOCAL, SYM_F_ALIGN)
+> +	SYM_START(name, SYM_L_LOCAL, SYM_F_ALIGN)	\
+> +	__SYM_FUNC_START
+>  
+>  /* SYM_FUNC_START_LOCAL_NOALIGN -- use for local functions, w/o alignment */
+>  #define SYM_FUNC_START_LOCAL_NOALIGN(name)		\
+> -	SYM_START(name, SYM_L_LOCAL, SYM_A_NONE)
+> +	SYM_START(name, SYM_L_LOCAL, SYM_A_NONE)	\
+> +	__SYM_FUNC_START
+>  
+>  /* SYM_FUNC_START_WEAK -- use for weak functions */
+>  #define SYM_FUNC_START_WEAK(name)			\
+> -	SYM_START(name, SYM_L_WEAK, SYM_F_ALIGN)
+> +	SYM_START(name, SYM_L_WEAK, SYM_F_ALIGN)	\
+> +	__SYM_FUNC_START
+>  
+>  /* SYM_FUNC_START_WEAK_NOALIGN -- use for weak functions, w/o alignment */
+>  #define SYM_FUNC_START_WEAK_NOALIGN(name)		\
+> -	SYM_START(name, SYM_L_WEAK, SYM_A_NONE)
+> +	SYM_START(name, SYM_L_WEAK, SYM_A_NONE)		\
+> +	__SYM_FUNC_START
+> +
+> +#define SYM_FUNC_END(name)				\
+> +	__SYM_FUNC_END					\
+> +	SYM_END(name, SYM_T_FUNC)
+>  
+>  /*
+>   * Expose 'sym' to the startup code in arch/x86/boot/startup/, by emitting an
+> diff --git a/arch/x86/include/asm/vdso.h b/arch/x86/include/asm/vdso.h
+> index e8afbe9faa5b..498ac423741c 100644
+> --- a/arch/x86/include/asm/vdso.h
+> +++ b/arch/x86/include/asm/vdso.h
+> @@ -2,7 +2,6 @@
+>  #ifndef _ASM_X86_VDSO_H
+>  #define _ASM_X86_VDSO_H
+>  
+> -#include <asm/page_types.h>
+>  #include <linux/linkage.h>
+>  #include <linux/init.h>
+>  
 
-I guess patch 3 justifies this.
+Makes sense to me.
 
 Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 
