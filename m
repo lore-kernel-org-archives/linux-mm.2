@@ -4,93 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB83EA7948
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 22:31:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E0AAEA794A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 22:44:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0E616B008A; Wed,  4 Feb 2026 17:31:20 -0500 (EST)
+	id 664996B008A; Wed,  4 Feb 2026 17:44:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBBB76B0092; Wed,  4 Feb 2026 17:31:20 -0500 (EST)
+	id 611AB6B0092; Wed,  4 Feb 2026 17:44:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABAA36B0093; Wed,  4 Feb 2026 17:31:20 -0500 (EST)
+	id 510806B0093; Wed,  4 Feb 2026 17:44:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9814E6B008A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 17:31:20 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3A332C1865
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:31:20 +0000 (UTC)
-X-FDA: 84408221520.08.B91D6C5
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F17D6B008A
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 17:44:46 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4772140305
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:44:45 +0000 (UTC)
+X-FDA: 84408255330.04.3408D1B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AC6FE1C0009
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:31:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bkZWq0tF;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by imf11.hostedemail.com (Postfix) with ESMTP id 3495640002
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:44:44 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Rh93rqzA;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770245084; a=rsa-sha256;
+	cv=none;
+	b=0KDe+x8CqqdrWEEMzHwxl4cvxSnEy9mo0uhHJo3oe3IjGQu3lCxWui0D0ZzjaaVTia/qlL
+	63ZbVYHuOt5jLMo0UhUutoVR6gmqHQTEN9BcO985gdgzBdF6gmyxlOSPMnYoWxRtxe3WGq
+	3WIsDnQtvGgvQzxZ/bFV5+Z317MbdeE=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Rh93rqzA;
+	dmarc=none;
+	spf=pass (imf11.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770244278;
+	s=arc-20220608; t=1770245084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T23CRuOPDQJwu47oMVvhQWdbFgk6N7dbhDlWZMGtmoo=;
-	b=bUgArPO1BQE6sqzxjjfs3XWU5GNjCjty+vktzg9x831VIcSiVPM/o6BeBP/4AyG1CgWfmT
-	OvVpJCdCpRPXsf/Nnr7KY0NxFVR1j+RVpL/0MThxqbQVpvrBRNtSao91iOPxCrJrKugdxX
-	rhWfOc8KYTRw8IA9uV+Z/3mJG3v1pPc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bkZWq0tF;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770244278; a=rsa-sha256;
-	cv=none;
-	b=XmwH408lIc5fFc/oYUu5ZOENtC+crJEtlJzFNiGMR8ubIdYVHxGAyNjDOLvyQtI2gzQJ/S
-	yqNbko/IrDDh7aMS8qzudIoKIXajr/mmN/TfecJVB3dJxkqCAGZGMfuZ+ndamjJmpSxNvR
-	Tn++d3zTkq02w+Y/qn0vs8KcFCafsjU=
+	bh=hi1FTQYospgde6dt2oZ5A17mcgAlDsMrIodFJe740eA=;
+	b=C52M1Hmf6RqJWJhJzMjfTQoAcOrKK/B/zYqxS8NvHG38RFD84+Sw+/DySPo2w0IiWNMHoh
+	alNBgTYKUIg48/IMWyuaRCqnpWXMLS1mwVx/ZYeOeXWNH3R62cb9mplvxRPxlE4oVw7Aqo
+	bgrH17k5FaxcDnyT3cEDlSU0m1esXAI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D187060054;
-	Wed,  4 Feb 2026 22:31:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D8EC4CEF7;
-	Wed,  4 Feb 2026 22:31:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8278560126;
+	Wed,  4 Feb 2026 22:44:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FA8C4CEF7;
+	Wed,  4 Feb 2026 22:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770244277;
-	bh=il7aJ3eIWZeVJd7eT+iGQ2haRY0GHhIg8kpdTR7XNp8=;
+	s=korg; t=1770245083;
+	bh=wyDXzEiDI09qoOjixuC3rPHKoCE6XE1QSc7CX3XUerQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bkZWq0tFfzkTtKtN9z61RnYCdolEQZCrTfV/oYrh/sDwDq0gdnXdY1AgNDzqUlrg0
-	 AR3I/AtvQpwKFs3KFEzCcHdDYlLZc5FLAhWHu0DCrlhNqY5jPKTOcNb+shpL6YHDUR
-	 Ql8O4/bWbC6TEorw5hpeY7Gd5/JAKNbLuI8mGsbg=
-Date: Wed, 4 Feb 2026 14:31:16 -0800
+	b=Rh93rqzAkFeBAsQzplmY9WaqsNcmP6W1cbXQ/xnBK1+PJFtrUoc7rwdpWYmLXq6fW
+	 WB140oJV6TKBVyn3Py9cljiJjWBbWFt7A5b6CjjZOVs/+XIH+OCBnvZ445ok2Edu7D
+	 5R9zmSuLbcq4iX9J+Nb9RCpNuvUT6ozhoo+tayP4=
+Date: Wed, 4 Feb 2026 14:44:42 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
 To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org, bp@alien8.de,
- dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
- mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
- chleroy@kernel.org, ioworker0@gmail.com, lizhe.67@bytedance.com,
- boris.ostrovsky@oracle.com, konrad.wilk@oracle.com, kernel test robot
- <lkp@intel.com>
-Subject: Re: [PATCH v2] mm: folio_zero_user: open code range computation in
- folio_zero_user()
-Message-Id: <20260204143116.968730e769500aea281809bb@linux-foundation.org>
-In-Reply-To: <9206a7c4-bf88-4138-b8af-961625a82439@kernel.org>
-References: <20260107072009.1615991-9-ankur.a.arora@oracle.com>
-	<20260128185943.2397128-1-ankur.a.arora@oracle.com>
-	<9206a7c4-bf88-4138-b8af-961625a82439@kernel.org>
+Cc: Jiaqi Yan <jiaqiyan@google.com>, jane.chu@oracle.com,
+ muchun.song@linux.dev, osalvador@suse.de, william.roche@oracle.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] fs: hugetlb: simplify remove_inode_hugepages()
+ return type
+Message-Id: <20260204144442.4eb44f4bb933daed44d5db96@linux-foundation.org>
+In-Reply-To: <17af6fe6-9318-4e9c-ba54-0b6b16ea9c0c@kernel.org>
+References: <20260204214741.3161520-1-jiaqiyan@google.com>
+	<17af6fe6-9318-4e9c-ba54-0b6b16ea9c0c@kernel.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: AC6FE1C0009
-X-Stat-Signature: zig4napqhjow588xnxadwqb98wyhc66t
 X-Rspam-User: 
-X-HE-Tag: 1770244278-581205
-X-HE-Meta: U2FsdGVkX18kZT0Y5iGl+OZnPcyFEVoMGp9gRUTbEkYcwHJ9KBJW6JJKvaoUmAZ1W7QGULEe2SEC7wIQQG5Gfoc8eHdj5VW+vvGWuHfGdDbskNRfL7sczyEE/G0F013oliks1n53rNDcEvq+LtdpWngTREPqDUpw3UO5yruBFNp+WtLLd1youzh4oosdboHTTXI6lV+OhXQz5uGrrfUBEBIm0HELTyt2ooVcFH2qrsvcf1UGA/8uqioUP5ACb6fAPeI14qVskBYTis3N38LQKWSeorUrsB9bvcgOZLd/iPxo/p7g3xmKCtsUN6RVYviWZA82SquqVVXt8wboV+t9I4tFGY7jiNrTULB11KfuRbaAQu/2kiBtIGONRR2pdxW5iJf7UoUaSwq9VeTQnw2qbc68WCrlU4t94aTsAj9zoCpyGpAtWhx3QqNT1XsS73pZpHZzkggIZVLfQ8w0sTKfPTXtTo0uYYVW38vBlR3QaL3GPviVGsZm6lM+D9runAti4l/JRzHRot9vrhLYX3jwV6mPhJ0UyOETqKeTZaVWOccgQscAnkuSkvsYSedOQHFiWW6t72YAeTC/ZCHU6T8TfausSQ/gqGYo9bPCcEXQ8ffFl+9u9OgTDc9qIHy6fJMm2XhpMpxjgn1FDBn8/Gl5R0MuPLA125pGGy1mBtvMbqFQhjRnsJvRQBsQ9XEs3jnuT16noKkKd1+gH4R5u/1jWXTwTfQnZTKUOFbq8uFIL6FniJdHSHUGNlRbNdd416ndP7uxUXy8pYMBBINf84tk9bRV/xlXU8e912A/aQyYrOMeRVN0pFWx4S1+SduGLfgjvqcRD8qR+zHNshKYSBOhbuqLzpvXuPQ46Mn6XkT9RU9pOFACwkBVDmr7IkP1GUG/5wvnCUQfrMEwM1s0y2UCdH90jPG7J6g+NUCFWkN5Y7bOs3taE54Fd0eq1impxmhthaOZm9VD3t/DX1vyLM+
- zskx9VHP
- 3IlVI
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3495640002
+X-Stat-Signature: 1xn1g54mttzqrz7ecq9tou7k4tricayh
+X-HE-Tag: 1770245084-983231
+X-HE-Meta: U2FsdGVkX1+yl3w5ap09iC/p2XQGnR8A3izKkzpXyvk4R5BA/OB6u6FFhSBUtzDpYIUQXK+FMQZzzWE9G7KLlHG2a1hptDbrpNkqQTb6KwXu3ukGllV+Zxl28cbUiiHbEvqcrPx5mqPgG0l5xRzhJUsdk4tvXAeqs4Ui00TtxEyXFrQ8SKjP6Ybk7jGJNLZzfG91jdJVSJ6KyQQyMOFRg+aEkxzQrQXw14pa6A77qDoaVl1X4eH6UZk7HWmMOdM+NCVJhPZWakNwwZZU0osTn4O13RwHS1irxydYrWInYjvwEz9LHbuPJ/WsBJZDgtUW9fweDlVRKvDF411XX/xtjw0Y+F/dIEeJqhAc8nA7el0Wr4g5nmPwSsaGzLNeQPk4KLrcEFBJtNDqgc/otffr49BD4fVGtx+YQI+6pQsWC8WYnF3qwQkYpyrR2yd2bU3If3ybgx9bWRTjGF5vtij4acj1MyIhOpqab3k9KH6Kz+Du7uRzZ6kctaiGPIHhPkBBRGs6D5bENXQ940+D70CsrLVf1qOSJBm7qUQb6qCQMX4dbH5RWkwYBJXIBnyEw1sF8s2vokpzcOLX9fnAwyS+bh2ddEBBBh8ip9xxyo046QHD3Wq5aozk224r8M/9HE/KTyKzv5PWeNZISoJy/C2A23GWZbzNK1WqNgjnLc/liHOPMwgfIlX2N1nZTTYIL/z1pLcRTInjWe8h1RXvUnjvOEVd8++hcF63QYuE3Z6FKA9LqOKE7Dk3Y3K/Z+rVaoD6QQDOp3wAlTn/4WSBv2iDywVKw6PxguDkggiQsbvtjoCiwi7U9e5H0BnrTbDIGLP0v6krRQrzfb5v+fVAC7i3F/HF8ZtV74s8LMCgdjs+DLhnm3n4YrMmUjbH/dvhWubyALaIn6Yxzoj+Hja+RyVxRq5B7leMYHs4cmwYq9vxOwMi5LIyWIBp4LxOaTTGCzOmeYT67DmV6gOi+SGJccz
+ uWGEIb7D
+ j3iNPDHcs9b7IwGx6os7l5isz/wFi/88u1Z9y1AC15iuVxJs2Sa8y3kIplQpHp1ff78Bw/5mdZ/hu/J3NZU9f8PD1GfMSORxuC9tBcWCT+jEYXvx2+BInlzXANiKk2TTsdPOf7GHszi13RJ328pUqlrM9cX/6cEdi2UpkBzT0Y3a539yM5lBkjN9DoiKIGe3C35p9bhq9P8J5jmTJsVtV2qEoJGyNaZcA7uy3qwn+IyJJD4dctDjYADLvdaBUwU7XF7pmnZ6IQE99CPKYWBQGuks4Cvqi70UkLEkHYJO0tbpvkFkWLHOOz83ThjJGWcY7chLVaVLO2JPNWWc3gglb0C3n2L1ou4VoJq60G6K/gD9BPDaoaasSiJXEXw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,43 +93,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 4 Feb 2026 22:01:42 +0100 "David Hildenbrand (arm)" <david@kernel.org> wrote:
+On Wed, 4 Feb 2026 22:54:48 +0100 "David Hildenbrand (arm)" <david@kernel.org> wrote:
 
-> > As David pointed out, the previous open coded version makes a few
-> > unnecessary changes. Could you queue this one instead?
+> > Changelog
+> > =========
 > > 
+> > v2 -> v1 [2]
+> > 
+> > - Use two-tab alignment for parameters wrapped to new lines.
+> > 
+> > - Remove return type in remove_inode_hugepages()'s comment.
+> > 
+> > [1] https://lore.kernel.org/all/20220914221810.95771-10-mike.kravetz@oracle.com
+> > [2] https://lore.kernel.org/linux-mm/20260202233617.2350734-1-jiaqiyan@google.com
+> > 
+> > Suggested-by: Jane Chu <jane.chu@oracle.com>
+> > Reviewed-by: Jane Chu <jane.chu@oracle.com>
+> > Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> > Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> > Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> > ---
 > 
-> I'm late, maybe this is already upstream.
-
-It's in mm-unstable.  The second round of MM upstreaming is two weeks hence.
-
-> >   
-> >   	/* Region to the left of the fault */
-> > -	r[1] = DEFINE_RANGE(pg.start,
-> > -			    clamp_t(s64, r[2].start - 1, pg.start - 1, r[2].start));
-> > +	r[1] = DEFINE_RANGE(pg.start, r[2].start - 1);
-> >   
-> >   	/* Region to the right of the fault: always valid for the common fault_idx=0 case. */
-> > -	r[0] = DEFINE_RANGE(clamp_t(s64, r[2].end + 1, r[2].end, pg.end + 1),
-> > -			    pg.end);
-> > +	r[0] = DEFINE_RANGE(r[2].end + 1, pg.end);
+> For the future, the changelog always belongs down here, under the ---, like
 > 
-> TBH, without the clamp that looks much more readable here.
-
-me too.
-
-> >   
-> >   	for (i = 0; i < ARRAY_SIZE(r); i++) {
-> >   		const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
-> > -		const unsigned int nr_pages = range_len(&r[i]);
-> > +		const long nr_pages = (long)range_len(&r[i]);
-> >   		struct page *page = folio_page(folio, r[i].start);
-> >   
-> >   		if (nr_pages > 0)
-> > -			clear_contig_highpages(page, addr, nr_pages);
-> > +			clear_contig_highpages(page, addr, (unsigned int)nr_pages);
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> ---
 > 
-> Is that cast really required?
+> Changelog
+> ...
+> 
+>   fs/hugetlbfs/inode.c | 18 ++++++------------
+>   1 file changed, 6 insertions(+), 12 deletions(-)
+> 
+> I think I always add another "---" above the file list, not sure if that 
+> is required.
 
-Seems not.  The types for nr_pages are a bit chaotic - u64->long->uint.
+Interpretations might vary but the "^---$" inventor sayeth that
+everything below the "^---$" is not part of the changelog and is to be
+removed.
+
+
+Also, my preference is that the permanent upstreamable changelog not
+contain short-term development-time information, as that's
+uninteresting to someone who is looking at the commit three years from
+now.
+
+Material such as "how this patch differes from the previous version"
+and "how I tested it" is interesting and useful, but below the "^---$",
+please.
+
+
+Beware that git interprets the separator more loosely: "^-----------"
+will match.  So using a row of "-" characters to underline a heading is
+a pitfall.
+
 
