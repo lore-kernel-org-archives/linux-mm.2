@@ -4,72 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E57AE8B388
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:45:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6403E8B387
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:45:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B170A6B008A; Tue,  3 Feb 2026 19:45:07 -0500 (EST)
+	id 3A14B6B0096; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD8EE6B0092; Tue,  3 Feb 2026 19:45:07 -0500 (EST)
+	id 36DA46B0098; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A7BF6B0093; Tue,  3 Feb 2026 19:45:07 -0500 (EST)
+	id 281E96B0099; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 473DE6B008A
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:45:07 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 131A81A064F
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:07 +0000 (UTC)
-X-FDA: 84404929854.20.4580C06
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 13C7B6B0096
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CE95C160637
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:26 +0000 (UTC)
+X-FDA: 84404930652.19.B535084
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 165E916000B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:04 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=crXiy018;
-	spf=pass (imf08.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	by imf11.hostedemail.com (Postfix) with ESMTP id E180340002
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=1WuCWlAZ;
+	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
 	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770165905;
+	s=arc-20220608; t=1770165925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UfjaUaIuA0bRrAc4cE77mBYy+gfHHyNJYKQPy6J33YE=;
-	b=7sigc4OnbQKkxfswsex1jaa8hFhNdt4QQwCxMkARiPo4Uz3SRjO4KnPOacUF8dhmCOem3E
-	wKUytoBChviLrHfnEeKibBJHkoi+yKaBB2IPDPzzvWtjQnMsbCqmSCtmfkXyW1usISGdGG
-	trKu6Fgwxs5ObnDoWrDW9JTIfkVErXY=
+	bh=j99Bl1HWmVYx7aLiUOrbHBPAuPixzOzdzIN5XbrCTiI=;
+	b=YqYSdOd0fJ/du9PtaIggRL5S6H7tRzMrQmZukocFyChZrL9mEgiOcRvaTseB2T2J2flW1R
+	wVcUznW5Tb8prMKmV+kANQ+dRWcGhMXm2fHvDBA24/d+/4ghLWvleCOXExOZo6XI2UAoRa
+	Y068W63Sr/yiYmBtnvyJ2K7Ccid5hNM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=crXiy018;
-	spf=pass (imf08.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	imf11.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=1WuCWlAZ;
+	spf=pass (imf11.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
 	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770165905; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770165925; a=rsa-sha256;
 	cv=none;
-	b=D24DozutquOpAs9NBPkjeB/zUibGQ7FESKq3nE0F1XCoWx5KL+ZlOPg8RE/JMBBLJq0D/q
-	j9fJcemYp6GrFhDPP7m9hYAOj6yAPfMW/4UhsOUYnz47Rs/GhVb93pnPD+l0tDAuvLnhID
-	j5FXM9pcPAJ5SF3lv0NSYAGjlPKO9lw=
+	b=zinuMXy+BhptxPRxa6pRBg3WmvPBR7RC9XAhNlywUyTp/gTeU9dplklSqbpd9bcBpB31HM
+	naqBT2NPIBzB9dJXQwMOKorWud7U5VQm0mrSal2oq5j/9CAoaOyTAA87zg6l6+NkYWCcQQ
+	0PSQRXr+3pddBdE487nRvy5hmaLZco4=
 Received: from [IPV6:2601:646:8081:9484:7f27:8faf:e50:c87b] ([IPv6:2601:646:8081:9484:7f27:8faf:e50:c87b])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6140hAvG3684475
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6140iX2x3686652
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 3 Feb 2026 16:44:06 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6140hAvG3684475
+	Tue, 3 Feb 2026 16:44:53 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6140iX2x3686652
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770165850;
-	bh=UfjaUaIuA0bRrAc4cE77mBYy+gfHHyNJYKQPy6J33YE=;
+	s=2026012301; t=1770165897;
+	bh=j99Bl1HWmVYx7aLiUOrbHBPAuPixzOzdzIN5XbrCTiI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=crXiy01897ayeasjguHKSzOn2NtespesB5xpL8Yz8Rro2GlQ+haqoeVfRwHO2y2Ex
-	 m3GhQjzYodiuSlJ6RZGrBCU6iR57vXf5PayhAHKnL1Pv112u37riVXjQKdaq0vCe/b
-	 ydVdAY7lyHrnl4HKaNsjKP8nG4CWoFCSEDXkPVeRUuwjWF9XDdYGeUicLa/knHNU/N
-	 C2QNci0MUUj5Y7z1je88PgYSuhPDWNZGcNbn1GC/aVVG8aBNf5SGwaVgFGiCwU5wmj
-	 IPwjHDCPKoUJkoh55eUg9V82sNLOEkpCqYnTGSiLUg7sGJ4ZrLnoHASpDWWnGpOsQK
-	 zp+2hiw2M+duw==
-Message-ID: <45453806-e861-4084-a89a-38adc48ff67b@zytor.com>
-Date: Tue, 3 Feb 2026 16:43:04 -0800
+	b=1WuCWlAZ2LhZ2XdJJ//0ZKbxmRZIMy+v0Q5Gs+tyjOaTdMQRWYkOsudn7MKWqWVj9
+	 7MOkiVAg9MeJkyt9wpViQhHOzhaI4cLck8cqu8Q5oZAn3yaGJ3hmgnZUwC57NKUG4a
+	 9Cd6aLdiAeDMlHU31HZdzetIgs+2qDwu0z7wG6CRIA8wiZhY5Vm7Sr/URCsMiP2TWx
+	 92ZwmWLg4zz9CBBrZu7gBRDNA0XHl3a0Y4HhbfY4l97iKjFZxMD3dDVAuaTF9vYaMi
+	 lIOUHeu+YHDGAZko7kuLNPRKFLShhAcrJhcISGLtcCf3nrmXRK5Q4rRz5da+K79hPT
+	 vqMZkagnMRgMw==
+Message-ID: <63dd1427-06c3-4bb8-b57e-f36cb417c381@zytor.com>
+Date: Tue, 3 Feb 2026 16:44:28 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/6] x86/vdso: Fix DWARF generation for getrandom()
+Subject: Re: [PATCH v7 4/6] x86/vdso: Use SYM_FUNC_{START,END} in
+ __kernel_vsyscall()
 To: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
         linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
         x86@kernel.org, linux-mm@kvack.org,
@@ -102,20 +103,20 @@ Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
         Vasily Gorbik <gor@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
 References: <20260203171958.1522030-1-jremus@linux.ibm.com>
- <20260203171958.1522030-2-jremus@linux.ibm.com>
+ <20260203171958.1522030-5-jremus@linux.ibm.com>
 Content-Language: en-US, sv-SE
 From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20260203171958.1522030-2-jremus@linux.ibm.com>
+In-Reply-To: <20260203171958.1522030-5-jremus@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yw93h5iqr6e8roubjstjzmydauxf3t64
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E180340002
+X-Stat-Signature: mws37u17adc838trhczzrw7rsh4o1djo
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 165E916000B
-X-HE-Tag: 1770165904-325034
-X-HE-Meta: U2FsdGVkX1+D1BxiaE+IhaAE/ZCB8RxANCjMUMb5hi/gwZP82cFl0JGFf8GLcU0Nq375EFYsFe7hTQccSjcO0XdtX7Ch04Jn9v2vqzsSHTWM6INyawfRhNBFpFTOa0d8izcsafGLRuQ7HeWNhG+EnxLWpEDJi2DlSVtueCWNnjAdMSxNs0j01WOE2rPVH3iPJE0uc+X16G2ZQX8339e8npdoMrdoZO8VLAWcEhj+Ml65BB7wcjJyi+Afr/SnaIJm75iaNXMYgZGrm9VSe9UNzHrGZzH8mbo/Q8Ym1EvMliWs9Ne3WcWwLXxpH9hzzvAfXTWe554YO4Ypvaer2NPCVDd31s6K7ebi2p/MBgVL2+WgVTN7XTV5IwWFNHIz2I21M2Vu6FyIugBt44nsY1BUnFYpKAbu0zix7JF/79ydBGJBmyU0v7NI/vTUOByOVhPRaMY05/8RKOrzq8AjSPj5R65CQki5vYAEVNtJ1EyAirEYYiZlZoHgu6VlX/ccrV0Y4xWHdVl/cNyiwlBwMFLRugCmgbgmKa4I9mlT4tDTkKsdniRnkXm32Y3LtdQjogWQNz+2IFb10vkXaGqHGBo5h6TYQoZZ1PQToH8YB6IRRDD9O51y0Kaw1gbOpvK0r03NEZSay7rvxLIruFawI+K+Jvgw3Q0SNwctIBqrE38po5RRArablAOBCsrZ21+E+z0ydgC6rtJgt/jcf8b1+J9iIiRbaZl4wobLsftSAPlPRx5hkxsVb8nKRgO2jIb804UDIT/D6nJ7UuwM/MSvK7ZQ7fxO+IxCmk6PFL7gFldMZhq0eok/Dyg9PYYPE60GfOprR1LWbsWzbv0IBh9qZLKsbSoq/jaQbFxZqV9/rPvdm/98Ly3KQPFLeN9H913ThmnZ9l5hUydY+Za5UvBwBxHmhfLrExAA+UrDHy/gadxFFhwtLjLwfAc/c+l+YKyurq6pfgEiR4jS/3XAUN85bFv
- VNL3X7pH
- 0Rj0+4NJMEi0dsA/nSe3md7FcjPgeghgwS8cvujbvnVS7mGqCihU+Rp/xolrk567pQRSDkuVAhazg2j4xQHonWPh8aMYHZflykB1opldqIBdjrRvfnS7MSahmTDoPny2o0loqVchfv28XP33CCLR+8aLAZaKxGhX1afqVSBvNFVh81SErgmXA7LJHy/2UYXI76oR/nd+tUMnt/HnywnScwPv/237M2yoHZ8ByiNkUvaPCaXMOZah7uysXl5TLzTlI96ZYiOGyaVjSk/PadhF3CvAsq/ZgnHNp3DZdhOEpA+BaFnQhGcsiDFLVAB0carz2iXTouTuZy0IixF4eFN/THPDmVr4xFKTLjWXCtupHtDTQlq3LnrY6qCrIxgiNaRKY1Wft7SFWOx7J/4ahvaQ/7s6n/1QsQqfyc2pjWlAlSIots4Ruu0xm0frsstkDDzixyUxDNNQHd2RlTd786BE2vtyQr09sfiq6nBuvAqnyOsbmbwj5oYoOx+y+EOyr3aIoGcr65v9gk5yf+zjjFKBrezE+Ew==
+X-HE-Tag: 1770165924-127788
+X-HE-Meta: U2FsdGVkX18SapYA8D1hZF9qMj1eQOnWYBIxmrDToXXaC5SnQYuwgVzPOh6hXXJkTerntGL7TdO7snLnWwxR7sFtiy1OYgArqsAmSCP1Wa2nJoNPKUoHyisVInBOWq99SP5Ttn4OH/IN4ktjuEVIQUN9es9AYMt+dALvGkSWooNRBIvyS9D7fAubgMW2mZ+kbb5cW+aWz53Z52WtPEY0yybymd68Xqzjhvk7bcC8wOvGYhX8D5EXWPUh3rKNrb9pxx40XmdRrQFBli+bDk/KN/wGYfeApk6IVEjyaGODIzsl3hYfd+BK9tDBDtcUho+qH5ub7+enVDNdtHUc3SS5DmGM+r/43sX1V1z3kiyAdFJ/SMCICr6P/kM5EGwpyqatlqMMkvoOE9Okrsa5DS4DeFo2bpz5EVpAaUmVhbf8CGChseUjpvsMJdd1iqmxK3EpIUaGj/RtWoj+hRbFZGWwDJAmoYGIHMZkm3qBMoldKrqEUfy5QEpKGRsfLi9y0fROtqfehj9gde56fMqy8aY+fciuiN38uGsoxP6uI1v2LflDdp1A1FSY7fy5fz3aMyjZXC6akhAsinw0+w/6cD6d4G8jVWEmqi/JFd/nQhInYpKWGJYxCLIwi4BOcMnW9EJTg7AacqpC7hYHDCMfhQXDgqp3F3ZxfFygBSOco+RMBGEi1ePLgwto1IvbGLt5lfrNs34Pz115lIhQ/ZXq8+teqxNkqahpnvS89H1PUp2s3XU7hYLzwwAw0Qy8Kp+oCOf8KCRsLnbEkZH9t9/6jmcTF7M8DWRh/ixdSoXbRxjKz2gYpeS1uej4NUjcJl47UE6uNojiR5SK+v1bonvZUwI5snOmm9ot72FAuhvHJg65xjm6i80mKUlq/8ofyp5VrlUOtZRmvaY/4tEpwfkKyH/izyr2G8AD3haym/ptQ7BXkmEelj53STzZ4X4SrTtXZbrdiwTV0Ka2U9dGRcfvivW
+ uQkNremI
+ UFBytnkL8fZnBdZ2c4VBpil+FBi0WtmoWcp5nthCqXJD3wj6COPP4JVzrSN4ZoAqhIa+X25AzTvzIFmKdf3k5YT8DXxwnqloCYZt3N4Gf3hecHxXW3CZfNBWW9EteL44WwffOwDIXIsg6YaGw/DncKTLuJAGDuszPex7qe5/5D6T8+XG2mt3S+EvvWyie8s1JMbjPCGSVqjIgtgarAaVVLq8QGL4Pc93xLq/TG1DbMiMEMBvsFjyksGxFiBoEFMRp7ddSBpTsJqdiuLn0/1pXS8nP/P58NabJPyukCqlyKZ3W58ouRPB8JgdjBCfGjUGwg3OnGhfYKLuJ6IWO8Rvuuut8s5SHvzHhUdwwBvj58KJ6jjNZHCTJsTV9DOqmfHefD+FnJmbEwtN/IbE1POoaMKU2wzQmpPIrhBI6rWj+/QAucy9D3y8wmbcYQrLIQyxblVlXjbuTubhIPe+pzkrMmwZuxCmrO8kkhpZ4B8ksEU6wwCXL1UMX77g1gioi4kT3tFcPI31U4kL4usMGl0A5dADFgwet3/No/o6rl1Y1bZQ94cblYtL1IaVvn8h6w0gc6bD6ZsF0B7bUtlo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,45 +128,47 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 2026-02-03 09:19, Jens Remus wrote:
 > From: Josh Poimboeuf <jpoimboe@kernel.org>
 > 
-> Add CFI annotations to the VDSO implementation of getrandom() so it will
-> have valid DWARF unwinding metadata.
+> Use SYM_FUNC_{START,END} instead of all the boilerplate.  No functional
+> change.
 > 
-> Fixes: 33385150ac45 ("x86: vdso: Wire up getrandom() vDSO implementation")
 > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 > Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 > Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 > ---
->  arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
-> index bcba5639b8ee..cc82da9216fb 100644
-> --- a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
-> +++ b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
-> @@ -4,7 +4,7 @@
->   */
+> Notes (jremus):
+>     Changes in v7:
+>     - Rebase on H. Peter Anvin's vDSO changes on tip:x86/entry.
+> 
+>  arch/x86/entry/vdso/vdso32/system_call.S | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vdso/vdso32/system_call.S
+> index 9157cf9c5749..a90f4f7de396 100644
+> --- a/arch/x86/entry/vdso/vdso32/system_call.S
+> +++ b/arch/x86/entry/vdso/vdso32/system_call.S
+> @@ -9,11 +9,7 @@
+>  #include <asm/alternative.h>
 >  
->  #include <linux/linkage.h>
-> -#include <asm/frame.h>
-> +#include <asm/dwarf2.h>
+>  	.text
+> -	.globl __kernel_vsyscall
+> -	.type __kernel_vsyscall,@function
+> -	ALIGN
+> -__kernel_vsyscall:
+> -	CFI_STARTPROC
+> +SYM_FUNC_START(__kernel_vsyscall)
 >  
->  .section	.rodata, "a"
->  .align 16
-> @@ -22,7 +22,7 @@ CONSTANTS:	.octa 0x6b20657479622d323320646e61707865
->   *	rcx: number of 64-byte blocks to write to output
->   */
->  SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+>  	/*
+>  	 * If using int $0x80, there is no reason to muck about with the
+> @@ -85,7 +81,5 @@ SYM_INNER_LABEL(int80_landing_pad, SYM_L_GLOBAL)
+>  	CFI_RESTORE		ecx
+>  	CFI_ADJUST_CFA_OFFSET	-4
+>  	RET
+> -	CFI_ENDPROC
 > -
-> +	CFI_STARTPROC
->  .set	output,		%rdi
->  .set	key,		%rsi
->  .set	counter,	%rdx
-> @@ -175,4 +175,5 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
->  	pxor		temp,temp
->  
->  	ret
-> +	CFI_ENDPROC
->  SYM_FUNC_END(__arch_chacha20_blocks_nostack)
+> -	.size __kernel_vsyscall,.-__kernel_vsyscall
+> +SYM_FUNC_END(__kernel_vsyscall)
+>  	.previous
 
 Looks good to me.
 
