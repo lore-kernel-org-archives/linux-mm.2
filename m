@@ -4,84 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F18B5E8B39F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 06:50:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 529CDE83EE3
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 07:17:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E77D16B0005; Wed,  4 Feb 2026 01:50:40 -0500 (EST)
+	id 5AD116B0005; Wed,  4 Feb 2026 02:17:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E24446B0089; Wed,  4 Feb 2026 01:50:40 -0500 (EST)
+	id 55B186B0089; Wed,  4 Feb 2026 02:17:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D22C06B008A; Wed,  4 Feb 2026 01:50:40 -0500 (EST)
+	id 43C796B008A; Wed,  4 Feb 2026 02:17:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BD7956B0005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:50:40 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F2ADFBABBA
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:50:39 +0000 (UTC)
-X-FDA: 84405850998.20.59E32A2
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FC416B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:17:18 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 954628C35C
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:17:17 +0000 (UTC)
+X-FDA: 84405918114.11.241DA54
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7C078140003
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:50:38 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hq9zvd9f;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id C3FED18000D
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:17:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="alX5ja/r";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770187838;
+	s=arc-20220608; t=1770189435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjqDTyldBnHj8zXH7Ia2dO8KZLmg+HKhBrlN6K3aOQI=;
-	b=J4Ufnu4qIeGzSCynRI4wwRkajgIu1kKOlln6hKyHSt59/Io4fyW9NgghvHiRTbQ1tPPwmZ
-	NbL8Z/6lEYpb9ftUpp+RRDW8EcRKe9RIWJ5DIWLIS8Uh4XJoONgDlc1alcvWhTJlBJM1fx
-	fLGki2Ait/khZZhpZD6gHA+fVErP/x0=
+	bh=AAxmt40kl0VIpwi9JbEN/Ah5tUAvcuCP/zKdNUhvruY=;
+	b=cQj/jq/uDcYQQdrOWHnYA99hbCz1Cc09kPrsJeMDxd00KkaMGXgQL3sJrS+N7/+8XE2myf
+	w2EAl3ujaUIBp7p9NsfjFRBuz0oeilCs2sjSVBuo762ZqNjJXkc9wGk5tQZMBDYOg8qk2n
+	J0cmwsTNwqUEBmdf/giTj1mB11A3dQA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hq9zvd9f;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="alX5ja/r";
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770187838; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770189435; a=rsa-sha256;
 	cv=none;
-	b=NnpywzfmR9y0OOzLxuBSqZ0dZG3HnOqqKAL0L9qrHGvToRfPyln/wXN/ukbWFdhFGdec6G
-	Ch9myif6mz4HSnDuGCcoWJ0B4SfRRYRjyLUKGGrEDZM8yr1WL+Rq+ku9i0NSOl4tmpJGjv
-	Ef8cHduv5QN74SBs+p5LVwoz2zSxnXk=
+	b=n3j0s5cWS54C+Iuz1DYoKSU76JkuiPCP8EvQ94Hvl7yuUohoDWvZhkh31/EgdrXlIM6R7s
+	5lC7tYpDCiz6MjX5KPlJstzM0Ip8vMgm+UOAJx0oTAtupMpxJPTo34IU0yr5Z2UUX7LeUB
+	PtGGg1hT2wMos5B42WHkTikVFO7Yc3k=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7A7B3444AB;
-	Wed,  4 Feb 2026 06:50:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F187C4CEF7;
-	Wed,  4 Feb 2026 06:50:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 92C8141766;
+	Wed,  4 Feb 2026 07:17:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4028CC4CEF7;
+	Wed,  4 Feb 2026 07:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770187837;
-	bh=Ynp8H61OEOLyw86ddq0GbQsnIzog6c42WYAG7qHdqxE=;
+	s=k20201202; t=1770189434;
+	bh=PbpHINPIxKlo9HPoQQXP6SMwz/+sggXsDbHwfHXEEkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hq9zvd9f2q5zGqcvW/W4lh7x7Dh6/q62QFjUw1Bi7kXPS6XxKX9Kyxkdd2sAyPGCY
-	 36Py/Et+VJo3Ry7K6IwUGOug7qGUnkdjYmX4h2CclxHCcaZFTh0Lds5hs+fzS+aGfb
-	 Oi0vnap8tFz210HpediDQuBPuKmQrCXyKsM58phLEhNR8CGMhx8vafAjiRTDxhu49x
-	 GC7zBDoDWv6v6QlylYtVlc0gaIMWUgq1bHlWsMYEDaMSR/mQlKath+p+T3v4+sFCrO
-	 fuVSoUL0g+46uBc1nm5tHbgniXH9Grb6Dm2vFOOFbRbTACv9OLeX9BHkZGQ8FDB5Mi
-	 zCWKV9cYQfywA==
+	b=alX5ja/rxhvf5yBZcCNXHG6rAaG5VEkuC40wnmWvqMN6tM20LdqGLTogEH39uhSgK
+	 H/Q9S7C8aF1gsQKYdz1rjlPs0uHp8T5ZY1vGAiHOEhZtXr3O3jM9ytNzuozft2XdPj
+	 CFnhrg65NijjL3rspj1ZmBNWZzWV2ACtewNPl+b0+SXsRupHsfoLW1jd/c/dm9vmX7
+	 Z96d40SD/Ob8bq89SOm6B2UEOncXijT9pARMFVg6wnaOLyw4sqAnFwSxtCEyuk5+vV
+	 LpKs3AxRrLThnBl1CCr6m7V7lSwiF3Bc2jZXElLj9ZO6REzoVMBVZM03dkLzYR5dke
+	 VQphjGTIq7o7Q==
 From: SeongJae Park <sj@kernel.org>
-To: Shakeel Butt <shakeel.butt@linux.dev>
+To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
 Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Subject: Re: mm.git review status (mm-stable)
-Date: Tue,  3 Feb 2026 22:50:28 -0800
-Message-ID: <20260204065029.16046-1-sj@kernel.org>
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH v1 0/4] mm/damon: Support hot application detections
+Date: Tue,  3 Feb 2026 23:17:11 -0800
+Message-ID: <20260204071712.16325-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aYIdEKHZ9mss9ZJb@linux.dev>
+In-Reply-To: <af4f3e15-a306-4728-b5bf-1deaa700c99b@huawei-partners.com>
 References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 7C078140003
-X-Stat-Signature: zwi3u6mxxbnoms1dynzydtxoqa1zc858
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C3FED18000D
+X-Stat-Signature: uw9mzbtg9uesirs5pots5ojmjg7x4bnm
 X-Rspam-User: 
-X-HE-Tag: 1770187838-29644
-X-HE-Meta: U2FsdGVkX1/wZ3uqI5xtdaBUnL+p9EtyAfq0q0h7ag60t00NgnnIm7ehe/YkSI9W78W+BkkyiqMaMjq3eJT5hnysYyHbwNoLhjhscn/WcOSPGqD88KRFqtQJc3UZjc0vIWofpNMfQ0xnHvqSTrlZDhl2/YWXvKAdmpSxCLWRjcCBfXU8fAx+AVQkdfAKmdfT5rCiZvPXCTh96xBcshPmdMETHtUnFAtdwe+PE0vOn9j8Vqi4g37qxtUssNMrCfw5TJX2ZtBXAHkRRAOFEV+mEUt5Bn4n84QhVA/zf3STJT3GQWhL2y1AQAvXM8psnT8TLbmQpHOwQbzmooskpKvHnTFHf1ABeAjWFYr0u3KQZk432gP12wE6bDVcfYMjVtq0coSZSQsaroc2qwqM9Awa6rmu4oO/gGf0ZdMo+Qv7oTsuoSQteg088J3KcTb8L2VVpgDVGhtQJv5IZSYwSc1Pdvwkp1N9wIDtrCgawgJPJgGMGEZp397EGA1BQLOyvM4Tr72TGqQFPR6WVvUDV0zdj3alpYCFtBt0X2VNgLzHTw18McbjLhR6Hp83blzSw12GGD5MCayXvmagx1J0Tf1wDfPUR5T2q6PaXkqNE5Ve3+svv25DKZ/nJcDHGgF69M2z9HCXkQgbUpzyrO8MmJLxX6hRyMlvK0hniHuJ8msHD6f/P8xxurA18VyvsF43omjVCQ5hWhWsL3+YM03E+bHoY9w1EcPDet1Hel0n03F5qGM6/h+RZ5PfudpsZbhFvxEG+2805ppxq0FuCsAX+NsVhlrxQ5kWA+Q5HJyU11Gk7bRogBb3yGDQoEBVE7PFNvhnhC3E33EJePFpiAq0rdeHQU0kiVDPtgVz3TOn3EPnyWIfakWrsEhgajLXmTfk1XEGXtqkuS7FOlEgkGM3YqtV/RPJyz/u2K4ZC7mjq+dLQCWK6rTar+1Igw==
+X-HE-Tag: 1770189435-864659
+X-HE-Meta: U2FsdGVkX19yZ0c65JkTqGrHMBnG3GC1CoYKxtzz5KKzO6frLu3viuW+RW3ln8/MWjQyHhcLXeHd8p7tydwuR9KJn7DVwdHMPGKUG/W84NxEIHAmLM+NJkR1gRqO7fefnZZSKTH5gFdlCQ+w3GDt7O/MXoBa+bl72tf4D7YwvCEB/EW+sBAEXP32qU8ZGd+WdIWJSGOVQPCgg4qxXegJWXBpketBrADKXY+h2HUAaFSKtfPHz25VkQvwfJDI8uwD7iSh1AMaLIohrYgEZER/bBBbyqTE+S9gD6w58qMUEn0Ws9JBUImlzKf7gxk8l2yC3gcmnd2mGiWxKpQGhbw3NDiscm3pBjEe4Adr9Qf7YvdwiNOREa+CHCRxOQeOgs7Wf5JoukrEsjBnNFNNE1P6bIiZfSFpn3zWNMA94j0TeOa/KeIQ/QrIdzzLHEjWbWv434hGoozu7MiyKiztXcYjJ18Hrd+bJWCq6GDqL6ReIix90t9jlYycKKH4w7VcGO21SwTypWSm3GSKXDlgy2LyUtLoHQAsrcRw1x+G8hRjX3HpQZGT4XqDLuD0pihLilk7sHKO2+7qgrj7gYVIvVyx6hJKcK4GkWJawip32y1YXxv6aU6kqR+de1WIbdR7gam/qZQbHk7dbRnhKL0KoPi8aIgWhSZXVZVluCHZccArVOqxo+7X0Eq7wjkN0B8eYxF6dAy60jM5wJs62B6gD022zwYXTd7pFk4jVGvn2mL3w67sFJH1VUsZIDsybQ2O2IoRp2ZAopiGnZBAAZtOl4o3kIWIV+CNl7n2MskWNhmrSx1jpku5Cc2+DbzdOjcqrH6h4e8CVXsjXGKN6INhw4VjAwQKzYDFGGp/jEMGJhWVpjSrFyJcrIskWcxiSwjVcTDbII0huJt3KITCePivazsqpec7dqGSLMQuirgSulIxBww4XFznUNF2KoxF8qqr+YuP08fQL330vctfj43i45L
+ tlnPcZ3d
+ rEmOF3/yqtYAuHHx8YoPKO6OzKqAuUUoUsBRgVf7Y+eMcWDuk3gUMhsVTT8EXskPr7cZHebsr0Hh8LNVfa5tk/xM5u+xw5lBI50mjnTtCrvMbw4sx9kq732s6/cNSrYDe/2hKhXB0ySWC1LKGW8cBgnp8tFZ6t1iwqF1PkgGR8P0KWu7ryl4BkAI2KoD7NqtOFzvKU0PEDSRL0X0ey2QcY7cBLoFMwv1t8UAoT5M6+gJ7P6jtRIn6J5Yq7GOVC7gnGpkFBcYVh6clZEU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,74 +99,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 3 Feb 2026 08:18:18 -0800 Shakeel Butt <shakeel.butt@linux.dev> wrote:
+On Tue, 3 Feb 2026 17:25:11 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
 
-> On Mon, Feb 02, 2026 at 06:45:52PM -0800, Andrew Morton wrote:
-> > 
-> > I wrote a thing, thought it might be of some interest.
-> > 
-> > 
-> > mm.git review status for linus..mm-stable
-> > 
-> > Everything:
-> > 
-> > Total patches:       320
-> > Reviews/patch:       1.40
-> > Reviewed rate:       74%
-
-Thank you for sharing this, Andrew :)  This high level view is helpful.
-
-> > 
-> > Excluding DAMON:
-> > 
-> > Total patches:       259
-> > Reviews/patch:       1.65
-> > Reviewed rate:       84%
-
-And the above part made me wonder if there could be people who want to get the
-view for only DAMON patches.  I was actually wondering that recently, and
-therefore was writing a tool [1] that can provide that kind of information,
-occasionally in the last weekend.  The tool is still in a early stage, so it
-would be buggy and may be changed a lot in near future.  Nonetheless, it can
-provide the review status in multiple categories [2] including if it is not
-reviewed but written by a maintainer, and for specific subsystems.  So if you
-want to know more detailed review status of patches for DAMON or other
-subsystems in mm tree, you could use it.  E.g.,
-
-    $ ../lazybox/linux_hack/mm_tree_summary.py --subsystem "DAMON" --review_score_to_print_commits 11
-    baseline: v6.19-rc6-36-g6c790212c588f
-
-    # DAMON
-    mm-hotfixes-stable: 0 commits
-    mm-hotfixes-unstable: 0 commits
-    mm-stable: 62 commits
-      - review score 3: 12 commits
-      - review score 8: 42 commits
-      - review score 9: 7 commits
-      - review score 11: 1 commits
-        - 95296536eb19 ("memcg: rename mem_cgroup_ino() to mem_cgroup_id()")
-    mm-unstable: 1 commits
-      - review score 3: 1 commits
-    mm-new: 1 commits
-      - review score 3: 1 commits
-    mm-nonmm-stable: 0 commits
-    mm-nonmm-unstable: 0 commits
-
-> > 
-> > Excluding DAMON and zram:
-> > 
-> > Total patches:       245
-> > Reviews/patch:       1.74
-> > Reviewed rate:       88%
-> > 
+> SeongJae,
 > 
-> Thanks Andrew for sharing this. It seems like DAMON and zram maintainers
-> need to convince more folks to be reviewers for their sub-system :P
+> Thanks a lot for all the useful feedback.
 
-I just hope my code makes more reviewers than my words and chocolate cakes ;)
+The pleasure is mine! :)
 
-[1] https://github.com/sjp38/lazybox/blob/master/linux_hack/mm_tree_summary.py
-[2] https://github.com/sjp38/lazybox/blob/master/linux_hack/mm_tree_summary.py#L64
+> 
+> One thing that I was not sure about while working on this patch set
+> is whether to have an external new module or adding the logic to 
+> damon core. I mean, the hot application detecting can be useful for
+> all other modules and can improve DAMON performance.
+
+All exising non-sample DAMON modules are working for the physical address
+space.  I hence finding no many opportunities to bring benefits of hot
+application detection to those.
+
+I agree the hot applications detection could be useful in general and creative
+DAMON use cases for virtual address spaces.  Implementing the feature in DAMON
+core layer and exposing it via DAMON sysfs interface will help such use cases.
+But it seems not straightforward to imagine how the sysfs interface can be
+extended for the feature.
+
+So, I think it would better to be implemented inside the new module at the
+moment.  Later, if we end up having more modules that use the feature, we could
+move it to the modules-common or the core.  If we further find a good way to
+integrate that with sysfs interface, definitely it could go to core.
+
+From this point, however, I realize the feature can also be implemented in the
+user sapce in a pretty straightforward way.  Have you considered that?
+
+> What do you think?
+> My implementation was module based because I tried to avoid changes
+> to DAMON core for the RFC.
+
+If there is a good reason to implement that not in the user space but the
+kernel space, as I mentioned above, it seems the module is the right place to
+me.
 
 
 Thanks,
