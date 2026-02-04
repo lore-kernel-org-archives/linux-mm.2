@@ -4,116 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 924A7E8B383
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:42:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C2DE8B387
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:45:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B3DAE6B0005; Tue,  3 Feb 2026 19:42:25 -0500 (EST)
+	id A050F6B0088; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AEB4D6B0088; Tue,  3 Feb 2026 19:42:25 -0500 (EST)
+	id 9B2D56B0089; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9BFEB6B0089; Tue,  3 Feb 2026 19:42:25 -0500 (EST)
+	id 86A456B0092; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 878746B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:42:25 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 26F29D505D
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:42:25 +0000 (UTC)
-X-FDA: 84404923050.28.57250E6
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 75F9EC000C
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:42:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=I7sPk7Ey;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1A86B0088
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:45:06 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 14CDE1B23E6
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:06 +0000 (UTC)
+X-FDA: 84404929812.12.D31791C
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DB4471A0008
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:03 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=A667aHHn;
+	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770165743;
+	s=arc-20220608; t=1770165904;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=9K+Ad73ToZAC0tkIKIowUNqNkC41RThWypaaBO1pALw=;
-	b=BTZ9PHga6LEcckumCoHH26Uu/us9yRq1xUhG6SLR7gSHCDvbSLcHGDW9SQrJEc40KPdm/+
-	t2oDJEWxMaGmeXaUf4HMO2RyYiZwbIhNlfwzoW9iZdK/R7D4S/AWr0v/A+Z9QEUJ97pEIr
-	dpuHUl9ZnkLStyp6izH9m/ehIiQ88iw=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=SfjcLG/RUmRtt9wxHxBQ6mL+sKk+V7CX7MeisYlYpJc=;
+	b=0BobNyGcLX+URtlgCnRnrEVRxGFMG5pr1vKJDFu2/uFaONhu9Pv1BlVZ8wcZqpvCyin3sb
+	On44Ss+kfaG8CNo46ACxNrFhFrZ8kWCVWXNs9+NRTxzsPTKkv2d/nYaCba/3sZhTamikld
+	iVq0kIWIBFPI3xphgJhnAWbY0md+9I4=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=I7sPk7Ey;
-	spf=pass (imf28.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770165743; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=A667aHHn;
+	spf=pass (imf19.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770165904; a=rsa-sha256;
 	cv=none;
-	b=cwtVLKC9Af/6vNWRxrCec8us0RZ6LqhGf6seOkccYmAAdsere04pe1DgB6ylEiB/oCnLFy
-	/tuaOBMgiAgiGD/DPLbMTbJ0q0FCcILIHxI/7VytV77ya/6yqKXLj86xjpV9e8OAghl8+L
-	uUYcx1nX1ETkfoAMsOx/6803lx3XmQM=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-658ad86082dso10777056a12.0
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 16:42:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770165742; x=1770770542; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9K+Ad73ToZAC0tkIKIowUNqNkC41RThWypaaBO1pALw=;
-        b=I7sPk7EypJKzcVsIhuVd3KwQyR+lZVdvnW30YlPhJq+bAG5OufLf/4ggJ+TBa/3EZa
-         m2E28VX52xwQcJxXJhPZoRDNi7AFLco5WfZJyTJlYGOlJ+Td4nk4TANoTkM3spt8Jv1r
-         iJ4sA0pLl+6jj0/Mp7/sufuCFbgYD7AG97UrNv/Lpy/290tt84CUxyBj4Xa2dx6eI7EG
-         iIdGFR3Hm5Np/kLnx2i4td4e2o/WygaYZRuXeafts+QlLBQ1Eq2a6EDgyP9UYgwOQc/3
-         IRO6VQcBmEsOCYuEAq8hrtiVW30LUMnqNfp3wUvWFeatRYH2DScn1NudYf1tRO/UxyBm
-         E18g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770165742; x=1770770542;
-        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9K+Ad73ToZAC0tkIKIowUNqNkC41RThWypaaBO1pALw=;
-        b=wWW/xyeviXj9/NwzpvwTy/uY2JZhabyOCyAqhgQUhbN/Mr9ZzkzFw/hUkEzJUYQc1j
-         kibCmvtAh0de7dwhVBbA7MRSbTI1mvsLPASwQl5ry7/KVGv9gx3vakWdLbfW2vypmDGJ
-         4UzWynwFXNNtyTRG0HVIxvKuIz+fb7Fwl8ziO2kWAF3h+8DdTHUjmG5u7/pKT69rG/J6
-         XOUcjWr1LXJU1/atJhZAs91rqYEy6tXT+hvGPz504KYm6DqwSZEsbWcvnRv6xRae4lLB
-         vGspZUzs04kFMPjgrGrg1DZMbeeN0NkY3urbsqmZDueSeApyznVEHSeHzvqv/FYkos9M
-         1WZg==
-X-Gm-Message-State: AOJu0YwA7G2b6mDsJl79LqFHBCQl9BInmHTkQMZ4F15HxJCC+CBPiqv7
-	3K6QSELQBukL4oBVlUep7RPHMBaBe4VIDuJFhePTHR+6MB40I8xUux39
-X-Gm-Gg: AZuq6aLy37n/JVoeqHbIeBZOWHqRH8H9LfZs5S38MvS7PjaTwVrTXCU/dQvmDuD/vFC
-	hQgL2ECDFUXD8TFU3ohUVhResQknesGvYxbW7Uh18Iuwy+zbhwaXWCj5Xict6h4NByixoC8DOWO
-	ESjOInn2BFYp2JlxonycHIY+68hx27y9G3EgJ230zh3gxwjEV4UIiuIOx+NMgCcmpTfiMp6rwtW
-	aBxep5D7jipIpXE/mOM8omv/0hgIsP9WwMG9ZKaJ186pzeXkqhB4LLxBKisa0gH/EXxAVC/ykzc
-	tUdaaeFdj7nvP5mnE8e6kR8gl+GERdHjc/l4EJfCgW26n0ujUAVM8rpl3Yf7CMFCNtspTEb/QKW
-	gmSYwKdMb0dJEdjpviPWlAaapCtFjgbkbHyQ4N60pTOdpHIo1Fao83UNx6WfEkD7cZexR+wNuYb
-	toAL6srcM4UQ==
-X-Received: by 2002:a17:907:7fa8:b0:b8a:f29e:307a with SMTP id a640c23a62f3a-b8e9f396397mr90493166b.57.1770165741562;
-        Tue, 03 Feb 2026 16:42:21 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8ea0057dd1sm57062766b.65.2026.02.03.16.42.20
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 03 Feb 2026 16:42:20 -0800 (PST)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	riel@surriel.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	ziy@nvidia.com,
-	gavinguo@igalia.com,
-	baolin.wang@linux.alibaba.com
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	stable@vger.kernel.org
-Subject: [Patch v2] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared thp
-Date: Wed,  4 Feb 2026 00:42:19 +0000
-Message-Id: <20260204004219.6524-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
-X-Stat-Signature: r84amza3kycofj3b7ax8onzokx7o1b1q
-X-Rspamd-Queue-Id: 75F9EC000C
+	b=m3Al/IUxF7pvRG1QqUdhu2GEr5fNKxfUYPN51ptqEgeP5wFbSkflUCgllXPHCwa3hJOld6
+	DmhRtW3+1WHClqoHQLY42qTNMg7tnEfbBLVA4uppfiCQooMOBYHRDAHJd+Mx6wYCdQAAEm
+	05hm1vDKc7OfSiuuIOeRFHUTao9bbTE=
+Received: from [IPV6:2601:646:8081:9484:7f27:8faf:e50:c87b] ([IPv6:2601:646:8081:9484:7f27:8faf:e50:c87b])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6140hAvH3684475
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Tue, 3 Feb 2026 16:44:10 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6140hAvH3684475
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1770165853;
+	bh=SfjcLG/RUmRtt9wxHxBQ6mL+sKk+V7CX7MeisYlYpJc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=A667aHHnZjPtA3vHvH0jpqhwqdKf4X6/35CpgUlJSQSe8LQuTsAR5kPmP4uY2ByIn
+	 ifXxRqU5OoZ1IoPKwL2BVP5QUwz+R3SGHYL3uh11dVN2rYTroBzK1nnGRvaco9x3AV
+	 PJkukzXaZTKyfW4NdDv8FFAy72MvB3KMvFwpcfVVbCZ4l72ccV320HTpY/RDFTQiHJ
+	 0B5tAvHF0AYi85FhQDMbDhUuXXulb3MZHpeluT4WdNX/UDpsLb9qVSVz8Tvxd3EigZ
+	 2CCyraJ5yWcTjnGmIAjRCwmsIoillqKATqXgWxaHjK8wsBFZ/B/ylwPhstUWBamK/p
+	 FX9idc7SfXpvw==
+Message-ID: <bd2fdf83-e460-46ad-8617-16319bc55ca5@zytor.com>
+Date: Tue, 3 Feb 2026 16:43:44 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/6] x86/asm: Avoid emitting DWARF CFI for non-VDSO
+To: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+References: <20260203171958.1522030-1-jremus@linux.ibm.com>
+ <20260203171958.1522030-3-jremus@linux.ibm.com>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <20260203171958.1522030-3-jremus@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: qam7ciw6xgrg81nqyc8jt7dddhyzjfjw
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770165743-170592
-X-HE-Meta: U2FsdGVkX1/Mzjte5XYlwe7NTvCNjA/pxfJWeERG+6b3/HNqd4C2XWI0xc56nU/9brfL99gr5Sd4K01Ib8FYxcHnOJm6Sbw54SDMp75o0+FAoCpY8viNvXmN1LenWLWNZmOlPmcR7WkHcsDoNqoU6evin0e/RkqVmI00Dj40GfMOsIcM8Rd0qsjZKAvwU13yCAUgeZVMo5wN+U8F3XTkm/SFRy49Z776wAlFGw56gCJyh6lKPp++KT2FMhnWi/4azi8VvB1XhbdS6tPyqxtnrMIe8DO3qD2okk12fgLlzfqXjT6DNDAIl2eI2V4SXyUw+JbXvgx6KnfuZBGd46dmTlsv60/S23MOjXJ8bSulUW3xOzOBWPn1ooz1yfoxedASk8/wUjWAsefOcnkxnaTp0r0jTyQjfWXBvvcWN09MzIjFszeoXQLucdaJzMUNzjrssSTuMjR6pVnEYZ6rIEoYMmjup6vZKRISXigV9Us47/v4w8htKvgugefG7mzncZbilWUhdS62zeOa0tWiSOGCTd4+XeTwCB5C+Gn+lEf2C4IHPlMGweG5KDaPNxMbM1xwGayvG05YvP/AYDfRRq4IeedINUx9gHoaLXDR+TR01F96uvtgVDkwBQpw4bDwNlKgsrUeGhxQKzkE5ayrQs8X0YHxyAY8KIqZbc6xiLlSMTccWGC6XXjPPLlUZ2VgWA3WTVapQ7MtzHi0mQiytitjj/ZDEHjYO2+j/6F/EiqwAcE9K6MQF87aJ6f/ezSFVQ2vtv/hIfGN1SBXl730skj5SDSEWv/BhicH8kEkMyEmOFuxbStns8dzEhhcDPFw1j/DWxknF/AtutLOipvLpeh2Op+6XXYwI8RKfPhHQZ6w7YfVQorlso1OMXRpF/5/NxfPOT6ZncslhAqZlO53flkA91d7jCI+fUx36pByzcoZzHHmCI0kDybqTaO7kZjPGg4ADxTaL2BBt50Ac/6JvcI
- XwPePfdS
- YJVcauUs36avkPla3r0P+WEcGGqJ9/Hx048SLfIBWbeTJIrdUWtZ4ZBcHf7qiaAWGEt5GzOOe87Uz907Vh6T75JnmxxGTHga+EfqVejVp1OcpUortUb0P24PmUuBr5KeK/04z0GhviTn5B6HxNdnnZSLh3A0O2xN73I3zruI34/c5c0kHz4z8ISv/agOfQvpORO6mGZ9PGun666a2MTzqKyzqADjMeAMIR/ywO2OZazv0/YC+GMJaeNXTaGX8zuDoexkLoFijwTTT7SBEHdnhki+ddAuAOfrTjxAovNzxm6Wl+yGp/WmmcWIPg/eQmqsqH+Fo49cG8bGRDUYPf6ZlmbAlFsfkqYKpIaw0LN79XPZ/XCDi7mzQ0uNzJjjY7W8+S+wFkA5nhM4LWMzQv6Nthcl+jxcrgfUIpenkrxKlfJd1eKebv62BJRL4kfQArX6S6SQxdK6Ar0BnwIvCTb9eR0jCdsrXWslnU2fLcUgfhQU+zP6F65rW2c5AigyVIbB34OHLBMb41EU5VXYadzNmJ1ipxVtNyol+6cbWLW0EFS2R/HpR0pecasJIZHje+vNyO0wWMJXTLBdjBCofoQxIRuR0W9Wse4jObIE1Uss5YwrbwN7cqcXfw90RhX773s6XqUdII+mXJS5c9WEavfrk1hrC//f7YXxMiOD1HgMrWds5yz4vo1SM9wYH6Bhp/g8I9m6pQi938H3+s1ZE3d78GlCiAK/1uy9Vmbjaf4u7Inp0XCRxOc8jwR3i1TjRKLY7GjCy90/r1yMgngcbTgByNDbBXZc6W/JZV6Ln
+X-Rspamd-Queue-Id: DB4471A0008
+X-HE-Tag: 1770165903-281249
+X-HE-Meta: U2FsdGVkX1+Tu4o7k/ISmg3pZi4oCPmbpTKzREjSdwGs1+j2eLP3vR5akYhU8faY6UWmxeY5MB31r9pX4lTPKRQH/KHvc8NxnNqEHT7P+Xz6rnzQ5fXKcBOeeOl9vH2I5xoDWHqRc0MnbTy3LOGn966UNVVETQ4cu0vS4DMPmslAPSrZuONP0aAIgeELCVSrNbU6+GLxL6qfW+O0xnK0EUt/i50UyEE7jKIsQgRxb0graGwqf38gA5uST3wtrb4dwwcTjpV/kR9ivSk+qkDiwTHY1lx24z8UlV6PU52sma0mh0v5WWxWY55uFRQsGcDxgpfSCNX5PQDVwCrcNJUlDaWuTWEa0ud1pMYrTxJPNLf7PLeY42cWePflZCKzV6cHQIeC72T5qpOX0751+aACDAeu+5HJM2jG8oreOk8HEzXpvPGspuKebjs5BHEz1KpshGRKbchcxgHPSLFprnJFucTf/rtUdOLfj2l/m1FmvvYMl9Q8PugjIo0Afd7nIi+Bzm+5Ri6dGo6sk1iie9aG3QN5p+RrFmwepgTaAa9bpYS7ncBPHLmdAURXLWZbaSFnlrjtG8/2sYBkL9OoFu3CtgDa08s6yNV1Jir0cRSYCBbJgLn/zL3CMCsKlj2WhxYY48pxW6QUXSPKQ+osGLqnM2E36gI8RNh4lxmknK4sG19kwfx7dVHBlQwgNSZ3OECZYXHA1b2XF6x9J/Sw2yh7Umf7L/TvMQtWYhIP4lNG67jYzejpv9LzviKkhQDrCy1x6ir3Gtmg0azN3GDLiG3FqV9whA2aoVIwgSJMom1yGTO1FiV8V1u8WoZ2oy051qlJ4+yiPLoU/ByurBGeJj20d64hlXeJS7Gbj8dxtyy0i/FFaaV3VreAHnJDraK1NsPCqxpGt3EAYV9z38r/3qqzzByTYCJen8BKUime12r1CZylEIeL9Aq3KvMhLophC0p9hwRHjSXU+hIF8mOWl75
+ Ofo1Scjv
+ D55kB6ComiZ1nKT6evRCXhTbRhePYcPDcEKeGyBo9Mctns5+PCs4kVSq+kbO3ovg6o4aC5mEC2gJoZM9/4ZaH6/GZ9wywE7g1rnnxStaOMZzHtRoag/TPd5ltQD6zoTrxQrXi859JScGyddeUrqtj5hdvEUg8R6QeBDhaGwic2xVdtVvpj66+elYX6sSM2LhV0wR9e2ylc3xLpQNcu9fvn6He7tzfPydCFPTDQ2x8ZpA/aoTFhSl0KZQo+8DEgzoM1H1zp2FTtO9bW0RJeAqUFPe7r99gvXhhS6/PX7OyhaEJ3+U8/yifdyAzxSXwl/QJlW5m+nmkiKIaio3izKgNc10UJeaGEnFnqWixK3KBz/JD5B63v/G1qJI71ajVACqDfqgU5mePdWg29AZ0g1ohMPrHGdc8aT/Isj4f7zQK0VEVbg8YqSV6ROkgLcl3ylD/sVgb/Wb6Oy4prj1MCWZ8rk9HwCmIZsNELM7QaGnKbFB5iNg58hclTxeW0QsorzcZCag8YCQ4rB3nS10Ezyk6yCFkBw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,80 +124,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-split_huge_pmd_locked()") return false unconditionally after
-split_huge_pmd_locked() which may fail early during try_to_migrate() for
-shared thp. This will lead to unexpected folio split failure.
+On 2026-02-03 09:19, Jens Remus wrote:
+> From: Josh Poimboeuf <jpoimboe@kernel.org>
+> 
+> It was decided years ago that .cfi_* annotations aren't maintainable in
+> the kernel.  They were replaced by objtool unwind hints.  For the kernel
+> proper, ensure the CFI_* macros don't do anything.
+> 
+> On the other hand the VDSO library *does* use them, so user space can
+> unwind through it.
+> 
+> Make sure these macros only work for VDSO.  They aren't actually being
+> used outside of VDSO anyway, so there's no functional change.
+> 
+> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+> ---
+>  arch/x86/include/asm/dwarf2.h | 51 ++++++++++++++++++++++++-----------
+>  1 file changed, 35 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
+> index 09c9684d3ad6..7cc30500c095 100644
+> --- a/arch/x86/include/asm/dwarf2.h
+> +++ b/arch/x86/include/asm/dwarf2.h
+> @@ -6,6 +6,15 @@
+>  #warning "asm/dwarf2.h should be only included in pure assembly files"
+>  #endif
+>  
+> +#ifdef BUILD_VDSO
+> +
+> +	/*
+> +	 * For the vDSO, emit both runtime unwind information and debug
+> +	 * symbols for the .dbg file.
+> +	 */
+> +
+> +	.cfi_sections .eh_frame, .debug_frame
+> +
+>  #define CFI_STARTPROC		.cfi_startproc
+>  #define CFI_ENDPROC		.cfi_endproc
+>  #define CFI_DEF_CFA		.cfi_def_cfa
+> @@ -22,21 +31,31 @@
+>  #define CFI_ESCAPE		.cfi_escape
+>  #define CFI_SIGNAL_FRAME	.cfi_signal_frame
+>  
+> -#ifndef BUILD_VDSO
+> -	/*
+> -	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
+> -	 * The latter we currently just discard since we don't do DWARF
+> -	 * unwinding at runtime.  So only the offline DWARF information is
+> -	 * useful to anyone.  Note we should not use this directive if we
+> -	 * ever decide to enable DWARF unwinding at runtime.
+> -	 */
+> -	.cfi_sections .debug_frame
+> -#else
+> -	 /*
+> -	  * For the vDSO, emit both runtime unwind information and debug
+> -	  * symbols for the .dbg file.
+> -	  */
+> -	.cfi_sections .eh_frame, .debug_frame
+> -#endif
+> +#else /* !BUILD_VDSO */
+> +
+> +/*
+> + * On x86, these macros aren't used outside VDSO.  As well they shouldn't be:
+> + * they're fragile and very difficult to maintain.
+> + */
+> +
+> +.macro nocfi args:vararg
+> +.endm
+> +
+> +#define CFI_STARTPROC		nocfi
+> +#define CFI_ENDPROC		nocfi
+> +#define CFI_DEF_CFA		nocfi
+> +#define CFI_DEF_CFA_REGISTER	nocfi
+> +#define CFI_DEF_CFA_OFFSET	nocfi
+> +#define CFI_ADJUST_CFA_OFFSET	nocfi
+> +#define CFI_OFFSET		nocfi
+> +#define CFI_REL_OFFSET		nocfi
+> +#define CFI_REGISTER		nocfi
+> +#define CFI_RESTORE		nocfi
+> +#define CFI_REMEMBER_STATE	nocfi
+> +#define CFI_RESTORE_STATE	nocfi
+> +#define CFI_UNDEFINED		nocfi
+> +#define CFI_ESCAPE		nocfi
+> +
+> +#endif /* !BUILD_VDSO */
+>  
+>  #endif /* _ASM_X86_DWARF2_H */
 
-One way to reproduce:
+I guess patch 3 justifies this.
 
-    Create an anonymous thp range and fork 512 children, so we have a
-    thp shared mapped in 513 processes. Then trigger folio split with
-    /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
-    order 0.
-
-Without the above commit, we can successfully split to order 0.
-With the above commit, the folio is still a large folio.
-
-The reason is the above commit return false after split pmd
-unconditionally in the first process and break try_to_migrate().
-
-The tricky thing in above reproduce method is current debugfs interface
-leverage function split_huge_pages_pid(), which will iterate the whole
-pmd range and do folio split on each base page address. This means it
-will try 512 times, and each time split one pmd from pmd mapped to pte
-mapped thp. If there are less than 512 shared mapped process,
-the folio is still split successfully at last. But in real world, we
-usually try it for once.
-
-This patch fixes this by restart page_vma_mapped_walk() after
-split_huge_pmd_locked(). Because split_huge_pmd_locked() may fall back to
-(freeze = false) if folio_try_share_anon_rmap_pmd() fails and the PMD is
-just split instead of split to migration entry. Restart
-page_vma_mapped_walk() and let try_to_migrate_one() try on each PTE
-again and fail try_to_migrate() early if it fails.
-
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-Cc: Gavin Guo <gavinguo@igalia.com>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: <stable@vger.kernel.org>
-
----
-v2:
-  * restart page_vma_mapped_walk() after split_huge_pmd_locked()
----
- mm/rmap.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 618df3385c8b..5b853ec8901d 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2446,11 +2446,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			__maybe_unused pmd_t pmdval;
- 
- 			if (flags & TTU_SPLIT_HUGE_PMD) {
-+				/*
-+				 * After split_huge_pmd_locked(), restart the
-+				 * walk to detect PageAnonExclusive handling
-+				 * failure in __split_huge_pmd_locked().
-+				 */
- 				split_huge_pmd_locked(vma, pvmw.address,
- 						      pvmw.pmd, true);
--				ret = false;
--				page_vma_mapped_walk_done(&pvmw);
--				break;
-+				flags &= ~TTU_SPLIT_HUGE_PMD;
-+				page_vma_mapped_walk_restart(&pvmw);
-+				continue;
- 			}
- #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
- 			pmdval = pmdp_get(pvmw.pmd);
--- 
-2.34.1
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 
 
