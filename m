@@ -4,84 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 884C4E8B383
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 02:04:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CFEBE8B389
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 02:07:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B26FB6B0005; Tue,  3 Feb 2026 21:04:09 -0500 (EST)
+	id 8ABC96B0088; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD64A6B0088; Tue,  3 Feb 2026 21:04:09 -0500 (EST)
+	id 858A96B0089; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E07A6B0089; Tue,  3 Feb 2026 21:04:09 -0500 (EST)
+	id 72D636B008A; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8BEA26B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:04:09 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33CFE8C20E
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:04:09 +0000 (UTC)
-X-FDA: 84405129018.21.88A58F2
-Received: from out199-18.us.a.mail.aliyun.com (out199-18.us.a.mail.aliyun.com [47.90.199.18])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C602818000E
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:04:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HwBj3f7s;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.18 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770170646;
+	by kanga.kvack.org (Postfix) with ESMTP id 5C3C66B0088
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2691D160677
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:07:18 +0000 (UTC)
+X-FDA: 84405136956.09.B21C0B0
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 2E105C0012
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:07:16 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JQhs1JCx;
+	spf=pass (imf22.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770170836;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jBt7Z/V5pgKMFlIjdcHweNeN5RveOulAhKPeOcD39KA=;
-	b=xKuGzlR4DAs9zBZ6StQy1eDaHRKVylvK3qeeCxUb5Z/bQfWhGra9E4rg5auTjh9TU66gur
-	9wNDqMzpAKSrRuA3zU9CvBrwQL3tH0wA6IVWfyxyOtrAb9xoqZcdMZlmzC4OzIpPcH/yOK
-	Z96jJo0MbuRv7RnALhV+qmcrhNa3A2w=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=HwBj3f7s;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.18 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770170646; a=rsa-sha256;
-	cv=none;
-	b=J9Vu9sXmLjRato5rGo0zIZD69sNnD05z4RQ7QG5+O5/kC5SQKRWSJaKatUthwFWnn0b9Lo
-	luuFdFpMwba1YZzmsBeEA+NPGp8KJJ2eKV7SyjSuYNhVZtZAnvKRxo0KpWwqFCMjJRCg9V
-	gXOg3LWgmpUlPikNW10Lf4aQ4rDtYDA=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770170630; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=jBt7Z/V5pgKMFlIjdcHweNeN5RveOulAhKPeOcD39KA=;
-	b=HwBj3f7slVzWgweYiynPnrpx83X5/T1CWN3bqGvkCdNILR1vvcGOHgOtUs4qAZAKCPd2tBN54E7k/BtuTLKJrEYKjGrdyTm6LPCvd0OrP9hxPWHAjkUSHm8DRbJu6sT0hL7jrw+demfYagCNbza4hxLYaj73M3NpedI/ryZjjMY=
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WyUk0nd_1770170629 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 04 Feb 2026 10:03:49 +0800
-Message-ID: <ad71b58d-cdb9-4a88-9a80-d0c4339e54f1@linux.alibaba.com>
-Date: Wed, 4 Feb 2026 10:03:48 +0800
+	bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
+	b=gwPt5XW55qVtv6doJxdneMsI0ag41x4ejIu/YYZvuYMUUr+uxWaB2xG0+7lyptJZd4Kqbe
+	6sZc63C8f87HgH4uhehi45fG20Ns8oxoQjzjxVEP8PE9v52UT5yjTd6SoSzLevtG/76grZ
+	247CQ9iEyqccW3NabKOyeKqjT4/ZOIM=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JQhs1JCx;
+	spf=pass (imf22.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770170836; a=rsa-sha256;
+	cv=pass;
+	b=ygLOg2ezr4VEcP2YODCqhwgd5aYQLc19G/UepFiluokpjPyPQI/wQzGtYTFJPWJ9/9s4gQ
+	IDqcLC322QHSaRh5/ol/HzJDGtfM3ebPnxZheGmzUb6ZqQrqWJrS0sjCZ6OMnRIf0urCop
+	aex+wZU1ybjrvjOEMZzNn6xzVhogarQ=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8c5386f1c9fso856952185a.1
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 18:07:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770170835; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Bz2YrctULUn3fe1rreORR9tBYgrQ/IYKaBJc+mfHEbDBIWgidlFiHXI100FPKjwBwL
+         gBRgsQzNz2WBX72VUknquOcEIB0i5E0G4m2HwwEmVJv0i33UTh5fth8sT+bunFhs1+39
+         SXWNNCwdYk89amifP/TTYuN8KXfWswMY/73wauEK5f0dQwbh3SaW7gByykJT1iDOnucB
+         A4Ot5ps6ci6Uh6zDzhp2KMjKFh3tl09zhVRScFsWwoV2L3BR6NTXYm9V6BCYnhX86mSw
+         H/vNa1Hj0/urrcNZPGniHBS1lw1K0F/KN4Xsb6wXgkVNL2h+aW8kgvcvMhFEfkvNvjDm
+         YwTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
+        fh=wxsvq6FMgmxZq2NThXEarPuzvQxca4QRebrQQssydtw=;
+        b=VwEYyvuU7E36jkPXgQuDW0MQwfVkpmYkTy4z6qZIE8wLuhM7OqFBw/6mtnJW7uGMI9
+         KG3LtVPxyRKbZwL0dJMqTXAdgGRlMyOwAmYoGquCvXfgl4aSXvPy9J0+wRNLdk/PoQ3Y
+         p382/Cu4oP+TV2yW1/4G0wd6MUCx/9sdxcBMfTQnWyHpM56IE6IKzRJ/9OZXkSt4eNSY
+         JflO2rAVLz+jgIs29pmFApXy/cQcgf9ATxvvN7NjiATmxva2NVz3z0kM/kb3RNXDkAwC
+         p0MEv1MgyA6s6k3Gj7E7T7K/K0SgqBHBU0YZ63T7qef8NwdtmMPUDMQKIZnWq8JLnhUv
+         H85w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770170835; x=1770775635; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
+        b=JQhs1JCx1uI6MjN0E1KXBVJmO+FPbZ0WmUSMVzyysSX5rJyTWGik9PiWgMaK8jaFa0
+         C5CTyvKlugPF0wa5yr2MXSMyCJN9ciZnAZdPZFpEZ72F3EagQsVdLz19jD+oiu+QDyFr
+         JW99HOEJlDNSYQcqPeNUebCIObhCHfHgdDq78ZWZJ88bCHUx1ZIaHU2ZH0D5GWU1x6Pb
+         EqR34Xvefpzcl+H9RgXH36SMX32OXPxUTHvBpQajPuiR9v7kjkfuDz1xCeo4WTjBCOu9
+         lwbQOODpqT64SRoDSKDwjU1SDHbucXGyF29Vri1YpvPx4mgbAhkAU1Bs634tvgBx8n1C
+         iK7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770170835; x=1770775635;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
+        b=Ah96Y1nReuaddieUo8qoF4nRaVEUXtNFzN2z333t6W1kbbPB3vptfA5y8XrIdmyH4Z
+         hmno2kfWZZ/nE95+SSwxibed9i/NDQcaif3N0vZdOXgKpT1TAvjmjFIzPpVIsPK9U6vp
+         3E/8DIRgWz4FREzAK2/kxg/VdG9Fln2EnJR0XLj5UXA7mI25dEnpsLg4AT72X1MbPs0c
+         4ptGc+lbKmcd7H5YgXDmmhKpgQvErWh6xoKPUf0s0N7YsSvosFctgg6Qyp+eDw4N5XSq
+         CBXCdj6uxQR+pBhKRREvqGGWtfDQSsZHtqj/+alJ/fI7Flk4FymbkGpRThXRxYo+Oox6
+         JYbw==
+X-Forwarded-Encrypted: i=1; AJvYcCWj1sffYQ/IoEd3anuTMFyG1nWDeBhvQxf01fDM7/fraFrzsKnRyWnRO+nqRTH0DDcrmsGjEf7RUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx8uosKpC0p8pOBO3ig+AzkgxMppHt8/3AGOfyYENYsSIku3aBH
+	JVRwEyEArSbeyRJ9FtJLMnVP1m/DRZPyG1Vajt2XXl9hOHqZMN/yx6cj5wK8KEm6o9P3T/iab/A
+	TJw/YGwAS6uv8OqASXO1XqntUwYppFcQ=
+X-Gm-Gg: AZuq6aKVgw5BXbhjBLcNRdfuxhSgTaZ9Q2ameahhsX/R0tdfh2SW/BirpiXzvfDnAqF
+	8pXtPWnNDNAt5DM7TmwJAx4mwk1jytmiXXqXZi3o0eU3EyP03u5UCrldO6qyfcEXFuHEDw+VqG2
+	Tli74Yeel7vL7sd19pewlkyZW1FIn6dWIr76wIjOUp7wI8NgnH2EkdyKv+wv1k/SKQ8ptcuMPxL
+	RR+gRt69qRmHMAwNflNJ3SwzJZmWOVurg7bGyZvMzjZ/IqMfjJI++fEtxNkrP8uVsNUg2/pXkV1
+	MJMnChVNeciMFMtMD/Zcp4A=
+X-Received: by 2002:a05:620a:288e:b0:8ca:2cfa:822e with SMTP id
+ af79cd13be357-8ca2f9f5b94mr235535285a.70.1770170835165; Tue, 03 Feb 2026
+ 18:07:15 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v2] mm/huge_memory: fix early failure try_to_migrate()
- when split huge pmd for shared thp
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, ziy@nvidia.com, gavinguo@igalia.com
-Cc: linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
- stable@vger.kernel.org
-References: <20260204004219.6524-1-richard.weiyang@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260204004219.6524-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sukobtsghb4b6mscsonicf8pdxkcfd4e
-X-Rspamd-Queue-Id: C602818000E
+References: <CAC5umygEq6xvpDFnVnDLYLyqJV7qChEsJ_+W-KCBJ+EXj1948g@mail.gmail.com>
+ <20260127220003.3993576-1-joshua.hahnjy@gmail.com> <CAC5umyhqbW_qXaApO8OGg1wo706GfVPuak5JwdBfBgS751Ka5Q@mail.gmail.com>
+ <aYCiboGiXO2lQC0W@tiehlicka>
+In-Reply-To: <aYCiboGiXO2lQC0W@tiehlicka>
+From: Akinobu Mita <akinobu.mita@gmail.com>
+Date: Wed, 4 Feb 2026 11:07:03 +0900
+X-Gm-Features: AZwV_Qh72QJTI4M2CEIA0M9FqVyxcZFhJhrBbyaUc7tMrpfUO9BLxMEmywo9FJo
+Message-ID: <CAC5umygW8PXnS5tix-DfujhPjrRjBaEKe8ojW=y5FmqhqBfurg@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] mm/vmscan: don't demote if there is not enough
+ free memory in the lower memory tier
+To: Michal Hocko <mhocko@suse.com>
+Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	hannes@cmpxchg.org, david@kernel.org, zhengqi.arch@bytedance.com, 
+	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, ziy@nvidia.com, 
+	matthew.brost@intel.com, rakie.kim@sk.com, byungchul@sk.com, 
+	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
+	bingjiao@google.com, jonathan.cameron@huawei.com, 
+	pratyush.brahma@oss.qualcomm.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2E105C0012
+X-Stat-Signature: ytu4j15rjgtc3xmy1redgpzakj8z9o1t
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770170644-53073
-X-HE-Meta: U2FsdGVkX1/94gxBBm3OnCken00orMk/e1qXJkOrWLUmxuPA+9XrlxFOcUKzRhHVEzVCSh6cx8fB6z0IuJKYyHu/Vi4hQ0tXQM4rHu09be9jaHCds7yE+LVU9bFadIZGWoqAL8nkNf+zt/ekSXz7iUHx+m2Gq3TJdotdFmAGtNMx9E++AMW5v/nPXDjreh3ZdAo+w/oXSn/Nk2BW0I71SwFmpCjk578ksO4Dz+eQ/BjnfOCTbxKjxAGUlUU5F5Xj8MkVhoyhqrfMjDTsjiNQOBFmZuM13n+92BMXxzrOsqg9nxOE5I0BLSmI2Yjxhdhx6O8t7N6arrDQRqD+X+KsgK8YpbMKJ9tzP782FSW4GoiFjfoy7ov5w0rO88Jz2qql/08SygYltdndgEt7C326zS7Ho2j+HpbCJ+rxlEP7gfXfOW43FpfDeXLtJlrDWP2wJX/6h+X12xNA10/TWBD03aRfIfUjdQhvLMLNJykQS6ulNM+FHjaASkGkBqYmHQxLrGlVJwGq3xzZkWMvByknhmDJAS++oWAXz/8GSNN7WZ4znd1fYOo/wypBxUgwrExeMFJsiFa/rWzx34wN5WNk76mpfdEJfBy2MMYYwjXRyYGEf0em+X/w/IL0D6vTNCr8pOTPgzV1KKhl9QxPPvDbNZwa3DR8ulng81MsdxjRiGtEDtp1DUvEg1Pxk7PdZxUeC7pXpiie0AYu2i4OasviOk6ZjTX+P5BAGNYZO6NZNxty69JSl8s6IPLLRj86uqydA/+XrHdSIbDTjSL3ShvCmbcQZ6MobVh/wDEinSCPJ/p1iouwLIeNIxT4JSrW/Gwe/2bHe7H3fNVSVwfMSwthriIFsiSL4bEjqAAEfo7H9lN1+6pcT3fZCdgDU1BwfqGlob2BQBxL4It1KZDs1e+1bnjLn430aGYBxCgztJOOuoetJrIoBSkTecRatdMYPw1OqpeWmMkBgFzb2872X3B
- QBylgddW
- fDWIBOKMhrB5C7E4SPoim00cGmbYcS5MGsS2/lBCzXVnnhBOWQJPcGsZg6f7WzIvzwpoBheAq2SisYy63IamgBMYuLVGsyooJGO7HUaLlyGEr/DEt3NgvYvFRNdLSCKlmY/vNfSo/b76PC8GgZ6RiA69ZW2iptGtna8sVfWL+6XUSsSkcXgn3NCyp9V+OLE3Npw1+tLtkpwnqF+IiWlmCGs5sEl1c2NPsqYcOD7zE4qB3zxpVT5WVnzIWSqdU/Hth45F6FrHFLpG0IXYH8AoNriLpL87sM9Zde+ZCluPFF55iHqZWNFBH9QEQMOfbHVWmxbYMLJjATdObUhuXDuPe1ZxAmULvrV/Q/WPGExybLhsk9HNBZ2RMAG41VB5jXlJC7+7Yp04+vK1mUt96iKRzZr2C7nPTyfLBzpa5juyVeNjlwRSLULwwWcUo3jekBOkuSTD9iQAK7T4Ic8QTMm1Ry/62C0MEFtu2KJR6L54z6HkiXr4VtVTdSOxnC0aACYxJqQGC3VzZOTZqiGEcXKAiWHGzHu+i7M9DQm5sncz+hqDSK98=
+X-HE-Tag: 1770170836-435103
+X-HE-Meta: U2FsdGVkX1/wC8ruQXJv9BSbxIs4iJsZKoIKOpl4y8gis8N6DcRLd6gNj2aMsxmf/BYyYr88OxqcI7mhSgxVDJfFygDyfDcgU2jAK+cn+Cd2MbR2GdMKptucTCydYp3QhP5rh6rHCg8qcMBYztnNgetqnFYVUt+t16ptKSQj43Doq8rTklcZFnt8kRmPkRMz+fvg+Hh88VjSNq1VkUADAQPYlB24CdQ35b4NDXT7edTYbd36WJpWsRYJqtoViVDLhaDIgdHRUlVJrieBpGOHuv8Odl2GwOToNbvYVpHtBOGs2ncdw01ihfcdQ6lyt5fQPk5rpBv7bxVWBKGkfMgl36zQDzTpCHYgyKDpkJSuTd3rmbCVPm7mqZg00+9tYhLgPyohMGi4EiXRY9aJXmWVMvE61Ugc/SDRD7vgqJlGMDC08xPqtC0QeJp6CuRtud/Iux3HHwzLv97tejKJj1U2IX3uRuPX2I+v1Glzp8rCdwPL9AaCAQ5NYmwV7Q0kNgwTJLO+S0V94i2JCuer3ETRhZFSsYzun6FRJMB+SkfguCvKKhXKttObPOyc7Sg8ipIzYi9Cezsmqyd19H2acNGFAxMq0tLkTMXqosKbON3aiT0oRr6bPqViiC5eKFIyhZBgJ8mIvp5MNiyAtOVv9sFlYq6Qjo9B03hjbr9IjlRnae+3Hn/+DILaKzOrQqBpQEYX90A1Nh06QHtfLGlWFR/OB8s/ssm+q3J3UI1ENPyygJUJJVmJlXrqLvu2mzpLmvYSJtjFU9UZb1SBeBqr3IoeZ8VdW4w1KVRZ8syskWqf+XAoIP5FNBgY4KZzxhbGupSDz4dg3xknflzFAE4aaWIS+ha7zAroGUMEj8vJWY8OZcnYts6+OR8QX66YeLn1hE6h/zsL0vePGJIQUmBqTLI49xGdtdq1eEpvNhv7uV/RUqHndrG2CAS859pFhRkIHtloAOY8VYcGcamwuQbzBuk
+ uo/8J4dq
+ gc9Nfxs6Ob17cQMAXT6gFCE6XZRoLpplWS4JPubLVqTKfTD8giUmOHRN2sFnXNzhJ6Bn6m0M12+2lBZkIgNGoGGcDDDgpzpeTAUXRaUuFYT1+Sx6WgQiD/Sq/KkqJTPIUhiqqjaIC2IcUXlInk65apE1HmsbZAemVEOom1BpbXtUdNnBoLQDZstGJHEW5koL3JhPcV+d/QFHuSuaHZSCKQz7EshUsLOZA13AgJjpHcr2gjwFON/HSESDzXR97qRoFtNzJSS7qq/4FUfXHc9UVVrEtOXDDb4U1TL+BmazQMukqQLxjtaR6ViJyCJCv2lKfXNQTzw1QpcuVB8c4cCs8BW1eoGiLUNEe6BVl9LwD+1ZZYbbmXXCQZYZjMGUhebfKL2BSGhna1H9smiDkL8Q4oEauX3fZklvPHhgciA35xj8NdCjZ8pbLREAlUssIbOf4/bsw0OkDKXpMCBS51tqkIyupDBidqa3YnJXMBjjabrDqejZhBPDX+eFJB8FK0/L5Bq06LOkvYiSJtgBcCXjd2kC+7ae9xQKuvSZ6ND96HeL6lB65tWZCkKP7js1ox7RPWL8QC5FLwAc4MMSmh3HAY69MG0PNNqOeivszDf5ux4l8ezg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,85 +150,204 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+2026=E5=B9=B42=E6=9C=882=E6=97=A5(=E6=9C=88) 22:11 Michal Hocko <mhocko@sus=
+e.com>:
+>
+> On Thu 29-01-26 09:40:17, Akinobu Mita wrote:
+> > 2026=E5=B9=B41=E6=9C=8828=E6=97=A5(=E6=B0=B4) 7:00 Joshua Hahn <joshua.=
+hahnjy@gmail.com>:
+> > >
+> > > > > > Therefore, it appears that the behavior of get_swappiness() is =
+important
+> > > > > > in this issue.
+> > > > >
+> > > > > This is quite mysterious.
+> > > > >
+> > > > > Especially because get_swappiness() is an MGLRU exclusive functio=
+n, I find
+> > > > > it quite strange that the issue you mention above occurs regardle=
+ss of whether
+> > > > > MGLRU is enabled or disabled. With MGLRU disabled, did you see th=
+e same hangs
+> > > > > as before? Were these hangs similarly fixed by modifying the call=
+site in
+> > > > > get_swappiness?
+> > > >
+> > > > Good point.
+> > > > When MGLRU is disabled, changing only the behavior of can_demote()
+> > > > called by get_swappiness() did not solve the problem.
+> > > >
+> > > > Instead, the problem was avoided by changing only the behavior of
+> > > > can_demote() called by can_reclaim_anon_page(), without changing th=
+e
+> > > > behavior of can_demote() called from other places.
+> > > >
+> > > > > On a separate note, I feel a bit uncomfortable for making this th=
+e default
+> > > > > setting, regardless of whether there is swap space or not. Just a=
+s it is
+> > > > > easy to create a degenerate scenario where all memory is unreclai=
+mable
+> > > > > and the system starts going into (wasteful) reclaim on the lower =
+tiers,
+> > > > > it is equally easy to create a scenario where all memory is very =
+easily
+> > > > > reclaimable (say, clean pagecache) and we OOM without making any =
+attempt to
+> > > > > free up memory on the lower tiers.
+> > > > >
+> > > > > Reality is likely somewhere in between. And from my perspective, =
+as long as
+> > > > > we have some amount of easily reclaimable memory, I don't think i=
+mmediately
+> > > > > OOMing will be helpful for the system (and even if none of the me=
+mory is
+> > > > > easily reclaimable, we should still try doing something before ki=
+lling).
+> > > > >
+> > > > > > > > The reason for this issue is that memory allocations do not=
+ directly
+> > > > > > > > trigger the oom-killer, assuming that if the target node ha=
+s an underlying
+> > > > > > > > memory tier, it can always be reclaimed by demotion.
+> > > > >
+> > > > > This patch enforces that the opposite of this assumption is true;=
+ that even
+> > > > > if a target node has an underlying memory tier, it can never be r=
+eclaimed by
+> > > > > demotion.
+> > > > >
+> > > > > Certainly for systems with swap and some compression methods (z{r=
+am, swap}),
+> > > > > this new enforcement could be harmful to the system. What do you =
+think?
+> > > >
+> > > > Thank you for the detailed explanation.
+> > > >
+> > > > I understand the concern regarding the current patch, which only
+> > > > checks the free memory of the demotion target node.
+> > > > I will explore a solution.
+> > >
+> > > Hello Akinobu, I hope you had a great weekend!
+> > >
+> > > I noticed something that I thought was worth flagging. It seems like =
+the
+> > > primary addition of this patch, which is to check for zone_watermark_=
+ok
+> > > across the zones, is already a part of should_reclaim_retry():
+> > >
+> > >     /*
+> > >      * Keep reclaiming pages while there is a chance this will lead
+> > >      * somewhere.  If none of the target zones can satisfy our alloca=
+tion
+> > >      * request even if all reclaimable pages are considered then we a=
+re
+> > >      * screwed and have to go OOM.
+> > >      */
+> > >     for_each_zone_zonelist_nodemask(zone, z, ac->zonelist,
+> > >                 ac->highest_zoneidx, ac->nodemask) {
+> > >
+> > >         [...snip...]
+> > >
+> > >         /*
+> > >          * Would the allocation succeed if we reclaimed all
+> > >          * reclaimable pages?
+> > >          */
+> > >         wmark =3D __zone_watermark_ok(zone, order, min_wmark,
+> > >                 ac->highest_zoneidx, alloc_flags, available);
+> > >
+> > >         if (wmark) {
+> > >             ret =3D true;
+> > >             break;
+> > >         }
+> > >     }
+> > >
+> > > ... which is called in __alloc_pages_slowpath. I wonder why we don't =
+already
+> > > hit this. It seems to do the same thing your patch is doing?
+> >
+> > I checked the number of calls and the time spent for several functions
+> > called by __alloc_pages_slowpath(), and found that time is spent in
+> > __alloc_pages_direct_reclaim() before reaching the first should_reclaim=
+_retry().
+> >
+> > After a few minutes have passed and the debug code that automatically
+> > resets numa_demotion_enabled to false is executed, it appears that
+> > __alloc_pages_direct_reclaim() immediately exits.
+>
+> First of all is this MGLRU or traditional reclaim? Or both?
 
+The behavior is almost the same whether MGLRU is enabled or not.
+However, one difference is that __alloc_pages_direct_reclaim() may be
+called multiple times when __alloc_pages_slowpath() is called, and
+should_reclaim_retry() also returns true several times.
 
-On 2/4/26 8:42 AM, Wei Yang wrote:
-> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-> split_huge_pmd_locked()") return false unconditionally after
-> split_huge_pmd_locked() which may fail early during try_to_migrate() for
-> shared thp. This will lead to unexpected folio split failure.
-> 
-> One way to reproduce:
-> 
->      Create an anonymous thp range and fork 512 children, so we have a
->      thp shared mapped in 513 processes. Then trigger folio split with
->      /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
->      order 0.
-> 
-> Without the above commit, we can successfully split to order 0.
-> With the above commit, the folio is still a large folio.
-> 
-> The reason is the above commit return false after split pmd
-> unconditionally in the first process and break try_to_migrate().
-> 
-> The tricky thing in above reproduce method is current debugfs interface
-> leverage function split_huge_pages_pid(), which will iterate the whole
-> pmd range and do folio split on each base page address. This means it
-> will try 512 times, and each time split one pmd from pmd mapped to pte
-> mapped thp. If there are less than 512 shared mapped process,
-> the folio is still split successfully at last. But in real world, we
-> usually try it for once.
-> 
-> This patch fixes this by restart page_vma_mapped_walk() after
-> split_huge_pmd_locked(). Because split_huge_pmd_locked() may fall back to
-> (freeze = false) if folio_try_share_anon_rmap_pmd() fails and the PMD is
-> just split instead of split to migration entry. Restart
-> page_vma_mapped_walk() and let try_to_migrate_one() try on each PTE
-> again and fail try_to_migrate() early if it fails.
-> 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-> Cc: Gavin Guo <gavinguo@igalia.com>
-> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: <stable@vger.kernel.org>
-> 
-> ---
-> v2:
->    * restart page_vma_mapped_walk() after split_huge_pmd_locked()
-> ---
+This is probably because the watermark check in should_reclaim_retry()
+considers not only NR_FREE_PAGES but also NR_ZONE_INACTIVE_ANON and
+NR_ZONE_ACTIVE_ANON as potential free memory. (zone_reclaimable_pages())
 
-The fix looks reasonable to me. Thanks.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+The following is the increment of stats in /proc/vmstat from the start
+of the reproduction test until the problem occurred and
+numa_demotion_enabled was automatically reset by the debug code and
+OOM occurred a few minutes later:
 
->   mm/rmap.c | 11 ++++++++---
->   1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 618df3385c8b..5b853ec8901d 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2446,11 +2446,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->   			__maybe_unused pmd_t pmdval;
->   
->   			if (flags & TTU_SPLIT_HUGE_PMD) {
-> +				/*
-> +				 * After split_huge_pmd_locked(), restart the
-> +				 * walk to detect PageAnonExclusive handling
-> +				 * failure in __split_huge_pmd_locked().
-> +				 */
->   				split_huge_pmd_locked(vma, pvmw.address,
->   						      pvmw.pmd, true);
-> -				ret = false;
-> -				page_vma_mapped_walk_done(&pvmw);
-> -				break;
-> +				flags &= ~TTU_SPLIT_HUGE_PMD;
-> +				page_vma_mapped_walk_restart(&pvmw);
-> +				continue;
->   			}
->   #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->   			pmdval = pmdp_get(pvmw.pmd);
+workingset_nodes 578
+workingset_refault_anon 5054381
+workingset_refault_file 41502
+workingset_activate_anon 3003283
+workingset_activate_file 33232
+workingset_restore_anon 2556549
+workingset_restore_file 27139
+workingset_nodereclaim 3472
+pgdemote_kswapd 121684
+pgdemote_direct 23977
+pgdemote_khugepaged 0
+pgdemote_proactive 0
+pgsteal_kswapd 3480404
+pgsteal_direct 2602011
+pgsteal_khugepaged 74
+pgsteal_proactive 0
+pgscan_kswapd 93334262
+pgscan_direct 227649302
+pgscan_khugepaged 1232161
+pgscan_proactive 0
+pgscan_direct_throttle 18
+pgscan_anon 320480379
+pgscan_file 1735346
+pgsteal_anon 5828270
+pgsteal_file 254219
 
+> Then another thing I've noticed only now. There seems to be a layering
+> discrepancy (for traditional LRU reclaim) when get_scan_count which
+> controls the to-be-reclaimed lrus always relies on can_reclaim_anon_pages
+> while down the reclaim path shrink_folio_list tries to be more clever
+> and avoid demotion if it turns out to be inefficient.
+>
+> I wouldn't be surprised if get_scan_count predominantly (or even
+> exclusively) scanned anon LRUs only while increasing the reclaim
+> priority  (so essentially just checked all anon pages on the LRU list)
+> before concluding that it makes no sense. This can take quite some time
+> and in the worst case you could be recycling couple of page cache pages
+> remaining on the list to make small but sufficient progress to loop
+> around.
+>
+> So I think the first step is to make the demotion behavior consistent.
+> If demotion fails then it would probably makes sense to set sc->no_demoti=
+on
+> so that get_scan_count can learn from the reclaim feedback that
+> anonymous pages are not a good reclaim target in this situation. But the
+> whole reclaim path needs a careful review I am afraid.
+
+If migrate_pages() in demote_folio_list() detects that it cannot
+migrate any folios and all calls to alloc_demote_folio() also fail
+(this is made possible by adding a few fields to migration_target_control),
+it sets sc->no_demotion to true, which also resolves the issue.
+
+        migrate_pages(demote_folios, alloc_demote_folio, NULL,
+                      (unsigned long)&mtc, MIGRATE_ASYNC, MR_DEMOTION,
+                      &nr_succeeded);
+        if (!nr_succeeded && mtc.nr_alloc_tried > 0 &&
+                        (mtc.nr_alloc_tried =3D=3D mtc.nr_alloc_failed)) {
+                sc->no_demotion =3D 1;
+        }
 
