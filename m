@@ -4,88 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B3EFE9537B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 11:50:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE67FE9537B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 11:57:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AE5E6B0089; Wed,  4 Feb 2026 06:50:58 -0500 (EST)
+	id 07F576B0098; Wed,  4 Feb 2026 06:57:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 086546B008A; Wed,  4 Feb 2026 06:50:58 -0500 (EST)
+	id 02D096B0099; Wed,  4 Feb 2026 06:57:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EF0E26B00A0; Wed,  4 Feb 2026 06:50:57 -0500 (EST)
+	id E6DF26B009E; Wed,  4 Feb 2026 06:57:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA1F96B0089
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:50:57 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 835B755CBC
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:50:57 +0000 (UTC)
-X-FDA: 84406607754.03.B7163ED
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A9DF81C0009
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:50:55 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D2EC66B0098
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:57:22 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77039C023C
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:57:22 +0000 (UTC)
+X-FDA: 84406623924.17.B1BC4E9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB50C180005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:57:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pac4HwXD;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770205855;
+	s=arc-20220608; t=1770206240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=54e3nnMEbMlRo4NYQjEDgRFvwOYUnGfz3igbMPvxkxI=;
-	b=PoK/+kedbChfm00+VQP43di9e1IfBiDxa2PoDeJuxVH0pl+x2IGkuW1yoN3Shx4Or9vE7W
-	Ri+bnkHPvcJCBRoeebj7s3fKHRmkZeJFaPebiUc1J2HvjQKr3dCIefl0x7SMbeBoP+xqRY
-	0xBgWvModYl6V2nwhoiXCUoaWjmcBU8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=abpWLae2V17Hr5QG1OHwl086kYIKU5swWRHjEpW9O5A=;
+	b=pyh9EGvo4JkKMs0dkI071auK2yM6f/N+3cKdu8Y1JS1ZmPCU7uK4GbefzruoHofImPt9Tk
+	xVgPU5KcBialR/f1VaEiCHEm97doBJP7ZQ8FSjT6FVikh/zMZe5Le7WP4WTdGY7xKK8cEY
+	77f4QkgSnS2+0mvAwHAA0DRXz5HEioE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770205855; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pac4HwXD;
+	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206240; a=rsa-sha256;
 	cv=none;
-	b=tSnXQKh2bh3bNTr2Zb891HYN8r1uLZyAADqS9qgUjr4wa09y+GA/B+iIC1P5DVtsqWr94G
-	Mga2cRkmStzaSXuC0T6CZbS3KNxuIke46XB9VgT1Qctj0f94mCGEURdiiYtSYpffdHGSWE
-	QRpBTXDUlVSzyrxtePyBOKXRtLgWe90=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 497A9339;
-	Wed,  4 Feb 2026 03:50:48 -0800 (PST)
-Received: from [10.164.136.46] (unknown [10.164.136.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F04373F778;
-	Wed,  4 Feb 2026 03:50:48 -0800 (PST)
-Message-ID: <a9e0a6bd-46b5-41f8-be50-03300f938bf2@arm.com>
-Date: Wed, 4 Feb 2026 17:20:39 +0530
+	b=oVy0ZOoDgGdoUbBTPps8tWvPlJGpZ639gEe9wGu9xVfjvrVUI47YEzzEGs835AmClI3kxl
+	1KVBxly4+0u+XHXLsCPrt4z35iybrHvtYyNWFpYCHeIg2ob2CmMM6RNV9bJvpHmkps14w5
+	/JH+qKroTnX+gppl3GSZGhMqYm6cblM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 37BC6600C4;
+	Wed,  4 Feb 2026 11:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92374C4CEF7;
+	Wed,  4 Feb 2026 11:57:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770206239;
+	bh=3669cUuITKf9u7tNBrqzpeq3tWTkH+jHDiuw+zCYrkE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=pac4HwXDEvkjtpqH3duQWkwwKzmPV6AGkrzzuHZe0O5AELAb9TK6GCTXHIbhsOZ8Z
+	 q8tneEGcvwedeY277RW6MH/iRB75j9wIsomGma3B/1dNp6pdbowEdwUf/XLaePwge6
+	 1a/kNPutWgagecr03ZdMjHBr1mwWyGLAS1dP+0OrrtdDLzMoBbYiy5JJrFfLi5bYkY
+	 Qk/78O6ReZYYANDU2/O7DOup7Nd6dBU8JzT2UF/PL7x2m/RL8kHvJGJ/aHtW9IO8i6
+	 C6boOy8YxHr7RQvGBbsTVJrgM1MK3OP3WbAQRBzeYhbp6fSkazlcrPQSn6jn4fG2XM
+	 taOND3Q8Nn4yA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+Date: Wed, 04 Feb 2026 12:56:47 +0100
+Subject: [PATCH v14 3/9] rust: Add missing SAFETY documentation for `ARef`
+ example
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 00/12] mm: PUD (1GB) THP implementation
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Usama Arif <usamaarif642@gmail.com>
-Cc: ziy@nvidia.com, Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
- hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
- kas@kernel.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
- npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
- vbabka@suse.cz, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
- kernel-team@meta.com
-References: <20260202005451.774496-1-usamaarif642@gmail.com>
- <e65bc740-8e20-452c-b66f-0e13cd4e9c59@lucifer.local>
- <2efaa5ed-bd09-41f0-9c07-5cd6cccc4595@gmail.com>
- <b07a8d54-75f2-4d77-838a-7454ad559cd2@lucifer.local>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <b07a8d54-75f2-4d77-838a-7454ad559cd2@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A9DF81C0009
-X-Stat-Signature: ss4pe1hehy36pd4urrc79rery5fkdntr
+Message-Id: <20260204-unique-ref-v14-3-17cb29ebacbb@kernel.org>
+References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+In-Reply-To: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
+ Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
+ Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Igor Korotin <igor.korotin.linux@gmail.com>, 
+ Daniel Almeida <daniel.almeida@collabora.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
+ Andreas Hindborg <a.hindborg@kernel.org>, 
+ Oliver Mangold <oliver.mangold@pm.me>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1810; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=OkPeSjQsIxKohCmbfrAmRiZJb8MRdSOGkBDNdfIpHoA=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpgzQBBW2YqZGe4r2rWgHunfjy7egLqvEkgf7uz
+ 37O8ZRA0baJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYM0AQAKCRDhuBo+eShj
+ d8ySD/4oYFBz5VsAwkAc/58oE1gXZfwyx+fXfX6bgRFe4iQKQGVEtyYJSzETywutuMaGAmARdAi
+ 4UDKl4ygsICYVqLTt539ppsrWo2lF/YHT01wrCKlG2Dj7yIB/TagCsgMMn8n65juI9wGfW1dGrV
+ 1ClAkZ2fSD3EuBAP/SB9koV3O3TQB50NTF3q1rm0twBv/iWQuKmpJgdVzfIMGu99ZiHTN0EHd+I
+ aTSOdg0c2U6QRfvXa4qxLoF2nSseFVbXsFRlFt/hma2dzLbj4+uZSVeyh64pc/1DMu4FjigBTeZ
+ TYpF39r5j72xpLegzF1hOSbCSFWb93osfqan6YO38C++oWm81Jne2RQO8vlCSDipEYwwLKn+/RI
+ WqFAwZDSecHK2y6sTxytNBFK2HKp36t2br3edIiMZ93JtPAOeeYJxw+EvmlbeVYSMYmSI0MBAiy
+ aCF9eSlo4E/n6UGTZ7BX/R5+Gz0nhkjUnTv0/WM78JvEdHFXzg8eJEPmbl20x74aGx4AsZteFq2
+ FIIDipB4dmtWFMEVPHavrNIAzTGz0e846BMYnBe70K35ixMEigNxsF3QYjrLcXtSXQXoXeQKsM3
+ hlOlLb+hoGE5ZACH8lEcrepeFUuRy4HGujzE4WIH+nr1EMmTQtYMc63npItj/L5iX55R1rv1Tq6
+ FXC4PDR6u4FX/Mw==
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
+ fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+X-Stat-Signature: yy7ok3ee9kkpko9kxxc1by1ge3fuy9d7
+X-Rspamd-Queue-Id: BB50C180005
 X-Rspam-User: 
-X-HE-Tag: 1770205855-863897
-X-HE-Meta: U2FsdGVkX18erbK6dBeBeMo5g/bzxIxo2hj6IoA6R4L4ZYltfJQSYi3sT+kXiSbPeTYfF6jNYqV6ATdqO9Vp+EBY94mPP3GyJ/xDZsaoODFpHQkIGxuKWwktcLe3sxC4GQrzIkgAaR4AaeXL24i01ixqn8qMcaC+pGC1QjYb2JnuqXpFdWmPJ1x3QUq7zmC2vdEBt6vJUw1O58TIyT6em5UdN9WxTFwCLbRzM5ANaD6xRHi+RQodBnTVQl7iFibMALDt2+dQfxvkpJgNPqVjKpDiBJUBwojj1oyicX/rOKBFExsdvdkcozPv6Ifhs7FJgE2FzKfW/EvmAo9KMctRGCX2JA2teNhAAB8VHIFvBYRpZuVUdBkTCa1DPqNZS+4b9xdCJqis8j1DlCbpxm1xkf3/5rSFJRxCuHE8eOQbbzSOtA7RYUYc4kRThyDCwnDbOZpNuuw8Ch9Pq560Mzlx/OrH5KaN2K3H9dVcx6SCRFSTir8rR1fQjDxyrE7bZ3g9xCCASDgCqM2/gau4V1tT76WD3kVlEQ5HTiRiRXuqkrxg7OZ9uZ2M+LvMYN+opjSM2WI96T3NUAq7nLSPLEE+Sk/8hGDso0ik1rQelWKY9quaLpTUWCC0TZiWti43rLOeciYTMgITYouMPDYo+6BcJdUyz3elVrnkV86PoGD+3vxjQ0Lv1aa7H5heA7dFn4R/NxI5oXFnqNiX5y3hC1I/0gQkTFSVmXmwSX0Xhsp9/6MQVNqBOKeZ+6t71q9kGT6SMMDNAmixF/dyZLkiTrA3qsl0GfXUQ0QizF8k7TesR9FvbUoNwz3tvnQ9t8CNtbuIHn+rNuhdRC9pYc3WTv60OmcDuzdm5AASO8GlKMFLs9MN0Jp+ZQuNJkKWgZuO08BhEhgK+gdrGsxjokOA7WBL3EH4IE1Ms09Z5AoBb/OI/FRF8Rw43vOI9+w+QFJgdAilRHoDeaZuG9Z21z3rNDs
- SpFTzuDt
- U8TNUhkZAlsUaBAFOfUo1ELOnXPfYXKp5LPhpvlrVxaXGzx4Y7vuqoEVpx1G0dDsKNJIQSOqYXrG5/Ss+mLzSwT7opUeUBOlepM0HAGGTg+LoLvCOI2pRx00CGI9/ndSPjqpVX7jJrtsdu2e1JRNafOJcrKyPXYXWyrOMO2aOtFKvBDvOMSDXztZ8+3MrUFnQ50hIyobSM95q/eZTvTREPwWA73hbul7nifMbq4otE1FX2lapkcswCD4du1e05zJQsf2WACCTciB2cN5BQ4hflXunvg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770206240-704155
+X-HE-Meta: U2FsdGVkX19Dn0taLhHOMciWeYiTuexGauwDajxNzSuceZ1Z3k1A5S5suyOQWSNHgKGDp3Rvv3/amLc0uLOiL+kmpyq3Lqk9MGNlhZfaBX77zjjoHhGY4AYvxToIbEvHfI6Io3nGTHE7/LZBO3N/B9S4NAkrMQ3Jr7MsoP/zYLwLznH9AfJrRlowKgjIBB/6dhnmYOIPKB9rkp8GG2EGT+NQnNHdj5cNDBqV0QZoNHRMmqL+3S6O/yf/tGmnk3DjZN/3MfcqnwYSquHzf9E47DVa5A9wBFXWcDIQC7gdsNQ9hnppQEFeY1c2SRI5BL6Egp08CRkCsx96koOHkFKiEYlfhEIqmDN8e4T2KPiwY8iar3RdpfY+hR7it1VZkKCz5xYbf8PvXCyPHaZzAJW/Gms/DukPWjeHGHhOrqcfAJvlX94DrXzZWbQRGVMOOtF174WbUylX8rBPKYT6quE96Tfuyw+jawoOv0N6U0r5bYAqkdF3VgMaGW3URZKUl093XPaPl7DzoisTgxhA5qgpJtZoLzwxrPs4UmzKjgGF3lhgcpsu2AX0e/U4RYD/7qGyRzgvcdmePbLiMCqG4QrSPjWhXvpETXhYcEzdhdzyxh2fkBMQDMJ3NRj/xmdn65Qj5tjsyExN10i0Jj/sh8gNizFDNpLGJ6+VQXB/ZC0H/7DM0rANpZd+A6efhll4dbkJQxklWdIyXHiRr9FUy/HY/cMSwkHxCXlmr+O0+A6uYlLcqHAWvNOr1vC+HFr1pYnL5KZogLsgL7OsUpmfOstx9aT463PcldyXF5IP4cWcw3H0oENwDUaD/TGjBGF57LbITpT4Rh638KCFuitjAUEDMgDW4w7IXe5nQi1Tb3uvEH1qlcsPFfp+jp8JTK9JeRJDI+J+he6XjXhj3ZlcDE2hVru2pFT7OlGxSvdnNTgyZJnbPUFqcMoxmsQSLKfyv9rFbxp+7DHLGvd6EnlaoMw
+ PADIf0y8
+ noSJagGyDUJoL/EzCp3kZ54r+p1H9Yy96H5237rIv+48HFC6rvoCNnWJWjOQIyBsHfRoogbjp17GxLo98MqVtarsC3vfzC7XA57mG8CHCK9V2270VspJ55LaTlksoHZOwUkJwcaC1ISDZp4u8hbHBoiRWXX2iNET7fr6x67tBPus0RNqr+Pf4T9Zwvu3hARY9tqxufg8/PyV7Rzo2mvDKpl/uk5+D3nlGpXRruHAdbL7KPV0PpYlRKI4VXhBLv2sFZkF4ZJ+57iJOh1aHdZnmesgKMq1kZj45qXjh6YSl+YJsjsh5YlSEMVX16oGgR31+zBNp1WND00ATNUkeYT79rhNsPClySGsuktUepZq3D0mx+KoQtAvtuL0sJA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,107 +132,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Oliver Mangold <oliver.mangold@pm.me>
 
-On 04/02/26 4:38 pm, Lorenzo Stoakes wrote:
-> On Tue, Feb 03, 2026 at 05:00:10PM -0800, Usama Arif wrote:
->>
->> On 02/02/2026 03:20, Lorenzo Stoakes wrote:
->>> OK so this is somewhat unexpected :)
->>>
->>> It would have been nice to discuss it in the THP cabal or at a conference
->>> etc. so we could discuss approaches ahead of time. Communication is important,
->>> especially with major changes like this.
->> Makes sense!
->>
->>> And PUD THP is especially problematic in that it requires pages that the page
->>> allocator can't give us, presumably you're doing something with CMA and... it's
->>> a whole kettle of fish.
->> So we dont need CMA. It helps ofcourse, but we don't *need* it.
->> Its summarized in the first reply I gave to Zi in [1]:
->>
->>> It's also complicated by the fact we _already_ support it in the DAX, VFIO cases
->>> but it's kinda a weird sorta special case that we need to keep supporting.
->>>
->>> There's questions about how this will interact with khugepaged, MADV_COLLAPSE,
->>> mTHP (and really I want to see Nico's series land before we really consider
->>> this).
->>
->> So I have numbers and experiments for page faults which are in the cover letter,
->> but not for khugepaged. I would be very surprised (although pleasently :)) if
->> khugepaged by some magic finds 262144 pages that meets all the khugepaged requirements
->> to collapse the page. In the basic infrastructure support which this series is adding,
->> I want to keep khugepaged collapse disabled for 1G pages. This is also the initial
->> approach that was taken in other mTHP sizes. We should go slow with 1G THPs.
-> Yes we definitely want to limit to page faults for now.
->
-> But keep in mind for that to be viable you'd surely need to update who gets
-> appropriate alignment in __get_unmapped_area()... not read through series far
-> enough to see so not sure if you update that though!
->
-> I guess that'd be the sanest place to start, if an allocation _size_ is aligned
-> 1 GB, then align the unmapped area _address_ to 1 GB for maximum chance of 1 GB
-> fault-in.
->
-> Oh by the way I made some rough THP notes at
-> https://publish.obsidian.md/mm/Transparent+Huge+Pages+(THP) which are helpful
-> for reminding me about what does what where, useful for a top-down view of how
-> things are now.
->
->>> So overall, I want to be very cautious and SLOW here. So let's please not drop
->>> the RFC tag until David and I are ok with that?
->>>
->>> Also the THP code base is in _dire_ need of rework, and I don't really want to
->>> add major new features without us paying down some technical debt, to be honest.
->>>
->>> So let's proceed with caution, and treat this as a very early bit of
->>> experimental code.
->>>
->>> Thanks, Lorenzo
->> Ack, yeah so this is mainly an RFC to discuss what the major design choices will be.
->> I got a kernel with selftests for allocation, memory integrity, fork, partial munmap,
->> mprotect, reclaim and migration passing and am running them with DEBUG_VM to make sure
->> we dont get the VM bugs/warnings and the numbers are good, so just wanted to share it
->> upstream and get your opinions! Basically try and trigger a discussion similar to what
->> Zi asked in [2]! And also if someone could point out if there is something fundamental
->> we are missing in this series.
-> Well that's fair enough :)
->
-> But do come to a THP cabal so we can chat, face-to-face (ok, digital face to
-> digital face ;). It's usually a force-multiplier I find, esp. if multiple people
-> have input which I think is the case here. We're friendly :)
->
-> In any case, conversations are already kicking off so that's definitely positive!
->
-> I think we will definitely get there with this at _some point_ but I would urge
-> patience and also I really want to underline my desire for us in THP to start
-> paying down some of this technical debt.
->
-> I know people are already making efforts (Vernon, Luiz), and sorry that I've not
-> been great at review recently (should be gradually increasing over time), but I
-> feel that for large features to be added like this now we really do require some
-> refactoring work before we take it.
->
-> We definitely need to rebase this once Nico's series lands (should do next
-> cycle) and think about how it plays with this, I'm not sure if arm64 supports
-> mTHP between PMD and PUD size (Dev? Do you know?) so maybe that one is moot, but
+SAFETY comment in rustdoc example was just 'TODO'. Fixed.
 
-arm64 does support cont mappings at the PMD level. Currently, they are supported
-for kernel pagetables, and hugetlbpages. You may search around for "CONT_PMD" in
-the codebase. Hence it only supports cont PMD in the "static" case, there is
-no dynamic folding/unfolding of the cont bit at the PMD level, which mTHP requires.
+Original patch by Oliver Mangold <oliver.mangold@pm.me> [1].
 
-I see that this patchset splits PUD all the way down to PTEs. If we were to split
-it down to PMD, and add arm64 support for dynamic cont mappings at the PMD level,
-it will be nicer. But I guess there is some mapcount/rmap stuff involved
-here stopping us from doing that :(
+Link: https://lore.kernel.org/r/20251117-unique-ref-v13-3-b5b243df1250@pm.me [1]
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/sync/aref.rs | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-> in general want to make sure it plays nice.
->
->> Thanks for the reviews! Really do apprecaite it!
-> No worries! :)
->
->> [1] https://lore.kernel.org/all/20f92576-e932-435f-bb7b-de49eb84b012@gmail.com/#t
->> [2] https://lore.kernel.org/all/3561FD10-664D-42AA-8351-DE7D8D49D42E@nvidia.com/
-> Cheers, Lorenzo
->
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index 61caddfd89619..efe16a7fdfa5d 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -129,12 +129,14 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+     /// # Examples
+     ///
+     /// ```
+-    /// use core::ptr::NonNull;
+-    /// use kernel::sync::aref::{ARef, RefCounted};
++    /// # use core::ptr::NonNull;
++    /// # use kernel::sync::aref::{ARef, RefCounted};
+     ///
+     /// struct Empty {}
+     ///
+-    /// # // SAFETY: TODO.
++    /// // SAFETY: The `RefCounted` implementation for `Empty` does not count references and never
++    /// // frees the underlying object. Thus we can act as owning an increment on the refcount for
++    /// // the object that we pass to the newly created `ARef`.
+     /// unsafe impl RefCounted for Empty {
+     ///     fn inc_ref(&self) {}
+     ///     unsafe fn dec_ref(_obj: NonNull<Self>) {}
+@@ -142,7 +144,7 @@ pub unsafe fn from_raw(ptr: NonNull<T>) -> Self {
+     ///
+     /// let mut data = Empty {};
+     /// let ptr = NonNull::<Empty>::new(&mut data).unwrap();
+-    /// # // SAFETY: TODO.
++    /// // SAFETY: We keep `data` around longer than the `ARef`.
+     /// let data_ref: ARef<Empty> = unsafe { ARef::from_raw(ptr) };
+     /// let raw_ptr: NonNull<Empty> = ARef::into_raw(data_ref);
+     ///
+
+-- 
+2.51.2
+
+
 
