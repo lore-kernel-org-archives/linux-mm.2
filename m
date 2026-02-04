@@ -4,89 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FBF0E9539A
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 13:07:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B917E95396
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 13:16:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69C386B009B; Wed,  4 Feb 2026 08:07:50 -0500 (EST)
+	id 7B2436B00A9; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67DCF6B00A9; Wed,  4 Feb 2026 08:07:50 -0500 (EST)
+	id 78A3F6B00AA; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A6CD6B00B4; Wed,  4 Feb 2026 08:07:50 -0500 (EST)
+	id 689136B00AC; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BC446B009B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 08:07:50 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E1EAF5687F
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:07:49 +0000 (UTC)
-X-FDA: 84406801458.12.D96C889
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3A5CAC0002
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:07:46 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 571966B00A9
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC9C31BFB1
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:16:49 +0000 (UTC)
+X-FDA: 84406824138.15.49CEF1A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6165CC000D
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:16:48 +0000 (UTC)
 Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TLqvIPTg;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770210468;
+	s=arc-20220608; t=1770211008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p3b61zAwG+EG/B2dJ4JYY9LqFwDVxhmn4f7iI8adQsQ=;
-	b=QpTMgb1mlIoagiuWdM6i1ntKuFt/9MixCL5u7EGocNFaUof5NE/AWuJWwUQKJnAa2TQ0jN
-	kbLOWB1IeiWDqt33w4YqEgn5fQvvRSRbkKKTcVV23Ly5AJWEWBxCQ6KfLdtEvcXGFzqoVw
-	OEaGIuLRy2+C68c0PhOEHHqwMlm5dyA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UjrOFWSPNYyipT5loTZH36ibiLYoeTCKGJiud/B8xVE=;
+	b=tqciFRJ8nlSLM7pXgTAzwKj14BHkPslA1Woq5a5QUL4E4zh+Kku5N9CrhXXlLdSQFJZdVD
+	6mk6jqn/r0H+pXoXYGYWTm09t5NC9had8imklhOeOr51g51HthEvhGkYh+l+riv9Ta3B5g
+	B+nBKRQkLds/bstQLWI153TtBQinNJQ=
 ARC-Authentication-Results: i=1;
 	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770210468; a=rsa-sha256;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TLqvIPTg;
+	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770211008; a=rsa-sha256;
 	cv=none;
-	b=6DWcwLTB4whXliLOHRv662p+g+pVFj12i1Naiuq7S3HecWByHZQpE/YJw+V+mUd1vtBr90
-	pTr7DNYt9mxWxz80Yf9BoDueO8MNRV5xuUYxJGtpOXH9Qo3ikixYdC1vj+RyIetg8PbGap
-	1gcYAxoWSfqLZinoQJnFqRht8ryLFP8=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f5gbg5N0HzHnGk1;
-	Wed,  4 Feb 2026 21:06:39 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1E36D40569;
-	Wed,  4 Feb 2026 21:07:41 +0800 (CST)
-Received: from [10.123.123.154] (10.123.123.154) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 4 Feb 2026 16:07:40 +0300
-Message-ID: <8b8e9dde-33ff-41f7-8563-d9aeaf5efeb5@huawei-partners.com>
-Date: Wed, 4 Feb 2026 16:07:40 +0300
+	b=L7+D8gmyYJxB1zd+YpWFcqv7haMaYr4aYs/EjTA2tWeLfPZhcY0XV6C11mrQmgehWDRYzO
+	sYEjwzqxE8xiv6fOABpLsHX4YrPzYlVcZgJ+4cbTPaUHCqXu27M40aZUHMKx2H8ArDNVg5
+	HdYcudWQLVGsWqkTyCQG1l0gF+6dZRY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9133660133;
+	Wed,  4 Feb 2026 13:16:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04119C4CEF7;
+	Wed,  4 Feb 2026 13:16:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770211007;
+	bh=U65dLrebsUvHoLgUboK8QjnppPopUTT702V9iDjRq/c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=TLqvIPTgXEv96WN+eCtentVGfATIvpIxujtjtrndQR2J+tWvrud6Umx5DXM34Yayr
+	 APy5tjLiHooNJekVXn/XywSjycdheJleK9/di4M3bvG7Y+c91Z4Qmn7JbpryGZxq5m
+	 PkbZfo9W2TWBDD2Hlm5V1Q+pvYXeCxdT5q2MhJvIPE8l3GdGTmAt8F91npen3QYRl8
+	 OFOw9nClvoCRBTgRGnbTTdlfSXfYiMbJzQi0F6Id2BFVNV9wSfPxenVPrc7SxqTHZ8
+	 jCRuPVt9mnUjvkbMNcUtLO0z5LtVAsrnaWN6+BG/ViTAp3N2RfqhfpEjUU5G0ysVvc
+	 zJ1Wu6ydxLkNw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Boqun Feng <boqun@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
+ <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
+ Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: page: add volatile memory copy methods
+In-Reply-To: <aYFKbWfQmTInYy91@tardis.local>
+References: <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
+ <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
+ <aX0lcVngRcRwqgd5@tardis.local>
+ <SEV7bR_nyQNtvtgoO8X80HMkMTPLW_6roBSxJ-MpKHHNmkZQyVxSS9k1iFV7-bgAlHSLM566L8EqtRBnht65uA==@protonmail.internalid>
+ <aX2tyn9nBUEKM-SN@tardis.local>
+ <87ms1trjn9.fsf@t14s.mail-host-address-is-not-set>
+ <gKLHFGuJqzRyjCupif-LFYn2ZY6OmhkyYj6idYTOnN4zMmNacFLBD1G9zzsYpTJn13GGvL0i-7JA-lIlBgakgQ==@protonmail.internalid>
+ <DG2WLWJD8V5W.2I24LZKS6JG6Q@garyguo.net>
+ <87bji9r0cp.fsf@t14s.mail-host-address-is-not-set>
+ <878qddqxjy.fsf@t14s.mail-host-address-is-not-set>
+ <aYFKbWfQmTInYy91@tardis.local>
+Date: Wed, 04 Feb 2026 14:16:37 +0100
+Message-ID: <87ldh8ps22.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 0/4] mm/damon: Support hot application detections
-To: SeongJae Park <sj@kernel.org>
-CC: <artem.kuzin@huawei.com>, <stepanov.anatoly@huawei.com>,
-	<wangkefeng.wang@huawei.com>, <yanquanmin1@huawei.com>, <zuoze1@huawei.com>,
-	<damon@lists.linux.dev>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-References: <20260204071712.16325-1-sj@kernel.org>
-Content-Language: en-US
-From: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-In-Reply-To: <20260204071712.16325-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.123.123.154]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wyi75td8oa8d7nwuy4o8wyisemsuc3nz
-X-Rspamd-Queue-Id: 3A5CAC0002
+Content-Type: text/plain
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6165CC000D
+X-Stat-Signature: gpbsuoemoryb1sm8doqtkofztdfm8pdr
 X-Rspam-User: 
-X-HE-Tag: 1770210466-700287
-X-HE-Meta: U2FsdGVkX1/r6fSdoxqsEPXovXwGFztPpXOONOdCojIr2/u8cfex0/as+M33QL820GVJ9KGYyut7Lb0UL+c0XqyYCDY0oPUD8CP/VTPdWC9LVxzyGPe5Gyzc4CHyBdPleJGiCANTslnaCFLxYQo6h9PjNZUhwyxjV8QMd9NESug3AQSPwssyCCBHstEo7J3V4pZetGPBeo/kSLl+PbmklC8viHMke/lTxSuRrvHcV5T/KbzTx6/RgqMpVDMOVI4faGFbQxmH+hPveKkvIra9LlQoLIr7Mbu/pIJEo7ZeV0AHSqYhqZaHU9BY8w2OdXR26rs2mFTV2jn6838s31SSFSQj5o1SHrFArwL8v110ODjhJJ8H7GWkNRgre6SxcHCpWIds7Xa+u4eqneZtKvmk/Ft1Mx6ltfAw9siO7Qn0qNXfw6FuZmRgLdWsuGaC4JBwB+BtdbfBX0ox1ulW/vshnHR8lwi3Y0v+dpYo3YLlCDPzTBzS9bUvF4YwqnzYGfjW73Brrf65VOl5aIZAPsRfzZX29GQMzmnHxnF9Zn0zY81VyKIvlM4jWaV7kx2GEks9HgfkE+zo8ftDv4gw1Lp44fxPq9+kV5wlSfg2Vv2MlsnquuVF5G8KazbrdK1KdIGJXaZhISYG8QRFLaIhssckSkDBEHSCoPNs+eF6V/XvlpOw+Jp8qXCe/IYK2LFNJcFGmtgfsIBHGn9PeOaim1Fj4W/U3P0m2DcRFOEstzx5SX6A90nmCKyV5HY+DUd2rJugPQ/ns4NeMVpiYnEAEhrGUB9qzJQVVT27Mz3N5xe0Io50r6y/ET516SdPyU29WXPD43r8BCt5eh8AeMq7MiYBTqfzAwdInq+sc2rq0kIB4q9DbLFUZb5MyRQfQBoZdoeKUhOv6toJH9tEG5CZk3UoM+dVZ+q87fOmYBiow8P+FL3S7PCcF4lDdhmgK1/ZIhJ5pLOxFHcM5n4Eekg80cj
- rjdUgh3C
- R5znSdDsmEKnZ/XDzW+A5vrRI/IcSZ9XlIao/xjODCYheFED1wYWKOD4xfRLEe7bMTetbd3ZPhJg+z8troNfDspOixT4Zr+0iPOLRq9tWToVZlvU/ItuoKC8loEsjuqbCIZeBt+JFZbbE/H0THQfFNqvMcHm0350qoPDwHN2SA1YvdzlCjX1l7C2z6k/SrRaWVaP2DWV72T4UXerBNf0TCsu6b6Sbcfne+39Jyqdfexu33JYGa6xRG/yTMPlEv6zBLglpShtGIkH10Xqgda7hn9gq8g==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000376, version=1.2.4
+X-HE-Tag: 1770211008-926822
+X-HE-Meta: U2FsdGVkX1+IyHN08twL3B5UsChSK0+Wtm+zECpKoxbYmEyyBDZA9M6E+tIpsX0nyo3D7Qifh8Vz/dG8OmL1de2fld0eva+DNSCoKVOLCPBm5GjjESjWWRm7vIy8AzpEo2jNlzGYQF/MhxAHzW6KJxr/Ke0Nny0CxvY9TmFwhN1qXO60phhDSjrsQO7sbgOzokTBcxaZnk0mmffnrnjsGFRfMYJbmA5fApYEKbE7YvyHhyIA9lu3D+kZpCRyyXl8SlM7zDu2hDZCD5VwsDzlYMbep6llWIgmuiRYnyezSU0xwGFvENUoNh5zTxODJDiOtlK5KQOpjX2v4fwUyz5VHy+LLisD6Q1W7EF7ovPJkvkhxyz0CYjvs0HbaytVAvRDqXZ92mGzhuJyl/BHTSw8FdDUSpAjihLsAuFahoK6B8fQeKnGvNad2XfEs7cAvfnWl0tEAhhA4XX2Gq/xoA18BHd7+wCctUQCExcpHFEhTIBa7hVQIryDgoTPmEG0hPvpxU+HYqxavoXu+mQZn5ejE3kpWosv26iN4Yh2nz4N1n/m3tP8U6LVeeePd6FrEvbEXZJLGKtKVzMxKX2RYxkISYffsQUc6bIHHkubMCijI1lU38acs3dFPQkaCMjFafsx+FFxxihQHnHkn/B0ZAhis6sF4V1SP3DwiRa07UrNt/ykKRD3IzcKLuw4vJkoGILWgU6m5H7f8BCUMPPPmN4S2edTW/60mHYB+ezZiOx1oswnjmdPIhV/ZMSPg2rgV1ZeC2TUj0/5Tw0vt4vV8xtiiPP2aJ2u9/62zg2GRog/iMIrfwcfDR3QCLYNmvFJsfIm3Skse2YM52hW4gqeiB9mNLUPo3fcKuT+YSgucMSj8b0Em0kOJkJRHuxVRfLL7AYDUD/PlpdTc3jLTRWmTrcYP4qXog6AiwYhJUeyhENiR+EzPHRxHbxoyZHwVpXdfkU3HylpTfHHC/setvMI2yS
+ Y1r6tKYh
+ QfsAW77hVf+Qcx4x03bfv/QXqNQT1zEL2EguPRieMfivOdmX8Wu9Yy1ViHBkuwQMIOsIJi1/8TVVqtYZgvda3Jb/na6YMSx5d4O7huMUfvMM0Tb1ZQcOr9+5+Czgld66jB0/jAbgNc+eliOolcxN7p7QFF5WHspHpTu1QtraCRuVcJli0As5a28uKnNM0bFk1NAKY2JZmvIYhqceAsRn0aHxCJYotI8TXhbCTjk8U1kl7ay8NdMG4NqAUS1x4rJC4E8HP
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,63 +106,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Boqun Feng <boqun@kernel.org> writes:
 
-
-On 2/4/2026 10:17 AM, SeongJae Park wrote:
-> On Tue, 3 Feb 2026 17:25:11 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-> 
->> SeongJae,
->>
->> Thanks a lot for all the useful feedback.
-> 
-> The pleasure is mine! :)
-> 
->>
->> One thing that I was not sure about while working on this patch set
->> is whether to have an external new module or adding the logic to 
->> damon core. I mean, the hot application detecting can be useful for
->> all other modules and can improve DAMON performance.
-> 
-> All exising non-sample DAMON modules are working for the physical address
-> space.  I hence finding no many opportunities to bring benefits of hot
-> application detection to those.
-> 
-> I agree the hot applications detection could be useful in general and creative
-> DAMON use cases for virtual address spaces.  Implementing the feature in DAMON
-> core layer and exposing it via DAMON sysfs interface will help such use cases.
-> But it seems not straightforward to imagine how the sysfs interface can be
-> extended for the feature.
-> 
-> So, I think it would better to be implemented inside the new module at the
-> moment.  Later, if we end up having more modules that use the feature, we could
-> move it to the modules-common or the core.  If we further find a good way to
-> integrate that with sysfs interface, definitely it could go to core.
-> 
-> From this point, however, I realize the feature can also be implemented in the
-> user sapce in a pretty straightforward way.  Have you considered that?
-
-I though about it. However, accessing the task_struct directly and extracting
-the utime is much more efficient that getting the required info from the user
-space.
-
-> 
->> What do you think?
->> My implementation was module based because I tried to avoid changes
->> to DAMON core for the RFC.
-> 
-> If there is a good reason to implement that not in the user space but the
-> kernel space, as I mentioned above, it seems the module is the right place to
-> me.
-> 
-> 
-> Thanks,
-> SJ
-> 
+> On Sat, Jan 31, 2026 at 10:31:13PM +0100, Andreas Hindborg wrote:
 > [...]
-> 
+>> >>>>
+>> >>>> For __user memory, because kernel is only given a userspace address, and
+>> >>>> userspace can lie or unmap the address while kernel accessing it,
+>> >>>> copy_{from,to}_user() is needed to handle page faults.
+>> >>>
+>> >>> Just to clarify, for my use case, the page is already mapped to kernel
+>> >>> space, and it is guaranteed to be mapped for the duration of the call
+>> >>> where I do the copy. Also, it _may_ be a user page, but it might not
+>> >>> always be the case.
+>> >>
+>> >> In that case you should also assume there might be other kernel-space users.
+>> >> Byte-wise atomic memcpy would be best tool.
+>> >
+>> > Other concurrent kernel readers/writers would be a kernel bug in my use
+>> > case. We could add this to the safety requirements.
+>> >
+>> 
+>> Actually, one case just crossed my mind. I think nothing will prevent a
+>> user space process from concurrently submitting multiple reads to the
+>> same user page. It would not make sense, but it can be done.
+>> 
+>> If the reads are issued to different null block devices, the null block
+>> driver might concurrently write the user page when servicing each IO
+>> request concurrently.
+>> 
+>> The same situation would happen in real block device drivers, except the
+>> writes would be done by dma engines rather than kernel threads.
+>> 
+>
+> Then we better use byte-wise atomic memcpy, and I think for all the
+> architectures that Linux kernel support, memcpy() is in fact byte-wise
+> atomic if it's volatile. Because down the actual instructions, either a
+> byte-size read/write is used, or a larger-size read/write is used but
+> they are guaranteed to be byte-wise atomic even for unaligned read or
+> write. So "volatile memcpy" and "volatile byte-wise atomic memcpy" have
+> the same implementation.
+>
+> (The C++ paper [1] also says: "In fact, we expect that existing assembly
+> memcpy implementations will suffice when suffixed with the required
+> fence.")
+>
+> So to make thing move forward, do you mind to introduce a
+> `atomic_per_byte_memcpy()` in rust::sync::atomic based on
+> bindings::memcpy(), and cc linux-arch and all the archs that support
+> Rust for some confirmation? Thanks!
 
--- 
-Asier Gutierrez
-Huawei
+There is a few things I do not fully understand:
+
+ - Does the operation need to be both atomic and volatile, or is atomic enough on its
+   own (why)?
+ - The article you reference has separate `atomic_load_per_byte_memcpy`
+   and `atomic_store_per_byte_memcpy` that allows inserting an acquire
+   fence before the load and a release fence after the store. Do we not
+   need that?
+ - It is unclear to me how to formulate the safety requirements for
+   `atomic_per_byte_memcpy`. In this series, one end of the operation is
+   the potential racy area. For `atomic_per_byte_memcpy` it could be
+   either end (or both?). Do we even mention an area being "outside the
+   Rust AM"?
+
+First attempt below. I am quite uncertain about this. I feel like we
+have two things going on: Potential races with other kernel threads,
+which we solve by saying all accesses are byte-wise atomic, and reaces
+with user space processes, which we solve with volatile semantics?
+
+Should the functin name be `volatile_atomic_per_byte_memcpy`?
+
+/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
+///
+/// This copy operation is volatile.
+///
+/// # Safety
+///
+/// Callers must ensure that:
+///
+/// * The source memory region is readable and reading from the region will not trap.
+/// * The destination memory region is writable and writing to the region will not trap.
+/// * No references exist to the source or destination regions.
+/// * If the source or destination region is within the Rust AM, any concurrent reads or writes to
+///   source or destination memory regions by the Rust AM must use byte-wise atomic operations.
+pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
+    // SAFETY: By the safety requirements of this function, the following operation will not:
+    //  - Trap.
+    //  - Invalidate any reference invariants.
+    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
+    //    operation and all operations by the Rust AM use byte-wise atomic semantics.
+    //
+    //  Further, as `bindings::memcpy` is a volatile operation, the operation will not race with any
+    //  read or write operation to the source or destination area if the area can be considered to
+    //  be outside the Rust AM.
+    unsafe { bindings::memcpy(dst.cast::<kernel::ffi::c_void>(), src.cast::<kernel::ffi::c_void>(), len) };
+}
+
+
+Best regards,
+Andreas Hindborg
+
 
 
