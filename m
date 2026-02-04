@@ -4,82 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFB40EA7944
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:01:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F671EA7944
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:08:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05E026B0088; Wed,  4 Feb 2026 16:01:53 -0500 (EST)
+	id 7AF386B0005; Wed,  4 Feb 2026 16:08:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00B726B008A; Wed,  4 Feb 2026 16:01:52 -0500 (EST)
+	id 75C4A6B008A; Wed,  4 Feb 2026 16:08:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E22D86B0092; Wed,  4 Feb 2026 16:01:52 -0500 (EST)
+	id 65CC66B0092; Wed,  4 Feb 2026 16:08:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CC76C6B0088
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:01:52 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 851F4140311
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:01:52 +0000 (UTC)
-X-FDA: 84407996064.27.014A757
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A6E861A0008
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:01:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Vzrnjuj/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770238910; a=rsa-sha256;
-	cv=none;
-	b=tLLk86Bds68LztPFI67lb/xELn2z3dXBatnjccbT1Vwv2m4aT5vip7sG7YUDLTymS76aUI
-	jd229FOhjcY0OId2Cwl7QpVrHF5sFEWcu6KfUEUlR1zpsiIGfUXgvEQMOFp3HIjTPDqEOs
-	s7yYvtUPfT7c6MN5lAO7xamBUXSdqRU=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Vzrnjuj/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 53C346B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:08:56 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 048BA1B14A0
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:08:55 +0000 (UTC)
+X-FDA: 84408013872.23.3C91E38
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 678CE140007
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:08:54 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mj8+82Ig;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770238910;
+	s=arc-20220608; t=1770239334;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fdmHgE3ZGbAhvRpnrLMyPKzhMTTJNL/+uUOOGFpPmd8=;
-	b=00wyMeFfU6jSCQ51Hm3NiABM6susQvba5TaEYFP3y3LB5Cv3DzUDsGRLzX6bJycen129Ds
-	QXLO2XR6vjIA5pK1vtrl3C+tgfYoONL43BIFfNAKGvgp/Je0YJnXSVc4r4Q6EiCwQN1LH0
-	cY+MC1tAKtmA3tz5dPw6W4Vh+ueh4so=
+	bh=QsI8HZjEiZi6SMM2mODTE2c7Zj0pkzLKVbPnQ9vPFHA=;
+	b=cCkn42XYwMir0suNNhrQDsLaHgE8aKcuXTAPkQM/LDzDON/QOffUDg+5BSB+Lh4cse1rji
+	jIEMUfcaPqVb+9cW8KxGqc/1qTUUUGzDqRMj97RMTKCFztbLmHs485fpahML3QzdngoD8Q
+	zFvoolz2H+BlSraDNUUnS+6bRr3M5p0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mj8+82Ig;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770239334; a=rsa-sha256;
+	cv=none;
+	b=lj25cgFS/HfkltGQo5AOKwew6539EwYbaXfUjsLMF4jNZMGb6NSYZJotd+Zq6OxxGaCRGV
+	n2XpES47J7sqEr3kGsL6Di8DZWW2W/fp3XYXp9HAjIfFy2S093LdrpbMdlWaubRwstpmuQ
+	zarx2YksBnlOduyWb80WryEfLe2ddpc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76C7A44032;
-	Wed,  4 Feb 2026 21:01:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2C9C4CEF7;
-	Wed,  4 Feb 2026 21:01:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E3CC60010;
+	Wed,  4 Feb 2026 21:08:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F8BC4CEF7;
+	Wed,  4 Feb 2026 21:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770238909;
-	bh=jp2KfloYw+uC2B4Pxh+HiUCTQy7uOAAaMHvJN6AaS6c=;
+	s=k20201202; t=1770239333;
+	bh=L0yw/ZVXlFtoQTEti0lXJnZOK9g6qlS6ZDzawp2mTxk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Vzrnjuj/OhJlTXjtTS+zXd6lBLI3Hiy4cjnZ1JFzAV4OwNr4aBpV5r5gxMCWDXb7W
-	 yJZoVMfN6LFBlWkgImX9+f1eXNpte8okcFJ3D3N+5VjQMXdPFA0SUdhXMvaO1/KNYY
-	 q621/QIUEvMNKxbMZKdfnR0fpMtFX/bK+sKRFWX0ZOjj/dNfeKn5QT4rb5rc5gjDmE
-	 x6xjMVdUETf+K3mbOGTED080SE3lbocDvqPiMVIc5c/ljKPAIso7z0+XVkLqaTYhNU
-	 m7wCg7fEA1IdNGDk/yZ7X0lvogdWdcOrE563hP1IUoRgTQC8hjQJySuQznONrj74q9
-	 s7shtKCW4HvEQ==
-Message-ID: <9206a7c4-bf88-4138-b8af-961625a82439@kernel.org>
-Date: Wed, 4 Feb 2026 22:01:42 +0100
+	b=mj8+82IgGzyI6MJVVLBy57BfvzFo3eflS+GZ+P1hZLQt56+SpuW1qDVqN8T/4ok0o
+	 Bo/rnJCkRFxA2hHtsudRKnNMpNYNBdWsAmqfrIlIfhZc6vHsQIb+ZAhvYwZS2jZXLM
+	 wWtnZJhzQS+BE7Rdsf9bzz9zjQkPcsWgu2dBs6CjaDd/qr8NqBAXklQ8EJcKKwXa9n
+	 eeu5Nk2sTeurjCq3HR22POQH3xW9KiCL/0feoY5DwVCs5gR6vM3oY8Mf+mfvpsaFmN
+	 PhQ4IDgGm70galBMIGm9sKMnra1XxFhBP8QX6JfIgJE+Pfho5g5dqLokt2mrFwSNH4
+	 PBc5rPqWtN5pw==
+Message-ID: <3424eba7-523b-4351-abd0-3a888a3e5e61@kernel.org>
+Date: Wed, 4 Feb 2026 22:08:45 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: folio_zero_user: open code range computation in
- folio_zero_user()
-To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, x86@kernel.org
-Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
- hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
- peterz@infradead.org, tglx@linutronix.de, willy@infradead.org,
- raghavendra.kt@amd.com, chleroy@kernel.org, ioworker0@gmail.com,
- lizhe.67@bytedance.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com,
- kernel test robot <lkp@intel.com>
-References: <20260107072009.1615991-9-ankur.a.arora@oracle.com>
- <20260128185943.2397128-1-ankur.a.arora@oracle.com>
+Subject: Re: [PATCH 2/9] mm/memory_hotplug: add __add_memory_driver_managed()
+ with online_type arg
+To: Gregory Price <gourry@gourry.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: linux-mm@kvack.org, linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kernel-team@meta.com, dave@stgolabs.net,
+ dave.jiang@intel.com, alison.schofield@intel.com, vishal.l.verma@intel.com,
+ ira.weiny@intel.com, dan.j.williams@intel.com, willy@infradead.org,
+ jack@suse.cz, terry.bowman@amd.com, john@jagalactic.com,
+ Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>
+References: <20260129210442.3951412-1-gourry@gourry.net>
+ <20260129210442.3951412-3-gourry@gourry.net>
+ <20260202172524.00000c6d@huawei.com>
+ <aYDmor_ruasxaZ-7@gourry-fedora-PF4VCD3F>
+ <20260202184609.00004a02@huawei.com>
+ <aYEZAUJMLWvaug50@gourry-fedora-PF4VCD3F>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +131,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260128185943.2397128-1-ankur.a.arora@oracle.com>
+In-Reply-To: <aYEZAUJMLWvaug50@gourry-fedora-PF4VCD3F>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 678CE140007
+X-Stat-Signature: s5gzfz1x3oncady9t58e98dq6tghuz9s
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: A6E861A0008
-X-Stat-Signature: ess5qapmo5rw35ejshaaybo5n7gmg33z
-X-HE-Tag: 1770238910-475740
-X-HE-Meta: U2FsdGVkX1+aUrJv/jm63Xziaefs8X/svKgT0cVCT7GrtbtXdbe8BGtJajGVUN2NkWHSGC3mMajZu6jlNdJcgXhM5EBw2SZCBXWNWeKTRcz/fbKcexHhd9L1r3LuuD6yW0ILCSrgQogUj5ItjE1HvQ9kaJ5zSJuw/2LSu7N8ko/MqBC7X5o1e7Jl/pSXrr5X9tkNo5g/cpjVx/81qgTTqe4OitI5COg/1/KJgNykp2X+Re30SeGIKxptyOWzIeN3lkjlPZLixKwBk4eMoRSpT7twRuSnLZ3Z/3oEpEYPy3/8tJjg7DFB93v1j2p8HGxi3jq9qQeOy/3ZrwIkgtgcH1TJNhpd5SqofC3MjpootMElmxl6MeB6TgQo68KA1JLfZgG+TbYlFpVcwAhTN3PBB7Fcf4uST7zJqLAUtlB51I5nqOTUNtQNvH64kNfSH2xwmonVa2pbeol/mx4N4e8UVEs1L5B0S0VYCi/U5DN/yMgVVg0HtN6c0eOe+gGvn7mA7ldGqn6g3QKBrIJZpx5u3HxplbNn/cLTPLCNNL5b3bzO2m6WSvHWHWt2hYnoWQKb9E0WS+VLTaiTUSkVuqG2a3/aF4czdbnSxcP7AbLhO63GBvQFU8KO8+PgN3oPkfBvq5U09OkGbAcDGxxyVGV0UX565E3FSWpCigw8xBh7RhKoP847ytBZxoryTqDWskK+rzvqTs/LCGeF33tTrGDvIwsvbvlJKMNzb+1ktPaH43SZTPB97GPkuQ7DGt6DcfkoWA2z+dHE00lNht0PidylXrPekAG1pI6Gs+HGSkXChraZZ9NWO0ow7EAVz3ONxwyoinU4aUDFb0FYa0EYWB9Q1EJp6ZfNYGuWvofJ1vZWdtDPws3G5UTwfiil70Si+gYdzGCa0HHF6YyI5WFhU51gqgIwRskQIrEs0f24k2Ozh9McTUVTAJ7aqoGar9TemBExTTaNzO/fFycQ5uhj2L9
- NuZlvJLR
- EGL9esC+NJSTRpoCm1egM3kQK62tnv5TYcDg7FjItzfvFXSiiIEOJYiXe4zEuzKZ7Kgv+k9JyPnUJe533B+RZnwJTtZ7kvYYO6QDQts/gQhMTItKCHy4RY9n/h3j+NWKcm3P5vSSUFwjen3yh2YIcUaYoZPQb5TcPlXSmAmQLBuJS+Nlh7+qqs9SHT3DG3coXJz63j28z525zAix7ucYnhl7fRTf3Is0dnJlJZgCgNNFtT8CPWkhiQGGNJYE/Q9cYIP2JmHQr+e+cGiy9fEKE/CbMRkoKRF/xR2FKFlH9dgPN34NH8Dn8u1RpfQFvncmSg4/y1Nr6jvrOAqodD7vjLplOvTOYctTDr5FUrNvFRiiRsUdNjOyJqdt1mq72t7Gd3DpB
+X-HE-Tag: 1770239334-981186
+X-HE-Meta: U2FsdGVkX1/rui56la33euJ5n5oMSMQMnnVZidmH86D0rX8ulMcPgE2Uf4EEeZ+YC24b5+Zq/CNrvRZGRaU+1jTymYL3DJxJVnR4wb6bi47Lkq4ym6MtjwxNg+wWCYN1Z0XeqWbEuV5eP437PdxPdOIm+hI5DKcGXpvbyl4BvlqE08LYQtnxn4hx2PLKIZo+4/hIgKLO6vKitmRU504WDY+DugaSnFf+a6CO5gSNVkKBVkbv9UkmrEuy/fQpnL+DiwYq4WsZT0mRPU/3tViZcEj7dzDBTY2ZfRLs5bCGtfRzaW8//iiCCO3axu3CafsYLlIvcafRp8meEgShOdedeCR//IrlvY/LSfuwWgZUojaswew1764zCl/P/ezSfoNIZF9LOh2VuToCBtKQSjqExhsgQk6D91viroqrinAFLP4EYUAhw0ODezPF9MAO76Zd+sHsH3uvptTTGjzf5nIKm8BnG0d+VuSJy4oJAalu3ayb5B3nV9ZbI5GgPCTF3RQ4URv3vEYuZBGH2Ezzcb4f3fWuKO6od/1h0osUWv5y3nlhAFgsmCiDatNdsRUdIIl52qC1dLnAkaGiSTKdF/xVT5qG7vB6bX5YrQCXsfC0nlXILYs7MhGl3MJ/zAPqjyF9o/zYVVWg8uasmbReV+MROfWFCwZS1Z56+/nJfit7verX2czww49SGGpAzPud8YJKpl8yi+tnA+d910s/sM4RoHzrfc9J3waj9fF4lgQ+IEvZfGMNtTYYX7PaKYSlCk8Kgvzgc5CXNOvW+FGXYAWCZPw7Dg/it/QldwNjGQVm0Y2dzuMOWyt4FI7tPVz4Br6I+VGBrT3+BPfP61Zbw8OqPBWNMPlsi0zkDpsBS+BwCrYOKw8GYWFJFcw1JBjoekk71+bhuEByiYIOn0plWvNI28Uu423laR8ZsUErP55EEbCgzZuUsJ8iXVLxs9BpNGPQ72iEfisMOh14sCat5FO
+ 2vrSycVr
+ vryl6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,112 +150,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/28/26 19:59, Ankur Arora wrote:
-> riscv64-gcc-linux-gnu (v8.5) reports a compile time assert in:
+On 2/2/26 22:37, Gregory Price wrote:
+> On Mon, Feb 02, 2026 at 06:46:09PM +0000, Jonathan Cameron wrote:
+>>>
+>>> I can add a cleanup-patch prior to use the enum, but i don't think this
+>>> actually enables the compiler to do anything new at the moment?
+>>
+>> Good point. More coffee needed (or sleep)
+>>
+>> It lets sparse do some checking, but sadly only for wrong enum assignment.
+>> (Gcc has -Wenum-conversion as well which I think is effectively the same)
+>> I.e. you can't assign a value from a different enum without casting.
+>>
+>> It can't do anything if people just pass in an out of range int.
+>>
 > 
->     r[2] = DEFINE_RANGE(clamp_t(s64, fault_idx - radius, pg.start, pg.end),
->   		       clamp_t(s64, fault_idx + radius, pg.start, pg.end));
+> Which, after looking a bit... mm/memory_hotplug.c does this quite a bit
+> internally - except it uses a uint8_t
 > 
-> where it decides that pg.start > pg.end in:
->    clamp_t(s64, fault_idx + radius, pg.start, pg.end));
+> Example:
 > 
-> where pg comes from:
->    const struct range pg = DEFINE_RANGE(0, folio_nr_pages(folio) - 1);
+> static int try_offline_memory_block(struct memory_block *mem, void *arg)
+> {
+>          uint8_t online_type = MMOP_ONLINE_KERNEL;
+>          uint8_t **online_types = arg;
+> 	... snip ...
+> }
 > 
-> That does not seem like it could be true. Even for pg.start == pg.end,
-> we would need folio_test_large() to evaluate to false at compile time:
+> int offline_and_remove_memory(u64 start, u64 size)
+> {
+>          uint8_t *online_types, *tmp;
+> 	... snip ...
+>          online_types = kmalloc_array(mb_count, sizeof(*online_types),
+>                                       GFP_KERNEL);
+> }
 > 
->    static inline unsigned long folio_nr_pages(const struct folio *folio)
->    {
-> 	if (!folio_test_large(folio))
-> 		return 1;
-> 	return folio_large_nr_pages(folio);
->    }
+> So that's fun.
 > 
-> Workaround by open coding the range computation. Also, simplify the type
-> declarations for the relevant variables.
+> I'm not sure it's worth the churn here, but happy to do it if there are
+> strong opinions.
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202601240453.QCjgGdJa-lkp@intel.com/
-> Fixes: 93552c9a3350 ("mm: folio_zero_user: cache neighbouring pages")
-> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
 > ---
 > 
-> Hi Andrew
-> 
-> As David pointed out, the previous open coded version makes a few
-> unnecessary changes. Could you queue this one instead?
-> 
+> David do you have thoughts here?
 
-I'm late, maybe this is already upstream.
+I guess we should clean that all up where easily possible, but I don't 
+expect you to do that.
 
-> Thanks
-> Ankur
-> 
-> 
->   mm/memory.c | 17 ++++++++---------
->   1 file changed, 8 insertions(+), 9 deletions(-)
-> 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index ce933ee4a3dd..f5bfc082ab61 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -7284,7 +7284,7 @@ void folio_zero_user(struct folio *folio, unsigned long addr_hint)
->   	const unsigned long base_addr = ALIGN_DOWN(addr_hint, folio_size(folio));
->   	const long fault_idx = (addr_hint - base_addr) / PAGE_SIZE;
->   	const struct range pg = DEFINE_RANGE(0, folio_nr_pages(folio) - 1);
-> -	const int radius = FOLIO_ZERO_LOCALITY_RADIUS;
-> +	const long radius = FOLIO_ZERO_LOCALITY_RADIUS;
->   	struct range r[3];
->   	int i;
->   
-> @@ -7292,24 +7292,23 @@ void folio_zero_user(struct folio *folio, unsigned long addr_hint)
->   	 * Faulting page and its immediate neighbourhood. Will be cleared at the
->   	 * end to keep its cachelines hot.
->   	 */
-> -	r[2] = DEFINE_RANGE(clamp_t(s64, fault_idx - radius, pg.start, pg.end),
-> -			    clamp_t(s64, fault_idx + radius, pg.start, pg.end));
-> +	r[2] = DEFINE_RANGE(fault_idx - radius < (long)pg.start ? pg.start : fault_idx - radius,
-> +			    fault_idx + radius > (long)pg.end   ? pg.end   : fault_idx + radius);
-> +
-
-LGTM, although it could likely be made a bit more readable by using some temporary variables.
-
-
-const long fault_idx_low = fault_idx - radius;
-const long fault_idx_high = fault_idx + radius;
-
-r[2] = DEFINE_RANGE(fault_idx_low < (long)pg.start ? pg.start : fault_idx_low,
-		    fault_idx_high > (long)pg.end ? pg.end : fault_idx_high);
-
-Well, still a bit unreadable, so ... :)
-
-
->   
->   	/* Region to the left of the fault */
-> -	r[1] = DEFINE_RANGE(pg.start,
-> -			    clamp_t(s64, r[2].start - 1, pg.start - 1, r[2].start));
-> +	r[1] = DEFINE_RANGE(pg.start, r[2].start - 1);
->   
->   	/* Region to the right of the fault: always valid for the common fault_idx=0 case. */
-> -	r[0] = DEFINE_RANGE(clamp_t(s64, r[2].end + 1, r[2].end, pg.end + 1),
-> -			    pg.end);
-> +	r[0] = DEFINE_RANGE(r[2].end + 1, pg.end);
-
-TBH, without the clamp that looks much more readable here.
-
->   
->   	for (i = 0; i < ARRAY_SIZE(r); i++) {
->   		const unsigned long addr = base_addr + r[i].start * PAGE_SIZE;
-> -		const unsigned int nr_pages = range_len(&r[i]);
-> +		const long nr_pages = (long)range_len(&r[i]);
->   		struct page *page = folio_page(folio, r[i].start);
->   
->   		if (nr_pages > 0)
-> -			clear_contig_highpages(page, addr, nr_pages);
-> +			clear_contig_highpages(page, addr, (unsigned int)nr_pages);
-
-Is that cast really required?
+For online_types I used it, obviously, to save memory. So I'd expect it 
+to stay at least there, but cast it to the proper type once we take it 
+out the array.
 
 -- 
 Cheers,
