@@ -4,80 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 272CFEA7944
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 19:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3676EA7946
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 20:00:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 907C46B0093; Wed,  4 Feb 2026 14:59:14 -0500 (EST)
+	id E56D96B0098; Wed,  4 Feb 2026 15:00:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DF8F6B0096; Wed,  4 Feb 2026 14:59:14 -0500 (EST)
+	id E34566B0099; Wed,  4 Feb 2026 15:00:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DF4C6B0098; Wed,  4 Feb 2026 14:59:14 -0500 (EST)
+	id D57576B009B; Wed,  4 Feb 2026 15:00:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B6396B0093
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 14:59:14 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BD5E71A0291
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 19:59:13 +0000 (UTC)
-X-FDA: 84407838186.17.B8FCFBC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C33B36B0098
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 15:00:45 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 87F2516025C
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 20:00:45 +0000 (UTC)
+X-FDA: 84407842050.03.FB3275F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1183320007
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 19:59:11 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ldpXkUS1;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id BA04180005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 20:00:43 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V77fOIPp;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770235152;
+	s=arc-20220608; t=1770235243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MEE0snW1c0yyhQTqHtYDbkG6NF+2an5RXcvUDICSa1U=;
-	b=iNV4STHY9zlJnc0/6OwzPxSmSb5tZ7jNZ1meF+DVL+AJy9mdAwYL7qnEADC2Svb5pF6e+M
-	CINYjkdrGp3/lTHTlF8DRizSwtViVMqpduSy7AiSpY4EAIQm1ngdgH780T+GSvyq2UuS+t
-	BrqpEJIGvTJOwO6CNh3PWBOd5SkMB98=
+	bh=Rx6NnBLa/5uRY3jYHFXV11DdFd23EdNAxbFo+sSPJp8=;
+	b=7Y5shjc9NFV2IVHnKVPNmhaa4vI8ehWIAZ8ak4FHbr+znLiRAwdbHljBYY6dKDufClIExg
+	7tZR9YAEZfFz93D5QNnohYqtgYr98ytA+Y8KQeXzpOq+l9qypW+hBAgqOEWEE83kR+vBEl
+	75u5d71WbyzzwaiNF3VfP0HGykAVlb0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ldpXkUS1;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V77fOIPp;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770235152; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770235243; a=rsa-sha256;
 	cv=none;
-	b=A2M22PlwcERCqPWPzun1hQFnoI6EscHlfX9/NF3hFs+ixKOsOckqkSk7y2Aj6WZtsdDu+6
-	+F0qkTdQkIY/uTEdrXxqhpo9yOE9ANkdYnilGdm8U5yDCSR8mnk0FF8I7S/4wtFVlNorIE
-	rCIsGC1qI/jF+3/q3U9dB1Fy1bmEj28=
+	b=ys6OlO5wzTxsDyOm5WH66iUwA7ErZ5TaP6A8yW2GEbCTRH0pYim4DUQAUT/eTjytISKa9J
+	XkNDBqrt2YOTCrk3l9mECYXtkektJg3x2uPcceU4T1xf/CE9K4am9zuE1DWSG1Ry/WW+UA
+	3pEzyva5wheXVHroCYlYDY6/2zfnres=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6C0A160018;
-	Wed,  4 Feb 2026 19:59:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D2CC4CEF7;
-	Wed,  4 Feb 2026 19:59:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1011C600AA;
+	Wed,  4 Feb 2026 20:00:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F50C19425;
+	Wed,  4 Feb 2026 20:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770235151;
-	bh=nPN9Wvy1E775/lgZvMVwn3Lvoht3KjaZQK/EfFGaIds=;
+	s=k20201202; t=1770235242;
+	bh=tHNm7+iDyHbPJd/eg2zZb8QElfqohJCKbz7sI/dd45I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ldpXkUS1iICiHnYGoD5ql4tiISVVvP7um/WsyvXhQetlA4SBh0uL20QqUpODVTf7c
-	 KjT7GB5T9VWYAizuAPw5wNsrI6wFlO0LFJMbBJXXL+u4KWdweqQxVly1s+9SXCY+5B
-	 jf/38/LdUF4/YMlMeAmMZpleptWpilEyvLLLHcfaOmChTLhcaol2jxqvlnDjLB/Hni
-	 qgxgQcqqjyDiWhEA2YfdFYFanDds8DxJmBr8s7Xm6a//vukHQeCkqrA8AvORLliOdn
-	 zpiwFE0Zbsa6no4r4vBx2Hx/kQjd5LY4lBYdT6DPq/7y/fdm/0ZfPPEd6onbsHVcc+
-	 K3sJUI6W08TNg==
-Message-ID: <29b4dc97-bb01-42fd-8ccd-f4cb2886ccd3@kernel.org>
-Date: Wed, 4 Feb 2026 20:59:05 +0100
+	b=V77fOIPptAyQ15AIB6hddQUX35UU6lB+X9NmVYhTfGqbST5e98ns0VfCWf3teSk2s
+	 sCPl+WWN7yZM2PNVFqrKoLKEX7gKsJayNqxVfTL9PG6pQDbMrqXTj03zwaNKVxrw/I
+	 LA/CyDJX37UEq28N0fgczFbxyBYJuAuEQPEQ8loyDALzU/ee6xKdqFtSx4O1k8mUoS
+	 9CHGXDF/eSYEAx6C3sjPLncGTKA+wdGAcOLDVZ20aqHV8VUkU+6S8jSMD6SAMYLiWt
+	 KxXMge7ysaT5dPMaTMlGGCt4NbL4wUgq8bp/76g0pTyfvKCvLhaMk5QlKn0U6GJ81w
+	 fRVYH4psjhuhQ==
+Message-ID: <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
+Date: Wed, 4 Feb 2026 21:00:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
  during hot-add
-To: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
+To: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org
+Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, kas@kernel.org, ardb@kernel.org,
  akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
  michael.roth@amd.com
 References: <20260203174946.1198053-1-prsampat@amd.com>
- <20260203174946.1198053-2-prsampat@amd.com> <aYMjjyVVax5cml9B@thinkstation>
+ <20260203174946.1198053-2-prsampat@amd.com>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aYMjjyVVax5cml9B@thinkstation>
+In-Reply-To: <20260203174946.1198053-2-prsampat@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1183320007
-X-Stat-Signature: gyja9eob737nqbjtk7mentwjjirb9wq1
+X-Stat-Signature: wwz5wfxd1mzmdai49frazrdscooqp1bd
+X-Rspamd-Queue-Id: BA04180005
 X-Rspam-User: 
-X-HE-Tag: 1770235151-469691
-X-HE-Meta: U2FsdGVkX18GsCT2mGsYnZbIuc+M6+siK+vZFv4sDj7q1F51M0TZrlYqb3bJ6lrPjrkYtG3NEjMOJVaicZON+eVaMKn7X8oCsLctyQMi+exqrLDtef+pdDDU0yX3BwoO8dV5BwoghMlTXg3pJQ/sF2GQGql+2hWrKi0NP/tzgu0eZacg2fUrCACWvPd2Eg46UJjrCQM8Bej01RlwIhz82KJRvmvpGO7DxM8FIUTuOw8JR6aKDXyxUCJCPvEP8udnqGRsg++mfoXrIX7PW3OzBEL+pI0A35wfi3BmhGobxsqT5833NmoozbULs5DADz5/FoRJiQl2zhQZAuwBztUfN46Z8t/0xk+e7Fm5rRhkzu1ofd9JoY7cn2EgyYlM61bi8WIOEiP69HXSu2u3AfwZbGhy1D+vdQ7kIkDO2V2zLfMy/qm0Aju5pcsl7kHeYP+VksnH5KqxeJiYaUhW7k1oJqb605vC1fTS6vFDEQXM2PilVufV0bPXkClLmkV49vt4JT4wvGYNjqY8LBft8feh2qd26pJFvgtRzoaUIDuT5FfLByxrNDmyZTYYE2nEEubndcSCVkpOWHycWhKWH1ooMQwsXZxpY6gCG3MVKQjOdD27ufOSEE6R5buaDptyHCX7xWEl4i+zhwESOYn5Z3mpTAhn1J2xvyBB6Sr5kd76DIGsoTLuzw13id5A73GmVL5mVy6akR+D3T3D26Ag8dFGjIFvDFoKrSolF3RIoFOYDrqvqdnsIgcg31TY2xsOmJ7Y4MmF7iRCEiy6+W3ygfV3OsdnJjy01X0jpCDyp7T6N3SyQycv8MnHgVAdasf0adIpkn+mS/Re70cWSMHRgTCvA7YTJOFddDEuu2YeLvKJzNgvJhRJnHYvWVyEzH7UL0/u74tiPqUScH6rYc8J9W+jjeLi0e8sesfeKw1s5kufzkICknuRlsecu8O/v0bZn6khCx3jYQmCChIQDeUBcWj
- 0q9wFsra
- /DXWnRLoZ7PW4Zvok8cJ0TK/mUoVReu5OUy/rw2QgXzZa564uebZeQecflPO78Wc4k3d4yFMCKZkRDFtOsjb+KxZsFSkBtD/NQ6++SYLY7T+hXGX/68bydCkERT53FWZSjqu9JqCuPpJA8jIze2xtDs8Gn3DMXXzkEvh0RC+0LMjQlB/oryxgBcK0uqsgyOUspbXoyeerhu8xhkQcQxjI9cL8ACxxUU9ftdLxVyMz4lHc8AeMuMOI5c9C2nRMXO0JH36MoxIw0z7hiA1A048y9IcteRRqeM4OBDM8d4EDfULQCri6h5qm6DumpIDfjVzMuiWqxKQCWuppJtU=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770235243-571320
+X-HE-Meta: U2FsdGVkX1//+Te0nv2ui+ZW5O8g5TuBwn8hlN1G7X+bIdq05y4ptIhbq3u3fZEf+mI8Vf+zDgT8grAjZUALlGXlO6vEVWfTtVFh3O68x3fvuAJaO8R7SzPjiE/x00TiPP29c/uLquHtrwbyRLPisfMZwxd9R3avvWsJoM3u6n7RkV97nnaXx0GCrpefWua2UPx6ko8mX7ZSW2vOGDiNqGWoSGjnMCVMNKBYjUPIPQm19vVd4lu4QnaHl3SDP3rw1xcxVrPqJUXhcZbWeBhZsyXqT7AAfouTtrK37FmKz9ELMpbdRpQmXYdJ/mD3dvp9U0xLbnA7jJ3ApJKEhCNXfuqGSOExtTWvxADxWkat7/dlfzdmhJwcDKDd5jiTcGfl62Yu6CNZQhj/f8qgfI64m1XVt9FGnSHD63BWnjIKGFsShyp2eOmjm32pBbKWSU3xJb6rhOD90YlCKACUbWXBPWulDYVy4qw7kPKNfZeehEUQJymQxkM7NipYzc01RMo7hxJ6DGLvuCzPKmrGcK29i4GUERUL9rzAJlAjoXPH2ARKyYOVqRqjVN0GaVjsQozkNpHQG/H9hBLfMhIAMNfxC8MByTqANum/j/4dVk6p5vmJJvdfXF3vdNHaC07/h85oYWWjeuLzWW9PTo4VImwyL82oYNYMPbgIfbg5W+BwOKhQld7pDxywairQrmJU5zqYXYKHbt8lKeNEYy2vKk6kYeWON1uzs7H+2elSHn69pjlsXztJcLr4cBuxM2uKAosZQ6m/M1q5x6P3kG7BL1h2SKOtSjxXRRvw8iDf+ytgvtW8WMEkR4ncRzTA57gkGoLUEbkAq8SP4MtQkhkFLQ41CbHLtJBonW/zcFxprh8zNI6VS1hHeVsxQvzyXDWslc9Na2QSxrbgwAn7ukRu9l9ute+dHI5S5NficyKyKD7r2KlxJgtpHzUg+2ihf4Aty7QynwRzecWELEMzcTmHh2y
+ VCvbVRAv
+ 7vYbA+2IFFhntB1mCKSFveX6FfSkUG9Fe0vajfYdeUjWJlKkhTBVmek3ptj33CGSaOTnxTKvcYg9vE9L6FGhSYnde9HDqkeTbJpL4Ce0jA0WVegd4SYVUb5La/WRSr/b5p39JHlWd86XGxgh0Biwv3D/jOcmCdTIyPZnJgKRZgT+OhYmijSOydCxyTGygYReuuU8oT/GTiRwIKtIJt3C8QrsH1apv2mJxse2uEP1O3YNS5knu17IR9K5k2tgzWEDQAjYxjVNBOyYBUGB4gHzPYTJ1YL2tWrmJCdUKmsotGqXU9s9EjibhP9Omjw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,68 +143,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/4/26 12:22, Kiryl Shutsemau wrote:
-> On Tue, Feb 03, 2026 at 11:49:45AM -0600, Pratik R. Sampat wrote:
->> Confidential computing guests require memory to be accepted before use.
->> The unaccepted memory bitmap maintained by firmware does not track
->> most hotplugged memory ranges apart from system memory annotated to be
->> cold plugged at boot.
->>
->> Explicitly validate and transition the newly added memory to a private
->> state, making it usable by the guest.
->>
->> Signed-off-by: Pratik R. Sampat <prsampat@amd.com>
->> ---
->>   drivers/firmware/efi/unaccepted_memory.c | 47 ++++++++++++++++++++++++
->>   include/linux/mm.h                       |  5 +++
->>   mm/memory_hotplug.c                      |  2 +
->>   3 files changed, 54 insertions(+)
->>
->> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
->> index c2c067eff634..359779133cb4 100644
->> --- a/drivers/firmware/efi/unaccepted_memory.c
->> +++ b/drivers/firmware/efi/unaccepted_memory.c
->> @@ -209,6 +209,53 @@ bool range_contains_unaccepted_memory(phys_addr_t start, unsigned long size)
->>   	return ret;
->>   }
->>   
->> +/*
->> + * Unaccepted memory bitmap only covers initial boot memory and not the
->> + * hotpluggable range that is part of SRAT parsing. However, some initial memory
->> + * with the attribute EFI_MEMORY_HOT_PLUGGABLE can indicate boot time memory
->> + * that can be hot-removed. Hence post acceptance, only for that range update
->> + * the unaccepted bitmap to reflect this change.
->> + */
->> +void accept_hotplug_memory(phys_addr_t start, unsigned long size)
->> +{
->> +	struct efi_unaccepted_memory *unaccepted;
->> +	unsigned long range_start, range_len;
->> +	phys_addr_t end = start + size;
->> +	u64 phys_base, unit_size;
->> +	unsigned long flags;
->> +
->> +	unaccepted = efi_get_unaccepted_table();
->> +	if (!unaccepted)
->> +		return;
-> 
-> This can be tricky.
-> 
-> If we boot a VM with <4GiB of memory and all of it is pre-accepted by
-> BIOS, the table will not be allocated.
-> 
-> But it doesn't mean that hotplugged memory above should not be accepted.
-> 
-> I don't think there is a way to detect such cases.
-> 
-> Your check is probably the best we can do, but it means VMs are going to
-> crash if memory accept is required by no table.
-> 
-> This is ugly situation.
+>   #endif
+>   
+>   static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index a63ec679d861..549ccfd190ee 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1567,6 +1567,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+>   	if (!strcmp(res->name, "System RAM"))
+>   		firmware_map_add_hotplug(start, start + size, "System RAM");
+>   
+> +	accept_hotplug_memory(start, size);
+> +
+>   	/* device_online() will take the lock when calling online_pages() */
+>   	mem_hotplug_done();
+>   
 
-It's all starting to feel .... very hacky, sorry to say.
+I really hate that accepting (and un-accepting) hotplugged memory is 
+different to accepting ordinary boot memory.
 
-This should all be easier. If we expect memory hotplug (SRAT), why can't 
-we just allocate the bitmap properly?
+Is there really no way we can get a reasonable implementation where we 
+just call a generic accept_memory() and it will know what to do?
 
 -- 
 Cheers,
