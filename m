@@ -4,85 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AE0EE8B386
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 01:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42F33E8B383
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 01:38:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBEA16B0089; Tue,  3 Feb 2026 20:36:28 -0500 (EST)
+	id A78C96B008A; Tue,  3 Feb 2026 20:38:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6C586B008A; Tue,  3 Feb 2026 20:36:28 -0500 (EST)
+	id A5BE76B0092; Tue,  3 Feb 2026 20:38:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B780A6B0092; Tue,  3 Feb 2026 20:36:28 -0500 (EST)
+	id 9A4446B0093; Tue,  3 Feb 2026 20:38:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A4BED6B0089
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 20:36:28 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2009E14058D
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:36:28 +0000 (UTC)
-X-FDA: 84405059256.15.8398CA1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 44A0316000B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:36:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UOZ9O05y;
-	spf=pass (imf08.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 88B446B008A
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 20:38:05 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0D68A1A05FD
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:38:05 +0000 (UTC)
+X-FDA: 84405063330.08.5CF1E8A
+Received: from out199-12.us.a.mail.aliyun.com (out199-12.us.a.mail.aliyun.com [47.90.199.12])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BC60814000F
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:38:01 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oHUcJhAl;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.12 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770168986;
+	s=arc-20220608; t=1770169083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hq2xbKhR9wr7hQnm1mSbFXPqOVqrlx/YQZbkdmaikj4=;
-	b=pcFTYaJMeBilpMv7dTUuAcdBUp/hA04McEpPswfWjsC4xcsaXSReMeciIEWw7sYWtq84k+
-	HZH0fnWUjpZG/d1HC1RmhuT2yKqTRTqS/X9OqRyPOli0lVX5xVO+SwSFaJxPLjXgIYqmaE
-	fPqXpGmqgXsfIwzWQ7tXWqvcM1WiM/8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770168986; a=rsa-sha256;
+	bh=2a1QLi7lGtUwAEBkHLYxXoFJSHkjdL6qXIoliAPoQLM=;
+	b=xT+79ETHRE3e/HrIN4+oLVWe+7IBZTcdXgCxIFNBiyhzFeMn5HtkKTeXp7r4RTyDeJ4N+c
+	NuN8h3z3qo+BJaC/CyeR29MeiMQjzWobPB3c8Gq6wxIlnhxttLgJevvTPR4lMI41kHz1gY
+	e3jBYNctSuhyKBFMu7ECx5W+y3y3bCk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770169083; a=rsa-sha256;
 	cv=none;
-	b=XzngqwiQEv5P+jjm9nMDRQHsM70Tcb/WGTrV11g2RrxpBA/tD3f5DaGiq+HP4wONRixQCB
-	iBbldTC0pr66FQk2agkaJMOhHpVLqfneLXZBhYvfjCF1bQAVBG2ZBTq6txbVeW6enxdUYq
-	3xgJKou2hsJ1jaXK+fFz8VixuwbGnvY=
+	b=ou6/TiqeiPbWY4hHMGu89GHl/eQNsXeWGd5lo/GHcxNfmCAl3NGUaTx5XfSOkWO6lTKJMk
+	Z4C3fG2vm0E3a4FbUtxulnQDf8cuVabSfeGXfi41YYegX4zajHCyYRagSof9yLwqSIJQbP
+	sSpqTjAoS2H5TY9KGiYtnqlGSAhe7Z8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UOZ9O05y;
-	spf=pass (imf08.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1625141A7A;
-	Wed,  4 Feb 2026 01:36:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE427C19422;
-	Wed,  4 Feb 2026 01:36:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770168985;
-	bh=3J1yG40l4xBx53q7czVEncWZi7wToG/HailPa7lrU/A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UOZ9O05yRahAFd2bgWZYrBRJsnzpJuJfsbkWYAEtgU9gPknO0DYIpP9niURbRZ9eu
-	 uh3AvXzm8h6Ap9ral2bT1IiwwWOGBRSCH1E1UM22TdYaHnpDa9IZpctqEdjAXY3ens
-	 7v0jD3JJ8PrUddiQSxnEJt/R4WHVCKD+xBP5qkCfHOgixJw4DDnvM9cMt+73Vcmt2x
-	 2tyiEqnLJbTMo6ZxMdGxPCXgc0BB2vltvFUr4310QBJJaGtLt5mazdjHbBl4ETKe5H
-	 Z2HpZGNUGjObOR4D4uPMVf5aq1hKdSwKOBexOgmPR+ObI4xTbfeL4PnTE5ytjSfdWD
-	 XAVxwJusoB0Dw==
-Date: Tue, 3 Feb 2026 17:36:24 -0800
-From: Kees Cook <kees@kernel.org>
-To: Titouan Ameline de Cadeville <titouan.ameline@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] fs/tests: exec: drop duplicate bprm_stack_limits test
- vectors
-Message-ID: <202602031722.72C5EBFF15@keescook>
-References: <20260203175950.43710-1-titouan.ameline@gmail.com>
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=oHUcJhAl;
+	spf=pass (imf23.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 47.90.199.12 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1770168477; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=2a1QLi7lGtUwAEBkHLYxXoFJSHkjdL6qXIoliAPoQLM=;
+	b=oHUcJhAlCt6P3eAuYG6nEdkLpDkLKsUuPtwsyYBVg4Mniwy+1VE+b3O5aC5YlUpz4G6U7lB+d2GW048wRzL1zrETcH1gvMKvkuEYYNWV/lY06TXOhwpccLz/ZtB2UM3a7eC93K/Hd0VdH2tk31EyL4fI8QoenULmNFDch2l+Vf8=
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WyUcHFa_1770168472 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 04 Feb 2026 09:27:53 +0800
+Message-ID: <07f6ea98-0bcd-41cd-aa91-3ddba0539dcc@linux.alibaba.com>
+Date: Wed, 4 Feb 2026 09:27:52 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260203175950.43710-1-titouan.ameline@gmail.com>
-X-Rspamd-Queue-Id: 44A0316000B
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/page_idle.c: remove redundant mmu notifier in aging
+ code
+To: qinyu <qin.yuA@h3c.com>, akpm@linux-foundation.org, david@kernel.org
+Cc: linux-mm@kvack.org
+References: <20260203102649.2486836-1-qin.yuA@h3c.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20260203102649.2486836-1-qin.yuA@h3c.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: BC60814000F
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: eoigs19zrdni8w515c9hzx8okmwznjny
-X-HE-Tag: 1770168986-235821
-X-HE-Meta: U2FsdGVkX18j3LWd4oOKwEHUprmpVTgueGY8EFcrvjpc8jAFwcf/35m7cLlin4981FLHBgvPROSA08xu6J6AOE/VpVqpNvA7ks2qnHlIIc7lGKyYVGcL1m7IcB9WMBh64b0yQ9U4bUHU7Ery+DJtYbj/Iq4mOfI4f/YuvaOlT8NlfP8q5Gf7lScv6g7CPzONMocH+ZUMmATLCPD03fs4QPFFX0iL6DW2qNEjHWxPM/+mjKWhpKHEimaAdL/0gUUSJCMOXe8yJoyE/vjeMSI9ji2Pi0Qgl2b74gg3/Pf2FEtUy4Go4yeXvTzhm0MWUumN2afl5b1RZG9SkfDpzYmoiGoD2NvOyUItZkilWNrWK2cU5nizRSeoJ5d8A/NxQ1lwjOQIq43z2qS1qVOv1CxJoU2dpafZlRolkvjMMUo/g+/27Z8B9Y09HnKzZXsHtzNJkh4rO7u31JuLcZYc93zlrd4tz70ufrM8q3Jh3j/FpYw6rpv5X2SUosHR1XaeKhOzmSoCboJLOyeFVw1znLUtHP0j5n8GmnRDqDnwemsEx2iVaceNiWg7Xmc/MkK79rYEqsE0UIyyWb/TZAbjJ9vse0VnsGlYjSirBcjqhPDit2Vuhqbckw35rGFVjl7y8xO/UV5i6GCiAVTfd1vY25CMciodRQ9c8KuV/ep+dqYt1hPLroMFg7z/0Qp6RlESFX6pBoL1tNvC7V3E26bRqoVSdvQO6fNXaedcUnDxnzOvZbpx2cMSraM7JCsQq6qvsAUmvM5aIJ7ZzbxotCM0J2k7Bxqfr8Rih5NcQVn7JYwfYFFtVKpPfh9abzhP4/tnmR4c33CBlicklYNaXXQgOKJgcE3C3w32MGQykBEPrwLy8nclny2G+25hAAxQ5/jkl9MBqzWK8UyuaHzP2VLorPtnsh3tvTghi2Li6F6TUV59YTPNYSxBmnQHRYcmRppxf1fNS8fsM3vHVTyfKquWfzc
- g4pI+T/O
- gILdiS5x9hHXxIAxUwJ+cBD//fmkbNHhYB+9L2GqE1+P0R6vIpiKhKU7l6HqFvmgCqNfDe+L8+m72xotMth2SC0wW1nLpPxQrK9FgQwocRM0xBQOEp8mWWpPdbMratHXNqb0ihLQOpzpW/2LlCilWtluidv0eGYl2SZxOpcy6naoMk1M1VTU9/qpNEH1VcmYSNjE6OfzMCmD+Xs4t24Jf0IQtdjZ67ezGf9et5+z1Z0ljZCS/jkHvPyK1NkmZKoImW6E6ldQbEsjTroLJdKJCQ/KkPqtDjzfTcnd98OneUBBQeimFSi/qdcLMzW1MhwSwL43+vWVHwikDLODhHlopjHwP9lfnnGhB59BZrN57NqOd9ecR4xrEtx1Jpg==
+X-Stat-Signature: xcwaiuo8pe8nrdd759hoena6dyz3w4y9
+X-HE-Tag: 1770169081-254598
+X-HE-Meta: U2FsdGVkX18TF4QOe5fi3gwg7q7MXzb/goAnM10lEmdkt4FozyOktSmlK1cywrwRs7HAOe0QSnwOK9G1y8fOu8UcXrTV9NyC4j+EoZGm0gn3M93H3guAvcc1wSrnf91Sp63SPFwCtQLjwrxi5BjKS3BBx3CcjMCuDimhDJ2Ts67H2p/dbPaqCZErwwaU3T2DKQsFgfOaZTfL4I0rvePGKaV+hLC/vgoPWJiMgoNitg+qXHa00ZH/PPJASvnNM6mUYBw7i0JOKSqt/ptlbvcZ83jcoQ1I8pLqG8VnISklgqv5TIEbpxmKLBhVQgN1MMmzoZTrRoSpxE4KVIo00jbh6Q8up4feGO9ioJZ31XgpXAvjjt0oU1YbNLQ9VL5HRA7a7NleQIo7dTd0sWUn0Y+bNXEsHfhAE8kKqXUtQ+elnOZk+/fthUHehKSmHDfDoY7Ao06KVyZ6+pCsJK4+AyLVzl9Dzx9a3uchT1y7NUSlWw8P775r+d5k9nUMoQzBmyt5FyLAoceOx3+SNAUtPEH84zhFjcl0TCBXUBK2ktN4HRrrS8JNvlyQRPG5E+Xw8XHvC4SarjjX/72yFQdnlPOu07qjH8e6Zam1sxDptxkhx9vxrA+qLKQqRrhs8/UaNfM7/HRqLndBc9R4ZEtZ9YTC/75yh3uGLTTp8sumSIV/6+xw7IjiErKp18MKDSW1XFzJmKYXFINAfws6GGiUH+d+SV1xpdRSmkk8WwyKdKKX63Aw5izmxGgn3Zfqxy1qtk3SSrRKIGuL/V16HSuZEUtWd66bav4vS3gsrMF/EirWYjk01N/MsfwmM/vtwiDIDJNyem34LS5elf5n49G5Vf8jlyv/7sl/1v+mXEU9F3x8RVK2YFxSA24l8NiFNx/DKDRu8w2CL2kQfv6QysfBkf96YHGuWxiESCYef6doqsW0ka1K9Vxh2JJ3mwLWXl/zydVgsiexDc23aDXuNuxH0LG
+ W6LvkmiC
+ bqE7KQy5PkmJeM73j9Irs3wMAmW/dZVNbKwMMMqUKFg+oCt1Sqg+QPX4aN5T0WG6vDsZjjMV0iYsPBSp8GBaFn+4fBrYFqa13bz/tIubwvwRQ4kl019djxvFa6I7cZWKdrndJhbVksDz2MbZm61Fq80nPVDTvAik9N52OurCaT8QFCZP00L4tyeMdXetbwu4ixoO9807Vll2wU88bi61Q/jKh4EWwG4ag6x3upuv3iSuBlkvtsHgMy3uGhaVwidk805WwqpWE/Ru3kMFaU3w6qWDLsjqUOESzvqKiFyHYhj9eAvVtKUdjBWczbfYoqWSnzk2TWORjFJ3O+8WSINSWUMrq0aD/Cq93t/nztan6HntnT8XrY/+9chiWYrmvlpsUxe7catkAc676MvUPA2reRlNGEZvLh6+RAVLISjlRHEYOLXJKcV6L8TNRS44M82d3fUrt64e0MdMsDaQCtN42J3zf5Nb/ToH22sbXahLOpDSQuwg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,55 +86,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 03, 2026 at 06:59:50PM +0100, Titouan Ameline de Cadeville wrote:
-> Remove duplicate entries from the bprm_stack_limits KUnit test vector
-> table. The duplicates do not add coverage and only increase test size.
 
-Hm, yes, these are pointless duplicates. It makes me think I typo'd
-something here.
 
-> Signed-off-by: Titouan Ameline de Cadeville <titouan.ameline@gmail.com>
-
-Regardless:
-
-Fixes: 60371f43e56b ("exec: Add KUnit test for bprm_stack_limits()")
-
-> ---
->  fs/tests/exec_kunit.c | 6 ------
->  1 file changed, 6 deletions(-)
+On 2/3/26 6:26 PM, qinyu wrote:
+> now we have mmu_notifier_clear_young immediately follows
+> pmdp_clear_young_notify which internally call mmu_notifier_clear_young,
+> this is redundant. change it with non-notify variant and keep consistent
+> with ptep aging code.
 > 
-> diff --git a/fs/tests/exec_kunit.c b/fs/tests/exec_kunit.c
-> index 7c77d039680b..f412d1a0f6bb 100644
-> --- a/fs/tests/exec_kunit.c
-> +++ b/fs/tests/exec_kunit.c
-> @@ -87,9 +87,6 @@ static const struct bprm_stack_limits_result bprm_stack_limits_results[] = {
->  	    .argc = 0, .envc = ARG_MAX / sizeof(void *) - 1 },
->  	  .expected_argmin = ULONG_MAX - sizeof(void *) },
->  	/* Raising rlim_stack / 4 to _STK_LIM / 4 * 3 will see more space. */
-> -	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * (_STK_LIM / 4 * 3),
-> -	    .argc = 0, .envc = 0 },
-> -	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
->  	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * (_STK_LIM / 4 * 3),
->  	    .argc = 0, .envc = 0 },
->  	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
+> Signed-off-by: qinyu <qin.yuA@h3c.com>
+> ---
 
-Looking at the surrounding tests and trying to jog my memory, I think I
-meant to have differing envc values here, but that turned out not to be
-useful: I wanted to test the impact of rlim_stack.rlim_cur, not
-argc/envc here.
+LGTM.
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-> @@ -103,9 +100,6 @@ static const struct bprm_stack_limits_result bprm_stack_limits_results[] = {
->  	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * _STK_LIM,
->  	    .argc = 0, .envc = 0 },
->  	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
-> -	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * _STK_LIM,
-> -	    .argc = 0, .envc = 0 },
-> -	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
+>   mm/page_idle.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/page_idle.c b/mm/page_idle.c
+> index 96bb94c7b..9c67cbac2 100644
+> --- a/mm/page_idle.c
+> +++ b/mm/page_idle.c
+> @@ -74,7 +74,7 @@ static bool page_idle_clear_pte_refs_one(struct folio *folio,
+>   			pmd_t pmdval = pmdp_get(pvmw.pmd);
+>   
+>   			if (likely(pmd_present(pmdval)))
+> -				referenced |= pmdp_clear_young_notify(vma, addr, pvmw.pmd);
+> +				referenced |= pmdp_test_and_clear_young(vma, addr, pvmw.pmd);
+>   			referenced |= mmu_notifier_clear_young(vma->vm_mm, addr, addr + PMD_SIZE);
+>   		} else {
+>   			/* unexpected pmd-mapped page? */
 
-Same here.
-
-Reviewed-by: Kees Cook <kees@kernel.org>
-
--- 
-Kees Cook
 
