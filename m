@@ -4,144 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CFEBE8B389
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 02:07:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C740E8B38B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 02:25:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8ABC96B0088; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
+	id 5D1146B0005; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 858A96B0089; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
+	id 57E916B0088; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72D636B008A; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
+	id 47D8B6B0089; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C3C66B0088
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:07:18 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2691D160677
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:07:18 +0000 (UTC)
-X-FDA: 84405136956.09.B21C0B0
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2E105C0012
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:07:16 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JQhs1JCx;
-	spf=pass (imf22.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770170836;
+	by kanga.kvack.org (Postfix) with ESMTP id 32C7D6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9E7C140645
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:25:49 +0000 (UTC)
+X-FDA: 84405183618.28.6ADB3FE
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 37B334000A
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:25:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	spf=pass (imf07.hostedemail.com: domain of yunjeong.mun@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=yunjeong.mun@sk.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770171948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
-	b=gwPt5XW55qVtv6doJxdneMsI0ag41x4ejIu/YYZvuYMUUr+uxWaB2xG0+7lyptJZd4Kqbe
-	6sZc63C8f87HgH4uhehi45fG20Ns8oxoQjzjxVEP8PE9v52UT5yjTd6SoSzLevtG/76grZ
-	247CQ9iEyqccW3NabKOyeKqjT4/ZOIM=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JQhs1JCx;
-	spf=pass (imf22.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770170836; a=rsa-sha256;
-	cv=pass;
-	b=ygLOg2ezr4VEcP2YODCqhwgd5aYQLc19G/UepFiluokpjPyPQI/wQzGtYTFJPWJ9/9s4gQ
-	IDqcLC322QHSaRh5/ol/HzJDGtfM3ebPnxZheGmzUb6ZqQrqWJrS0sjCZ6OMnRIf0urCop
-	aex+wZU1ybjrvjOEMZzNn6xzVhogarQ=
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8c5386f1c9fso856952185a.1
-        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 18:07:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770170835; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Bz2YrctULUn3fe1rreORR9tBYgrQ/IYKaBJc+mfHEbDBIWgidlFiHXI100FPKjwBwL
-         gBRgsQzNz2WBX72VUknquOcEIB0i5E0G4m2HwwEmVJv0i33UTh5fth8sT+bunFhs1+39
-         SXWNNCwdYk89amifP/TTYuN8KXfWswMY/73wauEK5f0dQwbh3SaW7gByykJT1iDOnucB
-         A4Ot5ps6ci6Uh6zDzhp2KMjKFh3tl09zhVRScFsWwoV2L3BR6NTXYm9V6BCYnhX86mSw
-         H/vNa1Hj0/urrcNZPGniHBS1lw1K0F/KN4Xsb6wXgkVNL2h+aW8kgvcvMhFEfkvNvjDm
-         YwTA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
-        fh=wxsvq6FMgmxZq2NThXEarPuzvQxca4QRebrQQssydtw=;
-        b=VwEYyvuU7E36jkPXgQuDW0MQwfVkpmYkTy4z6qZIE8wLuhM7OqFBw/6mtnJW7uGMI9
-         KG3LtVPxyRKbZwL0dJMqTXAdgGRlMyOwAmYoGquCvXfgl4aSXvPy9J0+wRNLdk/PoQ3Y
-         p382/Cu4oP+TV2yW1/4G0wd6MUCx/9sdxcBMfTQnWyHpM56IE6IKzRJ/9OZXkSt4eNSY
-         JflO2rAVLz+jgIs29pmFApXy/cQcgf9ATxvvN7NjiATmxva2NVz3z0kM/kb3RNXDkAwC
-         p0MEv1MgyA6s6k3Gj7E7T7K/K0SgqBHBU0YZ63T7qef8NwdtmMPUDMQKIZnWq8JLnhUv
-         H85w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770170835; x=1770775635; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
-        b=JQhs1JCx1uI6MjN0E1KXBVJmO+FPbZ0WmUSMVzyysSX5rJyTWGik9PiWgMaK8jaFa0
-         C5CTyvKlugPF0wa5yr2MXSMyCJN9ciZnAZdPZFpEZ72F3EagQsVdLz19jD+oiu+QDyFr
-         JW99HOEJlDNSYQcqPeNUebCIObhCHfHgdDq78ZWZJ88bCHUx1ZIaHU2ZH0D5GWU1x6Pb
-         EqR34Xvefpzcl+H9RgXH36SMX32OXPxUTHvBpQajPuiR9v7kjkfuDz1xCeo4WTjBCOu9
-         lwbQOODpqT64SRoDSKDwjU1SDHbucXGyF29Vri1YpvPx4mgbAhkAU1Bs634tvgBx8n1C
-         iK7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770170835; x=1770775635;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P3XKctSvXGgVpW/lX1QkUiLVHuzybB4KcosEl9SXxcg=;
-        b=Ah96Y1nReuaddieUo8qoF4nRaVEUXtNFzN2z333t6W1kbbPB3vptfA5y8XrIdmyH4Z
-         hmno2kfWZZ/nE95+SSwxibed9i/NDQcaif3N0vZdOXgKpT1TAvjmjFIzPpVIsPK9U6vp
-         3E/8DIRgWz4FREzAK2/kxg/VdG9Fln2EnJR0XLj5UXA7mI25dEnpsLg4AT72X1MbPs0c
-         4ptGc+lbKmcd7H5YgXDmmhKpgQvErWh6xoKPUf0s0N7YsSvosFctgg6Qyp+eDw4N5XSq
-         CBXCdj6uxQR+pBhKRREvqGGWtfDQSsZHtqj/+alJ/fI7Flk4FymbkGpRThXRxYo+Oox6
-         JYbw==
-X-Forwarded-Encrypted: i=1; AJvYcCWj1sffYQ/IoEd3anuTMFyG1nWDeBhvQxf01fDM7/fraFrzsKnRyWnRO+nqRTH0DDcrmsGjEf7RUQ==@kvack.org
-X-Gm-Message-State: AOJu0Yx8uosKpC0p8pOBO3ig+AzkgxMppHt8/3AGOfyYENYsSIku3aBH
-	JVRwEyEArSbeyRJ9FtJLMnVP1m/DRZPyG1Vajt2XXl9hOHqZMN/yx6cj5wK8KEm6o9P3T/iab/A
-	TJw/YGwAS6uv8OqASXO1XqntUwYppFcQ=
-X-Gm-Gg: AZuq6aKVgw5BXbhjBLcNRdfuxhSgTaZ9Q2ameahhsX/R0tdfh2SW/BirpiXzvfDnAqF
-	8pXtPWnNDNAt5DM7TmwJAx4mwk1jytmiXXqXZi3o0eU3EyP03u5UCrldO6qyfcEXFuHEDw+VqG2
-	Tli74Yeel7vL7sd19pewlkyZW1FIn6dWIr76wIjOUp7wI8NgnH2EkdyKv+wv1k/SKQ8ptcuMPxL
-	RR+gRt69qRmHMAwNflNJ3SwzJZmWOVurg7bGyZvMzjZ/IqMfjJI++fEtxNkrP8uVsNUg2/pXkV1
-	MJMnChVNeciMFMtMD/Zcp4A=
-X-Received: by 2002:a05:620a:288e:b0:8ca:2cfa:822e with SMTP id
- af79cd13be357-8ca2f9f5b94mr235535285a.70.1770170835165; Tue, 03 Feb 2026
- 18:07:15 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RTAFkAayxmZk0fM9TjC5eT3JeaY4mHLqbu9KWtXFnio=;
+	b=KkmCUua1cXrnwhel3aIJZjWiPhT+DaVSkdCAjainjWWhK6iPspD9gcAqQZLIHT7HNN2t2G
+	G/ozyuCTBGkhuqRhfhaYt/6+la8E3PGX6SHnI5DkghZ5wAZBAqvUvuNt72kLSBDTkqCHnW
+	L2kXYe0CTZVDx6P52lEIAqylPnr7kzw=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=none;
+	spf=pass (imf07.hostedemail.com: domain of yunjeong.mun@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=yunjeong.mun@sk.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770171948; a=rsa-sha256;
+	cv=none;
+	b=lmqwyyl8k749X+ejUAPDJVHoBei56iGk5AnluTxZM3Cc9Cz/08fDnW3zJx7ibuTYm0zJC+
+	WedMwfPgj+RdRGcTNtRBw5xavZnvu76rKpXHiPBnWxRzS+FMZtfsw4x4g3wnLrXdzMO+HD
+	TFRephs3gmaR4NCUOSnVdAI0xp42Eho=
+X-AuditID: a67dfc5b-c45ff70000001609-89-6982ae246dfa
+From: Yunjeong Mun <yunjeong.mun@sk.com>
+To: sj@kernel.org
+Cc: honggyu.kim@sk.com,
+	kernel_team@skhynix.com,
+	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	akpm@linux-foundation.org,
+	corbet@lwn.net,
+	bijan311@gmail.com,
+	ajayjoshi@micron.com
+Subject: Re: [RFC PATCH 0/5] mm/damon: Add node_sys_bp quota goal metric for
+Date: Wed,  4 Feb 2026 11:25:35 +0900
+Message-ID: <20260204022537.814-1-yunjeong.mun@sk.com>
+X-Mailer: git-send-email 2.48.1.windows.1
+In-Reply-To: <20260124015045.78075-1-sj@kernel.org>
+References: 
 MIME-Version: 1.0
-References: <CAC5umygEq6xvpDFnVnDLYLyqJV7qChEsJ_+W-KCBJ+EXj1948g@mail.gmail.com>
- <20260127220003.3993576-1-joshua.hahnjy@gmail.com> <CAC5umyhqbW_qXaApO8OGg1wo706GfVPuak5JwdBfBgS751Ka5Q@mail.gmail.com>
- <aYCiboGiXO2lQC0W@tiehlicka>
-In-Reply-To: <aYCiboGiXO2lQC0W@tiehlicka>
-From: Akinobu Mita <akinobu.mita@gmail.com>
-Date: Wed, 4 Feb 2026 11:07:03 +0900
-X-Gm-Features: AZwV_Qh72QJTI4M2CEIA0M9FqVyxcZFhJhrBbyaUc7tMrpfUO9BLxMEmywo9FJo
-Message-ID: <CAC5umygW8PXnS5tix-DfujhPjrRjBaEKe8ojW=y5FmqhqBfurg@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] mm/vmscan: don't demote if there is not enough
- free memory in the lower memory tier
-To: Michal Hocko <mhocko@suse.com>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	hannes@cmpxchg.org, david@kernel.org, zhengqi.arch@bytedance.com, 
-	shakeel.butt@linux.dev, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, ziy@nvidia.com, 
-	matthew.brost@intel.com, rakie.kim@sk.com, byungchul@sk.com, 
-	gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, 
-	bingjiao@google.com, jonathan.cameron@huawei.com, 
-	pratyush.brahma@oss.qualcomm.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2E105C0012
-X-Stat-Signature: ytu4j15rjgtc3xmy1redgpzakj8z9o1t
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLLMWRmVeSWpSXmKPExsXC9ZZnoa7KuqZMgz+7RCxW7G1lt5izfg2b
+	RcOPz2wWTw60M1o8+f+b1WJh2xIWi8u75rBZ3Fvzn9Xi5FsHi8Nf3zA5cHnsnHWX3WPTqk42
+	j02fJrF7nJjxm8XjxeaZjB6L+yazenxf38Hm8XmTXABHFJdNSmpOZllqkb5dAlfGqyOnGQuO
+	CFVMODCdpYHxPV8XIweHhICJxJpTfl2MnGDmxDXP2UBsNgENiYOHTjKD2CICghL9j2ewdjFy
+	cTALrGSSuLj4CRNIQljAR+L6udVgNouAqsTrjTfYQWxeATOJ+ZOPMkMM1ZRouHQPrIZTwFhi
+	2t9NrCC2kACPxKsN+xkh6gUlTs58wgJiMwvISzRvnc0MskxC4DKbxMvzr1ghBklKHFxxg2UC
+	I/8sJD2zkPQsYGRaxSiUmVeWm5iZY6KXUZmXWaGXnJ+7iREY6Mtq/0TvYPx0IfgQowAHoxIP
+	b8DHxkwh1sSy4srcQ4wSHMxKIrzp0+szhXhTEiurUovy44tKc1KLDzFKc7AoifMafStPERJI
+	TyxJzU5NLUgtgskycXBKNTDaSbhoL+LZedW48e7tpSK/NZdECp/hM7y1NkPEX1VVKJ+N9dkm
+	tXO8nuJV4d+vzvhrkyP2Ts/+lZrLBKlXJordIReXr53i5uH3xTm+LWgvo84xz+kfpAr3zONz
+	NVOY9ONumYj2kr8+lhaPi1oW68/ZLpvJp+bqq9d3dMXLzUXqtlEprw34lJVYijMSDbWYi4oT
+	AVNY2FBwAgAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHLMWRmVeSWpSXmKPExsXCNUNWR1dlXVOmweE/rBYr9rayW8xZv4bN
+	ouHHZzaLJwfaGS2e/P/NavH52Wtmi8NzT7JaLGxbwmJxedccNot7a/6zWpx862Bx+OsbJgce
+	j52z7rJ7bFrVyeax6dMkdo8TM36zeLzYPJPRY3HfZFaP7+s72Dy+3fbwWPziA5PH501yAVxR
+	XDYpqTmZZalF+nYJXBmvjpxmLDgiVDHhwHSWBsb3fF2MnBwSAiYSE9c8ZwOx2QQ0JA4eOskM
+	YosICEr0P57B2sXIxcEssJJJ4uLiJ0wgCWEBH4nr51aD2SwCqhKvN95gB7F5Bcwk5k8+ygwx
+	VFOi4dI9sBpOAWOJaX83sYLYQgI8Eq827GeEqBeUODnzCQuIzSwgL9G8dTbzBEaeWUhSs5Ck
+	FjAyrWIUycwry03MzDHVK87OqMzLrNBLzs/dxAgM5WW1fybuYPxy2f0QowAHoxIPb8DHxkwh
+	1sSy4srcQ4wSHMxKIrzp0+szhXhTEiurUovy44tKc1KLDzFKc7AoifN6hacmCAmkJ5akZqem
+	FqQWwWSZODilGhhvufOnTTnH8ndiosISu2RJz/YLzHeuKtyV0Ix8npbhcUrvr57a3X7+5uUG
+	QQV91sdqmVZOXSKrH9S3/G+216PHhVMjw65Ed0o9YjJuYTgkkHX25bJPNo36FTy7vnVe+WiT
+	aOis1iS80ab6nFccq9jPqdcXete0uMblP9e5kbTwXWzyLcnXN5RYijMSDbWYi4oTAfwAvkph
+	AgAA
+X-CFilter-Loop: Reflected
+X-Stat-Signature: fjwanzmpq78sg86s7kd94ehwbz8mq6ax
 X-Rspam-User: 
-X-HE-Tag: 1770170836-435103
-X-HE-Meta: U2FsdGVkX1/wC8ruQXJv9BSbxIs4iJsZKoIKOpl4y8gis8N6DcRLd6gNj2aMsxmf/BYyYr88OxqcI7mhSgxVDJfFygDyfDcgU2jAK+cn+Cd2MbR2GdMKptucTCydYp3QhP5rh6rHCg8qcMBYztnNgetqnFYVUt+t16ptKSQj43Doq8rTklcZFnt8kRmPkRMz+fvg+Hh88VjSNq1VkUADAQPYlB24CdQ35b4NDXT7edTYbd36WJpWsRYJqtoViVDLhaDIgdHRUlVJrieBpGOHuv8Odl2GwOToNbvYVpHtBOGs2ncdw01ihfcdQ6lyt5fQPk5rpBv7bxVWBKGkfMgl36zQDzTpCHYgyKDpkJSuTd3rmbCVPm7mqZg00+9tYhLgPyohMGi4EiXRY9aJXmWVMvE61Ugc/SDRD7vgqJlGMDC08xPqtC0QeJp6CuRtud/Iux3HHwzLv97tejKJj1U2IX3uRuPX2I+v1Glzp8rCdwPL9AaCAQ5NYmwV7Q0kNgwTJLO+S0V94i2JCuer3ETRhZFSsYzun6FRJMB+SkfguCvKKhXKttObPOyc7Sg8ipIzYi9Cezsmqyd19H2acNGFAxMq0tLkTMXqosKbON3aiT0oRr6bPqViiC5eKFIyhZBgJ8mIvp5MNiyAtOVv9sFlYq6Qjo9B03hjbr9IjlRnae+3Hn/+DILaKzOrQqBpQEYX90A1Nh06QHtfLGlWFR/OB8s/ssm+q3J3UI1ENPyygJUJJVmJlXrqLvu2mzpLmvYSJtjFU9UZb1SBeBqr3IoeZ8VdW4w1KVRZ8syskWqf+XAoIP5FNBgY4KZzxhbGupSDz4dg3xknflzFAE4aaWIS+ha7zAroGUMEj8vJWY8OZcnYts6+OR8QX66YeLn1hE6h/zsL0vePGJIQUmBqTLI49xGdtdq1eEpvNhv7uV/RUqHndrG2CAS859pFhRkIHtloAOY8VYcGcamwuQbzBuk
- uo/8J4dq
- gc9Nfxs6Ob17cQMAXT6gFCE6XZRoLpplWS4JPubLVqTKfTD8giUmOHRN2sFnXNzhJ6Bn6m0M12+2lBZkIgNGoGGcDDDgpzpeTAUXRaUuFYT1+Sx6WgQiD/Sq/KkqJTPIUhiqqjaIC2IcUXlInk65apE1HmsbZAemVEOom1BpbXtUdNnBoLQDZstGJHEW5koL3JhPcV+d/QFHuSuaHZSCKQz7EshUsLOZA13AgJjpHcr2gjwFON/HSESDzXR97qRoFtNzJSS7qq/4FUfXHc9UVVrEtOXDDb4U1TL+BmazQMukqQLxjtaR6ViJyCJCv2lKfXNQTzw1QpcuVB8c4cCs8BW1eoGiLUNEe6BVl9LwD+1ZZYbbmXXCQZYZjMGUhebfKL2BSGhna1H9smiDkL8Q4oEauX3fZklvPHhgciA35xj8NdCjZ8pbLREAlUssIbOf4/bsw0OkDKXpMCBS51tqkIyupDBidqa3YnJXMBjjabrDqejZhBPDX+eFJB8FK0/L5Bq06LOkvYiSJtgBcCXjd2kC+7ae9xQKuvSZ6ND96HeL6lB65tWZCkKP7js1ox7RPWL8QC5FLwAc4MMSmh3HAY69MG0PNNqOeivszDf5ux4l8ezg=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 37B334000A
+X-HE-Tag: 1770171945-486787
+X-HE-Meta: U2FsdGVkX1+/skKYXvqmtViIaHs0i3LOiQnylShEFXc+U05UaN/o+/gNsFfcRu2PoFb9GxqG33YfWeZRZt1LrnZB+j/t2iIyultY37MQ8o0K+KuzxqtYFnInO+DpOVryI8NNxCrnHhiDK+ZJ28AVActMaeKQDlwebNcdV0hnuNkFVh/py1GQ4TTT7beFBLjmHuFsqU3cezP8nAW7IGuf4dumfJYuuSDQFuxzsaAlJAN/2f+VUHXHegV3vkminIEnVI83ihttGSfMDHVxAYM5fbxnGL/TLwl3JqLEhwKZZ1Kdkk5wrt/n0rWxvmpXI6OkHDbXxS4Q1MYh6OHgRPim1EtYSJ0rgHi16l3V4sCDGsdIb4s8e0/badySOH7FwsF4O+x0nMOJ8uP67sdraGdtlWpGoq6vZSyxJNsZceHJB5bEprRWybjnpjpZB394p+8HGJxLbU3t3Ok34RKj9EAnD33PlCx6mGNsJQ56wyp8VaeCV0DFTZyr3TSOhGCW5hYGIXXWVJy1bQdrhq4FgRJaKTvvj3OD7M9sr6YOXcGrK8tIcswxycpYlUP0aCGTQJWdbOxPQ4vwKNvLDaDb6xJ4Sowxoucny7wal2p5ssUKyDMUU1REIqTdMYhwDehXsAFdvQTrEg6mxMo05H4l3iE0RcFc36V3rMqSPUCXv+6h6Ri86xeHadMjrwoBculGq67s1Soj2VLwsFOTRufOIpMv5janpwRJQa7jdYInllmutv+meT9bB0REPmBe7jYdtWJ5NB59DSVXMtuePdsgG/e12z2wkLb4/QdXSsCWXhlfF3apPEc3hW+0APd160WG7I5FG4TScw2k+3E4Tpn6eKcd1pKRTP1QEhMr47Q5hMXaFTapoW6ZkXLBrDzSgyf0q2lZ8FtmdI3qpVkfoQTd4ln1WWRrzKOUaufMoxlxKCj6XHy36BNXNZNv3A9CTJ9AZ5rLBi/1kpTmUT5sn5+QYjA
+ dw2uRitJ
+ EKvPCRR1vRG3QDiD/czCXdV//AgOCRSvEv+MJwYiGywa6sFRY170qKMXWeprQA0pK8lJm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,204 +109,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2026=E5=B9=B42=E6=9C=882=E6=97=A5(=E6=9C=88) 22:11 Michal Hocko <mhocko@sus=
-e.com>:
->
-> On Thu 29-01-26 09:40:17, Akinobu Mita wrote:
-> > 2026=E5=B9=B41=E6=9C=8828=E6=97=A5(=E6=B0=B4) 7:00 Joshua Hahn <joshua.=
-hahnjy@gmail.com>:
-> > >
-> > > > > > Therefore, it appears that the behavior of get_swappiness() is =
-important
-> > > > > > in this issue.
-> > > > >
-> > > > > This is quite mysterious.
-> > > > >
-> > > > > Especially because get_swappiness() is an MGLRU exclusive functio=
-n, I find
-> > > > > it quite strange that the issue you mention above occurs regardle=
-ss of whether
-> > > > > MGLRU is enabled or disabled. With MGLRU disabled, did you see th=
-e same hangs
-> > > > > as before? Were these hangs similarly fixed by modifying the call=
-site in
-> > > > > get_swappiness?
-> > > >
-> > > > Good point.
-> > > > When MGLRU is disabled, changing only the behavior of can_demote()
-> > > > called by get_swappiness() did not solve the problem.
-> > > >
-> > > > Instead, the problem was avoided by changing only the behavior of
-> > > > can_demote() called by can_reclaim_anon_page(), without changing th=
-e
-> > > > behavior of can_demote() called from other places.
-> > > >
-> > > > > On a separate note, I feel a bit uncomfortable for making this th=
-e default
-> > > > > setting, regardless of whether there is swap space or not. Just a=
-s it is
-> > > > > easy to create a degenerate scenario where all memory is unreclai=
-mable
-> > > > > and the system starts going into (wasteful) reclaim on the lower =
-tiers,
-> > > > > it is equally easy to create a scenario where all memory is very =
-easily
-> > > > > reclaimable (say, clean pagecache) and we OOM without making any =
-attempt to
-> > > > > free up memory on the lower tiers.
-> > > > >
-> > > > > Reality is likely somewhere in between. And from my perspective, =
-as long as
-> > > > > we have some amount of easily reclaimable memory, I don't think i=
-mmediately
-> > > > > OOMing will be helpful for the system (and even if none of the me=
-mory is
-> > > > > easily reclaimable, we should still try doing something before ki=
-lling).
-> > > > >
-> > > > > > > > The reason for this issue is that memory allocations do not=
- directly
-> > > > > > > > trigger the oom-killer, assuming that if the target node ha=
-s an underlying
-> > > > > > > > memory tier, it can always be reclaimed by demotion.
-> > > > >
-> > > > > This patch enforces that the opposite of this assumption is true;=
- that even
-> > > > > if a target node has an underlying memory tier, it can never be r=
-eclaimed by
-> > > > > demotion.
-> > > > >
-> > > > > Certainly for systems with swap and some compression methods (z{r=
-am, swap}),
-> > > > > this new enforcement could be harmful to the system. What do you =
-think?
-> > > >
-> > > > Thank you for the detailed explanation.
-> > > >
-> > > > I understand the concern regarding the current patch, which only
-> > > > checks the free memory of the demotion target node.
-> > > > I will explore a solution.
-> > >
-> > > Hello Akinobu, I hope you had a great weekend!
-> > >
-> > > I noticed something that I thought was worth flagging. It seems like =
-the
-> > > primary addition of this patch, which is to check for zone_watermark_=
-ok
-> > > across the zones, is already a part of should_reclaim_retry():
-> > >
-> > >     /*
-> > >      * Keep reclaiming pages while there is a chance this will lead
-> > >      * somewhere.  If none of the target zones can satisfy our alloca=
-tion
-> > >      * request even if all reclaimable pages are considered then we a=
-re
-> > >      * screwed and have to go OOM.
-> > >      */
-> > >     for_each_zone_zonelist_nodemask(zone, z, ac->zonelist,
-> > >                 ac->highest_zoneidx, ac->nodemask) {
-> > >
-> > >         [...snip...]
-> > >
-> > >         /*
-> > >          * Would the allocation succeed if we reclaimed all
-> > >          * reclaimable pages?
-> > >          */
-> > >         wmark =3D __zone_watermark_ok(zone, order, min_wmark,
-> > >                 ac->highest_zoneidx, alloc_flags, available);
-> > >
-> > >         if (wmark) {
-> > >             ret =3D true;
-> > >             break;
-> > >         }
-> > >     }
-> > >
-> > > ... which is called in __alloc_pages_slowpath. I wonder why we don't =
-already
-> > > hit this. It seems to do the same thing your patch is doing?
-> >
-> > I checked the number of calls and the time spent for several functions
-> > called by __alloc_pages_slowpath(), and found that time is spent in
-> > __alloc_pages_direct_reclaim() before reaching the first should_reclaim=
-_retry().
-> >
-> > After a few minutes have passed and the debug code that automatically
-> > resets numa_demotion_enabled to false is executed, it appears that
-> > __alloc_pages_direct_reclaim() immediately exits.
->
-> First of all is this MGLRU or traditional reclaim? Or both?
+On Fri, Jan 23, 2026 at 05:50:43PM -0800, SeongJae Park wrote:
+> Cc-ing SK hynix folks (Honggyu and Yunjeong) for quota auto-tuning behavior
+> confusion (not stop immediately after satisfying the goal) I discuss below.
+> 
 
-The behavior is almost the same whether MGLRU is enabled or not.
-However, one difference is that __alloc_pages_direct_reclaim() may be
-called multiple times when __alloc_pages_slowpath() is called, and
-should_reclaim_retry() also returns true several times.
+Hi Seonjae, thanks for Cc-ing us :)
 
-This is probably because the watermark check in should_reclaim_retry()
-considers not only NR_FREE_PAGES but also NR_ZONE_INACTIVE_ANON and
-NR_ZONE_ACTIVE_ANON as potential free memory. (zone_reclaimable_pages())
+> 
+> Please note that the goal-based quota auto-tuning works in proportional way,
+> preferring small steps and "eventual" goal convergence.  As a result, migration
+> will occur a few more times until it is completely stopped after the goal is
+> satisfied.  Unless there is another scheme that migrates pages into node 0, you
+> may end up having node 0 having a bit less than the 40% memory.
+> 
+> > 
+> >     No oscillation - migration stops when target state is reached.
+> 
+> So, little bit of oscillation could still happen.  Hopefully that shouldn't be
+> significant, though.
+> 
+> IIRC, SK hynix people also confused with the behavior when they experimented
+> migrate_{hot,cold} action with NODE_MEM_USED_BP goal based quota auto-tuning,
+> but using only a single scheme that does migration in a single direction.
+> Because this is at least second time it made confusion, if you need, maybe I
+> can try to add a feature for making DAMOS immediately stops after the goal is
+> satisfied.  Let me know if such new feature can be useful for you.  Cc-ing SK
+> hynix people (Honggyu and Yunjeong) so that they can correct me if my memory is
+> broken, or answer if the new feature I described here can be useful for them.
+> 
 
-The following is the increment of stats in /proc/vmstat from the start
-of the reproduction test until the problem occurred and
-numa_demotion_enabled was automatically reset by the debug code and
-OOM occurred a few minutes later:
+Yes, you're absolutely right. Currently, esz(effective size) starts from 0 and 
+esz gradually increases as `current` approaches `target`.
+Once `current` reaches `target`,  `esz` then begins to decrease.
 
-workingset_nodes 578
-workingset_refault_anon 5054381
-workingset_refault_file 41502
-workingset_activate_anon 3003283
-workingset_activate_file 33232
-workingset_restore_anon 2556549
-workingset_restore_file 27139
-workingset_nodereclaim 3472
-pgdemote_kswapd 121684
-pgdemote_direct 23977
-pgdemote_khugepaged 0
-pgdemote_proactive 0
-pgsteal_kswapd 3480404
-pgsteal_direct 2602011
-pgsteal_khugepaged 74
-pgsteal_proactive 0
-pgscan_kswapd 93334262
-pgscan_direct 227649302
-pgscan_khugepaged 1232161
-pgscan_proactive 0
-pgscan_direct_throttle 18
-pgscan_anon 320480379
-pgscan_file 1735346
-pgsteal_anon 5828270
-pgsteal_file 254219
+However, we observed that even after `current` hits `target`, 
+migration still continues relatively aggressively - because `esz`  remains high, 
+and it takes time for it to decrease.
 
-> Then another thing I've noticed only now. There seems to be a layering
-> discrepancy (for traditional LRU reclaim) when get_scan_count which
-> controls the to-be-reclaimed lrus always relies on can_reclaim_anon_pages
-> while down the reclaim path shrink_folio_list tries to be more clever
-> and avoid demotion if it turns out to be inefficient.
->
-> I wouldn't be surprised if get_scan_count predominantly (or even
-> exclusively) scanned anon LRUs only while increasing the reclaim
-> priority  (so essentially just checked all anon pages on the LRU list)
-> before concluding that it makes no sense. This can take quite some time
-> and in the worst case you could be recycling couple of page cache pages
-> remaining on the list to make small but sufficient progress to loop
-> around.
->
-> So I think the first step is to make the demotion behavior consistent.
-> If demotion fails then it would probably makes sense to set sc->no_demoti=
-on
-> so that get_scan_count can learn from the reclaim feedback that
-> anonymous pages are not a good reclaim target in this situation. But the
-> whole reclaim path needs a careful review I am afraid.
+To address this, we previously suggested that initializing `esz`  at `target`
+(or something suitably large value, rather than 0) and letting it gradually 
+decrease as `current` gets closer to  `target`.  
+This would allow for stronger migration when `current` is far form `target`, 
+and gradually weaken migration as `current` approaches `target`.
 
-If migrate_pages() in demote_folio_list() detects that it cannot
-migrate any folios and all calls to alloc_demote_folio() also fail
-(this is made possible by adding a few fields to migration_target_control),
-it sets sc->no_demotion to true, which also resolves the issue.
+Such a feature would be useful for us to experiment with tiered memory system :)
 
-        migrate_pages(demote_folios, alloc_demote_folio, NULL,
-                      (unsigned long)&mtc, MIGRATE_ASYNC, MR_DEMOTION,
-                      &nr_succeeded);
-        if (!nr_succeeded && mtc.nr_alloc_tried > 0 &&
-                        (mtc.nr_alloc_tried =3D=3D mtc.nr_alloc_failed)) {
-                sc->no_demotion =3D 1;
-        }
+Best Regards,
+Yunjeong
+
 
