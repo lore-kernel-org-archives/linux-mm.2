@@ -4,121 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45B9BEA7943
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:32:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48BEBEA7943
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:34:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41F9C6B0005; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
+	id 82F936B0005; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CCC26B0088; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
+	id 803FA6B0092; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CBA56B008A; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
+	id 6CE906B0093; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 15DA66B0005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BFD731A02E7
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:32:12 +0000 (UTC)
-X-FDA: 84408072504.26.ECA9214
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 909CF14000C
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:32:09 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 59EE06B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E46C1B1E31
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:34:16 +0000 (UTC)
+X-FDA: 84408077712.17.80CB409
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id A0BB014000D
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:34:13 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	spf=fail (imf09.hostedemail.com: domain of tim.bird@sony.com does not designate 35.89.44.37 as permitted sender) smtp.mailfrom=tim.bird@sony.com;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=sony.com (policy=none)
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770240730;
+	s=arc-20220608; t=1770240854;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=ibfByY8iQK9Y3JqCrajSiNIKhKDR1x5uCu5uqTcP8Po=;
-	b=al7upjmnEdZ4gVaSUsxuQ8YmwToHVqtBi8l8h2c6XYPxU569yU81UxkCbDGErSKDWRpdr6
-	2HhaDOJr7yLHobsrGCg+zO/kJmNOtLoiJbrO6vDt4ad61lKBUsIwpEikCwzr4IZx6eQff4
-	mTIhodyaH4CSJc/dfLg+mcCb/wIiG68=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
+	b=pn7b5JalAZDPYu7qqjpnf5y1Y0HpGi+i1l0FobeVKUDCEnsiY11tc7GwTNPvmvdTmrCRxm
+	Eap1VGixXSd6pFjHCHkwwHsLjhaLuwu1t1e3MfO1x7LT4EKuSfRBXGTkkQLFMCokr8mH0o
+	GeyJC7lZWYIlkWBLLobr3sZ+BAjYtF8=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=none;
-	spf=fail (imf09.hostedemail.com: domain of tim.bird@sony.com does not designate 35.89.44.37 as permitted sender) smtp.mailfrom=tim.bird@sony.com;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=sony.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240730; a=rsa-sha256;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240854; a=rsa-sha256;
 	cv=none;
-	b=z/vUDm0xAB76jqPu9EYfrHXd07USSr5bF+Hv4zwzM8P2aD7peuUiEJrlSB9gL2DlIwBKEZ
-	D9KyHYgzsJi1L3W6HKpgy9KfJD20lgRKQhtTPb9SHwuktiRewy+hTEeeDfjKv3xPsCyivX
-	zPl/KGCPIVNno5GliVddeEh9ztpTEQQ=
-Received: from eig-obgw-6005b.ext.cloudfilter.net ([10.0.30.162])
-	by cmsmtp with ESMTPS
-	id niGJvc3nHipkCnkTovYF9F; Wed, 04 Feb 2026 21:32:08 +0000
-Received: from host2044.hostmonster.com ([67.20.76.238])
-	by cmsmtp with ESMTPS
-	id nkTnv6GJpHSQMnkTnvstIX; Wed, 04 Feb 2026 21:32:08 +0000
-X-Authority-Analysis: v=2.4 cv=GIQIEvNK c=1 sm=1 tr=0 ts=6983bad8
- a=O1AQXT3IpLm5MaED65xONQ==:117 a=uc9KWs4yn0V/JYYSH7YHpg==:17
- a=HzLeVaNsDn8A:10 a=z6gsHLkEAAAA:8 a=20KFwNOVAAAA:8 a=Xie9NPzdAAAA:8
- a=pwlSjyV6AAAA:8 a=SwvnC8opRPVetA8u2xwA:9 a=vUoOGYJDS1_Kmot3Fv_X:22
- a=J9--6epWBKc4EL46Yp3Y:22 a=iekntanDnrheIxGr1pkv:22
-Received: from [66.118.46.62] (port=46610 helo=timdesk..)
-	by host2044.hostmonster.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.99.1)
-	(envelope-from <tim.bird@sony.com>)
-	id 1vnkTf-000000003WL-3RQZ;
-	Wed, 04 Feb 2026 14:31:59 -0700
-From: Tim Bird <tim.bird@sony.com>
-To: kbusch@kernel.org,
-	willy@infradead.org,
-	kirill@shutemov.name,
-	aneesh.kumar@kernel.org,
-	mike.kravetz@oracle.com,
-	peterz@infradead.org,
-	akpm@linux-foundation.org,
-	riel@surriel.com,
-	torvalds@linuxfoundation.org,
-	david@kernel.org,
-	muchun.sony@linux.dev,
-	osalvador@suse.de,
-	hughd@google.com,
-	will@kernel.org,
-	npiggin@gmail.com
-Cc: linux-spdx@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tim Bird <tim.bird@sony.com>
-Subject: [PATCH] mm: Add SPDX id lines to some mm source files
-Date: Wed,  4 Feb 2026 14:31:01 -0700
-Message-ID: <20260204213101.1754183-1-tim.bird@sony.com>
-X-Mailer: git-send-email 2.43.0
+	b=S7707agMu4Imibau0nRa1nYFqMy+KZ6GKzwTHBgJyyDfV+U1W/zzQjixH+r3W1qKt/BTt2
+	FYviJ4KDn5cojmcjJ74IrpK3khwD83QoVhlw49Koip9m4apPPJJBFPit1Jr6Ugloo8TtKF
+	VxExoscodn25cNpck03BcUN5mKdo0mw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C10725BD6A;
+	Wed,  4 Feb 2026 21:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770240851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
+	b=rd1JcDkivGYAJX5jTLUdHvhNoNBnESnBxYOBd4TCFsPdlZSqPBrWPZCcXosVhjWTN64mpj
+	N6esqOxI7L3PrwCKRtZLuCAblYVVC3CHa9zkvF51XNIKtDQZbCkR0yzkivr6SbuAaRfVdZ
+	re9BK/79dzOXnj5H1MHtLliT3jrBxe4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770240851;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
+	b=jV7dAsbmHYoDnaCfHbUJkPDTF8BxybGNjMGYXEO73dgLx+kSjXddSLVJIlzMD0j30cYn5X
+	E8krLh5HZwgB/ZCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770240851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
+	b=rd1JcDkivGYAJX5jTLUdHvhNoNBnESnBxYOBd4TCFsPdlZSqPBrWPZCcXosVhjWTN64mpj
+	N6esqOxI7L3PrwCKRtZLuCAblYVVC3CHa9zkvF51XNIKtDQZbCkR0yzkivr6SbuAaRfVdZ
+	re9BK/79dzOXnj5H1MHtLliT3jrBxe4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770240851;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
+	b=jV7dAsbmHYoDnaCfHbUJkPDTF8BxybGNjMGYXEO73dgLx+kSjXddSLVJIlzMD0j30cYn5X
+	E8krLh5HZwgB/ZCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A2A143EA63;
+	Wed,  4 Feb 2026 21:34:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FY1YJ1O7g2kqagAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 04 Feb 2026 21:34:11 +0000
+Message-ID: <82dafb42-ca29-4ea7-9c1f-114c10443237@suse.cz>
+Date: Wed, 4 Feb 2026 22:34:11 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - host2044.hostmonster.com
-X-AntiAbuse: Original Domain - kvack.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - sony.com
-X-BWhitelist: no
-X-Source-IP: 66.118.46.62
-X-Source-L: No
-X-Exim-ID: 1vnkTf-000000003WL-3RQZ
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: (timdesk..) [66.118.46.62]:46610
-X-Source-Auth: tim@bird.org
-X-Email-Count: 4
-X-Org: HG=bhshared_hm;ORG=bluehost;
-X-Source-Cap: YmlyZG9yZztiaXJkb3JnO2hvc3QyMDQ0Lmhvc3Rtb25zdGVyLmNvbQ==
-X-Local-Domain: no
-X-CMAE-Envelope: MS4xfCBbe77XgsuVs3klX5fbk0I8Bkz8VIP8VpF1AtrAGry0Mcy3BeMeZSOi3C1d5ddoD4wo8y5rOpBQ8PR9uE/D0A9Anxke7OMo84y704GZVDKR4Bib4z0b
- uubsIuyRo5gbsRYhVal2INaZufAnLnQtkOAONfuXOlSQaRVOpf8momflw2vRID/vQunKDkzIYWQeQKdszaZVtDtsm/ooiWjNDys=
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 909CF14000C
-X-Stat-Signature: pbgyocijz5e34k3at16ra8km94k767aw
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/slub: zero-initialize slab object extensions to fix
+ KMSAN
+Content-Language: en-US
+To: Osama Abdelkader <osama.abdelkader@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
+ <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: syzbot+6e04171f00f33c0d62fb@syzkaller.appspotmail.com
+References: <20260204195751.188219-1-osama.abdelkader@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260204195751.188219-1-osama.abdelkader@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: xe8fyx6sra4piqd7twzrz4npxhywfhcj
 X-Rspam-User: 
-X-HE-Tag: 1770240729-627659
-X-HE-Meta: U2FsdGVkX18rRjYEfWhYCbgJ5TK4MElv45FWNrLxH9TlKzZyi3SkU479r6YaSeDEbIwSuc0FQSeu60F4WgpXeZxhvj1guaXrPrI6y3iRg3FZRdTapTcimVT4LeQnsylaAzJ5UHUqVXIY8RrdO8sM4eDFj5bLRfoRnqoHId5qYJpA5G8RfRFlMtFSV6P5m0VpZQgcZLBR0lpwqBNx5t0fgkMoXVawhaUY6SWSXTjANTBwzom3/FLNctRoJUX9Xt81eYP8lhxN2phH+k/9OOPcrFlUYwqeRKySavJzIvI7gfy3TaXebKljYh0R3MzYVsp0zWZ91RnY1Bt0lK2FKQri93zfEn36p4pLPE3bcpa5PzZk+JGpJu6CMR31+ugG5G/spL4b1P/djJzFEjAJTpKj+5/ZbOFQoz687N2dUJoZtBG4MgPqNPTuOEAe4JKZPCmJ8XHQWzPVAaNTLxVPGuZ/HzbCC6v8YQ8koEQnvS2jAqYcz5W6ysIO8JYRBfBsTGIkcAb8IqFT7XXCi9G2gjyDsHHDmlrxUL3KDJNc8wYeCR4JTuuu3jDZHBDRpLOnp9NPEp+w63lkhK4P2gGp7QLFAk8PrKNFQ89mfSASPbewgp7MotK1IfepR8YtZqBjYNh9XUvmAufFRo5Wpo9Ov17Peu0zKJySWEZlGaprYEt2DyAeCLKahFVgWLfXOijeIXky3W8q9Pr41tVt4YkmSPTKaGBDf5hQep14H2PUcJWvxGXPS7dKN7IXHG6FEE0tNm/F2GUviyCRSuxc3XqLicxUnYN/vEh+fkshF7/xl8QCWso1x0IKkgTMYF5Ix9gmZdlkcDHBnWkjur8f1JWDvueT8W8sUcEKeO/T38kZxcF7j3OLrJAdbXuwu3eZmRcbkcfQUeK+dR/OHI7ag5PY/B+4Lmqtj7Bxkx1CDnnHdo0Wl8LES6HeQ0EAS5IUAu+s3BC5GYgsv6swS4ioJ+V4/MV
- mwEZQbEg
- IeTp6ZEoV5DhLcEXeJBw0SHlwIA+kVJASJvRKurxWgbROZBJONOE0lOAHaD51okcQVKmUwlcT4XKtuCRi3hOT03h7Mjowb4U2j4dH515tEkCdAQvVm1XIFMLkViiQAxbxFjK3LDFuEkF7cUnQObt8zYeFBUNFIDoag0fctGgA9AVHfx84hoYNaQlm3kiFI9gHvVqYA/8//ZUn1s9wARcBv8IbFJlTLeAaGUShAplrLXMZr7Zq2MblYGM0uYCdG6SONbxdjWjNBii5YwVlxAjnNQ/WxtuB2EkEl4Z7G64PQBGngWY9AO4XfdiZA2FiJx89R2EYV9d5P1JWIPWuA1hdy3Tj/Og/b8xk8JYrfhdapUNo3IJRBx0XHQyaaT87W4gm+BF4kZ9y9KgAUMkb7mo2Ik7HQt+OlM26yqkoy6c/sy+Bx84LmxooYMyQb4FBXjw3kOIp2hMGZKXAzRpFT/hKZS3y88HcIDm2bR8d
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A0BB014000D
+X-HE-Tag: 1770240853-368
+X-HE-Meta: U2FsdGVkX1+h1SZ69ro7VouJ5aayoXWVg2UWnT/fvsSuy3EyyLKq09XZs3F2jxo/r49u76wmpiGea1B50zFvhIYYnzkbDE9Px13DZ4YMO+eqQA4Tfat6j/vI0VPAkqR1RUEnI6S6U7c1ancWX/iRO6saTYsLLuS5+ywAGl5WVip4adGeIwFNi5dvzqkIEl73Hx/pA0rkc4Hk19xjiByGPB2dbVkkEEdWEm7AvlYyAaL7oSo6JF4ny+MCvf5w3+4mIwUZnG4lun3F4tuRnYIuM41+SRPtr9Dk74Qc4hZRp0tZb6aOgt887tZjs8+5ayrSDUfSXtY9/bDAzejB4Mgey74fHWnl/DQ4in8K3S+Y6IWFMkJ7wJYgw/CRf2dDqQ/SPCpXjeqzsKE9PYSTO61DTD1vO+mqgCzra6gp+lBC4JjVOhG1jkJHXUnIPiur3khxQczKljfdv+E383KbTlPUaWWM90yJooHL2KQFXdO21ycwRjC0k1UDC/1BHNkhFzTQGKtIVKyt36jkGy86rbk07rM+6TsC544WmqIFjg6AiN2sf4CHx6fVtg3c0lSk5dqFcBkTq7n0C30sLDyZPAGS4JL1pL3uo0Ko25gKDeJkGJPO7jFsygI1GLnFrBzxP6Y+dp8I5qQRLER+I6Q7IIsaBufSjS6gIJ2sbe5S3JR52caB8J7RVmMSZY4RqacYHsVC3bH8RzUAZ6NLFgFJkZW0NI4OVqTsFnaKeUMdah81qVwqXBq6l3sxoHjRZIZQ0ftVVjVUr0BslS0x/juEaf4Wy20HOS98VnaDCALIuIEYnYqGtOoIfWF+WAoX78kFOGWfTVzaKmLtV7z+37LZOLPtCfOyvYi/+K3T1iNVviiIqgEvQmncuXCBZK6WZCtQcpfutMHYquKuq8fjXQRhTcIbCTq0+FWIrBk7CsMsvjwyJoNLpBMjQl0kRk+NA/SEoIFoH3OLaGmbIs62RC1i+Rw
+ buArG7Us
+ 8G70H8hwTilv8aBcKk5vysU0bCPvmJz2wPi7BdkGGp64E4GBBGHdB4nFzkbq4gznE1hLuI+o9Lbi0TZPcY7B0+Xzv5DUU1oZVivoqkWsnPjtiEZISYbwsB4k/aHuGf+52JTGhdbk5PpoDFfNL6bpRNSxJAjl11in77GDe4/UtoAF8BamuICcK2IjtE6m84839zLgS9euYkOGYIAnB2d0FUHws9OpV5PEHTKj9sAQ3S8W4VWJw8VzSU0xY7B7TiHP5/xa523ZeHYpfh+8Fo5fenzF03wMUH8qAMTiTODPqoX8RHnqx6ZPY3Xmb6W33t0XRfat6jRBmTeKsArqiNMcBfzF5RzaIqJ5N0nF1VLQfRnqQK6/9w+xLfEY8XMs1/hiKVBHZ981RikMnPqIAwPvUxMigwaZ6BMxMoziwjYd3uP+V55FkpVYOYqMY6ObMK77TCkjb1x/zz7kxk80Ukm9cLiFa7+nCFTpARtTNljt7BO4Z7tOlXQfz3DNxR0xK1droeYYJG2EcjKEC5s0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,131 +180,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Some of the memory management source files are missing
-SPDX-License-Identifier lines.  Add appropriate IDs
-to these files (mostly GPL-2.0, but one LGPL-2.1).
+On 2/4/26 20:57, Osama Abdelkader wrote:
+> KMSAN reports uninitialized reads in __memcg_slab_free_hook
+> when freeing sigqueue objects. Although kmalloc_nolock(__GFP_ZERO)
+> and kcalloc_node normally zero memory, some allocation paths
+> (fallbacks, early boot, reused slabs, or races) may leave objcg undefined.
+> 
+> Explicitly memset the obj_exts array after allocation to guarantee no
+> uninitialized reads in __memcg_slab_free_hook and preserve correct memcg
+> accounting.
+> 
+> Reported-by: syzbot+6e04171f00f33c0d62fb@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=6e04171f00f33c0d62fb
+> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+> ---
+>  mm/slub.c | 12 +++++++++++-
+>  1 file changed, 11 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index f77b7407c51b..e66d17ee7fa8 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -2123,7 +2123,17 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+>  		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+>  				   slab_nid(slab));
+>  	}
+> -	if (!vec) {
+> +	/*
+> +	 * Explicitly zero the obj_exts array to ensure KMSAN recognizes it
+> +	 * as initialized. Although kmalloc_nolock and kcalloc_node normally
+> +	 * zero memory, KMSAN may not track this initialization in all cases,
+> +	 * especially during early boot or with certain allocation paths.
+> +	 * This explicit memset ensures KMSAN sees the initialization and
+> +	 * prevents uninitialized value warnings when accessing objcg fields.
+> +	 */
 
-Signed-off-by: Tim Bird <tim.bird@sony.com>
----
- mm/dmapool_test.c   | 1 +
- mm/folio-compat.c   | 1 +
- mm/gup_test.c       | 1 +
- mm/hugetlb_cgroup.c | 9 +--------
- mm/memfd.c          | 3 +--
- mm/mmu_gather.c     | 1 +
- mm/rmap.c           | 2 +-
- mm/shmem.c          | 3 +--
- 8 files changed, 8 insertions(+), 13 deletions(-)
+This explanation makes no sense to me. The kcalloc or kmalloc with
+__GFP_ZERO above has just cleared the object, and this is just clearing it
+again. It didn't happen sometimes in the past where KMSAN wouldn't track this.
 
-diff --git a/mm/dmapool_test.c b/mm/dmapool_test.c
-index 54b1fd1ccfbb..e8172d708308 100644
---- a/mm/dmapool_test.c
-+++ b/mm/dmapool_test.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- #include <linux/device.h>
- #include <linux/dma-map-ops.h>
- #include <linux/dma-mapping.h>
-diff --git a/mm/folio-compat.c b/mm/folio-compat.c
-index 45540942d148..a02179a0bded 100644
---- a/mm/folio-compat.c
-+++ b/mm/folio-compat.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * Compatibility functions which bloat the callers too much to make inline.
-  * All of the callers of these functions should be converted to use folios
-diff --git a/mm/gup_test.c b/mm/gup_test.c
-index eeb3f4d87c51..9dd48db897b9 100644
---- a/mm/gup_test.c
-+++ b/mm/gup_test.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- #include <linux/kernel.h>
- #include <linux/mm.h>
- #include <linux/slab.h>
-diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
-index 58e895f3899a..0a87cbbeeed9 100644
---- a/mm/hugetlb_cgroup.c
-+++ b/mm/hugetlb_cgroup.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: LGPL-2.1
- /*
-  *
-  * Copyright IBM Corporation, 2012
-@@ -7,14 +8,6 @@
-  * Copyright (C) 2019 Red Hat, Inc.
-  * Author: Giuseppe Scrivano <gscrivan@redhat.com>
-  *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms of version 2.1 of the GNU Lesser General Public License
-- * as published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it would be useful, but
-- * WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-- *
-  */
- 
- #include <linux/cgroup.h>
-diff --git a/mm/memfd.c b/mm/memfd.c
-index ab5312aff14b..8f1f26de92f0 100644
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -1,10 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * memfd_create system call and file sealing support
-  *
-  * Code was originally included in shmem.c, and broken out to facilitate
-  * use by hugetlbfs as well as tmpfs.
-- *
-- * This file is released under the GPL.
-  */
- 
- #include <linux/fs.h>
-diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
-index 247e3f9db6c7..fccba879f056 100644
---- a/mm/mmu_gather.c
-+++ b/mm/mmu_gather.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- #include <linux/gfp.h>
- #include <linux/highmem.h>
- #include <linux/kernel.h>
-diff --git a/mm/rmap.c b/mm/rmap.c
-index f955f02d570e..a91282020e77 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1,8 +1,8 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * mm/rmap.c - physical to virtual reverse mappings
-  *
-  * Copyright 2001, Rik van Riel <riel@conectiva.com.br>
-- * Released under the General Public License (GPL).
-  *
-  * Simple, low overhead reverse mapping scheme.
-  * Please try to keep this thing as modular as possible.
-diff --git a/mm/shmem.c b/mm/shmem.c
-index ec6c01378e9d..e460f41d26b9 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1,3 +1,4 @@
-+// SPDX-License-Identifier: GPL-2.0
- /*
-  * Resizable virtual memory filesystem for Linux.
-  *
-@@ -17,8 +18,6 @@
-  *
-  * tiny-shmem:
-  * Copyright (c) 2004, 2008 Matt Mackall <mpm@selenic.com>
-- *
-- * This file is released under the GPL.
-  */
- 
- #include <linux/fs.h>
--- 
-2.43.0
+The bug must have a different explanation, such as getting an invalid
+pointer to kmem_cache_free(). Too bad it doesn't report any details about
+the address.
+
+> +	if (vec)
+> +		memset(vec, 0, objects * sizeof(*vec));
+> +	else {
+>  		/*
+>  		 * Try to mark vectors which failed to allocate.
+>  		 * If this operation fails, there may be a racing process
 
 
