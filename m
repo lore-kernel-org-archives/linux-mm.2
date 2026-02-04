@@ -4,91 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D9EEE95390
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 12:04:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A4CBE95398
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 12:47:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCD626B00B0; Wed,  4 Feb 2026 07:04:58 -0500 (EST)
+	id 20F7C6B0098; Wed,  4 Feb 2026 07:47:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B50DA6B00B1; Wed,  4 Feb 2026 07:04:58 -0500 (EST)
+	id 1E6FE6B00A8; Wed,  4 Feb 2026 07:47:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5CA46B00B2; Wed,  4 Feb 2026 07:04:58 -0500 (EST)
+	id 0BC526B00A9; Wed,  4 Feb 2026 07:47:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 908E16B00B0
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:04:58 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 36791140110
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:04:58 +0000 (UTC)
-X-FDA: 84406643076.01.8F78351
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 503684001B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:04:56 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qgt3gasq;
-	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ED7BA6B0098
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:47:19 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 859C51B024E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:47:19 +0000 (UTC)
+X-FDA: 84406749798.09.3F2EA3A
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B8BC31C0003
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:47:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=kcUIn6kl;
+	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.178 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770206696;
+	s=arc-20220608; t=1770209237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fTI38envbZN9fduycNacD7pj4fl/oCX4AVN1HKxV/jg=;
-	b=0Nm3Qr25PcQvIvrHp/45JMHzigbhHwTJjBu9rCsUy4giuZSz1jkR8n7E0CFIHAuAqXROXI
-	A0eZ+zFUv5H63PCP+DPqG74cElMc0326OSCSC3tKsdACs7ktBIvbCKQCGNG/7ALYek7YR0
-	Y9uzv5cBvuHWNW72r/Ja97BE9V1PX4s=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qgt3gasq;
-	spf=pass (imf27.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206696; a=rsa-sha256;
+	bh=+U8LpVemtW+m+yu1KTxoehmwVgUgV8X5ud3ORfVCCrA=;
+	b=tLp/y6LNl7P093rDjOpVRI9v8RypRwP68/tXaqY9txs3bn5dAn3OgEiSu8mS4JbrrIdAdh
+	YJwuiaSRJqgL7zRui+mP0DHHghzbM0J+BqbIA0gy7W2PNAhYeGN7FgiNTvmcMnX2nI+aXo
+	J3dMaoEof0bobVMbc44FgGRnhR1OrAA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770209237; a=rsa-sha256;
 	cv=none;
-	b=08ZILw5DgwNea4QqYoYRPWGTWOggUg7AQNWvTwHGgfQah7xuqkgUBPckSwSlY1CozHj6CF
-	ayCaypIRWgMPk8t7LzUELJD9KHRuzmaoXryKPAzqBbQWJP+hNH2khZ+x45EXw8bcnR5py2
-	HK6EAGRyANqROVXE0ZspQwz/I8uVBdk=
-Date: Wed, 4 Feb 2026 20:04:38 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770206694;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fTI38envbZN9fduycNacD7pj4fl/oCX4AVN1HKxV/jg=;
-	b=qgt3gasqhkckRLUDm00tqVNsqlEfvqN6Xq6Q7hLF84tAOunjzlA+n58plgndu70sUFR35B
-	It8hwBDzSzHDQrBUv/tsKBskXsEiVSxnc5dgSAhqkcR18lmlGCUqt5uKR0yHJYF8pOqvrw
-	OTHu4BXMzscS8fr2j78aICkRPp35Oaw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] codetag: Avoid codetag race between same slab object
- alloc and free
-Message-ID: <h3hzjqgfur2bzedmbdsnxpzh3strdejkgya6quul6f55b65pid@vutmz7mvnzrd>
-References: <20260203073006.151710-1-hao.ge@linux.dev>
- <aYHDMvMUfKj4_eDe@hyeyoo>
- <5b8e12d6-269c-4979-b99b-b3b4177aa00f@linux.dev>
- <inzhzqeqqvjudozqz433462qy522deyl226jfvajdkw3eerodk@bjoiaorsesuq>
- <3de9129a-82e1-430e-8df9-7063e7d2129c@linux.dev>
+	b=wi0lQUUH1QxTVh3LpDLH80kyo2cp7diQar43Fe+Y+w9irAPbDrYtImCVFekIum0IEUBO/8
+	CL1kOT5Ry/uLbX+Sd8QDNP0kGGN/TR8X0HTOfmU0Nt3rCCkuGYxHzNuXop2dyIJfpmaWmJ
+	YQdRFZ6dyaox9uypuBgMVLakWdIJ79A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=kcUIn6kl;
+	spf=pass (imf18.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.178 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50336cffef9so52628131cf.0
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 04:47:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1770209237; x=1770814037; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+U8LpVemtW+m+yu1KTxoehmwVgUgV8X5ud3ORfVCCrA=;
+        b=kcUIn6klOexcSeXZahcCGq+q4T96+0wNun+Td7MApkgeW85cocEVTY1RrMgEd3S/XR
+         eDyOAJ+cPW7UbcVU2v2Muh0JxT1dYSpGhyzVrT8XMB3ETg89yelrlv+naXakZlz9K200
+         8vBxIPVIaMfpi8aecApQgi0cPULIfSulwHzyN8qjDxOwcLFGRwAj7D0RjO8EAyigcKUK
+         NXPZqVu7r1uXK99vfBSMoeyTqtU7L2UmQDy/Bidg9UTIzvmRU0d2dtUbgUDbTCin+2vh
+         4UV/dl2dbgjiIpiYcq5pCI0CWoNHGPo4ucFHKGa8y7bFBMlG471POjSnnEAoXTDua90t
+         6yWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770209237; x=1770814037;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+U8LpVemtW+m+yu1KTxoehmwVgUgV8X5ud3ORfVCCrA=;
+        b=US7xYeM7C6k2P/dLXgTB4zRH84KSeFO+dmSjAH8r1X6rbpONR9wsLqM0hLM0NUjetv
+         gh4V2qDQOy5S5N0gXygf2354NDtU0x950jR+X4cJ9CPZeAWjHWiI9D9sIJOKW/IdMpLA
+         LkGAZcMF5NW4WVPonLdi4Qwi376cNNLGDyLCBubzhf2Z5umI5MZJ1OrrZTLBtppjSNFe
+         doXgjocc4FDUeNsYjWnYKnr+vbIaN/Tf7XwfjTC4SsyQ7SthnSP3TLdATYfuSnFXr+mM
+         PmtS3GUwPriUV3Y/HzDJIGhX/YD3DmW+7QcQx1W5wgWuLisfi3g7GtmRVsKHlP3kAJzH
+         MZPA==
+X-Forwarded-Encrypted: i=1; AJvYcCWpMc04c6ELSYrxiXSUlcw5DTQBj1yUTnmpm07dZQo4842Yn1jjGBrq9yJaiU7DforZqr3vEvxxzw==@kvack.org
+X-Gm-Message-State: AOJu0YzKRJFhC8/GNkFx9GjKfkPjZj3qB9xkCaLcHIx7DyQ2+GI0By42
+	JxGw3YCr5uK6Rem6qSM14TLHGM/puvcLMKiNs+TWZyw781AzB4McO7YeHVstChfLqt0=
+X-Gm-Gg: AZuq6aLdpYBqG9w/EpOvyNwOG7PpgnItyJ/23nepiOfaOBykOyeLsbo9oSuS54WWxid
+	mIxcew7nrsyw7Hgg0zCw0P2O4GUerRpae/zMjTn7hOkrelI+BOM1Gbl+pIfltoYLc/CTPfD7q/W
+	TW8ScOD6+IkDzBXQeYjRuPauxt6KmOJogKERjvqLXLZjkxPtaXTwdc/EBytUoGl7ILcyiIetv9Q
+	e7+5VTIWlK/4LcgGIUzpym/bC124kmPrHtkOH9qQfo2I0CHE/3PQ2GB90vz80EwIEO1MrLOzb9K
+	89/cCfFAnlBad+3LN1Zbp/761ZjMqhG33+XnD02h8cn6ayUPdBf3FSagmVmn32QgSoJca+Zt3zY
+	mlgtjRF8XDr1bLOeLqLrOdBooNjuicwwN+HJaq81UUk4FAvbCizlykj6pMhK2F1HOJc3QHfvwCq
+	4fl3hAe2OCc09ELjpcVSP55Iz4J9ao0SjmcFWr84buq3I/nCnglr2PcWIKOqkRteEJaZY=
+X-Received: by 2002:ac8:7f4d:0:b0:4ee:5fc:43d9 with SMTP id d75a77b69052e-5061c0d57d6mr32950401cf.16.1770209236488;
+        Wed, 04 Feb 2026 04:47:16 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5061c14815asm18573661cf.6.2026.02.04.04.47.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 04:47:15 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vncHr-0000000Gzio-1QmV;
+	Wed, 04 Feb 2026 08:47:15 -0400
+Date: Wed, 4 Feb 2026 08:47:15 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Sean Christopherson <seanjc@google.com>,
+	Ackerley Tng <ackerleytng@google.com>,
+	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
+	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
+	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
+	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
+	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
+	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
+	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
+	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
+	keirf@google.com, kent.overstreet@linux.dev,
+	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+	mail@maciej.szmigiero.name, maobibo@loongson.cn,
+	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
+	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
+	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
+	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
+	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
+	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
+	qperret@google.com, richard.weiyang@gmail.com,
+	rick.p.edgecombe@intel.com, rientjes@google.com,
+	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
+	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
+	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
+	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
+	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
+Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
+ kvm_get_memory_attributes() to per-gmem attributes
+Message-ID: <20260204124715.GA2328995@ziepe.ca>
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
+ <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
+ <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
+ <20260129003753.GZ1641016@ziepe.ca>
+ <aXqx3_eE0rNh6nP0@google.com>
+ <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
+ <20260203181618.GY2328995@ziepe.ca>
+ <aYLOZIZU0nwk+0UN@yilunxu-OptiPlex-7050>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3de9129a-82e1-430e-8df9-7063e7d2129c@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: d6xpmjyn6bt5syz755imsrzjcn156g5a
+In-Reply-To: <aYLOZIZU0nwk+0UN@yilunxu-OptiPlex-7050>
+X-Rspamd-Queue-Id: B8BC31C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 503684001B
-X-HE-Tag: 1770206696-194257
-X-HE-Meta: U2FsdGVkX1+is+eld2JODoB3cjsSoAkKBVkY1Sb2VQiwQveETQwis5pI3YioJPM8zT7s3BvO6mX0Q3n+IwSP6AMakD5A20Un/bol2M+j4Jo3QJLbTmAotN1dTH6ISs/X64t4uhsGV1CVFUfmLLju3Fp2/a6H6LKYCLkqcNCDpJzQcC0lqVzie1Nfb8UvUSyQTKh2py/JxJ6vyxddSdCYGbgSFsz4oMIAYr2YY8cchlBmTFAxJ87u1RDrgy/qkvmJ9mGbatwVvuieP6pMCyhYFGjs/XnuE1/NKfnHTL/u9cJGndtyOy57fkHE9eRkodtHvKswPvbL2AoD6ocXxuZWxlXWmVV/+P2pgGO5GaSrSKQCjKz8X6eXXpIWoG7dNYHEPhb6dO094o6mHL44tvu16KK64LfqeOaGolKkl/787wCNUeulj4j0+NZ9yIvm0M9yYI3TZcFQt3SVogMWMUUcdOWYKbn1/YkwVsNqOjqyFLvzzk9K4hlVTSTgMjLukn3V5n34ovWU+nxl/KnwiLVbLm8QnnkafAvowjf38qv9vbKCcYktUefUYD1ZyNq6o2+le3JHAE5GKVYBjiqtUc+JTti0ktnBYOF3uIPNBxz8ChU2xox5ivmuLHT9q4AlfpJUq3cxxN9JdAcHCNYZvJ4AYJMap/I63/ZvCmQ9dxuBBKR9J7HNR3IqRwc/wjRovdOooWwlTR4JHp4FR50YJ4WnIN5bVVcda6GyxSNoGiyl8qX2LCFThp6fIbfR/Dmg7VmXo7KXfk2QT8OUaNMOxHQ7FYN23tF+6k1hiLqpHhNIb6zAr//hghT767Jsh/frU1VxGX6Lc6E5wfSck5b8VLcXlhTrdPhbnfv2615TaVR2Dcvin0GFepUDrwiK8uZGoftSdMZ7L7ASwdv1eOeNWD9ojv6OGl+TdnHtUo3Ode1RkMvPKwsCpzdcELEjQ7O4/wBUCh3HHM8ivIXkGO1Z98W
- yXuOFfIj
- fjtemO2+IzH0/UMGcWyifXKJvH9IreI+4NplfwUBNm5I8+oZe++pk8i+tfWJp9TjoKTAP5VPve7yVtS0yifJiWVcd9xRUdpK6iDF7f9IE3pYw1GksNcdV24DTcYstf21arSX+DpOH9PZ5HLECVfWix9ukyEG0k7K43NyfDKz4epRN5zNZVE/ucP+csl+Ey3i3nFb5YWDvcnk6+FSvCHLe2XypjfvRQ+goVpDP+2e1liXjARNOxjmSiu2vG8lkJQf87HX4jpJmT/CS21KDxp7biPn/fPGIKuy7e8Y7QfhqhlQiE8cTXJFxDV1S3YI/Rb/VehcjIHO/sxumQ56rjqx0mwXo1g==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6emo7g31ghe6x1bwfwrycoy6w1qnhsge
+X-HE-Tag: 1770209237-3676
+X-HE-Meta: U2FsdGVkX18wLOlHixLkN9nJbLq4li+i5fULeztex/5sagp64nTb95NcPpSqt98tMBnTWAnCS0nZN4XuUArYzA+5Jf/FAAGk6UU3Rl+e3k3mME96JpSsdE6K7VXB6tWpKPV1NTtAtVPFAxQdCY5cAs2ovXRAY7tLdKIwNgwZmPkGLUN+i4BgAynClyWyIiew0vMkIxD5QccJGCzC0BKiEFiGoEYZJAzSnmM7K2I/3Mqc648M5tZN+bqxuFJGcJYzZXB4AmBSRTuX6ojWW1FK/NNEzHBS8K/QtKXA3FLMoVWJJJxIgm2SAK+7Es6acoCq2DaqlSVn7aFfHMv9iwU0JGyxrOYs27fgflQOBHMWyvyvJPyuOkQQWt0Bqo9L3ohDi09axencjqIpmFmtQDLnePkuycz+Rqc14jdLoH2Wg98MWFxIa9jUezDm4ealqsaqXFEeOHC25Jum1LVV+ewER2qAiUUb/hJiaWLe/6PAMRCuo6pkieQ0jPJMioA3/9cLRwgUH4SS+6YXae/7vVYUSR+0ep0l6ycU1xAqwMG+3RzVefdQReWQO62nGbpbUFOw7lL6R+ZiPYc8NOnI0oHZBQbVlza7GfjI7XHDVbC1Ox9xhpi2dP9s7zY7HXczpRMvogzeilMIbmy0kDm7EcyyFzqloE3Pu1S4kLpSr8Nzjjps6IdxMXCTzDDGwlIPHblwOj4mFlVdbNCY0EcqkC+5Pppg2jMR2R2C3nt70qUxubcUuvVPxjDHLq7gE5PzXzLqLee+132QWH1KnbG0dYPbCciCQdaFG7XeNreBc07d38cru7LqdXQg/3ROoPCV9brA+AHxjpd7dpphydgo+GlLO6DQzxsXR71N7zC2lt0QqI/gG0TeaGiJOeOcGg+2KJFijTK9su7JnY5fVFLGi+f8BSUWf6XMAstY603MdcRCFo41pL+bcBGKURBPbcRZs7iD2QIC/UC7kvXvyQY4acr
+ KjVXr9RK
+ SoHd98JEIFd5IVpwVsWq4KjLDHDDExtv+YXyAA+DCoBp77EhexcCBwKKTVtMxHCC26nJol6LKoRLkXhjdWloqIfK7YmNdIjpnfQ5vpB4QKm2BDVc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,24 +165,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 04, 2026 at 06:24:42PM +0800, Hao Ge wrote:
-> Hi Hao Li
+On Wed, Feb 04, 2026 at 12:43:16PM +0800, Xu Yilun wrote:
+> > Which means we need VFIO to know what they are, and hopefully it is
+> > just static based on the TDISP reports..
 > 
-...
-> 
-> This v2 patch incorporates your  suggested fix.
-> 
-> https://lore.kernel.org/all/20260204101401.202762-1-hao.ge@linux.dev/
-> 
-> I really appreciate your help.
+> I don't think VMM need to check TDISP report. The only special thing is
+> the MSI-X mixed pages which can be figured out by standard PCI
+> discovery.
 
-Happy to help.
+Either that or follow along with the guests's choices on
+shared/private.
 
-> 
-> 
-> Best  Regards
-> 
-> Hao
-> 
-> > 
+We can't let VFIO mmap a private MMIO page, so it has to know which
+pages are private at any moment, and it can't guess.
+
+Jason
 
