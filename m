@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB84E83EFB
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 09:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A29AE83EFC
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 09:28:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE1926B008A; Wed,  4 Feb 2026 04:28:38 -0500 (EST)
+	id BF08A6B00A9; Wed,  4 Feb 2026 04:28:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A65526B00A7; Wed,  4 Feb 2026 04:28:38 -0500 (EST)
+	id BB1486B00AB; Wed,  4 Feb 2026 04:28:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 963E16B00A9; Wed,  4 Feb 2026 04:28:38 -0500 (EST)
+	id AE4FD6B00A9; Wed,  4 Feb 2026 04:28:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 855116B008A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 04:28:38 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2E3B11B23AA
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9611A6B00A9
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 04:28:40 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 64A7E1406AB
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:28:40 +0000 (UTC)
+X-FDA: 84406249200.01.06C92BD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id C721F12000B
 	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:28:38 +0000 (UTC)
-X-FDA: 84406249116.15.40453E0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A433480002
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:28:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=Hjvwfcjm;
-	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=YCC37vWy;
+	spf=pass (imf29.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770197316;
+	s=arc-20220608; t=1770197318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=snHywBlaM/Yq2cKSKVWDiGiB0VeX2dXfahmJbW6u3qE=;
-	b=VhSw26VaAMx0UHX6tnzxjOfioKlOGF0TtV/1eDhUqk4h/OZbaJfpIMZRa8+uB6/8A9vb8k
-	vTY3IRyBOc0jZ70VCC9PMlS/s1TYRmZU6U1xSzM308AAbX9eEwtFg8kGv3tZnx9aegO66y
-	kUvqN3+38xzou4QpCWGNHPPnMnKN3us=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770197316; a=rsa-sha256;
-	cv=none;
-	b=ky2KIjzDWe6GsT4C3bWbpaSKOcXM2AFqBYQtA6SYqevZ9dbelCgJcIfqJNCxchI+NXMcRl
-	RJiF4+KwFRa1wGVvEGRGbfQzNtig+zq54X9iPcMuVFYDfEXQr0M2rptgDRQxmacb6UlLwz
-	IpQlyy3Qp5klv2GrOpLsuxa0QoBYkSM=
+	bh=GfsAK5rP15A7joS1NAGjtJPolV12DjAvdfVmCtA+puU=;
+	b=NfTIo5SwmL28P3oNC/nN8cL8ZXNveK/NNPFunYSy1QTL2Pwf0xTbLJhBFeGgD0+6YI/+BG
+	rEdWCn9EkIaHcQkQTDYy5rNlbmnrUFiJ9wfSjv+PL4+NdU9GTyd1DGcA9snXh7pvEU81KT
+	0s242iGpRY3K+bdfEEQBXh8XFoQmNXw=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=Hjvwfcjm;
-	spf=pass (imf30.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	imf29.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=YCC37vWy;
+	spf=pass (imf29.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770197318; a=rsa-sha256;
+	cv=none;
+	b=StwlQI+b/2EtrBuMnuAfc/Gz9/BdmS1LYNz8US9bZ8QUt3IXBD9a1ZL2Y28Q2oNc2/SqWz
+	L/24YSppcdC059aGU5WpqhoDs5FzGc11T3jAe0UT9NYDqnh+xi7rDk7EPpJgqwvdsV/a2Y
+	6A6ZMwiUrVoXRh+6XppOfKShoIHirgE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 965FA60127;
-	Wed,  4 Feb 2026 09:28:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5783DC4CEF7;
-	Wed,  4 Feb 2026 09:28:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 53DFF444FC;
+	Wed,  4 Feb 2026 09:28:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F87C2BC86;
+	Wed,  4 Feb 2026 09:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770197315;
-	bh=nXEQW0RD3tHANLDk1Vmj8TZU/wOk6Cxie+cPvOqsozU=;
+	s=k20201202; t=1770197317;
+	bh=iLmLS/irenZofYvUMwo2u3+RQqPVVKJnWwXqNzruW7s=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=HjvwfcjmVhIG76TDoBvmEmqdCRSO9SYrE7ujdWcl8T2Fu948Ns/o1vn2b3pXaPCIi
-	 dee53azAEIroEXCTp5LwyChJEXamfrSxBWAxW7LkivT44ix3z9LxKngbveUSWozvwu
-	 OnxqdeQ7esTgXviLu+0qnEdz8h+VbHb0GgGyhln/T4wugwj333JwlXoFykmGyOm3P1
-	 f0cAJsTKdNglQfHGqPi4jsZIkKy8mqXw/sxzKaZrNvJt0/NOI6HHLqw3nr03gpklE2
-	 0f9ebGS1YJmrKT7/VCAf19xpU6B+dVs73kUGQX+za0W7ETC/DvKEmwyhn/HorIw0dw
-	 kRyO2LnWnGdNA==
-Content-Type: multipart/mixed; boundary="===============3576808011636229974=="
+	b=YCC37vWyvS6r6gFjTX1IJ1uJZEPpkgORKe21i5o2FhLGTx+qsSxzl+ZI7UMe4Aqac
+	 SF1OqDIUZKjWDlfn6ZEBDZxJN61PQDo0aVn3rRL7t1BXHzsEnUa3n7lDybRUTh2zgA
+	 XshKQijMriVAdh5TzjaI4Wpr6v2lHovO8y7v9H+5M7QCcxL+8x9TFjkgMOFRfkGP9U
+	 OFGgjqqhO1K2HjJjnCACwc0DwFqMEUwkCZoxDb5XYpYwk0PVMdcF2xi6J4mhMJRs7W
+	 GMSbWUWNpq2bz3evxVGgpQy+CBXYPUb5PeenIPnGFZuZCrhy2hOnDBjMUgJ9tF+PNO
+	 KCvqTPHY1cOzg==
+Content-Type: multipart/mixed; boundary="===============4976973485721389665=="
 MIME-Version: 1.0
-Message-Id: <958ccd923342ddd02e9122381d51319cb125ec51d601bb6fcad57531a2f5ef57@mail.kernel.org>
-In-Reply-To: <031afcd7c16e97f1f3c0d4a8a526a9eee2ad23fd.1770194182.git.zhuhui@kylinos.cn>
-References: <031afcd7c16e97f1f3c0d4a8a526a9eee2ad23fd.1770194182.git.zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v6 11/12] selftests/bpf: Add test for memcg_bpf_ops hierarchies
+Message-Id: <a1f4a2908ada3a81838bdddc64907529c53a5be29de83c928a70f2b3736783da@mail.kernel.org>
+In-Reply-To: <d3e3dba90cf47c7da97a8a4142e7e816c5c1ace5.1770194182.git.zhuhui@kylinos.cn>
+References: <d3e3dba90cf47c7da97a8a4142e7e816c5c1ace5.1770194182.git.zhuhui@kylinos.cn>
+Subject: Re: [RFC PATCH bpf-next v6 12/12] samples/bpf: Add memcg priority control example
 From: bot+bpf-ci@kernel.org
 To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
 	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
@@ -89,15 +89,15 @@ To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
 	linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
 	netdev@vger.kernel.org, linu@kvack.org, x-kselftest@vger.kernel.org
 Cc: zhuhui@kylinos.cn,geliang@kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Wed,  4 Feb 2026 09:28:34 +0000 (UTC)
-X-Rspamd-Queue-Id: A433480002
+Date: Wed,  4 Feb 2026 09:28:36 +0000 (UTC)
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 3ez8fxur51nosxccd7o4okdhsnm6iidb
+X-Rspamd-Queue-Id: C721F12000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8eghooazoxk34mkfjie1x5p1954f4tii
-X-HE-Tag: 1770197316-578683
-X-HE-Meta: U2FsdGVkX19k43HxFH9Npknd6iNyre9r4eEpAJSsblUZX6ZRR/P8yeKBEf1GGnYKSqCRq2FO+bW1w+O+wjuymXRJfISuSSU1KV2SUfo3fN/Y7h8ik4kbL1dKkTXdX4t7tUSO0S+x+qpDHn06nhI8S6KAXKUOIvNyzvE7oHkReKM2T+Gxn/vknVBW5+6Mt4F1Gcf9fkcM1MMMowq8BylmZepnFI0fJycQAcKwrLZcbf9sebKQ1H/xYd5EGc25KFxFFsQacJQQYJfb9RXojsNuHx4BqRBjkZDiH0CXke8+b7YCaXdxrnIC9Ong645yNoVxsMi3GBo8lxy2m9Bs+ugFy3X7k23+mZ8CsVbPJSMhAhc9ZcZ7zf/A0h1K/YvAkJqq6JOpcIf8hV/MDNwslHZal8OtbJj1ppOk2SJgF6wmo/jDapjESr1x1pxTt54o4I2UeykeLQBSMANiY3msN4c86VmH3gLe+ya/5S2luVcjnMkcdi5okCF45tJ7R5A95N0wfxmOvu0mxiIXJzVTmOTyqngND9cHvmfYkdLN62w3JYlTd4TOZiX3ODAfC9tRdXx285ULDD5XzXcxksee934UlpJnfzlIM9P3F+aTtM/PGbHCFyrwk/B0aPLuYvwr9n7DGWmIr2EuDAIHy3jpmI69Pfq2+GujC01NVZXC55kszUE6gtAb626HGoq2la/ACzWRcOeY8fzkh8vIr739r0Sl5CF7EeubP0nvcJGW6efyHawYszM4d0ArVIG4p9kvNOI5/Kq/9gsj2oY/QgpL8KtWMZVP0M//bEYFEXsMBYU166TDUaaw/S7ev4kDQgAQTJtLfVIhVHpQB06LgRRjew4iOEaF3GIGgQVkvZLz93Ch13I2pDf+q0YXs25UoaRqYJWBB/lLQxwiqutfGxmd23szSn7T2N3MT8UDDPqMatP6O8MVVHErN724HF4TxPCTHraFoXdG3D10hC2p95T333j
- CrWN4gug
- 5XQmec31kOaAmZ5YM2H1YeXgMYblf73Rj5rZ6geJrOW7iIohV5QUQUG7GIjcpqCUkOANMjqNTjKabMr25usUx2AvXcBJkQYB3XbvCBiWINp015qL/WYSLEJ8c0hXX3ZDb6h86I/2zeCElgWbLnCIedMJ5MM503Mi312JeeNVsaRdSKbUHotf+wuZM1SDbQOFMNDR+ybkGCnq7dLJSZlfIKBqCTr9DliqC8pZUcq5D4V3b2NKI3qJ53KIJlQ==
+X-HE-Tag: 1770197318-220719
+X-HE-Meta: U2FsdGVkX1+PnewvUHYhHS7g5Ato+r0gn/sm2Ieja0YEumVAkxtuXzKi6lchBIN78BhjJL5zakQaMPBy44WRh7WmG9xw7Wwx80WyEZJ0eonhgIxOWhTY0uBchutQDOQTu/1s3ZCeXmYceER216oIH/DHJf/DJm4UlUvYYJ2jz+n/VDzCmozIUS2yprGYbh9rdgmwycNFb6qijgi5z6xFB534wjGQxwYkmxF8Rd1ADUV5zS3UWp4A5UEXBfKNUALgz206x7t9L6SeU9fAvR2ujA7bdeEZBKjeQyCEu0LmvPUcDUuuTxeaTIlvXhmpy10PBWAKIZ8y3gXOeTrtqbyYL7ZPz0oA5u3zt248i19K2iTZH4wi7o2YVB6NWx+4O3hC1EQ37LJ7czUpt5bUMMqGlZH5A11qI30dL0oz/1bXJLyaxp74SpckzcCMIPLuncdbAtigXsSso7U8vHKTSYy5Wbcgz+qHkgxZYf14hgV1T0UVrRL7SgKI7jp3lzkwvdUv+kasrWgcEMXVsSgnlqQfy8m7t3hz63o9+3H4KI5OHtPEEHqHnVXILqOgIVjIuoa0WhC/gfmtb3hw0MS2SG1sRFOQhEDBHRCwY/biupAqAHe7o4lBmDcii9TdXalABZmznvDDrV41TFZYS9lVpoJ911GMvajBJRQCNN99S2H87Sqswi/Qq7Y1mg4nBQyrEHUtaqLlsCwuSAQ2g9N32dthua8R34309i9PYA0PJRjLfF3qVboQJi5ASvIeu8iMXpaOVROu1N0+MJSuo307LBxPHwR6g1RxNSWvrS5cZeZqDh+mtK/DCGHPAihM/M3VdXkgP0l9ivtOCDvF1Kau+OeQiT6uJxqzwSn7YZe5NXubrDybS1C8Exi95MTMW3XkN40Ry8xhqYASBSxuWEtdHOraxA9FijSObYmelsFocjzxxJBUVOVj6U/S8MGQdKJlkW70+teSb8NKbFfG/QEvyoJ
+ MHVhyuCy
+ o+GgkgJGkoWgRyNtU2Xqypu3/m3iO6K7lc5E5zjruwaTcbz9W/mDy6StAaqaIyIVlvtvxogN4QkBP76Cp6XQ6fKIGnEawS0YC9qP855LsHX5C7XN8a85KEg2SOu6yD/qcXhTrmY+zstskzo+NCDagYoV283dd/1OvJ9lIggGIpwWZd1UzS3b3yG1NJeY6eX4PufS/TMWLagcwl3cu00eXMU7QPhOOFXTU8I70yZ3TIF/7P48p2OoEdhrzP6tQLD99jn+uSRhBgQFOjz7VDPY1aS2kLTsc3F8k6GPz7+mniIwvOVr5m0M7rIPdSOiLLHnTYNpQBfs9x+9a6kGtTv3BkU/vgI+r+/a00Tl7N0XlKua16LAdTaPOrV0pv1WyCG2F1f3z+oCtXeLqUYoH2lg6pxcRZLsr8YzSajfuPGJFrHV93bpYQDFtLR6/QQeEW2iAJ00LaP5CHXcpHrMMWVA/ZfpWvOask1vf5kt6v38Qm6l35fbJ1i1PoIWA4R/fLQA1duYUW7E1s27GlaVvj3Vtxof1nGV5bB7sNyvzv3AvX08/R4w=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,61 +106,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============3576808011636229974==
+--===============4976973485721389665==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-> index 8c787439f..378ee3b3b 100644
-> --- a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-> +++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+> 1. memcg.bpf.c: A BPF program that monitors PGFAULT events on a
+>    high-priority cgroup. When activity exceeds a threshold, it uses
+>    the `get_high_delay_ms`, `below_low`, or `below_min` hooks to
+>    apply pressure on a low-priority cgroup.
+
+Is this description accurate? Looking at the code, below_low and
+below_min are implemented in high_mcg_ops which is attached to the
+high-priority cgroup:
+
+    high_mcg_ops = {
+        .below_low = (void *)below_low_impl,
+        .below_min = (void *)below_min_impl,
+    };
+
+And in memcg.c, high_mcg_ops is attached via:
+
+    .relative_fd = high_cgroup_fd,
+
+According to the memcg_bpf_ops documentation, below_low and below_min
+provide protection for a cgroup (returning true means the cgroup is
+protected from reclaim), rather than applying pressure. Only
+get_high_delay_ms (attached to the low-priority cgroup via low_mcg_ops)
+actually throttles/applies pressure.
+
+Could the commit message clarify that below_low/below_min protect the
+high-priority cgroup, while get_high_delay_ms throttles the low-priority
+one?
+
+> diff --git a/samples/bpf/memcg.c b/samples/bpf/memcg.c
+> new file mode 100644
+> index 000000000..0ed174608
+> --- /dev/null
+> +++ b/samples/bpf/memcg.c
 
 [ ... ]
 
-> +void test_memcg_ops_hierarchies(void)
-> +{
-> +	int ret, first = -1, second = -1, third = -1;
-> +	struct memcg_ops *skel = NULL;
+> +	prog = bpf_object__find_program_by_name(obj,
+> +						"handle_count_memcg_events");
+> +	if (!prog) {
+> +		fprintf(stderr,
+> +			"ERROR: finding a prog in BPF object file failed\n");
+> +		goto out;
+> +	}
 
-[ ... ]
-
-> +cleanup:
-> +	bpf_link__destroy(link1);
-> +	bpf_link__destroy(link2);
-> +	bpf_link__destroy(link3);
-> +	memcg_ops__detach(skel);
-> +	memcg_ops__destroy(skel);
-
-Can this crash if skel is NULL? Unlike the other tests in this file
-which guard these calls with if (skel), this cleanup path calls
-memcg_ops__detach() unconditionally. If any of the earlier goto cleanup
-paths are taken before memcg_ops__open_and_load() succeeds, skel remains
-NULL.
-
-The generated skeleton __detach() function does not have a NULL check:
-
-    static inline void
-    %1$s__detach(struct %1$s *obj)
-    {
-        bpf_object__detach_skeleton(obj->skeleton);
-    }
-
-This would dereference NULL when accessing obj->skeleton.
-
-For comparison, test_memcg_ops_over_high(), test_memcg_ops_below_low_over_high(),
-and test_memcg_ops_below_min_over_high() in the same file all use:
-
-    if (skel) {
-        memcg_ops__detach(skel);
-        memcg_ops__destroy(skel);
-    }
-
-> +	close(first);
-> +	close(second);
-> +	close(third);
-> +	cleanup_cgroup_environment();
-> +}
+If bpf_object__find_program_by_name() fails here, should the err variable
+be set to an error code before the goto? As written, err could be 0 (from
+the previous successful bpf_map_update_elem() call), causing main() to
+return 0 (success) even though the program failed.
 
 
 ---
@@ -170,10 +168,10 @@ See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21665371660
 
 AI-authorship-score: low
-AI-authorship-explanation: The code follows consistent patterns with other tests in the file and uses standard BPF selftest conventions, suggesting human authorship with good domain knowledge.
-issues-found: 1
+AI-authorship-explanation: The technical misunderstanding about hook purposes and dual authorship suggest human collaboration rather than AI generation.
+issues-found: 2
 issue-severity-score: low
-issue-severity-explanation: NULL pointer dereference crash in selftest cleanup path when cgroup setup fails, affecting test reliability but not production kernel code.
+issue-severity-explanation: The issues found are a misleading commit message description and a missing error code assignment in sample code, neither of which causes system instability.
 
---===============3576808011636229974==--
+--===============4976973485721389665==--
 
