@@ -4,174 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48BEBEA7943
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:34:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E922EA7943
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:35:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82F936B0005; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
+	id 8F31B6B0005; Wed,  4 Feb 2026 16:35:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 803FA6B0092; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
+	id 89D3E6B0092; Wed,  4 Feb 2026 16:35:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CE906B0093; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
+	id 792CF6B0093; Wed,  4 Feb 2026 16:35:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 59EE06B0005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:34:16 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E46C1B1E31
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:34:16 +0000 (UTC)
-X-FDA: 84408077712.17.80CB409
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A0BB014000D
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:34:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 680D26B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:35:42 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 265A51C1B3
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:35:42 +0000 (UTC)
+X-FDA: 84408081324.23.1B04AE9
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BA7DDA0002
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:35:39 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NpzRmSpU;
+	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770240854;
+	s=arc-20220608; t=1770240940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
-	b=pn7b5JalAZDPYu7qqjpnf5y1Y0HpGi+i1l0FobeVKUDCEnsiY11tc7GwTNPvmvdTmrCRxm
-	Eap1VGixXSd6pFjHCHkwwHsLjhaLuwu1t1e3MfO1x7LT4EKuSfRBXGTkkQLFMCokr8mH0o
-	GeyJC7lZWYIlkWBLLobr3sZ+BAjYtF8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=rd1JcDki;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jV7dAsbm;
-	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240854; a=rsa-sha256;
+	bh=nlyrMaKGGiD8GgpuGPaSWwtm7U6K5QJqsNa9rsAtym0=;
+	b=qhpyjvPBcQHD6fJWRXGC1OqFsHP5S1ub1Obuh5IjWndIL9u8TQIhxmrov95cIVZBlFYEof
+	FE1iMHK+UveuJxw7f+X0kKKJTfA8nUTdGPMToeLLkxCxbvdYrP904PjjX4ggxd1hGawzdm
+	YE28MECogtkvbmEMcfuordtkbefjI6U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240940; a=rsa-sha256;
 	cv=none;
-	b=S7707agMu4Imibau0nRa1nYFqMy+KZ6GKzwTHBgJyyDfV+U1W/zzQjixH+r3W1qKt/BTt2
-	FYviJ4KDn5cojmcjJ74IrpK3khwD83QoVhlw49Koip9m4apPPJJBFPit1Jr6Ugloo8TtKF
-	VxExoscodn25cNpck03BcUN5mKdo0mw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C10725BD6A;
-	Wed,  4 Feb 2026 21:34:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770240851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=Pr96tj2YnSc3VBICI8zlPqandS61oFx3xU1/oiIccLzvvKTkKrpfzVq9n3kXxU7kxjN2wr
+	IoEA5H1q5S6QdE/MCrhouMJ1I9zA3e85EuUkPw74+zawvjwIqJ7lIw1d0KJH6rCaoBhPSj
+	1FKhurCtZY+ACDU0rJ8KWrVOz3n85Tg=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=NpzRmSpU;
+	spf=pass (imf15.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770240939;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
-	b=rd1JcDkivGYAJX5jTLUdHvhNoNBnESnBxYOBd4TCFsPdlZSqPBrWPZCcXosVhjWTN64mpj
-	N6esqOxI7L3PrwCKRtZLuCAblYVVC3CHa9zkvF51XNIKtDQZbCkR0yzkivr6SbuAaRfVdZ
-	re9BK/79dzOXnj5H1MHtLliT3jrBxe4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770240851;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
-	b=jV7dAsbmHYoDnaCfHbUJkPDTF8BxybGNjMGYXEO73dgLx+kSjXddSLVJIlzMD0j30cYn5X
-	E8krLh5HZwgB/ZCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770240851; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
-	b=rd1JcDkivGYAJX5jTLUdHvhNoNBnESnBxYOBd4TCFsPdlZSqPBrWPZCcXosVhjWTN64mpj
-	N6esqOxI7L3PrwCKRtZLuCAblYVVC3CHa9zkvF51XNIKtDQZbCkR0yzkivr6SbuAaRfVdZ
-	re9BK/79dzOXnj5H1MHtLliT3jrBxe4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770240851;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=HpECjgLDyQROSSuqqkM4/AP66DpIGAvnkeFoALvGbNg=;
-	b=jV7dAsbmHYoDnaCfHbUJkPDTF8BxybGNjMGYXEO73dgLx+kSjXddSLVJIlzMD0j30cYn5X
-	E8krLh5HZwgB/ZCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A2A143EA63;
-	Wed,  4 Feb 2026 21:34:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id FY1YJ1O7g2kqagAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 04 Feb 2026 21:34:11 +0000
-Message-ID: <82dafb42-ca29-4ea7-9c1f-114c10443237@suse.cz>
-Date: Wed, 4 Feb 2026 22:34:11 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=nlyrMaKGGiD8GgpuGPaSWwtm7U6K5QJqsNa9rsAtym0=;
+	b=NpzRmSpU6MBWbeeD2QRsFEGmxHzEsNUXsNMwmKRRWP1u6U1BUyrWm9OJ+ZsFhhO4AmSCOy
+	H30Yn1iz2SUvhR9Ow1T5ZS6sU6XyU4gvdx/3rQdoHLOUCN6meI7ng1KR5o5utJbIjjglst
+	fm9dn74QF9DdOrSRzVCretNjjTFxrCQ=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-351-VLbEigN-O2icIblliR04rg-1; Wed, 04 Feb 2026 16:35:35 -0500
+X-MC-Unique: VLbEigN-O2icIblliR04rg-1
+X-Mimecast-MFC-AGG-ID: VLbEigN-O2icIblliR04rg_1770240935
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-794f00a879eso4057357b3.0
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 13:35:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770240935; x=1770845735;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nlyrMaKGGiD8GgpuGPaSWwtm7U6K5QJqsNa9rsAtym0=;
+        b=DWSO1E2lVcFf6TRYjHeStvorG6EF+eRxKVgH/O4mpPt9FugiewEVafnB9XvcQ5i4EC
+         rHadZXERwWnzC1z1VV/xvupoOvNEzHqkqfFUp5V43OGdLAl9PWFdumtz7uCDv4tbf1Dh
+         3yK5LgDSyDz54BxNwfqq0rq8ToGtrCcxZgLyFcaDgVzallcserOT16zpKWeXdeB6JKCf
+         21UeNhaIsFN299jokVMuh/nOcrOTyEnXcHh75sK9fLc+XMjUrDvayHWtspF/Hn1kLdlB
+         3cmTfoAvdcKs78+clbP7/oAGRFIfBaJrv4E54WkRLOocWFpS+AE1lvvWiB2Mp1BPvMWC
+         QujQ==
+X-Gm-Message-State: AOJu0Yz9EDz7zOWVLwiwwvXqQrZXWAYQZ/DVFbmSUCV0psruKZ9qLYoh
+	+fuiwFK2Cj+OKGnB/2e3K8498+SUnIl3X8UXu7mN0sLtLY1t4Z5n2yGcV0qkdbFgoArZrdswQI8
+	cG0W4yj8G165sIYezlGbBV/AAcSfikAOHD8kwMS7iuH/53WxW/sjIhz4fyZ0hhf1dCRUSg6Us+y
+	rIO/0paPU6q4++MCc6Fcjg+DKvEIE=
+X-Gm-Gg: AZuq6aLrqlyXLMZp8JsHYzvAYkTZj1jUnHNAIBKChJx7ZCKgc44dXS+sJOEnOzRtKIw
+	ssLGm1K3AxgXOeRuiatJyZU2KZco35F28UkaDWEsxoyZkUOJm33hedyoIJeXk+aif8pToGXiUCa
+	wwNTKs4HdVSo8t+SYKtUn9FRbG/MqygGCbt+piGaThk9plhuis4ilNi79oM5Q98ilf
+X-Received: by 2002:a05:690c:c50d:b0:794:752d:cc73 with SMTP id 00721157ae682-794fe823278mr37751677b3.61.1770240935361;
+        Wed, 04 Feb 2026 13:35:35 -0800 (PST)
+X-Received: by 2002:a05:690c:c50d:b0:794:752d:cc73 with SMTP id
+ 00721157ae682-794fe823278mr37751487b3.61.1770240934851; Wed, 04 Feb 2026
+ 13:35:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/slub: zero-initialize slab object extensions to fix
- KMSAN
-Content-Language: en-US
-To: Osama Abdelkader <osama.abdelkader@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: syzbot+6e04171f00f33c0d62fb@syzkaller.appspotmail.com
-References: <20260204195751.188219-1-osama.abdelkader@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260204195751.188219-1-osama.abdelkader@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xe8fyx6sra4piqd7twzrz4npxhywfhcj
+References: <20260122192841.128719-1-npache@redhat.com> <8067c5c9-491e-453a-be1b-33603744758e@lucifer.local>
+In-Reply-To: <8067c5c9-491e-453a-be1b-33603744758e@lucifer.local>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 4 Feb 2026 14:35:08 -0700
+X-Gm-Features: AZwV_Qhj9f0Nsb6Ktl9VTFxoa5W8_cz6au4xpYaFZG8J9_wccM3oiCb7CJWR8Xc
+Message-ID: <CAA1CXcA8digLf78mc2UFCGnGMu=xRBGGXsY6Xb4uwwkfr2kB3Q@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v14 00/16] khugepaged: mTHP support
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: linux-mm@kvack.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, corbet@lwn.net, 
+	rostedt@goodmis.org, mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
+	matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, jannh@google.com, pfalcato@suse.de, jackmanb@google.com, 
+	hannes@cmpxchg.org, willy@infradead.org, peterx@redhat.com, 
+	wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com, 
+	vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com, 
+	yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com, 
+	raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com, 
+	tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, 
+	cl@gentwo.org, jglisse@google.com, zokeefe@google.com, rientjes@google.com, 
+	rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: s--NYJm_wLqW3RwDnbCN2t_EjZYreCOxhbjIgMKRC-4_1770240935
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: BA7DDA0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: A0BB014000D
-X-HE-Tag: 1770240853-368
-X-HE-Meta: U2FsdGVkX1+h1SZ69ro7VouJ5aayoXWVg2UWnT/fvsSuy3EyyLKq09XZs3F2jxo/r49u76wmpiGea1B50zFvhIYYnzkbDE9Px13DZ4YMO+eqQA4Tfat6j/vI0VPAkqR1RUEnI6S6U7c1ancWX/iRO6saTYsLLuS5+ywAGl5WVip4adGeIwFNi5dvzqkIEl73Hx/pA0rkc4Hk19xjiByGPB2dbVkkEEdWEm7AvlYyAaL7oSo6JF4ny+MCvf5w3+4mIwUZnG4lun3F4tuRnYIuM41+SRPtr9Dk74Qc4hZRp0tZb6aOgt887tZjs8+5ayrSDUfSXtY9/bDAzejB4Mgey74fHWnl/DQ4in8K3S+Y6IWFMkJ7wJYgw/CRf2dDqQ/SPCpXjeqzsKE9PYSTO61DTD1vO+mqgCzra6gp+lBC4JjVOhG1jkJHXUnIPiur3khxQczKljfdv+E383KbTlPUaWWM90yJooHL2KQFXdO21ycwRjC0k1UDC/1BHNkhFzTQGKtIVKyt36jkGy86rbk07rM+6TsC544WmqIFjg6AiN2sf4CHx6fVtg3c0lSk5dqFcBkTq7n0C30sLDyZPAGS4JL1pL3uo0Ko25gKDeJkGJPO7jFsygI1GLnFrBzxP6Y+dp8I5qQRLER+I6Q7IIsaBufSjS6gIJ2sbe5S3JR52caB8J7RVmMSZY4RqacYHsVC3bH8RzUAZ6NLFgFJkZW0NI4OVqTsFnaKeUMdah81qVwqXBq6l3sxoHjRZIZQ0ftVVjVUr0BslS0x/juEaf4Wy20HOS98VnaDCALIuIEYnYqGtOoIfWF+WAoX78kFOGWfTVzaKmLtV7z+37LZOLPtCfOyvYi/+K3T1iNVviiIqgEvQmncuXCBZK6WZCtQcpfutMHYquKuq8fjXQRhTcIbCTq0+FWIrBk7CsMsvjwyJoNLpBMjQl0kRk+NA/SEoIFoH3OLaGmbIs62RC1i+Rw
- buArG7Us
- 8G70H8hwTilv8aBcKk5vysU0bCPvmJz2wPi7BdkGGp64E4GBBGHdB4nFzkbq4gznE1hLuI+o9Lbi0TZPcY7B0+Xzv5DUU1oZVivoqkWsnPjtiEZISYbwsB4k/aHuGf+52JTGhdbk5PpoDFfNL6bpRNSxJAjl11in77GDe4/UtoAF8BamuICcK2IjtE6m84839zLgS9euYkOGYIAnB2d0FUHws9OpV5PEHTKj9sAQ3S8W4VWJw8VzSU0xY7B7TiHP5/xa523ZeHYpfh+8Fo5fenzF03wMUH8qAMTiTODPqoX8RHnqx6ZPY3Xmb6W33t0XRfat6jRBmTeKsArqiNMcBfzF5RzaIqJ5N0nF1VLQfRnqQK6/9w+xLfEY8XMs1/hiKVBHZ981RikMnPqIAwPvUxMigwaZ6BMxMoziwjYd3uP+V55FkpVYOYqMY6ObMK77TCkjb1x/zz7kxk80Ukm9cLiFa7+nCFTpARtTNljt7BO4Z7tOlXQfz3DNxR0xK1droeYYJG2EcjKEC5s0=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: gtjrijaxwdn434s4aebc5787i7g85g5s
+X-HE-Tag: 1770240939-746337
+X-HE-Meta: U2FsdGVkX19ZkeIyL3qPXDTlVXWdTswRJ6YNQbOr9ZwmhQYFeLmM0gKuBo/JU+o8fJ2VrnEnPqLMdmSmVWq16rRJHjT6DDbsIkBLgfkJDGkmnWJIBwxrWxvy99HXbX78TLD0pNo9BIRDXfIdHJgYR+ssJxTZDP1iYbGge9aqvl85gVLhevWYd7Da1GXIkufrREgYoQ3ZQHec8WwtL0QY2Ma7yKZE58yoJc9E0hwi1c2CopZstO1hb00BhBrdVw90H0YTj7Kf5Qaawds7B3eRbsHUKH63fPqWCwhX/g9sMarzrTmb6DKFMB8IpGttQbNCF4F7UKgzmR5LjssGGTcULMtHT/DPznwxY0BoTxwjVuHLmX/opaZ0BuM9lv0gxBodL1Lv/dZtzU6HpBT9ZjgKc9LVoqzf4DqlSoIPYLYhUjTYze+JsIeexc+Q/Ka30ZOD/vfZ6cv0GTbdwbuJxHkx+ASfnfsRDd1HLhK31P4GHTgTPLrUrBPgdu30CITYEtHRNYZ7NTZmsStbCgY1MkOocEWuAXiMCARcNQ/bZ7Pupg2Vq4xze9wWD8Numjzl5BOSbicGjv4Rp1eJ5Xt3M//X7zlQK7eHSuSo5U/j9QCgThIjfe6AQGlcNTAicBZ7i1LV8VZZ0QUepPaunDLY3XAPw67zIGKh0w8xn4vro1GPf+yXQPqTVheOVRFfMtu4EvKcoXsj+k+DQQybNKw6HOcd4aC69sUnOwVxv/FZFbDTuI34BbFDqXXxt/waZu4DXlK+I26ZhIxO92KAZBm2rRdi82jtXhHgh9M44F+GBwRaCQWtutddECZs0P8xSK1HFv3ZtpOasIL0MpGj8uswaaW4iotlwZz6fQkpd2ZPXUsurQ5AJuSktUtEcFYDR2vAT3VdVaXaKIz/kcU52SPOBkngqfA32b43eKEKiTsf3OKVA6vywXxpj2ZeLB77051vcYsP+LUjdwXpyBznm0yrQt4
+ qf/W+hG8
+ 61MlQSZoxJxnQJRDz+zCfAyTe5f5tjjqdKY304MdUYxPyLxXmgVV0jBThBp/8V3RVoG/TmsL99zf0Bp8GxG6Om1W/uwsNY8Di1XjKOqO3bkDDgXlLVC+ihpqG6H6790ARihf97tnkYx/QoNyw6xKp6tZu9OvQNy2Q0C0Hs3xOQvhBPOICH/qFrPvq7pkYSnBEZiB2PFXRrJ/p8ZgritOXw5ns1aMDMGXRrzjJct/sJR4HU88aSSwZI0uxMaig92TNYUQDQctOQ2o21T0A3ceHQBNb/PRccMY7oj8JDnzXfxWXer5cEEv8bz8PhpR74iVRg2ErF1UoyFIaVaTZ9blmvRszSVxuLolvehVHyaaSjrHUAA9WbW4uMjxfVA0RiTMGTulPLTAxe2Q5FxoSzX7BEu8h2VsB1vZTSt1cusuusxJupxM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,54 +139,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/4/26 20:57, Osama Abdelkader wrote:
-> KMSAN reports uninitialized reads in __memcg_slab_free_hook
-> when freeing sigqueue objects. Although kmalloc_nolock(__GFP_ZERO)
-> and kcalloc_node normally zero memory, some allocation paths
-> (fallbacks, early boot, reused slabs, or races) may leave objcg undefined.
-> 
-> Explicitly memset the obj_exts array after allocation to guarantee no
-> uninitialized reads in __memcg_slab_free_hook and preserve correct memcg
-> accounting.
-> 
-> Reported-by: syzbot+6e04171f00f33c0d62fb@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=6e04171f00f33c0d62fb
-> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-> ---
->  mm/slub.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f77b7407c51b..e66d17ee7fa8 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -2123,7 +2123,17 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
->  		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
->  				   slab_nid(slab));
->  	}
-> -	if (!vec) {
-> +	/*
-> +	 * Explicitly zero the obj_exts array to ensure KMSAN recognizes it
-> +	 * as initialized. Although kmalloc_nolock and kcalloc_node normally
-> +	 * zero memory, KMSAN may not track this initialization in all cases,
-> +	 * especially during early boot or with certain allocation paths.
-> +	 * This explicit memset ensures KMSAN sees the initialization and
-> +	 * prevents uninitialized value warnings when accessing objcg fields.
-> +	 */
+On Mon, Jan 26, 2026 at 4:34=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> On Thu, Jan 22, 2026 at 12:28:25PM -0700, Nico Pache wrote:
+> > V14 Changes:
+> > - Added review tags
+> > - refactored is_mthp_order() to is_pmd_order(), utilized it in more pla=
+ces, and
+> >   moved it to the first commit of the series
+> > - squashed fixup sent with v13
+> > - rebased and handled conflicts with new madvise_collapse writeback ret=
+ry logic [3]
+> > - handled conflict with khugepaged cleanup series [4]
+>
+> Hmm no mention of change to 3/16, unless it's folded into one of the abov=
+e?
 
-This explanation makes no sense to me. The kcalloc or kmalloc with
-__GFP_ZERO above has just cleared the object, and this is just clearing it
-again. It didn't happen sometimes in the past where KMSAN wouldn't track this.
+It's the line with [3], but yeah my bad, i'll try to be more detailed
+with these change logs in the future. Was particularly lazy on this
+one.
 
-The bug must have a different explanation, such as getting an invalid
-pointer to kmem_cache_free(). Too bad it doesn't report any details about
-the address.
+Thanks for the reviews :)
 
-> +	if (vec)
-> +		memset(vec, 0, objects * sizeof(*vec));
-> +	else {
->  		/*
->  		 * Try to mark vectors which failed to allocate.
->  		 * If this operation fails, there may be a racing process
+-- Nico
+
+>
+> Very important to make reviewers aware of this stuff.
+>
+> It's also worth separating out things at a fine-grained level, really
+> everything. More detail is good. See [0] for example - I practice what I =
+preach
+> :)
+>
+> Thanks, Lorenzo
+>
+> [0]:https://lore.kernel.org/linux-mm/cover.1769198904.git.lorenzo.stoakes=
+@oracle.com/
+>
 
 
