@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F6EDE9538C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 11:58:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB95E9538D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 11:58:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A6956B00A2; Wed,  4 Feb 2026 06:58:08 -0500 (EST)
+	id D2F6F6B0005; Wed,  4 Feb 2026 06:58:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 653D66B00A3; Wed,  4 Feb 2026 06:58:08 -0500 (EST)
+	id CE6756B00A3; Wed,  4 Feb 2026 06:58:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 527E66B00A4; Wed,  4 Feb 2026 06:58:08 -0500 (EST)
+	id C06FC6B00A4; Wed,  4 Feb 2026 06:58:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 405266B00A2
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:58:08 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C677AC0110
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:58:07 +0000 (UTC)
-X-FDA: 84406625814.24.CF2B7BB
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B0F6D6B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:58:16 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5DD1C1BD70
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:58:16 +0000 (UTC)
+X-FDA: 84406626192.01.600CD42
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0E00218000D
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:58:05 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pWgJ7vqN;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id A5E76A000B
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:58:14 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ESN8nuz2;
+	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770206286;
+	s=arc-20220608; t=1770206294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SRMcgVLDtJ5++x9gFTNXV83X6Ab7B0i1jEhhVHQk9JE=;
-	b=ryAK61Wce4j5RtO92NwhX5JMlaeb9QD96fdCg3mt8yqUjuBD72i5pS25aFR7zbMbxTnTJH
-	cg5hE8Z7modkkWPZvVdxlOLnOw4nanmNJyjCZHXGZBB9sonq0zUby+4KoJkOrV7csXgMeo
-	+v2eIfe8GteUq9DuiQflTP+ShEFrSls=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pWgJ7vqN;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206286; a=rsa-sha256;
+	bh=9Zfvy7nM/NrHVVX1PT+lkagG6YqHQTr0oHEXLQMyTIs=;
+	b=K1KQd1kZacTlL5X9oMTiOF67Movy94k5T7C1RKmbLO+tR9uXdNfkC/GvrQRZkmGYOj311K
+	xKflG2qp692WOa49SVpqqXMa9zDZ7fvkMsHKTRmu4C6uKAaFbUjEFxVI7v4jNGFWdjSeaK
+	8+EBizeAQrHmYSa8T4tXL7lddi9zW3c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206294; a=rsa-sha256;
 	cv=none;
-	b=codkLKCV84F6chm6UiDgxzEwtE2B8oXya55Hj+/1NNzOpxMYez8HcsLoMaCJmFoCecah64
-	CgB+FuoQtVlMeCDDkIBuVVRQM5iC6QK7jFHRX/AUNwVx2BToJKg4AmjjGkC966H6OBWo0q
-	3WKQDdHD3YQJDWdosp9TXR5GeGqsF3I=
+	b=m7DVrajlVZsTaNAm91FIdIASWfUD8QB5UYNiHmQx4re8QSJ2RP0UiHDRpDNvpw36zZ3A/t
+	ZCS8ZoP01Lkmo/cxm53bJ6UnPBab07Xa8QE9KdzzGB+rVtHyQa4+LWYX9FULUIJp/xqSDU
+	LZWCcPv0PGsKTm5sixnOW3hMJ3vIp1U=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ESN8nuz2;
+	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8F2B160054;
+	by tor.source.kernel.org (Postfix) with ESMTP id 300A7600C4;
+	Wed,  4 Feb 2026 11:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78FEC2BCB1;
 	Wed,  4 Feb 2026 11:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0BCC4CEF7;
-	Wed,  4 Feb 2026 11:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770206285;
-	bh=c2p54y/pAhnBEdMSbuIx3iZj3XWho61Cf1y9xR2YDhM=;
+	s=k20201202; t=1770206293;
+	bh=PBOESvJWRqEQ2bmBI+MqZdyLdwyA7OsD4YPXBLOYQLU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=pWgJ7vqNJD8qw9H62F41a+IyFWjd51pc+AHkRbmLJuxmCSc4sZOUMvjcri+R6nekk
-	 XY/gZrjgCGaOI9A8tVQsKCS1RNjnQcAfRGuDLXvKA281qgwBo126KEMXpK6grvmVZw
-	 Bw8ByJxEZ+PZ0f0GpeDewSgVQ91hK5150Ls76Bo8cm2S2PlC+5JNUcri0yc++EIQl+
-	 kNfwrMU/0yG4VQt9vY2sOEdrXibri84JnGLDgDOfUqpuxFyBJKi7YdcAtralLSqLfV
-	 yduxBbniHcTFDcClY5YKR1ODZuDOLaA6CQJH0Den9kJWI1c68FgJMXZph8PTEh0gHP
-	 6U4R0xV8UPZKg==
+	b=ESN8nuz2S87uQ84h21rrTo5WOEHsLs4F/sXyU5GGND+4N+g6BhMrcVYsicUjk8cGD
+	 xHqIhAIoD+Qe6eEWHfC6tcbLJYTrWASs3XNZ9GL5g8G7HkJEd/9MeXdDlkgEyncwBp
+	 xViltxhwMzKVxH9JWNNVCZiHwfpczGFiJlypHFhpSTKrxqW9W85Elz/RSLB8oe87JR
+	 K2yZTbj8s16zLvUCpu5x4utzXyoLKz0dDcQKoT+fEKIDoPHD2QS62uUBvaN8+yXKbr
+	 ssOC/AuvsbiwhuzTNktYS7JzTL7cTfH2eIy7TJN1Ynv+wCm3HsXSEs3RKnFIcq5wfx
+	 hzWtW6SDAGX2g==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 04 Feb 2026 12:56:51 +0100
-Subject: [PATCH v14 7/9] rust: page: convert to `Ownable`
+Date: Wed, 04 Feb 2026 12:56:48 +0100
+Subject: [PATCH v14 4/9] rust: aref: update formatting of use statements
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260204-unique-ref-v14-7-17cb29ebacbb@kernel.org>
+Message-Id: <20260204-unique-ref-v14-4-17cb29ebacbb@kernel.org>
 References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
 In-Reply-To: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
@@ -96,33 +96,32 @@ Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
  linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
  dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
  linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>, 
- Asahi Lina <lina+kernel@asahilina.net>
+ Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4220; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=FvgSRVnZWbKwiBgsZbTbds4VyUjBG0VqS2LEVRR8T4M=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpgzQF3kN9mHdfQUXkp64epI5aSl8D87Au9J4JZ
- BI3oEDLgDeJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYM0BQAKCRDhuBo+eShj
- d2ywEAC8FyaOp71E081s63SKilLPbpt7rb1EA7gDcRJwDI58JBuU7jJKM6yOk3RjZKzUIPPMobB
- hd0UD25zrRDuhGWxP7k1YmEBBEMggWw6ns+CGJcab1yS3ckrPdrrtXq9c/iL02VE7VgV11Wrl+G
- SWUO2BuZbFK2apxYAbl21RMf3MAQ8j1My4Dmulq1xjb0oh6SekC8BPCR/PU0sGNaX3HBcOFVaKi
- WWq8YfG5J6M7mk0RTA9LCq0qp03TfGiDv6FhGp2vVqBRj2HzH6A8SJ17zMyVHAziyQi3ll7I5/7
- Imw2djBsHJxwwbDYkFG4kYNzWG83iTXw8C5XRO5AHQzDtrO9I9HcUUn1WGvzb1YngNXrwcKs7/h
- 6vIPOGYTsj7sme89ANt8DLQhEpWPXGHntpUjhgfwCWN+Y+mJlM9Zl0mev2GUlpUcTIula7EA2DA
- lg6iFabhl48WFVLZT2PBo+wvckSqcirMcacSliac3mYkKGh/f2OibUcRho4idWDOjMmIItNdPbA
- EEx2NPX8c239fzWWo4sG2MS8YKjiH70VXEAEemFDKdPOKeyBvhQz0LaFzmMMVwKyC9AQNYWYSWU
- lbAwIYkUsVBFT/oXjGsQNrUWaX/mKjFJHa1gUS9Ts3frcSXpOa9pPb0ORpCZYOAf51nACen/nor
- YuBBF93SjC6LvMQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=753; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=PBOESvJWRqEQ2bmBI+MqZdyLdwyA7OsD4YPXBLOYQLU=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpgzQC8WXId3BB6udifTdGRxtPZJjj8e9hx+zAu
+ QOTwRyR6O+JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYM0AgAKCRDhuBo+eShj
+ d52WD/9JR/g98fdUOY2A8g+rGpmdLfgzdygQocbFPvSVXyFv38q6LeptynGRXH328+Llt9FMs7W
+ W2Yyp39eVHkhsA2sBR+RmPm0kLhpQyTlCas32QiZ3BVU0HAS+NeoBelq6HB5MpyCIBG5hNt69lI
+ YMymMT9+vQZB7AC1uaReCxdkqSDFxmT+vIZ4589KpZWzbHR4M6JY6XAd57pdg1k1tYuzYInaS/o
+ Gr7kW3zIy9YG3zEpodF1SmwQWaf///Uzfi2SZRvn0dq0HcEpzpd4mSF1VuJ1796efe/UpjBFDoz
+ YXaGCJTZwHy9B+sFzu82whCwF3hi8cPX2I67pGhDU4vkQf4u9sqX7uHYf2pz7/SY5dbqEF2gi0C
+ QOcESpEP05JCslZh3vtiZybsPtBB3KF/fj3nOisEL0YBmhgfK9hcAjkzuS5NX1VnclZPiFtSEtd
+ aZi8BWjWrIk/xl90Dv/dtp2EQpiFJc6RGeXXkUJDRwNeeIDCbtcyIQrHTT//IwlK+ab8RpATME5
+ GScNPXhVoGC2dPGlmtZ79a4nn5XS2smcQfmrUySufpWh8FpTCnjZrOt/fWdUlobSnPHfXe643ws
+ KYu8SkPindocqSr854POQ9gNtOXnfk8cjiAszpDKMwENo5OhLW60YELBH9dPsw4iG3BiKQ346bx
+ 7t8YyWd6wkWbBeA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Stat-Signature: ye5w78j79btkr4acpjbpmc4ju8n8d5q5
+X-Rspamd-Queue-Id: A5E76A000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0E00218000D
-X-HE-Tag: 1770206285-20387
-X-HE-Meta: U2FsdGVkX1/6FEricj+UVVqCu7IeVaR7zAsCDpsn9gdUA+jzHdMrnto1aftNQ/9nSacNq6Eoq0z1mZ+azwi1xhhE0WkF+PuRjHEoBOPSb8gcWGHGyavXjK41rjnKD7XkTwiLIfyxhGJwES0gTu2zjce7aOGqRuXjlzS7bd/c0UtAG/rXNHBJpHDRzGGuOVAspj7Kn3CIph1ADplvBj6+YvrXmMrit3L7wQ5Kkl4oqYdSpwdm/yiyhT9JBjEKkOsPPn6Xj8mUXkVgDn1ee94fpV1azkdaFzuNi1ZT+VpIhUubdFGEyxKy0vXQMgcspJc0zZIpUIfbJ2i2wsNMKGGhL8TYTL0Wcer3r2mNymwPOv+uucnJ1jYLg4QI7S5CUFK8lGLdj6REzeoPAiO9Gjg/Pi5ZcWllQ4lABvUhVr7UbmWGc+8KRrLXauOCFwFl35iuH0bXdcI2PldyIxq2aJTEugUz4tmMn+Q33aTl3Xm8kWnaBYkG6MXXZv9Pd4h26crbOK54ifW8aXjOXEZphijEkcf8QahLB3ioFfW10XXdktBL7vn2sq5zkvXaZFqLesZZAjlwkvpLuAZhs7LCRkiYGZosbJ4UPi+iS8sZJIXhtew08/JkxVx5YvqKAwhoHHwOYqhnUw2rWj1K7A8GFWwi0GFDc5/QzH+mhqbXf89hUXp0yrDjwcHO5CRmDXM+Z+FiAY4uuK+ueIk3uGGYTt4m6HST5dawG2/GpLO278v40WszVisi1M1tnT2iYiR/Ox6QB/hO3eKxodC9QZKi/0Q70nLkS1hKfKOdOrA/u7NNB2mru3pTxVbhn6LRscy5kX2PTioAYJRQYOzdMRSGSTa9v7GM1xlg2QpnmgCWBjqHGnHqyMY+LbOsHTef/sZYtseT2+6CE8UO7JAOOyu33ri0cKS+FGgwEC5ChtbEcWkcd52pV2c/hdv6VU5vRDPS4YQ+yhcC568KlTr6Rk9xtHK
- 2BaLiQAv
- lN6BrYCxklgoEr9bSPx0Ljfn8GEqYrNq6e3QqnZAImQGXg1uSVUva70QO6qXk4WyGid3F8Pp6EHa7w6PlVfVIi/xEHzXORYTpgjkaSv++Txmt0EWPpGYM/2gdJbYQ2l4dsDHaUkvrORaUFio13ySGWU29op9741yEjZXhWfSgsLpSyGj8q7xpG/qqHElg4PVJiEzTqE3hMiKGbRD7VeYpVBT+ROhbeOZoEes57g+f2ylQH7P5s1edY+welweCEqlV+FxUMFkROZXVTyACSyMn/6rk94B6zyof/LlMOtLnq2LQcOKRuvPBcld3kEu/tkxm4zY1Hj//LkzLpXuT1Z1280ybKxynOpQWAVEsFQtjRJ80H+8z0aOZRr9FFeyP5Fq7ho1i
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7yua17ji9y6sxoh533q8qsq94oyc9mqn
+X-HE-Tag: 1770206294-127106
+X-HE-Meta: U2FsdGVkX1+baN03Yq7ccFMBab0ZK8EAlRGZRUAXamnN05VEtD7nAZqD+0OarAYkMCf0XzFkO2LJAJR39WNClBNyxgJgv4V3SlMNNB9GHAK2+M9mV3yqH5SvZzwV72zfWX7VLGubWHvv8dkYkxQaIguPWr4Mcjmm3/xr1aNINMnBlsybNPXXz/9Bsr1/t854Q/iCo3w5FMQTc1pa+X+pfu+1hzuFrvu70VWKbp8k6/s1KdLSvURU8OIL9jDEM1MRRe9fNocLperaXI8mOD//t+vtEF1NCYszctoNdYmBjbCm8T/rqDTfvCa+p3fF6LqvGuYMwvkdngY+4qtMBBZbfU0SEEUy9aLmo9Ucn5LcMXL/JFvFD7aJWYe+P9Qra/JX28iE2mbdmepje/VcIxGYWPr3iPRoCfGFHe+PPp4zahEJdBhEY75XNMJ6QvZaUocCiJCzH/URsrMczR21iSW9ENXORkDEsSsrpMZdxEsHOx/Goz2JqqvAvvJ+XjHuGOLntfYzl7OH7oHJgyNR5pvgFjnE/jFFrglIc5aiX2GyFAMJpBZNlbhaWlgE8DVtHCDXCulZZOQVoRRjYT3qhVjnxiSZ/1PeCt4TVcLtju2Yj8w9M56f9pzZdNh3B7W1+RSsEv/o1CFlBljGL733L8inN0ONk7jChH7I41UcgaoRTxh4VssZOqNJ8h3lOgtvIJRtbCY8Vv5G45PCuoWooIzPY2sa/V8EtaIo6I39DNPCopuFHxJGG1N8NTLuqKGNj+n6bgnqAKHc6pRctx7DjhzYoZ/9cHFRGmwA9Nd5xCYSM+Iaxj7Ue6O9nyOKnoCzwiIF23DG/5L9F254lDApOR08vdcX/d6RRWiqKk13hMxe9pm6Zvmy3xdSFoExtRZ9zQCo8jfaeM3s+YB8ZBS987lcPQ+1NZiF/cvGbKgm0hfJKRyNlIkyGQL8G5ajjRAqXqTugI4l0/rvGYFMKtyCqsu
+ UN6jyrct
+ ehDQcgTuVapXRb/xWsSg7sYIgZkUA8ekE1Yxv8GfachyTPsZh3ETQFkVOxTVSmfp/ZQBIRfAkt2y5/gvchyrb54ob0kuV54TQn0N56o+CRygPrhknaLbEbrs4IryZ9/K6U3pw5hTLXsMm5BquMrz73dgBvaKe+xbpRMu8KKfgOWa7ZcWx/oz59PUARLF3nT6r4l5dVzemzJidRJ/Kb59P/FWNc139VA+EmvXBByH96wpyisfZVPEjUPmoYzt9wUOnM3OOmxuCd6fMdlzvC4j5DdauGi4f1s8FrNPm/4v943yGrVex4IGQSVg0eA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,109 +130,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asahi Lina <lina+kernel@asahilina.net>
+Update formatting if use statements in preparation for next commit.
 
-This allows Page references to be returned as borrowed references,
-without necessarily owning the struct page.
-
-Original patch by Asahi Lina <lina@asahilina.net> [1].
-
-Link: https://lore.kernel.org/rust-for-linux/20250202-rust-page-v1-2-e3170d7fe55e@asahilina.net/ [1]
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/page.rs | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+ rust/kernel/sync/aref.rs | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index bf3bed7e2d3fe..4591b7b01c3d2 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -10,6 +10,11 @@
-     bindings,
-     error::code::*,
-     error::Result,
-+    types::{
-+        Opaque,
-+        Ownable,
-+        Owned, //
-+    },
-     uaccess::UserSliceReader, //
- };
- use core::{
-@@ -83,7 +88,7 @@ pub const fn page_align(addr: usize) -> usize {
+diff --git a/rust/kernel/sync/aref.rs b/rust/kernel/sync/aref.rs
+index efe16a7fdfa5d..3c63c9a5fb9be 100644
+--- a/rust/kernel/sync/aref.rs
++++ b/rust/kernel/sync/aref.rs
+@@ -17,7 +17,12 @@
+ //! [`Arc`]: crate::sync::Arc
+ //! [`Arc<T>`]: crate::sync::Arc
+ 
+-use core::{marker::PhantomData, mem::ManuallyDrop, ops::Deref, ptr::NonNull};
++use core::{
++    marker::PhantomData,
++    mem::ManuallyDrop,
++    ops::Deref,
++    ptr::NonNull, //
++};
+ 
+ /// Types that are internally reference counted.
  ///
- /// [`VBox`]: kernel::alloc::VBox
- /// [`Vmalloc`]: kernel::alloc::allocator::Vmalloc
--pub struct BorrowedPage<'a>(ManuallyDrop<Page>, PhantomData<&'a Page>);
-+pub struct BorrowedPage<'a>(ManuallyDrop<Owned<Page>>, PhantomData<&'a Owned<Page>>);
- 
- impl<'a> BorrowedPage<'a> {
-     /// Constructs a [`BorrowedPage`] from a raw pointer to a `struct page`.
-@@ -93,7 +98,9 @@ impl<'a> BorrowedPage<'a> {
-     /// - `ptr` must point to a valid `bindings::page`.
-     /// - `ptr` must remain valid for the entire lifetime `'a`.
-     pub unsafe fn from_raw(ptr: NonNull<bindings::page>) -> Self {
--        let page = Page { page: ptr };
-+        let page: Owned<Page> =
-+            // SAFETY: By function safety requirements `ptr` is non null and valid for 'a.
-+            unsafe { Owned::from_raw(NonNull::new_unchecked(ptr.as_ptr().cast())) };
- 
-         // INVARIANT: The safety requirements guarantee that `ptr` is valid for the entire lifetime
-         // `'a`.
-@@ -126,8 +133,9 @@ pub trait AsPageIter {
- /// # Invariants
- ///
- /// The pointer is valid, and has ownership over the page.
-+#[repr(transparent)]
- pub struct Page {
--    page: NonNull<bindings::page>,
-+    page: Opaque<bindings::page>,
- }
- 
- // SAFETY: Pages have no logic that relies on them staying on a given thread, so moving them across
-@@ -161,19 +169,20 @@ impl Page {
-     /// # Ok::<(), kernel::alloc::AllocError>(())
-     /// ```
-     #[inline]
--    pub fn alloc_page(flags: Flags) -> Result<Self, AllocError> {
-+    pub fn alloc_page(flags: Flags) -> Result<Owned<Self>, AllocError> {
-         // SAFETY: Depending on the value of `gfp_flags`, this call may sleep. Other than that, it
-         // is always safe to call this method.
-         let page = unsafe { bindings::alloc_pages(flags.as_raw(), 0) };
-         let page = NonNull::new(page).ok_or(AllocError)?;
--        // INVARIANT: We just successfully allocated a page, so we now have ownership of the newly
--        // allocated page. We transfer that ownership to the new `Page` object.
--        Ok(Self { page })
-+        // SAFETY: We just successfully allocated a page, so we now have ownership of the newly
-+        // allocated page. We transfer that ownership to the new `Owned<Page>` object.
-+        // Since `Page` is transparent, we can cast the pointer directly.
-+        Ok(unsafe { Owned::from_raw(page.cast()) })
-     }
- 
-     /// Returns a raw pointer to the page.
-     pub fn as_ptr(&self) -> *mut bindings::page {
--        self.page.as_ptr()
-+        Opaque::cast_into(&self.page)
-     }
- 
-     /// Get the node id containing this page.
-@@ -348,10 +357,13 @@ pub unsafe fn copy_from_user_slice_raw(
-     }
- }
- 
--impl Drop for Page {
-+// SAFETY: `Owned<Page>` objects returned by Page::alloc_page() follow the requirements of
-+// the Ownable abstraction.
-+unsafe impl Ownable for Page {
-     #[inline]
--    fn drop(&mut self) {
-+    unsafe fn release(this: NonNull<Self>) {
-         // SAFETY: By the type invariants, we have ownership of the page and can free it.
--        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
-+        // Since Page is transparent, we can cast the raw pointer directly.
-+        unsafe { bindings::__free_pages(this.cast().as_ptr(), 0) };
-     }
- }
 
 -- 
 2.51.2
