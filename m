@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CA4DE9D408
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:14:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E96E9D408
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91D5F6B009B; Wed,  4 Feb 2026 11:14:24 -0500 (EST)
+	id 31B8E6B009E; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F4BA6B009E; Wed,  4 Feb 2026 11:14:24 -0500 (EST)
+	id 2EF5E6B009F; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79F616B009F; Wed,  4 Feb 2026 11:14:24 -0500 (EST)
+	id 1F1DA6B00A0; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 64B056B009B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:14:24 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 24041C11A0
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:14:24 +0000 (UTC)
-X-FDA: 84407271648.19.1CE8868
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E8C56B009E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B30C214024E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:15:00 +0000 (UTC)
+X-FDA: 84407273160.27.EAA4306
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 49B191C0017
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:14:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H1vPGXhU;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf24.hostedemail.com (Postfix) with ESMTP id CFBB118000E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:14:58 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qq6PmPjD;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770221662;
+	s=arc-20220608; t=1770221699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MQFqn9skdybOJ+mbSsHDDaYRySBPw+TTO7n8EyuKb1U=;
-	b=LSUyCHhYws33e6TFoH9kEwe3N8DdAMFcFBtt2DJfoDBvthN/bDeNU5SiIqciqu//u0SREP
-	0KkpUzQ4zkolS1YMLnTW1C9iuYVFpSMxqQaGLkmrefpiyUUJ6mnGBR9BzJSTIqTnUJx9qL
-	NtrmWAtvF8uH6Al6YW5dkkKHeL/S0xA=
+	bh=L5iDN2vIV71qjvt+RitJ3eEXc5ng3mYIItXp41S3woo=;
+	b=8lR+sxuob2M47sYwEeuaVST3VgcAvKQayyhvYNBibAD+XrpqPOwXlpCVJyFpy/OBI2BIKX
+	RPrjJIFCILqgWBgtaimbPxFBNCRNa7GLXX/8MOkHuISff4oiDO04A4tzSYOfdwhgPJMciO
+	eXUKoB/fb1ASLe1B3dJiJXrte6HvL7s=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=H1vPGXhU;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qq6PmPjD;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770221662; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770221699; a=rsa-sha256;
 	cv=none;
-	b=1Un3IbZ5qsx+w6WpY7LZu8hMXZwOSRBuklzQwoAY5RosN29EFGpOFr6HsSOeif1HphdmfT
-	deIlz8xqoXJq7SzCoGODcIj8CLhTsgBj1/e2Sm/mD8OKZ5vEiPNG/g8PS9k05BvyW6aP8i
-	Q9bl4oZDif2uJJwknSKOCZGOTWqHKlg=
+	b=sWaHHvyk7d/UHt49Y1wBGuTN39ixrxrqTiwug5HGs47DS8yGJFghJeBATgC4kfjiPanSW6
+	ATF3s0vwr/Amozo3cVXpWba1y85/bzONDh8BdRhE4IRWBeGkmIHONwlSjkh5n63ZRwWkdV
+	H2Dgcv2i21J1Waq3LCNCSXHwdkoYGA4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 40EDE44194;
-	Wed,  4 Feb 2026 16:14:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0BC7C19423;
-	Wed,  4 Feb 2026 16:14:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 096D043B62;
+	Wed,  4 Feb 2026 16:14:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD053C4CEF7;
+	Wed,  4 Feb 2026 16:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770221661;
-	bh=fpIWi3ZlUU6GICbdztTffdwV8kcfmInvBOHJZpSmhzI=;
+	s=k20201202; t=1770221697;
+	bh=Yq7rjOmFg4CcgdWMbNPzzzqdWj+uSBMikYGgvwuzD/M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=H1vPGXhUwV6c5NaktCTjngbifuDhCiF+MY5C9rAm7aQpM5UhZIbsPHjKUaCIe3UbT
-	 ZPan+cYjuPFcRTfiQwRp/Dsej0VELkl9kaMOIAbUzkJDkyGz4L2UiwDsU4b36C51v9
-	 MhKrNeaY79muH+KxquiZQbjLHI1Qj3LOb13NqQsfOiWDxqSVlKUPgnxqy6QmZiuULt
-	 Vg2X4M5Z2v2caTdEbzzI6mAwcTsbi7IWZPydTFK985L+WavMc0OfHDgPnUmU7HI5dX
-	 WOWKlCW/gGBMqBOCbmtqu11Dwr8VTP/CMpea3GpAszgJcoyFcHseGtZXiUIxONMT6U
-	 W6EDNps1rC7pg==
-Message-ID: <a61bc0a8-cf5a-418a-aeb4-96553b87f043@kernel.org>
-Date: Wed, 4 Feb 2026 17:14:12 +0100
+	b=qq6PmPjD7zhT9ot2QC9bw/em+sjKidISKx+M6635S/VLsnSzIHdkjtN3GpT67jcVr
+	 QKlfXbkrjUsEQPFC2Jpef0f3usL6xPZI9xZieC3loEmehrI+znscnN4is22oUYPksR
+	 rLNA6LbvFNFQvaNtCFMw/183u+J4q4YjuNpPXp6sffxhBR5wqIFTUEdaQ65autXc19
+	 r+6Ehby9ipL0DS9jDaoAPiPGn1RaSy1oDCFzEP+D7twyWyIz1qzdBZUqdAS0Aunubc
+	 msROGZeqxyTwEBrXiYGhpKhc4MQLyN1l+teThtvVP0lC0IvtsOE4AYyeMp8bbmQasP
+	 Zp78VUUPu8HZg==
+Message-ID: <7904198f-f4cb-492b-9e6b-4d9989b8d40d@kernel.org>
+Date: Wed, 4 Feb 2026 17:14:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 02/17] mm: Change the interface of prep_compound_tail()
+Subject: Re: [PATCHv6 03/17] mm: Rename the 'compound_head' field in the
+ 'struct page' to 'compound_info'
 To: Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>,
@@ -86,7 +87,7 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-3-kas@kernel.org>
+ <20260202155634.650837-4-kas@kernel.org>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260202155634.650837-3-kas@kernel.org>
+In-Reply-To: <20260202155634.650837-4-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 49B191C0017
-X-Stat-Signature: 15kkdyhqpofccbnk6pboawuhzomu4muh
+X-Rspamd-Server: rspam11
+X-Stat-Signature: atpdg3m1388czxk8kz7bgr5gas1gn4z8
 X-Rspam-User: 
-X-HE-Tag: 1770221662-284467
-X-HE-Meta: U2FsdGVkX19Z2D9N4fNZ2ViHMvpxlqZqins+TnN7f4WuyJ761h6sMUdBoHZ705b0KvfcUXUzdfMcZ/MROo5JfIdsJ3+famBENSGwUKETGa0DTS9MyMs9HlAAkdP3xw17Cyz4hOBfQBsmxWJHesrzX7UBUonk3fl6ozJoXNt29kcSoPqjbbcTredbyND1pqM/dxr/sT9vtI3Qby/jakx/819nC1Zdk+x+z9zXmWCG1ZyQE5xhyu0hq8sOHq/DVs7/aAzj3n3fJEPiK/gIqe2nJE+6aYAV65L5sx6p5S4Pl37gFHYmPW5VhtDzpr6pl/ykRcSaWXhSt4G9M1SFsUu9rA6KyrnUbnKSL1DG0gMaIeHUAIq9tn2YsvsrX4rMyxg85beqkJdRdnNew5tgKz0XtJuBolR1q5CAo6EWKr8FITh7A1STilu+89/MfC/OlA1GF/ETt3J0HWvTcnQRNl5mL1wiHN8Y4cPzVfLPgnO041sw8Mtnp7MksDuHM3jIjsnX0d5lpf1yyvZ9ZveXYuPSK+Y43R97aoBWF4hfGU4aZoZxSUK2NT171kc+o3RE4kPjFNE5K4CQ79VkNSRfU+Hy2vVPpCuEbuf2Y2YNAT46aPjOAPDeoRw01f54kZgYBOLTqxt6MMrZyUl4Rh66UZVw7VEv/cCke5R43w3QdyQmzuDmZWbE6VwngZrt23NfP5OUNcZuRo0pLQ5Gs0YTV2jDtDXGj1kVF0FOcWTHclRMeusq2YnwnT9OivXz1EqQ5E0dIW0BYqtZeBtFHdjpSOHgHPl74pw5HaY3pnGdN0LB7R1v5YN2mHTHaRvw6nqHazg3Qt1m6YqvSHbLGXYyB1IY2DqFBPCq9QNwArOPJqCpdmV+O3HuAyNVTJUTB+Ti5w01J0ujV4zI5R7flb1oAct8GTXWjCju+BjzPmQAueiC58heVp7PLIuuXE+Ze87lF7J8qz/GP+J1ROMyCVkCSw1
- uZk77ms6
- 5zzrPjUZ/8IXFYR8=
+X-Rspamd-Queue-Id: CFBB118000E
+X-HE-Tag: 1770221698-571247
+X-HE-Meta: U2FsdGVkX19kFgBFW83GR+BZJ27mKblIHY26qD8b7soz8nn6d2kdEmKy9dVAEpAmhnJrXlqotfPRr6lnBE5gm5eVJkw6UixZTknS1VIyLvOLSTNQAg1ZRYvdVZ++ER2SNpMs6ugi6q3t9ag/eR8z7NIZbbcLv5dHs7E6dDGuWUlT7ZS58Oj7q6RmvjrGOXQy0/stXTLVzkkUIHvMs18rSuYL/e3K35psgiGdRjahfqjjFYsmh16hSVJpY4YP18rhDiRkhRGzpGlYsfxS9hVWYDbUo8iaG7sBJ0mHhGBmhbKYg3aW3ufEUA+Jlt9H+a36ro80zlTKajs4+yVERr1y2exNF0qM9wBUMrhIs48HSi6zL87+9k8dNfZBSc03t+f8xxRoujudiBP0r0mEWPIjhlgtfyfrBnWOCVFn/QAYvu+U25BdmE5Qefa7p6F4yjdUcvqI7akQdQiwUIQ7gzkM4L9wHxfn17U9Zw7J2NPsyxWAhwBr6mESCdJ2LtVX6b/UB7JiJInq2vqClvK3SNnsYE/DcXLA1YEN61V9zN3dwNpYybf7jnu6py41FXvxzLfL5KW6K4YhjC7aV0IoJTaptICDA+yQZOgzD9pmdrB+WZ8UT1+hrSJn1zahz0XO0dp1KGJu0N4q87xzvL2TPaZZSva80MrIZR4mqXaaBhvNqi1xUkN34gj60eIUQ02kGUj/g/JzF5YgLNvSo5bdVQ25bTXki6dxITIYJrEDlrv9rHjLvxUPWOMYZdGzC5zvqU2FG+WPadwzFNjcHK7l3qPP8+neV+p3wPUecjqkrNXg72Fqob4XwNTHj9JER2sf/pMw1kzwbI5oO/9IornjcO6UPlmQdQZj2uahuPDFCkd+iy6Pj1WIc1w3pFWwmOrU8wSQzcFZf8lGJ32iYvwD9cDX8Pg5CKlI3111S9HBY8S2UEfEhYXUGgp+f9SKpfYYfTljS4s1NiTxRhNir+mLsBD
+ FVkjqC3v
+ gRJDxLR6nsBYwbbpqqFZRvQ4H3bS0yXEADZzSaf7q+bJzPKmSBJJNiSfl0NyKRNgUEImdx7mzv296O28WDd0yUF6OzpjsgiG/DKuedIDGeUkmnnEMtezQQt8i/w2XNgjWIoS9p+vGuB6svn2XMPRBpLy9vFrbcg7iMWj0XmqgLbSa0/BRGtbIDQA0J08jEibJRoBYe6f37SKQw+C0oD9aLK4nL0YhO9arEic+0j8KO53dQ8s3A2uKMagS9J3+D3VMn2zlvgexH/lVJF+DLBGsxZ3uHhkuOdm3qawIMf/qgVLcoPzNTiJcK0RHyG0b5XL7iJpOf4tyXb0VkeyrzZIIERRFMXqIChQEictw
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,79 +154,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> Instead of passing down the head page and tail page index, pass the tail
-> and head pages directly, as well as the order of the compound page.
+> The 'compound_head' field in the 'struct page' encodes whether the page
+> is a tail and where to locate the head page. Bit 0 is set if the page is
+> a tail, and the remaining bits in the field point to the head page.
 > 
-> This is a preparation for changing how the head position is encoded in
-> the tail page.
+> As preparation for changing how the field encodes information about the
+> head page, rename the field to 'compound_info'.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > Reviewed-by: Muchun Song <muchun.song@linux.dev>
 > Reviewed-by: Zi Yan <ziy@nvidia.com>
 > ---
->   include/linux/page-flags.h |  4 +++-
->   mm/hugetlb.c               |  8 +++++---
->   mm/internal.h              | 12 ++++++------
->   mm/mm_init.c               |  2 +-
->   mm/page_alloc.c            |  2 +-
->   5 files changed, 16 insertions(+), 12 deletions(-)
-> 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index f7a0e4af0c73..8a3694369e15 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -865,7 +865,9 @@ static inline bool folio_test_large(const struct folio *folio)
->   	return folio_test_head(folio);
->   }
->   
-> -static __always_inline void set_compound_head(struct page *page, struct page *head)
-> +static __always_inline void set_compound_head(struct page *page,
-> +					      const struct page *head,
-> +					      unsigned int order)
-
-Two tab indents please on second+ parameter list whenever you touch code.
-
->   {
->   	WRITE_ONCE(page->compound_head, (unsigned long)head + 1);
->   }
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 6e855a32de3d..54ba7cd05a86 100644
-
-
-[...]
-
-> diff --git a/mm/internal.h b/mm/internal.h
-> index d67e8bb75734..037ddcda25ff 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -879,13 +879,13 @@ static inline void prep_compound_head(struct page *page, unsigned int order)
->   		INIT_LIST_HEAD(&folio->_deferred_list);
->   }
->   
-> -static inline void prep_compound_tail(struct page *head, int tail_idx)
-> +static inline void prep_compound_tail(struct page *tail,
-
-Just wondering whether we should call this "struct page *page" for 
-consistency with set_compound_head().
-
-Or alternatively, call it also "tail" in set_compound_head().
-
-> +				      const struct page *head,
-> +				      unsigned int order)
-
-Two tab indent, then this fits into two lines in total.
-
->   {
-> -	struct page *p = head + tail_idx;
-> -
-> -	p->mapping = TAIL_MAPPING;
-> -	set_compound_head(p, head);
-> -	set_page_private(p, 0);
-> +	tail->mapping = TAIL_MAPPING;
-> +	set_compound_head(tail, head, order);
-> +	set_page_private(tail, 0);
->   }
-Only nits, in general LGTM
 
 Acked-by: David Hildenbrand (arm) <david@kernel.org>
 
