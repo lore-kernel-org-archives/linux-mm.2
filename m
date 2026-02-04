@@ -4,93 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A04AFE9D403
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 15:43:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56E97E9D404
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 15:44:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E92736B0098; Wed,  4 Feb 2026 10:43:32 -0500 (EST)
+	id BC2876B009E; Wed,  4 Feb 2026 10:44:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E66AC6B009E; Wed,  4 Feb 2026 10:43:32 -0500 (EST)
+	id B6C176B00A0; Wed,  4 Feb 2026 10:44:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D692F6B00A0; Wed,  4 Feb 2026 10:43:32 -0500 (EST)
+	id A994D6B00A2; Wed,  4 Feb 2026 10:44:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C29056B0098
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 10:43:32 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6368EC109F
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 15:43:32 +0000 (UTC)
-X-FDA: 84407193864.30.0BC3673
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1556120014
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 15:43:30 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPZZro8v;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9882F6B009E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 10:44:34 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3FFE8892F7
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 15:44:34 +0000 (UTC)
+X-FDA: 84407196468.06.40834BF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 7363420013
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 15:44:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBr30LtE;
+	spf=pass (imf03.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770219810;
+	s=arc-20220608; t=1770219872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/yWUHtkwLAsu+DnrU+gY101qDlmE6inMuHEbis68x/M=;
-	b=FQtIP92uBmEbRJNgLlP34vfZ7ZMnZ+wROYIcSLyGEsbb/bcuGBGgK2Db8HvbghheWR9zsq
-	d2hdjMFCc7ZOruZj7idzGR8ElhCfv4zd8Ek0yJS5Gt7QqsnmXNf8oILtQqY4c4ngn93rd5
-	G9zZvZOo9vIF5jr/0ClCYVtqLGB1P+Y=
+	bh=86TOPhED2LK9Z5gdyG52xDP8a9cxJnHCpI+YykKGTIE=;
+	b=G34ne1J29eKqweTep+SVDfXG0ARueG4f51WQe4e7gdnY91boYrm5yCW0LNUEZIB9wzthCH
+	hf75kGqhtqA0rIAbiRM2qnzy8q7zE7AUjgAtE7Vg6vCaz3eVQqMfLQSrl/oZaJYgB/6+vF
+	UHHYpyExmdYDh/Lq9U2hgWoVN616/5g=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VPZZro8v;
-	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DBr30LtE;
+	spf=pass (imf03.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770219810; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770219872; a=rsa-sha256;
 	cv=none;
-	b=HnEBQIpo4Xz2z2Ot26b76Gqy07XkqjpxCSdzbuguZLEycIAQu4LfndXIh/6dlS1awhQxXa
-	ikMcvSEud4N0aC74QirExcW5KB/3ud7LV1XT03MPVYX6ptkLyhzDwgZ+cwHAT2WKzyIjey
-	mDFcvoFtGD3hvn9+OamhLccrgRaL97E=
+	b=C+2nFTBXbKn3IaA8PQxPc6mAfT6cRpE+j+s7mfcF/+O1R+6h7K8pUjLUgWEU83Cwz8FgQT
+	3Dv1mrkzXz+dCIapoK/WayWHEZMZRP4KUR4LCboJynf31R3ePVAoZrq2a6Nen0zQKrYa80
+	FLyJb7PBnNrEj4iKv8VaO8PFg4l5AqM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4167C60010;
-	Wed,  4 Feb 2026 15:43:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FD5C4CEF7;
-	Wed,  4 Feb 2026 15:43:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 24AE5443AD;
+	Wed,  4 Feb 2026 15:44:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71BCC19423;
+	Wed,  4 Feb 2026 15:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770219810;
-	bh=Axbp5hUl8npKt0WGTCQFeaQ4EcYxU7hzPCvTCkrlP5M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPZZro8vd+CEap7faYo2Y06FFlw4uMU4KKKzjvXbqO4QrDrZ9uZf0QZZIBCHhRAL8
-	 ygnLnOXVGs7DShWU3aPAtMJfjEsdFZgCuoO4E/7kakEQ04lPFK6QNniPB9LZfPuRbo
-	 1n9CFcr0Mh1DWN3krmPIusnsFdUZDlU5FchVmtLziuk1bpPVx+wjsGSxpYunEVKkcM
-	 JyEUZ/WZDgCLzvwaYRnBVM4TVUxTOqUtWbBR0ryImVEY9cDtV+usw+L7y0s6Bj+oNV
-	 DUpSM7LeN4YPT0b7FiJ0kKhAJbNWAJBYQojBPmodi/usMTUtgZlyFc3oIw4XCqqtRA
-	 zY9Lr0s7xRFjA==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 0/4] mm/damon: Support hot application detections
-Date: Wed,  4 Feb 2026 07:43:20 -0800
-Message-ID: <20260204154321.18577-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <8b8e9dde-33ff-41f7-8563-d9aeaf5efeb5@huawei-partners.com>
-References: 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1770219871;
+	bh=njzWuPzbKHbXrfvanK0wErBQpb7HTe1NuBwa0DB/VnE=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=DBr30LtEKnTojuKd7J1+fpgB+sbccKg9qCkTMMfwmwnq8KmSDDxmP+pEarvhEJsxF
+	 4aOqerP5AamsMRT9hI0Vzv6vH+vi5F3ZyX5srZxI2hCyjD1S1PRxLHcXZAg4ggJbb2
+	 Z4oP7qSLGK/MHR6MdkIzg2lLAtdKa7KFCDyV9CdUiwAKvzwcEorKFMM7sglBSGaOFn
+	 C3fOfugbRFTfc7dfwzcco/zUMsDB//fQ5F94TmWaMljS2LOJdHma7aoEFpO/yoAAa2
+	 eca60dsaJrUqZBkbSEX0Jgqon4yINjzlrxMJzftFBp13rS+9OqoHdfkMlcmZmgEOOL
+	 6sbUZCVA836aw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 04 Feb 2026 16:44:21 +0100
+Message-Id: <DG6AKHUKXNO8.SS3EJRUSQO1A@kernel.org>
+Subject: Re: [PATCH v14 2/9] rust: rename `AlwaysRefCounted` to
+ `RefCounted`.
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
+ "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
+ Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
+ <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
+ Hallyn" <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner"
+ <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
+ <igor.korotin.linux@gmail.com>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ "Viresh Kumar" <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen
+ Boyd" <sboyd@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+ <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+ <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, "Oliver Mangold" <oliver.mangold@pm.me>
+To: "Andreas Hindborg" <a.hindborg@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
+ <20260204-unique-ref-v14-2-17cb29ebacbb@kernel.org>
+In-Reply-To: <20260204-unique-ref-v14-2-17cb29ebacbb@kernel.org>
+X-Stat-Signature: wn1jrpukw96gx8t8g35t6fgytwtk94s1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C1556120014
-X-Rspamd-Server: rspam07
-X-Stat-Signature: hy4ui98k93nkct6x3xyxnjjqy5u8mtqi
-X-HE-Tag: 1770219810-787334
-X-HE-Meta: U2FsdGVkX182a9jF6h6aCh5Xsz5d8F/7TaAknRTyBXrO6tbTFxw34bfhr6h3cAF7gG/XTpMAvML15MC4ElmSrhKSwHZwhU0HOsoV0ZzzBiMK0BrC5+yLQ7QoLkU7uCF4EvWeTTs8Vx3BLQppa0HNqyrkHnQ7NqCVNZT0aZjWv5bpmRK8Nhu4+VH8CrZ/RZsN8Mazip6fzfyfui4Yp3dn8ilVTrVYKz9borueMOBVeFVUOwzCg2p1SkCGloiT0xO8k9Zkcec/ByGCPYP+QENyqffh3wbBXt9YqaI4/7Jz0YEja8azJ7c7onCApOMdfGxMw8pFEX/vC3XSrXfU/aZxYznXMJzV2gNbR6a81Tng6jJh7mxDkFJ2GEB+v5JOMbCsOVMMOg0MG/TmpZVaITCJDC6kT/WhTHfydrIDUfaAF4ALWSPcpDnEyolteejbhpSPHB1+wY2o9rlFByVztFWj0ZdeqivYS0+v8xHsRVH85K/ZYKqpqvhFhPmJc2eRLEl0dO5z1nQ1d/UCr207F5B6I1YmSP+/vIEaK2VLoJEc7XFS1YlNSdPh7VU0DNwwZkvUhGrFPCqtsgPvYzuUf9SGBwc7vb52mrCFayEmajSc6RoqZDUcEcTYX3KSjic3CAXNdYC1ACtLogb+ZgPNWZgFhT26mkWtAzkZu0j5tauFDeBFOsJ5Hem+Fo1tugyhsYZvuSHu8uPXHGF4+uYe0NwaZdfWC1+HQIlUmN0Nk9Y85zu5UXGWFvWu4v9z6NZ54l82xXh9EcsZgb9awjAN3CCBeIfC4NOCjs3yDLkm0IsMcLQ3dsX2ZTYFFmw0m0aIIZPio3QOrmsixbuv6/bNJHsMiOm33n3NTriWPRYrsD7reZehyScVWJ+rPAlNPIrSmLWXdlrYfqh13pOhfcyhDr+MRp4D0gJiMz+5Kn8NsWdLNGdZJrTlb0GUPphWFFOtPVCpvuis21ZYHHwfseZcdlr
- +5i8uhYm
- w7hg2FJTZixZEndhbvnMblZ8poMCxwTfONDrqKv+7tt3b1O5sZmk+FCbLGXIVMOGz6Qz6M9T6Hpm1waJYc+bZrJxfqEm/P/65UxFQO54T5pXKo2LTUwmT6ppAEWK1leFPn/rs6vNJU8NzYtOEnGJvKryS10aQiMn617895Vbco3P0nxsue1rnpll0c8HPx95c4oTXVydKw8GCT0+RQEi1AenyY4Pj9DXXNP7mPeBzib2LXL4BXdBkoGIWh9nrUkcR8lifQo3rReOa3iBEizFEMp2G1WoFBzCiEwEoXH8Ex6/2RiUZyAY6i0v/WA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7363420013
+X-HE-Tag: 1770219872-329976
+X-HE-Meta: U2FsdGVkX1/eYbkrYS8KGcDC+DiD9YuUC8MLAq6latj4PWYLkf7oFyHpMUJZJ6LpYn0sMi+iOoyCkFvUcMClSIwhlvimsZeLCEJErSItSrwWHAi2GWAOpSi9ZcqaStbLWL6S8PYLYwRYjTYYMnnxxayuOB0drPHT+o7MLQK3joO6MP8o6ukWupye5UUTgt9wSGNlotH/5LTe0w607a4I7ScbW0gbdoveV7CYFYBHJEfzmmolY0S2EWSAHcunjpkdkEuoAj6NqI+pxE1JhvE25zZbcqZs5oyTuIhhFRYYfhTV1cAfSZ2P+zjhbKmrTCE33TMyMyo/AFfHdTIJLrocDErEuefDlvaI7uIZQG1qx7Eg82Ymie1TJNj8eHUNwtKNb7PpaIJeAkGgQm53J3pojbjbBnPrYposgBEWWc+Z1MBq5pAWN2bsyAXkM1ICD3R6uX+qKcLYmVOswsjYsiHzjTBrKLm6DAYNckgnIDOEr60QSbpIt2AKUooDaTwIP9crBQwk7iQTCsNzWfuuaYv+ova8qT7pEVEivJ5SHhWE+96qTPjmQysDNmWE4cQhDltnORJuywTv3WkQOLHiQzl3+jwvPai0deiwjm0HeGMYwxE2c5uKEswoOaXkxlecUlDocOtttP9U/gC00gB1NjVSut3CtVLF6lfATFZzubKm43tKQh7w77WTTxEpT15n+lLmMzZ29L1GlOOZpftiuHCPhy9HnrT1Tqy5ICVUl2OE0rW0uxHDbo0VkkSTPDxqDGlktQm+Q00fZsauct5861Th1Q9w9dRdFJfy4cWGGfptCGqvEIU6xKfx6vGM39e7O8s3FvinwcKiutKbhIs3qIvt7Dbs+q9Y4cS5D0WJ+ApzsAIIZb28JdgVqtlL8Q+lWCecIOnhyTL/A0DFN5Czb9Od3JF8pPbeGKKO/fLBlrZGwfrVrdq5UojSt2VtirYqYNpm7Lve3got2/911Sun2Vg
+ 3SH7Xcx9
+ OG0BdNEeWWwiw8ZVLD65E7sR0ZRHg3JUVmOdCQhUH7oPd+ZuFQXttxt14xA0AwclEIFJvmPccxBfpdmtumnbQrzszUve/ooJm5rV+HeVSfBTW08mnVozbUkok41CmIcFLkXlMAdsC9e+SlotM5lQndLDPfl8rRtzd2bYrJjhwxbYtR9DV9ps3jNlhFOEwgwVc4hEU+k4DBAQgt7crm0mI3MdfflFv8O1YJR5x/1OhpmKr7pzyg3HABfP5F6ZhWtJHOMAwO3ZEhDd8VORVP0jC5nwtpWviTza1S135zGnStMyhId81ifiV3hJEFOnjJ5DVPQp96zAcbKiZI9XI5cofaF0U61lZKjszQnN50hb7O5rxYHcILHr955noow==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,75 +114,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 4 Feb 2026 16:07:40 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
+On Wed Feb 4, 2026 at 12:56 PM CET, Andreas Hindborg wrote:
+>  rust/kernel/auxiliary.rs        |  7 +++++-
+>  rust/kernel/device.rs           | 10 ++++++---
+>  rust/kernel/device/property.rs  |  7 +++++-
+>  rust/kernel/drm/device.rs       | 10 ++++++---
+>  rust/kernel/drm/gem/mod.rs      |  8 ++++---
+>  rust/kernel/pci.rs              | 10 ++++++++-
+>  rust/kernel/platform.rs         |  7 +++++-
 
-> 
-> 
-> On 2/4/2026 10:17 AM, SeongJae Park wrote:
-> > On Tue, 3 Feb 2026 17:25:11 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-> > 
-> >> SeongJae,
-> >>
-> >> Thanks a lot for all the useful feedback.
-> > 
-> > The pleasure is mine! :)
-> > 
-> >>
-> >> One thing that I was not sure about while working on this patch set
-> >> is whether to have an external new module or adding the logic to 
-> >> damon core. I mean, the hot application detecting can be useful for
-> >> all other modules and can improve DAMON performance.
-> > 
-> > All exising non-sample DAMON modules are working for the physical address
-> > space.  I hence finding no many opportunities to bring benefits of hot
-> > application detection to those.
-> > 
-> > I agree the hot applications detection could be useful in general and creative
-> > DAMON use cases for virtual address spaces.  Implementing the feature in DAMON
-> > core layer and exposing it via DAMON sysfs interface will help such use cases.
-> > But it seems not straightforward to imagine how the sysfs interface can be
-> > extended for the feature.
-> > 
-> > So, I think it would better to be implemented inside the new module at the
-> > moment.  Later, if we end up having more modules that use the feature, we could
-> > move it to the modules-common or the core.  If we further find a good way to
-> > integrate that with sysfs interface, definitely it could go to core.
-> > 
-> > From this point, however, I realize the feature can also be implemented in the
-> > user sapce in a pretty straightforward way.  Have you considered that?
-> 
-> I though about it. However, accessing the task_struct directly and extracting
-> the utime is much more efficient that getting the required info from the user
-> space.
-> 
-> > 
-> >> What do you think?
-> >> My implementation was module based because I tried to avoid changes
-> >> to DAMON core for the RFC.
-> > 
-> > If there is a good reason to implement that not in the user space but the
-> > kernel space, as I mentioned above, it seems the module is the right place to
-> > me.
+If you apply the kernel import style, those are
 
-I agree it would be much more efficient to do that in the kernel space.  But,
-given existence of 'top' like user space programs that also does similar works
-and heavily used, I'm not directly feeling how important the efficiency is in
-the real life.
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-Meanwhile, doing it in the user space (DAMON user-space tool or your own one)
-would be simpler and more flexible.  For example, you could simply use 'ps
---sort=%cpu', and make the sorting algorithm flexible (e.g., sorting by RSS or
-using different sorting algorithms) without changing kernel.
-
-So there are pros and cons, to my humble view.  Those may depend on the given
-use case, and I want to focus on your planned or expected use case.  Could you
-please clarify your planned or expected use case, and how important and trivial
-the pros and cons of keeping the logic in kernel or user space would be on the
-scenarios?
-
-
-Thanks,
-SJ
-
-[...]
+However, I wonder if we want aref::* in the prelude instead.
 
