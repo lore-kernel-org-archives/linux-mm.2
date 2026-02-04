@@ -4,125 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4F03E9537B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 11:58:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60AA7E9538D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 12:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15A926B00AA; Wed,  4 Feb 2026 06:58:44 -0500 (EST)
+	id C4FA96B00AD; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1257C6B00AB; Wed,  4 Feb 2026 06:58:44 -0500 (EST)
+	id C1C756B00AE; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0309C6B00AC; Wed,  4 Feb 2026 06:58:43 -0500 (EST)
+	id B50396B00AF; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E34376B00AA
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:58:43 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B31F41B0277
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:58:43 +0000 (UTC)
-X-FDA: 84406627326.01.283E68D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DFD9BA0009
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:58:41 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gz7NyLru;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A24796B00AD
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43AFF140148
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:00:24 +0000 (UTC)
+X-FDA: 84406631568.02.585E964
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0412C40005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:00:21 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fmE7uI6q;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770206322;
+	s=arc-20220608; t=1770206422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ntJYUYqYp3Gn7FI7pRL2pZqwu0nCn58LEkukXjOhJQ8=;
-	b=NGsJ4R5FnHO/bSnP39UKDLtj5XG32eqRnlHPC+L19E4TwLcq+DEDbV1BBmrsEuqLXhIscS
-	RKyiBxBwpgrwkaFQJ6O/45ERrmNhRAL3PSEluBTtaORcYRAVtFxSkgwAfMvse4la4EypRr
-	kxxJ9mUnUY3QltrIorNv7GILTLY3Z1o=
+	bh=L7b7/ObJFuGII2AQCCO0slNHZyckJAjLIqJeasqhJKw=;
+	b=U2Ssf55QbfK8cp0o3vP1aVTihz3P0oB3Bd+1CBNYGyrZxxUOx8YpqWCexP3eaXr3DJBc92
+	xj4Z6CUZDKn3W0GiczpojvgY4N/rbZ/jSO0ew7X14QNzloRRTAhm1AkXCcX2wJK2eLaZr6
+	K+Mfpn5nzGMqGF5y84pYawr2YR4kuBY=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Gz7NyLru;
-	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206322; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=fmE7uI6q;
+	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206422; a=rsa-sha256;
 	cv=none;
-	b=IumBWPIwLhcysv/9GUPvI8uhBmYYKHPb2djDvzGUipsHNTX7gUU28U6TcBrfCSq5VfPSUW
-	VeRwghQwrtsRoRgO2qd+yzmQ+5S+qFBsQ82i5Ly7ygy8gOwCnFjImdEsZViWNEGeyV+GtW
-	6It37W1ioKrfRYu/YxJ9nxNX/KFLtjM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1ECFA437CB;
-	Wed,  4 Feb 2026 11:58:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB73C4CEF7;
-	Wed,  4 Feb 2026 11:58:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770206321;
-	bh=4kJUgBgTj0V7kRaDlo9MltCBPjRgIT4dj8eMOKXfB5o=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Gz7NyLruiwim/m3qBSE5DCyGcBGfDnNAOVb4JpibsYAUsWYSmm1MpCPHgWwtj/fRE
-	 e8VUFzL72M3Zx6A1qZzoh/IA8ii2wIC7I4cJhh+uULDLUPyMKnEvCcEKQxVOEmnib9
-	 DoSHh3MiiduX7HJcOEoYvDR16yqzuWAG0XdMb3TjJ4hksqK25J8oJA81S9JdyO6hKT
-	 KumBA+dRzkFBjLvTQYFQ6GwuEX6rkbvQzlazbWUeATLs2BAmRQQCZoHCpYtJV8wBG0
-	 WlW6SNySBC1jA+L56+L0NXtFEY6GCjF7HOrLV7AMDGIWW1Tfv0xJw3TcrW5yiutEIv
-	 NrzqX1zgg14vw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Wed, 04 Feb 2026 12:56:53 +0100
-Subject: [PATCH v14 9/9] rust: page: add `from_raw()`
+	b=Oeg+QZ+wbA4lToT83qnIpV1dGlWXzO+ng5FfDLzG8fseKlqAc4Pls/1VtyN4EyrhTOR90i
+	XhfSgxMKrncmnSc9OPYAEz+RLsjsu5T4chZSuELu2QU51SKyKW17ZThc9crVFTuUHd5oxW
+	OF/Jw/Hgm8z4s4Uw9hK8BMvxDSnBCpk=
+Date: Wed, 4 Feb 2026 20:00:05 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770206419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L7b7/ObJFuGII2AQCCO0slNHZyckJAjLIqJeasqhJKw=;
+	b=fmE7uI6qXms647X2X2mafRw2ZoAjGy/82UxM/h4Bn24SKXKOF2TBTIsLTaVn4njlehBYyj
+	oPQpOMIa5dzWcxDkfoZ/DeO0UfvOd+o2nd3iSj4yKrkmBsQ7JqhaLzAQqM3iCL0lgnV7OM
+	65lek+iT/9hpFCr4lLMNcx3Bu4UGPPw=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/slab: Add alloc_tagging_slab_free_hook for
+ memcg_alloc_abort_single
+Message-ID: <75a2obu7fk4t2h5wj54gkbtyie4pdenw4mzecmmsgzwbhvxfmy@7mrdfx5q5p3h>
+References: <20260204101401.202762-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260204-unique-ref-v14-9-17cb29ebacbb@kernel.org>
-References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
-In-Reply-To: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, 
- Leon Romanovsky <leon@kernel.org>, Paul Moore <paul@paul-moore.com>, 
- Serge Hallyn <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Igor Korotin <igor.korotin.linux@gmail.com>, 
- Daniel Almeida <daniel.almeida@collabora.com>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, 
- Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- linux-block@vger.kernel.org, linux-security-module@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
- linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
- Andreas Hindborg <a.hindborg@kernel.org>, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1098; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=4kJUgBgTj0V7kRaDlo9MltCBPjRgIT4dj8eMOKXfB5o=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpgzQGWPeTkfQ596Yd1NnAfAqNezMquqK4g6o3T
- qdh/ZoqiCOJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYM0BgAKCRDhuBo+eShj
- d4iLD/9Q3u3EUkTrf71/HDEO1t/JE9RtrcE59R/WUUVHVBm36/KFnyuhWlTrS9tw/VZFWtGQ8So
- sTWdaMtJWEC2q3QQRpNIfuFJ+Z/+jGK5LZPDwn9KXSQXO72OFyCHmoxZ8S49BGHkcXC5J36BddJ
- oBhV1NXLnyPAz4PFYpxCpsyaIvY/ndPSnFXUaDUitUS6k8jXTbQnIThXtMjwRQYwvoZ/WV124sk
- UEf0NZdBT/tTHHljmTjmsBsfh/s31GgbOsBRNZlgQbEn1nfIKUv8rkWWsiMc2z5/CrZPZFNLLc2
- dvo/sOb/S1/XSyhIfdqBW5nu6XT3aIsRyQBNla6glkOxnRCPVwGnA0cVqLJSwGDC7HwdjQp8tg3
- 6OpsRLLpT8i9c7RUWvazHkNpzYJVUiCdPvQ6bTtgozQcZ3XftPlRnYqaUc0MKuQrDp32ITc1Qpf
- 2+NdHl7Ap0HGYUDWUouSvjzXWw3qRpzVu9MDGgzT/Ov44EEz/z8ouTVC8G5/wtYG2DvJ2Vt29g9
- weNYSK06rZyCIJ+f9S4SG6AsSmYmsH717vhWbdgv70nWR1sWbtA2U+0U94cRyNxeQLnmIvuY9CJ
- jUyG0IGKuA+MPWHoxjeNdu0VkFmHoW388Q536eQxeCfpBS7lljXv3TWUIUBmJqIKc7HOg81GZK1
- dE20j3imAjE0sfg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam12
-X-Stat-Signature: za3o1qdsfonqzt4g3x77h8rppp6zsfmb
-X-Rspamd-Queue-Id: DFD9BA0009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260204101401.202762-1-hao.ge@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0412C40005
+X-Stat-Signature: kowiawuszc4tgn4ms87t18en3are6npg
 X-Rspam-User: 
-X-HE-Tag: 1770206321-167920
-X-HE-Meta: U2FsdGVkX195kK90gKFQRoD1Q781F3uQV9FnIzm9XoDcw69hitDRWn4qj+ypuzQQBD9k73fx3HAIzgrbbXDaC6W9bkyrwMkWZlIyjq+jR92NRQbg2vzMcJX8re72oFddKYaECJvPgQ4EyDJ8lLELBQ6R+MeZRhd6F5dOF17JN3ITpzFnttj+QsAFwPFQzExc4ZTneaoLpDUN/PBjau3lktsSUS13NjKbD6u2whIceNtKiXtwU7v58clV60hxLQdMVnli9ARr9yt0w+8ZrztCQ0hSWeYGFTV+xbNzOe6APr9NVEK2jDG8LTj3Rqy7BeBay7JBakyDnRl5PemHLCZz9HlN/LcF/3qN5GkaoJgk+Z/XNzUbekc+/6L3EGiCPpUtXuefS6xLrmrBTTUvQ/V8neUxDY9ieemeu2Dm2sFvp/LHdcw+NbGnW/Hb3AxaNEky+L9fBnXHHem/eh9YPDjKIyur2bvfale9cEUkhuk35XA0T3yaf7t1NqrCS+v54wVgp+o1PMuY0UJ9cao12md0cSn4CXpZnjAJIgD11SW/ZZN58HGVNaCOH/cdWX1WPQIk9aacGb+KJPOR86+SDxABiUPl2mLjrwOmrH7GEc7TXMii7e16w5khahOdCMiMTxv9jDXcNRqU9n291bFB5Tq1t6coDwpq6lNZOXGifS5HTZ8d4SDeKa3FJAGNyHJ4Wjw7nKVeW9eiQKqSDb5DVWTNWy39qSuBMyGkswLmXqVx8H8HCaI3/CguvtOTeu9yB67kf0ZtSzq9ScVHJHpgEbKGME9wQ6o/uxzSjT6Ec1WM4uRLsCrkVb1LN9qHNu4pRolXQhcsQUaw316aBIffwQEvFssMfZSXWK9xjVdTFNlkSs+S1/uIAf9B6pAtClLyEF4tKNyEsbZIf+bGkQmTqZslX2fmbmoyRMw8px5q+kIJo0bmc8O3R6tfdFHrm9SwgkC605DU00CSGoM9KAK+75b
- cr+XqZBS
- dPXFGZbECNHkm6dsrl5Bd9QVgn+H2oDY7WX3UuSKc83yGEvuSj/Ok/8MWWBwzZAAjw03uWH/yn60+AucpOakAjwKhj7v3hEChGqaxxNnMDwAjDMNhZvQGfN7/dZFmfV1ocQvSXzgSK8nhdkQ2r/glgtHB+GgqVmx/YdTvnmi/+JV81Nk+r5pFKMqgs8VQI5A0+DjRItbnZPbATx1B/rw3D5RePUHNdlLFNaWskCjKE1/U3Z5OviW3uFeeqopBmvp3Br1XsXjiCuYtaQQ6NdNwf/Cam8yvqWR/494HNZV7p6yUjIcOPBZR/ADenIeKB4dTSZ5jGc908VvXrTt2cXbRlnV3YCT+PDQOIUu8bkJ15KHJiJg=
+X-HE-Tag: 1770206421-251517
+X-HE-Meta: U2FsdGVkX19DXs1LYU26gGz0RIBj4bjEntqDt0LzC3QaeNkPxt4UcbKizsYG8uwYxsY9sC5xWaPpBYIm6DBCaDTKwbsnt1/+iUYW48/zxCzjIrp0xhmciDx2s8hpaueQ8VE7soFTXyKSGP9Kx8Wq8MzzHAbF2sQoSTmKN1W8bWyEWmsTPZ2rOgL2oEzetnZJc1m7F2DmS3HXbsvJF40WWDwAJ8MFF7ZwDsTh9fmzoMBfgS5QmVg1y5U1lHm2udv20uPQc9P0WT0PsAjAl5FOfsd9jmP/oSod49wFRRwBbPUX37kP0HWh5aDCqPSDl0RA2yWjBf3/B+QbMtPM/3xuWRXJXNG1zlGba3WtB8qL1/DYMJ2iZbdJ0hKHphncl2RTLSybijBO8q+EKBxhd7qSn7MaIKOBfp6oiQFd3iuRgyN6RnFMUb0MZciF9bW5tB85oL85lrKALr2Aq64/P16egHekJeXh6yIeK26HCWxn7C+yhPxc7+y/lyQ/kgJCXOD3CzSHUe3GztqTNqeWyHOpwkicWOlAfxZ4cKrBo7qBmgUGlfy21d2dejCesvjh8B3EXsC7p8o/SFBRL6HL4w5c00IIR/2hdrBGSbq4cjo4xZn7kei0tNGyRFOAFCA9ISzrII2CdZev8Sn16zcjjltn9vuTLbAIZobNDYlnzdqT1fTi9TG7l00jQaPyGRYSFi+vWEl4zeB3jdfWNSDtN9dMIWbXxXUL+uLX/eupY8pubz06yZ8LQ/Fs79n+thbxJlHA2swJl1JFNBhGOSZ/z37zrz2yLOysMPNz01lUDrI3KfDQ30hM2Fv1MmFLnZ7yxGCL3uY+1+H7Sqcma9xqOB7WJtkB43KhjzQMuWw2v/2zJ0rWM7KEJGoB3HtT5/CO0f7NT5LxvJCaHFNSSLS/DC629XXnq7K76D9a
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,39 +88,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a method to `Page` that allows construction of an instance from `struct
-page` pointer.
+On Wed, Feb 04, 2026 at 06:14:01PM +0800, Hao Ge wrote:
+> When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
+> may be noticed:
+> 
+> [ 3959.023862] ------------[ cut here ]------------
+> [ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
+> [ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
+> [ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+> [ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
+> [ 3959.024182] Tainted: [W]=WARN
+> [ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+> [ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> [ 3959.024199] pc : alloc_tag_add+0x128/0x178
+> [ 3959.024207] lr : alloc_tag_add+0x128/0x178
+> [ 3959.024214] sp : ffff80008b696d60
+> [ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
+> [ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
+> [ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
+> [ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
+> [ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+> [ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
+> [ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
+> [ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
+> [ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
+> [ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
+> [ 3959.024340] Call trace:
+> [ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
+> [ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
+> [ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
+> [ 3959.024369]  xas_alloc+0x304/0x4f0
+> [ 3959.024381]  xas_create+0x1e0/0x4a0
+> [ 3959.024388]  xas_store+0x68/0xda8
+> [ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
+> [ 3959.024409]  filemap_add_folio+0x16c/0x7e0
+> [ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
+> [ 3959.024424]  iomap_get_folio+0xfc/0x180
+> [ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
+> [ 3959.024441]  iomap_write_begin+0x198/0xc18
+> [ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
+> [ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
+> [ 3959.024461]  blkdev_write_iter+0x38c/0x978
+> [ 3959.024470]  vfs_write+0x4d4/0x928
+> [ 3959.024482]  ksys_write+0xfc/0x1f8
+> [ 3959.024489]  __arm64_sys_write+0x74/0xb0
+> [ 3959.024496]  invoke_syscall+0xd4/0x258
+> [ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
+> [ 3959.024514]  do_el0_svc+0x48/0x68
+> [ 3959.024520]  el0_svc+0x40/0xf8
+> [ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
+> [ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
+> [ 3959.024540] ---[ end trace 0000000000000000 ]---
+> 
+> When __memcg_slab_post_alloc_hook() fails, there are two different
+> free paths depending on whether size == 1 or size != 1. In the
+> kmem_cache_free_bulk() path, we do call alloc_tagging_slab_free_hook().
+> However, in memcg_alloc_abort_single() we don't, the above warning will be
+> triggered on the next allocation.
+> 
+> Therefore, add alloc_tagging_slab_free_hook() to the
+> memcg_alloc_abort_single() path.
+> 
+> Fixes: 9f9796b413d3 ("mm, slab: move memcg charging to post-alloc hook")
+> Suggested-by: Hao Li <hao.li@linux.dev>
+> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+> ---
+> v2: Hao Li correctly pointed out the root cause of this problem.
+>     Per his suggestion, this patch adds the missing hook call.
+>     Many thanks to him for the thorough analysis.
+> ---
+>  mm/slub.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/mm/slub.c b/mm/slub.c
+> index f77b7407c51b..452a92544c6a 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -6689,6 +6689,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+>  static noinline
+>  void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
+>  {
+> +	alloc_tagging_slab_free_hook(s, virt_to_slab(object), &object, 1);
 
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
----
- rust/kernel/page.rs | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+LGTM.
 
-diff --git a/rust/kernel/page.rs b/rust/kernel/page.rs
-index 4591b7b01c3d2..803f3e3d76b22 100644
---- a/rust/kernel/page.rs
-+++ b/rust/kernel/page.rs
-@@ -191,6 +191,17 @@ pub fn nid(&self) -> i32 {
-         unsafe { bindings::page_to_nid(self.as_ptr()) }
-     }
- 
-+    /// Create a `&Page` from a raw `struct page` pointer
-+    ///
-+    /// # Safety
-+    ///
-+    /// `ptr` must be valid for use as a reference for the duration of `'a`.
-+    pub unsafe fn from_raw<'a>(ptr: *const bindings::page) -> &'a Self {
-+        // SAFETY: By function safety requirements, ptr is not null and is
-+        // valid for use as a reference.
-+        unsafe { &*Opaque::cast_from(ptr).cast::<Self>() }
-+    }
-+
-     /// Runs a piece of code with this page mapped to an address.
-     ///
-     /// The page is unmapped when this call returns.
+Minor nit: It would be cleaner to store the result of `virt_to_slab(object)` in a local
+variable and reuse it in the code that follows.
 
--- 
-2.51.2
+If you end up sending a v3, feel free to add:
+Reviewed-by: Hao Li <hao.li@linux.dev>
 
-
+> +
+>  	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+>  		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
+>  }
+> -- 
+> 2.25.1
+> 
 
