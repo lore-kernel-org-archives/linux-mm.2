@@ -4,89 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2BAEE8B39F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 06:21:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AD4DE83045
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 06:36:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02A9E6B0005; Wed,  4 Feb 2026 01:21:42 -0500 (EST)
+	id 8DE726B0005; Wed,  4 Feb 2026 01:36:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F16A16B0089; Wed,  4 Feb 2026 01:21:41 -0500 (EST)
+	id 8C0086B0089; Wed,  4 Feb 2026 01:36:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E156F6B008A; Wed,  4 Feb 2026 01:21:41 -0500 (EST)
+	id 7C43A6B008A; Wed,  4 Feb 2026 01:36:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C7D066B0005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:21:41 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 76AEABAAFF
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:21:41 +0000 (UTC)
-X-FDA: 84405778002.30.8B2A4F3
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9B06A40002
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:21:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="DPLaiT5/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 66DD26B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:36:32 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D84891B253E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:36:31 +0000 (UTC)
+X-FDA: 84405815382.27.BFFCFD3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 533B240002
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 06:36:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q2OuIsCp;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770186099;
+	s=arc-20220608; t=1770186990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RMrZT2j+/I2Uo0G3gxwUxwRURynYr4G6nxE71up9VIQ=;
-	b=axJSc90P8GvZbKgckj3HWgVcgdc3PRNd1+wOhLPBb6q/aLsCH6K9JuzHlSrxqQ8r/JV9dQ
-	19bzapWg6trahF8QBWKiY6tHVO3Oxd0sS7HHC82V5Dh0DpoCUFZ/lydO+b47i2xND3DPOj
-	UyZx5FPGc1+Tw3i9Q4g3KuAN0jazHws=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770186099; a=rsa-sha256;
-	cv=none;
-	b=SfBkGYnSRI4lRUBXtDuMtXe04dtSbRQpQ/wVZDLNC8xChkWqjx+M/a1mP3jdJCVtXO+OWP
-	PpUgPvAH9Jx+UI5/B8QT56tTuO/il3gaLr/cY3DJaPDq1drM6RpDYW0YrQ5tHsZENlNicU
-	CUWkxv3GmE8Ke+t18+Qwwmdmo0StfsY=
+	bh=PKiLsQOYKsOSLiFQOikhSGrffLOP0eA8agqGroBlfPU=;
+	b=kJ8BAwvOJv8vkLkEHUGHgC2ciXMy/2n4m79wg+GtGQU8aU8gCdtfPTRJ3b9RKoIMibie6Z
+	SF94j7xf9xG+njx9LEaPB9jOk7i0YC9TRKXQXddy8S13usQWcRAMC/C14BKGKn5P8C4v5K
+	0eTmPlnjAhdDtLJu18LqUDbuFXQ8+oE=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="DPLaiT5/";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-Date: Wed, 4 Feb 2026 14:21:24 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770186097;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RMrZT2j+/I2Uo0G3gxwUxwRURynYr4G6nxE71up9VIQ=;
-	b=DPLaiT5/tcgUHOBFHpQx5WbgMCZXdhDx6OWQ0unFJczK7/a3GufOkUptQK8aD7L3VT2Xtw
-	pMdJxvAzNMSz/UmL6qSsCBdgwXoJxz4Mxro+/gbV1B3BGD5NI7M51c0o4WR6BZKO33yCy7
-	yW0NV8+B/EIUCegv9sGE/cS7kOWFyJ0=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Suren Baghdasaryan <surenb@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] codetag: Avoid codetag race between same slab object
- alloc and free
-Message-ID: <inzhzqeqqvjudozqz433462qy522deyl226jfvajdkw3eerodk@bjoiaorsesuq>
-References: <20260203073006.151710-1-hao.ge@linux.dev>
- <aYHDMvMUfKj4_eDe@hyeyoo>
- <5b8e12d6-269c-4979-b99b-b3b4177aa00f@linux.dev>
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Q2OuIsCp;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770186990; a=rsa-sha256;
+	cv=none;
+	b=XXph3KOK5BeBV9r26r3J6i0674t/u4hkf1E8thtPsEFSnOItHWQD7KXWeSQcF/A1nPrTDH
+	gr21h8vxKKJQ4yah5o4l2hfvsFIxbXmnkT4JWAHvTwfD/QhIXSPUeHh6DGKpjqVsIk3j2h
+	2X9kbdFfxDm7/AUU9S7JXOUcyssmGtM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6202160010;
+	Wed,  4 Feb 2026 06:36:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C879DC4CEF7;
+	Wed,  4 Feb 2026 06:36:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770186989;
+	bh=N3s8qX3LNYftquHC3kpN7MQgpIFfQVMSYk7RgIbY1MI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q2OuIsCps8yAxB5WsKTvJw2wY9YwmEGr1azMDKqi5tndxSlUx4bDcrNppvB3EY1WB
+	 gE1qO4dfGLQZAdcIQSzo/ag6udaX7sVSMJYsc+FeKdZJWhn13a+wBYsQxM0cyC7IJz
+	 M98NoTz3xVMH32Dx5I16ZI3jWyajgHUN38scVWItDjChT/htsHh9k9O1ueWBzYCvDL
+	 XoHuuCILaBBNPACtQRGRALEMkJcZlq6SLwwi+9/5TqqBJpkCxanhVGrSc7F2cjAE8L
+	 dFXYr94Awv9FjP36RF3udcoreRJWt1gbhqj5kwg2Qe2MD3HFNs5e/YfIKiSpNVdPCG
+	 jsxymUq17EovQ==
+From: SeongJae Park <sj@kernel.org>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	maple-tree@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Suren Baghdasaryan <surenb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Christian Kujau <lists@nerdbynature.de>
+Subject: Re: [PATCH v3 21/30] maple_tree: Add cp_is_new_root() helper
+Date: Tue,  3 Feb 2026 22:36:19 -0800
+Message-ID: <20260204063620.15857-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <malwmirqnpuxqkqrobcmzfkmmxipoyzwfs2nwc5fbpxlt2r2ej@wchmjtaljvw3>
+References: 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5b8e12d6-269c-4979-b99b-b3b4177aa00f@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 9B06A40002
-X-Stat-Signature: 54mbqpfsb5bw5xjg4f41uggptrxw8mbk
+X-Rspamd-Server: rspam12
+X-Stat-Signature: kfw517sxmr4wxkffzdg8np1rw46cu56y
+X-Rspamd-Queue-Id: 533B240002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770186099-245956
-X-HE-Meta: U2FsdGVkX1/T56S9doq1Y+KUeJBTb4FTqEagl4fUUZ8YlRlCl0nD6S6qW0WwsnDrZ7RY4RGPhCgBfZWMSBdgHyKjOaBRYC+6jvDghtHGCFMvrM8lEsegY50r4Wb27bSrv/1mj9VaPpQCEJOw5KsEVAoHKHJ5g6Pi4Hlom5w4BKTKnxzeCg+dKZN0cje+OEbsIuDCIyd7MrB+8sK0Z2HDAw/xJvmC9xjfrrrxJXix+LFpqHY9oEE1XcR2dSSY57vbBFnKm2kO65N7lSnBMzQSMKWe8jYlhOpkSY9xRLj6elDHKdZ2d868YHpdlbbpe+nEUtqJFYFrCEPJwmpNRR6a2jFABjcr/u56AVOem1iqB8oizg1KpU5uvU7JlJ75XvjYkL+xKavoRkkW22ap9kEcqxN7MVn8CCNRerXKo48BYUPg7PpaR1ONrwS9yjK7CJd/yj4PZWP4W5qlCbxRDoGVi8PulxfHVn/Ect8a5TqhokcTKueA+lCPfbmLlqJN1S4VJnqwUZ48gkes9W+HLpRhIoJ7zMceCooo4cUPVT1X4nx0G326gS+lTVWiuF4loSsNvLbm5mrQaX1vvV2tfkdcSS2aaCcrzhR2X6eBBG/kaWsHKNVPHGrms4Mnft0qCnfrztJV63/egqtkx1tagc60IfzbQeNVOLiNMMfAeZe23y6YKUQr++ESbWl+pqlmOtAniprT57d0c0XAAM2wIwFg+4vas3wQU1L1bsGSGaA98IqbBiJKzvyY9EYTRTNOEJXyJhwQEuE0V1q222ZzGGOJ0Fwj+3qo6FRbq0elFNHih2rEQP/kzzYlcBeUSiqDPYABUPVtykJlfHrGmLpN5LhgXMka4lgvay8PsTpdbYZHZxY15CfzruJtPnsB4uUvYz67lCrXXRZV+noBQa3gFcOfrsDfkSO3U/qJmluFoWCWIcqzsjfv8W0it++uPuC0ZysgnFtHtAg4devotFDBWDE
- xTgOThrl
- HxZDgbe2iYQva6FSzgH/MR/8f9HEZw3esCe/pc74RUUcNWgzhElYatyjoyqrXtCUJQGHamo+LmJtKiOLRFbQiUBjBMjVqgUEr2/ru5TbfIZmXcRRuqUOwJE0Adtn14jPc6MBODzNY0AtjgPOzKSnoiVkIh5/JZq9pUSpO2Eru8Buce773O3QpcMYIC6Cx4TKrDlsBOdczRhLMIoACQXwQy7jBouxy8M/uqlj5uPLvopQ2lKU=
+X-HE-Tag: 1770186990-131717
+X-HE-Meta: U2FsdGVkX19yJE6xlq2yu04h0qhVpUC4ekoqYGuOIYSavGgXpaj/6ZQweQwtrD9KygRHL7LMgs0wdFka67znGKOQqbEjR9OOoqdAjseXKgzGfmcOC5+J+g8oo+YMOpk+0BZFPDQWRaQBtBP3nJSlLI3nM7Q/vuV/EDQUdqb8XzOiuruR6OKQ91/zmjpsoG+tXGwl+91QkOqD6rXQJZIma//1YLr/zdpbdC7jnZwlZBSdcOdIfsNbjL0B7ifWmS7d/YdKYf1KWibFgNq67MO0yH6e/4DxQEIVLeVwz+2dTzIoT+lgbhLLoHW/Tw/PxGpv1iSxrfO0woP8dQAvhGZwqV8XgX1GqUrbFxgFzonj0rhnhDcbYyqb/Eo4gVOTdDL+AXgjphO8zgq024vMax+k9IWwB4QCeBlx4bAb/G9ntHCLBUbvbBJrzaBvKOshK0Czwttn7/AmlCme3t6om0QDEYY9A5y77MjtixCvO3QlapyN+mGvb8DAm37/yC6GTLn6OqlGTe/BLA2Nkssa4dTg23fe440BKIicPuUIUH1S85xpn5lYfJTm1hXLAIiXdKyeXL3a6T8hX4oM+dNiqBEbqJA85o/Ej3HLPs4u8syO4Eqq0VJ4xOob+8AG1HooJMO0H6ghCAx/SHiQBXsJTXH5oEju/6+k23Zn3k0f0iTv2rKwLNk5Go4MfdvNacJaBHNOvy91eobo+AIOjYs/bpHf1WZBPGEwV5z4NssZHTTagu6nv1umoxNxw/mSAv9oJFSq6pIcNupkro0WGZvQFe/DnfUPDdC+AgyJth1Q4E8CaXdlP5Di6TiSJI7KWG3x0dbgicuEDNyrIEQhLx+2fef8fITrOxZ21tU6dm8vA6zEc6csAff2+ah0UyGAtRqWEomN+Y68ot2PoBpilLTBGLoQLu+hSwkdQuBDAZpLMPcfwsg0DqDKDdstkw7pcrK3S5k7dI+TwadtfExk5fMTIcv
+ tQORNYS0
+ bF7hKWW7jmnSHrgHmtLZpC1WCvIVD+6I1arAz7Pj4iZXpmIVJ+8D07uK/kYOHk61UaDRgRZsDC3vuKR471B71z4vy2cqwCGvjI+FyYjhYAZ0dbOkqL1uxcwaR2Ftz2PpdJqAS61t0Y/OpbPjkdfWY1zfqmI3BkdFKHkbekTpN18ijmpvTpt1RpdfC038rgfryqGKzv7u8i64Bm3WN7g2MZaCiZE9Q2LVeYpx2cXKocupF9iLjn/xo6E8UwdLHDxw1K7IXD4E66PuWSbQbuVEyMbhnVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,160 +103,103 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 03, 2026 at 06:02:07PM +0800, Hao Ge wrote:
-> Hi Harry
-> 
-> 
-> On 2026/2/3 17:44, Harry Yoo wrote:
-> > On Tue, Feb 03, 2026 at 03:30:06PM +0800, Hao Ge wrote:
-> > > When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
-> > > may be noticed:
-> > > 
-> > > [ 3959.023862] ------------[ cut here ]------------
-> > > [ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
-> > > [ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
-> > > [ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
-> > > [ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
-> > > [ 3959.024182] Tainted: [W]=WARN
-> > > [ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-> > > [ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > > [ 3959.024199] pc : alloc_tag_add+0x128/0x178
-> > > [ 3959.024207] lr : alloc_tag_add+0x128/0x178
-> > > [ 3959.024214] sp : ffff80008b696d60
-> > > [ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
-> > > [ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
-> > > [ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
-> > > [ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
-> > > [ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> > > [ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
-> > > [ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
-> > > [ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
-> > > [ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
-> > > [ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
-> > > [ 3959.024340] Call trace:
-> > > [ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
-> > > [ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
-> > > [ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
-> > > [ 3959.024369]  xas_alloc+0x304/0x4f0
-> > > [ 3959.024381]  xas_create+0x1e0/0x4a0
-> > > [ 3959.024388]  xas_store+0x68/0xda8
-> > > [ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
-> > > [ 3959.024409]  filemap_add_folio+0x16c/0x7e0
-> > > [ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
-> > > [ 3959.024424]  iomap_get_folio+0xfc/0x180
-> > > [ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
-> > > [ 3959.024441]  iomap_write_begin+0x198/0xc18
-> > > [ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
-> > > [ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
-> > > [ 3959.024461]  blkdev_write_iter+0x38c/0x978
-> > > [ 3959.024470]  vfs_write+0x4d4/0x928
-> > > [ 3959.024482]  ksys_write+0xfc/0x1f8
-> > > [ 3959.024489]  __arm64_sys_write+0x74/0xb0
-> > > [ 3959.024496]  invoke_syscall+0xd4/0x258
-> > > [ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
-> > > [ 3959.024514]  do_el0_svc+0x48/0x68
-> > > [ 3959.024520]  el0_svc+0x40/0xf8
-> > > [ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
-> > > [ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
-> > > [ 3959.024540] ---[ end trace 0000000000000000 ]---
-> > Hi Hao, on which commit did you observe this warning?
-> 
-> 
-> I've actually encountered this a few times already – it's been present in
-> previous versions,
-> 
-> in fact – but the occurrence probability is extremely low.
-> 
-> As such, it's not possible to bisect the exact commit that introduced the
-> issue.
-> 
-> It is worth noting, however, that all the call traces I have observed are
-> related to xas.
-> 
-> 
-> > > This is due to a race condition that occurs when two threads concurrently
-> > > perform allocation and freeing operations on the same slab object.
-> > > 
-> > > When a process is preparing to allocate a slab object, another process
-> > > successfully preempts the CPU, and then proceeds to free a slab object.
-> > > However, before the freeing process can invoke `alloc_tag_sub()`, it is
-> > > preempted again by the original allocating process. At this point, the
-> > > allocating process acquires the same slab object, and subsequently triggers
-> > > a warning when it invokes `alloc_tag_add()`.
-> > The explanation doesn't make sense to me, because alloc_tag_sub()
-> > should have been called before it's added back to freelist or sheaf
-> > before other threads can allocate it, or am I missing something?
-> 
-> You are correct. Likely mental fatigue on my part – I cleared my head
-> afterward and found this scenario does not exist.
-> 
->  As you noted, alloc_tag_sub is invoked first, then the object is added back
-> to the freelist, so the race condition I described is probably non-existent.
-> 
-> Therefore, we may need to revisit our assumptions and take a closer look at
-> the code corresponding to XAS.
+On Tue, 3 Feb 2026 12:26:44 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
 
-Thanks for the reporting.
+> 
+> Andrew,
+> 
+> Please apply this fix to remove warnings on older compilers.  I've compiled the
+> lot against gcc 8.1 and 9.3 with only this fix needed.
 
-My suspicion is that this issue is not related to XAS. I suspect it may be
-caused by a missing call to alloc_tagging_slab_free_hook() on some free path,
-leaving an uncleared tag behind.
+I also confirmed the below patch passes my build tests.
 
-And then I reviewed all call sites of alloc_tagging_slab_free_hook() and my
-understanding is that it should be invoked on every path that frees slab
-objects.
+> 
+> Thanks again, SJ, for looking at these patches!
 
-Then after reading some code, I noticed that in memcg_slab_post_alloc_hook(),
-when __memcg_slab_post_alloc_hook() fails, there are two different free paths
-depending on whether size == 1 or size != 1. In the kmem_cache_free_bulk() path
-we do call alloc_tagging_slab_free_hook(). However, in
-memcg_alloc_abort_single() we don't, and I think that omission of
-alloc_tagging_slab_free_hook() could explain the problem(unless I'm missing some
-other details...)
+You're welcome, that's my pleasure :)
 
--- 
+> 
+> Regards,
+> Liam
+> 
+> -------------------------------------------------------------------------------
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index 42038e42a4c7e..22cbaba72931f 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -3361,7 +3361,7 @@ static inline bool cp_is_new_root(struct maple_copy *cp, struct ma_state *mas)
+>                  * read-side operations that can view it until it is insert into
+>                  * the tree after an rcu_assign_pointer() call.
+>                  */
+> -               RCU_INIT_POINTER(cp->slot[0], mt_mk_node(cp->dst[0].node, mt));
+> +               ma_init_slot(cp->slot[0], cp->dst[0].node, mt);
+>                 cp->height++;
+>         }
+>         WARN_ON_ONCE(cp->dst[0].node != mte_to_node(
+
+But, I found mm-new of today triggers below warning during booting on my test
+machine.  And git-bisect points this fixup patch.  I further found reverting
+this patch makes the booting success without the below warning.  I have no idea
+about the root cause, so reporting first.
+
+[    0.447863] ------------[ cut here ]------------
+[    0.449019] WARNING: lib/maple_tree.c:2617 at mas_wr_split+0x116d/0x1270, CPU#0: swapper/0/0
+[    0.451068] Modules linked in:
+[    0.451745] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.19.0-rc6+ #263 PREEMPT(voluntary)
+[    0.453653] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    0.455282] RIP: 0010:mas_wr_split (lib/maple_tree.c:2617 (discriminator 1) lib/maple_tree.c:2590 (discriminator 1) lib/maple_tree.c:3400 (discriminator 1) lib/maple_tree.c:3462 (discriminator 1))
+[    0.456071] Code: ff ff ff 40 88 7b 4f 88 53 4d 4c 89 43 08 48 89 4b 10 48 89 6b 20 4c 89 63 28 e9 27 fe ff ff 4c 39 e2 0f 45 f8 e9 e7 f2 ff ff <0f> 0b e9 78 f8 ff ff 48 c7 44 24 10 00 00 00 00 b9 01 00 00 09
+All code
+========
+   0:   ff                      (bad)
+   1:   ff                      (bad)
+   2:   ff 40 88                incl   -0x78(%rax)
+   5:   7b 4f                   jnp    0x56
+   7:   88 53 4d                mov    %dl,0x4d(%rbx)
+   a:   4c 89 43 08             mov    %r8,0x8(%rbx)
+   e:   48 89 4b 10             mov    %rcx,0x10(%rbx)
+  12:   48 89 6b 20             mov    %rbp,0x20(%rbx)
+  16:   4c 89 63 28             mov    %r12,0x28(%rbx)
+  1a:   e9 27 fe ff ff          jmp    0xfffffffffffffe46
+  1f:   4c 39 e2                cmp    %r12,%rdx
+  22:   0f 45 f8                cmovne %eax,%edi
+  25:   e9 e7 f2 ff ff          jmp    0xfffffffffffff311
+  2a:*  0f 0b                   ud2             <-- trapping instruction
+  2c:   e9 78 f8 ff ff          jmp    0xfffffffffffff8a9
+  31:   48 c7 44 24 10 00 00    movq   $0x0,0x10(%rsp)
+  38:   00 00
+  3a:   b9 01 00 00 09          mov    $0x9000001,%ecx
+
+Code starting with the faulting instruction
+===========================================
+   0:   0f 0b                   ud2
+   2:   e9 78 f8 ff ff          jmp    0xfffffffffffff87f
+   7:   48 c7 44 24 10 00 00    movq   $0x0,0x10(%rsp)
+   e:   00 00
+  10:   b9 01 00 00 09          mov    $0x9000001,%ecx
+[    0.460144] RSP: 0000:ffffffff9b803ba0 EFLAGS: 00010087
+[    0.461338] RAX: ffff8c6b8022f600 RBX: ffffffff9b803e78 RCX: 0000000000000000
+[    0.462915] RDX: ffff8c6b8022ee00 RSI: 0000000000000001 RDI: ffff8c6b8022ee50
+[    0.464498] RBP: 0000000000000003 R08: 0000000000000001 R09: 0000000000000003
+[    0.466099] R10: 0000000000000002 R11: ffff8c6b8022ee00 R12: ffffffff9b803c90
+[    0.467676] R13: ffffffff9b803e78 R14: 0000000000000001 R15: ffffffff9b803c78
+[    0.469244] FS:  0000000000000000(0000) GS:ffff8c6ccfce7000(0000) knlGS:0000000000000000
+[    0.470862] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.471827] CR2: ffff8c6c40801000 CR3: 00000001bf624000 CR4: 00000000000000b0
+[    0.473238] Call Trace:
+[    0.473861]  <TASK>
+[    0.474326]  mas_store_gfp (lib/maple_tree.c:4890)
+[    0.475159]  early_irq_init (kernel/irq/irqdesc.c:197 (discriminator 2) kernel/irq/irqdesc.c:572 (discriminator 2))
+[    0.476105]  start_kernel (init/main.c:1112)
+[    0.476922]  x86_64_start_reservations (arch/x86/kernel/head64.c:310)
+[    0.477950]  x86_64_start_kernel (??:?)
+[    0.478854]  common_startup_64 (arch/x86/kernel/head_64.S:419)
+[    0.479761]  </TASK>
+[    0.480243] ---[ end trace 0000000000000000 ]---
+
+
 Thanks,
-Hao Li
+SJ
 
-> 
-> Thank you for taking the time to review this with me.
-> 
-> Thanks
-> 
-> Best  Regards
-> 
-> Hao
-> 
-> > 
-> > > Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> > > ---
-> > >   mm/slub.c | 7 ++++++-
-> > >   1 file changed, 6 insertions(+), 1 deletion(-)
-> > > 
-> > > diff --git a/mm/slub.c b/mm/slub.c
-> > > index f77b7407c51b..0d84fc917a89 100644
-> > > --- a/mm/slub.c
-> > > +++ b/mm/slub.c
-> > > @@ -2261,8 +2261,13 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
-> > >   	 * If other users appear then mem_alloc_profiling_enabled()
-> > >   	 * check should be added before alloc_tag_add().
-> > >   	 */
-> > > -	if (likely(obj_exts))
-> > > +	if (likely(obj_exts)) {
-> > > +
-> > > +		while (!READ_ONCE(obj_exts->ref.ct))
-> > > +			cpu_relax();
-> > I don't think this is acceptable - it shouldn't wait forever even when
-> > there is a real bug that doesn't clear the tag.
-> > 
-> > > +
-> > >   		alloc_tag_add(&obj_exts->ref, current->alloc_tag, s->size);
-> > > +	}
-> > >   	else
-> > >   		alloc_tag_set_inaccurate(current->alloc_tag);
-> > >   }
-> > > -- 
-> > > 2.25.1
-> > > 
-> 
+[...]
 
