@@ -4,147 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E96E9D408
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A8F0E9D408
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:28:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31B8E6B009E; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
+	id 8537F6B0089; Wed,  4 Feb 2026 11:28:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EF5E6B009F; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
+	id 8015D6B0098; Wed,  4 Feb 2026 11:28:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F1DA6B00A0; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
+	id 6E3B56B009F; Wed,  4 Feb 2026 11:28:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E8C56B009E
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:15:01 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B30C214024E
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:15:00 +0000 (UTC)
-X-FDA: 84407273160.27.EAA4306
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id CFBB118000E
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:14:58 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qq6PmPjD;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A0E16B0089
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:28:40 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E2632140257
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:28:39 +0000 (UTC)
+X-FDA: 84407307558.03.27A2D6B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5525FA000B
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:28:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y2akqElQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PpKR4Mo4;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y2akqElQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PpKR4Mo4;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770221699;
+	s=arc-20220608; t=1770222517;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L5iDN2vIV71qjvt+RitJ3eEXc5ng3mYIItXp41S3woo=;
-	b=8lR+sxuob2M47sYwEeuaVST3VgcAvKQayyhvYNBibAD+XrpqPOwXlpCVJyFpy/OBI2BIKX
-	RPrjJIFCILqgWBgtaimbPxFBNCRNa7GLXX/8MOkHuISff4oiDO04A4tzSYOfdwhgPJMciO
-	eXUKoB/fb1ASLe1B3dJiJXrte6HvL7s=
+	bh=cIlYwH/D2XFaIR5fnqbXTtiNOYRPKmKUsqMiylg631c=;
+	b=dMaA6n2PIGbRS8PGv/UmiTHEnzNLoHhGm0D1tzjjqk2WoIvEcAYbUv9Khp7YXXYBn0DE3X
+	Cl8Ar2ptFpeXuVbS+TXZZNhVXcVwGZz9oJb/DEw67NqFCVm7WlNjBO2vIIFff/SS0g+PCD
+	HXZKEabSOmy+ScMKmN05u82BHqUm15c=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qq6PmPjD;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770221699; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y2akqElQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PpKR4Mo4;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y2akqElQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PpKR4Mo4;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770222517; a=rsa-sha256;
 	cv=none;
-	b=sWaHHvyk7d/UHt49Y1wBGuTN39ixrxrqTiwug5HGs47DS8yGJFghJeBATgC4kfjiPanSW6
-	ATF3s0vwr/Amozo3cVXpWba1y85/bzONDh8BdRhE4IRWBeGkmIHONwlSjkh5n63ZRwWkdV
-	H2Dgcv2i21J1Waq3LCNCSXHwdkoYGA4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 096D043B62;
-	Wed,  4 Feb 2026 16:14:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD053C4CEF7;
-	Wed,  4 Feb 2026 16:14:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770221697;
-	bh=Yq7rjOmFg4CcgdWMbNPzzzqdWj+uSBMikYGgvwuzD/M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qq6PmPjD7zhT9ot2QC9bw/em+sjKidISKx+M6635S/VLsnSzIHdkjtN3GpT67jcVr
-	 QKlfXbkrjUsEQPFC2Jpef0f3usL6xPZI9xZieC3loEmehrI+znscnN4is22oUYPksR
-	 rLNA6LbvFNFQvaNtCFMw/183u+J4q4YjuNpPXp6sffxhBR5wqIFTUEdaQ65autXc19
-	 r+6Ehby9ipL0DS9jDaoAPiPGn1RaSy1oDCFzEP+D7twyWyIz1qzdBZUqdAS0Aunubc
-	 msROGZeqxyTwEBrXiYGhpKhc4MQLyN1l+teThtvVP0lC0IvtsOE4AYyeMp8bbmQasP
-	 Zp78VUUPu8HZg==
-Message-ID: <7904198f-f4cb-492b-9e6b-4d9989b8d40d@kernel.org>
-Date: Wed, 4 Feb 2026 17:14:48 +0100
+	b=Syo4WwlOJ06f+1jEYTP9rGh7Mwhhhv1KQxNgWMpiq6mf9ml6WIA/Jz3I/E0cxvMlPOg9Zo
+	jQMKWbbb8GgMJMM1Uo5Zz+Htog6osrmlnHqrKYvOS9jLnECyLS6IIwK8J7Aibgpc5kVKai
+	gSe1q8OMrnXS5EqrFXKO/WLsw1fJjZU=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 836093E756;
+	Wed,  4 Feb 2026 16:28:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770222514; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cIlYwH/D2XFaIR5fnqbXTtiNOYRPKmKUsqMiylg631c=;
+	b=Y2akqElQVaiH9Djl8xeMVITW6IN4Zz7acRrU2VaYyI4v5Fz70lpiZcPoLCcQZWRs2Sfnyk
+	yF4CaHPOJpPmwvg10KrIxXQP5wk38E1itwUyaH76kSSvXq9L9Oezm9f8Zd8IUlBzeB3OL8
+	AvbCjYnvtnAA8EykkWeZE9HRAujHbo4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770222514;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cIlYwH/D2XFaIR5fnqbXTtiNOYRPKmKUsqMiylg631c=;
+	b=PpKR4Mo4oHZ5v/K6/QCDOU+CM2nRgaFrVsrjS0c0I08wO0ciRoZ9itTGKgc5HptjiTNjfl
+	BrVM6Hif80ZeiDAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770222514; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cIlYwH/D2XFaIR5fnqbXTtiNOYRPKmKUsqMiylg631c=;
+	b=Y2akqElQVaiH9Djl8xeMVITW6IN4Zz7acRrU2VaYyI4v5Fz70lpiZcPoLCcQZWRs2Sfnyk
+	yF4CaHPOJpPmwvg10KrIxXQP5wk38E1itwUyaH76kSSvXq9L9Oezm9f8Zd8IUlBzeB3OL8
+	AvbCjYnvtnAA8EykkWeZE9HRAujHbo4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770222514;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=cIlYwH/D2XFaIR5fnqbXTtiNOYRPKmKUsqMiylg631c=;
+	b=PpKR4Mo4oHZ5v/K6/QCDOU+CM2nRgaFrVsrjS0c0I08wO0ciRoZ9itTGKgc5HptjiTNjfl
+	BrVM6Hif80ZeiDAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 631203EA63;
+	Wed,  4 Feb 2026 16:28:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZnvZF7Jzg2laUAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 04 Feb 2026 16:28:34 +0000
+Message-ID: <51489c81-1adb-4582-8564-7c97b6a1060f@suse.cz>
+Date: Wed, 4 Feb 2026 17:28:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 03/17] mm: Rename the 'compound_head' field in the
- 'struct page' to 'compound_info'
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-4-kas@kernel.org>
-From: "David Hildenbrand (arm)" <david@kernel.org>
+Subject: Re: [PATCH v2] mm/slab: Add alloc_tagging_slab_free_hook for
+ memcg_alloc_abort_single
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260202155634.650837-4-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Hao Li <hao.li@linux.dev>, Hao Ge <hao.ge@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260204101401.202762-1-hao.ge@linux.dev>
+ <75a2obu7fk4t2h5wj54gkbtyie4pdenw4mzecmmsgzwbhvxfmy@7mrdfx5q5p3h>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <75a2obu7fk4t2h5wj54gkbtyie4pdenw4mzecmmsgzwbhvxfmy@7mrdfx5q5p3h>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: atpdg3m1388czxk8kz7bgr5gas1gn4z8
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
+X-Stat-Signature: scr697pugrc1idnkqnq6byk96twk5sza
+X-Rspamd-Queue-Id: 5525FA000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CFBB118000E
-X-HE-Tag: 1770221698-571247
-X-HE-Meta: U2FsdGVkX19kFgBFW83GR+BZJ27mKblIHY26qD8b7soz8nn6d2kdEmKy9dVAEpAmhnJrXlqotfPRr6lnBE5gm5eVJkw6UixZTknS1VIyLvOLSTNQAg1ZRYvdVZ++ER2SNpMs6ugi6q3t9ag/eR8z7NIZbbcLv5dHs7E6dDGuWUlT7ZS58Oj7q6RmvjrGOXQy0/stXTLVzkkUIHvMs18rSuYL/e3K35psgiGdRjahfqjjFYsmh16hSVJpY4YP18rhDiRkhRGzpGlYsfxS9hVWYDbUo8iaG7sBJ0mHhGBmhbKYg3aW3ufEUA+Jlt9H+a36ro80zlTKajs4+yVERr1y2exNF0qM9wBUMrhIs48HSi6zL87+9k8dNfZBSc03t+f8xxRoujudiBP0r0mEWPIjhlgtfyfrBnWOCVFn/QAYvu+U25BdmE5Qefa7p6F4yjdUcvqI7akQdQiwUIQ7gzkM4L9wHxfn17U9Zw7J2NPsyxWAhwBr6mESCdJ2LtVX6b/UB7JiJInq2vqClvK3SNnsYE/DcXLA1YEN61V9zN3dwNpYybf7jnu6py41FXvxzLfL5KW6K4YhjC7aV0IoJTaptICDA+yQZOgzD9pmdrB+WZ8UT1+hrSJn1zahz0XO0dp1KGJu0N4q87xzvL2TPaZZSva80MrIZR4mqXaaBhvNqi1xUkN34gj60eIUQ02kGUj/g/JzF5YgLNvSo5bdVQ25bTXki6dxITIYJrEDlrv9rHjLvxUPWOMYZdGzC5zvqU2FG+WPadwzFNjcHK7l3qPP8+neV+p3wPUecjqkrNXg72Fqob4XwNTHj9JER2sf/pMw1kzwbI5oO/9IornjcO6UPlmQdQZj2uahuPDFCkd+iy6Pj1WIc1w3pFWwmOrU8wSQzcFZf8lGJ32iYvwD9cDX8Pg5CKlI3111S9HBY8S2UEfEhYXUGgp+f9SKpfYYfTljS4s1NiTxRhNir+mLsBD
- FVkjqC3v
- gRJDxLR6nsBYwbbpqqFZRvQ4H3bS0yXEADZzSaf7q+bJzPKmSBJJNiSfl0NyKRNgUEImdx7mzv296O28WDd0yUF6OzpjsgiG/DKuedIDGeUkmnnEMtezQQt8i/w2XNgjWIoS9p+vGuB6svn2XMPRBpLy9vFrbcg7iMWj0XmqgLbSa0/BRGtbIDQA0J08jEibJRoBYe6f37SKQw+C0oD9aLK4nL0YhO9arEic+0j8KO53dQ8s3A2uKMagS9J3+D3VMn2zlvgexH/lVJF+DLBGsxZ3uHhkuOdm3qawIMf/qgVLcoPzNTiJcK0RHyG0b5XL7iJpOf4tyXb0VkeyrzZIIERRFMXqIChQEictw
+X-HE-Tag: 1770222517-859479
+X-HE-Meta: U2FsdGVkX1+oRgNVnGPLLif4CHLxF5MZEt38XfJNe5JIOysYK2OOU02hts3EBawbXTYXTAnaU/ZuS1qFEkJbNouijS/tGU4CNA5Ws1uSLZjrNAUpLfzNk1EoZ+oWTMkzHd7xhDrey4ujHBrp4kbPecpSCg0RYPB/ksv3TOo/onKy4IRPUzMwmJe8QyIwRKAL4HYPcW6Wt9VmAwKAvy//yuO23TmXpCMNm1sUuSceoo/kgcDCa+wjC2YGKDO4SyZVgHqMxENxZru47JsfKHjVKUSm57qutg88tFO+M9h8JlGJ0lSH1x+knk1AKjvDEd3YjEzhb6aBBKcvtnCXqrhaLFv7T4xpc7YpJfKgcd5gb0Mt0gcn4fXN8HN3XbhQl0zwvcjzYn29dB5nqxhFcTuS85x3ic8CyJOoisE21jvNdxsp1fX8owyWB5db+zfWT3ku1RpbOugLP9eH3/h6NEaIoSe0Gmb1lBezkzOZIAxKutP9wKirmfSLFRQJoX+NnUNA7S3eHtLM8f2zWCJYy1bMLzn7EEPaPOlHAuJXRoW/++S6y5LgGy56XrzGRI72MmE9KioPpT4AHdFq4YAi6Mm/nXT5oxIMc0RvmiEjtJTWKFYeMz01UwQcA+E38Lgeuc3A7VXSS+2NHD8ayU+4vr71CccVWvM1pZQG+QUA3PShap4D88H7VI400/9bII2OMLJJxE9hbmIAJSBW9BH83B/p8/d4S+ey6ILvhdHELTVku/T3HqLrFmsqp3EQlUaRyOvxeInTZeY8MQpq+zaT5owuul8sf3ccG/dlrAcNyBUYoaVC3t6UvrSJEYMe88M/9CySgGbnkut2xUN+74zXp2qy8tkR3sPnvXfKCMAbgSweMb6VS3ML9GpQg3dInjY0CBclA72zZEeEK78IBX0bkpnbthB2rykMAOk5VvfDsuPcwpyCLZBZgFrfCmMiw6YezRin9ZbW3flxAFJ2UGldTaL
+ HoczB0mq
+ y4CeNun5z1ncTQERIfRgVH1G+6ypmkTPsrGhVz3zB51HV+h5zoH2tOVwfi/9zbcGo984el0ubEXcVeT4wCWwch6MrGtI8dUYbNxxfBuA/Y5BsxLbooGxYQtY8ggDRZ61NsjWOsvm0cv1IetDsUaw/cxVEXtwD/m9kyGLgKi35IWweARzSOUzFPf2EgjgIS/8jO1jNPrQ/6yrOwN+e9MtAeVwHl768TT78foR2NggDUR6e3yGKxT6jSWjPpRF+bzEz5wF/uIp1mNzZzZj4t3ANAKcPSf2OuShswkrHn6yumr5x5jKQd9DW8lEOSCU+L2ixogEXEgqTf/aZDZ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,23 +181,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> The 'compound_head' field in the 'struct page' encodes whether the page
-> is a tail and where to locate the head page. Bit 0 is set if the page is
-> a tail, and the remaining bits in the field point to the head page.
+On 2/4/26 13:00, Hao Li wrote:
+> On Wed, Feb 04, 2026 at 06:14:01PM +0800, Hao Ge wrote:
+>> When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
+>> may be noticed:
+>> 
+>> [ 3959.023862] ------------[ cut here ]------------
+>> [ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
+>> [ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
+>> [ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+>> [ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
+>> [ 3959.024182] Tainted: [W]=WARN
+>> [ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+>> [ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>> [ 3959.024199] pc : alloc_tag_add+0x128/0x178
+>> [ 3959.024207] lr : alloc_tag_add+0x128/0x178
+>> [ 3959.024214] sp : ffff80008b696d60
+>> [ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
+>> [ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
+>> [ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
+>> [ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
+>> [ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+>> [ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
+>> [ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
+>> [ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
+>> [ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
+>> [ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
+>> [ 3959.024340] Call trace:
+>> [ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
+>> [ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
+>> [ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
+>> [ 3959.024369]  xas_alloc+0x304/0x4f0
+>> [ 3959.024381]  xas_create+0x1e0/0x4a0
+>> [ 3959.024388]  xas_store+0x68/0xda8
+>> [ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
+>> [ 3959.024409]  filemap_add_folio+0x16c/0x7e0
+>> [ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
+>> [ 3959.024424]  iomap_get_folio+0xfc/0x180
+>> [ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
+>> [ 3959.024441]  iomap_write_begin+0x198/0xc18
+>> [ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
+>> [ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
+>> [ 3959.024461]  blkdev_write_iter+0x38c/0x978
+>> [ 3959.024470]  vfs_write+0x4d4/0x928
+>> [ 3959.024482]  ksys_write+0xfc/0x1f8
+>> [ 3959.024489]  __arm64_sys_write+0x74/0xb0
+>> [ 3959.024496]  invoke_syscall+0xd4/0x258
+>> [ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
+>> [ 3959.024514]  do_el0_svc+0x48/0x68
+>> [ 3959.024520]  el0_svc+0x40/0xf8
+>> [ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
+>> [ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
+>> [ 3959.024540] ---[ end trace 0000000000000000 ]---
+>> 
+>> When __memcg_slab_post_alloc_hook() fails, there are two different
+>> free paths depending on whether size == 1 or size != 1. In the
+>> kmem_cache_free_bulk() path, we do call alloc_tagging_slab_free_hook().
+>> However, in memcg_alloc_abort_single() we don't, the above warning will be
+>> triggered on the next allocation.
+>> 
+>> Therefore, add alloc_tagging_slab_free_hook() to the
+>> memcg_alloc_abort_single() path.
+>> 
+>> Fixes: 9f9796b413d3 ("mm, slab: move memcg charging to post-alloc hook")
+>> Suggested-by: Hao Li <hao.li@linux.dev>
+>> Signed-off-by: Hao Ge <hao.ge@linux.dev>
+>> ---
+>> v2: Hao Li correctly pointed out the root cause of this problem.
+>>     Per his suggestion, this patch adds the missing hook call.
+>>     Many thanks to him for the thorough analysis.
+>> ---
+>>  mm/slub.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index f77b7407c51b..452a92544c6a 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -6689,6 +6689,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+>>  static noinline
+>>  void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
+>>  {
+>> +	alloc_tagging_slab_free_hook(s, virt_to_slab(object), &object, 1);
 > 
-> As preparation for changing how the field encodes information about the
-> head page, rename the field to 'compound_info'.
+> LGTM.
 > 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> ---
+> Minor nit: It would be cleaner to store the result of `virt_to_slab(object)` in a local
+> variable and reuse it in the code that follows.
 
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Did that locally, also added Cc: stable
 
--- 
-Cheers,
+> If you end up sending a v3, feel free to add:
+> Reviewed-by: Hao Li <hao.li@linux.dev>
 
-David
+Pushed to slab/for-next-fixes, thanks!
+
+> 
+>> +
+>>  	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+>>  		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
+>>  }
+>> -- 
+>> 2.25.1
+>> 
+
 
