@@ -4,77 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C095EA7943
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:35:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDDABEA7944
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:37:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7DEEC6B0088; Wed,  4 Feb 2026 16:35:55 -0500 (EST)
+	id 2CA556B0005; Wed,  4 Feb 2026 16:37:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A9676B0092; Wed,  4 Feb 2026 16:35:55 -0500 (EST)
+	id 26A7D6B0096; Wed,  4 Feb 2026 16:37:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B6716B0093; Wed,  4 Feb 2026 16:35:55 -0500 (EST)
+	id 180646B0098; Wed,  4 Feb 2026 16:37:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 55C6B6B0088
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:35:55 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 22DFA1A02E8
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:35:55 +0000 (UTC)
-X-FDA: 84408081870.22.C82B24D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 068476B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:37:45 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C4A8716034F
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:37:44 +0000 (UTC)
+X-FDA: 84408086448.01.6C6C0FE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3A18940012
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:35:53 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="L/9m/IXn";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1A4BF40013
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:37:42 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YgMET0/C";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770240953;
+	s=arc-20220608; t=1770241063;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CYo9Z9gm7GkJIE7DS2NeS7B/ZlRYyeNGt89dcwlK4CY=;
-	b=UJb1gkouhgGc8WdKsmiuEoWCpbNgwghCbpJlvlXObx7j+LCV7YY1Q0J4dXaChotcq7+jKR
-	3bUitBdh+DJjrBnMPz57rMI26m8feyygc2Ee/WTv83vHXMpgEp6ncuZcc8SVZq9yQIrb65
-	RXfh+DIsMajkki4seVD955vzMbTayts=
+	bh=2Q/c3GBlIXfULOsiQe/JOzlqxHlHPgw6dVhGEUCtCDI=;
+	b=OMa6VDwuqEDNVYaq0eyXywaYKsqa6lm8ZWu5bTUYXNdJ1Z64eESzmo0J9J+gUKtD1lr3ra
+	Ooe6m5uXY/j9OnVkvTiCDPJe5DmQS7M2/u2FPAv/I8LHcT/TsoTE7nqZmTaRkFM42St4KM
+	HpTKdme3fvUGTCIMm0taG0nz6pMoHYg=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="L/9m/IXn";
-	spf=pass (imf27.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YgMET0/C";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240953; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770241063; a=rsa-sha256;
 	cv=none;
-	b=3k/nJ++PzkfcXVxHvhbSXmH/jXXJZAhUaDzuHq6BjhqNpjNrlWndpbJ4uqCgzo9jJxUDhW
-	vG349HSFoT92uOyGCWsFAg8R4xXCOOG6BOL3orjVLkO5jXQgp9bneRCMmUuEJFwUF35ghd
-	GE+d/1PR71NxfOrZrvCnPaRhR/IPucM=
+	b=KVGLm9TuQLe+lvNgmlHVodvVK3rcPRbwXH4EBn8Mo4kyJyWM/2iBKnM5MU/x2D2UY8xxmk
+	b3Mnowpl1Yxp4bGt9SMCHeyKie0sHCDpFvbl/8RIa35v6z1bZEkNDXEpnsFaO0fzE8PhGw
+	6fV5wo9pdves++dbC3ZbNtESfq1BZdE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26C6D433BB;
-	Wed,  4 Feb 2026 21:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB96C4CEF7;
-	Wed,  4 Feb 2026 21:35:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C48A403C3;
+	Wed,  4 Feb 2026 21:37:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF91C4CEF7;
+	Wed,  4 Feb 2026 21:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770240952;
-	bh=1JOH5a4nFNxuZdz4tbFuHznJYRc0xRITRKZgjfVW7Hc=;
+	s=k20201202; t=1770241061;
+	bh=mgZ1A8T3ZA0g2gF5yLq+cN/Jw+cZKs+yhh7skTClPeI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L/9m/IXnWlC0c5WwHUg0ZZLXnilSkMlJlirxaxYJYkgdi7UhIfufGSdWboQwhBzax
-	 yEtHGJTyY86gdLHKEVCo7nv+K4IfaAlrCsnGENt/7rPEenrvbNTtnEOMAjfufIdlLG
-	 JK6DwQgveAtVYsIj2ifMZp5XLPzbNoI44nS3gaagOJjBe/7ZI6nTSByplHrPQhIvjc
-	 gaj2LejLIUXVbbDkQGG/UgMiUKZulPfa9ZMwky36/cLm/PldS+E/SQCO2a2ZW9FAlE
-	 ww+2qt5GXtqlMt6GDY9BErY8Hfh5XUdzasTdRVejT7IFtqLtRsd/5fVEY208/1//pw
-	 k2OtV19/J85cQ==
-Message-ID: <fd67a91f-3930-4bd8-886b-13f7783f4aec@kernel.org>
-Date: Wed, 4 Feb 2026 22:35:48 +0100
+	b=YgMET0/CiuVpQ5LvghzJOXjXrETaUrYGVTwC9GGMh37vtMLn2kef49FDCa49/eviN
+	 efQ7sYK0S4qNUa0yzsI31OyBp8IEb1r0T5VNrM+NNgeJ+KvIF43eGVSKdCpwOANNmV
+	 XF2fvbGq4NxF8xadpA6y2n+DWBXMBOS6Soa5F8PzbDgttvqgALuKbxDtbvqweno5sA
+	 cgtuL0hig5MrU2ffSLoteKB+YUl45SC5n/4Ty4YFjCOyLK6lxr7Z0E9c6bmJTyX29R
+	 ZwzZcrd+OaIw16BDJ30NwNcPK6RvkzmEmu6FY3AMIskbEuuEds6jty/lwbXbldoI6X
+	 R4hy0nNnMHnLA==
+Message-ID: <1bfc9e64-2961-4d2c-a6c3-fb123f66e6cc@kernel.org>
+Date: Wed, 4 Feb 2026 22:37:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v6 2/5] mm: khugepaged: refine scan progress number
-To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260201122554.1470071-1-vernon2gm@gmail.com>
- <20260201122554.1470071-3-vernon2gm@gmail.com>
+Subject: Re: WARNING in memory_failure() at include/linux/huge_mm.h:635
+ triggered
+To: Zi Yan <ziy@nvidia.com>, =?UTF-8?B?5piv5Y+C5beu?= <shicenci@gmail.com>
+Cc: linux-mm@kvack.org, linmiaohe@huawei.com, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>
+References: <PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
+ <b9e89c85-807c-4a8b-aa5c-8c1325e75445@kernel.org>
+ <1db245a8-f9ab-42e4-8cc6-cc7562961921@kernel.org>
+ <48978612-6933-4897-85DD-6740B6C8570B@nvidia.com>
+ <25CA4D90-A24E-49C6-92D2-08080EC81466@nvidia.com>
+ <032058DC-CD8D-406A-B986-740E41C834B2@nvidia.com>
+ <e97d5c0c-b8ec-4da4-b838-7a308f8a6327@kernel.org>
+ <61BBEF63-20D6-4671-B7F7-F015D49B2080@nvidia.com>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260201122554.1470071-3-vernon2gm@gmail.com>
+In-Reply-To: <61BBEF63-20D6-4671-B7F7-F015D49B2080@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3A18940012
-X-Stat-Signature: mmcezt4q31cft86xytfpbqzouokmhtbj
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: zcs35i79j3mim1x6praummfff9qmdkhw
 X-Rspam-User: 
-X-HE-Tag: 1770240953-671979
-X-HE-Meta: U2FsdGVkX19EtX4Ran0QRoLLoJ2TcQ4GatZqjGTvtT6AcUsdl/fpniBQj2iE0hW0iKJ12Taradq+/kV5fZeOY8CPaCREzTj4cvEydAdnYOep0vKOxICt78ZAdg4SIuSugOvTL5azVoIYSzXji7Exb6HDY7qjh6XwxMs6TdvHoNjDTMQP6JhvWlrlLm15MfsNYU1QglvAVmdz6FZziqP1rUsenRxFf2w07MIFDWwG7tPQV2Xn9PxcB0RDOZbv+vqxyJouM0pr9tOOIAkRdMrZ2+x8s3kuartF45cDXGBRbCcF9vBDuV/P1ZEsMzGavFn+/knsYE0iwH+gSOjaYIH4mlDKt8QrGh7R8oF0ZektIo5jY9FlycdHU64UeLxMLpP9ukAI5oYmjrfUZioyU5busjKhOPC+bLIzZDw3HSk2s1S0CuLbq8BPiW+p0rf0WCIslpZ2m0ePsiP/earPV0cOFWn23R/XbRHzZnB6LSkfBTnmKp5ixFtGAdneDKKQ24SmIZJoO2kU1l7uYs2NCjHVs43LZ9PtFHji+YJB3sHUTjoABHrTdVzJ0OLxYgGnKQs0aml+Cw+lRXk+n7RnjYJURSalNXY7rlLYueG36M6enHC1WKQ9rs4KWx7nJAymi4gEKPLPyjf5l0GS0IdkORrXt49e7RkBn5VKU3iDotwv6LjEYQsoODsg5RueXuFkj2jlTgIwDQFN3ZFiZ/79xaKvhWb/1HBHkZZ/lV7FgYO9Nr5Vi0mihTMa+tYXMRz9EtH9MAQ3vlbV+3UalWwUPoNTYEEZlb/CyMHC7KEBxIDJKVLSVuV4H2d1ogTuIRKgWGSgAUa2EbpImfKMVxTqB0PjM7HESgx4L+fkd3RidvzrecMOpxSkEc1CVhUK0sQfhnKCAdsYHaZXFvcrlRNgNjl1jibxMSjRwFcgOdJFWx8Uc9Yuew4ZhlJqiWd69GJmUe8oW/7xQN4Bc/40YoZfH2Z
- S+wh03/C
- zMCH6uwjvJ8o6Y7bSAlpsgoCuuA3OafHXZvZsZoUXnCMOiosOC5aaxY8ySyCu8nsFLLyvjVcOIwV/3WpFpzz8cxty5RHP8zWdJ1xZCM2/csRgEsDdG3GzsY0etzJ0LeDXa6mxvUXrfLw2dCciOP37Jop/4RSwpizkWFghPrxHfX4W9NlUnxFv8wtYDSST7RX1rIm0h2Nq3VtwvAsgF29NCvCfcI4QDX0/rae61Oajt19gtccXblN9N8jME8f3ggz24E9L0pX3HQwCQG+Pba/CY+JV6gMuKcmIA7kX
+X-Rspamd-Queue-Id: 1A4BF40013
+X-HE-Tag: 1770241062-58588
+X-HE-Meta: U2FsdGVkX1/AsshfZOVBxcvMyTQvhUHGuBFmHi0BZ6hZVRgCe8c0FcaRpGm5gvCpDLTp0XsIEqcsJ+D7ROAVNOELKVXOKp1sKmqNd1YaLNjz7GyWQi1pv9o1Zs8BGKStLohHjSkAEVFKmWyT27wabhG4aVEmp0myaHI8OAwUl/7PUcXwwiR0GqGOeITxxI04EtEo0E/R4+y3QssOlhM9gkOnd5UI2PoVXdqoGIombuFue5Zcg5VUhlE+vKiuvNHJBpzWqV6xBPFgLoOtbt3c/QY2Nwfr3kopDBdZxMlxko4Y9aXMqZ01i63Rfv8alJWiiM0R5FRieUaWhoVSUK5XADLnUXO5WxJe7OxgkM1B5D3BntOJ91q0dVE3KQsu7w9dJQbRmv7NTFP09u2t5yJ9tzoBkWUeggrB5/Pt79Hi1Cnc06XOswVRphmwGnS+5kLHafOk91afF4WShxuImgBujYQizaynuiqh82hwId2TW4nZe7CdPwJooCW9ufozvT6HSbEcsSIRazhFP4ZdnrUQVLPDfS2Chj6pUkhCvzRW/z+68qwirnqKAP8w0/dgTJz+uM9q7y+FEafEV7HWP5blhh5WPrNfkB0upsyH3q2Rlq7+3pjl8TlviJsCB1Vs2zn3Q6atmdcBq7iwX8rp9tXDCNSdnNItlU0PNDcOa3nh9OzCqW/gVavoTFoi3oe+nRerBRAHfBi1Zc4tRl6tH1m6g//I2i6HWnh002BpBhdO94H0j9AlS5rQROtQ6HHlmM2HBdrnf6fAKgFKzTZaMR1IAJPXrk4q3TuN6EkssZgOHSq+LO6IT83+0aOUWRkuymOm/aZaSwoTI95n4gqPCJi7szkzwCPPawEHFKFBXMQcZxZkzZ3h9EEeq1t9WT7hgCgt2+u0WPAGNluPb7FOX2UFAXL15UEz5W4q8VmguN96vRicipqmr7Qpmqdslm9gxHAx+jSvorpISpZIEXmm0l1
+ PPnmgTzx
+ iH7eJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,53 +146,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-[...]
+On 2/4/26 22:08, Zi Yan wrote:
+> On 4 Feb 2026, at 14:18, David Hildenbrand (arm) wrote:
+> 
+>> On 2/4/26 18:41, Zi Yan wrote:
+>>>
+>>>
+>>> More details:
+>>> later at sg_vma_fault(), the driver just handles a page fault by supplying
+>>> a subpage from a pre-allocated compound page[3]. We then get a large folio
+>>> without !CONFIG_TRANSPARENT_HUGEPAGE.
+>>
+>> We can identify such non-folio (but compound) things by looking at PG_large_rmappable IIRC.
+> 
+> OK, back to the issue. The patch below should fix the issue?
+> 
+> Hi 是参差,
+> 
+> Can you test it?
+> 
+>  From fa4a900e027a0c7365a9f786840943990d5da971 Mon Sep 17 00:00:00 2001
+> From: Zi Yan <ziy@nvidia.com>
+> Date: Wed, 4 Feb 2026 16:04:19 -0500
+> Subject: [PATCH] mm/memory_failure: reject unsupported non-folio compound page
+> 
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>   mm/memory-failure.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 825c706ac576..4ed903de9a0e 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2440,9 +2440,12 @@ int memory_failure(unsigned long pfn, int flags)
+> 
+>   	folio = page_folio(p);
+> 
+> -	/* filter pages that are protected from hwpoison test by users */
+> +	/*
+> +	 * filter pages that are protected from hwpoison test by users
+> +	 * or unsupported non folio compound pages
+> +	 */
+>   	folio_lock(folio);
+> -	if (hwpoison_filter(p)) {
+> +	if (hwpoison_filter(p) || !folio_test_large_rmappable(folio)) {
 
-> +	if (cur_progress) {
-> +		if (_pte >= pte + HPAGE_PMD_NR)
-> +			*cur_progress = HPAGE_PMD_NR;
-> +		else
-> +			*cur_progress = _pte - pte + 1;
-
-*cur_progress = max(_pte - pte + 1, HPAGE_PMD_NR);
-
-?
-
-It's still a bit nasty, though.
-
-Can't we just add one at the beginning of the loop and let the compiler
-optimize that? ;)
-
-> +	}
->   	pte_unmap_unlock(pte, ptl);
->   	if (result == SCAN_SUCCEED) {
->   		result = collapse_huge_page(mm, start_addr, referenced,
-> @@ -2286,8 +2301,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
->   	return result;
->   }
->   
-> -static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned long addr,
-> -		struct file *file, pgoff_t start, struct collapse_control *cc)
-> +static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm,
-> +		unsigned long addr, struct file *file, pgoff_t start,
-> +		unsigned int *cur_progress, struct collapse_control *cc)
->   {
->   	struct folio *folio = NULL;
->   	struct address_space *mapping = file->f_mapping;
-> @@ -2376,6 +2392,8 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
->   			cond_resched_rcu();
->   		}
->   	}
-> +	if (cur_progress)
-> +		*cur_progress = max(xas.xa_index - start, 1UL);
-I would really just keep it simple here and do a
-
-*cur_progress = HPAGE_PMD_NR;
-
-This stuff is hard to reason about, so I would just leave the file case 
-essentially unchanged.
-
-IIRC, it would not affect the numbers you report in the patch description?
+I think you have to test for folio_test_large() before testing 
+folio_test_large_rmappable().
 
 -- 
 Cheers,
