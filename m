@@ -4,95 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8BDDE83EE4
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 07:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44DC2E83EE5
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 07:37:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE3256B0093; Wed,  4 Feb 2026 02:31:43 -0500 (EST)
+	id A71A06B0092; Wed,  4 Feb 2026 02:37:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8C616B0096; Wed,  4 Feb 2026 02:31:43 -0500 (EST)
+	id A49556B0093; Wed,  4 Feb 2026 02:37:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8F5C6B0098; Wed,  4 Feb 2026 02:31:43 -0500 (EST)
+	id 972956B0096; Wed,  4 Feb 2026 02:37:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C62766B0093
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:31:43 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7080E1A071C
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:31:43 +0000 (UTC)
-X-FDA: 84405954486.01.D1F2DB3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C4AB440005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:31:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eLzhmU/v";
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 811CF6B0092
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:37:38 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 332C91B23A8
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:37:38 +0000 (UTC)
+X-FDA: 84405969396.09.5A6F81E
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 4A91320003
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:37:36 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=e1fI0NAh;
+	spf=pass (imf13.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770190301;
+	s=arc-20220608; t=1770190656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tQeD//g7qTGSUf0Euogkk2UB+un5n4tdYik9/w5fH7E=;
-	b=b1rudT9JQbG8z2qu0v5yJQhjfAc8Q8PGPVS8v0BSPDHheCFF1jeWq0PJ4GL7DEt/ZMGyvg
-	ZmJIq6CONF/qnoDi4T7CSVe5MnD6sKA4eO5EqrtqQRD19XoM+V1AULp4+l2uvsArnPlnT5
-	DB5M1oekV9srhJq557Lk4YDUWcHgkXs=
+	bh=6xKiGXhAf0POKtC5HLVPhalwQmNgPksjY3TFJBTsNxc=;
+	b=veoeM2jzgC9qkym0D27y4BFn3k352fQNc2GfWisQsLnKwcuiDsv/0+kdXypvPQodn6G0KU
+	BE+Zrqo1EdJjU0GWh67gdttxOfEw0S7icMcrCCszL1OwtOHqkfMjNIrPV6WHRMb3sLtzJC
+	BD+ObNy/jjBTwan3E4tpocu9SrbR0XE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eLzhmU/v";
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770190301; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=e1fI0NAh;
+	spf=pass (imf13.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770190656; a=rsa-sha256;
 	cv=none;
-	b=UtKYQoTYHuIKJ7AVi6quf/ymJmNbYnYkMCkKh/OJoW9PvF1I75T3DIcVfpYmr2FD1rZ9ag
-	a49aaeVNQouNULN+XC6tB8I08vzjPhKtd1SrvxPGd8vgpwxybWJcOn3MB4cv6Pl0ZetWHX
-	btaYNf8Idaq+pcNvmwTJv/lO3Nt7IkM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 383A660010;
-	Wed,  4 Feb 2026 07:31:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD87C4CEF7;
-	Wed,  4 Feb 2026 07:31:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770190300;
-	bh=h8IFr3hAC3Re7Gtgad9D9ErBYgAe1ei2FUSAKZYjjM0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLzhmU/vh6ibnUoQIkKF4n1DxSPWw1DfbD9La3zxbhOgTEVxFcSZzvL6jb9IRp0kM
-	 2gU/cVFQd5dF9sKT+eN4nY/uQxDplOAMY/y/Bvo8kSJAcUYSRvDeP7MBME4ILFTkkG
-	 BRzmEJd9LlvViVTmsGOy1g6Pk793bzFKKR98yff9xyeZzSxLoOZuxIS/dj4XnB6srk
-	 dYE4w4s7tnR0z16XGOhM6ldkBUCc8tbWnbAT1PYAsDm6ry/Qu7cior/cD2kRXQ0UJ5
-	 cmyplZxx0R5cMCUiJx3ogXvtAsrOQzgeyrMRJo/XCKdxQix0X8ImvwhkvDdJCss5o6
-	 G6OHWOgpc5Bsw==
-From: SeongJae Park <sj@kernel.org>
-To: Gutierrez Asier <gutierrez.asier@huawei-partners.com>
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH v1 0/4] mm/damon: Support hot application detections
-Date: Tue,  3 Feb 2026 23:31:32 -0800
-Message-ID: <20260204073133.16471-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <56e9d735-d728-445d-9d5d-f044c9fe53b2@huawei-partners.com>
-References: 
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C4AB440005
-X-Stat-Signature: xhxenm43pcz3dknrhc9r3mktogfzkow3
+	b=fbOQTGyhb3jf0e7Dq283Qei8u/pqKhCZA35op/RQFmU2w59tpnhN/Xi5vbSg11qHMpMwGD
+	vOYf6u4sUyMk3DDyPfz5+SL+0VxG0f6Nhu+dgE60wA0A0/QkKvqocBECnycWoo5Zrw4b71
+	2yRGiUBR2HCBexVEhDa2SCU7Cjohv64=
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82361bcbd8fso3811677b3a.0
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 23:37:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770190655; x=1770795455; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6xKiGXhAf0POKtC5HLVPhalwQmNgPksjY3TFJBTsNxc=;
+        b=e1fI0NAhxzoflE2k/dbSPlhWOqMKC7q95HOAoEjSd6lqozrsbOoYPg/Z7jXb5ssQ9y
+         mNNBAaQ8ryibJDa2f7IDWGYxPBozQbssorYXu50+MmpnCHWWbC/uEqYHUp4wdgESPbqb
+         wnyXRW4IvDyePH7RlbR/JVWbaefEVl4upJ/7vgjw5r5C/6IfikdJHBlHHCIDYMj/KYkl
+         gHVGM6SSe13f5LJdddqVyUZ2eyWJ1QPJGtRegVy+MxN7IZYBrRTvrDCRplhyE79e+/on
+         /UG8s6on2NGcC/IlknHVCvXMJLd8/hPv+QU+OcHWrd+eXfsgwhojgRJVDSowBDoecJwd
+         0FAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770190655; x=1770795455;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :cc:to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6xKiGXhAf0POKtC5HLVPhalwQmNgPksjY3TFJBTsNxc=;
+        b=vEGitzawdp65TdUF2k8lNO8a9s2SVAlKBroOIM8ZLe4nm9XxEvSRX5Ivz/yEddL4WQ
+         ZJ0H/fwppXE7r9wY8FaJqRg7OyvHcLYSFOKRSwxK7MRr0DlSwnEHpGxuwhnl6oz8HrWV
+         9b9uhEtKK54QhZuvQdulNVak1rnjMew5Wo7Cr9Ynj0/Tzxqx02uUgA/J72b0wRqG9j6v
+         kRt/qwobJacdOrq58DMIf8HLibu2F0yAulfJ8qPmCze4zckuWlZuwnJmo8TwLuiaUFEq
+         W+Q9pHpnF2mqSV3DxPVssXd/4yo6GSE69YoxVC69M1/Fks+VZr2KuOFw/bo2BdK+LpZO
+         noTA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmlfvEVo67gL80r3t3A8t/qQ3PPDTJckNfnTxBcw1aape/6aKfU6EU4tZJ9Xxgv//IlWmq9gZ75Q==@kvack.org
+X-Gm-Message-State: AOJu0YyAVfip5Kj4uma84UduJhRBsHfcKwseNpNxIsnzFZDqMH/X/Uup
+	XSltOG5I12Nu54Sdi2cQYJb4MsdIZgvZ4CgJLyqy8FSwcbSDcHVK+8D2
+X-Gm-Gg: AZuq6aKQ68gmdgB37bKR0hhq05JzF9VVPRO4JtmFw48m17+7994+Ptaoy5lWdozmNSE
+	y+lyuCzrVceDQb1eNnx8/XySIbF9w0DCPGJTREiUxPqPAiC1aOpIK5u6Gsu06BgMHBODA5hBgDQ
+	/d6Gb9u9s82iCsPeiiNFVmicHqedA4P6aNewn4o2bFY5vnnub4GVX//lhWL458kOGSJZNdI4415
+	rvk2fjOiC0XUIl5UeYO1WKwSusP676uYcDEDvgn4af+DTGp69EcQG8Bdyww1itd977oI1ZL/vfJ
+	P2/hJpvtXfwQgfiFd8EqEg5vxqniNfbv2jwSUEqi2Yyau8+P7wggWVXt2KIVHSWXWVNh2rt43oq
+	lxFF5/Ka2VBukF4+EBhf/PNgK40CcmCoHoLiQZRi0PBlrJXLVlTF+96KQh336Ow2cBScNlVVlhH
+	DAGLpHvDoiWYwZZm98lB01mlVH6HIgCDOIDk4SHR6DFK6eU8ON9IMwwEnS3Iyi
+X-Received: by 2002:a05:6a00:4b47:b0:821:807a:e427 with SMTP id d2e1a72fcca58-8241c1dfd96mr2358341b3a.21.1770190655016;
+        Tue, 03 Feb 2026 23:37:35 -0800 (PST)
+Received: from li-5d80d4cc-2782-11b2-a85c-bed59fe4c9e5.ibm.com ([129.41.58.6])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8241d163fb2sm1561632b3a.14.2026.02.03.23.37.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 23:37:34 -0800 (PST)
+Message-ID: <abe69ec973a115015d998907e9f7fd4d3c45f38a.camel@gmail.com>
+Subject: Re: [PATCH v3 2/6] xfs: add helpers to pack AG prediction info for
+ per-folio tracking
+From: "Nirjhar Roy (IBM)" <nirjhar.roy.lists@gmail.com>
+To: Kundan Kumar <kundan.kumar@samsung.com>, viro@zeniv.linux.org.uk, 
+ brauner@kernel.org, jack@suse.cz, willy@infradead.org, mcgrof@kernel.org, 
+ clm@meta.com, david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
+ hch@lst.de,  ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
+ cem@kernel.org,  wangyufei@vivo.com
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com, 
+	vishak.g@samsung.com, joshi.k@samsung.com
+Date: Wed, 04 Feb 2026 13:07:27 +0530
+In-Reply-To: <20260116100818.7576-3-kundan.kumar@samsung.com>
+References: <20260116100818.7576-1-kundan.kumar@samsung.com>
+	 <CGME20260116101245epcas5p30269c6aa35784db67e6d6ca800a683a7@epcas5p3.samsung.com>
+	 <20260116100818.7576-3-kundan.kumar@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4A91320003
+X-Stat-Signature: jajua84puzn6emf1brgoxwy9w9btherh
 X-Rspam-User: 
-X-HE-Tag: 1770190301-2125
-X-HE-Meta: U2FsdGVkX18tzvJIKeho6np9f3er+By2AfMFOeZtebLSICX+rdzquEW+Te3/UE6zFRqtujAmn/kb9jcN/YENUu1JwawS0lcTaVDQ5mCRu1eb7PuqgxFxZ9D4dO4+tMCyJodKTgIK/G8Aqgahj9G5qyue/QTgEVr5NPlJjEI5hvYEuWEsGgsakSJO/7NGUEysolQlpQ01uiAc4TiesPGm8Ij1H6wW5DM40GshHYyvI9FZccD22qNJiA7GSL/Fmm3GcXMTybdutnDeBgGzHq9TWB5T24apMUh0G/C4RVXfMm1vRrW1CJlR4gJp0kpGNJJbmc5xdJCPLgG82FzL4uJoNKLr627hOPziBCO0IUAc2us76aX/61NMJA2YNrvbG7LTp8c6uPWUwJvg/uUoJtyDDlseaXvYK2CKW8VtpCKaQmGr7VQdJFr7+Kf+BW6+0xNQyEZ5l1Xeiri60Iz1v0vbt7nMLeTeKebLYeI3619fSBCEJlzMVXN03uHbdWSAMwGNHqM2Bkt/neriZeyqYadKa/c6+d9fRVvF6I7h1/l7j+qpSt9NDNmu5PrMzaEyKfy640nVU50fmw3tt85cWAjpjbJ1NW5wMbVggnAYRQ/cN02hWS1yHbNnMmGu2Wq/iOqCGiuO8EarSTlseFhHR/i0S+ceZdMM2XPEZHDbb38ohkgVgSdBjE1UqglNDpF5QYR1ebRjXqpZSqMfjH5IcuNWI3BSV4MfqjNCuJ4vqnBHgFQkH5ga86/cvdsF+OpmHXA2FK/t+SdzPiG3pODd75IOO7s5kM7uilSyTk//suM8Lq0xKzXJDkHNN/uMBDGfW/KnfO5/SlPNT7kN2FxxBpd1AN2sqzXo4/KNiT5g8ceO5mvUffMAvZOuhoJmPOuvEEhgCEvdM85vcXyEGkP/3+mM3BO8VAbm1EkTQTdkzVoe6S6+jJ6aQngAuqqxRNYjgUDPz2CSbXAwmrBAx61APeX
- FN/DD0dr
- k901QME6feigcatWESHxJ5xbzKJKMj6fLPclgBMHeWkbpv+dixFrWKcdyZO3EmBlAqy45NJTjdRyMKy0qhkMkO1HOFVfZQ60tsFnpGtFrm3jHvgugy/73fXjYGluQx4WKhH7AFQgKawj82206JKs/UNczur5d3BUVBZm0RCFL5k/Du1Q6TQScO8hreTlu4g2EKkYzABKsoSEY4HNDGUzROEh51rhMN2NeKmyk23ByW29cQ0RRXvYKWThaTBttNBASMm6uQlY8eoW469o3m4Ib3vRZvw5kc1DRZJjz+L/96qBII+k=
+X-HE-Tag: 1770190656-583658
+X-HE-Meta: U2FsdGVkX1+foI3N7S7mr4rFI5J66uMhS30AagkiWIp6PTjuL4HqotJDRqybFZQyhgDfCutitZ8WhJIpeGRE3BFVT2SYCdpYWRFvVr0Chq/ouql8OjTU/LBxOO2pHRrZ8V/YESnrYEg+Q7YBvLdxCW/Z0wCku0QgKhhDyZBxfpNFfL7sSCfqfnHz/mYC1j60qSDuL/tDTwjsQT5TDpciuGNV6DHJvhgL0xzMaguChsAVwFRBgJXxVm+v0Uj1BmMZkZHfKd4/+zgIMHjx3VlSSD3LrTbslED8Sn1WojnAQzmr3ZRxMU38JThNkXYkGGMUgt8Bj4APTsHnH2QaxjMS95SHPG6kHxnjD/0dGGf2TR6hR+dqAokyM4HRQY3cxorNDmVj2LkpPhlfyxiIe6qEUsbR24wQ9PEarwfICRLazTw2C5KJev0qknFmxnGkGzH5y4R+bjiqCtB5yck2lKCoYQgBL4LYFMDEUeQR2k/uxKo2y5B80aoImbczAguwsa5SvIa49nOyu1F5JTaAloWX6/A9hw6v5N79n1PjmhHSEVlE+lpwwsO1t47pn1Id5x09yIzXMGPCQSn2FFpy+hpq+OGSNwDwtMt84iSzXDRxR4Ezt7oQAA21CCCSlHly8T03b3+0pyvCYnpYB2HM3Bul7ttNfX4K90A3wsYE2dLB0ssMaAbAf6yeqpnTHMf3K4rwPPMzLmyutWt1NRYTHtUbwaTsWM6xNWKJuU4uo2JmMq1htInv/5AG1RL1CDHTFuhMzQ2Te0XLmGj8uKTSY3n1D1uTQFStSiNi+NItsoI95Wynq4nBKoiE/kmW2jKq9PjYFwPk1BuaVs1majxDLiiOw5ehkKHHsncqMiYem8LrZY1xw0Jy4MQr/1rfnfEVsiImATxifjdFxyGNqU7Z8Dy1D7T9qb4XdPHhk84c5JR7YTTTUO6VJf2pucFPH6mFdbwnJxi+axZ0RgtCJY5vTx9
+ hiqbhWQP
+ I4HZe5QuQf+BDpX6HpJSgLrxdRJ638ckk/XPVc5LiMzoDFHNlSFqTn6yIAhsgqhLsm5LIqFIYP14UlSwZy015IwIVEYt+33egRC6d9leFGWiu5hfaT1lynbGj575EUgvLeLxRh0ddTvo8EWEhSOGyqcHv5/W8Anh2BashBtGvS7dP4XHSJRkq8PgXC5WEtA0Ztq6cepXiS4+kDUUGnR7liiGI8t4MDaUQLZ90qP0xW/sp3Cor60sGFQCBOWejBITct347djTLznacZ9Xwyifsrg0g7RhdIZBA1ROn3j4eJ7qOlq3LL/xvUOKJeui9QiawyOXNWxSH4A5ORoK6zw/6y3i5dZH1wRXAA89tDKY3odt6HItMLYwTVIk6VAatpv4xlLqxBrUBPbpXY4/sP3FCClvI/VY5mPpKsmTXfqrZmACb6t0kpvLXOPhkUs4Ey178q9TQWJPT51OTXQblMvOm6QKJlubuhGM//75Nde+KrnFUvBTL2ZpF5LntKJNtCdA1xlLA9Y155CeM/Kb/aE7DDfJ1wFl+RuNcXcnYDzFLpFuTs5C6lZ2EgIHUy2e8loNRY88etzAKve/MDtJ/HStzo/s1Ds9TtXRRQC/ewp+rF9MHDsNo6g6qqE5hc+Qd7XtMotYVSixufbRlnZ0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,140 +128,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 3 Feb 2026 16:03:04 +0300 Gutierrez Asier <gutierrez.asier@huawei-partners.com> wrote:
-
-> Hi SeongJae!
+On Fri, 2026-01-16 at 15:38 +0530, Kundan Kumar wrote:
+> Introduce helper routines to pack and unpack AG prediction metadata
+> for folios. This provides a compact and self-contained representation
+> for AG tracking.
 > 
-> On 2/3/2026 4:10 AM, SeongJae Park wrote:
-> > Hello Asier,
-> > 
-> > 
-> > Thank you for sharing this nice RFC patch series!
-> > 
-> > On Mon, 2 Feb 2026 14:56:45 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-> > 
-> >> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
-> >>
-> >> Overview
-> >> ----------
-> >>
-> >> This patch set introduces a new dynamic mechanism for detecting hot applications
-> >> and hot regions in those applications.
-> >>
-> >> Motivation
-> >> -----------
-> >>
-> >> Currently DAMON requires the system administrator to provide information about
-> >> which application needs to be monitored and all the parameters. Ideally this
-> >> should be done automatically, with minimal intervention from the system
-> >> administrator.
-> >>
-> >>
-> >> Since TLB is a bottleneck for many systems, a way to optimize TLB misses (or
-> >> hits) is to use huge pages. Unfortunately, using "always" in THP leads to memory
-> >> fragmentation and memory waste. For this reason, most application guides and
-> >> system administrators suggest to disable THP.
-> >>
-> >> We would like to detect: 1. which applications are hot in the system and 2.
-> >> which memory regions are hot in order to collapse those regions.
-> >>
-> >>
-> >> Solution
-> >> -----------
-> >>
-> >>      ┌────────────┐           ┌────────────┐
-> >>      │Damon_module│           │Task_monitor│
-> >>      └──────┬─────┘           └──────┬─────┘
-> >>             │         start          │
-> >>             │───────────────────────>│
-> >>             │                        │
-> >>             │                        │────┐
-> >>             │                        │    │ calculate task load
-> >>             │                        │<───┘
-> >>             │                        │
-> >>             │                        │────┐
-> >>             │                        │    │ sort tasks
-> >>             │                        │<───┘
-> >>             │                        │
-> >>             │                        │────┐
-> >>             │                        │    │ start kdamond for top 3 tasks
-> >>             │                        │<───┘
-> >>      ┌──────┴─────┐           ┌──────┴─────┐
-> >>      │Damon_module│           │Task_monitor│
-> >>      └────────────┘           └────────────┘
-> >>
-> >>
-> >> We calculate the task load base on the sum of all the utime for all the threads
-> >> in a given task. Once we get total utime, we use the exponential load average
-> >> provided by calc_load. The tasks that become cold, the kdamond will be stopped
-> >> for them.
-> > 
-> > Sounds interesting, and this high level idea makes sense to me. :)
-> > 
-> > I'd like to further learn a few things.  Is there a reason to think the top 3
-> > tasks are enough number of tasks?  Also, what if a region was hot and
-> > successfully promoted to use huge pages, but later be cold?  Should we also
-> > have a DAMOS scheme for splitting such no-more-hot huge pages?
+> The packed layout uses:
+>  - bit 31	: valid
+>  - bit 24-30	: iomap type
+>  - bit 0-23	: AG number
+# AG limited to 2^24 - is this a reasonable assumption?
 > 
-> No specific reason. This was just for the RFC. We could move this to a parameter
-> somehow.
-
-Makes sense.  Depending on the test results with 3 tasks default value, I think
-we could just keep it a hard-coded default one.  If it turns out it is not
-working good for different cases, we could make it a tunable parameter or
-internally auto-tuned.
-
+> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
+> ---
+>  fs/xfs/xfs_iomap.h | 31 +++++++++++++++++++++++++++++++
+>  1 file changed, 31 insertions(+)
 > 
-> In case of a region turning cold, I haven't worked on it. In turning hot means
-> that we collapse the hot region, we should do the opposite (split) in case the
-> area turns cold. I haven't thought about it, but that a good catch. Thanks!
+> diff --git a/fs/xfs/xfs_iomap.h b/fs/xfs/xfs_iomap.h
+> index ebcce7d49446..eaf4513f6759 100644
+> --- a/fs/xfs/xfs_iomap.h
+> +++ b/fs/xfs/xfs_iomap.h
+> @@ -12,6 +12,37 @@ struct xfs_inode;
+>  struct xfs_bmbt_irec;
+>  struct xfs_zone_alloc_ctx;
+>  
+> +/* pack prediction in a u32 stored in xarray */
+Nit: Maybe some brief comment about what these are doing and their significance?
+> +#define XFS_AGP_VALID_SHIFT 31
+> +#define XFS_AGP_TYPE_SHIFT 24
+> +#define XFS_AGP_TYPE_MASK 0x7fu
+> +#define XFS_AGP_AGNO_MASK 0x00ffffffu
+> +
+> +static inline u32 xfs_agp_pack(u32 agno, u8 iomap_type, bool valid)
+Nit: Maybe use xfs_agnumber_t instead of u32 for agno?
+Nit: I think xfs style is like 
+static inline u32
+<function name, parameters etc>
+> +{
+> +	u32 v = agno & XFS_AGP_AGNO_MASK;
+> +
+> +	v |= ((u32)iomap_type & XFS_AGP_TYPE_MASK) << XFS_AGP_TYPE_SHIFT;
+> +	if (valid)
+> +		v |= (1u << XFS_AGP_VALID_SHIFT);
+> +	return v;
+> +}
+> +
+> +static inline bool xfs_agp_valid(u32 v)
+> +{
+> +	return v >> XFS_AGP_VALID_SHIFT;
+> +}
+> +
+> +static inline u32 xfs_agp_agno(u32 v)
+> +{
+> +	return v & XFS_AGP_AGNO_MASK;
+> +}
+> +
+> +static inline u8 xfs_agp_type(u32 v)
+> +{
+> +	return (u8)((v >> XFS_AGP_TYPE_SHIFT) & XFS_AGP_TYPE_MASK);
+> +}
+Again Nit:
+We are introducing functions here but using it in the upcoming patches, any reason why can't we
+introduce and use the functions in the same patch? In that way we can also look into the definitions
+and usages in the same patch instead of this where we have to switch between 2 patches - one to look
+into the definitions and another to look into the usages/call-sites? Again no hard preferences here
+- just a suggestion.
+--NR
+> +
+>  int xfs_iomap_write_direct(struct xfs_inode *ip, xfs_fileoff_t offset_fsb,
+>  		xfs_fileoff_t count_fsb, unsigned int flags,
+>  		struct xfs_bmbt_irec *imap, u64 *sequence);
 
-You're welcome!
-
-> 
-> >>
-> >> In each kdamond, we start with a high min_access value. Our goal is to find the
-> >> "maximum" min_access value at which point the DAMON action is applied. In each
-> >> cycle, if no action is applied, we lower the min_access.
-> > 
-> > Sounds like a nice auto-tuning.  And we have DAMOS quota goal for that kind of
-> > auto-tuning.  Have you considered using that?
-
-Maybe you missed the above question?
-
-> > 
-> >>
-> >> Regarding the action, we introduce a new action: DAMOS_COLLAPSE. This allows us
-> >> collapse synchronously and avoid polluting khugepaged and other parts of the MM
-> >> subsystem with DAMON stuff. DAMOS_HUGEPAGE eventually calls hugepage_madvise,
-> >> which needs the correct vm_flags_t set.
-> >>
-> >> Benchmark
-> >> -----------
-> > 
-> > Seems you forgot writing this section up.  Or, you don't have benchmark results
-> > yet, but only mistakenly wrote the above section header?  Either is fine, as
-> > this is just an RFC.  Nevertheless, test results and your expected use case of
-> > this patch series will be very helpful.
-> > 
-> > 
-> > Thanks,
-> > SJ
-> > 
-> > [...]
-> > 
-> 
-> Sure, will add the benchmark results in the next RFC version.
-
-Looking forward!  I'm particularly interested in your expected or planned use
-case, including why you implement the top n processes logic inside the kernel
-instead of putting it on the user space.  I'm also interested in how well the
-test setup is representing the realistic use case, and how good the results is.
-That will help us deciding important things including whether this can be
-merged, and if some corner cases handling should be made before or after
-merging it, earlier.
-
-
-Thanks,
-SJ
 
