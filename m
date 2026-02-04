@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B869AE83EFC
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 09:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 286DAE95360
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 09:42:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6D7DB6B00AD; Wed,  4 Feb 2026 04:28:46 -0500 (EST)
+	id 55BB36B00B2; Wed,  4 Feb 2026 04:42:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A2716B00AE; Wed,  4 Feb 2026 04:28:46 -0500 (EST)
+	id 5093B6B00B3; Wed,  4 Feb 2026 04:42:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0446B00AF; Wed,  4 Feb 2026 04:28:46 -0500 (EST)
+	id 407D86B00B4; Wed,  4 Feb 2026 04:42:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 43A846B00AD
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 04:28:46 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 12AE313B926
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:28:46 +0000 (UTC)
-X-FDA: 84406249452.13.82527C2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6A3C7140002
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:28:44 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=AFSx54P8;
-	spf=pass (imf09.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A57F6B00B2
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 04:42:14 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C48568B07B
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:42:13 +0000 (UTC)
+X-FDA: 84406283346.11.0C19112
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	by imf13.hostedemail.com (Postfix) with ESMTP id AA78E2000A
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:42:11 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=MmeNrHPO;
+	spf=pass (imf13.hostedemail.com: domain of gavinguo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gavinguo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770197324;
+	s=arc-20220608; t=1770198132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gSA7mipH8R///bnGI8oY4vMfZ9Nl42jQEHercPVesk8=;
-	b=Ee1U5ashdQU2kPzOZ3dM29HoWM+xtHHc2dlO3+9Z180GFykJa6jKus94hIWNk0VWs+MImY
-	hG/tQ5UgnAS8k0ibMtY5Hq5ko6aWSzJZQFCwk7w+an9Pmwf9ezEN3Cz0Xxn4zi7F0oeRDZ
-	ICtcSf8CDFG7h9F3r6CAr8KEGBkFTQc=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20201202 header.b=AFSx54P8;
-	spf=pass (imf09.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770197324; a=rsa-sha256;
+	bh=asSU9RKFguHXa4TgGLQdlPOVGmTm5EniivYaV065EMM=;
+	b=wSjOu7k6HZAJ0Qb6AOtfdH2uGhqmLo2Cp3/9nVqw9+WuIz4f3QsRxKoV2FuiKnLPNYjwaC
+	1YOiEPmA9xzlDc3Xib43eGrC7efKXkXcLzw7+3pxBQHXbdMhGP6uIQce0/no7pgNDWrZZh
+	lxzdBpDoW+tnULzv2hWgvz+5A16evAM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770198132; a=rsa-sha256;
 	cv=none;
-	b=QGZLpXwEOU3luW0v3zsetqVDFk54BGYJz4iUKNXeIq21PJ7nORfAyYPV8aWPoL7oQ8J2Pm
-	kwT4f98PvMmKa1gso/IBeZ2mp2N59PTXqo8B+N3yWdCxDSgqNbUfi0gXimDE4uE7QGB719
-	6oO7s3+hlud8Mm75JkyFB9VxOAbC6WQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 985EB442B5;
-	Wed,  4 Feb 2026 09:28:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF48BC4CEF7;
-	Wed,  4 Feb 2026 09:28:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770197323;
-	bh=wNmreD1B96IJwY1XBdvP/FHXcUDoGKx185+NrO65AHU=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=AFSx54P8bWsWcKCo3dw/7CAusa6aLI+b4yMUNsGB4Ux5ceAOJBU7zoi3JUNOzBbYc
-	 9oHVWnYgY/WmA1CVyAo0UI6r+m3rYBgu3W9dUg0jiGqByoxz4+zHhbhueezyHgh6t7
-	 kKrOxA9zuxkC5AOu5T8QDqCr828iKaIkn73q4V8BGl+VVWT73YZ47tyXsrSYlefftl
-	 zmZmIw8ea/zJ1+/dLVH7dhbnqMImPbd486nAd7rnw4lMfwqC0nlSTceXptUMhXQ8HR
-	 Ry8/jNQ4ib598H8RXm17+FE1TUvAWp3tT0Ae+bA6ETEpGYjkcZBZRVdsUVhSyIPShf
-	 Q93mDkPKVXg9g==
-Content-Type: multipart/mixed; boundary="===============6939426097549955783=="
+	b=Ic7fC44LFxeYdNFQNRG1nfnWblkTlfEyfYw1W+o+Kc73BMALXby+GIb/LZb4/dpvUHrZ+M
+	aoVApfQDi/RB13uGCSpJrniF3AcIfmll4n3XD45j/03Fqu/2/NW6/3mKZKVEQ6fmDzUSHt
+	uSTrQAzkL5OVsR0MkNmdSSbYlSOCEzw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=igalia.com header.s=20170329 header.b=MmeNrHPO;
+	spf=pass (imf13.hostedemail.com: domain of gavinguo@igalia.com designates 213.97.179.56 as permitted sender) smtp.mailfrom=gavinguo@igalia.com;
+	dmarc=pass (policy=none) header.from=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=asSU9RKFguHXa4TgGLQdlPOVGmTm5EniivYaV065EMM=; b=MmeNrHPOeF64VE76RsowyeaJWc
+	Xo+aR9r4rjndRXOFm1m7a70+z4Vk2vRXfTDxhLK1IroW5QlKyCWCXzvx2otyAzcktegCShen/RMXb
+	Z7fZkpQ0DtXITNJauDF5lCkDpJ9+fvwlIIIC05qTg1ya5B5GYEVplv+NErcU/C9rt9Bq2SDC3h6xG
+	Gilu9R78Z65z8V3Q7zeLdB/mvEuXhGwwEaHhYZhoQyVQPPIh9xmy7MI32sPBH35DQY6lxN8WH0Dak
+	jA7W2vLxE27XaNhh8r1XGtYLIpky3ACxUAvhvSQ8X2ARZf2eX2J++dAiUghl/rjB4fLLk75U9Hzos
+	IVIGYuWg==;
+Received: from ppp-27-55-95-245.revip3.asianet.co.th ([27.55.95.245] helo=[10.37.212.43])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vnZOQ-00DfHM-Ni; Wed, 04 Feb 2026 10:41:51 +0100
+Message-ID: <32c28997-b4ae-4842-bf5b-307f0b4d01b5@igalia.com>
+Date: Wed, 4 Feb 2026 17:41:40 +0800
 MIME-Version: 1.0
-Message-Id: <bec784d0d78a505dfbfbd17ffe95840dc356c80ceec2a96f9659b442b64c92c6@mail.kernel.org>
-In-Reply-To: <8b9d7d9485c627dc05cdeb6863abd5a1c81c95ec.1770194182.git.zhuhui@kylinos.cn>
-References: <8b9d7d9485c627dc05cdeb6863abd5a1c81c95ec.1770194182.git.zhuhui@kylinos.cn>
-Subject: Re: [RFC PATCH bpf-next v6 05/12] libbpf: introduce bpf_map__attach_struct_ops_opts()
-From: bot+bpf-ci@kernel.org
-To: hui.zhu@linux.dev, akpm@linux-foundation.org, hannes@cmpxchg.org,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, ast@kernel.org, daniel@iogearbox.net,
-	andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com,
-	song@kernel.org, yonghong.song@linux.dev, john.fastabend@gmail.com,
-	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
-	jolsa@kernel.org, shuah@kernel.org, peterz@infradead.org,
-	ojeda@kernel.org, nathan@kernel.org, kees@kernel.org, tj@kernel.org,
-	jeffxu@chromium.org, mkoutny@suse.com, kernel@jfarr.cc,
-	brauner@kernel.org, rdunlap@infradead.org, brgerst@gmail.com,
-	masahiroy@kernel.org, davem@davemloft.net, kuba@kernel.org,
-	hawk@kernel.org, inwardvessel@gmail.com, willemb@google.com,
-	kerneljasonxing@gmail.com, paul.chaignon@gmail.com,
-	a.s.protopopov@gmail.com, ameryhung@gmail.com,
-	chenridong@huaweicloud.com, lance.yang@linux.dev,
-	jiayuan.chen@linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, cgroups@vger.kernel.org, bpf@vger.kernel.org,
-	netdev@vger.kernel.org, linu@kvack.org, x-kselftest@vger.kernel.org
-Cc: ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Wed,  4 Feb 2026 09:28:42 +0000 (UTC)
-X-Stat-Signature: xgo8k3hph7oencgka3k7jck5418cxpyn
-X-Rspamd-Queue-Id: 6A3C7140002
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Patch v2] mm/huge_memory: fix early failure try_to_migrate()
+ when split huge pmd for shared thp
+To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+ david@kernel.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+ jannh@google.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com
+Cc: linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
+ stable@vger.kernel.org
+References: <20260204004219.6524-1-richard.weiyang@gmail.com>
+Content-Language: en-US
+From: Gavin Guo <gavinguo@igalia.com>
+In-Reply-To: <20260204004219.6524-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: AA78E2000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770197324-896358
-X-HE-Meta: U2FsdGVkX19eGisRJQiCjMw7+N+NIfJCe+jOaMrI6NR60HfuQxu+7OvV0r4yWiUaoQdm8kX2/wcY8VZO0qcJ4yQ7cit4NLUeph83jqw9LUrQb+vATtfDrJb/99/hoJGjkkGH0vqEm3lyzDr0lsuNwxESmmNgiZLqMKE749cCA9LuUFCfI9TL+3kDngF2NolnveadcPAcImorqQpUCW2B8Pjh/EWT5fJXs3U46Bz3FG8mLVIwJOJrs1Crz3LsncdSRT2MvROFobynNVjiw3ltBrkiLYP+lLQk/tF3ziEHGEMzRQHcCJoWtZHgje2lEc0GUtVDNsF4p4S/r2rw8ydg/Pa+p0jt3weEbE6jkLUtNIegMRnArg9v2NbLg5E2J+ILVy6WjoLLFFIYmLNPrHlnJQq5NaL39rO2RRio0lwqj/8LpYgiBpbvqjifY8VfT0hpHiRSrmb586xB/T6fjyDZuU1jXmB32Fa+YLKn+W0a6OVfAg9ErAhqbXM2cl43511O1/e1wWf7QhtUS0uETNLGsSi9ogzHkTeRv3M3/Q8pXAZY4caLurKl/BN47BT58yrEoEu4DzwE4cd+iXqvbEJQgWGDxvrhrawvADx2IbXtF/zDDKvL120rL9us9Ad8iP5o9zS4C7pRz033MChN7ObPhG816XeEDHnFy0R/Q4yoDJqVqmP0ZjsoyvI9lFPzRSNjl+kW2ZsplAFCp21DMQyd4ut5iPHpDsyXJt51IvEFm4MG/LO9rW36xV/xaPP7dao2ZF2GB0rWH6QecWC32iQhIf9BsttkYbEv7wx8h+fbzuXLOBgKRtzotmdOA6q642Hgv+0Yz98vtAfrnFh9wDZIJHOPLO6WSr38RkuTA9HkctyMU8xoojAV7EA3173181JwXZFxH7mOwcM0ZpLJXvlsu3U6cyVyhKazDC+EHsIQT+SK9ohFuv9wFmUvhiTMwn+axUj6i70wMd1F2MFtlcp
- VNUB83Jm
- v5Jluhy6/40Bio9p/sySaxmXbzhusIi4JHdS9b8UpGKwrKVF9BebngubSLFhDYaApkCHGfCGZiCt9/ONllIxuveWPyDoC3cp/uvLNQGWR9Q/mVWvWysDikbFnY0A8VFKLIGCytjNx77X52Y42W8mYpab2qCPUFfJnZ6StNeKerrdyLkYKCDyU2JM0nVPJ9jfMZu8Ll7H21pD3u9Hij68cYuHIqO0hGPSdgk1qDg70JpxCYisvaSigXwMmgsKYMGX4/Dr1GtTpnrcqD5D7gVaVNcQgrmZzUV6xKm0j2l7n+LuuzToRyWN/9R2odyhbZqP3wCyYkdZgj/DrjdeYPDMmPep2DogzZW/95BtmG9ZE6FNuvSsiwpudYnCzF6Y2WmVR1dMvJHUwJz/xoKc53bdDdClh/30e11Ln3iY4TlfB1sc90hRXEdbWQT7Hqbm+sIsz1AifpdoFoagZjB46lIAxoXgzKvtCguoCjNJyru9JHHuV3x/wADUuBIvxvyVY/sIgsv80OyJFsLgFxp/J+/ygVXVYFg2TxpZnE0EAjwkdoF9ahYclHIJKQqqssrFBNkC1BfVNDXOzRpF/AmJO1sKv9rNA1g==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: nkazqwrptr77mcmupdr8s5ojerayk38d
+X-HE-Tag: 1770198131-655152
+X-HE-Meta: U2FsdGVkX18E5XeOhjhs55HTcfOLMadsWgLnExIaDgitm16WvQBajVGKc5HmGY481JgdjqWG8TwSOIhVjgOlTrQxn7APpEwIQsB1CSbwvj+2YvPvpC3KDT8iW+3nhKZYFr6KM8wX17NjWx/NMmXLeX8LSTdpRxLKboKizX4IciAAc4m2+IthNilxIkvcSTzCdblJnTmiDJyXhkt9S+A+fi29Ck2IrIA6n9c2ze08VsdRIyD28sHjRmIHWwg4PgKck3OnvXf90atq1kefUrlwN7CtGlUXs5Vh1jpt1pcAQvmGUkMAbLU8ZOiQuSWWjKrDD2sfUK9U8uh4Bx3Ovm/nBIjTHM0u3LWMu2ZH+iAQWkokZ1s0LV/J4v8wRi7SkjQ8NXXdK6RahhD0/T0lmc/XL2nai/JtWdNd2UGQlN0rds6gNO9FwI8sUAGrXJEiv2We3ddSWVqzzMaV8YieReyNVeIecAB7pPcLicjp9LDA/w0A9L2qgG2TRUUzCnI2nPjMvjd9gLUTjkeoe8EuTFkynpOJx5giHB/a8PbbjEBGKeqf21E01nOW2luA1CIXl0Ns65+xpjCsmNrRrCaEo3Y02U05lui/qrZSVERFDsVeW+yRkwssB8xjZhbfvsdj6pWBVARUS2rIZIVrwMejfSkOfPWk7RKZJJXj0Jj9zuV3tOESrGvJ5/tqbHYCSt3ucrgPFWobKRhYy2vXa/s37+8l1O0x1MqnAdq2ujGOXbTg0Vkq9gTKkoL/7RJyWap3ITzC7fS1z8sBtM6ODktWN7JIAiENQwVlOAvT0dozTzK/fg5wiA8rbhMcemvuhTx5+QkypvIv4RKyXPSaW4udj15ykWJDKbv/jZMc+cXLvXKAVmkgEAvdlbP1Fi6lNHyBnN9oIPI45GCrZUVCL7xrs70eOvc4voV9pEDlXgkvQZphDSPF4kJQJ3DR+X5dxh5lByMMFySe4PTgMGye18JELRF
+ sGJNXSYa
+ +xIt7KktOxBy//TbWyCc+C8LqGmoxarAe0zATQwk+VvPME4NzDkOBrMutcO6vDjiM5VeWrlU6XUzzZ/cukw1JiNZH2bcgipJ03yNCtT5kEyo4pBrFVqlwW0Ga4tEU/gz0MidI5JNWieq+YnGgW5VcS76dRWdPm4LJwiRhzDCzThcDJj1Ddq1RiHCwwLygX1jgABMwQkAzBej78+wCknR1S5WR/1fTJakSwSqYlV3OQxpk8viT03gTsFsYAZHVen6OaDx4YI59jm8E5CIUvXdVJZDAGiEVHnRScZHPuB7e5ILc0ZrbK++R6cXP66KKDWsigaICwaj5uhUtMUKx9f+74xGU6NNdOEQL7hm6gcFrP/1BxX5JyLQZQDJHnKJlOj70VkxjCnpJS3lRKJ/m7dt4dYbrfTkL12MU5Q+JWf9M5np7PFGkOVgAfaFbID2jnmkr8PPdVFgsIX42V7xm8UuMWYl+EUY3rHvZsjtlHnW8CCc1stuO6fx7ygyQKRv906WJi8nFIX4Otusd6NjSr16RZpkbcg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,76 +99,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============6939426097549955783==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 2/4/26 08:42, Wei Yang wrote:
+> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+> split_huge_pmd_locked()") return false unconditionally after
+> split_huge_pmd_locked() which may fail early during try_to_migrate() for
+> shared thp. This will lead to unexpected folio split failure.
+> 
+> One way to reproduce:
+> 
+>      Create an anonymous thp range and fork 512 children, so we have a
+>      thp shared mapped in 513 processes. Then trigger folio split with
+>      /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
+>      order 0.
+> 
+> Without the above commit, we can successfully split to order 0.
+> With the above commit, the folio is still a large folio.
+> 
+> The reason is the above commit return false after split pmd
+> unconditionally in the first process and break try_to_migrate().
+> 
+> The tricky thing in above reproduce method is current debugfs interface
+> leverage function split_huge_pages_pid(), which will iterate the whole
+> pmd range and do folio split on each base page address. This means it
+> will try 512 times, and each time split one pmd from pmd mapped to pte
+> mapped thp. If there are less than 512 shared mapped process,
+> the folio is still split successfully at last. But in real world, we
+> usually try it for once.
+> 
+> This patch fixes this by restart page_vma_mapped_walk() after
+> split_huge_pmd_locked(). Because split_huge_pmd_locked() may fall back to
+> (freeze = false) if folio_try_share_anon_rmap_pmd() fails and the PMD is
+> just split instead of split to migration entry. Restart
+> page_vma_mapped_walk() and let try_to_migrate_one() try on each PTE
+> again and fail try_to_migrate() early if it fails.
+> 
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+> Cc: Gavin Guo <gavinguo@igalia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: <stable@vger.kernel.org>
+> 
+> ---
+> v2:
+>    * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+> ---
+>   mm/rmap.c | 11 ++++++++---
+>   1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 618df3385c8b..5b853ec8901d 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2446,11 +2446,16 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>   			__maybe_unused pmd_t pmdval;
+>   
+>   			if (flags & TTU_SPLIT_HUGE_PMD) {
+> +				/*
+> +				 * After split_huge_pmd_locked(), restart the
+> +				 * walk to detect PageAnonExclusive handling
+> +				 * failure in __split_huge_pmd_locked().
+> +				 */
+>   				split_huge_pmd_locked(vma, pvmw.address,
+>   						      pvmw.pmd, true);
+> -				ret = false;
+> -				page_vma_mapped_walk_done(&pvmw);
+> -				break;
+> +				flags &= ~TTU_SPLIT_HUGE_PMD;
+> +				page_vma_mapped_walk_restart(&pvmw);
+> +				continue;
+>   			}
+>   #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>   			pmdval = pmdp_get(pvmw.pmd);
 
-> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-> index 0c8bf0b5c..70a00da54 100644
-> --- a/tools/lib/bpf/libbpf.c
-> +++ b/tools/lib/bpf/libbpf.c
-
-[ ... ]
-
-> @@ -13503,7 +13510,9 @@ struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map)
->  		return &link->link;
->  	}
->
-> -	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, NULL);
-> +	link_opts.cgroup.relative_fd = OPTS_GET(opts, relative_fd, 0);
-> +
-> +	fd = bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, &link_opts);
-
-The expected_revision field from bpf_struct_ops_opts is defined in the public
-API but doesn't appear to be forwarded here. bpf_link_create() reads
-opts->cgroup.expected_revision for BPF_STRUCT_OPS, and similar functions like
-bpf_program__attach_cgroup_opts() forward all fields including expected_revision.
-
-Was the expected_revision field intentionally left unused, or should there be a
-line here like:
-
-    link_opts.cgroup.expected_revision = OPTS_GET(opts, expected_revision, 0);
-
-Note: A later commit in this series (e83943e72 "libbpf: Support passing
-user-defined flags for struct_ops") adds forwarding for the flags field, but
-expected_revision remains unused through the end of the series.
-
-> diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-> index dfc37a615..5aef44bcf 100644
-> --- a/tools/lib/bpf/libbpf.h
-> +++ b/tools/lib/bpf/libbpf.h
-> @@ -920,6 +920,20 @@ bpf_program__attach_cgroup_opts(const struct bpf_program *prog, int cgroup_fd,
->  struct bpf_map;
->
->  LIBBPF_API struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map);
-> +
-> +struct bpf_struct_ops_opts {
-> +	/* size of this struct, for forward/backward compatibility */
-> +	size_t sz;
-> +	__u32 flags;
-> +	__u32 relative_fd;
-> +	__u64 expected_revision;
-                ^^^^^^^^^^^^^^^^^
-The expected_revision field is defined here but is not read by
-bpf_map__attach_struct_ops_opts() in libbpf.c, so any value set by users
-will be silently ignored.
-
-> +	size_t :0;
-> +};
-
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21665371660
-
-AI-authorship-score: low
-AI-authorship-explanation: The commit follows standard libbpf API extension patterns with consistent naming and structure typical of experienced kernel developers.
-issues-found: 1
-issue-severity-score: low
-issue-severity-explanation: The expected_revision field in the public API struct is silently ignored, which could confuse users but does not cause system instability or crashes.
-
---===============6939426097549955783==--
+It looks good to me. Thanks!
+Reviewed-by: Gavin Guo <gavinguo@igalia.com>
 
