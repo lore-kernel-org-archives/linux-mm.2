@@ -4,119 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BF04E8B386
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:45:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD925E8B387
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:45:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D85466B0098; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
+	id 3066C6B009D; Tue,  3 Feb 2026 19:45:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3F866B0099; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
+	id 2D9216B009E; Tue,  3 Feb 2026 19:45:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEE676B009B; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
+	id 21A4E6B009F; Tue,  3 Feb 2026 19:45:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AAB656B0098
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:45:27 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4AD5359E26
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:27 +0000 (UTC)
-X-FDA: 84404930694.18.7306248
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 627F5C000D
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:25 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=ZibLcVuL;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf28.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770165925; a=rsa-sha256;
-	cv=none;
-	b=ooIxmNvPmveC4OUDn4qwbtdr2uT4cACVujBtDD2PwTqAKpjgGpPqLBuTBaeV+O4m7JK+TG
-	MrZdtgiAVvGTbOU7cpQ8Ugj/C1+bR7KDXQg/nOJIOMtANpGmgOCx3I0eT07BlnwLOizoWk
-	B3/euNXYJPuC1Sr9IfEVlj6Nvk03bIM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=ZibLcVuL;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf28.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0B8266B009D
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:45:35 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB0A4D5413
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:34 +0000 (UTC)
+X-FDA: 84404930988.28.4A0796F
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C8CBF40007
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:45:32 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VKhPWgyq;
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770165925;
+	s=arc-20220608; t=1770165933;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QBm6ZcPisQkneG596+7CCtRNo4FR94Kwhkfm4afnAkE=;
-	b=XqknM01NXznxMlquV4V8TqmLJUFnBIc6taW4xzgUmIF/hTiLZjiTYEx33+8e3FfUsDhegi
-	NK6Zxzw1zrgQWUxShGc7tnD/sheIpk5HK4H4XEA7xpVjqchBOsztJrVRu969BN1FlvGvTn
-	FRirNNzpuyma4vzy3+thPFNvzljDK7M=
-Received: from [IPV6:2601:646:8081:9484:7f27:8faf:e50:c87b] ([IPv6:2601:646:8081:9484:7f27:8faf:e50:c87b])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6140iX303686652
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 3 Feb 2026 16:44:57 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6140iX303686652
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770165899;
-	bh=QBm6ZcPisQkneG596+7CCtRNo4FR94Kwhkfm4afnAkE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZibLcVuLSIucGujyPOk0lr2GRGfUUCwgewWStAdXcf/4eRKgVHDfKOXWNg2lO5PRE
-	 dLm7rAOfvt39WHhl2/igmMZiEMY3s9iDuDW3bqCuqMyFmk5KQRtQc8yHI24ggAN8BV
-	 fLPIxXQMMaQsNFwEpHD7xnQBJgBepF2c5pqKRyIpJUDckn/K6QTq1Zaj/1xSk0QH1O
-	 +O70azzWqPCTO/qEpBfMH18/eZUmOOAn5apaFAQw/mMtr683Ky5jXLKITWvhet4IQk
-	 AxPzqM1kLIJxy/Bw5w89KatVX4Squ1ATMkFKGnR0NQIgkCFVVWjlzjEgsnvgGaunDY
-	 NmVBuCBx8kDnw==
-Message-ID: <7030a829-12aa-45dd-b78d-86cf72fb9a2d@zytor.com>
-Date: Tue, 3 Feb 2026 16:44:53 -0800
+	bh=v4h/YYZWHTFrsi5rw36w716dLeWijGWDgsTOzdwbmuA=;
+	b=6nmQKXiZ+2mCN+G55LC4wlsuh1AFtRTLDLTXK04kGivvfd9McocKGOcEhCNsw1FUq4IO6w
+	gJy1Q3QRPzqLXEvcIFCoXfUcY5hRagNzHhI5keu9+lfTC73exhXHf/zK2HUOtsgwmbgzdF
+	mGusMJ48Iq5ssC7naRozG8PxOWcY7g0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VKhPWgyq;
+	spf=pass (imf04.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770165933; a=rsa-sha256;
+	cv=none;
+	b=Zxx/WF/pq5Pq28gEiBYC73+Cd6v1aUorG+nQOBoOKaTFKMArbE2+b6RymrTJQRivb5QNBC
+	1j7e28jaUi9OtQXIAbExTqUSoIq97HYfdOsmud40YeweyeFLNi+FwVQKVVNnYnQOQz6zYa
+	WEhospWaHikMMduuh8w0Tj0iCsGsW/g=
+Date: Wed, 4 Feb 2026 08:45:19 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770165930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v4h/YYZWHTFrsi5rw36w716dLeWijGWDgsTOzdwbmuA=;
+	b=VKhPWgyq2lxi7QT4fzjcVWoZldoMTUJToSdgv3ry8xKYXwL2VExAROqKywuCAxF8qlUA0U
+	Lujf4nhM4CIz4INfYtJYQ0Eg5JBDXWyEMd8RLxl27/N5IUX8Ml5CSy538eo/sgpSNhQ9UF
+	s8oZaaTfba2cxrJ3H+h/tyPLEqH4+zk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Michal Hocko <mhocko@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
+Subject: Re: [PATCH V1 2/2] mm/slab: only allow SLAB_OBJ_EXT_IN_OBJ for
+ unmergeable caches
+Message-ID: <ed7hyqa62mp3mqc67eezfccw4bk6hrxzfulz7pwr4inzyikveb@2hlvbjvvi2ax>
+References: <20260127103151.21883-1-harry.yoo@oracle.com>
+ <20260127103151.21883-3-harry.yoo@oracle.com>
+ <by6wakewxlbsdypouzrxzns7ejkg2dsx7zgmbfcl772gpsrk4y@das2q2wrztbq>
+ <aYHqxs2bkSEFOqZZ@hyeyoo>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 5/6] x86/vdso: Use CFI macros in
- __vdso_sgx_enter_enclave()
-To: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-References: <20260203171958.1522030-1-jremus@linux.ibm.com>
- <20260203171958.1522030-6-jremus@linux.ibm.com>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20260203171958.1522030-6-jremus@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aYHqxs2bkSEFOqZZ@hyeyoo>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ztf486dx5xtwizodschggddx9s3hdmhp
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 627F5C000D
-X-Stat-Signature: fyz5zmpokubtad6o7ea7yma7fzru6k3d
-X-HE-Tag: 1770165925-726918
-X-HE-Meta: U2FsdGVkX18AvRyTquh6mgp6iXY+zp4wb41c+t47SZwg/OtHxX5r8EI889VjZeZlBAU4sl5OmtBybVrdIF4ILNnmpVQQVPy+iVQhcEsStrXtAv1UmjWM00Z5rAcLRmval4uvIVa13C/clHOwa4GaEBkTjeO2df3XzYjk91hvSWftMXK4KV/rndB1N9EVViFgzVom/uVjapXPWzENfQbjnCt3GT0kgpibyEMz3OF9G0+8QYfSa5W3aLmjFVwfWFxzthaRNm4OvECtCWJup+SD4nqMTMv8p3coyKIgtT4HqeSDreNREDCfv3eTxKrWr/OsDUoYpsuUV67vIxNdM8wmjZ1252sztVXF4vye75rNUnGN0noRHyaz7pCmU2hKNXA546u4VQZdt+VHE7UteLRafZj8FnIgOZ3llM95Lvw/AMrTJI69YG/CCwFCvnp2KD+CI5e5SFeN29eaobH5oiN7t2a3FPsK7FCpgpMdGWDKvdeP2EGEKfuIxomqvwXgXKNqdpyHJc5DjIUzrJ1FhsXbPw+BdB/DS889KU/X4yJU6h0VzE/0s5I1IbWX9xazH8G3cmLWviQz7cM2Wqoyx4K3vi3ib9txS0YDuYF0Cn4RSKWjL6E4Kd9UT97P8v1NwuiDBQCQnoS/88MID+WAEIizTIosZJLzPhgri/PaXyF2+EMb6b+wCrkqbKziySCDBb/nfwUb9QZaRlpW2HHKLJyM92eK5WboBbAXwIgbQgBXS+muqP8tnvMgmjI1c3Df8xix6l3L8Bc1LXrKlJyrHpQEEBKW64YSh20+6HbtHKHu0OzAPyAufcvK8qjwiX0tfy/TjFQqkteqM9l0hldUhlGbSP2A2v6C+IF+7aRgZmqpbrESmi1ELxSVkAVbFpFC5+xFvnSN/I2aRZnULrNqI+bZEYnzu/4mcfI36BTt1rOuj6h5+Bv+yH86nEymRQiJiPQ3uT3cwwanikQtnkEGFkR
- vYpY08nn
- rdCtXcj+HboJQ+mPv7NM++Q3ezdFcJtQfoajtSqDxEKsRqJWJEbdYKi8CXcpejva6uGP5zuG8StQgMxpAVaWYeqzWo0jP9TtexY+sCsU1QHvW/pecNVG8TEQzRSamoaP8Cy/Ahw+BdkkyXcv0DJ7vXFvCMohG+WkdNzPaEoiFmDHSnQbTlXEErDjeM39lWHbzl7jhJmrcgq+cO3udbpK/7omXTZE26l13b7FeIEGqILbxJDNPaUr83CnDXpw8PqcLmK6L1th+4sy/XlwnaAxuLqZiYeNRQZWQ/DKe8Zkm0ue0ykPiMYiCWjHtp8v7k/LVzED32UKx36w17I9N69ADX5ubfMjAe3tK52RTHnL53Pt4WOFpK0igJMrjOVXe4+p2XvtrTqZM1THYtEYhhnJtiXsAlmDfT3DSB830jtF8k5bXkv8ce/6CL/hkiMhkhr1+G8CZPj4c7VnstdTPxbGDImPPAVxqRKaP0izvWovqN7YKoojamz6/trnTSxDOL0z8Sai+RAca0euluE0zKpO4FXpQT5ZhCa9LpjR3k3k6edFNtIwf0eEfbANKu2tjcrk8HCK2Cisp5/6KXxs=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C8CBF40007
+X-HE-Tag: 1770165932-329035
+X-HE-Meta: U2FsdGVkX18ncVFWp9PhyEv7xo1LyY/1KT1Ha4fUvRmtE/U8/lEHDktITUPISccv1/fgoKGp9pTMs15BTJnIvVrvJY65AGmkV9UgW98jUBgSkpW54FzvKDnHH3tMNOi2t2m9If2eR4UR+lbapIol/uxT2HuL5UkbCXZxAjL0G2k/9GO4SB2txiGQx7vah4ioK8vcPoAv5POqSa9oZ9L18S1jcbB9Ak5ol2D2YA7Bcdo2/xJhX/nizzxsDv9k+73LzXWf4+4RIjcwtS5psfzPgG/OCSMBF/LEVzqsLVDuIHsxdGFSrPfGKXfsDoMBW2gbgc4ID8JGJZHPcMTE1Pl9WjfkrHEljLJghyj1ZJt+oEooYJ881n9S1bkQEOh69qqJjHSG/lnHpt7nk0SmmnoKBSEgf0i+C+pHx7YN1wjtX5BjxsHexJiZmAzIE3RUa9hVauEoFch1ufp3rjFN2qfVv4yzTtysWBpWLFm5U8HZsyJ627gEIkr1WHiF2lU97BWCBYtMjh4m2CdTVPUv6lWtF5GzikW8BKcVcb4T1pqcopH2D/IGHHoqKxpzNZxmBJWs4xBShm7AgupwdiZy9CwYvKQn1ICwZyI+MFnb8nx8qAicKAuI1eczcwvYOWGs/KbUZ3NyP4Nvy868pk3RCnQ3tJEcBXZ9Xb8iJl6ew6AZPGD7BdFsoJbDDBlMBMkaIovmLcN/mmV5juF05lSDCXLoxDVrpgxmHnsBSspNskPvTn4D9b4quvUMs52vXvR1+GJAOxBeot9A+MlkIjGKct9aZ46Y/AtENveq6Mhw+fIjdsV3nLTfNeHau1XbZuGQjXrDB3NrBcdXLOVUMap1I/+L9Xy0CCRgZsT+GxPBpUcBNzgRFO2Z5m4ODS1a0THeAf03vr3DAGbhG3mpvaleEaOQBk/YJTZ4CTPhNrxIehtIY3jdvhBf3neCy91Qo+b6F6uIq1hINTKrcf/obuh2t4A
+ IPAN/ULA
+ cNjoaga8ZAD/fIaZuOvp18dosnsncn7AZEEWxmv7ZUGO9TWeD7iVTrpSDNkYpv1FRjkxvAB1oMDgSKghThVDnuGLCPd3JcW6p5HzoNM389QU5hCmIDEw64fWTvWv/enhL5ezmxeHRPD2wiu4BBS+53gsQNgi4h0x41ZANnSQ0iDTDxr+W95x4DqnSKjvcjAdsogG8Zyvt3OZCpAkrHyFgrE7E/1jYINiyGAvFQfczL1fHiPiX06R5iXXSPh8e/cZHOymj/RRwHkVHO2koTy5LXFV7rIEuG5PFJCqRCMayYlS1WCKZdl8d2yUpwj819zNqyIGf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,63 +95,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-03 09:19, Jens Remus wrote:
-> From: Josh Poimboeuf <jpoimboe@kernel.org>
+On Tue, Feb 03, 2026 at 09:32:06PM +0900, Harry Yoo wrote:
+> On Tue, Feb 03, 2026 at 07:56:16PM +0800, Hao Li wrote:
+> > On Tue, Jan 27, 2026 at 07:31:51PM +0900, Harry Yoo wrote:
+> > > While SLAB_OBJ_EXT_IN_OBJ allows to reduce memory overhead to account
+> > > slab objects, it prevents slab merging because merging can change
+> > > the metadata layout.
+> > > 
+> > > As pointed out Vlastimil Babka, disabling merging solely for this memory
+> > > optimization may not be a net win, because disabling slab merging tends
+> > > to increase overall memory usage.
+> > > 
+> > > Restrict SLAB_OBJ_EXT_IN_OBJ to caches that are already unmergeable for
+> > > other reasons (e.g., those with constructors or SLAB_TYPESAFE_BY_RCU).
+> > > 
+> > > Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > > ---
+> > >  mm/slab.h        | 1 +
+> > >  mm/slab_common.c | 3 +--
+> > >  mm/slub.c        | 3 ++-
+> > >  3 files changed, 4 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/mm/slab.h b/mm/slab.h
+> > > index 8593c506cbf1..a5c4f981ee8b 100644
+> > > --- a/mm/slab.h
+> > > +++ b/mm/slab.h
+> > > @@ -388,6 +388,7 @@ extern void create_boot_cache(struct kmem_cache *, const char *name,
+> > >  			unsigned int useroffset, unsigned int usersize);
+> > >  
+> > >  int slab_unmergeable(struct kmem_cache *s);
+> > > +bool slab_args_unmergeable(struct kmem_cache_args *args, slab_flags_t flags);
+> > >  
+> > >  slab_flags_t kmem_cache_flags(slab_flags_t flags, const char *name);
+> > >  
+> > > diff --git a/mm/slab_common.c b/mm/slab_common.c
+> > > index 904414c3ebb8..d5a70a831a2a 100644
+> > > --- a/mm/slab_common.c
+> > > +++ b/mm/slab_common.c
+> > > @@ -174,8 +174,7 @@ int slab_unmergeable(struct kmem_cache *s)
+> > >  	return 0;
+> > >  }
+> > >  
+> > > -static bool slab_args_unmergeable(struct kmem_cache_args *args,
+> > > -				  slab_flags_t flags)
+> > > +bool slab_args_unmergeable(struct kmem_cache_args *args, slab_flags_t flags)
+> > >  {
+> > >  	if (slab_nomerge)
+> > >  		return true;
+> > > diff --git a/mm/slub.c b/mm/slub.c
+> > > index ae9af184a18b..0581847e7dac 100644
+> > > --- a/mm/slub.c
+> > > +++ b/mm/slub.c
+> > > @@ -7676,7 +7676,8 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
+> > >  	 */
+> > >  	aligned_size = ALIGN(size, s->align);
+> > >  #if defined(CONFIG_SLAB_OBJ_EXT) && defined(CONFIG_64BIT)
+> > > -	if (aligned_size - size >= sizeof(struct slabobj_ext))
+> > > +	if (slab_args_unmergeable(args, s->flags) &&
+> > > +			(aligned_size - size >= sizeof(struct slabobj_ext)))
+> > >  		s->flags |= SLAB_OBJ_EXT_IN_OBJ;
+> > 
+> > Hi Harry,
+> > 
+> > This patch looks reasonable to me. I just noticed a minor point that I
+> > wanted to bring up:
+> > 
+> > It seems a bit self-referential that SLAB_NEVER_MERGE already includes
+> > SLAB_OBJ_EXT_IN_OBJ, but we're using SLAB_NEVER_MERGE to decide whether to set
+> > SLAB_OBJ_EXT_IN_OBJ.
 > 
-> Use the CFI macros instead of the raw .cfi_* directives to be consistent
-> with the rest of the VDSO asm.  It's also easier on the eyes.
+> Hi Hao, thanks for bringing it up!
+>  
+> > Do you think it might be helpful to add a comment here for better clarity?
 > 
-> No functional changes.
+> Hmm but I'm not sure what should be clarified here.
+> (perhaps because I wrote it).
 > 
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> Signed-off-by: Jens Remus <jremus@linux.ibm.com>
-> ---
->  arch/x86/entry/vdso/vdso64/vsgx.S | 15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/arch/x86/entry/vdso/vdso64/vsgx.S b/arch/x86/entry/vdso/vdso64/vsgx.S
-> index c0342238c976..8d7b8eb45c50 100644
-> --- a/arch/x86/entry/vdso/vdso64/vsgx.S
-> +++ b/arch/x86/entry/vdso/vdso64/vsgx.S
-> @@ -24,13 +24,14 @@
->  .section .text, "ax"
->  
->  SYM_FUNC_START(__vdso_sgx_enter_enclave)
-> +	SYM_F_ALIGN
->  	push	%rbp
-> -	.cfi_adjust_cfa_offset	8
-> -	.cfi_rel_offset		%rbp, 0
-> +	CFI_ADJUST_CFA_OFFSET	8
-> +	CFI_REL_OFFSET		%rbp, 0
->  	mov	%rsp, %rbp
-> -	.cfi_def_cfa_register	%rbp
-> +	CFI_DEF_CFA_REGISTER	%rbp
->  	push	%rbx
-> -	.cfi_rel_offset		%rbx, -8
-> +	CFI_REL_OFFSET		%rbx, -8
->  
->  	mov	%ecx, %eax
->  .Lenter_enclave:
-> @@ -77,13 +78,11 @@ SYM_FUNC_START(__vdso_sgx_enter_enclave)
->  .Lout:
->  	pop	%rbx
->  	leave
-> -	.cfi_def_cfa		%rsp, 8
-> +	CFI_DEF_CFA		%rsp, 8
->  	RET
->  
-> -	/* The out-of-line code runs with the pre-leave stack frame. */
-> -	.cfi_def_cfa		%rbp, 16
-> -
->  .Linvalid_input:
-> +	CFI_DEF_CFA		%rbp, 16
->  	mov	$(-EINVAL), %eax
->  	jmp	.Lout
->  
+> Checking SLAB_OBJ_EXT_IN_OBJ (as part of SLAB_NEVER_MERGE) before
+> setting SLAB_OBJ_EXT_IN_OBJ should be fine (because it's not set before
+> we set it), and once you set it, it should prevent merging.
 
-Looks good to me.
+Yeah, s->flags currently doesn't have SLAB_OBJ_EXT_IN_OBJ, and the functionality
+here is totally fine. I just happened to notice this while reading through the
+code, and from a semantic perspective, it made me pause for a moment. It looks
+like we're checking if s->flags contains SLAB_OBJ_EXT_IN_OBJ (among other flags)
+to decide whether we can set SLAB_OBJ_EXT_IN_OBJ. Maybe we could add a small
+comment like: "SLAB_OBJ_EXT_IN_OBJ hasn't been set yet here; this is just
+checking for other unmergeable reasons."
 
-Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Of course, this is just a small thought, it's perfectly fine to leave it as is-I
+just thought it might help slightly.
 
+-- 
+Thanks,
+Hao
+
+> 
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
