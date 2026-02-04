@@ -4,100 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B917E95396
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 13:16:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F30E83EF9
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 13:45:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B2436B00A9; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
+	id 875906B00B4; Wed,  4 Feb 2026 08:44:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78A3F6B00AA; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
+	id 8236A6B00B5; Wed,  4 Feb 2026 08:44:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 689136B00AC; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
+	id 721A96B00B6; Wed,  4 Feb 2026 08:44:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 571966B00A9
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 08:16:50 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC9C31BFB1
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:16:49 +0000 (UTC)
-X-FDA: 84406824138.15.49CEF1A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6165CC000D
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:16:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TLqvIPTg;
-	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D9206B00B4
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 08:44:59 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EEC0EC0339
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:44:58 +0000 (UTC)
+X-FDA: 84406895076.28.4FFA999
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BD23D100016
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:44:55 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770211008;
+	s=arc-20220608; t=1770212697;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UjrOFWSPNYyipT5loTZH36ibiLYoeTCKGJiud/B8xVE=;
-	b=tqciFRJ8nlSLM7pXgTAzwKj14BHkPslA1Woq5a5QUL4E4zh+Kku5N9CrhXXlLdSQFJZdVD
-	6mk6jqn/r0H+pXoXYGYWTm09t5NC9had8imklhOeOr51g51HthEvhGkYh+l+riv9Ta3B5g
-	B+nBKRQkLds/bstQLWI153TtBQinNJQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UCualjpzLBrdwCPJv0gUmlcf7nSDxWmIfVGRzvs7nek=;
+	b=V+cCHiPAmVUemoRpz9P7dfAlwzpTY3ENTqqrQhuOZANeFGWI5OjDrdVzA/XB2o/nd3vuqK
+	6znJPqumuyWH1tbAgWID6F3gJDwyouZxa8Gqt71BHO2uy9sG70/cY+lL4GoUt400OIuuu3
+	BKjTmTSxmcuVA/LuNXIciBFlj3Egv1w=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TLqvIPTg;
-	spf=pass (imf28.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770211008; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770212697; a=rsa-sha256;
 	cv=none;
-	b=L7+D8gmyYJxB1zd+YpWFcqv7haMaYr4aYs/EjTA2tWeLfPZhcY0XV6C11mrQmgehWDRYzO
-	sYEjwzqxE8xiv6fOABpLsHX4YrPzYlVcZgJ+4cbTPaUHCqXu27M40aZUHMKx2H8ArDNVg5
-	HdYcudWQLVGsWqkTyCQG1l0gF+6dZRY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9133660133;
-	Wed,  4 Feb 2026 13:16:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04119C4CEF7;
-	Wed,  4 Feb 2026 13:16:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770211007;
-	bh=U65dLrebsUvHoLgUboK8QjnppPopUTT702V9iDjRq/c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=TLqvIPTgXEv96WN+eCtentVGfATIvpIxujtjtrndQR2J+tWvrud6Umx5DXM34Yayr
-	 APy5tjLiHooNJekVXn/XywSjycdheJleK9/di4M3bvG7Y+c91Z4Qmn7JbpryGZxq5m
-	 PkbZfo9W2TWBDD2Hlm5V1Q+pvYXeCxdT5q2MhJvIPE8l3GdGTmAt8F91npen3QYRl8
-	 OFOw9nClvoCRBTgRGnbTTdlfSXfYiMbJzQi0F6Id2BFVNV9wSfPxenVPrc7SxqTHZ8
-	 jCRuPVt9mnUjvkbMNcUtLO0z5LtVAsrnaWN6+BG/ViTAp3N2RfqhfpEjUU5G0ysVvc
-	 zJ1Wu6ydxLkNw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Boqun Feng <boqun@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, linux-mm@kvack.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: page: add volatile memory copy methods
-In-Reply-To: <aYFKbWfQmTInYy91@tardis.local>
-References: <DG21IW5HZV2F.PXTH9P2IO8O7@garyguo.net>
- <87sebnqdhg.fsf@t14s.mail-host-address-is-not-set>
- <aX0lcVngRcRwqgd5@tardis.local>
- <SEV7bR_nyQNtvtgoO8X80HMkMTPLW_6roBSxJ-MpKHHNmkZQyVxSS9k1iFV7-bgAlHSLM566L8EqtRBnht65uA==@protonmail.internalid>
- <aX2tyn9nBUEKM-SN@tardis.local>
- <87ms1trjn9.fsf@t14s.mail-host-address-is-not-set>
- <gKLHFGuJqzRyjCupif-LFYn2ZY6OmhkyYj6idYTOnN4zMmNacFLBD1G9zzsYpTJn13GGvL0i-7JA-lIlBgakgQ==@protonmail.internalid>
- <DG2WLWJD8V5W.2I24LZKS6JG6Q@garyguo.net>
- <87bji9r0cp.fsf@t14s.mail-host-address-is-not-set>
- <878qddqxjy.fsf@t14s.mail-host-address-is-not-set>
- <aYFKbWfQmTInYy91@tardis.local>
-Date: Wed, 04 Feb 2026 14:16:37 +0100
-Message-ID: <87ldh8ps22.fsf@t14s.mail-host-address-is-not-set>
+	b=mb8J9L1qtJagRYw+iWTGi6DefCg0GpB+GbyuHwaSlFrV8VzOz3YYlh4jRJwicYvAPMfBWi
+	ZELViAjAJG6lOdDnr3SUTVlWAQD+1HP3xdeuENmORMwMUWNTGoFQbLYw/OD3asDw7FO9eP
+	yuWRsK57jigPq8AelweCokCA8NMM6m8=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f5hQX5fT2zHnGkY;
+	Wed,  4 Feb 2026 21:43:48 +0800 (CST)
+Received: from dubpeml500005.china.huawei.com (unknown [7.214.145.207])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3273A40086;
+	Wed,  4 Feb 2026 21:44:50 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml500005.china.huawei.com
+ (7.214.145.207) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 4 Feb
+ 2026 13:44:48 +0000
+Date: Wed, 4 Feb 2026 13:44:47 +0000
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Linus Walleij <linusw@kernel.org>
+CC: Yushan Wang <wangyushan12@huawei.com>, <alexandre.belloni@bootlin.com>,
+	<arnd@arndb.de>, <fustini@kernel.org>, <krzk@kernel.org>,
+	<linus.walleij@linaro.org>, <will@kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+	<fanghao11@huawei.com>, <linuxarm@huawei.com>, <liuyonglong@huawei.com>,
+	<prime.zeng@hisilicon.com>, <wangzhou1@hisilicon.com>,
+	<xuwei5@hisilicon.com>, SeongJae Park <sj@kernel.org>, <linux-mm@kvack.org>
+Subject: Re: [PATCH 1/3] soc cache: L3 cache driver for HiSilicon SoC
+Message-ID: <20260204134447.00000afd@huawei.com>
+In-Reply-To: <20260204134020.00002393@huawei.com>
+References: <20260203161843.649417-1-wangyushan12@huawei.com>
+	<20260203161843.649417-2-wangyushan12@huawei.com>
+	<CAD++jLn+TDfu-aQ+Kfm=unYp4Zjg=endP3GGzZcpuYFR=s1K1g@mail.gmail.com>
+	<20260204134020.00002393@huawei.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6165CC000D
-X-Stat-Signature: gpbsuoemoryb1sm8doqtkofztdfm8pdr
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100011.china.huawei.com (7.191.174.247) To
+ dubpeml500005.china.huawei.com (7.214.145.207)
+X-Stat-Signature: qoumrb8nhiew9dxg86qw9hy9hmxpims1
 X-Rspam-User: 
-X-HE-Tag: 1770211008-926822
-X-HE-Meta: U2FsdGVkX1+IyHN08twL3B5UsChSK0+Wtm+zECpKoxbYmEyyBDZA9M6E+tIpsX0nyo3D7Qifh8Vz/dG8OmL1de2fld0eva+DNSCoKVOLCPBm5GjjESjWWRm7vIy8AzpEo2jNlzGYQF/MhxAHzW6KJxr/Ke0Nny0CxvY9TmFwhN1qXO60phhDSjrsQO7sbgOzokTBcxaZnk0mmffnrnjsGFRfMYJbmA5fApYEKbE7YvyHhyIA9lu3D+kZpCRyyXl8SlM7zDu2hDZCD5VwsDzlYMbep6llWIgmuiRYnyezSU0xwGFvENUoNh5zTxODJDiOtlK5KQOpjX2v4fwUyz5VHy+LLisD6Q1W7EF7ovPJkvkhxyz0CYjvs0HbaytVAvRDqXZ92mGzhuJyl/BHTSw8FdDUSpAjihLsAuFahoK6B8fQeKnGvNad2XfEs7cAvfnWl0tEAhhA4XX2Gq/xoA18BHd7+wCctUQCExcpHFEhTIBa7hVQIryDgoTPmEG0hPvpxU+HYqxavoXu+mQZn5ejE3kpWosv26iN4Yh2nz4N1n/m3tP8U6LVeeePd6FrEvbEXZJLGKtKVzMxKX2RYxkISYffsQUc6bIHHkubMCijI1lU38acs3dFPQkaCMjFafsx+FFxxihQHnHkn/B0ZAhis6sF4V1SP3DwiRa07UrNt/ykKRD3IzcKLuw4vJkoGILWgU6m5H7f8BCUMPPPmN4S2edTW/60mHYB+ezZiOx1oswnjmdPIhV/ZMSPg2rgV1ZeC2TUj0/5Tw0vt4vV8xtiiPP2aJ2u9/62zg2GRog/iMIrfwcfDR3QCLYNmvFJsfIm3Skse2YM52hW4gqeiB9mNLUPo3fcKuT+YSgucMSj8b0Em0kOJkJRHuxVRfLL7AYDUD/PlpdTc3jLTRWmTrcYP4qXog6AiwYhJUeyhENiR+EzPHRxHbxoyZHwVpXdfkU3HylpTfHHC/setvMI2yS
- Y1r6tKYh
- QfsAW77hVf+Qcx4x03bfv/QXqNQT1zEL2EguPRieMfivOdmX8Wu9Yy1ViHBkuwQMIOsIJi1/8TVVqtYZgvda3Jb/na6YMSx5d4O7huMUfvMM0Tb1ZQcOr9+5+Czgld66jB0/jAbgNc+eliOolcxN7p7QFF5WHspHpTu1QtraCRuVcJli0As5a28uKnNM0bFk1NAKY2JZmvIYhqceAsRn0aHxCJYotI8TXhbCTjk8U1kl7ay8NdMG4NqAUS1x4rJC4E8HP
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BD23D100016
+X-HE-Tag: 1770212695-200926
+X-HE-Meta: U2FsdGVkX194q3jdqoU/n8fndtphJCiZEWtd8Rrrtj67aqR/7aZelv8qs6y8whnFrpNXztm0ECsfdk9vH47fa7MhUGiJZP4vtfgGjTaxRTdb4pK2kNI2u7G1xe/+AZVHUQeYX4lQ91P9BS5mzc8ZYXQqL/Qr9kCaid8GWf3hHlz18ICAwn3jfahqd5pB7lRqAMAMtvttPvkAs+SK3I8fwiuWhgkASiENLkorphN12DsUn4xNO019Gs8kviNch1TW0GwgVfya5eSSfAd/iN4WmjAm3R8qfiOH4kCD8L6k4oOOd2bbP4xnNZ9b+WwpqsbbvtJrOalktA5byXiNCyu6OeRzvuvwR1ezF15bYfpTu1nvpjVnvcjzeXRjnVd6ag/u9pxS1+ciXhUUyK16mfkBzNBRIjS3isGVCQvvRdMP/7BROY3tCduh3ogDdI05phDKI2U6WcmJdrvtsTQMY9rAXfkqp4nh2zcq+b31OEUPvqxVqu4Cd9WB8Ncikp94LkUJ7bZ1RKXIuGuaVh/X1Yh7+gHFPrl6Cd3aiFY/ZruTxLRXq4sj1bkHWQcWSuA3at+pzADLqLP3XnxNSdcxY99PlHfR0z18/KS5M66djH0Wt9xY09+qd15CewT8tar82WFXCRJR94KZ6O/jid5n4HzD+ieGjvEDhHmiopgVstLILN56QTL73siGpweN7FFXRKR9Ewl0qBzqUvzk5yfFl8lRbbCQGfeCqsDhIVUccDprkDeF1P1fERNULajatV6j01r9Gc+4yk43msSVDVWLQ/BJyC7zQ1hS3zaTZUWS3LfVSHPrvDlO/MarC2rjhc4clQ13E4ELul7Mpq5EdM0sSRmLlzNKNqSZdwLhzT5HZiIijLiq6zpmHh8PRrBkHR/xTSGZ+gX3w34SSqGUifkwE96zuCq4joZ05zYzeO/UufHaPSqsS3qgam2vV4b9FXF2I11GFsauav0E8KFE5JXBPwy
+ y+0Y6x6F
+ o/FgGFVWAtkhyVwb82bycz/eD8XnGOtddrGukA/lJSeJT9wpDVlsgtJKxv5dxho6ExTTclOpJ3swGmgEs/BG3FYLFlmD0SkW4DXj24lP8WylS4dwuQO54jx88V5GqgLQJsK5XZCtYxiYFK9scFdJgbGYUqlE5zJlFYvwLHR3oq/glKmSSNRgug4XjUVWb8u0ZcBtbRS3A7svNXyIoH0ZsXn6IhGq2qrrLkkWDXPr/05D1joudAKCdIVx5ResbeL5C1xFu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,106 +99,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Boqun Feng <boqun@kernel.org> writes:
 
-> On Sat, Jan 31, 2026 at 10:31:13PM +0100, Andreas Hindborg wrote:
-> [...]
->> >>>>
->> >>>> For __user memory, because kernel is only given a userspace address, and
->> >>>> userspace can lie or unmap the address while kernel accessing it,
->> >>>> copy_{from,to}_user() is needed to handle page faults.
->> >>>
->> >>> Just to clarify, for my use case, the page is already mapped to kernel
->> >>> space, and it is guaranteed to be mapped for the duration of the call
->> >>> where I do the copy. Also, it _may_ be a user page, but it might not
->> >>> always be the case.
->> >>
->> >> In that case you should also assume there might be other kernel-space users.
->> >> Byte-wise atomic memcpy would be best tool.
->> >
->> > Other concurrent kernel readers/writers would be a kernel bug in my use
->> > case. We could add this to the safety requirements.
->> >
->> 
->> Actually, one case just crossed my mind. I think nothing will prevent a
->> user space process from concurrently submitting multiple reads to the
->> same user page. It would not make sense, but it can be done.
->> 
->> If the reads are issued to different null block devices, the null block
->> driver might concurrently write the user page when servicing each IO
->> request concurrently.
->> 
->> The same situation would happen in real block device drivers, except the
->> writes would be done by dma engines rather than kernel threads.
->> 
->
-> Then we better use byte-wise atomic memcpy, and I think for all the
-> architectures that Linux kernel support, memcpy() is in fact byte-wise
-> atomic if it's volatile. Because down the actual instructions, either a
-> byte-size read/write is used, or a larger-size read/write is used but
-> they are guaranteed to be byte-wise atomic even for unaligned read or
-> write. So "volatile memcpy" and "volatile byte-wise atomic memcpy" have
-> the same implementation.
->
-> (The C++ paper [1] also says: "In fact, we expect that existing assembly
-> memcpy implementations will suffice when suffixed with the required
-> fence.")
->
-> So to make thing move forward, do you mind to introduce a
-> `atomic_per_byte_memcpy()` in rust::sync::atomic based on
-> bindings::memcpy(), and cc linux-arch and all the archs that support
-> Rust for some confirmation? Thanks!
+Fixed linux-mm address that got added a few emails back.
 
-There is a few things I do not fully understand:
+On Wed, 4 Feb 2026 13:40:20 +0000
+Jonathan Cameron <jonathan.cameron@huawei.com> wrote:
 
- - Does the operation need to be both atomic and volatile, or is atomic enough on its
-   own (why)?
- - The article you reference has separate `atomic_load_per_byte_memcpy`
-   and `atomic_store_per_byte_memcpy` that allows inserting an acquire
-   fence before the load and a release fence after the store. Do we not
-   need that?
- - It is unclear to me how to formulate the safety requirements for
-   `atomic_per_byte_memcpy`. In this series, one end of the operation is
-   the potential racy area. For `atomic_per_byte_memcpy` it could be
-   either end (or both?). Do we even mention an area being "outside the
-   Rust AM"?
-
-First attempt below. I am quite uncertain about this. I feel like we
-have two things going on: Potential races with other kernel threads,
-which we solve by saying all accesses are byte-wise atomic, and reaces
-with user space processes, which we solve with volatile semantics?
-
-Should the functin name be `volatile_atomic_per_byte_memcpy`?
-
-/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
-///
-/// This copy operation is volatile.
-///
-/// # Safety
-///
-/// Callers must ensure that:
-///
-/// * The source memory region is readable and reading from the region will not trap.
-/// * The destination memory region is writable and writing to the region will not trap.
-/// * No references exist to the source or destination regions.
-/// * If the source or destination region is within the Rust AM, any concurrent reads or writes to
-///   source or destination memory regions by the Rust AM must use byte-wise atomic operations.
-pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
-    // SAFETY: By the safety requirements of this function, the following operation will not:
-    //  - Trap.
-    //  - Invalidate any reference invariants.
-    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
-    //    operation and all operations by the Rust AM use byte-wise atomic semantics.
-    //
-    //  Further, as `bindings::memcpy` is a volatile operation, the operation will not race with any
-    //  read or write operation to the source or destination area if the area can be considered to
-    //  be outside the Rust AM.
-    unsafe { bindings::memcpy(dst.cast::<kernel::ffi::c_void>(), src.cast::<kernel::ffi::c_void>(), len) };
-}
-
-
-Best regards,
-Andreas Hindborg
-
+> On Wed, 4 Feb 2026 01:10:01 +0100
+> Linus Walleij <linusw@kernel.org> wrote:
+>=20
+> > Hi Yushan,
+> >=20
+> > thanks for your patch!
+> >=20
+> > On Tue, Feb 3, 2026 at 5:18=E2=80=AFPM Yushan Wang <wangyushan12@huawei=
+.com> wrote: =20
+> > >
+> > > The driver will create a file of `/dev/hisi_l3c` on init, mmap
+> > > operations to it will allocate a memory region that is guaranteed to =
+be
+> > > placed in L3 cache.
+> > >
+> > > The driver also provides unmap() to deallocated the locked memory.
+> > >
+> > > The driver also provides an ioctl interface for user to get cache lock
+> > > information, such as lock restrictions and locked sizes.
+> > >
+> > > Signed-off-by: Yushan Wang <wangyushan12@huawei.com>   =20
+> >=20
+> > The commit message does not say *why* you are doing this?
+> >  =20
+> > > +config HISI_SOC_L3C
+> > > +       bool "HiSilicon L3 Cache device driver"
+> > > +       depends on ACPI
+> > > +       depends on ARM64 || COMPILE_TEST
+> > > +       help
+> > > +         This driver provides the functions to lock L3 cache entries=
+ from
+> > > +         being evicted for better performance.   =20
+> >=20
+> > Here is the reason though.
+> >=20
+> > Things like this need to be CC to linux-mm@vger.kernel.org.
+> >=20
+> > I don't see why userspace would be so well informed as to make decisions
+> > about what should be locked in the L3 cache and not?
+> >=20
+> > I see the memory hierarchy as any other hardware: a resource that is
+> > allocated and arbitrated by the kernel.
+> >=20
+> > The MM subsytem knows which memory is most cache hot.
+> > Especially when you use DAMON DAMOS, which has the sole
+> > purpose of executing actions like that. Here is a good YouTube.
+> > https://www.youtube.com/watch?v=3DxKJO4kLTHOI =20
+> Hi Linus,
+>=20
+> This typically isn't about cache hot.  It it were, the data would
+> be in the cache without this. It's about ensuring something that would
+> otherwise unlikely to be there is in the cache.
+>=20
+> Normally that's a latency critical region.  In general the kernel
+> has no chance of figuring out what those are ahead of time, only
+> userspace can know (based on profiling etc) that is per workload.
+> The first hit matters in these use cases and it's not something
+> the prefetchers can help with.
+>=20
+> The only thing we could do if this was in kernel would be to
+> have userspace pass some hints and then let the kernel actually
+> kick off the process. That just boils down to using a different
+> interface to do what this driver is doing (and that's the conversaion
+> this series is trying to get going)  It's a finite resource
+> and you absolutely need userspace to be able to tell if it
+> got what it asked for or not.
+>=20
+> Damon might be useful for that preanalysis though but it can't do
+> anything for the infrequent extremely latency sensitive accesses.
+> Normally this is fleet wide stuff based on intensive benchmarking
+> of a few nodes.  Same sort of approach as the original warehouse
+> scale computing paper on tuning zswap capacity across a fleet.
+> Its an extreme form of profile guided optimization (and not
+> currently automatic I think?). If we are putting code in this
+> locked region, the program has been carefully recompiled / linked
+> to group the critical parts so that we can use the minimum number
+> of these locked regions. Data is a little simpler.
+>=20
+> It's kind of similar to resctl but at a sub process granularity.
+>=20
+> >=20
+> > Shouldn't the MM subsystem be in charge of determining, locking
+> > down and freeing up hot regions in L3 cache?
+> >=20
+> > This looks more like userspace is going to determine that but
+> > how exactly? By running DAMON? Then it's better to keep the
+> > whole mechanism in the kernel where it belongs and let the
+> > MM subsystem adapt locked L3 cache to the usage patterns. =20
+>=20
+> I haven't yet come up with any plausible scheme by which the MM
+> subsystem could do this.
+>=20
+> I think what we need here Yushan, is more detail on end to end
+> use cases for this.  Some examples etc as clearer motivation.
+>=20
+> Jonathan
+>=20
+> >=20
+> > Yours,
+> > Linus Walleij
+> >  =20
+>=20
 
 
