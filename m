@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B3B7E83EF9
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 09:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A13DE83EF9
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 09:01:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 817626B00A9; Wed,  4 Feb 2026 04:01:40 -0500 (EST)
+	id CFD326B00AB; Wed,  4 Feb 2026 04:01:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FF7E6B00AA; Wed,  4 Feb 2026 04:01:40 -0500 (EST)
+	id CBE346B00AC; Wed,  4 Feb 2026 04:01:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7027D6B00AB; Wed,  4 Feb 2026 04:01:40 -0500 (EST)
+	id B93826B00AD; Wed,  4 Feb 2026 04:01:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DBFD6B00A9
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 04:01:40 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 248BAC286A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:01:40 +0000 (UTC)
-X-FDA: 84406181160.26.C9A6EF6
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 51761160007
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:01:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qb4JFLb4;
-	spf=pass (imf08.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A3D4E6B00AB
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 04:01:51 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 706941A0749
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:01:51 +0000 (UTC)
+X-FDA: 84406181622.17.FB85B95
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf30.hostedemail.com (Postfix) with ESMTP id A35CB80006
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 09:01:49 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bQCrR7X2;
+	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770195698;
+	s=arc-20220608; t=1770195709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JUgIlqpjjjKsmTkW8jalrAzVxUqTtIlI0a7hWgOUGus=;
-	b=HOWf0b2zgx1RHd76qaXkEmeejWUech7fdwbHC06uNVgJLSwtFAomJgzuwLeYEdCQFJfj+o
-	W4UCYtV9/S3TukeDzOfrlY4f94cPb827URDfUzler8d5ZzSScUOaFN754QW1prpWN9zvGl
-	o9WrPO1J7rA8GKJVaxQpu8CbsShu12I=
+	bh=rv/fHxt4+X3oWhp4filMRhQl39d1cdrW/sfgMsICQzE=;
+	b=IJ4lo6wPyjiNP1jAtFFsJ7Ep+Ewuo0Ps7NhwAtPJ+fnQ4m3CoXe1t6rwyR6bosOzdikkWN
+	8ER8DU8PUcz+8q8E/84wTcKUpX03vZ1F/ogGFnoDsfMORiBRDeZi+ASpmh70UTfEzpnSgx
+	BUi2N4htkrWfJUvQ0wz4vVGa/o383ak=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qb4JFLb4;
-	spf=pass (imf08.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bQCrR7X2;
+	spf=pass (imf30.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770195698; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770195709; a=rsa-sha256;
 	cv=none;
-	b=fR/kRzZ+CXSeDUPal52BWQCg/FWt92T+wpm6AoyK4BaSp4dKvIv01wy6/L2B2zkNkGXo5c
-	WsbYgLj87I4gWBf5vcEfUbgE2deYk4K6uLnezWKRQk9gH07ESyu9XQG8lF169x3afaHI3N
-	I+ttUShETBty3QXDXI6GJBZc34zZtL4=
+	b=LgEtB0P1csJXX57ytskPDK7zO4XBcEM1CeE1qw9ZlbThpKPu7qdVmTjtOMAmPKKfD1FNad
+	MsG2+VIUyXLiX1qTG1JZS5um5nsM83tOe5rjj9/1DOE478GrUtBZQNgjc/imVqNHWj+40R
+	w6z6324b8lETECRkGEDJtx34mK+ONj0=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770195695;
+	t=1770195707;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JUgIlqpjjjKsmTkW8jalrAzVxUqTtIlI0a7hWgOUGus=;
-	b=qb4JFLb4WR4PhEKpDXKKSeOEg3T9iUuMYWzao8DhB0Maow2Ot7VfRx1u1uCpQ2IoKxxSmE
-	8ok6gQSIbSaEcFpHYlhI/wKY4afiTMY0HP+IUpQ+Jg/IqvGVwTTLb+0q5mU/1z5KN7k4Sv
-	ogKq87qv1LveACxZHC/zgqhyceeXIDU=
+	bh=rv/fHxt4+X3oWhp4filMRhQl39d1cdrW/sfgMsICQzE=;
+	b=bQCrR7X2r1KY38L6/IQKxYBfiDuKDtwn8zePZYYGVObft9dokGTHhq00IwOtCQOBzXAy0E
+	3go5mBFxuE3UJGHhTlaHiMvm0tBMLeRTw40+mBYvuelnAfblGCQ9aHZUb5343daZa9L+VK
+	LAjM8u3aYrM/2yP9ACSLMHTyTQmH9pE=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -111,22 +111,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	linux-kselftest@vger.kernel.org
 Cc: Hui Zhu <zhuhui@kylinos.cn>,
 	Geliang Tang <geliang@kernel.org>
-Subject: [RFC PATCH bpf-next v6 11/12] selftests/bpf: Add test for memcg_bpf_ops hierarchies
-Date: Wed,  4 Feb 2026 17:00:07 +0800
-Message-ID: <031afcd7c16e97f1f3c0d4a8a526a9eee2ad23fd.1770194182.git.zhuhui@kylinos.cn>
+Subject: [RFC PATCH bpf-next v6 12/12] samples/bpf: Add memcg priority control example
+Date: Wed,  4 Feb 2026 17:00:08 +0800
+Message-ID: <d3e3dba90cf47c7da97a8a4142e7e816c5c1ace5.1770194182.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1770194182.git.zhuhui@kylinos.cn>
 References: <cover.1770194182.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 51761160007
-X-Stat-Signature: wjemx838t4urk6rjuckhw14m5cp38ymr
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A35CB80006
+X-Stat-Signature: bhw79xzxy5ssobxku4jqjwmrpc8zhxwa
 X-Rspam-User: 
-X-HE-Tag: 1770195698-772706
-X-HE-Meta: U2FsdGVkX19aS/9Npiy4o1YDS23+B/zHlftWPLpR095bFIzW8wO32cqEliRSpzyrGd+ChPBp9tjq4myhsq32bacIRW60PveeWQPRcQ4UNVD0YeqEiWgbLiAV2Odzj85eIyhrYnH7fD0UxLQy4VDSFpgNyjLiWqjNicB3aBdasZemt27EJjJko5NGybnVA7OMlPMz5lduITn7SCLFUx2PFhHuvsboSaf8GZDc1VqYKUCNokjusR0zj4VAG1jzD22a4qWEGNSCMJMESfvegSkALww9z69EVLCms2yDup2OEqACc5+nKgj5Qi3MorhX09Y3EsEHvPiPWaK5Zz90Phe2HB2RagPhNXTTbgFfjCrUkX1tPlkrFqjd9gCt8gB/unMmoSJmypHJ7aiSjKda78JH0JlK2/AfXFhtjvTysdNbps9iGLa6R6IRJJxdEi3Xop+KyB80qfYQebSCjBmsqVIdhdy3leLoowpm26vVo1cWd8YVa/H2NVUfSAZUWOutKfuWA/yY1HcA/L0wrjADRmHzGlBNLzwjKJgcDcfpZdZDVyd6P7cX2l7j0fJLRDEh0fDD4mRJf86WiYxibkdkl7o5bD4jmTVKTneX+NIHZRX2D1GaFd7YfLjQpO8GzVZqP72+x5zhFfAB4ap+2+22jI5C8gSMpbp0XnEYUIFKWm4nIGrmzwxsD/wjH4RYBIxPM/DKEKiL/o9ezYP88s20rrdmwIi+3jMNSg/Xqs8+eXdzeQyrptN8qQqiQPO/O4iqAaANyCz6+aUft/522XSGlO5+j7yOUFky6qjKM+yzyDydMBP5UMKyBOwTgErlCG+hkv8F7cq56VO83LS/qMCPCugaHRKkfgJOkRKCwLQCxOvtRh569wSYkpzUUU6fQtAMRMk7LrpOgEYh3N8+HX+s44tCcziTrrr6IjetoHWLNAobYI/ipjRJSYnfD4LGziWAad0ihM69//mrtLX0noQzJ/j
- Kho4jF1p
- +yEh3eWahYBG/JL7rQhfaN0tAv7gTunxfJ927XISvcuDcl918CcuCJo6Sp7abxkSrxDJPyTFEb6+OafRnrGh4R3GOz6iEqt4C19wyLNMf18YmhBWMHo3ufFgSFpg6vw/q6LK7+R40ug5zLNP2SasLc/5etLGm9Z3adYrhTPj452mxxspJ9E+Va9gsO206kzsjenyaf30X1dCrVydIWDbc2huoP81rdqvomaPwgaX3b32UtalPwYNlHO7moy9K6eQ/xK6vCEWV5oWjuZuv5dwdjiDtDl8eb1lfLYhWuD1q4qZLLRU=
+X-HE-Tag: 1770195709-806837
+X-HE-Meta: U2FsdGVkX1/ZrVpRdQdD0QIKHaIhAAU/wN0LlFEp1oA75Lz9fkTTYglvNHNUoApKTIVUQXgpwPl5GdSiGMTlBD+evBPCf967s3S0Q5ZaCq2nrelnnAga7OM4NmDG+pj1ewiZfMyS7LPL81jDKBIWp6d+sQkiMlwoEKR9b77kukjQbyA42DCAR24J9+N5BMK2OG5mLiv5VM9P1PR6ZMnZZOO1hUfQ7QNGuIEGPxAA7xvaAbJb3zc+IPpJHyZLdlCeTKvU2Po2W/gs6iWi0BtMm2r3oCfxNZN0WQWu3tBONcLUBj0NVmQdYulDv79db2L3oDJpNVGtwTtCYiGuvOINnOnJU6552KoVET09KjE/F18SoEHcdk4RM96HfS27gNTDtBIsmEtPaCK1EiIeABn3DmZXsf8LE1bOUn5qPJrIWwYX0Pc4AZzkK3ru3k5ChSmei4SP31kULlZhQfYFQncyLTF+ystA9rAcNZ6Le2TgNwnxDu6+x4ZuokZmpljxkCsHhX3s0UM/D3ZMkOxUSZeBcXep0mmhddhtae+0I7Sxac3IU1p7cwBSN7VttKoE3Gf77kuHuUvcQZmxf6g2ReKeVFG9lfpYXT130qY6EDqnqa7pFC7YesX5cbLGDbwRCvaD2rjU887nHqmRiAoQ67IlDIv4/I5W1zkVMhkSVUtzKv1Jzl7bwkqbnQZXS4INsS08zQXNZJiLcOorfQQdBSp7MkL2LlBAHhbK0h6gkByhZkhIS16YZJiH/niABlKTiGMykVsSZ+DLsSiuoCloavEDtZbw8tjb2qrgFXrGR1NNWUTFHE8/DJr7bWsXxvGnDAcLBUdOKuVHOwrPONVInaG560GoWBrSkHK9QldxgqlCtL98LtDHhkO0k6TRXsyvbDZbdU2Vm4trhRSrwJaA15EFL/FkbJXtpIOP08E6yYHIKN4gO/bPRq7+rZBNWoCw5y6pROZNNEmZyQ2hCQGOcD6
+ SQ1CqYOs
+ lHvaEvpYxWHTC85/eEF2stDGsVTfkiN/tAQrS5J0IzVT6XakqIzd/tz0SKaSUr62aHuQ4htBDb95/n1MP7hBynVf1AGG36gx0OUHl8nWmKYFPUi0jdJc5VrW9fk2VIksElKd3NB4cQG5fOWnJYQQU9YvCPLNRZOHRooo+qwIILjnxNV27L41cJakbfZQBVqimth9I7iJYSKmrfFHRTf0rZA7EgGUzkgGnFDKel/iB0LsEMZVaS80mWg0vmmMiVmb2ckUK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,108 +137,593 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-Add a new selftest, `test_memcg_ops_hierarchies`, to validate the
-behavior of attaching `memcg_bpf_ops` in a nested cgroup hierarchy,
-specifically testing the `BPF_F_ALLOW_OVERRIDE` flag.
+Add a sample program to demonstrate a practical use case for the
+`memcg_bpf_ops` feature: priority-based memory throttling.
 
-The test case performs the following steps:
-1. Creates a three-level deep cgroup hierarchy: `/cg`, `/cg/cg`, and
-   `/cg/cg/cg`.
-2. Attaches a BPF struct_ops to the top-level cgroup (`/cg`) with the
-   `BPF_F_ALLOW_OVERRIDE` flag.
-3. Successfully attaches a new struct_ops to the middle cgroup
-   (`/cg/cg`) without the flag, overriding the inherited one.
-4. Asserts that attaching another struct_ops to the deepest cgroup
-   (`/cg/cg/cg`) fails with -EBUSY, because its parent did not specify
-   `BPF_F_ALLOW_OVERRIDE`.
+The sample consists of a BPF program and a userspace loader:
 
-This test ensures that the attachment logic correctly enforces the
-override rules across a cgroup subtree.
+1. memcg.bpf.c: A BPF program that monitors PGFAULT events on a
+   high-priority cgroup. When activity exceeds a threshold, it uses
+   the `get_high_delay_ms`, `below_low`, or `below_min` hooks to
+   apply pressure on a low-priority cgroup.
+
+2. memcg.c: A userspace loader that configures and attaches the BPF
+   program. It takes command-line arguments for the high and low
+   priority cgroup paths, a pressure threshold, and the desired
+   throttling delay (`over_high_ms`).
+
+This provides a clear, working example of how to implement a dynamic,
+priority-aware memory management policy. A user can create two
+cgroups, run workloads of different priorities, and observe the
+low-priority workload being throttled to protect the high-priority one.
+
+Example usage:
+  # ./memcg --low_path /sys/fs/cgroup/low \
+  #         --high_path /sys/fs/cgroup/high \
+  #         --threshold 100 --over_high_ms 1024
 
 Signed-off-by: Geliang Tang <geliang@kernel.org>
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- .../selftests/bpf/prog_tests/memcg_ops.c      | 71 +++++++++++++++++++
- 1 file changed, 71 insertions(+)
+ MAINTAINERS             |   2 +
+ samples/bpf/.gitignore  |   1 +
+ samples/bpf/Makefile    |   8 +-
+ samples/bpf/memcg.bpf.c | 130 +++++++++++++++
+ samples/bpf/memcg.c     | 343 ++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 483 insertions(+), 1 deletion(-)
+ create mode 100644 samples/bpf/memcg.bpf.c
+ create mode 100644 samples/bpf/memcg.c
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-index 8c787439f83c..378ee3b3bc01 100644
---- a/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-+++ b/tools/testing/selftests/bpf/prog_tests/memcg_ops.c
-@@ -553,3 +553,74 @@ void test_memcg_ops_below_min_over_high(void)
- 	close(low_cgroup_fd);
- 	cleanup_cgroup_environment();
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7e07bb330eae..819ef271e011 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -6470,6 +6470,8 @@ F:	mm/memcontrol-v1.c
+ F:	mm/memcontrol-v1.h
+ F:	mm/page_counter.c
+ F:	mm/swap_cgroup.c
++F:	samples/bpf/memcg.bpf.c
++F:	samples/bpf/memcg.c
+ F:	samples/cgroup/*
+ F:	tools/testing/selftests/bpf/prog_tests/memcg_ops.c
+ F:	tools/testing/selftests/bpf/progs/memcg_ops.c
+diff --git a/samples/bpf/.gitignore b/samples/bpf/.gitignore
+index 0002cd359fb1..0de6569cdefd 100644
+--- a/samples/bpf/.gitignore
++++ b/samples/bpf/.gitignore
+@@ -49,3 +49,4 @@ iperf.*
+ /vmlinux.h
+ /bpftool/
+ /libbpf/
++memcg
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 95a4fa1f1e44..b00698bdc53b 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -37,6 +37,7 @@ tprogs-y += xdp_fwd
+ tprogs-y += task_fd_query
+ tprogs-y += ibumad
+ tprogs-y += hbm
++tprogs-y += memcg
+ 
+ # Libbpf dependencies
+ LIBBPF_SRC = $(TOOLS_PATH)/lib/bpf
+@@ -122,6 +123,7 @@ always-y += task_fd_query_kern.o
+ always-y += ibumad_kern.o
+ always-y += hbm_out_kern.o
+ always-y += hbm_edt_kern.o
++always-y += memcg.bpf.o
+ 
+ COMMON_CFLAGS = $(TPROGS_USER_CFLAGS)
+ TPROGS_LDFLAGS = $(TPROGS_USER_LDFLAGS)
+@@ -289,6 +291,8 @@ $(obj)/hbm_out_kern.o: $(src)/hbm.h $(src)/hbm_kern.h
+ $(obj)/hbm.o: $(src)/hbm.h
+ $(obj)/hbm_edt_kern.o: $(src)/hbm.h $(src)/hbm_kern.h
+ 
++memcg: $(obj)/memcg.skel.h
 +
-+void test_memcg_ops_hierarchies(void)
+ # Override includes for xdp_sample_user.o because $(srctree)/usr/include in
+ # TPROGS_CFLAGS causes conflicts
+ XDP_SAMPLE_CFLAGS += -Wall -O2 \
+@@ -347,11 +351,13 @@ $(obj)/%.bpf.o: $(src)/%.bpf.c $(obj)/vmlinux.h $(src)/xdp_sample.bpf.h $(src)/x
+ 		-I$(LIBBPF_INCLUDE) $(CLANG_SYS_INCLUDES) \
+ 		-c $(filter %.bpf.c,$^) -o $@
+ 
+-LINKED_SKELS := xdp_router_ipv4.skel.h
++LINKED_SKELS := xdp_router_ipv4.skel.h memcg.skel.h
+ clean-files += $(LINKED_SKELS)
+ 
+ xdp_router_ipv4.skel.h-deps := xdp_router_ipv4.bpf.o xdp_sample.bpf.o
+ 
++memcg.skel.h-deps := memcg.bpf.o
++
+ LINKED_BPF_SRCS := $(patsubst %.bpf.o,%.bpf.c,$(foreach skel,$(LINKED_SKELS),$($(skel)-deps)))
+ 
+ BPF_SRCS_LINKED := $(notdir $(wildcard $(src)/*.bpf.c))
+diff --git a/samples/bpf/memcg.bpf.c b/samples/bpf/memcg.bpf.c
+new file mode 100644
+index 000000000000..97c5897933c7
+--- /dev/null
++++ b/samples/bpf/memcg.bpf.c
+@@ -0,0 +1,130 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++
++#define ONE_SECOND_NS	1000000000
++
++struct local_config {
++	u64 threshold;
++	u64 high_cgroup_id;
++	bool use_below_low;
++	bool use_below_min;
++	unsigned int over_high_ms;
++} local_config;
++
++struct AggregationData {
++	u64 sum;
++	u64 window_start_ts;
++};
++
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, 1);
++	__type(key, u32);
++	__type(value, struct AggregationData);
++} aggregation_map SEC(".maps");
++
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, 1);
++	__type(key, u32);
++	__type(value, u64);
++} trigger_ts_map SEC(".maps");
++
++SEC("tp/memcg/count_memcg_events")
++int
++handle_count_memcg_events(struct trace_event_raw_memcg_rstat_events *ctx)
 +{
-+	int ret, first = -1, second = -1, third = -1;
-+	struct memcg_ops *skel = NULL;
++	u32 key = 0;
++	struct AggregationData *data;
++	u64 current_ts;
++
++	if (ctx->id != local_config.high_cgroup_id ||
++	    (ctx->item != PGFAULT))
++		goto out;
++
++	data = bpf_map_lookup_elem(&aggregation_map, &key);
++	if (!data)
++		goto out;
++
++	current_ts = bpf_ktime_get_ns();
++
++	if (current_ts - data->window_start_ts < ONE_SECOND_NS) {
++		data->sum += ctx->val;
++	} else {
++		data->window_start_ts = current_ts;
++		data->sum = ctx->val;
++	}
++
++	if (data->sum > local_config.threshold) {
++		bpf_map_update_elem(&trigger_ts_map, &key, &current_ts,
++				    BPF_ANY);
++		data->sum = 0;
++		data->window_start_ts = current_ts;
++	}
++
++out:
++	return 0;
++}
++
++static bool need_threshold(void)
++{
++	u32 key = 0;
++	u64 *trigger_ts;
++	bool ret = false;
++	u64 current_ts;
++
++	trigger_ts = bpf_map_lookup_elem(&trigger_ts_map, &key);
++	if (!trigger_ts || *trigger_ts == 0)
++		goto out;
++
++	current_ts = bpf_ktime_get_ns();
++
++	if (current_ts - *trigger_ts < ONE_SECOND_NS)
++		ret = true;
++
++out:
++	return ret;
++}
++
++SEC("struct_ops/below_low")
++bool below_low_impl(struct mem_cgroup *memcg)
++{
++	if (!local_config.use_below_low)
++		return false;
++
++	return need_threshold();
++}
++
++SEC("struct_ops/below_min")
++bool below_min_impl(struct mem_cgroup *memcg)
++{
++	if (!local_config.use_below_min)
++		return false;
++
++	return need_threshold();
++}
++
++SEC("struct_ops/get_high_delay_ms")
++unsigned int get_high_delay_ms_impl(struct mem_cgroup *memcg)
++{
++	if (local_config.over_high_ms && need_threshold())
++		return local_config.over_high_ms;
++
++	return 0;
++}
++
++SEC(".struct_ops.link")
++struct memcg_bpf_ops high_mcg_ops = {
++	.below_low = (void *)below_low_impl,
++	.below_min = (void *)below_min_impl,
++};
++
++SEC(".struct_ops.link")
++struct memcg_bpf_ops low_mcg_ops = {
++	.get_high_delay_ms = (void *)get_high_delay_ms_impl,
++};
++
++char LICENSE[] SEC("license") = "GPL";
+diff --git a/samples/bpf/memcg.c b/samples/bpf/memcg.c
+new file mode 100644
+index 000000000000..0ed174608a15
+--- /dev/null
++++ b/samples/bpf/memcg.c
+@@ -0,0 +1,343 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <string.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <errno.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <getopt.h>
++#include <bpf/bpf.h>
++#include <bpf/libbpf.h>
++
++#ifndef __MEMCG_RSTAT_SIMPLE_BPF_SKEL_H__
++#define u64 uint64_t
++#endif
++
++struct local_config {
++	u64 threshold;
++	u64 high_cgroup_id;
++	bool use_below_low;
++	bool use_below_min;
++	unsigned int over_high_ms;
++} local_config;
++
++#include "memcg.skel.h"
++
++static bool exiting;
++
++static void sig_handler(int sig)
++{
++	exiting = true;
++}
++
++static void usage(const char *name)
++{
++	fprintf(stderr,
++		"Usage: %s --low_path=<path> --high_path=<path> \\\n"
++		"          --threshold=<value> [OPTIONS]\n\n",
++		name);
++	fprintf(stderr, "Required arguments:\n");
++	fprintf(stderr,
++		"  -l, --low_path=PATH    Low priority memcgroup path\n");
++	fprintf(stderr,
++		"  -g, --high_path=PATH   High priority memcgroup path\n");
++	fprintf(stderr,
++		"  -t, --threshold=VALUE  The sum of 'val' PGFAULT of\n");
++	fprintf(stderr,
++		"                         high priority memcgroup in\n");
++	fprintf(stderr,
++		"                         1 sec to trigger low priority\n");
++	fprintf(stderr,
++		"                         cgroup over_high\n\n");
++	fprintf(stderr, "Optional arguments:\n");
++	fprintf(stderr, "  -o, --over_high_ms=VALUE\n");
++	fprintf(stderr,
++		"                         Low_path over_high_ms value\n");
++	fprintf(stderr,
++		"                         (default: 0)\n");
++	fprintf(stderr, "  -L, --use_below_low    Enable use_below_low flag\n");
++	fprintf(stderr, "  -M, --use_below_min    Enable use_below_min flag\n");
++	fprintf(stderr,
++		"  -O, --allow_override   Enable BPF_F_ALLOW_OVERRIDE\n");
++	fprintf(stderr,
++		"                         flag\n");
++	fprintf(stderr, "  -h, --help             Show this help message\n\n");
++	fprintf(stderr, "Examples:\n");
++	fprintf(stderr, "  # Using long options:\n");
++	fprintf(stderr, "  %s --low_path=/sys/fs/cgroup/low \\\n", name);
++	fprintf(stderr, "     --high_path=/sys/fs/cgroup/high \\\n");
++	fprintf(stderr, "     --threshold=1000 --over_high_ms=500 \\\n"
++			"     --use_below_low\n\n");
++	fprintf(stderr, "  # Using short options:\n");
++	fprintf(stderr, "  %s -l /sys/fs/cgroup/low \\\n"
++			"     -g /sys/fs/cgroup/high \\\n",
++		name);
++	fprintf(stderr, "     -t 1000 -o 500 -L -M\n");
++}
++
++static uint64_t get_cgroup_id(const char *cgroup_path)
++{
++	struct stat st;
++
++	if (cgroup_path == NULL) {
++		fprintf(stderr, "Error: cgroup_path is NULL\n");
++		return 0;
++	}
++
++	if (stat(cgroup_path, &st) < 0) {
++		fprintf(stderr, "Error: stat(%s) failed: %d\n",
++			cgroup_path, errno);
++		return 0;
++	}
++
++	return (uint64_t)st.st_ino;
++}
++
++static uint64_t parse_u64(const char *str, const char *name)
++{
++	uint64_t value;
++
++	errno = 0;
++	value = strtoull(str, NULL, 10);
++
++	if (errno != 0) {
++		fprintf(stderr,
++			"ERROR: strtoull '%s' failed: %d\n",
++			str, errno);
++		usage(name);
++		exit(-errno);
++	}
++
++	return value;
++}
++
++int main(int argc, char **argv)
++{
++	int low_cgroup_fd = -1, high_cgroup_fd = -1;
++	uint64_t threshold = 0, high_cgroup_id;
++	unsigned int over_high_ms = 0;
++	bool use_below_low = false, use_below_min = false;
++	__u32 opts_flags = 0;
++	const char *low_path = NULL;
++	const char *high_path = NULL;
++	const char *bpf_obj_file = "memcg.bpf.o";
++	struct bpf_object *obj = NULL;
++	struct bpf_program *prog = NULL;
++	struct bpf_link *link = NULL, *link_low = NULL, *link_high = NULL;
 +	struct bpf_map *map;
-+	struct bpf_link *link1 = NULL, *link2 = NULL, *link3 = NULL;
++	struct memcg__bss *bss_data;
 +	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
++	int err = -EINVAL;
++	int map_fd;
++	int opt;
++	int option_index = 0;
 +
-+	ret = setup_cgroup_environment();
-+	if (!ASSERT_OK(ret, "setup_cgroup_environment"))
-+		goto cleanup;
++	static struct option long_options[] = {
++		{"low_path",       required_argument, 0, 'l'},
++		{"high_path",      required_argument, 0, 'g'},
++		{"threshold",      required_argument, 0, 't'},
++		{"over_high_ms",   required_argument, 0, 'o'},
++		{"use_below_low",  no_argument,       0, 'L'},
++		{"use_below_min",  no_argument,       0, 'M'},
++		{"allow_override", no_argument,       0, 'O'},
++		{"help",           no_argument,       0, 'h'},
++		{0,                0,                 0,  0 }
++	};
 +
-+	first = create_and_get_cgroup("/cg");
-+	if (!ASSERT_GE(first, 0, "create_and_get_cgroup /cg"))
-+		goto cleanup;
-+	ret = enable_controllers("/cg", "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
++	while ((opt = getopt_long(argc, argv, "l:g:t:o:LMOh",
++				  long_options, &option_index)) != -1) {
++		switch (opt) {
++		case 'l':
++			low_path = optarg;
++			break;
++		case 'g':
++			high_path = optarg;
++			break;
++		case 't':
++			threshold = parse_u64(optarg, argv[0]);
++			break;
++		case 'o':
++			over_high_ms = (unsigned int)parse_u64(optarg, argv[0]);
++			break;
++		case 'L':
++			use_below_low = true;
++			break;
++		case 'M':
++			use_below_min = true;
++			break;
++		case 'O':
++			opts_flags = BPF_F_ALLOW_OVERRIDE;
++			break;
++		case 'h':
++			usage(argv[0]);
++			return 0;
++		default:
++			usage(argv[0]);
++			return -EINVAL;
++		}
++	}
 +
-+	second = create_and_get_cgroup("/cg/cg");
-+	if (!ASSERT_GE(second, 0, "create_and_get_cgroup /cg/cg"))
-+		goto cleanup;
-+	ret = enable_controllers("/cg/cg", "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
++	if (!low_path || !high_path || !threshold) {
++		fprintf(stderr,
++			"ERROR: Missing required arguments\n\n");
++		usage(argv[0]);
++		goto out;
++	}
 +
-+	third = create_and_get_cgroup("/cg/cg/cg");
-+	if (!ASSERT_GE(third, 0, "create_and_get_cgroup /cg/cg/cg"))
-+		goto cleanup;
-+	ret = enable_controllers("/cg/cg/cg", "memory");
-+	if (!ASSERT_OK(ret, "enable_controllers"))
-+		goto cleanup;
++	low_cgroup_fd = open(low_path, O_RDONLY);
++	if (low_cgroup_fd < 0) {
++		fprintf(stderr,
++			"ERROR: open low cgroup '%s' failed: %d\n",
++			low_path, errno);
++		err = -errno;
++		goto out;
++	}
 +
-+	skel = memcg_ops__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "memcg_ops__open_and_load"))
-+		goto cleanup;
++	high_cgroup_id = get_cgroup_id(high_path);
++	if (!high_cgroup_id)
++		goto out;
++	high_cgroup_fd = open(high_path, O_RDONLY);
++	if (high_cgroup_fd < 0) {
++		fprintf(stderr,
++			"ERROR: open high cgroup '%s' failed: %d\n",
++			high_path, errno);
++		err = -errno;
++		goto out;
++	}
 +
-+	map = bpf_object__find_map_by_name(skel->obj, "low_mcg_ops");
-+	if (!ASSERT_OK_PTR(map, "bpf_object__find_map_by_name low_mcg_ops"))
-+		goto cleanup;
++	obj = bpf_object__open_file(bpf_obj_file, NULL);
++	err = libbpf_get_error(obj);
++	if (err) {
++		fprintf(stderr,
++			"ERROR: opening BPF object file '%s' failed: %d\n",
++			bpf_obj_file, err);
++		goto out;
++	}
 +
-+	opts.relative_fd = first;
-+	opts.flags = BPF_F_ALLOW_OVERRIDE;
-+	link1 = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link1, "bpf_map__attach_struct_ops_opts"))
-+		goto cleanup;
++	map = bpf_object__find_map_by_name(obj, ".bss");
++	if (!map) {
++		fprintf(stderr, "ERROR: Failed to find .bss map\n");
++		err = -ESRCH;
++		goto out;
++	}
 +
-+	opts.relative_fd = second;
-+	opts.flags = 0;
-+	link2 = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_OK_PTR(link2, "bpf_map__attach_struct_ops_opts"))
-+		goto cleanup;
++	err = bpf_object__load(obj);
++	if (err) {
++		fprintf(stderr,
++			"ERROR: loading BPF object file failed: %d\n",
++			err);
++		goto out;
++	}
 +
-+	opts.relative_fd = third;
-+	opts.flags = 0;
-+	link3 = bpf_map__attach_struct_ops_opts(map, &opts);
-+	if (!ASSERT_ERR_PTR(link3, "bpf_map__attach_struct_ops_opts"))
-+		goto cleanup;
++	map_fd = bpf_map__fd(map);
++	bss_data = calloc(1, bpf_map__value_size(map));
++	if (bss_data) {
++		__u32 key = 0;
 +
-+cleanup:
-+	bpf_link__destroy(link1);
-+	bpf_link__destroy(link2);
-+	bpf_link__destroy(link3);
-+	memcg_ops__detach(skel);
-+	memcg_ops__destroy(skel);
-+	close(first);
-+	close(second);
-+	close(third);
-+	cleanup_cgroup_environment();
++		bss_data->local_config.high_cgroup_id = high_cgroup_id;
++		bss_data->local_config.threshold = threshold;
++		bss_data->local_config.over_high_ms = over_high_ms;
++		bss_data->local_config.use_below_low = use_below_low;
++		bss_data->local_config.use_below_min = use_below_min;
++
++		err = bpf_map_update_elem(map_fd, &key, bss_data, BPF_EXIST);
++		free(bss_data);
++		if (err) {
++			fprintf(stderr,
++				"ERROR: update config failed: %d\n",
++				err);
++			goto out;
++		}
++	} else {
++		fprintf(stderr,
++			"ERROR: allocate memory failed\n");
++		err = -ENOMEM;
++		goto out;
++	}
++
++	prog = bpf_object__find_program_by_name(obj,
++						"handle_count_memcg_events");
++	if (!prog) {
++		fprintf(stderr,
++			"ERROR: finding a prog in BPF object file failed\n");
++		goto out;
++	}
++
++	link = bpf_program__attach(prog);
++	err = libbpf_get_error(link);
++	if (err) {
++		fprintf(stderr,
++			"ERROR: bpf_program__attach failed: %d\n",
++			err);
++		goto out;
++	}
++
++	if (over_high_ms) {
++		map = bpf_object__find_map_by_name(obj, "low_mcg_ops");
++		if (!map) {
++			fprintf(stderr,
++				"ERROR: Failed to find low_mcg_ops map\n");
++			err = -ESRCH;
++			goto out;
++		}
++		LIBBPF_OPTS_RESET(opts,
++			.flags = opts_flags,
++			.relative_fd = low_cgroup_fd,
++		);
++		link_low = bpf_map__attach_struct_ops_opts(map, &opts);
++		err = libbpf_get_error(link_low);
++		if (err) {
++			fprintf(stderr,
++				"Failed to attach struct ops low_mcg_ops: %d\n",
++				err);
++			goto out;
++		}
++	}
++
++	if (use_below_low || use_below_min) {
++		map = bpf_object__find_map_by_name(obj, "high_mcg_ops");
++		if (!map) {
++			fprintf(stderr,
++				"ERROR: Failed to find high_mcg_ops map\n");
++			err = -ESRCH;
++			goto out;
++		}
++		LIBBPF_OPTS_RESET(opts,
++			.flags = opts_flags,
++			.relative_fd = high_cgroup_fd,
++		);
++		link_high = bpf_map__attach_struct_ops_opts(map, &opts);
++		err = libbpf_get_error(link_high);
++		if (err) {
++			fprintf(stderr,
++				"Failed to attach struct ops high_mcg_ops: %d\n",
++				err);
++			goto out;
++		}
++	}
++
++	printf("Successfully attached!\n");
++
++	signal(SIGINT, sig_handler);
++	signal(SIGTERM, sig_handler);
++
++	while (!exiting)
++		pause();
++
++	printf("Exiting...\n");
++
++out:
++	bpf_link__destroy(link);
++	bpf_link__destroy(link_low);
++	bpf_link__destroy(link_high);
++	bpf_object__close(obj);
++	close(low_cgroup_fd);
++	close(high_cgroup_fd);
++	return err;
 +}
 -- 
 2.43.0
