@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C82EE83EF9
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 13:54:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AC30E87840
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 13:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 77DC86B00B8; Wed,  4 Feb 2026 08:54:42 -0500 (EST)
+	id 5D09F6B00A5; Wed,  4 Feb 2026 08:58:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 72BA36B00B9; Wed,  4 Feb 2026 08:54:42 -0500 (EST)
+	id 57DB06B00A9; Wed,  4 Feb 2026 08:58:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FFDB6B00BA; Wed,  4 Feb 2026 08:54:42 -0500 (EST)
+	id 4A6CB6B00AA; Wed,  4 Feb 2026 08:58:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BFE66B00B8
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 08:54:42 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0913E13796B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:54:42 +0000 (UTC)
-X-FDA: 84406919604.27.2C6D46A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5FC8D16000D
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:54:40 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gNU9RLmF;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 390C36B00A5
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 08:58:47 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A38F1A016E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:58:46 +0000 (UTC)
+X-FDA: 84406929852.23.2F46415
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 8BFF140009
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:58:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=TzHv6l84;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf07.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770213524; a=rsa-sha256;
+	cv=none;
+	b=XRxbg8cMMUhBESHUOTwXNXXIy3ejXVqXRB/M9tTtW+MhFoyz3707Z3YiVdhQjKN4wbxCoi
+	tgTelbfBfsgVfRoAhoUGmV4w8nOIi1jCXDZV/EtXJt+JjcYKhWEms3sEmHVGB2Bu/I+ujv
+	+YD8JCXDklFrOQtDAGUaofgLWRJVwxA=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=TzHv6l84;
+	dmarc=pass (policy=none) header.from=collabora.com;
+	spf=pass (imf07.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770213280;
+	s=arc-20220608; t=1770213524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ISqGUnQFSfIzubIcjbsXKszPgBVvuBlocAkcpVEeiY=;
-	b=qXYj1SaScOymwoRjzR2Jk0jUvCJITYHf2/0WDX3cGWtzqaOwP0YuquyaY7KYvfiwVb4yVi
-	J4c5f3lmSw7dLOw7sMtcLrpE2UtGVrUM03fDUp0kz/qeXO/8fiw75tq2QXK8/IYMcxGxKe
-	lLWhMi6ITyNghkzMPXfl0X0q3sxQIj0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gNU9RLmF;
-	spf=pass (imf08.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770213280; a=rsa-sha256;
-	cv=none;
-	b=hdgZDkhD36u35tF+Il+hu0+iyEdXPhF5wxSlFqq2y2n98E4v8hKNz2f63xtQKmVfceh1gd
-	CG7koNkTFaPlyEe+Ohy0509qxxMVYvuOc4eESDUbMvGjElTBj4xFw/QDSz501R+sz9yIno
-	igc7OTIambGrL0QPN/N4apYef+rQBUM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D36166012A;
-	Wed,  4 Feb 2026 13:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AD6C4CEF7;
-	Wed,  4 Feb 2026 13:54:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770213279;
-	bh=Nx3mqv3VEYct46j5DWoW2n7667uX/NJxIPI+yS3dkOk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=gNU9RLmFxfnm6eHDaKsUmyEzRm88xgRGG3z8Trre1GxyWc7Fx/DsdvJRZnc+GaKLh
-	 kIV422HC993Ly9Zi4BYu9qPfXZ/5mc4XUhxPIglAtKhmp5Ehy+iG6ThT/lvo8AlkpB
-	 NP2xWCzTK2KQ8Gy7NqpD5A36R0edc/XwGtHEpDF9B9Z/5zHbZSnd1O606ndNcSfkwr
-	 K1wSITGJbN4y/tR1LB3US+oeYoz5vBwwMc1HAVEFTt2uVHjZoUl5CR2Ydc/pcMft6C
-	 jTvemJt8nPqu6eiOa6Y0vvQA5a2zaWnyKzA76KK41VbdGzzUxCxwfrTUu1+Bux9/h3
-	 vC2/P+qzC4H7w==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Graf <graf@amazon.com>,  Mike Rapoport <rppt@kernel.org>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  linux-kernel@vger.kernel.org,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,  usamaarif642@gmail.com,
-  rmikey@meta.com,  clm@fb.com,  riel@surriel.com,  SeongJae Park
- <sj@kernel.org>,  kernel-team@meta.com
-Subject: Re: [PATCH v6 1/4] kho: add size parameter to kho_add_subtree()
-In-Reply-To: <20260127-kho-v6-1-56f9396681c2@debian.org> (Breno Leitao's
-	message of "Tue, 27 Jan 2026 06:37:36 -0800")
-References: <20260127-kho-v6-0-56f9396681c2@debian.org>
-	<20260127-kho-v6-1-56f9396681c2@debian.org>
-Date: Wed, 04 Feb 2026 14:54:35 +0100
-Message-ID: <2vxzjywszk9w.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=st3JhlKUyXVT/jVcU3mjZfWi3pTdXTM+g25x9HLMpfU=;
+	b=5HUSL1LpLw1gtZSOiPf1Q2AQZ/d86olubETUDxODsrY7kNIETXXr1M1CnImnjxOoZikNc/
+	WlanYbyC1dbpzc4mqbF7nA+Nhj7vg1DLORfHrBuJkzoZNCFF5EqeOHwodjyVwbkSgUxu+R
+	/OXMSk8tkTuWk8NvpWBJs6rGX/D3pc4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1770213521;
+	bh=k5UMXWgwFCcfrE3dxMlUTv7lURRvMh1vxVEAuRt2VgA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TzHv6l84ETnKx77sOQfP3C3p+0DEvzf0uI9mXUiO7YSl3w1FLFLvDz0IuvB5U+DMo
+	 sdUrTp2ykoSXEIpOtVJ+KQzZS2Aqgt61+uy53TvsLfkP9xrUmYydC6lZSA62FoRKA7
+	 8mCAbwxqMmAM/WdWLvrCuusWXhv63dBgAd67KU03aL/sPT1RXZkqTu7LVEq06zQ3dl
+	 TLilyt4k2t8pZrrSDUwWGbCHTCYYssFyhodIXA/mXvMYOHo3rogBLGi+vZpdc/zzSP
+	 XoemwdNDnx36fXM3P0XKWmzVFFgAFM0t14NsfMqkuwy4p2MpPJI+ioaWW+qI/TyKGB
+	 8ulU6EQCuYkcA==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 6EBDA17E13D3;
+	Wed,  4 Feb 2026 14:58:41 +0100 (CET)
+Date: Wed, 4 Feb 2026 14:58:35 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: loic.molinari@collabora.com, willy@infradead.org,
+ frank.binns@imgtec.com, matt.coster@imgtec.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch, dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/4] drm/gem-shmem: Return vm_fault_t from
+ drm_gem_shmem_try_map_pmd()
+Message-ID: <20260204145835.2e98630c@fedora>
+In-Reply-To: <20260204114341.195143-2-tzimmermann@suse.de>
+References: <20260204114341.195143-1-tzimmermann@suse.de>
+	<20260204114341.195143-2-tzimmermann@suse.de>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5FC8D16000D
-X-Stat-Signature: miqszw86iqzjdasocdm8d4zekiq8jxx5
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1770213280-517840
-X-HE-Meta: U2FsdGVkX1/6sLh/OrJDPhTHmNuMrTIa4MUgAtHEmRRYSZHxd4is8Yv5ae0eHUaSrp+E/6R7v7W5YOaoJWqx7VB3/GgfgfU4DoTqyiWoqhlRrO10LiFDkOUXNIgfYrT0PvuzXph8vAYQ8AtvG05BNnAZJE875VznN8toDkTHuahW7/S1JdEGn8ws8sWkv26IH532rh/8t/LYT/gmXvUg10HH2QWnJ0FNcjVeUFTNOcWFyOulAkXliysBQgOgs0+adAnBpfu2VHQkhbfp307/o42jxqP04lfrR1QfkFeks/miC8g+v17kGkEJrcEb8xk3xMXn5EmIJ+Ff5WrCC5t1bmnBH5k6a4QjvqdXOhF6bfpy4lhWmAQa8ttnhSohzYqPMAO1m8JmfrVsKTLkHzaF3rhahV34G9vTCSoXhdYDjRyj+wDpcO9EQLggjxJAbzmAjtaM0X/008NsmGdW4L5qTZ1PXsOXD3OnJQtGx7vVuZHbQQ9eoJ4FkJoSeP+4Bp6juG77+LniljCaI6HfwdpmWb/4Kyn9nuMCVbfYxFmC/6huI0EtWcNDSqy4YX2KYbWz/qouwZZRHpJQqvGwlxadqcAuzUwGqf5GgwBwkdWJi/l4TcgY8kpdIqhI4G/fHtiYsM4ofIm5O72w0xdGwoF03K+qqrbybJYG7XgFQ1O7MQ4LOPDOR7ZVuL3LDS3YZ59/TH6q3oX5aOkP/tIbBGqvNK+//UNtyULFL9GpfYt9yHKSWB3db+sYXGjk8nTvpfvaeUNxfOTnKkfdWYcispMF3RGeMBoYNFEfhXyzzTjcmWIc+E/PcEfeBOljpVCzUz4DDCto883rkuzD9X/VI3fTf2q40xgtbOJiRnDvzfPrYtE8sPLJW2OKarYFBuXOseSsaKaZDFMa2Ijc3r2IfTXeHDzDQPZI/dnFnuxEIUpzDRopr6m280y5Xq/sNUWIp/tdaGZY/YreAFEmPcMvzLd
- SRRjc9Rh
- u5rt1wSfTOvDnMQOJk//JiO1EBRTjdIOGG9RZmkLB4xy1n2SbQEgs/UZMU6M3dlrXMBIASWnqQACTsPa60S4vvUKkpyQDKA0CsX9gIC7PQbjOo1k9S7HdaNIMnD6VpD/qSnYNzhM7sqbjlmKOs6kYH+0R8NJrRFTeR+WfG63EL0vOomGpIHboRPwrdgPioMEjwLvjZRPMK8iEBwlLUUsVDRXIeg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 8BFF140009
+X-Stat-Signature: 196hwh6ijw88scz3335hhx156bdfrpto
+X-HE-Tag: 1770213524-512537
+X-HE-Meta: U2FsdGVkX1/HZD/bqcOIvsUmvol3XwTEgn0fHX0T7XVTeUBREoxcqgAAIThy07yGHdObs2JJvZh/UkFk+dF2S3ifxKXrkmtWGhWjs8ICB4y9QCfnPVbhrUyzoGMB2vqsiG0abTRBjkJ78mGfUFeJ9T6LqaRgdYX0UWOLSqbQH5W0IDuXl82ONh6YlHuxhyrioRbg5qlY4L/wVjs0gGfrkYRNQmqyuLRTbUbs5ORc5k9GCWlfhY8iqMTHlrtpOgdR4WpqLlMSAVuA//Hk4QZbT/DSSoSVqFD8oG0Vo4Fd/b/3QbRi9lgn6rv6PyAinbTJGKGJ9hI3Vsef8ee/a0BSLHfT0ZL9V2U3N2IGEU+QPSaf6li3FxkECLPAhuJJ6dMMOnO19tdd/qEsgkLiHrk0gDDwGOJDGqRZX4RCptR11fggWsMcx29XOX4FK9T/xQYE32meeSuOM2zR9JXwMMxZC3CtsWX7v+F1VXPedhMWyAhojgrH4a4JQASEuqaLZhsKDG/+IpZ9hBbo5OLfZ1gM/NCOnK0+eWGMAkvPF3fAks0a8x6oZZv6ero6gZbXb1UJVpYdkAVOFMO9eWvXNIU2A5LQJjwbYjEk5gUm0D92TZSjANbrwFsh2w9bjGyU/NZel7K53OWc+WkLHmYpJMWvAbzO2PQCTUI8nMXZuWuYmje/S41WIJvo1tWwVRi/szDdgX0pBjpniI7PyJZ/bAfHv0dsRxN+feekZvTIlHiqX5JdvgkNccqhrIqR0DcEn3dYcO7GGKWLmcFz4JXGeSWYvJuca+ekDNIS1FJr1H46QXfwsjxzDmIah15citIG7TBR0/h+TGz7KtIjHgUAVY/nRsHbe9OMqk+qUgi+CDg6c7rTgR9d5lsXYSbvHbhw3e+eucbY9bM204nJIpyA4HMY3rs8MAwZLNYZgD6wGomAl+zv/3tP08IU2+C9gKo2jtavV18gOVIFQ3W7t+olEzT
+ SqeoeLji
+ y76ukMRo+TDTODxpw8INqbE3NyKYTaRo9PTsK6lsw9CnnFCECOJLMfLpIinfOZ20gmwza1+b2dIkqSogjCdrfg/6kTWgmed0IkSGjWjecOSl7Hvh4+7NrY268ocrUF6ivtdAocwfRxklaTkbib9jMYCxtgT719W5s1Jf9BrO4wZPx0oI6vCfCEOuqicBGddyj4V6v2eyMiRFtFMVSrTsmd9vqbclVDrOr+bmtp4UcUQzO+v4I0Vt+XMo4i7nQa7M1BpSTQgCjaUxCsFy9WIswHQvKQp75jr6o8JUANdBcu4jtGHA6RCos+bDWwHyCCYc7E9hH3hIZF8YpqMXHxV9N98YmizEmlKKxr74cKUdGY6Aeoj0KJA93BVL2qiGnyBWYIDodOmDYSbIf9B/X3srcTG0UnzNmSN6xtYbZxP1q8m3Q9awmppTVUxUsN19q+DuMUVh8XXrfzqeAs66y8HIHXiObaR9195k8dItK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,73 +100,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Breno,
+On Wed,  4 Feb 2026 12:39:29 +0100
+Thomas Zimmermann <tzimmermann@suse.de> wrote:
 
-On Tue, Jan 27 2026, Breno Leitao wrote:
+> Return the exact VM_FAULT_ mask from drm_gem_shmem_try_map_pmd(). Gives
+> the caller better insight into the result. Return 0 if nothing was done.
+> 
+> If the caller sees VM_FAULT_NOPAGE, drm_gem_shmem_try_map_pmd() added a
+> PMD entry to the page table. As before, return early from the page-fault
+> handler in that case.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
 
-> kho_add_subtree() assumes the fdt argument is always an FDT and calls
-> fdt_totalsize() on it in the debugfs code path. This assumption will
-> break if a caller passes arbitrary data instead of an FDT.
->
-> When CONFIG_KEXEC_HANDOVER_DEBUGFS is enabled, kho_debugfs_fdt_add()
-> calls __kho_debugfs_fdt_add(), which executes:
->
->     f->wrapper.size = fdt_totalsize(fdt);
->
-> Fix this by adding an explicit size parameter to kho_add_subtree() so
-> callers specify the blob size. This allows subtrees to contain
-> arbitrary data formats, not just FDTs. Update all callers:
->
->   - memblock.c: use fdt_totalsize(fdt)
->   - luo_core.c: use fdt_totalsize(fdt_out)
->   - test_kho.c: use fdt_totalsize()
->   - kexec_handover.c (root fdt): use fdt_totalsize(kho_out.fdt)
->
-> Also update kho_in_debugfs_init() to compute sizes using fdt_totalsize()
-> for the root and sub-FDTs it processes, since these are known to be
-> actual FDT blobs.
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
-No, this doesn't seem right. The "fdt" field that kho_in_debugfs_init()
-uses is the same "fdt" field where we put our non-FDT blobs. So I don't
-see how these can be known to be actual FDTs. All this happened to work
-because so far all users were FDT, but I bet it will break if you use
-your blob here. Perhaps give it a try and see if I am understanding this
-correctly?
+> ---
+>  drivers/gpu/drm/drm_gem_shmem_helper.c | 14 ++++++--------
+>  1 file changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> index 3871a6d92f77..e7316dc7e921 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -550,8 +550,8 @@ int drm_gem_shmem_dumb_create(struct drm_file *file, struct drm_device *dev,
+>  }
+>  EXPORT_SYMBOL_GPL(drm_gem_shmem_dumb_create);
+>  
+> -static bool drm_gem_shmem_try_map_pmd(struct vm_fault *vmf, unsigned long addr,
+> -				      struct page *page)
+> +static vm_fault_t drm_gem_shmem_try_map_pmd(struct vm_fault *vmf, unsigned long addr,
+> +					    struct page *page)
+>  {
+>  #ifdef CONFIG_ARCH_SUPPORTS_PMD_PFNMAP
+>  	unsigned long pfn = page_to_pfn(page);
+> @@ -562,12 +562,11 @@ static bool drm_gem_shmem_try_map_pmd(struct vm_fault *vmf, unsigned long addr,
+>  	    pmd_none(*vmf->pmd) &&
+>  	    folio_test_pmd_mappable(page_folio(page))) {
+>  		pfn &= PMD_MASK >> PAGE_SHIFT;
+> -		if (vmf_insert_pfn_pmd(vmf, pfn, false) == VM_FAULT_NOPAGE)
+> -			return true;
+> +		return vmf_insert_pfn_pmd(vmf, pfn, false);
+>  	}
+>  #endif
+>  
+> -	return false;
+> +	return 0;
+>  }
+>  
+>  static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+> @@ -593,10 +592,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>  		goto out;
+>  	}
+>  
+> -	if (drm_gem_shmem_try_map_pmd(vmf, vmf->address, pages[page_offset])) {
+> -		ret = VM_FAULT_NOPAGE;
+> +	ret = drm_gem_shmem_try_map_pmd(vmf, vmf->address, pages[page_offset]);
+> +	if (ret == VM_FAULT_NOPAGE)
+>  		goto out;
+> -	}
+>  
+>  	pfn = page_to_pfn(pages[page_offset]);
+>  	ret = vmf_insert_pfn(vma, vmf->address, pfn);
 
-To be honest, I didn't think of this when I suggested you use the size
-parameter. We have lost the size information, and it is hard for
-kho_in_debugfs_init() to find out since it has no idea what the
-underlying format is.
-
-One option is to have it in the KHO FDT, but I am not sure that is a
-good idea. Adding to ABI for debug feature sounds odd (not that I am
-completely against it, it just feels off).
-
-Another would be to give users a hook to populate the blobs when they
-call kho_retrieve_subtree(), so they can figure out how large the blob
-needs to be. This has another benefit: once we move away from FDT, it
-makes little sense to dump the blob since userspace won't have a way to
-parse it. Even with FDT, userspace still can't parse everything. For
-example, say the FDT has a reference to a struct kho_vmalloc. You'd get
-a pointer to the head of the list, but you would have no way of knowing
-what is inside the vmalloc buffer. This has the downside of not being
-able to show anything if the subsystem never calls
-kho_retrieve_subtree().
-
-Unfortunately I don't have much time this week to dive deeper into this.
-These are only things off the top of my head and I haven't thought too
-deeply, so please don't take them as strong suggestions. It would be
-great if you can think a bit more about the problem and come up with a
-recommendation?
-
-I will try to get back to this series in the next 1-2 weeks and
-hopefully find some way to make progress.
-
-I skimmed the rest of the patches and they all LGTM at a high level.
-
-[...]
-
--- 
-Regards,
-Pratyush Yadav
 
