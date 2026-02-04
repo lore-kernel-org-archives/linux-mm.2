@@ -4,141 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 971D5EA7944
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 19:55:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65B50EA7944
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 19:58:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1E326B0005; Wed,  4 Feb 2026 14:55:43 -0500 (EST)
+	id BA03A6B0092; Wed,  4 Feb 2026 14:58:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCBDB6B0089; Wed,  4 Feb 2026 14:55:43 -0500 (EST)
+	id B4D7C6B0093; Wed,  4 Feb 2026 14:58:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B76686B0092; Wed,  4 Feb 2026 14:55:43 -0500 (EST)
+	id A59F76B0096; Wed,  4 Feb 2026 14:58:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A3BCD6B0005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 14:55:43 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 41DF1160136
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 19:55:43 +0000 (UTC)
-X-FDA: 84407829366.18.B3AF7EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8F9E1100009
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 19:55:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FCY+qiQ4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770234941; a=rsa-sha256;
-	cv=none;
-	b=LVctF7VHYJ10RdcD8VDKeCtFh+mqOVgy5GdzX9cSskQEfSXAiZugT3LDSNK1KaNbXreLkJ
-	aCnoDrININMZUszOZAe5J66yHWn/DsySuLrRB7Z6VSf9fOIwsPLK/KC0h2zhxjnBfNNEEj
-	ZI9+J8x9/eG7C6nmmFQ9HOOtqgAPNNY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FCY+qiQ4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9310D6B0092
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 14:58:00 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 53194139E51
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 19:58:00 +0000 (UTC)
+X-FDA: 84407835120.03.7744EF2
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 89B7480005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 19:57:58 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KtkSnjUd;
+	spf=pass (imf02.hostedemail.com: domain of osama.abdelkader@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=osama.abdelkader@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770234941;
+	s=arc-20220608; t=1770235078;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3jWcA/XbbO+nkeLoviAPOeZo3SWOiuXAuNDbD7xv21I=;
-	b=z5mrWyb3mqmh8SxrcZigFfykWurBvbiKCY65J8r/Key4RoC5otzi1QOouTe8S9XN6hbGIp
-	NLmiuYon67jFHjJg4lPB+0Dbhm9RFwLAqEjQVhGo7wyh0H9A8uN9SBOAqkNqFokplu0Vts
-	9gQbesQg9AMkNTwiz9/j/WluRbR+46w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D5DA360127;
-	Wed,  4 Feb 2026 19:55:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB4DC19424;
-	Wed,  4 Feb 2026 19:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770234940;
-	bh=E7SiYONFnBjZyoLuPb3bNROQr7xtT5319lNuGhJMu8U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FCY+qiQ4jz8dDXY72EcyNZPUNF02EHNKLhG2vxQVyys5/9sxJ1IWZQeFgKoLYTvrs
-	 zdbqN+Z/E8RRnZxAbIeReMV0Z5ALIBbAVTch0Sbz8tf6mfxCPuNZddiuTJbsivZ+G+
-	 2bFQce5bI811bwFJeqSsSDrlC54QF0cj40ncm8eb6gH531NKOK3gj97S8COgBDy0m9
-	 mtuhegW+6ENj5FKKYkC29/wii9otBm89zTiOL7wc6gWVQmaobDcW+jAw6Eko6H7M8m
-	 hHpCMoNzMQJJAbsByeR4F2kY0ur+E6rtjimP9GsankPiOrOwMRHq6BOolx1C0Z9C41
-	 Nxf4L+b7/5cdA==
-Message-ID: <11399c99-f966-47be-bbb4-a7d4e79c8c38@kernel.org>
-Date: Wed, 4 Feb 2026 20:55:36 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=T3SdKNKQtGHVYu6fTQL1LvKPxizWalb7x6xSf7Uyyd0=;
+	b=zlTexwJMiwM8YZFteJjc34bnQpBsCNJb/SyTjwlbC4TjbDcp++/3Xpgg4UJekIfJp/F1qC
+	h1dL90goX0omGJXfIt/vD8DEsHcY0Yq4A1BhDzprBKRXMFYMTc5r+AhP1xkPyfYW4M5VX1
+	RMgsyza0ECdx43OJdN+7GGVwoasvgOk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770235078; a=rsa-sha256;
+	cv=none;
+	b=ymgHLdwPtI/n+lB6vSmlJqE998sZ7nDWtBm9LghM/JShnNvJREpnlLEza18f/DmM/Tnj45
+	WwN+vA3vGstxn1gqRzofTgP6JV+1xohU+AFQIRbNjmbo5401jM668p6g7zJMzc8SHI7rqe
+	pwW09gKC6rN7UNHvOXUlK0jj3KlG0po=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=KtkSnjUd;
+	spf=pass (imf02.hostedemail.com: domain of osama.abdelkader@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=osama.abdelkader@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47ee937ecf2so2188255e9.0
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 11:57:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770235077; x=1770839877; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T3SdKNKQtGHVYu6fTQL1LvKPxizWalb7x6xSf7Uyyd0=;
+        b=KtkSnjUdKfzx/CY2V0qMvpgc2aBMk15pEcP7GjxvGL2h3gx9RmSDkpkVpdtHqK019O
+         NRCSumfIKITlx5lToqcuWih7kFaurAF+FLY7pZxQiUK8ZASdpE3ACRO61ryZv/eMdntP
+         O4KJok1xUWrwAqXtv0gVyKEyjJ9VwMJ3qtaXrShe09Z+ModQUEXQ4/6JIBWE5wwh7WpH
+         GRP369wkN1WL3tWp4gWjVmsQFj1xbd9Wm2XW4SbCaIYaXjGkcqNjE3C+6dkYvNTnkw2z
+         OCh1Vo3UmULGlDDdm75gnnfRplO5EmjIlq44iSfRGt61jN/odCaM5Rie9GBaHzaJ0d8m
+         VMQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770235077; x=1770839877;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T3SdKNKQtGHVYu6fTQL1LvKPxizWalb7x6xSf7Uyyd0=;
+        b=QwWviz8p8ZrBuMEPlX2Cx64yRCUw3t8t2Z06yrhkb/hxRIZX7dV+waFTfHoO4PBlrI
+         0Gr0Hg97e2Ry/+lkMoTV2zelvGeYcnsOGywkXIxz+UDoLD+Bsvp4e3KMSUCRA18xys9M
+         BPq9W/N1BCJbZQe1e/AieMHI1oCN/u0N/Ac0vT7mdIuOy4zWbvp0r4IfKo9FCMvq6qyn
+         4GneGdkhTK876GmmzMKOjkj+zDRVacxta+rQWMzOajW3CToAXLUD9+e82ZcIHanwq/vj
+         3jItXmq3ApuhoXH2ZqXNeCNie5IB51T+xndMLAw1+swdQaNWY8vR3imSVgCH+4pqhkQF
+         amqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkYKx45UDiB20VK9eNun3XdhoroDMbTRQCUhlPHognICbNE8tuaoN3ah+OvOoeYywBmKyjRqJxcw==@kvack.org
+X-Gm-Message-State: AOJu0YyyYFFymOu/PhbfdmF0+3dCvL7jFM+eB7pN1kIzaHHAHJASXGIb
+	AQC2jEnkFinwGHJMEPHhx+zU2LP/fpeaZO3kZrUralKwhWoWyB5kXX/5
+X-Gm-Gg: AZuq6aJt9xEvCKzdOBAFnBoUv+lskoVLj95tCZj7oVuHT82Y1CLHIJu1gWk/JLeKSQ5
+	0+FxJRyFlfw4mkQSDbbbKZZc4CtMkuh9zDxQKn1o619OgQ+/xPmwLu6nmLehW+Fz/72OKChUMHQ
+	dSvGPV7Kdjk/AHz4upw84G6dcIHfghz2Q6ZaqtuIAr1UtMDLsaSa1YMECxxjIMAIBw7JGcEnf6W
+	PJ5KZu9rjtUF5Vk7x0vadcw07d9/vtfhmW4eAvhYB0MPlOMBR4k/eXe0WdEtDXb8nn4O1hONqv4
+	i2SAVIFn+UtiNEVqYHSgViCmRGSinzgOaTdKuelCZ68IO6Z0r+cWM+3CZ0PSP8hPejjLB5tCJZ9
+	jYnUrrfO/5f62jhDCydyd7Dw0P3Eux2dmXuRk4PTwG6/KbIkkgzuyqAlxU6QZCRG8ZrpPoFHuoH
+	gagnTTZCAgSrR4x9x5lJDYtnlxB8P9DiD58eCpBYjreU8=
+X-Received: by 2002:a05:600c:21cc:b0:477:3fcf:368c with SMTP id 5b1f17b1804b1-48317917835mr4537895e9.9.1770235076762;
+        Wed, 04 Feb 2026 11:57:56 -0800 (PST)
+Received: from osama.. ([102.42.253.8])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4830ec57bcdsm48704285e9.2.2026.02.04.11.57.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 11:57:56 -0800 (PST)
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Osama Abdelkader <osama.abdelkader@gmail.com>,
+	syzbot+6e04171f00f33c0d62fb@syzkaller.appspotmail.com
+Subject: [PATCH] mm/slub: zero-initialize slab object extensions to fix KMSAN
+Date: Wed,  4 Feb 2026 20:57:51 +0100
+Message-ID: <20260204195751.188219-1-osama.abdelkader@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING in memory_failure() at include/linux/huge_mm.h:635
- triggered
-To: Zi Yan <ziy@nvidia.com>
-Cc: =?UTF-8?B?5piv5Y+C5beu?= <shicenci@gmail.com>, linux-mm@kvack.org,
- linmiaohe@huawei.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>
-References: <PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
- <b9e89c85-807c-4a8b-aa5c-8c1325e75445@kernel.org>
- <1db245a8-f9ab-42e4-8cc6-cc7562961921@kernel.org>
- <48978612-6933-4897-85DD-6740B6C8570B@nvidia.com>
- <25CA4D90-A24E-49C6-92D2-08080EC81466@nvidia.com>
- <032058DC-CD8D-406A-B986-740E41C834B2@nvidia.com>
- <e97d5c0c-b8ec-4da4-b838-7a308f8a6327@kernel.org>
- <9E046323-740A-434A-8B60-B8A32D0955C0@nvidia.com>
-From: "David Hildenbrand (arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <9E046323-740A-434A-8B60-B8A32D0955C0@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 89B7480005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8F9E1100009
-X-Stat-Signature: 3sf9ptma4ht8xfyghiy97thkq9gude1f
-X-HE-Tag: 1770234941-950196
-X-HE-Meta: U2FsdGVkX1++2Kl59aH6M+gKGwdkI7qCP3QmT22pvyAXWpbGFAB3mc6/9rQPHanhqo3R7pUiwqqoPoFb1veoMzjkfq/god9y53AbPBlZE9jvzLZ1FUnEswslGddRfAyOrzdS6doDc4CSsknCJIljyc3HxmxhRPSwwC8b7xOEJpm5xXh3/0bgKg3SrAGWhiTSXEogMNvF+gSlpmtiFVIAL2bP83svlcdbYzGtMGazK0Qse242ZLOHYAqMdGteGRO0WghROFsjALU+OR9AJVaOJU53kIz3mZF8HPpD0h4+JXUJM2ySe33fYD80vqoQGEher0DsdDKBnAImuzpZRIw6bVNv8GjVMIpHCUYry3OC6CFh6skdt+BTDOuibzm8LpDl71B48dZcZO2VYFHoRWp63liFFrnYEZYUGPh3HXOI80D+NLmIF3FaNtcMBWQnL0fB2zl48XZYunsEyjSkO8RJdBSJcJVhrhqhyzeNH6PRNrc7WWPGlTHip9VITHu2l1AVzTOMCazWSCLhpCFEfUbDszPU3mmJ78qTK6sr6RcApS9oQo0wvrzCp1Sc5XK7UOgzlH0dPCcGgDtT+WCiRmr42mR/WIqGIQh3KdIXD0EWjP1UqxP0sl8QxlYGOTj8nLW5eqjRCWFg96r7ggROwBM2yY3HIKhqG0krNZQtvY3wxwNBfG4kz851MUr5cXKbgWUblG64gPRL9fBz2orF97dHhqFKdFLSYfhRjnpUABMYOfFdBK0HRxBF08YabFHnl5yH0ceHMOJB9RnvRHmXPoac4xeE227bBBKI+694kakrLc6V68wyh9nPnlkpWJPIIspBLir36dXgmQeQEV18aX39XSZNzg6qntXGFsH1Kps+TKhLhETRI1rqUvdpUBlXE09Ir8fvOhYtVakH5YDM7bvPrU6tSbfoZVS9vkSWmyoCoABMJkyh3wxxC8uNAan4o0CD4wyw17JugVXaTUlQA+M
- 9DbWMrzq
- hse5WKmMou7npIkvH55raidakZJLJwlWyjAn7EGZsaQmNjtVh4EdUMxyIEBquSWGDy03+4oewV5Re+iLJeOgmAvJYQnrmyKYgr3AMqPtEkzXfum7ODYwJo7OQcc5mKMMch3pridf4udLWb7apRjg5x8ySB/O1Rb96b5ceOwxJAYb/oECMDzJpIdghuR2UtysoQlGvXYh2wzkkDYO3jPVSelGjhdk2JMcpn5j3J+yHXpGRisATz3i/sZohva3lUwr9pC5RnhiUe6XlqYNIlpQO4Bd6481DaI1BMDfbLTJyGldrvc4=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fzqn8x9fq64f3rmt7cjfswihroskga46
+X-HE-Tag: 1770235078-68960
+X-HE-Meta: U2FsdGVkX1/LG44Qn+zje1L00WfobU5R3iua+5rWNRZwJBWGF21Q62Qrmn8422WHAF7gw62FLgsk/ojjeR27ZUtPCzYMn1x1yjY3MhvwE1EgWP3oLyb2wTo81fLV2WuiNUUsSiU1QmDLFytsIWuX52GMjjccCH8BRkoOVOVh0FJh43KIV4hAqzWLthX+p6cXIrhjoVP4OMYijeG93G7MDUgbxbXH4Ba2C4PRet5cdZB1V4WdRgBtVx1E3KyQS6j9jzo7trCE62nKo2Jk1caFTTFniv8DCl3kJ8zn5W9BAUme+49XRXmrZX/waujCMkzD/Ti1DKFNqBsSjwAB0Z7TAfITAG+MegOdRsoGfSLtTOzrLSFuOwqvhPJY20ZpQu9sZgxInGOBTxwvSUvK471TViSWqQvlarF8aLMMA2IFm+wW/nZocXVcIwqJ+tfZIHlyxstTWi0tv7gP7sjlBcXWT6fRJhAWsTn4V92LMSkPV5iNpdRHWW8zEZQoJ7wi+e6CHAjg6SmhfeAoMPoUJjPqO4achg2EhhKdFdzkaktIUXJ5m5uRbIxJhPFjlHrDp7cY+iVH4JotYQtf/bFeaox6AYktSy9OxtVUay/1s31Po2vGH171jKYyhEIMx+Mq6QY9j5SBBgSvytsPHmhQjDVcyIsihCncPtwnu6i7UOoOtqj1KOgqhR4WV/Mq3S6gKTIode2i6J7oMFErUHyDbs6Ysemgo3veWA41l+tohJw0/IdzUiQj7XBpMkhfoypGicB3+1MzbYCrVLfkbxg+ysz0uuRawyPm+5bAFTy0q/ulSzCnV6zpq273+mMcZ8zd1b0NvMYYs0RNywFG0Q+3dVQRB+ef7PCFCRWIbquKF5ojdAmabaVQvLkEGrXHlnSQWs8gxyZTLwVxYH1jTQl2X/HtJxfGKN496ceiyhCS4YdXQNokFRxdDX50J34EbjKkoCDXzPyaAdpyATIOtzVPCBT
+ UanluGes
+ deDKiTUOqBiOEazZB8REKZa2vqqVHZUvwg4YKgAY8Xlk10Tq5cwyuw4ky05OKP9gGd6s3UqEjk7juNr2JtLsigsG8C4YE21qhK7rEx7R10Ks6eoZ7f90UZr33xpQ1HYoAfTmcpgeYNEKu2kIHmvt+F04trNxmYap6ZQmXKIvM5sO6qblBUuIinK2GDsMxaLxQkv3m9VLgqocUIHz7TTf/base/oyBM8mZP0lszuwQy3AvjPIIDPO8iQ4z/NMRcR83DclgjTHTH30lCXAVLmu5IfIl+j3Xn4QZhSyeMovfpJa42yuohnQUsfOcJGy/9el/1EacRfIIZ8/JunUtShUMGn3fOKBC2sxIuadFGrhxfLOTBSXi3T6ey69rRpvF1nTfQ9yPbpxqjTWvSZ3x4bZVxSf+iZ8r3yW5fmSLpP95/HgWR6xzYTWtH4j1MXgU6KUyNvuJTcZETbNGVVRFTnYO0uO0zOxeH1Mv4WpYcyaptfNnbUQUMXRFjWYJaoKQEuP9j38bYB1FShi+iNs5fTSEmRqGVBeFkW/+QUhWVs3BVCNYk8mjFlxmKdko2y+khbx/dNCvChx8xRfcQ+5D7w3SKmSrkbTYmWHgDxW2uW2IVrQdLuk+T/QXVJnS/cX8rjqwrqf68VPL9z8O4HOpiekami+M+Fs4CAbLIW8y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,47 +122,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/4/26 20:48, Zi Yan wrote:
-> On 4 Feb 2026, at 14:18, David Hildenbrand (arm) wrote:
-> 
->> On 2/4/26 18:41, Zi Yan wrote:
->>>
->>>
->>> More details:
->>> later at sg_vma_fault(), the driver just handles a page fault by supplying
->>> a subpage from a pre-allocated compound page[3]. We then get a large folio
->>> without !CONFIG_TRANSPARENT_HUGEPAGE.
->>
->> We can identify such non-folio (but compound) things by looking at PG_large_rmappable IIRC.
-> 
-> What do you mean? Changing memory failure code to only handle large_rmappable?
-> large_rmappable is a folio flag, memory failure code should see such
+KMSAN reports uninitialized reads in __memcg_slab_free_hook
+when freeing sigqueue objects. Although kmalloc_nolock(__GFP_ZERO)
+and kcalloc_node normally zero memory, some allocation paths
+(fallbacks, early boot, reused slabs, or races) may leave objcg undefined.
 
-Did you mean "should not" ? :)
+Explicitly memset the obj_exts array after allocation to guarantee no
+uninitialized reads in __memcg_slab_free_hook and preserve correct memcg
+accounting.
 
-> non-folio but compound things to begin with, IMHO.
+Reported-by: syzbot+6e04171f00f33c0d62fb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6e04171f00f33c0d62fb
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+---
+ mm/slub.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-I would say that we could right now reject in memory failure code any 
-compound pages that do not have PG_large_rmappable set.
-
-I have the faint recollection that we don't set PG_large_rmappable on 
-hugetlb folios yet, so they have to identified as well.
-
-> 
-> I think we need to be able to tell between raw page (compound or not),
-> mappable page (compound or not, especially for those used with vm_insert_*),
-> and folio.
-
-We can't identify (small) folios just yet. We'd need another page flag 
-for that (just like PG_large_rmappable), and we all know how that ends ;)
-
-With Willy's work we'll be able to identify folios reliably.
-
-How to deal with that vm_insert_* crap, especially for non-folio pages, 
-is also future work based on that.
-
+diff --git a/mm/slub.c b/mm/slub.c
+index f77b7407c51b..e66d17ee7fa8 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2123,7 +2123,17 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 		vec = kcalloc_node(objects, sizeof(struct slabobj_ext), gfp,
+ 				   slab_nid(slab));
+ 	}
+-	if (!vec) {
++	/*
++	 * Explicitly zero the obj_exts array to ensure KMSAN recognizes it
++	 * as initialized. Although kmalloc_nolock and kcalloc_node normally
++	 * zero memory, KMSAN may not track this initialization in all cases,
++	 * especially during early boot or with certain allocation paths.
++	 * This explicit memset ensures KMSAN sees the initialization and
++	 * prevents uninitialized value warnings when accessing objcg fields.
++	 */
++	if (vec)
++		memset(vec, 0, objects * sizeof(*vec));
++	else {
+ 		/*
+ 		 * Try to mark vectors which failed to allocate.
+ 		 * If this operation fails, there may be a racing process
 -- 
-Cheers,
+2.43.0
 
-David
 
