@@ -4,74 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCDB0EA7946
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:52:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27327EA7946
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:54:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 29D526B008A; Wed,  4 Feb 2026 16:52:36 -0500 (EST)
+	id 64F656B008A; Wed,  4 Feb 2026 16:54:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24A7A6B0092; Wed,  4 Feb 2026 16:52:36 -0500 (EST)
+	id 5FCEE6B0092; Wed,  4 Feb 2026 16:54:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11FC06B0093; Wed,  4 Feb 2026 16:52:36 -0500 (EST)
+	id 4DF1E6B0093; Wed,  4 Feb 2026 16:54:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F1E766B008A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:52:35 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9500A14029B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:52:35 +0000 (UTC)
-X-FDA: 84408123870.03.E99B269
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 379986B008A
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:54:55 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3CE6C179B
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:54:54 +0000 (UTC)
+X-FDA: 84408129750.19.F5381FE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 908D3120007
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:52:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HWKy1JXk;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2A14320009
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:54:52 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=To2h+dL0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770241953; a=rsa-sha256;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770242093; a=rsa-sha256;
 	cv=none;
-	b=YrqkZnldyPAb3fYkWb5Yy35qTTVtw1bpbXi8wLzNb4pqNPpLL8CMUeQDwEvzHi8A9Tqa8D
-	Tz40lLETUBXkps4O2p31dQOBZwO6CbdlzX6r3ubgfje93WO7f4ou2EW79WeB47kg2S1CKW
-	G5TBTLizKK76X/opYQAvZTHgttYNW9w=
+	b=uYKYnm/COtBpXg1vxN8d4VSnXjwFuqLAGh0wH6i6nFGY/+dCg4sm849X8MmSlQxco6k3S6
+	GLJtBhhiyk9gz6AlLZwA+jBd7k6TVuXEcI1WUi5fScD1BqQNh6Tt8fPlycsKpFRPaKHnO0
+	9naz/F1UgGdcy0270eoZ3AA50iOrfcQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HWKy1JXk;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=To2h+dL0;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770241953;
+	s=arc-20220608; t=1770242093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=apwmoJ/NqQIls7XkamxxCHsqfHOdPWtNfNkocUwRrkY=;
-	b=pfFxdZ/tAgYZqJA4ltJZfVE3tzTzSfAAc4E16Oqt0LTPN4LtrbMXgm9I2dGhllcLx+GUrk
-	2D8hmN7MP9qVwOqBOo9afkHxlisEtwdjQC6el4xx2cGOir/7bWAc7xQciTCo+I6mKHvDgw
-	lStM3VS9xjyrKgKk1CCiocrUQJx9Z88=
+	bh=jUxWIpARETJakM90EqJOoaJ8AfGytj8zgMfyHiUZm/w=;
+	b=b1L1HNlwSG/hf74PIb/oO3hDzLHReb1Vwb9VoBP3sCemZKGJGX++eVVJf8W7R2NVL/CFqr
+	E8TumhKOXkSeApEpJiIF34ilyBaR7jky8PEcWSACymo1w0Z7Ju1Pw1tN5nGg/fua9CmUtG
+	LdrLjlK94h7iU8+/r4N6EyWBidFp8o4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1EFF4400CF;
-	Wed,  4 Feb 2026 21:52:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45DDC4CEF7;
-	Wed,  4 Feb 2026 21:52:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3C094417BB;
+	Wed,  4 Feb 2026 21:54:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C556C4CEF7;
+	Wed,  4 Feb 2026 21:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770241952;
-	bh=SBfx+CM602J5ou5CcxN5uQHo/IDdl2oeSO8Rn7So8ZI=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=HWKy1JXkxhvkeOGLYPlG9Opnedkfs033jLldco2kxt9E5Ea1HNKMUC/mnlKh79JLq
-	 0Cww7ih/+Bk2Dn6W4Psr+ZKQkR3WJqmtYZZWPNpGGq3lhRmFzD7lBHO+LZA/VmH1UN
-	 VRTUrPaS7xyJQ3X5NMDGIvAvOpvXe4IA2ACpzOIsVepExWSMT0dSVhjABRJaJP1sj2
-	 JPZuDDem2a6jT7xymRus0tL1zNsTahdxogdacPLA7XcMj70Aa1PULGazJh4vjegUgA
-	 HbhFoh+NkR+A91ggyTL9M0v+MX7m4r2Bv8aApXWoe/EQ5ihJac2CFLAtEG1JN2sT5O
-	 gaDLIxj9gShaw==
-Message-ID: <5948f3a6-8f30-4c45-9b86-2af9a6b37405@kernel.org>
-Date: Wed, 4 Feb 2026 22:52:27 +0100
+	s=k20201202; t=1770242092;
+	bh=q7Gv2zGZSyVDrHhkYnCxZihsE2w6iP1FgZNVJBvJa2s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=To2h+dL0nKLio9G3q/lE0b2zcXBB+6sbXjaqHo6ilwoMXpCPz9l8X6eDvkE0/bq9z
+	 g5kxI++HvbSxaxaU5EA0zDooTtZZNIG35rnLg9LP4tNDuNX/xXQq/UTSrZKE65+l1F
+	 RkfGerhlQ8+MbRgiIh25AMqvKwjBCpXBLGAU2uEyQrHgBYNQ0ClTTrhkk1vgsCfzrx
+	 v4OoENLloVKPv7xHwMNJAvWpbQPCqrt4clx+JNiafkfumHkgo+anzS1m4xdl4jjuDF
+	 uLeyE3mlBcFKGdMPCVbxGDMw1yf1ZI7e23QKXdwTypXIx49ZDHa+wj1njI/vsqZ982
+	 lkwESDvHOHy0g==
+Message-ID: <17af6fe6-9318-4e9c-ba54-0b6b16ea9c0c@kernel.org>
+Date: Wed, 4 Feb 2026 22:54:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: walk_pgd_range BUG: unable to handle page fault
-To: Tytus Rogalewski <tytanick@gmail.com>, linux-mm@kvack.org,
- muchun.song@linux.dev, osalvador@suse.de
-References: <CANfXJzt4P+FCkdL_=FfmG80_bY8FkzSocJSPeksSQ_vXObRNOQ@mail.gmail.com>
+Subject: Re: [PATCH v2] fs: hugetlb: simplify remove_inode_hugepages() return
+ type
+To: Jiaqi Yan <jiaqiyan@google.com>, jane.chu@oracle.com,
+ muchun.song@linux.dev
+Cc: akpm@linux-foundation.org, osalvador@suse.de, william.roche@oracle.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260204214741.3161520-1-jiaqiyan@google.com>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -118,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CANfXJzt4P+FCkdL_=FfmG80_bY8FkzSocJSPeksSQ_vXObRNOQ@mail.gmail.com>
+In-Reply-To: <20260204214741.3161520-1-jiaqiyan@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 908D3120007
-X-Stat-Signature: eh39upie69dch7edpom9tn7oejuba1h1
-X-HE-Tag: 1770241953-263055
-X-HE-Meta: U2FsdGVkX1+N1C5VnbHEVvN+4Vw+REbi6zjj75nSBV4TqZEM2gGhcTXIA1jukdj40n3s89H7J9hjNNQiP1FjR9uanC9o1Iy9Q4FDutLTqzGt9js7p55Gwn1QuW0S9DreO6LHPDhN+MBT/AokRJwH0JQWmLOUVLj6/Xi+4q2PNrckeHNGHbhYsfrWe/zcvAIEIcWD87HkHq/cSS7duBuT5glgTylkn7k67qrug6QF0/qGnrDgQ9LtKvo8cM+jTmi1NwjbGL+E1ZAnDcpxxlv95Vh6gb+7VBdNz9Cydg9l8IfTVOdunA/lj74/DyL0jblm1yfdazvvotWxpCY2SKB2R76hKUJp43hitrvdubFVVjeCe7r/B/dyDw4biSJ5a5L/mxGLfzV1awNbZJ1MglfjTj8UNjClFGktGWwTaNmtV2yoPNZyoUmVYWH/dQ2vqJ0VN5FBgcUvfiSeeYWgrzk3wlCswnVl3XEj2Q5O+pR4uaF7l34REVyJrkdglUK4S3j1LijE2xknKNizqRZM+9vmmRvrBK9TrNY7DhfwKoyuQ68HbxuAIweCFntOlUN7ryP0BopEIIE/QtteAWHv74JpntYuJhFS/pRHNcf3OCqOocoU4pCLHuGP3PZQBK5veboPLU961mGevfJVnOCkRAkvLzV9TxhNer6tyc7GK8L0ElcarIeIcwF3aChv/RD9gpuj2tqZJbxXRjwpAt0YIwZnT34SQbPn9dw8kgQ899Axf6naqZkt5LomGf3Yd4ZrboNATddJcsP3cjrQXRc7HqInHZCLVMQ52iCNphFuPGFIY44pvKKua4V9JWULNboJAD+zi3MVWvA0TUwQv8khDBjYQYYeB/mfgwQxCpUs530k17Zu8kW80WrZhGZUuKUboNk1fAr7UlJNy95ftrLk1z4QGnI3QmVCNy4mdmISdrtpx7GMRITk7C1S2kfwgmIiaa/XQzVX2Pq0e7vpTaveNwb
- DmhSscjU
- Y+z/8GbFPVNbbfzQTUYusm6loJpfRr8zqfD/seLuIoLcM2rf+koVtKdfxq5yPxGG0Qz1aAvCyvMNvHWSNrFQmzXsnufnk7Tp+XfTlMlOmeVaAMDOCYYSYlr9IoW7pyCDSlXhjzMUiMr14RB/5FThWkaSHUqeigfU0o1/o6tywZIxKs8Hhl3WmC5LaABlQdJ6gyZdD3ZSXe9ipKqWdlaXGMAypS/jc/l3Z75iQLTH4ZH9UuFkvgof8ijX/iqbXd/Lz/DbioKo+tvCedHi/9v63kygl/mnmOs295od2CqKFg2zDW5pmqaB1qReNTDJPACeZQ124Q2UowwcG6bo=
+X-Rspamd-Queue-Id: 2A14320009
+X-Stat-Signature: ac8c395rx3fuarqwm4sfg66xrpqpibyk
+X-HE-Tag: 1770242092-673273
+X-HE-Meta: U2FsdGVkX1+7p4CxGsn7uLCen86ohS6EUx6kgD3AOsv75mw0B04rFkBOdgfRo88YUQqHr0YuhUCCLLaJNeX4sVTK5tmwWncqzXtdhKLqfEE+dXsy8k2ykK80Q4dC67jBlTxmPmA1ZLAqPOk2EON+TSdMeWX54Xo2hzlGPGB9tn4uVWMWaRzOXjm/CIBjiUF44juO9bmcb2t2r7ACM1L0JVl+pCuuSdVk9dfWKO/67YYI0Sn6wDnAuG9wVqwqzt8l2eWHogxqqsLpNuNCQ7tcd7zBnm8BcigvFbO2fK/a3EHm/1WEx+uwbIl1TjSx/5So535g0JhAM/60kA67Xe7SJnkb0jpS1xRRnc382/+LrOSJeO7XIGpm8Kiz+junurpVS4Khv5zS6dt+nWLeGRPKrOvEwK2BUQxeMsbLg+vghDRMwQaWBhtM7id6ytWVZ1xl4gV3bq2EVUYmwVZ7miWssbaH33l/JvPYbnRGYxZZ+RNQqfzizWEjOO4n6lVducCrfHBGL6CbaQYnCnQV/tqc55A9YJPWxkyQ/lx5GKHdic4eTz4xAQ0Z1aOIYbK7sh6nEnqFzN7EVQfc38cbE8jNysTc4hVf3BR/aH0VrKCwiaiMqqMzXdtYeCk/22oqs33Fj9uMjspAzkmX43b2lyACEYVzs8SCsogo/1vQHo32O9Zgd28GAzna6r+kUyvbntTLZgCEsy0iNmLy0sXzNJUuMWRTzJcETzyztmja+Un5091luPybXWuwWIk9++VimbjeXaOTLPpkSqse1HBjPIA8E8CXGO636nMItMl0MwIY86X8H1Phv8wlOep7qy3b1ImXi3ypyemarEyHdGS98RSOXKa+u51BMdByAc1bdcOGM1SkcqcnZzhrTfFf5wpMQugE8K/osmm/VL9GmdwIT4VIPkHRsuRGhhy5+oFwqpXVlQd9JQUDLGVF5T/Qa84eQoMLHpQVasSYLvTVx5Js3r4
+ F97a2RJi
+ +gh0LgDkUM13tpJgfy0JaEKOWC7us4y6/34UQFA4/EHTgZO+6pcQaF5/tLFs+b5kq4xzwsifNqHtQULuYLrg0HrsoWBIWrqXPvM5emvg6EQjGdCo1+qeOu8fd+62dFfgJSeSKcIE5VIWNcO9AibHXrMgolmvcyaCsBC6sS7xNfxHng5OP5NC42Rwk/+2awT8b6Tvy8hHCUldFxgYu0cYpTjgNZ8tuSkp2bbN4RQgBj2gvQeyax96RCQn9eMhPeSnzeIsgtNy3RDt8q/4xk7+GsP4V9N3R+uRS8ZaXhnkehCPgiUM8qM+uXBjpYzzErE6AuEZpvxJ6X/mG4xP3gdaWMzZlUzCK4q+QVLOJp9xW0XZc1rl2uWha7+ToWw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,107 +140,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/28/26 15:14, Tytus Rogalewski wrote:
-> Hello guys,
+On 2/4/26 22:47, Jiaqi Yan wrote:
+> When remove_inode_hugepages is introduced in
+> commit c86272287bc6 ("hugetlb: create remove_inode_single_folio to remove single file folio")
+> it used to return a boolean to indicate if it bailed out due to race with
+> page faults. However, since the race is already solved by [1],
+> remove_inode_hugepages() doesn't have any path to return false anymore.
 > 
-
-Hi!
-
-> Recently i have reported slab memory leak and it was fixed.
+> Simplify remove_inode_hugepages() return type to void, remove the
+> unnecessary ret variable, and adjust the call site in
+> remove_inode_hugepages(). No functional change in this commit.
 > 
-> I am having yet another issue and wondering where to write with it.
-> Would you be able to tell me if this is the right place or should i send 
-> it to someone else ?
-> The issue seems also like memory leak.
+> Changelog
+> =========
 > 
-> It happens on multiple servers (less on 6.18.6, more on 6.19-rc4+).
-> All servers are doing KVM with vfio GPU PCIE passthrough and it happens 
-> when i am using HUGEPAGE 1GB + qemu
-
-Okay, so we'll longterm-pin all guest memory into the iommu.
-
-> Basically i am allocating 970GB into hugepages, leaving 37GB to kvm.
-> In normal operation i have about 20GB free space but when this issue 
-> occurs, all RAM is taken and even when i have added 100GB swap, it was 
-> also consumed.
-
-When you say hugepage you mean 1 GiB hugetlb, correct?
-
-> It can work for days or week without issue and
+> v2 -> v1 [2]
 > 
-> I did not seen that issue when i had hugepages disabled (on normal 2KB 
-> pages allocation in kvm).
-
-I assume you meant 4k pages. What about 2 MiB hugetlb?
-
-> And i am using hugepages as it is impossible to boot VM with >200GB ram.
-
-Oh, really? That's odd.
-
-> When that issue happens, process ps hangs and only top shows 
-> something but machine needs to be rebooted due to many zombiee processes.
+> - Use two-tab alignment for parameters wrapped to new lines.
 > 
-> *Hardware: *
-> Motherboard: ASRockRack GENOA2D24G-2L
-> CPU: 2x AMD EPYC 9654 96-Core Processor
-> System ram: 1024 GB
-> GPUs: 8x RTX5090 vfio passthrough
+> - Remove return type in remove_inode_hugepages()'s comment.
 > 
-> root@pve14:~# uname -a
-> *Linux pve14 6.18.6-pbk* #1 SMP PREEMPT_DYNAMIC Mon Jan 19 20:59:46 UTC 
-> 2026 x86_64 GNU/Linux
+> [1] https://lore.kernel.org/all/20220914221810.95771-10-mike.kravetz@oracle.com
+> [2] https://lore.kernel.org/linux-mm/20260202233617.2350734-1-jiaqiyan@google.com
 > 
-> [171053.341288] *BUG: unable to handle page fault for address*: 
-> ff469ae640000000
-> [171053.341310] #PF: supervisor read access in kernel mode
-> [171053.341319] #PF: error_code(0x0000) - not-present page
-> [171053.341328] PGD 4602067 P4D 0
-> [171053.341337] *Oops*: Oops: 0000 [#1] SMP NOPTI
-> [171053.341348] CPU: 16 UID: 0 PID: 3250869 Comm: qm Not tainted 6.18.6- 
-> pbk #1 PREEMPT(voluntary)
-> [171053.341362] Hardware name:  TURIN2D24G-2L+/500W/TURIN2D24G-2L+/500W, 
-> BIOS 10.20 05/05/2025
-> [171053.341373] RIP: 0010:*walk_pgd_range*+0x6ff/0xbb0
-> [171053.341386] Code: 08 49 39 dd 0f 84 8c 01 00 00 49 89 de 49 8d 9e 00 
-> 00 20 00 48 8b 75 b8 48 81 e3 00 00 e0 ff 48 8d 43 ff 48 39 f0 49 0f 43 
-> dd <49> f7 04 24 9f ff ff ff 0f 84 e2 fd ff ff 48 8b 45 c0 41 c7 47 20
-> [171053.341406] RSP: 0018:ff59d95d70e6b748 EFLAGS: 00010287
-> [171053.341416] RAX: 00007a22401fffff RBX: 00007a2240200000 RCX: 
-> 0000000000000000
-> [171053.341425] RDX: 0000000000000000 RSI: 00007a227fffffff RDI: 
-> 800008dfc00002b7
-> [171053.341435] RBP: ff59d95d70e6b828 R08: 0000000000000080 R09: 
-> 0000000000000000
-> [171053.341444] R10: ffffffff8de588c0 R11: 0000000000000000 R12: 
-> ff469ae640000000
-> [171053.341454] R13: 00007a2280000000 R14: 00007a2240000000 R15: 
-> ff59d95d70e6b8a8
-> [171053.341464] FS:  00007d4e8ec94b80(0000) GS:ff4692876ae7e000(0000) 
-> knlGS:0000000000000000
-> [171053.341476] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [171053.341485] CR2: ff469ae640000000 CR3: 0000008241eed006 CR4: 
-> 0000000000f71ef0
-> [171053.341495] PKRU: 55555554
-> [171053.341501] Call Trace:
-> [171053.341508]  <TASK>
-> [171053.341518]  __walk_page_range+0x8e/0x220
-> [171053.341529]  ? sysvec_apic_timer_interrupt+0x57/0xc0
-> [171053.341541]  walk_page_vma+0x92/0xe0
-> [171053.341551]  smap_gather_stats.part.0+0x8c/0xd0
-> [171053.341563]  show_smaps_rollup+0x258/0x420
+> Suggested-by: Jane Chu <jane.chu@oracle.com>
+> Reviewed-by: Jane Chu <jane.chu@oracle.com>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+> ---
 
-Hm, so someone is reading /proc/$PID/smaps_rollup and we stumble 
-somewhere into something unexpected while doing a page table walk.
+For the future, the changelog always belongs down here, under the ---, like
 
-[171053.341288] BUG: unable to handle page fault for address: 
-ff469ae640000000
-[171053.341310] #PF: supervisor read access in kernel mode
-[171053.341319] #PF: error_code(0x0000) - not-present page
-[171053.341328] PGD 4602067 P4D 0
+Signed-off-by: Jiaqi Yan <jiaqiyan@google.com>
+---
 
-There is not a lot of information there :(
+Changelog
+...
 
-Did you have other splats/symptoms or was it always that?
+  fs/hugetlbfs/inode.c | 18 ++++++------------
+  1 file changed, 6 insertions(+), 12 deletions(-)
+
+I think I always add another "---" above the file list, not sure if that 
+is required.
+
+
+I'm sure Andrew can fix that up when applying, thanks!
 
 -- 
 Cheers,
