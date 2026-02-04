@@ -4,222 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25C33E9D416
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D01DE9D416
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B9A66B00A4; Wed,  4 Feb 2026 11:57:05 -0500 (EST)
+	id E0C816B00B4; Wed,  4 Feb 2026 11:57:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 897BD6B00A5; Wed,  4 Feb 2026 11:57:05 -0500 (EST)
+	id DE9CE6B00B5; Wed,  4 Feb 2026 11:57:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 725186B00A6; Wed,  4 Feb 2026 11:57:05 -0500 (EST)
+	id CF6CF6B00B6; Wed,  4 Feb 2026 11:57:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 603026B00A4
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:57:05 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2E9901A0234
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:57:05 +0000 (UTC)
-X-FDA: 84407379210.16.7EB224D
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020129.outbound.protection.outlook.com [52.101.196.129])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4A1AB14000A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:57:02 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=mDaW8w5F;
-	spf=pass (imf09.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.129 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770224222;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B756C6B00B4
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:57:50 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 656EFC1385
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:57:50 +0000 (UTC)
+X-FDA: 84407381100.05.55C5699
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D9D84C0015
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:57:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h0vWfW4E;
+	spf=pass (imf28.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770224268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M+eB2euhFblGFpPMkFbegNCal5M7WqtFg71x/stvqzw=;
-	b=00LeUKj9S0E9uUX4GkjL6ixgV+4f6xOVXouNTLI72kSeBOVJYF6y08OcYRAr1JTnCnTMYR
-	fs6CqropwbN02pQy306tx0nF1mmOoz8P7YTWP5B4Lt80Sma/tvSmqIJW76ULu1YnpeWIth
-	fgssbfo+U5x9GwjbdwpF44owwDYkiHc=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=garyguo.net header.s=selector1 header.b=mDaW8w5F;
-	spf=pass (imf09.hostedemail.com: domain of gary@garyguo.net designates 52.101.196.129 as permitted sender) smtp.mailfrom=gary@garyguo.net;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=none) header.from=garyguo.net
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770224222; a=rsa-sha256;
-	cv=pass;
-	b=LKe/M3H4SRSHLLyE/obfQZxcUCMDopaVj9TNntjjBgf2Ghmoyy/l8Zm/A5oqUGYHsk4WxU
-	tzMOKIpaWL3ouLOMbSbwCJrMyzshEi581K7IppDJfj8rG46YmPDskTqS4m8hCu//8HCi0m
-	omQy4aRsaS8eSFD4Y7/QCag1mjn5Lfw=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=w5QIXVe1aEvddCwEo9pG4OOShWk4K+ODbKYT1m3QeNmEBsdCXaatIpCVuz+4CIACdJkuf5hIFV9RHhBm0wQZKlFvhn9zwQQgVns2gyKjCSnDU9/KsL7A1fz5DIDs9ODvvsHJTX+1auYuMQYvt41eEKdT2owvd+lqYeRjjegh8EBYfR7aOEEgkH8DMjnx83qs4ST3eHYm9F6RxM3cjATwgcVPduHmsQBwBPO8Vbn+NU2Y/rsjdHiTjILmw7eBOEAhv3dbkdNxrQqXs3rpqom7zTXWhOfmNWFFuVqnAYMn8w7b+hjJThdtlzYvPmevdigiT7sUYrXNUmVOoo3hPD3hKA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M+eB2euhFblGFpPMkFbegNCal5M7WqtFg71x/stvqzw=;
- b=KNT3hxqPy0xLxeR/ZUxbRPvb1peyM6rcfs5KSeR+wpuo04ZXJubfVljKL4rKsMpRIc3hb6g4evLRyklXpyn58bFxXfK/I4o+7x13JZMHZy7QosjoOnVEiWx/qyE2UQl3coz8+ZUyam93ujGbWOwh/HoutbRL0cl1NdcUXeI790/HPQaxpfB8hXqzv0gR9H9MsWOQv6g4kSNJK+SK/7e1NH3qn6KCqAkWb2h4tyH0ujjxqPbJwy+T/H0rFSwv/jrmPIOCKCuTwYvCZ9Ro3xNooVv685cEgIbPNDcu0OAARG/oTLeUU+8wpKwFnIaH3x0Nr2G7LO762hbNWU6SHGUhyw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M+eB2euhFblGFpPMkFbegNCal5M7WqtFg71x/stvqzw=;
- b=mDaW8w5FwvIhfc8pHmMDuRdEE2Qzf4fTW20FdlmN5Dllu0HIqBWBG8cjkOmimnocpmVd1A2wswUf6VZzIwSV934MOnT03LJoDy7GJVDWGs6pjhZlRU/oRD2KGtom3Iho5Dqhh/oxoa5DZ+BKSK30kZqvIhdLDfRVQL2jLRoq2Yk=
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:488::16)
- by LO4P265MB6903.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:348::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Wed, 4 Feb
- 2026 16:56:58 +0000
-Received: from LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986]) by LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1c3:ceba:21b4:9986%5]) with mapi id 15.20.9564.016; Wed, 4 Feb 2026
- 16:56:58 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Feb 2026 16:56:57 +0000
-Message-Id: <DG6C42N3P73T.2KCI7JFOEIPC@garyguo.net>
-From: "Gary Guo" <gary@garyguo.net>
-To: "Andreas Hindborg" <a.hindborg@kernel.org>, "Danilo Krummrich"
- <dakr@kernel.org>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Boqun Feng" <boqun.feng@gmail.com>,
- "Gary Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Alice
- Ryhl" <aliceryhl@google.com>, "Trevor Gross" <tmgross@umich.edu>, "Greg
- Kroah-Hartman" <gregkh@linuxfoundation.org>, "Dave Ertman"
- <david.m.ertman@intel.com>, "Ira Weiny" <ira.weiny@intel.com>, "Leon
- Romanovsky" <leon@kernel.org>, "Paul Moore" <paul@paul-moore.com>, "Serge
- Hallyn" <sergeh@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
- "David Airlie" <airlied@gmail.com>, "Simona Vetter" <simona@ffwll.ch>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian Brauner"
- <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Igor Korotin"
- <igor.korotin.linux@gmail.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Lorenzo Stoakes"
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "Viresh Kumar" <vireshk@kernel.org>, "Nishanth Menon" <nm@ti.com>, "Stephen
- Boyd" <sboyd@kernel.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
- <linux-kernel@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
- <linux-block@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, <linux-fsdevel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, "Asahi Lina" <lina+kernel@asahilina.net>
-Subject: Re: [PATCH v14 1/9] rust: types: Add Ownable/Owned types
-X-Mailer: aerc 0.21.0
-References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
- <20260204-unique-ref-v14-1-17cb29ebacbb@kernel.org>
- <7uftlTZxNVxMw7VNqETbf9dBIWLrQ1Px16pM3qnAcc6FPgQj-ERdWfAACc5aDSAdeHM5lLTdSBZYkcOIgu7mWA==@protonmail.internalid> <DG6AIA0QK77C.EKG7X4NBEJ00@kernel.org> <87fr7gpk6d.fsf@t14s.mail-host-address-is-not-set>
-In-Reply-To: <87fr7gpk6d.fsf@t14s.mail-host-address-is-not-set>
-X-ClientProxiedBy: LO4P123CA0283.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:195::18) To LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:488::16)
+	bh=cx+x6G+SfQWLjevinHfo/G9XD5zagVRglZJCduB24h8=;
+	b=rY/9ZZZZm5DHHT6uvRaj6oMPXXEqBXUVmsjoSqGHY24p7UP3Ueqs4G0qdw8rdNmvRMZvHV
+	nVkzokEVsv+KO1Bu3d2AylVcOkZbH6/RKfHTMoup4xEY2tpYJP4AscVW72VIdeKojcUWxQ
+	C04VUAAJCO++n4CucI26oqUjnPZcaXg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770224268; a=rsa-sha256;
+	cv=none;
+	b=7OS+1LIqO20JEnHcRpsVkYs0JaFj18NvJB7t2ve/OASyvGwJ/JtaqsoQdje+Fw827IzK5L
+	PYnOCrOSngtTEmsK380NtxQdWGmsmMLIzmjABIr9KJEGXsuEXoePii6AtwVlUJEn5EnQq4
+	FJXiV8KqHQ5xTsDjrkvJdztb7GZmX24=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=h0vWfW4E;
+	spf=pass (imf28.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Wed, 4 Feb 2026 16:57:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770224262;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cx+x6G+SfQWLjevinHfo/G9XD5zagVRglZJCduB24h8=;
+	b=h0vWfW4E1lCJpCcaT7+TLnrrJxd0qrbWxFlfwlBvpvHuC0PvV97F7eI5SYSYS+WlFih5wu
+	MdxGindgUXR/s3R7Hrlk2S8X0VTjJQlkn6AmwVpANAMnK2Dhk8W+BloE0+B2pDuN9HSScs
+	W/71qHmeKl4T8LquUSyGDwnvqLu/RhQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org, 
+	nphamcs@gmail.com, chengming.zhou@linux.dev, usamaarif642@gmail.com, 
+	ryan.roberts@arm.com, 21cnbao@gmail.com, ying.huang@linux.alibaba.com, 
+	akpm@linux-foundation.org, senozhatsky@chromium.org, sj@kernel.org, kasong@tencent.com, 
+	linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au, davem@davemloft.net, 
+	clabbe@baylibre.com, ardb@kernel.org, ebiggers@google.com, surenb@google.com, 
+	kristen.c.accardi@intel.com, vinicius.gomes@intel.com, giovanni.cabiddu@intel.com, 
+	wajdi.k.feghali@intel.com
+Subject: Re: [PATCH v14 25/26] mm: zswap: Store large folios in batches.
+Message-ID: <7g4udorizeimntvz3lfjpl6ftaivrynjzowbb7wvnnelzyqmzg@5gbxsfvumpxi>
+References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
+ <20260125033537.334628-26-kanchana.p.sridhar@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LOVP265MB8871:EE_|LO4P265MB6903:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba39bde3-e2e3-4e12-4630-08de640e6894
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|7416014|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MXUzK0FyelAwU2dDOWtlS1g4bjF2K08welB1TktKWTR2WUprVEJLME9sUHJI?=
- =?utf-8?B?eFRSaFQ3cS80ZjhuTkQ5NHhNR0FtL0ZobUJYSnMzWVhZVE9vOUN0SWwwSEtl?=
- =?utf-8?B?eWpxWHdJb1RPcnhMQ1Q2WEN5ZlpsWDdJTHo0WnV1WXRLMGl1ak04UFFCWGg5?=
- =?utf-8?B?eUZ0dGwzOUtiQ1VuQTZuRGFOME9saHRtaE5BYXQ0Y0dSNzFkUXdPK2F6L1U1?=
- =?utf-8?B?MGZWLzF6SHNOVkhkZk9EMmVEaVo3MWtYVjlNQjRDNXdwSFBBZkhzZ2gxMW1E?=
- =?utf-8?B?V05GVnNUbkM1TUNZV2NENkMwVnFXUDNQTnB5OWJLTzlpRmJRNG81dXRoKzN6?=
- =?utf-8?B?ZUdRa2VnY0tqVVYyNzZVWHJHaHpsWis1L3hNT1ArR09zOWRsYVFHa3pnTm1J?=
- =?utf-8?B?TEpISGNrazlDUlZIVTVpOTcwZEJqRDRqNjVlZno5Wmdrckx5VnFPaHZvaHVC?=
- =?utf-8?B?dXFkOGlEcUVoVks2M2R1NlhjWnV3TkV5VklaYTRmR0dIUUlINkl6SUJ2R3R1?=
- =?utf-8?B?ZTJ1aks0ZGlzaUMwQzdhZDZ5N0p6bHIvYm1vWUsxRzB3NHk0eVJXNldwR0x1?=
- =?utf-8?B?akhFYVBIeHlGNC9nYlFmdVlBTy9uejZSbk42N21CQm9ha1FSU3hpcWdocGVO?=
- =?utf-8?B?L1VKaDJVb2RNTnJocVEzZmFYSDNzQlk0ai9TSmRzU2FzS2d6OUlSSE1aMTg0?=
- =?utf-8?B?MEFPWmNBSzMxZ1Y3Y2dlcUJ5MDU2RnhLaW9ZV3ZVWUp5VzZ4cWpWVVE5SlJC?=
- =?utf-8?B?a1YzUnV0Rk1yUUxTeDhBYkltMFhqZ2FTMmwxSm9uNlJJUkdKck5KSGwxTnJQ?=
- =?utf-8?B?dUU4V2lDeU9DOS9tVzA2dFZpSGZxZjA3ZjA5QitCeDhwS0dvMUl1cU1iWnU0?=
- =?utf-8?B?UVM4K3h1R24zT1l1bUQydzRmN1ZwS0lmcStaZlNDek9hSitXSTBUeFJiYzZk?=
- =?utf-8?B?eDJsa0NkRWlQcklkQk1PdzJMNWU5TzlJUlJjUmw0WnR3RDZGK2hsTG1BZk9H?=
- =?utf-8?B?VjJOQjE0bWhvYzZLYUNxKzJBaksrQVN6ekVERUlvUnRsRXgwNTR3b1ZjRVpB?=
- =?utf-8?B?OTZRUlZEK2JSTHpyOThBSjFHM252VG5wRnNQc1dPWFZRMmVKZWY3RjNQWXR3?=
- =?utf-8?B?TjRibS9wS1RsYnphOWFEa3Z2V2l0eW5yaVRpWHI5d0xRNmlhNThpNCtoSTRx?=
- =?utf-8?B?V0wzUzgvOHVrTktrSm9EZTNGZGhES2RoYlZTUDJSdkU0Z2lyT1lPWEthQnd2?=
- =?utf-8?B?K2tNQWk5c0hwTUhFZWhpeFA2dHVTZmJvenRiMFdmL0NjcGJoZ1hUZ25LbUY4?=
- =?utf-8?B?OGFtekFweklmd1d5M01jQVJKZytTZlBpOG5EV1IyeWluK0l3RURSbU5iUEVq?=
- =?utf-8?B?NmRoMlhDTnNIbC83UnNVODNxU3ZIRDlaU0dBN21oNjU5UUt6YUFVRGxXVEVS?=
- =?utf-8?B?UWl5UmhtOEk2SkhxVCt2NmZqSmg3Y3diTERkUjJXTGtuMHhkZSt0djk0cjZh?=
- =?utf-8?B?b1ZpbC8yZEpYR09qcllTaXh4NHhMeEtTN1BKVHZVSSsvWXNJZFNyZXpKUW9F?=
- =?utf-8?B?ZXgwWk0xUjZBRFMyN2dxaFdLa3MzZUJNTldRV0YxQXhlM3hodml3bVlEWnhy?=
- =?utf-8?B?SDRpTklKTmt5dENVTENxaHkxQ3pyS1A5dEViSnVFQ3d5UDVJYlc4Z3QzS0pq?=
- =?utf-8?B?djdIU1VjSVdpK3ZOOXFvQ2p2NStKN3NobXhlWVNKODVVRFI4QXFLZEtmNDh3?=
- =?utf-8?B?VDBSdkp6cENxUDIveHBTMlk4ZzdYRTRyNDhIOUx2aG9Dc3JkV3EyeWt5ZzhV?=
- =?utf-8?B?YW1Gdy9xTzdoc3ZVN1BkdFJWRGkwdWpNeHl3QnJGbDJyRytiT083czF3NndV?=
- =?utf-8?B?YlVHM3hucGZxbVZDakV1K2xrRk5hdWE0bW9Fb001aFFMNnV2WGxvWGZDZnBu?=
- =?utf-8?B?dVRRcHc1dDZQMzZqRTkyekpKbEsxeDUzbjVsMHlWcllkZFB1clMyZXNteTNS?=
- =?utf-8?B?ZjU5MURmc203YTF6NTNYL3F4OU5Lemt3VUdtNzZoclRmV3RjTnNvTWZra3lS?=
- =?utf-8?B?MXFUUUs1UUphbGJsNHRIWFIzZTVwcmdneTdPdDNwU2w4c04vMWpRLzF2QUVL?=
- =?utf-8?Q?t7Dk=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014)(10070799003)(7053199007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UlZzUUZMdzdndUhxc1JZa0ZNak1YVGt0ZU1vZWRFTmVDS3BvNFVweWRZYVpu?=
- =?utf-8?B?UU5RSGJyT1NRODNBNWlQSWhZVzdiUE9rV1VlaFpDeG9uMFFidmZuSU5HaCtT?=
- =?utf-8?B?dmc5blVYVzRxVmMvQS9zWXlaVWtpdXhZREFkMEhWSEQxU2hKbDg0WVducE1w?=
- =?utf-8?B?WGxmaU01b2VQYm5yZ2g3SXZEQ29Dby9jd3lxVTloQ3F3THpmQUZOdk9VUFZW?=
- =?utf-8?B?YTVKQVRyUGNoRnlMRnU1RDVVaFFramxLK0NBVE5SdnJzNU9Kc1puQTQ3TTJO?=
- =?utf-8?B?VzdMck9VblQveEZ2bVNxK0tjaEpVU21pOFFqczFsZFVPTVN4ZUQ3cExyMjA2?=
- =?utf-8?B?d1JzSElaVUlSSzJsLzJGRSt4VnhlZHVhZnZhc1lkU2xUemo3YjdhVDFuL1Rj?=
- =?utf-8?B?RDM2MHZMVzk0RkJRbU9aeW42T0hFRUw4SjVTblhWcFY4WEdPTGZCbTRERW5S?=
- =?utf-8?B?cC9KWUk5WnorWWYyM0dqd3c1MlFBMWsyUG82MG5PU01CTHBMRytIb1lCa21w?=
- =?utf-8?B?THRtbGNHcHdmdGxJL2tQTksvTEJ4aWViUi93bE94Vlh6ZTloMXFmeDEzSEth?=
- =?utf-8?B?NjYvdmJ3ZlZyYjVQWC9XbkNPeXZnZ3RCemRZNVN3cUxULzFra2lBYkhNRDE5?=
- =?utf-8?B?T2ltWHNCM3JUNEpjb0daV0ZORnRrV2FBZ2lYWC9OK1ArS1E3emQ2cmRsQlpQ?=
- =?utf-8?B?aG42QUJqNmRqMklmVWhlZjlhRWhkeTNrbFdXT2dITFFxK3NVNlFZeEVRYnJL?=
- =?utf-8?B?Nk5JUkpLWnFLK3dSUGRqTmlTNHh5ZUNmQkJMUVlPVEJHM3c2QnVlMi9DdWox?=
- =?utf-8?B?dXZMMmM4T2ZzRlhsaEhnTDlwdCtLQWJiRFlZcFZ4eVFzZ1Z2NzVqUVdPSzRV?=
- =?utf-8?B?L25tL0FWcU5DM0JMUGpyVHgxVWMxRlhSc0tKaVVrb09tZ2ZqTjdnd2djT3BP?=
- =?utf-8?B?bWlkTnF1dHhCdWU0UDN0U3k1bFdzcFZhVlRjTzREWkpjL0tsbkRWWGVKSUxV?=
- =?utf-8?B?T3graHJmcDJrNHV0OENLNjUvWXRzeEpjSEdDWDFiZ210N1hETERBOXZmTEZR?=
- =?utf-8?B?R2ppK3BzbXgvT2ZTeXQ4dGZIUEhIUEt4WWRKUjZ1OWhHQm5iTCtneElWV1Z1?=
- =?utf-8?B?T2VkWkkxYk5wQU5GRWlpMUozNXZRQ1JBNXdONlJrVE1LaHNKTzdnY1FCQlEr?=
- =?utf-8?B?Tk1MUm5Wb3NXazBRaUludlUxZ0V3YXg3U1Jkdk9mY0oxZG5Ha2MvdUZFWVdm?=
- =?utf-8?B?Tk1VdXdoM1lxcUR5cEN4ZmlYbHRjRW1KUWZPVDJsY0lDSEFreGoxYmtLNWU1?=
- =?utf-8?B?aG05Z05DcnY3Y3dXMDlkcjVwT2F6NlpRZEZxYjNtRlY1NXI1bkJldnZwb2dX?=
- =?utf-8?B?MHVOMkVsalZMRlE0cFNRdkppZ3I5eGF2T0ZFUG5sZk1DQ2w3aFZSZW1jOS9o?=
- =?utf-8?B?NFFkbXFhNFlEVGZPbTNYajdpcGpsdmNuY2ZXWEdtUWdVdkJnMFBXdVNzR2ow?=
- =?utf-8?B?bGNpRE84YTZYTkF3U21sOEsvWDg3TDV0TDA1NzFaSW9aMENRMGdrWlpqcUVy?=
- =?utf-8?B?NklaTGZrdFc0NzhmSCswL2pvcXEzZDg2eTEyemhEdGcrUC8wZGZtTUtPL1hr?=
- =?utf-8?B?NER3ZE5PN0FsdEF2TXJwTFJySXk2NHJjUGhNaEZ5MEhqdVcvaUJCNi83UEMy?=
- =?utf-8?B?R2x6T1M2L2NLRmtpc2daRHNiUDU5V0RnWExNVFFRVWdmbDh3SEdYQ1FMWnUv?=
- =?utf-8?B?SkR0NzJ6dzJiTWJnVllLL2djcHgzbW9weFNicHEreUxQSUtyaGErNzA5Y2tG?=
- =?utf-8?B?U0RsVGN5eGk1d3A3SExaRU5sSmJGRlZHeThvOGxxNlhwZEFWVVdIOHp2T0l4?=
- =?utf-8?B?UjdvelRyU3JmUytMOVpWanhrdVhIR29WQmtWTU5PQnRLdmJWR05ZL2lDNHFN?=
- =?utf-8?B?QTFJejRoWVc0bzB2cEtPOVhlL0trNHJlUC9SZUpTbm5lSXltWklVRFRML2hG?=
- =?utf-8?B?YTdJTU12dG1YTFY5QndQK21tWTlCL1NOSXRxTnZ0SjY0YVRIakd4UDhhL05G?=
- =?utf-8?B?c2VSQmdQOC9BcFNDU3dBelg0TzhFNmZ6NFVFdTE3djFzekJQditsY25PZWZM?=
- =?utf-8?B?Z1l2djZqTjFEQW80Yk5iTmFCN2JZSFdHZ0VjWUVrQkZia2NzV3NJTFo0M2Jl?=
- =?utf-8?B?bGtCSzd1eVVJZkl3Yng2K0l2ZVNHUjZ1MERkU0NCK0VYMHFnbGdKaWkzNEYr?=
- =?utf-8?B?ZlVnaEJDRzdDQUpVNHp2ZDRLRHg2Z1VuWVJPaEVpQTk3Y203OXc1aDdRZjlY?=
- =?utf-8?B?OW9wbXdZb0c2SHk0d3hqdnZrRU93enNNWHU1cXlEM3VqOTRmTm45UT09?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba39bde3-e2e3-4e12-4630-08de640e6894
-X-MS-Exchange-CrossTenant-AuthSource: LOVP265MB8871.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Feb 2026 16:56:58.0692
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DaDP2q673MD+JSgyD6NBKeudYCoGDNwoS0vp4eziDEud+mPx0srbtK9Rg+ujjZSBgjrxKAzRphDhkTRxDTJeog==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6903
-X-Rspamd-Server: rspam11
-X-Stat-Signature: z8ohod3i7yaow5xj4st1f9c1wo6ocrzn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260125033537.334628-26-kanchana.p.sridhar@intel.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: D9D84C0015
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4A1AB14000A
-X-HE-Tag: 1770224222-802830
-X-HE-Meta: U2FsdGVkX1+vAJ2eKHGELag2mHFVrZheA4MRpLGrQqhotLpTtYpxOb6xDwie2VC6yV7NpOuQcIgQ0r0xERkOQLVTKLYvCwhz57ACpF5pZmMRNwF+xI1C3jNxZm1QRfxZSO/WROvhJUdqiOvxl1qeY5v9DLxri3XJfEYH2y+41udF80kwp++atqmhga7eaSJ5PV5al04MFR99T8QVL7ZEEmxb1vnDlNBt5zDiV6qU6G7RmAiTJpAJ7gZ+yW8EUgs9rQy4AeZ+s4HbILQ1782OX5a8TTOYYCocbkAaVAetn7+G4mgB6lycyfpy/l8JyUGFHWsUpOUInAPrnGuq8rDWnv3oYBo43eCq5lkI4RCUuBLnByIiRgJZ4gqn9O45cp+HGI/EX1KhQkxcxqIB4GIEiwwVyb8qzOp+EgQksNmHoG1/lZ5fzze9al2bomislPkDB4ftebPNuNK3IW+4FGGWZRlVp7L4hrKIdaYPdOF/82G/d0mdJzvbnfiXFbn6Ge+bAIgzN4ngUaT8LOG2dYGNqQbGE535bnudj9PaGysBZn7uDMoeHMfB/FucaUuHMR/Tj9+UfSKpgZvDQUe59POUY+fnxVg+B8HS4H1MlhdHlFeZF5nQbrdY1pyA/vjEh2UxcJ4iWnwk9vwLIga4By5+BBoC6TUS6MvldToFw8DuCLiWliJWjlmk9ShC7UTIfqrk20s2yQSvjJo67FLJ2v3eD46FR+EemPoUjfsCTaWXznI2risyeNdJscFi3JI/kXYmg3edzIy685BJ8DFU/IQXHX5P7GDwRkrbzqpmLC5TNc8aLvnFqRRRVwfXodBD6bimBJadWcNVZJf7wHk6YzIscaZ55eg0cWDg5oZlbAKkEB+63LYRbdJHdcBuFZIZWScN/kGXiJjXjyiWqXgulWB7BIoVA9OJcA/dFK3EOXfyxKJh0ASUvnVYf++/07z9xkCjK4ZAzo0FdcPzk4TxRRx
- l2XRpQTU
- 3LewmlcrgDM9rLvNbOu6aakWCRUGNyyh7zPCkgILJ01RRxf29MrSCn5S+CKYQ+15LcrHRpD22ZQZipuc/TP1zFdKa+YcxydZOkSWJlSnmsbgM+dkXgA9pFxk9GUVpHKN6PMXVLkNVpZ3LseDBIT4K63sOk26n0wIBos14ETxCMs7SPADmgrHpEKIRpW5Er3+j/Yw3DkRZstjO5gqwO5RRXNOolz/iKQev7PiaYSou5tbcHLDcHFXvg7WRYmq5NxgKrroxcxfCrCsvsYCbrcHQX/yPEZnd0Sb2vIAysMjUPWjXopn6tnqD9eDvxkdbIs8UQp1JmrSPLsSWNjzDuKu2PMsZKvUDUe5QuLpbk3PtFqWihPo9FA/5pJiGTHh9RdUHQjhQFV8LLg6WlPYuGI9CD1xmLtUXHYiF5KsXp7rgVaMbadejCHS81sTzsEBt7Weec1kh66Y0d/eFY590WMWkJGydLUZj0kGE16GbCTiRMfj//NbvYZQf3qGjPrbLymCL3lmWrCwxmx2yLFNdegNZcUcde9205XBxyHWr
+X-Rspamd-Server: rspam05
+X-Stat-Signature: xeps64a8stetj7ic6udwe1qhhpkzbbzb
+X-HE-Tag: 1770224266-368663
+X-HE-Meta: U2FsdGVkX1946ArSRBd/zHaKOntGBpuz0zGAavYLuwUSJneB5O/ZPmxpSFHvIg59LIbs2kyBT3TFFBgES/g/j6P77sU1+tLy/Z3Nxqk06jive8MiIBzNOBAOMZw4veY7egj8j/mHrY2m+bIjxR+8UG+Vwsopz+M9x8UubE+TWbh9/JJsKqlB/yOocX2tPfk+tof7hNcac1NNQUiSz0ecxM3Pwg9zzh/dLav4BltFXOKcW6RxIEsqN6EzsvRLEQuHieOPA46mbinUyashubJVJZlwONSbKwN1OdbGgTWzjSG5GmIZ7QJaW7wV9S4zc4N6H89JS6P864Ml5oLuSTz47wXa0UB81xx3evryzSXaZIkd978pLuCJ/T93bLujpa2Xg6tU2bMHYOBGZCSYeDPrBsqbY2y4WvniQkL4agPIdVLiThVsa7pNFNVc9GJdIA3cehhhA/Hr83KYJINijDgx56Ae5Vy9kM/aYs6LljzbEHzJBcK7d1EGjyPmZCBAbyJzsQe1PApzkwA2ukbHM5Zs7mjZGNxCKVWiGQ/lVCv7u244mKz1VyduzN30+pUHwpejfKXzFHf8FjiCHYvQaw/36qrkvKCFOmbCNoQ3VufBdicpCdBB2i1gpvAOc+wstRoneErvqvNQADa6/gExpP6TwkQ140459X2XrDuE7l2rsNbnFdFYzHsz0BsTRf+7elQcjdkqeT9YH2HfAP9KaGeX/GpbNNnLlAxBpKgoHQn/ClyTxocbTq9Gqt8OC6V50mQETkXGmGx++RQpx4dps2BafV3PoOxIBxI+Eu9uGwG5dtaBSK1x3QUqIOThaoXH4Zis5ZwB3nQqR+d77Fyjj46TmtjCmzNs73qfprrqmWVl+cMHYVu+Js1mff11nEKkE4lg1jkhi6zY6SiZgHuLs/F6NXgFpkKgJcN0IFTZnWlPTRKWLtcdcp30Zz5wgn3bd8yd+JW08c2YCEtTZigQofX
+ PvLgGh2+
+ RMpN/ayl5GUw1hBHAaWb+OhB2Ip13MO+kuBy0AaPlv0oEZ4xZk459jdyiUU1Z3RHT0o9Y4ALxj3vBeyyYIIMXFcfGeYp0+CPkaBioJC7YEmOL4zpf0VDGKsI2Q2rManks+QJyhjK8YRIH5iO4ChH7LgKLWthOsZSusLBOWlDLfPNuk3HMYH2DuaJAp4KGDxWYotSoEVycCkotqgw+Kxw5ApYUCEWZPyqdgz4Cn8G1c0JNnmmOKuK3xkaGEgffZnpRzmxq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -228,69 +94,677 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed Feb 4, 2026 at 4:06 PM GMT, Andreas Hindborg wrote:
-> "Danilo Krummrich" <dakr@kernel.org> writes:
->
->> On Wed Feb 4, 2026 at 12:56 PM CET, Andreas Hindborg wrote:
->>> From: Asahi Lina <lina+kernel@asahilina.net>
->>>
->>> By analogy to `AlwaysRefCounted` and `ARef`, an `Ownable` type is a
->>> (typically C FFI) type that *may* be owned by Rust, but need not be. Un=
-like
->>> `AlwaysRefCounted`, this mechanism expects the reference to be unique
->>> within Rust, and does not allow cloning.
->>>
->>> Conceptually, this is similar to a `KBox<T>`, except that it delegates
->>> resource management to the `T` instead of using a generic allocator.
->>>
->>> This change is a derived work based on work by Asahi Lina
->>> <lina+kernel@asahilina.net> [1] and Oliver Mangold <oliver.mangold@pm.m=
-e>.
->>>
->>> Link: https://lore.kernel.org/rust-for-linux/20250202-rust-page-v1-1-e3=
-170d7fe55e@asahilina.net/ [1]
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>
->> Given the From: line above, this needs Lina's SoB.
->>
->> This patch was also originally posted by Abdiel and Boqun and I think we=
- should
->> account for this. I mentioned this in a couple of previous versions alre=
-ady,
->> e.g. in [1]. I think we should account for this.
->>
->> [1] https://lore.kernel.org/all/cc28d048-5e0f-4f0e-b0f2-1b9e240f639b@ker=
-nel.org/
->
-> I had a question about this in the cover letter.
->
-> It is my understanding that the SoB needs confirmation from the author
-> if the code was changed. I changed the code and did not want to bother
-> the original author, because it is my understanding they do not wish to
-> be contacted. I did not want to misrepresent the original author, and so
-> I did not change the "From:" line.
+On Sat, Jan 24, 2026 at 07:35:36PM -0800, Kanchana P Sridhar wrote:
+> Support batching when storing large folios in zswap. If the underlying
+> compressor supports batching (e.g. hardware parallel compression),
+> allocate multiple compression buffers, otherwise allocate one. The
+> number of buffers is bounded by a new constant, ZSWAP_MAX_BATCH_SIZE, to
+> limit the memory overhead. For existing software compressors, the only
+> extra overhead is the extra 'buffers' pointer, so 8 bytes per-CPU on
+> x86_64.
+> 
+> Only the first buffer is currently used, but subsequent changes will use
+> the remaining buffers for hardware compression batching.
+> 
+> Regardless of compression batching, always process large folios in
+> batches. For hardware compressors, the batch size is the compressor
+> batch size, otherwise ZSWAP_MAX_BATCH_SIZE is used.
+> 
+> zswap_store_page() is replaced with zswap_store_pages(), which processes
+> a batch of pages and allows for batching optimizations. For now, only
+> optimize allocating entries by using batch allocations from the slab
+> cache.
+> 
+> Since batch allocations do not support specifying a node id, store the
+> node id in the zswap entry instead of relying on the zswap_entry being
+> allocated on the same node. The size of the zswap_entry remains
+> unchanged as 'referenced' is lumped in with the 'length' (as it doesn't
+> need a full unsigned int anyway).
+> 
+> Avoid repeatedly calling mem_cgroup_zswap_writeback_enabled() for every
+> page and only call it once for the folio, since the entire folio is
+> charged to a single memcg.
+> 
+> Suggested-by: Nhat Pham <nphamcs@gmail.com>
+> Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 
-Looks like your didn't make a very substantial change (just OwnableMut ->
-Unpin)? So mentioning the change in commit message should be sufficient.
+Generally LGTM with a few comments below, I suspect you'll need to
+update this patch anyway due to conflicts.
 
-If it's very substantial I would change author to be you and add the origin=
-al
-author as Co-developed-by instead.
+> ---
+>  mm/zswap.c | 351 +++++++++++++++++++++++++++++++++++++----------------
+>  1 file changed, 248 insertions(+), 103 deletions(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 0d56390342b7..6a22add63220 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -82,6 +82,11 @@ static bool zswap_pool_reached_full;
+>  
+>  #define ZSWAP_PARAM_UNSET ""
+>  
+> +/* Limit the batch size to limit per-CPU memory usage for dst buffers. */
+> +#define ZSWAP_MAX_BATCH_SIZE 8U
+> +#define ZSWAP_ENTRY_SPARE_4BYTES 32U
+> +#define ZSWAP_ENTRY_REF_BIT 1U
+> +
+>  static int zswap_setup(void);
+>  
+>  /* Enable/disable zswap */
+> @@ -139,7 +144,7 @@ struct crypto_acomp_ctx {
+>  	struct crypto_acomp *acomp;
+>  	struct acomp_req *req;
+>  	struct crypto_wait wait;
+> -	u8 *buffer;
+> +	u8 **buffers;
+>  	struct mutex mutex;
+>  };
+>  
+> @@ -148,6 +153,9 @@ struct crypto_acomp_ctx {
+>   * The only case where lru_lock is not acquired while holding tree.lock is
+>   * when a zswap_entry is taken off the lru for writeback, in that case it
+>   * needs to be verified that it's still valid in the tree.
+> + *
+> + * @compr_batch_size: The max batch size of the compression algorithm,
+> + *                    bounded by ZSWAP_MAX_BATCH_SIZE.
+>   */
+>  struct zswap_pool {
+>  	struct zs_pool *zs_pool;
+> @@ -157,6 +165,7 @@ struct zswap_pool {
+>  	struct work_struct release_work;
+>  	struct hlist_node node;
+>  	char tfm_name[CRYPTO_MAX_ALG_NAME];
+> +	u8 compr_batch_size;
+>  };
+>  
+>  /* Global LRU lists shared by all zswap pools. */
+> @@ -181,6 +190,7 @@ static struct shrinker *zswap_shrinker;
+>   *              writeback logic. The entry is only reclaimed by the writeback
+>   *              logic if referenced is unset. See comments in the shrinker
+>   *              section for context.
+> + * nid - NUMA node id of the page for which this is the zswap entry.
+>   * pool - the zswap_pool the entry's data is in
+>   * handle - zsmalloc allocation handle that stores the compressed page data
+>   * objcg - the obj_cgroup that the compressed memory is charged to
+> @@ -188,8 +198,11 @@ static struct shrinker *zswap_shrinker;
+>   */
+>  struct zswap_entry {
+>  	swp_entry_t swpentry;
+> -	unsigned int length;
+> -	bool referenced;
+> +	struct {
+> +		unsigned int length:(ZSWAP_ENTRY_SPARE_4BYTES - ZSWAP_ENTRY_REF_BIT);
+> +		bool referenced:ZSWAP_ENTRY_REF_BIT;
+> +	};
 
-Best,
-Gary
+As Nhat mentioned, please avoid the macros here. Also, if there's a new
+version (which I suspect there will be due to conflicts), please move
+adding the nid to the entry (instead of allocating it on the correct
+node) to a separate patch.
 
->
-> I want to be clear that I want to submit this patch the correct way,
-> whatever that is. I will happily take all the guidance I can get to find
-> the correct way to represent the work of the original author(s).
->
-> How would you prefer to account for the work by Abdiel and Boqun?
->
-> Please advise about SoB and I will correct the series.
->
->
-> Best regards,
-> Andreas Hindborg
+> +	int nid;
+>  	struct zswap_pool *pool;
+>  	unsigned long handle;
+>  	struct obj_cgroup *objcg;
+> @@ -241,8 +254,10 @@ static inline struct xarray *swap_zswap_tree(swp_entry_t swp)
+>  **********************************/
+>  static void __zswap_pool_empty(struct percpu_ref *ref);
+>  
+> -static void acomp_ctx_dealloc(struct crypto_acomp_ctx *acomp_ctx)
+> +static void acomp_ctx_dealloc(struct crypto_acomp_ctx *acomp_ctx, u8 nr_buffers)
+>  {
+> +	u8 i;
+> +
+>  	if (IS_ERR_OR_NULL(acomp_ctx))
+>  		return;
+>  
+> @@ -252,7 +267,11 @@ static void acomp_ctx_dealloc(struct crypto_acomp_ctx *acomp_ctx)
+>  	if (!IS_ERR_OR_NULL(acomp_ctx->acomp))
+>  		crypto_free_acomp(acomp_ctx->acomp);
+>  
+> -	kfree(acomp_ctx->buffer);
+> +	if (acomp_ctx->buffers) {
+> +		for (i = 0; i < nr_buffers; ++i)
+> +			kfree(acomp_ctx->buffers[i]);
+> +		kfree(acomp_ctx->buffers);
+> +	}
+>  }
+>  
+>  static struct zswap_pool *zswap_pool_create(char *compressor)
+> @@ -264,6 +283,7 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
+>  	if (!zswap_has_pool && !strcmp(compressor, ZSWAP_PARAM_UNSET))
+>  		return NULL;
+>  
+> +	/* Many things rely on the zero-initialization. */
+>  	pool = kzalloc(sizeof(*pool), GFP_KERNEL);
+>  	if (!pool)
+>  		return NULL;
+> @@ -316,7 +336,9 @@ static struct zswap_pool *zswap_pool_create(char *compressor)
+>  
+>  cpuhp_add_fail:
+>  	for_each_possible_cpu(cpu)
+> -		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
+> +		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu),
+> +				  pool->compr_batch_size);
+> +
+>  error:
+>  	if (pool->acomp_ctx)
+>  		free_percpu(pool->acomp_ctx);
+> @@ -354,7 +376,8 @@ static void zswap_pool_destroy(struct zswap_pool *pool)
+>  	cpuhp_state_remove_instance(CPUHP_MM_ZSWP_POOL_PREPARE, &pool->node);
+>  
+>  	for_each_possible_cpu(cpu)
+> -		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu));
+> +		acomp_ctx_dealloc(per_cpu_ptr(pool->acomp_ctx, cpu),
+> +				  pool->compr_batch_size);
+>  
+>  	free_percpu(pool->acomp_ctx);
+>  
+> @@ -645,14 +668,8 @@ static inline struct mem_cgroup *mem_cgroup_from_entry(struct zswap_entry *entry
+>  }
+>  #endif
+>  
+> -static inline int entry_to_nid(struct zswap_entry *entry)
+> -{
+> -	return page_to_nid(virt_to_page(entry));
+> -}
+> -
+>  static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
+>  {
+> -	int nid = entry_to_nid(entry);
+>  	struct mem_cgroup *memcg;
+>  
+>  	/*
+> @@ -669,19 +686,18 @@ static void zswap_lru_add(struct list_lru *list_lru, struct zswap_entry *entry)
+>  	rcu_read_lock();
+>  	memcg = mem_cgroup_from_entry(entry);
+>  	/* will always succeed */
+> -	list_lru_add(list_lru, &entry->lru, nid, memcg);
+> +	list_lru_add(list_lru, &entry->lru, entry->nid, memcg);
+>  	rcu_read_unlock();
+>  }
+>  
+>  static void zswap_lru_del(struct list_lru *list_lru, struct zswap_entry *entry)
+>  {
+> -	int nid = entry_to_nid(entry);
+>  	struct mem_cgroup *memcg;
+>  
+>  	rcu_read_lock();
+>  	memcg = mem_cgroup_from_entry(entry);
+>  	/* will always succeed */
+> -	list_lru_del(list_lru, &entry->lru, nid, memcg);
+> +	list_lru_del(list_lru, &entry->lru, entry->nid, memcg);
+>  	rcu_read_unlock();
+>  }
+>  
+> @@ -741,6 +757,56 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
+>  	kmem_cache_free(zswap_entry_cache, entry);
+>  }
+>  
+> +static __always_inline void zswap_entries_cache_free_batch(
+> +	struct zswap_entry **entries,
+> +	u8 nr_entries)
+> +{
+> +	/*
+> +	 * It is okay to use this to free entries allocated separately
+> +	 * by zswap_entry_cache_alloc().
+> +	 */
+> +	kmem_cache_free_bulk(zswap_entry_cache, nr_entries, (void **)entries);
+> +}
+> +
+> +static __always_inline bool zswap_entries_cache_alloc_batch(
+> +	struct zswap_entry **entries,
+> +	u8 nr_entries,
+> +	gfp_t gfp,
+> +	int nid)
+> +{
+> +	int nr_alloc = kmem_cache_alloc_bulk(zswap_entry_cache, gfp,
+> +					     nr_entries, (void **)entries);
+> +
+> +	/*
+> +	 * kmem_cache_alloc_bulk() should return @nr_entries on success
+> +	 * and 0 on failure.
+> +	 */
+> +	if (likely(nr_alloc == nr_entries))
+> +		return true;
+> +
+> +	if (WARN_ON_ONCE(unlikely(nr_alloc && (nr_alloc != nr_entries)))) {
 
+We don't need to check 'nr_alloc != nr_entries' here, as we just checked
+the opposite of it and returned above.
+
+> +		zswap_reject_kmemcache_fail++;
+
+I don't think we want to increment the counter if batch allocation
+fails, only if the fallback fails below. Not a big deal as this should
+never happen though.
+
+> +		zswap_entries_cache_free_batch(entries, nr_alloc);
+> +		nr_alloc = 0;
+> +	}
+> +
+> +	if (unlikely(!nr_alloc)) {
+
+We don't need to check this here as well, nr_alloc should always be 0,
+right? If anything, it's *very* likely() :)
+
+> +		unsigned int i;
+> +
+> +		for (i = 0; i < nr_entries; ++i) {
+> +			entries[i] = zswap_entry_cache_alloc(GFP_KERNEL, nid);
+> +
+> +			if (unlikely(!entries[i])) {
+> +				zswap_reject_kmemcache_fail++;
+> +				zswap_entries_cache_free_batch(entries, i);
+> +				return false;
+> +			}
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>  /*
+>   * Carries out the common pattern of freeing an entry's zsmalloc allocation,
+>   * freeing the entry itself, and decrementing the number of stored pages.
+> @@ -767,7 +833,9 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>  {
+>  	struct zswap_pool *pool = hlist_entry(node, struct zswap_pool, node);
+>  	struct crypto_acomp_ctx *acomp_ctx = per_cpu_ptr(pool->acomp_ctx, cpu);
+> +	int nid = cpu_to_node(cpu);
+>  	int ret = -ENOMEM;
+> +	u8 i;
+>  
+>  	/*
+>  	 * To handle cases where the CPU goes through online-offline-online
+> @@ -778,11 +846,7 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>  		return 0;
+>  	}
+>  
+> -	acomp_ctx->buffer = kmalloc_node(PAGE_SIZE, GFP_KERNEL, cpu_to_node(cpu));
+> -	if (!acomp_ctx->buffer)
+> -		return ret;
+> -
+> -	acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, cpu_to_node(cpu));
+> +	acomp_ctx->acomp = crypto_alloc_acomp_node(pool->tfm_name, 0, 0, nid);
+>  	if (IS_ERR_OR_NULL(acomp_ctx->acomp)) {
+>  		pr_err("could not alloc crypto acomp %s : %ld\n",
+>  				pool->tfm_name, PTR_ERR(acomp_ctx->acomp));
+> @@ -790,20 +854,39 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>  		goto fail;
+>  	}
+>  
+> +	/*
+> +	 * Allocate up to ZSWAP_MAX_BATCH_SIZE dst buffers if the
+> +	 * compressor supports batching.
+> +	 */
+> +	pool->compr_batch_size = min(ZSWAP_MAX_BATCH_SIZE,
+> +				     crypto_acomp_batch_size(acomp_ctx->acomp));
+> +
+>  	acomp_ctx->req = acomp_request_alloc(acomp_ctx->acomp);
+> +
+>  	if (IS_ERR_OR_NULL(acomp_ctx->req)) {
+>  		pr_err("could not alloc crypto acomp_request %s\n",
+>  		       pool->tfm_name);
+>  		goto fail;
+>  	}
+>  
+> -	crypto_init_wait(&acomp_ctx->wait);
+> +	acomp_ctx->buffers = kcalloc_node(pool->compr_batch_size, sizeof(u8 *),
+> +					  GFP_KERNEL, nid);
+> +	if (!acomp_ctx->buffers)
+> +		goto fail;
+> +
+> +	for (i = 0; i < pool->compr_batch_size; ++i) {
+> +		acomp_ctx->buffers[i] = kmalloc_node(PAGE_SIZE, GFP_KERNEL, nid);
+> +		if (!acomp_ctx->buffers[i])
+> +			goto fail;
+> +	}
+>  
+>  	/*
+>  	 * if the backend of acomp is async zip, crypto_req_done() will wakeup
+>  	 * crypto_wait_req(); if the backend of acomp is scomp, the callback
+>  	 * won't be called, crypto_wait_req() will return without blocking.
+>  	 */
+> +	crypto_init_wait(&acomp_ctx->wait);
+> +
+>  	acomp_request_set_callback(acomp_ctx->req, CRYPTO_TFM_REQ_MAY_BACKLOG,
+>  				   crypto_req_done, &acomp_ctx->wait);
+>  
+> @@ -813,12 +896,12 @@ static int zswap_cpu_comp_prepare(unsigned int cpu, struct hlist_node *node)
+>  	return 0;
+>  
+>  fail:
+> -	acomp_ctx_dealloc(acomp_ctx);
+> +	acomp_ctx_dealloc(acomp_ctx, pool->compr_batch_size);
+>  	return ret;
+>  }
+>  
+>  static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+> -			   struct zswap_pool *pool)
+> +			   struct zswap_pool *pool, bool wb_enabled)
+>  {
+>  	struct crypto_acomp_ctx *acomp_ctx;
+>  	struct scatterlist input, output;
+> @@ -832,7 +915,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>  	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+>  	mutex_lock(&acomp_ctx->mutex);
+>  
+> -	dst = acomp_ctx->buffer;
+> +	dst = acomp_ctx->buffers[0];
+>  	sg_init_table(&input, 1);
+>  	sg_set_page(&input, page, PAGE_SIZE, 0);
+>  
+> @@ -862,8 +945,7 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
+>  	 * to the active LRU list in the case.
+>  	 */
+>  	if (comp_ret || !dlen || dlen >= PAGE_SIZE) {
+> -		if (!mem_cgroup_zswap_writeback_enabled(
+> -					folio_memcg(page_folio(page)))) {
+> +		if (!wb_enabled) {
+>  			comp_ret = comp_ret ? comp_ret : -EINVAL;
+>  			goto unlock;
+>  		}
+> @@ -909,7 +991,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+>  	mutex_lock(&acomp_ctx->mutex);
+>  	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, entry->length,
+> -				acomp_ctx->buffer);
+> +				acomp_ctx->buffers[0]);
+>  
+>  	/* zswap entries of length PAGE_SIZE are not compressed. */
+>  	if (entry->length == PAGE_SIZE) {
+> @@ -919,15 +1001,15 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  
+>  	/*
+>  	 * zs_obj_read_begin() might return a kmap address of highmem when
+> -	 * acomp_ctx->buffer is not used.  However, sg_init_one() does not
+> -	 * handle highmem addresses, so copy the object to acomp_ctx->buffer.
+> +	 * acomp_ctx->buffers[0] is not used.  However, sg_init_one() does not
+> +	 * handle highmem addresses, so copy the object to acomp_ctx->buffers[0].
+>  	 */
+>  	if (virt_addr_valid(obj)) {
+>  		src = obj;
+>  	} else {
+> -		WARN_ON_ONCE(obj == acomp_ctx->buffer);
+> -		memcpy(acomp_ctx->buffer, obj, entry->length);
+> -		src = acomp_ctx->buffer;
+> +		WARN_ON_ONCE(obj == acomp_ctx->buffers[0]);
+> +		memcpy(acomp_ctx->buffers[0], obj, entry->length);
+> +		src = acomp_ctx->buffers[0];
+>  	}
+
+This code no longer exists (the conflict I referred to earlier).
+
+>  	sg_init_one(&input, src, entry->length);
+> @@ -1381,95 +1463,136 @@ static void shrink_worker(struct work_struct *w)
+>  * main API
+>  **********************************/
+>  
+> -static bool zswap_store_page(struct page *page,
+> -			     struct obj_cgroup *objcg,
+> -			     struct zswap_pool *pool)
+> +/*
+> + * Store multiple pages in @folio, starting from the page at index @start up to
+> + * the page at index @end-1.
+> + */
+> +static bool zswap_store_pages(struct folio *folio,
+> +			      long start,
+> +			      long end,
+> +			      struct zswap_pool *pool,
+> +			      struct crypto_acomp_ctx *acomp_ctx,
+
+I don't see where acomp_ctx is used here?
+
+> +			      int nid,
+> +			      bool wb_enabled,
+> +			      struct obj_cgroup *objcg)
+>  {
+> -	swp_entry_t page_swpentry = page_swap_entry(page);
+> -	struct zswap_entry *entry, *old;
+> +	struct zswap_entry *entries[ZSWAP_MAX_BATCH_SIZE];
+> +	u8 i, store_fail_idx = 0, nr_pages = end - start;
+>  
+> -	/* allocate entry */
+> -	entry = zswap_entry_cache_alloc(GFP_KERNEL, page_to_nid(page));
+> -	if (!entry) {
+> -		zswap_reject_kmemcache_fail++;
+> +	VM_WARN_ON_ONCE(nr_pages > ZSWAP_MAX_BATCH_SIZE);
+> +
+> +	if (unlikely(!zswap_entries_cache_alloc_batch(entries, nr_pages,
+> +						      GFP_KERNEL, nid)))
+>  		return false;
+> -	}
+>  
+> -	if (!zswap_compress(page, entry, pool))
+> -		goto compress_failed;
+> +	/*
+> +	 * We co-locate entry initialization as much as possible here to
+> +	 * minimize potential cache misses.
+> +	 */
+> +	for (i = 0; i < nr_pages; ++i) {
+> +		entries[i]->handle = (unsigned long)ERR_PTR(-EINVAL);
+> +		entries[i]->pool = pool;
+> +		entries[i]->swpentry = page_swap_entry(folio_page(folio, start + i));
+> +		entries[i]->objcg = objcg;
+> +		entries[i]->referenced = true;
+> +		entries[i]->nid = nid;
+> +		INIT_LIST_HEAD(&entries[i]->lru);
+> +	}
+>  
+> -	old = xa_store(swap_zswap_tree(page_swpentry),
+> -		       swp_offset(page_swpentry),
+> -		       entry, GFP_KERNEL);
+> -	if (xa_is_err(old)) {
+> -		int err = xa_err(old);
+> +	for (i = 0; i < nr_pages; ++i) {
+> +		struct page *page = folio_page(folio, start + i);
+>  
+> -		WARN_ONCE(err != -ENOMEM, "unexpected xarray error: %d\n", err);
+> -		zswap_reject_alloc_fail++;
+> -		goto store_failed;
+> +		if (!zswap_compress(page, entries[i], pool, wb_enabled))
+> +			goto store_pages_failed;
+>  	}
+>  
+> -	/*
+> -	 * We may have had an existing entry that became stale when
+> -	 * the folio was redirtied and now the new version is being
+> -	 * swapped out. Get rid of the old.
+> -	 */
+> -	if (old)
+> -		zswap_entry_free(old);
+> +	for (i = 0; i < nr_pages; ++i) {
+> +		struct zswap_entry *old, *entry = entries[i];
+>  
+> -	/*
+> -	 * The entry is successfully compressed and stored in the tree, there is
+> -	 * no further possibility of failure. Grab refs to the pool and objcg,
+> -	 * charge zswap memory, and increment zswap_stored_pages.
+> -	 * The opposite actions will be performed by zswap_entry_free()
+> -	 * when the entry is removed from the tree.
+> -	 */
+> -	zswap_pool_get(pool);
+> -	if (objcg) {
+> -		obj_cgroup_get(objcg);
+> -		obj_cgroup_charge_zswap(objcg, entry->length);
+> -	}
+> -	atomic_long_inc(&zswap_stored_pages);
+> -	if (entry->length == PAGE_SIZE)
+> -		atomic_long_inc(&zswap_stored_incompressible_pages);
+> +		old = xa_store(swap_zswap_tree(entry->swpentry),
+> +			       swp_offset(entry->swpentry),
+> +			       entry, GFP_KERNEL);
+> +		if (unlikely(xa_is_err(old))) {
+> +			int err = xa_err(old);
+>  
+> -	/*
+> -	 * We finish initializing the entry while it's already in xarray.
+> -	 * This is safe because:
+> -	 *
+> -	 * 1. Concurrent stores and invalidations are excluded by folio lock.
+> -	 *
+> -	 * 2. Writeback is excluded by the entry not being on the LRU yet.
+> -	 *    The publishing order matters to prevent writeback from seeing
+> -	 *    an incoherent entry.
+> -	 */
+> -	entry->pool = pool;
+> -	entry->swpentry = page_swpentry;
+> -	entry->objcg = objcg;
+> -	entry->referenced = true;
+> -	if (entry->length) {
+> -		INIT_LIST_HEAD(&entry->lru);
+> -		zswap_lru_add(&zswap_list_lru, entry);
+> +			WARN_ONCE(err != -ENOMEM, "unexpected xarray error: %d\n", err);
+> +			zswap_reject_alloc_fail++;
+> +			/*
+> +			 * Entries up to this point have been stored in the
+> +			 * xarray. zswap_store() will erase them from the xarray
+> +			 * and call zswap_entry_free(). Local cleanup in
+> +			 * 'store_pages_failed' only needs to happen for
+> +			 * entries from [@i to @nr_pages).
+> +			 */
+> +			store_fail_idx = i;
+> +			goto store_pages_failed;
+> +		}
+> +
+> +		/*
+> +		 * We may have had an existing entry that became stale when
+> +		 * the folio was redirtied and now the new version is being
+> +		 * swapped out. Get rid of the old.
+> +		 */
+> +		if (unlikely(old))
+> +			zswap_entry_free(old);
+> +
+> +		/*
+> +		 * The entry is successfully compressed and stored in the tree,
+> +		 * and further failures will be cleaned up in zswap_store().
+> +		 * Grab refs to the pool and objcg, charge zswap memory, and
+> +		 * increment zswap_stored_pages. The opposite actions will be
+> +		 * performed by zswap_entry_free() when the entry is removed
+> +		 * from the tree.
+> +		 */
+> +		zswap_pool_get(pool);
+> +		if (objcg) {
+> +			obj_cgroup_get(objcg);
+> +			obj_cgroup_charge_zswap(objcg, entry->length);
+> +		}
+> +		atomic_long_inc(&zswap_stored_pages);
+> +		if (entry->length == PAGE_SIZE)
+> +			atomic_long_inc(&zswap_stored_incompressible_pages);
+> +
+> +		/*
+> +		 * We finish by adding the entry to the LRU while it's already
+> +		 * in xarray. This is safe because:
+> +		 *
+> +		 * 1. Concurrent stores and invalidations are excluded by folio lock.
+> +		 *
+> +		 * 2. Writeback is excluded by the entry not being on the LRU yet.
+> +		 *    The publishing order matters to prevent writeback from seeing
+> +		 *    an incoherent entry.
+> +		 */
+> +		if (likely(entry->length))
+> +			zswap_lru_add(&zswap_list_lru, entry);
+>  	}
+>  
+>  	return true;
+>  
+> -store_failed:
+> -	zs_free(pool->zs_pool, entry->handle);
+> -compress_failed:
+> -	zswap_entry_cache_free(entry);
+> +store_pages_failed:
+> +	for (i = store_fail_idx; i < nr_pages; ++i) {
+> +		if (!IS_ERR_VALUE(entries[i]->handle))
+> +			zs_free(pool->zs_pool, entries[i]->handle);
+> +	}
+> +	zswap_entries_cache_free_batch(&entries[store_fail_idx],
+> +				       nr_pages - store_fail_idx);
+> +
+>  	return false;
+>  }
+>  
+>  bool zswap_store(struct folio *folio)
+>  {
+> +	bool wb_enabled = mem_cgroup_zswap_writeback_enabled(folio_memcg(folio));
+>  	long nr_pages = folio_nr_pages(folio);
+> +	struct crypto_acomp_ctx *acomp_ctx;
+>  	swp_entry_t swp = folio->swap;
+>  	struct obj_cgroup *objcg = NULL;
+>  	struct mem_cgroup *memcg = NULL;
+> +	int nid = folio_nid(folio);
+>  	struct zswap_pool *pool;
+> +	u8 store_batch_size;
+>  	bool ret = false;
+> -	long index;
+> +	long start, end;
+>  
+>  	VM_WARN_ON_ONCE(!folio_test_locked(folio));
+>  	VM_WARN_ON_ONCE(!folio_test_swapcache(folio));
+> @@ -1503,10 +1626,32 @@ bool zswap_store(struct folio *folio)
+>  		mem_cgroup_put(memcg);
+>  	}
+>  
+> -	for (index = 0; index < nr_pages; ++index) {
+> -		struct page *page = folio_page(folio, index);
+> +	/*
+> +	 * For batching compressors, store the folio in batches of the
+> +	 * compressor's batch_size.
+> +	 *
+> +	 * For non-batching compressors, store the folio in batches
+> +	 * of ZSWAP_MAX_BATCH_SIZE, where each page in the batch is
+> +	 * compressed sequentially. This gives better performance than
+> +	 * invoking zswap_store_pages() per-page, due to cache locality
+> +	 * of working set structures.
+> +	 */
+> +	store_batch_size = (pool->compr_batch_size > 1) ?
+> +			    pool->compr_batch_size : ZSWAP_MAX_BATCH_SIZE;
+> +
+> +	acomp_ctx = raw_cpu_ptr(pool->acomp_ctx);
+>  
+> -		if (!zswap_store_page(page, objcg, pool))
+> +	for (start = 0; start < nr_pages; start += store_batch_size) {
+> +		end = min(start + store_batch_size, nr_pages);
+> +
+> +		if (unlikely(!zswap_store_pages(folio,
+> +						start,
+> +						end,
+> +						pool,
+> +						acomp_ctx,
+> +						nid,
+
+I think acomp_ctx is not used in zswap_store_pages(). If it is, we don't
+need to pass it from here. Same for nid, no need to pass it from here.
+
+We should be able to shrink the arg list and make this more concise. I
+would drop unlikely() if it doesn't result in a meaningful improvement.
+Otherwise you can also make this line a bit shorter if you keep
+unlikely():
+
+	ret = zswap_store_pages(..);
+	if (unlikely(!ret))
+		goto put_pool;
+
+> +						wb_enabled,
+> +						objcg)))
+>  			goto put_pool;
+>  	}
+>  
+> @@ -1536,9 +1681,9 @@ bool zswap_store(struct folio *folio)
+>  		struct zswap_entry *entry;
+>  		struct xarray *tree;
+>  
+> -		for (index = 0; index < nr_pages; ++index) {
+> -			tree = swap_zswap_tree(swp_entry(type, offset + index));
+> -			entry = xa_erase(tree, offset + index);
+> +		for (start = 0; start < nr_pages; ++start) {
+> +			tree = swap_zswap_tree(swp_entry(type, offset + start));
+> +			entry = xa_erase(tree, offset + start);
+>  			if (entry)
+>  				zswap_entry_free(entry);
+>  		}
+> -- 
+> 2.27.0
+> 
 
