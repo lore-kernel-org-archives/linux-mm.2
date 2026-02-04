@@ -4,103 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C740E8B38B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 02:25:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E118CE8B38C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 02:28:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D1146B0005; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
+	id 2A7BF6B0088; Tue,  3 Feb 2026 21:28:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57E916B0088; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
+	id 2893B6B0089; Tue,  3 Feb 2026 21:28:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 47D8B6B0089; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
+	id 1B2346B008A; Tue,  3 Feb 2026 21:28:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 32C7D6B0005
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:25:50 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9E7C140645
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:25:49 +0000 (UTC)
-X-FDA: 84405183618.28.6ADB3FE
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 37B334000A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:25:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of yunjeong.mun@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=yunjeong.mun@sk.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 064236B0088
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 21:28:23 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 967828C15F
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:28:22 +0000 (UTC)
+X-FDA: 84405190044.14.2E6E2AE
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A8325A000B
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 02:28:20 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTd1mxIj;
+	spf=pass (imf25.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770171948;
+	s=arc-20220608; t=1770172100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RTAFkAayxmZk0fM9TjC5eT3JeaY4mHLqbu9KWtXFnio=;
-	b=KkmCUua1cXrnwhel3aIJZjWiPhT+DaVSkdCAjainjWWhK6iPspD9gcAqQZLIHT7HNN2t2G
-	G/ozyuCTBGkhuqRhfhaYt/6+la8E3PGX6SHnI5DkghZ5wAZBAqvUvuNt72kLSBDTkqCHnW
-	L2kXYe0CTZVDx6P52lEIAqylPnr7kzw=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hjmnnaJ+dU4QzslBxUrlmdhSXDXCpeTGjd28jp/dBEQ=;
+	b=t2pF7FRznjFuwonUnZRwiQngyWUyDvk+zRpDaWDWo3fvARtkWVvnnJn7xKTcW8nUI43JEY
+	Z2zRc2Pe3VXmB9oBL9UawoOXCJjtOpTp3dO/mGkPuVf3REcRMHB4t1xkxbJ1iRqs1Trn8x
+	+2+H5yTvviNh1Bi5ssoNZUutBoOEkwY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of yunjeong.mun@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=yunjeong.mun@sk.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770171948; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTd1mxIj;
+	spf=pass (imf25.hostedemail.com: domain of thehajime@gmail.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770172100; a=rsa-sha256;
 	cv=none;
-	b=lmqwyyl8k749X+ejUAPDJVHoBei56iGk5AnluTxZM3Cc9Cz/08fDnW3zJx7ibuTYm0zJC+
-	WedMwfPgj+RdRGcTNtRBw5xavZnvu76rKpXHiPBnWxRzS+FMZtfsw4x4g3wnLrXdzMO+HD
-	TFRephs3gmaR4NCUOSnVdAI0xp42Eho=
-X-AuditID: a67dfc5b-c45ff70000001609-89-6982ae246dfa
-From: Yunjeong Mun <yunjeong.mun@sk.com>
-To: sj@kernel.org
-Cc: honggyu.kim@sk.com,
-	kernel_team@skhynix.com,
-	Ravi Jonnalagadda <ravis.opensrc@gmail.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
+	b=V26ULWUzvvhaP4Yi1fDFyPqZbKb4FaSmfFmoEIw31dgGD/JVU2tTcV25KvHy/VEBfXSitF
+	NGvtABSuDliiwjDgjmpv1YvGDo3IvOBSv/FaSvnidGz36kzOpbYwZP62jTjEknVqr5FViV
+	+KRyjVfO6k4bfKz9tnoUKgUdlpl2Tdc=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c5e051a47ddso3764139a12.1
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 18:28:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770172099; x=1770776899; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hjmnnaJ+dU4QzslBxUrlmdhSXDXCpeTGjd28jp/dBEQ=;
+        b=YTd1mxIjeHAF9hY2PcscEc0VWxf/OT1qEYdBLmX1w95kVRlaVQLY5dlvIiSCahzGwO
+         xfmfbgO/n4ZAsIovSm/8hy7U6Ocwd5SsW1qWBkXcgc4JZ6WFXmeIi0rDMNfm7+UcRr2C
+         OQwpqFV6tiGopMfi8DzFOU4CekqnDutnJniVjM9yLsN+2f9K41/Tv4+xOtkvdWqNha64
+         27mc2nuOHfkQ074Y9+780J8Muq6NL/A5Mh9a6KaIUCaSy0pGyzawjvTSE3wMzEkPXByk
+         rZzeIiKrOdHB7Gt+QjnNzgQ2e/GDGELSzd08XK49MHc51q/1kSQd0IAabuRBdEmKjBK3
+         fAPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770172099; x=1770776899;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hjmnnaJ+dU4QzslBxUrlmdhSXDXCpeTGjd28jp/dBEQ=;
+        b=U3VsBQC8Rnn01xIcaoQFRQefgMmEio264mu7NyYL+saGmG6Zs+FCKQLJhzoxDbY9HH
+         L7eCN0GIdIsItrcja/5CxlmBJ4hQxJG+xpUSruaNWoX1IX8zY+r9ObUUsLUzihLSFdmF
+         fgqMfdWEsuIjUrOgvk7nyWztITvl3uknyPB6aOvkqzI75qAvcAqvrTQFZxK9dm8FVAoa
+         RWCL3J269cAPks4O1BCSBIbL5AysAL9xStitdIEWIqzq7tKdkvKKvCwmmxkTiA/CKuK/
+         qFKh1N+gFmTDyJQ/xEdIaI/Ze9owAm/+jtZsXw9FIld2xNrjFtQxVu+Vqg3YTIToFwZY
+         Tp7g==
+X-Forwarded-Encrypted: i=1; AJvYcCXRDzsbrmIoCUHKpRV55hzlfZih9REL8w+jYcaf1C1X0jZzMTRZcJ6IWnXP0sxcG2UgKsUfrd9U4A==@kvack.org
+X-Gm-Message-State: AOJu0YyBxIEKw0uxfyw2OXZTyrvPiiNiSNC8/QY13XM8pLl9Z7c7P4Me
+	MLy9jU30nG7w3kd6dEDQdwdeyaayWzM9AE9NdtOQbxPnc3fusgInpYOo
+X-Gm-Gg: AZuq6aIvtgAJr2EysV4OPhO1tT7bw9NPdlbDYyHIu/COgUDwyS0ZKn3nGnmDKnoSfkv
+	avGbWuU3EyGXz78zmwVn3MYbVMBQ9Hg6mozNeWv7Xo5iSwUXPZ86BkzqZN7ls8THPaD1smXCWSl
+	XP7c3MYEy0GIUsj9mydPwHWzzC3T6oXg+/jf4uuyjubdsp58t9+CpR1Fbvlfl1hZ6bMbx/DJNto
+	Rw41TcPugM2T/40HxaPs9JKEs1JOIOenKKDFRNHQJqdObkhBRD8L8UN8osX7iTq0onfDPA37Nds
+	wnw81GOtQsXYONNe3SXjPBtOzZWy/QEKhlCNu6sxhnWsLbFccTu4/S+7HTJQnbFGUENjBwHRMjm
+	4txAMAw5uAxEfeNXho9XdjfFKqdI1gmRcUD1RTkaq19aSOeVTQrt0XnDyolTjV/nOn+xVxWSnWm
+	fLlUin0R3LmfjiYuQdwT2I0ysJHtoLNVd3Lcs8ETbCb1FloCo0uBh+Xi+2ot44hv+EXizQ0tdsA
+	uLxJhsuz9/Xf4/P
+X-Received: by 2002:a05:6a20:a122:b0:370:73c1:6a87 with SMTP id adf61e73a8af0-393724cde89mr1471194637.58.1770172099431;
+        Tue, 03 Feb 2026 18:28:19 -0800 (PST)
+Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a93397c472sm6721415ad.89.2026.02.03.18.28.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 18:28:18 -0800 (PST)
+Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
+	id 421DD1200C31; Wed,  4 Feb 2026 11:28:17 +0900 (JST)
+From: Hajime Tazaki <thehajime@gmail.com>
+To: linux-um@lists.infradead.org
+Cc: thehajime@gmail.com,
+	ricarkol@google.com,
+	Liam.Howlett@oracle.com,
 	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	akpm@linux-foundation.org,
-	corbet@lwn.net,
-	bijan311@gmail.com,
-	ajayjoshi@micron.com
-Subject: Re: [RFC PATCH 0/5] mm/damon: Add node_sys_bp quota goal metric for
-Date: Wed,  4 Feb 2026 11:25:35 +0900
-Message-ID: <20260204022537.814-1-yunjeong.mun@sk.com>
-X-Mailer: git-send-email 2.48.1.windows.1
-In-Reply-To: <20260124015045.78075-1-sj@kernel.org>
-References: 
+	Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <kees@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v14 01/13] x86/um: nommu: elf loader for fdpic
+Date: Wed,  4 Feb 2026 11:27:59 +0900
+Message-ID: <fa22ec46b0d78df65a005d4a33d05edebbbd381d.1770170302.git.thehajime@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1770170302.git.thehajime@gmail.com>
+References: <cover.1770170302.git.thehajime@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrLLMWRmVeSWpSXmKPExsXC9ZZnoa7KuqZMgz+7RCxW7G1lt5izfg2b
-	RcOPz2wWTw60M1o8+f+b1WJh2xIWi8u75rBZ3Fvzn9Xi5FsHi8Nf3zA5cHnsnHWX3WPTqk42
-	j02fJrF7nJjxm8XjxeaZjB6L+yazenxf38Hm8XmTXABHFJdNSmpOZllqkb5dAlfGqyOnGQuO
-	CFVMODCdpYHxPV8XIweHhICJxJpTfl2MnGDmxDXP2UBsNgENiYOHTjKD2CICghL9j2ewdjFy
-	cTALrGSSuLj4CRNIQljAR+L6udVgNouAqsTrjTfYQWxeATOJ+ZOPMkMM1ZRouHQPrIZTwFhi
-	2t9NrCC2kACPxKsN+xkh6gUlTs58wgJiMwvISzRvnc0MskxC4DKbxMvzr1ghBklKHFxxg2UC
-	I/8sJD2zkPQsYGRaxSiUmVeWm5iZY6KXUZmXWaGXnJ+7iREY6Mtq/0TvYPx0IfgQowAHoxIP
-	b8DHxkwh1sSy4srcQ4wSHMxKIrzp0+szhXhTEiurUovy44tKc1KLDzFKc7AoifMafStPERJI
-	TyxJzU5NLUgtgskycXBKNTDaSbhoL+LZedW48e7tpSK/NZdECp/hM7y1NkPEX1VVKJ+N9dkm
-	tXO8nuJV4d+vzvhrkyP2Ts/+lZrLBKlXJordIReXr53i5uH3xTm+LWgvo84xz+kfpAr3zONz
-	NVOY9ONumYj2kr8+lhaPi1oW68/ZLpvJp+bqq9d3dMXLzUXqtlEprw34lJVYijMSDbWYi4oT
-	AVNY2FBwAgAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHLMWRmVeSWpSXmKPExsXCNUNWR1dlXVOmweE/rBYr9rayW8xZv4bN
-	ouHHZzaLJwfaGS2e/P/NavH52Wtmi8NzT7JaLGxbwmJxedccNot7a/6zWpx862Bx+OsbJgce
-	j52z7rJ7bFrVyeax6dMkdo8TM36zeLzYPJPRY3HfZFaP7+s72Dy+3fbwWPziA5PH501yAVxR
-	XDYpqTmZZalF+nYJXBmvjpxmLDgiVDHhwHSWBsb3fF2MnBwSAiYSE9c8ZwOx2QQ0JA4eOskM
-	YosICEr0P57B2sXIxcEssJJJ4uLiJ0wgCWEBH4nr51aD2SwCqhKvN95gB7F5Bcwk5k8+ygwx
-	VFOi4dI9sBpOAWOJaX83sYLYQgI8Eq827GeEqBeUODnzCQuIzSwgL9G8dTbzBEaeWUhSs5Ck
-	FjAyrWIUycwry03MzDHVK87OqMzLrNBLzs/dxAgM5WW1fybuYPxy2f0QowAHoxIPb8DHxkwh
-	1sSy4srcQ4wSHMxKIrzp0+szhXhTEiurUovy44tKc1KLDzFKc7AoifN6hacmCAmkJ5akZqem
-	FqQWwWSZODilGhhvufOnTTnH8ndiosISu2RJz/YLzHeuKtyV0Ix8npbhcUrvr57a3X7+5uUG
-	QQV91sdqmVZOXSKrH9S3/G+216PHhVMjw65Ed0o9YjJuYTgkkHX25bJPNo36FTy7vnVe+WiT
-	aOis1iS80ab6nFccq9jPqdcXete0uMblP9e5kbTwXWzyLcnXN5RYijMSDbWYi4oTAfwAvkph
-	AgAA
-X-CFilter-Loop: Reflected
-X-Stat-Signature: fjwanzmpq78sg86s7kd94ehwbz8mq6ax
+X-Stat-Signature: 3skxb7z48qd4e6kxeen7uegb6iqbucwe
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 37B334000A
-X-HE-Tag: 1770171945-486787
-X-HE-Meta: U2FsdGVkX1+/skKYXvqmtViIaHs0i3LOiQnylShEFXc+U05UaN/o+/gNsFfcRu2PoFb9GxqG33YfWeZRZt1LrnZB+j/t2iIyultY37MQ8o0K+KuzxqtYFnInO+DpOVryI8NNxCrnHhiDK+ZJ28AVActMaeKQDlwebNcdV0hnuNkFVh/py1GQ4TTT7beFBLjmHuFsqU3cezP8nAW7IGuf4dumfJYuuSDQFuxzsaAlJAN/2f+VUHXHegV3vkminIEnVI83ihttGSfMDHVxAYM5fbxnGL/TLwl3JqLEhwKZZ1Kdkk5wrt/n0rWxvmpXI6OkHDbXxS4Q1MYh6OHgRPim1EtYSJ0rgHi16l3V4sCDGsdIb4s8e0/badySOH7FwsF4O+x0nMOJ8uP67sdraGdtlWpGoq6vZSyxJNsZceHJB5bEprRWybjnpjpZB394p+8HGJxLbU3t3Ok34RKj9EAnD33PlCx6mGNsJQ56wyp8VaeCV0DFTZyr3TSOhGCW5hYGIXXWVJy1bQdrhq4FgRJaKTvvj3OD7M9sr6YOXcGrK8tIcswxycpYlUP0aCGTQJWdbOxPQ4vwKNvLDaDb6xJ4Sowxoucny7wal2p5ssUKyDMUU1REIqTdMYhwDehXsAFdvQTrEg6mxMo05H4l3iE0RcFc36V3rMqSPUCXv+6h6Ri86xeHadMjrwoBculGq67s1Soj2VLwsFOTRufOIpMv5janpwRJQa7jdYInllmutv+meT9bB0REPmBe7jYdtWJ5NB59DSVXMtuePdsgG/e12z2wkLb4/QdXSsCWXhlfF3apPEc3hW+0APd160WG7I5FG4TScw2k+3E4Tpn6eKcd1pKRTP1QEhMr47Q5hMXaFTapoW6ZkXLBrDzSgyf0q2lZ8FtmdI3qpVkfoQTd4ln1WWRrzKOUaufMoxlxKCj6XHy36BNXNZNv3A9CTJ9AZ5rLBi/1kpTmUT5sn5+QYjA
- dw2uRitJ
- EKvPCRR1vRG3QDiD/czCXdV//AgOCRSvEv+MJwYiGywa6sFRY170qKMXWeprQA0pK8lJm
+X-Rspamd-Queue-Id: A8325A000B
+X-HE-Tag: 1770172100-448215
+X-HE-Meta: U2FsdGVkX1/X5H+0A1RkwoGZg6xqaXBZkkK4IcndP9GNtQWKGB5YudsZG6MQLoxDVGIcyBpAZ4h8QsfJxPfk80j74haSIVCJRttZnSkPA/IKedHt1jMpQU7ihuohOf2So1JZlooS2gmUSzBkqD5Gdd3fLkZE6M0YRKQFt3BEjB6XGeKvp8gJZ1mH8WJyZipxzVvudOv5ZBzAmFueg34SgbPH0Cvi/0e8xgWO9Vup5uw3IloqFL0f5nuUM8ztK5IZ/uAkOXtFw9WEV0PwQelgyRN2O2mquaVZKSmzLZzPw9W3wxrwgOe51ANgv6DSCyXlsE4F+WPEmQaSe4y3hR+w0CxdNlczNAXPR+Q3cdR0I1rhpGavOBPqhnxkNTmTJUKy6cDHqFnVX4nFlYUzIW0YwixpT/bVFjpZJ7AAg9VzIDvrqcavtCBCBmRs7hVr4WE7cS6mIiHdV//vWhElJyQlIHjW6Us4hV+8QIVZQ0qjwPXHJU6jDQBBkwsVizO/50DYkkRO9hegD+cM7X2f/bnJQBO37TLVali5CJY/Q3ViWYI9N/WH/vrjsV45x+zdE9GGoXy7lQ2YENRFfuls/a/NugE4mAHwqsS9wQCZkEOlZOi/vVUSewiRXIZMayNm8sEXLPbTeUMohcqUvwdpxRuRzzIzOCMC5qNNouE+GqC3a78rcjA5Wug56LL6wVag31OmzPjrlAK5q12CXz88mQpu32dVV5za0zRevQmQZzDdAtnoWGXeZ+DOl5wb5frazsfYmFDLwcxyaQX7obxVXMhFDpZCELemCaY1TcGzefBcs4kcVI25SmPNa4ANq0MWQ4E9LzDlrDRi6bZXBCoRZ4tbXOn1QY7ZGwRcIkv6DyCBLdmIeKbP4A3euiWfBOBlB2TbMRWWQtuzn5kjN1xMiMDHwTjYYTZ5UwD9AMrGnbWvsIv7+FWQWsrl4IV8FmmmdFQzDxeFINYIG3ess2/wOhN
+ d+8jLza/
+ 4VzxPsxG6REIL8bvLDz7skY98FnsHU7xe9q4t1v8zVtzu0XGXKCiSs866Bbi3u9+SrpcOMPYxV1mcdFgn/26NRX6asWCr3IFK3I+99Xy+CrVa2lbnLO8bDAASgUgKFMYPDef4bl6zxsecqwVDxMAPNBiXFigt7tKWWHUpzTowQJlduXs2JmJGz4e7EYZbtliZW8hZMvHp98HnIdKm5IC6n6spLt5p1bTBtHE88+5B8md01MAedOJbahibYieyzzCXUCc3R/RQDwIpJ5kgng8LBDxSxEcKRg2nmbMq4zbBFN4Ayu6GjbDczsMUS8BLgKjqRXhbXnBdNsh/utxQ+wZXQjLuh+LfuRjmmBDfPd1qcbq0JLL8msMy0Jy8zcFU52DNxBU/y/8CAyM2pUTeDh5Tx7a5xrq4TjBuWJV5uNnswJ/xbziMlNOQmumRW31EHDZ4YT5yEhG5joCm/hJbqcHm5I1A3BRek3MbF/gvZIHe9EaPQRFc7DCoBWX6G+TuXup7VctCNwJWx3Ii9S9Hlum95hcfL9tb1m1JPrQA36PLNvPc/65vXGIQNdjZd5PttWqogWsv87EzSMOq0l14ewuNmiDTq268VdktfJJdgkL79hr1NT/P8eGesfVBBC7rQacI0rMqfCXwbehYXeI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,53 +130,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Jan 23, 2026 at 05:50:43PM -0800, SeongJae Park wrote:
-> Cc-ing SK hynix folks (Honggyu and Yunjeong) for quota auto-tuning behavior
-> confusion (not stop immediately after satisfying the goal) I discuss below.
-> 
+As UML supports CONFIG_MMU=n case, it has to use an alternate ELF
+loader, FDPIC ELF loader.  In this commit, we added necessary
+definitions in the arch, as UML has not been used so far.  It also
+updates Kconfig file to use BINFMT_ELF_FDPIC under !MMU environment.
 
-Hi Seonjae, thanks for Cc-ing us :)
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org
+Acked-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+Signed-off-by: Ricardo Koller <ricarkol@google.com>
+---
+ arch/um/include/asm/mmu.h            | 5 +++++
+ arch/um/include/asm/ptrace-generic.h | 6 ++++++
+ arch/x86/um/asm/elf.h                | 8 ++++++--
+ fs/Kconfig.binfmt                    | 2 +-
+ 4 files changed, 18 insertions(+), 3 deletions(-)
 
-> 
-> Please note that the goal-based quota auto-tuning works in proportional way,
-> preferring small steps and "eventual" goal convergence.  As a result, migration
-> will occur a few more times until it is completely stopped after the goal is
-> satisfied.  Unless there is another scheme that migrates pages into node 0, you
-> may end up having node 0 having a bit less than the 40% memory.
-> 
-> > 
-> >     No oscillation - migration stops when target state is reached.
-> 
-> So, little bit of oscillation could still happen.  Hopefully that shouldn't be
-> significant, though.
-> 
-> IIRC, SK hynix people also confused with the behavior when they experimented
-> migrate_{hot,cold} action with NODE_MEM_USED_BP goal based quota auto-tuning,
-> but using only a single scheme that does migration in a single direction.
-> Because this is at least second time it made confusion, if you need, maybe I
-> can try to add a feature for making DAMOS immediately stops after the goal is
-> satisfied.  Let me know if such new feature can be useful for you.  Cc-ing SK
-> hynix people (Honggyu and Yunjeong) so that they can correct me if my memory is
-> broken, or answer if the new feature I described here can be useful for them.
-> 
-
-Yes, you're absolutely right. Currently, esz(effective size) starts from 0 and 
-esz gradually increases as `current` approaches `target`.
-Once `current` reaches `target`,  `esz` then begins to decrease.
-
-However, we observed that even after `current` hits `target`, 
-migration still continues relatively aggressively - because `esz`  remains high, 
-and it takes time for it to decrease.
-
-To address this, we previously suggested that initializing `esz`  at `target`
-(or something suitably large value, rather than 0) and letting it gradually 
-decrease as `current` gets closer to  `target`.  
-This would allow for stronger migration when `current` is far form `target`, 
-and gradually weaken migration as `current` approaches `target`.
-
-Such a feature would be useful for us to experiment with tiered memory system :)
-
-Best Regards,
-Yunjeong
+diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
+index 07d48738b402..82a919132aff 100644
+--- a/arch/um/include/asm/mmu.h
++++ b/arch/um/include/asm/mmu.h
+@@ -21,6 +21,11 @@ typedef struct mm_context {
+ 	spinlock_t sync_tlb_lock;
+ 	unsigned long sync_tlb_range_from;
+ 	unsigned long sync_tlb_range_to;
++
++#ifdef CONFIG_BINFMT_ELF_FDPIC
++	unsigned long   exec_fdpic_loadmap;
++	unsigned long   interp_fdpic_loadmap;
++#endif
+ } mm_context_t;
+ 
+ #define INIT_MM_CONTEXT(mm)						\
+diff --git a/arch/um/include/asm/ptrace-generic.h b/arch/um/include/asm/ptrace-generic.h
+index 86d74f9d33cf..62e9916078ec 100644
+--- a/arch/um/include/asm/ptrace-generic.h
++++ b/arch/um/include/asm/ptrace-generic.h
+@@ -29,6 +29,12 @@ struct pt_regs {
+ 
+ #define PTRACE_OLDSETOPTIONS 21
+ 
++#ifdef CONFIG_BINFMT_ELF_FDPIC
++#define PTRACE_GETFDPIC		31
++#define PTRACE_GETFDPIC_EXEC	0
++#define PTRACE_GETFDPIC_INTERP	1
++#endif
++
+ struct task_struct;
+ 
+ extern long subarch_ptrace(struct task_struct *child, long request,
+diff --git a/arch/x86/um/asm/elf.h b/arch/x86/um/asm/elf.h
+index 22d0111b543b..388fe669886c 100644
+--- a/arch/x86/um/asm/elf.h
++++ b/arch/x86/um/asm/elf.h
+@@ -9,6 +9,7 @@
+ #include <skas.h>
+ 
+ #define CORE_DUMP_USE_REGSET
++#define ELF_FDPIC_CORE_EFLAGS  0
+ 
+ #ifdef CONFIG_X86_32
+ 
+@@ -158,8 +159,11 @@ extern int arch_setup_additional_pages(struct linux_binprm *bprm,
+ 
+ extern unsigned long um_vdso_addr;
+ #define AT_SYSINFO_EHDR 33
+-#define ARCH_DLINFO	NEW_AUX_ENT(AT_SYSINFO_EHDR, um_vdso_addr)
+-
++#define ARCH_DLINFO						\
++do {								\
++	NEW_AUX_ENT(AT_SYSINFO_EHDR, um_vdso_addr);		\
++	NEW_AUX_ENT(AT_MINSIGSTKSZ, 0);			\
++} while (0)
+ #endif
+ 
+ typedef unsigned long elf_greg_t;
+diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+index 1949e25c7741..0a92bebd5f75 100644
+--- a/fs/Kconfig.binfmt
++++ b/fs/Kconfig.binfmt
+@@ -58,7 +58,7 @@ config ARCH_USE_GNU_PROPERTY
+ config BINFMT_ELF_FDPIC
+ 	bool "Kernel support for FDPIC ELF binaries"
+ 	default y if !BINFMT_ELF
+-	depends on ARM || ((M68K || RISCV || SUPERH || XTENSA) && !MMU)
++	depends on ARM || ((M68K || RISCV || SUPERH || UML || XTENSA) && !MMU)
+ 	select ELFCORE
+ 	help
+ 	  ELF FDPIC binaries are based on ELF, but allow the individual load
+-- 
+2.43.0
 
 
