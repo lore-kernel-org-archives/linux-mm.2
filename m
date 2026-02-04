@@ -4,88 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4C17EA7944
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:14:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6D17EA7943
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:24:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0F046B008A; Wed,  4 Feb 2026 16:14:56 -0500 (EST)
+	id 171736B008A; Wed,  4 Feb 2026 16:24:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBCAC6B0092; Wed,  4 Feb 2026 16:14:56 -0500 (EST)
+	id 129196B0092; Wed,  4 Feb 2026 16:24:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C74256B0093; Wed,  4 Feb 2026 16:14:56 -0500 (EST)
+	id 052076B0093; Wed,  4 Feb 2026 16:24:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B3D0D6B008A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:14:56 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6B34713A7F8
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:14:56 +0000 (UTC)
-X-FDA: 84408028992.09.FF54142
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id B0C6A4000B
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:14:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MmEvGNuS;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E8F736B008A
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:24:03 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE3C3160306
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:24:03 +0000 (UTC)
+X-FDA: 84408051966.27.801E03B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B7933140003
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:24:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TB/gBxn0";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770239694;
+	s=arc-20220608; t=1770240241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4nLUw54ZQ5pHQ6ZwylItl08lvjGNIMY8JJapJ6me5pM=;
-	b=11aEG8IRPXzQS1MIPDXl4x89KDi8qzgzXCf52Ovw5TRjURGaK/ldbsv82KbBzwakFKpJ6+
-	1xt12E3wi/enMpWybylTb4BYPG0D8DQRPSlV+A1HGMrIAegnxF13ERRqu/hHSuC1/9NC9V
-	pkp2koN4lK9j90SjpYFj0BSqgbyx8W8=
+	bh=VqWwWarWsfMjCDqPsqjyT88dGeLq8ZVXtXvMxj6zq40=;
+	b=QoSZyT5DmlETzJqLXn7OWbfSog2DRuOVwjc2jfm/TeyiSG+TIFEft/WUavyk/i9HRrCcE9
+	GDfguiuer166o2tCcRrdhOfZyyrTc8gmzCK8UP2kd6OBPP9BD6NVYr1daALGevazm+BdGZ
+	WdZD2txshsQefZU2tFFPUn1dXQuDdWk=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MmEvGNuS;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TB/gBxn0";
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770239694; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240241; a=rsa-sha256;
 	cv=none;
-	b=FioX6atIdP4kFCUSk/mGrOIZtOc+OjI1ATMTfpldW15NKXvgzENKuLO8RrcsKhLVhQntCU
-	hS+S+L8ZEiYSnG2b3687CUELo3JnkXOwntLKUAX9EyBMARf8Hjl09mxwW95wZA1Oy6r33z
-	QUuEq17FAa/pcLLrVSQxkotxwwqZ3xg=
+	b=x+54BpPqwe31p3ip/oSILoSa2BY/+yWxP3XKl1onXiyjHKisfPjwLmFtyniDS3ArTD+oK9
+	yIfPDzPLPwAZjnUzHyZxtWS/eb5WxdcaXZUS05qdOEslF124T4CkHQ19Sur3z9Bjg15415
+	0Hx0ip0Erp1WNVIOhK6mb6hMhdN6Xws=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1F37A60054;
-	Wed,  4 Feb 2026 21:14:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E11FBC4CEF7;
-	Wed,  4 Feb 2026 21:14:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B0FFE4003B;
+	Wed,  4 Feb 2026 21:24:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE01C4CEF7;
+	Wed,  4 Feb 2026 21:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770239693;
-	bh=oAOu0Okr/82bp8yyu+4LQUmMWWVw2RhgAxBYpAn99LI=;
+	s=k20201202; t=1770240240;
+	bh=kvt6RfSq5mmKVHA1/fGV6JgGgvGhaQbjcEYu9QCJ8nM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MmEvGNuS4AFAleo9RH3oaj/4hU71oUjr2weE3X45t3aN5V20ak+iRE+073fXmHpaS
-	 cxKzgqeqUZyvdNGdoZnrROTRi8OkMDXivWtnQLjKiwNOBqntm8ZK+4nDOBU+v72uLC
-	 mM+ujrNmRkjdDgUO3Vjx2BDKifHrhQ+0fSulbD1rc72dhINtKjt6gett7wZOeMnKAd
-	 ksBZsCzgaQpYcSDdW82QiF6cOHx3q8zZxcvXaVM8TuEqr00kmVjm0TaMt/Un1FeVUA
-	 xgUgWi3516UfcoIOQ8v0rwKIb5w4nkS7fd9DWKg52v+qZyIsEFKaLiBvr9vAR9+TaU
-	 QOKTbv4GzbqLQ==
-Message-ID: <29f79411-3ec9-4e03-a1f1-2869164dccd3@kernel.org>
-Date: Wed, 4 Feb 2026 22:14:50 +0100
+	b=TB/gBxn0vfFQQb9YORjszU1lX5IkTjOJ1u3/7THf65vM0u8ZNr0FV57VeiWMStM/y
+	 2YtN6AkLRFjRjW/c+r6hgkgX2JroCZ0CdqdKUjjql+ffDFpo40G8TIwxBIGzFtI60W
+	 7szzPIuh3l/Bdd/mAtprfk8Q2UXb92+6iAs9OLVUg9wGmMTWnmmi/TZWZooZsLcOa7
+	 OyNIpwTRUbbKYMoxw3mF2UjMymhO99IJ3Bok++/fR9erkdPjTTOXhXUAp7y0ix1Mcp
+	 OSaiXvkODeedQKWUcj3A1jg8AmfU+PCAnYrGGHSSdAi0AMMl6mLgvpaIPWkFly2MNh
+	 xT557Xa8tKrCQ==
+Message-ID: <d795eac4-b52f-4984-a92d-6bfc9d84121c@kernel.org>
+Date: Wed, 4 Feb 2026 22:23:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING in memory_failure() at include/linux/huge_mm.h:635
- triggered
-To: Zi Yan <ziy@nvidia.com>
-Cc: =?UTF-8?B?5piv5Y+C5beu?= <shicenci@gmail.com>, linux-mm@kvack.org,
- linmiaohe@huawei.com, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, Matthew Wilcox <willy@infradead.org>
-References: <PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
- <b9e89c85-807c-4a8b-aa5c-8c1325e75445@kernel.org>
- <1db245a8-f9ab-42e4-8cc6-cc7562961921@kernel.org>
- <48978612-6933-4897-85DD-6740B6C8570B@nvidia.com>
- <25CA4D90-A24E-49C6-92D2-08080EC81466@nvidia.com>
- <032058DC-CD8D-406A-B986-740E41C834B2@nvidia.com>
- <e97d5c0c-b8ec-4da4-b838-7a308f8a6327@kernel.org>
- <9E046323-740A-434A-8B60-B8A32D0955C0@nvidia.com>
- <11399c99-f966-47be-bbb4-a7d4e79c8c38@kernel.org>
- <86002E57-58EB-4940-A7F0-7AE4A60484DF@nvidia.com>
- <7bb98650-cb7a-4230-8868-7da2aab5923a@kernel.org>
- <0BBB65F0-7ED4-40DE-9949-761326993D7D@nvidia.com>
+Subject: Re: [PATCH mm-new v6 4/5] mm: khugepaged: skip lazy-free folios
+To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org
+Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260201122554.1470071-1-vernon2gm@gmail.com>
+ <20260201122554.1470071-5-vernon2gm@gmail.com>
 From: "David Hildenbrand (arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +121,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <0BBB65F0-7ED4-40DE-9949-761326993D7D@nvidia.com>
+In-Reply-To: <20260201122554.1470071-5-vernon2gm@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wahbunawcdi7xxio7fh7xbramxk1kuz9
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B7933140003
+X-Stat-Signature: bo5x4suf8pxx5adu6ihq7p769adqa1ss
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: B0C6A4000B
-X-HE-Tag: 1770239694-18497
-X-HE-Meta: U2FsdGVkX19UB/K76EjW35bKPz1W+wulyIUa4gJT169wNzoitolNKMHk4UJpx2ZxXb8WtvbS8IP8C5klXudSGfGI3qb+hK8T13ahPhXZipbv9HUlRoHdJ0O0F1OqFys7AE5Wo0UWls44PRnboQqhOcEfEW11p3jUi/NM69fYfD2ocK9k/XygR4LzOMZpHRjfS6YuO8/BwnCGZfgzb/Oaca7pz+LjGKA0CTuvzy92Bvt8AoYkRGL9eD3ZkNNkH4LnITLtXzjIMj0qYobHxH9ZkHDF8vctZyQCTyizEq3Q8vX9MGjxLTVuZPqHeWTlrriZ9rsSPHXIkQyTlkg/iaRxRYrwzuYy+pXooH+FQIhF3m1Mw+rHciq7VsTAtzs2rhrjX8HzrOrLPSto96eKKcSku5ot8GtwZtmemKyGdV9nnrzhiW92bCtLB9I+hAxsLTqEO9p1ZD2chAgE4/HJLvu7NsKs1B0KPSFwkOIhpC2OVY1cnKLcq5+9KRD66PAWBsqRqDPrYODMG4ECRB41nSCZULuw17xGeEdlA3YyaogUDmnYf7A1blrhakJnCTNR5omqkQZA1JYxtCXe7brbHhNVRdx77oDpylWJD/67AmRwW/zr9ia8UaGcVXxSC76nW3sqol+IykVuAfPUo85PBJr8/s+0It782pkYDXDsENh++ICklYmYGRWz5DFQwsnOe72OH0CpcZ9JhZGEYJaYZH5oJdDV9Y4M6xSqqO2/ecKhMq45NRx51nGxAdyi9vj1DUQzb3UsEB5Pw1ns2DOFEcZRH9XGvkGao33OqNNlgTMubaUgv1KzofiKnhY1KzyhspbT9XHSq/aqiIpp9kg8RtYsnkn1HCZ3QyiF6aos48KPTNKw5r9NOuS/XX6fgV+GjhiH0jl+awpQBTtiS+c2vDafTlKFFnZ4PYpk3YsIU/uHS9+bbTLlusHq17CRyPF9ghh/EhJCmxo3R5zqEhzJUWu
- +Qm3m8Kn
- Et2uL9U4EB97wwc/7cz7UAPtWs9UYNVrk/uwduEQBNqKydN9+WViMzYOyoASRnbk/jIEslAgYJ88pgevzodXi+dcVlOTmZzB/vTkkeuBYgoe+iUS5OdtQun96ivY4dgwlAkZJjp5rG6SF6egr+uA69TnSHwnX2tRjXqIkvXubHo4FtUYQU72XQsUvMlRdq+w+5WgEApw9/Fa548WZl4kbHqEmt2zzpgtn8pPcjZd3fxHPcggrOprZmA+gudWxkuf1hwyJg4Y42lDLWAk+C/vqRKtk5D1xlfvkvteu7i7GmXn7IY47Qf4QvaxIyjH9qhxrydWPqEj+46xAiUvcdUZCc2fd6pkq4JyTBYvf
+X-HE-Tag: 1770240241-14842
+X-HE-Meta: U2FsdGVkX1/FesqCrfFza7ZWHyuNNFOhCPylLYqbb9Hu3lrQEpXAAe/bWmzHXch8hgfVFcfRapcqVMAseYq1e/BMdBpgQkqEVtQX+MC3klsACfU9z7P4DY7hBdUvRBZX791BoQt5ocyXmt/DYoOOPiU6ykeEDRS99R3aWNLGte8lKDHd0/+YWC5clhwJiBcNhJN+spGnJJC17pXCyp8DdG6M3D03UIU/nX73Ibv6tPCK4QcREmyiowUPDBowdWDL2c/b8b9rS8xpbOgrL/VV9a6RNgAEUUcrJHX96NWkbDPOwA3LEDaPhHVETve7edtsxTyh1xHO32UbLiLaos582JSf/LyUujCRFe8kQGY4IUiUMHGs23943BHYrsDN/FF+Q7f4F20bMQcrYcWRwOcbfF5mwdR9Ryi7J8p8Y02P/NDZXArY+qzpbpYIM9FnSQWMchCA/Xpj7si5/XQUpJPvuPlpMgz1PLo8+d4p4zSc5vXOJ2f67zG9TC9wOABKjM5wP0PRlU7Nb7hLlbqfgdbS6ezI7653uV0ycc1V+2ddX8alYaDUxkdRXpWTZk1vmEP/DsQzrZ+xflXn+BEmtqKSYwViuCFX9dvzS30zS2T8Po5XzejURzVjvXUgSWBq3BpEVTzMxidbUaksttVw5k2HDqfU1Sd+tn2axAPEx3wovscOXhDoatmYVzBNMJ4NDGrMtQOMhZ2f4P7/3k7AM788QYNec+ff0qxMz5U2GOlr+XMogkJvmQq6CcurFlQy30A+psfpccuuArnhWdLlCuSYgd42O2Y9qgfBTpFBV5Uf6+EN19vIOMbaY/kj9h69obsHnr95rnkScaSpiOa5jW6fX9RNY80/AODX8TkQ5IKikK7lb7TganykBTnm6n7zbeDwkogwOMwG3ThgM1fssBh1kNojYUUaJ9F+X4DFtD6hNpQmRuQoqWEu2Lu3Uhw7ssNpFLkkF9Q/Z6vvkFWm423
+ WYK6cI+2
+ dYzWXQ1g750rAVHskiLP2Ofd/9NgbnVAiesFHf5ba5X75szALnQsPQXLJ//47KieKk1JfzIHTXFTL1pdOSYB0dT9f/4fOVgQHUvDtsy43ADHcznPCaTI7yumY7NL4p4+kyGFsvFLIOGqCWhIZkLx8vCTgkixXKFwZDzTO+BUDIeiPYj6sTUiCH3XPBCM1B3ECNJoyTIUFaxp4ic0lRf9/+8p46bxecO0ZZMaVQ1sn5y/UgVkOgRgvm57dZSczVcN9Jb+MWIGBknbPV5LDa7MTyBGdSQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,105 +140,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/4/26 21:45, Zi Yan wrote:
-> On 4 Feb 2026, at 15:31, David Hildenbrand (arm) wrote:
+On 2/1/26 13:25, Vernon Yang wrote:
+> From: Vernon Yang <yanglincheng@kylinos.cn>
 > 
->> On 2/4/26 21:13, Zi Yan wrote:
->>>
->>>
->>> Yes.
->>>
->>>
->>> Right. My patchset[1] is trying to add it, since hugetlb is used as a folio
->>> in most places and large_rmappable is a folio flag.
->>>
->>>
->>> [1] https://lore.kernel.org/all/20260130034818.472804-1-ziy@nvidia.com/
->>
->> Still on my todo list :)
+> For example, create three task: hot1 -> cold -> hot2. After all three
+> task are created, each allocate memory 128MB. the hot1/hot2 task
+> continuously access 128 MB memory, while the cold task only accesses
+> its memory briefly andthen call madvise(MADV_FREE). However, khugepaged
+> still prioritizes scanning the cold task and only scans the hot2 task
+> after completing the scan of the cold task.
 > 
-> Sure. Wait for your input there. :)
-
-Hoping I'll be able to dig through that pile in my inbox fairly quickly
-throughout the next days.
-
-Thanks for all the review you did why I was not paying a lot of attention.
-
+> And if we collapse with a lazyfree page, that content will never be none
+> and the deferred shrinker cannot reclaim them.
 > 
->>
->>>
->>> Yes, I am thinking about removing mapcount in struct page to achieve that.
->>
->> On my todo list :) Stupid CONFIG_PAGE_MAPCOUNT that is still around and stupid partial-mapping handling.
->>
->> I worked on this after LPC but was distracted by PTO :D
->>
->>> And only pages used for vm_insert_*() and folios need mapcount.
->>
->> vm_insert_*() won't need it for non-folio things. Only folios. We just have to teach the zap code to also leave the mapcount of these non-folio things alone. IOW, identify them when we map/unmap as "not folio" and not touch the mapcount.
+> So if the user has explicitly informed us via MADV_FREE that this memory
+> will be freed, it is appropriate for khugepaged to skip it only, thereby
+> avoiding unnecessary scan and collapse operations to reducing CPU
+> wastage.
 > 
-> Oh, that sounds great. I thought I would need to convert all drive code
-> that does vm_insert_*() to use folio.
-
-Heh, no. We really just have to identify them when mapping and unmapping them.
-"these are not folios".
-
-> Basically, I hit
-> __folio_large_mapcount_sanity_checks() on _mm_id_mapcount when I moved
-> _mm_id_mapcount and friends from prep_compound_page() to page_rmappable_folio().
-
-Yes, exact same issue.
-
-I ran into something similar in the past and documented it in __folio_rmap_sanity_checks():
-
-	/*
-	 * TODO: we get driver-allocated folios that have nothing to do with
-	 * the rmap using vm_insert_page(); therefore, we cannot assume that
-	 * folio_test_large_rmappable() holds for large folios. We should
-	 * handle any desired mapcount+stats accounting for these folios in
-	 * VM_MIXEDMAP VMAs separately, and then sanity-check here that
-	 * we really only get rmappable folios.
-	 */
-
-should have been "for these pages" now that it's clear that not all pages
-are/will-be folios.
-
-I added an rmappable check in there back then but found out about the other
-compound pages.
-
-
-> IIUC, __folio_add_file_rmap() can just return if a non-folio compound page
-> is encountered. Of course, remove part needs to do the same.
-
-We should never call that code, because ... we don't won't really have a folio :)
-
-With Willy's changes, page_folio() will return NULL for things that are not a folio
-IIRC.
-
-
+> Here are the performance test results:
+> (Throughput bigger is better, other smaller is better)
 > 
+> Testing on x86_64 machine:
 > 
->>
->>> Code
->>> uses vm_insert_*() on pages would probably have a struct mappable_page
->>> with mapcount.
->>
->> I don't think we'll need a mapcount for them. Only for folios.
->>
->>>
->>>
->>> I think it might the other way around. memdesc does not have mapcount,
->>> if we do not have a separate struct for these mappable pages now,
->>> what do we use at memdesc time? folio?
->>
->> Folios will have mapcount related information, yes. Long term, memdescs will for sure not have any.
->>
->> Real fun begins once we start messing with refcounts. vm_insert_*() will be "fun" on non-folio things.
+> | task hot2           | without patch | with patch    |  delta  |
+> |---------------------|---------------|---------------|---------|
+> | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
+> | cycles per access   |  4.96         |  2.21         | -55.44% |
+> | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
+> | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
 > 
-> Yeah, maybe we will refcounts for every used memdescs. But who knows.
+> Testing on qemu-system-x86_64 -enable-kvm:
+> 
+> | task hot2           | without patch | with patch    |  delta  |
+> |---------------------|---------------|---------------|---------|
+> | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+> | cycles per access   |  7.29         |  2.07         | -71.60% |
+> | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
+> | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
+> 
+> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+> ---
+>   include/trace/events/huge_memory.h |  1 +
+>   mm/khugepaged.c                    | 13 +++++++++++++
+>   2 files changed, 14 insertions(+)
+> 
+> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
+> index 384e29f6bef0..bcdc57eea270 100644
+> --- a/include/trace/events/huge_memory.h
+> +++ b/include/trace/events/huge_memory.h
+> @@ -25,6 +25,7 @@
+>   	EM( SCAN_PAGE_LRU,		"page_not_in_lru")		\
+>   	EM( SCAN_PAGE_LOCK,		"page_locked")			\
+>   	EM( SCAN_PAGE_ANON,		"page_not_anon")		\
+> +	EM( SCAN_PAGE_LAZYFREE,		"page_lazyfree")		\
+>   	EM( SCAN_PAGE_COMPOUND,		"page_compound")		\
+>   	EM( SCAN_ANY_PROCESS,		"no_process_for_page")		\
+>   	EM( SCAN_VMA_NULL,		"vma_null")			\
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index df22b2274d92..b4def001ccd0 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -46,6 +46,7 @@ enum scan_result {
+>   	SCAN_PAGE_LRU,
+>   	SCAN_PAGE_LOCK,
+>   	SCAN_PAGE_ANON,
+> +	SCAN_PAGE_LAZYFREE,
+>   	SCAN_PAGE_COMPOUND,
+>   	SCAN_ANY_PROCESS,
+>   	SCAN_VMA_NULL,
+> @@ -583,6 +584,12 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>   		folio = page_folio(page);
+>   		VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
+>   
+> +		if (cc->is_khugepaged && !pte_dirty(pteval) &&
+> +				folio_test_lazyfree(folio)) {
 
-Some of these things should probably be frozen pages and use a different interface
-then. A bunch of hard nuts to crack.
+Should be aligned as
+
+		if (cc->is_khugepaged && !pte_dirty(pteval) &&
+		    folio_test_lazyfree(folio)) {
+
+
+But you could just have it in a single line.
+
+> +			result = SCAN_PAGE_LAZYFREE;
+> +			goto out;
+> +		}
+> +
+>   		/* See hpage_collapse_scan_pmd(). */
+>   		if (folio_maybe_mapped_shared(folio)) {
+>   			++shared;
+> @@ -1332,6 +1339,12 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
+>   		}
+>   		folio = page_folio(page);
+>   
+> +		if (cc->is_khugepaged && !pte_dirty(pteval) &&
+> +				folio_test_lazyfree(folio)) {
+> +			result = SCAN_PAGE_LAZYFREE;
+> +			goto out_unmap;
+> +		}
+
+Dito.
+
+> +
+>   		if (!folio_test_anon(folio)) {
+>   			result = SCAN_PAGE_ANON;
+>   			goto out_unmap;
+
+Surprised that there is no need to add checks for SCAN_PAGE_LAZYFREE 
+anywhere, but it's similar to SCAN_PAGE_LOCK just that we cannot ever 
+run into it for madvise.
+
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
 
 -- 
 Cheers,
