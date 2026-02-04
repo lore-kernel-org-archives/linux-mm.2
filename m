@@ -4,94 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB3AFEA7941
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 18:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52777EA7941
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 18:44:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3D406B0089; Wed,  4 Feb 2026 13:39:30 -0500 (EST)
+	id AFC786B0089; Wed,  4 Feb 2026 13:44:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEABA6B0092; Wed,  4 Feb 2026 13:39:30 -0500 (EST)
+	id AAA5E6B0092; Wed,  4 Feb 2026 13:44:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C20CE6B0093; Wed,  4 Feb 2026 13:39:30 -0500 (EST)
+	id 9A9116B0093; Wed,  4 Feb 2026 13:44:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B28336B0089
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:39:30 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6971F1B1C07
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 18:39:30 +0000 (UTC)
-X-FDA: 84407637300.29.CEB3A78
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6FE2A1C0004
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 18:39:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AzM9PswD;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 869866B0089
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 13:44:58 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 308441B1AE5
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 18:44:58 +0000 (UTC)
+X-FDA: 84407651076.13.0A9290D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 902D5C000A
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 18:44:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hbo8oTeR;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770230368;
+	s=arc-20220608; t=1770230696;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sq10w9mp01JehBW+gYCL/vI825m5RbW2tTMtUbtlu+U=;
-	b=7FKcf4YKCqtJhkdsK9pGbOSmOvreX4+gCvdfaBBdzFx3ggmKzKAmZJtMmMPwfhFjklSZFw
-	o/dDRMS4XFWBYcJ/RvXx7AfePYorLJzpkmMAik4NAYoO1EgfQZ5ZGCKUuXg9OC9Zsz1mJu
-	7F9YA8B+xSb1Vq1LvGLVahU5Zkid/Z0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=AzM9PswD;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770230368; a=rsa-sha256;
+	bh=xE30DIF7aMl5fJFbfMHsATsjIo296bw/JVseiyW00cs=;
+	b=2aDiCwQU8QRCUxPlqPfVQp1EO4xnSFPaN93K0HrPBpMeK2QQc5iEAaLq0ELJFmespjFN7u
+	wF++b3zgIdX5zvn6CQ/oOn75IA9mPrjzsSeNppLGs/JBjz/mxBz8QdMP63VaAZMjUmETER
+	uwN/+x3E8hYCqWVuOLhGd1QOG0ihyKI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770230696; a=rsa-sha256;
 	cv=none;
-	b=1Ziyszaqven4IhO/5Z2AQVqc4yASlttssc2ZNgY4ik3YLmovB95G3wGe9UhjcnLllrDNck
-	/LHrjMgM1cKADeFC7ZVytTMN57A1zIVctnF8akTb/bMCiBeuYT2SYLgITPCY2iXVRWrM7k
-	1ZEpElTNB5/xQP8V/y9fkTWDzZpC4Fk=
+	b=oUn0v6dRzfB36xf0XUBwn/CCxGqrB6Y48HV3PAI6yr9s6PxTdpYzx7c6mEklyPsO5pxEYv
+	NG/dIkSfQLRZdu9J3UM/DUQW1LGYcgCeJ0UK+zD7NaXf/+uzwlhR8RJcIZEm2Rm+IrHcNf
+	iSRgLGiVIAJ6We+XampGc4XYRRRqHHc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hbo8oTeR;
+	spf=pass (imf28.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0068F443A8;
-	Wed,  4 Feb 2026 18:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DD6C4CEF7;
-	Wed,  4 Feb 2026 18:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770230366;
-	bh=eFXYiDyxDYUB6JOD3ot86OdVYBZMkI+eBQk1Lhhu8j0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AzM9PswDjHjAkz6T3vFt6SICBKgk1v3X79cQxFG2JfNH7S3cJ0qF0dSeWeX4nivZ2
-	 oCZLVVdapJSCo/6JBadydcJmh4dGPbDG2QBn3B+tm7M6ICdB5K0obuE8vav74gOtks
-	 7Q696AonpWUAL13woaegLufSvCP6eUplcqQ8b414=
-Date: Wed, 4 Feb 2026 10:39:25 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org,
- nphamcs@gmail.com, chengming.zhou@linux.dev, usamaarif642@gmail.com,
- ryan.roberts@arm.com, 21cnbao@gmail.com, ying.huang@linux.alibaba.com,
- senozhatsky@chromium.org, sj@kernel.org, kasong@tencent.com,
- linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
- davem@davemloft.net, clabbe@baylibre.com, ardb@kernel.org,
- ebiggers@google.com, surenb@google.com, kristen.c.accardi@intel.com,
- vinicius.gomes@intel.com, giovanni.cabiddu@intel.com,
- wajdi.k.feghali@intel.com
-Subject: Re: [PATCH v14 00/26] zswap compression batching with optimized
- iaa_crypto driver
-Message-Id: <20260204103925.fd15632afc3bccc0ea8f500d@linux-foundation.org>
-In-Reply-To: <nlsqmn3x56ug7vfxw3vmpsmlyc6sie2plr22hpu7q6j7jq3adx@jbgg7sza67mv>
-References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
-	<nlsqmn3x56ug7vfxw3vmpsmlyc6sie2plr22hpu7q6j7jq3adx@jbgg7sza67mv>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ijijduj1c79szp4ucwxepsjx6cyqdbtk
+	by tor.source.kernel.org (Postfix) with ESMTP id 83F3360010;
+	Wed,  4 Feb 2026 18:44:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9977C4CEF7;
+	Wed,  4 Feb 2026 18:44:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770230695;
+	bh=sxzUvwz2+H6f2P/hcewo6WsZzK2JbK2OdANari5N7ys=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Hbo8oTeRLq/G0/qNbB7YGWd3dqSCmtSDilBsD797FE8yTqU3sx0WcQ0oS9XbIIpUE
+	 A1GWb4UWvEa2lM04K4NCr3r7qRI9cmv98vwCQgZVTms9IFLwe+y25M2E08EtQ5kXvU
+	 TK/vUY9zjpNsqyq7VdV5gTZWHbI/+OiaQc22SSNijzPlesacMt+VEYZrtf5A9XAjj8
+	 64ZUmYp1Uo1yret9r+Dq7qgLLV/WTAto0tXRshAdik+sxBzHCbBTvB711h3J8tuCnf
+	 qjZNADObhwdt7CptI8g+ytiqygIxaDnlT0aWUKMEA2VDySzXf4rLHFIODj+3H4tvZv
+	 xAjV+tyoF8VQg==
+Date: Wed, 4 Feb 2026 20:44:48 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Evangelos Petrongonas <epetron@amazon.de>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Miu <jasonmiu@google.com>, linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	nh-open-source@amazon.com
+Subject: Re: [PATCH] kho: add support for deferred struct page init
+Message-ID: <aYOToJvAUU0dmW94@kernel.org>
+References: <20251216084913.86342-1-epetron@amazon.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251216084913.86342-1-epetron@amazon.de>
+X-Rspamd-Queue-Id: 902D5C000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 6FE2A1C0004
-X-HE-Tag: 1770230368-765118
-X-HE-Meta: U2FsdGVkX18AchnQtJ9wRlsbvQElrV5KoZ8sRTsdzsbFq16TfeFS8sELJP0ld9OhUzcatw6frS6fLgQkQLhaj7XBOkRJT7sdXu4WRiDDwNqVrc/am/j2OumK5qzS5SKqdQcFaQKIPEpGmxER5SyjSd2KMNAf592m9BbCwzvDSwXms3BCFbqvXsfC5Xu951kA974zOBFG0I9RZ7hrVdW3YK5Hm6T3dkBzd21TM4Zf1kIdUxUgfrbbzNcVhk5HPr0Pq0dGoo1xtR00rSKmd+IxIaab0y+MELJq5CIgdNVzTFSJSmF1Sm9Xbx6me2ojMP5AdHmWctl9mAWYFvsj6bHIjhoAoCWPzFo7NsKlRQ9kmamB0qM3nabv7Tq/7Upm66unTTAof1Zj9lnXdrhOhnELEi7sofAsi/Hmrt+DkNif4P0UgXiDtzwRyoLbBs3heZk0J0PGw195fjug1b+EIOFFj56bmII6Z3RUwnwy5m548TcYO8hqoqovhkx9iWV7W/1ex3ULNYcG2LtRgyvQdC8oP2kzoQsSAyUGp1DsErpUM0ZresAhb3R3wUgWLJEGPI8i1Okre1+slqhIZ2IQq6kPPRK1dmzqy/gDCo/1ntXyzkN2RwCmnYrkJ+esHC1GVpwykgplv3wbbKXaZiY0nGEDPoM9/zVtzwok5oCjBiKcPL6pfhYS2xgaWMNFk0Djj5vMpAqaBzO6X9wMbVFynYmdv38TrenvyyroGQ0awt5CHLhsrm4oVtIRwNKM5BMYdj51VxYENhZOj5KyE/7Atqcm1h1NF31L6CnnPVSNVE9TCxc/Xs4A519DBSZODGBsIzgAVFYSs0qnjgrgXn/A870PADqCVI43f+rfLbwdKczYGn6OAG/6u7oXo8td6vWnQCLtCgcOZ/jQGoMuD9AUVsRCbFKXxxj2QvSieYhEBZxz2Dj9CWLan+4Iidr80qYAQ5ooIkzwOm5pR4SPvpDqXYK
- qzqtJUoI
- 7f1Km6gNrdtyY5STN4/7DFA0hFX5ziD7tU03JCq47E+Yxjbq5ceQTg+zNumaWjzU3y3/bT3Oid7Rc/1gVNUU5mKAuHsiNgQNHWVmkEibB9JHgeX5nPFTSiTYX5u5O3dlKy5LqhuPsL9qp4RsEPFU2zlsVsw169ijX1qgItU7S7iznSKKPe2inANe45QHXf4pTRuZYz107/rhfpAXvbS0733/fxwcm8qKJzyS7fjgj6zCNG8Wm11L2ZDalIim3uZkaXdwvBX7LTQYD3jpO0OBEb+1hT8W5mqYPfkLcLBJOHjVXo/w=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: pr9up8jno7maunpn8dymyp9qeaaumcue
+X-HE-Tag: 1770230696-109607
+X-HE-Meta: U2FsdGVkX1+YOz7D7ivkd9JpmJgwnib4jbxiCD3CQlXfnQAM6jkpsezSIY10QZ2WXLwcyE50Qb3ye9VYNOScicjI/Wdn3oaiqIwNCwIdiGB1prMP2z1NuBaUAkJnWtk17SfKyyBYWBE1xTOCOjFpO0M6z7ytVUyeYLh+QKwAAuZH+FO+12UpHLvJMedA36Bno9X4lE1uLW8FGskEq2saurU0CE0UJ4ERKSSGP+ZHc+2r8mIni3zmhfILG2tCFWml/sLmuq/EoQgvj/LOdivgHjqWv4uAMwLmKMmRD7AaB/oox8FyfOYs8ggU5vcXyVhrU1f1ziwAfrmhq8TGpTP4VAxiaRfCwF6ZRZ0kOrlS4sko59+xGjzs2adUtNBdGm6S+FA01EQ4vNvymeDY8mjwsnZoRf1WI0ncTvGVMthTdnf4P0wzLa3rtLDtlj1/rj6e644eZ4BOcFlb03yuXdfz80HRGMMikuN8o8vOl2YChOKROlLFDqcCMXB933WgjqOLHXCwq4rP+K0A1GfAGs6Fj9iPQEz4UvNi+Z/Pq/DONJ4uD82lGz/0PQv9RB5HgeAz2gzplH4Bw7QkpT/5Yvo4dqAKqQXJQOLTcDcqgrBFpSYjUZwOfTBQQ5XYMVgXev+xb8u/m4bGE9Oau9v7BoKSrrS8Tz0Muk5OmQDFrF1Cke9kQN9u3n5Tds9MKMU5dMI6VeN4VCxV0U44JgRgKHcrqKIdbGLPCIpFlLm9U0BToKOUYDSVNYrrm/MSu8GIgmI+S+iUH29nS/H3NDLTG4bnGiHbAsB/+RElYZXBGKR5db9rm9rNeHvBOfBHyfwD8eHitwaDplEY+OBAPHe8BcfYA07o0gFPGN2HhgRSel8TfNBkKUUHJUQtn9gPqAbw4gnvevVknpuP++cAJB1Sb55pcsWQyiVmZ7razXlwMJo6FJdddLqNCut5VkQ0F+aIZ2CgEukvsRZXnEsZU1RwSdM
+ 0eHnxEaO
+ U/YoKA8CLuTdbrZmMQVJWmDUdCOmqPsHcvtdpeiF3SfUGvV6ZVkVsF2GMZFNPHKzVOUL8IWkgx2Z7OpAxR50H5beF1JFpUFlKEYJpVDTo9bNnjpud6+D4PQPaDzBl8u9H19gqr4X9DJU78Ef85PGKikr4ELH1Z4S3Z/y/VdDt22YVtmgMIMaS1V1qIyfQ6kRYoz/lrG8x+yiDAxi1H5mv11dMGsAXE8bHaX4SRDaRzMvSQl7DL54+VOX7qFwhw6dfILxg29Ou0CA8/ME8HzLAd7QXapMQoSAmxDmjB4lnvaq6a4uaGeJzBj6M6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,59 +96,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 4 Feb 2026 18:21:43 +0000 Yosry Ahmed <yosry.ahmed@linux.dev> wrote:
+Hi Evangelos,
 
-> On Sat, Jan 24, 2026 at 07:35:11PM -0800, Kanchana P Sridhar wrote:
-> [..] 
+Are you planning to send a v2?
+
+On Tue, Dec 16, 2025 at 08:49:12AM +0000, Evangelos Petrongonas wrote:
+> When `CONFIG_DEFERRED_STRUCT_PAGE_INIT` is enabled, struct page
+> initialization is deferred to parallel kthreads that run later
+> in the boot process.
 > 
-> I think this series is really hard to move and respin in its current
-> form.
+> During KHO restoration, `deserialize_bitmap()` writes metadata for
+> each preserved memory region. However, if the struct page has not been
+> initialized, this write targets uninitialized memory, potentially
+> leading to errors like:
+> ```
+> BUG: unable to handle page fault for address: ...
+> ```
 > 
-> Herbert, could we take in the crypto patches separately (if they are
-> ready)? Not sure if it's better to take them through the crypto tree
-> (and provide a tag for Andrew?), or through the mm tree.
-
-Keeping everything in the same tree is of course simpler.
-
-> But either way,
-> most review is on the later zswap patches and respinning all these
-> crypto patch every time is a pain.
-
-It's mainly a crypto patchset by linecount:
-
-:  .../driver-api/crypto/iaa/iaa-crypto.rst      |  168 +-
-:  crypto/acompress.c                            |  110 +-
-:  crypto/testmgr.c                              |   10 +
-:  crypto/testmgr.h                              |   74 +
-:  drivers/crypto/intel/iaa/Makefile             |    4 +-
-:  drivers/crypto/intel/iaa/iaa_crypto.h         |   95 +-
-:  .../intel/iaa/iaa_crypto_comp_dynamic.c       |   22 +
-:  drivers/crypto/intel/iaa/iaa_crypto_main.c    | 2926 ++++++++++++-----
-:  drivers/crypto/intel/iaa/iaa_crypto_stats.c   |    8 +
-:  drivers/crypto/intel/iaa/iaa_crypto_stats.h   |    2 +
-:  include/crypto/acompress.h                    |   68 +
-:  include/crypto/algapi.h                       |    5 +
-:  include/crypto/internal/acompress.h           |   15 +
-:  include/linux/crypto.h                        |    3 +
-:  mm/zswap.c                                    |  724 ++--
-:  15 files changed, 3144 insertions(+), 1090 deletions(-)
-:  create mode 100644 drivers/crypto/intel/iaa/iaa_crypto_comp_dynamic.c
-
-So I expect it'll work to take all this into the crypto tree.
-
-> >   mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool.
-> >   mm: zswap: Consistently use IS_ERR_OR_NULL() to check acomp_ctx
-> >     resources.
+> Fix this by introducing `kho_get_preserved_page()`,  which ensures
+> all struct pages in a preserved region are initialized by calling
+> `init_deferred_page()` which is a no-op when deferred init is disabled
+> or when the struct page is already initialized.
 > 
-> Andrew, I think this two zswap patches are in good shape, and are
-> standalone improvements. Do they apply to mm-unstable? Could we take
-> them in separately to lighten the load of respinning this?
+> Fixes: 8b66ed2c3f42 ("kho: mm: don't allow deferred struct page with KHO")
+> Signed-off-by: Evangelos Petrongonas <epetron@amazon.de>
+> ---
+> ### Notes
+> @Jason, this patch should act as a temporary fix to make KHO play nice
+> with deferred struct page init until you post your ideas about splitting
+> "Physical Reservation" from "Metadata Restoration".
+> 
+> ### Testing
+> In order to test the fix, I modified the KHO selftest, to allocate more
+> memory and do so from higher memory to trigger the incompatibility. The
+> branch with those changes can be found in:
+> https://git.infradead.org/?p=users/vpetrog/linux.git;a=shortlog;h=refs/heads/kho-deferred-struct-page-init
+> 
+> In future patches, we might want to enhance the selftest to cover
+> this case as well. However, properly adopting the test for this
+> is much more work than the actual fix, therefore it can be deferred to a
+> follow-up series.
+> 
+> In addition attempting to run the selftest for arm (without my changes)
+> fails with:
+> ```
+> ERROR:target/arm/internals.h:767:regime_is_user: code should not be reached
+> Bail out! ERROR:target/arm/internals.h:767:regime_is_user: code should not be reached
+> ./tools/testing/selftests/kho/vmtest.sh: line 113: 61609 Aborted
+> ```
+> I have not looked it up further, but can also do so as part of a
+> selftest follow-up.
+> 
+>  kernel/liveupdate/Kconfig          |  2 --
+>  kernel/liveupdate/kexec_handover.c | 19 ++++++++++++++++++-
+>  2 files changed, 18 insertions(+), 3 deletions(-)
+> 
+> diff --git a/kernel/liveupdate/Kconfig b/kernel/liveupdate/Kconfig
+> index d2aeaf13c3ac..9394a608f939 100644
+> --- a/kernel/liveupdate/Kconfig
+> +++ b/kernel/liveupdate/Kconfig
+> @@ -1,12 +1,10 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+>  
+>  menu "Live Update and Kexec HandOver"
+> -	depends on !DEFERRED_STRUCT_PAGE_INIT
+>  
+>  config KEXEC_HANDOVER
+>  	bool "kexec handover"
+>  	depends on ARCH_SUPPORTS_KEXEC_HANDOVER && ARCH_SUPPORTS_KEXEC_FILE
+> -	depends on !DEFERRED_STRUCT_PAGE_INIT
+>  	select MEMBLOCK_KHO_SCRATCH
+>  	select KEXEC_FILE
+>  	select LIBFDT
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 9dc51fab604f..78cfe71e6107 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -439,6 +439,23 @@ static int kho_mem_serialize(struct kho_out *kho_out)
+>  	return err;
+>  }
+>  
+> +/*
+> + * With CONFIG_DEFERRED_STRUCT_PAGE_INIT, struct pages in higher memory
+> + * regions may not be initialized yet at the time KHO deserializes preserved
+> + * memory. This function ensures all struct pages in the region are initialized.
+> + */
+> +static struct page *__init kho_get_preserved_page(phys_addr_t phys,
+> +						  unsigned int order)
+> +{
+> +	unsigned long pfn = PHYS_PFN(phys);
+> +	int nid = early_pfn_to_nid(pfn);
+> +
+> +	for (int i = 0; i < (1 << order); i++)
+> +		init_deferred_page(pfn + i, nid);
+> +
+> +	return pfn_to_page(pfn);
+> +}
+> +
+>  static void __init deserialize_bitmap(unsigned int order,
+>  				      struct khoser_mem_bitmap_ptr *elm)
+>  {
+> @@ -449,7 +466,7 @@ static void __init deserialize_bitmap(unsigned int order,
+>  		int sz = 1 << (order + PAGE_SHIFT);
+>  		phys_addr_t phys =
+>  			elm->phys_start + (bit << (order + PAGE_SHIFT));
+> -		struct page *page = phys_to_page(phys);
+> +		struct page *page = kho_get_preserved_page(phys, order);
+>  		union kho_page_info info;
+>  
+>  		memblock_reserve(phys, sz);
+> -- 
+> 2.43.0
+> 
+> 
+> 
+> 
+> Amazon Web Services Development Center Germany GmbH
+> Tamara-Danz-Str. 13
+> 10243 Berlin
+> Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+> Sitz: Berlin
+> Ust-ID: DE 365 538 597
+> 
 
-"mm: zswap: Tie per-CPU acomp_ctx lifetime to the pool" throws a few
-rejects.
-
-"mm: zswap: Consistently use IS_ERR_OR_NULL() to check acomp_ctx
-resources" also throws rejects when applied standalone.
-
-
+-- 
+Sincerely yours,
+Mike.
 
