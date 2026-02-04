@@ -4,134 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6D17EA7943
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:24:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45B9BEA7943
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 21:32:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 171736B008A; Wed,  4 Feb 2026 16:24:04 -0500 (EST)
+	id 41F9C6B0005; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 129196B0092; Wed,  4 Feb 2026 16:24:04 -0500 (EST)
+	id 3CCC26B0088; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 052076B0093; Wed,  4 Feb 2026 16:24:03 -0500 (EST)
+	id 2CBA56B008A; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E8F736B008A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:24:03 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AE3C3160306
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:24:03 +0000 (UTC)
-X-FDA: 84408051966.27.801E03B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B7933140003
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:24:01 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 15DA66B0005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:32:13 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BFD731A02E7
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:32:12 +0000 (UTC)
+X-FDA: 84408072504.26.ECA9214
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 909CF14000C
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 21:32:09 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TB/gBxn0";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=none;
+	spf=fail (imf09.hostedemail.com: domain of tim.bird@sony.com does not designate 35.89.44.37 as permitted sender) smtp.mailfrom=tim.bird@sony.com;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=sony.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770240241;
+	s=arc-20220608; t=1770240730;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VqWwWarWsfMjCDqPsqjyT88dGeLq8ZVXtXvMxj6zq40=;
-	b=QoSZyT5DmlETzJqLXn7OWbfSog2DRuOVwjc2jfm/TeyiSG+TIFEft/WUavyk/i9HRrCcE9
-	GDfguiuer166o2tCcRrdhOfZyyrTc8gmzCK8UP2kd6OBPP9BD6NVYr1daALGevazm+BdGZ
-	WdZD2txshsQefZU2tFFPUn1dXQuDdWk=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=ibfByY8iQK9Y3JqCrajSiNIKhKDR1x5uCu5uqTcP8Po=;
+	b=al7upjmnEdZ4gVaSUsxuQ8YmwToHVqtBi8l8h2c6XYPxU569yU81UxkCbDGErSKDWRpdr6
+	2HhaDOJr7yLHobsrGCg+zO/kJmNOtLoiJbrO6vDt4ad61lKBUsIwpEikCwzr4IZx6eQff4
+	mTIhodyaH4CSJc/dfLg+mcCb/wIiG68=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TB/gBxn0";
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240241; a=rsa-sha256;
+	dkim=none;
+	spf=fail (imf09.hostedemail.com: domain of tim.bird@sony.com does not designate 35.89.44.37 as permitted sender) smtp.mailfrom=tim.bird@sony.com;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=sony.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770240730; a=rsa-sha256;
 	cv=none;
-	b=x+54BpPqwe31p3ip/oSILoSa2BY/+yWxP3XKl1onXiyjHKisfPjwLmFtyniDS3ArTD+oK9
-	yIfPDzPLPwAZjnUzHyZxtWS/eb5WxdcaXZUS05qdOEslF124T4CkHQ19Sur3z9Bjg15415
-	0Hx0ip0Erp1WNVIOhK6mb6hMhdN6Xws=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B0FFE4003B;
-	Wed,  4 Feb 2026 21:24:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE01C4CEF7;
-	Wed,  4 Feb 2026 21:23:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770240240;
-	bh=kvt6RfSq5mmKVHA1/fGV6JgGgvGhaQbjcEYu9QCJ8nM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TB/gBxn0vfFQQb9YORjszU1lX5IkTjOJ1u3/7THf65vM0u8ZNr0FV57VeiWMStM/y
-	 2YtN6AkLRFjRjW/c+r6hgkgX2JroCZ0CdqdKUjjql+ffDFpo40G8TIwxBIGzFtI60W
-	 7szzPIuh3l/Bdd/mAtprfk8Q2UXb92+6iAs9OLVUg9wGmMTWnmmi/TZWZooZsLcOa7
-	 OyNIpwTRUbbKYMoxw3mF2UjMymhO99IJ3Bok++/fR9erkdPjTTOXhXUAp7y0ix1Mcp
-	 OSaiXvkODeedQKWUcj3A1jg8AmfU+PCAnYrGGHSSdAi0AMMl6mLgvpaIPWkFly2MNh
-	 xT557Xa8tKrCQ==
-Message-ID: <d795eac4-b52f-4984-a92d-6bfc9d84121c@kernel.org>
-Date: Wed, 4 Feb 2026 22:23:55 +0100
+	b=z/vUDm0xAB76jqPu9EYfrHXd07USSr5bF+Hv4zwzM8P2aD7peuUiEJrlSB9gL2DlIwBKEZ
+	D9KyHYgzsJi1L3W6HKpgy9KfJD20lgRKQhtTPb9SHwuktiRewy+hTEeeDfjKv3xPsCyivX
+	zPl/KGCPIVNno5GliVddeEh9ztpTEQQ=
+Received: from eig-obgw-6005b.ext.cloudfilter.net ([10.0.30.162])
+	by cmsmtp with ESMTPS
+	id niGJvc3nHipkCnkTovYF9F; Wed, 04 Feb 2026 21:32:08 +0000
+Received: from host2044.hostmonster.com ([67.20.76.238])
+	by cmsmtp with ESMTPS
+	id nkTnv6GJpHSQMnkTnvstIX; Wed, 04 Feb 2026 21:32:08 +0000
+X-Authority-Analysis: v=2.4 cv=GIQIEvNK c=1 sm=1 tr=0 ts=6983bad8
+ a=O1AQXT3IpLm5MaED65xONQ==:117 a=uc9KWs4yn0V/JYYSH7YHpg==:17
+ a=HzLeVaNsDn8A:10 a=z6gsHLkEAAAA:8 a=20KFwNOVAAAA:8 a=Xie9NPzdAAAA:8
+ a=pwlSjyV6AAAA:8 a=SwvnC8opRPVetA8u2xwA:9 a=vUoOGYJDS1_Kmot3Fv_X:22
+ a=J9--6epWBKc4EL46Yp3Y:22 a=iekntanDnrheIxGr1pkv:22
+Received: from [66.118.46.62] (port=46610 helo=timdesk..)
+	by host2044.hostmonster.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.99.1)
+	(envelope-from <tim.bird@sony.com>)
+	id 1vnkTf-000000003WL-3RQZ;
+	Wed, 04 Feb 2026 14:31:59 -0700
+From: Tim Bird <tim.bird@sony.com>
+To: kbusch@kernel.org,
+	willy@infradead.org,
+	kirill@shutemov.name,
+	aneesh.kumar@kernel.org,
+	mike.kravetz@oracle.com,
+	peterz@infradead.org,
+	akpm@linux-foundation.org,
+	riel@surriel.com,
+	torvalds@linuxfoundation.org,
+	david@kernel.org,
+	muchun.sony@linux.dev,
+	osalvador@suse.de,
+	hughd@google.com,
+	will@kernel.org,
+	npiggin@gmail.com
+Cc: linux-spdx@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-arch@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tim Bird <tim.bird@sony.com>
+Subject: [PATCH] mm: Add SPDX id lines to some mm source files
+Date: Wed,  4 Feb 2026 14:31:01 -0700
+Message-ID: <20260204213101.1754183-1-tim.bird@sony.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v6 4/5] mm: khugepaged: skip lazy-free folios
-To: Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com,
- baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260201122554.1470071-1-vernon2gm@gmail.com>
- <20260201122554.1470071-5-vernon2gm@gmail.com>
-From: "David Hildenbrand (arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260201122554.1470071-5-vernon2gm@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B7933140003
-X-Stat-Signature: bo5x4suf8pxx5adu6ihq7p769adqa1ss
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - host2044.hostmonster.com
+X-AntiAbuse: Original Domain - kvack.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - sony.com
+X-BWhitelist: no
+X-Source-IP: 66.118.46.62
+X-Source-L: No
+X-Exim-ID: 1vnkTf-000000003WL-3RQZ
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (timdesk..) [66.118.46.62]:46610
+X-Source-Auth: tim@bird.org
+X-Email-Count: 4
+X-Org: HG=bhshared_hm;ORG=bluehost;
+X-Source-Cap: YmlyZG9yZztiaXJkb3JnO2hvc3QyMDQ0Lmhvc3Rtb25zdGVyLmNvbQ==
+X-Local-Domain: no
+X-CMAE-Envelope: MS4xfCBbe77XgsuVs3klX5fbk0I8Bkz8VIP8VpF1AtrAGry0Mcy3BeMeZSOi3C1d5ddoD4wo8y5rOpBQ8PR9uE/D0A9Anxke7OMo84y704GZVDKR4Bib4z0b
+ uubsIuyRo5gbsRYhVal2INaZufAnLnQtkOAONfuXOlSQaRVOpf8momflw2vRID/vQunKDkzIYWQeQKdszaZVtDtsm/ooiWjNDys=
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 909CF14000C
+X-Stat-Signature: pbgyocijz5e34k3at16ra8km94k767aw
 X-Rspam-User: 
-X-HE-Tag: 1770240241-14842
-X-HE-Meta: U2FsdGVkX1/FesqCrfFza7ZWHyuNNFOhCPylLYqbb9Hu3lrQEpXAAe/bWmzHXch8hgfVFcfRapcqVMAseYq1e/BMdBpgQkqEVtQX+MC3klsACfU9z7P4DY7hBdUvRBZX791BoQt5ocyXmt/DYoOOPiU6ykeEDRS99R3aWNLGte8lKDHd0/+YWC5clhwJiBcNhJN+spGnJJC17pXCyp8DdG6M3D03UIU/nX73Ibv6tPCK4QcREmyiowUPDBowdWDL2c/b8b9rS8xpbOgrL/VV9a6RNgAEUUcrJHX96NWkbDPOwA3LEDaPhHVETve7edtsxTyh1xHO32UbLiLaos582JSf/LyUujCRFe8kQGY4IUiUMHGs23943BHYrsDN/FF+Q7f4F20bMQcrYcWRwOcbfF5mwdR9Ryi7J8p8Y02P/NDZXArY+qzpbpYIM9FnSQWMchCA/Xpj7si5/XQUpJPvuPlpMgz1PLo8+d4p4zSc5vXOJ2f67zG9TC9wOABKjM5wP0PRlU7Nb7hLlbqfgdbS6ezI7653uV0ycc1V+2ddX8alYaDUxkdRXpWTZk1vmEP/DsQzrZ+xflXn+BEmtqKSYwViuCFX9dvzS30zS2T8Po5XzejURzVjvXUgSWBq3BpEVTzMxidbUaksttVw5k2HDqfU1Sd+tn2axAPEx3wovscOXhDoatmYVzBNMJ4NDGrMtQOMhZ2f4P7/3k7AM788QYNec+ff0qxMz5U2GOlr+XMogkJvmQq6CcurFlQy30A+psfpccuuArnhWdLlCuSYgd42O2Y9qgfBTpFBV5Uf6+EN19vIOMbaY/kj9h69obsHnr95rnkScaSpiOa5jW6fX9RNY80/AODX8TkQ5IKikK7lb7TganykBTnm6n7zbeDwkogwOMwG3ThgM1fssBh1kNojYUUaJ9F+X4DFtD6hNpQmRuQoqWEu2Lu3Uhw7ssNpFLkkF9Q/Z6vvkFWm423
- WYK6cI+2
- dYzWXQ1g750rAVHskiLP2Ofd/9NgbnVAiesFHf5ba5X75szALnQsPQXLJ//47KieKk1JfzIHTXFTL1pdOSYB0dT9f/4fOVgQHUvDtsy43ADHcznPCaTI7yumY7NL4p4+kyGFsvFLIOGqCWhIZkLx8vCTgkixXKFwZDzTO+BUDIeiPYj6sTUiCH3XPBCM1B3ECNJoyTIUFaxp4ic0lRf9/+8p46bxecO0ZZMaVQ1sn5y/UgVkOgRgvm57dZSczVcN9Jb+MWIGBknbPV5LDa7MTyBGdSQ==
+X-HE-Tag: 1770240729-627659
+X-HE-Meta: U2FsdGVkX18rRjYEfWhYCbgJ5TK4MElv45FWNrLxH9TlKzZyi3SkU479r6YaSeDEbIwSuc0FQSeu60F4WgpXeZxhvj1guaXrPrI6y3iRg3FZRdTapTcimVT4LeQnsylaAzJ5UHUqVXIY8RrdO8sM4eDFj5bLRfoRnqoHId5qYJpA5G8RfRFlMtFSV6P5m0VpZQgcZLBR0lpwqBNx5t0fgkMoXVawhaUY6SWSXTjANTBwzom3/FLNctRoJUX9Xt81eYP8lhxN2phH+k/9OOPcrFlUYwqeRKySavJzIvI7gfy3TaXebKljYh0R3MzYVsp0zWZ91RnY1Bt0lK2FKQri93zfEn36p4pLPE3bcpa5PzZk+JGpJu6CMR31+ugG5G/spL4b1P/djJzFEjAJTpKj+5/ZbOFQoz687N2dUJoZtBG4MgPqNPTuOEAe4JKZPCmJ8XHQWzPVAaNTLxVPGuZ/HzbCC6v8YQ8koEQnvS2jAqYcz5W6ysIO8JYRBfBsTGIkcAb8IqFT7XXCi9G2gjyDsHHDmlrxUL3KDJNc8wYeCR4JTuuu3jDZHBDRpLOnp9NPEp+w63lkhK4P2gGp7QLFAk8PrKNFQ89mfSASPbewgp7MotK1IfepR8YtZqBjYNh9XUvmAufFRo5Wpo9Ov17Peu0zKJySWEZlGaprYEt2DyAeCLKahFVgWLfXOijeIXky3W8q9Pr41tVt4YkmSPTKaGBDf5hQep14H2PUcJWvxGXPS7dKN7IXHG6FEE0tNm/F2GUviyCRSuxc3XqLicxUnYN/vEh+fkshF7/xl8QCWso1x0IKkgTMYF5Ix9gmZdlkcDHBnWkjur8f1JWDvueT8W8sUcEKeO/T38kZxcF7j3OLrJAdbXuwu3eZmRcbkcfQUeK+dR/OHI7ag5PY/B+4Lmqtj7Bxkx1CDnnHdo0Wl8LES6HeQ0EAS5IUAu+s3BC5GYgsv6swS4ioJ+V4/MV
+ mwEZQbEg
+ IeTp6ZEoV5DhLcEXeJBw0SHlwIA+kVJASJvRKurxWgbROZBJONOE0lOAHaD51okcQVKmUwlcT4XKtuCRi3hOT03h7Mjowb4U2j4dH515tEkCdAQvVm1XIFMLkViiQAxbxFjK3LDFuEkF7cUnQObt8zYeFBUNFIDoag0fctGgA9AVHfx84hoYNaQlm3kiFI9gHvVqYA/8//ZUn1s9wARcBv8IbFJlTLeAaGUShAplrLXMZr7Zq2MblYGM0uYCdG6SONbxdjWjNBii5YwVlxAjnNQ/WxtuB2EkEl4Z7G64PQBGngWY9AO4XfdiZA2FiJx89R2EYV9d5P1JWIPWuA1hdy3Tj/Og/b8xk8JYrfhdapUNo3IJRBx0XHQyaaT87W4gm+BF4kZ9y9KgAUMkb7mo2Ik7HQt+OlM26yqkoy6c/sy+Bx84LmxooYMyQb4FBXjw3kOIp2hMGZKXAzRpFT/hKZS3y88HcIDm2bR8d
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,122 +127,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/1/26 13:25, Vernon Yang wrote:
-> From: Vernon Yang <yanglincheng@kylinos.cn>
-> 
-> For example, create three task: hot1 -> cold -> hot2. After all three
-> task are created, each allocate memory 128MB. the hot1/hot2 task
-> continuously access 128 MB memory, while the cold task only accesses
-> its memory briefly andthen call madvise(MADV_FREE). However, khugepaged
-> still prioritizes scanning the cold task and only scans the hot2 task
-> after completing the scan of the cold task.
-> 
-> And if we collapse with a lazyfree page, that content will never be none
-> and the deferred shrinker cannot reclaim them.
-> 
-> So if the user has explicitly informed us via MADV_FREE that this memory
-> will be freed, it is appropriate for khugepaged to skip it only, thereby
-> avoiding unnecessary scan and collapse operations to reducing CPU
-> wastage.
-> 
-> Here are the performance test results:
-> (Throughput bigger is better, other smaller is better)
-> 
-> Testing on x86_64 machine:
-> 
-> | task hot2           | without patch | with patch    |  delta  |
-> |---------------------|---------------|---------------|---------|
-> | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
-> | cycles per access   |  4.96         |  2.21         | -55.44% |
-> | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
-> | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
-> 
-> Testing on qemu-system-x86_64 -enable-kvm:
-> 
-> | task hot2           | without patch | with patch    |  delta  |
-> |---------------------|---------------|---------------|---------|
-> | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
-> | cycles per access   |  7.29         |  2.07         | -71.60% |
-> | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
-> | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
-> 
-> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
-> ---
->   include/trace/events/huge_memory.h |  1 +
->   mm/khugepaged.c                    | 13 +++++++++++++
->   2 files changed, 14 insertions(+)
-> 
-> diff --git a/include/trace/events/huge_memory.h b/include/trace/events/huge_memory.h
-> index 384e29f6bef0..bcdc57eea270 100644
-> --- a/include/trace/events/huge_memory.h
-> +++ b/include/trace/events/huge_memory.h
-> @@ -25,6 +25,7 @@
->   	EM( SCAN_PAGE_LRU,		"page_not_in_lru")		\
->   	EM( SCAN_PAGE_LOCK,		"page_locked")			\
->   	EM( SCAN_PAGE_ANON,		"page_not_anon")		\
-> +	EM( SCAN_PAGE_LAZYFREE,		"page_lazyfree")		\
->   	EM( SCAN_PAGE_COMPOUND,		"page_compound")		\
->   	EM( SCAN_ANY_PROCESS,		"no_process_for_page")		\
->   	EM( SCAN_VMA_NULL,		"vma_null")			\
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index df22b2274d92..b4def001ccd0 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -46,6 +46,7 @@ enum scan_result {
->   	SCAN_PAGE_LRU,
->   	SCAN_PAGE_LOCK,
->   	SCAN_PAGE_ANON,
-> +	SCAN_PAGE_LAZYFREE,
->   	SCAN_PAGE_COMPOUND,
->   	SCAN_ANY_PROCESS,
->   	SCAN_VMA_NULL,
-> @@ -583,6 +584,12 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
->   		folio = page_folio(page);
->   		VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
->   
-> +		if (cc->is_khugepaged && !pte_dirty(pteval) &&
-> +				folio_test_lazyfree(folio)) {
+Some of the memory management source files are missing
+SPDX-License-Identifier lines.  Add appropriate IDs
+to these files (mostly GPL-2.0, but one LGPL-2.1).
 
-Should be aligned as
+Signed-off-by: Tim Bird <tim.bird@sony.com>
+---
+ mm/dmapool_test.c   | 1 +
+ mm/folio-compat.c   | 1 +
+ mm/gup_test.c       | 1 +
+ mm/hugetlb_cgroup.c | 9 +--------
+ mm/memfd.c          | 3 +--
+ mm/mmu_gather.c     | 1 +
+ mm/rmap.c           | 2 +-
+ mm/shmem.c          | 3 +--
+ 8 files changed, 8 insertions(+), 13 deletions(-)
 
-		if (cc->is_khugepaged && !pte_dirty(pteval) &&
-		    folio_test_lazyfree(folio)) {
-
-
-But you could just have it in a single line.
-
-> +			result = SCAN_PAGE_LAZYFREE;
-> +			goto out;
-> +		}
-> +
->   		/* See hpage_collapse_scan_pmd(). */
->   		if (folio_maybe_mapped_shared(folio)) {
->   			++shared;
-> @@ -1332,6 +1339,12 @@ static enum scan_result hpage_collapse_scan_pmd(struct mm_struct *mm,
->   		}
->   		folio = page_folio(page);
->   
-> +		if (cc->is_khugepaged && !pte_dirty(pteval) &&
-> +				folio_test_lazyfree(folio)) {
-> +			result = SCAN_PAGE_LAZYFREE;
-> +			goto out_unmap;
-> +		}
-
-Dito.
-
-> +
->   		if (!folio_test_anon(folio)) {
->   			result = SCAN_PAGE_ANON;
->   			goto out_unmap;
-
-Surprised that there is no need to add checks for SCAN_PAGE_LAZYFREE 
-anywhere, but it's similar to SCAN_PAGE_LOCK just that we cannot ever 
-run into it for madvise.
-
-Acked-by: David Hildenbrand (arm) <david@kernel.org>
-
+diff --git a/mm/dmapool_test.c b/mm/dmapool_test.c
+index 54b1fd1ccfbb..e8172d708308 100644
+--- a/mm/dmapool_test.c
++++ b/mm/dmapool_test.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0
+ #include <linux/device.h>
+ #include <linux/dma-map-ops.h>
+ #include <linux/dma-mapping.h>
+diff --git a/mm/folio-compat.c b/mm/folio-compat.c
+index 45540942d148..a02179a0bded 100644
+--- a/mm/folio-compat.c
++++ b/mm/folio-compat.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * Compatibility functions which bloat the callers too much to make inline.
+  * All of the callers of these functions should be converted to use folios
+diff --git a/mm/gup_test.c b/mm/gup_test.c
+index eeb3f4d87c51..9dd48db897b9 100644
+--- a/mm/gup_test.c
++++ b/mm/gup_test.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0
+ #include <linux/kernel.h>
+ #include <linux/mm.h>
+ #include <linux/slab.h>
+diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
+index 58e895f3899a..0a87cbbeeed9 100644
+--- a/mm/hugetlb_cgroup.c
++++ b/mm/hugetlb_cgroup.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: LGPL-2.1
+ /*
+  *
+  * Copyright IBM Corporation, 2012
+@@ -7,14 +8,6 @@
+  * Copyright (C) 2019 Red Hat, Inc.
+  * Author: Giuseppe Scrivano <gscrivan@redhat.com>
+  *
+- * This program is free software; you can redistribute it and/or modify it
+- * under the terms of version 2.1 of the GNU Lesser General Public License
+- * as published by the Free Software Foundation.
+- *
+- * This program is distributed in the hope that it would be useful, but
+- * WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+- *
+  */
+ 
+ #include <linux/cgroup.h>
+diff --git a/mm/memfd.c b/mm/memfd.c
+index ab5312aff14b..8f1f26de92f0 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -1,10 +1,9 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * memfd_create system call and file sealing support
+  *
+  * Code was originally included in shmem.c, and broken out to facilitate
+  * use by hugetlbfs as well as tmpfs.
+- *
+- * This file is released under the GPL.
+  */
+ 
+ #include <linux/fs.h>
+diff --git a/mm/mmu_gather.c b/mm/mmu_gather.c
+index 247e3f9db6c7..fccba879f056 100644
+--- a/mm/mmu_gather.c
++++ b/mm/mmu_gather.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0
+ #include <linux/gfp.h>
+ #include <linux/highmem.h>
+ #include <linux/kernel.h>
+diff --git a/mm/rmap.c b/mm/rmap.c
+index f955f02d570e..a91282020e77 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1,8 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * mm/rmap.c - physical to virtual reverse mappings
+  *
+  * Copyright 2001, Rik van Riel <riel@conectiva.com.br>
+- * Released under the General Public License (GPL).
+  *
+  * Simple, low overhead reverse mapping scheme.
+  * Please try to keep this thing as modular as possible.
+diff --git a/mm/shmem.c b/mm/shmem.c
+index ec6c01378e9d..e460f41d26b9 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1,3 +1,4 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * Resizable virtual memory filesystem for Linux.
+  *
+@@ -17,8 +18,6 @@
+  *
+  * tiny-shmem:
+  * Copyright (c) 2004, 2008 Matt Mackall <mpm@selenic.com>
+- *
+- * This file is released under the GPL.
+  */
+ 
+ #include <linux/fs.h>
 -- 
-Cheers,
+2.43.0
 
-David
 
