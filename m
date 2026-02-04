@@ -4,97 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6627E95372
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 10:06:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2408BE95374
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 10:15:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E6F9A6B008A; Wed,  4 Feb 2026 05:06:22 -0500 (EST)
+	id 688A86B0092; Wed,  4 Feb 2026 05:15:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1D8D6B009E; Wed,  4 Feb 2026 05:06:22 -0500 (EST)
+	id 65E526B0093; Wed,  4 Feb 2026 05:15:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1C306B00A1; Wed,  4 Feb 2026 05:06:22 -0500 (EST)
+	id 55D406B0096; Wed,  4 Feb 2026 05:15:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5066B008A
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 05:06:22 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4ACA05AB22
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 10:06:22 +0000 (UTC)
-X-FDA: 84406344204.18.DA3D0EB
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 9312220011
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 10:06:19 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CZKXl+dY;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770199580; a=rsa-sha256;
-	cv=none;
-	b=2gtAm0iKWSjFDOhavaU82MCSOHV7qnd13XCgxqHPXY6lnwvJfZ/SNCbGMVHwSwJImmochl
-	9QxPrVwocRfIRHJqUeFfaxJdKjtf0t1i1unC+n4WVwt97YYpFXpt3cvge5i4zLm4gTYTGW
-	vStk37lhK7LRBuqlB0dlFMb+U/F9UEw=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CZKXl+dY;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf13.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44B046B0092
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 05:15:00 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E23B51A0780
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 10:14:59 +0000 (UTC)
+X-FDA: 84406365918.22.6A111BC
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C603080005
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 10:14:57 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZrQql6eU;
+	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770199580;
+	s=arc-20220608; t=1770200098;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=D9HxAumNmpe8J8U/T7Gdsq3VAUwZDXQg+B2McB0UGQ0=;
-	b=LWJCBILy8OgU39LVTjokYatq/HjGEF7BJQ6ACyr0kLW/J14sfmDfSLNBr6IafbQ9+vv4Cv
-	LntD1I+ABatqG3xgbBJooZECbJax+H/oSmoKPH44IGuyofufImwVQ+3Zcz76i4uvZ6cM04
-	vEerX0cWslaV23Hvug50f+7nFXCvXeE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770199580; x=1801735580;
-  h=date:from:to:cc:subject:message-id;
-  bh=2EDTZrfHuRej4wOgRYjVsCkOS7HIHmRDyJymP4OlmCM=;
-  b=CZKXl+dYhhZUrwp43LY4WI6RuE829bWLzo2N5QdMzu5Steg9w/i0iavg
-   sbATryDc3EL0mSOYxzAeFIP0JPdXLkEAIv0gU8XnN/e82pt1PjplWCwFR
-   YXQM/vkhgdyE9Oln9D0L6wNpqyemgaL+6dwe3OJDUWg+BK89OmZfKni/f
-   AItsNW8c2kpJtySrdQ4ziyHc7uRlVjA/T/R9XYQ09C3zmxL9MIuek4/R8
-   xvuo6V5t8TLHNBnkYApKK2mNW2d5aWXuvCVRFqYQn2JlB3pn7mqVmUwIt
-   nh5ZmI/W22WSg5RzBvmkcSAxDfZylIQ6LPOOtgRNGiRhj8aWztOsATSKI
-   Q==;
-X-CSE-ConnectionGUID: Vs6lGwxMQ8G1CSodW+KqBA==
-X-CSE-MsgGUID: HOJ0oCXcSOKGqk+qQKM1GA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71280970"
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
-   d="scan'208";a="71280970"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 02:06:18 -0800
-X-CSE-ConnectionGUID: 6lVpEMlETViWPFgtDkPMLQ==
-X-CSE-MsgGUID: 4CVukEYgQzanFSMXOMLMVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
-   d="scan'208";a="214601410"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 04 Feb 2026 02:06:15 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vnZm1-00000000hfU-0VQo;
-	Wed, 04 Feb 2026 10:06:13 +0000
-Date: Wed, 04 Feb 2026 18:05:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>
-Subject: [akpm-mm:mm-new 102/124] lib/maple_tree.c:3364:38: sparse:
- sparse: incorrect type in argument 1 (different address spaces)
-Message-ID: <202602041809.nfXcWI84-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=tNDuvLBbkzIbWJoE0G1ZqgGCpNPmYnXQHNWvh9P0CtQ=;
+	b=nTPPBw9ZdmG2uGmiwoIincYHW4ZNvgZRpgTGPE/oMPtuikt5cMFMIwOSBKX9rDXhlVNxwY
+	v4g+O1aisgJKm1SDXDgPZ1VOZTrFM/OskJ91eWo6sVmaB2csudrNTQDjpptuUlE6hp4LVL
+	vqO0nr9ttVzdzAUy9orxmnmXl12XQyQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZrQql6eU;
+	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770200098; a=rsa-sha256;
+	cv=none;
+	b=3ClSHEOe81y/c1u6Z+5x1EFE6pGbekPO/352Lp9HYQy8apC1FV1MgXbd8Ep+rMZYkFcXQV
+	dRS7OMc8zSdfGsi3rZZdurll+3+Zjk0rDcaqYQlVDmc8I+xLcNBmYD/ZRZJaWr3vM2pBvL
+	JhJAamQeNUiy5EIur/VcUrUBxcgtDR4=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770200095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tNDuvLBbkzIbWJoE0G1ZqgGCpNPmYnXQHNWvh9P0CtQ=;
+	b=ZrQql6eUufu63rSDKCzdzVXNSBwjStFKM8ncoqOtyiPXdNbP5cLDWEaZw0krnKvofwQGfp
+	UX3JUHhW49zGQVLBlYZvXvre1OMbPTlOSPtFDbEURtluUFs8UMuTqo/A1xtNSZaeqPEdFo
+	mxQJAxdNemxSSzCF08SWCW2fBkaExjo=
+From: Hao Ge <hao.ge@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <hao.ge@linux.dev>,
+	Hao Li <hao.li@linux.dev>
+Subject: [PATCH v2] mm/slab: Add alloc_tagging_slab_free_hook for memcg_alloc_abort_single
+Date: Wed,  4 Feb 2026 18:14:01 +0800
+Message-Id: <20260204101401.202762-1-hao.ge@linux.dev>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: C603080005
+X-Stat-Signature: 3wftowzgaxe3jh3pyweu461kc6qrjj6h
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9312220011
-X-Stat-Signature: i6thartpnegrp7n49m5idfm3jfx5fiwz
-X-HE-Tag: 1770199579-592214
-X-HE-Meta: U2FsdGVkX18AbdEMRVgGP7e6CLz47qccXfj0b4wiSua6sn0LtR7qO6X0mhfacV4BwdD3AbynXnZEPNQa2WD1PvsiwTZP+HNX4u8MjpMCY9Cq1hHfMcz/28ePCLQ+YNhOiQJiQ4lM/lIzl3+hCMI+YWCSw6JLhg92XXaL2Svu8yEjB7s6HJKbpmOqnmoRV0Lt6u2lqcD1vnsJJILcAHrLD+/YKCJamzYxjLyiH9skli1cgvobrNwf9bpveQ4YgAlutjFDLpeJYsIdMpAMhyr6eWg4yWWSMlOBOKfzvTv9+LZSbH3YnwkKd7/ar5oq+VQldm9V3JdD2vkyo46yrtJ6ALlA9tye6uGF5N0JFOdKLBm24rOqXLut+n3OGKEeiowtDwF4CFR6YMoBkUOVZP7f30c7P71qpBgaA/XoYU0D+93FiZTBRg8uKxgCYZaDcXDti9DXBvgDL1A4OgAyuNW3bgtOre2+ZUcSGcf3DqG4Hp7i8XuUDWZRbSL7GpnHOyZ3hDFlfS2036h1wYRSfP/GY0LL5UnOyPYGH6Exifug2+BDXDpj6Z5shCwFe8Yslt2i8rtAf35vhzQ9H+yFVIvHkUYuOygFhlTiBGYC8lT4LeR7FmI4Ab28IIoOBr16+MzOIvgsCc9cwkmVv37J4twDhUj/wYPDMsDgJ37/oh49AREll6YWRlN4LYeuTkmOpdWulLU7UvUAsSBTDI5yK+hxWoKhtncZP+lQrELWcPcXlyPF3XDJJMCTNdqQXSOZ+1wLdThTmFBF2kCWhHCTaawJHFs4IQ+mW+L+afL+lgIL2m+98jcowHafQ1QT4Lc0XqnN0SP6aBCb9NtnPcbe7HGm0r3TJ9DaZWw4wo1AZqgcryweRK4VArryLeiwjpady7qUBz+lCQJwOc/HNIatghMp8fkcAyWnyVACNRlvE5dS9Kfv3Vq2B51iMKAWnpTDlCE79o7Wk65N0hdiVGhmAFz
- sn/oK+NQ
- wtebijXiHmymip10TgW9yx0TpMQgMOJA2NNjLV5RtqWp6qO+6Nqya2W8VKwtGKZncSgBKvCA+snqH3HC9+m6SzycjEbwl7AopHx6GjQDLgcPGHOEo04/jAIqiueQaslyNGGu4swLpcKGG5ScLGOijWsWCT+Xy4zBjTuevvTL0y1Mtoc6dCjEfVGkkWcO2xNDiV78UciAeqNQwqWhxWRWeG05JAIQO34iC5V9SJKTUQ2ZXTYtrohBBWZgc/y+/Cb2qW8moA2Hu7yJ/KlA5Psw3wN1rD8lc+fO78J4D
+X-HE-Tag: 1770200097-302831
+X-HE-Meta: U2FsdGVkX1/+AeO2phGkB+7is+Q2B1GIiK67X8yV3xBE4xjrgHkEHFeKVBO0vir9qU54yrcncsMYj4ehynFICyt/5fmS/qJmJlp48+SpMwAu+w7ZxYUvihQBz3cjKU/Z7ItBSGebGBcJ3gU0NPHZXO7mkU/wn2s6p/4nY86M8G6d7PDuEklxIYlKFbFeV4ouMyc9BzbX5152x1zTJ/FFXWtPiTsXemQYNhqRTMG57qP1SlCr/9+sJBrW9vJJ+k45ReLx1e/ncXdbzGiS21qCMRSYBAJnRWj+XisKDy6/qGhDcW8fxzuK5hno3T6B+5UbDovDxmewiGlYq7sbtHej0nWWcMlohWLYUApzaltLHR74c022BkTMBdvf7sbVBrEzx5yhgRHGC1lyBkK9UYlrUjKpOJ2IwRjbQlwT3wnHcE9CyubEZPIJOWnJ99bepV6P3P5661OnajEnDQ1aM6RK8x3Bgd8u7Ad0mNjFX9036rC7iqwdSXaGFF3lw1f1W0nD/KEttsCp2RAxx4/Hy6XWaaHIJnVtKwe1w0r9UCMeYA+29gKvkQrUf/bb/pIFq4/RPEFciasBDzFkuu2YbRUiIW5kYogwnUbl2rW/cWjcft9wCiIvXXbMT1SWE8sMUtrYC9mrqPT5RZrzzfzBkDJEide7j459OLfNnTl4em/REU1R+Yo3AFSACo13UWCszzJGKEA5t53UtrPFXLmQSbmQmt6N91yq//ZAcd8JxCKhQBRwclLJRHGdiL0FlnAigB+BI+6g8R9dkrK4T8y0qkHte+6O5Y0dk21cgHmOz002gmiBiUVqSo2GUSnTJeoLICB4HG9CjjgW9fLEd2FK2V7Fqvnfi/HdaQOh9b8yMo3UIF5WbclT9yc4UsesvDgE7fsHzlwsbbJiJMv4ygZqR+MQxg6P55qE6XKgaOJU8CE3hoX4kV+AQb+Fj1c+3WVGh3hKxYAiWN30jqa50NXSErk
+ 8PLCCwqT
+ oYHhUs8YKXZwYgJzPYkgwBvtbHNfSoY4FkHQBQT1KoyE7HS46sWGew1f7sG7QjtbKd+tnoqKal4j51chrXA/zHtQjgqKryTgUC8BmQssRamczN6fhsnSpDnDxqFk+p0a4WqQpO9NGpuW+90Mn3RfKo4cCgxbHx9MkMUbnoNgGOTo2d3FNgD+bF4ome4da031uABROEiv+KFoZrTj4YJOELHYquKKAznL/e/MoyS6f3R3xMltdlJ2fyoulNg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,65 +91,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-head:   3b688128ee79df55807d8b3e60e9d0ed62db009d
-commit: 8b56f4dfdf0a4aa460fde0212eb270c943288bfa [102/124] maple_tree-add-cp_is_new_root-helper-fix
-config: csky-randconfig-r122-20260204 (https://download.01.org/0day-ci/archive/20260204/202602041809.nfXcWI84-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260204/202602041809.nfXcWI84-lkp@intel.com/reproduce)
+When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
+may be noticed:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602041809.nfXcWI84-lkp@intel.com/
+[ 3959.023862] ------------[ cut here ]------------
+[ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
+[ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
+[ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
+[ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
+[ 3959.024182] Tainted: [W]=WARN
+[ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+[ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 3959.024199] pc : alloc_tag_add+0x128/0x178
+[ 3959.024207] lr : alloc_tag_add+0x128/0x178
+[ 3959.024214] sp : ffff80008b696d60
+[ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
+[ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
+[ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
+[ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
+[ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
+[ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
+[ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
+[ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
+[ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
+[ 3959.024340] Call trace:
+[ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
+[ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
+[ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
+[ 3959.024369]  xas_alloc+0x304/0x4f0
+[ 3959.024381]  xas_create+0x1e0/0x4a0
+[ 3959.024388]  xas_store+0x68/0xda8
+[ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
+[ 3959.024409]  filemap_add_folio+0x16c/0x7e0
+[ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
+[ 3959.024424]  iomap_get_folio+0xfc/0x180
+[ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
+[ 3959.024441]  iomap_write_begin+0x198/0xc18
+[ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
+[ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
+[ 3959.024461]  blkdev_write_iter+0x38c/0x978
+[ 3959.024470]  vfs_write+0x4d4/0x928
+[ 3959.024482]  ksys_write+0xfc/0x1f8
+[ 3959.024489]  __arm64_sys_write+0x74/0xb0
+[ 3959.024496]  invoke_syscall+0xd4/0x258
+[ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
+[ 3959.024514]  do_el0_svc+0x48/0x68
+[ 3959.024520]  el0_svc+0x40/0xf8
+[ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
+[ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
+[ 3959.024540] ---[ end trace 0000000000000000 ]---
 
-sparse warnings: (new ones prefixed by >>)
->> lib/maple_tree.c:3364:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected void [noderef] __rcu **slot @@     got void [noderef] __rcu * @@
-   lib/maple_tree.c:3364:38: sparse:     expected void [noderef] __rcu **slot
-   lib/maple_tree.c:3364:38: sparse:     got void [noderef] __rcu *
+When __memcg_slab_post_alloc_hook() fails, there are two different
+free paths depending on whether size == 1 or size != 1. In the
+kmem_cache_free_bulk() path, we do call alloc_tagging_slab_free_hook().
+However, in memcg_alloc_abort_single() we don't, the above warning will be
+triggered on the next allocation.
 
-vim +3364 lib/maple_tree.c
+Therefore, add alloc_tagging_slab_free_hook() to the
+memcg_alloc_abort_single() path.
 
-  3339	
-  3340	static inline bool cp_is_new_root(struct maple_copy *cp, struct ma_state *mas)
-  3341	{
-  3342		if (cp->min || cp->max != ULONG_MAX)
-  3343			return false;
-  3344	
-  3345		if (cp->d_count != 1) {
-  3346			enum maple_type mt = maple_arange_64;
-  3347	
-  3348			if (!mt_is_alloc(mas->tree))
-  3349				mt = maple_range_64;
-  3350	
-  3351			cp->data = cp->d_count;
-  3352			cp->s_count = 0;
-  3353			dst_setup(cp, mas, mt);
-  3354			init_cp_src(cp);
-  3355			node_copy(mas, cp->src[0].node, 0, cp->data, cp->max, maple_copy,
-  3356				  cp->dst[0].node, 0, mt);
-  3357			node_finalise(cp->dst[0].node, mt, cp->end + 1);
-  3358			/*
-  3359			 * Warning, see cp_leaf_init() comment and rcu_assign_pointer()
-  3360			 * documentation.  Since this is a new root, there are no
-  3361			 * read-side operations that can view it until it is insert into
-  3362			 * the tree after an rcu_assign_pointer() call.
-  3363			 */
-> 3364			ma_init_slot(cp->slot[0], cp->dst[0].node, mt);
-  3365			cp->height++;
-  3366		}
-  3367		WARN_ON_ONCE(cp->dst[0].node != mte_to_node(
-  3368					mt_slot_locked(mas->tree, cp->slot, 0)));
-  3369		cp->dst[0].node->parent = ma_parent_ptr(mas_tree_parent(mas));
-  3370		mas->min = 0;
-  3371		mas->max = ULONG_MAX;
-  3372		mas->depth = 0;
-  3373		mas->node = mas_root_locked(mas);
-  3374		return true;
-  3375	}
-  3376	
+Fixes: 9f9796b413d3 ("mm, slab: move memcg charging to post-alloc hook")
+Suggested-by: Hao Li <hao.li@linux.dev>
+Signed-off-by: Hao Ge <hao.ge@linux.dev>
+---
+v2: Hao Li correctly pointed out the root cause of this problem.
+    Per his suggestion, this patch adds the missing hook call.
+    Many thanks to him for the thorough analysis.
+---
+ mm/slub.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
+diff --git a/mm/slub.c b/mm/slub.c
+index f77b7407c51b..452a92544c6a 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6689,6 +6689,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
+ static noinline
+ void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
+ {
++	alloc_tagging_slab_free_hook(s, virt_to_slab(object), &object, 1);
++
+ 	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
+ 		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.25.1
+
 
