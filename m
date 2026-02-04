@@ -4,118 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 399FEE8B387
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 00:50:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FC62E8B386
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 01:00:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C51C6B009F; Tue,  3 Feb 2026 19:50:47 -0500 (EST)
+	id ACA456B0005; Tue,  3 Feb 2026 20:00:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 672296B00A0; Tue,  3 Feb 2026 19:50:47 -0500 (EST)
+	id A78256B0088; Tue,  3 Feb 2026 20:00:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5717B6B00A1; Tue,  3 Feb 2026 19:50:47 -0500 (EST)
+	id 9A2146B0092; Tue,  3 Feb 2026 20:00:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 426786B009F
-	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 19:50:47 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D590E8C188
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:50:46 +0000 (UTC)
-X-FDA: 84404944092.05.4164B32
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EF53040002
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 00:50:44 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=RWTj5e+h;
-	spf=pass (imf04.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8974C6B0005
+	for <linux-mm@kvack.org>; Tue,  3 Feb 2026 20:00:16 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4088B13B5B0
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:00:16 +0000 (UTC)
+X-FDA: 84404968032.23.FC53EC5
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 344CAC0012
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 01:00:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nJQHM1xK;
+	spf=pass (imf10.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770166245;
+	s=arc-20220608; t=1770166814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ejpaqsz9CMO56IB7gVAQcbMCdvB+s9mbb2E3+bpwa/4=;
-	b=bCGS2FVjxISsTu0kccPri3dyLPUkMpCsHY+BQbXCdos+gR5hcYiu2FkQLGf7EIYYupUiPF
-	W4oCexwbBlc+2s+tVFJbKwulLj0GoSplhljDy4Wh8Iz8u8rp2P5MMONncJnSfp+3gfEna1
-	PNpLZ7a2t0WYUypljPRQy7wFxedA1Ls=
+	bh=ETtAgu9zn2DbdID69yeQZoqXuJNNuYg+Fj5vMI3aElk=;
+	b=Bodss6lVgLd6l+rTMONv0rsNqYnR6eCtoTymkXYsGJdmtrl/J4YTJOCX+F8Zedt5Qso4yi
+	ZDNAPNwvwObFpQgFTvntA6I/AXKEZkH6D0OYOdqenqSNFgRXAw65/1qh3NIeyuIC/I45Rx
+	FLsL8YcaTLlUeTlfRQHCJoDHFDieits=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=RWTj5e+h;
-	spf=pass (imf04.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770166245; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nJQHM1xK;
+	spf=pass (imf10.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770166814; a=rsa-sha256;
 	cv=none;
-	b=o/WbM8rWWWO3eTujnlZOzqoRDTGSTM0UtcMhYlOz8zIhagJ2pd+10dphdo7ekOkS+irU3a
-	mmkzJkzPOIMk50+ZKG37xoJiBSZSTgMEdaXF57/K/9SnGlAfeyFTIFcMrmr6fQbajo/qjX
-	1+SnR7Pf8KmFX/dWLaK59JB/jyFlGW4=
-Received: from [IPV6:2601:646:8081:9484:7f27:8faf:e50:c87b] ([IPv6:2601:646:8081:9484:7f27:8faf:e50:c87b])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 6140o2eC3687362
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 3 Feb 2026 16:50:05 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 6140o2eC3687362
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770166207;
-	bh=Ejpaqsz9CMO56IB7gVAQcbMCdvB+s9mbb2E3+bpwa/4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RWTj5e+h1GfgY2uJUjhz+ZDqeE3AlVlEAgP9GkHrXJZVFnIPqKSm0iBR/rykX6U60
-	 Pe7NjbAs0rJ2VbwvNuAooQlZj6dlXjUbjLB2AzoEAT0NyTPLYaHvr5IVlmySydgoKo
-	 srrQOtWAUzNgHurf4mlIrxciyK6wAQL40q+qaJUNUR/nfnMw0PtdWFAA96j44VUZgS
-	 VVzbV3gTd3t7nYdJMSRxY/FV4iNnhqTzuyVTsdIsayaKkqVUJmhdwYfzqNTR7gyikd
-	 ZUfkPXSCCZ6FPF3kkb/4+YDggZf80bIpZJY+9rYq9aUfNIPNtK3u1SL417rVoujXia
-	 KPQihnp3o/pnQ==
-Message-ID: <f671c79a-ee73-4a12-af48-2811f97b9f3d@zytor.com>
-Date: Tue, 3 Feb 2026 16:49:56 -0800
+	b=Mg61aX54CZLOR14zC6xr8jYWlgx5xZ9hbIgmsybEFwS2BcB+v1tbqI7KdGPA6FKgCnykQv
+	b/0ELlAXBD3SP1BJwR0o2m3Q3xSe4RX5miG564H+01/2gu78AN11lqPQdoFT0GOorIZRAL
+	lUY7NxD5BYKbaOPziU9NvlomRtZ5bQ8=
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-124566b6693so4993673c88.0
+        for <linux-mm@kvack.org>; Tue, 03 Feb 2026 17:00:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770166813; x=1770771613; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ETtAgu9zn2DbdID69yeQZoqXuJNNuYg+Fj5vMI3aElk=;
+        b=nJQHM1xK+UT4lBBYKSGBguqtObq689uOFh8rWzlRr3s4lAy0Nmue7s3s7jSfjTWILU
+         DuBh0MScrbJRZM//Tl5LYrXIbx3ieldFYYV8lIYW7jeB71mTcNuJTxVo+aeq/x9zDwUY
+         9j5osFCr7VaAAI7lDSyNdoPyQC5CJCYwExFAI02SMyMV2PZb8p6cqkfuSYv/DbVzpH24
+         tvVPfPlOY8x4E880VvKTPbuu5FuatGmbrXeRoJIHUwPDjJ6dai7GWQFDog6IIGJ/PmQ+
+         25fealfzpwp9Fc8y8Tfvlx5byFnd2RBjVzImzAI+lxqzeWAz/4v0HXeg+UC7QOCHbdbK
+         TdYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770166813; x=1770771613;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ETtAgu9zn2DbdID69yeQZoqXuJNNuYg+Fj5vMI3aElk=;
+        b=L6NwJ12u+4h1B9jLcg5ffa4cY4p84fGitSrcK1sTyTNjbryHi/YTJQiIBm2Xj4Mznv
+         NN0FvFv8H6/HYLZFZa3Hd7ub5BCmbfSu+3/gSCwTMZ7fqZuYoy4hgYUFkDJ25k3fm0af
+         QUo0wWup/0EX8u8vz+FrPYsElzf0R6/Ss8oes0htUnPmhej15u5Su6zzu+mSdeQbF3bS
+         Llncr+S10Kdaw2ALiI2HgdwDRXR1g4p7zbUDNjVvmLdv82RGr8M54x0HTw86W1uw9rdJ
+         vUaMx0AcwL/geDFJKVqVD582dTE9VrYYnYyK6aHYRz0ev+dST8QJwGf0mg9lMrKzld92
+         8vAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHkqyrptvJS7AyQo/76EiHFcFG4CAoInmZxniCOIMBOXzgbm9JYnoHztxKh1OHBCl1MX6Kz7lOew==@kvack.org
+X-Gm-Message-State: AOJu0YyjlTGqqNcdtfBm+3jckb4HBAJL5B8/ASiCxDKzIclnsYKxkHky
+	BTCayw18FYC+4ulpcJFNZG60/eNt0xDjQqzOa1rksILE306yTQNvhTfY
+X-Gm-Gg: AZuq6aKvv8N3MxWtashXNL3enKaGRvTu85Y2wCxJMZadI5cch8DUVa6M/D/X45+1QcM
+	3VV/ppNBjWGloXsMO3tO+6UcQIMrTVH/W5n9eYGCTQCYr0btW1YOtiRKpFuGgrqyVPQ6rHRakMd
+	GtpUoUaEjHf1KECtS8fWdcNtwByir6YJ0rQS4uum3GJyCq3J2aBjw6WdqfmUIno2fTOA7IJIbnF
+	1+ZOMPacYitGfCxjmeIBqMO6PeTIc1CdS8qEiCYRJo4j1OqNgh4LMjayPdlFdqFFJGhBROVYUhr
+	kfgxf7TSU+hhw6coxEiGOlxyCfmec0KBuxR0Elvmb78sQaJOA3wMSDIXd2u9jDKIkDlv2wegApt
+	GZavPKG6KmyVjMG5v38GrJVZ8VrBqbwzI6ovnKAVgDcwSwITWth48p1CUxL9R285stcpO/En5GJ
+	GcqpaqjWK2Hin9NipoCpcpCDinCbVsYQqAaKA9aJmPy8YezkTdmx6J3QW8I/QARV4=
+X-Received: by 2002:a05:7022:418f:b0:123:31dc:e8b5 with SMTP id a92af1059eb24-126f470cbaemr700307c88.0.1770166812500;
+        Tue, 03 Feb 2026 17:00:12 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1151:15:1cc5:26fe:6b00:bcef? ([2620:10d:c090:500::21b0])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-126f4e04467sm654039c88.2.2026.02.03.17.00.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 17:00:12 -0800 (PST)
+Message-ID: <2efaa5ed-bd09-41f0-9c07-5cd6cccc4595@gmail.com>
+Date: Tue, 3 Feb 2026 17:00:10 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 6/6] x86/vdso: Enable sframe generation in VDSO
-To: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-References: <20260203171958.1522030-1-jremus@linux.ibm.com>
- <20260203171958.1522030-7-jremus@linux.ibm.com>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20260203171958.1522030-7-jremus@linux.ibm.com>
+Subject: Re: [RFC 00/12] mm: PUD (1GB) THP implementation
+Content-Language: en-GB
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: ziy@nvidia.com, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260202005451.774496-1-usamaarif642@gmail.com>
+ <e65bc740-8e20-452c-b66f-0e13cd4e9c59@lucifer.local>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <e65bc740-8e20-452c-b66f-0e13cd4e9c59@lucifer.local>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EF53040002
-X-Stat-Signature: 1nbw9srs5jec8hjwyzq5rf7frxu1j1wo
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 344CAC0012
+X-Stat-Signature: o75jgzc43jsk58di19bsgtct96btx8hi
 X-Rspam-User: 
-X-HE-Tag: 1770166244-269914
-X-HE-Meta: U2FsdGVkX18NdBv22/TLgmea8q20JSqfuoXEAQZCKY/25bKVLfM+PQGBqQ0Io+1oOT8iBhJewXQFoggR87XTufx740dJ+GX3SHXjYEo6ABqom7Z5ElB7FFty+XEl5ZW3UfWafwLu48mpaSSSPX25txdr9wXJ7kyWpgSuQnP0XBv/kpf+Ga8ewWtoyVLFQtJoShByhYfsPA08hV/kdN3JEVcQxHAXdECMdei7RywQQ8//j4WxOPBmGHybOjvli5I633DaLZAaB0trw0/OmaEkRvhv//GV4i1Ystjj/vU/XMgE0o9De/V9cVSM2ZBGNWJrJncIeydur61gAwFNlBoBuAz6SIM9ClSpM64ud42Yldtv2+mgE0jqhW+ORxSSfpM/MEqKRh1W7PzzsMY8OwvEKWju+BmvxDJC3HMwspQTQLPFD1OEM4OMtVYOmcjh/PUmd9Pw53zAKo/293vqekybeWQ1d4VQiax+OvwrF0JszzLUt/YyFBpHX3AWp9rC6jhiVoFNJM8zNQwb/0WVKT1zs4hO3OU3968pjHifPJoqf7k8RCyW0266fNHXomhB1IYuahmS6bmoF46rpr7EC5xaI7apMbRvpn6fTgp3pmyq07B57QZ88a/8ltZ6MoCCOAspOM7hMdGOR+fwv++yeKImm0VVgdDPVC8y4sjIWvxjzNshYUq7vnq048KIPQpwAwYBwkkVNPBXM758bXnnxwGzRcfb21rwDreg7d1ccBTIpzpY2AlXwvwVCY0aXLQjuAGk86dVU6EuZxe/FHqCQEVj8IJC60VE9dKm5+krOUPzaGza9mw8ZY5auwT4gdKn6STKMG4xJMNdEnh8EUtHiq27O1E2aOZ+DuUJzu4zKoJOm/g3fmLjMiXfRdykGPZy1xNK8vu7gjsK1NouqUKK8Y+Wri3I8wiaGlxge7bs5+FLBnTB5TJzsGF4PwrPFC7nmjkkn1HH8Bb9imBGF+MFKJb
- 828eyRsS
- fcph9Q1FolsVf3OmBlxYvO8q7tqb7kD4aqoz754ZwivbFro4hBkc67rba90DpcqPOZlijUSZQNtzJrLSVuu53NtPt543Fn3XONffRSUJKyOr0RXDH+hATjDIJmslV5x47cLmF3rkoKt5srHGZCXBk1FQesL0jlrdHq9n+V5WHppP9XL6g0YfXwKmc6I2m6m5eI19w4znOQSMuFh51qRkCkhOVYopHJ+/BuT8mHRxTxp1TQl1R6IqoqVGTgIQz/JSHe1siJxaVjSbrlZrdu5ITSXYNlDc04Z5LbSiwy1jmvEJ7pmew4tlSnQoHfE1e5eVDkKG1S95TZPZ+jDj5l9cbbv1AULKGPNQFYthSDrnJI+PDp3Q=
+X-HE-Tag: 1770166814-183216
+X-HE-Meta: U2FsdGVkX196xJJ98X/cEr0kTwqmbAA/K4JgaiWzxO/WN/TMSos2AVVLdPdibLhuf4MVyN2srpYKvxJkisT3iJCyauSoeRAPwxu513Q5x8e2fXYXQ0zoX1uQV6rN6RDG2LBlbGhIEXrUBhI60dG76GXD1TFvMhyUTMGurDZN2fUsAoIH1ntoADOANHB9ZUwKW372beiG/PvIa1eGcgVKV82QHeCknp4V9FH5VS+SgZrOEZvYDqNzXi3cWbOmPzTkTr5TCxLWqXYZvhdYqMpnqS2v3zeakefQLrAQPSPEEHds2ABuFAP2vCh+ISJWet4Ylpnr6c4TqUOixgWgA0RJ+Kds3Pj1GUgd2d0aagy5Cnf1bHDq5wV0iu6b7YG5vJbjxaBRFDFQppR+/AyVuBwlSrXDSYtF5DSh3HFhYquno9KduxiEgB9nv2vAocsrwkgt5UTs1Wju4sYs0ZLcgAJhhH03sbbqVfwITIjNct4vDPDfxnaJruFqYFsTb6ygqKdub74572kbMm2Ab0LYyOn9gNfdq5gEAvR9j8LeT0k0i7FnDnwE8vNRPZlCFhDDIOgnnae2Op5n5yYenjYudsZh6CrzMb2rqgJgGdCu09NwogEyY9zf6IMOg03u0N2oQvEvvpjFxjPsAKmlsSnKNHfmto4j39kayKUr+LhmQ9hDXCImPfUea9FTxfSW28xwwSFqOrotRXsgBFZp0WydirsLcsOGvzixXQlE2WaDuVX0T8J9I0/dxoOh9l6LTkPvkYT4sWi9T0U50TtZUKir5Hj5OsJR/uL7TvaSQyQW2x/CZJgMYAshHdP1ajHVRpMZ4zsfxIGdJHDGggi8df4qiZdRMF9NB7bQDSMQ5C612ByLfRLfi7tbxb6m18so7ZpyHSyAbH6NlWcF8WX+dDHTmHX2NLA1LEmLlYN5x3Q0FTq3tUwx7wIl/uRq2cUo4jIT1W3ha/z6eV+NUTnk1QvFJDA
+ ghVbmb8N
+ /tLXP/3wrJ89IzbULm+FENcHwMipuWuBq/DFpy6eQ5/NJnvbAW0BwkTHsC9zhHaCEBL3itfVWmzGk7OHM1vDokpTB/YB6wj47fI15Pa71KQ7Z5L6R8lTNsyGRffzRQmQ+m7vqhQE3Gq+emgFFTe5oGO6DhcmxbDlA5ijMptp5Yq5/d/IBYDc7E4tIG6n109OnsQcGOWJmP/3mmZxdUaIe30tzP1qEGUtpbU0ld4Zr/wpH+0x6LIv9gQ3+RA7RflnVRHUroYT1QyKTNrghxSirn65zjCXvhwTxE93VhxCc+etILxpyXqw7kZlQ+efPnF+tOtdKygic1AMp8FY4cnW4gsq0TaQxstHOhsEDz/IN2uWS5Df2SUzbBIX8e5RNtu2vpJqlLHknkBiwLO+ZglkezJYgD7qAizi6B6zskJYJdxc4Nd4KmnVwQXq7iR7BXFZmGYU0kioKZy64zrAaKa9FD5fiHZQSEtGTeidqh68qS/n8lyteB3+hoWCgeA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,21 +128,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-03 09:19, Jens Remus wrote:
-> -
-> +#if defined(__x86_64__) && defined(CONFIG_AS_SFRAME)
-> +	.cfi_sections .eh_frame, .debug_frame, .sframe
-> +#else
->  	.cfi_sections .eh_frame, .debug_frame
-> +#endif
->  
 
-It would be better to:
 
-#undef CONFIG_AS_SFRAME	/* i386 doesn't support .sframe */
+On 02/02/2026 03:20, Lorenzo Stoakes wrote:
+> OK so this is somewhat unexpected :)
+> 
+> It would have been nice to discuss it in the THP cabal or at a conference
+> etc. so we could discuss approaches ahead of time. Communication is important,
+> especially with major changes like this.
 
-in fake_32bit_build.h.
+Makes sense!
 
-	-hpa
+> 
+> And PUD THP is especially problematic in that it requires pages that the page
+> allocator can't give us, presumably you're doing something with CMA and... it's
+> a whole kettle of fish.
 
+So we dont need CMA. It helps ofcourse, but we don't *need* it.
+Its summarized in the first reply I gave to Zi in [1]:
+
+> 
+> It's also complicated by the fact we _already_ support it in the DAX, VFIO cases
+> but it's kinda a weird sorta special case that we need to keep supporting.
+> 
+> There's questions about how this will interact with khugepaged, MADV_COLLAPSE,
+> mTHP (and really I want to see Nico's series land before we really consider
+> this).
+
+
+So I have numbers and experiments for page faults which are in the cover letter,
+but not for khugepaged. I would be very surprised (although pleasently :)) if
+khugepaged by some magic finds 262144 pages that meets all the khugepaged requirements
+to collapse the page. In the basic infrastructure support which this series is adding,
+I want to keep khugepaged collapse disabled for 1G pages. This is also the initial
+approach that was taken in other mTHP sizes. We should go slow with 1G THPs.
+
+> 
+> So overall, I want to be very cautious and SLOW here. So let's please not drop
+> the RFC tag until David and I are ok with that?
+> 
+> Also the THP code base is in _dire_ need of rework, and I don't really want to
+> add major new features without us paying down some technical debt, to be honest.
+> 
+> So let's proceed with caution, and treat this as a very early bit of
+> experimental code.
+> 
+> Thanks, Lorenzo
+
+Ack, yeah so this is mainly an RFC to discuss what the major design choices will be.
+I got a kernel with selftests for allocation, memory integrity, fork, partial munmap,
+mprotect, reclaim and migration passing and am running them with DEBUG_VM to make sure
+we dont get the VM bugs/warnings and the numbers are good, so just wanted to share it
+upstream and get your opinions! Basically try and trigger a discussion similar to what
+Zi asked in [2]! And also if someone could point out if there is something fundamental
+we are missing in this series.
+
+Thanks for the reviews! Really do apprecaite it!
+
+[1] https://lore.kernel.org/all/20f92576-e932-435f-bb7b-de49eb84b012@gmail.com/#t
+[2] https://lore.kernel.org/all/3561FD10-664D-42AA-8351-DE7D8D49D42E@nvidia.com/
 
