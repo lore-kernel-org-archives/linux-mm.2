@@ -4,145 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B7F5E9D40D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:50:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8017E9D414
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 16:51:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 315236B00A0; Wed,  4 Feb 2026 11:50:35 -0500 (EST)
+	id CBD086B009B; Wed,  4 Feb 2026 11:51:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2CBBB6B00A2; Wed,  4 Feb 2026 11:50:35 -0500 (EST)
+	id C46CD6B009F; Wed,  4 Feb 2026 11:51:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CB576B00A3; Wed,  4 Feb 2026 11:50:35 -0500 (EST)
+	id B9E306B00A2; Wed,  4 Feb 2026 11:51:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 07B616B00A0
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:50:35 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A43B7C13B9
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:50:34 +0000 (UTC)
-X-FDA: 84407362788.19.56ADF59
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B292A140003
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:50:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KvP2Ej0r;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A47BF6B009B
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 11:51:16 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 41790139E2E
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:51:16 +0000 (UTC)
+X-FDA: 84407364552.25.995E4DB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BB1E340006
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 16:51:14 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D9k7tIE3;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770223832;
+	s=arc-20220608; t=1770223874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Dizu3UrovhjzKxn0TRKZF2AItoOO8OJZaigSXl9q9s4=;
-	b=X82pSEgeEDmn/B9C3StPenek2wdBnNU+tE1Kv1OC3qJQweqCcSr/sN8zcMH6QUDpL2tPVR
-	lZUkum8scVCSNERk1z1YhMmQo+SRr5xPAM8fj4y9niclVUPUIsDX8y0pn6Gmkx28bO2nvQ
-	5dZsf7LxRPLyAURN7d3fi/gRAiVvHCw=
+	bh=oE4evpwq48XhVyaYYvfHRgsQ/n0/tSWlEqvQXDEYBFI=;
+	b=NtLkmCydwsBw0m1+toqpw7emsFnhQLgYyvSxw4U7vCtX63dxwt35U3lKO+Rq39M5iOEsH6
+	wQbvNYyicMvumbPgibaL76tdx3Ndzx7p3LoVkczdYU1ZWlgvHqHElToOgJzwhHvY+TA8ci
+	OplQfQURtpqeZ+L0wAiFz5pU6HsAXPw=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KvP2Ej0r;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D9k7tIE3;
+	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770223832; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770223874; a=rsa-sha256;
 	cv=none;
-	b=tkW3xy5r54qmCwtWzIaPPRWrpwakTBEf9BYkbghWDNBTLe+pO5uOrQvZEODe4ePj62RYl7
-	l7N5qvSg2oBhyhet0tzTmlrzyphUShfUoe9pE26osDG+brP7tK4qoLgrUcap34xZHr1piG
-	6USwFTPtC6Ynm+6sMl1Tt4RzKefIx0E=
+	b=o2X/2HJLLacWzZ2I2eaZuCOprhF2jzylyw4kFFCOMj6GEuxeFTj0MR3F+VE4vjOYcna8JX
+	CE+6nuRuTPw8iDW2zhLY7eLLDUn1DmnRa1MuYVPriLV0t8ldKlIN/G7VPKeOYyUB1NBD+/
+	3zE3mWO8XT6sRM9NGRdjGNCAT3+Ku2g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9EF4E441E2;
-	Wed,  4 Feb 2026 16:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F69C4CEF7;
-	Wed,  4 Feb 2026 16:50:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0694260010;
+	Wed,  4 Feb 2026 16:51:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA29C4CEF7;
+	Wed,  4 Feb 2026 16:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770223831;
-	bh=fd9mB6uxi20UpngRQKWBUIqmPqpBhJ06BLLPzdm+xN8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KvP2Ej0r49rqN3zlMVpi7wdZOiGb5ddjkwluNNwr9i65tfI+kq4umf0NzPJuSsz8p
-	 P6qg5MuNuC/5M3knmpbfL5L40N42mK4CxEuRfEkEvj5XMAVFGkQ5ALUg/vIDbzsrpn
-	 //iCatRb0KhDzkd/uzYZNxOW53aznd3RDzb/Zz2Zl7jilmlNc1PgoPNluqUj5Pdz/2
-	 6b47830F8Tvk2zwwsSlOD9haOzCh25eYY3PiIsZkPeucUqpGe9bEw1u0YDXiUIHiK+
-	 uatWn5zfW2IwFwvhWhhIepkHH5jQtDQ0ES43T91LXVz3v288R1X14ywTluExwNxg70
-	 eVR618or/n1mg==
-Message-ID: <1b80b189-b549-40ba-800c-8037ce12b081@kernel.org>
-Date: Wed, 4 Feb 2026 17:50:23 +0100
+	s=k20201202; t=1770223873;
+	bh=9yju6q+ofsFqcseB6FiksXGpBHaUWDzcaMIwa69Ny8U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D9k7tIE3z5/7vyQThvrnSrW2LHaj8/vAIgtcw2ZILjmaEe18P997idkF6gHtMESJJ
+	 O8/bFSLpZwFNDaijdqgLyGVpg5ht5VDQjK23EqoYeE4ruisd18NEcLDGMcND4U3ruU
+	 nUquxAZXBfRR+8gGOYXuGYHU2hj9yG6LAZ8pfkQAii1U/Qmm1nx933qOF/rxSajRjK
+	 eMCLqDOCRRRu12xg3pwVqjrKnFZ50Qyg4QLbm0nU0hIfyNEkpyIhYXWsqFf2Jc/ZSy
+	 EErcokVxn7NNUHIKEgOXFN5xIFNl8L1GSlifyv3iyw8KiRrOcL2kErIBvpGS0s8VTR
+	 z47zZFkEVWfLg==
+Date: Wed, 4 Feb 2026 17:51:10 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Snaipe <me@snai.pe>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH 1/1] fs,ns: allow copying of shm_mnt mount trees
+Message-ID: <20260204-unsicher-bejubeln-7aaeb5a6d40c@brauner>
+References: <20260129173515.1649305-1-me@snai.pe>
+ <20260129173515.1649305-2-me@snai.pe>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 05/17] riscv/mm: Align vmemmap to maximal folio size
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-6-kas@kernel.org>
-From: "David Hildenbrand (arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260202155634.650837-6-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: mxte6cnt9sq8jpmri8gstgcng5fd967w
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260129173515.1649305-2-me@snai.pe>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BB1E340006
+X-Stat-Signature: 9rfaztstorwbagzkpyctyf7btbiho8nk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B292A140003
-X-HE-Tag: 1770223832-707934
-X-HE-Meta: U2FsdGVkX1/ONkbAv1MrpTR0eyEKBYoQAcOuoq5/1Tk+tTDYuik9YSJU9WL9008u4qKKU2O2wC13kfHejlyjZm045L2CPj3jObaC2P3tunp/6qmtIdgbWZYgZ6+ubCX61Dh/94vbzsgSXHhUtcfXwsNlOvhgFcrQv+lLX3av5AA/AHGybMqQQn8/8RHaWnREw7EmYJ6ib1Sl3NyEXN2/T/wk9qBiuy5nc0YdbhYKxAnHOZu4a4+yNzdbTAh37TTqtG5WWlNCXuKv6wRouV/Y7BqrBNSM5l2/rslpr1orZBgaNgXwx1tijlUuRPret3EBtOkf+zKHTzzjCB9sp1NuIaA2D7vMfmkiguyuUDJxddG8Va7EoJaiZPBD4GIujgj/RmCOkaRxCVZe/ffAJf39SDPs9eahB7mTffi4jxIi8J703cGS4fIeOm7m2O/q3e0QuJiek/6NR4ndMRFo5f5Q+ZYZaonaEK/H6KUNr5MP14gkeeMdIJNHoOYU/M0RSJCnkiSARHCvDayQHiVBh3Tn6GvXIabb8/SsEo1XWLGJjqf7beNm0QX0jwFZit07wtHvS+UQotWi341Od24GfsjSGGgmKXdtMguWyCqMztMoxV9omWSeGj+u0mT7gjZ2uvS+I375//klk5mdpL6lEkfZKGkOxjwIWr1yDOlPdNMNKzWDi9MMUIMt7FxOw0/uafu52Hbv0mVaSb+Sp4vD/rvAghAYMOw2VNFKcdJBIYHQC5tN/79/X9pscCizYGRuKQkfFPOtfURGYcU/JrsyF09HXWaTq1ZTKflVFH9+dALb4PB1G3njhm2uMKfci/RwY93KpdYgHesAQtonk7qS6eiv2f8aVin6X8NeNRiSRwqEH2zJXqzaj8S9daog5Qei5Oo0DNLOfQo8Ue/d4TejNGTvNNYZ0jO4q2xAdBz7r1W8CvX5AvMDUbWB/oCsFchrLeg7lmodHtgdVl9n8RZLh67
- zNTLb9/j
- 3Yz3yVVrIW9sGyVPyh2afMX7j4OVI2uP+m/bDXtI4DGtbZhHcpJ6MLvZ2uhwLhlCti6kiDZ/MfOJIV+ABFVlOYH58nSLHS4v7Sysu1tJC6PV9JYltnSfcgLbrNs7ziqWGydZXwEnTn/ed5HF7o8xnv93JtzrlKjdTyNhPZiN6BK62EUzFpYcEXrQEFijMDFshEGSdnvtNfU/QzqsBqYfCzYv7M99jKn2UbDYfffcOk5g7k/JHp16LCR3cB7EZk3qIf+GHW2i8Os8fDL+GAI8XoMDrmLeCfkkry+Ff
+X-HE-Tag: 1770223874-836008
+X-HE-Meta: U2FsdGVkX1+ssX2KSY9kxunsxLX4zT+t6PgLWSxQzo2bhpsaLiV4dNvHhh4EjQzVtN3ZNzuyb6kCjfLofYcHQHqCxj12tlKLe0mYLAflSZa+C8qq/tYJ5g2q0eKbSJHJNXRlI+fnXmCp/BfbHto2lNY4t1MfzfKfzHpYoPxxqWqwqxK4QWD6/Foi07xH46DvnDCh2+gCbY0VNjj9trUlynejNUzf/UTVeuD/hKdm+aRf80WBQkamRGX9cvwrhmdNiRVoCchQ009zFkZTJJnuDntopynnSRrfg2BefZNPV/nHQq+n7YC4IASgS49bdooc0DexugWE69vpJ5/nGIUYUrOVJ8pnTynYkv+8FAQEMS6f4IyF0f3VtwM2wb5xAo9WTrvygYzKHeDGNOzKdaTg/Ks0CMVH1dpw1SoPbL4KIJQcAyPdiJHs/6E55FVA+ZyrbKlRQaOTOcEwwPWaiHrg2hOuuQJlqzykLTEKsGnZqzcFsknTpGOoSLmdlV/Em43LzkXnEKlw44i+6jVgHbXY4U7yzfmvsuoLK8VXA4zW/E3Ld3IMRLFgm1LfgMLEK6yEXU193tXrPHtpe6bE82v6fMyeWPoXNls4AupEXA8A4+T2xAKsJ1WpOATLoVFeNTPtJGOhdwgocK0W1wThxKI22jt0HVGCFosP7Y+2yEVdvhRxFPl3A7jnpdqK3rkfyCDpdFUR+IEFsYA0y9zHhquHd4nKyxZhJ2/aTuqS7/WFA0nGzyBebY11zxCdpaSz/K217tbqEbEEAX5gdEHm1ES1DpPWHupXM0iTqr5ZLu+CnH4J/CcCbc4xZ9xiagLwdZC+1QYDasak1ODh0pKnkpmCKhdxg1WSwMw60Mg6EBDH0fkKJEHyPrHUvxD594wai9ZD72FTFF7E+ZfE9OtWVe7Rbmus4Ax7q9CjuL3KEKzdytEYn+woEA+6+U1KoB84agEJCJrRIZjg+j0kWK8P1vQ
+ DY7Trix2
+ Tx2tichsk5GzAxwxsgXwSMuj3X9rXqEhqQf25nchewel5ECuKPFsqrLUewQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,70 +91,248 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> The upcoming change to the HugeTLB vmemmap optimization (HVO) requires
-> struct pages of the head page to be naturally aligned with regard to the
-> folio size.
+On Thu, Jan 29, 2026 at 06:35:15PM +0100, Snaipe wrote:
+> From: "Franklin \"Snaipe\" Mathieu" <me@snai.pe>
 > 
-> Align vmemmap to MAX_FOLIO_NR_PAGES.
-
-I think neither that statement nor the one in the patch description is 
-correct?
-
-"MAX_FOLIO_NR_PAGES * sizeof(struct page)" is neither the maximum folio 
-size nor MAX_FOLIO_NR_PAGES.
-
-It's the size of the memmap that a large folio could span at maximum.
-
-
-Assuming we have a 16 GiB folio, the calculation would give us
-
-	4194304 * sizeof(struct page)
-
-Which could be something like (assuming 80 bytes)
-
-	335544320
-
--> not even a power of 2, weird? (for HVO you wouldn't care as HVO would 
-be disabled, but that aliment is super weird?)
-
-
-Assuming 64 bytes, it would be a power of two (as 64 is a power of two).
-
-	268435456 (1<< 28)
-
-
-Which makes me wonder whether there is a way to avoid sizeof(struct 
-page) here completely.
-
-Or limit the alignment to the case where HVO is actually active and 
-sizeof(struct page) makes any sense?
-
-
+> The main motivation for this change is to be able to bind-mount memfd file
+> descriptors. Prior to this change, it was not easy for a process to
+> create a private in-memory handle that could then be bind-mounted.
 > 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> A process had to have access to a tmpfs, create a file in it, call
+> open_tree on the resulting file descriptor, close the original file
+> descriptor, unlink the file, and then check that no other process raced
+> the process to open the new file. Doable, but not great for mounting
+> sensitive content like secrets.
+> 
+> With this change, it is now possible for a process to prepare a memfd,
+> and call open_tree on it:
+> 
+>     int tmpfd = memfd_create("secret", 0);
+>     fchmod(tmpfd, 0600);
+>     write(tmpfd, "SecretKey", 9);
+> 
+>     int treefd = open_tree(tmpfd, "", OPEN_TREE_CLONE|AT_EMPTY_PATH|AT_RECURSIVE);
+>     move_mount(treefd, "", -1, "/secret.txt", MOVE_MOUNT_F_EMPTY_PATH);
+> 
+> Signed-off-by: Franklin "Snaipe" Mathieu <me@snai.pe>
 > ---
->   arch/riscv/mm/init.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+>  fs/namespace.c | 8 ++++++++
+>  mm/internal.h  | 2 ++
+>  mm/shmem.c     | 2 +-
+>  3 files changed, 11 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-> index 21d534824624..c555b9a4fdce 100644
-> --- a/arch/riscv/mm/init.c
-> +++ b/arch/riscv/mm/init.c
-> @@ -63,7 +63,8 @@ phys_addr_t phys_ram_base __ro_after_init;
->   EXPORT_SYMBOL(phys_ram_base);
->   
->   #ifdef CONFIG_SPARSEMEM_VMEMMAP
-> -#define VMEMMAP_ADDR_ALIGN	(1ULL << SECTION_SIZE_BITS)
-> +#define VMEMMAP_ADDR_ALIGN	max(1ULL << SECTION_SIZE_BITS, \
-> +				    MAX_FOLIO_NR_PAGES * sizeof(struct page))
->   
->   unsigned long vmemmap_start_pfn __ro_after_init;
->   EXPORT_SYMBOL(vmemmap_start_pfn);
+> diff --git a/fs/namespace.c b/fs/namespace.c
+> index d82910f33dc4..f51ad2013662 100644
+> --- a/fs/namespace.c
+> +++ b/fs/namespace.c
+> @@ -38,6 +38,9 @@
+>  #include "pnode.h"
+>  #include "internal.h"
+>  
+> +/* For checking memfd bind-mounts via shm_mnt */
+> +#include "../mm/internal.h"
+> +
+>  /* Maximum number of mounts in a mount namespace */
+>  static unsigned int sysctl_mount_max __read_mostly = 100000;
+>  
+> @@ -2901,6 +2904,8 @@ static int do_change_type(const struct path *path, int ms_flags)
+>   * (3) The caller tries to copy a pidfs mount referring to a pidfd.
+>   * (4) The caller is trying to copy a mount tree that belongs to an
+>   *     anonymous mount namespace.
+> + * (5) The caller is trying to copy a mount tree belonging to shm_mnt
+> + *     (e.g. bind-mounting a file descriptor obtained from memfd_create)
+>   *
+>   *     For that to be safe, this helper enforces that the origin mount
+>   *     namespace the anonymous mount namespace was created from is the
+> @@ -2943,6 +2948,9 @@ static inline bool may_copy_tree(const struct path *path)
+>  	if (d_op == &pidfs_dentry_operations)
+>  		return true;
+>  
+> +	if (path->mnt == shm_mnt)
+> +		return true;
+
+The problem with this approach is that it allows to bind-mount anything
+that uses the internal tmpfs mount and that while it allows to
+bind-mount tmpfs it exludes memfd_create() calls that are hugetlb
+backed. So this would allow:
+
+arch/x86/kernel/cpu/sgx/ioctl.c:        backing = shmem_file_setup("SGX backing", encl_size + (encl_size >> 5),
+drivers/gpu/drm/drm_gem.c:              filp = shmem_file_setup("drm mm object", size, VM_NORESERVE);
+drivers/gpu/drm/i915/gem/i915_gem_shmem.c:              filp = shmem_file_setup("i915", size, flags);
+drivers/gpu/drm/i915/gem/i915_gem_ttm.c:                filp = shmem_file_setup("i915-shmem-tt", size, VM_NORESERVE);
+drivers/gpu/drm/i915/gt/shmem_utils.c:  file = shmem_file_setup(name, PAGE_ALIGN(len), VM_NORESERVE);
+drivers/gpu/drm/ttm/tests/ttm_tt_test.c:        shmem = shmem_file_setup("ttm swap", BO_SIZE, 0);
+drivers/gpu/drm/ttm/ttm_backup.c:       return shmem_file_setup("ttm shmem backup", size, 0);
+drivers/gpu/drm/ttm/ttm_tt.c:   swap_storage = shmem_file_setup("ttm swap", size, 0);
+include/linux/shmem_fs.h:extern struct file *shmem_file_setup(const char *name,
+mm/memfd.c:             file = shmem_file_setup(name, 0, VM_NORESERVE);
+mm/memfd_luo.c: file = shmem_file_setup("", 0, VM_NORESERVE);
+mm/shmem.c:static struct file *__shmem_file_setup(struct vfsmount *mnt, const char *name,
+mm/shmem.c:     return __shmem_file_setup(shm_mnt, name, size, flags, S_PRIVATE);
+mm/shmem.c:struct file *shmem_file_setup(const char *name, loff_t size, unsigned long flags)
+mm/shmem.c:     return __shmem_file_setup(shm_mnt, name, size, flags, 0);
+mm/shmem.c:     return __shmem_file_setup(mnt, name, size, flags, 0);
+fs/xfs/scrub/xfile.c:   xf->file = shmem_kernel_file_setup(description, isize, VM_NORESERVE);
+fs/xfs/xfs_buf_mem.c:   file = shmem_kernel_file_setup(descr, 0, 0);
+include/linux/shmem_fs.h:extern struct file *shmem_kernel_file_setup(const char *name, loff_t size,
+ipc/shm.c:              file = shmem_kernel_file_setup(name, size, acctflag);
+mm/shmem.c: * shmem_kernel_file_setup - get an unlinked file living in tmpfs which must be
+mm/shmem.c:struct file *shmem_kernel_file_setup(const char *name, loff_t size, unsigned long flags)
+mm/shmem.c:EXPORT_SYMBOL_GPL(shmem_kernel_file_setup);
+mm/shmem.c:      * bypass file security, in the same way as shmem_kernel_file_setup().
+mm/shmem.c:     return shmem_kernel_file_setup("dev/zero", size, vm_flags);
+security/keys/big_key.c:                file = shmem_kernel_file_setup("", enclen, 0);
+
+which is a no-no. If we want to support that we might need to come up
+with something more granular.
+
+One way to work around this is something like the DRAFT, UNTESTED, BREAKS,
+DOESN'T COMPILE thing below [1]. It copies the shm_mnt for memfds. If
+you have multiple things that want to bind-mount and that rely on the
+internal tmpfs mount this code should instead create an internal
+shm_mnt_clonable mount that can be reused by the respective subsystems.
+
+The problem is hugetlbfs which creates a couple of mounts but it's max 5
+so it's probably ok to do that as well. But ugly as sin.
+
+The other option is to fsck around with the file operations - also ugly
+as sin. The third option is [3] via an inode flag. It's also not
+completely clean but it's preferable to the other ones. Then you can
+check for an inode flag. pidfs and nsfs could also be switched over to
+this unless I'm missing something.
+
+So what will it be: Pest or Cholera?
+
+[3]:
+
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 78699d2ec0bb..f806ee130b37 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2122,6 +2122,7 @@ extern loff_t vfs_dedupe_file_range_one(struct file *src_file, loff_t src_pos,
+ #define S_VERITY       (1 << 16) /* Verity file (using fs/verity/) */
+ #define S_KERNEL_FILE  (1 << 17) /* File is in use by the kernel (eg. fs/cachefiles) */
+ #define S_ANON_INODE   (1 << 19) /* Inode is an anonymous inode */
++#define S_KERN_MOUNTABLE (1 << 20) /* Inode is kernel internal but mountable. */
+
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 88ef1fd5cd38..93e443e580b2 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -5880,6 +5880,11 @@ struct file *shmem_file_setup(const char *name, loff_t size, unsigned long flags
+ }
+ EXPORT_SYMBOL_GPL(shmem_file_setup);
+
++struct file *shmem_file_mountable(const char *name, loff_t size, unsigned long flags)
++{
++       return __shmem_file_setup(shm_mnt, name, size, flags, S_KERN_MOUNTABLE);
++}
++
+ /**
+  * shmem_file_setup_with_mnt - get an unlinked file living in tmpfs
+  * @mnt: the tmpfs mount where the file will be created
+
+diff --git a/mm/memfd.c b/mm/memfd.c
+index ab5312aff14b..75fd0f5b7b27 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -464,12 +464,13 @@ static struct file *alloc_file(const char *name, unsigned int flags)
+        int err = 0;
+
+        if (flags & MFD_HUGETLB) {
++               /* Do the same for hugetblfs. */
+                file = hugetlb_file_setup(name, 0, VM_NORESERVE,
+                                        HUGETLB_ANONHUGE_INODE,
+                                        (flags >> MFD_HUGE_SHIFT) &
+                                        MFD_HUGE_MASK);
+        } else {
+-               file = shmem_file_setup(name, 0, VM_NORESERVE);
++               file = shmem_file_mountable(name, 0, VM_NORESERVE);
+        }
+        if (IS_ERR(file))
+                return file;
 
 
--- 
-Cheers,
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 080659ea7e62..1c6be54b2f08 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2399,6 +2399,23 @@ struct vfsmount *clone_private_mount(const struct path *path)
+ }
+ EXPORT_SYMBOL_GPL(clone_private_mount);
 
-David
++struct vfsmount *vfs_clone_kern_mount(const struct vfsmount *mnt)
++{
++       struct mount *new_mnt;
++
++       guard(namespace_shared)();
++
++       if (WARN_ON_ONCE(mnt->mnt_ns != MNT_NS_INTERNAL))
++               return ERR_PTR(-EINVAL);
++
++       new_mnt = clone_mnt(mnt, mnt->mnt_root, CL_PRIVATE);
++       if (IS_ERR(new_mnt))
++               return ERR_PTR(-EINVAL);
++
++       new_mnt->mnt_ns = MNT_NS_INTERNAL;
++       return &new_mnt->mnt;
++}
++
+ static void lock_mnt_tree(struct mount *mnt)
+ {
+        struct mount *p;
+diff --git a/include/linux/mount.h b/include/linux/mount.h
+index acfe7ef86a1b..8faa864d8f05 100644
+--- a/include/linux/mount.h
++++ b/include/linux/mount.h
+@@ -80,6 +80,7 @@ extern bool __mnt_is_readonly(const struct vfsmount *mnt);
+ extern bool mnt_may_suid(struct vfsmount *mnt);
+
+ extern struct vfsmount *clone_private_mount(const struct path *path);
++struct vfsmount *vfs_clone_kern_mount(const struct vfsmount *mnt);
+ int mnt_get_write_access(struct vfsmount *mnt);
+ void mnt_put_write_access(struct vfsmount *mnt);
+
+diff --git a/mm/memfd.c b/mm/memfd.c
+index ab5312aff14b..bffb5281e082 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -22,6 +22,9 @@
+ #include <uapi/linux/memfd.h>
+ #include "swap.h"
+
++static struct vfsmount *memfd_shm_mnt __ro_after_init;
++static struct vfsmount *__memfd_internal_mnt __ro_after_init;
++
+ /*
+  * We need a tag: a new tag would expand every xa_node by 8 bytes,
+  * so reuse a tag which we firmly believe is never set or cleared on tmpfs
+@@ -464,12 +467,13 @@ static struct file *alloc_file(const char *name, unsigned int flags)
+        int err = 0;
+
+        if (flags & MFD_HUGETLB) {
++               /* Do the same for hugetblfs. */
+                file = hugetlb_file_setup(name, 0, VM_NORESERVE,
+                                        HUGETLB_ANONHUGE_INODE,
+                                        (flags >> MFD_HUGE_SHIFT) &
+                                        MFD_HUGE_MASK);
+        } else {
+-               file = shmem_file_setup(name, 0, VM_NORESERVE);
++               file = shmem_file_setup_with_mnt(__memfd_internal_mnt, name, 0, VM_NORESERVE);
+        }
+        if (IS_ERR(file))
+                return file;
+@@ -522,3 +526,12 @@ SYSCALL_DEFINE2(memfd_create,
+        fd_flags = (flags & MFD_CLOEXEC) ? O_CLOEXEC : 0;
+        return FD_ADD(fd_flags, alloc_file(name, flags));
+ }
++
++void __init memfd_secret_init(const struct vfsmount *mnt)
++{
++       memfd_shm_mnt = vfs_clone_kern_mount(mnt);
++       if (ERR_PTR(memfd_shm_mnt)) /* leave memfd_shm_mnt as an error pointer so comparison against another mount always fails. */
++               __memfd_internal_mnt = mnt;
++       else
++               __memfd_internal_mnt = memfd_shm_mnt;
++}
 
