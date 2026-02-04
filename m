@@ -4,82 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60AA7E9538D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 12:00:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EB2EE9538C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Feb 2026 12:01:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4FA96B00AD; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
+	id 75BF46B00AE; Wed,  4 Feb 2026 07:01:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1C756B00AE; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
+	id 729736B00B0; Wed,  4 Feb 2026 07:01:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B50396B00AF; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
+	id 65C1E6B00B1; Wed,  4 Feb 2026 07:01:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A24796B00AD
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:00:24 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E5B46B00AE
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 07:01:16 -0500 (EST)
 Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 43AFF140148
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:00:24 +0000 (UTC)
-X-FDA: 84406631568.02.585E964
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 0412C40005
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:00:21 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fmE7uI6q;
-	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 137A4140125
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:01:16 +0000 (UTC)
+X-FDA: 84406633752.02.3EF4411
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CE36A180017
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 12:01:13 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770206422;
+	s=arc-20220608; t=1770206474;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L7b7/ObJFuGII2AQCCO0slNHZyckJAjLIqJeasqhJKw=;
-	b=U2Ssf55QbfK8cp0o3vP1aVTihz3P0oB3Bd+1CBNYGyrZxxUOx8YpqWCexP3eaXr3DJBc92
-	xj4Z6CUZDKn3W0GiczpojvgY4N/rbZ/jSO0ew7X14QNzloRRTAhm1AkXCcX2wJK2eLaZr6
-	K+Mfpn5nzGMqGF5y84pYawr2YR4kuBY=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fmE7uI6q;
-	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206422; a=rsa-sha256;
-	cv=none;
-	b=Oeg+QZ+wbA4lToT83qnIpV1dGlWXzO+ng5FfDLzG8fseKlqAc4Pls/1VtyN4EyrhTOR90i
-	XhfSgxMKrncmnSc9OPYAEz+RLsjsu5T4chZSuELu2QU51SKyKW17ZThc9crVFTuUHd5oxW
-	OF/Jw/Hgm8z4s4Uw9hK8BMvxDSnBCpk=
-Date: Wed, 4 Feb 2026 20:00:05 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770206419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L7b7/ObJFuGII2AQCCO0slNHZyckJAjLIqJeasqhJKw=;
-	b=fmE7uI6qXms647X2X2mafRw2ZoAjGy/82UxM/h4Bn24SKXKOF2TBTIsLTaVn4njlehBYyj
-	oPQpOMIa5dzWcxDkfoZ/DeO0UfvOd+o2nd3iSj4yKrkmBsQ7JqhaLzAQqM3iCL0lgnV7OM
-	65lek+iT/9hpFCr4lLMNcx3Bu4UGPPw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Hao Ge <hao.ge@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/slab: Add alloc_tagging_slab_free_hook for
- memcg_alloc_abort_single
-Message-ID: <75a2obu7fk4t2h5wj54gkbtyie4pdenw4mzecmmsgzwbhvxfmy@7mrdfx5q5p3h>
-References: <20260204101401.202762-1-hao.ge@linux.dev>
+	bh=9STnT2nrZmYVSIlFr44Osf27PJ5zv0m7V76gLTlp6UQ=;
+	b=vboYY/t+FIftI8YZJAfcRfQFMvfwY8YkuHHDNwCE3mH1L0bJi/xeFQFTAByaeATdNI4WSY
+	3EF9PkI2ctsjVxCGJlrX6OG7F+VfBzbJXoyzmMspzgqb3Rx+e5Z9SHzkm4Y0hbIX6EPiNg
+	9QNazWmEWDN8ZvTgAafZ2DweDmCr8Nw=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770206474; a=rsa-sha256;
+	cv=none;
+	b=0TD9YCEeSsxo80t+/RlVOlUuQxZXUP5Es1mvVh6J23IYr/DnFG8w7VvN0ANxx/a7/vbi9H
+	rNPt79utkgNG0sdf9e/mWy/dbkKyrgUMQnWDl8qhCIzpHq2OT+v9LwNsjA6rHnSAAM/07O
+	2Wqj5SfPpDQvsxHnxo6k1e2mDtJO3SQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 43F89339;
+	Wed,  4 Feb 2026 04:01:06 -0800 (PST)
+Received: from [10.164.136.46] (unknown [10.164.136.46])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 83A6C3F632;
+	Wed,  4 Feb 2026 04:01:06 -0800 (PST)
+Message-ID: <0dff358a-9308-4ef4-b3d8-aa5f9ab3dcd9@arm.com>
+Date: Wed, 4 Feb 2026 17:31:03 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204101401.202762-1-hao.ge@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0412C40005
-X-Stat-Signature: kowiawuszc4tgn4ms87t18en3are6npg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 00/12] mm: PUD (1GB) THP implementation
+From: Dev Jain <dev.jain@arm.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Usama Arif <usamaarif642@gmail.com>
+Cc: ziy@nvidia.com, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ kas@kernel.org, baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ vbabka@suse.cz, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <20260202005451.774496-1-usamaarif642@gmail.com>
+ <e65bc740-8e20-452c-b66f-0e13cd4e9c59@lucifer.local>
+ <2efaa5ed-bd09-41f0-9c07-5cd6cccc4595@gmail.com>
+ <b07a8d54-75f2-4d77-838a-7454ad559cd2@lucifer.local>
+ <a9e0a6bd-46b5-41f8-be50-03300f938bf2@arm.com>
+Content-Language: en-US
+In-Reply-To: <a9e0a6bd-46b5-41f8-be50-03300f938bf2@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: z8gzibzytafi1e664x64xx5r9pxquaw4
+X-Rspamd-Queue-Id: CE36A180017
 X-Rspam-User: 
-X-HE-Tag: 1770206421-251517
-X-HE-Meta: U2FsdGVkX19DXs1LYU26gGz0RIBj4bjEntqDt0LzC3QaeNkPxt4UcbKizsYG8uwYxsY9sC5xWaPpBYIm6DBCaDTKwbsnt1/+iUYW48/zxCzjIrp0xhmciDx2s8hpaueQ8VE7soFTXyKSGP9Kx8Wq8MzzHAbF2sQoSTmKN1W8bWyEWmsTPZ2rOgL2oEzetnZJc1m7F2DmS3HXbsvJF40WWDwAJ8MFF7ZwDsTh9fmzoMBfgS5QmVg1y5U1lHm2udv20uPQc9P0WT0PsAjAl5FOfsd9jmP/oSod49wFRRwBbPUX37kP0HWh5aDCqPSDl0RA2yWjBf3/B+QbMtPM/3xuWRXJXNG1zlGba3WtB8qL1/DYMJ2iZbdJ0hKHphncl2RTLSybijBO8q+EKBxhd7qSn7MaIKOBfp6oiQFd3iuRgyN6RnFMUb0MZciF9bW5tB85oL85lrKALr2Aq64/P16egHekJeXh6yIeK26HCWxn7C+yhPxc7+y/lyQ/kgJCXOD3CzSHUe3GztqTNqeWyHOpwkicWOlAfxZ4cKrBo7qBmgUGlfy21d2dejCesvjh8B3EXsC7p8o/SFBRL6HL4w5c00IIR/2hdrBGSbq4cjo4xZn7kei0tNGyRFOAFCA9ISzrII2CdZev8Sn16zcjjltn9vuTLbAIZobNDYlnzdqT1fTi9TG7l00jQaPyGRYSFi+vWEl4zeB3jdfWNSDtN9dMIWbXxXUL+uLX/eupY8pubz06yZ8LQ/Fs79n+thbxJlHA2swJl1JFNBhGOSZ/z37zrz2yLOysMPNz01lUDrI3KfDQ30hM2Fv1MmFLnZ7yxGCL3uY+1+H7Sqcma9xqOB7WJtkB43KhjzQMuWw2v/2zJ0rWM7KEJGoB3HtT5/CO0f7NT5LxvJCaHFNSSLS/DC629XXnq7K76D9a
+X-HE-Tag: 1770206473-966723
+X-HE-Meta: U2FsdGVkX1/9lHX5CnedS4+OlfNJRbW96xjvWWKh5AMrLhW8k1ReiL99sFVoyjNG93x3XE3qJL3+3lg/sdz6iZsaVqa4P+7meowN7Qw/B+rRsXt/PpDCzvl4MyN+dvwQNQzaKYPMo8w2dthT3mQOTI/LXUM/w251qvpItz032HO+gulcG66aURpHJZuiKbOkuMjZ9l2JcDe+TPJP5VwbA7elvoL5sJNlZ7PbqlcmEZTjiE4U2+1Md12BNNYH5LEa+R7VRZ+vlXLendWw7Sk4R2N2sbnz+I5SKXRrvOAY1rPlUqY0BrwcyYeJwI/kJA4nj2hTw9I+q+DOPgIorfLbY4k3djSM0x9vfGge3Qv8sWqOg/jfyUlU5CKAqKLVl/UQleqBCW4/wbf6UWnrhVPw8NYa8IaYnNgQV8xlmRn9uzoaz8JpRSXMFdGIGpX/BBqNaSZLAjAktSVViwA/Z+imByu31HymgW/T5rDk/rXM4vfREEMqw1HL8coF6Hwpr9D0ACwLkCV7ZlfxYi2NKh1ssA0h0oodtsn4/4idBfFCCvgKJ/dNCGpIxqLt91R4DXWCHOwFgC12tZ4ZFmNAAGHe4BEUsNtoLYvIlORsoKeFSPszLllLN3p40tIUtpCJr2mEm99w2r+QEP16Ld7VRzMRpfB54B1hY6cn+jRwHDw6frke6dUu98Rw9x9sTqo49bQdwXVG8atlVIvqTGG+tduRbvVvxuP5xgYTFY5OUHmDv21GwQVNwNVAmpewoi5y4zm+WnKceBcZUukcp1xZAk5MDG0wCvagEf63BlfMH+tJGAP0XD+TdvmF1KhJzNpiiOlMBaoUN3u6s0HiDIw2O9P4jreXhbqhEpEJyRTUbBX5QCJ3bf/TQeawKlgtR11tIL4OVxvufyIenMImawilyu0MrZRmpxg9EmPdrPOF05oz99h4ug3s6RUfNORKOQ/JCtxspjge55kVN7H7Vk/RBJK
+ kN/2y36f
+ 35HONDrEw+N93nRml9NXeuOnombcZ7iPa1ygKPKJkSBL8oct03vDtm4iMZGPUL8bb3Zuk5TQ1ND+uhNljDPw3VZoNsC9Sfcyk4H96SLzdr2PzS3rIVMrI+As7bIK0ccsU/Rf2MIj9uVHP5iYoF0xJqr53qpnEcVFxCC7IFY9xc9lXw22+6UZyWxIK5K4/DP2VlKTRk3Ggc7W/PzYj1aiss80pBa1ho/S0XSqU7JsRzB8AQY2J5byVzTrJEx8UlKIamjAmPTCMs1zsbxb4+1duMNmmpw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,101 +95,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 04, 2026 at 06:14:01PM +0800, Hao Ge wrote:
-> When CONFIG_MEM_ALLOC_PROFILING_DEBUG is enabled, the following warning
-> may be noticed:
-> 
-> [ 3959.023862] ------------[ cut here ]------------
-> [ 3959.023891] alloc_tag was not cleared (got tag for lib/xarray.c:378)
-> [ 3959.023947] WARNING: ./include/linux/alloc_tag.h:155 at alloc_tag_add+0x128/0x178, CPU#6: mkfs.ntfs/113998
-> [ 3959.023978] Modules linked in: dns_resolver tun brd overlay exfat btrfs blake2b libblake2b xor xor_neon raid6_pq loop sctp ip6_udp_tunnel udp_tunnel ext4 crc16 mbcache jbd2 rfkill sunrpc vfat fat sg fuse nfnetlink sr_mod virtio_gpu cdrom drm_client_lib virtio_dma_buf drm_shmem_helper drm_kms_helper ghash_ce drm sm4 backlight virtio_net net_failover virtio_scsi failover virtio_console virtio_blk virtio_mmio dm_mirror dm_region_hash dm_log dm_multipath dm_mod i2c_dev aes_neon_bs aes_ce_blk [last unloaded: hwpoison_inject]
-> [ 3959.024170] CPU: 6 UID: 0 PID: 113998 Comm: mkfs.ntfs Kdump: loaded Tainted: G        W           6.19.0-rc7+ #7 PREEMPT(voluntary)
-> [ 3959.024182] Tainted: [W]=WARN
-> [ 3959.024186] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-> [ 3959.024192] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [ 3959.024199] pc : alloc_tag_add+0x128/0x178
-> [ 3959.024207] lr : alloc_tag_add+0x128/0x178
-> [ 3959.024214] sp : ffff80008b696d60
-> [ 3959.024219] x29: ffff80008b696d60 x28: 0000000000000000 x27: 0000000000000240
-> [ 3959.024232] x26: 0000000000000000 x25: 0000000000000240 x24: ffff800085d17860
-> [ 3959.024245] x23: 0000000000402800 x22: ffff0000c0012dc0 x21: 00000000000002d0
-> [ 3959.024257] x20: ffff0000e6ef3318 x19: ffff800085ae0410 x18: 0000000000000000
-> [ 3959.024269] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
-> [ 3959.024281] x14: 0000000000000000 x13: 0000000000000001 x12: ffff600064101293
-> [ 3959.024292] x11: 1fffe00064101292 x10: ffff600064101292 x9 : dfff800000000000
-> [ 3959.024305] x8 : 00009fff9befed6e x7 : ffff000320809493 x6 : 0000000000000001
-> [ 3959.024316] x5 : ffff000320809490 x4 : ffff600064101293 x3 : ffff800080691838
-> [ 3959.024328] x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000d5bcd640
-> [ 3959.024340] Call trace:
-> [ 3959.024346]  alloc_tag_add+0x128/0x178 (P)
-> [ 3959.024355]  __alloc_tagging_slab_alloc_hook+0x11c/0x1a8
-> [ 3959.024362]  kmem_cache_alloc_lru_noprof+0x1b8/0x5e8
-> [ 3959.024369]  xas_alloc+0x304/0x4f0
-> [ 3959.024381]  xas_create+0x1e0/0x4a0
-> [ 3959.024388]  xas_store+0x68/0xda8
-> [ 3959.024395]  __filemap_add_folio+0x5b0/0xbd8
-> [ 3959.024409]  filemap_add_folio+0x16c/0x7e0
-> [ 3959.024416]  __filemap_get_folio_mpol+0x2dc/0x9e8
-> [ 3959.024424]  iomap_get_folio+0xfc/0x180
-> [ 3959.024435]  __iomap_get_folio+0x2f8/0x4b8
-> [ 3959.024441]  iomap_write_begin+0x198/0xc18
-> [ 3959.024448]  iomap_write_iter+0x2ec/0x8f8
-> [ 3959.024454]  iomap_file_buffered_write+0x19c/0x290
-> [ 3959.024461]  blkdev_write_iter+0x38c/0x978
-> [ 3959.024470]  vfs_write+0x4d4/0x928
-> [ 3959.024482]  ksys_write+0xfc/0x1f8
-> [ 3959.024489]  __arm64_sys_write+0x74/0xb0
-> [ 3959.024496]  invoke_syscall+0xd4/0x258
-> [ 3959.024507]  el0_svc_common.constprop.0+0xb4/0x240
-> [ 3959.024514]  do_el0_svc+0x48/0x68
-> [ 3959.024520]  el0_svc+0x40/0xf8
-> [ 3959.024526]  el0t_64_sync_handler+0xa0/0xe8
-> [ 3959.024533]  el0t_64_sync+0x1ac/0x1b0
-> [ 3959.024540] ---[ end trace 0000000000000000 ]---
-> 
-> When __memcg_slab_post_alloc_hook() fails, there are two different
-> free paths depending on whether size == 1 or size != 1. In the
-> kmem_cache_free_bulk() path, we do call alloc_tagging_slab_free_hook().
-> However, in memcg_alloc_abort_single() we don't, the above warning will be
-> triggered on the next allocation.
-> 
-> Therefore, add alloc_tagging_slab_free_hook() to the
-> memcg_alloc_abort_single() path.
-> 
-> Fixes: 9f9796b413d3 ("mm, slab: move memcg charging to post-alloc hook")
-> Suggested-by: Hao Li <hao.li@linux.dev>
-> Signed-off-by: Hao Ge <hao.ge@linux.dev>
-> ---
-> v2: Hao Li correctly pointed out the root cause of this problem.
->     Per his suggestion, this patch adds the missing hook call.
->     Many thanks to him for the thorough analysis.
-> ---
->  mm/slub.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index f77b7407c51b..452a92544c6a 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6689,6 +6689,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
->  static noinline
->  void memcg_alloc_abort_single(struct kmem_cache *s, void *object)
->  {
-> +	alloc_tagging_slab_free_hook(s, virt_to_slab(object), &object, 1);
 
-LGTM.
+On 04/02/26 5:20 pm, Dev Jain wrote:
+> On 04/02/26 4:38 pm, Lorenzo Stoakes wrote:
+>> On Tue, Feb 03, 2026 at 05:00:10PM -0800, Usama Arif wrote:
+>>> On 02/02/2026 03:20, Lorenzo Stoakes wrote:
+>>>> OK so this is somewhat unexpected :)
+>>>>
+>>>> It would have been nice to discuss it in the THP cabal or at a conference
+>>>> etc. so we could discuss approaches ahead of time. Communication is important,
+>>>> especially with major changes like this.
+>>> Makes sense!
+>>>
+>>>> And PUD THP is especially problematic in that it requires pages that the page
+>>>> allocator can't give us, presumably you're doing something with CMA and... it's
+>>>> a whole kettle of fish.
+>>> So we dont need CMA. It helps ofcourse, but we don't *need* it.
+>>> Its summarized in the first reply I gave to Zi in [1]:
+>>>
+>>>> It's also complicated by the fact we _already_ support it in the DAX, VFIO cases
+>>>> but it's kinda a weird sorta special case that we need to keep supporting.
+>>>>
+>>>> There's questions about how this will interact with khugepaged, MADV_COLLAPSE,
+>>>> mTHP (and really I want to see Nico's series land before we really consider
+>>>> this).
+>>> So I have numbers and experiments for page faults which are in the cover letter,
+>>> but not for khugepaged. I would be very surprised (although pleasently :)) if
+>>> khugepaged by some magic finds 262144 pages that meets all the khugepaged requirements
+>>> to collapse the page. In the basic infrastructure support which this series is adding,
+>>> I want to keep khugepaged collapse disabled for 1G pages. This is also the initial
+>>> approach that was taken in other mTHP sizes. We should go slow with 1G THPs.
+>> Yes we definitely want to limit to page faults for now.
+>>
+>> But keep in mind for that to be viable you'd surely need to update who gets
+>> appropriate alignment in __get_unmapped_area()... not read through series far
+>> enough to see so not sure if you update that though!
+>>
+>> I guess that'd be the sanest place to start, if an allocation _size_ is aligned
+>> 1 GB, then align the unmapped area _address_ to 1 GB for maximum chance of 1 GB
+>> fault-in.
+>>
+>> Oh by the way I made some rough THP notes at
+>> https://publish.obsidian.md/mm/Transparent+Huge+Pages+(THP) which are helpful
+>> for reminding me about what does what where, useful for a top-down view of how
+>> things are now.
+>>
+>>>> So overall, I want to be very cautious and SLOW here. So let's please not drop
+>>>> the RFC tag until David and I are ok with that?
+>>>>
+>>>> Also the THP code base is in _dire_ need of rework, and I don't really want to
+>>>> add major new features without us paying down some technical debt, to be honest.
+>>>>
+>>>> So let's proceed with caution, and treat this as a very early bit of
+>>>> experimental code.
+>>>>
+>>>> Thanks, Lorenzo
+>>> Ack, yeah so this is mainly an RFC to discuss what the major design choices will be.
+>>> I got a kernel with selftests for allocation, memory integrity, fork, partial munmap,
+>>> mprotect, reclaim and migration passing and am running them with DEBUG_VM to make sure
+>>> we dont get the VM bugs/warnings and the numbers are good, so just wanted to share it
+>>> upstream and get your opinions! Basically try and trigger a discussion similar to what
+>>> Zi asked in [2]! And also if someone could point out if there is something fundamental
+>>> we are missing in this series.
+>> Well that's fair enough :)
+>>
+>> But do come to a THP cabal so we can chat, face-to-face (ok, digital face to
+>> digital face ;). It's usually a force-multiplier I find, esp. if multiple people
+>> have input which I think is the case here. We're friendly :)
+>>
+>> In any case, conversations are already kicking off so that's definitely positive!
+>>
+>> I think we will definitely get there with this at _some point_ but I would urge
+>> patience and also I really want to underline my desire for us in THP to start
+>> paying down some of this technical debt.
+>>
+>> I know people are already making efforts (Vernon, Luiz), and sorry that I've not
+>> been great at review recently (should be gradually increasing over time), but I
+>> feel that for large features to be added like this now we really do require some
+>> refactoring work before we take it.
+>>
+>> We definitely need to rebase this once Nico's series lands (should do next
+>> cycle) and think about how it plays with this, I'm not sure if arm64 supports
+>> mTHP between PMD and PUD size (Dev? Do you know?) so maybe that one is moot, but
+> arm64 does support cont mappings at the PMD level. Currently, they are supported
+> for kernel pagetables, and hugetlbpages. You may search around for "CONT_PMD" in
+> the codebase. Hence it only supports cont PMD in the "static" case, there is
+> no dynamic folding/unfolding of the cont bit at the PMD level, which mTHP requires.
+>
+> I see that this patchset splits PUD all the way down to PTEs. If we were to split
+> it down to PMD, and add arm64 support for dynamic cont mappings at the PMD level,
+> it will be nicer. But I guess there is some mapcount/rmap stuff involved
+> here stopping us from doing that :(
 
-Minor nit: It would be cleaner to store the result of `virt_to_slab(object)` in a local
-variable and reuse it in the code that follows.
+Hmm, this won't make a difference w.r.t cont PMD. If we were to split PUD folio
+down to PMD folios, we won't get cont PMD. But yes, in general PMD mappings
+are nicer.
 
-If you end up sending a v3, feel free to add:
-Reviewed-by: Hao Li <hao.li@linux.dev>
-
-> +
->  	if (likely(slab_free_hook(s, object, slab_want_init_on_free(s), false)))
->  		do_slab_free(s, virt_to_slab(object), object, object, 1, _RET_IP_);
->  }
-> -- 
-> 2.25.1
-> 
+>
+>> in general want to make sure it plays nice.
+>>
+>>> Thanks for the reviews! Really do apprecaite it!
+>> No worries! :)
+>>
+>>> [1] https://lore.kernel.org/all/20f92576-e932-435f-bb7b-de49eb84b012@gmail.com/#t
+>>> [2] https://lore.kernel.org/all/3561FD10-664D-42AA-8351-DE7D8D49D42E@nvidia.com/
+>> Cheers, Lorenzo
+>>
 
