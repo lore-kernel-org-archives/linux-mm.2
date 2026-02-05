@@ -4,142 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C04E2E91287
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 07:23:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1310E91289
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 07:29:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0C5026B009D; Thu,  5 Feb 2026 02:23:51 -0500 (EST)
+	id A69226B0005; Thu,  5 Feb 2026 02:29:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 073E86B009E; Thu,  5 Feb 2026 02:23:50 -0500 (EST)
+	id A40BD6B0089; Thu,  5 Feb 2026 02:29:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE4B16B009F; Thu,  5 Feb 2026 02:23:50 -0500 (EST)
+	id 915F06B0092; Thu,  5 Feb 2026 02:29:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CCC2E6B009D
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 02:23:50 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9056F140402
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:23:50 +0000 (UTC)
-X-FDA: 84409563420.02.575FB23
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0A480140002
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:23:47 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VYjDcr3x;
-	spf=pass (imf09.hostedemail.com: domain of yilun.xu@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E6D36B0005
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 02:29:03 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 200F5160458
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:29:03 +0000 (UTC)
+X-FDA: 84409576566.30.46AB2AD
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4178C180009
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:28:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=4EpXynxz;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770276228;
+	s=arc-20220608; t=1770276541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6Hk694WXrry5fbSrFAvG80ABK+iq2sEw5lG4fv+F3pg=;
-	b=4I3s/Sv7PFbzAOJVGBwaNC9bGQTHyvmeFIG3WwW7X5vwzC0UAiA5+uIfDyWvViNe/fZ4a2
-	q7HOp68q6tBUt3V8Ye8McCwmAjVtNUN+Mpk+3BYMhFwRUvVvPuGmLsxFfse23BALzypsqX
-	+CI/CqC8gAcgRHpSpLx21azUPGFIaTA=
+	bh=9gE+wocAEYGAhpH+Qx7f17X+XfuZxkf0I1SRp2D88Ss=;
+	b=SgF+uDtjIcTZjCJ/eRJJWifpDzo+HqODUclhERuvI+/Cxsat77KBruQoIOXPOgTUMiWfw6
+	ReaZTxBkE08vloNe/PQXJOD/XHlX9/YdgyPTeW9fodOPBtvK6Ch45ODUspV59eocb9rB3O
+	CXrmXcKcFo6Hw3Fr7Rub5Upp7ffGgyM=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=VYjDcr3x;
-	spf=pass (imf09.hostedemail.com: domain of yilun.xu@linux.intel.com designates 198.175.65.14 as permitted sender) smtp.mailfrom=yilun.xu@linux.intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770276228; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=4EpXynxz;
+	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770276541; a=rsa-sha256;
 	cv=none;
-	b=pafIUiVqe632egYi2ySKzmSsxvIUpwBkio8a0PtTrWRlLULYS8jxPxCPdKJWQzEkQgqjiI
-	bPratmBS4WeMr0HcpU1dOuXn0eBPCbBFN8zy8iii+Gmo3NyUmy7hZGbzMpVHNrVAgjG9B3
-	ZtIPprf74+y6eYfFwcmjU00Q+XBfYKo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770276228; x=1801812228;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=FgmZNaT1AJdOs3lof3+rnMI62Gul05tMmOYxnVyfbkM=;
-  b=VYjDcr3x5+DFd7ZAKcn2QeYY1YWWcCbUsOKwMBUpBz4vvwn9XfQw9IHm
-   WggexHTVcolIrJw3S7aMTSkJ07aEs6TapnKA9p6E86BRSyksOQ46+q2E8
-   cxxDxqCh05coU/mIplx94/VB8IhS2YqI3ejg9JpKTuPLHqR4thFr9Enw6
-   gNy2H5HEHG9qJrySIAzyQCoCVu/ZDBm+JvbqmFyx6bHG6wsX4P85S+ysn
-   qT2NcVCC9mqH+x2Cp8kK1SsGthwUykJhD7ERVeNcih0i8GW1VZg1kGl+y
-   OcErM0qVf213oZfwORKk4AFNfiExgcAYpgpPwhTlCXo7qtjXnrfp/kngB
-   g==;
-X-CSE-ConnectionGUID: vXEvR6jzR2ibnfZnPZF3AQ==
-X-CSE-MsgGUID: PRVdfWoySw2wzZ3559wAAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="75322739"
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="75322739"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 23:23:44 -0800
-X-CSE-ConnectionGUID: w4M3nSSLQ/mBj1j0Il6KlQ==
-X-CSE-MsgGUID: NkzCqGaoSdu69QFLY8HZpA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="214913923"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa005.fm.intel.com with ESMTP; 04 Feb 2026 23:23:21 -0800
-Date: Thu, 5 Feb 2026 15:04:48 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Sean Christopherson <seanjc@google.com>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Alexey Kardashevskiy <aik@amd.com>, cgroups@vger.kernel.org,
-	kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, x86@kernel.org,
-	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com,
-	hannes@cmpxchg.org, hch@infradead.org, hpa@zytor.com,
-	hughd@google.com, ira.weiny@intel.com, isaku.yamahata@intel.com,
-	jack@suse.cz, james.morse@arm.com, jarkko@kernel.org,
-	jgowans@amazon.com, jhubbard@nvidia.com, jroedel@suse.de,
-	jthoughton@google.com, jun.miao@intel.com, kai.huang@intel.com,
-	keirf@google.com, kent.overstreet@linux.dev,
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
-	mail@maciej.szmigiero.name, maobibo@loongson.cn,
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com,
-	mingo@redhat.com, mlevitsk@redhat.com, mpe@ellerman.id.au,
-	muchun.song@linux.dev, nikunj@amd.com, nsaenz@amazon.es,
-	oliver.upton@linux.dev, palmer@dabbelt.com, pankaj.gupta@amd.com,
-	paul.walmsley@sifive.com, pbonzini@redhat.com, peterx@redhat.com,
-	pgonda@google.com, prsampat@amd.com, pvorel@suse.cz,
-	qperret@google.com, richard.weiyang@gmail.com,
-	rick.p.edgecombe@intel.com, rientjes@google.com,
-	rostedt@goodmis.org, roypat@amazon.co.uk, rppt@kernel.org,
-	shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
-	steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
-	tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
-	vbabka@suse.cz, viro@zeniv.linux.org.uk, vkuznets@redhat.com,
-	wei.w.wang@intel.com, will@kernel.org, willy@infradead.org,
-	wyihan@google.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com,
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Subject: Re: [RFC PATCH v1 05/37] KVM: guest_memfd: Wire up
- kvm_get_memory_attributes() to per-gmem attributes
-Message-ID: <aYRBEJSan8eoT8xw@yilunxu-OptiPlex-7050>
-References: <cover.1760731772.git.ackerleytng@google.com>
- <071a3c6603809186e914fe5fed939edee4e11988.1760731772.git.ackerleytng@google.com>
- <07836b1d-d0d8-40f2-8f7b-7805beca31d0@amd.com>
- <CAEvNRgEuez=JbArRf2SApLAL0usv5-Q6q=nBPOFMHrHGaKAtMw@mail.gmail.com>
- <20260129003753.GZ1641016@ziepe.ca>
- <aXqx3_eE0rNh6nP0@google.com>
- <aYHGVQTF6RUs7r3g@yilunxu-OptiPlex-7050>
- <20260203181618.GY2328995@ziepe.ca>
- <aYLOZIZU0nwk+0UN@yilunxu-OptiPlex-7050>
- <20260204124715.GA2328995@ziepe.ca>
+	b=nT1AvEqpLKQpn4/4uOn7sbOHoWR7USLyj4YQOf+uW7huOsv394SHgdLBuBiFZtS8CXM15X
+	Wi8xqLfysRhVfqoqBwNdMsS0NhP+/ZW3y1alTgucR60w9/A8TCJWT2SHh5pU6K4I+x0Cy8
+	G34NTHJMsBKQdcDnpJo674oDbaCF7RQ=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=9gE+wocAEYGAhpH+Qx7f17X+XfuZxkf0I1SRp2D88Ss=;
+	b=4EpXynxzOMmyGsO+mz1AV4zK9QxsASNxG3WgHKFUWAKKgH7TXVu+uqq28/0gvmzW1RySs69SW
+	W0//IlhBtx304X3nXsCZtvfswyZXNHObTWYbBOlZ4PeRgvnRnc8HZkv4hPnXSWqVwC521dEOSkg
+	QtuNW+SLojLNNglXYbViLVs=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4f67lM5w00z12LDJ;
+	Thu,  5 Feb 2026 15:14:55 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7C9554056E;
+	Thu,  5 Feb 2026 15:18:45 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 5 Feb 2026 15:18:45 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 5 Feb 2026 15:18:44 +0800
+Subject: Re: WARNING in memory_failure() at include/linux/huge_mm.h:635
+ triggered
+To: Zi Yan <ziy@nvidia.com>, <jane.chu@oracle.com>
+CC: "David Hildenbrand (arm)" <david@kernel.org>, =?UTF-8?B?5piv5Y+C5beu?=
+	<shicenci@gmail.com>, <linux-mm@kvack.org>, <akpm@linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>
+References: <PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
+ <b9e89c85-807c-4a8b-aa5c-8c1325e75445@kernel.org>
+ <1db245a8-f9ab-42e4-8cc6-cc7562961921@kernel.org>
+ <48978612-6933-4897-85DD-6740B6C8570B@nvidia.com>
+ <25CA4D90-A24E-49C6-92D2-08080EC81466@nvidia.com>
+ <032058DC-CD8D-406A-B986-740E41C834B2@nvidia.com>
+ <e97d5c0c-b8ec-4da4-b838-7a308f8a6327@kernel.org>
+ <61BBEF63-20D6-4671-B7F7-F015D49B2080@nvidia.com>
+ <1bfc9e64-2961-4d2c-a6c3-fb123f66e6cc@kernel.org>
+ <94DAA11B-597F-4F8F-AFFF-9D7626A7C091@nvidia.com>
+ <7d5754dd-8cf5-41f3-a767-271b28b1f63c@oracle.com>
+ <c5206f67-1e9e-d487-3514-8867f00cc626@huawei.com>
+ <85CB7DEA-79EE-43EE-BA9B-C2AC81F6FA02@nvidia.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <225f0193-e27d-bad7-56ec-09cdaed64f71@huawei.com>
+Date: Thu, 5 Feb 2026 15:18:44 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204124715.GA2328995@ziepe.ca>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0A480140002
-X-Stat-Signature: cparuqawbtmfmkkfzaw4bw1u3198sbyh
+In-Reply-To: <85CB7DEA-79EE-43EE-BA9B-C2AC81F6FA02@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4178C180009
+X-Stat-Signature: cwtqgaaopbf48odu3uqa9kmwy57pr998
 X-Rspam-User: 
-X-HE-Tag: 1770276227-86163
-X-HE-Meta: U2FsdGVkX1/wuIaVk6LKMAezO4ptrlyPDR1EXrC+GeNFubQSQ+dqEJ6rBPYAqxggQZYfRtanIyvV28ycRsUxW2rKElUBDIUzbpGHKsAMh0KGM6u+zwG2HleVi3B1UfZRMouN9fuq+GntSjrvz1diEg1tIb7/uhI1DFtlC9w8q3qM5DYiCSFOrkF7X7yVujzNkfVox8A2k8/0bcN/mnv82rnQJ6A7aaQNLUY9MmnDNJL6oq0PDMC0WBZGn2Xi4RQ0R7vbmYV7vNnUs2LuoEcvdOQHSQvVoAcRcT7GdavEdwlyD58M726M02g6CW2226IsD5ShStfM2SBo/onHhqfJjhS59UAbqBrFce6mfpoNpNNaDrZc5GV8bTt/WfZMis4SJ7lKRbq8nUx+JucxMVBgoqJyh8q9CAODwtj1dNbClvnRZXreL83T3CqXXLnzxCJbUsdLYAdVQkxZaj8ZqXr2qX2egqwka86AcecVnOLVR95V434lQMz+f4n4UMe8tyXW2k4mN8WGLl9fADZCpVf7OR4w0d5bLUz/IJtP4t4eel404VVNVPQKkHQfvmYGXciyHD+0UeTIaSyGZB2tK0ylMiNrBYXPQquup97Jvde51KFfmW3YoPARxdAsnG/53vytauQNMnhZ2re8riF44gvd+2AJg3hAMCMQdD5bHmX853VBsxJVrLO++zHXKUU8ifhRHCHTggQ4o774lqNy5quFxhhrQVQH2V72CoAvCqeuNEwJ+sBtB0u0PKaew46EKbcxu7LVC8HooU2s9Vsk6cHVmd1yFB8TCY1veNQGk2LkWVToiFspcyWLzCkE+bXofmMwCmbV5uxchqsTeMwqrdXL1Ol/4kj0G7rT10Im9dNJcToz+uwTQhdVwxxcSurSRGgvY0fQb9zkP2TO5eODfxHHEampYFcZXRD0F51qq8bx1Dwq56xYMsKG+2GZUBTHy5s1RVWDHz+hfVsipqml9BJ
- fTTk/I8R
- YQdxY241sR4rFct1BpvqtmbB1owbwr4EbdlaF8W6JKCeVgkrFLuGJko37preqY3J59qEOM9wUyrgJ3bWLwXxuEtrJDEBRAza/RzB5R9qROmo99YmSr02K4wLypT/680FjDqrXXX17ze/fLvhSUs1Nj4popRnjeZZw2ViFoFlHg2JP6MtgTYpfiht1+RbsLA9xvjouwZRSJKOgkW7VDl5DMERtEQKnaNGQPC6E2aHtZv+TCeDRlfBWKRFUYKh4/2CGkZCHF1jbV7yutYM+0hlMcq5Pd8wLNjlD161zfApczKgtjAvqD13t4Cw7PXGvIrtwMlNCiRRwgkiiptSeNMhtJE/PsWDHTqqRs/4T
+X-HE-Tag: 1770276539-920062
+X-HE-Meta: U2FsdGVkX18kbcrt85FXooCfVZuIdhGduEmNVZsOoO8gwWkaWYPzwOWbbxS5q+LsX23KKI4z1LSOtxnHTsYDyLZi87SxBce5QLZ98zFNkT2gixvlE3XONYkd04leY2cnXLgu5ZFDu6pRTXOc/2MCOpOPIirNQGvz7wGWf8oNcENj4XXkfwkr5pdMZwHtV4lAt1FR2pU5bqKccb8sZqs4mwwJkyR4P2qc5mB4INDdKXdRIJVJhXi9Ag49p8RTtZ8qRCIUFn9Airt6UMSZ8Hk0BRmlnl58G3Otxv3N3/Lu7yjIQKpjE+Fr1jRbWuuE8UvV/c42LQwNC/AQavRdl0SM+00mIP9Uyrsnm90L0QJ9UMhcxS+xj3Na9ZbXuMtGA/EP5eETwAeVCj9aTiUyi0q8xVCQv+PgRSkgmJU49FSaLnykfBoJMIHPCH7+A5afggspx9C8yGCtMVbPcfhzceKo9ITRU1tgL/4XzSel4SaSIeWZ7XHS3akfd1iNkJeG6/fCz02Ar95kIj5hJDlF2LWVZ0JV/dwzu4nF3EbAiBFniiUXJ8UspW4SPV45hKwkCZStZr8a5CMTujyxrjilmomP/+BsdXLKSAsb9wcTYVrCRjDqwTdRtcIZ4KSFIMde5/aDmwuZHA+zRqUcDWCyql2MFIaZutfrzURjvEsX73qrgwOdQLcxlam1/x29co1NRp1LKYtOfZO1P2VNAqg+cq6SMGWwO40arOFwgTz802dIK2dCug3dtpo/R2bDvfVpcpyX4WWZ8W81XyXYGR0E3/qXcZG6iiJE5ZLIEwZRu6kj81zLVmB7Ck7fq+d4XpYg55lsAdC200sn+fn6L/QZQyDarTFWKo9T+KXjFq/Mw3+FkXhPTREWVKxtP/0yAeHOwq+MWZ7Wac7ai4KPo3AK1z4qDTjn4e43lWyNPnjkaxhJTBBD02DmkOn+/HhxPyYkkI2zfZN7pJeb5AHhbLBOwNJ
+ jSIYn882
+ zz2b3Lyq6OMzaB5aBUBlXTb3cshPcZo+kKc7vaOH0ofIg0ClnO8xfX72uyyFGHBgr1aJXmoboxdnQksHFhLebvUrPjXwDqeHgPjGBeV8sTu6unbOrFEMvMgMJUwJ9zZgdnctc8c9Rvjogjc6liPMITaX1uMs5rMt9+KtO3a3Y22KJyE/6qOQBm2nS7Eh8IgAsO810UMUXKH3IOcOw3H/4txWeAH2xRgxP3NtETBt5OfSWMXVBiPd+cQOZxu3UX2LM8H6Z9w+V5UHAX3WBcp0ZyZWISceEvOCbgf4L0/x9l5S+qOHdX7TSN1lXaPnGt7FhTLfmN+7gnqELKHb/8aLNbDbUqrxb/JJyEByWOPwTSlr+ERzBAH81APYeicNhDM60/tmj1uMh3Qxarq8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,29 +118,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 04, 2026 at 08:47:15AM -0400, Jason Gunthorpe wrote:
-> On Wed, Feb 04, 2026 at 12:43:16PM +0800, Xu Yilun wrote:
-> > > Which means we need VFIO to know what they are, and hopefully it is
-> > > just static based on the TDISP reports..
-> > 
-> > I don't think VMM need to check TDISP report. The only special thing is
-> > the MSI-X mixed pages which can be figured out by standard PCI
-> > discovery.
+On 2026/2/5 11:53, Zi Yan wrote:
+> On 4 Feb 2026, at 22:21, Miaohe Lin wrote:
 > 
-> Either that or follow along with the guests's choices on
-> shared/private.
+>> On 2026/2/5 10:00, jane.chu@oracle.com wrote:
+>>>
+>>>
+>>> On 2/4/2026 1:41 PM, Zi Yan wrote:
+>>>> On 4 Feb 2026, at 16:37, David Hildenbrand (arm) wrote:
+>>>>
+>>>>> On 2/4/26 22:08, Zi Yan wrote:
+>>>>>> On 4 Feb 2026, at 14:18, David Hildenbrand (arm) wrote:
+>>>>>>
+>>>>>>> On 2/4/26 18:41, Zi Yan wrote:
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> More details:
+>>>>>>>> later at sg_vma_fault(), the driver just handles a page fault by supplying
+>>>>>>>> a subpage from a pre-allocated compound page[3]. We then get a large folio
+>>>>>>>> without !CONFIG_TRANSPARENT_HUGEPAGE.
+>>>>>>>
+>>>>>>> We can identify such non-folio (but compound) things by looking at PG_large_rmappable IIRC.
+>>>>>>
+>>>>>> OK, back to the issue. The patch below should fix the issue?
+>>>>>>
+>>>>>> Hi 是参差,
+>>>>>>
+>>>>>> Can you test it?
+>>>>>>
+>>>>
+>>>> <snip>
+>>>>> I think you have to test for folio_test_large() before testing folio_test_large_rmappable().
+>>>>
+>>>> Oh, forgot that. Thanks.
+>>>>
+>>>>
+>>>>  From 8dda4bba9964890462eca3ef3cce57bb4fab8313 Mon Sep 17 00:00:00 2001
+>>>> From: Zi Yan <ziy@nvidia.com>
+>>>> Date: Wed, 4 Feb 2026 16:04:19 -0500
+>>>> Subject: [PATCH] mm/memory_failure: reject unsupported non-folio compound page
+>>>>
+>>>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>>>> ---
+>>>>   mm/memory-failure.c | 8 ++++++--
+>>>>   1 file changed, 6 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>>>> index 825c706ac576..137c67fda57e 100644
+>>>> --- a/mm/memory-failure.c
+>>>> +++ b/mm/memory-failure.c
+>>>> @@ -2440,9 +2440,13 @@ int memory_failure(unsigned long pfn, int flags)
+>>>>
+>>>>       folio = page_folio(p);
+>>>>
+>>>> -    /* filter pages that are protected from hwpoison test by users */
+>>>> +    /*
+>>>> +     * filter pages that are protected from hwpoison test by users
+>>>> +     * or unsupported non folio compound pages
+>>>> +     */
+>>>>       folio_lock(folio);
+>>>> -    if (hwpoison_filter(p)) {
+>>>> +    if (hwpoison_filter(p) ||
+>>>> +        (folio_test_large(folio) && !folio_test_large_rmappable(folio))) {
+>>>
+>>> Just curious, would this filter out pte-mapped THP/mTHP folios?
 > 
-> We can't let VFIO mmap a private MMIO page, so it has to know which
-> pages are private at any moment, and it can't guess.
-
-No we could only let VFIO mmap MMIO pages that need emulation (like this
-MSI-X mixed page). MMIOs in such page cannot be assigned to guest so no
-way to convert to private.
-
-We don't allow VFIO mmap all asigned MMIO pages, no matter they will be
-private or shared. They are assigned to guest, so host don't touch them.
-Does that make sense?
-
+> No. All folios (including pre-mapped/mTHP ones) are large_rmappable.
 > 
-> Jason
+>>
+>> Thanks all.
+>>
+>> memory_failure() can meet various types of folios. So in get_hwpoison_page(),
+>> HWPoisonHandlable() and PageHuge() are used to check whether the folio can
+>> be handled. But in madvise(MADV_HWPOISON) scene, MF_COUNT_INCREASED is set in
+>> flag, so this check is skipped and warning triggered. Might HWPoisonHandlable()
+>> check be always used to make sure the folio is in sane types? Something like
+>> below (i.e. remove the MF_COUNT_INCREASED check before calling get_hwpoison_page):
+>>
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index 825c706ac576..ba4231858a36 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -2411,31 +2411,29 @@ int memory_failure(unsigned long pfn, int flags)
+>>          * In fact it's dangerous to directly bump up page count from 0,
+>>          * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+>>          */
+>> -       if (!(flags & MF_COUNT_INCREASED)) {
+>> -               res = get_hwpoison_page(p, flags);
+>> -               if (!res) {
+>> -                       if (is_free_buddy_page(p)) {
+>> -                               if (take_page_off_buddy(p)) {
+>> -                                       page_ref_inc(p);
+>> -                                       res = MF_RECOVERED;
+>> -                               } else {
+>> -                                       /* We lost the race, try again */
+>> -                                       if (retry) {
+>> -                                               ClearPageHWPoison(p);
+>> -                                               retry = false;
+>> -                                               goto try_again;
+>> -                                       }
+>> -                                       res = MF_FAILED;
+>> -                               }
+>> -                               res = action_result(pfn, MF_MSG_BUDDY, res);
+>> +       res = get_hwpoison_page(p, flags);
+>> +       if (!res) {
+>> +               if (is_free_buddy_page(p)) {
+>> +                       if (take_page_off_buddy(p)) {
+>> +                               page_ref_inc(p);
+>> +                               res = MF_RECOVERED;
+>>                         } else {
+>> -                               res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+>> +                               /* We lost the race, try again */
+>> +                               if (retry) {
+>> +                                       ClearPageHWPoison(p);
+>> +                                       retry = false;
+>> +                                       goto try_again;
+>> +                               }
+>> +                               res = MF_FAILED;
+>>                         }
+>> -                       goto unlock_mutex;
+>> -               } else if (res < 0) {
+>> -                       res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+>> -                       goto unlock_mutex;
+>> +                       res = action_result(pfn, MF_MSG_BUDDY, res);
+>> +               } else {
+>> +                       res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+>>                 }
+>> +               goto unlock_mutex;
+>> +       } else if (res < 0) {
+>> +               res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+>> +               goto unlock_mutex;
+>>         }
+>>
+>>         folio = page_folio(p);
+>>
+>> Thanks.
+>> .
+> 
+> This makes sense to me. And it gets rid of the warning as well.
+> 
+> Can you send a proper patch of this?
+> 
+> Feel free to add
+> 
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Tested-by: Zi Yan <ziy@nvidia.com>
+
+Sure. Thanks for all of your work. :)
 
