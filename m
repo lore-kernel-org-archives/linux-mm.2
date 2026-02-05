@@ -4,115 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E766BEC1E9A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:04:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 707D8EC1E9D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:10:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 350E76B0098; Thu,  5 Feb 2026 06:04:14 -0500 (EST)
+	id A210A6B00A2; Thu,  5 Feb 2026 06:10:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D48A6B009B; Thu,  5 Feb 2026 06:04:14 -0500 (EST)
+	id 9CEAC6B00A3; Thu,  5 Feb 2026 06:10:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D34A6B009F; Thu,  5 Feb 2026 06:04:14 -0500 (EST)
+	id 8CD986B00A4; Thu,  5 Feb 2026 06:10:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C7A06B0098
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:04:14 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CA80B1C1E6
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:04:13 +0000 (UTC)
-X-FDA: 84410118786.06.A5CA63A
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C1FF6180016
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:04:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="0jhD/C/s";
-	spf=pass (imf24.hostedemail.com: domain of 3KXmEaQkKCIAepmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3KXmEaQkKCIAepmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B86F6B00A2
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:10:54 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18A6C140479
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:10:54 +0000 (UTC)
+X-FDA: 84410135628.20.E180EB4
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 5EDF51C0011
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:10:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bmGn13cj;
+	spf=pass (imf20.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770289451;
+	s=arc-20220608; t=1770289852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=89hL5xRbrc/VbCzks41N6CYINZBf+zOJ4ZeQZ8mSub0=;
-	b=vcGZNYYCgCXM+yY7+SMaST/ZoKTpRJTGg9AA5JAurKgBSrEy/e1mAsTXQG+WWHXkghitfm
-	uDKakSMry6h0VTm1t075qKC51zReeqn3s5Pe0ayFQhXoNjYx+1n5mHfx/QCHNYBRiowiEP
-	6ZyXvz3vfW1tMGuLZF1IBk6Zav4HbnQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=JAhAF/TqAOcdirEE4QbAA/umy1aPPDrVrZvLwEDbY00=;
+	b=eWp9k4yq3ssoJanPdxp9vD1jeX4YfkYarwnfRmX72mrHrw9i29p/IIo/GvOr7KNmEkI1oE
+	tFVD75VmTX61Qw9Zeshgb9L5R58MyGCiHWrAFWKCCWZTQZXV3S+3Ihmt6WeUzocdbDn6hb
+	nNYwk2k1wqiJnb/9L801OAh47ccSx+o=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="0jhD/C/s";
-	spf=pass (imf24.hostedemail.com: domain of 3KXmEaQkKCIAepmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3KXmEaQkKCIAepmgiv2lpksskpi.gsqpmry1-qqozego.svk@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770289451; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=bmGn13cj;
+	spf=pass (imf20.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770289852; a=rsa-sha256;
 	cv=none;
-	b=zDXck2nbqOFhCpG+0xhi091ITcA7Q8wJ9cDj9kE7ZwuVixOtLdeeGY/aQ/GwQkoHT+ZaVR
-	pscPpNwOZNfeZOqH7yNFcdAECj8oRnGWzNIREWd2JAUjn6+lT06OQVsVI+/HyZazbjsoXC
-	yW+S6FuxX+JnXzQWz2mRND4f7gYDc3k=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4806e7c4220so11261355e9.2
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 03:04:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770289450; x=1770894250; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=89hL5xRbrc/VbCzks41N6CYINZBf+zOJ4ZeQZ8mSub0=;
-        b=0jhD/C/sUf/ihR9jepADO36TbcqllsGyjndRteO57RmFQWgczkX+DaS3THL7651pDC
-         LJAs7EjPmN0pZD1Gef7hmybGgX3rXHqLSCBytETIu28YzWAn3o/8gLuvIWby2bcNx8JN
-         1jTWYZBhkOIMp8GYOdFwFn23x/TvJXGY2KByigfxxPNKq0rScJFr7CurojNgqcRksoJ7
-         LlAhF9XZlY+C/2bvsnrJ8OReU7fdl92RW5+CwKRXXGHKDCEqBXADp9yfJh0dEzSrMWSm
-         qaSKIHswTJHFadgNaCeriNurn5FlIRBK3xFmg1DTMWEhIHQm6ty7lD/LIhhpeQliizlu
-         Pdrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770289450; x=1770894250;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=89hL5xRbrc/VbCzks41N6CYINZBf+zOJ4ZeQZ8mSub0=;
-        b=nxUcqDP20tgLShBnvNTtsygc2+/9zGFBvC9XZKuHFVGxm/11Ar41k/HBntqQmxgEl4
-         TQMjkCqaedDFknRjgkqZS5ZoDMYt8mvGFu5zmHKX7IM/fZSoKXe9oKURok+sA2jY8Z6h
-         uUtoxTG2XBTREOct3jy4lqLi3JwHMN7YEtXdP/g6N+k191k7eIPZoWGBzdP0iJj8N0Zk
-         +ReYeRIqJKTbs17ITwaEiYwyWzud+jC48pB7AswzrMwshTcw+92jmRIPNdqodWmSLunM
-         x9CPuslPcxaUJwK4XO37kLTUS6IB5Fm5HO5T9E1U8XH5DOpNMVqsaWjqGGK3zd5Z41Bn
-         XLCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXHs4ahT6+iPwoo7vXCPb0EB5dzvy3sf6WbXkj8CFqUlF3T2f87k2YzP152SMAlSfcNBUoFguDSXA==@kvack.org
-X-Gm-Message-State: AOJu0YyqruFNFWe8YPZA/a3B6LTKMvvjMB4ht/A9WrtScGatiwXPBYR/
-	2PrIFx6NYfMWFqFIY+AVII2I2jkZ/qXBcwK+rQfEDyhUlnnXEu/45tw8Mx5/Q6CnqO4OeX7tZu4
-	O/BUxLcdsu2kqJrR1JQ==
-X-Received: from wmjt15.prod.google.com ([2002:a7b:c3cf:0:b0:479:2d82:5535])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:35d5:b0:47e:e8c2:905f with SMTP id 5b1f17b1804b1-4830e926302mr90738135e9.8.1770289449847;
- Thu, 05 Feb 2026 03:04:09 -0800 (PST)
-Date: Thu, 5 Feb 2026 11:04:07 +0000
-In-Reply-To: <d3dca137-2e4c-4a1a-bdec-63cc2477bfda@kernel.org>
-Mime-Version: 1.0
-References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
- <20260205-binder-tristate-v1-3-dfc947c35d35@google.com> <d3dca137-2e4c-4a1a-bdec-63cc2477bfda@kernel.org>
-Message-ID: <aYR5J0ip2MdD3nMP@google.com>
-Subject: Re: [PATCH 3/5] mm: export zap_page_range_single and list_lru_add/del
-From: Alice Ryhl <aliceryhl@google.com>
-To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Stat-Signature: 3hk1h46x5bm35nptgprkyp8jgpehj6oz
-X-Rspamd-Queue-Id: C1FF6180016
+	b=an1gQffDixkCRLr/NZ/hYXOQvunGoA15CX1xewZrQ9YKL0dhpMBRY5D7rR+gkinXBmetfe
+	WCXra8QpKNhqZJCbimxvov+sEMEjNDk/vZVk3BaufTug+3nysxN8MoVf49a7B1sph2f0Be
+	dewN0dAtZd8B1YZd2xxA9kuT3BKa/bI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770289852; x=1801825852;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=b1ZngIBgu7/voNCfGbRGo3ybVy950T6qMrS+/q00oy8=;
+  b=bmGn13cj8/prVQ/C9m4CM3BqLDn+dPvdIMBJ6eEDdc30dPv6+eNBv1fk
+   Mq/Za+0tCrW9ZTAa11IZT2EdDFj5tGi9lcFWYbl4ytRUon734H8Dq4/zx
+   t7WwIm1kY40edPxgeh81uegRcO6wYpZwXX4an6UTNcvImDFlKDc43BLEf
+   9EVVfErBJp2SpQBa6OP8zh/5O7I/dFwxvrJd5izVOU9lO42ILa6hAwTeQ
+   ySzTnF6nI80RUZpZOUjWLZNQ4if2GJx1EQ/jeZuNrf8qbAzhPTPl4w8wP
+   V4jNDu+K3cdws9FfsVQNFghpZ4Sb/66Xxvi9C17mImnAuPB+D2LLeOoD6
+   w==;
+X-CSE-ConnectionGUID: 7VRoeTA9Roi94YM+8iSjmA==
+X-CSE-MsgGUID: TyPI/ksgRfOlKzfETApm4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="94136080"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="94136080"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 03:10:50 -0800
+X-CSE-ConnectionGUID: tj475tctT8SCc8pMpUaVuA==
+X-CSE-MsgGUID: VNKoHmVzQ9CME6YhJjCwdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="248086185"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO fedora) ([10.245.244.93])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 03:10:46 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH v4] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Thu,  5 Feb 2026 12:10:28 +0100
+Message-ID: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5EDF51C0011
+X-Stat-Signature: yziqaredsh1a3pfzgunroaaxauhebsia
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770289451-608356
-X-HE-Meta: U2FsdGVkX19wtvJpCG2XfuZ0jYChDH9jU+BWpLnz6RzAgvaVCvEAY3q25nof1Al1G/1Vz5cxOFQN8sPe+ZI8vJQWooXnZR61XyzgDFwUTC1Zypfel84KodGFtaPePufyrlwr8wGKH/ODy4we36bwM+ldsebz0KCBwaAHVrxkUvvkg0XHVU0Jl34InVkxonPVCwXbR5pAQMYJCfAVHcxlWQHteo9RS97OYRiky+g+ZM6z9QDS3AQKP4KPPsDw2oj9J2X2EgdBeTVLTZmfiCjAjvmIPw4/Bu8AqBbOvotJbBxbN3ya0pfSbwT21LrLXrpMKjnZfu2e49sCfp1SnThRjq8OTVAUSHKtt8+VJzfRufLzfQMdZLZ/kkupWn6wqx2lK9wNK9x53UvEGggnVJQpBsVkmG4oZJKphNo85MVOHT+9+5bM8yKTVKkPdd9vZ0x5nMNEisNNDsq7icjy2aDM7RiK/+S08RzIxzy/pOFJzd/KLK3gSmZFD5U631H5FG8ca6wp6WFnLyJKaIzJOH/8KrQ2PNLVOVaMBMoJv/Qn3ybJJQc1jSGfew8Lb6KZhEyqh7+W6Mr+d6Pq+oOwG9xZF8SlVaYSRvKSkK/8i+NbqZRibRKS3fYhlRWM8VTIoPItJL33LFQ92pIa5NAFxgZBOoAUeBkiqkvbKu8Mq3xhWpN0IZkw/+DmDXYGKo/iW5wqzC/1kzddyRpq7iugG1aGWe12l3TGduYAOrX38f21F3KvaLOBsY6JmrYAz3ZpbgLoagkQjad3F5BD+5ZL8sllBwBw5BO0hkiKhBCTMi6HUFNSdZHURpKlKZf1ZsYZputd1a5YnzBEOiR//pt/MIxUpK0KOCiI/1Q134nBq/TAJu9R0nyw8OIZoLzUP//yQHgfC6ZZ3rY9EPGSfk2pvXywxZqP1Fx4o4ZtgbaTGlsyjb7V9IWTwBa0F2x1RSLCth/Wqa5P5IRxEu4FhH4N10C
- c6Daa5r0
- HUHQWaqbBN0U0MNII/XWe6sDoBQyqCQMIJITV0ShpEik7BKnzhYktmdQts9zqk9W0MzcgJ7frCdLvyvGdFTZkQULuSuBPHkOBenAjdVwe3nUnFcwOl1ajbiI9klX8d+WIGv0JooDhHAbG858Tb9sUGuRRxmXREgegE+5upa/FacxHTHu43VR0QZHBMEexU1L+X3T3q6Iepa2/OJ8JyPkK/EsHf7BxErTxjIUOt40OTDQ5tPLA9sooW1Kobo7J1rH3BMgQszLj3vEkza3C8e3HwzqSbUKmIaJjAxBw3V5BM39rFkniUPyaUCA7r1LssqKn0kxC8mGF6900PH5/S2HE5QsQ3Pnp9Av3T41PmpmS02PDgq1/Qgq+pcWVlU28eAE2QVbm+3sXA28CzTbC80QGhn30OssAG43vqKWGJ2V2iSlDWf9SK93F4mSAWJ0/eKlnlqIlMilSRNdrVpcAlX6/vTHNrOb9YmPaJprJMxycKdxH5x9ZAVcH5DaXNoPb7uXxUV10Xs0aO6T4Faw4mrZWOAIWGRueuKJihDyn+xRHHvJYxXY+rkAFnrGNy5BVIIKfT6wkTU8R582IYZ+tUdyPZahcBgtIEyjWH92jEKJQ/jpWqduFpAMxvJQaq3jwAsy2t8ZE95Xu8j+x07NvlIqFs62M0NraQXO0Bio2P0J+wcHInUVTY5bQajZM2N5rJ+P7N/DgEupt3u/nK6Sg2eGWPr1Twg5rFQxBGx37+5n272fn+aoRztQCmXYNSJ0QuTclzI0I
+X-HE-Tag: 1770289851-275
+X-HE-Meta: U2FsdGVkX1/F/SgHjCqwkt7Q57pz1y3AaQLrbkRUtjDDTjiCqsDIl+G4cIiUB8RNn6yIi0mh9YnzGBL/ZkSlE+tew2R8eX40cp3WH/ZUM0MAdxzl44JG1TNS9PX+K+o5iKtbbI/IlInGUlKvZc70iE9Pk5zG8fMnHF+zhVjA8JHDciDoellNAmK0IHbzypLukii4U+zsHR85MZTSgrpBcxkIgi1uCoGar1XOs6CaUc2aO8zYBgrBDJRP7xDm9CbThVDoVrP1j8PT+rMRBielaa3+xn1rtgBC/UW/gI4lzD9EMjqEWemSbNRxeA6Pv5vBL85Fev5lpYEOoIMl/z2tziwPzeOTXZAKvHIZAbfzjLAhQN3ISgWb5pTYLRQBm0R90hMZbjaXo1vOpJQcqk7caNMV9BfDWJhfuTiHTmD2N1lmFjwqyi4D8PYX4WbS5FMT63yByvdvG5uE9SA+mcM1S/YaYLAo1xudBhXs6U6jhZFVWidkT9POGiiQWsvIw8Rec1Ee1g3RLwrSktJmtL0Jzo7dGovsKukzxb4HprOPgRIHDrwoUSUSV1lWi1vp+X7HzJGTbro0T0EEYvD2kMpviGm3SomJdqqdchiZ4JSNyS9Znfhgph9cCRe3qwijwrHqm9/Kn/75AKxaJENqlE+uS9cgzMNd7ddqIIYpa52Z0vI/EFIPGaMAQRn/nEE7zS9YScuSmXEz1vAiOhnmeF42WpzlzodSXHXvKf3fWkUDDyM/EOIr/B0LzLOP1IBMo7LpgB1eb5flf5WDfCpVyvDeJ6mj3Q1lcPqlmObKRYB8ihVw5KWwdo4qxTUYqCALoHaGMNKan9mX2Q7jF8rVeKuLntsj3E5elX2/GXbqaT2Jj23e5a2fFdCplh2lFZMHQAvz8YTxNzbNcohoaadotT+4Rfx0TEwB5hrTi6Wy5YbqtTxI7ckWc/vK0z9kpsJi3S3W3iVA/oG3s3xbn2yZ9v2
+ tb7ArLW2
+ 8L0fjs/Lkh7PyTtMoXSAFskvADOWhS0LQsy0TN87S3lolloTwaQn6MlnsmoGJE86yiRcSJEXFut1qIUvNbFcb26PxlsY4EpSfISVKeOu/mOytU8kPL5ct4QkwcHrfXZ+mzC2Oe6m6HgYUGHidwGh/hYWBaXsaCFfy7Qj9PMNvFtGBhUol6YPLlzh+XoGH/6jsMNQopv3oBnyKkf7JbEI9Y/VwdIkRSSBSOtaddXFMoTfy01Z3u9ZXXg/bYIivYyn0V2R9UsfM6WGzMD2sbK2MB0HkTbQ2TkVhqlI24Etas0l58nJ6xi7ah+U2EYlhBDZjpdq1ZxhX4zbaSmqtjSkgnvuRz5hD78eEJb/wTIAw7kun03DtTzHZcw8nyPqHPK2Q8W2E60YeZPNDD3RJzoR34r9CQ8BANnEFvsC7HlJufdhMudCQnUITdkZcHLyevc95dHTjOowIzthe1N86WkVsQtiEglym+88cy3hlZ3B1QwixQ6OqDfyf+7zyZG+O9NI7k7v2mLQZgANhsRZiNU6ClXvlyMekjijzebAkuXTDcx3+P25Qhenz+H4bwcvGJ5KF3XP9HJOMwUrk5cu99IJdyuUuY1/IcfWfoBo6A2qUHKXPJ/FqIzYkeA8dpXLfKZJS2jvuAbtlX/qch1BkMspDOo01zE1EL+yx/zVNYHoLqY/oAQhyCVB5pajl8A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,56 +113,216 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 05, 2026 at 11:59:47AM +0100, David Hildenbrand (arm) wrote:
-> On 2/5/26 11:51, Alice Ryhl wrote:
-> > These are the functions needed by Binder's shrinker.
-> > 
-> > Binder uses zap_page_range_single in the shrinker path to remove an
-> > unused page from the mmap'd region. Note that pages are only removed
-> > from the mmap'd region lazily when shrinker asks for it.
-> > 
-> > Binder uses list_lru_add/del to keep track of the shrinker lru list, and
-> > it can't use _obj because the list head is not stored inline in the page
-> > actually being lru freed, so page_to_nid(virt_to_page(item)) on the list
-> > head computes the nid of the wrong page.
-> > 
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >   mm/list_lru.c | 2 ++
-> >   mm/memory.c   | 1 +
-> >   2 files changed, 3 insertions(+)
-> > 
-> > diff --git a/mm/list_lru.c b/mm/list_lru.c
-> > index ec48b5dadf519a5296ac14cda035c067f9e448f8..bf95d73c9815548a19db6345f856cee9baad22e3 100644
-> > --- a/mm/list_lru.c
-> > +++ b/mm/list_lru.c
-> > @@ -179,6 +179,7 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-> >   	unlock_list_lru(l, false);
-> >   	return false;
-> >   }
-> > +EXPORT_SYMBOL_GPL(list_lru_add);
-> >   bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
-> >   {
-> > @@ -216,6 +217,7 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
-> >   	unlock_list_lru(l, false);
-> >   	return false;
-> >   }
-> > +EXPORT_SYMBOL_GPL(list_lru_del);
-> >   bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
-> >   {
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index da360a6eb8a48e29293430d0c577fb4b6ec58099..64083ace239a2caf58e1645dd5d91a41d61492c4 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -2168,6 +2168,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
-> >   	zap_page_range_single_batched(&tlb, vma, address, size, details);
-> >   	tlb_finish_mmu(&tlb);
-> >   }
-> > +EXPORT_SYMBOL(zap_page_range_single);
-> 
-> Why not EXPORT_SYMBOL_GPL?
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
 
-I just tried to match other symbols in the same file.
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
 
-Alice
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+The lru_add_drain_all() function requires a short work-item
+to be run on all online cpus to complete.
+
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
+
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
+
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in the do_swap_page() function.
+
+Rename the migration_entry_wait_on_locked() function to
+softleaf_entry_wait_unlock() and update its documentation to
+indicate the new use-case.
+
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
+
+v2:
+- Instead of a cond_resched() in the hmm_range_fault() function,
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
+v4:
+- Rename migrate_entry_wait_on_locked() to
+  softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+---
+ include/linux/migrate.h |  8 +++++++-
+ mm/filemap.c            | 15 ++++++++++-----
+ mm/memory.c             |  3 ++-
+ mm/migrate.c            |  8 ++++----
+ mm/migrate_device.c     |  2 +-
+ 5 files changed, 24 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..3cc387f1957d 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
+ 
+ int migrate_huge_page_move_mapping(struct address_space *mapping,
+ 		struct folio *dst, struct folio *src);
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 		__releases(ptl);
+ void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+ int folio_migrate_mapping(struct address_space *mapping,
+@@ -97,6 +97,12 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ 	return -ENOSYS;
+ }
+ 
++static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+diff --git a/mm/filemap.c b/mm/filemap.c
+index ebd75684cb0a..d98e4883f13d 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1379,14 +1379,16 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+ 
+ #ifdef CONFIG_MIGRATION
+ /**
+- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+- * @entry: migration swap entry.
++ * softleaf_entry_wait_on_locked - Wait for a migration entry or
++ * device_private entry to be removed.
++ * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
+- * Wait for a migration entry referencing the given page to be removed. This is
++ * Wait for a migration entry referencing the given page, or device_private
++ * entry referencing a dvice_private page to be unlocked. This is
+  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+  * this can be called without taking a reference on the page. Instead this
+- * should be called while holding the ptl for the migration entry referencing
++ * should be called while holding the ptl for @entry referencing
+  * the page.
+  *
+  * Returns after unlocking the ptl.
+@@ -1394,7 +1396,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+  * This follows the same logic as folio_wait_bit_common() so see the comments
+  * there.
+  */
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	__releases(ptl)
+ {
+ 	struct wait_page_queue wait_page;
+@@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	 * If a migration entry exists for the page the migration path must hold
+ 	 * a valid reference to the page, and it must take the ptl to remove the
+ 	 * migration entry. So the page is valid until the ptl is dropped.
++	 * Similarly any path attempting to drop the last reference to a
++	 * device-private page needs to grab the ptl to remove the device-private
++	 * entry.
+ 	 */
+ 	spin_unlock(ptl);
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index da360a6eb8a4..20172476a57f 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 4688b9e38cd2..cf6449b4202e 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
+ 	if (!softleaf_is_migration(entry))
+ 		goto out;
+ 
+-	migration_entry_wait_on_locked(entry, ptl);
++	softleaf_entry_wait_on_locked(entry, ptl);
+ 	return;
+ out:
+ 	spin_unlock(ptl);
+@@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm_area_struct *vma, unsigned long addr, p
+ 		 * If migration entry existed, safe to release vma lock
+ 		 * here because the pgtable page won't be freed without the
+ 		 * pgtable lock released.  See comment right above pgtable
+-		 * lock release in migration_entry_wait_on_locked().
++		 * lock release in softleaf_entry_wait_on_locked().
+ 		 */
+ 		hugetlb_vma_unlock_read(vma);
+-		migration_entry_wait_on_locked(entry, ptl);
++		softleaf_entry_wait_on_locked(entry, ptl);
+ 		return;
+ 	}
+ 
+@@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
+ 	ptl = pmd_lock(mm, pmd);
+ 	if (!pmd_is_migration_entry(*pmd))
+ 		goto unlock;
+-	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
++	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+ 	return;
+ unlock:
+ 	spin_unlock(ptl);
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 23379663b1e1..deab89fd4541 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+ 		}
+ 
+ 		if (softleaf_is_migration(entry)) {
+-			migration_entry_wait_on_locked(entry, ptl);
++			softleaf_entry_wait_on_locked(entry, ptl);
+ 			spin_unlock(ptl);
+ 			return -EAGAIN;
+ 		}
+-- 
+2.52.0
+
 
