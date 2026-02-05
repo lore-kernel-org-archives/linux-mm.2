@@ -4,244 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6BC8E83F05
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 05:46:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8B01E83F05
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 05:46:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D58CD6B0093; Thu,  5 Feb 2026 00:46:13 -0500 (EST)
+	id 3D59A6B0096; Thu,  5 Feb 2026 00:46:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D065B6B0096; Thu,  5 Feb 2026 00:46:13 -0500 (EST)
+	id 363836B0098; Thu,  5 Feb 2026 00:46:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB0D06B0098; Thu,  5 Feb 2026 00:46:13 -0500 (EST)
+	id 22EE76B0099; Thu,  5 Feb 2026 00:46:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A4FB46B0093
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 00:46:13 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E3661C2B2
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:46:13 +0000 (UTC)
-X-FDA: 84409317426.08.994DBB2
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DEA601C0006
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:46:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=E8Ggm6HQ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="A3/Hc+oT";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770270370;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EBEF6B0096
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 00:46:18 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B70E4B913C
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:46:17 +0000 (UTC)
+X-FDA: 84409317594.07.ECECDF2
+Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
+	by imf29.hostedemail.com (Postfix) with ESMTP id BA557120002
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:46:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VbzQtUlt;
+	spf=pass (imf29.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770270375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XiQLekNeMJ4gddbysQ6/Jap0xf8x4UO/mvbIq+TjzbA=;
-	b=QZc+Ab64FwqYp/N58++upk9YgVd7Br1IV866/7+iDsaz1Bda6TqN0SnCvVo6JYpwKEMCGK
-	/sgQPL8CAluW8SwrbzVZxsSJ8GUgsrOrcKxhbrnN65//Lzda/kf0If/mNyxBh+6RFvWUln
-	yXxnzB1+/nXIlNMCkjFM/DtgUinxEY4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770270370; a=rsa-sha256;
-	cv=pass;
-	b=Z/fDdcpddiGlK1RHn9ykVF2jD7TpTr4AXRoWXTLTWqrvp50I45kbP8hbvNym4A1bbLUqqK
-	zXZIMRN4X6LgeaXZXk//YCTXT71kca8mg+VC6Y5fG72Bnfg/iJRKmpP41VBzodTyrAzGU8
-	Gwqm5VLc65UFOddiQ3dbWo6qRctoUNs=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=E8Ggm6HQ;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="A3/Hc+oT";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf18.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 614NQftF2399241;
-	Thu, 5 Feb 2026 05:46:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=XiQLekNeMJ4gddbysQ
-	6/Jap0xf8x4UO/mvbIq+TjzbA=; b=E8Ggm6HQGPgOH+DNT0FqO11aXZGOqAvWVW
-	P+ZbPYrv9fpZEmx55TdvS9Qz/Ugc5LFXkOCSO03KT+rru3KjTPb0GOWjbyHamNZL
-	Gyunanlzji2eWjwWgzVirn5Eo9wnf4DNdOuWQwqmfmTGQ2zwGjVQdwxytdx9CG4q
-	DTxZMRgR5Ckcl9/gVPOHRHLd4VG9Pq7dMTCgfPpJC1M5tOAD6gh2Qh2AyLvfM6Wg
-	q1l8mkXKImpzIFtJ4Fd51oHs/tYJ/lavLg8mfB9BDdOEnJfAMlP9VoStVrVZ4YGq
-	GHoIriwRJmq4W0u0Y9fqOrByE17YgRBr0Ih3ir/ikoIUidM7okVg==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c3k5g3043-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Feb 2026 05:46:03 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6154v5WB025830;
-	Thu, 5 Feb 2026 05:46:03 GMT
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011038.outbound.protection.outlook.com [40.93.194.38])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c257b6pp8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Feb 2026 05:46:03 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bXZIlzJ6cFpnRJb6r9ILiz8llKdhJzFQeODBKUjEEq9Oj9QXONLbpwWFpRyqxxlcWdB/9VACNX8htLblQgjHPPQWb3GS5b6QNmSjPL6E9IJ31TRkmil11isjEWAGIqaykYKmlT793PV4k9HK/FFjR6jFvSPwQyx5oXlYFMSy+Bg+X5pzm1GTPfUbf2X/feVt/XHNgOFi3n6vBGOEuaixUMAI6hO3JaoF2QDqHX+W2m7mSxpQLtCxOlnJz4N82tmivvyYHDFtlheL6u+gPrHG/RKPHgxzq9BOmNvt3axEjuKJbFOM1yIk5J09a2rEVImdtRU+egvncD5kXJWScWGdkw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XiQLekNeMJ4gddbysQ6/Jap0xf8x4UO/mvbIq+TjzbA=;
- b=mzkOfPGx570XNHf0587qH4bGFmjGlJhqM2MAH7QVLSAvTwrqPWFhKPxIKPDGvGLzzfMLptXsCR6cQRNnivzK9aNp9GReAX1GTczn820I3e6xGJL2o/qrG8nf3bOoRTC1obpXEfwGNQ0oL/wcIqDKFEcc0R9uR9nFLVZW8K6q2ISlFE69H1DrjAvtG1sBiIEkcIkDm7fhffCNN0VsFttkHYaWwh5fbc9xr3kdLyfdrRuYk1O2jy9iq8g3p2a1odSl70H219Ns8EFN56NhRtfqe58SWrjjYuoj2lSbbEK5vkJKR0uBQq9AWRTbBX67KvwDD9BBJuj6uJjQfxxwbie3VQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=xh8SRryTbBKNPrusvQGIQRE83r+fwBp2qy2Ro8RHIOE=;
+	b=KFj61niWMOeR8PpZNh4dKofT9cQrdjWgChDfFwWRdyxZydEzHLyJKzYtgqSP9cB7zdUDXj
+	FX9pzZFYkYpOvnVF9FzQc3PH5oplsPJVrREGQ2wMpmgGQQsvIyWJuG8jwjR8craB9haTY1
+	jCVZ6DkpKSrnWrWKmDZZQwz1dkqDdGc=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VbzQtUlt;
+	spf=pass (imf29.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770270375; a=rsa-sha256;
+	cv=none;
+	b=G/7bU4pyKi2HkLqpMk3/kiPgJKs9F8hRAYhMRi3ZnW419bU+0Hc0WObqfwRRKWRXobrds/
+	cwEyRZx+CZIPJxY0pCOhpFJKNEEif40VD/VQiLx6NiqmXifd1lUUuf6b7gMHeC3bcfJMkG
+	kEo0bceKrF8v3tnu5YoHx6etXijrqcg=
+Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-1233b953bebso1561282c88.1
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 21:46:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XiQLekNeMJ4gddbysQ6/Jap0xf8x4UO/mvbIq+TjzbA=;
- b=A3/Hc+oTLFg6hNsi0j64+RXXd0d4ftYrmGYKLlTsSV/7hRwyssaDmLWcizp+lemUaNivdY2AWw7cL/q3syZmiiHP56Z6IBSkbwM7GSCTIO3lyn8bGBLTvg7atXJtndB+il2AFOvfBfLuhzl92OljE7lqH7x4MJxZRUzuiHx66RI=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by IA0PR10MB7206.namprd10.prod.outlook.com (2603:10b6:208:402::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Thu, 5 Feb
- 2026 05:46:00 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9587.010; Thu, 5 Feb 2026
- 05:46:00 +0000
-Date: Thu, 5 Feb 2026 14:45:51 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Dev Jain <dev.jain@arm.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-        Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
-        cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
-Message-ID: <aYQuj6Ot-JS4tXvY@hyeyoo>
-References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
- <20251110232008.1352063-2-shakeel.butt@linux.dev>
- <1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com>
- <aYAmGc6lu973jRwu@linux.dev>
- <2638bd96-d8cc-4733-a4ce-efdf8f223183@arm.com>
- <51819ca5a15d8928caac720426cd1ce82e89b429@linux.dev>
- <05aec69b-8e73-49ac-aa89-47b371fb6269@arm.com>
- <aYOuCmjQ5lGm8Mup@linux.dev>
- <4847c300-c7bb-4259-867c-4bbf4d760576@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4847c300-c7bb-4259-867c-4bbf4d760576@arm.com>
-X-ClientProxiedBy: SE2P216CA0100.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c4::14) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+        d=gmail.com; s=20230601; t=1770270374; x=1770875174; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xh8SRryTbBKNPrusvQGIQRE83r+fwBp2qy2Ro8RHIOE=;
+        b=VbzQtUltpKEQ/3rzDeNC46sqGnNMidv6cOnnQGLoGr6x6Qik4P/+giyBrQWMpYWEkU
+         j9m53Bo0NyIBGmEq2ykfAvX1EXkwc5OrnebfVT9la0x/EhP/zdecNzlhwhGNP2UAs6eX
+         E+Kf+ZV50XTcl2dpcJA32gI/iu6gewDvgHK0TKbNP+oxC6009B1DOSnC6mSwJSB96gfF
+         0OuAwVqA4e5AcuvckJfHgF9D9Tiy1crAS2yzW7FFLLG3Y+qfMdkIHavhZi6Ia36/zi6H
+         mknZm2VNwjaUOnjoFg+m4AL9cwUTety3UDHQ6hUz10Ett0Yala5w7gAjB4EY9yhLY83S
+         vQ9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770270374; x=1770875174;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xh8SRryTbBKNPrusvQGIQRE83r+fwBp2qy2Ro8RHIOE=;
+        b=I3N27AYcyn4MCKTsCEthXVbUp1Pz0+yvifpZLvcp3eQOlrtgV1o8S/ie1LYvGTdfl6
+         tneRQHxSZrBY3xNXYwB1hzkzNzDOXxVFgUFBkQBYg5QUIPyT7EKFAYOLaV38ogbg/bwU
+         p0BbIkPG0BDSRAeLbvzv7dSPErLTGF5x8/5+oEAMHC+6h7PhzYa1EcDgFkrJDI4Z0iQk
+         JrJajYtDEKgpIgvKDiXtmEsmCzAv0A0Xcj28lVRM0QC5drSBxSMHH6Tzb64d5GeMFYwM
+         hKZacGkTGI303mSPW/YjjIgxbsRfBudl5QOH5ti7ljH/3TuDgj0FoTHo1cKA5ywvl9AI
+         qhgg==
+X-Forwarded-Encrypted: i=1; AJvYcCVmaXcXYjeE9VwvlopnLMhadr7lkg9eXBUIAai0AYobL2pg1/CLnyQCXqXZBvDWWpeKVw7uKOWgDQ==@kvack.org
+X-Gm-Message-State: AOJu0YxzfEL0xaGEpFK9xEuNS32u9PyaKN4Ez0tcoYLHOlzEZqhi2uTN
+	WSfsVsTFFddF05GlQoJOmX8pS11iDn4X8NZ+2Kiir4a0AyRL8QawvwET
+X-Gm-Gg: AZuq6aI1rgi+/NxtvJmuJlioDXPzP+9bRN1ShRSCrtiwvYHDaJDvRjLeAa6DI9YSr/Y
+	NWzmaRB0GNke1x9iYSV+cmpMBr4kk5kqD+qyd1N4nezfdhlQL1IHBv6k42IuJNa2D816VHZDitj
+	HyZTx9tDsxe4bSQ4/U1+63gEGb2Cl/fa1Wws+DzSsYd9yhh8QxM+GOM3VHo8QtORY1JQtvFEqkW
+	nSW0FojJifMZTx9hUfIQ39H+r/bQ/VgIlJSegxCbTqo67WI4AOH27EUsg2xZeQ0D5FNYNj0Wqkj
+	kSQM2FlTmLIxi4K7H8jrSLvCa+vwZNETn5NeJ20MT6w2M29PdCtUcAhnKZmK/aHTDfNsrLVYZEf
+	npuMAVHYcD6zyjfJddw2ghNOml/HD5+hDZx/sa6gLC5vfOwGpuJ651ujpE2lOO2LrScU6BD9wgD
+	iN98GSy51NU5hX/fYnA3z6/Dsf+Qhe1PEJgw==
+X-Received: by 2002:a05:7022:7a2:b0:122:153:d161 with SMTP id a92af1059eb24-126f477cf4amr2706153c88.17.1770270374198;
+        Wed, 04 Feb 2026 21:46:14 -0800 (PST)
+Received: from [10.36.158.92] ([50.175.227.221])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-126f4e05ce7sm3514842c88.1.2026.02.04.21.46.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Feb 2026 21:46:13 -0800 (PST)
+Message-ID: <582ffff0-c1ed-4a25-9130-1b1c9d290998@gmail.com>
+Date: Wed, 4 Feb 2026 21:46:12 -0800
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|IA0PR10MB7206:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4fd543b1-4f22-48e0-a8be-08de6479d757
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?hhmkJ198dGBrRDsigN/BXy+6+IpHcjiFadUsiuUUgZZfSRYVG5u7YlxOJS6U?=
- =?us-ascii?Q?ENepjtOduShb8df6kDFRHFMAUZN+YK/MontA+ut+5r9lwDSZ9EDjAxXOr28/?=
- =?us-ascii?Q?VWVYCN73FFRK1bmN33n1PZMcsXFJe6/RjnlgR4AjAGAYsfFvWsWVkYwoWo1r?=
- =?us-ascii?Q?o41O1grfHqO1IeFTvFm9HN3jZDW+GVYXZOMr4ifgvrJc+/UBKw6tlvZdwKY7?=
- =?us-ascii?Q?dsnkoUXxx355w2iOnRyg42TIcnSryHqm5THVFcKbXOq889gaT92ClfQrlFNc?=
- =?us-ascii?Q?ZkRVkZvaVAfayKmyL6KxZYWrMP+FSESwlGsCYjJKOfA6L8/Uv0X/cV/hZPu6?=
- =?us-ascii?Q?QBzWBRrjKXImB/IW4dnrcx3l8Bw1M5o7YUGZo1Fv3ymWnDQQxmObEr7nu1ss?=
- =?us-ascii?Q?KgpMEKRWIjzxBTKYEVXGzzObMQXAXOS/yZ62UxW+pSZCqqepBOFPT/LN307L?=
- =?us-ascii?Q?FRj9hubg4XVA+YeONXqXJevi13e63qsOnCrSHM2PTzAnTTUSAMpDev4MO+K8?=
- =?us-ascii?Q?vaQF/qvhbwo2cWTZhSghXqOutfncK3zn2HyIfpuD022UP+nLsykExhG9eWrq?=
- =?us-ascii?Q?nV1yAZrHHJODgcmGQOZ3ITJuja+eYYRk2MqkH67QN63IEyq+pQmRqUchtKBM?=
- =?us-ascii?Q?Fy6hDc59HVjWhraTR6+9bhrsyhUB+mUUN/YGJEFh28BfdL/F3w8WGMow2rjN?=
- =?us-ascii?Q?lqS+p74sZ/FvaMcGAXrFSw9xoZyHyNZe/pIY3h6A0Jp8FCzQH3zV9P9tATtU?=
- =?us-ascii?Q?NRsu+zqxoJzVDDiVp7y+8n/lFSZURJO5fKMkOVSYMiFTLcEoYGw4jpzlwdZn?=
- =?us-ascii?Q?0RbMhPSsqaYPbPOvy60FiCXoago9fm4h0UKILkVKo6nnF0jnJuUbBfixpkxd?=
- =?us-ascii?Q?0wdmaKBfxtAbjGAkVIdbQPlUq5uIOtuUalmt2l6Jz87aSuUTpBKzhmCn1ZiU?=
- =?us-ascii?Q?u3+fMjhVaNdzgk5GdyXszhKv0F1T/CN2PhYPk0cNi8nmNfBVTHNJyZEPHkg2?=
- =?us-ascii?Q?Am3FgTNe/pnXMJNzvyZlSzjS/54xxqXx4r8EN5/qniPdCvqKvUIlh4Qmp/PK?=
- =?us-ascii?Q?Jqj7AQG0MC/rpOy7ZlGo3/MLUG7FA46XRGL+o4DoBG+eyGChN4p46BhzUlzc?=
- =?us-ascii?Q?cK7We29Yt/0EdmSr60eNwutnHMISVtVib9gxCNfCyFkcEsKJze8RuILZ3wS6?=
- =?us-ascii?Q?Xd1QFG2vv7mTNqZ+EK/Jjd0m/fZO7MR5a/hdICgGYMApiURp4sjN9Gipv66B?=
- =?us-ascii?Q?wwilpdKF6iVQK8necuP4egdfA6HbGTVDIKITMH2b3kbMIqKALXsuuDPffRn9?=
- =?us-ascii?Q?qhxpMpE/k5NhbmDwvb5YQbgpR0DEjZoL0gbVsTh0S8Bnpv9vLhgSKUBKy8Gm?=
- =?us-ascii?Q?o0fzmkekvdtcy3P0YtgsOZXJxrokYsMNPUpFM8mnO7JfN2EuxwV3XGH8AZ2o?=
- =?us-ascii?Q?hHOtbjCvzEUu5MBlntwaOzQT2rvcJlAWEGmGHJc57wBfGaBwnu/dbqSRiz0t?=
- =?us-ascii?Q?83VtSCqTux2QJDAndGF6HKDbAFS+hl/pnnde4wop5kGB0oBn5HX1ULtYP50l?=
- =?us-ascii?Q?esW719e8zX3ljTI1KkM=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?xN+771EfBAE83LM/NhZnYOXENQ+1cm5WNeclNyG9uj0UbWCBwT2/PGYOPNmk?=
- =?us-ascii?Q?gHw0BRswAA1kayatCS91cjk0+bb8nQ7P1SRpC97oekjbdGncAuqWz4PIGLjV?=
- =?us-ascii?Q?EWOMBP9J03L2OcI7VL2qmiZpKYUTC/tkzk/WJmwQItuSArMVKzG81jT59vx4?=
- =?us-ascii?Q?5IdGh85Q1tyurQbBy7sQRKQccHofuvpWF2kKDudndZjoQrt3I9WcanebQ82X?=
- =?us-ascii?Q?Bd/wWL+kvd/qtZTzLClifybHiXiB3JT17CJBX9wpUqSKuDve7ruF6MXGE2/p?=
- =?us-ascii?Q?pNjX3zpoTNHy4WZbW3XJ1oLnaKZFmfIGNpm4Iw8q8LeyQX+7Lq6vaSCVI1/+?=
- =?us-ascii?Q?dCUBVfM8c6FdeU4tPgq9xRNEwoDs3r7Gvfwwt5RNa+pUErhlAPoEaZbp/8xa?=
- =?us-ascii?Q?lyZRRb14iMkH63BXCKO6JXJcOuofcAgZrR9S91Qc4Bb9LAvcT4EN1J5SzH6N?=
- =?us-ascii?Q?nwQrCxFNWn/fPXPBRj5kxMH6Rqona6eJe+jZH9SYVWDBtdA2HCjV1YcROy/i?=
- =?us-ascii?Q?5fs/9hsZ4gzfXF2o0rUXQeLIAmpqRWfwA5RjE9XntmjSCwOR6tVGq0h3p8co?=
- =?us-ascii?Q?RXPJ36xoPl6hwCl50lkvD4QO8EUs7g81vhNsSKmidH54PyN3adWZyyMAbe8d?=
- =?us-ascii?Q?08iG9xJYKXDc0e1g2zc3omx8Z5v/VtFRZb4hsiXzHAEhCC7eHgLaKeHejLlo?=
- =?us-ascii?Q?rEsUpaGm1SYnlIi+qPhNqCVFPxm/Qaa0Nml5/G1SmB71kx8jkKL5+syIu+R9?=
- =?us-ascii?Q?Oe/8qAsNv5ZLrIcByiUO7HP/zwCTERcFFJL3as0DH0+AJB86+Tw4ypxrCBe1?=
- =?us-ascii?Q?1t5QNtmYpzSKZZV836W2e3ZxQqOUe5UtJ06+7TNAV2J3Oxo+e9H2rVVTo3s1?=
- =?us-ascii?Q?bt0kY7v9nsCifYu9llwPV3wCiJKcn8cuO5aCeNof72OV57XY7c6+qaA3RUpp?=
- =?us-ascii?Q?gLuKTrWGJ4pnosnsQolpRBYfzlPOAvzdwrmMDTCromXGLCpJv/RZxYtX7Iou?=
- =?us-ascii?Q?Gtbc8XaNfOU8ajr+2iThYYFjNjAUqguneVX8fTUdfjDIEI3hKaNufj38kOZ6?=
- =?us-ascii?Q?JW0Vdo1SknNvey3LWqf4HPIWHNOJj1CJgUpNalKWjHs9i7XV6pyEo83qfjt1?=
- =?us-ascii?Q?LX3HfOQw+WnezKTzN11M40rfgw+Nmf9VVJ4Nn2I4CBuzChDnFB/4gzjO9FNm?=
- =?us-ascii?Q?U0P7j+ZQGa8shJRfgIfLn7KfGjA6Y9Wp9RDTH652sILdKP3kZqgdfw4Gr8DK?=
- =?us-ascii?Q?v7Vu7kN8m+K7eqTmdEcicBAK3XGQg4NT4R3TFGUTPTy1W6/ktCMlF6SLMA6v?=
- =?us-ascii?Q?yEQuPSoZVGLyah72iAKRFZDN/QnPLuVIHuCTpL7enypzicNUPWOCn0rLjdUt?=
- =?us-ascii?Q?+EN+FyCM7MEqxKyVGr33D+MuBcgnpw9r9xBk6eNUf6L44w//yzD1VUyBYXkb?=
- =?us-ascii?Q?ZA2gKPg6LbfJo2AEl70Wk3YbxCYyaK6deMoFksdHN/q6oJKA1LI3oomMjor2?=
- =?us-ascii?Q?2Rxhr+KyXoOUVpdPsuheDw77/VjMWHTOuE8dOokknb6JDkrXgQdrhBC3zlYM?=
- =?us-ascii?Q?n4ImdTsahgCHp/j9dc/XZf4OqVE6QnkYDUa1buxQY+reXY+bGcZlo9Z1/hr7?=
- =?us-ascii?Q?MFnyRwlfLCzRLfFn2/Y7zKNGpgfKVctvlbAV/VGtfQVYkR77E4ybu4btAK5Y?=
- =?us-ascii?Q?6gZNCbWbpzKFwcYXgJhy2OXoCxvzX43GS8KQt5FjLdIfKUpj/eZAAV/gziJJ?=
- =?us-ascii?Q?X4F1B7zA9g=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	u8wPwocNfxWh7ySqQrEcZlh8W6/g5kDvhTuiMX5unJVgndgfLPH/wyE4Zv8kuX/WtmOhlTrcd3BLCfCu+DBEm/fVJGVaL/E4b0nGv1QN1OWRDmskZ7Ccgn4Ha8SeJls3shiY93/jTnu+LbQuxVePH/FAh0qlUhvaq8d7u6UiAaCCN3QjgVhvvMtiG0bPnRTBrsDWpBV1jP3+QdR+6BxruHJXzi3KytY9ZZtluv9v5Ee3oapb57EIP+AybL+4nN+RaT3QRivd4K8cXbQQ61HeleJbT33tN3IKISiqo6cy34H3zFcN/M74lokeUU1+bD5/UdTrtZHQhinu7HmAL2xZF9aURjt2kaAFpzepPdfTy0QZSDGn3QoChCFjUpoWnjr0W1Usszn3q5Bd2aEXCcifvhQnHRazKFlVjTI9n767ZGu5wBzVhu4J2rhI3Oh5oD6mBBrCGNBrE9cHFj1jxi0pl0n9coW2+oTPtayUO4QGAfw7Rh6aO+2izmQDG/1UaG3ftHX0rdZGJ9EhnMxf8rUMlC+aDQRJ64MhFony5amzBg2YEbnI41IbX71rNn2RdUDVBhsrNx7aCMd0yhXLJiUtE/Qzgj3rBIY87ggSc7zqfr0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fd543b1-4f22-48e0-a8be-08de6479d757
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 05:46:00.3096
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: f4lFE/joCJsOKUDj0mWEpw5WpAMxqnwS0YPZ3ow3A+UpH4Cx978iuYaZMpNdgcj/r8QkVW5C1spVk/j/leCEiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR10MB7206
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-04_08,2026-02-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxscore=0 adultscore=0
- spamscore=0 bulkscore=0 mlxlogscore=983 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602050038
-X-Authority-Analysis: v=2.4 cv=Jor8bc4C c=1 sm=1 tr=0 ts=69842e9c b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7CQSdrXTAAAA:8 a=F5yyXiPcnDNIn9BfyIMA:9 a=CjuIK1q_8ugA:10
- a=a-qgeE7W1pNrGK8U0ZQC:22 cc=ntf awl=host:13644
-X-Proofpoint-ORIG-GUID: Abc6JTecUnwhTNUhazewHqCZOZcBgAAl
-X-Proofpoint-GUID: Abc6JTecUnwhTNUhazewHqCZOZcBgAAl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDAzOCBTYWx0ZWRfX8a9O0gkBNCiJ
- aq8sMiBynkNWzjKeofrwDcbdHCUM43HOhzN/8eMXrgHKAFcBJsjXKgCGjpNHVUCkAsXFDUiXPGs
- HEx+gIB3L/3hqWQs1YVUXeG2xh3vWAxsq4c6TYpDZ+Y/BRB9RrZlbznv0jD54q3G32lm78IuovQ
- Iz/whvVM3NgGKGRxbm8PAer+d+PurYk6cEFuFYYBf+DMTf2ysDeaHCo+Ao6cA57+9ijgp3UyTng
- dC8gCd31+bukAyWXpX/hV5pqtrMqK0P3dRa5vE9tBVzo5nP3Gt8sSILR6N5qcx3D15UdcGCd7Do
- XTKPo8wWemGnq+u7UxudiuUoZqqNQwp5XWJFPBDxFYnj/Xe3Nw3iVrwmjeRP/TU1jojItzj473t
- 5tpZ6NFaE+nSlO+1p2PgIrDw+jkYogYjzGdE8lLq3yHKT3fGhYaq4HkSbdF+zIgysAGpipcG7rX
- EYZEi6AMv0sDF/5khXZHedpGHd9qjFmihhk3HsFg=
-X-Rspamd-Queue-Id: DEA601C0006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 00/12] mm: PUD (1GB) THP implementation
+Content-Language: en-GB
+To: Frank van der Linden <fvdl@google.com>
+Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, lorenzo.stoakes@oracle.com,
+ linux-mm@kvack.org, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260202005451.774496-1-usamaarif642@gmail.com>
+ <3561FD10-664D-42AA-8351-DE7D8D49D42E@nvidia.com>
+ <20f92576-e932-435f-bb7b-de49eb84b012@gmail.com>
+ <CAPTztWacSRGa36qv7jmGL9bL600t8K8x+31tbPEsvfY=qrnsNw@mail.gmail.com>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <CAPTztWacSRGa36qv7jmGL9bL600t8K8x+31tbPEsvfY=qrnsNw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BA557120002
+X-Stat-Signature: xsnixrwizeiqqrz6d1o9peecadgurpe3
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 531m4xbkjcxfuep8reo4f3gf5tppzgmp
-X-HE-Tag: 1770270369-605230
-X-HE-Meta: U2FsdGVkX19MLCOQttwY1POaa6gJ8suKjcH272t6RnvYTEP9NkgF8rdMaQd3+u40fAMYG4ZldSDB+oB5nH8do6hwK+GkA1PGxmL44C4EdJwKhESVCthXv1JSeSCuiwRKj8cObFHSOtqqpsVP9qr3rmqHx5bgi9frAeEamjBiNkTHbVkJaiMCixk5cxlIIXU6L4qmbJs3cMm5fLn5ggTq5yBasyGQJBMlDXK5gunBQBYRewPHsUrwNwCPPmoH+FR5Dfd4lhZFJIoL3V9GZGehVawaKYNL77vntJutiRhRwjkyGn9odbNWSFoF5Aq1TFTPzivw0xVTxqMOtx23zlQvamFHKO0CKE+xF6hsQ3lrl0OrtSJ06VETHUtflcsm1YpwmGEBcI/HQePXjf4mRO7psYW1LfUpe/wQBdYU8hg8sHRwlaSBuAmhzhi1pmGUY8ayMwq+JrTR/ILNMom3sJr22dZyEmdTkqnRIsGPwZtQNrFb0+skxsxvaKMxacZan3BMSnRsCJFXMJHCa1cd9mRe5XvSl91lKLHOaaqmPN7B1EV9HEWb9dmQACJ2FPTk/2N0QZFFrFtI5K9erLS6pEGi+XxCOUJNwzN82HuGfA/B6rLZpWTmi4HBwGEGPDstyQUNKQEHVL6wta7eHb+WIznnNdy6Eb1XqNFpRS/nfc3iMYLBkiMvQ2MP8HE1lTw3Rpt8n0LoG198shlvqH/7yIwvSKuJZrY76BowY4f0swqTn1merXXySTW2Xi+Gjop9AHk8S0CgL4b192tffM/s1A2g5IUzlZ2ofQnuT7xOQ9hBHPlIxyB9T+nXKZLDQmBauIAwd08VmquhDDSNyn3xu9QuwrsgsLbZftsToraK4AlSy/YKFJM67zzxbUNBy+JCjtC8GDlBfnG0x23scjgOYzCQJrCfTpClzXrOnNHbV/tsXtiFjBwpSnsGqNc4iaFLihI+CTBBLZiRwGvOG/hVM3O
- 5w+p+pWd
- iM60K+NJTSVGEULRV9NmTBb5lwgWopmAAuHTPcM6bBd9jWrGd+FJ3iMTYRaxijCUh/HjuYGQpr1se5PRzjpY8iE2Kpv7pflia69X/q4t5UWjWKpdTmJUdYF8YCMlaTQ9QbupzIfbTUyjaDjPRpKqRk992miea9chNiAUcvyPwyINMYYZKRKRDzh9ALz/FrROrsWR/wGSMQEY+aE+HZYCt8M8fCfEgWv0HbgvcmVKBAT9t1qTqj/Wd3GFAC3v7RcNDNH+EmvEorUPqXPFdfpqgGnmUvMK8UEZU+ywJ1aAB/ie+MPEboC2HFSOj35tn9aXlXLIFBE1hF2M486PA4QetuG1GSWxVeg4AwnAe0O18wpXYqzokWjfFR83mGbcGRCgQ6v4dgpw0ccKn6Bw5w/0BBUJOmJWUP3zJpneBqPyrAndNZl5mNezSxhU8BQj52O1uqEKUKsUmaV3gTxXr96uPObmTV788+Sk7782VEwwd45w51udvVDJeN1YUxcghWeViENyHuxBeASM4lFLXQhuUrTF2+ij2aOfM0zJsNzTY4OE3o9ypQp3LM7YrMmnXYLLS/NsgwU/OVQzItZ3pFF4yxNbn+/xG0v2xz5Qa6CBqrGlKLVWCZG1ktIyTFxmqijrMDWsTYhP37d0LB0RsAGc9SF6A+tE6bFPydF1oPVsQg1kB/aDC5QlcL1gWREvWc2svjV45wZ3DypqohFXIk7QsvhYgA5C1dcsIlzr1f+UF7jll1Cl8j/bN27fdSFif9QkccRuWeUPtzLZKe9A=
+X-HE-Tag: 1770270375-628615
+X-HE-Meta: U2FsdGVkX1/jKzenDfmr3DEVy8dQTlUlxketDg55hLkoKE9/+bLspKVpsbkiJjIOu+T516cEz67XsIM3to0zROWl30MG5EFWJsGrs7SaeoxCiVktQQxyLj1sBHhpafVU7ylzfItLo4VpoCwTJNjlivzqiAKNK8ASZcjg5/4MZ3+sl4NRgvE/0Wu7TlcdteL7bw2r5/972qtOrDJMNVEY7kHL3bLv8X4wbleoAxsshtAd8WMqQVVhX/SiYX37qc6U6u2ILOptDsoDSiBGEAX161GpEVi+VwL8hZ8wBXagU0FzSyqtzsTUReRMeJR4TRwkmldxlITqAHbZi3ZzQCKsvokE12IEL/QuOcWpl9V11KzR5Wq0OHRdlVh8yT7Rq/20/uU8eG18++rZxbwOAMqp7vDeMaIQT4ffAbssbOc2FCiXIfJvdj6hlNZloartua5dKKEPal3s5+N4UZUb/01vf2an8JTvb7/6mqD8o9Vppgp8c94rQDtHdf/sTJVzl/MgtncFK98G2iCkSzxcbDLy6TXuveXKy018mcl8x/9DkjnxpDw08usT9+L6yAPZiuUirF+7Hq5DgUaQvhxA0yMeNm/CptWU+Ckkq/MjQaI8WxWy1Dr694EI4rQwzlCMJnFp2ymyxXu1FD+8XJ+5D3vcKCUu8cZKRo40pRkb8dWsjM8ojcAiirG4RqyJJBHE6mTWsXyNtfWiIe+7kIQjLTXhtr0gdw7gItxFnCtOjHDnaUtJsm2KbCP5XwRfv1RQL/Hxo3et2/cZoCOMgkOSu0gm5cj1TnAQ92MbDQpjU2i0TW11nENOyMfErt3/p9BIlWLyHK+VxGgJLs2TxH0c/AsJ65c8P4RpoZzLu7kMMTZOZwtopI2gMR+ZA0T6dIfctaZRka7zBAwlkmbNr6FnNoSEK0724M5qcAREA2kEwor0ZeHxnQ54vWOw63ec29LKHogn5SC32nPtxmmuNM9RNwS
+ hi+OCjEp
+ 5TKhFkTaotlJmaTT1m5pkIs257tI8hJBsljpLmT3mIYJuH3tbg4fSqAKSroo5k0FczqAvVwuIPS/auEF4+oIKWxhomhTJGIpgqbaMmhInQv61rkeK6Qh0LP8yUw0K8y51NOO9W99csdAmHkAZMevLoi7bLj4Q3BzmdEjRJcTXC91GZ8E6Kw69rK0SenELLCGdIfIknnZP2OCtgZxDyDVdKvkg62F7ViywuRq0jQxI1NuL4TV3FgaltKgzdP4cVZsscTD8WLx6GfnBsxEq1bnBRcpGR+m7gLEnGbs3dHYlPY0zzsGHZydcUQgWZ/9xBew4sKZoS3yqCFL4nsqfJjjyDI3gYCijutCefUd8SAVxPmLDm/B5m6gDPYtts6vGPm25ueUEI9TQ5yUO9L/1PcP+1kgh+awulSSCOiyQhW7hujbbmxO77cC9VIa+2OscNQFqSey+C4ZSJc+7IBaw6XKWtnrBpNJgXXw+95HWhK4xU/VzoKvWdrC4pfQ6ymHHPA3ibW8wos3ceveP/w+88yJhij/UhG4lzmW/Z96atAStrBwT5cP5T7k2LeUWOi1K5y6fJHxhK2t5cdmmeZkqhrfZg18COugxkQ2zVCiR2GcqL+VIIsHQwcGRxcSmLg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -250,85 +130,343 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 05, 2026 at 10:50:06AM +0530, Dev Jain wrote:
+
+
+On 03/02/2026 16:08, Frank van der Linden wrote:
+> On Tue, Feb 3, 2026 at 3:29 PM Usama Arif <usamaarif642@gmail.com> wrote:
+>>
+>>
+>>
+>> On 02/02/2026 08:24, Zi Yan wrote:
+>>> On 1 Feb 2026, at 19:50, Usama Arif wrote:
+>>>
+>>>> This is an RFC series to implement 1GB PUD-level THPs, allowing
+>>>> applications to benefit from reduced TLB pressure without requiring
+>>>> hugetlbfs. The patches are based on top of
+>>>> f9b74c13b773b7c7e4920d7bc214ea3d5f37b422 from mm-stable (6.19-rc6).
+>>>
+>>> It is nice to see you are working on 1GB THP.
+>>>
+>>>>
+>>>> Motivation: Why 1GB THP over hugetlbfs?
+>>>> =======================================
+>>>>
+>>>> While hugetlbfs provides 1GB huge pages today, it has significant limitations
+>>>> that make it unsuitable for many workloads:
+>>>>
+>>>> 1. Static Reservation: hugetlbfs requires pre-allocating huge pages at boot
+>>>>    or runtime, taking memory away. This requires capacity planning,
+>>>>    administrative overhead, and makes workload orchastration much much more
+>>>>    complex, especially colocating with workloads that don't use hugetlbfs.
+>>>
+>>> But you are using CMA, the same allocation mechanism as hugetlb_cma. What
+>>> is the difference?
+>>>
+>>
+>> So we dont really need to use CMA. CMA can help a lot ofcourse, but we dont *need* it.
+>> For e.g. I can run the very simple case [1] of trying to get 1G pages in the upstream
+>> kernel without CMA on my server and it works. The server has been up for more than a week
+>> (so pretty fragmented), is running a bunch of stuff in the background, uses 0 CMA memory,
+>> and I tried to get 20x1G pages on it and it worked.
+>> It uses folio_alloc_gigantic, which is exactly what this series uses:
+>>
+>> $ uptime -p
+>> up 1 week, 3 days, 5 hours, 7 minutes
+>> $ cat /proc/meminfo | grep -i cma
+>> CmaTotal:              0 kB
+>> CmaFree:               0 kB
+>> $ echo 20 | sudo tee /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+>> 20
+>> $ cat /sys/kernel/mm/hugepages/hugepages-1048576kB/nr_hugepages
+>> 20
+>> $ free -h
+>>                total        used        free      shared  buff/cache   available
+>> Mem:           1.0Ti       142Gi       292Gi       143Mi       583Gi       868Gi
+>> Swap:          129Gi       3.5Gi       126Gi
+>> $ ./map_1g_hugepages
+>> Mapping 20 x 1GB huge pages (20 GB total)
+>> Mapped at 0x7f43c0000000
+>> Touched page 0 at 0x7f43c0000000
+>> Touched page 1 at 0x7f4400000000
+>> Touched page 2 at 0x7f4440000000
+>> Touched page 3 at 0x7f4480000000
+>> Touched page 4 at 0x7f44c0000000
+>> Touched page 5 at 0x7f4500000000
+>> Touched page 6 at 0x7f4540000000
+>> Touched page 7 at 0x7f4580000000
+>> Touched page 8 at 0x7f45c0000000
+>> Touched page 9 at 0x7f4600000000
+>> Touched page 10 at 0x7f4640000000
+>> Touched page 11 at 0x7f4680000000
+>> Touched page 12 at 0x7f46c0000000
+>> Touched page 13 at 0x7f4700000000
+>> Touched page 14 at 0x7f4740000000
+>> Touched page 15 at 0x7f4780000000
+>> Touched page 16 at 0x7f47c0000000
+>> Touched page 17 at 0x7f4800000000
+>> Touched page 18 at 0x7f4840000000
+>> Touched page 19 at 0x7f4880000000
+>> Unmapped successfully
+>>
+>>
+>>
+>>
+>>>>
+>>>> 4. No Fallback: If a 1GB huge page cannot be allocated, hugetlbfs fails
+>>>>    rather than falling back to smaller pages. This makes it fragile under
+>>>>    memory pressure.
+>>>
+>>> True.
+>>>
+>>>>
+>>>> 4. No Splitting: hugetlbfs pages cannot be split when only partial access
+>>>>    is needed, leading to memory waste and preventing partial reclaim.
+>>>
+>>> Since you have PUD THP implementation, have you run any workload on it?
+>>> How often you see a PUD THP split?
+>>>
+>>
+>> Ah so running non upstream kernels in production is a bit more difficult
+>> (and also risky). I was trying to use the 512M experiment on arm as a comparison,
+>> although I know its not the same thing with PAGE_SIZE and pageblock order.
+>>
+>> I can try some other upstream benchmarks if it helps? Although will need to find
+>> ones that create VMA > 1G.
+>>
+>>> Oh, you actually ran 512MB THP on ARM64 (I saw it below), do you have
+>>> any split stats to show the necessity of THP split?
+>>>
+>>>>
+>>>> 5. Memory Accounting: hugetlbfs memory is accounted separately and cannot
+>>>>    be easily shared with regular memory pools.
+>>>
+>>> True.
+>>>
+>>>>
+>>>> PUD THP solves these limitations by integrating 1GB pages into the existing
+>>>> THP infrastructure.
+>>>
+>>> The main advantage of PUD THP over hugetlb is that it can be split and mapped
+>>> at sub-folio level. Do you have any data to support the necessity of them?
+>>> I wonder if it would be easier to just support 1GB folio in core-mm first
+>>> and we can add 1GB THP split and sub-folio mapping later. With that, we
+>>> can move hugetlb users to 1GB folio.
+>>>
+>>
+>> I would say its not the main advantage? But its definitely one of them.
+>> The 2 main areas where split would be helpful is munmap partial
+>> range and reclaim (MADV_PAGEOUT). For e.g. jemalloc/tcmalloc can now start
+>> taking advantge of 1G pages. My knowledge is not that great when it comes
+>> to memory allocators, but I believe they track for how long certain areas
+>> have been cold and can trigger reclaim as an example. Then split will be useful.
+>> Having memory allocators use hugetlb is probably going to be a no?
+>>
+>>
+>>> BTW, without split support, you can apply HVO to 1GB folio to save memory.
+>>> That is a disadvantage of PUD THP. Have you taken that into consideration?
+>>> Basically, switching from hugetlb to PUD THP, you will lose memory due
+>>> to vmemmap usage.
+>>>
+>>
+>> Yeah so HVO saves 16M per 1G, and the page depost mechanism adds ~2M as per 1G.
+>> We have HVO enabled in the meta fleet. I think we should not only think of PUD THP
+>> as a replacement for hugetlb, but to also enable further usescases where hugetlb
+>> would not be feasible.
+>>
+>> Ater the basic infrastructure for 1G is there, we can work on optimizing, I think
+>> there would be a a lot of interesting work we can do. HVO for 1G THP would be one
+>> of them?
+>>
+>>>>
+>>>> Performance Results
+>>>> ===================
+>>>>
+>>>> Benchmark results of these patches on Intel Xeon Platinum 8321HC:
+>>>>
+>>>> Test: True Random Memory Access [1] test of 4GB memory region with pointer
+>>>> chasing workload (4M random pointer dereferences through memory):
+>>>>
+>>>> | Metric            | PUD THP (1GB) | PMD THP (2MB) | Change       |
+>>>> |-------------------|---------------|---------------|--------------|
+>>>> | Memory access     | 88 ms         | 134 ms        | 34% faster   |
+>>>> | Page fault time   | 898 ms        | 331 ms        | 2.7x slower  |
+>>>>
+>>>> Page faulting 1G pages is 2.7x slower (Allocating 1G pages is hard :)).
+>>>> For long-running workloads this will be a one-off cost, and the 34%
+>>>> improvement in access latency provides significant benefit.
+>>>>
+>>>> ARM with 64K PAGE_SZIE supports 512M PMD THPs. In meta, we have a CPU
+>>>> bound workload running on a large number of ARM servers (256G). I enabled
+>>>> the 512M THP settings to always for a 100 servers in production (didn't
+>>>> really have high expectations :)). The average memory used for the workload
+>>>> increased from 217G to 233G. The amount of memory backed by 512M pages was
+>>>> 68G! The dTLB misses went down by 26% and the PID multiplier increased input
+>>>> by 5.9% (This is a very significant improvment in workload performance).
+>>>> A significant number of these THPs were faulted in at application start when
+>>>> were present across different VMAs. Ofcourse getting these 512M pages is
+>>>> easier on ARM due to bigger PAGE_SIZE and pageblock order.
+>>>>
+>>>> I am hoping that these patches for 1G THP can be used to provide similar
+>>>> benefits for x86. I expect workloads to fault them in at start time when there
+>>>> is plenty of free memory available.
+>>>>
+>>>>
+>>>> Previous attempt by Zi Yan
+>>>> ==========================
+>>>>
+>>>> Zi Yan attempted 1G THPs [2] in kernel version 5.11. There have been
+>>>> significant changes in kernel since then, including folio conversion, mTHP
+>>>> framework, ptdesc, rmap changes, etc. I found it easier to use the current PMD
+>>>> code as reference for making 1G PUD THP work. I am hoping Zi can provide
+>>>> guidance on these patches!
+>>>
+>>> I am more than happy to help you. :)
+>>>
+>>
+>> Thanks!!!
+>>
+>>>>
+>>>> Major Design Decisions
+>>>> ======================
+>>>>
+>>>> 1. No shared 1G zero page: The memory cost would be quite significant!
+>>>>
+>>>> 2. Page Table Pre-deposit Strategy
+>>>>    PMD THP deposits a single PTE page table. PUD THP deposits 512 PTE
+>>>>    page tables (one for each potential PMD entry after split).
+>>>>    We allocate a PMD page table and use its pmd_huge_pte list to store
+>>>>    the deposited PTE tables. This ensures split operations don't fail due
+>>>>    to page table allocation failures (at the cost of 2M per PUD THP)
+>>>>
+>>>> 3. Split to Base Pages
+>>>>    When a PUD THP must be split (COW, partial unmap, mprotect), we split
+>>>>    directly to base pages (262,144 PTEs). The ideal thing would be to split
+>>>>    to 2M pages and then to 4K pages if needed. However, this would require
+>>>>    significant rmap and mapcount tracking changes.
+>>>>
+>>>> 4. COW and fork handling via split
+>>>>    Copy-on-write and fork for PUD THP triggers a split to base pages, then
+>>>>    uses existing PTE-level COW infrastructure. Getting another 1G region is
+>>>>    hard and could fail. If only a 4K is written, copying 1G is a waste.
+>>>>    Probably this should only be done on CoW and not fork?
+>>>>
+>>>> 5. Migration via split
+>>>>    Split PUD to PTEs and migrate individual pages. It is going to be difficult
+>>>>    to find a 1G continguous memory to migrate to. Maybe its better to not
+>>>>    allow migration of PUDs at all? I am more tempted to not allow migration,
+>>>>    but have kept splitting in this RFC.
+>>>
+>>> Without migration, PUD THP loses its flexibility and transparency. But with
+>>> its 1GB size, I also wonder what the purpose of PUD THP migration can be.
+>>> It does not create memory fragmentation, since it is the largest folio size
+>>> we have and contiguous. NUMA balancing 1GB THP seems too much work.
+>>
+>> Yeah this is exactly what I was thinking as well. It is going to be expensive
+>> and difficult to migrate 1G pages, and I am not sure if what we get out of it
+>> is worth it? I kept the splitting code in this RFC as I wanted to show that
+>> its possible to split and migrate and the rejecting migration code is a lot easier.
+>>
+>>>
+>>> BTW, I posted many questions, but that does not mean I object the patchset.
+>>> I just want to understand your use case better, reduce unnecessary
+>>> code changes, and hopefully get it upstreamed this time. :)
+>>>
+>>> Thank you for the work.
+>>>
+>>
+>> Ah no this is awesome! Thanks for the questions! Its basically the discussion I
+>> wanted to start with the RFC.
+>>
+>>
+>> [1] https://gist.github.com/uarif1/35dcd63f9d76048b07eb5c16ace85991
+>>
+>>
 > 
-> On 05/02/26 2:08 am, Shakeel Butt wrote:
-> > On Mon, Feb 02, 2026 at 02:23:54PM +0530, Dev Jain wrote:
-> >> On 02/02/26 10:24 am, Shakeel Butt wrote:
-> >>>>>> Hello Shakeel,
-> >>>>>>
-> >>>>>>  We are seeing a regression in micromm/munmap benchmark with this patch, on arm64 -
-> >>>>>>  the benchmark mmmaps a lot of memory, memsets it, and measures the time taken
-> >>>>>>  to munmap. Please see below if my understanding of this patch is correct.
-> >>>>>>
-> >>>>>  Thanks for the report. Are you seeing regression in just the benchmark
-> >>>>>  or some real workload as well? Also how much regression are you seeing?
-> >>>>>  I have a kernel rebot regression report [1] for this patch as well which
-> >>>>>  says 2.6% regression and thus it was on the back-burner for now. I will
-> >>>>>  take look at this again soon.
-> >>>>>
-> >>>> The munmap regression is ~24%. Haven't observed a regression in any other
-> >>>> benchmark yet.
-> >>> Please share the code/benchmark which shows such regression, also if you can
-> >>> share the perf profile, that would be awesome.
-> >> https://gitlab.arm.com/tooling/fastpath/-/blob/main/containers/microbench/micromm.c
-> >> You can run this with
-> >> ./micromm 0 munmap 10
-> >>
-> >> Don't have a perf profile, I measured the time taken by above command, with and
-> >> without the patch.
-> >>
-> > Hi Dev, can you please try the following patch?
-> >
-> >
-> > From 40155feca7e7bc846800ab8449735bdb03164d6d Mon Sep 17 00:00:00 2001
-> > From: Shakeel Butt <shakeel.butt@linux.dev>
-> > Date: Wed, 4 Feb 2026 08:46:08 -0800
-> > Subject: [PATCH] vmstat: use preempt disable instead of try_cmpxchg
-> >
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-> > ---
-
-[...snip...]
-
+> It looks like the scenario you're going for is an application that
+> allocates a sizeable chunk of memory upfront, and would like it to be
+> 1G pages as much as possible, right?
 > 
-> Thanks for looking into this.
+
+Hello!
+
+Yes. But also it doesnt need to be a single chunk (VMA).
+
+> You can do that with 1G THPs, the advantage being that any failures to
+> get 1G pages are not explicit, so you're not left with having to grow
+> the number of hugetlb pages yourself, and see how many you can use.
 > 
-> But this doesn't solve it :( preempt_disable() contains a compiler barrier,
-> probably that's why.
+> 1G THPs seem useful for that. I don't recall all of the discussion
+> here, but I assume that hooking 1G THP support in to khugepaged is
+> quite something else - the potential churn to get an 1G page could
+> well cause more system interference than you'd like.
+> 
 
-I think the reason why it doesn't solve the regression is because of how
-arm64 implements this_cpu_add_8() and this_cpu_try_cmpxchg_8().
+Yes completely agree.
 
-On arm64, IIUC both this_cpu_try_cmpxchg_8() and this_cpu_add_8() are
-implemented using LL/SC instructions or LSE atomics (if supported).
+> The CMA scenario Rik was talking about is similar: you set
+> hugetlb_cma=NG, and then, when you need 1G pages, you grow the hugetlb
+> pool and use them. Disadvantage: you have to do it explicitly.
+> 
+> However, hugetlb_cma does give you a much larger chance of getting
+> those 1G pages. The example you give, 20 1G pages on a 1T system where
+> there is 292G free, isn't much of a problem in my experience. You
+> should have no problem getting that amount of 1G pages. Things get
+> more difficult when most of your memory is taken - hugetlb_cma really
+> helps there. E.g. we have systems that have 90% hugetlb_cma, and there
+> is a pretty good success rate converting back and forth between
+> hugetlb and normal page allocator pages with hugetlb_cma, while
+> operating close to that 90% hugetlb coverage. Without CMA, the success
+> rate drops quite a bit at that level.
 
-See:
-- this_cpu_add_8()
-  -> __percpu_add_case_64
-     (which is generated from PERCPU_OP)
+Yes agreed.
+> 
+> CMA balancing is a related issue, for hugetlb. It fixes a problem that
+> has been known for years: the more memory you set aside for movable
+> only allocations (e.g. hugetlb_cma), the less breathing room you have
+> for unmovable allocations. So you risk the 'false OOM' scenario, where
+> the kernel can't make an unmovable allocation, even though there is
+> enough memory available, even outside of CMA. It's just that those
+> MOVABLE pageblocks were used for movable allocations. So ideally, you
+> would migrate those movable allocations to CMA under those
+> circumstances. Which is what CMA balancing does. It's worked out very
+> well for us in the scenario I list above (most memory being
+> hugetlb_cma).
+> 
+> Anyway, I'm rambling on a bit. Let's see if I got this right:
+> 
+> 1G THP
+>   - advantages: transparent interface
+>   - disadvantage: no HVO, lower success rate under higher memory
+> pressure than hugetlb_cma
+> 
 
-- this_cpu_try_cmpxchg_8()
-  -> __cpu_fallback_try_cmpxchg(..., this_cpu_cmpxchg_8)
-  -> this_cpu_cmpxchg_8()
-  -> cmpxchg_relaxed()
-  -> raw_cmpxchg_relaxed()
-  -> arch_cmpxchg_relaxed()
-  -> __cmpxchg_wrapper()
-  -> __cmpxchg_case_64()
-  -> __lse_ll_sc_body(_cmpxchg_case_64, ...)
+Yes! But also, the problem of having no HVO for THPs I think can be worked
+on once the support for it is there. The lower success rate is a much more
+difficult problem to solve.
 
-> Also can you confirm whether my analysis of the regression was correct?
-> Because if it was, then this diff looks wrong - AFAIU preempt_disable()
-> won't stop an irq handler from interrupting the execution, so this
-> will introduce a bug for code paths running in irq context.
+> hugetlb_cma
+>    - disadvantage: explicit interface, for higher values needs 'false
+> OOM' avoidance
+>    - advange: better success rate under pressure.
+> 
+> I think 1G THPs are a good solution for "nice to have" scenarios, but
+> there will still be use cases where a higher success rate is preferred
+> and HugeTLB is preferred.
+> 
 
-I was worried about the correctness too, but this_cpu_add() is safe
-against IRQs and so the stat will be _eventually_ consistent?
+Agreed. I dont think 1G THPs can completely replace hugetlb. Maybe after
+getting after several years of work to optimize it, there might be a path to it
+but not at the very start.
 
-Ofc it's so confusing! Maybe I'm the one confused.
 
--- 
-Cheers,
-Harry / Hyeonggon
+> Lastly, there's also the ZONE_MOVABLE story. I think 1G THPs and
+> ZONE_MOVABLE could work well together, improving the success rate. But
+> then the issue of pinning raise its head again, and whether that
+> should be allowed or configurable per zone..
+> 
+
+Ack
+
+> - Frank
+
 
