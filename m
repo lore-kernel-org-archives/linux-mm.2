@@ -4,116 +4,209 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F0BCEC1EA0
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7CEFEC1EA5
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:20:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 879116B0093; Thu,  5 Feb 2026 06:18:10 -0500 (EST)
+	id 2C1766B0092; Thu,  5 Feb 2026 06:20:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8306E6B009B; Thu,  5 Feb 2026 06:18:10 -0500 (EST)
+	id 26F2F6B0096; Thu,  5 Feb 2026 06:20:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7597C6B009D; Thu,  5 Feb 2026 06:18:10 -0500 (EST)
+	id 150F16B0098; Thu,  5 Feb 2026 06:20:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 633836B0093
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:18:10 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 030C358EFB
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:18:09 +0000 (UTC)
-X-FDA: 84410153940.04.AEC8CAA
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 477BCA0006
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:18:08 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TRtTsc7L;
-	spf=pass (imf25.hostedemail.com: domain of 3bnyEaQkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3bnyEaQkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770290288;
+	by kanga.kvack.org (Postfix) with ESMTP id F16486B0092
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:20:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AABE11A04BD
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:20:45 +0000 (UTC)
+X-FDA: 84410160450.10.DB6FC0A
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011035.outbound.protection.outlook.com [52.101.62.35])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A3ED010000F
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:20:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pVpUnWyt;
+	spf=pass (imf14.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.35 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770290442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z01yRtpRz+f8+vWuZfwZd3Dwpe3AoEMaMACYc8SLy3w=;
-	b=0Vlzk8rNf/g48V2fyQIUocEdLCYu2dIRYSBcIDRNZWg351BbmpLLFDyR+hud5YrkTVYTI1
-	Pe5trq1KaJfgIZ7bMmi87K14svKRtU4wwn0ANfD09FlQg1cotcUGljLsg7ti+/3iez0NVH
-	+Gh87DS6anMDNtPeYqYB7Ku+HxtFAfc=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=TRtTsc7L;
-	spf=pass (imf25.hostedemail.com: domain of 3bnyEaQkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3bnyEaQkKCMsr2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770290288; a=rsa-sha256;
-	cv=none;
-	b=bnBIxTCohwDrDCsTuL425srax5cD5qYvqqQLzLp/wfJj6mLGIibQuUlqkgVxKu+Tfn7aZz
-	Dw5MjYnlUkFrZ/iho7XglUMJmin0xTXjBWFdJBsywG2+KaDA36UMGRX15rsd/548QJNKWT
-	MRPnAiO2XBByeHHCS1qYgOPX+U2xGRo=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-480711d09f1so11089245e9.0
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 03:18:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770290287; x=1770895087; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z01yRtpRz+f8+vWuZfwZd3Dwpe3AoEMaMACYc8SLy3w=;
-        b=TRtTsc7Lf4qLOPBBKyn70yjEzArrXiCpxNH/tKoexYdy2F9uPERHfNHm/1p69twKDt
-         j0o51Rdovob7xam2OOfzcnkx5l5eZD2kN7RnjVmx4OPETZICiIbOpsd93MRb02+zc+4F
-         yg4o1NrHvHfGolpVJIcRGvrgADV4TXZKZHRAdWU2ICaHPiC2ikWfwQOjVSyWbsFNGdR/
-         hvt7yqPGmyDAxyspg9s3yUq59YmebZOUjCCwuj8+5l+ODmFNsooFbbBR4gL67k0a3I0+
-         iRwWdlumU4dbvw27Bnb0sLcl1UQBbuyR8wHIu/yr+l4NHaeP44R2VpmZP4drSWfbm1tI
-         lm9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770290287; x=1770895087;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z01yRtpRz+f8+vWuZfwZd3Dwpe3AoEMaMACYc8SLy3w=;
-        b=jDvnph8rDGzPFfPDA9xW66uH6/2fdJN+7X5DkZKNpp6KuyB/b0GXVm/ACSSpCTSJp8
-         bRgwwcqimYxM0mcQ7TzD/FV7J7J8OHNiBiNbFWiyrvI829phfPwjmm5uMtJgM6hMsxqY
-         7TiVgYXOe1JvnF8poOXA1jki5PivSiaQLohnt7X08P+wk2QRqIULHEksCOtG2OJlBkyS
-         MkdcwzRZMSiBLLl2hWrWj2x7y5E+uMzb9QpGB5ogqr2fFVUnBXmgvWcHuRiJtlNViARx
-         XvG878airFUHBycg5PxYab/iw6lxDQ88HX/s8vrUidYpF23S69akzVoNTJjIPonDlF4Y
-         MNFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvZj1NkS7rVGxuzk6WBKzg05WEkT1VrmB2Kt9NboSWrQ05MxAp5qcFXxxdBXnT0hhXOXb+CfSobw==@kvack.org
-X-Gm-Message-State: AOJu0YwkCyImznefUU4SP5c4xzQXVgYiL8noaE/tFhfy9kXvC8/Re+h2
-	3OD0xA50xcY01M8UYUw2Cl2By8C3BrJIkYJql6kBoCC7XB5zP+U4T8vD/KiTio/A4vNZbWkCdQR
-	NRnRq881CRcYumpuWbA==
-X-Received: from wmbjt17.prod.google.com ([2002:a05:600c:5691:b0:482:dff5:2424])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1c1a:b0:477:a246:8398 with SMTP id 5b1f17b1804b1-4830e93ea4emr80378215e9.2.1770290286698;
- Thu, 05 Feb 2026 03:18:06 -0800 (PST)
-Date: Thu, 5 Feb 2026 11:18:03 +0000
-In-Reply-To: <2f908340-a983-42c7-bb59-2d6f3a80c834@kernel.org>
-Mime-Version: 1.0
-References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
- <20260205-binder-tristate-v1-3-dfc947c35d35@google.com> <d3dca137-2e4c-4a1a-bdec-63cc2477bfda@kernel.org>
- <aYR5J0ip2MdD3nMP@google.com> <2f908340-a983-42c7-bb59-2d6f3a80c834@kernel.org>
-Message-ID: <aYR8a09XUh74tg8l@google.com>
-Subject: Re: [PATCH 3/5] mm: export zap_page_range_single and list_lru_add/del
-From: Alice Ryhl <aliceryhl@google.com>
-To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 477BCA0006
-X-Stat-Signature: 8dkbucg9ajkftrhq7rccxtniqb5e1ieu
+	bh=hiCDtWV/mBkJHYnCYr3XysCgcRP8AwBhd/kGvb9UfO4=;
+	b=TffbQMU9g+Vu9oQohBz43Hpkm36qxNTWzIL7Ss+yag/N6KuQB3Hze5k8rYZIZCqT45Vyu1
+	srElJj9T4Ocxxyo+4FTumlbUAqA+iBiSA9zdNZ+EcUE8HAragzpjZ1Zu9GhrvK38gG3Zqg
+	EZny0BR6epABkGATWENAJFpX3kNyiA4=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=pVpUnWyt;
+	spf=pass (imf14.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.62.35 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770290442; a=rsa-sha256;
+	cv=pass;
+	b=pnw73RjbJN6eIp4Ox+fKDmJHflSUNVgtMiNMSUvKDFU2Vj7JMTKS2AEd8TD/z+cpd1nDH3
+	53GmAVnYPdc5v+jaswdlrdF8Yv3VuKV0B9DwScH4CdCqHDy5utBAnGi1B9dEf5z+RwH/M6
+	BskIpizhQpXJqGgIWsCbPTBoDg1KC1k=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=DPcPpqs0qWd6ApkAyrMSuDVZoyDMouM44OYjux6H3X1ZAuCEDSrTdnkLt2Al3zabtvLghPuzIQ0ZfbsbwL1MztPmvFOx21XIH+WwP8Zt4kH8hBN6fWWIJ2G6a6e+BSiP5jGVFCaWVEyMKjs1ZUTkyL/faibmFaENEXrl9quh2GhfgpxiaNd8JpEgBsPlX+hQwKrgKpjNa2kC8i/uNMxUK2g8oZPQLLHX7Y8P2agr8W2Xk3gaTXblqNyhlU2caR1mA8ww0THlGMhr00kcFbBVIFmPfdzbXEmFUGOM4rDR95Zix21MqZhC2VL6WXijDG9DmA5bzj1rEBHJDlSq/BY4mQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hiCDtWV/mBkJHYnCYr3XysCgcRP8AwBhd/kGvb9UfO4=;
+ b=QliihnfmpXaj0YEf4JHZxgeI49saW63rTnmTI/4m5GjqDE9/FDCk1RWHsxFMRAImtPYLJwpawJm/DBHl0BOcPF0KvhExTwypOoG90YbYa/xr1Kpcqshh4RPV8G2byF03j6KOJiYRmRZ98q+Bc5MwSti4JF5sj8Xjxrq7N+uaZoTIPwrfnaAb31Oa+YOYsp1fifu7Qr3UkrrFypvG9J3PLEwUH7/68rMBpv7cxFiVMvD8J7cXZ8yvMUiNaK4DWYYazDY1nylSQU0Nh2i8V+wHCh40nDY2M/HEMxUmdHejy9kdQzWLJ73EbQcJ/DN39q5FcU71Rm/SgiVqAr/N/bJ1uQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hiCDtWV/mBkJHYnCYr3XysCgcRP8AwBhd/kGvb9UfO4=;
+ b=pVpUnWyt1RkgqrSkJc99J0JEa3sqgASe1y/ZjeKhAVzGaOwZlGj8NbJBBhH3LEtk3vVdc1VktDWPI4Ial/xwuJmPW9jTLS5aoZJNl2MfZbVU+vlDOG8NRTlsSzsgiiWLLNLti4noMPlNAyX3rFW8/veBe5f14z9tEyz90O6Q1l4F8VieQEyGdmUWnJwt59G3r36bcmGlmaKD1r/IaCcaTvqIEeF94gRtUvYNuOb5ghLFKuHNYlwtcaBM70Kjk/Xbo8VCR7pGnuaY1r6/1jcIImH3nFElR9GkKMbxv9j6TaFIVr2GxfVdNGntLhKv3kIQyNaGoKdbEMgfKFNyto0acA==
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
+ by CH3PR12MB9430.namprd12.prod.outlook.com (2603:10b6:610:1cd::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Thu, 5 Feb
+ 2026 11:20:36 +0000
+Received: from PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4]) by PH8PR12MB7277.namprd12.prod.outlook.com
+ ([fe80::2920:e6d9:4461:e2b4%5]) with mapi id 15.20.9587.013; Thu, 5 Feb 2026
+ 11:20:36 +0000
+Message-ID: <a1fa9630-2661-4a62-9b38-8154d8ef05b1@nvidia.com>
+Date: Thu, 5 Feb 2026 22:20:31 +1100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ intel-xe@lists.freedesktop.org
+Cc: Alistair Popple <apopple@nvidia.com>,
+ Ralph Campbell <rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+ Jason Gunthorpe <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Matthew Brost <matthew.brost@intel.com>,
+ John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+References: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
+Content-Language: en-US
+From: Balbir Singh <balbirs@nvidia.com>
+In-Reply-To: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY5PR04CA0025.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::35) To PH8PR12MB7277.namprd12.prod.outlook.com
+ (2603:10b6:510:223::13)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|CH3PR12MB9430:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3f11047-523e-4ac1-7ff1-08de64a89597
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QnRFZDlPQ3VkSlFjT1ppbjFtRFd5S0I3VVplNjdMRklZVlp5L0xFZlBINWdS?=
+ =?utf-8?B?dUFVZUJxdXEzR3UxSjVUczhZVTY1WW9kazMwOUV6OWZLaUUyQUFrSUtieXQv?=
+ =?utf-8?B?OFY1dnJrd2xPY2h2cFZzcFlldzZBRzlSbkk4UDRGaWdodVh5K2thTkZHTzBD?=
+ =?utf-8?B?WkJoZmZ4eUU5MVF4eWhPaHgxRm5JOGpIQ05GbDVpVlVhSkZWN25vcUpJd2xL?=
+ =?utf-8?B?cG9WeGUrMmZwK0NRKzZRUHR5VDFPbUJOclh3YngwM3BlZjhKOHd0aVVTOEJ3?=
+ =?utf-8?B?NXF3WkRqQzBZbXpTMzFLYmJZVVJEQkN5NTNibUpmbTRDbVZ3dDR1d29RZE9U?=
+ =?utf-8?B?V2t6bmhjblNHZ1MyUS95UnlTOU9HTzI4SkF5eFc3U09pcHlZWG9CVXJLVndt?=
+ =?utf-8?B?UDJyc0NnUThFV2NUWW15blFnbEVwNzJ1aVRUQnc3eXVmRWE2bUxzeTRNakVY?=
+ =?utf-8?B?ZEZiSEozZml4bjdzakZkU0w2MUNGQXoyNDY4ekJKbGluOFdiU3hibVQ4RUdK?=
+ =?utf-8?B?VzJ2ZGRnUXJPSkxSV1pmbDJMM3AyQ014UE5kQy90eEVGc1JET1diV0l1THJW?=
+ =?utf-8?B?Q3JqbVEzcmhqUjVpTFIxUS9WNWJtMnd6Q0pxMXptT0UyVDhjUWlOdE51ZWlT?=
+ =?utf-8?B?eDdEYmwxeGF0RVNiU1NnRko0YUJka25RTjAvc2g4SVo3cUEyM2pWZ28wN2Fn?=
+ =?utf-8?B?TzczV3JZOFdGS2VGbXdwOUhSd25idmJQSXZhSy9pRHp0dTRTKzVMV0UzNXNw?=
+ =?utf-8?B?OEROOEdYTFRFRlNiRTE0U2VGNEpkQThkWXJZd3NoajdITkl1cUZON2d1bDlu?=
+ =?utf-8?B?UFpjQ1l5SGZFWVpmc0gra1ZUYWZYcGxLamlMWWJVTTNrNEpxbG5iT0JYNk5G?=
+ =?utf-8?B?ZkRrMWw4dUEyaVdnQ3FLRmxxYUhkbzRUNzdqb1UrL3dmZjZUS2VaNW9RcXVJ?=
+ =?utf-8?B?WjYrWVQ4YUpsWDZMVjBsZ2RaK2lVQzByeDIzNVQ5QWJJK3ZiVzVhaXYzaFJr?=
+ =?utf-8?B?VmhuVmMyU296djhnUVNwd1RtY2N4UlI5dHRjeTd0Zzh0R3pHdldUWkdKZ0sr?=
+ =?utf-8?B?NEVtWGc3VU4xTjNyL3pqUUt1YWpnZjdtSTVmQzJCbUZuUFlQalhoSDRpZzBz?=
+ =?utf-8?B?cEJSN3JONmR6bk1ETjdvakRmaGRJbm5jU3ZqOHhGYmVNN1BHVTJTUU04QS9u?=
+ =?utf-8?B?UG9aWURVUHMxMmNFNjJpemFGR2dHR0k4N0hjcXoxQmkwcUJCMTVYanAvTTBx?=
+ =?utf-8?B?bW9FbFlkbXZHU29sQTVOdHBqSmdPS1VUcmFkc214RmdRTWpsMCt3OWVrODM3?=
+ =?utf-8?B?aDdhOXk5N3hONmxJMlN4T2U2eTI0TFFoY3pJSDZnSFpZTWNmdmZyNk55eGZS?=
+ =?utf-8?B?dUdEeHJWcGI1ekZhOFNERjdGdW5zTHpNU0E2NzlVYTQrYXlJUHBLUlRyblZt?=
+ =?utf-8?B?Z3h1TFV2OURJWUFZeGw1bkgyQVpTNmVTZ25jZUlabTlWdyt3N05UQVZwT1Ny?=
+ =?utf-8?B?VGpoVEdKWjN4WWNhMmFFUHFOQlZkWGdzeUFhTW44WVdkWUpwQVg5NUkzQUFT?=
+ =?utf-8?B?WnlSQkM2SXIwTDQyR2RmdEljZktLMFptK1U4VUxWdTIvV1I1Y0psRnpldG9F?=
+ =?utf-8?B?a0RvU2RqV29RWWVkYTN2VndPUmZQbEpXQ0JiL0x1WndCd0M1QUZUbFFKckNN?=
+ =?utf-8?B?ZGZWR2lLRDFoRmltRHZHNmRFajdUQUhHdVFaOGNpRUl4MWZVS3p5ZlR1V3VP?=
+ =?utf-8?B?N0FLYTdoeHlPK0NQeVJmalJiZ1pMalZHeTUzcXhqYjlkZjVWNHJOUHBGZnBt?=
+ =?utf-8?B?bzRtV09UVkQxMDcrRXFHdTk0UllXNzNOYnd0RSsvOGxwMHZSNUZRMldadHlh?=
+ =?utf-8?B?NXFWUk9DNk5Oc0hNeDc1cHJWOUN2eXFqM2lRU3J6TnNhaUtGNEJ4SnhhZ2ZM?=
+ =?utf-8?B?Q3AvdjVMV3VQcXF1VHIySGJBTm1NKzEyVmk0dFl2QWl4VGt0MEFnakN4NEp1?=
+ =?utf-8?B?QStPWkF6NFNIQzFiYzNzcml5b1NPVWlMdkZRc1YwYnJ6V2d2Z1prWFhSMEV5?=
+ =?utf-8?B?aEtscmFQRnVzNzRWUFNwU3hDU0FSOWpyaUFoQVJ6RWZydlZmajVOTmljd05r?=
+ =?utf-8?Q?SNb0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?aUNUTmgwak16d3lUL043MC9Ia1BhOFVHd2xyYTNQS1k4SUFvYXlzV09kcXNQ?=
+ =?utf-8?B?SkNsWVVuaTVpM1BMMG1YZGxieGo4Q1E5dHdNOFBzUW9NbUNZZ21saE13UXRM?=
+ =?utf-8?B?VUY2OEdaaXc4eU1YVXlCUFQ0d3FvbGlzeHZxaW80STZEL0s1WGhZSjRqTE15?=
+ =?utf-8?B?Q245WEpaQjVKbmVpNEhvNUJhUlR0Rm8wRUZGYVNwZG5jY0MzRldWdGZuaHVi?=
+ =?utf-8?B?QjdybzEybU1hRnJSMjU5Yk1BRkFobEtPb0dvWEVXZkJrZHZPZ1JOK1owVm84?=
+ =?utf-8?B?aW1nWUM3UWRBd09ObzJhTW5UM2t0UWdteitHcHg5VWNIaDE0Nk5TaDJoN3lF?=
+ =?utf-8?B?cnI0cXFjVWFkT0hrYlB3V1BDZjRzd0tVV2tGTnNQWlFuZ2xJRUhSUzU2c2Np?=
+ =?utf-8?B?Zmh4L1Y0eFROYlRBdUpmMEdOUm4rUElCZnFKR0Y0dGdMU1VQOWNheEdWZTZa?=
+ =?utf-8?B?bE51d0RhVlNtZ3FIc3I5QU5EZkNSQit1R2JZb2lQOHdLejZ6Vm1VeDhNN3RF?=
+ =?utf-8?B?dlg3UVJaSFRJeXhDNGZTQXJaMzMycFJYdDVlVlJleDRsSkR4YTA0QSsxNWlP?=
+ =?utf-8?B?SHIzNUNCOFFzOTdMc3FDK1BBeHNQdWl0OEExYnd4dWVNbVZyL0F4dlNpN2hC?=
+ =?utf-8?B?VTAxOGcvZWZyL1p0YkJickh1d0w2aDVHNDZra2pwQ2FJV2Z5K0FEMDBUUDN4?=
+ =?utf-8?B?YWdNdG4zODloWlN2NkZ4eER6aFMzSGlRVVdCanYwb3I1YTRFMDdiNUQ2c1h4?=
+ =?utf-8?B?blRRYTdqek05Wkk5c3RqTVB6Z0F1WkY2cC9HT0VWT0RFa1pSZTkxcmlLa3Zl?=
+ =?utf-8?B?RzVnNXJYTUpZUThhKzFrK3NHT3pjVTNRK3V6clhPVGo4ZGlTNXkvWE1iWHhp?=
+ =?utf-8?B?VGlJekpTeDBXNkl4TWtoTnQwYzA2dHJ5UnBhR0ZDKzAybGdqUDYyU216eVZ1?=
+ =?utf-8?B?cWgxakRXdU8rZnRSQUNoTnJ0bHlha2ZoUjVmY0M1WkQveDRXanJROTVVMG1Y?=
+ =?utf-8?B?aEZtQ1RhZElOSGp2NmVTTkRjaXpyVkVXV2ZncWh0TWVEOUJaSklpcnFKTlVH?=
+ =?utf-8?B?YXNMOE91eStRd3ZLbjJTWkNYWHd5QTlpRUNhdUdCTHptMnRJeE9WMGxXdGJs?=
+ =?utf-8?B?b3dUQTJEdEcwSGNZcWpIc0VTNXhPNjVFQUpwSWtiUWNkRXRmYkZwN2JBOUhh?=
+ =?utf-8?B?MmpFM2dpMldnUk9weUJDNkEvNjcvQnNFN084UVYxRCt6TWlRcmxNcjFkZ0Va?=
+ =?utf-8?B?a1kzTE9mSTVuRVZUR0pDL2NkcGJWb2EvZ05OdHpLWGkyMDk3Q2U0TGtrbWR6?=
+ =?utf-8?B?UElqczZ5djh0T25JTmxWWVhKSFlxT0xmdzkrZzRYNE9objY3MURXZTVkQ0JW?=
+ =?utf-8?B?SkxtbE45NlplaFBXbVlqU2pZazliRktoeTFEY3ZrRlMrS2hqMlJtOWdzczJw?=
+ =?utf-8?B?YXJYV2xpZlI4UXlmaEJaa1R3LzBXSFRGVytTdXcrL0dzcnRPL012OVh5UGhB?=
+ =?utf-8?B?dlRsb1BrTy9RMzl5STJPS3JndVVSaGJVbWtqZlhMOG9uRWtUYU16cFJzUDVv?=
+ =?utf-8?B?TnZXYW5ONW9SZWxiUDN2T3QzSGhMTXFuVU4vTkhmVzdtQWlBdGhBV2ZnTHVC?=
+ =?utf-8?B?dmtWdmNydzZaQU5HSm5BWW1ydThLTDdadGxudGNFODk3UVRPTEdkWUtSWTJQ?=
+ =?utf-8?B?UTZ3Q1RyM2ZRNmd2NktBcHlLYi9tZ0RLb2pLNU9Bek1yOS9MWDBpN0p3QzVi?=
+ =?utf-8?B?T1FhYStiUkhPSXlaS3BKMURPVFIvVzNIR2UvS2hJT3VUbG1pci93QzU5YmY5?=
+ =?utf-8?B?SDlHdTg2eWtWQmdhNGNwNDlGTHBPSHY2VUhFUEUwdHRPUG9LM1RxZVFLMjhB?=
+ =?utf-8?B?OEtMQWpXYU14R1Jya0tHNDBBUkZCU044QVFOZUtnL0ZRci96RnBNbGZvNzNL?=
+ =?utf-8?B?bW1obUxyelRsbFJFam1WNVdUclZmNVQyOWd0VFZVSElEUnJoUVZjaWlKakxM?=
+ =?utf-8?B?bWZiRWtHeVY3eE5udTVGM3JRdGVRVHVleWlpMmJxTjdnanV2ckNFZjE1c0k4?=
+ =?utf-8?B?TnFGTGhZR1FTOXVGZkVJQ3prenIvWXhlcENHU0NnRG4zMmFWalpYdm5iOGNG?=
+ =?utf-8?B?MkRWd0d5SHFWNkRRNmJXRmtXUTZIZ3VxSEFhbDBKK0xYOHdSVTBGakM5aEJp?=
+ =?utf-8?B?bVQ5T1BNbm1QaVM1MG8zcWdFSE9CV3Jaa2tacGFHZVRQT1p1YVMvQ1JsYjlX?=
+ =?utf-8?B?cG9XT3h0R0F3aUJRYnpWZHhsOEpVU0Z0N1VpZmlFLzA4RnZOSEhZbFFLVkNB?=
+ =?utf-8?B?R3U1TFA3MFdsSkcvWHdQQW9pLy9uZkVMcXlhclBhV2x5Wk9UUXZ5VjUwclF3?=
+ =?utf-8?Q?uR2+ir6HvpHmYr8Mdl9PP7tIoSawHecJVEYvaDox+CZ+c?=
+X-MS-Exchange-AntiSpam-MessageData-1: gMzWXmWopVFPog==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3f11047-523e-4ac1-7ff1-08de64a89597
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 11:20:36.2094
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2TurRzqLyVhVtNYBeHfii3kqK7ivfq04ahU76XS33mLxYfnqazw9XIWoBruJVJwulAViX9BfL94BXtwoO8kguw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9430
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ry9f3ekdmqoup96f4wzdazzususbdss1
+X-Rspamd-Queue-Id: A3ED010000F
 X-Rspam-User: 
-X-HE-Tag: 1770290288-886868
-X-HE-Meta: U2FsdGVkX18OoqBauopbGqoWuZKNYZT67m200TTQI3HoEISasYkqwCUg6TW00vv+B0iNncpfQY7k6vy23MJp/qlBm52IsYOv6QYRvyBjjUZviIOrzv5BqqgYXVCYcTaPmTT/9uZInX8y4TSnj8nYUBNKlLj57GIpFGPZvXsRTWRQ6/kVkWJiWTBD0fB87XA37bI7i0sb/ei0aLlnaHIIcaXpEBe/bhErbqXxycGAoz3tfby9ZgvaxVzyeSyi6ViPCxgs8nKLNIDHJJj06isfCM7S8FQnRUmHGKF45aeV6yPRZ+uPGf8GmP80bp0HSL+k44GL4+vXVzjcnNtFpkUURhZ+IMt8xgVCGdgxhqrkcyAmsc1PTVU6S6VSlAUqV1lVP4lK1CmYmhpctNPDNnFv/1NEIy7Yjc/C6UFS4OdY0Loj2fxRQ1PlXZhl9gcqiVbnGCToDQ9ZfHxkprx+ttbhjdz3TwXSVHVq+xtH6kAxmynOko8Vs4xx/H1i9BqS2C+w89qSVuQL95swEjTUaTK0QiDgiuejhhPok4BjJOAjjc9DtxLVmYAolJ/9P3dsB7uKhiNFTnrgD+JnH8NoTW42JPfD775SwZeQBUwwKE9/kwS479xwrYEWgrigWvYKgrXi1M/VzagziMKd5vZzyo7Ah51iiqhb2XB//L6E6tDxWd4mWBxhAyEduG5WB0pg4mIAtOXC+ia2z24ODmzXoudGm3OE99g2ekwWrRLrUdRndy1ukjHKP+CKoCoxGklHYYKT7GAzw5WszfYhh4O3eeeClqIQ5bgRPAPPjeyjwrBTj3glpiuh0/IJc3KFZuX8rGPBsZpiGB9OIZID6A7TvscoX3C+dDOT9ORNOBSXZxykPJX2Jv9B4/9WtNeeH3/g7AGYgIhzAt29E2pP9UaSN6oQfFApdDabFoupvr2ehSNo+Bq4suuK3wlo0AptbMKEPGxXm45Or8W57a/GxaOn7NY
- 8rqOu14W
- ZK7l24HTQwL/78YDicV7VV3DqfS5lIXMNW1r4Alq49QHzTwK8ihya8J22BEoKSBV794gRDZmDQoyzBE0w4X0ER46oXVKxy5vbM11NOI4D89oPbJctOUJpIQTj/0t4i0l0uA92Z9vh89aG1U0fKfo5tzWRds7DcH9n7BynrjchZRl/C1vsOBEsVyoYCen6JkRzsLy0kHm1bqm7JIjOn+dyaxa+nFnPt2HCeukNqJ1n9q2AWc2FbvLBlViewzuMyVDfA8a7Rwb8JQcjRi07sqy1x2UlJvnpMhIhRJs2UIFuocArH5jBqdBWBIwzp9H7CG8GdRIbxS7xmWUBGPtVuWv9Yk5/iY5yj8EP8+WJPUzmNJjVG0PjzswWtNttk9LZHDou/cbosiFA2wKOJJfG4iTQoFoPZUxN2DGu5kVjBraMmuPoYQoWWy+l6v5oGSgV/NbTwIojmMNmVF7dAbnNTqyC0YghZ61+66Q9IeN+yl2lMHoZxHOJ3xAnNi3iJkhRYj5kfZh/4cFQRnusV0PzIG4URRrLkSYZq3sgrMARbvSHBgnY5WvhbbcBmPVoPl9TxoHzbzU9Id4z5vfMrqYQW6M7nhIsgjOwywPDq1ksMyhz4GqX5VoScH/8q8H3LYAW2ZrJjH4NYv4zSbb/kWCwSoAdKMdg1mnBo81X9AFb12+mMFBHvllVro92+i54UDnAyrBR18bUS/gXMT7RHjc9knKX53rdbUMgkLKhOb3UBtSIgyfgRgQEieJ15h4lpf6M9M/DbfC0jetcW+r52xY=
+X-HE-Tag: 1770290442-304655
+X-HE-Meta: U2FsdGVkX1//e4+Ruu3mhac5U4J4VfSAlKQ6cd1CRWRuaSU4XvDz6i3TZHnCcNzQuN3RAeFYdPU9UQEKJtidPalZbPr2J8mSxo5NR2QCjcIcDaXMG2jJjLAr6kgBLVBebO8FWcfXSMupjzGpwWufXdKWLQqSUf6kCaQvIOYc+YyD3dHlpmkhJTxG/6wlFHTo4hdeJ49w1nvhccPjYC6YEoDV2R/QaM50iesPfUKgp/4CXKOC9FWZjpIkQytEhZYPOr8G18s5CdORnAxXawlPXK3dRBSyxJDHAciys6O2yDEalnBknUgVCV+o821tb7/fs6qLqv/wyA+su5dF0amS1vIuwbq9EDj2AQLfY0KyeQt43VwhZnmCDRiGQ8YhHFaMH4Tw8ftIr93q5lpTd3qZzvUqhCRB8joFrhE1rAqIjvvE2RaiylWqsYaz5kTcwhWX5ScUE4B2ylKGpNV4ihsC4bRDFo1C3ORg9WiDvIm6Iw1A+mKcmBRptm4HsEfcZMDpZdQlAxuVY48UAhRR6cwdWXJt1iqAPOm3p511BsAdn+ScdFsQD0XnTGhOXqJvT39R1TnbCtdlauzeP7voOkqU/oHr/LBkAXa0De6puqRd8hst5qEU+l6gnrcvwlHgV2UIzH7oczv+ogsBmd6AuzsVIFfcxp0NCrKqWaHxwLWbEue1cZ6AtT0qT/3HzIdfxq44GCSrO8C/esKzmu/D/Ojp/Pa2sFEkgeSzST3FTJHB57WGzKdOjNwl3Q68dD3RQWne5TQG+SxcOqr5DsDVWslhtmw6jJ+XWSj1OhmrPwBTtaOqA8BSf+rS6FDo1eE+4xsBA8T2WtT/9A6fVMDrt8MH8ceh7Ju23KZ7zI95fZnv0LjJm2xxH0q1jZRoujKhjxGWj5vlDBNnTcPsduyoiPZ4dkaJjYLbN5F760Srd/Jk5A5Wls+eAnV6T3O9vjj8IKa0L+PQ0fxCLb2HTVGoLdO
+ l2dvZeN6
+ YmvevlffxJv89JggIlosR4wkyG3B/SVInQ0Wxh4omSfiAjlmqG7FFO6Npo+wVagIsp9ctzq7HQmIA6tFLGlc1LWeNu7523ODRQ+cnpgdQa8iU7uIJeS3hbhxuIR0LGuKibZE1fI+DR5kBPBazlKMu7MBydp18OoVAJCumotaAtfr1jXrV5obN8ojMpC38/JjlZa7aEOM2+KxRw2/ly4jhrbYUf9mUvP4j6S7Rqak9BLRsqO1Z5/Yv3bJ7PCYVZtp2GSnCLhg2yPJV8YS4PgwfpDowk6xlZ9iSZlkbEmoiWoWY6pbP2cxBOtK+iPyOysIcJmcpC1BtZbMMmnuHV2GIuw66foYKccS0sCOGz3CeWF6j0bPAS1VY97WXgQg7BVu99FE3Pm+yzk5z8eU+f9MetNugPS88Ag5vlwpOnLxNgww/VqyHzVS3P3Rl17F7whqB+LXmb9IQaPh4prBp3GySubO7DkevezLnQgsZcuau4Tj9vyWr7xYkzLennd9HmlWKbSco8Hnl9+FlIjvMZv9vQ6kL0QwcMjqdt9f0IuqyuXU8n2yB4++XPbt6nocfWQg3t0WcjkDm7wmsJbZq7QXO8h+k8CcR3g7TGIF7AUKIr9AZ4+3bDBGl562/mlQWmDuFdTYHhtssKyZ59RNMX02YuxxCRUwxUWJObqhiZ125/85xfMXZmTISXoB2Puta+8bHf6HGoJGKapGt1m7dgK3mpROTSB9Vvs6mPOmhVOpz2RTPyQ3hJeWpCx30BB02wW2qB5subO2IwHO9c/iLv9RtFXrWt0548dXmHCse2vLXHFXilAJscNj1EJb4WA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,52 +215,220 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 05, 2026 at 12:12:23PM +0100, David Hildenbrand (arm) wrote:
-> On 2/5/26 12:04, Alice Ryhl wrote:
-> > On Thu, Feb 05, 2026 at 11:59:47AM +0100, David Hildenbrand (arm) wrote:
-> > > On 2/5/26 11:51, Alice Ryhl wrote:
-> > > > diff --git a/mm/list_lru.c b/mm/list_lru.c
-> > > > index ec48b5dadf519a5296ac14cda035c067f9e448f8..bf95d73c9815548a19db6345f856cee9baad22e3 100644
-> > > > --- a/mm/list_lru.c
-> > > > +++ b/mm/list_lru.c
-> > > > @@ -179,6 +179,7 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-> > > >    	unlock_list_lru(l, false);
-> > > >    	return false;
-> > > >    }
-> > > > +EXPORT_SYMBOL_GPL(list_lru_add);
-> > > >    bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
-> > > >    {
-> > > > @@ -216,6 +217,7 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
-> > > >    	unlock_list_lru(l, false);
-> > > >    	return false;
-> > > >    }
-> > > > +EXPORT_SYMBOL_GPL(list_lru_del);
-> > > >    bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
-> > > >    {
-> > > > diff --git a/mm/memory.c b/mm/memory.c
-> > > > index da360a6eb8a48e29293430d0c577fb4b6ec58099..64083ace239a2caf58e1645dd5d91a41d61492c4 100644
-> > > > --- a/mm/memory.c
-> > > > +++ b/mm/memory.c
-> > > > @@ -2168,6 +2168,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
-> > > >    	zap_page_range_single_batched(&tlb, vma, address, size, details);
-> > > >    	tlb_finish_mmu(&tlb);
-> > > >    }
-> > > > +EXPORT_SYMBOL(zap_page_range_single);
-> > > 
-> > > Why not EXPORT_SYMBOL_GPL?
-> > 
-> > I just tried to match other symbols in the same file.
+On 2/5/26 22:10, Thomas Hellström wrote:
+> If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+> trying to acquire the lock of a device-private folio for migration,
+> to ram, the function will spin until it succeeds grabbing the lock.
 > 
-> We were probably a bit too sloppy with some of these in the past. But:
+> However, if the process holding the lock is depending on a work
+> item to be completed, which is scheduled on the same CPU as the
+> spinning hmm_range_fault(), that work item might be starved and
+> we end up in a livelock / starvation situation which is never
+> resolved.
 > 
-> davhil01@e142025:~/git/linux$ grep -c "EXPORT_SYMBOL(" mm/memory.c
-> 12
-> davhil01@e142025:~/git/linux$ grep -c "EXPORT_SYMBOL_GPL(" mm/memory.c
-> 10
+> This can happen, for example if the process holding the
+> device-private folio lock is stuck in
+>    migrate_device_unmap()->lru_add_drain_all()
+> The lru_add_drain_all() function requires a short work-item
+> to be run on all online cpus to complete.
 > 
-> So just go with EXPORT_SYMBOL_GPL unless there is a good reason why not.
+> A prerequisite for this to happen is:
+> a) Both zone device and system memory folios are considered in
+>    migrate_device_unmap(), so that there is a reason to call
+>    lru_add_drain_all() for a system memory folio while a
+>    folio lock is held on a zone device folio.
+> b) The zone device folio has an initial mapcount > 1 which causes
+>    at least one migration PTE entry insertion to be deferred to
+>    try_to_migrate(), which can happen after the call to
+>    lru_add_drain_all().
+> c) No or voluntary only preemption.
+> 
+> This all seems pretty unlikely to happen, but indeed is hit by
+> the "xe_exec_system_allocator" igt test.
+> 
 
-Sounds good, I'll do that in the next version.
+Do you have a stack trace from the test? I am trying to visualize the
+livelock/starvation, but I can't from the description.
 
-Alice
+> Resolve this by waiting for the folio to be unlocked if the
+> folio_trylock() fails in the do_swap_page() function.
+> 
+> Rename the migration_entry_wait_on_locked() function to
+> softleaf_entry_wait_unlock() and update its documentation to
+> indicate the new use-case.
+> 
+> Future code improvements might consider moving
+> the lru_add_drain_all() call in migrate_device_unmap() to be
+> called *after* all pages have migration entries inserted.
+> That would eliminate also b) above.
+> 
+> v2:
+> - Instead of a cond_resched() in the hmm_range_fault() function,
+>   eliminate the problem by waiting for the folio to be unlocked
+>   in do_swap_page() (Alistair Popple, Andrew Morton)
+> v3:
+> - Add a stub migration_entry_wait_on_locked() for the
+>   !CONFIG_MIGRATION case. (Kernel Test Robot)
+> v4:
+> - Rename migrate_entry_wait_on_locked() to
+>   softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+> 
+> Suggested-by: Alistair Popple <apopple@nvidia.com>
+> Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+> Cc: Ralph Campbell <rcampbell@nvidia.com>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Jason Gunthorpe <jgg@mellanox.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Leon Romanovsky <leon@kernel.org>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: John Hubbard <jhubbard@nvidia.com>
+> Cc: Alistair Popple <apopple@nvidia.com>
+> Cc: linux-mm@kvack.org
+> Cc: <dri-devel@lists.freedesktop.org>
+> Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.15+
+> Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+> ---
+>  include/linux/migrate.h |  8 +++++++-
+>  mm/filemap.c            | 15 ++++++++++-----
+>  mm/memory.c             |  3 ++-
+>  mm/migrate.c            |  8 ++++----
+>  mm/migrate_device.c     |  2 +-
+>  5 files changed, 24 insertions(+), 12 deletions(-)
+> 
+> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+> index 26ca00c325d9..3cc387f1957d 100644
+> --- a/include/linux/migrate.h
+> +++ b/include/linux/migrate.h
+> @@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
+>  
+>  int migrate_huge_page_move_mapping(struct address_space *mapping,
+>  		struct folio *dst, struct folio *src);
+> -void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+> +void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+>  		__releases(ptl);
+>  void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+>  int folio_migrate_mapping(struct address_space *mapping,
+> @@ -97,6 +97,12 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+>  	return -ENOSYS;
+>  }
+>  
+> +static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+> +	__releases(ptl)
+> +{
+> +	spin_unlock(ptl);
+> +}
+> +
+>  #endif /* CONFIG_MIGRATION */
+>  
+>  #ifdef CONFIG_NUMA_BALANCING
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index ebd75684cb0a..d98e4883f13d 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -1379,14 +1379,16 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+>  
+>  #ifdef CONFIG_MIGRATION
+>  /**
+> - * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+> - * @entry: migration swap entry.
+> + * softleaf_entry_wait_on_locked - Wait for a migration entry or
+> + * device_private entry to be removed.
+> + * @entry: migration or device_private swap entry.
+>   * @ptl: already locked ptl. This function will drop the lock.
+>   *
+> - * Wait for a migration entry referencing the given page to be removed. This is
+> + * Wait for a migration entry referencing the given page, or device_private
+> + * entry referencing a dvice_private page to be unlocked. This is
+>   * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+>   * this can be called without taking a reference on the page. Instead this
+> - * should be called while holding the ptl for the migration entry referencing
+> + * should be called while holding the ptl for @entry referencing
+>   * the page.
+>   *
+>   * Returns after unlocking the ptl.
+> @@ -1394,7 +1396,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+>   * This follows the same logic as folio_wait_bit_common() so see the comments
+>   * there.
+>   */
+> -void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+> +void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+>  	__releases(ptl)
+>  {
+>  	struct wait_page_queue wait_page;
+> @@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+>  	 * If a migration entry exists for the page the migration path must hold
+>  	 * a valid reference to the page, and it must take the ptl to remove the
+>  	 * migration entry. So the page is valid until the ptl is dropped.
+> +	 * Similarly any path attempting to drop the last reference to a
+> +	 * device-private page needs to grab the ptl to remove the device-private
+> +	 * entry.
+>  	 */
+>  	spin_unlock(ptl);
+>  
+> diff --git a/mm/memory.c b/mm/memory.c
+> index da360a6eb8a4..20172476a57f 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>  				unlock_page(vmf->page);
+>  				put_page(vmf->page);
+>  			} else {
+> -				pte_unmap_unlock(vmf->pte, vmf->ptl);
+> +				pte_unmap(vmf->pte);
+> +				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+>  			}
+>  		} else if (softleaf_is_hwpoison(entry)) {
+>  			ret = VM_FAULT_HWPOISON;
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 4688b9e38cd2..cf6449b4202e 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
+>  	if (!softleaf_is_migration(entry))
+>  		goto out;
+>  
+> -	migration_entry_wait_on_locked(entry, ptl);
+> +	softleaf_entry_wait_on_locked(entry, ptl);
+>  	return;
+>  out:
+>  	spin_unlock(ptl);
+> @@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm_area_struct *vma, unsigned long addr, p
+>  		 * If migration entry existed, safe to release vma lock
+>  		 * here because the pgtable page won't be freed without the
+>  		 * pgtable lock released.  See comment right above pgtable
+> -		 * lock release in migration_entry_wait_on_locked().
+> +		 * lock release in softleaf_entry_wait_on_locked().
+>  		 */
+>  		hugetlb_vma_unlock_read(vma);
+> -		migration_entry_wait_on_locked(entry, ptl);
+> +		softleaf_entry_wait_on_locked(entry, ptl);
+>  		return;
+>  	}
+>  
+> @@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
+>  	ptl = pmd_lock(mm, pmd);
+>  	if (!pmd_is_migration_entry(*pmd))
+>  		goto unlock;
+> -	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+> +	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+>  	return;
+>  unlock:
+>  	spin_unlock(ptl);
+> diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+> index 23379663b1e1..deab89fd4541 100644
+> --- a/mm/migrate_device.c
+> +++ b/mm/migrate_device.c
+> @@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+>  		}
+>  
+>  		if (softleaf_is_migration(entry)) {
+> -			migration_entry_wait_on_locked(entry, ptl);
+> +			softleaf_entry_wait_on_locked(entry, ptl);
+>  			spin_unlock(ptl);
+>  			return -EAGAIN;
+>  		}
+
+Balbir
 
