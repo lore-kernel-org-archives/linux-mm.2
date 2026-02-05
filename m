@@ -4,82 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20246E9129A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 15:03:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8BB0EC1EBC
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 15:03:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68AC46B008A; Thu,  5 Feb 2026 10:03:25 -0500 (EST)
+	id 1C2906B0092; Thu,  5 Feb 2026 10:03:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6591F6B0092; Thu,  5 Feb 2026 10:03:25 -0500 (EST)
+	id 163E76B0093; Thu,  5 Feb 2026 10:03:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 562016B0093; Thu,  5 Feb 2026 10:03:25 -0500 (EST)
+	id 06F616B0098; Thu,  5 Feb 2026 10:03:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 43AFF6B008A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:03:25 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F19BDBA1DF
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:03:24 +0000 (UTC)
-X-FDA: 84410721528.10.3519600
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EB4D76B0092
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:03:27 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A635DB99F1
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:03:27 +0000 (UTC)
+X-FDA: 84410721654.09.BCB09E0
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E64C2A0004
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:03:21 +0000 (UTC)
+	by imf25.hostedemail.com (Postfix) with ESMTP id 290D0A0004
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:03:24 +0000 (UTC)
 Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RnDGgUy+;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VelJlC0b;
 	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770303802;
+	s=arc-20220608; t=1770303805;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0A7mImDoJqYE8iqTqTlwjsy63QXtq7QGHpRpdhDFcs0=;
-	b=YiQ/vL7ATELqHavMYj2KLkBPIiiZqezLi4Bp8cMakMlViKKEMCQv8PGyNxf+uEGDp2b8Pf
-	1Eq+obSpCdxooJmXAr/8wVVVb42UiFhKOg0wSvRo3YpEMSL3qa8/itvX/2CaogPkMYHq7H
-	K+LrzUC53wQTZg5RWwiYvPCNd6hWHOk=
+	bh=UOfaK00i/IND2Zrci8NnC5AqnIjhLy44iDJ9FLPJqtM=;
+	b=WKPqF4W2FF8wVG9kJ+UISinY0ahotQvsesKrpt8ljruA3dMDIPYcgs9hfQKMya3HBySamZ
+	/xgkl7MWN9E0cH26CRFrD/pPVr8WZm1AGIbRVQegpTsj37D+0zhZlrWp3UMuZ3LLqSvSMW
+	Gxurb2gi4F4ixaSRXapH4r8WzlaoJvA=
 ARC-Authentication-Results: i=1;
 	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=RnDGgUy+;
+	dkim=pass header.d=intel.com header.s=Intel header.b=VelJlC0b;
 	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.10 as permitted sender) smtp.mailfrom=lkp@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770303802; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770303805; a=rsa-sha256;
 	cv=none;
-	b=Q3s+pF0FHgtV1VACFLWrFrZE1wmPuQ98P758DyjONH3gHqWNk67s96CzL8uj0ciCwioSOc
-	W73ows85YgzmXcwi28VOghtJ1fDjgswCk8Tmj1mFIsFht3lQtEJM2/IJMXhwuCo8ZtqwzF
-	+Ki+qW2+BgmNOUIA+WOxOw0gAIQlPYM=
+	b=yf4E59ODmx+9CaafcFyoKM37mDY+xixUJ8Ic/Q7XWEE2AKXMba44qn6P/Q2II6atzLkUsf
+	xRKEYdlkqqbTFjIbwxfaYnp/V/NMFXoAH6DFzsESEPC6UWuzwXaepsmUjs+KkEB4rxODbe
+	Ec7KnUc6bxrzyq2UQH08RmrvrsL+VLs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770303802; x=1801839802;
+  t=1770303805; x=1801839805;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=Zpzmafaxz3oopy0yMeDp4c8Ycv/ED5wfk9nLDnD++1Y=;
-  b=RnDGgUy+YlBxKmjolnnI1076v+judih2+3UF0V0bc4sU9iUz5BOI0biV
-   QAQm9X6sHfIxBRvZgQhTGYFxzeuYDLpGcbVYYB0xZp2s25p+xwYLoy+AS
-   gBNjXUyLVIQIuSPVZlDhYrRTeW4VTmFNLDBh6NmFIHauMHVoQkYj0NmgN
-   Qs1vNqR0kG32CcfDScb/ECe/W9AQAzy5bT2xg5EOGXDC0VvAlBmsXtEqj
-   PvZ/5hKLT+c8vJockbP2ZFGQfXnlzviz8xLHLQ6jmK12onvbzfraZ88Cm
-   NbG4Kv+0G6exVWIja6QoWnzrvMqwIQ26xgcy1N9MTN4G82yLOuKFOOzhw
+  bh=QDQNj/v82AkaK8Fs++1Uo4hRK6o19qvCsj3OHG6VXJg=;
+  b=VelJlC0bfm+6+bPU0O+bhg5SBtSETjYPuN4uUnnHCT/7dvHpQo4nq74r
+   inf921CBnhgCSqO+iQpGXwv73konPyNYulI5cTBW7gHWS0DJ2254Uvmod
+   qK9v0ZsV1kTR4TWgO0h+d/U+lpwNNwhUToKcplkZdhWLo6s/566atX83c
+   HfZsU8i3ysiRGjkKlo1X1U0LaQLf3BODFNyUkstcEy0F3XgzInC+l730T
+   91XLj9LD4W3vMVKsCH1pHsFjFEcApNTU2TW3JU8A7XfV1Ng7rU7hCuZgk
+   Q6ePKzp3YWEoKcvczyp59K9UuBWugEGHkUZ3JKieDTUqj5PDc+gV82wSa
    A==;
-X-CSE-ConnectionGUID: /zvY56+nTLOAb8ohsxLV4A==
-X-CSE-MsgGUID: /oQxv5tIS3OkMJ7vjxolaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82873870"
+X-CSE-ConnectionGUID: 6P/NKOM0RWeTUekbcW380w==
+X-CSE-MsgGUID: Draz1gS5QZG6g9q/SAslsg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82873855"
 X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="82873870"
+   d="scan'208";a="82873855"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
   by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 07:03:20 -0800
-X-CSE-ConnectionGUID: R/yYo2qkSN2DEOwemuREZg==
-X-CSE-MsgGUID: D0Ua/ykVQeCWN8y2HdhW9w==
+X-CSE-ConnectionGUID: 4pHOlflUQu6YP/w5VkWf2A==
+X-CSE-MsgGUID: Ux6D/JXeROW/jL2EVGXy5Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
-   d="scan'208";a="210468515"
+   d="scan'208";a="210468516"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
   by fmviesa010.fm.intel.com with ESMTP; 05 Feb 2026 07:03:12 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vo0sw-00000000juG-0Y00;
+	id 1vo0sw-00000000juI-0xrD;
 	Thu, 05 Feb 2026 15:03:10 +0000
-Date: Thu, 5 Feb 2026 23:02:46 +0800
+Date: Thu, 5 Feb 2026 23:02:47 +0800
 From: kernel test robot <lkp@intel.com>
 To: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com,
 	mhocko@suse.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
@@ -96,20 +96,20 @@ Cc: oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
 Subject: Re: [PATCH v4 24/31] mm: memcontrol: prepare for reparenting LRU
  pages for lruvec lock
-Message-ID: <202602052247.VAoEwR9g-lkp@intel.com>
+Message-ID: <202602052203.U8hxsh2N-lkp@intel.com>
 References: <e27edb311dda624751cb41860237f290de8c16ae.1770279888.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <e27edb311dda624751cb41860237f290de8c16ae.1770279888.git.zhengqi.arch@bytedance.com>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E64C2A0004
-X-Stat-Signature: 3rkm6m4dutbdbhctq7tnsaws7iuaqgow
+X-Rspamd-Queue-Id: 290D0A0004
+X-Stat-Signature: 3di6o1tq5ftqonnen1oa8wicuebaugwk
 X-Rspam-User: 
-X-HE-Tag: 1770303801-624252
-X-HE-Meta: U2FsdGVkX1/ZC/EmNL/G26mMMUtKLOl+Wtf4r73lnLETN7qW4vR6QCPv3u6q1/vMtVb40d7PiNFO067xF2oQ/dWsI4vT6+71AE04gY5pCW8d1heqrO58geY1JoXR6tK6bPC++r6oKGvf2BYaLTsFsrFr4RKPSuqwW2ijnF2300Qbx9E764/NI6Z7VfpY6jofTdJhk+nxSb/1Cf48oGwmymxG/T0zG/ezUdMpIp6OJvgGnhPf/wEw+Du7LcC1wCEfCGGLGsPOzkFjrACGfvuAN9iHPiKldAVGZQPo6YV9T11ztgsEvyPus42RHbvDikcSUHEsaAouGGPkAaZIgrwDwaqmOEsqmT4JY7P6tHV8xh3og92XBGIIWTrz2xF6hmP1jWrb3rhhi23FkS0Kkth4WAiWeiDBBuLa6VmOTHXmJ/hYg6hikNlUZ9Chf72+v4UVa2rIT5qgKr83o1WuHrFv2sOSEjGRGCFv6bqcDrRjlXTbBqugHgQDF0n+0m4Wk9geJwy8r9xAC/VHQD3sbrW5IuMpaqkcCUPS5v0aNl2pl5XlTIpWrz4p3Q3Hzar+4pvatM+inMkU9xcGRVFk+CkCdAKsSlb238vGb2hC816wWsK7zOA2qjM0XVG3nDorbZsZIlck/3jMNuh5lqXT4wIW8NTUDda68ny7M39nvECIAlgp6Mhuk9+5E26Mz7cBAt7KJv0WHA72FbxAw4e6gbfzY/hb6zb4Ya0pVzvzO3P0lfaK5S7W9Z4m1DUao5yF9zeV9QD8B3kDqiIWRfqRQ3Bi/kxHEOooi1Gfwx1/fzMJTOE9w/uH7nqtx0MZjEwmzrbvLZtqeugt0G/Vy/YCWPsxRPwec3J+Eu/HR3MnW8Hlx2XLttMNvpRAWSwrN6EVffUjiKmVEsQpBvF+tEtjvNLThYp8us711+9yFQX8MW/1FlcHLNieRcGon9w8hfBQ8/zdQFgYxTGK9CY7J8p4wux
- 8iy8W+9U
- vbC3ZTpSjRq34cuE+S3FY1NSDB/QjARZ9HpfQWj5XPnv9GAkgRq57wDtGKysw8M2AQKEINHXLvr9P+LtbsqxtpAyZ4ez4I+X3cS8HpQjF9lT3uOF5t9ylthlohBMKJOWjQ7jL/H+A5iCwxDIrKJuxgFK1Xew3320Zc9HaoBnlvkdL/yN7XTf5cUXh2mwtCa+GaRWVfN/WNTS4r2eD3+HkcoM9nvokY1/nOlvwRY7wOfmr2bNJIhQg6uu41/HMq+eEau1OmEpYuxLtcR4joNg5TAMQZUPYYcQ9BARLZW3KCOWsrsfF/7u/Cf4A6wla3Jz/neMc790e5yBLinp48INA6yh8FfVqy+DHu0awhYh/+7/rQWCBzW4alem2Ru5mlfx9Un5X
+X-HE-Tag: 1770303804-916240
+X-HE-Meta: U2FsdGVkX18WMryJVZwsXqMbXgbJIjx/cW5ZtjummzlbrTVggLlPDO3ojBp96sCPpqrokB9UbiKAkYEJIIND2m4bJLKjVnCLg4sY35PNa5TnpuLVyMRx5pAqfS6fW+7n9bmUwrYiE5mWwEaxkIcbrukv6VxvLl5qHaz8tMNVgfTkwqh3KCe0X5xgw4A/B0rI0aSoeHKq1TdjVlLZo56HCRZyNFrzEWNcRadMVd6bMxi8MemNBdcMu0PkDjFGJqXdcb0PRG7CvVNvW7BRqDqPnstQ8fmHWcQavq8k6HLCiSKvYR9uyr5vKWo4vbTHHsoSIba3UveNy8nOJuQ0wsiGCnDCjVo5kh2dK7z836YHgPxczqWAZWuYkkV1K9jVQbeeveMMzOVshM3xireR7ZUJrmLTZyWlKODXbxrPrPG192cEtKVC5cCzuPG6v4b0vvPoxFCVQ5o3OjQ/Rt27z7ETt5yokzFehy1T9jRSADUtjoucNA+PnlJ+qjWcgwwQFNNpV+6yh3uf6gs5gO3FVBh+WIXQjKwfjKe9bogbL1LXnF40rk1ZSZItkVdHJBsW+wPLNgoeWy37J8zEsB8382dbdtMXu+YzbjTRKZbZ2K0enaYFrKo3S6LB24SoUCVYwg/2yAKHAzrz66PMyJjvsp9g4jju2rHHOxsO9c4wJdxRxv4eA1TDiUh7mQuqShMmbrk74fnSJ4Myzc2V/gmrVWVuOJIQLOLWpL4ARS6+jufQC5Btc6M7zpuR7vfTq5qeHHaBZUTdnt0b7sn/taySKnbWyHxYeobjLYg6m326hJkMcfM9fy81RamOpeKDGjraKwbRvyvbefBf0cz26I73vhyMI4AnggUSXctGesIHYj6vIMcGj+PtCBqYBvgJdiThhtQZC+gZrZOn6Ab7kCDub0mMG2IpAU6Av9umGEh461dFEW7vRMOCAZ1poXk9ExY12ZOzr7ngPbkbRa9efwjiwxJ
+ CmiFsUG8
+ exLMTSjxdm4tDszHq+CXTaqoC5LH8cIYNozUB5LuhbKK0I6Wrp/siegmqhs8B3aY8WsFswiWyrl6C73RjwoV91rKV56Mqpzl1H6GHZLRVS4g8dYTjq6OepTSIwG9LKME8IzIWEAWpAK5U8rM8rsHyaRoZwNPVj5IzaIh5qwlWI8rlDuLznk50QfL9OGkWFR1uDK7ZWxTlfeUj7GFmsIYbSgFKHML8tU6vVjJHKLUgZTS84hVFX+POH4JK+Nr05CcVOE+tETsEnLTuJ+srOtUGiTtlwAHJlDAX4JvUvYwKucfe5bedb1WZkfNhwzP5f+FRIMYg4GWgkJ4jIeJ2UZz3+VFqWMb/Sz2YLLhszqDDXEDiWIrbNuGD8556jvQc1K6gvFLl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,56 +132,64 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/mm-memcontrol-re
 base:   next-20260204
 patch link:    https://lore.kernel.org/r/e27edb311dda624751cb41860237f290de8c16ae.1770279888.git.zhengqi.arch%40bytedance.com
 patch subject: [PATCH v4 24/31] mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
-config: xtensa-allnoconfig (https://download.01.org/0day-ci/archive/20260205/202602052247.VAoEwR9g-lkp@intel.com/config)
-compiler: xtensa-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260205/202602052247.VAoEwR9g-lkp@intel.com/reproduce)
+config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260205/202602052203.U8hxsh2N-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260205/202602052203.U8hxsh2N-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602052247.VAoEwR9g-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602052203.U8hxsh2N-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
->> xtensa-linux-ld: mm/swap.o:(.text+0x40): undefined reference to `lruvec_unlock_irqrestore'
-   xtensa-linux-ld: mm/swap.o: in function `__page_cache_release.part.0':
-   swap.c:(.text+0x60): undefined reference to `lruvec_unlock_irqrestore'
-   xtensa-linux-ld: mm/swap.o: in function `__folio_put':
-   swap.c:(.text+0x1a6): undefined reference to `lruvec_unlock_irqrestore'
-   xtensa-linux-ld: mm/swap.o: in function `folios_put_refs':
-   swap.c:(.text+0x276): undefined reference to `lruvec_unlock_irqrestore'
-   xtensa-linux-ld: mm/swap.o: in function `folio_batch_move_lru':
-   swap.c:(.text+0x31a): undefined reference to `lruvec_unlock_irqrestore'
-   xtensa-linux-ld: mm/swap.o:swap.c:(.text+0x354): more undefined references to `lruvec_unlock_irqrestore' follow
-   xtensa-linux-ld: mm/swap.o: in function `lru_note_cost_refault':
-   swap.c:(.text+0x1340): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: mm/swap.o: in function `folio_activate':
-   swap.c:(.text+0x136c): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: mm/vmscan.o: in function `check_move_unevictable_folios':
-   vmscan.c:(.text+0x762): undefined reference to `lruvec_unlock_irq'
->> xtensa-linux-ld: vmscan.c:(.text+0x972): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: mm/vmscan.o: in function `move_folios_to_lru':
-   vmscan.c:(.text+0xa22): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: mm/vmscan.o:vmscan.c:(.text+0xa58): more undefined references to `lruvec_unlock_irq' follow
-   xtensa-linux-ld: mm/vmscan.o: in function `move_folios_to_lru':
-   vmscan.c:(.text+0xc40): undefined reference to `lruvec_lock_irq'
-   xtensa-linux-ld: mm/vmscan.o: in function `shrink_active_list':
-   vmscan.c:(.text+0xc9b): undefined reference to `lruvec_lock_irq'
-   xtensa-linux-ld: vmscan.c:(.text+0xcfc): undefined reference to `lruvec_unlock_irq'
->> xtensa-linux-ld: vmscan.c:(.text+0xe39): undefined reference to `lruvec_lock_irq'
-   xtensa-linux-ld: mm/vmscan.o: in function `shrink_inactive_list':
-   vmscan.c:(.text+0x1d32): undefined reference to `lruvec_lock_irq'
-   xtensa-linux-ld: vmscan.c:(.text+0x1e46): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: vmscan.c:(.text+0x1f3a): undefined reference to `lruvec_lock_irq'
-   xtensa-linux-ld: mm/vmscan.o: in function `folio_isolate_lru':
-   vmscan.c:(.text+0x2eb4): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: mm/mlock.o: in function `__munlock_folio':
-   mlock.c:(.text+0x5cc): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: mm/mlock.o: in function `__mlock_folio':
-   mlock.c:(.text+0x8b3): undefined reference to `lruvec_unlock_irq'
-   xtensa-linux-ld: mm/mlock.o: in function `mlock_folio_batch.constprop.0':
-   mlock.c:(.text+0xd15): undefined reference to `lruvec_unlock_irq'
->> xtensa-linux-ld: mlock.c:(.text+0xe70): undefined reference to `lruvec_unlock_irq'
+   nios2-linux-ld: mm/swap.o: in function `__page_cache_release.part.0':
+   swap.c:(.text+0x4c): undefined reference to `lruvec_unlock_irqrestore'
+>> swap.c:(.text+0x4c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+   nios2-linux-ld: mm/swap.o: in function `__folio_put':
+   swap.c:(.text+0x2ac): undefined reference to `lruvec_unlock_irqrestore'
+   swap.c:(.text+0x2ac): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+   nios2-linux-ld: mm/swap.o: in function `folios_put_refs':
+   swap.c:(.text+0x384): undefined reference to `lruvec_unlock_irqrestore'
+   swap.c:(.text+0x384): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+   nios2-linux-ld: mm/swap.o: in function `folio_batch_move_lru':
+   swap.c:(.text+0x4ac): undefined reference to `lruvec_unlock_irqrestore'
+   swap.c:(.text+0x4ac): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+>> nios2-linux-ld: swap.c:(.text+0x50c): undefined reference to `lruvec_unlock_irqrestore'
+   swap.c:(.text+0x50c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+   nios2-linux-ld: mm/swap.o: in function `folio_activate':
+   swap.c:(.text+0x21d8): undefined reference to `lruvec_unlock_irq'
+>> swap.c:(.text+0x21d8): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+   nios2-linux-ld: mm/vmscan.o: in function `move_folios_to_lru':
+   vmscan.c:(.text+0xa4c): undefined reference to `lruvec_unlock_irq'
+>> vmscan.c:(.text+0xa4c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+>> nios2-linux-ld: vmscan.c:(.text+0xaa4): undefined reference to `lruvec_unlock_irq'
+   vmscan.c:(.text+0xaa4): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+   nios2-linux-ld: vmscan.c:(.text+0xcac): undefined reference to `lruvec_unlock_irq'
+   vmscan.c:(.text+0xcac): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+   nios2-linux-ld: vmscan.c:(.text+0xd8c): undefined reference to `lruvec_unlock_irq'
+   vmscan.c:(.text+0xd8c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+   nios2-linux-ld: mm/vmscan.o: in function `shrink_active_list':
+   vmscan.c:(.text+0x11e0): undefined reference to `lruvec_lock_irq'
+   vmscan.c:(.text+0x11e0): additional relocation overflows omitted from the output
+   nios2-linux-ld: vmscan.c:(.text+0x12a0): undefined reference to `lruvec_unlock_irq'
+>> nios2-linux-ld: vmscan.c:(.text+0x144c): undefined reference to `lruvec_lock_irq'
+   nios2-linux-ld: mm/vmscan.o: in function `check_move_unevictable_folios':
+   vmscan.c:(.text+0x15d4): undefined reference to `lruvec_unlock_irq'
+   nios2-linux-ld: vmscan.c:(.text+0x1958): undefined reference to `lruvec_unlock_irq'
+   nios2-linux-ld: mm/vmscan.o: in function `shrink_inactive_list':
+   vmscan.c:(.text+0x2f8c): undefined reference to `lruvec_lock_irq'
+   nios2-linux-ld: vmscan.c:(.text+0x307c): undefined reference to `lruvec_unlock_irq'
+   nios2-linux-ld: vmscan.c:(.text+0x31dc): undefined reference to `lruvec_lock_irq'
+   nios2-linux-ld: mm/vmscan.o: in function `folio_isolate_lru':
+   vmscan.c:(.text+0x48a4): undefined reference to `lruvec_unlock_irq'
+   nios2-linux-ld: mm/mlock.o: in function `__munlock_folio':
+   mlock.c:(.text+0x968): undefined reference to `lruvec_unlock_irq'
+   nios2-linux-ld: mm/mlock.o: in function `__mlock_folio':
+   mlock.c:(.text+0xe5c): undefined reference to `lruvec_unlock_irq'
+   nios2-linux-ld: mm/mlock.o: in function `mlock_folio_batch.constprop.0':
+   mlock.c:(.text+0x158c): undefined reference to `lruvec_unlock_irq'
+>> nios2-linux-ld: mlock.c:(.text+0x1808): undefined reference to `lruvec_unlock_irq'
 
 -- 
 0-DAY CI Kernel Test Service
