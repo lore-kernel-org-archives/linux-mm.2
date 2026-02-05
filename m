@@ -4,131 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77351EC1EAF
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 12:46:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91A71EC1EB1
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 12:56:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCA816B0088; Thu,  5 Feb 2026 07:46:39 -0500 (EST)
+	id 6AAAB6B0005; Thu,  5 Feb 2026 07:56:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B75436B0093; Thu,  5 Feb 2026 07:46:39 -0500 (EST)
+	id 658AF6B0088; Thu,  5 Feb 2026 07:56:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A60836B0096; Thu,  5 Feb 2026 07:46:39 -0500 (EST)
+	id 5579E6B0089; Thu,  5 Feb 2026 07:56:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 901E36B0088
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:46:39 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BC5F139C79
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:46:39 +0000 (UTC)
-X-FDA: 84410376918.02.2C9CE42
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2F2E51C0008
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:46:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gYUdZK4r;
-	spf=pass (imf20.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770295597;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4451B6B0005
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:56:47 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E368B160507
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:56:46 +0000 (UTC)
+X-FDA: 84410402412.01.1D1095C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3093A18000E
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:56:45 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEzNcPow;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770296205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJxzf/DAKGtqPSrm9/DmJuhRV1AeX728/3K6M5fegUM=;
-	b=Uc0dTLRSmPwX9iWarNG8gc4CpxdYqynZ0Tuoyrkx9QgVnm0rSIEpyYz5DR96YWilxJ6vmw
-	3RZmX3IenayX3zC2kDb6Xyp+fVjNkZFK/51E+6RiYJRgHLWbGFOZ+V/EefAKmvNJ30RGZU
-	I3yCbWxDyyHyHt+A+BCNirbv5F1aZCM=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gYUdZK4r;
-	spf=pass (imf20.hostedemail.com: domain of tytanick@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=tytanick@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770295597; a=rsa-sha256;
-	cv=pass;
-	b=4q8qnkU5MAqFRhadqoPUKto3oH7WslFmQ851v3tVIfhq8ytOS8Tm671VbZ382aKZlrr2md
-	PvCcKkJw17kUEx6B7MpXZW3ZDbL5iIdpwuQH1K9RpxwRDDgr1ZxIMQG6NghUemqO1DM8Vy
-	hZ9Iy2ntOhK9BlRWKtmNcFUVyjVaN1A=
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-38320cd563aso10055611fa.0
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 04:46:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770295595; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cvy5uEnR5bHVkxpnF2XpN6c+MC6FNtuefeBXVP7/CCfCQ169fjOEIQvARYN7QynHvC
-         kO96J+c6IKPX2WB/sC663fTe5vuZ1xj5CPg4/4OIYGXi3h0sgadsAzb+MwPd6mGvMRyJ
-         t+MrqBLJODw4iUgHpYHNqQuKicG49coackSAC+rbQiEKRja0NKC54WFHo69KlU3BujmJ
-         v5qTj64NNr6U7YwoJTWw1ywtacJIb7ZuTxLIGANyzJl8hFXeaXJQetq8KxSD9/D2tTWK
-         MeP6uKEvEiCqqB1uGcGivShC3syNPak6sRK1PgQSCHhDibwc6ywgCC30FOd6LrjjB+iy
-         r8Fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=PJxzf/DAKGtqPSrm9/DmJuhRV1AeX728/3K6M5fegUM=;
-        fh=ZQe1qyefdrnXaA8U5dFotXo6s7dEBF58Oj5jNukPaFI=;
-        b=SdqELn9xtVKxS0L0Ah6ZacTRtwKfY9MopMC9G0aKkaTwDuYMKmq92rpja/KOcovwll
-         wn7+YUDVtQiGBGJ1SQ1v2tsO1FrI3j2TxTM1Me7jgt/eucXENMwBWx88Iyv0oOjve+FB
-         U8DN25mvn6/uVYsQeQoSa8Xx4I+slXWfPF+2Os1hjbykBA9eo+7b+WV9/6+Ke5x/nA01
-         2TPfgQ3naipTxOIQH4iLI1KBpZ50C7AwavJ8DV0Lls2KlBkxyolipBn9L3XbYC4fHwYl
-         jwJlkW05TlWq28jNvVlTr30yv0X2F/55GGKF6uahsckhSB7zBKKoCK2gHweQwJ3LbdRh
-         JuiA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770295595; x=1770900395; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PJxzf/DAKGtqPSrm9/DmJuhRV1AeX728/3K6M5fegUM=;
-        b=gYUdZK4rskEGiOFBJCure4h+la4aaqnrLzckU2a0KW8/hAfjCvLptUzzktDr6z13gk
-         KcdHXTmOJ7Y6jh4a+ecdIiB4j9FbAW/bTvXr84bKOo+o8brIUXBksOrhLwfftfgN6zXv
-         vDq4b9/l0svxlkUv95S4BtF5qquoMtbjyV+trzEA4R8h44FUNlYya6eaAXnM3yUhanqe
-         qWe7RF6K53dakyb8dQDKkx7AiEo/gCtkVMT9je/V3RW9tcAWRYhlXqb1yZMIcbZCUbAT
-         CibDQ4RtuP5PIE1jopUJjPsIBKnmpDyqXTiO/dvV+QU4nnH88aJSFH7B/SJSO3TtTKbr
-         li6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770295595; x=1770900395;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PJxzf/DAKGtqPSrm9/DmJuhRV1AeX728/3K6M5fegUM=;
-        b=nHzdlFPtNqm77Z/Kxw7icgy32O23gDGtUeqjTcLpGPzjE1cMOyX9LkYl7PwV1WURE1
-         1mf6kw/mbZ97wNp6oSBiMUAqDt1q1tBus3japk1hbl4BUnGooXFdlcw5DQxCaGs2JYtp
-         sV5J6o5pV5k7EhGVvg9SStBvNHd6ZjjKOEnKbAKiLNI50L8lsvzDCDyyM1wFXAZ4IuYw
-         WnRatitt+NaRPDOkKSOwW30SeW62AnZpxFWJScpFIqFR7f1FkH6GrUBrnKfnyowPjEh9
-         euHbzff8X1c/XP0UKPZDA+g+OSSunGG4Zu/JDxNQhelKh8jaslEPc8X9gjIZ76tr2zXX
-         a6iQ==
-X-Gm-Message-State: AOJu0YzMWkK8n4xdyQGk1y8Ml1MxBggP7zyw3DBOtX1fNYkhFn9U3uop
-	CwCkcEh9m/k7FL7UpnpgsnTU+BfFvgYFqQ52s7r4uKHBv13pgFd2zeYFKcoezuiaLo3l8ho06xj
-	JheL1K07umOtYtr7W01q1q3vFCNMqcRU=
-X-Gm-Gg: AZuq6aJvcjydJZGyRmFArJObUwBPMgXTto1t+zsFYFg8PVafB18W/nBfq5g17gIgheh
-	4ITorXN8UfmHw6KYuOyJSQd4sp+KppOVwOTzp3UCM5mMIDUA6V4iXfijVBGPiRoSXeGXcZ8xBeg
-	B2SDiZ9wIerwyIvJCJAWtyD0fkHuWy93RRiDFl20v7HWKeezbepUPup7cOTXfH3CfAoI1J+CmQr
-	wMPJsp0Z3obXGL063QlrEHfrmTcANUkEWyeS8OzcyfCCgL6U6/YJRHruW4U56ECNse3bp/BhUK/
-	l3xP6eCuQbkaYvsWZ8nqiqyjd4T01r7tLrZu6kQEsZc4FGu9qaAVejCXuSEWbsREq535c04AeZc
-	9Ljcie1PYWnzq
-X-Received: by 2002:a05:6512:4001:b0:59d:e03d:1cf9 with SMTP id
- 2adb3069b0e04-59e38c35679mr2239817e87.38.1770295594902; Thu, 05 Feb 2026
- 04:46:34 -0800 (PST)
+	bh=5ElIOuLrt/FtR1nkQcSBXTHWXRMi4g6+iAQr4g72yE8=;
+	b=oN8UJjljqoThRJ98xne8eePNEHr+WfJzXapnxnIj6/IP9XRsAUroHFcqmJ/hSRVEk5BivM
+	T7fUAYlohJd/RriCVRDpRnBcJQN36FTA1KKxnnkgsHq5hQKMv2Z1n4HWbRN3+JltEGKnuk
+	L/xsXFvS+x7ue4ivsPq67OvlNuVBM+8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AEzNcPow;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770296205; a=rsa-sha256;
+	cv=none;
+	b=Hclx48CgXOI2/wBo0Rn+FaACB6i37V2EyMEwjRxvN4vPstwmtj5ZRC+wbQAf63YoBGY0qE
+	KFcSpwo9NPr+gAbiwRW7fwBpYN91IIEE5K08KMP4c5/5phKWc050ZO0LJrYsD/TrtR+WTF
+	3SQXZg8Z5xzIES/HhfwsLgKBa7M4k8M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 989FC60010;
+	Thu,  5 Feb 2026 12:56:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BABC4CEF7;
+	Thu,  5 Feb 2026 12:56:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770296204;
+	bh=e5VyJ5rggvxgVaaTXdiX2bO8uDhtniRYd2c5UWCrvPU=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=AEzNcPowN4BXmt/D6Aou5d8c+1I3HBIPjz0gA7sikgv0Ip1rzk5T6BtqxHkZb5VkE
+	 DePut29gHzvT8VyvfG9xbgwY+Kibkxt4Pb5EjnOaeBTV5BMNyVVVLMFUNjpBMd1Ugk
+	 mPQBR5np1zulD6HftFxxFg09JX0BLr6DopqBYv2cA87ylu0Mt8qe60WVBtaHupSjIe
+	 bLmBOpbkINgrjrAieAMtg9kVh9w4PfCG4/U4g6dxJUvV67RnqoDmVI4M9E6VV8PHBh
+	 Kt0gJ+sj6BjoBSDBo0z+ZQb2tH1OkHtkHK+Ki2AyawzNqqsCg9diht8nNeNd/ZXMSg
+	 GTBttbb6q2jYQ==
+Message-ID: <062900fa-6419-4748-81d1-9128ce6c46d0@kernel.org>
+Date: Thu, 5 Feb 2026 13:56:36 +0100
 MIME-Version: 1.0
-References: <CANfXJzt4P+FCkdL_=FfmG80_bY8FkzSocJSPeksSQ_vXObRNOQ@mail.gmail.com>
- <5948f3a6-8f30-4c45-9b86-2af9a6b37405@kernel.org> <CANfXJzsWFyKXJKsESM+7JXoGkDSeQt+Qaimy3FV1-neyXiHZBg@mail.gmail.com>
- <CANfXJztYakHdsY0757+ssQf0WYtnrWdGd8mFegp6PLKZ_SKnCg@mail.gmail.com> <e21e21c8-e28f-45b8-8ee8-7e74d6607b73@kernel.org>
-In-Reply-To: <e21e21c8-e28f-45b8-8ee8-7e74d6607b73@kernel.org>
-From: Tytus Rogalewski <tytanick@gmail.com>
-Date: Thu, 5 Feb 2026 13:46:23 +0100
-X-Gm-Features: AZwV_QgbjbYRFk2XSFb3xiYvCW8oZG7O1T35pSwFfqEZ6Pf5SqEiNCpVdIaCHyY
-Message-ID: <CANfXJzto6Ewoj2qDQ5OJEMAuxVcfFcvuxbtKChentqvb2r+jGQ@mail.gmail.com>
-Subject: Re: walk_pgd_range BUG: unable to handle page fault
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org, muchun.song@linux.dev, osalvador@suse.de
-Content-Type: multipart/alternative; boundary="00000000000014eb20064a1310da"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv6 06/17] LoongArch/mm: Align vmemmap to maximal folio size
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260202155634.650837-1-kas@kernel.org>
+ <20260202155634.650837-7-kas@kernel.org>
+ <2ce0e684-de54-43ec-be7d-c58bbffb3f4e@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <2ce0e684-de54-43ec-be7d-c58bbffb3f4e@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2F2E51C0008
-X-Stat-Signature: pyx355bgp74jhfsy6p4ppj49p5kzdn5n
+X-Rspamd-Queue-Id: 3093A18000E
+X-Stat-Signature: yxgk9h6guxi9d34cfdemtmmzrx8wmhq7
 X-Rspam-User: 
-X-HE-Tag: 1770295596-888199
-X-HE-Meta: U2FsdGVkX1+8TsxKwzSzn6gfAOaVkKEj8+nKHqKX483P8OAJgddfAKHpKureCUGs+Ru+hM8NqGMgcT/0krmIukSF1uhrdNPospJ6dByZVPIOMNfiozUbsGtDXU+Rw06Zl5wg3LEWJVySuwP99Qtj+7hwF6cZn/Q40DViax9HfckC9Wa4rHg/9i0lT8/UqeIDT0nKlZXQ72wi6B4gvDENRaNujZEepm1jBcnitXUSJBZEdfl079aFxu3dF1FumSy3wcWXYG5QbIDSkbL3cQRE9hmqV+vu6VVpoqNDtHqD1u/TMOrCD4e0bk3KYwbRk4ca5TsdofmDcZaeQtqfDa5CzaUds4FesOqCk7SMns4g6HNg8ahM0u1liTf2bcUjXBYYPXVH5eyCcO5UOThJ7AMyISF56ZlqHvkDOMgrDXu/TT+tdfq2/OOftmYRCbU3UuJsWELAG10tiKjEU1y4NI4NBKmNBhlMxHEN2KNaru3cxoe0Z5cqWqNZwktCJ3y/6wJcpm78yfXeEqklL8TNiSEhSyqDLXiMjYuKAJnEIwkBu2olXT7oyAa7UR34kXsTHsHxkFxe2BojTy1hA+i8zfZt6X83krXWwCO2uZxzdG4zQISd7/QGHZeR8GJJoB4aUvIl8ysZ1kORUCOEXNioaf9JyZhGJHtWwNLnT8KDb+u6vIVrQB+CCgSgnkCeKTP+Gf6tNTz4ezF1AjYUihK8qkClXp+dqBi6kW4NtG3EJuabWeUDd96lqSHhlHzlssA6QK/oW6zX56ZqrjqL+ldqraYFUoO3G5EBX6lkF7y62tPFBLYlIKR+qnWrNT/ieT2SSVerbGdlQrL6W4qddk75cvspJd55SzDp5Eqh0kjiQVV7uaZGDBQnig2S4ZFPIbLBPo/QXAzZUfIy+75iQEK3vJOzKbqcXiXW3Ii87swohCOjEIYXL6YccyozTMm6YdDQk8879IuRGIQa5F3ryUs56Zf
- nl4LxHa5
- h0kJBSvUo/6OnZWvKjwuxOH+aHA9fu/kgP9vDe9VPmyo5EVRVeIwchfR+m2ywUSuYe+USJh3Y+98mGJdsm7n8FAzIb3+2W+P7ITTxm5KkduNST/OzU+/8iOhkC2uVbtA/nl5zchXEZ78BlKMfyThh6ZIWUwV2SYTgu+5XuxMBa9a7HJuibhhTq0YOrmbVfZtIabLPYRu9N7fTevWfHCUrYdtwW6juajanoSPbEFH0TXeoEHAQe4rfoABsoKkYMNNrQBqFkkzmOOY0YApA0yrELLOK20GYa+6hqESYzAO028sJP1Irv/94Ugakh8914aaqiN9/DFLKRPJxKUrhHPftbpVr0OrsyeoputW8nRO9yhr0FLsgk85GlIldXvSG37dnwGqC8Z1FMOW0PbBfVPYjzagursfJIs6xvegyXThOYnI7519xZijrJwWMmV2CZ6OKxoaKvstY2W3AjZUXUx9SIK/2+XBN3Ed6Q1MtKX5RyBbEAOwkjPVpSRfU7Nix6fAW7KcNUU3+upEBeaQ2dIrzrY9TOOLTkfE2MpDudZmXGWLjGshLGOJBc5KPfk15pX+1rkW5
+X-HE-Tag: 1770296205-859903
+X-HE-Meta: U2FsdGVkX18PTsKz65Bqky5IXiugLJIZXcaCmOe/mpcm37+1QRXvSf2PNoFr9FBz3u6H3A96IqN7DQbSakt8D+zISvmpXcgpDownFcU75oSSi7rZN4MEL9G3r1tlEFxU76Smvx3OBckn/glkuLiz/7QE3jc8HKd2qscCH+CWS4zKjEhS6AiypTQ+U1xNzx9ynWKsHXGY06d20tekp65DQqFAeXVcDOSwDMXhzqn1XJcs0VsTJ7+ODzjBTw70/aEj0tnQk6soQuFER0bHjlRUiK74RbixZTZdP0t1vGK7YR6gb8DozFzKf/mYPaZ2FgADKYlpdvBcaWuzTP2zcL1osX5m6TqRu5Dou2hBKSazbLhNlLJFv8w9WbwZ9/hbmHnqy+heStF+UfFOpbCG1YJP97CMufUa7i3aDDW+BxXCrwwKrUd0XmPPXSf9uh207RaDpxHWl785K5QhJhauG6ebQ0ThgOpc1wOgPw5EmlnNCUT/HZrmGvKE2U4kpBI7AiABWmXqcnEG3VxVgn0yTQg2/UsVK8q1TeCXKy6pUa/bV6EDWsQLaFleKKnUD1GEWY5Oza4R6ESRCPEKwIA0NGjUSBNftWHDRZ0tTTJ+0vt8a62lyD6tCb3cEXSOkSe0RUs3z0K1KBVHjbT/hNREBYeuKWYMqa6Ijh3JVhebt8kt6TunpBTl30WKLZn7tg/dciZu/3w044uESri9JcfK05PjfHZwLUG+ko96ZRhbdn9oRc+p7iAEPdgVGGFW1p8ev0dt7at+o7HD6OH9N/157ZtHIlHFbPu8TnDbj94huKkCnst8JmmG6+7G4Jogb3nvevSyPq8UvebkrtZ18m2CORRIDmjl5Eq/fRcHUCLs4lsJytCrBXwcYwjV+jeDDQhF3iPGbvpS0S8+7+pbVcwDek2qZukJjqfgAfQVkf1YSASrLEVbzdJr4oeqBpRJrjUCUhi3yZm5iY7/YRzp2t0Lxly
+ 7zhNFthx
+ 9sCase84mmZI/qcDzPC6GZwmzi3+U1OJzcq0fp1aMvZULrMOJrLtXEXoQHt3ofRD9Dh4VGLh/oppbuF/tbv2XTlTjBrbFa+gzDW+PiYnDk8/iN1dMn3454W279E6FAgKmq10WOcXPoa0kMPDK1Uskw5QK2XGhK7Ys7OeOuSFQLGhEjR97a+IU5xcswyTDMXYEKeXBQS82LkYcy3cSj3UfKBqrpRIxqUS1qujXoL+sENjg81u2VbcCJOem+W79ZSdUFmhXB6MTGZthwh+Rg5JTillDP1VLv4nvXmotHXPJOOB9TFUkoYLVDNgmhQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,252 +152,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---00000000000014eb20064a1310da
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 2/4/26 17:56, David Hildenbrand (arm) wrote:
+> On 2/2/26 16:56, Kiryl Shutsemau wrote:
+>> The upcoming change to the HugeTLB vmemmap optimization (HVO) requires
+>> struct pages of the head page to be naturally aligned with regard to the
+>> folio size.
+>>
+>> Align vmemmap to MAX_FOLIO_NR_PAGES.
+>>
+>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+>> ---
+>>   arch/loongarch/include/asm/pgtable.h | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/ 
+>> include/asm/pgtable.h
+>> index c33b3bcb733e..f9416acb9156 100644
+>> --- a/arch/loongarch/include/asm/pgtable.h
+>> +++ b/arch/loongarch/include/asm/pgtable.h
+>> @@ -113,7 +113,8 @@ extern unsigned long empty_zero_page[PAGE_SIZE / 
+>> sizeof(unsigned long)];
+>>        min(PTRS_PER_PGD * PTRS_PER_PUD * PTRS_PER_PMD * PTRS_PER_PTE * 
+>> PAGE_SIZE, (1UL << cpu_vabits) / 2) - PMD_SIZE - VMEMMAP_SIZE - 
+>> KFENCE_AREA_SIZE)
+>>   #endif
+>> -#define vmemmap        ((struct page *)((VMALLOC_END + PMD_SIZE) & 
+>> PMD_MASK))
+>> +#define VMEMMAP_ALIGN    max(PMD_SIZE, MAX_FOLIO_NR_PAGES * 
+>> sizeof(struct page))
+>> +#define vmemmap        ((struct page *)(ALIGN(VMALLOC_END, 
+>> VMEMMAP_ALIGN)))
+> 
+> 
+> Same comment, the "MAX_FOLIO_NR_PAGES * sizeof(struct page)" is just 
+> black magic here
+> and the description of the situation is wrong.
+> 
+> Maybe you want to pull the magic "MAX_FOLIO_NR_PAGES * sizeof(struct 
+> page)" into the core and call it
+> 
+> #define MAX_FOLIO_VMEMMAP_ALIGN    (MAX_FOLIO_NR_PAGES * sizeof(struct 
+> page))
+> 
+> But then special case it base on (a) HVO being configured in an (b) HVO 
+> being possible
+> 
+> #ifdef HUGETLB_PAGE_OPTIMIZE_VMEMMAP && is_power_of_2(sizeof(struct page)
+> /* A very helpful comment explaining the situation. */
+> #define MAX_FOLIO_VMEMMAP_ALIGN    (MAX_FOLIO_NR_PAGES * sizeof(struct 
+> page))
+> #else
+> #define MAX_FOLIO_VMEMMAP_ALIGN    0
+> #endif
+> 
+> Something like that.
+> 
 
-Hehe, i cant. I dont have any CPU only servers :)
+Thinking about this ...
 
+the vmemmap start is always struct-page-aligned. Otherwise we'd be in 
+trouble already.
 
-Should 2MB and 1GB one act the same ?
+Isn't it then sufficient to just align the start to MAX_FOLIO_NR_PAGES?
 
+Let's assume sizeof(struct page) == 64 and MAX_FOLIO_NR_PAGES = 512 for 
+simplicity.
 
---
+vmemmap start would be multiples of 512 (0x0010000000).
 
-tel. 790 202 300
+512, 1024, 1536, 2048 ...
 
-*Tytus Rogalewski*
+Assume we have an 256-pages folio at 1536+256 = 0x111000000
 
-Dolina Krzemowa 6A
+Assume we have the last page of that folio (0x011111111111), we would 
+just get to the start of that folio by AND-ing with ~(256-1).
 
-83-010 Jagatowo
+Which case am I ignoring?
 
-NIP: 9570976234
+-- 
+Cheers,
 
-
-czw., 5 lut 2026 o 13:44 David Hildenbrand (Arm) <david@kernel.org>
-napisa=C5=82(a):
-
-> On 2/4/26 23:50, Tytus Rogalewski wrote:
-> > Just had another crash and it is still happening in 6.18.8 . Here is
-> > claude output this time as i am lazy :)
->
-> I'm lazy and ignore AI slop. :)
->
-> [...]
->
-> >
-> >    Feb 04 21:42:16 pve12 kernel: BUG: unable to handle page fault for
-> > address: ff164aee00000000
-> >    Feb 04 21:42:16 pve12 kernel: #PF: supervisor read access in kernel
-> mode
-> >    Feb 04 21:42:16 pve12 kernel: #PF: error_code(0x0000) - not-present
-> page
-> >    Feb 04 21:42:16 pve12 kernel: PGD 4602067 P4D 0
-> >    Feb 04 21:42:16 pve12 kernel: Oops: Oops: 0000 [#1] SMP NOPTI
-> >    Feb 04 21:42:16 pve12 kernel: CPU: 125 UID: 0 PID: 783442 Comm: qm
-> > Not tainted 6.18.8-pbk #1 PREEMPT(voluntary)
-> >    Feb 04 21:42:16 pve12 kernel: Hardware name:  TURIN2D24G-2L+/500W/
-> > TURIN2D24G-2L+/500W, BIOS 10.12 11/14/2024
-> >    Feb 04 21:42:16 pve12 kernel: RIP: 0010:walk_pgd_range+0x6ff/0xbb0
-> >    Feb 04 21:42:16 pve12 kernel: Code: 08 49 39 dd 0f 84 8c 01 00 00 49
-> > 89 de 49 8d 9e 00 00 20 00 48 8b 75 b8 48 81 e3 00 00 e0 ff 48 8d 43 ff
-> > 48 39 f0 49 0f 43 dd <49> f7 04 24 9f ff ff ff 0f 84 e2 fd ff ff 48 8b
-> > 45 c0 41 c7 47 20
-> >    Feb 04 21:42:16 pve12 kernel: RSP: 0018:ff643a4c403439a8 EFLAGS:
-> 00010287
-> >    Feb 04 21:42:16 pve12 kernel: RAX: 000071afc01fffff RBX:
-> > 000071afc0200000 RCX: 0000000000000000
-> >    Feb 04 21:42:16 pve12 kernel: RDX: 0000000000000000 RSI:
-> > 000071afffffffff RDI: 80002fd0000002b7
-> >    Feb 04 21:42:16 pve12 kernel: RBP: ff643a4c40343a88 R08:
-> > 0000000000000080 R09: 0000000000000000
-> >    Feb 04 21:42:16 pve12 kernel: R10: ffffffffb84588c0 R11:
-> > 0000000000000000 R12: ff164aee00000000
-> >    Feb 04 21:42:16 pve12 kernel: R13: 000071b000000000 R14:
-> > 000071afc0000000 R15: ff643a4c40343b08
-> >    Feb 04 21:42:16 pve12 kernel: FS:  0000767454f93b80(0000)
-> > GS:ff161c21bdefe000(0000) knlGS:0000000000000000
-> >    Feb 04 21:42:16 pve12 kernel: CS:  0010 DS: 0000 ES: 0000 CR0:
-> > 0000000080050033
-> >    Feb 04 21:42:16 pve12 kernel: CR2: ff164aee00000000 CR3:
-> > 00000080dff18005 CR4: 0000000000f71ef0
-> >    Feb 04 21:42:16 pve12 kernel: PKRU: 55555554
-> >    Feb 04 21:42:16 pve12 kernel: Call Trace:
-> >    Feb 04 21:42:16 pve12 kernel:  <TASK>
-> >    Feb 04 21:42:16 pve12 kernel:  __walk_page_range+0x8e/0x220
-> >    Feb 04 21:42:16 pve12 kernel:  walk_page_vma+0x92/0xe0
-> >    Feb 04 21:42:16 pve12 kernel:  smap_gather_stats.part.0+0x8c/0xd0
-> >    Feb 04 21:42:16 pve12 kernel:  show_smaps_rollup+0x258/0x420
-> >    Feb 04 21:42:16 pve12 kernel:  seq_read_iter+0x137/0x4c0
-> >    Feb 04 21:42:16 pve12 kernel:  seq_read+0xf5/0x140
-> >    Feb 04 21:42:16 pve12 kernel:  vfs_read+0xbb/0x350
-> >    Feb 04 21:42:16 pve12 kernel:  ksys_read+0x69/0xf0
-> >    Feb 04 21:42:16 pve12 kernel:  __x64_sys_read+0x19/0x30
-> >    Feb 04 21:42:16 pve12 kernel:  x64_sys_call+0x2180/0x25a0
-> >    Feb 04 21:42:16 pve12 kernel:  do_syscall_64+0x80/0xce0
-> >    Feb 04 21:42:16 pve12 kernel:
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> >    Feb 04 21:42:16 pve12 kernel:  </TASK>
-> >    Feb 04 21:42:16 pve12 kernel: Modules linked in: sctp ip6_udp_tunnel
->
->
-> Yeah, same thing again.
->
-> Can you retry without vfio passthrough to see whether it's triggered by
-> that?
->
-> vfio recently gained support for installing huge mappings into user page
-> tables. I wonder whether it is related to that.
->
-> --
-> Cheers,
->
-> David
->
-
---00000000000014eb20064a1310da
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>Hehe, i cant. I dont have any CPU only servers :)<br>=
-<br><br>Should 2MB and 1GB one act the same ?<br><br><br></div><div><div di=
-r=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_signature"><div=
- dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr">
-
-
-
-
-
-
-
-<p style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-fami=
-ly:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">--</font></p><p =
-style=3D"font-stretch:normal;font-size:12px;line-height:normal;font-family:=
-&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1">tel. 790 202 300</f=
-ont></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal;f=
-ont-family:&quot;Helvetica Neue&quot;;margin:0px"><b style=3D"color:rgb(68,=
-68,68);font-size:x-small">Tytus Rogalewski</b><br></p><p style=3D"font-stre=
-tch:normal;font-size:12px;line-height:normal;font-family:&quot;Helvetica Ne=
-ue&quot;;margin:0px"><font size=3D"1" color=3D"#999999">Dolina Krzemowa 6A<=
-/font></p><p style=3D"font-stretch:normal;font-size:12px;line-height:normal=
-;font-family:&quot;Helvetica Neue&quot;;margin:0px"><font size=3D"1" color=
-=3D"#999999">83-010 Jagatowo</font></p><p style=3D"font-stretch:normal;font=
--size:12px;line-height:normal;font-family:&quot;Helvetica Neue&quot;;margin=
-:0px"><font size=3D"1" color=3D"#999999">NIP: 9570976234</font></p></div></=
-div></div></div></div></div><br></div><br><div class=3D"gmail_quote gmail_q=
-uote_container"><div dir=3D"ltr" class=3D"gmail_attr">czw., 5 lut 2026 o 13=
-:44=C2=A0David Hildenbrand (Arm) &lt;<a href=3D"mailto:david@kernel.org">da=
-vid@kernel.org</a>&gt; napisa=C5=82(a):<br></div><blockquote class=3D"gmail=
-_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
-,204);padding-left:1ex">On 2/4/26 23:50, Tytus Rogalewski wrote:<br>
-&gt; Just had another crash and it is still happening in 6.18.8=C2=A0. Here=
- is <br>
-&gt; claude output this time as i am lazy :)<br>
-<br>
-I&#39;m lazy and ignore AI slop. :)<br>
-<br>
-[...]<br>
-<br>
-&gt; <br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: BUG: unable to handle page =
-fault for <br>
-&gt; address: ff164aee00000000<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: #PF: supervisor read access=
- in kernel mode<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: #PF: error_code(0x0000) - n=
-ot-present page<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: PGD 4602067 P4D 0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: Oops: Oops: 0000 [#1] SMP N=
-OPTI<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: CPU: 125 UID: 0 PID: 783442=
- Comm: qm <br>
-&gt; Not tainted 6.18.8-pbk #1 PREEMPT(voluntary)<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: Hardware name: =C2=A0TURIN2=
-D24G-2L+/500W/ <br>
-&gt; TURIN2D24G-2L+/500W, BIOS 10.12 11/14/2024<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: RIP: 0010:walk_pgd_range+0x=
-6ff/0xbb0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: Code: 08 49 39 dd 0f 84 8c =
-01 00 00 49 <br>
-&gt; 89 de 49 8d 9e 00 00 20 00 48 8b 75 b8 48 81 e3 00 00 e0 ff 48 8d 43 f=
-f <br>
-&gt; 48 39 f0 49 0f 43 dd &lt;49&gt; f7 04 24 9f ff ff ff 0f 84 e2 fd ff ff=
- 48 8b <br>
-&gt; 45 c0 41 c7 47 20<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: RSP: 0018:ff643a4c403439a8 =
-EFLAGS: 00010287<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: RAX: 000071afc01fffff RBX: =
-<br>
-&gt; 000071afc0200000 RCX: 0000000000000000<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: RDX: 0000000000000000 RSI: =
-<br>
-&gt; 000071afffffffff RDI: 80002fd0000002b7<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: RBP: ff643a4c40343a88 R08: =
-<br>
-&gt; 0000000000000080 R09: 0000000000000000<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: R10: ffffffffb84588c0 R11: =
-<br>
-&gt; 0000000000000000 R12: ff164aee00000000<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: R13: 000071b000000000 R14: =
-<br>
-&gt; 000071afc0000000 R15: ff643a4c40343b08<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: FS: =C2=A00000767454f93b80(=
-0000) <br>
-&gt; GS:ff161c21bdefe000(0000) knlGS:0000000000000000<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: CS: =C2=A00010 DS: 0000 ES:=
- 0000 CR0: <br>
-&gt; 0000000080050033<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: CR2: ff164aee00000000 CR3: =
-<br>
-&gt; 00000080dff18005 CR4: 0000000000f71ef0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: PKRU: 55555554<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: Call Trace:<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0&lt;TASK&gt;<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0__walk_page_range+0x8=
-e/0x220<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0walk_page_vma+0x92/0x=
-e0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0smap_gather_stats.par=
-t.0+0x8c/0xd0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0show_smaps_rollup+0x2=
-58/0x420<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0seq_read_iter+0x137/0=
-x4c0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0seq_read+0xf5/0x140<b=
-r>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0vfs_read+0xbb/0x350<b=
-r>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0ksys_read+0x69/0xf0<b=
-r>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0__x64_sys_read+0x19/0=
-x30<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0x64_sys_call+0x2180/0=
-x25a0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0do_syscall_64+0x80/0x=
-ce0<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0entry_SYSCALL_64_afte=
-r_hwframe+0x76/0x7e<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: =C2=A0&lt;/TASK&gt;<br>
-&gt;=C2=A0 =C2=A0 Feb 04 21:42:16 pve12 kernel: Modules linked in: sctp ip6=
-_udp_tunnel <br>
-<br>
-<br>
-Yeah, same thing again.<br>
-<br>
-Can you retry without vfio passthrough to see whether it&#39;s triggered by=
- <br>
-that?<br>
-<br>
-vfio recently gained support for installing huge mappings into user page <b=
-r>
-tables. I wonder whether it is related to that.<br>
-<br>
--- <br>
-Cheers,<br>
-<br>
-David<br>
-</blockquote></div>
-
---00000000000014eb20064a1310da--
+David
 
