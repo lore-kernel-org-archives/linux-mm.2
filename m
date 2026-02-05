@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3C30ECD982
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 15:28:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8B83ECD983
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 15:32:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E5BD6B0089; Thu,  5 Feb 2026 10:28:37 -0500 (EST)
+	id 083716B0089; Thu,  5 Feb 2026 10:32:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 193676B008A; Thu,  5 Feb 2026 10:28:37 -0500 (EST)
+	id 030D66B008A; Thu,  5 Feb 2026 10:32:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 068986B0092; Thu,  5 Feb 2026 10:28:37 -0500 (EST)
+	id E751C6B0092; Thu,  5 Feb 2026 10:32:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E7FCB6B0089
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:28:36 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8D22D8BFF6
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:28:36 +0000 (UTC)
-X-FDA: 84410785032.29.8322507
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9C936100012
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:28:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IEGzDoIL;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D74436B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:32:22 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2782CC213B
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:32:22 +0000 (UTC)
+X-FDA: 84410794524.14.E37DB5A
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DB5EAC0014
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:32:18 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J4kMAUbZ;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770305314;
+	s=arc-20220608; t=1770305539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/SL5gP8QX8DLMYTu036KBvNCXId/b3s1citx/YK+obQ=;
-	b=NocevGGLQ5YsfVohoFtqJK95iUtZ611YgtZg2mFZGGTn2UOz7NrcUMI5uDpn3apkp7Q/tv
-	bG9AN8gJCBoKxwkXMBcMRGWFCFmbiLtAQIhdvYdVvILEv5aBkeBMJ9vDFziVqOz1MpRXm/
-	6KmtQgtv3zHNuEGrXsXn9/mV9KXq2qQ=
+	bh=nZCCu/D+A8/vQSICPy1kzHkrFU4nx4XMWizPhQHWKZE=;
+	b=B5tpvr7q1MKBjJRm2X05vgKMts0ztCyFrCA6m2+/hvORDZw9yURLC1ydepKXEFv0LY9+/p
+	x07P0KUARj769KEG6R6psdv6z8rEzRg/s3PcudzOwFlQx9JG4IAHBgr2XvSLjPP7CrWLGT
+	zTfshZ5gzGujDYhwLic9eOP/7RS0dMs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IEGzDoIL;
-	spf=pass (imf05.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J4kMAUbZ;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770305314; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770305539; a=rsa-sha256;
 	cv=none;
-	b=vjE9CiqU/4ztCDvFMX8xe1BldkoCsSQ1gBQlAnlK8Sj5721vQneJlDiYsFTVjI8maXYtuB
-	eN5ExRjZDrXIu9OoXAUQsbwqL+Spl6aAyBxeNGuvKb7ZxN1a/F4vWhwmzlPvt62cs6flSK
-	ZxRibW7Z28Y3SZIvoV0BA/y3YIXdv3w=
-Message-ID: <8f5f7617-7a35-4cb2-97b2-0a73c6d9622c@linux.dev>
+	b=eE9azTtBWNfFtww3k1xGTX6cxaVokiaQ247+v81KSOhsSQ1RbwxwvvF2AEEXOLfgOatulS
+	CGCToYKIcWVDa9gYi4naGWsJ9ISWT/YRgLFG+YPw8gbIDd98cJDuV/58nlF0kW+sBbxj69
+	n6j2tf9iOI8qY80o3dlTvNAKdvUzlN0=
+Message-ID: <c985a8ed-37ad-415e-b7b4-18a66b4da3fe@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770305311;
+	t=1770305536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/SL5gP8QX8DLMYTu036KBvNCXId/b3s1citx/YK+obQ=;
-	b=IEGzDoILmn6RaziZQkRjyJvvzWlaFO58iWze8rY0jh1kOJLRhJO6HZpFljbyPC+X0L84Av
-	Cj3u8KxpQa88wJ2ZLpjRYTRBp6+7l5b63JFvgtpcdm+Vg8KJhKoywh+RxTy+/vns8wVrSm
-	I/WRZ4sW+DSRbVjCNuvHzj//KzAkgjE=
-Date: Thu, 5 Feb 2026 23:28:14 +0800
+	bh=nZCCu/D+A8/vQSICPy1kzHkrFU4nx4XMWizPhQHWKZE=;
+	b=J4kMAUbZImqUoYGXnypA7JnwOQ6nbWXYNper/s+Ly1cCPQ7RG+AMBp08vyVNz/jHVoomLH
+	peW91wvsv7DEEEi+N86L66kXjHcz1UF+GeftNiAXSBKVuphiyV+y27NFganbyWwBX5e5Xy
+	01KUQfoTLHkARKXBEAIocUoDnlGa78k=
+Date: Thu, 5 Feb 2026 23:31:48 +0800
 MIME-Version: 1.0
 Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
 Content-Language: en-US
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, dave.hansen@intel.com
+To: Dave Hansen <dave.hansen@intel.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>
 Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
  aneesh.kumar@kernel.org, arnd@arndb.de, baohua@kernel.org,
  baolin.wang@linux.alibaba.com, boris.ostrovsky@oracle.com, bp@alien8.de,
@@ -89,21 +90,19 @@ References: <20260202095414.GE2995752@noisy.programming.kicks-ass.net>
  <d6944cd8-d3b7-4b16-ab52-a61e7dc2221c@linux.dev>
  <06d48a52-e4ec-47cd-b3fb-0fccd4dc49f4@kernel.org>
  <3026ad8d-92ad-4683-8c3e-733d4070d033@linux.dev>
- <13205d28-7478-4578-8bf3-ead18b4dc6b0@kernel.org>
+ <64f3a75a-30ff-4bee-833c-be5dba05f72b@intel.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <13205d28-7478-4578-8bf3-ead18b4dc6b0@kernel.org>
+In-Reply-To: <64f3a75a-30ff-4bee-833c-be5dba05f72b@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: zms6gng1wfi41r8dnxgezpsf4c4u6oen
+X-Rspamd-Server: rspam11
+X-Stat-Signature: tuwi64xsmqc8apx5h3gae7sceg8ygcdu
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 9C936100012
-X-HE-Tag: 1770305314-205659
-X-HE-Meta: U2FsdGVkX1+i+7jVo5fNyTmRQN/AbEDBjR8paes8JVo315VHxtnp9EQk1pVRI2s8+rSJl3tLN9cKuodzcwUMriSWzLpnfkmPlecE25hynv5MwdNUNf6LeJjSJeD4X1UM9GzCuXpU10yCyy+4lHfr421DcUHXWp7RWuWy3oz4dROndh917iP6M9z+PiD+DBrCuaG3kTbirgYzh/VS+7kz2fCw9RKJsphVzevRnGsSJtgwQZQPuRfcHfsSIelzrcy6aiQEQfXzO6zglN264PEPqChKsHyIkm8cR2G7dPgKJ6J+pdd7Fw3JKphGSMdetDSEg0mTtsQEzwK/RN0kJX3auCX2F6pPjlB32825T6t97uzaWKxh6ja1p+NEqdt57pdS7wn6rn0Ddrm2gVLE2b+HVvKLtHX+GDTrtAcZf/JOtUy8gX6ibj1kkqghY7bnf/8CDJ8T5ScvWYYwy9lvZJCiK8CoAuD7AJ1dNcg7tmc7fVVEpKCEJw/u7oeiL6sLdd7yAQ192XO9CUH+n1ZEQALp23RXeP3Nd7Pazu36dwKkX8NHaODIQOoTW81CNSNvTKrv8eawO0A/BrLqgcOfRk4/2SERp+wNq1vWGsKs8an8UuY0O5qDW5jQkYk6wZRFl05ITtBBtW/6WLMInP7G3i1meT9OemctnT2uTFG4tCPEJWrONNkM3EQQ06u+J/hDgkaVDdqUH6n15X83d55Uo6lqL0xTDbWjGs+lWCPm4RhbvwRN78It+H6JvqAv7G+dPjcSdj8aRnnrFDIgcOX0IbfBXh9atuI4ASibtgWH4E8+img5EAq74JD32vn0Qf4Vy3OFj6/pDaTnCLHsuQTRMOcuY2uA+g2sD5acQeKerDaRsDhW6/xjbmoa1R5Dmx69kV77+ex2VCHbgnKcrRF2ncsqu5pB7Fux+8NeU49wqXJAwHUSgbZBFiO2T5UGFKwdbMY0zkg2FzSqyWuLDuMl3xF
- 5ywV2ndY
- +FCoRgL9jSPxcojhVvb0Cse/v/Cmjr34P4LDC/4y6692oTXp/IJUZgNhnCL2pVEMMbUoFCmOCPoRZo8AOVmmGVFp1tRmr+oedjj7D86UkzskFLhUX2ghwciTKrytqADjKBTwzrRfa1ywo8AMqGmH4nRU1r6gOFvdwY1YHYtfxvB17/wJMcWGmaxbI5gGZF3VzqMV2PbOWUWsP/NPr0KSuSqQlcQ6FQ18Ik1OmQ2pXrgp639I=
+X-Rspamd-Queue-Id: DB5EAC0014
+X-HE-Tag: 1770305538-381677
+X-HE-Meta: U2FsdGVkX1+wpGMA4QKYwmt4xEj3B4vJUo/e5GDHxtGSlNJaVHvM+AQFHRfA5ZYyIx6B9/xHzwgJ1b7ruihoo+rZQnlcwpHBY/3IKdYnKXHvqUarPw7IDf6TQXS1MHgm1wKnUC86qcoB9+a8nHeAH6dUx8qkreSDO0WQC2M87ERz0GkIX8Gb+7iXPsLz4bamRNI5S6SRzebJ6hX0dtLrYu+5PSridZn3tNOD+H+XVCZ0X2oSUfZoPNyzqHNO4YkI17ySmsyvUOuyBj4iEUUGPSZ4u9yztFiT8rpK/dTt6aYL7nBWuzfo7vg1TL29yxoRrWBRL6QUQV03t6nZYZQgRG9NK/Ksuf8HTodcSO0jytouXJWn18iMtxB8zh7O/OBOgVPdVbR2GZowsxpzIini8FIKb+U5Y4ZQT7L8lOsj5cxc0VgxufMZeABlOzEVYTcY1hDllhJNrH592v9m/8raTfqojK5123KCQbWC3cwW9rfob4QX+50xw9/GQwY+6IkRh7pXHVk4xml6KlqrG2Jz2xaTT/tWcNyTsNJFrmRMWCqu7965Q0tnkD9rz8g4eELuau52SadRPfDhuBjm7uIhY7ecIwBf5bjx+iT7V/0FBuZ9qJJ7ehGlgBqrJkUdyDEoa762gnTsQL1sQctNtreDqnZ7OrWjXMUX5Jp1uCbOggM0DTBhuWds65EqlEJGmP/eWSercEv86s35TIQNRqWA9/gMioC5zuduMu6RIz+s6FxQsw6kQ4bEfdeJPgs492OJkbSXSyQnmqR0VXidX/Ar6da15OQiIkqQKy5b5TeXzyFFGsYyTmeNFSNfriZwd9lS/jOclm5ROIGQW7gE0E6h6iASZ2SLBUk4ToVV/CA9o+HS9GLfIDGSfg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,60 +113,18 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2026/2/5 23:05, David Hildenbrand (Arm) wrote:
-> On 2/5/26 16:01, Lance Yang wrote:
->>
->>
->> On 2026/2/5 21:25, David Hildenbrand (Arm) wrote:
->>> On 2/2/26 16:52, Lance Yang wrote:
->>>>
->>>>
->>>>
->>>> Yep, we could replace the IPI with synchronize_rcu() on the sync side:
->>>>
->>>> - Currently: TLB flush → send IPI → wait for walkers to finish
->>>> - With synchronize_rcu(): TLB flush → synchronize_rcu() -> waits for 
->>>> grace period
->>>>
->>>> Lockless walkers (e.g. GUP-fast) use local_irq_disable(); 
->>>> synchronize_rcu() also
->>>> waits for regions with preemption/interrupts disabled, so it should 
->>>> work, IIUC.
->>>>
->>>> And then, the trade-off would be:
->>>> - Read side: zero cost (no per-CPU tracking)
->>>> - Write side: wait for RCU grace period (potentially slower)
->>>>
->>>> For collapse/unshare, that write-side latency might be acceptable :)
->>>>
->>>> @David, what do you think?
->>>
->>> Given that we just fixed the write-side latency from breaking 
->>> Oracle's databases completely, we have to be a bit careful here :)
->>
->> Yep, agreed.
->>
->>>
->>> The thing is: on many x86 configs we don't need *any* TLB flushed or 
->>> RCU syncs.
->>
->> Right. Looks like that is low-hanging fruit. I'll send that out 
->> separately :)
->>
->>>
->>> So "how much slower" are we talking about, especially on bigger/ 
->>> loaded systems?
->>
->> Unfortunately the numbers are pretry bad. On an x86-64 64-core system
->> under high load, each synchronize_rcu() is about *22.9* ms on average ...
->>
+On 2026/2/5 23:09, Dave Hansen wrote:
+> On 2/5/26 07:01, Lance Yang wrote:
 >> So for now, neither approach looks good: tracking on the read side adss
 >> cost to GUP-fast, and syncing on the write side e.g. synchronize_rcu()
 >> is too slow on large systems.
 > 
-> GUP-fast is 3%, right? Any way we can reduce that to 1% and call it 
-> noise? :)
+> Which of the writers truly *need* synchronize_rcu()?
+> 
+> What are they doing with the memory that they can't move forward unless
+> it's quiescent *now*?
 
-Yes, GUP-fast is ~3%. I'll keep trying to do that, but first getting
-the low-hanging fruit done :)
+Without IPIs or synchronize_rcu(), IIUC, we have no way to know if there
+are ongoing concurrent lockless page-table walks — the walkers just disable
+IRQs and walk.
 
