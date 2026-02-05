@@ -4,126 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD868EA7963
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 04:23:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3DD1EA7967
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 05:13:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 302AB6B0093; Wed,  4 Feb 2026 23:23:46 -0500 (EST)
+	id F2B9C6B0089; Thu,  5 Feb 2026 00:13:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E3426B0096; Wed,  4 Feb 2026 23:23:46 -0500 (EST)
+	id ED9646B0092; Thu,  5 Feb 2026 00:13:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B79E6B0098; Wed,  4 Feb 2026 23:23:46 -0500 (EST)
+	id DAE586B0093; Thu,  5 Feb 2026 00:13:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 091736B0093
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 23:23:46 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9EAED58A53
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 04:23:45 +0000 (UTC)
-X-FDA: 84409109610.29.49C303B
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C19D91C0009
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 04:23:43 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Mz4t8aKu;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C62CF6B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 00:13:44 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 59329B90CC
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:13:44 +0000 (UTC)
+X-FDA: 84409235568.17.DC5F434
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 678C7140007
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:13:42 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ekrfxb6t;
+	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770265423;
+	s=arc-20220608; t=1770268422;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qW0+moZctApASOdwQkaNncsGOVFnNExxcEZS6yJkS4M=;
-	b=bDmq/8hHiIuJBNqAeNdIX+6xvfZwoNOOceH2ECJYQyJkNQAQTFZr7nXKKQvUJVyfNk3bHo
-	CuSDRMV9ZLdSLTOwCDF92PS4EUPOZveCJdeI2WbKr3jMmmzKse3X2pE0mS2BErbkXtbKrB
-	vopu9012xZ6nPEDjF0tKKEaWcQAxHtc=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Mz4t8aKu;
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770265423; a=rsa-sha256;
+	bh=4vfmzVCg0tqpO1KYczg0s+VtVqSDCdJvzToKcOgVwlg=;
+	b=YcdKIgUu0y0OHB+0Dam7sHpxTV4YtA40rmbuzCsRf5nmxtT9u5dv1FJTW1iF4P5IBkPzij
+	UXX9Gj+FavQXXoNGFiDsEKha+77tu4Kt2XZsJy147fk3YQ5c0W6tHTi9OQ3Fit4q3UDejX
+	WnrdBuH2qN0OOZTlukfVZu1E+nM2IZk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770268422; a=rsa-sha256;
 	cv=none;
-	b=4ntFlmty+yI1B7ZU7g5sJqTrPy44VnNWF7663DavtBgpQuoMyeeBl28enGTagwB4sgjkkV
-	5gJSWhicn/+JtHT+iN5WTJyfSuk1WIHFETpahHvJ5liBD52CYuqJ8ijVV6U43uarRMmLt+
-	iiKBymsDmwt/6ghliLO+qwnN7es9+3w=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c52f15c5b3so42452485a.3
-        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 20:23:43 -0800 (PST)
+	b=CkvT8HPgIfhssJ8IFMpRGGwKJzzmtb0fUp1iL8NbiYJAV1Ly9QNTt/KJBrw4EvIjZ25nwp
+	eR1I9VRKkf/oRoi82+XXsI4dSR0YTeVfRYhW/k6QSbJOm71r3F3vft+QHxl3Wz7QK9Ewqh
+	xRtMyAcSGEaWvdQL6wC8zwgpFKBbiv4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Ekrfxb6t;
+	spf=pass (imf09.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.175 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2b729f4c154so831481eec.0
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 21:13:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1770265423; x=1770870223; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qW0+moZctApASOdwQkaNncsGOVFnNExxcEZS6yJkS4M=;
-        b=Mz4t8aKukJHDpjbLO//53khHftcnfvov3f2skduJnTmjQyvtIoHv1uUv423iKgdCbq
-         iuQYASX+ZZlaPOyB3KG0cSg9syt18k/8wjeuy0mL0et9K3VdiVrdyevmhaCGkkErQhYs
-         yjuufnXs0h1SqvyQpmKJiZotJkzvoqfysrSXqY/wlExiAGxFJJbRWgkdcdbGN5d+G0er
-         VwiNKz/dKrsKWWJlQCi6rVfZZ1Shr/DCeWfX2fm9vw+JoPYEpftGrzLPYUVS7hyLo+KH
-         mvS5UQDvjus6UtT24Xn4gPM7u6sWQlhWtoHgaRZaD25LQ/1xA0Iy6zAdant7LKeaMFCK
-         Ay5A==
+        d=gmail.com; s=20230601; t=1770268421; x=1770873221; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4vfmzVCg0tqpO1KYczg0s+VtVqSDCdJvzToKcOgVwlg=;
+        b=Ekrfxb6tK6O/eDN2JD2DJFrDlaDaz8oHicpgcqdstsblXSl6mHebI3zi2eSTPuvLdu
+         CO+psGWnwejFW6zR/ISJg5oh7Gkn5L2L3aSN2vm6H9wLroXqyvTfOxhIf55acynl5mfP
+         hajOWCT4FxpBH/ryY3jL0Kmn1EOnrIGcLU9J/wACBgap1S0BA2NtTkGEgHJjKxOiiPP7
+         xB1naVwlIhvv7sjT98nmZ0zeq0cwk96eH7CiRGTLw93uGSQmLiYYhbgjqtU7/SiLArym
+         hfKQgpitzuY38HG1HQCMR5rYcCX56i5b24c3XvZxt9D5kciwfowfmKFXnu6XzlZNNnTc
+         aUZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770265423; x=1770870223;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qW0+moZctApASOdwQkaNncsGOVFnNExxcEZS6yJkS4M=;
-        b=EFCZayL2pQHzx4WWhHGeWmm3Y2pbivgs/63WExf6ZmwZxoPbqEQovk5KebUIdBGoFc
-         cJnYhE64gxNfeZtMnlE4WJKupE4yrKZjMT3gosCgzTStsMnK/c4HZts3an3KS3Kz00qO
-         HOmnfKP3zw0IDwXIRKNmJiSTtdvi34zyY0MFsxpKYfuYKPt0XVC3cxwANR05P+p1xG/v
-         V/GBbJCvK/KP9jDHdT6V7Zn/FnVKAN6NLBojrwQK/H4nk/DV4HRDygrJmKJ+3ELMkv2S
-         rSLJ/sTfC6TVCFR4cfqqTIlxaOtGKO6XrDv9DI1RUQLvIYbxfcBHqH7OGjPE40v3rnQ5
-         aYKA==
-X-Forwarded-Encrypted: i=1; AJvYcCW9x9K8TMGHEfp0Ag2lQpex5eWt93TroBsLuKwkpJZjNliIEDqMFnT0J6aZal82YnM5YCFYh0jcgg==@kvack.org
-X-Gm-Message-State: AOJu0Yx6wDpvHMK+3Yl4BEh2Vm3H6GVAU4OOyR7u1MbNGVQWAsUkgpfM
-	rbxVabRWLfeysVdr0Nl78CTb5or7m1VyjjMOFLREb+BzJWlvC2yipd/dfQmHgfi6u7c=
-X-Gm-Gg: AZuq6aI8l9WG7p0dExqkRJJKTA4LXA6sY/eoH9KyiYjoqKmk9BaX5Yr1/9HXQkNvXlI
-	fOONkguu+Xnfk1KUFxoIn6VxUnwyHPH8HC80Tpok1ILsPtaP4kOPJJx/C36gQ9fIL7VG118ckmc
-	bzOlbEKl2EFbQGdEJhvg8rkv3dqtA4ducDQ1olew6VZTynI40ZeYXWEYBmIKE205aUdNZhRhGo6
-	ljIRWJam206sMmi7xoDhuuaKnV7prV1aSjEMvhDKiq0U3d5E1yJYeV7wO1m2HC1yhVc0dPsS8sR
-	SIVdNY4xyAjb6yd9kZwDPu8egcKsVlTPus7nNAXZnXnjsY1+kv6HYr5zjJTeC5mYrWieGzW2wiM
-	k95H1XXW4noAU/XGvJs3c0ubb9A7A2kQzHwInrvur1t5kymlezUdXYqxcUcKdJbhPSekmkX901j
-	p3b7huNoxsMSzEg4VxEOrypvM0tNo+2HrkGzhZXwYlWt94hHwEkWQC5zayIYUrLRKkvbDJTw==
-X-Received: by 2002:a05:620a:c4d:b0:8c6:f74f:9b69 with SMTP id af79cd13be357-8ca2fa5e50cmr701545185a.83.1770265422854;
-        Wed, 04 Feb 2026 20:23:42 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89521cf8619sm34240906d6.32.2026.02.04.20.23.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 20:23:42 -0800 (PST)
-Date: Wed, 4 Feb 2026 23:23:40 -0500
-From: Gregory Price <gourry@gourry.net>
-To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org, kernel-team@meta.com, dave@stgolabs.net,
-	dave.jiang@intel.com, alison.schofield@intel.com,
-	vishal.l.verma@intel.com, ira.weiny@intel.com,
-	dan.j.williams@intel.com, willy@infradead.org, jack@suse.cz,
-	terry.bowman@amd.com, john@jagalactic.com,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 2/9] mm/memory_hotplug: add __add_memory_driver_managed()
- with online_type arg
-Message-ID: <aYQbTFLTRHiAnrKr@gourry-fedora-PF4VCD3F>
-References: <20260129210442.3951412-1-gourry@gourry.net>
- <20260129210442.3951412-3-gourry@gourry.net>
- <20260202172524.00000c6d@huawei.com>
- <aYDmor_ruasxaZ-7@gourry-fedora-PF4VCD3F>
- <20260202184609.00004a02@huawei.com>
- <aYEZAUJMLWvaug50@gourry-fedora-PF4VCD3F>
- <3424eba7-523b-4351-abd0-3a888a3e5e61@kernel.org>
+        d=1e100.net; s=20230601; t=1770268421; x=1770873221;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4vfmzVCg0tqpO1KYczg0s+VtVqSDCdJvzToKcOgVwlg=;
+        b=UGG1z3b3tqYlfK8wam5Nuk7UBa01bQ1S8tEWou13s9ZDHBTd0JAoLNre2VI/+13D4A
+         cIstevxQkmNPc8i3dVP9xKg0g60KuwmNMw8MqqmzESdzK2ymn00AEnnDZlMBgK7WUwYk
+         dmHiAqc48uxl7ovJNBy6/Kv7mCrTnUumAlG8/zpp0lEl2qjMj6H0QpFpi2UtLnH2OeQR
+         3LlBWEoIkH5GYgnOP27dye7g0ty3gHi2KFyEEar1QR0F2fm+TRkqTqOshXc4OhMUZvJp
+         +JF6cO+xHXyTyidT7Sj7MHQaw2TZOmsW6G1w3kHkT9BJdBn3TxYRmw3lWRHNjtU4i603
+         0eng==
+X-Forwarded-Encrypted: i=1; AJvYcCWFHTGGSqRnbFsvoj7IMsItVOH4AQyzKQq4yog/F9WKb9MEjfFcyTD83KlVywKV9gUaN9hvg5v4zQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy9asHZXKadq7nDEYd/3ddHTWhJuwL4n4ZM8zmn7eBVpZhehFiu
+	Gi0XlU11ClhtjLrxzvyYgmBpR7epVr+NP6xROSMC0J5eE2053xgC5DMi
+X-Gm-Gg: AZuq6aLfo6kZ0jJ8AaosSYD0+kVZGBgSBXl/ZKqbAuz+peNUyHKXG7g1X/6BgTsEygh
+	gB5QpaB3r5W84ANgtoQzMjD6CY+RTDR+MjXxbCAze0Mvyy0M9w4jWKS/xLKxmtpMrMuB2Ur25kz
+	zm3scHg1sO69ESIV39svdxcXONAp7u/ZC4p5koVW2KkPZEmrWMyRGYiHTPVnLuM8QssQnA5AszT
+	ASCUnkxAaf75hylLFCMDYqFNkI5PHRtdHSZefevM0kp/687hr/VEY0uh/lUpMwMIOQxqn0KJGS5
+	P6grDdxwn89kqPbupuWLe6Tu9gD5GLsELuO6g20VXGTUV3vsaG659hRXXjxUQbfk4mA9nA+X+A/
+	suJKQpVdUv6JD6PEeE6m+g7PaP2MOUIrZgZGHXVVpzSr7VvXaPAIg6zK8oqzbw/kcls6kC4TBJn
+	HHe95PNvqd4tnIuS0YsHPr1ATyI+6DU/S19hTcdCTFSdRz
+X-Received: by 2002:a05:7300:2303:b0:2b7:2bf3:ce01 with SMTP id 5a478bee46e88-2b832a7c450mr2214121eec.30.1770268420982;
+        Wed, 04 Feb 2026 21:13:40 -0800 (PST)
+Received: from [10.36.158.92] ([50.175.227.221])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b832f91114sm2514097eec.20.2026.02.04.21.13.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Feb 2026 21:13:40 -0800 (PST)
+Message-ID: <945064a3-b6ae-4257-afd7-5229cf8267a9@gmail.com>
+Date: Wed, 4 Feb 2026 21:13:39 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3424eba7-523b-4351-abd0-3a888a3e5e61@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C19D91C0009
-X-Stat-Signature: 7btyeh9cyosz7cwcu16qtox7y3hacr6a
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 01/12] mm: add PUD THP ptdesc and rmap support
+Content-Language: en-GB
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Zi Yan <ziy@nvidia.com>, Kiryl Shutsemau <kas@kernel.org>,
+ lorenzo.stoakes@oracle.com, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com,
+ npache@redhat.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
+ vbabka@suse.cz, lance.yang@linux.dev, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <20260202005451.774496-1-usamaarif642@gmail.com>
+ <20260202005451.774496-2-usamaarif642@gmail.com>
+ <aYB75cWO2nnTx2ch@thinkstation>
+ <63D23D5F-AF35-4199-B52E-DFFC16DFDF91@nvidia.com>
+ <05d5918f-b61b-4091-b8c6-20eebfffc3c4@gmail.com>
+ <aYQZzw8kJFsy1mMW@casper.infradead.org>
+ <aYQar8YiejRNCqE4@casper.infradead.org>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <aYQar8YiejRNCqE4@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 678C7140007
 X-Rspam-User: 
-X-HE-Tag: 1770265423-143047
-X-HE-Meta: U2FsdGVkX1+FC4cEP8C9XdvXe5GuHFjggvIu41F9a7LExfKWjIgpo/IDvqKWj03KflGU9wflKVgMLJjJG/fChpaG7qqFdyj0sX4dTbBlzQEUVb0Jcx0HiXImwXGjUIN5KIDQzcHD0DODEgUKPNHoRiM5qvyA0A0zSn11Q2XSAfF3X1KOYYqLX4FqYgYlMJjniXxBkiBF3rf2dHs5kaCBwUegKf54F/gZix6W/XMJ406RajQ/PXRKJR3zVlRJ5kjBCIKt3/BAPyRE65h+eyM5hrwf9YlkIRymTanOB+tuuVLEJGIP9Y22grqlZeet/xmj+zxSmNhV1zaSieQvMhYFo+Z1I5zP2fJbH0cy9Gx+Lepkal3wZWLkYHp1OySaDhAySaqg93v0rR7tqWxusB0tDPlaQd5KCh0HqJ4Dj//BoP8VK7VR8gctiznBBuirPHY/l5IleCSpT0f9ftf0uH7OZ824P9EU/kBgXvA0sWpWHMoqCbm2nGupV0oOsQMDnOofbXjWMmL4lerQGYfG0BqijcdR7wkay+of9oPM2cOmIEDfTy38SuxuxOekYlcQNeE0j3L3byVjOeRofbMctUHNyKA2aRDXxrm0PEoR3gFcn9gPh6eCK90SzOTMyIKgnCpCBK1xK/buu7ViCZtT+ceVQfHa0vrf+3dM87fokkTJ1yCbg5sszL+wclISk7uRqSemLYa79buHZ+h70wRDEkXlNTXebx0p0+M/4HUBN2l+Pvi9hc0RZAU30RyRJXXC8SQM+UBuizYEyF7tmdH0tb6XRhjPyT8w8DXNb95GOPg74VmRvcuuuiRRfHyAtF3bt0FcYz5/lstriekc2GpSRlYpkoV/gbf426uCtqJzXRYMhhMGEp3y/QyLjQkroRPuP3rY963+WMUycgkXiFrcrxhaVAKU7we+6d3w/Xd5yyB4lNMHDBFRf0t40XXHsPOqtJYGFY7Pm+p7NMGgGVtQCMP
- kzNvkpzn
- lwg2UqLrB2qMxrxOMTng4Z1lLNCqcb7BBMNJEWVn4bu1rYFi/7Y3YtMXEriT0soPn7cDvk1OtMNG+nT/uFgRKjWIMSixzg0YH9sXFBx9/ogN5gTC5E7SgSc2/oCGpmzGB/AiLoorcwHBs2gqINACH6ba8ftpY19Th2WtF9AuWCeRxsVH87kTT03rDXo2G/73/R9yprdhZnXf8Gv5A7xZd1KnfsdYsBH0QuFs47W5fIyA5TrE/8nJ48ZwztXs3DQma6jGlm/s3S4rYEnj4NzgbAtmzyR2kzJNyLjsFvfeoVlGps+N0kcOETHlnRPPFkwb8pAPIiBjxpWufhl8wahgWjfJL3P0hzwJa/sK1fk2Tfc92u5rXTLlPl6tnp7cfk4G7bUYZ
+X-Rspamd-Server: rspam05
+X-Stat-Signature: hky9bmwiii76gba7pjjw9dpaq9nrzeb1
+X-HE-Tag: 1770268422-637969
+X-HE-Meta: U2FsdGVkX1/plv5kNtgddAm116kfOUUjqL0fpQGzhWTunAJMkCLF9k9vhqeuHK0X0hTjMWTgU0R35opQtLx5xFDtXB8w9n/q+ZjiVqvmUGfaB+lUk8KJz5JYtCswNdOaqc69dW334ANof/9YVXROCv6rzP/Ch5OYLp3kjT3BfGrYqcliKqbWkQvyzgxXxbrN5IldATN+opcUiAT4FFYnIcMiHNivJg4J6Es9JfAK912Ummzh/fiDk8wVu7Q9hyaA7Se56lPOagw3Q1I4r/2y7g0jqcnIfvj6zb+2NDhvBwl5zXDH4S2Bi/7yP2PrTA9upWi02lYGoQbWv+n3w714Lws2lqhYnYwbz4ZgEEocQW8r9ZPcKUV8GC6LT+6IkkGVhhWaURJpx/HE+lfK71u8nr4/mH+EAx/PaXtihLnbMO+dMFUDzupJ/Q+QU9anfjdsRgJ4BDB3dkeXBw7LTH9F8YTD7Fqb2UIfU47qzIgrffmJtwza0x4JM+u3aSRt4HsFY2Apyt6OvY3pXAiAnx0JwX/6ycFYUEWGvU/JCkg7kyRRIhmMqbc6mKTF3qPZ4RA5SZQRKx+y9json7GZJHoX3JJ+A9l3Ck5VzgJFRvYfCObMP+lH3qwxpu4973YSlYYq1YJlyQ6YlfCSy9zJ2DciIpVONqQVH3qwdYQcT4btTKdkuB1CdtTtzLKBmoETI8rbPcXi5L+Zxr+MOlvOZu/wmNC96JC35s2NkzfKNG/WifsXuFQb8b4IAB9hPrULGXpY3Y8Hy6g1y5AdQ9feW1+FEYhzGEx353JKikB5ae7WC6za9PuC7D/cinAvwAgt1CtxFhUxVYuFB2DR+zufsAn8xgJtuj4gHW5AF/VX3fkVR9PY2iTp6qz4PtYUdx/ECKV594FvItWNYsh5CMcPeTblxTTnoe6+UTd9oM307Xxn4u0bOkluzuUGiCyQ/pkHgbv07Q5Rg51qUjJNeCVuDWz
+ kvx3T2Bd
+ F9QL0m0j63lqj3D/6g7ILCb713P1LgUx7pf7kUGqj2tD+oHn9lFzKXq1YZHu+gIwUNwer43da1GdmaHzJlTODJAQnfkxwCdy1rBvhjPBQgYSG5KE5LLhaFcKAHx9eCKh8XwB2y1ilr7CGZPSjdYE6lXzx58nXD1mK0azjNDyzA16nGvxlv0zqayiyJI7nBDIhMjzyQcIjbgSz0ghi38LlNAz/JQFxLDzw6oOaS2O6r2ovNkyXucqhbcMStOyXZCMdtdrQ65OtR+QQ8VdNdzp7/46VJC0MiuHzAeQCrJYI3WD1RZ6eaJ/jE835GXneriMXovJ/PTx5JqGxR2+kBFsA2pENqs+30h1mYIf1/dn7m2btqMQp2TxHtjhZ/SFe8TmJwnPiga0Bvd0xIIgTvmsly2m7rSqr/2KJNekgJPrWmmoEXnYJ/kwn9CagLT7kEwg3Sbm4BIHClc7FzEz+p43kkYIQN8YUxa7fI5hUW0tDjDEe+yvr4+xXAqc+YEYl1O+xNWa0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,19 +134,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 04, 2026 at 10:08:45PM +0100, David Hildenbrand (arm) wrote:
-> > 
-> > David do you have thoughts here?
-> 
-> I guess we should clean that all up where easily possible, but I don't
-> expect you to do that.
-> 
-> For online_types I used it, obviously, to save memory. So I'd expect it to
-> stay at least there, but cast it to the proper type once we take it out the
-> array.
-> 
 
-I can do it pretty easily and pull it out ahead.
 
-~Gregory
+On 04/02/2026 20:21, Matthew Wilcox wrote:
+> On Thu, Feb 05, 2026 at 04:17:19AM +0000, Matthew Wilcox wrote:
+>> Why are you even talking about "the next series"?  The approach is
+>> wrong.  You need to put this POC aside and solve the problems that
+>> you've bypassed to create this POC.
+
+
+Ah is the issue the code duplication that Lorenzo has raised (ofcourse
+completely agree that there is quite a bit), the lru.next patch I did
+which hopefully [1] makes better, or investigating if it might be
+interferring with DAX/VFIO that Lorenzo pointed out (will ofcourse
+investigate before sending the next revision)? The mapcount work
+(I think David is working on this?) that is needed to allow splitting
+PUDs to PMD is completely a separate issue and can be tackled in parallel
+to this.
+
+> 
+> ... and gmail is rejecting this email as being spam.  You need to stop
+> using gmail for kernel deveopment work.
+
+I asked a couple of folks now and it seems they got it without any issue.
+I have used it for a long time. I will try and see if something has changed.
+
+[1] https://lore.kernel.org/all/05d5918f-b61b-4091-b8c6-20eebfffc3c4@gmail.com/
 
