@@ -4,134 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C961E91263
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 06:01:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFE8CE91264
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 06:05:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691886B0098; Thu,  5 Feb 2026 01:01:52 -0500 (EST)
+	id EB3956B0096; Thu,  5 Feb 2026 01:05:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 669076B009B; Thu,  5 Feb 2026 01:01:52 -0500 (EST)
+	id E61936B009B; Thu,  5 Feb 2026 01:05:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5923C6B009D; Thu,  5 Feb 2026 01:01:52 -0500 (EST)
+	id D6D326B009D; Thu,  5 Feb 2026 01:05:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4802B6B0098
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 01:01:52 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A8A71C2A4
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:01:52 +0000 (UTC)
-X-FDA: 84409356864.23.8FE700B
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 046FE14000A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:01:49 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BbkcYqRg;
-	spf=pass (imf23.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C3BD26B0096
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 01:05:20 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 70884B9311
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:05:20 +0000 (UTC)
+X-FDA: 84409365600.12.49AAB6C
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 591D61C0007
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:05:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kvcEkNau;
+	spf=pass (imf21.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770271310;
+	s=arc-20220608; t=1770271518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mWheuy98QZQOkZMZm50UQN36EdHXhDRUEXaATEO4/v4=;
-	b=ALjffauHE6QygguibmtCEcu+oYoMvaqx+65D49BL8psnao62gMTpbdfm4Gxfqn7bAZOdmH
-	zIpWdc39AF1mSW8oDwnLwH9sNnx8yYBpW2RStKbG2uLiJ9xAnQydQGa3wq8NvUlAAoGV3w
-	epGdS6iQodxzL6mdypKqy89jpq8fTC0=
+	bh=hBHW4Xv763Y1jThiTf34K0D7Lq+LdxUqx6OdzU7vHqM=;
+	b=HgcCiz4bfNiLH6Oy77zFT365geVH4qDDKc+31LJFIgMpsMPrq8rpmdVHn768LD52Simh6t
+	Ni0KRJSMOnau1IxwlDvrXCHuHcat1mPpcyAN7KlZaAvu+LRuZlvGWp3qqamX00Xlo8+WEH
+	EonxD62GAR1IzW4rZIjg0/1JXBVOc1o=
 ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BbkcYqRg;
-	spf=pass (imf23.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.175 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770271310; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kvcEkNau;
+	spf=pass (imf21.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.181 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770271518; a=rsa-sha256;
 	cv=pass;
-	b=xMC8BiEVDCICmP/iOMD1SrNmfosn6B9JqupacyxskqWP8B19+k4al5JJcMDI+rTe/ZHOJv
-	qm+BmwOf4V9OqWluY8pzhcDgVJEsYuxtMwvT7vO1PS8bHq/QLdOkNpcnUFIesdeIn/g3KW
-	i2jG0ADf/tW4LxZ0keBT/yknHjc3cPw=
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-37fd6e91990so5658951fa.3
-        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 22:01:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770271308; cv=none;
+	b=XctV2oebo0LyJWVIlymQRaptUZlCn2aSWfRA3QejhFkbSYt2v3zkUAFislRNgFQKId0/c7
+	Z43Jpe570LYj5gGt6WeNq+THmEcu72q/tVMKY76MrPbNyd+HXS22E7Yi6lA+oycqVBSruA
+	XFNGjiCRI7+XCoakVjR37xAt2A94zSE=
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38320cd563aso5940281fa.0
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 22:05:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770271517; cv=none;
         d=google.com; s=arc-20240605;
-        b=aV9hfinyZ2nBgRxQIg4jtBvcNkiWjhSQWTt196Ovgz04UpjTe7o7zUeIm+4QB3TpIL
-         uWoa4Y2iuMtgi7j81CQlqdNL991gbtExy3mtIF6iB6zDu0IdK6znK/aGGAeuxJgi201l
-         Jr546SJkYYONzgjMUEf99AlIA5VOK93E8S1VleX8fh7JgxzHXsMW/NcoTXJHSGPLfSZy
-         z6dOy9a3MTCsM4f9fZzjDdSBeFBQSBL9OfAfiNR/jvjOB4tLAlbLztyOPLv6Q+jjLF7e
-         DXl6FNKkAG7ghTUxQ5/rF2x1vlzlz/RDtZC8mwH7a6DvYe+59BIOsrDYFdZpCCgf+oYk
-         2i3w==
+        b=DFcYQN8Mj3spol1s5jxzbV0qFrUfBb04syhHdrdSfQ30u7bTbU2WDNjWL6Ri+oUWTh
+         0zBuezn8JQxcgJ726ykmtOCXSp3OjVdjRB8PuitdnuxFI4Xojm+TssOhn1DKx7gLiImg
+         ZwNPAcCyE1A92uu0nk1VK8SRTL3wmd4oH7yXqgzH9CzzEh772rjxKtdBCaspnXVtvQNT
+         M3c21/sHKit2cmEkXuNyHeW8NKv8cAkdehyGhYAjYmIBcdeJv7QdPp5rN7WXGCJqkG/b
+         U9EJ/gH5smvFNJcuzDt6IpkeBNtd9m5bQuMc2Dsf3dnaHKcfKs10iO8khQ4QvDYrzgeN
+         5+kA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=mWheuy98QZQOkZMZm50UQN36EdHXhDRUEXaATEO4/v4=;
-        fh=1oHiTMFT8HWKTsfyaxlIREwymfRwqi7AzOD5Hv7auuw=;
-        b=B0Td72CnN2eLGNzRSEg/2VNXQN0H/4Ha/BL2GmM/bANcxWcPztef0l6RcYrTwQ7Q9M
-         YR3cgYwjj1sbZ4ukiqw9InPOYCVAsRzMNL52j/PbbJcVinIRy0dcfaZBPl7uSEptq7uA
-         x9cJKCZjrwONedDpowLv4/55zr/Fj1RScmNVAaZFN+QNuoiwjpd5inyPP3EkOleNXcDl
-         Bj1iC8KuuN5BHc/sMzb/oAYU6f4lL9RyRpURtuDN2LBF7u3n4NdW4Is+1VMoY22aq29y
-         lamAxD/xOtj/+U+HQWPCd42cQ4nwm164h03Iuc2FsLGL7YiUeC5cSICAwmIbXA4V/0rf
-         hxBw==;
+        bh=hBHW4Xv763Y1jThiTf34K0D7Lq+LdxUqx6OdzU7vHqM=;
+        fh=WoEhivdOEeH/7yg9PruOr6YXyRlN8Vz9k2fiN06s8Qw=;
+        b=Hlynay3JcTS4W1G+iGrKaEiIH6CDF9tr114qz+c01GcUX3hr4o90yNfV9ImYqpfnBK
+         TcXYgKH8Bjvg+e/QTssj8kxuj4I0YqHWx3uiRmP8g5Fvql9bGYgx9P1p6vg0d0OxbK9t
+         2tX2npdt4DSbLnaweJ12EOse3WMEEdM9HBqNrvMcZeg4ll1KLxAjoqtrJQ2jRcv1TIeO
+         amqWYIJA9rky7Z++rhDUfwdtZhbYd16C7QhA/DCTYn8rq9QZXpwzBw8XlwMTU0gMnJRA
+         /1d7gICJGd0l27WWTtzMX0B9Pd0gZ41W8rY0pSiZiMCP2FJMxf0GCDY1H/ZAU+uRTDtg
+         sCug==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770271308; x=1770876108; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1770271517; x=1770876317; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mWheuy98QZQOkZMZm50UQN36EdHXhDRUEXaATEO4/v4=;
-        b=BbkcYqRg/1SFar2k0hrNil3pHfjq1aGt7G1rqJjDBAOk5X1pm/2+b1r5CO7rCoDqG2
-         R27/i8OfPhmhd6nCSQSZx5VkPOp9ZAlf4e3SGgq4SqGrLMQfa5XrRH88mo5/9mOoF1z6
-         jfkP8fXvuVXP3HgZIbEBmvhNVoBYj2CbdsvbiBLicP2Ov+WlFDK1Us+ZX5Hp7w4rxTF2
-         a0U0NL4CMt6KRGqfsQSk3LKuGAqsVxbgAPLkSMe2Bv8Cdg5o8r2SGjaYSzpYMUyW/4aG
-         M6nLBr01eIn1DUG2RDvxUwv0NuGBC8FtsJSrZffXR1PgPHpZ22IDqMzV9pFN/xQFt6Kp
-         RRag==
+        bh=hBHW4Xv763Y1jThiTf34K0D7Lq+LdxUqx6OdzU7vHqM=;
+        b=kvcEkNauIkUmxIj+NhittE04DdCUewCki2CW8UUjTkJjMQGr2UwVhi+PMJPqiUnZmT
+         TwmogKwydGairnyZdjqF6T13NXJPLkifhXY/wL3aVmvnwbInjY0nnq7+8PW1Mx0e5kJv
+         w5ygSIIIu4iXi8SU/DW1WPt5EAP1XH3Vfs27cGdu4El41VOlq7LcWCq5OEVE+PZH0AZY
+         hubRkN5RQ/F29Ap+nNulipq3BUqTQfWPtplKYKQ08edDDtol0QEkXaCFGkjsIPBv++rM
+         4fo+VXNNvlRz3QpGpUs0/rXcskKjBskGqRgBAChVgM4hDk90x/9PbD5qfiOAYL9xeB17
+         S4Lg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770271308; x=1770876108;
+        d=1e100.net; s=20230601; t=1770271517; x=1770876317;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=mWheuy98QZQOkZMZm50UQN36EdHXhDRUEXaATEO4/v4=;
-        b=KEa29UK3Hc14u4rEMSKQ080RdBGBdWmeLmFWo2i0p8mGPXRrEu60aeeC9PcnF/Nqa1
-         0WyCwQkFwNWxFS8ML7gELWFhjf3oN5aC2oWCw8XRIquQuDtUCrws/Sl92UhlGjWc9lz+
-         SPdB5h4e5fOLnV7OGC5CC5ff/GoF2dghvGEhI49pgtOcpEUGMqp/E1Ca0cfxwfZFfyV/
-         V8Gs6gnGG+ZwOLB5k/WG3F3OuMrycLG9h909LeIN04uv8+zyd+AnQYBGwsP8bdNHsIPB
-         HmzRAODJie8pj6ijFaVc2UObpbRWg2JlV1eQm0ig/etQW5+zbdqw56k8dLMEBCVlJwo/
-         qNvg==
-X-Forwarded-Encrypted: i=1; AJvYcCUNfX/VWJGzswVKzrj7Fn3iYGRsS9ioX68sNa47W4o+AcV3e+LrDEU4bx6T4WCXXPOs8AtBKT/0rQ==@kvack.org
-X-Gm-Message-State: AOJu0YyLW0jY18wJ98CubjXs/+hAeX8x6AZVKQuYO8iMRHpRxFeVLN91
-	9pswU/42d9Wt2TtgVvmp9ykvKtMC6r4jaXWVRsbMpiAOVoX8hs/Xm9Md7eRiCptHsDaCdCDLm3Z
-	RcZaIUOzPwO2PtwGgo+6o51La86roYW4=
-X-Gm-Gg: AZuq6aLm5pl+GVCwc9wp0+x9AnuTCMlVEZMgrTzyBurLVjxXWpRSgb2fO/YbRjX4PtB
-	MRd5lhAi9TKUdToQctX1EdgH0631ChRcRWx1hJWguAXbYHgiwj2BcQ2V+SecWxompSzrhCl+DYG
-	bBj9i2BYGhOIDRhehfLIkGmfztEgyL3cWAR7gpcK6obU59+c8v/uG7D4li2Sq+mL1sUusBq3f6z
-	fTj00WxDdn+wRziy0X9DKi/mw8dfaoOVuEUVpvYnrSCgjfuAAPkv7dPfkaqHFtlmgzY+dI=
-X-Received: by 2002:a05:651c:220c:b0:385:dde5:1bf8 with SMTP id
- 38308e7fff4ca-38691e3240bmr26222591fa.40.1770271307655; Wed, 04 Feb 2026
- 22:01:47 -0800 (PST)
+        bh=hBHW4Xv763Y1jThiTf34K0D7Lq+LdxUqx6OdzU7vHqM=;
+        b=tfMvk6NDeZOxd47FnwcI5mNUBKgGX98naO1XkZD3mRyV+MgseHDooZpn5RDFL/fH44
+         /aSoyFYXlRzA2SZffWFZTkjJ1o1EFmNmvqnx16JWX/+D/W9w3SDuS1GE3A8QwbfOpr23
+         /zxuIqqun3PICtaF9IuFwLJltWDq3j1UcTMwFbehlk7wgtcJT8ndcFIr8fKd6t2fLgsw
+         fuPxm8/3hAQjFTr9rO6GLsUdpJCqm8zOqMaEukZ+DdO/cCHZ1CUL1yos0Un/WAyG9NUD
+         bJdZ/SfJKW7Soyx3i4MGEeRaL6Z8uFqcI9NbhZVgFm7k6lx913lsfoblM6rZgXMtM/ZS
+         zGLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVd4hxAvxLmEb3Xj9g+XoyAsLaTN4qqNURfaLBCkZeOB7W2izgVOmsM8vJh6H0S0Hb25nxjBkyS4w==@kvack.org
+X-Gm-Message-State: AOJu0Ywaz4810JsVOpH7qFBJNKFylC9dgUEc5mfyKlfCtQ4M/Fp+upPp
+	2xY3Cb/elbnLgeVxwDkBrU+Vj8ygmu2IfVT2BgVSIlic5ridc+TlAf7SAA2aC+1AmBopc7AmtHe
+	XlnsqVqGfWtCU5f30wIcakHs3dH5es1I=
+X-Gm-Gg: AZuq6aI7CUrmdtekiX+G86ESDskOC/mPdX/s+PR9fyQbrF7yK1pO761g0+wQ9MdjJP7
+	OVR1SUrB2rbK/bvLIYSi0gJ1x10PsJswsyUjMg+SPlRor6MxF4ogGSGHGfDehaXZ3kDaoIQCRxU
+	/M+v9slB/pfWVT3L96wKgaAS+K+hffBUfjpC8h/GtrJAt0VSND/xdjSMsQ5EsMqorkRiUhgytmD
+	0j587obWcblnKk1Vjj/166US/Ef9kjLDNPu2Mc3Go8EdEucf8w3ZCJTMc8Id9ofrXyyV6tnCz+U
+	ECAl0g==
+X-Received: by 2002:a05:651c:2101:b0:37b:926d:5bf3 with SMTP id
+ 38308e7fff4ca-38691c6006amr19475131fa.6.1770271516579; Wed, 04 Feb 2026
+ 22:05:16 -0800 (PST)
 MIME-Version: 1.0
 References: <20260201122554.1470071-1-vernon2gm@gmail.com> <20260201122554.1470071-5-vernon2gm@gmail.com>
- <a5eca294-cb5c-437a-a48d-6c87675c59dc@linux.dev>
-In-Reply-To: <a5eca294-cb5c-437a-a48d-6c87675c59dc@linux.dev>
+ <d795eac4-b52f-4984-a92d-6bfc9d84121c@kernel.org>
+In-Reply-To: <d795eac4-b52f-4984-a92d-6bfc9d84121c@kernel.org>
 From: Vernon Yang <vernon2gm@gmail.com>
-Date: Thu, 5 Feb 2026 14:01:36 +0800
-X-Gm-Features: AZwV_Qj0aVbHQma-mmTgAlqMBhdlIkR6MfuI13bR6yBSYWjMBfeGX3-nKe2z4P0
-Message-ID: <CACZaFFMnJxfwi6mVMXJjemS8bQaU_EMpj2RUG7=_Tt0HJMGdNQ@mail.gmail.com>
+Date: Thu, 5 Feb 2026 14:05:05 +0800
+X-Gm-Features: AZwV_QgV-gxrVONK0weFycR-3qSKQeojbNfzxf8xBINTeRa7Nbpn8NHQ-RIwlFA
+Message-ID: <CACZaFFObZoY0ddPm_nuWK02yqWtM_g5EvntThaxptbnGoi1oNg@mail.gmail.com>
 Subject: Re: [PATCH mm-new v6 4/5] mm: khugepaged: skip lazy-free folios
-To: Lance Yang <lance.yang@linux.dev>
-Cc: lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com, 
-	baohua@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>, david@kernel.org, akpm@linux-foundation.org
+To: "David Hildenbrand (arm)" <david@kernel.org>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 046FE14000A
-X-Stat-Signature: y7oxctngjd54w9i4ax4jb1zgderaw96q
+X-Stat-Signature: pcdru3diomz8od8mc3s5arndfxfi6xjk
 X-Rspam-User: 
-X-HE-Tag: 1770271309-607842
-X-HE-Meta: U2FsdGVkX1/4iAaq9suk277kPY4REDOQp/fspUD0JfZFXtIuoAIiiG5zJCpurQB1VRGVj4wBbu2IoQhJDr9+3Sv5PxDqtH361YMFCql6aPRBOpsqIt71lUkfmIFAINXKU1Tt1NSZ1DI3qSMkz4uzDFt75RxyrmHg6gwxirX55B03djztjKRNiUE8OIB28v3tjdO5PMcOYaqNtsYEXoCN5PjRRHKooXYVDBYWjyOG19wqjKjSHTOeCu+lC6YXkH+TgImqvICmYnXzztaWzB6cofLnPSUaMwf4O3UXwJHZLaiwTA6SwlJw9URXZMzWWDP4wazs7MMzuR3uYFXgnwJETFb+nE7X3JufKMPhQ0TI4Z72fZHn62exzqnqKP04Jq0ejsViyr7g0q8nm+GY/FRQ5bLv9CJaFNGQbTp/6gqhlpvTm4y3xtopxqRPC/sXigYyJI1Ydk6YZuMRB4RiFsNPK/x3rNmux4URkkBLKDZMZRGOKSg3Je6N/hRH2TCxzVj5ZnI+tUQgGiVlQG7KcRUQudr826EBLg6FUYeNSSTRvGLa00GTdP3u1HyXIwqULAcwHgFjSZLoZnceQ1qpLhlB/djKfPi6at6QK5EX3WnXmw3ntd6oviNpNGU7kmYayD50dZLoUF3crXlwRRzxkRwdhxPiFKo1UUbrXkSTy660Wk4Jc/RIBnXkWzO+TkQb27a7OyAchSHdZqdEOzi6iowC3M36SYwpXREGuF29gZlv+PX6Pq6ceIfvuFI0tSSbVrhisGOVImQ5OZh6tx8TGgtewGX7UDC5F85tGLehMF9CqizaBvabPe14o1R5//AzlWiwjdlu6Z4xdHEOkaQ+W0eR6p3a2pC1wmEG2bR8Z7Aa++QOO8NOTGWQAPo49bchFeJq7aSCfSafaaKWzIOuABwVrOSRj/fnKQWdKNVztpF5uY5RbUoyDUj4AnfyBzAoBGzo3yA9guHW7g+fynMTK2Q
- X4Te9eHd
- r7QQ3sZJwFRE94jB/3Y+NOUswiCLU0QrGVkEuMqTBRHxOTSZJerz8Z+y821FrHQhPyIBdqccj4hSb72OUnAgJW2qXUvQF8ThH/6VORJNwyzaKmrAss8Zqxy9QkCgFB+OAIYmkJ2EM9ZiEGdi2FsgycULlH7g8SSRogbfMJC0QouxElXxJ1D03wjt1q0J9Nonl56ZcgRXTxWLddFTcSHQZfSj1xOFGfSi+vcIAcoaKI18YVn/veI6aeOHHDzpR5xLAfaWa67IbHVenr0uMy04yNq5W3Hufci7hDI2cVp8m5LeNPW+SLja42xL0qNTSBPhKlwvHay00dzEaUoxqV24sv4AtRFkC5tzdpjJOZNkZorWUI3K5Mc3eWUwPCzHtU2eaIt25e8d1agz61PN4/kI5gigGlg==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 591D61C0007
+X-HE-Tag: 1770271518-873507
+X-HE-Meta: U2FsdGVkX1+jlxXoSs4ywCB97XXtxGeiScYXvTrmCLwCc5v2gDYqmT3M/deRhgXfLNJBAyYxGCKbbQ9r4KUVFikVdTRsQenrictKeZyUCNKLslXx3TB9GfYQPvRea0xsB+gTwXqsKZ92WnLbapSpKcyTjrQTiDmdQWxTw/BlSBd+4W/pBlRncsq4gw8d6pTCnWfTfC6xVcigLu/0RYZkItffQViUfGty0Lq3/Rl6JqfqSz5p+AXNyOAwmZ/mmXWT6Eerrqd4Y1pF+Y2kZgqT/L3Arx6QOglPmtUx+pZcVVzc/QI8eGY92Z8H+uclkHbAhdfnw8opxqUci+/FEVFx/kfRDRQqzXTRWyqSwshJR7yJR9i7HKD8Ef3JUv6uo4cKWvSVZKHOZSKkm+7lm1Xn56L4IcaDrKc37jNk44TBr/TCKUx3p/bHmciaUc9k1bzaS7wLWY+pZim+c5As4S1L+Qg5iCrt8u5Uf/U03UClDBARcSw1O/dOT295eVTY+H1+/Booxt+4TbP+AauR4mLWZTscD0ljFRXC16YohADCRx1e6/I7U9dI8V2GH1XUBD6GLCOca9sggyhdV/v3zRscAYW/hm0+YdIe0J7iuXCQXZbL8PeGxatnTaHAsgDbSXauL1l3mRI9l/CvskzS/8lhB5Rvz8LJ2s72bs9ZrMBlkwh7DXFwQWfZ2UWoJzZ9NgdGRt5GStv1Vb60D0eQltmNr45LOyt/RYbt5BMC9Op08sT2bM/+TG6W2H6ndxD2/1FVWCHk9TY59f4uOjLDkEaxOUMmWDkHrl1JlYS9B0jLCicRtoMLl+aphKFfIuMDOuJvdC/bDmPr0owZdCI2Fr/dmiy0a2/iKQaI1QFSe2GU+Ah4nOEXCm2pCuPwBXTTl0sNNmE+Nz91j5cm7xcqLePdbBSpXUDGPgYcZH3ckSSl55Ijgzg3Gs4SPc9qrkH5ur2xRSscRT0bJyVCNGj0mAb
+ ZqvQgc91
+ tfwHawHJMMuoKFPs+SrZN9itvwzd3g4+cyHXXaoSY73cSsd5j4pybfXtCexBrnxhSg5PgdFMi2K8wc242Y6C7/r4yHFgia9yeQvUnXvqR3Hjrd7cZZAjotVMaM6RIMdVnJTInAfjpvYzKFW+dN3U+TsTE+KXLiedcuf3lvoE8ffkiLxXlioTEYuyC5ebN6+MdMpCI+eCK+xR5BJOvasYLyRyd8v/zxeEGPAEtsTsoNpf++t3rMJYlGZlHOAIzdzeLh4CiERYAp8lSZn79wFHKB0TrIFpv/UJrRmeUN0m72yf3NCx+2pQfhBp9nYn7dXP1x/RXYnymih9S62ZwVX9c3esOfJVb5kUPsMQCTCWHUSZ0MjiTeL8+as+DLaxSm8mnq6sZdAzLr1K8t1tJLb4GF/0FipX8ekhgiHwUKLzElPMM2GzPHRJrBi7FzBoL+SUhxkPatmHUpdWyMfk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,22 +141,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 3, 2026 at 7:23=E2=80=AFPM Lance Yang <lance.yang@linux.dev> wr=
-ote:
+On Thu, Feb 5, 2026 at 5:24=E2=80=AFAM David Hildenbrand (arm) <david@kerne=
+l.org> wrote:
 >
-> On 2026/2/1 20:25, Vernon Yang wrote:
+> On 2/1/26 13:25, Vernon Yang wrote:
 > > From: Vernon Yang <yanglincheng@kylinos.cn>
 > >
 > > For example, create three task: hot1 -> cold -> hot2. After all three
 > > task are created, each allocate memory 128MB. the hot1/hot2 task
 > > continuously access 128 MB memory, while the cold task only accesses
 > > its memory briefly andthen call madvise(MADV_FREE). However, khugepaged
->
-> s/andthen/and then/
-
-LGTM, Thank you for review and suggestion, I will do it in the next version=
-.
-
 > > still prioritizes scanning the cold task and only scans the hot2 task
 > > after completing the scan of the cold task.
 > >
@@ -229,6 +224,19 @@ te(struct vm_area_struct *vma,
 > >
 > > +             if (cc->is_khugepaged && !pte_dirty(pteval) &&
 > > +                             folio_test_lazyfree(folio)) {
+>
+> Should be aligned as
+>
+>                 if (cc->is_khugepaged && !pte_dirty(pteval) &&
+>                     folio_test_lazyfree(folio)) {
+
+LGTM, Thank you for review and suggestion, I will do it in the next version=
+.
+
+> But you could just have it in a single line.
+
+If it is placed on a single line, it will exceed 80 characters.
+
 > > +                     result =3D SCAN_PAGE_LAZYFREE;
 > > +                     goto out;
 > > +             }
@@ -246,12 +254,24 @@ struct mm_struct *mm,
 > > +                     result =3D SCAN_PAGE_LAZYFREE;
 > > +                     goto out_unmap;
 > > +             }
+>
+> Dito.
+>
 > > +
 > >               if (!folio_test_anon(folio)) {
 > >                       result =3D SCAN_PAGE_ANON;
 > >                       goto out_unmap;
 >
-> Nothing else jumped at me, LGTM.
+> Surprised that there is no need to add checks for SCAN_PAGE_LAZYFREE
+> anywhere, but it's similar to SCAN_PAGE_LOCK just that we cannot ever
+> run into it for madvise.
 >
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+
+Thank you for review and explanation.
+
+> --
+> Cheers,
+>
+> David
 
