@@ -4,143 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAC49EC1EA5
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 12:36:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C75E2EC1EB0
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 12:41:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07A436B0089; Thu,  5 Feb 2026 07:36:26 -0500 (EST)
+	id 144176B0088; Thu,  5 Feb 2026 07:41:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 052496B0092; Thu,  5 Feb 2026 07:36:25 -0500 (EST)
+	id 0F2A16B0089; Thu,  5 Feb 2026 07:41:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA0966B0093; Thu,  5 Feb 2026 07:36:25 -0500 (EST)
+	id F336A6B0092; Thu,  5 Feb 2026 07:41:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D963A6B0089
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:36:25 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9234C1404E1
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:36:25 +0000 (UTC)
-X-FDA: 84410351130.14.72A64CA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id DA45A1C0005
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:36:23 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtQBNKIT;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E1FFE6B0088
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:41:32 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8935A160558
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:41:32 +0000 (UTC)
+X-FDA: 84410364024.26.ABE7488
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BD197100014
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:41:29 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kyRjQwnP;
+	spf=pass (imf14.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770294983;
+	s=arc-20220608; t=1770295290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2ruqFZgabKAkNeRA5sZYFSrZ2hk2WlcWppPqkAadnaY=;
-	b=Fj9AOupOJfzj3OGzmSOQHbMDU0yTgKTD3CTbnq5oXdGWpWeAXtjpWjYt3yQ7qfo65WqUnq
-	AfANQj0EC9pNMfBaSPY9txC3BOLeWAOkQ4cPqFeIUwPNaoj4bl4Mwmro3hKBcyGg7z+/1g
-	LCo337P1TnLn/ftjKPj2Gkt4HDjTbJM=
+	bh=2VH+A+2qDgLZCkO+UaImpQ8ygXTNKgl6Hczv7y2yjVw=;
+	b=ewwrJzOJp9Zh1fVvx6gEgHQ35AyRrAQ/vJVOgZM/AYUPe8u+tjHxXXUJ2jHpiSAh6uK4cS
+	bLggc5XW0FTwE0B+bkreWV2vAk4uRPY1C9NtdP8rHqCvHEGCmm964nIr8Hd/VCpZRw5/Ny
+	fFBT9xXbJT72RwFb0YtStMXKEKj3KLw=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=TtQBNKIT;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770294983; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=kyRjQwnP;
+	spf=pass (imf14.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770295290; a=rsa-sha256;
 	cv=none;
-	b=gqNHayhTskF/dwWQ8Ey7MEeL60K0Y0/Zol9U8uiegvS/vTGL3mumf1fAYIQ1nje7OXQOuo
-	4rcaBMII/DtYhkaCc1IQi7UiufTsRG7ckOr5nCv1QQnXcXMotW0e+wJv7DAIHGuTercaKs
-	LB7BqcZ1631aJQoWMxKeC3cpoKpXX9c=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F50B60128;
-	Thu,  5 Feb 2026 12:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EE35C4CEF7;
-	Thu,  5 Feb 2026 12:36:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770294983;
-	bh=8/8Jy6F6zpE0ImY/RE+j4v4WFesc3wVw+siam1Qja9E=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TtQBNKITgGL6zbfLUxe/PiktVZEc/RE/jj6Y8Gr2oCOM7xzyMkXP2fVDDetKrp8eB
-	 jnSXFgyX0GDnmV2JG7bTZHMefL6at+zqLOl8PRcHGDHXRhI34VMLN+UF0DBYTKWEOn
-	 HhNbUYsJJGNweSMyFuibERZf9tmBlE9eNXPMvZ6Gk3E+y35Ei7UiMkf2cqRzkjlZ7x
-	 22eSHXEqcH6TtBWw4VjPZ1wtirRo91pEtB0Vrdk5QqPrMtB+60Njg9+kK/CT7++EFs
-	 M2nHV7V1127ll39g+PqbXAxABEd3GXUMNfO9ywsrvGfadL+0Exb1uNSNymJcVLrwfx
-	 JXiXfs2CPCx3Q==
-Message-ID: <a9bbf82b-bed5-436b-814b-cd9fa3f976d0@kernel.org>
-Date: Thu, 5 Feb 2026 13:36:16 +0100
+	b=J9r3Yg1c0RKhv7WmwSjCFLg64LXMoQj2KZ1rxkJMgsho2rAiOa8SypId9JwP/v5p0ptTLU
+	N9B24+LbLyPFhWpSIabCGYkElimmdKkf/z+7E75o3TTK5N5ZZyE5yrtbY542gRf473FVlw
+	tKLMo38yzSIXVp7CWHP3gspl/K2+fww=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770295290; x=1801831290;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=VimFjRK28/j+gUbIr3eJarghf07UCr9oX8jxWPGbwik=;
+  b=kyRjQwnPj/CY5B0TjclmTKhBMcyOLG5eA+r5dd+SoBRctmvDliUuH8F6
+   ZvNd+yM9js+Z6MozuHiZYZOuz0a7Tmpe7wUD7iAAzIVsL74VYfma+38J1
+   J6mu7sjw4ES7as7QupJWG/VUyPgvDKkoaKdN6VwZ0V8zb2dhz8ydRGlzf
+   iV/3lttPDR1LurYdRDjp5boUthub2yjKJq/NFM53fdSs3KsjBJUbE3fpz
+   bwpm9o7VhjvbUu2O1LHVq5KHGlocO70IWQbYZvR4T7OEw6k310xc1arl4
+   aRcfXtebb4vEBsMPZLDlMgRQtIS/JJ4TxLPAbdB9QCDbEhyGY7+3+uSto
+   A==;
+X-CSE-ConnectionGUID: QvFlsrUGTFm7NNJ2bJWwKg==
+X-CSE-MsgGUID: Os4s5yGSTACeExg/fIFWgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="96947941"
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="96947941"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 04:41:28 -0800
+X-CSE-ConnectionGUID: mhxCuNKwR16muqQBMfSf2g==
+X-CSE-MsgGUID: SHLCvZAzQGeIXi7ExROklg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,274,1763452800"; 
+   d="scan'208";a="215486668"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO [10.245.244.93]) ([10.245.244.93])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 04:41:25 -0800
+Message-ID: <050af3658287690c9f9b29a49bb3e31ecb4c273e.camel@linux.intel.com>
+Subject: Re: [PATCH v4] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Balbir Singh <balbirs@nvidia.com>, intel-xe@lists.freedesktop.org
+Cc: Alistair Popple <apopple@nvidia.com>, Ralph Campbell
+ <rcampbell@nvidia.com>,  Christoph Hellwig	 <hch@lst.de>, Jason Gunthorpe
+ <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>,  Leon Romanovsky	
+ <leon@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Matthew Brost
+	 <matthew.brost@intel.com>, John Hubbard <jhubbard@nvidia.com>, 
+	linux-mm@kvack.org, dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Date: Thu, 05 Feb 2026 13:41:22 +0100
+In-Reply-To: <a1fa9630-2661-4a62-9b38-8154d8ef05b1@nvidia.com>
+References: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
+	 <a1fa9630-2661-4a62-9b38-8154d8ef05b1@nvidia.com>
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 (3.58.2-1.fc43) 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: folio_zero_user: open code range computation in
- folio_zero_user()
-To: Ankur Arora <ankur.a.arora@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
- mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
- tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
- chleroy@kernel.org, ioworker0@gmail.com, lizhe.67@bytedance.com,
- boris.ostrovsky@oracle.com, konrad.wilk@oracle.com,
- kernel test robot <lkp@intel.com>
-References: <20260107072009.1615991-9-ankur.a.arora@oracle.com>
- <20260128185943.2397128-1-ankur.a.arora@oracle.com>
- <9206a7c4-bf88-4138-b8af-961625a82439@kernel.org>
- <20260204143116.968730e769500aea281809bb@linux-foundation.org>
- <87a4xneo5u.fsf@oracle.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <87a4xneo5u.fsf@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DA45A1C0005
-X-Stat-Signature: fi9zw36dgk93g76fgsnjntqhrcoonh4m
+X-Rspamd-Queue-Id: BD197100014
+X-Stat-Signature: 7sd447z91kh78wj78tsgd45o97mpkqqj
 X-Rspam-User: 
-X-HE-Tag: 1770294983-73084
-X-HE-Meta: U2FsdGVkX18LhBGRY2oBR/I3IYqYX2YT3DiYmyUHHFjB+pz587T+MvpjU5ZcLe5WaeXY7ye6bGU+5ug0qF0UGrakEypqeTmddXRTk7+97Jsdwiurr74y9Y4180wFd7q0QSSofWjbdqLQvmL4ZQB9Sdo3tmyD5u+HczmG75CJDhVVFkV3Ndaf1Mjhl9Cna4mRW/YXgIRH1l4dv1zv9utjarRLSEnGxTmtPfYQWbpKOjoZn/6uZckk7AX+Iy4+Hb36qxa25H481EI7Kagl/HUfC78MPUidji0dTSvkFDzl6sAaO+V3UKCHixg8xoAmGkAjoI8nUe9rLHBSuv390HrFGWNUkyDgo7aSRLHGAI648NLKabA+TcqzZgwWfFPSiWBm0WDI+Q0uqISGHPuUp1PwGS4WO9FT3uuwsFFvnbxgWy3Up7+fA2tfL8pqnzLmtaITFd1CFCl/UWv2IgVIMu3r8BOT2OPF3D8b2g9CekMXXqEfDHO6rfUN8Hx3EqP2egxdH9dSKqaeHqfxEoADZfXS0yy2JASsC8tySDoLS++Pkyr+9G+8yMlo/j6hsgY47/i2K5meY5Cil3mHf3iR3U8/q18838kQxtv36m/YTQ42f2VnTT81hYlBUaOtT1hmqUs8rQGl6c4KAMaqS1dDdrWCpDmaoMDWQH9TV+GNBj7Ix/4/LjdF8MTNUgs1kstY74P0z+JrqS7/7w6B+CWldhkr1P1SgV9Ltnj4YaQb+squtdyqJXWLLOdE2Ot80tACFK7NQYne1ekpClXK2ezDqwuuA5Fy6eQCLnOEQvSiRx73PikQ0s+PEJbBwJAk5J+pzzJ/+ObCaoSUt11WIyR7ujkZXc1fDiX2hNCP5UTcBQdnsdC9cPnbofQ4eSb/JvTQSTrPmuldibq5RVkl4ZSnhAKaoIV9w9URoGJb8B3aUyrfU4MykCwAou8yRg58S2RuAcnLdeq2aB9zzlm8IiwZQZl
- r3aJe7HS
- 6goAYGzOeWAKZbKEuydUme4zCdfk4qmr/OL0N/3aOxlRX0HpYmpQooeC79DIX8Aq02ebBqzTfcelZbajNV+TP1A0hjNNwizE103uhklv7KWMBb3nNZGrqxNNt+wyXmymplxa9ITBiProgFYZii7aLIL65A6LS5r9qfHBf+swdsWcUzpyLZ0/jKoZr/XWhD7myJEvI9keJzKorJWoi4moHSrngdwp41DtPbqX3SlKBLy0CLWv5EfRkE+5gn5jqeC6QyicyeAg1A7rzT2wav8L/2ylukX6onrPtj4rfR1cWLmbTnST1iteOvBj7Toro25JPqrOOzryrnVeBX/bp/Jfxgg4btmji/ZX1LafygG34zhNuva+SGn1aqgEIgby5JqjMwIXacv5GFe1ROm8=
+X-HE-Tag: 1770295289-694658
+X-HE-Meta: U2FsdGVkX187r+XMfETcBUHXx5QP0fh6cHlB6xUc6POptuwUaRHU5x5bH8aWJsMd1whf3wFx6U/IdHhML7D8ZWy+lxgF7FftJezq2mmZwSt3jiiYchMDDTqbXHm0u2v6o6v/gA9Ke3VT7kJEdXH6dzhRPMXHUTxsMcMSRpTozL4Xa4RsTkU3cTW0vZv5ZztbCATaIN0LZuLBLTipzY2im4Ly8ZRXqevrvfLQKyyaVITgvXeM099UKGhJ8I3E+4UeFaJKZmFJIjGRwdpCT3xVnY+re+1ofaE0aNWUBqOnkE8RWDKa7Et6d8LqFjdAQfKlfNaXUqiFOgQGPTCEW1OU00DdUacjmWSYVOGO7+GKeOEnxpgg7if+cB8bg5rhiqh4KxVFioPtK9iOSvMCYys1PR5TLtuuylrrtpmYrHncEcSRoaJC5Kor5Aurjqm1oWs9s7jQtcuY6DmWZo+lxL5NdOCiAoLkJ68smss0usPOXDpGdk8nX+dDld1E0WFak4ZBJWdXm7kyk35fGLPvfJ/0E1F+xZ4JTCYRq9vn8JL0t7p37vEvxiA56d3dS0+djKEpUVg0UwZ6O7b9/1ZYK/vfS8OBeR64y3KNL+nIHv8WohZLM5w6exE43uxNCVCImfZOA2q4LtA3Nbq2KzYo+SHsovGPbbVFe7uvJMD/dknEoR5Uv7TBk70/hUJE5Ypem59hz32dzuSGU9XIypPsrQ98/l3UaANQqR9cKULs6XisAxp6o3GcGnabplpgLWSHHFrZE/buA4paIdreCF+hNmjx3AATB9TyD5sjf0Oj+1o/ZJhtkXPFZMrisENyyeJoI+5MXqIV13d5Xv0H1cy0pEjPc0YOb+ItHqTFmV7aivTTwkemI+RgS7oFFoGaPpZYCBHyXoLI+wbcuLHdAetHVFaKXAGjYSPIBPQIlOhdfaDXDRlpM0m7RMQPdLcSDVvpyNAPo61WN7oLNJQWQ0dedNB
+ 842kLrCK
+ UeSJdVE/S6N3JfpvOHwfQtklPJHltMjV+Q+IWxJYkDDa5UElMCD9rwpAhvGWklg2OZPrgJslUQNK+K4c16rv/7rg3Oq8awBFT/9dhnRVD7ooLYGqPaXP2Nzfrr0S/tIHr26JHrXeEi60HsDuOENthu9QW/ZRQ2AFaQsryXbVPTJzkcFYWpgEb0YAeUJSuOECh7jDuhu6Q1esMRYyAaOb5yOPUbp5cG6BPc0jSflfm5J0VGI+AdCycWk6WV648zggvtyNm6tpzibL7yUUZax3/Tyh6Q8mygh2KKpk9WU4M+6v5Ms8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,46 +112,182 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/26 06:48, Ankur Arora wrote:
-> 
-> Andrew Morton <akpm@linux-foundation.org> writes:
-> 
->> On Wed, 4 Feb 2026 22:01:42 +0100 "David Hildenbrand (arm)" <david@kernel.org> wrote:
->>
->>>
->>> I'm late, maybe this is already upstream.
->>
->> It's in mm-unstable.  The second round of MM upstreaming is two weeks hence.
->>
->>>
->>> TBH, without the clamp that looks much more readable here.
->>
->> me too.
->>
->>>
->>> Is that cast really required?
->>
->> Seems not.  The types for nr_pages are a bit chaotic - u64->long->uint.
-> 
-> Yes agreed.
-> 
-> The first u64 is because currently struct range only supports that.
-> Then the cast to signed long is because the range can be negative
-> and the clear_contig_highpages() is only done if nr_pages > 0.
+On Thu, 2026-02-05 at 22:20 +1100, Balbir Singh wrote:
+> On 2/5/26 22:10, Thomas Hellstr=C3=B6m wrote:
+> > If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+> > trying to acquire the lock of a device-private folio for migration,
+> > to ram, the function will spin until it succeeds grabbing the lock.
+> >=20
+> > However, if the process holding the lock is depending on a work
+> > item to be completed, which is scheduled on the same CPU as the
+> > spinning hmm_range_fault(), that work item might be starved and
+> > we end up in a livelock / starvation situation which is never
+> > resolved.
+> >=20
+> > This can happen, for example if the process holding the
+> > device-private folio lock is stuck in
+> > =C2=A0=C2=A0 migrate_device_unmap()->lru_add_drain_all()
+> > The lru_add_drain_all() function requires a short work-item
+> > to be run on all online cpus to complete.
+> >=20
+> > A prerequisite for this to happen is:
+> > a) Both zone device and system memory folios are considered in
+> > =C2=A0=C2=A0 migrate_device_unmap(), so that there is a reason to call
+> > =C2=A0=C2=A0 lru_add_drain_all() for a system memory folio while a
+> > =C2=A0=C2=A0 folio lock is held on a zone device folio.
+> > b) The zone device folio has an initial mapcount > 1 which causes
+> > =C2=A0=C2=A0 at least one migration PTE entry insertion to be deferred =
+to
+> > =C2=A0=C2=A0 try_to_migrate(), which can happen after the call to
+> > =C2=A0=C2=A0 lru_add_drain_all().
+> > c) No or voluntary only preemption.
+> >=20
+> > This all seems pretty unlikely to happen, but indeed is hit by
+> > the "xe_exec_system_allocator" igt test.
+> >=20
+>=20
+> Do you have a stack trace from the test? I am trying to visualize the
+> livelock/starvation, but I can't from the description.
 
-That makes sense to me.
+The spinning thread: (The backtrace varies slightly from time to time:)
 
-> 
-> And, the third one is almost certainly unnecessary for any realistic
-> hugepage size but since nr_pages is being truncating, I wanted that
-> to be explicit.
+[  805.201476] watchdog: BUG: soft lockup - CPU#139 stuck for 52s!
+[kworker/u900:1:9985]
+[  805.201477] Modules linked in: xt_conntrack nft_chain_nat
+xt_MASQUERADE nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 bridge
+stp llc xfrm_user xfrm_algo xt_addrtype nft_compat x_tables nf_tables
+mei_gsc_proxy pmt_crashlog mtd_intel_dg mei_gsc overlay qrtr
+snd_hda_codec_intelhdmi snd_hda_codec_hdmi intel_rapl_msr
+intel_rapl_common cfg80211 intel_uncore_frequency
+intel_uncore_frequency_common intel_ifs i10nm_edac sunrpc binfmt_misc
+skx_edac_common nfit xe x86_pkg_temp_thermal intel_powerclamp coretemp
+nls_iso8859_1 kvm_intel kvm drm_ttm_helper drm_suballoc_helper
+gpu_sched snd_hda_intel cmdlinepart drm_gpuvm snd_intel_dspcfg drm_exec
+spi_nor drm_gpusvm_helper snd_hda_codec drm_buddy pmt_telemetry
+dax_hmem snd_hwdep pmt_discovery mtd video irqbypass cxl_acpi qat_4xxx
+iaa_crypto snd_hda_core pmt_class ttm rapl ses cxl_port snd_pcm
+intel_cstate enclosure cxl_core intel_qat isst_if_mmio isst_if_mbox_pci
+drm_display_helper snd_timer snd cec idxd crc8 einj ast mei_me
+spi_intel_pci rc_core soundcore isst_if_common
+[  805.201496]  ipmi_ssif authenc i2c_i801 intel_vsec idxd_bus
+spi_intel i2c_algo_bit mei i2c_ismt i2c_smbus wmi joydev input_leds
+ipmi_si acpi_power_meter acpi_ipmi ipmi_devintf ipmi_msghandler
+acpi_pad mac_hid pfr_telemetry pfr_update sch_fq_codel msr efi_pstore
+dm_multipath nfnetlink dmi_sysfs autofs4 btrfs blake2b libblake2b
+raid10 raid456 async_raid6_recov async_memcpy async_pq async_xor
+async_tx xor raid6_pq raid1 raid0 linear rndis_host cdc_ether usbnet
+mii nvme hid_generic mpt3sas i40e nvme_core usbhid ahci
+ghash_clmulni_intel raid_class nvme_keyring scsi_transport_sas hid
+libahci nvme_auth libie hkdf libie_adminq pinctrl_emmitsburg
+aesni_intel
+[  805.201510] CPU: 139 UID: 0 PID: 9985 Comm: kworker/u900:1 Tainted:
+G S      W    L      6.19.0-rc7+ #18 PREEMPT(voluntary)=20
+[  805.201512] Tainted: [S]=3DCPU_OUT_OF_SPEC, [W]=3DWARN, [L]=3DSOFTLOCKUP
+[  805.201512] Hardware name: Supermicro SYS-421GE-TNRT/X13DEG-OA, BIOS
+2.5a 02/21/2025
+[  805.201513] Workqueue: xe_page_fault_work_queue
+xe_pagefault_queue_work [xe]
+[  805.201599] RIP: 0010:_raw_spin_unlock+0x16/0x40
+[  805.201602] Code: cc 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90
+90 90 90 0f 1f 44 00 00 55 48 89 e5 c6 07 00 0f 1f 00 65 ff 0d fa a6 40
+01 <74> 10 5d 31 c0 31 d2 31 c9 31 f6 31 ff c3 cc cc cc cc 0f 1f 44 00
+[  805.201603] RSP: 0018:ffffd2a663a4f678 EFLAGS: 00000247
+[  805.201603] RAX: fffff85c67e35080 RBX: ffffd2a663a4f7b8 RCX:
+0000000000000000
+[  805.201604] RDX: ffff8b88fdd31a00 RSI: 0000000000000000 RDI:
+fffff75c86ff5928
+[  805.201605] RBP: ffffd2a663a4f678 R08: 0000000000000000 R09:
+0000000000000000
+[  805.201605] R10: 0000000000000000 R11: 0000000000000000 R12:
+0000631d10d42000
+[  805.201606] R13: ffffd2a663a4f7b8 R14: 00000001a4ca4067 R15:
+74000003ff9f8d42
+[  805.201606] FS:  0000000000000000(0000) GS:ffff8bc76202b000(0000)
+knlGS:0000000000000000
+[  805.201607] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  805.201608] CR2: 0000631d10c00088 CR3: 0000003de3040004 CR4:
+0000000000f72ef0
+[  805.201609] PKRU: 55555554
+[  805.201609] Call Trace:
+[  805.201610]  <TASK>
+[  805.201610]  do_swap_page+0x17c6/0x1b70
+[  805.201612]  ? sysvec_apic_timer_interrupt+0x57/0xc0
+[  805.201614]  ? asm_sysvec_apic_timer_interrupt+0x1b/0x20
+[  805.201615]  ? __pfx_default_wake_function+0x10/0x10
+[  805.201617]  ? ___pte_offset_map+0x1c/0x130
+[  805.201619]  __handle_mm_fault+0xa75/0x1020
+[  805.201621]  handle_mm_fault+0xeb/0x2f0
+[  805.201622]  ? handle_mm_fault+0x11a/0x2f0
+[  805.201623]  hmm_vma_fault.isra.0+0x5b/0xb0
+[  805.201625]  hmm_vma_walk_pmd+0x5c7/0xc40
+[  805.201627]  ? sysvec_apic_timer_interrupt+0x57/0xc0
+[  805.201629]  walk_pgd_range+0x5ba/0xbf0
+[  805.201631]  __walk_page_range+0x8e/0x220
+[  805.201633]  walk_page_range_mm_unsafe+0x149/0x210
+[  805.201635]  walk_page_range+0x2a/0x40
+[  805.201636]  hmm_range_fault+0x5c/0xb0
+[  805.201638]  drm_gpusvm_range_evict+0x11a/0x1d0 [drm_gpusvm_helper]
+[  805.201641]  __xe_svm_handle_pagefault+0x5fa/0xf00 [xe]
+[  805.201736]  ? select_task_rq_fair+0x9bc/0x2970
+[  805.201738]  xe_svm_handle_pagefault+0x3d/0xb0 [xe]
+[  805.201827]  xe_pagefault_queue_work+0x233/0x370 [xe]
+[  805.201905]  process_one_work+0x18d/0x370
+[  805.201907]  worker_thread+0x31a/0x460
+[  805.201908]  ? __pfx_worker_thread+0x10/0x10
+[  805.201909]  kthread+0x10b/0x220
+[  805.201910]  ? __pfx_kthread+0x10/0x10
+[  805.201912]  ret_from_fork+0x289/0x2c0
+[  805.201913]  ? __pfx_kthread+0x10/0x10
+[  805.201915]  ret_from_fork_asm+0x1a/0x30
+[  805.201917]  </TASK>
 
-But the non-silent truncation is no better? IOW, it doesn't matter.
+The thread holding the page-lock:
 
-You could just make clear_contig_highpages() consume an unsigned long ...
+[ 1629.938195] Workqueue: xe_page_fault_work_queue
+xe_pagefault_queue_work [xe]
+[ 1629.938340] Call Trace:
+[ 1629.938341]  <TASK>
+[ 1629.938342]  __schedule+0x47f/0x1890
+[ 1629.938346]  ? psi_group_change+0x1bd/0x4d0
+[ 1629.938350]  ? __pick_eevdf+0x70/0x180
+[ 1629.938353]  schedule+0x27/0xf0
+[ 1629.938357]  schedule_timeout+0xcf/0x110
+[ 1629.938361]  __wait_for_common+0x98/0x180
+[ 1629.938364]  ? __pfx_schedule_timeout+0x10/0x10
+[ 1629.938368]  wait_for_completion+0x24/0x40
+[ 1629.938370]  __flush_work+0x2b6/0x400
+[ 1629.938373]  ? kick_pool+0x77/0x1b0
+[ 1629.938377]  ? __pfx_wq_barrier_func+0x10/0x10
+[ 1629.938382]  flush_work+0x1c/0x30
+[ 1629.938384]  __lru_add_drain_all+0x19f/0x2a0
+[ 1629.938390]  lru_add_drain_all+0x10/0x20
+[ 1629.938392]  migrate_device_unmap+0x433/0x480
+[ 1629.938398]  migrate_vma_setup+0x245/0x300
+[ 1629.938403]  drm_pagemap_migrate_to_devmem+0x2a8/0xc00
+[drm_gpusvm_helper]
+[ 1629.938410]  ? krealloc_node_align_noprof+0x12f/0x3a0
+[ 1629.938413]  ? __xe_bo_create_locked+0x376/0x840 [xe]
+[ 1629.938529]  xe_drm_pagemap_populate_mm+0x25f/0x3a0 [xe]
+[ 1629.938721]  drm_pagemap_populate_mm+0x74/0xe0 [drm_gpusvm_helper]
+[ 1629.938731]  xe_svm_alloc_vram+0xad/0x270 [xe]
+[ 1629.938933]  ? xe_tile_local_pagemap+0x41/0x170 [xe]
+[ 1629.939095]  ? ktime_get+0x41/0x100
+[ 1629.939098]  __xe_svm_handle_pagefault+0xa90/0xf00 [xe]
+[ 1629.939279]  xe_svm_handle_pagefault+0x3d/0xb0 [xe]
+[ 1629.939460]  xe_pagefault_queue_work+0x233/0x370 [xe]
+[ 1629.939620]  process_one_work+0x18d/0x370
+[ 1629.939623]  worker_thread+0x31a/0x460
+[ 1629.939626]  ? __pfx_worker_thread+0x10/0x10
+[ 1629.939629]  kthread+0x10b/0x220
+[ 1629.939632]  ? __pfx_kthread+0x10/0x10
+[ 1629.939636]  ret_from_fork+0x289/0x2c0
+[ 1629.939639]  ? __pfx_kthread+0x10/0x10
+[ 1629.939642]  ret_from_fork_asm+0x1a/0x30
+[ 1629.939648]  </TASK>
 
--- 
-Cheers,
+The worker that this thread waits on in flush_work() is,=20
+most likely, the one starved on cpu-time on cpu #139.
 
-David
+Thanks,
+Thomas
 
