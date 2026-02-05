@@ -4,256 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344B0EC1EA7
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:58:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C04CEEC1EA7
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:58:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E8FB6B0093; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
+	id 3377C6B0005; Thu,  5 Feb 2026 06:58:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BD436B0096; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
+	id 2EB276B0096; Thu,  5 Feb 2026 06:58:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 74A486B0098; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
+	id 217786B0098; Thu,  5 Feb 2026 06:58:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61C116B0093
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21E6913B12F
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:37 +0000 (UTC)
-X-FDA: 84410255874.09.434A96C
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 8E57F18000C
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zntgn4L+;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="qLnf2o/p";
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770292713;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 10C906B0005
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:58:50 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7141C1B27D8
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:49 +0000 (UTC)
+X-FDA: 84410256378.24.767CF76
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B5B8AA0004
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:47 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XhP7ik1L;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770292727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bsK+vqGfal5dKaAiBsT/7V0Q//EWgCjKKA+2bYIonkE=;
-	b=JHcoxIE03RuFePANQMTPV9LMpDQSlExpqf3QY1IubNCNjJvmFJKEt8dgBT/x6ALGcUk5FR
-	wj3yZysbbxp7B1GifbLMVLmXgVPeVtzKT1L03rbD+9LH7LDrivnqq5dllRwFuMBSdCuMXP
-	yCI2E3RgrpKNlOUXr9u6YF6mnf3HKsE=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zntgn4L+;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="qLnf2o/p";
-	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770292713; a=rsa-sha256;
-	cv=pass;
-	b=pggyd4UENeu901GtTJZQpcp4Puf+9xb9XVwaI8uMfbM91VE7xyFctOpoi6vtRyuPU+X5nU
-	nYppTN686CZsqTPoN4GXGYwgdHliblylqumzv4VwjUtOxEXyz95kzHoBccGRyyEkrprfcS
-	OXrITrAgJRayUleF+l5UmRBJaAeSnzM=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 614N7nUr1717984;
-	Thu, 5 Feb 2026 11:58:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=bsK+vqGfal5dKaAiBs
-	T/7V0Q//EWgCjKKA+2bYIonkE=; b=Zntgn4L+nJTx35xNqsmLnFjYSKhJgSiDOz
-	A3PMo6e+lBfND+IQpjsnEuuTS6p/uJTIhf4zugF6z2yOG/DcUn7WeiUYuJZe5uCT
-	QuHcfH9/0G2KMmso0vPg4qgPjnIqGLPN1Rz6YZ4jF20HChkN7/12yWE2QO6g+usS
-	P1xJSrjy3SeFALvCe6Z7/olDmz8BYjpysHyRI0Gml0ICSXfImgQxaah0VsIteQx0
-	i0x7MVaC+L0gVvHuPQjcB9AQ62dvTxPpSMRBMgJAAzZWc0R7vCgGJoQv6f7r95a1
-	EE1p6WQSS8kUBxro9PspK9aQ5h4jDRYp+xnVVcFXco3ke1IjIqdA==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c3jhb3kfs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Feb 2026 11:58:03 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 615Bq5uM018685;
-	Thu, 5 Feb 2026 11:58:02 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011067.outbound.protection.outlook.com [52.101.52.67])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c186qkuee-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 05 Feb 2026 11:58:02 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g6vJ4xDowduCn1lFUCtEchEtUn5VXOJPdkEKTiav+2WrbUZZ8aSH8vxLA95PywVv4Df0VCJSTrOnBF1w2obZmnwXm6RJYeZFdcX/osnCaPgVZIwVRc3lXQhv30IZnOV6swdC1mAuwU+RP96X8+1Mdp0gTgvux32V9PMxoTUyAvPcG6De0q9nFLXyxaymChLBZ/bsRFPNXXEgg7LOeE9sBNeGdeIFlKIKgzqsZ08g9+oHdAjToZXbPXGHzs7wmz+SM1iOBfHVKjsdd+0LowLbzTGZvGl2fzE8Sdl3e23jGzgOdfZqobGEHInkdPjWrqlGLpw9/ma1DleTOhFX2uxyYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bsK+vqGfal5dKaAiBsT/7V0Q//EWgCjKKA+2bYIonkE=;
- b=sMwgwPoGGibPl//hKsEoUINfJ4YnV+1XVaUTyIqq1LDrgrn+hLhW6ZKRsKAMj6PT7P3gwZuXN3a1sbewubVSv7AdyxeXj/DB/ghkMd5J54u9d+cKfeMR8DJGmrma+tLq6Quj/bMTel8hY3kpcF1nw+6f7r2NzeqBOW+6Hvq2ST+Ihilewb0Cwu3fFEXkxdLzue2pnU17WNjTFIuZQJZw+mC/rAmW41TvGkz0f/W8aenVdChi+Oz1jWi2NpCjXAcx4tA4vfWUqmKqbLDW5T1DFVIeGx1wd1bKlCeMtHd86EmCc5jhwQHUOIHGpdGp7TzqvWbgCvxa07l9YHHxwVqdVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bsK+vqGfal5dKaAiBsT/7V0Q//EWgCjKKA+2bYIonkE=;
- b=qLnf2o/pXhCtVtk6oVw2rYlynMJlZuxP/o6DaamY875lezNtYa/a2VltG4y8fZiMKaYg5XRKFF6GUEjQ9tZoeYSEnKjZUFaZvkaJEJ3fJHNwfRQrfgz6s4YW2iv+UdZ0k/kBLQjyEgypcv/mCVjZ4RMJR4l0hIp8XIiIDmkiSBQ=
-Received: from DS0PR10MB8223.namprd10.prod.outlook.com (2603:10b6:8:1ce::20)
- by IA3PR10MB8515.namprd10.prod.outlook.com (2603:10b6:208:572::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Thu, 5 Feb
- 2026 11:57:59 +0000
-Received: from DS0PR10MB8223.namprd10.prod.outlook.com
- ([fe80::b4a4:94e3:f0bc:f4c9]) by DS0PR10MB8223.namprd10.prod.outlook.com
- ([fe80::b4a4:94e3:f0bc:f4c9%5]) with mapi id 15.20.9520.006; Thu, 5 Feb 2026
- 11:57:59 +0000
-Date: Thu, 5 Feb 2026 11:57:58 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Carlos Llamas <cmllamas@google.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dave Chinner <david@fromorbit.com>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Muchun Song <muchun.song@linux.dev>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>,
-        Andreas Hindborg <a.hindborg@kernel.org>,
-        Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
-        kernel-team@android.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH 3/5] mm: export zap_page_range_single and list_lru_add/del
-Message-ID: <ab63390c-9e75-4a45-9bf4-4ceb112ef07f@lucifer.local>
-References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
- <20260205-binder-tristate-v1-3-dfc947c35d35@google.com>
- <02801464-f4cb-4e38-8269-f8b9cf0a5965@lucifer.local>
- <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
-X-ClientProxiedBy: LO4P123CA0428.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18b::19) To DS0PR10MB8223.namprd10.prod.outlook.com
- (2603:10b6:8:1ce::20)
+	bh=BmmdvIwhybDhFqBs6aJZscFp02FRbghf0sarFdacbp4=;
+	b=1NJRLB5X5TjhqIolOMWYokijcIaaunF94HYrGIa5HP+lSrf9mpYwAC3jlzWVryPdzYnOdO
+	EiIL+gH3arR7t/ZZajziIPdST+UUqVWbMnzxEB3rA8+Y9dmwtDsOx9HlG2/p8a8o4CbdWG
+	r2R+9zva/nB3VGBAIRhNfkkhH096auQ=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XhP7ik1L;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770292727; a=rsa-sha256;
+	cv=none;
+	b=t8c7M5rNtA15KgPj154kfzZ9PNMKrBMILeHZtPdau8R52BuXCdmn7SXS1w9zkeKPjRl4Ht
+	b7JYfpLD1tLCId6ABTgcuew2+60oRoWavpTcxE3pNeS+1Cbk4f3ZkVgpP2Md3tx+DkLUy8
+	7mVnH26jOnAJgKqmLEDNFATA37bXCCk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 192EC6013B;
+	Thu,  5 Feb 2026 11:58:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D731FC16AAE;
+	Thu,  5 Feb 2026 11:58:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770292726;
+	bh=GDq3H3vjByLJ3Ey0kNEDQ9d9kRtQLl25iHAO3wBE/5c=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XhP7ik1LXXfjNBnyfS22rv87pd9aNzA7BcYBKsfG9RyitOwBNzkdha7F1F7HZtWZr
+	 RKBCmDD51vVC22UoKfyH6wrLbffbTfdiC0gTQD1JCJbEACzWG3TJwKQG/VkBznINwu
+	 /ZA4R3A3YI4nncmqbyPAzJA02dOTh2cDW8EN8Ao7jJ3aA77B5XeVNy/ovVk5CZ8w8X
+	 e1Y+tNsNKXvgMZKwU9kCYPB4yfbIR1uDWadA8KUph+ddThGFdlkvOYT/Qwb5KlwwBB
+	 0Jwoq95Os8O3bf9Vk7HiDT6jtCWjHqVHLE0NxlQQrPerNxMnNkhUWXvnE8Ti5NvXpy
+	 eGcEwZJrSTb6A==
+Message-ID: <8deb6010-3abd-48dd-8b77-40dbf2d48c65@kernel.org>
+Date: Thu, 5 Feb 2026 12:58:37 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR10MB8223:EE_|IA3PR10MB8515:EE_
-X-MS-Office365-Filtering-Correlation-Id: f0cc7e36-0576-49da-578e-08de64adce66
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7a5w/pJ3GrxK8L9X2l70Ui3Px7rUB8RV15Lfltk8Bm4rNGHvMNmFQbphmtyA?=
- =?us-ascii?Q?6WXhjumpv+a9OwsUd/QYTQ6aQjSEeDvDeDb5ICFS5B4CY1+olw1qVIkcKiZE?=
- =?us-ascii?Q?yMDk2cc2uPxdLQ6DOatrnZ2m+euimrxxn+iQUZJ54GbxaFSg8ND+P2UDX3qD?=
- =?us-ascii?Q?b7Og4rtj2LKSPfJCgo7odruyi1H+X+iJa1itebDtdYC3cb1D+dq7+wj3avi8?=
- =?us-ascii?Q?ELl6m/Lp3lmDk7AMz60wngu2ZvwWY8vQYXwNbOYIITlmcU8zjh0LmV+feHCR?=
- =?us-ascii?Q?7Teg7g9jogzqfaix28wwEFbMDzaC1MpvnQmCJiwdUS/xkaOoFJia3/mlhSPB?=
- =?us-ascii?Q?KYQFWEhV+HSzL15OcW5NpVDvlDhowAwiM8zsvDN+GDMLCSlgQXfm41aFEHX0?=
- =?us-ascii?Q?BcZhEKx9MDjtzxgCWopcdvHPrKfZ0+jjFP13zvP2/sb6d4Bfgzo4VpWgZz8G?=
- =?us-ascii?Q?qvZGqES0CTOI3lSNw+00Zz1OFtrPb4PHmAeDqRGn252ZQEmiBCpvd3yaMkbk?=
- =?us-ascii?Q?zALQ/UwV6vFk9k9Krkt+i/At1CRiJGPQMJxjcljddm425P7H15DTWiM5AreY?=
- =?us-ascii?Q?7Oj+D3YLOS4k75KQw/KA0DNDsRhz4eYfEPAM228bZfzyW4CBty+jSQcYLkkK?=
- =?us-ascii?Q?CdB+WDxKznFUUd6RbVH0fGPToEtT3M0lQuNpGhq2yoCi2Iu+GB4BEA8xS+EG?=
- =?us-ascii?Q?dxuUrrIMkJqBr2G7VFV/3hn/o10KORay8iO7gHtufhs61uDbHu2y/ThKLrC4?=
- =?us-ascii?Q?H5Gs1HzJesrgRu4kNUXfBliDttkua1e610g3rMRWUaiWIkxE3Qdv96X+Pa9V?=
- =?us-ascii?Q?8agebnHBE+RAoZ7+dIwBkKnkXJ2uva0hxfET6hnRsJC6arb9YkZkv3aDSyQw?=
- =?us-ascii?Q?S1FtDaJxxCocIgi3+7Aa/VN1TdFpOQduKBepD2TrXnBM9xaprkHin6s7XlK4?=
- =?us-ascii?Q?32FGGxkg3E++YJ//Tc96JF7TxjkIkfuDMm0+L1JZWRGeZ90bIOso/mfV2+To?=
- =?us-ascii?Q?uD95qSX4X+1Y0cmdeJ8yyikGsYcy2xB9fFFG4sYA9R2inFCLHGzDZT48s8fg?=
- =?us-ascii?Q?bgVNsUDW851Tkb90rX0IqILndlKRQUkSeac4V8YJMXzfn57+yGJ3/OMKEWTR?=
- =?us-ascii?Q?1JpD6b7q5GXgXpVkmewJDavm1FArNZ7/rjcKJC4aKcM2KZ7mgOcFyI7Thz/v?=
- =?us-ascii?Q?0bgD9LpbibNGwerv19/niIL7haIHjODP0UmeoDpMRyoFSZabizW9RYrQ3BlU?=
- =?us-ascii?Q?a5fPm/zwLp+9HekT2mUplZ/NWO6xUrJGF11wOkK3pf4ohJ9bd6rTFKYAp90t?=
- =?us-ascii?Q?LZtb+VWay8CapD2KU845gFpJXwZvZW+LfZ2wJ1q7uhzaqwPOGVyaANIZEvXe?=
- =?us-ascii?Q?iGygTAXQMZxjhx3Fb7BoQvVr6LNrmEtuB4Uu+GPvZg9vMOu9zIjA/ExR1hJF?=
- =?us-ascii?Q?gfa3PiuBwKUjocz7OcnBh2ziy0SjRjjdqU8kFnAlHPhAyjmGcPFcTDApHWSr?=
- =?us-ascii?Q?wNCW7A8WQUl32nUmKrVh+eloLkYfUVM1vwdFfZW3oDX7eIcLZbinx5XXAE6A?=
- =?us-ascii?Q?WaOamoka/8CXjUF/rKU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB8223.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+km287NiOLAwrkt1Wn38TyhiVWfVps2Zxphs5PnufXP5mP36nAB50+sTiOp5?=
- =?us-ascii?Q?M3Ss4HKH0skPyYp9EyhC6hQojCzj1mvIh4w3zhftahI89Y6NcCDH4is+WyEI?=
- =?us-ascii?Q?uyyOqOzAAZWAdCRx9mE0jiwzofP+Q9W+pYNt01tyapP++8OsiroOtShPnpYN?=
- =?us-ascii?Q?iW6JnoxComvb8qyWCKhF7lWDsIcbGjFdnxChjP9qVUKZfxBH20OgFal7ZZ9n?=
- =?us-ascii?Q?yWVDXrPGwWd2gd2R+ShyVUs5VxhMtKWipz3wQgd9g1DyRJ4RJBkdQDYuJrZJ?=
- =?us-ascii?Q?AYZlpVr/cukLARsL/4ebtj5JXZutBubPj3MNUgMK299BiiBEDSiWnHHrnARy?=
- =?us-ascii?Q?yPoyjc0ASvQeqMxQYW0PXBBdCLYcJPFecXi76xSGjqFIKHzI4AjWEmN0QC79?=
- =?us-ascii?Q?iriEkxpzPKJRF1vxnS0f7AkCwVDouF+NSbp9zpJcRnpBV6H2GyPEY02gES8I?=
- =?us-ascii?Q?vQ503sxD+EyPFZpamB63SeyRaAcPacDb2/K1e8oQVidlybtvUvSLP4LTPzhx?=
- =?us-ascii?Q?wbmNmBnY4Bwrji0KdwXxa02cX6tcALHKYr+ZsIvJ/v5TeBpZewaPcpML7yCx?=
- =?us-ascii?Q?SCa72dgEA7c5SgcYRfWRMYw2qZ5zSa4/IosOCqeJmT0g0t9urEUprH+N2poe?=
- =?us-ascii?Q?AxPcBWsrHwRvEqFKQUNjQXWqMmKxJc0VWMhbmKCMyzIqd6KFqRPisbeynMde?=
- =?us-ascii?Q?Aapr/EsFJef7yCWcY4euyiN2dGvmG6CuVOsPdWLxf3Ooz0EnzT+oEm2RrHaq?=
- =?us-ascii?Q?2nIRywkmfA6sMGeTsGfI1smDimH/GT/Far93J7+I4b0Tz5hgXf+vliam84w9?=
- =?us-ascii?Q?0hvwBvUFHevTWjtBVIZqdQyzty9HqnG8Pct/Dn9a0Sruk78s7xtgSAl1y/g1?=
- =?us-ascii?Q?adZSaVJN8TvQatYmTCRiy7hOi3FfxJJGPSZ7nxlGYSo74bttHKtbSIt7ndVs?=
- =?us-ascii?Q?OBm59IvW41My7JQSF7I6a+d/gLT+81Sc6OhxddwFM7biiZrCUqTp4pTDXjy4?=
- =?us-ascii?Q?R/25lwhoxRL4j52AqOi7dBRPbhgEiCtonBFWXRcQbDxkVYfLNe+H9APwIoTi?=
- =?us-ascii?Q?l09/JtgQHuujT0oZXgO8v5a1mlOjqSIJYOXIl8piecrpq1ystIj7iEJXhvKe?=
- =?us-ascii?Q?sIEGlT7wGGN9Fwde25iZ+Dwv5+ePT+91Yr7w++/z1bTmMvAiZxD0E0iuuNH0?=
- =?us-ascii?Q?54ZDXuUV045HVUgh8yU0o32scxPj1cdfkskvBTGg7QoIjtkzE80U6wy+0Ypz?=
- =?us-ascii?Q?RpjL36MkXqIPiMEUhvtW4wSi3oQ48GvszytZfmOIXZZoye5ziQf54BZO1BZf?=
- =?us-ascii?Q?GWVjJyJDvRby8MDAU4Ni3UEOjJorINwiiJV0TYtpN0XVYsMjbGS+/LHZoN/I?=
- =?us-ascii?Q?etsLl6C1Ae5FiC0MLoY/bKOQ7jxVNTuO41aLjDdUqpXd+POlGncBHtt7pNY9?=
- =?us-ascii?Q?fXnLyqBXsnoMPRj0/Rdu1aQuJwb/zj1tvjJ1NRCzSFSTdE75di7m9NeLYjQL?=
- =?us-ascii?Q?xE4OOI5YMvjGYbj+yDcalsTzhzDqXcRtJRFUB0MGovUHbpH3oKBaBXjx5lNB?=
- =?us-ascii?Q?Qj4CPKvxU5keMx0CxvPg3oLb/qih94jPscGC4Ede7ddzkIJAKm8XspobukCl?=
- =?us-ascii?Q?pKm9/SEDN2oAljuJHvTvcf9zZgk5QyOJ7a7wmH3w6gEaoK3fSFMcG584EoUZ?=
- =?us-ascii?Q?RwnqH/M3muvnIuCC8Hx/r7piOClusd2XdrRtQu6ODVgm3fOyaAJMyXEk6jfX?=
- =?us-ascii?Q?/SPfBAbOvsiyMED1TUSPgsaHySGIP5c=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	i7TcqaH7/d6E+OVAW5BULfqlNYr/nSxR0HEiXgXyTcT+Id+jX74AJJdITOVcKKtHCJr5pFMQPlOIFks9KpeM8QtocUuFVk1y37bfBo7ePkaGnpjlzdooXdHDYhehPC5HMkwtGrV5AqWydL8CUgAhUD7A5AyvprB/zkAW2MYFxeTZ7S/PjhTfRsj4g+9yTuTSTf0Jx4q7nbTeN4yrMAT5FPihUYb3pM9kxt1Jd/HvMtnDYSxcp7eMXOv0zUEnHAQ9JysZkl7nxlMl2GfA5Fu37piOdLfozfnHc3NO7+pL7z/edgdaQgY++W/1RECGVTxrXAxAqIt8wqJFYCfWO5/ixdVQxB4HbFEsj8J9bjZy5B71jvOofwruxzyA5OK5IWSH+aPKoNdY7Wk6LEM5NxE5yVkO5qA0037hvpH2VT2PZdpeqk8sY9SJ6ob4yNG2zs/y7RNbpZBUPNWTHaID6DRDVjo4q4TWeVobW07E4WeqH5rDUmK/7FdZGlBsTusCmYX1+ZBfj+aFosTuO2xrBlRXFgrMLBfzCB205ytQTiIxHDrMUDrSTXCRWX1VYo1SrA3WhOX8nXwpeYlTxldASF/QyD5Fpqk+b4xQ+s/PMGWNL4s=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f0cc7e36-0576-49da-578e-08de64adce66
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB8223.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 11:57:59.0021
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0Qv+NjKnYkJ9MkeBeMGjXe36vXzmsybV4YFFfMMIKatqsaeajuOV04HXEiwBWN1zRgRuQU9zQGCSnbMJm5EB+7kOz8d7i/y+OILSOZg/Dy8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8515
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-05_02,2026-02-05_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
- suspectscore=0 mlxlogscore=999 adultscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602050088
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDA4OCBTYWx0ZWRfX1AUzQdhbT81C
- pWW8Eg0MjGoazdeeq7dtbYgNLctYxi1bC8K73PQnauFPhSmB5/CkEBxWLuA8qya2llEddJ86khV
- R/WJhkFHzIIP1rawDDHk3/KdAQ1oXuSNXrGKJUkHYEaS+fJwh/oO4hhfkX8Tl5LfxlO8JaVpjJw
- 3BeUGpPaRgOxuzFRJgQS3ykDpg497pPgwvl0/WuQS2VgFdhlb+g6CrO1a8+FomY5lIwGGpsXH3v
- 8q/4+CNnlXZSgzHomjgi2NJTyR9qATZPzZ4ixs/brfFTSopx2PAmor+q3upgOoclbt9qjoa8iUx
- 5o/K6jNPV0Kj5AIlCIwyEzQF7N6jVYHx1Aljvx0zgcgii7lOcvpMOomzUn0pq8FPPzLCU5Or2Pa
- 2s/7fLpBbBWwCWFMi+zBI38NBIExZKkOaKQiATM88QGYp9Igk6pRJqrlfg0iGy/l/f832vVGvWu
- UTMknX99IsGUqiWtyqiaW2lKBee7mqic4O66JPck=
-X-Proofpoint-ORIG-GUID: fR2i-jTCojGkin7yDDfhNSfFzD0rvPxT
-X-Proofpoint-GUID: fR2i-jTCojGkin7yDDfhNSfFzD0rvPxT
-X-Authority-Analysis: v=2.4 cv=CaYFJbrl c=1 sm=1 tr=0 ts=698485cb b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=grDJtCt9INGPdPqjOVgA:9 a=CjuIK1q_8ugA:10
- cc=ntf awl=host:12103
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8E57F18000C
-X-Stat-Signature: 8moqao6f651n4u63qq6kjih3qwhg4838
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv6 02/17] mm: Change the interface of prep_compound_tail()
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>,
+ Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260202155634.650837-1-kas@kernel.org>
+ <20260202155634.650837-3-kas@kernel.org>
+ <a61bc0a8-cf5a-418a-aeb4-96553b87f043@kernel.org>
+ <aYR-YULI3lBtl9y_@thinkstation>
+From: "David Hildenbrand (arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aYR-YULI3lBtl9y_@thinkstation>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ahk5jrppd8k3qfwgawu41f9i3cyrou5n
+X-Rspamd-Queue-Id: B5B8AA0004
 X-Rspam-User: 
-X-HE-Tag: 1770292713-402122
-X-HE-Meta: U2FsdGVkX18oQ0TQtGN9B8nl1MA7e8ieZE0IZ8jY8/fFUHSI90bZ24X6tPKB6ASXbuyilw6vBiB0UF6WYhOtbFhCRYohyH+JiN3riaG5o7qBx0VRxl4WFJKI7Arlt+DiT5ebM7or+E+3gHiFouFrqntUuraoOPI+uvosH/RLevErG2MXfp2H9ytkC178z595ZZYinuXwFbDBI2Y3Tlk6YrOND7O2MPQVxAjADYxa+kc9jw8kt9l43pSFIPRiH3CKNm0nT/kHYvis51U+fQJMc9fnhjcKc9sUqRxI8rO/yWMl0cKSvELhXouJyDKToB42hEMgHi4KiYpTKavn1M6NEKVH7fyOQGs0RsuR3sQKoHrMmOuFpV71JcRGxXaZOe7BTsXqsvaG4HubWqK5jAWAoif491C7GlR/6DFwG2SjbKtfk1nPXHCcDNE7ibl1hOVYsTM6Z9+zwWQdTUAtxrKgIYJmGXhEMqe5d8hp0u96iR2JRIlSAA5aDV+ysB8Vl7NlP4xXMbdS54Y0bWQZdxAcBC2STofQ9KNVvBBpSO+TAlP5m+RF5u60uSsJlmOQhxBdITKcTKk7ij5gv7U5KjYXnJnxWikFRmXYsbRuiKkLyHjvM3tzjdpl3Q77F5DIAajzzNryv+SHXhShYa+ZYIYLvzEa73BUvZUp+2+P9vbEFwuGC6iP8RGCIw5arY3pPj0yPuY8VJcJMomxeJ190R+tj56hQKCaxHMmfNihQN0o7eXQ1b6EueffJAYDV/UHk9o1M2Bg3u/K9AbbUBp8MNZOn+AD7Ho1v/iR4thK02MP/FEFnofCM8ZMu9kwYjsxSu8W3mxTUnjC++HuDBYSs14PBS1PE1dtAHqHdvdHxCvZMQX3iHKsl1L9cHUW3Me0m+QkO037E/J/ZCd544wMQT6PzuwJFuLifJH5ubVVK7kTVAdOQ1QETtTK2Gnxilz9TcBSiOa5f5GgswYfdaFpOtc
- YmGo8PZJ
- BdJ4h1Tj+96qa2xzwJXEx7ot8xnpGXBY5O8+u+B8icjXc/pxVkuTO1590h/kd590n/ypnNedLXSgRjLIYcNudCRDIEy06Q+R1kXPLqc51aY7WkVUEHIoZ8ShCb6Uq4FBck/G9KT49pD6d5l1KLJmdzTWl1DuaH5zZMnFiHeCuPSbrketF81cpz+sRiaP/FOUhjITwS72rv9TRiTkFM6qSWt9049uVdntl/UXIZwyoDvE4IWjQzDuvbfv1iJdY45QWFhKAC36xsaJVmB3RHbaaQPOZHO2o8ETIXb9dS3pFWq++JdTF5AuobuvKi9UDSGB7+RI7sXVPPwn8vYk/Y3kGcMr6hLSh/um3+hf1vnBs584uU6TaEWTNabURopS6OS4bm1l8mPHDkI1mh1KGjfamJ82vcpd/6D+NMWxsE4aXfbW85/VdwX7kQa2fpnjRoR8V817Rxb0qU4dN9bQP0RC37mgNwj5mZnb6kisxf50enYfRHO2S0zodhtzWYVUb7x2PwmnS6MqvTsZ/Ximtmy8LIz8N0UNAMOCI81grW6mG9kkoA982NCDaycQ779VU6qf23R14phlgE5KcpxY/7yel8O1JD7Nj/2fYTbVqSz45KOjw0/gOCvRvrixUWvKAAv7BxxR0pH1HDUcz4Db8GbJl86mkI3g0tqwD1fkHmMtOYkb6zK1UFhoOiSBQmMO6y4cI+YApAn5k8aMQAaNgu80qnrfa/q7j9PQXiqS2+Lc3ND5J42h/NuOvgDwke0sllcarK9FeFMZCcX1Ktl3Lz2fYEyEZ3WTG+wwx7+Nh
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770292727-493567
+X-HE-Meta: U2FsdGVkX1+/NNI/EoiM6ha58fr8V9hYGAjJPdfD7zNNyoyvn42lrxp0lcsS8q3frMA5oAV4rlN0TGhj4DY1VtBkZugi1UQl3OxvrugpdMXho9dJZ4N0cHSgadshwPLLJByVoAQLswR79tSqBWQ08NVk4DiT6LS3OIOvgZloJMXH3Cxw92kUuXp1JU+xBuZZ0DS/cz3QVfhxNliKTxL0kGSlBRymLOOWSi4m4OHtMX5HaTb7MitW82huv0875ZewJWqfhbpWvAZsCiICzg3SYZmUMg6HtzS0dp1W0QdfT00m29r9c0ALST7qDFswnM4HtOgdu81zyjvVqVZMIbnQ8XNIYZmOZVWFtCwMzj5xxZg9yDEe/KExdUsxO2n5UQcWPfS1hHmHLa2IUkRxJ17pnSBbPEUDyxatn60iO/DJu88XxbUIehWftL8LHtxdJ7bQFMKiVOI26Ysp4VdNoDlS8kCjHbMZoXZ5fYASp8LTkLnCV8jKjKyrLnGLHoyRUq6F3zTSdayBBo0aFa65d9mDHhKZ4V+BeKg+tGwMdWe5OviqkeCu0PI2UqraAcaVNOvb0xWdgv33XaM/5l8nq/8cpVUuwo7v0o/kkSg7mxG6QZy/IJ+3Y0STyrbZZaOTbQ2CNGO41KHxEgJ+TGSejqZBWNLpdxcrnWbBECUHSZzkW++THO86Y09Cm9N1q5Na2lT88UkZpiO3/Hf7G18qEViSQLQhCYYtG88b1bLUsHVHy+42slQqT9t7A+AVuHdz2S+sC8XWlE+A96+2OYHiEwTD2NWgtoEf31YnjM0JO1o+kUdLvTUJYEnGe25NUHZyiUGOeRvAkILiw563G6O+8D8sDOUrJpXEK39vmPRIiyzsmYkB5pNdSqp2a2RugDNBq7FEx11feyTPoQI+r1PYuFkhgBCI7cDn+/vJAlG/UnzEcnl1ZIGc0QRTxpplB7d8oADrNUkSD4dvVhHDLPyZVfR
+ f/wxuaya
+ uRLJZF+guUWSoT7tkF+mi+tpYSF8Ma+hNojKPdezydRgtjiBMkSkNxWNgy44RqoBSJH5K+yv0HWaCEOMczAydZUnZy2ckRvN7Wdhj4VUJjEA2S3sdTGibbxh6LhRStLggklsAJFmRvmW0xm39J3foe0g3JPYOaKxyspZIYtNDB2mkabflKQyco4zzEmw62wfVai7oGGwKwOQ4cMS1HqGc/jaMLtrOYtPpvMAvwy2fFBx6f72HK81Mbwtxz1Gzeh76Sra0WnV5qfMyXO8IG8dSEjHx4tNHBrgsqkPaO1za8kBo9vazhKKng88VjMPWD9PkqJ6a06Bvy30KJTpIr4nFPL1xdJq5FK7n7qo2u9wVxnBmc2VdyzyBDoDPjmmnhC0sCktl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -262,272 +153,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Christoph for his input on exports here.
+On 2/5/26 12:35, Kiryl Shutsemau wrote:
+> On Wed, Feb 04, 2026 at 05:14:12PM +0100, David Hildenbrand (arm) wrote:
+>> On 2/2/26 16:56, Kiryl Shutsemau wrote:
+>>> Instead of passing down the head page and tail page index, pass the tail
+>>> and head pages directly, as well as the order of the compound page.
+>>>
+>>> This is a preparation for changing how the head position is encoded in
+>>> the tail page.
+>>>
+>>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+>>> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+>>> Reviewed-by: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>>    include/linux/page-flags.h |  4 +++-
+>>>    mm/hugetlb.c               |  8 +++++---
+>>>    mm/internal.h              | 12 ++++++------
+>>>    mm/mm_init.c               |  2 +-
+>>>    mm/page_alloc.c            |  2 +-
+>>>    5 files changed, 16 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+>>> index f7a0e4af0c73..8a3694369e15 100644
+>>> --- a/include/linux/page-flags.h
+>>> +++ b/include/linux/page-flags.h
+>>> @@ -865,7 +865,9 @@ static inline bool folio_test_large(const struct folio *folio)
+>>>    	return folio_test_head(folio);
+>>>    }
+>>> -static __always_inline void set_compound_head(struct page *page, struct page *head)
+>>> +static __always_inline void set_compound_head(struct page *page,
+>>> +					      const struct page *head,
+>>> +					      unsigned int order)
+>>
+>> Two tab indents please on second+ parameter list whenever you touch code.
+> 
+> Do we have this coding style preference written down somewhere?
 
-On Thu, Feb 05, 2026 at 12:43:03PM +0100, David Hildenbrand (arm) wrote:
-> On 2/5/26 12:29, Lorenzo Stoakes wrote:
-> > On Thu, Feb 05, 2026 at 10:51:28AM +0000, Alice Ryhl wrote:
-> > > These are the functions needed by Binder's shrinker.
-> > >
-> > > Binder uses zap_page_range_single in the shrinker path to remove an
-> > > unused page from the mmap'd region. Note that pages are only removed
-> > > from the mmap'd region lazily when shrinker asks for it.
-> > >
-> > > Binder uses list_lru_add/del to keep track of the shrinker lru list, and
-> > > it can't use _obj because the list head is not stored inline in the page
-> > > actually being lru freed, so page_to_nid(virt_to_page(item)) on the list
-> > > head computes the nid of the wrong page.
-> > >
-> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > > ---
-> > >   mm/list_lru.c | 2 ++
-> > >   mm/memory.c   | 1 +
-> > >   2 files changed, 3 insertions(+)
-> > >
-> > > diff --git a/mm/list_lru.c b/mm/list_lru.c
-> > > index ec48b5dadf519a5296ac14cda035c067f9e448f8..bf95d73c9815548a19db6345f856cee9baad22e3 100644
-> > > --- a/mm/list_lru.c
-> > > +++ b/mm/list_lru.c
-> > > @@ -179,6 +179,7 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
-> > >   	unlock_list_lru(l, false);
-> > >   	return false;
-> > >   }
-> > > +EXPORT_SYMBOL_GPL(list_lru_add);
-> > >
-> > >   bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
-> > >   {
-> > > @@ -216,6 +217,7 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
-> > >   	unlock_list_lru(l, false);
-> > >   	return false;
-> > >   }
-> > > +EXPORT_SYMBOL_GPL(list_lru_del);
-> >
-> > Same point as before about exporting symbols, but given the _obj variants are
-> > exported already this one is more valid.
-> >
-> > >
-> > >   bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
-> > >   {
-> > > diff --git a/mm/memory.c b/mm/memory.c
-> > > index da360a6eb8a48e29293430d0c577fb4b6ec58099..64083ace239a2caf58e1645dd5d91a41d61492c4 100644
-> > > --- a/mm/memory.c
-> > > +++ b/mm/memory.c
-> > > @@ -2168,6 +2168,7 @@ void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
-> > >   	zap_page_range_single_batched(&tlb, vma, address, size, details);
-> > >   	tlb_finish_mmu(&tlb);
-> > >   }
-> > > +EXPORT_SYMBOL(zap_page_range_single);
-> >
-> > Sorry but I don't want this exported at all.
-> >
-> > This is an internal implementation detail which allows fine-grained control of
-> > behaviour via struct zap_details (which binder doesn't use, of course :)
->
-> I don't expect anybody to set zap_details, but yeah, it could be abused.
-> It could be abused right now from anywhere else in the kernel
-> where we don't build as a module :)
->
-> Apparently we export a similar function in rust where we just removed the last parameter.
+Good question. I assume not. But it's what we do in MM :)
 
-What??
+> 
+> -tip tree wants the opposite. Documentation/process/maintainer-tip.rst:
+> 
+> 	When splitting function declarations or function calls, then please align
+> 	the first argument in the second line with the first argument in the first
+> 	line::
+> 
+> I want the editor to do The Right Thing™ without my brain involvement.
+> Having different coding styles in different corners of the kernel makes
+> it hard.
 
-Alice - can you confirm rust isn't exporting stuff that isn't explicitly marked
-EXPORT_SYMBOL*() for use by other rust modules?
+Yeah, but unavoidable. :)
 
-It's important we keep this in sync, otherwise rust is overriding kernel policy.
+-- 
+Cheers,
 
->
-> I think zap_page_range_single() is only called with non-NULL from mm/memory.c.
->
-> So the following makes likely sense even outside of the context of this series:
->
-
-Yeah this looks good so feel free to add a R-b from me tag when you send it
-BUT...
-
-I'm still _very_ uncomfortable with exporting this just for binder which seems
-to be doing effectively mm tasks itself in a way that makes me think it needs a
-rework to not be doing that and to update core mm to add functionality if it's
-needed.
-
-In any case, if we _do_ export this I think I'm going to insist on this being
-EXPORT_SYMBOL_FOR_MODULES() _only_ for the binder in-tree module.
-
-Thanks, Lorenzo
-
-
-> From d2a2d20994456b9a66008b7fef12e379e76fc9f8 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (arm)" <david@kernel.org>
-> Date: Thu, 5 Feb 2026 12:42:09 +0100
-> Subject: [PATCH] tmp
->
-> Signed-off-by: David Hildenbrand (arm) <david@kernel.org>
-> ---
->  arch/s390/mm/gmap_helpers.c    |  2 +-
->  drivers/android/binder_alloc.c |  2 +-
->  include/linux/mm.h             |  4 ++--
->  kernel/bpf/arena.c             |  3 +--
->  kernel/events/core.c           |  2 +-
->  mm/memory.c                    | 15 +++++++++------
->  net/ipv4/tcp.c                 |  5 ++---
->  rust/kernel/mm/virt.rs         |  2 +-
->  8 files changed, 18 insertions(+), 17 deletions(-)
->
-> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
-> index d41b19925a5a..859f5570c3dc 100644
-> --- a/arch/s390/mm/gmap_helpers.c
-> +++ b/arch/s390/mm/gmap_helpers.c
-> @@ -102,7 +102,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
->  		if (!vma)
->  			return;
->  		if (!is_vm_hugetlb_page(vma))
-> -			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr, NULL);
-> +			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
->  		vmaddr = vma->vm_end;
->  	}
->  }
-> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-> index 979c96b74cad..b0201bc6893a 100644
-> --- a/drivers/android/binder_alloc.c
-> +++ b/drivers/android/binder_alloc.c
-> @@ -1186,7 +1186,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
->  	if (vma) {
->  		trace_binder_unmap_user_start(alloc, index);
-> -		zap_page_range_single(vma, page_addr, PAGE_SIZE, NULL);
-> +		zap_page_range_single(vma, page_addr, PAGE_SIZE);
->  		trace_binder_unmap_user_end(alloc, index);
->  	}
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index f0d5be9dc736..b7cc6ef49917 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2621,11 +2621,11 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
->  void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
->  		  unsigned long size);
->  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
-> -			   unsigned long size, struct zap_details *details);
-> +			   unsigned long size);
->  static inline void zap_vma_pages(struct vm_area_struct *vma)
->  {
->  	zap_page_range_single(vma, vma->vm_start,
-> -			      vma->vm_end - vma->vm_start, NULL);
-> +			      vma->vm_end - vma->vm_start);
->  }
->  void unmap_vmas(struct mmu_gather *tlb, struct ma_state *mas,
->  		struct vm_area_struct *start_vma, unsigned long start,
-> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
-> index 872dc0e41c65..242c931d3740 100644
-> --- a/kernel/bpf/arena.c
-> +++ b/kernel/bpf/arena.c
-> @@ -503,8 +503,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
->  	struct vma_list *vml;
->  	list_for_each_entry(vml, &arena->vma_list, head)
-> -		zap_page_range_single(vml->vma, uaddr,
-> -				      PAGE_SIZE * page_cnt, NULL);
-> +		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
->  }
->  static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
-> diff --git a/kernel/events/core.c b/kernel/events/core.c
-> index 8cca80094624..1dfb33c39c2f 100644
-> --- a/kernel/events/core.c
-> +++ b/kernel/events/core.c
-> @@ -6926,7 +6926,7 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
->  #ifdef CONFIG_MMU
->  	/* Clear any partial mappings on error. */
->  	if (err)
-> -		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE, NULL);
-> +		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE);
->  #endif
->  	return err;
-> diff --git a/mm/memory.c b/mm/memory.c
-> index da360a6eb8a4..4f8dcdcd20f3 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -2155,17 +2155,16 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
->   * @vma: vm_area_struct holding the applicable pages
->   * @address: starting address of pages to zap
->   * @size: number of bytes to zap
-> - * @details: details of shared cache invalidation
->   *
->   * The range must fit into one VMA.
->   */
->  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
-> -		unsigned long size, struct zap_details *details)
-> +		unsigned long size)
->  {
->  	struct mmu_gather tlb;
->  	tlb_gather_mmu(&tlb, vma->vm_mm);
-> -	zap_page_range_single_batched(&tlb, vma, address, size, details);
-> +	zap_page_range_single_batched(&tlb, vma, address, size, NULL);
->  	tlb_finish_mmu(&tlb);
->  }
-> @@ -2187,7 +2186,7 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
->  	    		!(vma->vm_flags & VM_PFNMAP))
->  		return;
-> -	zap_page_range_single(vma, address, size, NULL);
-> +	zap_page_range_single(vma, address, size);
->  }
->  EXPORT_SYMBOL_GPL(zap_vma_ptes);
-> @@ -2963,7 +2962,7 @@ static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long add
->  	 * maintain page reference counts, and callers may free
->  	 * pages due to the error. So zap it early.
->  	 */
-> -	zap_page_range_single(vma, addr, size, NULL);
-> +	zap_page_range_single(vma, addr, size);
->  	return error;
->  }
-> @@ -4187,7 +4186,11 @@ static void unmap_mapping_range_vma(struct vm_area_struct *vma,
->  		unsigned long start_addr, unsigned long end_addr,
->  		struct zap_details *details)
->  {
-> -	zap_page_range_single(vma, start_addr, end_addr - start_addr, details);
-> +	struct mmu_gather tlb;
-> +
-> +	tlb_gather_mmu(&tlb, vma->vm_mm);
-> +	zap_page_range_single_batched(&tlb, vma, address, size, details);
-> +	tlb_finish_mmu(&tlb);
->  }
->  static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index d5319ebe2452..9e92c71389f3 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -2052,7 +2052,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
->  		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
->  				*length + /* Mapped or pending */
->  				(pages_remaining * PAGE_SIZE); /* Failed map. */
-> -		zap_page_range_single(vma, *address, maybe_zap_len, NULL);
-> +		zap_page_range_single(vma, *address, maybe_zap_len);
->  		err = 0;
->  	}
-> @@ -2217,8 +2217,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
->  	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
->  	if (total_bytes_to_map) {
->  		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
-> -			zap_page_range_single(vma, address, total_bytes_to_map,
-> -					      NULL);
-> +			zap_page_range_single(vma, address, total_bytes_to_map);
->  		zc->length = total_bytes_to_map;
->  		zc->recv_skip_hint = 0;
->  	} else {
-> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> index da21d65ccd20..b8e59e4420f3 100644
-> --- a/rust/kernel/mm/virt.rs
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
->          // sufficient for this method call. This method has no requirements on the vma flags. The
->          // address range is checked to be within the vma.
->          unsafe {
-> -            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
-> +            bindings::zap_page_range_single(self.as_ptr(), address, size)
->          };
->      }
-> --
-> 2.43.0
->
->
-> --
-> Cheers,
->
-> David
+David
 
