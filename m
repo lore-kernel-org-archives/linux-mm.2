@@ -4,122 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D9D4E9126A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 06:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF29CE9126A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 06:40:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 58CDF6B0096; Thu,  5 Feb 2026 01:36:34 -0500 (EST)
+	id 1EA1E6B0098; Thu,  5 Feb 2026 01:40:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 537956B0098; Thu,  5 Feb 2026 01:36:34 -0500 (EST)
+	id 1C21C6B0099; Thu,  5 Feb 2026 01:40:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 419816B0099; Thu,  5 Feb 2026 01:36:34 -0500 (EST)
+	id 097D06B009B; Thu,  5 Feb 2026 01:40:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E2656B0096
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 01:36:34 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D1C401403E9
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:36:33 +0000 (UTC)
-X-FDA: 84409444266.06.72BF091
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2A956C0005
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:36:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jeu09bjB;
-	spf=pass (imf22.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E75256B0098
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 01:40:16 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7E6D813AC67
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:40:16 +0000 (UTC)
+X-FDA: 84409453632.01.B6325F9
+Received: from mail-dl1-f54.google.com (mail-dl1-f54.google.com [74.125.82.54])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5448D140004
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:40:14 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dRRpvfRI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770273614; a=rsa-sha256;
+	cv=none;
+	b=NJGgibOP6wXRUo1+ToQHex0AxrahXhUqmwi3mNkf2gMKZrh6rzxcXnPh+7wc4QevH99GV6
+	NZ2vSb7omSO0voIVObWIphomKWdpDdTWDpXV0E8pP9Uk6i05Cq48XNAvhRIJD6Nq64tH4s
+	vdDmXGvKDF/DoSkuooEjLqovz1ymHs8=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=dRRpvfRI;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of usamaarif642@gmail.com designates 74.125.82.54 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770273392;
+	s=arc-20220608; t=1770273614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vH999gu9cF8Ex6UpWJyf9ehfO8DS1HfN7WwuwJxfEkk=;
-	b=Cv6Vt5cIe7266SbNR7gs95lCS+Arrowe1DSZshG4i149QDKUiPr+BaRdza+b+V+d6nIVM1
-	y37IwoBotrkypUxZplJBsMte73i2OqobWl/0eN41Z2zFbozMyrx+JL35HAzohUpYv0PpX/
-	HB3LxIpMo8NFcrKWQgtYxkNZDxPkI+g=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jeu09bjB;
-	spf=pass (imf22.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770273392; a=rsa-sha256;
-	cv=none;
-	b=dd/Ka7k5FaOhMjl5EnAsnug6p0ZCJ+Pca6wnNAOHPaWwqGQTew4jZn0LxMFO1tWvQzvRw4
-	nj+lnN5zF5AOSPw2pDBb5VTMpQoT39nnL7xRuhe74pxEhNUSuASpqjxd6GuxKUZAB55jJ6
-	/euPEg4di33orb5E0CfPxqluhNoFIm8=
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-81f4f4d4822so345921b3a.3
-        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 22:36:31 -0800 (PST)
+	bh=jxUlt9iOzTlAUVTV6PVTek3fJpMPieKvkeAmkn/pVCM=;
+	b=mHHcU8aV/4bMb95mnGGkXwijhVuiuQyxyabt7QYiRxyqKCkRerGZ986NdhknXyAr2ffXOJ
+	9ki89eVhUMePY2ET1YCN1xvsl5yx/UT+GH4QXeuU8l4HuoRzp9JRV0+CjWNiCPs0PK9cRY
+	M+H+xMuUpbTeS1V5Z4f1430ieN+rMYs=
+Received: by mail-dl1-f54.google.com with SMTP id a92af1059eb24-124566b6693so1868252c88.0
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 22:40:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770273391; x=1770878191; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vH999gu9cF8Ex6UpWJyf9ehfO8DS1HfN7WwuwJxfEkk=;
-        b=Jeu09bjBWVAEm0b9XkQe3aGnxJzm8khwzfiHQET3bVRzwJOMl6VgY1D1lfr52k5jxM
-         5Chs92PshUsY/c6/dWMLHA/BFdIKi3a4KhwzJRHsF3/Hsq+DU4yk5MfjqM1x9ECb+E4S
-         RCkJ4n2ZGrMT1idCYBArYnBFZMrH8X5esv2lkVmJEZoZeaMPY4cUvd69GWQe6nnADeQw
-         e4jqXlUQ/GVz3KOVvxYJVyH8AYPrPzDBQklQMyPuFPmnmtXrlNIEyAIduHe8zQsquBFb
-         kjypKzCSoxYCic3QRfwHGYdJd/KQu4d3VA3fTPcYB+IBbuKDPjxDTfPHe8umgp5IMcER
-         Z4kg==
+        d=gmail.com; s=20230601; t=1770273613; x=1770878413; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jxUlt9iOzTlAUVTV6PVTek3fJpMPieKvkeAmkn/pVCM=;
+        b=dRRpvfRIsAyBmaDH5ROm74kJLS51+zJpW6FdvuFuSF7ch0oN7YWMFr+LyKdIk0R0CA
+         hsZq4qrCexPWi+JibRgqFGHFnsFX1PdreKaNZO1gG+y7484DS77Uh6aAT94KUVMwkuK7
+         KX3xDzuoCq5IPH0+q/5ake1sVAZUD6ebc8cV9GloQViSRJoDC1JuVaVwZ7uAsD5evXRJ
+         Lwy4as9HKOl/UaQpI7r+TO9mTYGHMjdEkbDEyVItx4TeamHxcEm8DQ0V+BMO/towK2cF
+         LCiCG2UPuNZIVuUGJScq5WJkTug9uRig85XcmtOlbtGS347osRRL1kcU83gPhsU9as+G
+         h0QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770273391; x=1770878191;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vH999gu9cF8Ex6UpWJyf9ehfO8DS1HfN7WwuwJxfEkk=;
-        b=IegtA3GW1vmMZ2Z8MYexrJIBU4fSE2JPuc3isbhfbJWyrvhK0u9ehMCEt7eCZXCEXY
-         FlFXQQVCskfGOhn6iVFRBz/PUTET8tVFiFvqQVYDX9Em0fgXdguKW59wfxN3kppS5ZWs
-         HUzf0YufUA2XOdPznsdpCv7K/3ict4cIIJxv2jawGponjRg6HlU+Z51ns9emhFPcIbZz
-         6TCqEt1cPLA6xIy40mYQIy3ekLbD4tSM1ugPoqzDvAVphOXZLBDQyokdvj2Cxik1JER8
-         EkfdQ+CjUMeiM/85WzN4swQ/NThJMR5qyXoZxCaJPIVJW1hsHvGe1b0o9JX/a1PV1NDk
-         M6hg==
-X-Forwarded-Encrypted: i=1; AJvYcCVUPz8gs+DuJfUDAuiPzFRQm7x76yz9Eikk6bX7r1mzP4ecgdRBuEsjfrP/Ln9PrM+kgJeT+5p5ew==@kvack.org
-X-Gm-Message-State: AOJu0YyjAZP9+iU283yUGFUpsuzCPqOyJ9OgPTsyckqiR+bh/A0zfs8U
-	1osnAWvW1i3Nbp4KKo4N/q6da/97yEo1Lm11ytQSTjByoGf7itqQl/cs
-X-Gm-Gg: AZuq6aIFkzqXNskvNVvQFuyo9NdhOwJwSP59s0r0DHgq3Hmi0Lq9ynN+MwvoqrIz6Js
-	djHtIlBtXeTMauOoF1pQvfaDYnNeqxCH8454SPmyDRuwi7gGCZqZjaKM6UHm01oOOt6VrqaDJXJ
-	6cPKRAUKBOJ6uPuGuaYPzpAeqxAjI8zQ8O6DDr1bvvCFx+xrrdzWLmEx8NdF9BrRvBHLG+4mJDj
-	9TrL72me0O5KtaptsvJUqS44awtmlJ6K4Vltm/+wc9uuza0ohZ5ri+VoSVD7PxRKeE7uIkHTZel
-	uIEZJqZJ0KnpCpRZs7zERbvaXXENoVfGvBZRM5swAta6d5j6iYruCqvig8hBiL9AKg//t9VbrOE
-	9kNkxBsQnEKZv5tBVAEmJUWtRpmIjS7dqP+9IoOY8sCUbR6lTMYeUiWXu9b49AJ90KHmJnG4iUT
-	wnQ+GaS8EPdsWZ0jL6CAXigonsKnddK5ya6yS1sb0GvsTJE9eU31dLOtwb1L6zLqw0
-X-Received: by 2002:a05:6a21:150d:b0:38c:627f:873f with SMTP id adf61e73a8af0-393723a5662mr5102313637.45.1770273390885;
-        Wed, 04 Feb 2026 22:36:30 -0800 (PST)
-Received: from li-5d80d4cc-2782-11b2-a85c-bed59fe4c9e5.ibm.com ([49.207.208.177])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6c8321cb78sm3885009a12.8.2026.02.04.22.36.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 22:36:30 -0800 (PST)
-Message-ID: <87a16d4d9c1e568a37fa07a97dda5777e14e9a8b.camel@gmail.com>
-Subject: Re: [PATCH v3 3/6] xfs: add per-inode AG prediction map and
- dirty-AG bitmap
-From: "Nirjhar Roy (IBM)" <nirjhar.roy.lists@gmail.com>
-To: Kundan Kumar <kundan.kumar@samsung.com>, viro@zeniv.linux.org.uk, 
- brauner@kernel.org, jack@suse.cz, willy@infradead.org, mcgrof@kernel.org, 
- clm@meta.com, david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
- hch@lst.de,  ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
- cem@kernel.org,  wangyufei@vivo.com
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com, 
-	vishak.g@samsung.com, joshi.k@samsung.com
-Date: Thu, 05 Feb 2026 12:06:19 +0530
-In-Reply-To: <20260116100818.7576-4-kundan.kumar@samsung.com>
-References: <20260116100818.7576-1-kundan.kumar@samsung.com>
-	 <CGME20260116101251epcas5p1cf5b48f2efb14fe4387be3053b3c3ebc@epcas5p1.samsung.com>
-	 <20260116100818.7576-4-kundan.kumar@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
+        d=1e100.net; s=20230601; t=1770273613; x=1770878413;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jxUlt9iOzTlAUVTV6PVTek3fJpMPieKvkeAmkn/pVCM=;
+        b=GHiD6aO3d1p9WIfAy8MoNbaQp8rdtHuIAuCunietqKSax5/Q8wPbfWhCIiK1lPXxCm
+         JYtgL/RkVEkBp1/g0bBWza99n66+ykcxCavFlfYPPNFo+j9/vwVT2LjVu/+PGV0FKWCC
+         gPEtWaCp49MoLryF3h2gUHXDPXdDHt2aU2DtJt7jWjPmvqDVW9thLkl+jvibwRvzhRGS
+         1CtzJq1d8KukxIQh2k0GvPoRTj4r8PtkuG517zlVd00xgLDMXtWl7dLfMDhAsGJNRt9T
+         eIhITBkSmIGr7OvGuou7LIinJpo1jrqGSJjKD8TuKg5xUbXLGKEvgEUiiR/y+D5DWl+n
+         NEUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXYUXR62SPHfw9CUl9Vq9oeaFfgHDeWN+qTKh/2Evqh4nYXHcimzTzDUrfIUyX730bqyxAe0fXTEw==@kvack.org
+X-Gm-Message-State: AOJu0YyQfDc86wI6zzyxtOoVFgX72eEmi7Af1M1BbMnA8KkXU4SHCk08
+	LoL/QeQw534MT9yhcn7t9a+y7VgWmHfjREKCHMzkLSEbUtCjBqu5yfcm
+X-Gm-Gg: AZuq6aLf6QioTeRI1Bq+//zyQDyiFDWZ189EDtujtSiCVUWfJ6KgBZYfjcbHX1FDnFy
+	qGv0L/A0PnaOE7ZnM+Th/mTE9S7M4LXv2ukZPXvDasWzyWp92oZ5iT6/AFlHy0/qwcXnnScs1+q
+	H2Fb95PDcF0MTnFfwRYpNXtgpbQ7qnsoRibKAupOpEZ9qiE8ziNK9ZMfTNE2WJNoleCRCwe5buF
+	GvnRFsj9F6eF/wfLGTVAn/yMrgHRg7CxjPsvmplctLJMPJCrt1WNbl8RdA2HHoMUtnXl8Wp0nNy
+	AK6wyc6oFZ4NSN7qkRy5ao/uDMO2+TNBF6ZLqWhDJd07B7IJOsIxDQG+hzJIBgfusqVm4++m2D5
+	Ek1okBqKwizbtSZ7hYz0pRcUJ7gR/g3Cs7qocSyGEGAfJKqAB8PvDZnbCN+tTcY4ZvyY0zH7vrS
+	Li9lsvb41LVqj0zgGT5l/sSVvGHXCklOWTwA==
+X-Received: by 2002:a05:7022:623:b0:124:9acd:32d1 with SMTP id a92af1059eb24-126f477ab10mr2613028c88.9.1770273612526;
+        Wed, 04 Feb 2026 22:40:12 -0800 (PST)
+Received: from [10.36.158.92] ([50.175.227.221])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-126f504e860sm4141883c88.17.2026.02.04.22.40.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Feb 2026 22:40:11 -0800 (PST)
+Message-ID: <a95971cb-bd90-48de-8b8f-2d6d1f13085a@gmail.com>
+Date: Wed, 4 Feb 2026 22:40:11 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC 01/12] mm: add PUD THP ptdesc and rmap support
+Content-Language: en-GB
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: ziy@nvidia.com, Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-mm@kvack.org,
+ hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
+ kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20260202005451.774496-1-usamaarif642@gmail.com>
+ <20260202005451.774496-2-usamaarif642@gmail.com>
+ <9033fac5-1dd2-49ab-be34-c68bde36ec11@lucifer.local>
+ <1638e64e-bc66-4bbe-9fc3-c4c185d86ead@gmail.com>
+ <eac3e28c-974d-4bd5-a8f5-ec703295f624@lucifer.local>
+From: Usama Arif <usamaarif642@gmail.com>
+In-Reply-To: <eac3e28c-974d-4bd5-a8f5-ec703295f624@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2A956C0005
-X-Rspamd-Server: rspam07
-X-Stat-Signature: wb6e17ohumhuuohugeh4tqefxbaaw4o1
-X-HE-Tag: 1770273391-661350
-X-HE-Meta: U2FsdGVkX18p3nil/eUc4m89yilTBkUBxa0OEdp6b0voixu6QwVdRAxNmnE0oFmY6iLrvv8LCseM33kyoi5tDZiPf4NhBO1sTaHX6iH8R5mYI2Fy8u6aXjlshDcru8I5KwSU+87Mtk/NN/baY+qjujKhSXnDqWr7iOaLd9WxuBtBwBRuqgvoA6WW/vPe2tKWIn2wECqpqF44O3ryB0z+YcSMysNu72LGh+KiEU3eF1FTmiJeJSJrLI1RbvuBJGKvTPJMyGdhgMfr2WtUdGVshHQYAP5QyCK7o4xElQxzLznQt+/Z+BZIdkrGrITaKcVpLn5tllbW2dIPTlmuZpQCwVUIsgAK6Z7lAl1r4nIzwGcmP9QFMcwOxt5Kjrcn0C5vUAeuxQic4mjlv9ogM/bpmguJtmD9eoPxZisCFqEKGrKW4vFRz6s4sJHQsHpuiPlO3tkjvSiYQWdWoQvpfym6V2QIe6GFKxIWyrPadtsLGnnEp3e9ACd54SO0lC9k35F2b3IxP3sodbunhMYAHwucLhm6vkN3NoATURcffxe7pKT/4TOLGOGsD4rdY9/s24FDQl0YH3CHnUUXChfp9+F7U9Nl4CJorj0cKIK3n1y0GslRQeEnr6GO6uzv+cjaTOfRcB6T0qYL7auYoP8vMWN0kiedWK+DZ89zURDgQm1XlOFkyDH1TetuseqWvqLp06LBJHWtB3wX4QhsjlXuY1yW3gr/Yg2G7pRFwMjLOOaIZeoHIEsTSCIOvmaO6vVxj174XM/fTSGSH9qU4nZ0knI4tGOH8TCaPS8hVNE0IIDgwnxa4rsd4yRPBRHjL1RDz8IoZdZHfdAw87ZameqITJJMewlGAF5XCezBLCG+pUOmCEHhsxlyx2k2jy95381YvIdggWeudF1t+QS9qWWdNVYv26vU1thKiSWxZLD+v6AShI5TF7FhmjhaRVdf0Lg+SISuTIJBclwNDEXrV0vb6L6
- CIEG2+if
- RRa6wQbVSolLLfE4WtxZBs5xKyWlxhAKpE0+R+S48DsqseEb+eFK/Hqk090IZufrfEj0H+yPluysaedHTrYool58CYGqNacxhKUcrqLdXXpR5Jjx0UXzJ6C8JZP/SD01SDUA+xZEhGBXzqxoMq8rkD6AjZHJ3IwLIo6TrnwQWdCz9wtXG5NnPKVq/AgMp+CRAYlGkUhdHJN22VDr9sQSqflyGsKStPTP6LDuhcf9HDwAp9b4=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5448D140004
+X-Stat-Signature: yzbhoh3hkejz8e6hb4xy68q1jyoq78tk
+X-HE-Tag: 1770273614-794775
+X-HE-Meta: U2FsdGVkX19Umt5Dl/G4F5Bs+v8sqs4uIPJaQumh6Z1hZ/k40FgEUdzsTUHvRsZG+d4SKnWmJwkrkx7LW2Y/8b1hpdA7VKfKR/E1kfyANzKN+D42Tv8VS/344EzVR/hR7GhI3wxTNk6mivLG5CueUlDZEvOWJJxiIb3wmz8lLnO22jKc6fkNA5RDUrTatA3U8uon3lKzdNQChrmsuMMN42X0uiyBXJeub18gWqEwVa7VoU6jBa1Mp3UNXpzOfccPHXeO/qxWYCdSQfAnbcQN4mqwK5+LUW2QbnD0D0RsaVUeu55mqk5u69H57kJ4fX/87n6Lnz564/hPo/whgLwGViDQ1CXsALUNGyGHtOyFe5739bBiDCINL7SYmUdh4BCe0WEQJtB3jA/LRU2ZXco+6XUpu0UPaVM26n00WCGzEzKhQYyDHfFOjdjv1kkWbzooz/9lS8onQY3VseDH0irtm9kQE7nBW0KY2IIjlpYfIyGdLDeXH2IAEV7rMekOqV+v9+GAd7gCJ3aA78bAfRrREtdg4/KAd423Y/8O/kRO0D1r6LPo1V0Qzinn5kab+VltIhd13jo4D7+LnOEeYBNixtIdtOvBHRAmDalKpiRJ0izdVhwsIHG7+n1B80pdMrtN/E1kj2mHvwP9g2vMWRqb8QeTU2YtaA8Sg06/iKLPDQL9/ddy+3bgprpGH5wR9ru2TcsIZNKBpHvP5+1RY1fUlrfcXiY8m2EAq7Q2reM1enNxTzU+8anlwspTPiPFPtl56LBUjI0X/aUGLktPzSyyMyjw7xo3kc9xJiimr+ht7HPhBytSNd8zU7+AVW0Z2MenBxL6gMhqS4Z+TqjOfso1vaAggoY82ZhPoOEMVSWGaUZ5fqEsh1QYuiSWtN+8jT46Q7DXJSN0HSJJ/XiZJNBy1kgbJv4QSta1PXyPFK9sXB0J9CjQ7iJ5Dc+uqlMA+9H/xHQYWZImdkf2BWfAvGI
+ Ieu+1C6W
+ JI0aE1q0ZT8LDzeqnWODv0m1XLJQPcD0plJ3hII72pwwnxsT1cTh2AMO65Kbk5PJFlsvSM6Pe+6hHLeqEacocA/dYvcf1hmBR/fwPQnIPjXEOa2gbWtc7vBV1T3lVWehYg73vUDYuas5G9LRtj0Ed4fLNrD9y8nHot1/8Tc2wD32FLcpk9HXLtX63qcj+7fxjjcKsJ5p2rrgUHeIFQqaWblWoByvLnldVY8Sv9YN6Foa8cis9NE49QLVvnkLquHufVfbc8R4jMzMafGq+oOqMgCsDtUIxN/tS672/QIJtUyMMDf0uVQaRQ2foLxinwLLUpKIUR4biXSqRrYAZcalolUar+dR/4qQ1UNlBsNmkzZy25SCZ6i8qtdm9I/sPAvYuA1qFiLpefPOmGQjNSiV3xOQlsuIEUxH0Y5QAEFBp937IXOFlICaxMQfIEysfj9qWBt37Bqgreupt8A/rAhXHvYs51B8t2Egnbz1dgnSnfnhjogKZD5KXkxssGDm7jf4n1uhWa91Kb2AupD7YHAfyXEKRXLE1tkWekBq7j+eeumP7LlBfKvzV/cVvgTWDIRldUdCjQzHkl+Q1CJ4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,104 +131,898 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-01-16 at 15:38 +0530, Kundan Kumar wrote:
-> Add per-inode structures to track predicted AGs of dirty folios using
-> an xarray and bitmap. This enables efficient identification of AGs
-> involved in writeback.
-> 
-> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
-> ---
->  fs/xfs/xfs_icache.c | 27 +++++++++++++++++++++++++++
->  fs/xfs/xfs_inode.h  |  5 +++++
->  2 files changed, 32 insertions(+)
-> 
-> diff --git a/fs/xfs/xfs_icache.c b/fs/xfs/xfs_icache.c
-> index e44040206851..f97aa6d66271 100644
-> --- a/fs/xfs/xfs_icache.c
-> +++ b/fs/xfs/xfs_icache.c
-> @@ -80,6 +80,25 @@ static inline xa_mark_t ici_tag_to_mark(unsigned int tag)
->  	return XFS_PERAG_BLOCKGC_MARK;
->  }
->  
-> +static int xfs_inode_init_ag_bitmap(struct xfs_inode *ip)
-Similar comment as before:
-static int
-xfs_inode_init...()
-> +{
-> +	unsigned int bits = ip->i_mount->m_sb.sb_agcount;
-> +	unsigned int nlongs;
-> +
-> +	xa_init_flags(&ip->i_ag_pmap, XA_FLAGS_LOCK_IRQ);
-Nit: The name of the functions suggests that it is initializing the tracking bitmap which it does -
-however, the above line does slightly different thing? Maybe move the xarray init outside the bitmap
-init function? 
-> +	ip->i_ag_dirty_bitmap = NULL;
-> +	ip->i_ag_dirty_bits = bits;
-> +
-> +	if (!bits)
-Umm, !bits means agcount is 0. Shouldn't we ASSERT that bits >= 2? Or am I missing something?
-> +		return 0;
-> +
-> +	nlongs = BITS_TO_LONGS(bits);
-> +	ip->i_ag_dirty_bitmap = kcalloc(nlongs, sizeof(unsigned long),
-> +					GFP_NOFS);
-> +
-> +	return ip->i_ag_dirty_bitmap ? 0 : -ENOMEM;
-> +}
-> +
->  /*
->   * Allocate and initialise an xfs_inode.
->   */
-> @@ -131,6 +150,8 @@ xfs_inode_alloc(
->  	ip->i_next_unlinked = NULLAGINO;
->  	ip->i_prev_unlinked = 0;
->  
-> +	xfs_inode_init_ag_bitmap(ip);
-xfs_inode_init_ag_bitmap() returns int - error handling for -ENOMEM?
-> +
->  	return ip;
->  }
->  
-> @@ -194,6 +215,12 @@ xfs_inode_free(
->  	ip->i_ino = 0;
->  	spin_unlock(&ip->i_flags_lock);
->  
-> +	/* free xarray contents (values are immediate packed ints) */
-> +	xa_destroy(&ip->i_ag_pmap);
-Nit:Maybe have a small wrapper for freeing it the prediction map? No hard preferences though.
-> +	kfree(ip->i_ag_dirty_bitmap);
-> +	ip->i_ag_dirty_bitmap = NULL;
-Nit: Usually while freeing the pointers I prefer:
-t = ip->i_ag_dirty_bitmap;
-ip->i_ag_dirty_bitmap = NULL;
-kfree(t);
-In this way, the pointer(i_ag_dirty_bitmap in this case) that I am freeing never points to an
-already freed address.
 
-> +	ip->i_ag_dirty_bits = 0;
-> +
->  	__xfs_inode_free(ip);
->  }
->  
-> diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
-> index bd6d33557194..dee449168605 100644
-> --- a/fs/xfs/xfs_inode.h
-> +++ b/fs/xfs/xfs_inode.h
-> @@ -99,6 +99,11 @@ typedef struct xfs_inode {
->  	spinlock_t		i_ioend_lock;
->  	struct work_struct	i_ioend_work;
->  	struct list_head	i_ioend_list;
-> +
-> +	/* AG prediction map: pgoff_t -> packed u32 */
-> +	struct xarray           i_ag_pmap;
-> +	unsigned long           *i_ag_dirty_bitmap;
-> +	unsigned int            i_ag_dirty_bits;
-Not sure but, I mostly see the typedefed versions of data types being used like uint32 etc. Darrick,
-hch, are the above fine?
---NR
->  } xfs_inode_t;
->  
->  static inline bool xfs_inode_on_unlinked_list(const struct xfs_inode *ip)
+
+On 04/02/2026 04:55, Lorenzo Stoakes wrote:
+> On Tue, Feb 03, 2026 at 11:38:02PM -0800, Usama Arif wrote:
+>>
+>>
+>> On 02/02/2026 04:15, Lorenzo Stoakes wrote:
+>>> I think I'm going to have to do several passes on this, so this is just a
+>>> first one :)
+>>>
+>>
+>> Thanks! Really appreciate the reviews!
+> 
+> No worries!
+> 
+>>
+>> One thing over here is the higher level design decision when it comes to migration
+>> of 1G pages. As Zi said in [1]:
+>> "I also wonder what the purpose of PUD THP migration can be.
+>> It does not create memory fragmentation, since it is the largest folio size
+>> we have and contiguous. NUMA balancing 1GB THP seems too much work."
+>>
+>>> On Sun, Feb 01, 2026 at 04:50:18PM -0800, Usama Arif wrote:
+>>>> For page table management, PUD THPs need to pre-deposit page tables
+>>>> that will be used when the huge page is later split. When a PUD THP
+>>>> is allocated, we cannot know in advance when or why it might need to
+>>>> be split (COW, partial unmap, reclaim), but we need page tables ready
+>>>> for that eventuality. Similar to how PMD THPs deposit a single PTE
+>>>> table, PUD THPs deposit a PMD table which itself contains deposited
+>>>> PTE tables - a two-level deposit. This commit adds the deposit/withdraw
+>>>> infrastructure and a new pud_huge_pmd field in ptdesc to store the
+>>>> deposited PMD.
+>>>
+>>> This feels like you're hacking this support in, honestly. The list_head
+>>> abuse only adds to that feeling.
+>>>
+>>
+>> Yeah so I hope turning it to something like [2] is the way forward.
+> 
+> Right, that's one option, though David suggested avoiding this altogether by
+> only pre-allocating PTEs?
+
+Maybe I dont understand it properly, but that wont work, right?
+
+You need 1 PMD table and 512 PTE tables for a PMD. Cant just have PTE tables, right?
+
+
+> 
+>>
+>>> And are we now not required to store rather a lot of memory to keep all of
+>>> this coherent?
+>>
+>> PMD THP allocates 1 4K page (pte_alloc_one) at fault time so that split
+>> doesnt fail.
+>>
+>> For PUD we allocate 2M worth of PTE page tables and 1 4K PMD table at fault
+>> time so that split doesnt fail due to there not being enough memory.
+>> Its not great, but its not bad as well.
+>> The alternative is to allocate this at split time and so we are not
+>> pre-reserving them. Now there is a chance that allocation and therefore split
+>> fails, so the tradeoff is some memory vs reliability. This patch favours
+>> reliability.
+> 
+> That's a significant amount of unmovable, unreclaimable memory though. Going
+> from 4K to 2M is a pretty huge uptick.
+> 
+
+Yeah I dont like it either, but its the only way to make sure split doesnt fail.
+I think there will always be a tradeoff between reliability and memory.
+
+>>
+>> Lets say a user gets 100x1G THPs. They would end up using ~200M for it.
+>> I think that is okish. If the user has 100G, 200M might not be an issue
+>> for them :)
+> 
+> But there's more than one user on boxes big enough for this, so this makes me
+> think we want this to be somehow opt-in right?
+>
+
+Do you mean madvise?
+
+Also an idea (although probably a very bad one :)) is to have MADV_HUGEPAGE_1G.
+
+> And that means we're incurring an unmovable memory penalty, the kind which we're
+> trying to avoid in general elsewhere in the kernel.
+> 
+
+ack.
+
+>>
+>>>
+>>>>
+>>>> The deposited PMD tables are stored as a singly-linked stack using only
+>>>> page->lru.next as the link pointer. A doubly-linked list using the
+>>>> standard list_head mechanism would cause memory corruption: list_del()
+>>>> poisons both lru.next (offset 8) and lru.prev (offset 16), but lru.prev
+>>>> overlaps with ptdesc->pmd_huge_pte at offset 16. Since deposited PMD
+>>>> tables have their own deposited PTE tables stored in pmd_huge_pte,
+>>>> poisoning lru.prev would corrupt the PTE table list and cause crashes
+>>>> when withdrawing PTE tables during split. PMD THPs don't have this
+>>>> problem because their deposited PTE tables don't have sub-deposits.
+>>>> Using only lru.next avoids the overlap entirely.
+>>>
+>>> Yeah this is horrendous and a hack, I don't consider this at all
+>>> upstreamable.
+>>>
+>>> You need to completely rework this.
+>>
+>> Hopefully [2] is the path forward!
+> 
+> Ack
+> 
+>>>
+>>>>
+>>>> For reverse mapping, PUD THPs need the same rmap support that PMD THPs
+>>>> have. The page_vma_mapped_walk() function is extended to recognize and
+>>>> handle PUD-mapped folios during rmap traversal. A new TTU_SPLIT_HUGE_PUD
+>>>> flag tells the unmap path to split PUD THPs before proceeding, since
+>>>> there is no PUD-level migration entry format - the split converts the
+>>>> single PUD mapping into individual PTE mappings that can be migrated
+>>>> or swapped normally.
+>>>
+>>> Individual PTE... mappings? You need to be a lot clearer here, page tables
+>>> are naturally confusing with entries vs. tables.
+>>>
+>>> Let's be VERY specific here. Do you mean you have 1 PMD table and 512 PTE
+>>> tables reserved, spanning 1 PUD entry and 262,144 PTE entries?
+>>>
+>>
+>> Yes that is correct, Thanks! I will change the commit message in the next revision
+>> to what you have written: 1 PMD table and 512 PTE tables reserved, spanning
+>> 1 PUD entry and 262,144 PTE entries.
+> 
+> Yeah :) my concerns remain :)
+> 
+>>
+>>>>
+>>>> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+>>>
+>>> How does this change interact with existing DAX/VFIO code, which now it
+>>> seems will be subject to the mechanisms you introduce here?
+>>
+>> I think what you mean here is the change in try_to_migrate_one?
+>>
+>>
+>> So one
+> 
+> Unfinished sentence? :P
+> 
+> No I mean currently we support 1G THP for DAX/VFIO right? So how does this
+> interplay with how that currently works? Does that change how DAX/VFIO works?
+> Will that impact existing users?
+> 
+> Or are we extending the existing mechanism?
+> 
+
+A lot of the stuff like copy_huge_pud, zap_huge_pud, __split_huge_pud_locked,
+create_huge_pud, wp_huge_pud... is protected by vma_is_anonymous check. I will
+try and do a better audit of DAX and VFIO.
+
+>>
+>>>
+>>> Right now DAX/VFIO is only obtainable via a specially THP-aligned
+>>> get_unmapped_area() + then can only be obtained at fault time.
+>>>> Is that the intent here also?
+>>>
+>>
+>> Ah thanks for pointing this out. This is something the series is missing.
+>>
+>> What I did in the selftest and benchmark was fault on an address that was already aligned.
+>> i.e. basically call the below function before faulting in.
+>>
+>> static inline void *pud_align(void *addr)
+>> {
+>> 	return (void *)(((unsigned long)addr + PUD_SIZE - 1) & ~(PUD_SIZE - 1));
+>> }
+> 
+> Right yeah :)
+> 
+>>
+>>
+>> What I think you are suggesting this series is missing is the below diff? (its untested).
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 87b2c21df4a49..461158a0840db 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -1236,6 +1236,12 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
+>>         unsigned long ret;
+>>         loff_t off = (loff_t)pgoff << PAGE_SHIFT;
+>>
+>> +       if (IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD) && len >= PUD_SIZE) {
+>> +               ret = __thp_get_unmapped_area(filp, addr, len, off, flags, PUD_SIZE, vm_flags);
+>> +               if (ret)
+>> +                       return ret;
+>> +       }
+> 
+> No not that, that's going to cause issues, see commit d4148aeab4 for details as
+> to why this can go wrong.
+> 
+> In __get_unmapped_area() where the current 'if PMD size aligned then align area'
+> logic, like that.
+
+
+Ack, Thanks for pointing to this. I will also add another selftest to see that we actually
+get this from _get_unmapped_area when we dont do the pud_align trick I currently have in
+the selftests.
+
+> 
+>> +
+>>
+>>
+>>> What is your intent - that khugepaged do this, or on alloc? How does it
+>>> interact with MADV_COLLAPSE?
+>>>
+>>
+>> Ah basically what I mentioned in [3], we want to go slow. Only enable PUD THPs
+>> page faults at the start. If there is data supporting that khugepaged will work
+>> than we do it, but we keep it disabled.
+> 
+> Yes I think khugepaged is probably never going to be all that a good idea with
+> this.
+> 
+>>
+>>> I noted on the 2nd patch, but you're changing THP_ORDERS_ALL_ANON which
+>>> alters __thp_vma_allowable_orders() behaviour, that change belongs here...
+>>>
+>>>
+>>
+>> Thanks for this! I only tried to split this code into logical commits
+>> after the whole thing was working. Some things are tightly coupled
+>> and I would need to move them to the right commit.
+> 
+> Yes there's a bunch of things that need tweaking here, to reiterate let's try to
+> pay down technical debt here and avoid copy/pasting :>)
+
+Yes, will spend a lot more time thinking about how to avoid copy/paste.
+
+
+> 
+>>
+>>>> ---
+>>>>  include/linux/huge_mm.h  |  5 +++
+>>>>  include/linux/mm.h       | 19 ++++++++
+>>>>  include/linux/mm_types.h |  5 ++-
+>>>>  include/linux/pgtable.h  |  8 ++++
+>>>>  include/linux/rmap.h     |  7 ++-
+>>>>  mm/huge_memory.c         |  8 ++++
+>>>>  mm/internal.h            |  3 ++
+>>>>  mm/page_vma_mapped.c     | 35 +++++++++++++++
+>>>>  mm/pgtable-generic.c     | 83 ++++++++++++++++++++++++++++++++++
+>>>>  mm/rmap.c                | 96 +++++++++++++++++++++++++++++++++++++---
+>>>>  10 files changed, 260 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>>>> index a4d9f964dfdea..e672e45bb9cc7 100644
+>>>> --- a/include/linux/huge_mm.h
+>>>> +++ b/include/linux/huge_mm.h
+>>>> @@ -463,10 +463,15 @@ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
+>>>>  		unsigned long address);
+>>>>
+>>>>  #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +void split_huge_pud_locked(struct vm_area_struct *vma, pud_t *pud,
+>>>> +			   unsigned long address);
+>>>>  int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>>>>  		    pud_t *pudp, unsigned long addr, pgprot_t newprot,
+>>>>  		    unsigned long cp_flags);
+>>>>  #else
+>>>> +static inline void
+>>>> +split_huge_pud_locked(struct vm_area_struct *vma, pud_t *pud,
+>>>> +		      unsigned long address) {}
+>>>>  static inline int
+>>>>  change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>>>>  		pud_t *pudp, unsigned long addr, pgprot_t newprot,
+>>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>>> index ab2e7e30aef96..a15e18df0f771 100644
+>>>> --- a/include/linux/mm.h
+>>>> +++ b/include/linux/mm.h
+>>>> @@ -3455,6 +3455,22 @@ static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
+>>>>   * considered ready to switch to split PUD locks yet; there may be places
+>>>>   * which need to be converted from page_table_lock.
+>>>>   */
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +static inline struct page *pud_pgtable_page(pud_t *pud)
+>>>> +{
+>>>> +	unsigned long mask = ~(PTRS_PER_PUD * sizeof(pud_t) - 1);
+>>>> +
+>>>> +	return virt_to_page((void *)((unsigned long)pud & mask));
+>>>> +}
+>>>> +
+>>>> +static inline struct ptdesc *pud_ptdesc(pud_t *pud)
+>>>> +{
+>>>> +	return page_ptdesc(pud_pgtable_page(pud));
+>>>> +}
+>>>> +
+>>>> +#define pud_huge_pmd(pud) (pud_ptdesc(pud)->pud_huge_pmd)
+>>>> +#endif
+>>>> +
+>>>>  static inline spinlock_t *pud_lockptr(struct mm_struct *mm, pud_t *pud)
+>>>>  {
+>>>>  	return &mm->page_table_lock;
+>>>> @@ -3471,6 +3487,9 @@ static inline spinlock_t *pud_lock(struct mm_struct *mm, pud_t *pud)
+>>>>  static inline void pagetable_pud_ctor(struct ptdesc *ptdesc)
+>>>>  {
+>>>>  	__pagetable_ctor(ptdesc);
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +	ptdesc->pud_huge_pmd = NULL;
+>>>> +#endif
+>>>>  }
+>>>>
+>>>>  static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
+>>>> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+>>>> index 78950eb8926dc..26a38490ae2e1 100644
+>>>> --- a/include/linux/mm_types.h
+>>>> +++ b/include/linux/mm_types.h
+>>>> @@ -577,7 +577,10 @@ struct ptdesc {
+>>>>  		struct list_head pt_list;
+>>>>  		struct {
+>>>>  			unsigned long _pt_pad_1;
+>>>> -			pgtable_t pmd_huge_pte;
+>>>> +			union {
+>>>> +				pgtable_t pmd_huge_pte;  /* For PMD tables: deposited PTE */
+>>>> +				pgtable_t pud_huge_pmd;  /* For PUD tables: deposited PMD list */
+>>>> +			};
+>>>>  		};
+>>>>  	};
+>>>>  	unsigned long __page_mapping;
+>>>> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+>>>> index 2f0dd3a4ace1a..3ce733c1d71a2 100644
+>>>> --- a/include/linux/pgtable.h
+>>>> +++ b/include/linux/pgtable.h
+>>>> @@ -1168,6 +1168,14 @@ extern pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp);
+>>>>  #define arch_needs_pgtable_deposit() (false)
+>>>>  #endif
+>>>>
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +extern void pgtable_trans_huge_pud_deposit(struct mm_struct *mm, pud_t *pudp,
+>>>> +					   pmd_t *pmd_table);
+>>>> +extern pmd_t *pgtable_trans_huge_pud_withdraw(struct mm_struct *mm, pud_t *pudp);
+>>>> +extern void pud_deposit_pte(pmd_t *pmd_table, pgtable_t pgtable);
+>>>> +extern pgtable_t pud_withdraw_pte(pmd_t *pmd_table);
+>>>
+>>> These are useless extern's.
+>>>
+>>
+>>
+>> ack
+>>
+>> These are coming from the existing functions from the file:
+>> extern void pgtable_trans_huge_deposit
+>> extern pgtable_t pgtable_trans_huge_withdraw
+>>
+>> I think the externs can be removed from these as well? We can
+>> fix those in a separate patch.
+> 
+> Generally the approach is to remove externs when adding/changing new stuff as
+> otherwise we get completely useless churn on that and annoying git history
+> changes.
+
+Ack
+
+>>
+>>
+>>>> +#endif
+>>>> +
+>>>>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>>>>  /*
+>>>>   * This is an implementation of pmdp_establish() that is only suitable for an
+>>>> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+>>>> index daa92a58585d9..08cd0a0eb8763 100644
+>>>> --- a/include/linux/rmap.h
+>>>> +++ b/include/linux/rmap.h
+>>>> @@ -101,6 +101,7 @@ enum ttu_flags {
+>>>>  					 * do a final flush if necessary */
+>>>>  	TTU_RMAP_LOCKED		= 0x80,	/* do not grab rmap lock:
+>>>>  					 * caller holds it */
+>>>> +	TTU_SPLIT_HUGE_PUD	= 0x100, /* split huge PUD if any */
+>>>>  };
+>>>>
+>>>>  #ifdef CONFIG_MMU
+>>>> @@ -473,6 +474,8 @@ void folio_add_anon_rmap_ptes(struct folio *, struct page *, int nr_pages,
+>>>>  	folio_add_anon_rmap_ptes(folio, page, 1, vma, address, flags)
+>>>>  void folio_add_anon_rmap_pmd(struct folio *, struct page *,
+>>>>  		struct vm_area_struct *, unsigned long address, rmap_t flags);
+>>>> +void folio_add_anon_rmap_pud(struct folio *, struct page *,
+>>>> +		struct vm_area_struct *, unsigned long address, rmap_t flags);
+>>>>  void folio_add_new_anon_rmap(struct folio *, struct vm_area_struct *,
+>>>>  		unsigned long address, rmap_t flags);
+>>>>  void folio_add_file_rmap_ptes(struct folio *, struct page *, int nr_pages,
+>>>> @@ -933,6 +936,7 @@ struct page_vma_mapped_walk {
+>>>>  	pgoff_t pgoff;
+>>>>  	struct vm_area_struct *vma;
+>>>>  	unsigned long address;
+>>>> +	pud_t *pud;
+>>>>  	pmd_t *pmd;
+>>>>  	pte_t *pte;
+>>>>  	spinlock_t *ptl;
+>>>> @@ -970,7 +974,7 @@ static inline void page_vma_mapped_walk_done(struct page_vma_mapped_walk *pvmw)
+>>>>  static inline void
+>>>>  page_vma_mapped_walk_restart(struct page_vma_mapped_walk *pvmw)
+>>>>  {
+>>>> -	WARN_ON_ONCE(!pvmw->pmd && !pvmw->pte);
+>>>> +	WARN_ON_ONCE(!pvmw->pud && !pvmw->pmd && !pvmw->pte);
+>>>>
+>>>>  	if (likely(pvmw->ptl))
+>>>>  		spin_unlock(pvmw->ptl);
+>>>> @@ -978,6 +982,7 @@ page_vma_mapped_walk_restart(struct page_vma_mapped_walk *pvmw)
+>>>>  		WARN_ON_ONCE(1);
+>>>>
+>>>>  	pvmw->ptl = NULL;
+>>>> +	pvmw->pud = NULL;
+>>>>  	pvmw->pmd = NULL;
+>>>>  	pvmw->pte = NULL;
+>>>>  }
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index 40cf59301c21a..3128b3beedb0a 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -2933,6 +2933,14 @@ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
+>>>>  	spin_unlock(ptl);
+>>>>  	mmu_notifier_invalidate_range_end(&range);
+>>>>  }
+>>>> +
+>>>> +void split_huge_pud_locked(struct vm_area_struct *vma, pud_t *pud,
+>>>> +			   unsigned long address)
+>>>> +{
+>>>> +	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PUD_SIZE));
+>>>> +	if (pud_trans_huge(*pud))
+>>>> +		__split_huge_pud_locked(vma, pud, address);
+>>>> +}
+>>>>  #else
+>>>>  void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
+>>>>  		unsigned long address)
+>>>> diff --git a/mm/internal.h b/mm/internal.h
+>>>> index 9ee336aa03656..21d5c00f638dc 100644
+>>>> --- a/mm/internal.h
+>>>> +++ b/mm/internal.h
+>>>> @@ -545,6 +545,9 @@ int user_proactive_reclaim(char *buf,
+>>>>   * in mm/rmap.c:
+>>>>   */
+>>>>  pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address);
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +pud_t *mm_find_pud(struct mm_struct *mm, unsigned long address);
+>>>> +#endif
+>>>>
+>>>>  /*
+>>>>   * in mm/page_alloc.c
+>>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>>> index b38a1d00c971b..d31eafba38041 100644
+>>>> --- a/mm/page_vma_mapped.c
+>>>> +++ b/mm/page_vma_mapped.c
+>>>> @@ -146,6 +146,18 @@ static bool check_pmd(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+>>>>  	return true;
+>>>>  }
+>>>>
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +/* Returns true if the two ranges overlap.  Careful to not overflow. */
+>>>> +static bool check_pud(unsigned long pfn, struct page_vma_mapped_walk *pvmw)
+>>>> +{
+>>>> +	if ((pfn + HPAGE_PUD_NR - 1) < pvmw->pfn)
+>>>> +		return false;
+>>>> +	if (pfn > pvmw->pfn + pvmw->nr_pages - 1)
+>>>> +		return false;
+>>>> +	return true;
+>>>> +}
+>>>> +#endif
+>>>> +
+>>>>  static void step_forward(struct page_vma_mapped_walk *pvmw, unsigned long size)
+>>>>  {
+>>>>  	pvmw->address = (pvmw->address + size) & ~(size - 1);
+>>>> @@ -188,6 +200,10 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>>>  	pud_t *pud;
+>>>>  	pmd_t pmde;
+>>>>
+>>>> +	/* The only possible pud mapping has been handled on last iteration */
+>>>> +	if (pvmw->pud && !pvmw->pmd)
+>>>> +		return not_found(pvmw);
+>>>> +
+>>>>  	/* The only possible pmd mapping has been handled on last iteration */
+>>>>  	if (pvmw->pmd && !pvmw->pte)
+>>>>  		return not_found(pvmw);
+>>>> @@ -234,6 +250,25 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+>>>>  			continue;
+>>>>  		}
+>>>>
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>
+>>> Said it elsewhere, but it's really weird to treat an arch having the
+>>> ability to do something as a go ahead for doing it.
+>>>
+>>>> +		/* Check for PUD-mapped THP */
+>>>> +		if (pud_trans_huge(*pud)) {
+>>>> +			pvmw->pud = pud;
+>>>> +			pvmw->ptl = pud_lock(mm, pud);
+>>>> +			if (likely(pud_trans_huge(*pud))) {
+>>>> +				if (pvmw->flags & PVMW_MIGRATION)
+>>>> +					return not_found(pvmw);
+>>>> +				if (!check_pud(pud_pfn(*pud), pvmw))
+>>>> +					return not_found(pvmw);
+>>>> +				return true;
+>>>> +			}
+>>>> +			/* PUD was split under us, retry at PMD level */
+>>>> +			spin_unlock(pvmw->ptl);
+>>>> +			pvmw->ptl = NULL;
+>>>> +			pvmw->pud = NULL;
+>>>> +		}
+>>>> +#endif
+>>>> +
+>>>
+>>> Yeah, as I said elsewhere, we got to be refactoring not copy/pasting with
+>>> modifications :)
+>>>
+>>
+>> Yeah there is repeated code in multiple places, where all I did was replace
+>> what was done from PMD into PUD. In a lot of places, its actually difficult
+>> to not repeat the code (unless we want function macros, which is much worse
+>> IMO).
+> 
+> Not if we actually refactor the existing code :)
+> 
+> When I wanted to make functional changes to mremap I took a lot of time to
+> refactor the code into something sane before even starting that.
+> 
+> Because I _could_ have added the features there as-is, but it would have been
+> hellish to do so as-is and added more confusion etc.
+> 
+> So yeah, I think a similar mentality has to be had with this change.
+
+Ack, I will spend a lot more time thinking about the refractoring.
+> 
+>>
+>>>
+>>>>  		pvmw->pmd = pmd_offset(pud, pvmw->address);
+>>>>  		/*
+>>>>  		 * Make sure the pmd value isn't cached in a register by the
+>>>> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+>>>> index d3aec7a9926ad..2047558ddcd79 100644
+>>>> --- a/mm/pgtable-generic.c
+>>>> +++ b/mm/pgtable-generic.c
+>>>> @@ -195,6 +195,89 @@ pgtable_t pgtable_trans_huge_withdraw(struct mm_struct *mm, pmd_t *pmdp)
+>>>>  }
+>>>>  #endif
+>>>>
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +/*
+>>>> + * Deposit page tables for PUD THP.
+>>>> + * Called with PUD lock held. Stores PMD tables in a singly-linked stack
+>>>> + * via pud_huge_pmd, using only pmd_page->lru.next as the link pointer.
+>>>> + *
+>>>> + * IMPORTANT: We use only lru.next (offset 8) for linking, NOT the full
+>>>> + * list_head. This is because lru.prev (offset 16) overlaps with
+>>>> + * ptdesc->pmd_huge_pte, which stores the PMD table's deposited PTE tables.
+>>>> + * Using list_del() would corrupt pmd_huge_pte with LIST_POISON2.
+>>>
+>>> This is horrible and feels like a hack? Treating a doubly-linked list as a
+>>> singly-linked one like this is not upstreamable.
+>>>
+>>>> + *
+>>>> + * PTE tables should be deposited into the PMD using pud_deposit_pte().
+>>>> + */
+>>>> +void pgtable_trans_huge_pud_deposit(struct mm_struct *mm, pud_t *pudp,
+>>>> +				    pmd_t *pmd_table)
+>>>
+>>> This is a horrid, you're depositing the PMD using the... questionable
+>>> list_head abuse, but then also have pud_deposit_pte()... But here we're
+>>> depositing a PMD shouldn't the name reflect that?
+>>>
+>>>> +{
+>>>> +	pgtable_t pmd_page = virt_to_page(pmd_table);
+>>>> +
+>>>> +	assert_spin_locked(pud_lockptr(mm, pudp));
+>>>> +
+>>>> +	/* Push onto stack using only lru.next as the link */
+>>>> +	pmd_page->lru.next = (struct list_head *)pud_huge_pmd(pudp);
+>>>
+>>> Yikes...
+>>>
+>>>> +	pud_huge_pmd(pudp) = pmd_page;
+>>>> +}
+>>>> +
+>>>> +/*
+>>>> + * Withdraw the deposited PMD table for PUD THP split or zap.
+>>>> + * Called with PUD lock held.
+>>>> + * Returns NULL if no more PMD tables are deposited.
+>>>> + */
+>>>> +pmd_t *pgtable_trans_huge_pud_withdraw(struct mm_struct *mm, pud_t *pudp)
+>>>> +{
+>>>> +	pgtable_t pmd_page;
+>>>> +
+>>>> +	assert_spin_locked(pud_lockptr(mm, pudp));
+>>>> +
+>>>> +	pmd_page = pud_huge_pmd(pudp);
+>>>> +	if (!pmd_page)
+>>>> +		return NULL;
+>>>> +
+>>>> +	/* Pop from stack - lru.next points to next PMD page (or NULL) */
+>>>> +	pud_huge_pmd(pudp) = (pgtable_t)pmd_page->lru.next;
+>>>
+>>> Where's the popping? You're just assigning here.
+>>
+>>
+>> Ack on all of the above. Hopefully [1] is better.
+> 
+> Thanks!
+> 
+>>>
+>>>> +
+>>>> +	return page_address(pmd_page);
+>>>> +}
+>>>> +
+>>>> +/*
+>>>> + * Deposit a PTE table into a standalone PMD table (not yet in page table hierarchy).
+>>>> + * Used for PUD THP pre-deposit. The PMD table's pmd_huge_pte stores a linked list.
+>>>> + * No lock assertion since the PMD isn't visible yet.
+>>>> + */
+>>>> +void pud_deposit_pte(pmd_t *pmd_table, pgtable_t pgtable)
+>>>> +{
+>>>> +	struct ptdesc *ptdesc = virt_to_ptdesc(pmd_table);
+>>>> +
+>>>> +	/* FIFO - add to front of list */
+>>>> +	if (!ptdesc->pmd_huge_pte)
+>>>> +		INIT_LIST_HEAD(&pgtable->lru);
+>>>> +	else
+>>>> +		list_add(&pgtable->lru, &ptdesc->pmd_huge_pte->lru);
+>>>> +	ptdesc->pmd_huge_pte = pgtable;
+>>>> +}
+>>>> +
+>>>> +/*
+>>>> + * Withdraw a PTE table from a standalone PMD table.
+>>>> + * Returns NULL if no more PTE tables are deposited.
+>>>> + */
+>>>> +pgtable_t pud_withdraw_pte(pmd_t *pmd_table)
+>>>> +{
+>>>> +	struct ptdesc *ptdesc = virt_to_ptdesc(pmd_table);
+>>>> +	pgtable_t pgtable;
+>>>> +
+>>>> +	pgtable = ptdesc->pmd_huge_pte;
+>>>> +	if (!pgtable)
+>>>> +		return NULL;
+>>>> +	ptdesc->pmd_huge_pte = list_first_entry_or_null(&pgtable->lru,
+>>>> +							struct page, lru);
+>>>> +	if (ptdesc->pmd_huge_pte)
+>>>> +		list_del(&pgtable->lru);
+>>>> +	return pgtable;
+>>>> +}
+>>>> +#endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
+>>>> +
+>>>>  #ifndef __HAVE_ARCH_PMDP_INVALIDATE
+>>>>  pmd_t pmdp_invalidate(struct vm_area_struct *vma, unsigned long address,
+>>>>  		     pmd_t *pmdp)
+>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>> index 7b9879ef442d9..69acabd763da4 100644
+>>>> --- a/mm/rmap.c
+>>>> +++ b/mm/rmap.c
+>>>> @@ -811,6 +811,32 @@ pmd_t *mm_find_pmd(struct mm_struct *mm, unsigned long address)
+>>>>  	return pmd;
+>>>>  }
+>>>>
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>> +/*
+>>>> + * Returns the actual pud_t* where we expect 'address' to be mapped from, or
+>>>> + * NULL if it doesn't exist.  No guarantees / checks on what the pud_t*
+>>>> + * represents.
+>>>> + */
+>>>> +pud_t *mm_find_pud(struct mm_struct *mm, unsigned long address)
+>>>
+>>> This series seems to be full of copy/paste.
+>>>
+>>> It's just not acceptable given the state of THP code as I said in reply to
+>>> the cover letter - you need to _refactor_ the code.
+>>>
+>>> The code is bug-prone and difficult to maintain as-is, your series has to
+>>> improve the technical debt, not add to it.
+>>>
+>>
+>> In some cases we might not be able to avoid the copy, but this is definitely
+>> a place where we dont need to. I will change here. Thanks!
+> 
+> I disagree, see above :) But thanks on this one
+> 
+>>
+>>>> +{
+>>>> +	pgd_t *pgd;
+>>>> +	p4d_t *p4d;
+>>>> +	pud_t *pud = NULL;
+>>>> +
+>>>> +	pgd = pgd_offset(mm, address);
+>>>> +	if (!pgd_present(*pgd))
+>>>> +		goto out;
+>>>> +
+>>>> +	p4d = p4d_offset(pgd, address);
+>>>> +	if (!p4d_present(*p4d))
+>>>> +		goto out;
+>>>> +
+>>>> +	pud = pud_offset(p4d, address);
+>>>> +out:
+>>>> +	return pud;
+>>>> +}
+>>>> +#endif
+>>>> +
+>>>>  struct folio_referenced_arg {
+>>>>  	int mapcount;
+>>>>  	int referenced;
+>>>> @@ -1415,11 +1441,7 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+>>>>  			SetPageAnonExclusive(page);
+>>>>  			break;
+>>>>  		case PGTABLE_LEVEL_PUD:
+>>>> -			/*
+>>>> -			 * Keep the compiler happy, we don't support anonymous
+>>>> -			 * PUD mappings.
+>>>> -			 */
+>>>> -			WARN_ON_ONCE(1);
+>>>> +			SetPageAnonExclusive(page);
+>>>>  			break;
+>>>>  		default:
+>>>>  			BUILD_BUG();
+>>>> @@ -1503,6 +1525,31 @@ void folio_add_anon_rmap_pmd(struct folio *folio, struct page *page,
+>>>>  #endif
+>>>>  }
+>>>>
+>>>> +/**
+>>>> + * folio_add_anon_rmap_pud - add a PUD mapping to a page range of an anon folio
+>>>> + * @folio:	The folio to add the mapping to
+>>>> + * @page:	The first page to add
+>>>> + * @vma:	The vm area in which the mapping is added
+>>>> + * @address:	The user virtual address of the first page to map
+>>>> + * @flags:	The rmap flags
+>>>> + *
+>>>> + * The page range of folio is defined by [first_page, first_page + HPAGE_PUD_NR)
+>>>> + *
+>>>> + * The caller needs to hold the page table lock, and the page must be locked in
+>>>> + * the anon_vma case: to serialize mapping,index checking after setting.
+>>>> + */
+>>>> +void folio_add_anon_rmap_pud(struct folio *folio, struct page *page,
+>>>> +		struct vm_area_struct *vma, unsigned long address, rmap_t flags)
+>>>> +{
+>>>> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
+>>>> +	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+>>>> +	__folio_add_anon_rmap(folio, page, HPAGE_PUD_NR, vma, address, flags,
+>>>> +			      PGTABLE_LEVEL_PUD);
+>>>> +#else
+>>>> +	WARN_ON_ONCE(true);
+>>>> +#endif
+>>>> +}
+>>>
+>>> More copy/paste... Maybe unavoidable in this case, but be good to try.
+>>>
+>>>> +
+>>>>  /**
+>>>>   * folio_add_new_anon_rmap - Add mapping to a new anonymous folio.
+>>>>   * @folio:	The folio to add the mapping to.
+>>>> @@ -1934,6 +1981,20 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>  		}
+>>>>
+>>>>  		if (!pvmw.pte) {
+>>>> +			/*
+>>>> +			 * Check for PUD-mapped THP first.
+>>>> +			 * If we have a PUD mapping and TTU_SPLIT_HUGE_PUD is set,
+>>>> +			 * split the PUD to PMD level and restart the walk.
+>>>> +			 */
+>>>
+>>> This is literally describing the code below, it's not useful.
+>>
+>> Ack, Will remove this comment, Thanks!
+> 
+> Thanks
+> 
+>>>
+>>>> +			if (pvmw.pud && pud_trans_huge(*pvmw.pud)) {
+>>>> +				if (flags & TTU_SPLIT_HUGE_PUD) {
+>>>> +					split_huge_pud_locked(vma, pvmw.pud, pvmw.address);
+>>>> +					flags &= ~TTU_SPLIT_HUGE_PUD;
+>>>> +					page_vma_mapped_walk_restart(&pvmw);
+>>>> +					continue;
+>>>> +				}
+>>>> +			}
+>>>> +
+>>>>  			if (folio_test_anon(folio) && !folio_test_swapbacked(folio)) {
+>>>>  				if (unmap_huge_pmd_locked(vma, pvmw.address, pvmw.pmd, folio))
+>>>>  					goto walk_done;
+>>>> @@ -2325,6 +2386,27 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>>>>  	mmu_notifier_invalidate_range_start(&range);
+>>>>
+>>>>  	while (page_vma_mapped_walk(&pvmw)) {
+>>>> +		/* Handle PUD-mapped THP first */
+>>>
+>>> How did/will this interact with DAX, VFIO PUD THP?
+>>
+>> It wont interact with DAX. try_to_migrate does the below and just returns:
+>>
+>> 	if (folio_is_zone_device(folio) &&
+>> 	    (!folio_is_device_private(folio) && !folio_is_device_coherent(folio)))
+>> 		return;
+>>
+>> so DAX would never reach here.
+> 
+> Hmm folio_is_zone_device() always returns true for DAX?
+> 
+
+Yes, that is my understanding. Both fsdax and devdax call into
+devm_memremap_pages() -> memremap_pages() in mm/memremap.c, which
+unconditionally places all pages in ZONE_DEVICE.
+
+> Also that's just one rmap call right?
+> 
+Yes,
+
+>>
+>> I think vfio pages are pinned and therefore cant be migrated? (I have
+>> not looked at vfio code, I will try to get a better understanding tomorrow,
+>> but please let me know if that sounds wrong.)
+> 
+> OK I've not dug into this either please do check, and be good really to test
+> this code vs. actual DAX/VFIO scenarios if you can find a way to test that, thanks!
+
+I think DAX is ok, will check more into VFIO. I will also CC the people who added
+DAX and VFIO PUD support in the next RFC.
+
+> 
+>>
+>>
+>>>
+>>>> +		if (!pvmw.pte && !pvmw.pmd) {
+>>>> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>>>
+>>> Won't pud_trans_huge() imply this...
+>>>
+>>
+>> Agreed, I think it should cover it.
+> Thanks!
+> 
+>>
+>>>> +			/*
+>>>> +			 * PUD-mapped THP: skip migration to preserve the huge
+>>>> +			 * page. Splitting would defeat the purpose of PUD THPs.
+>>>> +			 * Return false to indicate migration failure, which
+>>>> +			 * will cause alloc_contig_range() to try a different
+>>>> +			 * memory region.
+>>>> +			 */
+>>>> +			if (pvmw.pud && pud_trans_huge(*pvmw.pud)) {
+>>>> +				page_vma_mapped_walk_done(&pvmw);
+>>>> +				ret = false;
+>>>> +				break;
+>>>> +			}
+>>>> +#endif
+>>>> +			/* Unexpected state: !pte && !pmd but not a PUD THP */
+>>>> +			page_vma_mapped_walk_done(&pvmw);
+>>>> +			break;
+>>>> +		}
+>>>> +
+>>>>  		/* PMD-mapped THP migration entry */
+>>>>  		if (!pvmw.pte) {
+>>>>  			__maybe_unused unsigned long pfn;
+>>>> @@ -2607,10 +2689,10 @@ void try_to_migrate(struct folio *folio, enum ttu_flags flags)
+>>>>
+>>>>  	/*
+>>>>  	 * Migration always ignores mlock and only supports TTU_RMAP_LOCKED and
+>>>> -	 * TTU_SPLIT_HUGE_PMD, TTU_SYNC, and TTU_BATCH_FLUSH flags.
+>>>> +	 * TTU_SPLIT_HUGE_PMD, TTU_SPLIT_HUGE_PUD, TTU_SYNC, and TTU_BATCH_FLUSH flags.
+>>>>  	 */
+>>>>  	if (WARN_ON_ONCE(flags & ~(TTU_RMAP_LOCKED | TTU_SPLIT_HUGE_PMD |
+>>>> -					TTU_SYNC | TTU_BATCH_FLUSH)))
+>>>> +					TTU_SPLIT_HUGE_PUD | TTU_SYNC | TTU_BATCH_FLUSH)))
+>>>>  		return;
+>>>>
+>>>>  	if (folio_is_zone_device(folio) &&
+>>>> --
+>>>> 2.47.3
+>>>>
+>>>
+>>> This isn't a final review, I'll have to look more thoroughly through here
+>>> over time and you're going to have to be patient in general :)
+>>>
+>>> Cheers, Lorenzo
+>>
+>>
+>> Thanks for the review, this is awesome!
+> 
+> Ack, will do more when I have time, and obviously you're getting a lot of input
+> from others too.
+> 
+> Be good to get a summary at next THP cabal ;)
+> 
+>>
+>>
+>> [1] https://lore.kernel.org/all/20f92576-e932-435f-bb7b-de49eb84b012@gmail.com/
+>> [2] https://lore.kernel.org/all/05d5918f-b61b-4091-b8c6-20eebfffc3c4@gmail.com/
+>> [3] https://lore.kernel.org/all/2efaa5ed-bd09-41f0-9c07-5cd6cccc4595@gmail.com/
+>>
+>>
+>>
+> 
+> cheers, Lorenzo
 
 
