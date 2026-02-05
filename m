@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC989EC1E9A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 10:51:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E03BEC1E92
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 10:51:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D4546B0092; Thu,  5 Feb 2026 05:51:44 -0500 (EST)
+	id BCB236B0093; Thu,  5 Feb 2026 05:51:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 582406B0093; Thu,  5 Feb 2026 05:51:44 -0500 (EST)
+	id BA2F46B0096; Thu,  5 Feb 2026 05:51:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 456616B0096; Thu,  5 Feb 2026 05:51:44 -0500 (EST)
+	id AA24C6B0098; Thu,  5 Feb 2026 05:51:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 28B286B0092
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:51:44 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E1D60140486
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:51:43 +0000 (UTC)
-X-FDA: 84410087286.10.56F5D2C
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0AC311C0004
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:51:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Chs8LF8y;
-	spf=pass (imf20.hostedemail.com: domain of 3PHaEaQkKCI0r2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3PHaEaQkKCI0r2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 950846B0093
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:51:47 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 25DBAB99F1
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:51:47 +0000 (UTC)
+X-FDA: 84410087454.11.D8DA412
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4537D100016
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:51:45 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ED3fO4cy;
+	spf=pass (imf14.hostedemail.com: domain of 3P3aEaQkKCJAu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3P3aEaQkKCJAu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770288702;
+	s=arc-20220608; t=1770288705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=VLcYGJKdfae0UDgu1rmn9Sa9RDtDWULKl4q8DTm9pQw=;
-	b=kXyBzxciRxUxeWvU6yFQ1B9YlQLM2nRUxymyv/mdftDiOkPuRjDyjqqqvp1v7Ph1qX+1Kd
-	43RZbTvFURHKwaRbSIy4/BlaXJoYqXOV3xkeJfrEdGe8RHA7iJOHYMLvSUgxG4K1rEsOoV
-	88JQXEmGePokR3AirouIEE9ugcT1LME=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RMyX8uRGOmUN6KZEX+IAO29sQdtn60nQJQNJ760wFa4=;
+	b=dzc6/mLlxSauPcHyElbr0RhF1fx07EmXuGwNt+0lAGsG+llgaJ7begw+8EB3XNN77vqxWC
+	TympeVXdZkzxCnQJIdLgRlhgPxqIXdJ+B+cDTVIVf7n7lPnNbsTWsr9da3oqG2iVvIYupW
+	wgEJLh3HUjlnN2uTbTHx5hn6VEZEozY=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Chs8LF8y;
-	spf=pass (imf20.hostedemail.com: domain of 3PHaEaQkKCI0r2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3PHaEaQkKCI0r2ztv8Fy2x55x2v.t532z4BE-331Crt1.58x@flex--aliceryhl.bounces.google.com;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ED3fO4cy;
+	spf=pass (imf14.hostedemail.com: domain of 3P3aEaQkKCJAu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3P3aEaQkKCJAu52wyBI1508805y.w86527EH-664Fuw4.8B0@flex--aliceryhl.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770288702; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770288705; a=rsa-sha256;
 	cv=none;
-	b=xyU2kEWain3lVIsCx9QC7OAt0kc0WeRx6Dx5To2co8cjuLiSb6fV8bz0uvwk4ON287w1pE
-	Q36+TweFwnE2dYlEyoZ27YwnkxeNf7E9mibQyqRROCGyyFLpGJUfA/MnF9tSH810w5LGiI
-	DyXDSAhVlVI/CdMrEM+myMmNRUeej1c=
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4830e7c6131so11723275e9.2
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 02:51:41 -0800 (PST)
+	b=USOCv+cTvgDGSOH6kzPCLFYzZuZeoFFhwvSDAwbN6tYcSjQIcyWyuTT0PEc63S5wyAgdvW
+	4lzMKfwmuFxyg+5dpEquvKx2DgLLLBZPzFvqGucaHgnXzlD2ZR6/g4yQ9BuDdo3y2FC5vX
+	JJNWykkzZBsiMFk393dknFdvIM5REyc=
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4806cfffca6so11237225e9.2
+        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 02:51:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770288700; x=1770893500; darn=kvack.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VLcYGJKdfae0UDgu1rmn9Sa9RDtDWULKl4q8DTm9pQw=;
-        b=Chs8LF8y2EiKsz6/jsmo2hsx9iiITyXGyA2hjXv4UI6o7LmlosmTmL1G5zahFETjPG
-         oFvQAFdtj/6QghFuaUPpNn81LAeOJoVQNb0u5owwZQQorGf4bNZAUzs/nM8qaV8cPgCB
-         JMbArtU5drB7i13CHz3Pu2WpTmv5MJmCWuEL4T40TlyXl0E9UE79S+M8eABFFMUV7beD
-         UOdiXL9HksuruOk9TwlWIA0DsisTDVjg7/N3pIGdLxwdsujFqKwfIScC3CStBJ/cbUfx
-         GcEX4lMLZ+jbpsd1t30ZYLsIv6tSPh6SBu7HRsGvtN6Xn9xRknA6l8Qm/CnfJQmo/JN5
-         KlUA==
+        d=google.com; s=20230601; t=1770288704; x=1770893504; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RMyX8uRGOmUN6KZEX+IAO29sQdtn60nQJQNJ760wFa4=;
+        b=ED3fO4cy/I4rZQHpgi63poFBaASQowqypmC9/yP5cO0mysUrYSTvl55wMiaj6dX7Ha
+         IElDxaeyl9JqYT7UzTWXyy7vhh5QXwNdMbpvQwzF2y+DObIkWZEDqrPfj/e1BzVokks2
+         qWO0EypT2xruE1hX8BjfUK04MpikwzTPijTiKxkZekO8iKodJ0u9IrJ/p3upTgFAhhb2
+         R0P1NEv48KAHpBOMcnyKRMS5sNmdHbOJtng94rWUN2krVM8LcVL6aelJbcRHykWvC93T
+         LkWdp9V9WzDkjsH75TTCkVE/0z4LebXhHy8RTaruXs7PWOBQocK8JxLeuYNx+v8PfFy3
+         U1qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770288700; x=1770893500;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VLcYGJKdfae0UDgu1rmn9Sa9RDtDWULKl4q8DTm9pQw=;
-        b=RPUvKV2B4u4zSPX+lB+lyen4riDKg2SPjgTgrbXFVqcfeSBmE5UdwRsZljWtA+Sr5m
-         DeXn90HByo7UNkhhrVQkV/f6bjY8fOoKG0ObHypK+41YEtjBLYWqTQmEZvr/CUwZRx7m
-         5eZWDN39zpTN9mslLikirCPbeFs/OuaeyIf57pkgEnm4rOe+NEZAvTYM1jqYq/Ra6Dz9
-         6YFKci6v3AOfOPwbeH6V+jsQ0PPjT9a+34u6JPJRcCB/+KiUiohQb8Olrxbq6NHmUvPI
-         CY1161H/ehctJPfncUYAHKiU/B5lhUIRp7AN4cra+4YTL7np3/6qXqO+ottTGdboDpIg
-         jM4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUcnQAkLDVhtEIOBYnsTgMriIaHIeAxFBfpaDGAmobgqFHI1SDuDSKNwxWfdCHoUGJ9Vy7zk6mFtg==@kvack.org
-X-Gm-Message-State: AOJu0Yzpq8LR7pn7At8gZB2x6NsA8UJMWi8tXDsfg/DzYOozyQD9idYa
-	TL3CJCZEimVXCegTuiTONuu+8GB1d+tVBnYNHvwXgAi4Q1OYpMHc6NcT7GtazlKhcbhNLP1TAGU
-	SV+yk5mKbA6b4WHM5iw==
-X-Received: from wruy11.prod.google.com ([2002:a5d:620b:0:b0:435:ab2d:c11b])
+        d=1e100.net; s=20230601; t=1770288704; x=1770893504;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RMyX8uRGOmUN6KZEX+IAO29sQdtn60nQJQNJ760wFa4=;
+        b=VHVBIqJwJrKIvZaSX/Fq0Tm7YhBuExm8rmTf8yH2ZAxBz7hUHw4hk3a64rhdf1DpNh
+         +0ykVwVcFsjPFRNxf7NFV2F4s1RTg9Xxx91GuWEYuj0yvMmR2SVscaoSwy6N1cIj8Q91
+         F1Nm0OslBSEi+IUuVx5CvzmeEg8xUaTJNLuaonCiUhpB82cCRc4ang6B+HBI7WL50pof
+         DUiJnPWgHniJZsXdwTScJddgVlc7IHwHu5iYX7Geys2nG1i0PHCMDaDbig/FUg8uNv1R
+         g32XtABTcdAchHG/pjYGPw6TZeluXzhHc0TBdwU89qWKd/ze3bm/5BwiQYjrMc+zwsim
+         /FMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPEuH61ktESCBHjNYbzU2TzInGN4RrvjzpDtOpcVAK/I1VxNxp3mjj07Is4JnKrpeFrbFynXqO+Q==@kvack.org
+X-Gm-Message-State: AOJu0YzjtNIWp/x+FU4qFyPBq8y/XvQ3IYiO0sAFfKMpdE7BoHX8xdYN
+	EfLdI75RHHxouWCkpJ4QSN3JfHhOY9+tNIeJG4mtMKzDAR7DQUa7y2Ot9/xcV79E6QJDH5Gzqdp
+	lvF+BMBGHKETVwWEvQQ==
+X-Received: from wrf23.prod.google.com ([2002:a05:6000:43d7:b0:436:f00:c1cf])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:5295:b0:477:58af:a91d with SMTP id 5b1f17b1804b1-4830e92c9c2mr72417905e9.5.1770288700302;
- Thu, 05 Feb 2026 02:51:40 -0800 (PST)
-Date: Thu, 05 Feb 2026 10:51:25 +0000
+ 2002:a05:600c:154a:b0:482:ef72:5778 with SMTP id 5b1f17b1804b1-4830e93478amr80493955e9.8.1770288703598;
+ Thu, 05 Feb 2026 02:51:43 -0800 (PST)
+Date: Thu, 05 Feb 2026 10:51:27 +0000
+In-Reply-To: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAC52hGkC/x3MMQqAMAxA0atIZgttEEWvIg6xjZqlSlpEKN7d4
- viG/wskVuEEU1NA+ZYkZ6xwbQP+oLizkVANaLG3aDuzSgysJqukTJnNgCN5i46CJ6jVpbzJ8x/ n5X0/Pk2sgGEAAAA=
-X-Change-Id: 20260204-binder-tristate-729ac021adca
+References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1462; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=B35AnR3cY3KY+ESrYf5USuFHaMGr2T6vQRpPugNJCz4=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBphHYzrqBA5nhRZndl3zcRt9KeGBwaoiOcP+yXj
- cTUEYoiB1yJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYR2MwAKCRAEWL7uWMY5
- RibnD/9j3gbFLogRDIYf1C8LWr+gvE5LRxKD7sfVosY6d9Ys7W4CkF0F6hQYUFD/U6wpvqT0ok3
- 9z7p1wFNskyBGJ+JfAGI6EwJh4sQwT/KKX/W6/Q7IE2wDDj0TsVO9osUl7hdEuh3UXRFikyHQds
- xHKx/OiS3SGuGA1o7RtHGAdWpNnRX4Gt55C9nwh4DKWBnqVO+WpDL8B/y0TZ9DclhJrukb9BRvn
- /QpX/9TRHlU15ACrIGJcOWsm7ebc4w0GWH/zGhg6cqNpJxp1b04N7DzeCnQOZXqYbWyYBYmPWLF
- ZDAqOvBrhXwq7ucLR6QsSL2zZ2k3JaCtpgSMJPOxbCo81CLXSFOyeuTUw5kQSx5n1ral7Jsaifd
- MKcD+a58cZ6rBJjC68hOa8ZRdwzE6OappKRRrJqoPLIvB6scsZ8aDkLXRoI85EVcSQEj1aDPlBQ
- bq55rH0uAncExMiB5V+337URq0Y8dwo2ey6Sr4n/FPOdAhU4tcBu0nt8zvSyhY5w02CGfx+oJv/
- 6JWrJUVkzPignN27tKv6rqSXBnTyAy3qw2xb5J7cAW34wJIslC24jarb2/X9T0115pKoM7mzUr/
- HoU7eNSRHawmAT2CoExCy9WOXks3DLTBu+pUXzK0ul6an10l1wEA19p4D/F62pEImvUIFcbbjWD 3qVK2o2UeRXk75Q==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1564; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=lHbpClqy5L1XyxxmB7KNUoFqATCRTP8Er1SZGKGJ6tI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBphHY4aveNr15TrzG7ybOw4TJxbQ92vW+WTNFwe
+ SWpiksgXOeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYR2OAAKCRAEWL7uWMY5
+ RpEbEAC0yt4w3VlnWagA17RkTMJUz2p4xk2iEYS9GjmxYT8blDHPFMYFaItdVcShUAHSGKR/5uP
+ sp56JdoMwss+uH23eVwJiQ+HbryIOXdKVtLt+5oKl0UqRnr5R2uiwWlvusffAP+LAQhX7oP7VWE
+ V+SwLxDVamJaGEIJp695c0KtFyx6MVHwB6+VNY3ABU5KqkjaFcDy1b97UDGC14f7sAQcpSxk7YI
+ ZQRzS/O2c29hQ4VJw/Q93nYRKuPOnB4Lhm5nFc9IZfQJ6xZhp+ND1h6pfZBgfP+78TTEY+0O0RL
+ p6niPOid/1OsqecLYRt5KuPv9CwTXmislZfm6l6AtWKzV9HSL3UwjzYp89wj+8/2y9Alk35MqDB
+ Vm3YEb/L5lP3F24xewKmeQ5qtr5D6ypVUuOJ6PNseGVxaD1uHJ25HW0xZ0o7lsd1Natiy7AogWP
+ Z1cRoiXXGc89E4N5N343Mb2Bmc8HofAHx+W/n1Kcs6XZf1phN7RKpkdqTysMnSSx6ghhABdaBE4
+ 9xSTp48eyJq9u6ArYggMUOck58X2jH5+HWSOTpAUC6omijpbWoq2lBtdcV3fh9lvrDtVR533LAh
+ ppXfMNZX5Fp+lnVq12G31nZs7qvqYsQT/QCxlBJIsYHttULTQrcsadK44k6RzJrRzBwoRAQWvQ0 UruzpTUpSPSbVnA==
 X-Mailer: b4 0.14.2
-Message-ID: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
-Subject: [PATCH 0/5] Make Rust Binder build as a module
+Message-ID: <20260205-binder-tristate-v1-2-dfc947c35d35@google.com>
+Subject: [PATCH 2/5] security: export binder symbols
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
@@ -119,14 +119,14 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.
 	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0AC311C0004
-X-Stat-Signature: 89n7rwebz897byx1hjqn1fwspd1c7nwc
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4537D100016
+X-Stat-Signature: j9nhpn6m67w5n9xewrbphdfi18cuknxf
 X-Rspam-User: 
-X-HE-Tag: 1770288701-507338
-X-HE-Meta: U2FsdGVkX1/xUpny3kEnRK3zaLOjQ3ReJlLFtU7iIvjx3LbS7SBgDcrJJ2L3G/JCT27zj8tL/7t4oKj4OBbmUzFSb4p9PIwMti5UAj3jJZgtPzbyX4qAlN6qCjqjSLXmxnaRgC/SVbaQZSmNg7jnod1HozR4pnGv84bRooXwe+IuyfIJcHXX6dt+561fqsituPdd7LHurrA+Q+sC4hv16Qz8gWa+Hh+xEC+zMmLq1rcgqsUnZ0tI23KVi9EMBimBOvohl3z+Cg4+L6eLScgGAdgot56SyTfnmTqVtP/1QyrTkh5WulNVFXnVGocLtoLZfCWa3DA9gXrLl0Mek7vss9oAY9pDvAxFhIPVOUjsm4XupvK7l0lS40UoIbPrJFtzTfE/u3mcVy5bmt+F1n3BzYpGHahBdqqOFbEviHQbfuAtwdtohiKMtJPmk1D15XlNJg9dhd92Vxiib3sy1LeMT0j0qpayJsR5pypiNqLx2/kAupjBnnl/RijD/lMjLMnfl0Px4N/gsSAic0/jO+dtAOAQgyMtVasml9Lj/l0DxHJmM9FHXcmQ+x5epwQNi4MG7JC6RR6MHjJzbTYgCbkKI/3atzV5rHKxB9VuiplFQZIeO7PRQhw/9VcSNZAYW+Stku7AjJpU4aQSJN/XnuRm6W80iDd5tFyugav+C6wpFMmUCQfc9yZnBS2dkSaSvQPYeRGBr/n5SdQFYz85RhWlhg16c2zRniQeUy/lncrBZDhRamd+ccCoyuMCDH8FauuPQQLrFIu52LrggJ+5sQKj2iVdJ1bV71uMQQ3OF8Zo4G0sqsFJy4Kv2V3kUsZNi0gQZbjOCWUU++XgEKKmw78b+QwzAztGxDCLWED2MNmOZ2q4qF9358dmg1Rh0ZXbr9r8l6elhpdXqOQM4ma6MS7i87yV4HRq7eaCIuf2hOAzUmIaafbeba8rXCwYhtLVQ4ziO2FSVEoM8aaplS0aaSe
- GbtlCLhI
- b9iBzZl7RsdXBj1T/E0KtbajxpbeBkWq5dvRR6KEuu4Ys6c5smAaGBpalQ2k+r3XH85yBxEOpubT71tEByhcWkgmdxqXC/EjNZ/Dn1SebFXxUxyThdmMwdWe/OAUrmyP/fdYqdxSpHzxkATa0+OHpsjDbpYW0a7b2zHQhqE+7oo8syR7QxvpITlvCOVA9U4899e1giLg90tOLUeFH+Al6TYC4EklqV2VjAOGjTsMAzgelw4Ugu1KU03y+F2C6LxvEOLKH7GgTXPKLGZ9tnwoTsWzk7b9shgC1sOz1efGQox+ucDttdnjE3Sow9iiTBQE72Hu4tyKnU0SJiUf3K9xCcA0FvcMoG/ySq3mOOK/dVmc6919sRLof2ysSlJiM7Js3AsohI7l2Y1kLmzCv3yJTWUMQwj8UOQAW3vbueugJHk6YvWt/g+qZ2+67z/UL7xZpplDsMlFWdh+1KcgjYmwYKaABV5+Mmnxu1cLDwIvAYssD/IlnBkunXCmZpagORCip9MYMcR1RPT8L2r4KDqVmkSpL4ed1wGGlotkqIWKccnVxvLdbSgtr/aAMN1PH62hKwlm9HSGx8LA76hk7t1e1JWbqf41q/iNDGO7A
+X-HE-Tag: 1770288705-807983
+X-HE-Meta: U2FsdGVkX1/RKNFQigzsS7jycaOzkEV6gg/kIYqEzx3hI8vMIjLgYj/nFWQF0m/TMJjS4Fkm7WEIvfQ3+xeEMb2Ch5McjDnUxSy3LtbN4fETYEZxjhfW+51/Asu27A3sK1nNc9KiJr62+lQyGA/0WbgkJOEC6Ca1qsaq2hMDhf3VxWpmWi+GHkx3ocvFoCllB3wvfjMAw/OYseVnLVwS0QvzIL5U3j/2daSqJvVnagnFY7zLGDYqDfXbRIJO/3jrNmvtzJXtSx52x51Ka/3OMSBbN04OCoY51a0q8oS6JerqaRc1NFd/rPQAykD+EucN9ZYlE+sJU3q4BbWVLzFoldC5ylf+N50IhbNJr6Hl/68gf0rIcbtxYxkOEnySd4MtTk8LVPMRRKPIs5kjoh7p/9XCCA478+N57xPxqP5zKLWDWjleFrev77ND5/0jmB0yiIZx2vZ5nWJ/Z9slfOVfA1zeMnxQYpRoXOYq9xk0Ce807x5lyaF2tuW3QnzvCn6+XAjIa02lCOGFxhY+YzPQLDsLKKx6tMvno9TJVXM3tLXh717KmbjaRI3Wye6SXQqWjqN5xs/dRFf0QPxYu0jSkVwSR8LtJA+xlwh4vgJWkBSfRi/0yh6+Z0dzbPWsS/kY15nh9sMpNoeO17Qnl01zI0jZhwQfp8XUNzr2+qzq+ESifoUv25lzOenJIYb2CL0N1lhmbckIyZafR7UCGgH5bJ7j3nfJDao8Sxf5JnKIu7s1xh1kx48yLvYDYWuRGaDPPqGhRP9F25YTeTInE4/NkEdnKbFW2JmZahzLDw9BSL+yqNu6fwUcxivjXDa+5uVieHDdQeruoTEEt+dIkyVd9KbMdowYNjAnt+8w/z2tP2OoO4GaNMNXd3AslLv9ODBLbSCubFg0pOejQl/9aDT3YxHNdlj6Y6K6eXZvDHkevbh+iyr1BaTtsPueToWyKelsp+7e10sBgaOkHRGMeqx
+ 035NHAq6
+ hF2BKgbGP+DfqvfFGxM6cUnY6mc6U+GsnvWAW0O3zadgDabLl9myLDH4qY6Laad3hGpNFAMdb5le8KDj1bJ0xN92JYy1vuHdtXXo3fjkczxByFncyEiHah8wJ1AHS/FcgzSm9NgKLPDRgmP62RwMC2ujK/Pe5fnGSsdQnaqzDEI31Lu+YO/L7qBz/J0O8C4uVPLHIpNxzMlS8KA52Vn48RStFHASFdK+RuhBViYLYZM2DOCrun7nJi9KCks1vqkROjM9lkkV1qPY8izqTaBmqLP/skvcV3VmLGbFyAabvVzIaW6BW6VJr8XpWmUgs5NOuZKRfoMgy81PKkUSBxBXJMvNf4iIRO7mfOzZKrLuZJyysAZpzGPUqhYaaAKP0J9aXFV5c1T8dQsXVx8UgfInQjvZ1R/Z0qEzGYDexJQN3ar8MdDINBLzf3XmXAru4vdK4tHrhjxvQzkbPSvu8cfo/uqJikRw1c5f88V/BwGoYBNqndf3I6L5GYNuwWkoG9tb5wQtcawsqIaZcHBM9KGEAuwcA9VKgbRirMc7OgFQ8HmHrEAk7OMq3dJXffM2iYNpyMmxWK0NMxl8YWRomvPh2zNMqhnuU+FNoQZZ2IFu/dF3CBMMah9XF2iIY03i8bdRGnoGWKMoMtGj/4hc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,43 +135,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently Binder only builds as built-in module, but in downstream
-Android branches we update the build system to make Rust Binder
-buildable as a module. The same situation applies to distros, as there
-are many distros that enable Binder for support of apps such as
-waydroid, which would benefit from the ability to build Binder as a
-module.
-
-Note that although the situation in Android may be temporary - once we
-no longer have a C implementation, it makes sense for Rust Binder to be
-built-in. But that will both take a while, and in any case, distros
-enabling Binder will benefit from it being a module even if Android goes
-back to built-in.
+To enable building Binder as a module, export these symbols.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (5):
-      export file_close_fd and task_work_add
-      security: export binder symbols
-      mm: export zap_page_range_single and list_lru_add/del
-      ipc: export init_ipc_ns and put_ipc_ns
-      rust_binder: mark ANDROID_BINDER_IPC_RUST tristate
+ security/security.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
- drivers/android/Kconfig | 2 +-
- fs/file.c               | 1 +
- ipc/msgutil.c           | 1 +
- ipc/namespace.c         | 1 +
- kernel/task_work.c      | 1 +
- mm/list_lru.c           | 2 ++
- mm/memory.c             | 1 +
- security/security.c     | 4 ++++
- 8 files changed, 12 insertions(+), 1 deletion(-)
----
-base-commit: 4df29fb5bcebeea28b29386dec18355949512ca1
-change-id: 20260204-binder-tristate-729ac021adca
+diff --git a/security/security.c b/security/security.c
+index 31a688650601b62df1e536bbe4407817edbd6707..b4776f0e25b33df95379a08a7659c0e5f767237b 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -488,6 +488,7 @@ int security_binder_set_context_mgr(const struct cred *mgr)
+ {
+ 	return call_int_hook(binder_set_context_mgr, mgr);
+ }
++EXPORT_SYMBOL_GPL(security_binder_set_context_mgr);
+ 
+ /**
+  * security_binder_transaction() - Check if a binder transaction is allowed
+@@ -503,6 +504,7 @@ int security_binder_transaction(const struct cred *from,
+ {
+ 	return call_int_hook(binder_transaction, from, to);
+ }
++EXPORT_SYMBOL_GPL(security_binder_transaction);
+ 
+ /**
+  * security_binder_transfer_binder() - Check if a binder transfer is allowed
+@@ -518,6 +520,7 @@ int security_binder_transfer_binder(const struct cred *from,
+ {
+ 	return call_int_hook(binder_transfer_binder, from, to);
+ }
++EXPORT_SYMBOL_GPL(security_binder_transfer_binder);
+ 
+ /**
+  * security_binder_transfer_file() - Check if a binder file xfer is allowed
+@@ -534,6 +537,7 @@ int security_binder_transfer_file(const struct cred *from,
+ {
+ 	return call_int_hook(binder_transfer_file, from, to, file);
+ }
++EXPORT_SYMBOL_GPL(security_binder_transfer_file);
+ 
+ /**
+  * security_ptrace_access_check() - Check if tracing is allowed
 
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.53.0.rc2.204.g2597b5adb4-goog
 
 
