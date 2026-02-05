@@ -4,140 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76539ECD983
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 15:48:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAD37ECD981
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 15:56:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6F5C6B0089; Thu,  5 Feb 2026 10:48:21 -0500 (EST)
+	id 34F906B0089; Thu,  5 Feb 2026 10:56:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1C6F6B008A; Thu,  5 Feb 2026 10:48:21 -0500 (EST)
+	id 2FD036B008A; Thu,  5 Feb 2026 10:56:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A1B506B0092; Thu,  5 Feb 2026 10:48:21 -0500 (EST)
+	id 1FBF56B0092; Thu,  5 Feb 2026 10:56:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F2986B0089
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:48:21 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 40E60160601
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:48:21 +0000 (UTC)
-X-FDA: 84410834802.14.B2EA633
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8C30D140008
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:48:19 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nu876Qwq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770306499; a=rsa-sha256;
-	cv=none;
-	b=G0206OQLo3cjj6Zkb+Q0JMIRcUuzRekmfkwdYoE7rluP2SQ0R8zbJBNOGyZF8rqAM41eoD
-	aszWpn4WM5G3ptovw+iuae+v83hUy/J+/Jv87CbJoQsSH1CUGgVoxnmfvE7a9ok/jJlY36
-	Ra+rbr8ScKruqhHztDOvQtoAbQj+TDU=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Nu876Qwq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F5ED6B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:56:47 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A2ECF1A02E5
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:56:46 +0000 (UTC)
+X-FDA: 84410856012.29.1439AE3
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8880D20002
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 15:56:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ilFoiW3n;
+	spf=pass (imf13.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770306499;
+	s=arc-20220608; t=1770307004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EXO/yr95BQvFU/kb/2U+bvG/94BK8oDMmoN0GatQvrk=;
-	b=KjwsR9BMfuOR0xoRoN5FmXIM4dc9TxcRYcIVjfILdyJqwrEw4wLnEd8/isM9EKPwaJTI8H
-	cPV+pcK5ASIa161vtvS3P63HwBCKYUKEDSpCHupDNVJMFyH4JadV3s1uSUDNp8bgtDJ8w+
-	OIK55S83wEUSXKOYYfe2KkIwaJHsCMY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E27AA6011F;
-	Thu,  5 Feb 2026 15:48:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64314C4CEF7;
-	Thu,  5 Feb 2026 15:48:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770306498;
-	bh=VWhQr3Z+ccbJrrcfBGfZJZEc2/K4wBqICeXlpi3Prmk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Nu876QwqbfV5qynC7ba1PNcW6kFoCiX0xZVJg94nQ/YAXjYFugrvsueR+JSpe2pae
-	 rY0c8JfG9b0JRDqQq4Bdt0GAAGY6BNk/zv8c38yUpeHoXwsdifhSzLinBTFN/V0Els
-	 iAKyKePSbqtE23p09QbWhgQhBbyVWbWFndo0F6gE0hqw0b/yi2PG6oWYQANy/Omti8
-	 Nc0WwV5+q3NLPGWequp2spO0xxgan0o8bnhbcE4g7FWk60WSOiF76gkPRjnfrnLnF7
-	 gYvEmGzE0oL1EF3oVxlAqGw1ynwGrzRJyw+5WNAEZBIGvWd8dEWsgXgor76Ac9oGz/
-	 z/Q372FU9uAnA==
-Message-ID: <ce4334f8-5e54-4dbf-9be0-059279ef1962@kernel.org>
-Date: Thu, 5 Feb 2026 16:48:13 +0100
+	bh=2eUzdVsVgqGYxQMSlMfTZqWPBf2xiq3xt7FhI76ZwiI=;
+	b=oF+HRkAGek5Ve1wKWbQOhElKi7hBecwgcyD6kdXOJiPOHj/CktdU4uvqJqdqwlSc9ngbOp
+	IM95gJdlxuCa3BARbkahx86n+tdJ+JZKqwoEAPGZV+jkf7bJptENSdi0Ns9EQNOBOKDXh2
+	iRByUkNezzP/p6YtAe8lqoax9cKgJa4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ilFoiW3n;
+	spf=pass (imf13.hostedemail.com: domain of bfoster@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bfoster@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770307004; a=rsa-sha256;
+	cv=none;
+	b=7kHmqaaqTOu4LT2Th1wccrbzgHDtd7ViLD36dr14P2BS39G8iEBCM9begMveARXWVR2fJv
+	e9rOdH0HA3skv77y8pxDvRvSfZXIUTB9dUvkdaJIUCHOYuDijAkWzf4Qu33gHzShBI46x6
+	HMpT+8MMIH2EPIs3tCx7OA6/Ax+ZBBg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770307003;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2eUzdVsVgqGYxQMSlMfTZqWPBf2xiq3xt7FhI76ZwiI=;
+	b=ilFoiW3n2K1GfGb+PSGW90aHtedUIGwQd/IJnTIGUSpUSA1qmrsFy39DhSsH2pEuTNvOzt
+	j9rAk8EtUsUGXQurHim7QdKHOUVL6hJ20n9+Gr0u0lAfwKYnid0sGz0Ginh/LgZ31vG8Jm
+	gpC3kDHFYHhceIS3VaW3wSD4mnMQELg=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-70-AUlrj7mrP0CGSw1HpnAcmw-1; Thu,
+ 05 Feb 2026 10:56:36 -0500
+X-MC-Unique: AUlrj7mrP0CGSw1HpnAcmw-1
+X-Mimecast-MFC-AGG-ID: AUlrj7mrP0CGSw1HpnAcmw_1770306993
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 589AB1955F28;
+	Thu,  5 Feb 2026 15:56:32 +0000 (UTC)
+Received: from bfoster (unknown [10.22.88.110])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B0266300DDA1;
+	Thu,  5 Feb 2026 15:56:26 +0000 (UTC)
+Date: Thu, 5 Feb 2026 10:56:24 -0500
+From: Brian Foster <bfoster@redhat.com>
+To: Kundan Kumar <kundan.kumar@samsung.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, willy@infradead.org,
+	mcgrof@kernel.org, clm@meta.com, david@fromorbit.com,
+	amir73il@gmail.com, axboe@kernel.dk, hch@lst.de,
+	ritesh.list@gmail.com, dave@stgolabs.net, cem@kernel.org,
+	wangyufei@vivo.com, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, linux-xfs@vger.kernel.org, gost.dev@samsung.com,
+	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
+Subject: Re: [PATCH v3 4/6] xfs: tag folios with AG number during buffered
+ write via iomap attach hook
+Message-ID: <aYS9qOxsv-xoUwGZ@bfoster>
+References: <20260116100818.7576-1-kundan.kumar@samsung.com>
+ <CGME20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79@epcas5p2.samsung.com>
+ <20260116100818.7576-5-kundan.kumar@samsung.com>
+ <20260129004745.GC7712@frogsfrogsfrogs>
+ <7dc267e7-b6e0-4be2-a60e-9d90dcf472eb@samsung.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
- during hot-add
-To: Kiryl Shutsemau <kas@kernel.org>, "Pratik R. Sampat" <prsampat@amd.com>
-Cc: linux-mm@kvack.org, linux-coco@lists.linux.dev, x86@kernel.org,
- linux-kernel@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org,
- akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com,
- michael.roth@amd.com
-References: <20260203174946.1198053-1-prsampat@amd.com>
- <20260203174946.1198053-2-prsampat@amd.com>
- <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
- <70be936e-e49d-4485-8d1e-416fdf8f40a4@amd.com>
- <aYR0vqwyFPo3EKAi@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aYR0vqwyFPo3EKAi@thinkstation>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <7dc267e7-b6e0-4be2-a60e-9d90dcf472eb@samsung.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: 8yyyJlX010XbEUNqIJSWuawh7reuJ9mLM98ZGcv7TeY_1770306993
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam11
+X-Stat-Signature: i4xbj39gghmd8y8n7phcrud671684gks
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 8C30D140008
-X-Stat-Signature: we8hnc5o4d8fsfqx9qrcd48zuwe6etqw
-X-HE-Tag: 1770306499-434399
-X-HE-Meta: U2FsdGVkX1+Q60w53L/pI2gTkayQvImHPm8Gw5krTbardO+VIr3yz4KqT49SaOSk3xAfS1uF9Q/ZGwYO4NMsZr8A4Y0tMTPOTWva4z1GZ19UlHhKxD9NzXHyc67AaVW1OEerhF0pjoBp8TxUJ44VNMpDLaFMLL/zLWeGa1M1cQgESDsP2g2BsJmubLMEkI3hKEOGTNlQU+0tleOE6HaYvWztet8TLhA6AeVvqto9h00/kdSi9ogxe9TQzZwaFehF/A2BbeGfhZTK3UdIy0iOh+4KR14mUq4DLqEgGOiu2wej1D+ufYXPVzI+9BLlYk46D6aB3C4Uxs6dLvBbT94IlAdGnSCWwFw6h/Lzpl5cYfhM36aW2I0twh89c2Ne74o7JteqJyERtlsmkLqqbiKPF6aDGbYoBeg3XAl3QdEn6areIwoq2HZ8+yzvwwTbUN+Vbhuur41RbGDvO0W2+bx5zf4zYjIYruXHoRZSqJ+jHgSwYyz/bj4v4LqP/BJvrKfjV41ta9Fdj6Q054RlfS5lYDWrMQOHvuZPpFRRfCL2Jrzj9mhWxI1R1iLwbUa/7PsnM9GlU8lIoiPtUkHodBOSOTe3CqHh7Mr3Vh77zW5ui3SRPEluSB5ZI67+4o3DTqT9W8V97BxjhtAIEaRNP7DYEkFIt3fU9rNuOUI0yJdlonDcF7D84Pble1HkWPgwCrRe+jK0yGnZV/zkUyObYX6WHPrYD2BFJ+g/CDN/djTq7dtz/h0cFzqvOwjRMTSpmSKQCLWhZk4JJWq9t3p/GydCoobEC0U2kR2QwgEh3hLd0euOx7wq9iEq4jL9IXKyqra/NYyoOBz8JmrAYtDU8sfVbWs9YUs9YvySR6VGQjHPMfEjOS8rn1OWC995Hm+EXHwJMBSBAsEnhHHNR2HnF2GELFEvfd11mI63QMAN3kbwLodRb4cVHGTLiFygpS43Ta/VAiX5GJL6yc9gITqufe7
- YPXV1UAL
- j2OpxpxN6l348NbPzyPUBZA64l31nz83qgMfJLTG2tWw802qdSlb6iREfp021MVyCPjfgKtW27L/UxxoQo/SxqyxEiPl4Fb3GkU7HFv9PkdIh2aYwk9fJ/ViwGYn9EbrQlrobtcGIwDXKb0iY/lbfSHUw9ne+5/SBVUYiiY5GgIAXcSSsROsXW80q10MSF9LuEjOqDqvCbwPluX6g+KabNT2ZuDoal6pagtTA2/cjoCuQt/6cqGLjsRWmk5a8jCip/vRtc5K18ns0n8y6Wh4XfUw3DBAR3u8WrIZMwNA5gnVMsaXhZe3FV5bg4w==
+X-Rspamd-Queue-Id: 8880D20002
+X-HE-Tag: 1770307004-475037
+X-HE-Meta: U2FsdGVkX18IjYb2KbnuLWTgCcDJMw0+QyyANcD1Sj1yz+K44CfDRhW380r8dOVFxhBtgLvBbnkfZuAEYcMPAbgHL/kMRYjmlM2hW0pQimoIwYYGPSb/OWnsSmtUDueD6J2YCiBACzbji4L5J2yJph1lGb8ko+TLgvzoHKFcaTb2FsvEAFd/zqoIaf+YIjUzxwFBloQMC8VZ8LERvgZhbRCZmRNI+5N3h8Pj9hveUB8uXzT8dYmS8SfTYq8RjBUkIRCU+RbudqSqX9JnfLx2RsZhLCDqOJKuR3wdq8uKbAg57+slk/QcpJlp6DVl5na9vi0opqW8lQMkN0x9UTMQY/cQTdyWqZdlzqKy3bmtC/6CuSd+cPnWqxfphTwhXBNhSj2hDUjYieSbdXVeGuAWSRBnKrxNqhlQdXBgsaB1IpueoyyLn2f6WVGtgdTBN6y6d+/vWKoTybtXW1jz6b587mSoxam6Wx9eTWMFbTzdn6nelzeIvCULY/WCsKYXQJyu+Rh+v0ECVC+NVT+z2yzwMMxrIQ0GAgXuc9trPKokR45ZpRTmd4XEeW6lPKVP3Rnkn634IQs6BRx+GRaZksiaDUhrv8A4Kv6zQhkQgc3idMx9OfwEtp0inJoiUH7lRy+1f/Bcfo+DhItC/dnecbBADOXVtwdlUbf9JOp9bbF20lpyGTOUtk1pADO7P34Xd3Kho2HPeX9BUzFMAPsyCkvoZr6kCveIUJZZuhTKmXY4wMlDlmlAiHopx9jnIlxOKEPYmPZXeiblt+sOkFCnHTTX01hCVcd1Ota/9xfO5ABKUWaBe4GiU8mAis8opy1zixMhvg0CHtuaQcWg2J2iZqFmd9ZNtRlnCqDTJLfy1yJqLOyCRoqZD7u0Vubg4aP01pntynomJDUj5i1tRUo2GjiaPx+wF7RGEG7Kq5hNBP6bPXHwBtM7f5Sbri/zA41aZbY0eyC8dPYOb/eMsrNZFLh
+ GJjbriHQ
+ zwqc7ybeRSZPncT/hbQWuSjt+eJu7XGYEfS+LcSYtoQW6KmRwwC/47w10oMPnFcvtrPnkP6BGT66ceLXYBDoc7083vMqlcUWpjsVFp4CuoUn+gD+cgdwAM6FsSp8uY7zsf6ahgCRVMboJrOpt61dt5h/N8dHfCQs54VV51ozYyYfebwXJU7KKxJ+btnRGKSFkzCRa1JXo4RqlFHF1N7yctSO0vj7vZouzD8/vCXxNwy/i7dr1H57ym353hA1qaSfrFFRedRHiMOV6yU5VpVK3bPwMsu0vDq1qKHT2+icBQyibQi3ZjU7KXK6hQq3Y2+/vGVlSDs3wObczvFhGz2bBmrlei5ncCbDOplti5RPj+ywd4/SwQsPOsfoIUuq6/otQJ8+IMyFbE+Tb73Q+FuoIxpRepk07kX2KmzIp2N1qqO92keS02Ugrm1wR83vKT8kgROodLxFtEeTuCFk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,65 +115,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/26 11:48, Kiryl Shutsemau wrote:
-> On Wed, Feb 04, 2026 at 09:50:09PM -0600, Pratik R. Sampat wrote:
->>
->>
->> On 2/4/26 2:00 PM, David Hildenbrand (arm) wrote:
->>>
->>> I really hate that accepting (and un-accepting) hotplugged memory is different to accepting ordinary boot memory.
->>>
->>> Is there really no way we can get a reasonable implementation where we just call a generic accept_memory() and it will know what to do?
->>>
->>
->> Sure, that shouldn't be impossible.
->>
->> The only reason I initially kept them separate is because we accept and update
->> the bitmap unconditionally. This mainly applies to cold-plugged memory since
->> their bitmap state after remove shouldn't matter. However, as we are now
->> correctly setting the bits in the hot-remove path we should be fine accepting
->> from the for_each_set_bitrange_from() logic within accept_memory(), I think.
->>
->> Something like so?
->>
->> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
->> index d11e7836200a..e56adfd382f8 100644
->> --- a/drivers/firmware/efi/unaccepted_memory.c
->> +++ b/drivers/firmware/efi/unaccepted_memory.c
->> @@ -36,6 +36,7 @@ void accept_memory(phys_addr_t start, unsigned long size)
->>          unsigned long range_start, range_end;
->>          struct accept_range range, *entry;
->>          phys_addr_t end = start + size;
->> +       phys_addr_t bitmap_end;
->>          unsigned long flags;
->>          u64 unit_size;
->>
->> @@ -44,6 +45,21 @@ void accept_memory(phys_addr_t start, unsigned long size)
->>                  return;
->>
->>          unit_size = unaccepted->unit_size;
->> +       bitmap_end = unaccepted->phys_base + unaccepted->size * unit_size * BITS_PER_BYTE;
->> +
->> +       /* Memory completely beyond bitmap: hotplug memory, accept unconditionally */
->> +       if (start >= bitmap_end) {
->> +               arch_accept_memory(start, end);
->> +               return;
->> +       }
->> +
->> +       /* Memory partially beyond bitmap */
->> +       if (end > bitmap_end) {
->> +               arch_accept_memory(bitmap_end, end);
->> +               end = bitmap_end;
->> +       }
+On Tue, Feb 03, 2026 at 12:58:34PM +0530, Kundan Kumar wrote:
+> On 1/29/2026 6:17 AM, Darrick J. Wong wrote:
+> > On Fri, Jan 16, 2026 at 03:38:16PM +0530, Kundan Kumar wrote:
+> >> Use the iomap attach hook to tag folios with their predicted
+> >> allocation group at write time. Mapped extents derive AG directly;
+> >> delalloc and hole cases use a lightweight predictor.
+> >>
+> >> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+> >> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
+> >> ---
+> >>   fs/xfs/xfs_iomap.c | 114 +++++++++++++++++++++++++++++++++++++++++++++
+> >>   1 file changed, 114 insertions(+)
+> >>
+> >> diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+> >> index 490e12cb99be..3c927ce118fe 100644
+> >> --- a/fs/xfs/xfs_iomap.c
+> >> +++ b/fs/xfs/xfs_iomap.c
+> >> @@ -12,6 +12,9 @@
+> >>   #include "xfs_trans_resv.h"
+> >>   #include "xfs_mount.h"
+> >>   #include "xfs_inode.h"
+> >> +#include "xfs_alloc.h"
+> >> +#include "xfs_ag.h"
+> >> +#include "xfs_ag_resv.h"
+> >>   #include "xfs_btree.h"
+> >>   #include "xfs_bmap_btree.h"
+> >>   #include "xfs_bmap.h"
+> >> @@ -92,8 +95,119 @@ xfs_iomap_valid(
+> >>   	return true;
+> >>   }
+> >>   
+> >> +static xfs_agnumber_t
+> >> +xfs_predict_delalloc_agno(const struct xfs_inode *ip, loff_t pos, loff_t len)
+> >> +{
+> >> +	struct xfs_mount *mp = ip->i_mount;
+> >> +	xfs_agnumber_t start_agno, agno, best_agno;
+> >> +	struct xfs_perag *pag;
+> >> +
+> >> +	xfs_extlen_t free, resv, avail;
+> >> +	xfs_extlen_t need_fsbs, min_free_fsbs;
+> >> +	xfs_extlen_t best_free = 0;
+> >> +	xfs_agnumber_t agcount = mp->m_sb.sb_agcount;
+> >> +
+> >> +	/* RT inodes allocate from the realtime volume */
+> >> +	if (XFS_IS_REALTIME_INODE(ip))
+> >> +		return XFS_INO_TO_AGNO(mp, ip->i_ino);
+> >> +
+> >> +	start_agno =  XFS_INO_TO_AGNO(mp, ip->i_ino);
+> >> +
+> >> +	/*
+> >> +	 * size-based minimum free requirement.
+> >> +	 * Convert bytes to fsbs and require some slack.
+> >> +	 */
+> >> +	need_fsbs = XFS_B_TO_FSB(mp, (xfs_fsize_t)len);
+> >> +	min_free_fsbs = need_fsbs + max_t(xfs_extlen_t, need_fsbs >> 2, 128);
+> >> +
+> >> +	/*
+> >> +	 * scan AGs starting at start_agno and wrapping.
+> >> +	 * Pick the first AG that meets min_free_fsbs after reservations.
+> >> +	 * Keep a "best" fallback = maximum (free - resv).
+> >> +	 */
+> >> +	best_agno = start_agno;
+> >> +
+> >> +	for (xfs_agnumber_t i = 0; i < agcount; i++) {
+> >> +		agno = (start_agno + i) % agcount;
+> >> +		pag = xfs_perag_get(mp, agno);
+> >> +
+> >> +		if (!xfs_perag_initialised_agf(pag))
+> >> +			goto next;
+> >> +
+> >> +		free = READ_ONCE(pag->pagf_freeblks);
+> >> +		resv = xfs_ag_resv_needed(pag, XFS_AG_RESV_NONE);
+> >> +
+> >> +		if (free <= resv)
+> >> +			goto next;
+> >> +
+> >> +		avail = free - resv;
+> >> +
+> >> +		if (avail >= min_free_fsbs) {
+> >> +			xfs_perag_put(pag);
+> >> +			return agno;
+> >> +		}
+> >> +
+> >> +		if (avail > best_free) {
+> >> +			best_free = avail;
+> >> +			best_agno = agno;
+> >> +		}
+> >> +next:
+> >> +		xfs_perag_put(pag);
+> >> +	}
+> >> +
+> >> +	return best_agno;
+> >> +}
+> >> +
+> >> +static inline xfs_agnumber_t xfs_ag_from_iomap(const struct xfs_mount *mp,
+> >> +		const struct iomap *iomap,
+> >> +		const struct xfs_inode *ip, loff_t pos, size_t len)
+> >> +{
+> >> +	if (iomap->type == IOMAP_MAPPED || iomap->type == IOMAP_UNWRITTEN) {
+> >> +		/* iomap->addr is byte address on device for buffered I/O */
+> >> +		xfs_fsblock_t fsb = XFS_BB_TO_FSBT(mp, BTOBB(iomap->addr));
+> >> +
+> >> +		return XFS_FSB_TO_AGNO(mp, fsb);
+> >> +	} else if (iomap->type == IOMAP_HOLE || iomap->type == IOMAP_DELALLOC) {
+> >> +		return xfs_predict_delalloc_agno(ip, pos, len);
+> > 
+> > Is it worth doing an AG scan to guess where the allocation might come
+> > from?  The predictions could turn out to be wrong by virtue of other
+> > delalloc regions being written back between the time that xfs_agp_set is
+> > called, and the actual bmapi_write call.
+> > 
 > 
-> You are calling arch_accept_memory() on every memory allocation if the
-> memory is not represented in the bitmap. Hard NAK.
+> The delalloc prediction works well in the common cases: (1) when an AG 
+> has sufficient free space and allocations stay within it, and (2) when 
+> an AG becomes full and allocation naturally moves to the next suitable AG.
+> 
+> The only case where the prediction can be wrong is when an AG is in the
+> process of being exhausted concurrently with writeback, so allocation
+> shifts between the time we tag the folio and the actual bmapi_write.
+> My understanding is that window is narrow, and only a small fraction of 
+> IOs would be misrouted.
+> 
 
-In which scenarios would we not have memory represented in the bitmap? 
-Guests with <4 GiB? (how does kexec work?) Anything else?
+I wonder how true that would be under more mixed workloads. For example,
+if writeback is iterating AGs under a trylock, all it really takes to
+redirect incorrectly is lock contention, which then seems like it could
+be a compounding factor for other AG workers.
 
--- 
-Cheers,
+Another thing that comes to mind is the writeback delay. For example, if
+we buffer up enough delalloc in pagecache to one or more inodes that
+target the same AG, then it seems possible to hint folios to AGs that
+are already full, they "just don't know it yet." Maybe that is more of
+an odd/rare case though.
 
-David
+Perhaps the better question here is.. how would one test for this? It
+might be interesting to have stats counters or something that could
+indicate hits and misses wrt the hint such that this could be more
+easily evaluated against different workloads (assuming that doesn't
+already exist and I missed it).. hm?
+
+Brian
+
+> >> +	}
+> >> +
+> >> +	return XFS_INO_TO_AGNO(mp, ip->i_ino);
+> >> +}
+> >> +
+> >> +static void xfs_agp_set(struct xfs_inode *ip, pgoff_t index,
+> >> +			xfs_agnumber_t agno, u8 type)
+> >> +{
+> >> +	u32 packed = xfs_agp_pack((u32)agno, type, true);
+> >> +
+> >> +	/* store as immediate value */
+> >> +	xa_store(&ip->i_ag_pmap, index, xa_mk_value(packed), GFP_NOFS);
+> >> +
+> >> +	/* Mark this AG as having potential dirty work */
+> >> +	if (ip->i_ag_dirty_bitmap && (u32)agno < ip->i_ag_dirty_bits)
+> >> +		set_bit((u32)agno, ip->i_ag_dirty_bitmap);
+> >> +}
+> >> +
+> >> +static void
+> >> +xfs_iomap_tag_folio(const struct iomap *iomap, struct folio *folio,
+> >> +		loff_t pos, size_t len)
+> >> +{
+> >> +	struct inode *inode;
+> >> +	struct xfs_inode *ip;
+> >> +	struct xfs_mount *mp;
+> >> +	xfs_agnumber_t agno;
+> >> +
+> >> +	inode = folio_mapping(folio)->host;
+> >> +	ip = XFS_I(inode);
+> >> +	mp = ip->i_mount;
+> >> +
+> >> +	agno = xfs_ag_from_iomap(mp, iomap, ip, pos, len);
+> >> +
+> >> +	xfs_agp_set(ip, folio->index, agno, (u8)iomap->type);
+> > 
+> > Hrm, so no, the ag_pmap only caches the ag number for the index of a
+> > folio, even if it spans many many blocks.
+> > 
+> > --D
+> > 
+> 
+> Thanks for pointing out, I will rework to handle this case.
+> 
+> >> +}
+> >> +
+> >>   const struct iomap_write_ops xfs_iomap_write_ops = {
+> >>   	.iomap_valid		= xfs_iomap_valid,
+> >> +	.tag_folio		= xfs_iomap_tag_folio,
+> >>   };
+> >>   
+> >>   int
+> >> -- 
+> >> 2.25.1
+> >>
+> >>
+> > 
+> 
+> 
+
 
