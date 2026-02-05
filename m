@@ -4,154 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0DB5ECD9A6
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 21:30:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6E6EECD997
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 21:34:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAFF66B008A; Thu,  5 Feb 2026 16:30:29 -0500 (EST)
+	id EE5DC6B008A; Thu,  5 Feb 2026 16:34:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E882D6B0092; Thu,  5 Feb 2026 16:30:29 -0500 (EST)
+	id EBD9B6B0092; Thu,  5 Feb 2026 16:34:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D32236B0093; Thu,  5 Feb 2026 16:30:29 -0500 (EST)
+	id DF4466B0093; Thu,  5 Feb 2026 16:34:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BEC866B008A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 16:30:29 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58C4313B8DA
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:30:29 +0000 (UTC)
-X-FDA: 84411696978.07.51268B5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9255A140011
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:30:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWJa58im;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CBF9A6B008A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 16:34:00 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8F22E13B7BA
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:34:00 +0000 (UTC)
+X-FDA: 84411705840.10.99672B1
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 8D8D040012
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:33:58 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KnjjFg3Z;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770327027;
+	s=arc-20220608; t=1770327238;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qV6lOMhQwHxIKaaDmlM3BFVff/Q2VSOnebunH9gwrKQ=;
-	b=0ubsh3/B233tH4jphws8XZFvFFB10Vgh5Qd+uGDY/99QGaPvtowRNHc2dI4lPIFiFOPfjq
-	XwNEQxgHmrQvx4YfBTLLaOGyAfEowu35TN4taGfDJ7cy8nyb9vuGC/zExFNQcXKZ73rrdi
-	K+lQSmGAtuXjO8wT9td5dRFFIfr908Y=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UWJa58im;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770327027; a=rsa-sha256;
+	bh=+qpr3waIcmIzqz7i9F6KVzxWpJS3O2v0oEGwyPDl/Qc=;
+	b=zBvorQj16TyiphxJ+UF12/GmnmUProEQt+LCzRcBX1IS0EGKcxtFfX1j1YxvBfCibbdwhR
+	FPyWLyRVlxO0tS8xedbFi3EBOpkQ+zNSmr5M2xHWCLuus6h+j20LIYAR6vQ6upBWRr9CpZ
+	TZfTJ7FxmDOryJBLyKH+Zh8AR5HWEWY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770327238; a=rsa-sha256;
 	cv=none;
-	b=14JreG3FqCIXtqVp3unV+PQ54zxRIAgasc77WGCRWFu11MF9OWlvOm1YgJfphZ1Xls7ktO
-	IGTdH2sRRDM4hp8VsQteSwyLAC2HNBnSIAguzuLBKjkG5x6wwKrF6RAu4UAVzBSPW+Sj5t
-	45HJgUGzsqwuIfhvUeKD21q+r8JiwNs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ACA8F600AD;
-	Thu,  5 Feb 2026 21:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF3DC4CEF7;
-	Thu,  5 Feb 2026 21:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770327026;
-	bh=Lx+GDw84ajKkD7Q7e2YiWEUXDPohIGrcgs1E8NQihRE=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=UWJa58imC0523bdHUwOv4s43hDkqXGIQPMlrIIoBFoNK5Q4WIDQtxwtXe9LRgv7C3
-	 1QOhGsuqa7ynp1ftSHwRBc4UYKNQPQHilUoIRYBu6uIlD7s6MVOdVRrnDVQMKnA0lt
-	 e6+/I/RmUZ3ndJGVodsAmXmCGSnYIDW3QpvPkGhYuqgaC5hXHneSYbLeskpQPGHxZ2
-	 IwNCwiebzbU5H7TgTuurErSwRhUQVzMASWNT0ykO2LdV0Co4UK752mykmHWViMd30t
-	 Z7FcWNRAjEhgh2CYvI6dF9duOwmDfMiuXG3HQsi8YuTLX66jVqQuIVP3rADGoClRKg
-	 7odoQAFZkaeLQ==
-Message-ID: <2cb4503d-3a3f-4f6c-8038-7b3d1c74b3c2@kernel.org>
-Date: Thu, 5 Feb 2026 22:30:14 +0100
+	b=OVc30kIB28V7ea+QSM7VmeWrerwzRqztVmw3CUwLv3xJRputFMhKsR6Bz9VtwXJHPzG1BW
+	vwRiLPqR59MWHP6wQCHm92+VIjSmoi9eV8vfm/Mf6tl3yZVH9vqcMmzXLcL4sg4ZIiN/44
+	k6/xAObvF/RZXopwzkpIU7UH2QmMG0c=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=KnjjFg3Z;
+	spf=pass (imf11.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Thu, 5 Feb 2026 13:33:50 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770327236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+qpr3waIcmIzqz7i9F6KVzxWpJS3O2v0oEGwyPDl/Qc=;
+	b=KnjjFg3ZoglQX/inTXLusN3966exuJUxp2WyryH2K3LXnD6N6OIeQHR3Qu5ALTGC0KkvfK
+	LkUXJjI1jLCH0qdOoR1EXvIbk4bik6qKdIzt3l82icJgDAUj5Q4Aw3T6Gf9jrLlb/Gvm9Y
+	5RA/xE3IcfAEvy1PHanFM9IFTKkBC7o=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible pages
+Message-ID: <aYUKpZ8nCB6MTQGY@linux.dev>
+References: <20260205053013.25134-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>, Lance Yang <lance.yang@linux.dev>
-Cc: Dave Hansen <dave.hansen@intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- aneesh.kumar@kernel.org, arnd@arndb.de, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, boris.ostrovsky@oracle.com, bp@alien8.de,
- dave.hansen@linux.intel.com, dev.jain@arm.com, hpa@zytor.com,
- hughd@google.com, ioworker0@gmail.com, jannh@google.com, jgross@suse.com,
- kvm@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mingo@redhat.com, npache@redhat.com,
- npiggin@gmail.com, pbonzini@redhat.com, riel@surriel.com,
- ryan.roberts@arm.com, seanjc@google.com, shy828301@gmail.com,
- tglx@linutronix.de, virtualization@lists.linux.dev, will@kernel.org,
- x86@kernel.org, ypodemsk@redhat.com, ziy@nvidia.com
-References: <20260202133713.GF1395266@noisy.programming.kicks-ass.net>
- <540adec9-c483-460a-a682-f2076cf015c2@linux.dev>
- <20260202150957.GD1282955@noisy.programming.kicks-ass.net>
- <d6944cd8-d3b7-4b16-ab52-a61e7dc2221c@linux.dev>
- <06d48a52-e4ec-47cd-b3fb-0fccd4dc49f4@kernel.org>
- <3026ad8d-92ad-4683-8c3e-733d4070d033@linux.dev>
- <64f3a75a-30ff-4bee-833c-be5dba05f72b@intel.com>
- <c985a8ed-37ad-415e-b7b4-18a66b4da3fe@linux.dev>
- <647cbe2e-a034-4a75-9492-21ea1708eccc@intel.com>
- <99237729-f2b0-4a7a-8213-65a2f1c57744@linux.dev>
- <aYTJzft5cuqD9akC@casper.infradead.org>
- <6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9255A140011
-X-Stat-Signature: h38j57ptzkewwbi1c7q4hco1r1jzh5f3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260205053013.25134-1-jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 8D8D040012
 X-Rspam-User: 
-X-HE-Tag: 1770327027-590850
-X-HE-Meta: U2FsdGVkX1/yPLkAvhwLwBw58JrTiFTiqJhTpBe/dU1Nzyt731v8yi53cCngvwysOo3Bj47QmiDozoXZDS4cE1Nch67l/23nmUUWAaEWNZQ+1LhZbef48XPG/0ULndX3XyMbHyNDFsFNg2nrI4rFr7ck8KiMrQNfISu3XgR9w4Xkuh4rulck88gBEFleJ6XguH6ejdoaHXC8rNGCDnju4CGyAlouY9YiFisFFn4hlOy31qRlt61aL3X/0b1Ah1C2sk2pRV70jemlvZOjv7u1P7UyNvbV6893NqoYzj6kCHkxva4lzTGX5hEAQM5I5c2eiAvj8kFHMf3noBQqTXpyMMZKOWeA6blwGrZkydxQc3JIfC33QtjSBokGf/2jE9OeKAdDtyAaj5d4wpV4QkJ25vgJkZZgUTCQh1oxckEpQl8rEF9MM2UZdSvztEYWJGWdewtTQluAetBt09AVHqNc6VK/Inr/1Njjkh95ZB09hkCZY8qt6YJsrH2TQ+VecOhHq/wF3NIcCEBcWde5zcX9Kbl3Var29YO7JYm1IMaV/ftTrLp27BQ+WcbhIqJz8KJfTVaya9AX8GMQDRYkG2ksWkf82yf0S+zSVIG3wieDKpILhWpWVzuJ8HbbtppoWNRL9y6TyM+HaxEwWa/5JZf9Zi4VYSmzjzQ5j/DD4cICmanCXD+y5WluUP4txf2HMXv1hs/Cm0MB4mlDi/lrZnWhVDFCkDNyWxEAWcP2FVqi6BLXg2jB2gbzTlPe7wRceZylatzGF4/bywpCpdQsicety3L/nquys9jqmhCQTL0duycMOHQPrBYEYeod1eHWdAqpmi3HvIuKtcnziqo/lljV7xUgWNH+X5QTKiMRyWwfb/OQ0Y1xxRE+PjvG2YBrfwuZy61WuP1uw6LFfTuI8qY20nTTH2RCsFGuMOj772Q3V1DpvyYrfE749nJ6xVC/KzEhpn7Xy4k4gY/UoaQ3O42
- gAty6mQO
- ePDs34/8ON4Be7xImyLq8CMnUuZuvLHMEXSbg5Sz4vI0YyHKA88TTWAHwAh5KEiL3nWHNn6uFnm+4ImrAuAa2lTT7YHue7srdhcA/1t8U3JIuJ7qkfsli0ir7+51gvMIuoFGKhBVwuIlo0PJdRfKEZDfCur+yeP0MEqBCnZXhQaea73dloC+KmfxDK2fxTO0SES9Q61JYPUGViyNA+H8BnS8Um3OMjlCy65azrMYgc3ZztG4drbEWYGP1FQqZqZsqg+M3mdasM8Wcux2Vp/lDQJ1iFZHBtKHLezCX
+X-Rspamd-Server: rspam05
+X-Stat-Signature: gmwghxob44bfzb764kez6desbbyirjfa
+X-HE-Tag: 1770327238-381746
+X-HE-Meta: U2FsdGVkX1+7OQ44XDXdklgRLL90MzVWjbm/VRp7G1tpwEky03aWnaZqfv2TnZHjArS9SHPR1BW1REZWOydOZ5vWsbh56vs+tfsndMVUnG2sTgILRcCEt6sX8gXZtDZsq0QWSAkA9PQqgxigvl7z+uxZoIMp+4A25kmIgFux6MWqeGrUw0EGJniK/vzd6EjsKRGyhlqd0PSsG6XCzfHJzfdiKlWAqod65i+r/C6ysDaYKifPDBLzk6mb2k58BSeGnOaGTwwceYhRGhj8My5+sfELLco/mcrVzQzsOfPFcl/6AMu9S53Dwb0TkuWRKBm50pizlba/lURif57kE+is1ZIUi4hKEpl9CTMw71Y4HZ4U407ugo5tExwX6hSznM4bryoyD9zJF5A0Jlnmp2tfWqPrET30hl5gT3sOf3RFcf7iWCC0drK+DDyyLM9chZT2v3gOXUqWlmxUYh8OylNVMDNEVvlQBUNncTYjHznsf4vlCv1aSt4iA/qoK+mvicsy49qpzPcTEzZ/dhzwEbN+5hPAZaogSFEgnob/u6XI42KjCmgBtA3RzTToo74AvC1MrT5Uzvs+Qnjgkvg/Snv1gkKp4OlGGfwPfOXZvTwlL7qAm3YySzNBPZSmEpvCi9lEP5X82u9opR6gAc7Pbr/+5/y2Fsm4Qw55Rv8Y0ATHksxPe8lXzLsXE9wdhFkSdlhlLH1IcsBuDQdN/nk016HokrWaWBOKCuz4b/rQbbjg4VDPiYxV6oaSEdywUU4FcaLVQlY3uPzcMKowN0qq4qEMykYET9vj12mFPjxbGncX7AX0a76YDzObhfUdnUL3jcBJJSRPg1HDrBxg/OewiwoCbD/513nO5NWrxOGBDaBI01ZxydOiFyLvJw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,34 +90,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/26 18:06, David Hildenbrand (Arm) wrote:
-> On 2/5/26 17:48, Matthew Wilcox wrote:
->> On Fri, Feb 06, 2026 at 12:30:56AM +0800, Lance Yang wrote:
->>>
->>> The issue is we're about to free the page table (e.g.
->>> pmdp_collapse_flush()).
->>>
->>> We have to ensure no walker is still doing a lockless page-table walk
->>> when the page directories are freed, otherwise we get use-after-free.
->>
->> But can't we RCU-free the page table?  Why do we need to wait for the
->> RCU readers to finish?
+On Thu, Feb 05, 2026 at 01:30:12PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
 > 
-> For unsharing hugetlb PMD tables the problem is not the freeing but the 
-> reuse of the PMD table for other purposes in the last remaining user. 
-> It's complicated.
+> The global zswap_stored_incompressible_pages counter was added in commit
+> dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as-is")
+> to track how many pages are stored in raw (uncompressed) form in zswap.
+> However, in containerized environments, knowing which cgroup is
+> contributing incompressible pages is essential for effective resource
+> management.
 > 
-> For page table freeing, we only do it if we fail to allocate memory -- 
-> if we cannot use RCU IIRC.
+> Add a new memcg stat 'zswpraw' to track incompressible pages per cgroup.
+> This helps administrators and orchestrators to:
 > 
-> khugepaged, no idea.
+> 1. Identify workloads that produce incompressible data (e.g., encrypted
+>    data, already-compressed media, random data) and may not benefit from
+>    zswap.
+> 
+> 2. Make informed decisions about workload placement - moving
+>    incompressible workloads to nodes with larger swap backing devices
+>    rather than relying on zswap.
+> 
+> 3. Debug zswap efficiency issues at the cgroup level without needing to
+>    correlate global stats with individual cgroups.
+> 
+> While the compression ratio can be estimated from existing stats
+> (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
+> "uniformly poor compression" and "a few completely incompressible pages
+> mixed with highly compressible ones". The zswpraw stat provides direct
+> visibility into the latter case.
+> 
+> Changes
+> -------
+> 
+> 1. Add zswap_is_raw() helper (include/linux/zswap.h)
+>    - Abstract the PAGE_SIZE comparison logic for identifying raw entries
+>    - Keep the incompressible check in one place for maintainability
+> 
+> 2. Add MEMCG_ZSWAP_RAW stat definition (include/linux/memcontrol.h,
+>    mm/memcontrol.c)
+>    - Add MEMCG_ZSWAP_RAW to memcg_stat_item enum
+>    - Register in memcg_stat_items[] and memory_stats[] arrays
+>    - Export as "zswpraw" in memory.stat
+> 
+> 3. Update statistics accounting (mm/memcontrol.c, mm/zswap.c)
+>    - Track MEMCG_ZSWAP_RAW in obj_cgroup_charge/uncharge_zswap()
+>    - Use zswap_is_raw() helper in zswap.c for consistency
+> 
+> Test
+> ----
+> 
+> I wrote a simple test program[1] that allocates memory and compresses it
+> with zstd, so kernel zswap cannot compress further.
+> 
+>   $ cgcreate -g memory:test
+>   $ cgexec -g memory:test ./test_zswpraw &
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 0
+>   zswpin 0
+>   zswpout 0
+>   zswpwb 0
+> 
+>   $ echo "100M" > /sys/fs/cgroup/test/memory.reclaim
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 104800256
+>   zswpin 0
+>   zswpout 51222
+>   zswpwb 0
+> 
+>   $ pkill test_zswpraw
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 0
+>   zswpin 1
+>   zswpout 51222
+>   zswpwb 0
+> 
+> [1] https://gist.github.com/mrpre/00432c6154250326994fbeaf62e0e6f1
+> 
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Now that I had dinner my memory comes back: for khugepaged, we have to 
-make sure there is no concurrent GUP-fast before collapsing and 
-(possibly) freeing the page table / re-depositing it.
+Overall looks good but as Nhat suggested please update v2
+documentation.
 
--- 
-Cheers,
 
-David
+> ---
+>  include/linux/memcontrol.h | 1 +
+>  include/linux/zswap.h      | 9 +++++++++
+>  mm/memcontrol.c            | 6 ++++++
+>  mm/zswap.c                 | 6 +++---
+>  4 files changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index b6c82c8f73e1..83d1328f81d1 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -39,6 +39,7 @@ enum memcg_stat_item {
+>  	MEMCG_KMEM,
+>  	MEMCG_ZSWAP_B,
+>  	MEMCG_ZSWAPPED,
+> +	MEMCG_ZSWAP_RAW,
+
+Hmm I don't like the name though. How about INCOMPRESSIBLE or INCOMP for
+short?
+
 
