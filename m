@@ -4,96 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F2B5EA7945
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 03:21:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D7AEA795C
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 03:26:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C2646B0089; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
+	id 6CAA66B0092; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 769136B0092; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
+	id 6A1146B0093; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63D506B0093; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
+	id 5A93C6B0096; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C52C6B0089
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EAD8A1C103
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:21:19 +0000 (UTC)
-X-FDA: 84408952278.08.241F8C2
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 0538F12000A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:21:15 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s4LUiWGC;
-	spf=pass (imf29.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AC456B0092
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5ACD1B1F8A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:26:01 +0000 (UTC)
+X-FDA: 84408964122.06.A52A785
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4CB194000A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:25:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=VF9lGFv5;
+	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770261678;
+	s=arc-20220608; t=1770261960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LyyA1PPt7lfcB8CKs4wjIz9KHF1gMnrJMFjQaE0YHQ8=;
-	b=x74LQrXggjlXHv2z9HznUoFi285htKexZT1B1POBBM3UiNML+RCHPoi0vr9/o0vh5GeT6e
-	x2fy0WDBSml/PBjn/7hXAXmWjz5AyLj1H/dFz106EyTmM0EmUh3A1dxdblCOz3FCIA1bFb
-	IVrsIEGAn5eIRZ9Y39TWdPSRg437BSU=
+	bh=Y65p+o5Rps4onC3/jarY3MtWPIWXJrlYtcNOlL4XV0c=;
+	b=zjgbLj0zLCpUxPNON60HvehRwNOez6/WM//BX3GH0f1z+IBBNhGxXLq69OKYFD0/FEYSrP
+	w4C2TFwx6Qda8mI8/nw7u5eIOgEtNlrw42cnTNr1spLXZKEtgtZQ2i5CIW5s6Sy4gyWeaM
+	ZdCdb1QJwG1afh2f3/R2QAV/6OEBKzw=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=s4LUiWGC;
-	spf=pass (imf29.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=VF9lGFv5;
+	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770261678; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770261960; a=rsa-sha256;
 	cv=none;
-	b=FYrGxMZ00zh58pX7xsQY7BGVmDl4jYZfCao+DHcvFZ6w/RL14/q+Zc0G9SEXZiC5TdCOFY
-	jXQUeLHiocUJaSroaiLp167MG1fLaVvGAnWT0bHit0wQaJIZejAhIDYIMUeXbHsLEs30Wf
-	gT/VlCTeVjrcM1gPO+Or4c6PJ+lYSDM=
+	b=uBgv3I2Q5ow64NBvABsI/EwBp7fbIDLMUw6wwTkuO0AmU7i3PrCRrhL8YdESihq3wComv/
+	mAHranE/pS4nJdQ+WPJOgkDb/y37X/o0fItMgkcqbtk90BrnWh2K1oZ1cMfXDykVKbw0vJ
+	ePVftCc9Kl3qm/it7aI59Dw3/cNkjA0=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=LyyA1PPt7lfcB8CKs4wjIz9KHF1gMnrJMFjQaE0YHQ8=;
-	b=s4LUiWGCqQZAkW0B6mOkXEBOqMMP0TCbhQLWY/7IMJcNDgk9KFb0gC83uJb/+Cdq8eesSLyWj
-	RQxyp6eSVPhZ08RLr/bLU56Wgoj7kL/ny3J5YlqlUF6Ennup2KtfLY0A6b9SxlYLRT8iGNiYeo1
-	PBZffgnj1gjijaIDWK29Pho=
-Received: from mail.maildlp.com (unknown [172.19.162.223])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4f62Sb6T8Dz1T4Gw;
-	Thu,  5 Feb 2026 11:16:47 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5C02A40561;
-	Thu,  5 Feb 2026 11:21:11 +0800 (CST)
+	bh=Y65p+o5Rps4onC3/jarY3MtWPIWXJrlYtcNOlL4XV0c=;
+	b=VF9lGFv5ezS5ST2Z8jHuz7giPo0shjEeRQuFmjCbcALHkfFyUeF39at30GyriLm/q1Ku6fD9E
+	uWsKwzbWZhbzZTfIjd+PKkr15lKVzQ4BK0LTeNCCJviHFBSW3Eqjb2iSG8OsN23F5zQLMvadvS8
+	2wOqXVeY06X7HyNDBJYm2gA=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4f62Yr6JbNz1cyV5;
+	Thu,  5 Feb 2026 11:21:20 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id 34BC540567;
+	Thu,  5 Feb 2026 11:25:55 +0800 (CST)
 Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 5 Feb 2026 11:21:11 +0800
+ 15.2.1544.11; Thu, 5 Feb 2026 11:25:54 +0800
 Received: from [10.173.125.37] (10.173.125.37) by
  kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 5 Feb 2026 11:21:10 +0800
-Subject: Re: WARNING in memory_failure() at include/linux/huge_mm.h:635
- triggered
-To: <jane.chu@oracle.com>, Zi Yan <ziy@nvidia.com>, "David Hildenbrand (arm)"
-	<david@kernel.org>, =?UTF-8?B?5piv5Y+C5beu?= <shicenci@gmail.com>
-CC: <linux-mm@kvack.org>, <akpm@linux-foundation.org>,
-	<linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>
-References: <PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
- <b9e89c85-807c-4a8b-aa5c-8c1325e75445@kernel.org>
- <1db245a8-f9ab-42e4-8cc6-cc7562961921@kernel.org>
- <48978612-6933-4897-85DD-6740B6C8570B@nvidia.com>
- <25CA4D90-A24E-49C6-92D2-08080EC81466@nvidia.com>
- <032058DC-CD8D-406A-B986-740E41C834B2@nvidia.com>
- <e97d5c0c-b8ec-4da4-b838-7a308f8a6327@kernel.org>
- <61BBEF63-20D6-4671-B7F7-F015D49B2080@nvidia.com>
- <1bfc9e64-2961-4d2c-a6c3-fb123f66e6cc@kernel.org>
- <94DAA11B-597F-4F8F-AFFF-9D7626A7C091@nvidia.com>
- <7d5754dd-8cf5-41f3-a767-271b28b1f63c@oracle.com>
+ 15.2.1544.11; Thu, 5 Feb 2026 11:25:53 +0800
+Subject: Re: [PATCH] mm/memory_failure: reject unsupported non-folio compound
+ page
+To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>
+CC: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
+	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Naoya
+ Horiguchi" <nao.horiguchi@gmail.com>, Harry Yoo <harry.yoo@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Yu Zhao <yuzhao@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Wei Yang
+	<richard.weiyang@gmail.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, =?UTF-8?B?5piv5Y+C5beu?= <shicenci@gmail.com>
+References: <20260205005603.274383-1-ziy@nvidia.com>
 From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <c5206f67-1e9e-d487-3514-8867f00cc626@huawei.com>
-Date: Thu, 5 Feb 2026 11:21:09 +0800
+Message-ID: <95bd5396-256c-58c6-62ab-ae95e0cf371c@huawei.com>
+Date: Thu, 5 Feb 2026 11:25:53 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <7d5754dd-8cf5-41f3-a767-271b28b1f63c@oracle.com>
+In-Reply-To: <20260205005603.274383-1-ziy@nvidia.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -101,13 +97,13 @@ X-Originating-IP: [10.173.125.37]
 X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
  kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 0538F12000A
-X-Stat-Signature: tg37z5c6nxwwwmgnnwxb5r3tcc38k8ep
+X-Rspamd-Queue-Id: 4CB194000A
+X-Stat-Signature: acns6g3c3ysdy9spig1n9ebbey76kyha
 X-Rspam-User: 
-X-HE-Tag: 1770261675-47595
-X-HE-Meta: U2FsdGVkX19TJAbF0HkpOiPlYNSiEdOOE9d/ylzw7/hoyzLys00kibDtcUfE6miZ/mLWsO6fPR8LPE20lxIpV2p1A0AHEUquhTDqSngmG54SV9TSV0cRjBSLE+Gm6bWeuSnjUSxx/gIxCcW04StQEO2mUfRlkELQjSIoa+/ia/TN5X6StmZkHdjjBu6q7OECwz5vgFr9i3TYk8l/6ec2WiaETeEZP3o6Ga6yfQ2JEIpHxCowozIYyVHdNxuGJ27XktWg5bDJUlvEhDEU/kcviQDtTjXjZit/PWy59bNzo16qTB1DGqRIdQxKn+HRYJkxeQF3Bf8uk+Qo3ddsoT2VvORGMbGEwhnRsvI4sZtAdHfp/WEN5DsnpWAH+L41T/MReiNgwIevhDpJjRLpp041P2Mju84uxHUFee5KShzPBjCfX3wo4/qlFNJg/ahtKCrSVd8vKJc+EZqwEkfHfIft+gDl9+5H5JtMW7RSVNjLRt4meogpwjqajYdsHvXej5UGMM51KngUMvqO7mLYo/bySru/zi2HIkTbSyatQiE0JRuOxyc2USW+T7f0nXQ5U/cRpU/WCb0KNPNPCQfNWJSBMEnnVCPSFUjJdfzZcO8hv7kowI7aJmJqSCxJBIHrz2mUMX4vin8yraEOxKWD4dHLG17QYRpea1jCD7HSjmi5m8Ho6cZKohQbo0CVIH4kkxGzAbWP7pBRXvzxvajgle0LzBE5WQgRsxTc1qFwfzok2jakoKByXVLL1XtqQ0RWR5enz8B+m843x3jKPpgaCz+nb3t3Y1gV0Lehyr4hISw/HmVpp4UskaIMB8ITXdKxJqZfluUvE9RXy2Y6NhwJRQrBFiWgfYipZSZDh5zLarLZICPDGb+sRftQ/dovQTTNhJsfDU2tIqGEed/OHX78dsUj9my1INDMEQACK8HvsDx+IXev3lWCS3jmRyXAHMgSZXMm1hj4IFtscG20Om2H/5f
- YipwiN8b
- aPks1w9odmtSRI8zVwIn+IKgzkDOyBU3eiGzGMIPTN7OqN8Hu0mdkzHAFArjInWsYVsp9LSa8OfS0ul+pQKC9yiIZMzERzMfQR/LEVXM7+kX4klGLmU1MdkkwAisFEYdsbA/DLKcWUNjJtnwNg9qwRSEqqVyoLySYjTvSQeftXuKKrM7tIWqin/ATKT3RWzxPfSufJLJI1mEI+OdctTbhynXEXsizc3RD+/EBTLv5UOTpe8edLJcGm6PXpMi67FTA7YlBNsQjE1REDEKmXz2D02raS9HhAkH4d5ZLfWgBj5LpVeE/CaKwd/hG8OEO0KvtDgTUUh9FI2yETCdc3JK9zW8tySDeRG51iSAUuYWOQ98xeudAPyesNWj1KNxuTTglXM8DmEMgeFYw2B0=
+X-HE-Tag: 1770261958-64751
+X-HE-Meta: U2FsdGVkX1/87dL+bOJLnNQ+UHBQ4nN947vKjvbBCB4Iv3J3JNLsMbuYbUtk1+2GpacKNrWYiT8yGJG8nvFaJ0+F8AIDV269j/BtFR1xTPfDz3gGlkkMSgi7UMAL3GsS7SbwukQ9Xrd3n0lCA5ii8FG1noOkFaglTmtp9tmeeKnHBNueV19+Jmc1ZEkrGaiMWmKdSCfALyWr3pCBCPyNqxdDzb2yXNgYODR8k65bzmIt1zqCC+EnSMAw6He+Jrb/YPV4R7QMpc2nQeQy/3uzoWj2/M0wurFr6MCeEBXWcVLPMi8M41GXrzBNGozzLM90kTmwDaTVNidF+eVmVw0cvawzozP5bU22uDGW1cV46luGWAP1rbQTj43WfQWkZlxk/v/7PMH81x2OH5Q+LW3HLn90a+Tz+9PG3U8pmtGlFJZVtKXUHAQGt2FAMXeFPcWllzAw9nlFIbJX+vzBC+vqYCQhlIr9gxOp3a0jdG+RxdJLnEY7s1TCZOrH9CXKd5LQkqx4xdOxOSrUHRH2+CVKulzqkB5jZ9uTPTAzvoP7jgRwg6y01Q6sI2IqMBH/MreCiAq/vPjWZ6jGmo8zrWdYFWUFLVv+GFB0pj7ilvCEigwC6GqXWDYMF6s7+3ms6hqxSwSPwAQkS5S5OM8u/+SfuWfNk0B+0R1mw42LoPheECu5ZCl0UlEP0KKnc8djEa5H4fkZKasB/lggbNeCVDwnm5PWkEpX6jkP5tItZM1pshqWljnAhHUasmcAnRHL4F9mu6PXi9P6bGXpQLTuLh1G3UfKwm1Aza4cLbBp0KKZDTUgGAhCRyNxtF8oykNM9f+WYNA+hSHVaN4WRJ5tPwweS0/2p0v4UpdU/onyb+3u0+honDiKhkSQiudR1wqA9T/YwlymgY69Me5PpE8mN5wEYEP0bJSbPVJc/8ISsdNqc+YkPII1pCrdZF8YhrHd+DZvR8zpfrijnFezEb8RNjR
+ zVNWPBcY
+ onnrW0+qwsZWesf3U6y+ev9JkcXfLjDhKfzKCd1OdcutddMxPlomCPN6T+3DpWLyEXXQ24R1T2z/BR28=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,134 +112,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/2/5 10:00, jane.chu@oracle.com wrote:
+On 2026/2/5 8:56, Zi Yan wrote:
+> When !CONFIG_TRANSPARENT_HUGEPAGE, a non-folio compound page can appear in
+> a userspace mapping via either vm_insert_*() functions or
+> vm_operatios_struct->fault(). They are not folios, thus should not be
+> considered for folio operations like split. Change memory_failure() and
+> soft_offline_page() to reject these non-folio compound pages as
+> EOPNOTSUPP.
 > 
+> Add PageNonFolioCompound() helper function. This function is functionally
+> equivalent to folio_test_large() && !folio_test_large_rmappable(), but it
+> is supposed to be used on struct page. So open code it instead.
 > 
-> On 2/4/2026 1:41 PM, Zi Yan wrote:
->> On 4 Feb 2026, at 16:37, David Hildenbrand (arm) wrote:
->>
->>> On 2/4/26 22:08, Zi Yan wrote:
->>>> On 4 Feb 2026, at 14:18, David Hildenbrand (arm) wrote:
->>>>
->>>>> On 2/4/26 18:41, Zi Yan wrote:
->>>>>>
->>>>>>
->>>>>> More details:
->>>>>> later at sg_vma_fault(), the driver just handles a page fault by supplying
->>>>>> a subpage from a pre-allocated compound page[3]. We then get a large folio
->>>>>> without !CONFIG_TRANSPARENT_HUGEPAGE.
->>>>>
->>>>> We can identify such non-folio (but compound) things by looking at PG_large_rmappable IIRC.
->>>>
->>>> OK, back to the issue. The patch below should fix the issue?
->>>>
->>>> Hi 是参差,
->>>>
->>>> Can you test it?
->>>>
->>
->> <snip>
->>> I think you have to test for folio_test_large() before testing folio_test_large_rmappable().
->>
->> Oh, forgot that. Thanks.
->>
->>
->>  From 8dda4bba9964890462eca3ef3cce57bb4fab8313 Mon Sep 17 00:00:00 2001
->> From: Zi Yan <ziy@nvidia.com>
->> Date: Wed, 4 Feb 2026 16:04:19 -0500
->> Subject: [PATCH] mm/memory_failure: reject unsupported non-folio compound page
->>
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->> ---
->>   mm/memory-failure.c | 8 ++++++--
->>   1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->> index 825c706ac576..137c67fda57e 100644
->> --- a/mm/memory-failure.c
->> +++ b/mm/memory-failure.c
->> @@ -2440,9 +2440,13 @@ int memory_failure(unsigned long pfn, int flags)
->>
->>       folio = page_folio(p);
->>
->> -    /* filter pages that are protected from hwpoison test by users */
->> +    /*
->> +     * filter pages that are protected from hwpoison test by users
->> +     * or unsupported non folio compound pages
->> +     */
->>       folio_lock(folio);
->> -    if (hwpoison_filter(p)) {
->> +    if (hwpoison_filter(p) ||
->> +        (folio_test_large(folio) && !folio_test_large_rmappable(folio))) {
+> Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
+> Reported-by: 是参差 <shicenci@gmail.com>
+> Closes: https://lore.kernel.org/all/PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com/
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> ---
+>  include/linux/page-flags.h | 16 ++++++++++++++++
+>  mm/memory-failure.c        |  9 ++++++---
+>  2 files changed, 22 insertions(+), 3 deletions(-)
 > 
-> Just curious, would this filter out pte-mapped THP/mTHP folios?
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index f7a0e4af0c73..2fe8047f42a3 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -1102,6 +1102,22 @@ static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
+>  
+>  bool is_free_buddy_page(const struct page *page);
+>  
+> +static inline bool PageNonFolioCompound(const struct page *page)
+> +{
+> +	if (PageCompound(page)) {
+> +		const struct page *head = compound_head(page);
+> +
+> +		/*
+> +		 * Without CONFIG_TRANSPARENT_HUGEPAGE, PG_large_rmappable
+> +		 * should not be set/used.
+> +		 */
+> +		return !IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) ||
+> +		       !test_bit(PG_large_rmappable, &head[1].flags.f);
+> +	}
+> +
+> +	return false;
+> +}
+> +
+>  #ifdef CONFIG_MIGRATION
+>  /*
+>   * This page is migratable through movable_ops (for selected typed pages
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index cf0d526e6d41..8b6b5950bb66 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -2440,9 +2440,12 @@ int memory_failure(unsigned long pfn, int flags)
+>  
+>  	folio = page_folio(p);
+>  
+> -	/* filter pages that are protected from hwpoison test by users */
+> +	/*
+> +	 * filter pages that are protected from hwpoison test by users or
+> +	 * unsupported non folio compound ones
+> +	 */
+>  	folio_lock(folio);
+> -	if (hwpoison_filter(p)) {
+> +	if (hwpoison_filter(p) || PageNonFolioCompound(p)) {
+>  		ClearPageHWPoison(p);
+>  		folio_unlock(folio);
+>  		folio_put(folio);
+> @@ -2945,7 +2948,7 @@ int soft_offline_page(unsigned long pfn, int flags)
+>  	ret = get_hwpoison_page(page, flags | MF_SOFT_OFFLINE);
+>  	put_online_mems();
+>  
+> -	if (hwpoison_filter(page)) {
+> +	if (hwpoison_filter(page) || PageNonFolioCompound(page)) {
 
-Thanks all.
-
-memory_failure() can meet various types of folios. So in get_hwpoison_page(),
-HWPoisonHandlable() and PageHuge() are used to check whether the folio can
-be handled. But in madvise(MADV_HWPOISON) scene, MF_COUNT_INCREASED is set in
-flag, so this check is skipped and warning triggered. Might HWPoisonHandlable()
-check be always used to make sure the folio is in sane types? Something like
-below (i.e. remove the MF_COUNT_INCREASED check before calling get_hwpoison_page):
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 825c706ac576..ba4231858a36 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2411,31 +2411,29 @@ int memory_failure(unsigned long pfn, int flags)
-         * In fact it's dangerous to directly bump up page count from 0,
-         * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
-         */
--       if (!(flags & MF_COUNT_INCREASED)) {
--               res = get_hwpoison_page(p, flags);
--               if (!res) {
--                       if (is_free_buddy_page(p)) {
--                               if (take_page_off_buddy(p)) {
--                                       page_ref_inc(p);
--                                       res = MF_RECOVERED;
--                               } else {
--                                       /* We lost the race, try again */
--                                       if (retry) {
--                                               ClearPageHWPoison(p);
--                                               retry = false;
--                                               goto try_again;
--                                       }
--                                       res = MF_FAILED;
--                               }
--                               res = action_result(pfn, MF_MSG_BUDDY, res);
-+       res = get_hwpoison_page(p, flags);
-+       if (!res) {
-+               if (is_free_buddy_page(p)) {
-+                       if (take_page_off_buddy(p)) {
-+                               page_ref_inc(p);
-+                               res = MF_RECOVERED;
-                        } else {
--                               res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
-+                               /* We lost the race, try again */
-+                               if (retry) {
-+                                       ClearPageHWPoison(p);
-+                                       retry = false;
-+                                       goto try_again;
-+                               }
-+                               res = MF_FAILED;
-                        }
--                       goto unlock_mutex;
--               } else if (res < 0) {
--                       res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
--                       goto unlock_mutex;
-+                       res = action_result(pfn, MF_MSG_BUDDY, res);
-+               } else {
-+                       res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
-                }
-+               goto unlock_mutex;
-+       } else if (res < 0) {
-+               res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-+               goto unlock_mutex;
-        }
-
-        folio = page_folio(p);
+There should be no problem in soft_offline_page(). HWPoisonHandlable() check will be used
+by get_hwpoison_page() to reject PageNonFolioCompound folios. Or am I miss something?
 
 Thanks.
 .
+
 
