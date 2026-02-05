@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25AA4E91290
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 09:02:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8B22E91297
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 09:02:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8B6066B0092; Thu,  5 Feb 2026 04:02:21 -0500 (EST)
+	id 2DC6D6B009B; Thu,  5 Feb 2026 04:02:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84B076B009B; Thu,  5 Feb 2026 04:02:21 -0500 (EST)
+	id 29C996B00A4; Thu,  5 Feb 2026 04:02:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 786156B00A4; Thu,  5 Feb 2026 04:02:21 -0500 (EST)
+	id 15DDB6B00A6; Thu,  5 Feb 2026 04:02:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 621A76B0092
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 04:02:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08E02C1C88
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:02:21 +0000 (UTC)
-X-FDA: 84409811682.04.51152D9
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 496A81C0004
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:02:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Rub8sARC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 051536B009B
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 04:02:32 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A805258F72
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:02:31 +0000 (UTC)
+X-FDA: 84409812102.25.FCF5732
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D9B3040002
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:02:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gJvM0GXf;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770282139;
+	s=arc-20220608; t=1770282150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z0u4X3qGXgYyNfrzLzU8BizQ+vhvSMeoi5s8ySDp/8o=;
-	b=NIZIB8vQuWIt9sTNIDfVttovxIf7SIpAov3LQ29U/NJGHf4xLTeEqQhTU/N+jduFn9j0le
-	5tKraHxNwKlvJk76/sZFymPMPDrb+dJ0tVBR7uicIcLjSDcihr2YyURR6M00BKOdnewTga
-	6MHy1LPyvcar1jEgiv0m/COjDpyuIM4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770282139; a=rsa-sha256;
-	cv=none;
-	b=5e97SecxbTNoNKHJiO8Th+dUJsLElyN1128HzH3Sjo6zFCsPgtGi7scQGayskG9D+uT5JQ
-	6ILgdqsDgl3yAcC/l5iMbdwtF3VaWxEfXQp8Eul9cDF++UiyiBII3/SudQuRH0dw53MguF
-	0TkI+yy0StP7CLhTXquJgCga4+Z2AE8=
+	bh=rVG4FBtA5C8lZDYA783TBUFJRw1YsphndfITKeVR5Jk=;
+	b=B3F2ryB4POhnnZIoht0aq2VL157ki5SdSJRuuPPXaS26RxcEgJ+LFHvuAOOwdr8RI9mIch
+	W4W0mzTuf7FwbNKb0xwN7xun4Ibs2cpNxkMVHmlsOeHznpo7cguQCKpBwiNafg7EioVEJi
+	1ReG1jvwBlzziMRi4Ou0dOsVRsoGreQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Rub8sARC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf21.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gJvM0GXf;
+	spf=pass (imf17.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.181 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770282150; a=rsa-sha256;
+	cv=none;
+	b=lYECcXEihy6QlXl2MIWsydxA7TcSXyPfTKRM/9h9jnJpguQ4ACdfW5HGEcTp24C8lmVwlc
+	Um7GRPmXPAyM0OlEcGJ62A4JmtB8g94Kgf6d9wE3zcO11dBzwHRC4kInJTg4W4jcPRWs1F
+	JN9k+0a280jSYdmeNLzUzv4R8udxJm0=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770282137;
+	t=1770282148;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=z0u4X3qGXgYyNfrzLzU8BizQ+vhvSMeoi5s8ySDp/8o=;
-	b=Rub8sARCWUqqz8QIAScGUeh64VvqACia5l5MPo9Zu8Clf00z7wJNF9NkdlvFCQxPeg1KjV
-	3OlN/oT7NUtlT0Nvv9dPHaB9RbwEpWbREDl3Vdn132CHhDA9TTY70o6MPC50P9xWmezg/p
-	BpSvAxenj2HHM8+I+hvB473ZaCBAXCg=
+	bh=rVG4FBtA5C8lZDYA783TBUFJRw1YsphndfITKeVR5Jk=;
+	b=gJvM0GXfYQygWkW4Ct+rwyYQkDXLMBc3fP697JvVIMEZedGgIR8TI28dyqAoOkaQ9blK/h
+	D3CJvfPRZbVKCShjyWCz8Zde7Vf+fXSIeTOP19Qt4JAlKVhS0+PtMtGXKzjBbLVZkGJ8BM
+	SDe5BdzPXCcuGS6rcjBS2ydOuV0l34Q=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -88,22 +88,22 @@ Cc: linux-mm@kvack.org,
 	cgroups@vger.kernel.org,
 	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v4 09/31] buffer: prevent memory cgroup release in folio_alloc_buffers()
-Date: Thu,  5 Feb 2026 17:01:28 +0800
-Message-ID: <fc5551a4e252dcac2ee4904706bb2a2513177854.1770279888.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 10/31] writeback: prevent memory cgroup release in writeback module
+Date: Thu,  5 Feb 2026 17:01:29 +0800
+Message-ID: <46e2df6f69837b0f12e1ad1307c0f32334939dc5.1770279888.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1770279888.git.zhengqi.arch@bytedance.com>
 References: <cover.1770279888.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 496A81C0004
-X-Stat-Signature: iou6z87khkisd3i683jbd8a1w53irbaw
+X-Stat-Signature: qpdexeij8xkeugqi9qy3433unn9fj1xh
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770282139-636197
-X-HE-Meta: U2FsdGVkX19eJhLdJbHyd56C1UPfMda0nFKXZx3iGgEmz8x8OhIm5tVnP7GhtxS7XX38DIhWeLKHmk+FFnuzRMp8QXnIWh5NJdcMY1mh234k7Ibx7uWycE3PXS2e/eR/DbLYwKoxzn/4Sm7Z+obs0STDK39FPXatQvr5QYKb+seFxHf+v81XibCU7lWuVB9EbPpe4fZIe0aBpTtsfAqVFICGziv7rYRNkxwwcbiNbQfpq+lLldmh6xtzHGmFdKmO5gyHXaQxI+ciFrlQe+8XUX3d4l1VMcihwZlMhZ9Lr3OZfSzoUK0ol2PvJb8GNchepciwvePfUqNru8tBFX0BO4ZW1xl2Fna2rkDJ4jelgSPYy+yjJkQ2x8ECV18HQCXcd/uJR//Cl/b/PM9TvXVo1I3c/ELk8tM5EdHxGMHhqQe7AtKoLv6zWjOMtP+q+Fm09cv67Pidk5cj/XgexQaV8NhZViXc7Px8keRQRNFKY1abWE6M60xhDDYPfkjllpmfmU7vtLGqsn4OBGUkRr4AI6licQo30xUjwk4UEVODWFosXB0vFy+oDtuYgtJx2gxaVlagsne2RHc4JsOoFR2Fsqa6zvCbDjxlGIT+I8+bh75A0aXqwdnt7m+dyZHei13Ns2k7L/v6iqBYod6YFdatIC79462J1q0YDaIXXhIPyxSYh4Q18hhWGbRGd/k6P3PrhruLbpoJyu/ptjM8OoqGNoTOHipgynuQM0fpZew8jBG8TiDpiuw2Jlcw2uivCj1WTbpPIwZYXaR1a82PqntaGSMjp+no9XMvzpD9eX+mbyiWJQLM/W1LOI/uNNKsni2RCl/0y/lLa4E9W3G8A1mnq01EbuZrnJh1+SoTfNOUBF0tN5j18X7bCPJvINwKzFDqktJSQgimZ0jtATHUx0EOaoog1IXqctGnVAvzovffRPQc9MEiN0rIrqoSN/+imjbrv2SVW656uZYLHfADcoz
- huQ/sxMN
- sPb0A5GBs+Hm0cymb5HL+ZEaN6PF15FJMQFIPhIBA7JJGE4M+16ytQBQ1CwhxINfOLgFvhKuwOM550FPiUV+Wt6Emw5FSuzXlPeZHn5XLHzVZaG30YklbLxdlBbe/q+bKlPH+SHimOEyo6DoZ93+PuXNC5lRqhqo+h572hEN3lXvEW88Xv3LIlBjFsXqWBVmH0DHY4Nk9HGnpaWVDsIX7k/G+Xwqr63dlBkhZwXsnLYMe+JAix01C5tJQ3QJy/ngAI4inesXSx1Hg9xl/zU7YvXl8BM7sVPckxED7x+2hVARfXdXkv3Ue2o6O/w==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: D9B3040002
+X-HE-Tag: 1770282149-949514
+X-HE-Meta: U2FsdGVkX18OQEZ2d0O1dvvwLKlR7yCDG/3e1RxZ5xeO70iZzJcWcGV7WKsGUkdIJuM4u7CCELgscQmBB3wA6Aq6fuxtkdZ724cVf0ikpqEwgn/B5baAGQRj7dwNlaUGEDdUDlvlruIuzEpV0ktz42HXTeuITk5eB9LrIiCXmg3UEHMx9zINSdiXUC2fEj430sQ6LGD/1TfHd0iTyRaIvXV+IPPvCgLjxAXCdp1ac0Oz48fYFGVyVnXj6qe/jknUJNBbMMfi6zUANOCh3EEvNAwgftQdJNBw723Es+eMsqYsCw72mOKz3FIYE4ZZdvP3HUsocghn7HeeNekRLuw2aQqULTnq14tcUYI3iNSH+QXhBpC7aSp24BzXSj3JCsevISA0obYMrgpe1LHBcnFxuMHbJx+oWKqDQNrZAo7LPAfZDejEbRSg9CT9zZrEVFlTKAOvUdkHEs3oxncbovi2Wzx1/YyxLsPE1n06MTdwms/jL7bGMC0NzizhSmtzKKZDwMvh5PU+0Uc/q8brYpnbBKm54+JpxeRreYoDxXg9qVLaL2vPPHSbrsX8rKu6i6oHCGvPW1DUhaspEugNd0Ff58nKwacqo7ydPz4ISPGxdSMKpGsWOdSPlJQNtSSQYvwBZ9On05cRS/8y7RDuxKe5ihsyvi08280O6BuJ/lFjj6AuhKkAjM/f2MIPIqsGwz5eiUs8f/hqQxZbQEIfFnU2n+s8Pmxi0iyi1NtRzG/Wx/Zj5dHO1BJRdXehsWrcMPZiu6RTtsr8xS/3rm+lb+3cvC/A+idSQuPCJTlEl/7B4BDLXdZGpAOVpZ2CP0tGSi7+L+h6buImR01Nt1RGyv2+cK0WqQdORn017pSq7K6r2vDBt3bTD3kes6M2pcUWIhUxCao1A7rjEkRFjm+xmguo5FgpMDQJJCXe2QaqwXhLyEClXKmW4EElksgyR/B5QcdhsMroOWKWLt272HRXA4q
+ fJM3wLoU
+ NbzFh6KHC0j+4IB7XEriCqrvGTuKipk0atSFiOVIslvdKcuNiQWu89kSJPTT385zzJZLVzKJAFnTKPprghaPgH8+ZMW5GCuTYD7YsujP+OaVANvuoGhRv6LJj4CS5Rfl820zZiBpiDkfcowm6b320zLOUvE06s59ZA6/kVj1VOrdTpZsktshdab5umSOlNVxmSACUJnnfjwqTGp1+IIgnCjbmsF7lm8Ogq1u4m5i1rH/JKtmzunwMlIY47mtete0IRk/Mi+X2tXpiOokzBhiA1Ocf7aI5ibguIAmdUn0LN0eWm0k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,8 +119,10 @@ memory cgroup. To ensure safety, it will only be appropriate to
 hold the rcu read lock or acquire a reference to the memory cgroup
 returned by folio_memcg(), thereby preventing it from being released.
 
-In the current patch, the function get_mem_cgroup_from_folio() is
-employed to safeguard against the release of the memory cgroup.
+In the current patch, the function get_mem_cgroup_css_from_folio()
+and the rcu read lock are employed to safeguard against the release
+of the memory cgroup.
+
 This serves as a preparatory measure for the reparenting of the
 LRU pages.
 
@@ -130,31 +132,146 @@ Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 ---
- fs/buffer.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/fs-writeback.c                | 22 +++++++++++-----------
+ include/linux/memcontrol.h       |  9 +++++++--
+ include/trace/events/writeback.h |  3 +++
+ mm/memcontrol.c                  | 14 ++++++++------
+ 4 files changed, 29 insertions(+), 19 deletions(-)
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index b67791690ed33..d80b635cff162 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -926,8 +926,7 @@ struct buffer_head *folio_alloc_buffers(struct folio *folio, unsigned long size,
- 	long offset;
- 	struct mem_cgroup *memcg, *old_memcg;
+diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
+index 68228bf89b82e..1a527ce28514d 100644
+--- a/fs/fs-writeback.c
++++ b/fs/fs-writeback.c
+@@ -279,15 +279,13 @@ void __inode_attach_wb(struct inode *inode, struct folio *folio)
+ 	if (inode_cgwb_enabled(inode)) {
+ 		struct cgroup_subsys_state *memcg_css;
  
--	/* The folio lock pins the memcg */
--	memcg = folio_memcg(folio);
-+	memcg = get_mem_cgroup_from_folio(folio);
- 	old_memcg = set_active_memcg(memcg);
- 
- 	head = NULL;
-@@ -948,6 +947,7 @@ struct buffer_head *folio_alloc_buffers(struct folio *folio, unsigned long size,
+-		if (folio) {
+-			memcg_css = mem_cgroup_css_from_folio(folio);
+-			wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
+-		} else {
+-			/* must pin memcg_css, see wb_get_create() */
++		/* must pin memcg_css, see wb_get_create() */
++		if (folio)
++			memcg_css = get_mem_cgroup_css_from_folio(folio);
++		else
+ 			memcg_css = task_get_css(current, memory_cgrp_id);
+-			wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
+-			css_put(memcg_css);
+-		}
++		wb = wb_get_create(bdi, memcg_css, GFP_ATOMIC);
++		css_put(memcg_css);
  	}
- out:
- 	set_active_memcg(old_memcg);
-+	mem_cgroup_put(memcg);
- 	return head;
- /*
-  * In case anything failed, we just free everything we got.
+ 
+ 	if (!wb)
+@@ -979,16 +977,16 @@ void wbc_account_cgroup_owner(struct writeback_control *wbc, struct folio *folio
+ 	if (!wbc->wb || wbc->no_cgroup_owner)
+ 		return;
+ 
+-	css = mem_cgroup_css_from_folio(folio);
++	css = get_mem_cgroup_css_from_folio(folio);
+ 	/* dead cgroups shouldn't contribute to inode ownership arbitration */
+ 	if (!css_is_online(css))
+-		return;
++		goto out;
+ 
+ 	id = css->id;
+ 
+ 	if (id == wbc->wb_id) {
+ 		wbc->wb_bytes += bytes;
+-		return;
++		goto out;
+ 	}
+ 
+ 	if (id == wbc->wb_lcand_id)
+@@ -1001,6 +999,8 @@ void wbc_account_cgroup_owner(struct writeback_control *wbc, struct folio *folio
+ 		wbc->wb_tcand_bytes += bytes;
+ 	else
+ 		wbc->wb_tcand_bytes -= min(bytes, wbc->wb_tcand_bytes);
++out:
++	css_put(css);
+ }
+ EXPORT_SYMBOL_GPL(wbc_account_cgroup_owner);
+ 
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 7b3d8f341ff10..6b987f7089ca4 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -895,7 +895,7 @@ static inline bool mm_match_cgroup(struct mm_struct *mm,
+ 	return match;
+ }
+ 
+-struct cgroup_subsys_state *mem_cgroup_css_from_folio(struct folio *folio);
++struct cgroup_subsys_state *get_mem_cgroup_css_from_folio(struct folio *folio);
+ ino_t page_cgroup_ino(struct page *page);
+ 
+ static inline bool mem_cgroup_online(struct mem_cgroup *memcg)
+@@ -1564,9 +1564,14 @@ static inline void mem_cgroup_track_foreign_dirty(struct folio *folio,
+ 	if (mem_cgroup_disabled())
+ 		return;
+ 
++	if (!folio_memcg_charged(folio))
++		return;
++
++	rcu_read_lock();
+ 	memcg = folio_memcg(folio);
+-	if (unlikely(memcg && &memcg->css != wb->memcg_css))
++	if (unlikely(&memcg->css != wb->memcg_css))
+ 		mem_cgroup_track_foreign_dirty_slowpath(folio, wb);
++	rcu_read_unlock();
+ }
+ 
+ void mem_cgroup_flush_foreign(struct bdi_writeback *wb);
+diff --git a/include/trace/events/writeback.h b/include/trace/events/writeback.h
+index 4d3d8c8f3a1bc..b849b8cc96b1e 100644
+--- a/include/trace/events/writeback.h
++++ b/include/trace/events/writeback.h
+@@ -294,7 +294,10 @@ TRACE_EVENT(track_foreign_dirty,
+ 		__entry->ino		= inode ? inode->i_ino : 0;
+ 		__entry->memcg_id	= wb->memcg_css->id;
+ 		__entry->cgroup_ino	= __trace_wb_assign_cgroup(wb);
++
++		rcu_read_lock();
+ 		__entry->page_cgroup_ino = cgroup_ino(folio_memcg(folio)->css.cgroup);
++		rcu_read_unlock();
+ 	),
+ 
+ 	TP_printk("bdi %s[%llu]: ino=%lu memcg_id=%u cgroup_ino=%lu page_cgroup_ino=%lu",
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 9e7b00f1450e7..5508a4aced0cc 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -243,7 +243,7 @@ DEFINE_STATIC_KEY_FALSE(memcg_bpf_enabled_key);
+ EXPORT_SYMBOL(memcg_bpf_enabled_key);
+ 
+ /**
+- * mem_cgroup_css_from_folio - css of the memcg associated with a folio
++ * get_mem_cgroup_css_from_folio - acquire a css of the memcg associated with a folio
+  * @folio: folio of interest
+  *
+  * If memcg is bound to the default hierarchy, css of the memcg associated
+@@ -253,14 +253,16 @@ EXPORT_SYMBOL(memcg_bpf_enabled_key);
+  * If memcg is bound to a traditional hierarchy, the css of root_mem_cgroup
+  * is returned.
+  */
+-struct cgroup_subsys_state *mem_cgroup_css_from_folio(struct folio *folio)
++struct cgroup_subsys_state *get_mem_cgroup_css_from_folio(struct folio *folio)
+ {
+-	struct mem_cgroup *memcg = folio_memcg(folio);
++	struct mem_cgroup *memcg;
+ 
+-	if (!memcg || !cgroup_subsys_on_dfl(memory_cgrp_subsys))
+-		memcg = root_mem_cgroup;
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return &root_mem_cgroup->css;
+ 
+-	return &memcg->css;
++	memcg = get_mem_cgroup_from_folio(folio);
++
++	return memcg ? &memcg->css : &root_mem_cgroup->css;
+ }
+ 
+ /**
 -- 
 2.20.1
 
