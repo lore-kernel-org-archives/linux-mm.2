@@ -4,113 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1661EECD992
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 18:26:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EFE3ECD992
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 18:36:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 802146B0089; Thu,  5 Feb 2026 13:26:16 -0500 (EST)
+	id 2AFD16B0089; Thu,  5 Feb 2026 13:36:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7AD1F6B008A; Thu,  5 Feb 2026 13:26:16 -0500 (EST)
+	id 25D5C6B008A; Thu,  5 Feb 2026 13:36:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AF3F6B0092; Thu,  5 Feb 2026 13:26:16 -0500 (EST)
+	id 13F4C6B0092; Thu,  5 Feb 2026 13:36:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 599C86B0089
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 13:26:16 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 283F71C545
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 18:26:16 +0000 (UTC)
-X-FDA: 84411232752.08.7BC209C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 84EE0A0002
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 18:26:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Z1Y/k+3S";
-	spf=pass (imf15.hostedemail.com: domain of namhyung@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F34736B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 13:36:45 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98635C235C
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 18:36:45 +0000 (UTC)
+X-FDA: 84411259170.01.ACFE7C3
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 15D4A120006
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 18:36:42 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZhLHDS4M;
+	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770315974;
+	s=arc-20220608; t=1770316603;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jc6X8z+uqAcXbG7AVKaEWyFX1HejH8ZQ21HFzAYLgfk=;
-	b=MKKjFLY3vizgNzY6fZjenpwJQIcgmlRu8n8D0xQw1Qt38+PEOnka9TVk5G4No2r8jBbBLA
-	4MEBsv1LLbZSSgA5Gxom2qp6GnB8LuYjAjQsme2hSRBUZQ7NZzKOjSTjTKKDOxMx9zBY6F
-	VvoXQ4XgmjDftCFqmFE7I24V+yEjalM=
+	bh=a9XUew3OKs2khZcdfbu4P2U7TU7j0aznGt+BPSW+pjQ=;
+	b=MYhfcTV6d6Hlz1+CYTdVB0ERE454E1bQIhPreeuGLM0Cz5TzYZWFFDS3aiHm50GMVV/5NK
+	f4tetVhpYHawf3NQ+DiWxJ5AJ7Ovxp48XcqHntOrPNlVZlJD3kVCr2ckniL94Lu+6HwVTk
+	ZsUIpYsdZXUL0cOJmlKg7ohiW62+1uA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Z1Y/k+3S";
-	spf=pass (imf15.hostedemail.com: domain of namhyung@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=namhyung@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770315974; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ZhLHDS4M;
+	spf=pass (imf29.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.17 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770316603; a=rsa-sha256;
 	cv=none;
-	b=tCI62OD56TLRYDUp6+x+xNqZWot6cPIfTFg0oIpBj/8BHHCtE5wMvLExyhjOZYFdCOQuCi
-	NznDcY5jnN1VBcgGXm2nNU0dRdXs+jGln+1XMuIzPTrRzmMoYbzxE8AwmaZRvjMRxnLGy+
-	OCpC0edRb1BNriLh+tgth+MnYZjsFQw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E302460010;
-	Thu,  5 Feb 2026 18:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB09C4CEF7;
-	Thu,  5 Feb 2026 18:26:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770315973;
-	bh=ZgI4s4IJcqbYrOfugYledwXgFygfiU6a+fz/w80FIxM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z1Y/k+3SJ4RKsX8YvKX86d51UTcLx1XomnMvEAaxmVVKLBE1BdoWJJE/+swWUIxmh
-	 QdqPYoZLdyHu41x7DCQVqzexpwe/mriTIGMbyAvqPealoXRis9NuJaOjB8c7xlBMdf
-	 B2OjtIExPowIFb8OWrbepKwlD5Mtb+TZMk+Ww1oFDDznGMz/xqiiyOmngHOjHOE5v1
-	 +3Apngm2vNRIe4cgGITUaKtfpYwl4FgVLrw+AK9IYejkRXA0TkeaWzslBb9CyTA43W
-	 W6vMFdREQO8O7vg+SKtW/7NWh0OQpyokQVaCengvMXduAPAMwApvEZLSFE1nNCTxxh
-	 AtN6aWEKtonpA==
-Date: Thu, 5 Feb 2026 10:26:10 -0800
-From: Namhyung Kim <namhyung@kernel.org>
-To: Jens Remus <jremus@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
-	Steven Rostedt <rostedt@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Indu Bhagat <indu.bhagat@oracle.com>,
-	"Jose E. Marchesi" <jemarch@gnu.org>,
-	Beau Belgrave <beaub@linux.microsoft.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-	Carlos O'Donell <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-	Dylan Hatch <dylanbhatch@google.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: Re: [PATCH v13 00/18] unwind_deferred: Implement sframe handling
-Message-ID: <aYTgwoyRl8kxQShT@google.com>
-References: <20260127150554.2760964-1-jremus@linux.ibm.com>
+	b=E2fKI6k02cKK0CuvrhIlhy5XSfKSKQHeQoHu0gyrSjaGTO3/D7Kw3maVKkHfxoNaeKAICr
+	3t3oVi8vKRra/mrKsnHiVaxnLAA808JqNQEKZTBApqDpcHqS/hWznwLntLuRpCaUQ20j5U
+	crFVawUjKpRNNq+5D5htq3MixRqbxNw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770316604; x=1801852604;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=BRoiTGDD1DPstl6jjIry5OxGDVXQrFg9V+c5bc7ZNDo=;
+  b=ZhLHDS4Mrr9kjDoYWu4M2/WF20C86S8aa98UFNwPBcrpynGt1pub2WD2
+   NOlKz/YWcOS8hZ3wy+9s0RXgoCaCRbPTRw8ECW8Kkv1kIj8sRIAmPMMmu
+   oifo2gbUzkamwn87oAi4qwhVpTgnqRv/T/HSR4En+uqchQNpipHUfOKut
+   1nfcs/6SB3jUgLseb4GUAmF/I2+GwBe0pVyv4zqmvVfN3mBCPay31M5Nx
+   Xn5GD8/uBKvZV+nz0vcoLdjobXUaxr1cu9uV9D32GL4GBxn77sY6NGik3
+   aJk5mzpIx+ErIFzutNYn0BVx0duNNiA6MmjrOOxBEYLvmmPQRPHYoNpkb
+   w==;
+X-CSE-ConnectionGUID: hBfwFpLySWOUFyB7V1uyJw==
+X-CSE-MsgGUID: YJ6vno+STLWVa6zVJXCPbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71514787"
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
+   d="scan'208";a="71514787"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 10:36:42 -0800
+X-CSE-ConnectionGUID: gXKa7sqmSK6D/KjxOc4B2g==
+X-CSE-MsgGUID: wizrHLKHQe6FZo0fvb0otQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
+   d="scan'208";a="210428597"
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.111.86]) ([10.125.111.86])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 10:36:40 -0800
+Message-ID: <dfdfeac9-5cd5-46fc-a5c1-9ccf9bd3502a@intel.com>
+Date: Thu, 5 Feb 2026 10:36:40 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260127150554.2760964-1-jremus@linux.ibm.com>
-X-Stat-Signature: kemsi1yoq6sy45y9qtu9agymhn1yf69k
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, Lance Yang <lance.yang@linux.dev>
+Cc: Peter Zijlstra <peterz@infradead.org>, Liam.Howlett@oracle.com,
+ akpm@linux-foundation.org, aneesh.kumar@kernel.org, arnd@arndb.de,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com,
+ boris.ostrovsky@oracle.com, bp@alien8.de, dave.hansen@linux.intel.com,
+ dev.jain@arm.com, hpa@zytor.com, hughd@google.com, ioworker0@gmail.com,
+ jannh@google.com, jgross@suse.com, kvm@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mingo@redhat.com,
+ npache@redhat.com, npiggin@gmail.com, pbonzini@redhat.com, riel@surriel.com,
+ ryan.roberts@arm.com, seanjc@google.com, shy828301@gmail.com,
+ tglx@linutronix.de, virtualization@lists.linux.dev, will@kernel.org,
+ x86@kernel.org, ypodemsk@redhat.com, ziy@nvidia.com
+References: <20260202133713.GF1395266@noisy.programming.kicks-ass.net>
+ <540adec9-c483-460a-a682-f2076cf015c2@linux.dev>
+ <20260202150957.GD1282955@noisy.programming.kicks-ass.net>
+ <d6944cd8-d3b7-4b16-ab52-a61e7dc2221c@linux.dev>
+ <06d48a52-e4ec-47cd-b3fb-0fccd4dc49f4@kernel.org>
+ <3026ad8d-92ad-4683-8c3e-733d4070d033@linux.dev>
+ <64f3a75a-30ff-4bee-833c-be5dba05f72b@intel.com>
+ <c985a8ed-37ad-415e-b7b4-18a66b4da3fe@linux.dev>
+ <647cbe2e-a034-4a75-9492-21ea1708eccc@intel.com>
+ <99237729-f2b0-4a7a-8213-65a2f1c57744@linux.dev>
+ <aYTJzft5cuqD9akC@casper.infradead.org>
+ <6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 15D4A120006
+X-Stat-Signature: db4w9r5ufjjysi6czdsknopknci6znsr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 84EE0A0002
-X-HE-Tag: 1770315974-204302
-X-HE-Meta: U2FsdGVkX1/nRO7Pej/KptKvWwcavfPWuygQ2jpwIeSsMC14TvmvjoBRPq8ninyTGBzSvTEoQW0sV7HwC4+arS35p4ZMS4/LwZ6MzeSMpVL9RF117JBNCxQcV9zMx7vNJYCiZx/GYzugv18IPY2YFssp8AuAx/diIx4a2PMNmbJOyEjF/FWXxUdUeTeob0uzLqP9jbb7Ol0nrGZ94zAVCH4srCzGsLEHK9WCwD2h5DYJn7kE6K0BK+0Jdiyc5nCsOcAjPr+godfI+I//2ZPUa/zmHslwTQE4RALkRi49f9h1XOVxOP6WO8uQI54+9Z8KH2YMrPE9PPDxJmIeFUKeEWFNhg47dEH8+/t4Acc2E3Z6ldXFHfwI9rxvDtaTWZzGd1TL8tYkab7VhUpowZIi5RhNnZ+Tu/6c7g0m+0yOBR6GKHVlzxSmngedeZ6d6ggim9hCJxA2PNkfomfUSNz4BvuprI9xi5SX4OCYqZkhPGgo8UbHd+8c2x309M2cTpajWkQvdVO+uXBTzT4gsY7fJfsZP0fuQG0mDNBINzJsG/EpsT4cX/DLiqrgY3gfw+Wkdryi7xX9gZPqBry9tBvZiAfa6hp4vrYChUXMPoXDT2SIbkY8aN0LCooRlvFAPdRX6fqpGzKAzuyqBjFFmrTOkExJv/WbUfR7IX0d/IDvGu7pbFMlfMQvjbGk/LyJejMaQBfcJu82AusjlwkBa1Tcc9yPgMeHpSXsPLP9w/Q7n2/ZW+AagSnL7JgkT82M3SgWJ/w5/0SU1qRwqBxIAw0/CTxg4A0fiDoAoR7xFvvB9iPxw1rlyHqx3+GnRNpQOt/ep1DXConBqhYi9RKc4BN92Em9UQP5TLTiuaDf6pdZBvCnH5FOwTmUP8rBp7TdL/Ld3qu+Tqnp24e8srVEcrzRMr2pTCMzwloprpwI3ZQtKesd5S5qtTKENZKRphryiz3lSDKuAF8pOaOfsIKezn+
- 8qis/1ZJ
- GYpGHMjt8A0FsdUhTB6ViXAmB1R7CkqnRcqrY8iYWTah4VCGKXMu9pXX6N/WBgCOZ3OOKmU2gYCOkRQUbuKYBFfichddZ0uf0b4jXEfcKnjk+1Rsg7ms9fRcEDtVBWDG2LZfsB2ZAp0vgDzAZvE1H3KHjfmdlCafp0DAta+Ca10mAwPkMv0kJs2vfEKPjro5iy6WvzB4TpgRf//ir4UT+iiA/9DwN5DLK1AA15BdXSMdU4RPyn5N+OAngkOg2E5AeWH+L+fr/WHQFvJgB0OpbbZdfRa83508zrYtbzjkzJ8qeJ7AVJroiMNMigjTHKuTDRci6Tws5aE0qIc9V7+4yvmDYkTr0PFnTNsp06K7KlQhyTxjT8WFHl5W8G1eg8qMfGG1v
+X-HE-Tag: 1770316602-872553
+X-HE-Meta: U2FsdGVkX1+vheyCd/ViDbCWfyaOJaOfFS5WwyrY2OQFu8yfEWIy6uphsNJ3qtw58VUsnalox0jSWD2kg97GtdxnpG23ZUlBM0/GuvkzElbxeHmM+/W+m5UYHZBn5aV7T07sDJkIxgXeaIHVsC8L8vDYfdyKrSBeS2801aEAgLeuc0/bGCysmhy4H01AtmoJJVpPeiY/srhhomaTa6wiA0yrYRahOZsx3xpdfWqCGFObDINHnOHgW86pVe0ZXRofkYw5ZqrHwuCnykwC5uaf9nVbnN1JdPc68YL6b/dCxH07ywVyQhaL2HhOxKSOeFROiH3SxW7cNUO1wuk5Y9Xr/JbR+nXMkbC+y2Hz837WnyhSFEiSTHkhAcbzpoe/PW5C1OF+CWOA4ShgDcCNxvtVEk1rYfmpREEE9zv97txenHOS+EycG+fDUbJABIlMEmh/wFo+RVm4qqMwaZhpplBUVFpBVtxirFkbMWUYKWxek4UTJzItZmd1wJsYGsVXGO9yv2BCvXIv8eqfXGobCohGVtg2hIcSMuliGLZqNVU4RMkDBXc87jMsrBjt5gvqzWkurZjZTscPmzzG2YAsxD0eTG04wRh9AZJnFZTYsm0uT7WppkJFxiAdq9qXWTV2rHtndZsg6OvOHtKfLDsQ0/XSyBzXUa5ngmU46g8mlc5FB/dPkRuS1yuVFwWMPyRnTWpXzFsfFUHVIeWIp5uGyvj+Kshr40hUwFyc08D2iFL8eTTlejgA9CX/UGsg1dbM421s2u4iefYO6O2EFxLM81BporVp9yYb/XlxJccmHnDLHKQaa1ckpgDptGque8+nMzX/L7PbcHFcUlErp0Zslw2jnb5JZ16gJgDmcdlgTnqMJiGbqg+9CoEqDuz5wVPSJJhp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,172 +169,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 2/5/26 09:06, David Hildenbrand (Arm) wrote:
+>> But can't we RCU-free the page table?  Why do we need to wait for the
+>> RCU readers to finish?
+> 
+> For unsharing hugetlb PMD tables the problem is not the freeing but the
+> reuse of the PMD table for other purposes in the last remaining user.
+> It's complicated.
 
-On Tue, Jan 27, 2026 at 04:05:35PM +0100, Jens Remus wrote:
-> This is the implementation of parsing the SFrame V3 stack trace information
-> from an .sframe section in an ELF file.  It's a continuation of Josh's and
-> Steve's work that can be found here:
-> 
->    https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
->    https://lore.kernel.org/all/20250827201548.448472904@kernel.org/
-> 
-> Currently the only way to get a user space stack trace from a stack
-> walk (and not just copying large amount of user stack into the kernel
-> ring buffer) is to use frame pointers. This has a few issues. The biggest
-> one is that compiling frame pointers into every application and library
-> has been shown to cause performance overhead.
-> 
-> Another issue is that the format of the frames may not always be consistent
-> between different compilers and some architectures (s390) has no defined
-> format to do a reliable stack walk. The only way to perform user space
-> profiling on these architectures is to copy the user stack into the kernel
-> buffer.
-> 
-> SFrame [1] is now supported in binutils (x86-64, ARM64, and s390). There is
-> discussions going on about supporting SFrame in LLVM. SFrame acts more like
-> ORC, and lives in the ELF executable file as its own section. Like ORC it
-> has two tables where the first table is sorted by instruction pointers (IP)
-> and using the current IP and finding it's entry in the first table, it will
-> take you to the second table which will tell you where the return address
-> of the current function is located and then you can use that address to
-> look it up in the first table to find the return address of that function,
-> and so on. This performs a user space stack walk.
-> 
-> Now because the .sframe section lives in the ELF file it needs to be faulted
-> into memory when it is used. This means that walking the user space stack
-> requires being in a faultable context. As profilers like perf request a stack
-> trace in interrupt or NMI context, it cannot do the walking when it is
-> requested. Instead it must be deferred until it is safe to fault in user
-> space. One place this is known to be safe is when the task is about to return
-> back to user space.
-> 
-> This series makes the deferred unwind user code implement SFrame format V3
-> and enables it on x86-64.
-> 
-> [1]: https://sourceware.org/binutils/wiki/sframe
-> 
-> 
-> This series applies on top of the tip perf/core branch:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  perf/core
-> 
-> The to be stack-traced user space programs (and libraries) need to be
-> built with the recent SFrame stack trace information format V3, as
-> generated by the upcoming binutils 2.46 with assembler option --gsframe.
-> It can be built from source from the binutils-2_46-branch branch:
-> 
->   git://sourceware.org/git/binutils-gdb.git  binutils-2_46-branch
-> 
-> Namhyung Kim's related perf tools deferred callchain support can be used
-> for testing ("perf record --call-graph fp,defer" and "perf report/script").
+Letting the previously-shared table get released to everything else in
+the system sounds like a fixable problem. tlb_flush_unshared_tables()
+talks about this, and it makes sense that once locks get dropped that
+something else could get mapped in and start using the PMD.
 
-Is it possible for users to choose the unwinder - frame pointer or
-SFrame at runtime?  I feel like the option should be
-"--call-graph sframe,defer" or just "--call-graph sframe" if it always
-uses deferred unwinding.
+The RCU way of fixing that would be to allocate new page table, replace
+the old one, and RCU-free the old one. Read, Copy, Update. :)
 
-Thanks,
-Namhyung
+It does temporarily eat up an extra page, and cost an extra copy. But
+neither of those seems expensive compared to IPI'ing the world.
 
-> 
-> 
-> Changes since v12 (see patch notes for details):
-> - Rebase on tip perf/core branch (d55c571e4333).
-> - Add support for SFrame V3, including its new flexible FDEs.  SFrame V2
->   is not supported.
-> 
-> Changes since v11 (see patch notes for details):
-> - Rebase on tip master branch (f8fdee44bf2f) with Namhyung Kim's
->   perf/defer-callchain-v4 branch merged on top.
-> - Adjust to Peter's latest undwind user enhancements.
-> - Simplify logic by using an internal SFrame FDE representation, whose
->   FDE function start address field is an address instead of a PC-relative
->   offset (from FDE).
-> - Rename struct sframe_fre to sframe_fre_internal to align with
->   struct sframe_fde_internal.
-> - Remove unused pt_regs from unwind_user_next_common() and its
->   callers. (Peter)
-> - Simplify unwind_user_next_sframe(). (Peter)
-> - Fix a few checkpatch errors and warnings.
-> - Minor cleanups (e.g. move includes, fix indentation).
-> 
-> Changes since v10:
-> - Support for SFrame V2 PC-relative FDE function start address.
-> - Support for SFrame V2 representing RA undefined as indication for
->   outermost frames.
-> 
-> 
-> Patches 1, 4, 11, and 17 have been updated to exclusively support the
-> latest SFrame V3 stack trace information format, that is generated by
-> the upcoming binutils 2.46 release.  Old SFrame V2 sections get rejected
-> with dynamic debug message "bad/unsupported sframe header".
-> 
-> Patches 7 and 8 add support to unwind user (sframe) for outermost frames.
-> 
-> Patches 12-15 add support to unwind user (sframe) for the new SFrame V3
-> flexible FDEs.
-> 
-> Patch 16 improves the performance of searching the SFrame FRE for an IP.
-> 
-> Regards,
-> Jens
-> 
-> 
-> Jens Remus (7):
->   unwind_user: Stop when reaching an outermost frame
->   unwind_user/sframe: Add support for outermost frame indication
->   unwind_user: Enable archs that pass RA in a register
->   unwind_user: Flexible FP/RA recovery rules
->   unwind_user: Flexible CFA recovery rules
->   unwind_user/sframe: Add support for SFrame V3 flexible FDEs
->   unwind_user/sframe: Separate reading of FRE from reading of FRE data
->     words
-> 
-> Josh Poimboeuf (11):
->   unwind_user/sframe: Add support for reading .sframe headers
->   unwind_user/sframe: Store .sframe section data in per-mm maple tree
->   x86/uaccess: Add unsafe_copy_from_user() implementation
->   unwind_user/sframe: Add support for reading .sframe contents
->   unwind_user/sframe: Detect .sframe sections in executables
->   unwind_user/sframe: Wire up unwind_user to sframe
->   unwind_user/sframe: Remove .sframe section on detected corruption
->   unwind_user/sframe: Show file name in debug output
->   unwind_user/sframe: Add .sframe validation option
->   unwind_user/sframe/x86: Enable sframe unwinding on x86
->   unwind_user/sframe: Add prctl() interface for registering .sframe
->     sections
-> 
->  MAINTAINERS                               |   1 +
->  arch/Kconfig                              |  23 +
->  arch/x86/Kconfig                          |   1 +
->  arch/x86/include/asm/mmu.h                |   2 +-
->  arch/x86/include/asm/uaccess.h            |  39 +-
->  arch/x86/include/asm/unwind_user.h        |  69 +-
->  arch/x86/include/asm/unwind_user_sframe.h |  12 +
->  fs/binfmt_elf.c                           |  48 +-
->  include/linux/mm_types.h                  |   3 +
->  include/linux/sframe.h                    |  60 ++
->  include/linux/unwind_user.h               |  18 +
->  include/linux/unwind_user_types.h         |  46 +-
->  include/uapi/linux/elf.h                  |   1 +
->  include/uapi/linux/prctl.h                |   6 +-
->  kernel/fork.c                             |  10 +
->  kernel/sys.c                              |   9 +
->  kernel/unwind/Makefile                    |   3 +-
->  kernel/unwind/sframe.c                    | 840 ++++++++++++++++++++++
->  kernel/unwind/sframe.h                    |  87 +++
->  kernel/unwind/sframe_debug.h              |  68 ++
->  kernel/unwind/user.c                      | 105 ++-
->  mm/init-mm.c                              |   2 +
->  22 files changed, 1414 insertions(+), 39 deletions(-)
->  create mode 100644 arch/x86/include/asm/unwind_user_sframe.h
->  create mode 100644 include/linux/sframe.h
->  create mode 100644 kernel/unwind/sframe.c
->  create mode 100644 kernel/unwind/sframe.h
->  create mode 100644 kernel/unwind/sframe_debug.h
-> 
-> -- 
-> 2.51.0
-> 
+> For page table freeing, we only do it if we fail to allocate memory --
+> if we cannot use RCU IIRC.
+
+But that case is fine to be slow and use synchronize_rcu(). If you're
+failing to allocate a single page, you're in a way slow path anyway.
+
+> khugepaged, no idea.
+Sounds like Lance has some homework to do there. :)
 
