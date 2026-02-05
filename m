@@ -4,116 +4,256 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BED0EC1EA5
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:58:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 344B0EC1EA7
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:58:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4E7276B0092; Thu,  5 Feb 2026 06:58:06 -0500 (EST)
+	id 8E8FB6B0093; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B10B6B0093; Thu,  5 Feb 2026 06:58:06 -0500 (EST)
+	id 8BD436B0096; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3BCF86B0096; Thu,  5 Feb 2026 06:58:06 -0500 (EST)
+	id 74A486B0098; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CF0C6B0092
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:58:06 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EFEFF1B25CE
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:05 +0000 (UTC)
-X-FDA: 84410254530.29.5FA7653
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 3222FC0007
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:02 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vIOrFD5G;
-	spf=pass (imf22.hostedemail.com: domain of 3yYWEaQkKCDoWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3yYWEaQkKCDoWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770292683;
+	by kanga.kvack.org (Postfix) with ESMTP id 61C116B0093
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:58:37 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 21E6913B12F
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:37 +0000 (UTC)
+X-FDA: 84410255874.09.434A96C
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 8E57F18000C
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:58:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zntgn4L+;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="qLnf2o/p";
+	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770292713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=30L32YMTRfZh1EnIU9CFZai9EgpumK+W4TFcDn64HBM=;
-	b=RsZ4qH8u88M69R0fAfP+JMZ1Dajsrde9tA428pmKmMhnzXtDgXfw3zqMLqdoYdF+2ZtJ4c
-	gkUhFL6N32tyDpv2bmebDfBkkIJYXidaDnR4jtxa/l+lOB8p+wmHxGYWMPk7SRmt7f057D
-	DuzG0EYywmv+40FsiCUcY+hTlxldyQ0=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=vIOrFD5G;
-	spf=pass (imf22.hostedemail.com: domain of 3yYWEaQkKCDoWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3yYWEaQkKCDoWheYanudhckkcha.Ykihejqt-iigrWYg.knc@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770292683; a=rsa-sha256;
-	cv=none;
-	b=KkLS2sZeQmIjLMuRGU67/FsKz8KxJDRlSMBpdI62WN5lJ/te0zsklp+dZvIx2lscVFItI8
-	NPm0H34vyb+D1La098YzSWLs29M54g6A4xja0Jyn26plxgskk06UhkjisQWG/VCh81oS1t
-	PKf3USnNPDytCsm6qdOVlBx9Wt5vnvY=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-4325cc15176so646032f8f.1
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 03:58:02 -0800 (PST)
+	bh=bsK+vqGfal5dKaAiBsT/7V0Q//EWgCjKKA+2bYIonkE=;
+	b=JHcoxIE03RuFePANQMTPV9LMpDQSlExpqf3QY1IubNCNjJvmFJKEt8dgBT/x6ALGcUk5FR
+	wj3yZysbbxp7B1GifbLMVLmXgVPeVtzKT1L03rbD+9LH7LDrivnqq5dllRwFuMBSdCuMXP
+	yCI2E3RgrpKNlOUXr9u6YF6mnf3HKsE=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Zntgn4L+;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="qLnf2o/p";
+	spf=pass (imf16.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770292713; a=rsa-sha256;
+	cv=pass;
+	b=pggyd4UENeu901GtTJZQpcp4Puf+9xb9XVwaI8uMfbM91VE7xyFctOpoi6vtRyuPU+X5nU
+	nYppTN686CZsqTPoN4GXGYwgdHliblylqumzv4VwjUtOxEXyz95kzHoBccGRyyEkrprfcS
+	OXrITrAgJRayUleF+l5UmRBJaAeSnzM=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 614N7nUr1717984;
+	Thu, 5 Feb 2026 11:58:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=bsK+vqGfal5dKaAiBs
+	T/7V0Q//EWgCjKKA+2bYIonkE=; b=Zntgn4L+nJTx35xNqsmLnFjYSKhJgSiDOz
+	A3PMo6e+lBfND+IQpjsnEuuTS6p/uJTIhf4zugF6z2yOG/DcUn7WeiUYuJZe5uCT
+	QuHcfH9/0G2KMmso0vPg4qgPjnIqGLPN1Rz6YZ4jF20HChkN7/12yWE2QO6g+usS
+	P1xJSrjy3SeFALvCe6Z7/olDmz8BYjpysHyRI0Gml0ICSXfImgQxaah0VsIteQx0
+	i0x7MVaC+L0gVvHuPQjcB9AQ62dvTxPpSMRBMgJAAzZWc0R7vCgGJoQv6f7r95a1
+	EE1p6WQSS8kUBxro9PspK9aQ5h4jDRYp+xnVVcFXco3ke1IjIqdA==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c3jhb3kfs-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 05 Feb 2026 11:58:03 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 615Bq5uM018685;
+	Thu, 5 Feb 2026 11:58:02 GMT
+Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011067.outbound.protection.outlook.com [52.101.52.67])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c186qkuee-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 05 Feb 2026 11:58:02 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=g6vJ4xDowduCn1lFUCtEchEtUn5VXOJPdkEKTiav+2WrbUZZ8aSH8vxLA95PywVv4Df0VCJSTrOnBF1w2obZmnwXm6RJYeZFdcX/osnCaPgVZIwVRc3lXQhv30IZnOV6swdC1mAuwU+RP96X8+1Mdp0gTgvux32V9PMxoTUyAvPcG6De0q9nFLXyxaymChLBZ/bsRFPNXXEgg7LOeE9sBNeGdeIFlKIKgzqsZ08g9+oHdAjToZXbPXGHzs7wmz+SM1iOBfHVKjsdd+0LowLbzTGZvGl2fzE8Sdl3e23jGzgOdfZqobGEHInkdPjWrqlGLpw9/ma1DleTOhFX2uxyYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bsK+vqGfal5dKaAiBsT/7V0Q//EWgCjKKA+2bYIonkE=;
+ b=sMwgwPoGGibPl//hKsEoUINfJ4YnV+1XVaUTyIqq1LDrgrn+hLhW6ZKRsKAMj6PT7P3gwZuXN3a1sbewubVSv7AdyxeXj/DB/ghkMd5J54u9d+cKfeMR8DJGmrma+tLq6Quj/bMTel8hY3kpcF1nw+6f7r2NzeqBOW+6Hvq2ST+Ihilewb0Cwu3fFEXkxdLzue2pnU17WNjTFIuZQJZw+mC/rAmW41TvGkz0f/W8aenVdChi+Oz1jWi2NpCjXAcx4tA4vfWUqmKqbLDW5T1DFVIeGx1wd1bKlCeMtHd86EmCc5jhwQHUOIHGpdGp7TzqvWbgCvxa07l9YHHxwVqdVg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770292681; x=1770897481; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=30L32YMTRfZh1EnIU9CFZai9EgpumK+W4TFcDn64HBM=;
-        b=vIOrFD5GnISvxnv2Y9ySWHyvGp0BxzEQpNLNAPhaYUgbIfYwoi09nL0YpW7C7SxDv4
-         pp4x3GsmEiAxzXlHeoqPe4zdcvTy8R85fa9sbWvf4leLPpNNu2zHZKDuTp86iRfcwLqt
-         Jdxaw1H/K7208KfOqiaBN7sjXbdCSCjGO5TWTfVWo4SYLGSXakqtSkCJixqma4do1s0M
-         NztonxNac1hPQbbzBZw7ZGXQafhN2MV9OSqiH5ghivvnuK7G1IwIKXgQkxTZi1/wL3s5
-         AqV6U8J6Fvx8fSYMOgKtQXPYdQXZGJT/E10sRS4KQ78LRoW7LAz3A3AlfIbeh/oT7V8d
-         d/SQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770292681; x=1770897481;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=30L32YMTRfZh1EnIU9CFZai9EgpumK+W4TFcDn64HBM=;
-        b=jkrS2giXzKrBT8Cxts365RH36aTKfsFx3mHYxIqxGj5m45sMnJ6uZqN4YJRsJITXnt
-         OGI604Y5/DTBAnAv1OoGaVXFvw9to5eQcj0DwW6tQTaB0tUwacXcIAzbFVp5f3IVQl3Q
-         AjaD0q7MaJoJbPIIwTXtzoZnQvWbFfNbXq9dC2Z/QVmxItFtbsZ2PHzLP8o44hdzbBiM
-         JiiyOEHljyjRgoi0JX3Uy+GyyxJvq8gYgVyueAZzCdDV7dwM3czvzqZP0wgRGcWocTKE
-         ZR1gXo7lj8aWFtodX9lRtD8UdKUze/igni1pJz9gJJ8v7qTRA3swkn6Owsdo6QZeI8fN
-         qB4g==
-X-Forwarded-Encrypted: i=1; AJvYcCV/T6dR6L1haRqK959BWRnp4MWILnU0ASJyTziIa1QEokojydZOaBNzpX/2rICMRZQ5Zgzk+cSw+g==@kvack.org
-X-Gm-Message-State: AOJu0YxMQGYO7h3aWAzVyAeryGwftGK0x0tn5Rpu4ZpGjnajhJ8Gye3p
-	BQncgebiLaPZeJ0TU5BzO2/fJfJgt0GdabDUP7Stl18L43DL4osXgr5rbnqnufJo67/WMR14pwz
-	Y8mVJ3oX4/tQM0FYiFg==
-X-Received: from wrqm13.prod.google.com ([2002:a5d:4a0d:0:b0:436:e5d:8f4])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:64c3:0:b0:436:d10:a6b0 with SMTP id ffacd0b85a97d-43617e422f7mr9490372f8f.20.1770292681357;
- Thu, 05 Feb 2026 03:58:01 -0800 (PST)
-Date: Thu, 5 Feb 2026 11:58:00 +0000
-In-Reply-To: <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
-Mime-Version: 1.0
-References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
- <20260205-binder-tristate-v1-3-dfc947c35d35@google.com> <02801464-f4cb-4e38-8269-f8b9cf0a5965@lucifer.local>
- <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
-Message-ID: <aYSFyH-1kkW92M2N@google.com>
-Subject: Re: [PATCH 3/5] mm: export zap_page_range_single and list_lru_add/del
-From: Alice Ryhl <aliceryhl@google.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bsK+vqGfal5dKaAiBsT/7V0Q//EWgCjKKA+2bYIonkE=;
+ b=qLnf2o/pXhCtVtk6oVw2rYlynMJlZuxP/o6DaamY875lezNtYa/a2VltG4y8fZiMKaYg5XRKFF6GUEjQ9tZoeYSEnKjZUFaZvkaJEJ3fJHNwfRQrfgz6s4YW2iv+UdZ0k/kBLQjyEgypcv/mCVjZ4RMJR4l0hIp8XIiIDmkiSBQ=
+Received: from DS0PR10MB8223.namprd10.prod.outlook.com (2603:10b6:8:1ce::20)
+ by IA3PR10MB8515.namprd10.prod.outlook.com (2603:10b6:208:572::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Thu, 5 Feb
+ 2026 11:57:59 +0000
+Received: from DS0PR10MB8223.namprd10.prod.outlook.com
+ ([fe80::b4a4:94e3:f0bc:f4c9]) by DS0PR10MB8223.namprd10.prod.outlook.com
+ ([fe80::b4a4:94e3:f0bc:f4c9%5]) with mapi id 15.20.9520.006; Thu, 5 Feb 2026
+ 11:57:59 +0000
+Date: Thu, 5 Feb 2026 11:57:58 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3222FC0007
-X-Stat-Signature: 6qhqwjbphatqrhrjkowyrgknthfi11ku
+Cc: Alice Ryhl <aliceryhl@google.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Carlos Llamas <cmllamas@google.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+        Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dave Chinner <david@fromorbit.com>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>,
+        Andreas Hindborg <a.hindborg@kernel.org>,
+        Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+        kernel-team@android.com, linux-fsdevel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>
+Subject: Re: [PATCH 3/5] mm: export zap_page_range_single and list_lru_add/del
+Message-ID: <ab63390c-9e75-4a45-9bf4-4ceb112ef07f@lucifer.local>
+References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
+ <20260205-binder-tristate-v1-3-dfc947c35d35@google.com>
+ <02801464-f4cb-4e38-8269-f8b9cf0a5965@lucifer.local>
+ <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <21d90844-1cb1-46ab-a2bb-62f2478b7dfb@kernel.org>
+X-ClientProxiedBy: LO4P123CA0428.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18b::19) To DS0PR10MB8223.namprd10.prod.outlook.com
+ (2603:10b6:8:1ce::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR10MB8223:EE_|IA3PR10MB8515:EE_
+X-MS-Office365-Filtering-Correlation-Id: f0cc7e36-0576-49da-578e-08de64adce66
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?7a5w/pJ3GrxK8L9X2l70Ui3Px7rUB8RV15Lfltk8Bm4rNGHvMNmFQbphmtyA?=
+ =?us-ascii?Q?6WXhjumpv+a9OwsUd/QYTQ6aQjSEeDvDeDb5ICFS5B4CY1+olw1qVIkcKiZE?=
+ =?us-ascii?Q?yMDk2cc2uPxdLQ6DOatrnZ2m+euimrxxn+iQUZJ54GbxaFSg8ND+P2UDX3qD?=
+ =?us-ascii?Q?b7Og4rtj2LKSPfJCgo7odruyi1H+X+iJa1itebDtdYC3cb1D+dq7+wj3avi8?=
+ =?us-ascii?Q?ELl6m/Lp3lmDk7AMz60wngu2ZvwWY8vQYXwNbOYIITlmcU8zjh0LmV+feHCR?=
+ =?us-ascii?Q?7Teg7g9jogzqfaix28wwEFbMDzaC1MpvnQmCJiwdUS/xkaOoFJia3/mlhSPB?=
+ =?us-ascii?Q?KYQFWEhV+HSzL15OcW5NpVDvlDhowAwiM8zsvDN+GDMLCSlgQXfm41aFEHX0?=
+ =?us-ascii?Q?BcZhEKx9MDjtzxgCWopcdvHPrKfZ0+jjFP13zvP2/sb6d4Bfgzo4VpWgZz8G?=
+ =?us-ascii?Q?qvZGqES0CTOI3lSNw+00Zz1OFtrPb4PHmAeDqRGn252ZQEmiBCpvd3yaMkbk?=
+ =?us-ascii?Q?zALQ/UwV6vFk9k9Krkt+i/At1CRiJGPQMJxjcljddm425P7H15DTWiM5AreY?=
+ =?us-ascii?Q?7Oj+D3YLOS4k75KQw/KA0DNDsRhz4eYfEPAM228bZfzyW4CBty+jSQcYLkkK?=
+ =?us-ascii?Q?CdB+WDxKznFUUd6RbVH0fGPToEtT3M0lQuNpGhq2yoCi2Iu+GB4BEA8xS+EG?=
+ =?us-ascii?Q?dxuUrrIMkJqBr2G7VFV/3hn/o10KORay8iO7gHtufhs61uDbHu2y/ThKLrC4?=
+ =?us-ascii?Q?H5Gs1HzJesrgRu4kNUXfBliDttkua1e610g3rMRWUaiWIkxE3Qdv96X+Pa9V?=
+ =?us-ascii?Q?8agebnHBE+RAoZ7+dIwBkKnkXJ2uva0hxfET6hnRsJC6arb9YkZkv3aDSyQw?=
+ =?us-ascii?Q?S1FtDaJxxCocIgi3+7Aa/VN1TdFpOQduKBepD2TrXnBM9xaprkHin6s7XlK4?=
+ =?us-ascii?Q?32FGGxkg3E++YJ//Tc96JF7TxjkIkfuDMm0+L1JZWRGeZ90bIOso/mfV2+To?=
+ =?us-ascii?Q?uD95qSX4X+1Y0cmdeJ8yyikGsYcy2xB9fFFG4sYA9R2inFCLHGzDZT48s8fg?=
+ =?us-ascii?Q?bgVNsUDW851Tkb90rX0IqILndlKRQUkSeac4V8YJMXzfn57+yGJ3/OMKEWTR?=
+ =?us-ascii?Q?1JpD6b7q5GXgXpVkmewJDavm1FArNZ7/rjcKJC4aKcM2KZ7mgOcFyI7Thz/v?=
+ =?us-ascii?Q?0bgD9LpbibNGwerv19/niIL7haIHjODP0UmeoDpMRyoFSZabizW9RYrQ3BlU?=
+ =?us-ascii?Q?a5fPm/zwLp+9HekT2mUplZ/NWO6xUrJGF11wOkK3pf4ohJ9bd6rTFKYAp90t?=
+ =?us-ascii?Q?LZtb+VWay8CapD2KU845gFpJXwZvZW+LfZ2wJ1q7uhzaqwPOGVyaANIZEvXe?=
+ =?us-ascii?Q?iGygTAXQMZxjhx3Fb7BoQvVr6LNrmEtuB4Uu+GPvZg9vMOu9zIjA/ExR1hJF?=
+ =?us-ascii?Q?gfa3PiuBwKUjocz7OcnBh2ziy0SjRjjdqU8kFnAlHPhAyjmGcPFcTDApHWSr?=
+ =?us-ascii?Q?wNCW7A8WQUl32nUmKrVh+eloLkYfUVM1vwdFfZW3oDX7eIcLZbinx5XXAE6A?=
+ =?us-ascii?Q?WaOamoka/8CXjUF/rKU=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB8223.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+km287NiOLAwrkt1Wn38TyhiVWfVps2Zxphs5PnufXP5mP36nAB50+sTiOp5?=
+ =?us-ascii?Q?M3Ss4HKH0skPyYp9EyhC6hQojCzj1mvIh4w3zhftahI89Y6NcCDH4is+WyEI?=
+ =?us-ascii?Q?uyyOqOzAAZWAdCRx9mE0jiwzofP+Q9W+pYNt01tyapP++8OsiroOtShPnpYN?=
+ =?us-ascii?Q?iW6JnoxComvb8qyWCKhF7lWDsIcbGjFdnxChjP9qVUKZfxBH20OgFal7ZZ9n?=
+ =?us-ascii?Q?yWVDXrPGwWd2gd2R+ShyVUs5VxhMtKWipz3wQgd9g1DyRJ4RJBkdQDYuJrZJ?=
+ =?us-ascii?Q?AYZlpVr/cukLARsL/4ebtj5JXZutBubPj3MNUgMK299BiiBEDSiWnHHrnARy?=
+ =?us-ascii?Q?yPoyjc0ASvQeqMxQYW0PXBBdCLYcJPFecXi76xSGjqFIKHzI4AjWEmN0QC79?=
+ =?us-ascii?Q?iriEkxpzPKJRF1vxnS0f7AkCwVDouF+NSbp9zpJcRnpBV6H2GyPEY02gES8I?=
+ =?us-ascii?Q?vQ503sxD+EyPFZpamB63SeyRaAcPacDb2/K1e8oQVidlybtvUvSLP4LTPzhx?=
+ =?us-ascii?Q?wbmNmBnY4Bwrji0KdwXxa02cX6tcALHKYr+ZsIvJ/v5TeBpZewaPcpML7yCx?=
+ =?us-ascii?Q?SCa72dgEA7c5SgcYRfWRMYw2qZ5zSa4/IosOCqeJmT0g0t9urEUprH+N2poe?=
+ =?us-ascii?Q?AxPcBWsrHwRvEqFKQUNjQXWqMmKxJc0VWMhbmKCMyzIqd6KFqRPisbeynMde?=
+ =?us-ascii?Q?Aapr/EsFJef7yCWcY4euyiN2dGvmG6CuVOsPdWLxf3Ooz0EnzT+oEm2RrHaq?=
+ =?us-ascii?Q?2nIRywkmfA6sMGeTsGfI1smDimH/GT/Far93J7+I4b0Tz5hgXf+vliam84w9?=
+ =?us-ascii?Q?0hvwBvUFHevTWjtBVIZqdQyzty9HqnG8Pct/Dn9a0Sruk78s7xtgSAl1y/g1?=
+ =?us-ascii?Q?adZSaVJN8TvQatYmTCRiy7hOi3FfxJJGPSZ7nxlGYSo74bttHKtbSIt7ndVs?=
+ =?us-ascii?Q?OBm59IvW41My7JQSF7I6a+d/gLT+81Sc6OhxddwFM7biiZrCUqTp4pTDXjy4?=
+ =?us-ascii?Q?R/25lwhoxRL4j52AqOi7dBRPbhgEiCtonBFWXRcQbDxkVYfLNe+H9APwIoTi?=
+ =?us-ascii?Q?l09/JtgQHuujT0oZXgO8v5a1mlOjqSIJYOXIl8piecrpq1ystIj7iEJXhvKe?=
+ =?us-ascii?Q?sIEGlT7wGGN9Fwde25iZ+Dwv5+ePT+91Yr7w++/z1bTmMvAiZxD0E0iuuNH0?=
+ =?us-ascii?Q?54ZDXuUV045HVUgh8yU0o32scxPj1cdfkskvBTGg7QoIjtkzE80U6wy+0Ypz?=
+ =?us-ascii?Q?RpjL36MkXqIPiMEUhvtW4wSi3oQ48GvszytZfmOIXZZoye5ziQf54BZO1BZf?=
+ =?us-ascii?Q?GWVjJyJDvRby8MDAU4Ni3UEOjJorINwiiJV0TYtpN0XVYsMjbGS+/LHZoN/I?=
+ =?us-ascii?Q?etsLl6C1Ae5FiC0MLoY/bKOQ7jxVNTuO41aLjDdUqpXd+POlGncBHtt7pNY9?=
+ =?us-ascii?Q?fXnLyqBXsnoMPRj0/Rdu1aQuJwb/zj1tvjJ1NRCzSFSTdE75di7m9NeLYjQL?=
+ =?us-ascii?Q?xE4OOI5YMvjGYbj+yDcalsTzhzDqXcRtJRFUB0MGovUHbpH3oKBaBXjx5lNB?=
+ =?us-ascii?Q?Qj4CPKvxU5keMx0CxvPg3oLb/qih94jPscGC4Ede7ddzkIJAKm8XspobukCl?=
+ =?us-ascii?Q?pKm9/SEDN2oAljuJHvTvcf9zZgk5QyOJ7a7wmH3w6gEaoK3fSFMcG584EoUZ?=
+ =?us-ascii?Q?RwnqH/M3muvnIuCC8Hx/r7piOClusd2XdrRtQu6ODVgm3fOyaAJMyXEk6jfX?=
+ =?us-ascii?Q?/SPfBAbOvsiyMED1TUSPgsaHySGIP5c=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	i7TcqaH7/d6E+OVAW5BULfqlNYr/nSxR0HEiXgXyTcT+Id+jX74AJJdITOVcKKtHCJr5pFMQPlOIFks9KpeM8QtocUuFVk1y37bfBo7ePkaGnpjlzdooXdHDYhehPC5HMkwtGrV5AqWydL8CUgAhUD7A5AyvprB/zkAW2MYFxeTZ7S/PjhTfRsj4g+9yTuTSTf0Jx4q7nbTeN4yrMAT5FPihUYb3pM9kxt1Jd/HvMtnDYSxcp7eMXOv0zUEnHAQ9JysZkl7nxlMl2GfA5Fu37piOdLfozfnHc3NO7+pL7z/edgdaQgY++W/1RECGVTxrXAxAqIt8wqJFYCfWO5/ixdVQxB4HbFEsj8J9bjZy5B71jvOofwruxzyA5OK5IWSH+aPKoNdY7Wk6LEM5NxE5yVkO5qA0037hvpH2VT2PZdpeqk8sY9SJ6ob4yNG2zs/y7RNbpZBUPNWTHaID6DRDVjo4q4TWeVobW07E4WeqH5rDUmK/7FdZGlBsTusCmYX1+ZBfj+aFosTuO2xrBlRXFgrMLBfzCB205ytQTiIxHDrMUDrSTXCRWX1VYo1SrA3WhOX8nXwpeYlTxldASF/QyD5Fpqk+b4xQ+s/PMGWNL4s=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0cc7e36-0576-49da-578e-08de64adce66
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB8223.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 11:57:59.0021
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0Qv+NjKnYkJ9MkeBeMGjXe36vXzmsybV4YFFfMMIKatqsaeajuOV04HXEiwBWN1zRgRuQU9zQGCSnbMJm5EB+7kOz8d7i/y+OILSOZg/Dy8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8515
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-05_02,2026-02-05_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
+ suspectscore=0 mlxlogscore=999 adultscore=0 spamscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2602050088
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDA4OCBTYWx0ZWRfX1AUzQdhbT81C
+ pWW8Eg0MjGoazdeeq7dtbYgNLctYxi1bC8K73PQnauFPhSmB5/CkEBxWLuA8qya2llEddJ86khV
+ R/WJhkFHzIIP1rawDDHk3/KdAQ1oXuSNXrGKJUkHYEaS+fJwh/oO4hhfkX8Tl5LfxlO8JaVpjJw
+ 3BeUGpPaRgOxuzFRJgQS3ykDpg497pPgwvl0/WuQS2VgFdhlb+g6CrO1a8+FomY5lIwGGpsXH3v
+ 8q/4+CNnlXZSgzHomjgi2NJTyR9qATZPzZ4ixs/brfFTSopx2PAmor+q3upgOoclbt9qjoa8iUx
+ 5o/K6jNPV0Kj5AIlCIwyEzQF7N6jVYHx1Aljvx0zgcgii7lOcvpMOomzUn0pq8FPPzLCU5Or2Pa
+ 2s/7fLpBbBWwCWFMi+zBI38NBIExZKkOaKQiATM88QGYp9Igk6pRJqrlfg0iGy/l/f832vVGvWu
+ UTMknX99IsGUqiWtyqiaW2lKBee7mqic4O66JPck=
+X-Proofpoint-ORIG-GUID: fR2i-jTCojGkin7yDDfhNSfFzD0rvPxT
+X-Proofpoint-GUID: fR2i-jTCojGkin7yDDfhNSfFzD0rvPxT
+X-Authority-Analysis: v=2.4 cv=CaYFJbrl c=1 sm=1 tr=0 ts=698485cb b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=1XWaLZrsAAAA:8 a=VwQbUJbxAAAA:8 a=grDJtCt9INGPdPqjOVgA:9 a=CjuIK1q_8ugA:10
+ cc=ntf awl=host:12103
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8E57F18000C
+X-Stat-Signature: 8moqao6f651n4u63qq6kjih3qwhg4838
 X-Rspam-User: 
-X-HE-Tag: 1770292682-407772
-X-HE-Meta: U2FsdGVkX1+Ur6hU1COlUBjL1n3M1dn5oXodk2FIQsHLHBJhnoU1WsD+3zTsjUEJfUGz48hZiT+At7gghoO9tgzmoRp/pVz1WgDBZe3gK7TRsTBVJ5iuDqO9o5JaurhW0GVJ5VZxQXJmBl+0YwJ/bRYkuy47D7EoirWIcmc59LWuSwTNrwUP2ZG7iZVPlvruH/PSDmTaol22QY79IadBNbalbikj1Sh32g3sGIofIlU0Bq7+REdAVz2Vy71js6cskeUWdWvG7GWo85/as5ao+rj77yytFZvgYdoVlCfcBSseCaukXoPH1UyFV6GVrjU2SWK6oiNe6vDwbGLnlijBjluIZcBVuaiy9qx0m3sTU/JikGmsiaCykDDEnTdTKbeD0AcmPtHrZCGOMbfTJ23ijdSUmXl7uDCMSog4xiazuK8oXwt+zcjFQUyGRyZIr7ZMB4BmpFHXpMk1dlXigt467hcwS9XukLuaV3loRKkaulPlIEy1kXaWs+7Pj/vdeQbSqU6GErSnYvKZ19LMSp3SmzqqMSBqQ1Uv5RvVm1025qJwOBGYgU/KsPC8HbcWB5LQbN0j3LCdKQXVqy662KMp8sWU9F6ODAKA90JsGz0XRbPJDkPko8ysWL7ze0C+NiIKMSQrI2dgOQ72bMGB22q3nLnP5dNBeFqLMYDhY7hyIzhdJTevkUY+R4tMpckifAxsTG6memc1eEgoMQ6jVAXscgiTg2kPgVdpEk9PTdQmnElBsPwh3KbB6J4oyNwBwCDzQoTn34Uv5NpqTTKITyCrElr5CTQDRinX3DOYxSrDju0oo9cWMAJRwuIc8jYw4Q0mtZADkLrESeKrxORkb//ftNVV1ZyS98EYxHXfRKxBXJZNdt6kPef8W/1Van1e6J+E0ouD0e6b++wr7U78IQtVdqZqNZ+Yom7Q+wkPEdSTfcqlcoJFcSmXm/n8yBHOuo3PT0SMvexZeXhew7LRIR8
- BOERzH7V
- d2iyR2h3/KbAOaIsaA/Gg/ZeB7NXH5MpHZiDthgbDT/k5QlBvlbJBp6qfol9eqpGh4Dl/3PVLgRtsRRmSLpoOocBd+Ut05jK6B1S2aOB8f5lPpIHQEA7Efp3qkQ3JecJSZTp/z/p1kycvqp9d4W4ajWbGC6MZyhl1KdSe/WltgEV9d/h4MGqrVSDDZn9iSvoSdxZwXO9Gay+BkHnGQfsjta98Zr+IeMByb23hz47f8ZSO8A+o0COS+XzGxpnxO9gZM/znncBaI/SOhScUnHUGoeOu8BBdonNDi5a8lmKFuKbxpiRpt0Xh5pRMr19u+wwubdDTxidjVL/vJrQsrFCeeyPYkYBAMTXiFcWqxN6VcWVRmzXoOGxbb02aZKnDT/0htgVFS8khWCNzoVnziwj2OCFTHN8Gh5q2yyPJc+0iVDJbD5orL/Ql5U92qXxeprI6ov8SYkF/lIOP2HVwcuMCNFpQSJ0amnrp8XdMpUB3w+raeQ19O1OBn+5Hj+ih1JmW/KT0N6N62C7TeKDprI3Gj9AkjXRDzk48J9yE9Rxa4hzJHLoLqUwn6y6BRqe+Mrc+dUT5pDirNCV8ZX0+ds9u84SThHmY/86NgFmhl1l1eUqLvhX5Orf11YD/0taH/moLBam6nJQ+Ch644LzLpdpcXsSBeti2VY8SELGN9G/9Pa4Tl1UKri4ZAlhZxq3p2Sy0/XxuF6sw8caOiAVavyc8OS0gMxZv7EuJd/Bf
+X-HE-Tag: 1770292713-402122
+X-HE-Meta: U2FsdGVkX18oQ0TQtGN9B8nl1MA7e8ieZE0IZ8jY8/fFUHSI90bZ24X6tPKB6ASXbuyilw6vBiB0UF6WYhOtbFhCRYohyH+JiN3riaG5o7qBx0VRxl4WFJKI7Arlt+DiT5ebM7or+E+3gHiFouFrqntUuraoOPI+uvosH/RLevErG2MXfp2H9ytkC178z595ZZYinuXwFbDBI2Y3Tlk6YrOND7O2MPQVxAjADYxa+kc9jw8kt9l43pSFIPRiH3CKNm0nT/kHYvis51U+fQJMc9fnhjcKc9sUqRxI8rO/yWMl0cKSvELhXouJyDKToB42hEMgHi4KiYpTKavn1M6NEKVH7fyOQGs0RsuR3sQKoHrMmOuFpV71JcRGxXaZOe7BTsXqsvaG4HubWqK5jAWAoif491C7GlR/6DFwG2SjbKtfk1nPXHCcDNE7ibl1hOVYsTM6Z9+zwWQdTUAtxrKgIYJmGXhEMqe5d8hp0u96iR2JRIlSAA5aDV+ysB8Vl7NlP4xXMbdS54Y0bWQZdxAcBC2STofQ9KNVvBBpSO+TAlP5m+RF5u60uSsJlmOQhxBdITKcTKk7ij5gv7U5KjYXnJnxWikFRmXYsbRuiKkLyHjvM3tzjdpl3Q77F5DIAajzzNryv+SHXhShYa+ZYIYLvzEa73BUvZUp+2+P9vbEFwuGC6iP8RGCIw5arY3pPj0yPuY8VJcJMomxeJ190R+tj56hQKCaxHMmfNihQN0o7eXQ1b6EueffJAYDV/UHk9o1M2Bg3u/K9AbbUBp8MNZOn+AD7Ho1v/iR4thK02MP/FEFnofCM8ZMu9kwYjsxSu8W3mxTUnjC++HuDBYSs14PBS1PE1dtAHqHdvdHxCvZMQX3iHKsl1L9cHUW3Me0m+QkO037E/J/ZCd544wMQT6PzuwJFuLifJH5ubVVK7kTVAdOQ1QETtTK2Gnxilz9TcBSiOa5f5GgswYfdaFpOtc
+ YmGo8PZJ
+ BdJ4h1Tj+96qa2xzwJXEx7ot8xnpGXBY5O8+u+B8icjXc/pxVkuTO1590h/kd590n/ypnNedLXSgRjLIYcNudCRDIEy06Q+R1kXPLqc51aY7WkVUEHIoZ8ShCb6Uq4FBck/G9KT49pD6d5l1KLJmdzTWl1DuaH5zZMnFiHeCuPSbrketF81cpz+sRiaP/FOUhjITwS72rv9TRiTkFM6qSWt9049uVdntl/UXIZwyoDvE4IWjQzDuvbfv1iJdY45QWFhKAC36xsaJVmB3RHbaaQPOZHO2o8ETIXb9dS3pFWq++JdTF5AuobuvKi9UDSGB7+RI7sXVPPwn8vYk/Y3kGcMr6hLSh/um3+hf1vnBs584uU6TaEWTNabURopS6OS4bm1l8mPHDkI1mh1KGjfamJ82vcpd/6D+NMWxsE4aXfbW85/VdwX7kQa2fpnjRoR8V817Rxb0qU4dN9bQP0RC37mgNwj5mZnb6kisxf50enYfRHO2S0zodhtzWYVUb7x2PwmnS6MqvTsZ/Ximtmy8LIz8N0UNAMOCI81grW6mG9kkoA982NCDaycQ779VU6qf23R14phlgE5KcpxY/7yel8O1JD7Nj/2fYTbVqSz45KOjw0/gOCvRvrixUWvKAAv7BxxR0pH1HDUcz4Db8GbJl86mkI3g0tqwD1fkHmMtOYkb6zK1UFhoOiSBQmMO6y4cI+YApAn5k8aMQAaNgu80qnrfa/q7j9PQXiqS2+Lc3ND5J42h/NuOvgDwke0sllcarK9FeFMZCcX1Ktl3Lz2fYEyEZ3WTG+wwx7+Nh
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,9 +262,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
++cc Christoph for his input on exports here.
+
 On Thu, Feb 05, 2026 at 12:43:03PM +0100, David Hildenbrand (arm) wrote:
 > On 2/5/26 12:29, Lorenzo Stoakes wrote:
 > > On Thu, Feb 05, 2026 at 10:51:28AM +0000, Alice Ryhl wrote:
+> > > These are the functions needed by Binder's shrinker.
+> > >
+> > > Binder uses zap_page_range_single in the shrinker path to remove an
+> > > unused page from the mmap'd region. Note that pages are only removed
+> > > from the mmap'd region lazily when shrinker asks for it.
+> > >
+> > > Binder uses list_lru_add/del to keep track of the shrinker lru list, and
+> > > it can't use _obj because the list head is not stored inline in the page
+> > > actually being lru freed, so page_to_nid(virt_to_page(item)) on the list
+> > > head computes the nid of the wrong page.
+> > >
+> > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > > ---
+> > >   mm/list_lru.c | 2 ++
+> > >   mm/memory.c   | 1 +
+> > >   2 files changed, 3 insertions(+)
+> > >
+> > > diff --git a/mm/list_lru.c b/mm/list_lru.c
+> > > index ec48b5dadf519a5296ac14cda035c067f9e448f8..bf95d73c9815548a19db6345f856cee9baad22e3 100644
+> > > --- a/mm/list_lru.c
+> > > +++ b/mm/list_lru.c
+> > > @@ -179,6 +179,7 @@ bool list_lru_add(struct list_lru *lru, struct list_head *item, int nid,
+> > >   	unlock_list_lru(l, false);
+> > >   	return false;
+> > >   }
+> > > +EXPORT_SYMBOL_GPL(list_lru_add);
+> > >
+> > >   bool list_lru_add_obj(struct list_lru *lru, struct list_head *item)
+> > >   {
+> > > @@ -216,6 +217,7 @@ bool list_lru_del(struct list_lru *lru, struct list_head *item, int nid,
+> > >   	unlock_list_lru(l, false);
+> > >   	return false;
+> > >   }
+> > > +EXPORT_SYMBOL_GPL(list_lru_del);
+> >
+> > Same point as before about exporting symbols, but given the _obj variants are
+> > exported already this one is more valid.
+> >
+> > >
 > > >   bool list_lru_del_obj(struct list_lru *lru, struct list_head *item)
 > > >   {
 > > > diff --git a/mm/memory.c b/mm/memory.c
@@ -136,20 +317,217 @@ On Thu, Feb 05, 2026 at 12:43:03PM +0100, David Hildenbrand (arm) wrote:
 > > >   	tlb_finish_mmu(&tlb);
 > > >   }
 > > > +EXPORT_SYMBOL(zap_page_range_single);
-> > 
+> >
 > > Sorry but I don't want this exported at all.
-> > 
+> >
 > > This is an internal implementation detail which allows fine-grained control of
 > > behaviour via struct zap_details (which binder doesn't use, of course :)
-> 
+>
 > I don't expect anybody to set zap_details, but yeah, it could be abused.
 > It could be abused right now from anywhere else in the kernel
 > where we don't build as a module :)
-> 
+>
 > Apparently we export a similar function in rust where we just removed the last parameter.
 
-To clarify, said Rust function gets inlined into Rust Binder, so Rust
-Binder calls the zap_page_range_single() symbol directly.
+What??
 
-Alice
+Alice - can you confirm rust isn't exporting stuff that isn't explicitly marked
+EXPORT_SYMBOL*() for use by other rust modules?
+
+It's important we keep this in sync, otherwise rust is overriding kernel policy.
+
+>
+> I think zap_page_range_single() is only called with non-NULL from mm/memory.c.
+>
+> So the following makes likely sense even outside of the context of this series:
+>
+
+Yeah this looks good so feel free to add a R-b from me tag when you send it
+BUT...
+
+I'm still _very_ uncomfortable with exporting this just for binder which seems
+to be doing effectively mm tasks itself in a way that makes me think it needs a
+rework to not be doing that and to update core mm to add functionality if it's
+needed.
+
+In any case, if we _do_ export this I think I'm going to insist on this being
+EXPORT_SYMBOL_FOR_MODULES() _only_ for the binder in-tree module.
+
+Thanks, Lorenzo
+
+
+> From d2a2d20994456b9a66008b7fef12e379e76fc9f8 Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (arm)" <david@kernel.org>
+> Date: Thu, 5 Feb 2026 12:42:09 +0100
+> Subject: [PATCH] tmp
+>
+> Signed-off-by: David Hildenbrand (arm) <david@kernel.org>
+> ---
+>  arch/s390/mm/gmap_helpers.c    |  2 +-
+>  drivers/android/binder_alloc.c |  2 +-
+>  include/linux/mm.h             |  4 ++--
+>  kernel/bpf/arena.c             |  3 +--
+>  kernel/events/core.c           |  2 +-
+>  mm/memory.c                    | 15 +++++++++------
+>  net/ipv4/tcp.c                 |  5 ++---
+>  rust/kernel/mm/virt.rs         |  2 +-
+>  8 files changed, 18 insertions(+), 17 deletions(-)
+>
+> diff --git a/arch/s390/mm/gmap_helpers.c b/arch/s390/mm/gmap_helpers.c
+> index d41b19925a5a..859f5570c3dc 100644
+> --- a/arch/s390/mm/gmap_helpers.c
+> +++ b/arch/s390/mm/gmap_helpers.c
+> @@ -102,7 +102,7 @@ void gmap_helper_discard(struct mm_struct *mm, unsigned long vmaddr, unsigned lo
+>  		if (!vma)
+>  			return;
+>  		if (!is_vm_hugetlb_page(vma))
+> -			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr, NULL);
+> +			zap_page_range_single(vma, vmaddr, min(end, vma->vm_end) - vmaddr);
+>  		vmaddr = vma->vm_end;
+>  	}
+>  }
+> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> index 979c96b74cad..b0201bc6893a 100644
+> --- a/drivers/android/binder_alloc.c
+> +++ b/drivers/android/binder_alloc.c
+> @@ -1186,7 +1186,7 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	if (vma) {
+>  		trace_binder_unmap_user_start(alloc, index);
+> -		zap_page_range_single(vma, page_addr, PAGE_SIZE, NULL);
+> +		zap_page_range_single(vma, page_addr, PAGE_SIZE);
+>  		trace_binder_unmap_user_end(alloc, index);
+>  	}
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index f0d5be9dc736..b7cc6ef49917 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2621,11 +2621,11 @@ struct page *vm_normal_page_pud(struct vm_area_struct *vma, unsigned long addr,
+>  void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  		  unsigned long size);
+>  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+> -			   unsigned long size, struct zap_details *details);
+> +			   unsigned long size);
+>  static inline void zap_vma_pages(struct vm_area_struct *vma)
+>  {
+>  	zap_page_range_single(vma, vma->vm_start,
+> -			      vma->vm_end - vma->vm_start, NULL);
+> +			      vma->vm_end - vma->vm_start);
+>  }
+>  void unmap_vmas(struct mmu_gather *tlb, struct ma_state *mas,
+>  		struct vm_area_struct *start_vma, unsigned long start,
+> diff --git a/kernel/bpf/arena.c b/kernel/bpf/arena.c
+> index 872dc0e41c65..242c931d3740 100644
+> --- a/kernel/bpf/arena.c
+> +++ b/kernel/bpf/arena.c
+> @@ -503,8 +503,7 @@ static void zap_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
+>  	struct vma_list *vml;
+>  	list_for_each_entry(vml, &arena->vma_list, head)
+> -		zap_page_range_single(vml->vma, uaddr,
+> -				      PAGE_SIZE * page_cnt, NULL);
+> +		zap_page_range_single(vml->vma, uaddr, PAGE_SIZE * page_cnt);
+>  }
+>  static void arena_free_pages(struct bpf_arena *arena, long uaddr, long page_cnt)
+> diff --git a/kernel/events/core.c b/kernel/events/core.c
+> index 8cca80094624..1dfb33c39c2f 100644
+> --- a/kernel/events/core.c
+> +++ b/kernel/events/core.c
+> @@ -6926,7 +6926,7 @@ static int map_range(struct perf_buffer *rb, struct vm_area_struct *vma)
+>  #ifdef CONFIG_MMU
+>  	/* Clear any partial mappings on error. */
+>  	if (err)
+> -		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE, NULL);
+> +		zap_page_range_single(vma, vma->vm_start, nr_pages * PAGE_SIZE);
+>  #endif
+>  	return err;
+> diff --git a/mm/memory.c b/mm/memory.c
+> index da360a6eb8a4..4f8dcdcd20f3 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2155,17 +2155,16 @@ void zap_page_range_single_batched(struct mmu_gather *tlb,
+>   * @vma: vm_area_struct holding the applicable pages
+>   * @address: starting address of pages to zap
+>   * @size: number of bytes to zap
+> - * @details: details of shared cache invalidation
+>   *
+>   * The range must fit into one VMA.
+>   */
+>  void zap_page_range_single(struct vm_area_struct *vma, unsigned long address,
+> -		unsigned long size, struct zap_details *details)
+> +		unsigned long size)
+>  {
+>  	struct mmu_gather tlb;
+>  	tlb_gather_mmu(&tlb, vma->vm_mm);
+> -	zap_page_range_single_batched(&tlb, vma, address, size, details);
+> +	zap_page_range_single_batched(&tlb, vma, address, size, NULL);
+>  	tlb_finish_mmu(&tlb);
+>  }
+> @@ -2187,7 +2186,7 @@ void zap_vma_ptes(struct vm_area_struct *vma, unsigned long address,
+>  	    		!(vma->vm_flags & VM_PFNMAP))
+>  		return;
+> -	zap_page_range_single(vma, address, size, NULL);
+> +	zap_page_range_single(vma, address, size);
+>  }
+>  EXPORT_SYMBOL_GPL(zap_vma_ptes);
+> @@ -2963,7 +2962,7 @@ static int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long add
+>  	 * maintain page reference counts, and callers may free
+>  	 * pages due to the error. So zap it early.
+>  	 */
+> -	zap_page_range_single(vma, addr, size, NULL);
+> +	zap_page_range_single(vma, addr, size);
+>  	return error;
+>  }
+> @@ -4187,7 +4186,11 @@ static void unmap_mapping_range_vma(struct vm_area_struct *vma,
+>  		unsigned long start_addr, unsigned long end_addr,
+>  		struct zap_details *details)
+>  {
+> -	zap_page_range_single(vma, start_addr, end_addr - start_addr, details);
+> +	struct mmu_gather tlb;
+> +
+> +	tlb_gather_mmu(&tlb, vma->vm_mm);
+> +	zap_page_range_single_batched(&tlb, vma, address, size, details);
+> +	tlb_finish_mmu(&tlb);
+>  }
+>  static inline void unmap_mapping_range_tree(struct rb_root_cached *root,
+> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+> index d5319ebe2452..9e92c71389f3 100644
+> --- a/net/ipv4/tcp.c
+> +++ b/net/ipv4/tcp.c
+> @@ -2052,7 +2052,7 @@ static int tcp_zerocopy_vm_insert_batch_error(struct vm_area_struct *vma,
+>  		maybe_zap_len = total_bytes_to_map -  /* All bytes to map */
+>  				*length + /* Mapped or pending */
+>  				(pages_remaining * PAGE_SIZE); /* Failed map. */
+> -		zap_page_range_single(vma, *address, maybe_zap_len, NULL);
+> +		zap_page_range_single(vma, *address, maybe_zap_len);
+>  		err = 0;
+>  	}
+> @@ -2217,8 +2217,7 @@ static int tcp_zerocopy_receive(struct sock *sk,
+>  	total_bytes_to_map = avail_len & ~(PAGE_SIZE - 1);
+>  	if (total_bytes_to_map) {
+>  		if (!(zc->flags & TCP_RECEIVE_ZEROCOPY_FLAG_TLB_CLEAN_HINT))
+> -			zap_page_range_single(vma, address, total_bytes_to_map,
+> -					      NULL);
+> +			zap_page_range_single(vma, address, total_bytes_to_map);
+>  		zc->length = total_bytes_to_map;
+>  		zc->recv_skip_hint = 0;
+>  	} else {
+> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> index da21d65ccd20..b8e59e4420f3 100644
+> --- a/rust/kernel/mm/virt.rs
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -124,7 +124,7 @@ pub fn zap_page_range_single(&self, address: usize, size: usize) {
+>          // sufficient for this method call. This method has no requirements on the vma flags. The
+>          // address range is checked to be within the vma.
+>          unsafe {
+> -            bindings::zap_page_range_single(self.as_ptr(), address, size, core::ptr::null_mut())
+> +            bindings::zap_page_range_single(self.as_ptr(), address, size)
+>          };
+>      }
+> --
+> 2.43.0
+>
+>
+> --
+> Cheers,
+>
+> David
 
