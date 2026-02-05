@@ -4,105 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0051ECD9B0
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 22:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7974CECD9AA
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 22:40:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54C086B0093; Thu,  5 Feb 2026 17:23:37 -0500 (EST)
+	id 536DD6B008A; Thu,  5 Feb 2026 17:40:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 424946B0096; Thu,  5 Feb 2026 17:23:37 -0500 (EST)
+	id 517D96B0092; Thu,  5 Feb 2026 17:40:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 267C56B0098; Thu,  5 Feb 2026 17:23:37 -0500 (EST)
+	id 44E226B0093; Thu,  5 Feb 2026 17:40:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 05D356B0093
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 17:23:37 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B830759D86
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 22:23:36 +0000 (UTC)
-X-FDA: 84411830832.02.85357BE
-Received: from mail-dy1-f201.google.com (mail-dy1-f201.google.com [74.125.82.201])
-	by imf07.hostedemail.com (Postfix) with ESMTP id E3E1340009
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 22:23:34 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 342F16B008A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 17:40:37 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D399913B924
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 22:40:36 +0000 (UTC)
+X-FDA: 84411873672.28.62BBE90
+Received: from mail-oo1-f78.google.com (mail-oo1-f78.google.com [209.85.161.78])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 30CAC40009
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 22:40:35 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=scSceCqr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of 3ZRiFaQ4KCPwnsvhervmglevhwksskpi.gsqpmry1-qqozego.svk@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3ZRiFaQ4KCPwnsvhervmglevhwksskpi.gsqpmry1-qqozego.svk@flex--jordanrichards.bounces.google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770330215;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IJksqRPHK8nq3yAPIXtsuMVSMnE1A5SQd5CFOcd17PU=;
-	b=StJ1VbLbswhrTteWOl0yi2L/dVaFxrg4qNC/Dmcc1tuXLrjmm25CLOIv5UOQAE3o4s2Dyy
-	PeP9joU78znTQzQWeCJPG8P5TqQXrwoZuEXgxAM1ruh5KUUCwq3m3FxsQt2zO8KeAwo4Ju
-	Lu6sVLtoCtWtMdleeQAOHd5D02uC0Rk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770330215; a=rsa-sha256;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf07.hostedemail.com: domain of 3YhyFaQkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3YhyFaQkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770331235; a=rsa-sha256;
 	cv=none;
-	b=6kSVY0oviV/wtv10wCuKCb7W+yAsTJtR+eLfFMpu3irGBeBLMeY6af5DbOXxzoDeMYb5n8
-	HjyMYQHlTP7Ld89GWMUB1zwAs5azxG9pmB/MERtmAqEghnC7zISqUSYVr5tpFpSSs4yeHa
-	dGSlCYg8voqVxUzrvOp0x/xFHt59ZzQ=
+	b=swFZn02zp8f0gO3cU3XBN9K33tFVpV1Y1efJ/OfCWoRYl892hvbhVkITk7Thj+6v5Mccys
+	JAwylrqaBUG86jP0cw0Y2tJVD2e74thApPWd5caVCH3NpiFVLq6qNTkn4hQMm03J3hG/Ry
+	o1SBfU3FLayPbVcGN6t5sel9wTMtLBI=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=scSceCqr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of 3ZRiFaQ4KCPwnsvhervmglevhwksskpi.gsqpmry1-qqozego.svk@flex--jordanrichards.bounces.google.com designates 74.125.82.201 as permitted sender) smtp.mailfrom=3ZRiFaQ4KCPwnsvhervmglevhwksskpi.gsqpmry1-qqozego.svk@flex--jordanrichards.bounces.google.com
-Received: by mail-dy1-f201.google.com with SMTP id 5a478bee46e88-2b82974bd26so72957eec.1
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 14:23:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770330214; x=1770935014; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IJksqRPHK8nq3yAPIXtsuMVSMnE1A5SQd5CFOcd17PU=;
-        b=scSceCqrxD2xn0YRv9J81ZL3yEswv+8eobnbBw/JXgZRP4wRsJoamabPGBP5up5nNG
-         S8t5zf/BqRgffd76fN3lPU2lmezPVPT6QEYhVYKhRVNQjadzGuXsDZBjHiNZ4bc9JIvU
-         /LPBMGTSuuZzhLAet5B97EOorur6JSjAbCR0lXJy2Twwmc6CwVb258lM7f+53f3g5W42
-         0QANFlYrT5QHSE84TgJcANPMI2wK0Aq6x/CNZ3CAj20Iofyi4tGLvkBDMp5B3FFBb/Ks
-         5hAOtSNF7ygsVUGIZ1NGtuOj88isdGqfwqBmu7KnZIlMbm0Cb+kc4g05wkXZ0FhWdbT7
-         oqLw==
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf07.hostedemail.com: domain of 3YhyFaQkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.78 as permitted sender) smtp.mailfrom=3YhyFaQkbAAMv12ndoohudsslg.jrrjohxvhufrqwhqw.frp@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770331235;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=DuWAEd+N9k1V2CmdDlaOa4SrWIxcBY/M7PymrB9H2NI=;
+	b=HomqFTF3F/Xjz3MG0k6xLCqwAimiTa4yTfmybqFU2HXHCfrsMF4J4R39m2CweTaCEy/q+s
+	8GrXxZ6TpGeq0uiFjEJ/TTQUCiZRbGm84TEYQghV9hR4if7W745jUDZ5g/wjp4QdO1Lh9o
+	vlPcvoiZci6CCqP1CE45rmm4iy+iLek=
+Received: by mail-oo1-f78.google.com with SMTP id 006d021491bc7-66304fd62ebso6499057eaf.3
+        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 14:40:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770330214; x=1770935014;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IJksqRPHK8nq3yAPIXtsuMVSMnE1A5SQd5CFOcd17PU=;
-        b=WRyunpBAHAk5O1H25C5uUaU4CYPaPTsaNPE9TjZjpVe0fTGmMd0WW2OaqstF6EJvPj
-         qYSU0Lxg4b51hS8UYfkTDteHWTGSRWpFUZeg4yIEybaqNch6oU8pD7IA++FUhV7GhNYb
-         JniVfRyJKobZg3zWGbTIo/ilzWPxS+mwGSt1dTTwZ2RzvnQQnnFXe4h754dsR4El3K+i
-         VzIDJFlM/CtP6UUL93g3HRXRdtD5GlpXyy8NOPHLlYq/I9WsYMl8nrTEtnIaWKaydeN6
-         RcJKBj6+O5caa9k4QbI472TTf3lqBk9sblIMUda5j/R0H7RLrQ36E2Ys0Rp04VpmGwYw
-         2CLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUoy2Iyo6wxvWQ21Q/IExgujv9lxH3FjJIgt78b18v3YkIybumWibMs1EO3cmSVXWYRmn7WT0sHfw==@kvack.org
-X-Gm-Message-State: AOJu0Yx99t82zVWYzIryBGS8iUQvirKky34At5BzwSbiqYAHaHPl9X5R
-	Ys0TQVw1O7CydIBVv9JLWOP8sRbep9xbpLHSpICprPdvfTPDsJ1hCKrPqJHwQnYsCIWjmhH8+Ys
-	d7YfyCCICDY8LXJ/1Dg6Ou0S1NiTYSh1cZBwfKg==
-X-Received: from dlbqd13.prod.google.com ([2002:a05:7023:b0d:b0:123:171f:e390])
- (user=jordanrichards job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:7300:e78d:b0:2b7:2dbb:eb4a with SMTP id 5a478bee46e88-2b856833cfbmr350548eec.31.1770330213767;
- Thu, 05 Feb 2026 14:23:33 -0800 (PST)
-Date: Thu,  5 Feb 2026 22:23:29 +0000
-In-Reply-To: <20260205222329.2419035-1-jordanrichards@google.com>
-Mime-Version: 1.0
-References: <20260205222329.2419035-1-jordanrichards@google.com>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260205222329.2419035-3-jordanrichards@google.com>
-Subject: [PATCH v2 2/2] selftests/liveupdate: add end to end test
- infrastructure and scripts
-From: Jordan Richards <jordanrichards@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, 
-	Pratyush Yadav <pratyush@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: Jason Miu <jasonmiu@google.com>, David Matlack <dmatlack@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Jordan Richards <jordanrichards@google.com>
+        d=1e100.net; s=20230601; t=1770331234; x=1770936034;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DuWAEd+N9k1V2CmdDlaOa4SrWIxcBY/M7PymrB9H2NI=;
+        b=oZuGgcwwLfgie8yIcBJJOFfr2z7vaTdRbshFXsHtq9dRdFzNcmCjJDzBXGbppJ7mP+
+         w2B+1OVuFfKA16wcTHbeyTUoR2meVUQJr8rEsvs9Kgq+VCZuoiBD7uy6CMqF4XKgBEPP
+         /dvk+KilbaDWUhARGwnX99+jfpmL9V1DGq5JB7AxdAKkI03MZr8/7nqjtPLrra8VSSqG
+         zWNPAZ4N6DL0NLS2sPp7WEe3ofYK/e1YqyCFCSUz8l/Vf1yHKsiFnU0Y85x3lgKUSuBJ
+         DcdBPwZ6t0C5BlOSBfPi78tOYoWac6EUgbf9LVpnrE0fS5zMH+SrV9oHLi0rDpzgNQMv
+         vnrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXzDddgczGb/LVc7ER9Q92SnWNmmmdIbRQ0NfLzd20R20t1Zk1LkedcqP09+l2tH8GyyDB5OSr6Dg==@kvack.org
+X-Gm-Message-State: AOJu0YyqlhDbASK4ZatEGoz8CgClaoBmgob+kegEe/d+9wqu3Xr0Nxao
+	NaJBB7BRnjSzGcltRbfVHpE7f7NSqT2TcyItnlDKZtWXQZJQOf3HVdpi2d4j1NZLWjWvGBZUvLk
+	sJbv7MhbYdeT6lPnBFgjZKD7G6Wu3E/Z2KCslLHcY6ezqmgQBlmnRqM0I8V4=
+MIME-Version: 1.0
+X-Received: by 2002:a05:6820:611:b0:662:fe0b:d763 with SMTP id
+ 006d021491bc7-66d334b3eaemr231461eaf.37.1770331234288; Thu, 05 Feb 2026
+ 14:40:34 -0800 (PST)
+Date: Thu, 05 Feb 2026 14:40:34 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69851c62.a00a0220.37c87e.002e.GAE@google.com>
+Subject: [syzbot] [mm?] kernel BUG in page_table_check_set (2)
+From: syzbot <syzbot+227179d5a8a87e9df90d@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, pasha.tatashin@soleen.com, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: E3E1340009
-X-Stat-Signature: 1pqjmj7kokqeaeaphngbw9o48ihyj6xa
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770330214-631878
-X-HE-Meta: U2FsdGVkX1/ahDfkXvcv+3rJ9Au3YOy1jYs3a08/lCjdLpo0QhJpzfaU29zSZZic7M1cFYo33dV9rFotWEGRWuOncTyx/UxhF4hKcCBXSgIo7MtCLSnD/Tdx3UTKtL+SvNWfo25vc2K9cXhWX5sZHRYo8woIKPknr74YW/vyqjZRvIJ0PJwE33kWx5EZqkioXwcVuIKrvDpaq/eCXPfvKty5MojhYjG80/bUsVfo4gwTJfh45yQR7jypZYO34t0A3pA4c7OTFBj7JhCv+Bz8ekkn3uqgPHdddq9L6rwpmhqlfa9lTK9q5nbLuVhyou1iZqAbFUrvEtrLn21ULr7Tv0yGUB1mxJmjTvNC1Ixl9DqHK8eUrJTNylvlXtkiojgWYdhtErjwbE4+yC553nA29nRTOhNshC7DbO2v/5fH9RhIXXABiXeTO6pTQ+NvM0+2g1I6RymyJYu3L+3UXax/qm2CdRF/aJ/1gIa38f8OqDjFJR7IjaPOmoXii0uUXEq3FQ/hAWxv/VZok7xV4lUrL2UMcU57ckYGt0cXOGzO8TTJXHsV69pWKfqiCDpYSrsWyVg73N2J35wJXpNTi27K/EqrEGV/6YxUDf2E7obV7j384GIEi+yST97g6rZ0FWzOKgJfhgC5C2HwZ6qBl9my+G5H0j1gxof/E8Jdy0y+jnzWA4WWTM2cwvBL3j26+g5NR7d44xlfELDMbDV75mogR6F0CGGBjpbGiSNMor/W0dAeE5dzrWwMo2SCtsz5oeOTzZTdpMp9jAkAD4PiSnZH+Iix0/nO0wOHSZmlQ//Rydl4o+ml+Wn/cjyFMs/uwPAEHJmWyZf6Se8vxoLOSi22v8PnwFOTECD9pGTuK/c9MWSX+0IFp4znZYsDeRTR9plYeHxLLbpYL0kg9r2vdF/rOHrgNgDFGPR2CgnHFUrnqbt6+i81q6EXjfbO3wrcGKpwv4/c3tOMk5W4WuzqPu5
- PMbC7EKh
- hVLSRWtvYq1KcSw/UBZ8JHX6NLrARPEGLO0n/Jxn5RW5h9w8dqDaAb36b38IOUXbrfJ7ks1qM22PYfJpEwDv2nfa06CFKwYzp5hlK9f/k3wgTxmT0sY4HXyWbCRPF0graSMWmb6XT1xHjiX2jgvaph/tF6kt/bScvDl1DV+8kDZCmpL2kRx43POJLB0bCX4VW1aEwzvSgXM/i+CWAr6z6DARfndzGESy+b/VIZz8iQLiOupZM3nX4R01Jnlh+FVhUmXcDP/9IWFzf8KE/V7ieuIrj7fzzVJZwHK5PWBKZKESlnbAYgeAW4h2na1dnbZDGBI9ImVVTKnqcbaCbuhjW9syHH69RchVKls5QYAcRJJ5oFQ8R0o8aAcQMDIFYncquaguU+VwwZFe/Qua3LsqGbH5S5vF+TzIFwG6OoGOTqisqRZa9DQhlmp6WjwIgLvu0rAiCjbks9fmYXHh173ykLH9NDzqXW9rk3LFqOQnJpdpTToPLn6NMLxdlC9WkIikyZ+zo2jV8Gr37OCf4mCfV5bcnMLtzvOtpx7Mp9CmKOuU0Sq09yLIL48AhMByABGC/PdfAvPe+ll0dM1BaUPw5PWc133jSTdKN+eyxf524qAbtEc/MQh7OK+sRcfv6vQIeYf9mJy8+DgAIB/PkunqZrDQorxq4xJYZL4FD0XTuejqbc8C075JvluYDEoodEsHHP0bL6/DsSUoo65oNiYiAYdy5Bzgv7Enyae33XFCMyLTCEZPFExYzI//A9g==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 30CAC40009
+X-Stat-Signature: erkdzrh5mkkqegzt7ehq453674hu5z4a
+X-HE-Tag: 1770331235-945744
+X-HE-Meta: U2FsdGVkX1/qdv5pZEM7M5kY4a2UoZzWZYqJVTEtkfNtUepLCnj8Z8eAKcVLYic9eBoMJ2T+z2R8KSBtlvs475usojcBkWJRRcfIwQMIlstNTu8BEBl0I7rMSYHbVVbv7yUEAxO0z8bPrf/PYDppinxsMgISyYfxjxJFnhWlN/VlBxScR3JU6D38UcjdNBercynJWu+3XoQvKZ3gKd5DhvJppPTk5uYE+Ee/UugScFzThPCEzuFjga7qbHnajzW4c6r4vYFjGcVBvyryo0m1VSuccViUHwIPJELrmNkyLNiV4Mx+A9JicmGnodT6SEovqShn5/HvrZIyMhENsxYF9kS6P9B4LfJNmrL0W5yk694EVlRQLtYhGg7CHrgbyUJkICj9MSWCwv8QVu3W79XGmkW3yfWA1eDlgXz6KVJ7S67DSrjeEh21iRQ6kaRuiFXJ7O8Y2xH2r4RowXPmudF+z2mSzPJDFREEh7iVHe3QGaEwJs5x8IXhF4fPHLHDVo01V63sG+GIb4zJ9xhmdBz9H5qZ7F7+F2cbdBSM6LQ3Q4kX+IrHpHJAX4TyW9KSzZTF2LvCHzMEHe8Zuxc4rNiI8BjFiVI/UPtWXMmxOO0jvz8RTL1CpnIkDb/yD4g7dlNJL5nwrkbtIGYSx2tKYTeOrP4/c8kiEFwhMeeGpZiLrebGTdFIAjKZ2e/COIv9J0icEjY5B0Qt/AMP/os3PxBf9QI2Lh6k/w0+Cczq+Ygqq/4N1SKiYy1VnkWdw6eD4ftJJ8HiNXV6ngaNdA4WtLSWEacMa7ScZ+nShRp77JLNjpvHG1SqBMPm7oCvsa+IM0doCFvwG3N2BF4CmwK+KDp+/3f+MFqAbqNdG7a0/rKne7TlBTUXJdyecnaY0VnwHSjhw/22n3TO58FNB3/8F35//AXRLbtfTfB+KCT6lWjyloWd5dR5oS5eG163lQr0a3R8+ZKApF04QW83U9E1NOP
+ paJTlNQo
+ O8n07wHbQzPdJq0fECIr1sITMgJb6Tf15RpPaKaXEL12DqeccQAG6YQN9PAFNHmG+yta/N4uGffzgwCr45PgnO58UVpVsXcA39F5GX32hjAF/4fZGy9+Uri/EKAw7xENOVRag1F7feAyMTj1ijq5P96eQimPnezq75cL9Q7v4Clj7gAaDwUte0v9LOPgizWx0+WZ9CHV2pSZIgrAuV1GOxUEgP2hlFtz+LQ2HNX0DBuw5VkgMUObcrDJdJ3QUnd1R0YuH5Q6VGn6rqVYaoAcJ01H87BjxlKaljzwip4mplfYdMCv9mtUgz/TgKM1Iuh/zNSoVb4IwtW9xcX/Q59GpljW26NgMiRo0BjbtOyVoliG0MAttfG5IyKO7nZeDDDm5Qrrn0bLyAOoBRXAosIL/5sJwdFNTeGkEvlZG8+YiBKymVrPtpL3lXUFVTfikxQLBow8vchJsJmb9rMO7dmC+5O7Z4AtlVMcTf5mQJkR5TldQhJlBYGYTEbe3GhaAm/yvSYeOgGAlEhlYPsDN36N+qGa6z0Ieb6HWqZAb8iPrCC7ufJ0EJyHnsx0tiTGYnZ9iF1RQnQ3YRBhlOo8PtYuHba/sLF9CSGQJbkwwe1tK30fN2eOQwu+RLml1sJnwQ2C9JbUmr7asjIQY/zpfYaTrhOMHZjgA8PmLl2A8ogP3nrSxkh7p5diUzK0c0pKxfO5jNfIEzlvTEz7impqlJUxdHoYJjtEkQ4B8LKQkPwBhs8JeGG0Mz2kPoAPc89QT5gjkrvTRnasJbm+a7Ka2kaXM+3Ss79LUDTY3X+jJBC9qj3zO7z3AtNwPvEtMQFI5X4qh4+YLB/EuvE30NpPERcqETNjEyquT2XjdCxTAi1ohm0dCSoP8m1KysUfGXJLuCirGQroRqgZKyEWXUfFwjHk3kiCEk7QVxA5iFH2AcLwtyvqtBj8VwVK6XdY8ze2dwXSXRZove+M6kY99wTwUMuFHA1rEn2kR
+ jeJJ5JgD
+ Rnrz4o6OtZIsr6vKcZwheD/0JY6kqXckyh1+p+gSk9cXcnnbaZAWr6LQRW/D6te6jJ7qXZcY04Ed+MVDbdRWMSDUYECKfcO8/fDRlVj51iiHUNGeWPX1IMQ1oi+tOM8MZEdWDtEVNHiTSMjALviXfsghv281Hpr8WVeBwMGM63GEP51S+b2Y+a5mC8GyEP/DpEpKLmuFgaqwTlLn2eY+NZ1u2nlFA8PIIyIE1AzU4HlyTiXcnuoDBpTclU9doWBGPd49DL76B7O5g/p/GLKg+nbUKt7wRFgv5luglcvZ3Cmx+es60hoydqx2JlA8qo6jNulrNVJqw+rzLnYOr1CbHgq3LF5ryackMX4osY7h4Nuzbfm4/8w0wL+it+Q+cLHUoRT/aZl3HhzX7M6Co0DaOq43KGgdwuB4PckpUavyx/VTdHTtBONYJIxSeCL5YDvShYMiqS+5vZbBJ4M+DZx1FWI6GYv+kKtyPgd5iKJFcbw4vgIhi3TN9Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,718 +96,113 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Hello,
 
-Add the end to end testing infrastructure required to verify the
-liveupdate feature. This includes a custom init process, a test
-orchestration script, and a batch runner.
+syzbot found the following issue on:
 
-The framework consists of:
+HEAD commit:    099ba40b1bd9 riscv: lib: optimize strlen loop efficiency
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git for-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=158c8b22580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=781a4eb07921464d
+dashboard link: https://syzkaller.appspot.com/bug?extid=227179d5a8a87e9df90d
+compiler:       riscv64-linux-gnu-gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+userspace arch: riscv64
 
-init.c:
-A lightweight init process that manages the kexec lifecycle.
-It mounts necessary filesystems, determines the current execution
-stage (1 or 2) via the kernel command line, and handles the
-kexec_file_load() sequence to transition between kernels.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-luo_test.sh:
-The primary KTAP-compliant test driver. It handles:
-- Kernel configuration merging and building.
-- Cross-compilation detection for x86_64 and arm64.
-- Generation of the initrd containing the test binary and init.
-- QEMU execution with automatic accelerator detection (KVM, HVF,
- or TCG).
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/a741b348759c/non_bootable_disk-099ba40b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/38fcde8ce410/vmlinux-099ba40b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9246b4696c47/Image-099ba40b.xz
 
-run.sh:
-A wrapper script to discover and execute all `luo_*.c`
-tests across supported architectures, providing a summary of
-pass/fail/skip results.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+227179d5a8a87e9df90d@syzkaller.appspotmail.com
 
-Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Signed-off-by: Jordan Richards <jordanrichards@google.com>
+------------[ cut here ]------------
+kernel BUG at [] mm/page_table_check.c:118!
+Kernel BUG [#1]
+Modules linked in:
+CPU: 0 UID: 0 PID: 7886 Comm: syz.4.1009 Tainted: G             L      syzkaller #0 PREEMPT 
+Tainted: [L]=SOFTLOCKUP
+Hardware name: riscv-virtio,qemu (DT)
+epc : page_table_check_set+0xa74/0xd30 mm/page_table_check.c:118
+ ra : page_table_check_set+0xa74/0xd30 mm/page_table_check.c:118
+epc : ffffffff80bfcb7c ra : ffffffff80bfcb7c sp : ffff8f8000cb6860
+ gp : ffffffff89f9df20 tp : ffffaf801c80b500 t0 : 0000000000000000
+ t1 : fffff5ef026b8409 t2 : ffffffff9136c6e8 s0 : ffff8f8000cb68e0
+ s1 : 0000000000000001 a0 : 0000000000000001 a1 : 0000000000000000
+ a2 : 0000000000080000 a3 : ffffffff80bfcb7c a4 : ffff8f800b83a948
+ a5 : 000000000007f948 a6 : 0000000000000003 a7 : ffffaf80135c204b
+ s2 : 00000000000b5a00 s3 : 0000000000000000 s4 : ffffaf80135c2000
+ s5 : 0000000000000001 s6 : 0000000000000001 s7 : dfffffff00000000
+ s8 : 0000000000007fff s9 : ffffffff88825fa0 s10: 0000000000000000
+ s11: ffffffff8a0b5d80 t3 : 0000000000000001 t4 : fffff5ef026b8409
+ t5 : fffff5ef026b840a t6 : 0000000000000002 ssp : 0000000000000000
+status: 0000000200000120 badaddr: ffffffff80bfcb7c cause: 0000000000000003
+[<ffffffff80bfcb7c>] page_table_check_set+0xa74/0xd30 mm/page_table_check.c:118
+[<ffffffff80bfd300>] __page_table_check_ptes_set+0x264/0x47c mm/page_table_check.c:212
+[<ffffffff80b5e6c2>] page_table_check_ptes_set include/linux/page_table_check.h:76 [inline]
+[<ffffffff80b5e6c2>] set_ptes arch/riscv/include/asm/pgtable.h:640 [inline]
+[<ffffffff80b5e6c2>] remove_migration_pte+0x1136/0x2494 mm/migrate.c:436
+[<ffffffff80a0df26>] rmap_walk_anon+0x30e/0x690 mm/rmap.c:2861
+[<ffffffff80a27da6>] rmap_walk_locked+0xa6/0xcc mm/rmap.c:2977
+[<ffffffff80b69a0a>] remove_migration_ptes+0x18a/0x1bc mm/migrate.c:470
+[<ffffffff80b90dc0>] remap_page mm/huge_memory.c:3434 [inline]
+[<ffffffff80b90dc0>] __folio_split+0xeb4/0x16f8 mm/huge_memory.c:4069
+[<ffffffff80b91ae2>] __split_huge_page_to_list_to_order+0x7e/0x140 mm/huge_memory.c:4200
+[<ffffffff80b9554a>] split_huge_page_to_list_to_order include/linux/huge_mm.h:385 [inline]
+[<ffffffff80b9554a>] split_folio_to_list+0x22/0x30 mm/huge_memory.c:4264
+[<ffffffff80ab469a>] madvise_cold_or_pageout_pte_range+0x1862/0x2400 mm/madvise.c:412
+[<ffffffff80a03002>] walk_pmd_range mm/pagewalk.c:130 [inline]
+[<ffffffff80a03002>] walk_pud_range mm/pagewalk.c:224 [inline]
+[<ffffffff80a03002>] walk_p4d_range mm/pagewalk.c:262 [inline]
+[<ffffffff80a03002>] walk_pgd_range+0xcc6/0x1f84 mm/pagewalk.c:303
+[<ffffffff80a043f8>] __walk_page_range+0x138/0x7a8 mm/pagewalk.c:410
+[<ffffffff80a05cf2>] walk_page_range_vma_unsafe+0x212/0x868 mm/pagewalk.c:714
+[<ffffffff80a063a2>] walk_page_range_vma+0x5a/0x84 mm/pagewalk.c:724
+[<ffffffff80aadfe8>] madvise_cold_page_range mm/madvise.c:586 [inline]
+[<ffffffff80aadfe8>] madvise_cold+0x1a4/0x5f4 mm/madvise.c:606
+[<ffffffff80ab66c0>] madvise_vma_behavior+0x1188/0x251c mm/madvise.c:1364
+[<ffffffff80ab7c8e>] madvise_walk_vmas+0x23a/0x970 mm/madvise.c:1721
+[<ffffffff80ab85ae>] madvise_do_behavior+0x1ea/0x5c0 mm/madvise.c:1937
+[<ffffffff80ab94c6>] do_madvise+0x18a/0x22c mm/madvise.c:2030
+[<ffffffff80ab95f0>] __do_sys_madvise mm/madvise.c:2039 [inline]
+[<ffffffff80ab95f0>] __se_sys_madvise mm/madvise.c:2037 [inline]
+[<ffffffff80ab95f0>] __riscv_sys_madvise+0x88/0xdc mm/madvise.c:2037
+[<ffffffff80078192>] syscall_handler+0x92/0x114 arch/riscv/include/asm/syscall.h:112
+[<ffffffff86391c0a>] do_trap_ecall_u+0x3d2/0x58c arch/riscv/kernel/traps.c:344
+[<ffffffff863bb61e>] handle_exception+0x15e/0x16a arch/riscv/kernel/entry.S:232
+Code: 7097 ff90 80e7 4580 81e3 e004 8097 ff90 80e7 9380 (9002) 8097 
+---[ end trace 0000000000000000 ]---
+----------------
+Code disassembly (best guess):
+   0:	ff907097          	auipc	ra,0xff907
+   4:	458080e7          	jalr	1112(ra) # 0xff907458
+   8:	e00481e3          	beqz	s1,0xfffffffffffffe0a
+   c:	ff908097          	auipc	ra,0xff908
+  10:	938080e7          	jalr	-1736(ra) # 0xff907944
+* 14:	9002                	ebreak <-- trapping instruction
+  16:	9780                	.short	0x8097
+
+
 ---
- tools/testing/selftests/liveupdate/.gitignore |   1 +
- tools/testing/selftests/liveupdate/config     |   1 +
- .../selftests/liveupdate/config.aarch64       |   2 +
- .../selftests/liveupdate/config.x86_64        |   2 +
- tools/testing/selftests/liveupdate/init.c     | 179 ++++++++++++
- .../testing/selftests/liveupdate/luo_test.sh  | 276 ++++++++++++++++++
- .../selftests/liveupdate/luo_test_utils.c     |  27 +-
- tools/testing/selftests/liveupdate/run.sh     |  63 ++++
- 8 files changed, 538 insertions(+), 13 deletions(-)
- create mode 100644 tools/testing/selftests/liveupdate/config.aarch64
- create mode 100644 tools/testing/selftests/liveupdate/config.x86_64
- create mode 100644 tools/testing/selftests/liveupdate/init.c
- create mode 100755 tools/testing/selftests/liveupdate/luo_test.sh
- create mode 100755 tools/testing/selftests/liveupdate/run.sh
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/tools/testing/selftests/liveupdate/.gitignore b/tools/testing/selftests/liveupdate/.gitignore
-index 661827083ab6..cb08ddb0dfee 100644
---- a/tools/testing/selftests/liveupdate/.gitignore
-+++ b/tools/testing/selftests/liveupdate/.gitignore
-@@ -6,4 +6,5 @@
- !*.sh
- !.gitignore
- !config
-+!config.*
- !Makefile
-diff --git a/tools/testing/selftests/liveupdate/config b/tools/testing/selftests/liveupdate/config
-index 91d03f9a6a39..016d009dba13 100644
---- a/tools/testing/selftests/liveupdate/config
-+++ b/tools/testing/selftests/liveupdate/config
-@@ -1,4 +1,5 @@
- CONFIG_BLK_DEV_INITRD=y
-+CONFIG_DEVTMPFS=y
- CONFIG_KEXEC_FILE=y
- CONFIG_KEXEC_HANDOVER=y
- CONFIG_KEXEC_HANDOVER_ENABLE_DEFAULT=y
-diff --git a/tools/testing/selftests/liveupdate/config.aarch64 b/tools/testing/selftests/liveupdate/config.aarch64
-new file mode 100644
-index 000000000000..445716403925
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/config.aarch64
-@@ -0,0 +1,2 @@
-+CONFIG_SERIAL_AMBA_PL011=y
-+CONFIG_SERIAL_AMBA_PL011_CONSOLE=y
-diff --git a/tools/testing/selftests/liveupdate/config.x86_64 b/tools/testing/selftests/liveupdate/config.x86_64
-new file mode 100644
-index 000000000000..810d9c9d213e
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/config.x86_64
-@@ -0,0 +1,2 @@
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-diff --git a/tools/testing/selftests/liveupdate/init.c b/tools/testing/selftests/liveupdate/init.c
-new file mode 100644
-index 000000000000..fb08bd58b9b9
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/init.c
-@@ -0,0 +1,179 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+/*
-+ * Copyright (c) 2025, Google LLC.
-+ * Pasha Tatashin <pasha.tatashin@soleen.com>
-+ */
-+#include <fcntl.h>
-+#include <linux/kexec.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <sys/mount.h>
-+#include <sys/reboot.h>
-+#include <sys/syscall.h>
-+#include <sys/wait.h>
-+#include <unistd.h>
-+
-+#define COMMAND_LINE_SIZE 2048
-+#define KERNEL_IMAGE "/kernel"
-+#define INITRD_IMAGE "/initrd.img"
-+#define TEST_BINARY "/test_binary"
-+
-+static int mount_filesystems(void)
-+{
-+	if (mount("devtmpfs", "/dev", "devtmpfs", 0, NULL) < 0) {
-+		fprintf(stderr, "INIT: Warning: Failed to mount devtmpfs\n");
-+		return -1;
-+	}
-+
-+	if (mount("debugfs", "/debugfs", "debugfs", 0, NULL) < 0) {
-+		fprintf(stderr, "INIT: Failed to mount debugfs\n");
-+		return -1;
-+	}
-+
-+	if (mount("proc", "/proc", "proc", 0, NULL) < 0) {
-+		fprintf(stderr, "INIT: Failed to mount proc\n");
-+		return -1;
-+	}
-+
-+	return 0;
-+}
-+
-+static long kexec_file_load(int kernel_fd, int initrd_fd,
-+			    unsigned long cmdline_len, const char *cmdline,
-+			    unsigned long flags)
-+{
-+	return syscall(__NR_kexec_file_load, kernel_fd, initrd_fd, cmdline_len,
-+		       cmdline, flags);
-+}
-+
-+static int kexec_load(void)
-+{
-+	char cmdline[COMMAND_LINE_SIZE];
-+	int kernel_fd, initrd_fd, err;
-+	ssize_t len;
-+	int fd;
-+
-+	fd = open("/proc/cmdline", O_RDONLY);
-+	if (fd < 0) {
-+		fprintf(stderr, "INIT: Failed to read /proc/cmdline\n");
-+
-+		return -1;
-+	}
-+
-+	len = read(fd, cmdline, sizeof(cmdline) - 1);
-+	close(fd);
-+	if (len < 0)
-+		return -1;
-+
-+	cmdline[len] = 0;
-+	if (len > 0 && cmdline[len - 1] == '\n')
-+		cmdline[len - 1] = 0;
-+
-+	strncat(cmdline, " luo_stage=2", sizeof(cmdline) - strlen(cmdline) - 1);
-+
-+	kernel_fd = open(KERNEL_IMAGE, O_RDONLY);
-+	if (kernel_fd < 0) {
-+		fprintf(stderr, "INIT: Failed to open kernel image\n");
-+		return -1;
-+	}
-+
-+	initrd_fd = open(INITRD_IMAGE, O_RDONLY);
-+	if (initrd_fd < 0) {
-+		fprintf(stderr, "INIT: Failed to open initrd image\n");
-+		close(kernel_fd);
-+		return -1;
-+	}
-+
-+	err = kexec_file_load(kernel_fd, initrd_fd, strlen(cmdline) + 1,
-+			      cmdline, 0);
-+
-+	close(initrd_fd);
-+	close(kernel_fd);
-+
-+	return err;
-+}
-+
-+static int run_test(int stage)
-+{
-+	char stage_arg[32];
-+	int status;
-+	pid_t pid;
-+
-+	snprintf(stage_arg, sizeof(stage_arg), "%d", stage);
-+
-+	pid = fork();
-+	if (pid < 0)
-+		return -1;
-+
-+	if (!pid) {
-+		char *const argv[] = {TEST_BINARY, "-s", stage_arg, NULL};
-+
-+		execve(TEST_BINARY, argv, NULL);
-+		fprintf(stderr, "INIT: execve failed\n");
-+		_exit(1);
-+	}
-+
-+	waitpid(pid, &status, 0);
-+
-+	return (WIFEXITED(status) && WEXITSTATUS(status) == 0) ? 0 : -1;
-+}
-+
-+static int get_current_stage(void)
-+{
-+	char cmdline[COMMAND_LINE_SIZE];
-+	ssize_t len;
-+	int fd;
-+
-+	fd = open("/proc/cmdline", O_RDONLY);
-+	if (fd < 0)
-+		return -1;
-+
-+	len = read(fd, cmdline, sizeof(cmdline) - 1);
-+	close(fd);
-+
-+	if (len < 0)
-+		return -1;
-+
-+	cmdline[len] = 0;
-+
-+	return strstr(cmdline, "luo_stage=2") ? 2 : 1;
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	int current_stage;
-+	int err;
-+
-+	if (mount_filesystems())
-+		goto err_reboot;
-+
-+	current_stage = get_current_stage();
-+	if (current_stage < 0) {
-+		fprintf(stderr, "INIT: Failed to read cmdline");
-+		goto err_reboot;
-+	}
-+
-+	printf("INIT: Starting Stage %d\n", current_stage);
-+
-+	if (current_stage == 1 && kexec_load()) {
-+		fprintf(stderr, "INIT: Failed to load kexec kernel\n");
-+		goto err_reboot;
-+	}
-+
-+	if (run_test(current_stage)) {
-+		fprintf(stderr, "INIT: Test binary returned failure\n");
-+		goto err_reboot;
-+	}
-+
-+	printf("INIT: Stage %d completed successfully.\n", current_stage);
-+	reboot(current_stage == 1 ? RB_KEXEC : RB_AUTOBOOT);
-+
-+	return 0;
-+
-+err_reboot:
-+	reboot(RB_AUTOBOOT);
-+
-+	return -1;
-+}
-diff --git a/tools/testing/selftests/liveupdate/luo_test.sh b/tools/testing/selftests/liveupdate/luo_test.sh
-new file mode 100755
-index 000000000000..1520711b1d35
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/luo_test.sh
-@@ -0,0 +1,276 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+set -ue
-+
-+CROSS_COMPILE="${CROSS_COMPILE:-""}"
-+
-+test_dir=$(realpath "$(dirname "$0")")
-+kernel_dir=$(realpath "$test_dir/../../../..")
-+
-+workspace_dir=""
-+headers_dir=""
-+initrd=""
-+KEEP_WORKSPACE=0
-+
-+source "$test_dir/../kselftest/ktap_helpers.sh"
-+
-+function get_arch_conf() {
-+	local arch=$1
-+	if [[ "$arch" == "arm64" ]]; then
-+		QEMU_CMD="qemu-system-aarch64 -M virt -cpu max"
-+		KERNEL_IMAGE="Image"
-+		KERNEL_CMDLINE="console=ttyAMA0"
-+	elif [[ "$arch" == "x86" ]]; then
-+		QEMU_CMD="qemu-system-x86_64"
-+		KERNEL_IMAGE="bzImage"
-+		KERNEL_CMDLINE="console=ttyS0"
-+	else
-+		echo "Unsupported architecture: $arch"
-+		exit 1
-+	fi
-+}
-+
-+function usage() {
-+	cat <<EOF
-+$0 [-d build_dir] [-j jobs] [-t target_arch] [-T test_name] [-w workspace_dir] [-k] [-h]
-+Options:
-+	-d)	path to the kernel build directory (default: .luo_test_build.<arch>)
-+	-j)	number of jobs for compilation
-+	-t)	run test for target_arch (aarch64, x86_64)
-+	-T)	test name to run (default: luo_kexec_simple)
-+	-w)	custom workspace directory (default: creates temp dir)
-+	-k)	keep workspace directory after successful test
-+	-h)	display this help
-+EOF
-+}
-+
-+function cleanup() {
-+	local exit_code=$?
-+
-+	if [ -z "$workspace_dir" ]; then
-+		ktap_finished
-+		return
-+	fi
-+
-+	if [ $exit_code -ne 0 ]; then
-+		echo "# Test failed (exit code $exit_code)."
-+		echo "# Workspace preserved at: $workspace_dir"
-+	elif [ "$KEEP_WORKSPACE" -eq 1 ]; then
-+		echo "# Workspace preserved (user request) at: $workspace_dir"
-+	else
-+		rm -fr "$workspace_dir"
-+	fi
-+	ktap_print_totals
-+
-+	exit $exit_code
-+}
-+trap cleanup EXIT
-+
-+function skip() {
-+	local msg=${1:-""}
-+	ktap_test_skip "$msg"
-+	exit "$KSFT_SKIP"
-+}
-+
-+function fail() {
-+	local msg=${1:-""}
-+	ktap_test_fail "$msg"
-+	exit "$KSFT_FAIL"
-+}
-+
-+function detect_cross_compile() {
-+	local target=$1
-+	local host=$(uname -m)
-+
-+	[[ "$host" == "arm64" ]] && host="aarch64"
-+	[[ "$target" == "arm64" ]] && target="aarch64"
-+
-+	if [[ "$host" == "$target" ]]; then
-+		CROSS_COMPILE=""
-+		return
-+	fi
-+
-+	if [[ -n "$CROSS_COMPILE" ]]; then
-+		return
-+	fi
-+
-+	local candidate=""
-+	case "$target" in
-+		aarch64) candidate="aarch64-linux-gnu-" ;;
-+		x86_64)  candidate="x86_64-linux-gnu-" ;;
-+		*)       skip "Auto-detection for target '$target' not supported. Please set CROSS_COMPILE manually." ;;
-+	esac
-+
-+	if command -v "${candidate}gcc" &> /dev/null; then
-+		CROSS_COMPILE="$candidate"
-+	else
-+		skip "Compiler '${candidate}gcc' not found. Please install it (e.g., 'apt install gcc-aarch64-linux-gnu') or set CROSS_COMPILE."
-+	fi
-+}
-+
-+function build_kernel() {
-+	local build_dir=$1
-+	local make_cmd=$2
-+	local kimage=$3
-+	local target_arch=$4
-+
-+	local kconfig="$build_dir/.config"
-+	local common_conf="$test_dir/config"
-+	local arch_conf="$test_dir/config.$target_arch"
-+
-+	echo "# Building kernel in: $build_dir"
-+
-+	"$kernel_dir/scripts/kconfig/merge_config.sh" \
-+		-Q -m -O "$build_dir" "$common_conf" "$arch_conf" >> /dev/null
-+	cat $kconfig
-+
-+	$make_cmd olddefconfig
-+	$make_cmd "$kimage"
-+	$make_cmd headers_install INSTALL_HDR_PATH="$headers_dir"
-+}
-+
-+function mkinitrd() {
-+	local build_dir=$1
-+	local kernel_path=$2
-+	local test_name=$3
-+
-+	# Compile the test binary and the init process
-+	"$CROSS_COMPILE"gcc -static -O2 -nostdinc -nostdlib \
-+		-I "$headers_dir/include" \
-+		-I "$kernel_dir/tools/include/nolibc" \
-+		-I "$test_dir" \
-+		-o "$workspace_dir/test_binary" \
-+		"$test_dir/$test_name.c" "$test_dir/luo_test_utils.c"
-+
-+	"$CROSS_COMPILE"gcc -s -static -Os -nostdinc -nostdlib		\
-+			-fno-asynchronous-unwind-tables -fno-ident	\
-+			-fno-stack-protector				\
-+			-I "$headers_dir/include"			\
-+			-I "$kernel_dir/tools/include/nolibc"		\
-+			-o "$workspace_dir/init" "$test_dir/init.c"
-+
-+	cat > "$workspace_dir/cpio_list_inner" <<EOF
-+dir /dev 0755 0 0
-+dir /proc 0755 0 0
-+dir /debugfs 0755 0 0
-+nod /dev/console 0600 0 0 c 5 1
-+file /init $workspace_dir/init 0755 0 0
-+file /test_binary $workspace_dir/test_binary 0755 0 0
-+EOF
-+
-+	# Generate inner_initrd.cpio
-+	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list_inner" > "$workspace_dir/inner_initrd.cpio"
-+
-+	cat > "$workspace_dir/cpio_list" <<EOF
-+dir /dev 0755 0 0
-+dir /proc 0755 0 0
-+dir /debugfs 0755 0 0
-+nod /dev/console 0600 0 0 c 5 1
-+file /init $workspace_dir/init 0755 0 0
-+file /kernel $kernel_path 0644 0 0
-+file /test_binary $workspace_dir/test_binary 0755 0 0
-+file /initrd.img $workspace_dir/inner_initrd.cpio 0644 0 0
-+EOF
-+
-+	# Generate the final initrd
-+	"$build_dir/usr/gen_init_cpio" "$workspace_dir/cpio_list" > "$initrd"
-+	local size=$(du -h "$initrd" | cut -f1)
-+}
-+
-+function run_qemu() {
-+	local qemu_cmd=$1
-+	local cmdline=$2
-+	local kernel_path=$3
-+	local serial="$workspace_dir/qemu.serial"
-+
-+	cmdline="$cmdline liveupdate=on panic=-1"
-+
-+	echo "# Serial Log: $serial"
-+	timeout 30s $qemu_cmd -m 1G -smp 2 -no-reboot -nographic -nodefaults	\
-+		  -accel tcg -accel hvf -accel kvm				\
-+		  -serial file:"$serial"					\
-+		  -append "$cmdline"						\
-+		  -kernel "$kernel_path"					\
-+		  -initrd "$initrd"
-+
-+	local ret=$?
-+
-+	if [ $ret -eq 124 ]; then
-+		fail "QEMU timed out"
-+	fi
-+
-+	grep "TEST PASSED" "$serial" &> /dev/null || fail "Liveupdate failed. Check $serial for details."
-+}
-+
-+function target_to_arch() {
-+	local target=$1
-+	case $target in
-+	     aarch64) echo "arm64" ;;
-+	     x86_64) echo "x86" ;;
-+	     *) skip "architecture $target is not supported"
-+	esac
-+}
-+
-+function main() {
-+	local build_dir=""
-+	local jobs=$(nproc)
-+	local target="$(uname -m)"
-+	local test_name="luo_kexec_simple"
-+	local workspace_arg=""
-+
-+	set -o errtrace
-+	trap fail ERR
-+
-+	while getopts 'hd:j:t:T:w:k' opt; do
-+		case $opt in
-+		d) build_dir="$OPTARG" ;;
-+		j) jobs="$OPTARG" ;;
-+		t) target="$OPTARG" ;;
-+		T) test_name="$OPTARG" ;;
-+		w) workspace_arg="$OPTARG" ;;
-+		k) KEEP_WORKSPACE=1 ;;
-+		h) usage; exit 0 ;;
-+		*) echo "Unknown argument $opt"; usage; exit 1 ;;
-+		esac
-+	done
-+
-+	ktap_print_header
-+	ktap_set_plan 1
-+
-+	if [ -n "$workspace_arg" ]; then
-+		workspace_dir="$(realpath -m "$workspace_arg")"
-+		mkdir -p "$workspace_dir"
-+	else
-+		workspace_dir=$(mktemp -d /tmp/luo-test.XXXXXXXX)
-+	fi
-+
-+	echo "# Workspace created at: $workspace_dir"
-+	headers_dir="$workspace_dir/usr"
-+	initrd="$workspace_dir/initrd.cpio"
-+
-+	detect_cross_compile "$target"
-+
-+	local arch=$(target_to_arch "$target")
-+
-+	if [ -z "$build_dir" ]; then
-+		build_dir="$kernel_dir/.luo_test_build.$arch"
-+	fi
-+
-+	mkdir -p "$build_dir"
-+	build_dir=$(realpath "$build_dir")
-+	get_arch_conf "$arch"
-+
-+	local make_cmd="make -s ARCH=$arch CROSS_COMPILE=$CROSS_COMPILE -j$jobs"
-+	local make_cmd_build="$make_cmd -C $kernel_dir O=$build_dir"
-+
-+	build_kernel "$build_dir" "$make_cmd_build" "$KERNEL_IMAGE" "$target"
-+
-+	local final_kernel="$build_dir/arch/$arch/boot/$KERNEL_IMAGE"
-+	mkinitrd "$build_dir" "$final_kernel" "$test_name"
-+
-+	run_qemu "$QEMU_CMD" "$KERNEL_CMDLINE" "$final_kernel"
-+	ktap_test_pass "$test_name succeeded"
-+}
-+
-+main "$@"
-diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c b/tools/testing/selftests/liveupdate/luo_test_utils.c
-index 3c8721c505df..100dc0f69f37 100644
---- a/tools/testing/selftests/liveupdate/luo_test_utils.c
-+++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
-@@ -20,9 +20,14 @@
- #include <sys/stat.h>
- #include <errno.h>
- #include <stdarg.h>
-+#include <linux/unistd.h>
- 
- #include "luo_test_utils.h"
- 
-+#ifdef NOLIBC
-+#include <sys.h>
-+#endif
-+
- int luo_open_device(void)
- {
- 	return open(LUO_DEVICE, O_RDWR);
-@@ -32,8 +37,8 @@ int luo_create_session(int luo_fd, const char *name)
- {
- 	struct liveupdate_ioctl_create_session arg = { .size = sizeof(arg) };
- 
--	snprintf((char *)arg.name, LIVEUPDATE_SESSION_NAME_LENGTH, "%.*s",
--		 LIVEUPDATE_SESSION_NAME_LENGTH - 1, name);
-+	strncpy((char *)arg.name, name, LIVEUPDATE_SESSION_NAME_LENGTH);
-+	arg.name[LIVEUPDATE_SESSION_NAME_LENGTH - 1] = '\0';
- 
- 	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_CREATE_SESSION, &arg) < 0)
- 		return -errno;
-@@ -45,8 +50,8 @@ int luo_retrieve_session(int luo_fd, const char *name)
- {
- 	struct liveupdate_ioctl_retrieve_session arg = { .size = sizeof(arg) };
- 
--	snprintf((char *)arg.name, LIVEUPDATE_SESSION_NAME_LENGTH, "%.*s",
--		 LIVEUPDATE_SESSION_NAME_LENGTH - 1, name);
-+	strncpy((char *)arg.name, name, LIVEUPDATE_SESSION_NAME_LENGTH);
-+	arg.name[LIVEUPDATE_SESSION_NAME_LENGTH - 1] = '\0';
- 
- 	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_RETRIEVE_SESSION, &arg) < 0)
- 		return -errno;
-@@ -57,7 +62,7 @@ int luo_retrieve_session(int luo_fd, const char *name)
- int create_and_preserve_memfd(int session_fd, int token, const char *data)
- {
- 	struct liveupdate_session_preserve_fd arg = { .size = sizeof(arg) };
--	long page_size = sysconf(_SC_PAGE_SIZE);
-+	long page_size = getpagesize();
- 	void *map = MAP_FAILED;
- 	int mfd = -1, ret = -1;
- 
-@@ -93,7 +98,7 @@ int restore_and_verify_memfd(int session_fd, int token,
- 			     const char *expected_data)
- {
- 	struct liveupdate_session_retrieve_fd arg = { .size = sizeof(arg) };
--	long page_size = sysconf(_SC_PAGE_SIZE);
-+	long page_size = getpagesize();
- 	void *map = MAP_FAILED;
- 	int mfd = -1, ret = -1;
- 
-@@ -204,16 +209,11 @@ void daemonize_and_wait(void)
- 
- static int parse_stage_args(int argc, char *argv[])
- {
--	static struct option long_options[] = {
--		{"stage", required_argument, 0, 's'},
--		{0, 0, 0, 0}
--	};
--	int option_index = 0;
- 	int stage = 1;
- 	int opt;
- 
- 	optind = 1;
--	while ((opt = getopt_long(argc, argv, "s:", long_options, &option_index)) != -1) {
-+	while ((opt = getopt(argc, argv, "s:")) != -1) {
- 		switch (opt) {
- 		case 's':
- 			stage = atoi(optarg);
-@@ -224,6 +224,7 @@ static int parse_stage_args(int argc, char *argv[])
- 			fail_exit("Unknown argument");
- 		}
- 	}
-+
- 	return stage;
- }
- 
-@@ -251,7 +252,7 @@ int luo_test(int argc, char *argv[],
- 		fail_exit("Failed to check for state session");
- 
- 	if (target_stage != detected_stage) {
--		ksft_exit_fail_msg("Stage mismatch Requested --stage %d, but system is in stage %d.\n"
-+		ksft_exit_fail_msg("Stage mismatch Requested stage %d, but system is in stage %d.\n"
- 				   "(State session %s: %s)\n",
- 				   target_stage, detected_stage, state_session_name,
- 				   (detected_stage == 2) ? "EXISTS" : "MISSING");
-diff --git a/tools/testing/selftests/liveupdate/run.sh b/tools/testing/selftests/liveupdate/run.sh
-new file mode 100755
-index 000000000000..5637668ef7b6
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/run.sh
-@@ -0,0 +1,63 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+
-+SCRIPT_DIR=$(dirname "$(realpath "$0")")
-+OUTPUT_DIR="$SCRIPT_DIR/results_$(date +%Y%m%d_%H%M%S)"
-+TEST_RUNNER="$SCRIPT_DIR/luo_test.sh"
-+
-+TARGETS=("x86_64" "aarch64")
-+
-+GREEN='\033[0;32m'
-+RED='\033[0;31m'
-+YELLOW='\033[1;33m'
-+NC='\033[0m'
-+
-+PASSED=()
-+FAILED=()
-+SKIPPED=()
-+
-+mkdir -p "$OUTPUT_DIR"
-+
-+TEST_NAMES=(
-+    "luo_kexec_simple"
-+    "luo_multi_session"
-+)
-+
-+for arch in "${TARGETS[@]}"; do
-+    for test_name in "${TEST_NAMES[@]}"; do
-+        log_file="$OUTPUT_DIR/${arch}_${test_name}.log"
-+        echo -n "  -> $arch $test_name ... "
-+
-+        if "$TEST_RUNNER" -t "$arch" -T "$test_name" > "$log_file" 2>&1; then
-+            echo -e "${GREEN}PASS${NC}"
-+            PASSED+=("${arch}:${test_name}")
-+        else
-+            exit_code=$?
-+            if [ $exit_code -eq 4 ]; then
-+                echo -e "${YELLOW}SKIP${NC}"
-+                SKIPPED+=("${arch}:${test_name}")
-+            else
-+                echo -e "${RED}FAIL${NC}"
-+                FAILED+=("${arch}:${test_name}")
-+            fi
-+        fi
-+    done
-+    echo ""
-+done
-+
-+echo "========================================="
-+echo "             TEST SUMMARY                "
-+echo "========================================="
-+echo -e "PASSED: ${GREEN}${#PASSED[@]}${NC}"
-+echo -e "FAILED: ${RED}${#FAILED[@]}${NC}"
-+for fail in "${FAILED[@]}"; do
-+    echo -e "  - $fail"
-+done
-+echo -e "SKIPPED: ${YELLOW}${#SKIPPED[@]}${NC}"
-+echo "Logs: $OUTPUT_DIR"
-+
-+if [ ${#FAILED[@]} -eq 0 ]; then
-+    exit 0
-+else
-+    exit 1
-+fi
--- 
-2.53.0.rc2.204.g2597b5adb4-goog
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
