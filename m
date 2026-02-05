@@ -4,128 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B871EC1E88
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 09:54:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37AD7EC1E9A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 10:48:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5856E6B00A6; Thu,  5 Feb 2026 04:54:50 -0500 (EST)
+	id BA7166B0089; Thu,  5 Feb 2026 05:48:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 533546B00A8; Thu,  5 Feb 2026 04:54:50 -0500 (EST)
+	id B5DE06B0092; Thu,  5 Feb 2026 05:48:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 415126B00A9; Thu,  5 Feb 2026 04:54:50 -0500 (EST)
+	id A6A0B6B0093; Thu,  5 Feb 2026 05:48:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BCAD6B00A6
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 04:54:50 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7AD891402DE
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:54:49 +0000 (UTC)
-X-FDA: 84409943898.30.F38D85E
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 738FD10000F
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:54:47 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=TPkMESn+;
-	spf=pass (imf14.hostedemail.com: domain of viresh.kumar@linaro.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=viresh.kumar@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9375A6B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:48:27 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4403A1404A0
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:48:27 +0000 (UTC)
+X-FDA: 84410079054.01.D1ECF52
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 498DB180004
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:48:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RQGFSTWI;
+	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770285287;
+	s=arc-20220608; t=1770288504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9xBIY0mav+3IAaN2sDOZsKW4O0cnUlRHLSnJJ3/BuhM=;
-	b=NZ3BaYVuAV9W1dGF6AJ/wxJUG2u0Cp7OryOgm8zEg9jtkYLvFhOmRmBwC+a1YPwIOwN82i
-	RZb4uc24NBwWfN3fdElGDuA1CHUHYZnWCoZliG0FUqHdBv6H0xRseu8Qgb87EID9emETS2
-	ssy4HopDh3y2KlVeES0b19DRnIAh1/s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770285287; a=rsa-sha256;
-	cv=none;
-	b=xWUozLAj87UKZro7lwxsaF9f3u/55E6MNfpYaMxNs6PIxjDXvTQSWmT8KS1CSatCANV4/n
-	6BFlxZ17HqWrlJj5QLoE0Apsb3htwEz5KNqZesuaWarnJXZ4ftdPr0MkX96n/KV9KMYb1r
-	ETNghq2+dAqyxMmIo8dMB/wwRsTOjbQ=
+	bh=5TaxiC7aAM82PjRddN4PaEpv8xBPtPLxPQ4L7tuRQho=;
+	b=qHsWB6s3/6JRL3D8dJlMuKlmCuaGi54MA+4DmgKqbnMtdEP4+1dFHhfwR9poqheXxBXMnv
+	KUoJaqx7viTMwgY1UsUqOxDJjfesAmLWLul+Ev5bFPH1BfJiioSf6rqwqy4nh4Akn/RgOp
+	EDPIWyylv2FVdu84h+7W7XhbIgK+PRk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linaro.org header.s=google header.b=TPkMESn+;
-	spf=pass (imf14.hostedemail.com: domain of viresh.kumar@linaro.org designates 209.85.216.53 as permitted sender) smtp.mailfrom=viresh.kumar@linaro.org;
-	dmarc=pass (policy=none) header.from=linaro.org
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-34ab8e0df53so596515a91.3
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 01:54:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1770285286; x=1770890086; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9xBIY0mav+3IAaN2sDOZsKW4O0cnUlRHLSnJJ3/BuhM=;
-        b=TPkMESn+wg5fntQ5eIdHFrGbz36UXaecNPVWhCEil5cYwWVwWRwEnk8i5/6SAywQNf
-         kVdMiwTWkAMnQg6L669bw4nNZoBYfPanhDta7WWNGMXoE2Kee9w7zMxYDtswExpIaun8
-         k8ESM/9ipWz8foEe//wKpdDZqb/3A6yBSiQwDgNKDjEIy60ElpAcW6hUF2FaWV5cTJZ/
-         xm406qEvLUmpauzmEJBAdPkhDXR3U7t7TTqHLunFJlHtPmr00G5YDBny5xi5sa9iAGJU
-         jwnpgO9cKKCgg5QiLfGwDv9kENczgvTdcazbMIQgGfReMiOHHekcjNpybBPUuNsFMUrz
-         5Guw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770285286; x=1770890086;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9xBIY0mav+3IAaN2sDOZsKW4O0cnUlRHLSnJJ3/BuhM=;
-        b=u+9MX8MFPsBOtB+CcKzN7+Qb1pyY26teROUaRXzBlJNxiDm5241Q636WR5CwQ2vPDr
-         VQU9dxXUDd2GdGggfwp+Fo/0Si4uUgk4pfgf6XXrfTCa+SOVcxfLt9QHzd1dDpvtbO3k
-         dgxNxlEYfNw0FVPVo3XZy2uSXMKm1FrRZA1ieMo0Lp4q8Kl0oiC6traQyx81JctqHvbk
-         XJ1YghhHpmdrEWfZSoBx/5d227YyVuEiL4ovO1lBNV6jIFjLFpuZahL4i4j2CfHS0IIS
-         2qvlTNhhglb4y7CPsA9eMDpbMjeajEu4s4rbMtIPaTe+JyzCGjL3pxVhMpihnUVe/kVN
-         zT6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXbOC2sDsWJlzYn6g8kWX3+0c/UkQmze8IGUnNwAcoT0UnMsHttM2FUGzS6mDOQ28YCJAE7NxSHtg==@kvack.org
-X-Gm-Message-State: AOJu0YzfNPkeZs5HPMkV248Ih+Hu6voOp8pqyFfvCs6hg9s70PnMFEsr
-	MI0H6m/7mp1JcG3cU0sOfWwuqa7pXDQME0XwxrMLzCIq5Cg3Ccfod87OYjj5jmOyUe0=
-X-Gm-Gg: AZuq6aLleuPc1wHp+bT4NPBOP+eIJJbHBNKckf6PHHHldJiHHMjoKIqW1AnDGQCR/Ty
-	AZtV4nWEdjGndD71uiWALt1b/1Jyl4eoWj0dv/Jrz/4ZbFrRpDqJMxQN1fRqrj3fr7darCEBYUM
-	TadM66eCjEzTFf0poaYhnkkYH3hfon1379RmH+rXh3aiFMrGum5nAcEPyhA0ZJdhMJt5grms5t9
-	dGq+MhNEwLCZFpCHWH9tyKdD1g6hiXGvjE0b+laaoeQ1Qjzbbz5426ZXttvNcscvReBAOueEmuS
-	LVnn6u7iFfn61Rm+tJt748YJvmeHOh+8Tn3NNCrWUVZ/CebnOFR+V5W7XNje8puW41XlLBXUOjz
-	8hQG57sbGHZ6jH7NkbnFQ+t/j/HMr2Mc96Bc0c0MlsnNGvy3+89qJjs6zGlGwT84XiztFgZ1joH
-	EzUU5eqG87Kag=
-X-Received: by 2002:a17:90a:c110:b0:354:a05d:9dc2 with SMTP id 98e67ed59e1d1-354a05da864mr1522955a91.9.1770285285886;
-        Thu, 05 Feb 2026 01:54:45 -0800 (PST)
-Received: from localhost ([122.172.80.63])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-354894533dbsm2000361a91.7.2026.02.05.01.54.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 01:54:45 -0800 (PST)
-Date: Thu, 5 Feb 2026 15:24:42 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman <david.m.ertman@intel.com>, 
-	Ira Weiny <ira.weiny@intel.com>, Leon Romanovsky <leon@kernel.org>, 
-	Paul Moore <paul@paul-moore.com>, Serge Hallyn <sergeh@kernel.org>, 
-	"Rafael J. Wysocki" <rafael@kernel.org>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Igor Korotin <igor.korotin.linux@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Bjorn Helgaas <bhelgaas@google.com>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, 
-	Oliver Mangold <oliver.mangold@pm.me>
-Subject: Re: [PATCH v14 2/9] rust: rename `AlwaysRefCounted` to `RefCounted`.
-Message-ID: <xh3iuwlz4wapmgzojg4v3sen4oezfua4vsedskvrqhc7ryyclj@jggikwra6dmj>
-References: <20260204-unique-ref-v14-0-17cb29ebacbb@kernel.org>
- <20260204-unique-ref-v14-2-17cb29ebacbb@kernel.org>
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RQGFSTWI;
+	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770288504; a=rsa-sha256;
+	cv=none;
+	b=h9u5j8D/GrPuHLhtCnYP2L5H0HtXWeJSbhejccAUDBiTRozHB+Ewb1bYRFW+lgvuqxWQ/j
+	2kkTSwpW7p4YrFMR5CoeIGcNXyze2eqK7Fp4YxEbb/oc2jBJEzBfWURuIajIQw3t0fQBj8
+	0XQFTSrhiuR4IuvyTUMI3kQvXxVSqrc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CB9960010;
+	Thu,  5 Feb 2026 10:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC485C16AAE;
+	Thu,  5 Feb 2026 10:48:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770288503;
+	bh=KtgLQkOU/MenbkJ1CoPc5QlChz0x1XQvAlKnIeE5t4A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RQGFSTWIHkOvCNE1BlhUjQaajGN5Yh5b8paoTC6KavtX/e93aV098vEOpSEBCohAD
+	 RMATrK4LB/gfZKv3VSZJmG0IrgEfkSTsNSZijh2dl6wTMqP4jrN1SwKlMi4d1B3Oaf
+	 LwJX2srGjEWbFaQtj1ZH2joNZK+QS21BO+8/K/noDnf+Tw6KC0KYiWp7KmeecNVbmP
+	 9Z/6mOATHxtgUrDDvT3v+WIbSKuo+uIoec7bRTixVSQKvFaVYnAI1ZggMX7wTv5TxE
+	 2h7aHCl9lh07X7d+qwuWbpYjfN0TXJTEKJfPomReOtTJk0A4ZG/wwCiQunQyoFSx5M
+	 Ff5qmpsDPuLcg==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C95E2F4006C;
+	Thu,  5 Feb 2026 05:48:21 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 05 Feb 2026 05:48:21 -0500
+X-ME-Sender: <xms:dXWEaTmF7yFUWQUwHHE7Yqpdz967qXai-r4RbF9ttGBXuUN-PUWpSw>
+    <xme:dXWEaege_hDZX_A5jT9tYvXfxG1QWG2duZFZKvSoNYPPsZr7RHHp_jzgGB6VlAW55
+    v54naWMACDK6a861LgqhYLGKs2ycHgEsxv8jIfU2IaKoHxm_yxGHaqn>
+X-ME-Received: <xmr:dXWEafcudn86K3v7e1-sX3EvBClhFhI132dsYv4fWF-uNGKgRLPW7nguNW4QPA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeehuddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeeftddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepphhrshgrmhhprghtsegrmhgurdgtohhmpdhrtghpthhtohepuggrvhhiugeskh
+    gvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmsehkvhgrtghkrdhorhhg
+    pdhrtghpthhtoheplhhinhhugidqtghotghosehlihhsthhsrdhlihhnuhigrdguvghvpd
+    hrtghpthhtohepgiekieeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidq
+    khgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthhglhigse
+    hlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepmhhinhhgohesrhgvughhrghtrdgt
+    ohhmpdhrtghpthhtohepsghpsegrlhhivghnkedruggv
+X-ME-Proxy: <xmx:dXWEac8rCswMdkOUD8ouc9KOqEyV0XjD5cdkzCno68cOQ6I8st38GA>
+    <xmx:dXWEadgQmD84bqhvdJfsPTPCb_aOjJAlzrHqQcQMXcqdbxVpRpq1fA>
+    <xmx:dXWEaY_21YuiMzn1Pm0rL99d2AyKVM_iUEVp0YrkV3GbfVptf-RW3A>
+    <xmx:dXWEaWCq5d2m3qCBi4KOfQfyp-_ABe4tnq1aK6GIWccsYm_MrPZh1g>
+    <xmx:dXWEaaHCKX-vVgOQFNesWeQO7sOwR9G0aDwNem1qAtAFaVIMsPDp4N-9>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Feb 2026 05:48:21 -0500 (EST)
+Date: Thu, 5 Feb 2026 10:48:20 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "Pratik R. Sampat" <prsampat@amd.com>
+Cc: "David Hildenbrand (arm)" <david@kernel.org>, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org, 
+	akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+Message-ID: <aYR0vqwyFPo3EKAi@thinkstation>
+References: <20260203174946.1198053-1-prsampat@amd.com>
+ <20260203174946.1198053-2-prsampat@amd.com>
+ <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
+ <70be936e-e49d-4485-8d1e-416fdf8f40a4@amd.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260204-unique-ref-v14-2-17cb29ebacbb@kernel.org>
-X-Rspamd-Queue-Id: 738FD10000F
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <70be936e-e49d-4485-8d1e-416fdf8f40a4@amd.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: p4qyj1ma5njs7ytsjmyxbmo6a3qxcyqb
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 73n17ekw7h1k5ywkpffjk1okne5p6f6w
-X-HE-Tag: 1770285287-900033
-X-HE-Meta: U2FsdGVkX1/Q/vt1tGb9bv+d11SniIKAUBSb+FslZ8VrfplN3wc0HbYB1tb0yp4hiEp8GZ1C5EG4h+6vd3pMBKfhwhr4aEvDNwdLBDaNTlM5K+jWceLKKTl476tyW2io6/IAEXJAn1GCUjpMknbRLw9sNoTWIQQ8lpRIH/Q1YjTqRbEHwY+HKJg4N6O1MfV2myO8Ln161xR2iUkwHdfI2KliGZOW9NGCy8hUbQ/KpdJL4lK2K1+QyVD+Mw3Al0LAhdWr2KoPRrIZ6nRyrM++sLu518fzB9T1Rf5usOrekn7/4Qs6tGGmIfZe2FkNwinHoIWHPTMpeExgZFIUh5i4I5zGBWGNUGIh0xqk9y672oUf4wKczgT4GLwwCu8cer5rlalZ8F7vQbc87K8o6NMqAF8mzM++X6hA7tVXy4HOv9bQhU/AsRh5qnzTMkrFfbOI7ncQKTouI9bVz7oilsBEXSZ3YpxeSojF2fteCNGGndv0yJqenguM3D/8dN9i66VEbIprvWcmWh1/HsfuKP/g8If7ZWOec+QteBcxmAqhorTXTeGJ9O51+5XVIbJG6N5GN00c7X3082BEkvZQUWX8/jGfTLYDY0ct+k4xbD8NEqYWfwbi4QKMJet3DPaFkppVIZe1LvuFWoOr3Y7waOloIGLT3FtucXjyNUfsdpVymAlodbHNZ4c1HCw48PtgH7zQ8Oj9KndK7iC7RD1D5QQYqpHsvwKBMd4sGk9K3fevOZiM34YPfit8HsFd2Ui7pA/W3jWN1TR7RQuSI55cyAhjrIC0WS50euFyzAXmdBQyI55NU7L6A15SwwTd01v8p1R2tk6ag9kz7jCxFnjG2CUCXEBwsF8MJrpzWUk3jg6Gw3vbEooppmBy6iEA40CIqSM43nYQNRu7MaaZkyTePU/xKEZ6g6O+uFfGyPs0tXdEJKcI9fCcR6UA4rEJbN8pS2lBIgrZAqs5o2RcdlIcLER
- jaSUIZv2
- 0IvTr45EYYxCCRVFo6ytM1xI+zxwDGo0xl/hlqk3Wm8gostE3hR9fC3+RzA5fmiRmfrxToxqRO9ZZ0YhzYIBDoiyFL4fMmuSKm5mg5biuCg0HYyjySDzq/TKFEiWde2ZCQ9ZpRhVHuPu4tNcQBpyByKw9vxTHmzswRMutqCLd7oU/3EA86+TmB/g+S4VPCVDPmL6fLSCDG1MD0EeoY3dPI2zzKDLGHV8YML5zTixOQRt7Txj2XZSYUd2B4wrkCkfrd1OQoh58kNuDozSTU7QsJEHXZonOqdse/NCQKpt4sdOkFm0pPsj/20X6lE6pBsoz3TgiNqGEa19HWSlit2DrnCDkEnIbGyNN8dbD1FOWqtQNxQUVnbvK6nE8EH2TstKTm3mSzc0dwd62J87RtE6sZyTmHgGzoYmneKj6rSh87pWlTZhqMoTxbPGJEKXWOppLkT+wLRK5bYgYhSDjZLH0LpHkSxVJOWKAocpEjImXjZYPMr8=
+X-Rspamd-Queue-Id: 498DB180004
+X-HE-Tag: 1770288504-305670
+X-HE-Meta: U2FsdGVkX1+I3ODqgKgsfG3OfIhDYxD9yV+LV2s3aZlm7nc9yyp/TATyofF5gzH/YelBJWOUgID4j1voAaQv1z5++HK5JTymmEWgND/8QIDZ8OQ/9uKCjw8NDceVn1JgDSzusF54eT/mc62/0jUw4zhNHaEK9kl5Sbb90ZdZjfxutzbvG3rB7bwr/7IssxxpIAuy3BZrM9g5ayhtOerpioANkqPWO+zjpdaMZO/FGL94LDh74OMBsFJb5gWt8ZxPJ1xL1Z5u+CZfERfVrebjsSNjZf73WylM0/mPn0wudjRFmBKChVjaSdVyJf+A4wKb/0Sy3Da/7XeFGBvO11uMaAYY9ThaSkfkayCtJS//5UcSHWpX6XJxpjtdD+cY0gt2657T2x91xFrwFdCk7cM+sGtmrjAR7wUSHvLZ+i1dFrCoc9kKz2RsUBIcL/fkXFOoA1hNtvuGnTYIL0bGdhQS8bjc1csqgiJ0e2nOWygmeZS2PH6o5kjPsfv4NEyVxAnDUmXlGXJjupr5b9TnL9FH7hd0kb7YwcOCWOBzhiBU2lHTH5MPj08roo2wSguTDB24OgM//NYDmX+DN7qBIYtubjZbIuEY22Xhs7d/y+kAs9uSn7pVI90lsbTr9tr2DdzHemnmu9F7c9ASEaqCjl2Reiv6BPN47Iq8PPKQaFQfJj7D82D2bfbqg19xwaF4iz7ZsI7XcoPlDIXCzB7/MEF7gw7HUFbBT+tqBI8e1AsOW65TL6gn6eOP+p7RGxsgwM2sI+mvbGZ+Lq4lWPFZxAkVOrLFBQcOUl7szUmxfaswijLogn6QYANe7OF9o3B6qdulvPiTj3jEDV/ReI7QsM+V6doogwFZ8O9urSC5HT2b7VLFKJ377iOSgwwUA53t7Ht1RVPvdBVZ8WTODItAbynfnNl015AIS3w65WjzZ/hzPEfAT+vlC2SNGBSj0o7YH4D8CfXmn4HeU1NxpEoN7d9
+ r1A7WTMv
+ ViLA/tcJWLGZqe39ac1LLqGw9LB3aPH+ITKIw7a6Yt34sX/tqEIoU2HcXiv2h5XejiPwqP+R6q5yd6iq7BGm4yzvKEtx322yDnROKvtmJ4LPmAMCJL2ib5fgh6c02/QrSESYtpoF5BezTQTmaLnL+TztErZHn4WaYC7Bglz88Mfx+8EKBhjl3GczWvrhnJL4JB8Rw+SwZg95lYCpmzvnfpAMvu/O4TKM+m6i35A81M+AFvSpijOAqm8I03f1crdbFHG1pRZ3i8aco9HwTMW072eqKBjNLO8+uykNCyfLQnQ+/ag5XZub0OExk08NELgxaB6EaFvawVSLsiktV8Qa1+Z0saoADeG9hRjMH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,45 +133,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04-02-26, 12:56, Andreas Hindborg wrote:
-> diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-> index a760fac287655..06fe2ca776a4f 100644
-> --- a/rust/kernel/opp.rs
-> +++ b/rust/kernel/opp.rs
-> @@ -16,8 +16,8 @@
->      ffi::{c_char, c_ulong},
->      prelude::*,
->      str::CString,
-> -    sync::aref::{ARef, AlwaysRefCounted},
-> -    types::Opaque,
-> +    sync::aref::RefCounted,
-> +    types::{ARef, AlwaysRefCounted, Opaque},
->  };
->  
->  #[cfg(CONFIG_CPU_FREQ)]
-> @@ -1041,7 +1041,7 @@ unsafe impl Send for OPP {}
->  unsafe impl Sync for OPP {}
->  
->  /// SAFETY: The type invariants guarantee that [`OPP`] is always refcounted.
-> -unsafe impl AlwaysRefCounted for OPP {
-> +unsafe impl RefCounted for OPP {
->      fn inc_ref(&self) {
->          // SAFETY: The existence of a shared reference means that the refcount is nonzero.
->          unsafe { bindings::dev_pm_opp_get(self.0.get()) };
-> @@ -1053,6 +1053,10 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
->      }
->  }
->  
-> +// SAFETY: We do not implement `Ownable`, thus it is okay to obtain an `ARef<OPP>` from an
-> +// `&OPP`.
-> +unsafe impl AlwaysRefCounted for OPP {}
+On Wed, Feb 04, 2026 at 09:50:09PM -0600, Pratik R. Sampat wrote:
+> 
+> 
+> On 2/4/26 2:00 PM, David Hildenbrand (arm) wrote:
+> >>   #endif
+> >>     static inline bool pfn_is_unaccepted_memory(unsigned long pfn)
+> >> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> >> index a63ec679d861..549ccfd190ee 100644
+> >> --- a/mm/memory_hotplug.c
+> >> +++ b/mm/memory_hotplug.c
+> >> @@ -1567,6 +1567,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+> >>       if (!strcmp(res->name, "System RAM"))
+> >>           firmware_map_add_hotplug(start, start + size, "System RAM");
+> >>   +    accept_hotplug_memory(start, size);
+> >> +
+> >>       /* device_online() will take the lock when calling online_pages() */
+> >>       mem_hotplug_done();
+> >>   
+> > 
+> > I really hate that accepting (and un-accepting) hotplugged memory is different to accepting ordinary boot memory.
+> > 
+> > Is there really no way we can get a reasonable implementation where we just call a generic accept_memory() and it will know what to do?
+> > 
+> 
+> Sure, that shouldn't be impossible.
+> 
+> The only reason I initially kept them separate is because we accept and update
+> the bitmap unconditionally. This mainly applies to cold-plugged memory since
+> their bitmap state after remove shouldn't matter. However, as we are now
+> correctly setting the bits in the hot-remove path we should be fine accepting
+> from the for_each_set_bitrange_from() logic within accept_memory(), I think.
+> 
+> Something like so?
+> 
+> diff --git a/drivers/firmware/efi/unaccepted_memory.c b/drivers/firmware/efi/unaccepted_memory.c
+> index d11e7836200a..e56adfd382f8 100644
+> --- a/drivers/firmware/efi/unaccepted_memory.c
+> +++ b/drivers/firmware/efi/unaccepted_memory.c
+> @@ -36,6 +36,7 @@ void accept_memory(phys_addr_t start, unsigned long size)
+>         unsigned long range_start, range_end;
+>         struct accept_range range, *entry;
+>         phys_addr_t end = start + size;
+> +       phys_addr_t bitmap_end;
+>         unsigned long flags;
+>         u64 unit_size;
+> 
+> @@ -44,6 +45,21 @@ void accept_memory(phys_addr_t start, unsigned long size)
+>                 return;
+> 
+>         unit_size = unaccepted->unit_size;
+> +       bitmap_end = unaccepted->phys_base + unaccepted->size * unit_size * BITS_PER_BYTE;
 > +
->  impl OPP {
->      /// Creates an owned reference to a [`OPP`] from a valid pointer.
->      ///
+> +       /* Memory completely beyond bitmap: hotplug memory, accept unconditionally */
+> +       if (start >= bitmap_end) {
+> +               arch_accept_memory(start, end);
+> +               return;
+> +       }
+> +
+> +       /* Memory partially beyond bitmap */
+> +       if (end > bitmap_end) {
+> +               arch_accept_memory(bitmap_end, end);
+> +               end = bitmap_end;
+> +       }
 
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+You are calling arch_accept_memory() on every memory allocation if the
+memory is not represented in the bitmap. Hard NAK.
+
+> 
+>         /*
+>          * Only care for the part of the range that is represented
+> 
+> unaccept_hotplug_memory() truly doesn't do anything special for hotplug so I
+> could just re-name it unaccept_memory().
+> 
+> Thanks!
+> 
 
 -- 
-viresh
+  Kiryl Shutsemau / Kirill A. Shutemov
 
