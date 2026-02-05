@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F27EC1E9B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 10:51:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FDDDEC1E9A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 10:56:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2076D6B0099; Thu,  5 Feb 2026 05:51:53 -0500 (EST)
+	id DE7E66B0089; Thu,  5 Feb 2026 05:56:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 154316B009B; Thu,  5 Feb 2026 05:51:53 -0500 (EST)
+	id D94986B0092; Thu,  5 Feb 2026 05:56:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03F1E6B009D; Thu,  5 Feb 2026 05:51:53 -0500 (EST)
+	id CA12F6B009B; Thu,  5 Feb 2026 05:56:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D8AD66B0099
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:51:52 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9402513AF13
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:51:52 +0000 (UTC)
-X-FDA: 84410087664.30.866DABC
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B3D591C000F
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:51:50 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LG2WL5wr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3RXaEaQkKCJY0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3RXaEaQkKCJY0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770288710; a=rsa-sha256;
-	cv=none;
-	b=Tl95LSLn8+C2qC7SLDyEcF4kDk2MH4NIgjm26GpQbcZtHsHii74mtlnl+790dDXz/e6QBK
-	ZCGGQgRAqfA4iWiW8WCLPrjjgECPe+xIx2tFLu45AxMyVnDRZT99af3nQ0/Q8QB9AUC6iJ
-	RNhMrerBuxhgjMYxj/rVpd4BrgYUeag=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=LG2WL5wr;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of 3RXaEaQkKCJY0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3RXaEaQkKCJY0B824HO7B6EE6B4.2ECB8DKN-CCAL02A.EH6@flex--aliceryhl.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B264C6B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 05:56:54 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 636031B2756
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:56:54 +0000 (UTC)
+X-FDA: 84410100348.15.DAD70BF
+Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 72B9B1A000B
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 10:56:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tlQvUERg;
+	spf=pass (imf19.hostedemail.com: domain of 3PnaEaQkKCI8t41vxAH04z77z4x.v75416DG-553Etv3.7Az@flex--aliceryhl.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3PnaEaQkKCI8t41vxAH04z77z4x.v75416DG-553Etv3.7Az@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770288710;
+	s=arc-20220608; t=1770289012;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kpaIYad0WHN8wTh3ZSTIrnFcA9kAsyJ24DcP542BHNk=;
-	b=g4PwxXLo8D6bIlB+V/yEEm/S4L1RPJzNnGJtggRxGlcAX73aKwKcWzbOc/tXNuYxi42+C9
-	BEuNJIdfMz6TSpqBtte2xJydnDDHGxDmwNGKtTOxKqA2DrvFl2OTXdMqRxoJLByRhwi86p
-	J+E0GVJZ2iOc66FSJjCkDpU5IjXDDgU=
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-435ab9ed85dso729569f8f.1
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 02:51:50 -0800 (PST)
+	bh=FUC+IUQsyh6FSH9XQxPnuJxAw63qa2QoaAdOGHxWeSY=;
+	b=2BKCSPjZ80M2Nyw33qdvcUWDj2CnhaDVDOm9DiC8GmaLYQYpvLxx+K1OkL47AGZy7oagrK
+	DxnB7AjbbrCwMQ71duHIzZIwCIKTuBDUdqGCwT6fylHJLs40404jUbI3XThfr1aXqFWJY4
+	Vgthqdym6+6Cl8wimVB6C9shS4spflQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770289012; a=rsa-sha256;
+	cv=none;
+	b=ExvjhXWU3F5pOZQzXlonz5W6y+I/vqAKqwzAX9ruyWLjGfW83Xb02Wx3p1WFhbnWePmDs5
+	U8lCSfAG/OE0PUiZbOu1PH2WFNdTNkai7PTB2SfDh6cTzK6dtWN4R55hYv6qF8ekWIOLlW
+	FhqpLQrRQDB2rDsvdP6TS9JhM4dwtc0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=tlQvUERg;
+	spf=pass (imf19.hostedemail.com: domain of 3PnaEaQkKCI8t41vxAH04z77z4x.v75416DG-553Etv3.7Az@flex--aliceryhl.bounces.google.com designates 209.85.218.73 as permitted sender) smtp.mailfrom=3PnaEaQkKCI8t41vxAH04z77z4x.v75416DG-553Etv3.7Az@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-b874c325d10so76126366b.1
+        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 02:56:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770288709; x=1770893509; darn=kvack.org;
+        d=google.com; s=20230601; t=1770289011; x=1770893811; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kpaIYad0WHN8wTh3ZSTIrnFcA9kAsyJ24DcP542BHNk=;
-        b=LG2WL5wrJD1mRO/A0Fq8g5k2GgjVo/m+Ol5Wzlz0yuJSKeT286iHGlpjchWzZrvFQ8
-         Phs6wu62OoZOlWJdedNO6fUfa/MKUUo2v3QRtR5ojTrPhS+EyE56/k6wGTOAxOzQq39l
-         RoMsWPisS2x2Ojfq2mRrZgDj9ZwLiLTN0SB1qvVbO5XdL/i21M1LdfkXPeJLDmFndLLY
-         YWCajc4UEetT+8AUj/sHb0ZoRKlu20E5I5rH2823lDRzrUavDnH10WNExB8pe8wmxNL2
-         gz69SkavV4BttQA4pA+r6rNbGR15xjzeTODgFop+zys3eLbM6WQaORrZsPP/v8ipo0hn
-         BHoQ==
+        bh=FUC+IUQsyh6FSH9XQxPnuJxAw63qa2QoaAdOGHxWeSY=;
+        b=tlQvUERgL1hgT8GX3bv+O4nHiSKmgwxDjFSNsfhlhh0dcRhdq0YUYJOI7hesvcZ+6Y
+         jjGMLV8YKMMaX9x3P/MjOskOwEAjE0YB3nw72hGU91yvWSLz+LocDvUcqJFiJGcisNTR
+         MJnqUQgTbpWCMdNOmAXHoJOn8oMD0o7D56la8KipERJ1+IWWDNPjqn8frP1nTS3tyvg2
+         agRPqaEDM0mK35kQ4TXK0jGUBEuulk7VqOQM3g+UU09ceusTgpyOhumRST7QSZ21KVIP
+         CjEQzkMZJMM0t0TlEHoq1GEwG/D7I5ycPmYYrMfpvkoP91N/zbyYfZDexbo1V/xKcJry
+         17Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770288709; x=1770893509;
+        d=1e100.net; s=20230601; t=1770289011; x=1770893811;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kpaIYad0WHN8wTh3ZSTIrnFcA9kAsyJ24DcP542BHNk=;
-        b=pdyppZL1bW5jylVdjDgERopm/45LKTW+TP0VBko0gK+cqPrm0KZh/e+N5M2guEP/VG
-         WMFzV74xFZMDniUmlicRJvmPtxT2N2VcUhMC9xBxVu+j1K/usvY65hZ7lOWP1kW/NmlM
-         ts3a5C1qTRTYOcWSwqP5yw44nowhB4eRpmx+fXo33ooE7BLFgz40kHD042ZxiWYk3LxB
-         Vphey4VwrOKZfgC1Dm+EYVyz6+l+e65PxnjN44vBQ0ik5OXvsQ4GudaOZItzRzjN02M/
-         Zb5eSsDGm2VJpIE0aJm2kQMZJhIvWvnS7MGiKxMavPnB3Fx0bE2lINT54R6Yzw5kynax
-         8XaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXgbX3OYLqVX9l37qagjeC3WCNKQoGJHMYmOy6U9+PnrUxeF0zS/rGPz9CvGUer3uGf+5JhGvW7RA==@kvack.org
-X-Gm-Message-State: AOJu0YyfBbFPKrF5RysbQV+sp5K4e/WVfGkFWKtlcpBbfwBFxJgbFR4R
-	m7wAI0jBnxgFethvJNRn57ZqZnA/f27Zqp8W/DTVeso0ruxr1LovT13U4Q2VXt8XfNboIvSHb5r
-	Z123p//hf3ggDBSeMzg==
-X-Received: from wrd12.prod.google.com ([2002:a05:6000:4a0c:b0:435:9538:ee5d])
+        bh=FUC+IUQsyh6FSH9XQxPnuJxAw63qa2QoaAdOGHxWeSY=;
+        b=qxbi1NL9lRrGi+FA6cEvs9xHTtBGqmN+aTkPA2fhsMxGsr+xySBXWSWkYt1+i+8A4B
+         oCwshVnXNUUc9TkqL7LOodE8Lp9TPsRJ4hDc+u5HzrCt32wGWus2KGbAn0/P+NqGuaAV
+         XIC1ZwRNRi6HjJhyvaKxEFq4XZx1MswKUuZ+xEj3sj3c6Pl+cKPhk23DOhzZjjzeUJ1o
+         Iqgq0RmwYJcg2pb2AaMm46EVSpjDMvOTRFckzFnj03GvLpBpSTwQPjckc+LU2KbPhpmx
+         cZu0l/MueHIUOZPaHNRHJoMutLXYE3sPfBjQPLM1MbZTEFhhovnYjS6nofaAyjtbOPiP
+         /2Zw==
+X-Forwarded-Encrypted: i=1; AJvYcCVrVUMHwwqTPTZ9mg66EWIR/LgyniQ0vasYoAVpOFsGOC0j7mnAQAmIwFvoRPDdlurGTHqmfpGHKg==@kvack.org
+X-Gm-Message-State: AOJu0YyYxUxpyz+gwOmQe3KpYlYnf4kNerO5dDqcSCYDW0h7UWuwC+mF
+	wk2R5ErzD+g1UFMCPS0sCKfVujiR4dqz/RtoZUVlchVFiBZ7qeySmWyydgXzDJd3cpuztlS1rl5
+	l93o6pW6VpP1vunv8kg==
+X-Received: from wmbz19.prod.google.com ([2002:a05:600c:c093:b0:480:4a03:7b7d])
  (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:c0b:b0:436:19b1:c15a with SMTP id ffacd0b85a97d-43619b1c171mr5602426f8f.21.1770288709279;
- Thu, 05 Feb 2026 02:51:49 -0800 (PST)
-Date: Thu, 05 Feb 2026 10:51:30 +0000
+ 2002:a05:600c:1f8b:b0:480:1b65:b741 with SMTP id 5b1f17b1804b1-4830e93566emr86248865e9.15.1770288702092;
+ Thu, 05 Feb 2026 02:51:42 -0800 (PST)
+Date: Thu, 05 Feb 2026 10:51:26 +0000
 In-Reply-To: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
 Mime-Version: 1.0
 References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1997; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=u7tNOSUp16XQ9Cw8SF0QUGSikFb1+CWkD1yI1QkYzoo=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBphHY5pD8xrMoCMSi7/YAo0zBpNGTkGFDOlicJv
- SsWF7lHACqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYR2OQAKCRAEWL7uWMY5
- RvK4D/9Sqg7OAbaqsJt4VhIwElaxQsfFl0bkBDgM9NE0JgEtF//U3IWNLFyiDbFjyU/eYNk4vqA
- /EoImWS8mnYl49c7B4DXLibsoNeVIXCKk41En9QlYRydj2O+rGS4BRARaos3d5GjPSmcd5W/WY3
- JlN5F7KIYDwQtbzfPsAucG07Nj7n5ooKrD9vFmhSUlQOWltfSNAyris0RP0nsl1k//en5nczqcN
- Vls40YLjS1+M/48o87Ba3YvvlYh4DUWI2J5AdR9/ty4DwW+6LUYqAGimnOQ9vT1wZwyFqKs/5nV
- usl0vrnOojmKlNEIKXAhY+2Jv94Ssv0sX3Ngw5CLUFOCvPfiyzNHu609QvruEX8SKNeqwadY9NS
- YeHUBm0PnQkjoPqhJZmFyAdz9Fs30oPy9KItXYWvVWiggE0bDgPE0hsZX2WyOxOXk8z45ZYDY1L
- h4IUhPo4C9JFqzerdHy9DKCF98umsdKRVGW3CC+osSf91NbYzBFxsNQTTVNLm0Kj4WbJupA5VZY
- TAgoS3a4p2E7fv7C/DDR8exECeiis8FHGKgaP41bzhBB3p7kP9Z8L0JR1j/tZvGv28Hh0R7HOJJ
- XXjDToIdX6vm1owhmFCg8aoVz06WZ9aWdPGYaSfEgHmo2lybieLTgIshWP31cp0hOUQm9tffRSO VAuNvPd3riiG9ww==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2600; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=w6m8/CBcsVO45PErliVcnFx0D1tqtbL2J7ITeUkz298=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBphHY4wQ4kwP9Io25J2mxMCK0RJeRY4R9bMrUFI
+ K93z2EKoVeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCaYR2OAAKCRAEWL7uWMY5
+ RhmBD/4kCYBswFm2BtpYeMGLP4ihYfx7f4XUht5vAtF6sKzLqkxWIxbMVo6sn/e59ZLr/Dxxvnv
+ HDEelcjeJTEabMLBoH1FKvnerzLzGiGkxX4IHCUX3rYm+WVsuluY8NrnGrXgzmBXWlVqaaQlscx
+ i9PorwuCwYxjtYHwlJZkQqXnQmhXZHV0jz/9cPC6G/4jDtn4CcWYpBwx2rJOlKDzwaUrMwt0qtb
+ IHi5T0drgp8PpJ1YYGJVRFbKbIogwsOBBBkEESh55KhgIixlaYSE6MO/ydSA+alfi591dhhUmV+
+ lYnqlg6s1/COwZs06MokoR1jqDstgg6GjM3SF+e1H/Xu8MVJzkj/e5zjPWSlRFC7OL5jVV0sEk/
+ szu7SlqvpdFFCUGsuuuCFVJU/viD5uebiBRLO9ZfNlFAZ7mk8sRnSXIYYae9qCBpJLEq3O9U9m9
+ C+PDh2b3Ym5sDs+L5aq8eC3dhqO46LkvonWRJrZoQTQ+DiKTnef0ULt31jYO6uerKX3uGJvcSqf
+ SP4b20Y8o/tRQgVejrU+MvkXUFpqY1kKs2m+8npV9m838jez0jY3C2jI2Dm/xDW++Mfnv7vYmni
+ zDK3CV8BK2B0hmQOVgCGefVXoOlUeg9ktxWHg7qkv8LSoM0KxzGHcGCalsA/pTveoxGaeixjUGV QCNnFbOAhUfMrBQ==
 X-Mailer: b4 0.14.2
-Message-ID: <20260205-binder-tristate-v1-5-dfc947c35d35@google.com>
-Subject: [PATCH 5/5] rust_binder: mark ANDROID_BINDER_IPC_RUST tristate
+Message-ID: <20260205-binder-tristate-v1-1-dfc947c35d35@google.com>
+Subject: [PATCH 1/5] export file_close_fd and task_work_add
 From: Alice Ryhl <aliceryhl@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Carlos Llamas <cmllamas@google.com>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
@@ -119,14 +119,14 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.
 	linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
 	Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Queue-Id: 72B9B1A000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B3D591C000F
-X-Stat-Signature: mqxigixuewfbsubc3fac1prw8hu4xkqn
-X-HE-Tag: 1770288710-481958
-X-HE-Meta: U2FsdGVkX1+WLmxTdDBo6yMkoJFE9+IVLNhYfwCW+lX2KHe/uVkRRfbR+fuO5FoLRZhIHk+598To3ye81F9tGXfKpshcPk8Kqu6b4zojL5WFgkoImwe0Lm29rQ9ZA2acFcHmGFDBXRUxzJjLnIKpXTbZAGBVSERPf3J4KM5+78GxWntU1pLnw88cvQJfO3YxsLhlrAk4OCsu8CrbEfFkURJSiMF7ciXNbF2hTH+B16wbJgeW66KlICZMlHBRx9OqJ8dGNv7/p78M94aRjX9I78vzzr7fN35jfxLSjU+0N2jodBUh8AyFg9Q1D8/W8OJ2ABxvPNVtiY4mxgLyjlHZXdcVNEKmPi2ZPapcXGAeDSQeXd2WTrfOwniSjwLshpxI4ePtlbB6AAeiX+wlN8hj5NL9KRTet2zoLSlgOCafyBzdI8a0OV9l9nJZGd+0caAerKS98KaSDgjKEVfdbVv2C7642001ltaHY4zADH7xQKgGu+QDMnEj2QMn8DRydof2cZCNzllEb8rZxBp3wN0lusMDh/1hUQ9wqqcDBEGEiSkRLBiBJhBORTPs6CgufCLOeVkLye6130HsOkM4RQVyrwlO5v0AFfLKZVbDalpmtgDTJKZQWDfO51oU44ibV2PeFoJb2m3qEvuhtX/3fBmdDqduqmlpgEilSu1Er1X8DHc31OuFSdPBYwpJlfr3iKkiBDX1ebyg4lTxsxFUsK0bW7XemzvqXFSMOCsmJgHwHWtvMUzl3eicaaKB2ulAaN+LyQTtbBW9y7J6y84/YoGVlrVdJrnLXt9i5XHgWBEHpA5NaXa8/kkYm2E7PwDDfNZkykbWjl8x/14h57O1WeP1NxpcTDvwMEQMWOsvHur9z36pZJ2crMuLc0H40bNGPzxHInYTgrNRJpGdS1KxQ9uMK2hl1zOrlRt9Plu54PoSOnieJTGRD8zkhJQaHGJcjVLeberDGfh/ulRhy4OrygI
- yIsCa6GH
- gpoyHRZQBRog/HYds8EXptF3Y4+Iv8nOENzfpPzwSbHexCEY1sL1bwgmr+ahLD9E5XANlx7c2D65s/W6nOq9daYNMqDxV7fxHNOYfKhke81RdQbTfEcUsnVRPuEAiZuA8rga45XKwfPfwK4Oga0A+bTvaLtn2xTNG0PivEyatelDY77l400j9UcrfZqpvMcGeQo0/uRDkNs3zvJ4Qm6KldQkW/XXeL5ojZRPebxkSJLMxV0/KM/4ik5ih7YMQWRNua7PTqMibyVdm3v9SaOSC1yGQ91XfG8GEhal9y0V1AwuzDRet8gqhlfmVwqaK1S23WA6wb9S5Xm5YbWTCUDRlspR2JtZtK6ZYxOt+m5xxVCCORfbr04DC0nhMVmOagWiZZAApQMw5x5vbEr5qfU7NrHG/A2e377tfkTxFfyXNWCPtU5eCx1b2w/YqZMf/8vHtTyiBRQXljwFuxAahaZUDrzAKBR/3GwKADEBEbhKK1LUAe/elzYt3osUrN6TaF2edEm+nTz1a0E0c9Vp1QpfEpDvDYPGgMy5uHE4Uc+Ty08idKRjhkcB83PjqaCgiJAXAcFEXQfossvGDhJnaMmShkTbv+ZnnmwnppkrYZJ7PdCyY4LGcFShlrAAg/1sASwWmBuE/eO+U/DAKHitQBjxNN0nQ0UUtcnz/SlY58VgGdjP0CwfWVh4kDNUOxg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: uhkbx9s6683i51e4qcn4w4kmcojs6t1m
+X-HE-Tag: 1770289012-790341
+X-HE-Meta: U2FsdGVkX1/9tdksT2iug/RK59FMHAeGXGsvfoHg0sCMIjTOtDFu4lRsBlyjieozPnpf6JEb97U9+1+WwaR4wtbLHbK1dnt3kGGxeg9cltJD9b8Us9s5zzdvZmVhCvhql5oVCOSG5XmeZqArJCazDzt06YJG9iB9dZHsJvvegGfxdoXkATEFMgNx3t+xivxzBJF8oPxZeIdd4/4e9r1f4qOv5XKAOA/ZvdezS9VE17KSa+PMwwSUHCWz/Xj8/DSmGCs66xIetq9Bd7c6US7wclt+VsvNvu4EfKq3DVEKzhUMUnsUOoDLwdM9ixpq3goQ3HgygXHWEM0sqP/8tWtUfNeqTiOfy/CLQus8IAdHIsRCdGB+11Mx3i4xYnU8qg0vNUoSzkRjtZKnmYJ8y3RlErgRX9cGeJhkeR6Mi6SSquzAT6/Smfn0sJh4/M9nQYRvTRu5+JGaHynr5M0QUCBAg3ZSKWhMap5aSHc87z89/L3TTsMv7yNQpEDufoif+7U4lUKBB/z5AeRkEeQX4xSmxEcUuynuJTYQAZAn7NtZUHSoQjvRwo62mc7qY2UUQvJvDZk+mceUs/QJOihbEnLYPIIJjkZl7njzyFfsfno+iXrhtKEvJatfiXbEtYOMNqqzxgOZIkktbFnqt1hEgd0IzbHpYUOlWpm2ba0hWj8ZCCymSkSYXcIUBc/QZWHCsce/pMh5EeMWjbG746CWfJ3BoF2V2y4aSY3MXHqLimOwOFp2VTvtmewd42n1EibxzcdIhpbD4HwdoSFsCaVA5zRM3DAsm/YHH9otGM4w11/c78EF7MYiMmUS5676bbdL83k4UxJi+u6O0GhjSSVIAjKWTR28AufiBsVUjM3C+z75PtOveWmt0/rDm0vnsB0OWYeXgVTfx3LWSByepfr8rab2AJxupJFFhFff/IzK+76nncxU7x5lVD2NCUjhn0qUhry5/7VreA1sOnQdR2pppO4
+ alLZxJro
+ Lh20b2iPUth8DGohskcvWnNw3wV6PrxbdmtweG4Pa9prWAmHsZQAhRcm84hyPliK5f8B2/EHpgAjZtI16WvOcWH1/xm2283YaHOd4iOjVpAbczKUjD4ekb/e4y07Qb5MGtlBEcaRvn1zhU4qwlC8CvDSyqqetbhTerWB2SUO+GTFZAMrxm2VwxiMrKGpcYF6E+U/LUuVb2okQ/T0mOXzPzU3amniSXsajlxDgGeAafgXaNgpqkmArlYeHRyzCtTRsHeFdOoqNmydkBFp+3/3C+NDUdF4wjSjrRzf3rmFQx2Fd8bNFzxO4oh95Zuni60v0g1q0pYWmX1OV+ofHakHMMnKTpwSJChAjjaD3Np85S0vnSFVGQ5WHWIN+wGcjMeKAe6QKaqUqsSJjvMFg9f+bJIAp7QERUlGG3YUFsHY4ceIrGAIL8JVjhI0MBgt7RG6DI6ISmr2vILTuATi4CpRmsmYT+FZQa4der5UCjRmcaMcJG6dhXnBdpVFNEG0SoJFI0qfq1Ej+JYwCtshtLk6gm1VWFEoBL5ife9aby7xrFg4jn7EcR8/bnWPrQyFZp4HoIosjmt0VUKb2xDrvEUhQ3VpLxYjuMYoP0g8WfEo83PDjAFmdWENq9LlIBtl1os1J4i0bEvedf2wHKg1CoYW3gUpbr0nkfh4JLHHqLmvk4MTr1/w/JfcWoXMvBGPcmWtBhdGcxJDLl0nyECNV/rJwntrBV/S0LtGjhnj7O+G3juSPWMtMTTh1fHKr0mhedTj6Yvq5kCBS/xydlmo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,47 +135,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently Binder only builds as built-in module, but in downstream
-Android branches we update the build system to make Rust Binder
-buildable as a module. The same situation applies to distros, as there
-are many distros that enable Binder for support of apps such as
-waydroid, which would benefit from the ability to build Binder as a
-module.
+This exports the functionality needed by Binder to close file
+descriptors.
 
-Note that although the situation in Android may be temporary - once we
-no longer have a C implementation, it makes sense for Rust Binder to be
-built-in. But that will both take a while, and in any case, distros
-enabling Binder will benefit from it being a module even if Android goes
-back to built-in.
+When you send a fd over Binder, what happens is this:
 
-This doesn't mark C Binder buildable as a module. That would require
-more intrusive Makefile changes as it's built from multiple objects, and
-I'm not sure there's any way to produce a file called 'binder.ko'
-containing all of those objects linked together without renaming
-'binder.c', as right now there will be naming conflicts between the
-object built from binder.c, and the object that results from linking
-binder.o,binderfs.o,binder_alloc.o and so on together. (As an aside,
-this issue is why the Rust Binder entry-point is called
-rust_binder_main.rs instead of just rust_binder.rs)
+1. The sending process turns the fd into a struct file and stores it in
+   the transaction object.
+2. When the receiving process gets the message, the fd is installed as a
+   fd into the current process.
+3. When the receiving process is done handling the message, it tells
+   Binder to clean up the transaction. As part of this, fds embedded in
+   the transaction are closed.
 
+Note that it was not always implemented like this. Previously the
+sending process would install the fd directly into the receiving proc in
+step 1, but as discussed previously [1] this is not ideal and has since
+been changed so that fd install happens during receive.
+
+The functions being exported here are for closing the fd in step 3. They
+are required because closing a fd from an ioctl is in general not safe.
+This is to meet the requirements for using fdget(), which is used by the
+ioctl framework code before calling into the driver's implementation of
+the ioctl. Binder works around this with this sequence of operations:
+
+1. file_close_fd()
+2. get_file()
+3. filp_close()
+4. task_work_add(current, TWA_RESUME)
+5. <binder returns from ioctl>
+6. fput()
+
+This ensures that when fput() is called in the task work, the fdget()
+that the ioctl framework code uses has already been fdput(), so if the
+fd being closed happens to be the same fd, then the fd is not closed
+in violation of the fdget() rules.
+
+Link: https://lore.kernel.org/all/20180730203633.GC12962@bombadil.infradead.org/ [1]
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- drivers/android/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/file.c          | 1 +
+ kernel/task_work.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/android/Kconfig b/drivers/android/Kconfig
-index e2e402c9d1759c81591473ad02ab7ad011bc61d0..3c1755e53195b0160d0ed244f078eed96e16272c 100644
---- a/drivers/android/Kconfig
-+++ b/drivers/android/Kconfig
-@@ -15,7 +15,7 @@ config ANDROID_BINDER_IPC
- 	  between said processes.
+diff --git a/fs/file.c b/fs/file.c
+index 0a4f3bdb2dec6284a0c7b9687213137f2eecb250..0046d0034bf16270cdea7e30a86866ebea3a5a81 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -881,6 +881,7 @@ struct file *file_close_fd(unsigned int fd)
  
- config ANDROID_BINDER_IPC_RUST
--	bool "Rust version of Android Binder IPC Driver"
-+	tristate "Rust version of Android Binder IPC Driver"
- 	depends on RUST && MMU && !ANDROID_BINDER_IPC
- 	help
- 	  This enables the Rust implementation of the Binder driver.
+ 	return file;
+ }
++EXPORT_SYMBOL(file_close_fd);
+ 
+ void do_close_on_exec(struct files_struct *files)
+ {
+diff --git a/kernel/task_work.c b/kernel/task_work.c
+index 0f7519f8e7c93f9a4536c26a341255799c320432..08eb29abaea6b98cc443d1087ddb1d0f1a38c9ae 100644
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -102,6 +102,7 @@ int task_work_add(struct task_struct *task, struct callback_head *work,
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(task_work_add);
+ 
+ /**
+  * task_work_cancel_match - cancel a pending work added by task_work_add()
 
 -- 
 2.53.0.rc2.204.g2597b5adb4-goog
