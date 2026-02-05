@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 391DEE91297
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 09:05:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 980ACE91290
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 09:05:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98EB96B00C5; Thu,  5 Feb 2026 04:05:15 -0500 (EST)
+	id 091996B009F; Thu,  5 Feb 2026 04:05:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945E66B00C7; Thu,  5 Feb 2026 04:05:15 -0500 (EST)
+	id 073896B00C7; Thu,  5 Feb 2026 04:05:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 824AD6B00C8; Thu,  5 Feb 2026 04:05:15 -0500 (EST)
+	id EBEA36B00C9; Thu,  5 Feb 2026 04:05:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 711A76B00C5
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 04:05:15 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 40DBE1C277
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:05:15 +0000 (UTC)
-X-FDA: 84409818990.19.6ABCFA6
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 956F6C000C
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:05:13 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="L/Rz2kc9";
-	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DAABA6B009F
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 04:05:25 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 97E301C330
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:05:25 +0000 (UTC)
+X-FDA: 84409819410.24.F8E3FCD
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C23151C000E
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 09:05:23 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vYOlRAue;
+	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770282313;
+	s=arc-20220608; t=1770282324;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jFcIOUDkaubEwGoEkC6bdzZiVFewkjmb3X6C6JzsWU=;
-	b=nOdIqxLpQRd9te/jd9MZXQzz+0bCbHFqOM2Sp3ZDgaEhcrRQX2gAjcBZdI/EIFYnYoqSYg
-	d9JdZJJSxJ18vffujatwPhKZPwrmYvV3ymdkjTB8Y91DaL0HFB8DTZewsySxodbCC3pZjY
-	rKLaRJZjaC25+l8nxseSnH1aNUP6epk=
+	bh=a61eWbbzEDz2UJp1doEfV/zCU76HlIc7Sn6ibevaVaQ=;
+	b=7Pl45JTy5P9Fn80XYX5cpgtfx4qTxNEUS1wBiKEWqw+lvN9Ek7Xwk2kWMRNpafkDNgszH8
+	4I8liypkyveckGuLYXouFBAJLcwNHLEgaw2tXeO392VTXS/oqOrpFYS0nUGs4ra4eufODL
+	HgSVHQFU9KbNsrx0chn/7LWIKVgtG+Q=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="L/Rz2kc9";
-	spf=pass (imf22.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=vYOlRAue;
+	spf=pass (imf20.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770282313; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770282324; a=rsa-sha256;
 	cv=none;
-	b=pVTK+m0v/p/MCPFSde+8bfHzypYaLvfBEFiUjMGTCb51x28i0zustSTohkGzj5e/07X16p
-	xNGaCTayR0WtL+CXPFSP7v+z6RdC1Ub+97JzKcXLJq/X9B1C5JJptvy8VOjMCSfNeGhh8F
-	5NvYtLHZ/Mb7g1p+yaGqo0ZM70Csf5g=
+	b=rptD02jYweWQx+5Nz892kZHlYJQZxTpiPhuzLZUCjOXip3yrTjfE6FagKVHNicxGb4kRZa
+	NMkN2YnJ5ZuyIYL7FRjKcuAJfXqVFYJJ/o7Fe+0Qp58SskrF2k8zUjwYuA2KdJT8wh4Jtu
+	lY9rVHncb4WC1cXhuQuNqvHCxgfu5pA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770282308;
+	t=1770282322;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7jFcIOUDkaubEwGoEkC6bdzZiVFewkjmb3X6C6JzsWU=;
-	b=L/Rz2kc9fJKMY4HAeVxQjkQaw3Edh1c2yjznQCkbPgqqJnRZBwP3keW1+58eGGGtZbvO5F
-	B5Y7rnRT9NHvPuQuGfA4fc4QY+yQBYjoQSod+yNB7WjMoYC4oheokru1its0J/CZ0rmVg1
-	yD37EFiDP+aRrOnZs3n3XUHncJmYgiQ=
+	bh=a61eWbbzEDz2UJp1doEfV/zCU76HlIc7Sn6ibevaVaQ=;
+	b=vYOlRAueOHnytNbF68ecTXSMe2JBGN42PMMK2NXMNWnU9ULH1WwYVSgQEIjguyt6YXj33T
+	20N01Om3G23/sdvLlp/Ggtg9jACplaqESglsgpgpEqW14uYq5Pi/Kp41g10EFmcMO2KLud
+	RspUx7COjcAjb9Bd1PDiROhHvqNVghU=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -87,22 +87,22 @@ Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v4 27/31] mm: memcontrol: refactor memcg_reparent_objcgs()
-Date: Thu,  5 Feb 2026 17:01:46 +0800
-Message-ID: <47f00dba3dfa2481a7397d7049b6e8b8744766e8.1770279888.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 28/31] mm: workingset: use lruvec_lru_size() to get the number of lru pages
+Date: Thu,  5 Feb 2026 17:01:47 +0800
+Message-ID: <f3a8fe43c0d8572ad942354cf649c9f25ae762bc.1770279888.git.zhengqi.arch@bytedance.com>
 In-Reply-To: <cover.1770279888.git.zhengqi.arch@bytedance.com>
 References: <cover.1770279888.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 956F6C000C
-X-Stat-Signature: xrinjqcndtak8kgfyasbmf9ww38hcj8o
+X-Rspamd-Queue-Id: C23151C000E
+X-Stat-Signature: wtoxjuc4ctu57czihp5o74gw7ha7sf34
 X-Rspam-User: 
-X-HE-Tag: 1770282313-288054
-X-HE-Meta: U2FsdGVkX183VSs7GByCK4R8pkJK7aBH+Mpgd0ze9bbcTQqqf8b3OwvfaCZRWA9VTZKyTN+BNvvfniDyfu/Vw/uMhb9W8XwXeGw6xOEFChmkRuXyaAl4Qfl3qilm4x91e/loDGcwjB8dmZQZkv6h8CzwDXAfeXfw9rCDJIyV6Mmy2jnu1wjY8ctNmUrir2zn5Ghb7ZeFTqBmR5Vv9Ec2VKNaBFMZqWdxdqCqr5FiPpSopmvUHzOzyw8dBDKJtMpHXtM4pWiwfunnZk3lc/kwJ/5sZk1hxZSjQ2j35akq0sOOAzwJe68OdUEDqfF+VgQwWZqYM+ZK+cwu+GZ1yUvk6BPfSkPjBH76/uAkK7zT+S2FLF18CUcAlO9vH6kO7hpzPKmIcSpDxGjrOPPBqIkG6PZm/fpkUVEO5DLk42GD04D7zH1AiRxjRdBNkmA/nBXSf+UZUlACeVu+q8MsErVpQArp1l1X2kOHir7b+upex7IuZHZZkk35/lBFRO6Aw08SLEvZeM897cokLTSyU/Tbc7u7dmX7Zb87fhtRwWOdZ0TvW9a8it2rwAgn8kOxXz4ZT4jyrnAc0v997SenknGy1Wa2Xoz+ebcCjw42LJ8q9i1qTmpGbPFjuEFY9Ogong+9nHtfUSQKqJu284zdLGtxO5nIYRn5KEn+VpYwXPGIhp95K7cBN9JYz7Ta18RNh+9WTqklw2Akb44xOaI1WWdCKcB7Cx4XH4Wradp2c5TZUHg6ddBEW4b80n3vGljxkFrgzMRJu/thMQjC2T3nZIKONhRJZToDxXnTcdPUCOzXbhcVqRwtMrTxaGgcjFCUN2ZMAvcjmPW2d8QMC9nNyX9FbCs/U7FiJHrLmJFOQ3s6nJvvdFJAbIgDetD63bSkgvwDAfdqnkg9Hv6SCtRWsFMtCq9nOFKM7MKlySGBhpukn+HpLDvDNIOvBTbGXfjogljg8ghigrZLcMIn1KDgTE4
- i6O+yDLB
- nxSv3ByLV4vLChggOiEhHYwqMDEnvABKJ7Rf6FJBKucbbAWmV4nIO9gZaHhUTJqR74vRwv4a+r10GVTgSKXw/mK9R8pxzGWaZBzJ8hcKjQjis8DplST3c2qmlW1MzKNeEylT/Aeuf8pT0+ACPa3ftJ7yDS2gQd0GIEqB06CA57NZ4j1QwPINwnLH7q2YWxdcoLXXS4wDhhELJpX8Jl41kYDrBZoIZG6TkITDtxvrNBj72fQN1v0X9UZZ+Ig/vhC8WIpd5iYFAWS7TTjrpmMocad4aNzus8I1qK5sen4x2q0i8YCTR0New3Li2JP8f5cSS6+4ehE4H2vMR9oNF5kvdtd5Fe0LuhEiht8Eh
+X-HE-Tag: 1770282323-441505
+X-HE-Meta: U2FsdGVkX19kdLVS4kCxdzRPtt9fg9uwbUqZXgXBjDlMglI2g0NoEOg+Ui7NAcKLwP4+PeE7ADz+0zppvkP/Fzp9emF9GWFf+aDMGNDEtPhiID2vNo5hoEGlArL+JGR5wCstl6ZPip0gDDpoaux63/KEqL+HNiNJnQcNB4mXQ+hE2KAZ2DMoc+bt/QOo580BTNzxWQq437WHSQyltvqJTaDjmIE5x2vM5oExiYSCDzNcDMOZkex1LF+fGFsCceaVCEWrRBlyJOUGRngSIJXou46VQOelt9V5Sz309LTydETbGgUFn0kpmLmrILwvXtFcAZS0xJyt4GolLn39GEjNmIq0hTdhQy5fyUDY/SFB5G6m5aWejuB/ppWca7Hv5pAH63YZc50i4dqXSflXe318WDUv7OXU89hMNWo5KIWMBaG9h0Mh3x0h/wvgneMWUwj++Bnd765YC+6vmHvyENk3JwotYK5ao7xFjxPU9gPDLp8XRfSIm8TAEmTGvmms+a692OSsCPFlWnaauqbFaOaHcYnrsNumg1Kgbkw7UlfhWoJeKti6KLdlAGleX5d4aWARHTQBFmSVqXn3CWBZ+qsXSFzdqjM+TsEWNpU4y+K8RNUC2m2/p7v2uKpvEJCq1nU6jn9EoGqbZXn8aNFD0ozR4piNhUBKmQ3UwGEg4aQhJIwHdvqPEC3C6qDwRXz7bx4UBjHmXXVtTeIHczjTJ0vUFlEpKUKpNcw1gtk9dKagFDxzXMyBGdTe3XnGgErml/oX0M6XvaHjO+rHhGPkyPzYt69rvSsOWhRyINX6BhgxfbMzg6iRWHahKmBlnBjnN3no3pAgXSN16JwfErgWd89daQKxfC4nuz+Xjg4d+s77FeTla6ZRjndmSA1L8fY05QasUCzb5o25gw4XfCvyhRPFqeO1JHs5v8Nyq0RXWZhGZwJlIKJyPG4TlJNZEajhv+xlg5tRCb0N2Fbjx1UtnqU
+ Km3ic8pH
+ GepTXN8adWHMwEfkIkRnjEB7xf8g5fR9xei/qe0skXIuZalZPuPQJdiyjxqb6oWKIkj52kXJuHntKz7hFjx/eEUcH4VKklGEQhTKVtwwnQFWuRDoB+zwlWBXOSjk2kekNj/mxrN8YekUVZfnzo6PxqkR2r8GDxmKfZqiZV1Tb8sd1TESUPWVe3nOlBG+HrSnYVBXiZ6eN6MD/rK0IZ2DjkLbznsqVdH2fRi63yZJqkueQwHGXS/ljimZoCN+tv/F8DhSlJqNkGoL5s1U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,70 +113,66 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Refactor the memcg_reparent_objcgs() to facilitate subsequent reparenting
-LRU folios here.
+For cgroup v2, count_shadow_nodes() is the only place to read
+non-hierarchical stats (lruvec_stats->state_local). To avoid the need to
+consider cgroup v2 during subsequent non-hierarchical stats reparenting,
+use lruvec_lru_size() instead of lruvec_page_state_local() to get the
+number of lru pages.
+
+For NR_SLAB_RECLAIMABLE_B and NR_SLAB_UNRECLAIMABLE_B cases, it appears
+that the statistics here have already been problematic for a while since
+slab pages have been reparented. So just ignore it for now.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Muchun Song <muchun.song@linux.dev>
 ---
- mm/memcontrol.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ include/linux/swap.h | 1 +
+ mm/vmscan.c          | 3 +--
+ mm/workingset.c      | 5 +++--
+ 3 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 115a1f34bcef9..c9b5dfd822d0a 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -208,15 +208,12 @@ static struct obj_cgroup *obj_cgroup_alloc(void)
- 	return objcg;
- }
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 62e124ec6b75a..2ee736438b9d6 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -370,6 +370,7 @@ extern void swap_setup(void);
+ extern unsigned long zone_reclaimable_pages(struct zone *zone);
+ extern unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+ 					gfp_t gfp_mask, nodemask_t *mask);
++unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone_idx);
  
--static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
-+static inline struct obj_cgroup *__memcg_reparent_objcgs(struct mem_cgroup *memcg,
-+							 struct mem_cgroup *parent)
+ #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
+ #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 8c6f8f0df24b1..4dc52b4b4af50 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -390,8 +390,7 @@ unsigned long zone_reclaimable_pages(struct zone *zone)
+  * @lru: lru to use
+  * @zone_idx: zones to consider (use MAX_NR_ZONES - 1 for the whole LRU list)
+  */
+-static unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru,
+-				     int zone_idx)
++unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone_idx)
  {
- 	struct obj_cgroup *objcg, *iter;
--	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
+ 	unsigned long size = 0;
+ 	int zid;
+diff --git a/mm/workingset.c b/mm/workingset.c
+index 2be53098f6282..ecdc293cd06fb 100644
+--- a/mm/workingset.c
++++ b/mm/workingset.c
+@@ -684,9 +684,10 @@ static unsigned long count_shadow_nodes(struct shrinker *shrinker,
  
- 	objcg = rcu_replace_pointer(memcg->objcg, NULL, true);
--
--	spin_lock_irq(&objcg_lock);
--
- 	/* 1) Ready to reparent active objcg. */
- 	list_add(&objcg->list, &memcg->objcg_list);
- 	/* 2) Reparent active objcg and already reparented objcgs to parent. */
-@@ -225,7 +222,29 @@ static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
- 	/* 3) Move already reparented objcgs to the parent's list */
- 	list_splice(&memcg->objcg_list, &parent->objcg_list);
- 
-+	return objcg;
-+}
+ 		mem_cgroup_flush_stats_ratelimited(sc->memcg);
+ 		lruvec = mem_cgroup_lruvec(sc->memcg, NODE_DATA(sc->nid));
 +
-+static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-+{
-+	spin_lock_irq(&objcg_lock);
-+}
+ 		for (pages = 0, i = 0; i < NR_LRU_LISTS; i++)
+-			pages += lruvec_page_state_local(lruvec,
+-							 NR_LRU_BASE + i);
++			pages += lruvec_lru_size(lruvec, i, MAX_NR_ZONES - 1);
 +
-+static inline void reparent_unlocks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
-+{
- 	spin_unlock_irq(&objcg_lock);
-+}
-+
-+static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
-+{
-+	struct obj_cgroup *objcg;
-+	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
-+
-+	reparent_locks(memcg, parent);
-+
-+	objcg = __memcg_reparent_objcgs(memcg, parent);
-+
-+	reparent_unlocks(memcg, parent);
- 
- 	percpu_ref_kill(&objcg->refcnt);
- }
+ 		pages += lruvec_page_state_local(
+ 			lruvec, NR_SLAB_RECLAIMABLE_B) >> PAGE_SHIFT;
+ 		pages += lruvec_page_state_local(
 -- 
 2.20.1
 
