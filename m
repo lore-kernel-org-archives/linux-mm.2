@@ -4,76 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5905EC1EB2
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 13:57:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 539F8EC1EB9
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 13:59:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 972C06B0093; Thu,  5 Feb 2026 08:57:35 -0500 (EST)
+	id B78666B0089; Thu,  5 Feb 2026 08:59:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9206B6B0098; Thu,  5 Feb 2026 08:57:35 -0500 (EST)
+	id B4D076B008A; Thu,  5 Feb 2026 08:59:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 801A96B0099; Thu,  5 Feb 2026 08:57:35 -0500 (EST)
+	id A4C2D6B0092; Thu,  5 Feb 2026 08:59:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B0B16B0093
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 08:57:35 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36B7086E0C
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 13:57:35 +0000 (UTC)
-X-FDA: 84410555670.07.14FF7D5
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 980E16B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 08:59:09 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 51C85B9CD0
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 13:59:09 +0000 (UTC)
+X-FDA: 84410559618.05.F4EED1C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8586D100003
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 13:57:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q39m7elV;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 770BA100008
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 13:59:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UDgEXs23;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770299853;
+	s=arc-20220608; t=1770299947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/LOV/QfWvNfYtskQwsk6ZnLQC55NeUu2nzBjgWGFB4=;
-	b=vRpv/bwxgKVMzAjG/rXPzAHFpWtXy8v2aMwxxgOfLLCWerfg+31hj/tUS0U8w3NZIHAGI8
-	XvWJ8lY1Et5wGI1zN3Atlc8VXJhqtHBXJtx5yGNiyR1KkIwo6n22XlW5INZeyMBg9o8LSt
-	X0N5n0tndSkPLY8elS1ZhSY7kXayEKU=
+	bh=GAkL/tsqhjWmsB3gTBJ6WdAVIJsLA31Bz4iVVKg5aT0=;
+	b=2OQIlUwaKMfAup4rrUqNJfzyY4MiNdc2beEcmzq1HiOmOjDHWTyzb38Y8jesnhUPMs9ViM
+	BORTxKKLj375P9quvMSslqul41rPe6ySS6AhHyat4n18U79lUBGMFn5POdjVd+NbwG7qrl
+	zjZY3TFz7Pgc/J5mZR5rkqdNP6f6uew=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q39m7elV;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UDgEXs23;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770299853; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770299947; a=rsa-sha256;
 	cv=none;
-	b=iTs0xiHe5eb4ZNPg62kb9PPqE6CEnC5KmL3xScM9EcGEIEp7UIkKAk5TCvdbC2gKO3F1gL
-	UMPJQXTYqTH7KK2rE/2Qr4jZxm8Yan0SE1VjjwDFMVQFw8on/iG0XZTyThi6IoTtArb4gs
-	XS84oq7IX0A/6fW/KIqEU3ITJPbAI2g=
+	b=Bp90IFBMjz4F9EJwQVoG18IFwrCXbRhTqfRZVjM8dLhxf1QNxIp+DLVOvwpS1Jo84P9p91
+	oDgS+v5sgWTu8ZHi6gnwXrDyqV44kGrqtFhI9+f1cM01xvST61simEumPSydxzzIi25ahw
+	xDCFV0Az0+TZKbMeSCRPThQSBLTTbFw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 78EA640E4F;
-	Thu,  5 Feb 2026 13:57:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF58C19423;
-	Thu,  5 Feb 2026 13:57:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7A508444FC;
+	Thu,  5 Feb 2026 13:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E9A4C4CEF7;
+	Thu,  5 Feb 2026 13:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770299852;
-	bh=YgSQhIBpOA3HW8EbEt3blJrVqZkel/jdRwOh/YYBIUk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q39m7elVTMOdAUZ3gtFOs84ev6K57RNMhUYJsVToLHZKCvAnQvtp3+zEz+a/b+SI/
-	 RnXBXUojJPAjWQqk/htBWeP+19oL76zfpyK/nNWFsUHY6FeKTYPBBYAtVsLIj/OWnG
-	 dfvIqfHFiHcKlC3K/xrgWrki9QloCOii0ElF3y618geSEZBcavKzu3wW4lcytA5ZuS
-	 36BliToUO4iSE7eUV/TVdVEFtblvdYpy50YwGu1h8DJ6eW+bYXBj+SoMl8+/NAshwV
-	 kUjoFY9XRy7YIYt/ldP3ct+JgHKzsFLxuurXIk26EvCGXZSkiDzjq2uONRCBjwNb0Z
-	 cSl8TM7e9oy0w==
-Message-ID: <45b8ab60-8721-414b-a54c-008269e28a90@kernel.org>
-Date: Thu, 5 Feb 2026 14:57:24 +0100
+	s=k20201202; t=1770299946;
+	bh=NrgItkvDCDI0JdjjTiJgmYN8Hu+I5JatU6qOApBTUkQ=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=UDgEXs2326E6nluf1TRc8JSNvhmzOon3wFQO4IGhep2GcsTFGb51oZnfVZiY1GAaR
+	 AP8fzqcnv7eYrYj9lL4FNmIylIXtktJO6S/8lPEsr9/blHUuTeaYrMQZrCri1qieYO
+	 cq0gkqvEXFYLEhEOZv7vi4RklL+UFVEE6ysMw5CnfQHGwPi5Qp1XZ6xxWiFW46pN2N
+	 kiqi1m6pj9kSW9RPBUIsDiBzSO344zesdF59KRQwvqScPSbSq4fhaJHCL1XMX/KL6Z
+	 AGh6cTxV+hX4OwAQ5pwgwcuIpE1fW7fngurZgxukYKy1X9RCDc7bsKDUrmmVxEI6CF
+	 RZ/PweRaGfL5Q==
+Message-ID: <a3f454aa-7cff-4e85-b046-5d4c55d8ccb9@kernel.org>
+Date: Thu, 5 Feb 2026 14:58:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 06/17] LoongArch/mm: Align vmemmap to maximal folio size
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [PATCHv6 09/17] mm/sparse: Check memmap alignment for
+ compound_info_has_mask()
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>,
- Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  Vlastimil Babka <vbabka@suse.cz>,
  Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
  Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
@@ -85,10 +87,8 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-7-kas@kernel.org>
- <2ce0e684-de54-43ec-be7d-c58bbffb3f4e@kernel.org>
- <aYSgQknBNs5r-Tf5@thinkstation>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <20260202155634.650837-10-kas@kernel.org>
+ <ef1f6ec1-7036-400c-9d4f-fc4f6f969ef7@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -134,15 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aYSgQknBNs5r-Tf5@thinkstation>
+In-Reply-To: <ef1f6ec1-7036-400c-9d4f-fc4f6f969ef7@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8586D100003
-X-Stat-Signature: y3jgqzqwto9m3ig6ujid4oxw9kftjzh5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 770BA100008
+X-Stat-Signature: cy7rxxjikywrnb3jfan4f9w715bb5grq
 X-Rspam-User: 
-X-HE-Tag: 1770299853-9123
-X-HE-Meta: U2FsdGVkX19j7ExI72qXZ4/h991jRzDKkaLSK6dEIccZMGiLZ5Mm+whnRS0K/L7cbOZjDhtbibJIjLRnzC4Sro4E9PauWM9+wf9v0qZg67BxyjzwUJb0h00Te6V1A0EqzYzczDafO7TYkF2Ky1vrrkue7ffO0IYiiqzxq+qTj+OA0gsa5elWQbZATP6u0vGHEuu5x0kV0atWhGeiPoD6ZziSBWofnBfcyjbk6F9A8QgYRX+W4bKTA0IXq8DEDgiv7OwkCW0GS/fKWg17/QXSzuzmwxjBHM81IzStPiqSrntQXCLfS5UleJ9TN7hq8zc/mvY6R+lZznQqRMZUxDt+dnYvQl1eMVa3aqCh8fatzUp3BmUYBnsYHM03vKNbb75gxhlnzi4pFH3OhthQxdRN+YRk5dfriU6ia9LgKeIcNT0fviVK6y+zljWHO1G36EBNmX5N8qZIDn9l3p+saBQO0ms4fpefqEYBGCPIjnhoEDRUzyRcqrVpecTM7IQ2QxMvMsGuzb3hGShy85BqhgZushPpT4hBltXr6kOq/C8DUoCdBrmuaDu1zOSC4R3TzbWBsc6c2T7CgOf+2F51Cn8rTQAAw9QSIU6oyfAUbVhVkl9VLS4pAJPImEUio+ZBKllRr8ZD3A0GP+vREbbrh7Ywvjvqcbm8mEHplSdvn+Fm3RwTLQZycHFM8jyn5USeFqT4zchVmXVPo9eCU/dEoukh438s6grHs8NGVrAqJGRYvA2oBxpxN39b/5CJO6+EeqcayadpeLhIq3CD0oi+9TZqLu52jUBj7ErOAd1J6Yl6vQAMADvNbktZc85ehYA7WZJYlnQAJwgewm7mzVRebfUsskvcKyscapoiyBbeXWA+9MgTgX0iG2czDoAOcDwYgddjLKJUBtf2wD4evTkSMuHcZqqftfOSTz9dD2FoSdwwwKeV0WubAXn9Bg==
+X-HE-Tag: 1770299947-30444
+X-HE-Meta: U2FsdGVkX191/288wtf0q6g3oF2L+bKVihelLbAmeuV+LeWi/3aVhp5dzfHvhMLjgi0mz1DTcdH8BDjOly2IQ9Q1Njj8i5gR/+Itw009ZUrpOCcbCLBvWgC1JUSOBD3f+GLggvrTEKypBrNH8Z8JE6fFB/kJWhEiegG96D3i6D1TrQ3ltDC/55jKNqoC47vIFQtAbEWuy589hfTARcVTKBpZaz8SiS/HUfUhq3nXUfLO2XUBYgBcqNPfcl/ZX4kQzZnYyDrQYoaZUl6bXYmNqJgc19qkatsYf1ginEskCotuZ+FRy+7KrNzdQ1XuXkSVGoxh7MyAoJ2A2q1MIbKlDUDRDJ8ZK1AE/e8p5papWF3D12Qzb2Zn943hxf+8RAVsrqBn3d4NQZiTWC48QsS2TGLAxiX5e+tqzK2o9wvMOSh2LRP6sOLHiFINm9tZ+UxrbJXKNuWwxMKS8+vcVxkgMkp7GJbLI6chPyjFOFh9a6uyqYtAZrzDT1h5FQ0J8ebloQU965vtczaKtyun07PGaZghZKyA6IjA0+bJGFYlXMCBaB2Jggc6eVuW2d6zWzHk+3TFUoMwM+hGu3/c3ihg68nwyuFrSG2LcKrB2UsL8ouc88aX2CdWipI83WfbhUSUsZjM+EkPwAlruSG6YYGCMY4O1pU5VjKjc1Q7yIYoG9nPUgsT0TOVjPp+P5L1x/Af0CDmG5gbapUGxL7lnVCOmjCWjsV4pE9kOJ3nn2uF6mKsrKC/qpslfxPUNYyeugU6/fapHZTKmhQJ+zXtQOq8hPFx1pN6jD1UA0hulMTYr8jxkreBQ3/g/P8e2GKh6VxMyeq+3ZV7Tk4Vp0ZFywNkc4vK2TVyK2qNGMODrJ0fybzRidKiuXL0NPa7UTi3RiMheCtwWrs6AKaZ03YPHlpA5SBN/YaqTS/qBU3MGHAiSvC6wx+HkNteg+7OeyKmm7WjxzO03eTE0ljmEpBEwHY
+ HjSd8nRu
+ P4VTWtsIYqb3zDsW/RWxtOV0cytAeGd0N8WpOwn+9KA/a4fhuN3boF+ZI+B4h+1SBp3zniMrNmPLoB5cG+Y2rWe0hZlmLyDrmT6Rpj3LH6gfX5mmUOGl8MVMLPDw9YxG+YLJKZ9hTWolb5mijqYnYupB7FfIaDIA5ngR9gHxLcN2WNdEZI8mSzErJ96MpP7l7V33pT1VFDoVlQAHFj4+TodynuTvkF/O1F5T3TFJFUidocta9I4woK8oIpUELM+DIJ+wiKODlhHTiqzawV7gu42HaHhVkixgyKlURQNXTKqqt3w3DFfl3vZfd+brHWHkL0Hr06MUmtfBrSLg0uUGZA/7fkIGoAHET4dAj1FG0XdxhsZkt6wL20zXaUwm5X3JCrGrx
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,50 +153,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/26 14:52, Kiryl Shutsemau wrote:
-> On Wed, Feb 04, 2026 at 05:56:45PM +0100, David Hildenbrand (arm) wrote:
->> On 2/2/26 16:56, Kiryl Shutsemau wrote:
->>> The upcoming change to the HugeTLB vmemmap optimization (HVO) requires
->>> struct pages of the head page to be naturally aligned with regard to the
->>> folio size.
->>>
->>> Align vmemmap to MAX_FOLIO_NR_PAGES.
->>>
->>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
->>> ---
->>>    arch/loongarch/include/asm/pgtable.h | 3 ++-
->>>    1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
->>> index c33b3bcb733e..f9416acb9156 100644
->>> --- a/arch/loongarch/include/asm/pgtable.h
->>> +++ b/arch/loongarch/include/asm/pgtable.h
->>> @@ -113,7 +113,8 @@ extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
->>>    	 min(PTRS_PER_PGD * PTRS_PER_PUD * PTRS_PER_PMD * PTRS_PER_PTE * PAGE_SIZE, (1UL << cpu_vabits) / 2) - PMD_SIZE - VMEMMAP_SIZE - KFENCE_AREA_SIZE)
->>>    #endif
->>> -#define vmemmap		((struct page *)((VMALLOC_END + PMD_SIZE) & PMD_MASK))
->>> +#define VMEMMAP_ALIGN	max(PMD_SIZE, MAX_FOLIO_NR_PAGES * sizeof(struct page))
->>> +#define vmemmap		((struct page *)(ALIGN(VMALLOC_END, VMEMMAP_ALIGN)))
+On 2/5/26 14:31, David Hildenbrand (Arm) wrote:
+> On 2/2/26 16:56, Kiryl Shutsemau wrote:
+>> If page->compound_info encodes a mask, it is expected that vmemmap to be
+>> naturally aligned to the maximum folio size.
 >>
+>> Add a VM_BUG_ON() to check the alignment.
 >>
->> Same comment, the "MAX_FOLIO_NR_PAGES * sizeof(struct page)" is just black magic here
->> and the description of the situation is wrong.
+>> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+>> Acked-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>>   mm/sparse.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
 >>
->> Maybe you want to pull the magic "MAX_FOLIO_NR_PAGES * sizeof(struct page)" into the core and call it
->>
->> #define MAX_FOLIO_VMEMMAP_ALIGN	(MAX_FOLIO_NR_PAGES * sizeof(struct page))
->>
->> But then special case it base on (a) HVO being configured in an (b) HVO being possible
->>
->> #ifdef HUGETLB_PAGE_OPTIMIZE_VMEMMAP && is_power_of_2(sizeof(struct page)
+>> diff --git a/mm/sparse.c b/mm/sparse.c
+>> index b5b2b6f7041b..6c9b62607f3f 100644
+>> --- a/mm/sparse.c
+>> +++ b/mm/sparse.c
+>> @@ -600,6 +600,13 @@ void __init sparse_init(void)
+>>       BUILD_BUG_ON(!is_power_of_2(sizeof(struct mem_section)));
+>>       memblocks_present();
+>> +    if (compound_info_has_mask()) {
+>> +        unsigned long alignment;
+>> +
+>> +        alignment = MAX_FOLIO_NR_PAGES * sizeof(struct page);
+>> +        VM_BUG_ON(!IS_ALIGNED((unsigned long) pfn_to_page(0), 
+>> alignment));
 > 
-> This would require some kind of asm-offsets.c/bounds.c magic to pull the
-> struct page size condition to the preprocessor level.
+> No VM_BUG_ON. VM_WARN_ON_ONCE() should be good enough, no?
 > 
+> As discussed in the other thread, is checking for MAX_FOLIO_NR_PAGES 
+> alignment sufficient?
 
-Right.
-
-I guess you could move that into the macro and let the compiler handle it.
+And after further discussions, we could use MAX_FOLIO_VMEMMAP_ALIGN 
+macro once we have that.
 
 -- 
 Cheers,
