@@ -4,134 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C3B1EC1EA5
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:36:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8A09EC1EA5
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 11:38:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B8016B0005; Thu,  5 Feb 2026 06:36:02 -0500 (EST)
+	id 239EE6B0005; Thu,  5 Feb 2026 06:38:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7653D6B0088; Thu,  5 Feb 2026 06:36:02 -0500 (EST)
+	id 1E7856B0093; Thu,  5 Feb 2026 06:38:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 647696B0092; Thu,  5 Feb 2026 06:36:02 -0500 (EST)
+	id 0E6E26B0098; Thu,  5 Feb 2026 06:38:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51F0D6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:36:02 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EBEBE14045B
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:36:01 +0000 (UTC)
-X-FDA: 84410198922.11.2F39456
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E2837180006
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:35:59 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cu7s1t/w";
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EDEB16B0005
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 06:38:35 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9101F1C3A1
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:38:35 +0000 (UTC)
+X-FDA: 84410205390.25.05FA56D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id DD32580016
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 11:38:33 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d3ToISBU;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770291359;
+	s=arc-20220608; t=1770291514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sMihYGbDg77uRU1zVwkgutHH8FV1ulypyq9/n+xDWkE=;
-	b=CUXQG4QVnukt9q89BB63ep1TMNdMMkWvpWc6rbAWvmuMoJYyA0Rxl3MvbNTvO6wTaLuYut
-	wLiEgBnuWK5bj2zuZ47rdMlTp1BcHfz6R2HyuSbBTa7DsAbYoR9CyPKTjzQjenVN5nn3Ly
-	vdRRU4dxOEdLOWJm/24ALQNxtJD3nXA=
+	bh=T+ZQXOfhzgk5ATG5eY5hjfAnjCYI/aZr4E73w/GF57Q=;
+	b=pjF2A6nzrNmjyiLq7ZSAuH2arXfxRC8nktSuFg/VLc+Khndff/8YcDWKz654Y2NrYuHycO
+	OdHLnqt1LPzf2XVQNkRlPyl2Q+HAkE3nUewG/0oldiLnbEu3TH0j2b6xsldLRW0m4WVDr2
+	GyuqcNhEzgk4pYCX0Kg9IV8XVAL8f5o=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="cu7s1t/w";
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d3ToISBU;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770291359; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770291514; a=rsa-sha256;
 	cv=none;
-	b=VLovpzLP/daYLnxBATQTmZWucceWvJi4P6r8KL3lbmaOMHdMCzzfijrDz6b3Ej8G9eSXeh
-	jFSfIaIbshH4VI5oe4Hmfk57GFD00jKtfG8bR9I5vSz5HaSjcwCwCNDM5CgUx+L/CQ3wKC
-	QSyaiGSAqOmSm+pltzTwoCkLf++2qoc=
+	b=lWQyGK3F0tc6Kb9JURgl50ofRDQjeHbNJGqyCGchvbcZXcORV41xH46emOLg2tRlWVPzx6
+	jP1L+bpfbQxKW4U1mfxC/uWJD9++s2KNze6DQEX2ag6HsDnQ06sAVSZg0u1kzQwJPWD0QT
+	8UuoAMtV3ck7xTPWLdBOP0+dP0SzAtU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4D6A260122;
-	Thu,  5 Feb 2026 11:35:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E695BC4CEF7;
-	Thu,  5 Feb 2026 11:35:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BFA9143F37;
+	Thu,  5 Feb 2026 11:38:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA6BC4CEF7;
+	Thu,  5 Feb 2026 11:38:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770291359;
-	bh=3sMz1aXuuijzMsHvvObi2VXR9fx4WgEVichiU4CKZDM=;
+	s=k20201202; t=1770291512;
+	bh=PM0XV/uT/jCnIxBlVSrxNfFfXmA4nUroh+I9xLVtYfQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cu7s1t/w6916Ya6ixpS6ttgjpMI2URV57aNBympnofTya/gxFpRRp61I06akmavdL
-	 eQu0GohOQWs/g6dXAoYwIi5nj7gz2j0M7LOYJZJ5sO9IqcKJrdbCLpskJNbMSlFWLX
-	 UG82wzpZSIE1w8UVOTbUcAxsMVVkI/nPtrOynuoG/DJFIg48BaVfjnNV+Nmj2kH21A
-	 EQ3LaZKgCM/XBi+WtrdE/qdIFQLWJC8TURH7/eQznHgVg9EwRXhzMmSgN1/e7LpGdL
-	 He24meVNRkv/Ke8oXQ6sEJ2GN+y3q74OQtXvENKyJXDzJ3ctLSrOyGZyQdaKGC3nch
-	 Pv/Wt/rESj1UQ==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EDAACF4006C;
-	Thu,  5 Feb 2026 06:35:56 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Thu, 05 Feb 2026 06:35:56 -0500
-X-ME-Sender: <xms:nICEaW_GvSSBINXf0ofq_x-yLSb58h8Og9sxOg20LDUUqtVKPd2rGw>
-    <xme:nICEaS84tMRreNW5lZJAPhpBScOsKOGhe6iSr3R_x1nVEK-b0PtH-38d0qQvhAlfd
-    3s4NizCjv59vM_uLsgD3MC1EKHuXUlovGPmlKJdkjJUzkee04UF42Q>
-X-ME-Received: <xmr:nICEaVquclR8ZwZTFgdXvcQmyteANYL9y2MDtUACN47OUj1NDZeNvAxb9eMqNA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeehvddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefmihhrhihl
-    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
-    gvrhhnpeeigfdvtdekveejhfehtdduueeuieekjeekvdfggfdtkeegieevjedvgeetvdeh
-    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
-    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
-    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
-    drnhgrmhgvpdhnsggprhgtphhtthhopeehiedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghkphhmsehlih
-    hnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehmuhgthhhunhdrshho
-    nhhgsehlihhnuhigrdguvghvpdhrtghpthhtohepuggrvhhiugesrhgvughhrghtrdgtoh
-    hmpdhrtghpthhtohepfihilhhlhiesihhnfhhrrgguvggrugdrohhrghdprhgtphhtthho
-    pehushgrmhgrrghrihhfieegvdesghhmrghilhdrtghomhdprhgtphhtthhopehfvhgulh
-    esghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhsrghlvhgrughorhesshhushgvrdgu
-    vgdprhgtphhtthhopehrphhptheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:nICEaexJkDciWL0gFKUnWwSDONB_D9Vg9IWhiPLedXxhJBnzDgZGKg>
-    <xmx:nICEaUn-QwjMmOgHFazrgt66R5nUW1MxGWRvDl-sNftjNrODSjgR2w>
-    <xmx:nICEaanFFBKtYwPiT8WBYCH1FdMASU4t8LDB18cpKxTCSriwe6BV7g>
-    <xmx:nICEaazz6wcm51a7dwkOdM8i3af2JSfws-k5O4hX_h4YlCy-sTkk0g>
-    <xmx:nICEaRZub43Z5DZ1aTG6jE-RP89KGBpGg0cgqYFgv_KJH-iiJipqwpQ_>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Feb 2026 06:35:54 -0500 (EST)
-Date: Thu, 5 Feb 2026 11:35:50 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>, 
-	Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>, 
-	Frank van der Linden <fvdl@google.com>, Oscar Salvador <osalvador@suse.de>, 
-	Mike Rapoport <rppt@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, Baoquan He <bhe@redhat.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-riscv@lists.infradead.org
-Subject: Re: [PATCHv6 02/17] mm: Change the interface of prep_compound_tail()
-Message-ID: <aYR-YULI3lBtl9y_@thinkstation>
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-3-kas@kernel.org>
- <a61bc0a8-cf5a-418a-aeb4-96553b87f043@kernel.org>
+	b=d3ToISBU7ApYFyJrR45t52S2cND4hxuUwGAkEz9buEwGEVIxCZ+PwIyX8rw3833IZ
+	 1WERE75sN6q3JPGmCueFi683z+0eoY4ewv8urdc+GSU2pMV8VNzRdFkG3UkUUCD9N3
+	 Fh4VH8xSR17PHY6j8BLCg3725dqglYRxSI8v5LGmb8RqaZLOOo3Ksnq6FY+29xKNf0
+	 /PRYNTM6NOmfUqx6V5pPsdkfOiVTfCK/rwHL9tbRS0b6LKoACHEQqpMRx/CB5cYnIm
+	 LYSFlsJw+9nhcK+tK2LFtMwwXjNuc53HZ7vy7kkzft3YkFeoJ1gvhON/v//ieCBr/W
+	 PQOP2f8vTuRlA==
+Date: Thu, 5 Feb 2026 12:38:22 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Carlos Llamas <cmllamas@google.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, kernel-team@android.com, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org, Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH 1/5] export file_close_fd and task_work_add
+Message-ID: <20260205-mitschnitt-pfirsich-148a5026fc36@brauner>
+References: <20260205-binder-tristate-v1-0-dfc947c35d35@google.com>
+ <20260205-binder-tristate-v1-1-dfc947c35d35@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a61bc0a8-cf5a-418a-aeb4-96553b87f043@kernel.org>
+In-Reply-To: <20260205-binder-tristate-v1-1-dfc947c35d35@google.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DD32580016
+X-Stat-Signature: gybfi8ykomi99qswoc5efumktzcbncj8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E2837180006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: a8sdko3fqpz8jk1w7u45fo99qat18nre
-X-HE-Tag: 1770291359-178477
-X-HE-Meta: U2FsdGVkX1/I/E7t6Xp/+caSJzbjfLflMXI3D7HNBATNpSI5OU/AInbZY3U2BSLDQyGEyYuDNNN9T3o0SrD3wBFWagLa1uIg6/TW67dHt3ssdmk+dDymGrufn4QldkbdUEft2WR18liCBWErYvkCo1RTsvDUxzIxVwo+DWgLDtboiR0/gtqyxpOuNDhiGDKUbjeJ8HW73YlZHIojvD2BpgFOIsgkXvGTOZdsV2mTX+tIj1iH84i8Dtau8oWcPhiSgnCF0Sj0PcCEgHxUjQk/j7uRUEBUdK8JbbwukNfqa3oaGzesLszGMS6Gv/pBDNln9JvahY4ssZwZdEkxYfU6rc1++duguUQTP1FUygsfRMtD7R/78709m7nT6jm8B+43iqTfdUAgR/ssfkGvGjqsxr7u0L20eoYFtF48hhdpo2SyQ7NY4O+l7O/03P3m//ei12Qx1lP+7RlMW2i4Sk0pLHs5Ci7OtUW16Ur0FNO2iO3QstoWqqU7Ti8m0oCQbGIT+lCy/yHEKXXKO9hvgtmzH3xMfwEt887HFT/7VHHHMopNw1NdL5VwzE38orZsPS6zS1Hghn2wLZ391wcmz4E2pbnODxcRusy25ejpdQFUvRWTc83ifa4IhCOjYBw17f7skWXOPm2Mid9VqJi39gr/tlxvPmpiMydijT3BQERyIk64TwbiFDginEd+XfncqnvOlVjtVPshr0f2bdKJSnAKuV8ww9qnti9TFZLSsNxHP6YfUPi4a6gDP69GDiLpS28Rn0yq4jCuaYwgx643VnkT6dL0Oc93mYxxHChfgAWgF5coQeAsdsUK0nM68j5SIVGEq2sAfweUMebKTeSxSH/ul1QYEprrSQJt69YkRpOQ+thmNs8DblcguLEjgQQ0PG/Kqm0TzzNj9h8ktVZTSx9UIVspUXbMeKSLaRWN8mBfpfP3cy1zw0NFV2Q0yB53f593WHb0zTpcd7YybI+QZSI
- Iqw2/v4L
- 22RDKg7ktlt4gHbGZx5zV+9yem0bmjZzTMaBt1cCcLbe8DTd2NhGJNsAjR6pQIqpwqHgX8V8KH7DwuYQaU/nA2tgjsDqmaPrfDh4Q6hiDfMMTSQLJ0kHXy5FRIz3tOs8nrKhFc7iaMZtuMvwPWiFE2bEoW2oDqS9CKvLcC5pubCi8o1Qf7GwTRLj4ieleohqtNaUCCKW4bd1c1MB+03K23GIqD2skqUwPu+0NmfN8Bagwyy3gMqjubvjBSieBE9rmikCDe4S+yf4rtC+xXLpixyWMDYTjLbTPVPJSefO/YgKl5d3x/Lm35CT8vYOgkpPaVdys97IhIIdQ7Eetd7xSt7I4lpq/mhZC0mzev5hduHq1olisyQF+BNTOLw0BhXDVjSN4srYeVQJ5VxA=
+X-HE-Tag: 1770291513-817614
+X-HE-Meta: U2FsdGVkX189eSfHS848wMpLQmI/XUneSKgwmKkYTFNc0V+kvTuWHJ6RNgKwnXSEzBMfxiYfKdqJRTcQiINxbDyR4FwZsO41VpssTCbkefFXsoZesBFlKTtGPxPbVxoICcMEvPZdTnP6N43KtHNNVOzyc/2yZ94ZAvr9anmmj3rgwg0FS6N2mDQaHerBUq/2gyPRoJ75tSmnqNAoQ0cQjjlJm0DQ1UcgyDtgGtOJ1GIeWixf2WcQpeDbnliQAgDG1kEqBj30TY7MM44v1yN6n473eOgO5BgMfXazfnd/rdylJ4s4avLZPNUivEDKzgwjun4vyf+2tMhSfR+jw+cqBvRy43QuyJlBKGz4TURCm+W8uTE2WRUqoIh9Xh401e9KemNDgE+9QkIycH+b+VI1TVQmuONr1FkiwO8TDb2OYX5LfaP43EElhGdAud//o06XJvSQFVdagbp79WNzDBloanQyvZvvYfJ4jsQxE0hUH+EAR2Tw17pqW6QAA9Nt/E5qNG9pMxJPHcrudqm7ZbCEz7z5SZHm7Xlpsj7VNtOcrEYcC9WLTPl8W4veACkkJ6DT2D5md0VySHkmaoSOjLAziSVyXUjWfueS2r/02VCWggiPYAopZHRHQWAp8GxrTqVx0dWqMGFK8edUtVYVb2yFd8gyXOIDcqtjlQmISMr5yC4szPrdWgQjzxa/s5tiuEpxkxYaEkrJ8nyh1/PhupAcjvx6ZDn59JRO1hnnHwyfzM+QrHltBPCV2xSQCbUBOz6SbgU3FtLUua+Ix+D20/V3BVH7RM4jRUL4bXxCiugVZKZUA73X1bQbWQQtZ9UqDCOdfrz9I88kcssknbWu9PmVGTZJSkDpL6eqCKH1Lgy63lQAP54D4c+YWUTzAORCzEdGtVwO8BhYD6ph0OK+hSTZb/vEdVSBPGZCnp4TCbinRh4Vi4mhvo1vsE41m4CkdG/XaFWQrr39jSotfkPMFsk
+ oiCuBFbi
+ TbF+exi/EA232yUruT1pXq7oxdIX0IKXkZI93MMmtUNJH4yhZU84VbVn6dJsvTGNUjrnY1JMnKy2OOB4nKLKjpp5RtV8bm6gFQICKu5a7cLeysDqf2AdzO3b/Y88ph+JC2RkVMNpfiFx0rNQ6BLOOX2C5Ex4NXXZ1PElFL3WrGkHiNyLt5KlcQgvJZ0EynrWw8H0ZAhbx+WnmLUFIr9F9FTOJ7g2F5D9Cg57Qm9wjE3l2uwikFJPyqOzOz9PJ62CAaYw8gvb3vgULS/l0W56Ekx6grA/Aj9V5dGM2D52wynOTMoC8QlIzKGpF4b7YLh1VKfmHTg8OMgweasDf+DEFitsfTolaZOb4NaiO704N2+fDIddFVxU2i80MZ7V+rcGqrcmjNNmObKoqEHIBPDI8vfYy/hX7s7nvVbnfA8qVEzLcozg0svgB4X0temCL0ea+/mNCK9CXYtNVGorg+adDIzgOO1U+jhtlux+01q4t475NsgC07KqfH0/DQ7l+ySxYhYnHiumYXp4dudsFrDmpyDBu0Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,100 +106,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 04, 2026 at 05:14:12PM +0100, David Hildenbrand (arm) wrote:
-> On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> > Instead of passing down the head page and tail page index, pass the tail
-> > and head pages directly, as well as the order of the compound page.
-> > 
-> > This is a preparation for changing how the head position is encoded in
-> > the tail page.
-> > 
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > ---
-> >   include/linux/page-flags.h |  4 +++-
-> >   mm/hugetlb.c               |  8 +++++---
-> >   mm/internal.h              | 12 ++++++------
-> >   mm/mm_init.c               |  2 +-
-> >   mm/page_alloc.c            |  2 +-
-> >   5 files changed, 16 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> > index f7a0e4af0c73..8a3694369e15 100644
-> > --- a/include/linux/page-flags.h
-> > +++ b/include/linux/page-flags.h
-> > @@ -865,7 +865,9 @@ static inline bool folio_test_large(const struct folio *folio)
-> >   	return folio_test_head(folio);
-> >   }
-> > -static __always_inline void set_compound_head(struct page *page, struct page *head)
-> > +static __always_inline void set_compound_head(struct page *page,
-> > +					      const struct page *head,
-> > +					      unsigned int order)
+On Thu, Feb 05, 2026 at 10:51:26AM +0000, Alice Ryhl wrote:
+> This exports the functionality needed by Binder to close file
+> descriptors.
 > 
-> Two tab indents please on second+ parameter list whenever you touch code.
+> When you send a fd over Binder, what happens is this:
+> 
+> 1. The sending process turns the fd into a struct file and stores it in
+>    the transaction object.
+> 2. When the receiving process gets the message, the fd is installed as a
+>    fd into the current process.
+> 3. When the receiving process is done handling the message, it tells
+>    Binder to clean up the transaction. As part of this, fds embedded in
+>    the transaction are closed.
+> 
+> Note that it was not always implemented like this. Previously the
+> sending process would install the fd directly into the receiving proc in
+> step 1, but as discussed previously [1] this is not ideal and has since
+> been changed so that fd install happens during receive.
+> 
+> The functions being exported here are for closing the fd in step 3. They
+> are required because closing a fd from an ioctl is in general not safe.
+> This is to meet the requirements for using fdget(), which is used by the
+> ioctl framework code before calling into the driver's implementation of
+> the ioctl. Binder works around this with this sequence of operations:
+> 
+> 1. file_close_fd()
+> 2. get_file()
+> 3. filp_close()
+> 4. task_work_add(current, TWA_RESUME)
+> 5. <binder returns from ioctl>
+> 6. fput()
+> 
+> This ensures that when fput() is called in the task work, the fdget()
+> that the ioctl framework code uses has already been fdput(), so if the
+> fd being closed happens to be the same fd, then the fd is not closed
+> in violation of the fdget() rules.
+> 
+> Link: https://lore.kernel.org/all/20180730203633.GC12962@bombadil.infradead.org/ [1]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  fs/file.c          | 1 +
+>  kernel/task_work.c | 1 +
+>  2 files changed, 2 insertions(+)
+> 
+> diff --git a/fs/file.c b/fs/file.c
+> index 0a4f3bdb2dec6284a0c7b9687213137f2eecb250..0046d0034bf16270cdea7e30a86866ebea3a5a81 100644
+> --- a/fs/file.c
+> +++ b/fs/file.c
+> @@ -881,6 +881,7 @@ struct file *file_close_fd(unsigned int fd)
+>  
+>  	return file;
+>  }
+> +EXPORT_SYMBOL(file_close_fd);
+>  
+>  void do_close_on_exec(struct files_struct *files)
+>  {
+> diff --git a/kernel/task_work.c b/kernel/task_work.c
+> index 0f7519f8e7c93f9a4536c26a341255799c320432..08eb29abaea6b98cc443d1087ddb1d0f1a38c9ae 100644
+> --- a/kernel/task_work.c
+> +++ b/kernel/task_work.c
+> @@ -102,6 +102,7 @@ int task_work_add(struct task_struct *task, struct callback_head *work,
+>  
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL(task_work_add);
 
-Do we have this coding style preference written down somewhere?
-
--tip tree wants the opposite. Documentation/process/maintainer-tip.rst:
-
-	When splitting function declarations or function calls, then please align
-	the first argument in the second line with the first argument in the first
-	line::
-
-I want the editor to do The Right Thing™ without my brain involvement.
-Having different coding styles in different corners of the kernel makes
-it hard.
-
-> 
-> >   {
-> >   	WRITE_ONCE(page->compound_head, (unsigned long)head + 1);
-> >   }
-> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > index 6e855a32de3d..54ba7cd05a86 100644
-> 
-> 
-> [...]
-> 
-> > diff --git a/mm/internal.h b/mm/internal.h
-> > index d67e8bb75734..037ddcda25ff 100644
-> > --- a/mm/internal.h
-> > +++ b/mm/internal.h
-> > @@ -879,13 +879,13 @@ static inline void prep_compound_head(struct page *page, unsigned int order)
-> >   		INIT_LIST_HEAD(&folio->_deferred_list);
-> >   }
-> > -static inline void prep_compound_tail(struct page *head, int tail_idx)
-> > +static inline void prep_compound_tail(struct page *tail,
-> 
-> Just wondering whether we should call this "struct page *page" for
-> consistency with set_compound_head().
-> 
-> Or alternatively, call it also "tail" in set_compound_head().
-
-I will take the alternative path :)
-
-> 
-> > +				      const struct page *head,
-> > +				      unsigned int order)
-> 
-> Two tab indent, then this fits into two lines in total.
-> 
-> >   {
-> > -	struct page *p = head + tail_idx;
-> > -
-> > -	p->mapping = TAIL_MAPPING;
-> > -	set_compound_head(p, head);
-> > -	set_page_private(p, 0);
-> > +	tail->mapping = TAIL_MAPPING;
-> > +	set_compound_head(tail, head, order);
-> > +	set_page_private(tail, 0);
-> >   }
-> Only nits, in general LGTM
-> 
-> Acked-by: David Hildenbrand (arm) <david@kernel.org>
-
-Thanks!
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Uhm, no. We're not going to export task_work_add() to let random drivers
+queue up work for a task when it returns to userspace. That just screams
+bugs and deadlocks at full capacity. Sorry, no.
 
