@@ -4,106 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D7AEA795C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 03:26:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97C89EA7959
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 03:31:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CAA66B0092; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
+	id D4BC56B0093; Wed,  4 Feb 2026 22:31:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A1146B0093; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
+	id CF91D6B0096; Wed,  4 Feb 2026 22:31:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A93C6B0096; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
+	id BF8046B0098; Wed,  4 Feb 2026 22:31:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AC456B0092
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:26:02 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5ACD1B1F8A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:26:01 +0000 (UTC)
-X-FDA: 84408964122.06.A52A785
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4CB194000A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:25:58 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VF9lGFv5;
-	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AD0E56B0093
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:31:21 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4EE85C1827
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:31:21 +0000 (UTC)
+X-FDA: 84408977562.22.95E7200
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 9CB93A0004
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:31:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iPPgsWh3;
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770261960;
+	s=arc-20220608; t=1770262279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y65p+o5Rps4onC3/jarY3MtWPIWXJrlYtcNOlL4XV0c=;
-	b=zjgbLj0zLCpUxPNON60HvehRwNOez6/WM//BX3GH0f1z+IBBNhGxXLq69OKYFD0/FEYSrP
-	w4C2TFwx6Qda8mI8/nw7u5eIOgEtNlrw42cnTNr1spLXZKEtgtZQ2i5CIW5s6Sy4gyWeaM
-	ZdCdb1QJwG1afh2f3/R2QAV/6OEBKzw=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=vaaXsJL5AGetw98gAbGYxxD6vHawDzL3XjdFErrz8Eo=;
+	b=cCn0H6Elmqvs9njHjDQRdGtqgittpD6P7hguvsk+o4Oz2EtWScFdCPsMiZk2E8rhSKC+gw
+	htNmJwftwgqjF/Fh7E+8Z2a0OG4iAsM07tZwkIuRHDaeC/qNZ96/nVvJPfJGHNDsOA4yL7
+	5JXwkPcXvIcu6RlRVj0y8ac3VwQJ8mo=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=VF9lGFv5;
-	spf=pass (imf07.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770261960; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iPPgsWh3;
+	spf=pass (imf15.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770262279; a=rsa-sha256;
 	cv=none;
-	b=uBgv3I2Q5ow64NBvABsI/EwBp7fbIDLMUw6wwTkuO0AmU7i3PrCRrhL8YdESihq3wComv/
-	mAHranE/pS4nJdQ+WPJOgkDb/y37X/o0fItMgkcqbtk90BrnWh2K1oZ1cMfXDykVKbw0vJ
-	ePVftCc9Kl3qm/it7aI59Dw3/cNkjA0=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Y65p+o5Rps4onC3/jarY3MtWPIWXJrlYtcNOlL4XV0c=;
-	b=VF9lGFv5ezS5ST2Z8jHuz7giPo0shjEeRQuFmjCbcALHkfFyUeF39at30GyriLm/q1Ku6fD9E
-	uWsKwzbWZhbzZTfIjd+PKkr15lKVzQ4BK0LTeNCCJviHFBSW3Eqjb2iSG8OsN23F5zQLMvadvS8
-	2wOqXVeY06X7HyNDBJYm2gA=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4f62Yr6JbNz1cyV5;
-	Thu,  5 Feb 2026 11:21:20 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 34BC540567;
-	Thu,  5 Feb 2026 11:25:55 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 5 Feb 2026 11:25:54 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 5 Feb 2026 11:25:53 +0800
-Subject: Re: [PATCH] mm/memory_failure: reject unsupported non-folio compound
- page
-To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@kernel.org>
-CC: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes
-	<lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, Michal Hocko <mhocko@suse.com>, "Naoya
- Horiguchi" <nao.horiguchi@gmail.com>, Harry Yoo <harry.yoo@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Yu Zhao <yuzhao@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Wei Yang
-	<richard.weiyang@gmail.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, =?UTF-8?B?5piv5Y+C5beu?= <shicenci@gmail.com>
-References: <20260205005603.274383-1-ziy@nvidia.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <95bd5396-256c-58c6-62ab-ae95e0cf371c@huawei.com>
-Date: Thu, 5 Feb 2026 11:25:53 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
-MIME-Version: 1.0
-In-Reply-To: <20260205005603.274383-1-ziy@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 4CB194000A
-X-Stat-Signature: acns6g3c3ysdy9spig1n9ebbey76kyha
+	b=vqdI9jcK/Hq9EC+J8yNH8+HYsn7nzJqXqwSwZ15pl//jsqdW0gklBIMItbgBLfVOdkVz00
+	Lk1w2QqbUEq6ZK931VjUyYJBie1erY99GhR63SXJbb8aqY1HWn51Meurtw7gLdbToDqlno
+	9lBU8F1EqVh6R7DhFOycDA9FlYJe7Uc=
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b885e8c679bso69487366b.1
+        for <linux-mm@kvack.org>; Wed, 04 Feb 2026 19:31:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770262278; x=1770867078; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vaaXsJL5AGetw98gAbGYxxD6vHawDzL3XjdFErrz8Eo=;
+        b=iPPgsWh3gCT5VsSXEqGKDaaAIFWrG07FsqXCh/8UUVc85wu9iw+O0y2ryyg4GVZYOL
+         SBSIElOR5jqvrljyamaT5jQZrNujtXtuLQisTy6IWtCpKNOyBIO9bebGnFpFNz7aOnxA
+         nMu2ec1/7oLhQVVoPkeHPzfDsmT2bJ1cH5CLCOSnc1ru8GM+WtZGL8NGJpVlu2smO3EU
+         x2y8lhdSMdfpj+W+qZUiSE899QTkt1idR5d4NU3/qAPjYY+AxX9xsCjB/O/TOO+Az0IJ
+         +h0b7h4tDXHYGIOvJCgnMEqtWwJkgQM29dL5ZBp+7iAThIvpAOaO/QlHUaLKKi5jYl83
+         pG2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770262278; x=1770867078;
+        h=message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vaaXsJL5AGetw98gAbGYxxD6vHawDzL3XjdFErrz8Eo=;
+        b=qghd+ww9ybVRCK/WeEo/MJsfaexE3QPjkkSsmrxVmobav9sSrYCrBLTM3OG+VTWMOO
+         EO2M/ChFDhpM67oqDbvE1j488/6gqhPL0J8Fs7diZ1P5BUIP3iemn8zWymVg9ixT9ubK
+         mLURWdLs1X5phDfvXJaau8jVAhlHxhqJZE3/sVFpEyDcxiT1gm94bztCk6DnW1FX2nrh
+         tDVwyIdOCia9ovM7e+atSETvivKYpy/paUkimNnKfMfEXJQXKvOrCHvNV67MH5ipmCTb
+         nw8q7QZAlkL5e0iK20snxiDS6kIJ0oeexhBiMGPwCfvWp8R0rFWEuFfENP4JuBK9eWUW
+         24Aw==
+X-Gm-Message-State: AOJu0YxDmcarKUwe3s/pHavDkqeUodEH4t2soTTYx1j+g9J73/GAc6sC
+	z9TED36X8oFhH9kX4URNA5CDE9m+VcC1jq9wYk4FYKqjfu9ipMPnnIbP
+X-Gm-Gg: AZuq6aIzgqmOzu6zXNkYGNuoxdgTY5+L0GECGg1HTULWqfzeh9SYTm7Qoz19978ON0A
+	qGrprixHcnMYduRp1ukobp3SQDq16InwYi+K11x9AqT6zzmcXhDYvK7VChJYceShb3T9NvLz5wa
+	hKb42SiJvz1bwVaFK7Gvcox3nHpBXGP0tQVVM+LCSwbAWNGLKamIye4cEvPmcf5pgaIvdMyQWE1
+	M8mOzE1SScDLIsalthquh9MgXHkoXl33RHr1V/06YJqlp8Ujxta3zrQ5JoZaItEP7VttYLsF8y9
+	vikYGduBrJEYsW+HtqHmVXvF2s9MPDHjTyZNGvRzVABV8G2B70tCoSuDDPPkVq+qtnlZDggG/7+
+	S6fhGEszYxKgGQj1cGAZBCGEzCiLKWtvnvPGmxrAJNp+WFadkqedhrem5Xq+1MN7tQLTMn3Dn57
+	sg43AUWjkw8w==
+X-Received: by 2002:a17:907:72c7:b0:b88:5385:59d7 with SMTP id a640c23a62f3a-b8e9f04c9c1mr375893466b.4.1770262277573;
+        Wed, 04 Feb 2026 19:31:17 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8ea00455adsm186412066b.60.2026.02.04.19.31.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 04 Feb 2026 19:31:16 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	riel@surriel.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	harry.yoo@oracle.com,
+	jannh@google.com,
+	gavinguo@igalia.com,
+	baolin.wang@linux.alibaba.com,
+	ziy@nvidia.com
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	stable@vger.kernel.org
+Subject: [Patch v3] mm/huge_memory: fix early failure try_to_migrate() when split huge pmd for shared thp
+Date: Thu,  5 Feb 2026 03:31:13 +0000
+Message-Id: <20260205033113.30724-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9CB93A0004
+X-Stat-Signature: 6ht3qsznzowmzjnsxi1em7ukzdu5odwk
 X-Rspam-User: 
-X-HE-Tag: 1770261958-64751
-X-HE-Meta: U2FsdGVkX1/87dL+bOJLnNQ+UHBQ4nN947vKjvbBCB4Iv3J3JNLsMbuYbUtk1+2GpacKNrWYiT8yGJG8nvFaJ0+F8AIDV269j/BtFR1xTPfDz3gGlkkMSgi7UMAL3GsS7SbwukQ9Xrd3n0lCA5ii8FG1noOkFaglTmtp9tmeeKnHBNueV19+Jmc1ZEkrGaiMWmKdSCfALyWr3pCBCPyNqxdDzb2yXNgYODR8k65bzmIt1zqCC+EnSMAw6He+Jrb/YPV4R7QMpc2nQeQy/3uzoWj2/M0wurFr6MCeEBXWcVLPMi8M41GXrzBNGozzLM90kTmwDaTVNidF+eVmVw0cvawzozP5bU22uDGW1cV46luGWAP1rbQTj43WfQWkZlxk/v/7PMH81x2OH5Q+LW3HLn90a+Tz+9PG3U8pmtGlFJZVtKXUHAQGt2FAMXeFPcWllzAw9nlFIbJX+vzBC+vqYCQhlIr9gxOp3a0jdG+RxdJLnEY7s1TCZOrH9CXKd5LQkqx4xdOxOSrUHRH2+CVKulzqkB5jZ9uTPTAzvoP7jgRwg6y01Q6sI2IqMBH/MreCiAq/vPjWZ6jGmo8zrWdYFWUFLVv+GFB0pj7ilvCEigwC6GqXWDYMF6s7+3ms6hqxSwSPwAQkS5S5OM8u/+SfuWfNk0B+0R1mw42LoPheECu5ZCl0UlEP0KKnc8djEa5H4fkZKasB/lggbNeCVDwnm5PWkEpX6jkP5tItZM1pshqWljnAhHUasmcAnRHL4F9mu6PXi9P6bGXpQLTuLh1G3UfKwm1Aza4cLbBp0KKZDTUgGAhCRyNxtF8oykNM9f+WYNA+hSHVaN4WRJ5tPwweS0/2p0v4UpdU/onyb+3u0+honDiKhkSQiudR1wqA9T/YwlymgY69Me5PpE8mN5wEYEP0bJSbPVJc/8ISsdNqc+YkPII1pCrdZF8YhrHd+DZvR8zpfrijnFezEb8RNjR
- zVNWPBcY
- onnrW0+qwsZWesf3U6y+ev9JkcXfLjDhKfzKCd1OdcutddMxPlomCPN6T+3DpWLyEXXQ24R1T2z/BR28=
+X-HE-Tag: 1770262279-846684
+X-HE-Meta: U2FsdGVkX1+Hh0jK7IlVVZp3ADGNkoJYI7013O3MxWbrl9PD9RBX7VJYDl18TmRQ+1fP5/zoR7Sfb6vHAATjmtyvfJhtjWRYDHFOx99/2wo52hkYsaLwymbbw548RKG+ZViZwtWCz+I88DpVb+hSTyRt5XwTEUzpb9+JA8NwiTvLeg8ZYwGOq7JHgzM855gTvgebJYpYGfDaw13eDYBlruy4GKWunebhl6glSACW3Au3Y3OAiRJQRHIAjwoPIEKlsCXsDN5adTOGoD/V/SCZIVfnLuzHfJ0purSZp4jPXM2nBOiD9bId14XvZ8YFw079yq3eHGG09gpYUXmTRM27mqySH04AF9XOp8j2hJDTDp/FKamZM21O3A5oGctkJyvzjrkNRxw28KurqTdkwPZIQS5S5pGVJEWUkRoI+m72uEL8GCQyifA9P67ivAYSpBaYO4T/yQDX7UsmmdyzADTqUXU/mL65UIp2yoykzD2CgMM9APdM6g9ch634eXkZkt0uP7GYnztrvf0NYxpon4lpzWIFT+Auu1dpp493YB9jat7kODS1yeK3+SO8K7vtAcJG99GJIeMTC8jgMboN2As4S0wkAYyc80kxlCLQ05CC1NTFSXzSK88F4fgLwYqBoggbRZi53e8SHgODwvjm17wHvXMd4Ly05Xrx2Bb/x5/zeGwWtVtLtgv69G3EafjmdcK03WJxQF6uSEwQHVZls1wnNHJxi3nmKQAQmsvCJ0YgLbu15Xy5Lv4Ig066ZOPUilkJN+UOnBWOByz3yhFljSuKD90hej5zeuRJzMUowlgntrHBOtU93oiH+9sjRvbt9yCmSQuZ0PctoYJTGeHUFs1QTDoz/nzPeXduxUHN5p25hAOyr8PsDZandWlK2YPmJcnkfFXNp7J5ptmjVbzV3qAQOBE4q1pbml0k4nfQlLyNzOEl9KLL2pBaHXJchjOgsouNWMdRvnckId/1qBKe9O0
+ ZZbUL0Ua
+ ihsJJkqqNCQo02nW4peByDIpmkHs1MwtB1/Jeo7W2z5lIkpRDW1jipTxhX31rD7YjBc4Y4g8eExsYBcGCO+f0a0H3jR085vee//UotxRrHRkECfw7JpcMtZp2Laq++4ilJqfo79GCVLjFb2RaXGsI0FQN01lLgXrukiI/2/1zBEf8dmk/GnIFOu0pqe0aMlV4XfgvqcrtXNZqDEofQEzHZwcnPMqquVv3dqkD190xbLh+2yh/CbeJhLqfRy+3YddGeJiVnCibMej8pH61seGnZ9VojQ092HkE+KyC8EI8txHGRF18WV4/8NxD1aeNc3UQmrYu7+CEL8fUonHLX2vPj/p9/prgFnkFIpQpgsjWHWkl/7s+PDxJAcOhPFT38Qlq2GaKYMuk8IHjABbkQtMzdtJcNeH+BthbXqZ6Srdt+wIzp1edgEW7N3hHJtKh8cHOTpi3fCx8X8JLHKlA+9PkdfuVZGx8zMOYVANdGEuEHsdBM1IZcRja7vAGN71dLw6V9ziB8n7DkaG9khIYKpR4OnH6SuHK27gtLqX+4cwHR5j9SSYLsen4Wk3j5h8ytYGQAAvAHSoiQo4njXTqp1SPbTmFk6DZjB0bIsZEUJ2bYgl3lug4gu4xE/RdT2HDGGJeJ+RcEWLhfvYtIqywhFMaMVNf60OqsdrLmMB3qrLBn3WrL7bh3KOZb+fgJpQoTeld8aBYOt+yKbiEyPKF0R5qkaD5qngxnq8MguipRchKJb+uVv+QmGhkr6UBhw4b/wqmDzp+DJU2hMCgbqDTPeAxpm72l2GqfI8aOtXH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,84 +122,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/2/5 8:56, Zi Yan wrote:
-> When !CONFIG_TRANSPARENT_HUGEPAGE, a non-folio compound page can appear in
-> a userspace mapping via either vm_insert_*() functions or
-> vm_operatios_struct->fault(). They are not folios, thus should not be
-> considered for folio operations like split. Change memory_failure() and
-> soft_offline_page() to reject these non-folio compound pages as
-> EOPNOTSUPP.
-> 
-> Add PageNonFolioCompound() helper function. This function is functionally
-> equivalent to folio_test_large() && !folio_test_large_rmappable(), but it
-> is supposed to be used on struct page. So open code it instead.
-> 
-> Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
-> Reported-by: 是参差 <shicenci@gmail.com>
-> Closes: https://lore.kernel.org/all/PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com/
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  include/linux/page-flags.h | 16 ++++++++++++++++
->  mm/memory-failure.c        |  9 ++++++---
->  2 files changed, 22 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index f7a0e4af0c73..2fe8047f42a3 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -1102,6 +1102,22 @@ static inline bool folio_contain_hwpoisoned_page(struct folio *folio)
->  
->  bool is_free_buddy_page(const struct page *page);
->  
-> +static inline bool PageNonFolioCompound(const struct page *page)
-> +{
-> +	if (PageCompound(page)) {
-> +		const struct page *head = compound_head(page);
-> +
-> +		/*
-> +		 * Without CONFIG_TRANSPARENT_HUGEPAGE, PG_large_rmappable
-> +		 * should not be set/used.
-> +		 */
-> +		return !IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) ||
-> +		       !test_bit(PG_large_rmappable, &head[1].flags.f);
-> +	}
-> +
-> +	return false;
-> +}
-> +
->  #ifdef CONFIG_MIGRATION
->  /*
->   * This page is migratable through movable_ops (for selected typed pages
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index cf0d526e6d41..8b6b5950bb66 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -2440,9 +2440,12 @@ int memory_failure(unsigned long pfn, int flags)
->  
->  	folio = page_folio(p);
->  
-> -	/* filter pages that are protected from hwpoison test by users */
-> +	/*
-> +	 * filter pages that are protected from hwpoison test by users or
-> +	 * unsupported non folio compound ones
-> +	 */
->  	folio_lock(folio);
-> -	if (hwpoison_filter(p)) {
-> +	if (hwpoison_filter(p) || PageNonFolioCompound(p)) {
->  		ClearPageHWPoison(p);
->  		folio_unlock(folio);
->  		folio_put(folio);
-> @@ -2945,7 +2948,7 @@ int soft_offline_page(unsigned long pfn, int flags)
->  	ret = get_hwpoison_page(page, flags | MF_SOFT_OFFLINE);
->  	put_online_mems();
->  
-> -	if (hwpoison_filter(page)) {
-> +	if (hwpoison_filter(page) || PageNonFolioCompound(page)) {
+Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+split_huge_pmd_locked()") return false unconditionally after
+split_huge_pmd_locked() which may fail early during try_to_migrate() for
+shared thp. This will lead to unexpected folio split failure.
 
-There should be no problem in soft_offline_page(). HWPoisonHandlable() check will be used
-by get_hwpoison_page() to reject PageNonFolioCompound folios. Or am I miss something?
+One way to reproduce:
 
-Thanks.
-.
+    Create an anonymous thp range and fork 512 children, so we have a
+    thp shared mapped in 513 processes. Then trigger folio split with
+    /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
+    order 0.
+
+Without the above commit, we can successfully split to order 0.
+With the above commit, the folio is still a large folio.
+
+The reason is the above commit return false after split pmd
+unconditionally in the first process and break try_to_migrate().
+
+On memory pressure or failure, we would try to reclaim unused memory or
+limit bad memory after folio split. If failed to split it, we will leave
+some more memory unusable than expected.
+
+The tricky thing in above reproduce method is current debugfs interface
+leverage function split_huge_pages_pid(), which will iterate the whole
+pmd range and do folio split on each base page address. This means it
+will try 512 times, and each time split one pmd from pmd mapped to pte
+mapped thp. If there are less than 512 shared mapped process,
+the folio is still split successfully at last. But in real world, we
+usually try it for once.
+
+This patch fixes this by restart page_vma_mapped_walk() after
+split_huge_pmd_locked(). We cannot simply return "true" to fix the
+problem, as that would affect another case:
+split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
+leave the folio mapped through PTEs; we would return "true" from
+try_to_migrate_one() in that case as well. While that is mostly
+harmless, we could end up walking the rmap, wasting some cycles.
+
+Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Gavin Guo <gavinguo@igalia.com>
+Acked-by: David Hildenbrand (arm) <david@kernel.org>
+Cc: Gavin Guo <gavinguo@igalia.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: <stable@vger.kernel.org>
+
+---
+v3:
+  * gather RB
+  * adjust the commit log and comment per David
+  * add userspace-visible runtime effect in change log
+v2:
+  * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+---
+ mm/rmap.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index 618df3385c8b..1041a64b8e6b 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 			__maybe_unused pmd_t pmdval;
+ 
+ 			if (flags & TTU_SPLIT_HUGE_PMD) {
++				/*
++				 * split_huge_pmd_locked() might leave the
++				 * folio mapped through PTEs. Retry the walk
++				 * so we can detect this scenario and properly
++				 * abort the walk.
++				 */
+ 				split_huge_pmd_locked(vma, pvmw.address,
+ 						      pvmw.pmd, true);
+-				ret = false;
+-				page_vma_mapped_walk_done(&pvmw);
+-				break;
++				flags &= ~TTU_SPLIT_HUGE_PMD;
++				page_vma_mapped_walk_restart(&pvmw);
++				continue;
+ 			}
+ #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+ 			pmdval = pmdp_get(pvmw.pmd);
+-- 
+2.34.1
 
 
