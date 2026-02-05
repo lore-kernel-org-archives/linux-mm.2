@@ -4,94 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D21BEE9128B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 07:43:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D28C9E91298
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 08:56:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F302B6B0089; Thu,  5 Feb 2026 02:43:11 -0500 (EST)
+	id D38DC6B0089; Thu,  5 Feb 2026 03:56:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDDF66B0092; Thu,  5 Feb 2026 02:43:11 -0500 (EST)
+	id CBC2E6B0092; Thu,  5 Feb 2026 03:56:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDCC76B0093; Thu,  5 Feb 2026 02:43:11 -0500 (EST)
+	id B91746B0093; Thu,  5 Feb 2026 03:56:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CC1536B0089
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 02:43:11 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4D5121A03ED
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:43:11 +0000 (UTC)
-X-FDA: 84409612182.25.4387D85
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf30.hostedemail.com (Postfix) with ESMTP id F09FD8000E
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 07:43:07 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=z0hFhj2S;
-	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A32686B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:56:31 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4DFB013AE83
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 08:56:31 +0000 (UTC)
+X-FDA: 84409796982.14.0DA756A
+Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C702E14000B
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 08:56:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QD9LvZzW;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770277389;
+	s=arc-20220608; t=1770281789;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=2sEkyTYoXLoqsCh2Me8BmcoslamYjRf5TkQkVIJnLIE=;
-	b=4qp4rDJuw/7auZx+FHF47xZOPApaNlGb515um8sGBpnSJoIemrlKUwUUS7v4rMz/tsE7SC
-	T3WScfAshZOUvv5zZp5v/AFhNwtYQth6Mcg6QA1l74ZFb6CTfmiBAO51JS9Zzggn5J0II9
-	R/wFCMhSNrCqpJxLiTBHnY6DDuycjJY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=XzTKiZnV6r6pGRAN1Vi+8TF/Bjdg4KcZcIvONSYE8GM=;
+	b=DlX2dN0qBxy+iflfGhooO2GS1dCoB6GHrIytLs6qiP17H8bc25xRaX8CWj+5C3y6F7Hw5+
+	Z4LCvueBMNxoriNsklwLGYiYUYfninofk3nz24tSgx19gwbqXz/lrGyu5J49NUqbZKy1Kt
+	P1Q0iPz0NuyuAJbSJcgGNl1tofZnoRc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=z0hFhj2S;
-	spf=pass (imf30.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770277389; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QD9LvZzW;
+	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770281789; a=rsa-sha256;
 	cv=none;
-	b=Jdonj7pvmjaVwXlddLi6kYnZ7FjbNKXPtLVr1HZxtzOHYIjlW16TPkNJS/YhCGWlp90L50
-	HISIXD83e2Kt6vYKbR66z3miEl4KNmgj14ZNUGOOFMjl4cFOsXeEfTWtI4kgRZMVZLfHgb
-	Q/lNlORbj0G1xfes7QQ6E/8JJbMzAfA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=2sEkyTYoXLoqsCh2Me8BmcoslamYjRf5TkQkVIJnLIE=;
-	b=z0hFhj2SHpZLKHA0QzfvcJemSPOdSmSlDHv3pAJRdH/3jL0YqMgP3a5ZzAnxj4fFQawthP+oE
-	NsWol7eY67E5r0IKVaxL2vr6pOuqaRywRthIvcvHNGEdq9WtiJLcebPCRfb43ySlqoJt+g+zzK0
-	hacammfPG8wiKV2ChdpDXhU=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4f68GX24SLzLls7;
-	Thu,  5 Feb 2026 15:38:28 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id CFB8640563;
-	Thu,  5 Feb 2026 15:43:02 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 5 Feb 2026 15:43:02 +0800
-Received: from huawei.com (10.173.125.37) by kwepemq500010.china.huawei.com
- (7.202.194.235) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 5 Feb
- 2026 15:43:01 +0800
-From: Miaohe Lin <linmiaohe@huawei.com>
-To: <akpm@linux-foundation.org>
-CC: <nao.horiguchi@gmail.com>, <ziy@nvidia.com>, <shicenci@gmail.com>,
-	<david@kernel.org>, <jane.chu@oracle.com>, <linmiaohe@huawei.com>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] mm/memory-failure: reject unsupported non-folio compound page
-Date: Thu, 5 Feb 2026 15:53:28 +0800
-Message-ID: <20260205075328.523211-1-linmiaohe@huawei.com>
-X-Mailer: git-send-email 2.33.0
+	b=lpu1/lPUCQG2orrhb3ZjpufudW0wbg/Dho2mQnBDTHuLBVoKZS89eNBbtOJ5hKNm4cn0Ov
+	JuVij4Aab01U5KK9/KQBHzRu+hxVCdFkHcz9y3ClJKGEKjXK0CiosKtrAo/qtEbtqeDlk+
+	MfkrKs25Ua9sQ7eab3d9TpY+1Xb0l0g=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770281785;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XzTKiZnV6r6pGRAN1Vi+8TF/Bjdg4KcZcIvONSYE8GM=;
+	b=QD9LvZzWlQuxVXIzqUKWUAiV0Ob0NmKPCkZu/Aexlt5DbnpLFtLgVX8smP6J3XDdA0S2T5
+	PecjzAQloMBEMhrmGQmyOjQLCODWtP6/UnyJNRizFY2hu9AVnSbaQV2/qUFURTyrZ4C3P6
+	tgs75uji3qHzuvotgw9fptTeNstR0jI=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	yosry.ahmed@linux.dev,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	chenridong@huaweicloud.com,
+	mkoutny@suse.com,
+	akpm@linux-foundation.org,
+	hamzamahfooz@linux.microsoft.com,
+	apais@linux.microsoft.com,
+	lance.yang@linux.dev,
+	bhe@redhat.com
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v4 00/31] Eliminate Dying Memory Cgroup
+Date: Thu,  5 Feb 2026 16:54:29 +0800
+Message-ID: <cover.1770279888.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: F09FD8000E
-X-Stat-Signature: dym6ikc561ipj41ai8ogk167t5fcyxjz
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: cpqgk3w64g3dw46e8q86nwyt3xctdgwr
 X-Rspam-User: 
-X-HE-Tag: 1770277387-798083
-X-HE-Meta: U2FsdGVkX1/iek7DuSbFTt+Y9ApJEMMAtEFcULGcesOqsQXF9yvnPs9PPDb+mVI/0hItnLaXtbGoHbUEqK6rI0MoGxxA6N+8PL60mpaqwz32wOOay/xzVENBY81QeU7PQuUXvRBcp8RdR+UY+68o2hZSITxwH8TXlSp1nEtD3hhlTRFJFXsshMs8iyA1cRKgU5xXt3hypEPTxdGOipKBStJ/u7dDEr8MiIP/UihgcmA19lmm/LAfOJqWQjyvZ1GWh52WFgqzlgZFn3HjXKAVjadgWDL+vhPGwc12cZbEUNOGextQvUqyPQIsq8KVSc9rg4rpEEwE61gWVsfMm/evS148Ec2900gswV698rqwwSBfXYFO07t+RC2qu4GEhs1nhb0oX4UpfyU3MUZwq2rPNwl360W5mtAtl0xE2QL1cTZwwf+SKkwGlu1Wr1acZchEYTgKGKfykCiH3EFDJvPjWSWR7c2tPqAZooRAXinkl8uueut7zSumiKAlVIduKBx13HJV41pnYaNj/ULXdBsBlrlVN210MqgYrqNZskiCM5hUmjWP02c2WjXXaCHbYexps14u0xC3uRfJoBPZ2eaz5nL/QeHiSs8SeyGxl7fKSaG02lDY17Hv6bIUZnU36bY3DcXjOdb2p4jyG9feMjio5Sh5Iej+kV0X45B8IcJWMoQzRIu2V9jE0NzFWnU0GnosR0bp7Mk1Ajjqf0++VPv1ldNGuBywH9eB/cMmkV3Ws+yYIKXbLNYNIHtAcDUZih2dMlMGY7tpUe9asx1L3Plzty2o4hUv8LWhTaeKqITncp5J53GfyEh3RIPIA3IlNFi0t2IRbJaVfGaj3ERVNyd7xXbA5M3Q+ZsKG8ozUoxe69IbyVaT3mQszKgHts35YesIbJiUPCvQvp3b5J4SM3MiHpBLor6e4XivUO2+Hw477hdPoV773mB/KwGqilZPV0RNJXAMIZnvdgMyRPdHsy/
- pZdhfr05
- WTNMTlNZUSCEc/9FYkEaowMKmnjvX7+ZTpjNy5liarwxtH+QOqcJ55wPu7xd4D4H4S3f1uXvm5ZpwJUq1eOl/450sd2Wu4Ymt6lulkUPwvEg5iBi1ARfvXiSBUfSF4pJ/20OlXenYHaicP0niXL/Ax2L/N4r6N6nrq+dC0nX8/T13lMzGGgOizUgGuSj38Cva49jyl5/FGl2JxMvF0i7Zl7ERO0qgbYS78YNXvRYLteN1MIsDMaI2LRwL1HgTLnLVQwE0TapKyiIQHxGl4DMO8ZC29CmNk3qTMMom9CuQpzEX5mCMfeDTVu9m8yg3cwXhzCoc6Qivn6L3xsqbfN0jDsw6VHJ0xdDWgttn3kU5OPFCKt+iFL+Vnma92+AIFvdywm7OdYk+EYDqxK73VPFueT9H+fe0gdQ4n4SYW1EeyFqLoxMUEtBavh8VCR3E/OXtLQ5F
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: C702E14000B
+X-HE-Tag: 1770281787-456454
+X-HE-Meta: U2FsdGVkX19UpLSqB7j4eTqLtOWXou7coSCrsKhbEYLxfgn4iWkw6JeIx9vRMz82pzSZWjOc/iLZ1PHN/fyF74gmBpeMaTr+Dew2XDAOVjBODVHWoI1FxCiDvMZp6Gn3TAcXGfe/5Ij6XONHHbSwxHMJ7inCEkACv2tS0iAAEuWLta7pOo5RER48uv631gjjUbYK0v9sUkHGxDULwwcO5k8xp8o0Uzj/CZSJZxHHjZkUW+6uDzV37ThD6m9YbNqMd9EOSRlSNidPMRd0T/CB2c/JfMvpZQIHwUMLl2kTb2z1IqTlqFYD+z3AcQBRaJFcRipcAxjeUGntpdG8rL+K889cufoOtHi0x2C9TrKnSEM4IzNZ35ErjPM5u8jz6vnMCtn35rlq4LV5rcKhEI0+xXB/jN2tt9balct/wW+6fh65z4/cnleq2ZlTBuUzN1BHoNCrfrx3kV4T+u9iP2XXX8Tb0CZHqO48+5qHV2+RMGCmj0Y6hP0tPWdnuHnIjJMVW+dx2aADrWcD2DbaNlk90O3moGeiIx5+z/+y1yDgj1ZvfLl8T334J8Wu6Ex6gslNNR9iiqUAItd+mKLHaxhduxHhsl0s6IPi898Kz9b4ALyhnl8iLZuaK4A+DezOOxwvsKqJVNMc8f/3M1/6Mg+7X0Dt6Oe4ef9z8ix0E/GOd95EZ9co0pJkLpVhaxUlnf2Z+G19qAUButMI9husX2XB1dA9B6R5ROa+bTUbj+0Zf6H0m5yF0pHCDMeakK/cTpn1GxbGyI7zA4f41rdgT20+9tNc+5YS1wd/nyz9eaDRk2Y7n/OlS2+slUgvLV11CkUiCV+fh5fldSPFiPNjUUKjRudkVAj1CzcsPAbAJy7KGvU3u0pZ+rSad16OlOM6KQ1H8HcwSRRJKsney0jlbq5znQpIxm3hQvZ5gOX0qH58E0Z2K/U4fUo3i+iDKNJSldNAdZRQ7MMfsfgP0/ZF699
+ Yw5SV8sQ
+ SRSmdL2xNDKEZl7ztdZ7MH10WYPfKChru6N1+lIRO4VJtSb/ScPYyZWLms88YsmypfIOYVDpmnG6I6yOMDrMEqdS4Vxye52aCpi4uMm/1oU+au7rqDlxz1BALNqThUW72e6Vcej30TZ5ZTPCLGc1A3wGsTR69/tsgpigexwh06ybYjdaix+8gmVXIlYB3u45O4haqgtcEyiH/0zZtQjSYNEt+sBa7iMPfWyUmgaFrDYJXBHitloqTdH66fVbGCVM18nYGlx2FjBsz6fCx4MKEyGuH0Apw96qlyO2n
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,81 +108,283 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When !CONFIG_TRANSPARENT_HUGEPAGE, a non-folio compound page can appear in
-a userspace mapping via either vm_insert_*() functions or
-vm_operatios_struct->fault(). They are not folios, thus should not be
-considered for folio operations like split. To reject these pages, make
-sure get_hwpoison_page() is always called as HWPoisonHandlable() will do
-the right work.
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Fixes: 689b8986776c ("mm/memory-failure: improve large block size folio handling")
-Reported-by: 是参差 <shicenci@gmail.com>
-Closes: https://lore.kernel.org/all/PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com/
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Tested-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-[Some commit log borrowed from Zi Yan <ziy@nvidia.com>. Thanks.]
----
- mm/memory-failure.c | 42 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+Changes in v4:
+ - fix commit message in [PATCH v3 23/30] (pointed by Baoquan He)
+ - move lruvec_lock_irq() and firends to mm/memcontrol.c to fix the compilation
+   error in [PATCH v4 24/31] (reported by LKP)
+ - include parent_lruvec() within the RCU lock in lru_note_cost_unlock_irq() in
+   [PATCH v4 24/31] (pointed by Harry Yoo)
+ - move the declaration of lru_reparent_memcg() to swap.h
+   (suggested by Muchun Song)
+ - fix lru size update logic in lru_gen_reparent_memcg() in [PATCH v4 26/31]
+   (pointed and suggested by Harry Yoo)
+ - add [PATCH v4 28/31] to use lruvec_lru_size() to get the number of lru pages
+   in count_shadow_nodes() (suggested by Shakeel Butt)
+ - fix reparenting logic of lruvec_stats->state_local in [PATCH v4 29/31]
+   (pointed by Shakeel Butt)
+ - change these non-hierarchical stats to atomic_long_t type to avoid race
+   between mem_cgroup_stat_aggregate() and reparent_state_local() in
+   [PATCH v4 29/31]
+ - make css_killed_work_fn() to be called in rcu work, and use rcu lock +
+   CSS_IS_DYING check to avoid race between
+   mod_memcg_state()/mod_memcg_lruvec_state()
+   (suggested by Shakeel Butt)
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20260128
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 825c706ac576..ba4231858a36 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2411,31 +2411,29 @@ int memory_failure(unsigned long pfn, int flags)
- 	 * In fact it's dangerous to directly bump up page count from 0,
- 	 * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
- 	 */
--	if (!(flags & MF_COUNT_INCREASED)) {
--		res = get_hwpoison_page(p, flags);
--		if (!res) {
--			if (is_free_buddy_page(p)) {
--				if (take_page_off_buddy(p)) {
--					page_ref_inc(p);
--					res = MF_RECOVERED;
--				} else {
--					/* We lost the race, try again */
--					if (retry) {
--						ClearPageHWPoison(p);
--						retry = false;
--						goto try_again;
--					}
--					res = MF_FAILED;
--				}
--				res = action_result(pfn, MF_MSG_BUDDY, res);
-+	res = get_hwpoison_page(p, flags);
-+	if (!res) {
-+		if (is_free_buddy_page(p)) {
-+			if (take_page_off_buddy(p)) {
-+				page_ref_inc(p);
-+				res = MF_RECOVERED;
- 			} else {
--				res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
-+				/* We lost the race, try again */
-+				if (retry) {
-+					ClearPageHWPoison(p);
-+					retry = false;
-+					goto try_again;
-+				}
-+				res = MF_FAILED;
- 			}
--			goto unlock_mutex;
--		} else if (res < 0) {
--			res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
--			goto unlock_mutex;
-+			res = action_result(pfn, MF_MSG_BUDDY, res);
-+		} else {
-+			res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
- 		}
-+		goto unlock_mutex;
-+	} else if (res < 0) {
-+		res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
-+		goto unlock_mutex;
- 	}
- 
- 	folio = page_folio(p);
+Changes in v3:
+ - modify the commit message in [PATCH v2 04/28], [PATCH v2 06/28],
+   [PATCH v2 13/28], [PATCH v2 24/28] and [PATCH v2 27/28]
+   (suggested by David Hildenbrand, Chen Ridong and Johannes Weiner)
+ - change code style in [PATCH v3 8/30], [PATCH v3 15/30] and [PATCH v3 27/30]
+   (suggested by Johannes Weiner and Shakeel Butt)
+ - use get_mem_cgroup_from_folio() + mem_cgroup_put() to replace holding rcu
+   lock in [PATCH v3 14/30] and [PATCH v3 19/30]
+   (pointed by Johannes Weiner)
+ - add a comment to folio_split_queue_lock() in [PATCH v3 17/30]
+   (suggested by Shakeel Butt)
+ - modify the comment above folio_lruvec() in [PATCH v3 24/30]
+   (suggested by Johannes Weiner)
+ - fix rcu lock issue in lru_note_cost_refault()
+   (pointed by Shakeel Butt)
+ - add [PATCH v3 28/30] to fix non-hierarchical memcg1_stats issues
+   (pointed by Yosry Ahmed)
+ - fix lru_zone_size issue in [PATCH v2 24/28] and [PATCH v2 25/28]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20260114
+
+Changes in v2:
+ - add [PATCH v2 04/28] and remove local_irq_disable() in evict_folios()
+   (pointed by Harry Yoo)
+ - recheck objcg in [PATCH v2 07/28] (pointed by Harry Yoo)
+ - modify the commit message in [PATCH v2 12/28] and [PATCH v2 21/28]
+   (pointed by Harry Yoo)
+ - use rcu lock to protect mm_state in [PATCH v2 14/28] (pointed by Harry Yoo)
+ - fix bad unlock balance warning in [PATCH v2 23/28]
+ - change nr_pages type to long in [PATCH v2 25/28] (pointed by Harry Yoo)
+ - incease mm_state->seq during reparenting to make mm walker work properly in
+   [PATCH v2 25/28] (pointed by Harry Yoo)
+ - add [PATCH v2 18/28] to fix WARNING in folio_memcg() (pointed by Harry Yoo)
+ - collect Reviewed-bys
+ - rebase onto the next-20251216
+
+Changes in v1:
+ - drop [PATCH RFC 02/28]
+ - drop THP split queue related part, which has been merged as a separate
+   patchset[2]
+ - prevent memory cgroup release in folio_split_queue_lock{_irqsave}() in
+   [PATCH v1 16/26]
+ - Separate the reparenting function of traditional LRU folios to [PATCH v1 22/26]
+ - adapted to the MGLRU scenarios in [PATCH v1 23/26]
+ - refactor memcg_reparent_objcgs() in [PATCH v1 24/26]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20251028
+
+Hi all,
+
+Introduction
+============
+
+This patchset is intended to transfer the LRU pages to the object cgroup
+without holding a reference to the original memory cgroup in order to
+address the issue of the dying memory cgroup. A consensus has already been
+reached regarding this approach recently [1].
+
+Background
+==========
+
+The issue of a dying memory cgroup refers to a situation where a memory
+cgroup is no longer being used by users, but memory (the metadata
+associated with memory cgroups) remains allocated to it. This situation
+may potentially result in memory leaks or inefficiencies in memory
+reclamation and has persisted as an issue for several years. Any memory
+allocation that endures longer than the lifespan (from the users'
+perspective) of a memory cgroup can lead to the issue of dying memory
+cgroup. We have exerted greater efforts to tackle this problem by
+introducing the infrastructure of object cgroup [2].
+
+Presently, numerous types of objects (slab objects, non-slab kernel
+allocations, per-CPU objects) are charged to the object cgroup without
+holding a reference to the original memory cgroup. The final allocations
+for LRU pages (anonymous pages and file pages) are charged at allocation
+time and continues to hold a reference to the original memory cgroup
+until reclaimed.
+
+File pages are more complex than anonymous pages as they can be shared
+among different memory cgroups and may persist beyond the lifespan of
+the memory cgroup. The long-term pinning of file pages to memory cgroups
+is a widespread issue that causes recurring problems in practical
+scenarios [3]. File pages remain unreclaimed for extended periods.
+Additionally, they are accessed by successive instances (second, third,
+fourth, etc.) of the same job, which is restarted into a new cgroup each
+time. As a result, unreclaimable dying memory cgroups accumulate,
+leading to memory wastage and significantly reducing the efficiency
+of page reclamation.
+
+Fundamentals
+============
+
+A folio will no longer pin its corresponding memory cgroup. It is necessary
+to ensure that the memory cgroup or the lruvec associated with the memory
+cgroup is not released when a user obtains a pointer to the memory cgroup
+or lruvec returned by folio_memcg() or folio_lruvec(). Users are required
+to hold the RCU read lock or acquire a reference to the memory cgroup
+associated with the folio to prevent its release if they are not concerned
+about the binding stability between the folio and its corresponding memory
+cgroup. However, some users of folio_lruvec() (i.e., the lruvec lock)
+desire a stable binding between the folio and its corresponding memory
+cgroup. An approach is needed to ensure the stability of the binding while
+the lruvec lock is held, and to detect the situation of holding the
+incorrect lruvec lock when there is a race condition during memory cgroup
+reparenting. The following four steps are taken to achieve these goals.
+
+1. The first step  to be taken is to identify all users of both functions
+   (folio_memcg() and folio_lruvec()) who are not concerned about binding
+   stability and implement appropriate measures (such as holding a RCU read
+   lock or temporarily obtaining a reference to the memory cgroup for a
+   brief period) to prevent the release of the memory cgroup.
+
+2. Secondly, the following refactoring of folio_lruvec_lock() demonstrates
+   how to ensure the binding stability from the user's perspective of
+   folio_lruvec().
+
+   struct lruvec *folio_lruvec_lock(struct folio *folio)
+   {
+           struct lruvec *lruvec;
+
+           rcu_read_lock();
+   retry:
+           lruvec = folio_lruvec(folio);
+           spin_lock(&lruvec->lru_lock);
+           if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
+                   spin_unlock(&lruvec->lru_lock);
+                   goto retry;
+           }
+
+           return lruvec;
+   }
+
+   From the perspective of memory cgroup removal, the entire reparenting
+   process (altering the binding relationship between folio and its memory
+   cgroup and moving the LRU lists to its parental memory cgroup) should be
+   carried out under both the lruvec lock of the memory cgroup being removed
+   and the lruvec lock of its parent.
+
+3. Finally, transfer the LRU pages to the object cgroup without holding a
+   reference to the original memory cgroup.
+
+Effect
+======
+
+Finally, it can be observed that the quantity of dying memory cgroups will
+not experience a significant increase if the following test script is
+executed to reproduce the issue.
+
+```bash
+#!/bin/bash
+
+# Create a temporary file 'temp' filled with zero bytes
+dd if=/dev/zero of=temp bs=4096 count=1
+
+# Display memory-cgroup info from /proc/cgroups
+cat /proc/cgroups | grep memory
+
+for i in {0..2000}
+do
+    mkdir /sys/fs/cgroup/memory/test$i
+    echo $$ > /sys/fs/cgroup/memory/test$i/cgroup.procs
+
+    # Append 'temp' file content to 'log'
+    cat temp >> log
+
+    echo $$ > /sys/fs/cgroup/memory/cgroup.procs
+
+    # Potentially create a dying memory cgroup
+    rmdir /sys/fs/cgroup/memory/test$i
+done
+
+# Display memory-cgroup info after test
+cat /proc/cgroups | grep memory
+
+rm -f temp log
+```
+
+Comments and suggestions are welcome!
+
+Thanks,
+Qi
+
+[1].https://lore.kernel.org/linux-mm/Z6OkXXYDorPrBvEQ@hm-sls2/
+[2].https://lwn.net/Articles/895431/
+[3].https://github.com/systemd/systemd/pull/36827
+
+Muchun Song (22):
+  mm: memcontrol: remove dead code of checking parent memory cgroup
+  mm: workingset: use folio_lruvec() in workingset_refault()
+  mm: rename unlock_page_lruvec_irq and its variants
+  mm: vmscan: refactor move_folios_to_lru()
+  mm: memcontrol: allocate object cgroup for non-kmem case
+  mm: memcontrol: return root object cgroup for root memory cgroup
+  mm: memcontrol: prevent memory cgroup release in
+    get_mem_cgroup_from_folio()
+  buffer: prevent memory cgroup release in folio_alloc_buffers()
+  writeback: prevent memory cgroup release in writeback module
+  mm: memcontrol: prevent memory cgroup release in
+    count_memcg_folio_events()
+  mm: page_io: prevent memory cgroup release in page_io module
+  mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
+  mm: mglru: prevent memory cgroup release in mglru
+  mm: memcontrol: prevent memory cgroup release in
+    mem_cgroup_swap_full()
+  mm: workingset: prevent memory cgroup release in lru_gen_eviction()
+  mm: workingset: prevent lruvec release in workingset_refault()
+  mm: zswap: prevent lruvec release in zswap_folio_swapin()
+  mm: swap: prevent lruvec release in lru_gen_clear_refs()
+  mm: workingset: prevent lruvec release in workingset_activation()
+  mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+  mm: memcontrol: eliminate the problem of dying memory cgroup for LRU
+    folios
+  mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
+
+Qi Zheng (9):
+  mm: vmscan: prepare for the refactoring the move_folios_to_lru()
+  mm: thp: prevent memory cgroup release in
+    folio_split_queue_lock{_irqsave}()
+  mm: zswap: prevent memory cgroup release in zswap_compress()
+  mm: do not open-code lruvec lock
+  mm: vmscan: prepare for reparenting traditional LRU folios
+  mm: vmscan: prepare for reparenting MGLRU folios
+  mm: memcontrol: refactor memcg_reparent_objcgs()
+  mm: workingset: use lruvec_lru_size() to get the number of lru pages
+  mm: memcontrol: prepare for reparenting non-hierarchical stats
+
+ fs/buffer.c                      |   4 +-
+ fs/fs-writeback.c                |  22 +-
+ include/linux/memcontrol.h       | 177 +++++-----
+ include/linux/mm_inline.h        |   6 +
+ include/linux/mmzone.h           |  16 +
+ include/linux/swap.h             |  25 +-
+ include/trace/events/writeback.h |   3 +
+ kernel/cgroup/cgroup.c           |   8 +-
+ mm/compaction.c                  |  43 ++-
+ mm/huge_memory.c                 |  22 +-
+ mm/memcontrol-v1.c               |  31 +-
+ mm/memcontrol-v1.h               |   3 +
+ mm/memcontrol.c                  | 554 +++++++++++++++++++++----------
+ mm/migrate.c                     |   2 +
+ mm/mlock.c                       |   2 +-
+ mm/page_io.c                     |   8 +-
+ mm/percpu.c                      |   2 +-
+ mm/shrinker.c                    |   6 +-
+ mm/swap.c                        |  63 +++-
+ mm/vmscan.c                      | 293 +++++++++++-----
+ mm/workingset.c                  |  30 +-
+ mm/zswap.c                       |   5 +
+ 22 files changed, 909 insertions(+), 416 deletions(-)
+
 -- 
-2.33.0
+2.20.1
 
 
