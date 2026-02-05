@@ -4,96 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99165ECD985
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 17:07:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF48ECD98A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 17:29:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BBFDF6B0005; Thu,  5 Feb 2026 12:07:12 -0500 (EST)
+	id 7348F6B0089; Thu,  5 Feb 2026 12:29:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B98236B0088; Thu,  5 Feb 2026 12:07:12 -0500 (EST)
+	id 6E1F06B008A; Thu,  5 Feb 2026 12:29:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA4B46B0089; Thu,  5 Feb 2026 12:07:12 -0500 (EST)
+	id 58F846B0092; Thu,  5 Feb 2026 12:29:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B7AF6B0005
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:07:12 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5AE4E140640
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 17:07:12 +0000 (UTC)
-X-FDA: 84411033504.06.FAA9524
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6BF02A001C
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 17:07:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fcYeMZIj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770311230; a=rsa-sha256;
-	cv=none;
-	b=dzsbwUQg93ujHLJuXceJRaID/nifjEQOvkGJFgOASu38NOMNsz7S6gGxTUTCztTY1ZkLRO
-	Bb74ZlfhbcTr4EGTEoH19R2UBzzKEGfGXbEOmIe1SKijDD5xZejpyTrIbR2PgZ3i6GH9QK
-	nVs2CPJx6HFYSzx7SyzE4K+9+lCLQ7w=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fcYeMZIj;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 453C36B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 12:29:17 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 004DC160653
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 17:29:16 +0000 (UTC)
+X-FDA: 84411089154.08.6E89667
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 390B2140009
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 17:29:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxWACkGJ;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770311230;
+	s=arc-20220608; t=1770312555;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HEYYA57CDMGGAq2JRLgRRt5ntofrPVzlQMLQ16kz/Dw=;
-	b=DB2FJbKVmZ+hKvnjsox9NIoFCeFb61eLIXwNMShaIbkh+1Gk07xzP2Yt1ylZmkLYNbK179
-	Oz4lOQhP1Za0PkS9JFYVUoKYd87r78dLEjjQDMxKvxU5mMC4k3+pxfknqNwv/OtnpG7WLQ
-	TH292h7ZylwFJrbAsMqekDOsg8yR5yY=
+	bh=XzZvidWsus7OtK4lFAmO2lKtoJo1W0yiwW6FWu0uFdY=;
+	b=EUwn35gy6+SYLHt7EaqjbFspkh8JEQSx1RBbq+MV58/jEBoLr1sX7nFLrqAmgHYxTouXzJ
+	42N62MtlqeyURhfyi1Hyq3gS0Tj2dOPpdjHugxz8/dvCGyZ2SJ+EDq1PlkYao/Ty/PZ2iH
+	6qc1o+wMPGa0vbBmH78+SaWSAJXQdgo=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gxWACkGJ;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770312555; a=rsa-sha256;
+	cv=none;
+	b=ipPaSUU2V2eUbLWRuThDAHUjJmA6fmfxuEAND+KmWkwgkaHYugoiarH4graw7liUe7yGLb
+	6TJlxcx0oAygqiFVcRaUN0NSJlCRaaRfkCQfOS6HS8qxB1mRDZGuWie2c9iIenX8C6Fvjv
+	TCxkoCrzQeUhkTDLr/sBRQHzmukEarI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 48F5B43BB2;
-	Thu,  5 Feb 2026 17:07:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C86C4CEF7;
-	Thu,  5 Feb 2026 17:07:01 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8DF0660010;
+	Thu,  5 Feb 2026 17:29:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898D0C19421;
+	Thu,  5 Feb 2026 17:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770311229;
-	bh=hLZdAFydF5edywDm8qjhXg3gGbme641Ks4YIUjrXrgw=;
+	s=k20201202; t=1770312554;
+	bh=0h6aXl3odpNK6UOPrFIUbCWh+xiPmUDlXpbqQDhrshE=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fcYeMZIjFB4IOerLQoWZdRcGFgImN9mvMO7/6fSZZhrhmPrmVGuBWrwxPQlJ1yle7
-	 HnL4PYMwl20DiMPZliZtSKsQUOgSKyGnZbXFBD/QfWINXD+7LbHne/nvN68R+6QDsf
-	 RDuKmDO1QhpWx4di20pWG3GGWxQYd8lO/42q84AinDfz/WMHVBxayoqhXYFFC/g9iQ
-	 fH2Jyh09BEtLvMc/k2mpvHRs7RDor4a1YCOkLr/xDboSxwps/whobr3hKOhMehm0Qd
-	 e0aYp8sIZhtkV0lAjd8WWnuApxIf94bDxhZlOIgnmMGGiBkcdFlj0bPn7J1JdQkeEu
-	 1y9G/EYZ7Rsfw==
-Message-ID: <6a364356-5fea-4a6c-b959-ba3b22ce9c88@kernel.org>
-Date: Thu, 5 Feb 2026 18:06:59 +0100
+	b=gxWACkGJV7DkZqdSO+Yr0POPlWnhgxybc9tAg6dxFEhlVjQlQtKtTIljdTT0hzq1+
+	 h8KjD/VSTs3PLX2jFPkpp7je/j4DVJ107VFASmwRWRQu9HifVKwjMEwB89Ys0I7AXN
+	 c4e7RWEYNhNIONgGGL8jGEk5AyQRP93D3O+W7h6musIYXU+WV2OZEHgFg2TUlEH7hU
+	 Zv5T98JKbPMN2oOy8HhGH/F4Tc46+No1HTfVOyElgCAKIQP2E2ietHeFJ6qYJT7nvF
+	 xt16dahFoksybify+15Y+KDDncnYDnt16EK3DBG4Nz74Q1TpRdXr60fH5nZ4fBsbxd
+	 8uR5SZdgstrkw==
+Message-ID: <fc60cc71-80eb-4058-8d0a-dbd19a5c10ef@kernel.org>
+Date: Thu, 5 Feb 2026 18:29:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/3] targeted TLB sync IPIs for lockless page table
-To: Matthew Wilcox <willy@infradead.org>, Lance Yang <lance.yang@linux.dev>
-Cc: Dave Hansen <dave.hansen@intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- aneesh.kumar@kernel.org, arnd@arndb.de, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, boris.ostrovsky@oracle.com, bp@alien8.de,
- dave.hansen@linux.intel.com, dev.jain@arm.com, hpa@zytor.com,
- hughd@google.com, ioworker0@gmail.com, jannh@google.com, jgross@suse.com,
- kvm@vger.kernel.org, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mingo@redhat.com, npache@redhat.com,
- npiggin@gmail.com, pbonzini@redhat.com, riel@surriel.com,
- ryan.roberts@arm.com, seanjc@google.com, shy828301@gmail.com,
- tglx@linutronix.de, virtualization@lists.linux.dev, will@kernel.org,
- x86@kernel.org, ypodemsk@redhat.com, ziy@nvidia.com
-References: <20260202133713.GF1395266@noisy.programming.kicks-ass.net>
- <540adec9-c483-460a-a682-f2076cf015c2@linux.dev>
- <20260202150957.GD1282955@noisy.programming.kicks-ass.net>
- <d6944cd8-d3b7-4b16-ab52-a61e7dc2221c@linux.dev>
- <06d48a52-e4ec-47cd-b3fb-0fccd4dc49f4@kernel.org>
- <3026ad8d-92ad-4683-8c3e-733d4070d033@linux.dev>
- <64f3a75a-30ff-4bee-833c-be5dba05f72b@intel.com>
- <c985a8ed-37ad-415e-b7b4-18a66b4da3fe@linux.dev>
- <647cbe2e-a034-4a75-9492-21ea1708eccc@intel.com>
- <99237729-f2b0-4a7a-8213-65a2f1c57744@linux.dev>
- <aYTJzft5cuqD9akC@casper.infradead.org>
+Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org,
+ linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, ardb@kernel.org, akpm@linux-foundation.org,
+ osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+References: <20260203174946.1198053-1-prsampat@amd.com>
+ <20260203174946.1198053-2-prsampat@amd.com>
+ <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
+ <70be936e-e49d-4485-8d1e-416fdf8f40a4@amd.com>
+ <aYR0vqwyFPo3EKAi@thinkstation>
+ <ce4334f8-5e54-4dbf-9be0-059279ef1962@kernel.org>
+ <aYS8O0phOE41IuEF@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -140,17 +129,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <aYTJzft5cuqD9akC@casper.infradead.org>
+In-Reply-To: <aYS8O0phOE41IuEF@thinkstation>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hzzwcq7w5f17akm7pp4hpxt91zn1qhuc
+X-Rspamd-Queue-Id: 390B2140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6BF02A001C
-X-Stat-Signature: 86yji1thxx9hr3eqmfhyuouyfccjk7bn
-X-HE-Tag: 1770311230-359623
-X-HE-Meta: U2FsdGVkX1+YCekQHAN9F40ZwcWqj4JEQw2TUetOWo/FvWR/evcgGlI6DcckfO61lQWmEyNjIM0HPMH4Wl0bPPcEWXQ7ZzwzJimrVYHBOqdKlsbsMN4wITqnVT2yNDcA6oCZormIS1jW+LV+/1IeUroy7GfehZws3hnkjfUt9XL8TDJVJ+6J0mKXoZ40brQets+LNYxRWnHjMxzeZLlTBhH1Go/s2insK92W4gPMOCY5ZrE96BgqiDMZy6SuQpwsdj4h7oRtyUAXZU0NfjvrbNk2PMuWvub0eReUCryh/5hJEuxrZ/s1wDj0JaMGk0xm8RMHii/8KlagCvTo9aSui2yBjSnFdbONND2ebDMUpSmqY+noKBGI3Kd8b8yGSeq3r9m+tMSjIbgb9LHagDaRGrT9KwW3JpvPOCOdAMdlrvv0u8EVJH9OF7iwKIKC/XbI8w14yLaFyLaPzP4jUWSbTDRkrp/PnbEgwPCa72slYiAR1IxIBW57C3WrFEdcZ4F41iOxAS82n1kk7cBI5VASodrsNxb9qxece1IokjXaL4qACT+C15Wb6w2xxuUPwl2CpjdtjF0gXsi8Erql4PzSCabkBVqgTfA5zYOzCyX7qMSRveVWxD/F2hg9qeI5UH8NfNWyRFPyEvO7FoCwdNAPK9NCPcJzRYam73sAdN98JtPlQcRg9MUM0u0UC+okKBO5VXsojnUMaX2QK53eWqesxYtIEUPAoY1DIiwKG+pCLU07YTazkXzsmJskigRkAugJx8DRFBGvmouQn6a4qfcCShDnhmnx3E/1X/DfakDcGUGE0XR1SZHsuWkbAVd4FGo16fOmaTj/z4LN0/du4pFdKTzYd2qGK86y5uCseGu2cBHaQwQ3h0ddRMCqBW0efkvZH6fZ71/nG7Gesa/uSFBA4JuhAQ0KOXwPU2u4nVNbLRRBrj2eq+ir/Apw7W84gA+9rvkeUTr6Z6H/Doxr37G
- yyxNE8bb
- 58udp2lb+/jWnkgtXaQExDTQ9c1bK5nNdDOd03CRZBGp4X12ia8jj7KQEsIYprMVFqAJfALeKDybsYsNnJRz7NFd3kTmIAjpU6GaWPbKGd0FwFpII7VS2G9EiWdfGDxTT10xZcuxrpEBqnM7CQNTRMYTYAO4uG+SD2VtzGSz2MyB8SWbavRgmD+t5Iw1CoNKlifWrkIbGOGQjlCDoKwGu4QlatQgZCd9eeD9ylhG3vRiZGjUASWw6GjAQD58Pl7UUyMmo
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770312555-450946
+X-HE-Meta: U2FsdGVkX1+bsRuaTSICmfFdlbFAFfkuDSAVCGXOFEv2ZLLd/eeMYaJoI5K7NJnC7jYBuTPaJjs/Gibxmlmcj+ieB2qV3tjjF/TQSl9nz4WfZp+YkZvlIN3cBMrJzNPp6NzSPOWk7JrZKp5NYlyph0RKZLggvpWBI/WTDNCCscJb3Q0X46QmXQ18Ztb00xGC/hJSw/syChJ+oqbXdhEf9a0z1svFOkaLg0Un9OxiwAILwHtG18acYnPBNFtakE8588mDDbKspcZrTpkBe0WEj4hHUtFUdwV8wQq5MFKcNPu2Awu4XA1z5dEogsJHuiB86ksS27JayHPZEsLJkCrZCfxkspPkWMyLMbQOQJBnO7Z/04IokkayDUl/AaT5E57pn6Ds53KwrwzDvixaokS3PuPyGzSP8iXIVLk+aCsDDgJGm3n3O6yoiyaODbETlI+DrdGNDLxwV+CBgbn+daoXRWCmweiCBoJND6YSPdAzwTINEzeUwN+H9vn5M2LZgzmgi6Ge5f2EoMyp+c+tDYRPS9R72uHFuGAM5ElcYrjvemRKDC7Ix4H2GgaPV99VxHmP87BJgRfErpdDsDStprIu6gxx7KsjZ6CyQGXqIWOiAS1V5SqiS3SASbgU4G6gBfxdIEseqG4kq0BsGPWs6mibjH+lJ0bXmm8M/Ch/KgmmPxS4eIky1NwjxPe4K0IpyHMfnrbuMaLePCZTIVNTPzoaylBRiYLrtTsUUWMPnZc1EbUHPamBy8OKj12Lu66vs2g/i4O/y7BHAuv2TaNpgor57nF9VCsOpxCfeBISe3UmwfReR2XLNRbDfPyDXcZwCBoy5pId/qDqmNEkQRyOfUwUaMR9Tjor3xoJvYVE7mYd9rUxPBMSlWa/i6MHnlrjfnrTQdA2CkhsBEYqQIGYZ+V/jfHhJfDvHua+Ss7sZHtzSxiMl04Q8VjWfpBTddiaA8jqXoVPErkPjuecB4XEuzF
+ DBQrpe1u
+ Y8FLdhxXNAmlJcaahiQWnmBtqUbzT3P2WLgEwg62kbYRyYcsUOt4E09OtL23Sf5wslgaRPAT4dnsXR70cx+j0LBoZj+oVAscwKjkNkyetHZmeolv2m+lTFqCDb21R+FOUUbOOsRoKNdIB6qczNb4qB1z6utYbLw3RuxC89Xkas7r1eNNGzeFo5mSlxR2RWa3g7RjRKNDVMEHbpvJZTX8tecpuPi2F3271ELetdnD63JDfvW84HT4cSMGL1Rmm+ngqmnPvQY2KbKLV0BiDlX1YbIPvwFXlgCfnvjFt0m7qtSS3RiHIwnyluHLZXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,33 +148,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/26 17:48, Matthew Wilcox wrote:
-> On Fri, Feb 06, 2026 at 12:30:56AM +0800, Lance Yang wrote:
->> On 2026/2/5 23:41, Dave Hansen wrote:
->>> Yeah, but one aim of RCU is ensuring that readers see valid data but not
->>> necessarily the most up to date data.
+On 2/5/26 17:08, Kiryl Shutsemau wrote:
+> On Thu, Feb 05, 2026 at 04:48:13PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/5/26 11:48, Kiryl Shutsemau wrote:
 >>>
->>> Are there cases where ongoing concurrent lockless page-table walks need
->>> to see the writes and they can't tolerate seeing valid but slightly
->>> stale data?
+>>> You are calling arch_accept_memory() on every memory allocation if the
+>>> memory is not represented in the bitmap. Hard NAK.
 >>
->> The issue is we're about to free the page table (e.g.
->> pmdp_collapse_flush()).
->>
->> We have to ensure no walker is still doing a lockless page-table walk
->> when the page directories are freed, otherwise we get use-after-free.
+>> In which scenarios would we not have memory represented in the bitmap?
+>> Guests with <4 GiB? (how does kexec work?) Anything else?
 > 
-> But can't we RCU-free the page table?  Why do we need to wait for the
-> RCU readers to finish?
+> We create the bitmap that covers all unaccepted memory.
 
-For unsharing hugetlb PMD tables the problem is not the freeing but the 
-reuse of the PMD table for other purposes in the last remaining user. 
-It's complicated.
+Good! :)
 
-For page table freeing, we only do it if we fail to allocate memory -- 
-if we cannot use RCU IIRC.
+> 
+> What memory is unaccepted is up to BIOS. Current implementation of edk2
+> accepts the memory in the first 4G range of physical address space. It
+> means we won't have bitmap for this range (unaccepted->phys_base >= 4G).
 
-khugepaged, no idea.
+Ah, okay, this comes from the BIOS.
+
+> 
+> If the whole VM is smaller than 4G we won't have the bitmap at all.
+> 
+> We can allocate bitmap for all possible memory. Maybe upto max_possible_pfn?
+> But we might not know the value in EFI stub. It costs 4k per 64GiB of
+> physical address space.
+
+That's what I would do. 4k per 64GiB sounds reasonable.
+
+> 
+> Ideally, we want to know on boot:
+> 
+>   - what memory ranges are unaccepted - we have it;
+>   - what memory range can be removed or added after boot - we don't have it
+
+The SRAT describes memory ranges where we can see hotplug memory. Is 
+that too late? We calculate max_possible_pfn based on that.
+
+(don't ask me about special CXL windows and how they are advertised :) )
 
 -- 
 Cheers,
