@@ -4,90 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B4FEA795B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 03:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F2B5EA7945
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 03:21:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 616C96B0093; Wed,  4 Feb 2026 22:13:14 -0500 (EST)
+	id 7C2646B0089; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 599466B0096; Wed,  4 Feb 2026 22:13:14 -0500 (EST)
+	id 769136B0092; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 49BD96B0098; Wed,  4 Feb 2026 22:13:14 -0500 (EST)
+	id 63D506B0093; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 37D496B0093
-	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:13:14 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD6D3C1988
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:13:13 +0000 (UTC)
-X-FDA: 84408931866.29.641B0F1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3EB0C2000A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:13:12 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n7SeFapV;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C52C6B0089
+	for <linux-mm@kvack.org>; Wed,  4 Feb 2026 22:21:20 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EAD8A1C103
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:21:19 +0000 (UTC)
+X-FDA: 84408952278.08.241F8C2
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0538F12000A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 03:21:15 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s4LUiWGC;
+	spf=pass (imf29.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770261192;
+	s=arc-20220608; t=1770261678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vEtqPtk7GvCpHPDIpeP/K+Mu8H0SJxu2B93D5gQMKjY=;
-	b=MzsTi4WnysfJeJKip5UQGzWR7wQ3tGQbrHXGT01KM5fz3dYrfzjMJlscl+9kHDZ+O6LXMe
-	ynS8KCwC1TzoDGIb41SO2QfY9+kbb0isCbysIzPfI4dX6nDi6GIc1AnoeSlQmi6u1g6vL5
-	9TFcZqUCQYdIQMEk1zzlnnVNsiPpoR4=
+	bh=LyyA1PPt7lfcB8CKs4wjIz9KHF1gMnrJMFjQaE0YHQ8=;
+	b=x74LQrXggjlXHv2z9HznUoFi285htKexZT1B1POBBM3UiNML+RCHPoi0vr9/o0vh5GeT6e
+	x2fy0WDBSml/PBjn/7hXAXmWjz5AyLj1H/dFz106EyTmM0EmUh3A1dxdblCOz3FCIA1bFb
+	IVrsIEGAn5eIRZ9Y39TWdPSRg437BSU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=n7SeFapV;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770261192; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s4LUiWGC;
+	spf=pass (imf29.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770261678; a=rsa-sha256;
 	cv=none;
-	b=58ZdwZrayrVO/BcYmlf5MAEWOgX5KkjV8rvsBYPFkd/1J1vvGs+GNp0dTC6JliL043Uue/
-	5uRkRZoC98fSCu8y3Omw5vn52CqeMizJ5vX3XPs5A9AbNnAcuxeptsKOLJJl6PFqkpou8+
-	tGuhwlDiF40f/pxNJxPa7uWGoCV5GJY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 060184343D;
-	Thu,  5 Feb 2026 03:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C94EC4CEF7;
-	Thu,  5 Feb 2026 03:13:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1770261190;
-	bh=HDN75FDUo5Qy2KldHx4LIkZkOb9M+7wUHDms5Y7mFs0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n7SeFapVpA0FVa0rBcWMRcqmtGXhKF4SUKqa6WYkxg3xN0Hzhk+bD4Sky5jqyzz8i
-	 XrqwGPUGg1xCPw7eLbUS5wdpQeBTknZ8sef8am4JZu5wQad/bJvSThYaWvVQWHBHZn
-	 onA9ZqZCPSsmKqrx5TWnRVy7wi9D6Ji2AbfoUcYM=
-Date: Wed, 4 Feb 2026 19:13:09 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: david@kernel.org, lorenzo.stoakes@oracle.com, riel@surriel.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
- jannh@google.com, ziy@nvidia.com, gavinguo@igalia.com,
- baolin.wang@linux.alibaba.com, linux-mm@kvack.org, Lance Yang
- <lance.yang@linux.dev>, stable@vger.kernel.org
-Subject: Re: [Patch v2] mm/huge_memory: fix early failure try_to_migrate()
- when split huge pmd for shared thp
-Message-Id: <20260204191309.5c61a11ddfbb71f6a1672c12@linux-foundation.org>
-In-Reply-To: <20260205030421.zz72iie5bwvgxlsj@master>
-References: <20260204004219.6524-1-richard.weiyang@gmail.com>
-	<20260204114217.6da3e05ee5fbfac3a5f4c16a@linux-foundation.org>
-	<20260205030421.zz72iie5bwvgxlsj@master>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: r431eprzzim135wum9rztf4xojb6u56s
-X-Rspamd-Queue-Id: 3EB0C2000A
+	b=FYrGxMZ00zh58pX7xsQY7BGVmDl4jYZfCao+DHcvFZ6w/RL14/q+Zc0G9SEXZiC5TdCOFY
+	jXQUeLHiocUJaSroaiLp167MG1fLaVvGAnWT0bHit0wQaJIZejAhIDYIMUeXbHsLEs30Wf
+	gT/VlCTeVjrcM1gPO+Or4c6PJ+lYSDM=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=LyyA1PPt7lfcB8CKs4wjIz9KHF1gMnrJMFjQaE0YHQ8=;
+	b=s4LUiWGCqQZAkW0B6mOkXEBOqMMP0TCbhQLWY/7IMJcNDgk9KFb0gC83uJb/+Cdq8eesSLyWj
+	RQxyp6eSVPhZ08RLr/bLU56Wgoj7kL/ny3J5YlqlUF6Ennup2KtfLY0A6b9SxlYLRT8iGNiYeo1
+	PBZffgnj1gjijaIDWK29Pho=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4f62Sb6T8Dz1T4Gw;
+	Thu,  5 Feb 2026 11:16:47 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5C02A40561;
+	Thu,  5 Feb 2026 11:21:11 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 5 Feb 2026 11:21:11 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 5 Feb 2026 11:21:10 +0800
+Subject: Re: WARNING in memory_failure() at include/linux/huge_mm.h:635
+ triggered
+To: <jane.chu@oracle.com>, Zi Yan <ziy@nvidia.com>, "David Hildenbrand (arm)"
+	<david@kernel.org>, =?UTF-8?B?5piv5Y+C5beu?= <shicenci@gmail.com>
+CC: <linux-mm@kvack.org>, <akpm@linux-foundation.org>,
+	<linux-kernel@vger.kernel.org>, Matthew Wilcox <willy@infradead.org>
+References: <PS1PPF7E1D7501F1E4F4441E7ECD056DEADAB98A@PS1PPF7E1D7501F.apcprd02.prod.outlook.com>
+ <b9e89c85-807c-4a8b-aa5c-8c1325e75445@kernel.org>
+ <1db245a8-f9ab-42e4-8cc6-cc7562961921@kernel.org>
+ <48978612-6933-4897-85DD-6740B6C8570B@nvidia.com>
+ <25CA4D90-A24E-49C6-92D2-08080EC81466@nvidia.com>
+ <032058DC-CD8D-406A-B986-740E41C834B2@nvidia.com>
+ <e97d5c0c-b8ec-4da4-b838-7a308f8a6327@kernel.org>
+ <61BBEF63-20D6-4671-B7F7-F015D49B2080@nvidia.com>
+ <1bfc9e64-2961-4d2c-a6c3-fb123f66e6cc@kernel.org>
+ <94DAA11B-597F-4F8F-AFFF-9D7626A7C091@nvidia.com>
+ <7d5754dd-8cf5-41f3-a767-271b28b1f63c@oracle.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <c5206f67-1e9e-d487-3514-8867f00cc626@huawei.com>
+Date: Thu, 5 Feb 2026 11:21:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
+MIME-Version: 1.0
+In-Reply-To: <7d5754dd-8cf5-41f3-a767-271b28b1f63c@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0538F12000A
+X-Stat-Signature: tg37z5c6nxwwwmgnnwxb5r3tcc38k8ep
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770261192-414851
-X-HE-Meta: U2FsdGVkX19RddZDpZ2uZ2CQm/ZJi2SA525xbzbVzc4/J0t7V6X9l0uEbuWzdN4/5l6n6l8c147XampqbhcvmVOFLagN0MoyStnK18RauI0OJ4Mlm80YY333XAKa6IWmms+tO6kfE8rrxu1dT0IAe0HVbCAu+/TpupcvOusc/Fc8Pg86RduIovU8/oKDEwXA7bsv3iVWtp/mrGyctMJ9qVf0AmghGgA8II540cMWLKIcYOfLdqkvbjK6jsyyB9pr1fa0XlYFrO3PdSnLbfVzFETtyVPWlnVSfAwTJtbX84zSVL8v4ryUfp8gt8OPMVOhD0aVPXS5gs+Pi79HKzOE4ZyX5KNT8t6YJNnrnd0NcrxkfliFoFOmcVGDfcGlip3nf/9rWYPibv51D56vj9gyhPNJEPKvVeFRIkr/m2wkRz9V+VEOz/5gNO3TYr+HqjUsd3EzZ+GlFwC+b6cUlTtDoO10zHE0nq1vI93/FMxJ5Z0p9UpiD3g7KFxWJJACa237McspMMpezY+Lvr64mUIISWvfdi2LzOkunoTxGisq+2UZ4rMoAaVY5eCTfMljs/Gi2qE0LjOt5W/xeNTp2+Es+vZvvL/lKC7GVakxwX4k5iSB77djbpR+bplGvwE6Mc7quHQgaz++tDi3S0VVw5EdRBkYPx61V7gS8HgI4zIBvQZQsiuHglMLKuM9H6Wx0wmWbANB5Hg3CjWUKzg1MQ71uJJNeoba5UPN+wMCRJT7GcL3EaHpGAxezlfEQGnLs8eUqDZhpsWq+iM5WAC8DjbgMte15+/JtQmOgsQ/pE9ju0YYEq1edBZlJoZN60dqPbyZSMggW1gZuqb7Sjf3DNAo95cuDI5vEbPqfQoaL8dDp8ZrppY9CDo+wPrkeVtr61A8ggqD8hVbaTE38/Mjb7ktkO2e3+9yCM+w6T/HMGPzdNaC14tarHc+QmAbqSHAPnE/iIdtkUbaU07TUUXJdFp
- emCeXtgR
- CSJiUB15kYIk33Hp8a4EFGjjuqKfZKsPgDm00b4XLjI/9Qa3442eA2R0FYv7i5j8TkI9MY4+nWeA83sY=
+X-HE-Tag: 1770261675-47595
+X-HE-Meta: U2FsdGVkX19TJAbF0HkpOiPlYNSiEdOOE9d/ylzw7/hoyzLys00kibDtcUfE6miZ/mLWsO6fPR8LPE20lxIpV2p1A0AHEUquhTDqSngmG54SV9TSV0cRjBSLE+Gm6bWeuSnjUSxx/gIxCcW04StQEO2mUfRlkELQjSIoa+/ia/TN5X6StmZkHdjjBu6q7OECwz5vgFr9i3TYk8l/6ec2WiaETeEZP3o6Ga6yfQ2JEIpHxCowozIYyVHdNxuGJ27XktWg5bDJUlvEhDEU/kcviQDtTjXjZit/PWy59bNzo16qTB1DGqRIdQxKn+HRYJkxeQF3Bf8uk+Qo3ddsoT2VvORGMbGEwhnRsvI4sZtAdHfp/WEN5DsnpWAH+L41T/MReiNgwIevhDpJjRLpp041P2Mju84uxHUFee5KShzPBjCfX3wo4/qlFNJg/ahtKCrSVd8vKJc+EZqwEkfHfIft+gDl9+5H5JtMW7RSVNjLRt4meogpwjqajYdsHvXej5UGMM51KngUMvqO7mLYo/bySru/zi2HIkTbSyatQiE0JRuOxyc2USW+T7f0nXQ5U/cRpU/WCb0KNPNPCQfNWJSBMEnnVCPSFUjJdfzZcO8hv7kowI7aJmJqSCxJBIHrz2mUMX4vin8yraEOxKWD4dHLG17QYRpea1jCD7HSjmi5m8Ho6cZKohQbo0CVIH4kkxGzAbWP7pBRXvzxvajgle0LzBE5WQgRsxTc1qFwfzok2jakoKByXVLL1XtqQ0RWR5enz8B+m843x3jKPpgaCz+nb3t3Y1gV0Lehyr4hISw/HmVpp4UskaIMB8ITXdKxJqZfluUvE9RXy2Y6NhwJRQrBFiWgfYipZSZDh5zLarLZICPDGb+sRftQ/dovQTTNhJsfDU2tIqGEed/OHX78dsUj9my1INDMEQACK8HvsDx+IXev3lWCS3jmRyXAHMgSZXMm1hj4IFtscG20Om2H/5f
+ YipwiN8b
+ aPks1w9odmtSRI8zVwIn+IKgzkDOyBU3eiGzGMIPTN7OqN8Hu0mdkzHAFArjInWsYVsp9LSa8OfS0ul+pQKC9yiIZMzERzMfQR/LEVXM7+kX4klGLmU1MdkkwAisFEYdsbA/DLKcWUNjJtnwNg9qwRSEqqVyoLySYjTvSQeftXuKKrM7tIWqin/ATKT3RWzxPfSufJLJI1mEI+OdctTbhynXEXsizc3RD+/EBTLv5UOTpe8edLJcGm6PXpMi67FTA7YlBNsQjE1REDEKmXz2D02raS9HhAkH4d5ZLfWgBj5LpVeE/CaKwd/hG8OEO0KvtDgTUUh9FI2yETCdc3JK9zW8tySDeRG51iSAUuYWOQ98xeudAPyesNWj1KNxuTTglXM8DmEMgeFYw2B0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,27 +116,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 5 Feb 2026 03:04:21 +0000 Wei Yang <richard.weiyang@gmail.com> wrote:
-
-> >> Cc: Gavin Guo <gavinguo@igalia.com>
-> >> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> >> Cc: Zi Yan <ziy@nvidia.com>
-> >> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> >> Cc: Lance Yang <lance.yang@linux.dev>
-> >> Cc: <stable@vger.kernel.org>
-> >
-> >Why cc:stable?  In other words, what is the userspace-visible runtime
-> >effect of this bug?
+On 2026/2/5 10:00, jane.chu@oracle.com wrote:
 > 
-> On memory pressure or failure, we would try to split folio to reclaim or limit
-> bad memory. If failed to split it, we will leave some memory unusable.
 > 
-> I would put this in change log, if it looks good to you.
+> On 2/4/2026 1:41 PM, Zi Yan wrote:
+>> On 4 Feb 2026, at 16:37, David Hildenbrand (arm) wrote:
+>>
+>>> On 2/4/26 22:08, Zi Yan wrote:
+>>>> On 4 Feb 2026, at 14:18, David Hildenbrand (arm) wrote:
+>>>>
+>>>>> On 2/4/26 18:41, Zi Yan wrote:
+>>>>>>
+>>>>>>
+>>>>>> More details:
+>>>>>> later at sg_vma_fault(), the driver just handles a page fault by supplying
+>>>>>> a subpage from a pre-allocated compound page[3]. We then get a large folio
+>>>>>> without !CONFIG_TRANSPARENT_HUGEPAGE.
+>>>>>
+>>>>> We can identify such non-folio (but compound) things by looking at PG_large_rmappable IIRC.
+>>>>
+>>>> OK, back to the issue. The patch below should fix the issue?
+>>>>
+>>>> Hi 是参差,
+>>>>
+>>>> Can you test it?
+>>>>
+>>
+>> <snip>
+>>> I think you have to test for folio_test_large() before testing folio_test_large_rmappable().
+>>
+>> Oh, forgot that. Thanks.
+>>
+>>
+>>  From 8dda4bba9964890462eca3ef3cce57bb4fab8313 Mon Sep 17 00:00:00 2001
+>> From: Zi Yan <ziy@nvidia.com>
+>> Date: Wed, 4 Feb 2026 16:04:19 -0500
+>> Subject: [PATCH] mm/memory_failure: reject unsupported non-folio compound page
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>>   mm/memory-failure.c | 8 ++++++--
+>>   1 file changed, 6 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index 825c706ac576..137c67fda57e 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -2440,9 +2440,13 @@ int memory_failure(unsigned long pfn, int flags)
+>>
+>>       folio = page_folio(p);
+>>
+>> -    /* filter pages that are protected from hwpoison test by users */
+>> +    /*
+>> +     * filter pages that are protected from hwpoison test by users
+>> +     * or unsupported non folio compound pages
+>> +     */
+>>       folio_lock(folio);
+>> -    if (hwpoison_filter(p)) {
+>> +    if (hwpoison_filter(p) ||
+>> +        (folio_test_large(folio) && !folio_test_large_rmappable(folio))) {
 > 
-> As David mentioned some change in comment and change log, do you prefer a v3?
+> Just curious, would this filter out pte-mapped THP/mTHP folios?
 
-v3 would be good please.  If the patch(set) was large and had been
-under test for significant time then I think a delta is preferable. 
-But that isn't the case here.
+Thanks all.
 
+memory_failure() can meet various types of folios. So in get_hwpoison_page(),
+HWPoisonHandlable() and PageHuge() are used to check whether the folio can
+be handled. But in madvise(MADV_HWPOISON) scene, MF_COUNT_INCREASED is set in
+flag, so this check is skipped and warning triggered. Might HWPoisonHandlable()
+check be always used to make sure the folio is in sane types? Something like
+below (i.e. remove the MF_COUNT_INCREASED check before calling get_hwpoison_page):
+
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 825c706ac576..ba4231858a36 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -2411,31 +2411,29 @@ int memory_failure(unsigned long pfn, int flags)
+         * In fact it's dangerous to directly bump up page count from 0,
+         * that may make page_ref_freeze()/page_ref_unfreeze() mismatch.
+         */
+-       if (!(flags & MF_COUNT_INCREASED)) {
+-               res = get_hwpoison_page(p, flags);
+-               if (!res) {
+-                       if (is_free_buddy_page(p)) {
+-                               if (take_page_off_buddy(p)) {
+-                                       page_ref_inc(p);
+-                                       res = MF_RECOVERED;
+-                               } else {
+-                                       /* We lost the race, try again */
+-                                       if (retry) {
+-                                               ClearPageHWPoison(p);
+-                                               retry = false;
+-                                               goto try_again;
+-                                       }
+-                                       res = MF_FAILED;
+-                               }
+-                               res = action_result(pfn, MF_MSG_BUDDY, res);
++       res = get_hwpoison_page(p, flags);
++       if (!res) {
++               if (is_free_buddy_page(p)) {
++                       if (take_page_off_buddy(p)) {
++                               page_ref_inc(p);
++                               res = MF_RECOVERED;
+                        } else {
+-                               res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
++                               /* We lost the race, try again */
++                               if (retry) {
++                                       ClearPageHWPoison(p);
++                                       retry = false;
++                                       goto try_again;
++                               }
++                               res = MF_FAILED;
+                        }
+-                       goto unlock_mutex;
+-               } else if (res < 0) {
+-                       res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
+-                       goto unlock_mutex;
++                       res = action_result(pfn, MF_MSG_BUDDY, res);
++               } else {
++                       res = action_result(pfn, MF_MSG_KERNEL_HIGH_ORDER, MF_IGNORED);
+                }
++               goto unlock_mutex;
++       } else if (res < 0) {
++               res = action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
++               goto unlock_mutex;
+        }
+
+        folio = page_folio(p);
+
+Thanks.
+.
 
