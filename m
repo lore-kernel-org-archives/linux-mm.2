@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 702BEEE6B6A
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 23:28:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87CFCEE6B66
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 23:34:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE3586B0089; Fri,  6 Feb 2026 18:28:35 -0500 (EST)
+	id 8B1AF6B0089; Fri,  6 Feb 2026 18:34:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A90C96B0092; Fri,  6 Feb 2026 18:28:35 -0500 (EST)
+	id 85EF16B0092; Fri,  6 Feb 2026 18:34:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98FEC6B0093; Fri,  6 Feb 2026 18:28:35 -0500 (EST)
+	id 75E2C6B0093; Fri,  6 Feb 2026 18:34:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 841D16B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:28:35 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F08E4139059
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:28:34 +0000 (UTC)
-X-FDA: 84415623348.15.F475AF5
-Received: from r3-20.sinamail.sina.com.cn (r3-20.sinamail.sina.com.cn [202.108.3.20])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 0A47E180006
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:28:31 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=Ufj2C5zO;
-	spf=pass (imf06.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.20 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 67F076B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:34:28 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 18EB81A0354
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:34:28 +0000 (UTC)
+X-FDA: 84415638216.01.2A8EAD8
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 152B780002
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:34:25 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UfeA1jSy;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770420513;
+	s=arc-20220608; t=1770420866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5+q2ZVcAz7bB71SNxE1U3HEq9dQbnKL+GOuYh5D2Ugo=;
-	b=XlBELZzVD8zrBRV3reSr91W09DgIucz0DU6/rQiN+CjlZ2aUg2PKqg3g6VKVME8qrnnOfQ
-	jmAn5frHs/fJoX7ZYHMFWBcV3R5kbkX1moW/OI7QAl7yBd4APqlzGSeE3hg7fqlwZpm59R
-	Ebh0r6yN9WDX5CzkKp4N32gP8khc6gs=
+	bh=A/95J67fXqSWtWPcMB6TuDp3d6eu7CAewNBLcn/8dhY=;
+	b=BuMSI+uxrce7RnzW2YdQ5CW2dz/Y/08gDSae76MkOgT1sGvU3GNYSoUw6rNCqt3yeHjapp
+	pgYM7SIZ2gGGXwftoqWh188SrxvAupfOXRBMP+nh4CIamFaTcrM8wH+EjWOIpNeEOl+/+e
+	wcaGWB5D+xl+dvg4mgpNF9j9k6HeurU=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=sina.com header.s=201208 header.b=Ufj2C5zO;
-	spf=pass (imf06.hostedemail.com: domain of hdanton@sina.com designates 202.108.3.20 as permitted sender) smtp.mailfrom=hdanton@sina.com;
-	dmarc=pass (policy=none) header.from=sina.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770420513; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UfeA1jSy;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770420866; a=rsa-sha256;
 	cv=none;
-	b=zYM7MUwvJSDFoVZivZ3NnVCMkDL+nOE82Kbfv8yfzQDM345zjooqTq51N9u8NRP5C8UBub
-	4fYA+8HydkI/ySnY4fmp9tEmBZPcrx4bmOv02SO+q0BtA7WaB1y233tEbJIWCg/+2iLENI
-	a56jVvHa+Sr5vyfzDDtb5IaYZ2E0YTE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1770420512;
-	bh=5+q2ZVcAz7bB71SNxE1U3HEq9dQbnKL+GOuYh5D2Ugo=;
-	h=From:Subject:Date:Message-ID;
-	b=Ufj2C5zOIlVOjp/r5+VzNdpBG4yBGMktKJ+SxOm0epOMk+pH7ECt1IsP6CtqEtdIP
-	 lLaTVa7b0dJYT225adWtbLyo5+LD7w6++3cM/U+Fwhv9+ZC1QX7cVKnmIXMXeax8yp
-	 BmI1VpAtEpiOpINt9Eubf5tXszRB9X7hXh+7Wse8=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
-	by sina.com (10.54.253.32) with ESMTP
-	id 6986791A000015B1; Fri, 7 Feb 2026 07:28:27 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-X-SMAIL-MID: 5619754456882
-X-SMAIL-UIID: 5FFF89B0442249D792C553FA56B5A095-20260207-072827-1
-From: Hillf Danton <hdanton@sina.com>
-To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Cc: lsf-pc@lists.linux-foundation.org,
-	Viacheslav Dubeyko <vdubeyko@redhat.com>,
-	linux-mm@kvack.org,
-	Pavan Rallabhandi <Pavan.Rallabhandi@ibm.com>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: Re: [LSF/MM/BPF TOPIC] Machine Learning (ML) library in Linux kernel
-Date: Sat,  7 Feb 2026 07:28:11 +0800
-Message-ID: <20260206232817.2596-1-hdanton@sina.com>
-In-Reply-To: <47d21a6821c4b2d085f7b97bcdaa205bfcb0e0ad.camel@ibm.com>
-References: 
+	b=DeibMzGCN/tuIXjhKNO6a1273naDo4MjMWWiP5HajUqXvvcgAJaCP0CPLJmL1l6RfVdKOf
+	HSqPCUI8/9dIn6dUyvcjuwIBir0VBe+l04BupFxq4rie+Y5Q0V/IdllwDnRolauV3PKeTt
+	wQZS/0oB2YaQvZ8V7gbk7Nc1u1V/lTw=
+Date: Fri, 6 Feb 2026 15:34:16 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770420863;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A/95J67fXqSWtWPcMB6TuDp3d6eu7CAewNBLcn/8dhY=;
+	b=UfeA1jSyV+OqIfwBh0CAxmexGOP9K7hGF9UiD7EqHITc68VhZE8JBYzCyE3Z1tXBTGs9m+
+	tPTk66jat6OESVZQjq6oEK+ewBXmonqtlxK8P/fZm/Tr5lhiz/6l+2FHg7++359oEQDrVD
+	V37sykWOiA8qulJHzJAyipLGHm06vRk=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: kernel test robot <lkp@intel.com>, hannes@cmpxchg.org, 
+	hughd@google.com, mhocko@suse.com, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	david@kernel.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, 
+	yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org, 
+	hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, lance.yang@linux.dev, bhe@redhat.com, 
+	oe-kbuild-all@lists.linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: Re: [PATCH v4 24/31] mm: memcontrol: prepare for reparenting LRU
+ pages for lruvec lock
+Message-ID: <aYZ6PxkkLj3aNGuk@linux.dev>
+References: <e27edb311dda624751cb41860237f290de8c16ae.1770279888.git.zhengqi.arch@bytedance.com>
+ <202602052203.U8hxsh2N-lkp@intel.com>
+ <cbb1ba53-134b-487f-87c0-85ca4791773e@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: bs9gofs9mukbrk8f3oynzahysmwdic4h
-X-Rspamd-Queue-Id: 0A47E180006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cbb1ba53-134b-487f-87c0-85ca4791773e@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 152B780002
+X-Stat-Signature: jfdu79i6iy4xksg385gkxi3uw8dnefn9
 X-Rspam-User: 
-X-HE-Tag: 1770420511-509696
-X-HE-Meta: U2FsdGVkX1/UEcLHF5qbr3wKZhacoWE/HOG189QRYJAwvsk/v2qvjv0V+O5WlOwkmuJeM3guA0/2nTggc3aSqdMXCysQ1mlskOwRfxaNOrtgji/gtq+zh3whZTKiNElohTIJlApf6uHD4aevGd5FDZrOAasTH5or5HdftIH/9i9ZQqZQH9HAjw8JGM9XBB7EmISOMTc/1vK/duXj36vibZ6S2nIK0EUTpdign7hkS9sglyj0o6c1V/v5hz8axCcRrgyqorv246CXdJfoHrfCI8eV2VRK1s30kFg4buQXkfisa/49Y6xedGjfW6og41EpjqClLfCYtdJodP2aT0IFBWqKdfg/91UfWEG4wQToZ/7gmXIlU7VAvOX9Nw4jjbQJZ5lGjIv9vWGm2ejHC3F7ZuIzMyhcOAlST0//Zij1vf2nd8vHuXC9cWTbJhrU7LwuR2wFkQMyK8U1Cv9c7ct4twn05cXMoZEGEDXiTA4KcTVp6DiylwfgDMe6cbWZFaDgdPXfVvFW38a3Yd7QJDatwXHg8MI6UrTjabfP7ZqM2Ezu64OJ3Pee+iI3tMR+fx8+y3Lp0FFhYkKMhC7Qj9VJe3vp1+2bIYKFafShYtesFnShemvqzcewPtbRR1CYOcufPJUvq9g2dBEo6nhbScts8cdpDuHJ3FoXKEpKdV93or7F3zblj3a+9d8jHYh0Pg3Y07/oT0vq5RjJJMHo4LPjjboPhwXuu4Xo7hXHphR1XkoMXHar6yiCB1V0HJem5G4PIKmop3LwL92XZSWp9GOwA4a21TM0bcKGoA/1JrgXgjhfKCy6Kh83P2GJFLQvpIQ8Dzgc35PJgEt1dAK7/MF+xHsECRDxQb2dkkluJaAzkM515+JUsnlb2hO2vPt7/pbtJh73VpfWR4sRuUXkrY8vbCdbKFy2rjyf0/erDgPFWTGmHFdgUm69ItUFO0/IzTfY
+X-HE-Tag: 1770420865-830701
+X-HE-Meta: U2FsdGVkX1+KY+e6p6tTf76FLWc2ZpvGxHZRYXzi6Ra4jeo/cGuV/741HS7oNKUuKWdrfPgMW1ub9m6qIzHTem/PlC0M83MTXeLQdnSZ7lu8p1c67tcL9A5NoVdXDY85EZw2oeCuOh34t36SsHVIKeOLQeaChqDiEdFRSjv42n2OvlQnxoA6VdTM9O9J71FZEkSSZikUW/yCgzyfyvHzHfWfc4krMvksPwFYScNN5b/T8sY5wY/7b40EEze1ZesIWGZ8iiQOVcGqMe+hEN7TcH9sZlHgiaWHQvwu8tENL/jkGgibhxDtWxem3xmhjffsnENSxsbQGB3IQ3gmAMuqJSpnbmzct820jftsw7E/u04MxMcqL3wpkFcRSxjztQQN4GGDwlCSqHvcXB0wY0+tsMvGG4FOO4b01Fim2QAovhpujhaqXREBveY9y5EgjdIQaOHgRD96CR9sjI5TpdIgIxm2ZikS9CfAs9Su3IW2i0K01HLEa4mmr2qPvo//YSSrRYbpIklX7OCQGODTJ9nv8NrtLbOJGEykJhEYBElEnwQkxfCBDRvWJnj9Ti+5ayQ8teCZm2EnkIp39E0Kh8d9AXNyW4lJ42PYX/N3bM7zsz5icQq7Ao+ANGOo1KmGa8egW9Z9HCOSDYGR4i7VBynQKqbOF0ygwkKun3mt/R6AFcqZ4LkDuZADtc0olfjOkogesgoBfPDpcxq3IqgcMkrGy/FF9PWobbvM///pluacoNOe02PuB8JxShHin7d4hFIHmdesm6n6o7bls8Bas4cVqAkwOIb/5JE2JONBw1JaByiIwkbJTohSGAYxuwtkziqYeiXFjmzRs06N5MgaO7YdltSxjKPgMPuI2kgUY/CSWXhmCRMorcRzxHFOrRhDEQBGTPzNb9SP4BsTCROIV4/ej2YyTdgauKZbeFFFLKlSdJhuZ1Uyp2izmKnT/3mciKxOhG3mg1QhqQBoCFa54J7
+ /lOUN9wK
+ +V/he1lC3Oar/h1SfK1qOcC1L8fbYtBE/O3ZVVFhfZqFKC3SzuzxKC5QqJiPn+RGN1s6cbrbYf3X6esZdYPkwr0Bf1QPuZ0HFqlur9VTOhS6O5b+ml/ijpCj4P48LwcKEM35CLxYCPmUBuF5Np6W/8M2/nDlhxrWNn65ogPBd6lIICs2VmCBpI3eO51nqFdDhntzaBbE3ETkQRW+EqjdrReNPoOnC1J4FdxZ45m7CAozDq18RQKytmi1WQqxDUrUr0Btxq2wmuBePa9js43ASorEKuuJ0Z393drRigYmfPgt1JJ+19rcmLsolF6SK7xOpwMCAr4WKTioUvpGXxwS73xPmOmQ0rrMnubkb4f0HihcjJk/vKLyvn9BChNFYQFlXB2syt9qrA2hneeo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,30 +98,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 6 Feb 2026 19:38:28 +0000 Viacheslav Dubeyko wrote:
-> Hello,
+On Fri, Feb 06, 2026 at 02:13:32PM +0800, Qi Zheng wrote:
 > 
-> Machine Learning (ML) is approach/area of learning from data,
-> finding patterns, and making predictions without implementing algorithms
-> by developers. The number of areas of ML applications is growing
-> with every day. Generally speaking, ML can introduce a self-evolving and
-> self-learning capability in Linux kernel. There are already research works
-> and industry efforts to employ ML approaches for configuration and
-> optimization the Linux kernel. However, introduction of ML approaches
-> in Linux kernel is not so simple and straightforward way. There are multiple
-> problems and unanswered questions on this road. First of all, any ML model
-> requires the floating-point operations (FPU) for running. But there is
-> no direct use of FPUs in kernel space. Also, ML model requires training phase
-> that can be a reason of significant performance degradation of Linux kernel.
-> Even inference phase could be problematic from the performance point of view
-> on kernel side. The using of ML approaches in Linux kernel is inevitable step.
-> But, how can we use ML approaches in Linux kernel? Which infrastructure
-> do we need to adopt ML models in Linux kernel?
->
-Given the short list, eevdf, slab, ext4, IP stack, usb bus and kvm, ML is not
-needed before the second half in 2027, because it wastes minutes to make
-either liver or pancreas intelligent. By intelligent I mean liver can edit
-ppt in Russian. Perhaps Cerebellum is an exception.
+> 
+> On 2/5/26 11:02 PM, kernel test robot wrote:
+> > Hi Qi,
+> > 
+> > kernel test robot noticed the following build errors:
+> > 
+> > [auto build test ERROR on next-20260204]
+> > [cannot apply to akpm-mm/mm-everything brauner-vfs/vfs.all trace/for-next tj-cgroup/for-next linus/master dennis-percpu/for-next v6.19-rc8 v6.19-rc7 v6.19-rc6 v6.19-rc8]
+> > [If your patch is applied to the wrong git tree, kindly drop us a note.
+> > And when submitting patch, we suggest to use '--base' as documented in
+> > https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> > 
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Qi-Zheng/mm-memcontrol-remove-dead-code-of-checking-parent-memory-cgroup/20260205-170812
+> > base:   next-20260204
+> > patch link:    https://lore.kernel.org/r/e27edb311dda624751cb41860237f290de8c16ae.1770279888.git.zhengqi.arch%40bytedance.com
+> > patch subject: [PATCH v4 24/31] mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+> > config: nios2-allnoconfig (https://download.01.org/0day-ci/archive/20260205/202602052203.U8hxsh2N-lkp@intel.com/config)
+> > compiler: nios2-linux-gcc (GCC) 11.5.0
+> > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260205/202602052203.U8hxsh2N-lkp@intel.com/reproduce)
+> > 
+> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202602052203.U8hxsh2N-lkp@intel.com/
+> > 
+> > All errors (new ones prefixed by >>):
+> > 
+> >     nios2-linux-ld: mm/swap.o: in function `__page_cache_release.part.0':
+> >     swap.c:(.text+0x4c): undefined reference to `lruvec_unlock_irqrestore'
+> > > > swap.c:(.text+0x4c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+> >     nios2-linux-ld: mm/swap.o: in function `__folio_put':
+> >     swap.c:(.text+0x2ac): undefined reference to `lruvec_unlock_irqrestore'
+> >     swap.c:(.text+0x2ac): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+> >     nios2-linux-ld: mm/swap.o: in function `folios_put_refs':
+> >     swap.c:(.text+0x384): undefined reference to `lruvec_unlock_irqrestore'
+> >     swap.c:(.text+0x384): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+> >     nios2-linux-ld: mm/swap.o: in function `folio_batch_move_lru':
+> >     swap.c:(.text+0x4ac): undefined reference to `lruvec_unlock_irqrestore'
+> >     swap.c:(.text+0x4ac): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+> > > > nios2-linux-ld: swap.c:(.text+0x50c): undefined reference to `lruvec_unlock_irqrestore'
+> >     swap.c:(.text+0x50c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irqrestore'
+> >     nios2-linux-ld: mm/swap.o: in function `folio_activate':
+> >     swap.c:(.text+0x21d8): undefined reference to `lruvec_unlock_irq'
+> > > > swap.c:(.text+0x21d8): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+> >     nios2-linux-ld: mm/vmscan.o: in function `move_folios_to_lru':
+> >     vmscan.c:(.text+0xa4c): undefined reference to `lruvec_unlock_irq'
+> > > > vmscan.c:(.text+0xa4c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+> > > > nios2-linux-ld: vmscan.c:(.text+0xaa4): undefined reference to `lruvec_unlock_irq'
+> >     vmscan.c:(.text+0xaa4): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+> >     nios2-linux-ld: vmscan.c:(.text+0xcac): undefined reference to `lruvec_unlock_irq'
+> >     vmscan.c:(.text+0xcac): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+> >     nios2-linux-ld: vmscan.c:(.text+0xd8c): undefined reference to `lruvec_unlock_irq'
+> >     vmscan.c:(.text+0xd8c): relocation truncated to fit: R_NIOS2_CALL26 against `lruvec_unlock_irq'
+> >     nios2-linux-ld: mm/vmscan.o: in function `shrink_active_list':
+> >     vmscan.c:(.text+0x11e0): undefined reference to `lruvec_lock_irq'
+> >     vmscan.c:(.text+0x11e0): additional relocation overflows omitted from the output
+> >     nios2-linux-ld: vmscan.c:(.text+0x12a0): undefined reference to `lruvec_unlock_irq'
+> > > > nios2-linux-ld: vmscan.c:(.text+0x144c): undefined reference to `lruvec_lock_irq'
+> >     nios2-linux-ld: mm/vmscan.o: in function `check_move_unevictable_folios':
+> >     vmscan.c:(.text+0x15d4): undefined reference to `lruvec_unlock_irq'
+> >     nios2-linux-ld: vmscan.c:(.text+0x1958): undefined reference to `lruvec_unlock_irq'
+> >     nios2-linux-ld: mm/vmscan.o: in function `shrink_inactive_list':
+> >     vmscan.c:(.text+0x2f8c): undefined reference to `lruvec_lock_irq'
+> >     nios2-linux-ld: vmscan.c:(.text+0x307c): undefined reference to `lruvec_unlock_irq'
+> >     nios2-linux-ld: vmscan.c:(.text+0x31dc): undefined reference to `lruvec_lock_irq'
+> >     nios2-linux-ld: mm/vmscan.o: in function `folio_isolate_lru':
+> >     vmscan.c:(.text+0x48a4): undefined reference to `lruvec_unlock_irq'
+> >     nios2-linux-ld: mm/mlock.o: in function `__munlock_folio':
+> >     mlock.c:(.text+0x968): undefined reference to `lruvec_unlock_irq'
+> >     nios2-linux-ld: mm/mlock.o: in function `__mlock_folio':
+> >     mlock.c:(.text+0xe5c): undefined reference to `lruvec_unlock_irq'
+> >     nios2-linux-ld: mm/mlock.o: in function `mlock_folio_batch.constprop.0':
+> >     mlock.c:(.text+0x158c): undefined reference to `lruvec_unlock_irq'
+> > > > nios2-linux-ld: mlock.c:(.text+0x1808): undefined reference to `lruvec_unlock_irq'
+> 
+> Ouch, I move lruvec_lock_irq() and its firends to memcontrol.c to fix
+> the compilation errors related to __acquires/__releases, but I forgot
+> that memcontrol.c will only be compiled under CONFIG_MEMCG.
+> 
+> Hi Shakeel, for simplicity, perhaps keeping lruvec_lock_irq() and its
+> firends in memcontrol.h and drop __acquires/__releases would be a
+> better option?
 
-Can you build bot to fix syzbot reports before 2028?
+Yes, let's proceed with that for now. We can always improve this later.
+
 
