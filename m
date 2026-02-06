@@ -4,164 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F1BDEE6B44
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 17:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14058EE6B44
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 17:48:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8EFD6B0096; Fri,  6 Feb 2026 12:46:47 -0500 (EST)
+	id 56A4B6B0005; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E127E6B009B; Fri,  6 Feb 2026 12:46:47 -0500 (EST)
+	id 4ED946B0093; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C91786B0096; Fri,  6 Feb 2026 12:46:47 -0500 (EST)
+	id 4170B6B0098; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AD5806B0096
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:46:47 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 720A08AB0E
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:46:47 +0000 (UTC)
-X-FDA: 84414762054.07.A872102
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 36DD0100017
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:46:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RuDZk8rg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QaWMdLy1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RuDZk8rg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QaWMdLy1;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C34C6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D402CD598F
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:48:15 +0000 (UTC)
+X-FDA: 84414765750.03.A422D87
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 57F0240018
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:48:14 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ibP2Gdyf;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770400005;
+	s=arc-20220608; t=1770400094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qTlz2nZkPDxI9jBkmlvcEKM3D50RgjaUXvgFGDrKR3Q=;
-	b=gMvJO4pffRFvPbt2hpHqNThTecZtvSVhy/yz6f//SrwHflRJZa+27VzRzCjezyKoEKRK1X
-	2EqKs6tNw69kFlFwhWUrIYs/6ahFphfoOP0ReuMXY9GDHKeTbET/jTehHd7Z4FPMiFmxm9
-	qhJ6poZKbDrKmV3CsNUZt22I/a8PA9k=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=dNKe4GeIZwLAsiEXos9BPWKKpoOagA7aZshZ4jhAHBw=;
+	b=pjtWl38AwGzH+mWPj1ur07ypmFOXkpv+BWtknJXGnttO+mwaEtk/SJ4JBzUeV4XVnato6h
+	tAZFwbELEsxRcNNYM0sRYHxwOoUbphzW7EZLbedAq1doHgs1//rM4UksnNby9zzxko+Yq+
+	wUvIK8XysoGnGvYwNVLXzC3NxJTKsGk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RuDZk8rg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QaWMdLy1;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=RuDZk8rg;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=QaWMdLy1;
-	spf=pass (imf14.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770400005; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ibP2Gdyf;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770400094; a=rsa-sha256;
 	cv=none;
-	b=7T6Df+w39Ag5+3FzJ/MgIq8iDUSq0XU+LGkmSlmHSIUPipZFu73GL4KwRHO5pydKrQCTJ/
-	lMBJjGKsOGGa8xQ3dUfX6Cs8ZDdpoUwCkTfkbIRqw3slG8bbvUjdLVBL8/2vJAZU6nPUKf
-	PDPgUgdA2XAEl/8ykD6+WfCzmu2nShM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7AA9B3E6E2;
-	Fri,  6 Feb 2026 17:46:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770400003; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qTlz2nZkPDxI9jBkmlvcEKM3D50RgjaUXvgFGDrKR3Q=;
-	b=RuDZk8rgXjnZKWlFtjqE2zHm7XBTpP1jJz4vbGSXXStpnbrQb4F9mUAD4qLYmnNQToQ2tB
-	qpdlW9S8k9NjQNGCM/lWDC0Pa8mzWUx/fj29ePeYi9puE0rofwy6v0n6k+AFv616rdK0Rr
-	5R6mf2sj7WW33qHoze/GOAa9i6QYn7U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770400003;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qTlz2nZkPDxI9jBkmlvcEKM3D50RgjaUXvgFGDrKR3Q=;
-	b=QaWMdLy1zPMgLdUBMmi+iijKOvqYya+oiX9LwRqbDIDtar1/QxaQsNaNVkeIFq4cjEv+wd
-	CMYrNfi3IkKSt9Dg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770400003; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qTlz2nZkPDxI9jBkmlvcEKM3D50RgjaUXvgFGDrKR3Q=;
-	b=RuDZk8rgXjnZKWlFtjqE2zHm7XBTpP1jJz4vbGSXXStpnbrQb4F9mUAD4qLYmnNQToQ2tB
-	qpdlW9S8k9NjQNGCM/lWDC0Pa8mzWUx/fj29ePeYi9puE0rofwy6v0n6k+AFv616rdK0Rr
-	5R6mf2sj7WW33qHoze/GOAa9i6QYn7U=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770400003;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qTlz2nZkPDxI9jBkmlvcEKM3D50RgjaUXvgFGDrKR3Q=;
-	b=QaWMdLy1zPMgLdUBMmi+iijKOvqYya+oiX9LwRqbDIDtar1/QxaQsNaNVkeIFq4cjEv+wd
-	CMYrNfi3IkKSt9Dg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3879B3EA63;
-	Fri,  6 Feb 2026 17:46:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id kva2Cv4ohmnsNAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 06 Feb 2026 17:46:38 +0000
-Date: Fri, 6 Feb 2026 17:46:36 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
-	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
-	Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Tvrtko Ursulin <tursulin@ursulin.net>, Christian Koenig <christian.koenig@amd.com>, 
-	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Benjamin LaHaise <bcrl@kvack.org>, 
-	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
-	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
-	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Theodore Ts'o <tytso@mit.edu>, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mike Marshall <hubcap@omnibond.com>, 
-	Martin Brandenburg <martin@omnibond.com>, Tony Luck <tony.luck@intel.com>, 
-	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
-	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>, 
-	Carlos Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
-	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
-	Matthew Wilcox <willy@infradead.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>, 
-	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, 
-	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
-	linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
-	linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org, linux-erofs@lists.ozlabs.org, 
-	linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
-	devel@lists.orangefs.org, linux-xfs@vger.kernel.org, keyrings@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 09/13] mm: update all remaining mmap_prepare users to
- use vma_flags_t
-Message-ID: <hmc2or77xnhrdlncfzjsljljwljnp6zztqsvmgxspfilmzkyty@czxpjpdm66ov>
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
- <fb1f55323799f09fe6a36865b31550c9ec67c225.1769097829.git.lorenzo.stoakes@oracle.com>
+	b=l7B9MvKWK5vV5duyibJadzEiUMrpmQDzCe/J/4+hnUBvBMLON6zYnNmO9lJk4tLJ2lX2jQ
+	0F0HL5feIb/omFxbeAVO9IcUF4VNDRa7dyfRag4xjHNN/2CWyqBQABq47a9rgHgUw6L0lz
+	kPY09m9qarB/3/ORYJZixbbI6S+xEyE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A5249600CB;
+	Fri,  6 Feb 2026 17:48:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64392C116C6;
+	Fri,  6 Feb 2026 17:48:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770400093;
+	bh=E9VSBnb8FGRC/30JfT6OdDNQsCCg2idmhSTmBJntEpE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ibP2GdyfxqfzpgDDjiQSdyNd5Dus9LZ2QzgfsM5+KBbDn1k/H+xUX08CbdlkRuTkI
+	 UM4Dp25y438hTEwXk8mUPC55PILi1MMYXraHzZQRrC2m9T6RJG6qHpM/+RUL2mQvUr
+	 9oprQifE4HVzBVOPNRQ2wmQ41CNrChMuQdKlzf9RquQmqAXu/Z4k6C+d7VkqcYDuBw
+	 xjKw9Obr8qb8JCVVlttb69I4fLwtPlxtwtxvWBUTyrGs/+N8jt+ksaz1MTZmOevNnS
+	 1SxVnccfZcXxzpk5fJ2LhwNH1q48swPQCjgEC06SG8H8wZGzYjqhALP5EanDaB1bjm
+	 B5xXDl/AJyTmw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Rientjes <rientjes@google.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Alexander Graf <graf@amazon.com>,
+	David Matlack <dmatlack@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [LSF/MM/BPF TOPIC] HugeTLB file preservation across live update
+Date: Fri, 06 Feb 2026 18:48:09 +0100
+Message-ID: <2vxz1pixvk4m.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fb1f55323799f09fe6a36865b31550c9ec67c225.1769097829.git.lorenzo.stoakes@oracle.com>
-X-Stat-Signature: o1omesyekyxoatxoubarszjyowkmok9h
+Content-Type: text/plain
+X-Rspamd-Server: rspam12
+X-Stat-Signature: eka6xhdch9cw71gura1mmq7su6q8us11
+X-Rspamd-Queue-Id: 57F0240018
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 36DD0100017
-X-HE-Tag: 1770400004-38062
-X-HE-Meta: U2FsdGVkX18rM6FEAlwr1+A8ctzj5bCqZY2nudpPvyqUBYcKWOQ3uczSP9MD7bfmrz4exO3mMkNw+DnMmfCq8PEKBU2HqCTkdgndP2RSSCaf5eObilToZlACMTSZpGp1dyyCUaV2PIvOlUJ6mCW2Hp/Buid/+cHpVYIsgjzY8OEdz4UcVKM7IOB0i1j3JF+3gEwxfUuaWIcO5+9W/oduh0gaVZtKkg1k7lwF/lgiIp3QW/Efl5WadYm7izjGhHD3Pp6/vWEdGTvRvSxOU9W348F/8vqIGScbnGh9zNj+r5xa4uzv+QtpoOEjTVW6I0aRWH7QguUYwa40F0A8e8DLbXEILHEfXdnSqs3EI/IbuBeZ46CGpQmqA+2L2g2fgQEdZkxChXMRyc/xuqhmpcnco0hKccOaZHkyF+KhAe33UIzTQoAMadbgN+gSuY61AsvbKrft7Os8TFfcGhxfdFW/j0lx0xFxcZcr8eXpEmxAHZaoJLjcPOjsEW80973lRFLlaGOf/Q01/ktSM4unLxPU0hkhEtA3l3iZvetKlp1sqF49kWWBDkgQye7/IsPmih72FWoEu+0i2jzJRv+9gzuPgGv1r1pryENYh3CYAba1PFRZ5PNbsFjKGzrdJTCp/C1GEbY9dygkQvIGeMYWObkayyPHHP5ow1MzCHRwJAF9zkORvQtJwRLifC3cEiKJeyWX97ImPGpvinnwQ0ltgvTtBStlDGLyaLlxIiL3HC5bZQOTq7kg5tCbdqSfFEIkApvT92kLzR973NbGYXwDMGeMhNurPi/reStB1Bjb03j7Y2daoRa8gACli20PEgR23cPfn3AnEGUClH5dn9gwAnDbNRlRw99Abt7XEowI0Oc8/Klmts3+e/6GWzOqrtYrocGsuUXwoyg2IMZzDjFFFm93dtiz1MT0wyuG1YRln5g4iXRk/eRb92+m6wRhVtm1JFnYmdkUNsu8b1gPG4GVn21
- Ely98oSE
- CMLg64H1z9Y7KmorgvlpUIuz/syGRggziyNhZcFxa5fpImjy0lFKyMx9K955w7ZAllFEaW9bgAJ75L2Dnc/if38cewXbpNvdhqYSmEYszBhzeBsVJniOb6XkoIHlOXsfJAplEkHaiQ/WKujNzjslM64oa7FvmFgQ4+b6kkpT7gTIrCL9QZSn1YYYXj5UqZ4qKt0gTuOXvGsfNZt7rcURU23BsmSXJPG+AMQgVpeP+wywo0U48u79HcdTrensUpT+TfL86su9R08n3z3fIJ7J94p8uhUpuHsozg6/AwfHROMZd70FFTt2pewpjQgfnrklG/+D7S2jdQUPcJxBni4prJJ8S+cVnUFScGEFKk/pgc0WWtm0vhhq7wcow1VqaMKmDA3fdsmVtOPmArRKvmdDXTgKThV4RbOzKxVPFsFLrGd8VFPOg4DxOlddeLDdYAvwsmdSk
+X-HE-Tag: 1770400094-736461
+X-HE-Meta: U2FsdGVkX192b2ISy+jL+XfYGN0xkjL2TQG1N6gS7t9iNKAobvLBbXy3giHC3bbvSOGJ0Sz2bi5b7+hoNrUgIFkAeyALvjKKEvHsAXPmTVLFH9iQlhEsj19ISpLR9zDHdhSATDhyY9AV0nKWHZkcMJY0unForlwx/wtzlc+6ZGgiwj0hOVRZ2h2RyPJXoou1H10T225FJeKyPtaFoySpMNAhVvTdMEIFDw13ubRu2+7tHPvwlw+bi+2Iw2/Lf8cib52LcGL8zO1szUAZGm+aP32eg8xAklBCZJRY1BMW1JNaGRZmJl8K2p6r7fip7TdTHHAw3qxa9mz3E+GqWVsCjySlrIu+A0ydhEd6qg9qnsXCyUxTDut8QNBGdRa5AXnsfLqW7PIjp2GhiE04anCAejqhuZcI83iFUnnXCyznpV9cPh/17DKnWml38wqHOX/1eLoZbf3+JxlyPfHKZAugqEo31DovGNrEkZEFcRQHfLCVKVEMwcT+HMIfFmQt397wgvbQI+wiIZe7GMmjDXTU2KZZessXoA9ovEjutqNqV00xZ0Mrzi+eEL7bUHGnhkD+S8NNnUdGm46ts8Ky3UWGBn+03xwWlE2cGz6XcFm+N3pH7dCGsPfV/JDibQReDuQNNsSOY4yyje+7ZbPQkW+Z4iLyoI6ut9IntkLAxtkLzNrm/Zhb78C1HhK7ZfjYG9qUHgSCptYgDMze2WyeI4p74McL0xf2+SS8na+YZJ5TgZZHf0tEPyvYS4BgBSP0yu/3avdAS2FHPzylBmxhXZ6ef/TgD6Ry1koxQMd50Ilu3ISuwMgNFz6K44XnB4Gij/S0pmnDCjRhG/AdL+PI/TXPd8rDjbKDheCB5IE2DNNKDNncw2IRIh0fZq43RZcOyolrrWZ1l2qpt+kB+YlkvjcY07Qv2q+iB2OCF0VjQQoiuwc3BU8tVKssPLq7+A7WTH09W1gT3Zo6DWz0FMo44Jb
+ oIo6H+57
+ UzeQPfxsq3wBB84kgfWNyrGqId5CeKwE54ysVPXjWtNYAe80Aml89D227tpIDWaC+x1+xfWbJ2dsQpwU5BkHhHgY0Tkc1cYSPxHiZETLjuvactVCLTpJzQ3QrOGuWfeZW20sFaI9hOEpVdwP/ksDJX6m7HU7NGVfURDflc94FnACmkwNg45MbqzzxeP5YVjPI9A4iQxaLRI+UMoIxkM5NekbKbbhP0mJXrqPiQdjHmcuTf+D+KFEnBA5Xv9QnBI5Wyo/7v9AGKPV6Yik9pzubEwV35ult5w9OjV91o6r9nGLgh/S1ZlV44bqR50m//JMV7AH6LFOdO9/1AM5dF96ikcoD4N1WwBbAQO5JT5K/ls7WflQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -170,348 +95,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Jan 22, 2026 at 04:06:18PM +0000, Lorenzo Stoakes wrote:
-> We will be shortly removing the vm_flags_t field from vm_area_desc so we
-> need to update all mmap_prepare users to only use the dessc->vma_flags
-> field.
-> 
-> This patch achieves that and makes all ancillary changes required to make
-> this possible.
-> 
-> This lays the groundwork for future work to eliminate the use of vm_flags_t
-> in vm_area_desc altogether and more broadly throughout the kernel.
-> 
-> While we're here, we take the opportunity to replace VM_REMAP_FLAGS with
-> VMA_REMAP_FLAGS, the vma_flags_t equivalent.
-> 
-> No functional changes intended.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  drivers/char/mem.c       |  6 +++---
->  drivers/dax/device.c     | 10 +++++-----
->  fs/aio.c                 |  2 +-
->  fs/erofs/data.c          |  5 +++--
->  fs/ext4/file.c           |  4 ++--
->  fs/ntfs3/file.c          |  2 +-
->  fs/orangefs/file.c       |  4 ++--
->  fs/ramfs/file-nommu.c    |  2 +-
->  fs/resctrl/pseudo_lock.c |  2 +-
->  fs/romfs/mmap-nommu.c    |  2 +-
->  fs/xfs/xfs_file.c        |  4 ++--
->  fs/zonefs/file.c         |  3 ++-
->  include/linux/dax.h      |  8 ++++----
->  include/linux/mm.h       | 24 +++++++++++++++++++-----
->  kernel/relay.c           |  2 +-
->  mm/memory.c              | 17 ++++++++---------
->  16 files changed, 56 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/char/mem.c b/drivers/char/mem.c
-> index 52039fae1594..cca4529431f8 100644
-> --- a/drivers/char/mem.c
-> +++ b/drivers/char/mem.c
-> @@ -306,7 +306,7 @@ static unsigned zero_mmap_capabilities(struct file *file)
->  /* can't do an in-place private mapping if there's no MMU */
->  static inline int private_mapping_ok(struct vm_area_desc *desc)
->  {
-> -	return is_nommu_shared_mapping(desc->vm_flags);
-> +	return is_nommu_shared_vma_flags(&desc->vma_flags);
->  }
->  #else
->  
-> @@ -360,7 +360,7 @@ static int mmap_mem_prepare(struct vm_area_desc *desc)
->  
->  	desc->vm_ops = &mmap_mem_ops;
->  
-> -	/* Remap-pfn-range will mark the range VM_IO. */
-> +	/* Remap-pfn-range will mark the range with the I/O flag. */
->  	mmap_action_remap_full(desc, desc->pgoff);
->  	/* We filter remap errors to -EAGAIN. */
->  	desc->action.error_hook = mmap_filter_error;
-> @@ -520,7 +520,7 @@ static int mmap_zero_prepare(struct vm_area_desc *desc)
->  #ifndef CONFIG_MMU
->  	return -ENOSYS;
->  #endif
-> -	if (desc->vm_flags & VM_SHARED)
-> +	if (vma_desc_test_flags(desc, VMA_SHARED_BIT))
->  		return shmem_zero_setup_desc(desc);
->  
->  	desc->action.success_hook = mmap_zero_private_success;
-> diff --git a/drivers/dax/device.c b/drivers/dax/device.c
-> index 22999a402e02..528e81240c4d 100644
-> --- a/drivers/dax/device.c
-> +++ b/drivers/dax/device.c
-> @@ -13,7 +13,7 @@
->  #include "dax-private.h"
->  #include "bus.h"
->  
-> -static int __check_vma(struct dev_dax *dev_dax, vm_flags_t vm_flags,
-> +static int __check_vma(struct dev_dax *dev_dax, vma_flags_t flags,
->  		       unsigned long start, unsigned long end, struct file *file,
->  		       const char *func)
->  {
-> @@ -24,7 +24,7 @@ static int __check_vma(struct dev_dax *dev_dax, vm_flags_t vm_flags,
->  		return -ENXIO;
->  
->  	/* prevent private mappings from being established */
-> -	if ((vm_flags & VM_MAYSHARE) != VM_MAYSHARE) {
-> +	if (!vma_flags_test(&flags, VMA_MAYSHARE_BIT)) {
->  		dev_info_ratelimited(dev,
->  				"%s: %s: fail, attempted private mapping\n",
->  				current->comm, func);
-> @@ -53,7 +53,7 @@ static int __check_vma(struct dev_dax *dev_dax, vm_flags_t vm_flags,
->  static int check_vma(struct dev_dax *dev_dax, struct vm_area_struct *vma,
->  		     const char *func)
->  {
-> -	return __check_vma(dev_dax, vma->vm_flags, vma->vm_start, vma->vm_end,
-> +	return __check_vma(dev_dax, vma->flags, vma->vm_start, vma->vm_end,
->  			   vma->vm_file, func);
->  }
->  
-> @@ -306,14 +306,14 @@ static int dax_mmap_prepare(struct vm_area_desc *desc)
->  	 * fault time.
->  	 */
->  	id = dax_read_lock();
-> -	rc = __check_vma(dev_dax, desc->vm_flags, desc->start, desc->end, filp,
-> +	rc = __check_vma(dev_dax, desc->vma_flags, desc->start, desc->end, filp,
->  			 __func__);
->  	dax_read_unlock(id);
->  	if (rc)
->  		return rc;
->  
->  	desc->vm_ops = &dax_vm_ops;
-> -	desc->vm_flags |= VM_HUGEPAGE;
-> +	vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT);
->  	return 0;
->  }
->  
-> diff --git a/fs/aio.c b/fs/aio.c
-> index 0a23a8c0717f..59b67b8da1b2 100644
-> --- a/fs/aio.c
-> +++ b/fs/aio.c
-> @@ -394,7 +394,7 @@ static const struct vm_operations_struct aio_ring_vm_ops = {
->  
->  static int aio_ring_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	desc->vm_flags |= VM_DONTEXPAND;
-> +	vma_desc_set_flags(desc, VMA_DONTEXPAND_BIT);
->  	desc->vm_ops = &aio_ring_vm_ops;
->  	return 0;
->  }
-> diff --git a/fs/erofs/data.c b/fs/erofs/data.c
-> index bb13c4cb8455..e7bc29e764c6 100644
-> --- a/fs/erofs/data.c
-> +++ b/fs/erofs/data.c
-> @@ -438,11 +438,12 @@ static int erofs_file_mmap_prepare(struct vm_area_desc *desc)
->  	if (!IS_DAX(file_inode(desc->file)))
->  		return generic_file_readonly_mmap_prepare(desc);
->  
-> -	if ((desc->vm_flags & VM_SHARED) && (desc->vm_flags & VM_MAYWRITE))
-> +	if (vma_desc_test_flags(desc, VMA_SHARED_BIT) &&
-> +	    vma_desc_test_flags(desc, VMA_MAYWRITE_BIT))
->  		return -EINVAL;
->  
->  	desc->vm_ops = &erofs_dax_vm_ops;
-> -	desc->vm_flags |= VM_HUGEPAGE;
-> +	vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT);
->  	return 0;
->  }
->  #else
-> diff --git a/fs/ext4/file.c b/fs/ext4/file.c
-> index 7a8b30932189..dfd5f4fe1647 100644
-> --- a/fs/ext4/file.c
-> +++ b/fs/ext4/file.c
-> @@ -822,13 +822,13 @@ static int ext4_file_mmap_prepare(struct vm_area_desc *desc)
->  	 * We don't support synchronous mappings for non-DAX files and
->  	 * for DAX files if underneath dax_device is not synchronous.
->  	 */
-> -	if (!daxdev_mapping_supported(desc->vm_flags, file_inode(file), dax_dev))
-> +	if (!daxdev_mapping_supported(desc, file_inode(file), dax_dev))
->  		return -EOPNOTSUPP;
->  
->  	file_accessed(file);
->  	if (IS_DAX(file_inode(file))) {
->  		desc->vm_ops = &ext4_dax_vm_ops;
-> -		desc->vm_flags |= VM_HUGEPAGE;
-> +		vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT);
->  	} else {
->  		desc->vm_ops = &ext4_file_vm_ops;
->  	}
-> diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-> index 2e7b2e566ebe..2902fc6d9a85 100644
-> --- a/fs/ntfs3/file.c
-> +++ b/fs/ntfs3/file.c
-> @@ -347,7 +347,7 @@ static int ntfs_file_mmap_prepare(struct vm_area_desc *desc)
->  	struct inode *inode = file_inode(file);
->  	struct ntfs_inode *ni = ntfs_i(inode);
->  	u64 from = ((u64)desc->pgoff << PAGE_SHIFT);
-> -	bool rw = desc->vm_flags & VM_WRITE;
-> +	const bool rw = vma_desc_test_flags(desc, VMA_WRITE_BIT);
->  	int err;
->  
->  	/* Avoid any operation if inode is bad. */
-> diff --git a/fs/orangefs/file.c b/fs/orangefs/file.c
-> index 919f99b16834..c75aa3f419b1 100644
-> --- a/fs/orangefs/file.c
-> +++ b/fs/orangefs/file.c
-> @@ -411,8 +411,8 @@ static int orangefs_file_mmap_prepare(struct vm_area_desc *desc)
->  		     "orangefs_file_mmap: called on %pD\n", file);
->  
->  	/* set the sequential readahead hint */
-> -	desc->vm_flags |= VM_SEQ_READ;
-> -	desc->vm_flags &= ~VM_RAND_READ;
-> +	vma_desc_set_flags(desc, VMA_SEQ_READ_BIT);
-> +	vma_desc_clear_flags(desc, VMA_RAND_READ_BIT);
->  
->  	file_accessed(file);
->  	desc->vm_ops = &orangefs_file_vm_ops;
-> diff --git a/fs/ramfs/file-nommu.c b/fs/ramfs/file-nommu.c
-> index 77b8ca2757e0..0f8e838ece07 100644
-> --- a/fs/ramfs/file-nommu.c
-> +++ b/fs/ramfs/file-nommu.c
-> @@ -264,7 +264,7 @@ static unsigned long ramfs_nommu_get_unmapped_area(struct file *file,
->   */
->  static int ramfs_nommu_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	if (!is_nommu_shared_mapping(desc->vm_flags))
-> +	if (!is_nommu_shared_vma_flags(&desc->vma_flags))
->  		return -ENOSYS;
->  
->  	file_accessed(desc->file);
-> diff --git a/fs/resctrl/pseudo_lock.c b/fs/resctrl/pseudo_lock.c
-> index 0bfc13c5b96d..e81d71abfe54 100644
-> --- a/fs/resctrl/pseudo_lock.c
-> +++ b/fs/resctrl/pseudo_lock.c
-> @@ -1044,7 +1044,7 @@ static int pseudo_lock_dev_mmap_prepare(struct vm_area_desc *desc)
->  	 * Ensure changes are carried directly to the memory being mapped,
->  	 * do not allow copy-on-write mapping.
->  	 */
-> -	if (!(desc->vm_flags & VM_SHARED)) {
-> +	if (!vma_desc_test_flags(desc, VMA_SHARED_BIT)) {
->  		mutex_unlock(&rdtgroup_mutex);
->  		return -EINVAL;
->  	}
-> diff --git a/fs/romfs/mmap-nommu.c b/fs/romfs/mmap-nommu.c
-> index 4b77c6dc4418..7c3a1a7fecee 100644
-> --- a/fs/romfs/mmap-nommu.c
-> +++ b/fs/romfs/mmap-nommu.c
-> @@ -63,7 +63,7 @@ static unsigned long romfs_get_unmapped_area(struct file *file,
->   */
->  static int romfs_mmap_prepare(struct vm_area_desc *desc)
->  {
-> -	return is_nommu_shared_mapping(desc->vm_flags) ? 0 : -ENOSYS;
-> +	return is_nommu_shared_vma_flags(&desc->vma_flags) ? 0 : -ENOSYS;
->  }
->  
->  static unsigned romfs_mmap_capabilities(struct file *file)
-> diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-> index 7874cf745af3..1238ec018bc7 100644
-> --- a/fs/xfs/xfs_file.c
-> +++ b/fs/xfs/xfs_file.c
-> @@ -1974,14 +1974,14 @@ xfs_file_mmap_prepare(
->  	 * We don't support synchronous mappings for non-DAX files and
->  	 * for DAX files if underneath dax_device is not synchronous.
->  	 */
-> -	if (!daxdev_mapping_supported(desc->vm_flags, file_inode(file),
-> +	if (!daxdev_mapping_supported(desc, file_inode(file),
->  				      target->bt_daxdev))
->  		return -EOPNOTSUPP;
->  
->  	file_accessed(file);
->  	desc->vm_ops = &xfs_file_vm_ops;
->  	if (IS_DAX(inode))
-> -		desc->vm_flags |= VM_HUGEPAGE;
-> +		vma_desc_set_flags(desc, VMA_HUGEPAGE_BIT);
->  	return 0;
->  }
->  
-> diff --git a/fs/zonefs/file.c b/fs/zonefs/file.c
-> index c1e5e30e90a0..8a7161fc49e5 100644
-> --- a/fs/zonefs/file.c
-> +++ b/fs/zonefs/file.c
-> @@ -333,7 +333,8 @@ static int zonefs_file_mmap_prepare(struct vm_area_desc *desc)
->  	 * ordering between msync() and page cache writeback.
->  	 */
->  	if (zonefs_inode_is_seq(file_inode(file)) &&
-> -	    (desc->vm_flags & VM_SHARED) && (desc->vm_flags & VM_MAYWRITE))
-> +	    vma_desc_test_flags(desc, VMA_SHARED_BIT) &&
-> +	    vma_desc_test_flags(desc, VMA_MAYWRITE_BIT))
->  		return -EINVAL;
->  
->  	file_accessed(file);
-> diff --git a/include/linux/dax.h b/include/linux/dax.h
-> index 9d624f4d9df6..bf103f317cac 100644
-> --- a/include/linux/dax.h
-> +++ b/include/linux/dax.h
-> @@ -65,11 +65,11 @@ size_t dax_recovery_write(struct dax_device *dax_dev, pgoff_t pgoff,
->  /*
->   * Check if given mapping is supported by the file / underlying device.
->   */
-> -static inline bool daxdev_mapping_supported(vm_flags_t vm_flags,
-> +static inline bool daxdev_mapping_supported(const struct vm_area_desc *desc,
->  					    const struct inode *inode,
->  					    struct dax_device *dax_dev)
->  {
-> -	if (!(vm_flags & VM_SYNC))
-> +	if (!vma_desc_test_flags(desc, VMA_SYNC_BIT))
->  		return true;
->  	if (!IS_DAX(inode))
->  		return false;
-> @@ -111,11 +111,11 @@ static inline void set_dax_nomc(struct dax_device *dax_dev)
->  static inline void set_dax_synchronous(struct dax_device *dax_dev)
->  {
->  }
-> -static inline bool daxdev_mapping_supported(vm_flags_t vm_flags,
-> +static inline bool daxdev_mapping_supported(const struct vm_area_desc *desc,
->  					    const struct inode *inode,
->  					    struct dax_device *dax_dev)
->  {
-> -	return !(vm_flags & VM_SYNC);
-> +	return !vma_desc_test_flags(desc, VMA_SYNC_BIT);
->  }
->  static inline size_t dax_recovery_write(struct dax_device *dax_dev,
->  		pgoff_t pgoff, void *addr, size_t bytes, struct iov_iter *i)
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index fd93317193e0..e31f72a021ef 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -550,17 +550,18 @@ enum {
->  /*
->   * Physically remapped pages are special. Tell the
->   * rest of the world about it:
-> - *   VM_IO tells people not to look at these pages
-> + *   IO tells people not to look at these pages
->   *	(accesses can have side effects).
-> - *   VM_PFNMAP tells the core MM that the base pages are just
-> + *   PFNMAP tells the core MM that the base pages are just
->   *	raw PFN mappings, and do not have a "struct page" associated
->   *	with them.
-> - *   VM_DONTEXPAND
-> + *   DONTEXPAND
->   *      Disable vma merging and expanding with mremap().
-> - *   VM_DONTDUMP
-> + *   DONTDUMP
->   *      Omit vma from core dump, even when VM_IO turned off.
->   */
+Hi all,
 
-I don't think it's useful to erase the VM_ prefix off the flags. These still
-exist, so maybe the alternative would be to rename them to e.g VMA_IO in
-comments, etc. I think just saying "IO" or "the I/O flag" above is ambiguous.
+I would like to propose the topic of HugeTLB file preservation across
+live update for discussion at the upcoming LSF/MM/BPF summit.
 
-> -#define VM_REMAP_FLAGS (VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP)
-> +#define VMA_REMAP_FLAGS mk_vma_flags(VMA_IO_BIT, VMA_PFNMAP_BIT,	\
-> +				     VMA_DONTEXPAND_BIT, VMA_DONTDUMP_BIT)
+Background
+==========
 
-as a sidenote, these flags are no longer constant expressions and thus
+Support for performing a live update was recently added to the kernel
+via the Live Update Orchestrator (LUO) subsystem [0]. Live update allows
+a full kernel update over kexec without terminating running workloads.
+The main target is live updating the hypervisor without terminating VMs.
 
-static vma_flags_t flags = VMA_REMAP_FLAGS;
+For more information on live update and LUO, see its kernel
+documentation [1], the LUO patchset [0], or this LPC 2025 presentation
+[2].
 
-can't compile.
+MEMFD preservation
+==================
 
-Rest LGTM though.
+MEMFD is the first file type that added support for live update. This
+support was merged with the LUO series. The memfd preservation code can
+be found in mm/memfd_luo.c [3].
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
+MEMFD can use pages backed by shmem or HugeTLB. The live update support
+in mainline currently only works with shmem-backed MEMFDs.
+
+HugeTLB preservation
+====================
+
+While shmem support for live update is useful for many things, using it
+for VM memory (and other memory-intensive workloads) is inefficient. The
+next step for MEMFD support for live update is to allow preserving
+HugeTLB-backed files.
+
+Note that we do not attempt to preserve the whole HugeTLB file system.
+We only preserve the memory pages for the files specified by userspace.
+The HugeTLB file is re-created fresh on the next kernel and the pages
+are inserted back in. This lets us keep the maintenance footprint
+smaller.
+
+Current status
+--------------
+
+This support was sent out on the list as an RFC [4] in December 2025,
+and was also presented at LPC 2025 [5] in the Live Update
+microconference.
+
+While the patchset has got some initial reviews from live update
+maintainers, it has not yet had any review from HugeTLB developers or
+maintainers.
+
+Goals of the discussion
+-----------------------
+
+This session will aim to present the topic, explain why it is needed,
+show how the support works, and most importantly, collect feedback on
+how to proceed with this work.
+
+PS: if any HugeTLB developers or maintainers are reading this, it would
+be great to have your initial thoughts on the RFC [4] so I can present a
+more polished patchset at the conference and make the most of the
+discussion.
+
+Key attendees
+=============
+
+Live update:
+  - Alexander Graf
+  - David Matlack
+  - Jason Gunthorpe
+  - Mike Rapoport
+  - Pasha Tatashin
+
+HugeTLB:
+  - David Hildenbrand
+  - Muchun Song
+  - Oscar Salvador
+
+References
+==========
+
+[0] https://lore.kernel.org/linux-mm/20251125165850.3389713-1-pasha.tatashin@soleen.com/T/#u
+[1] https://docs.kernel.org/core-api/liveupdate.html
+[2] https://lpc.events/event/19/contributions/2052/
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/memfd_luo.c
+[4] https://lore.kernel.org/linux-mm/20251206230222.853493-1-pratyush@kernel.org/T/#u
+[5] https://lpc.events/event/19/contributions/2044/
 
 -- 
-Pedro
+Regards,
+Pratyush Yadav
 
