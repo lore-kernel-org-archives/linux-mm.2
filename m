@@ -4,136 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79E42EE20AA
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 14:43:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAFFBEE20AF
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 15:03:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C914B6B00A0; Fri,  6 Feb 2026 09:43:23 -0500 (EST)
+	id 7C5BA6B0089; Fri,  6 Feb 2026 10:03:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C3F676B00A1; Fri,  6 Feb 2026 09:43:23 -0500 (EST)
+	id 79D596B0092; Fri,  6 Feb 2026 10:03:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B20E86B00A2; Fri,  6 Feb 2026 09:43:23 -0500 (EST)
+	id 672926B0093; Fri,  6 Feb 2026 10:03:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E9D96B00A0
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:43:23 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 67A7D1401D7
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:43:23 +0000 (UTC)
-X-FDA: 84414299886.29.3290F0C
-Received: from flow-a7-smtp.messagingengine.com (flow-a7-smtp.messagingengine.com [103.168.172.142])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4B3CB40006
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:43:21 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="X tiBlua";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=oZzBaS7b;
-	spf=pass (imf01.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 561116B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:03:29 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14C0016023B
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:03:29 +0000 (UTC)
+X-FDA: 84414350538.15.0A73B35
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 61E544001D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:03:26 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ov9UhAPw;
+	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770389001;
+	s=arc-20220608; t=1770390206;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bISqe2jKaP7KU/kCc6RBfI2gJ1MsWdykdn0nnq1JXjY=;
-	b=CO39Co+stNI9jG4PNzeT7Qm2KpedlDizwY2hgB5ltWY4+u46OKIJVl+kfLEBVakQoOznUI
-	AVhtqblIofYLW34Ul7DerlZ/e4v6Bl+JiaLnkw/1m1ZTZzSifo3G4x2yz+q5x2UdmIfXh1
-	TbqL2eTuVH3wSLRQ0rHMMNH5n7A1UNQ=
+	bh=VN3a+f3EbdwsFVnFJtw/oh2DvyqCtoqH2KNK+3Lms/Y=;
+	b=U7hyppZnICOjKWfP4fnHjI0WpXk7iGCMYFRQUCTEExfOHqqFGYIe188l22xII3hJcdLQli
+	DpTusfktBd20AuyxR04LEIuSDHkTIfrx8HLynP/qozHNb+WmZQs0rOurWlx35+YdlBa8cg
+	ANqJrme8jwDxIDGlTS2A+GfD8WGij3k=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="X tiBlua";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=oZzBaS7b;
-	spf=pass (imf01.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.142 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770389001; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ov9UhAPw;
+	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770390206; a=rsa-sha256;
 	cv=none;
-	b=gplcZS56KCWabzcMt7xWYBMJJGUHB85t1G7qLsrNhObyikH+CIJ5lTBJeQBt9rTU1pDaBk
-	zXPkvNeTSXFlRbOsM9IchuakJw2J2hSZsTNlIL1PQCR8mafW7xY5g+HEv/4NNtIw4cyP+g
-	XSYzdC7+L/uuL7Lk9v7tCShz8UBsoqk=
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailflow.phl.internal (Postfix) with ESMTP id 6823B13807A9;
-	Fri,  6 Feb 2026 09:43:20 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Fri, 06 Feb 2026 09:43:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1770389000; x=
-	1770396200; bh=bISqe2jKaP7KU/kCc6RBfI2gJ1MsWdykdn0nnq1JXjY=; b=X
-	tiBlua1qOJ9+VfxMxANao61ok4w8oV+yhjndZQeJrIoI7jLFUmtpJy72n5r9AFuc
-	syrd/70MYg43gJwvQDdV2vwzKY6lHRKems9lAod4sPbIsKTYkRxTXfbsxlXXATuO
-	CSm04KLxBIjEHTSMH3u7yTFS7KmtNQun9qBhXrKe7Ane4HiGvv/hRCDsVm1Jt+RR
-	QzjzD6njf62j27kSAffrlPH5L+06RMLxN7E5KXyueC1Q+GxVvhfiKj0rolh+iwq9
-	TwmgtRPPq0fYjYe2G3cdDeuTjbuVDKIrhWG/gvcS4KR18feTxZ9G0xme4BZoib8e
-	VPsKgffMFuvZCZ6A9yVxg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1770389000; x=1770396200; bh=bISqe2jKaP7KU/kCc6RBfI2gJ1MsWdykdn0
-	nnq1JXjY=; b=oZzBaS7b2xOAudK+026QQZU1KNJUrj1T9AgoESSr1rZ6DnbpzHj
-	vtGX2GtZr+dtd+mcQWnCEQ1XVqJJeVuJNT1Q+KJKkGzb3RAXby9SSkHWkbiV7EUh
-	utSFcVXxKmWoDHyTvlGVhm799og8qG1jcIctlLpQFSejTQ2pL2r7ig2/ewzabnlQ
-	+lStSi/SkaudFpYVBTYN3NIZdMG4x9lyb6Syxst59Wpq/KQRTiFza8PEmRubsg1w
-	V7m3F/ub5p7yi4ldLfQuJJXGzd1sJX/rGje3g5vNOsPRWDC+Z6ojPzRj6spUoNxE
-	1+fn/7u2JO6kthLhOLBxhpzSY++XpG4DUVg==
-X-ME-Sender: <xms:Bv6FaS168pLUBnVOew4KMOcno3dBuLgsv-8v16QqiTR-64YS1dn9Fg>
-    <xme:Bv6FaQPc8VYs5_WXb052nTgTSxfWH9pjC_UPYh-7srpSPzHWe-ZXSIDy7N4gSpyzD
-    eWZ2GS7pRXgo59DdN6IafYuUMr9MrB-Bfnu7uha6c4JcQzbnw1y5tA>
-X-ME-Received: <xmr:Bv6FaRQGF1AajFYr3mTMAYd0BFNd9pdsRpPsTr0qkYluel7d6hp12ezG8COUTA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeekgeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepfeetheejudeujeeikeetudelvdevkeefuddtkedvtdehtdetieeu
-    ieetjeeugedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
-    vddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghhlrgguhihshhgvvhdrihhlhi
-    grudeshhdqphgrrhhtnhgvrhhsrdgtohhmpdhrtghpthhtohepghhorhgsuhhnohhvrdhi
-    vhgrnheshhdqphgrrhhtnhgvrhhsrdgtohhmpdhrtghpthhtoheprghrthgvmhdrkhhuii
-    hinheshhhurgifvghirdgtohhmpdhrtghpthhtohepshhtvghprghnohhvrdgrnhgrthho
-    lhihsehhuhgrfigvihdrtghomhdprhgtphhtthhopegrlhgvgigrnhguvghrrdhgrhhusg
-    hnihhkohhvsehhuhgrfigvihdrtghomhdprhgtphhtthhopegurghvihgusehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrd
-    horhhgpdhrtghpthhtoheplhhorhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgt
-    ohhmpdhrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomh
-X-ME-Proxy: <xmx:Bv6Faex-Rv6_rF5KeJth-0QAZXxJvR5CHBJGZpW-I6rprmNd1TUllg>
-    <xmx:Bv6FaXdHTBdwnElAfv5z_dK9bacbzifxrjCS49X4NMxikUaKAjnXcQ>
-    <xmx:Bv6FaY6lZhyICBlNbKZYjsHgAWVyieXdaaN9t5IAM3t4gJq8wUJyGQ>
-    <xmx:Bv6FaUKvlc2_aSGCG4-ShlozphCy79up-w3iUMUaW8cZBbsUuzORNw>
-    <xmx:CP6FaTMRSuu63dnxcyDgxivuOgK5w7Hw0BC6SyCm5SqDuwHBYJ4aP4hH>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Feb 2026 09:43:15 -0500 (EST)
-Date: Fri, 6 Feb 2026 14:43:10 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-Cc: gorbunov.ivan@h-partners.com, artem.kuzin@huawei.com, 
-	stepanov.anatoly@huawei.com, alexander.grubnikov@huawei.com, 
-	David Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Yu Zhao <yuzhao@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Will Deacon <will@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: make ref_unless functions unless_zero only
-Message-ID: <aYX96BcEn0EPiUlH@thinkstation>
-References: <20260206133328.426921-1-gladyshev.ilya1@h-partners.com>
+	b=erkOXnLUZKiLptb1x7xmyJW/3T5GSFmJf8ZOcDhbPDDIIGpqy5MZ8pDGOhYKEWJiDEb5hK
+	nBy6Iueb64A/9bJn6UDTP9GgDtf+JmUD9SlsvqK7sIpuAmFWjv8b3maK1AOLvhDLJFEE2B
+	T4iWVjfdjS9gObBhuxw3RCED54zYnW4=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 616E7ZLa003772;
+	Fri, 6 Feb 2026 15:02:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=VN3a+f
+	3EbdwsFVnFJtw/oh2DvyqCtoqH2KNK+3Lms/Y=; b=Ov9UhAPwfHJmZRAYiJOXHg
+	vJm0/v5AHgJZhWCpDAwilGjtV/OF7TQVBsPtLi9bvtgQIpKOgvf5zcjUO9mNiCXw
+	fXf5iVHoKzDfmZHsdLzWrka8wJe5gjCav2adWU6EDSTQibaR400GyuqM1lyvPEzC
+	EakVzqJMUhppe/CCaHRB6fckccNsDcHZn5Ls15ReQL7SPYMIxLgKEdbihV5NashV
+	ABrUWQvgz/mKDZXmGIuPyMtZ6DJ7mL+7B71Q/hVsI3qc7JK3TjGfXicQJBep3Ttp
+	rTJytTwWozfWWZ0zCL8dkUhkA6VIg8qm4e2NRm5osyt7yxDT7bdqs4FwDEDIqYqQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19f6v70a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 15:02:53 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 616F2r1X010536;
+	Fri, 6 Feb 2026 15:02:53 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19f6v704-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 15:02:53 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 616CKfap025812;
+	Fri, 6 Feb 2026 15:02:51 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1w2n6j7b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 15:02:51 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 616F2lHI43057508
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Feb 2026 15:02:48 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D8C3220043;
+	Fri,  6 Feb 2026 15:02:47 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CDE2820040;
+	Fri,  6 Feb 2026 15:02:44 +0000 (GMT)
+Received: from [9.111.140.182] (unknown [9.111.140.182])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Feb 2026 15:02:44 +0000 (GMT)
+Message-ID: <4fb3f0d2-b916-409b-995a-7dd801df0d0f@linux.ibm.com>
+Date: Fri, 6 Feb 2026 16:02:44 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206133328.426921-1-gladyshev.ilya1@h-partners.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4B3CB40006
-X-Stat-Signature: 1671y67jmhwkbrmjs1ud4w7wb5um4hyg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/6] x86/vdso: VDSO updates and fixes for sframes
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+References: <20260203171958.1522030-1-jremus@linux.ibm.com>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <20260203171958.1522030-1-jremus@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ImRbMbpGp5l1xVrd7tdKYdOl20Lnib8d
+X-Authority-Analysis: v=2.4 cv=drTWylg4 c=1 sm=1 tr=0 ts=6986029e cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=meVymXHHAAAA:8 a=VnNF1IyMAAAA:8 a=LFt20mCCc4CE-LtB3JUA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=2JgSa4NbpEOStq-L5dxp:22
+X-Proofpoint-ORIG-GUID: qFD-z8fzc_fSt-HH-25cq6VUYJ4hYEP4
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDEwNyBTYWx0ZWRfXzbSAzP7G5FI/
+ /p9zU2HRdzAJhmGvyn6CvnGcBWwc3prPDDoX2kOP0OPJfO02QCPe3WoppPBQ6JvzwaUBZTQiw27
+ CP/vgygFJvLEheudQNfgp+vESKWb/gD9pXW7X28uaNdV3whDEkXmWn0PUSi8dxSX53h1Y+7QXN/
+ PFXQCPZg/DRCD/Lh7G/QLNfebf1Tg6taqnZCYM1zZ6OLxQMmn5ZD2n1dsr5pGErvM0BPMo5qDjO
+ 4iruCMqYw7C0VazRVB9X70chykQngDeAuNow21AkAG7icwvVOumt/tdy2JQ+a7LmpiOILqBg8ZV
+ QKMzabmVvL8Igy0eeEpZu9nw13WyhfgqwChukwS7niT0zhwdhnv/Gmno75h+i41sKTAe7Aa5xSh
+ yGXainupced8BFgMAlfs8iyiTbdUJQshciT/LigVWiZQ7B5Iu7kyYnBUTCA4D/YJBW51DkxML4u
+ 7j/RUp1cEDMV8F7zApQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-06_04,2026-02-05_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 clxscore=1015 spamscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602060107
 X-Rspam-User: 
-X-HE-Tag: 1770389001-678659
-X-HE-Meta: U2FsdGVkX18j0NBjWMDCrr2BJIsLlHG2GBfOtVWOxXrGArG9Fo6hd3GRHA/TD3asjpXQ3TvOlJSuynvZ0ww2uSQMsgLutVtD979M5T++Od1UEiU3au3cJBhE0BfEOu9f4wocamB/daNK+yfjG4iZYBrDOwuS/Me6oK9bsSKWqHyEmtwA8AVBFl+g2n+S6u31k/ilZH5YWaJn5EyobAxx20ou3cL5vwZIEoMGH6dcqjBM1HfGOkWw089Xgsb2YyQJmr6WRND0vWeWykzW4Hb63pgf8zKhl2I+fC3gfvKo+vMwYm5HKj7iDfavpyWzW25Uyes+3WiIN2zt5MVwc7h4Wdd2/QFh+EWu8yw9pXUauxI58sCPp9Y/WsfgpLS9sz70NDgWhZNkRAACVmAQaA9cElQF4+wE8S6G7yR9dQGORwEJIKf+u/drjPHNi1bqW/0S3jcIXwol7fl4+vKf6YOqgt+UL3Qy5o2fCqi5nCF6hoYZ87RtChU2OUyCMENU5PqM+al9ndhGuPtc75bJUDZa+xX4Sn23X2ngeHgTi/axZDnYPW+dDtkkSyRkLYT0DlpKt0x66ix262ywGhR/WLaVYv8M7UkbY/uPkm1q7/3KBWMr8XP4WydY9aJXX7xhijysHmY0oYEBiqM2xuxI1dlEU6AObNCNJldV8guN3997BKhFIKoAfyy0mPu6nuN24gEeV+Vi15kNsAJLZSRqwBum1MsQxe7PG2Tceu/0La7rH5XIj1NHFi5dJ6iKzWWdfZZmwqt755PnCpFbVhnE/e4i5ItCQjhAL6VNKbX6U6UQ4WuK4bbtB7W+ywxMo9+vEo48CGnz4uJfVELD+QUYaoooDp0QZMvHBXn7Pn6DgVGGzQdyCSiobxBhQ5HpuTu7Vflcduuf7q6OqFgWsyrhHiOKaHl9Yel3zhwtLFuyRyoFFfn5HO0qJVOawb8Q94tEC2NZ3nZzcT5CmZidbpROLxy
- 3YQz89XL
- lmHo58E2f0K2856rTDOMAji52yeVI5iOngcIxS21mqY1rEkuNQGC+/KarnIaFkejOVnLnpkOCyPhIriHJCAe+dYF9cZeBSQq40ZGYcACrc6YXmwdlbWeMExeuV9COOepcKw82wUkA5NtsDpCD33VG3N7Ugk4Hb6zjSHGV40m4dZNF4HGSayVDBmKZU+k8GqkUqqqEOTqPcd3rqCxYpyngKfIiqiW/+6wHG96G5AOMmLCcCkLA1Bsr7f29cPfPEDqBdioPxFHNVkvQnFQDICNqkn7v1UQBYDIJ2pyVahqH70EGq1DTCUQQtNyNIDFe+ein0quZZJbRQd+11uCS5hjSiw1MQVwDNMhkAVIWoFgSJVMQryR6lHwJH/NQv2JH40McaQi8zzpKDStChEev3e7GXych5dqpCQq6nBtBUqCxxxMZI+NOqRynU+ZqVBrq9wOIcWlAaEAx1myzwWz0iyrfEZrqZGQypQDMSZRvGWuOY6htirgWusxqDIAMCgyyJJgNI1Uy6jXJrweiJdga5Xo1c4lehTRwZCNS1xIgxv6Woew6BTgBZE0f1tjq/cx6jDRbJkMR
+X-Rspamd-Queue-Id: 61E544001D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: a5ycskxt4why137h71y3z7qz5sa9h5to
+X-HE-Tag: 1770390206-294668
+X-HE-Meta: U2FsdGVkX182URWu9oO0iSW+qxHhiLGkqCQ2KpasDIW0a8oREeyuHUWIYXieFyKjckZZgBHSn8oxtvRUN/WIE5XD+ZIN4xknyfVq4YjbYpY54bspEbFNNwxuAsW6PgvqmMlRbXS3CXTmbep3zOrmSaf0+/W4FAuFIfl0Og8S5ixvwWiPhTbaY2t76Klegt8i3wda999taGKqy2IJ/aTUvNIINIBM0uAKtEFX9dTEU1KrbgzZWQDO8cL2Q/nOblny3ViybacBtdTCrnbp5S6Q9MddmdyJ4WqVle5UjwoL4qP+Q8bnOAOPaloevXtSDuJn0xGRVJfe4pnmFZgjQO2Zc90sJJcCPlu4T5G+YMwxsmx4v5iRg9E93L7++P0Uz6jva+RyNwKoN1Ffclnrabpdbz6lAGJ9MXZ2zY8SlPUawe3xZYAHTaVt8aFgPigYwk6b69wOGHWs8D/+3P8EF5SsFTp1SVsLxS8iEPg+zTOZ5sIhOM5B/doQkooBg4oAfDfMUVAZB8Bfso9vEAtEcIijDQVFtGo+W+bMS+4ZEtyJGbZgWMTiezPyqRvCbhXQutv0x0Eckv+f+m6TniE2KZIAxMTmzDnGlBOXClNYUVobfhnp6ylBG+jvl4RUnbsoV0NgDIp2aiAZFT274BGm6E92rAzfZyYfG5cWy9E7bnfwR42DMhUlVAHoPd4okct2zVoLWeWjxG2PdAnqKE44Rte/SUvq+J2J5QmA3FcKiThekfpsscFhgHVaiojKjsKG4xs5f8ii4BjPk1nj6t8Rd8sSnVldI8ykJiJK+D2aYP2AJ75wG/hZxZzYrjgH2FtmmD2aUHm2ydD18NrdEydmEQ2ZrdCs3AE21RZXz7gq3CamJtM9V+sG4KY3tmDbvNDFBkBkfWvFK9zFOuN9NiLtx2/tzX0LSIZt7ILUI24iSBJu0wLLwxkB4btkI7HTmXnkqY8fyz31N82PFAlKfHjfSS5
+ CFwK2Q4t
+ Peou1Ax6ottf55JhF2GmplvwuteJdm6AZC4M1qhHMvbkHTS7nXeP0cA94EtXmFLjDYhpEtQ3mRnz1bTKmUF1YMUePXgnp8HervL8GZ4gzIljDe1K3ruS1cnlfWxR9Wkz4EqzZcfexHR/gInwMr8seumygZYcQRvBTbu/bmsbNF4XecyxeILhsVKvcMj8tDtY3FeTN0B2xBXZ0BWm3PvmDqoTgIGQEoOt/W+TfPz2yT7M7IKGZN6tVjUg61Or/OUNXHAUOLnTs2p8iDfpiaXLxXs2wl60k91JKgBmyX3NDpl/UZ58FHwWtJToOeieqAXGP/qfqIuPLGkLR/9yGhiXfUIrxjdSvcXuMWs3vXgZ2lxMU1mFrbH7NXHxOggwJ05gqO88QiCebn3ywWx8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,27 +176,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 01:33:02PM +0000, Gladyshev Ilya wrote:
-> There are no users of (folio/page)_ref_add_unless(page, nr, u) with
-> u != 0 [1] and all current users are "internal" for page refcounting API.
-> This allows us to safely drop this parameter and reduce function
-> semantics to the "unless zero" cases only, which will be optimized in
-> the following patch.
+On 2/3/2026 6:19 PM, Jens Remus wrote:
+> This enables generation of SFrame V3 stack trace information for VDSO on
+> x86-64.  It's a continuation of Josh's and Steve's work:
 > 
-> If needed, these functions for the u!=0 cases can be trivially
-> reintroduced later using the same atomic_add_unless operations as before.
-> 
-> [1]: The last user was dropped in v5.18 kernel, commit 27674ef6c73f
-> ("mm: remove the extra ZONE_DEVICE struct page refcount"). There is no
-> trace of discussion as to why this cleanup wasn't done earlier.
-> 
-> Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-> Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-> Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>    https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
+>    https://lore.kernel.org/all/20250422183439.895236512@goodmis.org/
 
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
+Above is the link to Steven's v5 of the series on which I based my v6:
+https://lore.kernel.org/all/20260129112726.892340-1-jremus@linux.ibm.com/
 
+I just realized that Steven's latest version actually was v6:
+https://lore.kernel.org/all/20250425023750.669174660@goodmis.org/
+
+That is why I also messed up the series' versioning and erroneously sent
+mine as v6 as well.  Sorry for that!
+
+I'll incorporate all of the missing original v6 changes and review
+feedback into v8.  Following is an excerpt from the range-diff between
+Steven's v6 and my v6 showing the only missing change in commit subject
+of patch 3:
+
+3:  6ce4adda138b ! 3:  9b59e14424b0 x86/asm: Use CFI_* macros in SYM_FUNC_* macros so they can be added to VDSO
+    @@ Metadata
+     Author: Josh Poimboeuf <jpoimboe@kernel.org>
+
+      ## Commit message ##
+    -    x86/asm: Use CFI_* macros in SYM_FUNC_* macros so they can be added to VDSO
+    +    x86/asm: Simplify VDSO DWARF generation
+
+         Add CFI_STARTPROC and CFI_ENDPROC annotations to the SYM_FUNC_* macros
+         so the VDSO asm functions don't need to add them manually.  Note this
+         only affects VDSO, the CFI_* macros are empty for the kernel proper.
+
+    +    [ Jens Remus: Reword commit subject and message as suggested by Josh. ]
+    +
+         Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+    -    [ Fixed rebased issues. ]
+         Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+    +    Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+
+      ## arch/x86/entry/vdso/vdso-layout.lds.S ##
+     @@
+
+Regards,
+Jens
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
+
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
+
 
