@@ -4,125 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B975FEE20A0
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:31:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 894A6EE20A0
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:33:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EACD46B0089; Fri,  6 Feb 2026 08:31:15 -0500 (EST)
+	id D1DD96B0092; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5AAD6B0092; Fri,  6 Feb 2026 08:31:15 -0500 (EST)
+	id CF5B06B0093; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2F2D6B0093; Fri,  6 Feb 2026 08:31:15 -0500 (EST)
+	id C1E546B0096; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BF8ED6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:31:15 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C1BFB69E9
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:31:15 +0000 (UTC)
-X-FDA: 84414118110.20.9C03355
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	by imf21.hostedemail.com (Postfix) with ESMTP id ADD971C0013
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:31:13 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="S0/E+gGo";
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AF3676B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B06156902
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:33:30 +0000 (UTC)
+X-FDA: 84414123780.22.21E6421
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 389D810000C
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:33:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=Z9Z88ceb;
+	spf=pass (imf05.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770384673;
+	s=arc-20220608; t=1770384808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Di9rrCemg3Phd+bFA7xXmyQkZ2Pz85YWhx7g/X7oYx4=;
-	b=MV7a2A35Xny65lQ5oR4lOhFMzm8gzev++hMyBTYA0brG38sKnDdI70uoU6rQZqKVQQGbzB
-	ste+ZqjeNpxNdX0FHpNwLXH/Am6JQDUX8FoUrz4cpSD7Y8bYrP6NtPMeYoDUX+ooR4A0t6
-	/lSdm0evvjErYyZAsIXVsSTuVKA+ZeU=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="S0/E+gGo";
-	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.43 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770384673; a=rsa-sha256;
+	bh=vb13Vwh1fPqNxRNlEIYNEmJHIJtcIK4aczKvaS88OeA=;
+	b=BUCZHt+NfMsjyi+kFrJfUi/Gpi2dXY0NUnlIyoeGijJ9QTuNAEMR0LTareXrQUkXdumpnU
+	zFHz112YJ4uvdtQ7WrwmHCTyqB1R23UCUJOwqztpS1B4m5c/tVbEEd9iMipP0LXOHcBqyO
+	IWugKD8FBH7Re0XOQ+CTF5Q3FjRdDLo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770384808; a=rsa-sha256;
 	cv=none;
-	b=2mhm5S7U1waSUU4FDzJRZnKHd+onmVABGXkOAkPA7fUVlEPP5nUDZaKlNh11rCp4SiMo71
-	OM+zucP7V+TCDbPM7nuBSBU+7qm3YloCAcOHmqMhRHvpiWZmGMP3OzFN1Cck3KIe+/Gze7
-	X9vshi8nJcMP5RPwucUV6hHADBkrb7A=
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-88a2e3bd3cdso28694606d6.0
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 05:31:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1770384673; x=1770989473; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Di9rrCemg3Phd+bFA7xXmyQkZ2Pz85YWhx7g/X7oYx4=;
-        b=S0/E+gGojJ7tS8ZV1snTot96UvVDEeSFeTWwgR+q3f+W8acbD6BOJTILX/16/SoWhF
-         MD7rmuh8IJEs7lSBW50hCRaAjUBnnwzVaM8Erl/hIv+WYzwbaia/FYz1NjSTw4cAelPO
-         pmpmFYWwqZKNbN1+D/s5yleVlOISLjumDBWnq2oKxjPEOEn4KTqiqDrz66OtRMFB8mro
-         LtkehX2XUucjBe7XfeaGgObr4mDK4pzLUfASd+YlffKBt1EYjabgITO07W+9QlRed1u/
-         xLdApygE5aCNkkQwtJmUfMIvZ63T0amgA6QcwmvXfvDcofeAbqBsYKrsZ395nnm5ZGK2
-         xHeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770384673; x=1770989473;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Di9rrCemg3Phd+bFA7xXmyQkZ2Pz85YWhx7g/X7oYx4=;
-        b=rPsDf/DnUdfkOu5gNdGA/JJCyplY4xWuNsMqil6AzTjNnmr6sFFayhmtuQnN70VFWc
-         tqC5TUeXCyoZSY9K7KSKS5BMz11VkGXQ13KywJ0n+zbW7+t9g1BK3OL69lT9mVgiIIsy
-         uDJzQU+WgaNH7HTCjQZ65qG2w18vjGod9yc8/rdUujTLFuctpW7pd3tZ8Bp5bLZ+PJGB
-         oXgPpSL8v9XHK4LNlWcrO/E76pZhVbmxJ6aYY0DXB/wvY14JGuGysjMIGvGB5+urXJva
-         yeVY2Ld+Dg9WEuaIosvRShzUrQZ+MBKeT8kqCVCW7MJvMhuMgoXCGQ3VYB6YUn+/dX1t
-         PyMg==
-X-Forwarded-Encrypted: i=1; AJvYcCXlaZewK89G3pYqRKrZU/FH0P/RdvQCmzDHTEsTkz3INPCEl+eynNzCaKmfBWE3ZBUIkoUm6GxZ/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yw7FAEsyGRFAMgMysb1qPBdf/N/za4Vd2AzSqF/uFeDlE5hXpcF
-	fTp81CEV0BThidH3/19Unq+FXRW4FCkxsiljkWAJM5ZLR8Ul+AHssXgLopzhZBF/88o=
-X-Gm-Gg: AZuq6aIO9iTLxStOlHD8aK+JuLYoE8ewwb0VoI/y32gKKJIZYYqbPYwSyiNCzE1NK8Q
-	AQAe/KVo56WMgSxBbG9fh/yloa/P42O4misNweux6IHjaTM/Fhem0R7g8iEXd2e1nhE9C7QhA/y
-	I8LNSb73MUzovGf6644qvJWSNIBpx4K+NoNos0kF63+SEQ6DuYsY2Ash6BY+INxve1fGekklIZG
-	JghJ9puYuOySn7m9Sh8y2/ppa0iJAGzCm9fzoKl2FB+PUjwBIuOeBG9p8eTfIyY3YlkQAyDV9q8
-	Z4uDZa0bSDjp6wtP6gbFsHJvRMxh9OvlauHxylJh3uaPVuI0G0oHZqUJls8dy7esNWExY9U8M/T
-	gI9UjZgiAmYojg8j5/Or/RUWt6SvWMD0KDJauWZzW9d9AUZE6XlDCxNk/4zS7QJYkanMbSNGPKG
-	vUYo/EKdS04NH/5t+XjGtXw5NCLYmzgH0jbpqc0f4mbNH0MzTUrj/zM6gt7gKBeG60K2eQGw==
-X-Received: by 2002:a05:6214:2428:b0:894:6540:9112 with SMTP id 6a1803df08f44-8953c150d50mr35637556d6.33.1770384672493;
-        Fri, 06 Feb 2026 05:31:12 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9ee9fbasm152145985a.39.2026.02.06.05.31.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 05:31:11 -0800 (PST)
-Date: Fri, 6 Feb 2026 08:31:09 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Cui Chao <cuichao1753@phytium.com.cn>, dan.j.williams@intel.com,
-	Mike Rapoport <rppt@kernel.org>,
-	Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, qemu-devel@nongnu.org
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID
- of CFMW
-Message-ID: <aYXtHa4Y2y_5xgcS@gourry-fedora-PF4VCD3F>
-References: <20260108094812.8757ce3ad8370668eaafb29c@linux-foundation.org>
- <9132054c-3017-4af0-84e0-e4359b0794a6@phytium.com.cn>
- <20260115101858.85fd7b8e837c1c92a4fdc5f0@linux-foundation.org>
- <696944eca1837_34d2a10056@dwillia2-mobl4.notmuch>
- <2d1e23ad-7ec1-483b-88b3-70ce19b69106@phytium.com.cn>
- <aXOl9CN_66HywIjZ@gourry-fedora-PF4VCD3F>
- <a90bc6f2-105c-4ffc-99d9-4fa5eaa79c45@phytium.com.cn>
- <20260205145842.efb90572a902ae4c481e6ef6@linux-foundation.org>
- <aYUjf0OrD8f_bJCy@gourry-fedora-PF4VCD3F>
- <20260206110305.00001fbb@huawei.com>
+	b=d3V9lwk+iqfXf21ZLhldbcnk+5OvBGVqoaKmRL88I5YXwHkG+85oGRtQGMZJK1yjKV/Nop
+	NoHK2dRbACOxqkZ53e3bLoJZHl8rbdwR7qLfkDe7boyljA7UnID5kotnHRpgn6hAk1YDDR
+	xJgR80uF9aga/IWQeo7vMsJNe80L59Y=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=Z9Z88ceb;
+	spf=pass (imf05.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
+	dmarc=pass (policy=none) header.from=gaisler.com
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4f6w5f1jGqz1FDXx;
+	Fri,  6 Feb 2026 14:33:26 +0100 (CET)
+Received: from [10.10.15.18] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4f6w5d3Z4Lz1FQVL;
+	Fri,  6 Feb 2026 14:33:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1770384806;
+	bh=vb13Vwh1fPqNxRNlEIYNEmJHIJtcIK4aczKvaS88OeA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Z9Z88cebMu7Ddw1jVWtT448QIvjHL3GiCwWDGvsQ01Wxtyv3l79H+bPYslc1UOB9Y
+	 BdTB81cJcyiWlbAk4Xtv+cSCwqG0dm8ZtfsJ0+1NUs0nMYD/nsZAWUQ7EG3GW5LUcx
+	 0wBqY7vrdo20aOPF/76QbRmshC7PSNXwuN38zJAxeBlYBIzyXSflwMh2TZ4DIboOxw
+	 vVux+ighrR6Q5uNjNY7Izr87aZexRGjwxcfGrRU9WPwEYfMjDFCgLUCpuncK1iWdjy
+	 /ZR4ft/NA5cLVxWSHqdmyJ6d7uUMeuP1zpoKteadSBJ5gNGxos6/Pw/tMDP1Ddpwbt
+	 dhqXYTI9hYY9A==
+Message-ID: <847afd79-e8f8-4547-8167-0125809de055@gaisler.com>
+Date: Fri, 6 Feb 2026 14:33:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206110305.00001fbb@huawei.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: ADD971C0013
-X-Stat-Signature: kyu6k34ijg64bsyfr8ebt1ss58dnj4ot
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to
+ CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Qi Zheng <qi.zheng@linux.dev>, richard.weiyang@gmail.com, will@kernel.org,
+ peterz@infradead.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ dev.jain@arm.com, ioworker0@gmail.com, linmag7@gmail.com,
+ akpm@linux-foundation.org
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
+ <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
+ <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
+ <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
+ <538fef61-3903-407e-8486-538a28b99e9d@kernel.org>
+ <53a1bbdd-26d1-454d-af06-169172278718@linux.dev>
+ <c24c32bd-085d-460a-833a-a982eb5becaa@kernel.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <c24c32bd-085d-460a-833a-a982eb5becaa@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 389D810000C
 X-Rspam-User: 
-X-HE-Tag: 1770384673-627070
-X-HE-Meta: U2FsdGVkX1+e0QCk/NndOZEm9k7FIg79TcNO7lEVhM8VRQvTqyZ1ZTnHnJpsu546xyb+XWO1/r5kYX5oXoevNNjJytBx0gr+beadPNujmKKGZQTNALuixLZfXDmHN+73UF7fTx8FzrHbegIT6VFqG7sKQOrNxgJ4429phBjE2FMqRJdswkIXETG0HHt90W5TzVSppcI5tpEuSioVIG+xwC5G29bfKoC32eDDaV2ZCAkgHeU0sZOjBcHhoSkoHlQsHzZeawpEl1jIAMvqTkHeMAoXEdPym2qGFYwQuSb/KOV2rhWFrgvhNfi71u0t2B+p3mI4xiDkMwwas91M5bnY30Evpyd47TA+z2T7jn93CsYpUBtniiPKhmr3WZgV1izWVHD55ShKRUTtniwToDGn9zKjlJaghWJhWCJ1tXzFZa5yDm5PiRT+6UDMt+qg2IaKy47Ddk1Rjii++J1zNfvcM8HlV6Q9ahXu+m/SqzaYyKfEbwRBHq7RJXPcNIqrOnJZtvpR3zhfq+9JCR8Jjm42ZO8hT2pXV+sLCq/LBAx1v/roJnm5SHYb+6Hnlp8mrvrw3cqdybs+J3evmF/6vRRG97L2bujxL/sefIgJARYe9+rmQk6gsRY9z7Tqn+St3iqhHoZKyzf5LlQZRDZ1//oFIen5V7xR/TFCv3kAGl2xQ8xFIB8f0N/S8EsYN0rB1LIkN6i0Oho1zqNiy83Mhj4gxvTnFPrOwH1qtuyqgdaxzgFhWy1whfzGaVmqPGBFz8NlisflFoPPJqK1DeBLKNzoIw/KwbMF4Yh1TRLu75v8SpvJ437iGzFwIrZRpbJodQNwNqtU7Y15Bnd9PsuyQkyQI6YukG9Hv56OIKpy9EwVIG3RakQJwVERC0gocAqX5PFLb5/mYXw8GB0QHJJmMwEDw91V3cZkVIcyrW/1Fiq2DYgA76raUiNA2DQKzvRJ1nDVS2Pd64VsnrnxuVIRjq3
- We/hPui/
- Sa3VitHf74MT/pqF1T6qBn6ri8ZEEpQdQLL15mdG2gbS3wcMzGbmKwRtBGvFPVydqMKQBBnXWQO2boNqa06bz/1EjvZR06oCTvHA4k535oMmCGJ7tBnWWq6N2RiojWnpFOzR7SZ8T4NW84E8uIKCeQ/nARKwZjDHWgHi9
+X-Rspamd-Server: rspam05
+X-Stat-Signature: t8wuxra34h35r3egiixf495mau3gpxgg
+X-HE-Tag: 1770384807-606206
+X-HE-Meta: U2FsdGVkX1+HefTr54ydDvJcjJOPWSurAkS+16FTTykIHRWqu4QRT531n0L3hAtHitAboOUsxza/BLrHmCTy1KxNoTqUWmMvulaxFdGFMjfKG0mBIsBix7O+aa1xoGWhdVCHj5dFznGSJCgDG2L1opxuz83Uc+n7eYScjtOnBcDXbavsPfqOC8SidCjc3IQZ1phTJ4C9mMEvUSRK3PwJZhJiNpJV6K1a8X7njryzLn4NYj2xhSMnAjYCDKRqiVUHMt+hJY3qh/+ydK0pmhkUIxYFSOX610EJjuQBkIoENT/j2SEyyPanQEDRL88MNc6fUOj0S0/BzB6SSPZSc9lN4O/8nEaQGqu8h5rOSduZGc1Cb78pVjWGiUlmz4L6HzxDosP3napYAp/PmoO72o9kPlV7LnMN9vErXIAwS3zMJqMS9FPffsgOIxQh4zbiFRXfoSd1qzmcJNbC2hFRByZzWnD787Ed+EiBh9JO8cOrhH6N6mkBtgK+OGMP+/E/o7SXJDajVV5MFFEnV/MMEDAn3Z4t2FqGGZ0q1b4HVVgSs9gxBCExUtB4nvrvF9phhf5D9F7LrEbTeHVpLQYMgddnq2G1z51wVHzF8sFKpe8nyZf7hr+hQSDmgJoSEzMlOVwT2MbFB5183TJdcM8g0L6yEnh9H8Hj9ejV8AntgOQp0luvwhtGm1OejfUjyOhSnHAaJAOR1E64Uvv//fbjYxvkyiXvd57xe54dI72F7pyU6Ham4idcY1xqaDKSylKOp1/6nHUw939wF+6IwkaiiDxr2bl9HXTDG7oYkaYnR/xAAxk6KjAjlQSUzToVOGn8mUF21MxYMeSgSQ/LrVDIQnCg62mqQ/wQrmhITjmCxssUgEu0h3ka7trj7jdT5bMTDwG1MOy6ayG2r/dOmmU1iSXMOSdyhjgDoo8BFVz80rLCRY+z4ZdDHQXgetccMt/ePnLI3+SuIPq/MJKdcbW3iou
+ e9xAbRDC
+ w9Z0UimVr0rnU88gDQ7MjSejzvikR5YEd1fYvKGwa445EGvkh/85IL2qOU8AfVTsjl2cZAYQKYpNAX4A4xg3I0qVhQwfvVIrQmlAcTXI5BHX4ClaUFOVfVboMmULdokFuo/0yJd1l8ySWWofC7BCVaG4Z51rqM1O2v/rS2DMRArggWx/pYA92+sRloXN9BeokzRC8on8+L3w8Wmofb5QE31b7C+QxjgQq6F2fM5darlbdTxf84Z7pHtINBQcAjRtxkGlTx1pwhVIKNHhXvCELYfHvohnQ1ZMzPJYr+xJ5qLK8fYGq8Z4LRAJlW5wwi4q/1uey5bXyl1sbpXjx29DArxrojPc/pVSFi6bnTbYieei063oP1enctuhfcfh7snb31LoRcX99CAda5SZYFHA5NvjbakBoVokZC6MXKrwJcAaXDnINUHcQgP9pJKMYIXgSBaVwQq689PSNmRYoIl6hg042PqiHw/jmQ0RJt5EqC1pJPVBT2JrojW7Man10w1L0VJ7TM49DBoQNXwnKpZRTDWqISQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,37 +112,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 11:03:05AM +0000, Jonathan Cameron wrote:
-> On Thu, 5 Feb 2026 18:10:55 -0500
-> Gregory Price <gourry@gourry.net> wrote:
+On 2026-02-06 13:59, David Hildenbrand (Arm) wrote:
+> On 2/6/26 12:58, Qi Zheng wrote:
+>>
+>>
+>> On 2/6/26 7:45 PM, David Hildenbrand (Arm) wrote:
+>>> On 2/6/26 12:13, Qi Zheng wrote:
+>>>>
+>>>>
+>>>>
+>>>> Ah, It's just simply aligned with the MMU_GATHER_RCU_TABLE_FREE above.
+>>>
+>>> But does that work as expected for !SMP?
+>>
+>> In the case of !SMP, tlb_remove_table() will not be called:
+>>
+>> static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, bool is_page)
+>> {
+>>      pgtable_free(table, is_page);
+>> }
 > 
-> I disagree. There is nothing in the specification to say it should do that and
-> we have very intentionally not done so in QEMU - this is far from the first
-> time this has come up!. We won't be doing so any time soon unless someone
-> convinces me with clear spec references and tight reasoning for why it is the
-> right thing to do.
+> Ah, okay. Confusing stuff. Would have been nice to document/mention that in the patch description.
+> 
+> So if it compiles, all good
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > 
 
-Interestingly I've had this exact conversation - in reverse - with other
-platform folks, who think CFMWS w/o SRAT is broken.  It was a zealous
-enough opinion that I may have over-indexed on it (plus i've read the
-numa mapping code and making this more dynamic seems difficult).
+It looks a bit weird, but it is actually more logically correct than
+before the patch. Before this in the !SMP sparc64 case
+__HAVE_ARCH_TLB_REMOVE_TABLE was defined even with no actual
+__tlb_remove_table() present. But it did not matter in practice.
+But I agree that a mention would not hurt.
 
-> This configuration reflects the pre hotplug / early CXL deployment
-> situation. Now we have proper support in Linux we have moved beyond that.
-> We do need to solve the dynamic NUMA node cases though and I'm hoping your
-> current work will make that a bit easier.
+Tested both with SMP and !SMP
 
-If we want flexibility to ship HPAs around to different nodes at
-runtime, that might cause issues. The page-to-nid / pa-to-nid mapping
-code is somewhat expected to be immutable after __init, so there could
-be nasty assumptions sprinkled all over the kernel.
+Tested-by: Andreas Larsson <andreas@gaisler.com> #sparc
+Acked-by: Andreas Larsson <andreas@gaisler.com> #sparc
 
-That will take some time.
----
+Cheers,
+Andreas
 
-Andrew if Jonathan is good with it then with changelog updates this can
-go in, otherwise I don't think this warrants a backport or anything.
-
-~Gregory
 
