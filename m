@@ -4,236 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFD27EE20A7
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DDFEE20A6
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:57:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55B3B6B0093; Fri,  6 Feb 2026 08:56:51 -0500 (EST)
+	id 3A4916B0096; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 53A526B0096; Fri,  6 Feb 2026 08:56:51 -0500 (EST)
+	id 386386B0098; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3E82D6B0098; Fri,  6 Feb 2026 08:56:51 -0500 (EST)
+	id 2922D6B0099; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C9366B0093
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:56:51 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E59E9136D2B
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:56:50 +0000 (UTC)
-X-FDA: 84414182580.04.4AFD669
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B9F67140004
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:56:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lfnpMlXZ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf09.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770386207; a=rsa-sha256;
-	cv=fail;
-	b=y/Ki4wVRfijEg9wP3/K4k9BvB96NDvhy/EQJPHpGXpzDxT9Hure/j/vsLThMCYaiI2/LI2
-	D8qbbxrTUptLbPfCYUkpCbBjGXHzCXZzsrhaQLHtsBPYGMSSh64gVxHKBcCD6jwfpHnkTI
-	4K43VjEm9UbKIxFIc0YiSaN9oedNYrA=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=lfnpMlXZ;
-	dmarc=pass (policy=none) header.from=intel.com;
-	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
-	spf=pass (imf09.hostedemail.com: domain of tianyou.li@intel.com designates 192.198.163.17 as permitted sender) smtp.mailfrom=tianyou.li@intel.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770386207;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A2496B0096
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B35EC5634D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:57:01 +0000 (UTC)
+X-FDA: 84414183042.23.B8B3F07
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id CD739180007
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:56:59 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770386220;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CnTg0djbl6LoBIqZBzEtTkVVyB9Me/yh6KlDEPjefbA=;
-	b=J4pkA1VaV7UNgOw7DGUUOfeBBRtl2Dmo8R1UceYY4wb2prpbZhaK/sFupHANfsXQzS+zAP
-	uLsZJ2R8z/yoOQBBQSNXAVd5tqxPisXxs+9AcIIVkb8hcHjDqa8sV2prCqUFe3wcPrgjQ9
-	DtGr4IEAJ59obVkrwnN26isbETWow94=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770386207; x=1801922207;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=mBN0B36ITz+dpD4BXnAk6MFVguTDcmRnfm5RQ8g1hIQ=;
-  b=lfnpMlXZLC076Npw6YzJK4dsANfG29/HCDR5NR9/qLIa59KlvwOdsBMy
-   TxZGmIiLuVn0SsmCPpUykDzAWHiGRc+CxRryegQJNtvlttQnFRq/RZLmN
-   +Ro4sI770EcivpPRXZIDLOZIObv+2vGSJRhcWGQuLrtALXA4I2tgUrKzM
-   Fe/uHlN2gtYpYlyXKAC1JTze/MvSBCYCWZF4a2hvBCSH0TWMKc+EPLjfF
-   KmkXBXl03rADjjNT4FWW5glyaF9O5HQzIKiufGuXGvh+4L9A4vXFz/+kI
-   /J9I6I6ycg481/RbEwc03TZsvpMrtcDWaVA5aR3VZdqfkzgVH6avrjzgc
-   w==;
-X-CSE-ConnectionGUID: jqCfo4gjQjWRtq+42d/Kfg==
-X-CSE-MsgGUID: ELjG7L5iTAKgn0dDTA5IfA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11693"; a="71483837"
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
-   d="scan'208";a="71483837"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 05:56:45 -0800
-X-CSE-ConnectionGUID: 7zovsFPcTEaamPAnRXCeoA==
-X-CSE-MsgGUID: wrGCeyXySUye3heoDlAhDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,276,1763452800"; 
-   d="scan'208";a="215447552"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2026 05:56:45 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Fri, 6 Feb 2026 05:56:45 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Fri, 6 Feb 2026 05:56:45 -0800
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.0) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Fri, 6 Feb 2026 05:56:44 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QoxJZfzhVlxVYWWSUgIMjJUpz9uP3olElZjR1djaIzstejZI3gzJsegCr0N97ESSUIxkRrDfJj5/HH8HEIkWJ3a7o9D6o4usT3D3qRohzz6MUeXP+RIGpjK3rH2mjN/VmTnCLkI2dMB+OFsZK0FRkmaucK3T4Exsd6niVIBiEAyQJdpSxDiYkFO6ARBuGT9zQG9KZGsVdoY2SFa5bVb5U7T89xHSIUcusJZvQKzTvANyEpHkgAFt2an58bFm33hMl0bY0yJjNpqVs6XW+gNu3mPqAUaDFajTmhHGJUzShl5MIN4yegSvjHZPKNhBYcCjWJcA+lek5Zl/LJ07vQttIQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CnTg0djbl6LoBIqZBzEtTkVVyB9Me/yh6KlDEPjefbA=;
- b=NQR3Xo8WGDtJcctkfhFhtEP6OIKUDqe8v6/goTakVb1ZQ2OQAmRaDmlgMjR/getHlvopoZZ7u00FbYDnlWWStxWf7xnVVOLfzsAq1ZLOUCLQvdMUf8C0tT9Wk22+J69U0bDYjKJjqPKaFlcz4NCzDmE2kwxRSzfSZrv8WyRzFPZEYDwkxYyDGCpAPzogy2VE/bUu+x/CPBGntvqB3LPmi/LJwu5wF8/k3gCvhbqpVXUF7rPWQX2wBsZKw9C1aCeodmyOq6cLCvKsh60j+wQiKkIH0Z+RTUOxXVlkMBim8zPUwI4lMGc9CDpqvrt5PFIO8rYJyDb5qIDdhswvnC9mCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
- by DM3PPFD83941681.namprd11.prod.outlook.com (2603:10b6:f:fc00::f55) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.13; Fri, 6 Feb
- 2026 13:56:43 +0000
-Received: from MW4PR11MB8289.namprd11.prod.outlook.com
- ([fe80::e4be:8608:3d70:c1a1]) by MW4PR11MB8289.namprd11.prod.outlook.com
- ([fe80::e4be:8608:3d70:c1a1%3]) with mapi id 15.20.9587.013; Fri, 6 Feb 2026
- 13:56:42 +0000
-Message-ID: <a670fc3c-e298-4430-9c41-d51598d25e06@intel.com>
-Date: Fri, 6 Feb 2026 21:56:29 +0800
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9] mm/memory hotplug: Fix zone->contiguous always false
- when hotplug
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Oscar Salvador
-	<osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>, Wei Yang
-	<richard.weiyang@gmail.com>, Michal Hocko <mhocko@suse.com>
-CC: <linux-mm@kvack.org>, Yong Hu <yong.hu@intel.com>, Nanhai Zou
-	<nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>, Tim Chen
-	<tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen
-	<yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>, Chen Zhang
-	<zhangchen.kidd@jd.com>, <linux-kernel@vger.kernel.org>
-References: <20260130160635.2671167-1-tianyou.li@intel.com>
- <2bf497eb-47b0-4eb9-a66e-607c82c36c20@kernel.org>
-Content-Language: en-US
-From: "Li, Tianyou" <tianyou.li@intel.com>
-In-Reply-To: <2bf497eb-47b0-4eb9-a66e-607c82c36c20@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TPYP295CA0023.TWNP295.PROD.OUTLOOK.COM (2603:1096:7d0:a::7)
- To MW4PR11MB8289.namprd11.prod.outlook.com (2603:10b6:303:1e8::9)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=5Zs+DR2LmyOtpGzEiKrxzZCtBbHCAI3j2ET7S259SQU=;
+	b=wtggwpRSu8ld79E4/aTeYHckHbGrkiMRMcU7UCOgpUZ26ENyoa0v8BwXWAvdx/mjVVf+36
+	apLCGewNfOyLGfRupxSDpgKTTgTDc45VFHHF5ze1VmLGfgOx8dUnTmb466tFDjF3TAU2Sw
+	BFYue6XqayVfolWRTqNeiVo1PJ0whWk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770386220; a=rsa-sha256;
+	cv=none;
+	b=IM9TSJgQLJDL+zGI053ynkhGcTGsPYy+KEhCPpRhuTbVH4WhiDQphsp8D6vzs6KPFwGXZi
+	0tNDfAJEHoHoxQYOlRkqi/PzyHErdpzXMwPpzXJGWBwWEy/VMxjr6VFvjMQnznyA3KISt3
+	sLij4iCKJcmnDRDYYfFEWpxyKOrm5P8=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E7B6339;
+	Fri,  6 Feb 2026 05:56:52 -0800 (PST)
+Received: from localhost.localdomain (unknown [10.163.132.30])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1E36F3F632;
+	Fri,  6 Feb 2026 05:56:53 -0800 (PST)
+From: Dev Jain <dev.jain@arm.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org
+Cc: lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	ryan.roberts@arm.com,
+	anshuman.khandual@arm.com,
+	kirill@shutemov.name,
+	willy@infradead.org,
+	Dev Jain <dev.jain@arm.com>
+Subject: [PATCH] mm: map maximum pages possible in finish_fault
+Date: Fri,  6 Feb 2026 19:26:48 +0530
+Message-Id: <20260206135648.38164-1-dev.jain@arm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB8289:EE_|DM3PPFD83941681:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4a1c3e1b-9587-4bd2-51f0-08de65878eec
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MHl0T1NZTHJEYUVTL2NEQ1k4TExiQjhzUWxnLzFaSXFoSjJkdXh3NEkySXlW?=
- =?utf-8?B?ZHlGTmQ1V01rRExlK2pLcUsrRHR5VFp4Wm95elNHSzFXc3BJVlZMVHZEMHhG?=
- =?utf-8?B?M1J5d0dGT0hSODYvRVVZZnFvNkdzaS91RktoTWcxZUtWTXh1WEdyVW1uNkVh?=
- =?utf-8?B?QUxsZVNUR0xIY1hDRDlzcGlOclkvREtkeVBMWU1MSG1VcVRtalZmZmJESHdu?=
- =?utf-8?B?R3M2R2YvOGwxOW1QVS9SUmhlejdib2hXWVNpRDdhT1F6T0p4dmJYTmEvY0tj?=
- =?utf-8?B?d1g5N0Q2T3NXWlkvRWFQb0VpZ3UzUFBaNm5PYjI2ZHFnTmsvUTdPL2FPYmhM?=
- =?utf-8?B?bFdOcGY0NklyeVJFV0FEK1NkdGlEZHVqcm14YnVKYzZ2NW1PbG9jbG91Nkps?=
- =?utf-8?B?MzBpa3V6dmJMcmlrQ3RWRkM3aktUMUZHWS94UHhGYXprbENxZys0MzVOaXh2?=
- =?utf-8?B?eWZ4UE5TRE9pK0VmdmhUTVFlQVBFZGVXTU16RHRqWXVUcnA5R1NiZm1BL2Zx?=
- =?utf-8?B?b1REZ21VQ3VCYnRwQ1QzbjdJelZOQUhQb0xIYkRWR2tzeXBhc3FMRmNLYk9u?=
- =?utf-8?B?ZHpmcktGTlBScktmSWNWb3NPR2E2OExLakdGSlI4dFAxbnpLREplUEluN0V1?=
- =?utf-8?B?aFRJS1hGTHczMXQ4dHF1UDBOV1dEbXRMNkpqcStMOXBYWDNWRFpheTJYMUxk?=
- =?utf-8?B?d1dyUTVEVWl4TkY3Nm51eXErcTFYTVJQNmltcmdEZ2x4a3V3UVVmNVJRMmZK?=
- =?utf-8?B?a0grM3VRdzBoamQ1S3ZkczBGY2hqVnAvc2taUnBzVkxTdW9iTU5zM2d4Y1p1?=
- =?utf-8?B?UXkra3VuYllwTFJlQWlTKzNoOXFvTHBxVHdIZ1Awd3cvUStpakZHZUsrSG13?=
- =?utf-8?B?MDhvdXB2WVFIZEFMM21OQVNDek9iZGJlQ09RalZGVkRsLzVHZ1dVOWdRTUhj?=
- =?utf-8?B?MkpHWkQ5VDVGaXhYMjZOemdVbXc1ditadnpoK0orRk56K3V3NFlQc3pzY2sz?=
- =?utf-8?B?Y01jVWlFaGVJYkMxWnRCemNSeU9WWTBCSXBneHZWYmpPM05WaWNTK2dCaU5G?=
- =?utf-8?B?a3ZWT201TEgxbDZVNFpWZXFTVTdnMW5JRnVNVk1nWmVhK1VkNXRYSHB0VlQy?=
- =?utf-8?B?dVNEdkJaTzU3TWNmbDhoYmNUZFV2eVZxWTdYSXBCT2tXb2ozK2dNRHpSSkwr?=
- =?utf-8?B?NWppMmR4cmx2S3NVVkppM3ZjL2hMWHdpd0UwWmRjZVppUHJsb2lJRDdqVHJJ?=
- =?utf-8?B?UFpIL0F6bm5SYlFvUWJsVUxDQzlraDJ4VkhVSXEvV0srN0F6N2dyMURzTGRn?=
- =?utf-8?B?YXNZWmhTN0NvN2ltZEZiSk9ETHR2MW5QWEZmKzdkUG12dVJNVVV1TC9TTnhl?=
- =?utf-8?B?MnJUNWU0d0wyMzZKZFdUQUdQS1k0Z095YWFldlZSbDMwTkVUeGxJTGNUOWxa?=
- =?utf-8?B?WmdqWlR6dnhpdGYxWGpoOGdxV3Bod2ZHUFpzVHVJSlpHS1BETjRBTm9XT2xV?=
- =?utf-8?B?YWpzTURpWVI1enFXWHVHekozNDhiMDd3bjRHT2FTVGN4cDg5b2lRV0lCWllV?=
- =?utf-8?B?TWk0QlN6V0FqaVQxUGF2UkliY3FrRUs1K05JMmRkUnBtRm9iVWtDeGdXTHRu?=
- =?utf-8?B?TlBPelNOZ3E1bmJubU8rS0lrTm1QY21zcFcvVzNBUmpZeDdSbGlSNVcyakd5?=
- =?utf-8?B?ZlRNNU11bW5ETUozWGRIWVUrRGtPRmlVa1FaTTMycENadEtSR21pQUdvdEsy?=
- =?utf-8?B?R3EvdmNxUHdYWldPZm8zcXpTb25EZ2JyZ2VWVmI4RWdsSkg1YVcra3I1N0lZ?=
- =?utf-8?B?d1dpd05uMFBUbkp6Uys4SW9tRW9qZUdaUWZ3aS9hTk0rYzhhQnpOTVJybDY2?=
- =?utf-8?B?eTNGU3FsZ2VpWmhHQW04OWlWQVBxUTVyRGhhdFlxNlhXdkdScHZYUWFFUVV0?=
- =?utf-8?B?b2R0Z291ODFtdXc0S3plbUYzR2d6aGZPbWNzUVo5U1F0bUM4am4zUzBlSkVr?=
- =?utf-8?B?UkFmQVQvN3hGRUdaOWtoWUo1a0xxckE4UGJPRHBPeDBSRXdZTXUxYmtDbjg2?=
- =?utf-8?B?V2hGZlBuSEZpWVAxZDhkcmJpOENDSTd2b29NZHF6MEhJUFc3cTZCMGJibzgz?=
- =?utf-8?Q?GxQo=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW4PR11MB8289.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bEZnbFRoSWUzeXNDMHpOaHdwd1Bwd3dvSm8wZUluSmFCMnEwSzlYbnJ5Nmhj?=
- =?utf-8?B?Y1NmUnlFOHgrakwrc2VFelA1TXJRaEE5NnRYNkwrRjBPYVMyWnp5bUR6Ymtm?=
- =?utf-8?B?Mm5lR3JhR2lvTm9mcmFOZGxLNHRrWTFlV1FSdU90UXZnNWJMK0JhY0FNeG5j?=
- =?utf-8?B?OG0vOTN2MHBqMVJURndUaGFLTEw1RXd5VksvNTJicEVOSSt6RGpYWHhGcHl0?=
- =?utf-8?B?L2orWkxTRUlkMWNZUzlCQis3clJYY2RGVmwwZjkwME9pUVY0QjcvZkVUVW9J?=
- =?utf-8?B?eWpKSUlTNytScGVvejVTSlJCOXM4V0dwUENpS2MxV2ZqQTZCNkJHY0hscFJu?=
- =?utf-8?B?ZXBXMGR5TUFpdXNjcFBZSDBzcmRtVlR3ODlYT3NNbkVYcXNNUmZBaGIzZ2la?=
- =?utf-8?B?c0gwTVFvS1hvWGw3Vkl5R1JHMTh6R0Y2dlhReHlLZmpVUjZyOWVPLy9jUnR5?=
- =?utf-8?B?UFltL1BTWmZjNm0xS1BnQW93RkxpUys2WnFFdUhYdUdLRktiK1hsMnJjWVpI?=
- =?utf-8?B?RWxPM1JTUEllM3QyOWUwR3pmY1ZCR1NJL3ZuaHF2NFRZVjg3dXJ1eE9xd1RS?=
- =?utf-8?B?NUdwQ1YrNTdjWEtNeWlXUUFnNjVSYnhYWFdlRkRrS2ljZXpaV0tleG9FL3Ew?=
- =?utf-8?B?b1pKa2t4aTV4WW9ld3FVdTR3Q2VnNUlYbkFIeEtWWEVUdGxLb2IvRENJZFdH?=
- =?utf-8?B?U2NCQm1IR1R5T3JHT2ZReFMzTU1ZdFZreXZzSW5JSTh2YlhyUWVVajBmTng3?=
- =?utf-8?B?dlJHbllSemVURkRXbFU1UThZZFNWNzFpZnpQTW1QQVMvQjRwTmw5OFBIZzVj?=
- =?utf-8?B?aGxEL25WcHhpWlBxank2MW5kUXJLTUc5TlF1dCtQek4xZDBFMzN5Lzd4R3JT?=
- =?utf-8?B?STBEZGFpUE9zdW5uNGh3UkVydWRtTllOQW85RUhzeTNnQUFueC9tWWtCMWtr?=
- =?utf-8?B?RVRpNzdRQXY2WEo5YnY1cENZSzVuVDlSWHRteTZ6OXNOa2JoMGxBZDZqNDY5?=
- =?utf-8?B?UmJidGRwckUzbXI1L1AyUmlzSEExQUQ1NVpWQjB2dnJPU3h5bllVRnkzclEr?=
- =?utf-8?B?YWZUVm1PYWFhNzBJd3dsZ01LYjdaeWU2cHk4cDRpamQ1NjZwQ0FnK2x1d09L?=
- =?utf-8?B?eUFodllFUkRuSmZBUTNIMGpMcUtSL2s3MzRLd1NNSnlCTE5uY2ovNXVXZktE?=
- =?utf-8?B?VFJGT280cndCeUI2M2VBNTVCcTZmZkJuYVcxUzBETE1aNVl5UTQ0TFhmd1lP?=
- =?utf-8?B?OHFRR2xIYXBaT1hGcmFGeUJqbTJJWTEzWUdzMFNtSjhYbkJXbFY5VUZ5RWQz?=
- =?utf-8?B?VHhuL2IwSno2WUR4N1hYS3ZtRmF4MWVDZU5Kbno3cnF2S1ZKRGs5UW94bXU2?=
- =?utf-8?B?Q0F2VHVTWFZtL1MwaTFrMHh3cFZjRFY5WUloanFMRVdBOGlSbVZidmJ5MkFV?=
- =?utf-8?B?TTdFSTVWbXlLUTNlc21HeExnRlljNEx6UjNaZ3RHUVJOck51QVJOUGJaNUJy?=
- =?utf-8?B?ZHpxNjdmRDluQ0hQYWx1OWpKZjliY1MrVG85SjJueVl0VjFnRUV5MXY5TmtB?=
- =?utf-8?B?NFAwMWE3NncrRXVJOFIwRGljUUwyNklMK2RKTDNLa0NTQ0p3bnR5ODlJbHJC?=
- =?utf-8?B?R1dVL2wydXpjS0RhNWVsZEM1cCsyU1BzTlpDeGw4R2grd1BhaVRxMHdtenJT?=
- =?utf-8?B?bFYrS2hlRndzK05PcURnbXpiNmZqWnhzbXVLV1FveGtlUXRyNWU1SWg0YzBT?=
- =?utf-8?B?d3JGeGtQYXBKUUxydzFBNDdGbHNRZ2RrdXdnTWx1dDdBbHVzVFNrMVFiSEwx?=
- =?utf-8?B?aEVKdkxHR2h2eDdXeERRMU1MSGhXcXpXQU9ZNEZNZ1pwb0ZvNjBwbFgzVzJm?=
- =?utf-8?B?SHU4bWVWN0pZRnNQYVJtYitYek9ZOUlPa3I4VE5BdUtkSXBiWk5jZERHRTJu?=
- =?utf-8?B?bjZWVG1JS044RTdHcU1DbTJFWmk2anNuUE81SDRLRllDWWMvaWVxRGZsSk00?=
- =?utf-8?B?Ynd2WVpIZlh0Qys5UXlVSWo0WlR5ajZZb291SUZkTWdCR3VJTTZwNnlJb0JJ?=
- =?utf-8?B?OUFKNE90aGJRUk1TeGVWVmpRT0hLcW14YmYxQ0lNSVk5N3o1SWdqUVFXOUdT?=
- =?utf-8?B?Nkw2VGFWcVdYckltdlRsWEhVZWhMbFVpaHpNSVNocWVFK1VxTmFyVWRKV01h?=
- =?utf-8?B?R3FyVjJrT1FiTVYxUVY5QmFiaUhPdk9UcGhZWjBpbEFwNlcvZkl4OTBYWFYz?=
- =?utf-8?B?YXlYUElGNUxxTUJCTG45Uk4ybmNpSHduYU40S1FFbzJtZkt1S2RWZVVmRnFv?=
- =?utf-8?B?eWlpdi9nei9qRlRJUmhMcWE3djQxdEJhcEk0dVB6ZkFkWEJybVZmdz09?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a1c3e1b-9587-4bd2-51f0-08de65878eec
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB8289.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 13:56:42.9170
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hjHzwxtAC+uqVuNwR/qPo7uV8jbuK+IX/cdyE2CRnCL0i8SxsMRtl+0Hv91u1wkPTIz5ro8fASjMzWJ4Lh6EDQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM3PPFD83941681
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CD739180007
+X-Stat-Signature: ojnj3y1p1obnzfxc3953jmx78g9d5x4s
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B9F67140004
-X-Stat-Signature: rnnis6po9qmt1cxemk9tktotzfnjua7o
-X-HE-Tag: 1770386206-331476
-X-HE-Meta: U2FsdGVkX1+QF1W7ZjYn88jiVOybtVi4HO1AlLLpgAi3W3f3Hs6aZpy1LdU37ACjvKm4D5SmRNfcRNbyCzxhxRctYUXU2i4oDcTRXhaA9dss9GQ9N5cB0VE4jw+UXe/zkHvz5zDhwO757jFJNlX7sBLi4QSb4mD0EtwokuSxV5R4Q6dKQupYNqlaRcYYOuWqmiERLgpRuKcWmWOvBL5DEQg/WffRxib5tsWGQsaGMOgYhAhOEoDUgc9hUK3PX7BOHz2tk/FYD2uUYDVm2/TZMiUKEtn3YDgfbeBlyYIWXtLtmgMTmpX5sfDuYKkTcjzQnwb8EtvuTilnXXZ+trZje4n1jD2hO5n8AwNF+InA1+QwDOYTOSFFZIiCjRYkmItO32UpDST1TnKM2BC6zj6FQY29DEqf6SZSzou2tSFdNbhxFixSf2Rh1kJCKo11S3h6WcdSB5AbRkIBEOjrNgLDXTaVS3paZ0HtGok+bmThg1PU+Wjmp6H0dKIsrgPiWFwBXTdTF3yYBdA64iHGyf0QFa81Ibn9XSe4D05VhxI5F8pHuSVU4jDPDBGhtHjgH6aBXftRRXN8QIhw6h11RJBkP+yoyu8jY6dqCFQnJwsrHXiuYSB6Gcq/cupPg1YKFK1nJ03uszs75AQPjRfLt1J0AgQb7WWQMj5bF/pBDM+cZv2sfddWJa1Rq6n5WulNOVsd0pZUxpZqa5ZaeVn3CacSkYA6GCoGpi7cF1oPoxsPnaroANu4hkmxNN4grFiylVSL4KdLR/SP1mC3BGbvtr1Z4ix2nY6wxVOgulZ/4kK1+iGoZ5nB7AqA4U7BBEtopQ7Tc5MFxNGFAleh58JXxfJEe88BlYYfEC1vCYjSGE22Rpf610zX68YZqPk6FxQgdvhekO2gdBLIqJY4t3WOn4tzjq0phJc15pHoh4U7b7fV+q3BkIgVugeH0/i9m3nfbN1528ZUXx+vMAcWzfodXjy
- F2DMJmXc
- XigGPMUF/dYKb8inE71iMJBiOY9jJWvV2d1UrR8GksqZYQN8MnSUXPawQHKiiRa1HZr+Ev6Cdf7IE6IbXricaiIJyMTLPNseTVP2c44f8/UCLF439Ta4JpKVf3wahaVr87MTNmQvwi/aN/YWemIl8gsPRTooCvKzlwrj48zUtj3HYKf3c4spo1OkHU+qT8Ou8Rjau3rEiTJDxxVeuFQjbk+CB+QdNh7ugGF+meZB6QXauIAq6vl28WTi5vpoRYzI1s123IwxAEwENxanvMrJxQi0a7ngZ1LAhTT53kKpV19scNS/w4UbLM7Wxjy+rAQg4ECdEiIhYTyxciP/2jz/Yfy/maYSsDAKCvqiyqh5FO6ftuuPyGUi2R4n6HCx/MhocRL+5JLC09ls6HWsG2boQnNDeuftVTnJGlYf71c0TR+M+1XBODSCR3yQA5o2H+m1jpk6B6v+Lks7Zto6oI4wONmvO0pIQ+RmoP7ty0saVm90L3JNlnYBNjz4uxKAb0u08RIfwp1A/bMw7VRzBN1oRe+D94Py1YV9IElamlsT0Bu5NhcT4vc/LFJQAGNyZlHlnxGjvA9hxNDv7UKgg9p9xeI1eUKpFQoLhIQfe2OCHASa7+K9JD5m8bBLsUF6D+srPjzc6anZ82lc0wNY7yIZHSRx74g==
+X-HE-Tag: 1770386219-600528
+X-HE-Meta: U2FsdGVkX1/3t5uQgwTVBLyJ0IC3lZgSkJo7QkRjdH+OnyFYCHypLt92IgaUDs1md7Q8F+nLWzkXhnDhmM1jTnHHCmP/hmICSlYFtxmT7PRToBxmyITQY2KV56XkgV9n9LptEFOrrEOHYztormMA9Qn8POsqCStmx2KqBDM1RQ1kl7OO5rqx0KJvV1aWvps19g2DJnniv4AzN8/lLakoGLaC77nfu4ifmKvEWyVSORKzl4erx2ysT4+8zXLfULQoNAyM8X5s3lcRZ5GBiUAWqq4DOoozTQig/avsl6wdvAa+nkujtf4Le1I4Kb4U55LELoUggRs4o1OtqgNYTJHSdXhBq2g2tZuk3NeqeICYNrDbVtkjly8vbgH/vKi3JgIQx45PXc7G1TzpXAdtz0w3d6UQFQFD6vKUfCkJWFGzzCzMsLkbRXTPRG/q3xyNil37+9cfFRqwtwo8Q77NBPTsalT2vAxtjnqa8E7Pjl7l2QIWKdbBIh2XvDwYdE4Iw1BqvJk0ew0IJ5cS5A12tW/8cBSWON6ZGCYo5ryWpg/w7vcKoRvBiLTyHCjxwO6Y2AfMGe3XZ8v3bKKN3pJk6m7D+Aag+QwLL7fqhNLyhu/DZttjngTKPyjUGQ5/5iunMo5xg0nTuo9SsnrD01zUkbjpGseCLA1Y8akA5CNUwmMocucP0BH6TUIWTEpxCJWtd1IZ0Bk2c1GVlLB01oe7P1Yx5/e7USjXyW2h2Hy3Qfrg6tWyh2WFOwhBE5sz8kvPIVwAMfsmi3k/OKKRfLwPzOqLixUNX8CALqU7qcQwpw2jRIPiGFsz5pGqHVkdInl+UKpKb5fypRQS5vO3kf9QtKvEMLKJe4ZnwgigMeyEKC780EMdiUWTf16hW9swqJe/FLYmDMKPP56W4sMsIy9EglaKS9dIobDKdUjxhbvhkY+l2lVxtaVU6NyuJRW+xEJzzZ1gcHcmAZsa972WSZH+cq3
+ ChXZHeXT
+ Z5K/Lps4Y7dDG5FIgkDhg64hXiC2Mmzcm5BAQNUyOt0YNECmv0+Zeed8cx8OIbPi2g/4WDSQSlgnDphdHINgOlvA1NKFuyCdhwYDpc3LjHEuNduIBNppEhsTo7eysw86orS30iRLRiNhtPveoNcS/hJc5URSLXw+CvF7XVQ9gSCUjzD33AiEMgiG5/OlWXIFnhm6GjVKYcYKpVgw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,48 +91,285 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Suppose a VMA of size 64K, maps a file/shmem-file at index 0, and that the
+pagecache at index 0 contains an order-9 folio. If do_fault_around is able
+to find this folio, filemap_map_pages ultimately maps the first 64K half of
+the folio into the pagetable, thus reducing the number of future page
+faults. If fault-around fails to satisfy the fault, or if it is a write
+fault, then we use vma->vm_ops->fault to find/create the folio, followed by
+finish_fault to map the folio into the pagetable. On encountering a similar
+large folio crossing the VMA boundary, finish_fault currently falls back
+to mapping only a single page.
 
-On 2/6/2026 9:00 PM, David Hildenbrand (Arm) wrote:
-> On 1/30/26 17:06, Tianyou Li wrote:
->> From: Yuan Liu <yuan1.liu@intel.com>
->>
->> set_zone_contiguous() uses __pageblock_pfn_to_page() to detect
->> pageblocks that either do not exist (hole) or that do not belong
->> to the same zone.
->>
->> __pageblock_pfn_to_page(), however, relies on pfn_to_online_page(),
->> effectively always returning NULL for memory ranges that were not
->> onlined yet. So when called on a range-to-be-onlined, it indicates
->> a memory hole to set_zone_contiguous().
->>
->> Consequently, the set_zone_contiguous() call in 
->> move_pfn_range_to_zone(),
->> which happens early during memory onlining, will never detect a
->> zone as being contiguous. Bad: the fast path relies on the zone
->> contiguous state may skipped.
->>
->> To fix the issue, move the set_zone_contiguous() call to a later
->> stage in memory onlining, where pfn_to_online_page() will succeed:
->> after we mark the memory sections to be online.
->>
->> Fixes: 2d070eab2e82 ("mm: consider zone which is not fully populated 
->> to have holes")
->> Cc: Michal Hocko <mhocko@suse.com>
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
->> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
->> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
->>
->
->
-> I assume this one is to be ignored :)
->
+Align finish_fault with filemap_map_pages, and map as many pages as
+possible, without crossing VMA/PMD/file boundaries.
 
-Thanks David for your review. Yes, this one should be ignored. I should 
-clarify that ahead. Thanks.
+Commit 19773df031bc ("mm/fault: try to map the entire file folio in
+finish_fault()") argues that doing a per-page fault only prevents RSS
+accounting, and not RSS inflation. Combining with the improvements below,
+it makes sense to map as maximum pages as possible.
 
-Regards,
+We test the patch with the following userspace program. A shmem VMA of
+2M is created, and faulted in, with sysfs setting
+hugepages-2048k/shmem_enabled = always, so that the pagecache is populated
+with a 2M folio. Then, a 64K VMA is created, and we fault on each page.
+Then, we do MADV_DONTNEED to zap the pagetable, so that we can fault again
+in the next iteration. We measure the accumulated time taken during
+faulting the VMA.
 
-Tianyou
+On arm64,
+
+without patch:
+Total time taken by inner loop: 4701721766 ns
+
+with patch:
+Total time taken by inner loop: 516043507 ns
+
+giving a 9x improvement.
+
+To remove arm64 contpte interference (although contpte will worsen the
+execution time due to not accessing mapped memory, but incurring the
+overhead of painting the ptes with cont bit), we can change the program to
+map a 32K VMA, and do the fault 8 times. For this case:
+
+without patch:
+Total time taken by inner loop: 2081356415 ns
+
+with patch:
+Total time taken by inner loop: 408755218 ns
+
+leading to an improvement as well.
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <assert.h>
+#include <time.h>
+#include <errno.h>
+#include <string.h>
+#include <sys/syscall.h>
+#include <linux/memfd.h>
+#include <fcntl.h>
+
+#define PMDSIZE     (1UL << 21)
+#define PAGESIZE    (1UL << 12)
+#define MTHPSIZE    (1UL << 16)
+
+#define ITERATIONS  1000000
+
+static int xmemfd_create(const char *name, unsigned int flags)
+{
+#ifdef SYS_memfd_create
+    return syscall(SYS_memfd_create, name, flags);
+#else
+    (void)name; (void)flags;
+    errno = ENOSYS;
+    return -1;
+#endif
+}
+
+static void die(const char *msg)
+{
+    fprintf(stderr, "%s: %s (errno=%d)\n", msg, strerror(errno), errno);
+    exit(1);
+}
+
+int main(void)
+{
+    /* Create a shmem-backed "file" (anonymous, RAM/swap-backed) */
+    int fd = xmemfd_create("willitscale-shmem", MFD_CLOEXEC);
+    if (fd < 0)
+        die("memfd_create");
+
+    if (ftruncate(fd, PMDSIZE) != 0)
+        die("ftruncate");
+
+    char *c = mmap(NULL, PMDSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    if (c == MAP_FAILED)
+        die("mmap PMDSIZE");
+
+    assert(!((unsigned long)c & (PMDSIZE - 1)));
+
+    /* allocate PMD shmem folio */
+    c[0] = 0;
+
+    char *ptr = mmap(NULL, MTHPSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+    if (ptr == MAP_FAILED)
+        die("mmap MTHPSIZE");
+
+    assert(!((unsigned long)ptr & (MTHPSIZE - 1)));
+
+    long total_time_ns = 0;
+
+    for (int i = 0; i < ITERATIONS; ++i) {
+        struct timespec start, end;
+        if (clock_gettime(CLOCK_MONOTONIC, &start) != 0)
+            die("clock_gettime start");
+
+        for (int j = 0; j < 8; ++j) {
+            ptr[j * PAGESIZE] = 3;
+        }
+
+        if (clock_gettime(CLOCK_MONOTONIC, &end) != 0)
+            die("clock_gettime end");
+
+        long elapsed_ns =
+            (end.tv_sec - start.tv_sec) * 1000000000L +
+            (end.tv_nsec - start.tv_nsec);
+
+        total_time_ns += elapsed_ns;
+
+        assert(madvise(ptr, MTHPSIZE, MADV_DONTNEED) == 0);
+    }
+
+    printf("Total time taken by inner loop: %ld ns\n", total_time_ns);
+
+    munmap(ptr, MTHPSIZE);
+    munmap(c, PMDSIZE);
+    close(fd);
+    return 0;
+}
+
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+---
+Based on mm-unstable (6873c4e2723d). mm-selftests pass.
+
+ mm/memory.c | 72 ++++++++++++++++++++++++++++-------------------------
+ 1 file changed, 38 insertions(+), 34 deletions(-)
+
+diff --git a/mm/memory.c b/mm/memory.c
+index 79ba525671c7..b3d951573076 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -5563,11 +5563,14 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
+ 		      !(vma->vm_flags & VM_SHARED);
+ 	int type, nr_pages;
+-	unsigned long addr;
+-	bool needs_fallback = false;
++	unsigned long start_addr;
++	bool single_page_fallback = false;
++	bool try_pmd_mapping = true;
++	pgoff_t file_end;
++	struct address_space *mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
+ 
+ fallback:
+-	addr = vmf->address;
++	start_addr = vmf->address;
+ 
+ 	/* Did we COW the page? */
+ 	if (is_cow)
+@@ -5586,25 +5589,22 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 			return ret;
+ 	}
+ 
+-	if (!needs_fallback && vma->vm_file) {
+-		struct address_space *mapping = vma->vm_file->f_mapping;
+-		pgoff_t file_end;
+-
++	if (!single_page_fallback && mapping) {
+ 		file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
+ 
+ 		/*
+-		 * Do not allow to map with PTEs beyond i_size and with PMD
+-		 * across i_size to preserve SIGBUS semantics.
++		 * Do not allow to map with PMD across i_size to preserve
++		 * SIGBUS semantics.
+ 		 *
+ 		 * Make an exception for shmem/tmpfs that for long time
+ 		 * intentionally mapped with PMDs across i_size.
+ 		 */
+-		needs_fallback = !shmem_mapping(mapping) &&
+-			file_end < folio_next_index(folio);
++		try_pmd_mapping = shmem_mapping(mapping) ||
++			file_end >= folio_next_index(folio);
+ 	}
+ 
+ 	if (pmd_none(*vmf->pmd)) {
+-		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
++		if (try_pmd_mapping && folio_test_pmd_mappable(folio)) {
+ 			ret = do_set_pmd(vmf, folio, page);
+ 			if (ret != VM_FAULT_FALLBACK)
+ 				return ret;
+@@ -5619,49 +5619,53 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 	nr_pages = folio_nr_pages(folio);
+ 
+ 	/* Using per-page fault to maintain the uffd semantics */
+-	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
++	if (unlikely(userfaultfd_armed(vma)) || unlikely(single_page_fallback)) {
+ 		nr_pages = 1;
+ 	} else if (nr_pages > 1) {
+-		pgoff_t idx = folio_page_idx(folio, page);
+-		/* The page offset of vmf->address within the VMA. */
+-		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
+-		/* The index of the entry in the pagetable for fault page. */
+-		pgoff_t pte_off = pte_index(vmf->address);
++
++		/* Ensure mapping stays within VMA and PMD boundaries */
++		unsigned long pmd_boundary_start = ALIGN_DOWN(vmf->address, PMD_SIZE);
++		unsigned long pmd_boundary_end = pmd_boundary_start + PMD_SIZE;
++		unsigned long va_of_folio_start = vmf->address - ((vmf->pgoff - folio->index) * PAGE_SIZE);
++		unsigned long va_of_folio_end = va_of_folio_start + nr_pages * PAGE_SIZE;
++		unsigned long end_addr;
++
++		start_addr = max3(vma->vm_start, pmd_boundary_start, va_of_folio_start);
++		end_addr = min3(vma->vm_end, pmd_boundary_end, va_of_folio_end);
+ 
+ 		/*
+-		 * Fallback to per-page fault in case the folio size in page
+-		 * cache beyond the VMA limits and PMD pagetable limits.
++		 * Do not allow to map with PTEs across i_size to preserve
++		 * SIGBUS semantics.
++		 *
++		 * Make an exception for shmem/tmpfs that for long time
++		 * intentionally mapped with PMDs across i_size.
+ 		 */
+-		if (unlikely(vma_off < idx ||
+-			    vma_off + (nr_pages - idx) > vma_pages(vma) ||
+-			    pte_off < idx ||
+-			    pte_off + (nr_pages - idx)  > PTRS_PER_PTE)) {
+-			nr_pages = 1;
+-		} else {
+-			/* Now we can set mappings for the whole large folio. */
+-			addr = vmf->address - idx * PAGE_SIZE;
+-			page = &folio->page;
+-		}
++		if (mapping && !shmem_mapping(mapping))
++			end_addr = min(end_addr, va_of_folio_start + (file_end - folio->index) * PAGE_SIZE);
++
++		nr_pages = (end_addr - start_addr) >> PAGE_SHIFT;
++		page = folio_page(folio, (start_addr - va_of_folio_start) >> PAGE_SHIFT);
+ 	}
+ 
+ 	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+-				       addr, &vmf->ptl);
++				       start_addr, &vmf->ptl);
+ 	if (!vmf->pte)
+ 		return VM_FAULT_NOPAGE;
+ 
+ 	/* Re-check under ptl */
+ 	if (nr_pages == 1 && unlikely(vmf_pte_changed(vmf))) {
+-		update_mmu_tlb(vma, addr, vmf->pte);
++		update_mmu_tlb(vma, start_addr, vmf->pte);
+ 		ret = VM_FAULT_NOPAGE;
+ 		goto unlock;
+ 	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
+-		needs_fallback = true;
++		single_page_fallback = true;
++		try_pmd_mapping = false;
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ 		goto fallback;
+ 	}
+ 
+ 	folio_ref_add(folio, nr_pages - 1);
+-	set_pte_range(vmf, folio, page, nr_pages, addr);
++	set_pte_range(vmf, folio, page, nr_pages, start_addr);
+ 	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
+ 	add_mm_counter(vma->vm_mm, type, nr_pages);
+ 	ret = 0;
+-- 
+2.34.1
 
 
