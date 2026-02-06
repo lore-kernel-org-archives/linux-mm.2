@@ -4,86 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F34C6EB28F4
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:00:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27AF2EB28F8
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:02:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 659716B0089; Fri,  6 Feb 2026 04:00:34 -0500 (EST)
+	id 84A076B0092; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 644766B0092; Fri,  6 Feb 2026 04:00:34 -0500 (EST)
+	id 818656B0093; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53D036B0093; Fri,  6 Feb 2026 04:00:34 -0500 (EST)
+	id 719F36B0096; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4055D6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:00:34 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CD8D013BBEE
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:00:33 +0000 (UTC)
-X-FDA: 84413435946.05.4ECFD95
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id F089712001B
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:00:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M6j1z8no;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CADA6B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 054021407C5
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:02:54 +0000 (UTC)
+X-FDA: 84413441910.02.3D93B25
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 1DA96C0011
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:02:52 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q1ubLa5l;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770368432;
+	s=arc-20220608; t=1770368573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dvc9exR4lmlUC+x59cTZfqWcxDZzkLPrfzlnUPP7c8o=;
-	b=Bo3I57PNL7yOS4JjXX2FFaz3A7QGxg0GtiHQFwgIqwY50v86lDCxJMY9iJ27jQ3Szgv9R/
-	z1gsaPujL19QbixH+2zfVYA528HE3MBnFAv99j6C49D7+c1C5xYXgRzqZelI+LfCL/EeTW
-	yPOVsx995CM9j5cRa3N7iF+iUWAAAsI=
+	bh=VxP1X4J3nFTdtOllsWa8XsYdXgacHF5twMkqXGv5UTY=;
+	b=uuTB3I0l5J3AAsdg6gSECemiHLu6bA8D2fftXDb6Fc+BS1YebGy6KJwjtHFKguQfYp39pR
+	sSXQpyPDWMVHbR3WXk3VgDxCNHOOBqXGMXUaOO9lFYUvLgSnAflmOal0fQR7SHe5z8JpZl
+	lxg8LtjNxLWrndr+oml+xb/WBuL9EtM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M6j1z8no;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q1ubLa5l;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770368432; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770368573; a=rsa-sha256;
 	cv=none;
-	b=xDAKCyi1RHdCK/+ONSapSV7FwNnoSFz720Bp4DpK/Lb8dB1zYwfgVCpvGv6mg00JQ8HcX+
-	BrO3/P43Wv+YUkZsRpVubhWYBpmXbRb/AAz5MUN1cctol+YGUdYcMtHqZwgXRu0dy5W91a
-	I0NuF1KgDPLPlfZG/ZDEoECOsX1Ll8Q=
+	b=PR6lzAUws8tpxKOQzFYW07z85MON+hJ4WQ2HCsNKHdxfxHBrDRaLeoM0akpEKS+aLGH8Y8
+	h/2sWgKP31gzi9vpWA6DVBKJU9EnCaSpBU95EONnFw+fAgCea5BlNQlqf0QOQTaY0givzr
+	pmYOYiHoA6tfZILYJsEWOG0AFxERnVU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4CB2F600CB;
-	Fri,  6 Feb 2026 09:00:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FE9C116C6;
-	Fri,  6 Feb 2026 09:00:27 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 26CFB443C2;
+	Fri,  6 Feb 2026 09:02:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9649CC116C6;
+	Fri,  6 Feb 2026 09:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770368431;
-	bh=7kbKaWndHwVcjwzjrw/nCKTho2SsZNBybxIV+9B7yZo=;
+	s=k20201202; t=1770368572;
+	bh=hkFt2yH4MBr3yZ05qlX5GzMUkIFfehbRgX81ou3KaBU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M6j1z8noyjDeshwcAcpPlo3uI3Gn0y10+P9ZmDbTWHSHCPiJCl+GDiHCTcfk8LLPb
-	 AVV5UjOZapQt/7rRp56VT0gV43hKaZld7yDo0oj++EdF5vsvNfig1rhAVcQwvjz+hA
-	 wcwbuBgboJQmh7tveMrIrC153XymblYrJURUXtjAv3a1vP83qlBWhD/VPZAxCkMiJU
-	 pvbaUrI1WAG/XsMPxlT8kD2cOvtjh44NrZYBYoWI5FPySRnoLVyDUvNcPPyi4MD0YW
-	 PkrSb6sUH6JeAAXthe9b1ioolfnJz7gRMFwLO60l1LF8rnd9VFp1HN5bfBsOHwB3DS
-	 MA7wi4K8g6TcA==
-Message-ID: <af21afa0-2a30-478e-ac9f-6bd431af6502@kernel.org>
-Date: Fri, 6 Feb 2026 10:00:25 +0100
+	b=q1ubLa5ljjzM9R80g5IM2NUqQJAAufrLy9Lc+SD9Xr1GdVYWVgjzYAmGZuRuxTgrq
+	 1fSRP+UTlly/Cz4RVZ+6i9Xre+rTKN1l/ssJh+Aaa1Z3KqKB6F/HFBUF0Dglh8WWpg
+	 Ymmz+Iu0WY8JftSAE4GKvGGZ3D88MdJBSK8MPOfXrUwKNdSjW0eR1AtLhi1lCWxH6W
+	 j3oEVWjl02eIcgUnAt0SB5KrL8ebTO11DTyI5CedBhnF5qNPo3EgKVv32nRmYAx+NT
+	 iOVkl1W5bG/FD/TIDLBPc4t6XExo5AfdTw00Ews+IzrbMYCXuc3jYZ0tw7nVExtg0u
+	 mt57mpxM328tw==
+Message-ID: <1a6d8295-e27b-4440-a367-af0432a7af4f@kernel.org>
+Date: Fri, 6 Feb 2026 10:02:48 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [stable-6.6.y] mm: khugepaged refuses to freeze
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <gp3foqukne5ukrssvx64svhcpogmrskyyzjatofstfrl3vplrk@onxbnxdjrswu>
- <3d0f189b-faab-4452-b9cc-8f4e7a15025f@linux.alibaba.com>
- <jujsgu5ed3srhetch2pbpdrt4tnf2alodrk4nfo7idxmhsq772@lirvj7ftvxgv>
- <h3bbxn4omwe2jv32vyjou34me73x5nwg6ai57goqo2qlntq73y@ra75spa3tlzr>
- <1179320d-6bab-40a4-a7ac-dbcfbab24623@linux.alibaba.com>
- <c225864f-192c-4cf0-a5fb-411de8c22eec@kernel.org>
- <70ed2de7-3e66-4a23-85bb-e0a4c5b61088@linux.alibaba.com>
+Subject: Re: [PATCH mm-new v6 2/5] mm: khugepaged: refine scan progress number
+To: Dev Jain <dev.jain@arm.com>, Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260201122554.1470071-1-vernon2gm@gmail.com>
+ <20260201122554.1470071-3-vernon2gm@gmail.com>
+ <fd67a91f-3930-4bd8-886b-13f7783f4aec@kernel.org>
+ <CACZaFFNGFWv3FG8spJDLfLTe=0QWuBWL+Lbs+W3h9vGL=jrT6Q@mail.gmail.com>
+ <85e8ded9-a9eb-4663-9c96-93af60006fb6@kernel.org>
+ <9508744b-e5d5-49ef-825f-eef683892541@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <70ed2de7-3e66-4a23-85bb-e0a4c5b61088@linux.alibaba.com>
+In-Reply-To: <9508744b-e5d5-49ef-825f-eef683892541@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9pwgfr8s9kgdhaonwrxyax7yngh6arcg
-X-Rspamd-Queue-Id: F089712001B
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 1DA96C0011
+X-Stat-Signature: i1a8byhqfa3wyk9gu61gh7x4es4wy5i4
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770368431-462136
-X-HE-Meta: U2FsdGVkX18ytc+Fy80g8116dWviGNisodw+HZTvOjc2dtpRfM0J6bP+ZQMsOnxgejZb49DfEGxQLoSllZ8E78/IsCi4qH3bUuVSBuWNYoqqSRXRFmKmR4KxVtZWtClGUV3MEl0o9yozhHFI9YE+VMTSCBoffZgs4JP11LIGmXBIyexgSYbJxctC5XjALFsq5f7tOwAIfoxSagHVPLxG+k0UyKBsdCR4YluX20oxDbnP6kc8j9V8ho4vxHV5PZXq/fAXCk4Psc6C/I3tVspzv6gARbRJnA8l/DEehqInaHClvbjJhsjPMk1qB2AzoDz95xy3n8MMjNJb8qaVpccR7LlncMx4sAgFjctYY7xZa99UuqDgRZdeklL5S0sxcX/tE6OfBV4LDO7kIZvIaBKGsZ0GQ8/SLQ5/zOjiIexsqCVDF4ILR5jGB8+vS8N/HbxPfHk+E/tScTIh7gil6A2F0u6Nz2HEVEOuavRxST/N4fC2q3PHMt6YY9OWLzEEyuTnLiqzVp5tS6B84QJ/XT47Xz3D00WxsrEGEJ10sXKdK1EJuq/+n2Zfu3oauqZhK1dCfKk58QbwfqgUlKQtoHh1UA1z/Io329jEhXfmmjVoxqpGyyVntd6rhxkWDMdg35UMndxS0EUXO6p/DScjLUC8XGTp2OlFry6N3LHnzScaknA9Bom+jXVbnHHG1Owk1O2nLjZeYaK8sq+OTyLGyEKgTJDXpA3XMkmQ6AttyL23TN7/ccwRIfEWP9BWbdBfCq5Y/Qnx2t8HET8jdpHcUjVZv4GIbiwpGu++uSBx7dRQuzRphn7EuPpUL/HrFHy5NYhUULz5ytR62NImdyM6DQAyUcDjkr/fxFZEL2Iq8oZTm6LA8FKd7aiyRRnVS+9teteYUTMciG3SFBhK9ZdNQc4bjNhtpwfXZHB8jPCE9h3KmzZ+yKfAS9fmAVbQe6M7WN0ITNk7k7fOSHx1ZtrMnsU
- twPh50rt
- 0n3kP36vOVJfuyn4NUg9u0qwJlFRpVUvucBVKJjFaEwvAgj/prJqEAvpE0oikOllI9uREANijkL7cc/4tcsmFayyTr3PDYzFGIIj2hcVAoIohyjZDWXFbkzRJpACpHxrbzrTzE3X4hK6+vY57VNVwi9TT6j5o7r+ByzaET2toCKAaiXtGJNAbF4NftkTC+q2qrdKZsbAq82wY/uF7hGnqhHZt/6+wGMehpecQoW50pXEm/NjoR1dzUcWGX7aJwSojr5kJ6ncS2ggE6dbYhw/k3G5qMpM1I9fzgU9a
+X-HE-Tag: 1770368572-163916
+X-HE-Meta: U2FsdGVkX18aT+9gZFHxF5oYIxKzXXJlZ28MNKGt1Q2xTr7DSYvC47yxfWtWOENJ4B1wr4wXSndcpifv/BRnL5ZmsWtHooeqah8UMSUvGR3NJ/emwPMXoXCNA+6avCGZiWZAjj1khmEuammaoH4gZGFEAs1QvtYy7hd/NBAEuYiaOBktrni8Sy3pVqFhdFHR6brmvLJwnzznTVS9HwWShSnfLphSBgPC6lkph6fXXEvuPQ/+LtdTpp76oDVJaIKkSV7gbmIkO0m/emFz8+oNOHAYaNuI0Iw5rlXsi30aqgQaAoLJPjgfCzpjTx1tHrGTE9iIfed01nzP5yVwCZeIEjplTMv/ckzb5G2liUoxH8i8s8qQMeqvjL2rRZYwnFHfV8egWRwUfQMDXnkqLgpaVVvGqccQtg1N8SiLZi84cWHJo7W8v3o/1B6xp8VmoiHtmEk4YeiTSufRFRIkzucJ34IcVMFmo4zU3lEdCxnfETH6p3jhbrwm4liqKtem0YFTkfygGKCdtzRMOuVN28poX4m1LhV3goqgpDSbLqIXCS7xGq6cK4yfhSZwT3uylI9Y1fOp17MnK94a+/a/DFBx/uMB/nwF6YXb2WCnCngCxSTBVk4tO7vkf6ptBefuLkT41YfF6NIB5HIRoXgOFY4GNS/6ghQkqaTqCYVl7k3I9YzjTn/oyv3LYUO1Tl0bxvdjL8PoPBEbMufVWyWf3NGZ/6tv+kQzihCF8rbDR9LOH5DVKDv4i4CTwvSvdZZpLzDkQSkyNmwXSAh8rPcRVpBizE1Vo9F5h/Sv8/N9BoEjWD8ZECQMTsjdrQWJq2ZibfbDG72CD5dFd0CIyMbz6dFLNlOzHZNwmAnfQUdDvYCdnM04EnKw+E6hOgE86dIMvrebCK43mZNKFNxVJSy8qmjjU4KHR/8TBiSJ5mAKNK6TmakBGT8/iuMf/OquafFszLMyoM9o5Rn7cds7JqWjJpR
+ W65mKn6U
+ PI4fZGR5/D1H+w4dXaxNkZHIuHcCVG04KgT6TpbzH56x7GuVPaNDVPoDHQA6V0w7j6USL66y+VxQl2DWEEt4x84b/S9pW4Ks/u5d5il9YnbCXFPS4PR2guRAqAvHkKFKp1xuUmXFU1Dgb+LgicPF1NTukG1YqF8haFlSrHOJmE7wEL8LGSRKbVVdDVS0dG9mOEFhCszOKEl2hhIaswn7iXpAWrOZq59rvYWhXzT1XPk9dzEQdIoqiyBuORuAFHdqvyQWohibeTe8B1ZgyngufM3yrHg1Xx+eSUg0CffAESyEtDvAxyk7NroV8Ww==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,17 +144,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->> I recall that there is a notifier when the system is preparing to 
->> sleep (pm notifier or something). Could we simply hook into that to 
->> tell khugepaged to suspend+resume?
+On 2/5/26 15:25, Dev Jain wrote:
 > 
-> Do you mean “struct dev_pm_ops”, which is used to register PM callbacks 
-> for devices? However, I don’t know how to use it with a kernel thread.
+> On 05/02/26 5:41 pm, David Hildenbrand (arm) wrote:
+>> On 2/5/26 07:08, Vernon Yang wrote:
+>>> On Thu, Feb 5, 2026 at 5:35 AM David Hildenbrand (arm)
+>>> <david@kernel.org> wrote:
+>>>
+>>> I guess, your meaning is "min(_pte - pte + 1, HPAGE_PMD_NR)", not max().
+>>
+>> Yes!
+>>
+>>>
+>>>
+>>> I'm also worried that the compiler can't optimize this since the body of
+>>> the loop is complex, as with Dev's opinion [1].
+>>
+>> Why do we even have to optimize this? :)
+>>
+>> Premature ... ? :)
 > 
-> Also look at how kswapd does it, kswapd also uses 
-> kthread_freezable_should_stop() to check the freeze state.
+> 
+> I mean .... we don't, but the alternate is a one liner using max().
 
-Right, mimicking what kswapd does sound reasonable!
+I'm fine with the max(), but it still seems like adding complexity to 
+optimize something that is nowhere prove to really be a problem.
 
 -- 
 Cheers,
