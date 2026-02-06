@@ -4,86 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E28D7EE20AF
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 15:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D0F9EE20A6
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 15:29:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 528136B0093; Fri,  6 Feb 2026 10:22:10 -0500 (EST)
+	id 892A86B0089; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E9386B0096; Fri,  6 Feb 2026 10:22:10 -0500 (EST)
+	id 840566B0092; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4161A6B0098; Fri,  6 Feb 2026 10:22:10 -0500 (EST)
+	id 738EB6B0093; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 31CE76B0093
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:22:10 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F06B6140209
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:22:09 +0000 (UTC)
-X-FDA: 84414397578.17.19D8B48
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CEBB6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F30F6140210
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:29:14 +0000 (UTC)
+X-FDA: 84414415428.09.4D3CD3A
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 8C6BC80010
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:22:07 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UBvhRd28;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5B99DA000E
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:29:13 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m5INnH5Z;
 	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770391753; a=rsa-sha256;
+	cv=none;
+	b=BQ34bVbWLi1drpLf+x9WH3ENlztf1qaBVAKY8o7Hr8vFYbHgIkj32Z9L66Mdk2IsSVfLV3
+	uhS/cCId2f3p/jdH5SCXjsJQ3Esg+2l5xF5OKU0nKBnM8p4s+zVwQq1Ela8+vj6VgiGH6y
+	kXrkfr06TbXMeJ/g9wLBZWuQnIxv2is=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m5INnH5Z;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770391328;
+	s=arc-20220608; t=1770391753;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T2Sx14Efw2MdrqSrFAtZIkeoX+ECvkhMa4elHhdmrE0=;
-	b=fbv0xx2OXdTxu4rk9Fah4Rda537chWKPmKZ/AarmTSeSxkvEcpFWpmKfMXL55hZWK76vCc
-	xEpoznGU0cyXfV5/oz8sPh+XXhpz6kfFDWtNi6WrA/xN0vVHTXp+U6A0HN/f1fXUgMS/sv
-	gonLaFcNBAgUSdhDpXfhdT6kODJhhfM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770391328; a=rsa-sha256;
-	cv=none;
-	b=2I4MrEPiqXZITIPV7ZRviO3pxrL+tIUoLWGktzFbHweOnKinRKVHvyQluunLYgXAygCgT5
-	Tpsyyxb/Q6wcSYkt25jZKsGj/yOvoIM5Z7B/33p0GhLoUO1eKUGM73rsOm6/oGBhjOpdLY
-	u4lPbfab0+PNZH0Bz8JaVno1LhGNHYk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=UBvhRd28;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	bh=AVUop78ux91cHyjHUfguhbbjHSQTp88xnWvceiJRFLU=;
+	b=nj9/M2CRrM2P/hEELRtVBuS3foNrIn9Mh/tpmlIDcay2tFpi9jDQcntmhlQV8Mn4xIkNCl
+	ggBJK4cw3ygNJVI3d9N00fzi4wsZ75g0JeXVhA03oMCXt/+HE5JBq85dLRoybLF+RloDkQ
+	xsWPR0fupuPjYYrj1A8LedYpG5t5Pho=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=T2Sx14Efw2MdrqSrFAtZIkeoX+ECvkhMa4elHhdmrE0=; b=UBvhRd2894gn4ox1l1tketHFhB
-	1rOGXbMLhqnMkMP+qO8Vn9bvvF7tSPTcvTCLgnvzwFucX5BocZzuEMtFJKGDW/bR099kBUGpl5Dty
-	A1mrXBaGatZ1B1PlDxWJc1ioh2BJL2C44bVRR94BosfvJZ/8Xz5xwJ1BoYbR1/xIPVLWduMDMutVd
-	Lqh84SGndiF+1lzoOx4Y1gRzvKYlz1j+WKvygwgYMjVqedT2nVewK+E8xHDH8qBSEpIdm21Za2PKO
-	OFxMULlhW7MMTuYUwa49mlCsb9uOZwxexxsDLJoTbkR8Lrv6sAJKI0M/ZQSYGEeeKeKuzvsvhxShW
-	MoMOLDrg==;
+	bh=AVUop78ux91cHyjHUfguhbbjHSQTp88xnWvceiJRFLU=; b=m5INnH5ZnhfPYYArkaPSoRjEVh
+	4N46sjbuTj/NJTBffuAyHjahVfHjHwPxqs9xsKjiDJ93ymlkOYxeW5zjGllWxGXLxttZx/pDHdHus
+	3G9tXXoA7o57DwEpwnJeInxVGE7zPbB9w/uuYWX72BNiYd04+XEFBzdMSn3FpsNFrf3nrihKqjPcu
+	w97WSSM18X4OvIpS7DNI9JR+v25D66+vmoYbkEZxtexQGi3Eu15715q1lWJi6bw2HUNnaEcJZlPF6
+	ZRcDqA2OK+oq4K3sCL2qsA5+ZCf1DVCIXDc+02JsSS/FXLaDZQcyWIEX1A8lFalLeURFMRUNG8OvI
+	bYp8Yn2g==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1voNek-00000005OXd-32Ae;
-	Fri, 06 Feb 2026 15:22:02 +0000
-Date: Fri, 6 Feb 2026 15:22:02 +0000
+	id 1voNlb-00000005Ozj-3NPX;
+	Fri, 06 Feb 2026 15:29:07 +0000
+Date: Fri, 6 Feb 2026 15:29:07 +0000
 From: Matthew Wilcox <willy@infradead.org>
-To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
-	anshuman.khandual@arm.com, kirill@shutemov.name
-Subject: Re: [PATCH] mm: map maximum pages possible in finish_fault
-Message-ID: <aYYHGisOQFQINXwR@casper.infradead.org>
-References: <20260206135648.38164-1-dev.jain@arm.com>
+To: xu.xin16@zte.com.cn
+Cc: david@kernel.org, akpm@linux-foundation.org, chengming.zhou@linux.dev,
+	hughd@google.com, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: ksm: initialize rmap values directly and make them const
+Message-ID: <aYYIw3h35HOqodAb@casper.infradead.org>
+References: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260206135648.38164-1-dev.jain@arm.com>
-X-Rspamd-Queue-Id: 8C6BC80010
-X-Stat-Signature: acwunrkpig8rp65sctdymcm6qm8naznw
+In-Reply-To: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770391327-988741
-X-HE-Meta: U2FsdGVkX18iXAs7zNdmbgJxD2MruPRVk+S5w6Yt5e0pQQJlMBMsTC/jtJMmjYXnzy+kvgWvavWipRXer6GbRnYwtYao2QGfIaNzQhbNTc6/p/67hUc54GnQGnFegZPnDkDc7gzjXyjtk+ZoBMgLz957jmi4RQrJ+YtA/pJP2y/jUSaClwunjEfOQdYsi394p59SSXDzjt93VRJhNnw9F69ThtHPdW7ENvTaQNp5q2kOz1vqm96UE4dIlvGDZ500V01Sz2foVCgZh4BbdrGGazIM8s/Ytyfayhnt5UcKivPYafh6KGBx6smkFEg67U3STUxjNJxCGBwlTkrBDYVGeno7w/rFbR5B90auCuhrj+B/DV7AUO8XVsbnLkLo68vWJgd8PoUtr8GbDoUUCynn+CEkH3SoJYTIJONaPYYG3q+5xfFVuqqtqTTpbsuD6r5ZAytIftajurhsECpy02gsu39iJPXZiId1IaQ3LTRXrszyaCvx8EL1el1glwnZYkk9yRs/d8LlKKRtH8LlDjXqIaf3NVkvnCJEQeYh9qz6TO/OJsEdXsWij/cOfP6RhK/Z93mUClLoSJWaNiypWNZXge88mLnqFcSYTfQV4mzHuHlWhdZ69LDEpXJPkl6Jm9b7FsKsqt1Akp5+1uveXh7CMoBBswAc7CjifQOIx/o+mMzlq1m7OeRExtCQdDGdyWAx3XIP3W9wTT7zkz7TPC1e6HkAN+tCf42BP2wreLsa6zDryI3E77NSgZDKGEGBeKTB3AFp5Tw70BSzPsp0Cik0oeEQDLUpxGw0j0ood8JKoD4Jr4HufhBKCtU2USmN0vvv0Ie8awDAcVW8k3X3rHX/9NCscMZtB4O6NUJLAqs+4PUsXv4wFxRqyyCs8d/tBJxEc0NxYqThc/6OOfFR7NvjIUZns6JxMuNivSVv3573x7J8IRcZpcTTQQZb/cMb2srAvWU6/4TjGNFt+HiDSdC
- /KLm0iCg
- m/o1Z6Z5PT+XrGP5LK7+tyKfcRY6h1jHBETreUU51Ica7uFnsTAkEXnqehXLFTgnophILUthBrQKGJZlYM9v+5XrFtNri2pow4q9hNpH2A2cOw1Me+OWTS3TX14fDY2bM0OXMDO5G5AiHyHmB3rOPWm+rpCKSNGGmtVsKH0LhzUfLaAoRmlvH1r0eqbYyAS4VrP9tUCLKovhz2GPxNCpLzM7/c7Hx3F3K/Li/9UypP/Gz3bb33dq9VO79FjEhoUtJjEzbCjp1rngtpz0Bn/Z/ZuM1u/kr+/+27pDviR+iUGPQ1mE=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 5B99DA000E
+X-Stat-Signature: axkkxxg8fwinzwtsz5n5unafcaxnaq1y
+X-HE-Tag: 1770391753-992310
+X-HE-Meta: U2FsdGVkX1+Yomx0Uc/0/Rutw51GypSZ+wEUWvsciIbR/W+HEyHtmJeKVTRCPJsQab6+S4E0Rc7ODkzQzsg2ObDrjWZ1TwKVPjBNIl5A2fDKbb3aSMNYj050epteFiImcMp6PTeHi7n3KyOmvUJI0wm4F6qbPxuPR7mas25kwkidcGmn3Q598QCMjLWEm3y4PiDohJcFVopg3H5UieVRvuY4EzocerL333yTcY5C6o5IdvKNmd7OImHhaE1dSZZ+/eyhZienjCC/qPAOaGEU6Sp/ygjxQYXrC8Z1zKPxQl3l48tIMTBrJajhWR0do38X/LEQfjM3YuhlKcI/zTJWEOgl+VLbgn8EnVZWM968GnASa3ZQ9NDJIHt00m27Tyya2OKi7hr2oAYG1wMTgIp/uGEKK5qa/ag/oqvY7Qspf1sP/x4J737mLiH5bN/YdSlKpMoxohQjQP3WNhWv7ecHOXHAIVgSo8CqunAPwAvRDSOptH+lrbNesWE5A9kX7Buve5+JIFQz32iI9ij8GhduFJRmIsRQ0FPz2sVIk/nKcPVVJP7Xd0oRSXq89yVNIFAA9Te4JXL5Zm+MPRri2FcDgHuZc1Pg2Kfe3A/aHTrELVSPDFbKZ9S1Md9rVDxLraPE6ynUo33ZEzIszfygXHLUbvFWAYKb+UsTcvrs+9+ld/mjwgC8pPQXzJuuSmiwn/JjbdlG3RvYOHsh6mvkWX2hZE9BVgwchdXGs9cZXTDIb2b48f0wbLpBKRWjcXkzxjW3Z6lZTCBLH60ziAKzI51oXvnhvrBhURXuiyxzNFHIlu0+6GCrh7y7fnIc8OdVb2KoELKWLmGpjr+7Lsux26riqkx6+zr57vfX9IotAHL7jGaqtmElF30S5k1DabkIJbDyflpbOXiSy1468gnmfNxbkqOXj1PmnwEz4isj3x0N+I87zT4Qm2SzCvUtwKBUetkdLObj10nD2GxooU7q9d9
+ 6ilWxzVn
+ /0pIDs5Vsj592tKr0ErRlknk7Kp9mPWDw8TVh2RIk/E08do8ltlQRfhWHTFq6H1Gwl074FQD13pZXbSXFaKMDXU2n8is4U6hxWgxDcHu5iOu4DQzFNjAVPilfQG9EXeqv5eAYazoJeghKlBm4UFnIPU0BWTcLQ//HkIuCko78VeryQCEBxcPeO8ojZg5owlTAHK+09v4TvtyOTp2V/g1mS0CqZ/GfTkVmwKC8HZE1RLKXX5890iUuGc+D/+DJHKNX9HsE7BXs8cj2h0OIA19pjzqhxz6U69Snrcdogdv8os5L4m/5mFgLL8WwYg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,25 +90,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 07:26:48PM +0530, Dev Jain wrote:
-> We test the patch with the following userspace program. A shmem VMA of
-> 2M is created, and faulted in, with sysfs setting
-> hugepages-2048k/shmem_enabled = always, so that the pagecache is populated
-> with a 2M folio. Then, a 64K VMA is created, and we fault on each page.
-> Then, we do MADV_DONTNEED to zap the pagetable, so that we can fault again
-> in the next iteration. We measure the accumulated time taken during
-> faulting the VMA.
+On Fri, Feb 06, 2026 at 03:22:54PM +0800, xu.xin16@zte.com.cn wrote:
+> make them const to make code more robust. Besides, since KSM folios are always
+> order-0, so folio_nr_pages(KSM folio) is always 1, so the line:
 > 
-> On arm64,
+> 	"pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;"
 > 
-> without patch:
-> Total time taken by inner loop: 4701721766 ns
+> becomes directly:
 > 
-> with patch:
-> Total time taken by inner loop: 516043507 ns
-> 
-> giving a 9x improvement.
+> 	"pgoff_end = pgoff_start;"
 
-It's nice that you can construct a test-case that shows improvement, but
-is there any real workload that benefits from this?
+How do you know KSM folios will always be order 0?  I don't.  NAK this
+change.
 
