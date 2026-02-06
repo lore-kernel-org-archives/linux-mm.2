@@ -4,99 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24FF6E8B364
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 03:06:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D7FAECD9BC
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 03:15:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B82D6B0096; Thu,  5 Feb 2026 22:06:37 -0500 (EST)
+	id B36FE6B008A; Thu,  5 Feb 2026 22:15:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54FA96B0098; Thu,  5 Feb 2026 22:06:37 -0500 (EST)
+	id ABABE6B0092; Thu,  5 Feb 2026 22:15:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A8986B0099; Thu,  5 Feb 2026 22:06:37 -0500 (EST)
+	id 9C6A66B0093; Thu,  5 Feb 2026 22:15:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D7556B0096
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 22:06:37 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BF7CD1B2C12
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:06:36 +0000 (UTC)
-X-FDA: 84412543992.12.7195AFF
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 40401C0002
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:06:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=bS+LYkvr;
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 889396B008A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 22:15:21 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0AE1D1B2BF2
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:15:21 +0000 (UTC)
+X-FDA: 84412566042.26.138ADEF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 63A1640011
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:15:19 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OdmgRg3q;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770347194;
+	s=arc-20220608; t=1770347719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=s09W6T/GPRyuerNlrv5Ie2L5UW/FX11530s9MFvNE9k=;
-	b=2fFXoZ21CRv5CIoNyJ0OwqCyQuPYblxiRU4nefDru4tD2nSlUUHBKNuNooICah1h7DwDGh
-	el5Bw/CxzYtWe3uHSWhd3GD80G1AEpHPzKD2/AJkO+MQV0LzBHrk2FdhKCVLpLbDT8b/o+
-	jXxX5LAhMgVdDf+jjMutKbGrlELUoXc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=bS+LYkvr;
-	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770347194; a=rsa-sha256;
+	bh=FhXaQen6a9EVArYZZOaT/FuxRzbwOvXvKdJaf2cR7dI=;
+	b=a2rmV/iC305qNXahyz0y7yq7eiBwU97KbIIepBfFZ7lNHLL5GNII0RE6HvddkTGwhFguvR
+	0KR+lTcFXrt30MZZCQ60DKHQ8bN407X5BcCqm24nk03MlOgJjhWcBCTY6fNlHqLvRpRsi/
+	+JV7VG3Mon9bxgci/KfUc4vMwCK32XY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770347719; a=rsa-sha256;
 	cv=none;
-	b=f4ktuxBrPV0iE5AiAoVqyJSoUQ0o3MsatjIrb8NdZgOchhDiZ+TaA50+FQYaYssvUOPJ34
-	6ankM/NT0DcCyNgk65W5719SnDPEm8Mh8NPgZsZSmiVFHuFJR5TV6y9CGtIBRuBWkgOpxc
-	d3Bj2gAVNMhQZWAMI1ZXmWyXYx43rvo=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=s09W6T/GPRyuerNlrv5Ie2L5UW/FX11530s9MFvNE9k=;
-	b=bS+LYkvrjYAQ2n6R77Wd+cwuAY5NfZdg8JR8ntIaEENdBt5a0JxU6C3WY7K1+EGFL1PPNJiLX
-	BeRkw2I6/1xUhoPQgI7WW1fgkOjxxugRuwvPawScgtx8VKSYBH/l5vASkO9L2fNvY5N1SOCO/8u
-	Zxb4rj4UuHY35Ne3yoF3Ggw=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4f6f585B66z1T4Fj;
-	Fri,  6 Feb 2026 11:02:04 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9074C20168;
-	Fri,  6 Feb 2026 11:06:29 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 6 Feb 2026 11:06:29 +0800
-Received: from huawei.com (10.173.125.37) by kwepemq500010.china.huawei.com
- (7.202.194.235) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 6 Feb
- 2026 11:06:28 +0800
-From: Miaohe Lin <linmiaohe@huawei.com>
-To: <akpm@linux-foundation.org>, <shuah@kernel.org>
-CC: <david@kernel.org>, <lorenzo.stoakes@oracle.com>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <nao.horiguchi@gmail.com>,
-	<broonie@kernel.org>, <linmiaohe@huawei.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
-Subject: [PATCH v4 3/3] selftests/mm: add memory failure dirty pagecache test
-Date: Fri, 6 Feb 2026 11:16:39 +0800
-Message-ID: <20260206031639.2707102-4-linmiaohe@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20260206031639.2707102-1-linmiaohe@huawei.com>
-References: <20260206031639.2707102-1-linmiaohe@huawei.com>
+	b=C91QSm2E13LzXe/iNOeuFYc7CXjnDGqkfUdZSEvt7pf9+OBUX/AvXH4/Xt147y0ZE2V+Gw
+	+HzYO4HwVc2gJIXz50BcdsPlN2t13DzVEAWLf+vmE5SN0FLek5vucjprGmQ1L7I01sNZRk
+	i8wTt3vgkpaaOXMO0HlXO1v7qnBbPzQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OdmgRg3q;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 50D33429E5;
+	Fri,  6 Feb 2026 03:15:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0F98C4CEF7;
+	Fri,  6 Feb 2026 03:15:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770347718;
+	bh=uPXDqLDLtK0pqdFOgCp+rr9C19DDhLskCTGooJBdwTE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OdmgRg3qyn6J8aDsbqLaGp0YTTaluhiZhWbkHR3umhSBbE8aYtGUlHk/e/adSV9hW
+	 VkRWFb1ddniw7FTb+jOja5JusVe1kt63cNiVsMwknLtRRCRQ6apiwHp9HbeZivqfzV
+	 QHwRU4m05XBFBFW5uCuhh/x1oXdDQ2NMe9sF8BI7ax9S3W7rp944KLlnBccq4blXhZ
+	 ecX2zxqDsd403YnagGtHitK2eKdvWjCspHuoe1tSeiTulxdmSgVwhYpkTimAyqlV7u
+	 s+RU+pd7A4bcugMnk7Fjfk851NxzpT0KnjHdPWRO451TyVqifObRGPnCkAaxAJKjQo
+	 74KzFLtsloFbQ==
+From: SeongJae Park <sj@kernel.org>
+To: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	"Jiayuan Chen" <jiayuan.chen@shopee.com>,
+	"Johannes Weiner" <hannes@cmpxchg.org>,
+	"Michal Hocko" <mhocko@kernel.org>,
+	"Roman Gushchin" <roman.gushchin@linux.dev>,
+	"Shakeel Butt" <shakeel.butt@linux.dev>,
+	"Muchun Song" <muchun.song@linux.dev>,
+	"Yosry Ahmed" <yosry.ahmed@linux.dev>,
+	"Nhat Pham" <nphamcs@gmail.com>,
+	"Chengming Zhou" <chengming.zhou@linux.dev>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	"Nick Terrell" <terrelln@fb.com>,
+	"David Sterba" <dsterba@suse.com>,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible pages
+Date: Thu,  5 Feb 2026 19:15:09 -0800
+Message-ID: <20260206031509.68313-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <e155ad8af874f10baaed91f1d12fde222b82036b@linux.dev>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 40401C0002
-X-Stat-Signature: fk89peqp1huprnzqc9ecg8hko9yroyif
+X-Rspamd-Queue-Id: 63A1640011
 X-Rspam-User: 
-X-HE-Tag: 1770347193-421147
-X-HE-Meta: U2FsdGVkX18346h+K9Ogh3kb6deA2XldMHmdS/XpZp7n00ybbr0KPq6c+Tr47qKrppYjfVLdw+mbPcuwwrSFjzxBn5gygk9JqvMXlo6dNvLAbRXHZ5Gzvt7Q7X42fQKrtz+XlOQStUEe94fjtNTXdBzu27vzTdvXUFPPyS0LYNt0hoVGDV10ecAygdy9M0jEXdwvV+NZChdNdSZmO7+B7g1qx2czQLDFUomkaDQ9LaJhSTfn3lPVUXsNOjviSAXcjz7joI4MSjHepoWISvZmNot10yuvIgjI1LDox5AW12zpwPvARdPrd+ip2ydBQiLokF4DxycNKhIH+XFzBU58st8zfEmWr3biV9CtyJ53oI3emnOBhuwtc+ElfczLDF82utjR+T5mJYgq912Xll1fBh6yrRs+uLsZ+EnzFrezxdZde/q1nCrFbWKjrvkCohF2z0GOv2qd3fSLup+UeotSw7lc1TYCIiw2ivtlWlWK00Q9MA6xRGO6i5Ts7J/gl05K/d7mYw2jbdVeMOcJcWogdqDgBR27i8ul+NY8Iw0fnf0pEzK8TqtWOTtz4cUZvvopRUed9fuXG66ug6vuGkiVMv768QgjAiQLpWr1qupiJLai+41hNuWi8G7JIzFs+br29ZMJ6MfcS2l3CnYgFEoMtWk/M/t1C6/fU2Yh6Ht1V6S6BInUzYYM37f3H2V9y7YcwBW1dxS0c/4TOhKLIgelPCUaYycXwXnzxwbdUXNamwA/A1i4DrDhutFH/OM7gDbS/nQt0twGtlQj9Eod5CQE8PEzmtKjDoSwoMrnXp0XZRqsTRiFXi24rckKCMiJzxmhFuQ4/xUc8pq+GLe8Jr4ErVVypwGGsT9CjD+5OHGl5TkL94s5e237eIknM5n4xFgAAmd4jPE0yAbsVIOSIGit3AIHNmy+LJVbRTDvZF0akpTZmI+XS74BVStsjsCaBBlt4ib8lNAbIAaTE7EglFd
- rFhfqQ1P
- mxXuAKKnuhqAq6fGNxGzzLZuy6SG5PBhqw1gt6KoVp/OqRmW40MnPjyZ4RS4Twk48FVH2ywmm/DZ8/96R3hdqtcWtSUu//p2yNGwh5Hz1qyCSnX2JdIbdc2Hs7xcvaNtWbCYNoSOXz7y+e5adu6Do58Br1OjhJFfvfP475s3s2ZR9x/qtV37DgoGOgV3lpmA/2kjiEc2sXel5k11T41wChWw88/kGQRMb7+I6LQAp5M7iOsRuHeqq/1/ogRr1IObxyk3e5qGhl44p2bNva6Sb5nozmc3+yOeai0VHaDsZ5CgOJE14NVL6Hdp+T2UW1Tfz9eVIrLqyByUq1Ng46MkxithCuwXIKIs79q8c/ccdP5PnjAqJusnS6stzQq7xW3qDzyMoqwOt+c2d4lO5hl/2/Jx7HrhhH8tmU6Y3HK5qpijZCW+7g5rYf4C4YEg+MfKgOGslsmV4cvckUQEnwZx1grscG4JC6WHa5avm
+X-Rspamd-Server: rspam05
+X-Stat-Signature: c7t9uecrs6ohk81ktmox1ut89iafa9zh
+X-HE-Tag: 1770347719-634987
+X-HE-Meta: U2FsdGVkX189RdYgrmvw4zRzY4aFXA7pcv2B3+aa776ziw06urXmDI/14CtLNF1SJGYeDZBfx1jVAhpJk/X63JjoBjzrk3SNykAWvesLqWmz0CpF8887wyiPSeJzYSvp9AfZ7ihez96hmS33IS3SV+rf2cbSSmoU+0pKqOFyalJk0dtSjG41mhfi9wJuhKzqKNKxotb93I4YQI6IN2+N6GGINSesrXhPP4otiy7/Sso2FMGeU7016z8LbmMRIGfJjP2uTJzzvZE1Z4Hi2FKtHLTB/53h3LXAhcyjyJSrQu5Oo80d7u4wL+cZo2k9hewWrgZMzgDoav/8xIQZER7qZxxtDOIUGl2NGCE44SWR73grq9hb1LTjnEvwKMKh6RuVLRKLVgUHBdYO7BQM1N5BYFBmiwUt/4CDXDHvuN0XBU08puS72mekI4XNhlarmc0c/RnxPlBNvE1Bt5Xx1nZxUjSIrcpFIbMvAqX2vs1tvMfx7tTRsqtl+6QYOCKxBlE672FoifyMHylKIiaP63wz/CRF3UgC1HpqkVSpOzJo8rPDnL/Muqty8PeIOmiEIRwaadEIiquIXJ6HkzI8kTt0VIiCucDpih59qxXwSUTaCMPPPkqUCOpbWHC8YeGY8V1jPd2JYveLIbXeysm5oI5hfgExfbEUy8lNqQbNRJR5gIJYSrp5Hnu2CcRlG5pYe2vqVIaSZpng4mMxbckkJNTbUpOB6MlevCfIE43CNesyMvoqnDw4kMLdkBcv1C15KbZygRWytvZj7ge9ZWNY2FPlMPPbjk4NKWAHMuk1aYadkl0JwgW+UsjNoeNLT4X1Dl7U0Rf38fODyLr2Xog9PjsJpUASMAwRcnvL5RCcMHXmGQ5UDgtX9aarXjoJVQ6WrgcYSde/dfg/ljoj239aL6LjUF9pHqWRqHRgaBhPA+159Nt0UOdGjclIeQKLr7poZc15skvYlpyjCZgd+7Baqsl
+ uEo5zpxa
+ 9utATTHvnWF0KtuTIJGtIyrNjOw85LVWiACnOrpXRHtXzlSImSRZ1UGzgkJv2tgdsPBg1y8cG+s0CBhhp/WAnGAoFsS6/LOxRAl9I+YUm7siKEqjPJXGIvoLlsDdYup2P1HT7fJQfITsi4LQkOeddid1Mt9B7l0d0t9LczzPNU1i0XO6pOepz07vdkoUJOACCpFemwIZH4WTm8JjDfzOQoa8Hscb6v1j8ikHNUlWOzFK1dpf3liftmpuxlBgl1sCcRyZ0yrnybyyyuXk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,135 +105,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch adds a new testcase to validate memory failure handling for
-dirty pagecache. This performs similar operations as clean pagecaches
-except fsync() is not used to keep pages dirty.
+On Fri, 06 Feb 2026 02:47:58 +0000 "Jiayuan Chen" <jiayuan.chen@linux.dev> wrote:
 
-This test helps ensure that memory failure handling for dirty pagecache
-works correctly, including proper SIGBUS delivery, page isolation, and
-recovery paths.
+> February 6, 2026 at 10:21, "SeongJae Park" <sj@kernel.org mailto:sj@kernel.org?to=%22SeongJae%20Park%22%20%3Csj%40kernel.org%3E > wrote:
+> 
+> 
+> > 
+> > On Thu, 5 Feb 2026 13:30:12 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
+[...]
+> > >  @@ -941,7 +941,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+> > >  zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
+> > >  
+> > >  /* zswap entries of length PAGE_SIZE are not compressed. */
+> > >  - if (entry->length = PAGE_SIZE) {
+> > >  + if (zswap_is_raw(entry->length)) {
+> > >  WARN_ON_ONCE(input->length != PAGE_SIZE);
+> > >  memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
+> > >  dlen = PAGE_SIZE;
+> > > 
+> > Below this part, I show 'dlen = PAGE_SIZE'. Should it also be converted to
+> > use the helper function?
+> > 
+> 
+> The dlen variable represents the decompressed (plaintext) size.
+> Since we compress individual pages, the decompressed output should
+> always be PAGE_SIZE in normal cases.
+> 
+> This check validates whether decompression produced the expected result, not whether the entry is incompressible.
+> 
+> Using zswap_is_incomp() here would be semantically incorrect - the helper is meant to check if an
+> entry was stored without compression (i.e., compression failed to reduce size), while dlen = PAGE_SIZE
+> verifies the output of decompression is valid.
 
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
----
- tools/testing/selftests/mm/memory-failure.c | 62 +++++++++++++++++++--
- 1 file changed, 58 insertions(+), 4 deletions(-)
+You are right.  Thank you for kindly correcting me.
 
-diff --git a/tools/testing/selftests/mm/memory-failure.c b/tools/testing/selftests/mm/memory-failure.c
-index 3aa624db9577..3d9e0b9ffb41 100644
---- a/tools/testing/selftests/mm/memory-failure.c
-+++ b/tools/testing/selftests/mm/memory-failure.c
-@@ -29,8 +29,10 @@ enum inject_type {
- enum result_type {
- 	MADV_HARD_ANON,
- 	MADV_HARD_CLEAN_PAGECACHE,
-+	MADV_HARD_DIRTY_PAGECACHE,
- 	MADV_SOFT_ANON,
- 	MADV_SOFT_CLEAN_PAGECACHE,
-+	MADV_SOFT_DIRTY_PAGECACHE,
- };
- 
- static jmp_buf signal_jmp_buf;
-@@ -162,6 +164,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
- 	case MADV_SOFT_ANON:
- 	case MADV_HARD_CLEAN_PAGECACHE:
- 	case MADV_SOFT_CLEAN_PAGECACHE:
-+	case MADV_SOFT_DIRTY_PAGECACHE:
- 		/* It is not expected to receive a SIGBUS signal. */
- 		ASSERT_EQ(setjmp, 0);
- 
-@@ -172,6 +175,7 @@ static void check(struct __test_metadata *_metadata, FIXTURE_DATA(memory_failure
- 		ASSERT_NE(pagemap_get_pfn(self->pagemap_fd, vaddr), self->pfn);
- 		break;
- 	case MADV_HARD_ANON:
-+	case MADV_HARD_DIRTY_PAGECACHE:
- 		/* The SIGBUS signal should have been received. */
- 		ASSERT_EQ(setjmp, 1);
- 
-@@ -244,6 +248,18 @@ TEST_F(memory_failure, anon)
- 	ASSERT_EQ(munmap(addr, self->page_size), 0);
- }
- 
-+static int prepare_file(const char *fname, unsigned long size)
-+{
-+	int fd;
-+
-+	fd = open(fname, O_RDWR | O_CREAT, 0664);
-+	if (fd >= 0) {
-+		unlink(fname);
-+		ftruncate(fd, size);
-+	}
-+	return fd;
-+}
-+
- /* Borrowed from mm/gup_longterm.c. */
- static int get_fs_type(int fd)
- {
-@@ -259,17 +275,14 @@ static int get_fs_type(int fd)
- 
- TEST_F(memory_failure, clean_pagecache)
- {
--	const char *fname = "./clean-page-cache-test-file";
- 	int fd;
- 	char *addr;
- 	int ret;
- 	int fs_type;
- 
--	fd = open(fname, O_RDWR | O_CREAT, 0664);
-+	fd = prepare_file("./clean-page-cache-test-file", self->page_size);
- 	if (fd < 0)
- 		SKIP(return, "failed to open test file.\n");
--	unlink(fname);
--	ftruncate(fd, self->page_size);
- 	fs_type = get_fs_type(fd);
- 	if (!fs_type || fs_type == TMPFS_MAGIC)
- 		SKIP(return, "unsupported filesystem :%x\n", fs_type);
-@@ -302,4 +315,45 @@ TEST_F(memory_failure, clean_pagecache)
- 	ASSERT_EQ(close(fd), 0);
- }
- 
-+TEST_F(memory_failure, dirty_pagecache)
-+{
-+	int fd;
-+	char *addr;
-+	int ret;
-+	int fs_type;
-+
-+	fd = prepare_file("./dirty-page-cache-test-file", self->page_size);
-+	if (fd < 0)
-+		SKIP(return, "failed to open test file.\n");
-+	fs_type = get_fs_type(fd);
-+	if (!fs_type || fs_type == TMPFS_MAGIC)
-+		SKIP(return, "unsupported filesystem :%x\n", fs_type);
-+
-+	addr = mmap(0, self->page_size, PROT_READ | PROT_WRITE,
-+		    MAP_SHARED, fd, 0);
-+	if (addr == MAP_FAILED)
-+		SKIP(return, "mmap failed, not enough memory.\n");
-+	memset(addr, 0xce, self->page_size);
-+
-+	prepare(_metadata, self, addr);
-+
-+	ret = sigsetjmp(signal_jmp_buf, 1);
-+	if (!self->triggered) {
-+		self->triggered = true;
-+		ASSERT_EQ(variant->inject(self, addr), 0);
-+		FORCE_READ(*addr);
-+	}
-+
-+	if (variant->type == MADV_HARD)
-+		check(_metadata, self, addr, MADV_HARD_DIRTY_PAGECACHE, ret);
-+	else
-+		check(_metadata, self, addr, MADV_SOFT_DIRTY_PAGECACHE, ret);
-+
-+	cleanup(_metadata, self, addr);
-+
-+	ASSERT_EQ(munmap(addr, self->page_size), 0);
-+
-+	ASSERT_EQ(close(fd), 0);
-+}
-+
- TEST_HARNESS_MAIN
--- 
-2.33.0
 
+Thanks,
+SJ
 
