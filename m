@@ -4,90 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5507DEE20A0
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:35:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44E9EEE20A0
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:40:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAABE6B0096; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
+	id 527E16B0089; Fri,  6 Feb 2026 08:40:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B95CF6B0098; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
+	id 4D62D6B0098; Fri,  6 Feb 2026 08:40:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABF226B0099; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
+	id 3E1D26B0099; Fri,  6 Feb 2026 08:40:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B5866B0096
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4783EC07F3
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:34:59 +0000 (UTC)
-X-FDA: 84414127518.29.F461AAB
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 5710B40006
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:34:55 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 29BF56B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:40:31 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C6BB9139064
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:40:30 +0000 (UTC)
+X-FDA: 84414141420.03.2A43E1A
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C6202100008
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:40:28 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b="SZs8A+/8";
+	spf=pass (imf05.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.68 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770384897;
+	s=arc-20220608; t=1770385229;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=Ek9xXpyxB7RWqvoD0KJ9YQ7rIi4F0Xgb9AWn4cpPhqs=;
-	b=5SNMoveBuWAPKH1X8RBpuFSxyky4V5JLwtCn6esdbooDYBqDbc5YvxQxO8s2Di2hFu4eau
-	37Fu3cEG7+HYd84tKjZAPN2JC2mFEi167ih0myx8ITg8MqTzyzRju7cSWt7hp1bEpl3Pmb
-	hY+soJjWqljezy3sjjqdF5SGA7EWBXI=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=c6RP03fPs9VBCASY2WT450UV3Fh+vZb66DaShDBDiDw=;
+	b=6wNJfiit+y/0U1uf/0LqpnDIeGoZ+LGn40+fHtZXSLSWRpe2lMTaYUJHi3zor4R9GXpv/V
+	yNwefjXBR4bXNBrwCLh/dYvRo3NE3HM0HYTWy0pd5bLteD1KCpm+x+H3LtJIAiLP64+3Tq
+	IEyLwLZ3PiCFd6TlDOhP4GKVezZdMQo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=none;
-	spf=pass (imf11.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
-	dmarc=pass (policy=quarantine) header.from=h-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770384897; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b="SZs8A+/8";
+	spf=pass (imf05.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.68 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770385229; a=rsa-sha256;
 	cv=none;
-	b=2p48CHFyulL77QlEZtDV50w677TJSBt1qdbCsRwGMtBzfPFSjzuZ39UbxulYOBg/RP/WMQ
-	9C56X3C3NySG6UOHKdHWKvDFYviWm3hkQlwaArem8TO/Izw7gd+AZL8Z/T5yX0EfpogddG
-	5pnb56chof1SBid+F7ed5gbFcae2DdI=
-Received: from mail.maildlp.com (unknown [172.18.224.107])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f6w645B89zJ46FB;
-	Fri,  6 Feb 2026 21:33:48 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1402840584;
-	Fri,  6 Feb 2026 21:34:41 +0800 (CST)
-Received: from mscphis00972.huawei.com (10.123.68.107) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 6 Feb 2026 16:34:40 +0300
-From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-To: <gladyshev.ilya1@h-partners.com>
-CC: <gorbunov.ivan@h-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <alexander.grubnikov@huawei.com>, David
- Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
-	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
-	<mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Yu Zhao <yuzhao@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Will Deacon <will@kernel.org>,
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] mm: make ref_unless functions unless_zero only
-Date: Fri, 6 Feb 2026 13:33:02 +0000
-Message-ID: <20260206133328.426921-1-gladyshev.ilya1@h-partners.com>
-X-Mailer: git-send-email 2.43.0
+	b=E7IUKevwDAhtLFZAlLeahk/eoAQ/wo1QYI4+nCLcTCyREopIz5LMIaBCzW3cBGGQM60RI/
+	B+fTdNT25tPnEgLJ6DshtRqr5jii5mhwPKQbitujNJ7Q83uK8Fmya6xVS382NhsSUI6XVm
+	1c0QoPXIc7PEazJNzw8sGpOTrcsxV9U=
+Received: by mail-wm1-f68.google.com with SMTP id 5b1f17b1804b1-48069a48629so19400805e9.0
+        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 05:40:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770385227; x=1770990027; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c6RP03fPs9VBCASY2WT450UV3Fh+vZb66DaShDBDiDw=;
+        b=SZs8A+/8GwFBxqI4Ju7nzSddpJgzDXNWO0ybcJ2lX3jvklMvYJnAMLjYexzRhnUbuu
+         v0FNsl4k+0WtdNfj9fvKmUYz+JEHOVJNgJ3i6x8DcFgGItc98zXg17lS4EV0nQCD/re5
+         2JWJ0kB1gsgks+TZn+TwbOWqnYeMhXUawe19EoG3Y3uwjjtscj0j4ESD983p6HtbYbZo
+         GTLiwg6HeP/tw7Fbxqej1a6vJ2trE5IBE3GSaq0Y5e2RhdKn23xzjl61a+03ei0CeJTc
+         nB970Fw2xgDRUa/MIahl8H8u0dIV1YYcou7SL6IBIKR8A4wi9wEF3+3+xvoLf+IQwand
+         vozA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770385227; x=1770990027;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=c6RP03fPs9VBCASY2WT450UV3Fh+vZb66DaShDBDiDw=;
+        b=U1hctnafBUPnT6OvKLA9gNMKiWLam87ImCgw8bKQnUXT5DkYmQZ2QWWvtwN4AoGI5w
+         YKhxwP2PVCrAhL8ld4+FE8eOEAXxwnOM58rHy+VApRuRHftVVOMMfzySHr0gfcilBAvQ
+         7LO7T5NzitoHd1pNnKVI9sX+Pf9Qw/p76LRxWOBHXCA26FZb7Fy9LsIdBvPonCqbkgoT
+         pMo4HxKbGDcLPmY9eSKeNYzRC6WTn8e499nxucpCRntnC2qaiVFaEe1c2U0NZvm3m9VM
+         pauaZvSkFoQApDzV7Tv+rgYaESwGr+sNN5201N3v7tbkeJvUhIR17q8zyyT6yZPJ1TA6
+         1c3g==
+X-Forwarded-Encrypted: i=1; AJvYcCWR9bUeJSSVACc8jcEKZJz6GEPKat8Cn4JT/JFUh/aN5Nl89DV9bOvGX6pAeZi8s3OYueEFI8D8UA==@kvack.org
+X-Gm-Message-State: AOJu0YxxZtvpiUfnPg2skXwDA7Nwq6qwoU9win3BmsacgwxI2x7wp5PE
+	J35Ljfqk+wD7vCZQqgQu2L6E+hl+Z+UyCB40qY8qDuxdBP940Bh2+LIL9nFs6W5Qpt8=
+X-Gm-Gg: AZuq6aJymM3pKhUAHIjOSyCic7Sk8qJ0jb3OtZ5tYRcGvmJbCfLyj8sDHuiFV9bdm0A
+	+nwOBnMtgXxT7GXK7v1mCNYbfr4SHA9Y5jzvOC61yqy9GrvB8ir2hjF92wGr6x2IrlRQ1uQMFG0
+	vTqTgLpB3i3QH1GnHuUYiwxTJ6df35qCvNEyK1sHz+GhNkOv5LdGkuJWaqRKPSSyeLTgfWMM+pA
+	LtXzIMr4zk+PWNfWuTC3EXDwIcjsv/wbOC6YOeyP3ccXP6Vout0dvd85yswsPuSxVcT9QMpIED/
+	fO7p5eWaa0PKf4vCbGbzL2MkdlaIzT3eCBPK9PNF0yk0iERqwycCzmuu2qkkNDxG2HcjvGQvlrI
+	Nk4yRSof+6lpB7UcHhUQ2SfXYC1b4vdzAOU5crjMTR4sixRGGQBLYoJ//EA5D/wrSugZpllqAiY
+	zTB9zoE92uYyQxTE/2
+X-Received: by 2002:a05:600c:34c7:b0:477:b0b9:3129 with SMTP id 5b1f17b1804b1-483201dc3ebmr40796345e9.3.1770385227046;
+        Fri, 06 Feb 2026 05:40:27 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483206b8d9asm44916885e9.2.2026.02.06.05.40.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 05:40:26 -0800 (PST)
+Date: Fri, 6 Feb 2026 16:40:23 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: [bug report] io_uring: add task fork hook
+Message-ID: <aYXvR4WQ0LEYxMPK@stanley.mountain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.68.107]
-X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
- mscpeml500003.china.huawei.com (7.188.49.51)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <caa37f28-a2e8-4e0a-a9ce-a365ce805e4b@stanley.mountain>
+X-Stat-Signature: sqfbh5tyxxa9cr4mmwct63ucfpwz5wx9
+X-Rspamd-Queue-Id: C6202100008
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5710B40006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: d7ef1b8pn6z3hhb7jeigemy81997qr6r
-X-HE-Tag: 1770384895-630779
-X-HE-Meta: U2FsdGVkX1/Ks7Gnr8EnspEKzUcyJhEdy/0RZJESgl7DSszbetmIE2yJvzGgeKF4KGdeqfLPpbX9D1wwG4Ik9XLN6NGp1Yn7PZfZKBUdrSDnVumjYUc6IfPqUKZbCa/uv7JgaDAGfi7DbNTJ9RjVI5qqtJYtTOmFx3eA3L1n/jG3mKFhXaQr+S38TvuKKai4MH+EKC6yntzWhkfpKheWOOJzTzMjKNeR3NWtwHRzQBu8158yI6HG29Kiv9BznQi1NePWO8RohZ+MJFAOCiALJyYGSgwAIM9q3z5OYwAN2qgWCN5taRcJm8gMHQPXQz/0taus60W0FbEcufBIPNaYYv92wa7I4UAhJsR3SRI1cVc6VYaXIzbaHILutZsvy0f1HhWyIUS51Ee2b69gbNaEJiZOb2VMy2MIzXVrpzCX7q3AWlZab5pv8bjURWS7eTi5BJ9PRV3oFB1QsD0dw8DBR0VcTRDKJNdtw4iXVvCHhGMDIDvFe7IgCp5BMIaGH2xbxUzbzWjhiA5cqqdJKIGlOiDEWvbCuHEIKH2v6HJ68A8ANN8yxldlaD8vr+W4KiDuFur5VTfpKAylLrm2GvAA5GHPSdS22el3ocbdVyHMp+0wt724Lqj0i7UgHPZkzHK767JAR82mJRsRXHlbVroMw9iY5C1tLziWf8wqWzaRBz3N9SJzHudBE2iznxTvN3Pfy9PlxLiPLk7888+ljGGUZuDUiIFoSSxyWe01W8MAm2W/DUWM0hqBX6IC5nG3gVPHAs+jGq/sIBUNz+tOHDWcOYTTF7+whzUQVz6oUh2NqtwHftdi25LPYeIIE4jpbzky6JddUNeQ03QcHgawydfcTwB9PryYZxQq3T5K/BCj0qINW/zFZtcKN+d7RbUFtHlznVfX2NOLb0iKSesXt8T/3I7/kdSM13Sgv5ARQ//0IVklOEFhLjZzVLacFjWuw+KTFkpHd8XjFJkLk7J7/4G
- LoZP0xXq
- e8JQUtvx5r6OpFdcrIPGiSm+M78cQJ/oRu2V0XCQGrLYwnIseK5uAlc01MnYtp7lTHbRBKiSNt7fuD/9OMMceHSuS1F7YkLVw1tAvZ8klrahxnHOdbXcGOyTn5AhWFL+xOjoxeqle6P/kbES45P1BMEY7yCrh1ojfRqIYGsjYym60hqjZaKlqPvXvDA9eVTsH08vIhsUNpU4hoO9yRrML+hJmwZ3L9c1wBjBZh0qtrUr8wp8TBZFQHXLKOAUEyIH7s5R6
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770385228-634129
+X-HE-Meta: U2FsdGVkX1+gkVlmkDFaQLleERTK6Mf3Kfb8EMM4myij7N0Dtn9dELDj0xPj0N5DI1F6cIk6Du3r633If05mnni8u3c64RineX3lwkdKglhtvEUG/7BcmdKkMRCZitikD6liiyDnPy3hkbavenEiRNXsls4A2m0CGp87cGiW5tiknB+Ha3BrjEwusGJwzs2o7T3l46EkhwWpQhebHEN6BMoD052ZRlYt7E9rENIMFgLuF6GjbzTKjQziyJdHuuEHzSl22uLUx7icTS2U/axo7YyKziQN4C/zq/QFBz2+Iy5d0M8EgPLkYpGM7l30K0T5a1vCwB3Ft9l/XJQkAGvoc2z7vlBnz0Cxb+OvS5RmmBGHowkqG4yCnoozllxHWCTv72haB0z0znmUFo/PpiU/1RZ8vuTBcVsOVX61kCvFYAiikS9wAv0D0reGsSFef0E8Jx9LubO23CSjFCP8QJFSTVdTgFizDuIi82Dl+6dyrMEL0xHnTXcUfSUARLKY+zMChqpur1wDvhWHp9zfI0Z8ocqzPz9cpS2jyGWvqiQNecmOgin8S5x806vyu42X/oTpZycb/OB4SuFmSXkAcqFLHJ/cKQlEFRa9EPB6/cdi5z2LmNN2rWXsBEgj028GzRC8lKH122zEmoO6dDAhUl0kk/c0IVnBZmgPv87Vt+Bid2qih8aYMxid0c63C5e/Hll0IdgeBzsrIbVQBSX1fEeSK3+3npCjRCX5X4n0DX8wK8mQDb60hvO9vMZLXCcn8rXVbJt2Faq4EhGubvH5tu7Mmb7RkSrIQuNrHyxxJu/zwmLXkuMQiSaVhMl2rM0+voW4FWwuxqbdQi7Y1x089u7yHMXHmLtlwOdPZI7DUN7rHwpDOHql11LsNwbMoIAdKY/nbYgR+MxRJSVPZO8TRi20AyKjPvO/+DbswWz3xm6FV3jLnpG0BjbXbsywC3N+qijZA81kw722LycctoWhBgu
+ L3sEbREI
+ cPX1i7jXX/1ANnIYXIcS5AAMY6i/bKWasIgk++qYd8GXh6rsG2LjiurbBourSmk0BJ90GkErCuADpBT3WwT0ojhSHIHAfPToLyQI4vzlCVTuXn31xoHFRqdIQR/XX0Mgv9XlkbZ1V7QjuxummRqZthJEtg2JXOi6uOb2wLZrSE7FjlaZTwErC1QG2udtnrpeGFc3V9rHGLdgV9KQ6kkeE6Fe+V1AznaDxwaK+l4xM/p49eMjLzj+mR+mp5KGR8xpZh4QvHvLtDNQUdEcWwS0RKte3lNFA+jlUQqIoHtYZl3krr85sscqMxDW2j6ThJCo0xuBuBeqwFgZNszci9kuaXmMOREak48dHoFUG5bfZBSgqftRNp+4DR+k6kXpY1qCJSkzJUOY8HKWQ76YEE1l5DNpj3+sH/rTbj9IDvSgadcntPAng8wCX9EaRLUW+IKS1uR/XXWklMwPqhhYmW1lfvwDjzCqQ6BZqtdAf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,123 +124,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are no users of (folio/page)_ref_add_unless(page, nr, u) with
-u != 0 [1] and all current users are "internal" for page refcounting API.
-This allows us to safely drop this parameter and reduce function
-semantics to the "unless zero" cases only, which will be optimized in
-the following patch.
+[ Smatch checking is paused while we raise funding.  #SadFace
+  https://lore.kernel.org/all/aTaiGSbWZ9DJaGo7@stanley.mountain/ -dan ]
 
-If needed, these functions for the u!=0 cases can be trivially
-reintroduced later using the same atomic_add_unless operations as before.
+Hello Jens Axboe,
 
-[1]: The last user was dropped in v5.18 kernel, commit 27674ef6c73f
-("mm: remove the extra ZONE_DEVICE struct page refcount"). There is no
-trace of discussion as to why this cleanup wasn't done earlier.
+Commit 4f08520591a2 ("io_uring: add task fork hook") from Jan 16,
+2026 (linux-next), leads to the following Smatch static checker
+warning:
 
-Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
-Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
----
- include/linux/mm.h         |  2 +-
- include/linux/page-flags.h |  6 +++---
- include/linux/page_ref.h   | 14 +++++++-------
- 3 files changed, 11 insertions(+), 11 deletions(-)
+	kernel/fork.c:2544 copy_process()
+	warn: passing zero to 'ERR_PTR'
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index f0d5be9dc736..0b30305512dc 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1306,7 +1306,7 @@ static inline int folio_put_testzero(struct folio *folio)
-  */
- static inline bool get_page_unless_zero(struct page *page)
- {
--	return page_ref_add_unless(page, 1, 0);
-+	return page_ref_add_unless_zero(page, 1);
- }
- 
- static inline struct folio *folio_get_nontail_page(struct page *page)
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index f7a0e4af0c73..fb6a83fe88b0 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -231,7 +231,7 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
- 	return page;
- }
- 
--static __always_inline bool page_count_writable(const struct page *page, int u)
-+static __always_inline bool page_count_writable(const struct page *page)
- {
- 	if (!static_branch_unlikely(&hugetlb_optimize_vmemmap_key))
- 		return true;
-@@ -257,7 +257,7 @@ static __always_inline bool page_count_writable(const struct page *page, int u)
- 	 * The refcount check also prevents modification attempts to other (r/o)
- 	 * tail pages that are not fake heads.
- 	 */
--	if (atomic_read_acquire(&page->_refcount) == u)
-+	if (!atomic_read_acquire(&page->_refcount))
- 		return false;
- 
- 	return page_fixed_fake_head(page) == page;
-@@ -268,7 +268,7 @@ static inline const struct page *page_fixed_fake_head(const struct page *page)
- 	return page;
- }
- 
--static inline bool page_count_writable(const struct page *page, int u)
-+static inline bool page_count_writable(const struct page *page)
- {
- 	return true;
- }
-diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
-index 544150d1d5fd..b0e3f4a4b4b8 100644
---- a/include/linux/page_ref.h
-+++ b/include/linux/page_ref.h
-@@ -228,14 +228,14 @@ static inline int folio_ref_dec_return(struct folio *folio)
- 	return page_ref_dec_return(&folio->page);
- }
- 
--static inline bool page_ref_add_unless(struct page *page, int nr, int u)
-+static inline bool page_ref_add_unless_zero(struct page *page, int nr)
- {
- 	bool ret = false;
- 
- 	rcu_read_lock();
- 	/* avoid writing to the vmemmap area being remapped */
--	if (page_count_writable(page, u))
--		ret = atomic_add_unless(&page->_refcount, nr, u);
-+	if (page_count_writable(page))
-+		ret = atomic_add_unless(&page->_refcount, nr, 0);
- 	rcu_read_unlock();
- 
- 	if (page_ref_tracepoint_active(page_ref_mod_unless))
-@@ -243,9 +243,9 @@ static inline bool page_ref_add_unless(struct page *page, int nr, int u)
- 	return ret;
- }
- 
--static inline bool folio_ref_add_unless(struct folio *folio, int nr, int u)
-+static inline bool folio_ref_add_unless_zero(struct folio *folio, int nr)
- {
--	return page_ref_add_unless(&folio->page, nr, u);
-+	return page_ref_add_unless_zero(&folio->page, nr);
- }
- 
- /**
-@@ -261,12 +261,12 @@ static inline bool folio_ref_add_unless(struct folio *folio, int nr, int u)
-  */
- static inline bool folio_try_get(struct folio *folio)
- {
--	return folio_ref_add_unless(folio, 1, 0);
-+	return folio_ref_add_unless_zero(folio, 1);
- }
- 
- static inline bool folio_ref_try_add(struct folio *folio, int count)
- {
--	return folio_ref_add_unless(folio, count, 0);
-+	return folio_ref_add_unless_zero(folio, count);
- }
- 
- static inline int page_ref_freeze(struct page *page, int count)
--- 
-2.43.0
+kernel/fork.c
+  2128  #ifdef CONFIG_IO_URING
+  2129          p->io_uring = NULL;
+  2130          retval = io_uring_fork(p);
 
+The patch added this assignment.
+
+  2131          if (unlikely(retval))
+  2132                  goto bad_fork_cleanup_delayacct;
+  2133  #endif
+  2134  
+  2135          p->default_timer_slack_ns = current->timer_slack_ns;
+  2136  
+  2137  #ifdef CONFIG_PSI
+  2138          p->psi_flags = 0;
+  2139  #endif
+  2140  
+  2141          task_io_accounting_init(&p->ioac);
+  2142          acct_clear_integrals(p);
+  2143  
+  2144          posix_cputimers_init(&p->posix_cputimers);
+  2145          tick_dep_init_task(p);
+  2146  
+  2147          p->io_context = NULL;
+  2148          audit_set_context(p, NULL);
+  2149          cgroup_fork(p);
+  2150          if (args->kthread) {
+  2151                  if (!set_kthread_struct(p))
+  2152                          goto bad_fork_cleanup_delayacct;
+
+So now retval is success where previously it had been -EAGAIN
+
+  2153          }
+
+regards,
+dan carpenter
 
