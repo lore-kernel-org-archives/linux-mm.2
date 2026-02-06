@@ -4,118 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24C7FEE6B6A
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 23:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA26EE6B66
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 23:14:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5B02A6B0098; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
+	id 1D4FC6B0099; Fri,  6 Feb 2026 18:14:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 55D846B0099; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
+	id 158E26B009D; Fri,  6 Feb 2026 18:14:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43F5D6B009B; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
+	id 03A496B009E; Fri,  6 Feb 2026 18:14:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 308EB6B0098
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD951160251
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:11:45 +0000 (UTC)
-X-FDA: 84415580970.09.BB32268
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 94B85140004
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:11:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=f6mExEWV;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf09.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E6F276B0099
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:14:55 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9379C13A71B
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:14:55 +0000 (UTC)
+X-FDA: 84415588950.01.0680176
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id CFB41100005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:14:53 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VUnuFhx5;
+	spf=pass (imf14.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770419504;
+	s=arc-20220608; t=1770419693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FVE23sU8f0tF/woG1DKU3iF/2D4ifdEew5Zjv3zRdio=;
-	b=YRKLype2pZpqeRiQ7TVUAc9fOH8QOa0PyACanWa2GeCEGneLwQgmyJUIRIZv+Ft6myXVov
-	uM5ESilrXbNl2pjHeTeIkZz7np6lzXOnqECg4uOf13yu5YSGdZ9a7GRMuHN6EUh0oKuwJz
-	mU5UNzRxqB1iZadd188TBKmlxahnnYo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770419504; a=rsa-sha256;
-	cv=none;
-	b=8jXDKOp2ab5f1DrCYwZzJuzaePuG9l6cMvRSMvJdHyWvSBrCCkGqVB6TiHD+FSmNBLm+0O
-	BkolYowmOWB4C0QRy6b8oWdOHzf+MddEz+DC5I9ZCkxGzAZI44XU94cxFB/keKgcOts1ww
-	r/iw5x/oDefRRkcy5g2T6sJjhZi5VYM=
+	bh=xORO1Htmm6YxNYM1C9oAOOlxqgAaEPMiLYXG8QXy21k=;
+	b=OfcTdahSM6sPoSYSEn2e8qC8Td4iOijeMCoU+C7uWCE8x1k+cKiRS6klqMzTswehEtNM+J
+	twoHICO4TYe1b2aZDvA5T01pjn/iJpWUXarWLtjSva13lfHbtcw89oxnJJotX/bF9gkH+9
+	dSsChRMH15YeyG4U6zQMKqdlZOQknxs=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=f6mExEWV;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf09.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
-Received: from [IPV6:2601:646:8081:9484:da7e:5e09:3c1e:8002] ([IPv6:2601:646:8081:9484:da7e:5e09:3c1e:8002])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 616N8MNN1391383
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Fri, 6 Feb 2026 15:08:29 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 616N8MNN1391383
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770419312;
-	bh=FVE23sU8f0tF/woG1DKU3iF/2D4ifdEew5Zjv3zRdio=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=f6mExEWVcFoGl+DPFS7WpxlxeCRIHac6tvcqDNllvY7fcn5iEbosRIzvziGMVi/jr
-	 IlZrZd/QABAJm2OHwDCNpqS9Bw2KbrG4IncZjpAWpmV6APHhylB1Bq9EOsCNzpQe1c
-	 pz4U8RZ3j8bVG6TzLrp+r8xc4p+Kt8wLNpOS0TqiPsWKN/d9wFnwjWOh04emb2YoTR
-	 svx3yUV2tx8YCHfBHxvpyy21Ps1+5ztp55UBPmKZTWspjimi2ZvfuvNGRAI5DS5db8
-	 5dBNmHcpOQXuS2bisH9Fug5kgfNmaEss+y8njKZu8sjy7noBU6YSnK1NreRaOSUXl0
-	 4okmimMg43c4g==
-Message-ID: <4304d18a-f647-4709-9f29-43d9995cc24e@zytor.com>
-Date: Fri, 6 Feb 2026 15:08:17 -0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=VUnuFhx5;
+	spf=pass (imf14.hostedemail.com: domain of dmatlack@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770419693; a=rsa-sha256;
+	cv=none;
+	b=HrMtB6t0fg+FYyj+W9Yd3TNdAg33Jmw42kqeJxLKM2PUVlceB+gGy5D3xy8jivlmzOdhbj
+	x4yAa/UtCFPC/84jKXozUKsivhh1YR31MjB5lIgIE8AS6/pepYpnFKRtGd7TX6ghBAUR71
+	jIaT7r8URfeCl1+YN1IDtFrVYV1Qwh8=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a07f8dd9cdso18422625ad.1
+        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 15:14:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770419692; x=1771024492; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=xORO1Htmm6YxNYM1C9oAOOlxqgAaEPMiLYXG8QXy21k=;
+        b=VUnuFhx5yYpHrV56BXOG6Y4raT23EC5qc0frXks96nfGxDZSZWIPVQBP7R+afCQiLR
+         PT3qGjMUehOpixCp2/oDvUNuvtnMZaONp8R2zF50zw3kjA99UG8uoiiiOwmnLQGPerlG
+         7ovnaviA1EiIPx2h+iYqG2Ju0aOxjQiKF1Ldy2PxBXSY6rFCtAyUIqXAUF3bb09/GPuN
+         qMLFt0qpPscFTYI4x65KOKy6mzZB0ytV1cM/a7And/UeENCHrYs5hNFDs07v2dh6+IKs
+         1VVCnfycIKx5X5aW9Gno3yRyXSREH/rihoGTcKre0HeCwcB+GJadIEfKtnyl9WQZ+tpY
+         U0sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770419692; x=1771024492;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xORO1Htmm6YxNYM1C9oAOOlxqgAaEPMiLYXG8QXy21k=;
+        b=fDXFlLJdrEHit6visG6wjn7yRcHFc2lqTLDb7o6QHcajGOsl2kFzypWiRUFuGNMbE/
+         M4IYtLKLCfAFGb2F7pPyuvgEwoaMtRHkF4L0+FvJ2407L8RNmY5KIKHTEG5aTsITWgih
+         blLTVZZWd4NSzUPknerXnSwea8rG7HV0F9hZeOsdRsb28UENr+EATcu2CSw+vJ7Y5cUk
+         HA4if532aco7AlPFpxJRXqxR2YZrjNA/mkcJehzZd08XEezxUUlHvxl2kxLPj8sgzLTj
+         3XitQ2Nwv0Dd7Z5k4IHT5n9aTjUxTeMUyAFXATq0Krxe8A9PRilcrhDJ8oJiAR0sSpuH
+         X8Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCVgcxVnuw23iMf2NfolQw9k612wk3602jHikviWXzxaJWoKQBBLdwczihEBqB76HdIzkHZUbyTM7A==@kvack.org
+X-Gm-Message-State: AOJu0YwZJUR7qFg5wFhpALQNefkYqSsH30i5r71OGYUNF4vMMxpMShcm
+	Oy8emxg1zoyaKL5ZBRwRVN81xOyB9OOVT/DdjcA2kL/k0JDnWmy50XW/A+y/REtjFg==
+X-Gm-Gg: AZuq6aL0JNhDc6PpvpgzTD9rQtYaoJ3RJ/7wOL89+RtkU/rPxXKmEzRZb/rLZ7ZsJ34
+	3qh7cFve2StXkBPJk5bZbCL1H5FsqdVtTycLWwUPw3h5JwAHemlz+6+tzI5M2egiwMZz13zEAQJ
+	HasfnqJwHjUMRJmH5taWAegxi2XhGb93QP6nDysDLjuv5Lw6ASMvIThwBuOiDvIfZ4bcxVwJCoW
+	2giPEBcBeVysBJF6arpupncVZzj6IbQMDBsCrfhQYXvR5S0dEc9CTCDDe7XjpxDG2I6hiepYXW8
+	5U/Yf+NFh7eumaWkud98NgScYw1rxovL+WK834+HuJlzKi0hGSN66rJqdqnklqrQwoigHJaIor4
+	XFNWyourZIzGUnlHfERT8D56hdJGzoBpYMGw1Dft44WWjpYtcDJEX6G1n6SxlPqtMPNcn1ko0Wu
+	ZPyh0dEPI0wFX/l7fz1th7ZuSqRfkUhNHNN3bQu9W42SQvp4jRHg==
+X-Received: by 2002:a17:903:3bcb:b0:2a0:c1ed:c8c2 with SMTP id d9443c01a7336-2a95191f76emr38694515ad.55.1770419692202;
+        Fri, 06 Feb 2026 15:14:52 -0800 (PST)
+Received: from google.com (79.217.168.34.bc.googleusercontent.com. [34.168.217.79])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a9521eb87fsm33865195ad.71.2026.02.06.15.14.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 15:14:51 -0800 (PST)
+Date: Fri, 6 Feb 2026 23:14:46 +0000
+From: David Matlack <dmatlack@google.com>
+To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+Cc: Alex Williamson <alex@shazbot.org>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Alexander Graf <graf@amazon.com>, Alex Mastro <amastro@fb.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Jacob Pan <jacob.pan@linux.microsoft.com>,
+	Jason Gunthorpe <jgg@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Jonathan Corbet <corbet@lwn.net>, Josh Hilke <jrhilke@google.com>,
+	Kevin Tian <kevin.tian@intel.com>, kexec@lists.infradead.org,
+	kvm@vger.kernel.org, Leon Romanovsky <leon@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	Lukas Wunner <lukas@wunner.de>,
+	=?utf-8?Q?Micha=C5=82?= Winiarski <michal.winiarski@intel.com>,
+	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Tomita Moeko <tomitamoeko@gmail.com>,
+	Vipin Sharma <vipinsh@google.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	William Tu <witu@nvidia.com>, Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v2 04/22] vfio/pci: Register a file handler with Live
+ Update Orchestrator
+Message-ID: <aYZ15u120FEa8Qw2@google.com>
+References: <20260129212510.967611-1-dmatlack@google.com>
+ <20260129212510.967611-5-dmatlack@google.com>
+ <6dc423bd-36e6-4f97-b2b2-c7030575a3a1@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 6/6] x86/vdso: Enable sframe generation in VDSO
-To: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-References: <20260206193642.1580787-1-jremus@linux.ibm.com>
- <20260206193642.1580787-7-jremus@linux.ibm.com>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20260206193642.1580787-7-jremus@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 94B85140004
-X-Stat-Signature: s5yjxek4thxxzoxy4fhysifmfjuhhfd1
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6dc423bd-36e6-4f97-b2b2-c7030575a3a1@linux.dev>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: CFB41100005
+X-Stat-Signature: xghz393b3irxu8f7xfnnur4ru5s4uak7
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770419503-355760
-X-HE-Meta: U2FsdGVkX1+ZnplQ0Yc+MjxMlaZXcEZPbLfkVUD0x8LrirKIxSlWWrOBvChV5wMjoQcX+9bcOxeIHXo91ZVu6fAIe/IGN3yBmxsnFZaNGmkrUX2xwipeYzWoqfy4O3jTk/KW7iBsjYqEk8B0KZEywR1iWg7eUFD8CvytQv/XJ+aVwq5vhfe5WWtRakrAiVubH5eWQUd35wP2IPQ3G7m7P5YvjwAlCKxnei42wXa8m5zZId3JQu7Y2DrfZ3cD3/DKGQIJkHqZv2XvvqZev7jpxZFJDq92M7Orcb0hcwCR4pJHzbw0ZVv89TYcteafMq5J8LWFy/ELAQcsN+SZ1twp8NBYW3yyfGqmGHd34x22BbZoebrPPVhUEhOOEDoNMg0RjPVu+mXPMXroA3SdGONZOqO9H6RCtkH2kXkG97fQgUZxOcQyZMVLSeaqJ6D4MRjepegSjxPwUUCU/tPgR69hcamFnrDBrT9fUwYtqRimjQwgp+HR6Kz1HajBuiMvX75M0BR8kIRmkFjfykRluLSJRiDE3CHDRoAb88PkzwthkMJVqrJe9z7pVQOlskzuugl2tNkcmixerC++kkN8dU/D70U+7SPE8RZ5z+Hl/3byvHe3WVwkPzPYUkv3efzn3aucjkouoxAgqPRygbYPRtTqoxg1qkjs+xpG9Bh74MP2+/JH6Zpz9H4u9fw+d1LTeS9Tx5e/f3rj/E5jCIYgNtTRBmgGIsTgd4tSwnP468cLMxZiFdBfkKF/QpfTb8sMccaGoXQORzZugQWrBZDaThkgkF4gZr/20sUiUuBlEJJeM+FCZoNT6/WnD7RqkXKZYFciglnLGuJ7Ii6Ky99E6AfwalaTA6o/33tJOo/LECpMIpLoe27PFUKNeY1GFjaFNPgSSKz9iQAlU9gXSI98uMSkcPpZuzozGv3q5Bvku4qvtuzwhUf14br4S7i0yPsVke0d4oudSQi9sQdRSObbfFU
- bIUtOIZ2
- q3/Q7N6upv9YasQwDDpF7vIUjyD3rt2rqVLyL++/sKOHlTG0/EuHA41ZHrU19CT1qfawqDbC8hDX3xLCYftPwsmGfBH0dE7NFneLxGRBOZx7WbmrsMTNVoEW637hUAi0QMymYSdCBVMKbtuoMoziWA23WdpidFtsASUttoSwhoyrszLGjTh5UOTgMyGqGY3L/q4Vkbv5OGcLXFo38g0xf5cAt6Moyno7BrFzPj2fTTsQSRM+ASm77bA4y2Wh4396O+f+Vz7U5vZ0tmYCvZvSA763ahxAc98lH4ftpSceQ+DioAkIKvfumnw4loOJZjeWBYTrdDWANLNhQpQo2ZZw/13b4QKFJI/h/pJzsCU72LMJ8QhYMEUI8f6Xpi7K9b2fAMqQI
+X-HE-Tag: 1770419693-407999
+X-HE-Meta: U2FsdGVkX19LkqcohF8Cjupd2vTbKm3z87ujj537e1qPSgEruqnjls/eMb/BfjmbVGVjC9RLuL1akO/rY3Ti+vz/vf/yzmgkJb3XwtKrKj7lwbfXnRNtr2Ud8PQNfNx7Ue25LRuwJkaekbyyK6Quq/Lm6tGqipFd6lh6lC+3ZF0/+LXPq6cfUCOckxfjMFgkRNiL4q9xxGFZzTcSAJopieDgPwG2yl9p3hWjC5IrMwCOm7oC7L7B8JDC+G9ETP0zdyMd3/28+DgSArxJQ/Go2+ILKeIQXOSiwfDck82w5H+HCnq9qa/0sgpPNG+Y+S6/JIZ8XuLnsaek7PSulO8q68RBhUeRwIEDNPx46VbZZNTquJ9U9JxLXcV8NYiwg4dB2cxh8mmB96FUg5kPuiiAEGyuNdcmz0Idz3P1cy1vWQdb63IVTNtG+dfLX6yC6UZ0fHCqVBaax1fJ+eh672AkFxJYv8dg9VLXa/rEYA8asWsMOv0Oi2zH2WxeHVATk9r2l10pktt9PTXhjVL8j6EwA0OYE2zq4+7J5whM6CYTw5nZ+R+bC1iPYa2BpAxC9ZdniGPNhSa1kQGHfKCgYmpcAs8NgEQhRYGGKdgXNI/66b09ekeJtuhvjK7DemYlPFz2QrHfgDeiyOS2xyul9Gc804JaG4jfTuizWAs6coBZF25fQcDR8c8YPVRr5wXSCTV/k5z2MHeAb8n8/M9s8dUMRwHeHMARk0RmkcXc78dROPjFx/w0FLbdint5c4N7972y4iSP/7vuRmwWaEJbPRUHtg8JGOP0hrjHHU4qu8zA8tbMjcyKk/djIuSHgy+3dgxp8WMBaaCJZY4NpuKl4QZsnXDlou+RfRN/CFm6vGIrVN2SaSk88hjaS/asE1LJm+h47iR7rtA53yjB+btTJqDJoGVRQgXoWJjzsikvcd3XjprU6HdBzy0deaju+gizi/Rlkrr4dZdY0my0vSTOEug
+ cPbo+2AF
+ Ba2lxpOveyVp1IVyu8wZ32l0GZA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,57 +153,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-06 11:36, Jens Remus wrote:
-> From: Josh Poimboeuf <jpoimboe@kernel.org>
+On 2026-02-06 02:37 PM, Yanjun.Zhu wrote:
+> On 1/29/26 1:24 PM, David Matlack wrote:
+
+> > +int __init vfio_pci_liveupdate_init(void)
+> > +{
+> > +	if (!liveupdate_enabled())
+> > +		return 0;
+> 813 int liveupdate_register_file_handler(struct liveupdate_file_handler *fh)
+> 814 {
+> 815         struct liveupdate_file_handler *fh_iter;
+> 816         int err;
+> 817
+> 818         if (!liveupdate_enabled())
 > 
-> Enable sframe generation in the VDSO library so kernel and user space
-> can unwind through it.
+> 819                 return -EOPNOTSUPP;
 > 
-> SFrame isn't supported for x32 or x86-32.  Discard .sframe sections for
-> those VDSOs.
-> 
-> [ Jens Remus: Add support for SFrame V3.  Prevent GNU_SFRAME program
-> table entry to empty .sframe section. ]
-> 
+> In the function liveupdate_register_file_handler, liveupdate_enabled is also checked.
+> as such, it is not necessary to check here?
 
-This will not break the x86-32 build if the assembler encounters .sframe?
-
-> Notes (jremus):
->     Changes in v8:
->     - Discard .sframe for x32 and x86-32 VDSOs. (Josh/Indu)
->       Note that the use of KEEP_SFRAME enables to define it for x86-64
->       VDSO only.  Unlike CONFIG_AS_SFRAME, which may also be defined
->       for x32 and x86-32 VDSO.  In x32 VDSO it would result in superfluous
->       .sframe (copied from the x86-64 build - could be removed in X32
->       build step).  In x86-32 VDSO it would cause a bogus GNU_SFRAME
->       program table entry.
-
-For x32, this would be a "valid" sframe, right, even if the tools currently
-don't know how to consume it (and potentially never will)? If so, is there
-really any reason to explicitly remove it?
-
->  	/*
->  	 * Text is well-separated from actual data: there's plenty of
->  	 * stuff that isn't used at runtime in between.
-> @@ -80,6 +87,10 @@ SECTIONS
->  		*(.discard)
->  		*(.discard.*)
->  		*(__bug_table)
-> +#ifndef KEEP_SFRAME
-> +		*(.sframe)
-> +		*(.sframe.*)
-> +#endif
-
-This #ifndef is actually not necessary: if we have already "consumed" the
-.sframe* sections they will not be encountered here.
-
-I would prefer to have KEEP_SFRAME always defined (as true or false, and using
-#if) instead of using #ifdef. I believe that also means you can do:
-
-#define KEEP_SFRAME IS_ENABLED(CONFIG_AS_SFRAME)
-
-... instead of #ifdef.
-
-	-hpa
-
+Yeah that is a bit odd. I see that memfd_luo_init() just checks for
+-EOPNOTSUPP. We can do the same thing here.
 
