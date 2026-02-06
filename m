@@ -4,92 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E265AEE2084
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:14:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A162EE208C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:35:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 53F0F6B0089; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
+	id B48676B0089; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50CEE6B0092; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
+	id AF62C6B0092; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 415D96B0093; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
+	id A02426B0093; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 309416B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6BAC1607D3
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:14:17 +0000 (UTC)
-X-FDA: 84413772954.09.2DC88D0
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2B974100014
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:14:13 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RaPi3BqZ;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D2C76B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46924B3D3C
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:35:18 +0000 (UTC)
+X-FDA: 84413825916.29.8EE1CC4
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7A3D2180008
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:35:16 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PvrvO4Tl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770377716; a=rsa-sha256;
+	cv=none;
+	b=57u+xRed7YdxxLaNiaNwbprcIZWxUiMrWyV/BEPh2NL2mKIck59aNnUkX/J58DOdD7JEvT
+	bwt4w4X8fYXubvBffE/QMTL2zfi+K/ypyA4ic4p/acrE1aFTUZo04KlqE7plXOcp1OnO0Z
+	aa4fR4m23XddeUP6D1JB1HhrCh9y3Qk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PvrvO4Tl;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770376456;
+	s=arc-20220608; t=1770377716;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t10+cy0YbJp1qzuAruOEDHFVPEgf+sIN5MYp954+hik=;
-	b=qhpeVJO/BQ3oAebpl2UTroWiUU2GCxBsjsnfQUJLGQml+j8Dq3lF0SESgThOeUJl7XONqe
-	IE+59NRQgnoemIN4JNie8wPFxVvrO0h+UH6jGzuKD7TURXBGs6PPkMg1YL1HqDQf5ELfwg
-	K/F9MNhZvs0b0CttOcP1XffxUtP26OY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RaPi3BqZ;
-	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770376456; a=rsa-sha256;
-	cv=none;
-	b=D9+tPBq50v+JdKkgrBeEy/u3oeqEK+O6iwJc3RMehv52Opi9cBYTIDsWPtuZoDbSwsNOdS
-	Idvq0YwfA7Muay2dG0f83Da6uK2BlLjRV4gOgumdIQy2zi6dC3or/R0LfALxJSoKVlL6ad
-	lS2jHf3aV0aznzzmEnbp5daqH9Yeuzc=
-Message-ID: <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
+	bh=fyNHzyO8yNbJalRk1JwWUSdFphKI36stzx00uDbxggc=;
+	b=FsIS0/hTDjXxnrfmsShSAjrFapSTNSBgGNLrwXYAZBZA34/xSpSLIHija/joNMwx61N57p
+	7ApcboWC604xM5zAXvJooTqgSMSxhBtf/I7CDEVsoXtYwVvULHKHiwTIcKCvj23ITeS7bY
+	LAjn94Vw204OgZj64zbcVIUPOrlbiYk=
+Date: Fri, 6 Feb 2026 19:35:07 +0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770376450;
+	t=1770377714;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t10+cy0YbJp1qzuAruOEDHFVPEgf+sIN5MYp954+hik=;
-	b=RaPi3BqZPsLqUSHKWvjkyZ/Bf9ppgLwDMnRp3djinkfcParF3X0U5UOMZXVjnrIIj+XKGG
-	qik03O+yZh0BczTm4tqsQ4ypqJYxgFR02cW1b2w7PUE2iHSCCwxRYQBdSb0+Sx1HZWERjm
-	cI4FFTRQSuQeqxHQ+OOhNwrumpE+hso=
-Date: Fri, 6 Feb 2026 19:13:59 +0800
-MIME-Version: 1.0
-Subject: Re: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to
- CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
-To: "David Hildenbrand (Arm)" <david@kernel.org>, andreas@gaisler.com,
- richard.weiyang@gmail.com, will@kernel.org, peterz@infradead.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, dev.jain@arm.com,
- ioworker0@gmail.com, linmag7@gmail.com, akpm@linux-foundation.org
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
- <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
- <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
+	bh=fyNHzyO8yNbJalRk1JwWUSdFphKI36stzx00uDbxggc=;
+	b=PvrvO4TlSq5kSmx6TeVpwJ30Ld0Wga6wWmLevrybCJJvVG1oYyRICSSJKkp8g/3226N6zG
+	ai9NzwpDIO/QpoCqbj2iGynly9F1IVfvK75h3Xhz3RzapcKFVqj3j4ISB+8w6nLbbNogsS
+	2a0ucmdBZz7yw6Ch8fx9UgiQxl4CjjI=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, akpm@linux-foundation.org, 
+	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] slub: let need_slab_obj_exts() return false if
+ SLAB_NO_OBJ_EXT is set
+Message-ID: <koypivw3zonvakx3k2ji5ti4oy5yv6t2yaretkbh6dd2f5h5uh@gjbuxu7ryph4>
+References: <20260205120709.425719-1-hao.li@linux.dev>
+ <aYU7l6P2ikKvnrWT@hyeyoo>
+ <67ebb9f2-b383-4b68-949e-239d8c7b18f0@suse.cz>
+ <aYW732VZACRIzr-r@hyeyoo>
+ <e924ce7e-29c8-4853-b1c2-3495b8cf8427@suse.cz>
+ <aYXAqQFGfru8aC6M@hyeyoo>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aYXAqQFGfru8aC6M@hyeyoo>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 4xbp4imfrcoojahmy76k431fsest4o3c
-X-Rspamd-Queue-Id: 2B974100014
 X-Rspam-User: 
-X-HE-Tag: 1770376453-290607
-X-HE-Meta: U2FsdGVkX18B35F1oRV3clba4PKrizzdLNPbo8ieQ6/iRXXtFDn4UZW3a0LsT6ptC5cfHya6RDrufjJzTvfwfkDxsbCZLD8B41c8T95UpKV/A6hf4R3VteNrY0xluMXbfheo0MFBILPLCtY6HFSKnPHJ2gEpfA70rUN9SI36XdKcdC/vpDB/m0fNbAvZkQSOxVMxNUR8n+O2gKkjxp9jyG9wHnjug21+3oZM6x/wY8O5NE+jkIHVX0X9QeglJp6tsQkbbNPADow/FS03CiXaJT2SkF4atoTD7tVTbviie/kiwBdO1W0tp+iPwfrd9L9JL5gApRf7rrQqAAm1TztQeIho1cOLC0tSK4NpTZjHQzSG7SvIba7K9oYoP/lnsu6VhE4W4Qwj6+LQygg6wwNsdwkTTeLHif6HwqVin7LbmdqBZGaIACsIACtsNgowVhPMnjLO/62+MKkVHekPCle3ZMJlfSIGlNreN+Eej96SpzrZP5XJGI3+dekwOnuZ6aZ2YjhKmAMvP6NEAxAkFgEfyTmrr12ByiAvpodU/dZVGHV6tk7ZT7cZAAYs5H27wtPhsykQeZ/Ghs3eLWpj5yLDaVhJeRPCPOTPsUm6OPTVWouJ+vD9tZmsAvXC89WPC4eJXoUrHLPOgu1kv+LSroRVC/S1sL1+7PHSbAfgT1Kj1b8Ve+WF9NaGCwOb90aFB72RKiRCx110TWmncia6H5gIgPanta/XOUQS+N8yJpiu7JSPKlqQta+Xg4LUS3jWbmhWG0KM1e3cN6BK+XDkbLliiak/rGS39lblciw+ng1v8tJLieiwXVl+AjgvLYHCz5QsXK4usUS7BGPKKJcazd8hZlLWctXFYx8RoPIK6Qlg9GmCTMka5Wf4DPfraE7C6HqSBDqEKbc3mcK0g4Dj/b51HcRant0prJJMiE5vLldBbyTcYVYITOnHAU9oHsSfCHb7PehfYztki5xksKMDhJA
- F+wc3E0j
- 7wGTDiKXm0z48yi9OgKETaOVyHEIr5dHG+yqRQna66J8R1rHT6lspXK73h49n+NUiyrihK5a/ayQVWVpXVdDhWE7muDanBqy56QaGU7qR2K7PE1wpF9zWldXubFrDhQ3nVpFSuQA9P4okkzvucq2pQb6VZYFiTQI7o2cUOAcMU5mNlBqMxKGtaZ3BI1YZ6idhF8qENR7hMhFKnn731onIAvwJn9hc1fS1VOArjBw6DXVEVAwYhYxE0dY6GpvlVUVowxWbGl2z13ydc5j9JrrRK7f+yjlGRsT/v0O47aW+WZy1aM99OzLu1yNqU2PaFi6ShpI+h8x7xt+N3D+jKCj2fkIb7lwlTMPZayqBsPJ8i+F7J7OpYnATXKKJVBhX8E0cjfSOOS9BwrqICUdloi/PeFsIXUcJpa4DZYUS
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 7A3D2180008
+X-Stat-Signature: qczy6pxdp747pymh6f8optk75fh6bzeq
+X-HE-Tag: 1770377716-159798
+X-HE-Meta: U2FsdGVkX1/pycm7sVC/T2fFUF5AHvE3Ijol1bnWMw+ckSIhM6M5h+jpYVU9dTY1KF471Y0iaUcIs/epyvsyFRTBncm9tM8e4wVHzBdukCRWbdTnJsdqXLb1ZN81E65nGDqmNFldmcAcdJ4qVS5WmAFbws758yCPTPooKqGZLYG0JVERligFgJgl8KpCIWDqzbfWbMPMGOZSXcwZ1BuFOyWC81kIljV6QOGz4nA1LYVHLWhy14tckKYA98/LVCE/gpLQzoWr6+lJA6VXsaDlHKc64qHM21qktt/ciB2DPgyux7bnzv3KQSUYc71AzGVGGWuNfqbhyQx06lz18jwLjB1bDe82FM1pSA5h+IV69Zg3FHJK/kUF8sLvkBUqpf7kNOumaJxLAK1HvZljmU1Z4Erqgh+mP5gsV0yEStX+VQJwZjwbooPHjKLIFLGycWfdIeJZbrXqBszhr5VGDlzGuEH1MWha+1Ekf4Fakh3M/MyHFVH8zaFoph8bnbQ7KLrkAKV3N4OFPSVJH/cnuZehHTHZAixfUyXrMQ6mApv2HcU/mo4+FFEPhPHIJg/OOYzyLJcbNyCGm46G6k1YFeOx3ysdEeXXQ+NGhSiinWxReY3dUjikySDmw53hJWta8bZWl31p596l5abUzkfTGv5O7Vn6zyHghYF9k7cJC72Tf64s6zt3kIIDRvNn805gwSxM0C1gseDWEiOQfDXd7vUBMkUI6RWgkfR8i1Ts0aUHWnZ9botoLTYnB/KJin6m3zXJ8vFEM2bWwYbuxuy1iHeHfcSJ3nrSiBq6YM5+dWEpE+x/0/k/wnwQGH4XIriExD7zwynRzitFilMKQXA98IzPBc3H9Vrm8wL1yBs+Bgs2L04Sg8AG3GaHIJ++tIJ844eGX1gW7AtIp09agocaIz9nPfMylUMWoLcx4UxuKOGK9Jn/moAHdEFF7hIVPv5eEQRstLqzlKzhgmZ9UU236Zf
+ g9yc7/8L
+ bQCeAmxvTSlT+ic/bPKOxsQCPmmN24A3G9/fNF4BvTBwuSca6e++wcVT380F6V4wfvwjib4u9zaTC7qzrsiFo2ul5TeFsOFs595rKldI+Pmvl3lhU/4HL33Sd56bYbnMM5dZShDv0C8ZJZ6ZWm9BCpzc+tSgxELNreu1GdUX/a3HMjx/Ugb/dVjXAUVBHAQaa6Q5lRnMJvMnT44P/Aqmx8rWPAQ5rGoWg0vXCwrVolb3PRF/z7J9/tGcnWxqiiJzy+dhonZhpN9Uz2DzX3WH2UMKrlg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,73 +94,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2/6/26 7:06 PM, David Hildenbrand (Arm) wrote:
-> On 1/27/26 13:13, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> For architectures that define __HAVE_ARCH_TLB_REMOVE_TABLE, the page
->> tables at the pmd/pud level are generally not of struct ptdesc type, and
->> do not have pt_rcu_head member, thus these architectures cannot support
->> PT_RECLAIM.
->>
->> In preparation for enabling PT_RECLAIM on more architectures, convert
->> __HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config,
->> so that we can make conditional judgments in Kconfig.
->>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   arch/powerpc/Kconfig            | 1 +
->>   arch/powerpc/include/asm/tlb.h  | 1 -
->>   arch/sparc/Kconfig              | 1 +
->>   arch/sparc/include/asm/tlb_64.h | 1 -
->>   include/asm-generic/tlb.h       | 2 +-
->>   mm/Kconfig                      | 3 +++
->>   6 files changed, 6 insertions(+), 3 deletions(-)
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index 9537a61ebae02..b47aa8fd62742 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -304,6 +304,7 @@ config PPC
->>       select LOCK_MM_AND_FIND_VMA
->>       select MMU_GATHER_PAGE_SIZE
->>       select MMU_GATHER_RCU_TABLE_FREE
->> +    select HAVE_ARCH_TLB_REMOVE_TABLE
->>       select MMU_GATHER_MERGE_VMAS
->>       select MMU_LAZY_TLB_SHOOTDOWN        if PPC_BOOK3S_64
->>       select MODULES_USE_ELF_RELA
->> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/ 
->> asm/tlb.h
->> index 2058e8d3e0138..1ca7d4c4b90db 100644
->> --- a/arch/powerpc/include/asm/tlb.h
->> +++ b/arch/powerpc/include/asm/tlb.h
->> @@ -37,7 +37,6 @@ extern void tlb_flush(struct mmu_gather *tlb);
->>    */
->>   #define tlb_needs_table_invalidate()    radix_enabled()
->> -#define __HAVE_ARCH_TLB_REMOVE_TABLE
->>   /* Get the generic bits... */
->>   #include <asm-generic/tlb.h>
->> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
->> index a630d373e6453..25fa2908d6152 100644
->> --- a/arch/sparc/Kconfig
->> +++ b/arch/sparc/Kconfig
->> @@ -74,6 +74,7 @@ config SPARC64
->>       select HAVE_KRETPROBES
->>       select HAVE_KPROBES
->>       select MMU_GATHER_RCU_TABLE_FREE if SMP
->> +    select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
+On Fri, Feb 06, 2026 at 07:21:29PM +0900, Harry Yoo wrote:
+> On Fri, Feb 06, 2026 at 11:03:08AM +0100, Vlastimil Babka wrote:
+> > On 2/6/26 11:01, Harry Yoo wrote:
+> > > On Fri, Feb 06, 2026 at 10:40:54AM +0100, Vlastimil Babka wrote:
+> > >> On 2/6/26 01:53, Harry Yoo wrote:
+> > >> > On Thu, Feb 05, 2026 at 08:07:23PM +0800, Hao Li wrote:
+> > >> >> SLAB_NO_OBJ_EXT is set for boot caches, but need_slab_obj_exts() doesn't
+> > >> >> check this flag. We should return false unconditionally when
+> > >> >> SLAB_NO_OBJ_EXT is set.
+> > >> >> 
+> > >> >> Signed-off-by: Hao Li <hao.li@linux.dev>
+> > >> >> ---
+> > >> > 
+> > >> > Looks reasonable to me,
+> > >> > Acked-by: Harry Yoo <harry.yoo@oracle.com>
+> > >> 
+> > >> Thanks, added to slab/for-7.0/obj_metadata
+> > >> I think it doesn't change anything at the moment?
+> > > 
+> > > ...unless you enable memory allocation profiling :)
+> > 
+> > If I do, would kmem_cache or kmem_cache_node caches gotten obj_exts in
+> > leftover space?
 > 
-> Why the SMP? At least in tlb_64.h, it was not protected by SMP IIUC.
+> /me builds and tests a new kernel with mem profiling always enabled...
+> 
+> Yes, but only if merging is disabled.
+> 
+> If you disable slab merging with `slab_nomerge`, kmem_cache gets
+> obj_exts from SLAB_OBJ_EXTS_IN_OBJ.
+> 
+> When I enable debug feature slab_debug=P (and thus change s->size),
+> kmem_cache_node gets obj_exts from SLAB_OBJ_EXTS_IN_OBJ.
 
-Ah, It's just simply aligned with the MMU_GATHER_RCU_TABLE_FREE above.
+Thanks for testing, this matches what I've seen too.
+
+Besides, even if the two boot caches, kmem_cache and kmem_cache_node, go through
+the SLAB_OBJ_EXT_IN_OBJ path, it seems it wouldn't cause real trouble. We'd just
+end up doing some unnecessary memset. So, as Vlastimil said, this patch is
+mostly about doing the right thing.
+
+-- 
+Thanks,
+Hao
 
 > 
-> Apart from that LGTM.
-
-Thanks!
-
-> 
-
+> -- 
+> Cheers,
+> Harry / Hyeonggon
 
