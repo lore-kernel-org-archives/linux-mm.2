@@ -4,145 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F096EE2082
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:24:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF440EE2086
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:33:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86D386B0089; Fri,  6 Feb 2026 05:23:59 -0500 (EST)
+	id 60A036B0089; Fri,  6 Feb 2026 05:33:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 823326B0092; Fri,  6 Feb 2026 05:23:59 -0500 (EST)
+	id 5E1EF6B0092; Fri,  6 Feb 2026 05:33:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 719356B0093; Fri,  6 Feb 2026 05:23:59 -0500 (EST)
+	id 4E0586B0093; Fri,  6 Feb 2026 05:33:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B42C6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:23:59 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0E0818C541
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:23:59 +0000 (UTC)
-X-FDA: 84413646198.28.3213EA1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D4706B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:33:37 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F1A16C2A4D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:33:36 +0000 (UTC)
+X-FDA: 84413670432.11.9269BBE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2E41918000D
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:23:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lkgsOVjM;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf05.hostedemail.com (Postfix) with ESMTP id 58524100003
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:33:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DJuP5dfG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770374015; a=rsa-sha256;
+	cv=none;
+	b=Qwi6F5nmXjL+h3xPXAlGgOVsH4+VgypLIWGlqSylbe//gQ6DAt/WSd9OxEWejvMv4zyJFh
+	4eALDtg7xmrfoMADrWkvRclGU7uXMa/sSlHGl4UQer93wyRdp3boXGi3ZYDud1jaAiosIt
+	lF9aFVw44uocW7mzee51dJVvbAc37Ck=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DJuP5dfG;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770373437;
+	s=arc-20220608; t=1770374015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+KNZN6z/krldVP2Y4BBko3jZMXeqf1Yu6t3X9QVX4lQ=;
-	b=jEaX/PnQHs5l0OrA+45bI1b1jtUtSOta/wyYk11xx5KkoMg+guxunlFhsAleRcBMJCRXPD
-	PoQ02rQXqs8xBDuw1EMdTuaSwvGWjkr6C8qq2biwrizLAFId0x8/k54ZFPtpGCZpzwSje+
-	6woXrdJh4MZuTkG9/2xeixis5rMbJNc=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lkgsOVjM;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770373437; a=rsa-sha256;
-	cv=none;
-	b=na4nhxv3vraBmkXg9hTK3Lc9aUv6ZUwFKiqE5An0lNUlnjN57NFEij4YVGG4jLI/WXfJkn
-	Q2DJwaS+M07jhatOZwKhkyl1C4EP1QrTk2lCqmLuNVSuLCtUx/4YkgLELCE/JZDdIHqDx+
-	9i0omRgA310SU6doqblyQpR0+BRqjUk=
+	bh=TkNiKkBVOp4K5FBUBklXQqfMQofsnSmilhOPuHp055Y=;
+	b=fiKavdFsNNvsuaSHyGZWxnlDS8XydQQ2Qx8UESP5x+AndYhsrLs02TPtk4AT2FYL2RW47m
+	bxjvFNXnDc6W90jnmF95zUuD2ocC0L4Fe6rBBTXdLFKbZXSANzqjUc+ifB/FuJYmi4sbtz
+	uHUwF+8o9M8p0sJsqBoRoGWfyzFKXAA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 01C7444214;
-	Fri,  6 Feb 2026 10:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA86DC19422;
-	Fri,  6 Feb 2026 10:23:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5849144298;
+	Fri,  6 Feb 2026 10:33:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3688CC116C6;
+	Fri,  6 Feb 2026 10:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770373435;
-	bh=CVRfjenhPNZ53C5ptXLpHu6G+l5qThn6T1w+S3R43J4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lkgsOVjM8345QQjYJiRfQfJ0oSMWqIL/dF3b44KB/OYvtFa5wtksT4epKW7dc7zQK
-	 n13iIxkGzKpBzMaIzGDTNhk7k+VRqM3ICVJzDUOySg0Dee4z13wjFn7Cl2EN1ekcLW
-	 XWt4/jPFLIpPhf3JY1BeyzKTbyedA1v9JDaYVUAjI9tYMJtEuJsfrVQR+lDly5qhC1
-	 zCwWghcKG4Qbwjg/A1hG6Xsrw28MryrTIl0yqvYqtw7HzK9njc9BhbXFrF7jt0cFdj
-	 aloqve3suzVNAbni2tS3Lc0IjWEudBVqDr37kT5BZXF3tUmnGa4ntBhXN5Von7/OEX
-	 EKyVfiMLATw8A==
-Message-ID: <ac8ea0ef-4175-4563-b312-d888b31b83a9@kernel.org>
-Date: Fri, 6 Feb 2026 11:23:48 +0100
+	s=k20201202; t=1770374014;
+	bh=XYo1Bu4Z7S2irBnPmK0cUuY3APoWfsJPzLU5AbVxZiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DJuP5dfGNup0UecupdTKDOZY/t3DMl65Gvrx8TJiPRtWXi0nV9UAtaWbFPEJkfDSr
+	 byvc7MnpZmrG3XMadEmaZKyNCBcNMoloWeQk/YbYTBHTjM6Ajv8ywz3WR9DtxAVu9E
+	 giDjB14s84H6d1F2lucnVQiz4zKFuL14jbMIJMyQ2S9tVFJyXzc98QHKhelNGWSJvA
+	 756vzzt3HzNDLE5tYqHxwMN8Cu2sdb7mLb32aDFBffCypg4CQD9tVrddgUAtOJ6YNn
+	 e75Et3HmB+q9TTZlibROt8vCZbi8HUlPZhMa9skXTUXOlzpmRd/POa/GP5n5tBmA/f
+	 eKaT9T+XjBRxA==
+Date: Fri, 6 Feb 2026 12:33:28 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
+Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct
+ page
+Message-ID: <aYXDeN0WGQG8-cxe@kernel.org>
+References: <ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
+ <aYJBBs17B-SQXFqq@kernel.org>
+ <279931074239b7f3812c4cb3969f887303c8cc26.camel@kernel.crashing.org>
+ <aYL3zxuTLT8N7C8-@kernel.org>
+ <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 15/17] mm: Remove the branch from compound_head()
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-16-kas@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260202155634.650837-16-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 2E41918000D
-X-Stat-Signature: iwcgtzmtdydqcuucpaox9kykwh8psjtk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
 X-Rspam-User: 
-X-HE-Tag: 1770373436-694331
-X-HE-Meta: U2FsdGVkX19s8LKIUqtUp0O16jQR2OKvFHop9rQjcUo2Bzk2VQtgKKulVnSyj+BMcoLWiUxI6jn1oAaPb0DmCHogfMWq4Rz3D2K6CJP7kWcoo3NT1uk/omK5MTkaEkXiWBINUNZ0rrN2vH5i4PN1VhU/4CaaKoJV1UuWXPBNghoblCJ5rkm9TaPVLRYOEHqDtlbcmTE7ieH0owZ2peEkQ093zZsfobt7LMKGTpKPA91FY8o015w3TB2P3kfyjTnQk5AxoBsmF2NUvZLqBSsnOpN8eiB2xbAOpmGzaFbSPF9lZzLhnf+/q5nTcnrv/EVpBIW37Bknj3Ylp1WkVVD4g6SYxzkFm5n2UOzkbRXMkuoMqZxdEHSaGhZiFLV437zHlCZhbBrzu7KV8L2YS2qBa1+P8KaawAqHUve2fDbaekN49aZRzN+h6qdh5rCmuE4pxbEdXpaXYg8xzJTWJI5mRzH3UpuRnbC4EFijJeZTyV4PlV0KW0kB1ZtEBNlraM6BaK/LgQ0YLImepbTePtX9XXUsP3Pv3BSWk7NCw5bh808fHrrCT0Slk7Q5jmKP95v7IyrDGeHxh5Fs7KsjWm2HeeDovg+Gv6mBWGuOOuXbD85UufEFEIkCBM7gv02QlikTeZBW9kzdyuYpsQRe6ZUJ2bpISBm3tRxTab/U6cZpYQmpfBit/TLxPc6j2cFODoEfXc7acsgC+OLLYV7ynv5Yqmv3Ec64ptca9B4odyGXkPvYBR2kc+8mSFFQHWiR1YnAGnaqEiwaIH0o+ymr9RS8qffj+6y+ln02vvQNjv0qxO98Zs546pOZzPKFi1i1Hpacyh+Z1r9wJ611hEV8d8H2clTgH6s0+cC+f3zUyZ5ukMakh9COVZmAOZbCm8G23hoy6zM5IIZqrFIIv+7FK5UE6/dLHXmOAD61yqbaVoAL05fJ9/yH85ys3My115uNTLgLaMDOAN3TtmRp11SPBGh
- 8pdkPDJ5
- RLx8Ub9eixNbJG3zRdVSBIt9N/G+NeMmt0S6tcNEoptU8LIn70PJ9lBSh4B3bJXlvXJ/kiBhss9SRuCEVBQGAi5y4AvLlOyXtD18xeucE3F3+ngeDRykTJ+5hjNQbJLEFJh0xAIjSV88gs+hmg/gg+13CMBxSi9j1n5WnDAxbHOeY4/5TtEKRd/DdKoRFkZ41lQUxcxWQGsIS5lwCc5PgpIpUO+FDO/7d8lIknu4HBd4HTIxGcQSBIEeV+1PxmMUN6fM9WElrDtBT1E8V9OoTQFi21fsbjd6WJv1ayGGe1ugrtKaXoqlD7AIlQKHuc5nbxI4PioMfTK5hSShYFIkepEJbxAtx0qYnlZIl
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 58524100003
+X-Stat-Signature: 8uww46kqm7miy4e5axwu7o4mmewn4145
+X-HE-Tag: 1770374015-877020
+X-HE-Meta: U2FsdGVkX1/MHq849Fo9J37EdgqmSNnCOkIvzNkfXdRW/iJQYtMaKj7i/xCWx7e0ymv69qzvldy3E54CIRpcvUHylRuQE/3ymaVVzel4+fsZBa0MIqJmDD7HimEbGLvNgBNRdaxDC30a1waW8CS0xI/TIg1gVaOyOB5hA33yvXsUPGEzk0OW2q5BpKST0qqAb0a0+fWWASomP0N36ToDmdfN3I7bXKW84+LpeJkzvNa/9K8UxgyT/bwtc4Ww1b6k2+J64hQLb9ctzbJWQTWqc6YUYV7wiJX/yvg93G9H1n50sXCUa5sEUlwUUGn57KeSwWIaTdOuIgo14VOQ+tQdW7Ik+JnK8mZ8V8mQpjgedxQMhFyDvIq0DHVXujXSYOfbJZ0p81Q+ySzXqmyMvuztwf/aGtu76bmXmKa+pPfV2Rzfa6gI1IIeMhEVAWoFMNZw3YnIbH4ugme18TTo3uButcX6WHhPquIehnCP0HE2n0gVMa2v1WTmggSaSIUaKHdUa0onatox5vNQ0a8AaNcmV4hHLLI8Vd/8DXL4a+KzDYeOxlIxJiY5UuXt4UkS0yTz56n494UYc4F0gdZfS9wskcn27jEyiULmntKFnEc3adaAt88F+CBhjXgo+ssQ/2X2Ms5odU7Hz67T7B7xrKa9lDwFjT38Mr5vRWp/m9Nr1rh2K+ffesBKAyW2AgSgIOg9Hg0Ye+ce1QLsJEKBm+Fo5I3H59CeOlbl+4K+s+FzIr1UFUvWmo2tz/sGExrGkvF017lwpj1oNcdaDe5UOduANeLOh5mAF2bvOHeFbzPghfzeXxCXZe72RIkS3C9IuLDuzIvc6azTTHN2rRwpqDlF7VGAxiDBk+Jp4Vu4iushGmFN1rpgKQGHPrOhyisHVefc9nE9FV/+MgVeQxPR6jPklcKS7gA+tMn9at23d3cMBwe/byDveX7nyVnZEmdiAjbWDt+6GWIXAYosIeEE4qY
+ C2uo4WDO
+ Nc5/TyxX2sRVXABKOuCPm/uBKYtx7jdSf8vAMLmT8NtHBgidlYDGiJhkOJbAg389JIYK6Ev0a3fKLPbpHKpEQ4/Gur9yvXPT8thAEW0dQfyGOyPv3PJivjn7IgvFYWzgyc3+nzGw596Fl8EtLSFgYHWaL3OPMMT7eV5lMAiZ6M8+jMoak8OpM8I+KGI9vLdVPyCX7jPtjQemviRDULFDtEZp/UQmgcGoNYHGJ9HuZL7Ky6NTkYxz6mCEF9JcZZ0lxWF7xcNjxGi49wedGFFodWimr+Y/HtDfzCPmeAV6kQ6ZM9Fc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,74 +96,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> The compound_head() function is a hot path. For example, the zap path
-> calls it for every leaf page table entry.
-> 
-> Rewrite the helper function in a branchless manner to eliminate the risk
-> of CPU branch misprediction.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> ---
->   include/linux/page-flags.h | 27 +++++++++++++++++----------
->   1 file changed, 17 insertions(+), 10 deletions(-)
-> 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index 1aaa604f4b9b..16384cb6f962 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -224,25 +224,32 @@ static __always_inline bool compound_info_has_mask(void)
->   static __always_inline unsigned long _compound_head(const struct page *page)
->   {
->   	unsigned long info = READ_ONCE(page->compound_info);
-> +	unsigned long mask;
-> +
-> +	if (!compound_info_has_mask()) {
-> +		/* Bit 0 encodes PageTail() */
-> +		if (info & 1)
-> +			return info - 1;
->   
-> -	/* Bit 0 encodes PageTail() */
-> -	if (!(info & 1))
->   		return (unsigned long)page;
-> -
-> -	/*
-> -	 * If compound_info_has_mask() is false, the rest of compound_info is
-> -	 * the pointer to the head page.
-> -	 */
-> -	if (!compound_info_has_mask())
-> -		return info - 1;
-> +	}
->   
->   	/*
->   	 * If compoun_info_has_mask() is true the rest of the info encodes
->   	 * the mask that converts the address of the tail page to the head page.
->   	 *
->   	 * No need to clear bit 0 in the mask as 'page' always has it clear.
-> +	 *
-> +	 * Let's do it in a branchless manner.
->   	 */
-> -	return (unsigned long)page & info;
-> +
-> +	/* Non-tail: -1UL, Tail: 0 */
-> +	mask = (info & 1) - 1;
-> +
-> +	/* Non-tail: -1UL, Tail: info */
-> +	mask |= info;
-> +
-> +	return (unsigned long)page & mask;
->   }
->   
->   #define compound_head(page)	((typeof(page))_compound_head(page))
+(added KMSAN folks)
 
-Nice!
+On Wed, Feb 04, 2026 at 08:02:13PM +1100, Benjamin Herrenschmidt wrote:
+> On Wed, 2026-02-04 at 09:39 +0200, Mike Rapoport wrote:
+> > > I might be missing something but I don't see what would restrict
+> > > this
+> > > to the early pre-initialized struct pages other than that
+> > > early_page_initialised() test, so we can't rely on anything in
+> > > struct
+> > > page inside memblock_free_pages().
+> > 
+> > Right, we can't rely on PG_Reserved being cleared for uninitialized
+> > pages :/
+> > 
+> > But I overlooked an easier and actually reliable way: use
+> > free_reserved_area() instead of memblock_free_late().
+> 
+> You mean replace all callers of memblock_free_late() and kill it ?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+That would be great, but with all the subtle differences you note below
+it's for the future :)
+
+> Or make memblock_free_late() use free_reserved_area() instead of
+> memblock_free_pages() ? :-)
+
+Yes, I think either calling free_reserved_page() in the loop in
+memblock_free_late() or replacing the entire loop with free_reserved_area().
+ 
+> The former misses:
+>  - totalram_pages_inc() and kmemleak_free_part_phys() in
+> memblock_free_late()
+> 
+> They also both miss as far as I can tell:
+> 
+> 	if (!kmsan_memblock_free_pages(page, order)) {
+> 		/* KMSAN will take care of these pages. */
+> 		return;
+> 	}
+> 
+> But I don't know if that matters, I don't know anything about kmsan :-)
+
+AFAIU, here kmsan allocates metadata for each page freed to buddy, but it
+handles reserved memory differently anyway, so it shouldn't be a problem.
+ 
+> There are other subtle differences between the two implementations
+> which probably boil down to the same thing but it's been a while and I
+> don't have time today to dig into the gory details :-)
+> 
+> ie, one does
+> 
+> 	clear_page_tag_ref(page);
+> 	__free_pages_core(page, order, MEMINIT_EARLY);
+> 
+> ie, clear_page_tag_ref() is done once for the whole "order" (though in
+> the memblock_free_late() order is always 0), then __free_pages_core()
+> which kind-of hard resets count to 0 etc...
+> 
+> The other one ends up setting the count to 1 then __free_page() which 
+> does a LOT more "stuff" that is new to me since last I looked (such as
+> the pcp stuff), ie a lot more convoluted code path, but I don't know if
+> it differs practically for that use case :-)
+
+It does not :)
+with __free_page() the pages may be freed to PCP lists rather than on
+global free lists, but it does not really matter, the pages are free and
+buddy can use them.
+ 
+> I assume that the right approach here is to make memblock_free_late()
+> call free_reserved_area() instead of memblock_free_pages() so we
+> preserve totalram_pages_inc() and kmemleak_free_part_phys() but I might
+> be missing something (and I don't know about KMSAN).
+
+free_reserved_page() adjusts totalram internally, so we only need to
+preserve kmemleak part.
+
+So it essentially becomes "oneliner" :)
+
+diff --git a/mm/memblock.c b/mm/memblock.c
+index e76255e4ff36..6e984bcdf6cd 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1770,10 +1770,8 @@ void __init memblock_free_late(phys_addr_t base, phys_addr_t size)
+ 	cursor = PFN_UP(base);
+ 	end = PFN_DOWN(base + size);
+ 
+-	for (; cursor < end; cursor++) {
+-		memblock_free_pages(pfn_to_page(cursor), cursor, 0);
+-		totalram_pages_inc();
+-	}
++	for (; cursor < end; cursor++)
++		free_reserved_page(pfn_to_page(cursor));
+ }
+ 
+ /*
+ 
+> Cheers,
+> Ben.
 
 -- 
-Cheers,
-
-David
+Sincerely yours,
+Mike.
 
