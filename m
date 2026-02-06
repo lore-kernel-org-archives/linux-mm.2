@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C3AEE209D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:01:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBA2EEE209B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:03:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 251B06B0005; Fri,  6 Feb 2026 08:01:05 -0500 (EST)
+	id 1F2D56B0092; Fri,  6 Feb 2026 08:03:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21BDD6B0089; Fri,  6 Feb 2026 08:01:05 -0500 (EST)
+	id 173126B0093; Fri,  6 Feb 2026 08:03:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 11E6D6B0092; Fri,  6 Feb 2026 08:01:05 -0500 (EST)
+	id 055666B0096; Fri,  6 Feb 2026 08:03:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EE0516B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:01:04 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9AA01A0120
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:01:04 +0000 (UTC)
-X-FDA: 84414042048.19.E8642C9
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E59C06B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:03:47 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DF721401A9
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:03:47 +0000 (UTC)
+X-FDA: 84414048894.20.967E0E8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C1B6A120023
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:01:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1TvsrKu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770382862; a=rsa-sha256;
-	cv=none;
-	b=b19l/qUDde7YyJYCLLlCcazxzA4sFoxaeFl7EYZUXjHG+eeo5p0qdoPLzoipHVsQWZchQR
-	1XrBL5Ber+a5uIXx27ZI++gDH7ti0Rz2aWS5ISVS963uEui4pq/ac6ubGxtnZD97r6NnwR
-	d11po3tnzWQuDs9jaBQK76kmz54lrVQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1TvsrKu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf18.hostedemail.com (Postfix) with ESMTP id B65501C0005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:03:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bv7EzWDi;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770382862;
+	s=arc-20220608; t=1770383025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LDB7SpH1D7FRzaEdNx4gEkY2tTWXwP938N6PHRW4uqk=;
-	b=RxHkl08vkKRAivf0Ll71RELwTglFpSAIP0Dd3Fy5h6FeN8Pwx9kAHLabEozvv4crMcC4Iv
-	79XGT5b8v6V2odhAj284f1l0hap4rqXzRgpZSE8KTQybqUQQ0MRIpRNCiu81p3mi4ry0vE
-	uxDoJ4jJwVwKwyxJbkWI31r0GdMiKtw=
+	bh=KAXkmc6NXH6dLSIG7Mz8FQHJyErfjJnUgjs4l9LzkcM=;
+	b=jKfJFvVyA4U3gHkgJTBK9Tr/eeKIyri6pvMObG8sFKr8SOmsugu0lcPOUk5S/luzhj+dPV
+	U3NUS3huSQoq2KWjkDCeSCBRDq9rqXAbSIPaxPx+f1+dIjRFLYeyI26yay56bpu1eD620Z
+	+Lnonix+TxAw1/7vBQA9pj9UtwjP20k=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bv7EzWDi;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770383025; a=rsa-sha256;
+	cv=none;
+	b=fgcLtt1f/nz4cG8ZoWUJzMwOQPOnInFgcP9pcn0fKHid2oVHHZv2gTvd0ycgN7pi+QWNzH
+	M4AEfeMsGjFgRz+JOhQjR+jKRHAWz20418tF8RZns61Igv7tvbmdtXrB7tNPfQpQrQFGJq
+	0xwZxdfwwaOVcfrW6khsACFQ4QG+kgk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C455D41755;
-	Fri,  6 Feb 2026 13:01:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DA8C19421;
-	Fri,  6 Feb 2026 13:00:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7C300418B5;
+	Fri,  6 Feb 2026 13:03:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA2DC116C6;
+	Fri,  6 Feb 2026 13:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770382861;
-	bh=xmLMB+sdewOcCxQz83Kl8Xqpk9X80TVAUBfSvRJdhE0=;
+	s=k20201202; t=1770383024;
+	bh=MJuM4duWRQOdgMSoWpQ5n672KHtCLpnyJV0vo6WaoLo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k1TvsrKuDX4ULVsLQHNN3r/U8zVYERr11gg7p18nkto5s8l6xgrLSFvCABym1KroS
-	 hSf545ZUDsS066b1eoRVkxNPo/nUhLdax068IyipdGdOYA1qK7o0sa4aiyKHZGLyN8
-	 VpM4K/08ZLkKx94jn2snGBs8p6TTyrI4Tg2v8dwGxrRkPLr6HUMByBgqEgnRhso2Lh
-	 zvqVcuvOTtkXZe6QFp1lR/+3ounkJZscyMNEyNwVDhLuIj67yp+r6BVp+7XNjnJOdU
-	 VwunTYuNceAdcWO5mtMYEPOwEm89jqsbaAGEuKrDJI+hmYCZKvtUmOnmB24N/3Jp+x
-	 W1t9upOlirA9A==
-Message-ID: <2bf497eb-47b0-4eb9-a66e-607c82c36c20@kernel.org>
-Date: Fri, 6 Feb 2026 14:00:56 +0100
+	b=bv7EzWDiendze/cP586ru5zBpHpfCly8MOX3VxeiW381Thyq5+xgeBLPmDNR9+jdi
+	 JAOrL8xYk19kWk4srpq3Qin0GmbD6FLxg0sC+mQRf0F7UQFseVZPC0Kn0XMrkua7p+
+	 jyuqkpfOWUKjHFO3qv4JfoGJvnaWs4NCNGAKZ0hiUqCB3t1DRiRIqviwua3mzILUne
+	 6zqF76LQM8geG+0JjCw2KugvN9IszV9WTp3MHfeCZ0BlNIo4dsPQ4jBlrtL77nPg1f
+	 IsjOZGxkgXZ9b56jYnxu1sdNaARVf03RaHZ0K7DeEaM07nKsgcRfI00Yes63M9BMnj
+	 y2Q0UeF/w8xCQ==
+Message-ID: <00d07c59-e573-40b6-a096-266ef14545b9@kernel.org>
+Date: Fri, 6 Feb 2026 14:03:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9] mm/memory hotplug: Fix zone->contiguous always false
- when hotplug
+Subject: Re: [PATCH] mm/memory hotplug: Fix zone->contiguous always false when
+ hotplug
 To: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
  Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
  Michal Hocko <mhocko@suse.com>
@@ -78,7 +78,7 @@ Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
  Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
  Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
  Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-References: <20260130160635.2671167-1-tianyou.li@intel.com>
+References: <20260130160938.2671462-1-tianyou.li@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260130160635.2671167-1-tianyou.li@intel.com>
+In-Reply-To: <20260130160938.2671462-1-tianyou.li@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: c68jfnxj8bknt79mim74fmbz5m6eaw3h
+X-Rspamd-Queue-Id: B65501C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C1B6A120023
-X-Stat-Signature: bc7f9ez66nxtdqas43iik6nxnbzcha44
-X-HE-Tag: 1770382862-147491
-X-HE-Meta: U2FsdGVkX1+mz16kxlpA1R5DXuLM2YA7QLqsNj+A25u5boSXwHenCDQNOtKg6q7BzqqS7MboqItxNzuL1FtgWmvpuZTsNV9exzOT2ZV3J84fz5kEuPP23idAzw6LFQ3Ff1bCH0F++a4ff4IgsFmYfGO8iPHKDEOt0NELecLOmv4aSRvxzi/6D3BLyJgxf4IGJeGjIH2ZmlHg2oxzNue1zqZd8nsN0xfBr7lJYJb/ZIkJS5PygDnrTzZb5uBJrjrIDqjTAP8vAoFdtUlu9CcAVBRWJE3dCI6VJHvFbvaTtuP+Zbv/vRz/o0iOQK6TNmbMQjaz0UHIVACG7rngKLFh1M4Fc+2kxzqazPmsVZI8geD1ac+FFHKlQCbEamPyH70/DXxwWGxvA5HFQMxDwb/14RPGAfhMMy1hlkAqbPRSvRSn9zT29NWV7W6MLEFfowLIh+Nd+6QM9frrhqdo2TwGIpgsFhnyenUzWx6ckR+G0EfDnXlS/UT0crzQySJiv0IXab7YeGZdlzRE3XOnlb1IZKqL4bM1OORHypkdFKYUWKt3bTfSD03ZAUXxQXQD4ph0lt9/4D2xQ/GjxqrZh+c1Pbc0QXU4qImY/fr3dfXJxiUC7TEPdp6tbbWHx2+NUNHn8ahhZhqXT/WdQiKA50IrujHwy1CVsjS2CGKPCwf0MtyKifQ8IrSMhSPjZyPu7crmmXy9RqLkHQaNp/BR1fNRS4Sk89esVbFs2pKUImxkHOouZ9NOcAq8jXeq7KWM4HumHv0G+HbGHorQ5vMTL4+/51XDSC4XKOZnAFC5ijlMr6OW25b2OiIjZF3EkQRW49IEt64X+EPazw+BxF2DAfaCEdoA9BT+uB9wrQdbUEi+FT0xico+5KfPo/GUPd4lZrjrzEf6M4dOLsbJr5Rqip3MjFhuhV16jlgsW6wOMUxqAiZbOFN4F/K945Blc2UYYZNj1oreV9kfKif4hmSRBHz
- //uybbbA
- +pHRV+K2vWuR8Dp2YSKUlWbZZ8B3Xmx40/Z72TSLYiwK7S69BZK/br7g6B35tDvrz1gAUZ8V4fW+NAwNmCqHODZDOUnclVqseKmbTwBApyB1DEcr7omelkL7XVhaOlrBe45NEcfjm9i9SghjxPKfU8ScR2i2dNXJRTloqoUaNuTgToMFShMN33eChzDrJw4DwQcOrzTvK7rwu81QQBwcz7x594n7mM/LzOEw9NOR9TMuN/QPGCNa5xBZgk07adirJlyoPm+b3g/RkLOw1N5uOQ9xCuNvIctyZEskj9ZgmX1/dzvB6GdOWDxt2OdcUW5s6i54GQO0l1E6DV61nsuuamaMqO0WSFLaWp1r//Zza2yJJ4OQnWjcCxdNhG3j3IN+mj60mbE5inUTq4SJh9/Ifkr2/3be6zclyyLqaUwtMncx0mYqNLsNODCawwQ==
+X-HE-Tag: 1770383025-492879
+X-HE-Meta: U2FsdGVkX19p4v90jlV0/OQ/xAllvQUPXfxtHBUmsPfHTZnhHwXnJ+eBHIjTe760W8Iwayibj/YxFn2cj9Y1gy7EhOlWPE37YX0W9oyEoZIcPjxKSQpgtwpwRUILcHB3J5C29A7NWnG7mBxUFciW6pxIFKiiX6ADSbifG9wzpZ8HEGnSmczqsW1AA7eNR6rDIhnmOGqralkZlK32vybyH/N+6RD9VejImNON97esDn7XCYKSWUHeV1y6p7yjmO6MRm9ifY9TtFoyooLbAtqtXWQmZvW4jjNcR6h6UMBJp9xO59VRyF2WhdC0s0hz+KJIuJuujT5JNrbALcnEb5lJceDlCgDJPyY0Rg7N/KrsKyKjWW4TETm7tfiKNxzh4/+MhTcRWD4B8y9919gKhSsF4PLg7Ev8rw5ZwVTTU0oqIVHCU27IXrR5JaG8fKaI9qkL347as3SaDuPdcv8Z7wi6pyjIbV0e+pPvUnSJvNzOz9R0NlhT/FFd63j8MOPot+FXHOdRcp4FVcRw2gRKPmLAd+LFDzrl4KkPh2vzC6rujpHwg2PNQarnEfUTjmOHfYM9GADOwyR+Dd/vV0z8GeiGitwyYCUclnBFoz46ACKu1/lRbe5TKNM7ydRYpb+kWu1rfrSwoAi+WFrsaOujpYr5uEMhddBmt0GO+ImJtle8Q8lYY4NEcOGLN7KSzohIr39SP5m5bFRJmdOOrEKrVkq/ElPCI1Q3z7cDcN03xxkFRq1nTb+qtBLB9WQnlz3VrD6aC2FaRMaOUDWQlf3BAPaLZn0HWh2XD8X7g33TAxaqFUExkAH0Bacant6hGWGjU7Sctt8ggWb39owzZkqpOHDdWbznHXMGEaR8SnV5YUoEMlhNbidER0GTyQWi4jO0fapDN5yMiG6fctgOOwTFTkhvhQSA8knbnjd89J6fjXGFULHRfm843E7eie0UmYcN9VHz488b5Q5hexd5+u3RhHr
+ zOFgRcvQ
+ VlMYmjeTHIJlKWKAFsMGcxxjYXkmpEcyHYEA4Liei9PGfO9z669igzAX+7BPeOlN1xD5GZYow0y1XfQ6rVCokNeuLXBaNu/sbcKviP4x4s4FDK73NpWWMFHQJ860qkr0yZ32rMBriobB6mLZv0Iur6FPt/O6k/Boaq5pUrxPq2KgL1xOGlJjAmba5eoHsYOrFYBOFPul0ez0nt8MYR8NxVn0oPHunX0eX3mFqT1Y+xVWTTc9dCQcZJjtqxeKKyMWz8/VxsdCjNrZnvkRmIl/zAZjitMlFRZisq8xb4ZvgiRHtiod26R5bhnt3FiDOfoifu+WYEbQPQXvTsdCz60duIZSyY/4fLoAELtq5LSY/6cFswbRDr+kwmWXgFevKHnSZL9AcZSqC9Dpp61CE4W7i907Xc1qScAR3hof6DmPBCZUKzwqxwlE6mhrxyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,8 +144,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/30/26 17:06, Tianyou Li wrote:
+On 1/30/26 17:09, Tianyou Li wrote:
 > From: Yuan Liu <yuan1.liu@intel.com>
+
+Nit: subject should start with "mm/memory_hotplug:"
+
 > 
 > set_zone_contiguous() uses __pageblock_pfn_to_page() to detect
 > pageblocks that either do not exist (hole) or that do not belong
@@ -171,10 +174,18 @@ On 1/30/26 17:06, Tianyou Li wrote:
 > Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
 > Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
 > Signed-off-by: Tianyou Li <tianyou.li@intel.com>
-> 
+
+How was Yuan Liu involved? If he is a co-author there is a
+
+	Co-developed-by: Yuan Liu <yuan1.liu@intel.com>
+
+missing.
 
 
-I assume this one is to be ignored :)
+Likely there is no resend required if you tell Andrew what to do, so he 
+can just fixup when applying.
+
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
