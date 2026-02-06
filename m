@@ -4,91 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1CC5EE6B66
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 23:10:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24C7FEE6B6A
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 23:11:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 546106B0088; Fri,  6 Feb 2026 18:10:00 -0500 (EST)
+	id 5B02A6B0098; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F4346B0089; Fri,  6 Feb 2026 18:10:00 -0500 (EST)
+	id 55D846B0099; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44B676B0092; Fri,  6 Feb 2026 18:10:00 -0500 (EST)
+	id 43F5D6B009B; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 37DAB6B0088
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:10:00 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA0B2B84D0
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:09:59 +0000 (UTC)
-X-FDA: 84415576518.20.DCBAE14
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 230F5180009
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:09:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRfdhljK;
-	spf=pass (imf16.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 308EB6B0098
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:11:46 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CD951160251
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:11:45 +0000 (UTC)
+X-FDA: 84415580970.09.BB32268
+Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 94B85140004
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 23:11:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=f6mExEWV;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf09.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770419398;
+	s=arc-20220608; t=1770419504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=R7PSIj1um49B2rZPEPWzXpIsmmnu8lgm9Xiu2RRyqq4=;
-	b=eTR7bv6rByE9g8eKZ9btXSAeVqALpSl9+5PJbKl7ZDys6BJ+GVxPxwERj5Sf+q9HH5jcUN
-	bAuzcy5DTb+1GvoIwa1h0CyI+f6Fs78xyv7lfYLrO17jGCl/l/sr6qok9hfGXeawwvoiyg
-	dnhjlaVJR2OKSc6BmwtPJUsQg1DohwU=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WRfdhljK;
-	spf=pass (imf16.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770419398; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FVE23sU8f0tF/woG1DKU3iF/2D4ifdEew5Zjv3zRdio=;
+	b=YRKLype2pZpqeRiQ7TVUAc9fOH8QOa0PyACanWa2GeCEGneLwQgmyJUIRIZv+Ft6myXVov
+	uM5ESilrXbNl2pjHeTeIkZz7np6lzXOnqECg4uOf13yu5YSGdZ9a7GRMuHN6EUh0oKuwJz
+	mU5UNzRxqB1iZadd188TBKmlxahnnYo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770419504; a=rsa-sha256;
 	cv=none;
-	b=5ZwNlCyIclrpILdOncG2PXIPWCuYtMbxKO2ewCxR4LvmMP4sEwpaXDbY7Ne+aI9avvGzkg
-	Sx3RIBZ4VL/PNwyTVRoxWaGEvp+y64PxplTYIIG1ziFWaePz90R+N78+OGTI+9nihJpwZ/
-	kPKONurnqwMTQROySmdNkmI5Q91hP6I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CAFEE408F6;
-	Fri,  6 Feb 2026 23:09:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88F5C116C6;
-	Fri,  6 Feb 2026 23:09:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770419396;
-	bh=JCLA96J6mzpfoWLV1MrmcZoPb5/P8YN14N+axSjroRg=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=WRfdhljKPpCHQto6BHAf2FZB7fyaBPESBXuAyRJldYsKApq2lUudppXjrMXIg974i
-	 asdFmsLEUu8SCln50jYpxYMrqgdilUl9C2TPrx2RGXgY+DF/BUWEsbmeo2gjGy7WKD
-	 CwEGbDgCU9mKFEzdyMsdmIocKZWCdjdcDfd7CzeIHC1mWe3xLsu7R5E3DEkLZzVbWO
-	 aqP75ed0Qpwnczl7yCExCOpghBaNQuCtw+PrkUDunkwThg2lv6qXEGs/gKySD3w2TK
-	 7Ws2im9l9ue4yX38BjZCDkO+Dqxo6DNxu9BkSp00XOGPYsUp3J4U6eE1ENSudsXG6Q
-	 t0pA4EgPrlLKA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B3F53809A17;
-	Fri,  6 Feb 2026 23:09:55 +0000 (UTC)
-Subject: Re: [GIT PULL] slab fix for 6.19-rc8
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <c5f2a4f2-8156-4c4a-9f28-0fe129893e2a@suse.cz>
-References: <c5f2a4f2-8156-4c4a-9f28-0fe129893e2a@suse.cz>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <c5f2a4f2-8156-4c4a-9f28-0fe129893e2a@suse.cz>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.19-rc8-fix
-X-PR-Tracked-Commit-Id: e6c53ead2d8fa73206e0a63e9cd9aea6bc929837
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 5ca98c22b5c4507fad4513a504d7c5ec46cd0386
-Message-Id: <177041939361.1109628.15892298095020403352.pr-tracker-bot@kernel.org>
-Date: Fri, 06 Feb 2026 23:09:53 +0000
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 230F5180009
-X-Stat-Signature: dosf3iqym7tywmf7qcgx7eiihk3z7smg
+	b=8jXDKOp2ab5f1DrCYwZzJuzaePuG9l6cMvRSMvJdHyWvSBrCCkGqVB6TiHD+FSmNBLm+0O
+	BkolYowmOWB4C0QRy6b8oWdOHzf+MddEz+DC5I9ZCkxGzAZI44XU94cxFB/keKgcOts1ww
+	r/iw5x/oDefRRkcy5g2T6sJjhZi5VYM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=f6mExEWV;
+	dmarc=pass (policy=none) header.from=zytor.com;
+	spf=pass (imf09.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+Received: from [IPV6:2601:646:8081:9484:da7e:5e09:3c1e:8002] ([IPv6:2601:646:8081:9484:da7e:5e09:3c1e:8002])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 616N8MNN1391383
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Fri, 6 Feb 2026 15:08:29 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 616N8MNN1391383
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2026012301; t=1770419312;
+	bh=FVE23sU8f0tF/woG1DKU3iF/2D4ifdEew5Zjv3zRdio=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f6mExEWVcFoGl+DPFS7WpxlxeCRIHac6tvcqDNllvY7fcn5iEbosRIzvziGMVi/jr
+	 IlZrZd/QABAJm2OHwDCNpqS9Bw2KbrG4IncZjpAWpmV6APHhylB1Bq9EOsCNzpQe1c
+	 pz4U8RZ3j8bVG6TzLrp+r8xc4p+Kt8wLNpOS0TqiPsWKN/d9wFnwjWOh04emb2YoTR
+	 svx3yUV2tx8YCHfBHxvpyy21Ps1+5ztp55UBPmKZTWspjimi2ZvfuvNGRAI5DS5db8
+	 5dBNmHcpOQXuS2bisH9Fug5kgfNmaEss+y8njKZu8sjy7noBU6YSnK1NreRaOSUXl0
+	 4okmimMg43c4g==
+Message-ID: <4304d18a-f647-4709-9f29-43d9995cc24e@zytor.com>
+Date: Fri, 6 Feb 2026 15:08:17 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 6/6] x86/vdso: Enable sframe generation in VDSO
+To: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@kernel.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+References: <20260206193642.1580787-1-jremus@linux.ibm.com>
+ <20260206193642.1580787-7-jremus@linux.ibm.com>
+Content-Language: en-US, sv-SE
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <20260206193642.1580787-7-jremus@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 94B85140004
+X-Stat-Signature: s5yjxek4thxxzoxy4fhysifmfjuhhfd1
 X-Rspam-User: 
-X-HE-Tag: 1770419397-299383
-X-HE-Meta: U2FsdGVkX19UDfSzi7RQA2njGNMjWE5Tihzf+ocDo7kN4XM7UigHOc4++lCJe0XRdTs2QDg/7R6jVdQYR+YWRYLRUUUbrYOWB7djVEZbRAbCj1UQPRAja7rOg0vi4bODt4ox0EjqAjp1YTI6d5mn6DFG+UNTSTZkHYtNFCD8dPdMwP883uc7XSu6Ix0l/1rDE4QJo3cjEc8fvMErkt/TfWMNXwCQjnkey0DXWOoXBFTBzjfZyOqagTl1b3kAVF2fsVf7Epm8Y5xJAL/+lvlxMZUpJZrjBIE+9qPq61OWdHcPF3W3NCK17PceiEIvSVAMaIVjrMcV1+HWBlnWxIwubGP49fl7d/qmo8Iiyzrc1ABxwCcyX2OObsE76qg4aFFePCUEbHJf3vVUcqxftjsezzDDevUgxnrQrAzwHWl7pBW5vpOLDhheGIAOm8OuX7EcFhDOogza4Zw9LY1bTVDOiCqOaGtTzynGFTEfvBeQ37F/M9tyrKvcEpLFT6CLrtU/9Gli1ZwlwqkXNXRA0U9GIJtz4pfDy194MIQQRFEk4nZwB6r6kr8Hr6jwvrzKETvX2NwX/ibZOOW696UzLhZgeg/YRW893T/AUCWGAqI1aYriAC7c5agFT4gAFEbUuDD0XNeyuEbmXYFY4nTxRvXcqJBYAFQJFqnlAqyAtlqSPZfL3XF7lSX7DkQ2PXusb+SEWAp7U+l8jegQCkp4l4e7C8YW+wQX720OXF6FrGnsRV2NBzNCfYh+lVeuQM8bAiqKOh4a18DCvXhYX6I7n4u5M4V4bdKSw2E+w3qC9pldNEa8ZOJpNTfb4azZIStSExJez+tW4eGrcKiOKmVIO+FW/NasmhKGodw0NE/4+8r5xQv1LUYoVVG6CM3Sd0CeLIFawbbsu3UWOL6zFraweQnmMm7jSmBbcFUDQhotMB1UiWgghvSZAOZQ0mNhZCvr38TFg3wtLvWNxxZ+mAyO33X
- ALykgGhj
- TUc3xiBAxtS/TcMbAYJ75BQNo/HXEcagbGJ4JtVQ/vM8zkSsnTmbFARCgYUMjtBvmMNSPnXBFOGXLME7ufzp3LdyONOnCgEpHy8MI1ZgpHKOM9cN0WClTVg1hbhkUCT4yNiJEvdi9z44n1yrSVqfuu55+7/Cyv3SeqQ0xoPi/T/3lR+i4RPQE5jlAJj6WFNCzgA2YyoFS3TJ0AVTObtxgKXtM/b782gbNB72RhzUQIkR8792xIhPbq81qjThukS+OHJJV9VV46E9Uj0xukEJSrhdPgaOQEpnGYlIbtSRCJc6ii3CQYuBieyhZRCkiJDNDAELYrJjkHin4TuDonufAqaKToMQbwidr0O26DY9L4znMLn74sKSsUXTcKWThgXa69IJR/v53SEGp/dbHxvgONi81oWv3vIzS9veA1s5hbYkPy3XCebI5SuHvtQ==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770419503-355760
+X-HE-Meta: U2FsdGVkX1+ZnplQ0Yc+MjxMlaZXcEZPbLfkVUD0x8LrirKIxSlWWrOBvChV5wMjoQcX+9bcOxeIHXo91ZVu6fAIe/IGN3yBmxsnFZaNGmkrUX2xwipeYzWoqfy4O3jTk/KW7iBsjYqEk8B0KZEywR1iWg7eUFD8CvytQv/XJ+aVwq5vhfe5WWtRakrAiVubH5eWQUd35wP2IPQ3G7m7P5YvjwAlCKxnei42wXa8m5zZId3JQu7Y2DrfZ3cD3/DKGQIJkHqZv2XvvqZev7jpxZFJDq92M7Orcb0hcwCR4pJHzbw0ZVv89TYcteafMq5J8LWFy/ELAQcsN+SZ1twp8NBYW3yyfGqmGHd34x22BbZoebrPPVhUEhOOEDoNMg0RjPVu+mXPMXroA3SdGONZOqO9H6RCtkH2kXkG97fQgUZxOcQyZMVLSeaqJ6D4MRjepegSjxPwUUCU/tPgR69hcamFnrDBrT9fUwYtqRimjQwgp+HR6Kz1HajBuiMvX75M0BR8kIRmkFjfykRluLSJRiDE3CHDRoAb88PkzwthkMJVqrJe9z7pVQOlskzuugl2tNkcmixerC++kkN8dU/D70U+7SPE8RZ5z+Hl/3byvHe3WVwkPzPYUkv3efzn3aucjkouoxAgqPRygbYPRtTqoxg1qkjs+xpG9Bh74MP2+/JH6Zpz9H4u9fw+d1LTeS9Tx5e/f3rj/E5jCIYgNtTRBmgGIsTgd4tSwnP468cLMxZiFdBfkKF/QpfTb8sMccaGoXQORzZugQWrBZDaThkgkF4gZr/20sUiUuBlEJJeM+FCZoNT6/WnD7RqkXKZYFciglnLGuJ7Ii6Ky99E6AfwalaTA6o/33tJOo/LECpMIpLoe27PFUKNeY1GFjaFNPgSSKz9iQAlU9gXSI98uMSkcPpZuzozGv3q5Bvku4qvtuzwhUf14br4S7i0yPsVke0d4oudSQi9sQdRSObbfFU
+ bIUtOIZ2
+ q3/Q7N6upv9YasQwDDpF7vIUjyD3rt2rqVLyL++/sKOHlTG0/EuHA41ZHrU19CT1qfawqDbC8hDX3xLCYftPwsmGfBH0dE7NFneLxGRBOZx7WbmrsMTNVoEW637hUAi0QMymYSdCBVMKbtuoMoziWA23WdpidFtsASUttoSwhoyrszLGjTh5UOTgMyGqGY3L/q4Vkbv5OGcLXFo38g0xf5cAt6Moyno7BrFzPj2fTTsQSRM+ASm77bA4y2Wh4396O+f+Vz7U5vZ0tmYCvZvSA763ahxAc98lH4ftpSceQ+DioAkIKvfumnw4loOJZjeWBYTrdDWANLNhQpQo2ZZw/13b4QKFJI/h/pJzsCU72LMJ8QhYMEUI8f6Xpi7K9b2fAMqQI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,16 +124,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Fri, 6 Feb 2026 09:59:01 +0100:
+On 2026-02-06 11:36, Jens Remus wrote:
+> From: Josh Poimboeuf <jpoimboe@kernel.org>
+> 
+> Enable sframe generation in the VDSO library so kernel and user space
+> can unwind through it.
+> 
+> SFrame isn't supported for x32 or x86-32.  Discard .sframe sections for
+> those VDSOs.
+> 
+> [ Jens Remus: Add support for SFrame V3.  Prevent GNU_SFRAME program
+> table entry to empty .sframe section. ]
+> 
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.19-rc8-fix
+This will not break the x86-32 build if the assembler encounters .sframe?
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/5ca98c22b5c4507fad4513a504d7c5ec46cd0386
+> Notes (jremus):
+>     Changes in v8:
+>     - Discard .sframe for x32 and x86-32 VDSOs. (Josh/Indu)
+>       Note that the use of KEEP_SFRAME enables to define it for x86-64
+>       VDSO only.  Unlike CONFIG_AS_SFRAME, which may also be defined
+>       for x32 and x86-32 VDSO.  In x32 VDSO it would result in superfluous
+>       .sframe (copied from the x86-64 build - could be removed in X32
+>       build step).  In x86-32 VDSO it would cause a bogus GNU_SFRAME
+>       program table entry.
 
-Thank you!
+For x32, this would be a "valid" sframe, right, even if the tools currently
+don't know how to consume it (and potentially never will)? If so, is there
+really any reason to explicitly remove it?
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+>  	/*
+>  	 * Text is well-separated from actual data: there's plenty of
+>  	 * stuff that isn't used at runtime in between.
+> @@ -80,6 +87,10 @@ SECTIONS
+>  		*(.discard)
+>  		*(.discard.*)
+>  		*(__bug_table)
+> +#ifndef KEEP_SFRAME
+> +		*(.sframe)
+> +		*(.sframe.*)
+> +#endif
+
+This #ifndef is actually not necessary: if we have already "consumed" the
+.sframe* sections they will not be encountered here.
+
+I would prefer to have KEEP_SFRAME always defined (as true or false, and using
+#if) instead of using #ifdef. I believe that also means you can do:
+
+#define KEEP_SFRAME IS_ENABLED(CONFIG_AS_SFRAME)
+
+... instead of #ifdef.
+
+	-hpa
+
 
