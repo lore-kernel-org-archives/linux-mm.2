@@ -4,109 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CF2AECD9BC
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B4EE8B364
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 944CB6B008A; Thu,  5 Feb 2026 21:47:31 -0500 (EST)
+	id 2F4476B0092; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91C2F6B0092; Thu,  5 Feb 2026 21:47:31 -0500 (EST)
+	id 2BAD96B0093; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81B086B0093; Thu,  5 Feb 2026 21:47:31 -0500 (EST)
+	id 1DEE06B0096; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DA6B6B008A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:47:31 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 18B8213B5E2
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:47:31 +0000 (UTC)
-X-FDA: 84412495902.28.0E5F7E8
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5617D4000A
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:47:29 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=nKzwI3+B;
-	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D7C16B0092
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 936B31B2784
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:48:05 +0000 (UTC)
+X-FDA: 84412497330.01.6B58C98
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B80DD160005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:48:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IMPBFxSu;
+	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770346049;
+	s=arc-20220608; t=1770346084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=ob4om/ZUIH5VDpYQRLmM68bAMoFu+iin3OtrpO9F1uU=;
-	b=FMh03mj9tBjI9kAOgnPsnO1Ixg08sJNtKcjluhJF7YPktTlLf55lZxf9ZxAMk9uyFkjp1l
-	JijrT0EGvvxnzm4RnxE6tVgfgM6ZOj+5Ms/MC96NvJ2g7MXmtj877qBel9bcH+tEV10sF6
-	k5FMVUQrCk16l/oW4P3SCtPGNBcqYJM=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=z8cUYDug+KA/z/+qG82tQKkyvE+6vqzDr2LKkma6cU4=;
+	b=p5FvLXZDwH1McRlSLZWqvzcgbF12wg5xoqXQCcdEuv6NTxoK4SPkUJ/At4ozg0FeiIkRt1
+	V8GQF0OG6kSjPgmByzQrxA9VvNevExId52wCOPx7vPMu2Sv7wIUq7t2Zy2V3t/3q8/HDSa
+	AD6ivTbfiACs197v/9m7oaxYTvNLD18=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=nKzwI3+B;
-	spf=pass (imf07.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.178 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770346049; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IMPBFxSu;
+	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770346084; a=rsa-sha256;
 	cv=none;
-	b=shryunXY6SXzEE4/bHWJYkeauSigjRh4a9S85XeWzWTpF/TMNTI2r7u9KjYLYC6rXGKuk+
-	AhBqkC+q2QSW+Q9BTdog6epXtdfr7vB2Evp1tRaKiwT4/AF4bPz+ZDh/+b7RQKTEy3vaCd
-	COTeTv5R9rpKSYQ/+Mgx5COBY5qAl+g=
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2a7b23dd036so918495ad.3
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 18:47:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1770346048; x=1770950848; darn=kvack.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ob4om/ZUIH5VDpYQRLmM68bAMoFu+iin3OtrpO9F1uU=;
-        b=nKzwI3+Bf3JzhEsP+50HhW/dR22T90MCXGr0dFcN9zZ5nTDP6IAF9oNyLx7zLXvTZP
-         SnO449sNU/qn10joiWzQB4CXp0keEhEfyqpv+Gs1FOeIC/8Q7POdnQ+i7Z5ZGXanGPYR
-         2VOstU4MnGQm5hwAq1OHhvi5SywZscuOGL7YM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770346048; x=1770950848;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ob4om/ZUIH5VDpYQRLmM68bAMoFu+iin3OtrpO9F1uU=;
-        b=nHcQxjwj/et5Wm3LWRTUubZGhn9NlNEqAwDxb/vvMQid2dsS3TnX1Npj0biPA0b4we
-         oYVCrzE2D2H1dHabefftGZbKR261DCV7/QdDGr8SEqZqsRUAHHCaT61ObvCfmfHChv5e
-         d4RWrOp4bEyPoUuKmmpmGvgKf0jGZ9/mZhIk4xsXeD20UOR9RkPTKZDscHk5pbu3KqT/
-         w8Gi7iLLJ2r+q/Otb6r1XvoAi0qYLvp1QbW51Mfaaf4GujFJgpkKNKHZX8YzEJanmmlP
-         AoiElhrtH+Rpy9yoJWnhQB3RolvZDXoeqMhrW6sYO6ikoJZS2kp15C2lb3M6VL6cHiw9
-         bHvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWnfY1vfFLTcFyztLHmb9FPF1zMoNStoNNWoXT8/baWHqUy6iau54xDJWstR9rS439mAoXxob6Gjw==@kvack.org
-X-Gm-Message-State: AOJu0YwKQZNqD+407Iv2R6oZURtIeBdIKNncs/apimruFcCRKceLvw7g
-	ctegT5IBw9SVZhu/j12elhpxocouPeR24ZnhZ12ur4bdbE9dqrqKUIJLI0qWNeR/Ag==
-X-Gm-Gg: AZuq6aIcXSX9QNDOXa5bicCNgEfW4eV8Y0KkrytPQylFxSM9KOu5o9SYn6xg5JGXBVi
-	NnUN2f+8R9dvtxKHIUEy4LbrJ7oS57aWy25+5M7WJaQXvM+UYn56v5tjT4Ox14urZefIZsHbisV
-	3O1irYu6UH+ZM3Kts2Ii10XhaQTVTLArnlkHRtatkUv9dgd3Qo7LIdRmnktuvORJgZ1hBKS/ijF
-	6yWE1a8VPtBtZbP5dn3PGc4Sn2wnmCvlZyR7igKwmKIWKDjLJxwKBQEXH6MqoYp6mJZ7OJ6/rlE
-	GePR+zYFbp4q5xKS3IjRhYWVI5lSNxRGpNjVznwu6jLXqEklSb/YjW2pnmm/2T2WODb1IN2370Q
-	yvODUTGJUpL6oKl9Elc4hEp3YUnn7Y9lF4O9njxw0Db/tU9dJWHU9c39aCSG4NZDOG+UF2jwJxD
-	fobLLEGTlDpz0NScWRty+d797VNTuyNjdO/v5Xf06ky6xPfDpqudY=
-X-Received: by 2002:a17:902:fc43:b0:2a0:f0db:690e with SMTP id d9443c01a7336-2a95192f788mr12567545ad.52.1770346048063;
-        Thu, 05 Feb 2026 18:47:28 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:7c0a:732a:f36b:6acc])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a9521c4134sm8184765ad.50.2026.02.05.18.47.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 18:47:27 -0800 (PST)
-Date: Fri, 6 Feb 2026 11:47:23 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: [stable-6.6.y] mm: khugepaged refuses to freeze
-Message-ID: <gp3foqukne5ukrssvx64svhcpogmrskyyzjatofstfrl3vplrk@onxbnxdjrswu>
+	b=LXhWInX+cNy79TcyL6GTjKID/OJ339NKDr1a8MLbePQXFri8EqZwfzefAwBDHGoVJSuv2e
+	XKUlrDXnMze+5c7TF6JfFygjxP3sH39t9cIy8Iu1Gv5on7Z9nprhKHDQ6bT/2dAd/pl8Fo
+	5DvbTFRPnS/X75zC9+KL1GU/gEqGg/Y=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 5617D4000A
-X-Stat-Signature: ee8nwpsqk7uj37b11by5wu5t9rzobnkh
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770346081;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z8cUYDug+KA/z/+qG82tQKkyvE+6vqzDr2LKkma6cU4=;
+	b=IMPBFxSu+8uQOW4JZAmYU378vjSSckXrZngrEjjc1dar8KyBJyMASGc9I43eGOFSz5SJo8
+	4DyVZaP8DtARAOTh71nbxYIhoXIw0i1dceOTE4MvOA5bLdmlgL14cCMN1GBcIwmqd7/p0E
+	drJzC+os8uGwbIuik+nmamkyTkB4c/s=
+Date: Fri, 06 Feb 2026 02:47:58 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <e155ad8af874f10baaed91f1d12fde222b82036b@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible
+ pages
+To: "SeongJae Park" <sj@kernel.org>
+Cc: "SeongJae Park" <sj@kernel.org>, linux-mm@kvack.org, "Jiayuan Chen"
+ <jiayuan.chen@shopee.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
+ "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
+ <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
+ "Muchun Song" <muchun.song@linux.dev>, "Yosry Ahmed"
+ <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>, "Chengming
+ Zhou" <chengming.zhou@linux.dev>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Nick Terrell" <terrelln@fb.com>, "David
+ Sterba" <dsterba@suse.com>, cgroups@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20260206022152.67992-1-sj@kernel.org>
+References: <20260206022152.67992-1-sj@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ujr5f1oa1x3fubs7jo63akrgqotwenw6
+X-Rspamd-Queue-Id: B80DD160005
 X-Rspam-User: 
-X-HE-Tag: 1770346049-461624
-X-HE-Meta: U2FsdGVkX1/zq9p+u7+WIgBcFzma+8RlebVyM49/vqvnPRWl039lCJrh5yo7q64tuoNYi2tShnbRTiIPgAx8iPekhcpXBbg+gBtLmgrz+YICkEiKcNzTqbTYUiIFE/Bj248GsNtZy4E+eTj2EFdW+ZPX2mX9nzMB1zx6RmthkoozbWlK6vHKE/flU1n7KqEfTx8gAJadEvBJUVTGVX2thipcBz2UeaZWm6u0/NqlDLGgjBGIflN2WJpjK4tzL0ftVg+dcVCaajTnXKngR6VlvwY2scbA4k8BOFCAd8w17PeOiTtB83miKo3wqOBFZdKk+y4xFOd/lQtP6V88IeOKJeevmgfKyLmYcsU0hGMDj7prXCz8K8gf8vcmruFqs8I1YYojeAy5jBkwJdOzQIzy8laK8H0AyFyuXybAtz6dLqaSaMalq+OXyTRvUKIwx9/5HseYF+xXX/Z7hUcmCkkOTdunLi9JckovLPamdUYtHTdLFVRypf1v4z/lQdgKhtoG3nRI+kypBkxchR9Pqrtrr7pBkgejrxi+ESFUIlT+w5KdOFFvcspEfmW8C3aEUekT9aipl82tEsmS7/D3w4KFwse85ImswbacG2Tps5WtbjnMkpk+esBwRz/PfFa4+ehcftTModY0knh3BT9cCnquF38IbaoGxTq6yNMJ9MTWonMK5JMxBk5z110jD2kIpNwPDrD1f67sKhrM31dl9rT6ghK91IrELNLn6c3z7qeQCazHXPASfp2CPP1WEbq/Bf9IEk3F8l3pVgaEfNkNYTGhw0onug9IsdXMu/cV/jEM8yNdYxP5nwLoBkGkel2/KXCD1maXU0M3P8WwKeC29LwLdBHQSAsccK3SjmS4l51S20AeOLijH8J+kZD7KLqy8XaMT70iVRMSPl5UyW3VK3JHHi1EyT8Zf3crqU1IwlmSZVyZofYF99q/9sB9PRzrBuoFZMNNiAvfb04WSdZ6JPc
- 1qJsSr4g
- N2GpMntgJFOZdgT5hrDKgLbtiNDkho355VOO6F/3nqjjhJEwrSeH5YLN05n1mOXcgJJknHNijslhu1mYo8lHdTOaUcyeFXb7QWpie0IAZ0yAATgOPy6ienutCXiBcwGeR7ds3lEH/TeaxYoAcdVPRED32IXpHK20cA12kYtI/Nyw/mFrbmwpWKEK+PowYHpCnMQvvweYEy6gvy2hJfGvvTgslHJkBUVOrxfenoN24oh6nXIsR40P7U97BHj2Vz0pKs3Xf/eNORwEfgYTvz3IWp1AmxHHI2S/9fTw2wfvD5+q3d4y3d3sUA3za8ULetMeK80QkGKCsR7YrXnY/oKyrEPOIaS9219hAdbOSZ9fb9ymwlNI=
+X-HE-Tag: 1770346083-35791
+X-HE-Meta: U2FsdGVkX18ekJj7Udyv7qjZ3cVFuLynCIDtJzacMoaTEt1pfV4Rb+QlGwgyGkhZIOiNR/ya3dEl9lUCeb0rOCfsjvna8yRqfdJ3LwIBLAYp6s9LVqoE2tcHyLUVK1je5FMIoQLm/v8ReW4IPF6sNAQ928HR6o0uGFEeesZ2q1s8ljNSNKkSnIvLDhXa1CATintaldcfbqY6bvmupixi+sVBJQLMz3maOZygZvJ77acQ2IZooA7/3ylqIGbEce6mSZXXP/86giAxXcPkVpaFOS9rS/iZMdfsARNztQNU39f6uNTHJShaDVAC73k1m46akTM6/zvUj+xQYt/tLiAOCslhxQ1Vjq3U4BAOS0BE20ZiVYh5N6O7jLzA1XBa5n4NRNtIDFZj37l7eHHsI+OfJlDB/QAeU7AjveYbhjzqYxaSlOyQwsRbt3t8nsW0/b/YVsUYWFkjiGvAE8L5U6Qez0sICuTEfoU4OSPrxP/8JL5qMAF/YcjwFR71DfpBot9s2aUp1lkpQDpr2FCSN+twNxfDRQKwruQxKBj3tbBNWEnHkhOQchRNW/qmwKlcy9FzBtvWZvCQ6aIFdAon79TkPi3pnnbUBc42t0kXqtvny0Svd0PP5rAK3KWRhqGAX9HXa/eUr0iavBSNe4G3PlIk46Wk5emDZnm2I0SwDgWONojQcrvG5ceDGr2KbH3CheUDvfZiKhX3jeYv6c36wclvF1S1vbZ6rwqQ22xXgZwr/T/4CTq946VU7GyiTV27YGc4GGMjtY4Cj3y6CcjEI6vOGo1RXzm7c3ssdyV2cMrIGVIvzoBKOLr9ZuTkfYBi+gD9Eppq06K3vhSG5XlRBq/F9ubQvnqlMQ/LvrovRfDr7fmx4WS2CZPnlsiLppnNTLIEgFZs8Dcyb8lEHZbwQ0v2OL18I2OpCnjl0pnRpgN8xCQUJBQmqBzFU/WPSq5rW7uzcUXhXmHdSN5NFOSqy9M
+ Hf8Qs8HO
+ qEcGwxSliDHZHRQbkJNodZVuMKGuL7pkIei5V/kZMyyigp5InJSY4U76e35hY9737IVPdjXooUSGK2cLx9SXME7E0vNR0bmWmIwROrUbBy2v13KF4zJJovagIBiOj/bnO/A854vTJcJyaT8v+VCyeb/Ue13czrFVBLmTmJDMPE36y+QQTS+N+dJh99XhDp2jrulHS/hGoqcF6GhvrfwF8cipCWzctbyBZuoSRmOthM2sx1m3+mWGANq0khlB+KgT6LoL4RahhCJ58GVxwGtiZv/rzU8uH58crMUQaYdbYw93lWDbrJwQmg4NKhe9ZiREf0X8B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,74 +99,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Greetings,
+February 6, 2026 at 10:21, "SeongJae Park" <sj@kernel.org mailto:sj@kerne=
+l.org?to=3D%22SeongJae%20Park%22%20%3Csj%40kernel.org%3E > wrote:
 
-I'm looking at a slightly unusual issue where khugepaged refuses to
-freeze during system suspend:
 
-...
- PM: suspend entry (s2idle)
- Filesystems sync: 0.003 seconds
- Freezing user space processes
- Freezing user space processes completed (elapsed 0.003 seconds)
- OOM killer disabled.
- Freezing remaining freezable tasks
- Freezing remaining freezable tasks failed after 20.004 seconds (1 tasks refusing to freeze, wq_busy=0):
- task:khugepaged      state:D stack:0     pid:1345  ppid:2      flags:0x00004000
- Call Trace:
-  <TASK>
-  schedule+0x523/0x16a0
-  ? sysvec_apic_timer_interrupt+0xf/0x90
-  ? asm_sysvec_apic_timer_interrupt+0x16/0x20
-  ? wait_for_completion_io_timeout+0xc5/0x170
-  schedule_timeout+0x23b/0x6e0
-  ? __pfx_process_timeout+0x10/0x10
-  ? wait_for_completion_io_timeout+0xc5/0x170
-  io_schedule_timeout+0x3f/0x80
-  wait_for_completion_io_timeout+0xe4/0x170
-  submit_bio_wait+0x79/0xc0
-  swap_readpage+0x150/0x2d0
-  ? __pfx_submit_bio_wait_endio+0x10/0x10
-  swap_cluster_readahead+0x3be/0x750
-  ? __pfx_workingset_update_node+0x10/0x10
-  shmem_swapin+0xa7/0x100
-  shmem_swapin_folio+0xcd/0x2e0
-  shmem_get_folio+0x237/0x580
-  collapse_file+0x247/0x1280
-  hpage_collapse_scan_file+0x26e/0x380
-  khugepaged+0x43b/0x810
-  kthread+0xfb/0x120
-  ? __pfx_khugepaged+0x10/0x10
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork+0x38/0x50
-  ? __pfx_kthread+0x10/0x10
-  ret_from_fork_asm+0x1b/0x30
-  </TASK>
-...
+>=20
+>=20On Thu, 5 Feb 2026 13:30:12 +0800 Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>=20
+>=20>=20
+>=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >=20=20
+>=20>  The global zswap_stored_incompressible_pages counter was added in =
+commit
+> >  dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as=
+-is")
+> >  to track how many pages are stored in raw (uncompressed) form in zsw=
+ap.
+> >  However, in containerized environments, knowing which cgroup is
+> >  contributing incompressible pages is essential for effective resourc=
+e
+> >  management.
+> >=20=20
+>=20>  Add a new memcg stat 'zswpraw' to track incompressible pages per c=
+group.
+> >  This helps administrators and orchestrators to:
+> >=20=20
+>=20>  1. Identify workloads that produce incompressible data (e.g., encr=
+ypted
+> >  data, already-compressed media, random data) and may not benefit fro=
+m
+> >  zswap.
+> >=20=20
+>=20>  2. Make informed decisions about workload placement - moving
+> >  incompressible workloads to nodes with larger swap backing devices
+> >  rather than relying on zswap.
+> >=20=20
+>=20>  3. Debug zswap efficiency issues at the cgroup level without needi=
+ng to
+> >  correlate global stats with individual cgroups.
+> >=20=20
+>=20>  While the compression ratio can be estimated from existing stats
+> >  (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
+> >  "uniformly poor compression" and "a few completely incompressible pa=
+ges
+> >  mixed with highly compressible ones". The zswpraw stat provides dire=
+ct
+> >  visibility into the latter case.
+> >=20=20
+>=20>  Changes
+> >  -------
+> >=20=20
+>=20>  1. Add zswap_is_raw() helper (include/linux/zswap.h)
+> >  - Abstract the PAGE_SIZE comparison logic for identifying raw entrie=
+s
+> >  - Keep the incompressible check in one place for maintainability
+> >=20=20
+>=20>  2. Add MEMCG_ZSWAP_RAW stat definition (include/linux/memcontrol.h=
+,
+> >  mm/memcontrol.c)
+> >  - Add MEMCG_ZSWAP_RAW to memcg_stat_item enum
+> >  - Register in memcg_stat_items[] and memory_stats[] arrays
+> >  - Export as "zswpraw" in memory.stat
+> >=20=20
+>=20>  3. Update statistics accounting (mm/memcontrol.c, mm/zswap.c)
+> >  - Track MEMCG_ZSWAP_RAW in obj_cgroup_charge/uncharge_zswap()
+> >  - Use zswap_is_raw() helper in zswap.c for consistency
+> >=20=20
+>=20>  Test
+> >  ----
+> >=20=20
+>=20>  I wrote a simple test program[1] that allocates memory and compres=
+ses it
+> >  with zstd, so kernel zswap cannot compress further.
+> >=20=20
+>=20>  $ cgcreate -g memory:test
+> >  $ cgexec -g memory:test ./test_zswpraw &
+> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+> >  zswpraw 0
+> >  zswpin 0
+> >  zswpout 0
+> >  zswpwb 0
+> >=20=20
+>=20>  $ echo "100M" > /sys/fs/cgroup/test/memory.reclaim
+> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+> >  zswpraw 104800256
+> >  zswpin 0
+> >  zswpout 51222
+> >  zswpwb 0
+> >=20=20
+>=20>  $ pkill test_zswpraw
+> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+> >  zswpraw 0
+> >  zswpin 1
+> >  zswpout 51222
+> >  zswpwb 0
+> >=20=20
+>=20>  [1] https://gist.github.com/mrpre/00432c6154250326994fbeaf62e0e6f1
+> >=20=20
+>=20>  Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >  ---
+> >  include/linux/memcontrol.h | 1 +
+> >  include/linux/zswap.h | 9 +++++++++
+> >  mm/memcontrol.c | 6 ++++++
+> >  mm/zswap.c | 6 +++---
+> >  4 files changed, 19 insertions(+), 3 deletions(-)
+> >=20
+>=20As others also mentioned, the documentation of the new stat would be =
+needed.
+>=20
+>=20>=20
+>=20> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.=
+h
+> >  index b6c82c8f73e1..83d1328f81d1 100644
+> >  --- a/include/linux/memcontrol.h
+> >  +++ b/include/linux/memcontrol.h
+> >  @@ -39,6 +39,7 @@ enum memcg_stat_item {
+> >  MEMCG_KMEM,
+> >  MEMCG_ZSWAP_B,
+> >  MEMCG_ZSWAPPED,
+> >  + MEMCG_ZSWAP_RAW,
+> >  MEMCG_NR_STAT,
+> >  };
+> >=20=20
+>=20>  diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> >  index 30c193a1207e..94f84b154b71 100644
+> >  --- a/include/linux/zswap.h
+> >  +++ b/include/linux/zswap.h
+> >  @@ -7,6 +7,15 @@
+> >=20=20
+>=20>  struct lruvec;
+> >=20=20
+>=20>  +/*
+> >  + * Check if a zswap entry is stored in raw (uncompressed) form.
+> >  + * This happens when compression doesn't reduce the size.
+> >  + */
+> >  +static inline bool zswap_is_raw(size_t size)
+> >  +{
+> >  + return size =3D=3D PAGE_SIZE;
+> >  +}
+> >  +
+> >=20
+>=20No strong opinion, but I'm not really sure if the helper is needed, b=
+ecause it
+> feels quite simple logic:
+>=20
+>=20 "If an object is compressed and the size is same to the original one=
+, the
+>  object is incompressible."
+>=20
+>=20I also feel the function name bit odd, given the type of the paramete=
+r. Based
+> on the function name and the comment, I'd expect it to receive a zswap_=
+entry
+> object. I understand it is better to receive a size_t, to be called fro=
+m
+> obj_cgroup_[un]charge_zswap(), though. Even in the case, I think the na=
+me can
+> be better (e.g., zswap_compression_failed() or zswap_was_incompressible=
+() ?),
+> or at least the coment can be more kindly explain the fact that the par=
+ameter
+> is the size of object after the compression attempt.
+>=20
+>=20>=20
+>=20> extern atomic_long_t zswap_stored_pages;
+> >=20=20
+>=20>  #ifdef CONFIG_ZSWAP
+> >  diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> >  index 007413a53b45..32fb801530a3 100644
+> >  --- a/mm/memcontrol.c
+> >  +++ b/mm/memcontrol.c
+> >  @@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] =3D=
+ {
+> >  MEMCG_KMEM,
+> >  MEMCG_ZSWAP_B,
+> >  MEMCG_ZSWAPPED,
+> >  + MEMCG_ZSWAP_RAW,
+> >  };
+> >=20
+>=20No strong opinion, but I think Shakeel's suggestion of other names is
+> reasonable.
+>=20
+>=20>=20
+>=20> #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
+> >  @@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[]=
+ =3D {
+> >  #ifdef CONFIG_ZSWAP
+> >  { "zswap", MEMCG_ZSWAP_B },
+> >  { "zswapped", MEMCG_ZSWAPPED },
+> >  + { "zswpraw", MEMCG_ZSWAP_RAW },
+> >=20
+>=20Ditto.
+>=20
+>=20>=20
+>=20> #endif
+> >  { "file_mapped", NR_FILE_MAPPED },
+> >  { "file_dirty", NR_FILE_DIRTY },
+> >  @@ -5458,6 +5460,8 @@ void obj_cgroup_charge_zswap(struct obj_cgroup=
+ *objcg, size_t size)
+> >  memcg =3D obj_cgroup_memcg(objcg);
+> >  mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
+> >  mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
+> >  + if (zswap_is_raw(size))
+> >  + mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, 1);
+> >=20
+>=20I understand the helper function is better to receive size_t rather t=
+han
+> zswap_entry for this.
+>=20
+>=20>=20
+>=20> rcu_read_unlock();
+> >  }
+> >=20=20
+>=20>  @@ -5481,6 +5485,8 @@ void obj_cgroup_uncharge_zswap(struct obj_cg=
+roup *objcg, size_t size)
+> >  memcg =3D obj_cgroup_memcg(objcg);
+> >  mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
+> >  mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
+> >  + if (zswap_is_raw(size))
+> >  + mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, -1);
+> >  rcu_read_unlock();
+> >  }
+> >=20=20
+>=20>  diff --git a/mm/zswap.c b/mm/zswap.c
+> >  index 3d2d59ac3f9c..54ab4d126f64 100644
+> >  --- a/mm/zswap.c
+> >  +++ b/mm/zswap.c
+> >  @@ -723,7 +723,7 @@ static void zswap_entry_free(struct zswap_entry =
+*entry)
+> >  obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
+> >  obj_cgroup_put(entry->objcg);
+> >  }
+> >  - if (entry->length =3D=3D PAGE_SIZE)
+> >  + if (zswap_is_raw(entry->length))
+> >  atomic_long_dec(&zswap_stored_incompressible_pages);
+> >  zswap_entry_cache_free(entry);
+> >  atomic_long_dec(&zswap_stored_pages);
+> >  @@ -941,7 +941,7 @@ static bool zswap_decompress(struct zswap_entry =
+*entry, struct folio *folio)
+> >  zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->len=
+gth);
+> >=20=20
+>=20>  /* zswap entries of length PAGE_SIZE are not compressed. */
+> >  - if (entry->length =3D=3D PAGE_SIZE) {
+> >  + if (zswap_is_raw(entry->length)) {
+> >  WARN_ON_ONCE(input->length !=3D PAGE_SIZE);
+> >  memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
+> >  dlen =3D PAGE_SIZE;
+> >=20
+>=20Below this part, I show 'dlen =3D=3D PAGE_SIZE'. Should it also be co=
+nverted to
+> use the helper function?
+>=20
 
-The system is using zram swap.  I wonder if khugepaged should
-be suspend/freeze aware.  Does something like below make sense?
-Or is the problem elsewhere?
+The=20dlen variable represents the decompressed (plaintext) size.=0D
+Since we compress individual pages, the decompressed output should
+always be PAGE_SIZE in normal cases.
 
----
- mm/khugepaged.c | 3 +++
- 1 file changed, 3 insertions(+)
+This check validates whether decompression produced the expected result, =
+not whether the entry is incompressible.
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index eff9e3061925..fa6a018b20a8 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -1894,6 +1894,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
- 		xas_set(&xas, index);
- 		folio = xas_load(&xas);
- 
-+		if (try_to_freeze())
-+			goto xa_unlocked;
-+
- 		VM_BUG_ON(index != xas.xa_index);
- 		if (is_shmem) {
- 			if (!folio) {
--- 
-2.53.0.rc2.204.g2597b5adb4-goog
-
+Using zswap_is_incomp() here would be semantically incorrect - the helper=
+ is meant to check if an
+entry was stored without compression (i.e., compression failed to reduce =
+size), while dlen =3D=3D PAGE_SIZE
+verifies the output of decompression is valid.
 
