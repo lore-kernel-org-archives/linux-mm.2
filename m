@@ -4,173 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84589EB28D2
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 06:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C0B0EB28CB
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 06:44:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E9F956B00A0; Fri,  6 Feb 2026 01:26:55 -0500 (EST)
+	id BA1A16B0096; Fri,  6 Feb 2026 01:44:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA6306B00A1; Fri,  6 Feb 2026 01:26:55 -0500 (EST)
+	id B4F5B6B009D; Fri,  6 Feb 2026 01:44:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C66696B00A2; Fri,  6 Feb 2026 01:26:55 -0500 (EST)
+	id A4E1E6B009E; Fri,  6 Feb 2026 01:44:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B3CC16B00A0
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 01:26:55 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5FE8EBB08C
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:26:55 +0000 (UTC)
-X-FDA: 84413048790.19.33F8BA8
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011005.outbound.protection.outlook.com [52.101.62.5])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 435FCC0005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:26:52 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=QxeFea7m;
-	spf=pass (imf22.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.62.5 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770359212;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8FC686B0096
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 01:44:38 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D342D13BA9A
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:44:37 +0000 (UTC)
+X-FDA: 84413093394.10.5D7966F
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DD47140005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:44:35 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SxGTm9ih;
+	spf=pass (imf01.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770360275;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S3hJHpnfViHF1yf+goF0/Lb83b1vt3zrrOPqrembubQ=;
-	b=BRuxD/wAz/26p9mmHsWwIG90sPMERhq7LXrZb9Cbr/H1LF18ZCt0RpyyDW9DwiWvWI6Bc/
-	hm1expdd6Ju6peTsPmsNwvKUKgMHHFeOB8brBpMGAkaB7WETPI/o1DtUoV/X3LqGNVM1Sw
-	n4IzKCwnAQ7fwOvyjOmTdVQG0qtsblo=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=QxeFea7m;
-	spf=pass (imf22.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.62.5 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770359212; a=rsa-sha256;
-	cv=pass;
-	b=cgUpfGISXdWWrqZ5BdwxEpd7h15nOIwhNllgT4+mQZZnl2v3/6AS3EX/h5O1l5NlY6NkeE
-	h+mzOg2NIfrJ9Ecaj3wUqGkw07oUgokgCouD+pYZyoSaIcFMa5GfNX84TLoPjMKPSWDwdq
-	DiVdRcInsT5J1b3U3pvA8H9uRKI30Dk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=VscrMbsOI6e2Hc0yi3fJnmm8CUEaztco7po9BLbincQjIjHhT8uLRzi9pjbAGfDQTZa9i+du49cejhj3zk2QITQv6kV89MpLuH/2yEy73N3n2MOgTBb0UDWeZ8xE0orLPgCZJWPMP/guWpWGHMZYUTUbjllWIXZLRcL6oomTkr+0j/0IRlkDyX8AcynEFziMYX3WjG1wlMDScI6+96fVdFVsakXaiXjl7RP/yQrbDBra1e0o0DvKbdBptuuCKhM4lWp7MK0YxRcw4y2hwQp1QwRo/PUOZK+t0yv5N5BfzcfV0+hFrr91noQ9Oh9SCqNwlDpB7SzSNSW+AzD/NZK44g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S3hJHpnfViHF1yf+goF0/Lb83b1vt3zrrOPqrembubQ=;
- b=vqrderwuTG6vRMkkj0GTHxkOMDZDLq8QURGK7c9e5UKepXIdsjBLkwuXrh631eKS67JvdagM9xl0AsjmZEisokAf4U+rx2T4YqvD0Fdks7lH+AVDObBOh9CJkEY3aHjSFNDAGKPpAxtO49V18ckg5Bn1JTwThKNMVT0GBKqf+33r8OcmU8KLWeZllirmrpYf9LXCcR/+/uKBZHe0GhxO4qbUCE2iwcpk2AgYcQryHlyKrltHqVdyPsYNGCNL0vM42GblRl+cpL8Fq0ssGHnIethbtwfdU6NMv8UdRp0kEMtEvkpX/I0Ju8u+Y5GZKJ+HpUbGDCkeuz1LujsWkbhKUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=collabora.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S3hJHpnfViHF1yf+goF0/Lb83b1vt3zrrOPqrembubQ=;
- b=QxeFea7mbvCX5zeZpTkLwRAHHRpp/G/cgBkr4VOLreN27rKO7Lmd3OTQudcCvyXBoanrKnY0p1oYxcu9v2NHM+RV1STdB1qmo1TB2ty433EqOUVCpYPpRR7RggYsiBiB4AveY2FFwv0NBfEWQhU+NgqRtx2NlQTmNiNKhU5NE/M=
-Received: from MN2PR19CA0017.namprd19.prod.outlook.com (2603:10b6:208:178::30)
- by PH7PR12MB8825.namprd12.prod.outlook.com (2603:10b6:510:26a::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.14; Fri, 6 Feb
- 2026 06:26:44 +0000
-Received: from BL6PEPF00022573.namprd02.prod.outlook.com
- (2603:10b6:208:178:cafe::e5) by MN2PR19CA0017.outlook.office365.com
- (2603:10b6:208:178::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.15 via Frontend Transport; Fri,
- 6 Feb 2026 06:26:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00022573.mail.protection.outlook.com (10.167.249.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Fri, 6 Feb 2026 06:26:44 +0000
-Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 6 Feb
- 2026 00:26:40 -0600
-From: Honglei Huang <honglei1.huang@amd.com>
-To: <Felix.Kuehling@amd.com>, <alexander.deucher@amd.com>,
-	<christian.koenig@amd.com>, <Ray.Huang@amd.com>
-CC: <dmitry.osipenko@collabora.com>, <Xinhui.Pan@amd.com>,
-	<airlied@gmail.com>, <daniel@ffwll.ch>, <amd-gfx@lists.freedesktop.org>,
-	<dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <akpm@linux-foundation.org>, <honghuan@amd.com>
-Subject: [PATCH v3 7/8] drm/amdkfd: Unify userptr cleanup and update paths
-Date: Fri, 6 Feb 2026 14:25:56 +0800
-Message-ID: <20260206062557.3718801-8-honglei1.huang@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260206062557.3718801-1-honglei1.huang@amd.com>
-References: <20260206062557.3718801-1-honglei1.huang@amd.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022573:EE_|PH7PR12MB8825:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a14b2e5-3d6e-49c0-3908-08de6548b2bc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?GuJroFy6F6j+HwLhWHMf70pU8LQ6cMgZj0U7C58ZBSfnDA2//mqnBC7a3dvL?=
- =?us-ascii?Q?o4FYtjKVP/rLcDROVTLRZSEp6n8GDmD1yHmmgomQKm7Mg+QaLixBNXPO/Q6I?=
- =?us-ascii?Q?D1n2f4MbmAMrt48hQCMCDs9RmUYcVjg311v0+Gc8BAZwu/n4RFoOuGNlvA8K?=
- =?us-ascii?Q?71QtDaLzqu4dA0RXAK/tINs8hLQwLghODIF2w+6ObNNhtq5QgAHB5/buhB3y?=
- =?us-ascii?Q?Eb4a5vaIITAYv+5XEthaKNAjCscWRHN7jFJiF67j+5wtPnljqoN6b8jI39Te?=
- =?us-ascii?Q?gkUrRKrdk9fkiqjLu5Z8Q3ttpZ624YDszhk9fgblz1ux/gunK3JOi10QPNLx?=
- =?us-ascii?Q?x6/yRwuaE32Km2gAvCLV3AtxqxfPkteHwRS+/bysMYFcCUzwBQcaevIi5DWS?=
- =?us-ascii?Q?+9Wa3A5XP/GVbyqAru0l60yNltl6q1hv6r9zYYdqSHCmZXWs9RU3k+8j0VZn?=
- =?us-ascii?Q?nWyLve/xq7PcH6MRDHSisK1QRgpgZ/Npz9kG+Tk1hvDzDBMKNYcPAl3hFHMj?=
- =?us-ascii?Q?OsqER/RSKnVHzqCmhD+nXSkqQ7UPlaUsOoqQf/Ds/t8+/CMtrHJqj6c0qOSV?=
- =?us-ascii?Q?sffZlaUcvtvGxR9y6MbY7XcoEi+MXMy3VoFPQVfZlGjirjJSLDUNckKizo2O?=
- =?us-ascii?Q?paiyLN/jb//lE7xTDrpkW6ez7nhs036dnaArQHhs6kat4U1N3wdZnBFfDk42?=
- =?us-ascii?Q?kDm+38Cgij6MhXoHUiom1G3h5phl1rUnohl5qHaV9PYjsEOJLGLpAT0ypYUq?=
- =?us-ascii?Q?Sps/kdHf+ku3UzcztZPnqSqfO+y2amtX3jNjvCj7GFokUx7wG5iqoxfN8Czn?=
- =?us-ascii?Q?WDqFY2rak5ArjaM2cevKHDOLhuqYdqpX4qLX3tPFcy4kCo4MCiObFQc2Hd/8?=
- =?us-ascii?Q?3Mntr26h2p0TmWTzb1mswlwrqdlM+fRgl8oecdJHn1ayIFjqv7OprXGvV3wv?=
- =?us-ascii?Q?IQ3dNjlX0PuKRvL3OegghMotA18KsrTKOzJCbapoY3YtNcnLOBufJCWAVrA4?=
- =?us-ascii?Q?mFQZWZMjNWAG1cscUdNSe4zALHXTkCI5ihrESEftTca9+ezeNMAFGj8g+QYX?=
- =?us-ascii?Q?T+1i48qMuEDCClrrOi3i0O7+qSgYxcJYmyy6rZ2Gbz/SwsIzk5cA3SpyQxUy?=
- =?us-ascii?Q?DroRYIC6wJfGpBUHbvc2J0ESowRQApxQyj5s0ajZ1r5mcmzdjVMaM4E9dDlk?=
- =?us-ascii?Q?Gunv+KXwtKhPcHJSnEYlXdemIotB40n7hTiQoztVhGygQihYPjQILV125/v/?=
- =?us-ascii?Q?4ZmpyaZdkfvQzZHJzlg733UQUv66BQX61Rk4EVBIMsm62Jdos5hPeBfM7+HT?=
- =?us-ascii?Q?3Gsgxy0/NmPdGO7eHCnrworvvWn1uH7cr1DF95bKKFzn4NDAcaErpfqINCR1?=
- =?us-ascii?Q?p41RTXFwtHoiZmqNHuIuuv0c10/rCmhzI61Znc8eGDRoESEFMFrYrlnqji02?=
- =?us-ascii?Q?cJfpUMC+pibqZ16OaIR0YQkXInUAKjNKXd/nXd+t5HqIEkXukZjPDtgn7Yh9?=
- =?us-ascii?Q?s0mKIG63NRihFRsE/YQWANwLKKLJkF6TVGwC0rr9VruXEh/1iUD4opKL19iF?=
- =?us-ascii?Q?99gKh/Wy+NY1T1EFC8+F/sBJEtxV7evHS9Dbr5+LIVtXMihZBmPz0uKllJJK?=
- =?us-ascii?Q?UdtHdibJEjEWpEsW8iwjrPip3NWpnz1cO5T6c+xOTUnp7gDSdQwfNDRYWHIx?=
- =?us-ascii?Q?9kxSvA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	PPj0p+3sOWHaWCurAMvKCOef6fjOrT4M4kjtPtdpkUGksPAELsjfy3+3AOJNOyHRdfBzcbJ4JeP6FYCVWDsw9hA+PnrKYCXGxaLiFes2i9YRpOS9nxh1uiTwqxi+UkpAjv99hKhPKoNYLy1LpYoVccN2WrjpAawjRzcRyfy68eDM8lc96WcfgZpLWN+/n0OFx6J7biidvkgjGoHLf7I2k2zPIwiDkNA3qieoob/5ako+mCoJftzgxoLXBx6j4HWJM+fvBZVt+3PmjCUQmz95sC9+RX+GBmMNfxxFo7AXde77cXCnNd7+jHodCsrwiWZrro3MY+nqvOc/DGQAbr2e0BsLUNpN6wnneLRyByQ94goaBBavxTYKQ7g4VjhUHTgG11qaY/RxnaqjJ+s8YdkopvCdpt2C4yispPhHiXM7pJ/W9onDO0HWvEpdjET0ssSc
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 06:26:44.3488
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a14b2e5-3d6e-49c0-3908-08de6548b2bc
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022573.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8825
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 435FCC0005
-X-Stat-Signature: ktehchhdimensddopoh7rsssfzb8guau
+	bh=Lk9u4ICPZk54rPPfUJcalYjNGp53FK+yZW2KfFesx1I=;
+	b=za9CP53pJOWLAr4AnkXpNP9orM5JfAOPhaCypqmTMfLurw0EbHhnUTw7a13Nkz3oyMRAhl
+	CMbr/V0wjZMXYyIgJmPS6aezAQEviGDa+mPTz1fCAlxuJ+SAtfwAuqd/2aCSfNtmHJjgJl
+	icgx1JYLnMZE4ogxyWJbOtg0Dm9ceCY=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=SxGTm9ih;
+	spf=pass (imf01.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770360276; a=rsa-sha256;
+	cv=none;
+	b=itpqeXbqGw6scVdDm+xQaZElGbkHQeBEhP/E4wbIBt12RLZdTXsH3VgprKiG04wdUPenYL
+	s+hL/YB4kLkbfhdau/kBFSN6SE+4OWYo2k6XqxR6YEQH1RLMc5/UnBp5PGx4og+04IlwcJ
+	FTfjwls1o58kXdfS2fZFl8/3AmHlO/g=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2a929245b6aso3350015ad.0
+        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 22:44:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770360275; x=1770965075; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Lk9u4ICPZk54rPPfUJcalYjNGp53FK+yZW2KfFesx1I=;
+        b=SxGTm9ihZ9GHdrq5//zFunm3+maPcRyQRo4SfrlzCM5z45Uw7c7fNN/sO3TzsogggY
+         NSahBKVaDc6ujgu0CTjO4fvdeEu72pco9cerEq5KptaJCTIyQXIlkCY2gLNGaL04Frv5
+         hBzJNHUugu1XPp6T3JuKJa16t+UUUF2qW83oA9fA8yqGU0ajvjpK5Mqk9ataqCEJGI8Q
+         4XeT+VtJM0s2KSr2w5wXn/ljLrR721UDHFIM5HENbC81E5asvxFqmyJg1xIo8ICJndY2
+         ZNT61aeXrP9m2HYd+zsUYSyuvz2L1JEeS0r3fzUlGa5nJKLIuee21/0iEPK05RaLGAwB
+         k5Iw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770360275; x=1770965075;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:date
+         :cc:to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Lk9u4ICPZk54rPPfUJcalYjNGp53FK+yZW2KfFesx1I=;
+        b=LLydhDr2g8sMaUsBC/xXJzNri4/2axniCgEqIIg2Kqc4YUGOiYNHT0PKyEwIMo9olh
+         5VODGvmp874SIbYKDr65bYzE0fMmoQgc8TGiMIrg6s/47SlrtOuRH6IqRZ7dPjU/0Q10
+         zzwa6aTsnrfBDD9e8wzr+ITiTYwpKcQqxipOa/gtdYszplHlMm14I2z6BkLJQm1eAMUW
+         cO5xfe4lm1Ucz1ZpR9uoabN2S2vba9Ef4hku3/J77iDF+EDL2ci+B3XWBJlkp/uyvoYc
+         nwjHH8+QURIhBO0BwyjwYgx9Tss9iyZwVPJZjjgKf3Q1sztqWnS9/oovTLUSNQBrJ+rs
+         0Rpg==
+X-Forwarded-Encrypted: i=1; AJvYcCUNp2diYZFkGr7ReJv9OIKXm4lLf99XEPDR9OPvN3f9M5P5A0mogQusip3+wUTDOKycGR/nei/Mew==@kvack.org
+X-Gm-Message-State: AOJu0YxA9X0TrrH+9fQAxBs+7zg7mpC6Hh2/Nxn6K11q9aPN1MVi+I9E
+	f9XXV3/UoPD9UloMHe4QSMp0rX01wV3fEXdEY7il1yMNun9tibHm0KN6
+X-Gm-Gg: AZuq6aKwwq1C6XbkugRHNjFr+M0Ix/bMdT17yvxQDmTm68mdtEe685dKgWAj4MFKXBT
+	QCfpj5rB3y7bPqCf3wz74q+ok1luSidq1ZIldyiRZF9MnEkkksd0i3tmqfkpgJDhEmnRYhZ8Sip
+	mMREmT56MgShyhbl6p6WJ/lTmCjAAzTmmJvUe9iQ9Em2/AsHmmyzr4Y9qKsty1WbD8Y1L+vq7vH
+	4772llHU+0WCQdBJnrSAJjKXiRLKt77O5++kxZI1Gh5inX5/S5vTNnP79EWS6cTCOlSRRzREA4Z
+	B3HItUl/funrkZhS9Wps0UXPVCnRI+aew2oBLCncxmcVv2Hc2nQhgBK2D3IWcbdGWxBLzhoKsK1
+	4uwpytepqIiDXccA5kGWLnrvBFtbgnEqjTMdGIR3BOJBTqpS7zLhIEw1sFVEUMXdgC1nW0Et0x6
+	X/kBpJazizDBoPf4JopDRqyis1yW/2e3oN8YSWdmEhrKuLOB7f7Ol2/JZwtK9b9eYk
+X-Received: by 2002:a17:902:ef45:b0:2a0:9ca7:7405 with SMTP id d9443c01a7336-2a95192a3d3mr26109155ad.36.1770360274531;
+        Thu, 05 Feb 2026 22:44:34 -0800 (PST)
+Received: from li-5d80d4cc-2782-11b2-a85c-bed59fe4c9e5.ibm.com ([49.207.208.177])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a952205e83sm16689695ad.81.2026.02.05.22.44.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 22:44:34 -0800 (PST)
+Message-ID: <c400d2a68d87a29e17a08ed03489ca33ea46a8f4.camel@gmail.com>
+Subject: Re: [PATCH v3 4/6] xfs: tag folios with AG number during buffered
+ write via iomap attach hook
+From: "Nirjhar Roy (IBM)" <nirjhar.roy.lists@gmail.com>
+To: Kundan Kumar <kundan.kumar@samsung.com>, viro@zeniv.linux.org.uk, 
+ brauner@kernel.org, jack@suse.cz, willy@infradead.org, mcgrof@kernel.org, 
+ clm@meta.com, david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
+ hch@lst.de,  ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
+ cem@kernel.org,  wangyufei@vivo.com
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com, 
+	vishak.g@samsung.com, joshi.k@samsung.com
+Date: Fri, 06 Feb 2026 12:14:24 +0530
+In-Reply-To: <20260116100818.7576-5-kundan.kumar@samsung.com>
+References: <20260116100818.7576-1-kundan.kumar@samsung.com>
+	 <CGME20260116101256epcas5p2d6125a6bcad78c33f737fdc3484aca79@epcas5p2.samsung.com>
+	 <20260116100818.7576-5-kundan.kumar@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DD47140005
+X-Stat-Signature: 4g5mqxc6jd4p8qk631pq9e3p4qkc5u8g
 X-Rspam-User: 
-X-HE-Tag: 1770359212-219977
-X-HE-Meta: U2FsdGVkX18rXDE79eYkrkTdP1dQ0Jgc+ybEe3QsClERrKf9PtYS/eCSiPCu5u/q827tmWY0iqiiY8NL86xXNgzUDsJuQAjTTFpRZNNGEeIVdbKG27GbPQE/rx2nfZc6g6MDhDnDlaXTghiYc+8lAsxRGSWD0yWNscusBUPY6HmwwuNcDPBxwS+F0fj1FmmQ3Wfio+i0TXQooqnXL3yBCjMiRyyeGtw2VsI38rR0JGacAgyGP6dyns10sBsMwu3bDV3+VEQb5ffHoXibqnqqDLl4qy10e6hZiKRUJe80/guousMahMUL5pzKC/9I+8P8bxqy2U1YD0EbIRjcpqudt2K4ln19IgMGxUTwapqoTFXTEjJ53jZFNgWHe+WFUw+y5y2lTLGg1SnvZB0WtWrQQ3CHlCQNJjkKPJ4HX4s9BChg4dTPPyHF0CpY5EOL6UaflDc57gMkZmr+7yC/IWQu2wQM5AXqsHi6UicJ+WsAXk3m3aWRefLAAk0aY8d3VNyMxm1XubpaqsIYwTXWOqIt81Pog1YZ0Jb3i1zrnTFQSYGSOjCDBLiapOzB0vwE9Fner0ln3ufJAl3VtEJxT70F/m7ihYQl+sv0Qi+FqHdBUL8z1CeC3SXCpKuBRAkCbb/pt04HmhhSXd7WTTnnVWwGs9vWkimvr+i+D6iyrhSkTfJBJ8S4mc2X11dzVjxHRjnxjh09t1BQzMz/kE5qjiKrUjor495U6NPyUmVEId+yDhX+yaqer6ocseaieT8/gV9XVzH3BoXO2OKpSj48IDu75fGd9miV/CoKeuIcrQtjpaJK7JEOqe1bEK7sQEXdTQDdpUpMgtHLLeuPcQreo/SDUbw8mh556nSe79oKTnGeWWASS2C5A6CeHCnGC1CHlS05Du+5EMCUvI9OuRpbw5Tt9ZncbSS4OnhJ3iPndHILKR+3bBHuskTNpV6mteuxKt6pod/aiaRiDNX6sXp5ea+
- oqehkd6C
- sqoQFvEgDZeFlHJoUJ5hh3Xj5wNYa58Q9TY5R9C48RaU2sWyHkyUdudBo1rXyp9yIul1rcYGN6gaLjz8LfqIGWC3cN6odaSGuDD5qsmbEgal7BHwBTlTv8D1wx64EAEf43qOLuXk/XpDPe/3CcyKElv4KpdPUcb0E9QW+To5+Afo6b5p9S2L775sDSoGyKydcxJDnMVfu97OpZhTevO2mJ2xdfuIjgKorgrNIbHUwy1jb6q5ElWw38Z3WnPqHGAW34naQ+HM+SyeG3Hnvj9VMcnk0mWv3SkR7gnvX/woHs1ScYyASG8VXzNOfpTbBjKGb+/QWtO4qWYCJaYGvVKceSlLZCnkPBh47fm4+6jwe86HVDxo4K5sqq+ILdL8v0fB6VlYo4JvEPo4KZS+qB3LZt5fMsEAZWQ+C1jeov1bee/Gtt1/5IyT+YHuxDHi7AAj2SSGNHjGpxmb157k=
+X-HE-Tag: 1770360275-887121
+X-HE-Meta: U2FsdGVkX18kjijSyyMVbmhg9HU1Eh6MTf/3oMUTbA7j8bopuxaMyRZxoyWLm5l5ViUUGgKYR4e6OUJEqOUUmdqxiHeBekfHuSeaK1Zr8uqqrsP9wNA200mETzPI/51YKVBmUmfC5ob410UhrwwOV53Gko5ROPadOp1q5agjE5h4MufAwFxDMvS6641qpl90QDm20Ww+xr8UeLuqIMRu8HSm0gzPPDnlPYcIB1AYY+QPSSrJ16ELnJ3+7mrc6yaMo1fJF6C5cvT0iua7CCn5oAuxCvRF1/8OZDkJkwzHKrk+ZexYBOH/Lrd2XY5sx+IoXS5HHJbCYCmPHUdV+/cQ/nAk9WchJZGSJ/Bs0ZlSmMS9qvwXHdbs8EWfLXza8XnVoc0UTxHYqb9b/rWwgKwkK3VjPviMsEONqHL0YBmKlbuoSji0OMWSbOALT9wNoKbdZg5NL8fjxCHqLZuxa/medrPPsZU0nl/FFwWXgVLy33S3uPVqvh4QDrwA/uh7MhKv9pNybJ/xvFkg+ezTfx2jpbgXY632XYayhbcBSS7Lqr7oyq9DXkqjrB9sorb1NIJn6+K0oK/9Y0ClJZaPvD+4c95uL+V6d5CIIheg9H4z8Wh5VAdDfy7A7kwwPt0bBSRgm1oYPjhPzwct6EySR6Mc8Y7MNoRMmN/zuz2ylWO5L8DauvV1jhmLmWhjknfAvbC4Y/G4CmLnG8+PylIA50r5kDuTQpHHAYE70fQjbph1MqO5EdbTck3ySYpx1Fv5o22vv7pQ6UYqW9rdm9pWrgehsmVZt0Cco9aqSnTi6vJL6FV4G1LtbC7DzP1rg49+DmwkMIvf7kmehdwDGhjyuHETdPvs1eLIAgwyHP2TAg1DQ/SC9D3oNEfTSPq1pwvATIs12RArV2EUzXEU2Z48nHsrtKOt/yfZC6qJiHmtztphc+AIhlqiNgt5z87wZIjQZRKPxT3WdB7tEW7GmwSsVEJ
+ YhMvFdP/
+ jR8tv/oXI2GnZDVDEnXsNp0axAh11oGrexzl8ovIiCReIwDHVnzEvCT7gqN4hct4zeqFnTOdO8L0bLPdMf3XCLtu3Oi7YUmF9ftC0i/9lWLR5E84AgEipSgNcuQieiSHZo0KixRMdWj+qhnQw65k3VcI6E8GIPzFebwDMCAcE/DtQmt6gPEddnr0CMraL9s6Ooqgh0xfxxcwuhJmJ1dUGjYowqDh/q/4OoxOFF2dhpo8fC39QuU4aESCI8c7zUQ8QcbU5pKF4YVC6jCqwpKiMGvcw1YhX7x8zNAkSIjc+6Rkjf/oqfAEG5m0MeHYBJ8dmhRzG0hWN5x5nTnPaRYIJJYFCm5RQ8yS7sCVodJjGLxaam54Ah0CyPpaPBIe4x5fVpKvp2JyKkab1Kxuxa85IYoAmbMdtUiZibo491VH89CJ/0gd6oqN9BPXZHK7yJhv8F5iWZeDJIWL/LurHgK9Bxth1SVLBL/pTN1UHLvtX/03EAqGr2UnZop60JqmfAL0fMfI/AiBUtW6AnYTE89LHvvKEzrFRDlwtvNk/r4tDz+B13CyUVSVdBeGpfNxgpVLgnx7m4zTaANR3/Obqf3jGOQb1IrnwwqYaGFIxCjwLJJkQHBP1LYwcLTlC150wAtpPyneCzTYS1MrUwglUxVmqPzwWEzHRSQMWjLZb4RRN6OZ8/M8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,240 +128,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Honglei Huang <honghuan@amd.com>
+On Fri, 2026-01-16 at 15:38 +0530, Kundan Kumar wrote:
+> Use the iomap attach hook to tag folios with their predicted
+> allocation group at write time. Mapped extents derive AG directly;
+> delalloc and hole cases use a lightweight predictor.
+> 
+> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
+> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
+> ---
+>  fs/xfs/xfs_iomap.c | 114 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 114 insertions(+)
+> 
+> diff --git a/fs/xfs/xfs_iomap.c b/fs/xfs/xfs_iomap.c
+> index 490e12cb99be..3c927ce118fe 100644
+> --- a/fs/xfs/xfs_iomap.c
+> +++ b/fs/xfs/xfs_iomap.c
+> @@ -12,6 +12,9 @@
+>  #include "xfs_trans_resv.h"
+>  #include "xfs_mount.h"
+>  #include "xfs_inode.h"
+> +#include "xfs_alloc.h"
+> +#include "xfs_ag.h"
+> +#include "xfs_ag_resv.h"
+>  #include "xfs_btree.h"
+>  #include "xfs_bmap_btree.h"
+>  #include "xfs_bmap.h"
+> @@ -92,8 +95,119 @@ xfs_iomap_valid(
+>  	return true;
+>  }
+>  
+> +static xfs_agnumber_t
+> +xfs_predict_delalloc_agno(const struct xfs_inode *ip, loff_t pos, loff_t len)
+> +{
+> +	struct xfs_mount *mp = ip->i_mount;
+> +	xfs_agnumber_t start_agno, agno, best_agno;
+> +	struct xfs_perag *pag;
+Nit: Coding style - I think XFS uses a tab between the data type and the identifier and makes all
+the identifier align. Something like
+int			a;
+struct xfs_mount	*mp;
+> +
+Nit: Extra blank line?
+> +	xfs_extlen_t free, resv, avail;
+> +	xfs_extlen_t need_fsbs, min_free_fsbs;
+> +	xfs_extlen_t best_free = 0;
+> +	xfs_agnumber_t agcount = mp->m_sb.sb_agcount;
+Similar comment as above
+> +
+> +	/* RT inodes allocate from the realtime volume */
+> +	if (XFS_IS_REALTIME_INODE(ip))
+> +		return XFS_INO_TO_AGNO(mp, ip->i_ino);
+What are we returning for realtime volume? AG sizes and rtgroup sizes may be different, isn't it?
+Can we use the above macro for both? Also, rt volume work with extents (which can be more than the
+fsblock size) - so will the above work? 
+> +
+> +	start_agno =  XFS_INO_TO_AGNO(mp, ip->i_ino);
+> +
+> +	/*
+> +	 * size-based minimum free requirement.
+> +	 * Convert bytes to fsbs and require some slack.
+> +	 */
+> +	need_fsbs = XFS_B_TO_FSB(mp, (xfs_fsize_t)len);
+> +	min_free_fsbs = need_fsbs + max_t(xfs_extlen_t, need_fsbs >> 2, 128);
+A short comment explaining the above?
+> +
+> +	/*
+> +	 * scan AGs starting at start_agno and wrapping.
+> +	 * Pick the first AG that meets min_free_fsbs after reservations.
+> +	 * Keep a "best" fallback = maximum (free - resv).
+> +	 */
+> +	best_agno = start_agno;
+> +
+> +	for (xfs_agnumber_t i = 0; i < agcount; i++) {
+Maybe use for_each_perag_wrap_range or for_each_perag_wrap (defined in fs/xfs/libxfs/xfs_ag.h)?
+> +		agno = (start_agno + i) % agcount;
+> +		pag = xfs_perag_get(mp, agno);
+> +
+> +		if (!xfs_perag_initialised_agf(pag))
+> +			goto next;
+> +
+> +		free = READ_ONCE(pag->pagf_freeblks);
+> +		resv = xfs_ag_resv_needed(pag, XFS_AG_RESV_NONE);
+> +
+> +		if (free <= resv)
+> +			goto next;
+> +
+> +		avail = free - resv;
+> +
+> +		if (avail >= min_free_fsbs) {
+> +			xfs_perag_put(pag);
+> +			return agno;
+> +		}
+> +
+> +		if (avail > best_free) {
+Just for my understanding - we are doing a largest fit selection, aren't we?
+> +			best_free = avail;
+> +			best_agno = agno;
+> +		}
+> +next:
+> +		xfs_perag_put(pag);
+> +	}
+> +
+> +	return best_agno;
+> +}
+> +
+> +static inline xfs_agnumber_t xfs_ag_from_iomap(const struct xfs_mount *mp,
+> +		const struct iomap *iomap,
+> +		const struct xfs_inode *ip, loff_t pos, size_t len)
+> +{
+> +	if (iomap->type == IOMAP_MAPPED || iomap->type == IOMAP_UNWRITTEN) {
+> +		/* iomap->addr is byte address on device for buffered I/O */
+> +		xfs_fsblock_t fsb = XFS_BB_TO_FSBT(mp, BTOBB(iomap->addr));
+> +
+> +		return XFS_FSB_TO_AGNO(mp, fsb);
+> +	} else if (iomap->type == IOMAP_HOLE || iomap->type == IOMAP_DELALLOC) {
+> +		return xfs_predict_delalloc_agno(ip, pos, len);
+> +	}
+> +
+> +	return XFS_INO_TO_AGNO(mp, ip->i_ino);
+> +}
+> +
+> +static void xfs_agp_set(struct xfs_inode *ip, pgoff_t index,
+> +			xfs_agnumber_t agno, u8 type)
+> +{
+> +	u32 packed = xfs_agp_pack((u32)agno, type, true);
+> +
+> +	/* store as immediate value */
+> +	xa_store(&ip->i_ag_pmap, index, xa_mk_value(packed), GFP_NOFS);
+Maybe nit: Unhandled return from xa_store() - It returns void *
+> +
+> +	/* Mark this AG as having potential dirty work */
+> +	if (ip->i_ag_dirty_bitmap && (u32)agno < ip->i_ag_dirty_bits)
+if agno >= i_ag_dirty_bits, then shouldn't we throw a warn or an ASSERT() or XFS_IS_CORRUPT() -
+Darrick, any thoughts?
+> +		set_bit((u32)agno, ip->i_ag_dirty_bitmap);
+> +}
+> +
+> +static void
+> +xfs_iomap_tag_folio(const struct iomap *iomap, struct folio *folio,
+> +		loff_t pos, size_t len)
+Nit: Coding style:
+I think xfs functions declares 1 parameter in each line with the ")" just after the last parameter
+on the same line. Look at something like xfs_swap_extent_rmap() defined in fs/xfs/xfs_bmap_util.c.
+Not sure if the maintainers have hard preferences with this - so better to cross check.
+> +{
+> +	struct inode *inode;
+> +	struct xfs_inode *ip;
+> +	struct xfs_mount *mp;
+> +	xfs_agnumber_t agno;
+Coding style as mentioned before:
+struct inode		*inode;
+struct xfs_inod		*ip;
 
-Refactor userptr management code to handle both single and batch
-allocations uniformly.
-
-This adds:
-- cleanup_userptr_resources(): unified cleanup for single/batch
-- discard_user_pages_batch(): discard pages for batch ranges
-- amdgpu_amdkfd_update_user_pages_batch(): update pages for batch
-- valid_user_pages_batch(): validate batch pages
-
-Modified functions to support batch mode:
-- update_invalid_user_pages(): uses batch update when applicable
-- confirm_valid_user_pages_locked(): checks batch validity
-- amdgpu_amdkfd_gpuvm_free_memory_of_gpu(): uses unified cleanup
-
-Signed-off-by: Honglei Huang <honghuan@amd.com>
----
- .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 143 +++++++++++++++---
- 1 file changed, 126 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index bc075f5f1..bea365bdc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -2276,6 +2276,35 @@ int amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu_batch(
- 	return ret;
- }
- 
-+static void cleanup_userptr_resources(struct kgd_mem *mem,
-+				      struct amdkfd_process_info *process_info)
-+{
-+	uint32_t i;
-+
-+	if (!amdgpu_ttm_tt_get_usermm(mem->bo->tbo.ttm))
-+		return;
-+
-+	if (mem->num_user_ranges > 0 && mem->user_ranges) {
-+		for (i = 0; i < mem->num_user_ranges; i++)
-+			interval_tree_remove(&mem->user_ranges[i].it_node,
-+					     &mem->user_ranges_itree);
-+
-+		if (mem->batch_notifier.mm) {
-+			mmu_interval_notifier_remove(&mem->batch_notifier);
-+			mem->batch_notifier.mm = NULL;
-+		}
-+
-+		kvfree(mem->user_ranges);
-+		mem->user_ranges = NULL;
-+		mem->num_user_ranges = 0;
-+	} else {
-+		amdgpu_hmm_unregister(mem->bo);
-+		mutex_lock(&process_info->notifier_lock);
-+		amdgpu_ttm_tt_discard_user_pages(mem->bo->tbo.ttm, mem->range);
-+		mutex_unlock(&process_info->notifier_lock);
-+	}
-+}
-+
- int amdgpu_amdkfd_gpuvm_free_memory_of_gpu(
- 		struct amdgpu_device *adev, struct kgd_mem *mem, void *drm_priv,
- 		uint64_t *size)
-@@ -2317,12 +2346,7 @@ int amdgpu_amdkfd_gpuvm_free_memory_of_gpu(
- 	mutex_unlock(&process_info->lock);
- 
- 	/* Cleanup user pages and MMU notifiers */
--	if (amdgpu_ttm_tt_get_usermm(mem->bo->tbo.ttm)) {
--		amdgpu_hmm_unregister(mem->bo);
--		mutex_lock(&process_info->notifier_lock);
--		amdgpu_ttm_tt_discard_user_pages(mem->bo->tbo.ttm, mem->range);
--		mutex_unlock(&process_info->notifier_lock);
--	}
-+	cleanup_userptr_resources(mem, process_info);
- 
- 	ret = reserve_bo_and_cond_vms(mem, NULL, BO_VM_ALL, &ctx);
- 	if (unlikely(ret))
-@@ -2909,6 +2933,44 @@ int amdgpu_amdkfd_evict_userptr(struct mmu_interval_notifier *mni,
- 	return r;
- }
- 
-+static void discard_user_pages_batch(struct amdgpu_bo *bo, struct kgd_mem *mem)
-+{
-+	uint32_t i;
-+
-+	for (i = 0; i < mem->num_user_ranges; i++) {
-+		if (mem->user_ranges[i].invalid && mem->user_ranges[i].range) {
-+			amdgpu_ttm_tt_discard_user_pages(bo->tbo.ttm,
-+							 mem->user_ranges[i].range);
-+			mem->user_ranges[i].range = NULL;
-+		}
-+	}
-+}
-+
-+static int amdgpu_amdkfd_update_user_pages_batch(struct mm_struct *mm,
-+						 struct amdgpu_bo *bo,
-+						 struct kgd_mem *mem)
-+{
-+	uint32_t i;
-+	int ret = 0;
-+
-+	for (i = 0; i < mem->num_user_ranges; i++) {
-+		if (!mem->user_ranges[i].invalid)
-+			continue;
-+
-+		ret = get_user_pages_batch(
-+			mm, mem, &mem->user_ranges[i],
-+			&mem->user_ranges[i].range,
-+			amdgpu_ttm_tt_is_readonly(bo->tbo.ttm));
-+		if (ret) {
-+			pr_debug("Failed %d to get user pages for range %u\n",
-+				 ret, i);
-+			break;
-+		}
-+	}
-+
-+	return ret;
-+}
-+
- /* Update invalid userptr BOs
-  *
-  * Moves invalidated (evicted) userptr BOs from userptr_valid_list to
-@@ -2946,8 +3008,12 @@ static int update_invalid_user_pages(struct amdkfd_process_info *process_info,
- 
- 		bo = mem->bo;
- 
--		amdgpu_ttm_tt_discard_user_pages(bo->tbo.ttm, mem->range);
--		mem->range = NULL;
-+		if (mem->num_user_ranges > 0 && mem->user_ranges)
-+			discard_user_pages_batch(bo, mem);
-+		else {
-+			amdgpu_ttm_tt_discard_user_pages(bo->tbo.ttm, mem->range);
-+			mem->range = NULL;
-+		}
- 
- 		/* BO reservations and getting user pages (hmm_range_fault)
- 		 * must happen outside the notifier lock
-@@ -2971,7 +3037,11 @@ static int update_invalid_user_pages(struct amdkfd_process_info *process_info,
- 		}
- 
- 		/* Get updated user pages */
--		ret = amdgpu_ttm_tt_get_user_pages(bo, &mem->range);
-+		if (mem->num_user_ranges > 0 && mem->user_ranges)
-+			ret = amdgpu_amdkfd_update_user_pages_batch(mm, bo, mem);
-+		else
-+			ret = amdgpu_ttm_tt_get_user_pages(bo, &mem->range);
-+
- 		if (ret) {
- 			pr_debug("Failed %d to get user pages\n", ret);
- 
-@@ -3005,7 +3075,10 @@ static int update_invalid_user_pages(struct amdkfd_process_info *process_info,
- 			ret = 0;
- 		}
- 
--		amdgpu_ttm_tt_set_user_pages(bo->tbo.ttm, mem->range);
-+		if (mem->num_user_ranges == 0)
-+			amdgpu_ttm_tt_set_user_pages(bo->tbo.ttm, mem->range);
-+		else
-+			set_user_pages_batch(bo->tbo.ttm, mem->user_ranges, mem->num_user_ranges);
- 
- 		mutex_lock(&process_info->notifier_lock);
- 
-@@ -3019,6 +3092,14 @@ static int update_invalid_user_pages(struct amdkfd_process_info *process_info,
- 		 /* set mem valid if mem has hmm range associated */
- 		if (mem->range)
- 			mem->invalid = 0;
-+
-+		if (mem->num_user_ranges > 0 && mem->user_ranges) {
-+			uint32_t i;
-+
-+			for (i = 0; i < mem->num_user_ranges; i++)
-+				mem->user_ranges[i].invalid = 0;
-+			mem->invalid = 0;
-+		}
- 	}
- 
- unlock_out:
-@@ -3126,6 +3207,29 @@ static int validate_invalid_user_pages(struct amdkfd_process_info *process_info)
- 	return ret;
- }
- 
-+static bool valid_user_pages_batch(struct kgd_mem *mem)
-+{
-+	uint32_t i;
-+	bool all_valid = true;
-+
-+	if (!mem->user_ranges || mem->num_user_ranges == 0)
-+		return true;
-+
-+	for (i = 0; i < mem->num_user_ranges; i++) {
-+		if (!mem->user_ranges[i].range)
-+			continue;
-+
-+		if (!amdgpu_ttm_tt_get_user_pages_done(mem->bo->tbo.ttm,
-+							mem->user_ranges[i].range)) {
-+			all_valid = false;
-+		}
-+
-+		mem->user_ranges[i].range = NULL;
-+	}
-+
-+	return all_valid;
-+}
-+
- /* Confirm that all user pages are valid while holding the notifier lock
-  *
-  * Moves valid BOs from the userptr_inval_list back to userptr_val_list.
-@@ -3140,15 +3244,20 @@ static int confirm_valid_user_pages_locked(struct amdkfd_process_info *process_i
- 				 validate_list) {
- 		bool valid;
- 
--		/* keep mem without hmm range at userptr_inval_list */
--		if (!mem->range)
--			continue;
-+		if (mem->num_user_ranges > 0 && mem->user_ranges)
-+			valid = valid_user_pages_batch(mem);
-+		else {
-+			/* keep mem without hmm range at userptr_inval_list */
-+			if (!mem->range)
-+				continue;
- 
--		/* Only check mem with hmm range associated */
--		valid = amdgpu_ttm_tt_get_user_pages_done(
--					mem->bo->tbo.ttm, mem->range);
-+			/* Only check mem with hmm range associated */
-+			valid = amdgpu_ttm_tt_get_user_pages_done(
-+						mem->bo->tbo.ttm, mem->range);
-+
-+			mem->range = NULL;
-+		}
- 
--		mem->range = NULL;
- 		if (!valid) {
- 			WARN(!mem->invalid, "Invalid BO not marked invalid");
- 			ret = -EAGAIN;
--- 
-2.34.1
+--NR 
+> +
+> +	inode = folio_mapping(folio)->host;
+> +	ip = XFS_I(inode);
+> +	mp = ip->i_mount;
+> +
+> +	agno = xfs_ag_from_iomap(mp, iomap, ip, pos, len);
+> +
+> +	xfs_agp_set(ip, folio->index, agno, (u8)iomap->type);
+> +}
+> +
+>  const struct iomap_write_ops xfs_iomap_write_ops = {
+>  	.iomap_valid		= xfs_iomap_valid,
+> +	.tag_folio		= xfs_iomap_tag_folio,
+>  };
+>  
+>  int
 
 
