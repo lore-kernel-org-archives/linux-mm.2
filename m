@@ -4,133 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5E32EB28E2
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 08:46:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26E30EB28F4
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 08:55:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 159B96B0088; Fri,  6 Feb 2026 03:46:47 -0500 (EST)
+	id 4CF786B0089; Fri,  6 Feb 2026 03:55:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 106FA6B0089; Fri,  6 Feb 2026 03:46:47 -0500 (EST)
+	id 47CB06B0092; Fri,  6 Feb 2026 03:55:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F20DD6B0093; Fri,  6 Feb 2026 03:46:46 -0500 (EST)
+	id 35E526B0093; Fri,  6 Feb 2026 03:55:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DF49D6B0088
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:46:46 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8113A1A0641
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:46:46 +0000 (UTC)
-X-FDA: 84413401212.25.79962BF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CE56010000B
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:46:44 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cd2IjknD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770367604; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 268A26B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:55:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C1B211A077B
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:55:44 +0000 (UTC)
+X-FDA: 84413423808.10.C50313E
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id BF29CC0004
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:55:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nfQ7bbch;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770368143; a=rsa-sha256;
 	cv=none;
-	b=LWOmHMQOjKtJgzEnkQ9zZsgrFJPpiDLFgLzUQr8O+rnVduW6eizlg5Zp12Xgo2Iya4GG7B
-	W03dIknSW728b76jXk5qv50IpJSe+d3BUEcDG6ZTI8deIOQ3hZt6uTfKAfES9FPAN9+bvh
-	gRChSW3d4ksA9wl6B8lM0Pp25ezaP7M=
+	b=CMLOa0fDTmzWAZHFNUhJR4P6gAOH0vmSqmk4XQkUqeCgZr89e6iL/u4F0GZdvrtVI46Axs
+	fVcr3rXldj65TyZu/ZUV8DA/DRRRsfG+GalvhtD173IDq9HQ3sLyq5ciOzquMLEy15cP2Q
+	ZZ+8x8RvEUIfc2wM3cb+POUOe+6H5tM=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Cd2IjknD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=nfQ7bbch;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770367604;
+	s=arc-20220608; t=1770368143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=twlwJRQPlVuaEt+rsMn/HrxLLGGeCuGXe4Ucw2ywtS0=;
-	b=DfedWPx8R1Xcrzcu+07amucPOA8aCxpyganCQoUD88nMF+GOnI5s2b7GSQumzQxYs+euDV
-	Lh/W5UaoZ0AVr799T92zqnixxoX12nIPmzVtzd5g9A9dNOb6dB9qw/bjIsc5EkBASsgbG+
-	1n9E3AGfeupDUZGtgBY0GJKeidpHZCw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2249160010;
-	Fri,  6 Feb 2026 08:46:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B7DC116C6;
-	Fri,  6 Feb 2026 08:46:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770367603;
-	bh=vchmqJmb2mGDzQ5x5W+qQCMF+BxTNhOa/z4vEqJc8JY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Cd2IjknDbdngmTYRAHlMyH9MekbEjkFVmozUJp/COGZI19pcTJnY0rNhFUfqrqndS
-	 UBJKaYmS2RiZNDQWvIZ4G7L42zymEiKNkxbyLiJ0hlPvCxtIwWvJcOkw4KMMCb2Kd8
-	 +4VzoOWTRqe4RGKPudwWWwDj1SppAG2VMtab3T0f4bR9fOemtAPvczwUUiiMbCYuC/
-	 ilC3bgaqb34EUYyN/lcVUqec/vp4tVz36nvAmgqBOEWnW85zTEXU1PBQkLDBvlnZ4C
-	 eEfXdrx6qETuZz1hbBxD5p4CnHBtyg0snmRCpUQBTDISlHWVjhbrXNcISMm1ndFd6p
-	 8DVOWEghBCFog==
-Message-ID: <e1c00847-0f97-4ef2-9d7b-5ffaaff62c0c@kernel.org>
-Date: Fri, 6 Feb 2026 09:46:40 +0100
+	bh=Wp7Qazz8xwMa3br3OGB1GRZNlhrigjBZUeslfFenub0=;
+	b=CdEYKjHVCBhnsgng8WOxpAw3MQDOnMgY8L8uu5x/5WPLmf71nujkej5QgbTeQlse5aGpHc
+	JfboDRNzvb4pGz3U2wHvwaorNINmRveaRSc0qrylX9CPckNOOhsXyvQ+J0g9AY1nS4LzlQ
+	RbCo7R2XPXwGHu0IQbbl0T9bWdIRAyk=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1770368137; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Wp7Qazz8xwMa3br3OGB1GRZNlhrigjBZUeslfFenub0=;
+	b=nfQ7bbch5z907Fy86dwYu3w9EX19oKQO/GgCUvbgqV0q2O/ID5b3gr2tmH6l+A04YXk2NTOYlPmYMTLjmFw+sibQRCXLKgM6zwfLLYiEeiAIkg6ZB/aSq6+gL5QJPg0g+d+WaifJyHUat4Krcl4IB333+YOEYhvcJgOqsBFJvuM=
+Received: from 30.74.144.131(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wye899q_1770368136 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 06 Feb 2026 16:55:37 +0800
+Message-ID: <70ed2de7-3e66-4a23-85bb-e0a4c5b61088@linux.alibaba.com>
+Date: Fri, 6 Feb 2026 16:55:36 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ksm: initialize rmap values directly and make them const
-To: xu.xin16@zte.com.cn
-Cc: akpm@linux-foundation.org, chengming.zhou@linux.dev, hughd@google.com,
- wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260206163850402hEblYPDgLSG4M7CT1ju2G@zte.com.cn>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260206163850402hEblYPDgLSG4M7CT1ju2G@zte.com.cn>
+Subject: Re: [stable-6.6.y] mm: khugepaged refuses to freeze
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <gp3foqukne5ukrssvx64svhcpogmrskyyzjatofstfrl3vplrk@onxbnxdjrswu>
+ <3d0f189b-faab-4452-b9cc-8f4e7a15025f@linux.alibaba.com>
+ <jujsgu5ed3srhetch2pbpdrt4tnf2alodrk4nfo7idxmhsq772@lirvj7ftvxgv>
+ <h3bbxn4omwe2jv32vyjou34me73x5nwg6ai57goqo2qlntq73y@ra75spa3tlzr>
+ <1179320d-6bab-40a4-a7ac-dbcfbab24623@linux.alibaba.com>
+ <c225864f-192c-4cf0-a5fb-411de8c22eec@kernel.org>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <c225864f-192c-4cf0-a5fb-411de8c22eec@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: CE56010000B
-X-Stat-Signature: bhhunu8m1og6wph4gjjqib5kke1qie3h
-X-HE-Tag: 1770367604-821542
-X-HE-Meta: U2FsdGVkX1+toBzSmLhYMk3H44DMVo+yMLafv1uHhSLi8yLKvBP07XfWEkYmZDLxEW9SZWQHLBb0M7Vfj39z8ZHwWTrwr2OZ3ukOkdS8ElpbzHNofgK57QNn00zqqeWzhfWmoioy2zk3GNWz/XlbXUbtssUKJEFG18vbSSxagH80xtkJzj26s+u4qXbSVl8JarftYmLfCgnMAeEd6ybdB+pDyH672w7VxWHrW2tL8FzvwYsXW7K3nQ3Bqondh3v2gcMEbfFeGDnvW+MlzJsOR4UoSXVmPlmvkWuSxDODE16PC6YdraM7ChKL9KoatjXzpsRPozA+FRdYHYF5wt5jbxuD+JK6B2NEPJ2M+srSI+VG74yoB9kjchSaLfI1Us3tK+tNELwct76RdcHJFukKKjBjA1XBCcjtdBMVOVSIJaK3QPjCpM1MHAZeqUrs0s5CX7t+EV6ycZh8Twa3rdaro5negzCvpW//8mXT55MIRr6S5r7+VFHtjmHLB0BslSo6YqiOLUegcpkIat64gcz/e5znRoK+OOSLjuPHla1uE9urWlqaY1+EQ9ljyfqUVPDAGxAmW8dxk8LG3wAuM+e4rnwMG88g5+hCN4i2NAMfFFqIxY+r4xZVeak53n+i4CW7xKbQ4x/lIAZwpmEAsWTDBEMHEwKtU2tVjNkSYfN+qnSKt5SL0g5uEmy2HuRd2SCQVK96JbQsRVIFMsD3w5LTkWLA+sL14ME1iag9OHaKuNl7xLa40466kXb64Wsx3nnqa33ONNOYVOz4/4mXt/SplB88T7H2IFnf1gXap9xcs/Mcv4DdeYgTkpAlsYqVmBtmASO6C2i5WQfer9kDnkO6CmS0MId9U9SUNxnGGNz7ZwJWTaozgzk7sg5L0kdRTSmxZmac/QPR3oQia5Z39Pkry3f2SuDasgcYBGeHHLCzBR/YI8D/pKVJFMEKPbscN4jY+b+VuJlFcVxGEvRC5KR
- pIgEF4Ex
- o3ZbqCKIoIG6piMjsrgeNhMFGthkvqV/i2RIyh7B9vyTuvSh7o121bgGqC8YLj41F6erox6ljy8tnTmun7MOvIuPJwnp2UH3nttKRKZnG9i6H/fmnCDdXzNnPHmmEyt26jKzZdJ/IR4h7lMLqsaMrNCcJ+radFlULFj9YrARrH8iKCOSMf0CHQkpZiZ5ebX+vVcBoUwQFccSzmnctBQx7eK9HsxUxxIbsuSFQnh3GkmHFY4mVW9Uyxz8Pb0lhbgS626KQEPKMdVTXL5XZ56ZNp8n0LWlGsaM+0pV05LBArTByAGzY6Yd6+7zhNRBmjpJ18ZkqQ2X1cNVIeO/9N0D1MfgpvQ==
+X-Rspamd-Queue-Id: BF29CC0004
+X-Stat-Signature: ehtjiqpjrtgb6pqg8thr4dqckpppaa9d
+X-HE-Tag: 1770368141-132800
+X-HE-Meta: U2FsdGVkX1/QCjSVFPO/vjZc7dMI/sPPssMDhaZX8MIZA5aa3mP1Rtz1wRSgkcK+PSSSa24PPO4dqTvjBxP/IscaqJGEJPGTEh5Qqc6L8/kC/naQ/uOxphdWtHlYHYeWBPmWQu0ueTt2JVLgA1wYuTEnQNpIXU7i+5aeUnKUOLkXsD9v0RtSaCb//e5vUcKb5MY+hmpYK4yOPgiEWTjhaKsGxXUEviJGXNK8H5Td0WRzZqY9pgxtuf9SuqUhsUCjOjKMxs28WEkw3u3y9hOXRYXiVLkXRn9bAYvJOzxlfo0Wlhd9Sfghm4cqvJzXFDK2VnS0H/xOquPqnBqCRHnQldPWLI1X94JgpkDjDetdNo/ugjx8rzK+P9AyrAGXjWx/SGcyR+rvfwKvdPl4PqcYU9iItnGTTYfyyt0OtTJxYp2bOyDoiXWzaRRdj6G4/EJ74Yq2k8yNxqawBkU2rsbyJDPDB+NxxeT/PkGGBU/sBgWY/R2boomxIGTz6dBp/6StxoYEqDA+VpYWHYNEiH87k+ySUn9+81IXX9oMJVWppqRkhkSqbYxBT+4fhkdwq0JTJGfjUi6xZlUzj+fv4VQP3rlBV0kCM2jzKJffXzK/itgn3Skv0hLU1XQ54jk+9yre+zBx6nmaO6QTd63rPpK0nLsAhqpOn8gvzD4E3pUOIX60TVlKUUNQzUHor48e27Y1NxCbVZgUb8znbz9gchUEV5xn3gi/qufX/Y6icZm59RsGfMSOfB2SaN9axB69CJP8ArFsPyaq7hKjlmr+m/vJXB8wbITuibINfaCWLoO7FcPBPHRsNZnAweOA34pHxfYJj3Q5KjCfASw5q6ZMtfeyUI1vdz5GNIi/BnxvH0vaPqqH2esXqRWz9fzKR/W6QRYdID93oxrox63BbeizP82Bmg0FGfYrl/wq/QTEG19DDpxlHtlURFE0/RFgh2Qhzf/RrxNnAO6+Onu9yOLNmuT
+ zAdmR6J8
+ XKPosSZ0uYreEqM3Bla/8Hqy1fms6DL+Zvyqz0JjTVHldD2YduALgVP3Ud7rkMUstEM6oCG5s7P5dZEMNMyBXvBMRRKGlwQixc28Ps3odsLidnIxdAqN3luUHDcWdSTsLSpupGOn/1VPdn75woTIEGTsv+4LMW42RAjo+eit0pthVkHs3Ru7i+aZkMpMIr/6xrKHmXbF+aBug2t39zo8hoOsi1c1/X7l+8/M+44C50YAhTbPGyS81f53bC5P/7gMX+A6klJeeMz3gnfyqOae1pKmMz2wXtOqmr/fznSQZUoP9Z+s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,51 +96,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/6/26 09:38, xu.xin16@zte.com.cn wrote:
->>> Considering that commit 06fbd555dea8 ("ksm: optimize rmap_walk_ksm by passing
->>> a suitable addressrange") seems to have already been merged, this new patch is
->>> proposed to address the issue raised by David at:
->>>
->>> https://lore.kernel.org/all/ba03780a-fd65-4a03-97de-bc0905106260@kernel.org/
->>>
->>> This initialize rmap values (addr, pgoff_start, pgoff_end) directly and
->>> make them const to make code more robust. Besides, since KSM folios are always
->>> order-0, so folio_nr_pages(KSM folio) is always 1, so the line:
->>>
->>> 	"pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;"
->>>
->>> becomes directly:
->>>
->>> 	"pgoff_end = pgoff_start;"
->>>
->>> The test reproducer of rmap_walk_ksm can be found at:
->>> https://lore.kernel.org/all/20260206151424734QIyWL_pA-1QeJPbJlUxsO@zte.com.cn/
+
+
+On 2/6/26 4:36 PM, David Hildenbrand (Arm) wrote:
+> On 2/6/26 06:12, Baolin Wang wrote:
 >>
->> Thanks!
 >>
+>> On 2/6/26 12:31 PM, Sergey Senozhatsky wrote:
+>>> On (26/02/06 12:38), Sergey Senozhatsky wrote:
+>>> [..]
+>>>>
+>>>> Right, I thought about it but wasn't sure.  Could the inner loop (e.g.
+>>>> collapse_file() in this particular case) loop long enough to fail 
+>>>> suspend
+>>>> w/o ever giving the outer loop (khugepaged_do_scan()) a chance to 
+>>>> freeze?
+>>
+>> Yes, that’s possible. However, if we add a try_to_freeze() check in 
+>> the inner loop, we need to consider various scenarios (such as 
+>> anonymous folio swap-in and other potential cases?), which feels too 
+>> hacky to me.
+>>
+>>> For inner loops I wondered if cond_resched() could be an indicator of
+>>> where try_to_freeze() should be placed.  Those cond_resched() calls
+>>> are there for a reason, after all.   E.g. something like:
 >>>
->>> Fixes: 06fbd555dea8 ("ksm: optimize rmap_walk_ksm by passing a suitable addressrange")
->>> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+>>> ---
+>>>
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index fa6a018b20a8..cee08466a069 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -2431,6 +2431,9 @@ static unsigned int 
+>>> khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>>           unsigned long hstart, hend;
+>>>           cond_resched();
+>>> +        if (try_to_freeze())
+>>> +            break;
+>>> +
+>>>           if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+>>>               progress++;
+>>>               break;
+>>> @@ -2453,6 +2456,9 @@ static unsigned int 
+>>> khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>>               bool mmap_locked = true;
+>>>               cond_resched();
+>>> +            if (try_to_freeze())
+>>> +                goto breakouterloop;
+>>> +
+>>>               if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+>>>                   goto breakouterloop;
 >>
->> The patch does not seem to be upstream / in mm-stable yet.
->>
->> Can you resend the original patch with these changes included and the
->> reproducer referenced in the updated patch description?
+>> This looks better than the previous version. Let’s also wait to see if 
+>> others have any better suggestions.
 > 
-> Sure, I thought the original patch was merged in linux-next.
+> What prevents other callpaths (faults, read(), write(), etc) from 
+> similarly triggering swapin?
 
-linux-next is just an integration tree.
+Usually it’s just a userspace process triggering one page fault to swap 
+a page in, then will return to userspace. There aren’t other kernel 
+threads like khugepaged continuously do swap-in in a loop.
 
-What you want to look out for is whether the patch ended up in mm-stable 
-or mm-hotfixes-stable
+> I recall that there is a notifier when the system is preparing to sleep 
+> (pm notifier or something). Could we simply hook into that to tell 
+> khugepaged to suspend+resume?
 
-	git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git
+Do you mean “struct dev_pm_ops”, which is used to register PM callbacks 
+for devices? However, I don’t know how to use it with a kernel thread.
 
-As long as it's not in there (1) the commit id is not stable; and (2) we 
-can still modify it.
+Also look at how kswapd does it, kswapd also uses 
+kthread_freezable_should_stop() to check the freeze state.
 
--- 
-Cheers,
 
-David
+> Essentially, making hpage_collapse_test_exit_or_disable() break our for us.
+
+Ah, yes, even better:)
 
