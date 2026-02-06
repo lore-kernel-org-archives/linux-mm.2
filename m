@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 691DAEB28FA
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:41:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A551EB28FA
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:42:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2CA86B0089; Fri,  6 Feb 2026 04:41:55 -0500 (EST)
+	id ED28E6B0098; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D009C6B00A3; Fri,  6 Feb 2026 04:41:55 -0500 (EST)
+	id E9CA16B009B; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C17406B00A6; Fri,  6 Feb 2026 04:41:55 -0500 (EST)
+	id D9F3A6B009F; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AE58A6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:41:55 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 589ECC15B8
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:41:55 +0000 (UTC)
-X-FDA: 84413540190.26.F21496A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C921C6B0098
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61D4D1B27CB
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:42:35 +0000 (UTC)
+X-FDA: 84413541870.21.299D217
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7ECDB80006
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:41:53 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUCfLDqu;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 839EE140009
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:42:33 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GSvVnMTC;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770370913;
+	s=arc-20220608; t=1770370953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ldGTQnCdP93ZKMLJ0WVYjVKXTxQNI2LiwEL3XwjMBkY=;
-	b=XRAsqCCl5aWX8hZp5ZA2nciuJz8uXoQlNfS+yNPHBH/trlyRcpW/iDPJ5bKMjvdy32BG05
-	5JUYVM1PL5fGhZKJnPysbWA0hAyFk9HpuYwSafRcxEX2VaP3Tm6pBA8xtK0bf8RbPyPB4c
-	ZDW5oC7Z7swx1cC+ytTO3gR/vMbpQuk=
+	bh=bhtg/7GX3NXsxhckQh7kks7D977Vk1pRYCk+7yLlU5c=;
+	b=CPRzrPE3Y7c+fZu2q670pXLIQuUCJYrpFjH/jho6E9U4aAT66id3ObhW6px3OAO7o7NUw/
+	0JMNb0nJ2MlowsyFjbuNIqRfcWuFzMjqwICt34mCUJ2cYiZGcyu4OGq0nU9WU3NLJ7V3UN
+	8WJrQ9W3Dy4o5XL0gM8Yl2uV/l8JMyY=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RUCfLDqu;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GSvVnMTC;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770370913; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770370953; a=rsa-sha256;
 	cv=none;
-	b=l3yXFeHshPyuqniqIcnpipl4LWQly9NUgQi2kp5Z81kOCaEYohDocA97ShDEOwrjA8mw7Q
-	tqaCwgiUF/JUI7OZD/HSyYyLlDQguTcDIb0fsDVDsqORdkyY11IRlfGx0dLn2tvKC4mHEO
-	N1241J3n+Vt1M/EUetAsjZgafOIV6+c=
+	b=b5moTExp6zxTz/0Kz2D/uSBDZXcRKl7hjl6oKvYarwGYefbjny9rn+uHY7TbBGJf3YPpaf
+	kD760+LKtQjzKox3QmXzJsde7vyYkwz1A/lfyHGFnNVX96ND0NuXjxLTl1I9sB31Q75yIk
+	0/+feK04ASgQQlNSoPNZyrzYUzj9x4Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8211143F58;
-	Fri,  6 Feb 2026 09:41:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6227EC116C6;
-	Fri,  6 Feb 2026 09:41:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A4F5A43867;
+	Fri,  6 Feb 2026 09:42:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FF4C116C6;
+	Fri,  6 Feb 2026 09:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770370912;
-	bh=83rnD8t3DNJ6QPw39Ew9UXjnTNb13axZkWJb6v64MTg=;
+	s=k20201202; t=1770370952;
+	bh=LhrTzSWf7NEah6Z7Oux3u9gbfwj2MNl56bdSDhRmPl8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=RUCfLDqu4SJx8/KJLBbnt2bOOruTXTFBRj3zfNkkKbLB/6TbEbz0Zv7LmeTW5kEb3
-	 Ndti+ks1LLtKOQ5cKLBEoSYmrf26R1l/Uieb9s4ACUmCYAxAaOt6RElMgtu/NSy0hQ
-	 ty0IXApx24A3cS3dVj8/zxAYlnOkfwlb+8O3YqzK3kuc9QEJAeZJOMpnxjfjzfpGxG
-	 ZS+aq70CmWJNi8hzlzLfgMW/SPn0Yf5MY92b5kkon/PPpe4z6LDqZq1ydO0FYbYQsR
-	 vVER/vc/M3/bb1+mj8BjP6ZAph5B33SqPo6eA7qvylTuEdkb0Pk1HbEic1QMOi1sPu
-	 GivGlnw+Zi3bw==
-Message-ID: <f417576d-ab79-44f5-99a1-3f672b490bf2@kernel.org>
-Date: Fri, 6 Feb 2026 10:41:45 +0100
+	b=GSvVnMTCcRhkxqlqeDx3rM6srCHZuDenv1DdtPoFP9SUQF8TtuPX/r+4ffLF35a1z
+	 Ya3vXMuTz4OOJrBpC3QVOcQytVqQMUT1mJ5GxbGIGf7EJGU+N6gJF9KKyPHkdhuied
+	 j04tYZXUUvXAkbj2ysXMysEc59RfXPQGZHhTSA6i6PI4+j57T7VPUOH69hOp+j/cy2
+	 yVhWELbxXuWm5SP2qxoGok6mGdD2AiEEDOTR9oIxhwob/7H52+k1jLuQMGzMgKqnNt
+	 u8PlegUm+gteaVi/n5UohU/uGYeeR/8vQpstamEQl+CsHkiUMRiikbcO/+Ojwu/bls
+	 wMOHaiNU6bRzA==
+Message-ID: <ad1a6ccd-d542-420f-b862-b41b7a29054b@kernel.org>
+Date: Fri, 6 Feb 2026 10:42:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 12/17] mm: Drop fake head checks
+Subject: Re: [PATCHv6 13/17] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
 To: Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
@@ -85,7 +85,7 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-13-kas@kernel.org>
+ <20260202155634.650837-14-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260202155634.650837-13-kas@kernel.org>
+In-Reply-To: <20260202155634.650837-14-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: tagzna5d1r7y498w3apn451brfirgnq3
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 839EE140009
+X-Stat-Signature: aouxa5mqegeed5wco76nn3g1bb3mkd4i
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7ECDB80006
-X-HE-Tag: 1770370913-466761
-X-HE-Meta: U2FsdGVkX18+qKT+a7R15UUDRt5qOWyRQE0aseizWcehrZKeFUcPljY2JI11TrwpJhstUJTvPmhLwGDUbIJ3WCDDX1Mmp8HcZEsDuqOIVcau2oNGAspuYn/kWAywT6mCh6wq2jUsEiWDZvQdtDwinpKZcxM9WGqFFneW7Ij1dCKN9QZwWHyfX7fDUPl9E200j/V5g0dOK4WEvDdd2477H90vuN+oWAw27rU6Otv+p5/9iszpSGbz/zBigCASrZUi0ma+oEDbMsYbAOIToCrcHeYHOYsa8qTZCShHfwrSpin8Xqb/k6+dZ4a7RWxZicYGG5QVHUYtgMBS2ThwES/qKwhKejOzpzh1xaT/0At6rCTdMwMtEuU+G42phoU10mlHw6p+Bk1AFF4VLljVtQxoC1Qw1lS4c/Cgl7gVnW0+rD13BndGkIYINcw5PEtSn8s4rCxyPEmr3o/S5GG0dkFYSJKSz/cIDYG+AsXBLJ24/uh8QvnBYNrUtY/LQ8IlgMG0Ff/nTFevpypZCXMyQoCDZzBgwPIyDxQ7gFZNKh/BGgUyiwPt3CHH53qDpkCm7k5v+y9gpZCjsTp75EjhKKJOly39Ch+PhR5v/NtV1p6vA3336kcMynY9OjmjZ4LMnTGRpE5bXGLknilvL0kzIToIe2DOR/c6tQFbRHXvfsROkM37amfpRy4o80njZKwYWfl1TPsiQh8J/gLZKro6yKDavhZY1hZL7k5r0x52qXbWusXjzSVBCxRrrurpUz//9s9e5qXVzdnyKkw+IatdRm9lKHs4OrhMQSMpIYyv6A3TYPa+XtXGE640QODNn6HdPMYws/izNullkHpL0qqYrs9PdV67/xhdx/rTPRpxSpS/vafGuqkHplK5CXOJFFDnlJA2xxKk17aw3DPOdR4QYiu5y2X9z04lSvDZybv0Sd10zRwZ1R00GypH5gHDGC6Smve/qFtTrQ6WVq6AP0fWRew
- rFI8rIAz
- tfKq5REKmghw73ujs7ghmcdpMG9SwLpq2CfkHuE/A5JyzRGmcqemctwDR3GpomUiR/X0oMgN3hZYnwywiZLf+YT2/0cJ6tBcXKy4XSgtXhh8lw9qCy/3e2EjCwC/NaulzXdFn2mTpsXHOxCEo6bBFgLOHhM2wuVvNiMUequbvIjmaE7CR3vM3ZU8OhvCVB6QKDSY07w7a2CLUMJ0jjfuoUd5oNIpQ/nYIo8Hx2XKHMDbDuqoM5/zpK86vePuHx6FN9PfVLtRZMBofutsGAYvpDTsU3mlsYfireRIQ
+X-HE-Tag: 1770370953-63962
+X-HE-Meta: U2FsdGVkX1+OprUD1kK5/k3Bs7nVm52TqmGyfnYXmF0t7QJ+mtRJzZRmWeRjqQUEaQgHsVrFHY2+1Yr/Ye8ujeEsrhv/hd2tQUea0My07kR8eHB7LN9/Nl5ROBwE6Z+uFr2nrjRd3ywgrqHHv1C+Q+LS5mL/ZLX5KhD+tkd2vXcKcq9NYFb9rqudRt/Yf16NmuhLXq08KQhO271UPbKIHk7ldVolxKVaz336C3xc/RY1H9+pmUAhGpY5cIk+4tXWIOqNb+B4WMlJAbSD5Kcdn5X/v7WAgVsiPIPwWu5NcCOwcOkAmYOtWhub2t7/SdM0pnVeVQZOm+UKz3Qm+WmxLeAtybvAasjlD7+vPxn/s9QOYxFsIn1uBkSjhQVQvD4fIki7oe+7/eIf2A0tfcfoWQh71ZP4W8KhoxY9WncXRRY6Uzdpps8/XqIDNw9Rb1Sskdx0cHNiDwDY8D0hQQKSBF9RLmTkFFyTYJVms8XqYzK2B2cYE8FHPt2upXBWNxXvyKrDZOl8un3We+pLPEKQkpIkRtlj35jmaAHdlOcRsytA0RH/iypFtQAYgY05ynZohg4/qffa5c8ZWe7A0OccieoPlmnkOfi6MyhrV5oxsWC+e6VmYn8+/8lnbBeCvJIjX70n8825OSV1cZscydVsCSXfen68ryukDCmUncDW5fpzYxkGZ6r63cxj9jeePVBHjGps4GBnTqC8J+A0hjSxveu0wGxHKXNgCV7aTM+hlGjZEGp/acHatCOP6A4+PszY/Of+zoYw0hjDERQ0ek41FltNya8YIZKrDHjaoLAeM80CDZjmqmme3W8UnkljqCTU1tiDsIe0oPbimIEOyRPd+WoZehaE3svMx3IHECqnNE7DhVsvQZFSbNhe+e/mej4oph54baHl+Kb6e6GZ4qVJGFEd0Qn2GLoepunGmpYbuYYOl8caNSUFkdD9rRx3jAK5ddUfpU7JaXqYJw7RatV
+ exUidbbI
+ 46wQolO07LGf22IR2HGqqBXVx7y5/PylV2gm//LYmDrxtP8lDXbATbDHPANUGGtlSuL/tOdcH9+o9L6jyvSuDbVZyhZEsWkFeOVN8zAX4RB2XvSo9PNl4LBaoGtMZg67XFzhWlSwTjcodp/mnQnGYNFtCcMBr0tB8J47tubfEeRgn4lT58Xzsc4ZoS5bVKPRj2uh2/CRkJpGNdE1dC6MdTDlm6U96xp8FVVnHtyMmOz1v/biL69AJ5QKwUQP5mO9C3hG4SZrURSMAmIqyCe2PAInZ9waBVZUxQ3L+xkLNNySppch9wnP83WPmDXFb2yv0UwU3fTtY2ZNqNKM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,30 +152,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> With fake head pages eliminated in the previous commit, remove the
-> supporting infrastructure:
+> The VMEMMAP_SYNCHRONIZE_RCU flag triggered synchronize_rcu() calls to
+> prevent a race between HVO remapping and page_ref_add_unless(). The
+> race could occur when a speculative PFN walker tried to modify the
+> refcount on a struct page that was in the process of being remapped
+> to a fake head.
 > 
->    - page_fixed_fake_head(): no longer needed to detect fake heads;
->    - page_is_fake_head(): no longer needed;
->    - page_count_writable(): no longer needed for RCU protection;
->    - RCU read_lock in page_ref_add_unless(): no longer needed;
+> With fake heads eliminated, page_ref_add_unless() no longer needs RCU
+> protection.
 > 
-> This substantially simplifies compound_head() and page_ref_add_unless(),
-> removing both branches and RCU overhead from these hot paths.
+> Remove the flag and synchronize_rcu() calls.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> ---
 
-Can you say a bit words more why RCU was required and is now no longer 
-needed?
-
-IIRC, it's because we now no longer reuse the real head page (page 0) 
-for a tail, and there could have been a race where we could have 
-attempted to write to that page0 while already mapped (r/o) to page1.
-
-Also good to mention that the corresponding RCU sync will be removed 
-separately in a following commit.
-
-Nothing jumped at me and it's a great simplification for core-mm.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
