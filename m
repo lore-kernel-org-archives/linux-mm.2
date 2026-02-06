@@ -4,92 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7FF4ECD9B9
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85E46ECD9B9
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:36:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15ABD6B008A; Thu,  5 Feb 2026 21:34:11 -0500 (EST)
+	id AEC8C6B008A; Thu,  5 Feb 2026 21:36:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13C306B0092; Thu,  5 Feb 2026 21:34:11 -0500 (EST)
+	id A6F9E6B0092; Thu,  5 Feb 2026 21:36:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 066006B0093; Thu,  5 Feb 2026 21:34:11 -0500 (EST)
+	id 96E906B0093; Thu,  5 Feb 2026 21:36:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E81356B008A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:34:10 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9134C16076F
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:34:10 +0000 (UTC)
-X-FDA: 84412462260.12.A6C7E21
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 992DA1C000D
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:34:04 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uc4tZYfg;
-	spf=pass (imf18.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 862716B008A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:36:16 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1AD1A5A859
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:36:16 +0000 (UTC)
+X-FDA: 84412467552.28.5E0D9A2
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf27.hostedemail.com (Postfix) with ESMTP id F1F564000C
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:36:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s4aantJR;
+	spf=pass (imf27.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770345248;
+	s=arc-20220608; t=1770345374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfSoJqHnivlDlIr4yD3u1C63GloDhp3Ya4gt8AF33eo=;
-	b=MwZVmipLXQtGPOmG5tOEblMNw05tb22HHh4+/wd0uIZ8uW//fCZ0/YU6A2rtc+bf3TmVg7
-	wATjx4fcExKvjXVmORPDRXDk1zdwtW5McdT/J6dQjIxltWnBv+gGnR9E4wxLX/EgvWJs3k
-	DxxVWWjZzocBomnyucXealtcIcuxZ+8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770345248; a=rsa-sha256;
-	cv=none;
-	b=zqKOILE4cxOvy4vdNJXm29yzy9HaXMVdTtuQBriuWLWnFRX+v+haHhOyr/O14DOVcpDDFR
-	xs5TQQtlCR0eolZ5pwClWnaaEDbAngiqQaYloxEbGqt8TJrfkOqt9yz6BFNH2fPfP5m14r
-	E75re5c7llyum4fhrHlTQrzj6wz7HEE=
+	bh=ezukT8gf6vSf0QeciExJA8vVhdyq2uEBdV2mhNDadD4=;
+	b=xhDh9XdxQaVkD9jNWnWsUtF4zFdBZQkx8lVNzPf5rweV+hDu0iOVu8d0GVmVo0nyKlarRl
+	4nQs8MQnUNaJFntIYH4O1uTVcOg/uC4DNjSyAnB/pdbMsctPkIolVjZ7xPVC22DeODdIIL
+	JCeuAFbhBHRMbwI5QQ8HdFzudzeJonU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uc4tZYfg;
-	spf=pass (imf18.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s4aantJR;
+	spf=pass (imf27.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770345374; a=rsa-sha256;
+	cv=none;
+	b=R1Vlki/Ttkz+Q3eUNOmB1jlEi+XDan+tR3yOAm45K8/26e5LtGGgaDDgfrS4S9NpeY45Nl
+	TDtYuED8MetloiVRgA2wCbfx6FgW4wZqsC7gX2FgNGa6vA+ZNSV/hWU/om1RdNRtt5zb9h
+	KmglHzh42yBCHxtf4cg374sJ+yb4vbA=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ezukT8gf6vSf0QeciExJA8vVhdyq2uEBdV2mhNDadD4=;
+	b=s4aantJRfPssrCTa1yKJyIcOivrhh0gnt+2+HS1+182XHUQoAjcmUsCCwlGCcCW5dna5kD/Tj
+	2OdvS7KYVXF41Xxj1VvwJZwa4d2K18QfufeULKIkramvSMwkaTpVYwTto6aT8OKViDrr4q3IBEi
+	fiiwQAorO5zkQeydhJ3YdZw=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4f6dPv742bzKm4s;
+	Fri,  6 Feb 2026 10:31:31 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id BB32A40562;
+	Fri,  6 Feb 2026 10:36:07 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 6 Feb 2026 10:36:07 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 6 Feb 2026 10:36:06 +0800
+Subject: Re: [PATCH v3 1/3] selftests/mm: add memory failure anonymous page
+ test
+To: Mark Brown <broonie@kernel.org>
+CC: <akpm@linux-foundation.org>, <shuah@kernel.org>, <david@kernel.org>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<nao.horiguchi@gmail.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
+References: <20260204073331.899406-1-linmiaohe@huawei.com>
+ <20260204073331.899406-2-linmiaohe@huawei.com>
+ <2028f5e1-e032-4909-8240-15fe0b3c82a5@sirena.org.uk>
+ <0a84104a-32e3-8518-ebc0-703814e233d4@huawei.com>
+ <73756615-b779-44b1-8ff5-b4b2d5e3c7cf@sirena.org.uk>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <92c543fd-4316-d5dd-451a-a2c668fc98aa@huawei.com>
+Date: Fri, 6 Feb 2026 10:36:06 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770345240;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nfSoJqHnivlDlIr4yD3u1C63GloDhp3Ya4gt8AF33eo=;
-	b=uc4tZYfgXOFC9nl3sMdCd8ww5lBF9as+h8Tr/TPvCORF5ZGC9gnanhVyAnGYvKEtbaUJ6e
-	e0qEDmu+YBBQDstR3JTGS+89oEObfLj4NJirsCcaKqe4SYWihr0bxHxy83dWlZyrCt+qnC
-	ml5vU7D6qSV1SsfRrE8y4cV3V9Qhb7Y=
-Date: Fri, 06 Feb 2026 02:33:56 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Yosry Ahmed" <yosry.ahmed@linux.dev>
-Message-ID: <b0b984be60ffa366929d363ec2b63f5c92187556@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible
- pages
-To: "SeongJae Park" <sj@kernel.org>, "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Cc: "SeongJae Park" <sj@kernel.org>, linux-mm@kvack.org, "Jiayuan Chen"
- <jiayuan.chen@shopee.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
- "Muchun Song" <muchun.song@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
- "Chengming Zhou" <chengming.zhou@linux.dev>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Nick Terrell" <terrelln@fb.com>, "David
- Sterba" <dsterba@suse.com>, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260206022152.67992-1-sj@kernel.org>
-References: <20260206022152.67992-1-sj@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 992DA1C000D
+In-Reply-To: <73756615-b779-44b1-8ff5-b4b2d5e3c7cf@sirena.org.uk>
+Content-Type: text/plain; charset="windows-1252"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F1F564000C
+X-Stat-Signature: qngf69zss9g9tx1bwomnx4bxwsawxs64
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1qgy4ccnrbsemr3apc6zdbzrgmhsrcbf
-X-HE-Tag: 1770345244-256194
-X-HE-Meta: U2FsdGVkX19e95RaqEGzS9V9fJ1riDCka3aBYQ8hvdY1nPhMoucd93MZztD1mu1VSy+1E03QlfgEEHdBSlrMcQurKTOnOWs17qXijMEpk8z+OhXEaHLgxlUkcUIMHp2JPV0v0RyCVudvwIjKf/2CKuWIh9Cuk4/gZWlpO8XHBP7tDqagVItejpBkFIOd+W00WQRxQzRFSavxaJIaav5/+dCzaHhN+xVJSKCe6wWRedqqCXaDrqWfD1p22xMkwE+E+2Lui2m8Dqe6t4F9vyxncGgGCX42L3s/w//cI88NYaT+zPhct1pg3QSdIEt1poKnzAnqmzoSfkFbma9ahHF7Fvz3J9+tkSIX88YX4Cs5DgFnaBjeYTvAjV2APbP2FOdyYk4CkAUGY3XdlS8lDo82N8HHGlyVPofqgh6l7agdnYke8WY5Q4BghWWQQjl0Rrz14Oea1eSP9/ziUjLcnsfxOhxCIYKoN+pzd0rARyqXE3UlsTBMHSFWm2gJHLXNE0NISWtXTYJofi6tzWX4ORt2GnR6CUAumkJW1GnsgpVUdnj3ShLhw35jiBCDked9Uc56Yh6TsI+CxIuZ+WYU/LOsxVX+3EUAY3qJkB5vbnkAV9BOSE1rPi/czeILcQcWtaoUpzCNEfHZN1j40crLTrtYg7QrFvgz3xzujV6cNj5TCD+j8wSwdVrLjhsGbCY23AdJdepHv9rvOBBpnThSR5ePVW0dEQcNBHhtBJedMrRdXr/fSItqEjqDNIU0pKvlSuilAldQVVlsxiSeHFS/oLSu0p+XNKdzPhkP6bPTpP6R1fkFO4u9T0Za/tGZ013gaTd1QB+ZoSPEaXiv9WxHFKzk1onQComlaMXiOadXMccKtoKyO5/JHa13YIq7WlMk3pWGkp7/z9pvBHjLevC4tHriLsDnu6nsUaciQdTNmFW2C1kF5IG/4szPYurcOak2B2i0jaAwlOPlIJyk7j9Yu8n
- GMaW5GrZ
- xGUEatGTTfZ0sK+aoGzho9G3nK0V1UhGC9Vb7x3kNVEtDnJdXEUglFrLcUJon1rf2At0RHK0l+3kRG0BIty3likzbfx9xk/dX7f/aZPi1s0cnbR20HMGlQbO8BgtxFtZTKkwT80EKgJnIjVfdt3bPpwE35ETL8h3Jw3jHAph7NId8NrlqY7sRrs4JgdWd5FKz3kMOiPzsW13mmFhROWTe5q9d8ZMtsGFFYBsA31n3MpA1wNFPN6Z2pBGzCEe6iJ2WLmDJfVxeP1Hqe9bt/zjwyJtaKSOr+a/+TS/XvOND/rc1Fw8=
+X-HE-Tag: 1770345372-633609
+X-HE-Meta: U2FsdGVkX18wWwGCrgXJClgxm2I1/sKCHm9eRVOD2shVA96yiKetY+z28lIVVMXoOx1AFFy+7HIg0gZvyaz9BwUepfLcg3qoNOAmc/ZIOXbPpjnrXBTy/259VhbMQokYi7C2cvFRR6rJcVC9XY26A05AR2AYvjoDay8dUdXk+YuPKgP/SfDNM8ecl9EAuJuAYMvjkF1XDHTbHQ1XUtcKea/RaAoChKeRAdMDF8mggJnmhCeYiOqEO5FPkhc0EMEnn7VdCsuCtAtxZLXz9R77+G7JIDZe62I+DccQrD1+DuMjb7dmInYvGHVse+5jxcxE+rdJYYQAnEr9i/qbXtCOeasdzZ923JGSTVKnXZtMzKOeeyiReVPLbMSuxw7cnILYRGHm7N7lNZ9JUWM0cwI0tqAl+CsUcdglRqMm3BhZtekpywXkyhn4XLwCSEQ+m++Tv7uRY6CSFE7IToejMOesWUW3NGHmGGIIB2pYhNLI8oLvL9Ykgp413bX2n9Tg+bOSvz7HdsrjoaM2DLguM8xmgAudLsZlPsXJnVeHyqiPzNuizfeYdW/KJtlgDd57aJJFoCnUPKP/+odIbbWuCifepnWWdRbpwnEWzIh9fbv4bKd3MTgoPcBaVq5aVZvhFhLDextfdvtIgkXbJNG43Qj19V4hjeTytI9O5DFNqVz72E+gapua+PoamYB2mu78M7JNPvJGuUkF3cWxgkCPMWR3hwo+lKxn1hIpFHOUTYDkcqpc8hGxALJ+YxVUVnzfCewy002QHMycXMy4ImNMFZjeIAVlH5ePCFMFSavZsxI8h+d190S1T/e4xTDq5ZZzqu3kIbSoWU8sq3mUo8RjEdAYvfWVd2TCRsl//95Is+dQ4OtceoYQhR1HlzTmK2zFWgzGm0uQ2g24HoUZs//b+cNuiaoG/O9tDVMS5aW8NBp3z5AEss5h1Hsgtu8fLs7nt1qqM2zeMbrj9dgYzIw9NdG
+ e2L9VfHP
+ U9dKlVsF5lQJEALkDiWFEvtM/asXKIpUwSC20i2RbTweATW7ExyKaNcBR5xJAZuAXoSQ+rHl7nPPky17qpaQbG6VB8hX6QPlTTQmOG3tzb7bcND/7qdFjPGcs2twDFXzMBCU9l02cD6eVFRGkP0MMbg5QZqc5KRFiCEuM2lEarmzJmMAYKUJDxNGuM1Ilv+ULTD8xZ95nG7EcNPEIK4HQ7bXTyHLmbxmRClV1V8rxsGRS56ATSW2MsYyriSdAcm9pWvPEluIxEz+dw8fty8468O7PLOFNrRI21erhMDLqyExP5pP4M+pF2bd8zpRyDxuqdqEqevMWIisOhv+7GcJASoVbbFxrOazE3vXC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,163 +112,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->=20
->=20On Thu, 5 Feb 2026 13:30:12 +0800 Jiayuan Chen <> wrote:
->=20
->=20>=20
->=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >=20=20
->=20>  The global zswap_stored_incompressible_pages counter was added in =
-commit
-> >  dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as=
--is")
-> >  to track how many pages are stored in raw (uncompressed) form in zsw=
-ap.
-> >  However, in containerized environments, knowing which cgroup is
-> >  contributing incompressible pages is essential for effective resourc=
-e
-> >  management.
-> >=20=20
->=20>  Add a new memcg stat 'zswpraw' to track incompressible pages per c=
-group.
-> >  This helps administrators and orchestrators to:
-> >=20=20
->=20>  1. Identify workloads that produce incompressible data (e.g., encr=
-ypted
-> >  data, already-compressed media, random data) and may not benefit fro=
-m
-> >  zswap.
-> >=20=20
->=20>  2. Make informed decisions about workload placement - moving
-> >  incompressible workloads to nodes with larger swap backing devices
-> >  rather than relying on zswap.
-> >=20=20
->=20>  3. Debug zswap efficiency issues at the cgroup level without needi=
-ng to
-> >  correlate global stats with individual cgroups.
-> >=20=20
->=20>  While the compression ratio can be estimated from existing stats
-> >  (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
-> >  "uniformly poor compression" and "a few completely incompressible pa=
-ges
-> >  mixed with highly compressible ones". The zswpraw stat provides dire=
-ct
-> >  visibility into the latter case.
-> >=20=20
->=20>  Changes
-> >  -------
-> >=20=20
->=20>  1. Add zswap_is_raw() helper (include/linux/zswap.h)
-> >  - Abstract the PAGE_SIZE comparison logic for identifying raw entrie=
-s
-> >  - Keep the incompressible check in one place for maintainability
-> >=20=20
->=20>  2. Add MEMCG_ZSWAP_RAW stat definition (include/linux/memcontrol.h=
-,
-> >  mm/memcontrol.c)
-> >  - Add MEMCG_ZSWAP_RAW to memcg_stat_item enum
-> >  - Register in memcg_stat_items[] and memory_stats[] arrays
-> >  - Export as "zswpraw" in memory.stat
-> >=20=20
->=20>  3. Update statistics accounting (mm/memcontrol.c, mm/zswap.c)
-> >  - Track MEMCG_ZSWAP_RAW in obj_cgroup_charge/uncharge_zswap()
-> >  - Use zswap_is_raw() helper in zswap.c for consistency
-> >=20=20
->=20>  Test
-> >  ----
-> >=20=20
->=20>  I wrote a simple test program[1] that allocates memory and compres=
-ses it
-> >  with zstd, so kernel zswap cannot compress further.
-> >=20=20
->=20>  $ cgcreate -g memory:test
-> >  $ cgexec -g memory:test ./test_zswpraw &
-> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
-> >  zswpraw 0
-> >  zswpin 0
-> >  zswpout 0
-> >  zswpwb 0
-> >=20=20
->=20>  $ echo "100M" > /sys/fs/cgroup/test/memory.reclaim
-> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
-> >  zswpraw 104800256
-> >  zswpin 0
-> >  zswpout 51222
-> >  zswpwb 0
-> >=20=20
->=20>  $ pkill test_zswpraw
-> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
-> >  zswpraw 0
-> >  zswpin 1
-> >  zswpout 51222
-> >  zswpwb 0
-> >=20=20
->=20>  [1] https://gist.github.com/mrpre/00432c6154250326994fbeaf62e0e6f1
-> >=20=20
->=20>  Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >  ---
-> >  include/linux/memcontrol.h | 1 +
-> >  include/linux/zswap.h | 9 +++++++++
-> >  mm/memcontrol.c | 6 ++++++
-> >  mm/zswap.c | 6 +++---
-> >  4 files changed, 19 insertions(+), 3 deletions(-)
-> >=20
->=20As others also mentioned, the documentation of the new stat would be =
-needed.
->=20
->=20>=20
->=20> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.=
-h
-> >  index b6c82c8f73e1..83d1328f81d1 100644
-> >  --- a/include/linux/memcontrol.h
-> >  +++ b/include/linux/memcontrol.h
-> >  @@ -39,6 +39,7 @@ enum memcg_stat_item {
-> >  MEMCG_KMEM,
-> >  MEMCG_ZSWAP_B,
-> >  MEMCG_ZSWAPPED,
-> >  + MEMCG_ZSWAP_RAW,
-> >  MEMCG_NR_STAT,
-> >  };
-> >=20=20
->=20>  diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> >  index 30c193a1207e..94f84b154b71 100644
-> >  --- a/include/linux/zswap.h
-> >  +++ b/include/linux/zswap.h
-> >  @@ -7,6 +7,15 @@
-> >=20=20
->=20>  struct lruvec;
-> >=20=20
->=20>  +/*
-> >  + * Check if a zswap entry is stored in raw (uncompressed) form.
-> >  + * This happens when compression doesn't reduce the size.
-> >  + */
-> >  +static inline bool zswap_is_raw(size_t size)
-> >  +{
-> >  + return size =3D=3D PAGE_SIZE;
-> >  +}
-> >  +
-> >=20
->=20No strong opinion, but I'm not really sure if the helper is needed, b=
-ecause it
-> feels quite simple logic:
->=20
->=20 "If an object is compressed and the size is same to the original one=
-, the
->  object is incompressible."
->=20
->=20I also feel the function name bit odd, given the type of the paramete=
-r. Based
-> on the function name and the comment, I'd expect it to receive a zswap_=
-entry
-> object. I understand it is better to receive a size_t, to be called fro=
-m
-> obj_cgroup_[un]charge_zswap(), though. Even in the case, I think the na=
-me can
-> be better (e.g., zswap_compression_failed() or zswap_was_incompressible=
-() ?),
-> or at least the coment can be more kindly explain the fact that the par=
-ameter
-> is the size of object after the compression attempt.
+On 2026/2/5 19:28, Mark Brown wrote:
+> On Thu, Feb 05, 2026 at 02:58:50PM +0800, Miaohe Lin wrote:
+>> On 2026/2/4 19:26, Mark Brown wrote:
+> 
+>>> In -next I added a hack with wrapper scripts per category to improve the
+>>> integration of the mm selftests with the kselftest framework, could you
+>>> please wire things up into that, see:
+> 
+>> Sorry, I missed that. Do you mean adding something like below to run memory-failure test separately?
+> 
+> Yes, pretty much - I'd keep the list of TEST_PROGS sorted but otherwise
+> that's it.
 
-I vote to drop the helper.
+Sounds good to me. Will do.
+
+Thanks.
+.
+
 
