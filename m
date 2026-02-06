@@ -4,76 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 024A5EE2089
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04784EE2085
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:47:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 596016B0088; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
+	id 454EB6B0092; Fri,  6 Feb 2026 05:47:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 543176B0089; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
+	id 4033E6B0093; Fri,  6 Feb 2026 05:47:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4450C6B0092; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
+	id 305746B0096; Fri,  6 Feb 2026 05:47:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 348976B0088
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0333613BB4F
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:46:47 +0000 (UTC)
-X-FDA: 84413703696.05.1B2F0DD
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2171C6B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:47:29 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 81B535A606
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:47:28 +0000 (UTC)
+X-FDA: 84413705376.04.5DB151A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4E579C000A
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:46:46 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DwwqXPk+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770374806; a=rsa-sha256;
-	cv=none;
-	b=EVXoYa+Rowh2xLFUsyqCvWfkSRFsaVaVR+lSZjDUTswNR1DePDsZ3pkM/OY4rqajwW+mbg
-	xbB9Mt64/7/6Jpf+vEtPGyCQ9ZpA4rm8mQKjVgENsuHsfptXAdamk+GHbrSUet+qqgHqJr
-	RO/rXyNPP0JU3S8ji63DfSGu0tZXmFw=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DwwqXPk+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id BD7D8C000D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:47:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LsKO82kj;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770374806;
+	s=arc-20220608; t=1770374846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cArcO8doHePVNVOuHnDWRT93Ld2F55OEAnBp5AcHusY=;
-	b=OeDjiromXxa+p1uCgTy2G9bz7gA3bG1p0V6fNfzlTM+Nm6lGhOPaNa0ABU212XkSSaswa8
-	M2A7fbkqDDIS2vfXHLNMUwCjgE504GHDwB9b9crDNGKmqhwzbJYiiS92SM1mECAoGCi5H3
-	q38xT72IoIGEZqG/Grvb9oHlSK/ZinE=
+	bh=PeA2fPs+K/YI87IFem1uMAThA/X9sGtEi+1lh/fMTzU=;
+	b=hTmNuCzAa4mViRrZWyeafYbGVwrr0b7CdUSkggbdcwYjyVzxGTUX/puUMwu0xH3MxjZeYy
+	OdOi4JlzfMB4vgWdr/5kTXFJnOq9AuKwEOKMLK31Qqa7OXypAwGSYfj3V350ZytpSoTGZW
+	2ReVIdBM9dClQ5N2xw4aC6HIK4MMhKE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LsKO82kj;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770374846; a=rsa-sha256;
+	cv=none;
+	b=yp9EUIRy7RxYAJH78epn3n2CtVJjwmpylQrIP9a+bsgsHLpdlW0fjq72iLb3VkefWIHHlL
+	Ukzbe/oZ5u3TBMSVCIZWsbJGoLUIXKRam5X++qT3SeejuPU8IOlbONyy5Cyu0UD/3j181x
+	AieLevY2Je+6xfW0lyvVrkVTh2aU/J0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AB65560010;
-	Fri,  6 Feb 2026 10:46:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C11C19422;
-	Fri,  6 Feb 2026 10:46:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3671A6001A;
+	Fri,  6 Feb 2026 10:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBA4C116C6;
+	Fri,  6 Feb 2026 10:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770374805;
-	bh=PHMU2xpIBrdrA0pF+qsCVfYhTTFK5H/MMPeHTteF43Y=;
+	s=k20201202; t=1770374845;
+	bh=5i7dp1xUCJOG9hy7V+b1PdlJOS7RsJ7dHlcYAV5h2YQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DwwqXPk+Csnrpw30BYx+2nsLWv0boIzO7iMdbCNNpRZLSG/N0sDO9H2tjtg985UyN
-	 /hPmZZo/7w/om+ounqcCGH6rsEdKq9hyK+bIJunB0jOxRKifa2UBsxQfGi2HSIP1oK
-	 Hvlb+G0+6bdfoFCP3AmZ9/LZjd3Ge/vmQtIqiGsOuufhq3xVahaBSdp6ueIzzTClDm
-	 xMn0eUF4xpnlpPbEaBkFgOuKGNzx5ggRgenGjZAnf5v5jFK512mPPOfaMmnSi6fs2O
-	 Lf2Bq0C04Let6Og4BmjjltyWrZEkpWDepf0JLHZnrfzM7cLdXQMBpL8InnORyvKsbo
-	 2DYZWGKzMzY9Q==
-Message-ID: <ef853093-3007-49d9-aff2-fa39fef2b9b3@kernel.org>
-Date: Fri, 6 Feb 2026 11:46:42 +0100
+	b=LsKO82kj6PRszI0+zZeQc8tluJxIE69Cj4vGHdqA1NlH0u10MOVEs22ixEWvmimIC
+	 awoKQatoPIWQL62cf8xL7ZSF6YFMdTuycox+je4rHTSrjgWQL8CWbmsT5UbUHFsicm
+	 XLph+PdHZbweJ6qmmfw5AN0yHd9m4e+AI1wBpRRNeaROBGdkqrTacsljEV5Fauz762
+	 Vz123gFOVcmVVxRP3S3uafACvi4/Fprxx++TYBInXU06Sq17MxkuP+Gjh7fighEao9
+	 NDGMSSHGEGHWiLaZLNrhzNoxW6zaY4DbkVYf9lzbRmVI9jEMNkS80x3HWbMQf3lhYq
+	 PNQi6VMYBoyKw==
+Message-ID: <a97d16c0-b31e-4f7a-9fa4-171ac80b33a8@kernel.org>
+Date: Fri, 6 Feb 2026 11:47:22 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] ksm: Initialize the addr only once in
- rmap_walk_ksm
+Subject: Re: [PATCH v2 0/2] KSM: Optimizations for rmap_walk_ksm
 To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
 Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
  yang.yang29@zte.com.cn, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260206175745201sbMJ9Ru8QZsjAo7YMopKS@zte.com.cn>
+References: <20260206175609696_A7uH3a1F7VmQN-iTzjC3@zte.com.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +119,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260206175745201sbMJ9Ru8QZsjAo7YMopKS@zte.com.cn>
+In-Reply-To: <20260206175609696_A7uH3a1F7VmQN-iTzjC3@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: BD7D8C000D
+X-Stat-Signature: 9syyewfr5xktkojthk6s9pkrxr7f618r
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4E579C000A
-X-Stat-Signature: r75iw1wo37a1yxuufh55jr8fke7o1k81
-X-HE-Tag: 1770374806-527047
-X-HE-Meta: U2FsdGVkX1/nldafKBa2PLfdBOZw+u80jwCx7V/OqMP9OkvlSqhQTCeKZ9WxZtg0/1lJPMuFwKbw8yFYwY8BLKYT34r6w2RjucHVmrV+9rvPGnirSv8Szwb2VwC7ylwgas6bwF+GMT1PWJvf78pJ9miEc50RBedw7j2NGiShbZqd41QQKiCdl9ULqTlvVTlXJFEkzOTzBzoonR8Wffgo9c12Jtdf9gJ2hA+2Q3MdYsW6Nge3i0wOHI/d4aGeKhZAoJdEuOQtF7N7Jg3wzGkX7LxJmmhKsGx8HJ0x9ufZzKHAGYRFhNyQzHlc9nZepD79/mJxZpqGLcV2n+PjtR2g/VHeyArybrnfmXt48bWU+5GGKvF18Ks7emRilOM8fJDeNuOvBRXROzuVBhmxn/XTsEcqTEVg4TqnpW2+s4iZQNzdp4iH5zWsRMJs0z4rEElLZyRvTLFbEAlMTA2dslGCNe/izpj/kE59uiHERTKQjtaDFbiRQONGjcoldnLERRHdaRmje0wce2etTK4dOZE4h+uAAdp7KcByfrsWJUA3wASZK739QCorePFBt9amL+QMjTUNeYRQ9jM9IgxfUgwhHRjTa3n+7sJR1D1ZnYzW6ZWSBdrbVQkPRUUYGMojMxuOJ6t5lF7wvlU6McJeP1vn07CTLd5PEoCPyuGyxwbWV6HC5gvULBMEAVDbQruox3QE/8L1r5CysPvqTrURdA6iJ6VpGb25sVQvfANvERzmudWkvN6DZQfp+5BLx3XPGoTAcS8W4/NPmLUiOquuLp08EQANyXIYG9LJ762I0wnjYPQTHNRsyIuBuS66z7NaISu2YT3CJxirkbkSJYsza+pqlxMJBBHZ3hJjCwpBolkd+pStFzyutQIQEfpXCnFQNuyJV3ONvLN/VL9Xjtk5eij1BlhVo2SWsHoBhPuh3VqhikdZbLnp698FcL1BJF/slI9KBkF0TUyGGrX0AI9m8EQ
- iq/VJ6nJ
- WTT5qa3VfIEnclDcloUmy/aagRGtr7c2z5MW/9iVzHgPlUEpg3RahXejKFQX1U6Ompxjwx7ROyzCjwlUQa8yj1ol9lJTM/0/SjCwU5qSLRnS1dqlM7qKgZ3fOc0ORHcBVTvQCrrM8Ofgr9tA+bLq8F1MP8Gv7Iau/dalk/PquV+Pj2jicrGMJ230+7ArjsuQJnV8l6wW7arye41gcf3F1Y4Zly2ZUjmR935kSyguLq6PINgBqkTV5tqY7EIjeHxGMDdsAWxr6mHVpzP50BX3UB26Ya/tTdopBthMlaLj0MGMEuPoj3xMBqTa3OFCgcL2Zi78fZgDJZt2bD7ZeHyjYXpWqqdDOCqESuCe2V59a2kwDPbzLiiYix7wkmzB8Fad1dNWauXkonBZq8E3I0adrK8sgTuUeMrXvH5N5
+X-HE-Tag: 1770374846-909143
+X-HE-Meta: U2FsdGVkX1/06WoQYN5/LA1e27hCnBpRv7fYVmDKFpPe8pEvfSV80/ekxxUzbpKHLjCpjMpoBFkPLZJbv7Pto8ltKnCE0gu2FZOinKEG8Ap8tAa3uYRxxUm2zR9rQ6LB7j6n759a3Uv9/h4f1J2iPAFmy0w8KufcGoYtQ7zU/NSnyVtDMMHfdv+L7SY+nBs7XQlzzccZ5OATbGzr2bxHyK3xQY/QxV5CRsjpoz7TIUc2nofIvaA7ARJkSz7p6bFapa49uJR80riU743JLYFMdmOvcVlwo4wjG7ZQMGgZa0TWKcZKdIl5vvcb2yJWcNjtjK9pD0PHy2DTxHUNwqWKTcFQADZELz9SfsDNAHsL7Nplvb6A6JL4jc56EH4FUymkS5CD+MOyuQXd+hxcl950CjHvtQZKpjZr8ZoZxvKdv5y78QpH5SSXQE/i/j+1oTabpd5JdR2eOyU1lTazHFI0vW8grFfM1Oz3r4y3Oskd7c4VdQQTN0pz4oxioAyXQxsu7TuoRfAGGbC//s9Q6S5rhaDN3WNt4x+cKM/P5oRzC16U+C3q7O65eGMOaLsSYZ0beqxYGZevmXl/GexpMOkPnrmepJANrkKd8Oop8u8OqEoqqTnUOsEhe6KpJKG/kRreZUBacbRu9kxqGmtffy/+ru4Edg/3gpHw/LNIS1AxSPKPw8+Oj7eFjCx9dyIa5t44NfgWwsTQzcaRwGc2StjSn8HCrqX5GIqd/ydYPWwnnE9viXIf5MS8YX5REESu9CSpL0JRYP0iUyTNnBwYdwWEBf3VHRcGBZ5nnX4NVSShcWtqWfMsZNejoyXvGgFV9oqB65xpmt8Jj0GBS1HUz6DPaPGF6E5xnE/UE2nvZqU80Jhvl24k6OH1ke9mLcjLhK5XO5tNdFNAXeO88MNGGBpabULQfB6XvHTiC+Wso3pLHZqZusa5JOp4wjSdwlbrZEx0zCqmrAYNjtNcwhU+Q8S
+ NxvzAtju
+ VXYj2EuFIhXRMGJDEPdISFAV+avewTTHJfdjYsay8DEZ+7IQHGctsonq47NpxH+ZJsjJYbuU/XraCnX5nFOJl727NhQqU6aMxUBokMdlhfR0Am2wV+iGwsKc7XXbgDj6GE2Aw5SlaxjABWCFqMG0P11yHCxBUs+3qRC67WYT6lZtd44RVjU5SaPware7NhAOvPiefZLpYCUws9RKl25LUiy8DypAcKZfALbwfKtTpvN7uxj4Nfir+4uaWobA3uRQFiXXGFVhCc0zLaQiHhJ4ZM4wkxtcfnfxYuvrMl0kyD8c6y8AGxBUEryGQ8LoQSATY1lXGbk5QGvtgIV46cz+mLWKuK6E4E+8IjLUV6Ka933IGDiw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,21 +138,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/6/26 10:57, xu.xin16@zte.com.cn wrote:
+On 2/6/26 10:56, xu.xin16@zte.com.cn wrote:
 > From: xu xin <xu.xin16@zte.com.cn>
 > 
-> This is a minor performance optimization, especially when there are many
-> for-loop iterations, because the addr variable doesn’t change across
-> iterations.
+> There are two perfomance optimization patches for rmap_walk_ksm.
 > 
-> Therefore, it only needs to be initialized once before the loop.
+> The patch [1/2] move the initializaion of addr from the position inside loop
+> to the position before the loop, since the variable will not change in the
+> loop.
 > 
-> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
-> ---
+> The patch [2/2] optimize rmap_walk_ksm by passing a suitable page offset range
+> to the anon_vma_interval_tree_foreach loop to reduce ineffective checks.
+> 
+> The metric performance is seen at patch[2/2].
 
-Make sure to pick up any tags when resending! :)
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+For the future, we usually describe what changed between versions 
+briefly in the cover letter. Thanks!
 
 -- 
 Cheers,
