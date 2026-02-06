@@ -4,124 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C46D3EE20A8
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 14:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67E3DEE20A8
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 14:40:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E10216B0089; Fri,  6 Feb 2026 09:28:14 -0500 (EST)
+	id 7F3E76B0092; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE7696B0092; Fri,  6 Feb 2026 09:28:14 -0500 (EST)
+	id 7EA4F6B0096; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE6676B0093; Fri,  6 Feb 2026 09:28:14 -0500 (EST)
+	id 694496B0093; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BDA086B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:28:14 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75EE71B1C2E
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:28:14 +0000 (UTC)
-X-FDA: 84414261708.12.4F8D124
-Received: from mail-ot1-f68.google.com (mail-ot1-f68.google.com [209.85.210.68])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 514DF20011
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:28:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=u7lacekq;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.68 as permitted sender) smtp.mailfrom=axboe@kernel.dk
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 563E16B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F3CF35634D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:40:17 +0000 (UTC)
+X-FDA: 84414292074.17.A187230
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id ED9D540005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:40:15 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ds9jtKUp;
+	spf=pass (imf17.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770388092;
+	s=arc-20220608; t=1770388816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DsBpUlxtFsyeEjeiWFAkqcdrMjz0lxaLUaFPl/YKamw=;
-	b=ciBA/bhuSOWsDoGbXDvDf+tcXSdgRLsi2qDWkDijF0m0oxBfvXljQ7utb6XJnuDaEfygQ7
-	WNg3uVa3jyHmODV+n7MH3HHYycd9SKVztOdWq8r6RVE8H4jFdPdEV8SomU4qSGnQ7pQxfw
-	EW8U11AJ0uBcqqMWzFXQ05xx0PzItKc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770388092; a=rsa-sha256;
-	cv=none;
-	b=3N8DeRXjNT7frbv5XIlc0xKnPOXcMINlg/Fmr2kY7PN8WpOR8+/m4G7IXwWfr1HJ6N3l6l
-	fp6T7TyLkGJFXrIbfpxlv3T42ARwacUUZIGct0EU1NhxCIYhRxkZj7RRc69GsagCM85XLn
-	y6Fp6lFUkZLAjCAlRP6fXQWpWBY/r7k=
+	 message-id:message-id:to:to:cc:cc:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZJOPyIeuN4YpQvteY0c57G969uic9qUJI9o0lGN6g88=;
+	b=tyHPl+wiGpsKVDPeNO79oYrbVm2wALe0BQEsHBmaa7ad6SycHCjtQQUjc0pXPqJ1uGVPYW
+	GnJWewa4moFWXFJnpV18SaQVSGtERDnt37ZEEB2OgBzckVW9RG++C+npGP+Xt2/t6SLrYP
+	ClpTvxk7GHOm0jfUbiEDD+iHAwV6YZo=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel-dk.20230601.gappssmtp.com header.s=20230601 header.b=u7lacekq;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of axboe@kernel.dk designates 209.85.210.68 as permitted sender) smtp.mailfrom=axboe@kernel.dk
-Received: by mail-ot1-f68.google.com with SMTP id 46e09a7af769-7cfccba483eso725255a34.0
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 06:28:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1770388091; x=1770992891; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DsBpUlxtFsyeEjeiWFAkqcdrMjz0lxaLUaFPl/YKamw=;
-        b=u7lacekqXnWY3X2TCCUIYrifRabkTuYqtgLfM4hmChPgZls38pV1cGzp4dzpftaTRV
-         mwzJk5WVCyvjoGgfz/Q9NmVqgHyShWoD8S0b2KJJvPTYKn9aD8+rCCheYHR1NuFnJqc5
-         /CTGwub78Le8ETPk8y1ZbvAjcFfK6az1u5/Qa82zhFF7OGELpdgo96HRlwge52asPLoK
-         2a31gn/NgDzGJqRqgJPVsPkL9d+xRNm1TWNryxSG3gB9wxm3tLUmzsVa/mn1jmI1uXMP
-         LyYFOrk4KQ8MDHITEE+JzK6FXBAnGffbPAGqCI+HZnYY73b7MlGHvV0qw7FXZovzjUNt
-         KNMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770388091; x=1770992891;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DsBpUlxtFsyeEjeiWFAkqcdrMjz0lxaLUaFPl/YKamw=;
-        b=Ub0ULugBtEziQnnEEsuc9UeotCnU0xGSGLmfSLJGaF+Z4OnI/G5EG1J1e9fQg3ToRK
-         WuohaF8RyuHB8P4PBLtCr3PJbnyvQxmzlyKz1O3gvTgCtQWY4T7JxPz/MTkSKAMU2fgT
-         TNaPMn0bg+k8MXq8nHv2A65Y47R5b/7u/Ahwi3Qq0V26emR3uH/80Oc8J84ka5HNsqqr
-         yU2Oleje1gvJkmhiXHQPsOAizp2ypsdUw7KIp5sw3c+RVV8HeXpNEcZglaSIj4LcrQXd
-         NqeO3wih0De+5zyoEvpOnwhzF7TlMsJZUrZsb7yzu7K/Flai50gGFq8UOCUlWqt0E8C0
-         5V2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXFBS4ruJojuGXrIYGSNXrKLW53crOPrVXdKVHBYQbbnaaMKybvRSYYOhZSZwkAXmDESQpuC2pkFw==@kvack.org
-X-Gm-Message-State: AOJu0Ywsc0D0pRtCxiWnwz3KiUnSyUlVNi7gzfOsqiCKIW+lAWHjBhKD
-	QSjjcGaifVaVyxlkMDyue4YTBGrKhE7tlESyPtFR/vtPGzJHNg1rzNLEtzMwUlxiOg4=
-X-Gm-Gg: AZuq6aKAtxCtrvGSOboTeZpsqgLAlFnor7cLO/xQsyQyikRWsjbXtmpqhGNAFo0+hVM
-	IdWekP7XABI0a6+EmQZxxBjMaMtVgXKgC8PBPXooP+ZUqZu1y9x8dN3MUodCpuV5ur3ovK4ooNV
-	0dAUuknLkVQfAfOvgXsS4huvq4iU2aw+kYRxOns/4gzgwhKwv/sscg1imUsH1QleSn/Kz+UpY8w
-	ejQB37czU7r1pBpZCnynzgD5fs8ZWEefnmffIB+CAPVxNN4NwDvuoknL9jpmH45IkERlBCxHc7A
-	xezO15G11/2SG5kQQNs4vV0p59SpNKGRc6l5fN33QEiPro6VtH3of6mFgnCRY6HSPeQVnYPEifE
-	6FCC8VyaNCmUVC1PFTiUj5mAFr1hyARUJGnLm+dT1+0fDH8KGhKmGsJQ9Hic0hzYvZx5M1ILqV8
-	OMfJucX2oFrNxAJLcScZOc8xBzMyfJx00s5sD+Oozfo8Pib9a80cCNAKCeeQnvXkDlegFCDU2NL
-	Nfw3qc=
-X-Received: by 2002:a05:6830:2585:b0:7cf:d191:2a50 with SMTP id 46e09a7af769-7d4643f38damr1225567a34.13.1770388090976;
-        Fri, 06 Feb 2026 06:28:10 -0800 (PST)
-Received: from [192.168.1.102] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4646fca4asm1663267a34.2.2026.02.06.06.28.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Feb 2026 06:28:10 -0800 (PST)
-Message-ID: <b57cd15d-8e3d-474d-9c33-96f04a2a5499@kernel.dk>
-Date: Fri, 6 Feb 2026 07:28:09 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug report] io_uring: add task fork hook
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel <linux-kernel@vger.kernel.org>
-References: <aYXvR4WQ0LEYxMPK@stanley.mountain>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <aYXvR4WQ0LEYxMPK@stanley.mountain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 514DF20011
-X-Stat-Signature: sj5kwpmije8arjghnosrfurcebmo1sti
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Ds9jtKUp;
+	spf=pass (imf17.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770388816; a=rsa-sha256;
+	cv=none;
+	b=wNv337lGXOwbvFqMrSyrFUhVKbfLZ2qUAJS52R3YQ8rekQ/3jd3ihylqzrqfJ/OGpUYhwA
+	c5y41eyIx2iJQFKtYXhKdAkEoplgklcXsXEbEfro05NLhtgMd2j05sbB22uGtd5JloMUb4
+	OTAQ/0gOEJyGtLqxBwa34oIG3jGnv8A=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770388815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:content-type:content-type;
+	bh=ZJOPyIeuN4YpQvteY0c57G969uic9qUJI9o0lGN6g88=;
+	b=Ds9jtKUpgMiN/yXyqaAwiQsibHbmw4qavXaG3xcz5IXrmYi9DZfMV5k5seScZrCDTSJybH
+	kK3BjiVjQlI6fmqeJ+8oVh3NhFyXLIMoj2hTSNgrbhFkbEPbMylbWc/nCZvWFGlOcmQoyZ
+	c2l9QTzTDBFwGd5y0D/D1kK//ZxQyAk=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-647-_sk-7kBwPcOgQlIMf14EzA-1; Fri,
+ 06 Feb 2026 09:40:12 -0500
+X-MC-Unique: _sk-7kBwPcOgQlIMf14EzA-1
+X-Mimecast-MFC-AGG-ID: _sk-7kBwPcOgQlIMf14EzA_1770388809
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AF63118005B6;
+	Fri,  6 Feb 2026 14:40:09 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.22.74.16])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3DF8B19373D8;
+	Fri,  6 Feb 2026 14:40:07 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id A16CE400DF80B; Fri,  6 Feb 2026 11:39:20 -0300 (-03)
+Message-ID: <20260206143430.021026873@redhat.com>
+User-Agent: quilt/0.66
+Date: Fri, 06 Feb 2026 11:34:30 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+ Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@linux.com>,
+ Pekka Enberg <penberg@kernel.org>,
+ David Rientjes <rientjes@google.com>,
+ Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+ Leonardo Bras <leobras@redhat.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Waiman Long <longman@redhat.com>,
+ Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH 0/4] Introduce QPW for per-cpu operations
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-MFC-PROC-ID: dAEAIyYyUM-27y-V8MPJ0mdirD5-Zh2BWp4Yxgpsgwo_1770388809
+X-Mimecast-Originator: redhat.com
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam11
+X-Stat-Signature: hmjxs8rjp8yn745zor6yuthskzukmd4a
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770388092-946681
-X-HE-Meta: U2FsdGVkX1+Oo0x3RyVE+Ig/iLBqJIsndETZEfUN3yE7ghC5xVf+Ngi8ctKXLnNk2CeVMtZpMkfLG783nrSHWpN3HvbqZUUjV0g1THHUUKDOgJN011bOFGhdNp9AyrryID1Y2//ftJfDkuzGWCrW7W24L60EiVqrKxKobOwKtIaQD30lqJKEzuoG2NGHOvCbFnYD2ogRzIW5VY5/79NeDAKpK2J1hRCTjeUvWoor09vnR1EECv4GlBTk/o3JnMEIkCsbtl5MeRxo2k0MxRhjQTSJiSiu38R7iuskHliPJAZ9VsuZu34ydjqWRr2b2Z2KTKhbg7MZJY7TAeC8Q+VGiiFTugqfLWtpupLGmA/llt/8INRR2MGIi/v91yDMfQbM/bBtqr51vG1c2pXTrYB+fmuUo+aaHe0RRVGQDDu4Z9dbu9L1BDweHMsxzodEx3A0uqDWTZR9KH/hy/x049CZTDbAsMZEWnhTn5SdZoZ1nNZDkEBMRLXEa9DPgdqsiFZTknVDy+e8lFr1DngHJw+AY4eiu6MC7d+ixk8/mG/6BUQUENe0ALJkCk4r9d/YlfGgJim88bq/Pw+vTSbqJqTW6U8N3LNe9wdZBnA7o3Ys+0IkCTOfdXBU4es1ige7lRZ5tR0dg30T//5Uoy1noU47z79vUelcy5q/JCF9KbKwnt/Zk20eTTKGbgv6YDxo0ANJXWF8YelR7qk/89SLpUCb+nQLFMDDA6BAfvJe7fUtJHFO2wlozbuNPYVlJVoE6x5NCBaUoqZyLAs1WROJWpJApdjpiybKmmR2qaznhNyC+J6ccNEwUx6ImW/y/XTAxxPYhSUBbfitRX6mHhva7SMkuGx7XDz3Kh8nhwOCjr2rvRezxePgFBka+0qYTcW2DBJx/+CpQ1uat9hZY6O9YMorm0b/EmKutIKsioU//TxYEIMWA2knELBelb5vXFZL2E8ckFq1Gs7/QnK57WACCKP
- 6zT4IE7Y
- 5QeC3Mh0W1LcUbWkLDuTQVGrV1rW2dHz2z6OhG6jrVYrOuEoUcq3tYoQkT75zjTFGY+V4F5k+zfBevjhyvmAjDFWgUhBUcrnoxYni1ZJHJGCuk5MZpfcbxXpddYnY894Ip7IU1gEH4B+GwDjZxXh8hE0irALroKZ8oqZzB+RPTqeIQhkb9WjiFfl6NHwWVyWAqQkIHT2fHiVZYedlLS9dbiIDaSQdc2aX0eNpAgsUn0cf9FPg5u2yorwKy40/sqQJt6VU4IO7MvTzOTrGoPtljR0ge5YgGyhDjNlKhP6zgVMziGJ9HskriJNNK86ZAPRNUsKrSOCYhoVmOeSwVw5UFReAeFrUMzMVS62ihPKZaKZ6sSNOwMaLk4gHVS7C4ME8iU/P4ZGPJzZom1Vd97/H7yfo/2q1W5yh4caVQ7b7Kh/oTffo/SdYsxw8keJNUEueKO/OzKTlMwpCtTjS8W7NjN7sXAV+4AoWc7NzVE0eSY7fXRHrsBnBBm8WqKIB/fQJLxpxFFiE07UmoTAik0A7lkJIXnribTMM8zK0r3ATnPekhD4=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Queue-Id: ED9D540005
+X-HE-Tag: 1770388815-130775
+X-HE-Meta: U2FsdGVkX19ltpBEvUwuKhOjm6NP4tkRbKdCs4ryxeVimHoIai/REY645+Fbr5WhDncZK1YQz3/Fab72wtD8O4CK0Ac966H6q9atnolNk26l5jxhR0BoOgH58iVePUPlhIJQhwr7yb82w4wSRPzUr8+YxgbTV/9/vGOBKV7w4yEVKbtqitVLMuvlKHVJmaluyETGTDaT29PsmT9cla/giClLZF/vws6us4FfwfZARif+gVOeBuyryb3Z6QMuGi3OqSrq904pVWaSxAQdTXwa0+7tyjt4cIlyMS+aOp/bMFO3zgLAMKn3PdgAlS9P3NI30NWxEl1GL3NHSuWTeSarmF7gUPBLF8WNqkQq+yG0sTZ7RQdyqFiiVQFlRdTmCefZA3kjT0EhJzOYXZsdqzH8gQYoOoAV9UWULBo7gi6STS2Cwb/j+stB8VyP+bMVpdBHaxgvy1eq01eusou4OrSxezyMm6GsldlQetYMBq4IFhfMgxUhR0C+YfAFJPeYt4YT0ssmL+zUf/CdzkoNyc/629HtWN/43qzmxn0uqLkfF7njo/v0ZKBuS3m5CIplvXymyZ9ZMaGkLRDHgXok7paiLh32bkMkIb3F9R71Qh+p+4GjEPifRorroYdCqJhplk6F2HAlXA8doq2EVh+IN9sGFnYalWk0KuEEPiNu11PMMnSfEWUY7y02omwZmYAMwTXQHWSsgv01A4zkjt1oFY2XY/sQK4tzH4z54EBNO/Iq14+Hg1e58WRtn7xCD2QZsXHDTEWQ/2P8cKB25AZLXR5rFAxqAAsfJuKIY6Jb7phZUN36DOzV6QH+w4X8DXBw1XBtHgkV7EWOkq7bsATlxc4uP1BRBkyaugWFAtps2lEuuC5+9b68aIXsN+KE+aKgS7Bd9Imaclx8ujtGg71pDe/DXFW7zk08S9fwckCny3ovRsa+ubsDowuKJ9jarOn2EVxxrs7BeYs9PuTGL5t2fXd
+ wNpest6h
+ xh3ej9p4bftsIxKE1uO9tyGe/cO+rB3kc7i0ztxQOToD2F838qpWxpTp4ejzrkJXphYAQoKBvf69C+NDpUEyI+HONpHiHv07R/qqRrmOk6s2Ot0SYi8wSuu+JFdtnUv3wC3JxxJ4EW9wZBEUpbVHiWqjye7uzZ7CVjd5YzK4su61w40c3UactS8q2Sn7mQWOmXjhvq2l7to6nP1TsnWyhf5QU12UXh7nmj058xD3F2y16z8luaEh+HNK51foBnf5TEnTHnvzQuhwW3TQh6+nqavMppSxS9qRIgY2Nd6bTjCyv/H7LDCtYSvXtNBk9d1ywdd0yknflqSiwmB5/zz8QCSFtze4LhZC7gwg+ctihiN7rcLZFltfM1PtML1iwLV7cDAcpLMqSbwOmDDYXWzAkfOi7KA==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,56 +117,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/6/26 6:40 AM, Dan Carpenter wrote:
-> [ Smatch checking is paused while we raise funding.  #SadFace
->   https://lore.kernel.org/all/aTaiGSbWZ9DJaGo7@stanley.mountain/ -dan ]
-> 
-> Hello Jens Axboe,
-> 
-> Commit 4f08520591a2 ("io_uring: add task fork hook") from Jan 16,
-> 2026 (linux-next), leads to the following Smatch static checker
-> warning:
-> 
-> 	kernel/fork.c:2544 copy_process()
-> 	warn: passing zero to 'ERR_PTR'
-> 
-> kernel/fork.c
->   2128  #ifdef CONFIG_IO_URING
->   2129          p->io_uring = NULL;
->   2130          retval = io_uring_fork(p);
-> 
-> The patch added this assignment.
-> 
->   2131          if (unlikely(retval))
->   2132                  goto bad_fork_cleanup_delayacct;
->   2133  #endif
->   2134  
->   2135          p->default_timer_slack_ns = current->timer_slack_ns;
->   2136  
->   2137  #ifdef CONFIG_PSI
->   2138          p->psi_flags = 0;
->   2139  #endif
->   2140  
->   2141          task_io_accounting_init(&p->ioac);
->   2142          acct_clear_integrals(p);
->   2143  
->   2144          posix_cputimers_init(&p->posix_cputimers);
->   2145          tick_dep_init_task(p);
->   2146  
->   2147          p->io_context = NULL;
->   2148          audit_set_context(p, NULL);
->   2149          cgroup_fork(p);
->   2150          if (args->kthread) {
->   2151                  if (!set_kthread_struct(p))
->   2152                          goto bad_fork_cleanup_delayacct;
-> 
-> So now retval is success where previously it had been -EAGAIN
-> 
->   2153          }
+The problem:
+Some places in the kernel implement a parallel programming strategy
+consisting on local_locks() for most of the work, and some rare remote
+operations are scheduled on target cpu. This keeps cache bouncing low since
+cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+kernels, even though the very few remote operations will be expensive due
+to scheduling overhead.
 
-Thanks, fixed up.
+On the other hand, for RT workloads this can represent a problem: getting
+an important workload scheduled out to deal with remote requests is
+sure to introduce unexpected deadline misses.
 
--- 
-Jens Axboe
+The idea:
+Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+In this case, instead of scheduling work on a remote cpu, it should
+be safe to grab that remote cpu's per-cpu spinlock and run the required
+work locally. That major cost, which is un/locking in every local function,
+already happens in PREEMPT_RT.
+
+Also, there is no need to worry about extra cache bouncing:
+The cacheline invalidation already happens due to schedule_work_on().
+
+This will avoid schedule_work_on(), and thus avoid scheduling-out an
+RT workload.
+
+Proposed solution:
+A new interface called Queue PerCPU Work (QPW), which should replace
+Work Queue in the above mentioned use case.
+
+If PREEMPT_RT=n this interfaces just wraps the current
+local_locks + WorkQueue behavior, so no expected change in runtime.
+
+If PREEMPT_RT=y, or CONFIG_QPW=y, queue_percpu_work_on(cpu,...) will
+lock that cpu's per-cpu structure and perform work on it locally. 
+This is possible because on functions that can be used for performing
+remote work on remote per-cpu structures, the local_lock (which is already
+a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+is able to get the per_cpu spinlock() for the cpu passed as parameter.
+
+RFC->v1:
+
+- Introduce CONFIG_QPW and qpw= kernel boot option to enable 
+  remote spinlocking and execution even on !CONFIG_PREEMPT_RT
+  kernels (Leonardo Bras).
+- Move buffer_head draining to separate workqueue (Marcelo Tosatti).
+- Convert mlock per-CPU page lists to QPW (Marcelo Tosatti).
+- Drop memcontrol convertion (as isolated CPUs are not targets
+  of queue_work_on anymore).
+- Rebase SLUB against Vlastimil's slab/next.
+- Add basic document for QPW (Waiman Long).
+
+
+The following testcase triggers lru_add_drain_all on an isolated CPU
+(that does sys_write to a file before entering its realtime 
+loop).
+
+/* 
+ * Simulates a low latency loop program that is interrupted
+ * due to lru_add_drain_all. To trigger lru_add_drain_all, run:
+ *
+ * blockdev --flushbufs /dev/sdX
+ *
+ */ 
+#define _GNU_SOURCE
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <pthread.h>
+#include <sched.h>
+#include <unistd.h>
+
+int cpu;
+
+static void *run(void *arg)
+{
+	pthread_t current_thread;
+	cpu_set_t cpuset;
+	int ret, nrloops;
+	struct sched_param sched_p;
+	pid_t pid;
+	int fd;
+	char buf[] = "xxxxxxxxxxx";
+
+	CPU_ZERO(&cpuset);
+	CPU_SET(cpu, &cpuset);
+
+	current_thread = pthread_self();    
+	ret = pthread_setaffinity_np(current_thread, sizeof(cpu_set_t), &cpuset);
+	if (ret) {
+		perror("pthread_setaffinity_np failed\n");
+		exit(0);
+	}
+
+	memset(&sched_p, 0, sizeof(struct sched_param));
+	sched_p.sched_priority = 1;
+	pid = gettid();
+	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
+	if (ret) {
+		perror("sched_setscheduler");
+		exit(0);
+	}
+
+	fd = open("/tmp/tmpfile", O_RDWR|O_CREAT|O_TRUNC);
+	if (fd == -1) {
+		perror("open");
+		exit(0);
+	}
+
+	ret = write(fd, buf, sizeof(buf));
+	if (ret == -1) {
+		perror("write");
+		exit(0);
+	}
+
+	do { 
+		nrloops = nrloops+2;
+		nrloops--;
+	} while (1);
+}
+
+int main(int argc, char *argv[])
+{
+        int fd, ret;
+	pthread_t thread;
+	long val;
+	char *endptr, *str;
+	struct sched_param sched_p;
+	pid_t pid;
+
+	if (argc != 2) {
+		printf("usage: %s cpu-nr\n", argv[0]);
+		printf("where CPU number is the CPU to pin thread to\n");
+		exit(0);
+	}
+	str = argv[1];
+	cpu = strtol(str, &endptr, 10);
+	if (cpu < 0) {
+		printf("strtol returns %d\n", cpu);
+		exit(0);
+	}
+	printf("cpunr=%d\n", cpu);
+
+	memset(&sched_p, 0, sizeof(struct sched_param));
+	sched_p.sched_priority = 1;
+	pid = getpid();
+	ret = sched_setscheduler(pid, SCHED_FIFO, &sched_p);
+	if (ret) {
+		perror("sched_setscheduler");
+		exit(0);
+	}
+
+	pthread_create(&thread, NULL, run, NULL);
+
+	sleep(5000);
+
+	pthread_join(thread, NULL);
+}
+
 
 
