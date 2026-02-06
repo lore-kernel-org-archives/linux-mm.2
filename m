@@ -4,122 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D660EE2084
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:13:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E265AEE2084
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:14:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 424056B0089; Fri,  6 Feb 2026 06:13:02 -0500 (EST)
+	id 53F0F6B0089; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3FB666B0092; Fri,  6 Feb 2026 06:13:02 -0500 (EST)
+	id 50CEE6B0092; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FA3F6B0093; Fri,  6 Feb 2026 06:13:02 -0500 (EST)
+	id 415D96B0093; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1780C6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:13:02 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AF3851B2AA2
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:13:01 +0000 (UTC)
-X-FDA: 84413769762.24.E542E63
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D34FE180010
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:12:59 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=f1xumkw5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770376379; a=rsa-sha256;
-	cv=none;
-	b=NC6MvNYR4MqUdzaCUflpoaOEh4igCGw3BIq3Srd/pIz9zIfS9RbS0eqW2ls7d1kx2U+WH0
-	ZQQ0o5Y3vAKBeb4ueDU0pO/juCCb4vCqERmMbtjD9P4WZfTaBaLP0px1HbcEFBcsWZ9uVY
-	1ZhqH9EAaVmzG6RGOKBhSdKrJn/fcF0=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=f1xumkw5;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 309416B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:14:18 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D6BAC1607D3
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:14:17 +0000 (UTC)
+X-FDA: 84413772954.09.2DC88D0
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2B974100014
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:14:13 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RaPi3BqZ;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770376379;
+	s=arc-20220608; t=1770376456;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AgrfaHug42gFco7+TwJa2fy+qNwllbhCnVeHrD2K5W0=;
-	b=mUmrZOjwhV50fj4RrkR5jx0sMmS2lTtBFW4iiIA528084GZQSYR1wixMQFm6EjsIziZge2
-	HIC4NKF8hkMI0/3cuLf5hlgOkBPWE3pBvNFibyGCr4+65oxgAUJys/WXlqNDvryK8L/f9r
-	my4lpHehRDUfLZDpijUrWcDSPNvJdfM=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8231061d234so2127940b3a.1
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 03:12:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770376379; x=1770981179; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AgrfaHug42gFco7+TwJa2fy+qNwllbhCnVeHrD2K5W0=;
-        b=f1xumkw5z7tuy84nVtaHyFqKXuDUaxwxWVCPpJoYEqVaE6xy43lHhngAxjo8FhC9K0
-         KI/Q9vUc4Rum734FXr14+hXYiCKP75g91cJ4GJYH/6wgGP+lnYyw9XtWqYEYTrhBS5i+
-         JVIAX2YB+EE0LhgFAc3DpKfLMqu69L8rSzDV4qaYhop6ezbPTPiu01+XMM62Lroi7Tku
-         ubh4hZQZfH5H4hvNDXuREpCxV0dTFklPPMP/EujqUxfnz9YXnUX0IisaCPy/EU3++bDo
-         bfWYxCDoMbKcmMbkYWCOMO/yvmyuMYhPStHlKFlp91WvNeuvY+FPWlBhjsagfvcTOneA
-         f0kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770376379; x=1770981179;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AgrfaHug42gFco7+TwJa2fy+qNwllbhCnVeHrD2K5W0=;
-        b=H6jPgWZoDkjDGOWpSuH1fM68bvq8tUF+i3yiOFLB/PPeQEjHyl4/tTZ8RJ9mB9VkIc
-         BJTnCwguk6HvznoKxe0ZiQv+Q6cb8WAqX9qpJJGmJNivM1xGc7yLsfsDVM4RPPIyMtpz
-         itsHxNtW/GVK12cFpXTgrWoJs4yMIiITwa7/ddM4CQFqigTTUHnSexCaBkTOGhzswPFM
-         t0TVlfVZgOTo7B55oamXs8hbtyHAkmPvbHXblsZ1QOAdHrH9lmG/BRf394KRjR4/jDE1
-         tzvl+Ekr5U0aRj8Pr8MqfYm2UmbiCLC8VVigG1mvxwUjZhThJeogFk/Mcs0lmC/qrAmP
-         hZ0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW8HjiXC086g//VnrhTihjI0Sj68ykDwwQ6Ybu/B0xO1Lb4cdIOqJOaxh2EIQs3J7btn1O099m7dA==@kvack.org
-X-Gm-Message-State: AOJu0YwJC1xG2wPB0TSXtZqTHZWsSmbBbZmmVcTQzCeZhFUUE8Oq53Qd
-	qeGUIsW+YLutfSwYBbE8uZFNBlH1CPjbdlAOCiD4I4EtqXpvOLnSJudj
-X-Gm-Gg: AZuq6aKv9ONchrSDCMvH22Bqy/CEGsI+HIT7ZIoO0DwVzojQob9tgFEoy5Z9t+dRGUz
-	PgmlW/qBvSNq0dCqiyP0OBZsIAsfVolZUjl2840ZIi1LZzFkXBYovF01pxw2+9L/bhicqqUUNan
-	u52XatHclOLnbAY/ni6ar7xf91fJ5znMXZTQkaDeooInXsauN+63NqxL0S4kGeLkdj8d7kh5yjy
-	QAsEzQeMPI3nbS8shtp6xeir46U4T5y2I1lfA+fL9eGZUn8oeBtZcr4WZtpmtvW/clv8MhyUXSc
-	Sd4tWwp45KXFVlGgYlANeJGvxOuc0xGpeMZE+nZakmneevSQ19WXBVTNo22pZTeH5creowUV/vd
-	2tSQyrNXYkscnlqvTxOJ1ijF+80V03HZxug/SNIk1dzCoRQuGp9ZNBVikFNejexkU+9vo512YLp
-	BB07dMZn3ZaCDQhm9QIR43r/A=
-X-Received: by 2002:a05:6a00:10cf:b0:81f:4f47:c6d6 with SMTP id d2e1a72fcca58-82441789d4dmr1898910b3a.65.1770376378495;
-        Fri, 06 Feb 2026 03:12:58 -0800 (PST)
-Received: from localhost.localdomain ([114.231.118.96])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-824418a70fesm1929494b3a.45.2026.02.06.03.12.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 03:12:58 -0800 (PST)
-Date: Fri, 6 Feb 2026 19:12:46 +0800
-From: Vernon Yang <vernon2gm@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Dev Jain <dev.jain@arm.com>, akpm@linux-foundation.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Vernon Yang <yanglincheng@kylinos.cn>
-Subject: Re: [PATCH mm-new v6 2/5] mm: khugepaged: refine scan progress number
-Message-ID: <6zltgzs24wpypzu36ldwgtzilhv2z3ofuu45azp5u45huiwqvj@6jhhp5r24po6>
-References: <20260201122554.1470071-1-vernon2gm@gmail.com>
- <20260201122554.1470071-3-vernon2gm@gmail.com>
- <fd67a91f-3930-4bd8-886b-13f7783f4aec@kernel.org>
- <CACZaFFNGFWv3FG8spJDLfLTe=0QWuBWL+Lbs+W3h9vGL=jrT6Q@mail.gmail.com>
- <85e8ded9-a9eb-4663-9c96-93af60006fb6@kernel.org>
- <9508744b-e5d5-49ef-825f-eef683892541@arm.com>
- <1a6d8295-e27b-4440-a367-af0432a7af4f@kernel.org>
+	bh=t10+cy0YbJp1qzuAruOEDHFVPEgf+sIN5MYp954+hik=;
+	b=qhpeVJO/BQ3oAebpl2UTroWiUU2GCxBsjsnfQUJLGQml+j8Dq3lF0SESgThOeUJl7XONqe
+	IE+59NRQgnoemIN4JNie8wPFxVvrO0h+UH6jGzuKD7TURXBGs6PPkMg1YL1HqDQf5ELfwg
+	K/F9MNhZvs0b0CttOcP1XffxUtP26OY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RaPi3BqZ;
+	spf=pass (imf14.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770376456; a=rsa-sha256;
+	cv=none;
+	b=D9+tPBq50v+JdKkgrBeEy/u3oeqEK+O6iwJc3RMehv52Opi9cBYTIDsWPtuZoDbSwsNOdS
+	Idvq0YwfA7Muay2dG0f83Da6uK2BlLjRV4gOgumdIQy2zi6dC3or/R0LfALxJSoKVlL6ad
+	lS2jHf3aV0aznzzmEnbp5daqH9Yeuzc=
+Message-ID: <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770376450;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t10+cy0YbJp1qzuAruOEDHFVPEgf+sIN5MYp954+hik=;
+	b=RaPi3BqZPsLqUSHKWvjkyZ/Bf9ppgLwDMnRp3djinkfcParF3X0U5UOMZXVjnrIIj+XKGG
+	qik03O+yZh0BczTm4tqsQ4ypqJYxgFR02cW1b2w7PUE2iHSCCwxRYQBdSb0+Sx1HZWERjm
+	cI4FFTRQSuQeqxHQ+OOhNwrumpE+hso=
+Date: Fri, 6 Feb 2026 19:13:59 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: Re: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to
+ CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
+To: "David Hildenbrand (Arm)" <david@kernel.org>, andreas@gaisler.com,
+ richard.weiyang@gmail.com, will@kernel.org, peterz@infradead.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, dev.jain@arm.com,
+ ioworker0@gmail.com, linmag7@gmail.com, akpm@linux-foundation.org
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
+ <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
+ <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1a6d8295-e27b-4440-a367-af0432a7af4f@kernel.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4xbp4imfrcoojahmy76k431fsest4o3c
+X-Rspamd-Queue-Id: 2B974100014
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D34FE180010
-X-Stat-Signature: km9bzyzqsyyeun5wg7zmf5saud3ngq8m
-X-HE-Tag: 1770376379-14558
-X-HE-Meta: U2FsdGVkX196b6QAChsvBRHXRoaluqq5mpSoLlkUXZHSpDknxrDOCmwqQy4/DqtctyDVn/aPK3uYVpRVM5B/Hf6bxFJZDH37W25APsmYFKHy1DvLa4p/8yMLLgiavAVrdpDRLnl/bLMLYMbtd42Suc3ICHekEYpmVrHs537YIYAgkHFqdfZFcfN9abzWS1jUhCVwRuyP4cXXzxuTejUQPUfAv/R6vQPU8Q86DgG5+MUSgzlTLeaF66xhbTPvMjtu6lMQR/cpa2U8+pGiQOSd70yieJ0Bv5OeJ0DWx4F6Zd/K6ZUVNGg0HV67mQgPSgWOptGZmCACPfCzJ+D7AJl76Zjuv/bxfb+aLs5ap0cYjCK8yt1qL7c0OGGpTaDMz2sK5jh8r/RTc4I6X/3UQ/YDW/8POS4uEk2CNtBNlpoRQAOyJVE8EN8yjMFMKYJaCo/Rry4KkSluRij5Sp0p22RuyG5fzRSHdXMUXSTSAL58rvMWwirLzTmjEfz/No+WEMuGE5f7pyAjj8EBRL8q57uAUXarN3WKPhC2hCYtRUPuTx9wUvzpOML3XARMEAb9koI6HoeGY7HoJ+S3pldVxyIlAPVW8jS4AJ48ph8mYlY52kc6abPZ/2HrTi5hIYdNgj6Jx9A+twpPS8gzaGWWNCPePHOH9Dcjp1XqiydDXFcNNxPujfbcZyAX2Wbcazc5pj136Ih7GwExOv8H340xkY7vGQLKqFXXfxhclIQnUwyPzg4rpdkhRVfeRkVbHp7nhPlp0q4nh1B86NAqNOCidQh8lYYf0xOmCDZheiUBf0ictqbzrzdIAKKEdO8BLlq4pY3vboJPpfD+UrbkVm9qAMjEgZk7ksICx+GRkQtvUYfsx4iVqB7eTeflQ9Z3Stzmyh2TKqupNjmGJD11P18Awiwuc7KxZZ8l7IqjLGoZl1kUire1o+x/cE6VSChIvVS80oP7A4ZPqiP+/v7x1EHKA1U
- 0Ps9AxDg
- oJyXcoCCBdQ9S6oP+QjdP6nJzYGYo0w2+SA1Zajz7L8j74JEmVZ6nXkQqmvLZpwYJL13NCpTQRu8qN6s+h0HlH7WeMQI/ldn/GrehOFiBOEzlRuGQvPed8y4UiPY5bPRJ+QKyYRVfrUn+lNQidxqksGe8WkRqZVTtFSk9yCXa8zg4R5Bi6huha04m65kJxUOzG6WFczAO0s4LjyHE+V3WXGAPvMYHnI45W9mhS5TYONBFzb+tdVSYfjiTxLfQUzm5udkaKxY06j4ElbQlW+/q5XoBk2grm3NfuSia6fTKd8bdmWWQ28ot2L4+tgc+gj+2znl9Fz8yZHjeGllMt4bKzkixw1wEUL94auUauYY/yICb2/nkpMpBfdakhL7D/LenFoSfIVJEN0Fwo0+Is197xrUM3beGjV7zNY3+XmkTMhoH0/69SxSEnLCRD8imo9hVUbbzpyIbGpudQB5IqeJ1a6ZSoDp8DsCzKzqG4GfYyvzMTCjosJubpDl641jHiezU/ytKG9hJy3eaw+zh1RHDKS4o1WyK4zBsY2qs1QVHXE9Pym/RmeeuHv3X9QxQUlSWNThRIYSn422c5qc3MbJv2Q0Uwh/DAaksU2L8
+X-HE-Tag: 1770376453-290607
+X-HE-Meta: U2FsdGVkX18B35F1oRV3clba4PKrizzdLNPbo8ieQ6/iRXXtFDn4UZW3a0LsT6ptC5cfHya6RDrufjJzTvfwfkDxsbCZLD8B41c8T95UpKV/A6hf4R3VteNrY0xluMXbfheo0MFBILPLCtY6HFSKnPHJ2gEpfA70rUN9SI36XdKcdC/vpDB/m0fNbAvZkQSOxVMxNUR8n+O2gKkjxp9jyG9wHnjug21+3oZM6x/wY8O5NE+jkIHVX0X9QeglJp6tsQkbbNPADow/FS03CiXaJT2SkF4atoTD7tVTbviie/kiwBdO1W0tp+iPwfrd9L9JL5gApRf7rrQqAAm1TztQeIho1cOLC0tSK4NpTZjHQzSG7SvIba7K9oYoP/lnsu6VhE4W4Qwj6+LQygg6wwNsdwkTTeLHif6HwqVin7LbmdqBZGaIACsIACtsNgowVhPMnjLO/62+MKkVHekPCle3ZMJlfSIGlNreN+Eej96SpzrZP5XJGI3+dekwOnuZ6aZ2YjhKmAMvP6NEAxAkFgEfyTmrr12ByiAvpodU/dZVGHV6tk7ZT7cZAAYs5H27wtPhsykQeZ/Ghs3eLWpj5yLDaVhJeRPCPOTPsUm6OPTVWouJ+vD9tZmsAvXC89WPC4eJXoUrHLPOgu1kv+LSroRVC/S1sL1+7PHSbAfgT1Kj1b8Ve+WF9NaGCwOb90aFB72RKiRCx110TWmncia6H5gIgPanta/XOUQS+N8yJpiu7JSPKlqQta+Xg4LUS3jWbmhWG0KM1e3cN6BK+XDkbLliiak/rGS39lblciw+ng1v8tJLieiwXVl+AjgvLYHCz5QsXK4usUS7BGPKKJcazd8hZlLWctXFYx8RoPIK6Qlg9GmCTMka5Wf4DPfraE7C6HqSBDqEKbc3mcK0g4Dj/b51HcRant0prJJMiE5vLldBbyTcYVYITOnHAU9oHsSfCHb7PehfYztki5xksKMDhJA
+ F+wc3E0j
+ 7wGTDiKXm0z48yi9OgKETaOVyHEIr5dHG+yqRQna66J8R1rHT6lspXK73h49n+NUiyrihK5a/ayQVWVpXVdDhWE7muDanBqy56QaGU7qR2K7PE1wpF9zWldXubFrDhQ3nVpFSuQA9P4okkzvucq2pQb6VZYFiTQI7o2cUOAcMU5mNlBqMxKGtaZ3BI1YZ6idhF8qENR7hMhFKnn731onIAvwJn9hc1fS1VOArjBw6DXVEVAwYhYxE0dY6GpvlVUVowxWbGl2z13ydc5j9JrrRK7f+yjlGRsT/v0O47aW+WZy1aM99OzLu1yNqU2PaFi6ShpI+h8x7xt+N3D+jKCj2fkIb7lwlTMPZayqBsPJ8i+F7J7OpYnATXKKJVBhX8E0cjfSOOS9BwrqICUdloi/PeFsIXUcJpa4DZYUS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,50 +98,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 10:02:48AM +0100, David Hildenbrand (Arm) wrote:
-> On 2/5/26 15:25, Dev Jain wrote:
-> >
-> > On 05/02/26 5:41 pm, David Hildenbrand (arm) wrote:
-> > > On 2/5/26 07:08, Vernon Yang wrote:
-> > > > On Thu, Feb 5, 2026 at 5:35 AM David Hildenbrand (arm)
-> > > > <david@kernel.org> wrote:
-> > > >
-> > > > I guess, your meaning is "min(_pte - pte + 1, HPAGE_PMD_NR)", not max().
-> > >
-> > > Yes!
-> > >
-> > > >
-> > > >
-> > > > I'm also worried that the compiler can't optimize this since the body of
-> > > > the loop is complex, as with Dev's opinion [1].
-> > >
-> > > Why do we even have to optimize this? :)
-> > >
-> > > Premature ... ? :)
-> >
-> >
-> > I mean .... we don't, but the alternate is a one liner using max().
->
-> I'm fine with the max(), but it still seems like adding complexity to
-> optimize something that is nowhere prove to really be a problem.
 
-Hi David, Dev,
 
-I use "*cur_progress += 1" at the beginning of the loop, the compiler
-optimize that. Assembly as follows:
+On 2/6/26 7:06 PM, David Hildenbrand (Arm) wrote:
+> On 1/27/26 13:13, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> For architectures that define __HAVE_ARCH_TLB_REMOVE_TABLE, the page
+>> tables at the pmd/pud level are generally not of struct ptdesc type, and
+>> do not have pt_rcu_head member, thus these architectures cannot support
+>> PT_RECLAIM.
+>>
+>> In preparation for enabling PT_RECLAIM on more architectures, convert
+>> __HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config,
+>> so that we can make conditional judgments in Kconfig.
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   arch/powerpc/Kconfig            | 1 +
+>>   arch/powerpc/include/asm/tlb.h  | 1 -
+>>   arch/sparc/Kconfig              | 1 +
+>>   arch/sparc/include/asm/tlb_64.h | 1 -
+>>   include/asm-generic/tlb.h       | 2 +-
+>>   mm/Kconfig                      | 3 +++
+>>   6 files changed, 6 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>> index 9537a61ebae02..b47aa8fd62742 100644
+>> --- a/arch/powerpc/Kconfig
+>> +++ b/arch/powerpc/Kconfig
+>> @@ -304,6 +304,7 @@ config PPC
+>>       select LOCK_MM_AND_FIND_VMA
+>>       select MMU_GATHER_PAGE_SIZE
+>>       select MMU_GATHER_RCU_TABLE_FREE
+>> +    select HAVE_ARCH_TLB_REMOVE_TABLE
+>>       select MMU_GATHER_MERGE_VMAS
+>>       select MMU_LAZY_TLB_SHOOTDOWN        if PPC_BOOK3S_64
+>>       select MODULES_USE_ELF_RELA
+>> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/ 
+>> asm/tlb.h
+>> index 2058e8d3e0138..1ca7d4c4b90db 100644
+>> --- a/arch/powerpc/include/asm/tlb.h
+>> +++ b/arch/powerpc/include/asm/tlb.h
+>> @@ -37,7 +37,6 @@ extern void tlb_flush(struct mmu_gather *tlb);
+>>    */
+>>   #define tlb_needs_table_invalidate()    radix_enabled()
+>> -#define __HAVE_ARCH_TLB_REMOVE_TABLE
+>>   /* Get the generic bits... */
+>>   #include <asm-generic/tlb.h>
+>> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+>> index a630d373e6453..25fa2908d6152 100644
+>> --- a/arch/sparc/Kconfig
+>> +++ b/arch/sparc/Kconfig
+>> @@ -74,6 +74,7 @@ config SPARC64
+>>       select HAVE_KRETPROBES
+>>       select HAVE_KPROBES
+>>       select MMU_GATHER_RCU_TABLE_FREE if SMP
+>> +    select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
+> 
+> Why the SMP? At least in tlb_64.h, it was not protected by SMP IIUC.
 
-60c1:	4d 29 ca        sub    %r9,%r10		// r10 is _pte, r9 is pte, r10 = _pte - pte
-60c4:	b8 00 02 00 00  mov    $0x200,%eax	// eax = HPAGE_PMD_NR
-60c9:	44 89 5c 24 10  mov    %r11d,0x10(%rsp)	//
-60ce:	49 c1 fa 03     sar    $0x3,%r10	//
-60d2:	49 83 c2 01     add    $0x1,%r10	// r10 += 1
-60d6:	49 39 c2        cmp    %rax,%r10	// r10 = min(r10, eax)
-60d9:	4c 0f 4f d0     cmovg  %rax,%r10	//
-60dd:	44 89 55 00     mov    %r10d,0x0(%rbp)	// *cur_progress = r10
+Ah, It's just simply aligned with the MMU_GATHER_RCU_TABLE_FREE above.
 
-To make the code simpler, Let us use "*cur_progress += 1".
+> 
+> Apart from that LGTM.
 
---
-Thanks,
-Vernon
+Thanks!
+
+> 
+
 
