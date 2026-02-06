@@ -4,106 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 894A6EE20A0
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:33:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5507DEE20A0
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:35:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1DD96B0092; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
+	id BAABE6B0096; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF5B06B0093; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
+	id B95CF6B0098; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1E546B0096; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
+	id ABF226B0099; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AF3676B0092
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:33:30 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4B06156902
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:33:30 +0000 (UTC)
-X-FDA: 84414123780.22.21E6421
-Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 389D810000C
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:33:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=Z9Z88ceb;
-	spf=pass (imf05.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9B5866B0096
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:34:59 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4783EC07F3
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:34:59 +0000 (UTC)
+X-FDA: 84414127518.29.F461AAB
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5710B40006
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:34:55 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770384808;
+	s=arc-20220608; t=1770384897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vb13Vwh1fPqNxRNlEIYNEmJHIJtcIK4aczKvaS88OeA=;
-	b=BUCZHt+NfMsjyi+kFrJfUi/Gpi2dXY0NUnlIyoeGijJ9QTuNAEMR0LTareXrQUkXdumpnU
-	zFHz112YJ4uvdtQ7WrwmHCTyqB1R23UCUJOwqztpS1B4m5c/tVbEEd9iMipP0LXOHcBqyO
-	IWugKD8FBH7Re0XOQ+CTF5Q3FjRdDLo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770384808; a=rsa-sha256;
-	cv=none;
-	b=d3V9lwk+iqfXf21ZLhldbcnk+5OvBGVqoaKmRL88I5YXwHkG+85oGRtQGMZJK1yjKV/Nop
-	NoHK2dRbACOxqkZ53e3bLoJZHl8rbdwR7qLfkDe7boyljA7UnID5kotnHRpgn6hAk1YDDR
-	xJgR80uF9aga/IWQeo7vMsJNe80L59Y=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=Ek9xXpyxB7RWqvoD0KJ9YQ7rIi4F0Xgb9AWn4cpPhqs=;
+	b=5SNMoveBuWAPKH1X8RBpuFSxyky4V5JLwtCn6esdbooDYBqDbc5YvxQxO8s2Di2hFu4eau
+	37Fu3cEG7+HYd84tKjZAPN2JC2mFEi167ih0myx8ITg8MqTzyzRju7cSWt7hp1bEpl3Pmb
+	hY+soJjWqljezy3sjjqdF5SGA7EWBXI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=Z9Z88ceb;
-	spf=pass (imf05.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com;
-	dmarc=pass (policy=none) header.from=gaisler.com
-Received: from localhost (localhost [127.0.0.1])
-	by smtp.simply.com (Simply.com) with ESMTP id 4f6w5f1jGqz1FDXx;
-	Fri,  6 Feb 2026 14:33:26 +0100 (CET)
-Received: from [10.10.15.18] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by smtp.simply.com (Simply.com) with ESMTPSA id 4f6w5d3Z4Lz1FQVL;
-	Fri,  6 Feb 2026 14:33:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
-	s=simplycom2; t=1770384806;
-	bh=vb13Vwh1fPqNxRNlEIYNEmJHIJtcIK4aczKvaS88OeA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Z9Z88cebMu7Ddw1jVWtT448QIvjHL3GiCwWDGvsQ01Wxtyv3l79H+bPYslc1UOB9Y
-	 BdTB81cJcyiWlbAk4Xtv+cSCwqG0dm8ZtfsJ0+1NUs0nMYD/nsZAWUQ7EG3GW5LUcx
-	 0wBqY7vrdo20aOPF/76QbRmshC7PSNXwuN38zJAxeBlYBIzyXSflwMh2TZ4DIboOxw
-	 vVux+ighrR6Q5uNjNY7Izr87aZexRGjwxcfGrRU9WPwEYfMjDFCgLUCpuncK1iWdjy
-	 /ZR4ft/NA5cLVxWSHqdmyJ6d7uUMeuP1zpoKteadSBJ5gNGxos6/Pw/tMDP1Ddpwbt
-	 dhqXYTI9hYY9A==
-Message-ID: <847afd79-e8f8-4547-8167-0125809de055@gaisler.com>
-Date: Fri, 6 Feb 2026 14:33:24 +0100
+	imf11.hostedemail.com;
+	dkim=none;
+	spf=pass (imf11.hostedemail.com: domain of gladyshev.ilya1@h-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gladyshev.ilya1@h-partners.com;
+	dmarc=pass (policy=quarantine) header.from=h-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770384897; a=rsa-sha256;
+	cv=none;
+	b=2p48CHFyulL77QlEZtDV50w677TJSBt1qdbCsRwGMtBzfPFSjzuZ39UbxulYOBg/RP/WMQ
+	9C56X3C3NySG6UOHKdHWKvDFYviWm3hkQlwaArem8TO/Izw7gd+AZL8Z/T5yX0EfpogddG
+	5pnb56chof1SBid+F7ed5gbFcae2DdI=
+Received: from mail.maildlp.com (unknown [172.18.224.107])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4f6w645B89zJ46FB;
+	Fri,  6 Feb 2026 21:33:48 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1402840584;
+	Fri,  6 Feb 2026 21:34:41 +0800 (CST)
+Received: from mscphis00972.huawei.com (10.123.68.107) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 6 Feb 2026 16:34:40 +0300
+From: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+To: <gladyshev.ilya1@h-partners.com>
+CC: <gorbunov.ivan@h-partners.com>, <artem.kuzin@huawei.com>,
+	<stepanov.anatoly@huawei.com>, <alexander.grubnikov@huawei.com>, David
+ Hildenbrand <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+	<rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+	<mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, Harry Yoo <harry.yoo@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Yu Zhao <yuzhao@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Will Deacon <will@kernel.org>,
+	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] mm: make ref_unless functions unless_zero only
+Date: Fri, 6 Feb 2026 13:33:02 +0000
+Message-ID: <20260206133328.426921-1-gladyshev.ilya1@h-partners.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to
- CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>, richard.weiyang@gmail.com, will@kernel.org,
- peterz@infradead.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- dev.jain@arm.com, ioworker0@gmail.com, linmag7@gmail.com,
- akpm@linux-foundation.org
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
- <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
- <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
- <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
- <538fef61-3903-407e-8486-538a28b99e9d@kernel.org>
- <53a1bbdd-26d1-454d-af06-169172278718@linux.dev>
- <c24c32bd-085d-460a-833a-a982eb5becaa@kernel.org>
-Content-Language: en-US
-From: Andreas Larsson <andreas@gaisler.com>
-In-Reply-To: <c24c32bd-085d-460a-833a-a982eb5becaa@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 389D810000C
+Content-Type: text/plain
+X-Originating-IP: [10.123.68.107]
+X-ClientProxiedBy: mscpeml100003.china.huawei.com (10.199.174.67) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: t8wuxra34h35r3egiixf495mau3gpxgg
-X-HE-Tag: 1770384807-606206
-X-HE-Meta: U2FsdGVkX1+HefTr54ydDvJcjJOPWSurAkS+16FTTykIHRWqu4QRT531n0L3hAtHitAboOUsxza/BLrHmCTy1KxNoTqUWmMvulaxFdGFMjfKG0mBIsBix7O+aa1xoGWhdVCHj5dFznGSJCgDG2L1opxuz83Uc+n7eYScjtOnBcDXbavsPfqOC8SidCjc3IQZ1phTJ4C9mMEvUSRK3PwJZhJiNpJV6K1a8X7njryzLn4NYj2xhSMnAjYCDKRqiVUHMt+hJY3qh/+ydK0pmhkUIxYFSOX610EJjuQBkIoENT/j2SEyyPanQEDRL88MNc6fUOj0S0/BzB6SSPZSc9lN4O/8nEaQGqu8h5rOSduZGc1Cb78pVjWGiUlmz4L6HzxDosP3napYAp/PmoO72o9kPlV7LnMN9vErXIAwS3zMJqMS9FPffsgOIxQh4zbiFRXfoSd1qzmcJNbC2hFRByZzWnD787Ed+EiBh9JO8cOrhH6N6mkBtgK+OGMP+/E/o7SXJDajVV5MFFEnV/MMEDAn3Z4t2FqGGZ0q1b4HVVgSs9gxBCExUtB4nvrvF9phhf5D9F7LrEbTeHVpLQYMgddnq2G1z51wVHzF8sFKpe8nyZf7hr+hQSDmgJoSEzMlOVwT2MbFB5183TJdcM8g0L6yEnh9H8Hj9ejV8AntgOQp0luvwhtGm1OejfUjyOhSnHAaJAOR1E64Uvv//fbjYxvkyiXvd57xe54dI72F7pyU6Ham4idcY1xqaDKSylKOp1/6nHUw939wF+6IwkaiiDxr2bl9HXTDG7oYkaYnR/xAAxk6KjAjlQSUzToVOGn8mUF21MxYMeSgSQ/LrVDIQnCg62mqQ/wQrmhITjmCxssUgEu0h3ka7trj7jdT5bMTDwG1MOy6ayG2r/dOmmU1iSXMOSdyhjgDoo8BFVz80rLCRY+z4ZdDHQXgetccMt/ePnLI3+SuIPq/MJKdcbW3iou
- e9xAbRDC
- w9Z0UimVr0rnU88gDQ7MjSejzvikR5YEd1fYvKGwa445EGvkh/85IL2qOU8AfVTsjl2cZAYQKYpNAX4A4xg3I0qVhQwfvVIrQmlAcTXI5BHX4ClaUFOVfVboMmULdokFuo/0yJd1l8ySWWofC7BCVaG4Z51rqM1O2v/rS2DMRArggWx/pYA92+sRloXN9BeokzRC8on8+L3w8Wmofb5QE31b7C+QxjgQq6F2fM5darlbdTxf84Z7pHtINBQcAjRtxkGlTx1pwhVIKNHhXvCELYfHvohnQ1ZMzPJYr+xJ5qLK8fYGq8Z4LRAJlW5wwi4q/1uey5bXyl1sbpXjx29DArxrojPc/pVSFi6bnTbYieei063oP1enctuhfcfh7snb31LoRcX99CAda5SZYFHA5NvjbakBoVokZC6MXKrwJcAaXDnINUHcQgP9pJKMYIXgSBaVwQq689PSNmRYoIl6hg042PqiHw/jmQ0RJt5EqC1pJPVBT2JrojW7Man10w1L0VJ7TM49DBoQNXwnKpZRTDWqISQ==
+X-Rspamd-Queue-Id: 5710B40006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: d7ef1b8pn6z3hhb7jeigemy81997qr6r
+X-HE-Tag: 1770384895-630779
+X-HE-Meta: U2FsdGVkX1/Ks7Gnr8EnspEKzUcyJhEdy/0RZJESgl7DSszbetmIE2yJvzGgeKF4KGdeqfLPpbX9D1wwG4Ik9XLN6NGp1Yn7PZfZKBUdrSDnVumjYUc6IfPqUKZbCa/uv7JgaDAGfi7DbNTJ9RjVI5qqtJYtTOmFx3eA3L1n/jG3mKFhXaQr+S38TvuKKai4MH+EKC6yntzWhkfpKheWOOJzTzMjKNeR3NWtwHRzQBu8158yI6HG29Kiv9BznQi1NePWO8RohZ+MJFAOCiALJyYGSgwAIM9q3z5OYwAN2qgWCN5taRcJm8gMHQPXQz/0taus60W0FbEcufBIPNaYYv92wa7I4UAhJsR3SRI1cVc6VYaXIzbaHILutZsvy0f1HhWyIUS51Ee2b69gbNaEJiZOb2VMy2MIzXVrpzCX7q3AWlZab5pv8bjURWS7eTi5BJ9PRV3oFB1QsD0dw8DBR0VcTRDKJNdtw4iXVvCHhGMDIDvFe7IgCp5BMIaGH2xbxUzbzWjhiA5cqqdJKIGlOiDEWvbCuHEIKH2v6HJ68A8ANN8yxldlaD8vr+W4KiDuFur5VTfpKAylLrm2GvAA5GHPSdS22el3ocbdVyHMp+0wt724Lqj0i7UgHPZkzHK767JAR82mJRsRXHlbVroMw9iY5C1tLziWf8wqWzaRBz3N9SJzHudBE2iznxTvN3Pfy9PlxLiPLk7888+ljGGUZuDUiIFoSSxyWe01W8MAm2W/DUWM0hqBX6IC5nG3gVPHAs+jGq/sIBUNz+tOHDWcOYTTF7+whzUQVz6oUh2NqtwHftdi25LPYeIIE4jpbzky6JddUNeQ03QcHgawydfcTwB9PryYZxQq3T5K/BCj0qINW/zFZtcKN+d7RbUFtHlznVfX2NOLb0iKSesXt8T/3I7/kdSM13Sgv5ARQ//0IVklOEFhLjZzVLacFjWuw+KTFkpHd8XjFJkLk7J7/4G
+ LoZP0xXq
+ e8JQUtvx5r6OpFdcrIPGiSm+M78cQJ/oRu2V0XCQGrLYwnIseK5uAlc01MnYtp7lTHbRBKiSNt7fuD/9OMMceHSuS1F7YkLVw1tAvZ8klrahxnHOdbXcGOyTn5AhWFL+xOjoxeqle6P/kbES45P1BMEY7yCrh1ojfRqIYGsjYym60hqjZaKlqPvXvDA9eVTsH08vIhsUNpU4hoO9yRrML+hJmwZ3L9c1wBjBZh0qtrUr8wp8TBZFQHXLKOAUEyIH7s5R6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,45 +96,123 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-06 13:59, David Hildenbrand (Arm) wrote:
-> On 2/6/26 12:58, Qi Zheng wrote:
->>
->>
->> On 2/6/26 7:45 PM, David Hildenbrand (Arm) wrote:
->>> On 2/6/26 12:13, Qi Zheng wrote:
->>>>
->>>>
->>>>
->>>> Ah, It's just simply aligned with the MMU_GATHER_RCU_TABLE_FREE above.
->>>
->>> But does that work as expected for !SMP?
->>
->> In the case of !SMP, tlb_remove_table() will not be called:
->>
->> static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, bool is_page)
->> {
->>      pgtable_free(table, is_page);
->> }
-> 
-> Ah, okay. Confusing stuff. Would have been nice to document/mention that in the patch description.
-> 
-> So if it compiles, all good
-> 
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> 
+There are no users of (folio/page)_ref_add_unless(page, nr, u) with
+u != 0 [1] and all current users are "internal" for page refcounting API.
+This allows us to safely drop this parameter and reduce function
+semantics to the "unless zero" cases only, which will be optimized in
+the following patch.
 
-It looks a bit weird, but it is actually more logically correct than
-before the patch. Before this in the !SMP sparc64 case
-__HAVE_ARCH_TLB_REMOVE_TABLE was defined even with no actual
-__tlb_remove_table() present. But it did not matter in practice.
-But I agree that a mention would not hurt.
+If needed, these functions for the u!=0 cases can be trivially
+reintroduced later using the same atomic_add_unless operations as before.
 
-Tested both with SMP and !SMP
+[1]: The last user was dropped in v5.18 kernel, commit 27674ef6c73f
+("mm: remove the extra ZONE_DEVICE struct page refcount"). There is no
+trace of discussion as to why this cleanup wasn't done earlier.
 
-Tested-by: Andreas Larsson <andreas@gaisler.com> #sparc
-Acked-by: Andreas Larsson <andreas@gaisler.com> #sparc
+Co-developed-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Signed-off-by: Gorbunov Ivan <gorbunov.ivan@h-partners.com>
+Signed-off-by: Gladyshev Ilya <gladyshev.ilya1@h-partners.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ include/linux/mm.h         |  2 +-
+ include/linux/page-flags.h |  6 +++---
+ include/linux/page_ref.h   | 14 +++++++-------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
 
-Cheers,
-Andreas
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index f0d5be9dc736..0b30305512dc 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1306,7 +1306,7 @@ static inline int folio_put_testzero(struct folio *folio)
+  */
+ static inline bool get_page_unless_zero(struct page *page)
+ {
+-	return page_ref_add_unless(page, 1, 0);
++	return page_ref_add_unless_zero(page, 1);
+ }
+ 
+ static inline struct folio *folio_get_nontail_page(struct page *page)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index f7a0e4af0c73..fb6a83fe88b0 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -231,7 +231,7 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
+ 	return page;
+ }
+ 
+-static __always_inline bool page_count_writable(const struct page *page, int u)
++static __always_inline bool page_count_writable(const struct page *page)
+ {
+ 	if (!static_branch_unlikely(&hugetlb_optimize_vmemmap_key))
+ 		return true;
+@@ -257,7 +257,7 @@ static __always_inline bool page_count_writable(const struct page *page, int u)
+ 	 * The refcount check also prevents modification attempts to other (r/o)
+ 	 * tail pages that are not fake heads.
+ 	 */
+-	if (atomic_read_acquire(&page->_refcount) == u)
++	if (!atomic_read_acquire(&page->_refcount))
+ 		return false;
+ 
+ 	return page_fixed_fake_head(page) == page;
+@@ -268,7 +268,7 @@ static inline const struct page *page_fixed_fake_head(const struct page *page)
+ 	return page;
+ }
+ 
+-static inline bool page_count_writable(const struct page *page, int u)
++static inline bool page_count_writable(const struct page *page)
+ {
+ 	return true;
+ }
+diff --git a/include/linux/page_ref.h b/include/linux/page_ref.h
+index 544150d1d5fd..b0e3f4a4b4b8 100644
+--- a/include/linux/page_ref.h
++++ b/include/linux/page_ref.h
+@@ -228,14 +228,14 @@ static inline int folio_ref_dec_return(struct folio *folio)
+ 	return page_ref_dec_return(&folio->page);
+ }
+ 
+-static inline bool page_ref_add_unless(struct page *page, int nr, int u)
++static inline bool page_ref_add_unless_zero(struct page *page, int nr)
+ {
+ 	bool ret = false;
+ 
+ 	rcu_read_lock();
+ 	/* avoid writing to the vmemmap area being remapped */
+-	if (page_count_writable(page, u))
+-		ret = atomic_add_unless(&page->_refcount, nr, u);
++	if (page_count_writable(page))
++		ret = atomic_add_unless(&page->_refcount, nr, 0);
+ 	rcu_read_unlock();
+ 
+ 	if (page_ref_tracepoint_active(page_ref_mod_unless))
+@@ -243,9 +243,9 @@ static inline bool page_ref_add_unless(struct page *page, int nr, int u)
+ 	return ret;
+ }
+ 
+-static inline bool folio_ref_add_unless(struct folio *folio, int nr, int u)
++static inline bool folio_ref_add_unless_zero(struct folio *folio, int nr)
+ {
+-	return page_ref_add_unless(&folio->page, nr, u);
++	return page_ref_add_unless_zero(&folio->page, nr);
+ }
+ 
+ /**
+@@ -261,12 +261,12 @@ static inline bool folio_ref_add_unless(struct folio *folio, int nr, int u)
+  */
+ static inline bool folio_try_get(struct folio *folio)
+ {
+-	return folio_ref_add_unless(folio, 1, 0);
++	return folio_ref_add_unless_zero(folio, 1);
+ }
+ 
+ static inline bool folio_ref_try_add(struct folio *folio, int count)
+ {
+-	return folio_ref_add_unless(folio, count, 0);
++	return folio_ref_add_unless_zero(folio, count);
+ }
+ 
+ static inline int page_ref_freeze(struct page *page, int count)
+-- 
+2.43.0
 
 
