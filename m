@@ -4,93 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B4EE8B364
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:48:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FF74ECD9BF
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:53:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F4476B0092; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
+	id 3C2F06B008A; Thu,  5 Feb 2026 21:53:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BAD96B0093; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
+	id 370CE6B0092; Thu,  5 Feb 2026 21:53:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1DEE06B0096; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
+	id 26FBC6B0093; Thu,  5 Feb 2026 21:53:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D7C16B0092
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:48:06 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 936B31B2784
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:48:05 +0000 (UTC)
-X-FDA: 84412497330.01.6B58C98
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B80DD160005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:48:03 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IMPBFxSu;
-	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770346084;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z8cUYDug+KA/z/+qG82tQKkyvE+6vqzDr2LKkma6cU4=;
-	b=p5FvLXZDwH1McRlSLZWqvzcgbF12wg5xoqXQCcdEuv6NTxoK4SPkUJ/At4ozg0FeiIkRt1
-	V8GQF0OG6kSjPgmByzQrxA9VvNevExId52wCOPx7vPMu2Sv7wIUq7t2Zy2V3t/3q8/HDSa
-	AD6ivTbfiACs197v/9m7oaxYTvNLD18=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=IMPBFxSu;
-	spf=pass (imf08.hostedemail.com: domain of jiayuan.chen@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770346084; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 128226B008A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:53:47 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A45735A818
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:53:46 +0000 (UTC)
+X-FDA: 84412511652.11.55859C8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 4683040002
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:53:44 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HqQlu0fl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770346424; a=rsa-sha256;
 	cv=none;
-	b=LXhWInX+cNy79TcyL6GTjKID/OJ339NKDr1a8MLbePQXFri8EqZwfzefAwBDHGoVJSuv2e
-	XKUlrDXnMze+5c7TF6JfFygjxP3sH39t9cIy8Iu1Gv5on7Z9nprhKHDQ6bT/2dAd/pl8Fo
-	5DvbTFRPnS/X75zC9+KL1GU/gEqGg/Y=
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770346081;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z8cUYDug+KA/z/+qG82tQKkyvE+6vqzDr2LKkma6cU4=;
-	b=IMPBFxSu+8uQOW4JZAmYU378vjSSckXrZngrEjjc1dar8KyBJyMASGc9I43eGOFSz5SJo8
-	4DyVZaP8DtARAOTh71nbxYIhoXIw0i1dceOTE4MvOA5bLdmlgL14cCMN1GBcIwmqd7/p0E
-	drJzC+os8uGwbIuik+nmamkyTkB4c/s=
-Date: Fri, 06 Feb 2026 02:47:58 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <e155ad8af874f10baaed91f1d12fde222b82036b@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible
- pages
-To: "SeongJae Park" <sj@kernel.org>
-Cc: "SeongJae Park" <sj@kernel.org>, linux-mm@kvack.org, "Jiayuan Chen"
- <jiayuan.chen@shopee.com>, "Johannes Weiner" <hannes@cmpxchg.org>,
- "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
- <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
- "Muchun Song" <muchun.song@linux.dev>, "Yosry Ahmed"
- <yosry.ahmed@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>, "Chengming
- Zhou" <chengming.zhou@linux.dev>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Nick Terrell" <terrelln@fb.com>, "David
- Sterba" <dsterba@suse.com>, cgroups@vger.kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20260206022152.67992-1-sj@kernel.org>
-References: <20260206022152.67992-1-sj@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ujr5f1oa1x3fubs7jo63akrgqotwenw6
-X-Rspamd-Queue-Id: B80DD160005
+	b=JqwvdhJKO+WOj90vPxr/6igmFnnNq0OLMF9upO3YechjMjcwXZ72PS10u9mxXMrlI8bJNS
+	uLfk0fFrP0PgUTqkyHHN/7YAHFr9o5TCBo5T0FQB9HRaqHkSt9kAQMkNh+gv452pbzBsa5
+	fqeNNF8LUPMJ/MGrkjAcb0zqQESd9mY=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HqQlu0fl;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770346424;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=CE/aFihWLfv/9vuebWCtplFbVvQafyaSoSiugzEg66Y=;
+	b=qTVlcIfbztlpeFiH2jk1OLqJ/NVgHjUhoY+Gm8DdLd2SktJtTeAi1T8yubZFsfOzKIzk8J
+	pUe1qZ814i5t1IurGqdwBmAk3ow83XAeKpfjm1eaj8sH2Cyyfae9im7BgyWAr1bqCzw5V1
+	ZZ4UgYzX8vXNmTt31TPEoZ2L0UKkYRI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770346424; x=1801882424;
+  h=date:from:to:cc:subject:message-id;
+  bh=CUKtE/i7N3hUC0jAULQpxD8lV2v1wz/nzweA4ZT7f6A=;
+  b=HqQlu0flP0a8xMYKtgdksjXQKxm2kr4iB9WgN5H9bPMGYbv8tQMZ2N/r
+   LPjJXbQm9w0ixyY63RS1WUCkWyUimCb0uWHCnG+3GUt8durlv8vOX9Z3u
+   RvqM+uXP33lM61ezUbEg509J+uEAgg0zZXAD1CY6R3GSL8LuSRMqwTRiq
+   1k2IhJA38ZQ4utZatcyTwqAjsjoT3IkDkGAj6R26urD5crvqWUsS3b5jK
+   aq4nhWQsUW7Q+W5ZTejC661UcrX5O8AR9tkQD8uQDMk2iWBE211wo1lej
+   JVvd38uP+k2mZQlf/lXbKu4XHPFWgLpcpkjoaZeBRlOUnLW6+J/xatoPy
+   g==;
+X-CSE-ConnectionGUID: HvPLbKBdQdeziGkf/PYz/w==
+X-CSE-MsgGUID: 1DuhPZk3T0imPOHN718ZaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="82188139"
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
+   d="scan'208";a="82188139"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 18:53:43 -0800
+X-CSE-ConnectionGUID: 3FGzg0dhShmLuBgNkeRr8g==
+X-CSE-MsgGUID: 4YaaxdfHT2ONQyrdD7iwEg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
+   d="scan'208";a="210671254"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 05 Feb 2026 18:53:41 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1voByV-00000000kO8-0uqG;
+	Fri, 06 Feb 2026 02:53:39 +0000
+Date: Fri, 06 Feb 2026 10:53:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>,
+ Mark Brown <broonie@kernel.org>
+Subject: [linux-next:master] BUILD SUCCESS
+ 9845cf73f7db6094c0d8419d6adb848028f4a921
+Message-ID: <202602061059.24bOV0Ll-lkp@intel.com>
+User-Agent: s-nail v14.9.25
 X-Rspam-User: 
-X-HE-Tag: 1770346083-35791
-X-HE-Meta: U2FsdGVkX18ekJj7Udyv7qjZ3cVFuLynCIDtJzacMoaTEt1pfV4Rb+QlGwgyGkhZIOiNR/ya3dEl9lUCeb0rOCfsjvna8yRqfdJ3LwIBLAYp6s9LVqoE2tcHyLUVK1je5FMIoQLm/v8ReW4IPF6sNAQ928HR6o0uGFEeesZ2q1s8ljNSNKkSnIvLDhXa1CATintaldcfbqY6bvmupixi+sVBJQLMz3maOZygZvJ77acQ2IZooA7/3ylqIGbEce6mSZXXP/86giAxXcPkVpaFOS9rS/iZMdfsARNztQNU39f6uNTHJShaDVAC73k1m46akTM6/zvUj+xQYt/tLiAOCslhxQ1Vjq3U4BAOS0BE20ZiVYh5N6O7jLzA1XBa5n4NRNtIDFZj37l7eHHsI+OfJlDB/QAeU7AjveYbhjzqYxaSlOyQwsRbt3t8nsW0/b/YVsUYWFkjiGvAE8L5U6Qez0sICuTEfoU4OSPrxP/8JL5qMAF/YcjwFR71DfpBot9s2aUp1lkpQDpr2FCSN+twNxfDRQKwruQxKBj3tbBNWEnHkhOQchRNW/qmwKlcy9FzBtvWZvCQ6aIFdAon79TkPi3pnnbUBc42t0kXqtvny0Svd0PP5rAK3KWRhqGAX9HXa/eUr0iavBSNe4G3PlIk46Wk5emDZnm2I0SwDgWONojQcrvG5ceDGr2KbH3CheUDvfZiKhX3jeYv6c36wclvF1S1vbZ6rwqQ22xXgZwr/T/4CTq946VU7GyiTV27YGc4GGMjtY4Cj3y6CcjEI6vOGo1RXzm7c3ssdyV2cMrIGVIvzoBKOLr9ZuTkfYBi+gD9Eppq06K3vhSG5XlRBq/F9ubQvnqlMQ/LvrovRfDr7fmx4WS2CZPnlsiLppnNTLIEgFZs8Dcyb8lEHZbwQ0v2OL18I2OpCnjl0pnRpgN8xCQUJBQmqBzFU/WPSq5rW7uzcUXhXmHdSN5NFOSqy9M
- Hf8Qs8HO
- qEcGwxSliDHZHRQbkJNodZVuMKGuL7pkIei5V/kZMyyigp5InJSY4U76e35hY9737IVPdjXooUSGK2cLx9SXME7E0vNR0bmWmIwROrUbBy2v13KF4zJJovagIBiOj/bnO/A854vTJcJyaT8v+VCyeb/Ue13czrFVBLmTmJDMPE36y+QQTS+N+dJh99XhDp2jrulHS/hGoqcF6GhvrfwF8cipCWzctbyBZuoSRmOthM2sx1m3+mWGANq0khlB+KgT6LoL4RahhCJ58GVxwGtiZv/rzU8uH58crMUQaYdbYw93lWDbrJwQmg4NKhe9ZiREf0X8B
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4683040002
+X-Stat-Signature: x8tkr98qh5jx9ce3z9eoktnqb3hdcxht
+X-HE-Tag: 1770346424-773063
+X-HE-Meta: U2FsdGVkX18v2Q5rfMKv4ubhwpFbx5/bNhzJoK+NAA06dM7rquN2OB7HRcoOaXPHsAhSAdSCpgLfG5ARbiwiT/Fzo8FUybkk+MYR3kroW1D8H+2zVJpShsfcLRjLamF+hN097o2ukkADGEsk6RAF0I7x8aW2LY67rDuIRUdQv4wi5stZ5h8tuL0ygh4lbnKlvPItmZ/5AHKLTlaDiLU24kIf83PPLYFqeMYWvOJJys2vxeAVyb8wkZGG1W2goUlwclZr4Ot09TIj/obx3MXq/79hdwKtTAoMfotjRQ5e2lWEa7Gin16fXhXx0VeIAXarvNXrA10qZYU6++uGymWSpTtz0/89qQO3ypnXmroOxiV7+MrQ+y5uw3p3qJVEvHC3juZORIIHLtoeVmWkkDm4By2fDS41wuqivte63hScQ3o8fVvwu2gDU1N+7RWdIrq8xD379TlZlIPzafxyPLlJQ0VxaSdSDBg+b3J4HewwKk7pMm/SPgEigLMqyyoU/dZmzzRi4GV3bscVlLCex6q5P00RklTtNawNYTpHcp6uiECU6tVyHbELSvv9AzMQv6TBNBmzhjZV3pCy1WrkHcWnA7oP+EaJLeYAAUBImBkxbjEmfNmZcS8w+JXnU9kf+WFifO9cDs9fd5oH+CaaqEIotq5YA1KcUvbpGpdzEqPB1xXjQjKy+Lo8hmfLXsBAGYGYDDc9Ia1gyDqk0+cFbymUcThuprDg2e3n/AUlau3BKV6HtsXxx7u3xPr8Iqak98VuoS4sqHCxi30spN3LU2qBF1u0J8p0A8uEFR/Yee7ysvu+DmZpsO3YyzBTD5jufh5pQe4XcFjCsdVSDn/ePUJ9DGQtblhmzYCmAObcEfrzX6GKy4mvy6oiYYBLQcSw8v/G+56/CuXdqS2iWeY4cpEnMnmMAf/1SInN7Zic6kLreY76mxymDF6Nmj8UpPScSV0XXaWYw1wctuyf9B7lIRp
+ PNo4m76L
+ T6iYwI9mN0/uOhqxw4fhQxTBh1PGhmddSLD+9FQymbE2iZF6Y2qxpvhtumxvfL7vCGcyxccVs3wWRsgIC/L2YSWZjsFHr0q72MuWZWy7fy3eobunZmGxB+r13UrKfmPE75yVNA7c0zgPrwIlBxSVTtJ/AuzqXTzyEx4Cv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,270 +102,282 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-February 6, 2026 at 10:21, "SeongJae Park" <sj@kernel.org mailto:sj@kerne=
-l.org?to=3D%22SeongJae%20Park%22%20%3Csj%40kernel.org%3E > wrote:
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 9845cf73f7db6094c0d8419d6adb848028f4a921  Add linux-next specific files for 20260205
 
+elapsed time: 721m
 
->=20
->=20On Thu, 5 Feb 2026 13:30:12 +0800 Jiayuan Chen <jiayuan.chen@linux.de=
-v> wrote:
->=20
->=20>=20
->=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >=20=20
->=20>  The global zswap_stored_incompressible_pages counter was added in =
-commit
-> >  dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as=
--is")
-> >  to track how many pages are stored in raw (uncompressed) form in zsw=
-ap.
-> >  However, in containerized environments, knowing which cgroup is
-> >  contributing incompressible pages is essential for effective resourc=
-e
-> >  management.
-> >=20=20
->=20>  Add a new memcg stat 'zswpraw' to track incompressible pages per c=
-group.
-> >  This helps administrators and orchestrators to:
-> >=20=20
->=20>  1. Identify workloads that produce incompressible data (e.g., encr=
-ypted
-> >  data, already-compressed media, random data) and may not benefit fro=
-m
-> >  zswap.
-> >=20=20
->=20>  2. Make informed decisions about workload placement - moving
-> >  incompressible workloads to nodes with larger swap backing devices
-> >  rather than relying on zswap.
-> >=20=20
->=20>  3. Debug zswap efficiency issues at the cgroup level without needi=
-ng to
-> >  correlate global stats with individual cgroups.
-> >=20=20
->=20>  While the compression ratio can be estimated from existing stats
-> >  (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
-> >  "uniformly poor compression" and "a few completely incompressible pa=
-ges
-> >  mixed with highly compressible ones". The zswpraw stat provides dire=
-ct
-> >  visibility into the latter case.
-> >=20=20
->=20>  Changes
-> >  -------
-> >=20=20
->=20>  1. Add zswap_is_raw() helper (include/linux/zswap.h)
-> >  - Abstract the PAGE_SIZE comparison logic for identifying raw entrie=
-s
-> >  - Keep the incompressible check in one place for maintainability
-> >=20=20
->=20>  2. Add MEMCG_ZSWAP_RAW stat definition (include/linux/memcontrol.h=
-,
-> >  mm/memcontrol.c)
-> >  - Add MEMCG_ZSWAP_RAW to memcg_stat_item enum
-> >  - Register in memcg_stat_items[] and memory_stats[] arrays
-> >  - Export as "zswpraw" in memory.stat
-> >=20=20
->=20>  3. Update statistics accounting (mm/memcontrol.c, mm/zswap.c)
-> >  - Track MEMCG_ZSWAP_RAW in obj_cgroup_charge/uncharge_zswap()
-> >  - Use zswap_is_raw() helper in zswap.c for consistency
-> >=20=20
->=20>  Test
-> >  ----
-> >=20=20
->=20>  I wrote a simple test program[1] that allocates memory and compres=
-ses it
-> >  with zstd, so kernel zswap cannot compress further.
-> >=20=20
->=20>  $ cgcreate -g memory:test
-> >  $ cgexec -g memory:test ./test_zswpraw &
-> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
-> >  zswpraw 0
-> >  zswpin 0
-> >  zswpout 0
-> >  zswpwb 0
-> >=20=20
->=20>  $ echo "100M" > /sys/fs/cgroup/test/memory.reclaim
-> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
-> >  zswpraw 104800256
-> >  zswpin 0
-> >  zswpout 51222
-> >  zswpwb 0
-> >=20=20
->=20>  $ pkill test_zswpraw
-> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
-> >  zswpraw 0
-> >  zswpin 1
-> >  zswpout 51222
-> >  zswpwb 0
-> >=20=20
->=20>  [1] https://gist.github.com/mrpre/00432c6154250326994fbeaf62e0e6f1
-> >=20=20
->=20>  Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >  ---
-> >  include/linux/memcontrol.h | 1 +
-> >  include/linux/zswap.h | 9 +++++++++
-> >  mm/memcontrol.c | 6 ++++++
-> >  mm/zswap.c | 6 +++---
-> >  4 files changed, 19 insertions(+), 3 deletions(-)
-> >=20
->=20As others also mentioned, the documentation of the new stat would be =
-needed.
->=20
->=20>=20
->=20> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.=
-h
-> >  index b6c82c8f73e1..83d1328f81d1 100644
-> >  --- a/include/linux/memcontrol.h
-> >  +++ b/include/linux/memcontrol.h
-> >  @@ -39,6 +39,7 @@ enum memcg_stat_item {
-> >  MEMCG_KMEM,
-> >  MEMCG_ZSWAP_B,
-> >  MEMCG_ZSWAPPED,
-> >  + MEMCG_ZSWAP_RAW,
-> >  MEMCG_NR_STAT,
-> >  };
-> >=20=20
->=20>  diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> >  index 30c193a1207e..94f84b154b71 100644
-> >  --- a/include/linux/zswap.h
-> >  +++ b/include/linux/zswap.h
-> >  @@ -7,6 +7,15 @@
-> >=20=20
->=20>  struct lruvec;
-> >=20=20
->=20>  +/*
-> >  + * Check if a zswap entry is stored in raw (uncompressed) form.
-> >  + * This happens when compression doesn't reduce the size.
-> >  + */
-> >  +static inline bool zswap_is_raw(size_t size)
-> >  +{
-> >  + return size =3D=3D PAGE_SIZE;
-> >  +}
-> >  +
-> >=20
->=20No strong opinion, but I'm not really sure if the helper is needed, b=
-ecause it
-> feels quite simple logic:
->=20
->=20 "If an object is compressed and the size is same to the original one=
-, the
->  object is incompressible."
->=20
->=20I also feel the function name bit odd, given the type of the paramete=
-r. Based
-> on the function name and the comment, I'd expect it to receive a zswap_=
-entry
-> object. I understand it is better to receive a size_t, to be called fro=
-m
-> obj_cgroup_[un]charge_zswap(), though. Even in the case, I think the na=
-me can
-> be better (e.g., zswap_compression_failed() or zswap_was_incompressible=
-() ?),
-> or at least the coment can be more kindly explain the fact that the par=
-ameter
-> is the size of object after the compression attempt.
->=20
->=20>=20
->=20> extern atomic_long_t zswap_stored_pages;
-> >=20=20
->=20>  #ifdef CONFIG_ZSWAP
-> >  diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> >  index 007413a53b45..32fb801530a3 100644
-> >  --- a/mm/memcontrol.c
-> >  +++ b/mm/memcontrol.c
-> >  @@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] =3D=
- {
-> >  MEMCG_KMEM,
-> >  MEMCG_ZSWAP_B,
-> >  MEMCG_ZSWAPPED,
-> >  + MEMCG_ZSWAP_RAW,
-> >  };
-> >=20
->=20No strong opinion, but I think Shakeel's suggestion of other names is
-> reasonable.
->=20
->=20>=20
->=20> #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
-> >  @@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[]=
- =3D {
-> >  #ifdef CONFIG_ZSWAP
-> >  { "zswap", MEMCG_ZSWAP_B },
-> >  { "zswapped", MEMCG_ZSWAPPED },
-> >  + { "zswpraw", MEMCG_ZSWAP_RAW },
-> >=20
->=20Ditto.
->=20
->=20>=20
->=20> #endif
-> >  { "file_mapped", NR_FILE_MAPPED },
-> >  { "file_dirty", NR_FILE_DIRTY },
-> >  @@ -5458,6 +5460,8 @@ void obj_cgroup_charge_zswap(struct obj_cgroup=
- *objcg, size_t size)
-> >  memcg =3D obj_cgroup_memcg(objcg);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
-> >  + if (zswap_is_raw(size))
-> >  + mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, 1);
-> >=20
->=20I understand the helper function is better to receive size_t rather t=
-han
-> zswap_entry for this.
->=20
->=20>=20
->=20> rcu_read_unlock();
-> >  }
-> >=20=20
->=20>  @@ -5481,6 +5485,8 @@ void obj_cgroup_uncharge_zswap(struct obj_cg=
-roup *objcg, size_t size)
-> >  memcg =3D obj_cgroup_memcg(objcg);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
-> >  + if (zswap_is_raw(size))
-> >  + mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, -1);
-> >  rcu_read_unlock();
-> >  }
-> >=20=20
->=20>  diff --git a/mm/zswap.c b/mm/zswap.c
-> >  index 3d2d59ac3f9c..54ab4d126f64 100644
-> >  --- a/mm/zswap.c
-> >  +++ b/mm/zswap.c
-> >  @@ -723,7 +723,7 @@ static void zswap_entry_free(struct zswap_entry =
-*entry)
-> >  obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-> >  obj_cgroup_put(entry->objcg);
-> >  }
-> >  - if (entry->length =3D=3D PAGE_SIZE)
-> >  + if (zswap_is_raw(entry->length))
-> >  atomic_long_dec(&zswap_stored_incompressible_pages);
-> >  zswap_entry_cache_free(entry);
-> >  atomic_long_dec(&zswap_stored_pages);
-> >  @@ -941,7 +941,7 @@ static bool zswap_decompress(struct zswap_entry =
-*entry, struct folio *folio)
-> >  zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->len=
-gth);
-> >=20=20
->=20>  /* zswap entries of length PAGE_SIZE are not compressed. */
-> >  - if (entry->length =3D=3D PAGE_SIZE) {
-> >  + if (zswap_is_raw(entry->length)) {
-> >  WARN_ON_ONCE(input->length !=3D PAGE_SIZE);
-> >  memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
-> >  dlen =3D PAGE_SIZE;
-> >=20
->=20Below this part, I show 'dlen =3D=3D PAGE_SIZE'. Should it also be co=
-nverted to
-> use the helper function?
->=20
+configs tested: 262
+configs skipped: 3
 
-The=20dlen variable represents the decompressed (plaintext) size.=0D
-Since we compress individual pages, the decompressed output should
-always be PAGE_SIZE in normal cases.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-This check validates whether decompression produced the expected result, =
-not whether the entry is incompressible.
+tested configs:
+alpha                             allnoconfig    gcc-15.2.0
+alpha                            allyesconfig    gcc-15.2.0
+alpha                               defconfig    gcc-15.2.0
+arc                              allmodconfig    clang-16
+arc                              allmodconfig    gcc-15.2.0
+arc                               allnoconfig    gcc-15.2.0
+arc                              allyesconfig    clang-22
+arc                              allyesconfig    gcc-15.2.0
+arc                                 defconfig    gcc-15.2.0
+arc                   randconfig-001-20260205    gcc-8.5.0
+arc                   randconfig-002-20260205    gcc-8.5.0
+arm                               allnoconfig    clang-22
+arm                               allnoconfig    gcc-15.2.0
+arm                              allyesconfig    clang-16
+arm                              allyesconfig    gcc-15.2.0
+arm                                 defconfig    clang-22
+arm                                 defconfig    gcc-15.2.0
+arm                          ep93xx_defconfig    clang-22
+arm                   randconfig-001-20260205    clang-22
+arm                   randconfig-002-20260205    gcc-8.5.0
+arm                   randconfig-003-20260205    clang-22
+arm                   randconfig-004-20260205    gcc-8.5.0
+arm                           sunxi_defconfig    clang-22
+arm64                            allmodconfig    clang-19
+arm64                            allmodconfig    clang-22
+arm64                             allnoconfig    gcc-15.2.0
+arm64                               defconfig    gcc-15.2.0
+arm64                 randconfig-001-20260205    clang-22
+arm64                 randconfig-001-20260206    gcc-13.4.0
+arm64                 randconfig-002-20260205    gcc-10.5.0
+arm64                 randconfig-002-20260206    gcc-13.4.0
+arm64                 randconfig-003-20260205    clang-22
+arm64                 randconfig-003-20260206    gcc-13.4.0
+arm64                 randconfig-004-20260205    clang-19
+arm64                 randconfig-004-20260206    gcc-13.4.0
+csky                             allmodconfig    gcc-15.2.0
+csky                              allnoconfig    gcc-15.2.0
+csky                                defconfig    gcc-15.2.0
+csky                  randconfig-001-20260205    gcc-9.5.0
+csky                  randconfig-001-20260206    gcc-13.4.0
+csky                  randconfig-002-20260205    gcc-10.5.0
+csky                  randconfig-002-20260206    gcc-13.4.0
+hexagon                          allmodconfig    clang-17
+hexagon                          allmodconfig    gcc-15.2.0
+hexagon                           allnoconfig    clang-22
+hexagon                           allnoconfig    gcc-15.2.0
+hexagon                             defconfig    clang-22
+hexagon                             defconfig    gcc-15.2.0
+hexagon               randconfig-001-20260206    clang-19
+hexagon               randconfig-001-20260206    clang-22
+hexagon               randconfig-002-20260206    clang-22
+i386                             alldefconfig    clang-22
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                              allnoconfig    gcc-15.2.0
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20260206    clang-20
+i386        buildonly-randconfig-001-20260206    gcc-12
+i386        buildonly-randconfig-002-20260206    clang-20
+i386        buildonly-randconfig-002-20260206    gcc-12
+i386        buildonly-randconfig-003-20260206    clang-20
+i386        buildonly-randconfig-003-20260206    gcc-14
+i386        buildonly-randconfig-004-20260206    clang-20
+i386        buildonly-randconfig-004-20260206    gcc-14
+i386        buildonly-randconfig-005-20260206    clang-20
+i386        buildonly-randconfig-006-20260206    clang-20
+i386                                defconfig    clang-20
+i386                                defconfig    gcc-15.2.0
+i386                  randconfig-001-20260206    gcc-14
+i386                  randconfig-002-20260206    gcc-12
+i386                  randconfig-002-20260206    gcc-14
+i386                  randconfig-003-20260206    gcc-14
+i386                  randconfig-004-20260206    gcc-14
+i386                  randconfig-005-20260206    gcc-14
+i386                  randconfig-006-20260206    gcc-14
+i386                  randconfig-007-20260206    gcc-14
+i386                  randconfig-011-20260205    gcc-14
+i386                  randconfig-012-20260205    clang-20
+i386                  randconfig-013-20260205    gcc-14
+i386                  randconfig-014-20260205    clang-20
+i386                  randconfig-015-20260205    gcc-14
+i386                  randconfig-016-20260205    clang-20
+i386                  randconfig-017-20260205    gcc-14
+loongarch                        allmodconfig    clang-19
+loongarch                        allmodconfig    clang-22
+loongarch                         allnoconfig    clang-22
+loongarch                         allnoconfig    gcc-15.2.0
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20260206    clang-22
+loongarch             randconfig-002-20260206    clang-22
+m68k                             alldefconfig    gcc-15.2.0
+m68k                             allmodconfig    gcc-15.2.0
+m68k                              allnoconfig    gcc-15.2.0
+m68k                             allyesconfig    clang-16
+m68k                             allyesconfig    gcc-15.2.0
+m68k                                defconfig    clang-19
+m68k                                defconfig    gcc-15.2.0
+microblaze                        allnoconfig    gcc-15.2.0
+microblaze                       allyesconfig    gcc-15.2.0
+microblaze                          defconfig    clang-19
+microblaze                          defconfig    gcc-15.2.0
+mips                             allmodconfig    gcc-15.2.0
+mips                              allnoconfig    gcc-15.2.0
+mips                             allyesconfig    gcc-15.2.0
+mips                  cavium_octeon_defconfig    clang-22
+mips                  decstation_64_defconfig    gcc-15.2.0
+mips                           ip22_defconfig    gcc-15.2.0
+mips                      malta_kvm_defconfig    gcc-15.2.0
+nios2                            allmodconfig    clang-22
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    clang-22
+nios2                             allnoconfig    gcc-11.5.0
+nios2                               defconfig    clang-19
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20260206    clang-22
+nios2                 randconfig-001-20260206    gcc-8.5.0
+nios2                 randconfig-002-20260206    clang-22
+nios2                 randconfig-002-20260206    gcc-8.5.0
+openrisc                         allmodconfig    clang-22
+openrisc                         allmodconfig    gcc-15.2.0
+openrisc                          allnoconfig    clang-22
+openrisc                          allnoconfig    gcc-15.2.0
+openrisc                            defconfig    gcc-15.2.0
+parisc                           allmodconfig    gcc-15.2.0
+parisc                            allnoconfig    clang-22
+parisc                            allnoconfig    gcc-15.2.0
+parisc                           allyesconfig    gcc-15.2.0
+parisc                              defconfig    gcc-15.2.0
+parisc                randconfig-001-20260206    gcc-8.5.0
+parisc                randconfig-002-20260206    gcc-12.5.0
+parisc                randconfig-002-20260206    gcc-8.5.0
+parisc64                            defconfig    clang-19
+parisc64                            defconfig    gcc-15.2.0
+powerpc                          allmodconfig    gcc-15.2.0
+powerpc                           allnoconfig    clang-22
+powerpc                           allnoconfig    gcc-15.2.0
+powerpc                 canyonlands_defconfig    clang-22
+powerpc                       eiger_defconfig    clang-22
+powerpc                  iss476-smp_defconfig    clang-22
+powerpc                      mgcoge_defconfig    clang-22
+powerpc                      pmac32_defconfig    clang-22
+powerpc               randconfig-001-20260206    gcc-8.5.0
+powerpc               randconfig-002-20260206    clang-20
+powerpc               randconfig-002-20260206    gcc-8.5.0
+powerpc                         wii_defconfig    gcc-15.2.0
+powerpc64             randconfig-001-20260206    clang-22
+powerpc64             randconfig-001-20260206    gcc-8.5.0
+powerpc64             randconfig-002-20260206    gcc-10.5.0
+powerpc64             randconfig-002-20260206    gcc-8.5.0
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    clang-22
+riscv                             allnoconfig    gcc-15.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                               defconfig    gcc-15.2.0
+riscv                 randconfig-001-20260205    clang-19
+riscv                 randconfig-001-20260206    clang-22
+riscv                 randconfig-002-20260205    clang-22
+riscv                 randconfig-002-20260206    clang-22
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.2.0
+s390                                defconfig    clang-22
+s390                                defconfig    gcc-15.2.0
+s390                  randconfig-001-20260205    clang-18
+s390                  randconfig-001-20260206    clang-22
+s390                  randconfig-002-20260205    clang-22
+s390                  randconfig-002-20260206    clang-22
+sh                               allmodconfig    gcc-15.2.0
+sh                                allnoconfig    clang-22
+sh                                allnoconfig    gcc-15.2.0
+sh                               allyesconfig    gcc-15.2.0
+sh                                  defconfig    gcc-14
+sh                                  defconfig    gcc-15.2.0
+sh                    randconfig-001-20260205    gcc-15.2.0
+sh                    randconfig-001-20260206    clang-22
+sh                    randconfig-002-20260205    gcc-10.5.0
+sh                    randconfig-002-20260206    clang-22
+sh                   secureedge5410_defconfig    gcc-15.2.0
+sparc                             allnoconfig    clang-22
+sparc                             allnoconfig    gcc-15.2.0
+sparc                               defconfig    gcc-15.2.0
+sparc                 randconfig-001-20260206    gcc-8.5.0
+sparc                 randconfig-002-20260206    gcc-12.5.0
+sparc64                          allmodconfig    clang-22
+sparc64                             defconfig    clang-20
+sparc64                             defconfig    gcc-14
+sparc64               randconfig-001-20260206    gcc-10.5.0
+sparc64               randconfig-002-20260206    clang-20
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-14
+um                               allyesconfig    gcc-15.2.0
+um                                  defconfig    clang-22
+um                                  defconfig    gcc-14
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20260206    clang-22
+um                    randconfig-002-20260206    gcc-14
+um                           x86_64_defconfig    clang-22
+um                           x86_64_defconfig    gcc-14
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                            allnoconfig    clang-22
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20260206    gcc-14
+x86_64      buildonly-randconfig-002-20260206    clang-20
+x86_64      buildonly-randconfig-002-20260206    gcc-14
+x86_64      buildonly-randconfig-003-20260206    gcc-14
+x86_64      buildonly-randconfig-004-20260206    clang-20
+x86_64      buildonly-randconfig-004-20260206    gcc-14
+x86_64      buildonly-randconfig-005-20260206    gcc-12
+x86_64      buildonly-randconfig-005-20260206    gcc-14
+x86_64      buildonly-randconfig-006-20260206    clang-20
+x86_64      buildonly-randconfig-006-20260206    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20260206    clang-20
+x86_64                randconfig-001-20260206    gcc-14
+x86_64                randconfig-002-20260206    gcc-14
+x86_64                randconfig-003-20260206    gcc-14
+x86_64                randconfig-004-20260206    clang-20
+x86_64                randconfig-004-20260206    gcc-14
+x86_64                randconfig-005-20260206    gcc-14
+x86_64                randconfig-006-20260206    clang-20
+x86_64                randconfig-006-20260206    gcc-14
+x86_64                randconfig-011-20260205    clang-20
+x86_64                randconfig-011-20260206    gcc-14
+x86_64                randconfig-012-20260205    gcc-14
+x86_64                randconfig-012-20260206    gcc-14
+x86_64                randconfig-013-20260205    gcc-14
+x86_64                randconfig-013-20260206    gcc-14
+x86_64                randconfig-014-20260205    clang-20
+x86_64                randconfig-014-20260206    gcc-14
+x86_64                randconfig-015-20260205    gcc-14
+x86_64                randconfig-015-20260206    gcc-14
+x86_64                randconfig-016-20260205    clang-20
+x86_64                randconfig-016-20260206    gcc-14
+x86_64                randconfig-071-20260206    gcc-14
+x86_64                randconfig-072-20260206    clang-20
+x86_64                randconfig-072-20260206    gcc-14
+x86_64                randconfig-073-20260206    gcc-14
+x86_64                randconfig-074-20260206    gcc-14
+x86_64                randconfig-075-20260206    clang-20
+x86_64                randconfig-075-20260206    gcc-14
+x86_64                randconfig-076-20260206    gcc-14
+x86_64                               rhel-9.4    clang-20
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    clang-20
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    clang-20
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    clang-22
+xtensa                            allnoconfig    gcc-15.2.0
+xtensa                           allyesconfig    clang-22
+xtensa                           allyesconfig    gcc-15.2.0
+xtensa                  cadence_csp_defconfig    clang-22
+xtensa                randconfig-001-20260206    gcc-9.5.0
+xtensa                randconfig-002-20260206    gcc-10.5.0
 
-Using zswap_is_incomp() here would be semantically incorrect - the helper=
- is meant to check if an
-entry was stored without compression (i.e., compression failed to reduce =
-size), while dlen =3D=3D PAGE_SIZE
-verifies the output of decompression is valid.
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
