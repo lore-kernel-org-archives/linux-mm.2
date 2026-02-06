@@ -4,84 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DC26EE6B4D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 20:14:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FCB2EE6B59
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 20:43:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F15E86B0089; Fri,  6 Feb 2026 15:14:33 -0500 (EST)
+	id 016576B0005; Fri,  6 Feb 2026 15:43:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3AC6B0092; Fri,  6 Feb 2026 15:14:33 -0500 (EST)
+	id F054D6B0088; Fri,  6 Feb 2026 15:43:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCFE26B0093; Fri,  6 Feb 2026 15:14:33 -0500 (EST)
+	id E12106B0089; Fri,  6 Feb 2026 15:43:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id CA3586B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:14:33 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D957D5A13
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:14:33 +0000 (UTC)
-X-FDA: 84415134426.10.8FAD26B
-Received: from mail-10628.protonmail.ch (mail-10628.protonmail.ch [79.135.106.28])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8A2C41A0008
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:14:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=U3OzgVFZ;
-	spf=pass (imf19.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.28 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+	by kanga.kvack.org (Postfix) with ESMTP id CFC0A6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:43:45 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6C82D1A02AF
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:43:45 +0000 (UTC)
+X-FDA: 84415208010.12.E5FE4BF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BD102160006
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:43:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cEc/bc8j";
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770408871;
+	s=arc-20220608; t=1770410623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+2kf5hPOrCDamoohAxbiRlLxvzqHhWFTaCpLlhR4Cz4=;
-	b=lEaFnkgmZeLQNDjyMhDlUZ7709HPiJVrmbLTUFhbHH0tjFmRuFdiCnCXyTt+iDr2T6GoXy
-	VWnQtaxm4Npywg3/zVnmyPvT7fv4jxb/UJbipHz5v/UizC3Gtg+qunZYp9qJBHWkc7p9+H
-	GrtAJIGm2hghhE1eRPasynr6v9gxPZk=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=syDLORT/4uzWMK+hnAtj8+YwBgfLLWESBO/oTO1z7vU=;
+	b=3ht/KbuF4ccv82ImrAaB6Zdkep+bmHyyzikkIPXuVpAeTyDWV6Xc1Fg1LKbqYj8NX2YHkE
+	Ruf/tKBunnwmXdPbP+xkj48h4vO9o+XxCvB+PdRNGdkQb2TkQo7QhhHU9y+gmbYqWSTlYR
+	Ff8fm1mNm4F/9fmhoFYzwSNVChFu5So=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=U3OzgVFZ;
-	spf=pass (imf19.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.28 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770408871; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="cEc/bc8j";
+	spf=pass (imf08.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770410623; a=rsa-sha256;
 	cv=none;
-	b=CiiIKCn5kTJphVWa8A2E0vETevzAdOUHAl+DY29n1XJaJQ9BWyj+Qj3q7TlApvYty2kWxG
-	KDA4EcCE0813JKM8Y5SaMIvPrvgvjSKHTvssRTKxWFsnq8HijfxFNYn9ss3VkiuYeML/Lz
-	pHMahM1qGO/aCNGX/pgIhhvlRVZIeRk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1770408869; x=1770668069;
-	bh=+2kf5hPOrCDamoohAxbiRlLxvzqHhWFTaCpLlhR4Cz4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=U3OzgVFZIBr2yWLIFkvp+qLJ7OMU6WbgtRgbzfX4LqC6mVdkXIMJrXNRXNe3TsHhq
-	 K5NTSR6IUNcyBaLdYZdB5va7AujRYtoCCDYv19ga8/F2Gt0nImbnW5RbeowaTtVa51
-	 iEVFwkVor7mRHd9qQIky1IugJvDxWlYmz7r0BCaKNn45/R+1mveiTA6Vjz9f6ScRlf
-	 sHGcxqYzU+ut0w9qC6gn04zQs1b0j6U3rlZ1XZ+zQV/EAw/Gs65r7xMCQOWVim5J4A
-	 Ppny34ZP68kBUYt2gPF4VXGKSaHKWpFCtxcckR+0/mJHdTfLyFz7SW7bpDx+/CIz4H
-	 BfIQ793ycU++g==
-Date: Fri, 06 Feb 2026 20:14:25 +0000
-To: =?utf-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Kees Cook <kees@kernel.org>, joonki.min@samsung-slsi.corp-partner.google.com, Andrew Morton <akpm@google.com>, Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>, jiayuan.chen@linux.dev, syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, Kernel hackers <linux-kernel@vger.kernel.org>, linux-mm@kvack.org
-Subject: Re: KASAN vs realloc
-Message-ID: <aYZJ2Ohug6b9Vth0@wieczorr-mobl1.localdomain>
-In-Reply-To: <CANP3RGeHnhufYyc0P2OiKJbXdZjPW41TP=JS6nYk9xGRU8UuKQ@mail.gmail.com>
-References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com> <202601071226.8DF7C63@keescook> <btracv3snpi6l4b5upqvag6qz3j4d2k7l7qgzj665ft5m7bn22@m3y73eir2tnt> <CANP3RGfLXptZp6widUEyvVzicAB=dwcSx3k7MLtQozhO0NuxZw@mail.gmail.com> <CANP3RGeaEQipgRvk2FedpN54Rrq=fKdLs3PN4_+DThpeqQmTXA@mail.gmail.com> <CANP3RGcNFgLSgKYPjmro2s1Es04Pnhf+4wHpnSwRX4M8bLDW9g@mail.gmail.com> <aWFKEDwwihxGIbQA@wieczorr-mobl1.localdomain> <CANP3RGeWLMQEMnC03pUr8=1+e27vma1ggiWGWcpX+PcZ=SsxUg@mail.gmail.com> <CANP3RGeHnhufYyc0P2OiKJbXdZjPW41TP=JS6nYk9xGRU8UuKQ@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: bd556a4a64f26ab613af6dbc5d550912c9ffd249
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Stat-Signature: a6p9mikhnrm3o5fpx4snhrhws3kpcz4r
+	b=stA8uFLxhnIdyh95UxCa+/9II8AESVaM9XO+MdAL9pk0SrLtVn7YemBvWgsrq95Fqp0O3X
+	WoaK3sQlhcaj5b34UwrH+iTONZiclBA6s8KNV/QrQYnenvJrgiPPjiGvUmQgeIWZrkXUJW
+	1oNPOGIM1u/7gpjGQUlD6VlRE5gnezc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B2C9140281;
+	Fri,  6 Feb 2026 20:43:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723EEC116C6;
+	Fri,  6 Feb 2026 20:43:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770410622;
+	bh=/TnX09Hv5t15PMPchOzqwIa2F9kys99mKm/6GSVU3rI=;
+	h=Date:From:To:Cc:Subject:From;
+	b=cEc/bc8j40oDPNKYjkoeIt5QOpwDrrjfVP7k8Z8eVNzsNwGXtdV8uhbFatg0YSP+9
+	 NafyI79ICSPkzS/NH8SdBKHhVCrmMvpTbFc4+w+U03rGk69A1EO3sagAUm1hPFDxG2
+	 HSkjpUl/e6yHxm53HCkjDKqk9I4HVshr9oiDpmuo=
+Date: Fri, 6 Feb 2026 12:43:41 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: linux-mm@kvack.org, mm-commits@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: [GIT PULL] more hotfixes against 6.19-rc8
+Message-Id: <20260206124341.c7dc8fc55e0f0f9ea68d3951@linux-foundation.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BD102160006
+X-Stat-Signature: ztrn581rgn49d7tidy5zo8gi4xrs9so8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A2C41A0008
-X-HE-Tag: 1770408871-882931
-X-HE-Meta: U2FsdGVkX19DOR3/9PpbjforfrcyOZgyAtMs7GsmcGqaRu6cDL22T3lcPxZPgyoYPnMHdzvSdy+tghctgu+337xrk4g4gzMk5x0klxeSArpCHgzf+GgPOupIXvjjpzU6wR084jPYD3tSzbkrPK9F9lMD8bzZW6FNFEJeep8iqMyb08blP3Z7OWFUURK1M7DWf6VJeAoiJk5yiGl908D9Zy+c8mY9UTtfw9A5uMGf8GketVks9t8IguRKOn+obocCpcFVdFmfsOO+16rwGpGArLywwFgUhIY4CnTa7TzAcMsOM+ySrHyYAze11kBGKfJVG5mDwhkeoTU+0573/sQD3yIKCOPbL9RoKV1Rgch3VE1TPeJ687a/ABQAkagGER1iOVuD3iOLmig1fkIQOAzw8lUYFMp3vYLT6J322AySkjkYyWZz5rq4NoisR43QYAuV6kzYZz7uUFxuIuFuQDg9goZP9GBuAFS9TJqeuT62W8lQJ+zWA1XMkNnvBvM841qt+NOaYT9ketDT3OmAr0cU/KWX/TfRQ5+Rb/uyspo75q8+H9Cwyr4VZPt9s8bt28JgFYCyK2xuWkU1DwyWQGSr3Zwepa6jaz1fn/mPtOZ3V546AeJzLdBgl9Vc56mYmRr9bVgX/FcgoYGvZy69/mRqmLt4ive3+wCiH+PykNTgQ/3ODk07nrzLLZYIaXmyuo/lcBAXkrzmfEQJrhTe0RX1i+RwmKtSYr6zbv31u5pi+lPbF4YR52MukqMpO5ob9huThowp96UgSWPByZgQFMqqV72UpjrHSvPzzk2hKCWiejiZSXX8KBEIHieLMXXvlNTfgyLfeNepNb6R9WLsIHOyzxT8bHlAYlehuFo/cPAtZAIxDGnD/ZG0zq7IbrVaiC5aOnWrd9mk8YTBbSMfBu/81gjnNxGJJCjafsfetEMCmObmkZ4vPqankf5f38pI5Jyenbmv6doCJz+jxxYV4ab
- AnJzpDDA
- VpvzCDbneRiB+xC3yamiiYISqNHGr0S3lwb9qnx4xN7WPIrSB7KZ9DnL5JZ4WpOZod0rUKi86YE1r0aYvSU8vah91MMZ4vmTk4RDy2Fsjh7a7nLCSFZaXYGZrrI7X5gUL0+3u1p1zmO2oOw5fGwQr9yO7zlQOQqK34NxqEzUQbz/3762pVA8PmJ6WmY+NfoQzj3j35UsomivySsO1xtH1kZk/FnqMBQITh0oRzuEaGsGSZtURCl4IPs+j1coI3Ac+X7NFY66qFaxeAVV4V6YOWXJSeBO92eAsB0IacKzW3+EK3Z8=
+X-HE-Tag: 1770410623-281620
+X-HE-Meta: U2FsdGVkX18ipF+lkrkm35ftbcbHKPREZi6DhkBA0Z3nrBYqhzTIxJNMdVyXyaPHn1Y2V9QSKbifNg0BhQ/EOl9y7rJozbtV3LWiP+IvP+Ui9UKIhnkgzboE6kH/zD9w04iuv+OIgQKMYHtV8V+sWrPqiEvlhdrkHOon61kM+PZ7dOBcmmNCFPibgEalIWVOgL05bjjH+jNpyY24iqnS6bbelHF7NaA0uPqLolNWLU8up3qMGknNpa+M4XX+lWIdyDJLqlvsm6aS+5yMjWXpcLhV0MCn2ZlpxGLnNVqiDIqZFougD3hgGezAy19WHdBecQjohp7qOeQOSUvfrq1bGOJQ+O4jv3qb7EmCF/IhfIE8V44FvkY6WLPs1+aMMq5euWCQzlkls3WoIYgktt8JhKQIFcv7RnGz/tMINnYuRRTln2JVao51rsuEqfof8MAZU+9zHa8KLq7LZM3AR8kLBI8CBhbTLU645nvkBbU6fDMTxcpAGdQKNyOQM63zC3BsN//K7j2iNz1Dm4hs/+KePilKnxD8ADSRnJ3tLFdf12fLmmAqaFGYl89K5bd+klOgdfYfpfqYzwUT+6ay7111Lz8KqyFyDewpy1JRRY/Vv49fqdwlSPBTuLACLOfD7XvNSVcrbayLKRTo39NLZlqxj/xY4qvZ0IRTAbcQHbhvpuQsG/QtjiT/K8YiKcMVj6qRN7oOOQ3RGJ7uKiCuZ+O50/AVOKfHGWn9A/eRQZC9c+TXh4w193uYzvuuTA2HzGpmqK4zoRfYeQdWkGp0tFsQkwbMGtYLeQVRAg4ZWUMrmg1nev5HuM6OJh1kttWnpgy20w4dkHsYxs/TTHU+QTkzv4O9AamO6KbfzMgfnpvFZtA9+8QkLLIHKBj/JhJTvYFpN1SZ9FraTINv/Bo2Zw20YbJkzDzSN4aTsvzER2oTTsucNs5TjrxoMAbxNH4c47tpX3B2RW3OMqevdzHvHYW
+ tgGICxAd
+ 3RW1o4cDnZkdRI7kQOLI2IKblVNvT9tP5bKMeznPyPBAbRn0foP4APRrRdsmA+CcgednIBQyjssj5BIQYzL4pYkpqTP6g/HAS3NTdwkc7+bxj4z+7zNY0BcuAZqRlZM7gUEGlOdGWGEzM+A98i6OFcqIiu/lCYgR1xmUUkXRFSGi2closOmEyouj8bcPPOf4tCD7UYkpM4OYP75Z4kM52ZYt7BfeznjqxlWeAzs9mGppMVBoQ59SRvUXYTCTnaTGQlsFpwG5u0rsG8Ld5Xlp8nib0Qg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,34 +87,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From what I see kasan_poison_last_granule() is called through:
 
-__kasan_vrealloc()
---> __kasan_unpoison_vmalloc()
-----> kasan_unpoison()
-------> kasan_poison_last_granule()
+Linus, please merge these two MM fixes for the upcoming release, thanks.
 
-and the arguments are "addr + old_size" and "new_size - old_size" so it loo=
-ks
-okay I think.
 
-On 2026-02-06 at 11:07:12 -0800, Maciej =C5=BBenczykowski wrote:
->While looking at:
->  https://android-review.git.corp.google.com/c/kernel/common/+/3939998
->  UPSTREAM: mm/kasan: fix KASAN poisoning in vrealloc()
->
->I noticed a lack of symmetry - I'm not sure if it's a problem or not...
->but I'd have expected kasan_poison_last_granule() to be called
->regardless of whether the size shrunk or increased.
->
->It is of course possible this is handled automatically by
->__kasan_unpoison_vmalloc() - I haven't traced that deep,
->in general these functions seem to have a terrible api surface full of
->razors... with hidden assumptions about what is and is not granule
->aligned.
+The following changes since commit 1a47837bfafed7e9ef93f5dfdea6d70869b0c3ab:
 
---=20
-Kind regards
-Maciej Wiecz=C3=B3r-Retman
+  Documentation: document liveupdate cmdline parameter (2026-02-02 18:43:56 -0800)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-02-06-12-37
+
+for you to fetch changes up to ae9fd76c111bb4a5293c2831a1ad373605251dd6:
+
+  mm/memory-failure: reject unsupported non-folio compound page (2026-02-05 14:10:00 -0800)
+
+----------------------------------------------------------------
+A couple of late-breaking MM fixes.  One against a new-in-this-cycle patch
+and the other addresses a locking issue which has been there for 1+ years.
+
+----------------------------------------------------------------
+Andrii Nakryiko (1):
+      procfs: avoid fetching build ID while holding VMA lock
+
+Miaohe Lin (1):
+      mm/memory-failure: reject unsupported non-folio compound page
+
+ fs/proc/task_mmu.c      | 42 +++++++++++++++++++++++++++---------------
+ include/linux/buildid.h |  3 +++
+ lib/buildid.c           | 42 ++++++++++++++++++++++++++++++------------
+ mm/memory-failure.c     | 42 ++++++++++++++++++++----------------------
+ 4 files changed, 80 insertions(+), 49 deletions(-)
 
 
