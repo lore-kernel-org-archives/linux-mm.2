@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D42C6EE20A1
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:07:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE3A2EE20A0
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:08:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BBB26B0005; Fri,  6 Feb 2026 08:07:06 -0500 (EST)
+	id 0A5106B0005; Fri,  6 Feb 2026 08:08:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16A696B0093; Fri,  6 Feb 2026 08:07:06 -0500 (EST)
+	id 04FC96B0088; Fri,  6 Feb 2026 08:08:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04BBE6B0096; Fri,  6 Feb 2026 08:07:05 -0500 (EST)
+	id E73A46B0093; Fri,  6 Feb 2026 08:08:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E67886B0005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:07:05 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC591888E1
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:07:05 +0000 (UTC)
-X-FDA: 84414057210.30.E02F0A8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id C10851C0010
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:07:03 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pADlDw8M;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D5DE46B0005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:08:53 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0374456593
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:08:52 +0000 (UTC)
+X-FDA: 84414061746.01.D43B343
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 315A41C0006
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:08:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d9sEWGFi;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770383223;
+	s=arc-20220608; t=1770383331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0BfMXOyX2VSf5FRxfCLm7LvZCe4n0avyjTdWFz/Mn6I=;
-	b=Q8WRbCLNdm5O10GArPAEiZOlmdJsPZUGQUqrOYIHiyn/OziUH7pay/9wrf3feZDr5OVW6Q
-	JCT3tz8GxuoPYGkHcGLMTIa0VxLainMkJX3xysV7zVma+BWpsbc85kxhNYxn75GKCMAm8B
-	AJ9+jwQpkO97bU5tRSXt/l5xFt9CV3M=
+	bh=wVhzraKz/eb4hRtZ/6XrRCjI9AzeGgsZG0Fb0OBcWOc=;
+	b=nb+AeULoD2ERt8ePoAow8K+YGwFbl1jgrbJ0R/Io0FaadQXRjDvAfDDYKd863jDvsxbSZf
+	4veIzFa7+e5LGX+XlhnLX7kpUvz3HOqb8zrSWOB2eI8xDlzGVTXG/aI+UAUlK1leUn/yyM
+	Q4Ouob9CgXDjztGS+WFiE73vth05wuQ=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pADlDw8M;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d9sEWGFi;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770383223; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770383331; a=rsa-sha256;
 	cv=none;
-	b=n7Z1iduJRzO5sGuc5J6eHge3TNq7d5nGk0di9wqm6hcii5ePzOeQgyWpRXS3j9GMNYFUc3
-	SI1tut9PAq4Bth93OChgyBYR416QzDwKLL84k+tC9Kf4Z4bzW0ExD5LWU3jIQWA0WGxW5T
-	rOHpENl8s+N+xP+X2XUQfFH2za1hzIg=
+	b=os1DqqDob9s3eQzf7kv1oBc6xjSyDA1UsKJZD2sih2akJN+hlSU+RMjhv9AvxccWm1ts39
+	SgyKD+HrsZUvAtbyvzGE7ByvnvtIskL7d89ZE66GRRO7kAXwAiK5sMwbRBSBkmFlYiOQbb
+	jq7qgrF6LXVvbEixC/qR6cGaTzUgvCM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A6AA843D3E;
-	Fri,  6 Feb 2026 13:07:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D59C116C6;
-	Fri,  6 Feb 2026 13:06:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 73E0060010;
+	Fri,  6 Feb 2026 13:08:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF11C19422;
+	Fri,  6 Feb 2026 13:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770383222;
-	bh=gjqm/xw+EyLKIgvQKuFWku6zxpUiLlZVezFuLgVUV6I=;
+	s=k20201202; t=1770383330;
+	bh=yQatAuidA98Ax17IPcwzDzo7BEX1JG3THZB2KlSl+JI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pADlDw8M4pf14jpmlIFbIscbYzigwt0Z6gyiUPqPYg4K53sg4tuJNS+Fd8+FfzpvP
-	 C4XWlPplSyj14cXa9UOyziF1zOax7eidmDcttDSh0mjeh/D67t8YdTHpquiybuI+/P
-	 Q4NABcm2YikcvBj0ZVFXg/MYMud+oq8IN8rNdASMAhRBY4xV+KoolGf9pk+V097FMg
-	 EzBd1mN7Vu1V6bMDFMIYJvXLnz1586zJu9OcgL9MTm+6kLK7kQUrdnyfLgd8ZL3Otd
-	 XR/MPyTP6VxLKOchVZSl3jixlqmRd+7Uiwdp721hNeoHeewXT7Xoj99I5dJSjBTylf
-	 cH5uYZEzgAv6w==
-Message-ID: <75a6bc37-e597-46f0-adf8-c8ec8e5e0e4e@kernel.org>
-Date: Fri, 6 Feb 2026 14:06:55 +0100
+	b=d9sEWGFiaaRuc0sRdnQAcuG1352EjsHTlcUcZGWkuztARjNwJJPyYsFnT49xnGmu0
+	 7RHw4Tkuma5AimwbVkiWgqlHShrqnXx8/G7FadMgRziOJSchgxeIt/+2oZYCYuX154
+	 ysHzufYNUs+vgv+HRh/pQNvSxxpX86RNqQAgoFFvpfc02+PO91cogUGWhLTSINmPPx
+	 x9eXbp0TD4j1ScpA2ICUEfIuZEK+I+4IBrX2hp0brX9ZJEDv0Zav3wHtmIBWiLjrnY
+	 yV9VKuehMQ8VweK5VFvGLG5DUYp82+uy11I81WooluYehQahb5lQAYEC1YKZf9zTQw
+	 vDF+s8HaV4ZJQ==
+Message-ID: <ef673543-b03b-47b3-bd40-2540a56b6333@kernel.org>
+Date: Fri, 6 Feb 2026 14:08:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/13] Remove device private pages from physical
+Subject: Re: [PATCH v6 00/13] Remove device private pages from physical
  address space
 To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
 Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
@@ -78,8 +78,9 @@ Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
  rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
  willy@infradead.org, linuxppc-dev@lists.ozlabs.org,
  intel-xe@lists.freedesktop.org, jgg@ziepe.ca, Felix.Kuehling@amd.com,
- jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au
-References: <20260130111050.53670-1-jniethe@nvidia.com>
+ jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ ying.huang@linux.alibaba.com
+References: <20260202113642.59295-1-jniethe@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +127,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260130111050.53670-1-jniethe@nvidia.com>
+In-Reply-To: <20260202113642.59295-1-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: painur44obhr3s4w7nstbg3qoxu1h667
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 315A41C0006
+X-Stat-Signature: zcj8hin4ntori9jmaracqamstt899em8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C10851C0010
-X-HE-Tag: 1770383223-512005
-X-HE-Meta: U2FsdGVkX1/dwrahlfAeu3fCDeCuJEy5uJ8UElfie9Hf2bndiQSyxxhNYqE/UWs2gJARk/7A6OyooiWYvjuYri8eluYUAcOL58B2rjFTOXKSuj/JJsL15+HnkUwoPuTw+9BFx45674yY2wblnzvgjnUn+tktItaz2FjqPOd4cAY3tgtX1WbzEoDpdd5e2YfuUIxmr1//co7ZjPyn6gcGnQ7wQRsZVngClDuy8kQ4BLpd58iLgpjNhyZgftGTA0Zun2rSOl/A6EALaUnNA5nV3YvwAZ49PTdoso8S1CArcZPAfhDql7FyU3DKXICv2N/os2YUicK6YnUgscoM/ZXHOPo6Y7YDjvkR/M5Rfmc6bFaTKwCp2ZRu0E/CNtQgO+T62Cu6mV0d75EuKHTVfMuaKKxJ00K0KyDP/giL/a876DjvwMYqgXafc0XvG5Vq1YJ/Wetoi3hGcOP2Nr/T3oJvPQK+sid4CVRXfvIaErliN+O6c333RHd/JWlLcKmXUByQbS3rHRcYCFPk4LT2GSEMePfFINsZ5UfNHPPcLsInFjmySq3J96BNgO23zcuDl7ISpruLOaN1TWnZPHToHKZUycpfVq7QxSrI1mmAx+H048H/zwiB3mSJm1uD/f7KaNsvViXjf6EIQVo14QS3jdUrf0UDUV8OOhAo53DO24d1ySOyJYGZwbMQ33HHRK7GBkdgNY0yBVEqV0be8vVPh06qGQjuiVj5EooZjBNdsx/KhpSwHp/DtMKD2CcPq+eP4mLPfNYTMomwOe6UJZSbQjZaCILo1q3inuQfmrVYeh1WLgzuNBxC9LHjSbNsSJKseCGIidXds5NvMH808VH63an7Ht3t8x30QeC7CBGTmeRy4Vl9T2pofo3btpP/4Dj8uQNDahoiR2qpvMKc4lQhIs7+iuNQ4IlpUzR8uOfEi/hRV02tpM0FuUu3FM1le3mb3owgr1CbsmUz3lw98A5FnEw
- SbGDCvob
- iJ2UdQrweQwwAqVeqg1MFluERQRTlnrDBNK9O46ZoHjf7DBf0A04Fe/YJVZd/Y6Noo6mPDPC+7YtCgZ8Ci0pq5NSP6KO17AqBmM7+1DjlsjAkavbVFh/U6VdN4hSnjf9zttxxIMxTYJytXPOFy8FaGJSpnmXGKRQX8S/gTpAcnflgSadNxbB3GMLHqS4PUZ8Fpxh7NuXFV3KJ1PR3iiHq2aIz92AwK7/P2vPjGvwbnP4MyhpPRbT6WiEtcK3LAmEOlAy2
+X-HE-Tag: 1770383331-37504
+X-HE-Meta: U2FsdGVkX1/9fClxYb2Mi7gEkBivFP7NdXSwLMYBnqifryLqD53VCAAvBGnbp8f1qPLudOhFwDoPn76sTtAbc2ela/HciP49JQsDt2vxv5jGKNJUfw4JCbl+7O89m0V/p0BrABTkiVZJ2Rqke8mW7O87jiQV/JsR99ui9K+dhZrx9MSXatJD5CY1DLtq3dG7WLqR3qJk2jupA55Bq52aYQ2R5OlqG0jpLXsC8bj3SAY2siRL68o8JFzMXABtaKP5/LZT7FKUMXBQtM7ttO9XqUFY8Zfn3d7Jujx45z8aHehpD+CAKvV2qBLrM5kEV5LaUxF2rPAyJB0PqS4tgjgGfM1+/nH/ZW2NV0kK3TPgH8y9HB/GyIREVfYaOA+4+dcqhGQKJosTZJLlVp5WQwWpQWHHgcOUHzXDtviwIYNp1KSQLWKbwUhOs+E1oRWNnNFCntdx8IBpjEcIzh/zhsuqW5Wg7ISN0405I4TH2kdl0LRAeRsZMNpHzu1Zg1gJ/Za3qXIUKytjScmW9iRMJQ3gLywJLzu9gflwJg+3qRSGxZqR6ch15JVW85P8JXhpHbN0U/jPtGFpLZY8C0iDLDQuITMiAKtRNm0SfKrXklmQkn6x27HaqiiXjMovZvjhFO1COPgDZMjvwzNdlE/I24/GpQURWka9u0tGWALxw2iDVp0+bH9cbJqgeUTBvjraBJCmusBAyR+OYxsOtkAWUWwb4hZg+0nlRMOqWHgvorJ47+cL2NChD1RqFh2tVmpZuap8iRi1MKY2lEq3vU6iveDhVp6VDK/gEaet/KhK2RoIg8zt2LMRDm1ie5B2ffHFDv8cosWaa2uA7kBt976uonW0g4cZ5hWfOmyIgr0lpNZSF4P3muHy4lQlFV6owW7qeAeMsdUe2pWdTdOUSqnq+YKb+ByIVhM9MPFjBFizKm1fyuEEnYMx2EOTfwS7L6fr0Ye1OKyfYPn6PkHVEoupCC5
+ 3tgaI+AZ
+ FKi2uCFSY5f88roeF9HpH4UnqJU2vIvO3csRYfpXB09GUvjelO0j3vsoSRSOBaZVNPBdUcNrCkW6R/FN68Kn6mBO0vbOQbpUL9JeymTQ5tRyZllfYgarD+JTRNdgTa6ucl25MubOAMna26ovjMV2ribsRm87FDNbwnwLGlHHDilw2iqocy8JqDuhzvmHwdTtf4r4Vi2NOtUo0kXv3Rt+R5pkY8BuJddaMaEf7pvvQWfOL+B2KFakW0wf9kjeh54aPo7E4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,20 +146,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> The last patch contains the bulk of the work where we change how we
-> convert between device private pages to device private offsets and then
-> use a new interface for allocating device private pages without the need
-> for reserving physical address space.
-> 
 > By removing the device private pages from the physical address space,
 > this series also opens up the possibility to moving away from tracking
 > device private memory using struct pages in the future. This is
 > desirable as on systems with large amounts of memory these device
 > private struct pages use a signifiant amount of memory and take a
 > significant amount of time to initialize.
+> 
+> Changes in v6
+> -------------
+> - Fix maybe unused in kgd2kfd_init_zone_device()
+> - Replace division by PAGE_SIZE with DIV_ROUND_UP() when setting
+> nr_pages. This mirrors the align up that previously happened in
+> get_free_mem_region()
+> 
+> Note removed previous discussion in the cover letter relating to aarch64
+> and memremap_pages() as this was actually already addressed in commit
+> eeb8fdfcf090 ("arm64: Expose the end of the linear map in PHYSMEM_END").
+> 
 
-I plan to take a look at some things in here soon; still catching up on 
-my overflowing inbox.
+Now that I stumbled over v6, same comment; planning on taking a look soon.
 
 -- 
 Cheers,
