@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C559EE6B46
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:13:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF683EE6B4C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:13:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5FF576B0096; Fri,  6 Feb 2026 14:13:15 -0500 (EST)
+	id 873A66B0098; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5AA116B0098; Fri,  6 Feb 2026 14:13:15 -0500 (EST)
+	id 7EDF56B0099; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 440DB6B0099; Fri,  6 Feb 2026 14:13:15 -0500 (EST)
+	id 63E206B009B; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 309EB6B0096
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:13:15 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D19EEC1483
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 553206B0098
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20900139FCA
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:13:16 +0000 (UTC)
+X-FDA: 84414979992.15.7144136
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4413B100009
 	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:13:14 +0000 (UTC)
-X-FDA: 84414979908.27.68AB65D
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E5E78C000A
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:13:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=TsOSQ81U;
-	spf=pass (imf10.hostedemail.com: domain of slava@dubeyko.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=I2iksyzC;
+	spf=pass (imf05.hostedemail.com: domain of slava@dubeyko.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770405193;
+	s=arc-20220608; t=1770405194;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YEXgdq0izXJsGpGxsVLN8S/Y6PSgZJ5yVJf6Tpti494=;
-	b=vd4FyENE2RK636U/JcQYmBWIZZJKo3Fqkh0VraKV2mYqQjNmFoQJbUloIyCjTzn4Gf2GF8
-	q6ISeXsMzUNTASUY2iXJ7YF3omyGOy8Q67kjnHZR5tWUKY3CSFzygWKsyKyWDxoItsh3eF
-	TzdBfuvdLn2CQqj9f9GU+dBr24RX/88=
+	bh=Hp7dE9rfuLorTfLe8+rhBEONpAq5JPSPoipR3P8yp2s=;
+	b=sPdzl8dgbFQiyALtoD65YLmhQpyLacw+jDHZKGZBDbdyUZkjXo1Qg6kUAZ/lRpLrmB+SHZ
+	mrM5O+1BR/gnF10xPcPZiU/Peq2fq7lU53uDeuFWAcsbHETZkJSO4w4ignrQuxWrzgZhWY
+	c/jbCWQDiv1tOIOTXVwdKIY5RF/TfvM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=TsOSQ81U;
-	spf=pass (imf10.hostedemail.com: domain of slava@dubeyko.com designates 74.125.224.53 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=I2iksyzC;
+	spf=pass (imf05.hostedemail.com: domain of slava@dubeyko.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770405193; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770405194; a=rsa-sha256;
 	cv=none;
-	b=fBnlEflNOpnK51Cj9h2kuobvJlbtfDdMn60JaadsVERoAEbJT2g8dPeRazWHVCNXSCrY4O
-	7uJtGhNaItm/raB/W4ZTIN9S0suWUpIZZdYUjt4XYub0hLlzv7VY976m6BJ6R1L62FxVBy
-	Ko9LrjQlMVawfVg9tK14AzvR5NOnuC8=
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-649f2d9fe48so1104244d50.2
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:13:12 -0800 (PST)
+	b=Dny2hXBZOAOa+qwt/8c1BxoA5RggZNznnSh9oV8DZe1yT1fJjhSTR0QTz6y5h4N2kzQ9tz
+	l7VPWKQblE6skUOUSMgKdgS12HXh3NXhNqHQ+Xc8gUuRiqpPXKsQ5CNwlUNATx7C0HTTcj
+	+7WUG9CfZJR3mEE6bP3f5kWEbxXWL58=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-794ed669269so40449727b3.1
+        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:13:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1770405192; x=1771009992; darn=kvack.org;
+        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1770405193; x=1771009993; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YEXgdq0izXJsGpGxsVLN8S/Y6PSgZJ5yVJf6Tpti494=;
-        b=TsOSQ81UFlbcH2rrni1BRNvggVgubyz9eK8JY6dPhPuPMMq3c79ctPQCMH9xdizT+Q
-         w+QI1oiy+rpSdR6Bn2gdgcE/1RjgTuO35F0Dc1IthV1/t/QdFpCWjteAn7aLSu8MKR0l
-         Ltyu3ZAPJ4ZL472+rukuet0vMJ05Oykf2tCVX3Ek8GB3OhnvPM06qPQffVPpamBrHslU
-         GsCkPLC1+OJJiJZBVgJCyPcAm8RMS9OPjGXAlELpV4KK0hmEKbNlS2zntOFlpoTl+jhp
-         JHzNmq/cfoNYRjCg62HaPKcPhwRe1rYkMzx2TLYG9elTlkqopabfzAAiw7Ii+6SdenrX
-         kdxQ==
+        bh=Hp7dE9rfuLorTfLe8+rhBEONpAq5JPSPoipR3P8yp2s=;
+        b=I2iksyzC/JV9iF5wOx+50buUQGinmkxN49/HF6RfaypdsvMS0VpPKucNDi2zl9xaTM
+         4uzB6eAbnQQoerfIOc7zlQNI4wwU74nrudK/f8t8eNv8FaghofsJ+eE6v4BX0VVOsuly
+         ymaHfmUeuT0b3e8zPbBxxy9QLlgJdYd7zoQsEBlzuI61Ce1fPk2IIbaqKZ4Kztd9UitN
+         UDJkwccTsez1C0H1YncGi6XYdYZFHVQuu4/MfuiJDU3aisdcE43h/lxSJr+yfHyn+D8n
+         KTDCsc3jMwjjJDP8C7tO2idfR9vxsiiWaxN40IwcxGkd67adOSGAAhQOH/wDp90U9QfC
+         sfaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770405192; x=1771009992;
+        d=1e100.net; s=20230601; t=1770405193; x=1771009993;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=YEXgdq0izXJsGpGxsVLN8S/Y6PSgZJ5yVJf6Tpti494=;
-        b=oXB4AiuB9G7710QI9ddjeLmS+rRvX0kYykebGOVaAf4zyt+8MtMj6nr68DN/v3IfS7
-         FZWdNyATKhtgAe20SFoU2BTA24TIepuv73QNfbkIamNXj63uOadSBycHQ0QItYLTuPxR
-         C9LLON5jDA6heU30O1Fnsa1A04XT01vVnx6cdF0bHZxgCkQpX+FefOUUopTNnPZBMf1m
-         tE7Fam/MuIKFBudhNzHRJZDX2pLQ+6alMxrqfEh0ZP2liuswzKOIiYxAomAWaXLhTZV2
-         P8SUGmMg2xMHvPOiWQPSHvt4UyZUyHKEa4CJFZm3zlkRRtZiITdw4L1AG7rymCTVTg0p
-         IzbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTmj1Rvz9h7jzjJMhFT8C+Twg8X3UaFdJZJREEm1YmTjhcqeM3iHPUHZ4BT5B25m0eQEgpUl7KZA==@kvack.org
-X-Gm-Message-State: AOJu0YwwVjdfQLSBSHN/WCLfbbq29N53mqXV8nOhXwWI+/S4bsfprW7z
-	Ml7eVPKBy6YkRWH1hVIw6OJ/pTHWo66vT1GG8kZ1yeSVvlUKNcoy3t5SAE8RbQLcQRM=
-X-Gm-Gg: AZuq6aLDLHz/1xpCncwJvJbwL0yDViIDViIvQbVHoxWBc6/2y6X0l1Y4MajSuO2Sqcl
-	CHdaGlxKDAWlTdkPt9+s9u8rNnY2L2cax0K6OOMraeTKmVbkrgHNLvefOGVKnEkNXnNsCcSI1um
-	8K/142vd2jA2hEcKMU57g8yQiMZqeR/Y7mnQvnp5uyVYBS+zkghdrLCanFK7hPzG9qkzHRr3F1G
-	Avp4S5yqgjJPK3YkZp8EuaZPdxXL7aO/B33DAJnokIMx5RvX7FcUiyoO/AE2lguI3co8CpOFxE2
-	UZAe+pYvZAkXnbaxTRRBGyLBdMmZbSoYDDJpvarg+qajXylEbXgbieWosUkab7WoQIUkJLJn43y
-	CJOu32dDcU1DsvOpMVGLV/GOqCDRQg5FKDVkbR/bl+foZLkSnVqrjzr5FRGsGp/i0nXdjEQHMPp
-	ojEPPngiQ0fGQAbhcFh74z8kCy25NifN1Iibue63DcKaaibqCHnuffFBm3F7rXYH0CSURz5jrz2
-	E5/nBTpzHUe
-X-Received: by 2002:a05:690c:9c04:b0:796:1eee:b8f7 with SMTP id 00721157ae682-7961eeebef9mr45307667b3.58.1770405191900;
-        Fri, 06 Feb 2026 11:13:11 -0800 (PST)
+        bh=Hp7dE9rfuLorTfLe8+rhBEONpAq5JPSPoipR3P8yp2s=;
+        b=tlnSrd9gVx3njtBT/QEekhR6zef4NFjgVWltpHDFVu5tCDeWBdSqd75F/w6BG8bE1Y
+         icINKeE/SjCZWlZ1MDoqDVNDN+nbDnWLx8PqlevFmnClCRglHq1V0L5VyA5W0woi/RHN
+         Fcx0F1Uni+YcZGdYjwKsm3I+PlBKQJ+scmN4zBL/6zOInWcYmYCSKvTO8OpQZPdNSaBp
+         KJqTKpKgVbU6dFQB86j8xwtnE0yT5dbzQfyd+fz5/lm/yiTOpd/nSzEe/QprHCUktQnx
+         Tryzd3Jb993xfyDCFuBnA2NWf5m3OIJtptyR1Aohl2RW81J3xNqYlHqsCO5Tr/b0cu5E
+         C3rg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPzlN7xi/mVzhUXPHNbCkft2OFvl8Z9bTZ2aEEkT6HUt8p+5bjXCVWTOLduEUiHJbWIpIgzWXS1g==@kvack.org
+X-Gm-Message-State: AOJu0Yytkq/SY3nb9w9/L3pdA8AEgyKVMvoKQAHQD2cU84Qix75b63KL
+	cp+oFlLGjHeHyosftP69lgW8IDpeVUqIE380QlhfIqWNvazVd+b4edJ/QehFYSpvoyk=
+X-Gm-Gg: AZuq6aJlquY/QBZqVAQPu9edz/QkPOIhGBOAWt4tuc1lqjfdiJkAOItq9eOy0rNnuMa
+	eiGMA/0cMYqXMzUstxkQws5Ppc1K0EwMFHdhXQrnOjZ7K5I+RNAZYKRwvp9i6Sz0OFjgHohbF7e
+	/h8cjs0Q1GPAAJfVCHyrs6S0Gu0lSfRP3fwlmDCja7jBL8MxKe4aicVq8KMMoP0Jkwu+UAext6O
+	NP9E+6Uy+jP/+62FeIT2EijgkUAnFF27kjHe+VSziMw59uLSqwx9m51Lt/ek5BWZs9g8Rr16Ywj
+	guJnZMcFM9L/pBl9K3lFds7PKovTklINq+XauXTM3i3wXr5cqufCbA9DNPsd7SH/3AHn2595mHe
+	Qt8BYckZRoHxlRbstN+hH091rzH2QfMHf/56T7brSeb7CJX9SgsAT493dXWJkqQGO6QpB9Gs5Kk
+	B6EBS1olGunABmhy/h2nZgVUN4A0/Y5r32TKIrWr+Kf2uV6GF16g1jf5AS2WQ2NqFllnhNipACO
+	ZpR3FkK2Ohm
+X-Received: by 2002:a05:690c:d8b:b0:788:181b:86c1 with SMTP id 00721157ae682-7952a63e4bcmr38138647b3.5.1770405193303;
+        Fri, 06 Feb 2026 11:13:13 -0800 (PST)
 Received: from pop-os.attlocal.net ([2600:1700:6476:1430:9fc0:ed7d:72bd:ecd1])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a28697fsm29051277b3.50.2026.02.06.11.13.10
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a28697fsm29051277b3.50.2026.02.06.11.13.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 11:13:11 -0800 (PST)
+        Fri, 06 Feb 2026 11:13:12 -0800 (PST)
 From: Viacheslav Dubeyko <slava@dubeyko.com>
 To: linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -98,22 +98,22 @@ To: linux-fsdevel@vger.kernel.org,
 Cc: Slava.Dubeyko@ibm.com,
 	slava@dubeyko.com,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 3/4] ml-lib: Implement simple testing character device driver
-Date: Fri,  6 Feb 2026 11:11:35 -0800
-Message-Id: <20260206191136.2609767-4-slava@dubeyko.com>
+Subject: [RFC PATCH v1 4/4] ml-lib: Implement simple user-space testing application
+Date: Fri,  6 Feb 2026 11:11:36 -0800
+Message-Id: <20260206191136.2609767-5-slava@dubeyko.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260206191136.2609767-1-slava@dubeyko.com>
 References: <20260206191136.2609767-1-slava@dubeyko.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: E5E78C000A
-X-Stat-Signature: u1st7rnj5ttyhq3fhncqhqpqtgzpso4u
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4413B100009
+X-Stat-Signature: t9ti4971qwixrmxu9hb6gqhqga67773h
 X-Rspam-User: 
-X-HE-Tag: 1770405192-714669
-X-HE-Meta: U2FsdGVkX19FQaWluKvFo77fQ4ilpe/ykfOxMEXA44BEZGS8FWp62vVtexuQjX38am5IB5Zs5ue7aVwQgh92er+z0w2iapLp3mlEfftYAJBvmp49PCeSa0dOjvW25BG6U9MRgnjOqpYG7B3/wJWInIiHn36J2Ea9plnDaOxt1uRrZIoYQjH1dLfoKVZRu4VQX3u4gqW4NUwnKlliH8XkTJwKFAlX2HOx6CCga9kWp/kuM5q0oF4Abb0EtUJniFd24HifqKXOZBe5QzzXS3JpjjjEaHK1hykkd/cszkuR0zIumtnVMUNGO6X7ATaS5bBNabG9wH3xqdzCJAk/hNTa2UXP+yuPTan0skB+QIu2xNbd+701ZhCje1YbFnwERYHsgOoUfTQhZ6XQDDAPnivJrgMug6OLZgS8DnClboY7boQN0Hzg1u9v1U/vXDaoKoOOk6fYQflZbR+Lq5c4hsUIcbgP5v1pqjBQh8QnzP1gnlBR1Jzskaty/0qcqv+DV9pjtP4LJRMs0p2FJ0u40dHKliodVUpdiCxDueFpXOHoufGhLNb1ts8wQfZwFPjLLceN8IHTSaf3DUVQQsVT31Rv9vR8ZiVED5vLjj1bzEC72RxSV0w4eCKarRCpL9806kzLJgs2Mbx72J7zQrnMWBqtRL1QFrE6HeZs0DkT+NZEkeiKOhTOgJTlAMnWceW9/GTlvaIKRB//yi9bgEpe6LCuTsRTvijXBJo/M1yY5pQfG9aMyNbEDNU3z4JF0KItFipZ/DBHECc4EEd1vAKdZ2QqbenBMFJrOk+/uSVpirfHErqXx84r0OHhMLQNddwzehm+iuQqNDvQjBqJ8Revq0rxwDQUGEOt7S24uQE5IuKbhXjSVdCARGVyt4saz+OBKP6/OrHsIvPxiCxHTXPqbL8OGke9+GcgHGjmTUfCZoK7tXwRLAfPXCPsNjmHBCkmrzbNBq7KacjnX5SK8IAxOlj
- y/sEjtrL
- dcnaiujOVWHRY8oe0fxkbJxkW0CkhzTyB/6OqtzRKKHLbDmYffJimK9ic4T4G4LWiyYujG7FY+LkhIinr7onJL18BaFSi+7nJpgV8F6yXEOTxb23edkfsWCN3iPE8vqZfK+OG89fmoStLIqaiVlUt109OB4fK31MlZeZGxbXWo79G2j5tZUo7dUPeIvCahJPWS31TSwl9EHgfQ1MZ9PiwzGVdTJ9yuQFj/5qUWHmTMFdoKPd2fWTQ3mBR4bXOwpPXmdNAY8RRQwxxdc1dA/AKLZ7fYuorqEZuHoH99hxi9sud2o0cdLdFXSe9xSA8AJAa3iCP1USO8wPTbjSKJFruNFLFlE2pdT0it3ybCqIDABfWxRCdAMWNoswbBZxJmNa8M74XWp4iTZBOOY6an0jyBaVvQuYYsmUZLYu8m9mU41FXUS/fZkb1J5Gx882to3GgixGX
+X-HE-Tag: 1770405194-958965
+X-HE-Meta: U2FsdGVkX1/bLIJdMmUirs04ahA7O4iy98h583ewbCHPW8iSflZhzidEWmaT+gIgEQEFgOaqaxc1AyZz8YpIXsini9vbKyZbvbBeO6uiiMk7ZiwiUCiSBB6h5/sJWfaRxrSw3+McukuiUzCPO00k+QjSTEQ1xGjA5jiHTPN2hMPaVlyRwFGDX7xJ63SK+mrekpy2CVIWAB5LJgitORkYg9AQwoDrSVBt53Dk3R0wNvPXMkmKdsqXfVHRyg9g6AP/5cNXw9VZD9EM7N4umHYgar0gLf2OWYbqhhONlz/iYSfBAdg5sxLJ5hfhqDraL7AfAa1TTJ68xkW+9wM1PLvpkYw/CNkh+9KDe2zZ0FBZXssM+2v528udxnPFgnlH73qQRQAHEccJd4vZB0JyIE0ChUbeL8rK/URqmTtEKJ0twiDi2wqbVUSqmoYyykWGRU5B0cY/0h7+k7HbBe6IJJeCuROBQnAOZAwRGpyPSEPGsihnNo+Cqkd3Yq8QrIWUb0y36nvNUEzJdQQ/TDb7HQTCX8Ozu+u4HmmkCP6tu8pG9PUAOlGuW2JyhHUTnw1qXet0PGhn+HzJt2CFUEnrZC2Gd6kvhRPRtrXFBp7CYYSrvQhI/UlYNH/j3Zf2TiUr9UrECciiX38CjV7uLrRltRfXHx73w3H8fD5Z5QfPkffuGYYskIGwv/Y9EuGRfMZQb0UElCQarwPR4G/F0TEXetJ2rMgca5EIsgXNC++d8vXsVKxOYR/5RgBUxxGGqDQpOumNCC6t+goSC0m9EbteI06tdPIzSMgjIXh0MnLt3vIcaHpaTqMVc6rz+5h/gfvOmE1OVZJMW1MNCzWflpJFPgiHy1z+NVL6sbyqkoaKXNoe5eUsg/BJ9i52zqxDHKeXo+ORoabhBI13BZWgr7ufzQPaVlyFoIFj7P3jEd5EnfKCWmf+nWJIOCct5wXrIa1rcuWcuBiPONIOqQQFKwNWc/K
+ cs7pBede
+ wbbAAf+Pyy+P+bbE57WV+fYk9ueKZ+LQsM5NOnnuiLvAVsIuQPrEN4n0gJghytZHRB5D5TFdEKdtR9PwSrptx0X0lZ49ZKKHpdujBCCPraBcWirka1IoMCHnpr9tYQALb0Wd35m7G7mB/jNsuqrNP9zhB0Ld6uDIXpcylG7wSnUBT2xXVIFDddvbBuXmVcc8ChQ9okqD+k8PUPX7JpbBX+XfO2cum9+vou0FejwUAT0gvgkgw3lbWbGpLBIiuu8Q9zIONdbcMJ23yIIY3tN79zkN7V1yGH7zryYOPq4DCFv30iAzpievCFdT5G03YLjzr72JnLWg2RK8SpOdFXawqsKaKOFSOC9JBj//2VU3mHi0V+3YOTByWA16QsmWCf8PG2O4OovHqiiw+U1MVefbZZ2calOvephryMVZiwlVxitXGrciR657Ml5TUP4ppGXdGNv91
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,328 +122,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement simple testing character device driver
+Implement simple user-space testing application
 
 Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 ---
- lib/ml-lib/test_driver/Kconfig           |  22 +
- lib/ml-lib/test_driver/Makefile          |   5 +
- lib/ml-lib/test_driver/README.md         | 233 ++++++++++
- lib/ml-lib/test_driver/ml_lib_char_dev.c | 530 +++++++++++++++++++++++
- 4 files changed, 790 insertions(+)
- create mode 100644 lib/ml-lib/test_driver/Kconfig
- create mode 100644 lib/ml-lib/test_driver/Makefile
- create mode 100644 lib/ml-lib/test_driver/README.md
- create mode 100644 lib/ml-lib/test_driver/ml_lib_char_dev.c
+ .../test_application/ml_lib_char_dev_ioctl.h  |  21 ++
+ .../test_application/test_ml_lib_char_dev.c   | 206 ++++++++++++++++++
+ 2 files changed, 227 insertions(+)
+ create mode 100644 lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h
+ create mode 100644 lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c
 
-diff --git a/lib/ml-lib/test_driver/Kconfig b/lib/ml-lib/test_driver/Kconfig
+diff --git a/lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h b/lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h
 new file mode 100644
-index 000000000000..183fc1de57a8
+index 000000000000..7ea74e840fda
 --- /dev/null
-+++ b/lib/ml-lib/test_driver/Kconfig
-@@ -0,0 +1,22 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+config ML_LIB_TEST_DRIVER
-+	tristate "ML library testing character device driver"
-+	depends on ML_LIB
-+	default n
-+	help
-+	  This is a ML library testing character device driver for
-+	  testing generic ML library functionality. It provides:
-+
-+	  - Basic read/write operations
-+	  - IOCTL interface for device control
-+	  - Sysfs attributes for runtime information
-+	  - Procfs entry for debugging
-+
-+	  The driver creates a /dev/mllibdev device node that can be
-+	  used to read and write data to a kernel buffer.
-+
-+	  If unsure, say N.
-+
-+	  To compile this driver as a module, choose M here: the
-+	  module will be called mllibdev.
-diff --git a/lib/ml-lib/test_driver/Makefile b/lib/ml-lib/test_driver/Makefile
-new file mode 100644
-index 000000000000..6444bcf8985b
---- /dev/null
-+++ b/lib/ml-lib/test_driver/Makefile
-@@ -0,0 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-$(CONFIG_ML_LIB_TEST_DRIVER) += ml_lib_test_dev.o
-+
-+ml_lib_test_dev-y := ml_lib_char_dev.o
-diff --git a/lib/ml-lib/test_driver/README.md b/lib/ml-lib/test_driver/README.md
-new file mode 100644
-index 000000000000..0bb4105c8aa4
---- /dev/null
-+++ b/lib/ml-lib/test_driver/README.md
-@@ -0,0 +1,233 @@
-+# ML Library Testing Device Driver (mllibdev)
-+
-+ML library testing character device driver for the Linux kernel:
-+- Basic read/write operations
-+- IOCTL interface for device control
-+- Sysfs attributes for runtime information
-+- Procfs entry for debugging
-+
-+## Features
-+
-+### Character Device Operations
-+- **Open/Close**: Device can be opened and closed multiple times
-+- **Read**: Read data from a kernel buffer
-+- **Write**: Write data to a kernel buffer (1KB capacity)
-+- **Seek**: Support for lseek() operations
-+
-+### IOCTL Commands
-+- `ML_LIB_TEST_DEV_IOCRESET`: Clear the device buffer
-+- `ML_LIB_TEST_DEV_IOCGETSIZE`: Get current data size
-+- `ML_LIB_TEST_DEV_IOCSETSIZE`: Set data size
-+
-+### Sysfs Attributes
-+Located at `/sys/class/ml_lib_test/mllibdev`:
-+- `buffer_size`: Maximum buffer capacity (read-only)
-+- `data_size`: Current amount of data in buffer (read-only)
-+- `access_count`: Number of times device has been opened (read-only)
-+- `stats`: Comprehensive statistics (opens, reads, writes)
-+
-+### Procfs Entry
-+Located at `/proc/mllibdev`: Provides formatted driver information
-+
-+## Building the Driver
-+
-+### Option 1: Build as a Module
-+
-+1. Configure the kernel to build mllibdev as a module:
-+   ```bash
-+   make menuconfig
-+   # Navigate to: Library routines -> ML library testing character device driver
-+   # Select: <M> ML library testing character device driver
-+   ```
-+
-+2. Build the module:
-+   ```bash
-+   make -j$(nproc) M=lib/ml-lib/test_driver
-+   ```
-+
-+### Option 2: Build into Kernel
-+
-+1. Configure the kernel:
-+   ```bash
-+   make menuconfig
-+   # Navigate to: Library routines -> ML library testing character device driver
-+   # Select: <*> ML library testing character device driver
-+   ```
-+
-+2. Build the kernel:
-+   ```bash
-+   make -j$(nproc)
-+   ```
-+
-+### Option 3: Quick Module Build (Out-of-Tree)
-+
-+For quick testing, you can build just the module:
-+
-+```bash
-+cd lib/ml-lib/test_driver
-+make -C /lib/modules/$(uname -r)/build M=$(pwd) modules
-+```
-+
-+## Loading the Driver
-+
-+If built as a module:
-+
-+```bash
-+# Load the module
-+sudo insmod /lib/modules/$(uname -r)/build/lib/ml-lib/test_driver/ml_lib_test_dev.ko
-+
-+# Verify it's loaded
-+sudo lsmod | grep ml_lib_test_dev
-+
-+# Check kernel messages
-+sudo dmesg | tail -20
-+```
-+
-+You should see messages like:
-+```
-+ml_lib_test_dev: Initializing driver
-+ml_lib_test_dev: Device number allocated: XXX:0
-+ml_lib_test_dev: Driver initialized successfully
-+ml_lib_test_dev: Device created at /dev/mllibdev
-+ml_lib_test_dev: Proc entry created at /proc/mllibdev
-+```
-+
-+## Testing the Driver
-+
-+### Quick Manual Test
-+
-+```bash
-+# Write data to the device
-+sudo su
-+echo "Hello, kernel!" > /dev/mllibdev
-+
-+# Read data back
-+sudo su
-+cat /dev/mllibdev
-+
-+# Check sysfs attributes
-+cat /sys/class/ml_lib_test/mllibdev/stats
-+
-+# Check proc entry
-+cat /proc/mllibdev
-+```
-+
-+### Using the Test Program
-+
-+1. Compile the test program:
-+   ```bash
-+   cd lib/ml-lib/test_driver/test_application
-+   gcc -o ml_lib_test_dev test_ml_lib_char_dev.c
-+   ```
-+
-+2. Run the test program:
-+   ```bash
-+   sudo ./ml_lib_test_dev
-+   ```
-+
-+The test program will:
-+- Open the device
-+- Write test data
-+- Read the data back
-+- Test all IOCTL commands
-+- Display sysfs attributes
-+- Show procfs information
-+
-+### Example Test Output
-+
-+```
-+ML Library Testing Device Driver Test Program
-+==================================
-+Device opened successfully: /dev/mllibdev
-+
-+========== Write Test ==========
-+Successfully wrote 62 bytes
-+Data: "Hello from userspace! This is a test of the mllibdev driver."
-+
-+========== Read Test ==========
-+Successfully read 62 bytes
-+Data: "Hello from userspace! This is a test of the mllibdev driver."
-+
-+========== IOCTL Tests ==========
-+Current data size: 62 bytes
-+Set data size to: 50 bytes
-+Verified new size: 50 bytes
-+Buffer reset successfully
-+Size after reset: 0 bytes
-+
-+========== Sysfs Attributes ==========
-+buffer_size: 1024
-+data_size: 0
-+access_count: 1
-+
-+stats: Opens: 1
-+Reads: 1
-+Writes: 1
-+
-+========== Procfs Information ==========
-+ML Library Testing Device Driver Information
-+=================================
-+Device name:     mllibdev
-+Buffer size:     1024 bytes
-+Data size:       0 bytes
-+Access count:    1
-+Read count:      1
-+Write count:     1
-+
-+========== Final Test ==========
-+All tests completed successfully!
-+```
-+
-+## Unloading the Driver
-+
-+```bash
-+# Remove the module
-+sudo rmmod ml_lib_test_dev
-+
-+# Verify it's unloaded
-+sudo lsmod | grep ml_lib_test_dev
-+
-+# Check cleanup messages
-+sudo dmesg | tail -10
-+```
-+
-+## Troubleshooting
-+
-+### Device node doesn't exist
-+```bash
-+# Check if udev created the device
-+ls -l /dev/mllibdev
-+
-+# Manually create if needed (shouldn't be necessary)
-+sudo mknod /dev/mllibdev c MAJOR MINOR
-+```
-+
-+### Permission denied
-+```bash
-+# Run commands with sudo
-+sudo cat /dev/mllibdev
-+
-+# Or change permissions
-+sudo chmod 666 /dev/mllibdev
-+```
-+
-+### Module won't load
-+```bash
-+# Check kernel messages for errors
-+dmesg | tail -20
-+
-+# Verify module dependencies
-+modinfo lib/ml-lib/test_driver/ml_lib_test_dev.ko
-+```
-+
-+## License
-+
-+This driver is licensed under GPL-2.0.
-+
-+## Author
-+
-+Viacheslav Dubeyko <slava@dubeyko.com>
-+
-+## Version
-+
-+1.0
-diff --git a/lib/ml-lib/test_driver/ml_lib_char_dev.c b/lib/ml-lib/test_driver/ml_lib_char_dev.c
-new file mode 100644
-index 000000000000..b2d6e27ece28
---- /dev/null
-+++ b/lib/ml-lib/test_driver/ml_lib_char_dev.c
-@@ -0,0 +1,530 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
 +/*
 + * Machine Learning (ML) library
-+ * Testing Character Device Driver
++ *
++ * Userspace API for ml_lib_dev testing driver
 + *
 + * Copyright (C) 2025-2026 Viacheslav Dubeyko <slava@dubeyko.com>
 + */
 +
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+#include <linux/init.h>
-+#include <linux/fs.h>
-+#include <linux/cdev.h>
-+#include <linux/device.h>
-+#include <linux/slab.h>
-+#include <linux/uaccess.h>
-+#include <linux/proc_fs.h>
-+#include <linux/seq_file.h>
-+#include <linux/mutex.h>
-+#include <linux/ml-lib/ml_lib.h>
++#ifndef _ML_LIB_TEST_DEV_IOCTL_H
++#define _ML_LIB_TEST_DEV_IOCTL_H
 +
-+#define DEVICE_NAME "mllibdev"
-+#define CLASS_NAME "ml_lib_test"
-+#define BUFFER_SIZE 1024
++#include <linux/ioctl.h>
 +
 +/* IOCTL commands */
 +#define ML_LIB_TEST_DEV_IOC_MAGIC   'M'
@@ -451,505 +158,219 @@ index 000000000000..b2d6e27ece28
 +#define ML_LIB_TEST_DEV_IOCGETSIZE  _IOR(ML_LIB_TEST_DEV_IOC_MAGIC, 1, int)
 +#define ML_LIB_TEST_DEV_IOCSETSIZE  _IOW(ML_LIB_TEST_DEV_IOC_MAGIC, 2, int)
 +
-+/* Device data structure */
-+struct ml_lib_test_dev_data {
-+	struct cdev cdev;
-+	struct device *device;
-+	char *dataset_buf;
-+	size_t dataset_buf_size;
-+	size_t dataset_size;
-+	char *recommendations_buf;
-+	size_t recommendations_buf_size;
-+	size_t recommendations_size;
-+	struct mutex lock;
-+	unsigned long access_count;
-+	unsigned long read_count;
-+	unsigned long write_count;
++#endif /* _ML_LIB_TEST_DEV_IOCTL_H */
+diff --git a/lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c b/lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c
+new file mode 100644
+index 000000000000..432b8a0ad068
+--- /dev/null
++++ b/lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c
+@@ -0,0 +1,206 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Machine Learning (ML) library
++ *
++ * Test program for ml_lib_dev testing driver
++ *
++ * Copyright (C) 2025-2026 Viacheslav Dubeyko <slava@dubeyko.com>
++ *
++ * Compile with: gcc -o test_ml_lib_char_dev test_ml_lib_char_dev.c
++ * Run with:     sudo ./test_ml_lib_char_dev
++ */
 +
-+	struct ml_lib_model *ml_model1;
-+};
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <sys/ioctl.h>
++#include <errno.h>
 +
-+#define ML_MODEL_1_NAME "ml_model1"
++#include "ml_lib_char_dev_ioctl.h"
 +
-+static
-+int ml_lib_test_dev_extract_dataset(struct ml_lib_model *ml_model,
-+				    struct ml_lib_dataset *dataset);
++#define DEVICE_PATH "/dev/mllibdev"
++#define SYSFS_BASE "/sys/class/ml_lib_test/mllibdev"
++#define PROC_PATH "/proc/mllibdev"
 +
-+static struct ml_lib_dataset_operations ml_lib_test_dev_dataset_ops = {
-+	.extract = ml_lib_test_dev_extract_dataset,
-+};
-+
-+static dev_t dev_number;
-+static struct class *ml_lib_test_dev_class;
-+static struct ml_lib_test_dev_data *dev_data;
-+static struct proc_dir_entry *proc_entry;
-+
-+/* ML model operations */
-+static
-+int ml_lib_test_dev_extract_dataset(struct ml_lib_model *ml_model,
-+				    struct ml_lib_dataset *dataset)
++static void print_separator(const char *title)
 +{
-+	struct ml_lib_test_dev_data *data =
-+		(struct ml_lib_test_dev_data *)ml_model->parent->private;
-+	u8 pattern;
-+
-+	mutex_lock(&data->lock);
-+	get_random_bytes(&pattern, 1);
-+	memset(data->dataset_buf, pattern, data->dataset_buf_size);
-+	data->dataset_size = data->dataset_buf_size;
-+	atomic_set(&dataset->type, ML_LIB_MEMORY_STREAM_DATASET);
-+	atomic_set(&dataset->state, ML_LIB_DATASET_CLEAN);
-+	dataset->allocated_size = data->dataset_buf_size;
-+	dataset->portion_offset = 0;
-+	dataset->portion_size = data->dataset_buf_size;
-+	mutex_unlock(&data->lock);
-+
-+	return 0;
++	printf("\n========== %s ==========\n", title);
 +}
 +
-+/* File operations */
-+static int ml_lib_test_dev_open(struct inode *inode, struct file *file)
++static void read_sysfs_attr(const char *attr_name)
 +{
-+	struct ml_lib_test_dev_data *data = container_of(inode->i_cdev,
-+						struct ml_lib_test_dev_data,
-+						cdev);
++	char path[256];
++	char buffer[256];
++	FILE *fp;
 +
-+	file->private_data = data;
-+
-+	mutex_lock(&data->lock);
-+	data->access_count++;
-+	mutex_unlock(&data->lock);
-+
-+	pr_info("ml_lib_test_dev: Device opened (total opens: %lu)\n",
-+		data->access_count);
-+
-+	return 0;
-+}
-+
-+static int ml_lib_test_dev_release(struct inode *inode, struct file *file)
-+{
-+	pr_info("ml_lib_test_dev: Device closed\n");
-+	return 0;
-+}
-+
-+static ssize_t ml_lib_test_dev_read(struct file *file, char __user *buf,
-+				    size_t count, loff_t *ppos)
-+{
-+	struct ml_lib_test_dev_data *data = file->private_data;
-+	size_t to_read;
-+	int ret;
-+
-+	mutex_lock(&data->lock);
-+
-+	if (*ppos >= data->dataset_size) {
-+		mutex_unlock(&data->lock);
-+		return 0;
++	snprintf(path, sizeof(path), "%s/%s", SYSFS_BASE, attr_name);
++	fp = fopen(path, "r");
++	if (!fp) {
++		perror("Failed to open sysfs attribute");
++		return;
 +	}
 +
-+	to_read = min(count, data->dataset_size - (size_t)*ppos);
-+
-+	ret = copy_to_user(buf, data->dataset_buf + *ppos, to_read);
-+	if (ret) {
-+		mutex_unlock(&data->lock);
-+		return -EFAULT;
++	if (fgets(buffer, sizeof(buffer), fp)) {
++		printf("  %s: %s", attr_name, buffer);
 +	}
 +
-+	*ppos += to_read;
-+	data->read_count++;
-+
-+	mutex_unlock(&data->lock);
-+
-+	pr_info("ml_lib_test_dev: Read %zu bytes\n", to_read);
-+
-+	return to_read;
++	fclose(fp);
 +}
 +
-+static ssize_t ml_lib_test_dev_write(struct file *file, const char __user *buf,
-+				     size_t count, loff_t *ppos)
++static void show_sysfs_info(void)
 +{
-+	struct ml_lib_test_dev_data *data = file->private_data;
-+	size_t to_write;
-+	int ret;
-+
-+	mutex_lock(&data->lock);
-+
-+	if (*ppos >= data->recommendations_buf_size) {
-+		mutex_unlock(&data->lock);
-+		return -ENOSPC;
-+	}
-+
-+	to_write = min(count, data->recommendations_buf_size - (size_t)*ppos);
-+
-+	ret = copy_from_user(data->recommendations_buf + *ppos, buf, to_write);
-+	if (ret) {
-+		mutex_unlock(&data->lock);
-+		return -EFAULT;
-+	}
-+
-+	*ppos += to_write;
-+	if (*ppos > data->recommendations_size)
-+		data->recommendations_size = *ppos;
-+
-+	data->write_count++;
-+
-+	mutex_unlock(&data->lock);
-+
-+	pr_info("ml_lib_test_dev: Wrote %zu bytes\n", to_write);
-+
-+	return to_write;
++	print_separator("Sysfs Attributes");
++	read_sysfs_attr("buffer_size");
++	read_sysfs_attr("data_size");
++	read_sysfs_attr("access_count");
++	printf("\n");
++	read_sysfs_attr("stats");
 +}
 +
-+static long ml_lib_test_dev_ioctl(struct file *file, unsigned int cmd,
-+				  unsigned long arg)
++static void show_proc_info(void)
 +{
-+	struct ml_lib_test_dev_data *data = file->private_data;
++	char buffer[1024];
++	FILE *fp;
++
++	print_separator("Procfs Information");
++
++	fp = fopen(PROC_PATH, "r");
++	if (!fp) {
++		perror("Failed to open procfs entry");
++		return;
++	}
++
++	while (fgets(buffer, sizeof(buffer), fp)) {
++		printf("%s", buffer);
++	}
++
++	fclose(fp);
++}
++
++static void test_write(int fd)
++{
++	const char *test_data = "Hello from userspace! This is a test of the mllibdev driver.";
++	ssize_t ret;
++
++	print_separator("Write Test");
++
++	ret = write(fd, test_data, strlen(test_data));
++	if (ret < 0) {
++		perror("Write failed");
++		return;
++	}
++
++	printf("Successfully wrote %zd bytes\n", ret);
++	printf("Data: \"%s\"\n", test_data);
++}
++
++static void test_read(int fd)
++{
++	char buffer[256];
++	ssize_t ret;
++
++	print_separator("Read Test");
++
++	/* Seek to beginning */
++	lseek(fd, 0, SEEK_SET);
++
++	ret = read(fd, buffer, sizeof(buffer) - 1);
++	if (ret < 0) {
++		perror("Read failed");
++		return;
++	}
++
++	buffer[ret] = '\0';
++	printf("Successfully read %zd bytes\n", ret);
++	printf("Data: \"%s\"\n", buffer);
++}
++
++static void test_ioctl(int fd)
++{
 +	int size;
-+
-+	switch (cmd) {
-+	case ML_LIB_TEST_DEV_IOCRESET:
-+		mutex_lock(&data->lock);
-+		memset(data->dataset_buf,
-+			0, data->dataset_buf_size);
-+		data->dataset_size = 0;
-+		memset(data->recommendations_buf,
-+			0, data->recommendations_buf_size);
-+		data->recommendations_size = 0;
-+		mutex_unlock(&data->lock);
-+		pr_info("ml_lib_test_dev: Buffer reset via IOCTL\n");
-+		break;
-+
-+	case ML_LIB_TEST_DEV_IOCGETSIZE:
-+		mutex_lock(&data->lock);
-+		size = data->dataset_size;
-+		mutex_unlock(&data->lock);
-+		if (copy_to_user((int __user *)arg, &size, sizeof(size)))
-+			return -EFAULT;
-+		break;
-+
-+	case ML_LIB_TEST_DEV_IOCSETSIZE:
-+		if (copy_from_user(&size, (int __user *)arg, sizeof(size)))
-+			return -EFAULT;
-+		if (size < 0 || size > data->recommendations_buf_size)
-+			return -EINVAL;
-+		mutex_lock(&data->lock);
-+		data->recommendations_size = size;
-+		mutex_unlock(&data->lock);
-+		pr_info("ml_lib_test_dev: Data size set to %d via IOCTL\n", size);
-+		break;
-+
-+	default:
-+		return -ENOTTY;
-+	}
-+
-+	return 0;
-+}
-+
-+static const struct file_operations ml_lib_test_dev_fops = {
-+	.owner = THIS_MODULE,
-+	.open = ml_lib_test_dev_open,
-+	.release = ml_lib_test_dev_release,
-+	.read = ml_lib_test_dev_read,
-+	.write = ml_lib_test_dev_write,
-+	.unlocked_ioctl = ml_lib_test_dev_ioctl,
-+	.llseek = default_llseek,
-+};
-+
-+/* Sysfs attributes */
-+static ssize_t buffer_size_show(struct device *dev,
-+				struct device_attribute *attr, char *buf)
-+{
-+	struct ml_lib_test_dev_data *data = dev_get_drvdata(dev);
-+
-+	return sprintf(buf, "%zu\n", data->dataset_buf_size);
-+}
-+
-+static ssize_t data_size_show(struct device *dev,
-+			      struct device_attribute *attr, char *buf)
-+{
-+	struct ml_lib_test_dev_data *data = dev_get_drvdata(dev);
-+	size_t size;
-+
-+	mutex_lock(&data->lock);
-+	size = data->dataset_size;
-+	mutex_unlock(&data->lock);
-+
-+	return sprintf(buf, "%zu\n", size);
-+}
-+
-+static ssize_t access_count_show(struct device *dev,
-+				 struct device_attribute *attr, char *buf)
-+{
-+	struct ml_lib_test_dev_data *data = dev_get_drvdata(dev);
-+
-+	return sprintf(buf, "%lu\n", data->access_count);
-+}
-+
-+static ssize_t stats_show(struct device *dev,
-+			  struct device_attribute *attr, char *buf)
-+{
-+	struct ml_lib_test_dev_data *data = dev_get_drvdata(dev);
-+
-+	return sprintf(buf, "Opens: %lu\nReads: %lu\nWrites: %lu\n",
-+		       data->access_count, data->read_count,
-+		       data->write_count);
-+}
-+
-+static DEVICE_ATTR_RO(buffer_size);
-+static DEVICE_ATTR_RO(data_size);
-+static DEVICE_ATTR_RO(access_count);
-+static DEVICE_ATTR_RO(stats);
-+
-+static struct attribute *ml_lib_test_dev_attrs[] = {
-+	&dev_attr_buffer_size.attr,
-+	&dev_attr_data_size.attr,
-+	&dev_attr_access_count.attr,
-+	&dev_attr_stats.attr,
-+	NULL,
-+};
-+
-+static const struct attribute_group ml_lib_test_dev_attr_group = {
-+	.attrs = ml_lib_test_dev_attrs,
-+};
-+
-+/* Procfs operations */
-+static int ml_lib_test_dev_proc_show(struct seq_file *m, void *v)
-+{
-+	struct ml_lib_test_dev_data *data = dev_data;
-+
-+	seq_printf(m, "ML Library Testing Device Driver Information\n");
-+	seq_printf(m, "=================================\n");
-+	seq_printf(m, "Device name:     %s\n", DEVICE_NAME);
-+	seq_printf(m, "Buffer size:     %zu bytes\n", data->dataset_buf_size);
-+	seq_printf(m, "Data size:       %zu bytes\n", data->dataset_size);
-+	seq_printf(m, "Access count:    %lu\n", data->access_count);
-+	seq_printf(m, "Read count:      %lu\n", data->read_count);
-+	seq_printf(m, "Write count:     %lu\n", data->write_count);
-+
-+	return 0;
-+}
-+
-+static int ml_lib_test_dev_proc_open(struct inode *inode, struct file *file)
-+{
-+	return single_open(file, ml_lib_test_dev_proc_show, NULL);
-+}
-+
-+static const struct proc_ops ml_lib_test_dev_proc_ops = {
-+	.proc_open = ml_lib_test_dev_proc_open,
-+	.proc_read = seq_read,
-+	.proc_lseek = seq_lseek,
-+	.proc_release = single_release,
-+};
-+
-+/* Module initialization */
-+static int __init ml_lib_test_dev_init(void)
-+{
-+	struct ml_lib_model_options *options;
 +	int ret;
 +
-+	pr_info("ml_lib_test_dev: Initializing driver\n");
++	print_separator("IOCTL Tests");
 +
-+	/* Allocate device data */
-+	dev_data = kzalloc(sizeof(struct ml_lib_test_dev_data), GFP_KERNEL);
-+	if (!dev_data)
-+		return -ENOMEM;
-+
-+	/* Allocate dataset buffer */
-+	dev_data->dataset_buf = kzalloc(BUFFER_SIZE, GFP_KERNEL);
-+	if (!dev_data->dataset_buf) {
-+		ret = -ENOMEM;
-+		goto err_free_data;
-+	}
-+
-+	dev_data->dataset_buf_size = BUFFER_SIZE;
-+	dev_data->dataset_size = 0;
-+
-+	/* Allocate recomendations buffer */
-+	dev_data->recommendations_buf = kzalloc(BUFFER_SIZE, GFP_KERNEL);
-+	if (!dev_data->recommendations_buf) {
-+		ret = -ENOMEM;
-+		goto err_free_dataset_buffer;
-+	}
-+
-+	dev_data->recommendations_buf_size = BUFFER_SIZE;
-+	dev_data->recommendations_size = 0;
-+
-+	mutex_init(&dev_data->lock);
-+
-+	/* Allocate device number */
-+	ret = alloc_chrdev_region(&dev_number, 0, 1, DEVICE_NAME);
++	/* Get current size */
++	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCGETSIZE, &size);
 +	if (ret < 0) {
-+		pr_err("ml_lib_test_dev: Failed to allocate device number\n");
-+		goto err_free_recommendations_buffer;
++		perror("IOCTL GETSIZE failed");
++		return;
 +	}
++	printf("Current data size: %d bytes\n", size);
 +
-+	pr_info("ml_lib_test_dev: Device number allocated: %d:%d\n",
-+		MAJOR(dev_number), MINOR(dev_number));
-+
-+	/* Create device class */
-+	ml_lib_test_dev_class = class_create(CLASS_NAME);
-+	if (IS_ERR(ml_lib_test_dev_class)) {
-+		ret = PTR_ERR(ml_lib_test_dev_class);
-+		pr_err("ml_lib_test_dev: Failed to create class\n");
-+		goto err_unregister_chrdev;
-+	}
-+
-+	/* Initialize and add cdev */
-+	cdev_init(&dev_data->cdev, &ml_lib_test_dev_fops);
-+	dev_data->cdev.owner = THIS_MODULE;
-+
-+	ret = cdev_add(&dev_data->cdev, dev_number, 1);
++	/* Set new size */
++	size = 50;
++	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCSETSIZE, &size);
 +	if (ret < 0) {
-+		pr_err("ml_lib_test_dev: Failed to add cdev\n");
-+		goto err_class_destroy;
++		perror("IOCTL SETSIZE failed");
++		return;
 +	}
++	printf("Set data size to: %d bytes\n", size);
 +
-+	/* Create device */
-+	dev_data->device = device_create(ml_lib_test_dev_class,
-+					 NULL, dev_number,
-+					 dev_data, DEVICE_NAME);
-+	if (IS_ERR(dev_data->device)) {
-+		ret = PTR_ERR(dev_data->device);
-+		pr_err("ml_lib_test_dev: Failed to create device\n");
-+		goto err_cdev_del;
-+	}
-+
-+	/* Create sysfs attributes */
-+	ret = sysfs_create_group(&dev_data->device->kobj,
-+				 &ml_lib_test_dev_attr_group);
++	/* Verify new size */
++	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCGETSIZE, &size);
 +	if (ret < 0) {
-+		pr_err("ml_lib_test_dev: Failed to create sysfs group\n");
-+		goto err_device_destroy;
++		perror("IOCTL GETSIZE failed");
++		return;
 +	}
++	printf("Verified new size: %d bytes\n", size);
 +
-+	/* Create procfs entry */
-+	proc_entry = proc_create(DEVICE_NAME, 0444, NULL,
-+				 &ml_lib_test_dev_proc_ops);
-+	if (!proc_entry) {
-+		pr_err("ml_lib_test_dev: Failed to create proc entry\n");
-+		ret = -ENOMEM;
-+		goto err_sysfs_remove;
-+	}
-+
-+	dev_data->ml_model1 = allocate_ml_model(sizeof(struct ml_lib_model),
-+						GFP_KERNEL);
-+	if (IS_ERR(dev_data->ml_model1)) {
-+		ret = PTR_ERR(dev_data->ml_model1);
-+		pr_err("ml_lib_test_dev: Failed to allocate ML model\n");
-+		goto err_procfs_remove;
-+	} else if (!dev_data->ml_model1) {
-+		ret = -ENOMEM;
-+		pr_err("ml_lib_test_dev: Failed to allocate ML model\n");
-+		goto err_procfs_remove;
-+	}
-+
-+	ret = ml_model_create(dev_data->ml_model1, CLASS_NAME,
-+			      ML_MODEL_1_NAME, &dev_data->device->kobj);
++	/* Reset buffer */
++	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCRESET);
 +	if (ret < 0) {
-+		pr_err("ml_lib_test_dev: Failed to create ML model\n");
-+		goto err_ml_model_free;
++		perror("IOCTL RESET failed");
++		return;
 +	}
++	printf("Buffer reset successfully\n");
 +
-+	dev_data->ml_model1->parent->private = dev_data;
-+	dev_data->ml_model1->model_ops = NULL;
-+	dev_data->ml_model1->dataset_ops = &ml_lib_test_dev_dataset_ops;
-+
-+	options = allocate_ml_model_options(sizeof(struct ml_lib_model_options),
-+					    GFP_KERNEL);
-+	if (IS_ERR(options)) {
-+		ret = PTR_ERR(options);
-+		pr_err("ml_lib_test_dev: Failed to allocate ML model options\n");
-+		goto err_ml_model_destroy;
-+	} else if (!options) {
-+		ret = -ENOMEM;
-+		pr_err("ml_lib_test_dev: Failed to allocate ML model options\n");
-+		goto err_ml_model_destroy;
-+	}
-+
-+	ret = ml_model_init(dev_data->ml_model1, options);
++	/* Verify size after reset */
++	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCGETSIZE, &size);
 +	if (ret < 0) {
-+		pr_err("ml_lib_test_dev: Failed to init ML model\n");
-+		goto err_ml_model_options_free;
++		perror("IOCTL GETSIZE failed");
++		return;
++	}
++	printf("Size after reset: %d bytes\n", size);
++}
++
++int main(void)
++{
++	int fd;
++
++	printf("ML Library Testing Device Driver Test Program\n");
++	printf("==================================\n");
++
++	/* Open the device */
++	fd = open(DEVICE_PATH, O_RDWR);
++	if (fd < 0) {
++		perror("Failed to open device");
++		printf("\nMake sure:\n");
++		printf("1. The driver module is loaded (lsmod | grep mllibdev)\n");
++		printf("2. You have proper permissions (run with sudo)\n");
++		printf("3. The device node exists (ls -l /dev/mllibdev)\n");
++		return 1;
 +	}
 +
-+	pr_info("ml_lib_test_dev: Driver initialized successfully\n");
-+	pr_info("ml_lib_test_dev: Device created at /dev/%s\n",
-+		DEVICE_NAME);
-+	pr_info("ml_lib_test_dev: Proc entry created at /proc/%s\n",
-+		DEVICE_NAME);
++	printf("Device opened successfully: %s\n", DEVICE_PATH);
++
++	/* Run tests */
++	test_write(fd);
++	test_read(fd);
++	test_ioctl(fd);
++
++	/* Show sysfs and proc information */
++	show_sysfs_info();
++	show_proc_info();
++
++	/* Final stats */
++	print_separator("Final Test");
++	printf("All tests completed successfully!\n\n");
++
++	/* Close the device */
++	close(fd);
 +
 +	return 0;
-+
-+err_ml_model_options_free:
-+	free_ml_model_options(options);
-+err_ml_model_destroy:
-+	ml_model_destroy(dev_data->ml_model1);
-+err_ml_model_free:
-+	free_ml_model(dev_data->ml_model1);
-+err_procfs_remove:
-+	proc_remove(proc_entry);
-+err_sysfs_remove:
-+	sysfs_remove_group(&dev_data->device->kobj,
-+			   &ml_lib_test_dev_attr_group);
-+err_device_destroy:
-+	device_destroy(ml_lib_test_dev_class, dev_number);
-+err_cdev_del:
-+	cdev_del(&dev_data->cdev);
-+err_class_destroy:
-+	class_destroy(ml_lib_test_dev_class);
-+err_unregister_chrdev:
-+	unregister_chrdev_region(dev_number, 1);
-+err_free_recommendations_buffer:
-+	kfree(dev_data->recommendations_buf);
-+err_free_dataset_buffer:
-+	kfree(dev_data->dataset_buf);
-+err_free_data:
-+	kfree(dev_data);
-+	return ret;
 +}
-+
-+/* Module cleanup */
-+static void __exit ml_lib_test_dev_exit(void)
-+{
-+	pr_info("ml_lib_test_dev: Cleaning up driver\n");
-+
-+	/* Destroy ML model */
-+	ml_model_destroy(dev_data->ml_model1);
-+	free_ml_model(dev_data->ml_model1);
-+
-+	/* Remove procfs entry */
-+	proc_remove(proc_entry);
-+
-+	/* Remove sysfs attributes */
-+	sysfs_remove_group(&dev_data->device->kobj,
-+			   &ml_lib_test_dev_attr_group);
-+
-+	/* Destroy device */
-+	device_destroy(ml_lib_test_dev_class, dev_number);
-+
-+	/* Delete cdev */
-+	cdev_del(&dev_data->cdev);
-+
-+	/* Destroy class */
-+	class_destroy(ml_lib_test_dev_class);
-+
-+	/* Unregister device number */
-+	unregister_chrdev_region(dev_number, 1);
-+
-+	/* Free buffers */
-+	kfree(dev_data->recommendations_buf);
-+	kfree(dev_data->dataset_buf);
-+	kfree(dev_data);
-+
-+	pr_info("ml_lib_test_dev: Driver removed successfully\n");
-+}
-+
-+module_init(ml_lib_test_dev_init);
-+module_exit(ml_lib_test_dev_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Viacheslav Dubeyko <slava@dubeyko.com>");
-+MODULE_DESCRIPTION("ML libraray testing character device driver");
-+MODULE_VERSION("1.0");
 -- 
 2.34.1
 
