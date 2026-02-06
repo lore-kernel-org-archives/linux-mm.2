@@ -4,135 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5123EB28D4
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 07:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAB3AEB28DB
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 07:38:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2B49A6B0093; Fri,  6 Feb 2026 02:31:35 -0500 (EST)
+	id 16EFD6B0096; Fri,  6 Feb 2026 02:38:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 262F86B0096; Fri,  6 Feb 2026 02:31:35 -0500 (EST)
+	id 146BC6B0098; Fri,  6 Feb 2026 02:38:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1366E6B0098; Fri,  6 Feb 2026 02:31:35 -0500 (EST)
+	id 07D5F6B0099; Fri,  6 Feb 2026 02:38:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 002646B0093
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:31:34 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 936CF1B1A36
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:31:34 +0000 (UTC)
-X-FDA: 84413211708.09.CCCB55D
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8FFC5C0002
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:31:32 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Nu2olTHb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of dvyukov@google.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=dvyukov@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770363092;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E64BD6B0096
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:38:14 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9764F14077D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:38:14 +0000 (UTC)
+X-FDA: 84413228508.11.3CAE9A6
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C488640005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:38:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jOUi5vB9;
+	spf=pass (imf07.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770363493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AzhRNn4TRcoUApoouAvvxIqUSyjUpCRjRf8yuPMUqoA=;
-	b=f5VgbgZCxkSv69sx9jiGhXA90yXgA2bGuvbl7KKRhlgwv0i/Tz7be6UjOnrp1RnmH8wpX3
-	mb/LM3eBwtkf3Okk+iiBDcdLMGKWtCzYlpNQGY4URkoKNoIIfQQxAv3g4YGoCfKZbe4QAY
-	OghHis5YJVs/hNxn00abJyZuq/BUdOk=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770363092; a=rsa-sha256;
-	cv=pass;
-	b=ESuiuLeRY6tmDJOJ2rwGVJan/NlBohCymZeD6xnnYdBZbfXCJ7ZBT8LqAA/VhlLepm+Hj/
-	efHrBhEHQf2AfF/KHU14kjhCEnSKDpSE+UIwiE9DduecEnAbWED79LXC7fMfoE0JeN26w9
-	tT4BVQTBGzWB86STdTya4xXUeg7NQwI=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Nu2olTHb;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf28.hostedemail.com: domain of dvyukov@google.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=dvyukov@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-59b6d5bd575so1857710e87.1
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 23:31:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770363091; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bGwGRYo/Fn6sXqedpWwNYP/m3PVXP4bUU+5E++21t+pqmCB+TRZkm5zjR51tYcRTwL
-         +M3AasEoind7tJ6/ZfYjFzceK2GJtrWR1fg9+OBFPIfacQP7iHPk1/vEiohCDvHJBKoI
-         g2rf6dXYxVppPOrjJUPtwOvuDaUzweu0Q7DksiBUp5KeChRfZKo5UmJK0EjcVfrVPr18
-         Ja0ttDLrMnlDaLWfwSFZZJdAJPZHjlb9qt+rfgDKV86DHW2zaGtXJPyWtGq6CyHsF1wG
-         EMUQcdwITrLqACKdfe49baQXSswOtnrRq0kVTfUi4MkWA86hjteB1KM8QYeMuW1mLtgg
-         tT0A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=AzhRNn4TRcoUApoouAvvxIqUSyjUpCRjRf8yuPMUqoA=;
-        fh=5csbgBAAfvFKrlkXM5ZT0f9J4/MBs0UHjLJ21ofYXN8=;
-        b=YPJUQucE3q5pP6uRXoKiiGQf3y+YT0SIsQ2UV1YGUbFzJq9ZG/2AfBkrOvUVviYweJ
-         KzGJAerxPlYYQOV5fhFmu/oD75vZqqA8xD47lbzezFT1JLPxMA+SisgzEgqlkccwnkR6
-         8d4Xt8Y1kpKHaQcCHzsapnKVPj9S7jqpR6aDfagTuFcFYl0rQuQbyDsZuJNaMmvX7RJ4
-         keZhGxZHQCeyayK4zwCD553KG5rWZm/pvV4zFT507rX22eO0C1993oEm0jqfAZryjlM9
-         2FIpkzNJ8gQT096JAXFe3li0V9hwwva6DqBmK96VRKF9CygJj8696ZU5niR+gvHLrPCM
-         7xbg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770363091; x=1770967891; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AzhRNn4TRcoUApoouAvvxIqUSyjUpCRjRf8yuPMUqoA=;
-        b=Nu2olTHbO0Bg03uUhOXFUyD0JhgOuq5EhrEvW0gxyJ9XTPHXA+3NnFkY1f81CtSrSe
-         zuQHgv15DHW1g8Lo5PLBYTeCE/YuXA5P/ehky2j4sbov65Qj4r4m9zKFLu/tgvU4mnjW
-         dhWXHXqpkWri9k0CTHood66J7JIf7fliU6HWpy1ebLrrYLs0BP++gKUbhaTH+zC6PDXI
-         RO6bRSkDWUzMmrbF4wBnBgBDKPC5oMRODDSlFfqa2hfUtZ6/yoe5ytrP7uwPkWFfCpUI
-         w509fs5mAWjzP8XwnZt5ZMujKLEZz+C1Bg5Gm7UFyP8mqnMPRXLfkSoyOyJSfmNup0lJ
-         ElSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770363091; x=1770967891;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AzhRNn4TRcoUApoouAvvxIqUSyjUpCRjRf8yuPMUqoA=;
-        b=LdiO/aaS96O7uhWj8cDVZyFU06Tf6AbJSuFZgfg8WOyGZEBKA55a9dM/n3YxP9UnUG
-         0eAOfrjTwXKjy/CDH975VpjJfJMJheWrXDksJfKtv9SNDxjlAqE6FJnzSb6XsDV+e7OZ
-         J7yLKuQtU8BzB+5SQ+OvWqpnfzyhgbXVoouenBIW8tKb4kZO37aQhb8r+PVD7o6JDTe5
-         wLmcRJ053P7QIvx/5p7thF/aflIcRMw6weA2u/T2fots95ouIXiX6hhB9uY+I7NvPzHN
-         svxZrvWzeMhrFRQHcuwD2GAyeiuNpfdDf7Zl0ah123/f6OwWG7arV0THnSrebc/GGCJR
-         eHHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWzsrkFEG0uIfEiA8QNtJ4ZeWkOXY5V7OH1QFXkrzAmm85+WfLv9ErdfR1K1w9ULVOre9STjM8vqw==@kvack.org
-X-Gm-Message-State: AOJu0YyBvmb5gJLSB1lrK8ZvIcFCKovfa2/KOYdXAefhA/W0/tTOOIuF
-	0Vl7jAl0iUXWY7x/40IesvCXySIGVfGr34fZGDDwxV/YD7Wyb7YfW5RfMpvILCVlLU7v5WKckDx
-	QW930/MJx2FV5oL6W66FkDASdv5wpwGAtmSioqtao
-X-Gm-Gg: AZuq6aJZZK6SPhIoq2baA25FPA+SmOfPWL5BWDHKXGiLjn+wrwWFi9XzHHqjZq4HutB
-	aJfb+GjKlA+xNEB0c0XMTl5rZZZX/11Fw/Ml3DnarNJiCUqGhVzspTvQz2rd82vZoJji2NrEeBb
-	bWIN85zErKVEXzfvYGiVN2f8zuhQDlOJra7KXmu6VFHHgLSIbUijRu7WxzFJD5UlgOGi9zlGVN+
-	OARigUO/eHboUiXgyyx6IbE2n+UwVuc7XO6dFidvc16R+EigKpLk7lkAEEFIGjOn8kdcifRS4C4
-	I22feukdNtexwETN2wWMGtlCHOOO+VnUIdMUTJA=
-X-Received: by 2002:ac2:51c3:0:b0:59d:d1f0:a76a with SMTP id
- 2adb3069b0e04-59e450440f3mr515122e87.7.1770363090363; Thu, 05 Feb 2026
- 23:31:30 -0800 (PST)
+	bh=hSXSTz0W4QxEPrm4qmpvhLbcjqS3K5HHQ7Y8SU9rx/I=;
+	b=S42aiaV1DnIH1DpBDNuDxe4QcH3oqLxNX0h3GVZ1JhYSGbBzQEec3xAKLcmt0Sf66dxb/u
+	pePTFcpruX89FOM28S598BFUX4m5KVxvBPS3ByY9rBPgblaGmwYQcb8OaK468n8ecBFx5K
+	Mg1t6/c6vHGxoIyQEbJ/0sA4wotilJM=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jOUi5vB9;
+	spf=pass (imf07.hostedemail.com: domain of kunwu.chan@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=kunwu.chan@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770363493; a=rsa-sha256;
+	cv=none;
+	b=sXHLfB9dlN7XKvnj7p8a9KE9UFvrUQMnUX4PcPW6UVWWo4O19xVJg2rZUuL7jcwjRoAFGC
+	j9rHPDijp3wBbbYIMlwt5oDYi13Zf6aLBquAvNtG1LEElxl20pvNXFlkx8d8GqqKHPGc6t
+	NABoSJO8PrxitaAWXCqXvFihPVmI0n8=
+Message-ID: <e5ae996b-b5de-46cf-8c1a-532e4852a412@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770363489;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hSXSTz0W4QxEPrm4qmpvhLbcjqS3K5HHQ7Y8SU9rx/I=;
+	b=jOUi5vB9WJEVXrzWPWZuJxLOTe3s0OtdKYnjjA9OyV0yG25wwlcPFJa7op0Bfgskg0H+T2
+	PK0pXnoPeNYtWsUPBMKQfuEttn/TQUtZ/49g12FDIXYjgecdwtmDwi9vRQTrz56zUfULef
+	W1L1Pciiy7fFNMBMDBKpEk9SMQ4YiWM=
+Date: Fri, 6 Feb 2026 15:37:28 +0800
 MIME-Version: 1.0
-References: <69859728.050a0220.3b3015.0033.GAE@google.com>
-In-Reply-To: <69859728.050a0220.3b3015.0033.GAE@google.com>
-From: Dmitry Vyukov <dvyukov@google.com>
-Date: Fri, 6 Feb 2026 08:31:19 +0100
-X-Gm-Features: AZwV_QhOFdnB0m5Ad97mbhbaY-W6xpdlp3ux9BAVJiSy8vSV-fBjGk_XoVNPMww
-Message-ID: <CACT4Y+bd+PcL=XzkehM-bmsfAB95UA2y9jr5JY2ov8zVOp1DWA@mail.gmail.com>
-Subject: Re: [syzbot] [cgroups?] [mm?] KASAN: wild-memory-access Read in
- lookup_swap_cgroup_id (2)
-To: syzbot <syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, cgroups@vger.kernel.org, hannes@cmpxchg.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mhocko@kernel.org, 
-	muchun.song@linux.dev, roman.gushchin@linux.dev, shakeel.butt@linux.dev, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 8FFC5C0002
-X-Stat-Signature: 9rchuhbkwqckski5f4ptyna5xyuuob7q
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kunwu Chan <kunwu.chan@linux.dev>
+Subject: Re: [BUG] rcu detected stall in shmem_file_write_iter
+To: Zw Tang <shicenci@gmail.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ rcu@vger.kernel.org
+Cc: "hughd@google.com" <hughd@google.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "david@kernel.org" <david@kernel.org>, chrisl@kernel.org,
+ kasong@tencent.com, paulmck@kernel.org, frederic@kernel.org,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <CAPHJ_V+75SmoRQmoQmAT0GfdP-JotzwW801uPHZtHyynwdSOgw@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAPHJ_V+75SmoRQmoQmAT0GfdP-JotzwW801uPHZtHyynwdSOgw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam11
+X-Stat-Signature: sdtqgh1jhehnqp7akuw4soeoye45m8ca
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770363092-84255
-X-HE-Meta: U2FsdGVkX1/8k7k7pI6BHMTzBvW4HZkAjvrQKojKmBFs9GjG0xhhTweh1d8QWb3fVfrZ0OpCQWra9yn9YIH7bBSOJYdp6lUtLrSUMDgkXZYolDNsumUD+DxQE+AtpqXyfJvI+aHupaN8HzOrXrb4W8DTcbVLX+7dte2DzeaUvOy948Sq2s2b5eBVxN36MDuKzfgnnCXiUZwEd4f19DsVlDgMxQVm0zN0vrulAIPFie1Q7phCfS7wvBWuES17VN2j6D9XW/qz5qSyYlIzUrtDkAhqPTL9vYOnvgCy//f+3hpqXPEVAu3mPhHZeXzYjK96ESXIEDfCCP7zWmSDzBCAXaGxw26bixZV32CPeVAKOtzIThIyKFGR49/aXX2x6x7Dl/xiGUfBZj2AMq1snfsJfXx+FGmmqWDxEPX8Veyh3KP8Rzelkd+bBZOQIjEoMu41QlD49I7cHJErK9MZzalP2TqxYvHyRkbufkz7bYJNo0kkEkR0C/tdfbo23+NEU2vW91/hNTfkOnIXgsEjXExuzOZMphb3DPm0HSgrzQ0J4lMKJXb7V7JDw/SHqMRxl3+UqiAYHymlShPZCiwtZgI1Cb6Hag2ZMij2NpRr6oz3V0khIjUNm8PZ7XhwsBb6R9saRmglgvH6Lr54C9eWZCLw3ECgHIJDqEZB9GD6aMXo0sRynQq5Q6vi65Nlt/26BreIaz8ypsulezfXLLZnp48KFs6LMq9Zb5nER6/p5+nugdiwQQn5oMH5z+9NnuoJQmRMWCvsHRKroLzzlHV1s79DtR/mAEJ3kvH4EMmssD6+htscCBSMHrGfwaVOT7Nw2vaJvKYLLHIixM9QiIHhCKD0j8n3Qo6L2xQSLoUJQI9sm0VFmwW+vqH28jwmkulUmVfyVZJNBWco8A6D7XdCp0LOnD8zfCOYt+Oqk03sNv6lg56M524dFF1hpXJyH7EFRciQQR4xJxMY8PtzyOBvftJ
- H4/8LryG
- Hjn1THezIw/WscNPFz9ZAq4ofoQeNjOYXjlbe76I/9iAsfNwjX2bJ3rPJlsk9+9Vkxi8Ys+6VYX7XRcSVZPLYtjFINnm/DrwZLywP/7nT5h/Xe/HCo96Ax7OJQEjR4zl8e9X7AqRvcGQG3E2w08cFVVml1FoOOiXglrVQuWSfug20b+Ww71JXaYKlsdnfiiJ52cDO+g9tGOazNuiLypkP6wjkeutbc0LjtMOaXPANbGSG+cLL+cAaUaBaXgTdxPMM+gPuy3HDC2ajRSnNYGR49tCM33OotHcA3E8cMgGYQWLl2vPm7iQPIm7bthFo+bR+tOXYwdLkBIU3Yh3LhCz1oS8x+HWryTK4rjQCCMzazgWBSCi26l97XSGLTtOvH424pvlrmJyJBl9ErsnsRr8BgLcsZ6qtcWpHBvAf3hdqBhLsgNoNbX2pGRujlx7gkttMnwgJu1c3OgoYj9DFxctUv/tjnLXuwlpCurBb4wedwwKvZWMxWwDxM93Zy1exkXKS4F9wfB8+MvKQeoOe4t643vUaT7VrTsySWq9q4iXpURqFA9qb1LdIgqiIZ2JApylyvPl6UO7+wYlp0YYFXRaDe6fk8WJ5FRJ8ia4hMfhE3diI+xVjzJ+M1YXsw/iSx0eoxc4t5FUcgJvPQFrg+V7LlpbeW7MktwtQM7hkNAFCFPVdX3JXSoNzLvxvHqtAeno16wdCL2xj7baPOlpJpb2TKdHrvd9EPl1iH58Po4WyEt8fddvZr6FNJEmRbmT9fHWPHBn7OZH0AI/sCgBl13y8uk9EW5aeKcCSKc0kgjEVpgKaWtZnnldp/2iQW2r4zjx9cG2bQJDkPSPrsXIb7ykumXyI8jlJpL/P7b8R7teelwbnQddiTJPjjLoMLDMUlJPN6r/kP/9zFLmfGVlb8M7uSOwdFjEemveZHrnSh2+cECfvF42Sp1QSqgQD2DVFNflPAdfzpe7Gx89G9ctpBaPRjzuC9RP8
- +mL4cbyx
- DwFQhO4kz87F0tPOzAkXjhOP4pKKgs6I
+X-Rspamd-Queue-Id: C488640005
+X-HE-Tag: 1770363492-242187
+X-HE-Meta: U2FsdGVkX1+Vzf309551x1zfeV19xrYSMrswrYijVqfjEeuAFLvdUKEfL6v3dXFg/0EVewvpCWm+QIV/1kumlHtpyt2Tzyt0CtIrx1I0Q808C9xnnEhwBBDAdHpkp2oc93tbV9GoSJhP5mFbcr5Ykj5d73PYmqsUbg5M5qCgwVZjdncRrLbbmggrduhS3CC+nAiarXa3wdl8Wt+GqI6iWy5ZklgHijm/I97lkkyx/7pG/XYeio28tjOP6O+6qZJzgOyojnpebXFtaVom4PZrgPDGmgcsR0FJjT2NaVj5dw3BNkEHGr7Y81XXV8xu9BUW9a8//9N5Wxc2ia6TQ5JcPy96PzlY5Q2BGLeU4cEv3VbE6RnAavT8VAhgATr843o8jhdGgFwHvNoF/Z3tuoeBNZp04yuhPb6p2VW+U1RbSpyr1YLEMFuytjmnNdKly4aiNC9QdC+RZHdCRQRCGtv2tJnaxezH27Utrt91AUdIKCm65yNte9k0XxUxbOkYzrXDcNJ1t89ZlYEnsblnCpm9+eXCqTZeuZTEPXZtkd1rwHwONzuCsYeN9faLibanRknrOBUUHW4fbZyWoA0rMGTLJkODZUfCEjws/US68wCnl3blvmAI66+FkapchvQDjS4CgjWAiaJLoHNpHKmHTvxWYuypn4jtQlfgVfwg5iFoPKAqR31JYMXDyqhorTcKsDx4Hp9C+9l3Uxrk+Rfqvtc7Y7kqJCUcZuF+H0CsQO+7jI6jmqM682Co8QJ0sbzzo8DOZMHGwL5pnvD54Kh54q5dla9v6OFXzAYSsoxTE0t2BACoGl1lxti89h3slABiVyJVnfdVqwNSpCzbdO5NdwbizLAXyKlY4SqOHpe6wZr1lFT4JBdIVM1ZidJJVQhMrQ/oWMpayJ+I3vKNiwwAxO03o1HC2ecPFhOYoynN33i6Nk26Wjiac+XYYnU0BNn9yj96nkieCa3gs4+Ntt/Z5Ia
+ kDqlnVT6
+ r1HbGRnNv1yI8luKC+WYWQQlBpgBFymafcP6lr4D1AY8XmoVvewdOz9RL4Ph5qkfdX5IWdfQeX5P/b50ZY2kbsJNaOkaCx5DPxh1pOZ0T0xrlP9/vrUSlXHWgmRcTeb4bkm5jLToFsC94NxGcfXSUEzuga+PafUp7cChiT4AJr4hXAAYY2h7zue8PEUWza9KAu6P13SUkxYyTCMrhXl71iF0xHdZsPbGXHZiWqSxu/6LsM99IhfawERA6Y0gD8vTAai4mDO/4jTGR/Xc1j9GZnK/Fg72Dy9pvQWJuRmjasw/8DeZOw72gvAKn5LwBQ6iqAvpI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,94 +94,156 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 6 Feb 2026 at 08:24, syzbot
-<syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com> wrote:
+On 2/5/26 20:57, Zw Tang wrote:
+> Hi,
 >
-> Hello,
+> I am reporting a reproducible RCU stall observed on Linux 6.19.0-rc7,
+> triggered by a syzkaller C reproducer.
 >
-> syzbot found the following issue on:
+> The stall is reported while a userspace task is executing the tmpfs
+> (shmem) write path. The blocked task is a syz-executor process, and the
+> RCU report consistently shows it running in the shmem write / folio
+> allocation path for an extended period of time.
 >
-> HEAD commit:    18f7fcd5e69a Linux 6.19-rc8
-> git tree:       upstream
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1428fc5a580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=f1fac0919970b671
-> dashboard link: https://syzkaller.appspot.com/bug?extid=e12bd9ca48157add237a
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> The relevant call trace of the stalled task is:
 >
-> Unfortunately, I don't have any reproducer for this issue yet.
+>   shmem_file_write_iter
+>     shmem_write_begin
+>       shmem_get_folio_gfp
+>         __folio_batch_add_and_move
+>           folio_batch_move_lru
+>             lru_add
+>               __mod_zone_page_state
 >
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/2c19d9acc149/disk-18f7fcd5.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/02cf07c94e58/vmlinux-18f7fcd5.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/84011cec9819/bzImage-18f7fcd5.xz
+> The kernel eventually reports:
 >
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+e12bd9ca48157add237a@syzkaller.appspotmail.com
+>   rcu: INFO: rcu_preempt detected stalls on CPUs/tasks
 >
-> ==================================================================
-> BUG: KASAN: wild-memory-access in instrument_atomic_read include/linux/instrumented.h:68 [inline]
-> BUG: KASAN: wild-memory-access in atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
-> BUG: KASAN: wild-memory-access in __swap_cgroup_id_lookup mm/swap_cgroup.c:28 [inline]
-> BUG: KASAN: wild-memory-access in lookup_swap_cgroup_id+0xf9/0x1a0 mm/swap_cgroup.c:127
-> Read of size 4 at addr 0007fffffffffffc by task syz.5.3598/20029
+> This suggests that the task spends an excessive amount of time in the
+> shmem write and folio/LRU accounting path, preventing the CPU from
+> reaching a quiescent state and triggering the RCU stall detector.
 >
-> CPU: 1 UID: 0 PID: 20029 Comm: syz.5.3598 Tainted: G             L      syzkaller #0 PREEMPT(full)
-> Tainted: [L]=SOFTLOCKUP
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+> I am not yet certain whether the stall is caused by heavy memory
+> pressure, LRU/zone accounting contention, or an unintended long-running
+> critical section in the shmem write path, but the stall is consistently
+> associated with shmem_file_write_iter().
+>
+> Reproducer:
+>
+> C reproducer: https://pastebin.com/raw/AjQ5a5PL
+> console output: https://pastebin.com/raw/FyBF1R7b
+> kernel config: https://pastebin.com/raw/LwALTGZ5
+>
+> Kernel:
+> git tree: torvalds/linux
+> HEAD commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
+> kernel version: 6.19.0-rc7 (QEMU Ubuntu 24.10)
+>
+>
+>
+> rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+> rcu:  Tasks blocked on level-0 rcu_node (CPUs 0-1): P51643
+> rcu:  (detected by 1, t=100002 jiffies, g=470049, q=86 ncpus=2)
+> task:syz.3.5719      state:R  running task     stack:25640 pid:51643
+> tgid:51627 ppid:49386  task_flags:0x400140 flags:0x00080012
 > Call Trace:
+>  <IRQ>
+>  sched_show_task kernel/sched/core.c:7821 [inline]
+>  sched_show_task+0x357/0x510 kernel/sched/core.c:7796
+>  rcu_print_detail_task_stall_rnp kernel/rcu/tree_stall.h:292 [inline]
+>  print_other_cpu_stall kernel/rcu/tree_stall.h:681 [inline]
+>  check_cpu_stall kernel/rcu/tree_stall.h:856 [inline]
+>  rcu_pending kernel/rcu/tree.c:3667 [inline]
+>  rcu_sched_clock_irq+0x20ab/0x27e0 kernel/rcu/tree.c:2704
+>  update_process_times+0xf4/0x160 kernel/time/timer.c:2474
+>  tick_sched_handle kernel/time/tick-sched.c:298 [inline]
+>  tick_nohz_handler+0x504/0x720 kernel/time/tick-sched.c:319
+>  __run_hrtimer kernel/time/hrtimer.c:1777 [inline]
+>  __hrtimer_run_queues+0x274/0x810 kernel/time/hrtimer.c:1841
+>  hrtimer_interrupt+0x2f3/0x750 kernel/time/hrtimer.c:1903
+>  local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1045 [inline]
+>  __sysvec_apic_timer_interrupt+0x82/0x250 arch/x86/kernel/apic/apic.c:1062
+>  instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1056 [inline]
+>  sysvec_apic_timer_interrupt+0x6b/0x80 arch/x86/kernel/apic/apic.c:1056
+>  </IRQ>
 >  <TASK>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
->  kasan_report+0xdf/0x1a0 mm/kasan/report.c:595
->  check_region_inline mm/kasan/generic.c:186 [inline]
->  kasan_check_range+0x10f/0x1e0 mm/kasan/generic.c:200
->  instrument_atomic_read include/linux/instrumented.h:68 [inline]
->  atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
->  __swap_cgroup_id_lookup mm/swap_cgroup.c:28 [inline]
->  lookup_swap_cgroup_id+0xf9/0x1a0 mm/swap_cgroup.c:127
->  swap_pte_batch+0x3c3/0x720 mm/internal.h:390
->  zap_nonpresent_ptes mm/memory.c:1749 [inline]
->  do_zap_pte_range mm/memory.c:1818 [inline]
->  zap_pte_range mm/memory.c:1858 [inline]
->  zap_pmd_range mm/memory.c:1950 [inline]
->  zap_pud_range mm/memory.c:1978 [inline]
->  zap_p4d_range mm/memory.c:1999 [inline]
->  unmap_page_range+0x1f6f/0x43e0 mm/memory.c:2020
->  unmap_single_vma+0x153/0x240 mm/memory.c:2062
->  unmap_vmas+0x218/0x470 mm/memory.c:2104
->  exit_mmap+0x181/0xae0 mm/mmap.c:1277
->  __mmput+0x12a/0x410 kernel/fork.c:1173
->  mmput+0x67/0x80 kernel/fork.c:1196
->  exit_mm kernel/exit.c:581 [inline]
->  do_exit+0x78a/0x2a30 kernel/exit.c:959
->  do_group_exit+0xd5/0x2a0 kernel/exit.c:1112
->  get_signal+0x1ec7/0x21e0 kernel/signal.c:3034
->  arch_do_signal_or_restart+0x91/0x7a0 arch/x86/kernel/signal.c:337
->  __exit_to_user_mode_loop kernel/entry/common.c:41 [inline]
->  exit_to_user_mode_loop+0x86/0x4b0 kernel/entry/common.c:75
->  __exit_to_user_mode_prepare include/linux/irq-entry-common.h:226 [inline]
->  syscall_exit_to_user_mode_prepare include/linux/irq-entry-common.h:256 [inline]
->  syscall_exit_to_user_mode_work include/linux/entry-common.h:159 [inline]
->  syscall_exit_to_user_mode include/linux/entry-common.h:194 [inline]
->  do_syscall_64+0x4fe/0xf80 arch/x86/entry/syscall_64.c:100
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0x7f2f8f19aeb9
-> Code: Unable to access opcode bytes at 0x7f2f8f19ae8f.
-> RSP: 002b:00007f2f900350e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-> RAX: fffffffffffffe00 RBX: 00007f2f8f416098 RCX: 00007f2f8f19aeb9
-> RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f2f8f416098
-> RBP: 00007f2f8f416090 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-> R13: 00007f2f8f416128 R14: 00007ffc0c8cc050 R15: 00007ffc0c8cc138
+>  asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+> RIP: 0010:finish_task_switch+0x128/0x610 kernel/sched/core.c:5118
+> Code: 02 00 0f 85 67 04 00 00 49 8b 9c 24 98 0a 00 00 48 85 db 0f 85
+> 70 03 00 00 4c 89 e7 e8 61 78 92 02 fb 65 48 8b 1d 68 51 5d 04 <48> 8d
+> bb e0 0a 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1
+> RSP: 0018:ffff88802d32f630 EFLAGS: 00000286
+> RAX: 0000000000000000 RBX: ffff888012496900 RCX: 0000000000000000
+> RDX: 0000000000000000 RSI: ffff888012496900 RDI: ffff88806d535b80
+> RBP: ffff88802d32f670 R08: 0000000000000000 R09: ffffffff817f85a5
+> R10: 0000000000000000 R11: 0000000000000000 R12: ffff88806d535b80
+> R13: ffff88800635c600 R14: ffff88800f630f00 R15: ffff888012497374
+>  context_switch kernel/sched/core.c:5263 [inline]
+>  __schedule+0x1293/0x38c0 kernel/sched/core.c:6867
+>  preempt_schedule_irq+0x49/0x70 kernel/sched/core.c:7194
+>  irqentry_exit+0xc1/0x5a0 kernel/entry/common.c:216
+>  asm_sysvec_irq_work+0x1a/0x20 arch/x86/include/asm/idtentry.h:733
+> RIP: 0010:__mod_zone_page_state+0x12/0xf0 mm/vmstat.c:347
+> Code: 89 ef e8 b1 53 18 00 e9 54 ff ff ff 66 66 2e 0f 1f 84 00 00 00
+> 00 00 90 f3 0f 1e fa 48 b8 00 00 00 00 00 fc ff df 41 55 41 54 <55> 48
+> 89 fd 48 83 c7 70 53 48 89 f9 48 c1 e9 03 48 83 ec 10 80 3c
+> RSP: 0018:ffff88802d32f898 EFLAGS: 00000286
+> RAX: dffffc0000000000 RBX: ffff88800c0c4640 RCX: 0000000000000000
+> RDX: 0000000000000001 RSI: 0000000000000002 RDI: ffff88807ffdcc00
+> RBP: ffffea00014a5a00 R08: ffffffff846c1c01 R09: ffff88806d53b6d0
+> R10: ffff888006278000 R11: ffff8880062785bb R12: 0000000000000000
+> R13: 0000000000000001 R14: 0000000000000001 R15: 0000000000000001
+>  __update_lru_size include/linux/mm_inline.h:48 [inline]
+>  update_lru_size include/linux/mm_inline.h:56 [inline]
+>  lruvec_add_folio include/linux/mm_inline.h:348 [inline]
+>  lru_add+0x44f/0x890 mm/swap.c:154
+>  folio_batch_move_lru+0x110/0x4c0 mm/swap.c:172
+>  __folio_batch_add_and_move+0x27e/0x7e0 mm/swap.c:196
+>  shmem_alloc_and_add_folio mm/shmem.c:1991 [inline]
+>  shmem_get_folio_gfp.isra.0+0xc49/0x1410 mm/shmem.c:2556
+>  shmem_get_folio mm/shmem.c:2662 [inline]
+>  shmem_write_begin+0x197/0x3b0 mm/shmem.c:3315
+>  generic_perform_write+0x37f/0x800 mm/filemap.c:4314
+>  shmem_file_write_iter+0x10d/0x140 mm/shmem.c:3490
+>  new_sync_write fs/read_write.c:593 [inline]
+>  vfs_write fs/read_write.c:686 [inline]
+>  vfs_write+0xabc/0xe90 fs/read_write.c:666
+>  ksys_write+0x121/0x240 fs/read_write.c:738
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xac/0x330 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> RIP: 0033:0x7f9b5abad69f
+> Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54
+> 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d
+> 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
+> RSP: 002b:00007f9b595eddf0 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+> RAX: ffffffffffffffda RBX: 0000000000010000 RCX: 00007f9b5abad69f
+> RDX: 0000000000010000 RSI: 00007f9b511ce000 RDI: 0000000000000007
+> RBP: 0000000000000000 R08: 0000000000000000 R09: 00000000000002f2
+> R10: 00000000000001ce R11: 0000000000000293 R12: 0000000000000007
+> R13: 00007f9b595edef0 R14: 00007f9b595edeb0 R15: 00007f9b511ce000
 >  </TASK>
-> ==================================================================
+>
+Hi Zw,
 
-This happened before:
-https://lore.kernel.org/all/67d04360.050a0220.1939a6.000e.GAE@google.com/T/
-and now 2 more times.
-All reports look similar: exit_mm -> zap_p4d_range
-And all access addresses look the same: top 13 bits are zeros, then
-some garbage (0007fffffffffffc).
-I am pretty sure it's telling us something, some kind of tricky race,
-rather than a previous corruption. Swp entry is somehow invalid?
+__mod_zone_page_state() itself doesn't appear to block, so the reported
+frame is
+likely just where the task was sampled.
+
+Given the task stays in running state, this looks more like a long CPU-bound
+section rather than a blocking issue. With heavy shmem writes, we may be
+spending significant time in the folio allocation/LRU paths (for example
+folio_batch_move_lru() or alloc_pages() slowpath with reclaim/compaction),
+which can run for quite a while without hitting a reschedule point and thus
+starve RCU.
+
+Could you try enabling lockdep as David suggested? It would also help to
+collect
+some tracing or perf data around the allocation/LRU paths to see where
+the CPU
+time is actually spent.
+
+
+Thanx, Kunwu
+
 
