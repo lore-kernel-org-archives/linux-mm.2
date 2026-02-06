@@ -4,90 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78565EE6B48
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 18:49:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 724CBEE6B48
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 18:52:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 931BF6B0089; Fri,  6 Feb 2026 13:49:34 -0500 (EST)
+	id C77246B0089; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DFDA6B0092; Fri,  6 Feb 2026 13:49:34 -0500 (EST)
+	id C219D6B0092; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EB7A6B0093; Fri,  6 Feb 2026 13:49:34 -0500 (EST)
+	id B24526B0093; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AB9D6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:49:34 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EE706B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
 Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AF5851402EF
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:49:33 +0000 (UTC)
-X-FDA: 84414920226.12.D7858DA
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 31C4A1C000B
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:49:30 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hseMd+A4;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B2C813A2A8
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:52:21 +0000 (UTC)
+X-FDA: 84414927282.12.FA097AE
+Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 90A1680014
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:52:17 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sitd4Vye;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770403772;
+	s=arc-20220608; t=1770403939;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2PnF4DwLH70ap6fHwtiAszTynwFpgDYopGQkueAq9rQ=;
-	b=Hc4Rh2KLb2Op0gZd54r4vYEBk4fycWYWsXsQEzLdbB3/VJR3ZmHVxCryi8HcSB7D3IZZ4M
-	t+znMO1ZAPWm183+epsORWGTgTLRRa+DzP1VeXeDfx9q1IeoXZftN/mG/2WUPuv/Gz9B3U
-	Z9Skzd/wzY5DcJqlfwuom86dJkDJqyA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hseMd+A4;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770403772; a=rsa-sha256;
+	bh=r7mumZbXKpp+UcC6LYCZ5Q8LNGAoHw/22vUr8wOhvA4=;
+	b=8NBrFx/7jODG2WTx2kiuKklL5m9yZxv3AfVoYd2Vrz7behlcKbpEEJ2RlYqhdFIoVWTc0N
+	x2V5Tuan6Y/hI8j5Et/ghmJIdtyclo1CorRSWC9KW1R0oW5krGCBOmPJaCrM01+9wp17L6
+	c4CBu6I7tgXjGbKUhRtwF0pYwKO8DRg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770403939; a=rsa-sha256;
 	cv=none;
-	b=vJRok6AE4C3gKqBhgUkUvXOOPLW+E5M8gpW1RngKyD9R+dKOWlxT7z4ocLcwWqlsP1ieEY
-	oa8vEaSt2km2TsD1uTBxx5xEmnYsAI3jz8Nwz3NmOgi2rfdRvtX7is8n66iEzxOj4G0PZw
-	r1T66Un5hHb4z10IiB6jtsq5RkDd+Js=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=2PnF4DwLH70ap6fHwtiAszTynwFpgDYopGQkueAq9rQ=; b=hseMd+A4NenMekn6TuWNmdQ+e0
-	4qm76n4cPfr3qAb3TCOs2A6YKC8lEIpsBZlhxcAyJO+gzy233TUpHagOH/WZ0LQZnVDgXJ118/BRr
-	AA+o/DJmDL/i8aCCUrptRs3gCz7XjcBIsT6TcKaEbLIqgaViLgudML9roCSPQXSr48Z2daK7BomCT
-	i5SjDMWHq8FfHt21eLCa9iCDPB/RwHVrTc2qwLYVSc0EcELM4FPJR4aAGrL3h3EnOVqFLy+RULXKi
-	TpW1NpkKwPNnyBc8Hk60IuxW7803WyI7AwKiirubp3WKVA86NqkJko4AwcikUVGJYcpuYXpAjPNaP
-	HgwCS1Nw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1voQtR-00000005d1T-3eHV;
-	Fri, 06 Feb 2026 18:49:25 +0000
-Date: Fri, 6 Feb 2026 18:49:25 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: xu.xin16@zte.com.cn, akpm@linux-foundation.org,
-	chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
-	yang.yang29@zte.com.cn, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: ksm: initialize rmap values directly and make them const
-Message-ID: <aYY3tZmsIQnT0b3V@casper.infradead.org>
-References: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
- <aYYIw3h35HOqodAb@casper.infradead.org>
- <5a1cf097-5ab4-41d1-a707-a709de6210cf@kernel.org>
- <3192eca4-1c90-44ed-8386-bf635db357c4@kernel.org>
+	b=gyrmffXnH1Cjj//YrdDDsE47syf9u2X7CpvCOqrW187HT843fqBHYTtbJILaeh4drWbVHV
+	5MZ8F4ZXgnnzgfYT6nw6TzvjATt8nbl5AoXq5dbcIeYIzlVEVrmqdy+VuZWNw0JiZUEkYI
+	dQ1VaNjL7Cb8BQsPm6h1P7PTESEwDc0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=sitd4Vye;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Date: Fri, 6 Feb 2026 10:52:07 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770403933;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=r7mumZbXKpp+UcC6LYCZ5Q8LNGAoHw/22vUr8wOhvA4=;
+	b=sitd4Vye4V/h7qHTBkS38bDEsI6P/BMUzZU1dGeEAQ7LW0tF0D+Xry1ug3ppPBmOqyXrwC
+	D/QEjYc8d0wumdHpoeTnUJMnl6As6win53CMiNTMMfcYMZmcmkNwIbLcCqTZl7FzJM52eF
+	Bwl6eGOB4b2Q1AbfDVxoZfR38JQX/mQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Bing Jiao <bingjiao@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, muchun.song@linux.dev, 
+	roman.gushchin@linux.dev, tj@kernel.org, longman@redhat.com, chenridong@huaweicloud.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH v9 2/2] mm/vmscan: select the closest perferred node in
+ demote_folio_list()
+Message-ID: <aYY39YGAHmF1Oi5H@linux.dev>
+References: <20260114070053.2446770-1-bingjiao@google.com>
+ <20260114205305.2869796-1-bingjiao@google.com>
+ <20260114205305.2869796-3-bingjiao@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3192eca4-1c90-44ed-8386-bf635db357c4@kernel.org>
+In-Reply-To: <20260114205305.2869796-3-bingjiao@google.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 90A1680014
+X-Stat-Signature: f8rjbdxt56mdp1nsgjf7q5jkrwnjqofd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 31C4A1C000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: h9tokgi58ws5xa7gj1dhg5tr8zxsnqn6
-X-HE-Tag: 1770403770-417800
-X-HE-Meta: U2FsdGVkX1+TT1H/7EEcfG9X7KXtcCzEaIHVcv9wquLnSUrd0TxBD4rzmMdBMEhiHt4oaV0PaIQ7D2hf5vNDIdpGqj57jY9tCCir8p8tmUxfVRwPgAaxTa1XDQhyBQ7NNkGr29Ldx0DcgC/YrnGXX9n0+QwfN43cboOYfswzt4ecFkPl+Z0bhweBaK61yhjf6hgPKJ/bxLT0F6/38mtSMYm6FHh4GpFpxQOJXFzChbrbEk1nAl2vTqj/RRB/Kr+nH5wHrjhUiAfuKFmRGD3wE0OiZoQkJq0bgyTa+8nwcp9iMQRB8PrH8QJDQFO4nscKXIUwxIyYzU5u5lUkFu50R82ocopSawq678f8AtV659/NgbrhlR/Ow1drjxLnF0afc5L+2Kq9MGBgsuFVPZ1foGd3LCrvmcenRRsVYkYghLFKT4WXtX+hRR71GKEKTpkUFMq3q7ir74N4OQKyXeezDBUX23B4uOuzR8PhGjFco/JRPLZy2CfB4qX0wPm+psQMozrW/CYYqlYwBq0A/+o6pMiIRxWCdmeCPA+LHoN4t1o5prmAmMvzWxmLg8GyKijAGu8+nscn5HkuPFHhDMANKbYpSm0sT0tsDik5X8+4qOBs7EuJ1clIajCaRs2ToH1HUFn/kWi89pdKbgeZguxWTI6L4VzFZ2qs5QgZLN1vT55aFGV2NDHnw+8orQuntkLAbrYNlIumQz17mkgCW3jQ0QesDoyJ8NmhskOODl8hx5mbJVAPzGNA5bh10PIS2kFzrcOLJzz5oRhxZhGqSwPXNYGoov938dWxK0cWC40d+6OqywD6alkWG2YGLp2Wc+wNyoyhO9pV856qKlGuGnFCq1k9ipY8IbHnyUgDtl+HJFLRS1cNLnC8ppurcazQLvi62WeIPKGHpiO/DZZoDf0lvoFPT8dxshuWmdhAI7lwiQXHhK1Zkvi1k4sGdy4TJTH98isfZvBllzs6aTNB7LV
- 0o1r+zyw
- Kkp6jWf6HMP+MuR4uEN4aFdRClgk3YMoAR5lhiq7XNz2lTgE4O1DiyreyWSLpJZzs68OBCocz7bsf8W2sh8c65Zo3hNPx5sZHU1/AkuGjmk7znuupNmbzSQYpCtnKdA6d4UfSRmw20RD+i2pMmE91B58Sauf51FbueFi/cWip/YNDYGSFgwJkXqgF6rCJK9JidFEwSfwczT0p/yvkKQ3fEAykhBlGvSwGer0CpSFmtIL0cSZcsgecBxTrH5OoI/1TIE4GxBgbDZ6Iq7UOwpoQN4oRdSonPFCOO0IsPpCJ0V0kSXQ=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770403937-499953
+X-HE-Meta: U2FsdGVkX1/dDXF2RKNmlR2OOm1zLDaDMv+mnBDAM8vI4jZoTGceuYjwFrFcFtxBXfqOUho2rbiu0n778TpA2Xy7YHvD+lQzr6DzrgReaiVqjRjquOMVHxiN94fhSbkmtKRxlQVyASPwPtA1obkqYYIvWTzXsLpbd6nKhynmk8T0nZCLIy68V7cVrTuMYYTrDS31a96dg1u277ZqErSZXhjCEQk9ZRrG3thRUgUT4dHqYQJe4yjBns3o8uNlLbmq7q3osFeYA+pbX3mi5I8u67f7Z8ufX2OxGy4QX8pUH13lrSn3nabWZ2evPjGWbkgAqMZs6iDo8FC/LehjQwxX1jX3lByfh0xE0Cttod3+vE9BnShQV56VrA9iboQdtw52n6OAA/oRgw1/WEaVPm69KMykloFLYySIUOk79c0IODzrpjGtt6henVKIelxT6rCA6dx2acWMEQBYXjKO8KBOD42FPGWxlpOI01IXzFQWjKa3DxG3qZQyPp9B4vFIh7VDoUvSYpnCgiXDfmqGi3BpoRD7LsRMqw3xNzmyCy7Y8Fuc3r6c6EyUhbv+sjRdkJBJNbPU0+br2U2o8YSIumlocack7cr0JoCo//rcWn5eFktVA38yQ/b5xQ/31TO2tMbuBXBirqnppnSYO+SfBEdiAp1RQvPX1+IfhY4uDgoGThV3TuGiYirSsLIMS+Ck77yzFHVO+E5eiOh/SXWnVWSHR+SVw27rQs+yGMQ/Hnwh+jGVJ6m0M2sShBoY4+MC7pYE6/dNHL99dx1nMm3m1L9dRAsEZjXhbDk7N6Fz8DcEk3Ob6vweBHqGgQE8JmpviM884FL2ugnyz/fnjGqqIx0DALW9ArNmysNM6hdGO8akyWwXIYJ1V/rncGJWS0mYPeq4bPI9BllkGWVyLR3w17RWTP8CRy39zwRR6RUyZaLI/JQELhfdw6/jO4SYLQPI8/cR4XU+YFhyuMlW5FPGhst
+ UN4DE7n7
+ XS1bhYGSHr6/wLkfUaizL7uYRDWVnypkpGZA9Idc8kiax3IflDgZJaguhKp84cBsWjT/kdMRL47ePyTP6aiqH5rB2dW4XKLxqgiOTQ768lQmDSyY7haD8Q6Q5HisgfgqQJzDRveoY8pjwH/I/Dx337vsPollgdD1OU+4H7Xbhq5/kv3RwTg28dcE/i7hCkaXA4pV89JOC3qewxWnXrpWFv8AVFyyLj+XqRgKe8J+LWY5RtPCapu1tt6NCe4g8xE6ll4anYX1ZFb1qKx6vttyAhean4FnfZhA4F3K+mcPX8x0I+FPWSL79hBI55r6k7L9DdmNZKgeNCFA4uRr6M3emh/9VHCaQavh7cJG+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,30 +98,79 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 07:09:56PM +0100, David Hildenbrand (Arm) wrote:
-> On 2/6/26 18:34, David Hildenbrand (Arm) wrote:
-> > On 2/6/26 16:29, Matthew Wilcox wrote:
-> > > On Fri, Feb 06, 2026 at 03:22:54PM +0800, xu.xin16@zte.com.cn wrote:
-> > > > make them const to make code more robust. Besides, since KSM
-> > > > folios are always
-> > > > order-0, so folio_nr_pages(KSM folio) is always 1, so the line:
-> > > > 
-> > > >     "pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;"
-> > > > 
-> > > > becomes directly:
-> > > > 
-> > > >     "pgoff_end = pgoff_start;"
-> > > 
-> > > How do you know KSM folios will always be order 0?  I don't.  NAK this
-> > > change.
-> > 
-> > Once that changes we can revisit. ACK from me stands.
+On Wed, Jan 14, 2026 at 08:53:03PM +0000, Bing Jiao wrote:
+> The preferred demotion node (migration_target_control.nid) should be the
+> one closest to the source node to minimize migration latency.  Currently,
+> a discrepancy exists where demote_folio_list() randomly selects an allowed
+> node if the preferred node from next_demotion_node() is not set in
+> mems_effective.
 > 
-> And just to elaborate a bit: I don't see support for > 0 happening any time
-> soon, and it will require significant changes that I am not even sure we
-> would want to maintain upstream :)
+> To address it, update next_demotion_node() to select a preferred target
+> against allowed nodes; and to return the closest demotion target if all
+> preferred nodes are not in mems_effective via next_demotion_node().
+> 
+> It ensures that the preferred demotion target is consistently the closest
+> available node to the source node.
+> 
+> Signed-off-by: Bing Jiao <bingjiao@google.com>
 
-OK, you're the KSM maintainer.  There doesn't seem to be anywhere else
-in the KSM code which handles large folios, so this is just removing
-code that was recently added?
+One nit below:
+
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+
+[...]
+
+> @@ -320,16 +320,17 @@ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
+>  /**
+>   * next_demotion_node() - Get the next node in the demotion path
+>   * @node: The starting node to lookup the next node
+> + * @allowed_mask: The pointer to allowed node mask
+>   *
+>   * Return: node id for next memory node in the demotion path hierarchy
+>   * from @node; NUMA_NO_NODE if @node is terminal.  This does not keep
+>   * @node online or guarantee that it *continues* to be the next demotion
+>   * target.
+>   */
+> -int next_demotion_node(int node)
+> +int next_demotion_node(int node, const nodemask_t *allowed_mask)
+>  {
+>  	struct demotion_nodes *nd;
+> -	int target;
+> +	nodemask_t mask;
+> 
+>  	if (!node_demotion)
+>  		return NUMA_NO_NODE;
+> @@ -344,6 +345,10 @@ int next_demotion_node(int node)
+>  	 * node_demotion[] reads need to be consistent.
+>  	 */
+>  	rcu_read_lock();
+> +	/* Filter out nodes that are not in allowed_mask. */
+> +	nodes_and(mask, nd->preferred, *allowed_mask);
+> +	rcu_read_unlock();
+> +
+>  	/*
+>  	 * If there are multiple target nodes, just select one
+>  	 * target node randomly.
+> @@ -356,10 +361,16 @@ int next_demotion_node(int node)
+>  	 * caching issue, which seems more complicated. So selecting
+>  	 * target node randomly seems better until now.
+>  	 */
+> -	target = node_random(&nd->preferred);
+> -	rcu_read_unlock();
+> +	if (!nodes_empty(mask))
+> +		return node_random(&mask);
+> 
+> -	return target;
+> +	/*
+> +	 * Preferred nodes are not in allowed_mask. Filp bits in
+
+Filp -> Flip
+
+> +	 * allowed_mask as used node mask. Then, use it to get the
+> +	 * closest demotion target.
+> +	 */
+> +	nodes_complement(mask, *allowed_mask);
+> +	return find_next_best_node(node, &mask);
+>  }
+> 
 
