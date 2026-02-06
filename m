@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D34E6E9129F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 04:11:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 909CDE9129F
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 04:13:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3BE76B008A; Thu,  5 Feb 2026 23:11:20 -0500 (EST)
+	id CB5606B008A; Thu,  5 Feb 2026 23:13:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C1D726B0092; Thu,  5 Feb 2026 23:11:20 -0500 (EST)
+	id C967B6B0092; Thu,  5 Feb 2026 23:13:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF19B6B0093; Thu,  5 Feb 2026 23:11:20 -0500 (EST)
+	id BA3596B0093; Thu,  5 Feb 2026 23:13:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F5816B008A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 23:11:20 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EFC801C613
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:11:19 +0000 (UTC)
-X-FDA: 84412707078.17.038D5D7
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DB87E20010
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:11:17 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SAYmCD3c;
-	spf=pass (imf03.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id AA4A36B008A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 23:13:08 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 67C661B2BE5
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:13:08 +0000 (UTC)
+X-FDA: 84412711656.25.CF3E4F1
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 78DDE10000F
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:13:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xspz+Efq;
+	spf=pass (imf14.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770351078;
+	s=arc-20220608; t=1770351186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D4OW4s3gaXFmm9q/2xsnJJrtYlj7SsdGtTDJwGZIMW4=;
-	b=FhuJ9sdgtHNDG69x1WTMJUmAljs2xbrunSq4QYQvP+JxbxAp4vSKn7EWJrRO+yjp65hPkx
-	7Ux7lOWoCdiSENZcXXadS8TjSCNED8LO5nCP9T6lhiyo2ckWCEjwU6nd2KKo5aBeWnbu0p
-	SneOCUdAAzcDne6kEaK1FswscHpY4Kc=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=SAYmCD3c;
-	spf=pass (imf03.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770351078; a=rsa-sha256;
+	bh=b2nb7m/lJo+RpXLZ4jqQFzQjiRXw6teH08HYzSdnXqs=;
+	b=6wLBjDZRemJxj8oY8hgF6PjpFzMaO8J96skOLU+Nmv29tJ95bLQTuB/Xw6+2ElwOnnOoMT
+	TXITrPyQGrJqvfsp/9ctlY0+MXoVqRnI4K330K9Uj+mqutUA04GRdFhb1x0aNUz9VwtIX/
+	/dPJAY9ngp1Sm8IlLCdrQO3ewVhWHyY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770351186; a=rsa-sha256;
 	cv=none;
-	b=ILyGNJf8g9HkxAiCWXYt/k1kpnhQhkbJoa45eG8ziKF2q7Vj/YeZrF5b7K9pt7vDr8sNyI
-	dhFPpSUlCX7P2RupYMRDRpRBdihfAwA4qGY9I272ueQCJRYUj7+Y9a4OlTQ7iFTdFPH+rn
-	5q2QM6iaoi0ZF47eJ2bR2hQXdHmdI5E=
+	b=Zk0e/HxXm4T9SHnZIfYRvBmmFUwQDQtTaycmdbwr66rCHRBY8d7oDTvUoVAUTE2l4QzUTT
+	Ix7vIdS6a2F9eHA/DZjr2RjS//dsPTOPmvQdqhpx0hysZWkUs6G+91+emcEqdgJEZPcZRH
+	7BF/tG7OSbRFIYn59JP46CmD7BdqjNA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=xspz+Efq;
+	spf=pass (imf14.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770351075;
+	t=1770351184;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D4OW4s3gaXFmm9q/2xsnJJrtYlj7SsdGtTDJwGZIMW4=;
-	b=SAYmCD3ck4yK/hM3itvbD9mKLpxMrdxT7KMxmCG+XVOUfQqmmfWUuy/3IXH3+BGCaiBm+V
-	WhkktKZ4S+fh8PHguT3q0WI69nVlHNFCW7haNtCqkmqAeLIkqzScx/ZKjhGsArRtZ0iwcR
-	ujfDG5W9eyXs/3fFOA+Q6sXz8kDiFTE=
-Date: Fri, 06 Feb 2026 04:11:13 +0000
+	bh=b2nb7m/lJo+RpXLZ4jqQFzQjiRXw6teH08HYzSdnXqs=;
+	b=xspz+Efq/TClnHX6aZjGa8how1UeJlibzMvrHFBhNPg3bwRVYPKbGtaSt+RW8hloaLNyE6
+	D9Jx3KG2+gvtBFS6wcc7usHkrUMMXkBQI9W1pRHJipcIU6FlLaNfA4VGlhdRQ0e3Sj5KXu
+	8XIkPbPxT4jtZ1NwxcXHgLXT7UOLZVE=
+Date: Fri, 06 Feb 2026 04:12:57 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Yosry Ahmed" <yosry.ahmed@linux.dev>
-Message-ID: <75c6f71f794c04e6c6fc90e6ac0a3d4656651362@linux.dev>
+Message-ID: <b40e6e0a63c4303e048ed0dbc61c09788de98e19@linux.dev>
 TLS-Required: No
 Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible
  pages
@@ -75,22 +75,23 @@ Cc: "SeongJae Park" <sj@kernel.org>, linux-mm@kvack.org, "Jiayuan Chen"
  "Michal Hocko" <mhocko@kernel.org>, "Roman Gushchin"
  <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>,
  "Muchun Song" <muchun.song@linux.dev>, "Nhat Pham" <nphamcs@gmail.com>,
- "Chengming  Zhou" <chengming.zhou@linux.dev>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Nick Terrell" <terrelln@fb.com>, "David 
+ "Chengming Zhou" <chengming.zhou@linux.dev>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Nick Terrell" <terrelln@fb.com>, "David  
  Sterba" <dsterba@suse.com>, cgroups@vger.kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <e155ad8af874f10baaed91f1d12fde222b82036b@linux.dev>
+In-Reply-To: <3179fa38027bdacdd38b4ef34b493bdb5ef7a19a@linux.dev>
 References: <20260206022152.67992-1-sj@kernel.org>
- <e155ad8af874f10baaed91f1d12fde222b82036b@linux.dev>
+ <b0b984be60ffa366929d363ec2b63f5c92187556@linux.dev>
+ <3179fa38027bdacdd38b4ef34b493bdb5ef7a19a@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: DB87E20010
-X-Stat-Signature: j8759ddaft9r4ak8p8jt1m59nndfo1z3
+X-Rspamd-Queue-Id: 78DDE10000F
 X-Rspam-User: 
-X-HE-Tag: 1770351077-228467
-X-HE-Meta: U2FsdGVkX18ZtMnihYDts0Mi8JRAJFfqRAKQVk50ctst3xXPzQKPXzvoqlB3A9WfvN1RgnhqYf49LWGbsaFJRLIDyteCqsqdxMsUiqMZhFhwb4rTkAppzXl2+sCCc1Y0yqMCTosn/0wQMIXFKNN28+G6Gq4/4uZyuqA2pGGO7GdsfQruywt2seHrOdlxTjz0vQE3xA6MZ1/RhgjJYfCLyWNcDM8xgk7A90UihLl4E+AO8XCyhosvSdvnojEZiNh2NzWcpNlXkjX5CSxTlcw8VGQuBk8x3BN0qBBC3vsOiZjw9UZ8tlJ5a776B1rlBuMIb4K6WDU8XiaxYDA8bWv7toVbsRoRkitCtgYxr4/AB1rUt76x934/hVDOJjBfHXNWDiiQajydn4ieAu0P4kpsiKa3A67HE8nktAazXul4xG3XlCVPMzk7dikLb/FklQ/Xg7bzZ5chbx7HcH78nycdis+aDRfYqwTxs7fd9EAIBBNrO+iYg9+9tyJF2S7zPUJp+0rmKTqeE69nLGe+vrBcFxUkHCcD+DQe0G1rsPT8sO2hExoQbX2W2/9kQ97+CYV8XaFv6PmlWxLkEA5YrEHGZ0tvJfT1C5wwWmpuggyxG6phrnybDT5mn1/62rnbxSkUSLh8fGp5f0a9OGgxiclu16516jBYLEJgYStC7d2j5OnrAxYQpB2itbLZC+y9ThjnJSMK1HessUmsDlIrsKEuq5TdvHw3cqZYk4i+Z8kXkxqcC2tq1sXtS2B0oKFIaLcht1Fip0BuT8fZZjF//AlPN/92k2CThRHbxmXnPpNhw/PABA9Bg1m889hX+eewbO+JXI6bzI2LID4F2mhhCUwqf9SOyAch7Xvzkf/nR6yOclCgNlsAU1cobsEaM69ALoD8LnuFZx68Ms0mcz35bts9nNX2MDZAm2hRRoXDwIK4BxR3aS2X0rse6dXz+fGxPNKbgDRrpUwQ/oYwZMSQnEV
- RTMKEPF6
- u87ChoeuCEax14dHVS+RT06kQwY218jZCXVeEs2Pufx7xVGESpEuHDj0vmH4yljcwOqxY0PJIJ1MVsCMiWkxWZgFfYWnNaCmKz/dgnS77vSQQjQ/9V3n0kHkhDSkpuieOTA98MzpwlcTqQxL/UMlu9icvioptrHbKcOu9c4LLrQW62lGkXdXI132zO/ClKU5cV1PJUdRCbWimZUTAbC1biR9NwfV66FddmVJL7yczif6plsjzXTfe1lFFySfBcbjHFHkskIiW7u7xmj9s10YugztNRclJ1NH7giobSnh4lLuoBBg=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: b9atbxtzt863naecwh551zyj6q1hnhxr
+X-HE-Tag: 1770351186-426387
+X-HE-Meta: U2FsdGVkX1+PtnkApY4t6tK+/hFkDdqAdpC/h0v8cSYPSk18a/IM5xfeXyvZFEk2WH8kYonaymn/tvU+vFSbOWUYKPv6nB5NDRNuZure/AxYUaTS2qtsOww0bIBo+sfvUE4g6FpdkBrOyQTPQfWXrGjfa6JqOIm5gqYsbIt4lQ9kxnPGV5lsIcgUyHfV2k9FApx5Atcyg8EMNcrOJPjU4cybX1p/lzyZ09EfktqH0y37VV1w3hj58Mxs95nLP45RjLK3AAQTBcBmIcEmBEyNflvtVvbOquvcJ6CP4rnrYtKMbl44/MSri+erdTNtBJbAWKNYXwF+V3l8jsXTEyDfujWCoEyYCtPKvWhRRqnqlgT33AqtbpDlShfbNndJkfonZLY0n0S4qq7gZl1qjsWHXGo6xGiIWLWhcA0d71BBfDvha+Lg312p/jBboPFPApXBf53hx7bndMyo9ywmiCoF0MJKDmerbMUH0KQbJV+kSWJrtQ8aLx/fMbIm9cHUdnynkEv6MY9EbeDRp+uvHANQZ83mBGTyyG5yB01yWmQ1TB4DGTOV37gOEyHy11AtCnWpQ7/hGetJq2hWHnqn0CiJwJmwoykXN3lf5QUcYTzEh9SbI7qr45sPZKFGPQkpsMQlLMBZqvSEiAkmkOvJfU2azbWHiLYSTpARLB8t6E3GyVe2+LblIJV6vgA9YhHLVyCySkmoFRl90nA8NpjqpyhiI8ege/gNm3J5EeTtyOX7s7mE70e7adcukkZQRUcQUDmkyc4LgGu82MpHnZ5cRX6QFG9q+iYHe1U1hv/VW9iatNBNKO9MJw6iGRQcgRKxiNL72MWF5/NRd4Qz04XduPKZpnovjDOXhYmt0FsbkexiLdC/ZJtGtPiYhwUozh+HD0CwZ1Z1BTY4l117FYGsyGfYJrCPRMLPhBqtvOWrZm1oOsWSNKc7+8Dw2T4ZCJzkP5AUQhET+jzJb0lsoVT17Qi
+ BjCKUXJW
+ RM1npvOFFRAeBjwDJGmgW7mXtXziP0+L23TixValeHKs/9q7DNmpT1pX3S6mujFYZ6RTLJGWGjaTb/Wo+nD4gMyyROgs1w4hjk0A/6wzsaaRnbcebC5nrasV5SRQvOA/sGGaOnVvDp80zGzJbC9SLiKXX31K3KHyT5775pe/nj2se3Yf15HaGzwZKYtXHd24lrYaq3ulmGYTl7TzVJwUZnxj7XbDJDrBepVrflcm9/9JSmoxccdlBuLXCu8IiILQmMW2a+n+AOmiyg0dwBIjMu2Zf5F8H5guB1N59LjhQRfH2ixE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,8 +100,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 5 Feb 2026 13:30:12 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> w=
-rote:
+> >=20
+>=20> On Thu, 5 Feb 2026 13:30:12 +0800 Jiayuan Chen <> wrote:
 > >=20=20
 >=20>=20=20
 >=20>  From: Jiayuan Chen <jiayuan.chen@shopee.com>
@@ -257,110 +258,29 @@ ble() ?),
 parameter
 > >  is the size of object after the compression attempt.
 > >=20=20
->=20>=20=20
->=20>  extern atomic_long_t zswap_stored_pages;
-> >=20=20
->=20>  #ifdef CONFIG_ZSWAP
-> >  diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> >  index 007413a53b45..32fb801530a3 100644
-> >  --- a/mm/memcontrol.c
-> >  +++ b/mm/memcontrol.c
-> >  @@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] =3D=
- {
-> >  MEMCG_KMEM,
-> >  MEMCG_ZSWAP_B,
-> >  MEMCG_ZSWAPPED,
-> >  + MEMCG_ZSWAP_RAW,
-> >  };
-> >=20=20
->=20>  No strong opinion, but I think Shakeel's suggestion of other names=
- is
-> >  reasonable.
-> >=20=20
->=20>=20=20
->=20>  #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
-> >  @@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[]=
- =3D {
-> >  #ifdef CONFIG_ZSWAP
-> >  { "zswap", MEMCG_ZSWAP_B },
-> >  { "zswapped", MEMCG_ZSWAPPED },
-> >  + { "zswpraw", MEMCG_ZSWAP_RAW },
-> >=20=20
->=20>  Ditto.
-> >=20=20
->=20>=20=20
->=20>  #endif
-> >  { "file_mapped", NR_FILE_MAPPED },
-> >  { "file_dirty", NR_FILE_DIRTY },
-> >  @@ -5458,6 +5460,8 @@ void obj_cgroup_charge_zswap(struct obj_cgroup=
- *objcg, size_t size)
-> >  memcg =3D obj_cgroup_memcg(objcg);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
-> >  + if (zswap_is_raw(size))
-> >  + mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, 1);
-> >=20=20
->=20>  I understand the helper function is better to receive size_t rathe=
-r than
-> >  zswap_entry for this.
-> >=20=20
->=20>=20=20
->=20>  rcu_read_unlock();
-> >  }
-> >=20=20
->=20>  @@ -5481,6 +5485,8 @@ void obj_cgroup_uncharge_zswap(struct obj_cg=
-roup *objcg, size_t size)
-> >  memcg =3D obj_cgroup_memcg(objcg);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
-> >  mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
-> >  + if (zswap_is_raw(size))
-> >  + mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, -1);
-> >  rcu_read_unlock();
-> >  }
-> >=20=20
->=20>  diff --git a/mm/zswap.c b/mm/zswap.c
-> >  index 3d2d59ac3f9c..54ab4d126f64 100644
-> >  --- a/mm/zswap.c
-> >  +++ b/mm/zswap.c
-> >  @@ -723,7 +723,7 @@ static void zswap_entry_free(struct zswap_entry =
-*entry)
-> >  obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-> >  obj_cgroup_put(entry->objcg);
-> >  }
-> >  - if (entry->length =3D=3D PAGE_SIZE)
-> >  + if (zswap_is_raw(entry->length))
-> >  atomic_long_dec(&zswap_stored_incompressible_pages);
-> >  zswap_entry_cache_free(entry);
-> >  atomic_long_dec(&zswap_stored_pages);
-> >  @@ -941,7 +941,7 @@ static bool zswap_decompress(struct zswap_entry =
-*entry, struct folio *folio)
-> >  zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->len=
-gth);
-> >=20=20
->=20>  /* zswap entries of length PAGE_SIZE are not compressed. */
-> >  - if (entry->length =3D=3D PAGE_SIZE) {
-> >  + if (zswap_is_raw(entry->length)) {
-> >  WARN_ON_ONCE(input->length !=3D PAGE_SIZE);
-> >  memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
-> >  dlen =3D PAGE_SIZE;
-> >=20=20
->=20>  Below this part, I show 'dlen =3D=3D PAGE_SIZE'. Should it also be=
- converted to
-> >  use the helper function?
+>=20>  I vote to drop the helper.
 > >=20
->=20The dlen variable represents the decompressed (plaintext) size.
-> Since we compress individual pages, the decompressed output should
-> always be PAGE_SIZE in normal cases.
+>=20The reason I introduced the helper is that the incompressible check n=
+ow lives in two places:
 >=20
->=20This check validates whether decompression produced the expected resu=
-lt, not whether the entry is incompressible.
+>=20In zswap.c - for the global zswap_stored_incompressible_pages counter
+> In memcontrol.c - for the per-memcg MEMCG_ZSWAP_INCOMP stat
 >=20
->=20Using zswap_is_incomp() here would be semantically incorrect - the he=
-lper is meant to check if an
-> entry was stored without compression (i.e., compression failed to reduc=
-e size), while dlen =3D=3D PAGE_SIZE
-> verifies the output of decompression is valid.
+>=20By extracting a shared helper, both modules use the same logic, which=
+ helps with maintainability.
+>=20
+>=20That said, I'm fine with dropping the helper if preferred. I can add =
+a comment in memcontrol.c
+> explaining the logic. My only concern is that if the incompressible det=
+ection logic in zswap
+> ever changes, someone might forget to update the memcg accounting accor=
+dingly.
+>=20
+>=20But perhaps that's an unlikely scenario.
 
+Well, a selftest would be the right way to detect such a problem imo. Eve=
+n if we need to have a customer definition for incompressible later, it s=
+hould remain in zswap and we should pass it into memcg code.
 
-This confusion is exactly why we should drop the helper.
+For now, I think let's keep open-coding the PAGE_SIZE check.
 
