@@ -4,116 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF683EE6B4C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:13:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4734FEE6B4C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:19:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 873A66B0098; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
+	id 89A196B0092; Fri,  6 Feb 2026 14:19:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EDF56B0099; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
+	id 8470F6B0096; Fri,  6 Feb 2026 14:19:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63E206B009B; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
+	id 746106B0099; Fri,  6 Feb 2026 14:19:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 553206B0098
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:13:16 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 20900139FCA
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:13:16 +0000 (UTC)
-X-FDA: 84414979992.15.7144136
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4413B100009
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:13:14 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=I2iksyzC;
-	spf=pass (imf05.hostedemail.com: domain of slava@dubeyko.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770405194;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 63F076B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:19:16 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 025FA140311
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:19:15 +0000 (UTC)
+X-FDA: 84414995112.13.628F766
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E8F2340017
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:19:13 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=U4R79BZR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770405554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hp7dE9rfuLorTfLe8+rhBEONpAq5JPSPoipR3P8yp2s=;
-	b=sPdzl8dgbFQiyALtoD65YLmhQpyLacw+jDHZKGZBDbdyUZkjXo1Qg6kUAZ/lRpLrmB+SHZ
-	mrM5O+1BR/gnF10xPcPZiU/Peq2fq7lU53uDeuFWAcsbHETZkJSO4w4ignrQuxWrzgZhWY
-	c/jbCWQDiv1tOIOTXVwdKIY5RF/TfvM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=I2iksyzC;
-	spf=pass (imf05.hostedemail.com: domain of slava@dubeyko.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770405194; a=rsa-sha256;
-	cv=none;
-	b=Dny2hXBZOAOa+qwt/8c1BxoA5RggZNznnSh9oV8DZe1yT1fJjhSTR0QTz6y5h4N2kzQ9tz
-	l7VPWKQblE6skUOUSMgKdgS12HXh3NXhNqHQ+Xc8gUuRiqpPXKsQ5CNwlUNATx7C0HTTcj
-	+7WUG9CfZJR3mEE6bP3f5kWEbxXWL58=
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-794ed669269so40449727b3.1
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:13:14 -0800 (PST)
+	bh=fvh5DMP0qO3wt6PHVaJkcnU2bdJYis/SM/P7hxyNSCA=;
+	b=50hKmhyjmlWYHstqroJ1xQS0dP3Gx1t11vpPEcYzGwuB1RkQ6rYhN8hJEVijtRRakDIdt5
+	QjcQzRPblUQWjwGqWh+0sdcu52DmMuQ1fbdfspZfWwZVvcDU+9B/Z5aw7nVSdZr9RLTNTw
+	xsme7k9F1GF3DHWUuVRURRnt3zzub8w=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770405554; a=rsa-sha256;
+	cv=pass;
+	b=qjJ8qfxOWwvaJpTOOYu8UuefGY4RNk23cvtKBmGJVtEjhCERoG/ADQS23oxn1+9t9JQV/l
+	cFYo3hS8a+fyJpATYc98oxZbAjyWlnhbdahjGacdMMFbmxsTPgW1/J4OhL13BS+U8Fydn5
+	rzgTYqWIa6PRa2rGzYABRwWqezPdI6E=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=U4R79BZR;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so593429f8f.0
+        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:19:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770405552; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cEzkgzWRG7vQFD7uiztzk/V+70MCL/hPuRJB5WUMqFLuwbJxXfvOzZLWa1+vAD+ERY
+         kQ2hw75dKWpZwFfZYhRhTlyYzdNTPbpe4Wb4MFIbA6+4X0IGX3IUhsDT7Z+uQYKtM/id
+         vfvFs46ujNSwKRT4nni5sEgTWoToB99GAt2zprLPqJmJ7UzQvYwMDMdUz/+xEvfAylwB
+         sdxbWh2V0voR7SaojgFB5JOXEhe+t7aZpUOX/bPTlK4cjgFZEPlgUlRRFHU3YV2SQSEf
+         fAfKScinnYDXFZqCV5XAek035A7yfdL251eSKDWb/2yFkOxnxEThIhV0u9BL/Y7pa1Vr
+         ZmQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fvh5DMP0qO3wt6PHVaJkcnU2bdJYis/SM/P7hxyNSCA=;
+        fh=Z8SC5e7UpjA5klCuuvqu/j54d2FKfI4k/sjzDlBdlo0=;
+        b=NTj1m5TKdM8kUnaE7V1By5Qi+YZZ1c0S1PM0zR4n3QAbdCs/4hHyBJZFK9E44obKp2
+         /ezJ56ojPSAOeJWlS7d3hE+lKnIKcYYwv7tkUkaeRegGQDebgW1/5VS9DwPrfY7Ke1DP
+         Ujbwz1MSSRPTS9OJrD6tEXhOnOxKWEq1PDWnbaPlc23C2Y8dsLAeh0jrN2KVXwUEfouB
+         Pcc8+jqpNa/L3HM1o+1DJFDbw0ucb3Tg0lugw8urQOMN+7bT/pVZBKIEpWqfH5HaZIvb
+         Nj+Lo/HHgrUl6AzauiYodH1GiqRzhEJbiD76NS3H+Vnt+ueGJIdIPx9TDUWBeCNaktXl
+         QIVA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1770405193; x=1771009993; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1770405552; x=1771010352; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Hp7dE9rfuLorTfLe8+rhBEONpAq5JPSPoipR3P8yp2s=;
-        b=I2iksyzC/JV9iF5wOx+50buUQGinmkxN49/HF6RfaypdsvMS0VpPKucNDi2zl9xaTM
-         4uzB6eAbnQQoerfIOc7zlQNI4wwU74nrudK/f8t8eNv8FaghofsJ+eE6v4BX0VVOsuly
-         ymaHfmUeuT0b3e8zPbBxxy9QLlgJdYd7zoQsEBlzuI61Ce1fPk2IIbaqKZ4Kztd9UitN
-         UDJkwccTsez1C0H1YncGi6XYdYZFHVQuu4/MfuiJDU3aisdcE43h/lxSJr+yfHyn+D8n
-         KTDCsc3jMwjjJDP8C7tO2idfR9vxsiiWaxN40IwcxGkd67adOSGAAhQOH/wDp90U9QfC
-         sfaA==
+        bh=fvh5DMP0qO3wt6PHVaJkcnU2bdJYis/SM/P7hxyNSCA=;
+        b=U4R79BZRTLW+t46RJlHWCpoz//izhFm6j7RuQdceazebas/bAI7fO+aBuRl+TLE5Qw
+         ZeYV4UWGcVYVWTRaOtYjk9JpXDqaW7iESdoacis0oc880XtBwYOex9HzOLHtd5XafRXL
+         mKnaf4QSfUfUsHfE4LniN1uyHGZm5bdMQodz6ktjCt5UmU4+Ym/HzOZZMDgJqZrqlQxb
+         V4Lysfeqoi+MMRimpFZt1t41fq6Ko19XYkmgZYPJfgrRcIfn8sb3hT1Y5w09J0dT/dQf
+         mUnJbZklfoi6Pj94wIZQ/N9rmiheN0BymXEuYikncqHe5BRaGePRuQ9tAgqOz2sZutMX
+         NObQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770405193; x=1771009993;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1770405552; x=1771010352;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Hp7dE9rfuLorTfLe8+rhBEONpAq5JPSPoipR3P8yp2s=;
-        b=tlnSrd9gVx3njtBT/QEekhR6zef4NFjgVWltpHDFVu5tCDeWBdSqd75F/w6BG8bE1Y
-         icINKeE/SjCZWlZ1MDoqDVNDN+nbDnWLx8PqlevFmnClCRglHq1V0L5VyA5W0woi/RHN
-         Fcx0F1Uni+YcZGdYjwKsm3I+PlBKQJ+scmN4zBL/6zOInWcYmYCSKvTO8OpQZPdNSaBp
-         KJqTKpKgVbU6dFQB86j8xwtnE0yT5dbzQfyd+fz5/lm/yiTOpd/nSzEe/QprHCUktQnx
-         Tryzd3Jb993xfyDCFuBnA2NWf5m3OIJtptyR1Aohl2RW81J3xNqYlHqsCO5Tr/b0cu5E
-         C3rg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPzlN7xi/mVzhUXPHNbCkft2OFvl8Z9bTZ2aEEkT6HUt8p+5bjXCVWTOLduEUiHJbWIpIgzWXS1g==@kvack.org
-X-Gm-Message-State: AOJu0Yytkq/SY3nb9w9/L3pdA8AEgyKVMvoKQAHQD2cU84Qix75b63KL
-	cp+oFlLGjHeHyosftP69lgW8IDpeVUqIE380QlhfIqWNvazVd+b4edJ/QehFYSpvoyk=
-X-Gm-Gg: AZuq6aJlquY/QBZqVAQPu9edz/QkPOIhGBOAWt4tuc1lqjfdiJkAOItq9eOy0rNnuMa
-	eiGMA/0cMYqXMzUstxkQws5Ppc1K0EwMFHdhXQrnOjZ7K5I+RNAZYKRwvp9i6Sz0OFjgHohbF7e
-	/h8cjs0Q1GPAAJfVCHyrs6S0Gu0lSfRP3fwlmDCja7jBL8MxKe4aicVq8KMMoP0Jkwu+UAext6O
-	NP9E+6Uy+jP/+62FeIT2EijgkUAnFF27kjHe+VSziMw59uLSqwx9m51Lt/ek5BWZs9g8Rr16Ywj
-	guJnZMcFM9L/pBl9K3lFds7PKovTklINq+XauXTM3i3wXr5cqufCbA9DNPsd7SH/3AHn2595mHe
-	Qt8BYckZRoHxlRbstN+hH091rzH2QfMHf/56T7brSeb7CJX9SgsAT493dXWJkqQGO6QpB9Gs5Kk
-	B6EBS1olGunABmhy/h2nZgVUN4A0/Y5r32TKIrWr+Kf2uV6GF16g1jf5AS2WQ2NqFllnhNipACO
-	ZpR3FkK2Ohm
-X-Received: by 2002:a05:690c:d8b:b0:788:181b:86c1 with SMTP id 00721157ae682-7952a63e4bcmr38138647b3.5.1770405193303;
-        Fri, 06 Feb 2026 11:13:13 -0800 (PST)
-Received: from pop-os.attlocal.net ([2600:1700:6476:1430:9fc0:ed7d:72bd:ecd1])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a28697fsm29051277b3.50.2026.02.06.11.13.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 11:13:12 -0800 (PST)
-From: Viacheslav Dubeyko <slava@dubeyko.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	bpf@vger.kernel.org
-Cc: Slava.Dubeyko@ibm.com,
-	slava@dubeyko.com,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v1 4/4] ml-lib: Implement simple user-space testing application
-Date: Fri,  6 Feb 2026 11:11:36 -0800
-Message-Id: <20260206191136.2609767-5-slava@dubeyko.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260206191136.2609767-1-slava@dubeyko.com>
-References: <20260206191136.2609767-1-slava@dubeyko.com>
+        bh=fvh5DMP0qO3wt6PHVaJkcnU2bdJYis/SM/P7hxyNSCA=;
+        b=w8g1TynPJpfmY2g0L9ep6Vl2aKr1E446avSn4HAM9OfelNmw3bNl3gi3HmF2r7bALt
+         6z/GRH7pLMT6LkVYrOd/6NtP5r/2gGVvp+nB4GpdxyrmKvjNFro2rQOHNxN0hQsncJhx
+         02xaKQyOT5tI+b11dVa0RyUI1sCG9SDBhaplmPlugodfEVqgtfWxxoAxByr7QdE3V5TG
+         gmd+Vw8cN3KYiUJJDx53oDtYRZSdYDlu1lL8W+U9dtERMw2g0q4979kFbZGAw53sEhYn
+         f7RKMgVnUcQ3eZxlrGEARJX08uMEqdsirVTDuD2C50SpzpnBzLjlMyIKPDad5jL+baap
+         fViQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUjMCRemcWIJMOQIJ2b4cFLUCPbs3DFOpXSXPkba21orXZDBjiMoho2KkYRlNEkjXjhoBV/afy1ig==@kvack.org
+X-Gm-Message-State: AOJu0YzjSxJFDG6ePgoD8dMzqlQxnL5pdzY//Y230ETAO2d/abhNBDuz
+	623HQ5WxbwJpyhmSFZdD/E+YubRrbzuRCxN4BRo/J///2We80S57fca6GWwlISyijwamLv4uw12
+	6oT8UIiKWJdnfvs9rYg4hHqVJOPMESvM=
+X-Gm-Gg: AZuq6aLXOokDz7M22o+AyN4N/wPnrYHnprBGwZCuxmXz8pe/WX9elU4uZzCBMXwKpJ5
+	iTXib296+md4ITkbfLutUBvrPAkSR/CezKr6N5Avr4pQVuacNO3eAxCHom8/ib+64C2xz09wVVe
+	1KUIS/CJMpGPSwitowpJB2suMieS8mLNQQTkS9zqrUoKWEwhXQ8T+c/Ig0/5+Q9E9SoEE6g6XfY
+	tTyBfEbGD35o0GllcpS28NnMZy6f4TQxtKSURtizX6A22zi4UPD3XAc+84teV/YmonO9+SX4Bpj
+	pxtt4ceuSlo1TlgNKWbuWdC2w9G6rTTiFhpZ9UH9IndGz5HaZOlBjLePnl7zxa3rbGpDqe23oqd
+	b3ikLoMTZytZz7eq2cOndYqKo
+X-Received: by 2002:a05:6000:24c6:b0:430:f985:a7b2 with SMTP id
+ ffacd0b85a97d-4362938a74bmr5832110f8f.51.1770405552209; Fri, 06 Feb 2026
+ 11:19:12 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4413B100009
-X-Stat-Signature: t9ti4971qwixrmxu9hb6gqhqga67773h
+References: <20260206171348.35886-1-harry.yoo@oracle.com> <20260206171348.35886-2-harry.yoo@oracle.com>
+ <2ce1eac3-98fd-448f-8a73-01bb3cb5a7d5@suse.cz>
+In-Reply-To: <2ce1eac3-98fd-448f-8a73-01bb3cb5a7d5@suse.cz>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Fri, 6 Feb 2026 11:19:01 -0800
+X-Gm-Features: AZwV_QgOmEJlQPiQCkEAMnSvrww4GS3Jp7SWFouow-nGLlJkXss3_AON0w3rSVU
+Message-ID: <CAADnVQ+1RBXBWNQtshEfFNZEp0tDZOFKf_vedyjgdz=wqWdG8A@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm/slab: skip get_from_any_partial() if !allow_spin
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, 
+	linux-mm <linux-mm@kvack.org>, stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: E8F2340017
+X-Stat-Signature: kpbuzrzhyiy959bg31gj7xisgttxqnty
 X-Rspam-User: 
-X-HE-Tag: 1770405194-958965
-X-HE-Meta: U2FsdGVkX1/bLIJdMmUirs04ahA7O4iy98h583ewbCHPW8iSflZhzidEWmaT+gIgEQEFgOaqaxc1AyZz8YpIXsini9vbKyZbvbBeO6uiiMk7ZiwiUCiSBB6h5/sJWfaRxrSw3+McukuiUzCPO00k+QjSTEQ1xGjA5jiHTPN2hMPaVlyRwFGDX7xJ63SK+mrekpy2CVIWAB5LJgitORkYg9AQwoDrSVBt53Dk3R0wNvPXMkmKdsqXfVHRyg9g6AP/5cNXw9VZD9EM7N4umHYgar0gLf2OWYbqhhONlz/iYSfBAdg5sxLJ5hfhqDraL7AfAa1TTJ68xkW+9wM1PLvpkYw/CNkh+9KDe2zZ0FBZXssM+2v528udxnPFgnlH73qQRQAHEccJd4vZB0JyIE0ChUbeL8rK/URqmTtEKJ0twiDi2wqbVUSqmoYyykWGRU5B0cY/0h7+k7HbBe6IJJeCuROBQnAOZAwRGpyPSEPGsihnNo+Cqkd3Yq8QrIWUb0y36nvNUEzJdQQ/TDb7HQTCX8Ozu+u4HmmkCP6tu8pG9PUAOlGuW2JyhHUTnw1qXet0PGhn+HzJt2CFUEnrZC2Gd6kvhRPRtrXFBp7CYYSrvQhI/UlYNH/j3Zf2TiUr9UrECciiX38CjV7uLrRltRfXHx73w3H8fD5Z5QfPkffuGYYskIGwv/Y9EuGRfMZQb0UElCQarwPR4G/F0TEXetJ2rMgca5EIsgXNC++d8vXsVKxOYR/5RgBUxxGGqDQpOumNCC6t+goSC0m9EbteI06tdPIzSMgjIXh0MnLt3vIcaHpaTqMVc6rz+5h/gfvOmE1OVZJMW1MNCzWflpJFPgiHy1z+NVL6sbyqkoaKXNoe5eUsg/BJ9i52zqxDHKeXo+ORoabhBI13BZWgr7ufzQPaVlyFoIFj7P3jEd5EnfKCWmf+nWJIOCct5wXrIa1rcuWcuBiPONIOqQQFKwNWc/K
- cs7pBede
- wbbAAf+Pyy+P+bbE57WV+fYk9ueKZ+LQsM5NOnnuiLvAVsIuQPrEN4n0gJghytZHRB5D5TFdEKdtR9PwSrptx0X0lZ49ZKKHpdujBCCPraBcWirka1IoMCHnpr9tYQALb0Wd35m7G7mB/jNsuqrNP9zhB0Ld6uDIXpcylG7wSnUBT2xXVIFDddvbBuXmVcc8ChQ9okqD+k8PUPX7JpbBX+XfO2cum9+vou0FejwUAT0gvgkgw3lbWbGpLBIiuu8Q9zIONdbcMJ23yIIY3tN79zkN7V1yGH7zryYOPq4DCFv30iAzpievCFdT5G03YLjzr72JnLWg2RK8SpOdFXawqsKaKOFSOC9JBj//2VU3mHi0V+3YOTByWA16QsmWCf8PG2O4OovHqiiw+U1MVefbZZ2calOvephryMVZiwlVxitXGrciR657Ml5TUP4ppGXdGNv91
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770405553-640868
+X-HE-Meta: U2FsdGVkX1/6Py9U53JVICssGX0E3QzEGgUSvR2j0WuaCUrJNVOoJF4vPPzr6VNZGZgTuOyzt2dQ7zZ/ROTGdPRyM46PI+BgtV90aTDGgXCoAgQnF5bzI9H75gMwTMH4a1K6HR643hiomM/UDbexj1oF+nAyDKUspmfVTjx43FYAGfc/P2r+/6lq4D6j9CeoTZCVTS78xnzm77Bpe9kWyIJBM8jpoG7M5oWfiA5yhPCTalfOOL84XoiErhAzeqiBMIwqBLV7dfIZTCda+ITCFqfj4NJLWeOxz/szvRaSmWy2+HGUwcasMfcv45SrY9WV/esFrUbFPpEJ7wp9xG/02HwWHO7tzT49LPocRoiB/YmdvKqhIDfY7H3Pv3iRJp211XUGEAiuzhUSnun8Dih5zfzsbZEbofEjp2NUpKoiGvCOADkQfTzzjln4o1XHoTnvOL2XdafVZ8zKA49DTijTJLmA1F2sBSB7y91lf7bO6MHwg1dPLNKNkKzYTYmoboEhLdvukhm8hEjf24U8SUEdCPleT5MvhF0SLE/+DAQgCSHAGDnBmhToDBlKoLokpXwuIJH9spruIIjrd1YCZq6irHFGtgs8YKgLl7NXWzo967rIO5rHu6rGpKjAOnFr4/u4raxKjFsAZ7ejXnC4H8p5k6bq6QlKOCjSuTYMSiUiw3AtwTzoFWDD4C2UrYlG45QX5+93mBg9j0L905Q5CGW0zmXVlBh46xrbKOty5024pVxileMHXIMAkSU3vEIEUcjBzHw93nDmg9AWVmOGle12cjCXcXS9szYClFbIQbu8K5u7m+iInXQoM0JBDQ9gXxvRbAxm3w0O3fwgP2AiRVuXu/wdqRhP/KfujCtFbG+LHWupp11eJ3QwIcXGMveQPGZ91wHP4gR6fYE/tzb42YnLLzWGoZlWX1mQdPnZ3HxJSVPMgYuh2leJ62Texux6RDvVF+Ufu2OMHbN9OJVrgB2
+ JpcOxplA
+ x44F7ilwUIdDWDTyt4u+ZOmcjQRhJImIxAhcgTnmmOe9pYjnMk7Fe0Go9fpRxL6sOMfA5wjk8XCI3Uyb+qk0RtLd7iulMhHOJFr3aNJJXSdS1DlbuT9UXKlL9Fh5VW0+cXQ2EPUxhwcPeTsM5RMGoar7bohwzgVdrUzFenIFNlwWKw9cPV5yE/sr7HeryxbgyIOXTBkJZ1VY82QutO5Y/nCzHxrPCUQq7RbOnWUuwSw4f03GtLhZPAD9rWiF/AIUReNjNxD3iU4N1fkCBRWVky7Wwiv+p/Mf7CPn1SKP1uodeK6pQ5gs2LIfDDubWXyLsO9e806fkebV46/g/aILJfDotJySo0I5LPvGtc4crtnNPh+OCythz/eqxRxKH+N8NQYfRS1+Cryshdu6bfwlSIDX9qaiIujdt9TP5LyT+64SrWPSi/+dkXxRQKQcVXNnkcSXzPSHRsh1JKLB2Nu4RIQrqXgGps7IPpt6tjSfa1H5Ad0AUsm6QFMlXFvZBd4zQUbWYQoG5MMIngJF8XtiUzyWiEKeso41YUSo56RmqvvNQ04UCKiLVqYffB4lGq5WjUZZE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,256 +143,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement simple user-space testing application
+On Fri, Feb 6, 2026 at 10:10=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 2/6/26 18:13, Harry Yoo wrote:
+> > Lockdep complains when get_from_any_partial() is called in an NMI
+> > context, because current->mems_allowed_seq is seqcount_spinlock_t and
+> > not NMI-safe:
+> >
+> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> >   WARNING: inconsistent lock state
+> >   6.19.0-rc5-kfree-rcu+ #315 Tainted: G                 N
+> >   --------------------------------
+> >   inconsistent {INITIAL USE} -> {IN-NMI} usage.
+> >   kunit_try_catch/9989 [HC1[1]:SC0[0]:HE0:SE1] takes:
+> >   ffff889085799820 (&____s->seqcount#3){.-.-}-{0:0}, at: ___slab_alloc+=
+0x58f/0xc00
+> >   {INITIAL USE} state was registered at:
+> >     lock_acquire+0x185/0x320
+> >     kernel_init_freeable+0x391/0x1150
+> >     kernel_init+0x1f/0x220
+> >     ret_from_fork+0x736/0x8f0
+> >     ret_from_fork_asm+0x1a/0x30
+> >   irq event stamp: 56
+> >   hardirqs last  enabled at (55): [<ffffffff850a68d7>] _raw_spin_unlock=
+_irq+0x27/0x70
+> >   hardirqs last disabled at (56): [<ffffffff850858ca>] __schedule+0x2a8=
+a/0x6630
+> >   softirqs last  enabled at (0): [<ffffffff81536711>] copy_process+0x1d=
+c1/0x6a10
+> >   softirqs last disabled at (0): [<0000000000000000>] 0x0
+> >
+> >   other info that might help us debug this:
+> >    Possible unsafe locking scenario:
+> >
+> >          CPU0
+> >          ----
+> >     lock(&____s->seqcount#3);
+> >     <Interrupt>
+> >       lock(&____s->seqcount#3);
+> >
+> >    *** DEADLOCK ***
+> >
+> > According to Documentation/locking/seqlock.rst, seqcount_t is not
+> > NMI-safe and seqcount_latch_t should be used when read path can interru=
+pt
+> > the write-side critical section. In this case, return NULL and fall bac=
+k
+> > to slab allocation if !allow_spin.
+> >
+> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock=
+().")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > ---
+> >  mm/slub.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 102fb47ae013..d46464654c15 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -3789,6 +3789,14 @@ static void *get_from_any_partial(struct kmem_ca=
+che *s, struct partial_context *
+> >       enum zone_type highest_zoneidx =3D gfp_zone(pc->flags);
+> >       unsigned int cpuset_mems_cookie;
+> >
+> > +     /*
+> > +      * read_mems_allow_begin() accesses current->mems_allowed_seq,
+> > +      * a seqcount_spinlock_t that is not NMI-safe. Skip allocation
+> > +      * when GFP flags indicate spinning is not allowed.
+> > +      */
+> > +     if (!gfpflags_allow_spinning(pc->flags))
+> > +             return NULL;
+>
+> I think it would be less restrictive to just continue, but skip the
+> read_mems_allowed_retry() part in the do-while loop, so just make it one
+> iteration for !allow_spin. If lockdep doesn't like even the
+> read_mems_allowed_begin() (not clear to me), skip it too?
 
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
----
- .../test_application/ml_lib_char_dev_ioctl.h  |  21 ++
- .../test_application/test_ml_lib_char_dev.c   | 206 ++++++++++++++++++
- 2 files changed, 227 insertions(+)
- create mode 100644 lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h
- create mode 100644 lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c
-
-diff --git a/lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h b/lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h
-new file mode 100644
-index 000000000000..7ea74e840fda
---- /dev/null
-+++ b/lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+/*
-+ * Machine Learning (ML) library
-+ *
-+ * Userspace API for ml_lib_dev testing driver
-+ *
-+ * Copyright (C) 2025-2026 Viacheslav Dubeyko <slava@dubeyko.com>
-+ */
-+
-+#ifndef _ML_LIB_TEST_DEV_IOCTL_H
-+#define _ML_LIB_TEST_DEV_IOCTL_H
-+
-+#include <linux/ioctl.h>
-+
-+/* IOCTL commands */
-+#define ML_LIB_TEST_DEV_IOC_MAGIC   'M'
-+#define ML_LIB_TEST_DEV_IOCRESET    _IO(ML_LIB_TEST_DEV_IOC_MAGIC, 0)
-+#define ML_LIB_TEST_DEV_IOCGETSIZE  _IOR(ML_LIB_TEST_DEV_IOC_MAGIC, 1, int)
-+#define ML_LIB_TEST_DEV_IOCSETSIZE  _IOW(ML_LIB_TEST_DEV_IOC_MAGIC, 2, int)
-+
-+#endif /* _ML_LIB_TEST_DEV_IOCTL_H */
-diff --git a/lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c b/lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c
-new file mode 100644
-index 000000000000..432b8a0ad068
---- /dev/null
-+++ b/lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c
-@@ -0,0 +1,206 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Machine Learning (ML) library
-+ *
-+ * Test program for ml_lib_dev testing driver
-+ *
-+ * Copyright (C) 2025-2026 Viacheslav Dubeyko <slava@dubeyko.com>
-+ *
-+ * Compile with: gcc -o test_ml_lib_char_dev test_ml_lib_char_dev.c
-+ * Run with:     sudo ./test_ml_lib_char_dev
-+ */
-+
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <sys/ioctl.h>
-+#include <errno.h>
-+
-+#include "ml_lib_char_dev_ioctl.h"
-+
-+#define DEVICE_PATH "/dev/mllibdev"
-+#define SYSFS_BASE "/sys/class/ml_lib_test/mllibdev"
-+#define PROC_PATH "/proc/mllibdev"
-+
-+static void print_separator(const char *title)
-+{
-+	printf("\n========== %s ==========\n", title);
-+}
-+
-+static void read_sysfs_attr(const char *attr_name)
-+{
-+	char path[256];
-+	char buffer[256];
-+	FILE *fp;
-+
-+	snprintf(path, sizeof(path), "%s/%s", SYSFS_BASE, attr_name);
-+	fp = fopen(path, "r");
-+	if (!fp) {
-+		perror("Failed to open sysfs attribute");
-+		return;
-+	}
-+
-+	if (fgets(buffer, sizeof(buffer), fp)) {
-+		printf("  %s: %s", attr_name, buffer);
-+	}
-+
-+	fclose(fp);
-+}
-+
-+static void show_sysfs_info(void)
-+{
-+	print_separator("Sysfs Attributes");
-+	read_sysfs_attr("buffer_size");
-+	read_sysfs_attr("data_size");
-+	read_sysfs_attr("access_count");
-+	printf("\n");
-+	read_sysfs_attr("stats");
-+}
-+
-+static void show_proc_info(void)
-+{
-+	char buffer[1024];
-+	FILE *fp;
-+
-+	print_separator("Procfs Information");
-+
-+	fp = fopen(PROC_PATH, "r");
-+	if (!fp) {
-+		perror("Failed to open procfs entry");
-+		return;
-+	}
-+
-+	while (fgets(buffer, sizeof(buffer), fp)) {
-+		printf("%s", buffer);
-+	}
-+
-+	fclose(fp);
-+}
-+
-+static void test_write(int fd)
-+{
-+	const char *test_data = "Hello from userspace! This is a test of the mllibdev driver.";
-+	ssize_t ret;
-+
-+	print_separator("Write Test");
-+
-+	ret = write(fd, test_data, strlen(test_data));
-+	if (ret < 0) {
-+		perror("Write failed");
-+		return;
-+	}
-+
-+	printf("Successfully wrote %zd bytes\n", ret);
-+	printf("Data: \"%s\"\n", test_data);
-+}
-+
-+static void test_read(int fd)
-+{
-+	char buffer[256];
-+	ssize_t ret;
-+
-+	print_separator("Read Test");
-+
-+	/* Seek to beginning */
-+	lseek(fd, 0, SEEK_SET);
-+
-+	ret = read(fd, buffer, sizeof(buffer) - 1);
-+	if (ret < 0) {
-+		perror("Read failed");
-+		return;
-+	}
-+
-+	buffer[ret] = '\0';
-+	printf("Successfully read %zd bytes\n", ret);
-+	printf("Data: \"%s\"\n", buffer);
-+}
-+
-+static void test_ioctl(int fd)
-+{
-+	int size;
-+	int ret;
-+
-+	print_separator("IOCTL Tests");
-+
-+	/* Get current size */
-+	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCGETSIZE, &size);
-+	if (ret < 0) {
-+		perror("IOCTL GETSIZE failed");
-+		return;
-+	}
-+	printf("Current data size: %d bytes\n", size);
-+
-+	/* Set new size */
-+	size = 50;
-+	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCSETSIZE, &size);
-+	if (ret < 0) {
-+		perror("IOCTL SETSIZE failed");
-+		return;
-+	}
-+	printf("Set data size to: %d bytes\n", size);
-+
-+	/* Verify new size */
-+	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCGETSIZE, &size);
-+	if (ret < 0) {
-+		perror("IOCTL GETSIZE failed");
-+		return;
-+	}
-+	printf("Verified new size: %d bytes\n", size);
-+
-+	/* Reset buffer */
-+	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCRESET);
-+	if (ret < 0) {
-+		perror("IOCTL RESET failed");
-+		return;
-+	}
-+	printf("Buffer reset successfully\n");
-+
-+	/* Verify size after reset */
-+	ret = ioctl(fd, ML_LIB_TEST_DEV_IOCGETSIZE, &size);
-+	if (ret < 0) {
-+		perror("IOCTL GETSIZE failed");
-+		return;
-+	}
-+	printf("Size after reset: %d bytes\n", size);
-+}
-+
-+int main(void)
-+{
-+	int fd;
-+
-+	printf("ML Library Testing Device Driver Test Program\n");
-+	printf("==================================\n");
-+
-+	/* Open the device */
-+	fd = open(DEVICE_PATH, O_RDWR);
-+	if (fd < 0) {
-+		perror("Failed to open device");
-+		printf("\nMake sure:\n");
-+		printf("1. The driver module is loaded (lsmod | grep mllibdev)\n");
-+		printf("2. You have proper permissions (run with sudo)\n");
-+		printf("3. The device node exists (ls -l /dev/mllibdev)\n");
-+		return 1;
-+	}
-+
-+	printf("Device opened successfully: %s\n", DEVICE_PATH);
-+
-+	/* Run tests */
-+	test_write(fd);
-+	test_read(fd);
-+	test_ioctl(fd);
-+
-+	/* Show sysfs and proc information */
-+	show_sysfs_info();
-+	show_proc_info();
-+
-+	/* Final stats */
-+	print_separator("Final Test");
-+	printf("All tests completed successfully!\n\n");
-+
-+	/* Close the device */
-+	close(fd);
-+
-+	return 0;
-+}
--- 
-2.34.1
-
++1
+Just unconditional return NULL seems too restrictive.
 
