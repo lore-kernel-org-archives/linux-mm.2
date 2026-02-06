@@ -4,101 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BBFEB28D3
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 07:06:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52F40EB28D3
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 07:06:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A42006B00A5; Fri,  6 Feb 2026 02:06:34 -0500 (EST)
+	id B81696B0005; Fri,  6 Feb 2026 02:06:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9F68C6B00A7; Fri,  6 Feb 2026 02:06:34 -0500 (EST)
+	id B34FF6B00A7; Fri,  6 Feb 2026 02:06:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E17A6B00A8; Fri,  6 Feb 2026 02:06:34 -0500 (EST)
+	id A41346B00A9; Fri,  6 Feb 2026 02:06:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A50E6B00A5
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:06:34 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2D60C1A0746
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:06:34 +0000 (UTC)
-X-FDA: 84413148708.07.81DCBB0
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 501311C0004
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:06:32 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Sg5DWF/V";
-	spf=pass (imf20.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 91AEF6B0005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:06:42 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 582D11606C1
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:06:42 +0000 (UTC)
+X-FDA: 84413149044.26.B487211
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 73D3618000C
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:06:40 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NpYgOjaP;
+	spf=pass (imf24.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770361592;
+	s=arc-20220608; t=1770361600;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l9mXbrAaMtQHRTGDa3ewvpAsXiHuJtYFWMHk8lDDECc=;
-	b=CrzTdWQywol3ZdPjn/vlsxQbB63N3D/XmiqLSBOt7ui+WgaW6ef/vKcJ3LquTnyzh3Ya60
-	c8jl+4S4ypGmtCu+CX0aFJtlBPlVRNMokdV5RRrNxIQCgiQHNMItaNUsOuXKKXiU44pbEe
-	zj3YipC7+R614mrxKTUQvVGcvBjcwJw=
+	bh=WdBkyzLJQCBMuraYhS3VTvGUYkyPg06X/JmuXKPVjWg=;
+	b=yzRBHWtXWL6TXn69j6y6BJWQMNbtedgCdb5dkJ5Se8vaSZ/3VZc+9q6PA63YzhjAjFiyX8
+	wMQ2TECDcLEH0bjFsyElgeRpj6BJj987oLcywngZYEFdpOlBZAmG6saO7W26ZGrOLJqqxe
+	3V9QwNTdaNCCPfKcDTkCQKin9pFMLSs=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="Sg5DWF/V";
-	spf=pass (imf20.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.182 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NpYgOjaP;
+	spf=pass (imf24.hostedemail.com: domain of realwujing@gmail.com designates 74.125.82.46 as permitted sender) smtp.mailfrom=realwujing@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770361592; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770361600; a=rsa-sha256;
 	cv=none;
-	b=jmG2WnH+953iTWHwiRzPkdiVe9aXwgLh55XF6IUhpYjc9dJK9MF9QUnf7MW/4xdOYn+a/V
-	dESBdT7Ai7vnks1tfTkmNJDipLn15+M5jFn6pN8U8NzDu3I0CsNMTIvwDgxvCoSccpCDox
-	4difMVaARyCL/40j9+TtFLKSwnCZmd0=
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b8397e3e09so2309682eec.0
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 23:06:32 -0800 (PST)
+	b=7d/9JAuCc1pQ4q53pfp8jJv++RbyvzvrHv6TwVI83zkVF4z7l70A0EymmYpfzomvsKnq4F
+	nDFBBqYLeo1NOAVwUWFZTaAb/C3bFVBMYg4nyJLpMtFdZUa53cuTEKeJ9AfBncfr1TZoag
+	55eLJdKYmfMbBMPI6Ccm4MqV6VoEJYo=
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-124b117776fso1070898c88.0
+        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 23:06:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770361591; x=1770966391; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1770361599; x=1770966399; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l9mXbrAaMtQHRTGDa3ewvpAsXiHuJtYFWMHk8lDDECc=;
-        b=Sg5DWF/V1ukzxJSL2RP/1IRHFiJaXw2rwCeqfor3/DwdlrJXevZctapKudwHxou39U
-         XqmbX0te1x31WZpEKgu+8AMoWIKosTzCrz6+ESZrsrDKHdF71pK+Mn8Bnq3BEv1kyECV
-         nKerrnZEDYv4ftxOX1BxfXKQFToZZIGDNHpncMjid94YCcVuBjZmRAzJKzq/L/hon4A0
-         Y09dJjwqyFtD7WItgYC6Nmtiyund5rno8ZdC1FMktUc4lihNXEUgcKbNnNZp+ccLQIFS
-         H9ehWQm/e5jWPTy/9KGoqHEW6KmVxY+BVh6TU2BCfJgbHsTZ0kN5MVU7lxwpItuR6Nsh
-         m6Ig==
+        bh=WdBkyzLJQCBMuraYhS3VTvGUYkyPg06X/JmuXKPVjWg=;
+        b=NpYgOjaPNwNdV+AyvRJEgTyYX1qG2nd1teM9JsaW6WD+hK0PL/CXak7MP/vUgtTBKa
+         ka0FTri1WCVafjBRuSjwlL9FvYYWgpOaEOQhKc8g5fz7ulBtUKQn9FLOdCK7PoUNkdIR
+         /obk66yCa/vJlZEI0jE8zpqEBi/C7l8taTCL+ye0rDXy0n+sisxPSCXkYaFLRvYh5RB0
+         mCwaMvZE0ViBXtK4n4lWXINKkEt6liFWcvfoO9OyrSXUrUq3ERpOsaS4+/2/w3ds+fky
+         L5hYmya8KlovKKplS1wHIyHoMAfDcIE270wjsH9YPjR0BlGWxtbuHI1KFIfrSnAip0fM
+         2vrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770361591; x=1770966391;
+        d=1e100.net; s=20230601; t=1770361599; x=1770966399;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=l9mXbrAaMtQHRTGDa3ewvpAsXiHuJtYFWMHk8lDDECc=;
-        b=kb4sPJxkQrq5AAeNqd4e4ITva2tIrL79WvKBrreQMX43H4NAESo9zx53sgU7YMsLUP
-         eLB04WHGAG3uX1v1U7gKvrewh3HvPHZEELLzyIJHSVy7XYJTX2M+ZkfEZd2Spkiginf6
-         oi9tFnVWLtSa4tzNOpBguyFWn70purHMtAXGAyJH/0v/6e1jgryhOqgmdTb5zytPCJkt
-         bQy5AC3IMXg1R4Vmwhj+kAbAkNAJ87U3giateRun668Ticife9GjJSQBug5LvpTCmR9D
-         2BgBYdnM/fRGcxvNfq4zSG3bg4LMg717o8RkULx4XjFxUOMHaNxNOSaUFN7jchjSACIg
-         A4bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVXEXbHuZsevCqD5VYFxvzWjijz65xsS3K4rcBJHaKhYB30I8UPqEnFInzCYmIAK3lIrXIVoNH7+w==@kvack.org
-X-Gm-Message-State: AOJu0YzDoZhDNncZGTHiTCrzmBq7rSq2Z8/WfO2YsuPNSlsdlBxfyXJx
-	8OtCz3oOXA5wdtKqc2WoYpaRsoRTRJLQnmvgHdV5xFhyDcqQXL/1MwrZ
-X-Gm-Gg: AZuq6aLJhfYmGaAi5/ccZldqQdm2lPoDI1uO+Gx+Z5cuOdEr7wlTh1N3JElC1agwM7v
-	+4UWLNxk2ehXC9V8ZQW7wKwLEdmSBOGZ2dGJU8CkfbWCJEFYnhRyk1LZgc8egVLKoaIsZcctGa1
-	3WOmaPPrtwEiclKtXBWFH3hi8Ldjk0v0cFi2morB5A6Suf7yhTIdFKQAFs77R1hTvHH8nGpX0J5
-	jhgRIApQIGgzWpZcKSQlAKdLcWnLBp+Ix7FckYh2nj6w40F2FEuNYCn29Hsi6txgQGlNEcD0v8T
-	vCu27e50RrebcJUX1REpq4R/Sqf5VrqTyuqM0uEXSHcI8w9H7Z291uT39Jrz5vNU3o+oZJ4HTBN
-	WGfFO7Yk6rGPteXFhcGImUSlq69v6PNIC9W0w1Y9X39lU0sD9KWcNm8RJJf8h2mlhgwXAWe5gIu
-	ppQ1cihE1AR8bmNyuWWvT91w==
-X-Received: by 2002:a05:7022:6612:b0:11b:9386:826c with SMTP id a92af1059eb24-1270405f72cmr986038c88.41.1770361591067;
-        Thu, 05 Feb 2026 23:06:31 -0800 (PST)
+        bh=WdBkyzLJQCBMuraYhS3VTvGUYkyPg06X/JmuXKPVjWg=;
+        b=S5Y8UTz0WhQ9E2FUGU2lLozrZ+p4Jv/wbstTBL2uxDogO0lvwqmy6GnyM6NvwR5lj3
+         Y8Trc1SHK2mWGEGkKOb4HIOh4Lfve0zrzqaKgpVx9Uz/9hV5VCJAai3/zHOJ8WyBDgnd
+         AcN78vKhbHtSgLpYUbKor/Whxi98kKd2H62URnzrTF3g1mOy33ecYE8hZUmCK/zx2SIr
+         MYUMt9nNNgT+0s09KqCrlsaDtPiIiDRg14b3PoqVJ+MkoLQj9mQ0XsNYTeXfYBfeQx6Q
+         QJL6ZO7UDQNDQjsdx1RPtNl1kmv5W9CGA0MAzfa8OljwbDUQ+Q4kA+CQOBGV+Qe6Xbmx
+         UUUw==
+X-Forwarded-Encrypted: i=1; AJvYcCXL7SOwfuIsbd/uHtxISgaCjamHzC3B2UnSAcJNn7TxMTqnbU6DNBQeg6U6xpFhZEx0QUp6bHJ+4A==@kvack.org
+X-Gm-Message-State: AOJu0YydzOHPDMIWl/Q4LEPRS7KHjaAO0MhhtLeu97g7EsnWsbj271yn
+	4DRY60IcAtvsB0P89wWXoQ6j2nt1HSBegNMn3C+gi627N/nxqlZL8IQC
+X-Gm-Gg: AZuq6aIi08aIUZWNaOpNJLhdYg+BpV3UBNN8/JokQTzFan9QE9R5kfr59h79P8I+LcA
+	+wlQyZ/U46XW5a1MRq+xfhwsp5u2Mj9F/naJt6yUPnSCi8rDUGuUm1Vb9b3rMsRGgh3tqXSVkUh
+	hpH+pXyN2XPca3Vw6aq++Ar4Eink82aRIvinjwIPS1ZKhIxg1h9OsecopupCJldXB+r7fHkVZJA
+	lTPxQRwCtncLbaofYGEWIq0zlRDlmSb9hZOjxP78hAMyz/rkejTors+qmgkcpWX4VHSVgDLg3RI
+	X8o+Iyw0Zw7HemeAhvU2L2iIjqhbZwRJXrNrdrZS+x5sawFbNMhJiHNXzLH1Q91GoVMDbZ/8d2s
+	d9nf2fIVosFYOi+ySv1uGmy+NDqKayxn48JFfGO16uajQ4Ni19OpX/VrbedgjDP70OjdKYNB1gh
+	rWG08Ayp7Pqw==
+X-Received: by 2002:a05:7022:4597:b0:119:e56b:98a4 with SMTP id a92af1059eb24-12703fe5655mr919986c88.11.1770361599017;
+        Thu, 05 Feb 2026 23:06:39 -0800 (PST)
 Received: from [127.0.1.1] ([74.48.213.230])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127041e61b9sm1592601c88.8.2026.02.05.23.06.21
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-127041e61b9sm1592601c88.8.2026.02.05.23.06.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 23:06:30 -0800 (PST)
+        Thu, 05 Feb 2026 23:06:38 -0800 (PST)
 From: Qiliang Yuan <realwujing@gmail.com>
-Date: Fri, 06 Feb 2026 02:04:30 -0500
-Subject: [PATCH RFC 09/12] sched/isolation: Separate housekeeping types and
- add sysfs interface
+Date: Fri, 06 Feb 2026 02:04:31 -0500
+Subject: [PATCH RFC 10/12] tick/nohz: Implement dynamic nohz_full state
+ update
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260206-feature-dynamic_isolcpus_dhei-v1-9-00a711eb0c74@gmail.com>
+Message-Id: <20260206-feature-dynamic_isolcpus_dhei-v1-10-00a711eb0c74@gmail.com>
 References: <20260206-feature-dynamic_isolcpus_dhei-v1-0-00a711eb0c74@gmail.com>
 In-Reply-To: <20260206-feature-dynamic_isolcpus_dhei-v1-0-00a711eb0c74@gmail.com>
 To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
@@ -124,14 +124,14 @@ To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
 Cc: linux-kernel@vger.kernel.org, rcu@vger.kernel.org, linux-mm@kvack.org, 
  Qiliang Yuan <realwujing@gmail.com>, Qiliang Yuan <yuanql9@chinatelecom.cn>
 X-Mailer: b4 0.14.3
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 501311C0004
-X-Stat-Signature: bbjfmezfkzw77kbt558i9qhih4xgkwqf
 X-Rspam-User: 
-X-HE-Tag: 1770361592-657341
-X-HE-Meta: U2FsdGVkX1/oXbIreD6i6HeHP9OUGTjymZosXT27fiP85IBYCxd3vtXS6k1b1PzSk2Upc62k7YMduw8+1n4hL7e506AN9cRFsxJnRmpTAbum56U7hIoCJkap7I1Vz+Ny56Qxtut2uEI8gxkVU5G7sQvKfyF+G4zDM57L54SCTIc9IwmmdHj7/BpgZhsAi7OX+cmpiNWzPhYAenYDXzxMc1b9WDmMR5QeX9K2mfbll3aSRMi3hZaoH1/vLOR9nlyOV8bvkBRx4jUKVuBnpd1cqNakGnd1KMP5qOTYIILCRoWSVbygoPxAsruoWQ3eEVmj+exXGy2BMEja3/sjEkCNjuYkWlOjs0kFu3iPLmFVvjq/EWN5OderpR2526Zcq7btCkZJhPS3v9daFhxCxriiprLCU9ecMe2uSHR0xYNK+zfmgB3owaa1R4Ajf2OgyaNon41bWZrN3M3yoZNsibMUOSSOkVqvQlCLSRdxu3f0+FQ4y3hYcD+2/CbnuR0vwFqOzoiGf5ZMA6uMFULWKR1KbvxDw8l7xw8tcX8AdLYG/6fHJWG6wfmuuZPRJB2+GQvPMnzmkpXfC+rBtuuiPDE8Sf5wCRZWCe3wM2uGm/SJPqTGLEBrFzALN3hiZa38dYQugNT5kCKwYrur5X60V/kl3WppRrLj6r7f85D8Y4EmaS9rX6DeLFGE1Tli8bmFAH+Lxp8TiHddbxrx6JHtGroIw9OxsSKp+7nMUluIGxLJAZPjvJjiP1rNVigRNRK8JguMVJ6HPjWazPzP1ccIhhcT2b5USryVcgq160jaJeTonK1+yafpOkb8DvBM8tYmm3r/rdX3dpuzEMb+/E+heRNdwNfqt6+DNDBSNDLBTCvXyD5J2O6KBz9W+zpBjuEVmB6eQxvn9n6STxmoOtnr79wya6eIuuM2BScqGXWQMOJwYblxxEHhbXpSTTVdDkKNDA70A3jzN15a4/clVyeijLm
- kgpO9/Qe
- JZ561Q1dPjeG9d80Tkhcy2S4fiHwlUeQISOq3ewRr/SYRXeB8baGjQhsSYhj6OJeNu14JjzCTAm++u2sIpRJ+eNDRoe189FVKCreuM99JfrxokT1Sha6WclN6ujvw3pZsUTHW+SM6SS5SF7+Qx/Zs+YiVQ6KW654AHzjRpaidDGcMMfdjqwfFZI+dei+2WkDCimi3nxTGX4fK1oSpUbmwIibL2DLS6/M3gCdR5TAsCMHg6jmT5gL0PVQ+DRul5gGrD70OfjYLP5prm4Xrc7CBHQAHJ1STjTiCBDEiRvBjSGwsQ0zLTRoiUg4xTiloZbG0gJGOaCF7J1bca3IJ/dGPyqvlIAXknMIKOaqe5pw2jxvMTG8XLpVyKT+2QbFzupsb3pBQMVcqayGpSWGrQ2shFUGdC14tRxNlUcIF72Fh8I6cBqYixWKcW2GOIB+bMt1KIv2oWqZ+QZZEyW/S6s/oUxVPYQih7UZ5oKDO3/S5PwlDZZI9X4dg1rof/lOsOV0igfc8OlV6lIg5gBneUltJAnzC5w==
+X-Rspamd-Queue-Id: 73D3618000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: amhhfny5p8xxitnm3r7fxp636coc7an3
+X-HE-Tag: 1770361600-735613
+X-HE-Meta: U2FsdGVkX184UvFII325p/kC+vhaCNloVnl7E9HitQr1uZPA69FnKKas10q1FdAKZLYdkdoMpd/nv+BNLQwHaK88ZPMpZMlBVcDhbhvaikmZ4rVyiSYLVKVcZHSNHIaSFE+sdgECBwIn9kBCpk6qWroMKfURuCA+BNqiL4ALX117C0MFw+qsDEPn8rTBGNk3cVFL4Gsa0uPeNUyhKqRN2ZDvCLgG3Ts0dTjuBST/lj0NcMttOxR26iGMLf1RYSaerAhvvVzboPq4NDj+3A2nHrFXXo7WiHrvRoquqg+TKulJVRdIVlmbTeSwmVGwd+Htv/oe8LIJVJ5d3LgA1kXYj50MlNZgIkNTlRG3CVcqnCTTVBBExTV16SlZ8PRziejkEoC75x3K3/O2rrxDj0KUME6iXlnRSRKb4hfrkLR6XoFP+gOzDJcWEvlHLPy071h9f1Ir0ZOJKh3pze5/PcZMWEelFGmRhbQSLHsL7gKU08NebDp9wR9XLMxfoR4nIO5bZ6UIrDVpMlaHoRkXrNzfEsRPDgmNE5urNe7R0ZaGCvdQMYqGgGb6rgTRTp5hvJBZRj/S9qPifvJ4UQWDj6aVDPIhm0cOOC1yHCPX9ftPK0Sd2jpbnS2oleAPFi+sHxTQVn/uDWRl3YkMEiKOefg5yb++LOiHqy3WVCeilQTdENxLcYOitmfNdK3PKUIsXquGzI/bt2RPu7NxpPxUZjDWxaDJZF6At5/hS4hxIN0npCTvhPvCd5PNIjexVw2thyd+MH2mZ2OQiBEw7mQqQ/0+abGH/KSNaNWNZd+uwyPh8+l2gQ1DsVXn8x4XmBZjaK/UOKd0JPUR6KMpBSTiZTzlEXcJqmcJhbDVr/KSoVoXtjnqBg5+frhC0TTowBgDw2RZoTVPBNtpiZBBhZbVO3e4Dpzgvdb1KT6aZi93opSZIDxURUpctVB+n6UH1dVIDvKSJb/PxMxP6kNn8LFlLvv
+ UdyEeKmW
+ fAq3VMi1mVs5WUPtqs270YgiyfPSK686Pok+Qo6IcgsyQDEjHACGSUKMfnDv7lZtc8wq8RwWABVWmCAfRCBtUCCy1XOcEl12S0KvivGgdjvKlpPn8XSF9EtUGG2YU3atKkZQSNY+U/UaHqMZI1yPQy39AlX6av++oa+h9/LbjLXb+Hf03whotWQEX5Tcr+DOjTkwAkTZgCn2fpPgp4kZw/pEjQMRI+U7hC99fF60ZaR2MFlu4nT8QsDxoeCa+R3YRkbGMJiFMrzxaciJ8IRCCRlH6gNBfi94t8tmULZFjOjBaqArh/onVCA/mbsCnac1yUjb3EjU6VMntt0KTENpT2BAy8FR/TN8fv/wF8WG2HbT6OSed4/Obg6uuWsSUv2Kmq7xtzlpQhiegbOpR6HeeJbpuPgN0YdtT3hds3LVoZoKVANogUPDvlv5Az6JVb1qP28Rb8MyhhUZl1lZNFBH8Zv1FIgpbNTuHJ+m9URTKgacEw+R8+q6KTJxoq4pfm21np8lC/wexlBSgiH27VQuNbRFyMh81XgQ+NOAcE/4dUUAoq1My/fC9r7HgdlzsugJdHNotYAg8tOt8Kyg+7DLE38U9SyfPJ+PWXMniBudi2dT0Fev1FIcBC6ig1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,225 +140,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, most housekeeping types (timer, rcu, misc, etc.) share the
-same mask (HK_TYPE_KERNEL_NOISE), preventing fine-grained control over
-CPU isolation. Additionally, there is no way to update these masks at
-runtime.
+The nohz_full state (tick_nohz_full_mask) is currently a boot-time
+configuration that cannot be changed at runtime. This prevents
+dynamic CPU isolation from being fully effective, as the scheduler tick
+continues to run on newly isolated CPUs.
 
-Separate the housekeeping types into individual enum entries and expand
-the cpumasks array to accommodate them. Introduce a sysfs interface at
-/sys/kernel/housekeeping/ that allows users to view and update the
-housekeeping masks for each type at runtime. When a mask is updated via
-sysfs, a notifier is triggered to re-affine the relevant kernel
-subsystems and services.
+Remove the __init restriction from tick_nohz_full_setup() and
+tick_nohz_init(). Implement a housekeeping notifier in the tick-sched
+subsystem to handle HK_TYPE_TICK updates. When the mask is updated,
+the new isolation mask is calculated and applied, and all online CPUs
+are kicked to re-evaluate their tick dependency.
+
+This allows the kernel to dynamically enter or exit full dynticks mode
+on any CPU at runtime.
 
 Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
 Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
 ---
- include/linux/sched/isolation.h |  20 +++---
- kernel/sched/isolation.c        | 134 +++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 140 insertions(+), 14 deletions(-)
+ include/linux/tick.h     |  2 +-
+ kernel/time/tick-sched.c | 63 +++++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 61 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
-index 5c07e3e9b8d1..e8fe1cfa5022 100644
---- a/include/linux/sched/isolation.h
-+++ b/include/linux/sched/isolation.h
-@@ -10,21 +10,17 @@
- enum hk_type {
- 	HK_TYPE_DOMAIN,
- 	HK_TYPE_MANAGED_IRQ,
--	HK_TYPE_KERNEL_NOISE,
-+	HK_TYPE_TICK,
-+	HK_TYPE_TIMER,
-+	HK_TYPE_RCU,
-+	HK_TYPE_MISC,
-+	HK_TYPE_WQ,
-+	HK_TYPE_KTHREAD,
- 	HK_TYPE_MAX,
--
--	/*
--	 * The following housekeeping types are only set by the nohz_full
--	 * boot commandline option. So they can share the same value.
--	 */
--	HK_TYPE_TICK    = HK_TYPE_KERNEL_NOISE,
--	HK_TYPE_TIMER   = HK_TYPE_KERNEL_NOISE,
--	HK_TYPE_RCU     = HK_TYPE_KERNEL_NOISE,
--	HK_TYPE_MISC    = HK_TYPE_KERNEL_NOISE,
--	HK_TYPE_WQ      = HK_TYPE_KERNEL_NOISE,
--	HK_TYPE_KTHREAD = HK_TYPE_KERNEL_NOISE
- };
+diff --git a/include/linux/tick.h b/include/linux/tick.h
+index ac76ae9fa36d..40047523ec8c 100644
+--- a/include/linux/tick.h
++++ b/include/linux/tick.h
+@@ -271,7 +271,7 @@ static inline void tick_dep_clear_signal(struct signal_struct *signal,
  
-+#define HK_TYPE_KERNEL_NOISE HK_TYPE_TICK
-+
- struct housekeeping_update {
- 	enum hk_type type;
- 	const struct cpumask *new_mask;
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 97cc41626a33..d9ce26cf31fe 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -9,14 +9,26 @@
-  */
- #include <linux/sched/isolation.h>
- #include <linux/mutex.h>
-+#include <linux/kobject.h>
-+#include <linux/sysfs.h>
-+#include <linux/slab.h>
-+#include <linux/ctype.h>
- #include "sched.h"
+ extern void tick_nohz_full_kick_cpu(int cpu);
+ extern void __tick_nohz_task_switch(void);
+-extern void __init tick_nohz_full_setup(cpumask_var_t cpumask);
++extern void tick_nohz_full_setup(cpumask_var_t cpumask);
+ #else
+ static inline bool tick_nohz_full_enabled(void) { return false; }
+ static inline bool tick_nohz_full_cpu(int cpu) { return false; }
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 2f8a7923fa27..01d62dfc153f 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -27,6 +27,7 @@
+ #include <linux/posix-timers.h>
+ #include <linux/context_tracking.h>
+ #include <linux/mm.h>
++#include <linux/sched/isolation.h>
  
- enum hk_flags {
- 	HK_FLAG_DOMAIN		= BIT(HK_TYPE_DOMAIN),
- 	HK_FLAG_MANAGED_IRQ	= BIT(HK_TYPE_MANAGED_IRQ),
--	HK_FLAG_KERNEL_NOISE	= BIT(HK_TYPE_KERNEL_NOISE),
-+	HK_FLAG_TICK		= BIT(HK_TYPE_TICK),
-+	HK_FLAG_TIMER		= BIT(HK_TYPE_TIMER),
-+	HK_FLAG_RCU		= BIT(HK_TYPE_RCU),
-+	HK_FLAG_MISC		= BIT(HK_TYPE_MISC),
-+	HK_FLAG_WQ		= BIT(HK_TYPE_WQ),
-+	HK_FLAG_KTHREAD		= BIT(HK_TYPE_KTHREAD),
- };
+ #include <asm/irq_regs.h>
  
-+#define HK_FLAG_KERNEL_NOISE (HK_FLAG_TICK | HK_FLAG_TIMER | HK_FLAG_RCU | \
-+			      HK_FLAG_MISC | HK_FLAG_WQ | HK_FLAG_KTHREAD)
-+
- static DEFINE_MUTEX(housekeeping_mutex);
- static BLOCKING_NOTIFIER_HEAD(housekeeping_notifier_list);
- DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
-@@ -99,7 +111,7 @@ int housekeeping_unregister_notifier(struct notifier_block *nb)
+@@ -619,9 +620,14 @@ void __tick_nohz_task_switch(void)
  }
- EXPORT_SYMBOL_GPL(housekeeping_unregister_notifier);
  
--static int __maybe_unused housekeeping_update_notify(enum hk_type type, const struct cpumask *new_mask)
-+static int housekeeping_update_notify(enum hk_type type, const struct cpumask *new_mask)
+ /* Get the boot-time nohz CPU list from the kernel parameters. */
+-void __init tick_nohz_full_setup(cpumask_var_t cpumask)
++void tick_nohz_full_setup(cpumask_var_t cpumask)
  {
- 	struct housekeeping_update update = {
- 		.type = type,
-@@ -109,6 +121,124 @@ static int __maybe_unused housekeeping_update_notify(enum hk_type type, const st
- 	return blocking_notifier_call_chain(&housekeeping_notifier_list, HK_UPDATE_MASK, &update);
+-	alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
++	if (!tick_nohz_full_mask) {
++		if (system_state < SYSTEM_RUNNING)
++			alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
++		else
++			zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL);
++	}
+ 	cpumask_copy(tick_nohz_full_mask, cpumask);
+ 	tick_nohz_full_running = true;
+ }
+@@ -643,10 +649,61 @@ static int tick_nohz_cpu_down(unsigned int cpu)
+ 	return tick_nohz_cpu_hotpluggable(cpu) ? 0 : -EBUSY;
  }
  
-+static const char * const hk_type_names[] = {
-+	[HK_TYPE_TIMER]		= "timer",
-+	[HK_TYPE_RCU]		= "rcu",
-+	[HK_TYPE_MISC]		= "misc",
-+	[HK_TYPE_TICK]		= "tick",
-+	[HK_TYPE_DOMAIN]	= "domain",
-+	[HK_TYPE_WQ]		= "workqueue",
-+	[HK_TYPE_MANAGED_IRQ]	= "managed_irq",
-+	[HK_TYPE_KTHREAD]	= "kthread",
-+};
-+
-+struct hk_attribute {
-+	struct kobj_attribute kattr;
-+	enum hk_type type;
-+};
-+
-+#define to_hk_attr(_kattr) container_of(_kattr, struct hk_attribute, kattr)
-+
-+static ssize_t housekeeping_show(struct kobject *kobj,
-+				struct kobj_attribute *attr, char *buf)
+-void __init tick_nohz_init(void)
++static int tick_nohz_housekeeping_reconfigure(struct notifier_block *nb,
++					     unsigned long action, void *data)
 +{
-+	struct hk_attribute *hk_attr = to_hk_attr(attr);
-+	const struct cpumask *mask = housekeeping_cpumask(hk_attr->type);
++	struct housekeeping_update *upd = data;
++	int cpu;
 +
-+	return cpumap_print_to_pagebuf(false, buf, mask);
-+}
++	if (action == HK_UPDATE_MASK && upd->type == HK_TYPE_TICK) {
++		cpumask_var_t non_housekeeping_mask;
 +
-+static ssize_t housekeeping_store(struct kobject *kobject,
-+				 struct kobj_attribute *attr,
-+				 const char *buf, size_t count)
-+{
-+	struct hk_attribute *hk_attr = to_hk_attr(attr);
-+	enum hk_type type = hk_attr->type;
-+	cpumask_var_t new_mask;
-+	int err;
++		if (!alloc_cpumask_var(&non_housekeeping_mask, GFP_KERNEL))
++			return NOTIFY_BAD;
 +
-+	if (!alloc_cpumask_var(&new_mask, GFP_KERNEL))
-+		return -ENOMEM;
++		cpumask_andnot(non_housekeeping_mask, cpu_possible_mask, upd->new_mask);
 +
-+	err = cpulist_parse(buf, new_mask);
-+	if (err)
-+		goto out_free;
-+
-+	if (cpumask_empty(new_mask)) {
-+		err = -EINVAL;
-+		goto out_free;
-+	}
-+
-+	mutex_lock(&housekeeping_mutex);
-+	
-+	if (!housekeeping.cpumasks[type]) {
-+		if (!alloc_cpumask_var(&housekeeping.cpumasks[type], GFP_KERNEL)) {
-+			err = -ENOMEM;
-+			goto out_unlock;
++		if (!tick_nohz_full_mask) {
++			if (!zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL)) {
++				free_cpumask_var(non_housekeeping_mask);
++				return NOTIFY_BAD;
++			}
 +		}
++
++		/* Kick all CPUs to re-evaluate tick dependency before change */
++		for_each_online_cpu(cpu)
++			tick_nohz_full_kick_cpu(cpu);
++
++		cpumask_copy(tick_nohz_full_mask, non_housekeeping_mask);
++		tick_nohz_full_running = !cpumask_empty(tick_nohz_full_mask);
++
++		/* Kick all CPUs again to apply new nohz full state */
++		for_each_online_cpu(cpu)
++			tick_nohz_full_kick_cpu(cpu);
++
++		free_cpumask_var(non_housekeeping_mask);
 +	}
 +
-+	if (cpumask_equal(housekeeping.cpumasks[type], new_mask)) {
-+		err = 0;
-+		goto out_unlock;
-+	}
-+
-+	cpumask_copy(housekeeping.cpumasks[type], new_mask);
-+	housekeeping.flags |= BIT(type);
-+	static_branch_enable(&housekeeping_overridden);
-+	
-+	housekeeping_update_notify(type, new_mask);
-+	
-+	err = count;
-+
-+out_unlock:
-+	mutex_unlock(&housekeeping_mutex);
-+out_free:
-+	free_cpumask_var(new_mask);
-+	return err < 0 ? err : count;
++	return NOTIFY_OK;
 +}
 +
-+static struct hk_attribute housekeeping_attrs[HK_TYPE_MAX];
-+static struct attribute *housekeeping_attr_ptr[HK_TYPE_MAX + 1];
-+
-+static const struct attribute_group housekeeping_attr_group = {
-+	.attrs = housekeeping_attr_ptr,
++static struct notifier_block tick_nohz_housekeeping_nb = {
++	.notifier_call = tick_nohz_housekeeping_reconfigure,
 +};
 +
-+static int __init housekeeping_sysfs_init(void)
-+{
-+	struct kobject *housekeeping_kobj;
-+	int i, j = 0;
-+	int ret;
-+
-+	housekeeping_kobj = kobject_create_and_add("housekeeping", kernel_kobj);
-+	if (!housekeeping_kobj)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < HK_TYPE_MAX; i++) {
-+		if (!hk_type_names[i])
-+			continue;
-+
-+		housekeeping_attrs[i].type = i;
-+		sysfs_attr_init(&housekeeping_attrs[i].kattr.attr);
-+		housekeeping_attrs[i].kattr.attr.name = hk_type_names[i];
-+		housekeeping_attrs[i].kattr.attr.mode = 0644;
-+		housekeeping_attrs[i].kattr.show = housekeeping_show;
-+		housekeeping_attrs[i].kattr.store = housekeeping_store;
-+		housekeeping_attr_ptr[j++] = &housekeeping_attrs[i].kattr.attr;
-+	}
-+	housekeeping_attr_ptr[j] = NULL;
-+
-+	ret = sysfs_create_group(housekeeping_kobj, &housekeeping_attr_group);
-+	if (ret) {
-+		kobject_put(housekeeping_kobj);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+late_initcall(housekeeping_sysfs_init);
-+
- void housekeeping_init(void)
++void tick_nohz_init(void)
  {
- 	enum hk_type type;
+ 	int cpu, ret;
+ 
++	if (!tick_nohz_full_mask) {
++		if (system_state < SYSTEM_RUNNING)
++			alloc_bootmem_cpumask_var(&tick_nohz_full_mask);
++		else
++			zalloc_cpumask_var(&tick_nohz_full_mask, GFP_KERNEL);
++	}
++
++	housekeeping_register_notifier(&tick_nohz_housekeeping_nb);
++
+ 	if (!tick_nohz_full_running)
+ 		return;
+ 
 
 -- 
 2.51.0
