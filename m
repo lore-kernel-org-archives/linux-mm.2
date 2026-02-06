@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D0F9EE20A6
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 15:29:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 425E3EE20AF
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 15:39:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 892A86B0089; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
+	id 6AC056B0089; Fri,  6 Feb 2026 10:39:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 840566B0092; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
+	id 659246B0092; Fri,  6 Feb 2026 10:39:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 738EB6B0093; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
+	id 5859F6B0093; Fri,  6 Feb 2026 10:39:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CEBB6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:29:15 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F30F6140210
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:29:14 +0000 (UTC)
-X-FDA: 84414415428.09.4D3CD3A
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5B99DA000E
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:29:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m5INnH5Z;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770391753; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 46A646B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:39:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8F86B7310
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:39:45 +0000 (UTC)
+X-FDA: 84414441930.22.DD00464
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 68DD0100017
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:39:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jMtjddz9;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770392384; a=rsa-sha256;
 	cv=none;
-	b=BQ34bVbWLi1drpLf+x9WH3ENlztf1qaBVAKY8o7Hr8vFYbHgIkj32Z9L66Mdk2IsSVfLV3
-	uhS/cCId2f3p/jdH5SCXjsJQ3Esg+2l5xF5OKU0nKBnM8p4s+zVwQq1Ela8+vj6VgiGH6y
-	kXrkfr06TbXMeJ/g9wLBZWuQnIxv2is=
+	b=3m6auvB4vUeK0LhmnnU20Gm5dOGW5FgZPzVtKj2DA86GcahZBB0GVDRdSUMQP93ZZSibAo
+	EZI8kZzMGhVTHs1vurFGgeCL32Oi6zT1UXwwMVnYmM7kYzzEYAR9Dau5g6ceCMbTmNG0kX
+	pNYWuIUtijKISdhc7V3Leg32KyKodt8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=m5INnH5Z;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf25.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jMtjddz9;
+	dmarc=none;
+	spf=pass (imf14.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770391753;
+	s=arc-20220608; t=1770392384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AVUop78ux91cHyjHUfguhbbjHSQTp88xnWvceiJRFLU=;
-	b=nj9/M2CRrM2P/hEELRtVBuS3foNrIn9Mh/tpmlIDcay2tFpi9jDQcntmhlQV8Mn4xIkNCl
-	ggBJK4cw3ygNJVI3d9N00fzi4wsZ75g0JeXVhA03oMCXt/+HE5JBq85dLRoybLF+RloDkQ
-	xsWPR0fupuPjYYrj1A8LedYpG5t5Pho=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=AVUop78ux91cHyjHUfguhbbjHSQTp88xnWvceiJRFLU=; b=m5INnH5ZnhfPYYArkaPSoRjEVh
-	4N46sjbuTj/NJTBffuAyHjahVfHjHwPxqs9xsKjiDJ93ymlkOYxeW5zjGllWxGXLxttZx/pDHdHus
-	3G9tXXoA7o57DwEpwnJeInxVGE7zPbB9w/uuYWX72BNiYd04+XEFBzdMSn3FpsNFrf3nrihKqjPcu
-	w97WSSM18X4OvIpS7DNI9JR+v25D66+vmoYbkEZxtexQGi3Eu15715q1lWJi6bw2HUNnaEcJZlPF6
-	ZRcDqA2OK+oq4K3sCL2qsA5+ZCf1DVCIXDc+02JsSS/FXLaDZQcyWIEX1A8lFalLeURFMRUNG8OvI
-	bYp8Yn2g==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1voNlb-00000005Ozj-3NPX;
-	Fri, 06 Feb 2026 15:29:07 +0000
-Date: Fri, 6 Feb 2026 15:29:07 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: xu.xin16@zte.com.cn
-Cc: david@kernel.org, akpm@linux-foundation.org, chengming.zhou@linux.dev,
-	hughd@google.com, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	bh=YrGY9M4cXXS96KX9gUvIi50yWxDo45tAIdXHDfT0ufA=;
+	b=TUAzSF0rBPF8Q17ArrotQC+bmubIaCM1knTJ8Hd7u7qH+0NaNFjkUb8O4t4s98a5mCzxjV
+	jswcSyOuE4Oi844iNPF9275Ugk0T+tBM6a2hw9ppe8KQM+Qd9HDUauTvc2KR/5zpnTGwJ8
+	qbZjCn3JuehZuKHyScd5H1ZB3ns4drg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6428A60010;
+	Fri,  6 Feb 2026 15:39:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA066C116C6;
+	Fri,  6 Feb 2026 15:39:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770392383;
+	bh=bd90j/sd92aTHdoa8ZXxYROkAssOxPPzV9TCcpN7/4A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jMtjddz91a+R+jFPilZwkdFBMlS6c4CBY/QXiK14FqTKlhaC6lIrzAb9esL+/V7mN
+	 CPatgbnyQ8VHIxZon3FEua0y7JDCG8fb8WfJSAnVBEbcadOS1XwZJXtyoE9W8GWdUI
+	 YcNcVtGqnsPXhMzOF7Tq7aQWX8eB2FjLcMIB0R3M=
+Date: Fri, 6 Feb 2026 07:39:42 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: <xu.xin16@zte.com.cn>
+Cc: <david@kernel.org>, <chengming.zhou@linux.dev>, <hughd@google.com>,
+ <wang.yaxin@zte.com.cn>, <yang.yang29@zte.com.cn>, <linux-mm@kvack.org>,
+ <linux-kernel@vger.kernel.org>
 Subject: Re: ksm: initialize rmap values directly and make them const
-Message-ID: <aYYIw3h35HOqodAb@casper.infradead.org>
-References: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
+Message-Id: <20260206073942.e37ce92b81f0a0c51a1f5b82@linux-foundation.org>
+In-Reply-To: <20260206163850402hEblYPDgLSG4M7CT1ju2G@zte.com.cn>
+References: <a1d5bb75-3222-4863-a24a-4343b25ca6b7@kernel.org>
+	<20260206163850402hEblYPDgLSG4M7CT1ju2G@zte.com.cn>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5B99DA000E
-X-Stat-Signature: axkkxxg8fwinzwtsz5n5unafcaxnaq1y
-X-HE-Tag: 1770391753-992310
-X-HE-Meta: U2FsdGVkX1+Yomx0Uc/0/Rutw51GypSZ+wEUWvsciIbR/W+HEyHtmJeKVTRCPJsQab6+S4E0Rc7ODkzQzsg2ObDrjWZ1TwKVPjBNIl5A2fDKbb3aSMNYj050epteFiImcMp6PTeHi7n3KyOmvUJI0wm4F6qbPxuPR7mas25kwkidcGmn3Q598QCMjLWEm3y4PiDohJcFVopg3H5UieVRvuY4EzocerL333yTcY5C6o5IdvKNmd7OImHhaE1dSZZ+/eyhZienjCC/qPAOaGEU6Sp/ygjxQYXrC8Z1zKPxQl3l48tIMTBrJajhWR0do38X/LEQfjM3YuhlKcI/zTJWEOgl+VLbgn8EnVZWM968GnASa3ZQ9NDJIHt00m27Tyya2OKi7hr2oAYG1wMTgIp/uGEKK5qa/ag/oqvY7Qspf1sP/x4J737mLiH5bN/YdSlKpMoxohQjQP3WNhWv7ecHOXHAIVgSo8CqunAPwAvRDSOptH+lrbNesWE5A9kX7Buve5+JIFQz32iI9ij8GhduFJRmIsRQ0FPz2sVIk/nKcPVVJP7Xd0oRSXq89yVNIFAA9Te4JXL5Zm+MPRri2FcDgHuZc1Pg2Kfe3A/aHTrELVSPDFbKZ9S1Md9rVDxLraPE6ynUo33ZEzIszfygXHLUbvFWAYKb+UsTcvrs+9+ld/mjwgC8pPQXzJuuSmiwn/JjbdlG3RvYOHsh6mvkWX2hZE9BVgwchdXGs9cZXTDIb2b48f0wbLpBKRWjcXkzxjW3Z6lZTCBLH60ziAKzI51oXvnhvrBhURXuiyxzNFHIlu0+6GCrh7y7fnIc8OdVb2KoELKWLmGpjr+7Lsux26riqkx6+zr57vfX9IotAHL7jGaqtmElF30S5k1DabkIJbDyflpbOXiSy1468gnmfNxbkqOXj1PmnwEz4isj3x0N+I87zT4Qm2SzCvUtwKBUetkdLObj10nD2GxooU7q9d9
- 6ilWxzVn
- /0pIDs5Vsj592tKr0ErRlknk7Kp9mPWDw8TVh2RIk/E08do8ltlQRfhWHTFq6H1Gwl074FQD13pZXbSXFaKMDXU2n8is4U6hxWgxDcHu5iOu4DQzFNjAVPilfQG9EXeqv5eAYazoJeghKlBm4UFnIPU0BWTcLQ//HkIuCko78VeryQCEBxcPeO8ojZg5owlTAHK+09v4TvtyOTp2V/g1mS0CqZ/GfTkVmwKC8HZE1RLKXX5890iUuGc+D/+DJHKNX9HsE7BXs8cj2h0OIA19pjzqhxz6U69Snrcdogdv8os5L4m/5mFgLL8WwYg==
+X-Rspamd-Queue-Id: 68DD0100017
+X-Stat-Signature: iz1b4je53tfytu995anht8p3c4ym3cw3
+X-HE-Tag: 1770392384-120943
+X-HE-Meta: U2FsdGVkX199lsMTxfot/ZcApJu32rxQW/eRuXD0NY0EoU9ik6fk+6BE3CJiJjBIr4BU+1unijXSCO9OjYHJj9cfoD41cvUzlxDQTKRP2AWeaYlUijzsfP5M4V2iaSEvLBUdajsUXopzaqLXdG11d99YyUn0H6fVQnHWPnGBkVozJvTpWd9xQE71v0Gg1KR21EX8B+/mzUzInf3nI38luu/w/PdsVKtzVXqBJS43ctyGGShiIY9CZE3dF5w55WsDDbvpoix0pnqS4Mg+aX9KwvrCUbN4bACkkBffaIVckNL8dCJVuJsshZdpZZOx7158XFGFUB6sgH/Rtah8PPCHYkMnjjcY+gSo0gY+tgLEe2y6P0X8dTfvTM0kv2muhUmjS8sKoEv2bfubUQN1jIX2xD0QBkT4GWBxATfIVljiJP1gjKbZ48uz+sq9xxF5SoPOQhdnFHLT7Q3kPxDU7BJ0pabbE/5+lA8zHGO/YHRUDGH6Q2xU0quQalPrtxOC8vqRHfmmgAjzmPkJQL8YIHnA+TYxYRwXgEwXtQFEGnAMyIwQIrJfYR0ol3WOA8FiLqmvPIrRcG0incqYB7H999laGcsUGgiptZx0acFOPCCFAlvp+fdfJNTiCLgqQL8KEd0nIhAltpNom5iiFnL6Yok2CXhtBNwf+8gUspXYtnnBSnT4aNbAT2KOX6+O4eo1e7TcKg0GSwvnKyyp0SQuhsMmNTifvLzh3S2VsjRSKu/T1A+CI2IBysExiH2KESPCoTcYpIXlPCHe5myuH5MBpnObgLeTcFLsGsNVh/XXsqy+cE71bDIMJPQnZ1RNp5LomDNPHNe30sk8miWcCYCkmCKMQLryHqYKn4uWPS2Am9NGYSHEmba9wzv+0zHeNw6JozRgHiHgbhMD+04H5C+xf53SrOQ6IIYDZ9pCmZ89Hlzy7zk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,16 +90,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 03:22:54PM +0800, xu.xin16@zte.com.cn wrote:
-> make them const to make code more robust. Besides, since KSM folios are always
-> order-0, so folio_nr_pages(KSM folio) is always 1, so the line:
-> 
-> 	"pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;"
-> 
-> becomes directly:
-> 
-> 	"pgoff_end = pgoff_start;"
+On Fri, 6 Feb 2026 16:38:50 +0800 (CST) <xu.xin16@zte.com.cn> wrote:
 
-How do you know KSM folios will always be order 0?  I don't.  NAK this
-change.
+> > > 
+> > > Fixes: 06fbd555dea8 ("ksm: optimize rmap_walk_ksm by passing a suitable addressrange")
+> > > Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+> > 
+> > The patch does not seem to be upstream / in mm-stable yet.
+> > 
+> > Can you resend the original patch with these changes included and the 
+> > reproducer referenced in the updated patch description?
+> 
+> Sure, I thought the original patch was merged in linux-next.
+
+I've recently moved the original series into mm.git's mm-new branch, which
+isn't included in linux-next.  Because it appeared that the v2 series
+wouldn't be available in time for the next merge window.
+
+It is a wonderful performance improvement, but I think it's best that
+we revisit the series for the next -rc cycle.  So can you please
+integrate this new change into "ksm: optimize rmap_walk_ksm by passing
+a suitable addressrange", rework the changelogs to reflect the
+discussion thus far and resend the "KSM: Optimizations for
+rmap_walk_ksm" series?
 
