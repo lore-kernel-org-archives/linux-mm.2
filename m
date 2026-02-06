@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 888AAEE6B60
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 21:11:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16322EE6B5E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 21:11:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C0D5C6B0089; Fri,  6 Feb 2026 16:11:34 -0500 (EST)
+	id 7D4516B0092; Fri,  6 Feb 2026 16:11:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BBB496B0092; Fri,  6 Feb 2026 16:11:34 -0500 (EST)
+	id 77F956B0093; Fri,  6 Feb 2026 16:11:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A8FD36B0093; Fri,  6 Feb 2026 16:11:34 -0500 (EST)
+	id 681EA6B0096; Fri,  6 Feb 2026 16:11:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 92BA56B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 16:11:34 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 101DF8B135
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:11:34 +0000 (UTC)
-X-FDA: 84415278108.23.567C228
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5396910000D
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:11:32 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QuPDUGdp;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 57D776B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 16:11:39 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EACEE140357
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:11:38 +0000 (UTC)
+X-FDA: 84415278276.19.EA92B87
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EB4B940011
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:11:36 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HQqlC174;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770412292;
+	s=arc-20220608; t=1770412297;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jqKk9fme50qILT6TL36UAcLubp+BM9oPsU/UvwUa7vI=;
-	b=RQUgHYG2n1F5DdwczcJLUAYCFXj8X48DsKiYWtoQDI633osGVaoniLBGWJzwidD8ZzoSkG
-	Wwl4M3LtAhyFtyODvmdXlEJX9uZbXAoGniiJSMcE/hk2PmY5p6x1qE7zQxfpbR6GUjGC5x
-	X16rKEZmTITe0HdgJnQI2gauqJp3vM0=
+	bh=xf2CA3Q0xMY03NUgnPHCMc6U7qz2mHQ/rlWk9GQ8TvQ=;
+	b=iplNEA5RfmyhJartaKHirhCO+Bgq8YZ7sgvG1cPduYFAm1622C2IqDo/hiAtM2lAC2h1ba
+	a4ZYyd5zzCBrJxwxR0Q1SJ8kNm2qt9qP6SFPeGOhoRxxOlfuGPfXDZGkhpsG3HgY/fQB/q
+	pLHAFIyQFbdNEEn7ufFm+QfZ5xDftxs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QuPDUGdp;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HQqlC174;
+	spf=pass (imf27.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770412292; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770412297; a=rsa-sha256;
 	cv=none;
-	b=yscilibwodFuAA51lqgZkiMzjoFEtc+NaG8tUgrRN9oU/vHYTRn3OVoYxa7dEZjsGB8YEO
-	rOTqxwUSN8lLvqc4756FUZ/CxaqPaka9RUuJKClh1F6csPb21iRonddoxBdQ2GBoU15w0A
-	cEUnRF7YhYod5JrFyXSnp1v5uUd+ffU=
+	b=TWLQSvDOFUt4ywpqnoX7TeMr0tLkZ4E1IfhBCvUMODkoUrDz/tGstuZFe2omewsEGWs9Yq
+	QwSENAewLwfMysxdql+ArFqZIOdIb51NaWEgkzojG/+0w7HKdtF7ThLij8QXpQmLN/G4rB
+	Uock/nbaMQLdlpHU6ApYmKZ2/9xhCaI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D97D4600CB;
-	Fri,  6 Feb 2026 21:11:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 087C7C116C6;
-	Fri,  6 Feb 2026 21:11:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id DD4504022D;
+	Fri,  6 Feb 2026 21:11:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3089EC16AAE;
+	Fri,  6 Feb 2026 21:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770412290;
-	bh=tGpkTbkQCs2yz/lXZr74M2PLP6TLYGnHySlF4MFb55o=;
+	s=k20201202; t=1770412295;
+	bh=PrcApbk7BCNSPsQwnef2I6IdaZ2i07Y2ln8fzlwV9sQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=QuPDUGdpXG+jRKfCI93WnWBECSxeffdZgPnpEszWgv2T1bPinnDaMUa+lOjEJngmY
-	 zjuGhhZTfHXOgl0WUz0nFh7EM4nnmJRk2o5eSyI1ESCu8Dhka8o8mm+mjeYCHbrTwT
-	 JUgZ5dWWKI5ShNDHb/LMGXULTzY0OpC+4Bb5uc+tmBE37hqGFuz87LD+XFRrrglgEr
-	 4bAdKCf54TRYUSm5PHEaDoC4PX9V2sZn1w9tWREeV2+4BxsyeY7c/ENq2nRi/Sz2qJ
-	 g+lpBVj6c+1R4YRUXbk6GYIG8tKARhbARaaKnpS+dDXGbWZrG8O207eoMumiTfF/lB
-	 fS7WMxTZI2ydQ==
+	b=HQqlC174WwKjwtjLP1BUTMoxieROheLgxdft+OGqysEcip0EvNQ1MMicLZBsg6Ygl
+	 0iHMxOT9CHUgO55F77L5XNmNSzdo81rEEkzGE8xd5XuR6dcrtxvo41iJmz0jZbvVi/
+	 /FmqFiqb4mU+1saT1ogpOGPmK9eg+Wcu12rbxKwb/QuDF6Z0bdlVNhtRICOa91zibI
+	 AIIEZ1BL3GbaC1kvTZ2uVx1GtrsSirEUpeT+AWr9yXPjeC/cU67gaWt6VMSh06H69b
+	 KgYPNteuFvt6eYQY5iRbMOTdIXUD5GbtjQlWL4kd1XifwIFIYNRcae9LeIdBkEE6kW
+	 JUi5yQkVOrlvw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Fri, 06 Feb 2026 22:10:54 +0100
-Subject: [PATCH v2 08/11] rust: xarray: add entry API
+Date: Fri, 06 Feb 2026 22:10:49 +0100
+Subject: [PATCH v2 03/11] rust: xarray: add `contains_index` method
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260206-xarray-entry-send-v2-8-91c41673fd30@kernel.org>
+Message-Id: <20260206-xarray-entry-send-v2-3-91c41673fd30@kernel.org>
 References: <20260206-xarray-entry-send-v2-0-91c41673fd30@kernel.org>
 In-Reply-To: <20260206-xarray-entry-send-v2-0-91c41673fd30@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -88,31 +88,30 @@ Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=21192;
- i=a.hindborg@kernel.org; h=from:subject:message-id;
- bh=tGpkTbkQCs2yz/lXZr74M2PLP6TLYGnHySlF4MFb55o=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBphljo+HSkSPWQgXAH0o0Hr5UYAUqzIz990zCWT
- ShAfYdQhOuJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYZY6AAKCRDhuBo+eShj
- d+OPD/91TqFSj+c+q8fj/Fi1NQOKnSpT4wmiEHIgrUtQGTodDgDNAzsDBOJeG4/2kJNOE8FD28Z
- xOnjYAq4xnCgao/LaKfeDYXtkcaOzEs+pRoTXYV3PvU/XWdo8X2Hjw7SrRrNN00Pn1e1wb74gJ0
- zg29yImVFRHsiCkgXZWtSjCD1pgYlMJ7ZKDo8MT2Mq+bnuuUVjOueFe0jwaN+VMTNHOllcfKOe5
- Ew14uZZ5MY4P/n6lHxsEK6U/AZIuybzfVSmtVH+xiQ149btU6SFY62V0PqMZEOw8nQRf911zmEl
- g0GXxajdlmsiQCvdfzSogvSI1T3txaXiPLW4KFQcQDfZ4k39k+EvVJXwrr1Jne19Lra4AYZwaV8
- CsiHslLkfXrp8RvuSBOjupDgDPKZjpN95lpgynnGXmBsHmRzDtYj9gWqHnJP2Rfe/js0koJoRVE
- uhFDJcJlZ80QzZ55Txa+obw3OMzURDuIRiFkBvm5bB7sCAXAKeayVkXtJvcDEZyH6f7mu/8FmM9
- fh+xMXFMYuXNwoWWv8VjQZJ7vsKjHVtkpB7F0Wm3mX23u1ry6eBpq51Ibd7Mz6meo7lrtKndGkA
- kJsi8ltlPa4aPghRInIJbXBrmLQf0ibEsspDUIkLUlsnwr2XQijCaXp4ZqeIvZWcYDl5T9PvUWI
- TutdKnvBSe3FaHg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1538; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=PrcApbk7BCNSPsQwnef2I6IdaZ2i07Y2ln8fzlwV9sQ=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBphljjynnLtfrU8Iiz9Gm5FPAFGgN+NLu89L3zu
+ FUdyPDQUsCJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYZY4wAKCRDhuBo+eShj
+ d1WtD/0dSV1caS9hKFf19rq5n4cibJ7yErP+DuvjTNfhG+cx9BGtQf/Ivg9WhmB6dKF1/Ff/ZNE
+ fD7LuuYM708jMZ/Ag3QLJ6bZhYFCBVFMXU7uc1O6puBKeYx/LAuPoocpO5LcFPP/bt1ZEw8WUF0
+ m7zzmtHnXb+6ujkjd2gl6hBhGgSgOGhvdJyYX3ULUUkVXe8vN5TpwXq/IlUw+Os6dWO0Z8QNI9L
+ 49N/R7i9NuiZ19l2L7xKVsv9nEZmAAA6gJmAdAoeINuz0Q+e9PxyqMi9Ew1aBErPXVPOxMOchq7
+ 4ohQLw/lItGvp12xabHAIbxlKUV9FMDxccovc/mki8TucfkGlQtmlMhLwGS+iQtmMw6havc9ndR
+ Pf5qTpoqj69CNxpXyvsSUWI+xc49m7weMQ8a5zeIO/g2XlBsFrLQwnVtrhsHGKtxqg4Qo02NclV
+ CmO6qLnLmsf4hNzCsYGRhK5mdwew7WujEbd5hlufx+YNqZ6a8kGCXRhAvh0c2OPAgDXd0RCHtnG
+ Qy4kA65FWIqUx5woBVUWuCup53T3cNzSUyNmaXvwWMoXZyaDn7aJaQ+HLJyHHR3bZ7tqvodt018
+ KGZAdtO2i563HF4hHXqFw6msci9S/h4ojJZJCwvUaxYItpXWU1zcyOWq3rFcLZwLhGoZnQSJbel
+ nenKo4yG1+Wh9Yw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5396910000D
-X-Stat-Signature: tyx1z4gstjtt8m9ye13rk63x1qhkfpq4
+X-Stat-Signature: d35twhh9nya9f6ioai37ehrtmx97f58c
 X-Rspam-User: 
-X-HE-Tag: 1770412292-132577
-X-HE-Meta: U2FsdGVkX19l/49UgTLt5tgQRDByBvY36g0EY2u5JGMLEaeuwOhpk55ept02HSUFeQ9U2e3OxW2H76Nf46E0Md0+ZOhdW+s3IqdhTIzHUb2+7YZua5JD4IEpq/ZSfs3VGHl/ZFrWIRphbA/46w/a1e4fiUKLp0ucBwcsjccRsanJwyk0hczOlw+GfuOKEKG2/roQyTGmiwZu+wzAwbg5NTNIJfXfhl/NeW3cwkINepxeCBaY8NkSVzqbv9Kel9/9+j65y9j+9iHdHNkf11FHE8ugItR6toJPKudpvWS1jA8mkTJM3saouS7YyQpDnnH/AVKVCCzulxClGMBMRjO+ymUAi6zLBxdUvY6eP2uX6E1WiMIhCI/j3wbLXNRU5HOrIXsN6GE//zECB93E4fNz3bqRknQYmm6fqIiFlSW86JWuNbWvGpdJl/MpBSdFUEehJFMVDtn6p+CB3tD5xbo3vv3BBsInnFxrRFG1IP9GTwp4GxW+NOLXeb4lrMttXgejEP3dxO5UjFz4EQaOnbnjDZEmGWDTiKHSM1mYBd4Gy2+6Fga7ufqruD1HJTO7LJhjTtu88dKonKlH8Vl8YisksFF7Ss5eExDznrMcDK4k/d8L8+/Zdz5Jc8x+ngNiWIRWcHAJtlgtJp75Ash79xATA8ylnd4kY+h+X4FNbQd1qszKlS+vxEyeTbphw1g+R3J5O9BKk9n6sjf8gsEVV9ZruPOkaN+8BSP/Az3bU+y5px+Mr54GP0xyvuaJmwUhT5BKC9jOQ4v2iS50w9gkSkUgGBMIA50aK3753FlqsIYJ5OHqioFwdjdWl4WhkxgQKGaS0sthMSq6h6R9XEu/nE3RkiSyGPasPU4P2GdFSUwmeDgT/UTw0z0PE58dLBZSa3i4+EoK/TSEXV1ppWYP05Vt8kPEGbs3ZZG/nGuLfwAtkPZsnRx9n51illNElu6cVABuQ0hrUGNFR0OUDvDOQ9Z
- 3E7nT8PC
- Kaw0DElU1cYKrsl5lNi26z6fo6sDGuoP4Mw0lLaPJzUsMFnOXO8tbsCoo1/voXXbpA47fnTP2H3vZylRmyVo4k9QYxOoLNztKUkGb970gwYO6BFz322u12p9srBSwzIrMd112hV0b8DxezdOX4B+qzOc6jlfzCdzqZ7BrfF78hifD0bdAXgG9EmHfJZV/y838OeWq4HeG9AlSYrtst0ilzEKgtbFa1jek1vGzEwXCpP7IKLdA27hU7s7r1Yok0M30CSwI7QGWxOV5V6tGheoXQybpdVOQDldnYTBonSUp40PYeS2/5Yxs5uBpBnN+QZo0DhaB8VKdtCtFwzZBBB4VjKB9t3SHIPtik5pTM9xvHV3Az0Pq16tLCSOZ5DFQbcTECV/DysDJznyQ+ZJb/Wfvfn8p819+yzFpKmJg4sZY9x1ZCv658Hdzdt8aHZS3ed3RhsEvuyj8J25M1JA=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EB4B940011
+X-HE-Tag: 1770412296-219306
+X-HE-Meta: U2FsdGVkX18f2NMOi6pCRKKfDa06tOn3e0T4Ds67X1qVEPd3kYwMxa74cjmrdgyT6bGfkEYtYQLvHya6OV+ouQOBfAg6fWNRTLfh+8zynuUjJbRFRV3Avk0E5mQ+KxJ0RDIRNWDWuJHnys/S0xEn6Cc2jARFYZDSYtVvoVn1nC1QfpjhANUcNi41MjLEHX2hfIA2wNmW3MHfY11EqbG3fC7smzkGAv0CqAn1Taia7imjjTYsLP5FLOkarsqtmyoeeiukZxPn8GUknjy4bxVp+ni3Fc4K9ePT554GtT0Q1mPwVuLOrCWV+EtPmcUPNx1rSaX42w9jQ2b8sKp91MXTct+J91Xw2T5QHWdd1N7P5OahRQnRd2bbKNVYHOA6mGGxwQjfvN9MFSQGYSv3jvo5BVfx0ch3sDgeKlscDb8W3SvRMbPYWqOvUh/L5GLDS9vf+l4dqQQo6OQe0lvZhNV+fcXShRxhKC4711EV5I6u41o4vQqG0veYoXdwsZ61W7O3XQUTdJJHEKL3PI4TkHfjoX27/189EZEkBZO4u61edxUEBGQbuWGjm/CFQPyeZ3ua+Gj7udzYoe04KsZvOtk0U/C83YA70wr3rYCFMRezAEztGdhu+fwhU8H6roTz4VUCUsQvuT5xZimswqj4wXN4ohN+KK1AU8x9GkieIP1ACmniwXLdywzHMblRgpnEl0P9l9Dgj+jLDj7m7tN+GVcQShKCejS74HWmPaYLiCMfAcKbFZiwHBHa/l5Luz4/Fr+MHQH4Yt8E9HH97CZcrzIslINmld/sNHKwEBybcDyGYOrfUkuzAznd8/Dn2EVeYAOa4ABp3r6zUS5IN95P4N+4l7Y3nFmMZ7vPZgsV4K92JECTVnKDPaFMfj0s1CyQ7GGQ6HIJdcLDp1ADFJVX07ds9l0uPpR1lTnTKYYZkjAVPb7A+O2lWaIFdqjGHlaVm+kCkvGlChBC1JfLrUYqoYC
+ lbIji01I
+ 5Z0LbwLQJYNPU1wjnM04bPBGodSzFNAPaJanke4QcPDaRNL6xs+XUeSpNNGZG7LQHvM3yfICF7Y4GKFC9kQiA/qwaBD4ByeHJI/DvkqKM7VPRXyLIPOuEZnjJQHaOld0sZHWv23MkNzUhIHEQrlS5xR8H0f62alnn9ktElPfElrOvrzlO/59rrVy/PPaoLiLUYQvVqWez/hJIvGGnWDAvo0Sd3QCJJLhVRkyRPCpzVlnPNAFxsKutry/wMyRcrghRtwLxC2bJazR+GS30YxrtLKOwbrFQBxpboPSQ0n1g7oHikNO6GtJFq+5xegusp/V2B+OwCsXEPeJhR0p6QaiwwbLGFyZ+1tA+cc8CZ6E6qlPApGg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,598 +120,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add an Entry API for XArray that provides ergonomic access to array
-slots that may be vacant or occupied. The API follows the pattern of
-Rust's standard library HashMap entry API, allowing efficient
-conditional insertion and modification of entries.
-
-The implementation uses the XArray state API (`xas_*` functions) for
-efficient operations without requiring multiple lookups. Helper
-functions are added to rust/helpers/xarray.c to wrap C macros that are
-not directly accessible from Rust.
-
-Also update MAINTAINERS to cover the new rust files.
+Add a convenience method `contains_index` to check whether an element
+exists at a given index in the XArray. This method provides a more
+ergonomic API compared to calling `get` and checking for `Some`.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- MAINTAINERS                 |   1 +
- rust/helpers/xarray.c       |  17 ++
- rust/kernel/xarray.rs       | 123 +++++++++++++++
- rust/kernel/xarray/entry.rs | 367 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 508 insertions(+)
+ rust/kernel/xarray.rs | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 0efa8cc6775b7..8202515c6065b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -28361,6 +28361,7 @@ B:	https://github.com/Rust-for-Linux/linux/issues
- C:	https://rust-for-linux.zulipchat.com
- T:	git https://github.com/Rust-for-Linux/linux.git xarray-next
- F:	rust/kernel/xarray.rs
-+F:	rust/kernel/xarray/
- 
- XBOX DVD IR REMOTE
- M:	Benjamin Valentin <benpicco@googlemail.com>
-diff --git a/rust/helpers/xarray.c b/rust/helpers/xarray.c
-index 60b299f11451d..425a6cc494734 100644
---- a/rust/helpers/xarray.c
-+++ b/rust/helpers/xarray.c
-@@ -26,3 +26,20 @@ void rust_helper_xa_unlock(struct xarray *xa)
- {
- 	return xa_unlock(xa);
- }
-+
-+void *rust_helper_xas_result(struct xa_state *xas, void *curr)
-+{
-+	if (xa_err(xas->xa_node))
-+		curr = xas->xa_node;
-+	return curr;
-+}
-+
-+void *rust_helper_xa_zero_to_null(void *entry)
-+{
-+	return xa_is_zero(entry) ? NULL : entry;
-+}
-+
-+int rust_helper_xas_error(const struct xa_state *xas)
-+{
-+	return xas_error(xas);
-+}
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 656ec897a0c41..8c10e8fd76f15 100644
+index d9762c6bef19c..ede48b5e1dba3 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -13,11 +13,17 @@
-         NonNull, //
-     },
- };
-+pub use entry::{
-+    Entry,
-+    OccupiedEntry,
-+    VacantEntry, //
-+};
- use kernel::{
-     alloc,
-     bindings,
-     build_assert, //
-     error::{
-+        to_result,
-         Error,
-         Result, //
-     },
-@@ -251,6 +257,35 @@ pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
-         Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
+@@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+         Some(f(ptr))
      }
  
-+    /// Gets an entry for the specified index, which can be vacant or occupied.
++    /// Checks if the XArray contains an element at the specified index.
 +    ///
 +    /// # Examples
 +    ///
 +    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
++    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
++    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
 +    ///
++    /// let mut guard = xa.lock();
 +    /// assert_eq!(guard.contains_index(42), false);
 +    ///
-+    /// match guard.entry(42) {
-+    ///     Entry::Vacant(entry) => {
-+    ///         entry.insert(KBox::new(0x1337u32, GFP_KERNEL)?)?;
-+    ///     }
-+    ///     Entry::Occupied(_) => unreachable!("We did not insert an entry yet"),
-+    /// }
++    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
 +    ///
-+    /// assert_eq!(guard.get(42), Some(&0x1337));
++    /// assert_eq!(guard.contains_index(42), true);
 +    ///
 +    /// # Ok::<(), kernel::error::Error>(())
 +    /// ```
-+    pub fn entry<'b>(&'b mut self, index: usize) -> Entry<'a, 'b, T> {
-+        match self.load(index) {
-+            None => Entry::Vacant(VacantEntry::new(self, index)),
-+            Some(ptr) => Entry::Occupied(OccupiedEntry::new(self, index, ptr)),
-+        }
++    pub fn contains_index(&self, index: usize) -> bool {
++        self.get(index).is_some()
 +    }
 +
-     fn load_next(&self, index: usize) -> Option<(usize, NonNull<c_void>)> {
-         XArrayState::new(self, index).load_next()
-     }
-@@ -312,6 +347,72 @@ pub fn find_next_mut(&mut self, index: usize) -> Option<(usize, T::BorrowedMut<'
-             .map(move |(index, ptr)| (index, unsafe { T::borrow_mut(ptr.as_ptr()) }))
-     }
- 
-+    /// Finds the next occupied entry starting from the given index.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(10, KBox::new(10u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    /// guard.store(20, KBox::new(20u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    ///
-+    /// if let Some(entry) = guard.find_next_entry(5) {
-+    ///     assert_eq!(entry.index(), 10);
-+    ///     let value = entry.remove();
-+    ///     assert_eq!(*value, 10);
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(10), None);
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn find_next_entry<'b>(&'b mut self, index: usize) -> Option<OccupiedEntry<'a, 'b, T>> {
-+        let mut state = XArrayState::new(self, index);
-+        let (_, ptr) = state.load_next()?;
-+        Some(OccupiedEntry { state, ptr })
-+    }
-+
-+    /// Finds the next occupied entry starting at the given index, wrapping around.
-+    ///
-+    /// Searches for an entry starting at `index` up to the maximum index. If no entry
-+    /// is found, wraps around and searches from index 0 up to `index`.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(100, KBox::new(42u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    /// let entry = guard.find_next_entry_circular(101);
-+    /// assert_eq!(entry.map(|e| e.index()), Some(100));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn find_next_entry_circular<'b>(
-+        &'b mut self,
-+        index: usize,
-+    ) -> Option<OccupiedEntry<'a, 'b, T>> {
-+        let mut state = XArrayState::new(self, index);
-+
-+        // SAFETY: `state.state` is properly initialized by XArrayState::new and the caller holds
-+        // the lock.
-+        let ptr = NonNull::new(unsafe { bindings::xas_find(&mut state.state, usize::MAX) })
-+            .or_else(|| {
-+                state.state.xa_node = bindings::XAS_RESTART as *mut bindings::xa_node;
-+                state.state.xa_index = 0;
-+                // SAFETY: `state.state` is properly initialized and by type invariant, we hold the
-+                // xarray lock.
-+                NonNull::new(unsafe { bindings::xas_find(&mut state.state, index) })
-+            })?;
-+
-+        Some(OccupiedEntry { state, ptr })
-+    }
-+
-     /// Removes and returns the element at the given index.
-     pub fn remove(&mut self, index: usize) -> Option<T> {
-         // SAFETY:
-@@ -422,8 +523,30 @@ fn load_next(&mut self) -> Option<(usize, NonNull<c_void>)> {
-         let ptr = unsafe { bindings::xas_find(&raw mut self.state, usize::MAX) };
-         NonNull::new(ptr).map(|ptr| (self.state.xa_index, ptr))
-     }
-+
-+    fn status(&self) -> Result {
-+        // SAFETY: `self.state` is properly initialized and valid.
-+        to_result(unsafe { bindings::xas_error(&self.state) })
-+    }
-+
-+    fn insert(&mut self, value: T) -> Result<*mut c_void, StoreError<T>> {
-+        let new = T::into_foreign(value).cast();
-+
-+        // SAFETY: `self.state.state` is properly initialized and `new` came from `T::into_foreign`.
-+        // We hold the xarray lock.
-+        unsafe { bindings::xas_store(&mut self.state, new) };
-+
-+        self.status().map(|()| new).map_err(|error| {
-+            // SAFETY: `new` came from `T::into_foreign` and `xas_store` does not take ownership of
-+            // the value on error.
-+            let value = unsafe { T::from_foreign(new) };
-+            StoreError { value, error }
-+        })
-+    }
- }
- 
-+mod entry;
-+
- // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
- unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
- 
-diff --git a/rust/kernel/xarray/entry.rs b/rust/kernel/xarray/entry.rs
-new file mode 100644
-index 0000000000000..1b1c21bed7022
---- /dev/null
-+++ b/rust/kernel/xarray/entry.rs
-@@ -0,0 +1,367 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use super::{
-+    Guard,
-+    StoreError,
-+    XArrayState, //
-+};
-+use core::ptr::NonNull;
-+use kernel::{
-+    prelude::*,
-+    types::ForeignOwnable, //
-+};
-+
-+/// Represents either a vacant or occupied entry in an XArray.
-+pub enum Entry<'a, 'b, T: ForeignOwnable> {
-+    /// A vacant entry that can have a value inserted.
-+    Vacant(VacantEntry<'a, 'b, T>),
-+    /// An occupied entry containing a value.
-+    Occupied(OccupiedEntry<'a, 'b, T>),
-+}
-+
-+impl<T: ForeignOwnable> Entry<'_, '_, T> {
-+    /// Returns true if this entry is occupied.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    ///
-+    /// let entry = guard.entry(42);
-+    /// assert_eq!(entry.is_occupied(), false);
-+    ///
-+    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    /// let entry = guard.entry(42);
-+    /// assert_eq!(entry.is_occupied(), true);
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn is_occupied(&self) -> bool {
-+        matches!(self, Entry::Occupied(_))
-+    }
-+}
-+
-+/// A view into a vacant entry in an XArray.
-+pub struct VacantEntry<'a, 'b, T: ForeignOwnable> {
-+    state: XArrayState<'a, 'b, T>,
-+}
-+
-+impl<'a, 'b, T> VacantEntry<'a, 'b, T>
-+where
-+    T: ForeignOwnable,
-+{
-+    pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize) -> Self {
-+        Self {
-+            state: XArrayState::new(guard, index),
-+        }
-+    }
-+
-+    /// Inserts a value into this vacant entry.
-+    ///
-+    /// Returns a reference to the newly inserted value.
-+    ///
-+    /// - This method will fail if the nodes on the path to the index
-+    ///   represented by this entry are not present in the XArray.
-+    /// - This method will not drop the XArray lock.
-+    ///
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// assert_eq!(guard.get(42), None);
-+    ///
-+    /// if let Entry::Vacant(entry) = guard.entry(42) {
-+    ///     let value = KBox::new(0x1337u32, GFP_KERNEL)?;
-+    ///     let borrowed = entry.insert(value)?;
-+    ///     assert_eq!(*borrowed, 0x1337);
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn insert(mut self, value: T) -> Result<T::BorrowedMut<'b>, StoreError<T>> {
-+        let new = self.state.insert(value)?;
-+
-+        // SAFETY: `new` came from `T::into_foreign`. The entry has exclusive
-+        // ownership of `new` as it holds a mutable reference to `Guard`.
-+        Ok(unsafe { T::borrow_mut(new) })
-+    }
-+
-+    /// Inserts a value and returns an occupied entry representing the newly inserted value.
-+    ///
-+    /// - This method will fail if the nodes on the path to the index
-+    ///   represented by this entry are not present in the XArray.
-+    /// - This method will not drop the XArray lock.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// assert_eq!(guard.get(42), None);
-+    ///
-+    /// if let Entry::Vacant(entry) = guard.entry(42) {
-+    ///     let value = KBox::new(0x1337u32, GFP_KERNEL)?;
-+    ///     let occupied = entry.insert_entry(value)?;
-+    ///     assert_eq!(occupied.index(), 42);
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn insert_entry(mut self, value: T) -> Result<OccupiedEntry<'a, 'b, T>, StoreError<T>> {
-+        let new = self.state.insert(value)?;
-+
-+        Ok(OccupiedEntry::<'a, 'b, T> {
-+            state: self.state,
-+            // SAFETY: `new` came from `T::into_foreign` and is guaranteed non-null.
-+            ptr: unsafe { core::ptr::NonNull::new_unchecked(new) },
-+        })
-+    }
-+
-+    /// Returns the index of this vacant entry.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// assert_eq!(guard.get(42), None);
-+    ///
-+    /// if let Entry::Vacant(entry) = guard.entry(42) {
-+    ///     assert_eq!(entry.index(), 42);
-+    /// }
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn index(&self) -> usize {
-+        self.state.state.xa_index
-+    }
-+}
-+
-+/// A view into an occupied entry in an XArray.
-+pub struct OccupiedEntry<'a, 'b, T: ForeignOwnable> {
-+    pub(crate) state: XArrayState<'a, 'b, T>,
-+    pub(crate) ptr: NonNull<c_void>,
-+}
-+
-+impl<'a, 'b, T> OccupiedEntry<'a, 'b, T>
-+where
-+    T: ForeignOwnable,
-+{
-+    pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize, ptr: NonNull<c_void>) -> Self {
-+        Self {
-+            state: XArrayState::new(guard, index),
-+            ptr,
-+        }
-+    }
-+
-+    /// Removes the value from this occupied entry and returns it, consuming the entry.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    /// assert_eq!(guard.get(42).copied(), Some(0x1337));
-+    ///
-+    /// if let Entry::Occupied(entry) = guard.entry(42) {
-+    ///     let value = entry.remove();
-+    ///     assert_eq!(*value, 0x1337);
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(42), None);
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn remove(mut self) -> T {
-+        // SAFETY: `self.state.state` is properly initialized and valid for XAS operations.
-+        let ptr = unsafe {
-+            bindings::xas_result(
-+                &mut self.state.state,
-+                bindings::xa_zero_to_null(bindings::xas_store(
-+                    &mut self.state.state,
-+                    core::ptr::null_mut(),
-+                )),
-+            )
-+        };
-+
-+        // SAFETY: `ptr` is a valid return value from xas_result.
-+        let errno = unsafe { bindings::xa_err(ptr) };
-+
-+        // NOTE: Storing NULL to an occupied slot never fails. This is by design
-+        // of the xarray data structure. If a slot is occupied, a store is a
-+        // simple pointer swap.
-+        debug_assert!(errno == 0);
-+
-+        // SAFETY:
-+        // - `ptr` came from `T::into_foreign`.
-+        // - As this method takes self by value, the lifetimes of any [`T::Borrowed`] and
-+        //   [`T::BorrowedMut`] we have created must have ended.
-+        unsafe { T::from_foreign(ptr.cast()) }
-+    }
-+
-+    /// Returns the index of this occupied entry.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    ///
-+    /// if let Entry::Occupied(entry) = guard.entry(42) {
-+    ///     assert_eq!(entry.index(), 42);
-+    /// }
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn index(&self) -> usize {
-+        self.state.state.xa_index
-+    }
-+
-+    /// Replaces the value in this occupied entry and returns the old value.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    ///
-+    /// if let Entry::Occupied(mut entry) = guard.entry(42) {
-+    ///     let new_value = KBox::new(0x9999u32, GFP_KERNEL)?;
-+    ///     let old_value = entry.insert(new_value);
-+    ///     assert_eq!(*old_value, 0x1337);
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(42).copied(), Some(0x9999));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn insert(&mut self, value: T) -> T {
-+        let new = T::into_foreign(value).cast();
-+        // SAFETY: `new` came from `T::into_foreign` and is guaranteed non-null.
-+        self.ptr = unsafe { NonNull::new_unchecked(new) };
-+
-+        // SAFETY: `self.state.state` is properly initialized and valid for XAS operations.
-+        let old = unsafe {
-+            bindings::xas_result(
-+                &mut self.state.state,
-+                bindings::xa_zero_to_null(bindings::xas_store(&mut self.state.state, new)),
-+            )
-+        };
-+
-+        // SAFETY: `old` is a valid return value from xas_result.
-+        let errno = unsafe { bindings::xa_err(old) };
-+
-+        // NOTE: Storing NULL to an occupied slot never fails. This is by design
-+        // of the xarray data structure. If a slot is occupied, a store is a
-+        // simple pointer swap.
-+        debug_assert!(errno == 0);
-+
-+        // SAFETY:
-+        // - `ptr` came from `T::into_foreign`.
-+        // - As this method takes self by value, the lifetimes of any [`T::Borrowed`] and
-+        //   [`T::BorrowedMut`] we have created must have ended.
-+        unsafe { T::from_foreign(old) }
-+    }
-+
-+    /// Converts this occupied entry into a mutable reference to the value in the slot represented
-+    /// by the entry.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    ///
-+    /// if let Entry::Occupied(entry) = guard.entry(42) {
-+    ///     let value_ref = entry.into_mut();
-+    ///     *value_ref = 0x9999;
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(42).copied(), Some(0x9999));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn into_mut(self) -> T::BorrowedMut<'b> {
-+        // SAFETY: `ptr` came from `T::into_foreign`.
-+        unsafe { T::borrow_mut(self.ptr.as_ptr()) }
-+    }
-+
-+    /// Swaps the value in this entry with the provided value.
-+    ///
-+    /// Returns the old value that was in the entry.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray, Entry}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(42, KBox::new(100u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    ///
-+    /// if let Entry::Occupied(mut entry) = guard.entry(42) {
-+    ///     let mut other = 200u32;
-+    ///     entry.swap(&mut other);
-+    ///     assert_eq!(other, 100);
-+    ///     assert_eq!(*entry, 200);
-+    /// }
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn swap<U>(&mut self, other: &mut U)
-+    where
-+        T: for<'c> ForeignOwnable<Borrowed<'c> = &'c U, BorrowedMut<'c> = &'c mut U>,
-+    {
-+        use core::ops::DerefMut;
-+        core::mem::swap(self.deref_mut(), other);
-+    }
-+}
-+
-+impl<T, U> core::ops::Deref for OccupiedEntry<'_, '_, T>
-+where
-+    T: for<'a> ForeignOwnable<Borrowed<'a> = &'a U, BorrowedMut<'a> = &'a mut U>,
-+{
-+    type Target = U;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: `ptr` came from `T::into_foreign`.
-+        unsafe { T::borrow(self.ptr.as_ptr()) }
-+    }
-+}
-+
-+impl<T, U> core::ops::DerefMut for OccupiedEntry<'_, '_, T>
-+where
-+    T: for<'a> ForeignOwnable<Borrowed<'a> = &'a U, BorrowedMut<'a> = &'a mut U>,
-+{
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        // SAFETY: `ptr` came from `T::into_foreign`.
-+        unsafe { T::borrow_mut(self.ptr.as_ptr()) }
-+    }
-+}
+     /// Provides a reference to the element at the given index.
+     pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
+         self.load(index, |ptr| {
 
 -- 
 2.51.2
