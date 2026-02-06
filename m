@@ -4,87 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 870C2EE209F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 12:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8C3AEE209D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:01:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7A1876B0089; Fri,  6 Feb 2026 07:59:30 -0500 (EST)
+	id 251B06B0005; Fri,  6 Feb 2026 08:01:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74C796B0092; Fri,  6 Feb 2026 07:59:30 -0500 (EST)
+	id 21BDD6B0089; Fri,  6 Feb 2026 08:01:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65B366B0093; Fri,  6 Feb 2026 07:59:30 -0500 (EST)
+	id 11E6D6B0092; Fri,  6 Feb 2026 08:01:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 531856B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:59:30 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C7ADC551FE
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:59:29 +0000 (UTC)
-X-FDA: 84414038058.23.AFE8FF3
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EE0516B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:01:04 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9AA01A0120
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:01:04 +0000 (UTC)
+X-FDA: 84414042048.19.E8642C9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F3345C000C
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:59:27 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dfXlSi3x;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id C1B6A120023
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:01:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1TvsrKu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770382862; a=rsa-sha256;
+	cv=none;
+	b=b19l/qUDde7YyJYCLLlCcazxzA4sFoxaeFl7EYZUXjHG+eeo5p0qdoPLzoipHVsQWZchQR
+	1XrBL5Ber+a5uIXx27ZI++gDH7ti0Rz2aWS5ISVS963uEui4pq/ac6ubGxtnZD97r6NnwR
+	d11po3tnzWQuDs9jaBQK76kmz54lrVQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=k1TvsrKu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770382768;
+	s=arc-20220608; t=1770382862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6hsfkV5IAQfqxDKV1tC+TSjJcSOAFRAAcjIKt6tdM2Q=;
-	b=M4EiDIWGxyUhRcfSHTyrTIjRnkRQgPKjDe5wvcVHgnk8/VaeVngQQdf72udet9Nth+ygc2
-	XKQhW5QW2Pk8PWLtk/ISi108EJwHrAgScXHquPBQe1ICGzC6MY+XmM9y6yA7sA+PcD8+5u
-	r+TRNwjtdyY7gYRxhWroSUA4/ZNWlBc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dfXlSi3x;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770382768; a=rsa-sha256;
-	cv=none;
-	b=qmZEtYBOxaqBXzYD1Mj0HEcUn82MS7DCvsDmFhRAWi4b+KEN8VByPCaRDx6VHrV9Xo83NJ
-	ie4ZTPFej7XNga5r208KQJvivz8M1+c62PZskQeAUw3QJFYOcv2suhNdrcIBWM4A2eymKj
-	f+xVnkirv/pD8WbWvyS91YQIIEMPvrM=
+	bh=LDB7SpH1D7FRzaEdNx4gEkY2tTWXwP938N6PHRW4uqk=;
+	b=RxHkl08vkKRAivf0Ll71RELwTglFpSAIP0Dd3Fy5h6FeN8Pwx9kAHLabEozvv4crMcC4Iv
+	79XGT5b8v6V2odhAj284f1l0hap4rqXzRgpZSE8KTQybqUQQ0MRIpRNCiu81p3mi4ry0vE
+	uxDoJ4jJwVwKwyxJbkWI31r0GdMiKtw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F36564360E;
-	Fri,  6 Feb 2026 12:59:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A91FC116C6;
-	Fri,  6 Feb 2026 12:59:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C455D41755;
+	Fri,  6 Feb 2026 13:01:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DA8C19421;
+	Fri,  6 Feb 2026 13:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770382766;
-	bh=nmOlDsmcEuee8gUixqxPotvngOzcy39WDO9c3AhT2g0=;
+	s=k20201202; t=1770382861;
+	bh=xmLMB+sdewOcCxQz83Kl8Xqpk9X80TVAUBfSvRJdhE0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dfXlSi3xfznad/FmG0SCZLMafBjxDR/Lda1fAMWYelEvVJo+i4rC0KL2kaxDxe/Nm
-	 o4hd4e01aneUG0v+WeNJ+XCvIbBONAK1FfYC9cN8ZZkHJy1wnzS/Nk7m3dVuTuOoYx
-	 Gx3yMfF/A/3paZtby+moTo3+91ZGDXlbB6xC2/erHz7Su08ptQhecAnGy/N9dpg3n5
-	 dW6JBTXZPsoYUL2bJsuPl4y6MvtbTdxYd/UwKZfIa6rLBcu2GE3AA64I+2G92Ttkss
-	 xdUWLWWuOMSTsg6JrtyvYMVdXc8ZLMpbPzc+ltf7loOSrrbKeSVtTQxpCNP/BkSLYo
-	 pIVR/oT1x0/vQ==
-Message-ID: <c24c32bd-085d-460a-833a-a982eb5becaa@kernel.org>
-Date: Fri, 6 Feb 2026 13:59:20 +0100
+	b=k1TvsrKuDX4ULVsLQHNN3r/U8zVYERr11gg7p18nkto5s8l6xgrLSFvCABym1KroS
+	 hSf545ZUDsS066b1eoRVkxNPo/nUhLdax068IyipdGdOYA1qK7o0sa4aiyKHZGLyN8
+	 VpM4K/08ZLkKx94jn2snGBs8p6TTyrI4Tg2v8dwGxrRkPLr6HUMByBgqEgnRhso2Lh
+	 zvqVcuvOTtkXZe6QFp1lR/+3ounkJZscyMNEyNwVDhLuIj67yp+r6BVp+7XNjnJOdU
+	 VwunTYuNceAdcWO5mtMYEPOwEm89jqsbaAGEuKrDJI+hmYCZKvtUmOnmB24N/3Jp+x
+	 W1t9upOlirA9A==
+Message-ID: <2bf497eb-47b0-4eb9-a66e-607c82c36c20@kernel.org>
+Date: Fri, 6 Feb 2026 14:00:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to
- CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
-To: Qi Zheng <qi.zheng@linux.dev>, andreas@gaisler.com,
- richard.weiyang@gmail.com, will@kernel.org, peterz@infradead.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, dev.jain@arm.com,
- ioworker0@gmail.com, linmag7@gmail.com, akpm@linux-foundation.org
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
- <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
- <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
- <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
- <538fef61-3903-407e-8486-538a28b99e9d@kernel.org>
- <53a1bbdd-26d1-454d-af06-169172278718@linux.dev>
+Subject: Re: [PATCH v9] mm/memory hotplug: Fix zone->contiguous always false
+ when hotplug
+To: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
+ Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20260130160635.2671167-1-tianyou.li@intel.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <53a1bbdd-26d1-454d-af06-169172278718@linux.dev>
+In-Reply-To: <20260130160635.2671167-1-tianyou.li@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: xyg6dapbb1jx1r1dcfusyg1pgx4ht3mp
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: F3345C000C
-X-HE-Tag: 1770382767-871958
-X-HE-Meta: U2FsdGVkX18dRvvamsmE9I6//VF79EVp0m1cT8T1fj4olmK8bMHAfoUkNsCq0UuYZQqyzsKuD76KyVXCf7e/oXZH4TYmYJIBkeVwS/tf/mwD472uU31igDdav8qLuglMMLRIfXjy699b+u2pdQ97IF4dbFMEZybLzSwdCnONc/GC2YIK1UP8iplE/lEF/x7tQbL1Hdkyx+BoK0IIfNGJa6Ee40Jz/vOcaz92EkFEPciyBbzpX3gP49r24GqnlGmC+zhbnYmwj4Joa8prASTQ96KoBQlBgD7JkF+Oxnsd011V17bvwl3XRAl6lpJydPtP6Y2psfUh8tfZ8Af467A9Fg+O/VzvEKZO9Re/YhN+ecvkc8/kHcUQvuil8060cSTjQ2Bw22X7WL2aXkYTDbIFbIPxtG6QqUMMYr5ZduPT8dn/KaXraZh7d3hPCmsHX2x8C9gwU8jVI2SKDOSL4v9KAhKOX1bcVmjptmwqY8isWoPZ5N8xE7bP7KVseu/4h/J1xsdbzPr3ruOqvt5h/C9qrGDMOaNWjMmNjpBnkYuYOg3fVJZwy97VVRKsYhvqLcXaCrsrRJLLrMSXNNbqpz82wuuu6qEq8G2mDlQSkdj7wh8ZuhEqDvkBWFl0XRuytFxvNyJMdHpyYpuCd1jPLv9R8rl2Ix0j/vCJuw8iXZOTpDqpq27bhg/jL34ZUeotI5Xlita8hkBox14QE5yVy9sntFe2sq8ru11ZIkzHkTKIYBNNDNFSo8HGkCJv8pN6b3J9dQMux/sOiOODqU42vHYfanDUZa+VYlWajOHflOd0hhs7AuEcaLua3zeAykWVq2e68lCLcj4IYIzIsnCuwrmpCW2GcrfPCnLo9CoyuTPHGQZnlEIq7/5Wl7mvVJZ/GiQXJgnSxkL1/Y7jXjDht+umYJI3P9+ZlZn2gfsPrzbpCO5wGvxvmtapTqy1H95rCB6obsu7Me7Td8DiBSIEVCr
- U/VKMvaS
- DQmoe+wfuq+P2++ChA81iLXfSKrfD8ciijA/Q4ZVmcgv0wMqc9B0RqKRAXPilKN/Olbn5ddeBNIMTsfhwBeDZWTYncDwxaYIsf2GhEXD2LxntM2kNBbtmvwA7scyRO5fKsyi64ybkVTbCr1ebMbekAccyK9M1y9BBkJ8hDsaWtFfYYFtAnUUm/9AJZZ+fiRphhVkp4AVAq3UJ4OutkXgCZ63rdYChJFQtOVy/wUfoL6oATJzNuYM2uTO6drSPIbLI1h2FAIYtLBD1sZdDWbRufJqz+plSEtsg8+xfobzEng602DQbK2F2IFpuA4UsMVEHwKtCnb2zOyNp78N9M2K47N16VwtepbOiXybPHr5W4cZM+uGSAVifEs0ARMi0KOM00QESgNv8V8vSv84goIINLgRxMtvgUE8DhTMn7Qg2w4/E9Ag=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: C1B6A120023
+X-Stat-Signature: bc7f9ez66nxtdqas43iik6nxnbzcha44
+X-HE-Tag: 1770382862-147491
+X-HE-Meta: U2FsdGVkX1+mz16kxlpA1R5DXuLM2YA7QLqsNj+A25u5boSXwHenCDQNOtKg6q7BzqqS7MboqItxNzuL1FtgWmvpuZTsNV9exzOT2ZV3J84fz5kEuPP23idAzw6LFQ3Ff1bCH0F++a4ff4IgsFmYfGO8iPHKDEOt0NELecLOmv4aSRvxzi/6D3BLyJgxf4IGJeGjIH2ZmlHg2oxzNue1zqZd8nsN0xfBr7lJYJb/ZIkJS5PygDnrTzZb5uBJrjrIDqjTAP8vAoFdtUlu9CcAVBRWJE3dCI6VJHvFbvaTtuP+Zbv/vRz/o0iOQK6TNmbMQjaz0UHIVACG7rngKLFh1M4Fc+2kxzqazPmsVZI8geD1ac+FFHKlQCbEamPyH70/DXxwWGxvA5HFQMxDwb/14RPGAfhMMy1hlkAqbPRSvRSn9zT29NWV7W6MLEFfowLIh+Nd+6QM9frrhqdo2TwGIpgsFhnyenUzWx6ckR+G0EfDnXlS/UT0crzQySJiv0IXab7YeGZdlzRE3XOnlb1IZKqL4bM1OORHypkdFKYUWKt3bTfSD03ZAUXxQXQD4ph0lt9/4D2xQ/GjxqrZh+c1Pbc0QXU4qImY/fr3dfXJxiUC7TEPdp6tbbWHx2+NUNHn8ahhZhqXT/WdQiKA50IrujHwy1CVsjS2CGKPCwf0MtyKifQ8IrSMhSPjZyPu7crmmXy9RqLkHQaNp/BR1fNRS4Sk89esVbFs2pKUImxkHOouZ9NOcAq8jXeq7KWM4HumHv0G+HbGHorQ5vMTL4+/51XDSC4XKOZnAFC5ijlMr6OW25b2OiIjZF3EkQRW49IEt64X+EPazw+BxF2DAfaCEdoA9BT+uB9wrQdbUEi+FT0xico+5KfPo/GUPd4lZrjrzEf6M4dOLsbJr5Rqip3MjFhuhV16jlgsW6wOMUxqAiZbOFN4F/K945Blc2UYYZNj1oreV9kfKif4hmSRBHz
+ //uybbbA
+ +pHRV+K2vWuR8Dp2YSKUlWbZZ8B3Xmx40/Z72TSLYiwK7S69BZK/br7g6B35tDvrz1gAUZ8V4fW+NAwNmCqHODZDOUnclVqseKmbTwBApyB1DEcr7omelkL7XVhaOlrBe45NEcfjm9i9SghjxPKfU8ScR2i2dNXJRTloqoUaNuTgToMFShMN33eChzDrJw4DwQcOrzTvK7rwu81QQBwcz7x594n7mM/LzOEw9NOR9TMuN/QPGCNa5xBZgk07adirJlyoPm+b3g/RkLOw1N5uOQ9xCuNvIctyZEskj9ZgmX1/dzvB6GdOWDxt2OdcUW5s6i54GQO0l1E6DV61nsuuamaMqO0WSFLaWp1r//Zza2yJJ4OQnWjcCxdNhG3j3IN+mj60mbE5inUTq4SJh9/Ifkr2/3be6zclyyLqaUwtMncx0mYqNLsNODCawwQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,32 +144,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/6/26 12:58, Qi Zheng wrote:
+On 1/30/26 17:06, Tianyou Li wrote:
+> From: Yuan Liu <yuan1.liu@intel.com>
 > 
+> set_zone_contiguous() uses __pageblock_pfn_to_page() to detect
+> pageblocks that either do not exist (hole) or that do not belong
+> to the same zone.
 > 
-> On 2/6/26 7:45 PM, David Hildenbrand (Arm) wrote:
->> On 2/6/26 12:13, Qi Zheng wrote:
->>>
->>>
->>>
->>> Ah, It's just simply aligned with the MMU_GATHER_RCU_TABLE_FREE above.
->>
->> But does that work as expected for !SMP?
+> __pageblock_pfn_to_page(), however, relies on pfn_to_online_page(),
+> effectively always returning NULL for memory ranges that were not
+> onlined yet. So when called on a range-to-be-onlined, it indicates
+> a memory hole to set_zone_contiguous().
 > 
-> In the case of !SMP, tlb_remove_table() will not be called:
+> Consequently, the set_zone_contiguous() call in move_pfn_range_to_zone(),
+> which happens early during memory onlining, will never detect a
+> zone as being contiguous. Bad: the fast path relies on the zone
+> contiguous state may skipped.
 > 
-> static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, 
-> bool is_page)
-> {
->      pgtable_free(table, is_page);
-> }
+> To fix the issue, move the set_zone_contiguous() call to a later
+> stage in memory onlining, where pfn_to_online_page() will succeed:
+> after we mark the memory sections to be online.
+> 
+> Fixes: 2d070eab2e82 ("mm: consider zone which is not fully populated to have holes")
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
+> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
+> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+> 
 
-Ah, okay. Confusing stuff. Would have been nice to document/mention that 
-in the patch description.
 
-So if it compiles, all good
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I assume this one is to be ignored :)
 
 -- 
 Cheers,
