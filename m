@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A551EB28FA
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF4B1EB28FE
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:43:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED28E6B0098; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
+	id 5398D6B00A6; Fri,  6 Feb 2026 04:43:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9CA16B009B; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
+	id 4EDA16B00A7; Fri,  6 Feb 2026 04:43:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9F3A6B009F; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
+	id 3DCB36B00A8; Fri,  6 Feb 2026 04:43:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C921C6B0098
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:42:35 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 61D4D1B27CB
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:42:35 +0000 (UTC)
-X-FDA: 84413541870.21.299D217
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 839EE140009
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:42:33 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GSvVnMTC;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C5D76B00A6
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:43:11 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 965CB13BCEE
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:43:08 +0000 (UTC)
+X-FDA: 84413543256.19.5D75940
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D9549A000F
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:43:06 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b0q2M1Y1;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770370953;
+	s=arc-20220608; t=1770370986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bhtg/7GX3NXsxhckQh7kks7D977Vk1pRYCk+7yLlU5c=;
-	b=CPRzrPE3Y7c+fZu2q670pXLIQuUCJYrpFjH/jho6E9U4aAT66id3ObhW6px3OAO7o7NUw/
-	0JMNb0nJ2MlowsyFjbuNIqRfcWuFzMjqwICt34mCUJ2cYiZGcyu4OGq0nU9WU3NLJ7V3UN
-	8WJrQ9W3Dy4o5XL0gM8Yl2uV/l8JMyY=
+	bh=Pil0x8aMOWPYAkxrkAL2f5p4mgdOAz5LX6MF3fExWkk=;
+	b=X9UmlsqLB6L7R14N/5YGHOZHzgvHcMc9baEyIpvbtV70l8p8pHUDXEIVAQiVvvJ69EtKRh
+	xdQr9jXem42ZohkmiNR9ipyjiyt7ivk7FaVsh9TkjIb4f2j2fb6uTOV3II07aTRs/kryok
+	zQ/9brPwMnBvlTV/ZYA4v02WXtQ+kpU=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GSvVnMTC;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=b0q2M1Y1;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770370953; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770370986; a=rsa-sha256;
 	cv=none;
-	b=b5moTExp6zxTz/0Kz2D/uSBDZXcRKl7hjl6oKvYarwGYefbjny9rn+uHY7TbBGJf3YPpaf
-	kD760+LKtQjzKox3QmXzJsde7vyYkwz1A/lfyHGFnNVX96ND0NuXjxLTl1I9sB31Q75yIk
-	0/+feK04ASgQQlNSoPNZyrzYUzj9x4Q=
+	b=IWbJVuyMDs1T5UT6YRnKeBXNuududGUtGCYV5orDuHGjqbbmkCDsnx9P3zdoiihPBYBsj1
+	qCZEtOpD4DUWAHw3TteqmGy5sllXeQ1DZ0oDTDHInYj5uOFh8hCT/toUg8HlWCo5thB94I
+	D6cogdKpoToqVjWspa10Xz5SxmTLGmI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A4F5A43867;
-	Fri,  6 Feb 2026 09:42:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FF4C116C6;
-	Fri,  6 Feb 2026 09:42:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4DDE2600AD;
+	Fri,  6 Feb 2026 09:43:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C084C116C6;
+	Fri,  6 Feb 2026 09:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770370952;
-	bh=LhrTzSWf7NEah6Z7Oux3u9gbfwj2MNl56bdSDhRmPl8=;
+	s=k20201202; t=1770370986;
+	bh=opKNMeKc5dUGPWp6AFdxTH7O+3QX2spoWarAppjxqc0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GSvVnMTCcRhkxqlqeDx3rM6srCHZuDenv1DdtPoFP9SUQF8TtuPX/r+4ffLF35a1z
-	 Ya3vXMuTz4OOJrBpC3QVOcQytVqQMUT1mJ5GxbGIGf7EJGU+N6gJF9KKyPHkdhuied
-	 j04tYZXUUvXAkbj2ysXMysEc59RfXPQGZHhTSA6i6PI4+j57T7VPUOH69hOp+j/cy2
-	 yVhWELbxXuWm5SP2qxoGok6mGdD2AiEEDOTR9oIxhwob/7H52+k1jLuQMGzMgKqnNt
-	 u8PlegUm+gteaVi/n5UohU/uGYeeR/8vQpstamEQl+CsHkiUMRiikbcO/+Ojwu/bls
-	 wMOHaiNU6bRzA==
-Message-ID: <ad1a6ccd-d542-420f-b862-b41b7a29054b@kernel.org>
-Date: Fri, 6 Feb 2026 10:42:24 +0100
+	b=b0q2M1Y1+zFPHhE8ZfPQRp3VzxIogdG5i7e6pVAmwCnkqZPgiOkhMl2qkj3kC5NEg
+	 Axto48z8EEp6E+zuf9FLH4pnYtMWe46vAG4eYCOmfS+gE2nvNHhyCacw8WicO7aJFN
+	 iSH/EqOPEgf+At3uRYkyWNwfZZNKNh9bPQUVdLdW5QDEojnAfrnUJA5DKNufmuLMHd
+	 GH6RBqlMqSwoEKrcIyfmIS5x0Z1ZkDgRhnPL6MfhgJfpbvx6UJz2WqOfW7JACfIbgF
+	 GN1R89A+idESDTjIRjGwz1hS/d6rNe5iGfc9RKewY6R+4qqVJj4clFyq6YJNw8/AQA
+	 KIT3r+LwgJSTw==
+Message-ID: <33e5e080-6e07-4cc0-88da-0cb55c9d0ae2@kernel.org>
+Date: Fri, 6 Feb 2026 10:42:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 13/17] hugetlb: Remove VMEMMAP_SYNCHRONIZE_RCU
+Subject: Re: [PATCHv6 14/17] mm/hugetlb: Remove hugetlb_optimize_vmemmap_key
+ static key
 To: Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
@@ -85,7 +86,7 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
  loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-14-kas@kernel.org>
+ <20260202155634.650837-15-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260202155634.650837-14-kas@kernel.org>
+In-Reply-To: <20260202155634.650837-15-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 839EE140009
-X-Stat-Signature: aouxa5mqegeed5wco76nn3g1bb3mkd4i
+X-Rspamd-Queue-Id: D9549A000F
+X-Stat-Signature: b6j834fbezaw7smmfds3hdht18ip3u49
 X-Rspam-User: 
-X-HE-Tag: 1770370953-63962
-X-HE-Meta: U2FsdGVkX1+OprUD1kK5/k3Bs7nVm52TqmGyfnYXmF0t7QJ+mtRJzZRmWeRjqQUEaQgHsVrFHY2+1Yr/Ye8ujeEsrhv/hd2tQUea0My07kR8eHB7LN9/Nl5ROBwE6Z+uFr2nrjRd3ywgrqHHv1C+Q+LS5mL/ZLX5KhD+tkd2vXcKcq9NYFb9rqudRt/Yf16NmuhLXq08KQhO271UPbKIHk7ldVolxKVaz336C3xc/RY1H9+pmUAhGpY5cIk+4tXWIOqNb+B4WMlJAbSD5Kcdn5X/v7WAgVsiPIPwWu5NcCOwcOkAmYOtWhub2t7/SdM0pnVeVQZOm+UKz3Qm+WmxLeAtybvAasjlD7+vPxn/s9QOYxFsIn1uBkSjhQVQvD4fIki7oe+7/eIf2A0tfcfoWQh71ZP4W8KhoxY9WncXRRY6Uzdpps8/XqIDNw9Rb1Sskdx0cHNiDwDY8D0hQQKSBF9RLmTkFFyTYJVms8XqYzK2B2cYE8FHPt2upXBWNxXvyKrDZOl8un3We+pLPEKQkpIkRtlj35jmaAHdlOcRsytA0RH/iypFtQAYgY05ynZohg4/qffa5c8ZWe7A0OccieoPlmnkOfi6MyhrV5oxsWC+e6VmYn8+/8lnbBeCvJIjX70n8825OSV1cZscydVsCSXfen68ryukDCmUncDW5fpzYxkGZ6r63cxj9jeePVBHjGps4GBnTqC8J+A0hjSxveu0wGxHKXNgCV7aTM+hlGjZEGp/acHatCOP6A4+PszY/Of+zoYw0hjDERQ0ek41FltNya8YIZKrDHjaoLAeM80CDZjmqmme3W8UnkljqCTU1tiDsIe0oPbimIEOyRPd+WoZehaE3svMx3IHECqnNE7DhVsvQZFSbNhe+e/mej4oph54baHl+Kb6e6GZ4qVJGFEd0Qn2GLoepunGmpYbuYYOl8caNSUFkdD9rRx3jAK5ddUfpU7JaXqYJw7RatV
- exUidbbI
- 46wQolO07LGf22IR2HGqqBXVx7y5/PylV2gm//LYmDrxtP8lDXbATbDHPANUGGtlSuL/tOdcH9+o9L6jyvSuDbVZyhZEsWkFeOVN8zAX4RB2XvSo9PNl4LBaoGtMZg67XFzhWlSwTjcodp/mnQnGYNFtCcMBr0tB8J47tubfEeRgn4lT58Xzsc4ZoS5bVKPRj2uh2/CRkJpGNdE1dC6MdTDlm6U96xp8FVVnHtyMmOz1v/biL69AJ5QKwUQP5mO9C3hG4SZrURSMAmIqyCe2PAInZ9waBVZUxQ3L+xkLNNySppch9wnP83WPmDXFb2yv0UwU3fTtY2ZNqNKM=
+X-HE-Tag: 1770370986-667295
+X-HE-Meta: U2FsdGVkX19Mv33pgeJNEdE48PaTxvVgI8ld97adkC1Y/nCD2FayKJU2J41VJbQ+qh7BWl/aXuipO+ouDHCvRwrcjVjNtKVaR1ZHbXD+CEABgLNa9lVaXD7dNiVFhkCZHpm+vqfUGHU75i5O3XiMssRd8FkmNEDPvgLKFqZutLrU0vLZpG/L/BV7nhBK8F6AOqZ8rIKxXih9AASSstEryLMEep0uIby/xvhD3BEMd/pOFb4FwDFtVHlEh51m+iY/bj0s9pylCbc1vap8/nsXaq/Cx5uSZzVUJVP0iNr5SdfzK3JM1SPdGgZ+H3s/cJUst3H6xUZJ3J2HnqbWkrcrvoIoa4CsyUQlwuJewPdG3SYR+R0/USXN8jxsNTKNGf3a1eX/n14WE7RSigVhhNGznpl0+CFwxnhml27emD2B14q/NjbMqvjpErLurop5+TiXsy/a3aGS6E1cfaDVkrZQVKgi02M5Q2kw3hfgBkyF7tpOPdyrPYCN2MHsxwkPtsdd14oG/DZIhGGmvMYeUDXcpVfxX+ZeE4RUgGEVg53M98MQDqDEJjm2I5ovS85roN/KY/cgmrY4YnZSl9bVa1pBYeMsrn4bZapES1N4z++W8oMLtkUDNmW26J+iYwh3ERWa5ZWTL0bYwO0swsMWvJ3TWlGxomWW29qwIK/JVwgrt/VeZDCoG1FvHc8Kua1l3LhdmgJmY+BHB3JbKu9euVfwBBEovE/jCIqldVhqIqMR4NbdXZ79wVCFuavLm3JAlNNWbpgMz2XyrMGBI28IwKhhJ3KKhpyzpzMeGnjb8KsyG7IGswGxiRkii5+skk7iqZjyLtWD41BYUkYSgczSaPxIpQ1vowXx9OUeEZg+SwfIU57qMwBymrRLSqTwGcFP54mcKQ8S7BidE9P7nzTyfyXTidxAgic1azGF8fa/xbRcYflxa1z5BJzCY5YqjOatUXQy7UwycRpi+hbKPm0gdnJ
+ NXB8W1X8
+ tn1xQ+DsUpyH8oDO6OnUvNFCFT28lTLO5HLQOukligEbS55n4YHk45aFHUHvr0Z5qpULftPN4DVmcLfnoUuwinApv+bjdCf2TyElCa6meOo7dVnvkJxnKQIwpF54aUGB8gJ48Klv7AgG4XPA61Qb0+sm/hqQzKOny6CYEj/KDIWwxPS7wSIh/g6i4UCCz2DEO5fqSRuG59g5Hc/GGrwTKSSDAVWJkWqoVRw5f1+k8WJ8Y3Ys8rktVihEI/TubVguw+Ky2Cs8ssvaBnnEa6qf7zFmVHr56JGBgxELV+EBEbfpm08xpinbiWKgDL71Kw3UJemFBcIketazy0Sc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,22 +153,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> The VMEMMAP_SYNCHRONIZE_RCU flag triggered synchronize_rcu() calls to
-> prevent a race between HVO remapping and page_ref_add_unless(). The
-> race could occur when a speculative PFN walker tried to modify the
-> refcount on a struct page that was in the process of being remapped
-> to a fake head.
+> The hugetlb_optimize_vmemmap_key static key was used to guard fake head
+> detection in compound_head() and related functions. It allowed skipping
+> the fake head checks entirely when HVO was not in use.
 > 
-> With fake heads eliminated, page_ref_add_unless() no longer needs RCU
-> protection.
-> 
-> Remove the flag and synchronize_rcu() calls.
+> With fake heads eliminated and the detection code removed, the static
+> key serves no purpose. Remove its definition and all increment/decrement
+> calls.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> ---
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
