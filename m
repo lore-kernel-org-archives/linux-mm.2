@@ -4,94 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F204EB28FE
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:01:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C6FDEB28FE
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:03:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 036A06B009F; Fri,  6 Feb 2026 05:01:48 -0500 (EST)
+	id 76C886B009D; Fri,  6 Feb 2026 05:03:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F21BE6B00A0; Fri,  6 Feb 2026 05:01:47 -0500 (EST)
+	id 736DA6B00A0; Fri,  6 Feb 2026 05:03:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E4EDC6B00A1; Fri,  6 Feb 2026 05:01:47 -0500 (EST)
+	id 5E1346B00A1; Fri,  6 Feb 2026 05:03:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D3B726B009F
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:01:47 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B7931B2E40
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:01:47 +0000 (UTC)
-X-FDA: 84413590254.18.D886B63
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B725A40008
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:01:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DA076B009D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:03:15 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 026F01B2D7E
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:03:14 +0000 (UTC)
+X-FDA: 84413593950.01.E6F21AB
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9AD571C0007
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:03:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kTE0OWlX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hRfFyKvz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t0uXKtS8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VsbNk6cO;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770372105;
+	s=arc-20220608; t=1770372193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jya6ow62cTBWH1Pd9B7ZN3Pk8/aJdGT/6cFGya/aKPg=;
-	b=kKmawFam2A7HDgXpfZDHzJfRTtv6JBlIsLOvg5MCtY/UEsTAQOhvhhRQarKWsd+fCneHhq
-	Bfl4wmczl4RkMoa67rUkRvJBYdKlpAFrTL1MEssw2iQjOQCn0mzDfzM9JHQmeo1H9DTfX/
-	XEnfRq8oZcvjDpfUanpGONUBi7xA0ow=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn;
-	dmarc=pass (policy=none) header.from=zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770372105; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0m4hRENV6Qi2+EFaSdK45nduQDaaEEMijGnDDFn0cS8=;
+	b=G6KO0pPkGSFVkTMsfXj57hLb/LG3c3mhn1B3WMGwjIcfTK+UQ/L7c7NPknPw1e7BVoKgeG
+	B8OSQGKRO5jl5WgJn0UxNM0zucJTyrB6ILTCgohpN3O9N4OGVbIjneDHDu7O4SzGM7auf0
+	8bvTFf7u+mETZw8UReWGKPRQgvxyAJU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770372193; a=rsa-sha256;
 	cv=none;
-	b=KXJpGmv/zsqDWK88JNpRNnPZ9WQ1pRG/3k/4RRlpKCycjkVVTsBwFrGrAxJFHoNcH/iLKE
-	0OuuWiX+WN/3Ruvej+kYPxoJpbsUlefqZrjS4OQF5zGD8IUDgzCcuGl4h++6SVBctLRdpI
-	VbolaYPbDureQ1X96oZj8G8p/BBaJd4=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	b=7HbIYERo3TbqJmMreuJUEI6QRYL/GB5mY17xWm41IKjQc+qZk59rrzZF3mZZRArNx7EHad
+	fMvaP+5PlzJs3WMrSJRsdx5tO1RXKoBFP9qhPSNolM18bUYg+DkZhBDgKYlaZlUZ0FdNlY
+	Rf2HYcYLI+ReJrVaRq1OZMqim4PiE3A=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kTE0OWlX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hRfFyKvz;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=t0uXKtS8;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VsbNk6cO;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4f6qPK4PW4z5B108;
-	Fri, 06 Feb 2026 18:01:41 +0800 (CST)
-Received: from xaxapp05.zte.com.cn ([10.99.98.109])
-	by mse-fl2.zte.com.cn with SMTP id 616A1TjN026627;
-	Fri, 6 Feb 2026 18:01:30 +0800 (+08)
-	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp01[null])
-	by mapi (Zmail) with MAPI id mid32;
-	Fri, 6 Feb 2026 18:01:32 +0800 (CST)
-X-Zmail-TransId: 2af96985bbfc374-0d6af
-X-Mailer: Zmail v1.0
-Message-ID: <20260206180132364R_lYZujwOYfhazgKmxArZ@zte.com.cn>
-In-Reply-To: <20260206175609696_A7uH3a1F7VmQN-iTzjC3@zte.com.cn>
-References: 20260206175609696_A7uH3a1F7VmQN-iTzjC3@zte.com.cn
-Date: Fri, 6 Feb 2026 18:01:32 +0800 (CST)
-Mime-Version: 1.0
-From: <xu.xin16@zte.com.cn>
-To: <xu.xin16@zte.com.cn>, <david@kernel.org>, <akpm@linux-foundation.org>
-Cc: <chengming.zhou@linux.dev>, <hughd@google.com>, <wang.yaxin@zte.com.cn>,
-        <yang.yang29@zte.com.cn>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIIHYyIDIvMl0ga3NtOiBPcHRpbWl6ZSBybWFwX3dhbGtfa3NtIGJ5IHBhc3NpbmcgYSBzdWl0YWJsZcKgYWRkcmVzcyByYW5nZQ==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 616A1TjN026627
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 06 Feb 2026 18:01:41 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6985BC05.001/4f6qPK4PW4z5B108
-X-Rspamd-Server: rspam12
-X-Stat-Signature: hfhz6ucqjz4eztboz813exw3sneztm1t
-X-Rspamd-Queue-Id: B725A40008
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 1AE535BCD1;
+	Fri,  6 Feb 2026 10:03:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770372191; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0m4hRENV6Qi2+EFaSdK45nduQDaaEEMijGnDDFn0cS8=;
+	b=kTE0OWlX43omvQagnz3csrLOmjR+a56zzIk6KbmjAfM6B/o+40FL/gjoE36CQSmjie+BBY
+	KGc2ontBK8Sfr/4Y/e9QdoJ4ArZopLb6kisSqq6CjIcy94dDyAb9MngcqAH0XZ4UXyOc11
+	3mPEjVwBk9WRUIL6lJfxc687wB6kMzk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770372191;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0m4hRENV6Qi2+EFaSdK45nduQDaaEEMijGnDDFn0cS8=;
+	b=hRfFyKvzthTzRrapssO+AvTmcEDtWn8sk5sqlanur27VYqDE1aJ95DoyYDLnj0JQYEqXvx
+	8ZPYcIi3to4RScAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770372189; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0m4hRENV6Qi2+EFaSdK45nduQDaaEEMijGnDDFn0cS8=;
+	b=t0uXKtS8SWlA9ckngzvk1Nz01CvThdYtv0wOv5ASfjK4uLdkIQfadOXhYdOb525U6XTYoA
+	9tfBZ4F6hcHXQrM3Zi5YMiUqZC1K52lsq0IvcuyvI9H/tSoKXchmT89mznHm5YY3mA4xsk
+	7J3G44/ODteE6Q7kfL0Gy5tlwviF+fk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770372189;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=0m4hRENV6Qi2+EFaSdK45nduQDaaEEMijGnDDFn0cS8=;
+	b=VsbNk6cO4gc2gGLTMWqUhbT9FwDfSm6fOIQqgMqnI4Vic2PFKeE9c7R587qt5B15k94Qed
+	vbxi3NaVEvh8KwCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E8D133EA63;
+	Fri,  6 Feb 2026 10:03:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wgnzN1y8hWktVgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 06 Feb 2026 10:03:08 +0000
+Message-ID: <e924ce7e-29c8-4853-b1c2-3495b8cf8427@suse.cz>
+Date: Fri, 6 Feb 2026 11:03:08 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slub: let need_slab_obj_exts() return false if
+ SLAB_NO_OBJ_EXT is set
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Hao Li <hao.li@linux.dev>, akpm@linux-foundation.org, cl@gentwo.org,
+ rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20260205120709.425719-1-hao.li@linux.dev>
+ <aYU7l6P2ikKvnrWT@hyeyoo> <67ebb9f2-b383-4b68-949e-239d8c7b18f0@suse.cz>
+ <aYW732VZACRIzr-r@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aYW732VZACRIzr-r@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 9AD571C0007
+X-Stat-Signature: hi4cykjsqq73949ign34r8ejrruuwot4
 X-Rspam-User: 
-X-HE-Tag: 1770372104-425149
-X-HE-Meta: U2FsdGVkX18Uzp5UlltCps0N9XwCv4CsIhJDLGpbI73Zk6tOXHYjGQbeulyMz3L8p9GuLhdR2YQ2uC1wgwrBpvktCm/QVLcw+TIymNYlGST1kdHUSywUOpqK0eFZyBCl1OqSF1jgX9xJcuQ6Ey/vWzOvuF3LsG8TWLa9uWZ2q8Nkp3OLttkfZHpIucfiZ+Hx8pBOJ/NkBYMAWKt8sE6f/6YmTdzPpnFnCOhPWKZrzkgSTa6W1qT4OvxGU4fKYflnCo9HZL891EGKQ0Duu7i4U7pT/0vcbB2iTXhVG43a/lzpCR3iGGxQTfPjGspIfkp14h0cwpav5Chg2Eu7nLGTQ+wo7pk8k+yiKTCv5zt9ku90s89asCc9//4aZ8NEfsPfnM0qrjl/sj6JYznPmGWnhJv4sUZoUNGuirUP82GeS4e6EazZcFBLPLX2clzGUJVGwbz2eB7ZfysTFSmSAEIm1uuRwNqWXNdz4WP/RqW8Kk56IEbPgCy9hg8OReBI9v1LdEBZ8erfG79urWPVaZ1sXlwsdeNw0ZJE7UVlxX/uSTSgLFIkyaWiYuluel4n1reLOXPBEYuTAbr76+eLi3Q6dCKa2V9w/YzTkKh3TUkd1yp61JESs5QAK5eL7t1dRCTGZXhl9j9mgTWUM/vIrf9t+GIAzHxswDU1Ks2RMzHTZrFb5ql/rb6kK64Udq2rz+Ov58IwpfAXZaZPv6o+S8TF0AwbbpDtnbbiNJ9szG9RtBy6bLG2FKhLZ7gMnNu7Tg3WuHcQv1jEc/tBMwLcZZa05N3ATFsc23bMlI/66qxYOc0y5e9eZe0YyyBpk38rdkQAQ97VCO7E4QwGtuAG8Uw5HPJWilLKZmtZLVCmlCkMfhAhwRuv4Ykb6zN+cXoIrSSvCHzRwRPAUo4tVmrp63aTef92EWRKIxA1UB0cIiGKAY3l6bNp8675/CX0VnljD+Q92/USIKOEynN3pvZY5ng
- 7m26iyO/
- 1JTjmR26jQog+g6GAnlR2TihMB7YRRnHvjKSFg7jETR4VcFAYnqnfPoli7lQnUpYnpuSn8vbbytEAJ7k1kPkfr3HibuFHKI0JtIgpEzrEM4EZOh5HfXDX72bBurjBgzlJV0CseaPmdS308DzWugoFO48VDD6+LXM0aFxHyZaWTsjqZgBb2TNMTmZNlHdZ8jj3aKT9O1WIZnlqzg8dP6rIo8G+deaLcn4y3xCkj2IvP81gjo4t1+SimMjk8A==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770372192-685383
+X-HE-Meta: U2FsdGVkX19NlDdfr58K3mqgXfsX93+00AI2KgnoClwSjarEZkjssuckPJoWXMvXl5SDdoaDVj3AK9NxA1wA1pBqtzonJ494EGS6Whe3QtJXAaIMiBJGJfcN+oP/eV8d8cMi+JK0MBlFTs44O63Klk4jq8Ay3PYWmBIB87kXE0B3FxBflD2V2iUrUB3rAbe2CW4KucXVl1hFAhpObFrdHM6WXDpP0DiX3FL3NX5fz5oGYudtqz866PyA9bc0GWAqrNoKvoQdZxGWvRWF0lLtkZ0TQLF9jrKJFv3V2YOVs8PbKEoCbIfVGA1SpUloHC1ayu76uWm41dpKUkKlKrv/HQy1h1DQy+cqODGeocCEwsGeK1U/ZjAMSbRwj/hRSFvCjIDDkTxg/VaZC/t1jpgJM/airrX3J4m67XXQR4u+xGmSF265WP2Ix/omo0q0z+KvZvpTL/dBIjbIMwKVGPbRw1/yE/jXo0rTCiddPuRCypfwlD55++vbglqhrNWvZ5DKplBKGKCKvyYgMwFZdbJspD6c7ZwHNkEcrAbFXRhLLD32cIgeWAfOmzPel3zCVF3ZcYnym6oopXQVOEarGpdY9N0AH77bGFhFVet0s3KxEwSGwoZtxU/0aD5YoZfsN2wqou/4E3toWCT0j7rn6cBDaM7JDRsUSjJVxmiApvZGHqqZ6ubdeuprYu4OhsFMOL0NSB5p4FA1rEXyFWiGx0/cERW+RDBAiAjeWkBRJfV7decNt1QYx5vE4MQb7p8pDtUEG/y/4pd+3lZ3Xac6mrhz8PHtFal2qd5nc397aMvWrr2mr57w6IO1keIGEcke2HpZQslmI5MLxw8de1ylz0pAgeuSOC4CRuqJazo3XKf+wQ1I/J4pQZuDm4IeVx/QbdNstPKMEb3tAzULqI/lX1WF5mZurf6uR/QG0WpKbsZezU4tOp6ccUIAofi1vug6XEdS/tkJoriMQg3aJdC+On9
+ lExJ4mpT
+ qpIll6PaGkLDBf4OmrpAIdU8Nkx6QH4i+jGbo89VXbBkj5+HrXKER772Newig0hP0ep6HZu96tgwM0b8UBwVKeMeAfPiMHqabyDgRUMO4w7ZoCNaZ5NiWB1pBaSmXDFoFO7wSZ6DUP7x1Zmi6uFoa7XI6B6/VRtPqkPnspKKC6M9KSBeU6flZbWSbCQw+hB/kCUTI5WPDufutui2dfnf4X8OUZhyqDuWtqk9sNUXG4gE/I5EQ+3N0r9QTmRLc26kqGe4M897/K0Zf/I0EOHlyghXlnsLMDKViWXyoROoeC61Eprl8xqcaIN/gh5ISjE/eaRfqQ5Odj+mGsoWe8jgpwPQWbxt8xn4QRsR/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,98 +180,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: xu xin <xu.xin16@zte.com.cn>
+On 2/6/26 11:01, Harry Yoo wrote:
+> On Fri, Feb 06, 2026 at 10:40:54AM +0100, Vlastimil Babka wrote:
+>> On 2/6/26 01:53, Harry Yoo wrote:
+>> > On Thu, Feb 05, 2026 at 08:07:23PM +0800, Hao Li wrote:
+>> >> SLAB_NO_OBJ_EXT is set for boot caches, but need_slab_obj_exts() doesn't
+>> >> check this flag. We should return false unconditionally when
+>> >> SLAB_NO_OBJ_EXT is set.
+>> >> 
+>> >> Signed-off-by: Hao Li <hao.li@linux.dev>
+>> >> ---
+>> > 
+>> > Looks reasonable to me,
+>> > Acked-by: Harry Yoo <harry.yoo@oracle.com>
+>> 
+>> Thanks, added to slab/for-7.0/obj_metadata
+>> I think it doesn't change anything at the moment?
+> 
+> ...unless you enable memory allocation profiling :)
 
-Problem
-=======
-When available memory is extremely tight, causing KSM pages to be swapped
-out, or when there is significant memory fragmentation and THP triggers
-memory compaction, the system will invoke the rmap_walk_ksm function to
-perform reverse mapping. However, we observed that this function becomes
-particularly time-consuming when a large number of VMAs (e.g., 20,000)
-share the same anon_vma. Through debug trace analysis, we found that most
-of the latency occurs within anon_vma_interval_tree_foreach, leading to an
-excessively long hold time on the anon_vma lock (even reaching 500ms or
-more), which in turn causes upper-layer applications (waiting for the
-anon_vma lock) to be blocked for extended periods.
+If I do, would kmem_cache or kmem_cache_node caches gotten obj_exts in
+leftover space?
 
-Root Reaon
-==========
-Further investigation revealed that 99.9% of iterations inside the
-anon_vma_interval_tree_foreach loop are skipped due to the first check
-"if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a large
-number of loop iterations are ineffective. This inefficiency arises because
-the pgoff_start and pgoff_end parameters passed to
-anon_vma_interval_tree_foreach span the entire address space from 0 to
-ULONG_MAX, resulting in very poor loop efficiency.
+>> But a correct thing to do.
+> 
 
-Solution
-========
-In fact, we can significantly improve performance by passing a more precise
-range based on the given addr. Since the original pages merged by KSM
-correspond to anonymous VMAs, the page offset can be calculated as
-pgoff = address >> PAGE_SHIFT. Therefore, we can optimize the call by
-defining:
-
-	pgoff_start = rmap_item->address >> PAGE_SHIFT;
-
-since KSM folios are always order-0, so folio_nr_pages(KSM folio) is always 1,
-so the line:
-
-	"pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;"
-
-becomes directly:
-
-	"pgoff_end = pgoff_start;"
-
-Performance
-===========
-In our real embedded Linux environment, the measured metrcis were as follows:
-
-1) Time_ms: Max time for holding anon_vma lock in a single rmap_walk_ksm.
-2) Nr_iteration_total: The max times of iterations in a loop of anon_vma_interval_tree_foreach
-3) Skip_addr_out_of_range: The max times of skipping due to the first check (vma->vm_start
-            and vma->vm_end) in a loop of anon_vma_interval_tree_foreach.
-4) Skip_mm_mismatch: The max times of skipping due to the second check (rmap_item->mm == vma->vm_mm)
-            in a loop of anon_vma_interval_tree_foreach.
-
-The result is as follows:
-
-                 Time_ms      Nr_iteration_total    Skip_addr_out_of_range   Skip_mm_mismatch
-Before patched:  228.65       22169                 22168                    0
-After pacthed:   0.396        3                     0                        2
-
-The referenced reproducer of rmap_walk_ksm can be found at:
-https://lore.kernel.org/all/20260206151424734QIyWL_pA-1QeJPbJlUxsO@zte.com.cn/
-
-Signed-off-by: xu xin <xu.xin16@zte.com.cn>
----
- mm/ksm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 950e122bcbf4..54f72e92b7f3 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -3170,6 +3170,9 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
- 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
- 		/* Ignore the stable/unstable/sqnr flags */
- 		const unsigned long addr = rmap_item->address & PAGE_MASK;
-+		const pgoff_t pgoff_start = rmap_item->address >> PAGE_SHIFT;
-+		/* KSM folios are always order-0 normal pages */
-+		const pgoff_t pgoff_end = pgoff_start;
- 		struct anon_vma *anon_vma = rmap_item->anon_vma;
- 		struct anon_vma_chain *vmac;
- 		struct vm_area_struct *vma;
-@@ -3184,7 +3187,7 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
- 		}
-
- 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
--					       0, ULONG_MAX) {
-+					       pgoff_start, pgoff_end) {
-
- 			cond_resched();
- 			vma = vmac->vma;
--- 
-2.25.1
 
