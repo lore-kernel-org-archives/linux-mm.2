@@ -4,75 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C1AEB28E5
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 08:18:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9572AEB28EC
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 08:36:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 305CE6B0089; Fri,  6 Feb 2026 03:18:57 -0500 (EST)
+	id A35626B0089; Fri,  6 Feb 2026 03:36:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DDD66B0092; Fri,  6 Feb 2026 03:18:57 -0500 (EST)
+	id 9EBFC6B0092; Fri,  6 Feb 2026 03:36:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2134F6B0093; Fri,  6 Feb 2026 03:18:57 -0500 (EST)
+	id 8EB346B0093; Fri,  6 Feb 2026 03:36:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CDA56B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:18:57 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6EAEB140847
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:18:56 +0000 (UTC)
-X-FDA: 84413331072.22.0DEC581
+	by kanga.kvack.org (Postfix) with ESMTP id 7F06D6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 03:36:28 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2765F1B2E01
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:36:28 +0000 (UTC)
+X-FDA: 84413375256.05.AB9A28B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 79D6340013
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:18:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rkm+DJ+n;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 50EB1180009
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:36:26 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WnqjjJUM;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770365934;
+	s=arc-20220608; t=1770366986;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LXBByC5/KZduslF/XXgPcZ9d+pMMLE5CiBitFSTak2o=;
-	b=xdhHmA0GgWHRH8o3pIzY9FqhevI27WKI784DiOkWZusWOk6fsleCwDjajH9fJinWc9s/ln
-	c4ZhhUpN7qVKAeY2BP38vMRPyPUfU72SeuRaeW7NpLYTey9Th3Ysfv0TupSNsjz7zHDXo3
-	0QVBvOb26wpQqeQGqbVMrtH1r3CAs2g=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rkm+DJ+n;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770365934; a=rsa-sha256;
+	bh=ivETEg2XwNL+zy1cRx2DX6RZjxXK8YkRo2ilKPUq+RY=;
+	b=QC098tT2CjzEoCw/TVy/qVCKwe/KFGzK9eLKSAUe1hE0iYja3Hy9izKMu1QhD7bbXsA1gU
+	MrvE0xHA4VrnKw5DLfB+yJlVwCJwWLb6bY5F4qmx6AM8Pm3bsY9agrtHhIkQX598LNa/5l
+	msYweHwN690/H2F1J65DW/YEcBC74ts=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770366986; a=rsa-sha256;
 	cv=none;
-	b=lvBe5v/b2M6ZVEZEWeX+ohfeui5/tE7KdxPRLRjqD229d+862uS/K6IyHuy/YdOu3JZuR3
-	99Yw7JxEmRPMGcwUBCmW5IOn4Non2ucgvu+H3miwdrwfOIdmYP+xcKKKhn06seskgmuYs+
-	PLO4NPbvdX+O6RPxs53Xg0m7lkFrFkE=
+	b=NwdVTDy5F2mwMtqcut44pzhuM5njfHZkHBSxh0hcZ2ieOCsOXTjx86oYzANOQT4dzwTCXv
+	KOV7boxKI+/s2CgNoE7/c/KxkyZKD4TV7QBvNczKqP6dZHFFfFtMslnYzyTcb+VDEGZVZH
+	wuqjJuh/gV/e12Jkt/eA7XcASQWB7BI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WnqjjJUM;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B9B1408C2;
-	Fri,  6 Feb 2026 08:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BF4C116C6;
-	Fri,  6 Feb 2026 08:18:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3ABCA40936;
+	Fri,  6 Feb 2026 08:36:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137CCC116C6;
+	Fri,  6 Feb 2026 08:36:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770365933;
-	bh=syvH/EQhTARDq0ntPLE1YxFDXePP+tcEqlK28YM5SKA=;
+	s=k20201202; t=1770366985;
+	bh=60sXKh54dFupXDZ+oEQgwWCw9zthbOhUf3zVTKyrWO8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=rkm+DJ+nul/EhvQz9DIjFMuvbWLKUMga0qkpo6yRynLo49ahf8C7xCbDruBozImLe
-	 543u02WvzmVpgrM46UIs9g9E2qBfy9GchB+EpTDM/6e2z6WcTeTBIv5Blh6X10yyQH
-	 j47lD2Ih0XpJBSYJr2DDGHRXqPsLLfhyqoN7+AdBpAP4dzkwJ8Ku0D5sC4OJC6kjz3
-	 BVzC2HWM+MCTpta7hTpOf7gSPGFkQQpnCuocMKeJGzVHJu3a+UwZSd2r+2WzA9R7bB
-	 7Ccl6k9mtDsml3l3qmmb20hzAy8p6T5tCEzrnmMF/o154D/1s8CQ3XcyEhcaG3pc60
-	 fpj5Pa5yJ6JTA==
-Message-ID: <a1d5bb75-3222-4863-a24a-4343b25ca6b7@kernel.org>
-Date: Fri, 6 Feb 2026 09:18:49 +0100
+	b=WnqjjJUMboX0/6BWcCU+SJRLWP+GnBUjR3aYVurgfcD1iS3vVElyv8sX1+UKd0Sdl
+	 AYOvMsj9roCddWSwCjtAifSnhTKIMx2aY9NYtFqmZvdR5x7/NsOi2XF9oyE6Rw0RiG
+	 7cey/09Tt++9fPja52NXTF4WzHwdZXauIITpyRGAglW8TPYNw04ND4FX98w/GU3ziM
+	 66OfJnZ8XWMWsrsh1qld17kpwRb1xGcgrIjzav9vL6fEKG7PRwCD2fgFNGaW2oP4yL
+	 6BMAnumxMtRSvv/HOmwUxuIm9rPY0PtXNaow+oscOGEBYcSMuMfL8uW3kS/Hc2RYwc
+	 REqoRnGvtRNiA==
+Message-ID: <c225864f-192c-4cf0-a5fb-411de8c22eec@kernel.org>
+Date: Fri, 6 Feb 2026 09:36:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ksm: initialize rmap values directly and make them const
-To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
-Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
- yang.yang29@zte.com.cn, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
+Subject: Re: [stable-6.6.y] mm: khugepaged refuses to freeze
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <gp3foqukne5ukrssvx64svhcpogmrskyyzjatofstfrl3vplrk@onxbnxdjrswu>
+ <3d0f189b-faab-4452-b9cc-8f4e7a15025f@linux.alibaba.com>
+ <jujsgu5ed3srhetch2pbpdrt4tnf2alodrk4nfo7idxmhsq772@lirvj7ftvxgv>
+ <h3bbxn4omwe2jv32vyjou34me73x5nwg6ai57goqo2qlntq73y@ra75spa3tlzr>
+ <1179320d-6bab-40a4-a7ac-dbcfbab24623@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -119,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
+In-Reply-To: <1179320d-6bab-40a4-a7ac-dbcfbab24623@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 79D6340013
-X-Stat-Signature: negqfpwmt165bgqx388u6ggiu1i4on5k
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 50EB1180009
 X-Rspam-User: 
-X-HE-Tag: 1770365934-975534
-X-HE-Meta: U2FsdGVkX1/9hNmDO/fjg731gSOAb1hlHZ8aLHm6ZafVxtv0elLlTHU7ZaDkMzhfSCR3toLuuUsZYU+PqxI7fef8vrkRmAaqjyGD/Rfg5B+9MZTGYho9ewx71yv7ml+2XfzH3L998iBXlmNlAIJ5g4NKpbkxMq9wPH7L1AZQvICb5YzmGHxANc6wsFzzEjjKzB3DpA2I2uxkZeGiZ8iEfh9CxxJvsnAr0tJap+IFYS+a+7E3s63pdIDsb+Y6MnCT/qf/TO3KM8vHBNGIzyFc0R04iFbcaNnCHh6PROb1r/bx0OGy6AoVO23nnnidrLop7UN4LLDpDthiOzK48DgI/T4r1aGeEyDDvhMuF0RqIxjvKb/y2EfeTuQVftCou7vEstL8c/pWbRbdjJ3CICHsErH62Ft0u0ch8xb5yLcZ8xEiPzvZHs+0VYzZJQl1mFqhEKvCbBaGmkoAFWEHVvMWK7Ge4SuaEHReTn2QOiu52Z9cTM82AySttO64xOI7GYTfg0BCx+faEozXOzt+gkzInDsopAGJLmc5obMDd7vHYWkH50QSrBbFOF3nFU4ZuMHm9IxSDg9u0qdbWGk67MaU6MTkdwcaNTvekgT/KY5izePXNpuYPsKRgZNyJq8604x/DLcDshQtmGKfNvT2cY4wRPrdNatoZfe5wmhTbwUx8Fy+XzluXXUzUklSwZ4oT/rK32uU09w1jQ5G0ybKW2wHdjg8gNeO6uZcYr64CGIc3s6K+KHL2oHs2eMVDqw7nmCVYE0dxXW7gIMTvSBcghsdKQpiUDfnwetMgOBmGjo6PRx9OHpLA4ztvNR+zwyebJz9zjk+T18iTyS1TPJeKktDSOF9l7isuJG5Datx77q3kItQitoLmmYlqMFfS7TL3QkJLCeC4gvfEI48XaYQHo6i+o5ARIlO5yV+UdY2DAUVYuNS0/20UJ6gPhJRZNefF/uVuFEGsUCCf+22/vSSL36
- FYCtDb8A
- RVuW7xLQ0YHDzqogtFrMLdVOs1xReKZ3KKsQhMWnHEClz9AE6FZ7jUs4xUZdOrBhpB561MXBYNH5ugaKIZ2QP5KkrG1/j6y3Hqlotj11/S70GXth/6Zn6lXySO9v+vz/kEVxIePffKUvX7sxkJLChyLus+KZVbdsii3L3lqu4/ur7y23eCZPGvnn1bns45uInUsdd7aE7LskGBJQJDYN2r0v8kiF6+GyIp7pvjbNKGpGBibtiT+Jg5nOuHjVqYexvtKx4eH7iKg9+AA8YAduqxeqyUS9ZARQFg9DryyCtpx187Aebbc5+4tgSn68PE9wk9rdKkFIUUN7Kio44x/CXSI/45g==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: mj57d6fy1f6xcdqf1ajqfkmcpr5hk7js
+X-HE-Tag: 1770366986-916591
+X-HE-Meta: U2FsdGVkX1/NNwAa7ujhIQTd+7z+WlqbF6fhZy86M+hMFeJQMUze3TMoc52/lV0dlssJxgt2YA2fWrJv47CH+F+wo9txCoZFynHdlf3Y//S6nBHjUXClsDqTj5M+dnJf7BOHd49rvnqmuoCqji+hoqd0UE1DG0ywZMidGFuCAbH2HV0O3JQbZA1LyJrXuqReUaJt00eZLqcDe/HlvuYXut0qoNspGq3xkYVq+wWg2JUl5jEy3W9ELBp/meXhxdERXQjokNhn+fXw5/5bSn9lSkBtjpix6fdFFErIuSeEkYSHy+oobWqp6QoKnlGJd3xaGOTrTBFf4OrCuvKs5sDLaUxVbstQsLzEYGY91aNX1E0LUeJlr1UExFYwNLzeLkKwbEvHQ9+3c4cgC6X2otRD5XxsWW9kMZ1UQkFhF5Z8T203pd3Vflq8UisV+gBvSN/Dy0Sf5IOH2/VtXRoqRkN35rNCvNoZTbY1nE+b/1GTSBPAtBPDvPi0ns7IJAOCPjnKaotuZ/+BiGr+8BqinpfQgm4lJlLj7TDFULt04bCRkdAtqZtkWq3GNjRx2mD3ZkgTr32NEgVDGr4MXI6FtYudlLrqD8XjEcGQUpMuJFvuWYHQGOYba8A7tC5druu8Qo0w/y0ngTLpTxf+QJnu7LU0xBF/cnXKZ8wHW/Cp5RhM6NDIwD5yIjIiPeTspzcPZ6mXXFtjdQbegDkV3UbUOouvSwwPubx/JtdsSDEzJv1FW9TSrI5wtJxY+IF6JYqwmdEEohEaD4VZu2h7W5DLibT1voQRvEFNXpOIZEKcj895DbYn+VP47tEN8UpTxb4zcNlRwQ52Rij3eWG7JYuL1Jfr3+sVxUZds5tyVka4C/RyWsYeQFq4z2p0L13OC2cGUJIBNAadUq2k+ExIEvn+Od2xh2TBq0roHak+gI8Gbz925Uy9lcU3d4YgBB8Q2xsnFjZMh4Q+zI7ie3tqsnQf2GQ
+ DE7fH7BP
+ QKXbQAzOXlVHJnTD9TpOrQhPEN5fh6XZYgqLrb2ZbOJpOBjT7eIZqBTAr0XzC8UCELZ5uL4SlOKcwi7qYuzDYig3fjpbk1iSIr5hKYpJ+fG++FWTI56zQQak+yO/2y/a3OstwhFOiwg/op7vvtdybMJutdYng3RWdZlS9KP4RdjTpc7MqV6fKaArOdlFtlQ409ueWVbBbKnBK6bNewnijnw48CgzLkgTKIFbF1C0rdzOkqhljRLRva91+6w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,63 +147,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/6/26 08:22, xu.xin16@zte.com.cn wrote:
-> From: xu xin <xu.xin16@zte.com.cn>
+On 2/6/26 06:12, Baolin Wang wrote:
 > 
-> Considering that commit 06fbd555dea8 ("ksm: optimize rmap_walk_ksm by passing
-> a suitable addressrange") seems to have already been merged, this new patch is
-> proposed to address the issue raised by David at:
 > 
-> https://lore.kernel.org/all/ba03780a-fd65-4a03-97de-bc0905106260@kernel.org/
+> On 2/6/26 12:31 PM, Sergey Senozhatsky wrote:
+>> On (26/02/06 12:38), Sergey Senozhatsky wrote:
+>> [..]
+>>>
+>>> Right, I thought about it but wasn't sure.  Could the inner loop (e.g.
+>>> collapse_file() in this particular case) loop long enough to fail 
+>>> suspend
+>>> w/o ever giving the outer loop (khugepaged_do_scan()) a chance to 
+>>> freeze?
 > 
-> This initialize rmap values (addr, pgoff_start, pgoff_end) directly and
-> make them const to make code more robust. Besides, since KSM folios are always
-> order-0, so folio_nr_pages(KSM folio) is always 1, so the line:
+> Yes, that’s possible. However, if we add a try_to_freeze() check in the 
+> inner loop, we need to consider various scenarios (such as anonymous 
+> folio swap-in and other potential cases?), which feels too hacky to me.
 > 
-> 	"pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;"
+>> For inner loops I wondered if cond_resched() could be an indicator of
+>> where try_to_freeze() should be placed.  Those cond_resched() calls
+>> are there for a reason, after all.   E.g. something like:
+>>
+>> ---
+>>
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index fa6a018b20a8..cee08466a069 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+>> @@ -2431,6 +2431,9 @@ static unsigned int 
+>> khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>           unsigned long hstart, hend;
+>>           cond_resched();
+>> +        if (try_to_freeze())
+>> +            break;
+>> +
+>>           if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+>>               progress++;
+>>               break;
+>> @@ -2453,6 +2456,9 @@ static unsigned int 
+>> khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+>>               bool mmap_locked = true;
+>>               cond_resched();
+>> +            if (try_to_freeze())
+>> +                goto breakouterloop;
+>> +
+>>               if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+>>                   goto breakouterloop;
 > 
-> becomes directly:
-> 
-> 	"pgoff_end = pgoff_start;"
-> 
-> The test reproducer of rmap_walk_ksm can be found at:
-> https://lore.kernel.org/all/20260206151424734QIyWL_pA-1QeJPbJlUxsO@zte.com.cn/
+> This looks better than the previous version. Let’s also wait to see if 
+> others have any better suggestions.
 
-Thanks!
+What prevents other callpaths (faults, read(), write(), etc) from 
+similarly triggering swapin?
 
-> 
-> Fixes: 06fbd555dea8 ("ksm: optimize rmap_walk_ksm by passing a suitable addressrange")
-> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+I recall that there is a notifier when the system is preparing to sleep 
+(pm notifier or something). Could we simply hook into that to tell 
+khugepaged to suspend+resume?
 
-The patch does not seem to be upstream / in mm-stable yet.
-
-Can you resend the original patch with these changes included and the 
-reproducer referenced in the updated patch description?
-
-Thanks!
-
-> ---
->   mm/ksm.c | 13 +++++--------
->   1 file changed, 5 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 031c17e4ada6..c7ca117024a4 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -3171,8 +3171,11 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
->   		struct anon_vma *anon_vma = rmap_item->anon_vma;
->   		struct anon_vma_chain *vmac;
->   		struct vm_area_struct *vma;
-> -		unsigned long addr;
-> -		pgoff_t pgoff_start, pgoff_end;
-> +		/* Ignore the stable/unstable/sqnr flags */
-> +		const unsigned long addr = rmap_item->address & PAGE_MASK;
-> +		const pgoff_t pgoff_start = rmap_item->address >> PAGE_SHIFT;
-> +		/* KSM folios are always order-0 normal pages */
-> +		const pgoff_t pgoff_end = pgoff_start;
-
-I would move them all the way up, above the "struct anon_vma *anon_vma = 
-rmap_item->anon_vma;"
+Essentially, making hpage_collapse_test_exit_or_disable() break our for us.
 
 -- 
 Cheers,
