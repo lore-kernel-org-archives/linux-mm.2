@@ -4,88 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48513EE2086
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:42:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 024A5EE2089
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:46:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F03B6B0089; Fri,  6 Feb 2026 05:42:21 -0500 (EST)
+	id 596016B0088; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19E246B0092; Fri,  6 Feb 2026 05:42:21 -0500 (EST)
+	id 543176B0089; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 072946B0093; Fri,  6 Feb 2026 05:42:21 -0500 (EST)
+	id 4450C6B0092; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EE6256B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:42:20 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 91ED21A0773
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:42:20 +0000 (UTC)
-X-FDA: 84413692440.01.A3557F8
+	by kanga.kvack.org (Postfix) with ESMTP id 348976B0088
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:46:48 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0333613BB4F
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:46:47 +0000 (UTC)
+X-FDA: 84413703696.05.1B2F0DD
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E4A2740004
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:42:18 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VTysHtsF;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4E579C000A
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:46:46 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DwwqXPk+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770374806; a=rsa-sha256;
+	cv=none;
+	b=EVXoYa+Rowh2xLFUsyqCvWfkSRFsaVaVR+lSZjDUTswNR1DePDsZ3pkM/OY4rqajwW+mbg
+	xbB9Mt64/7/6Jpf+vEtPGyCQ9ZpA4rm8mQKjVgENsuHsfptXAdamk+GHbrSUet+qqgHqJr
+	RO/rXyNPP0JU3S8ji63DfSGu0tZXmFw=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DwwqXPk+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770374538;
+	s=arc-20220608; t=1770374806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8+jkxt/ep2Vq0npqHd3kAgPL9311GOhIAkMuXW7JH0U=;
-	b=Q6c1I9EjcAUcHA811tz9hcClOBRxu/vazdgGuiRy1ALxwP60TlLtx68ALbfNBySt9YC2CX
-	Kd8zafoA+A8FC+EfsuUdlwaJ8k2rBMRHlIpE9NNlc7hRIwE4Orf8IirBTUg2qz+W3izOf8
-	+MdSSq3jQYvPIcsb+ZMgmytgtFZdvXs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VTysHtsF;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770374538; a=rsa-sha256;
-	cv=none;
-	b=pYEFyA2014aVGLtFefuD7fBJL4cz04verAEYmTDh7BqVwrgPFBI4wGCuqG7y7qC0dMWaMu
-	TCBI59nQY3FeQ90QngkzlnZ/azTbkWdXoAkI8vApQaU9W7+vJ5Sj4WJQW7QD2wfyByrAwI
-	Ia2TVWjhrz3A0Xl3r0979AD/oKEE6Q8=
+	bh=cArcO8doHePVNVOuHnDWRT93Ld2F55OEAnBp5AcHusY=;
+	b=OeDjiromXxa+p1uCgTy2G9bz7gA3bG1p0V6fNfzlTM+Nm6lGhOPaNa0ABU212XkSSaswa8
+	M2A7fbkqDDIS2vfXHLNMUwCjgE504GHDwB9b9crDNGKmqhwzbJYiiS92SM1mECAoGCi5H3
+	q38xT72IoIGEZqG/Grvb9oHlSK/ZinE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3316360051;
-	Fri,  6 Feb 2026 10:42:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA05C116C6;
-	Fri,  6 Feb 2026 10:42:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AB65560010;
+	Fri,  6 Feb 2026 10:46:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C11C19422;
+	Fri,  6 Feb 2026 10:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770374537;
-	bh=X4ulH2AmDkCSg3stSWU0qmNiUtFh+CTtBIZg9eTnXM0=;
+	s=k20201202; t=1770374805;
+	bh=PHMU2xpIBrdrA0pF+qsCVfYhTTFK5H/MMPeHTteF43Y=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VTysHtsFbDZOc9nla0Q2lgBis/brgO6Tu+kf3ZjW0lCZpL1uJplM9eZTkXQhCcum2
-	 UIQVwE1+A3z9/osnfEUHa5wrcr52RX4ivjXktLIzY5oVFuwODBON2ufk5tTgU6mn+R
-	 kRQjtEeQq2irifXeO/1G3CFjPn3stmMk/VvAx3qvWB8gbBiWAQl6yd0+kYztL1a+QJ
-	 eagSYMaSu7JIt54TiZMwJU+j3SfNPW7mc3mRGstPV06L/k2NOUTqClojWUxdl8PEiw
-	 /vumUJqdqpNOYsec/0f6JZTDY41m2mszc4Rs+BB36RPHPk/B4ZAjutUf6q1FNZNSrq
-	 eP+Xw8P8QMVAg==
-Message-ID: <0ecdd75e-ccd8-4217-a409-51da756ff1fe@kernel.org>
-Date: Fri, 6 Feb 2026 11:42:10 +0100
+	b=DwwqXPk+Csnrpw30BYx+2nsLWv0boIzO7iMdbCNNpRZLSG/N0sDO9H2tjtg985UyN
+	 /hPmZZo/7w/om+ounqcCGH6rsEdKq9hyK+bIJunB0jOxRKifa2UBsxQfGi2HSIP1oK
+	 Hvlb+G0+6bdfoFCP3AmZ9/LZjd3Ge/vmQtIqiGsOuufhq3xVahaBSdp6ueIzzTClDm
+	 xMn0eUF4xpnlpPbEaBkFgOuKGNzx5ggRgenGjZAnf5v5jFK512mPPOfaMmnSi6fs2O
+	 Lf2Bq0C04Let6Og4BmjjltyWrZEkpWDepf0JLHZnrfzM7cLdXQMBpL8InnORyvKsbo
+	 2DYZWGKzMzY9Q==
+Message-ID: <ef853093-3007-49d9-aff2-fa39fef2b9b3@kernel.org>
+Date: Fri, 6 Feb 2026 11:46:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 17/17] mm/slab: Use compound_head() in page_slab()
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-18-kas@kernel.org>
+Subject: Re: [PATCH v2 1/2] ksm: Initialize the addr only once in
+ rmap_walk_ksm
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
+ yang.yang29@zte.com.cn, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260206175745201sbMJ9Ru8QZsjAo7YMopKS@zte.com.cn>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -132,17 +120,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260202155634.650837-18-kas@kernel.org>
+In-Reply-To: <20260206175745201sbMJ9Ru8QZsjAo7YMopKS@zte.com.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: E4A2740004
-X-Stat-Signature: w9m3hhti47c664zpr7srrtggkyzk1156
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1770374538-159734
-X-HE-Meta: U2FsdGVkX18C5cUXYZx29FeVhgoKU4outSLLfkHRTLQFw/DWG6ztEC+FXXgqbpAEPo/mH7VqCPjZKdgXES38X32mya2LIJz28GmNUnd8ovrlQckYDYJORR5PDp8iMp8noJe6ierhwfEIwCWD/v011paE/lOMP1O2lo04k0OMcwmq29sVLFMW3Bl42cmJvz+RuKr+4+aJofLBc5GBPCZTQUxEt/0xmKkTHXGf8duVQ9EGdzkKP9vWX6RRzhhSk1BRN8IxDDTBjzt0gU3Au11XHQRz3D7oBmF325kYxXKQbQQRDhsbHLA5fRU5Do7vMTS2FRA6aLzdFlkChqth2nPl9B4bIqeO9CzJagqFweUsXRgiAFR1Y33033JvKVe5JGgT23b7IRS+0KCZ7yF5aAyWw8iyxDMxLKhMvTFZE9Cfm2sVKWvh3t3+raiR1uP/qNkZT/UZyqvKr3e2wKXVtyioZxPytWz0VTCxxb9I87J9tqtg727zOoc//LRDEib/9mFItuTNKSswHaPCI2XF+T9E1uvHpLiOVgIcjyQfDkdvVzyUrSYeky2jdUTzmjPUW7KtXcwIDYXClpLSl3AuL4JRvuRMT0g4nYp2+NidKFQbg/l8TvX9j6T1sTz3bYV63CoTd9TmhJA6SkexSPcwsPvJxNZpOY/oxsmSy6oVke5v2SgRPCt9OiGTwsDD004NFfzRTeXIT3D1TwSm4k2GVLynbCQBCu7ThCWnyKg93tCP70PRFK6Qcq1hl5ucQHURGU/qx8xyBBUY1qaZVJ7DEHZkKOxk8fU1p/a8D9/k78KaPipQzK6/oGwKW3owwRNShm0jnXesSB719boBW/UQMDm+vU3c5VPgmInNj/QQlkI4HE7e+c1S5RHAlcghV0ZiQvnK8uRhEVNaqfRR6Kz1wGCkhBRz1h157jm2iFDzQjLG7tjBll/UwJhs9UtTEmEySomlb3L66VzGAjnUjiZA7EO
- eAykrRPS
- vHc5SOhbyJc5dUR194zD1mT/u1TpKw6nxEDsrRX0eFGfIPU/f+3iACxnZ1d1LpQuvq5HORKLIFVmAujODYMoDhgearITx85OQKJPENo2TlPM/AQtQ0UKC5wvYcQr0ojafvZoinqAh98BVYpvtPzKVws69s+4QuPqvume6fiXBfk6TInXrOhKM0PUGqN0RL7f8xaF0Y21LdDveYlOvtFNnDPpPomS0HGgkNBo4ODwUClPwoA3cvV4wlNfKF/ocIA2gPhUiUeQDNOwgF1aAn2JfpxbdezuthGyixJGIknjxO049dLvT/H9Bn0vgU29rXUJxHrpylvXC/Gaj8dOXok/pHQ8SGjfHgLsq7sFV
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4E579C000A
+X-Stat-Signature: r75iw1wo37a1yxuufh55jr8fke7o1k81
+X-HE-Tag: 1770374806-527047
+X-HE-Meta: U2FsdGVkX1/nldafKBa2PLfdBOZw+u80jwCx7V/OqMP9OkvlSqhQTCeKZ9WxZtg0/1lJPMuFwKbw8yFYwY8BLKYT34r6w2RjucHVmrV+9rvPGnirSv8Szwb2VwC7ylwgas6bwF+GMT1PWJvf78pJ9miEc50RBedw7j2NGiShbZqd41QQKiCdl9ULqTlvVTlXJFEkzOTzBzoonR8Wffgo9c12Jtdf9gJ2hA+2Q3MdYsW6Nge3i0wOHI/d4aGeKhZAoJdEuOQtF7N7Jg3wzGkX7LxJmmhKsGx8HJ0x9ufZzKHAGYRFhNyQzHlc9nZepD79/mJxZpqGLcV2n+PjtR2g/VHeyArybrnfmXt48bWU+5GGKvF18Ks7emRilOM8fJDeNuOvBRXROzuVBhmxn/XTsEcqTEVg4TqnpW2+s4iZQNzdp4iH5zWsRMJs0z4rEElLZyRvTLFbEAlMTA2dslGCNe/izpj/kE59uiHERTKQjtaDFbiRQONGjcoldnLERRHdaRmje0wce2etTK4dOZE4h+uAAdp7KcByfrsWJUA3wASZK739QCorePFBt9amL+QMjTUNeYRQ9jM9IgxfUgwhHRjTa3n+7sJR1D1ZnYzW6ZWSBdrbVQkPRUUYGMojMxuOJ6t5lF7wvlU6McJeP1vn07CTLd5PEoCPyuGyxwbWV6HC5gvULBMEAVDbQruox3QE/8L1r5CysPvqTrURdA6iJ6VpGb25sVQvfANvERzmudWkvN6DZQfp+5BLx3XPGoTAcS8W4/NPmLUiOquuLp08EQANyXIYG9LJ762I0wnjYPQTHNRsyIuBuS66z7NaISu2YT3CJxirkbkSJYsza+pqlxMJBBHZ3hJjCwpBolkd+pStFzyutQIQEfpXCnFQNuyJV3ONvLN/VL9Xjtk5eij1BlhVo2SWsHoBhPuh3VqhikdZbLnp698FcL1BJF/slI9KBkF0TUyGGrX0AI9m8EQ
+ iq/VJ6nJ
+ WTT5qa3VfIEnclDcloUmy/aagRGtr7c2z5MW/9iVzHgPlUEpg3RahXejKFQX1U6Ompxjwx7ROyzCjwlUQa8yj1ol9lJTM/0/SjCwU5qSLRnS1dqlM7qKgZ3fOc0ORHcBVTvQCrrM8Ofgr9tA+bLq8F1MP8Gv7Iau/dalk/PquV+Pj2jicrGMJ230+7ArjsuQJnV8l6wW7arye41gcf3F1Y4Zly2ZUjmR935kSyguLq6PINgBqkTV5tqY7EIjeHxGMDdsAWxr6mHVpzP50BX3UB26Ya/tTdopBthMlaLj0MGMEuPoj3xMBqTa3OFCgcL2Zi78fZgDJZt2bD7ZeHyjYXpWqqdDOCqESuCe2V59a2kwDPbzLiiYix7wkmzB8Fad1dNWauXkonBZq8E3I0adrK8sgTuUeMrXvH5N5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -151,40 +139,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> page_slab() contained an open-coded implementation of compound_head().
+On 2/6/26 10:57, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
 > 
-> Replace the duplicated code with a direct call to compound_head().
+> This is a minor performance optimization, especially when there are many
+> for-loop iterations, because the addr variable doesn’t change across
+> iterations.
 > 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Therefore, it only needs to be initialized once before the loop.
 > 
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
 > ---
-> 
-> I am not sure if this open-coded version is intentional and required for
-> memdesc transition. Drop the patch if it is.
 
-commit 2bcd3800f2da1be13b972858f63c66d035b1ec6d
-Author: Matthew Wilcox (Oracle) <willy@infradead.org>
-Date:   Thu Nov 13 00:09:15 2025 +0000
-
-     slab: Reimplement page_slab()
-     
-     In order to separate slabs from folios, we need to convert from any page
-     in a slab to the slab directly without going through a page to folio
-     conversion first.
-
-     Up to this point, page_slab() has followed the example of other memdesc
-     converters (page_folio(), page_ptdesc() etc) and just cast the pointer
-     to the requested type, regardless of whether the pointer is actually a
-     pointer to the correct type or not.
-     
-     That changes with this commit; we check that the page actually belongs
-     to a slab and return NULL if it does not.  Other memdesc converters will
-     adopt this convention in future.
-
-
-I think using compound_head() is fine. For memdescs the function has to be changed to
-lookup the memdesc either way, and not go through the head page.
+Make sure to pick up any tags when resending! :)
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
