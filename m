@@ -4,94 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7FABECD9B8
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:04:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B1B1ECD99D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:04:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8CDC6B008A; Thu,  5 Feb 2026 21:04:30 -0500 (EST)
+	id A589E6B0092; Thu,  5 Feb 2026 21:04:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B0FE46B0092; Thu,  5 Feb 2026 21:04:30 -0500 (EST)
+	id A026B6B0093; Thu,  5 Feb 2026 21:04:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0EBA6B0093; Thu,  5 Feb 2026 21:04:30 -0500 (EST)
+	id 92FAE6B0096; Thu,  5 Feb 2026 21:04:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 904E26B008A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:04:30 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 29B1F1B2BB3
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:04:30 +0000 (UTC)
-X-FDA: 84412387500.12.607A539
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8A0B1140003
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:04:26 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NNFkOUfS;
-	spf=pass (imf23.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 81D216B0092
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:04:57 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 210AF13B5E2
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:04:57 +0000 (UTC)
+X-FDA: 84412388634.14.5477179
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4237D180005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:04:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jlAE56nq;
+	spf=pass (imf16.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770343468;
+	s=arc-20220608; t=1770343495;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tQFK9n1X/6XJOHaia/NkQdjYqZ2VqcclwuM3/PMBkl8=;
-	b=dpa6Ef8iVSINdamYC+WCX7F/dsXie2szsk+SLBjqZfjNSjoVtJMzCf93DCqK/gueJh0PdK
-	2dCYm7zjm+zxb95V0+MQRAeUqRAZ/EkVZMzt+e1zWHqk1faB4+rDXzqyJsqcqn+GYaEAm/
-	ohK+PWeeHBd1+EGbQbdJU7+R/66YYUY=
+	bh=KHhqE0rOIIDTJy2nyKWhxSadph1tZYrS67Y+CtxUbZs=;
+	b=LRvx3EgRsX9+IO3vbgfq2K+R6eZf8/zAT4Wg81Ec7B6fiyOFHqm1KcT8ZUp+0XUsRShLED
+	sCqJaNyQBjdNzEy/SiW3+fYSFYCLyiQjObqZuHVXXu74moWcax9h3FdBuGeDxcYTJ2X1ib
+	EgVR7KNXuChY7QLPCUOm6gZbqWH9/wk=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=NNFkOUfS;
-	spf=pass (imf23.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jlAE56nq;
+	spf=pass (imf16.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770343468; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770343495; a=rsa-sha256;
 	cv=none;
-	b=wzlxApetd48talhf4hflRnKK5aWhieCeQyTQAYXb8Vnet7xojNGGTCet//rOsjcnjptYD4
-	L95E50NUySRAnz3bMYoxcFPhYZEofbec+rvhrMt8Rql/XAGTW6px5szu5d37KVny3++DvK
-	MSS2m9xhEZpWY2aXRvz/+YVzuOJhh5M=
+	b=SRoyw0FPJODw7f1BGia7Za9qKARx9Cljr0Sh0P75hanDw/UQuCt2uBjZ6AR11MPq2DmlCM
+	Du5blcM9/FyYQ812+yua7blZ2nAjL3LkGA4qTId/SaPPvYsaSN64ZOPKGYiJU4Ipq6OyGB
+	VpRkoPZGu7BChBZJCLAwG0fR/aR2oPQ=
 MIME-Version: 1.0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770343462;
+	t=1770343493;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tQFK9n1X/6XJOHaia/NkQdjYqZ2VqcclwuM3/PMBkl8=;
-	b=NNFkOUfS6OjPT6fWDsTe8LgVnn2qNou7cPBmDkWDv7x//qYHO6stl5mJ5r0B4GeKs70HAL
-	wzY5Yjx85rWtUN60++ZAzx29NyH3RDJ/3/4Hv3I5GefX+rOYOYVTGk2S7FvteQ5OvypsTi
-	kQ+ozs/7Y8wzKp1gzgw9uVuMZ/0S7BE=
-Date: Fri, 06 Feb 2026 02:04:16 +0000
+	bh=KHhqE0rOIIDTJy2nyKWhxSadph1tZYrS67Y+CtxUbZs=;
+	b=jlAE56nqDyr8ycjmwzpiymb4QVVFR6bSgAp9gD80ZSI1/ne0mOItgHiXX5u48ZNylqneq3
+	wbEYS5W6Lr3y0iMe76oN5s0Q5MlCqxFlXefLDnVBOPVb5OsSWGgW0AzRM5Sh2UmxzxlgIS
+	PA1o5Yktbs+orOSpBF6lcDNKd507PKg=
+Date: Fri, 06 Feb 2026 02:04:49 +0000
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <bc96ed3734ef03d4defc9c3940893eba8beaf0d9@linux.dev>
+Message-ID: <b9f07aca60c49a85a52c4eab4ed271ad29e04b5e@linux.dev>
 TLS-Required: No
 Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible
  pages
-To: "Nhat Pham" <nphamcs@gmail.com>
+To: "Shakeel Butt" <shakeel.butt@linux.dev>
 Cc: linux-mm@kvack.org, "Jiayuan Chen" <jiayuan.chen@shopee.com>, "Johannes
  Weiner" <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Shakeel Butt"
- <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Yosry
- Ahmed" <yosry.ahmed@linux.dev>, "Chengming Zhou"
- <chengming.zhou@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>,
- "Nick Terrell" <terrelln@fb.com>, "David Sterba" <dsterba@suse.com>,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, "Chris Li"
- <chrisl@kernel.org>
-In-Reply-To: <CAKEwX=PBsuO27n_Vw112Ss2ZCTFqGem8f134cGKbHUQVL0aQ9g@mail.gmail.com>
+ Gushchin" <roman.gushchin@linux.dev>, "Muchun Song"
+ <muchun.song@linux.dev>, "Yosry Ahmed" <yosry.ahmed@linux.dev>, "Nhat
+ Pham" <nphamcs@gmail.com>, "Chengming Zhou" <chengming.zhou@linux.dev>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Nick Terrell"
+ <terrelln@fb.com>, "David Sterba" <dsterba@suse.com>,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <aYUKpZ8nCB6MTQGY@linux.dev>
 References: <20260205053013.25134-1-jiayuan.chen@linux.dev>
- <CAKEwX=PMQ1aYWr36XKG7oup3diBXb5vjV=fGZeTmYcx+ebmMtQ@mail.gmail.com>
- <CAKEwX=PBsuO27n_Vw112Ss2ZCTFqGem8f134cGKbHUQVL0aQ9g@mail.gmail.com>
+ <aYUKpZ8nCB6MTQGY@linux.dev>
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 33hjweq3hx6cxrrjqy548r51ew8pwo5n
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 4237D180005
+X-Stat-Signature: h4j6jibpash9rg36x8s3k69737sxpb6o
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 8A0B1140003
-X-HE-Tag: 1770343466-192918
-X-HE-Meta: U2FsdGVkX1/XAloIXagX1KNEIoVOZpe2RVzfypalidRj7nes9Fbvvgjq1go3U1sUvPpzLZl/WPoXuNfnyylgOLcx7LMHhD25ZVtVvdPL/FCLjS/kcugVfvehPHRQR82DDU0pmJPfH9ThSoFcfrvSu/5gZ2ouUVhOcnKI1zcGN9iEvV1i6srYRrZbGAFa1lALwqKUg6aGUlsqd33nipxhWRwDJ1KWq0/wswrcZ5MSkA6ts0ZldczPXx5Dcz215kUh7NpkGdxC3wZhTMfiuNKxTqL0gwybN/H0+wmrZfV9UBjOTFQiPwPVP5C81yLV0HjKEAKn+BH0tTLvfQOf3ICYkebvm0ojK0Joch3hJQP84UcM6Xtfn+a2m8539ZZTZH78XjBBq+e5qz5oSX8drVqOXJny4upRrSPSZP2n2JqjepUGmdCzxySjIvoirXOvzJcasYY2WEjny77WNW4B1p7ZZf6l5aZhHcTxZrEfpKUQVUWhSC3hhAZ4l/GEW7zNqfeXbuBEoTb4D320pofTm7BAow11h+E4I5OvSHic2F1/27uypuzgc2BZzwFEIiJb1tEWFzW5AO5DE0VovB80fjTTx6Ch1Mko2u1sDZM51yq+G9+/FvLrGWcOxEwB4utUBcdv5hyDAx5e2cMnWqPN2XgAFHi8L6EJ31gASlsEBzMONo5B+uSTAWyRb9ZNKXsOslCFraQ7BrcqSM1DTUhTndG8qYhnwASaDYk/58ZiYuLoGIwgDJCGEDPYAPYHa3mFNOkOwm4msnLe8/LDHbjnWRAzQcqoLpGIpFibbtxeCdezmK8K9mm3vIJpjgyxhw9Y4zf2XIGIgNLBqk4uqk9S74rfeeO7UXFikNDrlmwynZTZkgorhL7J5keFqIfjkZMJnwg6f+rXnG6ikyzRiW/Nwt+K0+QrB/kzxsJYCE815YXbfX5vfyqTUggtgrmkRsZa9sH/53Y9CBGddCxLSuv6lTu
- eRyrPuM7
- 1ktLk8eqaO8KgX87S0jlFK3xdCA7vuYBucg1g6oISOirj5t2cRwd5Mfc1V0g37QFvQfiwnDHLzOHgkCokzJYE2YyxG1ZtofYbSFxIh30jqnFTmgTf3jcesle34D0n9pkl9UhRKoNN1M+Nr091vEqqXE+GGpLJMEsITmANbIqz5ZQ5LlT+WtAFIjv+V82n+wmFQfAKREnLPdHdIth0LxYAMp6tnhBqziWc20t7oW51c+b1LOlCaoLRAA7HpCCSvReDJEODKHDeKwIKVzlFkFWuNqIxYXRul8r2mQurw3j0w1UDlUM=
+X-HE-Tag: 1770343495-806847
+X-HE-Meta: U2FsdGVkX1/T1DbcLICA3bUwbNj9KkiEp0tcopLYDheXuOPbsFq6ZOMcx76oWaFReX8BSkv6KO6Hh3ayCB1JQb9dabV4O7eVmeTY3EDNWZMnnUcX3mlPyzbubEcvtRloyMP24jF1kyN+pPBfvdtsDTaJmti1Jzzj3oB2NSBuoaOjevkFe8dy8m4eflz5fhytDoPdpBiVtSFUihFg/ez0BTqi4NS8dkA5iPJA+lTCwZagtIKkXkDsN4ZUql034XxaabhytUPqFRqom3MQKkbyMPuAKECJMMB0fZmgbMnTFqjTnnp+JHbb/HYAN1SrYwZ68gJx7Xf3Qga4yBwVEtwlpH5IxCHZTaHYIP29LsoQ/TETz36glTfCxuvK6ISQ6S7ePq09YFwoSjbb1S7FQxp8a+K+MvcMhOquG0oOc7B9v+UVwEMGfu4KF5CZ/50yosC2RRPGzeGDzlEjvaAR8bPJ9LmqPRv0zlsCSQrQREdJcdGeXgkmRLQUjBiD6RtVovIIx6XoibI5tR4Pbnx/vpCx/0G7tSLkcSsTelW8sUl5VnAcA5D9kJqU5QZBqGeu/7T1f1pVUG0mx2Qzuxp4n4INDhiuyi+q1CQKJ4VKR54RbaUVjzFR1GzASQ2S4bHt/emUJjpCQMpiJjYxTfmZUZFXY1yoKnwwY2MEIHZKD545yg8G+97oxKNu0JD/jNgGEhnjT16G03B59u5m2GrsbEvw/oyTu2ci3qDfBdmc1Wk5uPh8BM+qsBsL4N+Crpt1Jj/T53NUL5khTRYxrTYsPM6DY90e9no7v2yJIYH+IMPrN0PnExfl3YsSjLxOqOvXk67HdB+6xZgGp8AXVY2WmVmRWkKC0GcUIu+KxBpHTzDE5L1FxnH3Lg+VgegjxJr7w4KawMnGbc1KXoteLQ5BriQBMMN+BLh1gzoTpbMlJXgXzFCuZN7dJoq4gSbzBT6li/dvZ5CoS+du1fNnIkVqly6
+ GKJcA6Md
+ CyRulOZxVbAUtjylQE7Kk6LUCFYVbraxX6UFfvrzwTJ6d+Z3iEITpn4ZI9Osk40GWPW13efTo7eGNGgoLgCDQ9nxH8CXxsceyZaoCWu938bgoiAAEyOgkkWDef9yLCR080E2zliyeC1+ecKQbxfXDQ70USNv46xFdQZ5OC3JeNYtP4L+1WdLMLuPJB9UfHmZDZbYNMdpHM4eLx/v/USxBWkJ2UPLOaZNuk88qVo99le3SnhI7L2F6YGQXrKJFY7Qv0VCWaQeGfVWiU5Drc1LKzNeeFKeW89pqRiPMTgo5GdEkqfc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,19 +98,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-February 6, 2026 at 01:45, "Nhat Pham" <nphamcs@gmail.com mailto:nphamcs@=
-gmail.com?to=3D%22Nhat%20Pham%22%20%3Cnphamcs%40gmail.com%3E > wrote:
+February 6, 2026 at 05:33, "Shakeel Butt" <shakeel.butt@linux.dev mailto:=
+shakeel.butt@linux.dev?to=3D%22Shakeel%20Butt%22%20%3Cshakeel.butt%40linu=
+x.dev%3E > wrote:
 
 
 >=20
->=20On Thu, Feb 5, 2026 at 9:31 AM Nhat Pham <nphamcs@gmail.com> wrote:
+>=20On Thu, Feb 05, 2026 at 01:30:12PM +0800, Jiayuan Chen wrote:
 >=20
 >=20>=20
->=20> On Wed, Feb 4, 2026 at 9:31 PM Jiayuan Chen <jiayuan.chen@linux.dev=
-> wrote:
-> >=20
->=20>  From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >=20
+>=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >=20=20
 >=20>  The global zswap_stored_incompressible_pages counter was added in =
 commit
 > >  dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as=
@@ -123,25 +119,25 @@ ap.
 > >  contributing incompressible pages is essential for effective resourc=
 e
 > >  management.
-> >=20
+> >=20=20
 >=20>  Add a new memcg stat 'zswpraw' to track incompressible pages per c=
 group.
 > >  This helps administrators and orchestrators to:
-> >=20
+> >=20=20
 >=20>  1. Identify workloads that produce incompressible data (e.g., encr=
 ypted
 > >  data, already-compressed media, random data) and may not benefit fro=
 m
 > >  zswap.
-> >=20
+> >=20=20
 >=20>  2. Make informed decisions about workload placement - moving
 > >  incompressible workloads to nodes with larger swap backing devices
 > >  rather than relying on zswap.
-> >=20
+> >=20=20
 >=20>  3. Debug zswap efficiency issues at the cgroup level without needi=
 ng to
 > >  correlate global stats with individual cgroups.
-> >=20
+> >=20=20
 >=20>  While the compression ratio can be estimated from existing stats
 > >  (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
 > >  "uniformly poor compression" and "a few completely incompressible pa=
@@ -149,16 +145,86 @@ ges
 > >  mixed with highly compressible ones". The zswpraw stat provides dire=
 ct
 > >  visibility into the latter case.
+> >=20=20
+>=20>  Changes
+> >  -------
+> >=20=20
+>=20>  1. Add zswap_is_raw() helper (include/linux/zswap.h)
+> >  - Abstract the PAGE_SIZE comparison logic for identifying raw entrie=
+s
+> >  - Keep the incompressible check in one place for maintainability
+> >=20=20
+>=20>  2. Add MEMCG_ZSWAP_RAW stat definition (include/linux/memcontrol.h=
+,
+> >  mm/memcontrol.c)
+> >  - Add MEMCG_ZSWAP_RAW to memcg_stat_item enum
+> >  - Register in memcg_stat_items[] and memory_stats[] arrays
+> >  - Export as "zswpraw" in memory.stat
+> >=20=20
+>=20>  3. Update statistics accounting (mm/memcontrol.c, mm/zswap.c)
+> >  - Track MEMCG_ZSWAP_RAW in obj_cgroup_charge/uncharge_zswap()
+> >  - Use zswap_is_raw() helper in zswap.c for consistency
+> >=20=20
+>=20>  Test
+> >  ----
+> >=20=20
+>=20>  I wrote a simple test program[1] that allocates memory and compres=
+ses it
+> >  with zstd, so kernel zswap cannot compress further.
+> >=20=20
+>=20>  $ cgcreate -g memory:test
+> >  $ cgexec -g memory:test ./test_zswpraw &
+> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+> >  zswpraw 0
+> >  zswpin 0
+> >  zswpout 0
+> >  zswpwb 0
+> >=20=20
+>=20>  $ echo "100M" > /sys/fs/cgroup/test/memory.reclaim
+> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+> >  zswpraw 104800256
+> >  zswpin 0
+> >  zswpout 51222
+> >  zswpwb 0
+> >=20=20
+>=20>  $ pkill test_zswpraw
+> >  $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+> >  zswpraw 0
+> >  zswpin 1
+> >  zswpout 51222
+> >  zswpwb 0
+> >=20=20
+>=20>  [1] https://gist.github.com/mrpre/00432c6154250326994fbeaf62e0e6f1
+> >=20=20
+>=20>  Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 > >=20
->=20Actually I forgot - can you also update the Documentation:
+>=20Overall looks good but as Nhat suggested please update v2
+> documentation.
 >=20
->=20Documentation/admin-guide/cgroup-v2.rst
->=20
->=20to include a short description of the new counter? Thanks!
+>=20>=20
+>=20> ---
+> >  include/linux/memcontrol.h | 1 +
+> >  include/linux/zswap.h | 9 +++++++++
+> >  mm/memcontrol.c | 6 ++++++
+> >  mm/zswap.c | 6 +++---
+> >  4 files changed, 19 insertions(+), 3 deletions(-)
+> >=20=20
+>=20>  diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol=
+.h
+> >  index b6c82c8f73e1..83d1328f81d1 100644
+> >  --- a/include/linux/memcontrol.h
+> >  +++ b/include/linux/memcontrol.h
+> >  @@ -39,6 +39,7 @@ enum memcg_stat_item {
+> >  MEMCG_KMEM,
+> >  MEMCG_ZSWAP_B,
+> >  MEMCG_ZSWAPPED,
+> >  + MEMCG_ZSWAP_RAW,
+> >=20
+>=20Hmm I don't like the name though. How about INCOMPRESSIBLE or INCOMP =
+for
+> short?
 >
 
-Thanks Nhat for the review and Acked-by!
-
-I'll update the documentation and add Chris Li's link to
-changelog in v2. Will consider the selftest as a follow-up.
+Thanks Shakeel! I'll rename it to INCOMP and update the documentation in =
+v2.
 
