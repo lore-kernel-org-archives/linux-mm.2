@@ -4,94 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 484B1EE2085
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 10:49:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AA8BEE208C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:01:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9632E6B0088; Fri,  6 Feb 2026 05:49:31 -0500 (EST)
+	id 56EFB6B0089; Fri,  6 Feb 2026 06:01:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90FF46B0092; Fri,  6 Feb 2026 05:49:31 -0500 (EST)
+	id 52FD46B0092; Fri,  6 Feb 2026 06:01:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 839BF6B0093; Fri,  6 Feb 2026 05:49:31 -0500 (EST)
+	id 41BAC6B0093; Fri,  6 Feb 2026 06:01:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 719CA6B0088
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 05:49:31 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 132CF1405CD
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:49:31 +0000 (UTC)
-X-FDA: 84413710542.18.7270721
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 2A1BCC0012
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:49:28 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=rp+5wXTU;
-	spf=pass (imf22.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+	by kanga.kvack.org (Postfix) with ESMTP id 33AD56B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:01:15 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED5C75B67F
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:01:14 +0000 (UTC)
+X-FDA: 84413740068.09.30C8039
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 1398B12001B
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:01:12 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JqYRZLZo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770375673; a=rsa-sha256;
+	cv=none;
+	b=YF5+SzSSTJYZ47UBStU3Zo6BCOJa3ELjHIaRn+hNSc3WkjfHz8VdF8uCXFnSIOPtHT/G1Q
+	E4SakipWo0JiBJkr8pw/VjT5Gk9rqJ0TZ8vjP0vNFfQoscIjCt1tmcuUHfRALz3DSVyGHk
+	dFTgp7fBG2Cae6KruqyGgScwWhqyq4o=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JqYRZLZo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770374969;
+	s=arc-20220608; t=1770375673;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ptcmndYEG1F6l9iVKWQB0jX78266KfWSXC+PhYUkJiY=;
-	b=cAm7i9Zug9nqTBVGVwIbnNkJalycopkfDZbbcNyaCI9qTqzFehq3Ks2ETqGU20u2LkIAxc
-	LBif5tjfnPt7778X6jLIoaME0wi1QNRJyYVjzosFxCPSeuP5cBxahJy16LL+OoRejBLlqf
-	YS0wIk/9p05BncyW0mwoILPy2Hytl3E=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=rp+5wXTU;
-	spf=pass (imf22.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770374969; a=rsa-sha256;
-	cv=none;
-	b=hemSlci/0EweSjoDhc4J9kfvq6cyG85KoH0z6a2Ia9OrWAm6yp5CqATL6Pk4WKun1/bFMm
-	5xIC9T1+fD8giw3p9dwB+l0FR+c5ZNLDx7EZM9VJ3L6frpUdv6+S678jDsytbi7ytyccoK
-	HkYCK8ePMceAUZVGv1RIknDNNcyBaMM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=ptcmndYEG1F6l9iVKWQB0jX78266KfWSXC+PhYUkJiY=; 
-	b=rp+5wXTUE69Xxrg+403LV08mJKMDJk6CMXofHVSo2AKrRWwNVx5A4LOs/8hpR9ciT6FSHKZNYnF
-	A4QqpZeBNqO3etWuChHwkLHFEmtY6NdGfxvZMdOYawZLx0PSEX6yKh2ahySDa3liWzGIpWzJLc4AG
-	Sgb/64W9FD5bUuHP/aH0At/zU6ApBpPqZkoEGv3xl7oYFafgPVuXsvdr47lNBFNtOJyuXtBQAzBiT
-	PNFJ+g7Z0eD8oRpNaX2EjhhDv1ec1OO9Vo5CLxRF1s3bvcoIkf3ZixzyRxAXQyKuOFc+SR/wqIyTN
-	Xqekxb9BTYixAbLAcn6u/Yjl72JSumBdnifg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1voJOt-004zKU-0W;
-	Fri, 06 Feb 2026 18:49:24 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 06 Feb 2026 18:49:23 +0800
-Date: Fri, 6 Feb 2026 18:49:23 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org,
-	yosry.ahmed@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev,
-	usamaarif642@gmail.com, ryan.roberts@arm.com, 21cnbao@gmail.com,
-	ying.huang@linux.alibaba.com, akpm@linux-foundation.org,
-	senozhatsky@chromium.org, sj@kernel.org, kasong@tencent.com,
-	linux-crypto@vger.kernel.org, davem@davemloft.net,
-	clabbe@baylibre.com, ardb@kernel.org, ebiggers@google.com,
-	surenb@google.com, kristen.c.accardi@intel.com,
-	vinicius.gomes@intel.com, giovanni.cabiddu@intel.com,
-	wajdi.k.feghali@intel.com
-Subject: Re: [PATCH v14 12/26] crypto: iaa - Rearchitect iaa_crypto to have
- clean interfaces with crypto_acomp.
-Message-ID: <aYXHM4mGlj9y2XXM@gondor.apana.org.au>
-References: <20260125033537.334628-1-kanchana.p.sridhar@intel.com>
- <20260125033537.334628-13-kanchana.p.sridhar@intel.com>
+	bh=6yvRHIYdCDY4or2kHuURSTiaBLb5Y1XNIikEDozr7uI=;
+	b=W69KBF19cloePeGsl8YFW2bRnyvGn1ZnO7TXVY+SGOLokYIOyLYbrvwp3Gt+bZI8+OGeVk
+	2ZfNkFuDsif4SeXE2OHgn/tpQ9yaMgIUz47p0QFTPJQAM0wbh1Xw3VedTsU4eAWDwujisR
+	WUQ7Jw4QhIgRwbnoIaKpxzGfbvPsF6U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA5F440DF0;
+	Fri,  6 Feb 2026 11:01:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C160AC116C6;
+	Fri,  6 Feb 2026 11:01:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770375671;
+	bh=OfuemE8NvbpkvzumGm/QBmZRuLBhKVNLRdNOqH8+xw8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JqYRZLZo2NU/xYu+jVFba4I8F8wjgB2QbQ6NFqY0InIReMZq6P7/iW5j2DGhbDvuH
+	 Bl62/oPvl6dTHhbcwtXCYfTNKTMY4ONgcEhGwculNZ/YnqMN2Qm+KCVzidmmhfszPQ
+	 cc0+VP4/wJpJYdZ0dUNs9rhA1LO11ZeFCl6b/CmD0IJlcDj/Ia7Q6FIKc+9niic8K5
+	 pKFVCnn5oeYnEs0qX/t8GypgfhImI//1SySOv4MpR/pDYMy5D1GdbAfO0TmVcXiBgy
+	 mn+BxdSngydqDTzj8V+GEHUeTe3LPcLD00TIqHoIw6+4IahFAOWOoOzY/7LIIWhcsx
+	 J4uDDyzcwt1GQ==
+Message-ID: <9f75b988-9729-452b-beb5-deab0718faa8@kernel.org>
+Date: Fri, 6 Feb 2026 12:01:08 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260125033537.334628-13-kanchana.p.sridhar@intel.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2A1BCC0012
-X-Stat-Signature: i1ycq58u6bf6w1dt4ztaxrxss5xqft6u
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] ksm: Optimize rmap_walk_ksm by passing a suitable
+ address range
+To: xu.xin16@zte.com.cn, akpm@linux-foundation.org
+Cc: chengming.zhou@linux.dev, hughd@google.com, wang.yaxin@zte.com.cn,
+ yang.yang29@zte.com.cn, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260206180132364R_lYZujwOYfhazgKmxArZ@zte.com.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260206180132364R_lYZujwOYfhazgKmxArZ@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1770374968-725342
-X-HE-Meta: U2FsdGVkX1+tH54Im6ayzFumdc6uTBn0mmujWwPfcIiukwUn4HzIava2SmsAE4eVCR5maCqF8rVNADIZhkJQ45RTdgejKmRUA23taQ19Jybtp4C2vcOR74OYpGjgu5Wz+4EKv4M1nfPspnw5yDYGgdPsz7VJeOFecWq6YiCAsw6eidetJHgOajwUefVk8hhLQlK53kg4Y9NpqEyXsZ9TfAcL22kZ0eWbhCS2hLVvKsX++EiJOZmGymfg1Gdgm5GuX5ozaxDIYe3pDZZS9ZVd2ErHmhToFf79sPAEnAqvOyu/5WlhHyTFF8rPRmYCtm/jcPkIocfJvWE2Znwp3+RPdxYv7uPyJosgww9POSqORj6xplGhUKolTLGpKzRW+t44MddLmkUTIax/daLQRSzdayRC46TkNIKy1DesOkIOX8pIh/3qSHByXy/PggAyvmxQgXLBfm1AUwtCcaIqLtUaymLlRBBIuN8CXe6IDF3aBgtKCqkjsJtQRNATvFNKngB2hLnK2C5Z6+9ruvaDIjPTeAdevytQAp01vaEuYZJ4/HdCusyGPjXjzZZ4nI0dYATxA1nW7UB4cdJK3TUOX2qcCYFH0cxSKlUHUeA1LMde2GUH/QC3evUp7hb5BUpvqmMAdHLUIT7ELlCV0nwQ7OAqztpB6moG4Rn1JfN6zABbUc5QbUfmPQ00mpUgD0U2E8OBAw2rxHj5nrrQFMPr5x0X/FYLU2zelFoxwIZKIEIDYz7mMl5ex1LlKJxLimRPtFl9eqy/4LCwwC4mJ34UYnQO1wdzxQNEbj8uopZb+tZSLY7acNqkJp04gCRtoYdlPRyBQvX0ShklReVzPTYNpz8NruKeC5dysHCtDHtgt+ea/H7MGUNDRkQFR7IPATuEHs6U0Tp+Np5m20N2gLYZXJu5W/F9lfO8TGz32rmDvfDURV04AOnUlH70r8ewO5WEPvi0PWmjqpBMxrxKwQb28p/
- dMxSkSM8
- AELew8TiDCQVaP0cywL2oLqbF1sm9sHkGfFTpSveWRGd1ZTU80Weu9TsBZ9UfL4oFPSiZ7ob9H4e2kxNlfaGFor6kL/eBY6LQC3+nTmbzUAEI8iyxUcjI2iUacLESR0UbkECV4iQMkJ10Qq2VdGJdIacxHAR9/T1tUv+KayC1Tog/N2pqk/tviQYblhockJnogOonrVZ4MZEQxOgPfNu055ahP+lTRQlH1IarxVQfmq8j3ViWkPupHR7HqEcGehF8OzLxw5o1QJHV3lw4uP0Y6IX5fcUFUkr4DzWnkY9BB2SzgnO+1jzFT4l31mR1b44EleDh6RQmjB+Yr3Q=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 1398B12001B
+X-Stat-Signature: iatncrt3n4nd3mtyhry7spp4qd14ufo8
+X-HE-Tag: 1770375672-900595
+X-HE-Meta: U2FsdGVkX193HsNGnRARyJnE4/x4tTB4nDhFhBKhTClRWBDh2bqyzfKkowIhsjKW+8whXxWXYBYSyTGMlI/E1w9PJ7+P3M1xk4WnBY9K5wRdhC+KWgbiy5ce6HdpbRLsVQV+qCBcKEakOb4Xurdrcj8lqpdaon79wzbvU4vvWSbcXV7ejs9xScE8wXwVCYSlliA2RaOJ+6r+e7uAu8dJzv88u2ASuhBKpdKfrnsA83o+JuyIXKckyuI6Fwk17q08tU8xQFEJxywvYmYpFVuRrFys59jSRz0qPZ0FhiH3LTSn1EgHm5IpZWTQV586fdpoed+4QQATm7SOehYDYMNcWIEpKJp0v0Tv7cx6hnZzeRyjeQjjshT1BdZ4GtOODk8dcg5UhMY/lxtIfgZgJl+2+Q9JHu5HPFz2lPiQU3o9D6dSIbK01UTHDtSS+Dj6sW2AjR+r8n7EEIuNo6ULCd3O7A+ruS0wUjrbm/JSF3UAIttC5wZynm7egBHQ9bVcAfQVUsB5QkpbjL0kOf13bq5jtFQcfYNYcWNGY5JL5nEo+jVv0rn3su5DcNAIsdN0jwzMcUUckwfWzuYyLhMUQnFWQq3uYeb8Qlh4aPLJjRRrai0daoJ5W/My7yRQo6AG/rnVJrx4pPDPKyaTNbBKSelmODViPoylAEjKDshoKeQqgrc9REZfMS0j6RKo6718BZs/DGa+Vs3/8GkwW3YiGeQMLWPDdKiVC763+xmXIp6t3DFReCvTjLmDSOYDMu8adeISTGu1cPOWi6BH3vMY8k7t2Nn6hct5whuNAcmEtT3T/iJAPXBfuAIFHKWzDuBeV30KIGqOSeMW9spIvg/2WC5Ghf3/AHfVzaWr1I0ytOz/RQjBd4FNq01aJinBPHWDkMPWCTuEfD1tokG+E8ZYmwEgtfRzZQj8lLDihLK/ysKJ5mk0rrmXhBwO0FRmxHWWtjjLXFMUh3yRJwFaUuoFzUw
+ m8GuNWVq
+ aEVs7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,24 +139,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Jan 24, 2026 at 07:35:23PM -0800, Kanchana P Sridhar wrote:
->
-> +static int iaa_crypto_acomp_init_fixed(struct crypto_acomp *acomp_tfm)
->  {
->  	struct crypto_tfm *tfm = crypto_acomp_tfm(acomp_tfm);
->  	struct iaa_compression_ctx *ctx = crypto_tfm_ctx(tfm);
->  
-> -	ctx->mode = IAA_MODE_FIXED;
-> -
-> -	compression_ctx_init(ctx);
-> +	ctx = iaa_ctx[IAA_MODE_FIXED];
+On 2/6/26 11:01, xu.xin16@zte.com.cn wrote:
+> From: xu xin <xu.xin16@zte.com.cn>
+> 
+> Problem
+> =======
+> When available memory is extremely tight, causing KSM pages to be swapped
+> out, or when there is significant memory fragmentation and THP triggers
+> memory compaction, the system will invoke the rmap_walk_ksm function to
+> perform reverse mapping. However, we observed that this function becomes
+> particularly time-consuming when a large number of VMAs (e.g., 20,000)
+> share the same anon_vma. Through debug trace analysis, we found that most
+> of the latency occurs within anon_vma_interval_tree_foreach, leading to an
+> excessively long hold time on the anon_vma lock (even reaching 500ms or
+> more), which in turn causes upper-layer applications (waiting for the
+> anon_vma lock) to be blocked for extended periods.
+> 
+> Root Reaon
 
-Gcc warns about ctx as this line does nothing.  What is meant to
-initialize?
+s/Reaon/Reason/ or better "Cause"
 
-Thanks,
+> ==========
+> Further investigation revealed that 99.9% of iterations inside the
+> anon_vma_interval_tree_foreach loop are skipped due to the first check
+> "if (addr < vma->vm_start || addr >= vma->vm_end)), indicating that a large
+> number of loop iterations are ineffective. This inefficiency arises because
+> the pgoff_start and pgoff_end parameters passed to
+> anon_vma_interval_tree_foreach span the entire address space from 0 to
+> ULONG_MAX, resulting in very poor loop efficiency.
+> 
+> Solution
+> ========
+> In fact, we can significantly improve performance by passing a more precise
+> range based on the given addr. Since the original pages merged by KSM
+> correspond to anonymous VMAs, the page offset can be calculated as
+> pgoff = address >> PAGE_SHIFT. Therefore, we can optimize the call by
+> defining:
+> 
+> 	pgoff_start = rmap_item->address >> PAGE_SHIFT;
+> 
+> since KSM folios are always order-0, so folio_nr_pages(KSM folio) is always 1,
+> so the line:
+> 
+> 	"pgoff_end = pgoff_start + folio_nr_pages(folio) - 1;"
+> 
+> becomes directly:
+> 
+> 	"pgoff_end = pgoff_start;"
+> 
+> Performance
+> ===========
+> In our real embedded Linux environment, the measured metrcis were as follows:
+> 
+> 1) Time_ms: Max time for holding anon_vma lock in a single rmap_walk_ksm.
+> 2) Nr_iteration_total: The max times of iterations in a loop of anon_vma_interval_tree_foreach
+> 3) Skip_addr_out_of_range: The max times of skipping due to the first check (vma->vm_start
+>              and vma->vm_end) in a loop of anon_vma_interval_tree_foreach.
+> 4) Skip_mm_mismatch: The max times of skipping due to the second check (rmap_item->mm == vma->vm_mm)
+>              in a loop of anon_vma_interval_tree_foreach.
+> 
+> The result is as follows:
+> 
+>                   Time_ms      Nr_iteration_total    Skip_addr_out_of_range   Skip_mm_mismatch
+> Before patched:  228.65       22169                 22168                    0
+> After pacthed:   0.396        3                     0                        2
+
+s/pacthed/patched/
+
+But I would just call it "Before" and "After".
+
+> 
+> The referenced reproducer of rmap_walk_ksm can be found at:
+> https://lore.kernel.org/all/20260206151424734QIyWL_pA-1QeJPbJlUxsO@zte.com.cn/
+> 
+> Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+
+Did you accidentally drop a
+
+	Co-developed-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+
+?
+
+> ---
+>   mm/ksm.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 950e122bcbf4..54f72e92b7f3 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3170,6 +3170,9 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>   	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
+>   		/* Ignore the stable/unstable/sqnr flags */
+>   		const unsigned long addr = rmap_item->address & PAGE_MASK;
+> +		const pgoff_t pgoff_start = rmap_item->address >> PAGE_SHIFT;
+> +		/* KSM folios are always order-0 normal pages */
+> +		const pgoff_t pgoff_end = pgoff_start;
+
+
+Maybe simply
+
+const pgoff_t pgoff = rmap_item->address >> PAGE_SHIFT;
+
+and drop pgoff_end? Then you simply pass pgoff as start and end below. 
+You could add the KSM folio comment above the 
+anon_vma_interval_tree_foreach.
+
+
+If the tools/testing/selftests/mm/rmap.c selftests keeps passing 
+rmap_walk_ksm() should be working as expected. Did you run it to make sure?
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Cheers,
+
+David
 
