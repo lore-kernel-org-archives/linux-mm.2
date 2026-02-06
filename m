@@ -4,89 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14058EE6B44
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 17:48:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B99BBEE6B45
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 17:48:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56A4B6B0005; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
+	id 293A36B0089; Fri,  6 Feb 2026 12:48:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4ED946B0093; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
+	id 26AD66B0093; Fri,  6 Feb 2026 12:48:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4170B6B0098; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
+	id 14CEA6B0098; Fri,  6 Feb 2026 12:48:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C34C6B0005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:48:16 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D402CD598F
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:48:15 +0000 (UTC)
-X-FDA: 84414765750.03.A422D87
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 57F0240018
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:48:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ibP2Gdyf;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 046AD6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:48:59 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A9DCD1A0266
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:48:58 +0000 (UTC)
+X-FDA: 84414767556.30.C1557FB
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 65E7340002
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:48:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="lGw4/sX+";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770400136; a=rsa-sha256;
+	cv=none;
+	b=hMvR+22wUcyBmzrfZe9NXvbpuPozinfQ7Dv5QEa3gv8f9gokkXyfEGD5zMy17zcY54D+Fw
+	ZQywTlx9pt3iydKo+ZJoaqJ/0ywobcrKCxwh/1NrVvRsUxAVls+nN7KdM5VMf/Q+vUemy0
+	P08UdYCboISU9GY0EDe5Pi4C+hUAeVI=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="lGw4/sX+";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf11.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770400094;
+	s=arc-20220608; t=1770400136;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=dNKe4GeIZwLAsiEXos9BPWKKpoOagA7aZshZ4jhAHBw=;
-	b=pjtWl38AwGzH+mWPj1ur07ypmFOXkpv+BWtknJXGnttO+mwaEtk/SJ4JBzUeV4XVnato6h
-	tAZFwbELEsxRcNNYM0sRYHxwOoUbphzW7EZLbedAq1doHgs1//rM4UksnNby9zzxko+Yq+
-	wUvIK8XysoGnGvYwNVLXzC3NxJTKsGk=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ibP2Gdyf;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770400094; a=rsa-sha256;
-	cv=none;
-	b=l7B9MvKWK5vV5duyibJadzEiUMrpmQDzCe/J/4+hnUBvBMLON6zYnNmO9lJk4tLJ2lX2jQ
-	0F0HL5feIb/omFxbeAVO9IcUF4VNDRa7dyfRag4xjHNN/2CWyqBQABq47a9rgHgUw6L0lz
-	kPY09m9qarB/3/ORYJZixbbI6S+xEyE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A5249600CB;
-	Fri,  6 Feb 2026 17:48:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64392C116C6;
-	Fri,  6 Feb 2026 17:48:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770400093;
-	bh=E9VSBnb8FGRC/30JfT6OdDNQsCCg2idmhSTmBJntEpE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ibP2GdyfxqfzpgDDjiQSdyNd5Dus9LZ2QzgfsM5+KBbDn1k/H+xUX08CbdlkRuTkI
-	 UM4Dp25y438hTEwXk8mUPC55PILi1MMYXraHzZQRrC2m9T6RJG6qHpM/+RUL2mQvUr
-	 9oprQifE4HVzBVOPNRQ2wmQ41CNrChMuQdKlzf9RquQmqAXu/Z4k6C+d7VkqcYDuBw
-	 xjKw9Obr8qb8JCVVlttb69I4fLwtPlxtwtxvWBUTyrGs/+N8jt+ksaz1MTZmOevNnS
-	 1SxVnccfZcXxzpk5fJ2LhwNH1q48swPQCjgEC06SG8H8wZGzYjqhALP5EanDaB1bjm
-	 B5xXDl/AJyTmw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Rientjes <rientjes@google.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Alexander Graf <graf@amazon.com>,
-	David Matlack <dmatlack@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>
-Subject: [LSF/MM/BPF TOPIC] HugeTLB file preservation across live update
-Date: Fri, 06 Feb 2026 18:48:09 +0100
-Message-ID: <2vxz1pixvk4m.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=95V3b+ZVOs7mOp1p1nkpVTlGEQ1HKsAHiv7J4h8kLtM=;
+	b=jfVz2dMbPpWGkxjou6PWaogbE20wwMcYT3IcTsVtzctd2TahzDIkTrlnR9k74r6h0pCzAN
+	PucY1iJkbvJXanU2gEZrEAMot0ebuS6/qGtBXz2JwhHNX6Jix7p4msm1KX34fA7CktBfIr
+	WDQ3pzSaMgqkUg0PkP0gFCdemxf9iGM=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 616CshDX023156;
+	Fri, 6 Feb 2026 17:48:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=95V3b+
+	ZVOs7mOp1p1nkpVTlGEQ1HKsAHiv7J4h8kLtM=; b=lGw4/sX+4FkoRgMhJJ6jlL
+	v8YwLrK3myUbl+ahWma6HfLwuEQplmRh/7+BJyYf5FrwjUTRLnq6Jbt2oS8exR1W
+	DkbxkavYeSRD8duqbowI58R9RYCU/u/LWbVCKST0pIy3lK/Bz6ykNY9PHTPOfeUr
+	qdT7EX+sg/0OFloalatIZkFfrbjJFQF7oq9S29JSwENpE6QNT4E2Opk+NJZ6qKPx
+	Y1C1hNa5vNegXOL+wxQ5pYu0Q2gRBnGLkMIeMdnc9Ysv3inhQaeTlu+H4UYpQDXC
+	GfNdWQqWToCiK/biB7yfGtbemRRTcbAtjipNV7gDaygUClMUswnMMs16BGm5phSA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cwhgea-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 17:48:31 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 616HmUbn029982;
+	Fri, 6 Feb 2026 17:48:31 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c19cwhge8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 17:48:30 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 616FwNNC009156;
+	Fri, 6 Feb 2026 17:48:30 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c1veyf9ef-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 17:48:29 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 616HmPfR61669838
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Feb 2026 17:48:25 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C9E722004B;
+	Fri,  6 Feb 2026 17:48:25 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2D3D020043;
+	Fri,  6 Feb 2026 17:48:24 +0000 (GMT)
+Received: from [9.111.139.102] (unknown [9.111.139.102])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Feb 2026 17:48:24 +0000 (GMT)
+Message-ID: <9a63ce89-84f0-4782-90bf-dfd7c8ec8c52@linux.ibm.com>
+Date: Fri, 6 Feb 2026 18:48:24 +0100
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
-X-Stat-Signature: eka6xhdch9cw71gura1mmq7su6q8us11
-X-Rspamd-Queue-Id: 57F0240018
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 6/6] x86/vdso: Enable sframe generation in VDSO
+To: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+References: <20260203171958.1522030-1-jremus@linux.ibm.com>
+ <20260203171958.1522030-7-jremus@linux.ibm.com>
+ <f671c79a-ee73-4a12-af48-2811f97b9f3d@zytor.com>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <f671c79a-ee73-4a12-af48-2811f97b9f3d@zytor.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDEyNyBTYWx0ZWRfX6fNUOzCorNIn
+ VVQclkHCe0KuRSlmimy0Dz8UEyaxTtXtzi13UaXTIN/jrjaGqGGDBAgPZzI0NQ2swZxWdGg35WX
+ ODbkjEmlA2/+sSatI0IhSbV3cBq/wc2gpJkvhflKKGutxmgtCXiEn1cVPU1Cblt26OlgyRiAv/f
+ ZYUqxp5jacyRoLDLUWRtNMT9w/OpHor3UVy0uVtIL/aNT++HPFJa8hhomQf6Kgd6qxSEV8jou5Q
+ z9A0NpYqJMzpfa8MZ4LzIOfGfOw0wOpHjDfdpVeY/f7dVnxmdwGv4HvPFgver1QK1i9ToSmWJcJ
+ D8EfW9kTf0EKwvXtKT3q0HmaN61f57u1Z7z/x9c01pnlB6HsL7c4YAmQwceotDfiKBYRPfqOVlz
+ wxB7Poz+CVfdckaCuVTaUtGnJLercniNAgiJd37nH9ggyKBkEEYMXov5fqRpvMvrGi9mob8sB5L
+ CdOdSqRgP988gXMtLWw==
+X-Authority-Analysis: v=2.4 cv=UuRu9uwB c=1 sm=1 tr=0 ts=6986296f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
+ a=44IIZKTLfzUdFyxfebkA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: kzzsbcp9iTOOGyukaKwzD6Q6COVYIuXo
+X-Proofpoint-GUID: RqJI4D_4LN6rKVzpRhjzBBV7lsDjQNw6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-06_05,2026-02-05_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602060127
 X-Rspam-User: 
-X-HE-Tag: 1770400094-736461
-X-HE-Meta: U2FsdGVkX192b2ISy+jL+XfYGN0xkjL2TQG1N6gS7t9iNKAobvLBbXy3giHC3bbvSOGJ0Sz2bi5b7+hoNrUgIFkAeyALvjKKEvHsAXPmTVLFH9iQlhEsj19ISpLR9zDHdhSATDhyY9AV0nKWHZkcMJY0unForlwx/wtzlc+6ZGgiwj0hOVRZ2h2RyPJXoou1H10T225FJeKyPtaFoySpMNAhVvTdMEIFDw13ubRu2+7tHPvwlw+bi+2Iw2/Lf8cib52LcGL8zO1szUAZGm+aP32eg8xAklBCZJRY1BMW1JNaGRZmJl8K2p6r7fip7TdTHHAw3qxa9mz3E+GqWVsCjySlrIu+A0ydhEd6qg9qnsXCyUxTDut8QNBGdRa5AXnsfLqW7PIjp2GhiE04anCAejqhuZcI83iFUnnXCyznpV9cPh/17DKnWml38wqHOX/1eLoZbf3+JxlyPfHKZAugqEo31DovGNrEkZEFcRQHfLCVKVEMwcT+HMIfFmQt397wgvbQI+wiIZe7GMmjDXTU2KZZessXoA9ovEjutqNqV00xZ0Mrzi+eEL7bUHGnhkD+S8NNnUdGm46ts8Ky3UWGBn+03xwWlE2cGz6XcFm+N3pH7dCGsPfV/JDibQReDuQNNsSOY4yyje+7ZbPQkW+Z4iLyoI6ut9IntkLAxtkLzNrm/Zhb78C1HhK7ZfjYG9qUHgSCptYgDMze2WyeI4p74McL0xf2+SS8na+YZJ5TgZZHf0tEPyvYS4BgBSP0yu/3avdAS2FHPzylBmxhXZ6ef/TgD6Ry1koxQMd50Ilu3ISuwMgNFz6K44XnB4Gij/S0pmnDCjRhG/AdL+PI/TXPd8rDjbKDheCB5IE2DNNKDNncw2IRIh0fZq43RZcOyolrrWZ1l2qpt+kB+YlkvjcY07Qv2q+iB2OCF0VjQQoiuwc3BU8tVKssPLq7+A7WTH09W1gT3Zo6DWz0FMo44Jb
- oIo6H+57
- UzeQPfxsq3wBB84kgfWNyrGqId5CeKwE54ysVPXjWtNYAe80Aml89D227tpIDWaC+x1+xfWbJ2dsQpwU5BkHhHgY0Tkc1cYSPxHiZETLjuvactVCLTpJzQ3QrOGuWfeZW20sFaI9hOEpVdwP/ksDJX6m7HU7NGVfURDflc94FnACmkwNg45MbqzzxeP5YVjPI9A4iQxaLRI+UMoIxkM5NekbKbbhP0mJXrqPiQdjHmcuTf+D+KFEnBA5Xv9QnBI5Wyo/7v9AGKPV6Yik9pzubEwV35ult5w9OjV91o6r9nGLgh/S1ZlV44bqR50m//JMV7AH6LFOdO9/1AM5dF96ikcoD4N1WwBbAQO5JT5K/ls7WflQ=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 65E7340002
+X-Stat-Signature: 98rzy8bu93s46z4aq9jwziij3eu1cpht
+X-HE-Tag: 1770400136-335963
+X-HE-Meta: U2FsdGVkX1/eZPK5Wwozp6dcbDqQNZ3ZLwQ/EBFzMgqzxF2S1aeYijn4XmqjFtHYvmKVFSe1qixJaXsXbZ6L//FxoaYOURyQD7Q8p1x0oYaB44f6YM63oUssqfMSg/61dfzfNb0d6nQlXHOwjozmrR8oO7C4lVIO507DZHIuJh9PCMqZQF7PBK3M1UDE3PooPeZL0gg6kQnx2+JzS3WPXFbmRkXq2q8Zgtf+5VNZxk0RebsBmyiP+oLzOHu7wsID56Gw6Xzaq19NEmSuVnjkzbxc4QxVp18urrCC19V/PL91JijDF89BSTTCVUVbxhV9SF6P63FG0nmZYWHK7aTToXl1pPgb1286vK8uiGQIz8/Il583rq3SD1MPx3BMUNcQPS+W7OfnUvrFZcWgZTfTkzZgnP0WhfMG6cPLX3xDZ1bXNu7OAoOSsAMlqQRQAUNnIGlp0s42OAqGTmVYph8NnyAz5fn1VHxC6v795W2aek0ig15btRbCAeCGXUZYunwQ5dXQEeRYzf9xy856nnz+j0nGFfVyBXNoU4iL936ptZSoIW6B1xHXhgNfgV5L3ZgZe8ERItquZ9AQw/NhkXu6cOwY0fCzVI/40ZvzeP8M5v4tUaXaLKaBL74JsSG57UPCqwAm87r9/noaawWdIb9HR7gvyrYuPYAjmU2XI8Hbp+PTPzxI99ta9SVrW5IDLODck24pvfFzCyHcuaPq36pvDUY4RGw6sA5AvVfv1DkxZe5WfAj28+xOTmbSxRpFKYrhUaWjvrMQgMLXFzLGA4NGfQZSo0edrOuLKiFpGcS3djNYLHhhH/HV5dBs01rStQJWP+4Lv5ka3wy5cmyF3arQ8/cVT1AZ47fWUZFSynH8ywDQy7d7E0aRU2xL9dc9QchB/6E4DsPCEZQSqdUMTsydxw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,96 +177,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi all,
+On 2/4/2026 1:49 AM, H. Peter Anvin wrote:
+> On 2026-02-03 09:19, Jens Remus wrote:
+>> -
+>> +#if defined(__x86_64__) && defined(CONFIG_AS_SFRAME)
 
-I would like to propose the topic of HugeTLB file preservation across
-live update for discussion at the upcoming LSF/MM/BPF summit.
+My understanding is that you would like above changed to:
 
-Background
-==========
+#ifdef CONFIG_AS_SFRAME
 
-Support for performing a live update was recently added to the kernel
-via the Live Update Orchestrator (LUO) subsystem [0]. Live update allows
-a full kernel update over kexec without terminating running workloads.
-The main target is live updating the hypervisor without terminating VMs.
+>> +	.cfi_sections .eh_frame, .debug_frame, .sframe
+>> +#else
+>>  	.cfi_sections .eh_frame, .debug_frame
+>> +#endif
+>>  
+> 
+> It would be better to:
+> 
+> #undef CONFIG_AS_SFRAME	/* i386 doesn't support .sframe */
+> 
+> in fake_32bit_build.h.
+Due to (binutils 2.46 pre-release) GNU assembler supporting --gsframe-3,
+but only for x86-64 not for x86-32 (nor x32) CONFIG_AS_SFRAME is enabled
+even for my i386 cross build attempt.  This then wrongly causes the
+.cfi_sections with .sframe to be selected (verified by adding an #error
+for testing).
 
-For more information on live update and LUO, see its kernel
-documentation [1], the LUO patchset [0], or this LPC 2025 presentation
-[2].
+IIUC the .cfi_sections is there to have DWARF in both .eh_frame and
+.debug_frame.  For .sframe it basically has the same effect as
+specifying the common assembler option --gsframe.  Given the more
+specific option --gsframe-3 is explicitly specified I think it would
+be better to drop the changes to both dwarf2.h and fake_32bit_build.h
+and solely rely on --gsframe-3.
 
-MEMFD preservation
-==================
+Josh, Indu, do you agree?
 
-MEMFD is the first file type that added support for live update. This
-support was merged with the LUO series. The memfd preservation code can
-be found in mm/memfd_luo.c [3].
-
-MEMFD can use pages backed by shmem or HugeTLB. The live update support
-in mainline currently only works with shmem-backed MEMFDs.
-
-HugeTLB preservation
-====================
-
-While shmem support for live update is useful for many things, using it
-for VM memory (and other memory-intensive workloads) is inefficient. The
-next step for MEMFD support for live update is to allow preserving
-HugeTLB-backed files.
-
-Note that we do not attempt to preserve the whole HugeTLB file system.
-We only preserve the memory pages for the files specified by userspace.
-The HugeTLB file is re-created fresh on the next kernel and the pages
-are inserted back in. This lets us keep the maintenance footprint
-smaller.
-
-Current status
---------------
-
-This support was sent out on the list as an RFC [4] in December 2025,
-and was also presented at LPC 2025 [5] in the Live Update
-microconference.
-
-While the patchset has got some initial reviews from live update
-maintainers, it has not yet had any review from HugeTLB developers or
-maintainers.
-
-Goals of the discussion
------------------------
-
-This session will aim to present the topic, explain why it is needed,
-show how the support works, and most importantly, collect feedback on
-how to proceed with this work.
-
-PS: if any HugeTLB developers or maintainers are reading this, it would
-be great to have your initial thoughts on the RFC [4] so I can present a
-more polished patchset at the conference and make the most of the
-discussion.
-
-Key attendees
-=============
-
-Live update:
-  - Alexander Graf
-  - David Matlack
-  - Jason Gunthorpe
-  - Mike Rapoport
-  - Pasha Tatashin
-
-HugeTLB:
-  - David Hildenbrand
-  - Muchun Song
-  - Oscar Salvador
-
-References
-==========
-
-[0] https://lore.kernel.org/linux-mm/20251125165850.3389713-1-pasha.tatashin@soleen.com/T/#u
-[1] https://docs.kernel.org/core-api/liveupdate.html
-[2] https://lpc.events/event/19/contributions/2052/
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/mm/memfd_luo.c
-[4] https://lore.kernel.org/linux-mm/20251206230222.853493-1-pratyush@kernel.org/T/#u
-[5] https://lpc.events/event/19/contributions/2044/
-
+Thanks and rRegards,
+Jens
 -- 
-Regards,
-Pratyush Yadav
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
+
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
+
 
