@@ -4,81 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBA2EEE209B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:03:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D42C6EE20A1
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:07:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F2D56B0092; Fri,  6 Feb 2026 08:03:48 -0500 (EST)
+	id 1BBB26B0005; Fri,  6 Feb 2026 08:07:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 173126B0093; Fri,  6 Feb 2026 08:03:48 -0500 (EST)
+	id 16A696B0093; Fri,  6 Feb 2026 08:07:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 055666B0096; Fri,  6 Feb 2026 08:03:48 -0500 (EST)
+	id 04BBE6B0096; Fri,  6 Feb 2026 08:07:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E59C06B0092
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:03:47 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9DF721401A9
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:03:47 +0000 (UTC)
-X-FDA: 84414048894.20.967E0E8
+	by kanga.kvack.org (Postfix) with ESMTP id E67886B0005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:07:05 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AC591888E1
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:07:05 +0000 (UTC)
+X-FDA: 84414057210.30.E02F0A8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B65501C0005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:03:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bv7EzWDi;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id C10851C0010
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:07:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pADlDw8M;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770383025;
+	s=arc-20220608; t=1770383223;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KAXkmc6NXH6dLSIG7Mz8FQHJyErfjJnUgjs4l9LzkcM=;
-	b=jKfJFvVyA4U3gHkgJTBK9Tr/eeKIyri6pvMObG8sFKr8SOmsugu0lcPOUk5S/luzhj+dPV
-	U3NUS3huSQoq2KWjkDCeSCBRDq9rqXAbSIPaxPx+f1+dIjRFLYeyI26yay56bpu1eD620Z
-	+Lnonix+TxAw1/7vBQA9pj9UtwjP20k=
+	bh=0BfMXOyX2VSf5FRxfCLm7LvZCe4n0avyjTdWFz/Mn6I=;
+	b=Q8WRbCLNdm5O10GArPAEiZOlmdJsPZUGQUqrOYIHiyn/OziUH7pay/9wrf3feZDr5OVW6Q
+	JCT3tz8GxuoPYGkHcGLMTIa0VxLainMkJX3xysV7zVma+BWpsbc85kxhNYxn75GKCMAm8B
+	AJ9+jwQpkO97bU5tRSXt/l5xFt9CV3M=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bv7EzWDi;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pADlDw8M;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770383025; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770383223; a=rsa-sha256;
 	cv=none;
-	b=fgcLtt1f/nz4cG8ZoWUJzMwOQPOnInFgcP9pcn0fKHid2oVHHZv2gTvd0ycgN7pi+QWNzH
-	M4AEfeMsGjFgRz+JOhQjR+jKRHAWz20418tF8RZns61Igv7tvbmdtXrB7tNPfQpQrQFGJq
-	0xwZxdfwwaOVcfrW6khsACFQ4QG+kgk=
+	b=n7Z1iduJRzO5sGuc5J6eHge3TNq7d5nGk0di9wqm6hcii5ePzOeQgyWpRXS3j9GMNYFUc3
+	SI1tut9PAq4Bth93OChgyBYR416QzDwKLL84k+tC9Kf4Z4bzW0ExD5LWU3jIQWA0WGxW5T
+	rOHpENl8s+N+xP+X2XUQfFH2za1hzIg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C300418B5;
-	Fri,  6 Feb 2026 13:03:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA2DC116C6;
-	Fri,  6 Feb 2026 13:03:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A6AA843D3E;
+	Fri,  6 Feb 2026 13:07:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D59C116C6;
+	Fri,  6 Feb 2026 13:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770383024;
-	bh=MJuM4duWRQOdgMSoWpQ5n672KHtCLpnyJV0vo6WaoLo=;
+	s=k20201202; t=1770383222;
+	bh=gjqm/xw+EyLKIgvQKuFWku6zxpUiLlZVezFuLgVUV6I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bv7EzWDiendze/cP586ru5zBpHpfCly8MOX3VxeiW381Thyq5+xgeBLPmDNR9+jdi
-	 JAOrL8xYk19kWk4srpq3Qin0GmbD6FLxg0sC+mQRf0F7UQFseVZPC0Kn0XMrkua7p+
-	 jyuqkpfOWUKjHFO3qv4JfoGJvnaWs4NCNGAKZ0hiUqCB3t1DRiRIqviwua3mzILUne
-	 6zqF76LQM8geG+0JjCw2KugvN9IszV9WTp3MHfeCZ0BlNIo4dsPQ4jBlrtL77nPg1f
-	 IsjOZGxkgXZ9b56jYnxu1sdNaARVf03RaHZ0K7DeEaM07nKsgcRfI00Yes63M9BMnj
-	 y2Q0UeF/w8xCQ==
-Message-ID: <00d07c59-e573-40b6-a096-266ef14545b9@kernel.org>
-Date: Fri, 6 Feb 2026 14:03:39 +0100
+	b=pADlDw8M4pf14jpmlIFbIscbYzigwt0Z6gyiUPqPYg4K53sg4tuJNS+Fd8+FfzpvP
+	 C4XWlPplSyj14cXa9UOyziF1zOax7eidmDcttDSh0mjeh/D67t8YdTHpquiybuI+/P
+	 Q4NABcm2YikcvBj0ZVFXg/MYMud+oq8IN8rNdASMAhRBY4xV+KoolGf9pk+V097FMg
+	 EzBd1mN7Vu1V6bMDFMIYJvXLnz1586zJu9OcgL9MTm+6kLK7kQUrdnyfLgd8ZL3Otd
+	 XR/MPyTP6VxLKOchVZSl3jixlqmRd+7Uiwdp721hNeoHeewXT7Xoj99I5dJSjBTylf
+	 cH5uYZEzgAv6w==
+Message-ID: <75a6bc37-e597-46f0-adf8-c8ec8e5e0e4e@kernel.org>
+Date: Fri, 6 Feb 2026 14:06:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory hotplug: Fix zone->contiguous always false when
- hotplug
-To: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>, Wei Yang <richard.weiyang@gmail.com>,
- Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
- Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
- Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-References: <20260130160938.2671462-1-tianyou.li@intel.com>
+Subject: Re: [PATCH v5 00/13] Remove device private pages from physical
+ address space
+To: Jordan Niethe <jniethe@nvidia.com>, linux-mm@kvack.org
+Cc: balbirs@nvidia.com, matthew.brost@intel.com, akpm@linux-foundation.org,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ ziy@nvidia.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com,
+ lyude@redhat.com, dakr@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ rcampbell@nvidia.com, mpenttil@redhat.com, jgg@nvidia.com,
+ willy@infradead.org, linuxppc-dev@lists.ozlabs.org,
+ intel-xe@lists.freedesktop.org, jgg@ziepe.ca, Felix.Kuehling@amd.com,
+ jhubbard@nvidia.com, maddy@linux.ibm.com, mpe@ellerman.id.au
+References: <20260130111050.53670-1-jniethe@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260130160938.2671462-1-tianyou.li@intel.com>
+In-Reply-To: <20260130111050.53670-1-jniethe@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: c68jfnxj8bknt79mim74fmbz5m6eaw3h
-X-Rspamd-Queue-Id: B65501C0005
+X-Rspamd-Server: rspam11
+X-Stat-Signature: painur44obhr3s4w7nstbg3qoxu1h667
 X-Rspam-User: 
-X-HE-Tag: 1770383025-492879
-X-HE-Meta: U2FsdGVkX19p4v90jlV0/OQ/xAllvQUPXfxtHBUmsPfHTZnhHwXnJ+eBHIjTe760W8Iwayibj/YxFn2cj9Y1gy7EhOlWPE37YX0W9oyEoZIcPjxKSQpgtwpwRUILcHB3J5C29A7NWnG7mBxUFciW6pxIFKiiX6ADSbifG9wzpZ8HEGnSmczqsW1AA7eNR6rDIhnmOGqralkZlK32vybyH/N+6RD9VejImNON97esDn7XCYKSWUHeV1y6p7yjmO6MRm9ifY9TtFoyooLbAtqtXWQmZvW4jjNcR6h6UMBJp9xO59VRyF2WhdC0s0hz+KJIuJuujT5JNrbALcnEb5lJceDlCgDJPyY0Rg7N/KrsKyKjWW4TETm7tfiKNxzh4/+MhTcRWD4B8y9919gKhSsF4PLg7Ev8rw5ZwVTTU0oqIVHCU27IXrR5JaG8fKaI9qkL347as3SaDuPdcv8Z7wi6pyjIbV0e+pPvUnSJvNzOz9R0NlhT/FFd63j8MOPot+FXHOdRcp4FVcRw2gRKPmLAd+LFDzrl4KkPh2vzC6rujpHwg2PNQarnEfUTjmOHfYM9GADOwyR+Dd/vV0z8GeiGitwyYCUclnBFoz46ACKu1/lRbe5TKNM7ydRYpb+kWu1rfrSwoAi+WFrsaOujpYr5uEMhddBmt0GO+ImJtle8Q8lYY4NEcOGLN7KSzohIr39SP5m5bFRJmdOOrEKrVkq/ElPCI1Q3z7cDcN03xxkFRq1nTb+qtBLB9WQnlz3VrD6aC2FaRMaOUDWQlf3BAPaLZn0HWh2XD8X7g33TAxaqFUExkAH0Bacant6hGWGjU7Sctt8ggWb39owzZkqpOHDdWbznHXMGEaR8SnV5YUoEMlhNbidER0GTyQWi4jO0fapDN5yMiG6fctgOOwTFTkhvhQSA8knbnjd89J6fjXGFULHRfm843E7eie0UmYcN9VHz488b5Q5hexd5+u3RhHr
- zOFgRcvQ
- VlMYmjeTHIJlKWKAFsMGcxxjYXkmpEcyHYEA4Liei9PGfO9z669igzAX+7BPeOlN1xD5GZYow0y1XfQ6rVCokNeuLXBaNu/sbcKviP4x4s4FDK73NpWWMFHQJ860qkr0yZ32rMBriobB6mLZv0Iur6FPt/O6k/Boaq5pUrxPq2KgL1xOGlJjAmba5eoHsYOrFYBOFPul0ez0nt8MYR8NxVn0oPHunX0eX3mFqT1Y+xVWTTc9dCQcZJjtqxeKKyMWz8/VxsdCjNrZnvkRmIl/zAZjitMlFRZisq8xb4ZvgiRHtiod26R5bhnt3FiDOfoifu+WYEbQPQXvTsdCz60duIZSyY/4fLoAELtq5LSY/6cFswbRDr+kwmWXgFevKHnSZL9AcZSqC9Dpp61CE4W7i907Xc1qScAR3hof6DmPBCZUKzwqxwlE6mhrxyg==
+X-Rspamd-Queue-Id: C10851C0010
+X-HE-Tag: 1770383223-512005
+X-HE-Meta: U2FsdGVkX1/dwrahlfAeu3fCDeCuJEy5uJ8UElfie9Hf2bndiQSyxxhNYqE/UWs2gJARk/7A6OyooiWYvjuYri8eluYUAcOL58B2rjFTOXKSuj/JJsL15+HnkUwoPuTw+9BFx45674yY2wblnzvgjnUn+tktItaz2FjqPOd4cAY3tgtX1WbzEoDpdd5e2YfuUIxmr1//co7ZjPyn6gcGnQ7wQRsZVngClDuy8kQ4BLpd58iLgpjNhyZgftGTA0Zun2rSOl/A6EALaUnNA5nV3YvwAZ49PTdoso8S1CArcZPAfhDql7FyU3DKXICv2N/os2YUicK6YnUgscoM/ZXHOPo6Y7YDjvkR/M5Rfmc6bFaTKwCp2ZRu0E/CNtQgO+T62Cu6mV0d75EuKHTVfMuaKKxJ00K0KyDP/giL/a876DjvwMYqgXafc0XvG5Vq1YJ/Wetoi3hGcOP2Nr/T3oJvPQK+sid4CVRXfvIaErliN+O6c333RHd/JWlLcKmXUByQbS3rHRcYCFPk4LT2GSEMePfFINsZ5UfNHPPcLsInFjmySq3J96BNgO23zcuDl7ISpruLOaN1TWnZPHToHKZUycpfVq7QxSrI1mmAx+H048H/zwiB3mSJm1uD/f7KaNsvViXjf6EIQVo14QS3jdUrf0UDUV8OOhAo53DO24d1ySOyJYGZwbMQ33HHRK7GBkdgNY0yBVEqV0be8vVPh06qGQjuiVj5EooZjBNdsx/KhpSwHp/DtMKD2CcPq+eP4mLPfNYTMomwOe6UJZSbQjZaCILo1q3inuQfmrVYeh1WLgzuNBxC9LHjSbNsSJKseCGIidXds5NvMH808VH63an7Ht3t8x30QeC7CBGTmeRy4Vl9T2pofo3btpP/4Dj8uQNDahoiR2qpvMKc4lQhIs7+iuNQ4IlpUzR8uOfEi/hRV02tpM0FuUu3FM1le3mb3owgr1CbsmUz3lw98A5FnEw
+ SbGDCvob
+ iJ2UdQrweQwwAqVeqg1MFluERQRTlnrDBNK9O46ZoHjf7DBf0A04Fe/YJVZd/Y6Noo6mPDPC+7YtCgZ8Ci0pq5NSP6KO17AqBmM7+1DjlsjAkavbVFh/U6VdN4hSnjf9zttxxIMxTYJytXPOFy8FaGJSpnmXGKRQX8S/gTpAcnflgSadNxbB3GMLHqS4PUZ8Fpxh7NuXFV3KJ1PR3iiHq2aIz92AwK7/P2vPjGvwbnP4MyhpPRbT6WiEtcK3LAmEOlAy2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,48 +145,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/30/26 17:09, Tianyou Li wrote:
-> From: Yuan Liu <yuan1.liu@intel.com>
-
-Nit: subject should start with "mm/memory_hotplug:"
-
+> The last patch contains the bulk of the work where we change how we
+> convert between device private pages to device private offsets and then
+> use a new interface for allocating device private pages without the need
+> for reserving physical address space.
 > 
-> set_zone_contiguous() uses __pageblock_pfn_to_page() to detect
-> pageblocks that either do not exist (hole) or that do not belong
-> to the same zone.
-> 
-> __pageblock_pfn_to_page(), however, relies on pfn_to_online_page(),
-> effectively always returning NULL for memory ranges that were not
-> onlined yet. So when called on a range-to-be-onlined, it indicates
-> a memory hole to set_zone_contiguous().
-> 
-> Consequently, the set_zone_contiguous() call in move_pfn_range_to_zone(),
-> which happens early during memory onlining, will never detect a
-> zone as being contiguous. Bad: the fast path relies on the zone
-> contiguous state may skipped.
-> 
-> To fix the issue, move the set_zone_contiguous() call to a later
-> stage in memory onlining, where pfn_to_online_page() will succeed:
-> after we mark the memory sections to be online.
-> 
-> Fixes: 2d070eab2e82 ("mm: consider zone which is not fully populated to have holes")
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Nanhai Zou <nanhai.zou@intel.com>
-> Signed-off-by: Yuan Liu <yuan1.liu@intel.com>
-> Signed-off-by: Tianyou Li <tianyou.li@intel.com>
+> By removing the device private pages from the physical address space,
+> this series also opens up the possibility to moving away from tracking
+> device private memory using struct pages in the future. This is
+> desirable as on systems with large amounts of memory these device
+> private struct pages use a signifiant amount of memory and take a
+> significant amount of time to initialize.
 
-How was Yuan Liu involved? If he is a co-author there is a
-
-	Co-developed-by: Yuan Liu <yuan1.liu@intel.com>
-
-missing.
-
-
-Likely there is no resend required if you tell Andrew what to do, so he 
-can just fixup when applying.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+I plan to take a look at some things in here soon; still catching up on 
+my overflowing inbox.
 
 -- 
 Cheers,
