@@ -4,94 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1BC9E9129D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 04:31:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F47FE9129F
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 04:31:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C973F6B0093; Thu,  5 Feb 2026 23:31:56 -0500 (EST)
+	id 7DC586B0096; Thu,  5 Feb 2026 23:31:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C41946B0096; Thu,  5 Feb 2026 23:31:56 -0500 (EST)
+	id 76A036B0098; Thu,  5 Feb 2026 23:31:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B44186B0098; Thu,  5 Feb 2026 23:31:56 -0500 (EST)
+	id 622576B0099; Thu,  5 Feb 2026 23:31:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A6F9A6B0093
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 23:31:56 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 384C31B2C2F
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:31:56 +0000 (UTC)
-X-FDA: 84412759032.16.CAC0775
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 56920180004
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:31:52 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=mSAH2xIy;
-	spf=pass (imf24.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5425F6B0096
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 23:31:58 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1EC621C6B9
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:31:58 +0000 (UTC)
+X-FDA: 84412759116.08.29904F9
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 28CA2C0006
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:31:55 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=CCKR1WeQ;
+	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770352314;
+	s=arc-20220608; t=1770352316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qr3LVoOJqpEYjoT7a1xDOpnKMJ8q6Fi6UAoB055FyKQ=;
-	b=BVE4ERgLZU5r0CsUU9C4l1QZppyuGr1fzrdRQgR7290fnrk+FBT+00rOvfIRKKUdvdI9rA
-	3MdCF8UuTmKSYP8IM1ybO+6t8CTMtU9nN//IdyGkkPp8rly0ZttinCD1WtbgE951iVTd0j
-	xZ5ON04Q4R9icBrzvH0A+ZWCpFClTk0=
+	bh=TvxtH1ZKMMdKhnVfUvoSmUSKImbjL0zsj7oE27BYgzY=;
+	b=fAewOc56Q9pv1RjGzIwqIVolVu3Kn8ENkJlavJ4IBbp9Oi0VvZ29zOWz0BZ4/AJ13O1r8M
+	Jn+wU2sSvEogsoNxWM9rrAION/7PclltnD1hrHSt8z1Zoq2Xn3KDZ359W4xoIlHJ8Ar+uB
+	0QPZkGZE9MF+iztoncFEs8PiBJfwkSI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=mSAH2xIy;
-	spf=pass (imf24.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.3 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
-	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770352314; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=CCKR1WeQ;
+	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770352316; a=rsa-sha256;
 	cv=none;
-	b=7dnmijCpBSx+jg4RN6kIiKoXMRyGEuRkOAysgaWP5oVCs3Golpvy95hDwEN9i93jPyoKWd
-	dzUzy/KlBlVzYedbW++Dr/uFOw1ciQclhKOmyAeNGil7SSthPTVb/y3Ot1sXl4GlyOHrhq
-	nKXj9yiPU7EUJRU9b+lihcHAJMPdjx4=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=qr
-	3LVoOJqpEYjoT7a1xDOpnKMJ8q6Fi6UAoB055FyKQ=; b=mSAH2xIywMiN4NWJgL
-	oOlitNnqti8W2haqwcBKXPNlMx1EiG7SwjW2jaRZuCxYTK/j/a5sd3GunkLRLm/o
-	NBSx4t38ylHfmq1ihvSmVXS7ELxqMcQwF15NHKXOx5w8jVxh1SBI9/C0bODLhaGK
-	fNdM0czovFKpu2KxaSMOyUe5U=
-Received: from ubuntu24-z.. (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgC3sLWbboVpASh5QQ--.27597S3;
-	Fri, 06 Feb 2026 12:31:27 +0800 (CST)
-From: ranxiaokai627@163.com
-To: graf@amazon.com,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	akpm@linux-foundation.org
-Cc: kexec@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ran.xiaokai@zte.com.cn,
-	ranxiaokai627@163.com,
-	stable@vger.kernel.org
-Subject: [PATCH -next 1/2] kho: fix missing early_memunmap() call in kho_populate()
-Date: Fri,  6 Feb 2026 04:31:20 +0000
-Message-ID: <20260206043121.197564-2-ranxiaokai627@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260206043121.197564-1-ranxiaokai627@163.com>
-References: <20260206043121.197564-1-ranxiaokai627@163.com>
+	b=XbOj6Lq3kcq9/ebn1h+Iep3Iy2/CmDdcjw+kXP9WJeQDdRe8KIyS1RHh3QBw4K3lrHjrqO
+	ZzJSd5H5TPLtszF/SMnNbN6MWdxTH2zwAhlAKgytdEnz2EiDvq9p9QEm1223zVw8CUZNY/
+	Nu/dwPXc5dhbgrVm3nqxtxbxubtckHI=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2a0d67f1877so1744225ad.2
+        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 20:31:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1770352315; x=1770957115; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TvxtH1ZKMMdKhnVfUvoSmUSKImbjL0zsj7oE27BYgzY=;
+        b=CCKR1WeQXrBFFkFmKc1MQh/QDNp8bMzzNBewtgXU5rt+AiAw0AOyQ4dMrfgn/jVDIX
+         vOoAiTSoBoodTiaYkqunXMJDnCsMJPLlMh9kWW68Mi2+obA3335JdATaRpNoOlR9XnSq
+         M1BustyRgq7u/2FdwvuydDgFlhSI1l8QbCDvo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770352315; x=1770957115;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TvxtH1ZKMMdKhnVfUvoSmUSKImbjL0zsj7oE27BYgzY=;
+        b=oG6Vio8CaykhjNmMxUWIIkss385eKyQ2a9lfwShLzgCUzo5Xl1qk90LR2k3e9ZD8nR
+         peXEcIXzpRwqO9OlWch3HyzK97L2VJiuZw3t3eQfmxkYZmcmjQVd2Y959wlPr4S7cCRN
+         AT00khLA9MIAikArrXUC4jBvfCUfK22f+T86PpUvBJCYt+sDxnmDtshn8sq7800oqL2g
+         MWXYyJH9UY9vjeYwEWpl1gk+nvKGZzqLTN2zSYjkIPXUgo0QVkgpzI/K3AsC/Z2XWPxu
+         jukibogn5HK7AVhTRTDRG8+3ZID9HWwmp/sa/4F+U4tMxfuHJM8by9w0grCV1pZm0/T/
+         /Oxw==
+X-Forwarded-Encrypted: i=1; AJvYcCW4UCXSrYq+DZY1nky0sr/3XMEOvNDMoshqpb3UK4PcpTQMHbtbqrYbRWC8cTPtzlxHvKls12bRiQ==@kvack.org
+X-Gm-Message-State: AOJu0YyCFoViKvj0QLRYKdkK4oEeW9DeNNay3/ePhiRd5i1kr2IE32jj
+	JXN/ZBLA3whICSRjZipghwcK2eWoHiZ++7CpH5UbeEn69BGZ5FA/NjeMbzBjsHsNlA==
+X-Gm-Gg: AZuq6aJ1SJhgeACAPrOtNsbXETNbmQfso44RdTuGAO1VJzdOEAmRlRH3RAa7DlsuXSZ
+	MFvljMS2d7vFi8a/rNrk5AahCs5u6Sg3L8d8zDy9+NbuCoWX7Efo24BkQ629iiDgISFJmhWZ5sW
+	e56gJWyodsJDxDwSzOQwr5/M57SFaJ+lGgQ5ZU/PsZuZ+EEz9Y/3YclaqUpY+C+nOsZ88QyiclS
+	yqKY0kyHFsb3JuT8hri6EhgBff8Y9AucrrneIScLiRWgbll7F6lMrL1LEdEqkwCPty9Okd3pdIQ
+	i9+/5+N9mMGRfU/qCRAO+TAEzMEiDl+zvqJ3uzaXIAyj6uyzrVbULkUazq+aOaCm3Hiq76jHOCh
+	7kkFOnxp2lZxMXhDfnOIAKyWBPlGXDxXKT2vWckbKbg905GjEZiLPuzCDu3LPLdHdBfsDWy7A6j
+	Xzs+Abq2QzzeqIPkggqjMiMG0PKSNLNUaSvVqb4uITNXjTxFbrCmI=
+X-Received: by 2002:a17:902:ea0c:b0:295:4936:d1e9 with SMTP id d9443c01a7336-2a9516f505emr21682055ad.36.1770352315009;
+        Thu, 05 Feb 2026 20:31:55 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:7c0a:732a:f36b:6acc])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6dcb542c36sm919684a12.16.2026.02.05.20.31.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 20:31:54 -0800 (PST)
+Date: Fri, 6 Feb 2026 13:31:50 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [stable-6.6.y] mm: khugepaged refuses to freeze
+Message-ID: <h3bbxn4omwe2jv32vyjou34me73x5nwg6ai57goqo2qlntq73y@ra75spa3tlzr>
+References: <gp3foqukne5ukrssvx64svhcpogmrskyyzjatofstfrl3vplrk@onxbnxdjrswu>
+ <3d0f189b-faab-4452-b9cc-8f4e7a15025f@linux.alibaba.com>
+ <jujsgu5ed3srhetch2pbpdrt4tnf2alodrk4nfo7idxmhsq772@lirvj7ftvxgv>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgC3sLWbboVpASh5QQ--.27597S3
-X-Coremail-Antispam: 1Uf129KBjvJXoW7AF4fAF1rGw1xtw18WFWktFb_yoW8WF4fpr
-	yrG3WxCw48Jayqqa17J3WxW34rW3ykK3W3ta4jk34fAFnxXr1kuFWxX3WIyF12qFySgw12
-	yFs5tayrW3WkCFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zErcTPUUUUU=
-X-Originating-IP: [117.176.242.230]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7R9+ymmFbp-e1AAA3R
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 56920180004
-X-Stat-Signature: 796f9wb7hhw1pzpncdoh19rwgyg44z3u
+In-Reply-To: <jujsgu5ed3srhetch2pbpdrt4tnf2alodrk4nfo7idxmhsq772@lirvj7ftvxgv>
+X-Stat-Signature: e46uon3gzztnqs4kqaog1irx93hbuu9u
 X-Rspam-User: 
-X-HE-Tag: 1770352312-26432
-X-HE-Meta: U2FsdGVkX1+KnrcgtsJdDUAMJEbNetdNHf+2F21+iamEW8hRxaIfKY9RhY68QWrPgUDoKMjXR+puc+u7wkPwn8/UWYOtp85ImMXXa3OagyEpXghG2Pw+0Sd6PD6x7+Y2OyPBrLdZyrd8bz7Ltp8HL8wOP7BgEMEzgmQFt5gfELCiS4J0SqaE54SCApv79ZKYWLid6eaVMN1yl0Nj1YYl0iMRBzD7xO/TFFHeTR7vRiUqz21WoLH5w85ZiQMw3Q/kXxY9GMS4uGjdh6MW+T+twp90470QO1lf9nPSdAK7MPPLKd8mhEMm1Kk5bQ62wyAO/KpXl8gcv4TLspUAsN3XdInGfDOev1AnCbV2WTXWX8J7vvn56qzps2QviXwT/Ux2VyJiqS/DK+FBqRYTE2NU4EYOukIEqXWRnaqxYbejcAyxbmlHIo1vYri5ZLJUGpxTrhhvypYdlW7Uu5MyfqL+P3gc9ovSeMxfxmMZpzEM3dhydu/cTrrJZkRkm64/0f7/ot+k6ImKs+J41wLnfS+i6ELkVY5X6PLazlPjyTecRUOnLUrZF0BDCkUpP6X5KtYKtME3v8degvV4D93TtU6GZRqRoCewx1pArIU0gxev5fhb1Z7S69SfyMgsyqzQsWkWzZGAJNxyCYPJgH7jt4wyj2MAMlBmlupPZZFxQ7nmmempAFq8J3JuW07xM0ckuVaZWF08wmg8YTSmpNoSDTpm1450KFhXkqcxnVw6Af65d40NodiBdIXnCc6qFQCbVfMgu0aQLJZMwdt3d21kPOu29BffTIzMLemURDuZmc/z/y38i7gB4zrxOjueDlDtcgWLe8EFYID+Wled81/w8v9C7D0c2rWVFJ+E7ASr4miawRQsyYcQ5jZnP0VLhZGBfzHS8NrzgryNJVyOzxHOvF2idC1DCa63YslcIpQll5CEuZy12i+vzPXV/xHZHUoQ3MkYJE/OXEUpXgwgB03tC0o
- AkUBkcO2
- eMlXXODC+j57joNrd4YkQjI+ozUrMRAB25ydHIFXY58rf0arG2KKpAQf2c+BviLNrv2LUj8chPpoB6b9OBZhU6y4EV6FSjo1kGYce2O0LkYJi55aaMJ9UecoD9x4pKKZMuKB74NW6g1hQTzQ1+32h3g4YDOhMlXuMbhO+1VoUCuiHcst20/kYYhO09gvcCHrwPxfyPkqkA3KBjUckEWfKUzD+pR2sdPf9paTgOu1Gm27FuivmWS5z2nnxYkJVXNfLf7yVNXJankH7c5wEGkSqfp6XZeh4V+bEzIx/8mJIDxPgoqVYFOJ12ngbU19Gg5CyPrHWSQBJ5zJrQE5r2LX6e86Wt5xNkm9zykHcvZrNG7nUAa1kawOjh9nvGPHesIyaGERqHkunX+NT3clLT5KLE+oURrrQ+w0JPW1ZxnasBKG1MZOzcNnuiVYTF1ir1P+920rCWbj99JFDNgtGcf9Kf6/J5w==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 28CA2C0006
+X-HE-Tag: 1770352315-64166
+X-HE-Meta: U2FsdGVkX1/sAa6rahXkzI1gCAWMAQlC5gnlrTvXe5cT1U54rJoIOdSWIx8hmhEz60m2O+gyLAhwIJc1Rib9wF3W5XYgABGeDNEQWvXYvtQPEh++vU79jqi3Sq286vxD6o9VA9knY3o9kV+lAM/49JkS7qpB9YAUBSsUJPYBBUyisGyo/5+JEXieSz3+bxeoGBFEG4Yw6W0rBgxRpXPsjBGeYg+FNdO1IQVFxIov6ApJ84Cnzy3hArV926GH1KtUi82HaT9hQNQxDKt5lQUnWXuzgZceFBgLpuvRGVMDwiLnvL/Ypttmq7Pi/vZF/9Xtutdo+3veJrWW3q4GR67PFGH6aNdwT+bxpwHZq6RI3t2/SD2d2Dve8HHRrK58JtSPaVrury6opOBwXqSENibhOC3ySZwkrFNjaP39ssmJivDfF/nKkP3vYrMPkOe1iulp8xUqAc03AzMN+jkY4oOpBOwdEgvcD56Fqq+FeguquK9wtZxKk8kz8X1S9MZRZsVBFeSa7trinGxpAWd8m/TDgvUqw/M/OCLN1MIAHtdZjffWCuGLULsE300h0+DtaCOsxTWYWkd9NgQMG17hIXyJ+ZSPaMslebdUZMLPNzj4nIK41rtOnzQEeizi1bYAZAUm+3OgNncfAVw7EvQ/1z/p6jXnId0NQv4i6U78wt2Wa3a/bLy8hzdmIL6pXdyV3nrffJRwZbWzaMvWgE9qLXZAiiPfcwIY0cCbfejNHSS1yzugBBBZ/1HrHWtwwsMe4ynrkwSbDyJAvTE6FN/I/U2/TqVPGpOx7smLD6PpFeGOn2bJNNRM5MxPU7BDqAljOPp73+H+hyVxwymC+1WVTyncAq7sLjcl/wZAGMqcQyP3h0qvDlDi9WlEe3epq7MVU291b4uH12ct+hJu1YBprlEo/9rz7pD9WRqjsVV5sSsdBRg9lIVCEUjLwhBmNscCOAHbQopsCj7xX/dMcexT4mP
+ XxcLeLeu
+ Qgb/UEGkx66hRQDS/PccqoiF8X7m+maCinJoQuqCNMRalSWRWdNotv7DsZ/vCrxmNKMSonkBazU3BHcZX0imAJpgPdQU1B2VXVs8RY/C1M8yvZCohJf6lS3jyN5wsowClMypt0sfqXG68ALeqG350XPmwK08bNY7HoWaJfqiRlKSjMKzfoCaMy1i5GXZb2pvi8Ei3jtE7hLockkHWkpaEnTMwbxZxqPdxc6GW6AfNtpN6a+I2f3Hxz0ePPjy08d8LH6BwbjF89tKLZWVqiA3ciFESlMPx/Nfa/t4gMmOHRzg0OtXeXivqWiLD9G3VVCkl0VdUzYR1GBIxz9Tw6urAcsPfinnHXmXP3L8msynQR7ZVo+eUv71rIPD3EU1H8Lm3pCwTcNgoP0/g+StNYDpM5NCWzOSzonUOSV+u3/GkrY8EpWw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,57 +123,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+On (26/02/06 12:38), Sergey Senozhatsky wrote:
+[..]
+> > > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > > index eff9e3061925..fa6a018b20a8 100644
+> > > --- a/mm/khugepaged.c
+> > > +++ b/mm/khugepaged.c
+> > > @@ -1894,6 +1894,9 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+> > >   		xas_set(&xas, index);
+> > >   		folio = xas_load(&xas);
+> > > +		if (try_to_freeze())
+> > > +			goto xa_unlocked;
+> > > +
+> > >   		VM_BUG_ON(index != xas.xa_index);
+> > >   		if (is_shmem) {
+> > >   			if (!folio) {
+> > 
+> > Your analysis is reasonable. When the system is freezing, khugepaged is
+> > still trying to swap-in shmem to collapse, which prevents the system from
+> > entering suspend state. However, it’s not only shmem that will swap in,
+> > collapsing anonymous folios may also trigger swap-in operations.
+> 
+> Right, I thought about it but wasn't sure.  Could the inner loop (e.g.
+> collapse_file() in this particular case) loop long enough to fail suspend
+> w/o ever giving the outer loop (khugepaged_do_scan()) a chance to freeze?
 
-kho_populate() returns without calling early_memunmap() on success
-path, this will cause early ioremap virtual address space leak.
+For inner loops I wondered if cond_resched() could be an indicator of
+where try_to_freeze() should be placed.  Those cond_resched() calls
+are there for a reason, after all.   E.g. something like:
 
-Fixes: b50634c5e84a ("kho: cleanup error handling in kho_populate()")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 ---
 
-b50634c5e84a ("kho: cleanup error handling in kho_populate()")
-has not landed in upstream, so
-Cc: <stable@vger.kernel.org> is unnecessary?
-
- kernel/liveupdate/kexec_handover.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-index fb3a7b67676e..76b714db175d 100644
---- a/kernel/liveupdate/kexec_handover.c
-+++ b/kernel/liveupdate/kexec_handover.c
-@@ -1463,6 +1463,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 	struct kho_scratch *scratch = NULL;
- 	phys_addr_t mem_map_phys;
- 	void *fdt = NULL;
-+	int populated = 0;
- 	int err;
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index fa6a018b20a8..cee08466a069 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -2431,6 +2431,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+ 		unsigned long hstart, hend;
  
- 	/* Validate the input FDT */
-@@ -1529,16 +1530,17 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
- 	kho_in.scratch_phys = scratch_phys;
- 	kho_in.mem_map_phys = mem_map_phys;
- 	kho_scratch_cnt = scratch_cnt;
--	pr_info("found kexec handover data.\n");
+ 		cond_resched();
++		if (try_to_freeze())
++			break;
++
+ 		if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+ 			progress++;
+ 			break;
+@@ -2453,6 +2456,9 @@ static unsigned int khugepaged_scan_mm_slot(unsigned int pages, enum scan_result
+ 			bool mmap_locked = true;
  
--	return;
-+	populated = 1;
-+	pr_info("found kexec handover data.\n");
+ 			cond_resched();
++			if (try_to_freeze())
++				goto breakouterloop;
++
+ 			if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+ 				goto breakouterloop;
  
- err_unmap_scratch:
- 	early_memunmap(scratch, scratch_len);
- err_unmap_fdt:
- 	early_memunmap(fdt, fdt_len);
- err_report:
--	pr_warn("disabling KHO revival\n");
-+	if (!populated)
-+		pr_warn("disabling KHO revival\n");
- }
- 
- /* Helper functions for kexec_file_load */
--- 
-2.25.1
-
-
 
