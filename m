@@ -4,137 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01C97EE6B46
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:22:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C93EBEE6B46
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:27:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E51586B0005; Fri,  6 Feb 2026 14:22:42 -0500 (EST)
+	id 0ADCD6B0089; Fri,  6 Feb 2026 14:27:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E327E6B0088; Fri,  6 Feb 2026 14:22:42 -0500 (EST)
+	id 0866D6B0092; Fri,  6 Feb 2026 14:27:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3ECB6B0089; Fri,  6 Feb 2026 14:22:42 -0500 (EST)
+	id ED3716B0093; Fri,  6 Feb 2026 14:27:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C00496B0005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:22:42 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FD6C1402D0
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:22:42 +0000 (UTC)
-X-FDA: 84415003764.20.981346E
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 528E81C000E
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:22:40 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RCfgHL+H;
-	spf=pass (imf18.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770405760;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DAD326B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:27:14 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5C851C17AB
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:27:14 +0000 (UTC)
+X-FDA: 84415015188.12.F5724B8
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 9FE3A100005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:27:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of 3j0CGaQkbAHwx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.71 as permitted sender) smtp.mailfrom=3j0CGaQkbAHwx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770406032;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DVQEzZOvJW8IWNIKc4lAQu2NPZWH1JrDJrUAOeUPtKI=;
-	b=Jv/PT4lXJKYfxQPvNyPh2ILNrWT2CwdC0+V/vcdEHpDUtZejI30QBQmQlaTJ6edf/ortk2
-	Dzm+FDMEdxkrIeCXDqvMDKcBqrlkD3+fZZrg5eas4Ixa0FP13hV/kZEtgLXsdJA5N0Rbxc
-	GgysGzFuSQ2uXQyNHcw77R7mbvIS3oY=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RCfgHL+H;
-	spf=pass (imf18.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770405760; a=rsa-sha256;
-	cv=pass;
-	b=CkdWEPB/fJqKWkmfkmncELESV9abNtA8bvuq3QMEc6AejAkYRiLbKdjcr7DFH8SEcP1glq
-	kknjuxid70XTHGY2AzgNIW73mOoJsQnc2NKHZJAOgcFxFrSjDinJrjbyA8j3eBoKq7NmoK
-	kbcBG3t25ynkd3KrUs/Bb3rhI6zD/bc=
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-4359a16a400so2387362f8f.1
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:22:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770405759; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HeWU4MLNLJfAhq5H9Qpyz8b2q5/aHom2cKAG3TUyhjaOxmV+nyfzqLYexoJ3u0mhll
-         S84weOKRHMBYgAsgBhdthy+UsJ13p9Mb+b5MxfkI8wf5wtU8MxUmANthoHpmUWIDK9m3
-         rM5Z4HrSt1oY1N38vAi5mJjw9NrqxXImL3hYNsIMOE9N0etaYi2WNDuPwf/7puCSrAvG
-         eiR/NRd4i//dXADo1WPL3qP2O894xlkIeEqAiFPWDVGtZZleO5xn+WntwTZZ0+NXT9zR
-         d0sSDaow/7grvgZ6iCdH6B6inaFLHbJlyMxUL/zOngY4meaKkzw75svByEzJMvrxe578
-         nWTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=DVQEzZOvJW8IWNIKc4lAQu2NPZWH1JrDJrUAOeUPtKI=;
-        fh=ZqTNxN851jB1S5DLVE8wshOeoyHNEjvS65KtMMFyjxQ=;
-        b=Je6WJkSWzSUwHE7mwWN2vSJiNa9lqxSp33SeapIlvIzVduDY/uRTDl+tklFLp7mcNN
-         PKMNX+QXJ2X8M1b7TNrpM/FB1w8Se+8ixia0lJq2M2c/IBuYTo218ROjoIGeteLOc7Xh
-         J+Cvixr2cki905eYKw4bJX12MzqZo11BKIeILBbBHRjSQmkX/AEs90XrFF+qE8F1TEQa
-         bJ7Tn/dNVtCeWaFPmDXMzfC4ohHv7hqoLY+Z8RE7HF2wB7k/tqkv5IhKonOuhp81FaZW
-         XBdQjA/qPd52E2hfnmOqYwNghmD47aYBkR6KpFISCAxEZ/dnkqxh2yrtaT0sHyJXJ2v+
-         g12w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770405759; x=1771010559; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DVQEzZOvJW8IWNIKc4lAQu2NPZWH1JrDJrUAOeUPtKI=;
-        b=RCfgHL+HtZmcqce72+wzXEK9SMRoHuE2EazeOFHYqh9scNIuwyEH3H650thCCkxyCv
-         jeoMqm68gz5Rp9eS/i49qo80gLfR/PXub6PX662bkV8crz4AfLALpQFUyEwLLOiHNErD
-         r8CArrt5RN26G0vgZHN+mzRBl0ZyejsZ1AatBqZavw8b2IqOyEsX8oh5Lyszi/msiaTx
-         VJtz2NyFwfQ+vK5950zWftCz7DoUuUyb13O1UbxXX0UOXY96MbrDlkRTljXw5qjCGsAq
-         BKBpk9nlfxwSPdqo2/RUm+iYOpCKXj3O5fg4W9jYTHiaQz9Imb/YBPmhbd3NoNaa61jp
-         Pewg==
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=lMlmgZvJ78/+6x3mT23T9oN35acHzRya1yuoCdwhq+Q=;
+	b=I2J+lNAlJPqxfirIq/Wj5IQY2vXA8FfU/rCG12/3Z/cxlCHDobgr5Fvtft3KZsTZ+85ooV
+	eoIQ0iKDCGdb5PxkWcW2xPPRIgJFdPnHO9f069IZT/COkFJkUEJ9uyysIGSpSlzpcjpwNz
+	U1ksomHNuLQwXywWb2x0T8Q7ZHN4r/I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770406032; a=rsa-sha256;
+	cv=none;
+	b=8BxHXHCJOsUKMPqgyqRHiH93iudY0caASuSQuwY2EFGoSeUZK153XSMP52O4LNRL8d3pom
+	1U2IRAFtEBCoFKP/Y4oUmm+427vqKKtqxQ4Fx+fe59vjLbnp3FSNTtRGuqQ9P8dUGyZ0OW
+	RhewcRp6U7FteBb/kalwMVMmkkDob2E=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of 3j0CGaQkbAHwx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.71 as permitted sender) smtp.mailfrom=3j0CGaQkbAHwx34pfqqjwfuuni.lttlqjzxjwhtsyjsy.htr@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-3fda122aeafso7888951fac.0
+        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:27:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770405759; x=1771010559;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=DVQEzZOvJW8IWNIKc4lAQu2NPZWH1JrDJrUAOeUPtKI=;
-        b=MlkoOSzBF0qijzTaOja0V4YwDWtdiwp5xcfKRHrwpHhQhOfsell2zwEw0/BiShEgUl
-         h4kPlXbFCSM5lyvKBpobrUugP29Mx6OeqAKC7f6Li+FkV6NJU8gyQ/lyVPtownH8+5B7
-         RBljs5lZ2AHMLDCfKkPy0mlMBg5FxIGwqMf4XQAEPG4egwIYLBmmfuPnysyJddoWVFgf
-         JHqTH5gJriBCtdkdigRecOjSRly04VZCvPa7TmUe+cJf78z23dFHHkWJCO5rtl4MVqjA
-         432D+S9BaN85PmxLbwvm5k2oDfHNQCpj1kiMcllSw4ilNf1D/+vpsxQhWQuPTTHOMtjc
-         KFwg==
-X-Forwarded-Encrypted: i=1; AJvYcCV0ciJYD2MM5aR1950UUBuZx//8I34wpyqVddTkZOxvPI+GAJ2dz1tlxZPbAqEEcIJ6ytxh0DrdQw==@kvack.org
-X-Gm-Message-State: AOJu0Yzl3UNF2SX0a9MFrFMN5c68EaW/BC39c8MD5Zkf+ph51ir74io7
-	LaW8able6P803zxzxrn/j7zqrpwQk9K8m8upYb/+LRdTBxsV10CJJoloxdZ9V10SBemA9f/jfif
-	342sZerGNu+kMdQFrJseFmaoG7jy4Pmk=
-X-Gm-Gg: AZuq6aJhbDsKPit5A9EyqfV2u4cAZXXY0AFzY90r2nFlX6FMTs6DoQERaAaBdfWGDH7
-	bvy1O/yZJSSNEvcN2n6iyn7baaj6QCi1yy1vu023bvqyEqV0Nx9JdyGgN+LXMJA1Kta2OJ8rDgM
-	OoPyyp6/FmsXoEuGGkmXjWoHat6frqJPb3yzgIQlTB5aFJdu4MDj67TXMrN2x9rjyl1xuFN7QdL
-	+UlYb1CrV+VUJ6k3nqL3nPWjEt06B9GXO2eCEoMIzAKaDs2ifk5upAuYDCkX5x6wAuQ5BavAnxv
-	Bjjq7PduCLhtRiCa8xDDWh2AMrhpTnRuPO/tQnUdFPRHVuQSpltw0aXio8BrbVWyL7oBs2qwgx+
-	To8VhU/yKe9KQwvwcWKh372sy
-X-Received: by 2002:a5d:64e8:0:b0:433:24c7:880e with SMTP id
- ffacd0b85a97d-43629381b2fmr6575786f8f.33.1770405758760; Fri, 06 Feb 2026
- 11:22:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770406031; x=1771010831;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lMlmgZvJ78/+6x3mT23T9oN35acHzRya1yuoCdwhq+Q=;
+        b=Ae2KBwhd5VjRCcC9xhtG80dqhN5EGfOybACNp+41QAjUj5RXs0Nj1mQtRyHGoyuIEN
+         kLAQfo5yOEk2F70lG9qofGOSxv0sC5XWyeQB52fsnSI3QnuoeCu8HtJdPy4tfsLMYleJ
+         0wKzB1y2fkuIUT0JWRdWeZr5x9GOwJvzfonLvrFbCjvO9SX+zmFIuLvWehsuKFUVfEau
+         4jVcn5RxnBWa/dzYRkUy7r4lQN+Kg/3E2+aZ3SVEgSpm+KijOkaRYx02/+oZoJBCBQZm
+         Jt3RjXr/zTS3BJiIBmSV0Rz2eciP79WIB6TeWmSMDwipUq4MfBHalWpiKDw+WdtI2pki
+         TdDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWLC4BTERRI+ukJo/L5OcsahlMhhJlxoGRwyqOnZh5hfG3CXN6tXshyzp8C7wDWF8OssV1Yjeq6YA==@kvack.org
+X-Gm-Message-State: AOJu0YzBarit6U1fxE2kQfmvKMMt3o4A4dQCaJGNiWE0q88T5ODuiBDy
+	BgdyIpeRJu1Dqh1jeWGOHVgA8ppctDo/mUogfRO6iaIIUP6+u/ST2HEI9OJZPKmE0m/q8hF1yam
+	2ADOBLfzl8PzY6WwipJqDSpSfF24Kxcw6iaWoz6F7qcxvElpQW18JuAgQhj8=
 MIME-Version: 1.0
-References: <20260206171348.35886-1-harry.yoo@oracle.com> <20260206171348.35886-3-harry.yoo@oracle.com>
- <52b408e8-ea29-439d-8e34-91c4cae8009a@suse.cz>
-In-Reply-To: <52b408e8-ea29-439d-8e34-91c4cae8009a@suse.cz>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 6 Feb 2026 11:22:27 -0800
-X-Gm-Features: AZwV_Qifsb8IS2VAAUQs5Z8p8kS9_HvBgFrXDAMC02FNOV2mNhMV5eiqvrN4GNY
-Message-ID: <CAADnVQJ5AKmt+fNkAVRLPT5qAgfCGquBNRhg4v=U9FrH9cU+OA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] mm/slab: use prandom if !allow_spin
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	linux-mm <linux-mm@kvack.org>
+X-Received: by 2002:a05:6820:4a8a:b0:662:faec:7d59 with SMTP id
+ 006d021491bc7-66d0ac43704mr1257033eaf.37.1770406031685; Fri, 06 Feb 2026
+ 11:27:11 -0800 (PST)
+Date: Fri, 06 Feb 2026 11:27:11 -0800
+In-Reply-To: <20260206135648.38164-1-dev.jain@arm.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6986408f.050a0220.3b3015.0045.GAE@google.com>
+Subject: [syzbot ci] Re: mm: map maximum pages possible in finish_fault
+From: syzbot ci <syzbot+ci580f4a2417fa7843@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, anshuman.khandual@arm.com, david@kernel.org, 
+	dev.jain@arm.com, kirill@shutemov.name, liam.howlett@oracle.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	mhocko@suse.com, rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com, 
+	vbabka@suse.cz, willy@infradead.org
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 9FE3A100005
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 528E81C000E
-X-Rspamd-Server: rspam07
-X-Stat-Signature: s5wp3mixjx4r8aknk8opq9rsmo8khkuj
-X-HE-Tag: 1770405760-921231
-X-HE-Meta: U2FsdGVkX1/xY+T+yKKCGYGmu/HlOZQaewC9tOrs0JDseLdfUsnXWzbc7jxCAq0MarwmlNCik54WXBsA52UABize7PYQvnJZCXOekeayq9U6dJQtbuUoAKWYRv247NshldwH2AMsdCf8BAdszuDb6gVRSPsPo7bDDQWF6KdjPgiNubAWF9hEGs4S3GselCU67dXXuKuQ3aBv0RIIhT2zozbJ17W9J6hqkA4eF/rHb8W+rs4HYxJFu5w/6xwKQXzTyz/hqnEHZMH90bqwDEPCAN3o97LslS8fPMgZbo+6lXbxD9UJms1j591PQGUtwVsvZ/ivTWKcfHKSQFe0m0Uud8PWVjXofIMpU8EqX2MXAw2C23pf/P4q6ZgXPLfl8WPzszCQJTIdGzFDFWMqVh49HzC6LdpS5JvZEdFUG941lfqZ5cidNo6O5ZRWlZoV6Pq7qSTEqu68OfBcfZP6k2E7Vqvey8okpsk80zmuUBJ0IOA0dX+6lWvHPm0WQ4agJL1KFU9XONxGCYmYUjBvHhLhPjenchemiSvbrlCaLvFg3RvKWbwOXz20G0RFGeqYGU4yQdWpGhDQFK5Oav2L385awve1r5j9e2l9vb7MQ+7p3Ocyufci7QHd6oQ470HsfQwHY8kJHaX3/Q0KQS0y9WVYk+V2sOQGt8r5iyuiJ9mqeQLJN8QlwPDNFZNaNFM9XBm69foe79ackS3F+wJpuj5Bt7Do0DngYErRr42rtcucvgpuxnna0SpmerJ6adW6zeVf+6cg2vSj6Z/oU3XMVpCvaJzYvVo65q3ARAhE7dnzLS7oz/mqZpaqSBBTD2jojbr6Wz4+LCEnAtQsFiDd5Dd7M+RnnCoNQpOrHNYWOY0VwqChCGTvzsLozujf5u2MZboDTAV7bUqhDiOVmObxOgV15NzzTQ2if/MVkMfXAzTE9heSL+LecQi31INOqSOEQxn/bq8Mk/m+YVTyEcomliI
- nH8gpy9T
- YiCaDvO3StLrJEy0FgFxumhzS0h/1iIOYSAjVAK7HWwnkRY+/9c3Sw7MbzyF7b2rbbQSzdxpgtMDCRWX+vfqSLpUpAl7PkQWDWWASSXOVGN9ILczfKT2kP5iCKA/QlDdYHoTFmA8yLhHeGn3LKo9+/oWQoNhRnzdnKfwxupCKcB0dkqOG/TRYkZRkbqKj8g1C89d9AKFNwhfAmezBtuchyegWKvlKR1wn3j4QWy1JyEV6Cy6cD/cHiJZ35p3BcSzMhUZy0aV0UQ9CjScvYctB51SLk1ijVdjSZ5cXb2JBavrhVqOMGlIzm0d3ZpNuii4SnNB8ckqF9FE1G3oQXfqPEGeLh8qttdbJCYYJSxLCLWb2b5V0AbGeKtKVDtUMBvCQfUpN7qS6oQqSzT0BLvYcEogppH+Y3zp06a7q2KYq57HCXcnPX6NLHypcTtJLaD6yIKohWf/dUjFTjKKagcWalt1dLDGFlBk1VG1YTFIGFvq7ppI6fyICS33f29tyf6EleTTPTl59IS708vN8C0uvs1o668jKzDG3AnBgjPwSkW83Dw8ICnBAbvNO+g==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: chh47kjs65ts96e8rkt7uzbr1u46qoe5
+X-HE-Tag: 1770406032-928231
+X-HE-Meta: U2FsdGVkX1/9L9gsFYUecdZIPmR7cVxpKIDyD8++oIfI2wuIAC4dExnX4Yb/dKkBiWaV9qW4aG/g9cs9KrlwqsUlztpFgo9gKSTrpGw6pNsj0AEzTRZ0TR2P7oYWFJlGU8v3E3+etr4Vimi45QOoXWlD1HEL7bjmkYa+52gVZUmC1MnlMKvFbEwJ9ig7idKH+57bpuMBGdnZkeJGm9umskIT3sWUFz4udYlIarnL16Rtf5NgQX8p+a+ns+5/jgeIWIJ9Kpo0NZJWCB3gZ7J3p6ckW+2VHd5kZd6jutgy+H41qO7OREIHVHxyEITVklQDeBJ9GuPQbSoESxNOLQt6xSn+NeeMctOkgKpuYWDwDJSFtFxhW9e4T6kVxOnoHlnhsCA52SJ/bnKUBMnPozXXByPsN1qt/jkm6R34iaGLRYcP+l6o00YkG86TNV08zszgP4QGxbtXSwLCUbrpFFhlCPZFr/zK/haXHwiehFDJZH53Zz1sxSNsM3208ijhX7Eb+kxAuOAGm5RyrvbCeHg9N0k8MKqIm4JUNgBWNLHFDx84voSnBIotn5JYCtXng3lC3aZoXbaUhkxDZilZ41Fs5gac0uMYzvCkRZw/wLsCvxaIollzzBoPjrb2N7g/Q4Vv9f3vlUziRaafsIFJtpm6+0frpyUu60gfA09txk0bPQqKBVasi4LAbsdqscl52ffLsFua3nPkBZMkISLjY/RaQpv1oEFyWSKkjAoRhTbxYpXs8DiKGsmbIZf2XdQH4pxeojIIBivqhFlykftq/A/jsz6Va2XaoW4j84D4IH9V9Cgh7vHXcS72GG7V7Ig2nvzt457CnYqcJMjtRRXRjRuimCKv9OKOyo5HLASNluwrmSOCybycRgCxMhE1G44XPQdBrPKF8lKnVeYVOkHM37GElUQvyt71By7RFDHWH+OKnhxt/BlX9zbIX+srm+/FDgOqqdk7Ydg8Kjk40LZu6DA
+ pxN7p0QH
+ Oyu82pE0JlNRX9jjhB78/QXavRvQ7AMOp9hLiaraawBm0GgHXBuH87b+WQsb4PR9Kegkcqavd/ZnmRIz1frjlZ6qRfVc2OEkKNJxx+WI3PyzGqSqTWnAoE/wwAedgFwjoPAwyWq4W7MaEmEOvP1fr4KI7F/AUfIqicx7e32ExavjQQk4x/P471FIGqdli1bFRiwp02j4MXvvaWsmVYFbtpNcM9CBmmlH5d9OC4dzQp9MW2sp8iXV9eofwHqzprRnyLQaSQU6TIaxbJ//kMCcns8qqGChtSlxDWid9WwbO+7U9E0FFLRf0fGj2EUelRcviCBj0mD8+9QaO3ulasIPq4oNheE/jrJjkgHZ0fLt8jpBvVthxdfvqympfdQzAn1LVixNv02zOorNI7rOiQGqclnTkEqbj4oCWkF4L3ySIdaCU6/1I0PGR8aeOubV8psxpany6oz+2AwaoZkMbYkHJs3tjpfcGdnHmdsFVLP3edFUXhr/ZA0/0KVZaK2Pm9JP+599d6yp5YM7TR7CeRqM5qTatpPVHhCtkztixZK/cwZFhMcc0LgUt6pDqD+EmlsbDKFPHyVX17BLG+7vcUC0k+/y0SMOpbf25Hxo0rhB0KOgXwbBVzubrVUyvelrlYd9pgRGvN1LJyqe1XtIPV5iV7WL0ZofuziqApZSPiHp3aGX2fBSS3l2sMe+YDc5aHH5CQmg5N8FG4D7uP5FBTNfSE3XrnjVNMM7bxFuYBOZbwC7/JcOkGeQ6FrAIe3S56dfoWeKzExATblwHthXRQ6O6Dq5vtmkhIiOsWqssk0GydRpPAR+/II5W7vHgR3dGzyEupkZ22OXuIu43E25ekuuxmtSFRjfTfxGkjAW1fNEIsidTBDzdaEB4rV8ooEc8Les1zS1MU8Vg+Z84uG1VlqUQiUSJMiiNVKA4hd8kOlvWtG5ZboV407bDOwmcxIAJlIpwO1tXoSx6oIqtU16f60/uQXJIzDXi
+ tqM/DswZ
+ aSuprCZd5mxcJAxjdYYfSdVhZI0duv6daogQZYDW+ns1HKrZifZTD9aIgIyg38mpvHTRXP0tOOKanwoFAdQ9zJR+6qg+qlES0TPBpw/qPTCAax/ev+Yvbw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,129 +101,137 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 6, 2026 at 10:27=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 2/6/26 18:13, Harry Yoo wrote:
-> > When CONFIG_SLAB_FREELIST_RANDOM is enabled and get_random_u32()
-> > is called in an NMI context, lockdep complains because it acquires
-> > a local_lock:
-> >
-> >   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >   WARNING: inconsistent lock state
-> >   6.19.0-rc5-slab-for-next+ #325 Tainted: G                 N
-> >   --------------------------------
-> >   inconsistent {INITIAL USE} -> {IN-NMI} usage.
-> >   kunit_try_catch/8312 [HC2[2]:SC0[0]:HE0:SE1] takes:
-> >   ffff88a02ec49cc0 (batched_entropy_u32.lock){-.-.}-{3:3}, at: get_rand=
-om_u32+0x7f/0x2e0
-> >   {INITIAL USE} state was registered at:
-> >     lock_acquire+0xd9/0x2f0
-> >     get_random_u32+0x93/0x2e0
-> >     __get_random_u32_below+0x17/0x70
-> >     cache_random_seq_create+0x121/0x1c0
-> >     init_cache_random_seq+0x5d/0x110
-> >     do_kmem_cache_create+0x1e0/0xa30
-> >     __kmem_cache_create_args+0x4ec/0x830
-> >     create_kmalloc_caches+0xe6/0x130
-> >     kmem_cache_init+0x1b1/0x660
-> >     mm_core_init+0x1d8/0x4b0
-> >     start_kernel+0x620/0xcd0
-> >     x86_64_start_reservations+0x18/0x30
-> >     x86_64_start_kernel+0xf3/0x140
-> >     common_startup_64+0x13e/0x148
-> >   irq event stamp: 76
-> >   hardirqs last  enabled at (75): [<ffffffff8298b77a>] exc_nmi+0x11a/0x=
-240
-> >   hardirqs last disabled at (76): [<ffffffff8298b991>] sysvec_irq_work+=
-0x11/0x110
-> >   softirqs last  enabled at (0): [<ffffffff813b2dda>] copy_process+0xc7=
-a/0x2350
-> >   softirqs last disabled at (0): [<0000000000000000>] 0x0
-> >
-> >   other info that might help us debug this:
-> >    Possible unsafe locking scenario:
-> >
-> >          CPU0
-> >          ----
-> >     lock(batched_entropy_u32.lock);
-> >     <Interrupt>
-> >       lock(batched_entropy_u32.lock);
-> >
-> >    *** DEADLOCK ***
-> >
-> > Fix this by using pseudo-random number generator if !allow_spin.
-> > This means kmalloc_nolock() users won't get truly random numbers,
-> > but there is not much we can do about it.
-> >
-> > Note that an NMI handler might interrupt prandom_u32_state() and
-> > change the random state, but that's safe.
-> >
-> > Link: https://lore.kernel.org/all/0c33bdee-6de8-4d9f-92ca-4f72c1b6fb9f@=
-suse.cz
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > ---
-> >  mm/slub.c | 28 ++++++++++++++++++++++++----
-> >  1 file changed, 24 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index d46464654c15..4d76af84f018 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -43,6 +43,7 @@
-> >  #include <linux/prefetch.h>
-> >  #include <linux/memcontrol.h>
-> >  #include <linux/random.h>
-> > +#include <linux/prandom.h>
-> >  #include <kunit/test.h>
-> >  #include <kunit/test-bug.h>
-> >  #include <linux/sort.h>
-> > @@ -3308,8 +3309,11 @@ static void *next_freelist_entry(struct kmem_cac=
-he *s,
-> >       return (char *)start + idx;
-> >  }
-> >
-> > +static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
-> > +
-> >  /* Shuffle the single linked freelist based on a random pre-computed s=
-equence */
-> > -static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
-> > +static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
-> > +                          bool allow_spin)
-> >  {
-> >       void *start;
-> >       void *cur;
-> > @@ -3320,7 +3324,19 @@ static bool shuffle_freelist(struct kmem_cache *=
-s, struct slab *slab)
-> >               return false;
-> >
-> >       freelist_count =3D oo_objects(s->oo);
-> > -     pos =3D get_random_u32_below(freelist_count);
-> > +     if (allow_spin) {
-> > +             pos =3D get_random_u32_below(freelist_count);
-> > +     } else {
-> > +             struct rnd_state *state;
-> > +
-> > +             /*
-> > +              * kmalloc_nolock() called in an NMI context might interr=
-upt
-> > +              * and change the state in the middle.
-> > +              */
-> > +             state =3D &get_cpu_var(slab_rnd_state);
-> > +             pos =3D prandom_u32_state(state) % freelist_count;
-> > +             put_cpu_var(slab_rnd_state);
->
-> I don't think this prevents the changing in the middle? We just stored th=
-e
-> pointer in a local variable state, but the prandom call will still access
-> the percpu variable through that?
->
-> So we might need to disable irq here, and have another percpu state that'=
-s
-> used when in_nmi()?
+syzbot ci has tested the following series
 
-imo this is all overkill.
-Just prandom_u32_state() without any protection is fine.
-Even if it reenters there is no harm. Just more randomness.
+[v1] mm: map maximum pages possible in finish_fault
+https://lore.kernel.org/all/20260206135648.38164-1-dev.jain@arm.com
+* [PATCH] mm: map maximum pages possible in finish_fault
+
+and found the following issue:
+WARNING in folio_add_file_rmap_ptes
+
+Full report is available here:
+https://ci.syzbot.org/series/72be5e3b-2ee7-4758-9574-5c09e110d6d0
+
+***
+
+WARNING in folio_add_file_rmap_ptes
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      7235a985b8126d891dbd4e7f20546ff3002b6363
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/7bf34a11-2b89-440d-9047-d9a8b7d52cbc/config
+C repro:   https://ci.syzbot.org/findings/b307b537-ffd9-403f-b188-852c8f39be62/c_repro
+syz repro: https://ci.syzbot.org/findings/b307b537-ffd9-403f-b188-852c8f39be62/syz_repro
+
+------------[ cut here ]------------
+nr_pages <= 0
+WARNING: ./include/linux/rmap.h:349 at __folio_rmap_sanity_checks include/linux/rmap.h:349 [inline], CPU#0: syz.0.17/5977
+WARNING: ./include/linux/rmap.h:349 at __folio_add_rmap mm/rmap.c:1350 [inline], CPU#0: syz.0.17/5977
+WARNING: ./include/linux/rmap.h:349 at __folio_add_file_rmap mm/rmap.c:1696 [inline], CPU#0: syz.0.17/5977
+WARNING: ./include/linux/rmap.h:349 at folio_add_file_rmap_ptes+0x98a/0xe60 mm/rmap.c:1722, CPU#0: syz.0.17/5977
+Modules linked in:
+CPU: 0 UID: 0 PID: 5977 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:__folio_rmap_sanity_checks include/linux/rmap.h:349 [inline]
+RIP: 0010:__folio_add_rmap mm/rmap.c:1350 [inline]
+RIP: 0010:__folio_add_file_rmap mm/rmap.c:1696 [inline]
+RIP: 0010:folio_add_file_rmap_ptes+0x98a/0xe60 mm/rmap.c:1722
+Code: 0b 90 e9 4c f7 ff ff e8 84 d1 ab ff 48 89 df 48 c7 c6 e0 44 9a 8b e8 d5 3e 11 ff 90 0f 0b 90 e9 9d f7 ff ff e8 67 d1 ab ff 90 <0f> 0b 90 e9 b2 f7 ff ff e8 59 d1 ab ff 49 ff cf e9 ea f7 ff ff e8
+RSP: 0018:ffffc90003f675f0 EFLAGS: 00010293
+RAX: ffffffff8216c889 RBX: ffffea000412fa00 RCX: ffff8881170c3a80
+RDX: 0000000000000000 RSI: 00000000fb412000 RDI: 0000000000000001
+RBP: 00000000fb412000 R08: f888304bee000000 R09: 1ffffd4000825f46
+R10: dffffc0000000000 R11: fffff94000825f47 R12: dffffc0000000000
+R13: ffffea000412fa30 R14: ffffea000412fa00 R15: 0000000000104be8
+FS:  0000555589649500(0000) GS:ffff88818e324000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000000040 CR3: 0000000114846000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ set_pte_range+0x538/0x8a0 mm/memory.c:5526
+ finish_fault+0xec7/0x1290 mm/memory.c:5668
+ do_read_fault mm/memory.c:5808 [inline]
+ do_fault mm/memory.c:5938 [inline]
+ do_pte_missing+0x216f/0x3210 mm/memory.c:4479
+ handle_pte_fault mm/memory.c:6322 [inline]
+ __handle_mm_fault mm/memory.c:6460 [inline]
+ handle_mm_fault+0x1b8c/0x32b0 mm/memory.c:6629
+ do_user_addr_fault+0x75b/0x1340 arch/x86/mm/fault.c:1387
+ handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+ exc_page_fault+0x6a/0xc0 arch/x86/mm/fault.c:1532
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+RIP: 0010:rep_movs_alternative+0x51/0x90 arch/x86/lib/copy_user_64.S:81
+Code: 84 00 00 00 00 00 0f 1f 00 48 8b 06 48 89 07 48 83 c6 08 48 83 c7 08 83 e9 08 74 db 83 f9 08 73 e8 eb c5 eb 05 c3 cc cc cc cc <48> 8b 06 48 89 07 48 8d 47 08 48 83 e0 f8 48 29 f8 48 01 c7 48 01
+RSP: 0018:ffffc90003f67cf8 EFLAGS: 00010202
+RAX: 00007ffffffff001 RBX: 0000000000000050 RCX: 0000000000000050
+RDX: 0000000000000001 RSI: 0000200000000040 RDI: ffffc90003f67d60
+RBP: ffffc90003f67eb8 R08: ffffc90003f67daf R09: 1ffff920007ecfb5
+R10: dffffc0000000000 R11: fffff520007ecfb6 R12: dffffc0000000000
+R13: 0000000000000050 R14: ffffc90003f67d60 R15: 0000200000000040
+ copy_user_generic arch/x86/include/asm/uaccess_64.h:126 [inline]
+ raw_copy_from_user arch/x86/include/asm/uaccess_64.h:141 [inline]
+ _inline_copy_from_user include/linux/uaccess.h:185 [inline]
+ _copy_from_user+0x7a/0xb0 lib/usercopy.c:18
+ copy_from_user include/linux/uaccess.h:223 [inline]
+ copy_from_bpfptr_offset include/linux/bpfptr.h:53 [inline]
+ copy_from_bpfptr include/linux/bpfptr.h:59 [inline]
+ __sys_bpf+0x229/0x920 kernel/bpf/syscall.c:6137
+ __do_sys_bpf kernel/bpf/syscall.c:6274 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6272 [inline]
+ __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6272
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4fb5d9acb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffe24ca9848 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 00007f4fb6015fa0 RCX: 00007f4fb5d9acb9
+RDX: 0000000000000050 RSI: 0000200000000040 RDI: 0000000000000000
+RBP: 00007f4fb5e08bf7 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f4fb6015fac R14: 00007f4fb6015fa0 R15: 00007f4fb6015fa0
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	84 00                	test   %al,(%rax)
+   2:	00 00                	add    %al,(%rax)
+   4:	00 00                	add    %al,(%rax)
+   6:	0f 1f 00             	nopl   (%rax)
+   9:	48 8b 06             	mov    (%rsi),%rax
+   c:	48 89 07             	mov    %rax,(%rdi)
+   f:	48 83 c6 08          	add    $0x8,%rsi
+  13:	48 83 c7 08          	add    $0x8,%rdi
+  17:	83 e9 08             	sub    $0x8,%ecx
+  1a:	74 db                	je     0xfffffff7
+  1c:	83 f9 08             	cmp    $0x8,%ecx
+  1f:	73 e8                	jae    0x9
+  21:	eb c5                	jmp    0xffffffe8
+  23:	eb 05                	jmp    0x2a
+  25:	c3                   	ret
+  26:	cc                   	int3
+  27:	cc                   	int3
+  28:	cc                   	int3
+  29:	cc                   	int3
+* 2a:	48 8b 06             	mov    (%rsi),%rax <-- trapping instruction
+  2d:	48 89 07             	mov    %rax,(%rdi)
+  30:	48 8d 47 08          	lea    0x8(%rdi),%rax
+  34:	48 83 e0 f8          	and    $0xfffffffffffffff8,%rax
+  38:	48 29 f8             	sub    %rdi,%rax
+  3b:	48 01 c7             	add    %rax,%rdi
+  3e:	48                   	rex.W
+  3f:	01                   	.byte 0x1
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
