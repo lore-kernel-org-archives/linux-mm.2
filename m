@@ -4,92 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 724CBEE6B48
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 18:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3685EE6B4B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 18:57:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C77246B0089; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
+	id E34526B0089; Fri,  6 Feb 2026 13:57:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C219D6B0092; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
+	id E04EE6B0092; Fri,  6 Feb 2026 13:57:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B24526B0093; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
+	id D06F56B0093; Fri,  6 Feb 2026 13:57:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9EE706B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:52:21 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B2C813A2A8
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:52:21 +0000 (UTC)
-X-FDA: 84414927282.12.FA097AE
-Received: from out-177.mta0.migadu.com (out-177.mta0.migadu.com [91.218.175.177])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 90A1680014
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:52:17 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sitd4Vye;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BF0B96B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:57:13 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 65FEEB7D82
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:57:13 +0000 (UTC)
+X-FDA: 84414939546.05.9214027
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 688454000E
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 18:57:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I5QGBQ6r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770403939;
+	s=arc-20220608; t=1770404231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r7mumZbXKpp+UcC6LYCZ5Q8LNGAoHw/22vUr8wOhvA4=;
-	b=8NBrFx/7jODG2WTx2kiuKklL5m9yZxv3AfVoYd2Vrz7behlcKbpEEJ2RlYqhdFIoVWTc0N
-	x2V5Tuan6Y/hI8j5Et/ghmJIdtyclo1CorRSWC9KW1R0oW5krGCBOmPJaCrM01+9wp17L6
-	c4CBu6I7tgXjGbKUhRtwF0pYwKO8DRg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770403939; a=rsa-sha256;
+	bh=m5CJY1D1ORsjcRpJZPe9IaaeTW5fbKdKTa4tG8KubRc=;
+	b=SI/Q2gzDLBbGVL1WMz5eylBTTJftF+Wqdvz1ML5PKeGI2nUhcYWY9w23AsbIhX4ggRrEk7
+	53vNRKeZ+YnkEOY+jut1qRZuRGfqEuoeL/UqGecvnRKPSFY6j69YNSxE+IWp++/Z1jNjIR
+	sF4Tk+M4blwguApVheps1641ztyL8WE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770404231; a=rsa-sha256;
 	cv=none;
-	b=gyrmffXnH1Cjj//YrdDDsE47syf9u2X7CpvCOqrW187HT843fqBHYTtbJILaeh4drWbVHV
-	5MZ8F4ZXgnnzgfYT6nw6TzvjATt8nbl5AoXq5dbcIeYIzlVEVrmqdy+VuZWNw0JiZUEkYI
-	dQ1VaNjL7Cb8BQsPm6h1P7PTESEwDc0=
+	b=ROPFdDNxXK3Zq0ulvZ4Ews69+cumQebr2fr/e3Je49fy66XDK3gyxmH4JQO3Cn6mVq2qiy
+	E1P1/8rq0vNBjRvLVCZKP4SkrnONYT0s4xUE3OgTWUTs1HcHRaUP8pnZgQ1iAo7kyL/ySh
+	8JqzgLbSvOV357wk6J3QYJIG6iaELD4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=sitd4Vye;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf30.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.177 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Fri, 6 Feb 2026 10:52:07 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770403933;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r7mumZbXKpp+UcC6LYCZ5Q8LNGAoHw/22vUr8wOhvA4=;
-	b=sitd4Vye4V/h7qHTBkS38bDEsI6P/BMUzZU1dGeEAQ7LW0tF0D+Xry1ug3ppPBmOqyXrwC
-	D/QEjYc8d0wumdHpoeTnUJMnl6As6win53CMiNTMMfcYMZmcmkNwIbLcCqTZl7FzJM52eF
-	Bwl6eGOB4b2Q1AbfDVxoZfR38JQX/mQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Bing Jiao <bingjiao@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Gregory Price <gourry@gourry.net>, Joshua Hahn <joshua.hahnjy@gmail.com>, muchun.song@linux.dev, 
-	roman.gushchin@linux.dev, tj@kernel.org, longman@redhat.com, chenridong@huaweicloud.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
-Subject: Re: [PATCH v9 2/2] mm/vmscan: select the closest perferred node in
- demote_folio_list()
-Message-ID: <aYY39YGAHmF1Oi5H@linux.dev>
-References: <20260114070053.2446770-1-bingjiao@google.com>
- <20260114205305.2869796-1-bingjiao@google.com>
- <20260114205305.2869796-3-bingjiao@google.com>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=I5QGBQ6r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 41D7B433B1;
+	Fri,  6 Feb 2026 18:57:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5A5C19422;
+	Fri,  6 Feb 2026 18:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770404230;
+	bh=vj+4jILh3JlTjBzKKN3MGz2W10iTwv5oZ+lklZ8Z4sE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=I5QGBQ6r7ZqvepDQxpeFXKCohbGwGRdI3luGvrzplan6E93TUNh0NgvoiIDm/ZosK
+	 3vw84bdBkL8ymfDKARKykGfG9UZVlUQjE6yZoqU2IqWjxAzBTKXweUDgQ+7zoNhIo+
+	 epUvuxmStcavY1Kl4T1V6mD0Vuk4GKkSfLBcVpTiZcXxbwIXXoxWiC0KoPn9THafvK
+	 +Vac0YAxhWtind3rR55NOCTUroUwSpgLx1gbfZwZhhdvzyXs99NSaM0nOrsKWLgE2u
+	 eFhs1zeQKPKAw4vK7g+uvIcTMVkBO2NtnoZ20queXiEV7X1ovYpMq29V0xp1KNFj4t
+	 LWsiOmFExLdiw==
+Message-ID: <7ee4fdcf-d773-4279-95f8-fc8300f7fd34@kernel.org>
+Date: Fri, 6 Feb 2026 19:57:06 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260114205305.2869796-3-bingjiao@google.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 90A1680014
-X-Stat-Signature: f8rjbdxt56mdp1nsgjf7q5jkrwnjqofd
+User-Agent: Mozilla Thunderbird
+Subject: Re: ksm: initialize rmap values directly and make them const
+To: Matthew Wilcox <willy@infradead.org>
+Cc: xu.xin16@zte.com.cn, akpm@linux-foundation.org, chengming.zhou@linux.dev,
+ hughd@google.com, wang.yaxin@zte.com.cn, yang.yang29@zte.com.cn,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <202602061522548871ohgXN8z0qq87sTSX-yZc@zte.com.cn>
+ <aYYIw3h35HOqodAb@casper.infradead.org>
+ <5a1cf097-5ab4-41d1-a707-a709de6210cf@kernel.org>
+ <3192eca4-1c90-44ed-8386-bf635db357c4@kernel.org>
+ <aYY3tZmsIQnT0b3V@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aYY3tZmsIQnT0b3V@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 688454000E
+X-Stat-Signature: eyhkuxhiqzt844mfgprjfjigb9csrpbg
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-HE-Tag: 1770403937-499953
-X-HE-Meta: U2FsdGVkX1/dDXF2RKNmlR2OOm1zLDaDMv+mnBDAM8vI4jZoTGceuYjwFrFcFtxBXfqOUho2rbiu0n778TpA2Xy7YHvD+lQzr6DzrgReaiVqjRjquOMVHxiN94fhSbkmtKRxlQVyASPwPtA1obkqYYIvWTzXsLpbd6nKhynmk8T0nZCLIy68V7cVrTuMYYTrDS31a96dg1u277ZqErSZXhjCEQk9ZRrG3thRUgUT4dHqYQJe4yjBns3o8uNlLbmq7q3osFeYA+pbX3mi5I8u67f7Z8ufX2OxGy4QX8pUH13lrSn3nabWZ2evPjGWbkgAqMZs6iDo8FC/LehjQwxX1jX3lByfh0xE0Cttod3+vE9BnShQV56VrA9iboQdtw52n6OAA/oRgw1/WEaVPm69KMykloFLYySIUOk79c0IODzrpjGtt6henVKIelxT6rCA6dx2acWMEQBYXjKO8KBOD42FPGWxlpOI01IXzFQWjKa3DxG3qZQyPp9B4vFIh7VDoUvSYpnCgiXDfmqGi3BpoRD7LsRMqw3xNzmyCy7Y8Fuc3r6c6EyUhbv+sjRdkJBJNbPU0+br2U2o8YSIumlocack7cr0JoCo//rcWn5eFktVA38yQ/b5xQ/31TO2tMbuBXBirqnppnSYO+SfBEdiAp1RQvPX1+IfhY4uDgoGThV3TuGiYirSsLIMS+Ck77yzFHVO+E5eiOh/SXWnVWSHR+SVw27rQs+yGMQ/Hnwh+jGVJ6m0M2sShBoY4+MC7pYE6/dNHL99dx1nMm3m1L9dRAsEZjXhbDk7N6Fz8DcEk3Ob6vweBHqGgQE8JmpviM884FL2ugnyz/fnjGqqIx0DALW9ArNmysNM6hdGO8akyWwXIYJ1V/rncGJWS0mYPeq4bPI9BllkGWVyLR3w17RWTP8CRy39zwRR6RUyZaLI/JQELhfdw6/jO4SYLQPI8/cR4XU+YFhyuMlW5FPGhst
- UN4DE7n7
- XS1bhYGSHr6/wLkfUaizL7uYRDWVnypkpGZA9Idc8kiax3IflDgZJaguhKp84cBsWjT/kdMRL47ePyTP6aiqH5rB2dW4XKLxqgiOTQ768lQmDSyY7haD8Q6Q5HisgfgqQJzDRveoY8pjwH/I/Dx337vsPollgdD1OU+4H7Xbhq5/kv3RwTg28dcE/i7hCkaXA4pV89JOC3qewxWnXrpWFv8AVFyyLj+XqRgKe8J+LWY5RtPCapu1tt6NCe4g8xE6ll4anYX1ZFb1qKx6vttyAhean4FnfZhA4F3K+mcPX8x0I+FPWSL79hBI55r6k7L9DdmNZKgeNCFA4uRr6M3emh/9VHCaQavh7cJG+
+X-HE-Tag: 1770404231-641395
+X-HE-Meta: U2FsdGVkX1/ogdlMEbEXUAQgzNyKLHJ2jyhaMjWjSC/9oY8ljLzLzfH1UZ3CGd4acQi7VUUwEPNc/hbD8DjosVggAoXQ2DXp85VMS7BcpnlzEGbY6Aiq2ogUroG8OEmW3AuuQ8WQRdB06K6aq9E5htQEt7zc5dBMmBbkaTNIT5uw64oqGqQflcvjpXxsQpbiTO9ouWTNdTZ8IclUpJlOtT2VeKSVFkWHzKiozfkHm5VHel0aag9LDPuaUqaQB+KFmMpiUPw+3p8PmurTinkl5G7x1zbEV5Om+AuQ4dv+uEFsTl8KwIVM7cvylzPfG2d7s75awYVVVHxpFLOOloPO23BkJlAw9E7Ws4uocofwdR8yQbHtjrSD8/R2k5gWtPQT6za2UpTGJ2LbltfB/dENySHKhC7xcHQsDYZzDIorWgv33Xr4/OrWa37jVqO0W6bEHbXc0f8fbAi8LPXnHnXtuxfP+xcQ6gR+vzxy9h6sZ3/cu8D/0GFSt/WmXlyNbf0cTjUvcBtIVbaK4zj/ZWKj/gdn4KNHpNYbk/LpYqDHSlBIK0b26rFMo2rrj3pSLe+aVpfvkraMANm+5CraMALJL7fagiPIrI21BR1ZVzu5ZUbU+lKc9MCh9rIyKxBXgEcFPbjnM9Liu3mpAC8gZyu9SlNI3xdkdpXsFI6QoHU9Cnmwv69PMUKyfVPNg3TnzxbgHeEP8kY4va8p9vTLZPaM4YFqu2hnBXY+g+Rf2UeZuW0mul1f/uRqO3yPoe2lMXxboH0oQuOlCYSMYEuguMopjpbSvA3saJ4XgzOFV3zUVPnPBL0FrBK85mr1f0lv5VILWtqJEYq6u85pMWFXBitztMPvS+QiXmNjGzoysjXYkRVJ6aihTk8byHTZ0m2Hv5727x773IskbS0Y52eWQBU9XUek9+Jv61hJ2UmDu0SXKrVJ8Dv05brCe62ECnX2RRfi0Ilx7p43nWomiGqpYsh
+ ZDmvO7HI
+ f0uQd0o30RWZmCNP5UgEJhCqDYZglT92u7tmcABlcXHpb6hguYv8iFu4qqQr1gOYHqz7GrfK3igHmQVZxoiPV23Ec1D21mIRlbJHQuF5WMEho0gVP6kyn2ggrHvuHeJGIZad3Nq9B0DFoWDC3gGBGa1J2iOcXJh4EAd+BnkL72gmRpA+ugXxa2vVfyUoODbaJZPiKGnSk2ZCuZDY93lp924D79buFQ6S2bEO10s4Z9yHPYCkCT4rc2M9Lliq04S0VfuVE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,79 +143,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Jan 14, 2026 at 08:53:03PM +0000, Bing Jiao wrote:
-> The preferred demotion node (migration_target_control.nid) should be the
-> one closest to the source node to minimize migration latency.  Currently,
-> a discrepancy exists where demote_folio_list() randomly selects an allowed
-> node if the preferred node from next_demotion_node() is not set in
-> mems_effective.
+On 2/6/26 19:49, Matthew Wilcox wrote:
+> On Fri, Feb 06, 2026 at 07:09:56PM +0100, David Hildenbrand (Arm) wrote:
+>> On 2/6/26 18:34, David Hildenbrand (Arm) wrote:
+>>>
+>>> Once that changes we can revisit. ACK from me stands.
+>>
+>> And just to elaborate a bit: I don't see support for > 0 happening any time
+>> soon, and it will require significant changes that I am not even sure we
+>> would want to maintain upstream :)
 > 
-> To address it, update next_demotion_node() to select a preferred target
-> against allowed nodes; and to return the closest demotion target if all
-> preferred nodes are not in mems_effective via next_demotion_node().
-> 
-> It ensures that the preferred demotion target is consistently the closest
-> available node to the source node.
-> 
-> Signed-off-by: Bing Jiao <bingjiao@google.com>
+> OK, you're the KSM maintainer.  There doesn't seem to be anywhere else
+> in the KSM code which handles large folios, so this is just removing
+> code that was recently added?
 
-One nit below:
+Yes! Sorry for not being clear. :)
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+This is a fixup for a patch that introduced that code in the first 
+place. It will be squashed into the original patch that's not upstream yet.
 
-[...]
+-- 
+Cheers,
 
-> @@ -320,16 +320,17 @@ void node_get_allowed_targets(pg_data_t *pgdat, nodemask_t *targets)
->  /**
->   * next_demotion_node() - Get the next node in the demotion path
->   * @node: The starting node to lookup the next node
-> + * @allowed_mask: The pointer to allowed node mask
->   *
->   * Return: node id for next memory node in the demotion path hierarchy
->   * from @node; NUMA_NO_NODE if @node is terminal.  This does not keep
->   * @node online or guarantee that it *continues* to be the next demotion
->   * target.
->   */
-> -int next_demotion_node(int node)
-> +int next_demotion_node(int node, const nodemask_t *allowed_mask)
->  {
->  	struct demotion_nodes *nd;
-> -	int target;
-> +	nodemask_t mask;
-> 
->  	if (!node_demotion)
->  		return NUMA_NO_NODE;
-> @@ -344,6 +345,10 @@ int next_demotion_node(int node)
->  	 * node_demotion[] reads need to be consistent.
->  	 */
->  	rcu_read_lock();
-> +	/* Filter out nodes that are not in allowed_mask. */
-> +	nodes_and(mask, nd->preferred, *allowed_mask);
-> +	rcu_read_unlock();
-> +
->  	/*
->  	 * If there are multiple target nodes, just select one
->  	 * target node randomly.
-> @@ -356,10 +361,16 @@ int next_demotion_node(int node)
->  	 * caching issue, which seems more complicated. So selecting
->  	 * target node randomly seems better until now.
->  	 */
-> -	target = node_random(&nd->preferred);
-> -	rcu_read_unlock();
-> +	if (!nodes_empty(mask))
-> +		return node_random(&mask);
-> 
-> -	return target;
-> +	/*
-> +	 * Preferred nodes are not in allowed_mask. Filp bits in
-
-Filp -> Flip
-
-> +	 * allowed_mask as used node mask. Then, use it to get the
-> +	 * closest demotion target.
-> +	 */
-> +	nodes_complement(mask, *allowed_mask);
-> +	return find_next_best_node(node, &mask);
->  }
-> 
+David
 
