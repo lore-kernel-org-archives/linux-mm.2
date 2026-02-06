@@ -4,82 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C8BEB28F8
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:03:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D240CEB28FA
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:14:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2625E6B0088; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
+	id AD1176B0089; Fri,  6 Feb 2026 04:14:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 222B36B0092; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
+	id A9F536B0092; Fri,  6 Feb 2026 04:14:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132786B0093; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
+	id 9C8D06B0093; Fri,  6 Feb 2026 04:14:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 03A3A6B0088
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3479160867
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:03:55 +0000 (UTC)
-X-FDA: 84413444430.26.6D0025A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id F0C251A000A
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:03:53 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GPSSFMUe;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D0EA6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:14:54 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2DA4716086D
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:14:53 +0000 (UTC)
+X-FDA: 84413472066.30.DFD223F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 475EC140008
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:14:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="H5sOJ/AQ";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770368634;
+	s=arc-20220608; t=1770369291;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NwmArf2i4vlgKd8l9Rj6k8S8tm/HHr43mIL/JbfZilI=;
-	b=fN8TLJuKnlC8dGvnjMNs7UoivN5Ibcxp33jVeZTIVh8fSzMxlD0BI06VABljddSWQ8fIJE
-	C8TrJZ7SX+gIotxSIk7tgsm1FI0+bKfB1WwhImKVO4p7VEg/3R1r97he5Lnl6FznKlhE8E
-	bBJeOEiPJVl2B/ItPQWVeR00lVLt6mc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770368634; a=rsa-sha256;
-	cv=none;
-	b=nEpPAmqVsYtkxFeYAMoIG11+J1rjUGF/uLss8MPnjv2SVg/2sgh07IXG/TSB79b1Mn89oQ
-	o+7408HtxtGPtvO4TjnFRdybby03pBnU+yvxWRyDgC+UQBEJZ6m5R0yzIUdyOEyIpiDBrc
-	Z3uGa4CjymjIQw3v9x4gL0wZPTEayMY=
+	bh=FuySHAhI9deeW3BF2Ylr7RHH9fDD+nnFMmTztLmbx0o=;
+	b=vhh2zRBRbsACLB4N6puaiV4G6uAxDhpSEZjujBNLSuSZAAtgDdAJbX8vs6D6cY+j+byIkR
+	avP1h+W4WdAZP4buFO+bStyVoijx58W3GWsrzJt/WIAv/YyTtDxG3TAECTYiGtDKppJ7dM
+	GusFXDa0rGlRaX2ZX70lVj2A+qmzA2M=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GPSSFMUe;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="H5sOJ/AQ";
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770369291; a=rsa-sha256;
+	cv=none;
+	b=FrdQoc7x6IZd+NO7Odwg/FgImrzMUStAbZnh5M9yOsYLWpY63ekuRVMUPe9nkasi13jlcz
+	OCUj1TQH7aG2l18dqIhEDhgUcGuxYuH+y9uMxXe2g9+3HcppM4aVnGXd/vLX4ITCOf0aea
+	a4/mtEuXmtIq6vnLVrpWksq94OwN87Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7042460010;
-	Fri,  6 Feb 2026 09:03:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5334C116C6;
-	Fri,  6 Feb 2026 09:03:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 54B62440D9;
+	Fri,  6 Feb 2026 09:14:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD80C116C6;
+	Fri,  6 Feb 2026 09:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770368633;
-	bh=yf3Ne5tIqz4PkENt5jTwf4zm9Qit2vY31bwJBriY4Pk=;
+	s=k20201202; t=1770369290;
+	bh=TsoItULYpmYPP5+qItOY9/D0ks8BEhX/aixQCeipdPo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GPSSFMUeMfvyY0v6aStotudcJqKTHE6fhDx5P7P4axot0d6U9xsHIxl2p+VvfPAYV
-	 rgdZfM7oxVDJ8jFFaz5RymK7gAWktpBIlA/ryEeTgmkZ+aIbCDjcAFMFbnSrmgXBL3
-	 7VdyzRmoA53G7vQ+hqm07gyCnfSTWeoIKbS05aSXf8UNpEFereA3z7VAWI9LhbNdZq
-	 E+hwO7jVtW+7RhbO0238gEXvEeYlB1eO3mScREpT1L/5VXHkKRPV/Ep5N12UVY89Xd
-	 9Ic0ESy7ea+iLNQNLjs1SopSp8TYUr7d916+wba1LPR+iOLtmhc9XYduSzF/Bit38Z
-	 bjGYcaIepbWUQ==
-Message-ID: <11a4ca6a-9534-4f3d-bda6-4caf460c6854@kernel.org>
-Date: Fri, 6 Feb 2026 10:03:49 +0100
+	b=H5sOJ/AQVD4KQdyWWnwpvGbsCTZKl09ACof7WNuoWazmfL2kJlPFbD5heZfAYPIbz
+	 d2CnLYUMcjF0tIbpv8zNS4Qg1isPdfN474/nNE3Eulr9/zFc5gyKGxM8T33/oy367q
+	 6fs1VzwFF7AGydtM9nWDqkQuQxSLFHXOZFF0ABPsCQZ44YHHvBaD7f+jyCx13Y8Npu
+	 EC/ISRF8qqpjKLGAUrmlvuTVz5ntYB1AURrL/xPiKqN0+TYLMb2W5us/8fIkpHwMrK
+	 uKicF1sG7SysotASG6r7gI5GHQStrqKlaklkU1b6PT+Xqp1rJG9ZuVVg16mXQ3J1HK
+	 Zf0C4zQ37KubQ==
+Message-ID: <7b88fdcb-6bd9-4eea-9174-81ab4763a0eb@kernel.org>
+Date: Fri, 6 Feb 2026 10:14:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v6 2/5] mm: khugepaged: refine scan progress number
-To: Dev Jain <dev.jain@arm.com>, Vernon Yang <vernon2gm@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260201122554.1470071-1-vernon2gm@gmail.com>
- <20260201122554.1470071-3-vernon2gm@gmail.com>
- <fd67a91f-3930-4bd8-886b-13f7783f4aec@kernel.org>
- <CACZaFFNGFWv3FG8spJDLfLTe=0QWuBWL+Lbs+W3h9vGL=jrT6Q@mail.gmail.com>
- <85e8ded9-a9eb-4663-9c96-93af60006fb6@kernel.org>
- <9508744b-e5d5-49ef-825f-eef683892541@arm.com>
- <acb25f5d-b099-42a8-be26-c60b79502e3a@arm.com>
+Subject: Re: [PATCHv6 11/17] mm/hugetlb: Remove fake head pages
+To: Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
+ Usama Arif <usamaarif642@gmail.com>, Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Vlastimil Babka <vbabka@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260202155634.650837-1-kas@kernel.org>
+ <20260202155634.650837-12-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +132,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <acb25f5d-b099-42a8-be26-c60b79502e3a@arm.com>
+In-Reply-To: <20260202155634.650837-12-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F0C251A000A
+X-Rspamd-Server: rspam12
+X-Stat-Signature: r7q71ijb7jspwtdo4qutabh1h5ggzaza
+X-Rspamd-Queue-Id: 475EC140008
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8w1qigtnofa1w97q4fr671fctapac6qp
-X-HE-Tag: 1770368633-29339
-X-HE-Meta: U2FsdGVkX18Y4gpDkBdwvok4SS/xjoK5EUKVqaMgYYBfv7yWyD/14pjyeJP6kMe/I/wHaWMIvJuGXq5Z2pLLAEif/JRIMfiB1J35PeSm7ctq7bbFW528evl5xhbQCXCkNvJ6UKcYYhqfZmll7tAVsr88SkValsAV//mUT97t9eILaay1SkLDWirkEXQ3O3xSagseVS5FdyutU21BPPIKEU63Ktn+AgBmEINbdnFaaH3BX4M2k+TmzLMwOPBBCrFZ1KZ6fD6PnJzczGZ7wh1uPPhN9V99pK2VomwEqiljceNimj4QtpZ6UgISP+hgrtILsA2oVACGOlRkpaBAvTni4bHdNFkMcRnP7OqTlefvi8psKDKyWR/aomJqTZI62gBxRph1T1faYxlHLuuz8/L9YGE3cap3yLJndYFtBQD/u7IQDXj/FIaTjLMSOuPdHuY+UfzU2h2iWi1ioIkN1XWrV5EqiSLE86pKyfc+F83srd4VRe9fpnj75R9TDg8hrJfiuTwg3KiNrO+8UsJPsEpTEvBC2BX21xUp4HIU0qGyb5QC85P7dH31GzIHewNAitFDrvEoRSmgj8i16KTD6wfnH6hy0eEZhFZZ55LoCSMN4E48EJu3XUx/8oayludLzWZkSNq/+xuV4uKUpcynRq3bPWn/7o56fXoczgSasc4Yz9O8upg35prPbkKp2R/bvhK37Xi52QI7kvX/KwHUyDH4pV2AU9sdnCdRTbznNnTuUBA1Pou/H17Iq7SmR3yUetXdy9+YaCGI7TqFdZzhWPvFm4k6Bu2qwHYvFSJoaD7D5Qv96PR3ILWisZvKU0v60zcb0q0ZYvp4V+14By2Z9jjCGRbj3x3ZcXLFHyiZTjtEdTiH3KQS8kPZAndxUYrl1IHE4S5mIlPCYmuSk+lwIDdi5GT5Ap6A8lWe9ZySCMc/j+Bvm8x2A0Ql6wRhHosiVdIMAn7d6FAL59Iu1hTCNug
- nS8jat3Y
- BD/3SFfJpOdpBBHPu8rYUj4oXqp1bW2LZk584wqa+8Vc4op0+vO7lTbH8Nq9UoY/9M4a9ZN2ZraBR7Wr0t8nU1metLRuDvyvdvYcc6oYL8D0esicnrI+hud7KLHS1KD+xMuTs6X83klSIhHq75iyJqlQUJvQnQJZ76wDYELCuRHIpS2y8IwYkND7Cx+WMQfJptEZrxbqEpK9XZ8ciX8GNla74TUOJGYwHQFMqXjD687J/TYhYIES9bwdNlR5428Vi91rj
+X-HE-Tag: 1770369291-100127
+X-HE-Meta: U2FsdGVkX181dwIHi0gfBDCCdp5w0nosvbG7uNPdD8DwYWjg/w43ZakRelxW1dlk+kiab/Z9s8Cgkv6bfvz2gyWOfr+z6jR3B/wFr2V6fAMVQgjpeQVoXYsVV7WYR00Fy4gjGknlcuAEMwLm/G4iqHpzDWjgihPZEebfLlrp5ds7DLMtU/T9VRrEWqRUNoKChfumBOexWCnYzyqgKQ5q/bIrV8r1tzU1AmvBsim0bOJsRXq659xjkYNkL1bZcu8QqrgFIOaaTvgUiQW3eTg4duMuAVvXy13oRpMgViHylPGwR3B/PU9OzGX4luQJR/ltenUtVnt6CBP+epfSAxPjaiVDIJwQNjJYWIYAoFt1iA8D6PvSmxQuZh+1VOHMbXLvsMx7ys50SmQmwoB5koHM5PWsiPiDYvWus5YCq6jDJHDTYutDL7D4zEwTZd4wm8TFpxK6w/DXkDk1lRAp4JhjEfQr1CuK+Mh5AEwbSBgUCGuojyFA13DIcBSSUOopi3S/8xLqWMoQM1/eBAJ2eteTZyD/dnfrG0Q4jCFlVmW0aKausC315nVNf4ge04CO7uyMh6cN+rOBdVD8tIu5h7ghT+b9tf+z4dzL4DS5c2+Ea1UyzxsoJ8ZpooK+OhulFkhc/vzOkrVEOdgFXVZpN/EsNdf2uXCvoqNPBkH8yQchs8Ck6Mjw9aPPmn8Pk0c/X1+huS7i5L8F3hzqm4U5Ktu4VNgdAn99YwWHAmr7noM9Z6OEuzHfvOc/MIuwI3ptl1U3dehqKnUI2ELAhyIX5phO0kb3xFiebv2mYZoUl/POgPEMiOLYftWwMuicnqr2yBS6qsWCa1rnq307UzyX9Q9P1qYEtgfwpQfjyppcztxdyea/u919ZYuXSbdsGK0JARVBYwZJck2CY90Pw5PKy3tuc5BtKQeLzYjWDIQXl5XQDjDxr3MqY3Ec17sKUOQl5W1ipTmRV49GeS2hBDtnAsi
+ pauEUqQi
+ A0WeR5L6ZoNIj+yXMZFZvp4y+O8QO+4TCL3nazHbu+sA++3w0Lbx/DleefQdAacMNMOQHoEcoRL/uMyF0++7bWH7qkAcJiYF5AfpjcZqDGsJEyFm3QLeOOEuwKUdCK3rxD0gL32laH8Oa+3LDgU1Vu5FexuDyniZBL4i2N2IZkmzYzR+XUtmoaOJhT+txkoqH3CdtIAutI+U+VMKHi9eo8o5LKU9anbnnMwsTNStxAGuxrX3eJ6oqapQdz9Jl5gk+Xhxf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,31 +151,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/26 15:30, Dev Jain wrote:
-> 
-> On 05/02/26 7:55 pm, Dev Jain wrote:
->> On 05/02/26 5:41 pm, David Hildenbrand (arm) wrote:
->>> Yes!
->>>
->>> Why do we even have to optimize this? :)
->>>
->>> Premature ... ? :)
->>
->> I mean .... we don't, but the alternate is a one liner using max().
->>
->> The objective is to compute the number of iterations of the for-loop.
->>
->> It just seems weird to me to track that in the loop, when we have the
->>
->> loop iterator, which *literally* does that only.
-> 
-> I realize I shouldn't have bolded out the "literally" - below I wrote that
-> I won't shout, but the bold seems like shouting :)
 
-Heh.
+> -/*
+> - * Populate vmemmap pages HVO-style. The first page contains the head
+> - * page and needed tail pages, the other ones are mirrors of the first
+> - * page.
+> - */
+> +static __meminit unsigned long vmemmap_get_tail(unsigned int order, int node)
+> +{
+> +	struct page *p, *tail;
+> +	unsigned int idx;
+> +
+> +	BUG_ON(order < VMEMMAP_TAIL_MIN_ORDER);
+> +	BUG_ON(order > MAX_FOLIO_ORDER);
 
-The thing is that the loop iterator does not quite what we want, 
-otherwise we wouldn't have to mess with max() etc.
+No BUG_ON.
 
 -- 
 Cheers,
