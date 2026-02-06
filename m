@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27AF2EB28F8
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:02:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C8BEB28F8
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 09:03:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84A076B0092; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
+	id 2625E6B0088; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 818656B0093; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
+	id 222B36B0092; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 719F36B0096; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
+	id 132786B0093; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CADA6B0092
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:02:55 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 054021407C5
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:02:54 +0000 (UTC)
-X-FDA: 84413441910.02.3D93B25
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 1DA96C0011
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:02:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q1ubLa5l;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 03A3A6B0088
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 04:03:56 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3479160867
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:03:55 +0000 (UTC)
+X-FDA: 84413444430.26.6D0025A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id F0C251A000A
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:03:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GPSSFMUe;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770368573;
+	s=arc-20220608; t=1770368634;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VxP1X4J3nFTdtOllsWa8XsYdXgacHF5twMkqXGv5UTY=;
-	b=uuTB3I0l5J3AAsdg6gSECemiHLu6bA8D2fftXDb6Fc+BS1YebGy6KJwjtHFKguQfYp39pR
-	sSXQpyPDWMVHbR3WXk3VgDxCNHOOBqXGMXUaOO9lFYUvLgSnAflmOal0fQR7SHe5z8JpZl
-	lxg8LtjNxLWrndr+oml+xb/WBuL9EtM=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q1ubLa5l;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770368573; a=rsa-sha256;
+	bh=NwmArf2i4vlgKd8l9Rj6k8S8tm/HHr43mIL/JbfZilI=;
+	b=fN8TLJuKnlC8dGvnjMNs7UoivN5Ibcxp33jVeZTIVh8fSzMxlD0BI06VABljddSWQ8fIJE
+	C8TrJZ7SX+gIotxSIk7tgsm1FI0+bKfB1WwhImKVO4p7VEg/3R1r97he5Lnl6FznKlhE8E
+	bBJeOEiPJVl2B/ItPQWVeR00lVLt6mc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770368634; a=rsa-sha256;
 	cv=none;
-	b=PR6lzAUws8tpxKOQzFYW07z85MON+hJ4WQ2HCsNKHdxfxHBrDRaLeoM0akpEKS+aLGH8Y8
-	h/2sWgKP31gzi9vpWA6DVBKJU9EnCaSpBU95EONnFw+fAgCea5BlNQlqf0QOQTaY0givzr
-	pmYOYiHoA6tfZILYJsEWOG0AFxERnVU=
+	b=nEpPAmqVsYtkxFeYAMoIG11+J1rjUGF/uLss8MPnjv2SVg/2sgh07IXG/TSB79b1Mn89oQ
+	o+7408HtxtGPtvO4TjnFRdybby03pBnU+yvxWRyDgC+UQBEJZ6m5R0yzIUdyOEyIpiDBrc
+	Z3uGa4CjymjIQw3v9x4gL0wZPTEayMY=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GPSSFMUe;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 26CFB443C2;
-	Fri,  6 Feb 2026 09:02:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9649CC116C6;
-	Fri,  6 Feb 2026 09:02:49 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7042460010;
+	Fri,  6 Feb 2026 09:03:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5334C116C6;
+	Fri,  6 Feb 2026 09:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770368572;
-	bh=hkFt2yH4MBr3yZ05qlX5GzMUkIFfehbRgX81ou3KaBU=;
+	s=k20201202; t=1770368633;
+	bh=yf3Ne5tIqz4PkENt5jTwf4zm9Qit2vY31bwJBriY4Pk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q1ubLa5ljjzM9R80g5IM2NUqQJAAufrLy9Lc+SD9Xr1GdVYWVgjzYAmGZuRuxTgrq
-	 1fSRP+UTlly/Cz4RVZ+6i9Xre+rTKN1l/ssJh+Aaa1Z3KqKB6F/HFBUF0Dglh8WWpg
-	 Ymmz+Iu0WY8JftSAE4GKvGGZ3D88MdJBSK8MPOfXrUwKNdSjW0eR1AtLhi1lCWxH6W
-	 j3oEVWjl02eIcgUnAt0SB5KrL8ebTO11DTyI5CedBhnF5qNPo3EgKVv32nRmYAx+NT
-	 iOVkl1W5bG/FD/TIDLBPc4t6XExo5AfdTw00Ews+IzrbMYCXuc3jYZ0tw7nVExtg0u
-	 mt57mpxM328tw==
-Message-ID: <1a6d8295-e27b-4440-a367-af0432a7af4f@kernel.org>
-Date: Fri, 6 Feb 2026 10:02:48 +0100
+	b=GPSSFMUeMfvyY0v6aStotudcJqKTHE6fhDx5P7P4axot0d6U9xsHIxl2p+VvfPAYV
+	 rgdZfM7oxVDJ8jFFaz5RymK7gAWktpBIlA/ryEeTgmkZ+aIbCDjcAFMFbnSrmgXBL3
+	 7VdyzRmoA53G7vQ+hqm07gyCnfSTWeoIKbS05aSXf8UNpEFereA3z7VAWI9LhbNdZq
+	 E+hwO7jVtW+7RhbO0238gEXvEeYlB1eO3mScREpT1L/5VXHkKRPV/Ep5N12UVY89Xd
+	 9Ic0ESy7ea+iLNQNLjs1SopSp8TYUr7d916+wba1LPR+iOLtmhc9XYduSzF/Bit38Z
+	 bjGYcaIepbWUQ==
+Message-ID: <11a4ca6a-9534-4f3d-bda6-4caf460c6854@kernel.org>
+Date: Fri, 6 Feb 2026 10:03:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH mm-new v6 2/5] mm: khugepaged: refine scan progress number
@@ -79,6 +79,7 @@ References: <20260201122554.1470071-1-vernon2gm@gmail.com>
  <CACZaFFNGFWv3FG8spJDLfLTe=0QWuBWL+Lbs+W3h9vGL=jrT6Q@mail.gmail.com>
  <85e8ded9-a9eb-4663-9c96-93af60006fb6@kernel.org>
  <9508744b-e5d5-49ef-825f-eef683892541@arm.com>
+ <acb25f5d-b099-42a8-be26-c60b79502e3a@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <9508744b-e5d5-49ef-825f-eef683892541@arm.com>
+In-Reply-To: <acb25f5d-b099-42a8-be26-c60b79502e3a@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 1DA96C0011
-X-Stat-Signature: i1a8byhqfa3wyk9gu61gh7x4es4wy5i4
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: F0C251A000A
 X-Rspam-User: 
-X-HE-Tag: 1770368572-163916
-X-HE-Meta: U2FsdGVkX18aT+9gZFHxF5oYIxKzXXJlZ28MNKGt1Q2xTr7DSYvC47yxfWtWOENJ4B1wr4wXSndcpifv/BRnL5ZmsWtHooeqah8UMSUvGR3NJ/emwPMXoXCNA+6avCGZiWZAjj1khmEuammaoH4gZGFEAs1QvtYy7hd/NBAEuYiaOBktrni8Sy3pVqFhdFHR6brmvLJwnzznTVS9HwWShSnfLphSBgPC6lkph6fXXEvuPQ/+LtdTpp76oDVJaIKkSV7gbmIkO0m/emFz8+oNOHAYaNuI0Iw5rlXsi30aqgQaAoLJPjgfCzpjTx1tHrGTE9iIfed01nzP5yVwCZeIEjplTMv/ckzb5G2liUoxH8i8s8qQMeqvjL2rRZYwnFHfV8egWRwUfQMDXnkqLgpaVVvGqccQtg1N8SiLZi84cWHJo7W8v3o/1B6xp8VmoiHtmEk4YeiTSufRFRIkzucJ34IcVMFmo4zU3lEdCxnfETH6p3jhbrwm4liqKtem0YFTkfygGKCdtzRMOuVN28poX4m1LhV3goqgpDSbLqIXCS7xGq6cK4yfhSZwT3uylI9Y1fOp17MnK94a+/a/DFBx/uMB/nwF6YXb2WCnCngCxSTBVk4tO7vkf6ptBefuLkT41YfF6NIB5HIRoXgOFY4GNS/6ghQkqaTqCYVl7k3I9YzjTn/oyv3LYUO1Tl0bxvdjL8PoPBEbMufVWyWf3NGZ/6tv+kQzihCF8rbDR9LOH5DVKDv4i4CTwvSvdZZpLzDkQSkyNmwXSAh8rPcRVpBizE1Vo9F5h/Sv8/N9BoEjWD8ZECQMTsjdrQWJq2ZibfbDG72CD5dFd0CIyMbz6dFLNlOzHZNwmAnfQUdDvYCdnM04EnKw+E6hOgE86dIMvrebCK43mZNKFNxVJSy8qmjjU4KHR/8TBiSJ5mAKNK6TmakBGT8/iuMf/OquafFszLMyoM9o5Rn7cds7JqWjJpR
- W65mKn6U
- PI4fZGR5/D1H+w4dXaxNkZHIuHcCVG04KgT6TpbzH56x7GuVPaNDVPoDHQA6V0w7j6USL66y+VxQl2DWEEt4x84b/S9pW4Ks/u5d5il9YnbCXFPS4PR2guRAqAvHkKFKp1xuUmXFU1Dgb+LgicPF1NTukG1YqF8haFlSrHOJmE7wEL8LGSRKbVVdDVS0dG9mOEFhCszOKEl2hhIaswn7iXpAWrOZq59rvYWhXzT1XPk9dzEQdIoqiyBuORuAFHdqvyQWohibeTe8B1ZgyngufM3yrHg1Xx+eSUg0CffAESyEtDvAxyk7NroV8Ww==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 8w1qigtnofa1w97q4fr671fctapac6qp
+X-HE-Tag: 1770368633-29339
+X-HE-Meta: U2FsdGVkX18Y4gpDkBdwvok4SS/xjoK5EUKVqaMgYYBfv7yWyD/14pjyeJP6kMe/I/wHaWMIvJuGXq5Z2pLLAEif/JRIMfiB1J35PeSm7ctq7bbFW528evl5xhbQCXCkNvJ6UKcYYhqfZmll7tAVsr88SkValsAV//mUT97t9eILaay1SkLDWirkEXQ3O3xSagseVS5FdyutU21BPPIKEU63Ktn+AgBmEINbdnFaaH3BX4M2k+TmzLMwOPBBCrFZ1KZ6fD6PnJzczGZ7wh1uPPhN9V99pK2VomwEqiljceNimj4QtpZ6UgISP+hgrtILsA2oVACGOlRkpaBAvTni4bHdNFkMcRnP7OqTlefvi8psKDKyWR/aomJqTZI62gBxRph1T1faYxlHLuuz8/L9YGE3cap3yLJndYFtBQD/u7IQDXj/FIaTjLMSOuPdHuY+UfzU2h2iWi1ioIkN1XWrV5EqiSLE86pKyfc+F83srd4VRe9fpnj75R9TDg8hrJfiuTwg3KiNrO+8UsJPsEpTEvBC2BX21xUp4HIU0qGyb5QC85P7dH31GzIHewNAitFDrvEoRSmgj8i16KTD6wfnH6hy0eEZhFZZ55LoCSMN4E48EJu3XUx/8oayludLzWZkSNq/+xuV4uKUpcynRq3bPWn/7o56fXoczgSasc4Yz9O8upg35prPbkKp2R/bvhK37Xi52QI7kvX/KwHUyDH4pV2AU9sdnCdRTbznNnTuUBA1Pou/H17Iq7SmR3yUetXdy9+YaCGI7TqFdZzhWPvFm4k6Bu2qwHYvFSJoaD7D5Qv96PR3ILWisZvKU0v60zcb0q0ZYvp4V+14By2Z9jjCGRbj3x3ZcXLFHyiZTjtEdTiH3KQS8kPZAndxUYrl1IHE4S5mIlPCYmuSk+lwIDdi5GT5Ap6A8lWe9ZySCMc/j+Bvm8x2A0Ql6wRhHosiVdIMAn7d6FAL59Iu1hTCNug
+ nS8jat3Y
+ BD/3SFfJpOdpBBHPu8rYUj4oXqp1bW2LZk584wqa+8Vc4op0+vO7lTbH8Nq9UoY/9M4a9ZN2ZraBR7Wr0t8nU1metLRuDvyvdvYcc6oYL8D0esicnrI+hud7KLHS1KD+xMuTs6X83klSIhHq75iyJqlQUJvQnQJZ76wDYELCuRHIpS2y8IwYkND7Cx+WMQfJptEZrxbqEpK9XZ8ciX8GNla74TUOJGYwHQFMqXjD687J/TYhYIES9bwdNlR5428Vi91rj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,31 +145,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/26 15:25, Dev Jain wrote:
+On 2/5/26 15:30, Dev Jain wrote:
 > 
-> On 05/02/26 5:41 pm, David Hildenbrand (arm) wrote:
->> On 2/5/26 07:08, Vernon Yang wrote:
->>> On Thu, Feb 5, 2026 at 5:35 AM David Hildenbrand (arm)
->>> <david@kernel.org> wrote:
+> On 05/02/26 7:55 pm, Dev Jain wrote:
+>> On 05/02/26 5:41 pm, David Hildenbrand (arm) wrote:
+>>> Yes!
 >>>
->>> I guess, your meaning is "min(_pte - pte + 1, HPAGE_PMD_NR)", not max().
->>
->> Yes!
->>
+>>> Why do we even have to optimize this? :)
 >>>
->>>
->>> I'm also worried that the compiler can't optimize this since the body of
->>> the loop is complex, as with Dev's opinion [1].
+>>> Premature ... ? :)
 >>
->> Why do we even have to optimize this? :)
+>> I mean .... we don't, but the alternate is a one liner using max().
 >>
->> Premature ... ? :)
+>> The objective is to compute the number of iterations of the for-loop.
+>>
+>> It just seems weird to me to track that in the loop, when we have the
+>>
+>> loop iterator, which *literally* does that only.
 > 
-> 
-> I mean .... we don't, but the alternate is a one liner using max().
+> I realize I shouldn't have bolded out the "literally" - below I wrote that
+> I won't shout, but the bold seems like shouting :)
 
-I'm fine with the max(), but it still seems like adding complexity to 
-optimize something that is nowhere prove to really be a problem.
+Heh.
+
+The thing is that the loop iterator does not quite what we want, 
+otherwise we wouldn't have to mess with max() etc.
 
 -- 
 Cheers,
