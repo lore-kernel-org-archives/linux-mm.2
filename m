@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AF3FEE20AB
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 14:40:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAA90EE20A8
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 14:40:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6FDC6B0089; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
+	id E306C6B0093; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A23C76B0093; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
+	id DFEB96B0096; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D06E6B0098; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
+	id CFCC56B0098; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 713D96B0089
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B937F6B0093
 	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:40:18 -0500 (EST)
 Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2C2911BDF2
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 741571B1CA7
 	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:40:18 +0000 (UTC)
-X-FDA: 84414292116.25.D15114F
+X-FDA: 84414292116.25.870AAA7
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4A93880005
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8F7DE40002
 	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:40:16 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FXtib2Wz;
-	spf=pass (imf02.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QxlPvTUb;
+	spf=pass (imf04.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1770388816;
@@ -34,49 +34,49 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
 	 references:references:dkim-signature;
-	bh=CIBbWTksw7DvJ78/DV3io3akwWeED1pL6ZqB6VcV8to=;
-	b=TXHN96aF1iGP5LllZqKxh1830+e0r1rCcZe8CtE3Gwc1TemBcvRgeAOisRTggImPQDJn2a
-	0KKEbjZZBnnQ4xV9RoZPHT/HBVrHp0HNaW+l7poircjAzeo2ZmUCYbvHr/RXw+fkR9+BOA
-	PQ1goZgYHNEhrWY9NxK85QpC1IZGXQs=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FXtib2Wz;
-	spf=pass (imf02.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=fEOvqcoh1Fhr9YWKofxCBfvK5qH5BMzdkv72N1ftR1w=;
+	b=Q0xYSPy4IUEacFeEEeSm+9AF1S6x9C9THn83fsXqvSpXDl8zHkXYOgpHJRoa4ehrAtpCaC
+	p4SBg0cztuWX8pPaBfaBJzFsJIl4fJ8h8WzZ5WYzc97wATyC0g7ViJQbh4GiMZm0Z18HEH
+	+hS4hAm6JZpyBrrkbwJ44/ioDgCXSNw=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770388816; a=rsa-sha256;
 	cv=none;
-	b=WKOeZawShVXeHpK+ahifGkGBGrPDEb6kOXmadCJShitxY8sUGq/HCTPr3CZCYfNh9Hnh40
-	8bug+9kywpymZHugUIgqEQsEaH6cRGhjTSz1dDtX7DzcqaBX5OU2jtkfE9yFoFHANvJpM7
-	S8r9OIZx5wuaSawh+PPhrM9KS29JFq8=
+	b=UaCTLLQS/IGebsbGel2ecSpQu2J+eBz9DIt135ypCWw6MHHyQ6ndgXZ2Y/GnxMrB6XH++X
+	wowrHZgRYB7Xdb9G1COD2w+SLYneoYksP5lvV551keveBjuwDSlq9sM75tldrBAS412pCY
+	//CzxhhbwAKe+qwU3iAu4hYMdBax4rg=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QxlPvTUb;
+	spf=pass (imf04.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770388815;
+	s=mimecast20190719; t=1770388816;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 references:references; bh=CIBbWTksw7DvJ78/DV3io3akwWeED1pL6ZqB6VcV8to=;
-	b=FXtib2WzsLjNOTJnd1PyNINvlC3WuZc5PF3eXbbsHE5pv4rRgGgQqs5jLoQLiqdZOi0dlO
-	rEDaBQXWalwfX5vzIr+AdoVi+KlFwkIMGze5yfGtBUIqm1htwB5OwLMVR8KFfxzllDWe14
-	2dabqhv6H30Iu5O+2KtBieNZjIBzPj0=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 references:references; bh=fEOvqcoh1Fhr9YWKofxCBfvK5qH5BMzdkv72N1ftR1w=;
+	b=QxlPvTUbfiLgDH9WB/xoUOgYDlwXe0MXskg87fr8gSI2PxpvZUTnBlEid+loVMYV1ziwl7
+	0h3WSPd/N+49NyaB82iDCBQFELO3vogk/5Chj2fD9joU0dQ3n81QaScY9P1mjKthiOvhHk
+	vXrLZiWW5u5EsQ3glYn2zajbALrfdW4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-wu1KRp-3McuXwj9pNVbERQ-1; Fri,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-xgRGpuo7OGSRD_FKQvVXFw-1; Fri,
  06 Feb 2026 09:40:12 -0500
-X-MC-Unique: wu1KRp-3McuXwj9pNVbERQ-1
-X-Mimecast-MFC-AGG-ID: wu1KRp-3McuXwj9pNVbERQ_1770388810
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+X-MC-Unique: xgRGpuo7OGSRD_FKQvVXFw-1
+X-Mimecast-MFC-AGG-ID: xgRGpuo7OGSRD_FKQvVXFw_1770388810
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21DDB18001FC;
-	Fri,  6 Feb 2026 14:40:10 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AF7461955DC2;
+	Fri,  6 Feb 2026 14:40:09 +0000 (UTC)
 Received: from tpad.localdomain (unknown [10.22.74.16])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F78B1800465;
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A09A918004AD;
 	Fri,  6 Feb 2026 14:40:07 +0000 (UTC)
 Received: by tpad.localdomain (Postfix, from userid 1000)
-	id B40B841DF09EC; Fri,  6 Feb 2026 11:39:20 -0300 (-03)
-Message-ID: <20260206143741.621816322@redhat.com>
+	id A63C641D2D126; Fri,  6 Feb 2026 11:39:20 -0300 (-03)
+Message-ID: <20260206143741.525190180@redhat.com>
 User-Agent: quilt/0.66
-Date: Fri, 06 Feb 2026 11:34:34 -0300
+Date: Fri, 06 Feb 2026 11:34:31 -0300
 From: Marcelo Tosatti <mtosatti@redhat.com>
 To: linux-kernel@vger.kernel.org,
  cgroups@vger.kernel.org,
@@ -98,21 +98,21 @@ Cc: Johannes Weiner <hannes@cmpxchg.org>,
  Waiman Long <longman@redhat.com>,
  Boqun Feng <boqun.feng@gmail.com>,
  Marcelo Tosatti <mtosatti@redhat.com>
-Subject: [PATCH 4/4] slub: apply new queue_percpu_work_on() interface
+Subject: [PATCH 1/4] Introducing qpw_lock() and per-cpu queue & flush work
 References: <20260206143430.021026873@redhat.com>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: hK_CJb0eUhpC-BbX-ecoOrneNcokJpkXJ3QzBciZKqQ_1770388810
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Mimecast-MFC-PROC-ID: s6rKXaeCIzukVPS8Ypyse2YdKvpNjwYMgOWDe5mXA1Q_1770388810
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4A93880005
-X-Stat-Signature: szh5wz9o56y689ea88jrz4nz6tnwuxz1
+X-Rspamd-Queue-Id: 8F7DE40002
 X-Rspam-User: 
-X-HE-Tag: 1770388816-5802
-X-HE-Meta: U2FsdGVkX1+kNir88P/BpDpHcQ0Kb2CZhx8xtvxDBDWQ04rUAuq7uYSNeZEz4JzuxTOmG3baKYU0OvBQl8dkJRBHZPhvM3BIFHUuGjMIxCXNhqauU/Q7beAR78MeNHtVKbIPVpAjrqP53E5JxCvrd7JS+Uwsx1vGCXXx90bxzk25imc5pEBUBEPi83LVVaEpvDKZ20yrWDKv0/o4psl82DXA7QI3GMyZ4SaV+B5y2Z95GP2rvDqjEJksFOVmP5Z4kd1CkUeDPgV6WY6t/3W6FaquZ2I8PEiS3rn2a6ccHZz3P22s7O8vUVbIQTNE1EsXbPeWd3spX0ZZ0KsOCXvr8a2E0AEBxjqGgjCtOMMptc7o0hLvBmVZHxR7NfjEcNElyIiAh4dLAYKKavj/DMdPzZHK7tD1jFOlOhMJOkbWdTuQ/vb3Qd89cZXAISdGH7k9sHCWytupRY+ONsMuzTANHou161OqLlowjBbkRnJpmSxMzfbVkfb1qVm0yT2D6Yigt/pyfqFhUIWY+/M+2dQ67ViN0PveKEtiRvjAnwPV7qpY6kjvbvCibqzygSv4M/c+ao69WKa+bpl2o4CiNaY5SzQx2JH4yk1lYq8hdQZPDkfxNLT6xPS5eQIgXK340yBnC/vzgGpcnPEwGp6T+MycQLvWM5/FD1zGKf662HIrcZAXniH2pCdLlBLuYrqMVwpmQyeU8ARCvZ2QJbyQcxzK3M5gRPsyDDSFRyZ4cOoW51AY51IQCPqBqp12lL6W/9NViuWxEXsPLCnu6xiwSRxDTnDfUAXZnSSwcGUKTlN9CL0JN0bNMOKsM7OXMJlHr06h8mdXfSDjNFPjCrYTB6razEAm24e67PoCnsZMVIZf03fv4TGmLgucZSQ4fXssKVSOEhPacqq+ZukDQ3jZpE9a4JhomYJwWeL3RNzLc4sa8Hu8idJTIPMq+EsjufYycYx2yMs6jqSQC5Eq7KriXpH
- WKwXZUIk
- +Y+PZeYtc0OoT5cGKAPAREqpYHoEhDIguLI6PDO8TAJCOqhArKgstABWIRPHEalxoT4thoT+bUdSPErZ1wu71brl0Mq1pp6UAj34ZHbzntcNIXZd3pfxuTFXH+V/JVstC5hEyVLCU0J0hAVOArZbXEPnJE7pyFR3VkfPtbBR1fBr4RYBTP5cFF/McLkr64lA4C0Z8NtyafdxBhLd/Peau80WYddTuCKhUVRKfceA9bT3X6QvrahVzkdE0HXZjhC8vutePJ7bvxETiyPkFntbscMuP8v0bbSIEOBXt9lJ8G++ZG8han2lCRP7UbYzA5mQz8SH3r6mdJyFNacO/5yZ5hEvmqlm2Iz6HnavkkzBC9mZaDaRSZ0xK0XOEmzcBWyi90jX7iC0oU694TDJcZHyECfMdIAOa8n16u14eXWA8atKbWgU=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: i3taapu4sp1sf8nqsdehkpnssgeri384
+X-HE-Tag: 1770388816-138210
+X-HE-Meta: U2FsdGVkX1+H4qNfjW9lWV+FJM+qd5gt/CysGYtLtdelfccXFJ5/80W1PovDZaR88dYEs0g8xeWnPHITVccHCkpW+wqPR56lUPbVb6X8NEZlJJjSyuclXPeE+zfzlalv602YXGu9vuS1bbEjDzIQtJL8el3ovu7hdDWKS7Y7V776QNlqqta41WGb5sWwpBmEdJ6ZGmS/Hc2sdWPv+MWzCIHuHsWY5xI+Us3ODQIrggE+Y/S/yaR80ac8YeLt7MIhXYveKrPhGM5V/aZvXmkSo+fLcv47GsXOMt6sz/4oVqncFeb6KHkTnp6XwqCeShX2SYAByDju4UJWbiTpx4haYulUNzgybDyO0Qz6K7uNf9wUMcKGpLD+TBQsBpBG2nLVvL8h4D1XV9RnSeqNqHG+FhRGSYUuKoBHIDdrLM65RhQLq9baZoNkBevaL7rVlW6/rC5qpcbEn/wsAM6H8m1CZh3n9Qt9O36pxBA6XTBR91nRXdxbtDHWu6CPobUtV0busLRTYCE9FJR2oyXYBGZYfhUCRlarmYCJxb0P4zhZvgW/SKxSyp4RZqJwt4G3zYGEPXncQo9OAWmcTIklAEKg91N7cUDU52N6Xx+CaUjcTuYP09GKzEkjl6PD/wsK9UovegxkHZxvjWek7CAZ/6Y6ZndsprMpGSnvOYZ9idQKS+F3A1Hf+blNq6w/RMYlvNatthL0gq6Y9eJ7OMN7QU+v48bzuzTry8TDTjZPJ69Xs+iiNYkL6imNwAMQRNIfo8wtL+F+lat+DjMpYlmqMyhtA0n0+rVMOwIerMHPEldSXApTkmKr1+uwSvtbw9almyY68bsVEN2c2V7xFg18x8z+mKLnFkdPiLT8XMPPAgOrl7YhgyOkJIXmNCnC3jBTp00OvS+vfMJzKNj13hXTl0lFOmN9Xhfu8Za/j6UiPs+E/y/lMTQ7z+9ilszU0cCBlt1Z2LbHs9FwpCrI6l3pPjm
+ ZoOUQU+2
+ Zmbo354CFxFC0bdi2EwAVv53CKbfWzXchtvyVG/d164uGXpNu2OR9tmgv8+D4GWSvTYnYI53z2h5+tj2I8NbS+NcjOGsl7WuPUVWWROyAjA/Uc6D8rl6/nXl9BrL0Hr6ftwRzZ6oY5zPNUtlOYwgRxAPmXJiUofZD+8sDYR5WJ0h3e3fkOFJudSujotrnCz+jPWFFTvHa87IiNwcCilE8Yft42koak6WArWCjQyDChORu+jbqgYvUFoJ7tAG/5kx7GZ70J+51vJGVSUNWslKc/HAh2UyE+kLIP71VYGNU2zXpQjbANDd8xPRIShj3KZubYBIiNSjTv+Z7IhlUcYKXSNtdv2mt5LXtl6gICjatQI8zHcZZz6OOyfsxniq6Zcq6erL0EEk2dDPhgOOiGHh2CT/1rzOfz0EWs+8wsvwnKQIHUv0G9DLXoc/pNwQCZT9ilNmc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,709 +121,467 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Make use of the new qpw_{un,}lock*() and queue_percpu_work_on()
-interface to improve performance & latency on PREEMPT_RT kernels.
+Some places in the kernel implement a parallel programming strategy
+consisting on local_locks() for most of the work, and some rare remote
+operations are scheduled on target cpu. This keeps cache bouncing low since
+cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+kernels, even though the very few remote operations will be expensive due
+to scheduling overhead.
 
-For functions that may be scheduled in a different cpu, replace
-local_{un,}lock*() by qpw_{un,}lock*(), and replace schedule_work_on() by
-queue_percpu_work_on(). The same happens for flush_work() and
-flush_percpu_work().
+On the other hand, for RT workloads this can represent a problem:
+scheduling work on remote cpu that are executing low latency tasks
+is undesired and can introduce unexpected deadline misses.
 
-This change requires allocation of qpw_structs instead of a work_structs,
-and changing parameters of a few functions to include the cpu parameter.
+It's interesting, though, that local_lock()s in RT kernels become
+spinlock(). We can make use of those to avoid scheduling work on a remote
+cpu by directly updating another cpu's per_cpu structure, while holding
+it's spinlock().
 
-This should bring no relevant performance impact on non-RT kernels:
-For functions that may be scheduled in a different cpu, the local_*lock's
-this_cpu_ptr() becomes a per_cpu_ptr(smp_processor_id()).
+In order to do that, it's necessary to introduce a new set of functions to
+make it possible to get another cpu's per-cpu "local" lock (qpw_{un,}lock*)
+and also the corresponding queue_percpu_work_on() and flush_percpu_work()
+helpers to run the remote work.
+
+Users of non-RT kernels but with low latency requirements can select
+similar functionality by using the CONFIG_QPW compile time option.
+
+On CONFIG_QPW disabled kernels, no changes are expected, as every
+one of the introduced helpers work the exactly same as the current
+implementation:
+qpw_{un,}lock*()        ->  local_{un,}lock*() (ignores cpu parameter)
+queue_percpu_work_on()  ->  queue_work_on()
+flush_percpu_work()     ->  flush_work()
+
+For QPW enabled kernels, though, qpw_{un,}lock*() will use the extra
+cpu parameter to select the correct per-cpu structure to work on,
+and acquire the spinlock for that cpu.
+
+queue_percpu_work_on() will just call the requested function in the current
+cpu, which will operate in another cpu's per-cpu object. Since the
+local_locks() become spinlock()s in QPW enabled kernels, we are
+safe doing that.
+
+flush_percpu_work() then becomes a no-op since no work is actually
+scheduled on a remote cpu.
+
+Some minimal code rework is needed in order to make this mechanism work:
+The calls for local_{un,}lock*() on the functions that are currently
+scheduled on remote cpus need to be replaced by qpw_{un,}lock_n*(), so in
+QPW enabled kernels they can reference a different cpu. It's also
+necessary to use a qpw_struct instead of a work_struct, but it just
+contains a work struct and, in CONFIG_QPW, the target cpu.
+
+This should have almost no impact on non-CONFIG_QPW kernels: few
+this_cpu_ptr() will become per_cpu_ptr(,smp_processor_id()).
+
+On CONFIG_QPW kernels, this should avoid deadlines misses by
+removing scheduling noise.
 
 Signed-off-by: Leonardo Bras <leobras@redhat.com>
 Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
-
 ---
- mm/slub.c |  218 ++++++++++++++++++++++++++++++++++++++++----------------------
- 1 file changed, 142 insertions(+), 76 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |   10 +
+ Documentation/locking/qpwlocks.rst              |   63 +++++++
+ MAINTAINERS                                     |    6 
+ include/linux/qpw.h                             |  190 ++++++++++++++++++++++++
+ init/Kconfig                                    |   35 ++++
+ kernel/Makefile                                 |    2 
+ kernel/qpw.c                                    |   26 +++
+ 7 files changed, 332 insertions(+)
+ create mode 100644 include/linux/qpw.h
+ create mode 100644 kernel/qpw.c
 
-Index: slab/mm/slub.c
+Index: slab/Documentation/admin-guide/kernel-parameters.txt
 ===================================================================
---- slab.orig/mm/slub.c
-+++ slab/mm/slub.c
-@@ -49,6 +49,7 @@
- #include <linux/irq_work.h>
- #include <linux/kprobes.h>
- #include <linux/debugfs.h>
+--- slab.orig/Documentation/admin-guide/kernel-parameters.txt
++++ slab/Documentation/admin-guide/kernel-parameters.txt
+@@ -2819,6 +2819,16 @@ Kernel parameters
+ 
+ 			The format of <cpu-list> is described above.
+ 
++	qpw=		[KNL,SMP] Select a behavior on per-CPU resource sharing
++			and remote interference mechanism on a kernel built with
++			CONFIG_QPW.
++			Format: { "0" | "1" }
++			0 - local_lock() + queue_work_on(remote_cpu)
++			1 - spin_lock() for both local and remote operations
++
++			Selecting 1 may be interesting for systems that want
++			to avoid interruption & context switches from IPIs.
++
+ 	iucv=		[HW,NET]
+ 
+ 	ivrs_ioapic	[HW,X86-64]
+Index: slab/MAINTAINERS
+===================================================================
+--- slab.orig/MAINTAINERS
++++ slab/MAINTAINERS
+@@ -21291,6 +21291,12 @@ F:	Documentation/networking/device_drive
+ F:	drivers/bus/fsl-mc/
+ F:	include/uapi/linux/fsl_mc.h
+ 
++QPW
++M:	Leonardo Bras <leobras@redhat.com>
++S:	Supported
++F:	include/linux/qpw.h
++F:	kernel/qpw.c
++
+ QT1010 MEDIA DRIVER
+ L:	linux-media@vger.kernel.org
+ S:	Orphan
+Index: slab/include/linux/qpw.h
+===================================================================
+--- /dev/null
++++ slab/include/linux/qpw.h
+@@ -0,0 +1,190 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _LINUX_QPW_H
++#define _LINUX_QPW_H
++
++#include "linux/spinlock.h"
++#include "linux/local_lock.h"
++#include "linux/workqueue.h"
++
++#ifndef CONFIG_QPW
++
++typedef local_lock_t qpw_lock_t;
++typedef local_trylock_t qpw_trylock_t;
++
++struct qpw_struct {
++	struct work_struct work;
++};
++
++#define qpw_lock_init(lock)			\
++	local_lock_init(lock)
++
++#define qpw_trylock_init(lock)			\
++	local_trylock_init(lock)
++
++#define qpw_lock(lock, cpu)			\
++	local_lock(lock)
++
++#define qpw_lock_irqsave(lock, flags, cpu)	\
++	local_lock_irqsave(lock, flags)
++
++#define qpw_trylock(lock, cpu)			\
++	local_trylock(lock)
++
++#define qpw_trylock_irqsave(lock, flags, cpu)	\
++	local_trylock_irqsave(lock, flags)
++
++#define qpw_unlock(lock, cpu)			\
++	local_unlock(lock)
++
++#define qpw_unlock_irqrestore(lock, flags, cpu)	\
++	local_unlock_irqrestore(lock, flags)
++
++#define qpw_lockdep_assert_held(lock)		\
++	lockdep_assert_held(lock)
++
++#define queue_percpu_work_on(c, wq, qpw)	\
++	queue_work_on(c, wq, &(qpw)->work)
++
++#define flush_percpu_work(qpw)			\
++	flush_work(&(qpw)->work)
++
++#define qpw_get_cpu(qpw)	smp_processor_id()
++
++#define qpw_is_cpu_remote(cpu)		(false)
++
++#define INIT_QPW(qpw, func, c)			\
++	INIT_WORK(&(qpw)->work, (func))
++
++#else /* CONFIG_QPW */
++
++DECLARE_STATIC_KEY_MAYBE(CONFIG_QPW_DEFAULT, qpw_sl);
++
++typedef union {
++	spinlock_t sl;
++	local_lock_t ll;
++} qpw_lock_t;
++
++typedef union {
++	spinlock_t sl;
++	local_trylock_t ll;
++} qpw_trylock_t;
++
++struct qpw_struct {
++	struct work_struct work;
++	int cpu;
++};
++
++#define qpw_lock_init(lock)								\
++	do {										\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			spin_lock_init(lock.sl);					\
++		else									\
++			local_lock_init(lock.ll);					\
++	} while (0)
++
++#define qpw_trylock_init(lock)								\
++	do {										\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			spin_lock_init(lock.sl);					\
++		else									\
++			local_trylock_init(lock.ll);					\
++	} while (0)
++
++#define qpw_lock(lock, cpu)								\
++	do {										\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			spin_lock(per_cpu_ptr(lock.sl, cpu));				\
++		else									\
++			local_lock(lock.ll);						\
++	} while (0)
++
++#define qpw_lock_irqsave(lock, flags, cpu)						\
++	do {										\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			spin_lock_irqsave(per_cpu_ptr(lock.sl, cpu), flags);		\
++		else									\
++			local_lock_irqsave(lock.ll, flags);				\
++	} while (0)
++
++#define qpw_trylock(lock, cpu)								\
++	({										\
++		int t;									\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			t = spin_trylock(per_cpu_ptr(lock.sl, cpu));			\
++		else									\
++			t = local_trylock(lock.ll);					\
++		t;									\
++	})
++
++#define qpw_trylock_irqsave(lock, flags, cpu)						\
++	({										\
++		int t;									\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			t = spin_trylock_irqsave(per_cpu_ptr(lock.sl, cpu), flags);	\
++		else									\
++			t = local_trylock_irqsave(lock.ll, flags);			\
++		t;									\
++	})
++
++#define qpw_unlock(lock, cpu)								\
++	do {										\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
++			spin_unlock(per_cpu_ptr(lock.sl, cpu));				\
++		} else {								\
++			local_unlock(lock.ll);						\
++		}									\
++	} while (0)
++
++#define qpw_unlock_irqrestore(lock, flags, cpu)						\
++	do {										\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			spin_unlock_irqrestore(per_cpu_ptr(lock.sl, cpu), flags);	\
++		else									\
++			local_unlock_irqrestore(lock.ll, flags);			\
++	} while (0)
++
++#define qpw_lockdep_assert_held(lock)							\
++	do {										\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl))			\
++			lockdep_assert_held(this_cpu_ptr(lock.sl));			\
++		else									\
++			lockdep_assert_held(this_cpu_ptr(lock.ll));			\
++	} while (0)
++
++#define queue_percpu_work_on(c, wq, qpw)						\
++	do {										\
++		int __c = c;								\
++		struct qpw_struct *__qpw = (qpw);					\
++		if (static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {			\
++			WARN_ON((__c) != __qpw->cpu);					\
++			__qpw->work.func(&__qpw->work);					\
++		} else {								\
++			queue_work_on(__c, wq, &(__qpw)->work);				\
++		}									\
++	} while (0)
++
++/*
++ * Does nothing if QPW is set to use spinlock, as the task is already done at the
++ * time queue_percpu_work_on() returns.
++ */
++#define flush_percpu_work(qpw)								\
++	do {										\
++		struct qpw_struct *__qpw = (qpw);					\
++		if (!static_branch_maybe(CONFIG_QPW_DEFAULT, &qpw_sl)) {		\
++			flush_work(&__qpw->work);					\
++		}									\
++	} while (0)
++
++#define qpw_get_cpu(w)			container_of((w), struct qpw_struct, work)->cpu
++
++#define qpw_is_cpu_remote(cpu)		((cpu) != smp_processor_id())
++
++#define INIT_QPW(qpw, func, c)								\
++	do {										\
++		struct qpw_struct *__qpw = (qpw);					\
++		INIT_WORK(&__qpw->work, (func));					\
++		__qpw->cpu = (c);							\
++	} while (0)
++
++#endif /* CONFIG_QPW */
++#endif /* LINUX_QPW_H */
+Index: slab/init/Kconfig
+===================================================================
+--- slab.orig/init/Kconfig
++++ slab/init/Kconfig
+@@ -747,6 +747,41 @@ config CPU_ISOLATION
+ 
+ 	  Say Y if unsure.
+ 
++config QPW
++	bool "Queue per-CPU Work"
++	depends on SMP || COMPILE_TEST
++	default n
++	help
++	  Allow changing the behavior on per-CPU resource sharing with cache,
++	  from the regular local_locks() + queue_work_on(remote_cpu) to using
++	  per-CPU spinlocks on both local and remote operations.
++
++	  This is useful to give user the option on reducing IPIs to CPUs, and
++	  thus reduce interruptions and context switches. On the other hand, it
++	  increases generated code and will use atomic operations if spinlocks
++	  are selected.
++
++	  If set, will use the default behavior set in QPW_DEFAULT unless boot
++	  parameter qpw is passed with a different behavior.
++
++	  If unset, will use the local_lock() + queue_work_on() strategy,
++	  regardless of the boot parameter or QPW_DEFAULT.
++
++	  Say N if unsure.
++
++config QPW_DEFAULT
++	bool "Use per-CPU spinlocks by default"
++	depends on QPW
++	default n
++	help
++	  If set, will use per-CPU spinlocks as default behavior for per-CPU
++	  remote operations.
++
++	  If unset, will use local_lock() + queue_work_on(cpu) as default
++	  behavior for remote operations.
++
++	  Say N if unsure
++
+ source "kernel/rcu/Kconfig"
+ 
+ config IKCONFIG
+Index: slab/kernel/Makefile
+===================================================================
+--- slab.orig/kernel/Makefile
++++ slab/kernel/Makefile
+@@ -140,6 +140,8 @@ obj-$(CONFIG_WATCH_QUEUE) += watch_queue
+ obj-$(CONFIG_RESOURCE_KUNIT_TEST) += resource_kunit.o
+ obj-$(CONFIG_SYSCTL_KUNIT_TEST) += sysctl-test.o
+ 
++obj-$(CONFIG_QPW) += qpw.o
++
+ CFLAGS_kstack_erase.o += $(DISABLE_KSTACK_ERASE)
+ CFLAGS_kstack_erase.o += $(call cc-option,-mgeneral-regs-only)
+ obj-$(CONFIG_KSTACK_ERASE) += kstack_erase.o
+Index: slab/kernel/qpw.c
+===================================================================
+--- /dev/null
++++ slab/kernel/qpw.c
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0
++#include "linux/export.h"
++#include <linux/sched.h>
 +#include <linux/qpw.h>
- #include <trace/events/kmem.h>
- 
- #include "internal.h"
-@@ -128,7 +129,7 @@
-  *   For debug caches, all allocations are forced to go through a list_lock
-  *   protected region to serialize against concurrent validation.
-  *
-- *   cpu_sheaves->lock (local_trylock)
-+ *   cpu_sheaves->lock (qpw_trylock)
-  *
-  *   This lock protects fastpath operations on the percpu sheaves. On !RT it
-  *   only disables preemption and does no atomic operations. As long as the main
-@@ -156,7 +157,7 @@
-  *   Interrupts are disabled as part of list_lock or barn lock operations, or
-  *   around the slab_lock operation, in order to make the slab allocator safe
-  *   to use in the context of an irq.
-- *   Preemption is disabled as part of local_trylock operations.
-+ *   Preemption is disabled as part of qpw_trylock operations.
-  *   kmalloc_nolock() and kfree_nolock() are safe in NMI context but see
-  *   their limitations.
-  *
-@@ -417,7 +418,7 @@ struct slab_sheaf {
- };
- 
- struct slub_percpu_sheaves {
--	local_trylock_t lock;
-+	qpw_trylock_t lock;
- 	struct slab_sheaf *main; /* never NULL when unlocked */
- 	struct slab_sheaf *spare; /* empty or full, may be NULL */
- 	struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
-@@ -479,7 +480,7 @@ static nodemask_t slab_nodes;
- static struct workqueue_struct *flushwq;
- 
- struct slub_flush_work {
--	struct work_struct work;
-+	struct qpw_struct qpw;
- 	struct kmem_cache *s;
- 	bool skip;
- };
-@@ -2826,7 +2827,7 @@ static void __kmem_cache_free_bulk(struc
-  *
-  * returns true if at least partially flushed
-  */
--static bool sheaf_flush_main(struct kmem_cache *s)
-+static bool sheaf_flush_main(struct kmem_cache *s, int cpu)
- {
- 	struct slub_percpu_sheaves *pcs;
- 	unsigned int batch, remaining;
-@@ -2835,10 +2836,10 @@ static bool sheaf_flush_main(struct kmem
- 	bool ret = false;
- 
- next_batch:
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu))
- 		return ret;
- 
--	pcs = this_cpu_ptr(s->cpu_sheaves);
-+	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 	sheaf = pcs->main;
- 
- 	batch = min(PCS_BATCH_MAX, sheaf->size);
-@@ -2848,7 +2849,7 @@ next_batch:
- 
- 	remaining = sheaf->size;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
- 
- 	__kmem_cache_free_bulk(s, batch, &objects[0]);
- 
-@@ -2932,13 +2933,13 @@ static void rcu_free_sheaf_nobarn(struct
-  * flushing operations are rare so let's keep it simple and flush to slabs
-  * directly, skipping the barn
-  */
--static void pcs_flush_all(struct kmem_cache *s)
-+static void pcs_flush_all(struct kmem_cache *s, int cpu)
- {
- 	struct slub_percpu_sheaves *pcs;
- 	struct slab_sheaf *spare, *rcu_free;
- 
--	local_lock(&s->cpu_sheaves->lock);
--	pcs = this_cpu_ptr(s->cpu_sheaves);
-+	qpw_lock(&s->cpu_sheaves->lock, cpu);
-+	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
- 	spare = pcs->spare;
- 	pcs->spare = NULL;
-@@ -2946,7 +2947,7 @@ static void pcs_flush_all(struct kmem_ca
- 	rcu_free = pcs->rcu_free;
- 	pcs->rcu_free = NULL;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
- 
- 	if (spare) {
- 		sheaf_flush_unused(s, spare);
-@@ -2956,7 +2957,7 @@ static void pcs_flush_all(struct kmem_ca
- 	if (rcu_free)
- 		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
- 
--	sheaf_flush_main(s);
-+	sheaf_flush_main(s, cpu);
- }
- 
- static void __pcs_flush_all_cpu(struct kmem_cache *s, unsigned int cpu)
-@@ -3881,13 +3882,13 @@ static void flush_cpu_sheaves(struct wor
- {
- 	struct kmem_cache *s;
- 	struct slub_flush_work *sfw;
-+	int cpu = qpw_get_cpu(w);
- 
--	sfw = container_of(w, struct slub_flush_work, work);
--
-+	sfw = &per_cpu(slub_flush, cpu);
- 	s = sfw->s;
- 
- 	if (cache_has_sheaves(s))
--		pcs_flush_all(s);
-+		pcs_flush_all(s, cpu);
- }
- 
- static void flush_all_cpus_locked(struct kmem_cache *s)
-@@ -3904,17 +3905,17 @@ static void flush_all_cpus_locked(struct
- 			sfw->skip = true;
- 			continue;
- 		}
--		INIT_WORK(&sfw->work, flush_cpu_sheaves);
-+		INIT_QPW(&sfw->qpw, flush_cpu_sheaves, cpu);
- 		sfw->skip = false;
- 		sfw->s = s;
--		queue_work_on(cpu, flushwq, &sfw->work);
-+		queue_percpu_work_on(cpu, flushwq, &sfw->qpw);
- 	}
- 
- 	for_each_online_cpu(cpu) {
- 		sfw = &per_cpu(slub_flush, cpu);
- 		if (sfw->skip)
- 			continue;
--		flush_work(&sfw->work);
-+		flush_percpu_work(&sfw->qpw);
- 	}
- 
- 	mutex_unlock(&flush_lock);
-@@ -3933,17 +3934,18 @@ static void flush_rcu_sheaf(struct work_
- 	struct slab_sheaf *rcu_free;
- 	struct slub_flush_work *sfw;
- 	struct kmem_cache *s;
-+	int cpu = qpw_get_cpu(w);
- 
--	sfw = container_of(w, struct slub_flush_work, work);
-+	sfw = &per_cpu(slub_flush, cpu);
- 	s = sfw->s;
- 
--	local_lock(&s->cpu_sheaves->lock);
--	pcs = this_cpu_ptr(s->cpu_sheaves);
-+	qpw_lock(&s->cpu_sheaves->lock, cpu);
-+	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
- 	rcu_free = pcs->rcu_free;
- 	pcs->rcu_free = NULL;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
- 
- 	if (rcu_free)
- 		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
-@@ -3968,14 +3970,14 @@ void flush_rcu_sheaves_on_cache(struct k
- 		 * sure the __kfree_rcu_sheaf() finished its call_rcu()
- 		 */
- 
--		INIT_WORK(&sfw->work, flush_rcu_sheaf);
-+		INIT_QPW(&sfw->qpw, flush_rcu_sheaf, cpu);
- 		sfw->s = s;
--		queue_work_on(cpu, flushwq, &sfw->work);
-+		queue_percpu_work_on(cpu, flushwq, &sfw->qpw);
- 	}
- 
- 	for_each_online_cpu(cpu) {
- 		sfw = &per_cpu(slub_flush, cpu);
--		flush_work(&sfw->work);
-+		flush_percpu_work(&sfw->qpw);
- 	}
- 
- 	mutex_unlock(&flush_lock);
-@@ -4472,22 +4474,24 @@ bool slab_post_alloc_hook(struct kmem_ca
-  *
-  * Must be called with the cpu_sheaves local lock locked. If successful, returns
-  * the pcs pointer and the local lock locked (possibly on a different cpu than
-- * initially called). If not successful, returns NULL and the local lock
-- * unlocked.
-+ * initially called), and migration disabled. If not successful, returns NULL
-+ * and the local lock unlocked, with migration enabled.
-  */
- static struct slub_percpu_sheaves *
--__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, gfp_t gfp)
-+__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, gfp_t gfp,
-+			 int *cpu)
- {
- 	struct slab_sheaf *empty = NULL;
- 	struct slab_sheaf *full;
- 	struct node_barn *barn;
- 	bool can_alloc;
- 
--	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
- 
- 	/* Bootstrap or debug cache, back off */
- 	if (unlikely(!cache_has_sheaves(s))) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
-+		migrate_enable();
- 		return NULL;
- 	}
- 
-@@ -4498,7 +4502,8 @@ __pcs_replace_empty_main(struct kmem_cac
- 
- 	barn = get_barn(s);
- 	if (!barn) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
-+		migrate_enable();
- 		return NULL;
- 	}
- 
-@@ -4524,7 +4529,8 @@ __pcs_replace_empty_main(struct kmem_cac
- 		}
- 	}
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, *cpu);
-+	migrate_enable();
- 
- 	if (!can_alloc)
- 		return NULL;
-@@ -4550,7 +4556,9 @@ __pcs_replace_empty_main(struct kmem_cac
- 	 * we can reach here only when gfpflags_allow_blocking
- 	 * so this must not be an irq
- 	 */
--	local_lock(&s->cpu_sheaves->lock);
-+	migrate_disable();
-+	*cpu = smp_processor_id();
-+	qpw_lock(&s->cpu_sheaves->lock, *cpu);
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
- 	/*
-@@ -4593,6 +4601,7 @@ void *alloc_from_pcs(struct kmem_cache *
- 	struct slub_percpu_sheaves *pcs;
- 	bool node_requested;
- 	void *object;
-+	int cpu;
- 
- #ifdef CONFIG_NUMA
- 	if (static_branch_unlikely(&strict_numa) &&
-@@ -4627,13 +4636,17 @@ void *alloc_from_pcs(struct kmem_cache *
- 		return NULL;
- 	}
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	migrate_disable();
-+	cpu = smp_processor_id();
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
-+		migrate_enable();
- 		return NULL;
++#include <linux/string.h>
++
++DEFINE_STATIC_KEY_MAYBE(CONFIG_QPW_DEFAULT, qpw_sl);
++EXPORT_SYMBOL(qpw_sl);
++
++static int __init qpw_setup(char *str)
++{
++	int opt;
++
++	if (!get_option(&str, &opt)) {
++		pr_warn("QPW: invalid qpw parameter: %s, ignoring.\n", str);
++		return 0;
 +	}
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
- 	if (unlikely(pcs->main->size == 0)) {
--		pcs = __pcs_replace_empty_main(s, pcs, gfp);
-+		pcs = __pcs_replace_empty_main(s, pcs, gfp, &cpu);
- 		if (unlikely(!pcs))
- 			return NULL;
- 	}
-@@ -4647,7 +4660,8 @@ void *alloc_from_pcs(struct kmem_cache *
- 		 * the current allocation or previous freeing process.
- 		 */
- 		if (page_to_nid(virt_to_page(object)) != node) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+			migrate_enable();
- 			stat(s, ALLOC_NODE_MISMATCH);
- 			return NULL;
- 		}
-@@ -4655,7 +4669,8 @@ void *alloc_from_pcs(struct kmem_cache *
- 
- 	pcs->main->size--;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 	stat(s, ALLOC_FASTPATH);
- 
-@@ -4670,10 +4685,15 @@ unsigned int alloc_from_pcs_bulk(struct
- 	struct slab_sheaf *main;
- 	unsigned int allocated = 0;
- 	unsigned int batch;
-+	int cpu;
- 
- next_batch:
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	migrate_disable();
-+	cpu = smp_processor_id();
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
-+		migrate_enable();
- 		return allocated;
-+	}
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
-@@ -4683,7 +4703,8 @@ next_batch:
- 		struct node_barn *barn;
- 
- 		if (unlikely(!cache_has_sheaves(s))) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+			migrate_enable();
- 			return allocated;
- 		}
- 
-@@ -4694,7 +4715,8 @@ next_batch:
- 
- 		barn = get_barn(s);
- 		if (!barn) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+			migrate_enable();
- 			return allocated;
- 		}
- 
-@@ -4709,7 +4731,8 @@ next_batch:
- 
- 		stat(s, BARN_GET_FAIL);
- 
--		local_unlock(&s->cpu_sheaves->lock);
-+		qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+		migrate_enable();
- 
- 		/*
- 		 * Once full sheaves in barn are depleted, let the bulk
-@@ -4727,7 +4750,8 @@ do_alloc:
- 	main->size -= batch;
- 	memcpy(p, main->objects + main->size, batch * sizeof(void *));
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 	stat_add(s, ALLOC_FASTPATH, batch);
- 
-@@ -4877,6 +4901,7 @@ kmem_cache_prefill_sheaf(struct kmem_cac
- 	struct slub_percpu_sheaves *pcs;
- 	struct slab_sheaf *sheaf = NULL;
- 	struct node_barn *barn;
-+	int cpu;
- 
- 	if (unlikely(!size))
- 		return NULL;
-@@ -4906,7 +4931,9 @@ kmem_cache_prefill_sheaf(struct kmem_cac
- 		return sheaf;
- 	}
- 
--	local_lock(&s->cpu_sheaves->lock);
-+	migrate_disable();
-+	cpu = smp_processor_id();
-+	qpw_lock(&s->cpu_sheaves->lock, cpu);
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
- 	if (pcs->spare) {
-@@ -4925,7 +4952,8 @@ kmem_cache_prefill_sheaf(struct kmem_cac
- 			stat(s, BARN_GET_FAIL);
- 	}
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 
- 	if (!sheaf)
-@@ -4961,6 +4989,7 @@ void kmem_cache_return_sheaf(struct kmem
- {
- 	struct slub_percpu_sheaves *pcs;
- 	struct node_barn *barn;
-+	int cpu;
- 
- 	if (unlikely((sheaf->capacity != s->sheaf_capacity)
- 		     || sheaf->pfmemalloc)) {
-@@ -4969,7 +4998,9 @@ void kmem_cache_return_sheaf(struct kmem
- 		return;
- 	}
- 
--	local_lock(&s->cpu_sheaves->lock);
-+	migrate_disable();
-+	cpu = smp_processor_id();
-+	qpw_lock(&s->cpu_sheaves->lock, cpu);
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 	barn = get_barn(s);
- 
-@@ -4979,7 +5010,8 @@ void kmem_cache_return_sheaf(struct kmem
- 		stat(s, SHEAF_RETURN_FAST);
- 	}
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 	if (!sheaf)
- 		return;
-@@ -5507,9 +5539,9 @@ slab_empty:
-  */
- static void __pcs_install_empty_sheaf(struct kmem_cache *s,
- 		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty,
--		struct node_barn *barn)
-+		struct node_barn *barn, int cpu)
- {
--	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
- 
- 	/* This is what we expect to find if nobody interrupted us. */
- 	if (likely(!pcs->spare)) {
-@@ -5546,31 +5578,34 @@ static void __pcs_install_empty_sheaf(st
- /*
-  * Replace the full main sheaf with a (at least partially) empty sheaf.
-  *
-- * Must be called with the cpu_sheaves local lock locked. If successful, returns
-- * the pcs pointer and the local lock locked (possibly on a different cpu than
-- * initially called). If not successful, returns NULL and the local lock
-- * unlocked.
-+ * Must be called with the cpu_sheaves local lock locked, and migration counter
-+ * increased. If successful, returns the pcs pointer and the local lock locked
-+ * (possibly on a different cpu than initially called), with migration counter
-+ * increased. If not successful, returns NULL and the local lock unlocked,
-+ * and migration counter decreased.
-  */
- static struct slub_percpu_sheaves *
- __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
--			bool allow_spin)
-+			bool allow_spin, int *cpu)
- {
- 	struct slab_sheaf *empty;
- 	struct node_barn *barn;
- 	bool put_fail;
- 
- restart:
--	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
-+	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
- 
- 	/* Bootstrap or debug cache, back off */
- 	if (unlikely(!cache_has_sheaves(s))) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
-+		migrate_enable();
- 		return NULL;
- 	}
- 
- 	barn = get_barn(s);
- 	if (!barn) {
--		local_unlock(&s->cpu_sheaves->lock);
-+		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
-+		migrate_enable();
- 		return NULL;
- 	}
- 
-@@ -5607,7 +5642,8 @@ restart:
- 		stat(s, BARN_PUT_FAIL);
- 
- 		pcs->spare = NULL;
--		local_unlock(&s->cpu_sheaves->lock);
-+		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
-+		migrate_enable();
- 
- 		sheaf_flush_unused(s, to_flush);
- 		empty = to_flush;
-@@ -5623,7 +5659,8 @@ restart:
- 	put_fail = true;
- 
- alloc_empty:
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, *cpu);
-+	migrate_enable();
- 
- 	/*
- 	 * alloc_empty_sheaf() doesn't support !allow_spin and it's
-@@ -5640,11 +5677,17 @@ alloc_empty:
- 	if (put_fail)
- 		 stat(s, BARN_PUT_FAIL);
- 
--	if (!sheaf_flush_main(s))
-+	migrate_disable();
-+	*cpu = smp_processor_id();
-+	if (!sheaf_flush_main(s, *cpu)) {
-+		migrate_enable();
- 		return NULL;
-+	}
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, *cpu)) {
-+		migrate_enable();
- 		return NULL;
-+	}
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
-@@ -5659,13 +5702,14 @@ alloc_empty:
- 	return pcs;
- 
- got_empty:
--	if (!local_trylock(&s->cpu_sheaves->lock)) {
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, *cpu)) {
-+		migrate_enable();
- 		barn_put_empty_sheaf(barn, empty);
- 		return NULL;
- 	}
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
--	__pcs_install_empty_sheaf(s, pcs, empty, barn);
-+	__pcs_install_empty_sheaf(s, pcs, empty, barn, *cpu);
- 
- 	return pcs;
- }
-@@ -5678,22 +5722,28 @@ static __fastpath_inline
- bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
- {
- 	struct slub_percpu_sheaves *pcs;
-+	int cpu;
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	migrate_disable();
-+	cpu = smp_processor_id();
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
-+		migrate_enable();
- 		return false;
-+	}
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
- 	if (unlikely(pcs->main->size == s->sheaf_capacity)) {
- 
--		pcs = __pcs_replace_full_main(s, pcs, allow_spin);
-+		pcs = __pcs_replace_full_main(s, pcs, allow_spin, &cpu);
- 		if (unlikely(!pcs))
- 			return false;
- 	}
- 
- 	pcs->main->objects[pcs->main->size++] = object;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 	stat(s, FREE_FASTPATH);
- 
-@@ -5777,14 +5827,19 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- {
- 	struct slub_percpu_sheaves *pcs;
- 	struct slab_sheaf *rcu_sheaf;
-+	int cpu;
- 
- 	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT)))
- 		return false;
- 
- 	lock_map_acquire_try(&kfree_rcu_sheaf_map);
- 
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	migrate_disable();
-+	cpu = smp_processor_id();
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
-+		migrate_enable();
- 		goto fail;
-+	}
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
- 
-@@ -5795,7 +5850,8 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- 
- 		/* Bootstrap or debug cache, fall back */
- 		if (unlikely(!cache_has_sheaves(s))) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+			migrate_enable();
- 			goto fail;
- 		}
- 
-@@ -5807,7 +5863,8 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- 
- 		barn = get_barn(s);
- 		if (!barn) {
--			local_unlock(&s->cpu_sheaves->lock);
-+			qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+			migrate_enable();
- 			goto fail;
- 		}
- 
-@@ -5818,15 +5875,18 @@ bool __kfree_rcu_sheaf(struct kmem_cache
- 			goto do_free;
- 		}
- 
--		local_unlock(&s->cpu_sheaves->lock);
-+		qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+		migrate_enable();
- 
- 		empty = alloc_empty_sheaf(s, GFP_NOWAIT);
- 
- 		if (!empty)
- 			goto fail;
- 
--		if (!local_trylock(&s->cpu_sheaves->lock)) {
-+		migrate_disable();
-+		if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
- 			barn_put_empty_sheaf(barn, empty);
-+			migrate_enable();
- 			goto fail;
- 		}
- 
-@@ -5862,7 +5922,8 @@ do_free:
- 	if (rcu_sheaf)
- 		call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 	stat(s, FREE_RCU_SHEAF);
- 	lock_map_release(&kfree_rcu_sheaf_map);
-@@ -5889,6 +5950,7 @@ static void free_to_pcs_bulk(struct kmem
- 	void *remote_objects[PCS_BATCH_MAX];
- 	unsigned int remote_nr = 0;
- 	int node = numa_mem_id();
-+	int cpu;
- 
- next_remote_batch:
- 	while (i < size) {
-@@ -5918,7 +5980,9 @@ next_remote_batch:
- 		goto flush_remote;
- 
- next_batch:
--	if (!local_trylock(&s->cpu_sheaves->lock))
-+	migrate_disable();
-+	cpu = smp_processor_id();
-+	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu))
- 		goto fallback;
- 
- 	pcs = this_cpu_ptr(s->cpu_sheaves);
-@@ -5961,7 +6025,8 @@ do_free:
- 	memcpy(main->objects + main->size, p, batch * sizeof(void *));
- 	main->size += batch;
- 
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 	stat_add(s, FREE_FASTPATH, batch);
- 
-@@ -5977,7 +6042,8 @@ do_free:
- 	return;
- 
- no_empty:
--	local_unlock(&s->cpu_sheaves->lock);
-+	qpw_unlock(&s->cpu_sheaves->lock, cpu);
-+	migrate_enable();
- 
- 	/*
- 	 * if we depleted all empty sheaves in the barn or there are too
-@@ -7377,7 +7443,7 @@ static int init_percpu_sheaves(struct km
- 
- 		pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
- 
--		local_trylock_init(&pcs->lock);
-+		qpw_trylock_init(&pcs->lock);
- 
- 		/*
- 		 * Bootstrap sheaf has zero size so fast-path allocation fails.
++
++	if (opt)
++		static_branch_enable(&qpw_sl);
++	else
++		static_branch_disable(&qpw_sl);
++
++	return 0;
++}
++__setup("qpw=", qpw_setup);
+Index: slab/Documentation/locking/qpwlocks.rst
+===================================================================
+--- /dev/null
++++ slab/Documentation/locking/qpwlocks.rst
+@@ -0,0 +1,63 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++=========
++QPW locks
++=========
++
++Some places in the kernel implement a parallel programming strategy
++consisting on local_locks() for most of the work, and some rare remote
++operations are scheduled on target cpu. This keeps cache bouncing low since
++cacheline tends to be mostly local, and avoids the cost of locks in non-RT
++kernels, even though the very few remote operations will be expensive due
++to scheduling overhead.
++
++On the other hand, for RT workloads this can represent a problem:
++scheduling work on remote cpu that are executing low latency tasks
++is undesired and can introduce unexpected deadline misses.
++
++QPW locks help to convert sites that use local_locks (for cpu local operations)
++and queue_work_on (for queueing work remotely, to be executed
++locally on the owner cpu of the lock) to QPW locks.
++
++The lock is declared qpw_lock_t type.
++The lock is initialized with qpw_lock_init.
++The lock is locked with qpw_lock (takes a lock and cpu as a parameter).
++The lock is unlocked with qpw_unlock (takes a lock and cpu as a parameter).
++
++The qpw_lock_irqsave function disables interrupts and saves current interrupt state,
++cpu as a parameter.
++
++For trylock variant, there is the qpw_trylock_t type, initialized with
++qpw_trylock_init. Then the corresponding qpw_trylock and
++qpw_trylock_irqsave.
++
++work_struct should be replaced by qpw_struct, which contains a cpu parameter
++(owner cpu of the lock), initialized by INIT_QPW.
++
++The queue work related functions (analogous to queue_work_on and flush_work) are:
++queue_percpu_work_on and flush_percpu_work.
++
++The behaviour of the QPW functions is as follows:
++
++* !CONFIG_PREEMPT_RT and !CONFIG_QPW (or CONFIG_QPW and qpw=off kernel
++boot parameter):
++        - qpw_lock:                     local_lock
++        - qpw_lock_irqsave:             local_lock_irqsave
++        - qpw_trylock:                  local_trylock
++        - qpw_trylock_irqsave:          local_trylock_irqsave
++        - qpw_unlock:                   local_unlock
++        - queue_percpu_work_on:         queue_work_on
++        - flush_percpu_work:            flush_work
++
++* CONFIG_PREEMPT_RT or CONFIG_QPW (and CONFIG_QPW_DEFAULT or qpw=on kernel
++boot parameter),
++        - qpw_lock:                     spin_lock
++        - qpw_lock_irqsave:             spin_lock_irqsave
++        - qpw_trylock:                  spin_trylock
++        - qpw_trylock_irqsave:          spin_trylock_irqsave
++        - qpw_unlock:                   spin_unlock
++        - queue_percpu_work_on:         executes work function on caller cpu
++        - flush_percpu_work:            empty
++
++qpw_get_cpu(work_struct), to be called from within qpw work function,
++returns the target cpu.
 
 
 
