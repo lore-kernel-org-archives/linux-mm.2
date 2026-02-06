@@ -4,81 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 392DBEE6B66
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 21:55:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9329EE6B66
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 22:06:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 27EDD6B008A; Fri,  6 Feb 2026 16:55:40 -0500 (EST)
+	id DDF456B008A; Fri,  6 Feb 2026 17:06:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 202216B0092; Fri,  6 Feb 2026 16:55:40 -0500 (EST)
+	id DB6F36B0092; Fri,  6 Feb 2026 17:06:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10EDD6B0093; Fri,  6 Feb 2026 16:55:40 -0500 (EST)
+	id CEDF46B0093; Fri,  6 Feb 2026 17:06:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F3E546B008A
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 16:55:39 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A6897C1834
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:55:39 +0000 (UTC)
-X-FDA: 84415389198.16.E56BCCA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BAA456B008A
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:06:29 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5287FD5B26
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 22:06:29 +0000 (UTC)
+X-FDA: 84415416498.28.3E47BB4
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D1568C0002
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:55:37 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=fdNIJB7F;
-	spf=pass (imf10.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
+	by imf06.hostedemail.com (Postfix) with ESMTP id D62B3180011
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 22:06:27 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=f7JDhqA8;
+	spf=pass (imf06.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
 	dmarc=pass (policy=quarantine) header.from=weissschuh.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770414938;
+	s=arc-20220608; t=1770415588;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=87FUAVihtGZ9V6acpjB8qMDvXKM8qmBODfmUAeswVBE=;
-	b=Y7YsXnYIwTw1jni08GgHHzY80brLlrCSobgImpLykrn35bAJkLt4yDBjFG+RazDVNZxtHe
-	kw+UeDIvFWh1t3YL+3ner8HdB797vWQ8ATwmVK7DnqK42dHFiaq36cFjPF//2PAovSrwSL
-	eKpTNOzkMvtPTaX9EkqLlL58+7KIrNI=
+	bh=bfqc+l4dyoDL2n2OdQ0v2fn/+SQhgq6smOmD7uWZA6k=;
+	b=Dl1Q1OxICdZba3Lt6Ixvrn1xv3nLHezbJfHrXm+nvNFEbD4xt383VcJRwpQ7j10eR7b25D
+	+Ust/hGoUQIWO8yZhAVimhUG1YxZNHVrDVYmNdipBpB5mOoerktyhLDlwvFhqgzEHGxhFR
+	wHrKsgv3toXezSXC3feOHqrTBp1zsZM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=fdNIJB7F;
-	spf=pass (imf10.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
+	imf06.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=f7JDhqA8;
+	spf=pass (imf06.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
 	dmarc=pass (policy=quarantine) header.from=weissschuh.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770414938; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770415588; a=rsa-sha256;
 	cv=none;
-	b=SvngrQ9dG+TBCfCGn7Kyno4SAM/sGAH8HTQj6e+0j1fR9xzmr0Crr+3Hfqjh4pMFy4NaBL
-	a+P02ImkNG067KSDcavwTMZw3IVerRtBO91xLhC69bzb3krk0OIH2JKdds/UbDwcA5jDGO
-	3wT9ldG8rzJ/bLsZO/4IyoxZme4RH50=
+	b=4k6Nx3IckdKfaLxGMzl0LPIKKbOPlsrSMrnp2DXLGIIDeqRZ1+UZyu/CMmOO/f/ZRMNoK9
+	NGgJEjeAYhSZZRo1tAX1xL6eYpkqIvK/tGEnTGBZ1YMwSKSLCDoEH+Jj/pH3ucH0O27wtM
+	XV+F9QjEohuvdBb5ZAuBn/+v932t/e8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1770414934;
-	bh=rMFN0NlTz0fAsXU+PIK/v/nmJI2k2Us3Bgd4+RQXh3I=;
+	s=mail; t=1770415585;
+	bh=0ms3/Jxex9AmT1zDq8VfFE4zQD5zB3PK6GtE9pjSjFY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fdNIJB7FIvtFm3J6JQ0v2iYLkGIjAdVY/1wUa/FYxdQLo9VgllRDtY+NP0E4zOnJ6
-	 jV+0SafEsgAPXPE0rNeY2lhdFw9uWYKFCaA/Kmkf0qtI34Uyjg56cY1TRjZJjS9auu
-	 NxDQ8jNHZaalhZScvsgEWjBAKa2F4xiEr9wwE0G4=
-Date: Fri, 6 Feb 2026 22:55:34 +0100
+	b=f7JDhqA8E/GKyiN5O6Nc5+kweuaZmOkfhRb3N1XBQhk44tf6sQ6ioWU//8NEHQxqD
+	 kOsbUHZ6hf+lSzuW9Hk3OnfvzPWUc7g/hRYYjwGgsEAsl2ozyKaq7cmVClKRwx95Ui
+	 ZPosWRbf8+ruPP2RQyqrOjQB0oZyiZlZVEnO9NFM=
+Date: Fri, 6 Feb 2026 23:06:24 +0100
 From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
 To: Jordan Richards <jordanrichards@google.com>
-Cc: Willy Tarreau <w@1wt.eu>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
 	Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
 	Shuah Khan <shuah@kernel.org>, Jason Miu <jasonmiu@google.com>, 
 	David Matlack <dmatlack@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] tools/nolibc: add ftruncate()
-Message-ID: <ebf0c9fd-9c45-4aa2-8cd7-fe8d5956ce52@t-8ch.de>
+Subject: Re: [PATCH v2 2/2] selftests/liveupdate: add end to end test
+ infrastructure and scripts
+Message-ID: <98e953ed-616c-4684-a8e1-87195349ef4c@t-8ch.de>
 References: <20260205222329.2419035-1-jordanrichards@google.com>
- <20260205222329.2419035-2-jordanrichards@google.com>
+ <20260205222329.2419035-3-jordanrichards@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260205222329.2419035-2-jordanrichards@google.com>
+In-Reply-To: <20260205222329.2419035-3-jordanrichards@google.com>
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D1568C0002
-X-Stat-Signature: 9sg5xtx8zcjkugfe14psp3fy76en91wu
+X-Rspamd-Queue-Id: D62B3180011
+X-Stat-Signature: o8g6fmjokj1oho9oemuem5pbzr1ke9hk
 X-Rspam-User: 
-X-HE-Tag: 1770414937-641636
-X-HE-Meta: U2FsdGVkX19gQXuNW62Oa0fkbJkDSrAJBWTuTut5T1IFP6+pFKWMS5OP82GoF5l3uLst6JpBR/rOyoIyx+OyT2SwVHBhDDEyXCO+MLUpn1O29Q1LnhcXt9dgL+temtqlNf3/ROIn/l30dBgp6t3RmAdsVIfwZrNFpcFtLNRTC18nqcZawGc5SfzVX0PyUup+nf1TOLn7IYU6HAJ+BX7mJLlVx/nl5Q01fnwhicLAJ3EDrZ+AFPATNxMgCh+51mU+2QatsSDLjBVu3Xs8qosGqzdhLZ8SIwR+hnsjAn/r72vqVZEgDA1qlIc5CoHh9rQXALoyEFVuBg1UO5UVrGv1kC0gy/+Xk1aNWtjfOCIluNtF5K/IKtiI9eQKIAIn99hRVX1+0+fDwBQx6VsW3jkjUAYzmeVPYpjBAGhJrYd9tUwzejYnIIK+Yj4p2qK9nFa7CbF6+VOplszi3fAzppZexNgSlVBZRXqi9pzDPgzZcSb0T7Q2+9rR8cfpi0aHHiZgEc7N1cjom3IO9WdafZmaBI1z/KYKAxgug2eOcOOqJzlyv9R6rL9wYZ7lZYs8DbstJ6ULjavn5idke9pieqXCkaGWw8PIU80niyb0ASYUJIruZNWlmCwiX1XGE8an3BohpOlcLE7DweFP/kXmn9PEnhVBlnIzAADIIuyB+Rj2UIPNeTfGiG5i71C4ALyeQXZIkqVosgCUEowjKLEXYXv2S6VRZekoQu6U2AiFwMvUdfpyLRzLcrX5M4n1GijYRQaw3W2KygJVtUXRWXzwcAvsfOBOigIQl3DVC8sKk/OCM4HWOeoWLqz/HzoxMq85y1cuUH5jmBP36o2jmmTHq5FdqAgNfREWgTgA4OGXe6iCKW/E5u6LVbRWoPBm5R6FnJTIHHimZpt1ZFMYzu88u2LlF0mj9u0uSGOeCAMAQaJrBDncrUHoXdfiX7w7sKl0OMZ2ARFXvE6NUXMGLLhytSG
- EbQ30uQ9
- wbar6q/1bP5I32Yh2skPOZy098ntyoLbLgTe8tADZKj9zo0NrhFC8MENB599dDlsgI8yW3vBrxAmoNNoiQIkL7OlVeefPq9wyN/MLr4a9l+buhPRYfw/Y10BKXpHRHQOvSXe+UoOJFL3yJC3zGqKaBWInbyedk8hWtC6p
+X-HE-Tag: 1770415587-252114
+X-HE-Meta: U2FsdGVkX18hzuzX7XAhku3p+X4rMcOMZHxdSLQkvFvrHXPCUsBE32wmXSvpRfW2RINrcSc8rmG9jl+aFu128wCFqozNonZQXBvvSJtaEWd/rQyOAsTFnr0LuO3vgHDZoUwg2DO00oj7jDjh9RlDk48E/BngvSftwjtGa/Z/mn5Q5V0s+yi76cAR2rhwNM4d6UYQb83Lm7aJANw9Cp5J0SassFfmppHletNlsh2RtbYOSiTZZxG+Eo+Xofvr2p60CxAl+MQb9VtkscsZB1lbnWvrE+nhgLMZCuSqWqU0V+R5FyxcA3X7xfNYYfoeorf5079AbwBWF9kzPSXcmrtFFB2bf0/e5LcqviTNh4zJ8UxO/uZlg9JBwNUgzcwkARHVYOLdpg0WjQt9NDYEzd5MSJ7www6xPZ0QRfJcYXLucdRyFPlPf2jTCF/gxTzUDs+QmJeKROSAIcE5089E5TAt2XP1/JhKsNJ4U07JrKr3HMyNXR2YSmgxz3QaNqkZFRCUZ/XPHeBCqffA+GyKaFJ1ubOaXDwP1buU4WuJ8lefCzGwvGXBmHF4acOYHcO1vckIYLdQKq9GihQnetSjiQ691bltXAstOEJ9dI4+Gu9dZe9U0kZrujDszXPBpNN0G5DbklWrvCEpHeA/ruZ0fz7wUy7sB1EBeHKMZa84hHsOrqyny2eaeDdNWT3KMNVA9poRBcApECcYPOA+6GDTpfWQ/0/Gct4DkpUTGHY6obBXkT7l++i6GFep98IttjuzRzJNlwxWNSHnyjGgybLUvU3CzvNHRY7/Bsr5s12Ixo1VUWlvojyhOn7w8P89EPc6GyGdJLv1x9i2OSc0GsbcqJ8KTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,47 +86,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jordan,
+On 2026-02-05 22:23:29+0000, Jordan Richards wrote:
+> From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-(please Cc nolibc maintainers on nolibc changes, I only saw this by
-chance)
+(...)
 
-On 2026-02-05 22:23:28+0000, Jordan Richards wrote:
-> ---
->  tools/include/nolibc/unistd.h | 11 +++++++++++
->  1 file changed, 11 insertions(+)
-> 
-> diff --git a/tools/include/nolibc/unistd.h b/tools/include/nolibc/unistd.h
-> index bb5e80f3f05d..845d10f48fd0 100644
-> --- a/tools/include/nolibc/unistd.h
-> +++ b/tools/include/nolibc/unistd.h
-> @@ -48,6 +48,17 @@ int access(const char *path, int amode)
->  	return faccessat(AT_FDCWD, path, amode, 0);
->  }
+> diff --git a/tools/testing/selftests/liveupdate/luo_test_utils.c b/tools/testing/selftests/liveupdate/luo_test_utils.c
+> index 3c8721c505df..100dc0f69f37 100644
+> --- a/tools/testing/selftests/liveupdate/luo_test_utils.c
+> +++ b/tools/testing/selftests/liveupdate/luo_test_utils.c
+> @@ -20,9 +20,14 @@
+>  #include <sys/stat.h>
+>  #include <errno.h>
+>  #include <stdarg.h>
+> +#include <linux/unistd.h>
 >  
-> +static __attribute__((unused))
-> +int sys_ftruncate(int fd, off_t length)
-> +{
-> +	return my_syscall2(__NR_ftruncate, fd, length);
-> +}
+>  #include "luo_test_utils.h"
+>  
+> +#ifdef NOLIBC
+> +#include <sys.h>
+> +#endif
 
-off_t is now always 64bit on nolibc. On 32-bit architectures however
-__NR_ftruncate only takes a 32bit value, leading to the wrong kind of
-truncation. Use __NR_ftruncate64 instead where available.
-
-Please also add a simple test to
-tools/testing/selftests/nolibc/nolibc-test.c
+This should not be necessary.
+I am actively trying to get rid of the checks for the NOLIBC macro.
 
 > +
-> +static __attribute__((unused))
-> +int ftruncate(int fd, off_t length)
-> +{
-> +	return __sysret(sys_ftruncate(fd, length));
-> +}
+>  int luo_open_device(void)
+>  {
+>  	return open(LUO_DEVICE, O_RDWR);
+
+(...)
+
+> @@ -45,8 +50,8 @@ int luo_retrieve_session(int luo_fd, const char *name)
+>  {
+>  	struct liveupdate_ioctl_retrieve_session arg = { .size = sizeof(arg) };
 >  
->  static __attribute__((unused))
->  int msleep(unsigned int msecs)
-> -- 
-> 2.53.0.rc2.204.g2597b5adb4-goog
-> 
+> -	snprintf((char *)arg.name, LIVEUPDATE_SESSION_NAME_LENGTH, "%.*s",
+> -		 LIVEUPDATE_SESSION_NAME_LENGTH - 1, name);
+> +	strncpy((char *)arg.name, name, LIVEUPDATE_SESSION_NAME_LENGTH);
+> +	arg.name[LIVEUPDATE_SESSION_NAME_LENGTH - 1] = '\0';
+
+FWIW we are currently working on "%.*s" support.
+
+>  
+>  	if (ioctl(luo_fd, LIVEUPDATE_IOCTL_RETRIEVE_SESSION, &arg) < 0)
+>  		return -errno;
+
+(...)
 
