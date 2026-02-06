@@ -4,237 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88373EE20B5
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 16:59:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6954EEE20B9
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 17:03:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99ABD6B008A; Fri,  6 Feb 2026 11:58:59 -0500 (EST)
+	id ABA596B008A; Fri,  6 Feb 2026 12:03:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91E176B0092; Fri,  6 Feb 2026 11:58:59 -0500 (EST)
+	id A63856B0092; Fri,  6 Feb 2026 12:03:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79E266B0093; Fri,  6 Feb 2026 11:58:59 -0500 (EST)
+	id 911516B0098; Fri,  6 Feb 2026 12:03:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 614A56B008A
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:58:59 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E99B256CD0
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 16:58:58 +0000 (UTC)
-X-FDA: 84414641556.10.C10444B
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 8B132140004
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 16:58:55 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ImvDzAL8;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=wPTuT1W5;
-	spf=pass (imf26.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770397135;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C02B6B008A
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:03:01 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 467CD8ADC1
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:03:01 +0000 (UTC)
+X-FDA: 84414651762.28.40FE82B
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E5F1340005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 17:02:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=orkqlvE9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EE5crKCo;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=P0Te8zeS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rMULjRcu;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770397379;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Wyu0Zcg8f8GMJ/NrCzGjkTwr6cqHdMQOMJ0+RWO45IU=;
-	b=C9lUSRmEt8bPcv+1WKBd0HcxI4Ofeq6J0t5CAfZC2MSXurcpRCh986dDtNWyfuklsocwEb
-	CovmFO5S2Lc8GbykFf6Y6ZQzhKtfxpdYv/V0uoEpiMqEFispgnLa2196sA3mNavSFR7cW/
-	2K3k3MeeW+maCValyreOuWR0qFcXfb8=
-ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ImvDzAL8;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=wPTuT1W5;
-	spf=pass (imf26.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770397135; a=rsa-sha256;
-	cv=pass;
-	b=NU/ZajLJTv4sfM+K/MwLpmfyj5mlWsxv6s8essFRDbze8dq7aC72Rx0agyeq50nINaw40z
-	vJLdCCIM8fiR4QBOPbabzygiPySMfvucgqcoFwQ4Yb9hetERK1zw97xe3Ywn4MauIMm/3r
-	QibS5NGcexBXrBkoPS+xcYJaoDjY8/M=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 616EvFbp3619868;
-	Fri, 6 Feb 2026 16:58:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=Wyu0Zcg8f8GMJ/Nr
-	CzGjkTwr6cqHdMQOMJ0+RWO45IU=; b=ImvDzAL8exlnEOF+Zv3GtGHbr25HKeuj
-	79x2WE/33FHAmpq5MPLsY7F9fD3QvI7FtGC6L455RYFOhYM/TsicBMnt7sQuEvf1
-	hgKl1J5rhldvOTkkvffT65DV+IeuDmZGYE4L/zRljREd1/Pfpnt1idxjBEcJ0ByL
-	qiYy2jZBTEMqw5hx6zBberVA7rCzZa7Zw5NDh5oxGfyaBxmlfYX20xxsrAKXvoOa
-	8cDXbWjNPLDvYtRmVIYuGT36736GlSwgcjk19KMy5LiGyExAlyAgBREMD2kw6oie
-	DxvnvPknyg8DePYGlbSFrilp51YgqKv4ukZ7LDCIlwWZtUhehla5Ng==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c50sg9j54-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 06 Feb 2026 16:58:50 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 616FnQ7g009519;
-	Fri, 6 Feb 2026 16:58:49 GMT
-Received: from ph7pr06cu001.outbound.protection.outlook.com (mail-westus3azon11010029.outbound.protection.outlook.com [52.101.201.29])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c186sbexf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 06 Feb 2026 16:58:49 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZdIBJejA61EwNWIyKFNf1kNef7JRx0oHNRbofZOCCjeoEah380/NME4l/5NyUjo/9FQn92LDewsFAcFXMyhMoP4A88jx+azeshMKhSlZq5wS7QEkV4ieZcKgmQ/KeUUX+oufJz02Qu8g/K4xfCOwer64YcbANkBzWJqw3UvfiO1FCMZtd8q197cP+UKK8g8dzYEzr27gOf4YhAaLezMyhzsoxs1mvj7CL0R4oj8IilXrZ2zRYQFnm0Ws5h2w9daO7QH5s3l6BwsGQftebkxyALjxhRskzWBjW0geDh5ob54xs5Me95leTVvX8VZTZA/jPiH8skymzLouckJ+AcZopg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Wyu0Zcg8f8GMJ/NrCzGjkTwr6cqHdMQOMJ0+RWO45IU=;
- b=Ge8LQR4c/1v8PciUG0BmasvVklEX4rkvJJMuxstP2RBIUoQe/iUX0FKYOg0XiU+pDYb+Gv08YiLcR6Nt8WInRF8/eoC7iFz8INyU+16iIDbgvQXGVtUO0Arw17CJlnQVIhFpTk804B/bzhI2mlOszjtHlXKJ/T8AW5HF29Kmz8aThbQVP9L7JjTyXAmaARx5ZZvl5Mib/BVmp89PAfTdPNoOzF56zMirnRkHkhi8xTaGAGdMugjB6Yl7P1cm0Rv6AHl86kf/TRxFmSwgJC3KtWEmBj5ffzvCx3ixF3wluPDYuG5AzfL1VCUMEoNm2BK0DQCi+e/xcrRvaXNXFFwbAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Wyu0Zcg8f8GMJ/NrCzGjkTwr6cqHdMQOMJ0+RWO45IU=;
- b=wPTuT1W53oP9lR/Ohc4g0SASotp0fzm7gwj5Ws6Q4NFvarOc7PAQLUpJA66R29yRfbpTFmGRafUO3Amsy21SKRgCyFuKGLy5SQpZ5P1bPdNKhEWFHPnIMq3wV2cDNeVTE+NQqlY5LEc4MU1Ifluo67W3aD2fgQvOVLjowrCOoKM=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by CY5PR10MB6093.namprd10.prod.outlook.com (2603:10b6:930:3a::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.16; Fri, 6 Feb
- 2026 16:58:16 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9587.013; Fri, 6 Feb 2026
- 16:58:15 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>,
-        Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
-        David Hildenbrand <david@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Mike Rapoport <rppt@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
-        Harry Yoo <harry.yoo@oracle.com>, stable@vger.kernel.org
-Subject: [PATCH] mm/page_alloc: skip debug_check_no_{obj,locks}_freed with FPI_TRYLOCK
-Date: Sat,  7 Feb 2026 01:58:02 +0900
-Message-ID: <20260206165802.17280-1-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0060.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2ba::8) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CUYqtP7ZgHQdQC5vBnzVZXDXwlg+QpNEKhaQm5ovGbg=;
+	b=e5HpjZro9Wi9NurPZeRqBIuU87T05qaOElbUDCql664HJ+MHFThX6wBdVdhhYlDU3gLLcg
+	8uzZ2ujswv3o1OegcKoJJ1Ak/WqpXrXnLdKF6O9nT8goEZQUrDHZndpLHzsk7jGpj8qC5A
+	Pk5OIzo3XDiECYNnY6n1xe457HNhmQ0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=orkqlvE9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=EE5crKCo;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=P0Te8zeS;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=rMULjRcu;
+	spf=pass (imf17.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770397379; a=rsa-sha256;
+	cv=none;
+	b=bAbyhq2V6C+aJeTb0D7H4jVa6E8LOCuhlaS1G3U0tiBKQDToHmdv6JPTdhlcAfTuaeZ5d6
+	hYNqZ/6KH3uY5hcsQMEezLGzDEA3IiktkFByKPwUr838/MVKO37IdWsja+Dkj/y/BILQDw
+	BAGWBskiypla7O6nwKrPeXqqXD39Ues=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E62653E6E5;
+	Fri,  6 Feb 2026 17:02:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770397377; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CUYqtP7ZgHQdQC5vBnzVZXDXwlg+QpNEKhaQm5ovGbg=;
+	b=orkqlvE9SwTuzg1vUY/b9kRBRSLpHcoYbkm9JOzNPXV3xUCu71jskW4VC6PYgISH5dAKeQ
+	GnxkepJWMc9d5s492frW0onGpnHzB+rf+OT0PoaQHLS9zG/MfhCdsTS6jTxddG2endGtrJ
+	1XF6Cbi3kAHbaCBgf/9/TTJmGw1Khg4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770397377;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CUYqtP7ZgHQdQC5vBnzVZXDXwlg+QpNEKhaQm5ovGbg=;
+	b=EE5crKCoft9WjyIsphFaJSVj0dj3WisFlTa44mrS3a0w9C5UIZO139v5AfnUvd8wFoAV/1
+	ijvnduHOW12+fhAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770397373; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CUYqtP7ZgHQdQC5vBnzVZXDXwlg+QpNEKhaQm5ovGbg=;
+	b=P0Te8zeSLjKAlYkAT+2RbICPhrTFBetL7skyodk5FaxxibOH9vtxvMRNfPFjuWF/D3BvCO
+	Twi7tlKa2WiGRW6KQFw0PMJvt9zlPkCAmXE9SqS2hBuQwUn90qdevnQOf1MeWIHxKS8xjC
+	uYOazmxOURU4PzyXqg1pSF2T4sjAbr4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770397373;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CUYqtP7ZgHQdQC5vBnzVZXDXwlg+QpNEKhaQm5ovGbg=;
+	b=rMULjRculEo3SDhtOcqpmQ/l0s6TQHipK7lfBzjVqqjjFBs2ZAH89Z4OkmL0BIHHr2y7hh
+	+YBebsQbhnf9GdDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B86A13EA63;
+	Fri,  6 Feb 2026 17:02:48 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dUHUKbgehmmudQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Fri, 06 Feb 2026 17:02:48 +0000
+Date: Fri, 6 Feb 2026 17:02:47 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jarkko Sakkinen <jarkko@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dan Williams <dan.j.williams@intel.com>, 
+	Vishal Verma <vishal.l.verma@intel.com>, Dave Jiang <dave.jiang@intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Jani Nikula <jani.nikula@linux.intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Tvrtko Ursulin <tursulin@ursulin.net>, Christian Koenig <christian.koenig@amd.com>, 
+	Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Benjamin LaHaise <bcrl@kvack.org>, 
+	Gao Xiang <xiang@kernel.org>, Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>, 
+	Jeffle Xu <jefflexu@linux.alibaba.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>, Theodore Ts'o <tytso@mit.edu>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Tony Luck <tony.luck@intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Dave Martin <Dave.Martin@arm.com>, 
+	James Morse <james.morse@arm.com>, Babu Moger <babu.moger@amd.com>, 
+	Carlos Maiolino <cem@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>, 
+	David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, 
+	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	linux-sgx@vger.kernel.org, linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+	linux-fsdevel@vger.kernel.org, linux-aio@kvack.org, linux-erofs@lists.ozlabs.org, 
+	linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev, 
+	devel@lists.orangefs.org, linux-xfs@vger.kernel.org, keyrings@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Jason Gunthorpe <jgg@nvidia.com>
+Subject: Re: [PATCH v2 01/13] mm/vma: remove __private sparse decoration from
+ vma_flags_t
+Message-ID: <e3qrulshyfrqkpihfb7prx2xyp5sn37aobccihw6r7vwwj2zm2@fh56mijhhk3c>
+References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
+ <64fa89f416f22a60ae74cfff8fd565e7677be192.1769097829.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CY5PR10MB6093:EE_
-X-MS-Office365-Filtering-Correlation-Id: 901ff273-28e2-4aee-7911-08de65a0eb6e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?saq4nfBXEQ/4nrPcXg2F+dFgkWZKK8oANaQivHWrhzXfZa5vRIoYuPk1Uykt?=
- =?us-ascii?Q?in+CHpKcv6BmmprOl3hebQ0YoiXSyNIZyCSNCsvkYNt+3o3h1PXMRRFLaDqB?=
- =?us-ascii?Q?H64t3YUze7+JpSo28jveEwvvdhhJIQCvJvcAU0MWS1K3wdwjteE3ZKUpi1UA?=
- =?us-ascii?Q?YLuzU2OM8i6QZ5H0hCvPz/D+JKlTO54Q1kbRPACqBfpxQ4uhZuNqsGy7LNqA?=
- =?us-ascii?Q?WDHElnwlcZqlxX473k2LCGJWWgk5efyCnKzLfXCeIBep5Srp53VKuWA9mWda?=
- =?us-ascii?Q?phli0A1s0OpnkPlB6MPhi5ZdXuzbIbw5JdsNEOZJqEWNLQEKl1s5YBV1L6rX?=
- =?us-ascii?Q?DU/vY43KcxUWFAwQJyxxSHahRj1Sf7QDrvc8vyNQeA7Ce+CCLeM/cjwEAEUp?=
- =?us-ascii?Q?5b292BfwaSMhn9CeaMpemIttJRzn9WK8/Eho8j2m+290V5VYASPxuhgHYSWQ?=
- =?us-ascii?Q?a38EWcJptNI9BJhjPIg5EeYO9kOchnTi0vqTj/KLrJ3ahwMn7xUfokux/9Ez?=
- =?us-ascii?Q?Jc1zXIZ+f0mLhyJx670d8VLDnLkkIxbqXW/V7oC21I0mMvCx/znU2L2UbOmD?=
- =?us-ascii?Q?WIUbKX5YvHDJ0TKVrmyYLtRWzKLP/14HWXfccoUevUI4Qf+3wyjKCPXRydDz?=
- =?us-ascii?Q?9IaCDd/lW4PWsNZ8uPg0JX3Amr33UFgTCiAh/tYbPNxP4XYLdz53iM+6633r?=
- =?us-ascii?Q?nLGIDiMh10KV58yRX66i7noAzoCVaORFueQR1TT8saBs5tZQzv2Qr+ITOFAW?=
- =?us-ascii?Q?WxaNmr36s1atAI5TloqOzdhJsxbm6lyV1aUR0OibKSGg05ssBepoduz3mUJD?=
- =?us-ascii?Q?iuEOD5hviTFGZw6dk3lpt1PC3E5tQOlWL8PEOv3C64oP/GDLbVc9gH4qP9yu?=
- =?us-ascii?Q?KDOtEmZ3aPUjp8llUlHrjfZo6jaUuSbynsBlQD4WqTmkhOJ7PIAvKIx+9IZ8?=
- =?us-ascii?Q?Q1kzfpI2c8pN83d7i1MmeQxwGBOQUwwYeYga0cUpjLLirjiy31UzNX4/2L2z?=
- =?us-ascii?Q?qiZ5XkJY4+7B6greoM6YVeo1P38810ZiRzgaRh4OWorober+QJN7nrMtyu1o?=
- =?us-ascii?Q?MnoJaAn2fxmcQ50V/ykLYKfY4GFuOtMpcxSX02cyHZlGYV+SPyWrfEBm5+oP?=
- =?us-ascii?Q?JXwdKapKLWG2yA/Vsio0f887Kgp1/fsYb8TIdLQYRFlMf5NxUG2DDwiPyceO?=
- =?us-ascii?Q?8wuatoneTO+zFCQCWZmYBEB48kniB5FNl+OaAKD0FukhtE6lzksPgaiedQ2Z?=
- =?us-ascii?Q?bKWCrgX4eJTM09mSt59Ak7nWq0nkFeAB92YxvNrqt5t87DCt15Vv6LA72dWd?=
- =?us-ascii?Q?uKBxuQLOWTphO230j7d7ilakztD0nvPjPFsl2xzSbMjlLDYJ2FgmIR3L8LhE?=
- =?us-ascii?Q?kRFMVFW1mp4skzaFImZT9P4pDm5gp0J/mKp/rwFqrMEuBbeRcQ2FQsbgZthB?=
- =?us-ascii?Q?ZRCCSSg1fEdKCGnafXlZNA3CE7LImZ8wEoUZkJhgjitvunmjHHRoKYUjnBNQ?=
- =?us-ascii?Q?3jVBfaSZMJuhhCGhWMr6yc8HbNxMxou5NEr3SQ0W7hiU7HQ/+mF+1XEEzlrO?=
- =?us-ascii?Q?H518lPghBASjbxWctng=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?idEhTA+bSeKlyK7PBIaAPxbqW5jY/YGsptawjCtj8mqiQzgETkPXavHbEkjY?=
- =?us-ascii?Q?ttc1QqqDt2xN8w9+Ro9TtHVmx0tcqcsKoERR2po0sU327edHZ6FsIxvsB5Zt?=
- =?us-ascii?Q?plhJM3Rox3Q4dSc7Meu7YKwiVZCq2SHQIGiMGX1nZQdMRFuCO22aUgaBI9sp?=
- =?us-ascii?Q?xMJ4xV8tbZY2m2pVMyn+mXlCN2UWJytzGX6Z3Qe40xXOlwzyQN5Ryi1bNEap?=
- =?us-ascii?Q?oJ2ealgEbD9KCRK0GZdjDAehXJfj/E5+XORyE5CGBOBCgce0r0yf0KACDPrL?=
- =?us-ascii?Q?xeaN33M+IgePpi2xtqEUxuHO+1GjXLgY30UBeCcnbBorCOF2d3n7yVGtGM+5?=
- =?us-ascii?Q?BFmGOW4oIClQTWfVVtfqu5LSDJuVx+Y1sNxlZyMeu0FbJcwhtsJOu0hZREq0?=
- =?us-ascii?Q?2uJgFsfe4GMqy/mlUzWq4ibQcrrJ3EKKviV4byv+aZShmczKbFvRwXXbbFft?=
- =?us-ascii?Q?SUyThrPfH2qzPg8exJ3zj8OVLsB83ZDP+CtW4YeZbsyI8GT30jPHeIvn1jBm?=
- =?us-ascii?Q?wRyHKg781TH9FKEjMzcRgywZXx+Mx2eR+apAaD8rEVPiGb69lIgWRM9zRiiA?=
- =?us-ascii?Q?azA0LMcgm2W/KM7FZ5qhuFOwB1Q1CLGPZ7pJ8ej3V17zZ1mlx/seGiznYUbu?=
- =?us-ascii?Q?t92KNNazAhjMcPLYo9t0cdFeedE4aoF5+YdmyXo+2I4ZjZI35RlWMlL1NXzt?=
- =?us-ascii?Q?vimcjfBFk1nFMzoLYMh8QWUT3Z7cVBDTa7yvBB+s1ANaTOsSG3w/IYEI54YJ?=
- =?us-ascii?Q?nI1QiI8jvjm4SX+RH8s0KMLjpOKxGF0m6fjNdFNCQOgubzbc4eUjJXTm1QOv?=
- =?us-ascii?Q?3pctoirt5b60oTB1oRJ54nFS9lNKtJAAxz7JCbyJHqKq2CLrZ0ZTcMJzfxJ0?=
- =?us-ascii?Q?c6Ypd1A28TwukkLKkpzXPukF7C2rV4xM5bxEEXkoTpiWwSqvdliM7JuKe+6X?=
- =?us-ascii?Q?vfoZjuT8T3XBR5pmYh7Rxpu0zwn4ZOEjL29oQ/zLYWsxeKSv625A0dVzUgLv?=
- =?us-ascii?Q?J6BXwLBH2AmsKS4R2HMV771yPm4sEN8faVDIQzCfArQFMyXCer66Q+njzMl5?=
- =?us-ascii?Q?DHrnKgmDsFnc32udfpzJeZq67XUwE41LKJgOZqz908107e7/vqShuXKXaGS6?=
- =?us-ascii?Q?3BkvZChbbceEFrnSuEWpQHbZK1/dq4Y1YhYXuHRoWqt47myvdq7/aZjhcvWq?=
- =?us-ascii?Q?DH9hfHSYiU/VitwCqSHzb1B9Yx/bjfYJ3kcuZrDC66QP4Qsa7GhcARzQLqmg?=
- =?us-ascii?Q?73BRAleSXO8UG1oX8+X5my6cF6cgit2LTfGCZSCjwCtvjN29UXJWkxZDNJww?=
- =?us-ascii?Q?q66KKH3Q4yOimhKtBMKW6PBc5BsBG2ks1iCnktYU4W06ZrC2mwONJg2rHxFe?=
- =?us-ascii?Q?c6M9Bd1dYuMsZepFisrFXdNEKLEbr8WAsWtRBggDv6VAEelND/tUeNnhxJmA?=
- =?us-ascii?Q?S0Qb/gr0ojlbOpZrGBs8FaTWEue+0xIXWhP7k9zb67H/0dtp1oDVomkHdcKO?=
- =?us-ascii?Q?FFo18M4iQEzv8SKMYzxFXI2UO/3tYZyGv95UpofIyl95bowcKNG+nD880u56?=
- =?us-ascii?Q?z6jTc+QWH7QAYFULOJWPthedIKCl2qJFWTc2tNW5H6ZFjsyO407hK0zlLtdZ?=
- =?us-ascii?Q?fg693DMyuCegd3mnY75Gxeo0ev5Bsla5rXNzvp8OFL3u4uB0odRnLBX8XHdm?=
- =?us-ascii?Q?D0Ojq0vTdJIBQvJUEEmM4Bcp8d4J77HI8BddwL7k1peGh9o8ezD1oVVCywcM?=
- =?us-ascii?Q?EAYkvyaRkA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	w+pjea+e5a4Ja2ncq3nBEZ9qqs69gqDeK/alBj4XD8CJnubwiGbGQ8sB3xnOR0f73b8paBoRxyZGXAXKR9+Jt7UqCuLQNsBI97wFOD/1nYfY9r1PqF+ngdXTfLBmjXF9VKVcuStpmATPwUv9gmNYOG6tkI/JyMSgG/1XhRGmduVFM1OqzpbNzSP7TlwgjgfER9myYZ0F5tZvp52VSWp5u+hwnSdLoMF1tYkC729s4ssZyIkwPT6sPDbe7TPm01Ma9O2zwrvboF/TCnMnuFnFgfS5USVa7eh/k0FPBFQnPigFLl4z1H4s3OIoo6GZcSna82t8lZDKGRZUzTfGK7eiiN6+Zb1QWb8WZQr0cv2aytmrz1AStD20Ufy6C44u8UNggYU+KAPd45Jebn3a7ecEqNN8nwJMa+CE5+JEAlKbhtz6TZAzwhZhv5WfE++Zdt+C1g6g7BENnDkZRyIRjh6Il9MZ/KUJsRr8dECKj/3cL7jPe0xsAelGesFc8pC/vx6Mz5vj3gdyysD/fyvvCCrFl+ySGoMBAeHQbvKneu6+t6nF6L1ipZzzy0WLGN7h1xsboL9gX9QjP7gM9Ehvot+BHYKm74FKqdiVhNci9rWwFWU=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 901ff273-28e2-4aee-7911-08de65a0eb6e
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 16:58:15.4781
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WFbO7aZH1nJdZtbNWWbM4mRLKox1vBHKF/IVwyLe5eNXBU/DTijH400G4tdIyki+GvHoPfccHcrfPvtDFFZbNw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6093
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-06_05,2026-02-05_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0
- malwarescore=0 mlxscore=0 adultscore=0 phishscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2602060124
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDEyNCBTYWx0ZWRfX1XJncplA8Mil
- oziltzyLcztg2Flxc+WSyCBHrDIreCiDNwML4a06Zf0or3rGBhwJDHdUqzMFVuISltXdH1ufazz
- wszC5mYp5ET7QQJVxFs2ob4pjzgYxP6q4v5KtCkgjhulXRB32N7mZ+UrznQyE9Bc+0kmcufZE3C
- PrP+puXOTqyHSdA5CUZksNrgmuYRGCc7/7FwxkVRyMpmd2dPMKXomCeB2eSgo16Ki8nP1IJ6E07
- ulPC5ZB5IOxH27UzuKBlxFggR5izR9x5i4Ofri3bAJgo+I32JDotAM24yK2GC6Rp4LldoZ2pST3
- VdlzrSKq1oR2v/NnaXgwIwQowIK1K8cp7tGIiCxLSO/DVngrBVjCQkzx3cDgGEfCA0HkXTfXm82
- sP8rNjdR9OXhk3KZ+HHVT5rGElY07UuljtCF5z5iu6W9tJYfFRUpjLJXHc8KkLPIs9czIc1nSvI
- gS+cTFGKLmmVsICCH8wt1MVD+fX1c7vXtFQcknzM=
-X-Authority-Analysis: v=2.4 cv=VdH6/Vp9 c=1 sm=1 tr=0 ts=69861dca b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=HzLeVaNsDn8A:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=L92Y-EZEwQ27Rhyv8WoA:9 cc=ntf awl=host:12104
-X-Proofpoint-ORIG-GUID: S2wr1lL7RlbRQfllMdy_7zs9z3Guw-bH
-X-Proofpoint-GUID: S2wr1lL7RlbRQfllMdy_7zs9z3Guw-bH
-X-Stat-Signature: 9erk9o9k4mhnda518eyproria3w85yi5
-X-Rspamd-Queue-Id: 8B132140004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <64fa89f416f22a60ae74cfff8fd565e7677be192.1769097829.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 1ubomso5y7wdouf8u4gbx5x1acon8wou
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770397135-272323
-X-HE-Meta: U2FsdGVkX1/h2pynvrTdpHiSubQiDql92yZAO72JAFgxAinzoTsTDYLA02zau21BbpZAF69BBVUFtjS2VteJPdnqxBu3NKOVc5XQpQjxie1qDdQhzmBh23JkxrGe/4xXRLCtpKhU8iHJa4P0jbmcsm6ZZr9v6H1mLyx5A4JfS0OSpPfNYU5pHCbqQJOSpHoa0Iqftkg3abMf7EtD1o1K18h/MELLJZnlzIoED1B2bhWUJWqZ3OoyBCjjo2I8Jw2Ht0ZOraDe4dVXJ2gZ39xR95ULsdaGQwtwjsJ02rGWAYorrP3OB0jghS4hF5crzP2ohMDXfr5R7t4Wc33FDYeelWhH5T7cW6Khw3VX7SPeJ04piOyndn0iRs8gwBs7hyPyuaT+qRlQ+cmtttUADQjgmnrNG6/ZecfHwjWouHo7I+QFDjkzNbkJ/2bWAF1IcHcuv34jHo5Prl5CaiHdAbaTzl5NHO18qel6blWKiISU37X13Cb2bn82YZG+wHz5os7yb/5ZrRqurNFo2RWKKmrOtQqVoTMOkFyV1DfvE9BXG+4v98BIjxMT9f6arJNSFbg6NBn7Ee0BZQj7ZIL9bX7HqOi5O9ZENfV227WGxD8sOjXflY/GGzu2RAj9JIhuYfZHTnetXKX/znbR3eEMj/ruED44rfGqKDUnFhml8KaDDFRFHwPhFt1hOhS8vaZRmQNNmg7NPZDrMPfUkvaGQd0qHpYPEMmJ/5sxR3+b7UQmzU4MuFQxDo8HrFZHJBom8qiZt8UdDThuLrj6MY0xZd1p0X2yiTlz6/H9W7kUlKwDt6GYJ5dKYHwkDSEs2p0KaMhrXS/LfhM2RcjkLeXFerYuebb0Al1D76vDvaxL9syXjrlI4vxYMmJa+NaNd1i8pciJwcVlaxGKtApTFbsMmWwnhQYMevhubKo0NRjeQGvCMf6T73dWGY5AIUUBzy7t1EzHzVQ49V8axMlNhn//gB8
- 2d7GO1Nc
- ymlmbCcLXNE221QdmpZXrGrEcit7W8ZJlAGhTPji7tVkD5768sQqSa1FNwZbFgC8bxgKeQlgSLQvxM+YAxWdQvj6AFXf+oZieokLCUwLdf1tvhiAGofEhAEUKxQQkftUUmU6EeHW8YiFPbei7QdyelvEhOCsxg4AydtHJCg9MlnOaCb26OHD9JCtcV/mLNBo5aEixNS/BxmfAofNoyWUD+gNGDyf4eh5LKdmte8vhYpqeEC113xIijqmzA+w9tN0oISWxDNM65K9VRp/m9qLuMadl89GfKThSeZEkTzJ3T9LHj1GSu4GCSF8efP2sGw4PVaZy7LU4xd47QV234IlBuMndsAEdBb0hYcy75NWsqB+omIYnNzUCilGY4hD+FTrEGJ66PKLqSS8c0crom1LDHSpz/5Qydg654p0B5mNkuM8mL+BBAahZKj7LXba3OtZr+LUlyqcleo4QqElcaX5RnA9zVX9jUePKX+wtdFSAJ8JfWpYe4GpNd1+CocPXFK3sZRzXLlfEj5V3aXLbaEBtnFrnQ6afv1lfW1FbKS4CwoayKHcSyJlbJO9toTOCHoatVQKioLXyQ5huXBC/g5m3Al3hjyEHTwc8FxR7pa0rq2gGfynfSte19PrpT818pQc6FIcGriicpTxGQTgb5bfRYPCnt0DCE2TU1iBxMtgqx4MQ6HsHCRncLt7DWQYvecD/CvBW11SY4bLxVVAhzPefiXlJ6A==
+X-Rspamd-Queue-Id: E5F1340005
+X-HE-Tag: 1770397378-396192
+X-HE-Meta: U2FsdGVkX1+MQ1RwY+Z+ZAyswF+IL3g8anp7HuJQ/cIWb6Qo/u0RIn+b9q6ejKL1s34wm22h+a68ZVhmWlMO6zjbLCdvDdr3P8dhLTNT3Et1men7oI39M7OkWGP2ibmVACNZhkNLT2v+9tqMdnHYwjiG/EsczNQTuJ/2Un7N9Jgo0htkcukGkuns9sgo7zW2V/VbVictzE2j5I5WuBlSX4YoX/71hdgWFb+zckE+ad5wPT4ieKotgb3SItzF6ZfCIINazuKxdDeaFvMJAQ58MoZMSOR8w0zdrllXc5fbp9FNciXFwjZjkBpd5JRoa2OVRKIfrUPo/bB3/lQtPIDJ4kVNxXiZm06pYw6fDNg5Itax2GcAWwOCHhzsE8EEKyW+EDtOxYuMYtbFIX8kyGiV1vRIPtkov6l7cNxjZrEJ5wVWAAZtSzkf0kV5GeGGNj6oiurpWJEP7uCT4pr6lNL5MaAKf01UGLt5O0qTUUXtLkLoWHxfwd/X8XkI/+w3nVSA8c/FCn1TRjEVK9cZgiY0hek/jvNKphElv6JGf/9hLHdAMP33g+ADyI0E+laBOZm3qFEfQYtZ+wJEYgmTaFpQlyrTA/rMnTRgxQ41WdVvR1REY9gsgpIcf8QKm5AwYtvwRSiWW855L3yEU6Fr8O/y0Ti8wPGidMHroYrY0dahI6nIUki6bsO7PHNsQKx94SD+t90MYvgm49OwKPKV3e3PVjpg4LdpGCVOGshrpcbf9pT2Izsq8x0vMvbzB+/3lQXYS1ysJ3A3ccUlUmrrIBfbWlse2qoZ1knw6u2mNUn53zDQtzajZKkcU98G9UtMFhUVr8nzyqbUdzpbNb/3WGQJSd6iuTKTYq9OOh9SPnE7ZoMdDVPPO1/Tf0OwpLAGQCSH/mBOkcHCjt6mUhOO4uxyWxnls2CqoZ2iI7b6AlG5xmiFzP1iIXciSqLfjyjwaX1t5pE7mkU6ylp99qLWBrp
+ HBOhiNvJ
+ aZ2cezGi7CZW6w50aH8El5rHVlrYwU2QsRTO27RmIUrvS8N1AjYmRmgWlMXvmgPHxDs6T2KqMHmfKKBsrPeJbaHygANwyAA1K2Ovnhiap3uqvIwUvV6cm8/TTGjwalZMF/S7DPBoGZsosYezFh/COFQwLysvvoZTxHnIKqo6qJG4PI773cC9jNS8b3MeLhClQoHuR+zY9yFfhqQFYelVTRWM35WJHneY0QtuH+Kdp/3ujS2YdXkvLvUiZHIvRQIqj9E+K0HbfeRz+WNxApFN9dz/5lb1lRMXg5L8KKMV5aN+NPIrSUcaliqNAzDUTwgRwIF/guxOCSybNNWaTlfBtKmcniPTuQGTkmdP2ALYmZq/MoHEVAjYFyXH07J2x3znC/fNm4VYTzvDbK6Ags2WydlEjk3pX+4DmIsEFLp8Gx8DWRCTlGa9jBdEwcJFG4rid+2fRbC6KdrZJblXtLIpUwTBkwA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -243,210 +170,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_DEBUG_OBJECTS_FREE is enabled,
-debug_check_no_{obj,locks}_freed() functions are called.
+On Thu, Jan 22, 2026 at 04:06:10PM +0000, Lorenzo Stoakes wrote:
+> We need to pass around these values and access them in a way that sparse
+> does not allow, as __private implies noderef, i.e. disallowing dereference
+> of the value, which manifests as sparse warnings even when passed around
+> benignly.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-Since both of them spin on a lock, they are not safe to be called
-if the FPI_TRYLOCK flag is specified. This leads to a lockdep splat:
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-  ================================
-  WARNING: inconsistent lock state
-  6.19.0-rc5-slab-for-next+ #326 Tainted: G                 N
-  --------------------------------
-  inconsistent {INITIAL USE} -> {IN-NMI} usage.
-  kunit_try_catch/9046 [HC2[2]:SC0[0]:HE0:SE1] takes:
-  ffffffff84ed6bf8 (&obj_hash[i].lock){-.-.}-{2:2}, at: __debug_check_no_obj_freed+0xe0/0x300
-  {INITIAL USE} state was registered at:
-    lock_acquire+0xd9/0x2f0
-    _raw_spin_lock_irqsave+0x4c/0x80
-    __debug_object_init+0x9d/0x1f0
-    debug_object_init+0x34/0x50
-    __init_work+0x28/0x40
-    init_cgroup_housekeeping+0x151/0x210
-    init_cgroup_root+0x3d/0x140
-    cgroup_init_early+0x30/0x240
-    start_kernel+0x3e/0xcd0
-    x86_64_start_reservations+0x18/0x30
-    x86_64_start_kernel+0xf3/0x140
-    common_startup_64+0x13e/0x148
-  irq event stamp: 2998
-  hardirqs last  enabled at (2997): [<ffffffff8298b77a>] exc_nmi+0x11a/0x240
-  hardirqs last disabled at (2998): [<ffffffff8298b991>] sysvec_irq_work+0x11/0x110
-  softirqs last  enabled at (1416): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
-  softirqs last disabled at (1303): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
-
-  other info that might help us debug this:
-   Possible unsafe locking scenario:
-
-         CPU0
-         ----
-    lock(&obj_hash[i].lock);
-    <Interrupt>
-      lock(&obj_hash[i].lock);
-
-   *** DEADLOCK ***
-
-Fix this by adding an fpi_t parameter to free_pages_prepare() and
-skipping those checks if FPI_TRYLOCK is set. Since mm/compaction.c
-calls free_pages_prepare(), move the fpi_t definition to mm/internal.h.
-
-Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/compaction.c |  2 +-
- mm/internal.h   | 35 ++++++++++++++++++++++++++++++++++-
- mm/page_alloc.c | 42 ++++++------------------------------------
- 3 files changed, 41 insertions(+), 38 deletions(-)
-
-diff --git a/mm/compaction.c b/mm/compaction.c
-index 1e8f8eca318c..9ffeb7c6d2b0 100644
---- a/mm/compaction.c
-+++ b/mm/compaction.c
-@@ -1859,7 +1859,7 @@ static void compaction_free(struct folio *dst, unsigned long data)
- 	struct page *page = &dst->page;
- 
- 	if (folio_put_testzero(dst)) {
--		free_pages_prepare(page, order);
-+		free_pages_prepare(page, order, FPI_NONE);
- 		list_add(&dst->lru, &cc->freepages[order]);
- 		cc->nr_freepages += 1 << order;
- 	}
-diff --git a/mm/internal.h b/mm/internal.h
-index 1f44ccb4badf..8fdffbe5cf1f 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -820,7 +820,40 @@ static inline void prep_compound_tail(struct page *head, int tail_idx)
- }
- 
- void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
--extern bool free_pages_prepare(struct page *page, unsigned int order);
-+
-+/* Free Page Internal flags: for internal, non-pcp variants of free_pages(). */
-+typedef int __bitwise fpi_t;
-+
-+/* No special request */
-+#define FPI_NONE		((__force fpi_t)0)
-+
-+/*
-+ * Skip free page reporting notification for the (possibly merged) page.
-+ * This does not hinder free page reporting from grabbing the page,
-+ * reporting it and marking it "reported" -  it only skips notifying
-+ * the free page reporting infrastructure about a newly freed page. For
-+ * example, used when temporarily pulling a page from a freelist and
-+ * putting it back unmodified.
-+ */
-+#define FPI_SKIP_REPORT_NOTIFY	((__force fpi_t)BIT(0))
-+
-+/*
-+ * Place the (possibly merged) page to the tail of the freelist. Will ignore
-+ * page shuffling (relevant code - e.g., memory onlining - is expected to
-+ * shuffle the whole zone).
-+ *
-+ * Note: No code should rely on this flag for correctness - it's purely
-+ *       to allow for optimizations when handing back either fresh pages
-+ *       (memory onlining) or untouched pages (page isolation, free page
-+ *       reporting).
-+ */
-+#define FPI_TO_TAIL		((__force fpi_t)BIT(1))
-+
-+/* Free the page without taking locks. Rely on trylock only. */
-+#define FPI_TRYLOCK		((__force fpi_t)BIT(2))
-+
-+extern bool free_pages_prepare(struct page *page, unsigned int order,
-+			       fpi_t fpi_flags);
- 
- extern int user_min_free_kbytes;
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 0127e9d661ad..328c4d996ae8 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -60,37 +60,6 @@
- #include "shuffle.h"
- #include "page_reporting.h"
- 
--/* Free Page Internal flags: for internal, non-pcp variants of free_pages(). */
--typedef int __bitwise fpi_t;
--
--/* No special request */
--#define FPI_NONE		((__force fpi_t)0)
--
--/*
-- * Skip free page reporting notification for the (possibly merged) page.
-- * This does not hinder free page reporting from grabbing the page,
-- * reporting it and marking it "reported" -  it only skips notifying
-- * the free page reporting infrastructure about a newly freed page. For
-- * example, used when temporarily pulling a page from a freelist and
-- * putting it back unmodified.
-- */
--#define FPI_SKIP_REPORT_NOTIFY	((__force fpi_t)BIT(0))
--
--/*
-- * Place the (possibly merged) page to the tail of the freelist. Will ignore
-- * page shuffling (relevant code - e.g., memory onlining - is expected to
-- * shuffle the whole zone).
-- *
-- * Note: No code should rely on this flag for correctness - it's purely
-- *       to allow for optimizations when handing back either fresh pages
-- *       (memory onlining) or untouched pages (page isolation, free page
-- *       reporting).
-- */
--#define FPI_TO_TAIL		((__force fpi_t)BIT(1))
--
--/* Free the page without taking locks. Rely on trylock only. */
--#define FPI_TRYLOCK		((__force fpi_t)BIT(2))
--
- /* prevent >1 _updater_ of zone percpu pageset ->high and ->batch fields */
- static DEFINE_MUTEX(pcp_batch_high_lock);
- #define MIN_PERCPU_PAGELIST_HIGH_FRACTION (8)
-@@ -1314,7 +1283,8 @@ static inline void pgalloc_tag_sub_pages(struct alloc_tag *tag, unsigned int nr)
- #endif /* CONFIG_MEM_ALLOC_PROFILING */
- 
- __always_inline bool free_pages_prepare(struct page *page,
--			unsigned int order)
-+					unsigned int order,
-+					fpi_t fpi_flags)
- {
- 	int bad = 0;
- 	bool skip_kasan_poison = should_skip_kasan_poison(page);
-@@ -1407,7 +1377,7 @@ __always_inline bool free_pages_prepare(struct page *page,
- 	page_table_check_free(page, order);
- 	pgalloc_tag_sub(page, 1 << order);
- 
--	if (!PageHighMem(page)) {
-+	if (!PageHighMem(page) && !(fpi_flags & FPI_TRYLOCK)) {
- 		debug_check_no_locks_freed(page_address(page),
- 					   PAGE_SIZE << order);
- 		debug_check_no_obj_freed(page_address(page),
-@@ -1579,7 +1549,7 @@ static void __free_pages_ok(struct page *page, unsigned int order,
- 	unsigned long pfn = page_to_pfn(page);
- 	struct zone *zone = page_zone(page);
- 
--	if (free_pages_prepare(page, order))
-+	if (free_pages_prepare(page, order, fpi_flags))
- 		free_one_page(zone, page, pfn, order, fpi_flags);
- }
- 
-@@ -2940,7 +2910,7 @@ static void __free_frozen_pages(struct page *page, unsigned int order,
- 		return;
- 	}
- 
--	if (!free_pages_prepare(page, order))
-+	if (!free_pages_prepare(page, order, fpi_flags))
- 		return;
- 
- 	/*
-@@ -3002,7 +2972,7 @@ void free_unref_folios(struct folio_batch *folios)
- 		unsigned long pfn = folio_pfn(folio);
- 		unsigned int order = folio_order(folio);
- 
--		if (!free_pages_prepare(&folio->page, order))
-+		if (!free_pages_prepare(&folio->page, order, FPI_NONE))
- 			continue;
- 		/*
- 		 * Free orders not handled on the PCP directly to the
 -- 
-2.43.0
-
+Pedro
 
