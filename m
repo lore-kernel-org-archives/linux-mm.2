@@ -4,94 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E8E4EE2092
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:59:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8372DEE2084
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 12:03:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CFA96B0089; Fri,  6 Feb 2026 06:59:16 -0500 (EST)
+	id E4FF56B0088; Fri,  6 Feb 2026 07:03:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17D5F6B0092; Fri,  6 Feb 2026 06:59:16 -0500 (EST)
+	id E102A6B0092; Fri,  6 Feb 2026 07:03:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05F456B0093; Fri,  6 Feb 2026 06:59:16 -0500 (EST)
+	id D1FFD6B0093; Fri,  6 Feb 2026 07:03:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E8B3C6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:59:15 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BFC666B0088
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 07:03:51 -0500 (EST)
 Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6245514012D
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:59:15 +0000 (UTC)
-X-FDA: 84413886270.15.2948243
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9787180015
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:59:13 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Aalvtl60;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770379153; a=rsa-sha256;
-	cv=none;
-	b=1ECw+YaWYyWzooSwCsKwAzYpWDh7ZIHmodRKCPNWq08FWdFAloHSApNk5bxIHq6q1kRXyW
-	VodkSlVLFt78wIkCfc4rHra/oeVMSuh0EHGjFDWwgle7l3Ocfycl8mqBmpDFTtsYYQInhX
-	m9NzcEXfuWfltjzENp0tzPBIm/v32oo=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Aalvtl60;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf02.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 88B2314015C
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:03:51 +0000 (UTC)
+X-FDA: 84413897862.15.7A1774A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 71367180004
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 12:03:49 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G5xOzC7m;
+	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770379153;
+	s=arc-20220608; t=1770379429;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5dYqXq1NRIfJySgnYSgnc1Tt2EdVmznlx20DFcIB6kE=;
-	b=p45aewZcHE2cQ8WNBwDaBY+NUCX8LpMDenfptnNTXguQnyfl5HVKaRPpgTbKLV+N97iLrn
-	KJ9ewqYapZF1oPyOsKlcgfPdNLzVzbkXqqYacuBR71srmReJldSlcNUkwDZhsqm7Yv/8ss
-	DWR0ixj22KluFcdJcZ0wK1u20hkWax4=
-Message-ID: <53a1bbdd-26d1-454d-af06-169172278718@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770379151;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5dYqXq1NRIfJySgnYSgnc1Tt2EdVmznlx20DFcIB6kE=;
-	b=Aalvtl60ATdjvtCv049X0heOLjC3Ne6UC4Jnw9CBdMvR2rHyEUK1QbvxylKB+AHtJsEUAU
-	qvz+5iU0N8RA5zOq5wxvvGIq8Nn3kg8PMVar5v/lHabP5zzzP0j4LoFOtXGenQaBOxygN1
-	8rGXHcgmdNLdrCK3y2uriNFt0zpk2rs=
-Date: Fri, 6 Feb 2026 19:58:47 +0800
+	bh=E0XNAH/NyqCZ35w94HdR4TuMyBVGAQNA+L5GFAQUXYI=;
+	b=t5HGCWmQ6zU8Cs+cOf0Jhw58oclsUftNmH+kHYKhk6XfZ7ll4USmTxjZIsEQJokt+ryPmA
+	U3pxrCrnKddHnhuvnNjxXwGThkvO7Kv4BdoZtQthfHamu7acbhKWsKLfkJAaw1kPpg4X/7
+	ibfRK3/JuNS3TGKN3eRo55sxbMMUF2o=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=G5xOzC7m;
+	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770379429; a=rsa-sha256;
+	cv=none;
+	b=TA2IegRevWRj5CwVsaDFiUCyRJjYPCDB4FCS7OOHycyaaXyXIFO6ZHEwDIo9NVO/MY2BUT
+	55Od1/uuEPHSoAaJnpv9PNIZXErioTK9WzKvXGc+c+z0Z0SJFxqN8svibK0K8XEI/0DKRt
+	Cu/rfRg8HH3FN5Ytkh7SgOYmgVxf0F8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4895E435D3;
+	Fri,  6 Feb 2026 12:03:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBCFC116C6;
+	Fri,  6 Feb 2026 12:03:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770379428;
+	bh=uMgj70N3216PC7d5PJlZUPfJ7trqCmQKoi+TPeLlEEE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=G5xOzC7maqyE3zF8h9xz38W1B0DbQ/4VL4h7f81ggg03ALi8dY4hUXfRTG4xVp5JS
+	 zAAFAWIq4P9bFkf54YoooUlreZfnjDfcYfRzZyEKypEhsN2udu10tYUz4jWHWZUpks
+	 8jsnmHhIvZE+Ekv5hFcwHeit7UjYFBRRtCiu42/r+8IAwNFs+VW+xd8BBefXY8595X
+	 OPqDPMJoPbEVcBaoKMEI74Fj3RMhWbPGriiDy84QTQLAGrt3ROiTI4YdFV88NtLRHi
+	 DlEbDtWFazMbi4lxwPHLG0b7PLr24msjpq7EA53A4x6wjn3CxmcCC7G7wJXInLlq6J
+	 9Hq55Vco8IKQg==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id C9422F40068;
+	Fri,  6 Feb 2026 07:03:46 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Fri, 06 Feb 2026 07:03:46 -0500
+X-ME-Sender: <xms:otiFaQEULD47vLfzOd_fg0E58Uo__xNLzoPHwEHRsGax1e3oTRp-hw>
+    <xme:otiFaaFzHKN9407YmjK3-rMpIUflrQYprQS_a3KWLaM065Qu1GRxkPCPbDOwMO8oS
+    lI9-xtOUz_jtzi7t5tSBuDabkWB1aMyMyGVYeWcOwywwbw5ujdiD6uQ>
+X-ME-Received: <xmr:otiFaTARMWepb3L38GBwiin7VOSdMlU8QBqWHQ84zyqzpqtNdaWj6nvoQO-jRg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeekuddvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprhhsrghmphgrth
+    esrghmugdrtghomhdprhgtphhtthhopehlihhnuhigqdhmmheskhhvrggtkhdrohhrghdp
+    rhgtphhtthhopehlihhnuhigqdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprh
+    gtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhk
+    vghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtghhlgieslh
+    hinhhuthhrohhnihigrdguvgdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtgho
+    mhdprhgtphhtthhopegsphesrghlihgvnhekrdguvg
+X-ME-Proxy: <xmx:otiFaZ8HNMMN3klfCbCKXshOKBsujGwRe1l6sKcNWOpkyEcNDSFgKg>
+    <xmx:otiFaVdbZp9Tz7qLQmG4P6TDG6tLok3czcT7evMAsN3wHNPfTcov-g>
+    <xmx:otiFacB97NFEo_X5WtU3UtB_XW0eZP5NVGx-t8J8bDzFSDtj3V9UKw>
+    <xmx:otiFaVfFgEnrfojQBQkd31IsDKYRbhHd_vgG0mQdJzjb79vPFXqoUQ>
+    <xmx:otiFaYhlxyVV5_mDe4Ex59CQpQkvQnEPkK5rjFhtC3nMHVXA802RUePi>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 Feb 2026 07:03:44 -0500 (EST)
+Date: Fri, 6 Feb 2026 12:03:39 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Pratik R. Sampat" <prsampat@amd.com>, linux-mm@kvack.org, 
+	linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, ardb@kernel.org, 
+	akpm@linux-foundation.org, osalvador@suse.de, thomas.lendacky@amd.com, michael.roth@amd.com
+Subject: Re: [PATCH v4 1/2] mm/memory_hotplug: Add support to accept memory
+ during hot-add
+Message-ID: <aYXYRf4lxm_iQwjE@thinkstation>
+References: <20260203174946.1198053-1-prsampat@amd.com>
+ <20260203174946.1198053-2-prsampat@amd.com>
+ <d07cbb96-ba30-4dcf-ad14-0479d6a989f2@kernel.org>
+ <70be936e-e49d-4485-8d1e-416fdf8f40a4@amd.com>
+ <aYR0vqwyFPo3EKAi@thinkstation>
+ <ce4334f8-5e54-4dbf-9be0-059279ef1962@kernel.org>
+ <aYS8O0phOE41IuEF@thinkstation>
+ <fc60cc71-80eb-4058-8d0a-dbd19a5c10ef@kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to
- CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
-To: "David Hildenbrand (Arm)" <david@kernel.org>, andreas@gaisler.com,
- richard.weiyang@gmail.com, will@kernel.org, peterz@infradead.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, dev.jain@arm.com,
- ioworker0@gmail.com, linmag7@gmail.com, akpm@linux-foundation.org
-Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
- <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
- <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
- <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
- <538fef61-3903-407e-8486-538a28b99e9d@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <538fef61-3903-407e-8486-538a28b99e9d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fc60cc71-80eb-4058-8d0a-dbd19a5c10ef@kernel.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 71367180004
+X-Stat-Signature: xaq4gfqrqqe9cc46ymg1c34j1opjgjad
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9787180015
-X-Stat-Signature: 9jqie9e4spubhp6fpznt7fdxpwhq89du
-X-HE-Tag: 1770379153-226334
-X-HE-Meta: U2FsdGVkX19vny26CAlgPzXJ7FKfE3BYT00oMCv8H9cbFxU4BT7dSAKROmtZoW3Ex+s9wkrrleOdzSWAiCQ0wcESWPWEHfYfcm87i/9KtGeI4exvyINCLhxssyD8LChy3cMLJ05CBnZEjVAW+qL1XjGQzCoOHrkSbKulrnSKmYI0OhUMiKbITEIKDQJwFDAJF3jNOraIrduEJxfSAWx81RohdeCoFvEQ3jd/3wxRXiaG/J9UpzRFrQzsvcxWUkwR2xHYwhBMJjQZyqqZbr88cvCAonX4S+t1PkGuE0f8MK2HrFYJ/Q4ioVS4N4sYa39Jakxkf9hQucp8ZBwbTIDQ4N/73pcyvhxGPfAjJ8wnQ/A24gWovslrrm8vCNh5HKOAAu9Bq/xQJyxNykY2BUEg7cRwsxpws56j39emeITBo64YEhqRpEU6QAXSTHtctM8M5GcETBIUX0n2+TX6RpE59YikMQ/dEi8u4hYmYXg+Zx6ma+o3FoECZMhRTEQCz1wJIn/6RJ8NnjGe5iErxvuJF0h1mB5UMSZ/athq64T5YILE8axUfmPUbhJB1+0ZUuA1FUZ7XxuTJDLCO+tBtGXNfHBqp4FetaEpdvZw0B0Bipw09cgl1zpLZ20hj3Wq6FWA0Pyc57jkDgsc+41i9MsRa+wNAlg4+AKwC7vN80Ez3OdZdd4f9BNoJDGCVAO5nAvQ/CsnNRqAtZf6xbz+TuMNNqrso/PtLBak28jiRJwk4Demkye40pMog0/XzKMHoATeC1EWnX4miifuPMpH0hk4n0me2Sqw0S68zV42urPm4249EmEj/SNyrIRBCYhqEmbGUJvdmV0enwCUimWQvnH3BzY2CSyDAipx/9SC7aPKwJDFcyd3jGRBjfRCkjVZZNqJtNG5lNdYhtdbVs8/5xvNWspXKbKNErkcQcttfPB7dPMhmsc+EBAgqP1woxpA2XyoN/3SNldFj4pFO+ZaVN8
- 2hD+k7ym
- jxTbFnRWq/tshZvi75BN3xAKGrUl2pSOVeWHpugjHiO4mDiZNxX9wrDnaEfHp/X2lNS5ScVjpp/8sKJoorAGPAQ31XC4HFdLDxhQXhMXL3vdB9yxptkCORDwrYpQs2PngqTiO51iQD7jN/0UkaFwo0pO0PwPYmsvr/Pgvvwq8Qru901uBiyBCq/ibuRxbpJwwXs4nkbErQmWwqHXOzc7sRsAlqOa/Jpsa+Ex+yJ2w4TLC+BB8UX9A+feldEvc6QxkqM8iq+cR4kkC47Rsnpw8xfzwmPPXvteGw8e6KzPy30REiDgBWkXn21mdNTGeH15We9OGIPHMTtjQ7KTiyi0bU5cMqWvurjR1wkk7C4FiYCFWQh+S3NSuMCMv9eSrVY+XIupI95baZBe68XV1Tuaj9iQnOGjf3KLNSI6L
+X-HE-Tag: 1770379429-507969
+X-HE-Meta: U2FsdGVkX186amq7CmvYYTHUiGV6EqzxJ0TJ37JUyxu8bnIzppCoi4g1taSguDriK4WNcf5N0m0qFxxzrhCGU44u5MIiVM9TkuCaQciCgDexoAOgnphx+7tj7CPDPk42M1PrMl0Ae+G0wfQKmueRIbWdSOt189KiNfAibCzHW3UD1LSPEJmG0v6RbsPjm3/CtbJ1pXhmJ+HxpBBdgOr/dHO+0d5rKumnhPcaRpXkp/vcyOzaMi2RrVHn7Fb66rrdq+idZysX8HOgRQVTB1X2bYR6i8/XxUJ/ofGxCIj1cWUzs9cgzUT2LKkLnL6i26xi4JtPtYKKGRtov45lBqX4FnMiOyc/47+0+IJSHMQnDwP+kt3snd16QDnE4ZNRvJK9uJpydOuAP509mlmLLmRM8jI+GYJq7AL7SGMxCRf9nrlggx2YgrHhwNzIG0Mu3rZBuZ5/sZz+hSixGp84RSDvZMmUuCa0cSpYCWQ4Xq/7QBdt05UvYNFRbSPA6y0bcMetQo3bfzZI1knVOwGnoONem/Ra069DKys2yNj635gcb3LjowIeFAe6xk8x3mjRjlULFSKj67/DIeXGMUGGTuUhpiEv1jRBp4jjeyVCKGsyvtgOUqVXj6Dcsl2i03o2yaUdF2cF/gk4fGOLYGBip/BVJ8pqMnY9KomzM7lD9L80TY632k++0JoCyKQ/63oTY3ZmAMb6IqhFhNQDOWEQbFUbfxpCx6l5w9oNH4Iqsa4K9czh5Dt5/32OizNd2PUb+TbKGEf7WZVmsjwus0cF+WAvSkElpp4XYGMvKRMh047pBzkMvtaHkPt3ZaIthjuDljnCgtQ55AENiinu2Yh/hdkpTI7C8Kqh9WU8W+2I0axrG1P14tfZeSh5Rkf7dVuJRuualQySgHCUUl6ejYskOcjhJO5f8eF22UzjKHAnLe/H7ZlxfgqKZGcy57FZeGLy0js/5ZyWl/8mkWLNCYKrp77
+ U/F0oVnh
+ o/FPVhGOt+lw7qs6Ct1ZleVySwFsK2LOF66EM1IHy4k6f5FK8q6xBh/P/cPVgfHgtYNb2G3t2YlfgqOy0Rhxj2qm9zb5btqONlnDKmIi6LbvAkxF9y7tCVfYEhuHD4BdlC5PkR++s5AVRWhm4kMk536EK15NO7vlrqrSTO5vQw+nC41ngCWROUNcQHzpT6oofvDHZTyOYbUBJbZuiEjiadRKXHRMNgUX25pGeZwAADEObqw6nKh+qP89HLn8Gh4dQa8SymRWVSCCno4JamQ5AhMVZ+yS5yWY4lvAOVogJGB9aWgL5y3GgV8TxFEiAH2Db3aPtEeFFYTI92n4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,87 +135,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2/6/26 7:45 PM, David Hildenbrand (Arm) wrote:
-> On 2/6/26 12:13, Qi Zheng wrote:
->>
->>
->> On 2/6/26 7:06 PM, David Hildenbrand (Arm) wrote:
->>> On 1/27/26 13:13, Qi Zheng wrote:
->>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>>
->>>> For architectures that define __HAVE_ARCH_TLB_REMOVE_TABLE, the page
->>>> tables at the pmd/pud level are generally not of struct ptdesc type, 
->>>> and
->>>> do not have pt_rcu_head member, thus these architectures cannot support
->>>> PT_RECLAIM.
->>>>
->>>> In preparation for enabling PT_RECLAIM on more architectures, convert
->>>> __HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE 
->>>> config,
->>>> so that we can make conditional judgments in Kconfig.
->>>>
->>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>>> ---
->>>>   arch/powerpc/Kconfig            | 1 +
->>>>   arch/powerpc/include/asm/tlb.h  | 1 -
->>>>   arch/sparc/Kconfig              | 1 +
->>>>   arch/sparc/include/asm/tlb_64.h | 1 -
->>>>   include/asm-generic/tlb.h       | 2 +-
->>>>   mm/Kconfig                      | 3 +++
->>>>   6 files changed, 6 insertions(+), 3 deletions(-)
->>>>
->>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->>>> index 9537a61ebae02..b47aa8fd62742 100644
->>>> --- a/arch/powerpc/Kconfig
->>>> +++ b/arch/powerpc/Kconfig
->>>> @@ -304,6 +304,7 @@ config PPC
->>>>       select LOCK_MM_AND_FIND_VMA
->>>>       select MMU_GATHER_PAGE_SIZE
->>>>       select MMU_GATHER_RCU_TABLE_FREE
->>>> +    select HAVE_ARCH_TLB_REMOVE_TABLE
->>>>       select MMU_GATHER_MERGE_VMAS
->>>>       select MMU_LAZY_TLB_SHOOTDOWN        if PPC_BOOK3S_64
->>>>       select MODULES_USE_ELF_RELA
->>>> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/ 
->>>> asm/tlb.h
->>>> index 2058e8d3e0138..1ca7d4c4b90db 100644
->>>> --- a/arch/powerpc/include/asm/tlb.h
->>>> +++ b/arch/powerpc/include/asm/tlb.h
->>>> @@ -37,7 +37,6 @@ extern void tlb_flush(struct mmu_gather *tlb);
->>>>    */
->>>>   #define tlb_needs_table_invalidate()    radix_enabled()
->>>> -#define __HAVE_ARCH_TLB_REMOVE_TABLE
->>>>   /* Get the generic bits... */
->>>>   #include <asm-generic/tlb.h>
->>>> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
->>>> index a630d373e6453..25fa2908d6152 100644
->>>> --- a/arch/sparc/Kconfig
->>>> +++ b/arch/sparc/Kconfig
->>>> @@ -74,6 +74,7 @@ config SPARC64
->>>>       select HAVE_KRETPROBES
->>>>       select HAVE_KPROBES
->>>>       select MMU_GATHER_RCU_TABLE_FREE if SMP
->>>> +    select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
->>>
->>> Why the SMP? At least in tlb_64.h, it was not protected by SMP IIUC.
->>
->> Ah, It's just simply aligned with the MMU_GATHER_RCU_TABLE_FREE above.
+On Thu, Feb 05, 2026 at 06:29:08PM +0100, David Hildenbrand (Arm) wrote:
+> > Ideally, we want to know on boot:
+> > 
+> >   - what memory ranges are unaccepted - we have it;
+> >   - what memory range can be removed or added after boot - we don't have it
 > 
-> But does that work as expected for !SMP?
+> The SRAT describes memory ranges where we can see hotplug memory. Is that
+> too late? We calculate max_possible_pfn based on that.
 
-In the case of !SMP, tlb_remove_table() will not be called:
+The cleanest way would be to declare the ranges in EFI memory map, not
+SRAT. It should be doable.
 
-static inline void pgtable_free_tlb(struct mmu_gather *tlb, void *table, 
-bool is_page)
-{
-	pgtable_free(table, is_page);
-}
-
-
-so I think it's okay to only select it in case of SMP.
-
-> 
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
