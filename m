@@ -4,142 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6D06EE6B46
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:07:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357F2EE6B46
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 19:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3FF896B0005; Fri,  6 Feb 2026 14:07:28 -0500 (EST)
+	id 612EC6B0089; Fri,  6 Feb 2026 14:13:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 388776B0088; Fri,  6 Feb 2026 14:07:28 -0500 (EST)
+	id 5CA536B0092; Fri,  6 Feb 2026 14:13:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2646B6B0089; Fri,  6 Feb 2026 14:07:28 -0500 (EST)
+	id 4C8C76B0093; Fri,  6 Feb 2026 14:13:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 12D956B0005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:07:28 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BCD2A139BD0
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:07:27 +0000 (UTC)
-X-FDA: 84414965334.26.4156C4D
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	by imf03.hostedemail.com (Postfix) with ESMTP id D832620010
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:07:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xqWhYCJz;
-	spf=pass (imf03.hostedemail.com: domain of maze@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=maze@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770404845;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 325976B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:13:11 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C85A2573DD
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:13:10 +0000 (UTC)
+X-FDA: 84414979740.14.1367532
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D8F12A0002
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:13:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=R1rD3vdH;
+	spf=pass (imf15.hostedemail.com: domain of slava@dubeyko.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770405189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZeVqPtO/zKV/ZDsrHlH8qzY+FDNnYt0+6eW+GIKJENk=;
-	b=qQ+Bqzl0QY36XkpJCqzIXbEDzTy770CqR7zvYg0Bx7nR1RqqNtWZwzqLgag1AvUIoLK1Ak
-	6QzDg26NnmzvqnzbAWDnjMqcUzup7XJGnyX5/bNN26QqE2dDuANhXFVsLzfhg2ZB2IgCad
-	sly5N3rH6wRkUf+AMRpabKH/y5s5obM=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xqWhYCJz;
-	spf=pass (imf03.hostedemail.com: domain of maze@google.com designates 209.85.160.169 as permitted sender) smtp.mailfrom=maze@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770404845; a=rsa-sha256;
-	cv=pass;
-	b=Wh2rz+tWXw5PsDQ0h/FWHCrW5T3jPHqZPJ4sFP0WXXrc9jghmA8MHe7WBfgLBWQvSFgc9h
-	leaEPmZnckZiPPVJC2F6okHgn+P6Bha+/wRiYnSzm39JKcGAnM+LqKD+vDXe22NwEp/nSI
-	k365JGQewbSOBkEoycDUxhs1K5oT/Os=
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5014b5d8551so42221cf.0
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:07:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770404845; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BwjWsuHvAvsOR4v/nfcawzFA6p79YIu9/LYNBvQJqv+U6oUvgeSWFVpLFRvSd8zory
-         33HvTUISMJyvd4/ZuFQ6n5I7DMZQOnbSwNjPfBgnuaAyuWQhvQTcvxjlQOjIwphSRLdL
-         bRcfgGIcHPmYpLYCg6RXfuudgf3Z+Ilx2EBkctt1HEzFuoxs/G0Q+rpLcyj1oIDramkQ
-         f6k9YoZ6LKD1YBdK30uB/YSCubIG0K+xN82zqv8XXedYUZnNDrawN4CVD0EGlJAvky33
-         wDFRa2TwnhnXaenNXq8TGy0Lz2/XfbOhYPIWZ0uTecAXyh9+5p4+3YEou+utQVHmDGcQ
-         5XQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=ZeVqPtO/zKV/ZDsrHlH8qzY+FDNnYt0+6eW+GIKJENk=;
-        fh=Yi8WIBW45WqppxljVOijoHZ1i8PCGo0YNROsWIbfa08=;
-        b=H0Kcgm4V1hxEHLBR+oJNu/VfM0RMxBLYeKZbDRPc9MIpNl7+3Myj4hexvzCgDjNYkk
-         0pWSk6vt/CQInzPgBeAJbeKPCFZKBVVuYKdd6zMTDOiYaYYdGbVGAkC1fNYDsFGgOZqf
-         Bk3BzPRMnvRjm6BG6/oPuOUJcQreUIIA1RezspI3CLcfisqbu+ujUsaZ47wfbhtS7lra
-         FWL69BJi+T6HUDfkztLKas1KgGSF2bSTZGJIO8voMs3ffYfYhxz4KWJ4yT/iZUmsp1el
-         khTDJ7lVbs6mLDDNl3978P+XdDFd8ZLcEm3VCEIz30Q4R/78EFKwCZEs55C0GkXwk9JR
-         Jx4A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Bu1z48KYD2GkC4sgRYY/gR/q5v6MBccc8TbuVDHZ7mU=;
+	b=19B9FtGa68kYoprrf854m133WDE+3cvd3y1ow/QhyuOUtIucy5M1vkKtrM6ZBwHUctIi+R
+	7VEZGO3HDYxK6ZMu4ikHg7YXcRbyR0uepMSqVy6uwMFcZPLDB5q7AdOTuOBDV3JbN3oyQl
+	Qcr8PLeZJMk9Ddr2W4ScdGFJMW6IDMc=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=dubeyko-com.20230601.gappssmtp.com header.s=20230601 header.b=R1rD3vdH;
+	spf=pass (imf15.hostedemail.com: domain of slava@dubeyko.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=slava@dubeyko.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770405189; a=rsa-sha256;
+	cv=none;
+	b=bbBXASOgJnje/I5q4/dinnkS5aXtfJMZQksLkK/hw/zpc7WPpxfh8qCVNyJVP33BMT3ah0
+	k9OpHQs45b4BtteUKSSS0UF0c/5PPkA+e/b4eQh+vg7i8F/R7zSwea4Qhz8TrhE6RbP4KM
+	A0rGIPCcuPY5U7n0X6PW2R4SUTtGyl0=
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-794d4f11a20so10197157b3.1
+        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 11:13:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770404845; x=1771009645; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZeVqPtO/zKV/ZDsrHlH8qzY+FDNnYt0+6eW+GIKJENk=;
-        b=xqWhYCJz4HlbxImjHMVIjZ5Utr/dSGKrALENQiCAPy3QvtMKYBkvQ/FQBCIUaqmqEz
-         nsr5ZPzuLqOyf5S5Y/J0pFztBBZCo/ZlFbi0n3BJW4rL4VU2nD8s+fTJGG2HoZZZxwKk
-         5Akdz7sfzlPduemntzaPQ2oFVFL/6HzqWHYoHi8ZosmA1ccLarHlBV4+/t4IyZ2GI1Wo
-         787O+6kt0V2tBQCom3N6DNe/uTSh0GLpXHjhMdwxf3E+Tktj/yU8Riy2xOdUYxHlZMwQ
-         wMGVGF2X2Bn559LJsVGABmYihNVnVAsUobNXPkx7EoAx8mUkB7ozjkaStixXVsPDT79y
-         92Uw==
+        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1770405188; x=1771009988; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bu1z48KYD2GkC4sgRYY/gR/q5v6MBccc8TbuVDHZ7mU=;
+        b=R1rD3vdHBXPeQ/Z9+qb2gpkffOY0TniAR+8CoZ2fne9uBHa6VjOc9kXTFmb3FnkqkJ
+         jjHON5bvDVYrIbx5tZYPAZRLKFmuQl+Lt2HxyL27XujH6ZISGwwl3ROvR5rz0Kf/SPx4
+         2rveG2Vtp81kMquu4CSUuKPjjNn4kp5YMQSkwMjI7oxDHa1uzU7FtT+mTxZlD6ZqYwmh
+         AT9GptqxAR3PX1QOzPBQIWRValqMx8mMsBxNYuE4uFt+aMQBPswiiDLXBbMGxB6+gOGG
+         nFulMZVbRnF/rQoCrnnVoefZhDvPXHR2BUXC8k7hOYMjDwME/VdFE7al1FEt+piBYrST
+         rISA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770404845; x=1771009645;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1770405188; x=1771009988;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZeVqPtO/zKV/ZDsrHlH8qzY+FDNnYt0+6eW+GIKJENk=;
-        b=wXyyNpKPxdGLC8A16ydX1dul5iOusZH/V9P6L+CXAWGsE/CZ0qwHiNUvq1ez+KFzzO
-         FZhmtLcydm9C8JUjGDgzrS5cYGpOe0+IYfuAq1cul/Uu8K/RDxYK+biaHttH//BVcK+c
-         xjl7Fw2pkbJl9EOkspRgIzHEZf1irg8c6PlJvstkWjVfLZVcIFYeahLvt7Qp9VmR4vm7
-         TvLw5lzxS8LJxBygaiUZ2fAhWYTCKw5Pt1GyAeiaynyu9BmztXshABc0x7PDTTlPafeJ
-         4tCbFHUO4rO6QFRCdqbVSp9+Mbv9JcrnDNXPSz0IQJ2wIdvM3VrxjoJRXFCE0AqBGz3D
-         EOXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHkYt10AmJCpSxNTgesFc9yE/3Ws9RQS1KGy/quWaWgoeLFOn0mhP14Ii47CymZW+dPZEB1YRgaQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxbr6gtxEPFl6NJNHN/vOSikBOFAue4P1zYSu7vAZtLTvb+Ay28
-	WfAh4tzOGO/f5s7hQU9fcvGt1CLGWbgsG8WsV6BHAA0RKm4+lO4KUQUjDBIkQAdhIXUbRjb0oTO
-	OcFTYw/Km3U8awPkkKL7rOuYF4QtUkzcTHVB1KGZJ
-X-Gm-Gg: AZuq6aLLgTuNGvSNJkS/IKdIlCxBUckF0vG/8BqPk7WJ4i91YVfYqdX8NpiRV30ekoI
-	bwtM2aozdYe9dv0P/kJW2dtDWZDHiXUxrQ5ovY7njh8pYpoZ029XtWqgNW+yzbyZm1aj3DO3Lta
-	wiiOad+Fi7EvfF/tZIJUZq2QVoqdOg+FT/bgjrsyNzjnrKCkc+XoxH376seQ4vhvvmN9VRsUl0C
-	7TkOz6YsEPnIIsjga69ikUd4Ys0kOomp+xXdXBmzaynh+i9nIk6ZLABcTR0xWXE8Ms3XrVSUXQI
-	LzHT7cREmYKpEy2c5hbLfAOODtZqpYUTpheYOp7oNg==
-X-Received: by 2002:ac8:51c2:0:b0:4ff:cb75:2a22 with SMTP id
- d75a77b69052e-50649ca8c6bmr598641cf.3.1770404844843; Fri, 06 Feb 2026
- 11:07:24 -0800 (PST)
+        bh=Bu1z48KYD2GkC4sgRYY/gR/q5v6MBccc8TbuVDHZ7mU=;
+        b=JOLsEzWgQgtmNohEaaIqzko7JVxjhfS9Uqmp5KWJwYMqraUb6s76U29XEnk5wPDshX
+         NDnBt/9VKWI8yBkgdRCvQMvlQvBwzCc8ebyCPNHxlKYdKNvBoLIy0ADrs7NhDaiI2T6P
+         w4XuWNfO3o3sOJ8jVcUhDAIu1l9a8P+Lf3ewlI1OACzc2RXV+JWdGQfMdX6JjCjxZaeZ
+         2V0MgUYB1msFrumLjawvyPJLkEdecQoBp8HyhgpkZJsO3u1S/4aly5ix/wMiCkbYM7iU
+         mKsaBfkBU4wLhBJzmxXFJaxZspUy8I2EynDepAN2Q1WMo8mJ9xWVQY+Y5Ju6DdjFMBrz
+         ADcg==
+X-Forwarded-Encrypted: i=1; AJvYcCXv52P0+g3OFgMZLlui5EzSArzINLTWir1TyT4bX7oZUrqciyG8F5C9uK2kk5R7DEuWPTFA1i71GA==@kvack.org
+X-Gm-Message-State: AOJu0Yw83Yq2vVbENphbIYi/nWpZs9qjNRSGUoO+L/jCGymkQoI5h6TR
+	XUWEdaGoz7HVSP1+PvGFvP1DQh9N36vcB5RseMLgKSZbvUUoD8jnRti8lLtyM32rPPcW+sNcDdG
+	99fUr0x4=
+X-Gm-Gg: AZuq6aK5hwkj2Z/eCDR8zqvcHaayBXrR47+KC3qTPdZqjMtJb757S3n3qUwPlBA8yGc
+	qWkak/f1v6u9C4bhklIYp2aE/gFHwLTUnISgbJRgbcpi+f276OC9IjyB1M/qnZ+24+iICPTi+Pm
+	7U19dsx/FPt7BHiaOnc+m1MNE7IaUPX5wAMoF9/1RxyKn+VjLrnOIrtw9At5qrE+vdSAooKxn6p
+	Oon0HiWv8VwktDrTlLAf7BUsXmy73sm68u3jBh3xQcgvRAPoFGoxb5DfVaHz15Xykk2iOx8rhwI
+	kgx0Iix8w1o7WqZX4P0q4lval0j+aV3/2Gavp6oYHrwAJCFFzrHkpktlxD7Y9A7e5CMtRQ8CU2P
+	VfPaofzI0msPqtvQd6fx5xkgKt52IKLydUduhep0bnDRvjVDk0ECBLFCKMEc2E6AoUrg9YbLmI6
+	/iV3TV8ukaRz7PFXZOAPUsCIDhXGSsy97FbT1A0rAMxedjYT4J8ZvRLkLCb/BSGLkRjdiV/cEJq
+	Sl6+JEAZ4zB
+X-Received: by 2002:a05:690c:4510:b0:794:e3c2:f338 with SMTP id 00721157ae682-7952ab1a634mr38039097b3.42.1770405187694;
+        Fri, 06 Feb 2026 11:13:07 -0800 (PST)
+Received: from pop-os.attlocal.net ([2600:1700:6476:1430:9fc0:ed7d:72bd:ecd1])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7952a28697fsm29051277b3.50.2026.02.06.11.13.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 11:13:07 -0800 (PST)
+From: Viacheslav Dubeyko <slava@dubeyko.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org
+Cc: Slava.Dubeyko@ibm.com,
+	slava@dubeyko.com,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH v1 0/4] Machine Learning (ML) library in Linux kernel
+Date: Fri,  6 Feb 2026 11:11:32 -0800
+Message-Id: <20260206191136.2609767-1-slava@dubeyko.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
- <202601071226.8DF7C63@keescook> <btracv3snpi6l4b5upqvag6qz3j4d2k7l7qgzj665ft5m7bn22@m3y73eir2tnt>
- <CANP3RGfLXptZp6widUEyvVzicAB=dwcSx3k7MLtQozhO0NuxZw@mail.gmail.com>
- <CANP3RGeaEQipgRvk2FedpN54Rrq=fKdLs3PN4_+DThpeqQmTXA@mail.gmail.com>
- <CANP3RGcNFgLSgKYPjmro2s1Es04Pnhf+4wHpnSwRX4M8bLDW9g@mail.gmail.com>
- <aWFKEDwwihxGIbQA@wieczorr-mobl1.localdomain> <CANP3RGeWLMQEMnC03pUr8=1+e27vma1ggiWGWcpX+PcZ=SsxUg@mail.gmail.com>
-In-Reply-To: <CANP3RGeWLMQEMnC03pUr8=1+e27vma1ggiWGWcpX+PcZ=SsxUg@mail.gmail.com>
-From: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
-Date: Fri, 6 Feb 2026 11:07:12 -0800
-X-Gm-Features: AZwV_QhSTkSJ_KynPb24QBIc0N9LtzMU3n-qIIiw27uPu35C6AHY-mN4QWU-75A
-Message-ID: <CANP3RGeHnhufYyc0P2OiKJbXdZjPW41TP=JS6nYk9xGRU8UuKQ@mail.gmail.com>
-Subject: Re: KASAN vs realloc
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Kees Cook <kees@kernel.org>, joonki.min@samsung-slsi.corp-partner.google.com, 
-	Andrew Morton <akpm@google.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, jiayuan.chen@linux.dev, 
-	syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, 
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
-	Kernel hackers <linux-kernel@vger.kernel.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D832620010
-X-Stat-Signature: swbmxkdgwwu5mnapwhgmwfxcs9zsdjfb
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: wpchanhqmh4h7p4sw9swhefui3iredu6
 X-Rspam-User: 
-X-HE-Tag: 1770404845-66547
-X-HE-Meta: U2FsdGVkX19fATSullxsc1lov/cYO6+WVGkfTRnaK8VD2eB+cnGaSTlngRD4tWUtRIUWuCRUYdlFLT7kNgQogwpsHhsF2a3CeOCtNeeA55MF4QVXgIjlyMjRVy6CGiYzD5mNJ/XrqfC3AyoYTI42dzlZmEzVYSuPy57qUnzLW5qKbEtvMHa0A7W1CHGyh12hL+DfZhMIt/DJpY4JVL7PFRXtcqLySztduiAaY+n4NFYBiojcidW+Yd/sVL1SaKjYJfohhSsO6R36eCIcvia30JPtBD06y/2QY9BUqqpGlVUU2shDZDBxuyZ4WiyAr+We2LwiPOydcuVtgPA53M53wrzBKFASlkGulmPhueMSX9gx5sWOvwg9KPahCBeFs5kadTe2Ry3hq017GGM5LBXAIqjQh/Jg49Firh+BWc4Y38FC4SeACHNPvPyiI6g6TfNq/ADMS6Iey13mI6hc2fVWBwONss6119zmrVoe2eSIg0avVJxdZozGI6aqEIkkfWmbS62/ikkTRMFZI/k9qBiCWhjopC/J+/RCTl9y/sGJBx5ZsO25KhDOfR2kN7Q0U2VC/OdUW1WOGKJI1dIAsspK7pYLLgasy9QHDwWuEHAUWURoMLcqZv9Ls/4AZ3fPHecHzbv7rJRlV6mjRU1a3qRadl2BR3aXtzB07AuYEMbGvLHfqJLFTCYbJul44ixi+M3E1ofOAu0PEtOgeaIzATu38fegd5o397IO+6d35bVrx0W7mgmWDlUIx4QEjsV/N1d4NACWANSRHxH7/JIBo7zoZCxg7m/TibnJVxVaDp/y5TZLfU1WnlDW6xC95IIoUXb4i1M4VAxvOUQnqgbVuoxE/oPpgCHSkcSbbkNWqku5OV0hj4Y9kg1H4NAHrxsZyoc8sKpJT32taGs5D7oUzJwlUZV5ZvAv4jRWc4CbL6/di8Y/cam9yWpqkJL1Tyg/N3WpZFZiJFMhq0oBrO6VBTi
- yfPvSafe
- kE/xaITqP0/yVlqZATUSZ6kn7Al+xXf6N/j2UybEtJSar7t7nvziLOoMXNeE6CYtL6Ho9o6zZF5zVBAV/YomkwmudT7muPB6oTcUtQ7z3/h58Gh62TvbLr9KakGLB2MXMn04EdqWT2mdCY2S0iWBIpCZsKT35c9UBaLdno+kMBlxiVzO0QQhGKJXBOPzMfQOUtFTJqbgc5NNzXsFzjpX4nfbrj4P6XTzEpGDWNq73smSqoEk2lq9+4lFlQ2C0X2QRt5yHPHQDuw56WrDUusFQ3ZAjh8rwv8PV8smUFe9CscqbgQvU039LHZw8a0qrsK7dIGxNS0+xBp95CgpOMB5ziBHZJjyiwH7sHRmhU91ZG5ilCva12mu/pyCRPAahDDC7xmrG
+X-Rspamd-Queue-Id: D8F12A0002
+X-HE-Tag: 1770405188-239009
+X-HE-Meta: U2FsdGVkX1/gQ9IypTuP6HP0U2mdm0B+66/wm8aQBFWIE8dr7zWfPy9yT+4wNBfTqbzIs0fOhinYrk5gjZaVs3n/sXbEwkJEUXiQoRojc5SGRGTQO+/2Qd8Zz5L4u9AS5JWXJOKQkEuV6LI9yEEPhz8JaerCDMcIJTd6pvhGDeN94oT1zy5FM49J5Zv4xrBEQbYydQDv7Zhz1Q2g/T57XQ/WrTiBTEsuDsIoFvCIDaot8ElE9V0EesIYxmEm9n1xYovvR4hY/KfpqcYyXm4LqZUFfBEozFOKMjDQ3WPiIV/SUDZJJ0HNx4Pii7+np3aFQqbf1fBNLbeREciXxbQYvWj/t8dLOaL2N87p/1g51zXC3M1vSBpkFvpbpmkDyX/M+ofAXodQjZP4AdV+ZFxqf12eY18T3V7wZrgN2GSdf4TEi43p2aPxpgrxLjk57RJqagWpEH9YKVbk6Mgle7G3AfqUAXQNkjNNSIZBcDlJ0h4oahnnHzoo69B2Y0gjSUg84J+bBKVY1EnWQgRXpVM+eOFM8RETETlHkDcaf5N1O2jtDb/+AKbYS3O5m3CPDf0vXTOW4CA+oAoU7USKMlwLdXfZr6dKsHr4ir0YpRZf6Q088YiQob4dVZS/mB9tsicxaHkzObXJUPav2197yovnWFY8/iVzU51ZQ1ZcklEIW++rLG6BBObZuTsfaiQ3a00Pjfs3m8K2ZQp4hqTye8WqaT8T3bw5dVWdufzdaBSrEGBjduWu6ZdSr/OJT0lvLXEKUh/K06ojNs877Sc90bN7wubW1jvcLdJ46OjsKh8LW9dCxn+rgj6SrbLXZWvH9EJ10KKWjFkXoj57zVEXUijD/IlPAgza0mNvyKZ6jPEnRroHVfMzwGByu2lXQOFARy5luEJk9M8ZsrvwMmnjeyp4373s2pb+Z8u3HwAwvBUxNk/01LXNtM32OPIMUGozOqJLBX40aYS2l9Od23Jb6zw
+ roXTude8
+ U3q5w86DyWuzud4V4TlFTqLbbfRdEj7DoLlS6TfCjrQBDPP+fRSxN3sKg+wePTs6ewrRDmAORff/LZOVn8PtLahPRFfXutsZ+Ov6NDpkSJfiDVz+6nKVnBSSJN8QUSzLnoNkf76BUv+TP1k8JjGRKPE4XwiMI2bpL4Elg9cZtQJjxS2Ec8G00L64VL45ZLeQsXhFsS3qDOLSyezLjFprgYJMeHUuj90nZZkoImVrD5FmRxhoN/ZqZ/QOxj/VDqwo71Wi7Adydq3QiRovLh1ngFwfPIkCbPsBmITOetvFmZUvyoMrGs4wtIiq02dNCTVO86gMp+qHrzL+DSWgZ5xuISBUSbzgUu4bdaDvKx1UknmVAOJTgZZNUpDi5OpL1D9XxieYiewUl9ezO9FVzQMRka0W6y3P66gVPMjBhsB2bKYIKcTtM1Zkxa6FFyVuzdcWVkh8T+yCXJRiiZ13n6ig8BWcv+KOkjcIo1jK733Jv9WT7B8PTgmKhKs6DikS33+dxdO05p8DTBBFe3BOSvXSkjPLM96l1qWj4vQPyBoK22Wi1iRI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,17 +121,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-While looking at:
-  https://android-review.git.corp.google.com/c/kernel/common/+/3939998
-  UPSTREAM: mm/kasan: fix KASAN poisoning in vrealloc()
+Hello,
 
-I noticed a lack of symmetry - I'm not sure if it's a problem or not...
-but I'd have expected kasan_poison_last_granule() to be called
-regardless of whether the size shrunk or increased.
+This patchset introduces initial vision of Machine Learning (ML) library
+in Linux kernel. It is an effort to define the ML library API and
+to elaborate the way of running ML models in Linux kernel.
 
-It is of course possible this is handled automatically by
-__kasan_unpoison_vmalloc() - I haven't traced that deep,
-in general these functions seem to have a terrible api surface full of
-razors... with hidden assumptions about what is and is not granule
-aligned.
+Linux kernel is a huge code base with enormous number of subsystems and
+possible configuration options. Complexity and changing nature of modern
+workloads result in complexity of elaborating an efficient configuration
+and state of running Linux kernel.
+
+Machine Learning (ML) is approach/area of learning from data,
+finding patterns, and making predictions without implementing algorithms
+by developers. The number of areas of ML applications is growing
+with every day. Generally speaking, ML can introduce a self-evolving and
+self-learning capability in Linux kernel.  There are already research works
+and industry efforts to employ ML approaches for configuration and
+optimization the Linux kernel. However, introduction of ML approaches
+in Linux kernel is not so simple and straightforward way. There are multiple
+problems and unanswered questions on this road. First of all, any ML model
+requires the floating-point operations (FPU) for running. But there is
+no direct use of FPUs in kernel space. Also, ML model requires training phase
+that can be a reason of significant performance degradation of Linux kernel.
+Even inference phase could be problematic from the performance point of view
+on kernel side. The using of ML approaches in Linux kernel is inevitable step.
+But, how can we use ML approaches in Linux kernel? Which infrastructure
+do we need to adopt ML models in Linux kernel?
+
+What is the goal of using ML models in Linux kernel? The main goal is
+to employ ML models for elaboration of a logic of particular Linux kernel
+subsystem based on processing data or/and an efficient subsystem
+configuration based on internal state of subsystem. As a result, it needs:
+(1) collect data for training, (2) execute ML model training phase,
+(3) test trained ML model, (4) use ML model for executing the inference phase.
+The ML model inference can be used for recommendation of Linux kernel
+subsystem configuration or/and for injecting a synthesized subsystem logic
+into kernel space (for example, eBPF logic).
+
+How ML infrastructure can be designed in Linux kernel? It needs to introduce
+in Linux kernel a special ML library that can implement a generalized
+interface of interaction between ML model’s thread in user-space and kernel
+subsystem. Likewise interface requires to have the means:
+(1) create/initialize/destroy ML model proxy in kernel subsystem,
+(2) start/stop ML model proxy, (3) get/preprocess/publish data sets
+from kernel space, (4) receive/preprocess/apply ML model recommendation(s)
+from user-space, (5) execute synthesized logic/recommendations in kernel-space,
+(6) estimate efficiency of synthesized logic/recommendations,
+(7) execute error back-propagation with the goal of correction ML model
+on user-space side.
+
+The create and initialize logic can be executed by kernel subsystem during
+module load or Linux kernel start (oppositely, module unload or kernel
+shutdown will execute destroy of ML model proxy logic). ML model thread
+in user-space will be capable to re-initialize and to execute
+the start/stop logic of  ML model proxy on kernel side. First of all,
+ML model needs to be trained by data from kernel space. The data can be
+requested by ML model from user-space or data can be published by ML model
+proxy from kernel-space. The sysfs interface can be used to orchestrate
+this interaction. As a result, ML model in user-space should be capable
+to extract data set(s) from kernel space through sysfs, FUSE or character
+device. Extracted data can be stored in persistent storage and, finally,
+ML model can be trained in user-space by accessing these data.
+
+The continuous learning model can be adopted during training phase.
+It implies that kernel subsystem can receive ML model recommendations
+even during training phase. ML model proxy on kernel side can estimate
+the current kernel subsystem state, tries to apply the ML model
+recommendations, and estimate the efficiency of applied recommendations.
+Generally speaking, ML model proxy on kernel side can consider several
+modes of interaction with ML model recommendations: (1) emergency mode,
+(2) learning mode, (3) collaboration mode, (4) recommendation mode.
+The emergency mode is the mode when kernel subsystem is in critical state
+and it is required to work as efficient as possible without capability of
+involving the ML model recommendations (for example, ML model
+recommendations are completely inadequate or load is very high).
+The learning mode implies that kernel subsystem can try to apply
+the ML model recommendations for some operations with the goal of
+estimation the maturity of ML model. Also, ML model proxy can degrade
+the mode to learning state if ML model recommendations becomes inefficient.
+The collaboration mode has the goal of using ML recommendations in
+50% of operations with the goal of achieving mature state of ML model.
+And, finally, ML model proxy can convert kernel subsystem in recommendation
+mode if ML model is mature enough and efficiency of applying
+the ML recommendations is higher than using human-made algorithms.
+The back-propagation approach can be used to correct the ML model
+by means of sharing feedback of efficiency estimation from kernel
+to user-space side.
+
+[REFERENCES]
+[1] https://lore.kernel.org/linux-fsdevel/20240605110219.7356-1-slava@dubeyko.com/
+[2] https://www.youtube.com/watch?v=E7q0SKeniXU
+[3] https://github.com/kernel-ml-lib/ml-lib
+[4] https://github.com/kernel-ml-lib/ml-lib-linux
+
+Viacheslav Dubeyko (4):
+  ml-lib: Introduce Machine Learning (ML) library declarations
+  ml-lib: Implement PoC of Machine Learning (ML) library functionality
+  ml-lib: Implement simple testing character device driver
+  ml-lib: Implement simple user-space testing application
+
+ include/linux/ml-lib/ml_lib.h                 | 425 ++++++++++
+ lib/Kconfig                                   |   6 +
+ lib/Makefile                                  |   2 +
+ lib/ml-lib/Kconfig                            |  18 +
+ lib/ml-lib/Makefile                           |   7 +
+ lib/ml-lib/ml_lib_main.c                      | 758 ++++++++++++++++++
+ lib/ml-lib/sysfs.c                            | 187 +++++
+ lib/ml-lib/sysfs.h                            |  17 +
+ lib/ml-lib/test_driver/Kconfig                |  22 +
+ lib/ml-lib/test_driver/Makefile               |   5 +
+ lib/ml-lib/test_driver/README.md              | 233 ++++++
+ lib/ml-lib/test_driver/ml_lib_char_dev.c      | 530 ++++++++++++
+ .../test_application/ml_lib_char_dev_ioctl.h  |  21 +
+ .../test_application/test_ml_lib_char_dev.c   | 206 +++++
+ 14 files changed, 2437 insertions(+)
+ create mode 100644 include/linux/ml-lib/ml_lib.h
+ create mode 100644 lib/ml-lib/Kconfig
+ create mode 100644 lib/ml-lib/Makefile
+ create mode 100644 lib/ml-lib/ml_lib_main.c
+ create mode 100644 lib/ml-lib/sysfs.c
+ create mode 100644 lib/ml-lib/sysfs.h
+ create mode 100644 lib/ml-lib/test_driver/Kconfig
+ create mode 100644 lib/ml-lib/test_driver/Makefile
+ create mode 100644 lib/ml-lib/test_driver/README.md
+ create mode 100644 lib/ml-lib/test_driver/ml_lib_char_dev.c
+ create mode 100644 lib/ml-lib/test_driver/test_application/ml_lib_char_dev_ioctl.h
+ create mode 100644 lib/ml-lib/test_driver/test_application/test_ml_lib_char_dev.c
+
+-- 
+2.34.1
+
 
