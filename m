@@ -4,89 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4790EE20AB
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 15:19:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39F00EE20B0
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 15:20:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E1EBF6B0005; Fri,  6 Feb 2026 10:19:49 -0500 (EST)
+	id A20F36B0092; Fri,  6 Feb 2026 10:20:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCCAE6B0089; Fri,  6 Feb 2026 10:19:49 -0500 (EST)
+	id 9D81B6B0093; Fri,  6 Feb 2026 10:20:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD9346B0092; Fri,  6 Feb 2026 10:19:49 -0500 (EST)
+	id 8CD6F6B0096; Fri,  6 Feb 2026 10:20:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BC0F96B0005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:19:49 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 61C58140254
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:19:49 +0000 (UTC)
-X-FDA: 84414391698.30.68E7582
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 48A0B180011
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:19:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aywzXuhD;
-	spf=pass (imf06.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 794B46B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 10:20:58 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 33F06139D9F
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:20:58 +0000 (UTC)
+X-FDA: 84414394596.03.F19CDF7
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 09C79140011
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:20:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bU0MtEep;
+	spf=pass (imf26.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770391187;
+	s=arc-20220608; t=1770391256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ChC6m5WfVroGjS9ENqi35nDBudi2mtW1bc10jN5JpMM=;
-	b=smwQQ5yArBzeP0lY3nyl8qVuq+TMbV26D8R9405/BRnIy2/Nq1sK44fTogcYNGmCBVjME/
-	M27pHhUNfR8rOXWNOXAgAyUKWxXAB+8YmwikJHpV+PK2a0EvEbunb+6/Gp1wuU2bpqeGKt
-	Tm/b40T42WaSDI2E0A7PBIdcWm/gEvk=
+	bh=m9TLokuC5rGVZdojl+bDurZF6xBfwIKD9MiN3qlHtRk=;
+	b=VNynkzLN+AcLxLUZ5zy/jJx0zbFdZPNqwRvxa0o/gZFdV51hioNivWSbFMQhatsCZ2KTAY
+	LWkvGnNrxyKFFpYX+KaGiQCcIDIkp4UaucHTlAIur+9HJEmxCfF1IGwDjE0538YsaNCrrG
+	26Qlzh4x1WavhS5qWXgdw/33rCQqCT4=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=aywzXuhD;
-	spf=pass (imf06.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770391187; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bU0MtEep;
+	spf=pass (imf26.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770391256; a=rsa-sha256;
 	cv=none;
-	b=c8sUmG2fcLtxZAn+ZFbACWxnh2Mgp4+9yfjpyMHnnJIuyh2ELcWowZicWW7TqRcyfAJk12
-	6YQoXS5XxgPDVih3/hVFHhvxwtl6HyaBkwK1vx9pmJLbBuXnfaCaHfjmtvOyADRvecx9A7
-	2qjMDIc3hVMaJDcFlVJfiRAQI6XZAm8=
-Date: Fri, 6 Feb 2026 15:19:31 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770391184;
+	b=HBx8k7uv/ZpcsaWx15aQdl8LPcsednqxtr7LR87HekFcDll9l97JeliDC8fa4DhscYBnpM
+	kM3BogAHoLy68QPlXtq1H8ORC3Q+bPnIYet+ed7gZYrrWfKb7vR2lVqZ1zjtYSHjrFt9HF
+	ytDRIxMhk78232rTjT6trcw5CUhgYa8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770391255;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ChC6m5WfVroGjS9ENqi35nDBudi2mtW1bc10jN5JpMM=;
-	b=aywzXuhD3aIRl8d7DfaV1A4HZXwVjqvlCIQ3oXkRUMWqETv6Fnc28cJp0x4vYuQGoNZP7+
-	COR3c6t8nqalS9d43VhLxDSGTWIjGkRXjKp/Wy5GOwnvvY+KVi+1+6FwRnBLRWb+V351o4
-	FPmWoT/JsuNl2LGBhfueWqgH+YiY3nM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Shuah Khan <shuah@kernel.org>, cgroups@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm: zswap: add per-memcg stat for incompressible
- pages
-Message-ID: <iphymajz5xn6cbntby7z5s3eioraigs4doqylijoljfhzrexup@f23vxl2deyfr>
-References: <20260206072220.144008-1-jiayuan.chen@linux.dev>
- <20260206072220.144008-2-jiayuan.chen@linux.dev>
+	bh=m9TLokuC5rGVZdojl+bDurZF6xBfwIKD9MiN3qlHtRk=;
+	b=bU0MtEepM/DpLOepT7cXO2wl6qAkt4dGgV3ZAp6A/7OXpZI3A4uKEGua9l9mKksWKJEZeZ
+	X8jiz+219Tu/xYoI5rayKCCbY/TXMW5CxThmh/IoBaKIP92jsoM3hr/egBW8qeA3dmNn0m
+	siplBKwLHc2Bbm+bcFPLApnEwhkKng0=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-5-ECvfvB9IP0O8Uukw_JZm4w-1; Fri,
+ 06 Feb 2026 10:20:54 -0500
+X-MC-Unique: ECvfvB9IP0O8Uukw_JZm4w-1
+X-Mimecast-MFC-AGG-ID: ECvfvB9IP0O8Uukw_JZm4w_1770391251
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2C61B1955F12;
+	Fri,  6 Feb 2026 15:20:51 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.22.74.16])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6DC6B18003F5;
+	Fri,  6 Feb 2026 15:20:49 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id CADA64015C638; Fri,  6 Feb 2026 12:20:28 -0300 (-03)
+Date: Fri, 6 Feb 2026 12:20:28 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 1/4] Introducing qpw_lock() and per-cpu queue & flush work
+Message-ID: <aYYGvEkIwBiRR1Uh@tpad>
+References: <20260206143430.021026873@redhat.com>
+ <20260206143741.525190180@redhat.com>
 MIME-Version: 1.0
+In-Reply-To: <20260206143741.525190180@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: EbgD6N_aa3xTsT3dhRVsGAHENPRsGV91xv30qddnA2M_1770391251
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260206072220.144008-2-jiayuan.chen@linux.dev>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 48A0B180011
-X-Stat-Signature: b9ketzj5n1wbdp118cupe6idkum586xj
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 09C79140011
+X-Stat-Signature: rnqfppj9fg9ptet4kfamhj3tybapq7a4
 X-Rspam-User: 
-X-HE-Tag: 1770391187-772568
-X-HE-Meta: U2FsdGVkX1+FQFl6bTQuv+724LJIQw5BrGfJQrCAipu0hLKdZ9XWgRzvCDNvv1Zry5Ecxyi1ig6nOvvZVrhTNSo7tPlKXJG0Vp5dz11PQCX92TM+HP/IxvLmmfAhaS2W8QAzvJx9arMFGhImbOxC9QbbxZniLPjKY2a60v0W25d8MuRNPzCOJgKToYRQb/P4ys7YER5v/Yv/NZidQWGO93ZGXkYpRuGRJCqhjUDDZqn1B72JpLVRzw9WTk2EbwBWQmmX9WlJya2n/MEnYdI0tTJpwowTeXnjOgdkcZAqs/WQ2y1KigWjLclKMnG6Fp0roYr1deKVuX+i5MaNKbGzJSKM5EhGxeob9huS72xnobvhGDngUZZWqh0L4ELUtvh8Pv1DkU/lpJUsNVmhHiYs7oVqv1G0nIjx4RkB/cgf91F1z1AjDlUL8ynm/wjLn8jNYrXyWXI4IiBjAaa2WGGrtp741/G6ouUFaKQIc3c8pPPovlk2XDjgqUOH2BgKDFIH4bGRiHY2CfaC9yEa+o76hFkcsEFwJa6ywcPBl8kmeM0ks/OIQ0hz0tkLag0yOHvM3/9bPqyohEPq7jSxFXxxFKQ/TsUw1BLH4m1qjAEMxzfxjKC64plXv/LJnNMTKCNQa+zV9fg9WJLK+trACP4AHpFIrb9UxGArvPY9gDLTOKe6X8km1zW7YVrOq9KDrOHz2AJRLkaQktxapgyn0DOwieBsCA9aRYxZPZLYlhRQ7cp/5XyYqaVkTTMeoKraGAJw+ikbiTFjGBxvfqZh8XDj4wLBw2BKGJRLONtxJwSnjtyKfL5q6Y2Al4kw5kip8DCpBF3bocISseC7qzKQLtloG2X7+puzB6V6HEYKboF6ona1neNgO0Ra7Ygxw7tx9vhwj/DmujMsfzTT9Veor8enG2TQ8fVwTZPCLbTppxtAJTnhC/UXlz8dXF0kvMc760LonOnwhiVfz8bMauyMtiA
- AxGet9Ow
- VTztJumS/1Kgl76d6CeEguA0/9ju/jmuYqYaaJnVg6p/HRr1Ste2L0I/4gHlGjFUUEpPo44g8+vglLUmMY6ha+jIfgbVE+R4LplcR/Y8pAEQNZ/RpbqaLJcF5ylzjQTjYEhYl6pKxDmfVi+obrkoI6JOclX33fsP2rrG6ThWCG+TIQVAyqmsS+o6og4/s+q+Fb9JCQKbJU7fcWls9YzJMUULutHTBsw4RLDVJvbhaKVqGTJXPGQM6UKy6rtdi3rPMRr1/AGrF8+pSBlXyjlqotd7QIPmlQSn+9DVq2qV54VkCUrssAn02uy0O1Q==
+X-HE-Tag: 1770391255-946575
+X-HE-Meta: U2FsdGVkX1/QRIoEWD8pDJwuYKP8/8J4cyfMe+5Dw7q/kICrohiooyUSPo7ZMbnEMfEeU7Mi29VjJ+K+4PosjCVK/MFqQf9M4K0ZQWs7J/CHldwtyDc9UbU65ptNeTfRAzNNQ3uLvemEkgLI65HyPHKZGTiCjpOXdqLMi8naLECblwkIpHwYAhsL7W0LceFnFWH2YO/vuSXJSzo4bKSaiAPw/rGJ6Uk3BHbao5GFYg4MRv1JVbn2KqG+vNNHvV9qsypGJWEA2P1GQEuvJwl5qyro/rAnaPK4DcIMYUkULXMYMXYVkBIQcKYH3ZAzWHnIegMhJH61bYRUfbb7/TOpHPZyDjiU9tKTCLpQOkUENBwRRyznClIGvoyK1f/+8v7yP8qpDxH362BGYz6Io2fMxGtJFBkJyv06wbsAbZVgP2S03tgcDqHkJ4sXzO9tEMh8sLgy69bssLnoLBmqbPcKLs1aymYf64lq7/AjqFV0nvSRhXdzPDDmv96cthSUo0GuHTwEg25ZN3SRFXibdM4RirZYZ3PXKGX8zrSmT7WuTzqEJIFaWRlFzo9MFhxj8uzOx/DfsQrzCTPYaZNmBucYRy3VweCiF9YanM99K67PwgvAErmJ2EjL7iOlmeSMObzHBAQCiQcstnBEty0JQdsrwcnvBhPfEYWbiPxjxngv6GcnahQCcbzQZ00WyqxjbN7PNAJBclhHnkzCj+USg9QH1xhjGhdVJKpu7r6pt+Tu4h89nmWhKHgFFwCSC9YD8XdweaCEgxpnrofon8Ctohgxd7/TiKBZNUH/GEEE4g3o8lrCzewxA+YafnTkz1U7b1iHFXHTdtgMP874Ywv0GJuCY6BOF8L4OgT1OosD9+16FR/KwvedO8o3fKuJdMSaPnWfxm/lvQg8BC4ZLHMMR+zWxwnevBDw0zKP4Dn5UwvnAnrH/qr+Htu+N3EQJe167n1aQ8n4BUpNEPwaRxaQMLJ
+ /PjoQD8f
+ 1CJ5XhW1mGZ9fhm3JFHrsO3JLsXcfFUaSZSXVIsEnW/+zRvPifrBLtTZnJMCrkmRinPpZ0uxiBdUCQ+YSei95bKB7/f43UuCQTCT8VZK2Sydm21FcMLnTpO3pe2CUd6z6W5+CUkP8mACBfHOTbnZvfNvtYP9fylfbNr7KbbOZFcrGz8AgZJEoGrJaiHIQDiw68c+tRF3gyYdg6Zt7qWK4MW/Q1Wf0PDwdQedjBo2fh5wZ9b6l/Ne5R49o0yHJ0XH0ceXWuh98OEVoWFO3wSCL16FiGnNIRPZxPnLTqwDXeZ+LDTxT1zsz3AfUTMpNq0DQUPNtq909Se6Ufc1mvHf8xk6rKxoUdut8ThdrdcYl9NXqhie1/555hM18+T0SFQsFjBSgucllYIp29HBRnRrC0TTydoYcMy677TZIMg4t8DvJxDUCEZIqAd/2cA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,120 +119,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 03:22:15PM +0800, Jiayuan Chen wrote:
-> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> 
-> The global zswap_stored_incompressible_pages counter was added in commit
-> dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as-is")
-> to track how many pages are stored in raw (uncompressed) form in zswap.
-> However, in containerized environments, knowing which cgroup is
-> contributing incompressible pages is essential for effective resource
-> management [1].
-> 
-> Add a new memcg stat 'zswap_incomp' to track incompressible pages per
-> cgroup. This helps administrators and orchestrators to:
-> 
-> 1. Identify workloads that produce incompressible data (e.g., encrypted
->    data, already-compressed media, random data) and may not benefit from
->    zswap.
-> 
-> 2. Make informed decisions about workload placement - moving
->    incompressible workloads to nodes with larger swap backing devices
->    rather than relying on zswap.
-> 
-> 3. Debug zswap efficiency issues at the cgroup level without needing to
->    correlate global stats with individual cgroups.
-> 
-> While the compression ratio can be estimated from existing stats
-> (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
-> "uniformly poor compression" and "a few completely incompressible pages
-> mixed with highly compressible ones". The zswap_incomp stat provides
-> direct visibility into the latter case.
-> 
-> [1]: https://lore.kernel.org/linux-mm/CAF8kJuONDFj4NAksaR4j_WyDbNwNGYLmTe-o76rqU17La=nkOw@mail.gmail.com/
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> ---
->  Documentation/admin-guide/cgroup-v2.rst | 5 +++++
->  include/linux/memcontrol.h              | 1 +
->  mm/memcontrol.c                         | 8 ++++++++
->  3 files changed, 14 insertions(+)
-> 
-> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-> index 7f5b59d95fce..78a329414615 100644
-> --- a/Documentation/admin-guide/cgroup-v2.rst
-> +++ b/Documentation/admin-guide/cgroup-v2.rst
-> @@ -1737,6 +1737,11 @@ The following nested keys are defined.
->  	  zswpwb
->  		Number of pages written from zswap to swap.
->  
-> +	  zswap_incomp
-> +		Number of incompressible pages currently stored in zswap
-> +		without compression. These pages could not be compressed to
-> +		a size smaller than PAGE_SIZE, so they are stored as-is.
-> +
->  	  thp_fault_alloc (npn)
->  		Number of transparent hugepages which were allocated to satisfy
->  		a page fault. This counter is not present when CONFIG_TRANSPARENT_HUGEPAGE
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index b6c82c8f73e1..d8ec05dd5d43 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -39,6 +39,7 @@ enum memcg_stat_item {
->  	MEMCG_KMEM,
->  	MEMCG_ZSWAP_B,
->  	MEMCG_ZSWAPPED,
-> +	MEMCG_ZSWAP_INCOMP,
->  	MEMCG_NR_STAT,
->  };
->  
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 007413a53b45..a6b6cf5f1aeb 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] = {
->  	MEMCG_KMEM,
->  	MEMCG_ZSWAP_B,
->  	MEMCG_ZSWAPPED,
-> +	MEMCG_ZSWAP_INCOMP,
->  };
->  
->  #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
-> @@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[] = {
->  #ifdef CONFIG_ZSWAP
->  	{ "zswap",			MEMCG_ZSWAP_B			},
->  	{ "zswapped",			MEMCG_ZSWAPPED			},
-> +	{ "zswap_incomp",		MEMCG_ZSWAP_INCOMP		},
->  #endif
->  	{ "file_mapped",		NR_FILE_MAPPED			},
->  	{ "file_dirty",			NR_FILE_DIRTY			},
-> @@ -5458,6 +5460,9 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
->  	memcg = obj_cgroup_memcg(objcg);
->  	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
->  	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
-> +	/* size == PAGE_SIZE means compression failed, page is incompressible */
+On Fri, Feb 06, 2026 at 11:34:31AM -0300, Marcelo Tosatti wrote:
+> Some places in the kernel implement a parallel programming strategy
+> consisting on local_locks() for most of the work, and some rare remote
+> operations are scheduled on target cpu. This keeps cache bouncing low since
+> cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> kernels, even though the very few remote operations will be expensive due
+> to scheduling overhead.
 
-I think the comment is not very useful, but maybe not worth sending a
-new version. Otherwise LGTM:
+Forgot to mention: patchset is against Vlastimil's slab/next tree.
 
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-> +	if (size == PAGE_SIZE)
-> +		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, 1);
->  	rcu_read_unlock();
->  }
->  
-> @@ -5481,6 +5486,9 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
->  	memcg = obj_cgroup_memcg(objcg);
->  	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
->  	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
-> +	/* size == PAGE_SIZE means compression failed, page is incompressible */
-> +	if (size == PAGE_SIZE)
-> +		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, -1);
->  	rcu_read_unlock();
->  }
->  
-> -- 
-> 2.43.0
-> 
 
