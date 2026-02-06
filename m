@@ -4,88 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A162EE208C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ECF0EE2091
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 11:46:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B48676B0089; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
+	id 417386B0089; Fri,  6 Feb 2026 06:46:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AF62C6B0092; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
+	id 3C43A6B0092; Fri,  6 Feb 2026 06:46:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A02426B0093; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
+	id 27B6F6B0093; Fri,  6 Feb 2026 06:46:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D2C76B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:35:18 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1685A6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 06:46:05 -0500 (EST)
 Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46924B3D3C
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:35:18 +0000 (UTC)
-X-FDA: 84413825916.29.8EE1CC4
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7A3D2180008
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:35:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PvrvO4Tl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770377716; a=rsa-sha256;
-	cv=none;
-	b=57u+xRed7YdxxLaNiaNwbprcIZWxUiMrWyV/BEPh2NL2mKIck59aNnUkX/J58DOdD7JEvT
-	bwt4w4X8fYXubvBffE/QMTL2zfi+K/ypyA4ic4p/acrE1aFTUZo04KlqE7plXOcp1OnO0Z
-	aa4fR4m23XddeUP6D1JB1HhrCh9y3Qk=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PvrvO4Tl;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=hao.li@linux.dev
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5BB4B1AF4CD
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:46:04 +0000 (UTC)
+X-FDA: 84413853048.29.63DA037
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 8472640005
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 11:46:02 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WezqA93r;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770377716;
+	s=arc-20220608; t=1770378362;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fyNHzyO8yNbJalRk1JwWUSdFphKI36stzx00uDbxggc=;
-	b=FsIS0/hTDjXxnrfmsShSAjrFapSTNSBgGNLrwXYAZBZA34/xSpSLIHija/joNMwx61N57p
-	7ApcboWC604xM5zAXvJooTqgSMSxhBtf/I7CDEVsoXtYwVvULHKHiwTIcKCvj23ITeS7bY
-	LAjn94Vw204OgZj64zbcVIUPOrlbiYk=
-Date: Fri, 6 Feb 2026 19:35:07 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770377714;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fyNHzyO8yNbJalRk1JwWUSdFphKI36stzx00uDbxggc=;
-	b=PvrvO4TlSq5kSmx6TeVpwJ30Ld0Wga6wWmLevrybCJJvVG1oYyRICSSJKkp8g/3226N6zG
-	ai9NzwpDIO/QpoCqbj2iGynly9F1IVfvK75h3Xhz3RzapcKFVqj3j4ISB+8w6nLbbNogsS
-	2a0ucmdBZz7yw6Ch8fx9UgiQxl4CjjI=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, akpm@linux-foundation.org, 
-	cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] slub: let need_slab_obj_exts() return false if
- SLAB_NO_OBJ_EXT is set
-Message-ID: <koypivw3zonvakx3k2ji5ti4oy5yv6t2yaretkbh6dd2f5h5uh@gjbuxu7ryph4>
-References: <20260205120709.425719-1-hao.li@linux.dev>
- <aYU7l6P2ikKvnrWT@hyeyoo>
- <67ebb9f2-b383-4b68-949e-239d8c7b18f0@suse.cz>
- <aYW732VZACRIzr-r@hyeyoo>
- <e924ce7e-29c8-4853-b1c2-3495b8cf8427@suse.cz>
- <aYXAqQFGfru8aC6M@hyeyoo>
+	bh=UibJEwiRfpg9LIZCDJn7Dac1zNN3EfEuURTyNpJkjbg=;
+	b=bRjysEuIQos2lc8h/ToY0q9EhKB/U6YRu6THRGlyzgm1UgWnMQX3XlXrWDQhTlcwdKfY3t
+	n5KAs1j0F8ikGaDDiH0HCVC5NRuSqkGiO/Elac9gX/99rvH3kzRuxrAMx9eLnYNmzTN4Vm
+	30c0bHPbu8kfOg6QHeMCDnrQnoqPJDw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WezqA93r;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770378362; a=rsa-sha256;
+	cv=none;
+	b=JRsSrjdI3DzziMDzSnddXSjU/mI+tIlZ/MVtJEyy2QwSRGuzksAXUW8rdzLgdlZeVYiBQw
+	YcOis3k+f+d4cYIfhH2NvbfIHoOIU4oUiDi0ZBkrd91A08Boz6MJqVX2qVjSQrIR+Sv+Fc
+	0UX64MsuE8k7eq6nwnU9qfO/wjv5KGQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 79E3E435A9;
+	Fri,  6 Feb 2026 11:46:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE15C19421;
+	Fri,  6 Feb 2026 11:45:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770378361;
+	bh=XT3tvSr7Whaw/wGhA/JRmGY0OYnnLn73hOQlr1eO6WQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=WezqA93rvVzTGU8jXDMPN8JLufLwqx66hpVWUezvwvv0fRxUfY8lHiQOmnTTMN0tM
+	 A1kU4DDF0/Vvwr9vwmJBH2Yp9i7tnP3VXf8XS6ATyIFYwVroEdgP/Zzed84yUGL07f
+	 SyegMd3Kg/Q9ePk2keJeh7hlU+AaJi9ONGG+2aOPpgYP7Dtlcw+CxnDOhAf/YlGuSs
+	 bWqD2azVr3W/7p+2IvZnHMJZc4Tvua5g6AkklfWZu9LA3mmdg5Rjnhh+kQvRvR2dRy
+	 LO9yRg4WBo0bxfcbeVcdh25k5Y+QqAjaeWfa9fT5o15B0aJh5RE1SEP/SYhhUjfmpQ
+	 ikfgjfD/5/Ftg==
+Message-ID: <538fef61-3903-407e-8486-538a28b99e9d@kernel.org>
+Date: Fri, 6 Feb 2026 12:45:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYXAqQFGfru8aC6M@hyeyoo>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 7/8] mm: convert __HAVE_ARCH_TLB_REMOVE_TABLE to
+ CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE config
+To: Qi Zheng <qi.zheng@linux.dev>, andreas@gaisler.com,
+ richard.weiyang@gmail.com, will@kernel.org, peterz@infradead.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, dev.jain@arm.com,
+ ioworker0@gmail.com, linmag7@gmail.com, akpm@linux-foundation.org
+Cc: linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-alpha@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linux-um@lists.infradead.org, sparclinux@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1769515122.git.zhengqi.arch@bytedance.com>
+ <5ebfa3d4b56e63c6906bda5eccaa9f7194d3a86b.1769515122.git.zhengqi.arch@bytedance.com>
+ <a404e9ec-35ff-44b1-b321-9cc4fbf72060@kernel.org>
+ <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <1663ae90-3247-4e12-a25a-049fc3281e19@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: t8dguau9h55bd8pr9tun8zi8b65adtgk
+X-Rspamd-Queue-Id: 8472640005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7A3D2180008
-X-Stat-Signature: qczy6pxdp747pymh6f8optk75fh6bzeq
-X-HE-Tag: 1770377716-159798
-X-HE-Meta: U2FsdGVkX1/pycm7sVC/T2fFUF5AHvE3Ijol1bnWMw+ckSIhM6M5h+jpYVU9dTY1KF471Y0iaUcIs/epyvsyFRTBncm9tM8e4wVHzBdukCRWbdTnJsdqXLb1ZN81E65nGDqmNFldmcAcdJ4qVS5WmAFbws758yCPTPooKqGZLYG0JVERligFgJgl8KpCIWDqzbfWbMPMGOZSXcwZ1BuFOyWC81kIljV6QOGz4nA1LYVHLWhy14tckKYA98/LVCE/gpLQzoWr6+lJA6VXsaDlHKc64qHM21qktt/ciB2DPgyux7bnzv3KQSUYc71AzGVGGWuNfqbhyQx06lz18jwLjB1bDe82FM1pSA5h+IV69Zg3FHJK/kUF8sLvkBUqpf7kNOumaJxLAK1HvZljmU1Z4Erqgh+mP5gsV0yEStX+VQJwZjwbooPHjKLIFLGycWfdIeJZbrXqBszhr5VGDlzGuEH1MWha+1Ekf4Fakh3M/MyHFVH8zaFoph8bnbQ7KLrkAKV3N4OFPSVJH/cnuZehHTHZAixfUyXrMQ6mApv2HcU/mo4+FFEPhPHIJg/OOYzyLJcbNyCGm46G6k1YFeOx3ysdEeXXQ+NGhSiinWxReY3dUjikySDmw53hJWta8bZWl31p596l5abUzkfTGv5O7Vn6zyHghYF9k7cJC72Tf64s6zt3kIIDRvNn805gwSxM0C1gseDWEiOQfDXd7vUBMkUI6RWgkfR8i1Ts0aUHWnZ9botoLTYnB/KJin6m3zXJ8vFEM2bWwYbuxuy1iHeHfcSJ3nrSiBq6YM5+dWEpE+x/0/k/wnwQGH4XIriExD7zwynRzitFilMKQXA98IzPBc3H9Vrm8wL1yBs+Bgs2L04Sg8AG3GaHIJ++tIJ844eGX1gW7AtIp09agocaIz9nPfMylUMWoLcx4UxuKOGK9Jn/moAHdEFF7hIVPv5eEQRstLqzlKzhgmZ9UU236Zf
- g9yc7/8L
- bQCeAmxvTSlT+ic/bPKOxsQCPmmN24A3G9/fNF4BvTBwuSca6e++wcVT380F6V4wfvwjib4u9zaTC7qzrsiFo2ul5TeFsOFs595rKldI+Pmvl3lhU/4HL33Sd56bYbnMM5dZShDv0C8ZJZ6ZWm9BCpzc+tSgxELNreu1GdUX/a3HMjx/Ugb/dVjXAUVBHAQaa6Q5lRnMJvMnT44P/Aqmx8rWPAQ5rGoWg0vXCwrVolb3PRF/z7J9/tGcnWxqiiJzy+dhonZhpN9Uz2DzX3WH2UMKrlg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770378362-714343
+X-HE-Meta: U2FsdGVkX1/v9WooXyepRDnu+a2JWhyCaY7cLmfGCXukGgj/0ijfrIX1pOWL9JxRif3h3Wj2syFN1pi6Ju2ZjpPSRA4/hxXaheE7LJvvwY94FWlDgH+vlhdK+jhc3PX3Hqe4SEuc/G+EVHChqdxqN/XczyZEh7MdFL9H4xZXsEVzyci84bbqrUhcsFLJBh7SdAV6jEXWl0zzS/q5yEfcfs4qdaaJYhrRs8ERbwYXp7iUxC1PgL3qjpGWsaHVqZSUjYod/E78q67DvHZBWnjOO4NGpY4+oBg/ieAtHEZvnb5aX7puf47E3xYsAuMi6CCzlYsxz7ff7Q9zVqswqybnVJ5MfI2m5zWyugAO1D8DmgNP74h5lgwe3QzpUR4ltkEq0VS15Em5kBroAqlUdT8f0i1QA5bQTmBb1ZXT03dtOBybjNrTu24qDekN+U43JcslbYdfR95uHNjicwagw415NwoVsHF0+zftoJcW58Kj/H8Wpf+s5CZ0hRe+c0HoebsG3SkuOfq3cJhFHDVGM5ADdiCSrvLNtN3YKxMllgSTt77slKuKtDILqKY06J315/IVeGNsf9UF4Xprnv3U5oP7Pidc/YRDoOkCMITMFjb5KQnzRFVx5jfMMnRDz4AFsI2Y4hhOYPcUYpawZlnvoZq+Uo/ZLiLTxGq6Y41a6k24az88vc+/pkDzpBJRTayy3dSdkq4AZz9PA967akoIVSYX3bhsv6CaIIDK132Fv9yCwDYg0RVBxGjq1i/icTJU9LjNyl8029/wxa6eUqU5pbhuRJJzpCzFCPpGFBjhx8F//qrQzv4rngBUyCVH8PMPPjGJHU7124aF9U8HpI+uWe85jHkHemephFCWqH1KOLyEcHIJFP3uyRKuvTwxgpsj8wA3lmI2Tb63STwGLTeLbo1bCNOO5E9ocJnN+Si3Lr6eYqMQZDs3pRZ21cJipRwcUqG1t/+CLPhQ9wHluDnR4qB
+ YeL6842S
+ lnejRQFoiYdCeVDt/zfxVlzwRaU0KD/+eniT8illDRgBckvEz4KZeIzWDqAuYTQMULp6Er/d0tMVyl0ganRfeATuodDSbOXeu4B9f1EZ2v8oMJgehm+nnlVhq03GLwRc768BqvTXzxLCVW9QG9aH4zN13X7hxdfvdU7f81/Fk3/C771ndP6UUFjxKB53nqLeHiN9svyOMEY8rRoAclsJRdZEGn5FMqD5HrdvBZq2IP2T0znDm1kGEd4g2TK4LRI7gqPeUT/cJx9Y8H4ksBqgpW08iyaZdIJq4e3QH/8WT8AZ6kRCWo5xm2rRxwExsZqUICW1LHGayUJtF6d2cFOJ99vA2tpbfwOMWjVxovYKTHI67ZK5pjcCSt7m7WOStlmCBQz9KIqi6F8IcA+sYo30x1CWkUAoJ3RlYdtcmMBeQ1oZYfj5z2jSRSD3yVRsB0OZssoXjHfnwQ8/DlXU2ssRlCyKsuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,53 +148,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 07:21:29PM +0900, Harry Yoo wrote:
-> On Fri, Feb 06, 2026 at 11:03:08AM +0100, Vlastimil Babka wrote:
-> > On 2/6/26 11:01, Harry Yoo wrote:
-> > > On Fri, Feb 06, 2026 at 10:40:54AM +0100, Vlastimil Babka wrote:
-> > >> On 2/6/26 01:53, Harry Yoo wrote:
-> > >> > On Thu, Feb 05, 2026 at 08:07:23PM +0800, Hao Li wrote:
-> > >> >> SLAB_NO_OBJ_EXT is set for boot caches, but need_slab_obj_exts() doesn't
-> > >> >> check this flag. We should return false unconditionally when
-> > >> >> SLAB_NO_OBJ_EXT is set.
-> > >> >> 
-> > >> >> Signed-off-by: Hao Li <hao.li@linux.dev>
-> > >> >> ---
-> > >> > 
-> > >> > Looks reasonable to me,
-> > >> > Acked-by: Harry Yoo <harry.yoo@oracle.com>
-> > >> 
-> > >> Thanks, added to slab/for-7.0/obj_metadata
-> > >> I think it doesn't change anything at the moment?
-> > > 
-> > > ...unless you enable memory allocation profiling :)
-> > 
-> > If I do, would kmem_cache or kmem_cache_node caches gotten obj_exts in
-> > leftover space?
+On 2/6/26 12:13, Qi Zheng wrote:
 > 
-> /me builds and tests a new kernel with mem profiling always enabled...
 > 
-> Yes, but only if merging is disabled.
+> On 2/6/26 7:06 PM, David Hildenbrand (Arm) wrote:
+>> On 1/27/26 13:13, Qi Zheng wrote:
+>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>
+>>> For architectures that define __HAVE_ARCH_TLB_REMOVE_TABLE, the page
+>>> tables at the pmd/pud level are generally not of struct ptdesc type, and
+>>> do not have pt_rcu_head member, thus these architectures cannot support
+>>> PT_RECLAIM.
+>>>
+>>> In preparation for enabling PT_RECLAIM on more architectures, convert
+>>> __HAVE_ARCH_TLB_REMOVE_TABLE to CONFIG_HAVE_ARCH_TLB_REMOVE_TABLE 
+>>> config,
+>>> so that we can make conditional judgments in Kconfig.
+>>>
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> ---
+>>>   arch/powerpc/Kconfig            | 1 +
+>>>   arch/powerpc/include/asm/tlb.h  | 1 -
+>>>   arch/sparc/Kconfig              | 1 +
+>>>   arch/sparc/include/asm/tlb_64.h | 1 -
+>>>   include/asm-generic/tlb.h       | 2 +-
+>>>   mm/Kconfig                      | 3 +++
+>>>   6 files changed, 6 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+>>> index 9537a61ebae02..b47aa8fd62742 100644
+>>> --- a/arch/powerpc/Kconfig
+>>> +++ b/arch/powerpc/Kconfig
+>>> @@ -304,6 +304,7 @@ config PPC
+>>>       select LOCK_MM_AND_FIND_VMA
+>>>       select MMU_GATHER_PAGE_SIZE
+>>>       select MMU_GATHER_RCU_TABLE_FREE
+>>> +    select HAVE_ARCH_TLB_REMOVE_TABLE
+>>>       select MMU_GATHER_MERGE_VMAS
+>>>       select MMU_LAZY_TLB_SHOOTDOWN        if PPC_BOOK3S_64
+>>>       select MODULES_USE_ELF_RELA
+>>> diff --git a/arch/powerpc/include/asm/tlb.h b/arch/powerpc/include/ 
+>>> asm/tlb.h
+>>> index 2058e8d3e0138..1ca7d4c4b90db 100644
+>>> --- a/arch/powerpc/include/asm/tlb.h
+>>> +++ b/arch/powerpc/include/asm/tlb.h
+>>> @@ -37,7 +37,6 @@ extern void tlb_flush(struct mmu_gather *tlb);
+>>>    */
+>>>   #define tlb_needs_table_invalidate()    radix_enabled()
+>>> -#define __HAVE_ARCH_TLB_REMOVE_TABLE
+>>>   /* Get the generic bits... */
+>>>   #include <asm-generic/tlb.h>
+>>> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+>>> index a630d373e6453..25fa2908d6152 100644
+>>> --- a/arch/sparc/Kconfig
+>>> +++ b/arch/sparc/Kconfig
+>>> @@ -74,6 +74,7 @@ config SPARC64
+>>>       select HAVE_KRETPROBES
+>>>       select HAVE_KPROBES
+>>>       select MMU_GATHER_RCU_TABLE_FREE if SMP
+>>> +    select HAVE_ARCH_TLB_REMOVE_TABLE if SMP
+>>
+>> Why the SMP? At least in tlb_64.h, it was not protected by SMP IIUC.
 > 
-> If you disable slab merging with `slab_nomerge`, kmem_cache gets
-> obj_exts from SLAB_OBJ_EXTS_IN_OBJ.
-> 
-> When I enable debug feature slab_debug=P (and thus change s->size),
-> kmem_cache_node gets obj_exts from SLAB_OBJ_EXTS_IN_OBJ.
+> Ah, It's just simply aligned with the MMU_GATHER_RCU_TABLE_FREE above.
 
-Thanks for testing, this matches what I've seen too.
-
-Besides, even if the two boot caches, kmem_cache and kmem_cache_node, go through
-the SLAB_OBJ_EXT_IN_OBJ path, it seems it wouldn't cause real trouble. We'd just
-end up doing some unnecessary memset. So, as Vlastimil said, this patch is
-mostly about doing the right thing.
+But does that work as expected for !SMP?
 
 -- 
-Thanks,
-Hao
+Cheers,
 
-> 
-> -- 
-> Cheers,
-> Harry / Hyeonggon
+David
 
