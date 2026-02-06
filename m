@@ -4,85 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5DDFEE20A6
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 13:57:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3950EE20A4
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 14:02:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3A4916B0096; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
+	id B11F96B0089; Fri,  6 Feb 2026 09:02:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 386386B0098; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
+	id AF3856B0092; Fri,  6 Feb 2026 09:02:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2922D6B0099; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
+	id 9CB286B0096; Fri,  6 Feb 2026 09:02:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A2496B0096
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 08:57:02 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B35EC5634D
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:57:01 +0000 (UTC)
-X-FDA: 84414183042.23.B8B3F07
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id CD739180007
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 13:56:59 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EF5E6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 09:02:12 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DDF211B005F
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:02:11 +0000 (UTC)
+X-FDA: 84414196062.18.2DE5CC4
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 0743C1C0029
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 14:02:08 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=JZqyYoC1;
+	spf=pass (imf20.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770386220;
+	s=arc-20220608; t=1770386529;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=5Zs+DR2LmyOtpGzEiKrxzZCtBbHCAI3j2ET7S259SQU=;
-	b=wtggwpRSu8ld79E4/aTeYHckHbGrkiMRMcU7UCOgpUZ26ENyoa0v8BwXWAvdx/mjVVf+36
-	apLCGewNfOyLGfRupxSDpgKTTgTDc45VFHHF5ze1VmLGfgOx8dUnTmb466tFDjF3TAU2Sw
-	BFYue6XqayVfolWRTqNeiVo1PJ0whWk=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf06.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770386220; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5rTeGmWivFmx0h9oCMWdLVhqyGHZ8vG/gGEjTr34nc0=;
+	b=cOSg9xPn1yi2EUQcI6HmNkxvDFO50XZrdX1Kkqf1BmFCPK3hI/clZ0lA426poluwO73V72
+	i7kgLofw538xQFqNlSrL7MIYNwsexfg/cNFJL3Ojb9naTevHNQNjTqkGrm1HVVkRRL3eTr
+	7ZZdyE/n/yRaLv0LJsEaUShvLO57E4Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770386529; a=rsa-sha256;
 	cv=none;
-	b=IM9TSJgQLJDL+zGI053ynkhGcTGsPYy+KEhCPpRhuTbVH4WhiDQphsp8D6vzs6KPFwGXZi
-	0tNDfAJEHoHoxQYOlRkqi/PzyHErdpzXMwPpzXJGWBwWEy/VMxjr6VFvjMQnznyA3KISt3
-	sLij4iCKJcmnDRDYYfFEWpxyKOrm5P8=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4E7B6339;
-	Fri,  6 Feb 2026 05:56:52 -0800 (PST)
-Received: from localhost.localdomain (unknown [10.163.132.30])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1E36F3F632;
-	Fri,  6 Feb 2026 05:56:53 -0800 (PST)
-From: Dev Jain <dev.jain@arm.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	kirill@shutemov.name,
-	willy@infradead.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [PATCH] mm: map maximum pages possible in finish_fault
-Date: Fri,  6 Feb 2026 19:26:48 +0530
-Message-Id: <20260206135648.38164-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	b=7Xg2KgEfcqzR84rS87FtMPzilgxwEyqZu+188CmXiqpA3kbxQSAIJYJteyHOwr+loXbMf/
+	Vpfl0vbIDD8GmB48SEOb/+LBz9UorECUru/YXFWUsFO73zeP13hMAxJA/UpV3Qkz7wQVWP
+	HrR7qU1VhMPKm6JSoQo63+R0xJalgu0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=JZqyYoC1;
+	spf=pass (imf20.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 616CwKY8032189;
+	Fri, 6 Feb 2026 14:01:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5rTeGm
+	WivFmx0h9oCMWdLVhqyGHZ8vG/gGEjTr34nc0=; b=JZqyYoC1dCZuow2dTuRAPi
+	kffhIzL9Y0wJIqwCSU3c3HmSKviWuFYqb3PfoV55hidOPBhuBCO74s+zVj/z8zZm
+	N4LBY6V0RGVTVYeBFztucaQ+YS3hrEm8yacUO8q2BEwr+p9TCBh36bPyztTbRzoR
+	Begvzdwn8bXQADuf/n/ApO4b00wNP3xDoJ3QkzZRf8G7fGOHYd9fDQH0gRM+BDm6
+	oFQ9/y7nAI85tGzxsOTyW0rOd41nKXf6bo4N7kKpG2o/obkhlBVzRB6fUTdapjl/
+	6kquZeyEniNNpQTsNvLzoezTPZGrtVmAHlfXCk7YVL/A73nczo95pyf1pNLG8PdA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185h8q2t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 14:01:28 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 616E1R8o000813;
+	Fri, 6 Feb 2026 14:01:28 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185h8q2p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 14:01:27 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 616DPce0005914;
+	Fri, 6 Feb 2026 14:01:26 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1x9jp44x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Feb 2026 14:01:26 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 616E1Mv031129980
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Feb 2026 14:01:23 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DAB8B20043;
+	Fri,  6 Feb 2026 14:01:22 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0BB772004B;
+	Fri,  6 Feb 2026 14:01:20 +0000 (GMT)
+Received: from [9.111.140.182] (unknown [9.111.140.182])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  6 Feb 2026 14:01:19 +0000 (GMT)
+Message-ID: <832897ac-f1d4-4f91-8034-f6b2d9e86fa4@linux.ibm.com>
+Date: Fri, 6 Feb 2026 15:01:19 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/6] x86/asm: Avoid emitting DWARF CFI for non-VDSO
+To: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
+        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
+        x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+References: <20260203171958.1522030-1-jremus@linux.ibm.com>
+ <20260203171958.1522030-3-jremus@linux.ibm.com>
+ <bd2fdf83-e460-46ad-8617-16319bc55ca5@zytor.com>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <bd2fdf83-e460-46ad-8617-16319bc55ca5@zytor.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CD739180007
-X-Stat-Signature: ojnj3y1p1obnzfxc3953jmx78g9d5x4s
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=UdxciaSN c=1 sm=1 tr=0 ts=6985f438 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=oGMlB6cnAAAA:8 a=jT-ijHZqpt8M6Ml0j-IA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=2JgSa4NbpEOStq-L5dxp:22
+ a=NdAtdrkLVvyUPsUoGJp4:22
+X-Proofpoint-GUID: AVfC4cfylaxogN-qGUTbmOpp_mw_Lu9E
+X-Proofpoint-ORIG-GUID: jo5kE4wFwL9iNHMz-So3u1DkBXo94QrW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA2MDA5OSBTYWx0ZWRfXwRUWWbWoJ2KN
+ CXLjScrh6OEZpc1H9DcVlgdSwf7fQogYn0lBZS58ZcH4WKOluwVZCHAdIE21bCDLJZzxDtE7LKT
+ jysaMiE4mmFaPcMrGdP6xLDE83DJ+DgZiWpU2L36p1K5tka+HlS3kZma+bpbxCwFsPEkCbw+t9T
+ Hbt97yDxIRwaaZkZtvMLplPRnHMiXOouDOO400eJXPix2gt6KELn1L7jdEZ3Tw3RW9/gTGc/TSf
+ pYSskOv7w/zPdxSEqmsvtp0SvBbKtb2RtVuNv/mIoeTxpurp30ptkGGGyXvAen/m7CorbIw3Z8U
+ plzEaAu9zoUD2GwHHPVd3+wBEtSf2pys67iyRCHFm47xKTryaJaeh53jxQdVvMuTqUzxbS4u6dq
+ El8w5bXcVMsUULdnamZ1AAGWN0FDuihRZQV2ULjFWWUtc76D1tcaB6YP/jbM5Us+v2kHIvQl/V6
+ Wbtu1Nv/f3bIMaQa/NQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-06_04,2026-02-05_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 spamscore=0 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602060099
+X-Rspamd-Queue-Id: 0743C1C0029
 X-Rspam-User: 
-X-HE-Tag: 1770386219-600528
-X-HE-Meta: U2FsdGVkX1/3t5uQgwTVBLyJ0IC3lZgSkJo7QkRjdH+OnyFYCHypLt92IgaUDs1md7Q8F+nLWzkXhnDhmM1jTnHHCmP/hmICSlYFtxmT7PRToBxmyITQY2KV56XkgV9n9LptEFOrrEOHYztormMA9Qn8POsqCStmx2KqBDM1RQ1kl7OO5rqx0KJvV1aWvps19g2DJnniv4AzN8/lLakoGLaC77nfu4ifmKvEWyVSORKzl4erx2ysT4+8zXLfULQoNAyM8X5s3lcRZ5GBiUAWqq4DOoozTQig/avsl6wdvAa+nkujtf4Le1I4Kb4U55LELoUggRs4o1OtqgNYTJHSdXhBq2g2tZuk3NeqeICYNrDbVtkjly8vbgH/vKi3JgIQx45PXc7G1TzpXAdtz0w3d6UQFQFD6vKUfCkJWFGzzCzMsLkbRXTPRG/q3xyNil37+9cfFRqwtwo8Q77NBPTsalT2vAxtjnqa8E7Pjl7l2QIWKdbBIh2XvDwYdE4Iw1BqvJk0ew0IJ5cS5A12tW/8cBSWON6ZGCYo5ryWpg/w7vcKoRvBiLTyHCjxwO6Y2AfMGe3XZ8v3bKKN3pJk6m7D+Aag+QwLL7fqhNLyhu/DZttjngTKPyjUGQ5/5iunMo5xg0nTuo9SsnrD01zUkbjpGseCLA1Y8akA5CNUwmMocucP0BH6TUIWTEpxCJWtd1IZ0Bk2c1GVlLB01oe7P1Yx5/e7USjXyW2h2Hy3Qfrg6tWyh2WFOwhBE5sz8kvPIVwAMfsmi3k/OKKRfLwPzOqLixUNX8CALqU7qcQwpw2jRIPiGFsz5pGqHVkdInl+UKpKb5fypRQS5vO3kf9QtKvEMLKJe4ZnwgigMeyEKC780EMdiUWTf16hW9swqJe/FLYmDMKPP56W4sMsIy9EglaKS9dIobDKdUjxhbvhkY+l2lVxtaVU6NyuJRW+xEJzzZ1gcHcmAZsa972WSZH+cq3
- ChXZHeXT
- Z5K/Lps4Y7dDG5FIgkDhg64hXiC2Mmzcm5BAQNUyOt0YNECmv0+Zeed8cx8OIbPi2g/4WDSQSlgnDphdHINgOlvA1NKFuyCdhwYDpc3LjHEuNduIBNppEhsTo7eysw86orS30iRLRiNhtPveoNcS/hJc5URSLXw+CvF7XVQ9gSCUjzD33AiEMgiG5/OlWXIFnhm6GjVKYcYKpVgw=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 8x9fqrpbx6s9byrnskmfymm3rc7s89xd
+X-HE-Tag: 1770386528-831078
+X-HE-Meta: U2FsdGVkX1+ixi3cyhb7+b3YcdYxNJ02gDT7A2Hoh4F3i+1LnzqkQmv0Rk0uGYgKDyY8fByZAIHZPkBchdZWTOQgao72q2jfWPAek23nr6joUCXrDVAgDqI6mfD0BqC0s96jI4TTdwxukr10tXuv3w0iBVi0vVxmd/JCrYycKK2XT/xyI/8thxRmoSfhQrU9BPn6LK6HQeP50D6QiaptCgywwvqz2tf6e0Oak8v1RTOuSNJFcAONGBCaxjLWRQ2xiCr4uGnnnMnNkte5kU61guyF6ddRsagSAosIAUupU1OhW5X4bRyqJ+ZH81tYSqOFhxZTu4Rebhn0HenbPdzVB9bEko28XuQQzvD3Gi/WcltnApz+pKF1A+LUY51WBgzp9C00isrTjcMYVkZqDFlJqgzGQyz//XeW4yQs1CotUViBpjyFigBGORNYwfLH4aV6gXweG6CDglImif4oN5drSQsxipX96P7ixUqDcvzxPYcwd/7+7+FbPxXiveCxIvxxAN5uhFwQlh76MKGR9DmUzxh97691wlrW7OPbs6koemUZOSIAl4C16vzrS6nHo1bKwU0gu1EuELU8Ch9JGiboEcQ3rNmzPscJy14XaLeQPfyxuaPE4NOw6831zg13LFF3tvzNS8IoWDqFvYsDl7j7VYAldoorQjWXDtGk4LFBjb/67D31cTz6OUkB+Q6MVwdCs6FR7ZL+HJXDLJWrR3quXIVm3+qj4LFkbMa3bvCCGQwYmb9spaXMFgTbDryyptyD08F14zVFRL/TpCztfz6sZ7TeP04Q0UdDw1nyMIFROg56jyPNIsaHBV3uFgoeDbkEDTJpUADRSF6oWMjSCCrwuWavaTfqbgjDyxL8OqUXpsVWIbuiFUjKv/bfGdgx/keDrDs3n+F1MgekNvvv0SULf9qt9aogkkX5b8foLyPhF/QmyFIyLy16nCR+U4QBxzk5dlnJM0ihlhvCup+N0+4
+ Sv5+BB9w
+ MqO6mKQ6qKHsmtRsDUjVXV8tlDcvTH+WiZi8vtZZAuaQPjx66VE0LAxhgzqvOAJA7bkgK09PRwVyzkbkf+pxwWUZ+0iOK3Tdj2FaavhwpyXs13kvPIFCexRMXKrxGyfHq9W7LJfhDTUlerah/tuntl4up8nT9G6ke3ESFEYLPW9JK+ub98Wi35s+j41zG28ZqRGSfVeK0baBIMIqstt+TYafFoLuuhfoCRfgPXRGeG59ueeWpVhHgv6QYVLbyaKMpM0oMnJWHhVqbjubyL59cTlJX5LR76G05OKyezC4GTj8cBX3DY4kuUhoNnHlUBnOqSJGCnDSdiued92vkM/f8FFlbNrtkEw05xbryyFtYyDsEIXME95RIs+JLyXmWpDpsN7oSe6+bQ3Lsq0BxmX/ldIu9jZL3GXmrrpS0vOE8BaMUABJSgdsxugDAQ0Hpj+FNTWBQG3bMQ3/DVaM+WszXQsmX/uMnAM8MyL8y2WXnI4k4vK9xZtUwXX1zxLJlWNJbtHUmrRY/cVqk3YtVn52+9L/RO9aSqmYC9x5I
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,285 +181,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Suppose a VMA of size 64K, maps a file/shmem-file at index 0, and that the
-pagecache at index 0 contains an order-9 folio. If do_fault_around is able
-to find this folio, filemap_map_pages ultimately maps the first 64K half of
-the folio into the pagetable, thus reducing the number of future page
-faults. If fault-around fails to satisfy the fault, or if it is a write
-fault, then we use vma->vm_ops->fault to find/create the folio, followed by
-finish_fault to map the folio into the pagetable. On encountering a similar
-large folio crossing the VMA boundary, finish_fault currently falls back
-to mapping only a single page.
+On 2/4/2026 1:43 AM, H. Peter Anvin wrote:
+> On 2026-02-03 09:19, Jens Remus wrote:
+>> From: Josh Poimboeuf <jpoimboe@kernel.org>
+>>
+>> It was decided years ago that .cfi_* annotations aren't maintainable in
+>> the kernel.  They were replaced by objtool unwind hints.  For the kernel
+>> proper, ensure the CFI_* macros don't do anything.
+>>
+>> On the other hand the VDSO library *does* use them, so user space can
+>> unwind through it.
+>>
+>> Make sure these macros only work for VDSO.  They aren't actually being
+>> used outside of VDSO anyway, so there's no functional change.
+>>
+>> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+>> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+>> Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+>> ---
+>>  arch/x86/include/asm/dwarf2.h | 51 ++++++++++++++++++++++++-----------
+>>  1 file changed, 35 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
+>> index 09c9684d3ad6..7cc30500c095 100644
+>> --- a/arch/x86/include/asm/dwarf2.h
+>> +++ b/arch/x86/include/asm/dwarf2.h
+>> @@ -6,6 +6,15 @@
+>>  #warning "asm/dwarf2.h should be only included in pure assembly files"
+>>  #endif
+>>  
+>> +#ifdef BUILD_VDSO
+>> +
+>> +	/*
+>> +	 * For the vDSO, emit both runtime unwind information and debug
+>> +	 * symbols for the .dbg file.
+>> +	 */
+>> +
+>> +	.cfi_sections .eh_frame, .debug_frame
+>> +
+>>  #define CFI_STARTPROC		.cfi_startproc
+>>  #define CFI_ENDPROC		.cfi_endproc
+>>  #define CFI_DEF_CFA		.cfi_def_cfa
+>> @@ -22,21 +31,31 @@
+>>  #define CFI_ESCAPE		.cfi_escape
+>>  #define CFI_SIGNAL_FRAME	.cfi_signal_frame
 
-Align finish_fault with filemap_map_pages, and map as many pages as
-possible, without crossing VMA/PMD/file boundaries.
+I missed that this is new on tip:x86/entry and thus also needs to be
+added below in the !BUILD_VDSO case.
 
-Commit 19773df031bc ("mm/fault: try to map the entire file folio in
-finish_fault()") argues that doing a per-page fault only prevents RSS
-accounting, and not RSS inflation. Combining with the improvements below,
-it makes sense to map as maximum pages as possible.
+>>  
+>> -#ifndef BUILD_VDSO
+>> -	/*
+>> -	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
+>> -	 * The latter we currently just discard since we don't do DWARF
+>> -	 * unwinding at runtime.  So only the offline DWARF information is
+>> -	 * useful to anyone.  Note we should not use this directive if we
+>> -	 * ever decide to enable DWARF unwinding at runtime.
+>> -	 */
+>> -	.cfi_sections .debug_frame
+>> -#else
+>> -	 /*
+>> -	  * For the vDSO, emit both runtime unwind information and debug
+>> -	  * symbols for the .dbg file.
+>> -	  */
+>> -	.cfi_sections .eh_frame, .debug_frame
+>> -#endif
+>> +#else /* !BUILD_VDSO */
+>> +
+>> +/*
+>> + * On x86, these macros aren't used outside VDSO.  As well they shouldn't be:
+>> + * they're fragile and very difficult to maintain.
+>> + */
+>> +
+>> +.macro nocfi args:vararg
+>> +.endm
+>> +
+>> +#define CFI_STARTPROC		nocfi
+>> +#define CFI_ENDPROC		nocfi
+>> +#define CFI_DEF_CFA		nocfi
+>> +#define CFI_DEF_CFA_REGISTER	nocfi
+>> +#define CFI_DEF_CFA_OFFSET	nocfi
+>> +#define CFI_ADJUST_CFA_OFFSET	nocfi
+>> +#define CFI_OFFSET		nocfi
+>> +#define CFI_REL_OFFSET		nocfi
+>> +#define CFI_REGISTER		nocfi
+>> +#define CFI_RESTORE		nocfi
+>> +#define CFI_REMEMBER_STATE	nocfi
+>> +#define CFI_RESTORE_STATE	nocfi
+>> +#define CFI_UNDEFINED		nocfi
+>> +#define CFI_ESCAPE		nocfi
 
-We test the patch with the following userspace program. A shmem VMA of
-2M is created, and faulted in, with sysfs setting
-hugepages-2048k/shmem_enabled = always, so that the pagecache is populated
-with a 2M folio. Then, a 64K VMA is created, and we fault on each page.
-Then, we do MADV_DONTNEED to zap the pagetable, so that we can fault again
-in the next iteration. We measure the accumulated time taken during
-faulting the VMA.
+#define CFI_SIGNAL_FRAME		nocfi
 
-On arm64,
+>> +
+>> +#endif /* !BUILD_VDSO */
+>>  
+>>  #endif /* _ASM_X86_DWARF2_H */
+> 
+> I guess patch 3 justifies this.
+> 
+> Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+> 
 
-without patch:
-Total time taken by inner loop: 4701721766 ns
-
-with patch:
-Total time taken by inner loop: 516043507 ns
-
-giving a 9x improvement.
-
-To remove arm64 contpte interference (although contpte will worsen the
-execution time due to not accessing mapped memory, but incurring the
-overhead of painting the ptes with cont bit), we can change the program to
-map a 32K VMA, and do the fault 8 times. For this case:
-
-without patch:
-Total time taken by inner loop: 2081356415 ns
-
-with patch:
-Total time taken by inner loop: 408755218 ns
-
-leading to an improvement as well.
-
-#define _GNU_SOURCE
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <sys/mman.h>
-#include <assert.h>
-#include <time.h>
-#include <errno.h>
-#include <string.h>
-#include <sys/syscall.h>
-#include <linux/memfd.h>
-#include <fcntl.h>
-
-#define PMDSIZE     (1UL << 21)
-#define PAGESIZE    (1UL << 12)
-#define MTHPSIZE    (1UL << 16)
-
-#define ITERATIONS  1000000
-
-static int xmemfd_create(const char *name, unsigned int flags)
-{
-#ifdef SYS_memfd_create
-    return syscall(SYS_memfd_create, name, flags);
-#else
-    (void)name; (void)flags;
-    errno = ENOSYS;
-    return -1;
-#endif
-}
-
-static void die(const char *msg)
-{
-    fprintf(stderr, "%s: %s (errno=%d)\n", msg, strerror(errno), errno);
-    exit(1);
-}
-
-int main(void)
-{
-    /* Create a shmem-backed "file" (anonymous, RAM/swap-backed) */
-    int fd = xmemfd_create("willitscale-shmem", MFD_CLOEXEC);
-    if (fd < 0)
-        die("memfd_create");
-
-    if (ftruncate(fd, PMDSIZE) != 0)
-        die("ftruncate");
-
-    char *c = mmap(NULL, PMDSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    if (c == MAP_FAILED)
-        die("mmap PMDSIZE");
-
-    assert(!((unsigned long)c & (PMDSIZE - 1)));
-
-    /* allocate PMD shmem folio */
-    c[0] = 0;
-
-    char *ptr = mmap(NULL, MTHPSIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    if (ptr == MAP_FAILED)
-        die("mmap MTHPSIZE");
-
-    assert(!((unsigned long)ptr & (MTHPSIZE - 1)));
-
-    long total_time_ns = 0;
-
-    for (int i = 0; i < ITERATIONS; ++i) {
-        struct timespec start, end;
-        if (clock_gettime(CLOCK_MONOTONIC, &start) != 0)
-            die("clock_gettime start");
-
-        for (int j = 0; j < 8; ++j) {
-            ptr[j * PAGESIZE] = 3;
-        }
-
-        if (clock_gettime(CLOCK_MONOTONIC, &end) != 0)
-            die("clock_gettime end");
-
-        long elapsed_ns =
-            (end.tv_sec - start.tv_sec) * 1000000000L +
-            (end.tv_nsec - start.tv_nsec);
-
-        total_time_ns += elapsed_ns;
-
-        assert(madvise(ptr, MTHPSIZE, MADV_DONTNEED) == 0);
-    }
-
-    printf("Total time taken by inner loop: %ld ns\n", total_time_ns);
-
-    munmap(ptr, MTHPSIZE);
-    munmap(c, PMDSIZE);
-    close(fd);
-    return 0;
-}
-
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
-Based on mm-unstable (6873c4e2723d). mm-selftests pass.
-
- mm/memory.c | 72 ++++++++++++++++++++++++++++-------------------------
- 1 file changed, 38 insertions(+), 34 deletions(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 79ba525671c7..b3d951573076 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5563,11 +5563,14 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	bool is_cow = (vmf->flags & FAULT_FLAG_WRITE) &&
- 		      !(vma->vm_flags & VM_SHARED);
- 	int type, nr_pages;
--	unsigned long addr;
--	bool needs_fallback = false;
-+	unsigned long start_addr;
-+	bool single_page_fallback = false;
-+	bool try_pmd_mapping = true;
-+	pgoff_t file_end;
-+	struct address_space *mapping = vma->vm_file ? vma->vm_file->f_mapping : NULL;
- 
- fallback:
--	addr = vmf->address;
-+	start_addr = vmf->address;
- 
- 	/* Did we COW the page? */
- 	if (is_cow)
-@@ -5586,25 +5589,22 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 			return ret;
- 	}
- 
--	if (!needs_fallback && vma->vm_file) {
--		struct address_space *mapping = vma->vm_file->f_mapping;
--		pgoff_t file_end;
--
-+	if (!single_page_fallback && mapping) {
- 		file_end = DIV_ROUND_UP(i_size_read(mapping->host), PAGE_SIZE);
- 
- 		/*
--		 * Do not allow to map with PTEs beyond i_size and with PMD
--		 * across i_size to preserve SIGBUS semantics.
-+		 * Do not allow to map with PMD across i_size to preserve
-+		 * SIGBUS semantics.
- 		 *
- 		 * Make an exception for shmem/tmpfs that for long time
- 		 * intentionally mapped with PMDs across i_size.
- 		 */
--		needs_fallback = !shmem_mapping(mapping) &&
--			file_end < folio_next_index(folio);
-+		try_pmd_mapping = shmem_mapping(mapping) ||
-+			file_end >= folio_next_index(folio);
- 	}
- 
- 	if (pmd_none(*vmf->pmd)) {
--		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
-+		if (try_pmd_mapping && folio_test_pmd_mappable(folio)) {
- 			ret = do_set_pmd(vmf, folio, page);
- 			if (ret != VM_FAULT_FALLBACK)
- 				return ret;
-@@ -5619,49 +5619,53 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	nr_pages = folio_nr_pages(folio);
- 
- 	/* Using per-page fault to maintain the uffd semantics */
--	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
-+	if (unlikely(userfaultfd_armed(vma)) || unlikely(single_page_fallback)) {
- 		nr_pages = 1;
- 	} else if (nr_pages > 1) {
--		pgoff_t idx = folio_page_idx(folio, page);
--		/* The page offset of vmf->address within the VMA. */
--		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
--		/* The index of the entry in the pagetable for fault page. */
--		pgoff_t pte_off = pte_index(vmf->address);
-+
-+		/* Ensure mapping stays within VMA and PMD boundaries */
-+		unsigned long pmd_boundary_start = ALIGN_DOWN(vmf->address, PMD_SIZE);
-+		unsigned long pmd_boundary_end = pmd_boundary_start + PMD_SIZE;
-+		unsigned long va_of_folio_start = vmf->address - ((vmf->pgoff - folio->index) * PAGE_SIZE);
-+		unsigned long va_of_folio_end = va_of_folio_start + nr_pages * PAGE_SIZE;
-+		unsigned long end_addr;
-+
-+		start_addr = max3(vma->vm_start, pmd_boundary_start, va_of_folio_start);
-+		end_addr = min3(vma->vm_end, pmd_boundary_end, va_of_folio_end);
- 
- 		/*
--		 * Fallback to per-page fault in case the folio size in page
--		 * cache beyond the VMA limits and PMD pagetable limits.
-+		 * Do not allow to map with PTEs across i_size to preserve
-+		 * SIGBUS semantics.
-+		 *
-+		 * Make an exception for shmem/tmpfs that for long time
-+		 * intentionally mapped with PMDs across i_size.
- 		 */
--		if (unlikely(vma_off < idx ||
--			    vma_off + (nr_pages - idx) > vma_pages(vma) ||
--			    pte_off < idx ||
--			    pte_off + (nr_pages - idx)  > PTRS_PER_PTE)) {
--			nr_pages = 1;
--		} else {
--			/* Now we can set mappings for the whole large folio. */
--			addr = vmf->address - idx * PAGE_SIZE;
--			page = &folio->page;
--		}
-+		if (mapping && !shmem_mapping(mapping))
-+			end_addr = min(end_addr, va_of_folio_start + (file_end - folio->index) * PAGE_SIZE);
-+
-+		nr_pages = (end_addr - start_addr) >> PAGE_SHIFT;
-+		page = folio_page(folio, (start_addr - va_of_folio_start) >> PAGE_SHIFT);
- 	}
- 
- 	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
--				       addr, &vmf->ptl);
-+				       start_addr, &vmf->ptl);
- 	if (!vmf->pte)
- 		return VM_FAULT_NOPAGE;
- 
- 	/* Re-check under ptl */
- 	if (nr_pages == 1 && unlikely(vmf_pte_changed(vmf))) {
--		update_mmu_tlb(vma, addr, vmf->pte);
-+		update_mmu_tlb(vma, start_addr, vmf->pte);
- 		ret = VM_FAULT_NOPAGE;
- 		goto unlock;
- 	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
--		needs_fallback = true;
-+		single_page_fallback = true;
-+		try_pmd_mapping = false;
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
- 		goto fallback;
- 	}
- 
- 	folio_ref_add(folio, nr_pages - 1);
--	set_pte_range(vmf, folio, page, nr_pages, addr);
-+	set_pte_range(vmf, folio, page, nr_pages, start_addr);
- 	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
- 	add_mm_counter(vma->vm_mm, type, nr_pages);
- 	ret = 0;
+Regards,
+Jens
 -- 
-2.34.1
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
+
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
 
 
