@@ -4,148 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB59AEE6B66
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 21:26:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA8A9EE6B69
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 21:43:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 03B6D6B00A1; Fri,  6 Feb 2026 16:26:55 -0500 (EST)
+	id F1EED6B0096; Fri,  6 Feb 2026 16:43:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2BFB6B00A2; Fri,  6 Feb 2026 16:26:54 -0500 (EST)
+	id ECCFC6B0098; Fri,  6 Feb 2026 16:43:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0C516B00A3; Fri,  6 Feb 2026 16:26:54 -0500 (EST)
+	id DD86B6B0099; Fri,  6 Feb 2026 16:43:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CBB0C6B00A1
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 16:26:54 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7B54DD5A77
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:26:54 +0000 (UTC)
-X-FDA: 84415316748.19.1644933
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8423A140003
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:26:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="a3U+W/2h";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of maze@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=maze@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770413211;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C9DE86B0096
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 16:43:29 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 386A0C177E
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:43:29 +0000 (UTC)
+X-FDA: 84415358538.30.F71940C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A49081A0008
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 21:43:27 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U4NlRDtD;
+	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770414207;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e2vRt91HE57LlxbsBX+S8iZ8+RLwY1B3JoqVasfqz+Y=;
-	b=3WruEwp4hqT4dtIYMt6A21Q78cp/U+VCNmSd/ei6geVvsWL9mt2vPSAX98nu0HIYskhxJj
-	s6JAh6/cjDk+OvAzy/th86QZZ+3JdvDj82Htr1LxcEfJr6SNdH2MfVXX5lF6CVvAWu9rY3
-	S7vONuGdZSxbY9MpZR3aVgeOJHQEqC4=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770413211; a=rsa-sha256;
-	cv=pass;
-	b=0Qmebnp/q2tKMXCviUU7volIEF8zIe0sFnqvPphuYiXZmL7q4kM4bo+eQ6ajHwQVJU/AtG
-	g39ipxWfAk1+z/BrVVManG4yWFqkTsA34wjWrqGWTx9JZm9Gyrg72w8c58EI1ahMEPXuTQ
-	Z6t+A3B5idpvl8vmqNxo01CuUvcVkU4=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="a3U+W/2h";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of maze@google.com designates 209.85.160.178 as permitted sender) smtp.mailfrom=maze@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50299648ae9so21581cf.1
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 13:26:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770413210; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LbU4F7agsFn0Czl6SlLPhiVL5WtATizbR3Hp/bKrsjYZ5BL0ViAZkJlpHIzgXNbTf6
-         r4jJHAky4+wKkpjwSx8mnilPWhgshAY36cY2f3hGWm01bHTn5LnZEcX7oSHGVMxm6bVr
-         RMGPQZaAGQa+sIsKTxHFGsfrwMbx/qTjjhWwCxCk1wLtDjcU2I0LdVMCYXWXCJWc9kiY
-         jFBw7dkdD/j3EVe6v+4XJx1xsSTvmilDn07aq8gyHGPFFoOGYlMSBfHLbS/DBcLX6K2c
-         ccAgGPG2Fp6gMhEfJNbGdQ17lswxixDPf5ztkbTY8kUNXCsnmq4h7wL0zF0Qeimg4dxh
-         pTmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=e2vRt91HE57LlxbsBX+S8iZ8+RLwY1B3JoqVasfqz+Y=;
-        fh=MHr+MlxRYlTnjt6URNG18wDhp1IZnmd0sGXioXfXF0U=;
-        b=U3EXngfYwVZV3knEY0hJaAk/vg8j2484vTvMcqGbHpNGV6x0xTA/86v+mtr/mY+B9+
-         xajE2PFtaxStFGgZ40FU1/pSB0tHBzxyfZskyEc1POLArNyMOTykSleOx8+7in9HjydX
-         bmzx3WietexN/i09hEEAAFqDnwDXiu9oQqhvV/IV5u9eTqjBA5E2xPRZL5hg5he4oV22
-         FkeJ1B9Rp/ZbFr7rDDeJjI6yVKy+uoZUeOkD0EtNx6GDQg7iHsEH6vYsNQJqpLPrHn9E
-         ebXI8oUEL2OBwoPBnYu9SmO19FHnN07gtgj7qPhMatZ0zQxROx+xdVrrgx4OBnSf5MwH
-         2W8A==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770413210; x=1771018010; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=e2vRt91HE57LlxbsBX+S8iZ8+RLwY1B3JoqVasfqz+Y=;
-        b=a3U+W/2hHR+61oPPwYmph125Bf9Y8csZxQ5P7L4ijLxY98zt2afZqDWNjmStKVQ0T/
-         sXvt4x+g5PziUl+0XzPWJ9RpsUIN91FT1+mm3VV2j0f1lAMG6x1ByQnMMob/w8sC0FMw
-         0Rat5vf/n4PCZojLzmuyr9nEZ9v1+eB3w5shVfvWJmoqY4rEAGBltU/9OHZoSzDVT7/5
-         r5AkBWmccNBL6li2sWrvv0FLKotSZg5i18z6faLIiuJu1lZUw5AquPzvRXpxnAgAHYkd
-         BVdbXTSuk1Kr+Dch314E/bU9YqidavPjI29hRSLwM/8XkfyOAMLmNc5Pp27V0artbjfd
-         1FTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770413210; x=1771018010;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=e2vRt91HE57LlxbsBX+S8iZ8+RLwY1B3JoqVasfqz+Y=;
-        b=uDeOT+YhOquO8wQEbbyijsTJ35L0btnzkVATl+352pgOOo+LuH/NX/E3wXOsREqZfz
-         Yuh/OZV5xDSBSkAE1S+D6cffuXOn90m7dnicSrlnRvDOJBPe9aL2zYXsMvJNJ8jEyC+Y
-         4BVZpZ+/4n3Ku9XGmpf6l+af6lEjaXxbJNCea5a98JsaRgJAfrxejuI7S8bhC+v4ld1C
-         Qrzu18jF6C3tzJNGw/VkyOuso+z45tl6hhnG1ddC30QNxxNle+nQC7KY4aKj5HlTQbqI
-         b95EOLWSWJthVos60M4q4+tHpdr1goxnRFyLKO/0NHQcz+rjx8Jod5d3rWrb4yff7VmQ
-         mcLA==
-X-Forwarded-Encrypted: i=1; AJvYcCWav+QB5OC5x8szl5VqqQpmqQ79KvUblBnS/sQgDkD9MZkuMXyf/l0fENgQpmPwMP0MVm/aN18gQQ==@kvack.org
-X-Gm-Message-State: AOJu0YweJFka27lbbD7DxVW6F3lsaazMyhJIohy3GB3pbm3NPsrhQPrl
-	xn5ZtWPTABeRdkjyljRdKtfALymBD6cT0jw53G0RGce83z0QaSpBAiqkqtUwtBb8sCh9z9BiMat
-	vfApsR9FZHlCsbA+9NKMLGbppRiDkwm51xUG+OE6k
-X-Gm-Gg: AZuq6aKcY9Qgo0/44ne3aUI+ZCcHrOWkiZd+zCykJdwh5w3vBCJrzM5AzPNhCYz8Ht4
-	YJt2dzd1HJFtQfrpiAe9lyj2YEjVmpVrTuE5Lkdvrr4yCLMI6Yi5rVQ81Acsk/D54zjNnjruri+
-	GZadCyeWn989hjrsXU1ZmrNMDbS0qffEdUSQp0BAslVx1RhEIRw9QZB664rDkAZNsaXciPFmWMh
-	Yl0KbVKDoXVT4ISq6D1CmWWaPYvNcbaiBVvIgE3FtuDcJF+4Wrd/0N+cutDjaCOgp5WAJTIF2LV
-	1kOs4ZYFwLiL4wPpEXpQx07Ju0X9ZA==
-X-Received: by 2002:a05:622a:1b89:b0:4ff:a98b:7fd3 with SMTP id
- d75a77b69052e-50649b6ad07mr2258111cf.2.1770413210149; Fri, 06 Feb 2026
- 13:26:50 -0800 (PST)
+	bh=uUrAd8iGiJWWzJk+XvDmhDYDR3i/4tUUap99IjGkiK0=;
+	b=y7J9/ZyIBTQ1U1cU6MRckJY4t6QzVQuvo1THotoqf34iUGcuqVK6vdjY1F09uNNxshsAHs
+	+eQ6o/7F4Y4RwSPcPHbzn1X2dfhMtTB/tDGZWj3ulGuEVJ2KIWOe91yijYJ2c4p/tZY1GX
+	2kOUr5fpF+YOzx5nVoW1wdCjDkXgKe0=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=U4NlRDtD;
+	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770414207; a=rsa-sha256;
+	cv=none;
+	b=YWdxoNwL8X0UMHlZwXoOYXc2ExE/hmyz8guzJKJGCyBHIt40tHYoa89Y9Bes5qzNYCV2q2
+	OVeGHPQ7bF6vk+QcR7Z6QuIc8ofQAbOucj7qa1PSQdQ6lKoJJdNpzFWwYsmJHKS8tkrC2y
+	+wVdi1biitHqr1B8wPgll0e5NFaGN94=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0A69560137;
+	Fri,  6 Feb 2026 21:43:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42824C116C6;
+	Fri,  6 Feb 2026 21:43:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770414206;
+	bh=NgQfAJHzVJF3x25o6e0VGnyxpkVMB6vbImUYVyuSsxg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=U4NlRDtD9s/gTCacHwCXha31viLPKHOqvB4N2P+g+m2Kx77f5fR+S/sxo/+JbRPCf
+	 XXd0vMBthXZhVQl/zLrF6lsQbz7wy883crvpo4sYtOwyknqWxhlFv9hlOQ2Nba6iyc
+	 ccwJnQT7dPFQ8hIF3nzPQ7NKcrkLxEfkga3OgAW1Z7BWlep5Plsprdl0nZYKlpajsX
+	 I5XgfNVdu7F65TL9j3L5dlRj4vjXOBUKijb/D5tL0x4/rktMS4AHYlop8dcG4E1pit
+	 s/j5l2MW40kZk7UR9OL8Q476vIaYDPDXo+yOxxmT+71ldU1iRkHhsrA6QDMAlje0uF
+	 IlbLXySC7+xSg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Tamir Duberstein
+ <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+ <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno
+ Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor
+ Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Andrew Morton
+ <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
+ Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ Harry Yoo <harry.yoo@oracle.com>
+Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 11/11] rust: xarray: add preload API
+In-Reply-To: <20260206-xarray-entry-send-v2-11-91c41673fd30@kernel.org>
+References: <20260206-xarray-entry-send-v2-0-91c41673fd30@kernel.org>
+ <20260206-xarray-entry-send-v2-11-91c41673fd30@kernel.org>
+Date: Fri, 06 Feb 2026 22:43:14 +0100
+Message-ID: <874intpmz1.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-References: <CANP3RGeuRW53vukDy7WDO3FiVgu34-xVJYkfpm08oLO3odYFrA@mail.gmail.com>
- <202601071226.8DF7C63@keescook> <btracv3snpi6l4b5upqvag6qz3j4d2k7l7qgzj665ft5m7bn22@m3y73eir2tnt>
- <CANP3RGfLXptZp6widUEyvVzicAB=dwcSx3k7MLtQozhO0NuxZw@mail.gmail.com>
- <CANP3RGeaEQipgRvk2FedpN54Rrq=fKdLs3PN4_+DThpeqQmTXA@mail.gmail.com>
- <CANP3RGcNFgLSgKYPjmro2s1Es04Pnhf+4wHpnSwRX4M8bLDW9g@mail.gmail.com>
- <aWFKEDwwihxGIbQA@wieczorr-mobl1.localdomain> <CANP3RGeWLMQEMnC03pUr8=1+e27vma1ggiWGWcpX+PcZ=SsxUg@mail.gmail.com>
- <CANP3RGeHnhufYyc0P2OiKJbXdZjPW41TP=JS6nYk9xGRU8UuKQ@mail.gmail.com> <aYZJ2Ohug6b9Vth0@wieczorr-mobl1.localdomain>
-In-Reply-To: <aYZJ2Ohug6b9Vth0@wieczorr-mobl1.localdomain>
-From: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
-Date: Fri, 6 Feb 2026 13:26:37 -0800
-X-Gm-Features: AZwV_QguewADB-2xma46o3PunJjIPEerBNilNQhrGaSGk5f8ofWHwvj9j70yzs8
-Message-ID: <CANP3RGerB8-soNb1pBx7TqmOivR7Vp4Q-iqjE5QH0fzHrxEseQ@mail.gmail.com>
-Subject: Re: KASAN vs realloc
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Kees Cook <kees@kernel.org>, 
-	joonki.min@samsung-slsi.corp-partner.google.com, 
-	Andrew Morton <akpm@google.com>, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Marco Elver <elver@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Uladzislau Rezki <urezki@gmail.com>, 
-	Danilo Krummrich <dakr@kernel.org>, jiayuan.chen@linux.dev, 
-	syzbot+997752115a851cb0cf36@syzkaller.appspotmail.com, 
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, kasan-dev@googlegroups.com, 
-	Kernel hackers <linux-kernel@vger.kernel.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8423A140003
-X-Stat-Signature: uhe3d9gf4oqgt9n5qb46axtc7c45ewgg
+Content-Type: text/plain
+X-Stat-Signature: q1mz9db4xwx9n9yz6z1u3g663bb8ggbp
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770413211-915070
-X-HE-Meta: U2FsdGVkX1/uehFIdBm2zORKy/ZBpYPduMIlzNBUeOeWbvsQCD0gVh00uT2cZSeLZuGXiRTMjjJoFKE7VLcg8qcBp+j8dpvYC65LYD6ttArTbJGbQY+Po7rgZ2kBWK1fUcHFm980to4DjbMpTQpmGU3JGut3TkzyEUQ7+5OXn/2Qfr8Gwd7gYBweklWjSfH+EUuH/3Uaf3DloZnw/PGqbwBonbC5uLcGyAUqBQ5zr1tGOC6iRrFuw7T1IN5f8kRKzS3dzXQ1Zxwmb0oJAk30rM54zFos/VtDk5nJOjck64xGmO8SnZqXl/GHKfwLMW7jGZSvR8HBY0DQNC6kvDwOqT31Muue8DDLW7NC2mrXPcBqNG53Ez7e4+u/Rh5Iw5UoG9MwV7T3M/CNSNJRAVA99BFd377QW4IzT8vqv3NmNj227CjHBZODZCBcdVDIdAJgv/zZ7ADlMRlpIwxylsJb+xk8u3P9zgEpRgKmaKCfGTelmznD20ukLpbmu4YORivBpLP6C2vlqBBQx1zm+QDNbp8A1xcZszSYcst7cia6LZgPdwgTYJQiGLGkcBd6ZJjDPfQQlR4ZhDwBaOcMzaDCLQWbqEmrnA9vZiVOXHwaxdGVYnqKGhT5sNV1Gd5/kLhNCWGzz6VJuGuuRuUoIGeA6Q2Q997yx3/lsIOF25u1bWm1WOUa/cue+iGjiZV1xBNlWGFd3MaXhApVSG2OQ4zH61Yitz/w+kLYVFLLkS8m0tXnNkz+bJCHoNhX1v4dA1lgKAEW+lkKlTm1Kq6fw4cq4vm8UiNFq1z2EhhPIky1LLxvlxP3vxT77SoKZjkCLdS6fC/gsKV0ca4S7d9sXoxcBSYvwIehbPkgi1Lwy+5fSmX9R4BVYKbY6e5q+ZxArSz2lxJA39IRJ7t+ROdYVpeXWBLfu1qmIXTEgq9yt7P6pD9j3ePeaSxK9cDrE5+rl5u1PxRAvErSpGyfHyAeRIN
- hkscvHli
- TbrA2QP8STe0U7s0ff51SvIwYkjjENkRZQMsiklRZdHAZAgm5X828+V5q40K5NOOIi9cHLd0z5p/5HN/Hp2AyR0b9/jrWAePTbTx1GMjdFs8LNBb4ewgL/wHbwW+TskXhXo3UzMPFnZXlJex4zMxFjknkAzf2zG2DIYmAEvO019aBpcCoF8UJZUYdjr0o36MDpLQm4Z+wyGsblMcAHGNwk2iQTrqFD1JqLnOTxyDtuy7cqkXo4YhCF5+bNMZIhgP15VTBfk3by35zrnHC8pOauYd4LctD3j1AV/cHDH76cbQPLIwUVGo1Gc+zMeTsCbMiyhm0MzsaUTRc7JPa10UuJzLDjGFf7FJiZNTEFzTOUIPqvipnPrcq/RkZfRGPeamXnhwD
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000019, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: A49081A0008
+X-HE-Tag: 1770414207-557525
+X-HE-Meta: U2FsdGVkX1/0cyocC1L62e/yPIWJoaowJT3ylJXg3h9ESbJ7eIhRjCaZjvO/OykPVIFuY5L6D/sUtSi53c29XrA205Kd/siJA9OkW8hs9DZCs/77dzKP3XddSS+aWHexasGvQNqmNryPCYzUCBaYRbsor6gcFibKa38zyMQ9HyD6C997x3wUnR0OsqM3KCr/7osSTYn7Lid/7PgpYcy1Lieot7bsuRD0BY+1jwexpHB9ZDnzwnvgzhR0N/adT1fhkxhf+Uk8WTnpiefSyCtkzaDPUi8KoN61ME7KrStIj/pPDQHJIn8lgNFY4vfbzjQG74o9wPeCXSzTmOOQBUdZ8d05H88nVtBpesLJxtCj++uBmMyNLGlEhsv/xzsrLPxHBG2x1Hbkk2NlM+ilQqRNF3U/kWcQ2DeiioFfD5NdlMPn0979z2r9oRqnAjtenXLMo2QtrnT6npHvSDeV0dBEVi3Xw+0qptkklBUvJcvjNh/2x2Xfrua9h74of3/kFbaFUjsxzoNxCGNY7Boz0vuZ+5VUEhoP6i+SyXwAJj/aeRhEz9BNPeMI3uLM/uFXXSRhdVJMoXgr3AIb3zlGEzJ+sCGIV6qSpUZvIUGzxgPJ4kc9RSljIjKFA5qKKz33TExdKmnkWY/Lj0rofVfDL38aXjfPCBkTNAqRdUeEz+KvcQLkpIt7TYToSODsz9cJN86JjH7T1eRTy6D6UH0ZBVSTYBuie14IiekOXn6ssTUbZtmruxig/6zRQpFKggYkfalrHyXnv1xtny8fd4vT0YFS/SzhG8uFc572UNZpY26IJghOmdHuKjufZ97BRRbJ7qGvbdIEyUEAH8Ttt6UrG30L6eBZ94MDUsMK5p5t5NhxLbyjMUWmQ8GbknW8swRmf/WGbMUk9GVoSQdZ2QZsPh3b+TkUhs5IVijXNtvbcx7bHYTrXRo6xEx+jPZl8QHVZTReGgMtg/C2wRN8t000Rn6
+ asJZKzz1
+ ILGZDkRmITqsARFBr7ipd60+Jj9MaXrYopDfvQnJqJJaiQeA3SFkoRwxsoYltjHko8/YzDauMJ3fwPcAoPgJkxg6pXPYmVXC/TnypiUT00lugt5Js/YI+A4/XvVuL/1D68/EnqKn6PQZLkQTZowSRCk3pQF+gO+xkXTpYxNlmS4dIL1f8AeCpYZlMaMIBVkpRr9Hpz6efZYcvJzojWxeB2sqyzfBHoWa6kgd4YgL6RGA277fljjSLL32hfxShqFDeWqIgsZVXMo7cSC/y5nB19b2E1J42dNoKMemMDLbbxD1rxIcBRy7m6ML+wjEE5bnJiqc+m8PiFRWybp3x2alWJcRf8A==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,42 +102,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 6, 2026 at 12:14=E2=80=AFPM Maciej Wieczor-Retman
-<m.wieczorretman@pm.me> wrote:
->
-> From what I see kasan_poison_last_granule() is called through:
->
-> __kasan_vrealloc()
-> --> __kasan_unpoison_vmalloc()
-> ----> kasan_unpoison()
-> ------> kasan_poison_last_granule()
->
-> and the arguments are "addr + old_size" and "new_size - old_size" so it l=
-ooks
-> okay I think.
+Andreas Hindborg <a.hindborg@kernel.org> writes:
 
-Cool, thanks for checking.
-
-> On 2026-02-06 at 11:07:12 -0800, Maciej =C5=BBenczykowski wrote:
-> >While looking at:
-> >  https://android-review.git.corp.google.com/c/kernel/common/+/3939998
-> >  UPSTREAM: mm/kasan: fix KASAN poisoning in vrealloc()
-> >
-> >I noticed a lack of symmetry - I'm not sure if it's a problem or not...
-> >but I'd have expected kasan_poison_last_granule() to be called
-> >regardless of whether the size shrunk or increased.
-> >
-> >It is of course possible this is handled automatically by
-> >__kasan_unpoison_vmalloc() - I haven't traced that deep,
-> >in general these functions seem to have a terrible api surface full of
-> >razors... with hidden assumptions about what is and is not granule
-> >aligned.
+> Add a preload API that allows preallocating memory for XArray
+> insertions. This enables insertions to proceed without allocation
+> failures in contexts where memory allocation is not desirable, such as
+> in atomic contexts or where reliability is critical.
 >
-> --
-> Kind regards
-> Maciej Wiecz=C3=B3r-Retman
+> The API includes:
 >
+> - `XArrayPreloadBuffer` for managing a pool of preallocated nodes.
+> - `XArrayPreloadNode` representing a single preallocated node.
+> - Integration with the entry API, allowing `VacantEntry::insert` and
+>   `VacantEntry::insert_entry` to accept an optional preload buffer.
+> - A new `Guard::insert_entry` method for inserting with preload support.
+>
+> The implementation uses a circular buffer to efficiently manage
+> preallocated nodes. When an insertion would fail due to ENOMEM, the
+> XArray state API automatically consumes a preallocated node from the
+> buffer if available.
+>
+> Export `radix_tree_node_ctor` from C to enable Rust code to work with the
+> radix tree node cache.
+>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
---
-Maciej =C5=BBenczykowski, Kernel Networking Developer @ Google
+I somehow managed to not include this last bit of detail:
+
+commit 09bdfa18f6f879eb42df2e032ad5224eed29eb25
+Author: Andreas Hindborg <a.hindborg@kernel.org>
+Date:   Fri Feb 6 22:38:09 2026 +0100
+
+    radix-tree: enable sheaf suppport for kmem_cache
+    
+    The rust null block driver plans to rely on preloading xarray nodes from the
+    radix_tree_node_cachep kmem_cache.
+    
+    Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+diff --git a/lib/radix-tree.c b/lib/radix-tree.c
+index b642f2775e89c..ddd67ce672f5c 100644
+--- a/lib/radix-tree.c
++++ b/lib/radix-tree.c
+@@ -1599,10 +1599,16 @@ void __init radix_tree_init(void)
+ 	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
+ 	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
+ 	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
+-	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
+-			sizeof(struct radix_tree_node), 0,
+-			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
+-			radix_tree_node_ctor);
++
++	struct kmem_cache_args args = {
++		.ctor = radix_tree_node_ctor,
++		.sheaf_capacity = 64,
++	};
++
++	radix_tree_node_cachep = kmem_cache_create(
++		"radix_tree_node", sizeof(struct radix_tree_node), &args,
++		SLAB_PANIC | SLAB_RECLAIM_ACCOUNT);
++
+ 	ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, "lib/radix:dead",
+ 					NULL, radix_tree_cpu_dead);
+ 	WARN_ON(ret < 0);
+
+
+Best regards,
+Andreas Hindborg
+
+
 
