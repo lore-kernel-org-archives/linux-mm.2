@@ -4,125 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CECFCECD9B5
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Feb 2026 23:11:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2DFAECD9AA
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 00:40:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D479E6B008A; Thu,  5 Feb 2026 18:11:00 -0500 (EST)
+	id 6BD0B6B008A; Thu,  5 Feb 2026 19:40:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFEEC6B0092; Thu,  5 Feb 2026 18:11:00 -0500 (EST)
+	id 66AC96B0092; Thu,  5 Feb 2026 19:40:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C28046B0093; Thu,  5 Feb 2026 18:11:00 -0500 (EST)
+	id 54C2A6B0093; Thu,  5 Feb 2026 19:40:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id AC5646B008A
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 18:11:00 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4E67F1C613
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 23:11:00 +0000 (UTC)
-X-FDA: 84411950280.22.23E7F78
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6F3904000F
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 23:10:58 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jLn3vjp7;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 436276B008A
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 19:40:05 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB7951C613
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 00:40:04 +0000 (UTC)
+X-FDA: 84412174728.12.9DAD56E
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D14DB10000C
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 00:40:01 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PBX6ioe2;
+	spf=pass (imf14.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770333058;
+	s=arc-20220608; t=1770338403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wNQbtNTj5xONF/FlzgjMO0/Jn5YLGFU3yCoER5lhWcI=;
-	b=DfH4SBXNt0zOBm+H3USyygsp1i29MU2FHe6pfZmrAdylshXBGbgqwz9lQo6y/4BGxQxMJT
-	RGGLby6/E6jFEFwuFKv0YBFeRWzngTttMNWr2SJFhRNSNLbkUMp0fNKkNDZkkcDYS1/6J4
-	aUyNXgqxEjLeiDPRULgLhUe9SJO9VJ0=
+	bh=j9x8Oha2FCRFhdP6sFQHAlg53hGqhvSeJttZv66OvZ8=;
+	b=w6v16482EaPt0EybVKoel/7fQVtwwJWyb6IiekRw7xVgxIRfgTfQOoSkEjPwC3Qo7QLHsk
+	2OC4OnVUcEJBDk4k/ssr40NfDxqGMlCLDy6EkGGaP0ZzzfvZ6s9IJmgoA7GLlL9ZHYIFsh
+	V2S0unqjz5YxLNpsTYWN+deLhGPTENs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=jLn3vjp7;
-	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.52 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770333058; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=PBX6ioe2;
+	spf=pass (imf14.hostedemail.com: domain of yosry.ahmed@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770338403; a=rsa-sha256;
 	cv=none;
-	b=TlJWzXwTsFa3uphzuGEywaHyBUUoCrl6YUolz0EszAE6p2frTM2oOsiwxXeoBd0qUHDpcI
-	H953ARYW0984qj4JfHhQnMbojT+lyRtY4RqCGWgMC+Z+ApVkNB4h31av+vjjrJHpxEXuZ8
-	Za2vcl5Ur6r9ipKLWJphZ2AUydXFEI4=
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-89473dca8aaso1357876d6.0
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 15:10:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1770333057; x=1770937857; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wNQbtNTj5xONF/FlzgjMO0/Jn5YLGFU3yCoER5lhWcI=;
-        b=jLn3vjp7znDTFQj1XQpopK3+ry7L2Cudg0j5tXX6CkI4Jl/fvzs0TCQ5tgTuGt/B0h
-         kseySQx2LTyArUcshRwPYyGnIWCvYPYib9JOFoOW3XuNEnyArtaJ4zFgvroprdL823jG
-         AVonSrFRaZULmeoNi0sOBhbS2GOqmVE70g3WfrNgX34ybtqcUbx/s5gKa4tIaCvvdRTm
-         MQf224T46XdU+KzVXNuKQSeNcE7qBhkW9Xr57ZpuF0SwsrAARZtxhtDCsZuzK+GRotK4
-         0DuYrxbF/ao/6QrJ4oG4btDIM2y4eqL9kOrJ3GpzqdEDjEW45m9pEVJOuu8PzOO9xn/b
-         5/1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770333057; x=1770937857;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wNQbtNTj5xONF/FlzgjMO0/Jn5YLGFU3yCoER5lhWcI=;
-        b=e9QO5qr3IX3Z0/1iqbq560NKw+jBVLYMiZCkIHTiXqfd60oADIk9ZbqyjG+hSTxy+f
-         dqIlvLk/1lTZ3jkzeUCvmn4VNSHCcPlAXTXGudeK21cRQKotKw0cNGbyahB0Q0aAIyhy
-         gH0LNKggLjpKivufDZU38AU0kQoecbJgV8omIychVxe1gNCiDHqGQX3HRGyO1g7M9LAF
-         w4q1cqwDfhaAkC4K9FXsaflJKmjwoL9k6bILYa7Z12Z3h8x+c7UCvk5vkySJQZCt1Fd2
-         JU++ewN4JyrQMQlYDwryEZQ2f4DUfLuYc03sVtzzFblfhrwtwhb3Zr3zPOJ7F4M92AF4
-         oSlw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCPzbrb3xSKy42lQSYs3BUWyvBEwQffaI6Q+yutsTK3Ly7Tu3+coJfmBfKnlEqvTAc0u5GfepMFw==@kvack.org
-X-Gm-Message-State: AOJu0YyvKV10QdKQ6mOtnrJtBm7xAjVsjQzq0lfdvVVoyPFhYt/bUBtY
-	Hf/o464LP04pb2hWGfp4c1SV6UnulRsb1E8lJlTC1eF7wRm74FHYn2Hse+/2fcjeJZ8=
-X-Gm-Gg: AZuq6aJaI/JVu+/RJFE4KRau74r/7aLmN9Uhx1PxwRv3EoQ0zl/OzSjIy7/ju4U4fcM
-	67gRaPF0OWsr0VRPjcx5gjxFncu9Cqei/s4R7B/m+dUgW29R5qvbi9ojH6mNTymy88FPj5S8gA/
-	Ibn/bzYqCpUOfQw8AlmUDrIM3bPs5bO+fLxGFGj/Unj4sZdpvPT8pi3U+Hwo8t/+8yJfCk7VFAf
-	I5gzJOVXrHBhhtGqK4UFVk52dF6C8HkhdpgWlt0J/clo5ZmBiPGFq38Vs9UFrkoK8xxUrY7ccol
-	8C5bWHOpVNKPGWuh6KABYPla07CX1bq3eidR/km7bR5QK7PAbva6e9ahG1LlAHyxscF94QQyRd5
-	1b4/jVrgI4hT93iei1u7EfAHs27i82+3ulVFdJgt05thw9IQTLGwU/4dXN5R8TE/i7m6BPmUIlY
-	Tomh2aWLk6C+FZqHQ06kGvmfIMRdMfHlaVGbSU7puZkl7CTlLA+8LpGLbB+FkN52uo0Bssvg==
-X-Received: by 2002:a05:620a:bc5:b0:8bb:26db:e22f with SMTP id af79cd13be357-8caef7e1ca2mr107313385a.30.1770333057461;
-        Thu, 05 Feb 2026 15:10:57 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8953c075fc3sm5353626d6.51.2026.02.05.15.10.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 15:10:57 -0800 (PST)
-Date: Thu, 5 Feb 2026 18:10:55 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Cui Chao <cuichao1753@phytium.com.cn>, dan.j.williams@intel.com,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wang Yinfeng <wangyinfeng@phytium.com.cn>,
-	linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v2 1/1] mm: numa_memblks: Identify the accurate NUMA ID
- of CFMW
-Message-ID: <aYUjf0OrD8f_bJCy@gourry-fedora-PF4VCD3F>
-References: <20260106031042.1606729-1-cuichao1753@phytium.com.cn>
- <20260106031042.1606729-2-cuichao1753@phytium.com.cn>
- <20260108094812.8757ce3ad8370668eaafb29c@linux-foundation.org>
- <9132054c-3017-4af0-84e0-e4359b0794a6@phytium.com.cn>
- <20260115101858.85fd7b8e837c1c92a4fdc5f0@linux-foundation.org>
- <696944eca1837_34d2a10056@dwillia2-mobl4.notmuch>
- <2d1e23ad-7ec1-483b-88b3-70ce19b69106@phytium.com.cn>
- <aXOl9CN_66HywIjZ@gourry-fedora-PF4VCD3F>
- <a90bc6f2-105c-4ffc-99d9-4fa5eaa79c45@phytium.com.cn>
- <20260205145842.efb90572a902ae4c481e6ef6@linux-foundation.org>
+	b=nwYDmPTv8FEKIOuimClqi9EtJ9yAsCseWQIiRIxZslFj+wfZJ7SkfISBhaIzqLdKzVxDeb
+	rh5zdFX2RLJ7AdJjv4ziliryPrH9QapgJWTV1oZYeww6cZlzxwnfaVZOQbfYMS5m/gMQ7p
+	fyyNgRrJDaNfD5GU9lSWU+q3V3NJ8/g=
+Date: Fri, 6 Feb 2026 00:39:53 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770338399;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j9x8Oha2FCRFhdP6sFQHAlg53hGqhvSeJttZv66OvZ8=;
+	b=PBX6ioe2oqYVg2VIrumnJ5LBuevyOQhXyW2HDSYuOkiAbnLGQKkZOnXszTzLZ3cAgq8/Tw
+	by0miBErTtiCs3CQx/DwEYoCUFeEajenBetDIISemUatz6Z2UmyO5vpj2QPNtdJqHQCeAn
+	pTn1Kb/cEEe1P4i9RX10dHJ5P695r2M=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: linux-mm@kvack.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Nhat Pham <nphamcs@gmail.com>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nick Terrell <terrelln@fb.com>, David Sterba <dsterba@suse.com>, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible pages
+Message-ID: <hevovghpl2udhpof66oz26ulrpqcrtuwjxcakyskoeoil2wo6x@osbrncj7ifwz>
+References: <20260205053013.25134-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260205145842.efb90572a902ae4c481e6ef6@linux-foundation.org>
-X-Stat-Signature: 5utuykp1q85wi85wsw66fosmb7k4t9cu
-X-Rspamd-Queue-Id: 6F3904000F
+In-Reply-To: <20260205053013.25134-1-jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: D14DB10000C
+X-Stat-Signature: 6aar7js6oundpeawhe33es4ajqzwc8c8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770333058-459119
-X-HE-Meta: U2FsdGVkX1+MdE2HNwD64jcrZIGtg0Ow1egAM9QMCsItypdEUbKgAzw60dE5O39sM3ztA+1KG+SByQZ6k45GUhXMoiqsAyX0UN367H7Y8DZB9bLJCaeYUyxd4prq3P+LsSQ5srESRociguDODGrv0Sf58aD8cloGbHFo45g8dSfvVa+jILLhD5YcL2V72cQHqctgUE4BLjZ93RkqF9JxQ+6dziaXWwWM4jo9G7RnRC5qNSYTXzToxN6w47OSl+WsTdTz7H84B7ZvDMJe+2LhpSjS0d+EvsZQgiAIHIvM1Z0LmPAwC7f+UuqKjzPMMPD1h32LGpJgYsdG2+w+j0V2V0RLxfTPFg7e1TRzCGxuMNhLMeOPm9AfMOsG0NsUH0r9cJibBpTrfN9wuk9ajFMlxRS42f9Mdn6HnELSgdG3OA19RClI1Cu/4AooYpX//ENvFug83hbfrJkaOFppV65+CC1Usd1gUCiZUuWM7hCtxM2GXTfZuW1a6uav56Xhxb82zaiPs89fl+NjV2XaISB6vR/I9N7oFvOEu3GlQz61g3wTmOR6RzkB/BIvHyK6LaaJXPsEyvxfkBIDU6DvU8y9XslKUf1B0X5OnE9km/jPhb1Gcy5YTVrWbDc+XshFsai5n5iD0Xp8KDf5kgwwIDCcfNNTH5Tp5iODi0h0rfFhbRmvmc7X1luAEFWhCL+FVFnjPVRTmhnWfbUfOvZudaBwFwc+jreSjx5bcfhoTABwYSf09nE6k+AxSgIgypVcBOynZG5wUE2pSqUyaXIZNg0SccOT2C/gOYajY2s6X2S5Ml0NYF3fBuZS0Qb9g5363CumvQ9VBDBtP2czKfoKUbO8ROUXF3kCKfr6/WMATy02phUjGXZSxBb91o4e40Uz4CGvAWwwLYgrh9oeE8KphUbrJZQ7gnc5f59S7K/9pJobBrlnzahU4gGvh0n1pTyAWIu4zKgGUEWBsDYPweg67xV
- EN/RXGhh
- fi4oiVlG2SAgJzDBqnhXZqQMQM9vc2CfhmArZOx+Xh5R/wUwslNFxJmHrnXknUV5qC2TSBcJ6cUwP8xvPuum0H4l3cfWko+bn77mkuSKxLW8Elm5UKY6JlVBCkpnInB40n73oBBWYM2mfykEmYtK5bkDmUvmpcr3XIxtbk6BgrQRtaBkIH6AwcZPjZN4NtXvWXrtLT+TyJ469Frjv6vfHX3GrBiSuohZwQAnPg1rl8GnH7yGzUoRIFI73hhS0ZKqy+i/Q303kCsRSJ/KbQ8Ae/k5G3DcV7OymsyAUASOruEYjZ70cga9iR24IFANjeeHEUV0zeqJb1bzJpJIOvC3dJ+fzSXcAz4hokMDIAPku7yB+udUfSq7pn2awVS4IbEPqI/uLGgrN5AYKpCQKJFcPs6rGfbT9k6Tker8KjODrBT2mfuCnh2V7FKQLKA==
+X-HE-Tag: 1770338401-321847
+X-HE-Meta: U2FsdGVkX1/JbuHpP4BcrtBeqROCY/BJGlM3Xl2CN9Jp4fZ4YPhviMoHKqJ0IaFiQI2eWOsdRAcTpsN1DwfqZzvIc6svjQy9GS0/iLvkOuf357Wyl2PyRps8WfySvvWwrfXUN21PZpXlNKs4nPKc/2AJtYsYKJlRj528BGJ6YR5xg7VLON/pj8UrqALQe0XXitJbNoTF1ce+Cwlesp40pS9UYyID+H1YJeBwQrG2kn8nskAIsfbE/8syJCBbnul7O9wZRQ340wwkfCcTA+hLgPUcZzyBrQiiFkJFJGl1yq73srdKAuH7La/VgC4symdeK/E9dkhpjdt46WaYc1jD9E5OkwdEf/H0AhooXSR+heia8HunATTEVM0B9ASvF71F6mC3L4cOqPuITewV11tR+1BPrnYNIzoSAlaiy2ZWygpYJ6D+s+WG2J+bB/cqT2SBjOR+2+G5jN8A/V2m3YvlJwZCo6thwnV3wyr9++y0g3rArD43/YqhYU4yxc+UJe2PXI5Bu1KmNLxUtY4Jf4h1N1d0BtGAvN1XtZs83lxftX7K9p6XA6C+uzYu07Rj0jznoU5dOQlVmDXzvui57nSjNIzZpBIt2bgKKTIDteuxbmk15sEp5JekjTybgtdN/RFYw/3UgZh4fyNT6sAJjdnYb2PMS/9P7gH8aFiG4/g1VMF3b/9WMJG3hpz1evSmFS4AMfMrZayTDg4afxiZc6p9wUc81Do1bcJOVGCsIu6r1k/FiIUPJzpCBrPHrjXIGKGE4KeaTBCZiXDmVJ+hNA3vOAdWFHrvbOgSXXNxPNsqAgyNaQJxjUvDhaCi+rOe2b+3GsYBnJSdo320TY18U2o9eyHgfW08Il0oY8iHFPczPZcmPczBtSSj0i7DlUylk7evxlLpibgoxkErrzUYDRyij1aBAXQXKWVz7y5ew0Ttz44XYluIe1QU4AmZIA8HveT9Z8mdL6537dGSSYwy0U2
+ Hfy6ymVK
+ 6nCVbKXYVUiP6bNnCVR/bVxsBY8PQBg1Ssy2KRUoQVqYFX1x704jObGAmmYvwa0iNSo6KDxNrrxyq6AZapt+daj93x0dRX0DbAsjJeteKgFukBd/NoxbqS+5N1/z4ffrIXzt4CNyPMoBc+57Z3x3MNYcoIRxcdRYjQr4c/wph7V+kIex/LqNbzsxhE0n91EV5lWhgAmad4D0b/88jhtupIDQN9a1hjGNy/Opwbqu3JQyNwMqdUl9GFl8lcDZ94O47/KAz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,28 +92,206 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 05, 2026 at 02:58:42PM -0800, Andrew Morton wrote:
-> On Mon, 26 Jan 2026 17:06:52 +0800 Cui Chao <cuichao1753@phytium.com.cn> wrote:
+On Thu, Feb 05, 2026 at 01:30:12PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
 > 
-> > > All that said, this does look harmless, and seems reasonable - but the
-> > > changelog should reflect what the hardware is doing above.
-> > This issue was discovered on the QEMU platform. I need to apologize for 
-> > my earlier imprecise statement (claiming it was hardware instead of 
-> > QEMU). My core point at the time was to emphasize that this is a problem 
-> > in the general code path when facing this scenario, not a QEMU-specific 
-> > emulation issue, and therefore it could theoretically affect real 
-> > hardware as well. I apologize for any confusion this may have caused.
+> The global zswap_stored_incompressible_pages counter was added in commit
+> dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as-is")
+> to track how many pages are stored in raw (uncompressed) form in zswap.
+> However, in containerized environments, knowing which cgroup is
+> contributing incompressible pages is essential for effective resource
+> management.
 > 
-> This patch doesn't sounds very urgent.  Perhaps we should do a v3 with
-> updated changelog and handle that in the next -rc cycle?
+> Add a new memcg stat 'zswpraw' to track incompressible pages per cgroup.
+> This helps administrators and orchestrators to:
+> 
+> 1. Identify workloads that produce incompressible data (e.g., encrypted
+>    data, already-compressed media, random data) and may not benefit from
+>    zswap.
+> 
+> 2. Make informed decisions about workload placement - moving
+>    incompressible workloads to nodes with larger swap backing devices
+>    rather than relying on zswap.
+> 
+> 3. Debug zswap efficiency issues at the cgroup level without needing to
+>    correlate global stats with individual cgroups.
+> 
+> While the compression ratio can be estimated from existing stats
+> (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
+> "uniformly poor compression" and "a few completely incompressible pages
+> mixed with highly compressible ones". The zswpraw stat provides direct
+> visibility into the latter case.
+> 
+> Changes
+> -------
+> 
+> 1. Add zswap_is_raw() helper (include/linux/zswap.h)
+>    - Abstract the PAGE_SIZE comparison logic for identifying raw entries
+>    - Keep the incompressible check in one place for maintainability
+> 
+> 2. Add MEMCG_ZSWAP_RAW stat definition (include/linux/memcontrol.h,
+>    mm/memcontrol.c)
+>    - Add MEMCG_ZSWAP_RAW to memcg_stat_item enum
+>    - Register in memcg_stat_items[] and memory_stats[] arrays
+>    - Export as "zswpraw" in memory.stat
+> 
+> 3. Update statistics accounting (mm/memcontrol.c, mm/zswap.c)
+>    - Track MEMCG_ZSWAP_RAW in obj_cgroup_charge/uncharge_zswap()
+>    - Use zswap_is_raw() helper in zswap.c for consistency
+> 
+> Test
+> ----
+> 
+> I wrote a simple test program[1] that allocates memory and compresses it
+> with zstd, so kernel zswap cannot compress further.
+> 
+>   $ cgcreate -g memory:test
+>   $ cgexec -g memory:test ./test_zswpraw &
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 0
+>   zswpin 0
+>   zswpout 0
+>   zswpwb 0
+> 
+>   $ echo "100M" > /sys/fs/cgroup/test/memory.reclaim
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 104800256
+>   zswpin 0
+>   zswpout 51222
+>   zswpwb 0
+> 
+>   $ pkill test_zswpraw
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 0
+>   zswpin 1
+>   zswpout 51222
+>   zswpwb 0
+> 
+> [1] https://gist.github.com/mrpre/00432c6154250326994fbeaf62e0e6f1
+> 
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> ---
+>  include/linux/memcontrol.h | 1 +
+>  include/linux/zswap.h      | 9 +++++++++
+>  mm/memcontrol.c            | 6 ++++++
+>  mm/zswap.c                 | 6 +++---
+>  4 files changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index b6c82c8f73e1..83d1328f81d1 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -39,6 +39,7 @@ enum memcg_stat_item {
+>  	MEMCG_KMEM,
+>  	MEMCG_ZSWAP_B,
+>  	MEMCG_ZSWAPPED,
+> +	MEMCG_ZSWAP_RAW,
 
-Mostly QEMU just needs to add SRAT entries associated with the
-CEDT/CFMWS it adds.
+Please change the name as Shakeel suggested.
 
-A system providing a CEDT/CFMWS entry without an SRAT entry is arguably
-bad BIOS.
+>  	MEMCG_NR_STAT,
+>  };
+>  
+> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> index 30c193a1207e..94f84b154b71 100644
+> --- a/include/linux/zswap.h
+> +++ b/include/linux/zswap.h
+> @@ -7,6 +7,15 @@
+>  
+>  struct lruvec;
+>  
+> +/*
+> + * Check if a zswap entry is stored in raw (uncompressed) form.
+> + * This happens when compression doesn't reduce the size.
+> + */
+> +static inline bool zswap_is_raw(size_t size)
 
-But yeah, this is not urgent.
+Internall as well, please rename this to zswap_is_incompressible() or
+zswap_is_incomp(). Not a big fan of the helper because it doesn't add
+much, but I don't feel strongly either way.
 
-~Gregory
+> +{
+> +	return size == PAGE_SIZE;
+> +}
+> +
+>  extern atomic_long_t zswap_stored_pages;
+>  
+>  #ifdef CONFIG_ZSWAP
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 007413a53b45..32fb801530a3 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] = {
+>  	MEMCG_KMEM,
+>  	MEMCG_ZSWAP_B,
+>  	MEMCG_ZSWAPPED,
+> +	MEMCG_ZSWAP_RAW,
+>  };
+>  
+>  #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
+> @@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[] = {
+>  #ifdef CONFIG_ZSWAP
+>  	{ "zswap",			MEMCG_ZSWAP_B			},
+>  	{ "zswapped",			MEMCG_ZSWAPPED			},
+> +	{ "zswpraw",			MEMCG_ZSWAP_RAW			},
+
+Here as well: zswap_incompressible or zswap_incomp?
+
+Other than the renames and doc, LGTM.
+
+>  #endif
+>  	{ "file_mapped",		NR_FILE_MAPPED			},
+>  	{ "file_dirty",			NR_FILE_DIRTY			},
+> @@ -5458,6 +5460,8 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+>  	memcg = obj_cgroup_memcg(objcg);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
+> +	if (zswap_is_raw(size))
+> +		mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, 1);
+>  	rcu_read_unlock();
+>  }
+>  
+> @@ -5481,6 +5485,8 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+>  	memcg = obj_cgroup_memcg(objcg);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
+> +	if (zswap_is_raw(size))
+> +		mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, -1);
+>  	rcu_read_unlock();
+>  }
+>  
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 3d2d59ac3f9c..54ab4d126f64 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -723,7 +723,7 @@ static void zswap_entry_free(struct zswap_entry *entry)
+>  		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
+>  		obj_cgroup_put(entry->objcg);
+>  	}
+> -	if (entry->length == PAGE_SIZE)
+> +	if (zswap_is_raw(entry->length))
+>  		atomic_long_dec(&zswap_stored_incompressible_pages);
+>  	zswap_entry_cache_free(entry);
+>  	atomic_long_dec(&zswap_stored_pages);
+> @@ -941,7 +941,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
+>  
+>  	/* zswap entries of length PAGE_SIZE are not compressed. */
+> -	if (entry->length == PAGE_SIZE) {
+> +	if (zswap_is_raw(entry->length)) {
+>  		WARN_ON_ONCE(input->length != PAGE_SIZE);
+>  		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
+>  		dlen = PAGE_SIZE;
+> @@ -1448,7 +1448,7 @@ static bool zswap_store_page(struct page *page,
+>  		obj_cgroup_charge_zswap(objcg, entry->length);
+>  	}
+>  	atomic_long_inc(&zswap_stored_pages);
+> -	if (entry->length == PAGE_SIZE)
+> +	if (zswap_is_raw(entry->length))
+>  		atomic_long_inc(&zswap_stored_incompressible_pages);
+>  
+>  	/*
+> -- 
+> 2.43.0
+> 
 
