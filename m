@@ -4,138 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E7C4ECD9B5
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:18:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ADAFECD9BB
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 02:21:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D195C6B0088; Thu,  5 Feb 2026 21:18:00 -0500 (EST)
+	id A73286B0089; Thu,  5 Feb 2026 21:21:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9C9E6B0089; Thu,  5 Feb 2026 21:18:00 -0500 (EST)
+	id A4B546B008A; Thu,  5 Feb 2026 21:21:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA8D36B008A; Thu,  5 Feb 2026 21:18:00 -0500 (EST)
+	id 949D16B0092; Thu,  5 Feb 2026 21:21:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A8B2D6B0088
-	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:18:00 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7E3C6160753
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:18:00 +0000 (UTC)
-X-FDA: 84412421520.27.4D5BD53
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 68E95180005
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:17:58 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xDiFXAEf;
-	spf=pass (imf06.hostedemail.com: domain of jasonmiu@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770344278;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 826386B0089
+	for <linux-mm@kvack.org>; Thu,  5 Feb 2026 21:21:58 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2677A1604B2
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:21:58 +0000 (UTC)
+X-FDA: 84412431516.04.1E1AB33
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E9A284000E
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 02:21:55 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bk2jSRTQ;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770344516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uwKKBAWfianGkgf2dOSPW7sjKHIffak4EwdTz+f+A0M=;
-	b=JMVy9EdIxPPn3EdnSu272HpGl7qoOgZ7oE6xtCP3FzZqx0S58Gbg6SzUDCoqIGkO7k3Q5T
-	LTgsQNYW3vUTcKTB16paM96zx/omGAlANPi9yyHkmSAVycQY1eyvzQnEusyiULdVV9C18B
-	QkXn3MaAPlXQGPTdrO8uzmYbcruT7yY=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xDiFXAEf;
-	spf=pass (imf06.hostedemail.com: domain of jasonmiu@google.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=jasonmiu@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770344278; a=rsa-sha256;
-	cv=pass;
-	b=KOwoKZ88dlHchB+sgd8VgHwUpWddMw9rPDTfG/o8TGRWBhWuyX+ffgp0GhscQmiTq86904
-	LpsTlzxZYfjEH9cMFHsTEsJ9ucTCjPXAN6IdSN83YsGMGXArhgg9miQGs/cwuPtaFjmNFE
-	R5mCyawZtm5PM+biE7weASeheZjMKUE=
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-42fb4eeb482so85254f8f.0
-        for <linux-mm@kvack.org>; Thu, 05 Feb 2026 18:17:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770344277; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NRoPilCabtjbQwnS41zK+YIGo0BfGg46svd32R6qg+S7Rq6Fczz9SQTyCuIaYmXMO7
-         7kyfT5uMHWKzBuhEoyRiz9x3e6AuFQ/7TG2lcKQa5nTjDe0zKTHB2Qnn6Nl0bL2+R6K6
-         Mh4rUpDG3bv2GgvbB+6JkeLSnos2dlzI2XhIX2L6Gqh4ewfB75u98p8TxWIT9qQwWLCq
-         T+JR7Aav3xC0U3nOuv8Moyqtjf4EPmOdVD46H7OJMVdx4+qYtHUj5S5yzK97TRP8JVFL
-         cX3rD5HedfyDJ8e3hEQ584ytXs8FavyUqyKLfJyglEN/NcYW8cFlfHGICEYef3a/RElg
-         kaIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uwKKBAWfianGkgf2dOSPW7sjKHIffak4EwdTz+f+A0M=;
-        fh=ZTbQDVDOBzuxrk11beGehEopnXYtalQhnSbGoZ4LBuw=;
-        b=Ps/0MyR/HZoOKnX6AfJcnBmgNCVPowPnXg25hMHuiqKCcCtVMFSS1Pdg5xrgfCwc1c
-         tTMPgZLtVJzpDhcPY3G4KZ8bNV6CvHeFgNOnj7kE1T/Uija+t7RsmMEz5rsDMsMwCy6p
-         EGJPgXzGI6T+/F8biOHYsYnEy/dGbo9duLjCO2E/AbJLTTT8b4eanZWtwKLh6M7Y3+UD
-         0Bd5SP4+mNoxlKZ3qOeV8hjy52Psx/8/HRupPKRzU2+hLAudT690iMjRvKAdoOb2g++H
-         scZsuNRv7XAXuh3zAbBBPso7tzd68TmwO2fJahKEBjOcvyfVR47OEEVAVa4md+jJ0Z8/
-         ZObA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770344277; x=1770949077; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uwKKBAWfianGkgf2dOSPW7sjKHIffak4EwdTz+f+A0M=;
-        b=xDiFXAEfqgI4Y3i+gmrERiY5oXhTlnI/zn4YBnL3OXeFdRlRObh0Jrkj8YCGVjC21R
-         bmrhCdFZlIdyuqxuRbKunnEGhi1JfzjvtKUV6mcg4nBT1koVV7IxBEbO62EOI4B2Sb+f
-         Q8DPfG4ONs2n/oXzXVX2B1q/WOMJnnE32aRBYeg3Gcr+vHoOvSM6OjBuhaQVs+pfKtfu
-         9JHMd56FWgsh49ZsPmkCeXDcei8zcvGmF6MiPexDhTAbo/m/lfj312i9uBqy8utQyvTX
-         X4WWSZ0DgR02zfJMUPV5IrPp7frcA1x5o/c2rqt9Yg4HWsm0yzFR2U7KVswOS8OdZOPF
-         r3Cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770344277; x=1770949077;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uwKKBAWfianGkgf2dOSPW7sjKHIffak4EwdTz+f+A0M=;
-        b=p+nv+5UiZjSoAWUbKzqSoFCryj72tpfE8bvsu2NcS7UAOJ3Olfty54ktZyhB6Ez8zD
-         1/mwwUVh5G6se/Fx/PtzUSSzmDCEYLRKO2nO9Wbu+su9tT7UhVj84Zk8vXhx5i3ljiy+
-         YM12THxSyT8jDadCCrkqcgyhxM5P7GILnehHteH1OPiZyC7/fIvKuPmuyMzoBGqkFO73
-         ZYWZPr7lZoIMetr6F9tKdLBhKn588Xw5p2/plFuIhTjHbYu1SrKCL8Jq7sRFogEJUAhP
-         6093EmgcsXTgiFqBP10cNSTIrPcM0HadUk/kFnstjjRqAwJD1pAUk+eOplBlht873hJJ
-         mELA==
-X-Forwarded-Encrypted: i=1; AJvYcCUlUV6hjf17W0XczM9zb3KtyePsD+ZolPM2N2G3S3pXideLOMQQbgdDddQtXIfrMsfCJOvvjGjOaQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy5gVVuSgaQmNUDmXnF0kk6GFIZL4QTaT35yJ1LdJeIufDG9am3
-	7V8g+2N7B6YILswH09HJyfIuLCEA1vdAJTTOh9WftsHlwtRjYUMxG9hzXMM6/yr2/XZJrHifi5q
-	ftJFGN0Pgx1A8m93H6wtUvYKVclFavZbkkq8KazDT
-X-Gm-Gg: AZuq6aJfw8xNR2W3LgerD/e5o0rjKiT07qilwRkrvve7udRG9d4oxnYPNhbwL1LNSvv
-	Wr02P9GeFUElDWWQlVKSMPUJvRjXt2Y/xHXm6mzaYMrCaMCv+Fz/V+YTJDjgKPg43vWMkeEm0PW
-	1OAhaTi+OO/hht4MNkECzjDy+eHJmpT/HgPzmyN+Fb6kfXQ3UM1ZivLzXOdRMcBP79isgDW6IIk
-	wMufuGV/vRW99a9LvjeU/L+Y7W6qPQJGLUVkRTk3z9TptBc4Dvlui+9JuaFHHZeaJv7ayxz867+
-	5XhhWVfHqJqRDE6IyczKcrky2A==
-X-Received: by 2002:a05:6000:430c:b0:430:fdc8:8bbd with SMTP id
- ffacd0b85a97d-43629380f51mr1671102f8f.41.1770344276502; Thu, 05 Feb 2026
- 18:17:56 -0800 (PST)
+	bh=34rxDBV5pclm6h3h7Mu9wlG3BBkftOkY4IJGoJ7cmXE=;
+	b=lUJTfi/Pba7O/pXT5hNOgLYPcKl5Edy+X2ImxAYG0/nwR9X4ZB3aG8K2Z57/biYAsGJvZY
+	CuRQl6UY6UQzMG6nfZc5IU2z9pM8t+hoPZOd2nkbq2CIVdnHv6TB0H/kaI3922hjioTn0t
+	s5eY+kmomTuu9MOZlsU8slJOOxY0i98=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Bk2jSRTQ;
+	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770344516; a=rsa-sha256;
+	cv=none;
+	b=NQE7rxoxar+4AriHCjyzivvequyLBNIFYENV1nfues+m1LhZYEIEJ6wW+SDT/7/tClSsE0
+	79aLMInXUYXQktrnFUopWcTgr9Gnf0nxLYiLIkRMMhVs23BLPrabxLjpNZLcW2+JHbOLLN
+	6tVeuEoxzrVedEmWaqLdx2RvZXLaqnc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id B93C0434D3;
+	Fri,  6 Feb 2026 02:21:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44283C4CEF7;
+	Fri,  6 Feb 2026 02:21:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770344514;
+	bh=YrlI3yBeNTgWfQVpjlQawqIA17VuSw3ki8nDUSsk8Io=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Bk2jSRTQ7fnmwvmvb7lXbQLA03HtBYzQpEBdKc1xSYXE1/nThiPnvYFoADxoWiUi5
+	 S4ckrO0mjLz33wsYhur/G6UTqNR5VSVgytQEl+tecSnJVSW9oIiRNGQiV81CWRDtKw
+	 EUQsfK4sLApZyXkfpOt0CcZRvFHuZoy/XLKag6hkzGucXq0RHXe2bMMhd0FycimYa/
+	 s7xKeMGAUhQvAoZ8+BHXSvjiN1u6VEnHJChj1UcMw75qyB3pihi5XOEu6vuzcQwf5Y
+	 V5wcfz1HaexVvXzmKWyMRq70V0P1XvnB9j4x2YCM+0g7zvGpGFOGOZ9tc0/L4KqZBG
+	 OzrAGp5ykz0ng==
+From: SeongJae Park <sj@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	linux-mm@kvack.org,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Nick Terrell <terrelln@fb.com>,
+	David Sterba <dsterba@suse.com>,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm: zswap: add per-memcg stat for incompressible pages
+Date: Thu,  5 Feb 2026 18:21:51 -0800
+Message-ID: <20260206022152.67992-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260205053013.25134-1-jiayuan.chen@linux.dev>
+References: 
 MIME-Version: 1.0
-References: <20260130005739.3163049-1-jasonmiu@google.com> <20260130005739.3163049-2-jasonmiu@google.com>
- <aYIfRa5fDBaLVR5y@kernel.org>
-In-Reply-To: <aYIfRa5fDBaLVR5y@kernel.org>
-From: Jason Miu <jasonmiu@google.com>
-Date: Thu, 5 Feb 2026 18:17:43 -0800
-X-Gm-Features: AZwV_Qh5kY2CdVbBsORvOJOaIaI4NUYwjHlys7b0_-TweShTI-HzzR29KaFBDN0
-Message-ID: <CAHN2nP+xPRYgMyhUEoBoqfwOQ4GZtvDjZf+B6JwoGe4xOSgf1A@mail.gmail.com>
-Subject: Re: [PATCH v8 1/2] kho: Adopt radix tree for preserved memory tracking
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
-	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
-	Jason Gunthorpe <jgg@nvidia.com>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 68E95180005
-X-Stat-Signature: gkn8133zar1dkksuyfgkxy9dp89tcgfx
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E9A284000E
+X-Stat-Signature: ncfa77jgwju431rxohgfrh49c3ngfzdn
 X-Rspam-User: 
-X-HE-Tag: 1770344278-554961
-X-HE-Meta: U2FsdGVkX19LuBV+l/ajOPiZvcoKxdxrfLNlCSsF3DZVvVBHM3C6MJY5Z3M+xfcRNpF/acM//qsCq+QWIhRWVcOfZctr7FmTmFzSubP+FRb40H/c4G13uyKExVvHwxdatkNhZdzgSM9zr7zGu3Q6C3J55DZAZzrZt8wUuaExnxJvjKF8A1V0IeWK8pbPUD5fcREUr2DQMgFqc4/Nl6BjCrnd6eWm1nMH5tdHQXAVGZHcrm4IodFqkE8RZGQ6esWPYJ5vkSKZ4J13RiI/ZK/efrzLxDzbydsFFoQggY8psTNXwjx0dKGQCRVVzJMdpJHSa+bWu9KYVsz64CVhKOTkUBbKPyUvIFOIsCr0Bo+O8Rd1R2iTCbin0CYtrru/Ch9A0gUzxxQA7xZpsaYcJOcvP/aXGrY29HhHeJ4rPCVh6g2tGFqRNIq4jsjgwm1/6Ww7mh2zaATCdWhToupca8fVQxm9Qj1pHmSpS5yoD39ZDVjG0zmaYd7rSxYOnzmUMUCU4wijTPkqqpCWQVCmMTi/WMs0adz8XQonFhR+O7ioi1c7OnpyCQANgooW1xkltV5pcKylxEat10F50GbT+J7H95aViMb5NoCV4zeeGas6Y5Tz/61ikwMyJ7wH/ceW1z9KJuRAstSr/7ZYD2mGdyx6jIR+B9fSAL1finBaCfmXVAJFZgP3NCoQxHSYMxSItHe7vtB/xdS73qAUzmS/rGxyUM6HfYiAPQvotiqAN9g+69nDTks7Ff6UZtst2PXqbHJQ/Nh29m8TaawQIQlXA6w5K0HmXTN0gkQhlQy8MP1Ga2ovCiOsk4AWloyTli/oAvPBhVd4w1T3rp3yBS9M0njCiR2Rijx7q1zMmmnKQVSUAjg52IAnApp8Fk3I+MvMjsOfLugSkaajYbf5lMzFpgwSFY4ZstZdXH9svQx5eWaVhzV/o6Qf0dQNWPvwAEIDetruka1muKfC0eUyAkqKCgF
- JGH61wUS
- PycjfcbCsXqUP+wO7ZuBc6N6Wy7wG+DcoK8U4q4eQWqA/AKNayyBF2SjBCT+cgZkZ+PRQU5HubvP3sSZqaqqZ3+P/CgNQCrOrCATVSCtcTamucVVIsstMZBGPZFV7N3wFGQ6rultB9DJzEbD/gLWHYRAw4OwrRwbNm0yMkL4y7/UuRgBERUn0uAtv84EVYGh8Nl5AawRzMbPQM7vsH66RhoACuxNI5DIhOkkIT00xB5CpRjkA+idnXmkr8vXc9ZJoU/ThShi/8Up2kdW92/k0V1RjMO+Hvpnc1MVyIB4hEI+HU6NzEojecxelNcivc1D5KeSOywUhITdwNHxLstX+9AQd0lRe+5dK3tVqIrg0s3Zq+W6Uy1B3mLeF7g==
+X-HE-Tag: 1770344515-688313
+X-HE-Meta: U2FsdGVkX18aEDk+XUeFCiCxrdVR8CuzTRXY8l/NXA6zaR/cZ2ptNDCTUnsLP1lodtirnXkCrTTeHQJz2A+QiwKbunDFxu990+KXvVnd2/RQOyyVcMVNVguXJ2wPmje9BHorvDz6NPbzPtKmpVALeJGDeJiJcSsgDgOMyO7wfOXodPXw97p05NL74ASL1g1Xv5hViZHc3Vhy4OcdqGPdUJpyngqcTju+ouG1rdqaTevOwOw/Nef1fc5XuQcRyE/8iR8udeWf/OPwStxYg6pi5Mrn+uVn3CIc/KhOP7+2qtR8l8Yh9UBaBCMBFFxQuNJvDI0YhoQ24pGePP/Jlj2As85C/zg/DGYMLbK9AW6iDJ9ett3bnQpfyTvhUTF046weP4BkkTF0E9M6hPQNE3ViywJMk19vpF8BLqTPfo0YiEYKmyDC6+ziip/nVbPcbGLTww1lUsvnwxnHNit9VJi/48eDgi/D/NxQs0CvxL9LJIFafEjtfoPIVUfkHCNway/FBUffH/myKHrtfIk3W9VO98cn6yVHfHQjOfHS3p7GB4tdqf1gAlBEjoZL3J/3AhyRoCZiKzInh2eLGWh+jF3hnpHMSK6hCI8yW/uk/eZP0e+Rqz1kvYXcawOspNLvVsDzDPwj6oLqbMe0EQkYwCq0BqBXExUlMbkADI+oqXCqY3FV4tpkuY/UPxyCKVBjFFLu3Xj2DD0lZ+xeiCaKvv91VuQGowsfmVmLPeHhF4OuIWvXFIUTxv2Mz1K0ufu+wKspgKcpvAl9Hz5pGBVlnAooDO0GwwLxY4iX+CPxxHAlgV8IHizjbnixcQ7wgZrbq9vqdusJC3g4SWhXlz3GlE0O9qOmO8B1+FAV2b+h2Pt68hbQkfftwlVWVzRuCNPkz6C04NGX01nTMutX9LzLa29SXVfcVz+Jbj+ENM1u5qfEX1E0gBYmQQj0f6TE6tQ/Caek8IgQyLEfCa9aT1m5LP3
+ gwkJS2aF
+ LvuIxaAtdid8jKmiwiIzliApZBqP4Nyn6WTgt7LXqtli925ajWXOJtshhcxp9dhVS2Ewj4JqAVwzw7f5M5BiIU0jP5F7than/7Wj2XrP8w441BjRdx+oRO3EsNjxueAu952Ry0WyfzJZGMuFqniAGxEox4pzn+ovUXpJ1N47Ibz+1JZKOpa7ijiuyb/tpuP21ENM5H79MZKAN7fnIjJn70HkdpfL0NpwCVymSvKUUs0z68liD6M1dQtWxWJfMOkx3L/pmI0u0L1zr+/ke64j62Kro19v+nI7AC4F/
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,97 +105,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Thank you so much, Mike, I've sent out the latest version.
+On Thu,  5 Feb 2026 13:30:12 +0800 Jiayuan Chen <jiayuan.chen@linux.dev> wrote:
 
-On Tue, Feb 3, 2026 at 8:16=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
-e:
->
-> On Thu, Jan 29, 2026 at 04:57:38PM -0800, Jason Miu wrote:
-> > The ABI `compatible` version is bumped to "kho-v2" to reflect the
-> > structural changes in the preserved memory map and sub-FDT property
-> > names. This includes renaming "fdt" to "preserved-data" to better
-> > reflect that preserved state may use formats other than FDT.
-> >
-> > Signed-off-by: Jason Miu <jasonmiu@google.com>
->
-> With minor comments below
->
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->
-> > ---
-> ...
->
-> > +static int __kho_radix_walk_tree(struct kho_radix_node *root,
-> > +                              unsigned int level, unsigned long start,
-> > +                              kho_radix_tree_walk_callback_t cb)
-> > +{
-> > +     struct kho_radix_node *node;
-> > +     struct kho_radix_leaf *leaf;
-> > +     unsigned long key, i;
-> > +     unsigned int shift;
-> > +     int err;
-> > +
-> > +     for (i =3D 0; i < PAGE_SIZE / sizeof(phys_addr_t); i++) {
-> > +             if (!root->table[i])
-> > +                     continue;
-> > +
-> > +             shift =3D ((level - 1) * KHO_TABLE_SIZE_LOG2) +
-> > +                     KHO_BITMAP_SIZE_LOG2;
-> > +             key =3D start | (i << shift);
-> > +
-> > +             node =3D phys_to_virt(root->table[i]);
-> > +
-> > +             if (level =3D=3D 1) {
-> > +                     /*
-> > +                      * we are at level 1,
-> > +                      * node is pointing to the level 0 bitmap.
-> > +                      */
-> > +                     leaf =3D (struct kho_radix_leaf *)node;
-> > +                     err =3D kho_radix_walk_leaf(leaf, key, cb);
-> > +                     if (err)
-> > +                             return err;
-> > +             } else {
-> > +                     err  =3D __kho_radix_walk_tree(node, level - 1,
-> > +                                                  key, cb);
-> > +                     if (err)
-> > +                             return err;
->
-> Nit: if (err) can be moved outside if (level =3D=3D 1)
->
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> The global zswap_stored_incompressible_pages counter was added in commit
+> dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as-is")
+> to track how many pages are stored in raw (uncompressed) form in zswap.
+> However, in containerized environments, knowing which cgroup is
+> contributing incompressible pages is essential for effective resource
+> management.
+> 
+> Add a new memcg stat 'zswpraw' to track incompressible pages per cgroup.
+> This helps administrators and orchestrators to:
+> 
+> 1. Identify workloads that produce incompressible data (e.g., encrypted
+>    data, already-compressed media, random data) and may not benefit from
+>    zswap.
+> 
+> 2. Make informed decisions about workload placement - moving
+>    incompressible workloads to nodes with larger swap backing devices
+>    rather than relying on zswap.
+> 
+> 3. Debug zswap efficiency issues at the cgroup level without needing to
+>    correlate global stats with individual cgroups.
+> 
+> While the compression ratio can be estimated from existing stats
+> (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
+> "uniformly poor compression" and "a few completely incompressible pages
+> mixed with highly compressible ones". The zswpraw stat provides direct
+> visibility into the latter case.
+> 
+> Changes
+> -------
+> 
+> 1. Add zswap_is_raw() helper (include/linux/zswap.h)
+>    - Abstract the PAGE_SIZE comparison logic for identifying raw entries
+>    - Keep the incompressible check in one place for maintainability
+> 
+> 2. Add MEMCG_ZSWAP_RAW stat definition (include/linux/memcontrol.h,
+>    mm/memcontrol.c)
+>    - Add MEMCG_ZSWAP_RAW to memcg_stat_item enum
+>    - Register in memcg_stat_items[] and memory_stats[] arrays
+>    - Export as "zswpraw" in memory.stat
+> 
+> 3. Update statistics accounting (mm/memcontrol.c, mm/zswap.c)
+>    - Track MEMCG_ZSWAP_RAW in obj_cgroup_charge/uncharge_zswap()
+>    - Use zswap_is_raw() helper in zswap.c for consistency
+> 
+> Test
+> ----
+> 
+> I wrote a simple test program[1] that allocates memory and compresses it
+> with zstd, so kernel zswap cannot compress further.
+> 
+>   $ cgcreate -g memory:test
+>   $ cgexec -g memory:test ./test_zswpraw &
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 0
+>   zswpin 0
+>   zswpout 0
+>   zswpwb 0
+> 
+>   $ echo "100M" > /sys/fs/cgroup/test/memory.reclaim
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 104800256
+>   zswpin 0
+>   zswpout 51222
+>   zswpwb 0
+> 
+>   $ pkill test_zswpraw
+>   $ cat /sys/fs/cgroup/test/memory.stat | grep zswp
+>   zswpraw 0
+>   zswpin 1
+>   zswpout 51222
+>   zswpwb 0
+> 
+> [1] https://gist.github.com/mrpre/00432c6154250326994fbeaf62e0e6f1
+> 
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> ---
+>  include/linux/memcontrol.h | 1 +
+>  include/linux/zswap.h      | 9 +++++++++
+>  mm/memcontrol.c            | 6 ++++++
+>  mm/zswap.c                 | 6 +++---
+>  4 files changed, 19 insertions(+), 3 deletions(-)
 
-Updated.
+As others also mentioned, the documentation of the new stat would be needed.
 
-> > +             }
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +/**
-> > + * kho_radix_walk_tree - Traverses the radix tree and calls a callback=
- for each preserved page.
-> > + * @tree: A pointer to the KHO radix tree to walk.
-> > + * @cb: A callback function of type kho_radix_tree_walk_callback_t tha=
-t will be
-> > + *      invoked for each preserved page found in the tree. The callbac=
-k receives
-> > + *      the physical address and order of the preserved page.
-> > + *
-> > + * This function walks the radix tree, searching from the specified to=
-p level
-> > + * (@level) down to the lowest level (level 0). For each preserved pag=
-e found,
->
-> Hmm, why do we need @level here?
-> Or it rather remained from the older versions?
->
-I forgot to remove this when we changed the function signature, I've
-updated it as well.
+> 
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index b6c82c8f73e1..83d1328f81d1 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -39,6 +39,7 @@ enum memcg_stat_item {
+>  	MEMCG_KMEM,
+>  	MEMCG_ZSWAP_B,
+>  	MEMCG_ZSWAPPED,
+> +	MEMCG_ZSWAP_RAW,
+>  	MEMCG_NR_STAT,
+>  };
+>  
+> diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+> index 30c193a1207e..94f84b154b71 100644
+> --- a/include/linux/zswap.h
+> +++ b/include/linux/zswap.h
+> @@ -7,6 +7,15 @@
+>  
+>  struct lruvec;
+>  
+> +/*
+> + * Check if a zswap entry is stored in raw (uncompressed) form.
+> + * This happens when compression doesn't reduce the size.
+> + */
+> +static inline bool zswap_is_raw(size_t size)
+> +{
+> +	return size == PAGE_SIZE;
+> +}
+> +
 
-Thanks again for the guidance.
+No strong opinion, but I'm not really sure if the helper is needed, because it
+feels quite simple logic:
 
->
-> --
-> Sincerely yours,
-> Mike.
+    "If an object is compressed and the size is same to the original one, the
+    object is incompressible."
+
+I also feel the function name bit odd, given the type of the parameter.  Based
+on the function name and the comment, I'd expect it to receive a zswap_entry
+object.  I understand it is better to receive a size_t, to be called from
+obj_cgroup_[un]charge_zswap(), though.  Even in the case, I think the name can
+be better (e.g., zswap_compression_failed() or zswap_was_incompressible() ?),
+or at least the coment can be more kindly explain the fact that the parameter
+is the size of object after the compression attempt.
+
+>  extern atomic_long_t zswap_stored_pages;
+>  
+>  #ifdef CONFIG_ZSWAP
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 007413a53b45..32fb801530a3 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] = {
+>  	MEMCG_KMEM,
+>  	MEMCG_ZSWAP_B,
+>  	MEMCG_ZSWAPPED,
+> +	MEMCG_ZSWAP_RAW,
+>  };
+
+No strong opinion, but I think Shakeel's suggestion of other names is
+reasonable.
+
+>  
+>  #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
+> @@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[] = {
+>  #ifdef CONFIG_ZSWAP
+>  	{ "zswap",			MEMCG_ZSWAP_B			},
+>  	{ "zswapped",			MEMCG_ZSWAPPED			},
+> +	{ "zswpraw",			MEMCG_ZSWAP_RAW			},
+
+Ditto.
+
+>  #endif
+>  	{ "file_mapped",		NR_FILE_MAPPED			},
+>  	{ "file_dirty",			NR_FILE_DIRTY			},
+> @@ -5458,6 +5460,8 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+>  	memcg = obj_cgroup_memcg(objcg);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
+> +	if (zswap_is_raw(size))
+> +		mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, 1);
+
+I understand the helper function is better to receive size_t rather than
+zswap_entry for this.
+
+>  	rcu_read_unlock();
+>  }
+>  
+> @@ -5481,6 +5485,8 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+>  	memcg = obj_cgroup_memcg(objcg);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
+>  	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
+> +	if (zswap_is_raw(size))
+> +		mod_memcg_state(memcg, MEMCG_ZSWAP_RAW, -1);
+>  	rcu_read_unlock();
+>  }
+>  
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index 3d2d59ac3f9c..54ab4d126f64 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -723,7 +723,7 @@ static void zswap_entry_free(struct zswap_entry *entry)
+>  		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
+>  		obj_cgroup_put(entry->objcg);
+>  	}
+> -	if (entry->length == PAGE_SIZE)
+> +	if (zswap_is_raw(entry->length))
+>  		atomic_long_dec(&zswap_stored_incompressible_pages);
+>  	zswap_entry_cache_free(entry);
+>  	atomic_long_dec(&zswap_stored_pages);
+> @@ -941,7 +941,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
+>  	zs_obj_read_sg_begin(pool->zs_pool, entry->handle, input, entry->length);
+>  
+>  	/* zswap entries of length PAGE_SIZE are not compressed. */
+> -	if (entry->length == PAGE_SIZE) {
+> +	if (zswap_is_raw(entry->length)) {
+>  		WARN_ON_ONCE(input->length != PAGE_SIZE);
+>  		memcpy_from_sglist(kmap_local_folio(folio, 0), input, 0, PAGE_SIZE);
+>  		dlen = PAGE_SIZE;
+
+Below this part, I show 'dlen == PAGE_SIZE'.  Should it also be converted to
+use the helper function?
+
+> @@ -1448,7 +1448,7 @@ static bool zswap_store_page(struct page *page,
+>  		obj_cgroup_charge_zswap(objcg, entry->length);
+>  	}
+>  	atomic_long_inc(&zswap_stored_pages);
+> -	if (entry->length == PAGE_SIZE)
+> +	if (zswap_is_raw(entry->length))
+>  		atomic_long_inc(&zswap_stored_incompressible_pages);
+>  
+>  	/*
+> -- 
+> 2.43.0
+
+Looks good to me overall, though.  Thank you for this patch.
+
+
+Thanks,
+SJ
 
