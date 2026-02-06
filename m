@@ -4,147 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4227CEE6B4D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 20:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FC47EE6B4D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Feb 2026 20:11:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BC886B0089; Fri,  6 Feb 2026 15:09:38 -0500 (EST)
+	id 498BC6B0089; Fri,  6 Feb 2026 15:11:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66AC06B0092; Fri,  6 Feb 2026 15:09:38 -0500 (EST)
+	id 446DC6B0092; Fri,  6 Feb 2026 15:11:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 54BA36B0093; Fri,  6 Feb 2026 15:09:38 -0500 (EST)
+	id 3455E6B0093; Fri,  6 Feb 2026 15:11:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44E576B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:09:38 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E46A88B2D4
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:09:37 +0000 (UTC)
-X-FDA: 84415121994.05.676BD9D
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id CF96514000C
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:09:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e40wVuHx;
-	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1EA6B0089
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 15:11:58 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B96AC8B150
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:11:57 +0000 (UTC)
+X-FDA: 84415127874.30.B725C10
+Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
+	by imf23.hostedemail.com (Postfix) with ESMTP id B6C9D140008
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:11:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770408575;
+	s=arc-20220608; t=1770408715;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KNkzI7/n94xGAZIGiTH3Axn/jOrvmAt6C/cefa5sLOQ=;
-	b=iHt82Bbhi2q9tvjVPOYIvMSZmVNodG4sbPt+M48COjXYASabP/pjI6nJX1enQuUyEuWWyq
-	MAVqC+9awJ4S40wRRwCHo0GlF1jYu0yYqMrVPtltwhzbpjrVLX/LVx6102allUkXZ9GvFW
-	qf+N2i/YQE6/bWXHwlkLU21npSpSpVQ=
+	bh=mom4FxigxUqgxHxI6Kp9ws79L6QLBt12tfLMkhAQPhM=;
+	b=2R2SIqNgZYVzltrIrgabEqyENtWZa0G4aZlwM6c3nOvnQR1fkuzzvyrRfoNo3mgdtewdRd
+	BZNKjOd+YabSf/qnaj3x2ie9VKMXtpzWiANlaSMn30E497JmQRcCEDXoNZ4wFWG+2KW+WZ
+	bgEm0kEKhWKTgHaYQYNz5OSJz/8XsbM=
 ARC-Authentication-Results: i=2;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=e40wVuHx;
-	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770408575; a=rsa-sha256;
+	imf23.hostedemail.com;
+	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770408715; a=rsa-sha256;
 	cv=pass;
-	b=cvF2GqAmT2AjNwK4o7w5r/67jcmlmATibQqbtjsxgo9yoKKO/QENhXOkG7IFBnGH0uApAJ
-	GrPw84EcrQyO1V1qKvH+uaQfu8mTDybLA8+VzYv63OjcE9PAHheznKfm+3gAZb+9eG9QfF
-	ip39saqrMJOhsdeOSKYFrjETOxc6ti4=
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-436234ef0f0so1362615f8f.1
-        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 12:09:35 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770408574; cv=none;
-        d=google.com; s=arc-20240605;
-        b=I/6uO5Ni5P/Ch30xLVyHeCGYqMG6WAuIYd/HReuCeksfZCdj6wpYDfljQyjaxuhg8H
-         Nn8wWZSDmlponDnbq9GW+HnF4WmxoL6PcpN4hluXUgXMkZHLLTVxDbewn78kb7RFsGHl
-         7GCKRxew1sadc3wpvLhKd9gFnjU7a+gNSjpZVweE2jtJAwcQHivb28hN6IJI9SBQAvoN
-         cjO7HPsOIF74kxBEZqudOWODsiYpY4rcWRclf7twihx4tX4yrhTEGg1Aixm/TofVvQLh
-         TmKfBqEIjd9rYsSGEWql+7Zff3gFvVDbhH2VcjVR51leNorD/hc5wAKFuqyv+FBgFSSk
-         E40g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=KNkzI7/n94xGAZIGiTH3Axn/jOrvmAt6C/cefa5sLOQ=;
-        fh=BpifxnHVTTWqZVbh+zL3wF43+y+XFjQhIoWCXZ8h0vM=;
-        b=DD0d/LLeh7wr5rHbAnKIBEuyaL2PY8b1z9vfIzVxQbLP7YwYrqCJRU1Z8F2XbZUqlC
-         k670nRs/hzt55RD7dVsPXDTVlOKpogSIMT7uQ9cZDzi9mWA/DhBtaqoDuZBgw5fNB0dV
-         IZ8JSxUdDG6CPUwOqRyy2hGmUGM2LIovboPVgcwB3tkYDkd/jTGagPOmb+NuqXocYEsf
-         duFq05CDggsb+ySa3ynnfPlP9b2djM+KpMgxk9bEXRySYow2tYO8kBpQ+KM099q7XYyV
-         glUuRWWdYHyCZJWbhDsuCm9Z3hcPavx2LrSSVWOk5A66ffTVbpHIxoqjgFztD5sIB1x/
-         A6jg==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770408574; x=1771013374; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KNkzI7/n94xGAZIGiTH3Axn/jOrvmAt6C/cefa5sLOQ=;
-        b=e40wVuHxB89suHzTb2GLGXQlfI45B1Ro1YfbmpQ73s86PVo0+kcXZgsPnLXnD78x13
-         aZwfrvX3q2pG4muM7zRCjKhNh7A874jtX8KG/rGh4CS4iTkfBK4ENLbFgovIbXSTLOC4
-         BII4IaL3pP39GB6aoeotH9FDUlFwTeCkeRp6dS+6uHd08F0gjLWAH/RpVLxcaBNMYXPO
-         AZvl+ziCR1eDDyuU6ld1N7CfL9eHbeU6nHLYwwOOhHw2HHeqR9eSQRi0IPlhMqOKHLWw
-         aBYaKBzjuQlvYtELDAbhSW+dYTPhKXNoZBsi4ruKY9BPoA92EDMt8p3pZfqa/oXJbl6/
-         bZng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770408574; x=1771013374;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=KNkzI7/n94xGAZIGiTH3Axn/jOrvmAt6C/cefa5sLOQ=;
-        b=vYAtsWcRP2sT/u7+W34mwyYLlXygDthyWaS0xL2H23mN97PNFxnasBd7tbG/r+t/Sl
-         b9Thyb+l0VPuwqtKLw/O9dKXWTAwU66iswIf25o0EveQtwydjgF131rosx5fCwFH9tt+
-         Ez4Bzz/XBG72tg2FR4EQDaeIroFDrWdeysLqoZHf0A1zfaYvj9kzzzXNFC8WRbOcBSjx
-         t/XeUQPG0lbnij3roYdd6wvmMCr3ypLaxVbG6wTF/tqLB5+mtmstPlYETPAE1dHRfFEh
-         sJ752KbVKgOQdw6JtX6syT/Ht6mTOy2WWKnaOvi2liRu4rcdyjIlgscd74aqjIOWGSLJ
-         5+yA==
-X-Forwarded-Encrypted: i=1; AJvYcCVViQNxavX7FI6lktyhofY57lj7AhYrozz0FcZ8L1AmrlawKRw5TbZ3JvPuWuhc94Fn+ZAkIoNqeA==@kvack.org
-X-Gm-Message-State: AOJu0Yy6RvKruWk0XwPoOvh7p6m1m7GAq9fHP+T4VhFrxe6/F2v0kyDn
-	sFJkFW0AWe0zuU+9ZPJ6Vw8d68Caweay65tRp6FkGIwvHiXInnDcyn8FjeGgT+buoNlVgncrjoH
-	x+wAU37QO2U+GFHfmw25R+IjgbhMJUoE=
-X-Gm-Gg: AZuq6aKaqYS9I9AlYEpzaBclYb4jIPsGcd02Pmx8hAwdlI4DqOxJtKYixp2v0Ylgx1M
-	rltS+KHFgXOIxmrX9EP6Tw1VFcFtNereAKeQSHvy/mub4hKKzZ4MCjAFiH9bDuvFvYTWINmLLJR
-	/b5+3pMzqq3Vl7ZpDu1c0h1SImHqyJPY3OnwV4FEbD+GQSQ6AQc83Y3pnYY4ngW1Q1qsacv88mO
-	/ILWu6JiQAvtLwbcG0arZ1G6mklto82rSZtDu60LEbN1FdFxvC0X04Pv3hGVWoEOY5i5U6yKa65
-	CVPI8O+xqJxHuLqY80sJu3j74UrvfB+k+jhO1Zx9TlvaGzByvPjcDzf0uriRhzygzB9fLwXQB57
-	qef4S8bok/VZRqQ==
-X-Received: by 2002:a5d:5887:0:b0:436:184b:4148 with SMTP id
- ffacd0b85a97d-4362965207dmr5961241f8f.3.1770408574080; Fri, 06 Feb 2026
- 12:09:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20260206093410.160622-1-harry.yoo@oracle.com> <20260206093410.160622-5-harry.yoo@oracle.com>
-In-Reply-To: <20260206093410.160622-5-harry.yoo@oracle.com>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 6 Feb 2026 12:09:22 -0800
-X-Gm-Features: AZwV_QhYNWBSDD-nTmAfJUx6ToEdVRJ7ZfLrAjTMeLBCvJJlvn_ysojVswF6Q_k
-Message-ID: <CAADnVQ+rNYeb5Pu2aHRVc+hYDeAF5t19MVwzXsyn2HkOuLPNLg@mail.gmail.com>
-Subject: Re: [RFC PATCH 4/7] mm/slab: free a bit in enum objexts_flags
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Michal Hocko <mhocko@kernel.org>, Hao Li <hao.li@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, Amery Hung <ameryhung@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, "Paul E . McKenney" <paulmck@kernel.org>, 
-	Frederic Weisbecker <frederic@kernel.org>, Neeraj Upadhyay <neeraj.upadhyay@kernel.org>, 
-	Joel Fernandes <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Zqiang <qiang.zhang@linux.dev>, 
-	Dave Chinner <david@fromorbit.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
-	Muchun Song <muchun.song@linux.dev>, rcu@vger.kernel.org, linux-mm <linux-mm@kvack.org>, 
-	bpf <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CF96514000C
-X-Stat-Signature: zjntciafy4z4q5phz9mmnyk8jpx4weu7
+	b=YkfepXbtsLN0IFJFQOKRh1va+yD7l3a5HIXV7rAelboF3eZb4pk1hIhAJPkhbjxZHpzS2Y
+	EwAYyqEVyCzRx1wK7XIGwOODP5sM7Y2wZixOgs9gQWF3ufJTFj8BTPtzhl6R6NsIs+EMJ6
+	orFIN60jLKL4BVnp1JGIjA6heotycv0=
+Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4561B140321
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:11:55 +0000 (UTC)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1588E1A02D7
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:11:55 +0000 (UTC)
+X-FDA: 84415127790.26.C1BFC2F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 55FE4A0008
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:11:53 +0000 (UTC)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770408713;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mom4FxigxUqgxHxI6Kp9ws79L6QLBt12tfLMkhAQPhM=;
+	b=kncY76J/QB4kmkGq3cJHP1J7iH7eiK4mQeHzF9gq6Xo/qexkbsn8T7ApVwoug3kgQ8X1jF
+	fYqUQ28XsAzL4OIJHd8yXbkrVxEDQ81f/3H0a3k9jm//hWRRtpUc/OPJQlJw6XlyHUv5z9
+	Lv7aLNzUmaJrlJplCKq4Kz8v1/An5T8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=z+sCdjyQ;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770408713; a=rsa-sha256;
+	cv=none;
+	b=tqM7ZLgO3x/RcYc/AeJCUn6F73u1I0aTQXRYsincm/tLT+RXVO6GeZ1hqd4FfM51ji9OJz
+	DqXo9PoLK1I7OyYp7ie4grjkVhRLusbLPVE5lpfz9Qimg27rih9P19bxZVc0CJFBCnDfyw
+	p+ySey3e31wEgGA2NSVreFHahUlIUKk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 157FB401F2;
+	Fri,  6 Feb 2026 20:11:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF525C116C6;
+	Fri,  6 Feb 2026 20:11:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770408711;
+	bh=8mYM8u1acZ5xGe1Ak0y+3i5xy3haa0EvTTtCBilST0U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=z+sCdjyQIdGmSGapZlqU23+BnFvm+eBV19oig3SG1wvDSaouD5eAGZqVmGAurEB0z
+	 kT0664BuT7Vdxd4kEZ1SXzRFtkzLQZurOoFzWGRAyzW5G284lPcuAgEQ535Lv4Wmey
+	 Bq/PxNalbxIcQTIC0/7boFsZfpuxvaUZa15Ix8Hc=
+Date: Fri, 6 Feb 2026 12:11:51 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: carstengrohmann@gmx.de
+Cc: bugzilla-daemon@kernel.org, Kairui Song <kasong@tencent.com>, Baoquan He
+ <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed
+ <yosryahmed@google.com>, linux-mm@kvack.org
+Subject: Re: [Bug 221055] New: Hibernate image write 10x slower since commit
+ 0ff67f990bd4 ("mm,  swap: remove swap slot cache")
+Message-Id: <20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org>
+In-Reply-To: <bug-221055-27@https.bugzilla.kernel.org/>
+References: <bug-221055-27@https.bugzilla.kernel.org/>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-HE-Meta: U2FsdGVkX1820Ie0vkXrCLFeeVwS+PuZyJL8sy2OGfFH6Xz7gsskYj2vYztZn++Dd/KFrO373Pv9AKMfJ/0Y5OxUtxc60/hrS0N1odPlw8lpjXA8J3yazlHXOE87dEzN8PDzTn2VpKzhsERpWWFi+ED6e3WDHz7wX0K5iKuQTlNgDGl38V7VVIO5QcFrG2QiDzQPOxptbvCadc3zkfpEhB4xm75P1js++cnyLuYGnJgLmcC7K9aCl7QML80jaqh0VWkSWhmlFP7+2YzDBKlhWs4bc1XSLj5Z+1raEcK9UQoOwGWpzUcmGhGdNireAityRMnjKmQ7LWgG8mX3CB1oUxjeWJJkheyIW+Rs2gX1vRsT4LbdkMhMAPor6CAvEBfJnHRwtaiPcyrwechlQlieUysrwsq1ICPx6O2Eg9IMuK4aFe8MAZwagArbkn9FrE9RDDy7SRSK0STXKE0qB468cfl7XAB8Y2JTnYMMacmzEflQ5nwQNS1cO/HoXjSP/H2ZxsygVpiCtrVSg1mk+8wJgdkdzsWs+Lz1o9FOYT0VkoSYsElytK8k4a2Y+XFzDQtXWzjpL7ZcCxdVub7+HXL5zMaAgJ2QSjVQm904VzTDbM3rsazh6M/dgucyJXi3xDUR/McyxbfKq6sdH/1VhJ9gBN3m6+pfVSZzkZ6+5otLDZwzG0j9Kcx8iCYufcQSPBCh5KG4Qb/KlhJodT8SpmqrOYLdWQ5+FNM6cyTQ8He5HYvaPH24MjpVhxS8K/vXYivFC5ll2s/px2UhTKTYyGFW8tfzMkTex0JN73CE+20U3eqixgLmdMGqxKcmvxQ9oRW/2H9dwjBCZVAzdc+wH6FzkReUexbSUHPqoRXhlfAcEWtS14jowZkArniwvVpTa8Lgnsque1Wtc7TJ9wf85gPZzfc9YTYtr+vnwkEucqyzDpU=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: B6C9D140008
+X-Stat-Signature: 5refud5zyfgjec57qa6n83aiws6w3djs
 X-Rspam-User: 
-X-HE-Tag: 1770408575-65293
-X-HE-Meta: U2FsdGVkX18FdajKfzS5d1oDv8ObQVbUQSHk+zwnonRt6SJMcaydGZwcT/YV1BUF42/KrnkD4L1fVbyniv3KZtqRmnD89/rgs/Ep46GgUEVI0GCsVsZljWKlw9Y0LbPQDXZlgeFYOfJq31AlnRu7jRrE8LEpN4hkDX9kXGEZLa9XvYOEilpKnlo6l5M/dWO1A8C64tzZpANPAI+VW/jFQ59u0KlU+TQ52cEvsc/CmbEkvE2uxQ9tqZKunVdHlTL8R4PgoMfDZwRxIRQrcAuMkznlqBYZC9/yK0Wp08ItcaXa1A1f3AQb91UGxP4+mVqWPsyZ/dQbgIH5d84ik01RJAeAO2coS8FVOvwR2tPiRzorML3XwVKcEhewnMkHgVpfYyyZjWaCYF5ZGysBSOKD6rQ6BJejnnijS2CMRNZ9Lj3Mw8QqOR3XolAEH8ddrE6otfHpy5KOeuQwKeeaB4KIyMjmjyZHFBarOwJU1zhPPuk5fHmW/tXFTYGzsi1XmI3jQSHJDz8Mqr46R2h/4uOiEtZWorfTz1ob59dC+A+xOCCFmXuIS/02r4Qa3xSfKO6eDh86uXbFQP/ab3DtfsfnRdSr9guj7RHEk0E/CDV9M1mkJK10pmCH5rdqt49SoH/QLjfx1n95whJPfqhnTmzyfDsj45lRciAPCagOenZBvurjw/S3dktGGhOc1XZvmIs4peHnrWEOGWruuwj4GxKx2o7tP7OcGW1hcAVNm0N9Q/hwM9I3ZaBGLH7PoAiMyy4MezF758XTbo30GuudrPGuk3mg3Iu93y+0ahYtntxNY2eyPS4tW0wJypzc4LlYff9oHi2GPh6DpyDenzNPOK7LTLBKTgo8aCBTafw/UH0id3P/fjPRN9Hk+pclLckzoAufTJcRten4xmuvcuDaHQSNaTFBS8ICBuT/cESqu0S2m4aEDjvJbXNh3e63ZH31Eg9Us0P1ylVRc75Go0d8Glc
- 9kSgdGYA
- AyBDXYRgi7/8hxp6iYseRZbTXmHfExZTyPuw6t+ugMG3urYsJuIZFqdorG22aV2/YKhcQ603wL5u8qMSZj7wm3SAtQhXRLcwfaJIo+3LDp/eaVIful6L2spAu4rOUhDoG78L195zBDySnrNblu2K3RrWkOYZFlS2vo6ObvnRce/HlfBzAkgqwJVCeeOn+Y63aF1NQ8SaJKVaAg9PvgnHy4c9G94Sm780KOQfMSU8JhcYVHkkjdijcQ++hT9XPNwRs+mwoWhD+Gl6SLODB4VH7N4x1KwK5vmt3GnuBcfIVmO0EiOWX+w5wOeSTT87S0xiDdK7b3BlQmcuKyP+Zh18iE3BM5YmcnP6mESkxEckMhnVeja6dOlSbFPw1RZYDhx5ie9s6Il5vdIAZrzHYjINcTxdfNUZwDpt8SfLOi7/b/mzZJcBKT+ZXXRi4XidoI06OUjHCHwMugNPtGtHm26it4e7DrDmsZObmcllGdKy45edkh5Q3byQLU4SKvQLQ58GLrv4lA70D26MRg0mvVa2TD0YAD9BgfGE4dK/ghdFRo5LUAZsjRhhlid8HM7RTVzA7tU9SfPVrVt0rTyNbCmssnv8E4L0yjChwzRT2
+X-HE-Tag-Orig: 1770408713-649919
+X-HE-Tag: 1770408715-186357
+X-HE-Meta: U2FsdGVkX1/L5PZPV+PArYx/+PK0G6RW2p8OA/czuUtmlqbYt+9z8uRKzzpZcuFlMfcxWvBGL5b2QWkckRkJPsh452kDxUoO+K77zdZDbsrXnTSmNCP85mLXeHwCtPDfvVgrWp5/ET/ILz0hutr3tCb4hc780VjG1nPKnyx7yCGCBUbsyj4JUjAq+3rUvAGSAOVKLgHmxBa6fNTPN/v8vYKP0nQG0tdMaPGmO6x5zZQPz/Q7Pa8X+cX934PTf7chKANgOiJIz+txD+X6jp60FqPYuolgiBgEXH/y2HTyNVLFhid1hdffSAvGO+CdWod7+33Or3+PtmoJ121elWLHMm2jEOia1puouml5P/elusMeXLurr/aPs+22JhoBSin/2XTnCQUKduaty9OfXtLQKvF98BC/+sG347TPhI8a2hXtbc4b0zcScDq9svN0O31nVWDll+1Ia69aZi0eM7Bcr+pJnIW9heKna7v3LqSYpCF36hnbVSFUpP9v1t7nCWRzNIOjBzSoIW5lddFttnDwgt3B2LREZC0BuaS2WZL30uGBlIMP4W2s85i0+Gy7hegseRwj1OygC7zFqhOo++P7IhuIJe7jE6l1tdlqRhC9aOiBZcM7TYGgJxjW8AdUtuu7TWkC7MuLTRNjQHU5u0fyf84AiSSr4yIa4HyfmPAv8GPnA2cyVaQQQzHBHXzTbl5Xv+B56LEm8z495zvQwpCdDG5zKHqlTUODADJxi4jfMGZs0LHz1RgANhyGkwXFMSvWEQDc2CdtSgBm1ULERFkF2zt3vqv5SbYNlexWOksWVnmmXhvXXgU+TY5E5TcfRVgBqjv/C6kIat2Y6QRK2sxEjo6BEQ/q1cEzt68P7RQiDUAIOTNPNX0G9OiTzdjPTbKeO2MTjvzjGmhguiSudItjvDIR8plvDcsdhq0mrlh9VRancGLGDWg7wgFZJHVBW8sYFVnujjNSvTLFSb//S6u
+ kor2CVHV
+ xwFEC3UV3sd712NGtP7P0Z5GW108FqRaEcGEgTEXzeRQRMjJ0yj0hDR7W+XLkIZjlqE2gX4dIMWkgFDZBJeLGfeRUBhmCjILl8kRN2MHp09CUqrbqFYml7yaz7U9OBxZAIWeXM31x9vYoA7WazacGjWUzYsPztBmA1EfucyipCsjptApmCBEQ+KRfk2v143oeusFPEKdKwxoDPeI+FCLytFb1/G7Jb6KX0WrKqecOt2xgzcklSnHVAcCixI0eyq4cweE63Y8rVWsJTik=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,24 +121,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 6, 2026 at 1:35=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wro=
-te:
->
-> Since kfree() now supports freeing objects allocated with
-> kmalloc_nolock(), free one bit in enum object_flags.
->
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+On Fri, 06 Feb 2026 19:51:38 +0000 bugzilla-daemon@kernel.org wrote:
 
-For patches 3 and 4:
+> https://bugzilla.kernel.org/show_bug.cgi?id=221055
 
-Acked-by: Alexei Starovoitov <ast@kernel.org>
+Dear Deity, I do wish kernel MM bugzilla would just go away.  Sigh.
 
-I think patches 3 and 4 are ready.
-Would be great to land them for this merge window
-(if Vlastimil agrees).
+Canned response follows:
 
-Patch 3 is tiny, but the impact is huge and
-patch 4 is a very nice cleanup.
-If we land it now we can start using kfree_rcu() on bpf side
-in the next release cycle. That will help us a lot.
+(switched to email.  Please respond via emailed reply-to-all, not via the
+bugzilla web interface).
+
+
+>             Bug ID: 221055
+>            Summary: Hibernate image write 10x slower since commit
+>                     0ff67f990bd4 ("mm,  swap: remove swap slot cache")
+>            Product: Memory Management
+>            Version: 2.5
+>           Hardware: All
+>                 OS: Linux
+>             Status: NEW
+>           Severity: normal
+>           Priority: P3
+>          Component: Other
+>           Assignee: akpm@linux-foundation.org
+>           Reporter: carstengrohmann@gmx.de
+>         Regression: No
+> 
+> === Summary ===
+> 
+> Hibernate image write 10x slower since commit 0ff67f990bd4 ("mm, 
+> swap: remove swap slot cache")
+
+Thanks for all the work you put into this.
+
+> === Description ===
+> 
+> Since kernel 6.15, writing the hibernate image to swap has become
+> approximately 10x slower. The regression was introduced by commit
+> 0ff67f990bd45726e0d9e91111d998e7a3595b32 ("mm, swap: remove swap slot
+> cache") authored by Kairui Song and merged by Andrew Morton.
+> 
+> === Performance Data ===
+> 
+>                  Before (6.14)   After (6.15+)
+> Hibernate        28-32 seconds   290-342 seconds
+> Effective rate   ~60 MB/s        ~4.5 MB/s
+> 
+> The swap partition's raw sequential write speed (measured with dd)
+> is 255-450 MB/s, confirming the hardware is not the bottleneck.
+> 
+> === Bisect Result ===
+> 
+> A full git bisect on the vanilla kernel repository
+> (git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git)
+> between v6.14 (good) and v6.15 (bad) with 14 iterations
+> consistently identified this commit:
+> 
+>   # first bad commit: [0ff67f990bd45726e0d9e91111d998e7a3595b32]
+>   #   mm, swap: remove swap slot cache
+> 
+> The parent commit 1b7e90020eb7 ("mm, swap: use percpu cluster as
+> allocation fast path") is fast (28s), while 0ff67f990bd4 itself
+> is slow (307s).
+> 
+> === Kernel Version Tests ===
+> 
+>   Kernel              Duration   Result
+>   6.12.1-arch1-1      32 sec     OK
+>   6.13.1-arch1-1      42 sec     OK
+>   6.14.1-arch1-1      32 sec     OK
+>   6.15.1-arch1-1     302 sec     SLOW
+>   6.18.1-arch1-1     290 sec     SLOW
+> 
+> === Reproduction ===
+> 
+> 1. System with swap partition (not swap file)
+> 2. Boot kernel >= 6.15
+> 3. Run: echo reboot > /sys/power/disk
+> 4. Run: echo 1 > /sys/power/pm_print_times
+> 5. Run: date; echo disk > /sys/power/state; date
+> 6. Compare hibernate duration with kernel <= 6.14
+> 
+> For best visibility of the issue, use hibernate=nocompress as
+> kernel parameter to disable image compression.
+> 
+> === Hardware ===
+> 
+> - CPU: Intel Core (Ivy Bridge)
+> - RAM: 16 GB
+> - SSD: Samsung SSD 830 Series (SATA II, 3.0 Gbps)
+> - Swap: 20 GB partition (/dev/sda2)
+> - Arch Linux x86_64
+> 
+> === Kernel Log (6.18, with hibernate=nocompress) ===
+> 
+>   PM: hibernation: hibernation entry
+>   PM: hibernation: Preallocating image memory
+>   PM: hibernation: Allocated 2217260 kbytes in 0.39 seconds (5685.28 MB/s)
+>   PM: hibernation: Creating image:
+>   PM: hibernation: Need to copy 506945 pages
+>   PM: hibernation: Wrote 1794356 kbytes in 397.97 seconds (4.51 MB/s)
+> 
+> -- 
+> You may reply to this email to add a comment.
+> 
+> You are receiving this mail because:
+> You are the assignee for the bug.
+
 
