@@ -4,111 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC260EE6B6C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 00:16:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37E20EE6B6F
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 00:48:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 290386B0092; Fri,  6 Feb 2026 19:16:50 -0500 (EST)
+	id 4086B6B008A; Fri,  6 Feb 2026 19:48:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 239496B0093; Fri,  6 Feb 2026 19:16:50 -0500 (EST)
+	id 3B63E6B0092; Fri,  6 Feb 2026 19:48:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 108B86B0096; Fri,  6 Feb 2026 19:16:50 -0500 (EST)
+	id 2C2606B0093; Fri,  6 Feb 2026 19:48:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F1FDB6B0092
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:16:49 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B54BCC18E7
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 00:16:49 +0000 (UTC)
-X-FDA: 84415744938.11.26A080B
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 198B36B008A
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 19:48:44 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3995213A7A9
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 00:48:43 +0000 (UTC)
+X-FDA: 84415825326.22.4A8144F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 36F51100005
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 00:16:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WJ8QBU3g;
-	spf=pass (imf05.hostedemail.com: domain of "SRS0=IOST=AL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=IOST=AL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	by imf07.hostedemail.com (Postfix) with ESMTP id ABA924000D
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 00:48:41 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p7nX2vVX;
+	spf=pass (imf07.hostedemail.com: domain of jpoimboe@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jpoimboe@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770423408;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1770425321;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGr1ePV66UvuGQOjrkpWkxTE6A1swlAzKdjhTQJYHVw=;
-	b=wQDmIXONTci1TYRu+WyTaFIkbQrtYBxhCWywEUg7jeXuto4JpOpHwb/G5XruW+d7raG3eT
-	oudLAPNrWlzG+aWTuZTGxT8Wmxrid76xhaCCknx/KNLLc/G/xtAmXTB43+s0vs4BmfF8V3
-	epjJp6TrW24IanWRlhpv2sMBO+pSQ/c=
+	bh=ThdYRa0w0w0c6u8WzkCILTjX8n/t6NbT4BMxHfe2XJo=;
+	b=PAVxeWvwA66YqCW+k4noRArlThnPZ91i2XvUDQYvJ4HSzYALbeoCaWj3Nk4tEje4k0i1py
+	IDH9J1wpSigB9wNrvM1RdkYeChAipi15iIS1tJTupPAewUJhtiV66MFgtjK6xtHIPOquKl
+	E/ROyJUPOSY6yOxsU1WiXd4KfZkQlc0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WJ8QBU3g;
-	spf=pass (imf05.hostedemail.com: domain of "SRS0=IOST=AL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org" designates 172.105.4.254 as permitted sender) smtp.mailfrom="SRS0=IOST=AL=paulmck-ThinkPad-P17-Gen-1.home=paulmck@kernel.org";
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p7nX2vVX;
+	spf=pass (imf07.hostedemail.com: domain of jpoimboe@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jpoimboe@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770423408; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770425321; a=rsa-sha256;
 	cv=none;
-	b=cylmw8nrC+hGfpZUN5CmXL9kgBbV2hBfAUKrMS8hJOsmjX1hhu9+AeYmhvwY2tnqw5cGqN
-	kDM8woCdojQIA9pintDxoMp4pjJE6nQBVupK4lfl88KZPDYswdli7/EXQJVKpnegjsFL7K
-	Fle3oK9nQQ4SIRk6HejQjGyGic4WIAk=
+	b=q1PFau4ZfHM0Z8FVLUXhDxT9gi9bTzlS43JjSdKNxP6L+oSxTrxexhnEz2vfbaVMA1s4G3
+	QVAvPSbi5TAWnuEFY23nETO11YPiYBWycjIuwJ+t+Px+ZP9ja9bDWyIarcLQUFk0gvh68W
+	QTj1Zt8wce7Ysf/4GjoUUvJUaCUz30A=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 378836014C;
-	Sat,  7 Feb 2026 00:16:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69A9C116C6;
-	Sat,  7 Feb 2026 00:16:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D17F3600C3;
+	Sat,  7 Feb 2026 00:48:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE14C116C6;
+	Sat,  7 Feb 2026 00:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770423406;
-	bh=cmHcOieE29bkmKS4OIrRotVZKXlaKd4m1k0Q6/r1ulo=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=WJ8QBU3gAvqXiJztkXogHR7//XU6ECPlbV7aQWFk+TWGS2vbvP5MpnlyXlu0PjbfG
-	 JsTV1sG4Fu2/789HI+xuWRG8WEu3rzIHeONZc6A7+TqxM6S9p3eeG2UijE1vSap2Kx
-	 VrZXn6iH7vFAyT9cMavRBSkLwd/kk6GHO6/uj8sPQ32xLxEeHMIidELEzVnBtJeiQf
-	 Q8iRuqD/x8BsFqjqqIIPyrtlx+cCmUqxegKJlCxhh4Qdr0NYbiLD7n35cvhV5P6fck
-	 FuCI+dMSmtoNTZ4YpeDOcP6KaaMhwLnNEHXvVUx8rPnmkQREjTF//zot0M9ZtrRbqI
-	 iW/zKYHKsn12g==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 6D37ACE0F9F; Fri,  6 Feb 2026 16:16:46 -0800 (PST)
-Date: Fri, 6 Feb 2026 16:16:46 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Amery Hung <ameryhung@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>, Dave Chinner <david@fromorbit.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>, rcu@vger.kernel.org,
-	linux-mm@kvack.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 0/7] k[v]free_rcu() improvements
-Message-ID: <3069e76d-5c7a-4c3f-9b83-43ed1700b95f@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20260206093410.160622-1-harry.yoo@oracle.com>
+	s=k20201202; t=1770425320;
+	bh=vsvgKR4j92CFsccFD6/N2XzrLJouwtpGWdBZS6Ku7o4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p7nX2vVXviUESlx8Jk7ISlG4N0+euZ5ks+pQQGhT+J9tbyWxYHXPF0ekRxG4DpISu
+	 dN0sohT7CkSMHGV9T+qTysmH9D3OwEVm7lwkrKWA3YrXYAngHjdlU9x7KFPUWUdnha
+	 st16aMTVH4R1YRqLofCAFIho4042/FJbxmc8klRZcNVe/tzZgBVbFQq5Opaf2Oq0vu
+	 4xA9SmmFpUkT5UCdZ/2z8fZK438ADxP7SYh1OWlkkcmpqruhh98c9Ua5YW+eG8q0l8
+	 3nsSWFD+Z/epBoJzv9V7wUmw0f9yrFRrN8pjk9ZGQ8sCEl8VDpQ8yZdPAXl9FiPNWs
+	 Z+HRp3xKIi3aA==
+Date: Fri, 6 Feb 2026 16:48:37 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
+	Steven Rostedt <rostedt@kernel.org>, Indu Bhagat <indu.bhagat@oracle.com>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
+	"Jose E. Marchesi" <jemarch@gnu.org>, Beau Belgrave <beaub@linux.microsoft.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Carlos O'Donell <codonell@redhat.com>, Sam James <sam@gentoo.org>, Dylan Hatch <dylanbhatch@google.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: Re: [PATCH v7 6/6] x86/vdso: Enable sframe generation in VDSO
+Message-ID: <h34g66ujiebhuxzcqo4hg4zq2mbpbh5c3u7b7qlznaqxxwpczf@3kwv2wydbuiq>
+References: <20260203171958.1522030-1-jremus@linux.ibm.com>
+ <20260203171958.1522030-7-jremus@linux.ibm.com>
+ <f671c79a-ee73-4a12-af48-2811f97b9f3d@zytor.com>
+ <9a63ce89-84f0-4782-90bf-dfd7c8ec8c52@linux.ibm.com>
+ <1AE3ED79-C094-46AE-B455-06199D5699DD@zytor.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260206093410.160622-1-harry.yoo@oracle.com>
-X-Stat-Signature: cqw75jtn16o7qra7b91m3wpau7npdtf4
+In-Reply-To: <1AE3ED79-C094-46AE-B455-06199D5699DD@zytor.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 36F51100005
-X-HE-Tag: 1770423408-632194
-X-HE-Meta: U2FsdGVkX1+Mzq91vdqrrboRwkxfW7SvGtOXmBxtrUVa0ZtKKxMfncSxmpb2Vk5+jHYjVQu84gn/cs0tK6rkx1qpeFK4EMS4ik3b/+SNexMILUcVwA15yi5RSNLSrpS7EiAqav6jB04yK19bumYrYmqHpCsq6E1QJTowVbWarhrCGViGyOxh5swtKV7To4CWR1g/XUa8rEVccpXOSz1TGEsMeCyX/ZD9V+/WKdRKm3Q7ekMakVvDi0gsT0/nTQkDMp4/Ah0n1lplDMnozogDBr2p4dhMmqrhGT2yb+FVWEGc/nRFKr0MIacXOHOTgQFrWK9GuS7Sb0BsEg8oEy3QSiRUiWU6uy4d3N9frG9T7HyHt5aj+9F7mwzwT5o7nStdoDYGhBBFPteSYCTt6vWX8jDNJ0S/H9WMJGx336Jt5BwQQJhhL+w1CKpOf31nyvS0oNIe2UVqNX3bOig8f9TVe6axu4yEkhyf7DqLO4xS5jJx6G6++9IzGmxS4iMpqXYdmA6yWwuixtnssSh89+nwkB1SqqP3d+kefEkmJvcadWE1BxeCgO9J9P/h61O7u03TfdR8XRByYLBIwcKFxdhVt8uO2pop+wnIvJqnMZn2liMyU3TxpXGZJHzEGzUdWBMwqY3sbfyGObJN5R8kCX0J+lbpXKUs2myK67KSlMYw5ddnFcPuCAv3W4QerN83ADtZqen2fMS8FGtZHyJdU/V4/VNW6hu6/YAJhwD8VlSgFWcNVjRYUKICzL7mCWr0qSPaTFFtt13cKyRNL8A8Up8lTinqVipG/VrPlCSY4RkHFobWLrr0rpwMnq6M2Zzar6jgYPO+LeUxynQgzVBHsJPckJ8EbszleZ8SWhKdpL9nlEEgwZVrfXMpKHfxMFw5jB1KsB9DPIjrelAQ8qVtlSW6VjUobdqFlV/I4lNtVtqp+56DW0Ay/FWG6i5Au/dUu9hBdX14SMltvP/IGeh7Skv
- 2uQOYj1u
- RKRmm0tE3fvT6n/cedZlpzsm9xiFQPxwzoR0SEcc5KXwfZawaG2KpNHMI8+KvBMJOblRz/fOK6ZGfQQU7KV047cXYN0CMFqPVSkP2DTgt43aYcIBH/2PpzEjT3F8AYeN38DlIwkEpJMsXwQGEih1eXy3v6nXv0h4J95CeaZqMsTirZgI/hp4pkILBlWrPP+3G8yB7bgVxdvv7idfGdOxhmruws0J1Fi3L/uORj75sxk0dnhY/aFd3hXQCBLmBC1odojk3MNmgJplzHvErfhnTpCX62GccQiclywEEOZ0YinhPOlGSlZ2Dx7SIGktkslhmxhq7VzHlU5tZlJjohbtb7U1D2PXYYRmrMMRoWdUGxpfiYt1w81IQJWAThhzaocWW9xv2ano6t2lTRhN63yq8FA/KhqxwFSp9wwz2F1FhbbMYI/DXIkjKTNsh/4r4SUrjXUQj5ZRvhUT5u8N4nrK7E/uuwA==
+X-Rspamd-Queue-Id: ABA924000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: tonfdrru4fbm98jb8b87o1tfsekmrhae
+X-HE-Tag: 1770425321-811449
+X-HE-Meta: U2FsdGVkX1+BVNNyaAqPV3GTMAmfJk/Jp0aHezEhU3CPtbIQJpreP9wyrwVkjumEDhfoYY2ehoGmFMfEPbjGvkwGDgEl+TLM2acC4CBMaRTvIhqyzhuodinWRlKgj0neRk5qYRF1PfctU7iHnM/jia677NBoH8URM3KN/RM84foe+o+PRKLAWSz7UZ+5A2KckQqe32VghsdbzGhaCKYjRHFZvrx65lNannCD8awTwOs5X7blJLjooUPknNELhYped5GygLFPaAqjfwQl0kZ0Rpp12RieUuqgvwOSYO8gc4QcV7MHxPJ108pbuX2ZbrguQytluEkO/IXWnbjMrA04CdLTWtSw4Dx4jTWYX5iwT15J06EMQv1/ipK8uRS46S/qntVo+j1EoP3Hjl1YYUXnHiaRDf9n+Ry9Bvd9NBw9ROs6xExxg2pf/qKfBnd/qG6d8+vld9nidCcokpRAgDW8o+uSHRFmSvgzNRuUkKXqLITE6hNi3Tdf3gNwtGJyzfS1Yq0Xl2gp6pV1iNyzCD3mXhSE3dqVHzAqkyyIXWB5Ivo/4ECNYFaf/RhLUpOO6IrOYxx+ka5l0f41ThcZ/99DjdgTqxDdnAqjT2PT34eDRczRxxVsPgJ7KMamYoa7XKhUsIB1sUTsWXQoMul+zC6GDzStpc8hUMKUPdgh/Rkx+3xpsr4GgE+qs9xsPD1m5o+/mZRaeWqmryT6EG5Od5pQYDc5fV/rDlOt/XARF8Y7oJI4og1rkWNVJUTJJLy+n1Oh9jUSqPMrcJWEiFrwShKfmb3oC6PSqyThtl3cEJ+UksAE8dHO33LL2fIjmpKKQzfmFy5j8ktUnGTKGIVU1o9HQupEPOAJxKGhq2ZGp7Rd/UJOxYpkKAUJD/d0jqRL/Rh002IDzhHj+1OoxFnwoeiYNAZp5zpmbOL26B9oAdQ5tzE/uVxGc6OziVWCWRmhA6m8g0NYnEHlEJct05BoUXr
+ CObU/YcY
+ spS/PabU8i2eEyduku0yyXvReLqbRHvogo83j9Hou/CwiIqe494PMWRYP49cbXm/g3p3GjBWK4ZxooLEcxIzQ91jtH3glPt9H+nlbxtdyFmUPHkr87f6AOzjTT6AHx3FXbhXbzifxKvH5rfqEtXd2lz+8Rlw5Qb9Mk+5njnOLY2aJhyNfhZYq9uUtCk1JLNFt46XM6TmKLxauG4PAe+itf54/3wALChVjk2xRlZiT9+wopQyvGOa6Z230cVEi8DcfYJvsvaQVGR2mr0GrzQX6KIphOg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,146 +110,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 06:34:03PM +0900, Harry Yoo wrote:
-> These are a few improvements for k[v]free_rcu() API, which were suggested
-> by Alexei Starovoitov.
+On Fri, Feb 06, 2026 at 03:56:59PM -0800, H. Peter Anvin wrote:
+> On February 6, 2026 9:48:24 AM PST, Jens Remus <jremus@linux.ibm.com> wrote:
+> >On 2/4/2026 1:49 AM, H. Peter Anvin wrote:
+> >> On 2026-02-03 09:19, Jens Remus wrote:
+> >>> -
+> >>> +#if defined(__x86_64__) && defined(CONFIG_AS_SFRAME)
+> >
+> >My understanding is that you would like above changed to:
+> >
+> >#ifdef CONFIG_AS_SFRAME
+> >
+> >>> +	.cfi_sections .eh_frame, .debug_frame, .sframe
+> >>> +#else
+> >>>  	.cfi_sections .eh_frame, .debug_frame
+> >>> +#endif
+> >>>  
+> >> 
+> >> It would be better to:
+> >> 
+> >> #undef CONFIG_AS_SFRAME	/* i386 doesn't support .sframe */
+> >> 
+> >> in fake_32bit_build.h.
+> >Due to (binutils 2.46 pre-release) GNU assembler supporting --gsframe-3,
+> >but only for x86-64 not for x86-32 (nor x32) CONFIG_AS_SFRAME is enabled
+> >even for my i386 cross build attempt.  This then wrongly causes the
+> >.cfi_sections with .sframe to be selected (verified by adding an #error
+> >for testing).
+> >
+> >IIUC the .cfi_sections is there to have DWARF in both .eh_frame and
+> >.debug_frame.  For .sframe it basically has the same effect as
+> >specifying the common assembler option --gsframe.  Given the more
+> >specific option --gsframe-3 is explicitly specified I think it would
+> >be better to drop the changes to both dwarf2.h and fake_32bit_build.h
+> >and solely rely on --gsframe-3.
+> >
+> >Josh, Indu, do you agree?
+> >
+> >Thanks and rRegards,
+> >Jens
 > 
-> [ To kmemleak folks: I'm going to teach delete_object_full() and
->   paint_ptr() to ignore cases when the object does not exist.
->   Could you please let me know if the way it's done in patch 3
->   looks good? Only part 2 is relevant to you. ]
+> Seems a lot cleaner to me, too, assuming it actually works.
 
-On what commit should I apply this series?  I get conflicts on top of -rcu
-(no surprise there) and build errors on top of next-20260205.
++1
 
-							Thanx, Paul
-
-> Although I've put some effort into providing a decent quality
-> implementation, I'd like you to consider this as a proof-of-concept
-> and let's discuss how best we could tackle those problems:
-> 
->   1) Allow an 8-byte field to be used as an alternative to
->      struct rcu_head (16-byte) for 2-argument kvfree_rcu()
->   2) kmalloc_nolock() -> kfree[_rcu]() support
->   3) Add kfree_rcu_nolock() for NMI context
-> 
-> # Part 1. Allow an 8-byte field to be used as an alternative to
->   struct rcu_head for 2-argument kvfree_rcu()
->   
->   Technically, objects that are freed with k[v]free_rcu() need
->   only one pointer to link objects, because we already know that
->   the callback function is always kvfree(). For this purpose,
->   struct rcu_head is unnecessarily large (16 bytes on 64-bit).
-> 
->   Allow a smaller, 8-byte field (of struct rcu_ptr type) to be used
->   with k[v]free_rcu(). Let's save one pointer per slab object.
->   
->   I have to admit that my naming skill isn't great; hopefully
->   we'll come up with a better name than `struct rcu_ptr`.
-> 
->   With this feature, either a struct rcu_ptr or rcu_head field
->   can be used as the second argument of the k[v]free_rcu() API.
-> 
->   Users that only use k[v]free_rcu() are highly encouraged to use
->   struct rcu_ptr; otherwise you're wasting memory. However, some users,
->   such as maple tree, may use call_rcu() or k[v]free_rcu() depending on
->   the situation for objects of the same type. For such users,
->   struct rcu_head remains the only option.
-> 
->   Patch 1 implements this feature, and patch 2 adds a few users in mm/.
-> 
-> # Part 2. kmalloc_nolock() -> kfree() or kfree_rcu() path support
->   
->   Allow objects allocated with kmalloc_nolock() to be freed with
->   kfree[_rcu](). Without this support, users are forced to call
->   call_rcu() with kfree_nolock() to free objects after a grace period.
->   This is not efficient and can create unnecessarily many grace periods
->   by bypassing the kfree_rcu batching layer.
-> 
->   The reason why it was not supported before was because some alloc
->   hooks are not called in kmalloc_nolock(), while all free hooks are
->   called in kfree().
-> 
->   Patch 3 adds support for this by teaching kmemleak to ignore cases
->   when free hooks are called without prior alloc hooks. Patch 4 frees
->   a bit in enum objexts_flags, since we no longer have to remember
->   whether the array was allocated using kmalloc_nolock() or kmalloc().
-> 
->   Note that the free hooks fall into these categories:
-> 
->   - Its alloc hook is called in kmalloc_nolock(), no problem!
->     (kmsan_slab_alloc(), kasan_slab_alloc(),
->      memcg_slab_post_alloc_hook(), alloc_tagging_slab_alloc_hook())
-> 
->   - Its alloc hook isn't called in kmalloc_nolock(); free hooks
->     must handle asymmetric hook calls. (kfence_free(),
->     kmemleak_free_recursive())
-> 
->   - There is no matching alloc hook for the free hook; it's safe to
->     call. (debug_check_no_{locks,obj}_freed, __kcsan_check_access())
-> 
->   Note that kmalloc() -> kfree_nolock() or kfree_rcu_nolock() isn't
->   still supported! That's much trickier :)
-> 
-> # Part 3. Add kfree_rcu_nolock() for NMI context
-> 
->   Add a new 2-argument kfree_rcu_nolock() variant that is safe to be
->   called in NMI context. In NMI context, calling kfree_rcu() or
->   call_rcu() is not legal, and thus users are forced to implement some
->   sort of deferred freeing. Let's make users' lives easier with the new
->   variant.
-> 
->   Note that 1-argument kfree_rcu_nolock() is not supported, since there
->   is not much we can do when trylock & memory allocation fails.
->   (You can't call synchronize_rcu() in NMI context!)
-> 
->   When spinning on a lock is not allowed, try to acquire the spinlock.
->   When it succeeds in acquiring the lock, do either:
-> 
->   1) Use the rcu sheaf to free the object. Note that call_rcu() cannot
->      be called in NMI context! When the rcu sheaf becomes full by
->      freeing the object, it cannot free to the sheaf and has to fall back.
->   
->   2) Use struct rcu_ptr field to link objects. Consuming a bnode
->      (of struct kvfree_rcu_bulk_data) and queueing work to maintain
->      a number of cached bnodes is avoided in NMI context.
-> 
->   Note that scheduling delayed monitor work to drain objects after
->   KFREE_DRAIN_JIFFIES is done using a lazy irq_work to avoid raising
->   self-IPIs. That means scheduling delayed monitor work can be delayed
->   up to the length of a time slice.
-> 
->   In rare cases where trylock fails, a non-lazy irq_work is used to
->   defer calling kvfree_rcu_call().
-> 
->   When certain debug features (kmemleak, debugobjects) are enabled,
->   freeing in NMI context is always deferred because they use spinlocks.
-> 
->   Patch 6 implements kfree_rcu_nolock() support, patch 7 adds sheaves
->   support for the new API.
-> 
-> Harry Yoo (7):
->   mm/slab: introduce k[v]free_rcu() with struct rcu_ptr
->   mm: use rcu_ptr instead of rcu_head
->   mm/slab: allow freeing kmalloc_nolock()'d objects using kfree[_rcu]()
->   mm/slab: free a bit in enum objexts_flags
->   mm/slab: move kfree_rcu_cpu[_work] definitions
->   mm/slab: introduce kfree_rcu_nolock()
->   mm/slab: make kfree_rcu_nolock() work with sheaves
-> 
->  include/linux/list_lru.h   |   2 +-
->  include/linux/memcontrol.h |   3 +-
->  include/linux/rcupdate.h   |  68 +++++---
->  include/linux/shrinker.h   |   2 +-
->  include/linux/types.h      |   9 ++
->  mm/kmemleak.c              |  11 +-
->  mm/slab.h                  |   2 +-
->  mm/slab_common.c           | 309 +++++++++++++++++++++++++------------
->  mm/slub.c                  |  47 ++++--
->  mm/vmalloc.c               |   4 +-
->  10 files changed, 310 insertions(+), 147 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
+-- 
+Josh
 
