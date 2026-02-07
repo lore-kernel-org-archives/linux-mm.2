@@ -4,135 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4534EEE0AE9
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 16:22:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1E0EE0AE0
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 17:21:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 610C26B008A; Sat,  7 Feb 2026 11:22:26 -0500 (EST)
+	id A6EA46B0089; Sat,  7 Feb 2026 12:21:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E8516B0092; Sat,  7 Feb 2026 11:22:26 -0500 (EST)
+	id A1C956B0092; Sat,  7 Feb 2026 12:21:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F65A6B0093; Sat,  7 Feb 2026 11:22:26 -0500 (EST)
+	id 8F4596B0093; Sat,  7 Feb 2026 12:21:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C68F6B008A
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 11:22:26 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D04891B2954
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 16:22:25 +0000 (UTC)
-X-FDA: 84418178250.27.0EBF707
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C84D1C000D
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 16:22:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=V+NakGWK;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F6E46B0089
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 12:21:05 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD4FB1604B8
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 17:21:04 +0000 (UTC)
+X-FDA: 84418326048.24.8744D68
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 9264B180006
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 17:21:02 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QQQqTLK3;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770481344;
+	s=arc-20220608; t=1770484862;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SwwWpunZdHWYzN3Xk68ExpdP2afESY8vTDXEBhdG4Dw=;
-	b=GSmJTvy9/dF8yJK9kP1ne/x7m6tuTk1ksWJzXNUYe7WUkDJxPQtBB707slrcAmqAmzAXSR
-	vJKU73YQDjdhqtktHsRyTl6u3LgW2HYlnOM8hVfQ38n+CprjY6qZdUyCMmSC2PRJjNgaXS
-	7W8EBepRfBAU8H1tRhG61J0FAvdPiJg=
+	bh=emM03ICtpXPA/lI1nLRfslW4iFBkY1GL7RvYe7XqKRo=;
+	b=C6xaorkppEOL1OzwjYEEu1GU32X0fcLX9ZojxQdeafU5tmBTmH0rGhm+bxatYNTErD8qPF
+	N6rtJkcVfpWsgGsUvN0OVDpruRXcCsxLng/qJJVu4Z5Pm3KOSKD0INEZEKcWF6LpKseQNi
+	lGW9UuTQWM8YXDC3bqSY6VkEohENokY=
 ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=V+NakGWK;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QQQqTLK3;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770481344; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770484862; a=rsa-sha256;
 	cv=pass;
-	b=dbQTayZ4p/x5/LPwv8Ma8+gJBC6hyCXxMYMyraD0YFsBzOkf/S4JwOnxMA7FX/ib5rjI6O
-	HflzAvUYlmvAVc1W6LRR/pFJhsg9w5wvHyvi5mxQW2droRDs5OnKVJc0zM2tWX4yetjrd1
-	94TqoLIsoxZOgfgpBuLUo43z9OMHK9I=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-658034ce0e3so5033743a12.3
-        for <linux-mm@kvack.org>; Sat, 07 Feb 2026 08:22:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770481342; cv=none;
+	b=cY5WjCq0TkJCg1/jJ87UQbt8TTcQDCjdLVyymIJNw226C8RxJcej+G+BW5L0QYOolZlcVE
+	kX1FMww63yE2ZttEs+qbmEvyo/GSBRoQNeotNCKnXBhQxEqCyYMHtvGO75wu/n40cZa13R
+	GNnMbAX1+FfJR+/crrngFuugbre6dfE=
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-658078d6655so2840715a12.3
+        for <linux-mm@kvack.org>; Sat, 07 Feb 2026 09:21:02 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770484861; cv=none;
         d=google.com; s=arc-20240605;
-        b=jZXATEVhUKekeUJjH3FfaI1o5CksKuEdXEwg0/+xJoIONjTix4qLBWxjj3iUgbtMh6
-         EYjatlhmqDQO79wugo5F/7eQVpNrhVN/I/A5p4D8cFS3CE56uKiCZ4meryulk/QnEPPv
-         dMos44oFknvPmAA3/FBwwzcBeLXT6YlC0IbcDMUUnUEprpusE25L2FQfDSMjeNgK3wGY
-         Hb5Yhq8nMsiyAHGQKubd1FUhN3GQ9w2yn1q62vfbm4WomSM4aNZzo+nvA+VUgO1eDAZy
-         mmqctpu/9v+zlkMe/Qnf5WUW7CISvEB7oKHcV6grPax/EXGpMOjV0n4hYSS9sKoT3q4+
-         phXQ==
+        b=cepb1niAtyVVmdkaktA/527+asj6NEntLVdRcOziBFT/uYA/P7yqiaq5sZQ5XnnI1E
+         m+mUVf70/hmJQFlBgbehu13jeezozTuRSzbh5uKS417KTYeXn2IAy3xoMFiDQx8cefDc
+         /iALL22LgUDIsEVLgLvPkD1VQFJFKVaLfnvc0Vfww+/JbibRiU1JiS78ALYbHbQPHO7e
+         wRD0PKT7iFIiCfokTcUSA2JkYbLECEBv5CF8Ca26ePkrq5JhoDG+E7qjGPpgeBu7/2ao
+         dwdydmxgVUo5HaV54a+9WieQ4Cd0NP44yYGyWjSBpag7AjMLGkaOggPthltvMhI6mZTk
+         USDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=SwwWpunZdHWYzN3Xk68ExpdP2afESY8vTDXEBhdG4Dw=;
-        fh=+fbCh/FwfF0VLjz3wLAkQh/ucALT5bU4ruJCb6/wzbs=;
-        b=PPanlYTKZHiDPtxajDtwKMttPncNym74x74HMEnS4sVCq/BCv6VMnvQlvV2EJPWFDo
-         igEfH1Y+asNsFXemXcYxeANNpYsT2a+X6Msmt7mpxKSeV7+sOvHpB4FFxUxTnfnttY1m
-         yI6CaYj1e4bACFQ431ak+V0BA6t00LmjXCHBSpb7aZ3W5++GsCP7ukegvOEbcL/OJEDl
-         NOOTvtn75Q8N1Y5KYXiyAW7vsGrBLKGq9oNzXtcOLpOcR17Cop9KvZN0bN06dZeshDcK
-         sHTF2XKdDFEsJMlVthQu5ik7j7kLPWgP8rJ17HwvqNCynzfsFuBUK5lzaSC6SqGPdQ8K
-         3kIw==;
+        bh=emM03ICtpXPA/lI1nLRfslW4iFBkY1GL7RvYe7XqKRo=;
+        fh=qjZdmCw1Upb/G9X87413I8boJ0eV6RA+BuedwT5K1b0=;
+        b=LFxsOvEBrOfQeQuuHu/Aj7IaL0Mn9UtVIxi1/hRnxFsmYfjs5HgAwVtlImgeUWiJuG
+         JwAzkwNuV/sma3ajz9PIvT9cG9cI20bzpKflrjHOmu8us8obL/PBuRR/akbSQYnTT1Jx
+         uXftpdD72hxscxaeMn0AmAwO5R+Sqd/hmfp93yiwo/upbQrAjLOqtxYxMCO4gIpyxBMO
+         tToNSHUN+XOdwAtHZPSMktnW7ObjdfpKjxhHPl/9mq51PZqgwxxm+aYPPQFAYOgqdj3Q
+         Ixnlht6Kis3Gz9WAkNz/ZRYXTbQ/RWlD4ozFWPYGh8SpeYJgAN6r6wH0A/oWAE7S59D/
+         hXeg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1770481342; x=1771086142; darn=kvack.org;
+        d=soleen.com; s=google; t=1770484861; x=1771089661; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SwwWpunZdHWYzN3Xk68ExpdP2afESY8vTDXEBhdG4Dw=;
-        b=V+NakGWKYURym9g8112csruK8o778pqYvJ0RN6EeWR1lfH8g9rLLkGJ4xCczRHC7wk
-         c/EOsc0gGhId2t4RdMQta9siRNLZyo+0VVB1pB+P4/aJVQu8vFUnG9NM/iXcsYkTR2pI
-         IhVumwWLcb/lCtU0VHN+gIXNOxxcg1CAFV0Xe6J7Wl4vCWDtY5ZcGMpD0PiV/u0jTA4c
-         TiWiFfgp1nNxtFe2mB2m8UGoWFKh7xu+CeMNZ4cgz5hzhQq1sz/MGILSCnb+I+YqiQon
-         pdzmHAQRghlpwZxFgSdeleoXGGKdb2YW4c6iMVVwzf51xqvaZofXcHKNM80cPMYvOxql
-         EL+g==
+        bh=emM03ICtpXPA/lI1nLRfslW4iFBkY1GL7RvYe7XqKRo=;
+        b=QQQqTLK3e4aO5UzwEuVYuh0L856pv2Yv69i2Of7uQE8gSHhZ7WRlfP5m9O7YU8vjKx
+         BreL9vSkmUDHETOifdTLmLTOl4cDc8kAIV4BSWC9hXi3wLzFu2cRgN25Wf2YkizFYNDb
+         zjsUeIy6pSLFixA8uoj0O9nojpDpSlUZxQ1/ysfuxUPtTAzLeitLK/vj8LoXrfY8Gwa4
+         eeT/BRQWbWNSuYG0o8+rOw0Y8rQ5O6iNawSWcC1ScFlpbUu0XH1eDEe8RaCAJwpIV2Lc
+         vBVwklReeZhBAS9qcKdLARrpsiP8zi1y8MD03Qn4Yu0JxdfpZNqngp9S2s3GFIEqUR7b
+         vNpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770481342; x=1771086142;
+        d=1e100.net; s=20230601; t=1770484861; x=1771089661;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=SwwWpunZdHWYzN3Xk68ExpdP2afESY8vTDXEBhdG4Dw=;
-        b=Fz3whr2tz2/liCoNltaay6ffYBU1n7ubRrIADZjkGugns0mdf+EwknA9WPqtM4WuCo
-         EVf8fhN5H7b0bbNlhAiRz6t6D6jzd0/Ko9dp9cS3kg8cnnGV4bwkc8qOc1f1A3YT1YGG
-         X38vuqhnr575vl+BFP5HDJjwSG5d5Q9g2yoTlaIBLRDhU5oC78bKYqy1YOpiPMeviCD8
-         O119Y12jF9G3ZSOGIoHDI0noasnUYe4BvIhW6rGPMHOGZspsCDoeYfyWi19NyCEIqEbk
-         3gmrFVf6H37xI//ifPoUHSKTlZdnoct7+ux5O2cznbaMBk1/aKjJuY97MW1eXvyM6H1S
-         PlRA==
-X-Gm-Message-State: AOJu0Yxu+HHHPgw8TYe99Xu44woefl5VwxX+eS9C6pIIkw8s/Qaa6XWy
-	jQhuByaEwXFgTfW842hEkpBscfinJ2gOOoGvZri2teOCyWwNGrtZeNgqanryvFHwJC8VcR0XRLF
-	oeIgq1vyq/P2+Q9/h4Ef1n7vEKb4kQ2l6VLuMbTRWGw==
-X-Gm-Gg: AZuq6aKDF/phNd/rLfIweBybkRkbhmVB4mMPbHBkvPg8G8OvdBHOaHfYhejOM0kOMpr
-	d/bFB15myGZWk7wLyhGqSlyhpCRgeUSjpJQR8xfVeqaMcz2mVOFj36zSFSsBtNAEVYB/eV6PWY5
-	+fG3o/Kq7EeoDvSsxZShdHciZRkmchymVEZhGewuvLvXtzjxmaFoIfvDCy0GuXtylQBND2hPSpL
-	HSKIX2QfJPXPwzdieb44IXlq9eMGBKXYI2A6ViDSQrjqoXl1/rlEOhWvBjmC+8NCaRydKBMNjLC
-	uyyuAAUXMmvaZJUVCS7PoYjGlMpE6c5xrQn2aA==
-X-Received: by 2002:a05:6402:2790:b0:659:4d41:9f6f with SMTP id
- 4fb4d7f45d1cf-6598417ffeemr2801007a12.30.1770481342025; Sat, 07 Feb 2026
- 08:22:22 -0800 (PST)
+        bh=emM03ICtpXPA/lI1nLRfslW4iFBkY1GL7RvYe7XqKRo=;
+        b=Z2Tp/qdryalfnKb39DCmPfoIZh6nGt8H4nFVx+aW0z8VkWQCdrwIlgaLa3KVyPeauu
+         ElBLSaoI+Kz67WbCL0qtYRMXs8hdaeXLsZoHCtd3GGctUplJMDKxcyLvvxiMwqep2wR0
+         od8AUWS4bLRyuhs7FZ37WIjWH+SBBgZdy/jSGdmPqxmrdmEnGeuJ72ss6CUQtvB2xYQg
+         bdciMtPHoPP5RW/dD/nnyzi58BUsWNco0acON7tJcv7hvPrOAeWrA+OckY4WjcDNj7Pl
+         +qapR6tMvrRRYZifLKp0kw6S1LiDC3jSqmDTDxtMexKymn2rX7PwPRj8j7AjrA6qCB+t
+         mOaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0PkwD7A+uu0BD7xVqb7CcgoyHHqPVOJc+BYlFPYe8FQpR9tbt9RVilWIIhwTt/d0H07UNj1AXdw==@kvack.org
+X-Gm-Message-State: AOJu0YzqkT7t6pLRGcKaql7gjOGr6EN1YanXIKh3K1wLpbMRsdkeEPuM
+	XlrrRyRSTs38RlOy3yWm6XJzkcPCEUKqBWmHwIZMeNQpStzM6v3TPQGdFG+C7sTmI9XgsAWoh2K
+	lbeVFgA/TIkrakobFqlorG/xHb6lDpuSokrWaJUl/1imLBVVjiAytZqc=
+X-Gm-Gg: AZuq6aLtgm7/wA0z5KmUxprgLU6kb4o4bCvgUKgQlYNn3QDaSxBAhfRyvDvpLAx/qr1
+	HUx5GDvf61OjFetMzpP/+0Lvo/pogKBxLxa0I834tqqlQYF1p/an/BfQIi41xOOurc0sKVy2l6S
+	9o/AmfDdUWkj8Wjbqjz3G/xYGmvTSB/s6flxhtqCaD4TPXOgyW34AuJ/UFcqvQA12GRhVS0miVF
+	/5XBwCuIchKnwZZ51CTILP1z2oYs/wpdPsr2lEu5L5vTguxk9BKSXAd2FSHsgMpWMWwQ4IMXieC
+	oXqToN9i4CKqM3Jp3GFh9w5yB8HDXSo898Rcqg==
+X-Received: by 2002:a17:907:d716:b0:b86:ea42:f829 with SMTP id
+ a640c23a62f3a-b8edf401a61mr395966866b.56.1770484860762; Sat, 07 Feb 2026
+ 09:21:00 -0800 (PST)
 MIME-Version: 1.0
-References: <2vxz1pixvk4m.fsf@kernel.org>
-In-Reply-To: <2vxz1pixvk4m.fsf@kernel.org>
+References: <20260206021428.3386442-1-jasonmiu@google.com> <20260206021428.3386442-3-jasonmiu@google.com>
+In-Reply-To: <20260206021428.3386442-3-jasonmiu@google.com>
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Sat, 7 Feb 2026 11:21:45 -0500
-X-Gm-Features: AZwV_Qht3zZbep386bW-1KaiZcZERZVy19RJjY4UcBBooi6ZQsXGP2uthzMhXJg
-Message-ID: <CA+CK2bCkLKrP6yvS=qpao1krfCbxUbj73bq8m8JnmKqtjp3tKQ@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] HugeTLB file preservation across live update
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: linux-mm@kvack.org, lsf-pc@lists.linux-foundation.org, 
-	Mike Rapoport <rppt@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Alexander Graf <graf@amazon.com>, 
-	David Matlack <dmatlack@google.com>
+Date: Sat, 7 Feb 2026 12:20:24 -0500
+X-Gm-Features: AZwV_QgzTl4mNxujoLDaf5mTXNHE3H1Ui7pyjHnr-IJSNXlSQjG622HK-ncLm8o
+Message-ID: <CA+CK2bBbM9__n-8JbHwi+jUaVYwue0Ro0_z1DPOCXkw5b5=vEA@mail.gmail.com>
+Subject: Re: [PATCH v9 2/2] kho: Remove finalize state and clients
+To: Jason Miu <jasonmiu@google.com>
+Cc: Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>, 
+	David Matlack <dmatlack@google.com>, David Rientjes <rientjes@google.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Mike Rapoport <rppt@kernel.org>, Pratyush Yadav <pratyush@kernel.org>, 
+	kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 9264B180006
+X-Stat-Signature: uabreryxoxg3dut93iqskx93nt8hfzwp
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C84D1C000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: d6hgipwxf9qfjg3migk5wif6abn89xky
-X-HE-Tag: 1770481343-772765
-X-HE-Meta: U2FsdGVkX19R+e6LErE7YBvsNzNaZ4irLQqAOpKlHc7Y9FZa4qjMANCMid03oJBjpRN/1whim33fc0o4kymB4DXchqxdpy7XUeWBO8iy/bd//SOe+dZa9CccZ0VW6AJ9D21QkHUvlgouJh6sBKlK3Z0vRujBrShhg+QY9T7D150q3yKdnmWzOUTXEB7/0aBZIVhSHZjN4cLjzf3+9m04+qli8l0+nuRFkH3lQPgwahNXEbYK/6r+GriQf+rUOHCz3h8B31xNmQOIggZN7B9MDgHnxSeplsvi2i0NamYrffwZIA4CHH9+AtrTQypSZx8nLm6Ek7+9n4giDm9dBoxWTmrgL05kQYpITK8JLRRyOt2XOW6D8v8fTxdM+0t2mz2BxBAQ6NWJTd4vr3GY223KUuygdectRdRlJt2+f97pzB0HUeUgJl48KG35+PQxTBTexjXPvxEjyB3g/8vdbpvMejpFnQdPl+VQrQ5s83F3eq5eBHi7xJy0ceAcamr4ZcCSnROflz6mdVmsaODvTtE88Dose1uXP2VD7NcM07XsnHxmFb9TT4yz1rxk+i6EUZcFmWXyC9jO/m7vKFrfRKDbc2H6uwM44D6Y86FxWW613kMymnl7YFjtRN3QbTS2V9SG8x65ncWovL6YrD+MB+rfoaZCkfISf9p0fz03PS3Rlp3k40eBxb1kEurTzeESjLXc96MqiaRvi/gOE2Pgug4CHTHP4stixR6yMI1Qdh/Qcnx9JaDHNFpFnJa0Z+DsKmdqn/qwxbafmRKe6WAETPswOVRCxh9L6EW41PF96uRZ4b9jDU54GKQwrzQXIvGEoM6BihXw4+2PhRhFRl0ts5OPS2JM8B9y8TmZZND9tDS7VG43CYXt1GY05ac8JkLHVYeRMwFebLCaFqfCYpVEKEfZHJoBknbWdZxwJ6Nm7m4PkWNW+XkOVV3uaGPCG64XIeEKhhn2x9NhBktl84DYgHK
- MuzyxT6l
- ueZFn1RnDu+vzKbbDUftB11L2e7UMqNpxyvqNxXTAKxwzg/Z27G+Vn5NQO3FsGKgZ9AulOxuFpfn1UzUPgn2313Af0GC+ZclAw3KfUWoRgQ06MzLo9AM/YlDqqR4gr1O5JD0/Kg7ZI7VkpYBpZnfmCfm/gzVxhZT5mOR4ykuXmWGkeaQOVbs4x9Mv72Qzsfu6bAkG+L6u2MICRJ/WuuUcrUKQHRf/HqwkZOPftfqQyZscbv60kv/FNB9zcVZyNc37qno5Wwo7q/bR6ZC01Bz7bs3VRE1wfN3C7Ow2uAHYMQI4sS/mBi7E2soxsYMTwEMkRW4/yPtShLZ9+bSJWIB8Uc6Ag6ZUq7TzLhiITBmy6+8M2uwmT3BBbJxzFr8eLnCsgFi7f08RX3zXHaLiJ93muqd6WwTBrEsYbdvsLdMJsiYt21ZWsqWssaPw88mymbNIDp5NBc/lPJIXp/RByRstGkTEDNOWJBiWvDwh6YRqQoSA5HxjRibt5WMcclfWfWOeSVPO
+X-HE-Tag: 1770484862-309358
+X-HE-Meta: U2FsdGVkX18ACGMX+ECllPc/4AwGtUiDufsVnMsckVLILsnEkaZ+EVq2TYKCDIqhYDob4c/wkcYFi+YTtZhhaJpkPruE8edTOD1jKOBhU84DLEiIH+2o3dJHIVK5+glzg6aKlv8fjnFpD77IVEIJBOZ3KrFR184RQHscecqUeYSYRjKVMhDfTiS9xjmAsUvVC4MPDX3t+rYgGyOtvq+PcLTc5wdHZniEFefq8xG3So1poISOMSzZF+jR+n4rOx1xmurFGA1tCeKRH3ioOoPvdQlwIYz7OCJjvjEagAc358YRHyINKSrO30Yww7lWGPPM5vKSM0CJv4tdiy8J8YYLXa7Yqb8qnFXALuVM8fotzwpfJEe97/rpPaEU5YboQr+Sl3juWxQ6FiAKcwbGcJvlmPOgGP0g/vW4CK4nl2sPl8e5z/fXSt1ECEOQjScA10z1fRMFErHbUT8jhSi8znlMP2Od2n4rlvh2Hd8TbUqaW28c62V5QGTRleSzY4ahXKL4Jzi93SMOtIR+IcKFFafH0wSJZ6dAuuUD2/Ajr8PaN+kQlVzXPv8vU7+K+xtj52BMuMIe+MFoDfEUDRq1h4qL8jiX3j6XgSNFkwcEHngfL47VgIJ4oNk3F3PUbvr4SeI13IRCtMo3HPjaacyNORmyF5x3SULzTzCcK7NQhCNJsKOxdNJ7zZxVBRvI5wRiikaa4u0F0yYa0McEJilCluNPetzKXc1a2SOr0q6Gb9GpeisS8mOKeK9RxYO+qZsRWn5kE5Vk1eMXYrILQPlWbNgZcfRPOv9AXER5p/G92Cv4ac90YweSDDjJscMQzaadIHCE1SyT306IM+/MxpMj71eUqqf9iI1+xU5cqWdCjIA8vP9JLQXRR8YXef7xhqfg/TpfT6EoO9Nn3Nly1TZmjaKu+5og4O4xQ/lUvLSeqV0wNAbfAEItzmxdTWtpfF08c0Ni8rDyX1pPjfV0pvWvFXx
+ ENIceU6d
+ NkIGYXpcf5EDiU+z38bB6e4IVwOhdwWKDvjd2NWd9XeOhixOfT3Cyi0bBVpb+u9KGu9pGRG9OSYYWhVa+IEeOs3ccVtgjWnQS+rb3uiclD0Sj0cIjiITJHjLW5FcWU4Bz/2f6wNGyNfin02FGfsLxPGolRQBr/bMC/gSQ+ywqKLIECwCowbkF+dg3Rnm6Miaim1jmDa5z+5Zma4/qNlAHFewlSBD9KVP+MZCGgd3vWplktgMutGPM1ojIfNWQz9G6SMPANGZcOD6Kp+r8L60O1jdSXq8aEuGRtqgkadxbkLy4W4OuKPWyledKp0K0ipaQp8DHW96PRcsV7cwFdSS2d+h21AZ3q//dHreV5kZeQO52j0sAKhlEmsd/SQmEdr7+vXuU4Q6pGKAVL/b+ZldVdC4jgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,113 +142,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 6, 2026 at 12:48=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
-> wrote:
+On Thu, Feb 5, 2026 at 9:14=E2=80=AFPM Jason Miu <jasonmiu@google.com> wrot=
+e:
 >
-> Hi all,
+> Eliminate the `kho_finalize()` function and its associated state from
+> the KHO subsystem. The transition to a radix tree for memory tracking
+> makes the explicit "finalize" state and its serialization step
+> obsolete.
 >
-> I would like to propose the topic of HugeTLB file preservation across
+> Remove the `kho_finalize()` and `kho_finalized()` APIs and their stub
+> implementations. Update KHO client code and the debugfs interface to
+> no longer call or depend on the `kho_finalize()` mechanism.
+>
+> Complete the move towards a stateless KHO, simplifying the overall
+> design by removing unnecessary state management.
+>
+> Signed-off-by: Jason Miu <jasonmiu@google.com>
+> ---
+>  Documentation/admin-guide/mm/kho.rst        | 53 +++++----------------
+>  Documentation/core-api/kho/index.rst        | 12 -----
+>  kernel/liveupdate/kexec_handover.c          | 21 +-------
+>  kernel/liveupdate/kexec_handover_debugfs.c  | 23 ---------
+>  kernel/liveupdate/kexec_handover_internal.h |  3 --
+>  kernel/liveupdate/luo_core.c                | 12 +----
+>  tools/testing/selftests/kho/init.c          | 20 --------
+>  7 files changed, 13 insertions(+), 131 deletions(-)
 
-+1
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-> live update for discussion at the upcoming LSF/MM/BPF summit.
->
-> Background
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Support for performing a live update was recently added to the kernel
-> via the Live Update Orchestrator (LUO) subsystem [0]. Live update allows
-> a full kernel update over kexec without terminating running workloads.
-> The main target is live updating the hypervisor without terminating VMs.
->
-> For more information on live update and LUO, see its kernel
-> documentation [1], the LUO patchset [0], or this LPC 2025 presentation
-> [2].
->
-> MEMFD preservation
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> MEMFD is the first file type that added support for live update. This
-> support was merged with the LUO series. The memfd preservation code can
-> be found in mm/memfd_luo.c [3].
->
-> MEMFD can use pages backed by shmem or HugeTLB. The live update support
-> in mainline currently only works with shmem-backed MEMFDs.
->
-> HugeTLB preservation
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> While shmem support for live update is useful for many things, using it
-> for VM memory (and other memory-intensive workloads) is inefficient. The
-> next step for MEMFD support for live update is to allow preserving
-> HugeTLB-backed files.
->
-> Note that we do not attempt to preserve the whole HugeTLB file system.
-> We only preserve the memory pages for the files specified by userspace.
-> The HugeTLB file is re-created fresh on the next kernel and the pages
-> are inserted back in. This lets us keep the maintenance footprint
-> smaller.
->
-> Current status
-> --------------
->
-> This support was sent out on the list as an RFC [4] in December 2025,
-> and was also presented at LPC 2025 [5] in the Live Update
-> microconference.
->
-> While the patchset has got some initial reviews from live update
-> maintainers, it has not yet had any review from HugeTLB developers or
-> maintainers.
->
-> Goals of the discussion
-> -----------------------
->
-> This session will aim to present the topic, explain why it is needed,
-> show how the support works, and most importantly, collect feedback on
-> how to proceed with this work.
->
-> PS: if any HugeTLB developers or maintainers are reading this, it would
-> be great to have your initial thoughts on the RFC [4] so I can present a
-> more polished patchset at the conference and make the most of the
-> discussion.
+A comment in FLB patch would also need to be updated:
+633  * Context: Called from liveupdate_reboot() just before
+kho_finalize().
+634  */
+635 void luo_flb_serialize(void)
 
-Thank you Pratyush for proposing this topic. A few more thoughts:
-While the discussion should be about memfd+hugetlb support, the long
-term goal is to make this work as an enabler for guestmemfd+hugetlb
-preservation support.
+But, given that patch has not yet landed, it should be updated
+separately, as it is likely this work lands first.
 
 Pasha
-
->
-> Key attendees
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Live update:
->   - Alexander Graf
->   - David Matlack
->   - Jason Gunthorpe
->   - Mike Rapoport
->   - Pasha Tatashin
->
-> HugeTLB:
->   - David Hildenbrand
->   - Muchun Song
->   - Oscar Salvador
->
-> References
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> [0] https://lore.kernel.org/linux-mm/20251125165850.3389713-1-pasha.tatas=
-hin@soleen.com/T/#u
-> [1] https://docs.kernel.org/core-api/liveupdate.html
-> [2] https://lpc.events/event/19/contributions/2052/
-> [3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
-ee/mm/memfd_luo.c
-> [4] https://lore.kernel.org/linux-mm/20251206230222.853493-1-pratyush@ker=
-nel.org/T/#u
-> [5] https://lpc.events/event/19/contributions/2044/
->
-> --
-> Regards,
-> Pratyush Yadav
 
