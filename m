@@ -4,83 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AC56EE0AE8
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 22:05:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CC90EE0AEC
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 22:08:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CE70D6B008A; Sat,  7 Feb 2026 17:05:52 -0500 (EST)
+	id DAC866B008A; Sat,  7 Feb 2026 17:08:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9E666B0092; Sat,  7 Feb 2026 17:05:52 -0500 (EST)
+	id D5A3B6B0092; Sat,  7 Feb 2026 17:08:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA1166B0093; Sat,  7 Feb 2026 17:05:52 -0500 (EST)
+	id C320A6B0093; Sat,  7 Feb 2026 17:08:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A9D126B008A
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 17:05:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40E638BD30
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:05:52 +0000 (UTC)
-X-FDA: 84419043744.10.2DB9A82
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AFFA66B008A
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 17:08:14 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 45B2F16042F
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:08:14 +0000 (UTC)
+X-FDA: 84419049708.04.4D3A688
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6CDA340014
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:05:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NsnqMXpW;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 66AE1100008
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:08:12 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dZqduA64;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770501950;
+	s=arc-20220608; t=1770502092;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IiGdYsMD3Vw4PP/Hg06XL6Z3azdEQp+dskd4cyk7INg=;
-	b=sNWkykuKCWkSIWUcQ8BlOakKX6QnzQX3UPulmGwcoFt+Yj6Syn3vFwaptAP4keaVeZaUb/
-	7N/6lP3puMp/mlBN82PBAAQwOdh7qIPm5ZDZvx0pVJbt89I+cahe2AToZt98sPvYt2+wI4
-	PE5QmevkhDEb1BNLPsHUxg+EHDJT8qY=
+	bh=tZ72lTGJy8plPIgt58KFdjEDPgYKok9oKnsbW9UXE+w=;
+	b=er4P3xNL0ughm3lQeXv3juHgaSANpZp6WfFLpGDbYnd7Flda7gWxW4Qivu1E8MMd9H3/eQ
+	0/zCFNE5SC4GReKcUBATM0OCvIBH0FV3gIz5M5MyHgRsoEqJmP7HXqOzMAwixTxeNF77fC
+	Uf4VEanxRd1vX8ztTp7vQYWdInoggKY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NsnqMXpW;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dZqduA64;
+	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770501950; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770502092; a=rsa-sha256;
 	cv=none;
-	b=NvgFvvWbuaieIwGpJQPacdqnJzqutl6Ldi+S6N102V9jQjdwzZHXGgh7A435ZmhH6oZCvj
-	x1v+Z4hnh+GGgr7kwwjlo1ArAJmr8W5bsfAwlOUKsSLT88Wo0BZAjDyYFWOnb8cu8sPF+Q
-	yAdFbvrG9DKDEy1kGyw065k3RWVFO8k=
+	b=vCsBzoZ5vSbV7Z4w4HXaSRqjCDA2/ZZL/ps82itE6adcFURCQNn/AzNxwWPdqFTU1+fbEv
+	iFAJHduAolcyx8pIu23s2ZUkbdn27vKN5Ij/H1OhJPu62elfRWl4EAPS8823O/IEnZnJKJ
+	T7NB+//efKXiXHzfhyiZdakZ9uJYmfQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4F1D04062A;
-	Sat,  7 Feb 2026 22:05:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F8AC19422;
-	Sat,  7 Feb 2026 22:05:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 76C9742A6D;
+	Sat,  7 Feb 2026 22:08:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE79AC116D0;
+	Sat,  7 Feb 2026 22:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770501949;
-	bh=uZLOOcmDPHjgS/t8oBjlwJ5VuMIYJUkjmIi0zJgswl4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=NsnqMXpWB3QmA+klSyyaj1wBsJ2EFa0NbC9JvMCJmyntg4A8WexCuYa++cJWmW88Y
-	 jmxy1sXzIeUr8Tjay3Z08TnSORZy/Q8mVvLJiQJ18pReXFrjj7myDeDjVqsSbi+zP3
-	 2fvQAz2KMe8JFL5/vduoqVVTmh3Iq+GYXn/HWfgHVQbK1TKpqCQhRhL86NY0PswiAI
-	 mAYOf+9Ikd5vngGUfiMLltxwrTKpverdAausN0GEowm7j0TkE41X0hLnfWAYBK/GZJ
-	 KoIMIwN8xl6BWrWTKpXZ1kWJn/UQNrv+Wdn3OTMPXjTYM05z+hQv6RDO98PsKo+AE3
-	 wgudDjEWkO1nA==
-Message-ID: <bd36d92d-dbf1-4818-bb31-0330c1f53577@kernel.org>
-Date: Sat, 7 Feb 2026 23:05:44 +0100
+	s=k20201202; t=1770502091;
+	bh=9IGgdZ3kY5iF+ftK2skFddHwkTgkMi6/QPrnTtu/PUY=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=dZqduA64+4APuYSKcyM4Q6f15K8xx2OrHRQrnc3prPGwKo/QKZ2ofY1bleRUurssr
+	 UYWIaQmvf6YIkG8pXCALoxNg7xRBsn+Vrdnv341prK8bpJHr89hIX4IpXjNn0ixBAJ
+	 aeyiPqVDkhl+sapMmXiNxFv+ETfUFpSair5o5e2lHSBLaMAGNRey0lR6GofQBo8ogs
+	 O7yqD7UTMqgJDi0QHfvMDWDK216oTTwnZy7A+aNcy9Ys+UwBbJEhVc2c+I9MiNzwgr
+	 KtMFXrm1fcJ7Gs1sXiSVc/vMEOIrxDOQHrSScnTaBuikIZz+oegiTJBJuhB2exQsMI
+	 ayPe6H96YTFcA==
+Message-ID: <51f96b31-fb59-4cda-9d33-e3cebc45686b@kernel.org>
+Date: Sat, 7 Feb 2026 23:08:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-new v7 4/5] mm: khugepaged: skip lazy-free folios
-To: Barry Song <21cnbao@gmail.com>
-Cc: Lance Yang <lance.yang@linux.dev>, Vernon Yang <vernon2gm@gmail.com>,
- akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- dev.jain@arm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Vernon Yang <yanglincheng@kylinos.cn>
-References: <20260207081613.588598-1-vernon2gm@gmail.com>
- <20260207081613.588598-5-vernon2gm@gmail.com>
- <CAGsJ_4zxAmDS+FWzfX-670W3H3LM=nUZ-gGe3jMV9tYM0E_EaA@mail.gmail.com>
- <e106bb45-5563-4b9b-bcb5-defd6e204c79@linux.dev>
- <c1280171-b9e7-4f10-adb5-b6a8ed69e54b@kernel.org>
- <CAGsJ_4yEfgipUe37_k5rArrYMPY_31JUKQGjRk+NNJTK9QhBWQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/page_alloc: clear page->private in
+ free_pages_prepare()
 From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ npiggin@gmail.com, linux-kernel@vger.kernel.org, kasong@tencent.com,
+ hughd@google.com, chrisl@kernel.org, ryncsn@gmail.com,
+ stable@vger.kernel.org, willy@infradead.org
+References: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
+ <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
+ <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -126,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAGsJ_4yEfgipUe37_k5rArrYMPY_31JUKQGjRk+NNJTK9QhBWQ@mail.gmail.com>
+In-Reply-To: <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: i33fusxetieweg8qe9jg7pqhx174csar
+X-Stat-Signature: h8z65xinphpyhknuwymzi7ukwogiq3sf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6CDA340014
-X-HE-Tag: 1770501950-770918
-X-HE-Meta: U2FsdGVkX1/KmKRvJ9ZhyJVU9/z4v0v/T3EXIFy9qfdUO9h0ea6jJmjBvbXa6Xs5sVGonEkU192EVtizeg9DV6YpBrdZLbGhK2zelkNwODqQ7uU6YFFUg1rGC+LBDP2OtEdhNRoBqzCW3XZXiMuwcTluXqPqECEuYCinEFVVb+8mSH55SZ4kAdui8OCNBgJ3wz20AD26DgK7FpQ0Uz5fVlUfpRT5KoU4ET0yeNhhaRE6I5FGGWUWI89Wfpk0aHznhTKHUOv7xxHkOSz4O0POjLfi4tLrp2V8pZ3CS6+jtefGumGnxrtX8bUYdp34kWVgkbfueo2ET2pROaVhnzhaZRPLCXV+GsIXR21ksQ6d1rsQT+6ZD/8Ds2RW08YvhZ85ZTXyoKWsdvzrZ64pzOZTuv/TU1xkTlSMZAP5ut34WyAcb/C2ByM5OMy8hDe/dv5o/PwiS+FeXbg+XZMkRGGAEg1eH4ao4fBvhOseUoYgMN1Rvy4RPSDG6UIRerC3kkSizmPFPGEbrfqrt3ddSsJWfFM+xS75bkmaPBv55aGyyKTapFi49fP1ORV0U++hdHli2SGd9/YGW1PhdYAkr43XIB4+xhOo015cEfU0zmX/4YRajjWswFvEqH/JLcMlg6+wHs8iPkflOMBksGHs7Z2eb34AFuT65SFnxqXu8X4RMoZi/zKowmbGIuWA1E4T5f6nBeSAIgq6lAajr3kJhLmQAsnKgfENu0hWnGC9YXH4NpxOoiK6tOi545ByEq5BPYLf0MH8R9JmKpniOc+JdbNxiQeCgDc9VJ1YLsLGcE+FOS5c3DvXgwBltSKK2NHNVPI84TugLk/0x7z8rBQePSmV999iRvu5XHdI9bXkr3jWSb7WNdq4I16NpVgft4izzaSluANTjz6m2hbePwmi+7jSMRTx8HqT6Y45j4WqZdrayvuhQqaOBNdQj/DUWigV3fnzEUGvChinzDwxUjv9yXa
- fg2gQTmY
- uda+PQlKB9FWy6eIw3x6DTd7ZFfS18PjdA485yTbQblx+R8nQ3XX+6f7EuBf2TnE9FjEe78O9S5jFNh952CcmXuPq/F9kNZJ2p32kFiSEucOAHC9irfcz3eyqHh/fO//ZfhA7cY99QqSD31uLK+dnF9Cqzclxlx5V6L2vblBjZ2nOQb4lKhcMPv70Xi5cuFZ7fblE1cIakNHL8QPJZsY5Obiithv65zH55+0BPnx8OTHRxoYyXACZM56xASFytoctAroe2FZ/dEzhG2Jcel1FHoZs+XvMmBMDdO+7Z35SqxPgzqbt4V6fJx3UuQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 66AE1100008
+X-HE-Tag: 1770502092-147418
+X-HE-Meta: U2FsdGVkX1+uF4g2BxCaAIcrNkBltSexJidDdUFdDR2AliTXTyTiWX2ahq7NVLQYntNQK4sqLPmntYOUMI0Td22JFaKYGm6O8ziSXOXBieZCcTjM22WWRoOfZ7Oj7L1PSc9qwOs5OujgvtzjnblzvCe+AzvxKFPRj5Bg4ou0znkXrMzn7WycCYQF08AEmAPfRj4VZFYJpr5oPUnuC+RPX78XipPtx3gOGd+74BmlMWuJEykbrSI2FUZHWn+AxDTsytHJWYsTPGwh6++clpuG2D6gYwt83jbd0Ds0yR8tehnV+4i/VDGpsQms6O9b4M7WLw2/gLZ/HTvLUgTt96qAGH1E73fRN6HtkewBhTRHwaUqRzKsKdVv6BGZ59v7pwnSRHVJK5TPQjyY37TUgmyDc92B3cJd4VKeJrTZTYWXNgIQsws+uiGxEQhkzr/3D2Zfxu3tZCG1++Iq2mDLylcJgSU6LW6g6oZTFPbK5H7OSOo5Uprbg49tEIfKceHYPh5Mj2Dp1i1/s1U3oT8RY3LzaBd8xm5H1Rilp1fbSAFsrUkUEFktffUS8KWzI9f1bbHlXpR9NPXukk/sjj8/wJkG13Tu9Urf+FKY1gqW0ZDW567KwmTqXggv6dK//PmaZ38RfIXoibvTkzcakvj8QJ5kOB27f+RsUnOuospzUye7SSltMwCtMzcO0nnjr9hsebSRSobwXNylyhehQsxkVtnAcj9X7nwjtTVsk99OHr3R7/55q/9JoZq4VRREhm6nH12BnmTb4pxlh3iE6C/9KeyfNNC95U839BagBdNNygfQTPR371i/hYGcNOXps2+8y3qzhV2ra2lncFB20h7lqVqcLIavf+mj6TKjlBy07W1kMnFMIr32gDyofwfPfjwH1xGWdIlC5Uf+J4pg8aVEWLKhaQlvccaU3THCMLHPednBEYFQoMmuY+6VjmS6Wrj0jnoMV5Q2odPZ+xTi+wQAH9P
+ 1uv7FHhf
+ s/oF4UkMwEXUYPLxefmFD+CLTYaOKTmj3SkE9RVBXF87zRGTDtqQzb5XJYJ2VxucglgmpOtcQh5/S/ppk5FdG33Ra8Wi6S/HNeiAvnM3sRMBcd14bSkuovGkad9YMQdHqafjxFunHuZen7Fr3RS72stx0UcNRNDOoGH0vWqKbl28AaFhTJoQR3SBCMoboKdhy5dnKbTdaWx8pHQhlJMjVw8VQHSu4KWOI5baEfQ7Nh5k05rAfq88u6ExH2PmK60PM6BsYvD5/RRpDVkdt1n2PSU/RYXO8+K/Yv52o3hmZhrZPhi9Iqo8V1iPeb+U8SH2Q3f53is6FTCf+p7qRNF4F/dFGAP8Kduem4XNnLBuIn3tvt9JXtHvdNaTghYk4RQSKq+tu3bPcXPyiX7XWTZ4Hx0TYAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,46 +144,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/7/26 23:01, Barry Song wrote:
-> On Sun, Feb 8, 2026 at 5:38 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->> On 2/7/26 14:51, Lance Yang wrote:
->>>
->>>
->>>
->>> Good catch!
->>>
->>
->> Good point!
->>
->>>
->>> Right. When the VMA has VM_DROPPABLE, we would drop the lazyfree folio
->>> regardless of whether it (or the PTE) is dirty in try_to_unmap_one().
->>>
->>> So, IMHO, we could go with:
->>>
->>> cc->is_khugepaged && folio_test_lazyfree(folio) &&
->>>       (!pte_dirty(pteval) || (vma->vm_flags & VM_DROPPABLE))
->>
->> Hm. In a VM_DROPPABLE mapping all folios should be marked as lazy-free
->> (see folio_add_new_anon_rmap()).
->>
->> The new (collapse) folio will also be marked lazy (due to
->> folio_add_new_anon_rmap()) free and can just get dropped any time.
->>
->> So likely we should just not skip collapse for lazyfree folios in
->> VM_DROPPABLE mappings?
 > 
-> Maybe change “just not skip” to “just skip”?
-> 
-> If the goal is to avoid the collapse overhead for folios that are
-> about to be dropped, we might consider skipping collapse for the
-> entire VMA？
-If there is no memory pressure in the system, why wouldn't you just want 
-to collapse in a VM_DROPPABLE region?
+> -               /*
+> -                * page->private should not be set in tail pages. Fix up 
+> and warn once
+> -                * if private is unexpectedly set.
+> -                */
+> -               if (unlikely(new_folio->private)) {
+> -                       VM_WARN_ON_ONCE_PAGE(true, new_head);
+> -                       new_folio->private = NULL;
+> -               }
 
-"about to be dropped" only applies once there is actual memory pressure. 
-If not, these pages stick around forever.
+BTW, I wonder whether we should bring that check back for non-device folios.
 
 -- 
 Cheers,
