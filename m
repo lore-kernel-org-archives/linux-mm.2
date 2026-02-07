@@ -4,89 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89121EE0AE8
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 21:25:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5BBEEE0AF1
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 21:38:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 688766B008A; Sat,  7 Feb 2026 16:25:42 -0500 (EST)
+	id 11F356B008A; Sat,  7 Feb 2026 16:38:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 60C2E6B0092; Sat,  7 Feb 2026 16:25:42 -0500 (EST)
+	id 0CD606B0092; Sat,  7 Feb 2026 16:38:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F11D6B0093; Sat,  7 Feb 2026 16:25:42 -0500 (EST)
+	id F0DC16B0093; Sat,  7 Feb 2026 16:38:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3D7236B008A
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 16:25:42 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93516D5E4E
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 21:25:41 +0000 (UTC)
-X-FDA: 84418942482.22.AD42434
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DE1A06B008A
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 16:38:36 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AA3F61A04CF
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 21:38:36 +0000 (UTC)
+X-FDA: 84418975032.24.2EAAA68
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id CB32D80005
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 21:25:39 +0000 (UTC)
+	by imf02.hostedemail.com (Postfix) with ESMTP id D93D78000E
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 21:38:34 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GGFEabRW;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqQdBh9s;
 	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770499540;
+	s=arc-20220608; t=1770500315;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kyNAXnAehtaLJyN55pHsjhdmj2dE6yYzXvVx/znfvwQ=;
-	b=Tk8sytfHpmHwJ8bDfTr6L0MUyNGyq1EF4b6whp92/HmaaUke781/Adm2zMg91zdtTnIm95
-	i/N0fyXqBmL5GB8Hx494jISot7JJ3ikrLQwb0LqpJ6ZfoYKHCWA44d9Hzbm1zXnnRlO03Z
-	gdDuQRc1uRZWcLfcA30bBRpSLOD0frs=
+	bh=j3c+ke1+1YRs9ZPfmTKL7Kv76NCMB4fpCYmnUMfkl5A=;
+	b=TGwMGgSTmeP6yibx9Qai159FqUXPcKwOdmsWOZFlu2fPGYTmg3kFIGrmoX61Wo968INrsU
+	FMOSJt9Ht2LMFo+tawMugAbL9oVZnc1JauEyZuUpIjzHqCcJRxZx0sMTvndqQCquiplX2J
+	nnrcJT0zxi6OksCWraO6ZuSTNG0saGc=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GGFEabRW;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oqQdBh9s;
 	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770499540; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770500315; a=rsa-sha256;
 	cv=none;
-	b=51qUNWQkS/QVYgxRHr2FML8SrdxIsqN7dIVQeBykCVXCgnpaT6HmAk9Oudjt/vpH8ekEfA
-	0ZTJSQaLHrU04KvZdZ6cSUvbzgp6DmuIJeg1K0M9X7ZubuJAjSeeusxzto+TJof0GDxJ9i
-	j/YuceWbIL/j0+Yejd6aKycNTkbrTkM=
+	b=QTBLadBw1HtFOR0uAaGS1DATi7aALlXHPpCqynugb65r8obFafZn+7Y6fTDvgUMNtvcdlH
+	T9wlO8DCeCS7N35fNaf6SvjD4TLBoYfFQLaLmF1tbwjfHrisiRAp0AB3wO34el/TSXLyMY
+	ZVyV+KB/8NXLEo3YGHrSDlquiNpmjZM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8473B40642;
-	Sat,  7 Feb 2026 21:25:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BA2C116D0;
-	Sat,  7 Feb 2026 21:25:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 000F24449C;
+	Sat,  7 Feb 2026 21:38:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D905C116D0;
+	Sat,  7 Feb 2026 21:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770499538;
-	bh=eR2kc1dFLNt01z/eTQHHUqpkmv+ymUfHbEBpx9JIxIw=;
+	s=k20201202; t=1770500313;
+	bh=WL8RKMbXY74d2CMJPJNygFuS7ayXvrx45a6R7LYDj/g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GGFEabRWsR0NmmRAYjKK0QnagsaLpG1VVhv/wQMslI79amhm14y7ppsKtm+3oR/JO
-	 ALqWzvnhsTiDDdaiz60YTm87Ksz+E+TbsKhoF+bu5CbiWgKT+fJA9BP6s3/JrPpFZ6
-	 c68j5J9nFq0GxjPkhGDC/tNSypWPWZ0/Kzl/V5/BCmiBe1KUEftCBAPt7PAyorRBXh
-	 tTSIXpFyvvkeWfFFflYZ3qI+sIw+SkzK5aTotneLCQeF3LCtUeXag/2E7AEcfEJDBr
-	 XLVhK5PhzgKICaHnCaoSkklm+XBuwhLsefpOKNI/YpX9UvHlgICuE6yvuTETC0HcWL
-	 ojpZb7YuCu1LQ==
-Message-ID: <412359f2-ecfb-498a-9717-f0a442abd3f7@kernel.org>
-Date: Sat, 7 Feb 2026 22:25:28 +0100
+	b=oqQdBh9sl6T/WoQmTaqwSb+Hf0W7EvI/kz5P31jLzegkKDtz2Ljid8W0a6qZvnbdH
+	 eh1iE41dYG47VNOpmCQZCYvp9S0EbWv4zIhmPQGuuYHEqA57hGvaJycE2ykfOHa4iW
+	 raj3idE2OVz3b6S7FnTiM+vfW54nZvXs0fAMPWFmZjQAJEr2z0EEGBo/L7rM1W/dgD
+	 oAexAibCpB0/ZsKxrnQW2VWR9Kz8Y2pDd2ehZjP5DQqbDefH+p0w73/85XuGLf1mET
+	 htAEXO7MRYF67M6LBaqMqGw9PkiMXaG3vxVURvUTUzoTe6JqMIrNZCenwDS9evvaYZ
+	 N3C0d6yewvc7g==
+Message-ID: <c1280171-b9e7-4f10-adb5-b6a8ed69e54b@kernel.org>
+Date: Sat, 7 Feb 2026 22:38:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 11/17] mm/hugetlb: Remove fake head pages
-To: Usama Arif <usamaarif642@gmail.com>, Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, Matthew Wilcox <willy@infradead.org>,
- Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Vlastimil Babka <vbabka@suse.cz>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-12-kas@kernel.org>
- <907ff793-9b02-4a22-a85e-2873246f6402@gmail.com>
+Subject: Re: [PATCH mm-new v7 4/5] mm: khugepaged: skip lazy-free folios
+To: Lance Yang <lance.yang@linux.dev>, Barry Song <21cnbao@gmail.com>,
+ Vernon Yang <vernon2gm@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ dev.jain@arm.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Vernon Yang <yanglincheng@kylinos.cn>
+References: <20260207081613.588598-1-vernon2gm@gmail.com>
+ <20260207081613.588598-5-vernon2gm@gmail.com>
+ <CAGsJ_4zxAmDS+FWzfX-670W3H3LM=nUZ-gGe3jMV9tYM0E_EaA@mail.gmail.com>
+ <e106bb45-5563-4b9b-bcb5-defd6e204c79@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -133,15 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <907ff793-9b02-4a22-a85e-2873246f6402@gmail.com>
+In-Reply-To: <e106bb45-5563-4b9b-bcb5-defd6e204c79@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: pes4tt1hsb9er7tuzrgx3cy1wnotazdy
-X-Rspamd-Queue-Id: CB32D80005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bwhocwkcwboyde7dgfbto8w68eunob5q
+X-Rspamd-Queue-Id: D93D78000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770499539-821485
-X-HE-Meta: U2FsdGVkX19TXyPFIu8Z+PJKWZJJo8Pv6sRBBBRLjYF7ofBuPqqlzg2N6gkuUS/Sr/Wf7BD25rrVs4HZawuBGkicio4+KC2HE4t+gK07p26MwaPnJrrQbyCXC0IjichpQTbkcDwmOVQPuG5eCzt3txMw2rM3jOWucL6A53OlYnmfEr/T/Cze5R3uuMGFvzF8GjQY5BbFQtiIPxg+AVXrDvpOTvQ9MP/ecDhGG8Kl2XAO3rO+FuUbo6wBJQx54lpnY20ucE7ytPcgl0AK10qk4NkUUyFyyUxycFYaZWBhmGmXNoD1Nnxw7KTY4za8dFIC4k6huASmf7zNkv3UoI9dxSf/9yleuRzr3Lkung52Z8rxm354/JwHCb1108tzz5HxcIqqkkga8FBMXjweV/eHOnUjoJMw7EYRyL9R/DbQ5vwN67f1JN7g6BZZICvzdwmpbj4go2yAxaKcaM1pywVNqj4Rn9ViRuliyHR+HsTNbaiLzo07GEV7MxHprcH4AcrnZmedp63idP6nfIDUmS1xtDI2ql+0I6sMUKLVaouPJV9XuxyNE9GhXemGqLtX5U0Dc8HQUfh8iG3+eDbMde9DIwvcTBgzbCvM1I+y1HHUFDu+qV2d1npS6DCbTO4Mw2LenSN3NU1RSULxQqb9f4NWRNpO2yRbi+xYyzx7sA/gBYBYya41YqpWw2Jrk47kb+No9ymLwMnDYw3PSEoT7pjC0DOEyhOvHRyVrD8i7eBVwKsjv7LeLIDHMnAsLP9A9dVzb99lqzCL75UstE0SOqRDh3DYt0MdtNrhrHcuBlfjBlok2vLdj8WKonrNlxCP4bngqaErfF1d7uLe0DLx3zvNJE3xPYsR/l3MS+/BBwZCgMesk2psN+q4FsjpG0sg7EjKSdrV397aEoLGQh9Y9WOI+fXRMBoxosgHHu6vQoBJE/DA2OLSn4GL0w==
+X-HE-Tag: 1770500314-766310
+X-HE-Meta: U2FsdGVkX19/8icHJSqhOTi+edVzN0FozkIVqHsnouNUpXCj7zQnotpNaHEenjuqdiwayLr5pMbvwTBKo3zFCMvqqtwGpgdr/Jm6h4UuoV5HS9lmdK1AWz6kp1TGGrNbd0GkjF0NPUNWdG+toC3j2PckkVA7vRQOnnaPsYpI3agNJWhuax60dIDol0lOHxmkWP11m1bFDDWKyIh6v84SlQGeWBTR/y0sKS0zaCrJPbrjSLlQhnDzekcacCgAXF00OK9aBC6HxQ22aMoYJHt6s3nWkPnOgbH/+kFkspoCvltN0UNH7HbZ76TCTndWD2QNIpK+PcenmaGo266CHl6vXJHTPxdw+Vdh1IAOZIrkLQ3heDhIQira9QDLRoh7qG2tM6TDn1Iwqvj+hEnbJlx0QcDjL0jm5a6O2wxOzvbxti3lcwLaP1IL555L5ofegE1rzTVacfBox4d+JCcVsKjBoJBz+HRDbfTDfuF8KTNj97v2IcKN2ehxFR1HsLgIsKpasRRo5ip3KWaHwWDslCk+gBUzinthhNXT2vs0aA/EDNPIOk+kVKIB5CF1IK9m931DEVBWncjM6kTpI9GwHpAq3PKCKwzYyP7j44eMua01kNH/vxKh9Ehv6ZZFWTBK8mHa3yiQ8ZEC/DvtpzHbLbJWW5M4szD7dH6nfSv/KNi+WWhCiWl1V8RuDT2vKGnn8YW5X9ToqbhuOpROoYepncEBlWx/+TucK7tU6Y6/CrAbjuJs67khafbxvKkNDTlx7eY0JlojVsE0S2MY1sCbmh4lSd8olGMQxEyCuPfM9EdWwrUXvfyDp0Sauw609KO7bavWVklhZks1bLV1ST88V5Hhdvj29TlMPyU4PsPSZSeYF+z7IIRQvBn1aXfuit87Y6DJ5WjQKddEe4cFMwgdLo0J17ZxVzTHKiXgW8g/hwHqd8eWEs2MvSBG7jPizpJ2D+kVYdXSeYXAOt/f57fV4bl
+ DP1wtCyG
+ RX525JyV2vtS48HrKtFa3XH7SceYdJN5w0jFsWAlQpkT3/ZHXBQKi5uZATzSvKOCesV2U/v18V+nPgkGt2wNjcFXg9M4bnYB9IlflAaIDV10N/dAfoujrcagPEvB8LrOOrJpWV4AiS5/Y5sEuo8YMDXhWFqXILfGt75gYymlPB6uskJY7pxn8V5UyoGfFG4Krc4ek8OX0veZo2Tlz5hw1jZTOTZdxlxp6PN9NlLYHaoctUlmQjNndR1cXcs2cQoElO398QlLvnheJ5Oh2wFtrEbLNf1i2Gh33BK3yfoEaPnyIWbAbxiZklEu0n66xlA5W1K/UqGY7+krz/C0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,28 +143,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/7/26 21:16, Usama Arif wrote:
-> 
->> +
->>   int __meminit vmemmap_populate_hvo(unsigned long addr, unsigned long end,
->>   				       int node, unsigned long headsize)
->>   {
->> +	unsigned long maddr, len, tail_pfn;
->> +	unsigned int order;
->>   	pte_t *pte;
->> -	unsigned long maddr;
->> +
->> +	len = end - addr;
->> +	order = ilog2(len * sizeof(struct page) / PAGE_SIZE);
+On 2/7/26 14:51, Lance Yang wrote:
 > 
 > 
-> This doesnt work for ARM. For len = 32 (2MB contiguous-PTE hugetlb on arm64):
-> ilog2(32 * 64 / 65536) = ilog2(2048 / 65536) = ilog2(0) which is undefined.
+> On 2026/2/7 16:34, Barry Song wrote:
+>> On Sat, Feb 7, 2026 at 4:16 PM Vernon Yang <vernon2gm@gmail.com> wrote:
+>>>
+>>> From: Vernon Yang <yanglincheng@kylinos.cn>
+>>>
+>>> For example, create three task: hot1 -> cold -> hot2. After all three
+>>> task are created, each allocate memory 128MB. the hot1/hot2 task
+>>> continuously access 128 MB memory, while the cold task only accesses
+>>> its memory briefly and then call madvise(MADV_FREE). However, khugepaged
+>>> still prioritizes scanning the cold task and only scans the hot2 task
+>>> after completing the scan of the cold task.
+>>>
+>>> And if we collapse with a lazyfree page, that content will never be none
+>>> and the deferred shrinker cannot reclaim them.
+>>>
+>>> So if the user has explicitly informed us via MADV_FREE that this memory
+>>> will be freed, it is appropriate for khugepaged to skip it only, thereby
+>>> avoiding unnecessary scan and collapse operations to reducing CPU
+>>> wastage.
+>>>
+>>> Here are the performance test results:
+>>> (Throughput bigger is better, other smaller is better)
+>>>
+>>> Testing on x86_64 machine:
+>>>
+>>> | task hot2           | without patch | with patch    |  delta  |
+>>> |---------------------|---------------|---------------|---------|
+>>> | total accesses time |  3.14 sec     |  2.93 sec     | -6.69%  |
+>>> | cycles per access   |  4.96         |  2.21         | -55.44% |
+>>> | Throughput          |  104.38 M/sec |  111.89 M/sec | +7.19%  |
+>>> | dTLB-load-misses    |  284814532    |  69597236     | -75.56% |
+>>>
+>>> Testing on qemu-system-x86_64 -enable-kvm:
+>>>
+>>> | task hot2           | without patch | with patch    |  delta  |
+>>> |---------------------|---------------|---------------|---------|
+>>> | total accesses time |  3.35 sec     |  2.96 sec     | -11.64% |
+>>> | cycles per access   |  7.29         |  2.07         | -71.60% |
+>>> | Throughput          |  97.67 M/sec  |  110.77 M/sec | +13.41% |
+>>> | dTLB-load-misses    |  241600871    |  3216108      | -98.67% |
+>>>
+>>> Signed-off-by: Vernon Yang <yanglincheng@kylinos.cn>
+>>> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+>>> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+>>> ---
+>>>   include/trace/events/huge_memory.h |  1 +
+>>>   mm/khugepaged.c                    | 13 +++++++++++++
+>>>   2 files changed, 14 insertions(+)
+>>>
+>>> diff --git a/include/trace/events/huge_memory.h b/include/trace/ 
+>>> events/huge_memory.h
+>>> index 384e29f6bef0..bcdc57eea270 100644
+>>> --- a/include/trace/events/huge_memory.h
+>>> +++ b/include/trace/events/huge_memory.h
+>>> @@ -25,6 +25,7 @@
+>>>          EM( SCAN_PAGE_LRU,              
+>>> "page_not_in_lru")              \
+>>>          EM( SCAN_PAGE_LOCK,             
+>>> "page_locked")                  \
+>>>          EM( SCAN_PAGE_ANON,             
+>>> "page_not_anon")                \
+>>> +       EM( SCAN_PAGE_LAZYFREE,         
+>>> "page_lazyfree")                \
+>>>          EM( SCAN_PAGE_COMPOUND,         
+>>> "page_compound")                \
+>>>          EM( SCAN_ANY_PROCESS,           
+>>> "no_process_for_page")          \
+>>>          EM( SCAN_VMA_NULL,              
+>>> "vma_null")                     \
+>>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>>> index 8b68ae3bc2c5..0d160e612e16 100644
+>>> --- a/mm/khugepaged.c
+>>> +++ b/mm/khugepaged.c
+>>> @@ -46,6 +46,7 @@ enum scan_result {
+>>>          SCAN_PAGE_LRU,
+>>>          SCAN_PAGE_LOCK,
+>>>          SCAN_PAGE_ANON,
+>>> +       SCAN_PAGE_LAZYFREE,
+>>>          SCAN_PAGE_COMPOUND,
+>>>          SCAN_ANY_PROCESS,
+>>>          SCAN_VMA_NULL,
+>>> @@ -583,6 +584,12 @@ static enum scan_result 
+>>> __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>>>                  folio = page_folio(page);
+>>>                  VM_BUG_ON_FOLIO(!folio_test_anon(folio), folio);
+>>>
+>>> +               if (cc->is_khugepaged && !pte_dirty(pteval) &&
+>>> +                   folio_test_lazyfree(folio)) {
+>>
+>> We have two corner cases here:
+> 
+> Good catch!
+> 
+>>
+>> 1. Even if a lazyfree folio is dirty, if the VMA has the VM_DROPPABLE 
+>> flag,
+>> a lazyfree folio may still be dropped, even when its PTE is dirty.
 
-HVO should not be possible for that size, and we should never reach that 
-point, no?
+Good point!
 
-Remember that for HVO, the metadata must span at least two pages.
+> 
+> Right. When the VMA has VM_DROPPABLE, we would drop the lazyfree folio
+> regardless of whether it (or the PTE) is dirty in try_to_unmap_one().
+> 
+> So, IMHO, we could go with:
+> 
+> cc->is_khugepaged && folio_test_lazyfree(folio) &&
+>      (!pte_dirty(pteval) || (vma->vm_flags & VM_DROPPABLE))
+
+Hm. In a VM_DROPPABLE mapping all folios should be marked as lazy-free 
+(see folio_add_new_anon_rmap()).
+
+The new (collapse) folio will also be marked lazy (due to 
+folio_add_new_anon_rmap()) free and can just get dropped any time.
+
+So likely we should just not skip collapse for lazyfree folios in 
+VM_DROPPABLE mappings?
+
+if (cc->is_khugepaged && !(vma->vm_flags & VM_DROPPABLE) &&
+     folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+	...
+}
+
 
 -- 
 Cheers,
