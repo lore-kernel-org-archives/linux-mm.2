@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3177EE0AF1
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 20:19:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AE74EE0AF3
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 20:20:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED946B008A; Sat,  7 Feb 2026 15:19:40 -0500 (EST)
+	id 708656B0092; Sat,  7 Feb 2026 15:20:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29BCB6B0092; Sat,  7 Feb 2026 15:19:40 -0500 (EST)
+	id 6BE666B0093; Sat,  7 Feb 2026 15:20:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A7526B0093; Sat,  7 Feb 2026 15:19:40 -0500 (EST)
+	id 5D8386B0096; Sat,  7 Feb 2026 15:20:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 09ADD6B008A
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 15:19:40 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9567DB9351
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 20:19:39 +0000 (UTC)
-X-FDA: 84418776078.13.CF6D6A5
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf30.hostedemail.com (Postfix) with ESMTP id A1F6580005
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 20:19:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=beMN1+tU;
-	spf=pass (imf30.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 502AB6B0092
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 15:20:10 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E0A81B99A2
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 20:20:09 +0000 (UTC)
+X-FDA: 84418777338.25.4EB5172
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 17FE5100009
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 20:20:07 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J0yJTLbw;
+	spf=pass (imf05.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770495577;
+	s=arc-20220608; t=1770495608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LmE23qjtgb2EulsiY+c7A9BQzukrzPbX/0RgHfT6JCg=;
-	b=YV0EOp1ymvsUTzvHf9DY+T0bmm4UA18xXHEF0rFvmm5K9Ipev4czvQlZSuWqTue0cPtan2
-	s4xJz1gthkhv02Zjvkj5BfclfYF/0qW3O/tf8UuaP13NhJXNG/AESuz9y7jWDn7wP5NEF4
-	DefWzKjl0XpzbX6ScCzTqs7gOXm9nlI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770495577; a=rsa-sha256;
-	cv=none;
-	b=gRCd1PZa7FzLYOPGCahkA05k2l1IVeF1diNw3VJFIgFQbuZwFkPlpyGhEAqnejvz04D5r3
-	3fx2X7DavnOMjIivGxn5aM+pbGHPPPH/GsI0WmV+Gml+FAfBoXotA3VRUzavSDAmdigPes
-	bfmWrkXm7Qm7nnR2u10ydTgDXhLNDTo=
+	bh=2CLN/nBgZu1TXV2x2w92nD7nqppwuTNa2tEtzd/B9Hg=;
+	b=Agd/atIxr3ufqaqLywTwR4voDR+Xo+wFW0pHNrFXqflKP/3NXptHMMDbcBeBPsA2mjbqPV
+	QVbWKT3gJhH6oF851NMrf4Qe1oXN3sZ4h3dbgluqudpUDIcfi329hNHetd3jOxQ87rJzrM
+	Jg1ZFtlUmlD1L9El+TCXo7GZzp7vCa4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=beMN1+tU;
-	spf=pass (imf30.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J0yJTLbw;
+	spf=pass (imf05.hostedemail.com: domain of usamaarif642@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=usamaarif642@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4806cc07ce7so33138475e9.1
-        for <linux-mm@kvack.org>; Sat, 07 Feb 2026 12:19:37 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770495608; a=rsa-sha256;
+	cv=none;
+	b=ju1ALFhTXZuRV3/txXerTKlZxG4R2M8hpfRelALaW76mu6hz7H5/IpGAZ6lLeyXHkyAp2P
+	0+twZj6XkBA3N+XlGa3J/fIUcg6gOnzwe4+mXY1N6NxcdUrbQUC6PitqpdsKgp641haXhm
+	LGxIDS2klFoV4PvKLELcO/hz29hCTH8=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4833115090dso4632425e9.3
+        for <linux-mm@kvack.org>; Sat, 07 Feb 2026 12:20:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770495576; x=1771100376; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1770495607; x=1771100407; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=LmE23qjtgb2EulsiY+c7A9BQzukrzPbX/0RgHfT6JCg=;
-        b=beMN1+tUdw0weZ7wONs1EmGJboQOKnXfEEwayeUhMtw/CK0CcBZ+amSH85JFvWQMN+
-         sGfxTJv+HycJg7aIKShSQSsQlEqcq+r2c9HedTkovGiPkNQSLv+trApXro5JEMqQQxth
-         zDUUEACMCn9hXkkQUsR9tsV1/520Q2Ay+FWrQPGrVHPcZHx2ud/RicK1a04kKPY/XgTY
-         lfaQ5MMGm15uGceIickMg82U7GPeGHba570r4Z/dT2PUBbIiKkOq3tz0cobJ5ooGqr9N
-         dFRgka/PackM9TxB+mD+g/rXpI2lp65+MXsXfWpEUuc010SwulldGKc4PAqYbq0gPiR9
-         TBaw==
+        bh=2CLN/nBgZu1TXV2x2w92nD7nqppwuTNa2tEtzd/B9Hg=;
+        b=J0yJTLbwwCU5/wrhGuGKCkWjBeZd0a4i2dQdxuS5B6JqWsFduid0IC3Bh4ajMurBCN
+         C54awTMozt6eqJkHXDUww6f/jn53BhMUZPyOWSynozgYDDpuz8LDH5TQ1/V6geNL++WI
+         8fUs2eN4tZ+Rt1+CNPWQ3HN+TlVthnW6PEY3KmWk8oD6pfPLviq+cZkxPiHiWO6lLilU
+         PGMBhqP0zAFr4OZe9puTNmU1qOPrIOMD/p4fNNhBLxjtk3+zA+EO5zZraBry6R8VEhgg
+         51+J9dFhmlWu8YlutfDynjmSGDZEqAkpZ9LKm1ouIlurejPbwWz3AwvbEL+OvgtqXY2S
+         vPNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770495576; x=1771100376;
+        d=1e100.net; s=20230601; t=1770495607; x=1771100407;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LmE23qjtgb2EulsiY+c7A9BQzukrzPbX/0RgHfT6JCg=;
-        b=oanMrtWdeU7XdocO7/P6ERPF6/BLnIxlSAeT1q2s5m8T/XDLqnTEiazrFWHnFO10vB
-         VMN5KMVJT0MirywiP0co+2u+j1taQZDDaRQqR1sO96iSHLo94yi71vOZvXyviazb8/re
-         k+Q1pCuW2kQuCdCn/IOQ8kmGlaXFOuqHRF1Ah1Kay05XJ8hbshQLPc1Z9Ju1k/AbLklE
-         g5+5OvnZ3HrHzQH5s7bRsREpRwTBuTgTil4Nqo42QqYAS9yxE6rfRaacaCCSbxBLCQAZ
-         fqU9pofuGxyLisaM1I/ElmXZtBn7z0XeL+yCN4soD20bhu4nGELkXyKvakIYJNTIKo+9
-         sqaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVe3VgVnbrNIyRdxKMis2OjlQPHQIjiwRjIk19Ou0sjB8xTZGNPKc25IqX2Alngyu4eEhPVcJfaGA==@kvack.org
-X-Gm-Message-State: AOJu0YyvyDPD1BaL4iBqaegYb6S2PJClOCNRB3GtOwFDkiNwvpuERd7o
-	qY/yt2kD7ELMBcBcce2f8UyblVEy8s6plrSdirGGpuHm6PZh18I7dmsC
-X-Gm-Gg: AZuq6aJeY0yYCDeiIuqpaqrgZP0rna9sqcnDP1X4g7kHhjvx9c8p8BuQEDKD1g8H6a3
-	WQhoxw+nGzLuaYzPWbqR3IOCDm4+vsxXLa5RvMol1YCg4G0DoXzLR0eSaTP2m+gr3pwFBQ7CSIO
-	rLuBnxfPwOv0yc4Rit0pvi2jZenYfoOxf1G/7TyqeaRE28STS5ltXQKl/W/uaAfuN046Bt+xQfg
-	Zn0DH6IX8qe82pzDklXeHK5siTMJYy1MXWftdRYxtnrSBi2uVtNVBDlRMi1ZncVdau0h8YOhyDt
-	TjZxREz7T1DtRQv8DWSFvAqwikPXg3RVO2A2GKEXaigq5nELPmlj+zsjZvckjrwQaj/lNR24F1N
-	15EI8feYEhy8dFoXAzHPOy/Vkqip8FqT14CK6zgMa6Qrkyt5gcNeOCcX9kXdLXP5eNEsRmenwqP
-	zqTTDvKMPY78G5/gEB8sKGz2DTjROqTLeg4AUJDzS0PDs+VIn0KBC/vHOcp/mJ04W6Dm2VELdiE
-	3cdEiNtRsn+lxI=
-X-Received: by 2002:a05:600c:4f8a:b0:480:3230:6c9b with SMTP id 5b1f17b1804b1-483201dd004mr94651865e9.7.1770495575929;
-        Sat, 07 Feb 2026 12:19:35 -0800 (PST)
+        bh=2CLN/nBgZu1TXV2x2w92nD7nqppwuTNa2tEtzd/B9Hg=;
+        b=alcEwqiTbOWOGTrv4K8ztfSZQlWg8NnLfyEdo+7t1/O/UvcUq4+CnHd4SN41NgrVy0
+         /ygYO15RgMkiBQ08SG8WKPTLr2FhibDO17nHvyBFurJXTQfpwvunf4Td11FS56OvJz/d
+         zq6Jthvlu8mP7PsZRQj2QVJA/+CvXuC4lRKPIqy+BRRAfeYKyc+1o4MqfnC04EmAtztD
+         R2gA9JRvNWx3waXtoxqLFxGA37LL/yl+eSSauyguNspw8lftvUk1WQrJiQ8IQ8j+S192
+         SN8YUlHQiAuaab6elJ45bkMmOki5JXA0Bq+BrUc97CueLfj01OR7jPt+xpT2+cAk8Kzm
+         FWIg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcfaiZUsL5L3giQcyQFTbn4hjeBqHOKNIsrchZI1B9n+88GR8J//JB6oaGQcovCYAs/XaBbRPlQQ==@kvack.org
+X-Gm-Message-State: AOJu0YyBoTLDpybQRsjLZBoZzx9zcgWCIkbcmW9ABg0ScNKD9VORo51Y
+	w1Ddgm88rzCfyjEDroOJ46esjr/ie5qiUTONknt29sPbmifZX++EgjG7
+X-Gm-Gg: AZuq6aLYY7KbXkpVi6Oohxo7CiXQouORDLA6JokE7wGcp97WoHgWRQXn4HXiosiwWup
+	1fmYwCkRSIOFEFOv2VU28qziaoDH5pWZk5IqTaQ3+A4mpSFvzr/lKQwrlTV7dQIg0lzEtK1N5dS
+	VXpoiACEsQhpI9KNwQmCRU0Jwa44QJq/sil6o1w34Vw1VMEfeDDwLOzrBCWqeJpDO1cEKdQyJQs
+	dh1X4gsIPQbnEJ+hKm7ZO64A1Xj3bYVVDPejOUmR9qKjgYOFhzXCrbyD34WJ6x0enoDKdH4Su9v
+	F7rUEzhBuEwvpg9Q+o9cXLYaRNpYh5XXrR4xpQRGRFF6SoC8JD4ENqR0kdZPR+XGaBguBnG1fxK
+	O6gB69RRxcEpV0Ng32qIr7GxbX08Qq9SXujXzZHV7t8XNHcZaBBRDSk2Mnn7BFIIwRsuf9DO7Cl
+	8zcrOjpc3Sb+MEBiP7L9KgbJ7rWX3fEG442iFwkwUD/HBddy1LGbVcemhZUd0SQssDPkWzYxO1p
+	9Urk02ZsC/ejYY=
+X-Received: by 2002:a05:600c:548d:b0:480:7162:fa48 with SMTP id 5b1f17b1804b1-483201ecd90mr108547085e9.13.1770495606497;
+        Sat, 07 Feb 2026 12:20:06 -0800 (PST)
 Received: from ?IPV6:2a02:6b6f:e752:9400:18cf:c773:ee86:c436? ([2a02:6b6f:e752:9400:18cf:c773:ee86:c436])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483206cc7d3sm131304355e9.5.2026.02.07.12.19.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483209cfd77sm51750705e9.14.2026.02.07.12.20.04
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 07 Feb 2026 12:19:34 -0800 (PST)
-Message-ID: <fd80736b-7b2a-4675-82a7-1902705c6361@gmail.com>
-Date: Sat, 7 Feb 2026 20:19:34 +0000
+        Sat, 07 Feb 2026 12:20:05 -0800 (PST)
+Message-ID: <f4e66e8d-d285-4362-8bc9-fef00f2f624d@gmail.com>
+Date: Sat, 7 Feb 2026 20:20:04 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 07/17] mm: Rework compound_head() for power-of-2
- sizeof(struct page)
+Subject: Re: [PATCHv6 01/17] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
 Content-Language: en-GB
 To: Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -114,21 +113,22 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
  Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>
 References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-8-kas@kernel.org>
+ <20260202155634.650837-2-kas@kernel.org>
 From: Usama Arif <usamaarif642@gmail.com>
-In-Reply-To: <20260202155634.650837-8-kas@kernel.org>
+In-Reply-To: <20260202155634.650837-2-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A1F6580005
+X-Stat-Signature: 8atpxnneb11ohfistrax6x9ze6htqoaw
+X-Rspamd-Queue-Id: 17FE5100009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 5samyf7nmqwjacekit1yedy6a1f4yhmm
-X-HE-Tag: 1770495577-957460
-X-HE-Meta: U2FsdGVkX187mOHj1pUfWJT9DUuI6/Y1moOX5FnHjhQ8NZs1NL48CtZ4zYUgpTrfqCzIjTa2FNOwqDJZzMibrpmZj0H/QBGWsNnb218MwBJcFZJ1fuqlpX65TFC87E7ZEKpQQEnUMX8Istboa84I4AMI4bXJqjHXSIpixnh3tt1GVqEmiQRyPes9+3G0KqDJ38uQObGrAE8dYkqbsp+maNda4TJ6+DrmEJI6kDBmM4BLCfh1IvDwEYCUC4mmEWAhlBqPtsCygayiehXfaFENEhkq+MLnm8AcypHKTjUWQb4wD7OPz72MhVqYH9RcWljuhEQiGfX9MGFkX432v5uprsOeObfebGHt/I3XHmDGt/fynapqp3FAkBqzTumqvCKCxmYRxxkbrWBYLcezdS3Q3nNY7/l3oz1aaLW8+uMwimh8JQLj/x+ALDxGzCqkVNGf5f6gc+zxnpk5+a4Pe3jVnKiwqxFOPeBkhf9+wq3+NOHUuQXIfyko3S8VfOs2oyiL2M3RbmvVOPEiMZCYh3RW5I0N01BvuZZk/xPeM6+d5eIcicuc1Yq8elOAmViFBMtWOO4g4GjMirpdqWveMWUwI1EpaUsKzt7SX54d/ckTqDXwILqth/oXbCCF/kE3Dy6LoLTivskJ/ywgtUdnZ8oTxPE7sRMJYhkdlM1Yk7KcEKioxlClui4crOlaBwvLnQTx0TOFUJY2EYDxosMNlOxca9gsP0xQhJWmIv0rQfIoRx+2LRajppbV0NxIX+CohUX4oKRqECRT0w2ibtLaWCqEdxFq20xIR8fkcl9OqMMZJFySps3T3H6vKLgMK1bqURVgi6FA3APwUWfKQ0Ptpnf/xQ0uIB456QP1nsNMw1vjlalwWvRsTK3h2/JhD/QdWgIL/EHc3qaFIcwKuiVRJDY96bTUrN4zwBG68tZ6pmcZ7n5TSAtAd87C8JG5FKPZ2kLu9GVV2FIfs7F+1pcqdi/
- AlGzp7D6
- 7iyWDJDVZUU6G9b+Ozo08A17yR6PxvdkoDBirzns9LeOiero3xql2rO41JkhhIo/5TSTmmY62OjcnlONLgd9XChN53tX0WffXbvZaIL7YPPLb0eonVW9XDgVZkuNtUOzrbiwDHdqAwmQsHw+EPeyQeTji/uUj1F/ueGTv57jz0BlopK8+LFVLbqpY0rOX9v9PuJTDxNB475qmyAV7wT5lClIdowermfuGY5d7N3ypQyhHsTuJfCWZLQLvtPo92ktMESiMnYLAo+/2OlVFf7U8NMmiDou6VFOTY+49JtgwyY2U5GwTBgMhgXyN7jJupaimoDvaQin6XN/KEoejiK4fAxv/J9U8B36pT96GUnPybvKOEiXa0YX/4B2Sk4LoYuoa7v2mHyhoLGE4kaBCOr5KYZoArdfv0fNuT55JXYIi+TiPslElYWlqHGo1IggShDUesIlwz+U5KHWqUjKZi4oXP8GEXFKI0erfIcTVs9KrUFBoanjjAGOD+B5+i3pf6qtmGu6Hs8Mg09mDAz1jzcPJ0zoTBXerzqXLBRs4Vc38fHAsYudQKxGE6SfVkd1LkmNsR6ABIIB+KRwridC/9jqgXSUo0w==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770495607-703772
+X-HE-Meta: U2FsdGVkX19DsQEqgzDCs47L2pkhxPyDtW289Q/X9p7WBoVQgX4BrPO7r6kFvEiYhq+todX2hTUX+Zbd9LufB+08yTCaLt1ll8NJ+3sBbcLx73RW97X48m1vbTMoL/w/lcpdWXsGE5dnUS6KxVECRAf/+7xP7oTEORGNWFT4KTsFMtZ3dJkFkMzlje5Rc8KhPgKcrNn8GxSnQtRVvIl8+wd1mAeh+lqfUpUaiQlYM4ZzK0nWDtlZXDRKp3+gRaP8j+HP+ZKPbD9NoBk+l0nFkXd7gL2Dqy5JSyXOCtd3F3SFlpsPfgwgf0R5L9Eqez6aljdWclf2jN2QHQO0t80Djq2SRtTIVz6VCsT6ack+GQl1x5gq7V9ozeorYDx84MhrO/le+e+/O47n/eOKzstGn3Q4BOyNCtYGeu0BstHqFDuV746NnM8QP//gwS6xdkBqobG/Rgr2x8eX0ITyVQ5rqMKwFCAibkb1FDlLEo8LU6FV/5ODcs9BTe2abKyzaKEv/UOHn8daJeqCBPbAed1vRQjx02AdOOT2ckJu9ZhU/B6FsgB/a/CVvZ90stG4D+z8YoT8BkOiVp0pOk3iF8hK0j/BXpupSvUaaOjpAHubHLdhBjWhiJQP8TGDc/hZZFKcf83PDDJzjyACTTwz08h2//zH1cQ7vu61vA5Rpkqrb/aVGpy6a2oDs743jqvS6eVjM4FC5XM93YYJj7tbMXaYDsTyhgXV+GHvA8OTCSSwRAuKJs2vaNJM7a3B010el+0pakWq+SJuB5aQKajU8qaWExzEZ8zoBGW/6fopqhs4xAhVOSCvK74Iqlo3qMBrKVjHQbbgOkx5P7fx9MCO45EFsSaGcl+nshIdqE3v5PNT+3RWKqN6wM/qY7h5rQCKqh0vjxMXXfaiWgo6AmUDbqrTxky0udNLN/KcWcYI28BdCWGvaGhUxwQHWfBAZlK1Ks67hS/4ZPh4JoNzYvI+KFS
+ PczAtSGp
+ gLApnvRx3ybpUNgNWdK5t/hiUj9fp/NYgpM7S2+DcjyqNKx+02fGhaNiUyTDxjuoJYTN16HZm8E9MRw6647OP9i/zxx+DbPI/ZHkeuHlidm3Rjlw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,135 +140,15 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 On 02/02/2026 15:56, Kiryl Shutsemau wrote:
-> For tail pages, the kernel uses the 'compound_info' field to get to the
-> head page. The bit 0 of the field indicates whether the page is a
-> tail page, and if set, the remaining bits represent a pointer to the
-> head page.
+> Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
 > 
-> For cases when size of struct page is power-of-2, change the encoding of
-> compound_info to store a mask that can be applied to the virtual address
-> of the tail page in order to access the head page. It is possible
-> because struct page of the head page is naturally aligned with regards
-> to order of the page.
-> 
-> The significant impact of this modification is that all tail pages of
-> the same order will now have identical 'compound_info', regardless of
-> the compound page they are associated with. This paves the way for
-> eliminating fake heads.
-> 
-> The HugeTLB Vmemmap Optimization (HVO) creates fake heads and it is only
-> applied when the sizeof(struct page) is power-of-2. Having identical
-> tail pages allows the same page to be mapped into the vmemmap of all
-> pages, maintaining memory savings without fake heads.
-> 
-> If sizeof(struct page) is not power-of-2, there is no functional
-> changes.
-> 
-> Limit mask usage to HugeTLB vmemmap optimization (HVO) where it makes
-> a difference. The approach with mask would work in the wider set of
-> conditions, but it requires validating that struct pages are naturally
-> aligned for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
+> This is preparation for adding the vmemmap_tails array to struct
+> pglist_data, which requires MAX_FOLIO_ORDER to be available in mmzone.h.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> ---
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: Muchun Song <muchun.song@linux.dev>
 
 Acked-by: Usama Arif <usamaarif642@gmail.com>
-
-Small nit below:
-
->  include/linux/page-flags.h | 81 ++++++++++++++++++++++++++++++++++----
->  mm/slab.h                  | 16 ++++++--
->  mm/util.c                  | 16 ++++++--
->  3 files changed, 97 insertions(+), 16 deletions(-)
-> 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index d14a17ffb55b..8f2c7fbc739b 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -198,6 +198,29 @@ enum pageflags {
->  
->  #ifndef __GENERATING_BOUNDS_H
->  
-> +/*
-> + * For tail pages, if the size of struct page is power-of-2 ->compound_info
-> + * encodes the mask that converts the address of the tail page address to
-> + * the head page address.
-> + *
-> + * Otherwise, ->compound_info has direct pointer to head pages.
-> + */
-> +static __always_inline bool compound_info_has_mask(void)
-> +{
-> +	/*
-> +	 * Limit mask usage to HugeTLB vmemmap optimization (HVO) where it
-> +	 * makes a difference.
-> +	 *
-> +	 * The approach with mask would work in the wider set of conditions,
-> +	 * but it requires validating that struct pages are naturally aligned
-> +	 * for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
-> +	 */
-> +	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
-> +		return false;
-> +
-> +	return is_power_of_2(sizeof(struct page));
-> +}
-> +
->  #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->  DECLARE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
->  
-> @@ -210,6 +233,10 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
->  	if (!static_branch_unlikely(&hugetlb_optimize_vmemmap_key))
->  		return page;
->  
-> +	/* Fake heads only exists if compound_info_has_mask() is true */
-> +	if (!compound_info_has_mask())
-> +		return page;
-> +
->  	/*
->  	 * Only addresses aligned with PAGE_SIZE of struct page may be fake head
->  	 * struct page. The alignment check aims to avoid access the fields (
-> @@ -223,10 +250,14 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
->  		 * because the @page is a compound page composed with at least
->  		 * two contiguous pages.
->  		 */
-> -		unsigned long head = READ_ONCE(page[1].compound_info);
-> +		unsigned long info = READ_ONCE(page[1].compound_info);
->  
-> -		if (likely(head & 1))
-> -			return (const struct page *)(head - 1);
-> +		/* See set_compound_head() */
-> +		if (likely(info & 1)) {
-> +			unsigned long p = (unsigned long)page;
-> +
-> +			return (const struct page *)(p & info);
-> +		}
->  	}
->  	return page;
->  }
-> @@ -281,11 +312,26 @@ static __always_inline int page_is_fake_head(const struct page *page)
->  
->  static __always_inline unsigned long _compound_head(const struct page *page)
->  {
-> -	unsigned long head = READ_ONCE(page->compound_info);
-> +	unsigned long info = READ_ONCE(page->compound_info);
->  
-> -	if (unlikely(head & 1))
-> -		return head - 1;
-> -	return (unsigned long)page_fixed_fake_head(page);
-> +	/* Bit 0 encodes PageTail() */
-> +	if (!(info & 1))
-> +		return (unsigned long)page_fixed_fake_head(page);
-> +
-> +	/*
-> +	 * If compound_info_has_mask() is false, the rest of compound_info is
-> +	 * the pointer to the head page.
-> +	 */
-> +	if (!compound_info_has_mask())
-> +		return info - 1;
-> +
-> +	/*
-> +	 * If compoun_info_has_mask() is true the rest of the info encodes
-
-s/compoun_info_has_mask/compound_info_has_mask/
 
