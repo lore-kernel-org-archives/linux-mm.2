@@ -4,214 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1EE5EE0ADC
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 14:32:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434DEEE0ADC
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 15:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 039016B0089; Sat,  7 Feb 2026 09:32:23 -0500 (EST)
+	id ECC5F6B0089; Sat,  7 Feb 2026 10:03:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F29296B0092; Sat,  7 Feb 2026 09:32:22 -0500 (EST)
+	id EA4046B0092; Sat,  7 Feb 2026 10:03:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD3496B0093; Sat,  7 Feb 2026 09:32:22 -0500 (EST)
+	id DB0F16B0093; Sat,  7 Feb 2026 10:03:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C7B246B0089
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 09:32:22 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6DC5ED5D6A
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 14:32:22 +0000 (UTC)
-X-FDA: 84417900924.06.CC13789
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010017.outbound.protection.outlook.com [52.101.61.17])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6E625100003
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 14:32:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="sZErs/W+";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CB0DF6B0089
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 10:03:27 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A8CB160407
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 15:03:27 +0000 (UTC)
+X-FDA: 84417979254.18.8DB0AB7
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 8DFF620004
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 15:03:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JA6UB6GR;
+	spf=pass (imf13.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770474739;
+	s=arc-20220608; t=1770476605;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R3ObfeBUpjtMlzr0SfJEpFMmSDcY5JrOjZO4ac/K5pM=;
-	b=UOtStWaDKC3reVtwlhlj2GSlCoOBUK3RIGtUVxeUo9/oLw+Z//elq3p3yFtW0nhKfjZeOl
-	nTCDlCzXhpX6Xm8rsXRKZi5gsdfxC2/Geq9MYx8Bz0a+SbTjNia+VvsSHVzofN/Jkpj0iL
-	fBSnX2iRP3ArbfE2kGXgkmWeEeo3rlw=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770474739; a=rsa-sha256;
-	cv=pass;
-	b=GRcTd6P8q3Uap2RSFiIrVipaz+ztrowK75iqVa+Y9WPEsESgtFfG3DA0opVGRQa9TCSMLY
-	xFV8K2/85O1e1ao9Lfha7sDZ+txYzUGMm7nR3DxgHypvMPJk7FjwUCZhq29lRs4ufU6Jd8
-	GRR13kNPDfifDNfaBPKgacJn8MJ7nKM=
+	bh=V6Ss5XpsjKoGOf9rRrMSZvZipghpLxZFw4pS4gJWW8c=;
+	b=vulfz6W3+50iQ3iXo+IkbnE86AAKaLgp+MQkUgMxCcUqtDYFjHL7f4B37TSk/CeYIikMz/
+	gw5GK3csOnh5w/faAx2zzMroxo6rat4KDoO4HQ+BsjnLXx80WFlCnALiIBR9RfvrwglsyS
+	J0CNcevKyFvWkWP/w503TYlp4xjG+WY=
 ARC-Authentication-Results: i=2;
-	imf14.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="sZErs/W+";
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf14.hostedemail.com: domain of ziy@nvidia.com designates 52.101.61.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QhCKSEhBqMCWA9fXkJN3jNGGjtyxrxHXUVmoALFjUY7FVvVgAiAWMqh7FTQghPHg0kwVYS2ScbT5Ql73OWrVAV/D0H9bmL6MBXFKaVTXdAs9p/K4SRSy7eIBHxUyT2Z8vgIoDxGBUpMPB5Wj8YISh8oVTmh77HMdhz+MPto5FivbhbaTpM0ova8LCeH3MhKyEbtRxKh4s+jXxdDNMk9Tvd3tsitZ2yMIdN+ROAun3UyKmM4hZF/xpkQ1W77XHUan5njPf9MmML37UYysOPxcz4fcPBmsdkkN9qVOu5GE8pSXullYfTeZiM49CLu8OF53Ar6H4euCaUgDPFeai+WImQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R3ObfeBUpjtMlzr0SfJEpFMmSDcY5JrOjZO4ac/K5pM=;
- b=owoNJBUpEwcRNhzxtwdloI05VoaeRSAbD2vK9QT4hlS2LlldS7goCVbZOgeo7egy12Fbxb+v1/SwA46hddAVkyHTv4MyFd1Rt13nHsxd3IqcjlSWy/PjwX5aOZZOpY2dxI2CveIlrtWHsuKo1mu4y/SIt6APfgtxL99nfMjQogb64MothM2J2vUYW6190o3R+ZcnTcPHCdwcxArl9fuyJQ0f1h7AmQWAQvQFv6JJGN9y21+warxI+YJ7oKqFKoukXaeGY1lWQnVm+9l75BpzTU7FSUUTGarX9hopBDi72aKqI0PF4wgSD5zuTff9g7777aernLgH97Ay80xIIdYj+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R3ObfeBUpjtMlzr0SfJEpFMmSDcY5JrOjZO4ac/K5pM=;
- b=sZErs/W+y9kOGk569fuBZ9kz8tO73OzWeD5ulwWJachlrwCortvaUH6Vl1Pp2BkBVqsCGHuIWrf3x9nyXQvnUkvHFHbEGGgo9NqBDA1ntqTr5wc63eFDBon+cCSgqQFpneW1TTKbj0uDqZ3SoTtY1j5eccNeJ7Nnak4Rrd/LLXtp3d0tLpfoi/DHEQ+LukXjAE8NhG7JnE3PzaXJP6QIb+6I4KI9V2SR8hdHSJK5kvi9r99Qcof7QssU/lzcLevXgT41GOARKHyhKLPhwkcw5MJkoekCT3Hk2frgddbnkPCVj4XuzVPcYX8YvSSCA85smDmwBr3JnBWwbMrJXi5o8w==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- IA1PR12MB8333.namprd12.prod.outlook.com (2603:10b6:208:3fe::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Sat, 7 Feb
- 2026 14:32:14 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::f01d:73d2:2dda:c7b2%4]) with mapi id 15.20.9587.017; Sat, 7 Feb 2026
- 14:32:14 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org,
- kasong@tencent.com, hughd@google.com, stable@vger.kernel.org,
- David Hildenbrand <david@kernel.org>, surenb@google.com,
- Matthew Wilcox <willy@infradead.org>, mhocko@suse.com, hannes@cmpxchg.org,
- jackmanb@google.com, vbabka@suse.cz, Kairui Song <ryncsn@gmail.com>
-Subject: Re: [PATCH] mm/page_alloc: clear page->private in split_page() for
- tail pages
-Date: Sat, 07 Feb 2026 09:32:12 -0500
-X-Mailer: MailMate (2.0r6290)
-Message-ID: <247E7FE9-E089-43D1-882B-81C7134C2FFE@nvidia.com>
-In-Reply-To: <CABXGCsNyt6DB=SX9JWD=-WK_BiHhbXaCPNV-GOM8GskKJVAn_A@mail.gmail.com>
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JA6UB6GR;
+	spf=pass (imf13.hostedemail.com: domain of mikhail.v.gavrilov@gmail.com designates 209.85.210.47 as permitted sender) smtp.mailfrom=mikhail.v.gavrilov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770476605; a=rsa-sha256;
+	cv=pass;
+	b=gCFG6pybvY1vSXOg2O8cF8JHhUzGQ0P1JCAAtBmdzw//4iTDDl2HYpJUa4+LAry6VyC7OT
+	T4VQA6bIX6KEaA0It3F7Vwhianskqq1WNV3S8pWN6ExFTzQyGyk6FNufE6mHjhPWQexBvj
+	DmUF7TCFtHhs4uuXtEVPY/92YqQ4LXY=
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-7d148dd3421so603658a34.0
+        for <linux-mm@kvack.org>; Sat, 07 Feb 2026 07:03:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770476604; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ezlYZG9KznicE+OG4nxZ/adC7SwFLpVcC21u36PtyJVCW84AQB4nEEQm/lhKGqztxT
+         VB41AjXS8h5OtDZTozwGpZo4yViOgh2UCcfXLIP7vvdVopdck13HPeruLlOdeDDcRVhg
+         hYsCalnTDXnrSwYk0IEo+8shE5DJbX5EQhW1unZQIRlN1PpK+DpUsDLhXx/AVd5Tz/e8
+         PE2DujRPX8/kC5rVDiAzDIzwpi/ru7M7hON0YuNcjL/XbH1eI2DXLXBvVIOPIOq4pZxA
+         ih5FsnYdxFiQx0fH9qPg+g+7IfCMy8b6NkU0CDakKfD2S0PnMYDqmV5Sv3frXXF670fC
+         YN4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=V6Ss5XpsjKoGOf9rRrMSZvZipghpLxZFw4pS4gJWW8c=;
+        fh=vC7GnoAMqAeDIIoLX6QPd8Vl3ghhTuvRQd8IB/alrHE=;
+        b=knIDyvGzaKgpRGphAAG0FPfUlafYZig70aZMEFBURuccc5flF0cyS+OVTVUTkCPpJj
+         WnzaFEQ/oUjaGW4GokLtUrkP67GD61A1aG+K/k3l9aRq2UHWbeynuVx4cgbUHH8eMb2A
+         TCsZz/Yo5zpZYGIoIKiOcbeddRKa8ovJdDvoQ8tbc//6wLocviOaYJD3wh6rfGtfvX6r
+         PG7PyBncgutzF/PiwtFtMWXcpSzlYrep3ocIM+9zjD8KdK5sNP2GA42o1zW+U/R/ZLCt
+         9yKdskz+upifwFQVv5jq5DS/94Kme7pgGy/HmtosNltKYCjcjtm+7PgbMnd/9DjAZfEp
+         cDlQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770476604; x=1771081404; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=V6Ss5XpsjKoGOf9rRrMSZvZipghpLxZFw4pS4gJWW8c=;
+        b=JA6UB6GRwSOKqp5/ryTBubvD/AIVii2GimS/WJNWCYEnVK5jwTlEZczMj5dxC3OuKZ
+         LfEh0kKCQifZoFsm/bjxK8zegwsGePsBcnAMJsY4sdK8q7XjJoYAig/2osG/dxP/ahnq
+         /JHexYP2hLhDE0HVsKj9unLN2tX1Xxj05D1Ilf31l+cDi1HFECYltDKtJDOk+QXbTJhn
+         GsBnQznPpDjXRhxenFN4Ox5yvCjhIFZNrtO/OrQ9qveFzC3kq4WNSuuiha7MaQrU0opR
+         fDQ4euxTbG98VLae+2614Yn/UdoSQs+85KK/gAv/U19L9eMHNaMUKRQhpyYEkaZxUKOM
+         hqsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770476604; x=1771081404;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=V6Ss5XpsjKoGOf9rRrMSZvZipghpLxZFw4pS4gJWW8c=;
+        b=uJDNY23X+6F+syDNLwoDbq5PPBegcEYBI0n9Q12Wc/YptbQxKMlU3EVQNRonKzcONb
+         dQ6FrYzqy1rhS9ad67HscrwoEXhgVC3VD2r3gC2b5dv7GEIlsBwDYYkCwHjdmV8mKtEX
+         YEvqLddYQ7AGsViPSyxeiPAjYX9EBmV+OlDqk6JVLdIvak6tqyIf/ZP3p9brJvptYKYW
+         50V8K+1dZvGTwTq2bLTRuDI671nrOYiyYUzgyZsKSJNbvwm56UpsbWC06h3+oxNtIrdz
+         FcGjeQJddma5ZPMDBIylEg+tqVAxWSXTObgT4J8Cn5cGM2woiKoAKTZzqQkdZxPhAG4b
+         i43w==
+X-Gm-Message-State: AOJu0YwKq5DyD0xVFY6wphjWHzP1DbtO2jg4xfQ/2KEseTPw/Uy0CJCL
+	ToieZtYn1/kUhiXr5rWu2rQkgGiAStym+jJp9MZcIOIZkVp+fAbu7PbdTwc0LN7LVTtDE+NRqAn
+	rc43QEcXZt2Hhxblynr7GAfmaQhz14dU=
+X-Gm-Gg: AZuq6aIsWq1jMAEK0pSAny/e9Oflqqmm5EFpU5eR8ext5eKnB2ablDnLvxoAZNBUL9/
+	o9hg9G38AHAYEej8SM5uCqLY/lYwPJnBO06KLUVqbQ3lsqlbETO9f4wtGkJ5kk1q2mxR62gqei3
+	4MGOQFEW0cCQWNVhPMzN306mnmn1WFj/UNgY8H35RSiKcoC0WXtUYpxYe687a9SQtBaXNaN1cic
+	K1qS9Fzdy2ZU2OgdYxV0ogF2lYfCXSJHtsrGWP8awUt8157KnSQ8svGXCRuBs+hDLuJ+IOFiw==
+X-Received: by 2002:a05:6830:4885:b0:7d1:9195:a83e with SMTP id
+ 46e09a7af769-7d4644176c7mr3390186a34.12.1770476604387; Sat, 07 Feb 2026
+ 07:03:24 -0800 (PST)
+MIME-Version: 1.0
 References: <CABXGCs03XcXt5GDae7d74ynC6P6G2gLw3ZrwAYvSQ3PwP0mGXA@mail.gmail.com>
- <20260206174017.128673-1-mikhail.v.gavrilov@gmail.com>
- <3BB6BA1D-3756-4FC6-B00D-79DF49D75C51@nvidia.com>
+ <20260206174017.128673-1-mikhail.v.gavrilov@gmail.com> <3BB6BA1D-3756-4FC6-B00D-79DF49D75C51@nvidia.com>
  <CABXGCsOMzrQTsByYraNby_MXnTuYBNt2vbWu65KCGX6bmi11iQ@mail.gmail.com>
- <F36AF979-5BE3-4399-9420-F41A475EA87D@nvidia.com>
- <B6CDB0B7-CB9A-492E-90DA-F8D7E3B037E1@nvidia.com>
- <7C7CDFE7-914C-46CE-A127-B7D34304C166@nvidia.com>
- <4C3D8E3E-D9D6-4475-A122-FA0D930D7DAD@nvidia.com>
+ <F36AF979-5BE3-4399-9420-F41A475EA87D@nvidia.com> <B6CDB0B7-CB9A-492E-90DA-F8D7E3B037E1@nvidia.com>
+ <7C7CDFE7-914C-46CE-A127-B7D34304C166@nvidia.com> <4C3D8E3E-D9D6-4475-A122-FA0D930D7DAD@nvidia.com>
  <CABXGCsP2z6sbf_FYZjdxyLhfJZEaxz0_WrEeteS50GLyU=KQGA@mail.gmail.com>
  <CABXGCsNM8Oex-V3vFSUy3ftMw1fAweHZHQYzRHWU9M6gm7r-rw@mail.gmail.com>
- <FF3C3042-8265-40E8-8786-333A6F627405@nvidia.com>
- <AB3C1175-FF03-484E-AEB6-07BC93E49683@nvidia.com>
- <CABXGCsNyt6DB=SX9JWD=-WK_BiHhbXaCPNV-GOM8GskKJVAn_A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <FF3C3042-8265-40E8-8786-333A6F627405@nvidia.com> <AB3C1175-FF03-484E-AEB6-07BC93E49683@nvidia.com>
+ <CABXGCsNyt6DB=SX9JWD=-WK_BiHhbXaCPNV-GOM8GskKJVAn_A@mail.gmail.com> <247E7FE9-E089-43D1-882B-81C7134C2FFE@nvidia.com>
+In-Reply-To: <247E7FE9-E089-43D1-882B-81C7134C2FFE@nvidia.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date: Sat, 7 Feb 2026 20:03:11 +0500
+X-Gm-Features: AZwV_QibOWsx0hvxPwoz0xT04dTclVaZRJpGZO3WzheOmzFRcEus6GsPC6hRFhs
+Message-ID: <CABXGCsMx5xxxaqsLMHrRE=K2-QQ8AsYWbpo=eCf+PKBEGXSZXw@mail.gmail.com>
+Subject: Re: [PATCH] mm/page_alloc: clear page->private in split_page() for
+ tail pages
+To: Zi Yan <ziy@nvidia.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	kasong@tencent.com, hughd@google.com, stable@vger.kernel.org, 
+	David Hildenbrand <david@kernel.org>, surenb@google.com, Matthew Wilcox <willy@infradead.org>, 
+	mhocko@suse.com, hannes@cmpxchg.org, jackmanb@google.com, vbabka@suse.cz, 
+	Kairui Song <ryncsn@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BLAP220CA0015.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:32c::20) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|IA1PR12MB8333:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4da6f9b4-ed13-475c-c60e-08de6655b002
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UDlFaWxvZW50Zk5oV0xic2N1ZW8zZnBMVlRYMXVxbUJUVnRyWmprSE9lNUx0?=
- =?utf-8?B?OUpjTUM5NHFFc09CUzlLWHNJOUdZaDB0cjFmc3ZtK3JqMHJJbnR6VkJnVlpz?=
- =?utf-8?B?RlBJZGJHczNSd0VrYUw0RG80RHk3Q3A1VUFMbUEzVXoxQXA4cHJYb3RCMmp1?=
- =?utf-8?B?b3RjQzg2VEMwbTZpMXNKY1JEMHJ5R3BMVFpGQ0ZBcDdkSC9rSzNkRDN2dk8v?=
- =?utf-8?B?L1pvZlBFUDRmdWlnZDIrdG9GdzlGQW1wQlpwU2dLUDZ6M2txUVMwT25KUEUz?=
- =?utf-8?B?Y2FHQytVUjc2YVJtbTM5RFl3b0c0WVZoNm5mMGZON3JkMU9OUGFBT1lzQ2RF?=
- =?utf-8?B?OTBYaEhFMEdRc01USXdBZVZIaGRPcmZRdFZTUW1FOG9jS2Z6OGhhK0p2bFBC?=
- =?utf-8?B?KzQ5UEsvOFZCcGN2OEc2QkowMVJqTEhZKzYrTHlvci8xM1VqMEFpelk2YkVD?=
- =?utf-8?B?VnNFOEQ0ek1qT0dydDBsK3gxNVpreHF3OEl1dSthbHR6cURqc1FGNG84V0Mw?=
- =?utf-8?B?MkszV01pTGVqK0NkTTlpN05YWXc2S0x2QkpLL0c3QUlKd01BSk8wN1ZPeDVk?=
- =?utf-8?B?aXJScEZ2VVFiMHl5eTRMQ3pTSi9TM2NOcXdtOU12NU9BNU9EL3BYaXhSOFRm?=
- =?utf-8?B?SVpPemdrenhOb1cxMWtpUWlFLzhHVzl4NW5qdHJqZlVWQnhoTFNkQlRETnds?=
- =?utf-8?B?bzlrcHRpUml6N1MwODYzSmVOWEIvbVNMZlUxQnl1WnkrblZ2RFRrYzFmM0sw?=
- =?utf-8?B?cU1VRU1RdkhVakhKcTh5UjZ0NjBFYUZkbmZvTmhld3c0dFNmQ1VnblNsTUEz?=
- =?utf-8?B?dzBNMXEwNWdPWWo4NFRtYVgwMDFFYTBRMlRMZDlGc0dka1hNVEV0bU1lMmt5?=
- =?utf-8?B?aFBPQ2tOaUxhbWhJWFpQV3dpTUtIblU2UDNBenFpK2syWmVIQnJZMWYrVytk?=
- =?utf-8?B?ZFZ1Q1NJUVBpS2s1VjVEa2Y3dWtIQjZUNzhLQ2dybDRRcWtGTzUyL3JOVVJk?=
- =?utf-8?B?R0xKZ2N6R3BmTG0wRmpzOFNLZnZFV0hGYjZHWHFJcmVQalNLREdKdTVreWh4?=
- =?utf-8?B?V21xY2o4WGgvdmZVellOOHJxWURhTzZoS0IxanB6Y1BDblZuZjNWK0k3ZHJ3?=
- =?utf-8?B?VHRxdnNRMm1QTzk3WmNjVWxwaGNZZkZnZFMxZjdSTlphWE1wYSt0eVpCWnBJ?=
- =?utf-8?B?cFpLK2ZuckNDZUQzSnFUeFFqaFYxTWl3eWo4a3RjZUJ0cDVRQk5UcDdZSWlq?=
- =?utf-8?B?bkVqWi9VNVBiYVIza1lOL01iSE9Kei9ON2w2TnoveTJaRkxJSi84MWdybi9m?=
- =?utf-8?B?YmhuNEN2THZsQ1FXV1Z2NnJ4aTZSMW12ckVTYkRFNDdDaTN2RWxDdHlFTEVa?=
- =?utf-8?B?OUZVRDFBQzMzd3d4WFAzWFNMeWFMcHNrVU1pbGdHeERyTGZZT09kVFBjRW9W?=
- =?utf-8?B?Y2thbElJZzNNQ1RnbjdDTnpvUnBXNEl5c2hGeXpNY2habjVDdk01bk1kbEFR?=
- =?utf-8?B?OXovRW5WVmg5ZlBFMUtrSTk3eVdDRmxIZmhhZGRyclpVT0l4dzlCRFI0ZVJw?=
- =?utf-8?B?UWhEcldwL0lGbGdpTGhEcm14VHd4aCs3ZTgrOVc3aVpyZThHNEtFN1VhWmpr?=
- =?utf-8?B?Rno5anUwNzFhbjUzT3EzZnZVR2VCUFpyQXRCNnhLYklWRnVOZjdCUFdHSzRT?=
- =?utf-8?B?WkVvcUR0UjFYVUdRU0xzZWdXY042Zys3aytOMVZmd0NkajVweFRsWVVDZGVN?=
- =?utf-8?B?NFlPcjJiQWJSQzRFNWFQL1JydlU1UmNKTHQvb3RzNU9NUlRYTy82TUV3S2RS?=
- =?utf-8?B?NGlOYmRGeSs3Nm1ZUVpjeWF1WDFvOW8vMlZnU2RIK08vTzRiUnJ0NWJONGJD?=
- =?utf-8?B?OWhJS2M5QTFhMCtvMnBhc0VvS2lobWM0U3M5emZ4TVpGZzlIT1pwcDdoMVho?=
- =?utf-8?B?RWkrYjNHUUVrK0FXb1BtcU1DU3M4Z2xpY0JMREgvQjVrWWwzSUNFRURGU3lZ?=
- =?utf-8?B?dGRtNFhWTnpjN0ZzZGFtU2JqSE1JTkVPWHdzSjJGS0NQME55b3MzeHZkQURR?=
- =?utf-8?B?cmtueExnNFBDa0djNEFrZENid2tzREwzdmY0ekdDRXNTSUc5VzJjdGdWVzZp?=
- =?utf-8?Q?Rb+I=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NkJ2ZlpJTE1KUTd2ZW4xaktKV0ZidUd6c1Ywd1VpNEhmZys4YmVha3JwTjA5?=
- =?utf-8?B?QkRVM3BzYXl2WDYzckVUR29IYlJIUE40a2xmbys1VVVGcUNlYUFYcVJMdXJv?=
- =?utf-8?B?bUIrQjdtTFIzdVpNRzBtMXppMHI1OEpxcXg3RlU4UmJ3MUgvU0VmYndEVkw0?=
- =?utf-8?B?aDFBdnNEVmtFNGsyVFoxdjZrSVVCb0t4SGhSTkV5S0M0dXFuZ0p3K2pZd3FS?=
- =?utf-8?B?eFdTelRMS0ZSNXZEeE1iN3lvTnR5aWRrUnRxbUxDTmlmaGRHemVBWUpBYVlP?=
- =?utf-8?B?V0ZOMmJrTFFVT2tJR0U3aklXRldkd3BPcndhd3BXK0F3NmlhRHY2MGJsZkJs?=
- =?utf-8?B?d0hEeDV1cVB2VWZYSzdTU3RtcjEvTUc1dEtvMGJnMktXNmVzUXIrZzRnQldG?=
- =?utf-8?B?blZlVjhDdWRtUFpxMStSOFBKZGt6ZUxYQkZlNVNoTCtaczZXbHVLYm0zU2g4?=
- =?utf-8?B?aC9oVEJBWHRrUVJBVUR1eTRLcytmSit4TU1hVjJqWlZ3cURlV1ZGT2EwVzR2?=
- =?utf-8?B?MFh1Qm43SWlZTjhuakNBbDN5L1JHWG5wVmFVajcwVDVCSE5nNmdCR2doM0pC?=
- =?utf-8?B?OUZCOHRSejVrMVBGM04vVGV2dSs0cWtFQnR5QkMweXBnakpLUlZXQXV1L0NN?=
- =?utf-8?B?djVjTTVKQ2NFTkJLM3lDZVBqMzNLRWxzcmhCbGUxOXBMN1paMGRqWWFaN0Ja?=
- =?utf-8?B?NnFCa08yU014Z1ZXdHJ0ZDRGY2VacnMreUlGSm1SMjIxdURNSlRYTVZSTXdZ?=
- =?utf-8?B?YzMwZDRjRElneVZ2dFFnR216L29oQWx0VXp3TmRKTzVPcDdyTFNhNCtwM0JZ?=
- =?utf-8?B?NlYxbG1QYlBkSHIxRS9SemV3Q1IvdlBuQllxa1RNa3lqQVRRdkxlZjZUVGxJ?=
- =?utf-8?B?REVVaEkyYUVNUlYxNXcweDMxekxmdnViRjJXd3krd2hRYmdHZzdSdkZmK3A3?=
- =?utf-8?B?K0dBZFVPUWxtZzd4VEc2d2hMVzJwa0hVSUZUOTVZdk5LeDZnUzZ2MmVXdmRn?=
- =?utf-8?B?ZnNNNzIwdWcrTVJZd29BK0F0STBlZDRYTndnRS83VldOV2RQQm5tZnNWVXhT?=
- =?utf-8?B?WDV0bE8zam5CK3J3dTc1QVFOOE53clMvb09tbEV6cHprcDV1a3BTMnhUUnY2?=
- =?utf-8?B?VlRnWEhaWDBFcEdybVlTVm9VbnhOZm5QeGVhSTd0VzVJRHNrTFpkYWU4N1JH?=
- =?utf-8?B?Y01IbW1oRG91RjAyYU5XTjgycXR4V0UxdUtOZ1BDdUprUFJWS0JpWmhlWTkr?=
- =?utf-8?B?MldMOVZwaHFWd2xVckh4NlBPMmlHYjB3cVI2L1U2bzlaemthN2t1UUE0SHJK?=
- =?utf-8?B?ejZPMlpTaTNTOXdUVnFPOTUySnNGVlZHQUUyVjFQbnM5czNMQkNYNGRBTGlx?=
- =?utf-8?B?eXp4ZGRyT2xubURxQnZNNkxPR0JWSzdXaTBaWENNR1Ric0RMWE02NU5uZDlO?=
- =?utf-8?B?eUFZc2tPVjlZbjFpY09DeUFMYk0xN3JUR3ZCa1V0OWxMcDgxeGtQblpkYjNR?=
- =?utf-8?B?cVNEM2pqQXlKNHlTbjZkT3Z4UzNrTkk2WnRJMjVSNVVSQlBVR1lEWkkzUVhF?=
- =?utf-8?B?OHpCVktzcmo5UXc0dGVMZmk5NmIrK2JZdW5GRm1DdUY3V2dpekFyN1U4b1Ba?=
- =?utf-8?B?SGFCdkowSDlrejV5bDc0WDhSSHh6SUNvUVVzc0x4bVlDeDRXNnJsRXlWS25B?=
- =?utf-8?B?NU9vRlAzZ0JseGFJT0cvMlY0K0loa3J6R2l0LzlqWkR5ek54azh0NEo3Yk5D?=
- =?utf-8?B?SmQwV2MrSWpwb0FVVzJoSDd1dTNncmhGeUFENTRzOTQrRFhKc0ZtTjN2THBQ?=
- =?utf-8?B?N2MySUJsZGY5QWVBNlRLdU41aXZuSGt6eGdYd2l3U1FZbzJ0SGRTKzFGSzBv?=
- =?utf-8?B?TFVrcUVpNWIzdXowZ1k2Y1lTRHJzUUk0Nk54T0V5cTZ3YXQ1Z3pPYVBIZjdF?=
- =?utf-8?B?bHlxRi9JRjh4azc1YUZ5T00rUVlxbm1vcWNOWXFHUzZyQVZpY2M3TXVEQlVs?=
- =?utf-8?B?Tmw3NWM4M0Fnb3Y1d3VmQ0E1dFZacXNpczRmaVZkQSsxeDlCLy9JeVVJMnNM?=
- =?utf-8?B?cXdXd29mNGhhL1hrQVcvTUFSVnZmQlBGNDNsRjI4bzY4TXErYlloZW8wUStm?=
- =?utf-8?B?Mlc0bGtDMTZFYVFOaENuV1YzYk9SMmI3b2RBSzRkTVZWNFYwNmNJazRjaTM3?=
- =?utf-8?B?a080aG5XWWVMMDMzVHd1bmFaQlFqM2FTTEVDTHBIMDJWNFV4Qk52RU1SbFNx?=
- =?utf-8?B?VWdpakYwaDJUY1lxbm9WY3B4R3B0Ym4rWFl0SzVUODY4N1FJeTJXOU1wOHhW?=
- =?utf-8?Q?13jQNGYlzMOvouJz2Z?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4da6f9b4-ed13-475c-c60e-08de6655b002
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2026 14:32:14.6008
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MFvyeInqwySjEHVD22J4uq79noV3IbfMXOTF/CYoz7PzbznbS9L283RUc/o7ThUN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8333
-X-Rspamd-Queue-Id: 6E625100003
-X-Stat-Signature: ob96bnt35u57edx65wprnptaq5xh3o37
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 8rbagrdn7icxnsa487apn418uwrteyaj
+X-Rspamd-Queue-Id: 8DFF620004
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770474739-371042
-X-HE-Meta: U2FsdGVkX1/ySHrOlxPUQE7GfQ5L+++xovKhloSLLMW6Fwykd6cSgPJbwusljBfrQ9nn6riomAWEVQ8fOvS+tUPqMrAw+UMZwtSYW80Jq7W/jn3l646WPcgCcsa6PXu/2Ypdud36BE+oaqM7+t3eRP8T4RVuMOOpEaCXnr1Lzz18SORa7bhzIt4YZOsZPCNZlNp+SrdAAgjoO1kvwtLz5qnzE/5hxJ3W3qWm41cWompFL+XNsNTH9uMJtflLl99G/leiduQslTplicjnXYJrR/2mV9l227aH11Rf+I6ty3Xkb541kxAO4rEAQHGtQ+PRK3mfyuO7mP2J/9wNUQz1YNFfD2UZliuCQ1XDUKzpKQlqgTFd1+iHMDL15mhalDMzDi+ajr68cxSIZvdmK6EmpgagA0FVl5cRJBN7gLFw4ytfURPC/7KQKjP6tCVcrriKdFdeAj2XtWi59iqDFvJHheDf8pcKF61ZxtoUMN6kytMMg0cObxGerCUHajMDeh/0nbo5jK9crpHruK0R4aLfAX9ZVFR63Sf6gdXSkpuk9ZatkzjHdOPJoPagOjPtqZWMVBawwTPCk6FnwUKHNrAXpZEOonuvAMK57ZXXJ8IMMOybz+xD0jyQ8wFleENCmCNF/USEnQoaYVqAAspvGWJzXx7N+C6RR8D4cgpeWKAeMEpp+LjhltsWslgzFp6KSUl0uc3rN7aDOOMrWFJnE3Fl29UWxsukbmNdg+JuXWwasmV8PJTjdDqEf64w5hlqrVWw0EJ7GU8dafEmdkF9GbHX6qBWe+xTw8lbXqVIUv1MZaVfs/1DM8XXfVImj4pszSiJvGqGbAw/ewmZP6xHeObZNcJ5ogR3oMDo3FSLybSC4aQK78uw0qNbJfNZd1mPZ4bzFzOO6m2H3ZHwDRwSj+mUOTnMgzlQ0x5KyKRw8sBkr0iPuW+LbyWgXndBZcyDRP/bVZk46mXw+2t5ix2nxU3
- nMX9DBXX
- 3J9dfg/x9Pr4MIOs6ZOgIrGoXX+/6RIdbJ3LtCbCSKX7rds02eQGoL+M44cRa4zBYSrRzSOOUyawD6xsRJFGHWGRZPWyyLX1dT/izlX7WeCTwRCglaPvXVDuFfw1ik7czmZva8xQGED7rywQBYrg8WB77txyqTQ8f/F45x9XOICUWs7TaTxOPg/kQBvsbl5eU/VVQjMRkFVY3eIevehqUvkdC4bAGKNt0QHmk2sRGiOtinr0h7u5PYvkxCT94qdzlOWP6eCLJNty3LF+CDc8g94Pt+y1S3sxXDPNI702DZO/nGPx5U8kKKVPbWNLqUskBn6kvypkkg8Ursv+A8UwqHQNIfdtPguOHANDrZJQALHg2Z7eINYAKxJ401O5BT8aEjM39CzEieMizw9P7o+yRVHlDa4oEo0eJtxnNYjm6/kPi/DvTBa2lj0Z7yKftvyqgvTnpPioZy5Sxk+DReV8YeKR5WXz+6hnUvQfyx+jPaa4qNrRo0yTQ5BuNW9O36QfF1hnxAq+UatErWyc=
+X-HE-Tag: 1770476605-665546
+X-HE-Meta: U2FsdGVkX1++kr+LDnsW4lEt6SCO9qpiYSmS6gMOhZfgIv6p9d5QI9WMzVvUKG4eDSvja3CB8D++/zraMg+F98kBBuvPvsu20pQ/nKtpxMaI+JeKJAh9QV70bdoWzZAHdWrVAQ0j80X5p8boglORJfPrAdQOoOxAPKuDqDApsaoNX8oR7XtqTZOmg7F+Fg2UHSRwW/latrqAzZh2cM9BMyz0gIgZD302vAV7BbNY/FrRVGQOSmjIjPGEheyKb/8t96CoBkfAq/5/c4V5x/EFk9bPmFSG/AH8HB/uaD8FEKhqVbO8kpE1Ck05j3XJxO/2yZ6rhc7YhjS4FxrESgrm3rzEuKek06wy5L4TnO1naUgHcAbaX6XM94+ieGfL6yT2VEcV8zxJeYR2TN6TW7YPn+2jRGPKcxIdKeKwr4UJT+ESPPQnUMTo6elG+Kjtb/T59OkR3mV3688ptZ9ZmAt1lqfeB3Y3MGvzUa0Kc7fe90N9FpGaIPYoJnXqAkUi5pAj0TVKTa0XhCr1zqER59JmVWF0P45wWDN+geWp0Kas2ndSH00XAeQFDnyzfs01v5pssNlvya/BI2fIVkp9QiH5tCgMUz3Ehd4ZYKTngIxxcmJ+fqTj26S5BMlHnZ7z9/IuTn/YGBUQqc/xkf6dCIS1up/AdGC24905VPNyr6hFeahPInBxlrlAaHWIQqw16xQ+xcdCS7QnicN1RMRYjxvMOO91kIfoPCElags9X27rXCzYQ4WhR9kXLmVRPttxcuip2edabk0i8w3rzXHrUcbONShNWRyFSP7Qw0WxOt18O6Gn7lBskhyJccApVGpylP2XDecKvgC6gIcbDPFXPHhBNZqWfl3sSltaKWFC2NxK5klytD2ilM1qJPyTHL0yIMfXvEdX58ETaDl/aaFNLyn/03wRYNI1+DYwuQqMooP9Owl+AVbUwFNz/0C8HKmUVL2bFAoCxc43tP/tirD6JKT
+ gdXasWqP
+ RUKK6fLmvgoP7AtjaH8cpDaNYdAm1g1pK/+J8YYA6EWV/+PyCuFk5GHrYd2A8KcKxaW5zOmecAXzaG5PuRTCphx14dTdIPSEXLiv7QDEQ78JVny4bt7RjkiQRHw5zeHjmh/7+QPLEVoXjlgC+9AiEZEOXXK31V61hqbGXtqmnSL5gb1QgZ6UeLlDask58lAOp1IAN1j/spkTrk+Rw/3IuEUwthja01kZtpTsJepeLMQg0F7KI1dnV6Uk09nejF9z9ABZy4lQBCipXgo95Y1xf9/lRsAYwWKpN/IWwLNhoSCc0pnd+SKZfda7K70SNTpO+WtQi2G/Ot7hLGcoLi7P+vYKGrS+dSQXVVH+/hqqT/AAexLPtUzQHVS8mi3ULTfT6LIQk4J/DqNqySFge7wD1VjN+wSokz5uUoZNtUgIPs5EeW7K5nNG5JMBDeqa37t09rPjGeBiGW1bpUPQHoZ37Wa1caxTrrpdZ6CmOtbYZW5ymlrTbmaxJrQhXkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -220,217 +149,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 7 Feb 2026, at 9:25, Mikhail Gavrilov wrote:
-
-> On Sat, Feb 7, 2026 at 8:28=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
->>
->> OK, it seems that both slub and shmem do not reset ->private when freein=
-g
->> pages/folios. And tail page's private is not zero, because when a page
->> with non zero private is freed and gets merged with a lower buddy, its
->> private is not set to 0 in the code path.
->>
->> The patch below seems to fix the issue, since I am at Iteration 104 and =
-counting.
->> I also put a VM_BUG_ON(page->private) in free_pages_prepare() and it is =
-not
->> triggered either.
->>
->>
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index ec6c01378e9d..546e193ef993 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -2437,8 +2437,10 @@ static int shmem_swapin_folio(struct inode *inode=
-, pgoff_t index,
->>  failed_nolock:
->>         if (skip_swapcache)
->>                 swapcache_clear(si, folio->swap, folio_nr_pages(folio));
->> -       if (folio)
->> +       if (folio) {
->> +               folio->swap.val =3D 0;
->>                 folio_put(folio);
->> +       }
->>         put_swap_device(si);
->>
->>         return error;
->> diff --git a/mm/slub.c b/mm/slub.c
->> index f77b7407c51b..2cdab6d66e1a 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -3311,6 +3311,7 @@ static void __free_slab(struct kmem_cache *s, stru=
-ct slab *slab)
->>
->>         __slab_clear_pfmemalloc(slab);
->>         page->mapping =3D NULL;
->> +       page->private =3D 0;
->>         __ClearPageSlab(page);
->>         mm_account_reclaimed_pages(pages);
->>         unaccount_slab(slab, order, s);
->>
->>
->>
->> But I am not sure if that is all. Maybe the patch below on top is needed=
- to find all violators
->> and still keep the system running. I also would like to hear from others=
- on whether page->private
->> should be reset or not before free_pages_prepare().
->>
->> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
->> index cbf758e27aa2..9058f94b0667 100644
->> --- a/mm/page_alloc.c
->> +++ b/mm/page_alloc.c
->> @@ -1430,6 +1430,8 @@ __always_inline bool free_pages_prepare(struct pag=
-e *page,
->>
->>         page_cpupid_reset_last(page);
->>         page->flags.f &=3D ~PAGE_FLAGS_CHECK_AT_PREP;
->> +       VM_WARN_ON_ONCE(page->private);
->> +       page->private =3D 0;
->>         reset_page_owner(page, order);
->>         page_table_check_free(page, order);
->>         pgalloc_tag_sub(page, 1 << order);
->>
->>
->> --
->> Best Regards,
->> Yan, Zi
+On Sat, Feb 7, 2026 at 7:32=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
 >
-> I tested your patch. The VM_WARN_ON_ONCE caught another violator - TTM
-> (GPU memory manager):
-
-Thanks. As a fix, I think we could combine the two patches above into one a=
-nd remove
-the VM_WARN_ON_ONCE() or just send the second one without VM_WARN_ON_ONCE()=
-.
-I can send a separate patch later to fix all users that do not reset ->priv=
-ate
-and include VM_WARN_ON_ONCE().
-
-WDYT?
-
->  ------------[ cut here ]------------
->  WARNING: mm/page_alloc.c:1433 at __free_pages_ok+0xe1e/0x12c0,
-> CPU#16: gnome-shell/5841
->  Modules linked in: overlay uinput rfcomm snd_seq_dummy snd_hrtimer
-> xt_mark xt_cgroup xt_MASQUERADE ip6t_REJECT ipt_REJECT nft_compat
-> nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet
-> nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4
-> nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack
-> nf_defrag_ipv6 nf_defrag_ipv4 nf_tables qrtr uhid bnep sunrpc amd_atl
-> intel_rapl_msr intel_rapl_common mt7921e mt7921_common mt792x_lib
-> mt76_connac_lib btusb mt76 btmtk btrtl btbcm btintel vfat edac_mce_amd
-> spd5118 bluetooth fat snd_hda_codec_atihdmi asus_ec_sensors mac80211
-> snd_hda_codec_hdmi kvm_amd snd_hda_intel uvcvideo snd_usb_audio
-> snd_hda_codec uvc videobuf2_vmalloc kvm videobuf2_memops snd_hda_core
-> joydev videobuf2_v4l2 snd_intel_dspcfg videobuf2_common
-> snd_usbmidi_lib videodev snd_intel_sdw_acpi snd_ump irqbypass
-> snd_hwdep asus_nb_wmi mc snd_rawmidi rapl snd_seq asus_wmi cfg80211
-> sparse_keymap snd_seq_device platform_profile wmi_bmof pcspkr snd_pcm
-> snd_timer rfkill igc snd
->   libarc4 i2c_piix4 soundcore k10temp i2c_smbus gpio_amdpt
-> gpio_generic nfnetlink zram lz4hc_compress lz4_compress amdgpu amdxcp
-> i2c_algo_bit drm_ttm_helper ttm drm_exec drm_panel_backlight_quirks
-> gpu_sched drm_suballoc_helper nvme video nvme_core drm_buddy
-> ghash_clmulni_intel drm_display_helper nvme_keyring nvme_auth cec
-> sp5100_tco hkdf wmi uas usb_storage fuse ntsync i2c_dev
->  CPU: 16 UID: 1000 PID: 5841 Comm: gnome-shell Tainted: G        W
->       6.19.0-rc8-f14faaf3a1fb-with-fix-reset-private-when-freeing+ #82
-> PREEMPT(lazy)
->  Tainted: [W]=3DWARN
->  Hardware name: ASUS System Product Name/ROG STRIX B650E-I GAMING
-> WIFI, BIOS 3602 11/13/2025
->  RIP: 0010:__free_pages_ok+0xe1e/0x12c0
->  Code: ef 48 89 c6 e8 f3 59 ff ff 83 44 24 20 01 49 ba 00 00 00 00 00
-> fc ff df e9 71 fe ff ff 41 c7 45 30 ff ff ff ff e9 f5 f4 ff ff <0f> 0b
-> e9 73 f5 ff ff e8 86 4c 0e 00 e9 02 fb ff ff 48 c7 44 24 30
->  RSP: 0018:ffffc9000e0cf878 EFLAGS: 00010206
->  RAX: dffffc0000000000 RBX: 0000000000000f80 RCX: 1ffffd40028c6000
->  RDX: 1ffffd40028c6005 RSI: 0000000000000004 RDI: ffffea0014630038
->  RBP: ffffea0014630028 R08: ffffffff9e58e2de R09: 1ffffd40028c6006
->  R10: fffff940028c6007 R11: fffff940028c6007 R12: ffffffffa27376d8
->  R13: ffffea0014630000 R14: ffff889054e559c0 R15: 0000000000000000
->  FS:  00007f510f914000(0000) GS:ffff8890317a8000(0000) knlGS:000000000000=
-0000
->  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->  CR2: 00005607eaf70168 CR3: 00000001dfd6a000 CR4: 0000000000f50ef0
->  PKRU: 55555554
->  Call Trace:
->   <TASK>
->   ttm_pool_unmap_and_free+0x30c/0x520 [ttm]
->   ? dma_resv_iter_first_unlocked+0x2f9/0x470
->   ttm_pool_free_range+0xef/0x160 [ttm]
->   ? __pfx_drm_gem_close_ioctl+0x10/0x10
->   ttm_pool_free+0x70/0xe0 [ttm]
->   ? rcu_is_watching+0x15/0xe0
->   ttm_tt_unpopulate+0xa2/0x2d0 [ttm]
->   ttm_bo_cleanup_memtype_use+0xec/0x200 [ttm]
->   ttm_bo_release+0x371/0xb00 [ttm]
->   ? __pfx_ttm_bo_release+0x10/0x10 [ttm]
->   ? drm_vma_node_revoke+0x1a/0x1e0
->   ? local_clock+0x15/0x30
->   ? __pfx_drm_gem_close_ioctl+0x10/0x10
->   drm_gem_object_release_handle+0xcd/0x1f0
->   drm_gem_handle_delete+0x6a/0xc0
->   ? drm_dev_exit+0x35/0x50
->   drm_ioctl_kernel+0x172/0x2e0
->   ? __lock_release.isra.0+0x1a2/0x370
->   ? __pfx_drm_ioctl_kernel+0x10/0x10
->   drm_ioctl+0x571/0xb50
->   ? __pfx_drm_gem_close_ioctl+0x10/0x10
->   ? __pfx_drm_ioctl+0x10/0x10
->   ? rcu_is_watching+0x15/0xe0
->   ? lockdep_hardirqs_on_prepare.part.0+0x92/0x170
->   ? trace_hardirqs_on+0x18/0x140
->   ? lockdep_hardirqs_on+0x90/0x130
->   ? __raw_spin_unlock_irqrestore+0x5d/0x80
->   ? __raw_spin_unlock_irqrestore+0x46/0x80
->   amdgpu_drm_ioctl+0xd3/0x190 [amdgpu]
->   __x64_sys_ioctl+0x13c/0x1d0
->   ? syscall_trace_enter+0x15c/0x2a0
->   do_syscall_64+0x9c/0x4e0
->   ? __lock_release.isra.0+0x1a2/0x370
->   ? do_user_addr_fault+0x87a/0xf60
->   ? fpregs_assert_state_consistent+0x8f/0x100
->   ? trace_hardirqs_on_prepare+0x101/0x140
->   ? lockdep_hardirqs_on_prepare.part.0+0x92/0x170
->   ? irqentry_exit+0x99/0x600
->   entry_SYSCALL_64_after_hwframe+0x76/0x7e
->  RIP: 0033:0x7f5113af889d
->  Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10 c7 45 b0 10 00
-> 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00 00 0f 05 <89> c2
-> 3d 00 f0 ff ff 77 1a 48 8b 45 c8 64 48 2b 04 25 28 00 00 00
->  RSP: 002b:00007fff83c100c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
->  RAX: ffffffffffffffda RBX: 00005607ed127c50 RCX: 00007f5113af889d
->  RDX: 00007fff83c10150 RSI: 0000000040086409 RDI: 000000000000000e
->  RBP: 00007fff83c10110 R08: 00005607ead46d50 R09: 0000000000000000
->  R10: 0000000000000031 R11: 0000000000000246 R12: 00007fff83c10150
->  R13: 0000000040086409 R14: 000000000000000e R15: 00005607ead46d50
->   </TASK>
->  irq event stamp: 5186663
->  hardirqs last  enabled at (5186669): [<ffffffff9dc9ce6e>]
-> __up_console_sem+0x7e/0x90
->  hardirqs last disabled at (5186674): [<ffffffff9dc9ce53>]
-> __up_console_sem+0x63/0x90
->  softirqs last  enabled at (5186538): [<ffffffff9da5325b>]
-> handle_softirqs+0x54b/0x810
->  softirqs last disabled at (5186531): [<ffffffff9da53654>]
-> __irq_exit_rcu+0x124/0x240
->  ---[ end trace 0000000000000000 ]---
+> Thanks. As a fix, I think we could combine the two patches above into one=
+ and remove
+> the VM_WARN_ON_ONCE() or just send the second one without VM_WARN_ON_ONCE=
+().
+> I can send a separate patch later to fix all users that do not reset ->pr=
+ivate
+> and include VM_WARN_ON_ONCE().
 >
-> So there are more violators than just slub and shmem.
-> I also tested the post_alloc_hook() fix (clearing page->private for
-> all pages at allocation) - 1600+ iterations without crash.
-> Given multiple violators, maybe a defensive fix (either in
-> split_page() which is already in mm-unstable, or in post_alloc_hook())
-> is the right approach, rather than hunting down each violator?
+> WDYT?
 >
-> --
-> Best Regards,
-> Mike Gavrilov.
 
+Makes sense. Ship the quiet fix first for stable, then add
+VM_WARN_ON_ONCE separately to hunt down violators in mainline.
+I'd vote for option 2 (just free_pages_prepare without VM_WARN) - it's
+simpler and covers all cases.
+Will your patch include a revert of the split_page() fix that's
+already in mm-unstable, or should that be handled separately?
 
---
+--=20
 Best Regards,
-Yan, Zi
+Mike Gavrilov.
 
