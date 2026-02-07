@@ -4,90 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 985C6EE0AF1
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 22:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DAABEE0AE8
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 22:31:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DD426B008A; Sat,  7 Feb 2026 17:26:57 -0500 (EST)
+	id 693846B008A; Sat,  7 Feb 2026 17:31:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07E1B6B0093; Sat,  7 Feb 2026 17:26:57 -0500 (EST)
+	id 6412A6B0092; Sat,  7 Feb 2026 17:31:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFA126B0096; Sat,  7 Feb 2026 17:26:56 -0500 (EST)
+	id 523146B0093; Sat,  7 Feb 2026 17:31:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E2B766B008A
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 17:26:56 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92687140351
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:26:56 +0000 (UTC)
-X-FDA: 84419096832.25.9E79276
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CBB4E180005
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:26:54 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M0BAedYd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770503215;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E17A6B008A
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 17:31:55 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D32FDC1DD5
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:31:54 +0000 (UTC)
+X-FDA: 84419109348.14.EB61582
+Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D0909A0004
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 22:31:52 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LnOoDnuN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770503512; a=rsa-sha256;
+	cv=pass;
+	b=JxG6Jzk/ascnNQp4wp9VLZNg0BOsGR3UBxCa87loxOXzvmcSa46h1nQ2vPux+T9Wo0QF45
+	feW7vZFErfWJWbEgwYB6qeI5Z9ynsPnZ9qS1C56t+G/2rr26mZjbBDuE1U93MsQSsE45rJ
+	Qxe3mLp1A61miHJ92agFmO5lnUJO1e8=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LnOoDnuN;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	spf=pass (imf25.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.51 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770503512;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uatIfXnMXwohncvpb4GuJ6tvrwIsq7Gi4yhdTvLaFmc=;
-	b=KbhJKDOGMtz9iRCe0OvB7FwYsG+W+Sgu1gCoXJzubDcFKCHicWO7FoQNvSpqXkH5JKM6z8
-	CoLQttmp/uZz6TBuVMYnyK81i9OSPFV2DYXuA7JhpgNbdThMglFmv0VDcEaHA4bfu0rENk
-	xGoxtXeUot1KqExF+gJBP/5g9Ufp9o8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770503215; a=rsa-sha256;
-	cv=none;
-	b=MGXesCHVNq/d52Xznhsmh+OYTioivIXAvzWM0eh8O/h0G+qvzEB9DppT4sZ5kHRtAcCne8
-	y+ot8eVcsQ02a8brYHvjsuk33hVL71zRcgLl9blstNXNOKSCyK2ACu4LkLuVCPgbkmBFs7
-	iXBu6l+9J7jaBX1/Rvd21unhwL6oOFE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=M0BAedYd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
-Date: Sat, 7 Feb 2026 14:26:43 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770503212;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uatIfXnMXwohncvpb4GuJ6tvrwIsq7Gi4yhdTvLaFmc=;
-	b=M0BAedYdtDfGL4RevBAr7WRnh6IHPEJoJg8oen8Ycw//6EKX2dlwevhCAGbmJu/qFSVxHS
-	/OyV6waSTQjew2u0iGNfNO8O8zZwvvbnTXiqrSvpU+UYiLD7s85gvAkSurw2o0eLKEsBzJ
-	wju6l5bxKCCtM7+gzN3JiZA69WqnBpw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com, 
-	roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org, 
-	lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com, yosry.ahmed@linux.dev, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, chenridong@huaweicloud.com, mkoutny@suse.com, 
-	akpm@linux-foundation.org, hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com, 
-	lance.yang@linux.dev, bhe@redhat.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v4 31/31] mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru
- maintenance helpers
-Message-ID: <aYe8DifzgL8C9uaI@linux.dev>
-References: <cover.1770279888.git.zhengqi.arch@bytedance.com>
- <cf1678070fb6bab6ede8fe48f835fe913a0bb728.1770279888.git.zhengqi.arch@bytedance.com>
+	bh=PGG3Tmu1N1oqV02HmaCAabr0AkA0/RFT9l301VCDKNg=;
+	b=UpHh/KkrfAj+wp2uUJypkZaDtppQPQ4FdcrgeUCmM0uMpCf3yimjT5vwrQIyZN2HcEwyQb
+	AHilB0Fkm0g6lcSZlGVyxvoJnO0NszCDvIgp3FPfO+Ze8iqoFWHHWO/hWcuHE7kyp09VxA
+	IAggTCZWgBMYxD39EHvlDfXzaZyAzpE=
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-894674a4c4aso31648326d6.3
+        for <linux-mm@kvack.org>; Sat, 07 Feb 2026 14:31:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770503512; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cIOsS62KEsr2wKcIfrRCDHKl8ZdFmhxBJRxSoNpQsobjH33BjcfB8d5Jn5wcUOmQxe
+         LlwOWgbF89j8IMt2p7luKkPMC7PUuijSF0b23SH2o2lhiBSXJ+hMLThg/k56lpYYf/mB
+         f1CKGvJlVbEjQBGI3PQc+27l0/CS36obF6BQflPqEdAbWKs7HTLBQbpn5Zhcg8gfo1PX
+         87UYEEQHw6+GeVo36rgtwU8MXcQM6Ewx8dPPHnjMcf3gABWoBDHmKLYaxX+QGHJQiWr3
+         dT3GsenAwVgkkHsEmdwWr8Wluw8KMaK640WdIRktGDSiKyUOLF+D4KAP1wzGFzUI/s1x
+         j1PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=PGG3Tmu1N1oqV02HmaCAabr0AkA0/RFT9l301VCDKNg=;
+        fh=dg7fwzb1Js4s+WPyjue+PS+oUZ3L0ZU8T4j8onD165c=;
+        b=b4jn4ByDZjrDmIH9jbI/cUzBFu6Mxex619kntzFv6t/ibDoXo5InWTZh2jW9hYTdmg
+         GZwfcJaF8EQcXGs+IHVpSM08QLyvM+FCYs3uXArkOxU38JWcL3iEtXqSZtBbghgxUgPj
+         eWH3H8mWCK7UWSUD/ODFWbKNcBGAfsyCSpCsKqRfSgSymS9uGzXykmXSKXeNRMHswPAc
+         MN/51dEuvseZrwPraNEb9X9tq9C/gfTBlDpFimjc6w/h4LY9YS5PSkj5P9iDkauYu0lP
+         YyPPIchdh4dkq8FIfKd71/rTwdeONI0oGDXC82y9CkkHRth1ePMhxn2gmFH8y5L8ql/a
+         ekxw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770503512; x=1771108312; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PGG3Tmu1N1oqV02HmaCAabr0AkA0/RFT9l301VCDKNg=;
+        b=LnOoDnuN6eUUwVzP3Q/Z7znTYBdbzoKrB/80/EhcSV4UruFp5ub/XmmojZeHc0vI6Y
+         hRTPKXjQlnOYyEKzoZhg4NBdFnGGUqx1xW30QyQ5RXnUSSkPK2h5jYbvtDuN/8FqQWl8
+         42ZjJVE+yn248sv97QlIBskN9SlHNdzlxi46t3+olwLtHYr4twRHulaY1AAH6l0jUuNo
+         KaUngNW+LZTIbAZ1ykvOCY3Day3cEz8fRRY+hZ63heQBgY82USyTONSRBB/VFne624+3
+         wLG8DnRh1Tt248NeyDR4LdEKG2OSCMasficsGJ8cDPBYUv82boYFT1COd8jYPtuWhNSt
+         3Egg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770503512; x=1771108312;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PGG3Tmu1N1oqV02HmaCAabr0AkA0/RFT9l301VCDKNg=;
+        b=S0qenRJN9u8HfyAUXsZ/5PKG3968h6SLpnURie9GFNrLsMsxuPFB0XIcCZQyhhdJCc
+         jbd5wM5UPrLUM4CIV+H/EGakoINZnRG2cIR3PeKf9je6bpjE2sGzj9TU08v1+/vM7pUP
+         5X06SLcE+W4EnWOtMTdIfCURE8W/Cg/GyRioE+JmGCg09rlSGAnfyQluyT5CPaY8m++d
+         qQeHsy4IusQ9ZUX5DAeiXu9lvoJZR1PlHgrFEkUN6n8om0mKzvDVILBzxO1/VlByrvdu
+         N6rEbX60MUXSeD8S3g0toKRTBjTlMZ8X9uRwSSe6UaaYFIjFGFNyQxTb1phUoCkf9ASO
+         Rdrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWTo8iG0naCrHcmDQwvel5eE/1n5/MzGc9I62lIWdpBK/Q7ybOIUYGh9PfUH2Jlk6wcGQOSOGUGjg==@kvack.org
+X-Gm-Message-State: AOJu0YxS03UaUD/ClSzVdW98uEMtG3VF+QcZpNjunS/k0h28pdTrArwQ
+	w3vrg9w0EOtynkwZtQk1Mv0S7jBjEl8pufkZd6NU9EN2ApJCFRKD9tup7VG2up5VYvS+96TodmN
+	5VBGnE9x4zAbumhi2gMT/oJFK7jM09tQ=
+X-Gm-Gg: AZuq6aIf7gmYUknCBm7oZ0oS/fa5Mp2ZiMPNc6xVZjzebxf3ToAlRU33Ehz0CBLvg2t
+	spdQ/Cp+RwLaDFnvCzjlF8ixFUEup5yK6tTGXzyyjwlfa2JDMi418IjHR/hSGlFj0OWAWEg6tdU
+	WYkwPXSX63LS0nM1rkzD8PG+sI42ilVzU/0S2+jbJLG/xonPskTWdLkkazVGdFW9duxhIgELMpa
+	JoQAelI139VYadtFjkhEFYXee7drnScqoTKvX/BSBmRUDtf4hbb/RBTnEYW+EMzXb/OIA==
+X-Received: by 2002:a05:6214:e6c:b0:88f:d4b1:4c2d with SMTP id
+ 6a1803df08f44-8953cd995b2mr98440976d6.60.1770503511579; Sat, 07 Feb 2026
+ 14:31:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cf1678070fb6bab6ede8fe48f835fe913a0bb728.1770279888.git.zhengqi.arch@bytedance.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: CBB4E180005
-X-Stat-Signature: sqrpezkiakkr9145p77ro74kqeg1ikwi
+References: <20260207081613.588598-1-vernon2gm@gmail.com> <20260207081613.588598-5-vernon2gm@gmail.com>
+ <CAGsJ_4zxAmDS+FWzfX-670W3H3LM=nUZ-gGe3jMV9tYM0E_EaA@mail.gmail.com>
+ <e106bb45-5563-4b9b-bcb5-defd6e204c79@linux.dev> <c1280171-b9e7-4f10-adb5-b6a8ed69e54b@kernel.org>
+ <CAGsJ_4yEfgipUe37_k5rArrYMPY_31JUKQGjRk+NNJTK9QhBWQ@mail.gmail.com>
+ <bd36d92d-dbf1-4818-bb31-0330c1f53577@kernel.org> <CAGsJ_4zBpL6a5ORAQUFwZMM+ikmMS8JSo9enLDZ7VFT9kkge+A@mail.gmail.com>
+ <bfda8f27-cd2d-43dd-9fdc-cebf7b7cd7f8@kernel.org>
+In-Reply-To: <bfda8f27-cd2d-43dd-9fdc-cebf7b7cd7f8@kernel.org>
+From: Barry Song <21cnbao@gmail.com>
+Date: Sun, 8 Feb 2026 06:31:40 +0800
+X-Gm-Features: AZwV_QgxhNqRogNl6N9SKbBz4-2j5TRyVujP-FCTMTWOGQJSFKVLI-AR7kj7ONU
+Message-ID: <CAGsJ_4w61iyE9WCGBjj6jufh4e8y2S8m=0-8Adjwg-hLODaRrg@mail.gmail.com>
+Subject: Re: [PATCH mm-new v7 4/5] mm: khugepaged: skip lazy-free folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Lance Yang <lance.yang@linux.dev>, Vernon Yang <vernon2gm@gmail.com>, akpm@linux-foundation.org, 
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com, dev.jain@arm.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Vernon Yang <yanglincheng@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770503214-84945
-X-HE-Meta: U2FsdGVkX1+0qcxwMzPzVxYGfSuTf0Sv2jnfzO+NlNxdKsx2vgNp6Q5PhF/YHUYR7naY9R1ZlOfkWoKXLrPWlXMttNAIVqjRUJWauGiyEEnozFi4+rlA2oBEClpK/JqgAeuNQlat9/1flppmKP2wzO5xBzXrTUULVj6vvzXNNFj9zvFt35S+Yw9br2QBal1cJyKQrQzWVybfhm5O/Edbt5camdo093z39+8jPBK+9aD4jv3AgxWPJXwwNYZKWDOSeBXsJJvm+2iZlbqo4qUYn+rIbQogB5CB+hBDqSWM/t+fZQ/0nJ07osXPvXsVR5M9xFEQAnNL+cEF38hYU/C2RIIFzIh/ZRws0nBOP0fhzsAuAYWaQcpSNXQ7YIzM0eebfWfhyKSU0Jjk4kXp01XIaly895sB+XkvjLgTiWhXwTQ1LnOoFKJZlaaTEjRYDuZkxBZUmrysLweGaZ/8koxkRARFql9XEadGd0jp2yQzqNnTZH7ae/4FNUkBy58+ZbziVyK4dGTebliOCGpSM6Mqnque65WnODNf5XScGBsxMTLu8lkkPDJPTU3G8SIpIEtMAx1onKaOSQmOHoxjP+Vze5WbRcH9igC/rBK1c4RdgAx5BUJS0tK1b3K7u6Q83xNy1K39OEffk5Mu49GCHp8+aAiJO6uRbwX0mBx2y4xwgx+arIBOaImjeQzxG5Qe5V30nJ2Lpd9gzHDFv74TyibHAgbp+zhioRt2d1Pdjs5iFEcYu3RLHLsj8zyK86ODH6NOKG3irLzXJeSuobdqJ/SgElOTL7VJrjHJd9Nl8JubjfcXAXCoPIXrtn868D+0Q+kcanytWkGgekKbwUsS5RmCc9sNUS9gW0/+4Tjqh6d49Bw3hCskvXccj7BaKxYNosJVFTBu0MUkfbHr6qUnoXoulyduivwJ7kguQfPKxz+A+iJZj577IRSxZIazCVhmIakC2VLUo36kVnOqCau/wd5
- KsJmy/5K
- ryrQ4Ouzko1gnXa22CW/XLcEQJcH3li5bC1XwoO+U9H6YQGlr+4cEwQMCkVQrwx7/tgZ4AcCBIWwn67bXve/6beK22A9ALTDJg0Fb2BtG/L7mgB8mUXkxXMD2/+WLs/pN4MDNF3wWmeXRnVmRmlP4XLgrUl2a30063i+7SisGeeKqmtnFUPDLh6ZDmBJ/s8IY3gLPXFluR00o+FGsnUfbb0+QlP6NFrQ11PYzkq897LQWsn6hTBJ56TZvoOkmepVHbuV2AXKwIyvCPrUj/d4xJh0wky4sio0BsyZ3YGkhrO4A1vBjgdiYXhKcLMxSeI7DkzcKmw+LNiPBFtOKWrLQdly7VQ==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D0909A0004
+X-Stat-Signature: hez9f9f4knek7osgerf8ucs9j9n41bxs
+X-HE-Tag: 1770503512-758917
+X-HE-Meta: U2FsdGVkX18iL0Zyfvyi7bBNfuHTYAUA6bNL/nRo1RedVsQUke4NwEdRaxQdSuLbW71XGE35LA1r/npRSniI/WYMdWXfklZwlqYlGkx4oXrDJykJQEjI5qKJutcUT2F4e6zrh7g2YxJHmUAOgmPsQPIZee9nvzclaZ9ONXEg7V0Wb1MmH+7TGkOljiJfy+dzhodr9jR43eFncWs6gJSy+mbUvG2LIOtd/cRoNb2Mj9BSydKucVdSkwEG0JxwnOaCpz8NwvSgs2y8Ktp8Zmm9vPvTvEnFApbyQj2bP//6XEt78EJsSnoxzaGDQJ4jLCd+h+mfNtw/UpC16MtGf9TnyczCMeQRVRfvR6lbWHkcD95UYN14Q2dDOkAa/4O6RJqJ77uDQKLX5C2wh4DgmTaBZ+pyIReGz1XtLIs6noBE50HZifJOHihxI+G97cG7M/vwBG4sQNWAFzWD7sZWOLDI9j3PL3TJZdxMOnPKRXMdBVaI/oSQBSEKzWgFs1pMz4wO7vy34KrpX4KjN2NpKyLZyU9tEdGQcMozrGr1C1LXPMWkAA6QHvHUmFIMHn1l84qHaBjWegZ57MXoue8i+L1JLbz/FjjAOREw11BSSPfsXQ1gerU9sAwAS0EAiiSGAj0vk7WsXA94mdZiIKzS5tSsVqUHQQyxjvnbR5ULOASiHi+rNTWkn2LTXZC8NZzQTWegGRcmQOtTPQ70NlZeW4OBXPlh++ZDYdoBAf84gBoazIqHXPHtfpycMeTnHJzJQN0SRjbr26KKr735Hj6m+jTKd81gEiJZN2RjY7jWK2LdbMORKnCGNO8BVUyZ5AAvMij0TwzzTaNoyDOFM/Ac9aiIcp8ybRIwewndW1zo+lDk70N8cIVGo4S/3UoYwdpIvQTgoTbbAcJjXCtaan7O8DYRdTRG4yZTW/NYXL6u38+kuFh5OH0lwMIEoB7HmYwCcDb0kcaE6ZLEScWy48a2C9G
+ oOlge9St
+ ApsDfa99ttAFSRUbfdu5YlK8uH2N5SFUNDzRwf2/FeGNDRUWsCFtAZzYKn/NIGZ8+iePSWwaLYsSS5+ayhdjCuNcBiesISgX4SHAGFzfJR0gPo5ZFA307BRa/YoDOU/43FwXBYxgU3S3+iCaMTbwL41j4nKjlnUKSdMzJaB906rniou02BfUtf7ABc8wZdlWUD3Ldfhvvd++da73wc7TlsuB8Ajx0QK8LwXXsqRMu/uDs2IwuBCkohDfjFnMTIe24o682j1rTiB6unpaSRZ9RDl7QQ499/gut5xFjLUBn65bSJRnvzA5ElvTQMYfIHp6s72h+v6gWcYds3fJYU+4xRDQefjaJhxzQDnN3qH1MBr6u/MDTjFjH0awf7aE0iHAkq7I3Pujqqt/iQT6u6BTFw4UJ26pAIPEUYAAU5tZTNva/PRg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,18 +145,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 05, 2026 at 05:01:50PM +0800, Qi Zheng wrote:
-> From: Muchun Song <songmuchun@bytedance.com>
-> 
-> We must ensure the folio is deleted from or added to the correct lruvec
-> list. So, add VM_WARN_ON_ONCE_FOLIO() to catch invalid users. The
-> VM_BUG_ON_PAGE() in move_pages_to_lru() can be removed as
-> add_page_to_lru_list() will perform the necessary check.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+On Sun, Feb 8, 2026 at 6:25=E2=80=AFAM David Hildenbrand (Arm) <david@kerne=
+l.org> wrote:
+>
+> On 2/7/26 23:17, Barry Song wrote:
+> > On Sun, Feb 8, 2026 at 6:05=E2=80=AFAM David Hildenbrand (Arm) <david@k=
+ernel.org> wrote:
+> >>
+> >> On 2/7/26 23:01, Barry Song wrote:
+> >>>
+> >>> Maybe change =E2=80=9Cjust not skip=E2=80=9D to =E2=80=9Cjust skip=E2=
+=80=9D?
+> >>>
+> >>> If the goal is to avoid the collapse overhead for folios that are
+> >>> about to be dropped, we might consider skipping collapse for the
+> >>> entire VMA=EF=BC=9F
+> >> If there is no memory pressure in the system, why wouldn't you just wa=
+nt
+> >> to collapse in a VM_DROPPABLE region?
+> >>
+> >> "about to be dropped" only applies once there is actual memory pressur=
+e.
+> >> If not, these pages stick around forever.
+> >
+> >   agree. But this brings us back to the philosophy of the original patc=
+h.
+> > If there is no memory pressure, lazyfree folios won=E2=80=99t be droppe=
+d, so
+> > collapsing them might also be reasonable.
+>
+> It's about memory pressure in the future.
+>
+> >
+> > Just collapsing fully lazyfree folios with VM_DROPPABLE while
+> > skipping partially lazyfree VMAs seems a bit confusing to me :-)
+>
+> Think of it like this:
+>
+> All folios in VM_DROPPABLE are lazyfree. Collapsing maintains that
+> property. So you can just collapse and memory pressure in the future
+> will free it up.
+>
+> In contrast, collapsing in !VM_DROPPABLE does not maintain that
+> property. The collapsed folio will not be lazyfree and memory pressure
+> in the future will not be able to free it up.
 
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Thanks for the clarification. I agree with your point =E2=80=94 whether laz=
+yfree
+folios are carried over to the new folios changes the whole story.
+
+Best Regards
+Barry
 
