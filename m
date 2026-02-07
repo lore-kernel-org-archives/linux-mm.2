@@ -4,243 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2949CEE6B70
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 01:27:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19FB4EE6B71
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Feb 2026 01:27:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 691616B0089; Fri,  6 Feb 2026 20:27:21 -0500 (EST)
+	id 7FE786B0092; Fri,  6 Feb 2026 20:27:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668BB6B0092; Fri,  6 Feb 2026 20:27:21 -0500 (EST)
+	id 7D5E76B0093; Fri,  6 Feb 2026 20:27:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 513906B0093; Fri,  6 Feb 2026 20:27:21 -0500 (EST)
+	id 681986B0096; Fri,  6 Feb 2026 20:27:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 403BF6B0089
-	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:27:21 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 564A06B0092
+	for <linux-mm@kvack.org>; Fri,  6 Feb 2026 20:27:58 -0500 (EST)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E604B1A034D
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 01:27:20 +0000 (UTC)
-X-FDA: 84415922640.10.B49915E
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 85C7EC0004
-	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 01:27:17 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="lKKo/7Cv";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VISedBf3;
-	spf=pass (imf10.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770427637;
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 073BED587A
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 01:27:58 +0000 (UTC)
+X-FDA: 84415924236.10.3D7EA9E
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0D611C000C
+	for <linux-mm@kvack.org>; Sat,  7 Feb 2026 01:27:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j65jzWm3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=leobras.c@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770427676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X8hkT7ZAgjhv8XwOMbZ94QqHDoePn12oLjx7/JcEyxY=;
-	b=0SoO7T6Nbn50Mo3kw63eTA4gP+fSdS/KxuHgpaovXuKyldoZUy7/Nq1enjlh47Q/hoFkH1
-	6rd5t0UFqkLmRU03sgYoz1ilmAZMN1yMzJgokAULmAdBJmsD0ByN0DLbUScewhlEyyOPo/
-	Vl9aV2RwS7pBYnwmGz5jjeiM74NspsM=
-ARC-Authentication-Results: i=2;
-	imf10.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="lKKo/7Cv";
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=VISedBf3;
-	spf=pass (imf10.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770427637; a=rsa-sha256;
-	cv=pass;
-	b=7VwEDeXBs0E15uWzLSuS/ucdwRd2zIZFA9caV/JWQqsOGPf0EmOyn8glfwqrvNGaK0D6a/
-	dPX0yzFh/Kab22P/T41r0ZazCekeCPvdJkZiXcR4SdGXqdKRGY49brbE/EvGqZ8Pj7ijNO
-	lRjqz6hPNhMGuyCDf3mNOZWvu0/TELk=
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 616JuGku3928701;
-	Sat, 7 Feb 2026 01:27:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=X8hkT7ZAgjhv8XwOMb
-	Z94QqHDoePn12oLjx7/JcEyxY=; b=lKKo/7CvjDR419gQ/67VQlcuFVpEPVHf5d
-	0R6mkeUK1vlkYOKn240vwXNDqphfhwT9nYWZNq/TC06qnlNzYVEfjNL2iuwery1r
-	pudtzu+yOis9YV5V3OzPBQojJ55TDNUoU+/dup+mEOQlWZWd0j6KPZzzNxplVmXA
-	u4W5iLOu4kP1EB0/eD4RGjjaRBrAUEmBOXRN4WKiyfWKx4oF0P8k5PAKl7Y3+Lhu
-	JMn1HbHkeqeRsM5bpt84zB+lnpI9GcyhkZfqHZEyJvm4zx/CIZXUeIiqmA10XFED
-	8kzAL5DTlG7+XXt04rqlVcRaUh73bWaQ8ywcAk1qjGS36t9Ym4+w==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c4dc3urc6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 07 Feb 2026 01:27:09 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 616NoNTe034785;
-	Sat, 7 Feb 2026 01:27:08 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011003.outbound.protection.outlook.com [52.101.62.3])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c186f9ynq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 07 Feb 2026 01:27:08 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SaCL2XOHfYCFmcvtgVFqT+LOevHc7FPwMxHJjAhz3N2nTiLQkUKp0sRqHixOJQY8ahlAT+msi+nR508g/iomyPIKObD8GuqP5lbGr7oTM1+LKE6jw7kUmr5OY8oCea/ZpfK0CsGr6ih6bPy/YVgBdG3UVr+/tyQRRV7xsvJIMTltIhGQZuQiE1lDcEGdV9Vu4CDV7LOHZuobyeqNp4hJ58OY1l0TN/wKfWxRK1Zkr+o55s0fgTjk3NNseSDkzFQZeHohqTBnMBZvwHFvseIJOwFyFMnXZMClBN0VANaOBFtwe1C3TmHytyEMDPaSu9IsP8bCfoV9ZnN6wW2CTR8xxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X8hkT7ZAgjhv8XwOMbZ94QqHDoePn12oLjx7/JcEyxY=;
- b=yZdPRprIdWpuZNs4YMQBBiNQk8ezLaxdQvB85e0rpeRFwJZAFs+lh0ZcgdJPHrlXW2Yv2jQa3qk/Pwb5ql7AB4J+DHyYoV+UYdD0DvGpPJTE+gjhiralyPVhp4ETxJQw3LpQTMxiBkentaGyqPvRtI3Udyrs2CMKl7rwk0eoDchUZjr5hBmDcEz99NvkthRsgx6Pyqcgh1qb51WvudrLH8wlSkUazMWwRikhcc0tQPJ6umbmkekVFVs3d4gDTiDHJ8Bl6lcUQ1h9IF4HDPfkg4eQF7VY9U0yFDdU5J3TFt9lXFC+n2sPxSxepy6y9sIVGUSJY3PttDeWldjf2sEp+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=PE7gzxqot5BRL9QsDMUVjbbKM2mWn3uLSLIy5IeNUqk=;
+	b=jtxhxfMx2h8k5KE5nPohRLPf1kbdCPeK7mtG6MnkPWE0vbhaFw8RM+B3/LErss37wSZD/1
+	a/+Tu0br6pmsmbRdXilbgBYxvtE3cb+b9dqy0KsdZ6fOvZaJbMX1Y6nNywTDwVSnh81QAM
+	jp1pXanNFl29gJmSonFO1nIOSPluLis=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770427676; a=rsa-sha256;
+	cv=none;
+	b=drCs7kZV0xEDlee0gBu1prc4rnNxwbu09QGm0GRpMUzxwskc8ePPrb2aFKHDiitcC3AfFp
+	7D7/9Fd2g9IePTR79mSedRXKT0wU80Lc7eplkMVzCAh48BPTd50AeMgeXep2wtmqEKMbaA
+	HQT7akR9KiWZadF7/th+rqxZ04v0iW0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j65jzWm3;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf28.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=leobras.c@gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4806cc07ce7so27485605e9.1
+        for <linux-mm@kvack.org>; Fri, 06 Feb 2026 17:27:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X8hkT7ZAgjhv8XwOMbZ94QqHDoePn12oLjx7/JcEyxY=;
- b=VISedBf3krODyOpOKM8DUoZrEdzeUvDPiwrczHAjuyN72qPv54nzCj2FweDYdHTdyw3NkLlP5ZftFVv2Vsfy8O+BYQjdD1vs9vE0CRaeWZeODeOAx9p9PH93qqvVTNSrGuIHhMyazvtD9jP70VG9uLJTOtm3c2wLBojPkUQ16zg=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by IA1PR10MB6784.namprd10.prod.outlook.com (2603:10b6:208:428::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.16; Sat, 7 Feb
- 2026 01:27:06 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9587.013; Sat, 7 Feb 2026
- 01:27:05 +0000
-Date: Sat, 7 Feb 2026 10:26:58 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Brendan Jackman <jackmanb@google.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        David Hildenbrand <david@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Mike Rapoport <rppt@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] mm/page_alloc: skip debug_check_no_{obj,locks}_freed
- with FPI_TRYLOCK
-Message-ID: <aYaU4mE1JcrtRact@hyeyoo>
-References: <20260206165802.17280-1-harry.yoo@oracle.com>
- <7B9B9CF3-29A6-4271-8C3C-87FF3EB9FA4D@nvidia.com>
- <aYYi3DhceyKbta2Y@hyeyoo>
- <651bd1f9-8971-48da-a0c4-328e235c2eab@suse.cz>
+        d=gmail.com; s=20230601; t=1770427674; x=1771032474; darn=kvack.org;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=PE7gzxqot5BRL9QsDMUVjbbKM2mWn3uLSLIy5IeNUqk=;
+        b=j65jzWm3bqKh7Rh6e46ybb+4XrQpCjjTABtbIAonkWj3dNQEfTXCMCB9JfyS8juvOX
+         bzzIv7Rb8lh/xpoR/8AdPNtxZAnvKEbri/49GCYbD8nIyQKOKg5Lb2xorOjnXWhN5mJ9
+         urw8PwKc7M6tb+Lrq+b1oP09Ze9UAJlmXBG3G3PW+pmp3QJFL2xGALYvatwJboBOFaYZ
+         tCk2gjEmwX3r4bZXZB6gQoDckdQs+lzIopVTakx5CzM5XFqJJU8DHH7H3liQUaQYjJyV
+         wGsWjl/qedBLW549zRa8rQNRf4iL92IbIGe6y5dyTx+0XTaBxx7xTCigXLaNthOmuokQ
+         5FWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770427674; x=1771032474;
+        h=content-transfer-encoding:content-disposition:mime-version
+         :references:in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PE7gzxqot5BRL9QsDMUVjbbKM2mWn3uLSLIy5IeNUqk=;
+        b=LgfO1zWNqRp7y/OuTokOEdpugYnR85yK2uecJhSOAsQ/yxwi6MrlvSicrks5t+o2Ih
+         Z0/sSyfh6N9AH/UvSq9nmCSIXt3gu+uqAPZOqAieqgwrMRO4fmY+v3juE8VVYYITr79s
+         DOgG2ExD2o66gTy2SRQlUq8KAJpS2TJcbV5PKtYnVqAYDGIuneqT51qX44G5XgVl1qG+
+         7/fbkWcW20GdiLpPPeiLchI3IHMpgXQ2IaPPuGHBJLZM+a0zConMUkxr000jP0FsNb0/
+         PV2S1/NW95eI5unMBByLcnjQwP6TZoJ11k80KqCZG0C+tPIrt8pAWZh9uqTbFLvU6VXH
+         Y8Nw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9/M92azw0D3BgCQFPliid/HD3rC6NKOf49IM9xthTjArThgMH4qydBj3xLpK75lCrZzFnvL/Cew==@kvack.org
+X-Gm-Message-State: AOJu0YzuDmRNtt2mI0+UzgKmorJE86jNjuLxnHF9Q1xDeQkBMJy/pnUO
+	Dv0MRxXRV/j4LGM2xWIAVd5vZhfNZncyWH1KXgMhrNKZJYn5pZns0Ju1
+X-Gm-Gg: AZuq6aLS/z+A1kPcGysmY5YSjTjGP1jH3JS/0VZ2IWnNOL7HSMc/ZO5umHq0RY9kjGF
+	NtkF4fkNlxsM5OPzlQsHhgVxLPn+/XiJ/X+Psc19WAv9mg8aWiq1sF7d6DN3KM6VHL9y727hKty
+	QDSBwiHzaLxpfiYzpNSCL4WMDF/XdeHi9kwOIE+dntbeJfg9gG42o4ycRJCyRU+JMpT/3f+fMWh
+	5++veAC/KA4gLgQK8vD2RiQH5XoXtbNrOq5k7tStKtNHu12zqdCJSOXbzmadwlz9gHKRz3PCMTD
+	+PH6tZ0f8QMSKTjzcMR6W64wVSbJHwjNNP748qvjxyslT3/DeBnWnfQg0u/qNdJtuULD5j+BWVR
+	c+Wy4OWIW5H+Uy3XfwimkysNMSq9smuiVbUgdyrVJdWgRVj4eHr5PLyOsnUZgk5psMcoPcDOrfF
+	kyaU9gRBe9po62tc121+bIjFs=
+X-Received: by 2002:a05:600c:35d1:b0:480:3a72:524a with SMTP id 5b1f17b1804b1-4832021b572mr58580195e9.19.1770427674181;
+        Fri, 06 Feb 2026 17:27:54 -0800 (PST)
+Received: from WindFlash.powerhub ([2a0a:ef40:1b2a:fa01:9944:6a8c:dc37:eba5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43629756bc3sm8833460f8f.39.2026.02.06.17.27.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 17:27:53 -0800 (PST)
+From: Leonardo Bras <leobras.c@gmail.com>
+To: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Leonardo Bras <leobras.c@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>,
+	Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 4/4] slub: apply new queue_percpu_work_on() interface
+Date: Fri,  6 Feb 2026 22:27:39 -0300
+Message-ID: <aYaVC11FZ1XOxMl2@WindFlash>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260206143741.621816322@redhat.com>
+References: <20260206143430.021026873@redhat.com> <20260206143741.621816322@redhat.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <651bd1f9-8971-48da-a0c4-328e235c2eab@suse.cz>
-X-ClientProxiedBy: SE2P216CA0126.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c7::10) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|IA1PR10MB6784:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26384c0e-f988-45ed-25a8-08de65e800d6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BmY2RLVHYl6GeGbFxWMK7U3HC9mPWzgn/W1QhTkiHyIOj6wbYWFdiuUlrzaC?=
- =?us-ascii?Q?KrAR60N8p6cSwOuU4udWfVdbvw1FiXfT68sXiJpYB951qSPghBaKuHFWvOUy?=
- =?us-ascii?Q?Iyor2GvzsVVeXDrxwphdngCuWehsrS5sim9pmc1JhGLs8CoUzNnvQRs24yT7?=
- =?us-ascii?Q?WDg7jIasmijHc8eujkziu1QMfFrEo3C3rIJg7LuZGwgYAS85V2mh5RJykNwH?=
- =?us-ascii?Q?59UbGaZ1Lr3jTVPj/Xx7mSCkZd3KDo1h+JN7ZxeG/YTXsWMfgw4cAAiv3dFj?=
- =?us-ascii?Q?YfuSSEy8uWKOmyi/sxr1ScbiBJccgZ7pyK+QFjnimuPFCMEg5vdcpjhjeX4z?=
- =?us-ascii?Q?Cjz+Q1aAgTxgUd0D41Wg1aV+ZPa94Byf2k0rINk6zlzoOR9b5v6R+JsPzn+o?=
- =?us-ascii?Q?qTjs5Jfnn4n3e5zkDGms0Q6k9S9BkEMBGAsV9YZ94fdmbRGHTZKL8tTfsIX8?=
- =?us-ascii?Q?uK7bPBfPUkZ5NCmih/HFQUId/GgzBSQL4MouNeRTxrkHpvodyqcMtX4nHDM7?=
- =?us-ascii?Q?ipEcTNbm9CPCMIZrSJfjdSdpxqjHKy4nRwsIlxFoguHi3i1IOxIJSd325IBL?=
- =?us-ascii?Q?82Pp4Vi/s9P4UVtVdkx2fyB8z115lEStau9eN+J7SGy6kOGjfPNlbpz1lruo?=
- =?us-ascii?Q?cvJWxSI76AueZyNUyrp4715wqe1LYNVviBDznHTijDNU9wjtbBvm+PnvQPUw?=
- =?us-ascii?Q?L3P1/YtZ7IiS2kNFOrgc5jwbq66CL17fboN9YXs99M0wzPE4h26ypT6twaRy?=
- =?us-ascii?Q?hiZbOO1jZgwjxwvbEVrDTFiO1CtA1MMIddGqe0j3ut1B1nfXFbM5aH6j/I8d?=
- =?us-ascii?Q?oqkoQxTObOcgqmsX0WPLRKnXMbh4SlasUzAUpM/xrJEStaDAfn7PC1Py8k3K?=
- =?us-ascii?Q?0f1lg23YiMaytXNxFxnq/gny2flL2CzkAVovjmsTMN1XsSvgO+zSZ3MpxZ3S?=
- =?us-ascii?Q?Jk5mGT0uVnR1NWsbIfEbtI6zsJ0dw0aj3Ibjc3GSNlSCONgmfBcb0z41EE3x?=
- =?us-ascii?Q?FAiymBWIqrkVXr1IETQhabk5Ic8Cxs0BxT8FUcWYEhOmybvF374q+Pt8+RVc?=
- =?us-ascii?Q?NOqC9ceWeMrkJH/Jqqtfi7Gg7i4SskP2pFR1V6hCA0R7XGuj0v/BSItc9fFt?=
- =?us-ascii?Q?BPeIoTT8vy0Fzg5stmDq3Ckep/hE7aXYJDfr1Cea8qlmKfu4Iy/qtIo55nWq?=
- =?us-ascii?Q?MyJuDyBGBXVS2tH4SFqqvnQ4g0z6RrHbOzrbVErluMKQBoB+ZhmS5D8AE9s7?=
- =?us-ascii?Q?Y3UOImuyqab1Yr8vGrVMCvM05RaYDdN0Qf365swNeHbT0MgfgXZfOmONByP4?=
- =?us-ascii?Q?Ecxrch/8hlJcW83kET2rDHhj4OyEyWHuD8pffM+9ksc1ZlZ4+72aqxqZ8Mp2?=
- =?us-ascii?Q?eRFEFURSCU4VSx+7xevkwH6Wr6D07pBrVeSdggu3BaUcgKY0k/tVW6rRlOsn?=
- =?us-ascii?Q?+B8ana0KbzGg2sJ3PrKAVJG6PuDVPZ5gqercJE6DHyx45pyQuR7BSHGZ67ic?=
- =?us-ascii?Q?ATTVuVmt2gpkZHAnvYKZHAzwkpmhxv3Bi4EvRJ/6FIv8WEGXK6SQwNdkvGsA?=
- =?us-ascii?Q?I4qIpb4noklu8ZIFjeU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?28RGMEp1sr216wgj2Y/Gdo6zNQdZ7DauVp83x9HTReoKT29nV0jTlmQKQm6U?=
- =?us-ascii?Q?aAlFdzZhADSgkOBTvHVokfgdJeSNC/WUcr/79gf4B2bkoYH8s7kfp70vUoYb?=
- =?us-ascii?Q?Fx89EMfdDFW8wh4w9tKhs2h8j8wYqlcsVnqbbGgb4vqyL3ryCQfSZ9AP+FUL?=
- =?us-ascii?Q?1iRfskIVIeJpktwIS/VLiX9AS0qTcUw5WAmejGFE2wOgh3R3hiw7g1CMnA9r?=
- =?us-ascii?Q?0ksiORPychAwQTTkbm52HZ7gKHeMqirzV0S0itl3TOmTXq/h0eNiEi8DImN7?=
- =?us-ascii?Q?n8Ep13k7TIgyg6fReO2Yuqufek+ieR0m+KYn+bLp09A3dpIWejL7/FOq0KXG?=
- =?us-ascii?Q?M2IUYQrPLKO6o2E8mKl2NR6P1+AhBC+sBlFd1fwg9ZvqiE2Di1eTtYGw7urX?=
- =?us-ascii?Q?3EuFy1GB1vo+/Kve3BovdrwAACvW2pjl5scw8RBYth5NKq1iC0lK9FtLrpmt?=
- =?us-ascii?Q?LbcT4OV8c+BSi2QaN9/VOgPwHB8dRDmzPSb2wQ3hdZrc+gXX45bTzXsyNeoM?=
- =?us-ascii?Q?WVRc+PNAmOK1VK28Q29J1hDYb9MVuJy2Ps/AxY7/6XJvHinVlumcSijqi0mK?=
- =?us-ascii?Q?+M1eQ/9ZMXYLzcFrqfBCN/1P0eFvbFAworQwjEGCIvGcj4nPxZTkZCsXYqRW?=
- =?us-ascii?Q?GG5WuCaMZBw07i9GQaaJInOX2VpmRqk+7hcB72Nvzsv4SZnDsqdhtwNldAs0?=
- =?us-ascii?Q?9N5rO/+swarGYtgpYooaPdUXhxFpGDx5KDL5FSiF9lx4o2fsKb0w3InGMY5r?=
- =?us-ascii?Q?GmPrE3qBdxGVmShIl2vN+uqDOxFEAhgcqqs2hTYK9JxFqU0F6X2xe9mPxZzo?=
- =?us-ascii?Q?r7XDEnxd4rkMXOAUiOK/0+fHK5n/c+4TLh0MKgvU59rwtCTOSTIMEfJYaMCD?=
- =?us-ascii?Q?PDPMQCk5+8XDV9FE/YP9Tu80ISFfzd2pVr4ot9Abz96YPsp1RRoROkam9SXk?=
- =?us-ascii?Q?4SGuS1LqDwrj9xEf13U/rLW4DFTl4tVFVkCJ9jIeosD5gW3kUaK4+uNBWxKJ?=
- =?us-ascii?Q?1miSva93M0Ca0/sFPuonwXMUogdnJC0IBUcGe2fO8QPlQ2T8ZNJrPKQTsK1n?=
- =?us-ascii?Q?IUg/vKNz2S65DzwGoCjQgMDQhGJCBr9gfMG7FCW7q9HSgbMDPmH5vLltn4E/?=
- =?us-ascii?Q?iJ8pVjm6jS9eAe3Qo+LsarXvrdfqDLq2xmUNHV/kAiqHtP3PV117OVppGTQq?=
- =?us-ascii?Q?hW3G1rGimTtQm+LKaPNiPoP/xXs9jLfLqO6CtGg5bHc9xQ5XTw+LfzCyuWPr?=
- =?us-ascii?Q?7wM2Bjy8R1dN2TAp0IGAhOVemCRQe9XwjU+CjrRy1YYbBSbOIWtjYTXKtxLv?=
- =?us-ascii?Q?8nCZTGW5OM+g7m8v63eJDxCh/vLAkmKKmx5/jg9u0O8fSTOQ/tprhorVOnP0?=
- =?us-ascii?Q?ZAtRipjk7LR+HtXv6XV1ZzJo5t0Y8PxruLfoJqoSyVNHXOE1+GUW3694M71s?=
- =?us-ascii?Q?Gd5e4CJlHGiHetUVDQ20SXpi7yym3WzrBSRdM8ELn4RFjaxPIsrbqrVgxWsI?=
- =?us-ascii?Q?0QXtTKNI1ujZhQHXLWLZLbj9dtGITMX7KC6R9jzfRmS7+eJVbW3jb9S6o+rW?=
- =?us-ascii?Q?d0PXXPSfWsaZpqamy6LxMxzi8RH5lEm6UN8FfTePw6cq4ulqb9hjyKlFs5/C?=
- =?us-ascii?Q?a7of0v2apEoHruEkKIGeaXR7loxDDVveYGJ4FN91MJSIulxc8d9axgiamqL5?=
- =?us-ascii?Q?CNroPKO6i+d6iQUoN3TzuJeZRF2uv6dk14/Wp6blaE89n8Ku0hh4uFpnkc2F?=
- =?us-ascii?Q?BtsoxWn14A=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	5tqreNZ29PUGOZ0/yg8jSvQNU8WzqBYV8m4ZG1o0vxuEYs5O3zcsd6B2uFdKLFxOo/8kb+SDlrglj91tgsnkPhE/hSsVKwsF7T6sRLHEuwqXGZywvLmFJ6llH6loc3OexFdE1cbxcVCd8GNXpf7zpS1s8BXDphse/Fm+7S9hRJdnbyW3QO+oSBfxO2/pJXv2oJLqOdRUtcFvRTHTylVWIbiU7gbpex1oY5HRHAlsogwn2kV0mxc8sUsHZ2ladtvzxc3buC+AcGdTfR3uTUhA5CGlml+n90Gp2skhypqjQiebR9Ah3x1/0Ut8GBdxMQOSF6l1rWYGjIullLsJ1xVyGwaR/2PpRSAEOH4hAJ+iXt/C6A78CZk7QByG2aDH/a4uqn6FgQUrsG2Ip+vfKWLdhjIz1g42rMxinbIN/AzzxUuZBZFsjBHDfjjLKE9g+bZwVFRPtR4EgXbBpxC8QGgMFgsh31PHkNgXTvDnfB+aYdLcblm0+MnU1TeqgV4rCDxgXxRXIbIMirMaYC5XgdI4lj2knI5EhRfym54swR+zTPTVKIeCp8XuEuuUvufmNW0s6b30qa7W09+jLNFIFUhpkf8wOzwrxY+tXyojuanO5Wc=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26384c0e-f988-45ed-25a8-08de65e800d6
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2026 01:27:05.7458
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: m8G5FiHnsRxk51PXUruwLwtT48L70+cS7emUP2i0+0K9KQrZg0HQMyDZ2hiBO2KL51bdtz4yp3FFklZJX+vZ/Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6784
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-06_05,2026-02-05_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
- malwarescore=0 spamscore=0 bulkscore=0 adultscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2602070008
-X-Authority-Analysis: v=2.4 cv=SMtPlevH c=1 sm=1 tr=0 ts=698694ed b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=0Ok5Ct6fZYEtJvbDS0EA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: P5mF_z7faLRMxqHsfPJ4mh9qNk40ez2y
-X-Proofpoint-GUID: P5mF_z7faLRMxqHsfPJ4mh9qNk40ez2y
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA3MDAwOSBTYWx0ZWRfX8oYKRT7cLdbi
- jS+lhn7fOMiZMUpkK4aQ0r/r0N2HSRZcg3Peb1Q+9J0qPg+dm/mDZtoV41QCEoAR7gi0EP04PS4
- fxdP/PIbrobXwvXLqEMHa3OBXQf5gxYuocLAa2NlKDmd6TpYdnohBo51EoWpc+R98OE0cFftY4N
- LTeFwaHs6zIdlszlC18RiObf2CErPlGtwqfc5ti8Iva6i9romFy0dvGzD980aBXUFGweZYFRrw8
- qA+UE90TKMI++D8tHBM6NWFkssX8Zt7ciSEl57mF0w+UHO+u3vAXw3F7GItLwm/i0up4xm6fDqd
- 6HMID3sVThBcV0gQdGBHLV1h7C6XAidSiG0VIqf9+0e2I9yRjf+vs1IqJeXicR6hXn1NXrTrwkk
- ynw6YvZRql8aLzDmxMGGPsGV5+WChf66Q4vRY1zE4RX1JGijzxh6mVN7om271xVJFTkQKAsehTs
- W7g/ZhtVhc0q1o8TNUQ==
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 85C7EC0004
-X-Stat-Signature: xfuuz1f7hkbrpsypi5oidzwpmw6r75hf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 0D611C000C
+X-Stat-Signature: e6q5ipfp9b1yc4zs67anipqtuxqcwxpn
 X-Rspam-User: 
-X-HE-Tag: 1770427637-588132
-X-HE-Meta: U2FsdGVkX1/2noC1XQL1vLy0zwyseqDebGv+/tcEdRa5Bl53WmG9hS3WTOSfqFYyLpM17zt794Aw9f4fxzrXotfhCqrSFbIgRvxCSZtSUZReq4HPGbxN9qVM+UUH3S7yRIFc9lqdWQYBj0Wavi/NWXSJnFdWqmiJMa9vHAZdWZ5+KzOFYnGsoc6BvylHA+I5PSN7MASyI+zEPJvI/G3dWAZs4sI/JY6CJqNb3ujuY2f4T03LeZnbqPNcNy538QtZO0xsrZelDat1gunDl41mSNoEG8htG/BE5A+ucH+ajl8KhZ12Ra6YkBO1uf8yiWiQWJuO1vg36ZR8mMJrMwEA6OxN8qDDQzClgz5Pw19m8lx7PCpa3G0v5A0q9osxHUV3sftrwyvIRIyLC6BC1GPNKics7y/x3y7jpyXxyElPbqal+fE2HFRCnIwJXFhgHg6f70qa4EEAhYSrttaiG7b+KJajznJmdjmGaNn0xiV8NHGbkzuEFZMNGFOBxmcejyxVFuuDsvqVcw9tpJ4rE2bRhaTPfLm6jdj2Tw2+/Ro5GVlOoSoArIyNmmCdDe0ohI6vWV3zh0R0DP+QA4hkY4kCkdTALqlMPzxzsIZOZ2fNcYOZc72BjqVdTCK2jykcYSH/tcCKSNwN8o49HgukjRwWKpVBG+YpMfOk5aYuEWqzyuvoZZgULvOzkgSZljeCZOV5FGqDfg2IlfrfKhQ/gmrYeeJgIquw1V8PluIZcQC0i3j1wy7rTiYGSOBntNmkQqKU++BU9mTqzJjlRgQRfIjmn2uHE4qIFfNYPI3B0OwD+NdwrChKkiICzXE5FzNRmuSTtU04UkjrHt2qD0cNAk6ZQmZBKCR9IkXfH7tQTAtV6LrQK+I/Aa7qhlDqUZ0830DkWMKYIt4tH2Lnc4m+fZ2gZm8KssB8YgoSsHn8iMQG3VmUZ0U5u0NJf6rFIU9A4PuTsNwKyGHPt0/7a0vw34P
- /Tfym7GC
- XzeR/QX3gVDl8KHWoH4dixxQu2eMAGaTW5kp6UcAAUv+kz9JYThkXmRxo9nv2OUACctfT9sk5JSOCY085KF+er9k+cOn54SYgDCAwyZDx2dArTAJk6tNruGe6Ar0HsxHTTyNEiYaUJe2+NZITjPnuArzWzREoBwoFor4Urvdu9P8f7iDxjJJ7e/TEuYcDq0lmXqIt0q1ii1LVsBkMyR4XTvCjRl71QlIVWZLQ/W20SkDihNJwtme1/wbEXg0V8yrEcnldBuwAa1/hw1ugQsF5wrBSnqQ0Kj/yRuyQHbX2kJ6zppuBPZXWts8LefdaAUID8PvgOIEsPsDuwAaaQL7CRuSbOeZoC81C2w47D6Kz59mMgGzIQBaHqPjYDlQ82cPNNdS+fA15qT4oZQEO5Ot/8xaOl/Pm4mxKVWxOpXNiICCKaFx8LX/H3erK5QeoYUAEfi03l++wdvjboSgRMaDTHNAbBrvmpqqxLGBW0AzN/c09PxINajcKX5CYFj/koiWeWK8cJtUl9vaU9Rqoa3To9Yp3ySxINVoYPEExEs3nMe7AurJHTjy0rZ/LPXgqBOPMnQX/ThjGjOOrZSV8zBJSaXcsXTmAEesw2bk4k0+T77V6aD7pGhQ22jvLrQyg9H/jLeDHG1/SQxQfkc17FHQoo0MXvrF9dh0s+RWwXLB+hpg8tv+XHO7PyaM5UlD4Co2srbhXTPAepTbGms5mWyX0AgGrJT0YhaZ19IfRrd89h7/lJo6rkUudEwHSrC/Ak3wH48ZH
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770427675-519464
+X-HE-Meta: U2FsdGVkX18uJgQ1zIy32gtxDKiiUGw0EqxPki+bX5FDYa5u2fP9lDb7kBIkKrhr7AxOB/UYz/xEGPAFlzI2deoSknLl6vvpr6jv+tzDhny9XW1MQ7CojPjw2xsZp18SqAFor7rBfvbfrMvwyFhlumWJph1SNMEUE68/NpWraYrtpZ0n65IbHOebIIYD5qnZiHM7knxr7XXTwkmb1r0M8E1tjObm6Xti9GoAgq2zYxSfY/3lMa/5/L7h/eUG867VSmtVlDFp5jVF5Z19g2E/he6+R3hWNesHotPpndSjneUnXTEp7iYP69sE2twS6EmxK/wm1bSVR2nFG6KVrddWquqvlHstlEy65V0P+zZ7K40FTZJ/XMbx85vZBItSmmYrcSaGX/M5YBLMKuoerQalsrnh7VdVmR5SwSP6qAR14iHNPynXk04s2L5cJ27R9LkumJpDKGkt4jX3qrRIFilJ/0+FSgLwmDM8HLnZZhalpPXfiJWpouFrkWuWDaOy6zlKJUmFmlP7I4pzAfBPT8SHh382Glwo/jv5G2hiKi/aMAzy9S/zqVsK7Soj/vwKyNsXZw8SJdGrMihlJOjpPJbkwv3TnH+sOxZBELIoYBCzdlUljPw8TT2sNEMBmKoutG4FL2L8ksCvfCUW0LacadcjeYQ7cjNxvxLPECGQKIeXgtrb8JAa52mqbdMZq64NQxIymSZoti1NOnEMJFpacP03mZ2dDyIerq5MUL9yL4uRC8lGDIAXbYbJHBgS3JzUJnX6pawYTPyHh/Fmt7f5uKJs7eBdRf+5ipV/ynafOEERWB1VKgJMWP53fmtKizG0DoFf9pxXZywEqOQELekuvyUjSz647oA6oVMZPQmjibXBxfPqgfXfps/DvDV+GV6caLKtnKRTSvLNiEIIVK/+dxahqSaQuj1b5z6AfnRe6+Z332SCH5coX9XTVNcMXfPE3yi3KFoLcPctRUKJ+te9hoy
+ UY83oN26
+ wj4BYw+niXvoltY4pYG47XgqAZLizind66NbGQds+vxnfTROcaITAxu4JyGYan0XgLRJCbwgGZqzCKO5TWshqx5pvYhHnZCqmJUTcIPwZpm8w8RaFayAa9mwGEXYMOwtBWdnW4Dbb+qsr/19gbNiZnINBDe/OsRSeM7vstwO/0vHVKy6b+N3poRWekDYf1UJPWy16iEt/Cw1uLxg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -249,92 +139,732 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 06:34:25PM +0100, Vlastimil Babka wrote:
-> On 2/6/26 18:20, Harry Yoo wrote:
-> > On Fri, Feb 06, 2026 at 12:08:04PM -0500, Zi Yan wrote:
-> >> On 6 Feb 2026, at 11:58, Harry Yoo wrote:
-> >> 
-> >> > When CONFIG_DEBUG_OBJECTS_FREE is enabled,
-> >> > debug_check_no_{obj,locks}_freed() functions are called.
-> >> >
-> >> > Since both of them spin on a lock, they are not safe to be called
-> >> > if the FPI_TRYLOCK flag is specified. This leads to a lockdep splat:
-> >> >
-> >> >   ================================
-> >> >   WARNING: inconsistent lock state
-> >> >   6.19.0-rc5-slab-for-next+ #326 Tainted: G                 N
-> >> >   --------------------------------
-> >> >   inconsistent {INITIAL USE} -> {IN-NMI} usage.
-> >> >   kunit_try_catch/9046 [HC2[2]:SC0[0]:HE0:SE1] takes:
-> >> >   ffffffff84ed6bf8 (&obj_hash[i].lock){-.-.}-{2:2}, at: __debug_check_no_obj_freed+0xe0/0x300
-> >> >   {INITIAL USE} state was registered at:
-> >> >     lock_acquire+0xd9/0x2f0
-> >> >     _raw_spin_lock_irqsave+0x4c/0x80
-> >> >     __debug_object_init+0x9d/0x1f0
-> >> >     debug_object_init+0x34/0x50
-> >> >     __init_work+0x28/0x40
-> >> >     init_cgroup_housekeeping+0x151/0x210
-> >> >     init_cgroup_root+0x3d/0x140
-> >> >     cgroup_init_early+0x30/0x240
-> >> >     start_kernel+0x3e/0xcd0
-> >> >     x86_64_start_reservations+0x18/0x30
-> >> >     x86_64_start_kernel+0xf3/0x140
-> >> >     common_startup_64+0x13e/0x148
-> >> >   irq event stamp: 2998
-> >> >   hardirqs last  enabled at (2997): [<ffffffff8298b77a>] exc_nmi+0x11a/0x240
-> >> >   hardirqs last disabled at (2998): [<ffffffff8298b991>] sysvec_irq_work+0x11/0x110
-> >> >   softirqs last  enabled at (1416): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
-> >> >   softirqs last disabled at (1303): [<ffffffff813c1f72>] __irq_exit_rcu+0x132/0x1c0
-> >> >
-> >> >   other info that might help us debug this:
-> >> >    Possible unsafe locking scenario:
-> >> >
-> >> >          CPU0
-> >> >          ----
-> >> >     lock(&obj_hash[i].lock);
-> >> >     <Interrupt>
-> >> >       lock(&obj_hash[i].lock);
-> >> >
-> >> >    *** DEADLOCK ***
-> >> >
-> >> > Fix this by adding an fpi_t parameter to free_pages_prepare() and
-> >> > skipping those checks if FPI_TRYLOCK is set. Since mm/compaction.c
-> >> > calls free_pages_prepare(), move the fpi_t definition to mm/internal.h.
-> >> >
-> >> > Fixes: 8c57b687e833 ("mm, bpf: Introduce free_pages_nolock()")
-> >> > Cc: <stable@vger.kernel.org>
-> >> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> >> > ---
-> >> >  mm/compaction.c |  2 +-
-> >> >  mm/internal.h   | 35 ++++++++++++++++++++++++++++++++++-
-> >> >  mm/page_alloc.c | 42 ++++++------------------------------------
-> >> >  3 files changed, 41 insertions(+), 38 deletions(-)
-> >> >
-> >> > diff --git a/mm/compaction.c b/mm/compaction.c
-> >> > index 1e8f8eca318c..9ffeb7c6d2b0 100644
-> >> > --- a/mm/compaction.c
-> >> > +++ b/mm/compaction.c
-> >> > @@ -1859,7 +1859,7 @@ static void compaction_free(struct folio *dst, unsigned long data)
-> >> >  	struct page *page = &dst->page;
-> >> >
-> >> >  	if (folio_put_testzero(dst)) {
-> >> > -		free_pages_prepare(page, order);
-> >> > +		free_pages_prepare(page, order, FPI_NONE);
-> >> 
-> >> Is it OK to add something like free_pages_prepare_fpi_none() for this one
-> >> to avoid the FPI flag move?
-> > 
-> > Yeah, moving FPI flag definition isn't great :)
-> > 
-> > I'm totally fine with your suggestion,
-> > as long as page allocator/compaction folks are fine with it!
+On Fri, Feb 06, 2026 at 11:34:34AM -0300, Marcelo Tosatti wrote:
+> Make use of the new qpw_{un,}lock*() and queue_percpu_work_on()
+> interface to improve performance & latency on PREEMPT_RT kernels.
 > 
-> Maybe even like this?
-> free_pages_prepare() which calls __free_pages_prepare(FPI_NONE)
+> For functions that may be scheduled in a different cpu, replace
+> local_{un,}lock*() by qpw_{un,}lock*(), and replace schedule_work_on() by
+> queue_percpu_work_on(). The same happens for flush_work() and
+> flush_percpu_work().
+> 
+> This change requires allocation of qpw_structs instead of a work_structs,
+> and changing parameters of a few functions to include the cpu parameter.
+> 
+> This should bring no relevant performance impact on non-RT kernels:
 
-Sounds good and will respin v2 soon, thanks!
+Same as prev patch
 
--- 
-Cheers,
-Harry / Hyeonggon
+> For functions that may be scheduled in a different cpu, the local_*lock's
+> this_cpu_ptr() becomes a per_cpu_ptr(smp_processor_id()).
+> 
+> Signed-off-by: Leonardo Bras <leobras@redhat.com>
+> Signed-off-by: Marcelo Tosatti <mtosatti@redhat.com>
+> 
+> ---
+>  mm/slub.c |  218 ++++++++++++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 142 insertions(+), 76 deletions(-)
+> 
+> Index: slab/mm/slub.c
+> ===================================================================
+> --- slab.orig/mm/slub.c
+> +++ slab/mm/slub.c
+> @@ -49,6 +49,7 @@
+>  #include <linux/irq_work.h>
+>  #include <linux/kprobes.h>
+>  #include <linux/debugfs.h>
+> +#include <linux/qpw.h>
+>  #include <trace/events/kmem.h>
+>  
+>  #include "internal.h"
+> @@ -128,7 +129,7 @@
+>   *   For debug caches, all allocations are forced to go through a list_lock
+>   *   protected region to serialize against concurrent validation.
+>   *
+> - *   cpu_sheaves->lock (local_trylock)
+> + *   cpu_sheaves->lock (qpw_trylock)
+>   *
+>   *   This lock protects fastpath operations on the percpu sheaves. On !RT it
+>   *   only disables preemption and does no atomic operations. As long as the main
+> @@ -156,7 +157,7 @@
+>   *   Interrupts are disabled as part of list_lock or barn lock operations, or
+>   *   around the slab_lock operation, in order to make the slab allocator safe
+>   *   to use in the context of an irq.
+> - *   Preemption is disabled as part of local_trylock operations.
+> + *   Preemption is disabled as part of qpw_trylock operations.
+>   *   kmalloc_nolock() and kfree_nolock() are safe in NMI context but see
+>   *   their limitations.
+>   *
+> @@ -417,7 +418,7 @@ struct slab_sheaf {
+>  };
+>  
+>  struct slub_percpu_sheaves {
+> -	local_trylock_t lock;
+> +	qpw_trylock_t lock;
+>  	struct slab_sheaf *main; /* never NULL when unlocked */
+>  	struct slab_sheaf *spare; /* empty or full, may be NULL */
+>  	struct slab_sheaf *rcu_free; /* for batching kfree_rcu() */
+> @@ -479,7 +480,7 @@ static nodemask_t slab_nodes;
+>  static struct workqueue_struct *flushwq;
+>  
+>  struct slub_flush_work {
+> -	struct work_struct work;
+> +	struct qpw_struct qpw;
+>  	struct kmem_cache *s;
+>  	bool skip;
+>  };
+> @@ -2826,7 +2827,7 @@ static void __kmem_cache_free_bulk(struc
+>   *
+>   * returns true if at least partially flushed
+>   */
+> -static bool sheaf_flush_main(struct kmem_cache *s)
+> +static bool sheaf_flush_main(struct kmem_cache *s, int cpu)
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+>  	unsigned int batch, remaining;
+> @@ -2835,10 +2836,10 @@ static bool sheaf_flush_main(struct kmem
+>  	bool ret = false;
+>  
+>  next_batch:
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu))
+>  		return ret;
+>  
+> -	pcs = this_cpu_ptr(s->cpu_sheaves);
+> +	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+>  	sheaf = pcs->main;
+>  
+>  	batch = min(PCS_BATCH_MAX, sheaf->size);
+> @@ -2848,7 +2849,7 @@ next_batch:
+>  
+>  	remaining = sheaf->size;
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+>  
+>  	__kmem_cache_free_bulk(s, batch, &objects[0]);
+>  
+> @@ -2932,13 +2933,13 @@ static void rcu_free_sheaf_nobarn(struct
+>   * flushing operations are rare so let's keep it simple and flush to slabs
+>   * directly, skipping the barn
+>   */
+> -static void pcs_flush_all(struct kmem_cache *s)
+> +static void pcs_flush_all(struct kmem_cache *s, int cpu)
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+>  	struct slab_sheaf *spare, *rcu_free;
+>  
+> -	local_lock(&s->cpu_sheaves->lock);
+> -	pcs = this_cpu_ptr(s->cpu_sheaves);
+> +	qpw_lock(&s->cpu_sheaves->lock, cpu);
+> +	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+>  
+>  	spare = pcs->spare;
+>  	pcs->spare = NULL;
+> @@ -2946,7 +2947,7 @@ static void pcs_flush_all(struct kmem_ca
+>  	rcu_free = pcs->rcu_free;
+>  	pcs->rcu_free = NULL;
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+>  
+>  	if (spare) {
+>  		sheaf_flush_unused(s, spare);
+> @@ -2956,7 +2957,7 @@ static void pcs_flush_all(struct kmem_ca
+>  	if (rcu_free)
+>  		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+>  
+> -	sheaf_flush_main(s);
+> +	sheaf_flush_main(s, cpu);
+>  }
+>  
+>  static void __pcs_flush_all_cpu(struct kmem_cache *s, unsigned int cpu)
+> @@ -3881,13 +3882,13 @@ static void flush_cpu_sheaves(struct wor
+>  {
+>  	struct kmem_cache *s;
+>  	struct slub_flush_work *sfw;
+> +	int cpu = qpw_get_cpu(w);
+>  
+> -	sfw = container_of(w, struct slub_flush_work, work);
+> -
+> +	sfw = &per_cpu(slub_flush, cpu);
+>  	s = sfw->s;
+>  
+>  	if (cache_has_sheaves(s))
+> -		pcs_flush_all(s);
+> +		pcs_flush_all(s, cpu);
+>  }
+>  
+>  static void flush_all_cpus_locked(struct kmem_cache *s)
+> @@ -3904,17 +3905,17 @@ static void flush_all_cpus_locked(struct
+>  			sfw->skip = true;
+>  			continue;
+>  		}
+> -		INIT_WORK(&sfw->work, flush_cpu_sheaves);
+> +		INIT_QPW(&sfw->qpw, flush_cpu_sheaves, cpu);
+>  		sfw->skip = false;
+>  		sfw->s = s;
+> -		queue_work_on(cpu, flushwq, &sfw->work);
+> +		queue_percpu_work_on(cpu, flushwq, &sfw->qpw);
+>  	}
+>  
+>  	for_each_online_cpu(cpu) {
+>  		sfw = &per_cpu(slub_flush, cpu);
+>  		if (sfw->skip)
+>  			continue;
+> -		flush_work(&sfw->work);
+> +		flush_percpu_work(&sfw->qpw);
+>  	}
+>  
+>  	mutex_unlock(&flush_lock);
+> @@ -3933,17 +3934,18 @@ static void flush_rcu_sheaf(struct work_
+>  	struct slab_sheaf *rcu_free;
+>  	struct slub_flush_work *sfw;
+>  	struct kmem_cache *s;
+> +	int cpu = qpw_get_cpu(w);
+>  
+> -	sfw = container_of(w, struct slub_flush_work, work);
+> +	sfw = &per_cpu(slub_flush, cpu);
+>  	s = sfw->s;
+>  
+> -	local_lock(&s->cpu_sheaves->lock);
+> -	pcs = this_cpu_ptr(s->cpu_sheaves);
+> +	qpw_lock(&s->cpu_sheaves->lock, cpu);
+> +	pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+>  
+>  	rcu_free = pcs->rcu_free;
+>  	pcs->rcu_free = NULL;
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+>  
+>  	if (rcu_free)
+>  		call_rcu(&rcu_free->rcu_head, rcu_free_sheaf_nobarn);
+> @@ -3968,14 +3970,14 @@ void flush_rcu_sheaves_on_cache(struct k
+>  		 * sure the __kfree_rcu_sheaf() finished its call_rcu()
+>  		 */
+>  
+> -		INIT_WORK(&sfw->work, flush_rcu_sheaf);
+> +		INIT_QPW(&sfw->qpw, flush_rcu_sheaf, cpu);
+>  		sfw->s = s;
+> -		queue_work_on(cpu, flushwq, &sfw->work);
+> +		queue_percpu_work_on(cpu, flushwq, &sfw->qpw);
+>  	}
+>  
+>  	for_each_online_cpu(cpu) {
+>  		sfw = &per_cpu(slub_flush, cpu);
+> -		flush_work(&sfw->work);
+> +		flush_percpu_work(&sfw->qpw);
+>  	}
+>  
+>  	mutex_unlock(&flush_lock);
+> @@ -4472,22 +4474,24 @@ bool slab_post_alloc_hook(struct kmem_ca
+>   *
+>   * Must be called with the cpu_sheaves local lock locked. If successful, returns
+>   * the pcs pointer and the local lock locked (possibly on a different cpu than
+> - * initially called). If not successful, returns NULL and the local lock
+> - * unlocked.
+> + * initially called), and migration disabled. If not successful, returns NULL
+> + * and the local lock unlocked, with migration enabled.
+>   */
+>  static struct slub_percpu_sheaves *
+> -__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, gfp_t gfp)
+> +__pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs, gfp_t gfp,
+> +			 int *cpu)
+>  {
+>  	struct slab_sheaf *empty = NULL;
+>  	struct slab_sheaf *full;
+>  	struct node_barn *barn;
+>  	bool can_alloc;
+>  
+> -	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+> +	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
+>  
+>  	/* Bootstrap or debug cache, back off */
+>  	if (unlikely(!cache_has_sheaves(s))) {
+> -		local_unlock(&s->cpu_sheaves->lock);
+> +		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
+> +		migrate_enable();
+>  		return NULL;
+>  	}
+>  
+> @@ -4498,7 +4502,8 @@ __pcs_replace_empty_main(struct kmem_cac
+>  
+>  	barn = get_barn(s);
+>  	if (!barn) {
+> -		local_unlock(&s->cpu_sheaves->lock);
+> +		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
+> +		migrate_enable();
+>  		return NULL;
+>  	}
+>  
+> @@ -4524,7 +4529,8 @@ __pcs_replace_empty_main(struct kmem_cac
+>  		}
+>  	}
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, *cpu);
+> +	migrate_enable();
+>  
+>  	if (!can_alloc)
+>  		return NULL;
+> @@ -4550,7 +4556,9 @@ __pcs_replace_empty_main(struct kmem_cac
+>  	 * we can reach here only when gfpflags_allow_blocking
+>  	 * so this must not be an irq
+>  	 */
+> -	local_lock(&s->cpu_sheaves->lock);
+> +	migrate_disable();
+> +	*cpu = smp_processor_id();
+> +	qpw_lock(&s->cpu_sheaves->lock, *cpu);
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  
+>  	/*
+> @@ -4593,6 +4601,7 @@ void *alloc_from_pcs(struct kmem_cache *
+>  	struct slub_percpu_sheaves *pcs;
+>  	bool node_requested;
+>  	void *object;
+> +	int cpu;
+>  
+>  #ifdef CONFIG_NUMA
+>  	if (static_branch_unlikely(&strict_numa) &&
+> @@ -4627,13 +4636,17 @@ void *alloc_from_pcs(struct kmem_cache *
+>  		return NULL;
+>  	}
+>  
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	migrate_disable();
+> +	cpu = smp_processor_id();
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
+> +		migrate_enable();
+>  		return NULL;
+> +	}
+>  
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  
+>  	if (unlikely(pcs->main->size == 0)) {
+> -		pcs = __pcs_replace_empty_main(s, pcs, gfp);
+> +		pcs = __pcs_replace_empty_main(s, pcs, gfp, &cpu);
+>  		if (unlikely(!pcs))
+>  			return NULL;
+>  	}
+> @@ -4647,7 +4660,8 @@ void *alloc_from_pcs(struct kmem_cache *
+>  		 * the current allocation or previous freeing process.
+>  		 */
+>  		if (page_to_nid(virt_to_page(object)) != node) {
+> -			local_unlock(&s->cpu_sheaves->lock);
+> +			qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +			migrate_enable();
+>  			stat(s, ALLOC_NODE_MISMATCH);
+>  			return NULL;
+>  		}
+> @@ -4655,7 +4669,8 @@ void *alloc_from_pcs(struct kmem_cache *
+>  
+>  	pcs->main->size--;
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  	stat(s, ALLOC_FASTPATH);
+>  
+> @@ -4670,10 +4685,15 @@ unsigned int alloc_from_pcs_bulk(struct
+>  	struct slab_sheaf *main;
+>  	unsigned int allocated = 0;
+>  	unsigned int batch;
+> +	int cpu;
+>  
+>  next_batch:
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	migrate_disable();
+> +	cpu = smp_processor_id();
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
+> +		migrate_enable();
+>  		return allocated;
+> +	}
+>  
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  
+> @@ -4683,7 +4703,8 @@ next_batch:
+>  		struct node_barn *barn;
+>  
+>  		if (unlikely(!cache_has_sheaves(s))) {
+> -			local_unlock(&s->cpu_sheaves->lock);
+> +			qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +			migrate_enable();
+>  			return allocated;
+>  		}
+>  
+> @@ -4694,7 +4715,8 @@ next_batch:
+>  
+>  		barn = get_barn(s);
+>  		if (!barn) {
+> -			local_unlock(&s->cpu_sheaves->lock);
+> +			qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +			migrate_enable();
+>  			return allocated;
+>  		}
+>  
+> @@ -4709,7 +4731,8 @@ next_batch:
+>  
+>  		stat(s, BARN_GET_FAIL);
+>  
+> -		local_unlock(&s->cpu_sheaves->lock);
+> +		qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +		migrate_enable();
+>  
+>  		/*
+>  		 * Once full sheaves in barn are depleted, let the bulk
+> @@ -4727,7 +4750,8 @@ do_alloc:
+>  	main->size -= batch;
+>  	memcpy(p, main->objects + main->size, batch * sizeof(void *));
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  	stat_add(s, ALLOC_FASTPATH, batch);
+>  
+> @@ -4877,6 +4901,7 @@ kmem_cache_prefill_sheaf(struct kmem_cac
+>  	struct slub_percpu_sheaves *pcs;
+>  	struct slab_sheaf *sheaf = NULL;
+>  	struct node_barn *barn;
+> +	int cpu;
+>  
+>  	if (unlikely(!size))
+>  		return NULL;
+> @@ -4906,7 +4931,9 @@ kmem_cache_prefill_sheaf(struct kmem_cac
+>  		return sheaf;
+>  	}
+>  
+> -	local_lock(&s->cpu_sheaves->lock);
+> +	migrate_disable();
+> +	cpu = smp_processor_id();
+> +	qpw_lock(&s->cpu_sheaves->lock, cpu);
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  
+>  	if (pcs->spare) {
+> @@ -4925,7 +4952,8 @@ kmem_cache_prefill_sheaf(struct kmem_cac
+>  			stat(s, BARN_GET_FAIL);
+>  	}
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  
+>  	if (!sheaf)
+> @@ -4961,6 +4989,7 @@ void kmem_cache_return_sheaf(struct kmem
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+>  	struct node_barn *barn;
+> +	int cpu;
+>  
+>  	if (unlikely((sheaf->capacity != s->sheaf_capacity)
+>  		     || sheaf->pfmemalloc)) {
+> @@ -4969,7 +4998,9 @@ void kmem_cache_return_sheaf(struct kmem
+>  		return;
+>  	}
+>  
+> -	local_lock(&s->cpu_sheaves->lock);
+> +	migrate_disable();
+> +	cpu = smp_processor_id();
+> +	qpw_lock(&s->cpu_sheaves->lock, cpu);
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  	barn = get_barn(s);
+>  
+> @@ -4979,7 +5010,8 @@ void kmem_cache_return_sheaf(struct kmem
+>  		stat(s, SHEAF_RETURN_FAST);
+>  	}
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  	if (!sheaf)
+>  		return;
+> @@ -5507,9 +5539,9 @@ slab_empty:
+>   */
+>  static void __pcs_install_empty_sheaf(struct kmem_cache *s,
+>  		struct slub_percpu_sheaves *pcs, struct slab_sheaf *empty,
+> -		struct node_barn *barn)
+> +		struct node_barn *barn, int cpu)
+>  {
+> -	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+> +	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
+>  
+>  	/* This is what we expect to find if nobody interrupted us. */
+>  	if (likely(!pcs->spare)) {
+> @@ -5546,31 +5578,34 @@ static void __pcs_install_empty_sheaf(st
+>  /*
+>   * Replace the full main sheaf with a (at least partially) empty sheaf.
+>   *
+> - * Must be called with the cpu_sheaves local lock locked. If successful, returns
+> - * the pcs pointer and the local lock locked (possibly on a different cpu than
+> - * initially called). If not successful, returns NULL and the local lock
+> - * unlocked.
+> + * Must be called with the cpu_sheaves local lock locked, and migration counter
+
+					   ^~ qpw?	
+
+> + * increased. If successful, returns the pcs pointer and the local lock locked
+> + * (possibly on a different cpu than initially called), with migration counter
+> + * increased. If not successful, returns NULL and the local lock unlocked,
+
+					   		   ^~ qpw?
+
+> + * and migration counter decreased.
+>   */
+>  static struct slub_percpu_sheaves *
+>  __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+> -			bool allow_spin)
+> +			bool allow_spin, int *cpu)
+>  {
+>  	struct slab_sheaf *empty;
+>  	struct node_barn *barn;
+>  	bool put_fail;
+>  
+>  restart:
+> -	lockdep_assert_held(this_cpu_ptr(&s->cpu_sheaves->lock));
+> +	qpw_lockdep_assert_held(&s->cpu_sheaves->lock);
+>  
+>  	/* Bootstrap or debug cache, back off */
+>  	if (unlikely(!cache_has_sheaves(s))) {
+> -		local_unlock(&s->cpu_sheaves->lock);
+> +		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
+> +		migrate_enable();
+>  		return NULL;
+>  	}
+>  
+>  	barn = get_barn(s);
+>  	if (!barn) {
+> -		local_unlock(&s->cpu_sheaves->lock);
+> +		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
+> +		migrate_enable();
+>  		return NULL;
+>  	}
+>  
+> @@ -5607,7 +5642,8 @@ restart:
+>  		stat(s, BARN_PUT_FAIL);
+>  
+>  		pcs->spare = NULL;
+> -		local_unlock(&s->cpu_sheaves->lock);
+> +		qpw_unlock(&s->cpu_sheaves->lock, *cpu);
+> +		migrate_enable();
+>  
+>  		sheaf_flush_unused(s, to_flush);
+>  		empty = to_flush;
+> @@ -5623,7 +5659,8 @@ restart:
+>  	put_fail = true;
+>  
+>  alloc_empty:
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, *cpu);
+> +	migrate_enable();
+>  
+>  	/*
+>  	 * alloc_empty_sheaf() doesn't support !allow_spin and it's
+> @@ -5640,11 +5677,17 @@ alloc_empty:
+>  	if (put_fail)
+>  		 stat(s, BARN_PUT_FAIL);
+>  
+> -	if (!sheaf_flush_main(s))
+> +	migrate_disable();
+> +	*cpu = smp_processor_id();
+> +	if (!sheaf_flush_main(s, *cpu)) {
+> +		migrate_enable();
+>  		return NULL;
+> +	}
+>  
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, *cpu)) {
+> +		migrate_enable();
+>  		return NULL;
+> +	}
+>  
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  
+> @@ -5659,13 +5702,14 @@ alloc_empty:
+>  	return pcs;
+>  
+>  got_empty:
+> -	if (!local_trylock(&s->cpu_sheaves->lock)) {
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, *cpu)) {
+> +		migrate_enable();
+>  		barn_put_empty_sheaf(barn, empty);
+>  		return NULL;
+>  	}
+>  
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+> -	__pcs_install_empty_sheaf(s, pcs, empty, barn);
+> +	__pcs_install_empty_sheaf(s, pcs, empty, barn, *cpu);
+>  
+>  	return pcs;
+>  }
+> @@ -5678,22 +5722,28 @@ static __fastpath_inline
+>  bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+> +	int cpu;
+>  
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	migrate_disable();
+> +	cpu = smp_processor_id();
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
+> +		migrate_enable();
+>  		return false;
+> +	}
+>  
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  
+>  	if (unlikely(pcs->main->size == s->sheaf_capacity)) {
+>  
+> -		pcs = __pcs_replace_full_main(s, pcs, allow_spin);
+> +		pcs = __pcs_replace_full_main(s, pcs, allow_spin, &cpu);
+>  		if (unlikely(!pcs))
+>  			return false;
+>  	}
+>  
+>  	pcs->main->objects[pcs->main->size++] = object;
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  	stat(s, FREE_FASTPATH);
+>  
+> @@ -5777,14 +5827,19 @@ bool __kfree_rcu_sheaf(struct kmem_cache
+>  {
+>  	struct slub_percpu_sheaves *pcs;
+>  	struct slab_sheaf *rcu_sheaf;
+> +	int cpu;
+>  
+>  	if (WARN_ON_ONCE(IS_ENABLED(CONFIG_PREEMPT_RT)))
+>  		return false;
+>  
+>  	lock_map_acquire_try(&kfree_rcu_sheaf_map);
+>  
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	migrate_disable();
+> +	cpu = smp_processor_id();
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
+> +		migrate_enable();
+>  		goto fail;
+> +	}
+>  
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+>  
+> @@ -5795,7 +5850,8 @@ bool __kfree_rcu_sheaf(struct kmem_cache
+>  
+>  		/* Bootstrap or debug cache, fall back */
+>  		if (unlikely(!cache_has_sheaves(s))) {
+> -			local_unlock(&s->cpu_sheaves->lock);
+> +			qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +			migrate_enable();
+>  			goto fail;
+>  		}
+>  
+> @@ -5807,7 +5863,8 @@ bool __kfree_rcu_sheaf(struct kmem_cache
+>  
+>  		barn = get_barn(s);
+>  		if (!barn) {
+> -			local_unlock(&s->cpu_sheaves->lock);
+> +			qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +			migrate_enable();
+>  			goto fail;
+>  		}
+>  
+> @@ -5818,15 +5875,18 @@ bool __kfree_rcu_sheaf(struct kmem_cache
+>  			goto do_free;
+>  		}
+>  
+> -		local_unlock(&s->cpu_sheaves->lock);
+> +		qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +		migrate_enable();
+>  
+>  		empty = alloc_empty_sheaf(s, GFP_NOWAIT);
+>  
+>  		if (!empty)
+>  			goto fail;
+>  
+> -		if (!local_trylock(&s->cpu_sheaves->lock)) {
+> +		migrate_disable();
+> +		if (!qpw_trylock(&s->cpu_sheaves->lock, cpu)) {
+>  			barn_put_empty_sheaf(barn, empty);
+> +			migrate_enable();
+>  			goto fail;
+>  		}
+>  
+> @@ -5862,7 +5922,8 @@ do_free:
+>  	if (rcu_sheaf)
+>  		call_rcu(&rcu_sheaf->rcu_head, rcu_free_sheaf);
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  	stat(s, FREE_RCU_SHEAF);
+>  	lock_map_release(&kfree_rcu_sheaf_map);
+> @@ -5889,6 +5950,7 @@ static void free_to_pcs_bulk(struct kmem
+>  	void *remote_objects[PCS_BATCH_MAX];
+>  	unsigned int remote_nr = 0;
+>  	int node = numa_mem_id();
+> +	int cpu;
+>  
+>  next_remote_batch:
+>  	while (i < size) {
+> @@ -5918,7 +5980,9 @@ next_remote_batch:
+>  		goto flush_remote;
+>  
+>  next_batch:
+> -	if (!local_trylock(&s->cpu_sheaves->lock))
+> +	migrate_disable();
+> +	cpu = smp_processor_id();
+> +	if (!qpw_trylock(&s->cpu_sheaves->lock, cpu))
+>  		goto fallback;
+>  
+>  	pcs = this_cpu_ptr(s->cpu_sheaves);
+> @@ -5961,7 +6025,8 @@ do_free:
+>  	memcpy(main->objects + main->size, p, batch * sizeof(void *));
+>  	main->size += batch;
+>  
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  	stat_add(s, FREE_FASTPATH, batch);
+>  
+> @@ -5977,7 +6042,8 @@ do_free:
+>  	return;
+>  
+>  no_empty:
+> -	local_unlock(&s->cpu_sheaves->lock);
+> +	qpw_unlock(&s->cpu_sheaves->lock, cpu);
+> +	migrate_enable();
+>  
+>  	/*
+>  	 * if we depleted all empty sheaves in the barn or there are too
+> @@ -7377,7 +7443,7 @@ static int init_percpu_sheaves(struct km
+>  
+>  		pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
+>  
+> -		local_trylock_init(&pcs->lock);
+> +		qpw_trylock_init(&pcs->lock);
+>  
+>  		/*
+>  		 * Bootstrap sheaf has zero size so fast-path allocation fails.
+> 
+> 
+
+
+Conversions look correct.
+
+I have some ideas, but I am still not sure about the need of 
+migrate_*able() here, but if they are indeed needed, I think we should work 
+on having them inside helpers that are special for local_cpu-only 
+functions, instead of happening on user code like this.
+
+What do you think?
+
+Thanks for getting this upstream!
+Leo
 
