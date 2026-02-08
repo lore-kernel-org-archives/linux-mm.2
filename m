@@ -4,118 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B3BEF06E2
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 13:57:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ED0AEF06E1
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 18:07:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECAE56B0089; Sun,  8 Feb 2026 08:57:46 -0500 (EST)
+	id 46A666B0089; Sun,  8 Feb 2026 13:07:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E78426B0092; Sun,  8 Feb 2026 08:57:46 -0500 (EST)
+	id 4178F6B0092; Sun,  8 Feb 2026 13:07:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D767A6B0093; Sun,  8 Feb 2026 08:57:46 -0500 (EST)
+	id 3197E6B0093; Sun,  8 Feb 2026 13:07:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C5EBE6B0089
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 08:57:46 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E7786B0089
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 13:07:36 -0500 (EST)
 Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 65B8413B258
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 13:57:46 +0000 (UTC)
-X-FDA: 84421442532.20.1DAF9EA
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 98EAB140007
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 13:57:44 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iF8kgTkk;
-	spf=pass (imf23.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B5DCC597AC
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 18:07:35 +0000 (UTC)
+X-FDA: 84422072070.20.2E860D0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 27298180004
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 18:07:33 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eIjSMF/3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770559064;
+	s=arc-20220608; t=1770574054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=laAbqFSG/YMXdSL9qlzHaO6Y+AMdhAXScO1IYuxjFow=;
-	b=hZWAuGomYVFIWH98lpnnNYzNIblFt06pJLy0enVRx6oWfbYhP4Mk9boMvmWykdAjaZszn7
-	7kX1z9MLPwbxNsGUcRjHIGm+gF+so1L9cyVf7KTLjMlEhGyWRTjjocRKLfhvJDXuaELObq
-	ZzasnQqw178vPTmbnOvM+37Bl2Qd65Q=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=iF8kgTkk;
-	spf=pass (imf23.hostedemail.com: domain of klourencodev@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=klourencodev@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770559064; a=rsa-sha256;
+	bh=yMcDMMO5pUL3iromxDqvHXOfyfcuNP17tBgk7jNq3a8=;
+	b=oRCWrYzwd427jaShCoAboerpbhLqL0Ho8ze3ZiMzZOuf9/NX5e+qhNMFoZlSwcK78Gd7rN
+	RHF76UYxmdUmRsp0Eu17f7HSfLEgF7f+gEnswkxFFUYwSF3O1w/bWmkQfNTNDzc6vw09Lz
+	BaM+Lts/ostfQU4XX6ytMFFj2OQWVsQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770574054; a=rsa-sha256;
 	cv=none;
-	b=2yDt/WNDC5IEryTGcRO3M9LylhONmCfYUDvdvLqiKljffInQRWyP8tcjPpAqo+KAlpuSuf
-	x/63HSzR4j5WueCnZIxgA4+kGBTaSqP1WVQrqz3M1CNXMoWEBaWUKdwq145JZt+9eWERod
-	dpILBWuxPOaiONpuTZknUIm6VFfcsAw=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4359228b7c6so1272593f8f.2
-        for <linux-mm@kvack.org>; Sun, 08 Feb 2026 05:57:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770559063; x=1771163863; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=laAbqFSG/YMXdSL9qlzHaO6Y+AMdhAXScO1IYuxjFow=;
-        b=iF8kgTkk/rr7kZ7W6+wgtg1g4JFeKB0J2ABP88GHbDcwU8WIO1Gy5MLIfGgvpGIZyW
-         i3zluM9QiWXFS04illzcojh/q4WcYlpjPx8RI7f0qOi3FbpJv3hFoM2fXSmJJpfeO2yu
-         1AGfDpQkO5FdkS7Qjsor/tHH9787xBhRZFWBWcKwGdg1fFBnK3+4pq3mUKgexem+4vv0
-         aO5LFNjfiHNDjbvj5VRQ6mCgNFGxA7keIXcUi527hDKjeFtzWmGzSBACRdhCot/qV0+L
-         PwF4bzhhOqPCi4uH4/NXCmVj3vOnNHJycv5RJldaoGXueDhHZtW58C05GJ2iYjieR+JA
-         nZEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770559063; x=1771163863;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=laAbqFSG/YMXdSL9qlzHaO6Y+AMdhAXScO1IYuxjFow=;
-        b=XG9Te4AKV1FicKEIfQJqcH/YL+c1ifpPY9Fcw+Sc4qMdFMT6oaWAofKb+6X4AWdZW0
-         5fuOjruH5wrMOWgKNNR2m59k0btgfqu2welXrVOCitDvauYDr7OR+AlbVeFmFvfc1rtJ
-         JfbkjvHVVXyePjnijo4++0UqUGXuYPmRo1H3fERF1E6PtZf6kms/gHcbDvLM85RWT6nW
-         G0Q/7gfLzXfkC5wzjFOg7zRzQ3+VA7RAP6hj8yNMC0kzshfQuDgQUku9kiqIMEPRiq2X
-         lHngiUSLrGo3BjzzkKhrY4ZGWoHfgWyIkI0twNMbhviI8iE+I+VOoGbMY3cjluw13N79
-         GxYQ==
-X-Gm-Message-State: AOJu0YyGRhFO356vYUZVjxYHIxkvht13Fw7ezamy6upfjIW9R5oXM0Mv
-	IvdowKad7FuCcoE58+e71S1642kKzB0mIca5klRiNjhqE5AxMlcewb0xBp2Q+A==
-X-Gm-Gg: AZuq6aJgEWyNU006wRgJYBmNUmrzMY47ViynLu0XEWI3iyScYI2A2ix8EXQ48/WUsu2
-	MM3XFblIy/xeybudBT7Onj2/cRP/fCnbuSQGr2YMtHiDG1umGRCbohFenS+et3OvA3cL7Yt2ogk
-	/a9g/mcQEryOUNqf18rYcv+fZzfPYsGcx70iUMGQc9juCif0uofmKj1b/jnSqrLL//a3QE0WgfU
-	C2Fxdo0LABW3rPHTP/dIum4l9bgqqmDu4fWSXEif/7rBlDk8vM2K4ZPC7SfQ7nZbiZ2sAMpp3Qy
-	Md8GkZPhNANUylmG52N/2iRjqMf1wtEX+roJLzXb4LyUfzp+8zb6SGX4UtgSnGDoRrTvFabXFWM
-	daNAX4IFRDVeFw2FRZiep1EYqswpAY/LjOwPyvZ25mDXYWa9H5y3mfRH7c30vhcZdXOAKiZlkyU
-	RixFnTOFXowtP81XODvEv50NtgZNBBwv2UDa6xe6sZ8rewaBxOTmPy5pK663ig+0KSAFTNx997F
-	o/rBTpEitQuVwWpCQ4TcBfRVtkSue/JQYVRroukUfs0+5t4CNOdkUWagMnU+fZlI4BLp8g=
-X-Received: by 2002:a05:6000:186c:b0:435:a135:7772 with SMTP id ffacd0b85a97d-43629244604mr11519638f8f.4.1770559062461;
-        Sun, 08 Feb 2026 05:57:42 -0800 (PST)
-Received: from 2a01cb0006769b001185461c960a9b50.ipv6.abo.wanadoo.fr (2a01cb0006769b001185461c960a9b50.ipv6.abo.wanadoo.fr. [2a01:cb00:676:9b00:1185:461c:960a:9b50])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436296bd4desm20045169f8f.18.2026.02.08.05.57.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Feb 2026 05:57:42 -0800 (PST)
-From: klourencodev@gmail.com
-To: linux-mm@kvack.org
-Cc: jack@suse.cz,
-	rppt@kernel.org,
-	akpm@linux-foundation.org,
-	david@kernel.org,
-	vbabka@suse.cz,
-	brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Kevin Lourenco <klourencodev@gmail.com>
-Subject: [PATCH v2] mm/fadvise: validate offset in generic_fadvise
-Date: Sun,  8 Feb 2026 14:57:38 +0100
-Message-ID: <20260208135738.18992-1-klourencodev@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <CAFveykMPrkb=VYwQAjCEARsC_WAGfQXMz_gf8Q0CTHWHooNHVA@mail.gmail.com>
-References: <CAFveykMPrkb=VYwQAjCEARsC_WAGfQXMz_gf8Q0CTHWHooNHVA@mail.gmail.com>
+	b=VyZcgDXu1apwe9FcHJQCdFDk+Dc3lhGS1dkcnn/4BMOUx9PLmrbeU0mIcvyO5tVXv5FnXY
+	sGN3K4Bn3Z3WwBJipvuYIbClpLiMRQwVjY0PjUHQwIJs0Fqq7bgJHbQLZ5I0KlIJUFcSMw
+	uxHBXUK0X+QkhLHA82trJKjMLJcInn0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="eIjSMF/3";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 49CD4600BB;
+	Sun,  8 Feb 2026 18:07:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158FAC4CEF7;
+	Sun,  8 Feb 2026 18:07:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770574053;
+	bh=PxcXwLUBRw69pj0y/iw2r5Y8so1kEeFr6i4iz7h+PcY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eIjSMF/3JMss8Yv+gzQCRJWnr30dkiCVPZJUb/Twq/rYj3Ce0b2P3ZsnTT+JbZyka
+	 vlOgGbPj+Hs+7evu4WQ5ZZjNMTbLg8eophnbVM8l5Yw9ZGiNNRYPAhr1wZw7Mnbbjp
+	 s2KPl5J79HQ1SNpCBVRfzZ5+IMwcNfGdFOgsV3UiLeNGfPu/PNNdp4cUxruGUrFEv4
+	 wvtSKOjCooDTcqBbHi/diKNhFZrcnm2EgIxJKYeJivAggYo04X0Rr5a4R6B9kAT3/m
+	 7midGG2ywBRApW/wuU82yzTseJINdxFPeWtLzn+sGRIQ3Xm9/dKr0cw8XkzCYvxSLP
+	 yE1Cl6ejYcP8g==
+Date: Sun, 8 Feb 2026 20:07:25 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Jason Miu <jasonmiu@google.com>
+Cc: Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
+	David Matlack <dmatlack@google.com>,
+	David Rientjes <rientjes@google.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v9 1/2] kho: Adopt radix tree for preserved memory
+ tracking
+Message-ID: <aYjQ3WlwJkcvJOZz@kernel.org>
+References: <20260206021428.3386442-1-jasonmiu@google.com>
+ <20260206021428.3386442-2-jasonmiu@google.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 98EAB140007
-X-Stat-Signature: giskaw4ta84y3a6uxnwcgc83ubib5auo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260206021428.3386442-2-jasonmiu@google.com>
+X-Rspamd-Queue-Id: 27298180004
+X-Stat-Signature: 3tdkzkeg9h6aa1yy39fazsj9jdt83jkm
 X-Rspam-User: 
-X-HE-Tag: 1770559064-978410
-X-HE-Meta: U2FsdGVkX18IwNb58PPiWvnusPlFZpYHqWcfnVJptFtjpVHtDHz0JSdyYqzu2X575DmKNAjwdActsA6vuLueC4bkHsa0ojLyKP9PkeefXDVRJQKrvMPQTxZhYINK+MQZtzezyc2YdZi2CMEyt6LprPTtPHpRrwJ2snvH6po3dK3Bt9E2OEOHFlb+OqwpNS5i/5DDX6B7DZnujHGSsn+REjVj8qncEmFTdM7VJ1t4GqOIdcRPpw10ILFp3W5O5vnXsY3SEbsIQVyfgsLZZJFVprzlqXN1T7TUEuMFdF4ry8LKsyP1uxqlOwK6E5jYp5CpfCXOBVVTYMk7Svzbv7nEXS7y0VO/ONWPuv1Pl2pOhQlPLg7bolBApVyEr57u6XU8ke7meAjcsRRXbsEhGLIGbJkP0UkClk9nyPR39Et6M7PL8nmFaLG/O+lV72XU3fgEheKJbtFDntjivQPP0kUkCLdCCXOxl5Wl0k41zNDj+FOWz4iCBWiP3QhFB+o8quRvuKAFn0PdG5/m+9caYqtVp4eNig98gAv+CdVQIjs7yOyk95PunBwrC30G89evmW4B3xhK9rpbMjd2knjhr0fKz8urYgqwx1qicg45aXen0NucvYEkDV2IAOJNHrxYrh+XjbriyRlzbgbqQ9eGIT0vILtAiphn6AilWNkf/RqP4xYz6587lcflkK/1UnY8y8jRpAWfgsNbWnEOxtymLlI7SxHFCDwrW2othpyjHHZvx/e2Scxy6xienfbdbyGWk2P/hCriGz3fLFWG399pZsFYV5Jx4tnaJPdQnlKSEMQZ2iDpfCJULjHvlZV/LEK44jEqE0/K0Nf0hfGNQF5XdkfMO2eKpDI2AHwUgLS4rOTMaxTaSS4VcqUNa9JBO1f1YOxjO27PzbQ33bDfToEsj4PFhBZWiWPhSDBz01YYQsTlVRsVXmgqlLRnQbCt46p0oZuj2bd5ObRzkbwOVuJEZvA
- +YCnJxIT
- lg9Ewtd4Wq4bAc0KHHP3fBMtHeyZd9a+YoL30sPXBq2sytoHhwEsl275HmMJzZeGsPIvKdTt26WSeHenU0aydfkNThRlnIJTWsYgslt7E1c9/AQ88YplAbNMIEbPaXMELSrR7WbizNyMEv8iDOQo6wYMQ/dWfj1b1imMje2oX75hDsUkCI4Z6Vg+dU91gbhlP9wjhVID74pPGa6dEkX5azWFEoHjVnhjrzwC7nL9JtkLXkEhArBP/i4qmIJQ+XL6uLr1YN4A9v/2NdaR8Y+ZOY6xNy4OGCWIxEUpxclXA1lgnjWY9apCtaC9uDzvXN7RfbCbfoZ/foKNWx1ESppouCdbHypzSCM2MIKKwJH55bLpNFtzJFrQMC8VZ4XkHEoM9QYsSTT9+YYE0EZ/vAEdD5rZAwJ2rGkc30y5WoZ4+FCQFZQ/lY9W+rybPpIJGLuvEubmK12q4rFiC1J8fAlx7G+PQGw==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770574053-182991
+X-HE-Meta: U2FsdGVkX18mJbuAGhCvdgyxA0rqtMHuQzBI/+Rb6A+ozXuPPMtkRBlhtn21Laa3LERZv2tp2kn9cbDCjYbJMNkdFxbqWp2/Wl/qyjNlYW03Bll0Ho2nVV3mB67K+iaVIbW+ldPBtwmJOn/cpPv7UGs+5Bmqm/jUR30DVe426gI6MzWGHhiX33LGW5tiH79SD0FVatQ4v1bm69Qrj5hi7wFAhQ8ls9sIVyjhxARCIpsyqR7hgWvqHmkh1C7fXJk155EqOKJyen64Dju/oJH81gliXrfbuxeLgjJm+KWHu8lO+ZbDOD4ogzx/rFFXeGPWJFRLVKRGS8N8ebzNOg8j5D5sOxXBTJM3vLoloSfpadX3nJ9gJvSDmHW+XZXq3gmi82xjjN1Rxb20DT3RjPpWtTWt6kNl4gwIWqOyQFnkg4g3nxrEemkrQjxLxFvdRN0Scl7diaDkKUuccQ0hfCMLV56O+sFS6EU2gWahjVZ8UCE7NoGCsY/SfoGVlpZBWVdKO9o50S+FY/tDMd8ihcPIKQc23inIbOfHZY4dn6HlIt9VUlkWbjLOQM2w+4i4TixVxmQYD2INndUDO3WyeWLp3dNJIXQblftbn1wCCdSBxHZBvdwXwd43vU7y4JxDmS4F0PyefN9XDDiBO9wNAXNH8bvomfsFJXOUoFNNeWFUUVvZS6DSRNsvxDstG+Hogn0yOTw9vpjI7rcyplhY1VD3gD6jD8EC+NKwnarZphiR67EguILxqjM/5CYPa/xqJNcWIp3cDsabyk9tf/CmtYNNIRrt0Di+NeIT7Oiyk1oMCQHh/jsA36ZXKWwCXsb3ZqCMdVk4uACBpKP73/7v5DR1JvhTxQn98i4w7o7qfYeel8M5/kJexpRBvIP7wiTx9AKB+/lA4uG/F7RcVsUZFMJHoDJUC2f6qwJYsY3uE+2srCCzi0h7LV2yfQ7iPBd/KqGCoE64Sb6svjuqr0UDvQ/
+ mMwdN8R+
+ Z34Qg1CwFQ6Eo9i12ea7OAO7HPrHoz+kEaPHXECU+ZEiMVt7qQ20zoqbQWVqgMxgy8BVG43IzQuc6AXhLoqX53VIqDKIeFRn9QtaUmixvfMl6v37dZ9W/6NCvaxTTpsYnsFWy/9kgJawAdNHpoW6KssHvXniNBzsPqpfdJhDBfYHO6GGot5FdTkpyRwSQNfGlmM052gbjJiSlhlFDseVqoMQQAFsgMmr+tcMl7XIy1D0TPgxefIep8rPdwgftM5q4CxMOVhHeBqX3XipUGOlTQvf8+jGQeJqlNNNTB+J9U73Ys1g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,39 +100,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kevin Lourenco <klourencodev@gmail.com>
+On Thu, Feb 05, 2026 at 06:14:27PM -0800, Jason Miu wrote:
+> Introduce a radix tree implementation for tracking preserved memory
+> pages and switch the KHO memory tracking mechanism to use it. This
+> lays the groundwork for a stateless KHO implementation that eliminates
+> the need for serialization and the associated "finalize" state.
+> 
+> This patch introduces the core radix tree data structures and
+> constants to the KHO ABI. It adds the radix tree node and leaf
+> structures, along with documentation for the radix tree key encoding
+> scheme that combines a page's physical address and order.
+> 
+> To support broader use by other kernel subsystems, such as hugetlb
+> preservation, the core radix tree manipulation functions are exported
+> as a public API.
+> 
+> The xarray-based memory tracking is replaced with this new radix tree
+> implementation. The core KHO preservation and unpreservation functions
+> are wired up to use the radix tree helpers. On boot, the second kernel
+> restores the preserved memory map by walking the radix tree whose root
+> physical address is passed via the FDT.
+> 
+> The ABI `compatible` version is bumped to "kho-v2" to reflect the
+> structural changes in the preserved memory map and sub-FDT property
+> names. This includes renaming "fdt" to "preserved-data" to better
+> reflect that preserved state may use formats other than FDT.
+> 
+> Signed-off-by: Jason Miu <jasonmiu@google.com>
 
-When converted to (u64) for page calculations, a negative offset can
-produce extremely large page indices. This may lead to issues in certain
-advice modes (excessive readahead or cache invalidation).
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Reject negative offsets with -EINVAL for consistent argument validation
-and to avoid silent misbehavior.
-
-POSIX and the man page do not clearly define behavior for negative
-offset/len. FreeBSD rejects negative offsets as well, so failing with
--EINVAL is consistent with existing practice. The man page can be
-updated separately to document the Linux behavior.
-
-Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
----
- mm/fadvise.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/fadvise.c b/mm/fadvise.c
-index 67028e30aa91..b63fe21416ff 100644
---- a/mm/fadvise.c
-+++ b/mm/fadvise.c
-@@ -43,7 +43,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
- 		return -ESPIPE;
- 
- 	mapping = file->f_mapping;
--	if (!mapping || len < 0)
-+	if (!mapping || len < 0 || offset < 0)
- 		return -EINVAL;
- 
- 	bdi = inode_to_bdi(mapping->host);
 -- 
-2.52.0
-
+Sincerely yours,
+Mike.
 
