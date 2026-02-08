@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB698EF06E1
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 18:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B682EF06E1
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 18:27:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1433A6B0092; Sun,  8 Feb 2026 13:07:59 -0500 (EST)
+	id 9A7216B0089; Sun,  8 Feb 2026 13:27:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EDBF6B0093; Sun,  8 Feb 2026 13:07:59 -0500 (EST)
+	id 95ABB6B0092; Sun,  8 Feb 2026 13:27:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01A606B0096; Sun,  8 Feb 2026 13:07:58 -0500 (EST)
+	id 8870F6B0093; Sun,  8 Feb 2026 13:27:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E54DD6B0092
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 13:07:58 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id ABF79D60F4
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 18:07:58 +0000 (UTC)
-X-FDA: 84422073036.08.8547EE5
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BB026B0089
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 13:27:39 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 11232D60C2
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 18:27:39 +0000 (UTC)
+X-FDA: 84422122638.13.203C220
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2125440007
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 18:07:56 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PCkh6TOJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770574077; a=rsa-sha256;
-	cv=none;
-	b=XtUNyD6pB4ywg5eHA73q8oqSCmTbhqqg6b3LXy79wdpObRrmOKySaFrkGKi/lGKyWZ6XUH
-	OZ3Oil5sGQG5lKKOUlwUqp9FzAvC2HcHDuIGywHxprbMwJbgU87PdimmrJhiSp2GUj9/C9
-	JE9DjC5R1v6GVimP1MRglFdGjDqLg4k=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PCkh6TOJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 6A2A0C0013
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 18:27:37 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XWAOIIyB;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770574077;
+	s=arc-20220608; t=1770575257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sDzR9lpKjFEUV6LzjMz/jFbiERE11kuQT8Dk9zXCm+c=;
-	b=YyCVANAEDYAHy8goyAO/mbdRwj2e8xl4A0Iep00YDXRDosSF38VWu/y47KxIiWb1943h9i
-	415t59i56E/7buNnCBBC/Qp2xFPL45oDx6n+kfV1K9LjmFv7IUVMgnpAK6I5vIwK0a4RTq
-	guQ9Z6VhjciGwggUOVKRawoKEjxBJxw=
+	bh=ZiusDlZTeoocLZIqk00ovZotLUmwWaMt/gztGdV4JiA=;
+	b=kHlMmaxywqkYM99Jk1QJ5AExg/QT2H1QZKM2k5DQd5pDTXsOQYn7SkLw44L1u5Xl/DmY2y
+	3Q5hjTaNwuhFhjysmKKZmlCfGROc18mlmLDjoP3Mky8lubbtcMw7owko2QHcmRkA+rDrRK
+	JL5RU3DmbAeRNREisnqtJtpmiBdoAAs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XWAOIIyB;
+	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770575257; a=rsa-sha256;
+	cv=none;
+	b=uDzCUlkjXpNXbKm+xXKz26eToCyyuyjDZ3vUSLBn9yAkKsN4g/analFcj6xMo7rEMxRzb8
+	rjsq0hBjtVLbuAlhDljXbT2E2YQLHmRPquna/b0akSwjH6IxkxOZ4OczEpRmQ9kU+2FhzP
+	46fYq8Yg0DrIv2BVfsssiAYmbclxyZM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A8E0600BB;
-	Sun,  8 Feb 2026 18:07:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5FBC4CEF7;
-	Sun,  8 Feb 2026 18:07:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C72C8600BB;
+	Sun,  8 Feb 2026 18:27:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400F3C4CEF7;
+	Sun,  8 Feb 2026 18:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770574076;
-	bh=kQt8t7OYMDtNIa31uvKvR7rjvGtIHYQ481BGVMxx3o0=;
+	s=k20201202; t=1770575256;
+	bh=W3IffCLBrBgEf2FYeJ7rhswTjUr6OfyY2Wh/al7U8XI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PCkh6TOJJvFbwBRVm1u4XSnuqOddU90qqDYh7bHdCfTliBoksC2mZUXnJ6aM/9csd
-	 q5EN9teFq6YQCsfb28mfFOUt9tXnGZHFrKDbLeOsuGPhXeE8lkfUQzaTh7FDP0bAnO
-	 RrROpFFspU3v6NrUtV6rz/FVijUm8MwCTBTHLTtdjGrZCtkOOfxEdo7HSGsWOLbZRM
-	 1oNVh+YGmDLy13BHv5N9HTfyhrt6BVSGLK2yauQV8TQuaKKcIL2JuUSr+BDBtc6BGQ
-	 18hko4wU0uu6JDzKvMrlFSsqmgadgl/VnYXl37i4IsnSjopbD+MWorp2oRQNaISbDu
-	 lt5o7xLDLouTg==
-Date: Sun, 8 Feb 2026 20:07:48 +0200
+	b=XWAOIIyBjdG9Vc8ratkZMGToWGpGS/da+eAb3qMLd1bnOCHMIiwdJVYMFEEGWZm/q
+	 hAiMMVTUNzllZSc5rUdMmrZKayp2JI3ek7isQt2hiPO2xW760qnyYFsEnPKqkCRLSy
+	 bmat2sMb+3QLwuUtZK4IDo4A85NVbws0+iYLAFI6U19HjdA49JDmdFeejpnR1efl5x
+	 /+T7HZTx6VYg1VhNShhV8oM8AHaOUKqQztLzSP5psxii5nJuUggsCOlQaVS3RM8an4
+	 DSXWCdVhP1vEz4SmE7/Vz17lkpPXjuvsyiuR3wpC46gW4RCadIvavAT9vJHVMSkQVJ
+	 2t/caZhI65vyw==
+Date: Sun, 8 Feb 2026 20:27:29 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Jason Miu <jasonmiu@google.com>
-Cc: Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>, Changyuan Lyu <changyuanl@google.com>,
-	David Matlack <dmatlack@google.com>,
-	David Rientjes <rientjes@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v9 2/2] kho: Remove finalize state and clients
-Message-ID: <aYjQ9FYujrFJVDel@kernel.org>
-References: <20260206021428.3386442-1-jasonmiu@google.com>
- <20260206021428.3386442-3-jasonmiu@google.com>
+To: Jordan Richards <jordanrichards@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Jason Miu <jasonmiu@google.com>,
+	David Matlack <dmatlack@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] selftests/liveupdate: add end to end test
+ infrastructure and scripts
+Message-ID: <aYjVkb8qOA6yHDA7@kernel.org>
+References: <20260205222329.2419035-1-jordanrichards@google.com>
+ <20260205222329.2419035-3-jordanrichards@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260206021428.3386442-3-jasonmiu@google.com>
+In-Reply-To: <20260205222329.2419035-3-jordanrichards@google.com>
+X-Stat-Signature: nbcxno3r5ps3sp5bzddumneaatmmmq43
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 2125440007
-X-Stat-Signature: az1ubsjc3q5yr9yf4uw8fse638b8bqbe
-X-HE-Tag: 1770574076-729950
-X-HE-Meta: U2FsdGVkX1++QXahA+/z5cvLohyhtyPbZ3kAqhgyQvEL5jntqd8Qk1INURzs5WlIeDidGVCkJ21a236s/j0TgkQyDYYoCaSXKcgjUKNau5jtCysi1AFvz/rSq69bgyJP87LhFqlD+kddvTIM9/Y0sJgrxWBdNlrBiO9voT7S1pSFRMKbbBjzPb/wEsjdqa7zcFGlZ0LGcQvYuzQNy+oN4tZYAUZgFTEnpSCZ/XZeu7amSRmp43P4jRlc0ePx7mI05WZoEvLL/6xFhP1Bx8ClfmRIT3py8E4aTbcgH+giSWpP0xhG89D5rHS/c2KBFYTO0jhB6cEROcokbyNQKY/RvDBeAY0ZOUO2QmEoxRkBUDYl4NxBZ6PhE7NBG8ac2TQEEGamzvf2rc6khz5FtEx/xzpIBwuerHzPXhsEmLY+SJeFcUfgGnEnzt/CocHCpYK+x/EIwCVceNq3dWGSHamFg63e/QNinuVwWAxlV6v4Z2QojIKxDoE2YeyDJ05su2aoVaoL8uCt4iKGctxk1cukKExtheorMSMdg+lMduYa/VX6hpYkSbMo4EyMEjqM23J7znQ+6kVLtEd5hXDYcb1YCS3fkqAGndzn00qX1URSiIicXp3kk3V7I3LhASBN40AER8fNIbWqHWcyJ/z1FhRpmHy5s0xNl3Mzswzy7CukMTzvtlvhk9UNNRS5hPwafhUIPNKop/myJ5qv5tkeJoiNsB0RKjxbfSG3k0qKm/C39cJSxiE9vBQ0IGlH0lK2NDxVU5bTPmC3ktsPdDzNjRp3vTA0QNjkQDku69hUyVn1dhENECoHwBQ5M/uqWL17b3A3bJToPmPdIWOnkRy/B8V8CQaJ9yQ2v5v8SZIw7Rx+9cguPRO7kWVet51m3tJHJHCngGrD4WfmDR5cqrTt7ARMRkP3Xf/ccGnyYlMYSQnfjd4pXCJi5R/eAv8vRvcs06Mzr71lbmbtrsASJkbkjsW
- CyA7uSBX
- 0w4MVp0nxvmmx6nruF1Cp9zImigz6yEGCpoiVN9gSXbMq54ynip0bWBukOWv3mE3cN4t2Y0QMtv+atvFp1fcD6cDvcSV6E/o/GhhCiaD0d6kGdyQ88Ve2mvQEiVqI7fPEP7OvjYU3YOZobJDuVNPppLCHNMj25gODu4IlVdPUIKVQkER9ZDrVkZCZsqcOC+V1vLHvGUUwHloSinqWyxlF0E/xqg5d67cg/PDjK0jyQqa5oxXLB5VSdrhNLf256PMQcTYKN+N65AQXbYtXWjVqMliFKTPenLU667Vt1fA9M9e97+E=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 6A2A0C0013
+X-HE-Tag: 1770575257-455855
+X-HE-Meta: U2FsdGVkX19vqD65CiJmLGx1v1SzxfBWI77/NOUuSKsc/j3sT1YRJbk6XlCQo6rYFbari7aISVgMZq9tm5aBPFMpHy3YYOW4bjeqX/9hdXYJrnbkJtZ52y0mT65u8u1pJxZC6sdXhEJmuuWUrSCrJINzYTjrRWoIExbnGMG1ThXNEkzG4Zm0SULya0zIV+eJz+LEG7QQhUrfm6bVkU+VHGtTDEKUqbc8K8GarW+drvscTMbmcRNfhocx0XDHkqgqJM9jX4XWx5xlyy1FUJIDj1E3RU4cJ1QihVyM5ZsReiPZ5GEAf6udPCEg+PipYEjbOrh8+0anNlXuWMC2oXtgVR+jbjjJW+lTgRr6zQrW7BRavTSArBRhnNAiarL8Q33yo+u5+IlDJvNH3kbM4Uv2fIPMiQj4rXVyXpTXJgfFCkpgmIldeyGtFiSRsQjMFBYxqTavBCZE/OxpBJRFpO/QLiuyOc+6cTh6G5LPw1PSKDqGHJJ7us+gqPELNqtDIDmyC+tMnaRlKx6EPrOL9FwrFG8Inm1QqX9Hcx3JKNrd9BXey3Vw+K16ZBkejaaWEKPfJF41fY1eBjHVm55HOvjH4feDNAqXR5bd8oFThb6B3mQRttzXHgicweuykljUV1B77b0ilF9/hnKBGjJ/Zi7gOqdMSUkxBmF498rmdi90g2JM74+7HaIVVqvdEZ9xwg78OUertjlcOnpRJxcEGswNiEwk69jhi8GSSj98gfiV3cpvwuUvys2XgT8fkj4yCeCkaBGfE3px8nEQP5+dpPZTUmLQJAVSIqUkTtOn18D9Ax+cxYMBdsffKJhl65z4s/tCumlPFaTp1QTU/KfG9QSvj4qx4j81kk8pvh2W0lxemTghcLHu9KK54fZfvW67ZKq3qIqj/JtqrR2TUgTvC7gdkltZ+fMPrRSQtC9tOCV37AA1/5pVZxubF4cVODgdDzkcmuc5glkKq+RaiccnP+V
+ 2XnwmmcM
+ vml0/rz++6MeoihiKJVRCpVS+lK1Mkzl3lxN4dD+NyMQnJVBVpnB5/ofgYcGDWYnQ2dK4iHXBisJmX7xXvF5WCVb+XvmxTnCNKyqiUnJwxTUz5JmXBrk5tCrJIuyQTnjqBWQTkTBvHx4KgJUwmwLtbB5yjx1B6idAdoDOstiXSmt7YheGQPWmMIWh34fQ8yWMMsyuQSGWdlOR1BddpmmMbAHnSgRDq/I4VXKJSzzhBKcyIBpKA1G3y3EtGGa09Fdtxrl9MeBv1RZKTTQMOwnYawnXA+t30ksXYUwr9fS/uOhZPkgwKZRdw8Q9vULkTlzDHuS8I6qcQK67nlB5KazDt7T5TxbvgmDpBT/uIPg3gmis+es=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,20 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 05, 2026 at 06:14:28PM -0800, Jason Miu wrote:
-> Eliminate the `kho_finalize()` function and its associated state from
-> the KHO subsystem. The transition to a radix tree for memory tracking
-> makes the explicit "finalize" state and its serialization step
-> obsolete.
+Hi Jordan,
+
+On Thu, Feb 05, 2026 at 10:23:29PM +0000, Jordan Richards wrote:
+> From: Pasha Tatashin <pasha.tatashin@soleen.com>
 > 
-> Remove the `kho_finalize()` and `kho_finalized()` APIs and their stub
-> implementations. Update KHO client code and the debugfs interface to
-> no longer call or depend on the `kho_finalize()` mechanism.
+> Add the end to end testing infrastructure required to verify the
+> liveupdate feature. This includes a custom init process, a test
+> orchestration script, and a batch runner.
 > 
-> Complete the move towards a stateless KHO, simplifying the overall
-> design by removing unnecessary state management.
+> The framework consists of:
 > 
-> Signed-off-by: Jason Miu <jasonmiu@google.com>
+> init.c:
+> A lightweight init process that manages the kexec lifecycle.
+> It mounts necessary filesystems, determines the current execution
+> stage (1 or 2) via the kernel command line, and handles the
+> kexec_file_load() sequence to transition between kernels.
+> 
+> luo_test.sh:
+> The primary KTAP-compliant test driver. It handles:
+> - Kernel configuration merging and building.
+> - Cross-compilation detection for x86_64 and arm64.
+> - Generation of the initrd containing the test binary and init.
+> - QEMU execution with automatic accelerator detection (KVM, HVF,
+>  or TCG).
+> 
+> run.sh:
+> A wrapper script to discover and execute all `luo_*.c`
+> tests across supported architectures, providing a summary of
+> pass/fail/skip results.
+> 
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+
+I think you also need 
+Co-developed-by: Jordan Richards <jordanrichards@google.com>
+
+> Signed-off-by: Jordan Richards <jordanrichards@google.com>
+
+With nolibc fixes Thomas requested:
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
