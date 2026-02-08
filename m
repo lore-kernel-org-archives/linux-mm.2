@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EC52EF06E2
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 10:23:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630F7EF06E3
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 10:35:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 233316B0089; Sun,  8 Feb 2026 05:23:06 -0500 (EST)
+	id 98F296B0089; Sun,  8 Feb 2026 05:35:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B6936B0092; Sun,  8 Feb 2026 05:23:06 -0500 (EST)
+	id 93D0B6B0092; Sun,  8 Feb 2026 05:35:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B8E26B0093; Sun,  8 Feb 2026 05:23:06 -0500 (EST)
+	id 814C26B0093; Sun,  8 Feb 2026 05:35:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EEB426B0089
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 05:23:05 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 802C414054A
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 10:23:05 +0000 (UTC)
-X-FDA: 84420901530.10.0134782
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 721D26B0089
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 05:35:57 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id F39B913B1F5
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 10:35:56 +0000 (UTC)
+X-FDA: 84420933912.29.6C01C0B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E9A67100005
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 10:23:03 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hFIlpYuV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6503514000A
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 10:35:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DHI2emSy;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770546183;
+	s=arc-20220608; t=1770546955;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S9EksYV9/lRgzN5hUhPRpNXuRskPBsHzGvJwBmB1B2A=;
-	b=mHqulqnOUBivzyWe0Mc026tdRFoO+Vy59dF8mBcsg/lan77dA6HGYTcNJvBLM3ZlQ2Q7dd
-	zdRMKN3rpXkCFU9dr4J28fergMgFcsaR1kDXAwJ4BDGertIitReSAWbAaotF/jNT9DtT0n
-	VkYkxKNs2XQ+pPp9F/VDnscbbwQLDuE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770546183; a=rsa-sha256;
-	cv=none;
-	b=wIsxH6gPwl0SRxXaku99+8SKrlUSuDUMZxc836B30A7PtO00vcgDdjRV39jCWfrItkWC0G
-	t+4/CjbnosuulFK6GZfGEHSxl8k6ZQhSxS8fNBK4dcQ+aowzeUp07IMTYxRGlnqEgoBkjx
-	NXyF6rU1IyHKdm96mGGcADAarLazXf4=
+	bh=lNkI+X5SQaIjgY9uzom2rkwzqdojhUd2Fwd8ZFcFbFM=;
+	b=aJFnx9wX2GFNU9kuWCEMbeabrD+fEoKfs5m0BSUpIHngJq+knNM8xN3ZnYkI4P4E+X75Zj
+	KR/y+V+yPndxtXUojfF+69gpKKQjhO/cL2lKV7McZujgarLOZcLgp1WkIA9vvtdfNbR5/c
+	/cpCOzhD4zXXvSzCgaSB1jneu+PXWaI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hFIlpYuV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DHI2emSy;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770546955; a=rsa-sha256;
+	cv=none;
+	b=zh3zsDisHXJpo46dpBFTPfF0ATJXoom/e8DU+onfY4z1jTdFru6QzPvxUcJ02XzVlf3tO5
+	G/mHk4soaReophIIvgP9ZUikg06JgrdNHHl0EGWSRKbZpRxUElAK6Acv/TShLHxIy86drh
+	lv9h1NQvL1m1xA7JlRiZ8hzV9HoDUWs=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4DCDE60054;
-	Sun,  8 Feb 2026 10:23:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001AFC4CEF7;
-	Sun,  8 Feb 2026 10:22:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B090A60054;
+	Sun,  8 Feb 2026 10:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44937C4CEF7;
+	Sun,  8 Feb 2026 10:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770546183;
-	bh=X40rdyS6Y6fl2CRiDiW77eJoxxt8y+6p1hMAAnDEfLU=;
+	s=k20201202; t=1770546954;
+	bh=NCs3O9G0c7KmfcC7DUEEfBaavqJKwtKWSCCSSJCxCXI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hFIlpYuV5D2Emx0Q2sDypBVW+AhWi8fSuO40+NXrjL28KqRmx6A6QX5FXeeOTE2lp
-	 6vMssip5iI0KL66gFswfQfau4ZitOqeDjeJPa5ij89+dq4dttWgDU68XSnzlha4G9f
-	 LTAWMWKeN1Z54We7+CPufJwweWX/BWwB+W/BOGIgIDkmowaq+fRqHccfv5EgbnMUUr
-	 IEeSng43gd7rVXZgTs/6sXTfjTo0xIdTvGOXB2DRzi2krxzvdH8dqRYbYcOmrYKZu0
-	 JiSwbNAXpr6U01oLDpnksOIAJDuhD6t0mXS6fR4uz+MuX72J1xltL3Z2pLZXcGmATE
-	 /Uj7w4dxYwc2w==
-Date: Sun, 8 Feb 2026 12:22:52 +0200
+	b=DHI2emSyf/h9KNTv2IQa99c6pbUNy9Y3CyumFJhfQM9X9sNJK2YKz96xu4+MvoShI
+	 chp7QJ63k+b7JYA5WIljxUYJ1tO9iCEPCP4fW3j4FC7/5mrQnZvqltsS2DOdYrxwMU
+	 o9leLokeK6IE5wXm8Hi30/fuUWxWLyiUokHEL+NA7GVobITxA1AMqAFGOFAoNR2Azp
+	 Ac0vKsyJ+LvNPFNJOWsWwWkdq5Y0XswOIHqlARomtxWu1vODPKYBYCyiLmnNZmEeGm
+	 2MqT4sQDHyGPGQ2ZD9UlJ1/V+LqIPtVvLHnboQUcjkAhbWf0SBrwqAGjF+L/1h6ABA
+	 bCW+eewRE9VIA==
+Date: Sun, 8 Feb 2026 12:35:43 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Peter Xu <peterx@redhat.com>
 Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
@@ -84,24 +84,24 @@ Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 09/17] userfaultfd: introduce
- vm_uffd_ops->alloc_folio()
-Message-ID: <aYhj_H2X141wU3oF@kernel.org>
+Subject: Re: [PATCH RFC 10/17] shmem, userfaultfd: implement shmem uffd
+ operations using vm_uffd_ops
+Message-ID: <aYhm_4difwN5XXxe@kernel.org>
 References: <20260127192936.1250096-1-rppt@kernel.org>
- <20260127192936.1250096-10-rppt@kernel.org>
- <aYEhgA1dY0biVYb8@x1.local>
+ <20260127192936.1250096-11-rppt@kernel.org>
+ <aYIzCuh8cjd09zrP@x1.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aYEhgA1dY0biVYb8@x1.local>
-X-Rspamd-Queue-Id: E9A67100005
-X-Stat-Signature: kadur418hpgztgsxaq8uofghequeiqja
+In-Reply-To: <aYIzCuh8cjd09zrP@x1.local>
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770546183-807860
-X-HE-Meta: U2FsdGVkX197N9F5zHa/Y4jT2Gz+k/8yrUfhhOTfmI8uKiac7jr6kOHRgnUAsgy0QoriVHEnTKlwydVxK1Y90hWVwM/fy1hfWVacgO7+0AXAJdqPza4mWkvvWXZK24fwPv0i9itrcmHAevlnIACjHKTNX0I0scl1VptEivERkwlLRv3AeG+1Xbx5+cotMjfOurV8NbPQs6fgO6VZcwY0GH2lSJvFNuUDCwOI3fPCsGygBaNRrz8oIo6IWlAULUlFWyd+bmEukYx1YTxBx7yOYzi8AFWLdQV64ljwv0QQKSzIrYzfuBc7b0uVwxWIoRP6WOtTOUpK6Fn62TMJE4P/0WpkdcXSlC8chNT5IHkGMjQtXRyei3kh9BkFjdnMyf3hBCFpjWRqqjsIAHRXa9dbY1FtliZC0XKBOIU8+YNzlAvtlxqVaNaT1TFxUxP+uX20l7v0vJZWxzooZwNV0gLUz4GD+FlLtsYH1jk8kE1qpTBjUI0VYiSqSXYZY+KqJqETpdPYZhL9zv8UIH3bPpjAsaAD/KdVBV7EY16ikBA+cfqZf4Z2TMeJjsnlvtXTckXI1sPfuz2bw1uGeTLfdt1Qi9JQEBQQYZ099sL7LfVXN/az6SrHYZywlTxj66g7dJucVIFQyPhWEw1mFlNGvqu10vNVG+6hFdIzGYyysXRlNK01ZSk3CTURGYVi93Wmsi/aVTPA6h+rt7al92DQq/3ys1MxnsFu4Iie91jz1ACRS4K/olsE+d1BLFfuxF9XTz+f1jxWP52PhyXHibN2NfaZldO18eR6ntyulHesl9QjXPHi4ZHLikLYMR++b5ZjwB0aKd/CDh9iDKS7AFSnO6OeFEDsjl+XAFDDntUPXtEhuXZkHQjKl0l4n2L47hvYWIx8bVA8dbpJrK3SZFqpkDDzevyRRxWSTDK/Q580I5Sr02tWBi/o9PGbF/ygqYPMWw86fXWSXdP4Vya2aiZbkDP
- EiZJF+Vr
- YmekL6gL73hUawQMLl9xiu2RWeahaRJ/QdIAVoNfxuuPhTOchc2YKOHEa3iw0IcrupprbpXAIQk1jBtzh6eOy1ZSXoZ5O3kVtwaksuXsZcqWWrx/VR/Sqe8Q+4JDnGQ0DhWGX0RMtB6mm4ij3YT0ZDPQtan8MPBxVbGv8y1CMWaHsDWr1npVkdOaQhmnQWNZuqkkU/oWPeHgeJ6mmsVP0VGnMM0OBs+RqkLaXFaHObQiu+ILiRKIsUt3GmBr5RK0+As/KhQBF0LtdckogDGF3c3DtLFMkzpSEsS2TGG88WNBo44Y=
+X-Rspamd-Queue-Id: 6503514000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: hddmnfrt3rgb8813wsjy1pq34n3gjnxn
+X-HE-Tag: 1770546955-378129
+X-HE-Meta: U2FsdGVkX18wBqQ6AWs5KJVdsJisp4kyiLeXYNFnviTtliLxxKkenmub1gZBGfyEHiZjW4MrAP2tIX1DlyvfcnE6LrJ8ezyqSmsbJKNzmRzk2zNa6K9lJxb7+ifpvB6bHSIEDdZ567gdB3XyeJtevK/9KgFRDCpLeAm58oatYr/16/6Zw7Tr31KpMK+UKvjWdTphSIiE7yoHaCERRt25JD1GcArMJX3aNg09i1S/BZ0L3XW+dKbm5gaP++2rYnkJNljA+eszDfuVWEVIdDDoGRR999tX8quRESxrF7XEx0wPL5HuSx3N/a/dEMvqdrd4BbRrnIjqfpxvnfRz1rSBt4rCgracAEwYIyAK6C5VL8DKACCvyLyQGbYxbemUCdZbfgOch2XzOaB5Qt9bin1CEO7+erJGOZbbgx0BUokiat9cdlYF8SVLsZucerXV+VkAn94lYbi+f55pXpRaC4t1L8dxjDNUHM8h3dtzCqTQw39ssuqEJO/uhdGwVTj3HlvM+Fr9MkwTD+JPCWSPo6W7hl3WuyTkbBuZNEXV4oCiUcGmb9ERwueQzjPHJAYdaK7FbD8xwmLfYAIZgqcd7MNe3lbgkvWal5rRmaVOwXKWb15GQi2Zojeo2PWKHGrAbo2NSgIhUD1YSjrHEWu6UW67x4uZsmQPiNj+t3DvYrX/vfRThnxV6waQzM+RGuOViZzw7RyqEk/HaaBmyGQmAmKRPP9TTXC8Gwy3GMM0v5UjceBsAWtYswdaX55AMyc4cJ0BI16RvtAI+JKWk4vani8kUzUwH3tYgYX/8U+UvZaAUY0g5HZiNzdvdvGKjQKJ+iwJVLwSgoKoCPGkjcvuvcaZWJCS5Ox9SdYH9wGnHpblnpeSjur4mdVAAQv231GGnrU7tAfYoP2BKs5lXZ5x5dKT345hdw2qNmCWGUY7RBT137aj/Sr6ULjfGATvldOe2ENs5Uz6aR+qEjtsQUPOokU
+ pj5Z1k+4
+ 4wV5ah5doNTEwj0kjiTFl4a3FrmNigUUC8q7WHCCqju6iPKSZkRV8Onpdn+SQkGwU9PweUoEJLvu7HkY9YotqBfrdT6ScRWeV2KG4cIlQcGUMBSCqSR9Cb0xHvehI+1/YQlHHIUKdJFadMbi2W4YMHKSKY9aElLOjct++OMcfw+oCk5l/rSlk8FhugpEWrswe1UR0xTmoz5o9Hxjw/c49RCPUj6WVw9Jtd78VvLybVcorl6eWiTH0Vlyn3N53GzvgEuVCR7mEGk8U+5VGDICgkTLpwg1K/hKACBb5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,74 +110,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 02, 2026 at 05:13:20PM -0500, Peter Xu wrote:
-> On Tue, Jan 27, 2026 at 09:29:28PM +0200, Mike Rapoport wrote:
+On Tue, Feb 03, 2026 at 12:40:26PM -0500, Peter Xu wrote:
+> On Tue, Jan 27, 2026 at 09:29:29PM +0200, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Add filemap_add() and filemap_remove() methods to vm_uffd_ops and use
+> > them in __mfill_atomic_pte() to add shmem folios to page cache and
+> > remove them in case of error.
+> > 
+> > Implement these methods in shmem along with vm_uffd_ops->alloc_folio()
+> > and drop shmem_mfill_atomic_pte().
+> > 
+> > Since userfaultfd now does not reference any functions from shmem, drop
+> > include if linux/shmem_fs.h from mm/userfaultfd.c
+> > 
+> > mfill_atomic_install_pte() is not used anywhere outside of
+> > mm/userfaultfd, make it static.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> [...]
+> This patch looks like a real nice cleanup on its own, thanks Mike!
 > 
-> > -static int mfill_atomic_pte_zeroed_folio(pmd_t *dst_pmd,
-> > -					 struct vm_area_struct *dst_vma,
-> > -					 unsigned long dst_addr)
-> > +static int mfill_atomic_pte_copy(struct mfill_state *state)
-> >  {
-> > -	struct folio *folio;
-> > -	int ret = -ENOMEM;
-> > -
-> > -	folio = vma_alloc_zeroed_movable_folio(dst_vma, dst_addr);
-> > -	if (!folio)
-> > -		return ret;
-> > -
-> > -	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
-> > -		goto out_put;
-> > +	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
+> I guess I never tried to read into shmem accountings, now after I read some
+> of the codes I don't see any issue with your change.  We can also wait for
+> some shmem developers double check those.  Comments inline below on
+> something I spot.
+> 
+> > 
+> > fixup
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> 
+> [unexpected lines can be removed here]
+
+Sure :)
+ 
+> > ---
+> >  include/linux/shmem_fs.h      |  14 ----
+> >  include/linux/userfaultfd_k.h |  20 +++--
+> >  mm/shmem.c                    | 148 ++++++++++++----------------------
+> >  mm/userfaultfd.c              |  79 +++++++++---------
+> >  4 files changed, 106 insertions(+), 155 deletions(-)
+> > 
+> > diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
+> > index e2069b3179c4..754f17e5b53c 100644
+> > --- a/include/linux/shmem_fs.h
+> > +++ b/include/linux/shmem_fs.h
+> > @@ -97,6 +97,21 @@ struct vm_uffd_ops {
+> >  	 */
+> >  	struct folio *(*alloc_folio)(struct vm_area_struct *vma,
+> >  				     unsigned long addr);
+> > +	/*
+> > +	 * Called during resolution of UFFDIO_COPY request.
+> > +	 * Should lock the folio and add it to VMA's page cache.
+> > +	 * Returns 0 on success, error code on failre.
+> 
+> failure
+
+Thanks, will fix.
+ 
+> > +	 */
+> > +	int (*filemap_add)(struct folio *folio, struct vm_area_struct *vma,
+> > +			 unsigned long addr);
+> > +	/*
+> > +	 * Called during resolution of UFFDIO_COPY request on the error
+> > +	 * handling path.
+> > +	 * Should revert the operation of ->filemap_add().
+> > +	 * The folio should be unlocked, but the reference to it should not be
+> > +	 * dropped.
+> 
+> Might be slightly misleading to explicitly mention this?  As page cache
+> also holds references and IIUC they need to be dropped there.  But I get
+> your point, on keeping the last refcount due to allocation.
+> 
+> IMHO the "should revert the operation of ->filemap_add()" is good enough
+> and accurately describes it.
+
+Yeah, sounds good.
+ 
+> > +	 */
+> > +	void (*filemap_remove)(struct folio *folio, struct vm_area_struct *vma);
+> >  };
 > >  
-> > -	/*
-> > -	 * The memory barrier inside __folio_mark_uptodate makes sure that
-> > -	 * zeroing out the folio become visible before mapping the page
-> > -	 * using set_pte_at(). See do_anonymous_page().
-> > -	 */
+> >  /* A combined operation mode + behavior flags. */
+
+...
+
+> > +static int shmem_mfill_filemap_add(struct folio *folio,
+> > +				   struct vm_area_struct *vma,
+> > +				   unsigned long addr)
+> > +{
+> > +	struct inode *inode = file_inode(vma->vm_file);
+> > +	struct address_space *mapping = inode->i_mapping;
+> > +	pgoff_t pgoff = linear_page_index(vma, addr);
+> > +	gfp_t gfp = mapping_gfp_mask(mapping);
+> > +	int err;
+> > +
+> >  	__folio_set_locked(folio);
+> >  	__folio_set_swapbacked(folio);
 > > -	__folio_mark_uptodate(folio);
-> > +	return __mfill_atomic_pte(state, ops);
-> > +}
+> > -
+> > -	ret = -EFAULT;
+> > -	max_off = DIV_ROUND_UP(i_size_read(inode), PAGE_SIZE);
+> > -	if (unlikely(pgoff >= max_off))
+> > -		goto out_release;
+> >  
+> > -	ret = mem_cgroup_charge(folio, dst_vma->vm_mm, gfp);
+> > -	if (ret)
+> > -		goto out_release;
+> > -	ret = shmem_add_to_page_cache(folio, mapping, pgoff, NULL, gfp);
+> > -	if (ret)
+> > -		goto out_release;
+> > +	err = shmem_add_to_page_cache(folio, mapping, pgoff, NULL, gfp);
+> > +	if (err)
+> > +		goto err_unlock;
 > >  
 > > -	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
-> > -				       &folio->page, true, 0);
+> > -				       &folio->page, true, flags);
 > > -	if (ret)
-> > -		goto out_put;
-> > +static int mfill_atomic_pte_zeroed_folio(struct mfill_state *state)
-> > +{
-> > +	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
-> >  
-> > -	return 0;
-> > -out_put:
-> > -	folio_put(folio);
-> > -	return ret;
-> > +	return __mfill_atomic_pte(state, ops);
-> >  }
-> >  
-> >  static int mfill_atomic_pte_zeropage(struct mfill_state *state)
-> > @@ -542,7 +546,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
-> >  	int ret;
-> >  
-> >  	if (mm_forbids_zeropage(dst_vma->vm_mm))
-> > -		return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, dst_addr);
-> > +		return mfill_atomic_pte_zeroed_folio(state);
+> > -		goto out_delete_from_cache;
+> > +	if (shmem_inode_acct_blocks(inode, 1)) {
 > 
-> After this patch, mfill_atomic_pte_zeroed_folio() should be 100% the same
-> impl with mfill_atomic_pte_copy(), so IIUC we can drop it.
+> We used to do this early before allocation, IOW, I think we still have an
+> option to leave this to alloc_folio() hook.  However I don't see an issue
+> either keeping it in filemap_add(). Maybe this movement should better be
+> spelled out in the commit message anyway on how this decision is made.
+> 
+> IIUC it's indeed safe we move this acct_blocks() here, I even see Hugh
+> mentioned such in an older commit 3022fd7af96, but Hugh left uffd alone at
+> that time:
+> 
+>     Userfaultfd is a foreign country: they do things differently there, and
+>     for good reason - to avoid mmap_lock deadlock.  Leave ordering in
+>     shmem_mfill_atomic_pte() untouched for now, but I would rather like to
+>     mesh it better with shmem_get_folio_gfp() in the future.
+> 
+> I'm not sure if that's also what you wanted to do - to make userfaultfd
+> code work similarly like what shmem_alloc_and_add_folio() does right now.
+> Maybe you want to mention that too somewhere in the commit log when posting
+> a formal patch.
+> 
+> One thing not directly relevant is, shmem_alloc_and_add_folio() also does
+> proper recalc of inode allocation info when acct_blocks() fails here.  But
+> if that's a problem, that's pre-existing for userfaultfd, so IIUC we can
+> also leave it alone until someone (maybe quota user) complains about shmem
+> allocation failures on UFFDIO_COPY.. It's just that it looks similar
+> problem here in userfaultfd path.
 
-It will be slightly different after the next patch to emphasize that
-copying into MAP_PRIVATE actually creates anonymous memory.
+I actually wanted to have ordering as close as possible to
+shmem_alloc_and_add_folio(), that's the first reason on moving acct_blocks
+to ->filemap_add().
+Another reason, is that it simplifies rollback in case of a failure, as
+shmem_recalc_inode(inode, 0, 0); in ->filemap_remove() takes care of the
+block accounting as well.
+
+> > +		err = -ENOMEM;
+> > +		goto err_delete_from_cache;
+> > +	}
+> >  
+> > +	folio_add_lru(folio);
+> 
+> This change is pretty separate from the work, but looks correct to me: IIUC
+> we moved the lru add earlier now, and it should be safe as long as we're
+> holding folio lock all through the process, and folio_put() (ultimately,
+> __page_cache_release()) will always properly undo the lru change.  Please
+> help double check if my understanding is correct.
+
+This follows shmem_alloc_and_add_folio(), and my understanding as well that
+this is safe as long as we hold folio lock.
+
+> > +static void shmem_mfill_filemap_remove(struct folio *folio,
+> > +				       struct vm_area_struct *vma)
+> > +{
+> > +	struct inode *inode = file_inode(vma->vm_file);
+> > +
+> > +	filemap_remove_folio(folio);
+> > +	shmem_recalc_inode(inode, 0, 0);
+> >  	folio_unlock(folio);
+> > -	folio_put(folio);
+> > -out_unacct_blocks:
+> > -	shmem_inode_unacct_blocks(inode, 1);
+> 
+> This looks wrong, or maybe I miss somewhere we did the unacct_blocks()?
+
+This is handled by shmem_recalc_inode(inode, 0, 0).
  
-> >  	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
-> >  					 dst_vma->vm_page_prot));
-> > -- 
-> > 2.51.0
-> > 
+> > @@ -401,6 +397,9 @@ int mfill_atomic_install_pte(pmd_t *dst_pmd,
+> >  
+> >  	set_pte_at(dst_mm, dst_addr, dst_pte, _dst_pte);
+> >  
+> > +	if (page_in_cache)
+> > +		folio_unlock(folio);
 > 
-> -- 
-> Peter Xu
-> 
+> Nitpick: another small change that looks correct, but IMHO would be nice to
+> either make it a small separate patch, or mention in the commit message.
+
+I'll address this in the commit log, 
+ 
+> > +
+> >  	/* No need to invalidate - it was non-present before */
+> >  	update_mmu_cache(dst_vma, dst_addr, dst_pte);
+> >  	ret = 0;
 
 -- 
 Sincerely yours,
