@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D024EF06F8
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 21:58:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E34BBEF06F7
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 21:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2E4896B0098; Sun,  8 Feb 2026 16:58:56 -0500 (EST)
+	id 77BF46B009B; Sun,  8 Feb 2026 16:59:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27CBD6B0099; Sun,  8 Feb 2026 16:58:56 -0500 (EST)
+	id 6B4256B009D; Sun,  8 Feb 2026 16:59:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F40096B009B; Sun,  8 Feb 2026 16:58:55 -0500 (EST)
+	id 4D7256B009E; Sun,  8 Feb 2026 16:59:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E56B66B0098
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 16:58:55 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B532D1B3172
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 21:58:55 +0000 (UTC)
-X-FDA: 84422655030.09.0B36788
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2AA1318000E
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 21:58:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dRPMC3fs;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 33A486B009B
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 16:59:00 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 00D0C1B316E
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 21:59:00 +0000 (UTC)
+X-FDA: 84422655198.06.84A7946
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 44B4280005
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 21:58:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R0nDCRXC;
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.182 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770587934;
+	s=arc-20220608; t=1770587938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YCzAnUs0VtYcvzowlURB7PfVAQtyZ2LBB9m2XBAedLE=;
-	b=Rkvczawc11/ak5RsEFutAkgyfLdQ/IcrzjtdfGlc4Sm+I1FcFo2F4XbPIXNIinrYmVOaSO
-	6AqYPZ/9b96QEp/spjk68ATon1C/1lPxDRo7tQBlHXHjkQsudmcJLD5c0Iv3PooJwT5rpZ
-	HludHOAvFXs9KyYD69NRDyV9oCQgbBE=
+	bh=AAYGpIpTp87S2/ee6Fydv9Vv1Hcay3Vy8wBGMvAXEzA=;
+	b=WEvISKebaIpmLptzna5R/Mc+f0UlbC6nhB7UaMg22LWXn4YDOeeL/bjrsOPp6G8qYTBWnK
+	gIPiKfeHdutV3JhuIFqCJjL6Cn7Vi7qHtxn05HuZ2Qt/JABbLX2eR5iuQl4BEptVcgQ0KQ
+	X1MswDbRkhGwnTcZUff3DohbWZDiqds=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dRPMC3fs;
-	spf=pass (imf24.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.160.46 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=R0nDCRXC;
+	spf=pass (imf30.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.182 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770587934; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770587938; a=rsa-sha256;
 	cv=none;
-	b=umFjhLUTGqFKrgfztHqSPA6Ix2mmSAHThHxAbGhviysICQv0rMJsi1PmV1uU07W918XcBl
-	KfwCz12yNBXImWRfMfxpK9aQAL18VcqEf/iDWvlE3xgoCjijkA3C27tE4+WFG4ne92g8mS
-	W7lYOxRlMcTgKZ3+Z2jDBH4w4lvV5Ls=
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-4042905015cso1478263fac.0
-        for <linux-mm@kvack.org>; Sun, 08 Feb 2026 13:58:53 -0800 (PST)
+	b=n6IOi924H1fN6KycjkHhIfuk+5PRe/Spr3JuVo3iJp4LOXxWwKhZ04y/yGoPZouqkjwaNe
+	NYkqhiUQAT/kb6ohKmYMR2yOjNjNP4PM/Xo1wZy2P+TWKJH/bvtqfqK4SxDrivIymQG2WT
+	g1Mom/1V6GwLJ0Fj/t5Nta4GtWDUB9w=
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-45c8b850f96so1670405b6e.0
+        for <linux-mm@kvack.org>; Sun, 08 Feb 2026 13:58:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770587933; x=1771192733; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1770587937; x=1771192737; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YCzAnUs0VtYcvzowlURB7PfVAQtyZ2LBB9m2XBAedLE=;
-        b=dRPMC3fsZqD0WnEQrNJhdkJsFQ4YeNCD2m/tCfNCXF1IDZCuKvYz77TwAXNp6yauX8
-         r1vEgCo1kPrIqK6Fofh73Mqv2J2t5aD5zNM7nbr689OhKgfK/N185cN4WgdCjOgnnyef
-         x0nhqOfFBikNzWZGH1G9FlI4iDHqDdEXdq/CC+4EKXbe6GB4lSMVlsru2gkgGwq0vJuw
-         otL4uocSvSV/8ndqyP2BvCrs8tXTgi4ZuQEGaimpYsO5D58yUS+p8xWAGOonYtSlm3y0
-         Y631ae4CVl01p8A03UOlOmT7O/tXHc/KstHrcF0Ix3xl+FfWSnt8N5wehyMrZxp/cKdG
-         jiaA==
+        bh=AAYGpIpTp87S2/ee6Fydv9Vv1Hcay3Vy8wBGMvAXEzA=;
+        b=R0nDCRXCZK+PweHgA3aO3L0qVGW9gB2vOCg7GiLxHCO17PSMUp1GedavFfuF388GrW
+         O7lJfFOOmf9TFFJo+vWLG6deWJG7c0SVSIGLRTm3hBAxuSOGy6YioJxIcriomuBLSjA9
+         2Csqq5Xn5PwmeaBPiT/E/d2+c286IZ2chgWt2aguxihqQm9J5qGBS3kd53NfIbNlw8T/
+         5EDnyJyNdcKzFMe+Qf7IIhysdSNlIFd+eMtz8jyyJqJnjfHa6oA1kaNInvJLIOi5SsCA
+         WF5eZUXu32Cpqke+NTMQVKSftq5yASRap5wAMj2YxGFv9jRPGXXpba8H3GZsIGaqZwz/
+         UsCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770587933; x=1771192733;
+        d=1e100.net; s=20230601; t=1770587937; x=1771192737;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=YCzAnUs0VtYcvzowlURB7PfVAQtyZ2LBB9m2XBAedLE=;
-        b=X3z0RzUwhAubAnUF8a8nSLmB5GA07WNsc0l3OAgd55e4RY6tLrlY5Ls71FUFZW7q+3
-         pC2WNjH5Usl8kaconMliBFLMdCW6nl6tV8z1Qlz3xeFzPsOmBlCRxcQPcXi5q3nUF1zC
-         EpNpFa3dmDMEN6P8mcvEZdexCHefCDXtxq5Fbxp0qy2Iy8w8gGo49qLb2lndXA15dlVC
-         46HPsJzxriYU6rsDCpLBveCtpFk3dOLUesGIOXI9daKAPFg/R7yirQcLgI+cANC02tC2
-         YpkRJv/EL4uMN16LKWNzTpK1w+RX7pD0OBtkvhcg6fek3iI1zwbkq8K/SbZVbjuySVdB
-         6XUA==
-X-Gm-Message-State: AOJu0YwhpqFOKC2wfXxlbSUmDXX4kIkZqqk/QfAqaGUosKOUEjlHpopj
-	GIUVCoFT6VWEaNbrhGzUqT5kqGimMKY61WkGSdd8GnO2aSt/0fyrHTySil+wYw==
-X-Gm-Gg: AZuq6aIaDHz6SkDsAGYE2RQBjsJ5fEUsx62Gb6GD3bnqy6EMNAEu1s1Gm2xY9wuCltK
-	ppm0z01FR880pZJBcb0+hT/KX3uJ5BgJmP3bP9Xl3yvOjGUT60ff3AOuPppUDbCTQ3u//HozURE
-	n+BxqDFQGEIQSwmSHe6F+yk91WQ/QSkI0/6N67hvx6LtLKZIeo2tLUPvSKVZYIJZ+l43mi5ShnY
-	FuQ8W1/kKb+bdALqjo0o6qGHZaqillrgKlm3LRu/gpHjMixBNgnFY4y6N5NXXMksSi8VEcdr0dC
-	8567e/19hPm8H6uONzl41CDqk84J3WNNOx+daY3M6ia+nYVyqBHrUxZ44TXgVpv94pWBUg4U/44
-	Wtx3ytwUCeA7INiQ1/pIy9lBHdNO5f2NLH8HOVl1xk6q3KbYD1b0QvzyKaRRv9YDfsPCBBbEEdg
-	wSF68zbYDMrFld7ZPGvlG1Ud6s1zbnx2iqBQ==
-X-Received: by 2002:a05:6820:1514:b0:662:c369:8af1 with SMTP id 006d021491bc7-66d0d5e38b6mr4727396eaf.78.1770587933119;
-        Sun, 08 Feb 2026 13:58:53 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:73::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66d3adcae3csm5051168eaf.9.2026.02.08.13.58.51
+        bh=AAYGpIpTp87S2/ee6Fydv9Vv1Hcay3Vy8wBGMvAXEzA=;
+        b=Vr6XEQUpqFblM4oPPTfhFAOWUCI/qpQetUxkLBqd28dLV7HvLtfqHp0jLO89a0kqny
+         KLuZypjoC3/XjxdRU2rRFhnG0qU69mSh9d+w3iQbFJwlcf1Lhy1foh8EcMS8NHhmdvOD
+         0oPFJuf1uUVmkAGyeLHNO1hm18HfF4gjNyPrA+oYIq3Y+2/366sAjBhpqbo4A7tHAvI1
+         p/uHO7XBUwCOqP06cHWpE/yxZjn5Y2mpdWVGN/w129zft56/fosrZn6QyX8ZrTsBzoby
+         tslLS1ofHpUuhrlyrrxjsN4fDkOXJxr9tjuR416RjC4OQ2P+D/SMIJcpD2yQ9Z626bX5
+         1ncg==
+X-Gm-Message-State: AOJu0YycScbYXPBk/scX9ppoIo6QAnvkMgdHw5hLxq1b7N+HFFNwj7F1
+	Qug0LB5WIeb5eA2Y/uE4wjLhHWsduF5ex/mqnK7EJ1bhKsYYF2Mwv1t5Uy8DGBcOYXXwyA==
+X-Gm-Gg: AZuq6aKJ876SHT4UWX0fuAxExk9qy0fqkj1At8WJ3OwOOAqUjvPFStPgjcZY/07mdr5
+	GglorSeacxyB6/9WjgQf6lSHC34yeKRhWudjK4Y2u8nBhXPh3/oKpj7oHo9pCFeaIIfN6U8X1Zw
+	/vLMsyGDpSrBKQhokJm6eKeuG0wpwHE+P9lXuOT3Kvbi0JqcoRzAzO3mpqqvtyNql5Ff7UvwOUV
+	3NKZnp/jtN99dsq7K4eB6IQ/scbNDH9lQ0rrfUBdJCruYNCVBpd+o2OJBouDrwrTo70jxys2m2i
+	HfJ5dyleIiINnKKhAdhK3RteAwrTYb7dB0cH24/0ilTv2ZjKhF7mDrhVAF4/0lGhTAvIj5c4Hn8
+	e76/mX/8XI0BHLvUcKf//paZTU21Cs5+NtUnHMlQewADI89bRjAYUFcbBb+a/oURG3GNDNe88m+
+	Cjemqy0hgCnQR5Zbke6Oe+FVpfM365jTQF
+X-Received: by 2002:a05:6808:6a83:b0:45e:84ec:f163 with SMTP id 5614622812f47-462fcbf61f5mr5120530b6e.64.1770587937297;
+        Sun, 08 Feb 2026 13:58:57 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:1::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d464785674sm6238015a34.19.2026.02.08.13.58.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Feb 2026 13:58:52 -0800 (PST)
+        Sun, 08 Feb 2026 13:58:56 -0800 (PST)
 From: Nhat Pham <nphamcs@gmail.com>
 To: linux-mm@kvack.org
 Cc: akpm@linux-foundation.org,
@@ -129,22 +129,22 @@ Cc: akpm@linux-foundation.org,
 	jannh@google.com,
 	pfalcato@suse.de,
 	zhengqi.arch@bytedance.com
-Subject: [PATCH v3 05/20] mm/swap: add a new function to check if a swap entry is in swap cached.
-Date: Sun,  8 Feb 2026 13:58:18 -0800
-Message-ID: <20260208215839.87595-6-nphamcs@gmail.com>
+Subject: [PATCH v3 07/20] mm: create scaffolds for the new virtual swap implementation
+Date: Sun,  8 Feb 2026 13:58:20 -0800
+Message-ID: <20260208215839.87595-8-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260208215839.87595-1-nphamcs@gmail.com>
 References: <20260208215839.87595-1-nphamcs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m4hkdkxsxda6swmzocoiywddsic3ijpq
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 89i38w8emur1bw9kkysoj66bu1m1dcgw
+X-Rspamd-Queue-Id: 44B4280005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 2AA1318000E
-X-HE-Tag: 1770587933-306648
-X-HE-Meta: U2FsdGVkX19gBRbehaOZXVImCG1qE3xNBP1SgFbsKUYcR+i13pMfHgsjBeLv2tZTldeEYHFkEyVhAaoq80Xk1HW6i7kuTW7vduVlChz6MvvQvwRM9z8fHQYxD4prLlpLnSzVrKE3GHOiJisaxLL2DQwfqG0SV+R7DSlWZkhym5x/6mhu1HvKnwg7JhoEw4goa1bVNQKiQEzhj8Aypsb75J/oAA5/xBjgm5QjHzwJMT4VTgNWOV7yq3TixbttcWE31QbWk9Plfql1jZAUK6f1ihfi5+QNDMQon5O8Oqbf5zluQK/Y0qLE4QE36TWD9lUyG5saK+3qz1WwWILphiyT5UqhJKb4LfW0a3zWmgnrrvU1KIxQo1259xJUA52L6dEqqT1DNpXPBRm7V6fTKQeAzL2SoC7VYb26zuwRl6dfTGmGGoQOLQiq9F2iKRoU9feXm7sYPZQWhE7oiQTL6nC8BXjS5TXuA8lpXws4Rq1aMoquPN/0BDuUdHFLv31gNcSHVY7DxM+ZZa1YgJlSqom09RparW4imih94GTQNXYdmxY38FhRxGFQPMPxdaKB/r/UmP1DxEq0ARGXHbnqphzqmbM2ZhbsA6b4ovU4FcNpstXpQcIAtSbisyOm94SxUJ4TZsasVFO2hXvCfrIGRYCmaovSipaq+KfgMIDKM3L4LzfMPACm15gNx+xpx7i1xptuFMFRSVRXhPDEAb6CP2Zu/83WEuGwK1f82OMnaBKILrYqZN3+rZhDDVlRCnjCKpfiWSGLNuWvpskH0tOE+vTE1P8lkWSjqB7Squ/YSt3HtUk6/8klahCZ7ieWNyCifBaWbQcd2ZvTqSmo16bYbi4Ib4qi9zJ0KAOwEKV54+5rfAk0l6VK5a5mS56r+SIGXcRiWSENYIuWhmqoO6UyWfkf0l6T5Xnzj00QsnWBfxsOmMJi5yqTEvH12ysapd6lADbDfYVZJcVS+b2o6uw3auo
- t0JhdkRo
- 5AQANY8z4KzVi4yMbjtHuBipAPzgl3ZZAXqFDYRJULtlhcUjKJtLgLvbUdXc9Mq5SC9QrRPq3iIk92QcbueoEsPUbPyFPYDH2vXJGEMv73GqUC1QqZesFI/bMFBzQqOL1VhIwvrqBwXzL/CY2JR3YYdON0HTm+6Klhi3O0lDvWOdPGiKt4+FY4cdNqDY79xAT9pA044Xs2YuhqlGnggVpC7pjS7IdGD/tHnoy/Jo3aZ5ch/SgN3rrrRCvZtBOAQG01o5SqmUHdJ+38hA=
+X-HE-Tag: 1770587938-48540
+X-HE-Meta: U2FsdGVkX1/BjTWESpxUpheAU8dWeCHdcKz8F2hmXgkrVhkXIWTLbrHRQlMEanvYcXPbPDMqFNyJCdEKn/6Qb8C7vQI2f6xo7hWFfgzymEiSBZczkMIwAjJbkLmJNSz0f8EkOGrB6RbZLgX+9A+Ojj+hYLKQERfPD0x6rG9mD5OskZthyS4EPgUg11i//rHURKG/cBG0LxnInsdzQWF/5twApOST3HqZZQQplkGoQtFmzrysIGvYYhoK9wlTSrAqz0gK2zCvk6apvSHEM1pgHd6+qsW0GKBnREmfm0oKAJhh5NW8NbHXhST6e8zMQaXVc3Rvj40w1JwiTp9kay/T1kJ0YBwQ7BeyopGK10WV8TvJfjv4dkV7Tq5Nm9IW61CLD4uuLR2oaYv79exYbqykepqrtfy/NHKYVFEBMtPfoVXdP1/cDLgNcSyJa8FuMsaJDTKD09UE4A/QHPsjCxcKcKJKCXLihq2oT4RlXYzS1XvGj+zbB11QC10hMshnhlCRoQyznSrLXRIwUlI5mUZRqERWP1SYZuCrDtrXgJ2cLbf74xPwAG1FP8lrFOc7pr8tkRSHSSdto2pHP0bJwpyPV0z6QsvKXhd9p2uPh7ijrSu1FgsqNhfkKZfTVLR8p5bjKcusZC182O+jAgaI6Jus/ayECt5brwwZ/9SqC/o84mjbKdLsmJLweCwThf+h+AYk6WNCXk0Mktvcf8ZsZluQ0LzwH8EebpOTX4PY8fdsUKeTyftc0YN7XpQY2YbrAEDChucSnXjhnkvsM59e2lyleKbPrb3qWBqZVabBBf37GvfQsJs4P1PHlLjpe4JRWVIsCuNKfbXGc0yjwoHhfN67zPCo4PB0WjIQOMnm9iHaEXQSB5IqlyKzcj6l77qDqI7GbJFq6vJzpWou6ZgufVkhxPY3LmNpapTt8y64jVxxuvzj+uwBhEOiOtIbqtMeI21P1r/z1EWmZIU2zrjcceJ
+ cKenKrdH
+ IJC1Y203TX8drk5CYToLSutAPU+RJo440k4slP9hv8h/qSqXsb2SxiB51U5yI94rB2ifh8hWA5LsmQaPC1DSUvnGOSN8Z41v7uN3IWFGKkzjppk69TglixvUKwxjxuQ+Kn7652zi9OHwfKhuHtsaZ25i1LC5Dby6IJrpPOKUOWhDxq7yBm7Ihy47Mrz93WNBMfT2FTbLg7cQG2oFv5KZHbD6IawvF8ee4JFfN/UDvO8bYnQBQraZBrBCkVAXtomtE2cptcuI0dOgn6kVgKE1Zsa9Y3eDkDcYVLVYREg1wO5CaKXn2K+MjJzVh/7pPFBqfLFHPpVT9RYUMOmQpUMiD+Iwdd/rWN6yV44E2KRT+gcmh8B4zcXz52P9+WzSzp352Quy5MWq61Oin+HkJgyYCP4CMEVUShggbMxWa2Lzb1DIBsAGuvVR+lJhilYUvvCvNwKLpfE/qQ3yljNS4pJfz6T1h/lNIEN7bbsTyo0mVph4Z66jr+/5t9hMP4iTA6ZNpb2sAvJwhhafZKc2QRMLu3mBE8nOl/b3vd3wVlVDm9fZwI5euPoIavBy+oLR0h/KhCI74+PBaJWYtfqTug904wHi3sIp76Cs4I73VDy5PMQwPZXEl74gbopyRMzLlzWSTrFcTrO4bmVxwjdHoZc8DkyB1a1/bD+SDKVMkB4O0zL1ETv7ADktClBFUNaPJLDU/OUCBOXNUICmq3w2VZGRWW1+Xu+RAxuH1FXM2Pmtrwk6GN57+M3KleEc8grOwtdtf6rfnD4I/I8ZiNzy0vL5EihnTKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,89 +153,131 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Userfaultfd checks whether a swap entry is in swapcache. This is
-currently done by directly looking at the swapfile's swap map - however,
-the swap cached state will soon be managed at the virtual swap layer.
-Abstract away this function.
+In prepration for the implementation of swap virtualization, add new
+scaffolds for the new code: a new mm/vswap.c source file, which
+currently only holds the logic to set up the (for now, empty) vswap
+debugfs directory. Hook this up in the swap setup step in
+mm/swap_state.c, and set up vswap compilation in the Makefile.
+
+Other than the debugfs directory, no behavioral change intended.
+
+Finally, make Johannes a swap reviewer, given that he has contributed
+majorly to the developments of virtual swap.
 
 Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 ---
- include/linux/swap.h |  6 ++++++
- mm/swapfile.c        | 15 +++++++++++++++
- mm/userfaultfd.c     |  3 +--
- 3 files changed, 22 insertions(+), 2 deletions(-)
+ MAINTAINERS          |  2 ++
+ include/linux/swap.h |  2 ++
+ mm/Makefile          |  2 +-
+ mm/swap_state.c      |  6 ++++++
+ mm/vswap.c           | 35 +++++++++++++++++++++++++++++++++++
+ 5 files changed, 46 insertions(+), 1 deletion(-)
+ create mode 100644 mm/vswap.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index e087673237636..b21038b160a07 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16728,6 +16728,7 @@ R:	Kemeng Shi <shikemeng@huaweicloud.com>
+ R:	Nhat Pham <nphamcs@gmail.com>
+ R:	Baoquan He <bhe@redhat.com>
+ R:	Barry Song <baohua@kernel.org>
++R:	Johannes Weiner <hannes@cmpxchg.org>
+ L:	linux-mm@kvack.org
+ S:	Maintained
+ F:	Documentation/mm/swap-table.rst
+@@ -16740,6 +16741,7 @@ F:	mm/swap.h
+ F:	mm/swap_table.h
+ F:	mm/swap_state.c
+ F:	mm/swapfile.c
++F:	mm/vswap.c
+ 
+ MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
+ M:	Andrew Morton <akpm@linux-foundation.org>
 diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 3da637b218baf..f91a442ac0e82 100644
+index 918b47da55f44..1ff463fb3a966 100644
 --- a/include/linux/swap.h
 +++ b/include/linux/swap.h
-@@ -435,6 +435,7 @@ void free_swap_and_cache_nr(swp_entry_t entry, int nr);
- int __swap_count(swp_entry_t entry);
- bool swap_entry_swapped(struct swap_info_struct *si, swp_entry_t entry);
- int swp_swapcount(swp_entry_t entry);
-+bool is_swap_cached(swp_entry_t entry);
- 
- /* Swap cache API (mm/swap_state.c) */
- static inline unsigned long total_swapcache_pages(void)
-@@ -554,6 +555,11 @@ static inline int swp_swapcount(swp_entry_t entry)
- 	return 0;
+@@ -669,6 +669,8 @@ static inline bool mem_cgroup_swap_full(struct folio *folio)
  }
+ #endif
  
-+static inline bool is_swap_cached(swp_entry_t entry)
-+{
-+	return false;
-+}
++int vswap_init(void);
 +
- static inline int folio_alloc_swap(struct folio *folio)
- {
- 	return -EINVAL;
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index cacfafa9a540d..3c89dedbd5718 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -194,6 +194,21 @@ static bool swap_only_has_cache(struct swap_info_struct *si,
- 	return true;
- }
+ /**
+  * swp_entry_to_swp_slot - look up the physical swap slot corresponding to a
+  *                         virtual swap slot.
+diff --git a/mm/Makefile b/mm/Makefile
+index 2d0570a16e5be..67fa4586e7e18 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -75,7 +75,7 @@ ifdef CONFIG_MMU
+ 	obj-$(CONFIG_ADVISE_SYSCALLS)	+= madvise.o
+ endif
  
-+/**
-+ * is_swap_cached - check if the swap entry is cached
-+ * @entry: swap entry to check
+-obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o
++obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o vswap.o
+ obj-$(CONFIG_ZSWAP)	+= zswap.o
+ obj-$(CONFIG_HAS_DMA)	+= dmapool.o
+ obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o hugetlb_sysfs.o hugetlb_sysctl.o
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index e2e9f55bea3bb..29ec666be4204 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -882,6 +882,12 @@ static int __init swap_init(void)
+ 	int err;
+ 	struct kobject *swap_kobj;
+ 
++	err = vswap_init();
++	if (err) {
++		pr_err("failed to initialize virtual swap space\n");
++		return err;
++	}
++
+ 	swap_kobj = kobject_create_and_add("swap", mm_kobj);
+ 	if (!swap_kobj) {
+ 		pr_err("failed to create swap kobject\n");
+diff --git a/mm/vswap.c b/mm/vswap.c
+new file mode 100644
+index 0000000000000..e68234f053fc9
+--- /dev/null
++++ b/mm/vswap.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Virtual swap space
 + *
-+ * Check swap_map directly to minimize overhead, READ_ONCE is sufficient.
-+ *
-+ * Returns true if the swap entry is cached, false otherwise.
++ * Copyright (C) 2024 Meta Platforms, Inc., Nhat Pham
 + */
-+bool is_swap_cached(swp_entry_t entry)
++#include <linux/swap.h>
++
++#ifdef CONFIG_DEBUG_FS
++#include <linux/debugfs.h>
++
++static struct dentry *vswap_debugfs_root;
++
++static int vswap_debug_fs_init(void)
 +{
-+	struct swap_info_struct *si = __swap_entry_to_info(entry);
++	if (!debugfs_initialized())
++		return -ENODEV;
 +
-+	return READ_ONCE(si->swap_map[swp_offset(entry)]) & SWAP_HAS_CACHE;
++	vswap_debugfs_root = debugfs_create_dir("vswap", NULL);
++	return 0;
 +}
++#else
++static int vswap_debug_fs_init(void)
++{
++	return 0;
++}
++#endif
 +
- static bool swap_is_last_map(struct swap_info_struct *si,
- 		unsigned long offset, int nr_pages, bool *has_cache)
- {
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 25f89eba0438c..98be764fb3ecd 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1190,7 +1190,6 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 		 * Check if the swap entry is cached after acquiring the src_pte
- 		 * lock. Otherwise, we might miss a newly loaded swap cache folio.
- 		 *
--		 * Check swap_map directly to minimize overhead, READ_ONCE is sufficient.
- 		 * We are trying to catch newly added swap cache, the only possible case is
- 		 * when a folio is swapped in and out again staying in swap cache, using the
- 		 * same entry before the PTE check above. The PTL is acquired and released
-@@ -1200,7 +1199,7 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
- 		 * cache, or during the tiny synchronization window between swap cache and
- 		 * swap_map, but it will be gone very quickly, worst result is retry jitters.
- 		 */
--		if (READ_ONCE(si->swap_map[swp_offset(entry)]) & SWAP_HAS_CACHE) {
-+		if (is_swap_cached(entry)) {
- 			double_pt_unlock(dst_ptl, src_ptl);
- 			return -EAGAIN;
- 		}
++int vswap_init(void)
++{
++	if (vswap_debug_fs_init())
++		pr_warn("Failed to initialize vswap debugfs\n");
++
++	return 0;
++}
 -- 
 2.47.3
 
