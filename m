@@ -4,107 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C76EBEF06E3
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 12:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FFFCEF06E2
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Feb 2026 13:23:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A25F56B0089; Sun,  8 Feb 2026 07:25:13 -0500 (EST)
+	id 30E556B0089; Sun,  8 Feb 2026 08:23:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D30F6B0092; Sun,  8 Feb 2026 07:25:13 -0500 (EST)
+	id 2BBB06B0092; Sun,  8 Feb 2026 08:23:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D2596B0093; Sun,  8 Feb 2026 07:25:13 -0500 (EST)
+	id 193DA6B0093; Sun,  8 Feb 2026 08:23:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7929F6B0089
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 07:25:13 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E793A1A0580
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 12:25:12 +0000 (UTC)
-X-FDA: 84421209264.26.777AFBF
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 683D140003
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 12:25:09 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=m+dHSqs0;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770553510;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 068D96B0089
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 08:23:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 92F5D8BF9C
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 13:23:45 +0000 (UTC)
+X-FDA: 84421356810.22.7AA2787
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 897C5C0006
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 13:23:43 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=I9Kvd96J;
+	spf=pass (imf10.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770557023;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vENV4XHx0aYPFMcC6RPD8AdmIxtoA9HhKWxvd0anuJ0=;
-	b=rdw1K70O11pptwD++xSo11bS+1U0MryuyqAec8iEWU137mds43843lLLO9at06xPpI6lHJ
-	dD1vNiL3R/oLc/krzxZ3J9pmQEpXm1HQdR4uVAmNkQbNknl5bxDKN/+peNhgqf57v+Pv/d
-	wcznquywO9HqGexYR9xQgYqbC0I394o=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=m+dHSqs0;
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770553510; a=rsa-sha256;
-	cv=none;
-	b=Z3z4rw40e7BM8aEjDpBDKaX6FyAzeYbcFHZloyazc8BrN54RPG9hueYZfMuSymJ669cf8w
-	LTM9bdRG7+4We/w6jG7J7lI+uJSufsfh0ys9KaU+xMqjPDsnfpYyyXSeOXk8OIVkxpzhVc
-	Ebwq69l3TxtMg6lfMx/p3macamu1i/A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770553509; x=1802089509;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=gk1oGazk55BHT1trMoRZGs0Oa8wwkioPvJiNM12KYKg=;
-  b=m+dHSqs0oHl05i+wKSe95cmPkFwct39VaFbu1BtTP2ALdYrzdjd49Zjh
-   2hHJLnTXQav0SwXkGGhG0PeQPFKcwpUb1oyhhL4MT+mKoOWjTFu6AidCP
-   sSKJMtk8hmtXvLy9hb+sVMYFupKwyqrP00jXTkc9zKqe2XE/jUFbA7B62
-   64S3EiDzyeKJQMecp0fVGl+9M2NB/8adwmIrFv8Bydz7r0o1W+Iy6WTKR
-   zKFUxRXouLCQC9te76DxZYev5S1q9qYGBL7XqLYG0uT/vgW5OZceiJNjW
-   4E70mONsaIGazO2Ch5KGFUa3z3yZg1UrpZifUGENQ4kzl9GAAyjVXvbRV
-   A==;
-X-CSE-ConnectionGUID: e4WGr6AhQ8+Eg1s+Z0ajIA==
-X-CSE-MsgGUID: QUdRlWrrSReURmApEqyoMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11694"; a="97147101"
-X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
-   d="scan'208";a="97147101"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 04:25:08 -0800
-X-CSE-ConnectionGUID: MXcdS3X2RnqXagpeYMVKcg==
-X-CSE-MsgGUID: Z4yAAamLRkOrP14lWiFygA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,280,1763452800"; 
-   d="scan'208";a="241592774"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 08 Feb 2026 04:25:05 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vp3qZ-00000000mBQ-05gV;
-	Sun, 08 Feb 2026 12:25:03 +0000
-Date: Sun, 8 Feb 2026 20:24:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH v2 2/3] tracing: Add tracer_uses_snapshot() helper to
- remove #ifdefs
-Message-ID: <202602082013.PnPZCdsA-lkp@intel.com>
-References: <20260208040221.900653834@kernel.org>
+	bh=oZIZNzbyl0ltEYOstNQmjNET5LwEuPQ8XuyDkoDHEg8=;
+	b=POKpJd93MDnw6W56hZc+M4YISOi3H2uXsWS72gcA917CIQMG3GANW5IKdNVdDeLpcTnbWw
+	mOvmbj69kmE5KVXD+3YliaNOlO/cglpTZpCTirM6vhLRzL9BXWT+WZVbKuTzU7ejn3sNOJ
+	TLso3LQfzq8Cvd5uv4386tOZUwUvTQA=
+ARC-Authentication-Results: i=2;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=I9Kvd96J;
+	spf=pass (imf10.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.208.169 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770557023; a=rsa-sha256;
+	cv=pass;
+	b=Xc1SmwSAiW1hBhyczHtUejn2Go/ejD12O153JX1eWYAhTScKMj3dKeH1qAtj5TUYUxI5S0
+	U9QUKwkDX8vW8VXygLqFtRbpEVku0kkt5TFVpn+TIo5VK+KQbhs+oTTLR5DRPsvRGUKNQy
+	jUOzv6cKr1WgGfP9xdV9ACBQbvRGj3I=
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-382f0732612so11678541fa.1
+        for <linux-mm@kvack.org>; Sun, 08 Feb 2026 05:23:43 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770557022; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eSFhmn6PdJm8BsRS+3FlgTKBBqbeQxKS2xU5/Bl/qSVqDO4D1TYa6AlFAETay40cEQ
+         +YwEwMSFapNO9+0tP4YWCXZrBofy6eePoidnp9y8DIzEicYMHLLrC68kxvF45hSYQFxr
+         rh8YFfYdJpidepBnZQcwwUq4UYVd7h3N8/6q2MZFj9Ox3bcRqxOH9fToXV8NZMONyJq5
+         RLmQx9BQH3OihYD49WFFeqnAMuqpTSP+JZpdzxxr6O6j/aWGS2RgGV9lQXJei3tEdIYj
+         hcFZJTjf+DaqVJK4cedp1ujyGA4OyJ4/rlsdpSY0eJ+xrXssUDyiZmf3qJNe+HZySZ1x
+         NvLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=oZIZNzbyl0ltEYOstNQmjNET5LwEuPQ8XuyDkoDHEg8=;
+        fh=TPeSa/DX5yb3XGggdDBr9VDWyBvlsQ9wLhltKRdkBM8=;
+        b=bNLmPkFBLJL6eOHtDPx/wfaltnwovIqSN/1pE3eQ7BijB9/a9PIIc532k4fhUS0cIm
+         6S4+0cYo3aFIIuEANBH5Oxjtt8rF4gkbAbQeCg0rUzKO3nrsLAIvjZrNnJidvL++oGu8
+         f169CBT3BRClSkeO0RhQxS78HwmrjPORuFdHAjA8/If1raLIf8aNSOf+57yrRPYOKrRX
+         meEi8pO5aJ/GGvyYB12hk+3sOYn37TovzM/kjxy6ZawOrHouciBXu/3f2x8rfoaaxS9X
+         ICavpYxBToqE7OlbsRH5eZV/Pu4M9w6IHY0xWEaKX4j8uLVu89jZLBNa54pYMCVPqTWN
+         EozA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770557022; x=1771161822; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oZIZNzbyl0ltEYOstNQmjNET5LwEuPQ8XuyDkoDHEg8=;
+        b=I9Kvd96JYCvYoJ5sHOk+ylU4MBsiHALBAAER5ih1aBsR4Ikc2qcKTQTpd1GAXshgd+
+         hITeGjaBjknnpdfIcserzAHy17Z2nhsfLvYhc3Y7K212jYUkLpG9Vq6fPSL1uOnvp6jM
+         hrY3ig226k8YYfFENc/xdHZ0xFFK8gpoI2IlBUSl8bkFo7Eu4CGDExYwSU4Qs6auaaRZ
+         JH2n4xGwLIAAymgV+2EuOD+xSRHF4biUOS/vc8iiZW0VblD43Oz4u6ccT1NuiwFBKk0P
+         XB+wFO0CDj4WVssOdbyjFInZhL5WW60CYjf118x7f6Mwn66JEA4FEho6sBEwpXJ0K3zx
+         eRfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770557022; x=1771161822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=oZIZNzbyl0ltEYOstNQmjNET5LwEuPQ8XuyDkoDHEg8=;
+        b=uTmDTNbG2dhFYkr+LPIMaHhNG4/kFfmYzZUImOfuHTJBlQcwc5uLvMh3b4ERKjow+y
+         EIM66LnEkzg4frRU0oV5DipXu+ya9cD9XwFQhS8xGA7bvrcznYbyGj89vCceN0d3lnDC
+         kl4CUxkIKGk9KHdOvBGp5QTtlto8Pgx2hBFatQG/vge1RJ0MNsC70/J37arDpJsUQ1GY
+         L9oepxeFzLJ7JS8U9/fUVReFUEkM+bVFUzgxgOM6oJEDsBn6bq4DwdP25ryAgNT+9Nw3
+         9ZVpf/WmtuejTis8R5O8qLKMr9Ty/ythM7say9FQVrM45nJDuKQ3SQzlEtIBGGkRXSnP
+         I+/w==
+X-Forwarded-Encrypted: i=1; AJvYcCUPxKb/r0unBz89whs+CCGBw4LcZRg7nZ7KG4BPQF+iz90NaG4vZnFDzYOWr+elZlFSag05pAwLfw==@kvack.org
+X-Gm-Message-State: AOJu0YxlNPoiImef+QRjgUAeBgmuP04lgOJRoiXh6ckRoW0fgTCPLGWh
+	Xr9fGnvMHmXxkz5GGm0BnK4SdIkBUZI2I3nLnvAY14Lyke0YNratk4x7rYIXRrEm0PN+fl8jHpV
+	fUJ8V4dkrIWAJMc5gkvrdxpgb9mI8Brc=
+X-Gm-Gg: AZuq6aLIzasWWrKVWSGJDrVC91hiZFcWZ8iBjjsJbMZ0A0ZyV7x1geZlo4i+jWrKESy
+	pWWCjiD1cXs0YfKo2jkgW0ptEbFSivjte/jiISzv5X7/jX83+xZ8YzvO9aAb9v4kEN+1UisQ6x/
+	jTAiywdpEJ2XNc3ZOHxP7TN6A1zxXhr0BGbUI+PhHe8aBDb8JYbXFxZFkjM2Rt4GbWsM8PP4Ouv
+	45yxEf8538wlVhp6qz2hLC960/vweROQg3Kz9dPJrB9FvjPG7RtwS4Q1ElHmZTvsm6xDo77
+X-Received: by 2002:a05:651c:4204:b0:385:bb79:77a9 with SMTP id
+ 38308e7fff4ca-386b51520f0mr22146761fa.41.1770557021260; Sun, 08 Feb 2026
+ 05:23:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260208040221.900653834@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 683D140003
-X-Stat-Signature: 3wqsnqu9h1k5ra1azg9hf67ibyj3wgg6
+References: <20260201122554.1470071-1-vernon2gm@gmail.com> <20260201122554.1470071-3-vernon2gm@gmail.com>
+ <fd67a91f-3930-4bd8-886b-13f7783f4aec@kernel.org> <CACZaFFNGFWv3FG8spJDLfLTe=0QWuBWL+Lbs+W3h9vGL=jrT6Q@mail.gmail.com>
+ <85e8ded9-a9eb-4663-9c96-93af60006fb6@kernel.org> <9508744b-e5d5-49ef-825f-eef683892541@arm.com>
+ <1a6d8295-e27b-4440-a367-af0432a7af4f@kernel.org> <6zltgzs24wpypzu36ldwgtzilhv2z3ofuu45azp5u45huiwqvj@6jhhp5r24po6>
+ <78b9bb1c-21aa-435f-a697-ebbfbe604a5a@arm.com>
+In-Reply-To: <78b9bb1c-21aa-435f-a697-ebbfbe604a5a@arm.com>
+From: Vernon Yang <vernon2gm@gmail.com>
+Date: Sun, 8 Feb 2026 21:23:30 +0800
+X-Gm-Features: AZwV_QglA-0-l7x9xF1ftx-Sqfnt07biNm-yGebo5N5uuHZ9SADIuYNz9ktcBr8
+Message-ID: <CACZaFFN8Y1dKYJPeNcnE+9hfBYNFLCJMi4TAyKuQ70JvjcrZPQ@mail.gmail.com>
+Subject: Re: [PATCH mm-new v6 2/5] mm: khugepaged: refine scan progress number
+To: Dev Jain <dev.jain@arm.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
+	ziy@nvidia.com, baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Vernon Yang <yanglincheng@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Stat-Signature: sst7i1n5e1iqp7d6ua4unrca3to6qyb4
+X-Rspamd-Queue-Id: 897C5C0006
 X-Rspam-User: 
-X-HE-Tag: 1770553509-302423
-X-HE-Meta: U2FsdGVkX186JfBKRzGSxCY9JtPb6WRoFCE0EWjc/G35SB87uSgXSC9xTrUx/MVJFcTYdJJ7nRPs8sqQq9Z2BBfNCCtVP+TByi3zmrUTI13OekBiGOB27Q1PXn2z1yREJOmj9aJ9bivufMR1EHF5bDW14DX/6hKUEJJ1OO/QjTZqAz2/G9/CzZX2NeLH9/7eypnM3+RWED1Oh4Py/pR5a3IzIBaNDZFRT/NzQCOpJiIvRPsg3S1cQjG5IAGU+rDE6l0blTZHELnm9rnJvPYjIuaxgKKmBwGDxl7g0nLDq5PHNXiIV09CwuO3oDAFPePB6OXvePLMKQwX8GWkJ21XC9PjMYfAQkvMfIMdPjK9IRUpZx1wUue52d/Sceb821KHQffwhOGLeIf6s/29M754snGvCUsDjAbrUZtOkQMpJl/lvfH9Fp1cjVZB3U3Wtb/sKIaqpqa4y7cB4P3ePx+GyoIn/SqXaqxOPQngcPMKuS1XKS8bF7XRs7QmxvtanK4C5rqqRjCgXhdowFq39Fvt2QYow6V/Gx27s+doHRrriHHXKaQ3EuoiLwJ0RYDgSXXldKjmyHrRhK8k1P0aKJy9pDUgjZhTSGfyGxb0q/4R51jP5IbROPFKKvhlJ/pAq9GF8icqcQt6I2zZTZ8WFWRke0rb8r1ckzmokb7NCH3arkOTRzNj3bn7MQ6Ba1ir/3n0GuNw+jBUwNh2YcbflWNUgq2o3Etd5tNF5MUJHvDeQjf7wtXYuEKCVF484+PGsJP8ENFFEMOiv6FQjnBtB9xjq2UAwmQJRcIAnPXbnd+3923sTpF1zN28G8lXM7/n1PdYmXAYtDrscQxpzSaL0QrpSsN2FylFSGffRRAjh5IlAbCbEpl1KMEPS9w2/jnJMURL0etG8IBqLUqhlnNnLS9SqojvTbjkJQefQgrvZREi+lEZ+xKyMZqhw7+KZqn7yXIUSygeZUgroWKThK0u5R6
- pFvFvhlS
- phzltNwTwUbFmKhYXXG/xg0ImAopqnUqS4INNBpNduxvMCy1qYIcuMWx5+GHZdDQtPbvXJDhO4oUsjuzvtGjmjDlnk7TeuThfqbkQ7xKbXqdQaxsnJBmWiYS6uTHsBYWDAROcA9ZTfbHmoKQC0qUNL896uwqeqv73WFmwFPELKiz76Jt5GJpj+DehA7CYXl/12SDozIJieQ7BNkmdt/89LiT2uCy/epuTdfXAfuDHcCjYg+XmzNTDiLZ0Xg26JejdaQPmuFUfooEaSLtOm9qVq6D07NS99mhPMFge8tA7EFN495wcLFFhMg2VrBxXqHD6yUFedhPXsI2TLsgNx7l9FFCob2txVs0Rfp0iuc8FVgNPFobNwAs+hFA346vneseLHMO/Ko28OKEJlqmMLcUo5sJowA==
+X-HE-Tag: 1770557023-31455
+X-HE-Meta: U2FsdGVkX18sfHSdTllwE0ruW1NycvmsJKMdpF+MTJkbg4bYvR9jID2aauSFVrBJOlWEpiuHEHCDdr7NNT7xGx718p3Drk3ya6k+zj3FOSPGvJ0CaGEVicnm78wQVCuGCsA07P22mNuk1IbrOCSiLh8Cj4Lr75MpYFdy0KQFrSPB81uzRURxI/U+1pe90dXxyFOZZcFGyd4OR9Q0XPdrBUVJvN8teCHRCdD6tj2LfOkWR1m9fyhk3hr8SdanrHGvPjZiWSJaUbzLVs+DllP03CGQ1LcnIx7ZLPw3bl50HmYbBrPI1dzJyFwxepc2n99INWwYiutxlUo1jt7TbwGqJwl9x8t9K1wcCdIVTtStLWC8LhkqnD498aj11IJtmdbKKs2GdiJv8MFtctrjNs4g3vnZqHVk0L6RkW8UBLGW0mo3rwKHTtjixypt4Uztd3wzzoRsqrenvdLaGyJUjeQmWQm+IpQ7zeHL04bS5I269rqyBKzyT0yW+ECM0IuTKtJsoEoDIGD1eL+bIA9clvghPDjeL5jfZsYq5UzeYV1Ej/Fvjze/9Ys9gdMyMN3H7RfyYWUHYhD6dtMdgblH+bFo0DQP+xEivysrf0OSmQWjw406rP7Z1zMk0l5GXj1keKhR+wCX/wWqFkoLCqVceruoEd7mVtJSibZ+lD+B2KwTEOslWYPbVFzC6jQnFZsaUMuNeNEn4vDXa7spRaco9pWHcC26x9G+RgwR/zMVG0/rJGeiqzB35y6vXsnhDhLogMo4ilxbGOg/VxrOb/1O1UMIqej7vusVfJ/FgXtcef+O/adUjlWXztfzO7n+jw9U+IrGhwlfck/yD3tGon5nHuo9Rmzdk80pZJ36JBBEV9Rg3LNSg+w42Vk4pljgmO6lMxEq6wUONQUYa9V/IRoxORFTSWf1CrvfEniCaV4bwgdGjJ8Y9DyUq7hoTeF4+Kp/WxNteMTRMxvLaxLgnnPJylR
+ xEpy/Ki/
+ Gdv7BmG25iiKMmlukggK7ILEVOZXcd+K0shYmcoFBQO1ziMRJBGxJflf32izInqIWiFRhKLdSu6mBTWlns6M6VOxJqptirPPULuzkhw51mXzlyc8F6B6RL4fGu0bZ2d8UmAaIxuzrmKL6tHUXL2XhLF6MIcS54LoWx7CkvTrRO5XOtnDBwqmP07h6c1pQPp/1/+47Nt6c33M2DBjL3MMBGoBYH4IERhmdX5Ky4xywCdQfW1lwz4+chXczqCd33UAUCO3Fu8CgVEY1d3h19pXR14uaGPHNgXYVZKvuhgOOM2p5nTCQC0sYSOcJgeU8yFoKurU2hYvzW5vt0ger6jbseIMQhsHpsyRxkPQQWEBxPkh9lrgXpWMpVwL2yexd/vAJ3uJQW/mqD4zQlNbOvLD0DRtPjNiE00b2XbI+NQ4MdEPHVw1/Xxjp4FNVFmRk4vKUcJtj8cNCh2pIq5ob5PrmbVRjUegun9kfkO5gVDqUFBDFK3k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,169 +143,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+On Sun, Feb 8, 2026 at 5:05=E2=80=AFPM Dev Jain <dev.jain@arm.com> wrote:
+>
+> On 06/02/26 4:42 pm, Vernon Yang wrote:
+> > On Fri, Feb 06, 2026 at 10:02:48AM +0100, David Hildenbrand (Arm) wrote=
+:
+> >> On 2/5/26 15:25, Dev Jain wrote:
+> >>> On 05/02/26 5:41 pm, David Hildenbrand (arm) wrote:
+> >>>> On 2/5/26 07:08, Vernon Yang wrote:
+> >>>>> On Thu, Feb 5, 2026 at 5:35=E2=80=AFAM David Hildenbrand (arm)
+> >>>>> <david@kernel.org> wrote:
+> >>>>>
+> >>>>> I guess, your meaning is "min(_pte - pte + 1, HPAGE_PMD_NR)", not m=
+ax().
+> >>>> Yes!
+> >>>>
+> >>>>>
+> >>>>> I'm also worried that the compiler can't optimize this since the bo=
+dy of
+> >>>>> the loop is complex, as with Dev's opinion [1].
+> >>>> Why do we even have to optimize this? :)
+> >>>>
+> >>>> Premature ... ? :)
+> >>>
+> >>> I mean .... we don't, but the alternate is a one liner using max().
+> >> I'm fine with the max(), but it still seems like adding complexity to
+> >> optimize something that is nowhere prove to really be a problem.
+> > Hi David, Dev,
+> >
+> > I use "*cur_progress +=3D 1" at the beginning of the loop, the compiler
+> > optimize that. Assembly as follows:
+> >
+> > 60c1: 4d 29 ca        sub    %r9,%r10         // r10 is _pte, r9 is pte=
+, r10 =3D _pte - pte
+> > 60c4: b8 00 02 00 00  mov    $0x200,%eax      // eax =3D HPAGE_PMD_NR
+> > 60c9: 44 89 5c 24 10  mov    %r11d,0x10(%rsp) //
+> > 60ce: 49 c1 fa 03     sar    $0x3,%r10        //
+> > 60d2: 49 83 c2 01     add    $0x1,%r10        // r10 +=3D 1
+> > 60d6: 49 39 c2        cmp    %rax,%r10        // r10 =3D min(r10, eax)
+> > 60d9: 4c 0f 4f d0     cmovg  %rax,%r10        //
+> > 60dd: 44 89 55 00     mov    %r10d,0x0(%rbp)  // *cur_progress =3D r10
+> >
+> > To make the code simpler, Let us use "*cur_progress +=3D 1".
+>
+> Wow! Wasn't expecting that. What's your gcc version? I checked with
+> gcc 11.4.0 (looks pretty old) with both x86 and arm64, and it couldn't
+> optimize.
 
-kernel test robot noticed the following build errors:
+$ gcc --version
+gcc (GCC) 15.2.1 20250808 (Red Hat 15.2.1-1)
 
-[auto build test ERROR on trace/for-next]
-[also build test ERROR on linus/master v6.19-rc8 next-20260205]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Above is my gcc version. However, I performed the assembly again without
+any optimization :(
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Rename-trace_array-field-max_buffer-to-snapshot_buffer/20260208-120355
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20260208040221.900653834%40kernel.org
-patch subject: [PATCH v2 2/3] tracing: Add tracer_uses_snapshot() helper to remove #ifdefs
-config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260208/202602082013.PnPZCdsA-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260208/202602082013.PnPZCdsA-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602082013.PnPZCdsA-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> kernel/trace/trace.c:6337:13: error: no member named 'cond_snapshot' in 'struct trace_array'
-    6337 |                 ret = tr->cond_snapshot ? -EBUSY : 0;
-         |                       ~~  ^
-   kernel/trace/trace.c:6366:2: error: use of undeclared identifier 'had_max_tr'
-    6366 |         had_max_tr = tracer_uses_snapshot(tr->current_trace);
-         |         ^
-   kernel/trace/trace.c:6372:6: error: use of undeclared identifier 'had_max_tr'
-    6372 |         if (had_max_tr && !tracer_uses_snapshot(trace)) {
-         |             ^
-   kernel/trace/trace.c:6385:7: error: use of undeclared identifier 'had_max_tr'
-    6385 |         if (!had_max_tr && tracer_uses_snapshot(trace)) {
-         |              ^
-   kernel/trace/trace.c:9795:23: warning: shift count is negative [-Wshift-count-negative]
-    9795 |                     !((1ULL << i) & TOP_LEVEL_TRACE_FLAGS)) {
-         |                                     ^~~~~~~~~~~~~~~~~~~~~
-   kernel/trace/trace.c:523:9: note: expanded from macro 'TOP_LEVEL_TRACE_FLAGS'
-     523 |                TRACE_ITER(PROF_TEXT_OFFSET) | FPROFILE_DEFAULT_FLAGS)
-         |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   kernel/trace/trace.h:1452:42: note: expanded from macro 'TRACE_ITER'
-    1452 |         (TRACE_ITER_##flag##_BIT < 0 ? 0 : 1ULL << (TRACE_ITER_##flag##_BIT))
-         |                                                 ^  ~~~~~~~~~~~~~~~~~~~~~~~~~
-   1 warning and 4 errors generated.
-
-
-vim +6337 kernel/trace/trace.c
-
-ef9188bcc6ca1d Mark-PK Tsai             2022-04-26  6300  
-9c5b9d3d65e485 Masami Hiramatsu         2020-01-11  6301  int tracing_set_tracer(struct trace_array *tr, const char *buf)
-09d23a1d8a82e8 Steven Rostedt (Red Hat  2015-02-03  6302) {
-428add559b6923 Steven Rostedt           2025-11-11  6303  	struct tracer *trace = NULL;
-428add559b6923 Steven Rostedt           2025-11-11  6304  	struct tracers *t;
-12883efb670c28 Steven Rostedt (Red Hat  2013-03-05  6305) #ifdef CONFIG_TRACER_MAX_TRACE
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6306  	bool had_max_tr;
-12883efb670c28 Steven Rostedt (Red Hat  2013-03-05  6307) #endif
-d33b10c0c73adc Steven Rostedt           2024-12-24  6308  	int ret;
-bc0c38d139ec7f Steven Rostedt           2008-05-12  6309  
-d33b10c0c73adc Steven Rostedt           2024-12-24  6310  	guard(mutex)(&trace_types_lock);
-1027fcb206a0fb Steven Rostedt           2009-03-12  6311  
-7a1d1e4b9639ff Steven Rostedt (Google   2024-06-12  6312) 	update_last_data(tr);
-7a1d1e4b9639ff Steven Rostedt (Google   2024-06-12  6313) 
-a1f157c7a3bb34 Zheng Yejian             2023-09-06  6314  	if (!tr->ring_buffer_expanded) {
-2b6080f28c7cc3 Steven Rostedt           2012-05-11  6315  		ret = __tracing_resize_ring_buffer(tr, trace_buf_size,
-438ced1720b584 Vaibhav Nagarnaik        2012-02-02  6316  						RING_BUFFER_ALL_CPUS);
-73c5162aa362a5 Steven Rostedt           2009-03-11  6317  		if (ret < 0)
-d33b10c0c73adc Steven Rostedt           2024-12-24  6318  			return ret;
-73c5162aa362a5 Steven Rostedt           2009-03-11  6319  		ret = 0;
-73c5162aa362a5 Steven Rostedt           2009-03-11  6320  	}
-73c5162aa362a5 Steven Rostedt           2009-03-11  6321  
-428add559b6923 Steven Rostedt           2025-11-11  6322  	list_for_each_entry(t, &tr->tracers, list) {
-428add559b6923 Steven Rostedt           2025-11-11  6323  		if (strcmp(t->tracer->name, buf) == 0) {
-428add559b6923 Steven Rostedt           2025-11-11  6324  			trace = t->tracer;
-bc0c38d139ec7f Steven Rostedt           2008-05-12  6325  			break;
-bc0c38d139ec7f Steven Rostedt           2008-05-12  6326  		}
-428add559b6923 Steven Rostedt           2025-11-11  6327  	}
-428add559b6923 Steven Rostedt           2025-11-11  6328  	if (!trace)
-d33b10c0c73adc Steven Rostedt           2024-12-24  6329  		return -EINVAL;
-d33b10c0c73adc Steven Rostedt           2024-12-24  6330  
-428add559b6923 Steven Rostedt           2025-11-11  6331  	if (trace == tr->current_trace)
-d33b10c0c73adc Steven Rostedt           2024-12-24  6332  		return 0;
-bc0c38d139ec7f Steven Rostedt           2008-05-12  6333  
-b1e5d74d04bbcf Steven Rostedt           2026-02-07  6334  	if (tracer_uses_snapshot(trace)) {
-c0a581d7126c0b Waiman Long              2022-09-22  6335  		local_irq_disable();
-a35873a0993b4d Tom Zanussi              2019-02-13  6336  		arch_spin_lock(&tr->max_lock);
-22bec11a569983 Steven Rostedt           2025-01-06 @6337  		ret = tr->cond_snapshot ? -EBUSY : 0;
-a35873a0993b4d Tom Zanussi              2019-02-13  6338  		arch_spin_unlock(&tr->max_lock);
-c0a581d7126c0b Waiman Long              2022-09-22  6339  		local_irq_enable();
-a35873a0993b4d Tom Zanussi              2019-02-13  6340  		if (ret)
-d33b10c0c73adc Steven Rostedt           2024-12-24  6341  			return ret;
-a35873a0993b4d Tom Zanussi              2019-02-13  6342  	}
-b1e5d74d04bbcf Steven Rostedt           2026-02-07  6343  
-c7b3ae0bd2ca65 Ziqian SUN (Zamir        2017-09-11  6344) 	/* Some tracers won't work on kernel command line */
-428add559b6923 Steven Rostedt           2025-11-11  6345  	if (system_state < SYSTEM_RUNNING && trace->noboot) {
-c7b3ae0bd2ca65 Ziqian SUN (Zamir        2017-09-11  6346) 		pr_warn("Tracer '%s' is not allowed on command line, ignored\n",
-428add559b6923 Steven Rostedt           2025-11-11  6347  			trace->name);
-d1e27ee9c6f21c Steven Rostedt           2024-12-19  6348  		return -EINVAL;
-c7b3ae0bd2ca65 Ziqian SUN (Zamir        2017-09-11  6349) 	}
-c7b3ae0bd2ca65 Ziqian SUN (Zamir        2017-09-11  6350) 
-607e2ea167e56d Steven Rostedt (Red Hat  2013-11-06  6351) 	/* Some tracers are only allowed for the top level buffer */
-428add559b6923 Steven Rostedt           2025-11-11  6352  	if (!trace_ok_for_array(trace, tr))
-d33b10c0c73adc Steven Rostedt           2024-12-24  6353  		return -EINVAL;
-607e2ea167e56d Steven Rostedt (Red Hat  2013-11-06  6354) 
-cf6ab6d9143b15 Steven Rostedt (Red Hat  2014-12-15  6355) 	/* If trace pipe files are being read, we can't change the tracer */
-d33b10c0c73adc Steven Rostedt           2024-12-24  6356  	if (tr->trace_ref)
-d33b10c0c73adc Steven Rostedt           2024-12-24  6357  		return -EBUSY;
-cf6ab6d9143b15 Steven Rostedt (Red Hat  2014-12-15  6358) 
-9f029e83e968e5 Steven Rostedt           2008-11-12  6359  	trace_branch_disable();
-613f04a0f51e6e Steven Rostedt (Red Hat  2013-03-14  6360) 
-50512ab576e1ce Steven Rostedt (Red Hat  2014-01-14  6361) 	tr->current_trace->enabled--;
-613f04a0f51e6e Steven Rostedt (Red Hat  2013-03-14  6362) 
-2b6080f28c7cc3 Steven Rostedt           2012-05-11  6363  	if (tr->current_trace->reset)
-2b6080f28c7cc3 Steven Rostedt           2012-05-11  6364  		tr->current_trace->reset(tr);
-613f04a0f51e6e Steven Rostedt (Red Hat  2013-03-14  6365) 
-b1e5d74d04bbcf Steven Rostedt           2026-02-07  6366  	had_max_tr = tracer_uses_snapshot(tr->current_trace);
-a541a9559bb0a8 Steven Rostedt (Google   2022-10-05  6367) 
-7440172974e85b Paul E. McKenney         2018-11-06  6368  	/* Current trace needs to be nop_trace before synchronize_rcu */
-2b6080f28c7cc3 Steven Rostedt           2012-05-11  6369  	tr->current_trace = &nop_trace;
-428add559b6923 Steven Rostedt           2025-11-11  6370  	tr->current_trace_flags = nop_trace.flags;
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6371  
-b1e5d74d04bbcf Steven Rostedt           2026-02-07  6372  	if (had_max_tr && !tracer_uses_snapshot(trace)) {
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6373  		/*
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6374  		 * We need to make sure that the update_max_tr sees that
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6375  		 * current_trace changed to nop_trace to keep it from
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6376  		 * swapping the buffers after we resize it.
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6377  		 * The update_max_tr is called from interrupts disabled
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6378  		 * so a synchronized_sched() is sufficient.
-34600f0e9c33c9 Steven Rostedt           2013-01-22  6379  		 */
-7440172974e85b Paul E. McKenney         2018-11-06  6380  		synchronize_rcu();
-3209cff4490bee Steven Rostedt (Red Hat  2013-03-12  6381) 		free_snapshot(tr);
-180e4e390978af Vincent Donnefort        2024-02-20  6382  		tracing_disarm_snapshot(tr);
-ef710e100c1068 KOSAKI Motohiro          2010-07-01  6383  	}
-12883efb670c28 Steven Rostedt (Red Hat  2013-03-05  6384) 
-b1e5d74d04bbcf Steven Rostedt           2026-02-07  6385  	if (!had_max_tr && tracer_uses_snapshot(trace)) {
-180e4e390978af Vincent Donnefort        2024-02-20  6386  		ret = tracing_arm_snapshot_locked(tr);
-180e4e390978af Vincent Donnefort        2024-02-20  6387  		if (ret)
-d33b10c0c73adc Steven Rostedt           2024-12-24  6388  			return ret;
-ef710e100c1068 KOSAKI Motohiro          2010-07-01  6389  	}
-577b785f55168d Steven Rostedt           2009-02-26  6390  
-428add559b6923 Steven Rostedt           2025-11-11  6391  	tr->current_trace_flags = t->flags ? : t->tracer->flags;
-428add559b6923 Steven Rostedt           2025-11-11  6392  
-428add559b6923 Steven Rostedt           2025-11-11  6393  	if (trace->init) {
-428add559b6923 Steven Rostedt           2025-11-11  6394  		ret = tracer_init(trace, tr);
-180e4e390978af Vincent Donnefort        2024-02-20  6395  		if (ret) {
-b1e5d74d04bbcf Steven Rostedt           2026-02-07  6396  			if (tracer_uses_snapshot(trace))
-180e4e390978af Vincent Donnefort        2024-02-20  6397  				tracing_disarm_snapshot(tr);
-428add559b6923 Steven Rostedt           2025-11-11  6398  			tr->current_trace_flags = nop_trace.flags;
-d33b10c0c73adc Steven Rostedt           2024-12-24  6399  			return ret;
-1c80025a49855b Frederic Weisbecker      2008-11-16  6400  		}
-180e4e390978af Vincent Donnefort        2024-02-20  6401  	}
-bc0c38d139ec7f Steven Rostedt           2008-05-12  6402  
-428add559b6923 Steven Rostedt           2025-11-11  6403  	tr->current_trace = trace;
-50512ab576e1ce Steven Rostedt (Red Hat  2014-01-14  6404) 	tr->current_trace->enabled++;
-9f029e83e968e5 Steven Rostedt           2008-11-12  6405  	trace_branch_enable(tr);
-bc0c38d139ec7f Steven Rostedt           2008-05-12  6406  
-d33b10c0c73adc Steven Rostedt           2024-12-24  6407  	return 0;
-d9e540762f5cdd Peter Zijlstra           2008-11-01  6408  }
-d9e540762f5cdd Peter Zijlstra           2008-11-01  6409  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I suspect that I might have messed up the environment earlier, failing to
+compile the newly modified code successfully, which resulted is assembly
+old_khugepaged.o.
 
