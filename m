@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E762E78D44
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:49:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B49D1E78D44
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:50:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 750376B0088; Mon,  9 Feb 2026 03:49:48 -0500 (EST)
+	id 273CE6B0088; Mon,  9 Feb 2026 03:50:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FE0C6B0089; Mon,  9 Feb 2026 03:49:48 -0500 (EST)
+	id 21D866B0089; Mon,  9 Feb 2026 03:50:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D2266B008C; Mon,  9 Feb 2026 03:49:48 -0500 (EST)
+	id 1240A6B008C; Mon,  9 Feb 2026 03:50:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AA936B0088
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:49:48 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EDA41140756
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:49:47 +0000 (UTC)
-X-FDA: 84424295214.01.A4716F5
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 02F8A6B0088
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:50:48 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96CA18C2A8
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:50:47 +0000 (UTC)
+X-FDA: 84424297734.07.FED4A4A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1318840006
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:49:45 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TPEOF6/3";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id C4E9840008
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:50:45 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uLs9PWdZ;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770626986;
+	s=arc-20220608; t=1770627045;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TGbTfLLZD/gDNQDsOqhyyqWwiZVtJ78GG3mOzthMJgA=;
-	b=cxUp/eq5YgE6f0QisJh7fZwclqCGpA7hzN9PnVxB5F77Nq019oiAbMD4kY3Mn9N+kpT3An
-	3jzIuOgt2OO9bwqPAJwcM2j16Xu041NAqA9/QLUcnsT2KxIx9jdcnZBMRGMpXODG9xVWdn
-	n/++oAE2xILpW+4heE250/bk4ChNQl8=
+	bh=vCGlZc4MIAQVuH+6hzdgIVYGRyPC+RbQinYDHIrYUoE=;
+	b=o585k7hFy77V+Zsgu9/FQ6e7sIaaOEZDYktmiNRKj4iHXORgl2uDuGXYFhKhSf5np9vHoC
+	oWRyWweUkKpxwDzljZNiGBs7PglIjtZBu8XPvBgoWvabpnVueLBqpfg1xxXCF5cVbSdXMg
+	Uj8x1h7LT9MERR5Rtlk93Fuptn+F9bQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TPEOF6/3";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uLs9PWdZ;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770626986; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770627045; a=rsa-sha256;
 	cv=none;
-	b=OVOsxr+td7PpZjkSauiUVECdduw3dO4dI2IakyoRmoydYsP1RBm9yu6akGmYnkquPzF4fE
-	JpgBxC+NwR2t4QuyC9yBrFOwy3GiTqoD8k2LzUAbHCaWjndvBXiYLGBQRHDN1THITdrA44
-	+Vow7qOT4kg/ljhHSbtwWHjDNdjQ8hU=
+	b=gHL1aBAD/8YaLPiFS11ulvpN0Xc1GDTUg/u1T22wCK/CIe4i8w15CYBqGlxor8cjOlDl9Y
+	piy9hQ8kCpjNx3Zbbes405rcrTf5UD6dMNApAAQaPRDf96pEtvkAUse3d6HUPVzu4uiqi3
+	iVkFN4gliZkL4ekkpC7z9kF5Z2vpamE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B7C34417D;
-	Mon,  9 Feb 2026 08:49:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BD6C116C6;
-	Mon,  9 Feb 2026 08:49:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E85EB40DB7;
+	Mon,  9 Feb 2026 08:50:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D10C116C6;
+	Mon,  9 Feb 2026 08:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770626984;
-	bh=hrBXFznTwdWmXs1zvNu9iVueNufa6xnW3w+yF3Djn+M=;
+	s=k20201202; t=1770627044;
+	bh=fYRHsOSaRYNQMebJuGT2xBJGUdIbxB45EEFLltoMfgU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=TPEOF6/3AguXyv7ybUXpRZLxt7s0hAp01KEaZscFtoVxo/QpUBu5lI2i5wOWi1+MD
-	 y3U6cc2RGmkB9FSiI4B7hmHsp1IL8xT63Pn3YuyW2x/hpjWR6c8Qbq046qN3rjaO+s
-	 1uyIAt1Y0cpjQIuZgNY8fK4XAb/2YVpFL8twI+jBtCyAjRVisoPkqfWFU1QYPTEsBd
-	 xKRXkoZZ046rUR0KjiGG4xOhZjl7TGeSSUY4Hh7Fkfr9ZlzH8MFG7IVAclUG4qTJlT
-	 QXbh0YG6qbH3Ohoxj4lT4SWHiIz0z9GBovH4Rc9J8C24vdVv4Vm4zfcyG8WJyWyjSG
-	 4MX0jadpTq1tQ==
-Message-ID: <3d5cb9a4-6604-4302-a110-3d8ff91baa56@kernel.org>
-Date: Mon, 9 Feb 2026 09:49:36 +0100
+	b=uLs9PWdZgFwFLWXFHdbc2Xm8rKsXgDs7yE3QKWIDrXMHUc1aQPtWXPJyJmHBLz6EL
+	 EhBOXeWS/vvtili6nW6jOZ88QcVVswtryYy/Rq7SHAAC9L5KLQ1EiLBOuQtNP/aqub
+	 TDKV8GTBKCxiyw2F6eJRo8Kvr+243wpiNeFkTy3ufcmHmihoWDBEY/c5wVWIVxhRB5
+	 4YZaZ7uLJjwuUBEIXjqPw5LoHEkVlYVds4NE59PLvjI+FDLTVPQlTR4wBPBa6gOfkF
+	 bk2vcCViQVaJABBSeZBiUlARhlIKZvn0ZmzFsBcPJudXLtQkzK2/qOINwEIxsQ9bJZ
+	 wCtkKQ5S+1XWw==
+Message-ID: <e5e5e4ca-2809-4866-b44c-1e532f999e73@kernel.org>
+Date: Mon, 9 Feb 2026 09:50:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/5] mm: rmap: support batched checks of the references
- for large folios
+Subject: Re: [PATCH v5 2/5] arm64: mm: factor out the address and ptep
+ alignment into a new helper
 To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
  catalin.marinas@arm.com, will@kernel.org
 Cc: lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
@@ -79,7 +79,7 @@ Cc: lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
  linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
- <18b3eb9c730d16756e5d23c7be22efe2f6219911.1766631066.git.baolin.wang@linux.alibaba.com>
+ <70499ea05beb23fe386b3d4423249a817cec17d4.1766631066.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <18b3eb9c730d16756e5d23c7be22efe2f6219911.1766631066.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <70499ea05beb23fe386b3d4423249a817cec17d4.1766631066.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1318840006
-X-Stat-Signature: 66yxh9u3oowxhm3zsdqcfgym3xw5feir
+X-Rspamd-Server: rspam11
+X-Stat-Signature: m84obywi54xnd9yibrdogo5brat5hdhg
 X-Rspam-User: 
-X-HE-Tag: 1770626985-811769
-X-HE-Meta: U2FsdGVkX19IUcUIbGeW6QaU1HHkOMv4yzsI3y0a4//65AL3oNXYi/Pgdhms+Ph3QMk5raFMhXP8tsoBTk6hxgdQrxj4797ju2F85aXArOMw5eeJum/ciOT66M8+UrDY1HXeP7Mr1ESrM5RyKJyskt1A/QVR4Tixk42yr5zNDWN1QR92JuPHTZA8ba8K3nW2ussKNIMsh4IsKpt/F98hwkXL4p+JIs9k77iPY1q2kKxYqk/tC61w09UIXmScEbEXknFfivl/PK6VyzwEXk/UeBkkWgXfkV/DnGBDxUlHG0XJ33OOCGcHXqymuXfpdWwfvAVNW8jVdPOeO8RaUADsEY4V9VTzYJIZXZ+JCWtQDxeRTQenBJrXMVF3NSgSxD4Q554A4tXT9DXIzbqcH6e9g+xL8MSY/s2HTtno7kQH/UqBDqbaoSMbUSmV4nvmGMuU8DXQmjByOA4LhYb3txo9qhvLwnAzXgOeizQrjXs2rJ+vVQk/NkXdsbwwkjDvCQTuJ3dZRI2w/aO34PLXpPXuwiB1XI84zQc7JzDoEleGg2+fRAFMGtV7emXhGr09RjQXpFA+POJTdk/fJFqxzDfJC6wU26DRodaX2TlU8JXjxYO/RHyHHXlzccdXmsSC+vjDWuXbYnyh76hYLifzDBKmiO4eha9NxPZ6t87I9qsgTKueLC7n5pYRdDIWs2KhRqSyIU/aNTTWsnNatazQq7S7yt4gRlboyFcZfFLDPns/jPTdZOigAB99s8Hh6sHLvW+by/hpZ/K6YkYdsKlpKWVPQYIWU28lmed3RLqa4eZgUhcMH2eNnKfm/7FPRwUkDuDxLd4pjogba0irBNBz7joDTolUVE0DdRQu+PGo9Iz4aYE39ZopvtpUYVs8CRxQTOdzjYLpD/W6HsuVbewDNwT63Flq0rUapQQKzMbI9a3yeEl9jeSaC1trF9BdwGgfyBHpTDi7OSRioEmATfFsw5u
- Ox6pfgBm
- /nBTo6ORpC0fL/jStoZlDeQoR1Mv2Dfft4fUtHPHyZi8fJdnIL+bhOJ4aFOBDQDLVbStGImjnCJwPRcChJdVfnlxDxJMytos/LtcdhZWbaorTvA2EgvkkYOXpIU5ZQnp6IgqZ77hvcXZUEoQrWj/D53NevidTlSKuFcQQ3HoOlfDH43X9q8Al4uXlUd3CPCA1xckpEIvywex4rsEsGjj+nk4/CQUehqVxvkoqdhg9Y8Bobh0ka7SXsM1zdpvgG3Dk9vPvh8VtJHq8psklYB65zZINNjHeG67kXjOcdlCPRx6KuDNvGyyBSHSeGNn3tq9BmFnW5WjFWxlPr+ayd5UoHrQ2XkvWaK+6si4Sy2qAbgDqrtIgy3rX/oMGtQ==
+X-Rspamd-Queue-Id: C4E9840008
+X-HE-Tag: 1770627045-598470
+X-HE-Meta: U2FsdGVkX18suMiVof1Pd1ErUUqF02r4++5hdU1Tqvhpiotluqzv8DgXOT4a/1HtaHtFpcN+qcr/qrIQ3vvRjEu7X9rc2A7kt82siD+5H/QpaUZhggCASXtovdxdZz0NvH4aQRYHqhEKK57UvbIQ14WkrjX70HKPFEOWPip4b/nGBtkA1YBgyT+wQNhuuoRR8EJ6Ax8YTaqu/2JRKtZTxAzuJqF3tbD/gSaT0AriG3o5E7gXHSji7H1tlZubLCDTByTyIa9cYo5D4dPpfe4cQPGOekNAswVi81w5bNLf0GiYMH4gZBeSKwcAhlrrNbNK9kdGkbGSIrV3bmoO2fViiAWP0a3hLt/vO3n/OLkJpz1NN+3sqxGis7BXK0rcmNa7F9yEwS/9ZICfzsmNMBni6n5yKHL+9dwCCZJqb9qrY7kvj39GG4eRChSmcvZuSRb6iNkgEbsRrIxC/+x6OV5nPvBKuRQp1MbjjZHFw9envim9GbckqBDhvfzD1B0lD7np5oilyxlF6UfQPHciWWh6kA+iTmPLrr4LQdX0UwY53c6UFN+APUT7HlSvDrN074jRxmRb1CJrL135IMzEvRUijrnqYVzQI6bY2TqrFb5MyaRfBntVttxvQ5JRLBx2SLyLIOK6eDSd+LDjV9hqLCbjHCBOlTj1itOY54d7ZSc812cBUS29WOKmzgp3YdonLEEm4CXWaY3AyLjSZKZHFeBwAuvIfPu3J5jwD4IztzHkpQMv2fZ5fEOzm92aMI31ersM3PMYUXCFjG0D+6ipa7Og+Yjwyj7Ge8qBzzGLBUditkpWx0LLd7sPW/Lm5UNt2RWYAL6M8a190Rw8AnapHEVuuOybMFvwdf7yoLYpX4ZUh+j1ChI8dCFNaRghc/UHtsn6nHj1slRR5ivUujVdTq3IXpd0Rpzl1PBS+Gdn/Xp05rm6XzbJModS23w5GRCf0VMFCLFy/3wxnr2J6FbYCT3
+ Ku+d+0Wg
+ onQy5cmQRZOua8eO0eR89KY6B1Z9F76sTd7oBOEnFewTFOjulzGghKHExM4rrEYQ6cY9rJaCBUlbcNmoMkwsGF0dX03O7NOv4wJxNXzFPNS4MhNchbzd8ijQU1nF7/qJy55wIIO71j7HVoa2xnB4SfsocX2x9ifsB+IpYO5rxPgmkzsoFx5UZNM4zi5J3LxVj38npAHSHHbQthgxQznh4Rp72WCkexgCLBGwUTqtxahS8MBip339YwnndMOEGST4STHhHol0oxS4jcF+cGeAephl9k/wZjK7+Gk8tw1SsyoC2zTDM/oHlDHifhLamkYUobCKvhYENVLnUaiH9eYWbi0+gcslQO0dLKTHIlaQJTMGEZeVbBVz/L79Ae55y+H86nEhAu0OrAd1Opyk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,198 +146,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 12/26/25 07:07, Baolin Wang wrote:
-> Currently, folio_referenced_one() always checks the young flag for each PTE
-> sequentially, which is inefficient for large folios. This inefficiency is
-> especially noticeable when reclaiming clean file-backed large folios, where
-> folio_referenced() is observed as a significant performance hotspot.
+> Factor out the contpte block's address and ptep alignment into a new helper,
+> and will be reused in the following patch.
 > 
-> Moreover, on Arm64 architecture, which supports contiguous PTEs, there is already
-> an optimization to clear the young flags for PTEs within a contiguous range.
-> However, this is not sufficient. We can extend this to perform batched operations
-> for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
-> 
-> Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
-> of the young flags and flushing TLB entries, thereby improving performance
-> during large folio reclamation. And it will be overridden by the architecture
-> that implements a more efficient batch operation in the following patches.
-> 
-> While we are at it, rename ptep_clear_flush_young_notify() to
-> clear_flush_young_ptes_notify() to indicate that this is a batch operation.
+> No functional changes.
 > 
 > Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 > ---
->   include/linux/mmu_notifier.h |  9 +++++----
->   include/linux/pgtable.h      | 31 +++++++++++++++++++++++++++++++
->   mm/rmap.c                    | 31 ++++++++++++++++++++++++++++---
->   3 files changed, 64 insertions(+), 7 deletions(-)
-> 
-> diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-> index d1094c2d5fb6..07a2bbaf86e9 100644
-> --- a/include/linux/mmu_notifier.h
-> +++ b/include/linux/mmu_notifier.h
-> @@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
->   	range->owner = owner;
->   }
->   
-> -#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
-> +#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
->   ({									\
->   	int __young;							\
->   	struct vm_area_struct *___vma = __vma;				\
->   	unsigned long ___address = __address;				\
-> -	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
-> +	unsigned int ___nr = __nr;					\
-> +	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
->   	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
->   						  ___address,		\
->   						  ___address +		\
-> -							PAGE_SIZE);	\
-> +						  ___nr * PAGE_SIZE);	\
->   	__young;							\
->   })
->   
 
-Man that's ugly, Not your fault, but can this possibly be turned into an 
-inline function in a follow-up patch.
-
-[...]
-
->   
-> +#ifndef clear_flush_young_ptes
-> +/**
-> + * clear_flush_young_ptes - Clear the access bit and perform a TLB flush for PTEs
-> + *			    that map consecutive pages of the same folio.
-
-With clear_young_dirty_ptes() description in mind, this should probably 
-be "Mark PTEs that map consecutive pages of the same folio as clean and 
-flush the TLB" ?
-
-> + * @vma: The virtual memory area the pages are mapped into.
-> + * @addr: Address the first page is mapped at.
-> + * @ptep: Page table pointer for the first entry.
-> + * @nr: Number of entries to clear access bit.
-> + *
-> + * May be overridden by the architecture; otherwise, implemented as a simple
-> + * loop over ptep_clear_flush_young().
-> + *
-> + * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-> + * some PTEs might be write-protected.
-> + *
-> + * Context: The caller holds the page table lock.  The PTEs map consecutive
-> + * pages that belong to the same folio.  The PTEs are all in the same PMD.
-> + */
-> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-> +					 unsigned long addr, pte_t *ptep,
-> +					 unsigned int nr)
-
-Two-tab alignment on second+ line like all similar functions here.
-
-> +{
-> +	int i, young = 0;
-> +
-> +	for (i = 0; i < nr; ++i, ++ptep, addr += PAGE_SIZE)
-> +		young |= ptep_clear_flush_young(vma, addr, ptep);
-> +
-
-Why don't we use a similar loop we use in clear_young_dirty_ptes() or 
-clear_full_ptes() etc? It's not only consistent but also optimizes out 
-the first check for nr.
-
-
-for (;;) {
-	young |= ptep_clear_flush_young(vma, addr, ptep);
-	if (--nr == 0)
-		break;
-	ptep++;
-	addr += PAGE_SIZE;
-}
-
-> +	return young;
-> +}
-> +#endif
-> +
->   /*
->    * On some architectures hardware does not set page access bit when accessing
->    * memory page, it is responsibility of software setting this bit. It brings
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index e805ddc5a27b..985ab0b085ba 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -828,9 +828,11 @@ static bool folio_referenced_one(struct folio *folio,
->   	struct folio_referenced_arg *pra = arg;
->   	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->   	int ptes = 0, referenced = 0;
-> +	unsigned int nr;
->   
->   	while (page_vma_mapped_walk(&pvmw)) {
->   		address = pvmw.address;
-> +		nr = 1;
->   
->   		if (vma->vm_flags & VM_LOCKED) {
->   			ptes++;
-> @@ -875,9 +877,24 @@ static bool folio_referenced_one(struct folio *folio,
->   			if (lru_gen_look_around(&pvmw))
->   				referenced++;
->   		} else if (pvmw.pte) {
-> -			if (ptep_clear_flush_young_notify(vma, address,
-> -						pvmw.pte))
-> +			if (folio_test_large(folio)) {
-> +				unsigned long end_addr =
-> +					pmd_addr_end(address, vma->vm_end);
-> +				unsigned int max_nr =
-> +					(end_addr - address) >> PAGE_SHIFT;
-
-Good news: you can both fit into a single line as we are allowed to 
-exceed 80c if it aids readability.
-
-> +				pte_t pteval = ptep_get(pvmw.pte);
-> +
-> +				nr = folio_pte_batch(folio, pvmw.pte,
-> +						     pteval, max_nr);
-> +			}
-> +
-> +			ptes += nr;
-
-I'm not sure about whether we should mess with the "ptes" variable that 
-is so far only used for VM_LOCKED vmas. See below, maybe we can just 
-avoid that.
-
-> +			if (clear_flush_young_ptes_notify(vma, address,
-> +						pvmw.pte, nr))
-
-Could maybe fit that into a single line as well, whatever you prefer.
-
->   				referenced++;
-> +			/* Skip the batched PTEs */
-> +			pvmw.pte += nr - 1;
-> +			pvmw.address += (nr - 1) * PAGE_SIZE;
->   		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
->   			if (pmdp_clear_flush_young_notify(vma, address,
->   						pvmw.pmd))
-> @@ -887,7 +904,15 @@ static bool folio_referenced_one(struct folio *folio,
->   			WARN_ON_ONCE(1);
->   		}
->   
-> -		pra->mapcount--;
-> +		pra->mapcount -= nr;
-> +		/*
-> +		 * If we are sure that we batched the entire folio,
-> +		 * we can just optimize and stop right here.
-> +		 */
-> +		if (ptes == pvmw.nr_pages) {
-> +			page_vma_mapped_walk_done(&pvmw);
-> +			break;
-> +		}
-Why not check for !pra->mapcount? Then you can also drop the comment, 
-because it's exactly the same thing we check after the loop to indicate 
-what to return to the caller.
-
-And you will not have to mess with the "ptes" variable?
-
-
-
-Only minor stuff.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
