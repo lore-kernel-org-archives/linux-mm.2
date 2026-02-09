@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64DD7E81BC5
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 13:32:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50ABEE81BB1
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 13:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 136186B008C; Mon,  9 Feb 2026 08:32:51 -0500 (EST)
+	id A37086B0088; Mon,  9 Feb 2026 08:32:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 100326B0089; Mon,  9 Feb 2026 08:32:51 -0500 (EST)
+	id A1E146B0089; Mon,  9 Feb 2026 08:32:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBA2E6B008C; Mon,  9 Feb 2026 08:32:50 -0500 (EST)
+	id 92DD06B0092; Mon,  9 Feb 2026 08:32:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C898B6B0088
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:32:50 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8469254E60
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 13:32:50 +0000 (UTC)
-X-FDA: 84425008500.26.187A80D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4B603A001A
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 13:32:48 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hpzWxrse;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ttksSl8q;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hpzWxrse;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ttksSl8q;
-	spf=pass (imf15.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 852366B0088
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:32:56 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3510DB623D
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 13:32:56 +0000 (UTC)
+X-FDA: 84425008752.02.68E220E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id EBFC2C000F
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 13:32:53 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=scVEs+EQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o6jnma8a;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=scVEs+EQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o6jnma8a;
+	spf=pass (imf10.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770643968;
+	s=arc-20220608; t=1770643974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=boj9j/yGfFA2Etm+EvKg+xlbL/fVdgVk5fwC1+4q6MM=;
-	b=LzJEArPqE7I7QwfpQT1qhthnw+Bli3/6roIHhZgzFcRGnAV+TWl3/jy4bOjX9HWyDenU9m
-	RNjpK1WuGprNG/Dl8YIzz59CpEZUw1Bl86grJhtGdbsiRD6UQlaWkDEEpbWPjzY5VtOcqT
-	1g9vy9avP6uYhJZfjvguFpnmayotrSU=
+	bh=9ffSXQJlFwYDdG2RQGzEhBMQ1sIFLJ/JD8jWSjBJRIY=;
+	b=kRSDQbikTOoCqP6IdrgLZd2+6JLrc62IRVljs3gckPjfOhjF3vRe6UQryzs0BiKLXR9XYV
+	u9LMEKXZQgwF/7FjrioXIesrbTHDXSe4TBhDKi+1zSa0DxfteeUMM1jr94vUAKHa5/ClDB
+	gkBWjwId9dYPKxmK7i42dkrB8mtpYWI=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hpzWxrse;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ttksSl8q;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hpzWxrse;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=ttksSl8q;
-	spf=pass (imf15.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=scVEs+EQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o6jnma8a;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=scVEs+EQ;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=o6jnma8a;
+	spf=pass (imf10.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770643968; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770643974; a=rsa-sha256;
 	cv=none;
-	b=ISFMmUrpGdAKZpqNTKbkF0gMfHrndIPVnQBxYULdqqFAOiRqK12UME+i4mJj9cXSGASV7E
-	VR+GWKe1cPUb9sRKGwBAxdtsvKP0hoC0qrlmPrcD54IoSG/1TcRVUT4+aOz8H8LKlZ/a6C
-	Z5HZtUeSonaVqJNQs58loH6tgbLjIHg=
+	b=NJvZq6YJaJUVN7Hw5XU7jDf5xzpDE3BQZ6WP+vFfe7CfHvkVP1VV1n3o8IX5LRemQGLXfu
+	sBggGtHOroJPcjrJCexoj3D77xf63Zxvmy57eN6B72IHrSvmc5ccD5dWs+ckr+FyDbu5L7
+	6SYRCRwBgKXhMbK6VRPRMcHOW0OjAik=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C5F033E6FE;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6EE325BD2D;
 	Mon,  9 Feb 2026 13:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1770643966; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=boj9j/yGfFA2Etm+EvKg+xlbL/fVdgVk5fwC1+4q6MM=;
-	b=hpzWxrseP1PXppnUk79PnOjOcaTbio3BXi5QtKGhtmvJ676U27eI/hJJrDbZ7t7KtpQAVG
-	vtmIHx0zsJlFJ+aFbZxQJlY9b9l7lhJzA4xipS9hwEuAZPu5Xf+oX3UHQypI+zMC5kvFRK
-	Vpw9KEBZv6hVBLNfd/e3dZbnoVk0YBg=
+	bh=9ffSXQJlFwYDdG2RQGzEhBMQ1sIFLJ/JD8jWSjBJRIY=;
+	b=scVEs+EQ6euAoziM71pug6l47w6O2dsYvJPvd1olIoHiX+t2HH1DyZsWWg26FkhfTJpc61
+	L9FmiA3XU9h0Hik3xfGgDsWriDeJrdEFS6NIKKPTq1FMB4C3thYPA5YAGquLkgOncnuxjY
+	d7NpIDGkI7F2/scmMCOKLIK+ZQLYMv0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1770643966;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=boj9j/yGfFA2Etm+EvKg+xlbL/fVdgVk5fwC1+4q6MM=;
-	b=ttksSl8q4A6bVbY31sfbadXvxPQiSjsPFMuFVcYH8KxKtN9Hxb/plpH23/k6Rf3W4V8NpC
-	5BeSpzVU3g5pVsCQ==
+	bh=9ffSXQJlFwYDdG2RQGzEhBMQ1sIFLJ/JD8jWSjBJRIY=;
+	b=o6jnma8aul3PMIzpwxMHmCWW09ILKd/48nniXBrB2VMA1BZxMxpQk915JBCU8YEc3TclI4
+	LfC/UfdgdUABtnBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1770643966; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=boj9j/yGfFA2Etm+EvKg+xlbL/fVdgVk5fwC1+4q6MM=;
-	b=hpzWxrseP1PXppnUk79PnOjOcaTbio3BXi5QtKGhtmvJ676U27eI/hJJrDbZ7t7KtpQAVG
-	vtmIHx0zsJlFJ+aFbZxQJlY9b9l7lhJzA4xipS9hwEuAZPu5Xf+oX3UHQypI+zMC5kvFRK
-	Vpw9KEBZv6hVBLNfd/e3dZbnoVk0YBg=
+	bh=9ffSXQJlFwYDdG2RQGzEhBMQ1sIFLJ/JD8jWSjBJRIY=;
+	b=scVEs+EQ6euAoziM71pug6l47w6O2dsYvJPvd1olIoHiX+t2HH1DyZsWWg26FkhfTJpc61
+	L9FmiA3XU9h0Hik3xfGgDsWriDeJrdEFS6NIKKPTq1FMB4C3thYPA5YAGquLkgOncnuxjY
+	d7NpIDGkI7F2/scmMCOKLIK+ZQLYMv0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1770643966;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=boj9j/yGfFA2Etm+EvKg+xlbL/fVdgVk5fwC1+4q6MM=;
-	b=ttksSl8q4A6bVbY31sfbadXvxPQiSjsPFMuFVcYH8KxKtN9Hxb/plpH23/k6Rf3W4V8NpC
-	5BeSpzVU3g5pVsCQ==
+	bh=9ffSXQJlFwYDdG2RQGzEhBMQ1sIFLJ/JD8jWSjBJRIY=;
+	b=o6jnma8aul3PMIzpwxMHmCWW09ILKd/48nniXBrB2VMA1BZxMxpQk915JBCU8YEc3TclI4
+	LfC/UfdgdUABtnBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B32A3EA63;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 163B33EA64;
 	Mon,  9 Feb 2026 13:32:46 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QKS8GP7hiWmTIgAAD6G6ig
+	id oHMBBP7hiWmTIgAAD6G6ig
 	(envelope-from <tzimmermann@suse.de>); Mon, 09 Feb 2026 13:32:46 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: boris.brezillon@collabora.com,
@@ -119,22 +119,22 @@ To: boris.brezillon@collabora.com,
 Cc: dri-devel@lists.freedesktop.org,
 	linux-mm@kvack.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 2/6] drm/gem-shmem: Test for existence of page in mmap fault handler
-Date: Mon,  9 Feb 2026 14:27:11 +0100
-Message-ID: <20260209133241.238813-3-tzimmermann@suse.de>
+Subject: [PATCH v3 1/6] drm/gem-shmem: Use obj directly where appropriate in fault handler
+Date: Mon,  9 Feb 2026 14:27:10 +0100
+Message-ID: <20260209133241.238813-2-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260209133241.238813-1-tzimmermann@suse.de>
 References: <20260209133241.238813-1-tzimmermann@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: a6sc74jejrms4udnthhtj6dm8twn4cmg
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EBFC2C000F
+X-Stat-Signature: r1hip7d6tkp4gbtokzztjemcw8tz4eyp
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4B603A001A
-X-HE-Tag: 1770643968-664469
-X-HE-Meta: U2FsdGVkX19ZD8CA8d6UXX9kDYM60l914yz2iAr7zoPnoX4FHozeqfZR3nbqqOcjaH4Q8FZa2oYUrVYUHHhcxlTKP+cUpvNu1QTeTMlvSrP+FhQiE3TruRyjjaBr/ObyPNHPmMbm7DVh5isEqNFkYk1ttdsxVGOVQTS7O8rTDo0NOp590et841L9zXBb+y8rlVyelgnccFasCMQ9OYKeZLTU/EOVTDwrzfTm9CZozGdtyXVid1SHTfNB7CZ1NZED0X1csxagTSoQNbDKi8pQpCpgyZYEkxuHUPTlAIcsAz1zd5drN+dXTWPse+4tlEaCfItdQGV8w9NsrtsbD3jnxfR0z9gcaRc4eVrjHXNINQi3zDEbFSlx34AyA/jKPfw8MLyuDhx+5FXUxwsUe8VUGOI8sJyyPaX7NeaHsMImrt2Vb9wTpjvDEpvpqr6OlG+9xxgez7xVf5z7aLuMvwULUwl7n7fH0OVkgdACMw/jFMVXlIJCqKoYzg5TRh3Iw87fCxXVQfveISyJ0XJ4pwyzIKWsKblJQO6AltmGsZ09ocQHuzm6VBDv5ViIqj/wtJurte/703MF3RxcP9+L8HE962+DVWhauTF+3hnWIr0Sq7MhFWL/NGWMMQs843BHuqEdvFroOMqDD8LeubiIQbGbseghpsKYW9xyQWwOy4MDEFlchYVTi5TatEbIwlKNYiLPsZEXFx+6RPx4tMOZkjot6UUBj2+YvYxw15wL9tKJXgVzYg4uNyByxlt4cGzmB5PQzUp9Fb4AWsLWgEMkMU+VrJq59WF5JhAgsk+KsR/keBAvEZO1qIXny09DcWlzz+Uplucy/6nV/VJO5k0G7XoMInnPCXbeTnTGApaS8TGgsmJP/8VVas22y+gIJ/eKh7/LpHfR1qLUAHZV/1Wl8nn/kQqgUx5ORJ7YHiv3HNzB+5u5VAqGzKI98ilAkQQHRSngdraVnaIklACaZNcYkFo
- JhCMgtUS
- LwYpGn43Iu9PyhvQgA7755Gh0eMAiZGi2ccGwr0I3e36OjobwOlF82YdPywycZTAbuo6KQSJR0zcQqxWgCnIsPiYvbO8axRL1/6PgTXqMbWi4IkQhAlnDhzPcQiT5Ov9pDs0PSnSCHWz4n38LEUfqb+n8BCaTMgiBOi9Y38deY/0qXnKJedJ2qKfMCxBrGx4vagJLkG7rlF2qmqKRYQY+A5i69cIRtAKHSOLq9R4gh7RNK+oYGLclemkuZuTn173sc2LgmpgR5s28Cu0=
+X-HE-Tag: 1770643973-848590
+X-HE-Meta: U2FsdGVkX18K0QOadBhx1lhzROqDzDZ6AjlyueCLJ2Yh0B2J01WG4U7mmi+gS1Pojen35yK6KMEb1cQRb8tuSYnF6j1YW4aJB7wzRQZFClhvA4YlQE1wOopiYmycdFZPp4qNZ1O1qEIL9Z+1za75yYmuTSfoUmQQ8GkzaHwIrwsVyhlc7zsz1n4t04EMSXGxG1lhvZpuBx6kV0GSKDXg9uw41xYLPw2/qeyZKcoFJuca9jOQ3Ihe7bwlM/Gk1kOXkF1OLmlpJYxV9yOClNcau54+Oqxl9pA1aDKAkmHyCrRDmzbtuZFEeJvcyyCv67E5b0b2U2685O0Y0auJ1pb0hY35O/bwtg2cED0x7pHNRb8uixNF52HP34MpUXP+n8FGGaNTPYZuzs6YlSSRAxpFqvNcBIxAF6JPMDrryaSLhsxUJjVZ0adET48dePgeT91VhSUr0BKgh6q6XIPfQn9cNofezmsq5WVpWmz7rjAOvhuYtrH9K4FAgiQ14EggxIRWWj1le5aAl7TT8p3baX6+AYkKa0g1Hzpq6UIeDjnoWrGbKAygHQZh7nIzG9G02uBO93Wi4EmrAoGcEQN+E6a1fZan4kysH4sLACf7tK0dTcBZhKu5jGXnh46DkZlJFQDM2gNHMzUhnVncfEFssjif9DvbsDKczxFYtzndtySPttdgmAPtaba9hA7GPRuAx7ULGFg+BJX6XkDWpnXus+vUOSqawywBzR6iuJQNRSRfSwfK2GrqMg20RzE4AL516DRgj/LGChysOme8wydtaDhDMfTUV4nQcTJwjplb+0I1YxLA5jANAY+b7HL6Aj0PKoEn8YGTn5URo4ox1Pmc1k20SJznfpLa+OUWqA4hhX19tIc09tB4b0fbV9wDerLTzUJ9gntwy9e+O2E9IQNwC8i4E4HuyOEU6OgGaQ6CZOZRXjp9yDgXupab01jL/70wnm10fMQEMOtv6B5tsudwPWT
+ nQyH62kr
+ MScOJNOJY3TLHN1lrYp1zkM+XgBbhzEwDQL8o769cefrn6eKZH9JEER6kI9BWgfXd9u+ED+jfrGeIr5Z5UCfM7op6epV2wozgQMkX2udCotEha10U7YJ9EeswE2Awl17/62fvpYQLdqfky8XtEdx3fq8pKrtiFTIEzqWTtTDwm8M77OmgT+iE7lkI5YlmWMVBEEmALA9tcXQjh1/W6ZhZHrIHk1A7d/19+KkxUM6eET9gi4Bxk8OssEiqp/KhyQnAZszIMUy35YiHVnU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,63 +143,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Not having a page pointer in the mmap fault handler is an error. Test
-for this situation and return VM_FAULT_SIGBUS if so. Also replace several
-lookups of the page with a local variable.
+Replace shmem->base with obj in several places. It is the same value,
+but the latter is easier to read.
 
 Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 ---
- drivers/gpu/drm/drm_gem_shmem_helper.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/drm_gem_shmem_helper.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
-index 5bced7db0f1f..3ee54c24e535 100644
+index 3871a6d92f77..5bced7db0f1f 100644
 --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
 +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
-@@ -574,31 +574,31 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct drm_gem_object *obj = vma->vm_private_data;
-+	struct drm_device *dev = obj->dev;
- 	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
- 	loff_t num_pages = obj->size >> PAGE_SHIFT;
--	vm_fault_t ret;
-+	vm_fault_t ret = VM_FAULT_SIGBUS;
- 	struct page **pages = shmem->pages;
--	pgoff_t page_offset;
-+	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
-+	struct page *page;
- 	unsigned long pfn;
+@@ -584,7 +584,7 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+ 	/* Offset to faulty address in the VMA. */
+ 	page_offset = vmf->pgoff - vma->vm_pgoff;
  
--	/* Offset to faulty address in the VMA. */
--	page_offset = vmf->pgoff - vma->vm_pgoff;
--
- 	dma_resv_lock(obj->resv, NULL);
+-	dma_resv_lock(shmem->base.resv, NULL);
++	dma_resv_lock(obj->resv, NULL);
  
--	if (page_offset >= num_pages ||
--	    drm_WARN_ON_ONCE(obj->dev, !shmem->pages) ||
--	    shmem->madv < 0) {
--		ret = VM_FAULT_SIGBUS;
-+	if (page_offset >= num_pages || drm_WARN_ON_ONCE(dev, !shmem->pages) ||
-+	    shmem->madv < 0)
-+		goto out;
-+
-+	page = pages[page_offset];
-+	if (drm_WARN_ON_ONCE(dev, !page))
- 		goto out;
--	}
- 
--	if (drm_gem_shmem_try_map_pmd(vmf, vmf->address, pages[page_offset])) {
-+	if (drm_gem_shmem_try_map_pmd(vmf, vmf->address, page)) {
- 		ret = VM_FAULT_NOPAGE;
- 		goto out;
- 	}
- 
--	pfn = page_to_pfn(pages[page_offset]);
-+	pfn = page_to_pfn(page);
+ 	if (page_offset >= num_pages ||
+ 	    drm_WARN_ON_ONCE(obj->dev, !shmem->pages) ||
+@@ -602,7 +602,7 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
  	ret = vmf_insert_pfn(vma, vmf->address, pfn);
  
   out:
+-	dma_resv_unlock(shmem->base.resv);
++	dma_resv_unlock(obj->resv);
+ 
+ 	return ret;
+ }
 -- 
 2.52.0
 
