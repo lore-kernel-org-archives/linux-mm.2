@@ -4,235 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B37E7E0CD
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 17:08:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48382E81BD3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 17:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C8ED6B0005; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
+	id A5FDE6B0088; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7769A6B0088; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
+	id A20076B0089; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6037F6B0089; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
+	id 90BB06B008A; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 469336B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DFDB61A0253
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:34 +0000 (UTC)
-X-FDA: 84425552148.07.425031E
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 93A7C12000B
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JbZENy86;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=bbuwze5t;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770656911;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 80E366B0088
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B248D572B3
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:45 +0000 (UTC)
+X-FDA: 84425552610.05.CCAE172
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 258FD160005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=cYSdSNGQ;
+	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770656923;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mqkPopx7IoJHttMZDCRP0i9Pq0O5PXSnIsqQO5MIY9Y=;
-	b=yVGzAuM0TtwJ9PWXZazqMS9oLzohDBkXCBBHHihsJr/tV11NXzJDH+TGGTO2iMFmZOCYMb
-	FBfBnt5zl+b5FMDVRdjrzKrLD1xQ4bJ2ccCaP2F3M3jQiNccdfGdEvasY4Dx7O48glWjhg
-	sEC+flBWNeyk5hxftYlCHZBZGjbkGhg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770656911; a=rsa-sha256;
-	cv=pass;
-	b=oJjq8GMI0liH6oxYqc5rrgig5JNsHwxAVo0Y5uzZ+mCTktZYqZbB/wRQHb//9roA1Fl+ir
-	MvewjoUZpwOcA3ESi5x+JHW0OW1NSpCznCdmfJtC/skwlXTDu0FiSS9uI5/NBPumgEgdA4
-	rIVL6552QYKMnnGrkd+ILywoys1XO4s=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JbZENy86;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=bbuwze5t;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619EClXK2021401;
-	Mon, 9 Feb 2026 17:08:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=mqkPopx7IoJHttMZDC
-	RP0i9Pq0O5PXSnIsqQO5MIY9Y=; b=JbZENy86Zhr5TtNz1GC/6vZoBr7+9lbd3L
-	F0wAYHRrHsXPPXrJbT2UOx5Aabf86KlbjX8h9d3e7+jzsfwPaxRkYOt1VjywdLDf
-	Z6UrO7LS0Q6ydWz70AqfyCuBnwIIs2y8OwhHnS2nztuGHtqwU9NaZ7wfZFomQ5L5
-	9Rl7dm6X8rGBareQukey4qdR6gbZcHcsX5CsKz2Yb//fsNOKZsc9q2cwzsoeRYdk
-	yYtNb7j3K6XpcTWyF/IEgtW3gituLu7IWOyp01JTMue1NJr3ZP6LonjqRhzRxmpm
-	ueBFOXG0Vb5PGcqkIalvTRiBJKAK6Rgq20fJ7Co6ZAmiQIpgwnAg==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c5xfp2bf0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Feb 2026 17:08:22 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 619FuMim005044;
-	Mon, 9 Feb 2026 17:08:21 GMT
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010042.outbound.protection.outlook.com [52.101.56.42])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c7jnq2sm4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Feb 2026 17:08:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tzfy/Zp9XUfLZW6RUyRFxDsKa1leaovBSFpJc0nOmvIKlFApJHRwGoqTJfamZfdlI0LtO3DFo+X0/pZB7TIeyyOGHLowS0Sv3kHpy53dywfSNAKBaIKFItY5YEEHYNlFwGbnF1ypQ8mIlCSRQyDLL2gajvgRfAqtzaXzEMeDswNrOGXFJ1zfQKBLfLQHJUZzaqzHRg4BRZtbEVpahhE4nLY8Zk3BX/dVA/Kkoz3BpsNC+jn09sr5/1zS2kXk17xavb2yT7Z5Lhqj9Es+/qcR++FrjzLHwoD/zSQBEjJWptZ6mkvb27Gd1L5A+ZlvQOw9b2bhpuEaXFuRl7Mb4qdTqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mqkPopx7IoJHttMZDCRP0i9Pq0O5PXSnIsqQO5MIY9Y=;
- b=TaC2tvNSwSum/rOLXGFBQbk/1voG6vvJbKXE8RFPCwiR5JkLvvadIRGEfSQqyEXIZ4wYpKhQKQfB0qfUksd1isutvbANLS5wOwU+Vb7ruim9fZpCLHG926VfzML1OZoE+443qq9BSCaHI8d4ov4PRVI0YrN9Uy9VCBnd4qUL+HwWWgdttK7SfGfHRl18lsddNMRFepJc4FBrpePq1Wjqk/0BsZv0IC2TvjJ8FM9OY9dEBB+0RnMswQ6k7U1ZQpUZ1E8tB/UxtULx6/Jgnr5uoxrWoVWVzo5cJI6sv/7pN3u2na/6Sh5MUxKp/mEgqIPP6pkmhAnbQoGCAAmIXUAqoA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mqkPopx7IoJHttMZDCRP0i9Pq0O5PXSnIsqQO5MIY9Y=;
- b=bbuwze5tygDr2tBEsGAsd8DxlWVZ5HoeiKxo+uTpt4c2CPjfcTieYcvifMK3a5APFUn8K6rJOgk/RpLd0zqwi0ALmhsNOlwtzBNRSuF/cFFC81iJK4lvDO9JUk2Hb+qURW/+62GvIW/AuJPgCY+7J5hskIlXCukgYBUAl7AitF0=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by CH0PR10MB5145.namprd10.prod.outlook.com (2603:10b6:610:db::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.16; Mon, 9 Feb
- 2026 17:08:16 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
- 17:08:16 +0000
-Date: Mon, 9 Feb 2026 17:08:16 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com,
-        Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
-        jannh@google.com, gavinguo@igalia.com, baolin.wang@linux.alibaba.com,
-        ziy@nvidia.com, linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
-        stable@vger.kernel.org
-Subject: Re: [Patch v3] mm/huge_memory: fix early failure try_to_migrate()
- when split huge pmd for shared thp
-Message-ID: <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
-References: <20260205033113.30724-1-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205033113.30724-1-richard.weiyang@gmail.com>
-X-ClientProxiedBy: LO4P265CA0280.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37a::17) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=V+SiWgduwxees+zomWnRSsdKtq4DlrLkGTFXFHvdFGk=;
+	b=gG55pfz9CinnIj7K3TlJW+JMEibeHe/R/2IqR7JL2hXhKXCPs1HJzjMrZUnhC8ONfVnxLc
+	BGYgqzK+6O7mZYGr8oVfrx8HTXeLXsCIHkzkBACSiQuRuRINzp+sUBmAhcEkepzaLx7IdK
+	HdhIXvvyGFwfo3ybdQ5i82FYHPMMC28=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=cYSdSNGQ;
+	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770656923; a=rsa-sha256;
+	cv=none;
+	b=F/kJnJjW7rsONOK6qm5sJ6+YZgJwcpSTqNcSuey5RENXbbrvkMJqzs6PpjxXdGylJk6obS
+	OgWJkk2Usfc2wYkt1lKTbsv1glEgzTqDcZabyzz/z0SBb0jQQbcCTC+Aih/Ouh1IFF7ae4
+	JABuKVugr7w6iZS9Lgeec6ABYOcNYeA=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619GkPnV501539;
+	Mon, 9 Feb 2026 17:08:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=V+SiWg
+	duwxees+zomWnRSsdKtq4DlrLkGTFXFHvdFGk=; b=cYSdSNGQSnFMx3NRwDFmIz
+	TvgrvbcYdQvO8LbcyVdkAjIKYmlTWgeRJrXrYetV96mnVqZEqwviN7JV2gMSxcWO
+	9I5IeI0TRVCyALVlHFJWWP5b7pZA0ahRIJROr2v4c2IlRLr4jp5mfN5L735zL1Ef
+	9JKUaxeYnwP5Ijor/LBj/HZD6uILhDYVdzoNbLu+Sz7gX24UTY5AlmVnCk0f3lgl
+	nx/8HkuDboBycUJ1Gx7Sb6jlbSPbLalJQP2N7rdSB6avBeCrz8q0n536Xk85/Gg6
+	q0S31jhvnIYdV5cfjH9Dbrzu3x6bgJXJc7aqa0kYSx79NwI7WfB+VcfGRj6ncUaA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696w0buq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Feb 2026 17:08:07 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 619DWTH9001499;
+	Mon, 9 Feb 2026 17:08:06 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6gqmx29g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Feb 2026 17:08:06 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 619H82Zo25494140
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Feb 2026 17:08:02 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EFE6420043;
+	Mon,  9 Feb 2026 17:08:01 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6553820040;
+	Mon,  9 Feb 2026 17:08:00 +0000 (GMT)
+Received: from [9.111.207.126] (unknown [9.111.207.126])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  9 Feb 2026 17:08:00 +0000 (GMT)
+Message-ID: <113e4e4d-8b7a-437d-a3a2-de74acc9ecaa@linux.ibm.com>
+Date: Mon, 9 Feb 2026 18:07:59 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB5145:EE_
-X-MS-Office365-Filtering-Correlation-Id: 19960e88-2ff4-4b53-7a8f-08de67fdd0c6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MgAdqZhAuFQU0vk99Vs/Hj1NX3TAiljvjSs9dTj83FvOfoeZHEAnjusPHesx?=
- =?us-ascii?Q?JFUXqqiZEZ98Mc/rvfXI9UFv4A+VEMZ8Kr6zgZFVgD+rtqtBer6AhjF1g3gS?=
- =?us-ascii?Q?zQdkS/aXpYY4o5MI0ot58J+/OYkNFhipjjNhyBNuHqKPNmkBrTKYiF7GDlLX?=
- =?us-ascii?Q?gAWn6snNZiGpmyyxpaNuHwc4Gu0CQLHN9bUh5AKYsT8442XaBDLuYLAiOZFs?=
- =?us-ascii?Q?I6CtOHzhHrh8m9XOf98TR1mrIKIxW9TAsWKMNZArV+GtVm0Jv+EeEd471I0t?=
- =?us-ascii?Q?Tc8p+vWDdUjvS43z2bqHuTn+Njecd9+KnMqt+dqLey7BIP3D3sAbMa6SLxrP?=
- =?us-ascii?Q?Uce7da417Fxw7hpsUxM6xTu6XUdj2oGcfIjJiTDd9VlhTqZbCMSiekeV9Liv?=
- =?us-ascii?Q?7BspcmYp+RE2rMiQ6UdP1TMstKvWCLHURuJfbxWcIzM78R4pYCeFkrjhX23N?=
- =?us-ascii?Q?xB1R6PK1XlT5xmwHPVOhY6a6nhHHFNkday3viPrDPPSkyWYnZimLA5A9ZgpG?=
- =?us-ascii?Q?VT4A9OLeP0xlLFzfyDi/FSr4G+UlntSMLvhwonhZg43sxac5/jt97Aj1avsI?=
- =?us-ascii?Q?Nn7ANmNWKHTpPzR+y1QTm+UKwvbUvcm7JHo9noeikpKkR1BtR2p3dpvgITI0?=
- =?us-ascii?Q?Kw/cRGuy47BX24ZAPs2xEgaByXeXpNXcWOLMRm3csBOBL049l/9vz9xu0OPO?=
- =?us-ascii?Q?I74Sntun3Os4H3pDHcPfKouJ2SWcmp3kHPFxxWUQxjQyaw3zADgwzsN8+Wfa?=
- =?us-ascii?Q?ijbBkxk8u8PxRiYEuYgDWRdDdkWhhrEuUooD7CdQmvPtUde8qvghD8+FAQnt?=
- =?us-ascii?Q?HhxWYVVQJYVCso20DKNk8TXK6EF8hBPWcuVa2LHK1o2QDr7Itc0s8ejLM2xV?=
- =?us-ascii?Q?dT2VZY/UwEbmJw40WqKmu5mFAO7N4RofW1grII4FeZ8BlEuHtke9fNyh0+Vb?=
- =?us-ascii?Q?0zN2ObZCdHCsl/gkOYF4ceDY+/XP9y5l3ueGVp6Qeg/fD8roNpHbz6N9jN4D?=
- =?us-ascii?Q?fUqkOglurNzGpKvmHds0q/m8AGJunSDB5yaG9emc+wCAbYFcYIDxgCBDCw9J?=
- =?us-ascii?Q?BB6kiDUdDKOKJ9iJA/1WfMP54n0EjiHgsl13HdK9iAP3NUlEBgRr3CpNnsSG?=
- =?us-ascii?Q?qkhlqPkrtx3222dNwPYAp/GRedwFibT84NPjNVFe+w4xH2Yk09/t4DwiRyJx?=
- =?us-ascii?Q?Y0w93LCAMlTu/B1sJ5DOdQUmwrp9soZdT/P5+1lESMe310lenwMfFFuf4NP1?=
- =?us-ascii?Q?lE01e0oisKdvXEsigPb8H32PD+bTccjWJG2RBcSl8pIwKJmJxxp/qZPjGDK0?=
- =?us-ascii?Q?0s4icfWNFvdtqb7aPHXdAjaWmZDxEYPBmYoXuk2Bz5ZtcgO6+NUCM87QvcL3?=
- =?us-ascii?Q?o+tkijhn0Rgo5HNwzuSN04dhntNxYam5UljZQaOX7Y4ARHYa2luzBOw7ZWx3?=
- =?us-ascii?Q?sMn10hxA6YokLv+0+YXPFIyBjibfdIhFB4dbKTA7M6DWtW1+XWtgzqXz/d/8?=
- =?us-ascii?Q?PmvwzpD30c93jmT29EqoGmVpmem8RPaulNeRVDZ7KIaIIV0Miwzs3SzHDiUf?=
- =?us-ascii?Q?tJmEtLj04VctcCftEKw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?OBNWXkhQPjVnb5DmCK6pzWrxBqPuFk1uDTgtnzVjOhU6b2qLNKXM4f9OBWkm?=
- =?us-ascii?Q?rgOyZ47gQ72AgoiZStU7b2BbNGGUgZ0nn3cDsQobPtCvOOkzGDA3tlUuBi5z?=
- =?us-ascii?Q?7pp4VvKlG1W3/eMlyi9J91u4D/2WV5FQdz5QTRaC4nPNh06bEJpl7GBP/nF3?=
- =?us-ascii?Q?vu/yc+CNXj94P190YGdsVdLKT2Me4+QSgJnSATrcJxkB9pSc69cf477pDXMY?=
- =?us-ascii?Q?gXtgXRY6AWzkWNNImBL6WDQLYNmBHDea0uGYs1CnJ+ZPVJgf8JagYul1HP98?=
- =?us-ascii?Q?cVC042UTDkSsG0V8nc1EeZnbzcZRBJnOVGsEm1z5sfOjppSEDUbymPP8rhNd?=
- =?us-ascii?Q?Sp+RkKFYXlYASdgzsZ/TVYuDMkQXwLA1Cb7d5fqkXxTwmP6ZNrUigoFeBWL2?=
- =?us-ascii?Q?NI9h8riGi6ZwOMf9eukvxZP8a5gSFV4Gqef/4WAcIGjfflqDSAP6AfNIwLXT?=
- =?us-ascii?Q?ncPmxom+u8QfpsX0yJRjJnzOBD14KmvKONLIyaO5apiJQhlKJfNuXcI92IYc?=
- =?us-ascii?Q?G0CjYyqWHnRKUz/845DZBVEYYdNG6mCiWWJRliOGPrCCOIO7Cf/T1oYVFQsX?=
- =?us-ascii?Q?NZ0RSq2OwPeEjIqTeHO/n5+K+LxQUZ5wLvGCOlL351Fna9pfzwlrxCWkcFmK?=
- =?us-ascii?Q?BDsrNBItKpu4KNQeRvA+1aO2NP3FdBKdsgWfEIsy4SG98w2/YUAA56XOrw5M?=
- =?us-ascii?Q?2wVyb1XtpYxRYjQ6H90FZvnfPbzfbTdbR5qokCYI2dSfNskg2QofhxEpG2R1?=
- =?us-ascii?Q?ajOVVe6mTBAxxWsxMv0vph5YiIn+tETLVvXJ5RNSm8LAk6uftbt9bJ5Z/oxf?=
- =?us-ascii?Q?Mics5CxWV5EmObkcKa+fYxjhz8m3aCuDaSawawalCbKa8qkF8A9xZWUO2kRr?=
- =?us-ascii?Q?dnP4Rur9WeXH+osqZW8Ber4vxmrv+UqI8CwQM6DZzsZ/LhlY2RIxkA/5fPrw?=
- =?us-ascii?Q?KzLXens4tU50H6p0wZj2rhBGSW6rUbRQJJ5sqbdJkwTwzRQptZ6YuENngBjY?=
- =?us-ascii?Q?EJn7gMJV6FKmCq5zHcGlIy4arkC0+PKhmIE8jVOQ/ACrRSj1yHgwAbwZTQ2M?=
- =?us-ascii?Q?ZKQhN4Z2FeAYy8uQjUa0AT0gRp5bBchU96GbNAJkEkRxXEL8mfKB50wLsMBE?=
- =?us-ascii?Q?Q/P2st4BeJQzGcOuX2RD9AYjdIWWTFj/QU+xLFaWb7kK3c+BbiRsem4rDc6G?=
- =?us-ascii?Q?VIRcTwk52NT/V0uZ4lOPF+ogJyFaejvK7uRFLBIq+vXCxU6tYnkJBRuyl6nd?=
- =?us-ascii?Q?1l32h5nGMwg+OWzv2GbQ9af+Jk0Tr+eemqS0POrqujzqbSsGnCXaJDGuXk28?=
- =?us-ascii?Q?KHai7RvKrLpjLWEeErBHeH1ezAtHrZIkPI9HcvbIMLrjmMah6Ma6zb7rZN1B?=
- =?us-ascii?Q?uDgs1leQtPtGUeBmhDg3GgdRzbk79Jkf09xW+OSZ6M9aVOAzkVxSuMg0L92N?=
- =?us-ascii?Q?P1PrCj4fxwqJiiu/dNacXiHUY9EcKL4Y1r18StZkblRixnl7NjMZlkfqkHyV?=
- =?us-ascii?Q?mUL9sAV/1gaOQKTsKp/xhMvp56L1+w6pieDaakGIc576QwGUaj7ih199t66H?=
- =?us-ascii?Q?QvFUcChqAWkemzA63lOrztytNvQ46uiQ+6u/+3dMuVcDzOJAb0p6hYA5kzuJ?=
- =?us-ascii?Q?+zXsNjkuxxJv+kVmH8tgpqSF6NZpZUAXKayOMcuvFjGF2CZTZ9CGJHgLXGZh?=
- =?us-ascii?Q?ExbiqqQLvLpzy4qtkGLuAIoPpDv1f67NZ/3D59EItkl/F4F+2JgaZ0VvABl+?=
- =?us-ascii?Q?mCFNZqRvpQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	+B2/bm3pJ81Kx/pEmG2ujtHiMjLHymkEc4OHYfHJN6ZmEYZrnygimHP8v/l4eS2h/lNrJ67YRXZ90PYyCTyKg9JqAxPbdoOQnbuxOgEBQnUEgZ2N2Th1Qtf5OLnNI7h7VRGyg79ZfrV9IRn9Sj9yxLWxnRvQhTQc+BH6hT6tj+3cXm+grWxF2zP2noPYO4+bBmcnCHmVoBMcns5JVTriA7unayY5OqkptSUGQm0y4Htlxy6sgFlbd+PZB0cwUj38gaqz6iWIyJ5xkSsns5CnIA1oySI5cRNvI4LiBi9GPhT61oKa1uQvNoNwaq7wZjAVIs7rPFaq1AVJX8Yn+8X7/ZQl6xQSUqd6necmexBCXvRGVXwunYC3+IztM4BclY5aEIrjU+U8rjWfj96Unm0RvmN4Uzg7YZYYTiDtLVDg7FGZFtoQNiTlmuinaBK2ZzdEX1sLrGKICFGeiGiVZSJdxj1HyE5MCxuTpyTVDOYZw347NVeSV7DO9SHiy9SeH2KPbEQiEnJymDtXhSAohmwHTbmkuK1EErgDmPK5yG54h8ViKHPxWrFJnkPtKEKxitfyb4lG3QDNVZf1jHvpf8/qwY8jSOIyYZfFDJIjt7817yk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 19960e88-2ff4-4b53-7a8f-08de67fdd0c6
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 17:08:16.2413
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6ec1OTv4NyFZDSP/fileTlGDqC2plGdW15KHqLMmjtpPHFrT2R7+FNkHXGA9srlcMtybK1mgkMxSdr6Jc3emLQtA15Qgyw/FS6pWqpJHe3w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5145
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 00/18] unwind_deferred: Implement sframe handling
+To: Steven Rostedt <rostedt@kernel.org>, Namhyung Kim <namhyung@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu
+ <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+References: <20260127150554.2760964-1-jremus@linux.ibm.com>
+ <aYTgwoyRl8kxQShT@google.com> <20260205135411.5fb22df2@gandalf.local.home>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <20260205135411.5fb22df2@gandalf.local.home>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=YeCwJgRf c=1 sm=1 tr=0 ts=698a1478 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
+ a=VwQbUJbxAAAA:8 a=1wei54M0JlXa_cUNk-YA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 6pOW16P1XhSQuI3JJirwxxHhVPPpl8Nt
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE0MSBTYWx0ZWRfXyPk1TShJpjFg
+ TRcEnZRgpTGTU6Gwj8TdWCJ3KO4QSZO01sZ3yCvl8pqdm3wyIxLYmUiMdtdy9p5YWSW34PwFfr/
+ cVKshdKgZpu3sjpoF2+UHdlwdcIZSEY4bs8UZ2FTjswVBBikq+mvJXupgPi1dsdSrWm9tq469eN
+ xvgsN3MRJwzWfd5lfkZeeMK+GQOg/m/FBIH4MewmaEcyFuFZ61fOCWMEuS9WXxnTqodYhRNncZ7
+ WGmjiBiLu+dU4WiSl1nbTbo2YN4ZGuGWOCFVaXs+lkpEnuUo8tKKqyrHhgrhoiQBrynMFL7Ib1J
+ ubA2JtF+UH6CwKeCbWUUWI2rXFa4c+ceaNJZV8h71qWMrHPtoz+mXQGj/FVDbszn2KIjdJW46Qd
+ is5TOuqlE1/xaTnbuM7vcqNMwQLKP8AIdXZJw6r7GDoogA6eSKJ9Wok0CL4HdZXC96l7zkjdtR/
+ Ih8Qs7LVYW1HAnzx2qQ==
+X-Proofpoint-ORIG-GUID: O1UEHkJ3Y0btRd8FNQdSrr18n7ct04xA
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-09_01,2026-02-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 adultscore=0
- spamscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602090144
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE0NCBTYWx0ZWRfX2umUnN3pM9Y7
- P9J5a1tIj2WqugQ+aWJcgbJ5fQdDK+qaFHdx5hqNCBSySfg5yla+WlVyNNdE1VrEFi//Na+5/Q0
- HlojhyOc9KtqEMoKc65ScWQLMqK99NVbovcUO8Gr9xBqdKxOF82nVEfndKL6J6gBjaxOsMOHbvG
- 44Hw15JlWgnkkv2gwCEs/htEXL5XP5fZZ00YPSiwiuMBCS2XzDtw9klfBAv8cWXSxjORtKJ8nuI
- WqIbGFWYu1nHX7CFMInKjtxouEhpn8KSOcF2mA8VoAEJSiv6oDIky8X8peHmdccSziAP8Atwktl
- j5zdXzcADeA+Dhs/bPUnQ2TujeEIEfrK37fgf6Ev5BTS05OsAHBtfrGGIcZ3DtVXQEF8yd89k75
- n266Zu0EZJszT4NbYX/hEYvrmDyLIuRk0nnx3M6N8FRrPr1q2DUbQ8Z4wJGQYIsl86p568mu6ge
- dKjuV+64Y8J3VZXIZ8Q==
-X-Proofpoint-GUID: _t9z159ebwK6wdtFLaXR2Yvg_-oGQqB3
-X-Authority-Analysis: v=2.4 cv=V8xwEOni c=1 sm=1 tr=0 ts=698a1486 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=pGLkceISAAAA:8
- a=SRrdq9N9AAAA:8 a=Ikd4Dj_1AAAA:8 a=V2sgnzSHAAAA:8 a=VwQbUJbxAAAA:8
- a=DS5PB2M2N5xGk5OapvcA:9 a=CjuIK1q_8ugA:10 a=Z31ocT7rh6aUJxSkT1EX:22
-X-Proofpoint-ORIG-GUID: _t9z159ebwK6wdtFLaXR2Yvg_-oGQqB3
-X-Rspamd-Queue-Id: 93A7C12000B
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 impostorscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602090141
+X-Stat-Signature: wh6udb1rs7oatadpszr3ddd57o63pjy5
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: q78jkjfo5t9dtbex88end16g8woud48m
-X-HE-Tag: 1770656911-657369
-X-HE-Meta: U2FsdGVkX1/DhWr0BzR7laiTIglYNRgGlt61pdJPAbgPveohy2oi5aC3WNsg+BCCF33zfsRLRTULVR7VCTTQ1UB5FRIqdAAbNiBsIUEj1PQdIhm2Ak0wF8YNcNh/FScx2ss6YrfBY45l8YEdEuEbmZEvcf6J/JIGuTqyaotwlqlDhXpvGsdEyrO47p3kai6Nq+L71haMnvdIEF9V+zur7WJeQPzqaln7toN61ABxMH5Q5bc4P3zy7Dd6L/O7fSLkq8cf0+TQarfKmkPghixWPZiu4/2MVhCHNjEaC1Ba4o7tw/YQYhMtcf77PuxcMty47KeT8nZq1PJ7ldUjJMA85qAowE5YJW+m3KSV3+o8gwPM16E/xoeW2PmwTlD5K69TSixXdbUSJAewDQdg0BKiJnlRHfV/M8YwBbXIY3x3JlDtax1RzSxKSobIpa7a7+GGD4YuljtrMdUr2rCy+/2nJfgMDixKKTUJKBZC/CaFD3uhu5EnBkZpAxpqQ+aQ4rWhyT0TmzQqpFJCcW1sUtE4CcQNH0sQPgYb5GKYUxaNHMFnA32Fvm12IQTxeE5GtF9rEQButFsyh62EZ0E4O2NG76BZ3KFTZY1gCj3byqkmd6xX4hwvFv24cO72w9WqDEA4y6pNPX1K0Uc3rJOnm5g1lsOk5ONx4t5MUtpopY2hWQwPzK9l9uHDPUTzMGe/J6gGOvM5fveICcrdHQhJx8ETmD+C0kUUsHUWY6h0ezv8tCWC9mvHjit0lvN4Q1GinHPp41KoZXXYA2S6qH+XiL9x6dPxQsN2SuXCxHJAM2TOQg8G0prfU5s9vqFv0yPFdoFXQEQoQ+cHelSSnw1lH/Sx42kei92SMHDjZAPUhsNGMOklsXQcsTwLJdXffHLLeb97CWhZOoin2r/mbkroPfECSXcoS8N2kU8vlIbbfw7U1ek5hSoVeYmvpBT4l6xj+Z0zH53qqCKlYbACLj5btcy
- mWTeD22u
- qXbL/Rhv4ysXdITDwfZhnPVqAT+Uy+S91qbB6/lzlW3sg5x7+Hq4T/ANdIJus3hDjC3D5rrKPGzqwpO/HtIaKMyZ6vvVKH17GdEShm4rLTIdJ2wkOUze8UdV+S5ZSmWuS+pc9pcAwMtdHXZzsp1xTN9bci6fZXqafP+GshGwFtpVQ8H8rgNoTAqCPX9T/x/TwRse7NdCt4Ycc09Wr/6aT7cu8sc10/v6wlNWkIRGVZVJ92kXACZ8wZbsetoj5d/EAzubqMvl1duYrGrhHZ1Rc4a7ABic2o3CMLQapTWjEYj1lOy503h9toDkQuB+XkWSlfpBQJBGKh+W7DBTWniQ7VzY3lzMsBtBmDAN9BzzMreDfLU1Ett97tM92FsX4bv1ZLWXdoQvSs2AzCXiuKb0Ogrvwe6v4s7KHORhuipPsuoX6121lRVRZWmstVReom2s4qLrOKcbMzHDnuKwK8z7E8sq1lJu3R2LZHP9RHSLMNo0aeWZ7KwA24ur5OCPAmzNXRzdPfi1yfhkmQdlNQkxLYkPBr1BoupAwIBuZp+p6N5SbCnuGCJFA1Pi9HSI76WqpwcH1WzipCnRMVE2ftnQwy7CvaxwFGjj1LvuI0zOjd7TEtCJ/DvT+akZQb4Ni+SgmfLR0AY1vMgu8SsfDdBGqmL2vX9R5FLzCSYO4QxWmX1shQ6/ugGLBLN3n30jj4HrXjHLtAtliHISWK7ev+HSdG4XwsLRKml0QIyfR4hcKe+NtTjdX42vWctp2GlzndQicAN2UFWxEkw01f/Ny7cyZ/ku+MZ3OrbtTJ1OhkItAuFL5VEjAmJaDfCLPDlzvtujBQl9HoI5dLP2EOJ9agGeG4vVZvUi3UqcwZ5Do
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 258FD160005
+X-HE-Tag: 1770656922-28129
+X-HE-Meta: U2FsdGVkX1/mJS8l+osbxZ50/rh2xuA0/FvuEBahkDgWjD+dfi7RqUBTa5sedpES6KnWUilq60QF0WMGUrGQcPgSSVBIMsrtGuqhAFEbzcGPk1O263Jf6StA2sQHqju2gesZddwZW/XgrNDEpntBcqy1PaBGEVxAGXRS1NL86MfDVAJ+BmXHMYCXMf9C/8roQoMuaH3k25ZX/7mI+8CCE4t99KN1RPE7tb/QP5VohlCxUHw2pIDTNfX/lq+FqqCjBGVpmbwJbGkPEfIcl2PhnGS/rrMnG5uG17B4LsgWb3wg+Nhuw2DCvyjiFALEEjxm5ZJcfdelBj+UhY24BWYmW0Y3cTA5DDpmqvkiXWuSkXXTgI57FCkfFx9nWP8yCRQIdF++v3oUJrohEz3xIIDibLWUfF1Ot8WDO/YSn4Q8LZQR8E/KthsawvUwvSjzHlGTGaksddjF0RNN79dRT/XMmQ5LdXrd20TIPkOE7MWwSjXZB+e21SZae+/KaYdgWELDbF5qDfZXGJ8E4SjObQLNgK9dIj9FAX+fJ2ljFAFrYRXgXYmlLg4rwI/3cGIFcghgAKNy7O17vqgG94+uphNzqwVRSi+G4nw/Kqdh3YfhRV134Itkr1Kj/UD554B3a4NPMRpPdd6HIrCt4pstaMxgAuk+CS2kAytopicUxv+K0FI1W46+ztuOnCz9UZmzsecNj5xpX1ytv2b2/HZ8j6nZwwZ47jkcUBgjm1IKBD+0qT5xmkpYPFoAGrYDltcSYfkb6wVIF9qaWJy5NxFQXFUIWH2tJqIZH8LuPo53hYQok/vvoYR1k0UoTlxUTfbNQ82ozXntvnT22yeWEEBneCA+3GX2vnwJLUpdJ/+NpX0kv/OZc3Ltcy2vpBAvOFOZgtnWTSHzZnTWk2ljthJXFON4yx/iHwuPziTHoUykn7GGngezrsDJsFOw3z0EI3RuKt1wyhz9c7BgXe1m59mf2Xv
+ csERqUjC
+ g1UsociU8jKASFLkL6aBAFlpNIGQi6H4/3V+m4xebySxGgoqoKhjU1Ht0aIOzynsAELcQI8/X5baWfWA0TDEVjFUp3pRrwAWX1Twvx/DSWHmQRXYzzgUbwY0zW1BjUaj7qKZFTH2UBYdjAp0Y4BBqCwhaZJey8qiwPzmwSii1ECOHq32GDx5KMAgJ4mcjZxnp5OPuLKVg1S8b50iLHTiXIH0txQ+JATeU3iDZ3W8uUV7bEie9D3Dow4CxmP6BHOg5G74IgGO0X7bvvoJ/mMQJk4PI9aPxG49g1cVa7caW3a6F1dAebIKiQh3gihA20ytpfkqHQvdxFU2Ab21kgZ8AtZ5+zX8RlgdeEZRpiwymVK1aftfFhCNEzaSOLHP/blW7WVmD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -241,171 +170,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 05, 2026 at 03:31:13AM +0000, Wei Yang wrote:
-> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
-> split_huge_pmd_locked()") return false unconditionally after
-> split_huge_pmd_locked() which may fail early during try_to_migrate() for
-> shared thp. This will lead to unexpected folio split failure.
+On 2/5/2026 7:54 PM, Steven Rostedt wrote:
+> On Thu, 5 Feb 2026 10:26:10 -0800
+> Namhyung Kim <namhyung@kernel.org> wrote:
+> 
+>>> Namhyung Kim's related perf tools deferred callchain support can be used
+>>> for testing ("perf record --call-graph fp,defer" and "perf report/script").  
+>>
+>> Is it possible for users to choose the unwinder - frame pointer or
+>> SFrame at runtime?  I feel like the option should be
+>> "--call-graph sframe,defer" or just "--call-graph sframe" if it always
+>> uses deferred unwinding.
+> 
+> Currently no, and I'm not sure we want that do we? The idea is to use the
+> best option that is available. Why use frame pointers if sframe is
+> available and it's being called with defer?
+> 
+> If there's no defer, then sframes are not available, so it defaults to the
+> best option available (which will likely be frame pointers).
 
-I think this could be put more clearly. 'When splitting a PMD THP migration
-entry in try_to_migrate_one() in a rmap walk invoked by try_to_migrate() when
-TTU_SPLIT_HUGE_PMD is specified.' or something like that.
+Maybe it would make sense not to "overload" the perf record option
+"--call-graph fp,defer" and use it for all deferred unwinding methods.
 
->
-> One way to reproduce:
->
->     Create an anonymous thp range and fork 512 children, so we have a
->     thp shared mapped in 513 processes. Then trigger folio split with
->     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
->     order 0.
+What about "--call-graph defer", "--call-graph any,defer", or
+"--call-graph *,defer"?
 
-I think you should explain the issue before the repro. This is just confusing
-things. Mention the repro _afterwards_.
+Regards,
+Jens
+-- 
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
 
->
-> Without the above commit, we can successfully split to order 0.
-> With the above commit, the folio is still a large folio.
->
-> The reason is the above commit return false after split pmd
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
 
-This sentence doesn't really make sense. Returns false where? And under what
-circumstances?
-
-I'm having to look through 60fbb14396d5 to understand this which isn't a good
-sign.
-
-'This patch adjusted try_to_migrate_one() to, when a PMD-mapped THP migration
-entry is found, and TTU_SPLIT_HUGE_PMD is specified (for example, via
-unmap_folio()), exit the walk and return false unconditionally'.
-
-> unconditionally in the first process and break try_to_migrate().
->
-> On memory pressure or failure, we would try to reclaim unused memory or
-> limit bad memory after folio split. If failed to split it, we will leave
-
-Limit bad memory? What does that mean? Also should be If '_we_' or '_it_' or
-something like that.
-
-> some more memory unusable than expected.
-
-'We will leave some more memory unusable than expected' is super unclear.
-
-You mean we will fail to migrate THP entries at the PTE level?
-
-Can we say this instead please?
-
->
-> The tricky thing in above reproduce method is current debugfs interface
-> leverage function split_huge_pages_pid(), which will iterate the whole
-> pmd range and do folio split on each base page address. This means it
-> will try 512 times, and each time split one pmd from pmd mapped to pte
-> mapped thp. If there are less than 512 shared mapped process,
-> the folio is still split successfully at last. But in real world, we
-> usually try it for once.
-
-This whole sentence could be dropped I think I don't think it adds anything.
-
-And you're really confusing the issue by dwelling on this I think.
-
-You need to restart the walk in this case in order for the PTEs to be correctly
-handled right?
-
-Can you explain why we can't just essentially revert 60fbb14396d5? Or at least
-the bit that did this change?
-
-Also is unmap_folio() the only caller with TTU_SPLIT_HUGE_PMD as the comment
-that was deleted by 60fbb14396d5 implied? Or are there others? If it is, please
-mention the commit msg.
-
-
->
-> This patch fixes this by restart page_vma_mapped_walk() after
-> split_huge_pmd_locked(). We cannot simply return "true" to fix the
-> problem, as that would affect another case:
-
-I mean how would it fix the problem to incorrectly have it return true when the
-walk had not in fact completed?
-
-I'm not sure why you're dwelling on this idea in the commit msg?
-
-> split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
-> leave the folio mapped through PTEs; we would return "true" from
-> try_to_migrate_one() in that case as well. While that is mostly
-> harmless, we could end up walking the rmap, wasting some cycles.
-
-I mean I think we can just drop this whole paragraph no?
-
-You might think I'm being picky about the commit msg here, but as is I find it
-pretty much incomprehensible and that's not helpful if we have to go back and
-read this in future.
-
->
-> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Tested-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Gavin Guo <gavinguo@igalia.com>
-> Acked-by: David Hildenbrand (arm) <david@kernel.org>
-> Cc: Gavin Guo <gavinguo@igalia.com>
-> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Cc: Lance Yang <lance.yang@linux.dev>
-> Cc: <stable@vger.kernel.org>
->
-> ---
-> v3:
->   * gather RB
->   * adjust the commit log and comment per David
-
-Clearly not enough :)
-
->   * add userspace-visible runtime effect in change log
-
-Which one was that?
-
-> v2:
->   * restart page_vma_mapped_walk() after split_huge_pmd_locked()
-> ---
->  mm/rmap.c | 12 +++++++++---
->  1 file changed, 9 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 618df3385c8b..1041a64b8e6b 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->  			__maybe_unused pmd_t pmdval;
->
->  			if (flags & TTU_SPLIT_HUGE_PMD) {
-> +				/*
-> +				 * split_huge_pmd_locked() might leave the
-> +				 * folio mapped through PTEs. Retry the walk
-> +				 * so we can detect this scenario and properly
-> +				 * abort the walk.
-> +				 */
-
-This comment is a lot clearer than the commit msg :)
-
->  				split_huge_pmd_locked(vma, pvmw.address,
->  						      pvmw.pmd, true);
-> -				ret = false;
-> -				page_vma_mapped_walk_done(&pvmw);
-> -				break;
-> +				flags &= ~TTU_SPLIT_HUGE_PMD;
-> +				page_vma_mapped_walk_restart(&pvmw);
-> +				continue;
-
-This logic does lok reasonable.
-
->  			}
->  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->  			pmdval = pmdp_get(pvmw.pmd);
-> --
-> 2.34.1
->
-
-Cheers, Lorenzo
 
