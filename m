@@ -4,106 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD541EE20BD
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:17:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C289EE20BD
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E06B46B0005; Mon,  9 Feb 2026 03:17:24 -0500 (EST)
+	id 7E5C76B0005; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB3A36B0088; Mon,  9 Feb 2026 03:17:24 -0500 (EST)
+	id 793646B0088; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB2886B0089; Mon,  9 Feb 2026 03:17:24 -0500 (EST)
+	id 69FF46B0089; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BA3EB6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:17:24 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2114E1B2FD3
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:17:24 +0000 (UTC)
-X-FDA: 84424213608.13.D523702
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3A73840002
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:17:17 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 555F96B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2B6A160715
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:23:02 +0000 (UTC)
+X-FDA: 84424227804.11.749B47A
+Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 22E104000A
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:23:00 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="YYyf8R2/";
+	spf=pass (imf01.hostedemail.com: domain of 3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770625042;
+	s=arc-20220608; t=1770625381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jyaX9VSLBdbnNBt5AvbHUd6L7XoEFfkRLFyElTfcEc0=;
-	b=E2XNiWp78shn1PsVXw03N4OW4NOIdnQeivpWSQ4BlbuXCK8kAnzoi+rCLQ69jCMnynpMH7
-	EjFTM3zKU+iMX4igjt/4jTffEZ635cw+s9fAv1oJeBH25fU/e+Pqw7yx60a38XKYId/n5m
-	mL9NV1p0+aZR9UdnnNKRSlH81ifRQYA=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1z62XI4JGEoZVPtufxwSYx1SFhBLLihIdxzj7l54Q9E=;
+	b=8qgx81629LuN5SQUW+e+Vqb0nlsW0vR9meQe+scDD0jIt99njTciDHGMv4J2iY2HIbB+Fs
+	5s3W0XJ19UByRzVVi6kQKXoqJJuL8NdT442PsdgNE/3zO8sWbAOVBDy94m44iV9JzvcPLY
+	wQuceheWXfdqVtbIevoZjIcsgxLNavQ=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf07.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770625042; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="YYyf8R2/";
+	spf=pass (imf01.hostedemail.com: domain of 3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770625381; a=rsa-sha256;
 	cv=none;
-	b=Gzew8+oCm/XNgDGn7OnWkwpLVtdA2DVgx32D03a5sSWdaNP6AK+sThd/u/DYC7dIcvcTa4
-	gM6yENWS7zdS9rfrUcABxto65dAAXJysTgGM5iGRKX+xBVDXLsi32W75jvqSnWe2lRwIQ0
-	0IfKeWRz3/3bcniymRIA2JzV9RcvoFs=
-Received: from mail.maildlp.com (unknown [172.19.163.177])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4f8cwH6s01zYQtlM
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:16:15 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 263DE40590
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:17:13 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP4 (Coremail) with SMTP id gCh0CgDnR_gGmIlph7o1Gw--.57276S2;
-	Mon, 09 Feb 2026 16:17:12 +0800 (CST)
-Message-ID: <6ad1fb5d-a859-4611-8af9-aa4d37aeeb38@huaweicloud.com>
-Date: Mon, 9 Feb 2026 16:17:10 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH -next 1/7] vmscan: add memcg heat level for reclaim
-To: Yuanchu Xie <yuanchu@google.com>
-Cc: akpm@linux-foundation.org, axelrasmussen@google.com, weixugc@google.com,
- david@kernel.org, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
- vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- corbet@lwn.net, skhan@linuxfoundation.org, hannes@cmpxchg.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- zhengqi.arch@bytedance.com, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, lujialin4@huawei.com,
- ryncsn@gmail.com
-References: <20260120134256.2271710-1-chenridong@huaweicloud.com>
- <20260120134256.2271710-2-chenridong@huaweicloud.com>
- <CAJj2-QEvrgQ+R-nc3LZ-cBfnzjakxfSgmNbqDa-RFBVOpdVaAQ@mail.gmail.com>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <CAJj2-QEvrgQ+R-nc3LZ-cBfnzjakxfSgmNbqDa-RFBVOpdVaAQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDnR_gGmIlph7o1Gw--.57276S2
-X-Coremail-Antispam: 1UD129KBjvJXoW3XrWxWw47CFy7XrWkWry7GFg_yoWfZFyfpF
-	Z3JF4ayan7Xr13Kwnaq3WUWr93Aw1xKr1ayrW3KF1fAwsIvr10vw42kr43ZFW5ArWUXr1f
-	ZryYgr13uw4qva7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWr
-	XwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07
-	jIksgUUUUU=
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Stat-Signature: 6xdzgjrqfsfbrbkhorfhdxjnhdppfow9
-X-Rspamd-Queue-Id: 3A73840002
+	b=NGmXNStpKaFbx50kCJN9cWUv9oQawWjRB1+nfbG15IrgBstDbLo3OSpNFINbZtzgefAQiq
+	V7IfGI5d6ayM37vx7nI8OSsM9R4POwkkKyn02ueGUXKOTRN67nOzNot+63Py9Z/sAYreQD
+	xbF2kx2W9SsNApXLqWmynGhbfjDHxXY=
+Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b884bfed5a7so175068866b.0
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 00:23:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770625379; x=1771230179; darn=kvack.org;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1z62XI4JGEoZVPtufxwSYx1SFhBLLihIdxzj7l54Q9E=;
+        b=YYyf8R2/UwxtaTXZ9f27evAmZehCfEAlSrllnM9pQv5WkxM4Z7WSsZNjIXW0wVHTnh
+         EiKwgGtWHPBisYZQB0q/sNLukGZzzJMMqPZ2F7s/dyn9EM8/rs+CjMZF+3URUhH2uIOd
+         Ny3N0cKkQ9/+VUnx5GLZNSbt+GTroDEqfLaSuzDdj7+VTjZWTHbMw6t+C5Fvnt9CqPT4
+         8/xzEgzSJ24lBAQ549VJjVqAR5Bhr3AtuWr3f5QxctU20IKZrZEhaVcN31l9oh+D+TZJ
+         hzXUWk0DOY9obki1uW7P22692Ih2DSODX/gK32YgjaGTRWsFAaLsapp1u9nyY0qwEKUM
+         iIFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770625379; x=1771230179;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1z62XI4JGEoZVPtufxwSYx1SFhBLLihIdxzj7l54Q9E=;
+        b=qyyP4LW0Q5mKBgXNqRz7nVn+Gxae0ExyK9+1PwA8K0idYdyDhwg3tq1VpXdbgO8ujb
+         UHVGqNiEJHTf2Mj481JiWXkcdKITDJtCYlnzgBwesM8d/PTk3qrKEpcrQUnyy7HxJyJV
+         DTcEMnisuGXFoZ7ThdtZnK4VNmSRvco7nGQxXo29cGwDJRki0ZxYq8UpFfd+J6RAd6AJ
+         mSxIk9SxiLuA8ASGwILX2qsbQ+qhm18RyIqgLonfUfepRwSqEv5odn5Qnj1N2dS8JsAm
+         aVqXorV89neEoRNHp8rOZmxXUPvhC2I15L5rhf4dMEcgl4rt8QBK9op09+0gVJWI+PRR
+         fScg==
+X-Forwarded-Encrypted: i=1; AJvYcCXFB48hfvJpnfvN5WqzjGPc4mv/PBrB8PhIyfpQV451ThxH6BmdBWmQHiLP/ZJ+9RJIBhuRbkZHew==@kvack.org
+X-Gm-Message-State: AOJu0YzjVn/F+nCWKWbY6h5MQfZ+CCplEYIHQ9iOYOJF+yNzaXKVym/i
+	rDQtOozXq23Vae1d8Xv4FuCE81ut0VAQS+C10nOOHXxM/yUUS6icpXujJf5ZXSVAie6RoFVOxNw
+	yCf1wIDqV+BBxwGlf8A==
+X-Received: from ejbri1.prod.google.com ([2002:a17:906:d7c1:b0:b8e:b016:f0a])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:907:a0d:b0:b86:f495:5e4c with SMTP id a640c23a62f3a-b8edf3749a6mr545462266b.55.1770625378829;
+ Mon, 09 Feb 2026 00:22:58 -0800 (PST)
+Date: Mon, 9 Feb 2026 08:22:57 +0000
+In-Reply-To: <6agwmmfv26g2ljxv2cvd5sbskkjgurnu2mhbsg5ssxkdikxpdp@xehzjz57omb7>
+Mime-Version: 1.0
+References: <20260118-mas-next-doc-v1-1-827d9f4924ce@google.com>
+ <tal36hph2g5azjk33h564bllr2n6bz2xhdw4vcvizkhptedfuq@56chjersnkfe>
+ <aXCiv9vOrMTbiJtb@google.com> <6fgs2mcvwlitkjza5d7cpu3mk34sqqn53vqazkicyge4gtqt7f@5dvqmpubypip>
+ <aYNlvQmpL5FVpGNz@google.com> <6agwmmfv26g2ljxv2cvd5sbskkjgurnu2mhbsg5ssxkdikxpdp@xehzjz57omb7>
+Message-ID: <aYmZYRyY2emr9I7W@google.com>
+Subject: Re: [PATCH] maple_tree: update mas_next[_range] docs
+From: Alice Ryhl <aliceryhl@google.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770625037-460419
-X-HE-Meta: U2FsdGVkX18iomO4b2Ttm93OmUeMht0UsycCI7gTXFMp60vGnB4eAulx5Z1iGfkjOt+6c8y5KFzX7Zut6aOg2HFMj2x249cNUXKyUK5nm0EBmld+ZmeMJ/6BhhfUSCqsR9juHlpDbxNm9J7sRkIJJkEOiG5adMQJ65CE1w80TIROzDg8aJlxe+EFP1M+r+deLhI4q3ArxmqLoy2Mfsb+QHA7oDP41yZ7sT7AttzdIHjmvHJO+yMXeWYp+9D1e9fcvUiTQqO2aXSoS9gqhBnwuQdXtL+dKipkeuiSCLqUer1/XuR7FfdGmvnqk82shLO5Ek7X0GMpYxzApfyOKQUr4fzMKC4GKv7YkXhh8G1dZ44+m8IyIidjMhaEcvw1BiHhAM9IzILNS4FANTAcMJqWgmhQE7/cp5/4Pb42pTzCXNa7E+PV/2FwKi8afycWzkhzlgBOgPM5YZBFz44dhr+SCHiFvbDbSvwXcQwdQxonoZ8HWED46BYASidYBd2PeqD4VkMw5f4dJ07dAkbn2Ma5yPMTX9PX8lBOd4soQEJj/YP7FdLwSKcNRjkHjqPdNS1WeryRjMoqiyAiq13JLnt8FSj/NpXTttd4uIosWHXNHt0r+1Y4xr3pCrHm52DDjZJdsZVH+8Ln6eySKf4gjlkA0+z8Bl8Hs6X02gzaFQEttJnvTOyxtnAiEdWiVyMNY2EFy5K+FOCLklSQius7d41IoCwtoviasSPuPQD1vFdFb7agLitzI4KgZVpJtUPNStqg75SJm6uuAKTKyNO5wEhmOlrRUV1WMvosvPWv6AtDrqkoiuSmLwEEsPUMNHbvu9debJadNrEBOBDfI+mtt/oJtM1wWg1fORLdAzHzNLcfkMiAjPVUqB/RJxYMqjagykasWHpX90AVlfFRcA8x1+9nJ+g7FsoFAdSJgv6iaGZWZsW721tU3s9oMiDVlXiKpT8ApSPkdfwwZw+lQKLPPRw
- SLXKGR0N
- CvzUV8zZxiWPc7FiSwHOgB8sqCMzeW0qe+xHH5WrAKdhN4THNssfAEdUmJxVob7xuK41gvNP8fWUfIwkdZ2d/EOIsck2k8zN7uerOD/6m9/UHUD7JAjAmXvihYb4RJwOel5dgzzgNY5e5a7kkflNKiodBS45j0T9O5GZUgVtsi920QjwBuE4QxtjGnVdj+eA1BO3vBPQRdPXb1yYsSJ8oDwJhNcgH3q2WNdbdYV1Inc4LtBQ0L0W8Kko0Qt7KlkdqhBEMaiLRxtlGyhY6Dj8kIyPVOK+nvn6PaUa57r9apoNDwTI=
+X-Rspamd-Queue-Id: 22E104000A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9gg9txh15mw5mugfjexgp8a4jbg7oipc
+X-HE-Tag: 1770625380-15333
+X-HE-Meta: U2FsdGVkX1/zxo5wl5G+RyOX57xIJgbwPPeN0yX7JzdYKKcYz9wXvCxM8nUn7dfRVMNNyxCc1+hMI5GZPsgIEGam7ZPCf9IHiyqQvEVfw8Aw7iiIIBP2Pp2dUX4AuMYuJdAx6GL/T+VaGqPdb02AivgAakhY2Th1GpCsC6aQUgf2313z8v6ncBeSpuCc4Q9p+QlGyQgwBx/hYylE1JEIIIk5fFVufwZlac6K9my/vDcNoUEmHOo2dI4nn5otEmKsZjUg4DDArDhosUttzMNlHpXt1eiN0SBE8sNsZ4C5LClPYFqZa8JYqCHPV8Smh+t1gNYB3ETLmicJJONGhX5BX7D912hjU1vb6H1l1s2LEAv7iBkxD0LYHhNeMpz8PMan9EdhoFq9IuN6I9OjT2RxY6Omt058DLe+5xo4quDr7CApQ5iFscoHhRQnzm3+Th+4uCsWiPrLue0GR5CNQZSa0GC0r5YvSiOolhIc6tyBMTrDbDyXM5cq3MjNMa3IjgHvOwJymj9DuKMMOZt9Z0kLB326Utizx8M/p2RuuW3WTFg3S41oO8GzPxM6AaJOHYzp2nPsljkAianpOXloTZYWwqv4s63Q8c8JKHMNJfBAf7NQVAxunlAuHT3mWEqhMTWdimTwZxMUjYHzF5Z4b+RJxy2Ca2I4+FwayT4pw6MPVxr1jWtY3QhZ0QPkSbHAjbzs6uM2SronroMfp5InjHXuU4zoLgec44pS+0ie1SzVgIjRcUmDp03X0lpxR4fHH50a4vB05fM86wY/ERMEDcV1dGcbCikHMDpTrOPDbz4b4LMatkkyF1fEKtf8smSgFbjROB/4jV6hxAqeFvkODHe5v3qmpr7ysQjH+5kiqmmOhXZ6c4NL32L2NdtIc9ocKQdfyL2fxyq6Fg0B+kto/6Gy7ym51rXDQKFhEft5KTNHj23vm9U2QTM6BWd8VhKKF6DwSI37VUmOBzXtUew7Gde
+ svzMz+zc
+ 2c7CfZLaEEM63B9Sl+/pNO9L0585AXveJmvY8quTsomrfjx3n32obF9cZZZ8BVPxtJEsDYd569QF9p9guT6aczszb6Q0ekMh6cVGRsmykyvA8F22hIDytBQAzIIDaEn0L3obsY1QSXCMrkO5J7i8cTEIYl4mxzNya8l2i5UriL+PFCG+rJB3ckl3ijy81LmpOnDVCpsk37eSVcQkZG3k+N9kW+WuZmJOkiLjude+sHT0cWQfEoZcmJf28/xIHyFLxA+5U1IbsN/vk2RMrYH6ukFavXVDdl92j+TVZCEK+53QG6aADfACjBoXt4p6wAF4tO5jf7NXUvUlbeSgRFFRjoPdhfQ7M9TDyuF0BEHNo1Hg/WdTqPC7GGeQsfPY5dsvhhlP7Q+Aq9FjUqnsb+/ulmNbFtvQj1S0mdcZbdb6h2CsfnpCVt5NeccIOIYNTi1lCgTLVPI5LbTSYp+fjyzKTVHLZkmv76zrtQnogfpNfAOQ6AzgT1KQpauGOJVV05NEg7ieR7c2EfWwpvZr68Y5V1cLwHZGJnxDv/8zvz2eNGNmk+oFpIbyHKCP7m+DtLhEEggp8eapqd3JUu138AX6G9UAP23ILKHSpi6VyzF9ZN2rhj7qQ8d/M9vlpYhqtCnaAwryiWu1rCoslHyB0mcL0BK9xl0q5xGLXpjxKoKbXhLT7gxitr5Errl6Nkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,285 +110,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Yuanchu,
-
-On 2026/2/7 6:47, Yuanchu Xie wrote:
-> Hi Ridong,
+On Sat, Feb 07, 2026 at 08:16:56AM +0000, Liam R. Howlett wrote:
+> * Alice Ryhl <aliceryhl@google.com> [260204 15:29]:
+> > On Mon, Jan 26, 2026 at 03:20:17PM -0500, Liam R. Howlett wrote:
+> > > * Alice Ryhl <aliceryhl@google.com> [260121 04:56]:
+> > > > On Tue, Jan 20, 2026 at 12:54:47PM -0500, Liam R. Howlett wrote:
+> > > > > * Alice Ryhl <aliceryhl@google.com> [260118 06:00]:
+> > > > > > If you read the docs, it sounds like the difference between these
+> > > > > > functions is whether mas->index and mas->last are updated. However, if
+> > > > > > you read the implementation, you will instead find that the difference
+> > > > > > is whether NULL entries are skipped.
+> > > > > 
+> > > > > This is not the intent.
+> > > > > 
+> > > > > mas_ should return special values including the XA_ZERO_ENTRY.
+> > > > > 
+> > > > > mas_next() should get the next non-NULL value.
+> > > > > 
+> > > > > mas_next_range() should advance the maple state to the next range,
+> > > > > regardless of what is in the range (NULL, special, or a regular entry).
+> > > > > 
+> > > > > Both should update the mas->index and mas->last values, if it moves
+> > > > > (ie, no error state is encountered).
+> > > > 
+> > > > I guess I'm a bit confused about the difference between XA_ZERO_ENTRY
+> > > > and returning NULL. Isn't the case where we return NULL when a slot has
+> > > > been reserved but not inserted yet?
+> > > 
+> > > mas_ will return the special entries.
+> > > 
+> > > mtree_ will return NULL on special entries.  I think this is just
+> > > mtree_load().
+> > > 
+> > > If you want to use your own locking and use mas_, then you can filter
+> > > out the special entries yourself.
+> > > 
+> > > If you want to use the normal api, then the special entries are filtered
+> > > for you.
+> > > 
+> > > This way you can mix/match the apis but the noral api still remains
+> > > simple to use - even if there are advanced users that mixed in.
+> > > 
+> > > The idea is that if you're using the advanced interface and storing
+> > > special entries, then you probably want to do something different on
+> > > those entries - at least sometimes.
+> > > 
+> > > > 
+> > > > Like the docs, you use "get" vs "advance" wording here, but I don't
+> > > > think there's any difference behavior-wise? Is one intended?
+> > > 
+> > > On return type, no, there isn't a difference.  The difference is where
+> > > the mas points in the end (mas->offset, mas->index, mas->last).
+> > > 
+> > > If a NULL is encountered bu mas_next(), then we proceed to the next slot
+> > > (which must have a value, if there is a next slot).  So, mas_next() will
+> > > always return the next entry until there is not a next entry - then it
+> > > returns NULL.  Note that mas_next() takes an 'end' value where we'll
+> > > stop advancing slots regardless if there are values.
+> > > 
+> > > If a NULL is encountered by mas_next_range(), then we return the NULL.
+> > > So, in this way, we can move to the next range even if it's NULL.
+> > > 
+> > > I hope this makes the difference more clear?
+> > 
+> > Yes.
+> > 
+> > But I guess the docs should still need to be updated? Right now, both of
+> > them say "Can return the zero entry.", but one of them can't because it
+> > skips them.
 > 
-> Thanks for working to reconcile the gaps between the LRU implementations.
-> 
-> On Tue, Jan 20, 2026 at 7:57 AM Chen Ridong <chenridong@huaweicloud.com> wrote:
->>
->> From: Chen Ridong <chenridong@huawei.com>
->>
->> The memcg LRU was originally introduced to improve scalability during
->> global reclaim. However, it is complex and only works with gen lru
->> global reclaim. Moreover, its implementation complexity has led to
->> performance regressions when handling a large number of memory cgroups [1].
->>
->> This patch introduces a per-memcg heat level for reclaim, aiming to unify
->> gen lru and traditional LRU global reclaim. The core idea is to track
->> per-node per-memcg reclaim state, including heat, last_decay, and
->> last_refault. The last_refault records the total reclaimed data from the
->> previous memcg reclaim. The last_decay is a time-based parameter; the heat
->> level decays over time if the memcg is not reclaimed again. Both last_decay
->> and last_refault are used to calculate the current heat level when reclaim
->> starts.
->>
->> Three reclaim heat levels are defined: cold, warm, and hot. Cold memcgs are
->> reclaimed first; only if cold memcgs cannot reclaim enough pages, warm
->> memcgs become eligible for reclaim. Hot memcgs are reclaimed last.
->>
->> While this design can be applied to all memcg reclaim scenarios, this patch
->> is conservative and only introduces heat levels for traditional LRU global
->> reclaim. Subsequent patches will replace the memcg LRU with
->> heat-level-based reclaim.
->>
->> Based on tests provided by YU Zhao, traditional LRU global reclaim shows
->> significant performance improvement with heat-level reclaim enabled.
->>
->> The results below are from a 2-hour run of the test [2].
->>
->> Throughput (number of requests)         before     after        Change
->> Total                                   1734169    2353717      +35%
->>
->> Tail latency (number of requests)       before     after        Change
->> [128s, inf)                             1231       1057         -14%
->> [64s, 128s)                             586        444          -24%
->> [32s, 64s)                              1658       1061         -36%
->> [16s, 32s)                              4611       2863         -38%
-> 
-> Do you have any numbers comparing heat-based reclaim to memcg LRU?  I
-> know Johannes suggested removing memcg LRU, and what you have here
-> applies to more reclaim scenarios.
-> 
+> Neither of the ones you are updating should skip the zero entry as they
+> are both the advanced interface.
 
-Yes, the test data is provided in patch 5/7.
+What do you call the entries that mas_next() skips? You know, the ones
+where it would otherwise return NULL.
 
->>
->> [1] https://lore.kernel.org/r/20251126171513.GC135004@cmpxchg.org
->> [2] https://lore.kernel.org/all/20221220214923.1229538-1-yuzhao@google.com/
->>
->> Signed-off-by: Chen Ridong <chenridong@huawei.com>
->> ---
->>  include/linux/memcontrol.h |   7 ++
->>  mm/memcontrol.c            |   3 +
->>  mm/vmscan.c                | 227 +++++++++++++++++++++++++++++--------
->>  3 files changed, 192 insertions(+), 45 deletions(-)
->>
->> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
->> index af352cabedba..b293caf70034 100644
->> --- a/include/linux/memcontrol.h
->> +++ b/include/linux/memcontrol.h
->> @@ -76,6 +76,12 @@ struct memcg_vmstats;
->>  struct lruvec_stats_percpu;
->>  struct lruvec_stats;
->>
->> +struct memcg_reclaim_state {
->> +       atomic_long_t heat;
->> +       unsigned long last_decay;
->> +       atomic_long_t last_refault;
->> +};
->> +
->>  struct mem_cgroup_reclaim_iter {
->>         struct mem_cgroup *position;
->>         /* scan generation, increased every round-trip */
->> @@ -114,6 +120,7 @@ struct mem_cgroup_per_node {
->>         CACHELINE_PADDING(_pad2_);
->>         unsigned long           lru_zone_size[MAX_NR_ZONES][NR_LRU_LISTS];
->>         struct mem_cgroup_reclaim_iter  iter;
->> +       struct memcg_reclaim_state      reclaim;
->>
->>  #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
->>         /* slab stats for nmi context */
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index f2b87e02574e..675d49ad7e2c 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -3713,6 +3713,9 @@ static bool alloc_mem_cgroup_per_node_info(struct mem_cgroup *memcg, int node)
->>
->>         lruvec_init(&pn->lruvec);
->>         pn->memcg = memcg;
->> +       atomic_long_set(&pn->reclaim.heat, 0);
->> +       pn->reclaim.last_decay = jiffies;
->> +       atomic_long_set(&pn->reclaim.last_refault, 0);
->>
->>         memcg->nodeinfo[node] = pn;
->>         return true;
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 4aa73f125772..3759cd52c336 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -5978,6 +5978,124 @@ static inline bool should_continue_reclaim(struct pglist_data *pgdat,
->>         return inactive_lru_pages > pages_for_compaction;
->>  }
->>
->> +enum memcg_scan_level {
->> +       MEMCG_LEVEL_COLD,
->> +       MEMCG_LEVEL_WARM,
->> +       MEMCG_LEVEL_HOT,
->> +       MEMCG_LEVEL_MAX,
->> +};
->> +
->> +#define MEMCG_HEAT_WARM                4
->> +#define MEMCG_HEAT_HOT         8
->> +#define MEMCG_HEAT_MAX         12
->> +#define MEMCG_HEAT_DECAY_STEP  1
->> +#define MEMCG_HEAT_DECAY_INTERVAL      (1 * HZ)
-> I agree with Kairui; I'm somewhat concerned about this fixed decay
-> interval and how it behaves with many memcgs or heavy pressure.
-> 
-
-Yes, a fixed decay interval may not be optimal for all scenarios. It serves as a
-foundational baseline. Perhaps we could expose a BPF hook here for more flexible
-tuning.
-
-The referenced benchmark [2] specifically tests under heavy pressure
-(continuously triggering global reclaim) and with a large number of memory cgroups.
-
-
->> +
->> +static void memcg_adjust_heat(struct mem_cgroup_per_node *pn, long delta)
->> +{
->> +       long heat, new_heat;
->> +
->> +       if (mem_cgroup_is_root(pn->memcg))
->> +               return;
->> +
->> +       heat = atomic_long_read(&pn->reclaim.heat);
->> +       do {
->> +               new_heat = clamp_t(long, heat + delta, 0, MEMCG_HEAT_MAX);
->> +               if (atomic_long_cmpxchg(&pn->reclaim.heat, heat, new_heat) == heat)
->> +                       break;
->> +               heat = atomic_long_read(&pn->reclaim.heat);
->> +       } while (1);
->> +}
->> +
->> +static void memcg_decay_heat(struct mem_cgroup_per_node *pn)
->> +{
->> +       unsigned long last;
->> +       unsigned long now = jiffies;
->> +
->> +       if (mem_cgroup_is_root(pn->memcg))
->> +               return;
->> +
->> +       last = READ_ONCE(pn->reclaim.last_decay);
->> +       if (!time_after(now, last + MEMCG_HEAT_DECAY_INTERVAL))
->> +               return;
->> +
->> +       if (cmpxchg(&pn->reclaim.last_decay, last, now) != last)
->> +               return;
->> +
->> +       memcg_adjust_heat(pn, -MEMCG_HEAT_DECAY_STEP);
->> +}
->> +
->> +static int memcg_heat_level(struct mem_cgroup_per_node *pn)
->> +{
->> +       long heat;
->> +
->> +       if (mem_cgroup_is_root(pn->memcg))
->> +               return MEMCG_LEVEL_COLD;
->> +
->> +       memcg_decay_heat(pn);
-> The decay here is somewhat counterintuitive given the name memcg_heat_level.
-> 
-
-The decay is integrated into the level retrieval. Essentially, whenever
-memcg_heat_level is fetched, we check if the decay interval has elapsed
-(interval > MEMCG_HEAT_DECAY_INTERVAL). If so, the decay is applied.
-
->> +       heat = atomic_long_read(&pn->reclaim.heat);
->> +
->> +       if (heat >= MEMCG_HEAT_HOT)
->> +               return MEMCG_LEVEL_HOT;
->> +       if (heat >= MEMCG_HEAT_WARM)
->> +               return MEMCG_LEVEL_WARM;
->> +       return MEMCG_LEVEL_COLD;
->> +}
->> +
->> +static void memcg_record_reclaim_result(struct mem_cgroup_per_node *pn,
->> +                                       struct lruvec *lruvec,
->> +                                       unsigned long scanned,
->> +                                       unsigned long reclaimed)
->> +{
->> +       long delta;
->> +
->> +       if (mem_cgroup_is_root(pn->memcg))
->> +               return;
->> +
->> +       memcg_decay_heat(pn);
-> Could you combine the decay and adjust later in this function?
-> 
-
-Sure.
-
->> +
->> +       /*
->> +        * Memory cgroup heat adjustment algorithm:
->> +        * - If scanned == 0: mark as hottest (+MAX_HEAT)
->> +        * - If reclaimed >= 50% * scanned: strong cool (-2)
->> +        * - If reclaimed >= 25% * scanned: mild cool (-1)
->> +        * - Otherwise:  warm up (+1)
->> +        */
->> +       if (!scanned)
->> +               delta = MEMCG_HEAT_MAX;
->> +       else if (reclaimed * 2 >= scanned)
->> +               delta = -2;
->> +       else if (reclaimed * 4 >= scanned)
->> +               delta = -1;
->> +       else
->> +               delta = 1;
->> +
->> +       /*
->> +        * Refault-based heat adjustment:
->> +        * - If refault increase > reclaimed pages: heat up (more cautious reclaim)
->> +        * - If no refaults and currently warm:     cool down (allow more reclaim)
->> +        * This prevents thrashing by backing off when refaults indicate over-reclaim.
->> +        */
->> +       if (lruvec) {
->> +               unsigned long total_refaults;
->> +               unsigned long prev;
->> +               long refault_delta;
->> +
->> +               total_refaults = lruvec_page_state(lruvec, WORKINGSET_ACTIVATE_ANON);
->> +               total_refaults += lruvec_page_state(lruvec, WORKINGSET_ACTIVATE_FILE);
->> +
->> +               prev = atomic_long_xchg(&pn->reclaim.last_refault, total_refaults);
->> +               refault_delta = total_refaults - prev;
->> +
->> +               if (refault_delta > reclaimed)
->> +                       delta++;
->> +               else if (!refault_delta && delta > 0)
->> +                       delta--;
->> +       }
-> 
-> I think this metric is based more on the memcg's reclaimability than
-> on heat. Though the memcgs are grouped based on absolute metrics and
-> not relative to others.
-> 
-
-I might be misunderstanding your comment. Could you elaborate?
-
-As designed, the heat level is indeed derived from the memcg's own
-reclaimability (reclaimed/scanned) and refault behavior. In essence, it
-quantifies the difficulty or “heat” of reclaiming memory from that specific
-cgroup. This metric directly correlates to whether a memcg can release memory
-easily or not.
-
->> +
->> +       memcg_adjust_heat(pn, delta);
->> +}
->> +
->>  static void shrink_node_memcgs(pg_data_t *pgdat, struct scan_control *sc)
->>  {
->> ...snip
->>  }
-> 
-> Thanks,
-> Yuanchu
-
--- 
-Best regards,
-Ridong
-
+Alice
 
