@@ -4,77 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFB87E94614
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 22:14:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD8A0E94617
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 22:15:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71B3C6B008C; Mon,  9 Feb 2026 17:14:55 -0500 (EST)
+	id 116B76B0092; Mon,  9 Feb 2026 17:14:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64F886B0092; Mon,  9 Feb 2026 17:14:55 -0500 (EST)
+	id 080E16B0099; Mon,  9 Feb 2026 17:14:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 548926B0099; Mon,  9 Feb 2026 17:14:55 -0500 (EST)
+	id EF93F6B009B; Mon,  9 Feb 2026 17:14:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F18E6B008C
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:14:55 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 072091C00D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DB6296B0092
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:14:57 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 86EEF160262
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 22:14:57 +0000 (UTC)
+X-FDA: 84426324234.29.B7A1129
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id A6C8E100013
 	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 22:14:55 +0000 (UTC)
-X-FDA: 84426324150.12.BBD18CE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 26E57100003
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 22:14:52 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BWLMW88K;
-	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OJB8rAer;
+	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770675293;
+	s=arc-20220608; t=1770675295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jgcYXNV9AndVyM0eXgkCwf75FkwR80fy6ED6RTnrjIA=;
-	b=llHA591VBtzifEp0vDV83Lp/NjDU9JBlQYJhGP3PC+BJflRIwXFAmoI7GaXoIV+G1CeEIr
-	ip2TNH+jSHwK6hE0YNMWwimwdtqfnDdoBtGvCCiANs/C3j8tV2B2J53JPTyllziPYPPE6S
-	Kroi713u4W+1pepLvahNHOJrS0dl3Ps=
+	bh=OiFiUMpX2KB1Jv/lqdujtPm172YWQGONs7yMm/FtBvY=;
+	b=YRQbnxnmbzu27G1aRBN5Euy7B7YHa/KajgkgPjptjb8kFKat5f8FrEn7HClmh6XAcQRM3x
+	TPnKWT4mTogFo7Pm6oAUcvbZ0X820MQPzmuxA8jyejKpJjwKKUaA13aEEaoR2LmmnBpSli
+	VQboCHVj0YXzjD7uIyoylSO7Gwz8R8M=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BWLMW88K;
-	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OJB8rAer;
+	spf=pass (imf14.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770675293; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770675295; a=rsa-sha256;
 	cv=none;
-	b=YTt/AyCIQsRaCTRum8AqHWgk7EFgbEix/Le8vvommcItX1Unh+ICcZVicsoI0WJbQPgjN8
-	R54Z9cb7mkG+R4pjcANMFlRSkGpaHfCpozROKvF5czSbeU83cxNqmUH3+sH/yxEVBlKJ/G
-	cWU8sSeAOQYJfxqdA0X2XftHmpr5gko=
+	b=05VinpeUILCoRi/enm7PRrWtvzNwLnTj5EvD3mEr1rewYh2TSJsGQi0rvWk9zBM8+DyQsX
+	0cQcfHyKDUjWYaeYi6A4jwUbBheqwrWyqA5icbQyi0TB2xFbF7WxyZWAAt2Qom4UZANHe6
+	+txB53alFVw1tiGrMadqeugHSxvrxAs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770675292;
+	s=mimecast20190719; t=1770675295;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jgcYXNV9AndVyM0eXgkCwf75FkwR80fy6ED6RTnrjIA=;
-	b=BWLMW88KKS0DSI60txIf9cA7elqwqqfbWnFW6I38TH3h+uLIqnMbyTGefexpYFfLPqGzWn
-	8VbxaD0ROp+XelHpXTXbtTvCw33zE7g0W+ES5Lws35NTQ45t32CZnWDujwYLNudbpDGDq3
-	HGlJo+QScszyMtE5RhITDUHeP3wKS2A=
+	bh=OiFiUMpX2KB1Jv/lqdujtPm172YWQGONs7yMm/FtBvY=;
+	b=OJB8rAerXC+XDZMFsdNeWhUDqyNEw1pSBLjGZ87u77Prnuzwnm6jwklIT7lPgMdKla/YtQ
+	KOUA8yXyK72is4FtXw98Nri0CIiUzkBCzd5wuI2dnC3oiyqHlg7YvlvE26nuzbQLNBCElC
+	75+UhYj2R25qBGZOE2lbCRwsU0DV4s8=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-515-BcyOFAXXPr-Qtb6-F_-Nvg-1; Mon,
- 09 Feb 2026 17:14:51 -0500
-X-MC-Unique: BcyOFAXXPr-Qtb6-F_-Nvg-1
-X-Mimecast-MFC-AGG-ID: BcyOFAXXPr-Qtb6-F_-Nvg_1770675289
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-100-N0_AAJneNLm9RMcrR_haJw-1; Mon,
+ 09 Feb 2026 17:14:52 -0500
+X-MC-Unique: N0_AAJneNLm9RMcrR_haJw-1
+X-Mimecast-MFC-AGG-ID: N0_AAJneNLm9RMcrR_haJw_1770675291
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D03831956088;
-	Mon,  9 Feb 2026 22:14:49 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 49F0F1956089;
+	Mon,  9 Feb 2026 22:14:51 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.22.65.66])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8E52018004BB;
-	Mon,  9 Feb 2026 22:14:48 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1296F18003F6;
+	Mon,  9 Feb 2026 22:14:49 +0000 (UTC)
 From: Luiz Capitulino <luizcap@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
@@ -83,25 +83,25 @@ To: linux-kernel@vger.kernel.org,
 Cc: ryan.roberts@arm.com,
 	akpm@linux-foundation.org,
 	lorenzo.stoakes@oracle.com
-Subject: [PATCH v2 03/11] drivers: dax: use pgtable_has_pmd_leaves()
-Date: Mon,  9 Feb 2026 17:14:25 -0500
-Message-ID: <cc34e4ceec2496ee192ca8e4803373255b0de137.1770675272.git.luizcap@redhat.com>
+Subject: [PATCH v2 04/11] drivers: i915 selftest: use pgtable_has_pmd_leaves()
+Date: Mon,  9 Feb 2026 17:14:26 -0500
+Message-ID: <5f829c4198fe72ac71e3e62426e12d475501ae51.1770675272.git.luizcap@redhat.com>
 In-Reply-To: <cover.1770675272.git.luizcap@redhat.com>
 References: <cover.1770675272.git.luizcap@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: vQmiTDKASUyxJ0D7wmCiSWPLqu_Eo0s_51cBOrYoiXI_1770675289
+X-Mimecast-MFC-PROC-ID: brJ9lqsE1wZwR32qKSRO55qZeas6hKZ6KoNyuwxoz8A_1770675291
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 26E57100003
-X-Stat-Signature: r7cubjq65xiqoeftj46j8fj3r4qrgatu
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: A6C8E100013
+X-Stat-Signature: iexnxhjdi8fm73bfqfpc5631d3garpa4
 X-Rspam-User: 
-X-HE-Tag: 1770675292-196801
-X-HE-Meta: U2FsdGVkX1//s4H+SWmMr6WGpSWEwkhVAFXzoZUnaEUxhsKUcYnw9zxiNcE7ehwMRJv0yMAB7FSStF/smcBAHiCBpVsN0pa++IqbuTfrlvjPNlHJ3rIG8iixdz3rZ5DALVmWI8WSSHAsoVi3ps7kPcqVfrNIRa9Psu/e5XV9ql39hksTA10qtrDIV8KHSGV7/++Jw4MyXPJ2qOe8eYe6Pkx34Lt5bJLDKBYFOwtTXpbJCqxTV4i5WsieZxR0FPAScmEplhTyJwaNUHVRiHziTzbLafn7z7ktrf+gdSLNQJTt6jWeaKUbHmd4jC8FweicfP5gRT/GK7KcPFOlvx66Pq3VRrK3cpJN09Y93qAIQhrUpzgLWTaWA0eZVsPLYvQW34eP52tj/a47MuDARGypLiFYL2QSy3VQ8Vt59FCVKY/6N7wE8wK+mNP3imvWBITbnG+9cm8OZiCs9iKWXzfQfhEa0KRHBtcknBNKdipZjuHtqi5gl66Kbjx9W+m9n+6yEXNojWhC73VF8Pt3h8S4jaoQn05uTLWLgblofbD5eH5IxRjRGugANPkNuelHuq9T3pYBnShjW4+RfPDiSAT2djgHRS4somn3Yn835etmWV8v/SLp9bSJfyAd3w6x56pV9xeG/EmFoiJ9feaRtde7WqlKRgQAPVfRPW9j69ghHsRIkpvBim8ib3GEcP5wsRtUXiu80wLPrTsfzU2WoI4WrG5fVaV5SGAU73eXmzqVKX2g2De7tx79Vf3IO385AH8PPSUMIHmPvzgJut2BJ4B1plzcsj6AjkCoyWyartqsJ+88CAPwLCvinPR9CiDbWBUcSkXeRI9HJifYQN/vaexTIdRTt7MvdGW7nirUJL1ZjxxIfnf3H/ud/ZpYrTAc2vIMYoGpDtWwNfXwLNsrl5MYWj2FJ4ARJgRuE0JnyyeSupqewj9o6RxTkZqVmMiTMFgjC7s0datWEaIZ9QPfe4G
- u7VfhZP3
- fO4P+W23FIRUdCI2t2emurD6xj6QVpnBw7UA7jdfl6GK7dnrhYsUuEgWh6uSwJUV8CYz4E3zwEoS9/hfPtSvwDzYhklRbfL3jsM3TmJgxdTPWr6CaDhw6ZNaVjDwGsxQZyTKbFDLJXv/t8skzgl5t8c9za2k+6EsNSSKK9BpqcpWqk9UzaxnWqinJU4cj9ft9DBuMKzDuXfOGi4O6VJ/PHAaI3rSLH5Jy4U7DSapYgwzNNQZRmq42Od2MxZM73/wutsNv4hnG96+swaH8zyFJOLTvbEThDzGc3YWIyuefxxLPTNLz258nTNDoP1QKAW+H1gp9icWJV8uRtileAB3pdtIxMBF+Z3a4S/vH8Pr2ZrciakppnJsoeQYwIbQ/0RsQNpDAlYkBn80EHeA0/vqRkzAUgDbATY0lnO9Y
+X-HE-Tag: 1770675295-907331
+X-HE-Meta: U2FsdGVkX19tqV+xBMLknGcNzxEGad0AwX3WtObfp4eeNsyyI0RGFdK3BOtWK3kYHOk4AabueXa5o5JmMva1rGlswPyPAhJvRLNUPlxQ6lfAA8c4i69hG+FUdoIuzpmUAe5Mt7nuzt6B/gBilurUsIt5308np/aY0NVqYY3Com1PStv9lAohCyxp5n+HVt7OzGfXjjL6xoVuAQwimM3kPRETtsOc1RunvUPWP9Zuva9H54xzI5rnd6BzUUDRyD8rwkODEjaqf6l5YIBlJ2v187fEd5ffcJezx3fOm58kT0MyLFKtrRj9UT1Ujz+kAtWabLP7SllwzqnkbpAoaRk0JUttxl7msVa03iQ3FECrGfLwjP1MIR9U++JMmmqxdBrC1n85nBca4ffFMj3+zdp06AbX9v9S/D6bs/lsMjpMPJrMycAwMSH6uv9LH4Q7KHD3p+VR4HPr5FUHgbt4zBvGvl/L2Clqy1gHREW+tagfiK6XZJ12CooBHjz0+N4YxXKO3BeWjn/eNwDtSGHj2Ju1x/V7bHiFYsmWY51B9jW0Ajr5+ChA8wFD7uDKyWDBl1qM7+T68r+nhypU6pVQx2x/U+JwAVwB2wzL5/OT9FEDfDZD+ZOHa638LeAKvn4ixKAzMCiAPLrlmBTJRSAiSDB5JxUViFB+ertV20ALno9ynRDaPEfIjVmBbKAW69ffjheLojgEKcEBZoiMgHREMF9YDXs+TLDSur9dgxXLZckpFJo3kOvuhKJ7r6ohz+nnX+4R5PkTFo8TSld0YTlsRFIDFxxwjo+re45+44ZJTtZhVg8yz7NbsdJC9huslwjWIEc7LGtbuMa0XM1HjmMNA3XyMCCTnJG0gcu+ldwTcoEXksgsyL6u5wWdb8qaVetcouqjZWZtn6yYN6LnKn4DEYOq0JqzqGlpIgxwsZwe3tkC8+k/oSpxNWA/zE9HKTXsSWMDVtZXXPeh23neCmatpjR
+ UnGs6DgQ
+ xGaHmFvzHA6wX5NW9P+R0kgWNO17v4LJK+tVwebqnQP339o/TsvZ8PpbLJ7JJeU1J60lepL8iDxgZ99nkUKAvJmU9ZMkEADbU9O/unHAyTPAGGxDXNp9ZYKaAIUvlBXaO80SjJ6JEwMLPLOZQHz1ID0s7Jc5gmXKWAO17JE8ybmA5ux5Xt5MbOCyBzkkGomJDV7DcgbbZg6IhXp84QdgDDJaRF/RlF/NYXWluvaXNViAHa+Kfm+TRL2RE5YCeKTU4YGox1fUvoBkSPtdf6PT63XhC25NzPcruZoxgqQebpYnG90S4zgc/FCnCUoEcTembfyK453vWf1TK3372d6Bq/gmLiY3fi9oEXkC7v/Jl2zwY67YQoZopulDSEoXhAFo9UouN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,28 +110,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-dax_align_valid() uses has_transparent_hugepage() to check if PMD-sized
-pages are supported, use pgtable_has_pmd_leaves() instead.
+igt_can_allocate_thp() uses has_transparent_hugepage() to check if THP
+is supported with PMD-sized pages. However, has_transparent_hugepage()
+is being replaced by an API that has clearer semantics. Thus, replace
+has_transparent_hugepage() with pgtable_has_pmd_leaves() and a check for
+IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE), this makes the intent of the
+check very clear.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
 ---
- drivers/dax/dax-private.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gem/selftests/huge_pages.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dax/dax-private.h b/drivers/dax/dax-private.h
-index c6ae27c982f4..97b577f4107b 100644
---- a/drivers/dax/dax-private.h
-+++ b/drivers/dax/dax-private.h
-@@ -119,7 +119,7 @@ static inline bool dax_align_valid(unsigned long align)
+diff --git a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+index bd08605a1611..dcd1f1141513 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
++++ b/drivers/gpu/drm/i915/gem/selftests/huge_pages.c
+@@ -1316,7 +1316,9 @@ typedef struct drm_i915_gem_object *
+ 
+ static inline bool igt_can_allocate_thp(struct drm_i915_private *i915)
  {
- 	if (align == PUD_SIZE && IS_ENABLED(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD))
- 		return true;
--	if (align == PMD_SIZE && has_transparent_hugepage())
-+	if (align == PMD_SIZE && pgtable_has_pmd_leaves())
- 		return true;
- 	if (align == PAGE_SIZE)
- 		return true;
+-	return i915->mm.gemfs && has_transparent_hugepage();
++	return i915->mm.gemfs &&
++		IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
++		pgtable_has_pmd_leaves();
+ }
+ 
+ static struct drm_i915_gem_object *
 -- 
 2.53.0
 
