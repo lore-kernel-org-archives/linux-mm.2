@@ -4,104 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C289EE20BD
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84D9AE78D40
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E5C76B0005; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
+	id 5D5866B0005; Mon,  9 Feb 2026 03:41:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 793646B0088; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
+	id 583906B0088; Mon,  9 Feb 2026 03:41:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69FF46B0089; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
+	id 43A9A6B0089; Mon,  9 Feb 2026 03:41:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 555F96B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:23:03 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E2B6A160715
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:23:02 +0000 (UTC)
-X-FDA: 84424227804.11.749B47A
-Received: from mail-ej1-f74.google.com (mail-ej1-f74.google.com [209.85.218.74])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 22E104000A
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:23:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="YYyf8R2/";
-	spf=pass (imf01.hostedemail.com: domain of 3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770625381;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1z62XI4JGEoZVPtufxwSYx1SFhBLLihIdxzj7l54Q9E=;
-	b=8qgx81629LuN5SQUW+e+Vqb0nlsW0vR9meQe+scDD0jIt99njTciDHGMv4J2iY2HIbB+Fs
-	5s3W0XJ19UByRzVVi6kQKXoqJJuL8NdT442PsdgNE/3zO8sWbAOVBDy94m44iV9JzvcPLY
-	wQuceheWXfdqVtbIevoZjIcsgxLNavQ=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="YYyf8R2/";
-	spf=pass (imf01.hostedemail.com: domain of 3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com designates 209.85.218.74 as permitted sender) smtp.mailfrom=3YpmJaQkKCA8p0xrt6Dw0v33v0t.r310x29C-11zAprz.36v@flex--aliceryhl.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770625381; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 336056B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:41:16 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BCD15160701
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:41:15 +0000 (UTC)
+X-FDA: 84424273710.02.30E9FC8
+Received: from smtp-out3.simply.com (smtp-out3.simply.com [94.231.106.210])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A6F484000A
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:41:13 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=OzGhPxF4;
+	dmarc=pass (policy=none) header.from=gaisler.com;
+	spf=pass (imf11.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770626474; a=rsa-sha256;
 	cv=none;
-	b=NGmXNStpKaFbx50kCJN9cWUv9oQawWjRB1+nfbG15IrgBstDbLo3OSpNFINbZtzgefAQiq
-	V7IfGI5d6ayM37vx7nI8OSsM9R4POwkkKyn02ueGUXKOTRN67nOzNot+63Py9Z/sAYreQD
-	xbF2kx2W9SsNApXLqWmynGhbfjDHxXY=
-Received: by mail-ej1-f74.google.com with SMTP id a640c23a62f3a-b884bfed5a7so175068866b.0
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 00:23:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770625379; x=1771230179; darn=kvack.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1z62XI4JGEoZVPtufxwSYx1SFhBLLihIdxzj7l54Q9E=;
-        b=YYyf8R2/UwxtaTXZ9f27evAmZehCfEAlSrllnM9pQv5WkxM4Z7WSsZNjIXW0wVHTnh
-         EiKwgGtWHPBisYZQB0q/sNLukGZzzJMMqPZ2F7s/dyn9EM8/rs+CjMZF+3URUhH2uIOd
-         Ny3N0cKkQ9/+VUnx5GLZNSbt+GTroDEqfLaSuzDdj7+VTjZWTHbMw6t+C5Fvnt9CqPT4
-         8/xzEgzSJ24lBAQ549VJjVqAR5Bhr3AtuWr3f5QxctU20IKZrZEhaVcN31l9oh+D+TZJ
-         hzXUWk0DOY9obki1uW7P22692Ih2DSODX/gK32YgjaGTRWsFAaLsapp1u9nyY0qwEKUM
-         iIFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770625379; x=1771230179;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1z62XI4JGEoZVPtufxwSYx1SFhBLLihIdxzj7l54Q9E=;
-        b=qyyP4LW0Q5mKBgXNqRz7nVn+Gxae0ExyK9+1PwA8K0idYdyDhwg3tq1VpXdbgO8ujb
-         UHVGqNiEJHTf2Mj481JiWXkcdKITDJtCYlnzgBwesM8d/PTk3qrKEpcrQUnyy7HxJyJV
-         DTcEMnisuGXFoZ7ThdtZnK4VNmSRvco7nGQxXo29cGwDJRki0ZxYq8UpFfd+J6RAd6AJ
-         mSxIk9SxiLuA8ASGwILX2qsbQ+qhm18RyIqgLonfUfepRwSqEv5odn5Qnj1N2dS8JsAm
-         aVqXorV89neEoRNHp8rOZmxXUPvhC2I15L5rhf4dMEcgl4rt8QBK9op09+0gVJWI+PRR
-         fScg==
-X-Forwarded-Encrypted: i=1; AJvYcCXFB48hfvJpnfvN5WqzjGPc4mv/PBrB8PhIyfpQV451ThxH6BmdBWmQHiLP/ZJ+9RJIBhuRbkZHew==@kvack.org
-X-Gm-Message-State: AOJu0YzjVn/F+nCWKWbY6h5MQfZ+CCplEYIHQ9iOYOJF+yNzaXKVym/i
-	rDQtOozXq23Vae1d8Xv4FuCE81ut0VAQS+C10nOOHXxM/yUUS6icpXujJf5ZXSVAie6RoFVOxNw
-	yCf1wIDqV+BBxwGlf8A==
-X-Received: from ejbri1.prod.google.com ([2002:a17:906:d7c1:b0:b8e:b016:f0a])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:a0d:b0:b86:f495:5e4c with SMTP id a640c23a62f3a-b8edf3749a6mr545462266b.55.1770625378829;
- Mon, 09 Feb 2026 00:22:58 -0800 (PST)
-Date: Mon, 9 Feb 2026 08:22:57 +0000
-In-Reply-To: <6agwmmfv26g2ljxv2cvd5sbskkjgurnu2mhbsg5ssxkdikxpdp@xehzjz57omb7>
-Mime-Version: 1.0
-References: <20260118-mas-next-doc-v1-1-827d9f4924ce@google.com>
- <tal36hph2g5azjk33h564bllr2n6bz2xhdw4vcvizkhptedfuq@56chjersnkfe>
- <aXCiv9vOrMTbiJtb@google.com> <6fgs2mcvwlitkjza5d7cpu3mk34sqqn53vqazkicyge4gtqt7f@5dvqmpubypip>
- <aYNlvQmpL5FVpGNz@google.com> <6agwmmfv26g2ljxv2cvd5sbskkjgurnu2mhbsg5ssxkdikxpdp@xehzjz57omb7>
-Message-ID: <aYmZYRyY2emr9I7W@google.com>
-Subject: Re: [PATCH] maple_tree: update mas_next[_range] docs
-From: Alice Ryhl <aliceryhl@google.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrew Ballance <andrewjballance@gmail.com>, maple-tree@lists.infradead.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
+	b=rV0cHZJ72bqVkahgoASsLHgUX2WThwp/HzLAajQijELMEVKhQjoh+Bzu3Iopo+7kTazurZ
+	a5TyTxFeS/v17LkTGRjU97y2o7n9bBfSvn3fSqQTzE7k9BcokiGcCCukdfcUbr4ztMuqgY
+	VW1NwiZ3Illo3bSKsW2dEHvSHK+ep9c=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none ("invalid DKIM record") header.d=gaisler.com header.s=simplycom2 header.b=OzGhPxF4;
+	dmarc=pass (policy=none) header.from=gaisler.com;
+	spf=pass (imf11.hostedemail.com: domain of andreas@gaisler.com designates 94.231.106.210 as permitted sender) smtp.mailfrom=andreas@gaisler.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770626474;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=RbC+RKpRL3vyZA9rhFwXc+s3LnlBOMIWZ1+a+rfNhok=;
+	b=uZU2HEMsLYGERKSaYEAqg9v7ThQA1pB0smbK+07mscedDKfoXcjhbitxXaeCMciMd4CAv5
+	RjPSXJPraSOUxu+MTkLV6cldciqw05VIsrOI3ZCvXIfGt9/djR5LzWwtyExBcJ9dUxtlM3
+	r7YEuW8J2BNQc/SvKyHGkChTBTxZ01s=
+Received: from localhost (localhost [127.0.0.1])
+	by smtp.simply.com (Simply.com) with ESMTP id 4f8dT36VdGz1DDdY;
+	Mon,  9 Feb 2026 09:41:11 +0100 (CET)
+Received: from [10.10.15.18] (h-98-128-223-123.NA.cust.bahnhof.se [98.128.223.123])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by smtp.simply.com (Simply.com) with ESMTPSA id 4f8dT110xZz1DDXf;
+	Mon,  9 Feb 2026 09:41:09 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gaisler.com;
+	s=simplycom2; t=1770626471;
+	bh=RbC+RKpRL3vyZA9rhFwXc+s3LnlBOMIWZ1+a+rfNhok=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OzGhPxF4b1JTlL0uvUgojBuLGl/d8Dy9MJzVSCLeT/MydG7knOZy+3rxTsSLXE0fa
+	 Fe8HpYTWVqRUTnGYcY3oAZB1G1mG+IVuTFOS7+WqJBz1ilC5nvTR8TovjKYRzf+P2w
+	 Ww4xwxi029qA+7zIuREjyi1oyTjnneeeu19Nl05HHLco+NvnhYBsugXIxVmZ8+yauy
+	 xXkbpOW82Lh5ONVHEwDikWUcNveQWPl7uCMf/FTqxIDhDMLT/JU43EG3ChwZ3W9qcL
+	 8U/FowPM9gwj9XED74iSkSmiVCadg33Ys0HHbcY4Truz0z7WWFA4WvlePWVs4XcxTs
+	 tU6jXEQEdNbzw==
+Message-ID: <55bef6c2-de81-4b60-b6df-5ef733b54dee@gaisler.com>
+Date: Mon, 9 Feb 2026 09:41:08 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH mm-unstable] arch, mm: consolidate empty_zero_page
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Borislav Petkov
+ <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org
+References: <20260124095628.668870-1-rppt@kernel.org>
+ <2157220c-0394-40fa-9918-a8514171bd10@gaisler.com>
+ <aXj_x5CyUeys7ONM@kernel.org>
+ <ec965a79-dad8-4358-a8e9-ebc9f330b67b@gaisler.com>
+ <aYcVu7gs65S1CeST@kernel.org>
+Content-Language: en-US
+From: Andreas Larsson <andreas@gaisler.com>
+In-Reply-To: <aYcVu7gs65S1CeST@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22E104000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9gg9txh15mw5mugfjexgp8a4jbg7oipc
-X-HE-Tag: 1770625380-15333
-X-HE-Meta: U2FsdGVkX1/zxo5wl5G+RyOX57xIJgbwPPeN0yX7JzdYKKcYz9wXvCxM8nUn7dfRVMNNyxCc1+hMI5GZPsgIEGam7ZPCf9IHiyqQvEVfw8Aw7iiIIBP2Pp2dUX4AuMYuJdAx6GL/T+VaGqPdb02AivgAakhY2Th1GpCsC6aQUgf2313z8v6ncBeSpuCc4Q9p+QlGyQgwBx/hYylE1JEIIIk5fFVufwZlac6K9my/vDcNoUEmHOo2dI4nn5otEmKsZjUg4DDArDhosUttzMNlHpXt1eiN0SBE8sNsZ4C5LClPYFqZa8JYqCHPV8Smh+t1gNYB3ETLmicJJONGhX5BX7D912hjU1vb6H1l1s2LEAv7iBkxD0LYHhNeMpz8PMan9EdhoFq9IuN6I9OjT2RxY6Omt058DLe+5xo4quDr7CApQ5iFscoHhRQnzm3+Th+4uCsWiPrLue0GR5CNQZSa0GC0r5YvSiOolhIc6tyBMTrDbDyXM5cq3MjNMa3IjgHvOwJymj9DuKMMOZt9Z0kLB326Utizx8M/p2RuuW3WTFg3S41oO8GzPxM6AaJOHYzp2nPsljkAianpOXloTZYWwqv4s63Q8c8JKHMNJfBAf7NQVAxunlAuHT3mWEqhMTWdimTwZxMUjYHzF5Z4b+RJxy2Ca2I4+FwayT4pw6MPVxr1jWtY3QhZ0QPkSbHAjbzs6uM2SronroMfp5InjHXuU4zoLgec44pS+0ie1SzVgIjRcUmDp03X0lpxR4fHH50a4vB05fM86wY/ERMEDcV1dGcbCikHMDpTrOPDbz4b4LMatkkyF1fEKtf8smSgFbjROB/4jV6hxAqeFvkODHe5v3qmpr7ysQjH+5kiqmmOhXZ6c4NL32L2NdtIc9ocKQdfyL2fxyq6Fg0B+kto/6Gy7ym51rXDQKFhEft5KTNHj23vm9U2QTM6BWd8VhKKF6DwSI37VUmOBzXtUew7Gde
- svzMz+zc
- 2c7CfZLaEEM63B9Sl+/pNO9L0585AXveJmvY8quTsomrfjx3n32obF9cZZZ8BVPxtJEsDYd569QF9p9guT6aczszb6Q0ekMh6cVGRsmykyvA8F22hIDytBQAzIIDaEn0L3obsY1QSXCMrkO5J7i8cTEIYl4mxzNya8l2i5UriL+PFCG+rJB3ckl3ijy81LmpOnDVCpsk37eSVcQkZG3k+N9kW+WuZmJOkiLjude+sHT0cWQfEoZcmJf28/xIHyFLxA+5U1IbsN/vk2RMrYH6ukFavXVDdl92j+TVZCEK+53QG6aADfACjBoXt4p6wAF4tO5jf7NXUvUlbeSgRFFRjoPdhfQ7M9TDyuF0BEHNo1Hg/WdTqPC7GGeQsfPY5dsvhhlP7Q+Aq9FjUqnsb+/ulmNbFtvQj1S0mdcZbdb6h2CsfnpCVt5NeccIOIYNTi1lCgTLVPI5LbTSYp+fjyzKTVHLZkmv76zrtQnogfpNfAOQ6AzgT1KQpauGOJVV05NEg7ieR7c2EfWwpvZr68Y5V1cLwHZGJnxDv/8zvz2eNGNmk+oFpIbyHKCP7m+DtLhEEggp8eapqd3JUu138AX6G9UAP23ILKHSpi6VyzF9ZN2rhj7qQ8d/M9vlpYhqtCnaAwryiWu1rCoslHyB0mcL0BK9xl0q5xGLXpjxKoKbXhLT7gxitr5Errl6Nkg==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A6F484000A
+X-Stat-Signature: kk64bwetyjh8uc34nmwhshgmrxf61br8
+X-HE-Tag: 1770626473-681557
+X-HE-Meta: U2FsdGVkX18c1HTpYLp58BbmmAXKRPMTZTyr30aQAIvYJnaYVINc7CmlN6bF+bOwGTTsrF7z5KZeAr9nfiDbyz1IGSNcCDKSHF3H1AMN6NfQesLVkTpe9uF/0d3lh1n41fjZOtJbXuobkS7cpDiRMLP8jLUCEBh4zbSzq5QwPtj3pVlt19+DpDSO4PuPPtFkKquOqISas3tfY9NpH7KnyRQJVO3QPG5HFhauIneHdStGQcxBKM8W+YjVv8z1WzQcpuFvjOCj/NPQsYRCgK3/bm1XKetMBxtwYSqPvySOsv3M3NbudqRFHY6p3M1XfF1qMGwqa7xXAAbH6N9AWlidbTzdTJJnhzDzSG/6Zxey2aTf9+E03wzAiPApNV1n0H4NKqNb6Pbu0sSA2dZqo+qafzNMUxOuc7FPVZKab+WAaxxUjOu18otOMbjM+w6HZEXWmp5NUltAySEyjOec9MzhIYNMt9I/gqc8Vo0KQ1Hss7hEZgxTWoaw0nPGV4ZNciv9Sd+Tge2YiSmEBVDURTSzEUeOkQ9GBcqxfPLhkc0dVWcrcbjNZgn8+lBltKv4q8MDHzEHLPeMz+Qdz9AVIv4J4O3v03MXmTXokvOZXgg8UidDxvJR9EjxFIjJIbKa4/zeIqdJ4tyg1hYDFEGZUCS7Q6OAkqAlYQFhTdoNkLGkbibYX3qWpQJk84K7nTUozhsrFP0ouaU26S1C7XZNvIlh4jFn7qguphLue7JoXPQozc/pnGvYuVnWW7zWLBmwR9rb8aF4kJwE2O50rxkug8HGYlBmN/ZfWBfwh83EdtJlZWOhceGH2bWZfk6FMUokBJOeIX4XmwIPZ0wPiAsSknZ6EvU8un72G/a+lfTFqRnNqzNtX3Xaq+1bv9yurKnoIMfxWvmv0BxH7mU63hXD33/LUgSGV1Gn6cObT9Hx3JBfbHm1RzHFdWPzn4y4Ett0qdaqfZfHsnZC1owKpRjyA+Q
+ mM2NknCh
+ jH7+pmXJ8RCGwMVJfKXr4I7biPnI1w0eQ6vB+ZY+6T1J4Yax+/QekSmsXwxR06GQqHEd6+HfGBSNJk8tWfUKAAqwtfJLprsXkj9W218vcKl7LE7DPwdVjWbZ76JsV1I36OZwN4qnvJNvjiapoZv6yQL/j/69FvGFRfBvI28Geg57dhb1YfaHeWIP0fZCpyuLOh9GzdAaw4gJUn+GKAH3a5VjGkYj9L/H3CpTW98rhrQyAlvb3s+uarAKIDv6Vbagvb06DNpWEAXNw2+MPFKP5jNCLN8aQcZ9p/Fzk28eGmbORYprYmRI+6OR8834SeaTDnyJ9BRXZhkkU+M2MWCTrk+sCw057MOGIdnfQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,80 +129,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Feb 07, 2026 at 08:16:56AM +0000, Liam R. Howlett wrote:
-> * Alice Ryhl <aliceryhl@google.com> [260204 15:29]:
-> > On Mon, Jan 26, 2026 at 03:20:17PM -0500, Liam R. Howlett wrote:
-> > > * Alice Ryhl <aliceryhl@google.com> [260121 04:56]:
-> > > > On Tue, Jan 20, 2026 at 12:54:47PM -0500, Liam R. Howlett wrote:
-> > > > > * Alice Ryhl <aliceryhl@google.com> [260118 06:00]:
-> > > > > > If you read the docs, it sounds like the difference between these
-> > > > > > functions is whether mas->index and mas->last are updated. However, if
-> > > > > > you read the implementation, you will instead find that the difference
-> > > > > > is whether NULL entries are skipped.
-> > > > > 
-> > > > > This is not the intent.
-> > > > > 
-> > > > > mas_ should return special values including the XA_ZERO_ENTRY.
-> > > > > 
-> > > > > mas_next() should get the next non-NULL value.
-> > > > > 
-> > > > > mas_next_range() should advance the maple state to the next range,
-> > > > > regardless of what is in the range (NULL, special, or a regular entry).
-> > > > > 
-> > > > > Both should update the mas->index and mas->last values, if it moves
-> > > > > (ie, no error state is encountered).
-> > > > 
-> > > > I guess I'm a bit confused about the difference between XA_ZERO_ENTRY
-> > > > and returning NULL. Isn't the case where we return NULL when a slot has
-> > > > been reserved but not inserted yet?
-> > > 
-> > > mas_ will return the special entries.
-> > > 
-> > > mtree_ will return NULL on special entries.  I think this is just
-> > > mtree_load().
-> > > 
-> > > If you want to use your own locking and use mas_, then you can filter
-> > > out the special entries yourself.
-> > > 
-> > > If you want to use the normal api, then the special entries are filtered
-> > > for you.
-> > > 
-> > > This way you can mix/match the apis but the noral api still remains
-> > > simple to use - even if there are advanced users that mixed in.
-> > > 
-> > > The idea is that if you're using the advanced interface and storing
-> > > special entries, then you probably want to do something different on
-> > > those entries - at least sometimes.
-> > > 
-> > > > 
-> > > > Like the docs, you use "get" vs "advance" wording here, but I don't
-> > > > think there's any difference behavior-wise? Is one intended?
-> > > 
-> > > On return type, no, there isn't a difference.  The difference is where
-> > > the mas points in the end (mas->offset, mas->index, mas->last).
-> > > 
-> > > If a NULL is encountered bu mas_next(), then we proceed to the next slot
-> > > (which must have a value, if there is a next slot).  So, mas_next() will
-> > > always return the next entry until there is not a next entry - then it
-> > > returns NULL.  Note that mas_next() takes an 'end' value where we'll
-> > > stop advancing slots regardless if there are values.
-> > > 
-> > > If a NULL is encountered by mas_next_range(), then we return the NULL.
-> > > So, in this way, we can move to the next range even if it's NULL.
-> > > 
-> > > I hope this makes the difference more clear?
-> > 
-> > Yes.
-> > 
-> > But I guess the docs should still need to be updated? Right now, both of
-> > them say "Can return the zero entry.", but one of them can't because it
-> > skips them.
+On 2026-02-07 11:36, Mike Rapoport wrote:
+>> Unfortunately, that does not help. The LDOM goes down in the same fashion.
 > 
-> Neither of the ones you are updating should skip the zero entry as they
-> are both the advanced interface.
+> Apparently something is wrong with my pointer arithmetics :/
+> 
+> Can you try this one instead?
+> 
+> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+> index 74ede706fb32..615f460c50af 100644
+> --- a/arch/sparc/include/asm/pgtable_64.h
+> +++ b/arch/sparc/include/asm/pgtable_64.h
+> @@ -210,6 +210,9 @@ extern unsigned long _PAGE_CACHE;
+>  extern unsigned long pg_iobits;
+>  extern unsigned long _PAGE_ALL_SZ_BITS;
+>  
+> +extern struct page *mem_map_zero;
+> +#define ZERO_PAGE(vaddr)	(mem_map_zero)
+> +
+>  /* PFNs are real physical page numbers.  However, mem_map only begins to record
+>   * per-page information starting at pfn_base.  This is to handle systems where
+>   * the first physical page in the machine is at some huge physical address,
+> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+> index 2bd99944176d..aa1f9f071fb2 100644
+> --- a/arch/sparc/mm/init_64.c
+> +++ b/arch/sparc/mm/init_64.c
+> @@ -177,6 +177,9 @@ extern unsigned long sparc_ramdisk_image64;
+>  extern unsigned int sparc_ramdisk_image;
+>  extern unsigned int sparc_ramdisk_size;
+>  
+> +struct page *mem_map_zero __read_mostly;
+> +EXPORT_SYMBOL(mem_map_zero);
+> +
+>  unsigned int sparc64_highest_unlocked_tlb_ent __read_mostly;
+>  
+>  unsigned long sparc64_kern_pri_context __read_mostly;
+> @@ -2495,6 +2498,9 @@ static void __init register_page_bootmem_info(void)
+>  }
+>  void __init mem_init(void)
+>  {
+> +	phys_addr_t zero_page_pa = kern_base +
+> +		((unsigned long)&empty_zero_page[0] - KERNBASE);
+> +
+>  	/*
+>  	 * Must be done after boot memory is put on freelist, because here we
+>  	 * might set fields in deferred struct pages that have not yet been
+> @@ -2503,6 +2509,12 @@ void __init mem_init(void)
+>  	 */
+>  	register_page_bootmem_info();
+>  
+> +	/*
+> +	 * Set up the zero page, mark it reserved, so that page count
+> +	 * is not manipulated when freeing the page from user ptes.
+> +	 */
+> +	mem_map_zero = pfn_to_page(PHYS_PFN(zero_page_pa));
+> +
+>  	if (tlb_type == cheetah || tlb_type == cheetah_plus)
+>  		cheetah_ecache_flush_init();
+>  }
+> 
 
-What do you call the entries that mas_next() skips? You know, the ones
-where it would otherwise return NULL.
+With that one, things work fine.
 
-Alice
+Cheers,
+Andreas
+
 
