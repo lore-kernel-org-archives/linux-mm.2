@@ -4,114 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17BE1E81BD3
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:56:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F91BE81BD3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 15:01:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 438506B00A2; Mon,  9 Feb 2026 09:56:30 -0500 (EST)
+	id F055A6B009F; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3E5D26B00A3; Mon,  9 Feb 2026 09:56:30 -0500 (EST)
+	id EB3996B00A0; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BD686B00A6; Mon,  9 Feb 2026 09:56:30 -0500 (EST)
+	id D94E06B00A1; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B7E76B00A2
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:56:30 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BCA62138162
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:56:29 +0000 (UTC)
-X-FDA: 84425219298.13.F0191F5
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 049A140004
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:56:27 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K6IA2mT7;
-	spf=pass (imf11.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770648988;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C955B6B009F
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE98EB6CFE
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:01:18 +0000 (UTC)
+X-FDA: 84425231436.09.AF87792
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	by imf27.hostedemail.com (Postfix) with ESMTP id CB6C440016
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:01:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VIc6oMEj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770649276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=hWcBvSDIuanvdGG8hK0w4PUAsRvRha3/h7urmdr6y1E=;
-	b=td+FeuCDJgWLoLsN7WMNAVFQMLDgXNtCrhwTAwsU+MsJQoz8A6ZjE6XIiHV0BSkPRGgwTg
-	U8r8DuVFYjo0/HL6CBW5t75dMTuPCZqcohvlhrszE94pOoydewNiAWIiQ1rqk9mXp43B1J
-	CfRJMRNUA/f8JrZ9VhyyxGCwtj6Ju2U=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K6IA2mT7;
-	spf=pass (imf11.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770648988; a=rsa-sha256;
-	cv=none;
-	b=pkuhlvztUQHpVzBkOwDyqPpprrZ40SmnMJjGJam+6aJHWYFEqlk6WfF7CiQ7tTvBd5y4OP
-	p09a7LbbymjcD8U7yHusVOd5oomjFehNZeDNbVD7XoCOs0K8wiCWGIoquypAy9tpmpmHRe
-	KJtzCyOww2kc5CSuRX1CA/rr5qG0K6A=
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-823210d1d8eso1769308b3a.1
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 06:56:27 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
+	b=7gfX5MYttMRZEmWz8wYx3z+FSKKx0gQeGbbm0eeN1ahSpa/ef+p3AtUr35rlHaiXQduZdC
+	0YdU3GT6S7jzyjYZfM0cxTKTkliQtSDkOjgAxZLH0ASAfyg6YokrlonhQBPBb9Agd8qpUV
+	vJC98I8Caa6fQVsKh9jVtQwRKd2FuGM=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770649276; a=rsa-sha256;
+	cv=pass;
+	b=LwiYAlJ461ZpzZbf3pWNQ4T3TGBdR/sPd1a4AU6lAb1aq33GkhBCNU92jf+jULssUSBs8t
+	xQ7UY5VK+6t2jPkxktgwJ1fK8qkovgNzR2JO4VvUFxPEyEn1nn1gPJNQzGURczHqhr34fW
+	HJ7Bv3VgLYaknpbI8FwaCC/Kd+kIBXg=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VIc6oMEj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf27.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5664848545fso1718369e0c.3
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 07:01:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770649276; cv=none;
+        d=google.com; s=arc-20240605;
+        b=TRG5u4pjlCCYY9mn6VHTs7koG05bdnJs4QYSZD9S1OVFXW0Kw+9dgYChd+B7U0KAaL
+         HaqiIkH0nI3VXSnJIsDjXSfeT/2i7uxK7PHqD0KRLFYfONDjnFG2CnP4rNM86bUD8csc
+         J+YCMSMfmFhwWXOnx5MkObF39ryI6ymOcgLDV462yJWTkwB8rykEU3rquBNSIT4FPePh
+         kN+gmSdlImZv6IKFiB5cXVQNIrT++KQSLEArYVMDgWqRJ/gmVUP1SI588tyPsdy4iC4l
+         IJjGe/yjSRHv429dcXKGaKV0954Xd2V7pecPBEX/fqveadGVeZMm2OYj9IcjnNh9YfhK
+         nY0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
+        fh=VC1sq2BfrJG31tlswTIh/U8pM3bfMlU3lreK9qRqjbI=;
+        b=ldGfJciPe8+sjuHIAoCjiEPVRs152+/rq4Embv5PP2CRqMNUQhA43KV1jOP7mTvqkK
+         E4I4nFlBl1N8qU55MJgONKJE8TxcxT6TS9+nWj7hDqHkRICktpli2el/vRbDwtm3pBBw
+         O0i9y/a1+UuA7Opa6ftLPztxooUOfx8DAL+wu4yzXQ4+XxBcHwokTtLozrwzcNaNZx6k
+         EgpXHdonz+ereE4ixQCOE9rIIyaAs03ijJY9mEI3vD+9ttWtQtrzw2voRgQuoE6+PAyS
+         tqlCo70lm0qenQfkBYP3siGyBcaUwhPdDZizr0VjdmVFPI+nWsA7y1HhRIP5D3oWS5q5
+         LfOw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770648987; x=1771253787; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hWcBvSDIuanvdGG8hK0w4PUAsRvRha3/h7urmdr6y1E=;
-        b=K6IA2mT7d9v12uIGgLrW651wDWCzsbInkYXezEkQZV5EZuZtwJK1qHR486ey7cDMs2
-         RTcQYbV56tr2xIRG9KYHkRCQpiuKpV/1ODNYikqlGfzYeKziK2u8VVdlinCD086Z44SK
-         UfR5kVXe3x8wMujHXWyEx9akDPYqE1FYyziNupmEX2ApYVKRkzJJsU2BP3fh4sie5XoN
-         wqBPRqu95Ei/TiV8MA28KZwlsvxp/yTjocdIjTkHhKVBZK1wHbiv9l5r+imeHB9GrUF5
-         I0psKq+d0Oku/tze7uCi4mTBszlbztk3HjJkV0VHAh/tJQNcb02CU9XmbA7zlCJU67C9
-         +0RQ==
+        d=gmail.com; s=20230601; t=1770649276; x=1771254076; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
+        b=VIc6oMEjw/MuNF/j8aYJWEqFNP7+xHsPlI4hOdaFO1X5mnjcAEdJgrfXNvIJGZTH6T
+         vLbHn7u72luQ28B4szRBw5iDm3t9DhUdAQxiJMIHDg2Oz3XgbjezKHrbGCzubM9Vni2F
+         A0cbcdcted1v6CXx0o4MeFdnsfui1EcVpD3nB6ladJHgi7t3DXCUK0XxXqcFzFTbfGov
+         nqR1Yd5EcZpxqrOA1/uCWFKBBesUlWsO8oywLJkAiB+L2GQ4kyfq/XWLvtoVMWLLlLge
+         OTeyEDrTm9GR/oGaI564piPkhvPnxnLFibpJWgWwdhmRi9dbkbjIiTq8kvh9U16kWYSC
+         a5ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770648987; x=1771253787;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1770649276; x=1771254076;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hWcBvSDIuanvdGG8hK0w4PUAsRvRha3/h7urmdr6y1E=;
-        b=f82f9N7SfeS2FycDw8nyPvPvQJEID2SqlYZ/4eTpmli2+mB5BH80fusAF4t5cMIAIl
-         W2seUBAB4MgehMl1IPDC5AoFcJ3wY44lkmbQTxXHYa5sj0SHjDzNMKxN1GMof871ecok
-         kVxO4ycxHMfmvB8wcmSQxmxb5uj3ceFN3rAlLHeQYIi/zj3k+qg9EQSj7P5QzD501Yzi
-         JqQdqa8QlZkka79EfHwl9Idvw8wHsrIW4IKFRhapsoSYKhJCBVvMP6OC9IIIFm9QQKjI
-         UvcD8vMRoub0BVvqNN6kg8sfQh85/FEfhFEVIILQ2jAsSLwxBY6yCLlvhEjs5ld1INsH
-         sztw==
-X-Forwarded-Encrypted: i=1; AJvYcCW1IXM2yJ9DhrLaWscwPebv1rMEZh5rDfwMf0m64XYNiigdl/R30ki6GPSe2glq0uDmZBN/WqH+Ew==@kvack.org
-X-Gm-Message-State: AOJu0YwlujJ7+DqwhY3LbvLVxwIrj6UkzvX5wHI0qEuKAy5Sx8w/ta5L
-	+XPZFHK212qr8bs12pz0JZDvd+gpwJSkc+UhjN1UYsIQbJwbe6ta4NuP
-X-Gm-Gg: AZuq6aIelbzIL16n9kzbf0qv5VnyXTtUaHtkrohMu6HzQv0PE1QvqDjRRyg55xYgTTL
-	xk1kNGtA9E56CjpINo1F4i0o9owPYu3HKx8q2KhH1iVyvf2Sdd9cTw4wk9Yowvmui0DefMhZm/U
-	FzobtQl6/zTVeQQVeHFQrnwkphucGNNuqVm4jEeDlUHChQWZz1N/rPWYRXv/r0Nv3v/qukMreno
-	ZBn9RFcV9elF4MVrmbupvqMsv6QAeGDAEIoFTKYbLrXEOQ1XBbHCf7/T8EZoG6RCnlWnehoKt69
-	sA7zf45VsVi5uuyjNwLJGdccpe1MceiLKNN9TBJaTmfff+huoKxsXR0bbiWDXpyOpULk+lLibKz
-	UBwG0r/BKYaazfdGXI2YeJTtK4uDAl5/sfJAerNkSv+noIAAKZb1u/a0bLHBJDBZ4958/04nePs
-	oukp1T4K8lS0r10Gni+HrV1B5UMx8nj/oEzftlfAfmoUaXzV68/AeyvyBJ9QvKXenW1vY+i4j9h
-	A==
-X-Received: by 2002:a05:6a20:7f8c:b0:35d:e4b2:b389 with SMTP id adf61e73a8af0-393ad366d00mr9773794637.58.1770648986687;
-        Mon, 09 Feb 2026 06:56:26 -0800 (PST)
-Received: from localhost.localdomain (123-194-188-82.dynamic.kbronet.com.tw. [123.194.188.82])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c6dcb61e4a1sm9193974a12.27.2026.02.09.06.56.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Feb 2026 06:56:26 -0800 (PST)
-From: Min-Hsun Chang <chmh0624@gmail.com>
-To: corbet@lwn.net,
-	akpm@linux-foundation.org
-Cc: linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Min-Hsun Chang <chmh0624@gmail.com>
-Subject: [PATCH v2] Docs/mm: fix typos and grammar in page_tables.rst
-Date: Mon,  9 Feb 2026 22:56:03 +0800
-Message-ID: <20260209145603.96664-1-chmh0624@gmail.com>
-X-Mailer: git-send-email 2.50.1
+        bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
+        b=BLHfOHYqNrnmbrOky04Sdk84zrtk+HmhMEtOO5n+y+Wh2PuVLfFcTap4lJz55xy//C
+         AZsAgiNkFF/AnoL/zh6uEodP9DDwO0RhAtkRJSVFT6Zu8I1qyDG9LH4wFhkavLon0Eo3
+         di5j00o3Bix7SR5TwJqMAdKa7istWT9Iw51cZyU8yVBghVNViUxvxR1jYmOC8qPva5fL
+         mvOau8LY0uZ/CNeoxAzU6eD+xEPJRwEn1V6YkFFkhVJL6IBu/1cMcvLb9Njs6kNeW03j
+         Cf4KAd8pg9B1p/MO+cYaAiHt1r/1wxaGDtPPc2NtyWmxARbopZLb0abXCrNSOWM4sbiu
+         VS5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX1M+UkAiJeIG1LbgR/ke9GETVMLrYddXL3QX7Y7AqMJ/5nupfYS+GPd75pZDo4Mp7fVfVjVdYF+w==@kvack.org
+X-Gm-Message-State: AOJu0YwbRVgYP8V0lnOJo1Qy7b95d3ydJ0gsC28VFA4mnmgG8sOV04HM
+	0gAzsWXWpDisJSUepxKwCI+GZXxHcE7kmLZXygnSWa4LO3IGr590ho23QnP5/XB5p+v7nDROxPA
+	ujFnniDjg7YcQKKaeD/MOcrbyUyla3ZQ=
+X-Gm-Gg: AZuq6aIg4Cd19Up9tw+cTjMLr6pJZFKKyjJyymUN/algLFqlOG2Pq5f+rIeav55mV4v
+	gTX2fvkyEmGNo0nw6lNV81Fbpme+CubG4Lao2WyRmkNepEsC10cHl+1j4c9qFC3yIG15UThjcQo
+	AlWznRqCXdc9EGMUDc6aHSU/bW7n594KGoDXfPjcgBPaVWoGkNcm5l4BNVoq/aaQNSXEEkWB9F7
+	amEvfh5YL6SahpilJKI9tcv3IaRZ/nmDBXucsguMdK9DfCTXn7sZjMlUXnP6UGHsqGLz73C
+X-Received: by 2002:a05:6122:45a7:b0:54a:1e96:e958 with SMTP id
+ 71dfb90a1353d-56705b85df5mr3065524e0c.0.1770649273870; Mon, 09 Feb 2026
+ 07:01:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 4s4pgoudizcherickh76fsd75xfcinps
+References: <20260209081323.68339-1-chmh0624@gmail.com> <87wm0m9dn1.fsf@trenco.lwn.net>
+In-Reply-To: <87wm0m9dn1.fsf@trenco.lwn.net>
+From: =?UTF-8?B?5by16ZaU5Yub?= <chmh0624@gmail.com>
+Date: Mon, 9 Feb 2026 23:01:02 +0800
+X-Gm-Features: AZwV_QiAlyGXhtQx_eidFLWQrBv-LDoYSO8WgjYuBHCFjqgaMv8Qac5XaiF2-wU
+Message-ID: <CABzB-hZpQOR5uxjUKGf2DcfcNXSwpaBf3mmKdmCU0T5=uDVz1g@mail.gmail.com>
+Subject: Re: [PATCH] Docs/mm: fix typos and grammar in page_tables.rst
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: akpm@linux-foundation.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: multipart/alternative; boundary="000000000000fdae40064a65689e"
+X-Rspamd-Queue-Id: CB6C440016
+X-Stat-Signature: sqgd5yc645obrk7enamz8xbgkj8ktmy4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 049A140004
-X-HE-Tag: 1770648987-542698
-X-HE-Meta: U2FsdGVkX1+wKqHkXaUpPmkX5aT3TsN+bvWUoTN0+a1LzapTL8MtwZiOX7Vn9/hJVn4T1BEycL+UFJszr5llK+KsJeYXb2/9vDh5QfqkU2FArOEyztn5L9k4S+0J2GfT4BPAajVTdQ2XQQfNBy5V9Ns/ZRoW1EIs8CDf8TYzj5NeqPvjVBC2O1dGU7VVQbPvtMtMGQ1HALULyDywlFAE8cfNAHzy9SHmDU9u1R+UiAGj/j5RamzLsIFPLhAm4CYW7ZzAslUN2YtEChI66VIaF8Goa/fd/gCbjFidyMQApQ3J71J1DoD2oeWhUFSr0zo+K03Hu3S0bG6k+uqGhOnq3g6fC+rxlblHS2P35NTFCQ4N4F2e9jmtPiw+dFqmvSf7ZNJpbUsP8o9Pl9/7L3NXwzBvoS9RvXmsrBVrrqIodkmur8tdQde68wHgpOlJl4UZrmMCjt9pDBvKsaqnIomcefGTxFcym3jtuIf6WwYXmBxXUuVHmxSuaYHUubbVWpZWV4lsHp4sICzNiUj3EHn1JPMbd8N/o44JMdP+JVXgL/RGAuT/S7d4FLtL04lOzT304rIOXK/qvqDtdxXBht9V6DmYDTeOhS7ZnUYy3jwqJN3IMLZURsaKYfNNI5P46JwYkI5rNZsoZi2s1/iWDfCBxpFxYST+659B7zkkem0QLwK7zIn/hz+ByMIYivpNJRrgKNwgDY6QcwRIV2vecXydxICo6WxoVTDzvHtMNSDuVR67FL5mRuhA5+KEnM2JrykdppFHvVgCkl1qjIy96tyKn3IDaIETMTPGJ8kVthP1pic5wsduwrIxEuZtwehAO0o8X92tBRfa2mPqSZ506bti+SwHZDb2VbOsU2i2nRsk1bGxT1S+Zh3eIWLvmdRp3vYE0EeaRxbWWsguN5eb2+dTjm8Ihpt9j/sbFq+Gm7beroEUr/nA8F2fJ1Pc7VoqOwbB1WXFIGa0bOr84zURN/D
- xcVVgW4b
- fg8dw0LeMdxExn9/Llddd41jBvgXIfNyyvDfd1Hk9aCpuol4YP3n5v29nVz50zDLuOhHkh3XnHZb6JkLS5ixQeZpbRl0+y7oLo7PbFP5y4Y30KoNSG8J1D8x2CQhuMvDU9JoN56J8Mfua39aUmPy6MGAcqOqcAW058VYvfNg/v1E2ISnUtvx3toTGzLXREUuClj0JbFygRwgCyzbliUDRPn86FLeVDZp2pHG5LqLF1bAe8vJPG0z/e6ZYxILGP93aqNv6oL9AB8vTmO4IlMC+HDm2VuBYkCuYoH1NAZt6oKnJM5VRDn3jJ2zsJzVCaVCD9h/8SH2lAQCk3KMqdLRbxkaI9P2IBwUj1ayOFU8mKBhVXNfPrsCTsByX3bD8jzYHzr1gh3IdKhQ5fX/b+Hskl+x4O+shCfkPHwd1vP9RlejSM6hIrbBX0txy38O0DYAm03wq/qgO9FHgief9iFY4cJyOcoPr3ovzSBfnMtCMiYlGELc=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770649276-7415
+X-HE-Meta: U2FsdGVkX19JfNcwOEJFagQATQLRwnrVTqWXZ9UpJnIOZRP1VWTb94gNcHVV2BAkzCdKJENDrIGxxxRbRUScjKtRZ+vA5qOFJ7fCK/RFAOObu4df0ZQnzdDvSK3V3/PpdkT4RePv9mBqmb/xyj7/t8TaIoEdXCQamrxJPscfGBsjfBDaz+6GneL3WfMFiBhewQB0Ot6OMDB+62xJQAUBMYCJPgWnp7kxN19fA+uW3h2atjOTyUeWEsfmOTijdTykdzaTe/ffTQJJyHI7rHPYgXT8eZL6GH+Crg1dmCaadTE63KTWS/vDvFIK1HKpFZpoJxALZBCrUQ5U+aybbv+08Lzda3aQUh1Msd2gFznrd7CCMF7rgKEb/waWVTFGT+kCQ86xCUpdMwxEMynh9M4tnjOvLf/BdRaEP734CPWVtHCLmWD6YZlkmZMt8UtvMIQqbiSPFiysIVNyrx0l4JtSnx7kl+0hV7Y3pAmjSADnLSxdV3F/cQ1fxG4+eEFcrFteayCNXIqvqsvBo1WCsSyd3aNmsV0NCWSVyjmz8lPqym6Ne0F/xH94vtd5dHMON5PF0x6A8ZF9jI0Uec7N4Xhdbt9eLjJvjxGfMwFKmc+mcVd/A0MxrduaNA+HWwVuW8KNn6j/oXHHBOJvmCtLj0Barty/Y86TbvSjjX142aHDMD7PTfQmauGWA66Yk4o5Y1KHPn1ysIEpJSOENPtZO214sySj8M3CNHy9OG/amAJlWhJrmenPkB+zRGG8qEOhFOGH6SxvUywfLYVPi1JXRXlMkXAbg1QTCCMo7c2/A2NujDGB2hMLM21uEfdvkp5SvfNCj5PR4MdkFZS5kzkX72gHOidIbPWFRU8rih9sSQWstsOM8mO9Hln8mY1vjrqJ7uBQEtCEAvtBgzImc4+JSj+ZjfBkeWZpAiiwN21sSiqV3C2FH8DsJ8Lbb4JuaFyV7HIUd6jKCI6an8WkDZcwOx0
+ ptzbyLbI
+ uyLd772N8sy5JquWbmtUZIt55GCq5mJYFG/k5py5p55t//meIzkBCNp5CkFBN5addzra9YuTT3p8PsUYcLlEenzRjnJaNTZygQnyzXfjETQUF5NO0k0yNwECMPfjnwj1rwiXTzdtuAQlrN1CmQETIg4m6g1Q4aoV90/iiMmt6wtRUJr3b5SsEpFIouT8qIFSAh1clcgIhhA0H7aXuWJ5a/8k0/gIUbH0+cud4J2DBGxsxvc+D5Q4F+mjdvBlsUIC34kpAn1U97knctp+0XqdC66F6fQl/Zda6CnU6w5MDlqHM+P1xSKkMsdYzbx8XzEE3uV4m6GPm/vR8L07z8Sc/weS/DW2DA7p/moVKAMSdOiFOO1xeE+yhBdiSVq7L5BFbSy4VC3n9A/E+wYZ+q4bPsOeP3QryRXz7bIl9YoxIP6uihUilJIB8E/T+RBz/g3oVgfgo0Kyra2JZnnRGYJhYHMratASpJJcxFG+1BMYaDhMKzWYn8bN10q1CJFL0jgV7wg/2duyIsTQk3NtrBiXzdVyGSGSdCv0OoimUTKArAQX4r8ccL8/wyaYN1r14vpjd4s/A4fRhIqkHh4LPbLIP27f3rF8LsGjMvZY7
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.001706, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,63 +135,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Correct several spelling and grammatical errors in the page tables
-documentation. This includes:
-- Fixing "a address" to "an address"
-- Fixing "pfs" to "pfns"
-- Correcting the possessive "Torvald's" to "Torvalds's"
-- Fixing "instruction that want" to "instruction that wants"
-- Fixing "code path" to "code paths"
+--000000000000fdae40064a65689e
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Min-Hsun Chang <chmh0624@gmail.com>
----
- Documentation/mm/page_tables.rst | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Thanks for the feedback, Jon! You're right, there's only one Linus. I have
+just sent out a v2 with "Torvalds's" corrected.
 
-diff --git a/Documentation/mm/page_tables.rst b/Documentation/mm/page_tables.rst
-index e7c69cc32493..126c87628250 100644
---- a/Documentation/mm/page_tables.rst
-+++ b/Documentation/mm/page_tables.rst
-@@ -26,9 +26,9 @@ Physical memory address 0 will be *pfn 0* and the highest pfn will be
- the last page of physical memory the external address bus of the CPU can
- address.
- 
--With a page granularity of 4KB and a address range of 32 bits, pfn 0 is at
-+With a page granularity of 4KB and an address range of 32 bits, pfn 0 is at
- address 0x00000000, pfn 1 is at address 0x00001000, pfn 2 is at 0x00002000
--and so on until we reach pfn 0xfffff at 0xfffff000. With 16KB pages pfs are
-+and so on until we reach pfn 0xfffff at 0xfffff000. With 16KB pages pfns are
- at 0x00004000, 0x00008000 ... 0xffffc000 and pfn goes from 0 to 0x3ffff.
- 
- As you can see, with 4KB pages the page base address uses bits 12-31 of the
-@@ -38,8 +38,8 @@ address, and this is why `PAGE_SHIFT` in this case is defined as 12 and
- Over time a deeper hierarchy has been developed in response to increasing memory
- sizes. When Linux was created, 4KB pages and a single page table called
- `swapper_pg_dir` with 1024 entries was used, covering 4MB which coincided with
--the fact that Torvald's first computer had 4MB of physical memory. Entries in
--this single table were referred to as *PTE*:s - page table entries.
-+the fact that Torvalds's first computer had 4MB of physical memory. Entries in
-+this single table were referred to as *PTEs* - page table entries.
- 
- The software page table hierarchy reflects the fact that page table hardware has
- become hierarchical and that in turn is done to save page table memory and
-@@ -212,7 +212,7 @@ threshold.
- Additionally, page faults may be also caused by code bugs or by maliciously
- crafted addresses that the CPU is instructed to access. A thread of a process
- could use instructions to address (non-shared) memory which does not belong to
--its own address space, or could try to execute an instruction that want to write
-+its own address space, or could try to execute an instruction that wants to write
- to a read-only location.
- 
- If the above-mentioned conditions happen in user-space, the kernel sends a
-@@ -277,5 +277,5 @@ To conclude this high altitude view of how Linux handles page faults, let's
- add that the page faults handler can be disabled and enabled respectively with
- `pagefault_disable()` and `pagefault_enable()`.
- 
--Several code path make use of the latter two functions because they need to
-+Several code paths make use of the latter two functions because they need to
- disable traps into the page faults handler, mostly to prevent deadlocks.
--- 
-2.50.1
+--000000000000fdae40064a65689e
+Content-Type: text/html; charset="UTF-8"
 
+<div dir="ltr">Thanks for the feedback, Jon! You&#39;re right, there&#39;s only one Linus. I have just sent out a v2 with &quot;Torvalds&#39;s&quot; corrected.</div>
+
+--000000000000fdae40064a65689e--
 
