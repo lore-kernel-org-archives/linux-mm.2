@@ -4,108 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB11E81BAD
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 12:20:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB17EE81BAF
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 12:44:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DFA706B0005; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
+	id 182B36B0005; Mon,  9 Feb 2026 07:44:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC8566B0088; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
+	id 1312D6B0088; Mon,  9 Feb 2026 07:44:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA6A86B0089; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
+	id 008706B0089; Mon,  9 Feb 2026 07:44:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B28406B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 66F7E1BBF5
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:38 +0000 (UTC)
-X-FDA: 84424826556.12.39EA6D4
+	by kanga.kvack.org (Postfix) with ESMTP id E379B6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 07:44:55 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 740BBC029F
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:44:55 +0000 (UTC)
+X-FDA: 84424887750.17.631CC3F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6024E180005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nS59lMNy;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id CEEA940002
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:44:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gRFOA375;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770639636;
+	s=arc-20220608; t=1770641094;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kqSWunoz+E6ZMe2l8bS+mn7oVK/00VEfRifqDWML6RQ=;
-	b=HcJ6/l5YreyMmP9GkeKxAPJEJAytBW12k8GMMiw6rPgdQUwl8H5L9o39OAKUiaTNtBnEi8
-	I56Rr4YtP0gvIO1GhF3Jk6KTXlLVUhVVsbZbNiY4vKvwEs/1nvks6M3U4GWt1uv0EUBhmT
-	aHIwRjV1RSR2ePRSVDhiJmbdHyof6q0=
+	bh=GQheDunW5zA4NksP28zM3dZYwC3Z3xP31iICASMbDzQ=;
+	b=BIkEhUwVflangh4yOvC9SwSEkWeRDurzi7V8CDcPlueuhQnSOjtlSq9VHat396v5CiLtuz
+	gyrFKwrYiYpHxRnA5+FA5zQaW3Sy05LJxhJ2jNyI5SmhPVzOdcKo5BoFvq4dtPqpf+fdcw
+	FxmN4GOZHKqiCzxfZL4nulQgyP41r4c=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nS59lMNy;
-	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gRFOA375;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770639636; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770641094; a=rsa-sha256;
 	cv=none;
-	b=UYIMmLHR1oyD6NDoNs3VgznMjWmd8LLuigqm9RBW3G4ID0tX92E6LGVwIeN4T11wzc61+Z
-	nmGyhKG8DO6mYc9MHQkgLacUKU2KV4/xgqoQRbrbJyRe1Z6ICLWycdL/nxTOlaKklV7QoG
-	6kOiRmMtk/DXYOfUcjbHT3oGRvUi9Qk=
+	b=uPELz+kXvG4HwygtpIR4SSJ6iVVaLpoDJIy+K3Zj1lFm87ztjCa3DAko1UVM3vzfHwpPza
+	q3LmFVtNtVkf+u1wR8dNbx1w81RGfGAAJJhQfk5cwpEKSloT5jHBe5A8y3sIbf+om8mU82
+	POHyrE3Pd51dn/1ZF8Rj/DG/c+bJjrI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 50623445A5
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2961CC16AAE
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B14734071E;
+	Mon,  9 Feb 2026 12:44:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA5BC16AAE;
+	Mon,  9 Feb 2026 12:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770639635;
-	bh=6D6LeMNA2nHolaHXRnfLbh8Q3Uq6J6Gi+ROI9jGFKp8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nS59lMNyhfwqY708p/h3M7cQcRZI/OiUubeR+IUkm+6nh36mNQt8ysCk1DWO4u4lJ
-	 szXoeu7qZRrHN5QQGpohDKsNAquhd0hRtiy6JQkz3cvqQ6U/dGT6z4zwZM43b/dIiy
-	 ya9JKsieFyz5YTSdrGtJfljmYemY4DmI/scee19nvlRMMgVfmNJbfzHw07xcwXJ71v
-	 5tj9N+x6f8X1vuffAIbRj+TgGsqI9dqDrsFkWXiJcKuGQn6Vc967NbOIso7oE6J3lb
-	 QRXWSUTH/mSyquNQhT1Le9RUeVrFFZH5+s3bLW171HCZm1/E06lPpogsWg2QbgaJ3x
-	 HNmZZU6PEXUMg==
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79430ef54c3so25270327b3.2
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 04:20:35 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXPYbNyAI4w8KvHZ9sjoSosODX/dO7ELHoHGqoVB0COTSzIaT5tDXZGfMhK8QoFrC7r+tAkKMWz2g==@kvack.org
-X-Gm-Message-State: AOJu0YwJeKSTGgCy4mbZj3nTXE6pqHbziagYrTwg6fZeyXg94hAPkEYC
-	3QW9ussC96fy06PHir/pLVd/w1sTiIWSFRdrUs2KG0iPsrsc9eaol8/+4ugewKE0/3fBxUl9iON
-	9ITf2sGvrqKawi2bKlRGyoxXwwrO87HoEIQn0lvARFg==
-X-Received: by 2002:a05:690c:ed6:b0:796:37bb:9eb2 with SMTP id
- 00721157ae682-79637bba28cmr52773487b3.5.1770639633751; Mon, 09 Feb 2026
- 04:20:33 -0800 (PST)
+	s=k20201202; t=1770641092;
+	bh=G/QXBcfFxtmQ5ukOzTzzyHmFNZaf39JAggsfb/kCTnA=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=gRFOA375/sp3no/G6bNeU7wSkj1+o0ceq8erg8RR2B2t0nUUfsPEHnV9KOG87hvAe
+	 G/gwYRoJcbHIfrKvm3J4iwwCXN9JL2Z8lV6LhoUFR3EIk8dfFJMzhhPJwT98vAVyiZ
+	 UAnlnq7qbR8oYNw8u+gtrPnZriUtLoAEdiw7AW3jbTvLmDhha08MZdS9y0+AeFKzUl
+	 1iOuBaKaM5pPjZ/M0LzgkguC/qvqy47YMvL8VFX0zfgWQwCMQEdjGZPjXvw9uD3Ak1
+	 HAVBH16kJVDMCb7ATYOqBp1FhQWd6HiTIgAAl92P1iZnQThpxJkFJzSm3xJSZsbIKZ
+	 ajkzIXUd0RLdA==
+Message-ID: <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
+Date: Mon, 9 Feb 2026 13:44:45 +0100
 MIME-Version: 1.0
-References: <20260208215839.87595-2-nphamcs@gmail.com> <20260208223143.366416-1-nphamcs@gmail.com>
-In-Reply-To: <20260208223143.366416-1-nphamcs@gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Mon, 9 Feb 2026 04:20:21 -0800
-X-Gmail-Original-Message-ID: <CACePvbXsngZmn0OrJZjvMhhHnL5FazxYX7ShEpbU9RwHSJaUuA@mail.gmail.com>
-X-Gm-Features: AZwV_QgrawpqSc96hXS3osxRNT9gK0yrZXayn3y2q6KwtRXx9G3p6M1k2h8G_zA
-Message-ID: <CACePvbXsngZmn0OrJZjvMhhHnL5FazxYX7ShEpbU9RwHSJaUuA@mail.gmail.com>
-Subject: Re: [PATCH v3 00/20] Virtual Swap Space
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, hughd@google.com, 
-	yosry.ahmed@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, len.brown@intel.com, 
-	chengming.zhou@linux.dev, kasong@tencent.com, huang.ying.caritas@gmail.com, 
-	ryan.roberts@arm.com, shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk, 
-	baohua@kernel.org, bhe@redhat.com, osalvador@suse.de, 
-	christophe.leroy@csgroup.eu, pavel@kernel.org, linux-mm@kvack.org, 
-	kernel-team@meta.com, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
-	linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com, 
-	joshua.hahnjy@gmail.com, npache@redhat.com, gourry@gourry.net, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	rafael@kernel.org, jannh@google.com, pfalcato@suse.de, 
-	zhengqi.arch@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam11
-X-Stat-Signature: n536qqo76qw49aooyaaboxj116rags69
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
+ zone->contiguous update when changes pfn range
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Wei Yang <richard.weiyang@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20260130163756.2674225-1-tianyou.li@intel.com>
+ <20260130163756.2674225-3-tianyou.li@intel.com>
+ <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
+ <aYjmcZ4hg9bNbmiY@kernel.org>
+ <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6024E180005
-X-HE-Tag: 1770639636-666955
-X-HE-Meta: U2FsdGVkX19kU2XT8VDjfzg/LlxVd+memdaMz4UEWKkvxKsp5em+MEsft9a0Hl/vMHcVq0m1XEfyw+AnrIvoUexVA86la3f1bxuQ3AV1LOrnlF+pPSAp+p2760V//ID17r2Z8UFkVpAv/4ADSiWS7Vwq9NgZshiK2VCpG8uYuyORvxxjMio3Wu0TmeT+8dt8sSWWL9plnyDtpCNAXUztwJIESkohate9S4p7wsYO0QdCtk5DDSRpm+Y40kjN5OlB7/2B1d074vvg+e+cpOpmhNrMqElvIn8Svd4VzxhDM+xodpRnwicex1CgYjDJPnipq3+cS6a/TzFxiBhuKo++eAxCUJDZFUTtyOrg+SQx3GaZnPr5rQqwWagRNCiMC3lSeSOa1Wx5Gc3b3r7M26Txzt+gf1iQ0XTA8gM81XuDkOPCvc9dBf2AxHgAuJwkb+HTytGNhJUAoi68B5Q3fXfJFSU8fe/cIGEEqFnKGI+8asZAc2SMCgLOg4198zXXaiJkLD0f/l1uhE2kj981LTSqWtPQ0Tck8ZJm7BMeP0F44+KxiqDTB5p+aaM20vdh8vcKFFX6NXy144AF+nv1QU2ljFkZGhoRlLNNW+K5MQtd+UQaAXBIhO1fhTUy+Uqi8Uv2t493yx0E3nDW7AY95KeN8jBL2lcUfgjjSSuaGGtem2nQRC6p5N8rEDpCRvI/p7mzm8pb1/U5wACmXHQUGkqxEocRBQ9zTX1sRLq/SZbx2KxTjVYydOAUM6BDpGpD/4+7MaZ17JE7m9hPgfg8oMaeOxyxUvN0djpUJEAfO3Oq6VrNt5dLU2U8da3Sq/2c778MSy8cPhEpWeXgcBFH3UY3SwwtbwWBTaLEvHtYu5LvGLzcVBWtbY+ol6FxgxRXFzAcFU+xPT55Qa1fISTz4m4IZ3BogWtjE7Leud6YScpLS+slPpwrU9gzGSccMrdgRnuWjEwHWvTWXZhEJVIJ5HI
- MZpNouhi
- V+Sclh84F3UqyLGQnoFYqWjmpFLpv98FPAul06ZPym4BVBiDOotBgA44PDmR35KzXA9HkpIL7zT2ufA2vGEoGFp3tti/GF2B0+RBwVTjK0hsMlidAyaluwMN+CE1fT0rdARh3S+njLkOabcWfLYzEvaCumMFuyIdGFl9awpZ/LWzoS9DSzZ905HHFpz7ZXcROIXOpm8xhqhb7Q0eBdEzpoMryhDR8mPoU9d7eSGJh3cCGU2IfyLjhymfTY6POOBCr5Q5rFZb2yag5ZBqlrFHHbnFTQVHHmqlM0EhQFVbriaypMGGphx9KEgzrAHYJsePLdXf8IBSnAOgGVn/ewpUywjeeOUTTIBe29cpzzA22CMkwfjIWIXNc3buTZEEHm3rs8OvbWG0gxUO61/6ai1/JYBcd2PXLLa8fkjamvFE4P+9BdcCGZYKG5thINQAFValGGIJPPCThA6Hqa8NZ+aEVbTJZI9tuQ4fQuv21WJReq2PrL26jjksiO2CZJbrXG6/gWEvvcfwdr1v11ORdRcXcbUswUzdUXugz5qFjg6Gvx8dPfCNXfSwxexCarCwj7Y6grubp/aoWU7Mfxn4tMYpCrAUrw/b66Guxek5Y7XRqwYtG88cUDtS/ew6Upb3KSYApL9dF7WamWqTzsOY=
+X-Rspamd-Queue-Id: CEEA940002
+X-Rspamd-Server: rspam07
+X-Stat-Signature: it5wfm8u5d8bop68n7amry6nkfxmdg7p
+X-HE-Tag: 1770641093-910600
+X-HE-Meta: U2FsdGVkX195rUwAdIvW30ddFzIaFvO/cOqwHFDMu2xwKttCod43KJM3szX7lyNk3sG9KfEnYyhw+bzVg+VILFJlQ8FS9mkS6RfMbr11xO8Kl/EZTUUVGeCScA6pTWpxojUW0efKU1ntawDrco0YSfeNuAzJ+bHg2zXmIkJofj+M0JjBDNy2cNhd2zxwpCdWV59zkB3+cHQzHeSdVFonBWKWy4klJE+O90jM0otSLml9DoRq1oYcQ91VQ6xIwcuxmLrx3YHDQwHeGWBsbmx6TF8y/r45Gwz4+Mz53OtNhnplNF/XzWGyFmJ6bRkvkejq/Pulyk1IV/U8/b496tsgULA73ZcrfMs5czLa/Yg2W+mo1oT4nUIXn06xdJfNRGxwXzQrP27bUKSufAbhDRzFeN6d/ojB/Ly/09OZB5x7+5PEC2UQ5adyUD789lMq8j2h+qJ/Jd0JAbGlf8lXZvJOVu5a5fHkL+xntVxcitHffQZSfvwxQteFnBCeQ5mKwGPcBEMwQYErvOyrrwHRFxFGoCu+pk7rx61hRl5L0lI5SUSbkJfg62DxP5rXuhPLW9gCjQ6yqSI9pM3/ku7GApaJ92RZNy1npQh+PYwekkCH+i5i2O5QNOHGhRJ51BHjKA4nvvPN5/L6APBsppRWcQvd9zXDIVLM6DGCLQIoYmfqbw+3UejLl7M8o373XR8tSNGD6AhXcUSXkxk5GkVuFEvq776k/gaXTI6mrhjmOuDkT4BMsHvDWn6VPhv9N/SbYHN773MmOMG1OAhGbZzbY1s0KYoIqEnlJTojaDXGFUGEryyKCELO8jzQsFf5wl2ctOBQc1QvA1HBhhYvh8EBVmsap2CvaPcdWZzTOFvLNGMySzaVi0t4wCcpX9DuvQoSseqtvOnstxGUq2VK6/2mX1XX465Tjcw73My2Ny6Q82aviSM3RdYrLEyW8S9UIDuQQCKLd8n0QjG1I3NvfLXlO1J
+ qZDECSMa
+ RhrWP+lypdZCit5PTNcqT6HZ9iAHfvXaKxLTf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,525 +148,349 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 8, 2026 at 4:15=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
->
-> My sincerest apologies - it seems like the cover letter (and just the
-> cover letter) fails to be sent out, for some reason. I'm trying to figure
-> out what happened - it works when I send the entire patch series to
-> myself...
->
-> Anyway, resending this (in-reply-to patch 1 of the series):
+On 2/9/26 11:52, David Hildenbrand (Arm) wrote:
+> On 2/8/26 20:39, Mike Rapoport wrote:
+>> On Sat, Feb 07, 2026 at 12:00:09PM +0100, David Hildenbrand (Arm) wrote:
+>>>
+>>> Thanks for all your work on this and sorry for being slower with
+>>> review the last month.
+>>>
+>>> While I was in the shower I was thinking about how much I hate
+>>> zone->contiguous + the pageblock walking, and how we could just get
+>>> rid of it.
+>>>
+>>> You know, just what you do while having a relaxing shower.
+>>>
+>>>
+>>> And I was wondering:
+>>>
+>>> (a) in which case would we have zone_spanned_pages == zone_present_pages
+>>> and the zone *not* being contiguous? I assume this just cannot happen,
+>>> otherwise BUG.
+>>>
+>>> (b) in which case would we have zone_spanned_pages != zone_present_pages
+>>> and the zone *being* contiguous? I assume in some cases where we have 
+>>> small
+>>> holes within a pageblock?
+>>>
+>>> Reading the doc of __pageblock_pfn_to_page(), there are some weird
+>>> scenarios with holes in pageblocks.
+>> It seems that "zone->contigous" is really bad name for what this thing
+>> represents.
+>>
+>> tl;dr I don't think zone_spanned_pages == zone_present_pages is 
+>> related to
+>> zone->contigous at all :)
+> 
+> My point in (a) was that with "zone_spanned_pages == zone_present_pages" 
+> there are no holes so -> contiguous.
+> 
+> (b), and what I said further below, is exactly about memory holes where 
+> we have a memmap, but it's not present memory.
+> 
+>>
+>> If you look at pageblock_pfn_to_page() and __pageblock_pfn_to_page(), the
+>> check for zone->contigous should guarantee that the entire pageblock 
+>> has a
+>> valid memory map and that the entire pageblock fits a zone and does not
+>> cross zone/node boundaries.
+> 
+> Right. But that must hold for each and ever pageblock in the spanned 
+> zone range for it to be contiguous.
+> 
+> zone->contigous tells you "pfn_to_page()" is valid on the complete zone 
+> range"
+> 
+> That's why set_zone_contiguous() probes __pageblock_pfn_to_page() on ech 
+> and ever pageblock.
+> 
+>>
+>> For coldplug memory the memory map is valid for every section that has
+>> present memory, i.e. even it there is a hole in a section, it's memory 
+>> map
+>> will be populated and will have struct pages.
+> 
+> There is this sub-section thing, and holes larger than a section might 
+> not have a memmap (unless reserved I guess).
+> 
+>>
+>> When zone->contigous is false, the slow path in __pageblock_pfn_to_page()
+>> essentially checks if the first page in a pageblock is online and if 
+>> first
+>> and last pages are in the zone being compacted.
+>> AFAIU, in the hotplug case an entire pageblock is always onlined to the
+>> same zone, so zone->contigous won't change after the hotplug is complete.
+> 
+> I think you are missing a point: hotp(un)plug might create holes in the 
+> zone span. Then, pfn_to_page() is no longer valid to be called on 
+> arbitrary pageblocks within the zone.
+> 
+>>
+>> We might set it to false in the beginning of the hotplug to avoid 
+>> scanning
+>> offline pages, although I'm not sure if it's possible.
+>>
+>> But in the end of hotplug we can simply restore the old value and move 
+>> on.
+> 
+> No, you might create holes.
+> 
+>>
+>> For the coldplug case I'm also not sure it's worth the hassle, we could
+>> just let compaction scan a few more pfns for those rare weird pageblocks
+>> and bail out on wrong page conditions.
+> 
+> To recap:
+> 
+> My idea is that "zone_spanned_pages == zone_present_pages" tells you 
+> that the zone is contiguous because there are no holes.
+> 
+> To handle "non-memory with a struct page", you'd have to check
+> 
+>      "zone_spanned_pages == zone_present_pages +
+>           zone_non_present_memmap_pages"
+> 
+> Or shorter
+> 
+>      "zone_spanned_pages == zone_pages_with_memmap"
+> 
+> Then, pfn_to_page() is valid within the complete zone.
+> 
+> The question is how to best calculate the "zone_pages_with_memmap" 
+> during boot.
+> 
+> During hot(un)plug we only add/remove zone_present_pages. The 
+> zone_non_present_memmap_pages will not change due to hot(un)plug later.
+> 
 
-For the record I did receive your original V3 cover letter from the
-linux-mm mailing list.
+The following hack does the trick. But
 
-> Changelog:
-> * RFC v2 -> v3:
->     * Implement a cluster-based allocation algorithm for virtual swap
->       slots, inspired by Kairui Song and Chris Li's implementation, as
->       well as Johannes Weiner's suggestions. This eliminates the lock
->           contention issues on the virtual swap layer.
->     * Re-use swap table for the reverse mapping.
->     * Remove CONFIG_VIRTUAL_SWAP.
->     * Reducing the size of the swap descriptor from 48 bytes to 24
+(a) I wish we could get rid of the pageblock walking in calc_online_pages().
+(b) "online_pages" has weird semantics due to the pageblock handling.
+     "online_pageblock_pages"? not sure.
+(c) Calculating "online_pages" when we know there is a hole does not make sense,
+     as we could just keep it 0 if there are holes and simply set it to
+     zone->online_pageblock_pages->zone->spanned_pages in case all are online.
 
-Is the per swap slot entry overhead 24 bytes in your implementation?
-The current swap overhead is 3 static +8 dynamic, your 24 dynamic is a
-big jump. You can argue that 8->24 is not a big jump . But it is an
-unnecessary price compared to the alternatives, which is 8 dynamic +
-4(optional redirect).
 
->       bytes, i.e another 50% reduction in memory overhead from v2.
->     * Remove swap cache and zswap tree and use the swap descriptor
->       for this.
->     * Remove zeromap, and replace the swap_map bytemap with 2 bitmaps
->       (one for allocated slots, and one for bad slots).
->     * Rebase on top of 6.19 (7d0a66e4bb9081d75c82ec4957c50034cb0ea449)
+ From d4cb825e91a6363afc68fb994c5d9b29c38c5f42 Mon Sep 17 00:00:00 2001
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Mon, 9 Feb 2026 13:40:24 +0100
+Subject: [PATCH] tmp
 
-My git log shows 7d0a66e4bb9081d75c82ec4957c50034cb0ea449 is tag "v6.18".
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+  include/linux/mmzone.h | 25 +++++++++++++++++++++++--
+  mm/internal.h          |  8 +-------
+  mm/memory_hotplug.c    | 20 ++++++--------------
+  mm/mm_init.c           | 12 ++++++------
+  4 files changed, 36 insertions(+), 29 deletions(-)
 
->         * Update cover letter to include new benchmark results and discus=
-sion
->           on overhead in various cases.
-> * RFC v1 -> RFC v2:
->     * Use a single atomic type (swap_refs) for reference counting
->       purpose. This brings the size of the swap descriptor from 64 B
->       down to 48 B (25% reduction). Suggested by Yosry Ahmed.
->     * Zeromap bitmap is removed in the virtual swap implementation.
->       This saves one bit per phyiscal swapfile slot.
->     * Rearrange the patches and the code change to make things more
->       reviewable. Suggested by Johannes Weiner.
->     * Update the cover letter a bit.
->
-> This patch series implements the virtual swap space idea, based on Yosry'=
-s
-> proposals at LSFMMBPF 2023 (see [1], [2], [3]), as well as valuable
-> inputs from Johannes Weiner. The same idea (with different
-> implementation details) has been floated by Rik van Riel since at least
-> 2011 (see [8]).
->
-> This patch series is based on 6.19. There are a couple more
-> swap-related changes in the mm-stable branch that I would need to
-> coordinate with, but I would like to send this out as an update, to show
+diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+index fc5d6c88d2f0..3f7d8d88c597 100644
+--- a/include/linux/mmzone.h
++++ b/include/linux/mmzone.h
+@@ -943,6 +943,11 @@ struct zone {
+  	 * cma pages is present pages that are assigned for CMA use
+  	 * (MIGRATE_CMA).
+  	 *
++	 * online_pages is pages within the zone that have an online memmap.
++	 * online_pages include present pages and memory holes that have a
++	 * memmap. When spanned_pages == online_pages, pfn_to_page() can be
++	 * performed without further checks on any pfn within the zone span.
++	 *
+  	 * So present_pages may be used by memory hotplug or memory power
+  	 * management logic to figure out unmanaged pages by checking
+  	 * (present_pages - managed_pages). And managed_pages should be used
+@@ -967,6 +972,7 @@ struct zone {
+  	atomic_long_t		managed_pages;
+  	unsigned long		spanned_pages;
+  	unsigned long		present_pages;
++	unsigned long		online_pages;
+  #if defined(CONFIG_MEMORY_HOTPLUG)
+  	unsigned long		present_early_pages;
+  #endif
+@@ -1051,8 +1057,6 @@ struct zone {
+  	bool			compact_blockskip_flush;
+  #endif
+  
+-	bool			contiguous;
+-
+  	CACHELINE_PADDING(_pad3_);
+  	/* Zone statistics */
+  	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
+@@ -1124,6 +1128,23 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
+  	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
+  }
+  
++/**
++ * zone_is_contiguous - test whether a zone is contiguous
++ * @zone: the zone to test.
++ *
++ * In a contiguous zone, it is valid to call pfn_to_page() on any pfn in the
++ * spanned zone without requiting pfn_valid() or pfn_to_online_page() checks.
++ *
++ * Returns: true if contiguous, otherwise false.
++ */
++static inline bool zone_is_contiguous(const struct zone *zone)
++{
++	return READ_ONCE(zone->spanned_pages) == READ_ONCE(zone->online_pages);
++}
++
+  static inline bool zone_is_initialized(const struct zone *zone)
+  {
+  	return zone->initialized;
+diff --git a/mm/internal.h b/mm/internal.h
+index f35dbcf99a86..6062f9b8ee62 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -716,21 +716,15 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+  static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
+  				unsigned long end_pfn, struct zone *zone)
+  {
+-	if (zone->contiguous)
++	if (zone_is_contiguous(zone))
+  		return pfn_to_page(start_pfn);
+  
+  	return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
+  }
+  
+-void set_zone_contiguous(struct zone *zone);
+  bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
+  			   unsigned long nr_pages);
+  
+-static inline void clear_zone_contiguous(struct zone *zone)
+-{
+-	zone->contiguous = false;
+-}
+-
+  extern int __isolate_free_page(struct page *page, unsigned int order);
+  extern void __putback_isolated_page(struct page *page, unsigned int order,
+  				    int mt);
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index a63ec679d861..76496c1039a9 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -492,11 +492,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+  		pfn = find_smallest_section_pfn(nid, zone, end_pfn,
+  						zone_end_pfn(zone));
+  		if (pfn) {
+-			zone->spanned_pages = zone_end_pfn(zone) - pfn;
++			WRITE_ONCE(zone->spanned_pages, zone_end_pfn(zone) - pfn);
+  			zone->zone_start_pfn = pfn;
+  		} else {
+  			zone->zone_start_pfn = 0;
+-			zone->spanned_pages = 0;
++			WRITE_ONCE(zone->spanned_pages, 0);
+  		}
+  	} else if (zone_end_pfn(zone) == end_pfn) {
+  		/*
+@@ -508,10 +508,10 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+  		pfn = find_biggest_section_pfn(nid, zone, zone->zone_start_pfn,
+  					       start_pfn);
+  		if (pfn)
+-			zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
++			WRITE_ONCE(zone->spanned_pages, pfn - zone->zone_start_pfn + 1);
+  		else {
+  			zone->zone_start_pfn = 0;
+-			zone->spanned_pages = 0;
++			WRITE_ONCE(zone->spanned_pages, 0);
+  		}
+  	}
+  }
+@@ -565,18 +565,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
+  
+  	/*
+  	 * Zone shrinking code cannot properly deal with ZONE_DEVICE. So
+-	 * we will not try to shrink the zones - which is okay as
+-	 * set_zone_contiguous() cannot deal with ZONE_DEVICE either way.
++	 * we will not try to shrink the zones.
+  	 */
+  	if (zone_is_zone_device(zone))
+  		return;
+  
+-	clear_zone_contiguous(zone);
+-
+  	shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
+  	update_pgdat_span(pgdat);
+-
+-	set_zone_contiguous(zone);
+  }
+  
+  /**
+@@ -753,8 +748,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+  	struct pglist_data *pgdat = zone->zone_pgdat;
+  	int nid = pgdat->node_id;
+  
+-	clear_zone_contiguous(zone);
+-
+  	if (zone_is_empty(zone))
+  		init_currently_empty_zone(zone, start_pfn, nr_pages);
+  	resize_zone_range(zone, start_pfn, nr_pages);
+@@ -782,8 +775,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+  	memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
+  			 MEMINIT_HOTPLUG, altmap, migratetype,
+  			 isolate_pageblock);
+-
+-	set_zone_contiguous(zone);
+  }
+  
+  struct auto_movable_stats {
+@@ -1079,6 +1070,7 @@ void adjust_present_page_count(struct page *page, struct memory_group *group,
+  	if (early_section(__pfn_to_section(page_to_pfn(page))))
+  		zone->present_early_pages += nr_pages;
+  	zone->present_pages += nr_pages;
++	WRITE_ONCE(zone->online_pages,  zone->online_pages + nr_pages);
+  	zone->zone_pgdat->node_present_pages += nr_pages;
+  
+  	if (group && movable)
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 2a809cd8e7fa..e33caa6fb6fc 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -2263,9 +2263,10 @@ void __init init_cma_pageblock(struct page *page)
+  }
+  #endif
+  
+-void set_zone_contiguous(struct zone *zone)
++static void calc_online_pages(struct zone *zone)
+  {
+  	unsigned long block_start_pfn = zone->zone_start_pfn;
++	unsigned long online_pages = 0;
+  	unsigned long block_end_pfn;
+  
+  	block_end_pfn = pageblock_end_pfn(block_start_pfn);
+@@ -2277,12 +2278,11 @@ void set_zone_contiguous(struct zone *zone)
+  
+  		if (!__pageblock_pfn_to_page(block_start_pfn,
+  					     block_end_pfn, zone))
+-			return;
++			continue;
+  		cond_resched();
++		online_pages += block_end_pfn - block_start_pfn;
+  	}
+-
+-	/* We confirm that there is no hole */
+-	zone->contiguous = true;
++	zone->online_pages = online_pages;
+  }
+  
+  /*
+@@ -2348,7 +2348,7 @@ void __init page_alloc_init_late(void)
+  		shuffle_free_memory(NODE_DATA(nid));
+  
+  	for_each_populated_zone(zone)
+-		set_zone_contiguous(zone);
++		calc_online_pages(zone);
+  
+  	/* Initialize page ext after all struct pages are initialized. */
+  	if (deferred_struct_pages)
+-- 
+2.43.0
 
-Ah, you need to mention that in the first line to Andrew. Spell out
-this series is not for Andrew to consume in the MM series. It can't
-any way because it does not apply to mm-unstable nor mm-stable.
 
-BTW, I have the following compile error with this series (fedora 43).
-Same config compile fine on v6.19.
+-- 
+Cheers,
 
-In file included from ./include/linux/local_lock.h:5,
-                 from ./include/linux/mmzone.h:24,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/mm.h:7,
-                 from mm/vswap.c:7:
-mm/vswap.c: In function =E2=80=98vswap_cpu_dead=E2=80=99:
-./include/linux/percpu-defs.h:221:45: error: initialization from
-pointer to non-enclosed address space
-  221 |         const void __percpu *__vpp_verify =3D (typeof((ptr) +
-0))NULL;    \
-      |                                             ^
-./include/linux/local_lock_internal.h:105:40: note: in definition of
-macro =E2=80=98__local_lock_acquire=E2=80=99
-  105 |                 __l =3D (local_lock_t *)(lock);
-         \
-      |                                        ^~~~
-./include/linux/local_lock.h:17:41: note: in expansion of macro
-=E2=80=98__local_lock=E2=80=99
-   17 | #define local_lock(lock)                __local_lock(this_cpu_ptr(l=
-ock))
-      |                                         ^~~~~~~~~~~~
-./include/linux/percpu-defs.h:245:9: note: in expansion of macro
-=E2=80=98__verify_pcpu_ptr=E2=80=99
-  245 |         __verify_pcpu_ptr(ptr);
-         \
-      |         ^~~~~~~~~~~~~~~~~
-./include/linux/percpu-defs.h:256:27: note: in expansion of macro =E2=80=98=
-raw_cpu_ptr=E2=80=99
-  256 | #define this_cpu_ptr(ptr) raw_cpu_ptr(ptr)
-      |                           ^~~~~~~~~~~
-./include/linux/local_lock.h:17:54: note: in expansion of macro
-=E2=80=98this_cpu_ptr=E2=80=99
-   17 | #define local_lock(lock)
-__local_lock(this_cpu_ptr(lock))
-      |
-^~~~~~~~~~~~
-mm/vswap.c:1518:9: note: in expansion of macro =E2=80=98local_lock=E2=80=99
- 1518 |         local_lock(&percpu_cluster->lock);
-      |         ^~~~~~~~~~
-
-> that the lock contention issues that plagued earlier versions have been
-> resolved and performance on the kernel build benchmark is now on-par with
-> baseline. Furthermore, memory overhead has been substantially reduced
-> compared to the last RFC version.
->
->
-> I. Motivation
->
-> Currently, when an anon page is swapped out, a slot in a backing swap
-> device is allocated and stored in the page table entries that refer to
-> the original page. This slot is also used as the "key" to find the
-> swapped out content, as well as the index to swap data structures, such
-> as the swap cache, or the swap cgroup mapping. Tying a swap entry to its
-> backing slot in this way is performant and efficient when swap is purely
-> just disk space, and swapoff is rare.
->
-> However, the advent of many swap optimizations has exposed major
-> drawbacks of this design. The first problem is that we occupy a physical
-> slot in the swap space, even for pages that are NEVER expected to hit
-> the disk: pages compressed and stored in the zswap pool, zero-filled
-> pages, or pages rejected by both of these optimizations when zswap
-> writeback is disabled. This is the arguably central shortcoming of
-> zswap:
-> * In deployments when no disk space can be afforded for swap (such as
->   mobile and embedded devices), users cannot adopt zswap, and are forced
->   to use zram. This is confusing for users, and creates extra burdens
->   for developers, having to develop and maintain similar features for
->   two separate swap backends (writeback, cgroup charging, THP support,
->   etc.). For instance, see the discussion in [4].
-> * Resource-wise, it is hugely wasteful in terms of disk usage. At Meta,
->   we have swapfile in the order of tens to hundreds of GBs, which are
->   mostly unused and only exist to enable zswap usage and zero-filled
->   pages swap optimizations.
-> * Tying zswap (and more generally, other in-memory swap backends) to
->   the current physical swapfile infrastructure makes zswap implicitly
->   statically sized. This does not make sense, as unlike disk swap, in
->   which we consume a limited resource (disk space or swapfile space) to
->   save another resource (memory), zswap consume the same resource it is
->   saving (memory). The more we zswap, the more memory we have available,
->   not less. We are not rationing a limited resource when we limit
->   the size of he zswap pool, but rather we are capping the resource
->   (memory) saving potential of zswap. Under memory pressure, using
->   more zswap is almost always better than the alternative (disk IOs, or
->   even worse, OOMs), and dynamically sizing the zswap pool on demand
->   allows the system to flexibly respond to these precarious scenarios.
-> * Operationally, static provisioning the swapfile for zswap pose
->   significant challenges, because the sysadmin has to prescribe how
->   much swap is needed a priori, for each combination of
->   (memory size x disk space x workload usage). It is even more
->   complicated when we take into account the variance of memory
->   compression, which changes the reclaim dynamics (and as a result,
->   swap space size requirement). The problem is further exarcebated for
->   users who rely on swap utilization (and exhaustion) as an OOM signal.
->
->   All of these factors make it very difficult to configure the swapfile
->   for zswap: too small of a swapfile and we risk preventable OOMs and
->   limit the memory saving potentials of zswap; too big of a swapfile
->   and we waste disk space and memory due to swap metadata overhead.
->   This dilemma becomes more drastic in high memory systems, which can
->   have up to TBs worth of memory.
->
-> Past attempts to decouple disk and compressed swap backends, namely the
-> ghost swapfile approach (see [13]), as well as the alternative
-> compressed swap backend zram, have mainly focused on eliminating the
-> disk space usage of compressed backends. We want a solution that not
-> only tackles that same problem, but also achieve the dyamicization of
-> swap space to maximize the memory saving potentials while reducing
-> operational and static memory overhead.
->
-> Finally, any swap redesign should support efficient backend transfer,
-> i.e without having to perform the expensive page table walk to
-> update all the PTEs that refer to the swap entry:
-> * The main motivation for this requirement is zswap writeback. To quote
->   Johannes (from [14]): "Combining compression with disk swap is
->   extremely powerful, because it dramatically reduces the worst aspects
->   of both: it reduces the memory footprint of compression by shedding
->   the coldest data to disk; it reduces the IO latencies and flash wear
->   of disk swap through the writeback cache. In practice, this reduces
->   *average event rates of the entire reclaim/paging/IO stack*."
-> * Another motivation is to simplify swapoff, which is both complicated
->   and expensive in the current design, precisely because we are storing
->   an encoding of the backend positional information in the page table,
->   and thus requires a full page table walk to remove these references.
->
->
-> II. High Level Design Overview
->
-> To fix the aforementioned issues, we need an abstraction that separates
-> a swap entry from its physical backing storage. IOW, we need to
-> =E2=80=9Cvirtualize=E2=80=9D the swap space: swap clients will work with =
-a dynamically
-> allocated virtual swap slot, storing it in page table entries, and
-> using it to index into various swap-related data structures. The
-> backing storage is decoupled from the virtual swap slot, and the newly
-> introduced layer will =E2=80=9Cresolve=E2=80=9D the virtual swap slot to =
-the actual
-> storage. This layer also manages other metadata of the swap entry, such
-> as its lifetime information (swap count), via a dynamically allocated,
-> per-swap-entry descriptor:
->
-> struct swp_desc {
->         union {
->                 swp_slot_t         slot;                 /*     0     8 *=
-/
->                 struct zswap_entry * zswap_entry;        /*     0     8 *=
-/
->         };                                               /*     0     8 *=
-/
->         union {
->                 struct folio *     swap_cache;           /*     8     8 *=
-/
->                 void *             shadow;               /*     8     8 *=
-/
->         };                                               /*     8     8 *=
-/
->         unsigned int               swap_count;           /*    16     4 *=
-/
->         unsigned short             memcgid:16;           /*    20: 0  2 *=
-/
->         bool                       in_swapcache:1;       /*    22: 0  1 *=
-/
->
->         /* Bitfield combined with previous fields */
->
->         enum swap_type             type:2;               /*    20:17  4 *=
-/
->
->         /* size: 24, cachelines: 1, members: 6 */
->         /* bit_padding: 13 bits */
->         /* last cacheline: 24 bytes */
-> };
->
-> (output from pahole).
->
-> This design allows us to:
-> * Decouple zswap (and zeromapped swap entry) from backing swapfile:
->   simply associate the virtual swap slot with one of the supported
->   backends: a zswap entry, a zero-filled swap page, a slot on the
->   swapfile, or an in-memory page.
-> * Simplify and optimize swapoff: we only have to fault the page in and
->   have the virtual swap slot points to the page instead of the on-disk
->   physical swap slot. No need to perform any page table walking.
->
-> The size of the virtual swap descriptor is 24 bytes. Note that this is
-> not all "new" overhead, as the swap descriptor will replace:
-> * the swap_cgroup arrays (one per swap type) in the old design, which
->   is a massive source of static memory overhead. With the new design,
->   it is only allocated for used clusters.
-> * the swap tables, which holds the swap cache and workingset shadows.
-> * the zeromap bitmap, which is a bitmap of physical swap slots to
->   indicate whether the swapped out page is zero-filled or not.
-> * huge chunk of the swap_map. The swap_map is now replaced by 2 bitmaps,
->   one for allocated slots, and one for bad slots, representing 3 possible
->   states of a slot on the swapfile: allocated, free, and bad.
-> * the zswap tree.
->
-> So, in terms of additional memory overhead:
-> * For zswap entries, the added memory overhead is rather minimal. The
->   new indirection pointer neatly replaces the existing zswap tree.
->   We really only incur less than one word of overhead for swap count
->   blow up (since we no longer use swap continuation) and the swap type.
-> * For physical swap entries, the new design will impose fewer than 3 word=
-s
->   memory overhead. However, as noted above this overhead is only for
->   actively used swap entries, whereas in the current design the overhead =
-is
->   static (including the swap cgroup array for example).
->
->   The primary victim of this overhead will be zram users. However, as
->   zswap now no longer takes up disk space, zram users can consider
->   switching to zswap (which, as a bonus, has a lot of useful features
->   out of the box, such as cgroup tracking, dynamic zswap pool sizing,
->   LRU-ordering writeback, etc.).
->
-> For a more concrete example, suppose we have a 32 GB swapfile (i.e.
-> 8,388,608 swap entries), and we use zswap.
->
-> 0% usage, or 0 entries: 0.00 MB
-> * Old design total overhead: 25.00 MB
-> * Vswap total overhead: 0.00 MB
->
-> 25% usage, or 2,097,152 entries:
-> * Old design total overhead: 57.00 MB
-> * Vswap total overhead: 48.25 MB
->
-> 50% usage, or 4,194,304 entries:
-> * Old design total overhead: 89.00 MB
-> * Vswap total overhead: 96.50 MB
->
-> 75% usage, or 6,291,456 entries:
-> * Old design total overhead: 121.00 MB
-> * Vswap total overhead: 144.75 MB
->
-> 100% usage, or 8,388,608 entries:
-> * Old design total overhead: 153.00 MB
-> * Vswap total overhead: 193.00 MB
->
-> So even in the worst case scenario for virtual swap, i.e when we
-> somehow have an oracle to correctly size the swapfile for zswap
-> pool to 32 GB, the added overhead is only 40 MB, which is a mere
-> 0.12% of the total swapfile :)
->
-> In practice, the overhead will be closer to the 50-75% usage case, as
-> systems tend to leave swap headroom for pathological events or sudden
-> spikes in memory requirements. The added overhead in these cases are
-> practically neglible. And in deployments where swapfiles for zswap
-> are previously sparsely used, switching over to virtual swap will
-> actually reduce memory overhead.
->
-> Doing the same math for the disk swap, which is the worst case for
-> virtual swap in terms of swap backends:
->
-> 0% usage, or 0 entries: 0.00 MB
-> * Old design total overhead: 25.00 MB
-> * Vswap total overhead: 2.00 MB
->
-> 25% usage, or 2,097,152 entries:
-> * Old design total overhead: 41.00 MB
-> * Vswap total overhead: 66.25 MB
->
-> 50% usage, or 4,194,304 entries:
-> * Old design total overhead: 57.00 MB
-> * Vswap total overhead: 130.50 MB
->
-> 75% usage, or 6,291,456 entries:
-> * Old design total overhead: 73.00 MB
-> * Vswap total overhead: 194.75 MB
->
-> 100% usage, or 8,388,608 entries:
-> * Old design total overhead: 89.00 MB
-> * Vswap total overhead: 259.00 MB
->
-> The added overhead is 170MB, which is 0.5% of the total swapfile size,
-> again in the worst case when we have a sizing oracle.
->
-> Please see the attached patches for more implementation details.
->
->
-> III. Usage and Benchmarking
->
-> This patch series introduce no new syscalls or userspace API. Existing
-> userspace setups will work as-is, except we no longer have to create a
-> swapfile or set memory.swap.max if we want to use zswap, as zswap is no
-> longer tied to physical swap. The zswap pool will be automatically and
-> dynamically sized based on memory usage and reclaim dynamics.
->
-> To measure the performance of the new implementation, I have run the
-> following benchmarks:
->
-> 1. Kernel building: 52 workers (one per processor), memory.max =3D 3G.
->
-> Using zswap as the backend:
->
-> Baseline:
-> real: mean: 185.2s, stdev: 0.93s
-> sys: mean: 683.7s, stdev: 33.77s
->
-> Vswap:
-> real: mean: 184.88s, stdev: 0.57s
-> sys: mean: 675.14s, stdev: 32.8s
-
-Can you show your user space time as well to complete the picture?
-
-How many runs do you have for stdev 32.8s?
-
->
-> We actually see a slight improvement in systime (by 1.5%) :) This is
-> likely because we no longer have to perform swap charging for zswap
-> entries, and virtual swap allocator is simpler than that of physical
-> swap.
->
-> Using SSD swap as the backend:
-Please include zram swap test data as well. Android heavily uses zram
-for swapping.
-
->
-> Baseline:
-> real: mean: 200.3s, stdev: 2.33s
-> sys: mean: 489.88s, stdev: 9.62s
->
-> Vswap:
-> real: mean: 201.47s, stdev: 2.98s
-> sys: mean: 487.36s, stdev: 5.53s
->
-> The performance is neck-to-neck.
-
-I strongly suspect there is some performance difference that hasn't
-been covered by your test yet. Need more conformation by others on the
-performance measurement. The swap testing is tricky. You want to push
-to stress barely within the OOM limit. Need more data.
-
-Chris
-
->
->
-> IV. Future Use Cases
->
-> While the patch series focus on two applications (decoupling swap
-> backends and swapoff optimization/simplification), this new,
-> future-proof design also allows us to implement new swap features more
-> easily and efficiently:
->
-> * Multi-tier swapping (as mentioned in [5]), with transparent
->   transferring (promotion/demotion) of pages across tiers (see [8] and
->   [9]). Similar to swapoff, with the old design we would need to
->   perform the expensive page table walk.
-> * Swapfile compaction to alleviate fragmentation (as proposed by Ying
->   Huang in [6]).
-> * Mixed backing THP swapin (see [7]): Once you have pinned down the
->   backing store of THPs, then you can dispatch each range of subpages
->   to appropriate backend swapin handler.
-> * Swapping a folio out with discontiguous physical swap slots
->   (see [10]).
-> * Zswap writeback optimization: The current architecture pre-reserves
->   physical swap space for pages when they enter the zswap pool, giving
->   the kernel no flexibility at writeback time. With the virtual swap
->   implementation, the backends are decoupled, and physical swap space
->   is allocated on-demand at writeback time, at which point we can make
->   much smarter decisions: we can batch multiple zswap writeback
->   operations into a single IO request, allocating contiguous physical
->   swap slots for that request. We can even perform compressed writeback
->   (i.e writing these pages without decompressing them) (see [12]).
->
->
-> V. References
->
-> [1]: https://lore.kernel.org/all/CAJD7tkbCnXJ95Qow_aOjNX6NOMU5ovMSHRC+95U=
-4wtW6cM+puw@mail.gmail.com/
-> [2]: https://lwn.net/Articles/932077/
-> [3]: https://www.youtube.com/watch?v=3DHwqw_TBGEhg
-> [4]: https://lore.kernel.org/all/Zqe_Nab-Df1CN7iW@infradead.org/
-> [5]: https://lore.kernel.org/lkml/CAF8kJuN-4UE0skVHvjUzpGefavkLULMonjgkXU=
-ZSBVJrcGFXCA@mail.gmail.com/
-> [6]: https://lore.kernel.org/linux-mm/87o78mzp24.fsf@yhuang6-desk2.ccr.co=
-rp.intel.com/
-> [7]: https://lore.kernel.org/all/CAGsJ_4ysCN6f7qt=3D6gvee1x3ttbOnifGneqcR=
-m9Hoeun=3DuFQ2w@mail.gmail.com/
-> [8]: https://lore.kernel.org/linux-mm/4DA25039.3020700@redhat.com/
-> [9]: https://lore.kernel.org/all/CA+ZsKJ7DCE8PMOSaVmsmYZL9poxK6rn0gvVXbjp=
-qxMwxS2C9TQ@mail.gmail.com/
-> [10]: https://lore.kernel.org/all/CACePvbUkMYMencuKfpDqtG1Ej7LiUS87VRAXb8=
-sBn1yANikEmQ@mail.gmail.com/
-> [11]: https://lore.kernel.org/all/CAMgjq7BvQ0ZXvyLGp2YP96+i+6COCBBJCYmjXH=
-GBnfisCAb8VA@mail.gmail.com/
-> [12]: https://lore.kernel.org/linux-mm/ZeZSDLWwDed0CgT3@casper.infradead.=
-org/
-> [13]: https://lore.kernel.org/all/20251121-ghost-v1-1-cfc0efcf3855@kernel=
-.org/
-> [14]: https://lore.kernel.org/linux-mm/20251202170222.GD430226@cmpxchg.or=
-g/
->
-> Nhat Pham (20):
->   mm/swap: decouple swap cache from physical swap infrastructure
->   swap: rearrange the swap header file
->   mm: swap: add an abstract API for locking out swapoff
->   zswap: add new helpers for zswap entry operations
->   mm/swap: add a new function to check if a swap entry is in swap
->     cached.
->   mm: swap: add a separate type for physical swap slots
->   mm: create scaffolds for the new virtual swap implementation
->   zswap: prepare zswap for swap virtualization
->   mm: swap: allocate a virtual swap slot for each swapped out page
->   swap: move swap cache to virtual swap descriptor
->   zswap: move zswap entry management to the virtual swap descriptor
->   swap: implement the swap_cgroup API using virtual swap
->   swap: manage swap entry lifecycle at the virtual swap layer
->   mm: swap: decouple virtual swap slot from backing store
->   zswap: do not start zswap shrinker if there is no physical swap slots
->   swap: do not unnecesarily pin readahead swap entries
->   swapfile: remove zeromap bitmap
->   memcg: swap: only charge physical swap slots
->   swap: simplify swapoff using virtual swap
->   swapfile: replace the swap map with bitmaps
->
->  Documentation/mm/swap-table.rst |   69 --
->  MAINTAINERS                     |    2 +
->  include/linux/cpuhotplug.h      |    1 +
->  include/linux/mm_types.h        |   16 +
->  include/linux/shmem_fs.h        |    7 +-
->  include/linux/swap.h            |  135 ++-
->  include/linux/swap_cgroup.h     |   13 -
->  include/linux/swapops.h         |   25 +
->  include/linux/zswap.h           |   17 +-
->  kernel/power/swap.c             |    6 +-
->  mm/Makefile                     |    5 +-
->  mm/huge_memory.c                |   11 +-
->  mm/internal.h                   |   12 +-
->  mm/memcontrol-v1.c              |    6 +
->  mm/memcontrol.c                 |  142 ++-
->  mm/memory.c                     |  101 +-
->  mm/migrate.c                    |   13 +-
->  mm/mincore.c                    |   15 +-
->  mm/page_io.c                    |   83 +-
->  mm/shmem.c                      |  215 +---
->  mm/swap.h                       |  157 +--
->  mm/swap_cgroup.c                |  172 ---
->  mm/swap_state.c                 |  306 +----
->  mm/swap_table.h                 |   78 +-
->  mm/swapfile.c                   | 1518 ++++-------------------
->  mm/userfaultfd.c                |   18 +-
->  mm/vmscan.c                     |   28 +-
->  mm/vswap.c                      | 2025 +++++++++++++++++++++++++++++++
->  mm/zswap.c                      |  142 +--
->  29 files changed, 2853 insertions(+), 2485 deletions(-)
->  delete mode 100644 Documentation/mm/swap-table.rst
->  delete mode 100644 mm/swap_cgroup.c
->  create mode 100644 mm/vswap.c
->
->
-> base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-> --
-> 2.47.3
->
+David
 
