@@ -4,84 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58041E81BD3
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 15:49:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 789BBE81BD3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 15:55:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCC316B0089; Mon,  9 Feb 2026 10:48:59 -0500 (EST)
+	id 8FC156B008A; Mon,  9 Feb 2026 10:55:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B80016B008A; Mon,  9 Feb 2026 10:48:59 -0500 (EST)
+	id 8A9636B0092; Mon,  9 Feb 2026 10:55:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AD6CD6B0093; Mon,  9 Feb 2026 10:48:59 -0500 (EST)
+	id 7A82D6B0093; Mon,  9 Feb 2026 10:55:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B1C66B0089
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:48:59 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 28DCE140181
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:48:59 +0000 (UTC)
-X-FDA: 84425351598.15.0012B40
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 8725218000D
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:48:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nmOjylNv;
-	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 67F906B008A
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:55:04 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1C492B6FC1
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:55:04 +0000 (UTC)
+X-FDA: 84425366928.27.51C6FFF
+Received: from mailout4.samsung.com (mailout4.samsung.com [203.254.224.34])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 760554000F
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:55:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=GZW9+Yro;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf11.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770652502; a=rsa-sha256;
+	cv=none;
+	b=KBO+aue93/dTi8lZxgmlyGmsaWhb22KrdUJnxxJmMctktROlEz63Aq0UBpHDccDw0UytjL
+	wXS8M0USKloWJGc48MfjgbvT2k12hpf2sE8T8mrnomYc2RPzLZKQiRiTK5ruwGKBx3GKjl
+	ICc4/Ty71QqwrL+RaNRhUUKhGSxwj1k=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=GZW9+Yro;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf11.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.34 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770652137;
+	s=arc-20220608; t=1770652502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D4nGYWiGOfNXdVY+uWCPGlOgSj0sGcvKWLRnuu+D02Y=;
-	b=P1rZ0WDJK6b0IqaVqNrijlbiQFw2OVHO1a0VSVHTAhZCZLn6xSzoYOdFP4jUVrgaXGca61
-	lGXM2Z8DTbmal8bqH3XftH+39Ygsz3dj7FbVHjH+zJOQs6LwNZyN4w0OYQAXcicswJC+GD
-	WAlGb81fMa0joVilu5kihQ/hr7f5d4E=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=nmOjylNv;
-	spf=none (imf24.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770652137; a=rsa-sha256;
-	cv=none;
-	b=hRqAyaC7XK4mRlqJ8u6k0G7XkRsDYIv7YIxn4Ivmq4VLEAUeKrue85jl3sZVuZtZvybIRq
-	4dswBaZZJGXD+9uGKIKwMX6IQ9pOEL90KtbmIAmQVSMDFU6uftZH63n9RmIWNmfWJecYdW
-	hNqBPyPqr2XTlE2c0XN4yBjUrhBOapM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=D4nGYWiGOfNXdVY+uWCPGlOgSj0sGcvKWLRnuu+D02Y=; b=nmOjylNvplNe7giU4xqfOfUmJU
-	eHbhPCPsVxTvU9KnVqo6OBcmtBhVwhKTegmz1FTX0bzkabYdyeTYS1NF1oFA+ixhLXso+4CSwgm8G
-	GpIB8zAK4rgSbf46I/s/9h//HxjyX3oW+H3n/+78v2JrcZqGyle02Xw1CILtpPmZw9ogNAUYlDbys
-	l+a8NkdFYBnkcjrKV2s9EatUmDxRICT09+ZXNmTB0pCENAx6vLNMzO31GUqxrFa0EvOI43iF0mQA5
-	gxjNtwSKm7kOfAoLmGd1sF4/Xszn7tteYcLH/eFB4h3rBA1SgrljlTzQUvMgRsBKmhEqzEzctpCxB
-	z+4+6lRA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpTVN-00000009iFw-0nJs;
-	Mon, 09 Feb 2026 15:48:53 +0000
-Date: Mon, 9 Feb 2026 15:48:52 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Min-Hsun Chang <chmh0624@gmail.com>
-Cc: corbet@lwn.net, akpm@linux-foundation.org, linux-doc@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH v2] Docs/mm: fix typos and grammar in page_tables.rst
-Message-ID: <aYoB5JatO60ouaMD@casper.infradead.org>
-References: <20260209145603.96664-1-chmh0624@gmail.com>
+	bh=SH6fKsCcHoZUpzqt+IdkVbwE8A8W9DShkgqGQvHxHVw=;
+	b=Pbr9npKfOmjC2uGwuRhD6G6fBC1K8eM9YZc1mrd3pmQqMXK6BhLalWVzmtUkTzxyDaovI5
+	hpyTcyIeWlwWl0g05i43EZeXoTwOTfSQ4wc+Hf3AeOnk+Zj7GMCHazz9GvSCOLJn5yqQTv
+	DYfuY/2ifW55gJUFjVGx45+5iyEQu0g=
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout4.samsung.com (KnoxPortal) with ESMTP id 20260209155456epoutp04b68013d5fe398eee4d863b3bde887253~SnxBbYJhL1156411564epoutp049
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:54:56 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20260209155456epoutp04b68013d5fe398eee4d863b3bde887253~SnxBbYJhL1156411564epoutp049
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1770652496;
+	bh=SH6fKsCcHoZUpzqt+IdkVbwE8A8W9DShkgqGQvHxHVw=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=GZW9+YrohBTSdV8WbG6g/CA1zl/LCSj5ruqdRYncptCw4GELMMbltx8RwBe3agSIt
+	 pYkHEohrFnoW/pQrZwk9QAtmXBPXJzNpkEhaZnDIJpxE86lSrHKw63hzlkgYdFN7Er
+	 2R1iAqWSgDDvvLDTvNRqsFPuxS7szNsp7h7IQCtw=
+Received: from epsnrtp04.localdomain (unknown [182.195.42.156]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20260209155455epcas5p1881af6ec338c4adc5a29870cdbc1beb4~SnxA1-tem2548425484epcas5p11;
+	Mon,  9 Feb 2026 15:54:55 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.89]) by
+	epsnrtp04.localdomain (Postfix) with ESMTP id 4f8q5V3Yb5z6B9m5; Mon,  9 Feb
+	2026 15:54:54 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20260209155454epcas5p270af6d87208aae7466053be8520292c7~Snw-i_C9O1577615776epcas5p28;
+	Mon,  9 Feb 2026 15:54:54 +0000 (GMT)
+Received: from [107.111.86.57] (unknown [107.111.86.57]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20260209155450epsmtip1ad4b5be51e3fd96ce54775e25682ded2~Snw8mdDYC0787207872epsmtip1I;
+	Mon,  9 Feb 2026 15:54:50 +0000 (GMT)
+Message-ID: <5b11145d-15e2-485c-a978-365b58854371@samsung.com>
+Date: Mon, 9 Feb 2026 21:24:49 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209145603.96664-1-chmh0624@gmail.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8725218000D
-X-Stat-Signature: 3aokrea6c97bgsejrhntctfkwgmc8ckg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/6] AG aware parallel writeback for XFS
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>
+Cc: Brian Foster <bfoster@redhat.com>, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, willy@infradead.org, mcgrof@kernel.org,
+	clm@meta.com, david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
+	ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net, cem@kernel.org,
+	wangyufei@vivo.com, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com,
+	vishak.g@samsung.com, joshi.k@samsung.com
+From: Kundan Kumar <kundan.kumar@samsung.com>
+In-Reply-To: <20260206062527.GA25841@lst.de>
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20260209155454epcas5p270af6d87208aae7466053be8520292c7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4
+References: <CGME20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4@epcas5p1.samsung.com>
+	<20260116100818.7576-1-kundan.kumar@samsung.com> <aXEvAD5Rf5QLp4Ma@bfoster>
+	<ca048ecf-5aec-4a0d-8faf-ad9fcd310e21@samsung.com>
+	<aXN3EtxKFXX8DEbl@bfoster>
+	<e7413e3b-3fae-4aab-90a1-4a6695156b2e@samsung.com>
+	<20260206062527.GA25841@lst.de>
 X-Rspam-User: 
-X-HE-Tag: 1770652136-920524
-X-HE-Meta: U2FsdGVkX1+R/j2tMlNNhDCf5ovNj6DOAMTFfgpmwv2Zp8BjuYjzraXqE5+ZZ+gyE6vOjdfc6KQpYNP2F42Y1Prp5O5TiZW5gcqXVpYaMTLh/9EL6ibDAZuHWRdPdx5d0jecF1z1gcmDZxU0oX3a+zSPOwFEe4ScqZi1MYScI4SiUYa2dW64dxkhF3hnaoTcaTLoxwGtQQeaQi+j8E4h7e2VaHkmfcDnP+36ZBOq6hCt7pVdGcJQLMXcLts0NA3lVI6IwgBe+ULUhpHozGA2a+2VkXFmP5Ua5XjitG592d20u3baMZBfjhZwg8TtjrNZe8EjYsn9VRRIbegPP0wK/jcIhNEaopa1eY39uarU++tWXjHhsppUgIRLcMl5iE4yibC5+3ZGPXhkDXTuSo61Rn9rmi7oxE9ZfMQtoftcnuxftyzstT+2ThWkRY+ImNDYnXjVs/4WyhYJCqcbYdpbTcV44x1QaF2bcPYEby3exlWTSAgJ7pX7I/OwdnsBmVfUZzzsH0FIy32bqB9QtE0/eWQhlntE6WahcnGxMSZgBsbRjyQlGkLWxPtTudojW5i3QeLrU6kXxUMYSRnvbZ7ipTgd484lNmLNiFrKjNsu9nQj5sIC1gQ/FfGYcOBuUZ0dJ6tCW4euWu63PrvRP8+F1m7Ssw3h/ZckSkUaDzVr589mHmDH70dZ6Ne8n9IOGHIIWJGeeIz+CUXNfsq2y3PyFKRiZlzQPAoFcTfsNklR6W171Sil3fRwNb2ynDIkodIDtxL1RIzfS9SiLUHCpCwVfQ4Z/HtwkSMhv8CQSZlCyN8EybojPR/zB9UtVjnRLiYJm4aP2X+gCKBy9EhwRm4R9nBOPk9IX+sSBivMZLo2FPUVqIR0iUiJ9MznpTgoO2/e8PiY6xun6LFKLsbWQC8obG1R8UHKHKU4AyEPA26kHpDLrX0A0Q26p75A6soyi3ujyHl8kOPHPTNRbrb5FFp
- LbSXK1fH
- Fvbwpn5QlquzW64fWNBa/UmtEWjDKSKUWAwHlDEMpW3elk/J/7RV9GDKyo0CBjwKh9BEd/No0CMQxwnHof4aieNTXDKqum9/LWAUrFgMIuxWJJJMtK9CdhU7QfE3XuozTVhPd24XoFvkaQ74CoFxDCCjq+A91KEgBDpY315ZyKOcCNfaM28B3Bd1um3a5tq5Z5IIGqYDrz1HqMPX1IKAWHSj9T2NppW7Yb8ndLzldnk3h+RpJlxFpFbPABDScwaqH2w0nvP6ZkB7brmwozwT3tdwgsdSqQgQV7+k2+XcPDDw4lZkWhlMZ78kao6VsKr71OstXputKpBmHdzmyiOikspkdDZwwmLzKAQTCsHv+ORiz10/oSLz0omsQOf4uuQhEL4esl7fLyILIdxirrcQYTL7eLw==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 760554000F
+X-Stat-Signature: ee1sng4i6r6b7369srxa1t467m9aji5d
+X-HE-Tag: 1770652500-199663
+X-HE-Meta: U2FsdGVkX1/jATUVoN9LdH3DGrOdYBRTkiobuqL1Kn0egwaz2ymuZ1VQ/erpP0tf9V/G6hgvuiaERpZ7+vVp3qI8WEEkK+SxOZ2SJUBA2GifHCQY7bMNaU7VwZoq0tMmywQuQEoQyQ8BoWReQ657BdpQaJu/l6weOgnseL5gxg7cTbcaF9umiadscbGGbE0HXFBm1zowuPYU1dw5b0E8qPTTdx/O0BGtIrY67rfsopy0w435IJagkjUb6ilo4B7AekRmdATdDPZerF93GrBr2hInNiqwTMpSTWG/rzcT089x2Z0bamYf9+jQuWeKHJNWYSu0hrsg5dZKuXtoS/34FfMPE/dUqkmn00U+sGpg9QYhsn9KZt8Lhxx7mfy3g2UpQr3Qzi0ZCMzB2PeFJDYtgHZAzVMlJd03YESnUnDG/wovkMlucg5xkE1IuYdT92v0+0V+5nJC2693iKZgOJ2tLXn8FtRE3f2eviaafPj+9uQ6TD5qU9z2+khhr4yF4elwTUPVdlCqWhBvNcym6gG2tfHn2wHsIRQPJHUturCn90XRDKr9WXaL92iGfsFal4p1OjcJ1ADMvp+1NQzT4CwcABcRPAS6s2RwhKjimTEDcfac8/1WY4gOl5HoJAWSyNjtc2PAqcA7XgMv2NzLz4CfxR8qUcEAxhnqlJVEpugD4sHvVPtEDPRV1ZxSJeShs+hfVNT/n/8QDykAOSNRv6X2qR3cjyHRNuXfGnouJ+1zoTcDX7mQnH8w//xLJjuVGOfDPvvq7sqpUjdWNmQ65tkRJftzyITQWimxfGvdoQJ9wKypNmnNr5SN9q+2qX3moUb6MMfs0Nw1M5jw1eHyrbLAzFQR62x4Ebt1/Ul9Z36xUtWMGdG5QSDUC/xG2mOAe3rPys04qR56M4MhpxfF4DROhd8UTdqdwyw+AMOrrhNtO4DZLng7X3fGZRAcW6dejWbKg87EYZOGPSGOwstqEUm
+ R/SPnTZ3
+ GkOZcCjyio6WqNspPXSJ9Oxv7lxpVwF7RTPJFXtStPMpVgzMxhSl5bhhxY8KkhUBegZLEcz7sIy9Ge4+Aq+XVA6H6ZaceBIuZgnfxkKobezQ8U90=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,74 +121,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 09, 2026 at 10:56:03PM +0800, Min-Hsun Chang wrote:
-> Correct several spelling and grammatical errors in the page tables
-> documentation. This includes:
-> - Fixing "a address" to "an address"
-> - Fixing "pfs" to "pfns"
-> - Correcting the possessive "Torvald's" to "Torvalds's"
-> - Fixing "instruction that want" to "instruction that wants"
-> - Fixing "code path" to "code paths"
-
-It'd be polite to cc the original author.  Added.
-
-(also see one question below)
-
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-
-> Signed-off-by: Min-Hsun Chang <chmh0624@gmail.com>
-> ---
->  Documentation/mm/page_tables.rst | 12 ++++++------
->  1 file changed, 6 insertions(+), 6 deletions(-)
+On 2/6/2026 11:55 AM, Christoph Hellwig wrote:
+> I fear we're deep down a rabbit hole solving the wrong problem here.
+> Traditionally block allocation, in XFS and in general, was about finding
+> the "best" location to avoid seeks.  With SSDs the seeks themselves are
+> kinda pointless, although large sequential write streams are still very
+> useful of course, as is avoiding both freespace and bmap fragmentation.
+> On the other hand avoiding contention from multiple writers is a good
+> thing.  (this is discounting the HDD case, where the industry is very
+> rapidly moving to zoned device, for which zoned XFS has a totally
+> different allocator)
 > 
-> diff --git a/Documentation/mm/page_tables.rst b/Documentation/mm/page_tables.rst
-> index e7c69cc32493..126c87628250 100644
-> --- a/Documentation/mm/page_tables.rst
-> +++ b/Documentation/mm/page_tables.rst
-> @@ -26,9 +26,9 @@ Physical memory address 0 will be *pfn 0* and the highest pfn will be
->  the last page of physical memory the external address bus of the CPU can
->  address.
->  
-> -With a page granularity of 4KB and a address range of 32 bits, pfn 0 is at
-> +With a page granularity of 4KB and an address range of 32 bits, pfn 0 is at
->  address 0x00000000, pfn 1 is at address 0x00001000, pfn 2 is at 0x00002000
-> -and so on until we reach pfn 0xfffff at 0xfffff000. With 16KB pages pfs are
-> +and so on until we reach pfn 0xfffff at 0xfffff000. With 16KB pages pfns are
->  at 0x00004000, 0x00008000 ... 0xffffc000 and pfn goes from 0 to 0x3ffff.
->  
->  As you can see, with 4KB pages the page base address uses bits 12-31 of the
-> @@ -38,8 +38,8 @@ address, and this is why `PAGE_SHIFT` in this case is defined as 12 and
->  Over time a deeper hierarchy has been developed in response to increasing memory
->  sizes. When Linux was created, 4KB pages and a single page table called
->  `swapper_pg_dir` with 1024 entries was used, covering 4MB which coincided with
-> -the fact that Torvald's first computer had 4MB of physical memory. Entries in
-> -this single table were referred to as *PTE*:s - page table entries.
-> +the fact that Torvalds's first computer had 4MB of physical memory. Entries in
-> +this single table were referred to as *PTEs* - page table entries.
-
-I'm unsure about this change of "*PTE*:s" to "*PTEs*".  Is that special
-rst syntax to keep PTE highlighted without highlighting the 's'?
-
->  The software page table hierarchy reflects the fact that page table hardware has
->  become hierarchical and that in turn is done to save page table memory and
-> @@ -212,7 +212,7 @@ threshold.
->  Additionally, page faults may be also caused by code bugs or by maliciously
->  crafted addresses that the CPU is instructed to access. A thread of a process
->  could use instructions to address (non-shared) memory which does not belong to
-> -its own address space, or could try to execute an instruction that want to write
-> +its own address space, or could try to execute an instruction that wants to write
->  to a read-only location.
->  
->  If the above-mentioned conditions happen in user-space, the kernel sends a
-> @@ -277,5 +277,5 @@ To conclude this high altitude view of how Linux handles page faults, let's
->  add that the page faults handler can be disabled and enabled respectively with
->  `pagefault_disable()` and `pagefault_enable()`.
->  
-> -Several code path make use of the latter two functions because they need to
-> +Several code paths make use of the latter two functions because they need to
->  disable traps into the page faults handler, mostly to prevent deadlocks.
-> -- 
-> 2.50.1
+> With multi-threaded writeback this become important for writeback, but
+> even before this would be useful for direct and uncached I/O.
 > 
-> 
+> So I think the first thing I'd look into it to tune the allocator to
+> avoid that contention, by by spreading different allocation streams from
+> different core to different AGs, and relax the very sophisticated and
+> detailed placement done by the XFS allocator
+
+Thanks, I’m going to restate what I think you are suggesting to make
+sure I'm tracking correctly.
+
+We will step back from per-folio tagging and instead align coarse
+sharding with a simpler allocation policy:
+
+- Create a bounded number of bdi wb contexts at mount time (capped,
+e.g. ≤ agcount).
+- Store a per-inode stream/shard id (no per-folio state).
+- Assign the stream id once and use it to select the wb context for
+writeback.
+- In the delalloc allocator, bias AG selection from the stream id by
+partitioning AG space into per-stream "bands" and rotating the start
+AG within that band; fall back to the existing allocator when
+allocation can't be satisfied.
+
+Does this align with what you have in mind?
 
