@@ -4,130 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F91BE81BD3
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 15:01:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A623E81BD6
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 15:01:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F055A6B009F; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
+	id 8168E6B00A0; Mon,  9 Feb 2026 10:01:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EB3996B00A0; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
+	id 7363E6B00A1; Mon,  9 Feb 2026 10:01:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D94E06B00A1; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
+	id 5BA0E6B00A3; Mon,  9 Feb 2026 10:01:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C955B6B009F
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:01:19 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DE98EB6CFE
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:01:18 +0000 (UTC)
-X-FDA: 84425231436.09.AF87792
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	by imf27.hostedemail.com (Postfix) with ESMTP id CB6C440016
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F4856B00A0
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:01:20 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EC0CBC0A20
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:01:19 +0000 (UTC)
+X-FDA: 84425231478.25.86403B2
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B30FA18001A
 	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:01:16 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VIc6oMEj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770649276;
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=lcdXVf1L;
+	spf=pass (imf24.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770649277;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
-	b=7gfX5MYttMRZEmWz8wYx3z+FSKKx0gQeGbbm0eeN1ahSpa/ef+p3AtUr35rlHaiXQduZdC
-	0YdU3GT6S7jzyjYZfM0cxTKTkliQtSDkOjgAxZLH0ASAfyg6YokrlonhQBPBb9Agd8qpUV
-	vJC98I8Caa6fQVsKh9jVtQwRKd2FuGM=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770649276; a=rsa-sha256;
-	cv=pass;
-	b=LwiYAlJ461ZpzZbf3pWNQ4T3TGBdR/sPd1a4AU6lAb1aq33GkhBCNU92jf+jULssUSBs8t
-	xQ7UY5VK+6t2jPkxktgwJ1fK8qkovgNzR2JO4VvUFxPEyEn1nn1gPJNQzGURczHqhr34fW
-	HJ7Bv3VgLYaknpbI8FwaCC/Kd+kIBXg=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VIc6oMEj;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf27.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5664848545fso1718369e0c.3
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 07:01:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770649276; cv=none;
-        d=google.com; s=arc-20240605;
-        b=TRG5u4pjlCCYY9mn6VHTs7koG05bdnJs4QYSZD9S1OVFXW0Kw+9dgYChd+B7U0KAaL
-         HaqiIkH0nI3VXSnJIsDjXSfeT/2i7uxK7PHqD0KRLFYfONDjnFG2CnP4rNM86bUD8csc
-         J+YCMSMfmFhwWXOnx5MkObF39ryI6ymOcgLDV462yJWTkwB8rykEU3rquBNSIT4FPePh
-         kN+gmSdlImZv6IKFiB5cXVQNIrT++KQSLEArYVMDgWqRJ/gmVUP1SI588tyPsdy4iC4l
-         IJjGe/yjSRHv429dcXKGaKV0954Xd2V7pecPBEX/fqveadGVeZMm2OYj9IcjnNh9YfhK
-         nY0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
-        fh=VC1sq2BfrJG31tlswTIh/U8pM3bfMlU3lreK9qRqjbI=;
-        b=ldGfJciPe8+sjuHIAoCjiEPVRs152+/rq4Embv5PP2CRqMNUQhA43KV1jOP7mTvqkK
-         E4I4nFlBl1N8qU55MJgONKJE8TxcxT6TS9+nWj7hDqHkRICktpli2el/vRbDwtm3pBBw
-         O0i9y/a1+UuA7Opa6ftLPztxooUOfx8DAL+wu4yzXQ4+XxBcHwokTtLozrwzcNaNZx6k
-         EgpXHdonz+ereE4ixQCOE9rIIyaAs03ijJY9mEI3vD+9ttWtQtrzw2voRgQuoE6+PAyS
-         tqlCo70lm0qenQfkBYP3siGyBcaUwhPdDZizr0VjdmVFPI+nWsA7y1HhRIP5D3oWS5q5
-         LfOw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770649276; x=1771254076; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
-        b=VIc6oMEjw/MuNF/j8aYJWEqFNP7+xHsPlI4hOdaFO1X5mnjcAEdJgrfXNvIJGZTH6T
-         vLbHn7u72luQ28B4szRBw5iDm3t9DhUdAQxiJMIHDg2Oz3XgbjezKHrbGCzubM9Vni2F
-         A0cbcdcted1v6CXx0o4MeFdnsfui1EcVpD3nB6ladJHgi7t3DXCUK0XxXqcFzFTbfGov
-         nqR1Yd5EcZpxqrOA1/uCWFKBBesUlWsO8oywLJkAiB+L2GQ4kyfq/XWLvtoVMWLLlLge
-         OTeyEDrTm9GR/oGaI564piPkhvPnxnLFibpJWgWwdhmRi9dbkbjIiTq8kvh9U16kWYSC
-         a5ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770649276; x=1771254076;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0coPOWMVgZc+g3IdWjGX+Lv0Cpur4Lg+tHaBcUOJXbg=;
-        b=BLHfOHYqNrnmbrOky04Sdk84zrtk+HmhMEtOO5n+y+Wh2PuVLfFcTap4lJz55xy//C
-         AZsAgiNkFF/AnoL/zh6uEodP9DDwO0RhAtkRJSVFT6Zu8I1qyDG9LH4wFhkavLon0Eo3
-         di5j00o3Bix7SR5TwJqMAdKa7istWT9Iw51cZyU8yVBghVNViUxvxR1jYmOC8qPva5fL
-         mvOau8LY0uZ/CNeoxAzU6eD+xEPJRwEn1V6YkFFkhVJL6IBu/1cMcvLb9Njs6kNeW03j
-         Cf4KAd8pg9B1p/MO+cYaAiHt1r/1wxaGDtPPc2NtyWmxARbopZLb0abXCrNSOWM4sbiu
-         VS5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX1M+UkAiJeIG1LbgR/ke9GETVMLrYddXL3QX7Y7AqMJ/5nupfYS+GPd75pZDo4Mp7fVfVjVdYF+w==@kvack.org
-X-Gm-Message-State: AOJu0YwbRVgYP8V0lnOJo1Qy7b95d3ydJ0gsC28VFA4mnmgG8sOV04HM
-	0gAzsWXWpDisJSUepxKwCI+GZXxHcE7kmLZXygnSWa4LO3IGr590ho23QnP5/XB5p+v7nDROxPA
-	ujFnniDjg7YcQKKaeD/MOcrbyUyla3ZQ=
-X-Gm-Gg: AZuq6aIg4Cd19Up9tw+cTjMLr6pJZFKKyjJyymUN/algLFqlOG2Pq5f+rIeav55mV4v
-	gTX2fvkyEmGNo0nw6lNV81Fbpme+CubG4Lao2WyRmkNepEsC10cHl+1j4c9qFC3yIG15UThjcQo
-	AlWznRqCXdc9EGMUDc6aHSU/bW7n594KGoDXfPjcgBPaVWoGkNcm5l4BNVoq/aaQNSXEEkWB9F7
-	amEvfh5YL6SahpilJKI9tcv3IaRZ/nmDBXucsguMdK9DfCTXn7sZjMlUXnP6UGHsqGLz73C
-X-Received: by 2002:a05:6122:45a7:b0:54a:1e96:e958 with SMTP id
- 71dfb90a1353d-56705b85df5mr3065524e0c.0.1770649273870; Mon, 09 Feb 2026
- 07:01:13 -0800 (PST)
+	bh=VXGnnQUcY2aOozzzIKf6y8CmmXN5VARe55Bh5Lbx7Ro=;
+	b=pLhVNfQIXXsTUb9FAWekEEE8RPEtaPaORQopz3/SXKBSLnYIf3Hkj3JGXxP5qAX9+7rfd8
+	MOIAzBXOnW0nZifykiqks9nZJPwC1E34ApEfrfTfjPLRtgaKpG+lsbbM3Vj6NUGyLR62YL
+	sUOZ2W17UQtbtI6QQl4hafZ0xfcElBc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=lcdXVf1L;
+	spf=pass (imf24.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770649277; a=rsa-sha256;
+	cv=none;
+	b=m14+20uTvxQlUD+y2R/2UkPGbgNppbe0lG+NzCDexQKWqV5NP5yJsJrOjOdtcOWv1tnDCl
+	ydHi8j6p1xLZwVTNXyuSsXP3mUISO2q2NQk9qUkhPadewiOyCyNY5pHc///QcBPJQcarzO
+	UuAQcO+SewQAZDJB6Bv5Q6XAzX91xeU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1770649274;
+	bh=2Jn6ht9R44NVLk0YTLUNGVwTRbNRIHRw4ncSbNE5+Lc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=lcdXVf1L5yg0p/y9x6biLEMw1DINlbMW4X95SONyD4ld0EbDvHzS1bkT7CNbO4Uzp
+	 XxXBE+qUzdmMpqwAZxsKySKV5VkgNiv580PwhHr4tpFjCm//KFbLMZ7A0Da2x4wGQt
+	 TRxlkmIK/A9nNJ2lkmcLiFf52US8l5HqEkakigsI3Jhlo/7i+NvifzAp4ZaKK06keT
+	 ZSvcxO2/vMCqtpm/MmICIRqxWySpmQIGsSFNLm1v5mLUA8Ai+hwUjCfOyZC+7gRpH8
+	 IkjUXP0bc0p7ufU6EFBJLSc3gwRpCEXxfx0HQd/PYkTyeVXO90UE14gwBoNKC2emew
+	 UJhdxYD4L/pFA==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id A229217E13D5;
+	Mon,  9 Feb 2026 16:01:13 +0100 (CET)
+Date: Mon, 9 Feb 2026 16:01:09 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: loic.molinari@collabora.com, willy@infradead.org,
+ frank.binns@imgtec.com, matt.coster@imgtec.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch, dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+Message-ID: <20260209160109.79a020ae@fedora>
+In-Reply-To: <0d00a0f6-d0e4-41db-b48b-77157cd2e968@suse.de>
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+	<20260209133241.238813-6-tzimmermann@suse.de>
+	<20260209152340.16f9b30a@fedora>
+	<0d00a0f6-d0e4-41db-b48b-77157cd2e968@suse.de>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20260209081323.68339-1-chmh0624@gmail.com> <87wm0m9dn1.fsf@trenco.lwn.net>
-In-Reply-To: <87wm0m9dn1.fsf@trenco.lwn.net>
-From: =?UTF-8?B?5by16ZaU5Yub?= <chmh0624@gmail.com>
-Date: Mon, 9 Feb 2026 23:01:02 +0800
-X-Gm-Features: AZwV_QiAlyGXhtQx_eidFLWQrBv-LDoYSO8WgjYuBHCFjqgaMv8Qac5XaiF2-wU
-Message-ID: <CABzB-hZpQOR5uxjUKGf2DcfcNXSwpaBf3mmKdmCU0T5=uDVz1g@mail.gmail.com>
-Subject: Re: [PATCH] Docs/mm: fix typos and grammar in page_tables.rst
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: akpm@linux-foundation.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/alternative; boundary="000000000000fdae40064a65689e"
-X-Rspamd-Queue-Id: CB6C440016
-X-Stat-Signature: sqgd5yc645obrk7enamz8xbgkj8ktmy4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: gqddrscwwhrorof7ojc9g4dhsd6xqrid
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770649276-7415
-X-HE-Meta: U2FsdGVkX19JfNcwOEJFagQATQLRwnrVTqWXZ9UpJnIOZRP1VWTb94gNcHVV2BAkzCdKJENDrIGxxxRbRUScjKtRZ+vA5qOFJ7fCK/RFAOObu4df0ZQnzdDvSK3V3/PpdkT4RePv9mBqmb/xyj7/t8TaIoEdXCQamrxJPscfGBsjfBDaz+6GneL3WfMFiBhewQB0Ot6OMDB+62xJQAUBMYCJPgWnp7kxN19fA+uW3h2atjOTyUeWEsfmOTijdTykdzaTe/ffTQJJyHI7rHPYgXT8eZL6GH+Crg1dmCaadTE63KTWS/vDvFIK1HKpFZpoJxALZBCrUQ5U+aybbv+08Lzda3aQUh1Msd2gFznrd7CCMF7rgKEb/waWVTFGT+kCQ86xCUpdMwxEMynh9M4tnjOvLf/BdRaEP734CPWVtHCLmWD6YZlkmZMt8UtvMIQqbiSPFiysIVNyrx0l4JtSnx7kl+0hV7Y3pAmjSADnLSxdV3F/cQ1fxG4+eEFcrFteayCNXIqvqsvBo1WCsSyd3aNmsV0NCWSVyjmz8lPqym6Ne0F/xH94vtd5dHMON5PF0x6A8ZF9jI0Uec7N4Xhdbt9eLjJvjxGfMwFKmc+mcVd/A0MxrduaNA+HWwVuW8KNn6j/oXHHBOJvmCtLj0Barty/Y86TbvSjjX142aHDMD7PTfQmauGWA66Yk4o5Y1KHPn1ysIEpJSOENPtZO214sySj8M3CNHy9OG/amAJlWhJrmenPkB+zRGG8qEOhFOGH6SxvUywfLYVPi1JXRXlMkXAbg1QTCCMo7c2/A2NujDGB2hMLM21uEfdvkp5SvfNCj5PR4MdkFZS5kzkX72gHOidIbPWFRU8rih9sSQWstsOM8mO9Hln8mY1vjrqJ7uBQEtCEAvtBgzImc4+JSj+ZjfBkeWZpAiiwN21sSiqV3C2FH8DsJ8Lbb4JuaFyV7HIUd6jKCI6an8WkDZcwOx0
- ptzbyLbI
- uyLd772N8sy5JquWbmtUZIt55GCq5mJYFG/k5py5p55t//meIzkBCNp5CkFBN5addzra9YuTT3p8PsUYcLlEenzRjnJaNTZygQnyzXfjETQUF5NO0k0yNwECMPfjnwj1rwiXTzdtuAQlrN1CmQETIg4m6g1Q4aoV90/iiMmt6wtRUJr3b5SsEpFIouT8qIFSAh1clcgIhhA0H7aXuWJ5a/8k0/gIUbH0+cud4J2DBGxsxvc+D5Q4F+mjdvBlsUIC34kpAn1U97knctp+0XqdC66F6fQl/Zda6CnU6w5MDlqHM+P1xSKkMsdYzbx8XzEE3uV4m6GPm/vR8L07z8Sc/weS/DW2DA7p/moVKAMSdOiFOO1xeE+yhBdiSVq7L5BFbSy4VC3n9A/E+wYZ+q4bPsOeP3QryRXz7bIl9YoxIP6uihUilJIB8E/T+RBz/g3oVgfgo0Kyra2JZnnRGYJhYHMratASpJJcxFG+1BMYaDhMKzWYn8bN10q1CJFL0jgV7wg/2duyIsTQk3NtrBiXzdVyGSGSdCv0OoimUTKArAQX4r8ccL8/wyaYN1r14vpjd4s/A4fRhIqkHh4LPbLIP27f3rF8LsGjMvZY7
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.001706, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B30FA18001A
+X-HE-Tag: 1770649276-508104
+X-HE-Meta: U2FsdGVkX18bLKN5b8QwH53JpiMQH9asbPLueT7/v73Q1pu7bx3/aTd4eylhl5PeESznZRHL4hHRicAXVplyo6kf2siKqunVQLL55YtGRybr5xtye27jqWnVGJ00bPT7Oqu+ylou5ke4s6ZhoZtUgQUl3lnWi4zRzll30IHVkwSS1yXutgQJ3RKgUWtdvF9tB4RlBRjWyVoT1es7gn+wxwB+EmcauQJYEa/A/NNBy7UKCLVkaSHte/sGx0hrZkS3pqV1RWisvnlMHGO5OQDOujxeS3e5zMP91meOnLbMraFHoyHxxeYCB7fioaTwIpcKMS+BXeoxJXXpVgEnkcwGCLeG8FG676yxx+NmNPNCHko45eFE6SpTGfwv+TbInACJzOk5gZSnkHutn12MG5YJUgDKfaqHMp5Bo8ZC2tHCwFh6NkuHNqTE1wL4n7ppr0K7y7+6IHhNhxROJ2D5gpzUjKFX5AFGooH4L/1+dpmz6cHLWf6YyDZfXAGEjaMAvGeLkJjYssjXBd9b4XSC9VZbUCtYv06amOe3C/VBKb15wSe1z37uufnDjrRuz9KOb18YCniFJ+qQiSPG+rxviQzNU8xLxzStFT7gqXhSYDDSmxIT8WojfdrV2u3c86m3SxTxZY8iDM32oXy2Y5ffG2Q+Rz/pzdKjeiCptcm1FIPmtyK/CRQgiFg3h03HH3sASVSJts0dJGwEoGeGDyBXvW0tC4Gq5LVelLQLmFe/56EgW1krIw6yPRIjcGovYU1hHDh5Pog56YIZ02ajTwvC5+fJW2B+F2IZ+0qRyAxAhP9d2AwkPWAZuFj7BhHtRpC3LPawhoLd1nwEYq+hN75q2KyjvOFYeDHUE/s0vr+S4kRb5NiBLIyZzUv5AYpYmDB8NltsiqgTFbISMwqZ8EPR4b+HZVjM3DwKOI4N33lH5CGn02t6HVKCiJ1xUOk0K6fjOsnX81i9/qO9FAZcLskhrw7
+ nfMkXzKk
+ SDRgs7TVzLnCA1un28VPsPcOTSl2b5KiWLPfizBpe0yNXlShJusRUlvFesui/mNvdaeYZeZ2Vpwg7Yj2J/38KbtnOs53Y/1abxtSVnqBzenXDM6Q92bfPIfiVUKA2sE6QwxctghQdBGhS40v55fhpThqUVMnqeaaT7ItNOxiPdfp5jivEQWG3AoMXQjIUjYNNa9krmsvwq7ZHvJOFf9pDpIJK43dwh66nFIjIgroY+YuVQRSFyhiC0sXfE8/gPRlVbqzqaiZb/AIFhP1btBQ5ZcXQb9ilf1wPr1Be6Wkp9govj1yq6mrJt/+KEEN9teUzsrl0rRLnPTBf0n6Tpq/jUFJc/UoD0N6RkIwhkm6j7KmcVKv2cabPIcB8kJW9aFNNIWpoo1megldJF8aHqAYeESI0dQ==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,16 +102,102 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000fdae40064a65689e
-Content-Type: text/plain; charset="UTF-8"
+On Mon, 9 Feb 2026 15:46:21 +0100
+Thomas Zimmermann <tzimmermann@suse.de> wrote:
 
-Thanks for the feedback, Jon! You're right, there's only one Linus. I have
-just sent out a v2 with "Torvalds's" corrected.
+> Hi Boris,
+>=20
+> thanks for reviewing the series.
+>=20
+> Am 09.02.26 um 15:23 schrieb Boris Brezillon:
+> > On Mon,  9 Feb 2026 14:27:14 +0100
+> > Thomas Zimmermann <tzimmermann@suse.de> wrote:
+> > =20
+> >> Invoke folio_mark_accessed() in mmap page faults to add the folio to
+> >> the memory manager's LRU list. Userspace invokes mmap to get the memory
+> >> for software rendering. Compositors do the same when creating the final
+> >> on-screen image, so keeping the pages in LRU makes sense. Avoids paging
+> >> out graphics buffers when under memory pressure.
+> >>
+> >> In pfn_mkwrite, further invoke the folio_mark_dirty() to add the folio
+> >> for writeback should the underlying file be paged out from system memo=
+ry.
+> >> This rarely happens in practice, yet it would corrupt the buffer conte=
+nt.
+> >>
+> >> This has little effect on a system's hardware-accelerated rendering, w=
+hich
+> >> only mmaps for an initial setup of textures, meshes, shaders, etc.
+> >>
+> >> v3:
+> >> - rewrite for VM_PFNMAP
+> >> v2:
+> >> - adapt to changes in drm_gem_shmem_try_mmap_pmd()
+> >>
+> >> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> >> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+> >> ---
+> >>   drivers/gpu/drm/drm_gem_shmem_helper.c | 20 ++++++++++++++++++++
+> >>   1 file changed, 20 insertions(+)
+> >>
+> >> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/=
+drm_gem_shmem_helper.c
+> >> index c3a054899ba3..0c86ad40a049 100644
+> >> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> >> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> >> @@ -598,6 +598,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fa=
+ult *vmf)
+> >>   	if (ret !=3D VM_FAULT_NOPAGE)
+> >>   		ret =3D vmf_insert_pfn(vma, vmf->address, pfn);
+> >>  =20
+> >> +	if (likely(!(ret & VM_FAULT_ERROR))) =20
+> > Can't we just go
+> >
+> > 	if (ret =3D=3D VM_FAULT_NOPAGE)
+> >
+> > here? =20
+>=20
+> After reviewing the code in vmf_insert_pfn, I think so. All we'll see is=
+=20
+> _OOM and _SIGBUS; or _NOPAGE on success.=C2=A0 I'll change it then.
+>=20
+>=20
+> > =20
+> >> +		folio_mark_accessed(folio);
+> >> +
+> >>   out:
+> >>   	dma_resv_unlock(obj->resv);
+> >>  =20
+> >> @@ -638,10 +641,27 @@ static void drm_gem_shmem_vm_close(struct vm_are=
+a_struct *vma)
+> >>   	drm_gem_vm_close(vma);
+> >>   }
+> >>  =20
+> >> +static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
+> >> +{
+> >> +	struct vm_area_struct *vma =3D vmf->vma;
+> >> +	struct drm_gem_object *obj =3D vma->vm_private_data;
+> >> +	struct drm_gem_shmem_object *shmem =3D to_drm_gem_shmem_obj(obj);
+> >> +	pgoff_t page_offset =3D vmf->pgoff - vma->vm_pgoff; /* page offset w=
+ithin VMA */
+> >> +	struct page *page =3D shmem->pages[page_offset]; =20
+> > Should we have a
+> >
+> > 	if (WARN_ON(!shmem->pages ||
+> > 		    page_offset <=3D (obj->size >> PAGE_SHIFT)))
+> > 		return VM_FAULT_SIGBUS;
+> >
+> >
+> > ? =20
+>=20
+> I left it out because it doesn't seem necessary.=C2=A0 In the fault handl=
+er=20
+> in drm_gem_shmem_fault(), I can see that we could get an OOB access. But=
+=20
+> we only call pfn_mkwrite() after going through _fault() first. I don't=20
+> see a way of getting here unless we've already tested for the page in=20
+> _fault().
 
---000000000000fdae40064a65689e
-Content-Type: text/html; charset="UTF-8"
-
-<div dir="ltr">Thanks for the feedback, Jon! You&#39;re right, there&#39;s only one Linus. I have just sent out a v2 with &quot;Torvalds&#39;s&quot; corrected.</div>
-
---000000000000fdae40064a65689e--
+I agree it's not supposed to happen, but isn't it what WARN_ON()s are
+for (catching unexpected situations)?
 
