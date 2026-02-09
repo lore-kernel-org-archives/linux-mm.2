@@ -4,138 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31AB6EE20BD
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 661C0EE20BD
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:13:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 55A706B0005; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
+	id D02996B0005; Mon,  9 Feb 2026 03:13:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 508186B0088; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
+	id CB0A66B0088; Mon,  9 Feb 2026 03:13:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 414686B0089; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
+	id BBD046B0089; Mon,  9 Feb 2026 03:13:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 307AD6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 007EFD6338
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:11:52 +0000 (UTC)
-X-FDA: 84424199706.14.A2ACB95
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 280A180005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:11:50 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hn+UPDqt;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AA43F6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:13:33 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5DCF41A06F0
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:13:33 +0000 (UTC)
+X-FDA: 84424203906.01.0442EF6
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9A8941C000D
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:13:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WYmHIj2E;
+	spf=pass (imf18.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770624711;
+	s=arc-20220608; t=1770624811;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=50l0l7arSP8Mc1SuJ0FPEfrM/K2HGzCxq+UPQbzFobs=;
-	b=Cnrta3gwG4A9N2pNRds+tJeNFXkVgGFhu3l8oowOO7a5/RAg4DRtzjp4SGpUcPY0NbhQJi
-	q4Mt59PdN0TL1hP9Ug4k8fRh9Q5VDvUTRL2Xd5R1eG0QCwLpiTUaS0V73vbiAwimSG+Lgl
-	ByPfQNnTKZoT75pHuwvyMe79c/BayCI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=u7ECsemPt0+8hrEaXFS0vyfUJpZDXufVX7a966wW9n4=;
+	b=ubqRDUnMo8drr629AMUy1Gh7LjQsDdewz2IOO7O+SC5X7oTSwiVszX0HmHaPD+AENHdNxQ
+	6is9e0VR7N8Yg7xejXo3r+RpQXEZcZDkb5K8Ege/OgNuQAaeRmWdA1uQbc6jeuFOyqW6H9
+	yViU23dm+I0MVMQce4qQWPcPd859LIU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hn+UPDqt;
-	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770624711; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=WYmHIj2E;
+	spf=pass (imf18.hostedemail.com: domain of chmh0624@gmail.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=chmh0624@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770624811; a=rsa-sha256;
 	cv=none;
-	b=ImjEPelw6TI+lhyndYWVFE0fWia3Jv/TAc8j0kY5NSvm4fo+s9KpWECCr1CjrRHU/DVpLh
-	YsCLjOJa0ue97Sus2KTYuHeILkZFmiAEPPY/dOOuOOJ9Bwlh23P/Y/IStDSiDjzYD2q+v9
-	3jFVgU2CR96slHijdACatCvLph6xdRg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 192D7443CB;
-	Mon,  9 Feb 2026 08:11:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A64C116C6;
-	Mon,  9 Feb 2026 08:11:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770624710;
-	bh=L8oWFHABpYlRLKDFyyvLn/HsEWp3abYK8JEFHOpAh/k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hn+UPDqteqgyuGfdYJqtzLugJgNnz3dFTl2+L91tmqGVsEiIXGb5BXZ7HBHY5kFVV
-	 dJ+VvRlzEIi5JCC+FDp//whR6ivA9eqo7YbE4pFUeNTEKYmLM8KED1iXULCr68h2VD
-	 QOYyPrGu5PwBC3EO18Rx0b5Xe6enc9thv+Tk+3UnWB2r+AAg61FxyI/RwSxxrcUI+m
-	 TYON0Jlmnmoz58PifxllXgf4AjE/a8og863ddQiYNP2XESaqkOL6UyZh3YSrRZCZSm
-	 sYwbXwxRcFbR0uok4BuxbFPstcDrvX2q9ksdDNlfr2e+vmS7PkzmLh+P+1ZnmYRD+z
-	 HE3mzLwMw4xUw==
-Message-ID: <4fc5e312-b56a-4664-9722-81163ecef515@kernel.org>
-Date: Mon, 9 Feb 2026 09:11:43 +0100
+	b=3SW7PeUXUevwbxDxVm4yfsb1dcMZkKPbAGeTrgwUfKlf3dQbX868+NzvbVWomzsORvBnWb
+	FrVZi+0zkRH1+YrY4P9qu94tpFtoGnu5pv5TqWiXU269/6MJ7rcU1ZhmiTUgNx1s6+Nofw
+	0kbBgcAAlkV4IWDCixQhAdd0iWkqC0w=
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2a7b23dd036so12443005ad.3
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 00:13:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770624810; x=1771229610; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u7ECsemPt0+8hrEaXFS0vyfUJpZDXufVX7a966wW9n4=;
+        b=WYmHIj2ENIVVV0qcswjftwnd7jw6+1MrZUBsopUJtO5Un9gPdvk6tbhng1X7s6qWrq
+         dBeC98Cqf5AWAwOzYE7Z1c3rwi2ni7TKEqduGB+93iOAMPLvOFQREUbfo1RYuPMKC1E2
+         MBJoeyWOQElF9mix96jYRG+i28ppiwtXqlZytsMUt3jHk2QOsKh7v8+4mkzMq7Brk/YW
+         SKpLgLCl9eFgrsHMM/lpZulvHE1CQOVbSHcXwRpIfJsjh0cb6k8uo+ZV1swaJqQQOgvl
+         cq5AEjEbyxYMfUKpiUXbJ42Cp8h3QDehL6M4ANZZkW7L7Hiy39BNnER8Rud0jI0FLcF9
+         2wWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770624810; x=1771229610;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u7ECsemPt0+8hrEaXFS0vyfUJpZDXufVX7a966wW9n4=;
+        b=aa6NuEB3lMqZWEncDtEXWqFxN8AxTiu1P94Bhpou3JfgDedn8kHFqjrn6oLFuDxHyi
+         qaZNhProieyRrQPX+DOZTaf7GOFuKa7JzLZVE0xhDZAyFfm57I4Ff4kXLSYe4FSlVfco
+         qvlv82Mpwa64My+RsxO7G9woUfq5rUHxAkreO9o/HvGziHyaAOsLkUxgHc5yAFqDC6bh
+         ApefQhZV+GjOM5hsjxvYlsalksuEc+SnlmxmdYm24h0/bZd6QekrVmVb/tbRymrdKBYL
+         X2U/qtJ0BgcZLp5lnI28FGCtqWFODu8P6esJi1rizIRbd53MLUM3MRZDo0G94eqzzyBP
+         /u2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXBbrROf2iZh8VDG5ZsgofQ38AkVfh58XeHCTbY/2Oy34IE1X+suve/tRe4QztFc1cy4YwwsQYzMA==@kvack.org
+X-Gm-Message-State: AOJu0YzpzlZUHTZxEVO/VTPftUKjR6MKtKvqd0YuayYRQ2OOdX9BrV26
+	cKZXHeotHgicQkviIp2rrXbuCfR0UU1PsQbYF0d80tuwR2ql/k18U3el
+X-Gm-Gg: AZuq6aKcxrrnieOD0W7WE5kqHwoeu75JOqhK+qPMzc51RZ/QEbrTSm61ySDyhWWFAi2
+	/F6s/jtuRbACwslL2JAfOiYS/xNIe75HM5wqVY707U1sVFZbfH0MErEXZml2LtCDVMu2J1gPpSU
+	ImlbSa9M77Dxg3ekQuImnGL4vU1rplndIesvsJAsTyDcw6xFXob0tO1BN7iRB/XQU2CsrEtxG/m
+	MdaawWC/XQSCXGs7int36NBRmh6wSVW5BBl5oWmEEb703xrZ0RGvDJzBaW/XwGLsqoeI7IQw0bA
+	PVcwVYKRWxRI0Jr3bdNgHUQAulREyXKB93Zi8KrhAo2mAYdh2JaQh3ZGMcS/FTPWxswhC6803a9
+	sM1whldyVjDetcQSdzIsjWgV31QfOqYOpQT6/sH5rg1IVFb4OEe1L02Fdf/pKZ9k22b2IUVld1b
+	EHcWq63WroTXO3vUMaTQczqjbN/MKXD97vkqfDaxaMjBsoxP+C/rney5Rbdbfmju0RcAs9mykhg
+	w==
+X-Received: by 2002:a17:902:f681:b0:2a7:80ac:85b0 with SMTP id d9443c01a7336-2a9516089bfmr97678645ad.2.1770624810288;
+        Mon, 09 Feb 2026 00:13:30 -0800 (PST)
+Received: from localhost.localdomain (123-194-188-82.dynamic.kbronet.com.tw. [123.194.188.82])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a9521f8cb6sm101205775ad.79.2026.02.09.00.13.28
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 09 Feb 2026 00:13:29 -0800 (PST)
+From: Min-Hsun Chang <chmh0624@gmail.com>
+To: corbet@lwn.net,
+	akpm@linux-foundation.org
+Cc: linux-doc@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Min-Hsun Chang <chmh0624@gmail.com>
+Subject: [PATCH] Docs/mm: fix typos and grammar in page_tables.rst
+Date: Mon,  9 Feb 2026 16:13:23 +0800
+Message-ID: <20260209081323.68339-1-chmh0624@gmail.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: cma: Fix stub for cma_skip_dt_default_reserved_mem()
-To: Mark Brown <broonie@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Rob Herring (Arm)" <robh@kernel.org>,
- Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260128-cma-fix-stubs-v1-1-e07a077d5b33@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260128-cma-fix-stubs-v1-1-e07a077d5b33@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 49cdryye5ta9h71dn7wgxgtjjfa99e1z
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9A8941C000D
+X-Stat-Signature: y7483ya6ahgpzjmucxw7q1qnbgwpkb4c
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 280A180005
-X-HE-Tag: 1770624710-617703
-X-HE-Meta: U2FsdGVkX18PU5o3HTzpT/ROY/pUBGOao+LV8omTQTQfbx8jT3Ny2irCwQQFxV8nsSzidImyD2jOj00fW2P3OJ6OyCNNe1NVQ6VdPdqI6qLNwZ9fSrm36YfMN/hRXNug3GAANxp2lq6HdZlBBtCImixLT0cwN3Gg9Ug3PQb/Kfm4+xsG33ojjHXrIhxmxM9JYyQrxyf4BCTVL7rq8oxL6IJ/aYccHretBnzPBcun82gT47yenxgaijpvvhLxclKMU1rKViRuVoHAkMMQkV057+gjOBRvnWqa82QRMtpY7KNVpD7oLjuUJnF4tNKIytWhrHLwcOqrqMx806TJmLk0h6kaJHxup2rQ3bKiPfAumUg6+P5WYX0ef67FzFhN7DZZqdmyH+ovGDjnhkYxknFOrCPCk6ICO5YufgjJCQ5sICe9qyhL/Z7dAWTWeG4oa5okQxI4VGenPyCKqo5UCqqeuEqHi15PVRgOQkyiF5wkcjvqAjuaxi52iNxHCFh6Rn0d8ihbKycexlYPJMiUxuLvRkTYp7PnA//+07VqBytY9lINS7yLRVj8OqPQiwILV0OD8OO7tNYmPuTG6U46LUvlyMAvkWkoRiZ+5T+izTplwRZ2IylCmnsqRbo28RtRRoZX2/B9FbwMZrEqdJgdpPNQVYmcX/5GTOKceW8yb5PwNMyrkhR8h7wFbU8ghps3q3coKVJIsANSicApfLYNkz2+949iW6HAgcUpLsKmUBkT60MxxXeC13xXWep3ziNvrv/ivC5Q1XsS+MnBmw50sY9aG6xO1MlbSJvg4iejijuFmejvuw5VTGEx3shVA3FS0+TATIHajxjabF/J0hTf15cOCVzZnmf+unCflQOzKjDoQk4B9OdNG+BfeJVUfKWorrVqNEOjlxJZNQxQPOAqVs7BkWWuKnP0oBvidtiq5u0Pbvfg94zHIcDmnZuCxNg4QC2LG14vIttdRQUkGOU3zoA
- unoYrxf4
- p7RGf+cs1KagpcKYM4H7tTK3cucPqVwyWe1XPBOSM8974sf5wI5NX6Leyf1ABMBSn0hJB+w7rGG1kkTgAhrWZFjZXh/OkLrJryuGgWt/l8Giojow5tdmdILRc8GYlzfMBFL1G0UkCVCAH1jATM6rFTvj7l9WKM/rsPd4UNVdHjtg2jtQ/8xu8jMALMV9XKNdFSGoehXAO7uNF2tEcGNZqaecbKrKFYIWdsieAve6mGL7Z+MfLtQcmFyzQPufsrHjjEbZB5OP8dv7dtPTgXx/1UEyDxPFQ61xDd+PwFn8q1e5kTUla+SBT1CISeO6AvrWrYKorh2zHskr+6mA=
+X-HE-Tag: 1770624811-816514
+X-HE-Meta: U2FsdGVkX18nEX8J0+ZAKpnu7If0sJCHxx986JLC6o1PkJ+U73qwYduuG3E09h/ALYJvPzrD7cJ9xfzR5HDQkmpAjrbaLG4gnndQZK519ykhY0wdcc+x3arJei5rkSjwXeT+bhIdDdiuKVoGamu2u7J3kDhy02sI/KvU+6sTc40njsHdb7jCIzvXlE8QuB3fe9AxosIDddNa/RjmvEvWYJWxVYIhV3E+hirfeQLVulOORPRy9vtkC5EitZZZ2WKOIAedw3f/uBaKw9xZCrxOjzWVA5AXhUMPkc9pu/jPXFh6Erv2FwgpyCNnkmw9TEnq5JjCHtPcG40Ntl6WkUnjVHdzHlVBPUZwQ1sCs9iN53LDHo8kjWkgTx2cLz3eEti1xNAIkkAFugF3TBxwSR1KoMkhRdYuYqMJmFBnGF0+Qk+y52cQcSHKVkAtazxfHbeqnCho4LGQwB1Y6sLO5v2BL3hG3xo6SLcYcUQBKi/geFIbbbs+ze3CNmVRPSl5DmSADBcQTxTpFkh3Qpg1vebUNklpsEC2SYoHssLidiK9UxXQbHVRnl9iI2CuzDz2sV/8plSh73qu512Hr4egOID+Zqc19RFVs/O0EM+c9KXn8jBrx4d+v64HwLv+sJSUhAU6VmYP3bczbXMvM9AEVlUpUaGXE8yc8iVnbuk554uWAH1xHWiBA0FLkWO/W1xjUdkHxMq/hGFciYW6HNE9QYw+WW7gQfUPOjXj3XAT5QSpIHtaYBDl0BXQ6ju3ifzy77w9O+oVVZ8RpaVNipXwTSsPJ+M9W1k8qTbeRGVyRHudste4Uj3TpJKowAzWC7FigNReWBFQ3JhgF9PtAKYIljmzOBTl9rdC5YA/hhJpGndqCCmQcpftoE6wrYVPab0FaXE5uww70EHhUdy/4u3KMJM0Sm5L6VaWK2hEu+xVepGIgrEafnglfA+rn2m8nrLo9OJTOwftp+IfPOta/XDQ+J3
+ T7fXHKt6
+ Yap3zqnltCgN4l+4XguUf6k1pRhIoersQRp2q+dcFnSYJ7a8drySCUyqtWgFGrFITLPXuSoAn/co02KSxzq5m1XUjbO7rR7ZJoIuDR2AQxUCUXV4wNi5OyUs2JszRpeG523A87ZdDA0/bUl/Lxd08so23LrbcHhGTFlw5c9q4/T4T786Kk+k0gbcQ9KnSS17NuoE64FOUHwKMbFbVEmJRuckCpjmheAN4vZUSQBP29EODS3itFaYg4FOMfqUxs/t5Tf78J1MaX/c/y7VyPd4wi20sjE40JjY6wbiY/m50J7kHEsweGzL58BFBXZLsj0JzUcz18PS5Tywi5KzLXRrh99kByIlFXE6r2MuaL7npsJ4RUOWNG1vEBSKBgeIRELtS/fkEC/BuHl5N5GxjaEloatVF8GDtXjv0qtEEIJ+QtAz5jRGHWyggHfiqAtx4itRzLkXVueIYVONsJsWFFd+/Lg4f9inNADOZpUX1XKaJNOYhxoY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,28 +119,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/28/26 17:28, Mark Brown wrote:
-> The stub for cma_skip_dt_default_reserved_mem() is not inlined so
-> triggers build warnings:
-> 
-> In file included from /tmp/next/build/fs/proc/meminfo.c:18:
-> /tmp/next/build/include/linux/cma.h:68:13: warning: 'cma_skip_dt_default_reserved_mem' defined but not used [-Wunused-function]
->     68 | static bool cma_skip_dt_default_reserved_mem(void)
->        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> which are fatal with -Werror.
-> 
-> Fixes: 26332ae848f08 ("of: reserved_mem: Allow reserved_mem framework detect "cma=" kernel param")
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+Correct several spelling and grammatical errors in the page tables
+documentation. This includes:
+- Fixing "a address" to "an address"
+- Fixing "pfs" to "pfns"
+- Correcting the possessive "Torvald's" to "Torvalds'"
+- Fixing "instruction that want" to "instruction that wants"
+- Fixing "code path" to "code paths"
 
-$ git show 26332ae848f08
-fatal: ambiguous argument '26332ae848f08': unknown revision or path not 
-in the working tree.
+Signed-off-by: Min-Hsun Chang <chmh0624@gmail.com>
+---
+ Documentation/mm/page_tables.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-This is not upstream or against an mm tree. Against which tree is it?
-
+diff --git a/Documentation/mm/page_tables.rst b/Documentation/mm/page_tables.rst
+index e7c69cc32493..d5a2c37b05e4 100644
+--- a/Documentation/mm/page_tables.rst
++++ b/Documentation/mm/page_tables.rst
+@@ -26,9 +26,9 @@ Physical memory address 0 will be *pfn 0* and the highest pfn will be
+ the last page of physical memory the external address bus of the CPU can
+ address.
+ 
+-With a page granularity of 4KB and a address range of 32 bits, pfn 0 is at
++With a page granularity of 4KB and an address range of 32 bits, pfn 0 is at
+ address 0x00000000, pfn 1 is at address 0x00001000, pfn 2 is at 0x00002000
+-and so on until we reach pfn 0xfffff at 0xfffff000. With 16KB pages pfs are
++and so on until we reach pfn 0xfffff at 0xfffff000. With 16KB pages pfns are
+ at 0x00004000, 0x00008000 ... 0xffffc000 and pfn goes from 0 to 0x3ffff.
+ 
+ As you can see, with 4KB pages the page base address uses bits 12-31 of the
+@@ -38,8 +38,8 @@ address, and this is why `PAGE_SHIFT` in this case is defined as 12 and
+ Over time a deeper hierarchy has been developed in response to increasing memory
+ sizes. When Linux was created, 4KB pages and a single page table called
+ `swapper_pg_dir` with 1024 entries was used, covering 4MB which coincided with
+-the fact that Torvald's first computer had 4MB of physical memory. Entries in
+-this single table were referred to as *PTE*:s - page table entries.
++the fact that Torvalds' first computer had 4MB of physical memory. Entries in
++this single table were referred to as *PTEs* - page table entries.
+ 
+ The software page table hierarchy reflects the fact that page table hardware has
+ become hierarchical and that in turn is done to save page table memory and
+@@ -212,7 +212,7 @@ threshold.
+ Additionally, page faults may be also caused by code bugs or by maliciously
+ crafted addresses that the CPU is instructed to access. A thread of a process
+ could use instructions to address (non-shared) memory which does not belong to
+-its own address space, or could try to execute an instruction that want to write
++its own address space, or could try to execute an instruction that wants to write
+ to a read-only location.
+ 
+ If the above-mentioned conditions happen in user-space, the kernel sends a
+@@ -277,5 +277,5 @@ To conclude this high altitude view of how Linux handles page faults, let's
+ add that the page faults handler can be disabled and enabled respectively with
+ `pagefault_disable()` and `pagefault_enable()`.
+ 
+-Several code path make use of the latter two functions because they need to
++Several code paths make use of the latter two functions because they need to
+ disable traps into the page faults handler, mostly to prevent deadlocks.
 -- 
-Cheers,
+2.50.1
 
-David
 
