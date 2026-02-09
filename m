@@ -4,164 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48382E81BD3
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 17:08:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 429ECE7E0CD
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 17:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5FDE6B0088; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
+	id 8F2E06B0088; Mon,  9 Feb 2026 12:12:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A20076B0089; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
+	id 8DD9A6B0089; Mon,  9 Feb 2026 12:12:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90BB06B008A; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
+	id 7C9456B008A; Mon,  9 Feb 2026 12:12:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 80E366B0088
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:08:46 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B248D572B3
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:45 +0000 (UTC)
-X-FDA: 84425552610.05.CCAE172
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 258FD160005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:42 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=cYSdSNGQ;
-	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D8AE6B0088
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:12:59 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4123CB2810
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:12:59 +0000 (UTC)
+X-FDA: 84425563278.01.3281D1D
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2A2A3100003
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:12:56 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=m4Yhz0p1;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770657177; a=rsa-sha256;
+	cv=none;
+	b=p0NZccNK56deLrDrDvKhgKbfwwCV8hUOPMod7Ul2XqZou1hPOFQHxNJzLNQmfTK707v3o3
+	RFH8UQ9Jv56H6LZZan1HnRcLXR8LnMZvT9Wp34OZ/kEmHC8PrmKbcR5o35HD6vMyUf04kq
+	jckbEGbomjNeyWKbaXuzCHX3y4Gy8vg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=m4Yhz0p1;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf14.hostedemail.com: domain of lkp@intel.com designates 198.175.65.18 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770656923;
+	s=arc-20220608; t=1770657177;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V+SiWgduwxees+zomWnRSsdKtq4DlrLkGTFXFHvdFGk=;
-	b=gG55pfz9CinnIj7K3TlJW+JMEibeHe/R/2IqR7JL2hXhKXCPs1HJzjMrZUnhC8ONfVnxLc
-	BGYgqzK+6O7mZYGr8oVfrx8HTXeLXsCIHkzkBACSiQuRuRINzp+sUBmAhcEkepzaLx7IdK
-	HdhIXvvyGFwfo3ybdQ5i82FYHPMMC28=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=cYSdSNGQ;
-	spf=pass (imf08.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770656923; a=rsa-sha256;
-	cv=none;
-	b=F/kJnJjW7rsONOK6qm5sJ6+YZgJwcpSTqNcSuey5RENXbbrvkMJqzs6PpjxXdGylJk6obS
-	OgWJkk2Usfc2wYkt1lKTbsv1glEgzTqDcZabyzz/z0SBb0jQQbcCTC+Aih/Ouh1IFF7ae4
-	JABuKVugr7w6iZS9Lgeec6ABYOcNYeA=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619GkPnV501539;
-	Mon, 9 Feb 2026 17:08:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=V+SiWg
-	duwxees+zomWnRSsdKtq4DlrLkGTFXFHvdFGk=; b=cYSdSNGQSnFMx3NRwDFmIz
-	TvgrvbcYdQvO8LbcyVdkAjIKYmlTWgeRJrXrYetV96mnVqZEqwviN7JV2gMSxcWO
-	9I5IeI0TRVCyALVlHFJWWP5b7pZA0ahRIJROr2v4c2IlRLr4jp5mfN5L735zL1Ef
-	9JKUaxeYnwP5Ijor/LBj/HZD6uILhDYVdzoNbLu+Sz7gX24UTY5AlmVnCk0f3lgl
-	nx/8HkuDboBycUJ1Gx7Sb6jlbSPbLalJQP2N7rdSB6avBeCrz8q0n536Xk85/Gg6
-	q0S31jhvnIYdV5cfjH9Dbrzu3x6bgJXJc7aqa0kYSx79NwI7WfB+VcfGRj6ncUaA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696w0buq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Feb 2026 17:08:07 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 619DWTH9001499;
-	Mon, 9 Feb 2026 17:08:06 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6gqmx29g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Feb 2026 17:08:06 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 619H82Zo25494140
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Feb 2026 17:08:02 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EFE6420043;
-	Mon,  9 Feb 2026 17:08:01 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6553820040;
-	Mon,  9 Feb 2026 17:08:00 +0000 (GMT)
-Received: from [9.111.207.126] (unknown [9.111.207.126])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Feb 2026 17:08:00 +0000 (GMT)
-Message-ID: <113e4e4d-8b7a-437d-a3a2-de74acc9ecaa@linux.ibm.com>
-Date: Mon, 9 Feb 2026 18:07:59 +0100
+	bh=WHG80cNLOTnnJm1UrutLtsSI/97fF9XWzn50Z9GVgng=;
+	b=tP1EGs06tpVwuGBP8ieOyDs69Hs0hl4gu92MRXHNoKtAaOMa64r4G9eUFV9OcZhHVnaR50
+	tfzn/OSQu0lgtJ3ua6D1qdRkyTUJ49v4NY+qkT+lgL7QPvZz9AAOuSztdkjZZkqOUdv+x0
+	Ys4scx14q2MeyREPZDV1sibNvvkcyGM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770657178; x=1802193178;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8Sub0P0wBitsQtcQWQoClr/YneNNLGxR7ML8aT1JB/s=;
+  b=m4Yhz0p1eHj0r4WD8QIgOFRxhrH/OfZt9RsrjCuzXCIRJpASVfqM1BmP
+   QKe1M/FVY8Icv7DzypnucMDMpmglQ3QdgFi4aoIT8qDYAEl2/x4YHRFey
+   AxHWWBjiVZi7v4Egll+LxFEsZeERrRQ6ceXxjtThLrFbkhLvdn3Z62a3n
+   jZEDvgIkEWUP3j7X/7vjQss2DPG9V+/3kVCv3KiCDTC1KCO840Blhr8jV
+   Y5hgwJvEy8Bnnw5uXYAnv3qWmMEmXCxCfZLa+ctPHQ+d5XcpsCPB6Huh5
+   t+Ib/mSdag59RH692QoRZoG5WEaCedz6FlmCEvQMZ9fgxPaeBkaD9bqmp
+   w==;
+X-CSE-ConnectionGUID: 2sBTUXunQdm/z0qgBf0MVA==
+X-CSE-MsgGUID: dB1cPqCARuehDkYPiKfPMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="71812457"
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="71812457"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 09:12:56 -0800
+X-CSE-ConnectionGUID: kodm8n0eQkyUGfi1VPkc5A==
+X-CSE-MsgGUID: Q2xaUuuRTp+sireEBbIn9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,282,1763452800"; 
+   d="scan'208";a="211699525"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 09 Feb 2026 09:12:49 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vpUoY-00000000o9a-0q0J;
+	Mon, 09 Feb 2026 17:12:46 +0000
+Date: Tue, 10 Feb 2026 01:12:17 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org
+Cc: oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
+	hannes@cmpxchg.org, hughd@google.com, yosry.ahmed@linux.dev,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, len.brown@intel.com,
+	chengming.zhou@linux.dev, kasong@tencent.com, chrisl@kernel.org,
+	huang.ying.caritas@gmail.com, ryan.roberts@arm.com,
+	shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk,
+	baohua@kernel.org, bhe@redhat.com, osalvador@suse.de,
+	lorenzo.stoakes@oracle.com, christophe.leroy@csgroup.eu,
+	pavel@kernel.org, kernel-team@meta.com,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com,
+	joshua.hahnjy@gmail.com
+Subject: Re: [PATCH v3 09/20] mm: swap: allocate a virtual swap slot for each
+ swapped out page
+Message-ID: <202602100110.Au8uHgc8-lkp@intel.com>
+References: <20260208215839.87595-10-nphamcs@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 00/18] unwind_deferred: Implement sframe handling
-To: Steven Rostedt <rostedt@kernel.org>, Namhyung Kim <namhyung@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu
- <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-References: <20260127150554.2760964-1-jremus@linux.ibm.com>
- <aYTgwoyRl8kxQShT@google.com> <20260205135411.5fb22df2@gandalf.local.home>
-Content-Language: en-US
-From: Jens Remus <jremus@linux.ibm.com>
-Organization: IBM Deutschland Research & Development GmbH
-In-Reply-To: <20260205135411.5fb22df2@gandalf.local.home>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=YeCwJgRf c=1 sm=1 tr=0 ts=698a1478 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=1wei54M0JlXa_cUNk-YA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: 6pOW16P1XhSQuI3JJirwxxHhVPPpl8Nt
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE0MSBTYWx0ZWRfXyPk1TShJpjFg
- TRcEnZRgpTGTU6Gwj8TdWCJ3KO4QSZO01sZ3yCvl8pqdm3wyIxLYmUiMdtdy9p5YWSW34PwFfr/
- cVKshdKgZpu3sjpoF2+UHdlwdcIZSEY4bs8UZ2FTjswVBBikq+mvJXupgPi1dsdSrWm9tq469eN
- xvgsN3MRJwzWfd5lfkZeeMK+GQOg/m/FBIH4MewmaEcyFuFZ61fOCWMEuS9WXxnTqodYhRNncZ7
- WGmjiBiLu+dU4WiSl1nbTbo2YN4ZGuGWOCFVaXs+lkpEnuUo8tKKqyrHhgrhoiQBrynMFL7Ib1J
- ubA2JtF+UH6CwKeCbWUUWI2rXFa4c+ceaNJZV8h71qWMrHPtoz+mXQGj/FVDbszn2KIjdJW46Qd
- is5TOuqlE1/xaTnbuM7vcqNMwQLKP8AIdXZJw6r7GDoogA6eSKJ9Wok0CL4HdZXC96l7zkjdtR/
- Ih8Qs7LVYW1HAnzx2qQ==
-X-Proofpoint-ORIG-GUID: O1UEHkJ3Y0btRd8FNQdSrr18n7ct04xA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-09_01,2026-02-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 clxscore=1015 impostorscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602090141
-X-Stat-Signature: wh6udb1rs7oatadpszr3ddd57o63pjy5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260208215839.87595-10-nphamcs@gmail.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 258FD160005
-X-HE-Tag: 1770656922-28129
-X-HE-Meta: U2FsdGVkX1/mJS8l+osbxZ50/rh2xuA0/FvuEBahkDgWjD+dfi7RqUBTa5sedpES6KnWUilq60QF0WMGUrGQcPgSSVBIMsrtGuqhAFEbzcGPk1O263Jf6StA2sQHqju2gesZddwZW/XgrNDEpntBcqy1PaBGEVxAGXRS1NL86MfDVAJ+BmXHMYCXMf9C/8roQoMuaH3k25ZX/7mI+8CCE4t99KN1RPE7tb/QP5VohlCxUHw2pIDTNfX/lq+FqqCjBGVpmbwJbGkPEfIcl2PhnGS/rrMnG5uG17B4LsgWb3wg+Nhuw2DCvyjiFALEEjxm5ZJcfdelBj+UhY24BWYmW0Y3cTA5DDpmqvkiXWuSkXXTgI57FCkfFx9nWP8yCRQIdF++v3oUJrohEz3xIIDibLWUfF1Ot8WDO/YSn4Q8LZQR8E/KthsawvUwvSjzHlGTGaksddjF0RNN79dRT/XMmQ5LdXrd20TIPkOE7MWwSjXZB+e21SZae+/KaYdgWELDbF5qDfZXGJ8E4SjObQLNgK9dIj9FAX+fJ2ljFAFrYRXgXYmlLg4rwI/3cGIFcghgAKNy7O17vqgG94+uphNzqwVRSi+G4nw/Kqdh3YfhRV134Itkr1Kj/UD554B3a4NPMRpPdd6HIrCt4pstaMxgAuk+CS2kAytopicUxv+K0FI1W46+ztuOnCz9UZmzsecNj5xpX1ytv2b2/HZ8j6nZwwZ47jkcUBgjm1IKBD+0qT5xmkpYPFoAGrYDltcSYfkb6wVIF9qaWJy5NxFQXFUIWH2tJqIZH8LuPo53hYQok/vvoYR1k0UoTlxUTfbNQ82ozXntvnT22yeWEEBneCA+3GX2vnwJLUpdJ/+NpX0kv/OZc3Ltcy2vpBAvOFOZgtnWTSHzZnTWk2ljthJXFON4yx/iHwuPziTHoUykn7GGngezrsDJsFOw3z0EI3RuKt1wyhz9c7BgXe1m59mf2Xv
- csERqUjC
- g1UsociU8jKASFLkL6aBAFlpNIGQi6H4/3V+m4xebySxGgoqoKhjU1Ht0aIOzynsAELcQI8/X5baWfWA0TDEVjFUp3pRrwAWX1Twvx/DSWHmQRXYzzgUbwY0zW1BjUaj7qKZFTH2UBYdjAp0Y4BBqCwhaZJey8qiwPzmwSii1ECOHq32GDx5KMAgJ4mcjZxnp5OPuLKVg1S8b50iLHTiXIH0txQ+JATeU3iDZ3W8uUV7bEie9D3Dow4CxmP6BHOg5G74IgGO0X7bvvoJ/mMQJk4PI9aPxG49g1cVa7caW3a6F1dAebIKiQh3gihA20ytpfkqHQvdxFU2Ab21kgZ8AtZ5+zX8RlgdeEZRpiwymVK1aftfFhCNEzaSOLHP/blW7WVmD
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2A2A3100003
+X-Stat-Signature: 33jcicpw3adupxw8sa5w43gzbyuaa9pm
+X-HE-Tag: 1770657176-938492
+X-HE-Meta: U2FsdGVkX193EM0QwaNTLeDtDzqATn8h4XUjw3LL2KiPynjwV/0B5Hj2xlLUnsUsjcnZilVVuaTNp//cyAs17zt/7+0Rw/kEK5HR7vy6Lxzq4xNK42gaFUnc/bqDBUSz0m6rUuLn+ncg0egLVqHsdSzzW5Kud3zGDR9jkwuEFwgPu76YzeKsUdmUQ/GKzEZJZmLJYrlhSIPvHiUUrZJrgwbqWUzAP3LVfsmnnx3owK9J4vEFM1zbVu0AUrgdwADSsb1AGnF+kT4NSHH6rNvjFH7C1hg/SoAuBLY5KNY0jCL4DAeS8tM9vc/ACtp+wEgYhVAPqC3qz8b7+km3RzhO8Mo5U0suck8ehQS/C7ftXAoNCyPI2Td9gE1yOKtQ7+bIIGuFHkQLLXZ/BhUtpfRlPJa7jPYgtHWjjVXSkUR7PQnU+W//BiFfhCzMk0gKqMhC8ow/GTrLV8MpToEsAmH7mq2yD8pwsIXkZjHK309G5OlIlHJELqv96ERxRhK7gD3wSn7lpUm9rXetZc3R6dTeovJc5RJKApPXyJV72o9rQSEnZHkwbgPZ6RMw3ZoX4BsPtH/VRWIA4pMBSmpiPkVCdyCtScQba0NkHALeU3GfJxgX21PW1S0TnADVyrVpXatdKVSXWOnxPoAGNDzJsqJQ68KSGwp08I/R98sXARMDuuRtGnvJm50ClM3bdnPl1DWsudlQJ0viM5hXueS4QE2UhdyyyG11xbBQWfSvvA4LMZ0gnGC25rH5wieBJ8dvx6WBSWF/CpfYKBhGxJKyfz95OXma0m5Jx3L426eGrOWbmBbbxkHACnWQefJNU+FTvObx03D7TAtzq5RqdR8UxsI4ivHYIHZG1JihsPbYu1DnnqjNSbcRl+TYBYXGwSowoL+KdkH5yy/mk4chErKgO1+kN0UWjRf9S4PX4QMyBNr+HzF0URgnTXIZjYuPCX6OpgXm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -170,39 +117,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/5/2026 7:54 PM, Steven Rostedt wrote:
-> On Thu, 5 Feb 2026 10:26:10 -0800
-> Namhyung Kim <namhyung@kernel.org> wrote:
-> 
->>> Namhyung Kim's related perf tools deferred callchain support can be used
->>> for testing ("perf record --call-graph fp,defer" and "perf report/script").  
->>
->> Is it possible for users to choose the unwinder - frame pointer or
->> SFrame at runtime?  I feel like the option should be
->> "--call-graph sframe,defer" or just "--call-graph sframe" if it always
->> uses deferred unwinding.
-> 
-> Currently no, and I'm not sure we want that do we? The idea is to use the
-> best option that is available. Why use frame pointers if sframe is
-> available and it's being called with defer?
-> 
-> If there's no defer, then sframes are not available, so it defaults to the
-> best option available (which will likely be frame pointers).
+Hi Nhat,
 
-Maybe it would make sense not to "overload" the perf record option
-"--call-graph fp,defer" and use it for all deferred unwinding methods.
+kernel test robot noticed the following build warnings:
 
-What about "--call-graph defer", "--call-graph any,defer", or
-"--call-graph *,defer"?
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.19]
+[cannot apply to akpm-mm/mm-everything tj-cgroup/for-next tip/smp/core next-20260205]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Regards,
-Jens
+url:    https://github.com/intel-lab-lkp/linux/commits/Nhat-Pham/swap-rearrange-the-swap-header-file/20260209-065842
+base:   linus/master
+patch link:    https://lore.kernel.org/r/20260208215839.87595-10-nphamcs%40gmail.com
+patch subject: [PATCH v3 09/20] mm: swap: allocate a virtual swap slot for each swapped out page
+config: s390-randconfig-r134-20260209 (https://download.01.org/0day-ci/archive/20260210/202602100110.Au8uHgc8-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 14.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602100110.Au8uHgc8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602100110.Au8uHgc8-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> mm/vswap.c:653:9: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct local_lock_t * @@
+   mm/vswap.c:653:9: sparse:     expected void const [noderef] __percpu *__vpp_verify
+   mm/vswap.c:653:9: sparse:     got struct local_lock_t *
+>> mm/vswap.c:653:9: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct local_lock_t * @@
+   mm/vswap.c:653:9: sparse:     expected void const [noderef] __percpu *__vpp_verify
+   mm/vswap.c:653:9: sparse:     got struct local_lock_t *
+   mm/vswap.c:665:9: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct local_lock_t * @@
+   mm/vswap.c:665:9: sparse:     expected void const [noderef] __percpu *__vpp_verify
+   mm/vswap.c:665:9: sparse:     got struct local_lock_t *
+   mm/vswap.c:665:9: sparse: sparse: incorrect type in initializer (different address spaces) @@     expected void const [noderef] __percpu *__vpp_verify @@     got struct local_lock_t * @@
+   mm/vswap.c:665:9: sparse:     expected void const [noderef] __percpu *__vpp_verify
+   mm/vswap.c:665:9: sparse:     got struct local_lock_t *
+   mm/vswap.c:182:36: sparse: sparse: context imbalance in 'vswap_iter' - unexpected unlock
+   mm/vswap.c:284:17: sparse: sparse: context imbalance in 'vswap_alloc' - different lock contexts for basic block
+   mm/vswap.c:413:19: sparse: sparse: context imbalance in 'vswap_free' - unexpected unlock
+   mm/vswap.c: note: in included file (through include/linux/rbtree.h, include/linux/mm_types.h, include/linux/mmzone.h, ...):
+   include/linux/rcupdate.h:897:25: sparse: sparse: context imbalance in 'folio_alloc_swap' - unexpected unlock
+   mm/vswap.c:570:9: sparse: sparse: context imbalance in 'swp_entry_to_swp_slot' - unexpected unlock
+
+vim +653 mm/vswap.c
+
+   643	
+   644	static int vswap_cpu_dead(unsigned int cpu)
+   645	{
+   646		struct percpu_vswap_cluster *percpu_cluster;
+   647		struct vswap_cluster *cluster;
+   648		int order;
+   649	
+   650		percpu_cluster = per_cpu_ptr(&percpu_vswap_cluster, cpu);
+   651	
+   652		rcu_read_lock();
+ > 653		local_lock(&percpu_cluster->lock);
+   654		for (order = 0; order < SWAP_NR_ORDERS; order++) {
+   655			cluster = percpu_cluster->clusters[order];
+   656			if (cluster) {
+   657				percpu_cluster->clusters[order] = NULL;
+   658				spin_lock(&cluster->lock);
+   659				cluster->cached = false;
+   660				if (refcount_dec_and_test(&cluster->refcnt))
+   661					vswap_cluster_free(cluster);
+   662				spin_unlock(&cluster->lock);
+   663			}
+   664		}
+   665		local_unlock(&percpu_cluster->lock);
+   666		rcu_read_unlock();
+   667	
+   668		return 0;
+   669	}
+   670	
+
 -- 
-Jens Remus
-Linux on Z Development (D3303)
-jremus@de.ibm.com / jremus@linux.ibm.com
-
-IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
-IBM Data Privacy Statement: https://www.ibm.com/privacy/
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
