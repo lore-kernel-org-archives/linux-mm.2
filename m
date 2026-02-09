@@ -4,94 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 899CDEF06E5
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 03:50:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7C62EF0712
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 06:11:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BD6DF6B0089; Sun,  8 Feb 2026 22:50:07 -0500 (EST)
+	id 6BFA76B0089; Mon,  9 Feb 2026 01:11:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B84916B0092; Sun,  8 Feb 2026 22:50:07 -0500 (EST)
+	id 66DB86B0092; Mon,  9 Feb 2026 01:11:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A90C46B0093; Sun,  8 Feb 2026 22:50:07 -0500 (EST)
+	id 545CE6B0093; Mon,  9 Feb 2026 01:11:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 94D246B0089
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 22:50:07 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 28F2F1A0688
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:50:07 +0000 (UTC)
-X-FDA: 84423540054.14.571BA45
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 04071C0009
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:50:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AHdaa4Km;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770609005; a=rsa-sha256;
-	cv=none;
-	b=mntfbq3Q5tz0dwZyo5h1LhNCJhbUAlAirAdGhfLxkyE5S7QWTPbV2WgjVXoRE6VBiiTfV1
-	/ZQrf36lu+FG3uChP5q+xLC0sUZQnen0q2Yffsn6LZ+d3yuF998MkhlqSoptgnQru/Yjj4
-	ddzgIiQ5PYlhjQkElrmXAqioHE/jqz8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=AHdaa4Km;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770609005;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 410D46B0089
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 01:11:15 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AC97B5A341
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 06:11:14 +0000 (UTC)
+X-FDA: 84423895668.10.5D5BDDB
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010046.outbound.protection.outlook.com [52.101.85.46])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 5DEC6180005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 06:11:11 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=cOGtOhJs;
+	spf=pass (imf06.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770617471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZUEvjV24W4taMCJI79PwPAm96gzGFacZTZhUwE8Scdw=;
-	b=1FqevA94eJvSZNX1Bv3lHeuY4EoFxD4B84yJnuCjc6cHpbOHhTDCSp459UHyJv3RNj3YDF
-	47GGSS3H1eLKWJFyuhwLOyrn/4V+RG73rGV8XuJZLCzgCVw/JS3XhJ6DE5ej65Uus0THRv
-	I7pdsmevg+Qjmhz7ejKQa8bd+Lb8VNs=
-Message-ID: <2a0e4ae2-457b-4d16-a7b9-7372fd665337@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770609002;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZUEvjV24W4taMCJI79PwPAm96gzGFacZTZhUwE8Scdw=;
-	b=AHdaa4KmJv0DVYbZg2OETQenH+i0unZQZKmxwtvZguQZPX0Z3ACaDjJDpeJbB65N60qqHY
-	dRVVsXNsFHEXwd/IfzXfcPLnHCh69Sd0TQlJ1CpeaBHIqt1CMrNe8grlG0RbwoKvWbZwIT
-	XurKQaHuQceIlzO7x+59wMkxJ0iYw+E=
-Date: Mon, 9 Feb 2026 11:49:43 +0800
+	bh=TMbvLyaAvNXsFoSV0KbS9N3tGeqxMjOmorgMDw9FoPY=;
+	b=QGjiLf1ZkcybgcTopCQcMYftwdANP2ICefCWoL+b/FOPbbpVK5B5+9Fx/LrYwZ+kTTs42c
+	NkFvaq/e8b3XepTVaOAZNJAhdgn/c9rkdHXjPWbzDpHYe+aKboWp3regauVU8NP8ngeHdn
+	OpTQruCoZ+RJVLqJ6owExKgfEhkRQTI=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=cOGtOhJs;
+	spf=pass (imf06.hostedemail.com: domain of Honglei1.Huang@amd.com designates 52.101.85.46 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770617471; a=rsa-sha256;
+	cv=pass;
+	b=WA/lD/dG4OtCP5bIeKwBpRbdz2GVmLtpIUAXIpHUYZEdGujDkYTryOrJSyTTPQDEW8iGgW
+	X10fVHjOFSS3uvQq2R8lpsJtcgEi2v3/JbUT8bxMGApnmkhChriGBQ6z/fe9QfEDkEQuFw
+	4uKgs3JPeJMscSODTiuZyqXEk1e4gA8=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lNbVvGADjqgL0mufX/e8998UZ+S8199yTtf6WbNlkY8EzEE85NdLYnUSYGRuJPYBHZX1UN4L3wp0+HJTsQSaKDyXN1bECvbLqz/k4EuSj5yLVtBiERWyyXvYppPSUoiiVj+YOxDTClh/23ixyfuYB0WOxCPJzgvJ9tJyfTjZ/m9KjzC8rfF5UT1OlNw5WZBPgYr7doqpAS9NTomjOvNEHBb8aX40Iuos3NXlrPTnQjZMpmKmKFWauOu4Kfq+TSILHunT73iUgBRz+jwE9g892dpFs+AwhknQUZPRTJ/ejgOygzvY56pYtotndQjxTorKAsK1BFFv59PGyNeCluCRRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TMbvLyaAvNXsFoSV0KbS9N3tGeqxMjOmorgMDw9FoPY=;
+ b=C+ehacZe7zN5WinWTA0wvTr03Uuv+CDVCM/0Xds3geXg0lFxALbXC59GcJxx3R2eQEY0I7wMeCjQDVfB/FRRH8RhzpKQjdTVnkVyvuy1xRwqABwupLd+FaYi4TUeDWL6MuXtDHI3bOQndfJA9xZsXcQJa8GY9tmlZ/YmEI0A7l4nClmlaeW8GXKeIIwcaVlZFBaee5NmsrHVNxJWGytBpW0UK47VSUNnnmOI+S3I+2A3HBaPurv1fR10peH58tDpoKl+ZGqU/pAs6o01wmgY3wyjjYPZGlYPANpylj2iwAPf0CnJAPjd6A145avQutR2jj2hvPDXfhHlPeDFCIICeA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=collabora.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TMbvLyaAvNXsFoSV0KbS9N3tGeqxMjOmorgMDw9FoPY=;
+ b=cOGtOhJs1h3LTfrB7CHZbxDk3hfalIFPl7nUfcBuUN7uvTr1JJE1/6E6f4LfU5MBJNUj1DZ5FI9D4G8W6ami+C93H5h3ElVFE+YLKYPTOQUlYcDSocg0kFPGkm1jbi71qFHyOm0w23HdTbaBApKITCm3Ozt72DeW7nehtpM0OqA=
+Received: from PH8PR02CA0050.namprd02.prod.outlook.com (2603:10b6:510:2da::19)
+ by SA5PPFCB4F033D6.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8e2) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 9 Feb
+ 2026 06:11:06 +0000
+Received: from SN1PEPF000397AE.namprd05.prod.outlook.com
+ (2603:10b6:510:2da:cafe::7d) by PH8PR02CA0050.outlook.office365.com
+ (2603:10b6:510:2da::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.19 via Frontend Transport; Mon,
+ 9 Feb 2026 06:11:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF000397AE.mail.protection.outlook.com (10.167.248.52) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9587.10 via Frontend Transport; Mon, 9 Feb 2026 06:11:06 +0000
+Received: from honglei-remote.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 9 Feb
+ 2026 00:11:02 -0600
+From: Honglei Huang <honglei1.huang@amd.com>
+To: <Felix.Kuehling@amd.com>, <alexander.deucher@amd.com>,
+	<christian.koenig@amd.com>, <Philip.Yang@amd.com>, <Ray.Huang@amd.com>
+CC: <dmitry.osipenko@collabora.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+	<amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<akpm@linux-foundation.org>, <honghuan@amd.com>
+Subject: [PATCH v4 1/8] drm/amdkfd: Add userptr batch allocation UAPI structures
+Date: Mon, 9 Feb 2026 14:10:40 +0800
+Message-ID: <20260209061047.3881808-2-honglei1.huang@amd.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260209061047.3881808-1-honglei1.huang@amd.com>
+References: <20260209061047.3881808-1-honglei1.huang@amd.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH v4 30/31] mm: memcontrol: eliminate the problem of dying
- memory cgroup for LRU folios
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
- roman.gushchin@linux.dev, muchun.song@linux.dev, david@kernel.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
- yosry.ahmed@linux.dev, imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- chenridong@huaweicloud.com, mkoutny@suse.com, akpm@linux-foundation.org,
- hamzamahfooz@linux.microsoft.com, apais@linux.microsoft.com,
- lance.yang@linux.dev, bhe@redhat.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1770279888.git.zhengqi.arch@bytedance.com>
- <9e332cc8436b6092dd6ef9c2d5f69072bb38eaf6.1770279888.git.zhengqi.arch@bytedance.com>
- <aYe1R2MMcXbPVYUW@linux.dev>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aYe1R2MMcXbPVYUW@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN1PEPF000397AE:EE_|SA5PPFCB4F033D6:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6dd66dde-d3c2-48b3-e25c-08de67a202e3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?e3yRY+/GarfzaibHXTf0+KPddfVu3sGpJ4EVj5TkQTAXxi6jXTTikNNhRgK6?=
+ =?us-ascii?Q?ERvzAEa7PRWPDcNDTJqbztVT5fXG9dN83/+WPFa4MgncnPGxD6HIMPL9U0Qw?=
+ =?us-ascii?Q?Mvk10s+PZlctRCH3QVtWVukTHYg956BfP93d0QBtbWwAYS8vA0/IHDfzU2xC?=
+ =?us-ascii?Q?l1CQFypEaXwvBYhwT3qArDQjdOOKq1RYIk3PO/LW932jbBC1AdI95OZZ1aWS?=
+ =?us-ascii?Q?5E2dFkWdPCjCEip8ZRB7PNYTdVlDwjw/4niKz6GjjCPyipt2St8sEaqBnsNx?=
+ =?us-ascii?Q?JmztUZ3U8a3qw9xPieg+wQZ+UaOu8QnF/Yz+7Nlj1+1JfDRfGgTv8WFx/+gK?=
+ =?us-ascii?Q?q+uhtPfCZdsWTiMFp0YeQmv2Q2OhivyTBRMMbdujhY9bmr+ncNfOZW7tHLyl?=
+ =?us-ascii?Q?Ay0wmSXtSQbGMp/PAhCRAssiqotQEU4NgRrqqwOuTsc8r4CLhAd/Rn96rEda?=
+ =?us-ascii?Q?a5AuBeKQe3JEjAimNRmd9PWHB3BieoQC2tLg4WcZPhFnTNhyo2a5etnNLSSz?=
+ =?us-ascii?Q?7TY/teYYPp1IIgLBiF0QE8eRLXGlq7MiJD0v71/opTbZDtn0jPh/tNilxENk?=
+ =?us-ascii?Q?XgxJ70se2o5u8obveFJCyaLLOJ3NUWxCeDtN+omMk2Zyz//+dEh9VVX6Ww7+?=
+ =?us-ascii?Q?ii3dSKbnFkjUNsrqxPEZxzG3JwRrnunhbycyX+T8WE3d2Z+DTVNRvsTU42rq?=
+ =?us-ascii?Q?2IS5BkCGJYP/Eaq6OWvzY/DqfQY9liAvV7z+lqL+mM3O0IS/iRKhSXufxEM2?=
+ =?us-ascii?Q?xwh5Q/kQjbT/DcDXh0mTi6LIV/KUY3m5TfjN9rEvui6HVFUUK8wkAjRUF2qb?=
+ =?us-ascii?Q?tMz9W4uC69auO7R22gBRSLBr2nR4cY6T8U0axYtoRrGRCn9TolSUHb+ZBYr8?=
+ =?us-ascii?Q?A2m+n82KbdJq2VXv0To2oxYvfXtr7NwpKaLXv1+UNf9TQzHB3a5FCOjH2KmK?=
+ =?us-ascii?Q?wG0nXCJjqWGNPoGaoll6PXHJVPs9PFmDPXfKQBzAlWzT6qh0dw982rs/6tTS?=
+ =?us-ascii?Q?VEUA+rvtvoMiaGbS5zE2wY0BcGoS9oTZA/F91etsgbhXK0vrVX0y3q3YiD7x?=
+ =?us-ascii?Q?4KNPBFqrS1G4xLtaXk1Iqln2Tz94WoFjPi3TOg7Sb2qxhh9KjZ2fKbHAbl2o?=
+ =?us-ascii?Q?XhznIdlKM30iAMq2lXc1mS8FhL8EsOoJY4mGQZviADy4zbCGOzZXMvWrLSIf?=
+ =?us-ascii?Q?08BXyg0b7bwsPirvloSKPKErItudAqOZjvz4chlh7BI4+U0jEh8XbR7YUxW9?=
+ =?us-ascii?Q?uAuNXKu2Xd3Q2LotQCcdon9ogAEKKSSKj6S04zfaPpUqeTNw6oPiR0qb3iZ5?=
+ =?us-ascii?Q?tPuSCpjwrx8IsYNbEoFD3eLqhhE5bUs8NysYXIf2AZoUEJFmEFA1rXbQrS5Z?=
+ =?us-ascii?Q?I1psWQ0NtpC0s4/4+st6ktPaR80TZEhfBSQn9RLh31t+buZIl179Zzo7eD8Q?=
+ =?us-ascii?Q?W6yK3buZ/1f4xQ/IoJJp7bcRpbOcZYAfcxKWiXJVbgd2WXNGSztnVAtTL7Re?=
+ =?us-ascii?Q?LnQEAvZKJoSpBCh8wMI9IUhtFPtbcmD9FFt1cbkZZQhfHtmY2YKWVG/PNSlU?=
+ =?us-ascii?Q?5w5xxe+wRePpcl1ORJiWImuIagKfVxR+UxFKZjhjHfaPC3Er8+DFm+gLwqtC?=
+ =?us-ascii?Q?vt2GyfQRTJe4R2rmC18CgRPPMRdeIZAjk7Lkjp07mqdrzlWXScDoHhFOvmFb?=
+ =?us-ascii?Q?nc5JIQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	DIwr0nfyLuZSisxEtrxayr68n4ckDhCol9Rri6OznEHzFmsEQEeZHrRo83YMCWee4KbdLpmj/I6BjDhKMRwHpEqdEIwxHPKi2RW8TOwBcGGacJJLNCkJ/T4T65MqfHJm4NW1U+zNGxgm7G56fK3pbUBxzCJ3mQPZq+OAr+fj4KlZnP7hxtvpFD8TcUlTnYubdeKRanKEfA0FBBWwLm4UbezpM4Ka8S7D0cs66gMfU1fiXVDfmdXiHV+64/UMuLmzdPZhSl3I5caHrCDfPwSWc/v8Q3Dxgd1FuE6wns3DRKknZbtcs5DibUcUzrcSW0I1wMWyWzLhanIbzUuyStaXduUAFVh8LHmEcq1NFhHmiLjXyflAryWAjs15cRJoHR2lKE7fWvcxAzbMDvVo6FhFZ8RjUBLKCUowjwTm4B8NUmQ/EuP3zkUyCnOKXHqqHWfl
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 06:11:06.3627
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6dd66dde-d3c2-48b3-e25c-08de67a202e3
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SN1PEPF000397AE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPFCB4F033D6
+X-Rspamd-Server: rspam12
+X-Stat-Signature: rrdabgbnthg857mzig36tbw9oo43e715
+X-Rspamd-Queue-Id: 5DEC6180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 04071C0009
-X-Stat-Signature: xtdea45ux1gyno7odjnj9kih7ti3wu89
-X-HE-Tag: 1770609004-451708
-X-HE-Meta: U2FsdGVkX19FnQ+bTfwM4Ka0p2f5JwytFoB0R4/EoZb0Wms3cl7kuuVmmYM7u101ItqBu6YlolLc4rpZtIICL9QOjI3pX9HVnf0s1Y4JyqmxgAerHdZjluw/e/YMAjaRnWbMj20nuQJx1yh0UytaMeP+yJx3TfqyWLqpr2MlB9AhcVFMBTNzNucHl86GyYv1MY85rlgnUwX5OFEaS27+D8sWFrJ3atthVAaV0gtjJOQuQBPlXS1jezMzAnXFJcC745/9LjoFUFnEpZDL6XeGWUdONlR0hb3OMokJUVWC9oAaY24MtV4fYk00UeLN9NVqnQkikHQXlkOS8fIJxkD2QniE9RbUQXtJG3xjdIdwdi+dRmGLkMcodzZWtA8xpRvmoSD3FmnACOqqB5mQDaiskh/F0C/JPCMeGI31Im1kjhYG3ZnKXvRngdAY0ko8qDjyxf3RTdiKYHTn4rXXReLo46HEi8u6qhjG+UH5P+hbGql3nNXwjxGIXB1CbP5GoBPt/J53PzHIwXOXtPgFzS3kgwCAPMlgUvsJtxN0ego+FnAE6Kef5CRngCBeOE0k/z9Z24vUjeui5bkI94CyudC+im3TZkHhnH//0mtOTqSDApfDOawQvGrfCpR4V7w4kaJnwv2VMdMCQYlbIliYR6uhgObcw1otKB+ksGJ1P7WjzskIMVpjTAGOewwZH8J/i7a5zoXVgKlPAT28WfVmSaRWtgGgHYxznpCKTKOSRoJIz8KO1nx6D+h/CJX/OCOaeZbD61l/smPp7VUqhYK4lbt91LyyUlHfCophOLih+OCPv6jhetXEtAcBQHX1GWza/tJepEAjzIuU0rT+EYnEQM7huS8SB90UrugQ0YOOmjEaj93rRvjMjTWn0DeDrue+ic/F8Qj9hVmK9FAMKNfyEcpesn+kAUNddR/2yWt7pWIrxE/uSq+ljXojoIENtj13hrdFryUh8SfJV2YWEsmk86D
- YIu/CNk5
- OWq+nchD4PUCDKpqfpbsfDidFPSfU8ICXC+QTVD/s/w52AUkYtdLf9FMdO40azTL6n0f8sUqCtNzFj4nLfcwu5TGve0aV+fccyJJ3BBHtDxBwOh90/8xgRYOpWBpebPN+m4/wp3DXgr5CTBAdNhltpuJZNn3PP/Q8wEjTuebGLppb+U4GqupglUewpeZtA2oRpedEuCoF0HI23Cd36VFIQtkqTH9N5T0IXQO666o03tljmqM=
+X-HE-Tag: 1770617471-743518
+X-HE-Meta: U2FsdGVkX19PYB0Dynuw611eld8ytld/chHCnLm6NBM0RBcCnBMnPoopJt+HRYgYalfLg2ijfdEx2gv8ngWMITB9KUxM4y10NOBfwAwqixgNfIkefUxw6cDaz5VJtDLE1GeMkR1qBKLs60PxxC6Kxvcz8YpLPW8qXWrQOR2bmhvWvSdf1watYb41hs/+XS2uJ8scqirmJmHnGz859bf8EGi/S7940aEiJrwOwL6sj+Sfc6CL/xPcoim6DRvvOMMAS2Sd/7KXJwUZpXCnjCDsPvN836tk8NaXGzrVdnHaWwCAIn6AAouW2jTxrb2m/abw6uEeb/NTffw98d7GeFXyjxxgEY2EbMPqf7NYSLESQJ6W11IkrmWttL0p9mpfTWZ42uYDI9QRD9YuzIulkGZ0bYe/EfwF2c+13AW/m1zeujPZOdmCwtCxhKqiHKqWDo3HhbifXv8kJ7nZGPm/IiDq6voGdqfrxzPXD8LIOujxBLf8yQf7tsPVLdEK9F4zvvbga1YrLTqcEYub6+ue/p3xMvJ4xHY7vl8tW/68bLus0VAsAfuvCFIWyWr/bi5hLdeAm7j1nJ6YoqgyEaBipnfRfMPb07E+G3rdMxPukLiUPDxuw0uFx++g0hXjpkUpSQj1bHvO1ogSdz0kFxqijkeGZYKw+YsEDitWKos9+sKT1hJmHAfiJk6PojdJ3VdgJeX7KbQNm764JCnizcKC0eX2z0ojEG0WxbGcOrt27qjE/ntWSxTsDffRYcmhVypcKF3po0Ny6NDvXgYcUCVrPgPb3aLqcvuekTnvqpELhfpkz1KXeAUbY/Fe3DSP0sUS/e1jOxfRjlbnTu3XTWApcvMHVrkYl83+ndoIAxeJDfIyohDRjK4KntznYe04sumCqFjJrdvujIeUsXjf6TkKHPVetvW8C4IVB/VpiUyPZVuhwrQhWGCI4TKTDpC6XdMYrKhj+CjArUQmk/IwwqL+Xy7
+ 6n21pN/G
+ v9SlbAuWSzIEbhYV+ExJUF4pOm6p48sd1Q5+wQMPoTlhD0SPDySqRRhFLl7c+i10AZKo3Z+fb/K/IlRjOlLkaBQNVrPST1U6apeTPjgK7LymHh3D45eHSuRWi0G+Okj4+VDzNpRFJwjjEcNDJNuBOnJ5Rj4ySw73TLDxLnhvh/aVfcdtGOTCO7FI89ECU1L6ArA801PSqF3L3RMaHF++v8a+NAxZxYaQsGJ6SK0/LwwgeuI9CFOBJgylQ0X8li7PYZCtYwzkxrDxAa0HGsGBfJp4ZxqzxXLqgPqrt462xm4wzlwk36MTIeWZhe4U7jzgqm6sxQ2D7t2quQhqQiG7fK9EJzDfZYIdm/C/eVAN/4IINIIZpJ2TWtSFulirDLyVFgM9/y5owcDBLVRPjoPfcbzHcQAIg+9R/uDMk7gWCFck9A9Yq0ddCd/RtRE8M8W4TWpuXf5Elgo79l3OT2EDFznwWB+9GGPqO+Dyui2v9DqLFOIayvSHFpaGwUISPiGynqZ0IBJ0zNp+A3NKh5yyo8rBPc5WJIEICLbma+UJEPaCVl0CZG8r1mEkN/xzqmvr37foK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,138 +179,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Honglei Huang <honghuan@amd.com>
 
+Introduce new UAPI structures to support batch allocation of
+non-contiguous userptr ranges in a single ioctl call.
 
-On 2/8/26 6:25 AM, Shakeel Butt wrote:
-> On Thu, Feb 05, 2026 at 05:01:49PM +0800, Qi Zheng wrote:
->> From: Muchun Song <songmuchun@bytedance.com>
->>
->> Now that everything is set up, switch folio->memcg_data pointers to
->> objcgs, update the accessors, and execute reparenting on cgroup death.
->>
->> Finally, folio->memcg_data of LRU folios and kmem folios will always
->> point to an object cgroup pointer. The folio->memcg_data of slab
->> folios will point to an vector of object cgroups.
->>
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->>   
->>   /*
->> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
->> index e7d4e4ff411b6..0e0efaa511d3d 100644
->> --- a/mm/memcontrol.c
->> +++ b/mm/memcontrol.c
->> @@ -247,11 +247,25 @@ static inline void reparent_state_local(struct mem_cgroup *memcg, struct mem_cgr
->>   
->>   static inline void reparent_locks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
->>   {
->> +	int nid, nest = 0;
->> +
->>   	spin_lock_irq(&objcg_lock);
->> +	for_each_node(nid) {
->> +		spin_lock_nested(&mem_cgroup_lruvec(memcg,
->> +				 NODE_DATA(nid))->lru_lock, nest++);
->> +		spin_lock_nested(&mem_cgroup_lruvec(parent,
->> +				 NODE_DATA(nid))->lru_lock, nest++);
-> 
-> Is there a reason to acquire locks for all the node together? Why not do
-> the for_each_node(nid) in memcg_reparent_objcgs() and then reparent the
-> LRUs for each node one by one and taking and releasing lock
-> individually. Though the lock for the offlining memcg might not be
+add:
+- KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH flag
+- struct kfd_ioctl_userptr_range for individual ranges
+- struct kfd_ioctl_userptr_ranges_data for batch data
 
-To do this, we first need to convert objcg from per-memcg to per-memcg
-per-node. In this way, we can hold the lru lock and objcg lock for
-each node to reparent the folio and the corresponding objcg together.
+Signed-off-by: Honglei Huang <honghuan@amd.com>
+---
+ include/uapi/linux/kfd_ioctl.h | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-Otherwise, the folio might have been moved to the parent lruvec, but
-objcg hasn't been reparent. In that case, it might be holding the lock
-of child lruvec to operate on the folio on the parent lruvec.
-
-> contentious but the parent's lock might be if a lot of memory has been
-> reparented.
-> 
->> +	}
->>   }
->>   
->>   static inline void reparent_unlocks(struct mem_cgroup *memcg, struct mem_cgroup *parent)
->>   {
->> +	int nid;
->> +
->> +	for_each_node(nid) {
->> +		spin_unlock(&mem_cgroup_lruvec(parent, NODE_DATA(nid))->lru_lock);
->> +		spin_unlock(&mem_cgroup_lruvec(memcg, NODE_DATA(nid))->lru_lock);
->> +	}
->>   	spin_unlock_irq(&objcg_lock);
->>   }
->>   
->> @@ -260,12 +274,28 @@ static void memcg_reparent_objcgs(struct mem_cgroup *memcg)
->>   	struct obj_cgroup *objcg;
->>   	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
->>   
->> +retry:
->> +	if (lru_gen_enabled())
->> +		max_lru_gen_memcg(parent);
->> +
->>   	reparent_locks(memcg, parent);
->> +	if (lru_gen_enabled()) {
->> +		if (!recheck_lru_gen_max_memcg(parent)) {
->> +			reparent_unlocks(memcg, parent);
->> +			cond_resched();
->> +			goto retry;
->> +		}
->> +		lru_gen_reparent_memcg(memcg, parent);
->> +	} else {
->> +		lru_reparent_memcg(memcg, parent);
->> +	}
->>   
->>   	objcg = __memcg_reparent_objcgs(memcg, parent);
-> 
-> The above does not need lru locks. With the per-node refactor, it will
-> be out of lru lock.
-> 
->>   
->>   	reparent_unlocks(memcg, parent);
->>   
->> +	reparent_state_local(memcg, parent);
->> +
->>   	percpu_ref_kill(&objcg->refcnt);
->>   }
->>   
->>   
-> 
-> [...]
-> 
->>   static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
->>   			gfp_t gfp)
->>   {
->> -	int ret;
->> -
->> -	ret = try_charge(memcg, gfp, folio_nr_pages(folio));
->> -	if (ret)
->> -		goto out;
->> +	int ret = 0;
->> +	struct obj_cgroup *objcg;
->>   
->> -	css_get(&memcg->css);
->> -	commit_charge(folio, memcg);
->> +	objcg = get_obj_cgroup_from_memcg(memcg);
->> +	/* Do not account at the root objcg level. */
->> +	if (!obj_cgroup_is_root(objcg))
->> +		ret = try_charge(memcg, gfp, folio_nr_pages(folio));
-> 
-> Use try_charge_memcg() directly and then this will remove the last user
-> of try_charge, so remove try_charge completely.
-> 
->> +	if (ret) {
->> +		obj_cgroup_put(objcg);
->> +		return ret;
->> +	}
->> +	commit_charge(folio, objcg);
->>   	memcg1_commit_charge(folio, memcg);
->> -out:
->> +
->>   	return ret;
->>   }
->>   
+diff --git a/include/uapi/linux/kfd_ioctl.h b/include/uapi/linux/kfd_ioctl.h
+index 84aa24c02..579850e70 100644
+--- a/include/uapi/linux/kfd_ioctl.h
++++ b/include/uapi/linux/kfd_ioctl.h
+@@ -420,16 +420,45 @@ struct kfd_ioctl_acquire_vm_args {
+ #define KFD_IOC_ALLOC_MEM_FLAGS_UNCACHED	(1 << 25)
+ #define KFD_IOC_ALLOC_MEM_FLAGS_EXT_COHERENT	(1 << 24)
+ #define KFD_IOC_ALLOC_MEM_FLAGS_CONTIGUOUS	(1 << 23)
++#define KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH	(1 << 22)
++
++/* Userptr range for batch allocation
++ *
++ * @start: start address of user virtual memory range
++ * @size:  size of this user virtual memory range in bytes
++ */
++struct kfd_ioctl_userptr_range {
++	__u64 start;		/* to KFD */
++	__u64 size;		/* to KFD */
++};
++
++/* Complete userptr batch allocation data structure
++ *
++ * This structure combines the header and ranges array for convenience.
++ * User space can allocate memory for this structure with the desired
++ * number of ranges and pass a pointer to it via mmap_offset field.
++ *
++ * @num_ranges: number of ranges in the ranges array
++ * @reserved:   reserved for future use, must be 0
++ * @ranges:     flexible array of userptr ranges
++ */
++struct kfd_ioctl_userptr_ranges_data {
++	__u32 num_ranges;	/* to KFD */
++	__u32 reserved;		/* to KFD, must be 0 */
++	struct kfd_ioctl_userptr_range ranges[];	/* to KFD */
++};
+ 
+ /* Allocate memory for later SVM (shared virtual memory) mapping.
+  *
+  * @va_addr:     virtual address of the memory to be allocated
+  *               all later mappings on all GPUs will use this address
+- * @size:        size in bytes
++ * @size:        size in bytes (total size for batch allocation)
+  * @handle:      buffer handle returned to user mode, used to refer to
+  *               this allocation for mapping, unmapping and freeing
+  * @mmap_offset: for CPU-mapping the allocation by mmapping a render node
+  *               for userptrs this is overloaded to specify the CPU address
++ *               for batch userptr (KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH),
++ *               this should point to a kfd_ioctl_userptr_ranges_data structure
+  * @gpu_id:      device identifier
+  * @flags:       memory type and attributes. See KFD_IOC_ALLOC_MEM_FLAGS above
+  */
+-- 
+2.34.1
 
 
