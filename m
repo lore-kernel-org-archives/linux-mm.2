@@ -4,137 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF30FE7E0C2
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 10:41:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ACA4E7E0C3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 10:42:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCD166B0005; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
+	id 5953B6B0005; Mon,  9 Feb 2026 05:42:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C84F86B0088; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
+	id 576396B0088; Mon,  9 Feb 2026 05:42:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4E3B6B0089; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
+	id 461EB6B0089; Mon,  9 Feb 2026 05:42:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A04F86B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4AA9B1A075E
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:41:26 +0000 (UTC)
-X-FDA: 84424576572.11.FF27667
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4B144C0002
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:41:24 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K0Asb6To;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 35F076B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 05:42:04 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DF30FBAEDF
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:42:03 +0000 (UTC)
+X-FDA: 84424578126.05.F010E41
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 36DE68000D
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:42:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S5DYD3/r";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770633722; a=rsa-sha256;
+	cv=none;
+	b=5+TxMOKQifrV1+6gmA/JS/+A8yILnz44TacjQPRrgr+v46yW9yexOuq9yTSTj86dz6WXRH
+	A9CwsBYVc0XYbAJ5WCohfbkJs5nWJwhUPnzyXU1ekNx4hahjWePzXPRhPA4Ysn5jfZLnV3
+	J+OSUrI3mmpPRyOcmCr308wDXJO5oMA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S5DYD3/r";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770633684;
+	s=arc-20220608; t=1770633722;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1vceECY6oOVlxttD05QrM0v69VFRLzzkozbTpsthX2I=;
-	b=MgHKwwtwc3etwfHribcFng5hsM395rlLtVO5I6FyDngQEo+icI/3owkj/D2xMcxK+73vpw
-	kHDHD8v1TQzpxP7exnxSuULQSYGarsikf8s83NBHg6dVuaq/lKU8IDL8ROlTZUnVtHmQ2D
-	mxHif6VFiQEAZN5Db9zmuC3UacxeqS0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770633684; a=rsa-sha256;
-	cv=none;
-	b=Dfisz26D9pnTmiaZfmolNiZYyuH/zzY5F9cfSvwwm0osGrf6RAGHz9ih8J2nj+zVzRT+QN
-	Vj5NsoYVM+VMVES3A/yPCZj7YY3kgNTdcdmjllV5TJHCYVAjdlIgmIKnIGUc2UyaRDS+No
-	E5iHtbcrJJ5PQ5nz/8IgbfgJmfXo73M=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=K0Asb6To;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-385c2f88618so36397601fa.2
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 02:41:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770633682; x=1771238482; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1vceECY6oOVlxttD05QrM0v69VFRLzzkozbTpsthX2I=;
-        b=K0Asb6TohOU6e+99EWi/SGSXFxfc09PK4KM3kxDt2n/ikEhiAmlbaGIVbJLFhWg+3d
-         QkQdNeBQaXF7XJuRevhtrdfM+7OzPkaP1cfsJ6nFm3kRCZE5Rqa834yuyINVTw9EhbSQ
-         HNw0wK2NsvbcAVwZ5WJtXINUsdDPounvZmFe8ynifU/6auIjqHIVXAWKIId4L03zZ8C/
-         NsOOhT9KjPI3o38//Qi4jlkkvyaxzn1imdsF00l6bshIxc2SsTFxzfiE8uS1QPe7KpdG
-         M8l6CsSPylBO6j5VrWLvQ3wSWZKReKdB2qEMIM/g9mynmiIAjo9lY7zRi8vpTgbBQmJz
-         7/Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770633682; x=1771238482;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1vceECY6oOVlxttD05QrM0v69VFRLzzkozbTpsthX2I=;
-        b=GZaTmo+r2N1smPxP1TeP+H3rSvdfCtMy95FNHj+wzHS2rghVm0sBLCActJQKRNRzDl
-         sERADYZsrqoHNHH9YGtvKXQeUFgjCCv1QoHbUCUY2G2X2r0jaaqaX/qYq7x0SmXEisDt
-         9bbL48FlGP+zOWIjO7gfzq1HD7oEVtwDDuvzT3uzjMhowOZAOHfPmdOrWxPtSZEQK18V
-         dGgr2J56C6t4NtiorkEL28H1hk6jeCwwFDBzPVY4j1/onC/xdfl41pdJ1HtlkABaH9VR
-         rD51OgqFueE62WMm8tSGCU+QnBpRb9KDIbIHmuwXM/iMG1p81Ey1VkHcvVWZaHAwqcfq
-         yakg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpYoKIdKr+Bf12FAH1ZcCK89LKI0DIyFsvqaLsfWa8KRYxWR2G+EE1graq8fhkEu6NyqG+3k48WA==@kvack.org
-X-Gm-Message-State: AOJu0Yznzd0volEhftnb3lRQXQIILzX70GS/bgAUmiuaK97vgOG9KtCd
-	hDmrEaespwSL8KhAJDoiN1rATHMXhELqnDwZjFlnosIKTFqXY8FsSJWy
-X-Gm-Gg: AZuq6aIfJ9HIR7biDMBFrbiFMDNfRBdxOZBLPmCKlLUfzaZzV+znzw3jMBfLcMnA96W
-	oe1ezrU+dWKLzEtGrfD0CUYDV3fJpeIP9WtDAB3nN2bFKq/xp+8FEqhJJCdBHXYaGqYkwy5C9j7
-	ZAamTcCfjvWnHdH+deytJrg4d14nBX9JuWNlurYxmKixKw2D7dwSDg6UFKEQT1O5YZDyYup6loa
-	JtVEImx3QQ6rmzHmA2QIyYY5QGE11kpoZsZPFocB/cf30iifLz3AjTLYZ2SzGAZOXdBsT3t9Qqg
-	2/MWWegPUv+xqv2ggXqkzPpEz4KffZvlIqDjeSPKjeBAAwS/XRMJzWSCvD6I6CvGo8JUXak7jGS
-	5az17gvMgY4Pa+sWA4R0Wzh3ijCz9XPffMj9VHdkGjG6zGZd/2JVKL1F7Zx5LOeVp7EtD11nW35
-	j6OazQGRfPw8dpYdSm/JKc+EKq32jA2oRt4+24e6/r
-X-Received: by 2002:a2e:a5c2:0:b0:382:56ff:5207 with SMTP id 38308e7fff4ca-386b515ab20mr35812111fa.36.1770633681964;
-        Mon, 09 Feb 2026 02:41:21 -0800 (PST)
-Received: from pc636 (host-90-233-206-112.mobileonline.telia.com. [90.233.206.112])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-386b6281ee1sm26940621fa.20.2026.02.09.02.41.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 02:41:21 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 9 Feb 2026 11:41:17 +0100
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>, Hao Li <hao.li@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Amery Hung <ameryhung@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	"Paul E . McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Zqiang <qiang.zhang@linux.dev>, Dave Chinner <david@fromorbit.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Muchun Song <muchun.song@linux.dev>, rcu@vger.kernel.org,
-	linux-mm@kvack.org, bpf@vger.kernel.org
-Subject: Re: [RFC PATCH 2/7] mm: use rcu_ptr instead of rcu_head
-Message-ID: <aYm5zZLvkZpCYw2s@pc636>
-References: <20260206093410.160622-1-harry.yoo@oracle.com>
- <20260206093410.160622-3-harry.yoo@oracle.com>
+	bh=JTdpMTI9/k0JFaYn8COZsXJ8AkDzsZ0je9g4NxTUGLE=;
+	b=5GoRWKTTE11VSuu4uU4uPE0kVcC2sucqMB+EU18R8uODwpyKyho1ShPJmYAfoFcW0KpDHy
+	qVPRYrq2ssQz9WnO9qgEW3+FBDkCpSyw2E5+c6mD1sMWui+NLupjcrfp0ZzaHHDi8W2LdB
+	iU9CdP12OTN8H2N22vFl7832zzL8Cno=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DB0E2440D2;
+	Mon,  9 Feb 2026 10:42:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FDA5C116C6;
+	Mon,  9 Feb 2026 10:41:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770633720;
+	bh=ywJCRbCgffCqqfChHalI2gIpjQYUmGoILfzVpNH7JE0=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=S5DYD3/rPRNhXUdylNPOOMeREFxP8EedkjL2Dg/gOs00I8eQtLP0qPh/M4UxzV9ab
+	 CArMqgdfjrcXuo+UI5gA7uiE0brOcn+HSbyjc84vW7Pnq7LaHpPgpBqOutHaa3XWZr
+	 W/5JXn4Ts0RRjiQbnl6rFqMct6lrc/w2ezbWVbpYS5hVs62XsnNR9ap62QdkBH5bHz
+	 qVezcj4G9FLHPoFT9vdzw+d2AvbYpafurb4QCZfGIss493gctvno/ipg9yDTMlHiZ5
+	 BTkbVXw5ZRnC8d8AC7YacM5Vsk4Dj6py8U942CFVad9c+3bQjFFA91UyKbUcxGm1lJ
+	 X0MSJ5w3+cOSA==
+Message-ID: <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org>
+Date: Mon, 9 Feb 2026 11:41:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206093410.160622-3-harry.yoo@oracle.com>
-X-Rspamd-Queue-Id: 4B144C0002
-X-Stat-Signature: ntkeqwes9kxtszpfqten8qyygiegt95h
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in
+ file_thp_enabled()
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Deepanshu Kartikey <kartikey406@gmail.com>, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com,
+ Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+ dev.jain@arm.com, baohua@kernel.org, ackerleytng@google.com,
+ seanjc@google.com, pbonzini@redhat.com, michael.roth@amd.com,
+ vannapurve@google.com
+Cc: ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+References: <20260209033558.22943-1-kartikey406@gmail.com>
+ <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770633684-486315
-X-HE-Meta: U2FsdGVkX18NjzUIEp82cHhUcVjBcUfPxHMXWMTbYOY2CSO+Ve2u2QHImg7w23Pt8N8Y4LZUWvNrShcvdUe0b18cpJhm9M8EpKj+mJhZIltQjbGkE+R7z7mUqqG4PJhEOjRcdq6Kqxe9g6UUxILAC5Oc6Rpltj0jC1PlgrXc2dyQI+bBI/J3V20m2YlLyDfs9yMuNBc0nisJDs8VvaDrTqLZv/Ae0HfCQmbVmotg2EA6Z+qK/ib0b6/th/XVPc9FAJynekNmV/pf+KtnligpU4fcH/lsI2U4myyeJXd42ubdizSeb06HadAqRDxHEFqPqfJTpot2NCGYsA576lG3o7b3aA3ZhYGdySaAesX2U39P/6uQNKA8CjLx7kC5wRpHFMOWqjc/ydu3MUU1SSszcQMgedP9ljG/LD/5+Jfb18y4QywYVLZWrmqnLexGGP2kgmSnlJzOVPHftl38iUlTlzPFPziaTtftKg5DGdehCnaH+p49yB5zFN6RE303eRSFZ/erRiOhX85MdRVU1e+sdBLA+cbdMU1pDLlj9wo0jdH5+NcPXLzIrJ/R5cvEUFfj1srBc3r4K9IRQmbJwjqWt5KHVBsblj536m5jNPcGzr0eyHEUksUYE4EOdzWXQaMP+TMIjuWazt7HXRs3Wr1MvSocmKsDD7MjJEHaiDZR3f/7eDAnIzXnuD4WjQL28KJXwdwkVSUaZnmPT9dDUktXX5B244sKYvO/5ugXYa7P13d1ke8ySS5C355ZL5XKj36F8Ii2hzJh3w5HIVGQOzzAprRhnAWB2E4VOtY64ECKQREnMzXC0/Vrs1APZgetAuz7g/ipcW8V5spRriAXnQFMmJPEXx1OTTexePuhDGlI+G6AJD4rOWBz/S/PL20db/SqecnA4eXoMDTsCWz2yDMq3jKXwAZtUGAMI1ztY7GxfCiL6ULg0PYh0JDtDQlt9wpQ9GuNsoSxpYvjDFzBBpW
- NlhotaDk
- KVFekYINMb2HeSh+PC9Xch24g3WyeqTIP6rZJalAyPMrmgqsxzFHA/SdmQbG5QFbWXXBca8bBmRHXj+cagH1J+3C7PyKzes8tAmhIT4O2TIPE9yi942Bi9RADJe45yjTp0JV9lHHWdboBJKZocuxwxAZD8q7mZn6BE36AMhmprG72wY/MODM0HMtk/dMDgoBFL0TfpS5MXH70h5ZxH5jQdu1v16zDb6zTjkl4yPwwWxdHCAr7JdIgc5+PKy0AWcTeY6xKWcoqxtpbyFAr/TSdIv/kmc709DxgTClmkwCe2zB+4vdYErNVJ2rCNSSLu7Y/bUUjt8Djc3LKuWZMEZM8QLzuWz9juDMCYF3OyZ37pEubDklAqH2mEHBctuQiWH4E5pmOj5z5MysSI9hTvTiQseVSe7h/In5AGqRKVhAy59z0q7zVGI9cPzmYgDutWjOVfgphtmg5Gn57Gctkow61ikAWAClCm+noyHjGT8VFvtFAkLxabdUdCGXVfTVBI70+ujSvKLmdzmkZb/KRnufRaT4cdd2wf8zJO9xT3aB88sO7bnswcDWw1sB12w0U5WIT3aDM3BnOlD4ybJWXo/q3p8V1R4Umit73EtyCICZapDIgInv0fA4zrfUQA8NDclQ1GOrvQ4NmPcfh+kKTQ+1mQzMNAQMIf3yg2pHh
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 36DE68000D
+X-Stat-Signature: 7b3u1waj4yn4hk14fmbf9y3ti5n8kuxr
+X-HE-Tag: 1770633721-148127
+X-HE-Meta: U2FsdGVkX18jE+PlfaIwdMXdiimkQEpwpmv8pcVRTY0Y93v8iW2QpEwY3l2nLgYJMBMe5jTyjkXf6GOu2eOsW0AvGtqB6H0kaxxvTrQ+AZ+iGO+FU0YRy/X/uTt0MraqRTOX2uxA4Al6uRkEK/EWxHGG2zk5VEmNea9giS1SYpOgvnBYaZhFi88vmvHMQTj+ebgK7qahLb/Yan3YMk5hBrn8XjOPd27RLVOokS9KlXesXTjrpfDi/0v55L8oRsDNnnW6nRhNeQ755qp4Lk8yN/7kAUwDaXEuPfNquo38AYJOTPtUPqtviIbypPDoQJOBJkYZRKZbwGZbIstx5ygZ826SdOQUz4TnGhGUhz6u8dZ4/fSNksxtreDX3biCdgQDnhf8RZks5aWqK/jYHyefU+ZIpmGLSzuCIEV7wTN/jUcMcAlkfAy6S4RNi6zecx8K6Fpn9PLJB+baVTUb/+35ydvUZFVMIuV9To625+XMP2zQ9TZnhclUKIG927J6P/TH1sDxI1dVxBG25q7d+SAdPH/L58BsNVw4Ut/NHHl5pwbVwGdumSE2NLALMy3MwVG8TshJu4Fs64Ev8rfEV2FQ4oM1VXUqW0h06qF5YF64VMUgXmmowPLuo7nWTHiRjuu97zPlaqFKE3ERZDGPp7UnHH4xs2DvEDrmdZKCpfINATa4y8CI6vFUuwqPsMvsD6Zg96opCIUc69qrcGGpNQeNWqftieNSQK2roAYXBnmytcTuFg9TOJcTqrZko0sQI/pvhesqfJvcIRdStZKWAr2Qib5rhNBGcxOhTJ6RgCdEr+U9VTzqdLX3IV+nH9aEEMFFrqEKTMf03sS1wgVQwY3lIJ5jOui05c7SAWljD2F27hJkLdPSFP46BCTOCgIDhqmt9PaIm/6hZSenddB9oeQ1auaKErKpMceokhEXV3jnEPlol4z0xJ93B3YwRUDVNqMVUgwvHhxNwnsAgnvWV6D
+ DtXx311A
+ nISCaQYcTMcrN2ZGUJvORwlFrI836hoL/BCgawTYQc0zj/2MrRwf1ffWCw9lUfQO10zTfmyfEjeUlzyw3HdH0rR+5M6p+5KPLlQ1OGdRtC5VW9Vs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,67 +145,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 06:34:05PM +0900, Harry Yoo wrote:
-> When slab objects are freed with kfree_rcu() and not call_rcu(),
-> using struct rcu_head (16 bytes on 64-bit) is unnecessary and
-> struct rcu_ptr (8 bytes on 64-bit) is enough. Save one pointer
-> per slab object by using struct rcu_ptr.
+On 2/9/26 11:24, David Hildenbrand (Arm) wrote:
+> On 2/9/26 04:35, Deepanshu Kartikey wrote:
+>> file_thp_enabled() incorrectly returns true for guest_memfd and secretmem
+>> inodes because they appear as regular read-only files when
+>> CONFIG_READ_ONLY_THP_FOR_FS is enabled. This allows khugepaged and
+>> MADV_COLLAPSE to create large folios in the page cache, but their fault
+>> handlers do not support large folios.
+>>
+>> Add explicit checks for GUEST_MEMFD_MAGIC and SECRETMEM_MAGIC to reject
+>> these filesystems early in file_thp_enabled().
+>>
+>> Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+>> Closes: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
+>> Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+>> Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
 > 
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  include/linux/list_lru.h | 2 +-
->  include/linux/shrinker.h | 2 +-
->  mm/vmalloc.c             | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
+> So we were able to reproduce this with secretmem, right?
 > 
-> diff --git a/include/linux/list_lru.h b/include/linux/list_lru.h
-> index fe739d35a864..c79bccb7dafa 100644
-> --- a/include/linux/list_lru.h
-> +++ b/include/linux/list_lru.h
-> @@ -37,7 +37,7 @@ struct list_lru_one {
->  };
->  
->  struct list_lru_memcg {
-> -	struct rcu_head		rcu;
-> +	struct rcu_ptr		rcu;
->  	/* array of per cgroup per node lists, indexed by node id */
->  	struct list_lru_one	node[];
->  };
-> diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
-> index 1a00be90d93a..bad20de2803a 100644
-> --- a/include/linux/shrinker.h
-> +++ b/include/linux/shrinker.h
-> @@ -19,7 +19,7 @@ struct shrinker_info_unit {
->  };
->  
->  struct shrinker_info {
-> -	struct rcu_head rcu;
-> +	struct rcu_ptr rcu;
->  	int map_nr_max;
->  	struct shrinker_info_unit *unit[];
->  };
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 41dd01e8430c..89c781dcab58 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -2596,7 +2596,7 @@ struct vmap_block {
->  	DECLARE_BITMAP(used_map, VMAP_BBMAP_BITS);
->  	unsigned long dirty_min, dirty_max; /*< dirty range */
->  	struct list_head free_list;
-> -	struct rcu_head rcu_head;
-> +	struct rcu_ptr rcu;
->  	struct list_head purge;
->  	unsigned int cpu;
->  };
->
-Why this change is needed?
+> We want to add "Fixes:" for the introducing commits, which would be he 
+> commits that enable secretmem and mapping of guest_memfd pages to user 
+> space. Can you identify them?
+> 
+> And also
+> 
+>      Cc: stable@vger.kernel.org
+> 
+>> ---
+>>   mm/huge_memory.c | 3 +++
+>>   1 file changed, 3 insertions(+)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 40cf59301c21..4f57c78b57dd 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -93,6 +93,9 @@ static inline bool file_thp_enabled(struct 
+>> vm_area_struct *vma)
+>>           return false;
+>>       inode = file_inode(vma->vm_file);
+>> +    if (inode->i_sb->s_magic == GUEST_MEMFD_MAGIC ||
+>> +        inode->i_sb->s_magic == SECRETMEM_MAGIC)
+>> +        return false;
+> 
+> That's nasty. We want some way to identify that through the mapping.
+> 
+> Unfortunately CONFIG_READ_ONLY_THP_FOR_FS ignores any 
+> mapping_set_large_folios() configs by design.
+> 
+> And CONFIG_READ_ONLY_THP_FOR_FS might go away soon, but we need a fix 
+> until then.
+> 
+> While we can identify secretmem through vma_is_secretmem(), we can't do 
+> the same for guest_memfd as it's built as a module.
+> 
+> Unfortunately AS_NO_DIRECT_MAP[1] won't work.
+> 
+> Maybe introduce a AS_NO_READ_ONLY_THP_FOR_FS, which we can just easily 
+> rip out along with CONFIG_READ_ONLY_THP_FOR_FS later?
 
-If you want to save 8 bytes of vmap_block structure, then i
-do not see a big gain here. We do not have so many vmap_block
-objects.
+On second thought, why do we pass the
 
-Am i missing something here? :)
+	!inode_is_open_for_write(inode)
 
---
-Uladzislau Rezki
+in file_thp_enabled()?
+
+Isn't that the main problem for these memfd things?
+
+Maybe a get_write_access() is missing somewhere?
+
+-- 
+Cheers,
+
+David
 
