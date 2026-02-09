@@ -4,142 +4,204 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB17EE81BAF
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 12:44:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E265EE81BB2
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 12:52:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 182B36B0005; Mon,  9 Feb 2026 07:44:56 -0500 (EST)
+	id C06DC6B0005; Mon,  9 Feb 2026 07:52:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1312D6B0088; Mon,  9 Feb 2026 07:44:56 -0500 (EST)
+	id BB4D06B0088; Mon,  9 Feb 2026 07:52:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 008706B0089; Mon,  9 Feb 2026 07:44:55 -0500 (EST)
+	id A6BDF6B0089; Mon,  9 Feb 2026 07:52:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E379B6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 07:44:55 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 740BBC029F
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:44:55 +0000 (UTC)
-X-FDA: 84424887750.17.631CC3F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CEEA940002
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:44:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gRFOA375;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770641094;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 92FFB6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 07:52:53 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E8CE160114
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:52:53 +0000 (UTC)
+X-FDA: 84424907826.03.42A59C1
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012055.outbound.protection.outlook.com [40.93.195.55])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 221BC40004
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:52:49 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=C9zlat40;
+	spf=pass (imf01.hostedemail.com: domain of Honglei1.Huang@amd.com designates 40.93.195.55 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770641570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GQheDunW5zA4NksP28zM3dZYwC3Z3xP31iICASMbDzQ=;
-	b=BIkEhUwVflangh4yOvC9SwSEkWeRDurzi7V8CDcPlueuhQnSOjtlSq9VHat396v5CiLtuz
-	gyrFKwrYiYpHxRnA5+FA5zQaW3Sy05LJxhJ2jNyI5SmhPVzOdcKo5BoFvq4dtPqpf+fdcw
-	FxmN4GOZHKqiCzxfZL4nulQgyP41r4c=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gRFOA375;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770641094; a=rsa-sha256;
-	cv=none;
-	b=uPELz+kXvG4HwygtpIR4SSJ6iVVaLpoDJIy+K3Zj1lFm87ztjCa3DAko1UVM3vzfHwpPza
-	q3LmFVtNtVkf+u1wR8dNbx1w81RGfGAAJJhQfk5cwpEKSloT5jHBe5A8y3sIbf+om8mU82
-	POHyrE3Pd51dn/1ZF8Rj/DG/c+bJjrI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B14734071E;
-	Mon,  9 Feb 2026 12:44:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA5BC16AAE;
-	Mon,  9 Feb 2026 12:44:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770641092;
-	bh=G/QXBcfFxtmQ5ukOzTzzyHmFNZaf39JAggsfb/kCTnA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=gRFOA375/sp3no/G6bNeU7wSkj1+o0ceq8erg8RR2B2t0nUUfsPEHnV9KOG87hvAe
-	 G/gwYRoJcbHIfrKvm3J4iwwCXN9JL2Z8lV6LhoUFR3EIk8dfFJMzhhPJwT98vAVyiZ
-	 UAnlnq7qbR8oYNw8u+gtrPnZriUtLoAEdiw7AW3jbTvLmDhha08MZdS9y0+AeFKzUl
-	 1iOuBaKaM5pPjZ/M0LzgkguC/qvqy47YMvL8VFX0zfgWQwCMQEdjGZPjXvw9uD3Ak1
-	 HAVBH16kJVDMCb7ATYOqBp1FhQWd6HiTIgAAl92P1iZnQThpxJkFJzSm3xJSZsbIKZ
-	 ajkzIXUd0RLdA==
-Message-ID: <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
-Date: Mon, 9 Feb 2026 13:44:45 +0100
-MIME-Version: 1.0
+	bh=gylIh0ThrPomTno+oK31UbEUB5IcngTLokLxEV75vY4=;
+	b=sficS1Ccgu99CVhLSXogNtaN4iKu4uXzJVsnNZdf0gbDN0SHwhHbxYYvcZSuCuTB8IDFrF
+	tU/V4lJk/sOm3dXBQq0SvC/LRcMePIYN7cnS1GjYFguPlNdqaUYRl97fgZUOM9IXrD+Rq2
+	Q5Q2kEKJUqOrZmkEnxknM4GprTE0TBg=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=C9zlat40;
+	spf=pass (imf01.hostedemail.com: domain of Honglei1.Huang@amd.com designates 40.93.195.55 as permitted sender) smtp.mailfrom=Honglei1.Huang@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770641570; a=rsa-sha256;
+	cv=pass;
+	b=H8zF6gVdPlbUjrSCyAFYI176IeoHAcDjk7vkHB9vQ4kGHjUzYN1qllHK8GAp3Ka4JC6NCl
+	kB5xuoAfK6+78y6iYQ4nfh/Ht2pNLTA2HNEv5GHV1RaajFLDuoypZzts80EYsQdLPybY6r
+	7MxHUj+3Aq50+9QH1YwwbYQTUaWH0E4=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uUyDJb+Uwy6nClza5aSTsmwrn7Ob7qX0DzsgnI0Cu+jWlmexcQaiuG5wcN5sTFZYojb/DhCErGLR32msPZuhImu/U+uVT0DdPU9mW8VCRLo5xR2+lOyQONq5xXTqPXgpOIwdSvpM4/qigBSCZUg70MKIFXCvBFyiCUNesfxPx3EFC6TWlQnbyZUm1PZOJoZk/FmWygECaXTEheL+1mInBHjRRFvYGv0fEfWr5WV5yl+hLF41ctjycwT/Webx6uFBSxVjcXcG/Y0rte2PyY89/OFJhDxf7Mxq+N4WSPpc77YZufLEu9+Dk8CD71JflbFCr/LarBpMok2PVDuIkBnh/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gylIh0ThrPomTno+oK31UbEUB5IcngTLokLxEV75vY4=;
+ b=yz5iYJk/mvPHgrCO97JlMwaifH8Q1HIw6zv1tZ5KEJY8uCFbMxmWJaKNon+tUNU5spVyXQ2i1CQo0TgneT/mRCt13pBQw7UIqLsHph2FJkY14zE++FX6fkLB3fPq9+D44oNilepSccFXXEwviivjLibkHzuHvDWVnR36ts8IB+mqE/frG+L0D3E9VnvmPipXvISICiPAdsikm2Pe5Xtb/MVjsCc0qmT6Gr0zhRUYWAevMEDHvR2GwG7Z6Wh9bMvErOrTjJa7uQr7HCFINJBEyzzQi0Yo4LAeBHs40Dke3Azja8vXMeS4qHaN7sadFXRL1vt7xyQNAS/C/5jJycFvag==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gylIh0ThrPomTno+oK31UbEUB5IcngTLokLxEV75vY4=;
+ b=C9zlat40kv687Bybnsavh6ht3BT/DHwhhlLtrcwymB6k7jzCv41BVTfyOwoM41lXighJsyT4l6s1J33kG8GMLC+uAtxN7QKglVRqZtyIOmhBytZRSjr9SA6AH+svi6HjtKxk3KXPadPa+zqlWrOAjWClxz5/MqGdxOFvvhJgcrc=
+Received: from IA1PR12MB6435.namprd12.prod.outlook.com (2603:10b6:208:3ad::10)
+ by LV2PR12MB6013.namprd12.prod.outlook.com (2603:10b6:408:171::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.18; Mon, 9 Feb
+ 2026 12:52:46 +0000
+Received: from IA1PR12MB6435.namprd12.prod.outlook.com
+ ([fe80::8b77:7cdb:b17a:a8e2]) by IA1PR12MB6435.namprd12.prod.outlook.com
+ ([fe80::8b77:7cdb:b17a:a8e2%5]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
+ 12:52:46 +0000
+Message-ID: <38264429-a256-4c2f-bcfd-8a021d9603b2@amd.com>
+Date: Mon, 9 Feb 2026 20:52:36 +0800
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
- zone->contiguous update when changes pfn range
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
- Wei Yang <richard.weiyang@gmail.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
- Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
- Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
- Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
- Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
-References: <20260130163756.2674225-1-tianyou.li@intel.com>
- <20260130163756.2674225-3-tianyou.li@intel.com>
- <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
- <aYjmcZ4hg9bNbmiY@kernel.org>
- <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
+Subject: Re: [PATCH v3 0/8] drm/amdkfd: Add batch userptr allocation support
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Felix.Kuehling@amd.com, Philip.Yang@amd.com, Ray.Huang@amd.com,
+ alexander.deucher@amd.com, dmitry.osipenko@collabora.com,
+ Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+ amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org
+References: <20260206062557.3718801-1-honglei1.huang@amd.com>
+ <da75eadd-865e-41fe-a86b-ed9d9aa45e5a@amd.com>
+ <8ba8e4f2-89f2-4968-a291-e36e6fc8ab9b@amd.com>
+ <f296a928-1ef6-4201-9326-eab43da79a84@amd.com>
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
+From: Honglei Huang <honghuan@amd.com>
+In-Reply-To: <f296a928-1ef6-4201-9326-eab43da79a84@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: KU0P306CA0060.MYSP306.PROD.OUTLOOK.COM
+ (2603:1096:d10:23::7) To IA1PR12MB6435.namprd12.prod.outlook.com
+ (2603:10b6:208:3ad::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB6435:EE_|LV2PR12MB6013:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b710d43-dd76-4a28-5e60-08de67da1f55
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MlRqVEVzcnBIMUNDTmU4TzR6WlNqZkIzNE9Zdkk2djJ5YWU3aDZRZnJZMzB1?=
+ =?utf-8?B?bnZuMG5hWVRoTmdxa3l6U0l3d3ZoaTljalBWczFrNXhwRU9RakdsOVF2aDdO?=
+ =?utf-8?B?R1RSSUJGUmgrMEFWa2NQNVA3N2J3am1NVUVuNTdmVWh5MUxHYU1tM2FwOHIx?=
+ =?utf-8?B?SkxlZXRWc2pnU05UdGtmRE5uNzZOdVFRWFo2WHhoU2JYM25kRXZiY1Y3LzM5?=
+ =?utf-8?B?R3dEdEF1ekZGTEFQc3NNdldJME9DUXJ3c09LR2ozUi9jNGJ3RllEak41cDRZ?=
+ =?utf-8?B?cXRZVFBnN2FvcTVUVkRPaUNlVkZPQmFRNHE0czF2WDBDdjE4Snd5SVVDbEdZ?=
+ =?utf-8?B?cUtJdEtxVnBYREFQc2JrL3lrRVFpMUxBSk1NSFh3M0o1UVZLUjBJMjZ1TWZy?=
+ =?utf-8?B?Qk9FUWJreXMyWWN6aUNJZGhlQ0hyN0kwcElpNEFlQVROU3E0YnY5MEQrZzhY?=
+ =?utf-8?B?aW1rRk9ZcWo5dnFDWThVWU9CMzkrZnZDSTEvcHJWSCsvYkNXd3VwZE8yRjRI?=
+ =?utf-8?B?Y2pvVmEwRnJqTHVFNGhVSkFnQ0NDT2k3a2F6RmVaVk5QOFF4UU5sZ2RaOE1k?=
+ =?utf-8?B?L2VVVTVZQUd2MXJoWURUM2xqZGhxM2J0aG9xUngyUExXR3JoME5rRC9RbjlJ?=
+ =?utf-8?B?cXB3VFJKL01lTE9OYjNMMXlYVlgyWWQ0MG0zN1hKZ2RhcWQwRDF0WTNaVEpE?=
+ =?utf-8?B?MFVpMmRlM3V3MXNDbnZoYUZhaFE1eEpLZFg2a0ZQSFpEelM4K1Z0SUFFN0RT?=
+ =?utf-8?B?ZDIvVm00UW00TXFOWFRhbjVZTEtGNnpoNDBja21kRFNraHZOb2dTWFZSNGRW?=
+ =?utf-8?B?K3hhZXJ4YjhyczZPNk4wVnZyT2NiZ256aVpzaWNqU2cvZ051eGVLcWcraWJK?=
+ =?utf-8?B?T2xjN0ljZUhGR01UWjYxRjBWM1M0bVFlVmJ1aHhJTS9YNGV1c3JrVnR3NWM4?=
+ =?utf-8?B?enNaNGttVE9UVWRoOUl3MmFrVzlSdkNRZDBVTU5jR1BWckZFa2swTDFYa1Iy?=
+ =?utf-8?B?ak5rVjZ4cXYrdGdCYWpqd0ZCejlENUw5RkpObHVrM3RZOTh3ZktwNklkOVhJ?=
+ =?utf-8?B?V1FWSXF2RGlCR2JvVjRvYXVyd1U5Q2h1SGNNdUdxbm94RUY3dXg0QWhlNlds?=
+ =?utf-8?B?UjdDOGVGZnZBTTFTQ2ZzZ2lUS0xYNi8xNFpTWjRuYWdsaHFvSW1Ea29RSTQr?=
+ =?utf-8?B?Y1VmZW8vRmxyNHRVemNMZVhqUmZzd01tdnN2TDBwL24wQmkybStzZzYvVW1a?=
+ =?utf-8?B?bWluUm5ScVF0bW1CWGs0Q3B6Skttb21sbWJqWi9ZaE8vMlptdUd0ajhYby85?=
+ =?utf-8?B?MEhqZmY4aStqMWZYcGZIZk4wOWV5SkVVVUFBM3Jhcm91UVgwQnFqd0F4aFBH?=
+ =?utf-8?B?cHF0M0FqRnZSc1ArWjd1OUFYcHFkRzVEa1RscS9DZTJuZ0E4Y2ZBRlM3UW9Y?=
+ =?utf-8?B?eC9nQnNsdUNOM3c4MGZRUkdkZHo4cmVWM0FydnRhWElCV1Y4VVdJeXZueTlw?=
+ =?utf-8?B?YXdqQXhndzlqSjNhUmNGdkdFQ29CV2dmN3JjYmlnTlY0eVhjbEdPYVpaN29n?=
+ =?utf-8?B?UWFWTDBuTWQ2ZU5pTzdyWWFDWUNUelB4VnlUaWFrRUVOcy9rLzBZYlZyY2xW?=
+ =?utf-8?B?L0h5MEZDSktlMzQyenpnd3NHeXR3cWZ4NDFoWHRMQUxPM1k0dW9qejRlUUZW?=
+ =?utf-8?B?Zk1JNGJGNXJSTHh4RjV0V1FJdTZlelJENytQVWIzS0pON1RJWlZGNzJRaHlZ?=
+ =?utf-8?B?NW1oaFJGZGRaQ25MVEI3bEFWNFE2dnlWMGxTdjJKSEd2QnlrVE53eWpTNmw4?=
+ =?utf-8?B?TGU5elBabDZOWHEvbUtjQlRmWlYvMHdGbzIxWE9QNy81ajBjbE5aRW5pVFBO?=
+ =?utf-8?B?RU00Y2xLeGZuS0pVeDNhQUZYbnR2MFhOZ3I1eWw0ZnRGR0hlSXVWOEVkZ0ZD?=
+ =?utf-8?B?cTdsMTFZQ0t5K2grZzZNN3d5Ulp3WC9yUm1oT2MxT0RVdzlhdTBBUnNoWjl4?=
+ =?utf-8?B?YTZsdEtLWFNTakpaOUJsNytFVHp6MDQwOHB6QVlnMXJ6cWpLRmp1QWNxUUN0?=
+ =?utf-8?B?cEhseVZlZ2xBMmphL1l3cTMweVV6MENpOHh2SEFwMUh6RnhTSkNIR3F6K3cz?=
+ =?utf-8?Q?IMK0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR12MB6435.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dXhYZEQ2ODJJNkxsZnRIRlBQalpVZXMrbkN4VTZSRU0rQmVJOEltZzcrTWVV?=
+ =?utf-8?B?cmVINXR5R0tXN292UFF2NGx1UVhheURncHRHRks2d0ZaSEVCRjZuNUVRNXlt?=
+ =?utf-8?B?ZUIzL01jd1IzZStodkF2ZzArdG5HSFlNejI0WHVueHl0WnNKNGh1Mkt6cWxQ?=
+ =?utf-8?B?bm42YUNHNjJWTC9KNFRCWjQrTm9MbmdxL3N5UHVlOHk0NEFac2owNE5XZnlj?=
+ =?utf-8?B?YmsxckxkNm9UYlQzeUdDdzBRVHVSUEJiclVyVCtiRmZBTWVEWjlLb284TWpX?=
+ =?utf-8?B?c25nUEJJR20wTkhGSXdpQm9FMUJzUlVXTTVBNitnU21mYldWeXBVam9FQzN1?=
+ =?utf-8?B?RzFOTkhTVEZHa2x1K0NtK3BzYy9yaW11TDAyZ2lSb2JjdGxMWjVHQUhLU1pp?=
+ =?utf-8?B?bVlET0tIR2orU3RUTVZkSnl2ZXNWV0FkTHZDTnBsMnRnQXgxOGRqMXk1YzdB?=
+ =?utf-8?B?RWRVNmp6RzQ3dmIvMERSZFlDaXFqU21UdWtkMmY5eWxRTlhhZkpDeXVWTE5u?=
+ =?utf-8?B?NWhramVJbjNZcHZDUDZJT1FzMnZGZ0FqNzB1ZHlmUS9pSjB2dGRFMW1wd29J?=
+ =?utf-8?B?RTRFeDY2dUhmMXE5N1Fmb1pxbEJ0ZXFHR1BDbGpSamNWWGp4OWpiS3JOQm0w?=
+ =?utf-8?B?WEtpVTAyUmN1bUR6YXFmbFhHTm9GUDJxNEZXUHdpdkE0clI5SWJvR3pzWGU3?=
+ =?utf-8?B?Q0EyNXg4VHNFLzgyTytHb2xxSngyTktYa2ZtMVlPQ1loZDFrVXJSWXJFOG1u?=
+ =?utf-8?B?OTR2WXhjaVlWVW90ZEhiWDVrcVB0c3kvTm9IdkhPUXN1bGJkVTdKanFrRGor?=
+ =?utf-8?B?ZFpBVUxjeFd3M0M0NW1JOTJpdFB2RnJzZC9yeUNTOGZ6S1p0eFMxTzhaQWFV?=
+ =?utf-8?B?MzZwVVdJRjBpZU0rS3F2alFuaCs3ZTVJSVhLRXRjcTR3Tjd0L1JxS0I4TWdq?=
+ =?utf-8?B?M04xTHh6bkx5T3NKc0xPMUU3ejQ0QytyY1pzTnRCQmp4VmZYWi9iUnBBL0g4?=
+ =?utf-8?B?OWVLejJsWmNuQUZWRmU2TWV5NFFiWEZ6anJHcjZ1SGNkblFEbEYvL1Rmbkhv?=
+ =?utf-8?B?bGlaaEFLRVBFZitDY1M5cytVVHlVNE1LbDMzd3VoNFFHV3hoUjZRYkdjbHcr?=
+ =?utf-8?B?RFJhREpQRHM5Z2xkZUNEUDYvbk02VUZiems5Vkg3WkF3Y20ySG1ER2JlRWdY?=
+ =?utf-8?B?SzJGcllRQkY2VWI2VlFJUkNKNFpjZHFzZHhETUxXYkxybmJaR1NkTHNwQjk4?=
+ =?utf-8?B?MmVPRWhSaWhCSEt1UWNNYy9ySEd5ZEZFaDZCaUFvWC9yVHZYTHZWMVB4TW8y?=
+ =?utf-8?B?U2VrdENRM25KdHdrQnViNVlpQndHRmtwdXRuc0YwVlc1dXl4c2ZJN0Q2S1l4?=
+ =?utf-8?B?Yk9aZEJpSEwxa3JBZjg3VUtySy9DL2gvY2FhYWRoM1Q3V3JiOGVYa1QrT3pI?=
+ =?utf-8?B?b1hvc2ZqVVdoYU1wSEpWY1U1bHcwaW1kQ0RBN1lpZ1RQUnBDNFJRTUJ6SFVi?=
+ =?utf-8?B?UlczdFh4SitxRktSNy9ITWo5T3hLc281a1JpdmtBenBtQXlkMEFMc0xJLzQ4?=
+ =?utf-8?B?MDMzK2ZWMnFyd2g5WjlON2YvU3d0YldweTJ6cVY3cDlUbkhkTDVWbmlrMHZO?=
+ =?utf-8?B?WmNlU0JCR05WOHVkdFlZWjFvZXQzL1FPakJzRGRoQ055b21CTlN6K0FRaXNT?=
+ =?utf-8?B?bFIvcCs2ZTZkWDNJTUh3UFF4MlZPQ1VJUG14U2p5UFZ5Yy9kMXlubDdQZS91?=
+ =?utf-8?B?NHJPZnFwRE5aZjdMRVlpbnZBcTRGSC94VThQN2oxTVNsN1hZeURWRk5DbzV0?=
+ =?utf-8?B?MitIUkJOTDhLL1NXRVlNRmdGeXJDSTZqaEFxNTRXVFZSU09UczN4VU03SnJT?=
+ =?utf-8?B?dkVyclNkNXB6NmluT2FobFJta1ZLTjBpdnNkQXhBcVRzcTNITWUwMmVqMExC?=
+ =?utf-8?B?K1U2a1JOWVpRSFlQcHhyYzdsaDRCR1ppK3FRcWxORGE2QmpuMy9jMHlZVnBK?=
+ =?utf-8?B?TFJWTVhScHBCOWVURGNxSTRIZGtKc3NXMFVNRmZlUSt5ZHVrVXVxRUFlMTE4?=
+ =?utf-8?B?ekhPQ0N6VVpVYVpHV1RHaGx1RXlIR3RFWGFyT2xRaVZnYmc1bCs2c2lmSEMw?=
+ =?utf-8?B?cXIvU2MzUWFTbHNTcEV1Y2VBalBOM2JHTG05NHNyZ042VTQ2QmZQNk1CRWlp?=
+ =?utf-8?B?ZUx6VUpTN1h3TW9qV0hCNnhTV0hiWEdBeVJ2NC9PNnJON29KRi9objBKWmtn?=
+ =?utf-8?B?R1ZhbE1NbDV2SE8xYldsQlIxMkZtSzF1UzNaOUpFUVp3K29oYXhvK0phdmxH?=
+ =?utf-8?B?b2VOeU52bk1ObEtMNGk4WGNaNzR0cnM3dU5QdERORHZKQ0ZFMFR3dz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b710d43-dd76-4a28-5e60-08de67da1f55
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB6435.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 12:52:46.3358
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: GcMQOmNKNwxRbpD5TzlUoBXB3bSmIe97/Pi96+tAehChmambR5YhlYdgjMcf9gT8yA87v9gudGAPCx5ct4MphA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB6013
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 221BC40004
+X-Stat-Signature: gebqjdqf1s7u6mg4nrhfaqtirteza39p
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CEEA940002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: it5wfm8u5d8bop68n7amry6nkfxmdg7p
-X-HE-Tag: 1770641093-910600
-X-HE-Meta: U2FsdGVkX195rUwAdIvW30ddFzIaFvO/cOqwHFDMu2xwKttCod43KJM3szX7lyNk3sG9KfEnYyhw+bzVg+VILFJlQ8FS9mkS6RfMbr11xO8Kl/EZTUUVGeCScA6pTWpxojUW0efKU1ntawDrco0YSfeNuAzJ+bHg2zXmIkJofj+M0JjBDNy2cNhd2zxwpCdWV59zkB3+cHQzHeSdVFonBWKWy4klJE+O90jM0otSLml9DoRq1oYcQ91VQ6xIwcuxmLrx3YHDQwHeGWBsbmx6TF8y/r45Gwz4+Mz53OtNhnplNF/XzWGyFmJ6bRkvkejq/Pulyk1IV/U8/b496tsgULA73ZcrfMs5czLa/Yg2W+mo1oT4nUIXn06xdJfNRGxwXzQrP27bUKSufAbhDRzFeN6d/ojB/Ly/09OZB5x7+5PEC2UQ5adyUD789lMq8j2h+qJ/Jd0JAbGlf8lXZvJOVu5a5fHkL+xntVxcitHffQZSfvwxQteFnBCeQ5mKwGPcBEMwQYErvOyrrwHRFxFGoCu+pk7rx61hRl5L0lI5SUSbkJfg62DxP5rXuhPLW9gCjQ6yqSI9pM3/ku7GApaJ92RZNy1npQh+PYwekkCH+i5i2O5QNOHGhRJ51BHjKA4nvvPN5/L6APBsppRWcQvd9zXDIVLM6DGCLQIoYmfqbw+3UejLl7M8o373XR8tSNGD6AhXcUSXkxk5GkVuFEvq776k/gaXTI6mrhjmOuDkT4BMsHvDWn6VPhv9N/SbYHN773MmOMG1OAhGbZzbY1s0KYoIqEnlJTojaDXGFUGEryyKCELO8jzQsFf5wl2ctOBQc1QvA1HBhhYvh8EBVmsap2CvaPcdWZzTOFvLNGMySzaVi0t4wCcpX9DuvQoSseqtvOnstxGUq2VK6/2mX1XX465Tjcw73My2Ny6Q82aviSM3RdYrLEyW8S9UIDuQQCKLd8n0QjG1I3NvfLXlO1J
- qZDECSMa
- RhrWP+lypdZCit5PTNcqT6HZ9iAHfvXaKxLTf
+X-HE-Tag: 1770641569-562765
+X-HE-Meta: U2FsdGVkX1/OlwPHaWVqpr15q5v5iJ5FpqS+wRR9rG8YnCQvryAVTkAcixWdD3VA/mYNBuBKiI2dT+d/UMjVKQI2/G58mBsV6SxVg7q3LTFNtpLzC3QdxX4AE8DWU2MKctLnEutIQJE2djT/sq9a8+aqt9BCkOhnWJDnaG5vv1sGEtcisH73I20/mquXiESEEzt8In5VGPbgRUZ84+N38K/i3R+oA73488/YEMBLNrgtarlSeHg6HXpdt+qSmC6q8vZxs2qqsn2OMSSnWtxz6hZZ89l9QcHxt+Ab8X79A5Cf3Szsf6zzQ2fDJqG49SDHJBIQg6a7CaEwo2v8/tB6LkdsSh6z6jW2FTVe0tnPWPwCs/c6vlvZKqn2u1cZbd5zcbbbPHBRfXumkVv207Fr4A3+uZBcCdNeV5pg8R6IiN6PmoIk4PNBajkzrZ0PSiyTCq3/DrK5pXv8W6TGPDvTZonQBzVXaqla5ja1qeq1IjwADStWtLOphhEQoBfso412Y+WxyWSc30+ighT3UthxUE6+XWzGN6N6vDiecNpa+HKc6J/uBOoyLdUQpv3USd9kTBjuRPx7wvngP/18sKP/FCzCK7v7BQGgj7x/xttgLklhfnC5cRZDojvQljYPkCMLEYBRa87Kq8RbY/hsTtxYqKJXviSTO6LWC+ittboJgBli9vxripvxX7XX9vVNovioGhuO+1sXe722raB5fK/ez7MWSchAMoEze1tPUUiMIxN186bRijLG++SKJ9ensaJZbN7fDxh2UfwTmkTxreobAC6j3kKG8ImDGs89gzqTn8lSIEnLNAvn/4Oe0l9MrkxhkaUMgoaY7+WVQWlAn5AksusQSVQpLvMmyxBv30WkO8TUNeU6XqGj+vjbm5pIBPXLaEW1Ua0QwDEROrjTHMnVqd7eBrnGT901oWfBc8jKMkeFbPefzRbIeb9Kf+Yd2nLxZx+9pzA5LgnFz6Z1owb
+ VsT+TqtC
+ FgdcT0G+0sVYidBYTt9JeWCsPsCNuHCAL5PQFVNVxDaA259KQlip1X+oAHJtRaG2XlwZYhwk3V+dYjKC6slftCWnjgrH53RvymmTGKdPGtAxiSmPrd1cMg5qTw385+hbgDyVoayTiMrf7yQNAHrUGYGwzwoeyBhY3IF+gdLOS/kgtAodpejVGOb8lAdOXkD9870ciffHAujCayKx7G3nhchGxdUxEUh7Kjpfk2q9tuJT11sxoZdQgi6xpca59F9Z46k9BzNOgt2tJXkR8/9lPG1CRkdCN5pIDqKgJVy8xCLC1M79pwMi1VLdMuieJt1x7ycREJ/X7sSlGa3idHWkOYDeiPCAxTcf0JPPBPmZt1aOUoB00Wh9Iogxh2nnDZbRpMkJiUYiKo/2m2LhmRhJ5yysDbxeSGCmEL08L6p8gkzVyx5EAXINyVr7cWM98G1J848DssbybZFfcNMCT7IdzHgtSNv1dNhM9v4Pp9UDGLJ/rFZWXMyD4wOTDhSA+EUtczc3XVQ4X6EEIlH12IeG1kI44kubewVXKJ6GG0c/P21aCB1O4v80RsQmGJF+2oSpU393DyUSSS40Epk3mtY/hLwQdJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,349 +210,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/9/26 11:52, David Hildenbrand (Arm) wrote:
-> On 2/8/26 20:39, Mike Rapoport wrote:
->> On Sat, Feb 07, 2026 at 12:00:09PM +0100, David Hildenbrand (Arm) wrote:
->>>
->>> Thanks for all your work on this and sorry for being slower with
->>> review the last month.
->>>
->>> While I was in the shower I was thinking about how much I hate
->>> zone->contiguous + the pageblock walking, and how we could just get
->>> rid of it.
->>>
->>> You know, just what you do while having a relaxing shower.
->>>
->>>
->>> And I was wondering:
->>>
->>> (a) in which case would we have zone_spanned_pages == zone_present_pages
->>> and the zone *not* being contiguous? I assume this just cannot happen,
->>> otherwise BUG.
->>>
->>> (b) in which case would we have zone_spanned_pages != zone_present_pages
->>> and the zone *being* contiguous? I assume in some cases where we have 
->>> small
->>> holes within a pageblock?
->>>
->>> Reading the doc of __pageblock_pfn_to_page(), there are some weird
->>> scenarios with holes in pageblocks.
->> It seems that "zone->contigous" is really bad name for what this thing
->> represents.
+
+DRM GPU SVM does use hmm_range_fault(), see drm_gpusvm_get_pages()
+
+My implementation follows the same pattern. The detailed comparison
+of invalidation path was provided in the second half of my previous mail.
+
+On 2026/2/9 18:16, Christian König wrote:
+> On 2/9/26 07:14, Honglei Huang wrote:
 >>
->> tl;dr I don't think zone_spanned_pages == zone_present_pages is 
->> related to
->> zone->contigous at all :)
+>> I've reworked the implementation in v4. The fix is actually inspired
+>> by the DRM GPU SVM framework (drivers/gpu/drm/drm_gpusvm.c).
+>>
+>> DRM GPU SVM uses wide notifiers (recommended 512M or larger) to track
+>> multiple user virtual address ranges under a single mmu_interval_notifier,
+>> and these ranges can be non-contiguous which is essentially the same
+>> problem that batch userptr needs to solve: one BO backed by multiple
+>> non-contiguous CPU VA ranges sharing one notifier.
 > 
-> My point in (a) was that with "zone_spanned_pages == zone_present_pages" 
-> there are no holes so -> contiguous.
+> That still doesn't solve the sequencing problem.
 > 
-> (b), and what I said further below, is exactly about memory holes where 
-> we have a memmap, but it's not present memory.
+> As far as I can see you can't use hmm_range_fault with this approach or it would just not be very valuable.
+> 
+> So how should that work with your patch set?
+> 
+> Regards,
+> Christian.
 > 
 >>
->> If you look at pageblock_pfn_to_page() and __pageblock_pfn_to_page(), the
->> check for zone->contigous should guarantee that the entire pageblock 
->> has a
->> valid memory map and that the entire pageblock fits a zone and does not
->> cross zone/node boundaries.
-> 
-> Right. But that must hold for each and ever pageblock in the spanned 
-> zone range for it to be contiguous.
-> 
-> zone->contigous tells you "pfn_to_page()" is valid on the complete zone 
-> range"
-> 
-> That's why set_zone_contiguous() probes __pageblock_pfn_to_page() on ech 
-> and ever pageblock.
-> 
+>> The wide notifier is created in drm_gpusvm_notifier_alloc:
+>>    notifier->itree.start = ALIGN_DOWN(fault_addr, gpusvm->notifier_size);
+>>    notifier->itree.last = ALIGN(fault_addr + 1, gpusvm->notifier_size) - 1;
+>> The Xe driver passes
+>>    xe_modparam.svm_notifier_size * SZ_1M in xe_svm_init
+>> as the notifier_size, so one notifier can cover many of MB of VA space
+>> containing multiple non-contiguous ranges.
 >>
->> For coldplug memory the memory map is valid for every section that has
->> present memory, i.e. even it there is a hole in a section, it's memory 
->> map
->> will be populated and will have struct pages.
-> 
-> There is this sub-section thing, and holes larger than a section might 
-> not have a memmap (unless reserved I guess).
-> 
+>> And DRM GPU SVM solves the per-range validity problem with flag-based
+>> validation instead of seq-based validation in:
+>>    - drm_gpusvm_pages_valid() checks
+>>        flags.has_dma_mapping
+>>      not notifier_seq. The comment explicitly states:
+>>        "This is akin to a notifier seqno check in the HMM documentation
+>>         but due to wider notifiers (i.e., notifiers which span multiple
+>>         ranges) this function is required for finer grained checking"
+>>    - __drm_gpusvm_unmap_pages() clears
+>>        flags.has_dma_mapping = false  under notifier_lock
+>>    - drm_gpusvm_get_pages() sets
+>>        flags.has_dma_mapping = true  under notifier_lock
+>> I adopted the same approach.
 >>
->> When zone->contigous is false, the slow path in __pageblock_pfn_to_page()
->> essentially checks if the first page in a pageblock is online and if 
->> first
->> and last pages are in the zone being compacted.
->> AFAIU, in the hotplug case an entire pageblock is always onlined to the
->> same zone, so zone->contigous won't change after the hotplug is complete.
-> 
-> I think you are missing a point: hotp(un)plug might create holes in the 
-> zone span. Then, pfn_to_page() is no longer valid to be called on 
-> arbitrary pageblocks within the zone.
-> 
+>> DRM GPU SVM:
+>>    drm_gpusvm_notifier_invalidate()
+>>      down_write(&gpusvm->notifier_lock);
+>>      mmu_interval_set_seq(mni, cur_seq);
+>>      gpusvm->ops->invalidate()
+>>        -> xe_svm_invalidate()
+>>           drm_gpusvm_for_each_range()
+>>             -> __drm_gpusvm_unmap_pages()
+>>                WRITE_ONCE(flags.has_dma_mapping = false);  // clear flag
+>>      up_write(&gpusvm->notifier_lock);
 >>
->> We might set it to false in the beginning of the hotplug to avoid 
->> scanning
->> offline pages, although I'm not sure if it's possible.
+>> KFD batch userptr:
+>>    amdgpu_amdkfd_evict_userptr_batch()
+>>      mutex_lock(&process_info->notifier_lock);
+>>      mmu_interval_set_seq(mni, cur_seq);
+>>      discard_invalid_ranges()
+>>        interval_tree_iter_first/next()
+>>          range_info->valid = false;          // clear flag
+>>      mutex_unlock(&process_info->notifier_lock);
 >>
->> But in the end of hotplug we can simply restore the old value and move 
->> on.
-> 
-> No, you might create holes.
-> 
+>> Both implementations:
+>>    - Acquire notifier_lock FIRST, before any flag changes
+>>    - Call mmu_interval_set_seq() under the lock
+>>    - Use interval tree to find affected ranges within the wide notifier
+>>    - Mark per-range flag as invalid/valid under the lock
 >>
->> For the coldplug case I'm also not sure it's worth the hassle, we could
->> just let compaction scan a few more pfns for those rare weird pageblocks
->> and bail out on wrong page conditions.
-> 
-> To recap:
-> 
-> My idea is that "zone_spanned_pages == zone_present_pages" tells you 
-> that the zone is contiguous because there are no holes.
-> 
-> To handle "non-memory with a struct page", you'd have to check
-> 
->      "zone_spanned_pages == zone_present_pages +
->           zone_non_present_memmap_pages"
-> 
-> Or shorter
-> 
->      "zone_spanned_pages == zone_pages_with_memmap"
-> 
-> Then, pfn_to_page() is valid within the complete zone.
-> 
-> The question is how to best calculate the "zone_pages_with_memmap" 
-> during boot.
-> 
-> During hot(un)plug we only add/remove zone_present_pages. The 
-> zone_non_present_memmap_pages will not change due to hot(un)plug later.
+>> The page fault path and final validation path also follow the same
+>> pattern as DRM GPU SVM: fault outside the lock, set/check per-range
+>> flag under the lock.
+>>
+>> Regards,
+>> Honglei
+>>
+>>
+>> On 2026/2/6 21:56, Christian König wrote:
+>>> On 2/6/26 07:25, Honglei Huang wrote:
+>>>> From: Honglei Huang <honghuan@amd.com>
+>>>>
+>>>> Hi all,
+>>>>
+>>>> This is v3 of the patch series to support allocating multiple non-contiguous
+>>>> CPU virtual address ranges that map to a single contiguous GPU virtual address.
+>>>>
+>>>> v3:
+>>>> 1. No new ioctl: Reuses existing AMDKFD_IOC_ALLOC_MEMORY_OF_GPU
+>>>>      - Adds only one flag: KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH
+>>>
+>>> That is most likely not the best approach, but Felix or Philip need to comment here since I don't know such IOCTLs well either.
+>>>
+>>>>      - When flag is set, mmap_offset field points to range array
+>>>>      - Minimal API surface change
+>>>
+>>> Why range of VA space for each entry?
+>>>
+>>>> 2. Improved MMU notifier handling:
+>>>>      - Single mmu_interval_notifier covering the VA span [va_min, va_max]
+>>>>      - Interval tree for efficient lookup of affected ranges during invalidation
+>>>>      - Avoids per-range notifier overhead mentioned in v2 review
+>>>
+>>> That won't work unless you also modify hmm_range_fault() to take multiple VA addresses (or ranges) at the same time.
+>>>
+>>> The problem is that we must rely on hmm_range.notifier_seq to detect changes to the page tables in question, but that in turn works only if you have one hmm_range structure and not multiple.
+>>>
+>>> What might work is doing an XOR or CRC over all hmm_range.notifier_seq you have, but that is a bit flaky.
+>>>
+>>> Regards,
+>>> Christian.
+>>>
+>>>>
+>>>> 3. Better code organization: Split into 8 focused patches for easier review
+>>>>
+>>>> v2:
+>>>>      - Each CPU VA range gets its own mmu_interval_notifier for invalidation
+>>>>      - All ranges validated together and mapped to contiguous GPU VA
+>>>>      - Single kgd_mem object with array of user_range_info structures
+>>>>      - Unified eviction/restore path for all ranges in a batch
+>>>>
+>>>> Current Implementation Approach
+>>>> ===============================
+>>>>
+>>>> This series implements a practical solution within existing kernel constraints:
+>>>>
+>>>> 1. Single MMU notifier for VA span: Register one notifier covering the
+>>>>      entire range from lowest to highest address in the batch
+>>>>
+>>>> 2. Interval tree filtering: Use interval tree to efficiently identify
+>>>>      which specific ranges are affected during invalidation callbacks,
+>>>>      avoiding unnecessary processing for unrelated address changes
+>>>>
+>>>> 3. Unified eviction/restore: All ranges in a batch share eviction and
+>>>>      restore paths, maintaining consistency with existing userptr handling
+>>>>
+>>>> Patch Series Overview
+>>>> =====================
+>>>>
+>>>> Patch 1/8: Add userptr batch allocation UAPI structures
+>>>>       - KFD_IOC_ALLOC_MEM_FLAGS_USERPTR_BATCH flag
+>>>>       - kfd_ioctl_userptr_range and kfd_ioctl_userptr_ranges_data structures
+>>>>
+>>>> Patch 2/8: Add user_range_info infrastructure to kgd_mem
+>>>>       - user_range_info structure for per-range tracking
+>>>>       - Fields for batch allocation in kgd_mem
+>>>>
+>>>> Patch 3/8: Implement interval tree for userptr ranges
+>>>>       - Interval tree for efficient range lookup during invalidation
+>>>>       - mark_invalid_ranges() function
+>>>>
+>>>> Patch 4/8: Add batch MMU notifier support
+>>>>       - Single notifier for entire VA span
+>>>>       - Invalidation callback using interval tree filtering
+>>>>
+>>>> Patch 5/8: Implement batch userptr page management
+>>>>       - get_user_pages_batch() and set_user_pages_batch()
+>>>>       - Per-range page array management
+>>>>
+>>>> Patch 6/8: Add batch allocation function and export API
+>>>>       - init_user_pages_batch() main initialization
+>>>>       - amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu_batch() entry point
+>>>>
+>>>> Patch 7/8: Unify userptr cleanup and update paths
+>>>>       - Shared eviction/restore handling for batch allocations
+>>>>       - Integration with existing userptr validation flows
+>>>>
+>>>> Patch 8/8: Wire up batch allocation in ioctl handler
+>>>>       - Input validation and range array parsing
+>>>>       - Integration with existing alloc_memory_of_gpu path
+>>>>
+>>>> Testing
+>>>> =======
+>>>>
+>>>> - Multiple scattered malloc() allocations (2-4000+ ranges)
+>>>> - Various allocation sizes (4KB to 1G+ per range)
+>>>> - Memory pressure scenarios and eviction/restore cycles
+>>>> - OpenCL CTS and HIP catch tests in KVM guest environment
+>>>> - AI workloads: Stable Diffusion, ComfyUI in virtualized environments
+>>>> - Small LLM inference (3B-7B models)
+>>>> - Benchmark score: 160,000 - 190,000 (80%-95% of bare metal)
+>>>> - Performance improvement: 2x-2.4x faster than userspace approach
+>>>>
+>>>> Thank you for your review and feedback.
+>>>>
+>>>> Best regards,
+>>>> Honglei Huang
+>>>>
+>>>> Honglei Huang (8):
+>>>>     drm/amdkfd: Add userptr batch allocation UAPI structures
+>>>>     drm/amdkfd: Add user_range_info infrastructure to kgd_mem
+>>>>     drm/amdkfd: Implement interval tree for userptr ranges
+>>>>     drm/amdkfd: Add batch MMU notifier support
+>>>>     drm/amdkfd: Implement batch userptr page management
+>>>>     drm/amdkfd: Add batch allocation function and export API
+>>>>     drm/amdkfd: Unify userptr cleanup and update paths
+>>>>     drm/amdkfd: Wire up batch allocation in ioctl handler
+>>>>
+>>>>    drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  23 +
+>>>>    .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 539 +++++++++++++++++-
+>>>>    drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      | 128 ++++-
+>>>>    include/uapi/linux/kfd_ioctl.h                |  31 +-
+>>>>    4 files changed, 697 insertions(+), 24 deletions(-)
+>>>>
+>>>
+>>
 > 
 
-The following hack does the trick. But
-
-(a) I wish we could get rid of the pageblock walking in calc_online_pages().
-(b) "online_pages" has weird semantics due to the pageblock handling.
-     "online_pageblock_pages"? not sure.
-(c) Calculating "online_pages" when we know there is a hole does not make sense,
-     as we could just keep it 0 if there are holes and simply set it to
-     zone->online_pageblock_pages->zone->spanned_pages in case all are online.
-
-
- From d4cb825e91a6363afc68fb994c5d9b29c38c5f42 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 9 Feb 2026 13:40:24 +0100
-Subject: [PATCH] tmp
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-  include/linux/mmzone.h | 25 +++++++++++++++++++++++--
-  mm/internal.h          |  8 +-------
-  mm/memory_hotplug.c    | 20 ++++++--------------
-  mm/mm_init.c           | 12 ++++++------
-  4 files changed, 36 insertions(+), 29 deletions(-)
-
-diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index fc5d6c88d2f0..3f7d8d88c597 100644
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -943,6 +943,11 @@ struct zone {
-  	 * cma pages is present pages that are assigned for CMA use
-  	 * (MIGRATE_CMA).
-  	 *
-+	 * online_pages is pages within the zone that have an online memmap.
-+	 * online_pages include present pages and memory holes that have a
-+	 * memmap. When spanned_pages == online_pages, pfn_to_page() can be
-+	 * performed without further checks on any pfn within the zone span.
-+	 *
-  	 * So present_pages may be used by memory hotplug or memory power
-  	 * management logic to figure out unmanaged pages by checking
-  	 * (present_pages - managed_pages). And managed_pages should be used
-@@ -967,6 +972,7 @@ struct zone {
-  	atomic_long_t		managed_pages;
-  	unsigned long		spanned_pages;
-  	unsigned long		present_pages;
-+	unsigned long		online_pages;
-  #if defined(CONFIG_MEMORY_HOTPLUG)
-  	unsigned long		present_early_pages;
-  #endif
-@@ -1051,8 +1057,6 @@ struct zone {
-  	bool			compact_blockskip_flush;
-  #endif
-  
--	bool			contiguous;
--
-  	CACHELINE_PADDING(_pad3_);
-  	/* Zone statistics */
-  	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
-@@ -1124,6 +1128,23 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
-  	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
-  }
-  
-+/**
-+ * zone_is_contiguous - test whether a zone is contiguous
-+ * @zone: the zone to test.
-+ *
-+ * In a contiguous zone, it is valid to call pfn_to_page() on any pfn in the
-+ * spanned zone without requiting pfn_valid() or pfn_to_online_page() checks.
-+ *
-+ * Returns: true if contiguous, otherwise false.
-+ */
-+static inline bool zone_is_contiguous(const struct zone *zone)
-+{
-+	return READ_ONCE(zone->spanned_pages) == READ_ONCE(zone->online_pages);
-+}
-+
-  static inline bool zone_is_initialized(const struct zone *zone)
-  {
-  	return zone->initialized;
-diff --git a/mm/internal.h b/mm/internal.h
-index f35dbcf99a86..6062f9b8ee62 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -716,21 +716,15 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
-  static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
-  				unsigned long end_pfn, struct zone *zone)
-  {
--	if (zone->contiguous)
-+	if (zone_is_contiguous(zone))
-  		return pfn_to_page(start_pfn);
-  
-  	return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
-  }
-  
--void set_zone_contiguous(struct zone *zone);
-  bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
-  			   unsigned long nr_pages);
-  
--static inline void clear_zone_contiguous(struct zone *zone)
--{
--	zone->contiguous = false;
--}
--
-  extern int __isolate_free_page(struct page *page, unsigned int order);
-  extern void __putback_isolated_page(struct page *page, unsigned int order,
-  				    int mt);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index a63ec679d861..76496c1039a9 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -492,11 +492,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
-  		pfn = find_smallest_section_pfn(nid, zone, end_pfn,
-  						zone_end_pfn(zone));
-  		if (pfn) {
--			zone->spanned_pages = zone_end_pfn(zone) - pfn;
-+			WRITE_ONCE(zone->spanned_pages, zone_end_pfn(zone) - pfn);
-  			zone->zone_start_pfn = pfn;
-  		} else {
-  			zone->zone_start_pfn = 0;
--			zone->spanned_pages = 0;
-+			WRITE_ONCE(zone->spanned_pages, 0);
-  		}
-  	} else if (zone_end_pfn(zone) == end_pfn) {
-  		/*
-@@ -508,10 +508,10 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
-  		pfn = find_biggest_section_pfn(nid, zone, zone->zone_start_pfn,
-  					       start_pfn);
-  		if (pfn)
--			zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
-+			WRITE_ONCE(zone->spanned_pages, pfn - zone->zone_start_pfn + 1);
-  		else {
-  			zone->zone_start_pfn = 0;
--			zone->spanned_pages = 0;
-+			WRITE_ONCE(zone->spanned_pages, 0);
-  		}
-  	}
-  }
-@@ -565,18 +565,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
-  
-  	/*
-  	 * Zone shrinking code cannot properly deal with ZONE_DEVICE. So
--	 * we will not try to shrink the zones - which is okay as
--	 * set_zone_contiguous() cannot deal with ZONE_DEVICE either way.
-+	 * we will not try to shrink the zones.
-  	 */
-  	if (zone_is_zone_device(zone))
-  		return;
-  
--	clear_zone_contiguous(zone);
--
-  	shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
-  	update_pgdat_span(pgdat);
--
--	set_zone_contiguous(zone);
-  }
-  
-  /**
-@@ -753,8 +748,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
-  	struct pglist_data *pgdat = zone->zone_pgdat;
-  	int nid = pgdat->node_id;
-  
--	clear_zone_contiguous(zone);
--
-  	if (zone_is_empty(zone))
-  		init_currently_empty_zone(zone, start_pfn, nr_pages);
-  	resize_zone_range(zone, start_pfn, nr_pages);
-@@ -782,8 +775,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
-  	memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
-  			 MEMINIT_HOTPLUG, altmap, migratetype,
-  			 isolate_pageblock);
--
--	set_zone_contiguous(zone);
-  }
-  
-  struct auto_movable_stats {
-@@ -1079,6 +1070,7 @@ void adjust_present_page_count(struct page *page, struct memory_group *group,
-  	if (early_section(__pfn_to_section(page_to_pfn(page))))
-  		zone->present_early_pages += nr_pages;
-  	zone->present_pages += nr_pages;
-+	WRITE_ONCE(zone->online_pages,  zone->online_pages + nr_pages);
-  	zone->zone_pgdat->node_present_pages += nr_pages;
-  
-  	if (group && movable)
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 2a809cd8e7fa..e33caa6fb6fc 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2263,9 +2263,10 @@ void __init init_cma_pageblock(struct page *page)
-  }
-  #endif
-  
--void set_zone_contiguous(struct zone *zone)
-+static void calc_online_pages(struct zone *zone)
-  {
-  	unsigned long block_start_pfn = zone->zone_start_pfn;
-+	unsigned long online_pages = 0;
-  	unsigned long block_end_pfn;
-  
-  	block_end_pfn = pageblock_end_pfn(block_start_pfn);
-@@ -2277,12 +2278,11 @@ void set_zone_contiguous(struct zone *zone)
-  
-  		if (!__pageblock_pfn_to_page(block_start_pfn,
-  					     block_end_pfn, zone))
--			return;
-+			continue;
-  		cond_resched();
-+		online_pages += block_end_pfn - block_start_pfn;
-  	}
--
--	/* We confirm that there is no hole */
--	zone->contiguous = true;
-+	zone->online_pages = online_pages;
-  }
-  
-  /*
-@@ -2348,7 +2348,7 @@ void __init page_alloc_init_late(void)
-  		shuffle_free_memory(NODE_DATA(nid));
-  
-  	for_each_populated_zone(zone)
--		set_zone_contiguous(zone);
-+		calc_online_pages(zone);
-  
-  	/* Initialize page ext after all struct pages are initialized. */
-  	if (deferred_struct_pages)
--- 
-2.43.0
-
-
--- 
-Cheers,
-
-David
 
