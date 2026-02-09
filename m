@@ -4,116 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA5A2E94623
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 23:16:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAD93E94626
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 23:38:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A7A916B0092; Mon,  9 Feb 2026 18:16:58 -0500 (EST)
+	id CD3976B0095; Mon,  9 Feb 2026 18:38:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A28DB6B0095; Mon,  9 Feb 2026 18:16:58 -0500 (EST)
+	id C81606B0096; Mon,  9 Feb 2026 18:38:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 927436B0096; Mon,  9 Feb 2026 18:16:58 -0500 (EST)
+	id B80BF6B0098; Mon,  9 Feb 2026 18:38:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F8FF6B0092
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 18:16:58 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A87A413A619
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 23:16:57 +0000 (UTC)
-X-FDA: 84426480474.18.CD3E64F
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CAC5F4000E
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 23:16:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gETDV3hY;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A400E6B0095
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 18:38:12 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 434791C224
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 23:38:12 +0000 (UTC)
+X-FDA: 84426534024.20.D1A48A8
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 76CC3C0002
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 23:38:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KXOwU3xp;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770679015;
+	s=arc-20220608; t=1770680290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9KPSiJIKj/b8QQwFvGSiwvCphuT1m/bq196d1vnTPzE=;
-	b=P5jDkxh46gKueY3skuW2oxajB04ZdkCTFMryenb/GGUXSkwmSk0I9vWK/+treHRqr1D8Ns
-	SJC0C6KdbDZ5vFiN3on/EYReUE6mRBK5a5jtMgmww7zcl8pxp39upwj9CnvDJnnJzw8YeV
-	pvzI0z0Hu3qFxmL+QvS4K6MymXtkGDQ=
+	bh=bKflQoWWfTAd7e7632MSiWX2TDgq/N2H5C8MOW7rRnU=;
+	b=EZQeTfyQRA0BOOdROD6TAR/wYxYzMIehxWOBzMhi3BlgayjqlBEfY3jrfZ14qmlJA7MkmW
+	QmDVrY+xjjG6kOUaAO/hDTaT/eWnw4F3ku1e3Vt6dkrDgKHWzToXhgFI2+mv+iunwGOwVe
+	ilcBzOWUo6zpIkTHjjhVpC6DilLlJ9g=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gETDV3hY;
-	spf=pass (imf07.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.161.41 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770679015; a=rsa-sha256;
+	imf28.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=KXOwU3xp;
+	spf=pass (imf28.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770680290; a=rsa-sha256;
 	cv=none;
-	b=i+Xl4BbZCX1xi3AqSi9SAJuXYnlhp2QzEVj4POiHqyysdPsSI87qckOtUiEGoE1aV+HD3Z
-	SS7rALTSsiMaxGHxXU4xuEX2dqDXb0ZJgTigZEIdWCYEHdztUQMk1J/3Nwi6WI4wq3FDoJ
-	LO21R4hYbR2oF4p4UU87PW3QWGf06FA=
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-66a2278a37dso1816310eaf.0
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 15:16:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770679015; x=1771283815; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9KPSiJIKj/b8QQwFvGSiwvCphuT1m/bq196d1vnTPzE=;
-        b=gETDV3hY6DAC5+6IppNjYYfATpLazUXKeYJu1SIYtB3Sa2Cx6oDoLXhq7q7NWw6XIl
-         IhFGU2vAptgXlteKAiCclNdM7FPEoEmSa0fHEO6O3GR9hjTD92Ske0txOAwvNS3dQZpY
-         ZltrsnpJy/ymZxD6aqJHL8IOioRvcrIiEyuZUPZ9gKfixclZO3QZVKYZ4aoqfb2lcv3/
-         KBeHxbedfZ+Qon8pbttB2OSO1R5p9LE7iPWuVk2O8dCYEwdbAbOYnmjFFVMRXFPpuPI9
-         ubhwMFYEFpj1gjvQpzQb8HFipECRFYhHN0LF9gi1W0CoR7mV8+bljv4HdmO6FywzTR2r
-         cKqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770679015; x=1771283815;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9KPSiJIKj/b8QQwFvGSiwvCphuT1m/bq196d1vnTPzE=;
-        b=HxwxRRw9AEPMM0JsACY6r2f6WhNCUka9HRZdEDmUxbVHGyPEApOao+MEiaCE0O2gJr
-         PbqsFarPyX/Ubgx+D2pz3ReqVDeZHwMRcGesmtd+fp7JZyJn3zXhgVvP1G2LdNozfwRC
-         T3636QYQJCMpo9pnlrZ/9xqusAC0VjxLghYhC8mNEHV5P4F/OhNR1pklcr2prwtTkpXX
-         gGi6dN/IR9ldEpFvHiQYn86NhtpdZk8KQ+CoH9SOlld5p7W3/0UAlMOO+oIg5FdVtJy8
-         9P8HG53U/I7TLPVJCtcOJc84r3KWCjdNbhBLp0eu24bvZNhE6xskWwOK/C0mXbH1GEmq
-         C5fQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfqfC5sTEIuyjWhc6jaPICtoqJcxv0gX4Epqeb/L5YWz3qbhTywzZcSUxPVPzaZNuQYPOlnY2dvA==@kvack.org
-X-Gm-Message-State: AOJu0Yw/i+Ka3cftX2Ff5CyDtdImOTKTv+RoJlukEirZtvc6O8aH7ghB
-	z8ci8vpNpYiQ96dNsel2eJ+fVJUNj6jUka5nCfBp6ji9xktQNSUeyWO3
-X-Gm-Gg: AZuq6aL6nHXmPqUKr3MQjUFImO2upoWkk/6MCJMrdB9yGKb7ovTZYgeE4+Q8I+Re2Gq
-	nt3COi8W4DDSEXxJJd6v8IlcncN7lRC2ulT5mQAqlQ37OUES1H8540RkJFDalwmUFTAA9JO4/KH
-	zQ6SiuWm5p7I+JGPemoQ3irrpFwVbRAv97JrIeMb+jiumdZa5153T7Q8B9NnKqfJY0X+Xoy89Q6
-	W98H7zlx5+mCRXhkw+iEG2XcYEMaIHB6k1cOlWjgHo8z75aBBHzzDzFRf93bfsOactlk8a+a3fz
-	27LrFkGwkuQf/I3w+wPqcLuWcWrHD5YMeYvZ1qCXmu4pQieE7EkpyqaVYWDyQbxM7Y47U/kkXxt
-	6y2XEm7SGSOoCxZO6BapIMPTByrFTaPJ+1gwNHcOsGw4o1cmBPrbV4HtBNFwWGxI9HX/5Xz7K8M
-	4yaEB4f9BEj3txMCD3RBZ5
-X-Received: by 2002:a05:6820:3088:b0:662:f91f:4a98 with SMTP id 006d021491bc7-66d0c18aba2mr5686178eaf.41.1770679014745;
-        Mon, 09 Feb 2026 15:16:54 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:70::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66d3adcae3csm6928357eaf.9.2026.02.09.15.16.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 15:16:54 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Minchan Kim <minchan@kernel.org>,
-	Michael Fara <mjfara@gmail.com>,
-	senozhatsky@chromium.org,
-	linux-mm@kvack.org,
+	b=n1gDKT7nXOVHIiESkQFeP71J0R+S7LuMcrTUX24AywWXeXGhaVPQehCqu6kTH+eDlgkMqN
+	8AcHoOBMtFDkIbogruDOAxUolfksXR0hkxpSVhg7XPQ8uky98TWoLDI09SgWPzw/1DjBVn
+	w2F3IAjFP2N/7eS88SOKxUmsKao6rU4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770680289; x=1802216289;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wGlZDqmrdBbEgyHk+9taYE7VHOb5DA6r41ddHjaltyQ=;
+  b=KXOwU3xpxTb0NQplB2wEPKa0xqc8q/jf4eiWiBo4MhPIVgG1yqXMfDC4
+   R/lY1OtkavrxeGi5LISqDwOzR9SF5KgEQi9V4GJ9iOou+hF2ZCAc1v0jY
+   xR7DuA5d+5qXkoqTuYK3pyPzV8XTPczgfkTtCFbdtA3v8B3v2v5kN9V+0
+   CFrIBsOyJ4yP7oI2e09XxYEPJE+l7XGO6pEqASG5PulvfE9LOqhKV53Mc
+   sOEcpfHYa+cQklzyCBQTbyQsPmHiOpJWhd+ATSyMnL8FdqttBjr7N0Yog
+   7mCEYZjbKFs4oEzuOqXSj6zVWNgrPXj28ydcsHuHituUbEA2iA7iLWGWg
+   A==;
+X-CSE-ConnectionGUID: sTwN0PuDQxOhYRtz9Kyu5g==
+X-CSE-MsgGUID: m11d++j2T5awZeeIbtyfbg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="89384732"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="89384732"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 15:38:08 -0800
+X-CSE-ConnectionGUID: cUlGTDknRj+p9ychtsexDA==
+X-CSE-MsgGUID: 7ThtdMsuRPanMmjNvnfNww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="216256848"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 09 Feb 2026 15:38:03 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vpapN-00000000oQ0-0GQ8;
+	Mon, 09 Feb 2026 23:38:01 +0000
+Date: Tue, 10 Feb 2026 07:37:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Deepanshu Kartikey <kartikey406@gmail.com>, akpm@linux-foundation.org,
+	david@kernel.org, lorenzo.stoakes@oracle.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, ackerleytng@google.com, seanjc@google.com,
+	pbonzini@redhat.com, michael.roth@amd.com, vannapurve@google.com
+Cc: oe-kbuild-all@lists.linux.dev, ziy@nvidia.com, linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org
-Subject: Re: [PATCH] mm/zsmalloc: fix NULL pointer dereference in get_next_zpdesc
-Date: Mon,  9 Feb 2026 15:16:52 -0800
-Message-ID: <20260209231652.1806289-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260209225018.1541260-1-joshua.hahnjy@gmail.com>
-References: 
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in
+ file_thp_enabled()
+Message-ID: <202602100727.b1U4CHAA-lkp@intel.com>
+References: <20260209033558.22943-1-kartikey406@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CAC5F4000E
-X-Stat-Signature: gmzj1ssyfyo4azgjwor93h9ghysmbxsh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260209033558.22943-1-kartikey406@gmail.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 9zz8f13czobdxp5tp1m6i71mcsemww8q
 X-Rspam-User: 
-X-HE-Tag: 1770679015-287300
-X-HE-Meta: U2FsdGVkX18GggW2RaqmyTpyMwzhMCvsbQpJV1kYk19f7QhWe8AbUZtjAyn/Fr+PUEi6ZfRsr1RwVJG7yQPFIHInd246SPqgBJuWO8S4YWLh4rutHwwCgUjSHxwa91sRuQsTLvc2P+1WG3aMMU07bmNdzuvZcclymMOdqsgrZnEpn78GVROnqDughXdE3DBZ9SeJz4LHuv/1QTrBK2a4LpfylaWq8o0U61T5i/cO/OlMU+xmGQXyCMrhEnLTbhf/8ooE4/RD9c02iPnYR5Z5W9bF/pRCvS44wD01qsfgJ4ujeDVuX6wQje2dnLsBCJ7BFS2A/5F+J8XeECpI37dkkZcHJ9jVijnRNzeIU8W+wnxr+MqdRtUsWGU+6lGODnUMaTEJR1nQ7rP/726984i6cjPd1Z225Tbwuv3vaOvaz6a8MBwAiSbd6LYBw482DqzA6xvz+shaJFPJyCnIWNLKDEMT5FQXEN9BZth1nC1QfXB5/HvHPy04MqytlW098Xm8HmNzPKaP0Xmeiu/NIGGUVupLML2gJr/dsLInP+id+pe6iWQZm30aTEaMggiZHSxyoJULs89S6JJGARGBFq1nu2clESDMjFnc6f2LrzyfkchPmfhSQCDP6uRhtT/DX9T3bwZyemyFUIYxbh56kyWwIe9T/o2vIvTJocM+tS0u14yatd0hT3F4FH3ZK2TR7Pn9sxplpltxyLEPn5z+GXCFwKbt9Ujtoj8RZqSiaJtfmtPwt1GJfK3Ymx6iImnPtjFrS4HHgMTOS731EethlNaS2DQk+ZWTajDtJFeQV6UsQpllF8jxj6viUbAD785pF5BRbwOF3zgpMFD4oZ1Rrvsa2/GvVlHRdcU4c0nohOOx+w+jeXZMt6FCTuL7oZLZ/KZRIDVdKcUimtSTNbd+wJ1ueZ1ACVukU8Iq93TD4HzwRhhsBbLdn+/giN6ZCZdJ56A0ZafXqVJQm0yqT9f29jD
- JFQAB7t0
- hcuu8cCsFQXvl3Bwu/dKR34AeN+6XyPw7vBiqaAjKjljg1TEBPLV6MpSh/ElfZihuRpD2qU3sTH656D87fia+txuFXt+OPxsyPetLkjztXYQlSGYGbxsjRffc74VRt+1J4/o5T14T2zCAgN6xxv3mSRrT1eNU5ZN4RbDa+X1uvjEjatISy8hHn/pGFWeeqcxUV9UmIfchuvK7CVHNJIIrGhM4cB9NfSKmy1BzeesJA11hLLu3Egmqf6Thy1lnb8iehRsq2eyZG1cNrGp4ZdKgG0+C1r/PDDmrGe+K3ZzEGJdkpxJpopnWjGeo0x1vPUOA4rLbRe1dPw9u+fTHyg0X7ijy+Yf2CYE0iRg6/tHyeDTmZgeHLLwjFPbDe9OKqVBMxiw4EVMqp2boXkGJOWBrHs+z4EViXsbl0SdrEINjFA4uCl5EJ8FfjSTe//LeBN4BP5Xew7OAV/ZKqPq98+p2YGf9VVK/wE8zF07AQoBhqwkTwVBwbqYZIZirim64tbqXJ/AvITjtGR6l9jLRIjUWiiEwXIMw/xDf9jis94CmySweZyzUy3wcP1t+xc04bNGP7tMHUi1fZDE+1wwP30WqrXdT66yXn96wV8K11qXFRSR6MUc=
+X-Rspamd-Queue-Id: 76CC3C0002
+X-HE-Tag: 1770680289-807552
+X-HE-Meta: U2FsdGVkX1/0KckTskkj3kIe+ZbEL367pGYU+pry3oPIVEJTJc6ChgOwtOslNXR1v4XgKEUvCd1fLPD4mvtlDeOvxQ6X0tyKsCAMYi4vEHe0ChyqavzGuYJfx6abmHoXGwpPIEA/EEt7KoxaCqe816l83YpaNMpQU4baTo4dV+3TGzrtO8muCwuQ61pHYvzXP8Zoo+y6W+Nzq/TO9fVTIjCX43GJinD67Xlt3EPiJ6Ng0bXEh+N7lZbjv0uZ9/4ZvufnpfOteFnjz25yRddjvl5wfQ9pZYuN94m6O/RbdpI+6+7LJi5vwMPlZydwLf7iFnosKkebM6p19gyaCKHOkTB2apNz+oCT1pSw1Tk6c4Yt/ojoCMV0D/Vxf6HMZzLHkffueXl18I143FkWX8R/b8SJWxDSjuJweiZHU9+GgkJ+sCMSlvMhGN+av1pSHlR/pSseZJSKnw0pSn/KbZ2mZ9X99zH3ZIPQ7aHGwqdEH8a7/+j7F0U9RPfmC7x7tz+2d7Y0/oK2ujJSavq8F7LKv8UvFQ0bbOjXpO2DWugpWGBk5CEUUarB1wUQhE6rn9g4jIFq1hGxGj4X0R3G3GxxR3MUM9Xj6waCiE+pHmYkdA07enA9wVgCeu9HLO7/XdTFDyLX0AiNOq9qxqqOWa0jwl+4iAor6Pracy/02mtTRIvAh2OBskDmjPoTnit2xLU/CFKpy5IQiNFW+eNxSV0X3DqjLGRci96Mjsn9pPr3ei7LNx+wmx4Zm5hEMR75JXI21g8uGiqUB0RUBt0KtS4IYMSOLW6cmfzsNiCcUnvs9IhuPNj8GwxAjyCZ0hqWWEB0E4pNuLYncDZJo6mOqxS0yjt7j1tqpdllM+Sejo5o2rqQ5cupWFVJ9eWW4+Ggqp/dmAlYmzF4Ngwy2jihAXmU3TK9Fv93Dp2AWB1GQeXh5aLWMVKFGaDW8ULBn74XfePD+bFwwZlblgkireszeFy
+ C7TkO4lO
+ LZCKsWADYWTmWSmVPH9ySNAo8VmexijGTEaTvKgFAx/TcfR0euoJH4V0Wln4Qg0rjUCXN+j8DbLPx2KjMbjZcoX6h2ag4VidKO4cFK48NmT9oWu20lK1l8S12GM6eoet25x8cFtzvLxyiOHoao02t6MCLU6iQjbqVDszl5zxVWsy6Ps8m99TXFNLcNobXqI/WDpIKuSweC8161myRWSxsXd82oJ0SJp8h1a7lrWQy/zAh5CldEq4TPDyqUb2eTwZ+W4UfzU7aONcXheUNTbxR74VXSitRAwWUtQ17lE39/Sn7CxCZGz65Ze29Lf0kElQJbeEnTzJ45qN7kkviY8p9T1Cs9B8rP1yWpATsRItMYKrIUEvC7XPk20jtOJvejiKuYpkR3qNwOtkg+x2vIQGyuArfsAD9OAvvwzHNHU4fDh5gxky6rbYk4xTQksbrpPrhFdeCC+7Io3Ndugk6lrIIq56VvXq3gVQ4Mry4pUZf0TGN0ZlFi4JWvqBePD4pkD/58d+jH1ONedtKHg9TLZeoRC7XZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,56 +115,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-I just noticed that Minchan wasn't Cc-ed in the patch. Adding him to the
-conversation here.
+Hi Deepanshu,
 
-On Mon,  9 Feb 2026 14:50:16 -0800 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+kernel test robot noticed the following build errors:
 
-> On Mon,  9 Feb 2026 19:32:57 +0000 Michael Fara <mjfara@gmail.com> wrote:
-> 
-> Hello Michael,
-> 
-> I hope you are doing well! Thank you for the patch. I'm not entirely sure if
-> the race condition that you note here is correct, and also if this is the
-> right fix.
-> 
-> > get_next_zpdesc() calls get_zspage() which unconditionally dereferences
-> > zpdesc->zspage without a NULL check. This causes a kernel oops when
-> > zpdesc->zspage has been set to NULL by reset_zpdesc() during a race
-> > between zspage destruction and page compaction/migration.
+[auto build test ERROR on akpm-mm/mm-everything]
 
-[...snip...]
+url:    https://github.com/intel-lab-lkp/linux/commits/Deepanshu-Kartikey/mm-thp-Deny-THP-for-guest_memfd-and-secretmem-in-file_thp_enabled/20260209-113800
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
+patch link:    https://lore.kernel.org/r/20260209033558.22943-1-kartikey406%40gmail.com
+patch subject: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in file_thp_enabled()
+config: arc-randconfig-001-20260210 (https://download.01.org/0day-ci/archive/20260210/202602100727.b1U4CHAA-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 14.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602100727.b1U4CHAA-lkp@intel.com/reproduce)
 
-Should we add a Fixes tag here as well?
-> > Signed-off-by: Michael Fara <mjfara@gmail.com>
-> > ---
-> >  mm/zsmalloc.c | 14 +++++++++++++-
-> >  1 file changed, 13 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> > --- a/mm/zsmalloc.c
-> > +++ b/mm/zsmalloc.c
-> > @@ -735,7 +735,19 @@ static struct zspage *get_zspage(struct zpdesc *zpdesc)
-> > 
-> >  static struct zpdesc *get_next_zpdesc(struct zpdesc *zpdesc)
-> >  {
-> > -	struct zspage *zspage = get_zspage(zpdesc);
-> > +	struct zspage *zspage = zpdesc->zspage;
-> > +
-> > +	/*
-> > +	 * If the backpointer is NULL, this zpdesc was already freed via
-> > +	 * reset_zpdesc() by a racing async_free_zspage() while isolated
-> > +	 * for compaction. See the TODO comment in zs_page_migrate().
-> > +	 */
-> > +	if (unlikely(!zspage)) {
-> > +		WARN_ON_ONCE(1);
-> > +		return NULL;
-> > +	}
-> > +
-> > +	BUG_ON(zspage->magic != ZSPAGE_MAGIC);
-> > 
-> >  	if (unlikely(ZsHugePage(zspage)))
-> >  		return NULL;
-> > --
-> > 2.39.0
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602100727.b1U4CHAA-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   mm/huge_memory.c: In function 'file_thp_enabled':
+>> mm/huge_memory.c:96:37: error: 'GUEST_MEMFD_MAGIC' undeclared (first use in this function)
+      96 |         if (inode->i_sb->s_magic == GUEST_MEMFD_MAGIC ||
+         |                                     ^~~~~~~~~~~~~~~~~
+   mm/huge_memory.c:96:37: note: each undeclared identifier is reported only once for each function it appears in
+>> mm/huge_memory.c:97:37: error: 'SECRETMEM_MAGIC' undeclared (first use in this function)
+      97 |             inode->i_sb->s_magic == SECRETMEM_MAGIC)
+         |                                     ^~~~~~~~~~~~~~~
+
+
+vim +/GUEST_MEMFD_MAGIC +96 mm/huge_memory.c
+
+    84	
+    85	static inline bool file_thp_enabled(struct vm_area_struct *vma)
+    86	{
+    87		struct inode *inode;
+    88	
+    89		if (!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS))
+    90			return false;
+    91	
+    92		if (!vma->vm_file)
+    93			return false;
+    94	
+    95		inode = file_inode(vma->vm_file);
+  > 96		if (inode->i_sb->s_magic == GUEST_MEMFD_MAGIC ||
+  > 97		    inode->i_sb->s_magic == SECRETMEM_MAGIC)
+    98			return false;
+    99	
+   100		return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
+   101	}
+   102	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
