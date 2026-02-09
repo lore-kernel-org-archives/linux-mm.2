@@ -4,112 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D945EF06EE
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 02:12:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A8CDEF06FF
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 02:21:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9BB576B0089; Sun,  8 Feb 2026 21:12:45 -0500 (EST)
+	id 6EE656B0089; Sun,  8 Feb 2026 21:21:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 968E86B0092; Sun,  8 Feb 2026 21:12:45 -0500 (EST)
+	id 671F36B0092; Sun,  8 Feb 2026 21:21:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84BB26B0093; Sun,  8 Feb 2026 21:12:45 -0500 (EST)
+	id 570F56B0093; Sun,  8 Feb 2026 21:21:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FE0F6B0089
-	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 21:12:45 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E516CC237F
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 02:12:44 +0000 (UTC)
-X-FDA: 84423294648.02.D379B8C
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 97B5A140007
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 02:12:42 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nGSWSU41;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 40C606B0089
+	for <linux-mm@kvack.org>; Sun,  8 Feb 2026 21:21:00 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A50268C256
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 02:20:59 +0000 (UTC)
+X-FDA: 84423315438.13.78B4B92
+Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 90C8B160005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 02:20:57 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aLXexndb;
+	spf=pass (imf08.hostedemail.com: domain of chengming.zhou@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770603162;
+	s=arc-20220608; t=1770603658;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1ylA3L9mIqs8KbpDB18VcTbiBCtNhl7HkIshF9K8Us8=;
-	b=B1uw9mL7FFA+089YT46yrvX99Y9JGt3JBPeF2x2KzNjeFOGwemH2z/LzzPGhzTbsZGF86I
-	vOBZh9rMPKmkb4nsPAFFAvHUB8GIAR2+N37pWr2xVhI6EjGevI1qAi75rkxW3E3HuBmY/6
-	BPW5aKxiAWPoVtbGjPCNJ6/O9t3SOTM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770603162; a=rsa-sha256;
-	cv=none;
-	b=4PnYWCkkdFJsl4z4sO+sFDxnU/KF6YkaGP4NbR3PE2/q0/DwKNulR6g0Wcw9N5gM2klbhj
-	ktd5f0q6rHUMKBj9Md5fAu4WKeMyBm6BIofw6puz3zxCZVYIYjUHPP0BPpiYx6rmunlZpq
-	O+FIxxP40NsHxeGRyVdCvIItQIBo+nM=
+	bh=OQN407ZmYQBloA6BAF7c/l2mr9zhF3xU5Rg1TJMGq9I=;
+	b=fbfLmcHjFtjPgdP7judam7u+/RXSX/YNrzQdtK8e6FtfKXEWBqwQLeghPt2I++WMcAl5sd
+	gK9KbQe8ovzmJjUXXfyTnuBdE7v1x/rUaeDC4AQTKWAXWVsJZqe025UnW2ijS/qqITeaKo
+	SBdeLOGchTIsIKWwiDqcIoqSsS5qV/Q=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=nGSWSU41;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770603163; x=1802139163;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JimVqJbGLErbVoUw3/1ZrbUgMnX0GyqHbji4ngZyjxg=;
-  b=nGSWSU41GpjvY9Hy8eouGAZfOa0yDxqey/qi9He+9hIbreIpLD4M3KCD
-   I+guWutsAKn2ou9oK1NTZkiZMuDTLeYiOdT7NXKUdW/ITpc8w13o7x0PP
-   ilypnq3KSO0wcXdsw9dQ5JLlJHbZOsd8g2KaO+pkykz9zk1CHxopClYJt
-   24vyqfhUn/mvsvabH5JUl/sHM30uO4idyzkc3nLRXPuqDLEH3yauym47+
-   eHUIFjKJywIxKAShP46KyVJ1gzQDRkFW+35RFYWNt4x4iQT3BeuR6jMmN
-   l9kiogy8uxOH/yMVsTI6eFiklU6yY/GO53WXzMPJ/IFU7y82zj8q3BkPl
-   g==;
-X-CSE-ConnectionGUID: xy/mo2QlQdKtentTu3ifVA==
-X-CSE-MsgGUID: +xNQoS12TuSpLHFClUPAmA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11695"; a="83152696"
-X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; 
-   d="scan'208";a="83152696"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2026 18:12:41 -0800
-X-CSE-ConnectionGUID: xhkRuhfrTKGXkNC6w+H8Gw==
-X-CSE-MsgGUID: V2n4KtwMTbyb4rXhMCRIhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,281,1763452800"; 
-   d="scan'208";a="211241351"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 08 Feb 2026 18:12:34 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vpGlL-00000000mVk-0Sao;
-	Mon, 09 Feb 2026 02:12:31 +0000
-Date: Mon, 9 Feb 2026 10:12:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	akpm@linux-foundation.org, hannes@cmpxchg.org, hughd@google.com,
-	yosry.ahmed@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev, muchun.song@linux.dev, len.brown@intel.com,
-	chengming.zhou@linux.dev, kasong@tencent.com, chrisl@kernel.org,
-	huang.ying.caritas@gmail.com, ryan.roberts@arm.com,
-	shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk,
-	baohua@kernel.org, bhe@redhat.com, osalvador@suse.de,
-	lorenzo.stoakes@oracle.com, christophe.leroy@csgroup.eu,
-	pavel@kernel.org, kernel-team@meta.com,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com,
-	joshua.hahnjy@gmail.com
-Subject: Re: [PATCH v3 18/20] memcg: swap: only charge physical swap slots
-Message-ID: <202602091006.0jXoavPW-lkp@intel.com>
-References: <20260208215839.87595-19-nphamcs@gmail.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aLXexndb;
+	spf=pass (imf08.hostedemail.com: domain of chengming.zhou@linux.dev designates 95.215.58.172 as permitted sender) smtp.mailfrom=chengming.zhou@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770603658; a=rsa-sha256;
+	cv=none;
+	b=QehwDbnllYV8eYUaHQuS/BI2rPXeVxS9JUNjN9JrNUZddVQbAgi9FRItK5AoctYc2cHyH6
+	BbK9IzG9gZxcojpqHg9z+25gV4jA23EO/1YOBDwQ8Z5UhG5geXSJLu2PLMRjoCidLIISNg
+	HTWOMVG0nhHlUIde2Fv1H7ezKg2Oxxs=
+Message-ID: <d1770ffe-e89f-4ccc-97a0-be74be4e81a2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770603655;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OQN407ZmYQBloA6BAF7c/l2mr9zhF3xU5Rg1TJMGq9I=;
+	b=aLXexndbUwlN08ZbKLTgVZ3S+Cbm85Eh/H41U4JdL/Q+E/mWv4gQ9k3I628Wp/AiIU5+LQ
+	laJ0F7j7YblXLM10Jh4ObSziGAKFyblkgQO3O1+S82HtB1jar0rYvFDzqOqUVeo8pp/46f
+	VFtG+BLtbatP7AajwURsO3VFzaSFlbk=
+Date: Mon, 9 Feb 2026 10:20:42 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260208215839.87595-19-nphamcs@gmail.com>
-X-Rspamd-Queue-Id: 97B5A140007
-X-Stat-Signature: 8nzcn8bbtjp85xr8x7pqjdf8g6znp6qs
+Subject: Re: [PATCH v2 1/2] mm: zswap: add per-memcg stat for incompressible
+ pages
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>, Nhat Pham <nphamcs@gmail.com>,
+ Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+ =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Jonathan Corbet <corbet@lwn.net>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Yosry Ahmed <yosry.ahmed@linux.dev>, Shuah Khan <shuah@kernel.org>,
+ cgroups@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260206072220.144008-1-jiayuan.chen@linux.dev>
+ <20260206072220.144008-2-jiayuan.chen@linux.dev>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <20260206072220.144008-2-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 90C8B160005
+X-Stat-Signature: 5twe6x649fnbixjanhazntsitw3sjdai
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770603162-106238
-X-HE-Meta: U2FsdGVkX1/vMVvfm6Bn6oXJX7SvymZ/hyXA3zP97uBefSmbistUKKAQk6pnooIlh3E0jHm2u+uix+LMQ8NhXex3ecQmGw0tu+2rRtzzupHQ3e8LOmUvu/+1Rb+199GEdndZc6eslalYrYpOFB6d7lgyQtgm6hEzzj4KmPwhCAhuNIT5oz2hDNlnoTlRNebeDM410PdGaKFeWY6mnH2Z1mXvGHLoKU9l9gy8+m2O5TCctc9FpwCp9yBxX0wF1/FUdxBqvnJtTxevc/2KTYafafZ8Y6Mwn0emwV3vjPQ+qK0DX4AnmqRuJCBh6L0OZ+UGQoeIkyDETsaPN+yEmsn69MNUwl9A3iJIplrsVOo07HEiYak/fnq/HgLlSNZxAzqljHFuw4H29SZeTH0WSryl5QpDiZ5p3SdYHYVyiVooXNmrgjhaB1rMPr1Gq6d/sfHAU6kpUC2rdya/PpZqQ2Lsh6FM8HxWWZX4+scp5mEbZMYpWs45F8dD149QXRRNml/sje/cudDOU6ejX+NXrBKG+qf7jFGMdCEPjWF/TpkgwtQk0LARHPjscFsadPXSj+zRiZcZsavZn8yxGLG4hrgCQLMPP0JZRcXLE8G+TVMH1rCPj3fgFttlE8KvtuYf5noKTTiqdrG+WP/BQ14CbaHgAH+cm/dM2xoxxlkVfBvLDjPo9V7m8kBuI0NjRVzZBEHm+in/YsHwtGUSyNtsfT3ctboWKbIzEwzNkzk/pDVoQdNvs83hCqT99NQUODtUYLSIqvgAEKGfgc+gkhfVr25vEX66XU4bIftkYTNNSnC5wWTepymtaaaaQloNUzZngF9CUehoQqVkhI3+Rp0xcpUpYL6QflR/edpg0kASTQx6O/cTa5vMerNGbSQU65v5Qg4u4qV3nsMrVvyUfFOshRo3VBDjDHKTOzsWKNjaLAh0I1LbBv5Ljz0vNjLHPDXVZXU0nj9LasOo/vC04NfBvq1
- sy3AAP2N
- 8FjRf58SQgPufzIb89P9LByH3TJ/rW74C1LEDXqpyItjphtfvXbKBYHpWrknweGKfV1lNSXSeOPMLWxxq4khrJFNyWd18CJTXzF2c1uuwz8K+AkQF+yHvySqD9BSKTJvBBwteEg56hbz1Fvnnxsaw7nIQT4h0SFjybbYpq/8qHcfz+YoYIVOw5NSYqSmu8LtIPQap1IhhK627J2+fExsH4L3N5oB4nJxKQarFkn4+aro5dZPbyINQ7+vCVevNpD12aVBLoteAVr0jnqD6i3zH4BghRsWU7/ww+fhypbI4D+7YpR6kZEZMJb9aQjP6QN1faOjsBMcU/q2fUHClmVaKFHgqUwmomw2No4ObKMWhJ/6wqyP+LUJYDpBXL2paqzZ6TJTCkgpWx53dBm3At5Wv9a9MMV7Xp9ZkpZjTWMlFcqRReBm99uZNERYssT6HKYle8E2w
+X-HE-Tag: 1770603657-317585
+X-HE-Meta: U2FsdGVkX1/UZGq8ozSUdPLCZBJMRE4nGDAwvdfa16erd/RldMTylkWNTrm25qbU1Haq7P9Uasczqvvx2qx+JdO2zLJ83I34VDXk1qXelrR0SkFtgXlhIwVpU27RB1cpg5gDX1eqHZDXQZThApWkvas+8+bLMaFe1NDSjUfNQS1rgqA5JYIlkoGCDPqWjrMACteTcwYE+uAVA7yQ904MLu/ExzGWBMBsQ7PP0BM0LuJOiJF2TEyn0GjaCwWyjQTtNGU4lR50rftXTILK7hJ6tjWp9xoT9rttuTe/JYBKMmFhOqbM9Nm3xcABSE1XRXnx5lOscmYfjEbq2y/tpKBmjuTKHXhIBrDbmkGMcDPSni4H2lWbXwb12Nh7shZpUE67NsklaAcADDpZ0THjURZIEI0JWE+6gPcTD181i9giktk9ValAKczrItwD/Ip22ysZsqkZrFolpcmXikgzkpxPJ+QCqRe37/EzaJwH8gXaOGrbh0NcrVcbYd0ZNi15zM0aPhLJHZf71NCX2bhNSsji5R7NeBdldNwjZEKIBz7Ey8Yl89p2rt1migvVNg+wglENUE0/Z4RlCYDd9nOsYDq/frN1tFMUJ2+oEZHGP2uR2dBr3mvaUsQ1zMVuukuQgG+mMYxXWKcD6xglKC0Xs3Qr30GI6SlFkH/IAEhCA8kx2LR0ed9CCBYKVLQ1VI7XvcAyvx4jSfG2ES8s/S/8/HLj3c0L81XlwnyL2rx6aRwNkAMm30KwMeNSMt46HIhzC/NWSFsx0pHsWyM41tU2xRnZfNIZpqHgTR3hq1/lE6A6DH1DC9ELdTAkXpiFONPcwQQvbZUIQXA5hapN1tsJQy0PA2BQQjR2AVf7D7cSzfPCwTdFpO5SDee0Js2ecdKkyq8PXCSMyJktm+2yLkUSzDCIGqRo2P+5zLb2oqDDZytPxHEWOKLNNtodM+0FSU7Jtno/AMR1+7hli7TBdSItbKQ
+ fuIZ+x0u
+ 3mSzwy3FAbY9V4L9m+/hUNGVk/kak6Ynun8axL9Yozq9JtWonfYN9WMpmsoLzI+NiGn0M9nBA4jAVxD7G7TAQnyHODsRX85WR78i2FaizEU9YjzoJgRf1h9vP+hqX26s577pB5/GpEMZZmpvkcdjHgmat0zr9WR7KqeRTTbvo8hYlXirpn+AyNUU78e32txib1HuJt5//QgK0lbGgfE75p/FbwvpZadvFn+IQ18FVeavSbz21RhCglm9/NvnDILtAIPsO27ZPDx4FA5nPZuS8VDWkJAT+JfJR7f+gMCsp7ixpkdDybBoQ9r7CnkjeagwYQfrU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,192 +99,116 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Nhat,
+On 2026/2/6 15:22, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> The global zswap_stored_incompressible_pages counter was added in commit
+> dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as-is")
+> to track how many pages are stored in raw (uncompressed) form in zswap.
+> However, in containerized environments, knowing which cgroup is
+> contributing incompressible pages is essential for effective resource
+> management [1].
+> 
+> Add a new memcg stat 'zswap_incomp' to track incompressible pages per
+> cgroup. This helps administrators and orchestrators to:
+> 
+> 1. Identify workloads that produce incompressible data (e.g., encrypted
+>     data, already-compressed media, random data) and may not benefit from
+>     zswap.
+> 
+> 2. Make informed decisions about workload placement - moving
+>     incompressible workloads to nodes with larger swap backing devices
+>     rather than relying on zswap.
+> 
+> 3. Debug zswap efficiency issues at the cgroup level without needing to
+>     correlate global stats with individual cgroups.
+> 
+> While the compression ratio can be estimated from existing stats
+> (zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
+> "uniformly poor compression" and "a few completely incompressible pages
+> mixed with highly compressible ones". The zswap_incomp stat provides
+> direct visibility into the latter case.
+> 
+> [1]: https://lore.kernel.org/linux-mm/CAF8kJuONDFj4NAksaR4j_WyDbNwNGYLmTe-o76rqU17La=nkOw@mail.gmail.com/
+> Acked-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-kernel test robot noticed the following build errors:
+Reviewed-by: Chengming Zhou <chengming.zhou@linux.dev>
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.19]
-[cannot apply to akpm-mm/mm-everything tj-cgroup/for-next tip/smp/core next-20260205]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Thanks!
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Nhat-Pham/swap-rearrange-the-swap-header-file/20260209-065842
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20260208215839.87595-19-nphamcs%40gmail.com
-patch subject: [PATCH v3 18/20] memcg: swap: only charge physical swap slots
-config: sparc64-defconfig (https://download.01.org/0day-ci/archive/20260209/202602091006.0jXoavPW-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260209/202602091006.0jXoavPW-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602091006.0jXoavPW-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> mm/vswap.c:637:2: error: call to undeclared function 'mem_cgroup_clear_swap'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     637 |         mem_cgroup_clear_swap(entry, 1);
-         |         ^
-   mm/vswap.c:637:2: note: did you mean 'mem_cgroup_uncharge_swap'?
-   include/linux/swap.h:658:20: note: 'mem_cgroup_uncharge_swap' declared here
-     658 | static inline void mem_cgroup_uncharge_swap(swp_entry_t entry,
-         |                    ^
->> mm/vswap.c:661:2: error: call to undeclared function 'mem_cgroup_record_swap'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     661 |         mem_cgroup_record_swap(folio, entry);
-         |         ^
-   mm/vswap.c:661:2: note: did you mean 'mem_cgroup_uncharge_swap'?
-   include/linux/swap.h:658:20: note: 'mem_cgroup_uncharge_swap' declared here
-     658 | static inline void mem_cgroup_uncharge_swap(swp_entry_t entry,
-         |                    ^
-   2 errors generated.
-
-
-vim +/mem_cgroup_clear_swap +637 mm/vswap.c
-
-   528	
-   529	/*
-   530	 * Caller needs to handle races with other operations themselves.
-   531	 *
-   532	 * Specifically, this function is safe to be called in contexts where the swap
-   533	 * entry has been added to the swap cache and the associated folio is locked.
-   534	 * We cannot race with other accessors, and the swap entry is guaranteed to be
-   535	 * valid the whole time (since swap cache implies one refcount).
-   536	 *
-   537	 * We cannot assume that the backends will be of the same type,
-   538	 * contiguous, etc. We might have a large folio coalesced from subpages with
-   539	 * mixed backend, which is only rectified when it is reclaimed.
-   540	 */
-   541	 static void release_backing(swp_entry_t entry, int nr)
-   542	{
-   543		struct vswap_cluster *cluster = NULL;
-   544		struct swp_desc *desc;
-   545		unsigned long flush_nr, phys_swap_start = 0, phys_swap_end = 0;
-   546		unsigned long phys_swap_released = 0;
-   547		unsigned int phys_swap_type = 0;
-   548		bool need_flushing_phys_swap = false;
-   549		swp_slot_t flush_slot;
-   550		int i;
-   551	
-   552		VM_WARN_ON(!entry.val);
-   553	
-   554		rcu_read_lock();
-   555		for (i = 0; i < nr; i++) {
-   556			desc = vswap_iter(&cluster, entry.val + i);
-   557			VM_WARN_ON(!desc);
-   558	
-   559			/*
-   560			 * We batch contiguous physical swap slots for more efficient
-   561			 * freeing.
-   562			 */
-   563			if (phys_swap_start != phys_swap_end &&
-   564					(desc->type != VSWAP_SWAPFILE ||
-   565						swp_slot_type(desc->slot) != phys_swap_type ||
-   566						swp_slot_offset(desc->slot) != phys_swap_end)) {
-   567				need_flushing_phys_swap = true;
-   568				flush_slot = swp_slot(phys_swap_type, phys_swap_start);
-   569				flush_nr = phys_swap_end - phys_swap_start;
-   570				phys_swap_start = phys_swap_end = 0;
-   571			}
-   572	
-   573			if (desc->type == VSWAP_ZSWAP && desc->zswap_entry) {
-   574				zswap_entry_free(desc->zswap_entry);
-   575			} else if (desc->type == VSWAP_SWAPFILE) {
-   576				phys_swap_released++;
-   577				if (!phys_swap_start) {
-   578					/* start a new contiguous range of phys swap */
-   579					phys_swap_start = swp_slot_offset(desc->slot);
-   580					phys_swap_end = phys_swap_start + 1;
-   581					phys_swap_type = swp_slot_type(desc->slot);
-   582				} else {
-   583					/* extend the current contiguous range of phys swap */
-   584					phys_swap_end++;
-   585				}
-   586			}
-   587	
-   588			desc->slot.val = 0;
-   589	
-   590			if (need_flushing_phys_swap) {
-   591				spin_unlock(&cluster->lock);
-   592				cluster = NULL;
-   593				swap_slot_free_nr(flush_slot, flush_nr);
-   594				need_flushing_phys_swap = false;
-   595			}
-   596		}
-   597		if (cluster)
-   598			spin_unlock(&cluster->lock);
-   599		rcu_read_unlock();
-   600	
-   601		/* Flush any remaining physical swap range */
-   602		if (phys_swap_start) {
-   603			flush_slot = swp_slot(phys_swap_type, phys_swap_start);
-   604			flush_nr = phys_swap_end - phys_swap_start;
-   605			swap_slot_free_nr(flush_slot, flush_nr);
-   606		}
-   607	
-   608		if (phys_swap_released)
-   609			mem_cgroup_uncharge_swap(entry, phys_swap_released);
-   610	 }
-   611	
-   612	/*
-   613	 * Entered with the cluster locked, but might unlock the cluster.
-   614	 * This is because several operations, such as releasing physical swap slots
-   615	 * (i.e swap_slot_free_nr()) require the cluster to be unlocked to avoid
-   616	 * deadlocks.
-   617	 *
-   618	 * This is safe, because:
-   619	 *
-   620	 * 1. The swap entry to be freed has refcnt (swap count and swapcache pin)
-   621	 *    down to 0, so no one can change its internal state
-   622	 *
-   623	 * 2. The swap entry to be freed still holds a refcnt to the cluster, keeping
-   624	 *    the cluster itself valid.
-   625	 *
-   626	 * We will exit the function with the cluster re-locked.
-   627	 */
-   628	static void vswap_free(struct vswap_cluster *cluster, struct swp_desc *desc,
-   629		swp_entry_t entry)
-   630	{
-   631		/* Clear shadow if present */
-   632		if (xa_is_value(desc->shadow))
-   633			desc->shadow = NULL;
-   634		spin_unlock(&cluster->lock);
-   635	
-   636		release_backing(entry, 1);
- > 637		mem_cgroup_clear_swap(entry, 1);
-   638	
-   639		/* erase forward mapping and release the virtual slot for reallocation */
-   640		spin_lock(&cluster->lock);
-   641		release_vswap_slot(cluster, entry.val);
-   642	}
-   643	
-   644	/**
-   645	 * folio_alloc_swap - allocate virtual swap space for a folio.
-   646	 * @folio: the folio.
-   647	 *
-   648	 * Return: 0, if the allocation succeeded, -ENOMEM, if the allocation failed.
-   649	 */
-   650	int folio_alloc_swap(struct folio *folio)
-   651	{
-   652		swp_entry_t entry;
-   653	
-   654		VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-   655		VM_BUG_ON_FOLIO(!folio_test_uptodate(folio), folio);
-   656	
-   657		entry = vswap_alloc(folio);
-   658		if (!entry.val)
-   659			return -ENOMEM;
-   660	
- > 661		mem_cgroup_record_swap(folio, entry);
-   662		swap_cache_add_folio(folio, entry, NULL);
-   663	
-   664		return 0;
-   665	}
-   666	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> ---
+>   Documentation/admin-guide/cgroup-v2.rst | 5 +++++
+>   include/linux/memcontrol.h              | 1 +
+>   mm/memcontrol.c                         | 8 ++++++++
+>   3 files changed, 14 insertions(+)
+> 
+> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+> index 7f5b59d95fce..78a329414615 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -1737,6 +1737,11 @@ The following nested keys are defined.
+>   	  zswpwb
+>   		Number of pages written from zswap to swap.
+>   
+> +	  zswap_incomp
+> +		Number of incompressible pages currently stored in zswap
+> +		without compression. These pages could not be compressed to
+> +		a size smaller than PAGE_SIZE, so they are stored as-is.
+> +
+>   	  thp_fault_alloc (npn)
+>   		Number of transparent hugepages which were allocated to satisfy
+>   		a page fault. This counter is not present when CONFIG_TRANSPARENT_HUGEPAGE
+> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+> index b6c82c8f73e1..d8ec05dd5d43 100644
+> --- a/include/linux/memcontrol.h
+> +++ b/include/linux/memcontrol.h
+> @@ -39,6 +39,7 @@ enum memcg_stat_item {
+>   	MEMCG_KMEM,
+>   	MEMCG_ZSWAP_B,
+>   	MEMCG_ZSWAPPED,
+> +	MEMCG_ZSWAP_INCOMP,
+>   	MEMCG_NR_STAT,
+>   };
+>   
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 007413a53b45..a6b6cf5f1aeb 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] = {
+>   	MEMCG_KMEM,
+>   	MEMCG_ZSWAP_B,
+>   	MEMCG_ZSWAPPED,
+> +	MEMCG_ZSWAP_INCOMP,
+>   };
+>   
+>   #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
+> @@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[] = {
+>   #ifdef CONFIG_ZSWAP
+>   	{ "zswap",			MEMCG_ZSWAP_B			},
+>   	{ "zswapped",			MEMCG_ZSWAPPED			},
+> +	{ "zswap_incomp",		MEMCG_ZSWAP_INCOMP		},
+>   #endif
+>   	{ "file_mapped",		NR_FILE_MAPPED			},
+>   	{ "file_dirty",			NR_FILE_DIRTY			},
+> @@ -5458,6 +5460,9 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
+>   	memcg = obj_cgroup_memcg(objcg);
+>   	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
+>   	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
+> +	/* size == PAGE_SIZE means compression failed, page is incompressible */
+> +	if (size == PAGE_SIZE)
+> +		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, 1);
+>   	rcu_read_unlock();
+>   }
+>   
+> @@ -5481,6 +5486,9 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+>   	memcg = obj_cgroup_memcg(objcg);
+>   	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
+>   	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
+> +	/* size == PAGE_SIZE means compression failed, page is incompressible */
+> +	if (size == PAGE_SIZE)
+> +		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, -1);
+>   	rcu_read_unlock();
+>   }
+>   
 
