@@ -4,136 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42C6BE7E0BB
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 10:25:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF30FE7E0C2
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 10:41:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9A7316B0005; Mon,  9 Feb 2026 05:25:47 -0500 (EST)
+	id CCD166B0005; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 951536B0088; Mon,  9 Feb 2026 05:25:47 -0500 (EST)
+	id C84F86B0088; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 829A16B0089; Mon,  9 Feb 2026 05:25:47 -0500 (EST)
+	id B4E3B6B0089; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 72CE66B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 05:25:47 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 166E316075C
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:25:47 +0000 (UTC)
-X-FDA: 84424537134.29.F4D6757
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 158CD4000A
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:25:44 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dch4CwOs;
-	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A04F86B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 05:41:26 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4AA9B1A075E
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:41:26 +0000 (UTC)
+X-FDA: 84424576572.11.FF27667
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4B144C0002
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:41:24 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K0Asb6To;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770632745;
+	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770633684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jJ7Ja3pq8GlBQQ3yJIz4WpWIK3mpfgNIH8F/1c40ZSw=;
-	b=vnRw50ACL586EhfHV7TBQNpC4XOSCadC7TLhtEQx4zwhTty18G3N63Ux9RQq4o3jVOgMDo
-	u/NBiTiOpqAlLFZUPn6esUgmUv2b2N+1AWyP3sbpwCLuGvo1jp4KnwBfGJd7O02KSUTOoq
-	jjPgDBV1Rcz7mcjrB4Ono8TakgEWTbI=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dch4CwOs;
-	spf=pass (imf17.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.174 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	bh=1vceECY6oOVlxttD05QrM0v69VFRLzzkozbTpsthX2I=;
+	b=MgHKwwtwc3etwfHribcFng5hsM395rlLtVO5I6FyDngQEo+icI/3owkj/D2xMcxK+73vpw
+	kHDHD8v1TQzpxP7exnxSuULQSYGarsikf8s83NBHg6dVuaq/lKU8IDL8ROlTZUnVtHmQ2D
+	mxHif6VFiQEAZN5Db9zmuC3UacxeqS0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770633684; a=rsa-sha256;
+	cv=none;
+	b=Dfisz26D9pnTmiaZfmolNiZYyuH/zzY5F9cfSvwwm0osGrf6RAGHz9ih8J2nj+zVzRT+QN
+	Vj5NsoYVM+VMVES3A/yPCZj7YY3kgNTdcdmjllV5TJHCYVAjdlIgmIKnIGUc2UyaRDS+No
+	E5iHtbcrJJ5PQ5nz/8IgbfgJmfXo73M=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=K0Asb6To;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770632745; a=rsa-sha256;
-	cv=pass;
-	b=8qaGRD7WfiqCtcI2Ytp68dTVscteq5o0omivm9qihpvhFs/s2LFcmX/7+yC+O3tEsQpdkq
-	7tUPs9GQ9vNK8xsVhg0Ia1a1QuOlubV1pIFtl9fmfB873TQuxWod1tkeZ8Gr4TzD4fjV8i
-	zvXgbApnG5Q3MWy72nAj82g6caq+Lvk=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8c70ce93afaso451187785a.0
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 02:25:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770632744; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RuE1dwkZDsHsmi/J3uxXHwlA6wdMtpZQ5wkxzIDRBw0Lmju14y8uW/f2r3rcX6ChhL
-         t+1qXy7LcQm2gry424gydjNxliesliNy9vwysUI8yP1+CGF2UpfuYu/1I8sEIC6MkCo6
-         7oDtf9skpOUMiV9q+KIzHBfkZgWExpbEKW2I5bHM4UdGiY1pyYSwezKGPL9DnXT7PdZq
-         c0NeXPxTTUsk89Wy81ib+j4oAHrDuaJ+Xx9YnyauSmruvOzsIaUp0QwqaWLsOCEIFEEz
-         sFsLVCgWestEiNdS9aA8mRJYA4HcBtJ4aES1QiSKPMYeaWHorxGfPtmMauj+DTC/EBPb
-         XYLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=jJ7Ja3pq8GlBQQ3yJIz4WpWIK3mpfgNIH8F/1c40ZSw=;
-        fh=mmhyU7RDl/AGHl5F55N5M+YjGiddqf6eKWSwdYEGcCI=;
-        b=Ik1kEj0XJ6Jq/4/x+1JYcU1UcOT02ZMaxxeIuY5S3qizH+KzsTgcOsitSJAwK+/Nyk
-         kQzLgPHwXXcXXsJ7I6Qt+y/y6gbQ4J/BEDIPjWCNXESDN4Hv9YwsBtyqzoiHOxTM4P1F
-         m1zgatPKPz7V6+6Bapdm4beVCSA6fmR7kMp/dQpB6F/kNbJJ6uAijPTUoNG5Tgx3wL8Z
-         PagRrTzOrw9O8DLFo7ESalxa8zgyXRXdC/jIHQpzR04FuXWAHlak7DLrCUijs+YV/nsR
-         FtFROUWobZstJfxW1Dq/IuJY0K7iNokBoMNLrfpzGrzJxdbdPwdw4oYjtE+Xvk1ytABK
-         5sVA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	spf=pass (imf28.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-385c2f88618so36397601fa.2
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 02:41:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770632744; x=1771237544; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jJ7Ja3pq8GlBQQ3yJIz4WpWIK3mpfgNIH8F/1c40ZSw=;
-        b=dch4CwOs8BSkZ4GyOISMQNxWsYj6zQNdRFFIlvMKabYxQO2ZeJoUMAbay3iwnBVmqa
-         5tvjhfh+19wLi0iQgwmbdpgV03IA4HMDKyoNY2KVqOxeBe+LDGf5rJKn/2E0/y539NaG
-         SJ6UYZMk461nGhZYTe84em9MRY3zfsvYDSRHdNMGH/5cItW+dAP/1/x3Sl4ENKhcUh2E
-         1d+ktzxc2lKJgSpd2wFmALdvG1/Uf7Jchgi1wn/Vq34Gzm7gt4+xSDddOvdTRw/c8qs4
-         l/dMwORNAkqNTCwnMQdlr/3QSdEQvmCH0KcSHfbS43jpfTnhb9BihNTcKCROKUaOR+XE
-         NP7g==
+        d=gmail.com; s=20230601; t=1770633682; x=1771238482; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1vceECY6oOVlxttD05QrM0v69VFRLzzkozbTpsthX2I=;
+        b=K0Asb6TohOU6e+99EWi/SGSXFxfc09PK4KM3kxDt2n/ikEhiAmlbaGIVbJLFhWg+3d
+         QkQdNeBQaXF7XJuRevhtrdfM+7OzPkaP1cfsJ6nFm3kRCZE5Rqa834yuyINVTw9EhbSQ
+         HNw0wK2NsvbcAVwZ5WJtXINUsdDPounvZmFe8ynifU/6auIjqHIVXAWKIId4L03zZ8C/
+         NsOOhT9KjPI3o38//Qi4jlkkvyaxzn1imdsF00l6bshIxc2SsTFxzfiE8uS1QPe7KpdG
+         M8l6CsSPylBO6j5VrWLvQ3wSWZKReKdB2qEMIM/g9mynmiIAjo9lY7zRi8vpTgbBQmJz
+         7/Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770632744; x=1771237544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=jJ7Ja3pq8GlBQQ3yJIz4WpWIK3mpfgNIH8F/1c40ZSw=;
-        b=GUV4zbM1rBR2unQuHQQxzCT9ucaL6G4Yz2OEGsm0TsomtQNJ+RGHg2vvoB3XUf+2iJ
-         BBp68FabGaH7sXRVIpFVZ832P7Ktf+QS1yZciEOzXmFukWykQLZwD5yuT0qcjt4XzKLS
-         pfzRxT9e3QTPRH7IZKjieGJ1BUEDyLmm/300lBc2Rw1Gl3TorNWVlcedCqr82i8uAmhc
-         s62xZm10/xbfL0t+zj9S1/8pAIqfE77kktQGoAZJmGS9UJfb/3aSAgj+1zy6SfGp55PK
-         W4gfA/AVv/I0TMaZJKphetWzdomWAE86Y7CI4Jq/q+Mfk7wkf0AJg1wd70jT2NIkK5r7
-         /lgg==
-X-Forwarded-Encrypted: i=1; AJvYcCVhWhaXWlwLxWE/jFNR9+zD/ZaFHk4q3ZzlQfINhANCTwKthCat095xuhptv2zj3C/pVdrB3Wl7SQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywwri0ObaaVDTLwEae/CMQF/2BBRS1NI/UBCyrPP+OnG8rO4LZZ
-	2jLg32+QGmkpsyP9Uco/dtV2wdvcxTQHPEZxXGzc5QdC8zbHhVNnljvH25KBWvME9GITx8Tpz8O
-	/QNRbLx0PbTo0PP1mL5Qqys/zFATdusY=
-X-Gm-Gg: AZuq6aI3Sgc3XWbBrl8kIlMvIhUttIKiCcIKFlpCgUAHlIUIgMIOAxxwMVFKrZ3Ijb5
-	NW/awyn+qOrlwigcOUbsa9IfFKzVOG7bD4mE0rqje6VaKvNftCzKahtDOCyEmABHy95NbQLaV0r
-	nUz9vGAe2qm1Kwa0pOnWhGsuONwP1LFxPe00digIxnoddBhDqyJqoiGILN8uqhg/Se7DR+JhxZM
-	9cxo91mAYi+k4psKAnxwcdwe3leDoI3k9JSMQAM7HoE6eLWRzyGwU42Brv8+790dyDAJg==
-X-Received: by 2002:a05:620a:2a14:b0:8ca:7b14:16d2 with SMTP id
- af79cd13be357-8caf1acb32fmr1351403485a.50.1770632743882; Mon, 09 Feb 2026
- 02:25:43 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770633682; x=1771238482;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1vceECY6oOVlxttD05QrM0v69VFRLzzkozbTpsthX2I=;
+        b=GZaTmo+r2N1smPxP1TeP+H3rSvdfCtMy95FNHj+wzHS2rghVm0sBLCActJQKRNRzDl
+         sERADYZsrqoHNHH9YGtvKXQeUFgjCCv1QoHbUCUY2G2X2r0jaaqaX/qYq7x0SmXEisDt
+         9bbL48FlGP+zOWIjO7gfzq1HD7oEVtwDDuvzT3uzjMhowOZAOHfPmdOrWxPtSZEQK18V
+         dGgr2J56C6t4NtiorkEL28H1hk6jeCwwFDBzPVY4j1/onC/xdfl41pdJ1HtlkABaH9VR
+         rD51OgqFueE62WMm8tSGCU+QnBpRb9KDIbIHmuwXM/iMG1p81Ey1VkHcvVWZaHAwqcfq
+         yakg==
+X-Forwarded-Encrypted: i=1; AJvYcCVpYoKIdKr+Bf12FAH1ZcCK89LKI0DIyFsvqaLsfWa8KRYxWR2G+EE1graq8fhkEu6NyqG+3k48WA==@kvack.org
+X-Gm-Message-State: AOJu0Yznzd0volEhftnb3lRQXQIILzX70GS/bgAUmiuaK97vgOG9KtCd
+	hDmrEaespwSL8KhAJDoiN1rATHMXhELqnDwZjFlnosIKTFqXY8FsSJWy
+X-Gm-Gg: AZuq6aIfJ9HIR7biDMBFrbiFMDNfRBdxOZBLPmCKlLUfzaZzV+znzw3jMBfLcMnA96W
+	oe1ezrU+dWKLzEtGrfD0CUYDV3fJpeIP9WtDAB3nN2bFKq/xp+8FEqhJJCdBHXYaGqYkwy5C9j7
+	ZAamTcCfjvWnHdH+deytJrg4d14nBX9JuWNlurYxmKixKw2D7dwSDg6UFKEQT1O5YZDyYup6loa
+	JtVEImx3QQ6rmzHmA2QIyYY5QGE11kpoZsZPFocB/cf30iifLz3AjTLYZ2SzGAZOXdBsT3t9Qqg
+	2/MWWegPUv+xqv2ggXqkzPpEz4KffZvlIqDjeSPKjeBAAwS/XRMJzWSCvD6I6CvGo8JUXak7jGS
+	5az17gvMgY4Pa+sWA4R0Wzh3ijCz9XPffMj9VHdkGjG6zGZd/2JVKL1F7Zx5LOeVp7EtD11nW35
+	j6OazQGRfPw8dpYdSm/JKc+EKq32jA2oRt4+24e6/r
+X-Received: by 2002:a2e:a5c2:0:b0:382:56ff:5207 with SMTP id 38308e7fff4ca-386b515ab20mr35812111fa.36.1770633681964;
+        Mon, 09 Feb 2026 02:41:21 -0800 (PST)
+Received: from pc636 (host-90-233-206-112.mobileonline.telia.com. [90.233.206.112])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-386b6281ee1sm26940621fa.20.2026.02.09.02.41.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 02:41:21 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 9 Feb 2026 11:41:17 +0100
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>, Hao Li <hao.li@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Puranjay Mohan <puranjay@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Amery Hung <ameryhung@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Zqiang <qiang.zhang@linux.dev>, Dave Chinner <david@fromorbit.com>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Muchun Song <muchun.song@linux.dev>, rcu@vger.kernel.org,
+	linux-mm@kvack.org, bpf@vger.kernel.org
+Subject: Re: [RFC PATCH 2/7] mm: use rcu_ptr instead of rcu_head
+Message-ID: <aYm5zZLvkZpCYw2s@pc636>
+References: <20260206093410.160622-1-harry.yoo@oracle.com>
+ <20260206093410.160622-3-harry.yoo@oracle.com>
 MIME-Version: 1.0
-References: <47d21a6821c4b2d085f7b97bcdaa205bfcb0e0ad.camel@ibm.com>
-In-Reply-To: <47d21a6821c4b2d085f7b97bcdaa205bfcb0e0ad.camel@ibm.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 9 Feb 2026 18:25:31 +0800
-X-Gm-Features: AZwV_Qhl0qsSwOQgOMCI7xSnmG-ncwg_fyRrIRycUWmzs6NMP7bdVr-wUKZ6eRc
-Message-ID: <CAGsJ_4wgG6-FvDbLw4De0r_vPO1fTH_69A2VyntabmS6H5ZM8Q@mail.gmail.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Machine Learning (ML) library in Linux kernel
-To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Cc: "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, 
-	Viacheslav Dubeyko <vdubeyko@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	Pavan Rallabhandi <Pavan.Rallabhandi@ibm.com>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260206093410.160622-3-harry.yoo@oracle.com>
+X-Rspamd-Queue-Id: 4B144C0002
+X-Stat-Signature: ntkeqwes9kxtszpfqten8qyygiegt95h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 158CD4000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: wtowmipg3syqre53f3ktro67eyy3hqw9
-X-HE-Tag: 1770632744-471760
-X-HE-Meta: U2FsdGVkX1/Pvi1SW4HNAwT5qslHjhpHAlm6z4Bzakw9aW4NUXTQ4OFu0dxwD/3gRx73OVmVP9sU5liD4YtbiCqIH4xdmRaqtExx8KnzGe1HsPjBgqU5siIzHRQnhR9rMevLETWTHple/tpL464GgSTeUPB7cWS2Oe43UY1Wv2hYdxDMGVmm4FcJzEvkqnCintARKLqB9ClQSyRNtmNmiUoGY7J7iGsboQshV0WInDRCTcyPD2YU8Y+rfbojJVemjv0x18HMqxM2FYkQsPNrgLM62tV6tlR2buG8Xsvyb4RV91U/I6SEaeMEQ1CLxGiya/Tqpyy8i4Mr1auIqsEfB1ieWsP1BMQBBU6xpYYEUAdEJjrY6sclqVwn3d2Xbhu/tdkgao+PZwi2PE7zaYOT6hGBi8J//1usweF1hQyrkTNDbC5Q5ypizN7vX14NZHayuVPHLSuk1aqdOT+wKywyb9jc7+h9+nngJZPLQO2YwWzCkS2Ihj6trp5sUEFAebHkqgIf4bqJP32L4ljAR3nElsi4YW1sby0sOQEuBol7hzeLuV0z/FhKMkgrlGHoZ7P3zr53RmFdkxI08exU8Jh66QM6iy7IqpsSSkDEM2zFpE/ZlMcUkc8RYaM+444tA4uB4IoY9FrAO+QtubfLPJGzTFsk6efwfeBvsM+cdpIR4BV80jm/w/75S6yhB9Ry+MpOdasWGOCZVI4ZLhgKMw8bg70mwwZK2hXtThhAgsE1+olqwV2x6zMHh/tCfMk9Z585xCTD3XfBC9IuQkpxQA7zo58XYljpBU+nMTwlZGiriduv2wQtKoJ13Y+Uilwhh1YoXmbauJiszahCtJlJXKkhjiW8agPuZLEcELfG7iBQFzs27MmI8Ds1zQ+zI0DjZ7eZydBytwtx06xJ2KkBSxR/qf3dBVGj5gfezSMJrBoDbQt0XP7/nJe7SyhGIDkwXOZpOLbDXi3O/R4KUgiabe3
- +KBylJW3
- w1ax9Q8LyjN+DSNkV6OtfJNzXj/9f2o30QZFjFrKeIdJ02d7V8F0E/aWUDME8uHdTeNk6laJAVSTDz0JWEp8mYVf5lF4f/VESMOoZRLWbwOWDgEqBoJKXLKKU1FLoTfJ39emNviqeVpFN2fxhGElUJZMJVP3gVcyjyjb1SKQqfUr/afFCQNuG9AurqDqSlWNJlk16Am6YBW6b25B1QTO0Y5HYpqfKv/MTHcrl7QUG9PA00xSTH28sy4LZPHdUxRwecysWPJMOtYQyoo5e1pyI1iTRVtEVqaFs1dqOiTPSfBMMFHnpRgg+7p4puWvUPFosvraVm5JbD1tKLtswkZ0ib2P0rtSux2LQ3bsWc9Gt5MnX6QlP8u7VLV0ZFlhOjLB423gtA/+FV3Gj5zsCmjaaIJsn6Xqm/SKyld+6uf5tkcUDVEKfUn7pwny8myP1lFv2uBHqVaN8b7oGrkTwtvFF7LpkCQ==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000003, version=1.2.4
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770633684-486315
+X-HE-Meta: U2FsdGVkX18NjzUIEp82cHhUcVjBcUfPxHMXWMTbYOY2CSO+Ve2u2QHImg7w23Pt8N8Y4LZUWvNrShcvdUe0b18cpJhm9M8EpKj+mJhZIltQjbGkE+R7z7mUqqG4PJhEOjRcdq6Kqxe9g6UUxILAC5Oc6Rpltj0jC1PlgrXc2dyQI+bBI/J3V20m2YlLyDfs9yMuNBc0nisJDs8VvaDrTqLZv/Ae0HfCQmbVmotg2EA6Z+qK/ib0b6/th/XVPc9FAJynekNmV/pf+KtnligpU4fcH/lsI2U4myyeJXd42ubdizSeb06HadAqRDxHEFqPqfJTpot2NCGYsA576lG3o7b3aA3ZhYGdySaAesX2U39P/6uQNKA8CjLx7kC5wRpHFMOWqjc/ydu3MUU1SSszcQMgedP9ljG/LD/5+Jfb18y4QywYVLZWrmqnLexGGP2kgmSnlJzOVPHftl38iUlTlzPFPziaTtftKg5DGdehCnaH+p49yB5zFN6RE303eRSFZ/erRiOhX85MdRVU1e+sdBLA+cbdMU1pDLlj9wo0jdH5+NcPXLzIrJ/R5cvEUFfj1srBc3r4K9IRQmbJwjqWt5KHVBsblj536m5jNPcGzr0eyHEUksUYE4EOdzWXQaMP+TMIjuWazt7HXRs3Wr1MvSocmKsDD7MjJEHaiDZR3f/7eDAnIzXnuD4WjQL28KJXwdwkVSUaZnmPT9dDUktXX5B244sKYvO/5ugXYa7P13d1ke8ySS5C355ZL5XKj36F8Ii2hzJh3w5HIVGQOzzAprRhnAWB2E4VOtY64ECKQREnMzXC0/Vrs1APZgetAuz7g/ipcW8V5spRriAXnQFMmJPEXx1OTTexePuhDGlI+G6AJD4rOWBz/S/PL20db/SqecnA4eXoMDTsCWz2yDMq3jKXwAZtUGAMI1ztY7GxfCiL6ULg0PYh0JDtDQlt9wpQ9GuNsoSxpYvjDFzBBpW
+ NlhotaDk
+ KVFekYINMb2HeSh+PC9Xch24g3WyeqTIP6rZJalAyPMrmgqsxzFHA/SdmQbG5QFbWXXBca8bBmRHXj+cagH1J+3C7PyKzes8tAmhIT4O2TIPE9yi942Bi9RADJe45yjTp0JV9lHHWdboBJKZocuxwxAZD8q7mZn6BE36AMhmprG72wY/MODM0HMtk/dMDgoBFL0TfpS5MXH70h5ZxH5jQdu1v16zDb6zTjkl4yPwwWxdHCAr7JdIgc5+PKy0AWcTeY6xKWcoqxtpbyFAr/TSdIv/kmc709DxgTClmkwCe2zB+4vdYErNVJ2rCNSSLu7Y/bUUjt8Djc3LKuWZMEZM8QLzuWz9juDMCYF3OyZ37pEubDklAqH2mEHBctuQiWH4E5pmOj5z5MysSI9hTvTiQseVSe7h/In5AGqRKVhAy59z0q7zVGI9cPzmYgDutWjOVfgphtmg5Gn57Gctkow61ikAWAClCm+noyHjGT8VFvtFAkLxabdUdCGXVfTVBI70+ujSvKLmdzmkZb/KRnufRaT4cdd2wf8zJO9xT3aB88sO7bnswcDWw1sB12w0U5WIT3aDM3BnOlD4ybJWXo/q3p8V1R4Umit73EtyCICZapDIgInv0fA4zrfUQA8NDclQ1GOrvQ4NmPcfh+kKTQ+1mQzMNAQMIf3yg2pHh
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,50 +143,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Feb 7, 2026 at 3:40=E2=80=AFAM Viacheslav Dubeyko <Slava.Dubeyko@ib=
-m.com> wrote:
+On Fri, Feb 06, 2026 at 06:34:05PM +0900, Harry Yoo wrote:
+> When slab objects are freed with kfree_rcu() and not call_rcu(),
+> using struct rcu_head (16 bytes on 64-bit) is unnecessary and
+> struct rcu_ptr (8 bytes on 64-bit) is enough. Save one pointer
+> per slab object by using struct rcu_ptr.
+> 
+> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> ---
+>  include/linux/list_lru.h | 2 +-
+>  include/linux/shrinker.h | 2 +-
+>  mm/vmalloc.c             | 4 ++--
+>  3 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/list_lru.h b/include/linux/list_lru.h
+> index fe739d35a864..c79bccb7dafa 100644
+> --- a/include/linux/list_lru.h
+> +++ b/include/linux/list_lru.h
+> @@ -37,7 +37,7 @@ struct list_lru_one {
+>  };
+>  
+>  struct list_lru_memcg {
+> -	struct rcu_head		rcu;
+> +	struct rcu_ptr		rcu;
+>  	/* array of per cgroup per node lists, indexed by node id */
+>  	struct list_lru_one	node[];
+>  };
+> diff --git a/include/linux/shrinker.h b/include/linux/shrinker.h
+> index 1a00be90d93a..bad20de2803a 100644
+> --- a/include/linux/shrinker.h
+> +++ b/include/linux/shrinker.h
+> @@ -19,7 +19,7 @@ struct shrinker_info_unit {
+>  };
+>  
+>  struct shrinker_info {
+> -	struct rcu_head rcu;
+> +	struct rcu_ptr rcu;
+>  	int map_nr_max;
+>  	struct shrinker_info_unit *unit[];
+>  };
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 41dd01e8430c..89c781dcab58 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -2596,7 +2596,7 @@ struct vmap_block {
+>  	DECLARE_BITMAP(used_map, VMAP_BBMAP_BITS);
+>  	unsigned long dirty_min, dirty_max; /*< dirty range */
+>  	struct list_head free_list;
+> -	struct rcu_head rcu_head;
+> +	struct rcu_ptr rcu;
+>  	struct list_head purge;
+>  	unsigned int cpu;
+>  };
 >
-> Hello,
->
-[...]
->
-> The continuous learning model can be adopted during training phase.
-> It implies that kernel subsystem can receive ML model recommendations
-> even during training phase. ML model proxy on kernel side can estimate
-> the current kernel subsystem state, tries to apply the ML model
-> recommendations, and estimate the efficiency of applied recommendations.
-> Generally speaking, ML model proxy on kernel side can consider several
-> modes of interaction with ML model recommendations: (1) emergency mode,
-> (2) learning mode, (3) collaboration mode, (4) recommendation mode.
-> The emergency mode is the mode when kernel subsystem is in critical state
-> and it is required to work as efficient as possible without capability of
-> involving the ML model recommendations (for example, ML model
-> recommendations are completely inadequate or load is very high).
-> The learning mode implies that kernel subsystem can try to apply
-> the ML model recommendations for some operations with the goal of
-> estimation the maturity of ML model. Also, ML model proxy can degrade
-> the mode to learning state if ML model recommendations becomes inefficien=
-t.
-> The collaboration mode has the goal of using ML recommendations in
-> 50% of operations with the goal of achieving mature state of ML model.
-> And, finally, ML model proxy can convert kernel subsystem in recommendati=
-on
-> mode if ML model is mature enough and efficiency of applying
-> the ML recommendations is higher than using human-made algorithms.
+Why this change is needed?
 
-Hi Slava,
+If you want to save 8 bytes of vmap_block structure, then i
+do not see a big gain here. We do not have so many vmap_block
+objects.
 
-Do we have any concrete examples where an ML-based proxy,
-together with its userspace ML agent, has demonstrated
-measurable performance improvements over well-designed,
-human-crafted kernel algorithms?
+Am i missing something here? :)
 
-Such examples could be in scheduling, filesystem I/O, or memory
-reclamation and readahead. I think having a real, data-backed
-example would be much more helpful for this discussion than
-reasoning about an abstract framework without a concrete use
-case.
-
-Thanks,
-Barry
+--
+Uladzislau Rezki
 
