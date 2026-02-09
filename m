@@ -4,296 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B161FE81BCF
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:45:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6373E81BD3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:46:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F41B6B00B5; Mon,  9 Feb 2026 09:45:37 -0500 (EST)
+	id 3B74D6B0089; Mon,  9 Feb 2026 09:46:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1CB996B00B6; Mon,  9 Feb 2026 09:45:37 -0500 (EST)
+	id 361416B00B6; Mon,  9 Feb 2026 09:46:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 04B9F6B00B8; Mon,  9 Feb 2026 09:45:36 -0500 (EST)
+	id 23D166B00B8; Mon,  9 Feb 2026 09:46:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DBC216B0089
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:45:36 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8B11B88DD8
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:45:36 +0000 (UTC)
-X-FDA: 84425191872.14.7456739
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A334CA000D;
-	Mon,  9 Feb 2026 14:45:32 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=GlIJTlUS;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=P+PtFuf1;
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770648333;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1184D6B0089
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:46:27 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BB17C160198
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:46:26 +0000 (UTC)
+X-FDA: 84425193972.16.CDDF1E5
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 53CA140004
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:46:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xA4TTeHC;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z7p2bqVa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xA4TTeHC;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z7p2bqVa;
+	spf=pass (imf11.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770648384;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XN9/pshIEtH6gcvYsxYLXigG8odRQF2zRrgNU1QZn0g=;
-	b=m2nd5aYW2psG89P5CyBSmyffs7P+P2wtgJTiq/M84Cxr4wZTi/uQuG7EDp3uOPCrovtMUC
-	0bmStKwzi2Vgpve1QbZZHwXl/Q6w9gVqaK0dKqnpSiASNiojXxNIqRgHf94dskqd6B9Ro1
-	t2bsBu00/8sHtHtEF9mGyPjrZ8T0B1k=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=GlIJTlUS;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=P+PtFuf1;
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770648333; a=rsa-sha256;
-	cv=pass;
-	b=Ee3vvFt8PyLmxVKbBeK6HODh55m/sqO8P7/iUP25DqaYEEomF44bKFfoVk+64twhERDVyn
-	iNOHapGO0NrTZKqPp3KYIrX/B1CTG6J1A+FhTSw2boZTf9scCtzeHo2VRLQV+hzkCIl8TB
-	mBNS0yOt0eAc/ikRWXCxCvymnVW3BXw=
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619BxP6L1405298;
-	Mon, 9 Feb 2026 14:04:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=XN9/pshIEtH6gcvYsx
-	YLXigG8odRQF2zRrgNU1QZn0g=; b=GlIJTlUSyVHoNcrEBz9XhmPQ3EJ7+wcTda
-	1MU8CAXZ/C7Uatg0kODeDX3JW0SziWcrKN5Vwj+OlHbq77Q6hv7iUk+1y8le1fkV
-	QSaIcuM8mz/jSkmqe5v+u4RDaYl/YuchrT/elgVLuRnEJyqG5a/5ad+N+aiApBHJ
-	ZHmHfQpDA9dP2Ew59aBGyIoe68qJRo2Yimg/VjD9pSwNkV3ruRICUYHn7R1r4m0E
-	wKZM4ZN+0yNj/ESDyplo471sDEvpywFHCOWfhTDwysIsNGw9xcidey1czMTaFoKb
-	WWc/fOzn0roPhwpdGImMRHWXxgzklwwdoKqLJ0HkYZ8QD93L8iaQ==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c5xh8t04d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Feb 2026 14:04:42 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 619C0BrF004601;
-	Mon, 9 Feb 2026 14:04:41 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011010.outbound.protection.outlook.com [52.101.62.10])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c7ctxgyy3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Feb 2026 14:04:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=keZQUyefymZwa2a9/TtwfFCm2MrPR71zJnbKx4CX8PU9k4R2Kkvfg5ek3kmP+kDFtclnzdf7ImcodLWv0FuSFQ5zIXaNDiivSflWsrFl5IgdKpYP3BzMvdrQs8V1j8ELhc2XNVo42WYlfbhFwW5wUufLl752UHAg6YgKrMNVQ/URA2wyeuARKEZ6/wD8XQrBChqwwqLQR5WkyOfT3Jjx1zE3m6IHK09fM5QF9OOcW3jf3n1+f2I76IlwOY6KlpWoeZPnis3qehKA81fquEBEppx6KaZNnRZQZ6XPWbk5rr76bwuRtA9Qex9vdVzPf1nsHVJCaK4Td+mgi+kOAkUfkA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XN9/pshIEtH6gcvYsxYLXigG8odRQF2zRrgNU1QZn0g=;
- b=mlRBlsJrTb7gz1BF6bjNoTcSidAe1MVzTaVjIB8SVfknWK2ol1SAukNWS9CXRPIjkNViAXzRT8FZcIvXR8XoOPjAssZl0pCoT85AHlkjDBs7meivAXRnq3GbHpKfzGJdciA4b/ibsi4gxFsF/pH/UuXz/eKTdQDhlEVoJSEAKREY6Zu0nDkuqCGBzqXldaMaZERCdEWSQatziOXa9IMmI98tG60ixdSTpZbEy1YXn9mP5x/KayrTsmagtWuEVbvt1YtAL+/WSALdlixQw6AnvXsnC+hZ8UDFnp8+EFoqYX3Yh2onUXTXwdLsx/KM8JmavU0sbK66gtvfPY8NoSyuGw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XN9/pshIEtH6gcvYsxYLXigG8odRQF2zRrgNU1QZn0g=;
- b=P+PtFuf1CmX2/9w0bUrD3g2IJiInYNpHAUC5pUhKvilYpL/HgfaFkzFIPphs5PkB7qNXftUAVpV05n7blJL0s/4lP/G5+BShTx4SgaAHYVBcgVV1QrfbYT11aKAFYYpN6gL5PzPqYCoChJlZYF9xYiYY3T4uybgpfDg7mY9l6Xw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS0PR10MB6222.namprd10.prod.outlook.com (2603:10b6:8:c0::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.17; Mon, 9 Feb
- 2026 14:04:29 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
- 14:04:29 +0000
-Date: Mon, 9 Feb 2026 14:04:29 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tursulin@ursulin.net>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Matthew Auld <matthew.auld@intel.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Benjamin LaHaise <bcrl@kvack.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <zbestahu@gmail.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Sandeep Dhavale <dhavale@google.com>,
-        Hongbo Li <lihongbo22@huawei.com>, Chunhai Guo <guochunhai@vivo.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Reinette Chatre <reinette.chatre@intel.com>,
-        Dave Martin <Dave.Martin@arm.com>, James Morse <james.morse@arm.com>,
-        Babu Moger <babu.moger@amd.com>, Carlos Maiolino <cem@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Hugh Dickins <hughd@google.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Jann Horn <jannh@google.com>,
-        David Howells <dhowells@redhat.com>, Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        Yury Norov <yury.norov@gmail.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>, linux-sgx@vger.kernel.org,
-        linux-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        linux-cxl@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        intel-gfx@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
-        linux-aio@kvack.org, linux-erofs@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, linux-mm@kvack.org, ntfs3@lists.linux.dev,
-        devel@lists.orangefs.org, linux-xfs@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Jason Gunthorpe <jgg@nvidia.com>
-Subject: Re: [PATCH v2 05/13] mm: add basic VMA flag operation helper
- functions
-Message-ID: <ee3a8a0b-cf20-4d6a-9a0d-a2515b32c896@lucifer.local>
-References: <cover.1769097829.git.lorenzo.stoakes@oracle.com>
- <885d4897d67a6a57c0b07fa182a7055ad752df11.1769097829.git.lorenzo.stoakes@oracle.com>
- <vrbggto75ugvpa5wtugmayr7yops6cnvygit42f2md646y6qnx@3vzc7taleijw>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <vrbggto75ugvpa5wtugmayr7yops6cnvygit42f2md646y6qnx@3vzc7taleijw>
-X-ClientProxiedBy: LO4P302CA0020.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c1::9) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=DSGfxZ/EEIX/zXxMZVu8MV7eH8W1DRl9z/K8tChKiW0=;
+	b=VA6zUeaF/3v2m+362qcrO5vPl2psys7amqHMxNWhdR4SrHSme9UVPUMjuMKMbyn6FZTe5R
+	malE8z120Q9kLeLAbwC+tKdVSKwGyeL2p/RKFVd++vJhaXrqVNp5OJEapbrUx5pRAUP28Z
+	8p53YB61SUXLm76idBzm5EWl5jvn5Dw=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xA4TTeHC;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z7p2bqVa;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xA4TTeHC;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=z7p2bqVa;
+	spf=pass (imf11.hostedemail.com: domain of tzimmermann@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=tzimmermann@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770648384; a=rsa-sha256;
+	cv=none;
+	b=pis/QSIchDarUPbJzHGYzV9IPGJpriF/miZAe4vJrbdoptI0IBZ8r+tXysITqBVlhJ28gj
+	Jp9TFENrXqIQOg+zrH7aQK3QDStJRhHGy6FYONpN9d+1RGSuFDIEjr+6zs7fAWmNkXzuu1
+	b4e137syqrRsmBBGjN560FmiXpaTBUI=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8272F3E6E7;
+	Mon,  9 Feb 2026 14:46:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770648382; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DSGfxZ/EEIX/zXxMZVu8MV7eH8W1DRl9z/K8tChKiW0=;
+	b=xA4TTeHCJ7TlIXSdLLZb/zW5GhyL4smc7HDQFRml8dnvNKnPX14PpRB//l7k59kRJ1Gvk4
+	VFjBy4pPvHX7E5bXETbCIgouklLBF9WgVLateMdm7Jz7j5afBGM4Rt+0woD+oyA2Zz4pW/
+	jOqrHUTAe67z6h0ckm9AftDIDIlQ2x0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770648382;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DSGfxZ/EEIX/zXxMZVu8MV7eH8W1DRl9z/K8tChKiW0=;
+	b=z7p2bqVa7t2sf6anYYtLo54Dtftdw4dIX8baa1BvBNssCLhkwNzt5JXR8gJju7MtYlhLXf
+	Nw6XobUKsjEoNWCw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770648382; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DSGfxZ/EEIX/zXxMZVu8MV7eH8W1DRl9z/K8tChKiW0=;
+	b=xA4TTeHCJ7TlIXSdLLZb/zW5GhyL4smc7HDQFRml8dnvNKnPX14PpRB//l7k59kRJ1Gvk4
+	VFjBy4pPvHX7E5bXETbCIgouklLBF9WgVLateMdm7Jz7j5afBGM4Rt+0woD+oyA2Zz4pW/
+	jOqrHUTAe67z6h0ckm9AftDIDIlQ2x0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770648382;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DSGfxZ/EEIX/zXxMZVu8MV7eH8W1DRl9z/K8tChKiW0=;
+	b=z7p2bqVa7t2sf6anYYtLo54Dtftdw4dIX8baa1BvBNssCLhkwNzt5JXR8gJju7MtYlhLXf
+	Nw6XobUKsjEoNWCw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 118413EA63;
+	Mon,  9 Feb 2026 14:46:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZR5mAj7ziWkUQQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 09 Feb 2026 14:46:22 +0000
+Message-ID: <0d00a0f6-d0e4-41db-b48b-77157cd2e968@suse.de>
+Date: Mon, 9 Feb 2026 15:46:21 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB6222:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e2c49ae-110d-4de0-dd1a-08de67e4245b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jEsDz461LlyyV8NyviRb4tOn710YT1o2Ba5wS6//mAPfboQXAU4XBx1WhlhV?=
- =?us-ascii?Q?z44tpRySJsOe/a7gURaY1h4RlsnS2j/ANDy2XeLytQrEmtVUm4CMUDMwjxna?=
- =?us-ascii?Q?SPmk7zf/cIO6rqGxqdhl6zfscIEP3oNHj2GEOqPCAOqcD5cxQ2N8es0Tf3pB?=
- =?us-ascii?Q?rww3F5gDJnLNgxDsZBPwi/xfX1XSoGC45Ak1nQb4NPcxGRgZb8n1nNU4Eq+g?=
- =?us-ascii?Q?1QT1IQVkMvRXxZfF9xeej7d9g/X9UyYzGp1kvIJq4P4LUl27k/6DjYkQiour?=
- =?us-ascii?Q?A+FrCChADqz8nvgiqQHUXBJdTn3QypTADRGcRJgGvcrXDNbrr2ctXeq9Xg/C?=
- =?us-ascii?Q?Z2lXUtzO7f0gMT41cNEay+VWeSuIJfK8nnpgLI5ISmyOlCXW7kDGfUs21Lpi?=
- =?us-ascii?Q?y4vlkgqZ5d+5yfxcVJF1iI64DB9Df0GncL9pVFWUj8SLu5c7Rv4K1tdW/kOP?=
- =?us-ascii?Q?K/pYgDiKFPU/bfKmnuE/ja/NC0438a9UC6Y+DCxP9SMub6jaIQvNPFITlEAV?=
- =?us-ascii?Q?6OthsLmtXKjVIHPWjLAya7Vq/pnLutVNX/f1IN8z+4qP2JV+3/wJHZKTI0rG?=
- =?us-ascii?Q?CZMC75GiyB9AE2kGR8uZoap9EHlsGhBomdpzX5Zy3M/qijvVDpPdIQlBJgDW?=
- =?us-ascii?Q?vytNQq9+yFLBMNseCF5afNRUI7whYv5YM/55UQ5CWXh3cWP26FSolyZs11rg?=
- =?us-ascii?Q?GY2NrulMBUDZE5GCk2QB//Wocy+swvzaq1/8j6pjwed9UZtDWavPf935+pV+?=
- =?us-ascii?Q?W2jeZjNKbknI5fxE/DcenVt+yUWdZ89wZRcFfb9segQm0RuAj2SnHAki3y7s?=
- =?us-ascii?Q?1H2hoF9l4p5NPyVqKOKQ4zvH5LUbKpnA2NZCt/SMv1UhUea4oDib1KPMknEo?=
- =?us-ascii?Q?5vRs4RuzRY6SzrCjb2MSEJaDyMJaxe3d4Mf09tBm7zvuoa1jQyb+HZNiuVw9?=
- =?us-ascii?Q?TVM4KFvhDOuqOGUaL7PFCOKVbtnNZ5CA6rHqZ1a+v5jZhDDxkqQksCu+esWm?=
- =?us-ascii?Q?X86zNjO3MITpGHc+G6iZ/DNxIG+ScIrajfBECR81LXUNEhcCbfKngm4wsBOX?=
- =?us-ascii?Q?DnADLZqxB/ZCovzqrK0UTqZ/xCDMoqbz2BSt0+PaGKFKch9WWLyNgplAt5xS?=
- =?us-ascii?Q?4xN30Ux0saYpqc9/wrKZoWfYU/i5rZYWZWyolIfL/vT53hTLQWz98EKDg9j5?=
- =?us-ascii?Q?g3VbjQ7ZkuDhmcrBniGQv17o9WMqvMaud2NdBh/muTGaVWeNPUxm5/G6BbqF?=
- =?us-ascii?Q?adhjyNrNB7tniK/814WH7OPPWKk3CB5fOWrbznW7ODAkrzTuTFj2DxiMek07?=
- =?us-ascii?Q?Z5bSx8oWpOatfdmzF+1bUz5OAcBT1HVfPElsaOQLHMn4b0rFxMEWXrdwBbTK?=
- =?us-ascii?Q?FIloEhabKEAAGgO8G6XZB+fVUeED2ooJlNsI/ZBaO4KwX3+Lf74WAwJXZjCb?=
- =?us-ascii?Q?/AQuCGbuM35CHw4iJa4Wmur8VAR52jcDMJrOCOPG1x/NGil9fXiKdOmkzHUH?=
- =?us-ascii?Q?MLgdZeHjTOnt+M8kyYa+45dlyucmQxy+o3B/n4pmydaU7uL4u0rg3WEme9ki?=
- =?us-ascii?Q?LtT/cYgA5wdj0XEa+Sc=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?algm93jTIV6IFZzwqxYt45GXti4mq6xDnk+JFqjmGddBxHXQ0ug7N2WeSpc9?=
- =?us-ascii?Q?y2RsOS9Dde2N/8uUigQMlgZnhWSZYk7mfFgOoVJJh852shIX4mxWxYEIGIbC?=
- =?us-ascii?Q?nbQpYoLGsHlDt5YzwFKQAGdxd+44j9jrg3CCCQkF7/F7m5zflTCdZWGJfBAW?=
- =?us-ascii?Q?CLlfRbDRxnyGLe0SIDo8GlBSsnilfmBFExqn7ly+bcIWHHHYaNgZZgD3KpPl?=
- =?us-ascii?Q?fiem1sPpf+1upq91jHJ7HnL307NJcfKjc6DncixiUFtMcQV5K6njwZlfuqPh?=
- =?us-ascii?Q?n/4lc+ULEB0adoX1ZNPqEnqhT65VJmFVklv1mtNVTTaDJjGTn1X6abAbKbcx?=
- =?us-ascii?Q?gwjHrBuDOrcUH+i6MXIV4ZU759UgtkaA+ukilMHS+9sNilCFjgLcQaIojABZ?=
- =?us-ascii?Q?CHqpAe5SFV5v4e4I80UVM7Ak0fWSD7PNZ2C/9onAZ/sfSbmCavWNr1dS/tZU?=
- =?us-ascii?Q?9Ow1wu6vqnFqiQGiMuRWWUcWEo981gwtEfgYq5rf1cJGEy+uxB0syJzLsweC?=
- =?us-ascii?Q?S24r/jRniT+LmHaP+AADTJX6IY+Q5GCJ3GxUtPLJfid1nEJaldkghRNpO9ee?=
- =?us-ascii?Q?XtF9d4D4EkIwR6BLX8TGnQKpIBnqHXF+GrtRzFfvbLctXvvFjApGMdO49AV6?=
- =?us-ascii?Q?Jprz/u7YqoVJwngb1tsQIlCxf6TltlCFjWf4O6cQGcNpAJDS6YxyJnN7XDj3?=
- =?us-ascii?Q?PD7ajDIZFUC1gauLOANmsd7lFCsza6G+c0HYm0KericLOcb5bbTI1IQXQaBz?=
- =?us-ascii?Q?68mhSJUN/u8BmVVuzIMVkvPblb/DK4NZkZtSXpZAVwFOB5eQ876SoPrpz4NQ?=
- =?us-ascii?Q?t8OOLc19iVVRAh1XmHabvGU/RC3cuo7nNZwJXuR1IoEkje7OaZc+AIKD3IaY?=
- =?us-ascii?Q?XhvHYFzV55xX+cHKgFPoFwCAUzKzeue6Ngr08jSTHNtn13axqZbhuZJtpXWO?=
- =?us-ascii?Q?HsWtdNk8Zp3R0pHDiljaYX/W3ZkTUiy+9dx5H0ZcCInM68zcyEbefK3xHj3R?=
- =?us-ascii?Q?VMfln6jHOonW/J3bYwbbMWjVAwwZaBUmALa0WQIe4dylj7dhkAqbu+pTo2VP?=
- =?us-ascii?Q?Ao0UrK/3xmzD+5HQBVcpg/nP+DR5eF3wY4zPsTQcjws/YtBlrNWD7Q9vyHTh?=
- =?us-ascii?Q?3vJHFG8ovDOGyB2MgZWZU611iGF9Y3HNjxLAvmmRF0YDgT17IFdELVsOLmIR?=
- =?us-ascii?Q?coB9rTBQbIe9tSp7nDyntAC5sVV8ppGtsa41Q8y5P3C0SN5jDRuN5S/YLb9m?=
- =?us-ascii?Q?ilMZKB286+D4QNIegUnz4YS5xPaITd+gJQfn0TnvyO5lEoiN6sKcDHEdDl1b?=
- =?us-ascii?Q?d1sIclNM2ctM3TGfzjtsPbX09RjNE2bmBcRQre9qAb0YgKxLzjlDlUtyzK5+?=
- =?us-ascii?Q?SgTuZM8lY5nI1aWl2DhOgpyNHHKw2hKo+c3C4nV+Q/YDDEjUIjbEyiwG/NYm?=
- =?us-ascii?Q?i1na4RQV8x/sx6c4bvm9KjAFE5c8OwTI6l1uJKL47k0Imtb5B/VzWcRDrHM5?=
- =?us-ascii?Q?LZ6S1kYeqZyLCtMB21qpl6YJmUBXCB9q4It3xrwg4HJ0P6scDZecNQoa1NEy?=
- =?us-ascii?Q?aZD26czewH5cOC44rVoaP6EolHPs+DQ6oofj6yL0oBGiTq4M66TLobQ3uFAT?=
- =?us-ascii?Q?wIsJOb4x6TslkIYIy7VFFbealaWXoxjLKnwBUoYkEbQoHR7d37ftprZoixT+?=
- =?us-ascii?Q?sjYSdIHuuYV+3jZGX9OYOkon1CKM/V14C3dhbvAEFIpunpHnaYHZ6I9eVs++?=
- =?us-ascii?Q?/9pA/mJXQA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	01KqIf54eTYJ389XoHV1TTvcQJXlwFzDjf4o37w3qHuZTIQkfKvz0WQ/EOPgYm5pm/wPcHUeWM1lGaLOhX0zW+a5ONrHVrypAJAStfspOkg56Q+LnECE9bFc04MxFBbR9Rhlbgu/RzM7BrjfiFPm5CXh3dRURyd8LSutGV2pPWwbOkcVy26bogDB2c1tqHv06ZnmjMFGEUeWhDs7g5QlQ8brQBbS1tvHNy3wKd8L3DPKCjvRTDLyAP9SqAvMENlhQERX4Hy51DMPQAA30Lsdr4Sa7udse22nT8fZWxzdf2VCO/XsY4ulF9SdK3Sd+1/2xRzTK313OM7o/V4Tj/e8ELV4rskDUl4zOGyDjD5OpB2fHPQQYpfRCz374BGOCRMCpAOqIFoDjYqP2stdpQH8I7n3zvHi579KXPzd33CMP7safWeIsPhIjrKNYHvQvT6WzC6OpIw98UosqkiAaf99/EyVTAdCiMSz8bdL6fLOrwU96Yyr2FlhSPjtx6Rval6PZllN6m5CINh3k3WsBMDW4UyZ9a9cT2tuBIbfp2+Tc04QsZS5ZIAsRy1L14ccMkbQJ782/to/eDmt9ddFTtyub/U0WPKEK3D0lWks0VOGSKA=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e2c49ae-110d-4de0-dd1a-08de67e4245b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 14:04:29.4558
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fnkFz3Z7dqQugpLWqynHQ/59OBxP6yCMyrlLZBi7q8cJQjoQxXAFtHLJ+WMVYiZYKXPON6/hAADKdIwmuCOMfmyxCtTptfkpyOexlwrm0E0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6222
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-08_05,2026-02-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 suspectscore=0 phishscore=0 mlxscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602090118
-X-Authority-Analysis: v=2.4 cv=YbOwJgRf c=1 sm=1 tr=0 ts=6989e97a cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=yPCof4ZbAAAA:8
- a=fvR3Ec5kcXMutB-RvbEA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: QZ_mHi027iN1x7vBbRhRx2U0ENVk-54g
-X-Proofpoint-GUID: QZ_mHi027iN1x7vBbRhRx2U0ENVk-54g
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDExOCBTYWx0ZWRfXzv8SoinjNsc+
- hBrjhbq4T+HLcPoG2wxRC8RU6zoG5mXEERE/X47rZq2xW/vd8a+swZ/btk+T7xInxD8LDqQL0Wl
- pPm6drnhTT65xYkld2Tug8L6f/pnA+4P1xFR3XjVjvzZhxEL7ELV/03LyUcH5H6ozPHGwpJiwgy
- H/COQGO96pfookgxb2Nf+GSt+oRLgo0q1v1aztwHisDJFI1Ae9PfF5DOsBKXGfnmQwANw9hVP/G
- Zb4LE+RetacojNFffsDkZXe5hswjd9fvU157soml/spF+LHJuwThquPlK/6ASAAm7t8bnmVbTK4
- IdgWBDg+zSUIxy0TmCYszADj1ibSe4x4qgm7sRFi4fyjotgGsLVgZsegVdzLT/LQw4GIRMcFrNb
- 92KA1P2VeTXFy0WE2wcvHhgR0Ff3pAL9js/5K06nwr8qvM6FuDZqyB9iu1L+iweAUjzRyhBGL8m
- 9QojpC+jv7Swzy8wjpQ==
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A334CA000D
-X-Stat-Signature: rmq6qr3nnnwy5p78s5ax4d6m83s8jdhm
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/6] drm/gem-shmem: Track folio accessed/dirty status
+ in mmap
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: loic.molinari@collabora.com, willy@infradead.org, frank.binns@imgtec.com,
+ matt.coster@imgtec.com, maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org, airlied@gmail.com, simona@ffwll.ch,
+ dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+ <20260209133241.238813-6-tzimmermann@suse.de>
+ <20260209152340.16f9b30a@fedora>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <20260209152340.16f9b30a@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 53CA140004
+X-Stat-Signature: un3dic9cx6qsuqa9yznwu9uray4ax37n
 X-Rspam-User: 
-X-HE-Tag: 1770648332-17666
-X-HE-Meta: U2FsdGVkX1/T+g/8XTHgfqT7riioAFnHBIruoAkAKQxnbjZb8k5oJWmvkLZhIgkhQ1F+O4MfCnnWSs4qcaE6vj9zxL83qdedzIIAoNUl33ZM3ycYDqlb2wPKo8deHUCFTQKIvLndeUBrH/2g3ex2a+oGdJXroHyj3x6VjQ/wKIYDSlfu/x0ttkYU4fMIVD2n1w+efBtaYL1vQ0cCnl/ZgN1/BVaEKKWStFTvkODQFCCCnzQSd9DbyeitTODpFngAuHUqN9jWUPxV3YfwjKxF39jeTWOZkK3PhjtJmN76P/V5W9TCDw5eQz/NZvQjHX+G2jKORVv9QYZfnSRPGVXAzf1dvSYnHVp7+SkbnOVzjlVPBJY9wNSO5NR080I1T7//8yyARLz/75pFz40ytVbbkxYR20nLtUMPSVdNCpmAwsjr1FoEb7M5RVRIiwFNdgx9euEKVv8B0cXqNpSsYZjTUwuNuzE1EAmV1LTXbdaIhE5ZEx5wtDnO7RM0GTcWOPkFpqQSNZ9cMgP+0FtPT7gfsERsaI4Zi3r7oVuLhHKZi+1vNCv9Z6xu0OVq4R9F2NIEb3zj23Lvd6zjUoyITpDrMosN7h4NxUUrtk3q11Y1QlwT4snbtuT9bYbfffQAFu/tYUwh+FLbhthGzVQDkbrprNUQAG4hIOTdk8Z/IO+H+ceCSzu22JlaE9n4Ev71TosS0gKmQZpNCGPYbAIlXi1S1HyjBKMNLXVelf2qLqtutncIPBDAUtugQlV++FGz8lbKSTOM2DAswTxZuwaddw5k0nkSL2hEv4YyE1J79ht/zuc0Ybq73WeVRR/fMfEEbv6O4AUR6caLVDUAoIVvD4oYM0bwfXVD5HzfhBjF5aAMLnBHRwqV8LRPfQjCp4edd65lRFhWtGf7K9278ysLMs8t3OVrPOsu5rnE/GoFyugeDxtnV7oLlRVROjB6BhvpA0g1PsU2B+4RaWZYKE0heXW
- 8ti/oxc1
- 12D9YQyL/4hkHElZGeIG5WPMc0/OkfnMUkLBfLqZjOlCOxf67haz0W4K3sdgGJ3iybGDyClar+uGLpsTQt3Dt6UVzcdq+XCZX7JEDLGcGw4D6Ccs5e1mFX4KXiDXPpRGb+R12N7Hl2uXmXCh8zvvSk1KKU1bdNIoi8wb7gndsibdZqZ6/lEo/sGSrmVqopWd0Zd4bwcC3sq8QLGe2NTFs3+Qq7AIcoWSnuAzbKfAXTHhsVglx/TPcyxmdxQysb7lldSm57xdI58pMml0To2zRCiWjeEIjZXz3ffykWGsJE2N2FI3Lq1Co/mg2H1AkagsfG0468w7qsEF6k/1t0wDpRwVsS3FgwzCqdQUTavdJMog38ADBEsN6QJQmYpKRelDKNtsAcj7hjDYQ7T3BVJNmZNlWkr+e1+k72ywXd058UUavLKBdqCWeEOdSzr3KYMtN6AK+fZrjQouAJdr3ler1KZZsOh7bs7saQzu5jEWaH9yAP5yST4iEZPGVkw4/haEQuVK4clTk8lxP457mlxQ5XEsiweeYJPVwlbdaYkT6UpGHh1mvr6Dl6OXXYW27iQrerGAUi4vEisVMFSuzMtHVIJTjVGMSPxtidDR8l4Ca1GLeG5/gr157fisjoBzXU6rPKNjf+Zr237ULouu+QHwhvl0UaQx0YV5oLJav59k08bsdHjBCC2NSTDjlpUWGtI4aJYxNrqBIab4uspnWphMlHv9kBbt43N//vVYRpRm171Le/tB7qT2bebFkNHUcfnDkNR/t5NnQJ5fg1JBKcVk7aWEVrBh4e2wsSCcrQ14rASFofOPHMLFXzz0+3A==
+X-HE-Tag: 1770648384-156164
+X-HE-Meta: U2FsdGVkX1/nWRHKflirf2USXvY0luPDTwdDwK9X1gugu5nWaJfZPJKicEr26RlkcOLE3R8g9M1rjF5wh7BeE0fTgdCvKna+q4IP5vJaavZbLTMMYwlVajSpNOPBM6okHVkWYUegMNy3iTqMA0+u2qhjEG2HAuRAzkGq4CtXGt705CoCmuYx7e165KyqLPj6pwnl1IhsAc0gHz1QDAWoIqTRjYTdbLrw8TYZugaJfF65SSFr41gQwwGMkv7sSDs+kzhUyyscai5pvZUSmhsUf77m697Jr6AJD0/Pckjmw4KL0zW+sX8GrnBXxAc015fzqmAaspPUAXZnm6tmmOMxO+12+vEfmtlSpv3Rukkq21D2lX1c+J7IoDd50drWm2Li13qGXN3PsRZQO+iK/rXjKgdbEWrduh/0LVyvX01hqXbNJahOvXVC5z8c+Wt7Wbkop6OxjoqcwN4W/4lyqaiH5ElOu+ib0DFHxxgaloBCpFXuRfABz0Kq7UuRkoUzhkiZuVORDE+dqTRKt+GopYdBV0qzDDK8OeTXhrp/bb5eQc/AirMZ6lU1cl5iVRX6GYOQsNMDITWcxrMoEabHUf0pDm3obCE+LmVct0/6nCCfPITeeCFX5bWbCRIYGLBkpLQtCHH3obCipASbsGkoKsBPiR8XSAX5thrJXS+jV/FJjzcrteJIgKaVUbUmARezQv6rFO8lm1WuOBEnk2X7IYe7PYPRXnzzQmcaWnrLwbWmHdHhia7PYNxrXpydix31db0I4Vyfgv3CjNVofFGsmmwkz0cw+fm8N7SSj6uvZo8CaC87a932HFty3uL03chcDyfJ5x+aNXp3BQerO7EH5Z2PP+i1L0bxBKiTk/UHGZgcNcaZhNQCG9JoQHkxq/JMbL4lML7qhUWkkYLxGZzn46ctoeThuUxGeMGiICQ7BLx2MUeEZbTxP5qWORXMNXFzOCpDrBLPkm8iZiFiOUSTM4g
+ S67WQCuq
+ mJddJSZenlQ+geYMR2lm46wbIgOxrbpauQppfNAe2io4Ju5I0j+PW5neKdHniLZRETFbDS0vctCMQQKAhUTWILbhQTFbSBPt7E2pmRdVXjdBmoByihqes0o53MtCQ+O2z4p1HQGHaUBeNJEVpkeVumuJXAqVK7APIk+yRDoo3dbWJqfJX1t7kx5vDhf8zbvmFsmtpbeZu4xD41hvwi8AGliGzIjNffAme5Z2w6dooV5yM1jDo6oGYDxDhj2vB1XiBfevoVotHkQBrxsqUk2a1gOc3j59aM0KKUeoFqMxHPtV56rjVvpWtVNgxYSFNgPzCyRLWL55uBd66/SY2xIwDBxPGIIbE5qdXF3JYEY+H5QPB/xOd5bpRKDehFuzig3fvILeSS9Pihs1WSf1aTybb+8Kiim9kf6dFs0Y6UklSKqO7SwGFiNzZ2kWZNML//q5Mi+RrUHwOIMmcgg4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -302,74 +167,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 05:35:49PM +0000, Pedro Falcato wrote:
-> On Thu, Jan 22, 2026 at 04:06:14PM +0000, Lorenzo Stoakes wrote:
-> > Now we have the mk_vma_flags() macro helper which permits easy
-> > specification of any number of VMA flags, add helper functions which
-> > operate with vma_flags_t parameters.
-> >
-> > This patch provides vma_flags_test[_mask](), vma_flags_set[_mask]() and
-> > vma_flags_clear[_mask]() respectively testing, setting and clearing flags
-> > with the _mask variants accepting vma_flag_t parameters, and the non-mask
-> > variants implemented as macros which accept a list of flags.
-> >
-> > This allows us to trivially test/set/clear aggregate VMA flag values as
-> > necessary, for instance:
-> >
-> > 	if (vma_flags_test(&flags, VMA_READ_BIT, VMA_WRITE_BIT))
-> > 		goto readwrite;
+Hi Boris,
+
+thanks for reviewing the series.
+
+Am 09.02.26 um 15:23 schrieb Boris Brezillon:
+> On Mon,  9 Feb 2026 14:27:14 +0100
+> Thomas Zimmermann <tzimmermann@suse.de> wrote:
 >
-> I'm not a huge fan of the _test ambiguity here, but more words makes it uglier :/
-> I think I can live with it though.
-
-Yeah, as discussed on IRC it's a bit of a trade off here unfortunately.
-
-I don't love having the _BIT stuff there but is necessary for now I feel until
-VM_xxx flags are finally fully deprecated.
-
+>> Invoke folio_mark_accessed() in mmap page faults to add the folio to
+>> the memory manager's LRU list. Userspace invokes mmap to get the memory
+>> for software rendering. Compositors do the same when creating the final
+>> on-screen image, so keeping the pages in LRU makes sense. Avoids paging
+>> out graphics buffers when under memory pressure.
+>>
+>> In pfn_mkwrite, further invoke the folio_mark_dirty() to add the folio
+>> for writeback should the underlying file be paged out from system memory.
+>> This rarely happens in practice, yet it would corrupt the buffer content.
+>>
+>> This has little effect on a system's hardware-accelerated rendering, which
+>> only mmaps for an initial setup of textures, meshes, shaders, etc.
+>>
+>> v3:
+>> - rewrite for VM_PFNMAP
+>> v2:
+>> - adapt to changes in drm_gem_shmem_try_mmap_pmd()
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+>> ---
+>>   drivers/gpu/drm/drm_gem_shmem_helper.c | 20 ++++++++++++++++++++
+>>   1 file changed, 20 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>> index c3a054899ba3..0c86ad40a049 100644
+>> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+>> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+>> @@ -598,6 +598,9 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>>   	if (ret != VM_FAULT_NOPAGE)
+>>   		ret = vmf_insert_pfn(vma, vmf->address, pfn);
+>>   
+>> +	if (likely(!(ret & VM_FAULT_ERROR)))
+> Can't we just go
 >
-> >
-> > 	vma_flags_set(&flags, VMA_READ_BIT, VMA_WRITE_BIT);
-> >
-> > 	vma_flags_clear(&flags, VMA_READ_BIT, VMA_WRITE_BIT);
-> >
+> 	if (ret == VM_FAULT_NOPAGE)
 >
-> The variadic-ness here is very nice though.
+> here?
 
-Thanks!
+After reviewing the code in vmf_insert_pfn, I think so. All we'll see is 
+_OOM and _SIGBUS; or _NOPAGE on success.  I'll change it then.
 
->
-> > We also add a function for testing that ALL flags are set for convenience,
-> > e.g.:
-> >
-> > 	if (vma_flags_test_all(&flags, VMA_READ_BIT, VMA_MAYREAD_BIT)) {
-> > 		/* Both READ and MAYREAD flags set */
-> > 		...
-> > 	}
-> >
-> > The compiler generates optimal assembly for each such that they behave as
-> > if the caller were setting the bitmap flags manually.
-> >
-> > This is important for e.g. drivers which manipulate flag values rather than
-> > a VMA's specific flag values.
-> >
-> > We also add helpers for testing, setting and clearing flags for VMA's and
-> > VMA descriptors to reduce boilerplate.
-> >
-> > Also add the EMPTY_VMA_FLAGS define to aid initialisation of empty flags.
-> >
-> > Finally, update the userland VMA tests to add the helpers there so they can
-> > be utilised as part of userland testing.
-> >
-> > Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-
-Thanks (also for other tags :P)
 
 >
-> --
-> Pedro
+>> +		folio_mark_accessed(folio);
+>> +
+>>   out:
+>>   	dma_resv_unlock(obj->resv);
+>>   
+>> @@ -638,10 +641,27 @@ static void drm_gem_shmem_vm_close(struct vm_area_struct *vma)
+>>   	drm_gem_vm_close(vma);
+>>   }
+>>   
+>> +static vm_fault_t drm_gem_shmem_pfn_mkwrite(struct vm_fault *vmf)
+>> +{
+>> +	struct vm_area_struct *vma = vmf->vma;
+>> +	struct drm_gem_object *obj = vma->vm_private_data;
+>> +	struct drm_gem_shmem_object *shmem = to_drm_gem_shmem_obj(obj);
+>> +	pgoff_t page_offset = vmf->pgoff - vma->vm_pgoff; /* page offset within VMA */
+>> +	struct page *page = shmem->pages[page_offset];
+> Should we have a
+>
+> 	if (WARN_ON(!shmem->pages ||
+> 		    page_offset <= (obj->size >> PAGE_SHIFT)))
+> 		return VM_FAULT_SIGBUS;
+>
+>
+> ?
 
-Cheers, Lorenzo
+I left it out because it doesn't seem necessary.  In the fault handler 
+in drm_gem_shmem_fault(), I can see that we could get an OOB access. But 
+we only call pfn_mkwrite() after going through _fault() first. I don't 
+see a way of getting here unless we've already tested for the page in 
+_fault().
+
+Best regards
+Thomas
+
+>
+>> +	struct folio *folio = page_folio(page);
+>> +
+>> +	file_update_time(vma->vm_file);
+>> +
+>> +	folio_mark_dirty(folio);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>>   const struct vm_operations_struct drm_gem_shmem_vm_ops = {
+>>   	.fault = drm_gem_shmem_fault,
+>>   	.open = drm_gem_shmem_vm_open,
+>>   	.close = drm_gem_shmem_vm_close,
+>> +	.pfn_mkwrite = drm_gem_shmem_pfn_mkwrite,
+>>   };
+>>   EXPORT_SYMBOL_GPL(drm_gem_shmem_vm_ops);
+>>   
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
