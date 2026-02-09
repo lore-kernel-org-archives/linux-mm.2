@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C448E81BCC
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4679E81BCD
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:10:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC5D56B0093; Mon,  9 Feb 2026 09:07:53 -0500 (EST)
+	id 32A406B0005; Mon,  9 Feb 2026 09:10:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D01DA6B0096; Mon,  9 Feb 2026 09:07:53 -0500 (EST)
+	id 2CE1C6B0089; Mon,  9 Feb 2026 09:10:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B02226B0099; Mon,  9 Feb 2026 09:07:53 -0500 (EST)
+	id 1DA056B009E; Mon,  9 Feb 2026 09:10:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F6DB6B0093
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:07:53 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 55B40879FF
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:07:53 +0000 (UTC)
-X-FDA: 84425096826.14.ED4619A
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf06.hostedemail.com (Postfix) with ESMTP id EB920180017
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:07:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pneERAOT;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A6626B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:10:46 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C7D4314017D
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:10:45 +0000 (UTC)
+X-FDA: 84425104050.24.FEA762A
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+	by imf28.hostedemail.com (Postfix) with ESMTP id DF2F9C0004
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:10:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=awdnsntt;
+	spf=pass (imf28.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770646071;
+	s=arc-20220608; t=1770646244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=svMvxcoEOwnxfPjspg+UHyXyu7rjBpbk7PZIuf8LnPs=;
-	b=zL6Zmh6ZoVIMHqS9Jk5wTZ6DFBO+ckVGivebn6djiiIfeCSbHrTHZNTx0Kfgq+5mCyAHmm
-	WZMBqPRukMkc+40RsOnReERmyz44DV4PWD3YIPIvSSwSnzx8iAnw1IN5Tg6ftNR1jSBcVy
-	n2HxbSd28U5R7pWMr1+yXvYAyHB6zvc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=pneERAOT;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770646071; a=rsa-sha256;
+	bh=GqpoZTOoqQeg/sPnbuxXNvz3jcbl4+d+2hh6+y2Ot8Y=;
+	b=F8Ifi+YaiDuoq75xm51pRb4PtPcGfmn5eU9p+JMbbDvskrO8KXPeZMjDHsaOqC9m4xX2Ka
+	Hnuotuzde7TAfTsP5jSGCt2aBmT2OYDb0G+qO9c9kIL+xWdJvLPSksCLFa9OXeAIVjQo0e
+	I5IMnCLQ+ijz8/tD+KhslkC8jUId7Vk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770646244; a=rsa-sha256;
 	cv=none;
-	b=UQXJmf92afRuSoZbY9svgX0mvuxlrSHkdYR03DvEIkEbWLoPk7ZWi8qP37KMPacv6/VW4u
-	B7Kj0+QRrfGGfpDad9QxzkGDDhSYgBHXuJXMK3V01avP9ludKFutLH64ZFroX1D3ho3Ec2
-	SV+ynLgF6pIYJ/KPeL4Rh9ZtnHelmyI=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770646060; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=svMvxcoEOwnxfPjspg+UHyXyu7rjBpbk7PZIuf8LnPs=;
-	b=pneERAOTivNHaJQTqFGXweahV9+GcETQkGa7hCrhrq1Wow4qM95CX75jQ9hiL7EYMsPEXdRNy34o64v70pMD0ZPOS5aC3rBV2NWF2Mv075ZLVmKjDtStFvcPWRREH4hlPKkzA+Htfqzw6DHltro+/j45hAFi34mZpz0jKmxVfAg=
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WytHTQS_1770646058 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 09 Feb 2026 22:07:38 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org
-Cc: lorenzo.stoakes@oracle.com,
-	ryan.roberts@arm.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	riel@surriel.com,
-	harry.yoo@oracle.com,
-	jannh@google.com,
-	willy@infradead.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v6 1/5] mm: rmap: support batched checks of the references for large folios
-Date: Mon,  9 Feb 2026 22:07:24 +0800
-Message-ID: <12132694536834262062d1fb304f8f8a064b6750.1770645603.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
-References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
+	b=rpr3yWrr7tWghIYwzs/sigg14c2jyrxqPsdNmEsERN1Ml+05H30CkoEPbG/3CAiMFWdtT4
+	fxmlb2AVSV9mz7tIFES6NqTKiQzM1tBu0vXuzePywdtGBQ2kBFsx4m0+PjgCEsn/6XWdck
+	jjK5IPurChXvXJiuRtkhgWwBohze4Ug=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=collabora.com header.s=mail header.b=awdnsntt;
+	spf=pass (imf28.hostedemail.com: domain of boris.brezillon@collabora.com designates 148.251.105.195 as permitted sender) smtp.mailfrom=boris.brezillon@collabora.com;
+	dmarc=pass (policy=none) header.from=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1770646240;
+	bh=hZkJVgJ7X2tCJW8hxCbMEX2eWCVr2C6omxspYOwQ0yQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=awdnsnttpnrxf2kSIQMnWGzZDpV1k+xmdUeIswLueRTYBQDpGa6V/ZdZSx1kSa33T
+	 T5p3ulBDXmgs7ul96a1rVSlzLFZJRppsrVxKiIfDqNH/llDIorW2eFMmlYotkYqMLJ
+	 jaFGEUnFFs7cksEwPs5qQBphkAB0iCQfz22g9Cdfdeto0fABFoIFrlawCeCNz4TYlN
+	 VPL/E5APCcJzKi5FjHoO971eHZMLJ/CU2wX03n32bTfMnPU4lr8hyM/VyXo0NpMCY+
+	 ttOSIu8RaGoFpwo8mpIp0BlFxEuKdE2bavwz7Ule8ULtbrN3bz0a8rVEipHreIDYTC
+	 yl7ECoK7TQpvQ==
+Received: from fedora (unknown [IPv6:2a01:e0a:2c:6930:d919:a6e:5ea1:8a9f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 817F917E137B;
+	Mon,  9 Feb 2026 15:10:40 +0100 (CET)
+Date: Mon, 9 Feb 2026 15:10:35 +0100
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: loic.molinari@collabora.com, willy@infradead.org,
+ frank.binns@imgtec.com, matt.coster@imgtec.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch, dri-devel@lists.freedesktop.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/6] drm/gem-shmem: Use obj directly where
+ appropriate in fault handler
+Message-ID: <20260209151035.59889115@fedora>
+In-Reply-To: <20260209133241.238813-2-tzimmermann@suse.de>
+References: <20260209133241.238813-1-tzimmermann@suse.de>
+	<20260209133241.238813-2-tzimmermann@suse.de>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EB920180017
-X-Stat-Signature: cydf1aayurpqeob5xrd3zqictdynx9d7
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: DF2F9C0004
 X-Rspam-User: 
-X-HE-Tag: 1770646070-152268
-X-HE-Meta: U2FsdGVkX19kx7T4I0Dzf87AzphwJkbigFpdwsQzXmJgR+LkUe05s8HqdusWKr/zKd29AQ9575HmV9s9l/tLuCcw3nnHrtmmywYBG7v8qIWmkoorQ1jf6WH+mCfkNWU38O7wxkxdbbnsyaIeokjCWstMMDjPZ+Yn00Nus4JKPr5YpwYXdtf3JGoCfRlfr+++ur0CdzWsy2zxpqnAd3iblUIHoU631XDqv1a3GaodkUd5ULj0A2he4RsCaU8nzgpGBaTSjxSxQ73ZS97ZeWBYUH8d5Y5jPIrxsZiCv2McN4R6SbaQ5f3wZBRw4e77c/cpeghKAmd23tVUO4+sAT7yLkSaLaP6fvixgXCCuQprNgk6rwM2FlLT9zmdE7WbrxsGhlhE+0NHGF8ZQ3zPhb1SEnIjTLIzZEiojX0d6w2r39kp5/l6wTFddOnVSfiSezAqvV/UsCF7wheM2Ac0qDufrk7apPdpVfo9HLzlEe/53RgDRs9bFB4iwtqtnJzN4Jmbo7wV2Bekde4mq6wOPr5O3LIKeYGR7DsVrO0pv0S1zuePKfiWxtYZqogSlHiwL/Qps8p5jm+ZKz4SR4nwfoagieej3x/goK7EboFmq0ofbu0LnnurVUoCoVfhkFsTKbHv/GVMYU9/j1QW2WbLpUmpp2mzcewwhcds2cqCnWjWjQH1Td2ASEOoPKcswakJ/yqhepXzn1cANycpYv1aIzI+i9fY7s0BAoSuEkXyQBekpXHRHs9P7Wb6CJymGICqUUWhDsh3VpjqO+5KA1XjNUjeoIr+wu26N+tk8cp98R650bi8cHNdp2DwdwIf1GibpznXQO3KYE0DKpEwN7AaFKVLGlDFkqFyl+B6S8Z5Av4BrKFZ7GhKGVbrV712ecGD0VSppvYA3CqjNLWFkOkqutOiYEgzWUczJSY2xmDNE2areHH0OeSf4ou1dcY6IK5Z6Kxj
+X-Rspamd-Server: rspam05
+X-Stat-Signature: y967ydff71e79zdtaqb8sop7om73at5q
+X-HE-Tag: 1770646243-604830
+X-HE-Meta: U2FsdGVkX191V1iMqlET5jJI/SWwcaVlXqib90HRUYO0XLAy/A60Sn2Wu/3NM1QtVj7pj0Gm+vEMe/7VpW2C1zX7LfjJX9RMqXSHZAfiAPAa3llFlVJsmXgcIh2mUKVtP+GzWliLD1EzsX5LEI09V1O6+ajQ/Ry0Y6zyYBIncof/oJUwj0gJAYoyeaMca9dRrf8APvT+Pru8Zz2pK4AYN5/SEvVRaj3tJz9fHNcAzG1C51w/fFxiZSIW9RQloS14vPGojIT/GM6bujN7cD/B6jJjHAsuQTeUkKv9RCMWzNv+39NPHB0RhuOuSnQKopWQDzUal5H9J+aOsVspSGhw2VPA8Zho1Kv2EUtKZa3whF60KdUpoDvSVAxSObUCaphz+NE45A8el5KpcV6cJHi/8xiJS/LgIARm4dOAzkqLktrXFEG2Ou1NrX86O4p/rSAgFixtKK2hw2TqEslKUnErtUUgQL9vIRGKlTDf/KPIv0op6zDU8NGgSo5zaNw1H2ffA7JwzP9mzTedkSuNnudjD4Gmva2PEfqo7OVBut8e0mv1OqaDqVSPN/54BDFLHe9WlkC4EhPJXeG2Q+slPdlm2aZXTIcTFqDtBYiMZX5urOljEaB2bln8yWbu4JxPl5+TqOUX2lfjRlVVoZniJ/jbuEuufkHSmoFDactaboWVeflCwDYjMM2o4V4vCokFYaLGlUG7nOFA6fnSbHDyNBxCzhoTtjXoJN6kMnlTTlg/0RVHbxcKQq/NwD8a2IaaKR+RGIuS86Qn1Fr/HNyqtGPCfH/3+M6PNxIarfdoZxWE/McREbOP/JZQs6g+18zlEFxCo6SchunBMpoj+YZJxUEsNoFUl0TS+8RTgpIDI84/CnD7mKEt52muUW6bNQxO78Aao4XfZt89HAhWWIAKa8hkwCJLL6+R+TY3M9ieAo11vzbFRyLkfR6q9okhqM0W5BYDQLLRbBpbhYcEqadmYbp
+ ulfCQCyi
+ MGTcu9MhasWOKJSa82e7J5dTuxdcb0WZtsA5igjo3kNuWVSqg7cARm05/gguncWlWRjFQT/Zw7I4YVSvMJPHfJI4shXiTRQhnPL58CCMTIxYPuSRC/8lV0ZBuXHNOuukiBy4ct6CHNicYU0nT3EoCQuCkh8ns5kZtVa5Msw8gZe31CKvVd5w/Q2Qy2kFBL97ZLwTm1R0srPH34O6Oz312+bI+miHPginuKXEQZKl/bPOt2MrCqdAplKYpMEi5EEyQk7LVA57Z597fqdkV9Ow5UQsMU3Fr+MvgGtCRdZi0XppvfC7imBdC8GXLUflV8uHtO5xC8ktxNMPdLZYg4fn+twbfpgqhbM3SfRGz8JZT4jHtTO/NwsD25gWWrrxQ4ft/KDfT3DbRfGie3e5WvNAaDKoylg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,171 +100,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, folio_referenced_one() always checks the young flag for each PTE
-sequentially, which is inefficient for large folios. This inefficiency is
-especially noticeable when reclaiming clean file-backed large folios, where
-folio_referenced() is observed as a significant performance hotspot.
+On Mon,  9 Feb 2026 14:27:10 +0100
+Thomas Zimmermann <tzimmermann@suse.de> wrote:
 
-Moreover, on Arm64 architecture, which supports contiguous PTEs, there is already
-an optimization to clear the young flags for PTEs within a contiguous range.
-However, this is not sufficient. We can extend this to perform batched operations
-for the entire large folio (which might exceed the contiguous range: CONT_PTE_SIZE).
+> Replace shmem->base with obj in several places. It is the same value,
+> but the latter is easier to read.
+> 
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 
-Introduce a new API: clear_flush_young_ptes() to facilitate batched checking
-of the young flags and flushing TLB entries, thereby improving performance
-during large folio reclamation. And it will be overridden by the architecture
-that implements a more efficient batch operation in the following patches.
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
-While we are at it, rename ptep_clear_flush_young_notify() to
-clear_flush_young_ptes_notify() to indicate that this is a batch operation.
-
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
----
- include/linux/mmu_notifier.h |  9 +++++----
- include/linux/pgtable.h      | 35 +++++++++++++++++++++++++++++++++++
- mm/rmap.c                    | 28 +++++++++++++++++++++++++---
- 3 files changed, 65 insertions(+), 7 deletions(-)
-
-diff --git a/include/linux/mmu_notifier.h b/include/linux/mmu_notifier.h
-index d1094c2d5fb6..07a2bbaf86e9 100644
---- a/include/linux/mmu_notifier.h
-+++ b/include/linux/mmu_notifier.h
-@@ -515,16 +515,17 @@ static inline void mmu_notifier_range_init_owner(
- 	range->owner = owner;
- }
- 
--#define ptep_clear_flush_young_notify(__vma, __address, __ptep)		\
-+#define clear_flush_young_ptes_notify(__vma, __address, __ptep, __nr)	\
- ({									\
- 	int __young;							\
- 	struct vm_area_struct *___vma = __vma;				\
- 	unsigned long ___address = __address;				\
--	__young = ptep_clear_flush_young(___vma, ___address, __ptep);	\
-+	unsigned int ___nr = __nr;					\
-+	__young = clear_flush_young_ptes(___vma, ___address, __ptep, ___nr);	\
- 	__young |= mmu_notifier_clear_flush_young(___vma->vm_mm,	\
- 						  ___address,		\
- 						  ___address +		\
--							PAGE_SIZE);	\
-+						  ___nr * PAGE_SIZE);	\
- 	__young;							\
- })
- 
-@@ -650,7 +651,7 @@ static inline void mmu_notifier_subscriptions_destroy(struct mm_struct *mm)
- 
- #define mmu_notifier_range_update_to_read_only(r) false
- 
--#define ptep_clear_flush_young_notify ptep_clear_flush_young
-+#define clear_flush_young_ptes_notify clear_flush_young_ptes
- #define pmdp_clear_flush_young_notify pmdp_clear_flush_young
- #define ptep_clear_young_notify ptep_test_and_clear_young
- #define pmdp_clear_young_notify pmdp_test_and_clear_young
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 21b67d937555..a50df42a893f 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1068,6 +1068,41 @@ static inline void wrprotect_ptes(struct mm_struct *mm, unsigned long addr,
- }
- #endif
- 
-+#ifndef clear_flush_young_ptes
-+/**
-+ * clear_flush_young_ptes - Mark PTEs that map consecutive pages of the same
-+ *			    folio as old and flush the TLB.
-+ * @vma: The virtual memory area the pages are mapped into.
-+ * @addr: Address the first page is mapped at.
-+ * @ptep: Page table pointer for the first entry.
-+ * @nr: Number of entries to clear access bit.
-+ *
-+ * May be overridden by the architecture; otherwise, implemented as a simple
-+ * loop over ptep_clear_flush_young().
-+ *
-+ * Note that PTE bits in the PTE range besides the PFN can differ. For example,
-+ * some PTEs might be write-protected.
-+ *
-+ * Context: The caller holds the page table lock.  The PTEs map consecutive
-+ * pages that belong to the same folio.  The PTEs are all in the same PMD.
-+ */
-+static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *ptep, unsigned int nr)
-+{
-+	int young = 0;
-+
-+	for (;;) {
-+		young |= ptep_clear_flush_young(vma, addr, ptep);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		addr += PAGE_SIZE;
-+	}
-+
-+	return young;
-+}
-+#endif
-+
- /*
-  * On some architectures hardware does not set page access bit when accessing
-  * memory page, it is responsibility of software setting this bit. It brings
-diff --git a/mm/rmap.c b/mm/rmap.c
-index a5a284f2a83d..8807f8a7df28 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -913,9 +913,11 @@ static bool folio_referenced_one(struct folio *folio,
- 	struct folio_referenced_arg *pra = arg;
- 	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
- 	int ptes = 0, referenced = 0;
-+	unsigned int nr;
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		address = pvmw.address;
-+		nr = 1;
- 
- 		if (vma->vm_flags & VM_LOCKED) {
- 			ptes++;
-@@ -960,9 +962,21 @@ static bool folio_referenced_one(struct folio *folio,
- 			if (lru_gen_look_around(&pvmw))
- 				referenced++;
- 		} else if (pvmw.pte) {
--			if (ptep_clear_flush_young_notify(vma, address,
--						pvmw.pte))
-+			if (folio_test_large(folio)) {
-+				unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
-+				unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
-+				pte_t pteval = ptep_get(pvmw.pte);
-+
-+				nr = folio_pte_batch(folio, pvmw.pte,
-+						     pteval, max_nr);
-+			}
-+
-+			ptes += nr;
-+			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
- 				referenced++;
-+			/* Skip the batched PTEs */
-+			pvmw.pte += nr - 1;
-+			pvmw.address += (nr - 1) * PAGE_SIZE;
- 		} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE)) {
- 			if (pmdp_clear_flush_young_notify(vma, address,
- 						pvmw.pmd))
-@@ -972,7 +986,15 @@ static bool folio_referenced_one(struct folio *folio,
- 			WARN_ON_ONCE(1);
- 		}
- 
--		pra->mapcount--;
-+		pra->mapcount -= nr;
-+		/*
-+		 * If we are sure that we batched the entire folio,
-+		 * we can just optimize and stop right here.
-+		 */
-+		if (ptes == pvmw.nr_pages) {
-+			page_vma_mapped_walk_done(&pvmw);
-+			break;
-+		}
- 	}
- 
- 	if (referenced)
--- 
-2.47.3
+> ---
+>  drivers/gpu/drm/drm_gem_shmem_helper.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_gem_shmem_helper.c b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> index 3871a6d92f77..5bced7db0f1f 100644
+> --- a/drivers/gpu/drm/drm_gem_shmem_helper.c
+> +++ b/drivers/gpu/drm/drm_gem_shmem_helper.c
+> @@ -584,7 +584,7 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>  	/* Offset to faulty address in the VMA. */
+>  	page_offset = vmf->pgoff - vma->vm_pgoff;
+>  
+> -	dma_resv_lock(shmem->base.resv, NULL);
+> +	dma_resv_lock(obj->resv, NULL);
+>  
+>  	if (page_offset >= num_pages ||
+>  	    drm_WARN_ON_ONCE(obj->dev, !shmem->pages) ||
+> @@ -602,7 +602,7 @@ static vm_fault_t drm_gem_shmem_fault(struct vm_fault *vmf)
+>  	ret = vmf_insert_pfn(vma, vmf->address, pfn);
+>  
+>   out:
+> -	dma_resv_unlock(shmem->base.resv);
+> +	dma_resv_unlock(obj->resv);
+>  
+>  	return ret;
+>  }
 
 
