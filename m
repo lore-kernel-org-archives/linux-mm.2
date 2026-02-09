@@ -4,136 +4,235 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC3EE7E0BC
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 16:56:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B37E7E0CD
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 17:08:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAA406B0005; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
+	id 7C8ED6B0005; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8BCF6B0088; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
+	id 7769A6B0088; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D602E6B0089; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
+	id 6037F6B0089; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BE3566B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6DC8FB6DA3
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:56:25 +0000 (UTC)
-X-FDA: 84425521530.03.DC4ECA6
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6A2302000D
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:56:23 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MNoZAGsK;
-	spf=pass (imf03.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 469336B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:08:35 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DFDB61A0253
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:34 +0000 (UTC)
+X-FDA: 84425552148.07.425031E
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 93A7C12000B
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 17:08:31 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JbZENy86;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=bbuwze5t;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770656183;
+	s=arc-20220608; t=1770656911;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
-	b=yU66yl/7HOu/nmXuJbucgqKwPlG15xmYKiD0uEDMQL2/y8+hTRoOonG6hHnBK5xYFqw6TD
-	oLwldueB9D3A9NNlCsacP3s1zPHnDCozwuaU4qy6GZx294eGAPPXiU+kOEEygwC6pGQoM7
-	S51svlwyZu3OG0pVs2WhFiKTT5XofPc=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=MNoZAGsK;
-	spf=pass (imf03.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770656183; a=rsa-sha256;
+	bh=mqkPopx7IoJHttMZDCRP0i9Pq0O5PXSnIsqQO5MIY9Y=;
+	b=yVGzAuM0TtwJ9PWXZazqMS9oLzohDBkXCBBHHihsJr/tV11NXzJDH+TGGTO2iMFmZOCYMb
+	FBfBnt5zl+b5FMDVRdjrzKrLD1xQ4bJ2ccCaP2F3M3jQiNccdfGdEvasY4Dx7O48glWjhg
+	sEC+flBWNeyk5hxftYlCHZBZGjbkGhg=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770656911; a=rsa-sha256;
 	cv=pass;
-	b=qdW5lppZG15goJjN4saC2YRss3ELmRbg81orI/0OuaCvGFGgn/Wqz7VKxkIXJdvLwBCP4B
-	YQpH1a1TSmPy0EnYggpgGhu22x9pLMmNYumBINQZdssLzcQTqw2o2pRCdKGJX4tQXFIap3
-	yvwdmNc2R4Sl0d1+8o7Ewn89P/6lD2g=
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-501488a12cbso56341811cf.3
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 08:56:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770656182; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AyConJOV1iZIb5E5zwngl9EjDDmlmZClTmxpjqoLvccgSSKJvwlyjYeD42e4mvozf7
-         xnxOwDF+nhalcckcDiMSN1UFSotpm5PbrtHL5ngj/ZoN4H7Xk7QekQ/ggowKn38IODBU
-         FS2g2OpgfWsd7nDEJ8lC5MaEur5q12CwaNeMaEVhwdESoEndMtROMNS4nA/2FdPgY3ue
-         jWs8jfYecLI/VVmZau/1kfwx8gvFwErSXYUCiS0xnrGtNMbIB3QvtZh6J2MKZWvCQ5e5
-         2O+BRl81aDuuGrUBMaGTjaQpOfLLXAoqLMw9KGrA5AG5dJIihkNi9ZLyp1E45Lmo0xO+
-         rVUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
-        fh=1kosLxhiddin7y8t87Z4Z7zwNzypi/NUwLVMMEDm+bc=;
-        b=gTO+4jw22UKV+86P3UoUeEj95URRgU8eHZ/0UqTYxIdrhdKmQT9qMUEgCdwBTnlMQE
-         drxqcbncR8c+MpGdpFPfGPxH6sIPU2N+ymGWgBJG1xHSdwlCu3pN898iN6Hi7k7zV3qO
-         0MYctWwLNilGhfSY/bb7HH1v70c0fw9ZkQV1Y/+NeE9KjHgmq7ABR6DAsbIidJYshec7
-         TJs7nllLoWsIPWKxgwqQI/fIspEUjqaL2O1tfpb7mu/lSWbhXgqIx/U6Wtu5M6TWy31T
-         s6edEmUzmJbUT6KDVW7JmmBvMGXkMpw3zKbIvnYUlmVz+yGS4JHyKc9YqwFSa1lW8LHC
-         5GVQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	b=oJjq8GMI0liH6oxYqc5rrgig5JNsHwxAVo0Y5uzZ+mCTktZYqZbB/wRQHb//9roA1Fl+ir
+	MvewjoUZpwOcA3ESi5x+JHW0OW1NSpCznCdmfJtC/skwlXTDu0FiSS9uI5/NBPumgEgdA4
+	rIVL6552QYKMnnGrkd+ILywoys1XO4s=
+ARC-Authentication-Results: i=2;
+	imf29.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=JbZENy86;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=bbuwze5t;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf29.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619EClXK2021401;
+	Mon, 9 Feb 2026 17:08:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=mqkPopx7IoJHttMZDC
+	RP0i9Pq0O5PXSnIsqQO5MIY9Y=; b=JbZENy86Zhr5TtNz1GC/6vZoBr7+9lbd3L
+	F0wAYHRrHsXPPXrJbT2UOx5Aabf86KlbjX8h9d3e7+jzsfwPaxRkYOt1VjywdLDf
+	Z6UrO7LS0Q6ydWz70AqfyCuBnwIIs2y8OwhHnS2nztuGHtqwU9NaZ7wfZFomQ5L5
+	9Rl7dm6X8rGBareQukey4qdR6gbZcHcsX5CsKz2Yb//fsNOKZsc9q2cwzsoeRYdk
+	yYtNb7j3K6XpcTWyF/IEgtW3gituLu7IWOyp01JTMue1NJr3ZP6LonjqRhzRxmpm
+	ueBFOXG0Vb5PGcqkIalvTRiBJKAK6Rgq20fJ7Co6ZAmiQIpgwnAg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c5xfp2bf0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 09 Feb 2026 17:08:22 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 619FuMim005044;
+	Mon, 9 Feb 2026 17:08:21 GMT
+Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010042.outbound.protection.outlook.com [52.101.56.42])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c7jnq2sm4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 09 Feb 2026 17:08:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tzfy/Zp9XUfLZW6RUyRFxDsKa1leaovBSFpJc0nOmvIKlFApJHRwGoqTJfamZfdlI0LtO3DFo+X0/pZB7TIeyyOGHLowS0Sv3kHpy53dywfSNAKBaIKFItY5YEEHYNlFwGbnF1ypQ8mIlCSRQyDLL2gajvgRfAqtzaXzEMeDswNrOGXFJ1zfQKBLfLQHJUZzaqzHRg4BRZtbEVpahhE4nLY8Zk3BX/dVA/Kkoz3BpsNC+jn09sr5/1zS2kXk17xavb2yT7Z5Lhqj9Es+/qcR++FrjzLHwoD/zSQBEjJWptZ6mkvb27Gd1L5A+ZlvQOw9b2bhpuEaXFuRl7Mb4qdTqQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mqkPopx7IoJHttMZDCRP0i9Pq0O5PXSnIsqQO5MIY9Y=;
+ b=TaC2tvNSwSum/rOLXGFBQbk/1voG6vvJbKXE8RFPCwiR5JkLvvadIRGEfSQqyEXIZ4wYpKhQKQfB0qfUksd1isutvbANLS5wOwU+Vb7ruim9fZpCLHG926VfzML1OZoE+443qq9BSCaHI8d4ov4PRVI0YrN9Uy9VCBnd4qUL+HwWWgdttK7SfGfHRl18lsddNMRFepJc4FBrpePq1Wjqk/0BsZv0IC2TvjJ8FM9OY9dEBB+0RnMswQ6k7U1ZQpUZ1E8tB/UxtULx6/Jgnr5uoxrWoVWVzo5cJI6sv/7pN3u2na/6Sh5MUxKp/mEgqIPP6pkmhAnbQoGCAAmIXUAqoA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770656182; x=1771260982; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
-        b=MNoZAGsKmvYECll8RLLY5/dDXj/aGjZU7mIzOKZfptbp3ZeuANNW1j4E340eQtbALM
-         sNA1cBCuFqwcOXLnPZ7lid0V7RhFu3oNUUvdm/JkozLSgqqNJy94QUelZFA/XaBW1p7J
-         tF7YUqEjHa9xwt4E9L97gasy1iuByOLT6MEVBifpj4zU6T0OmH5nu0vGJutHEnn9cRyD
-         LLfgdcZlpZXGXzjbZagEVc0p8lcfO2VAMBgaJF8v+7Hv19jSfc7DFyhyvqntUuXSpeMG
-         mqCXwf2+WYliObi1Ur8gqwDVMycLuIgi5UEUgrohChQZrkjWxllDix73mm1z1gXVhNV6
-         jwPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770656182; x=1771260982;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
-        b=ectYthl7DG9H3I0GEuo48OeoZMW/ygHPLPtQ2BWmt8+lF4I1HJoA+HeUT8fV7FBZMN
-         EuLCOqRPT4D3Gz2sPnJ3/jLrDYnCCert6Xr1ExZI+i0lf5rUdNFAljEUSpQWYy6/kSKi
-         o4ixCEUfvxHCAZVOjvO4IZfF7A7O3JYTAsPBxvIQHedag16lrDIgVhO72SumcjrTgosJ
-         FHEjfcRztlYW90R712cYjOR9w15uWjHngsY2neztB5wk12sZUmkPIIZFqE7sr/x+Cz3+
-         IdbcRFFQBbYDTWBN5LCWv25ZVAT/v59JUvxZzCSix0NNyJk8EeWdkXeONgTTInHsjVxp
-         h0lA==
-X-Forwarded-Encrypted: i=1; AJvYcCUo0NJiF0D1H/hjU/WYmIuxvChbu19vmj476j/W2EjVNexKgdZ8wo1hFrU3dWgWf/Ai5aypyquh4w==@kvack.org
-X-Gm-Message-State: AOJu0Yyg7oi6sg+ZEf3VNQ+fiG75jWxdz8xbypI2xYriQq1vSq8MpvAv
-	VdYQwNotUbXYCOTt+JgWVZAxtPWSbmj3QvIBw924kkR2wUwCceHsS8P4amHiREenor18qf6o6h+
-	vdA4/nsRhOOZ8Nd89cBhHeAH9Ho4OTQw=
-X-Gm-Gg: AZuq6aLJPIkGDdxGUspdGW4AEKyKR8Vhz7vs02tFDtKm0IHsATKJOQ7FhX+NLSGwMZF
-	mYa7WKkweHZ+7HoZzz/0Fy6zv5WY58IpJe80BE5R4pMKIzS69jb0bW8zN49B+rY3c7qHi54UXG5
-	5mSB0YlhL/AL7fOev4ySx0RY34Ne+J6GKhHmyNXLtHEXY1HjiWRi7rRTUXgr7RHojvGgZfP+dPZ
-	e4PUOvpw22GYYuu8gnehBHV0XlVtrVGSvtpOdaP1x5pANNcOabAvB4ktMpkipujXUh34l4aSBxg
-	7Ho2
-X-Received: by 2002:a05:622a:24f:b0:501:453e:bb34 with SMTP id
- d75a77b69052e-50639995bf6mr139450531cf.63.1770656182247; Mon, 09 Feb 2026
- 08:56:22 -0800 (PST)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mqkPopx7IoJHttMZDCRP0i9Pq0O5PXSnIsqQO5MIY9Y=;
+ b=bbuwze5tygDr2tBEsGAsd8DxlWVZ5HoeiKxo+uTpt4c2CPjfcTieYcvifMK3a5APFUn8K6rJOgk/RpLd0zqwi0ALmhsNOlwtzBNRSuF/cFFC81iJK4lvDO9JUk2Hb+qURW/+62GvIW/AuJPgCY+7J5hskIlXCukgYBUAl7AitF0=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CH0PR10MB5145.namprd10.prod.outlook.com (2603:10b6:610:db::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.16; Mon, 9 Feb
+ 2026 17:08:16 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::f3ea:674e:7f2e:b711%4]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
+ 17:08:16 +0000
+Date: Mon, 9 Feb 2026 17:08:16 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, riel@surriel.com,
+        Liam.Howlett@oracle.com, vbabka@suse.cz, harry.yoo@oracle.com,
+        jannh@google.com, gavinguo@igalia.com, baolin.wang@linux.alibaba.com,
+        ziy@nvidia.com, linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
+        stable@vger.kernel.org
+Subject: Re: [Patch v3] mm/huge_memory: fix early failure try_to_migrate()
+ when split huge pmd for shared thp
+Message-ID: <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
+References: <20260205033113.30724-1-richard.weiyang@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260205033113.30724-1-richard.weiyang@gmail.com>
+X-ClientProxiedBy: LO4P265CA0280.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:37a::17) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
 MIME-Version: 1.0
-References: <6989f0f2.a00a0220.34fa92.0047.GAE@google.com>
-In-Reply-To: <6989f0f2.a00a0220.34fa92.0047.GAE@google.com>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Mon, 9 Feb 2026 08:56:11 -0800
-X-Gm-Features: AZwV_Qh99pe2lEvylN_7wH92Hz38dScLErHXd7OQR-VvW36k9zihYCjtVb-hPDQ
-Message-ID: <CAJnrk1bfZH=rJm3_7=0_JHN810akMTJsYkDsVs_fd1CSjjm3QQ@mail.gmail.com>
-Subject: Re: [syzbot] [fs?] [mm?] possible deadlock in writeout_period
-To: syzbot <syzbot+d38b792a5cbd941006fc@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	syzkaller-bugs@googlegroups.com, willy@infradead.org, Jan Kara <jack@suse.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CH0PR10MB5145:EE_
+X-MS-Office365-Filtering-Correlation-Id: 19960e88-2ff4-4b53-7a8f-08de67fdd0c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?MgAdqZhAuFQU0vk99Vs/Hj1NX3TAiljvjSs9dTj83FvOfoeZHEAnjusPHesx?=
+ =?us-ascii?Q?JFUXqqiZEZ98Mc/rvfXI9UFv4A+VEMZ8Kr6zgZFVgD+rtqtBer6AhjF1g3gS?=
+ =?us-ascii?Q?zQdkS/aXpYY4o5MI0ot58J+/OYkNFhipjjNhyBNuHqKPNmkBrTKYiF7GDlLX?=
+ =?us-ascii?Q?gAWn6snNZiGpmyyxpaNuHwc4Gu0CQLHN9bUh5AKYsT8442XaBDLuYLAiOZFs?=
+ =?us-ascii?Q?I6CtOHzhHrh8m9XOf98TR1mrIKIxW9TAsWKMNZArV+GtVm0Jv+EeEd471I0t?=
+ =?us-ascii?Q?Tc8p+vWDdUjvS43z2bqHuTn+Njecd9+KnMqt+dqLey7BIP3D3sAbMa6SLxrP?=
+ =?us-ascii?Q?Uce7da417Fxw7hpsUxM6xTu6XUdj2oGcfIjJiTDd9VlhTqZbCMSiekeV9Liv?=
+ =?us-ascii?Q?7BspcmYp+RE2rMiQ6UdP1TMstKvWCLHURuJfbxWcIzM78R4pYCeFkrjhX23N?=
+ =?us-ascii?Q?xB1R6PK1XlT5xmwHPVOhY6a6nhHHFNkday3viPrDPPSkyWYnZimLA5A9ZgpG?=
+ =?us-ascii?Q?VT4A9OLeP0xlLFzfyDi/FSr4G+UlntSMLvhwonhZg43sxac5/jt97Aj1avsI?=
+ =?us-ascii?Q?Nn7ANmNWKHTpPzR+y1QTm+UKwvbUvcm7JHo9noeikpKkR1BtR2p3dpvgITI0?=
+ =?us-ascii?Q?Kw/cRGuy47BX24ZAPs2xEgaByXeXpNXcWOLMRm3csBOBL049l/9vz9xu0OPO?=
+ =?us-ascii?Q?I74Sntun3Os4H3pDHcPfKouJ2SWcmp3kHPFxxWUQxjQyaw3zADgwzsN8+Wfa?=
+ =?us-ascii?Q?ijbBkxk8u8PxRiYEuYgDWRdDdkWhhrEuUooD7CdQmvPtUde8qvghD8+FAQnt?=
+ =?us-ascii?Q?HhxWYVVQJYVCso20DKNk8TXK6EF8hBPWcuVa2LHK1o2QDr7Itc0s8ejLM2xV?=
+ =?us-ascii?Q?dT2VZY/UwEbmJw40WqKmu5mFAO7N4RofW1grII4FeZ8BlEuHtke9fNyh0+Vb?=
+ =?us-ascii?Q?0zN2ObZCdHCsl/gkOYF4ceDY+/XP9y5l3ueGVp6Qeg/fD8roNpHbz6N9jN4D?=
+ =?us-ascii?Q?fUqkOglurNzGpKvmHds0q/m8AGJunSDB5yaG9emc+wCAbYFcYIDxgCBDCw9J?=
+ =?us-ascii?Q?BB6kiDUdDKOKJ9iJA/1WfMP54n0EjiHgsl13HdK9iAP3NUlEBgRr3CpNnsSG?=
+ =?us-ascii?Q?qkhlqPkrtx3222dNwPYAp/GRedwFibT84NPjNVFe+w4xH2Yk09/t4DwiRyJx?=
+ =?us-ascii?Q?Y0w93LCAMlTu/B1sJ5DOdQUmwrp9soZdT/P5+1lESMe310lenwMfFFuf4NP1?=
+ =?us-ascii?Q?lE01e0oisKdvXEsigPb8H32PD+bTccjWJG2RBcSl8pIwKJmJxxp/qZPjGDK0?=
+ =?us-ascii?Q?0s4icfWNFvdtqb7aPHXdAjaWmZDxEYPBmYoXuk2Bz5ZtcgO6+NUCM87QvcL3?=
+ =?us-ascii?Q?o+tkijhn0Rgo5HNwzuSN04dhntNxYam5UljZQaOX7Y4ARHYa2luzBOw7ZWx3?=
+ =?us-ascii?Q?sMn10hxA6YokLv+0+YXPFIyBjibfdIhFB4dbKTA7M6DWtW1+XWtgzqXz/d/8?=
+ =?us-ascii?Q?PmvwzpD30c93jmT29EqoGmVpmem8RPaulNeRVDZ7KIaIIV0Miwzs3SzHDiUf?=
+ =?us-ascii?Q?tJmEtLj04VctcCftEKw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OBNWXkhQPjVnb5DmCK6pzWrxBqPuFk1uDTgtnzVjOhU6b2qLNKXM4f9OBWkm?=
+ =?us-ascii?Q?rgOyZ47gQ72AgoiZStU7b2BbNGGUgZ0nn3cDsQobPtCvOOkzGDA3tlUuBi5z?=
+ =?us-ascii?Q?7pp4VvKlG1W3/eMlyi9J91u4D/2WV5FQdz5QTRaC4nPNh06bEJpl7GBP/nF3?=
+ =?us-ascii?Q?vu/yc+CNXj94P190YGdsVdLKT2Me4+QSgJnSATrcJxkB9pSc69cf477pDXMY?=
+ =?us-ascii?Q?gXtgXRY6AWzkWNNImBL6WDQLYNmBHDea0uGYs1CnJ+ZPVJgf8JagYul1HP98?=
+ =?us-ascii?Q?cVC042UTDkSsG0V8nc1EeZnbzcZRBJnOVGsEm1z5sfOjppSEDUbymPP8rhNd?=
+ =?us-ascii?Q?Sp+RkKFYXlYASdgzsZ/TVYuDMkQXwLA1Cb7d5fqkXxTwmP6ZNrUigoFeBWL2?=
+ =?us-ascii?Q?NI9h8riGi6ZwOMf9eukvxZP8a5gSFV4Gqef/4WAcIGjfflqDSAP6AfNIwLXT?=
+ =?us-ascii?Q?ncPmxom+u8QfpsX0yJRjJnzOBD14KmvKONLIyaO5apiJQhlKJfNuXcI92IYc?=
+ =?us-ascii?Q?G0CjYyqWHnRKUz/845DZBVEYYdNG6mCiWWJRliOGPrCCOIO7Cf/T1oYVFQsX?=
+ =?us-ascii?Q?NZ0RSq2OwPeEjIqTeHO/n5+K+LxQUZ5wLvGCOlL351Fna9pfzwlrxCWkcFmK?=
+ =?us-ascii?Q?BDsrNBItKpu4KNQeRvA+1aO2NP3FdBKdsgWfEIsy4SG98w2/YUAA56XOrw5M?=
+ =?us-ascii?Q?2wVyb1XtpYxRYjQ6H90FZvnfPbzfbTdbR5qokCYI2dSfNskg2QofhxEpG2R1?=
+ =?us-ascii?Q?ajOVVe6mTBAxxWsxMv0vph5YiIn+tETLVvXJ5RNSm8LAk6uftbt9bJ5Z/oxf?=
+ =?us-ascii?Q?Mics5CxWV5EmObkcKa+fYxjhz8m3aCuDaSawawalCbKa8qkF8A9xZWUO2kRr?=
+ =?us-ascii?Q?dnP4Rur9WeXH+osqZW8Ber4vxmrv+UqI8CwQM6DZzsZ/LhlY2RIxkA/5fPrw?=
+ =?us-ascii?Q?KzLXens4tU50H6p0wZj2rhBGSW6rUbRQJJ5sqbdJkwTwzRQptZ6YuENngBjY?=
+ =?us-ascii?Q?EJn7gMJV6FKmCq5zHcGlIy4arkC0+PKhmIE8jVOQ/ACrRSj1yHgwAbwZTQ2M?=
+ =?us-ascii?Q?ZKQhN4Z2FeAYy8uQjUa0AT0gRp5bBchU96GbNAJkEkRxXEL8mfKB50wLsMBE?=
+ =?us-ascii?Q?Q/P2st4BeJQzGcOuX2RD9AYjdIWWTFj/QU+xLFaWb7kK3c+BbiRsem4rDc6G?=
+ =?us-ascii?Q?VIRcTwk52NT/V0uZ4lOPF+ogJyFaejvK7uRFLBIq+vXCxU6tYnkJBRuyl6nd?=
+ =?us-ascii?Q?1l32h5nGMwg+OWzv2GbQ9af+Jk0Tr+eemqS0POrqujzqbSsGnCXaJDGuXk28?=
+ =?us-ascii?Q?KHai7RvKrLpjLWEeErBHeH1ezAtHrZIkPI9HcvbIMLrjmMah6Ma6zb7rZN1B?=
+ =?us-ascii?Q?uDgs1leQtPtGUeBmhDg3GgdRzbk79Jkf09xW+OSZ6M9aVOAzkVxSuMg0L92N?=
+ =?us-ascii?Q?P1PrCj4fxwqJiiu/dNacXiHUY9EcKL4Y1r18StZkblRixnl7NjMZlkfqkHyV?=
+ =?us-ascii?Q?mUL9sAV/1gaOQKTsKp/xhMvp56L1+w6pieDaakGIc576QwGUaj7ih199t66H?=
+ =?us-ascii?Q?QvFUcChqAWkemzA63lOrztytNvQ46uiQ+6u/+3dMuVcDzOJAb0p6hYA5kzuJ?=
+ =?us-ascii?Q?+zXsNjkuxxJv+kVmH8tgpqSF6NZpZUAXKayOMcuvFjGF2CZTZ9CGJHgLXGZh?=
+ =?us-ascii?Q?ExbiqqQLvLpzy4qtkGLuAIoPpDv1f67NZ/3D59EItkl/F4F+2JgaZ0VvABl+?=
+ =?us-ascii?Q?mCFNZqRvpQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	+B2/bm3pJ81Kx/pEmG2ujtHiMjLHymkEc4OHYfHJN6ZmEYZrnygimHP8v/l4eS2h/lNrJ67YRXZ90PYyCTyKg9JqAxPbdoOQnbuxOgEBQnUEgZ2N2Th1Qtf5OLnNI7h7VRGyg79ZfrV9IRn9Sj9yxLWxnRvQhTQc+BH6hT6tj+3cXm+grWxF2zP2noPYO4+bBmcnCHmVoBMcns5JVTriA7unayY5OqkptSUGQm0y4Htlxy6sgFlbd+PZB0cwUj38gaqz6iWIyJ5xkSsns5CnIA1oySI5cRNvI4LiBi9GPhT61oKa1uQvNoNwaq7wZjAVIs7rPFaq1AVJX8Yn+8X7/ZQl6xQSUqd6necmexBCXvRGVXwunYC3+IztM4BclY5aEIrjU+U8rjWfj96Unm0RvmN4Uzg7YZYYTiDtLVDg7FGZFtoQNiTlmuinaBK2ZzdEX1sLrGKICFGeiGiVZSJdxj1HyE5MCxuTpyTVDOYZw347NVeSV7DO9SHiy9SeH2KPbEQiEnJymDtXhSAohmwHTbmkuK1EErgDmPK5yG54h8ViKHPxWrFJnkPtKEKxitfyb4lG3QDNVZf1jHvpf8/qwY8jSOIyYZfFDJIjt7817yk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19960e88-2ff4-4b53-7a8f-08de67fdd0c6
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 17:08:16.2413
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6ec1OTv4NyFZDSP/fileTlGDqC2plGdW15KHqLMmjtpPHFrT2R7+FNkHXGA9srlcMtybK1mgkMxSdr6Jc3emLQtA15Qgyw/FS6pWqpJHe3w=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB5145
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-09_01,2026-02-09_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999 adultscore=0
+ spamscore=0 bulkscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2602090144
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE0NCBTYWx0ZWRfX2umUnN3pM9Y7
+ P9J5a1tIj2WqugQ+aWJcgbJ5fQdDK+qaFHdx5hqNCBSySfg5yla+WlVyNNdE1VrEFi//Na+5/Q0
+ HlojhyOc9KtqEMoKc65ScWQLMqK99NVbovcUO8Gr9xBqdKxOF82nVEfndKL6J6gBjaxOsMOHbvG
+ 44Hw15JlWgnkkv2gwCEs/htEXL5XP5fZZ00YPSiwiuMBCS2XzDtw9klfBAv8cWXSxjORtKJ8nuI
+ WqIbGFWYu1nHX7CFMInKjtxouEhpn8KSOcF2mA8VoAEJSiv6oDIky8X8peHmdccSziAP8Atwktl
+ j5zdXzcADeA+Dhs/bPUnQ2TujeEIEfrK37fgf6Ev5BTS05OsAHBtfrGGIcZ3DtVXQEF8yd89k75
+ n266Zu0EZJszT4NbYX/hEYvrmDyLIuRk0nnx3M6N8FRrPr1q2DUbQ8Z4wJGQYIsl86p568mu6ge
+ dKjuV+64Y8J3VZXIZ8Q==
+X-Proofpoint-GUID: _t9z159ebwK6wdtFLaXR2Yvg_-oGQqB3
+X-Authority-Analysis: v=2.4 cv=V8xwEOni c=1 sm=1 tr=0 ts=698a1486 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=pGLkceISAAAA:8
+ a=SRrdq9N9AAAA:8 a=Ikd4Dj_1AAAA:8 a=V2sgnzSHAAAA:8 a=VwQbUJbxAAAA:8
+ a=DS5PB2M2N5xGk5OapvcA:9 a=CjuIK1q_8ugA:10 a=Z31ocT7rh6aUJxSkT1EX:22
+X-Proofpoint-ORIG-GUID: _t9z159ebwK6wdtFLaXR2Yvg_-oGQqB3
+X-Rspamd-Queue-Id: 93A7C12000B
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6A2302000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 9wojkhehdyfgo5cpuau7qcuj46gzaiz7
-X-HE-Tag: 1770656183-955861
-X-HE-Meta: U2FsdGVkX1+jjQvfvgnOGXyLLEFgDKEKgNeOY/q9vKMH8ibmJfbPSTb9mqMYHLGXV6oo4hhYK0a73uXP70feQJ2sbUstUvHk1BRuHQha7bF09tDYU39O/fcDsztImcFt3uoxOniSH9qPToSv9rluV1xT5YxI3q19xf6QX7Zw0pyi9PTYdil6XyHg46XaDe7u3fbF2ON6yB8OAKB1nqWd5TxNHoSJhFazp6vPLyz/ATf7NeSc7CL/8Cvr9JnqzkcDp4SwphN6ILn0krRXSFz0XuPsfU7R/XWY5ejXRjFN6Gl9eYbhHBfv8v28ukAUwpv9rxzzpASkNLyX/0QVYsk+EhcNImT93MFGa8IpsYrce29eiujM1nhxv2ayYBtHoTb0d7k8TncKilC6hes6fRcAN1IKhzGXgLTwqI0jX5X+AcjhnW0yN74Wzw1+Df3B6oWAXW11R3ocVU9TGnN18GNUbPdvoESMmcApralVKtkcej5yT4qosJL10nAxyWX4qnA/ImNTr2/FHzxg1+4ie0t9uvLwzVdSQu/uTIvcZJRHtQMiosmV9Ms4XeTEu8W6+PNluWD/ko2X5T1ZWosj2qH7LoocO+ztVdQON4uPpSLsq/sckzoEK7NCMaAe4ppuUR7fGLvOfhS4vGedQjj5YlU4wte4/wjqNA2EEmU0/MOp4VyMsS0VT4agi/zdRDt8hxoxaS/DhFl1LCrcBTgixxkxHDvm1AkCU1uiOih1ARv14spLbdX4dOP1kFA90BaQEKl4EJqUBf8AS+PNZWTOouFwJEDMQW6lLypHyXMR4NsLJAkXKp9LQuEYrz3ToZP1EN6HiXHEIzaL0NZ+YetqFJ3AO3g2Uk26cAA2sTOEHJy+9JsgnfWB3xSt16SurHguVqfPAtRL2c48EfpQhnDSDQ0/KcnlBHVQ566PCXPj2obZ7QFjvv94IvBgJNSk/LSe3+0zXYm1bxdDUNBeAwfnU9x
- 9Ec/OZ8T
- m9baIZpv1co0BvKRtUb3CaxqXSoqkkHTC0erCeernEmYir/ccPjfpLHMZMoqLv9D58dNayiCLZBXjw24YHtKty7366/4La2Ps775xk1akNsmcHKig8sVdIivbYnjCleEO3skWqhQtZeyorAkfG+/iLZlUYHie+XkU0nWjbBcJAIxCrDi46gFszEBvttMWkC5Ffww0/37kOz54owQFUGhv6ZWMaGZ0SJtczJAGCFT79LnBwV3Ujx9zOy2ivdLEmyT615HpRAyAnb9pPRuAQhiwGdzq3TS0k+FN39S9gflmROyMiVV9R9ZZECr2c4Ob/kAaVOmQmSFL1DQ77Q7clyMK4+XMkeD5igAjSIpPCUa/6+pF07yZkGsD0kfKNSgTmk2RqPPJnYkBuLvX4zCxwo2oUjHPgHJBQrYP6aH0ZbyGgAQ4YVzwsZQ7LxsSMxPRJ5vf+KEceKM2DJXIgj7l9vswFZ/tEVSms/8aNqan8q4mcBit97hw2WVVr5P5x/vzMrGmiHZCin8ASjEFsYExF8r9peWHKGjHtJC7UAa2zrbc70I/S3z1JJgL0IN12YLlTcdQhhD73UQLjMxqs+ubJQPRM9j6TGmF+ExlYcVTmrJGVOqAui1wXXKyG12/OsKaXEnWOoG9MB/Egi8DZcBAH6q21kjklR75v4GPtE0LYgUq6ByUPoKqHGOFPzD7j8cdFdRhATpUdBVQEYWin7YSHxPCDTzhI1ZYszvmIrTrIwBTsSbr57evCCaTRy/AtLhPwiAuZAWJdJHRvgUMJKp6Obf9KjpPqM0/XhGRL3+TR9QqMFcVRw4vkA0uN+QmzJ2dY8U6Rv2zW6CoNki63Jx1CZLGiv4WRRinSHmRHnTS93W9gDISAQAc/ib18y3d6vzf2Hly+IcMJU/NC0Y8Jdf3ahtl0UHWwgn5o1WbJSWyWX4FmzfKCdF2m2RvqGktaHV8ncZHxlQXbyS6EtMRKaL6hmcyCcptWeMD
- 6iM3i1eF
- 8YiiFNVS3zbeEuoGGpO2vcKK1w3TQhEE6WpnqWXmZ2506mld2+NHG6CjlyGHbz+QVmDJqOZ6G7Us1d+97hJj8CCGuQYCksUtfApfHluefwV6o5R7V7LnjXSFPG3wbX1M+tH1J0xIgSPt+WVhnDn/bUlj2kHsJwWNpyyq+u2ssjOhF3pJfMCwyThKx+KSw0QVKUJjnsbe7axYgVqByp83/0MKXdpXv3D5Aamusm1hp6xmlEjAiun/L7ihdAjlXq15JKB6vjAK9Hk=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: q78jkjfo5t9dtbex88end16g8woud48m
+X-HE-Tag: 1770656911-657369
+X-HE-Meta: U2FsdGVkX1/DhWr0BzR7laiTIglYNRgGlt61pdJPAbgPveohy2oi5aC3WNsg+BCCF33zfsRLRTULVR7VCTTQ1UB5FRIqdAAbNiBsIUEj1PQdIhm2Ak0wF8YNcNh/FScx2ss6YrfBY45l8YEdEuEbmZEvcf6J/JIGuTqyaotwlqlDhXpvGsdEyrO47p3kai6Nq+L71haMnvdIEF9V+zur7WJeQPzqaln7toN61ABxMH5Q5bc4P3zy7Dd6L/O7fSLkq8cf0+TQarfKmkPghixWPZiu4/2MVhCHNjEaC1Ba4o7tw/YQYhMtcf77PuxcMty47KeT8nZq1PJ7ldUjJMA85qAowE5YJW+m3KSV3+o8gwPM16E/xoeW2PmwTlD5K69TSixXdbUSJAewDQdg0BKiJnlRHfV/M8YwBbXIY3x3JlDtax1RzSxKSobIpa7a7+GGD4YuljtrMdUr2rCy+/2nJfgMDixKKTUJKBZC/CaFD3uhu5EnBkZpAxpqQ+aQ4rWhyT0TmzQqpFJCcW1sUtE4CcQNH0sQPgYb5GKYUxaNHMFnA32Fvm12IQTxeE5GtF9rEQButFsyh62EZ0E4O2NG76BZ3KFTZY1gCj3byqkmd6xX4hwvFv24cO72w9WqDEA4y6pNPX1K0Uc3rJOnm5g1lsOk5ONx4t5MUtpopY2hWQwPzK9l9uHDPUTzMGe/J6gGOvM5fveICcrdHQhJx8ETmD+C0kUUsHUWY6h0ezv8tCWC9mvHjit0lvN4Q1GinHPp41KoZXXYA2S6qH+XiL9x6dPxQsN2SuXCxHJAM2TOQg8G0prfU5s9vqFv0yPFdoFXQEQoQ+cHelSSnw1lH/Sx42kei92SMHDjZAPUhsNGMOklsXQcsTwLJdXffHLLeb97CWhZOoin2r/mbkroPfECSXcoS8N2kU8vlIbbfw7U1ek5hSoVeYmvpBT4l6xj+Z0zH53qqCKlYbACLj5btcy
+ mWTeD22u
+ qXbL/Rhv4ysXdITDwfZhnPVqAT+Uy+S91qbB6/lzlW3sg5x7+Hq4T/ANdIJus3hDjC3D5rrKPGzqwpO/HtIaKMyZ6vvVKH17GdEShm4rLTIdJ2wkOUze8UdV+S5ZSmWuS+pc9pcAwMtdHXZzsp1xTN9bci6fZXqafP+GshGwFtpVQ8H8rgNoTAqCPX9T/x/TwRse7NdCt4Ycc09Wr/6aT7cu8sc10/v6wlNWkIRGVZVJ92kXACZ8wZbsetoj5d/EAzubqMvl1duYrGrhHZ1Rc4a7ABic2o3CMLQapTWjEYj1lOy503h9toDkQuB+XkWSlfpBQJBGKh+W7DBTWniQ7VzY3lzMsBtBmDAN9BzzMreDfLU1Ett97tM92FsX4bv1ZLWXdoQvSs2AzCXiuKb0Ogrvwe6v4s7KHORhuipPsuoX6121lRVRZWmstVReom2s4qLrOKcbMzHDnuKwK8z7E8sq1lJu3R2LZHP9RHSLMNo0aeWZ7KwA24ur5OCPAmzNXRzdPfi1yfhkmQdlNQkxLYkPBr1BoupAwIBuZp+p6N5SbCnuGCJFA1Pi9HSI76WqpwcH1WzipCnRMVE2ftnQwy7CvaxwFGjj1LvuI0zOjd7TEtCJ/DvT+akZQb4Ni+SgmfLR0AY1vMgu8SsfDdBGqmL2vX9R5FLzCSYO4QxWmX1shQ6/ugGLBLN3n30jj4HrXjHLtAtliHISWK7ev+HSdG4XwsLRKml0QIyfR4hcKe+NtTjdX42vWctp2GlzndQicAN2UFWxEkw01f/Ny7cyZ/ku+MZ3OrbtTJ1OhkItAuFL5VEjAmJaDfCLPDlzvtujBQl9HoI5dLP2EOJ9agGeG4vVZvUi3UqcwZ5Do
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,678 +241,171 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 9, 2026 at 6:37=E2=80=AFAM syzbot
-<syzbot+d38b792a5cbd941006fc@syzkaller.appspotmail.com> wrote:
+On Thu, Feb 05, 2026 at 03:31:13AM +0000, Wei Yang wrote:
+> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
+> split_huge_pmd_locked()") return false unconditionally after
+> split_huge_pmd_locked() which may fail early during try_to_migrate() for
+> shared thp. This will lead to unexpected folio split failure.
+
+I think this could be put more clearly. 'When splitting a PMD THP migration
+entry in try_to_migrate_one() in a rmap walk invoked by try_to_migrate() when
+TTU_SPLIT_HUGE_PMD is specified.' or something like that.
+
 >
-> Hello,
+> One way to reproduce:
 >
-> syzbot found the following issue on:
+>     Create an anonymous thp range and fork 512 children, so we have a
+>     thp shared mapped in 513 processes. Then trigger folio split with
+>     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
+>     order 0.
+
+I think you should explain the issue before the repro. This is just confusing
+things. Mention the repro _afterwards_.
+
 >
-> HEAD commit:    59e4d31a0470 Merge branches 'for-next/core' and 'for-next=
-/..
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux=
-.git for-kernelci
-> console output: https://syzkaller.appspot.com/x/log.txt?x=3D14454b2258000=
-0
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D8a8594efdc14f=
-07a
-> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd38b792a5cbd941=
-006fc
-> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b797=
-6-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> userspace arch: arm64
+> Without the above commit, we can successfully split to order 0.
+> With the above commit, the folio is still a large folio.
 >
-> Unfortunately, I don't have any reproducer for this issue yet.
+> The reason is the above commit return false after split pmd
+
+This sentence doesn't really make sense. Returns false where? And under what
+circumstances?
+
+I'm having to look through 60fbb14396d5 to understand this which isn't a good
+sign.
+
+'This patch adjusted try_to_migrate_one() to, when a PMD-mapped THP migration
+entry is found, and TTU_SPLIT_HUGE_PMD is specified (for example, via
+unmap_folio()), exit the walk and return false unconditionally'.
+
+> unconditionally in the first process and break try_to_migrate().
 >
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/746a1d5c4188/dis=
-k-59e4d31a.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/2eefade79f10/vmlinu=
-x-59e4d31a.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/140624ef24ed/I=
-mage-59e4d31a.gz.xz
+> On memory pressure or failure, we would try to reclaim unused memory or
+> limit bad memory after folio split. If failed to split it, we will leave
+
+Limit bad memory? What does that mean? Also should be If '_we_' or '_it_' or
+something like that.
+
+> some more memory unusable than expected.
+
+'We will leave some more memory unusable than expected' is super unclear.
+
+You mean we will fail to migrate THP entries at the PTE level?
+
+Can we say this instead please?
+
 >
-> IMPORTANT: if you fix the issue, please add the following tag to the comm=
-it:
-> Reported-by: syzbot+d38b792a5cbd941006fc@syzkaller.appspotmail.com
+> The tricky thing in above reproduce method is current debugfs interface
+> leverage function split_huge_pages_pid(), which will iterate the whole
+> pmd range and do folio split on each base page address. This means it
+> will try 512 times, and each time split one pmd from pmd mapped to pte
+> mapped thp. If there are less than 512 shared mapped process,
+> the folio is still split successfully at last. But in real world, we
+> usually try it for once.
+
+This whole sentence could be dropped I think I don't think it adds anything.
+
+And you're really confusing the issue by dwelling on this I think.
+
+You need to restart the walk in this case in order for the PTEs to be correctly
+handled right?
+
+Can you explain why we can't just essentially revert 60fbb14396d5? Or at least
+the bit that did this change?
+
+Also is unmap_folio() the only caller with TTU_SPLIT_HUGE_PMD as the comment
+that was deleted by 60fbb14396d5 implied? Or are there others? If it is, please
+mention the commit msg.
+
+
 >
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D
-> WARNING: possible irq lock inversion dependency detected
-> syzkaller #0 Not tainted
-> --------------------------------------------------------
-> syz-executor/6572 just changed the state of lock:
-> ffff800097626150 (&p->sequence){+.-.}-{0:0}, at: writeout_period+0x94/0x1=
-1c mm/page-writeback.c:615
-> but this lock was taken by another, HARDIRQ-safe lock in the past:
->  (&xa->xa_lock#10){-.-.}-{3:3}
+> This patch fixes this by restart page_vma_mapped_walk() after
+> split_huge_pmd_locked(). We cannot simply return "true" to fix the
+> problem, as that would affect another case:
+
+I mean how would it fix the problem to incorrectly have it return true when the
+walk had not in fact completed?
+
+I'm not sure why you're dwelling on this idea in the commit msg?
+
+> split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
+> leave the folio mapped through PTEs; we would return "true" from
+> try_to_migrate_one() in that case as well. While that is mostly
+> harmless, we could end up walking the rmap, wasting some cycles.
+
+I mean I think we can just drop this whole paragraph no?
+
+You might think I'm being picky about the commit msg here, but as is I find it
+pretty much incomprehensible and that's not helpful if we have to go back and
+read this in future.
+
 >
->
-> and interrupts could create inverse lock ordering between them.
->
->
-> other info that might help us debug this:
->  Possible interrupt unsafe locking scenario:
->
->        CPU0                    CPU1
->        ----                    ----
->   lock(&p->sequence);
->                                local_irq_disable();
->                                lock(&xa->xa_lock#10);
->                                lock(&p->sequence);
->   <Interrupt>
->     lock(&xa->xa_lock#10);
->
->  *** DEADLOCK ***
->
-> 1 lock held by syz-executor/6572:
->  #0: ffff800097bd7c40 ((&dom->period_timer)){+.-.}-{0:0}, at: lockdep_cop=
-y_map include/linux/lockdep.h:41 [inline]
->  #0: ffff800097bd7c40 ((&dom->period_timer)){+.-.}-{0:0}, at: call_timer_=
-fn+0xd4/0x814 kernel/time/timer.c:1738
->
-> the shortest dependencies between 2nd lock and 1st lock:
->  -> (&xa->xa_lock#10){-.-.}-{3:3} {
->     IN-HARDIRQ-W at:
->                       lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5=
-868
->                       __raw_spin_lock_irqsave include/linux/spinlock_api_=
-smp.h:110 [inline]
->                       _raw_spin_lock_irqsave+0x5c/0x7c kernel/locking/spi=
-nlock.c:162
->                       __folio_end_writeback+0x10c/0x6f8 mm/page-writeback=
-.c:2990
->                       folio_end_writeback_no_dropbehind+0xd0/0x204 mm/fil=
-emap.c:1661
->                       folio_end_writeback+0xd8/0x248 mm/filemap.c:1687
->                       end_buffer_async_write+0x20c/0x350 fs/buffer.c:419
->                       end_bio_bh_io_sync+0xb0/0x184 fs/buffer.c:2776
->                       bio_endio+0x8d4/0x910 block/bio.c:1675
->                       blk_complete_request block/blk-mq.c:908 [inline]
->                       blk_mq_end_request_batch+0x49c/0x105c block/blk-mq.=
-c:1202
->                       nvme_complete_batch drivers/nvme/host/nvme.h:802 [i=
-nline]
->                       nvme_pci_complete_batch drivers/nvme/host/pci.c:134=
-8 [inline]
->                       nvme_irq+0x1ec/0x240 drivers/nvme/host/pci.c:1450
->                       __handle_irq_event_percpu+0x20c/0x8e4 kernel/irq/ha=
-ndle.c:211
->                       handle_irq_event_percpu kernel/irq/handle.c:248 [in=
-line]
->                       handle_irq_event+0x9c/0x1d0 kernel/irq/handle.c:265
->                       handle_fasteoi_irq+0x328/0x8d8 kernel/irq/chip.c:76=
-4
->                       generic_handle_irq_desc include/linux/irqdesc.h:172=
- [inline]
->                       handle_irq_desc kernel/irq/irqdesc.c:669 [inline]
->                       generic_handle_domain_irq+0xe0/0x140 kernel/irq/irq=
-desc.c:725
->                       __gic_handle_irq drivers/irqchip/irq-gic-v3.c:825 [=
-inline]
->                       __gic_handle_irq_from_irqson drivers/irqchip/irq-gi=
-c-v3.c:876 [inline]
->                       gic_handle_irq+0x6c/0x18c drivers/irqchip/irq-gic-v=
-3.c:920
->                       call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry=
-.S:891
->                       do_interrupt_handler+0xd4/0x138 arch/arm64/kernel/e=
-ntry-common.c:135
->                       __el1_irq arch/arm64/kernel/entry-common.c:497 [inl=
-ine]
->                       el1_interrupt+0x3c/0x60 arch/arm64/kernel/entry-com=
-mon.c:510
->                       el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/ent=
-ry-common.c:515
->                       el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->                       __daif_local_irq_restore arch/arm64/include/asm/irq=
-flags.h:175 [inline]
->                       arch_local_irq_restore arch/arm64/include/asm/irqfl=
-ags.h:195 [inline]
->                       kasan_quarantine_put+0xbc/0x1c8 mm/kasan/quarantine=
-.c:234
->                       __kasan_slab_free+0x8c/0xa4 mm/kasan/common.c:295
->                       kasan_slab_free include/linux/kasan.h:235 [inline]
->                       slab_free_hook mm/slub.c:2540 [inline]
->                       slab_free_after_rcu_debug+0x120/0x2f8 mm/slub.c:672=
-9
->                       rcu_do_batch kernel/rcu/tree.c:2605 [inline]
->                       rcu_core+0x848/0x1774 kernel/rcu/tree.c:2857
->                       rcu_core_si+0x10/0x1c kernel/rcu/tree.c:2874
->                       handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
->                       run_ksoftirqd+0x70/0xc0 kernel/softirq.c:1063
->                       smpboot_thread_fn+0x4d8/0x9cc kernel/smpboot.c:160
->                       kthread+0x5fc/0x75c kernel/kthread.c:463
->                       ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:8=
-44
->     IN-SOFTIRQ-W at:
->                       lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5=
-868
->                       __raw_spin_lock_irqsave include/linux/spinlock_api_=
-smp.h:110 [inline]
->                       _raw_spin_lock_irqsave+0x5c/0x7c kernel/locking/spi=
-nlock.c:162
->                       __folio_end_writeback+0x10c/0x6f8 mm/page-writeback=
-.c:2990
->                       folio_end_writeback_no_dropbehind+0xd0/0x204 mm/fil=
-emap.c:1661
->                       folio_end_writeback+0xd8/0x248 mm/filemap.c:1687
->                       end_buffer_async_write+0x20c/0x350 fs/buffer.c:419
->                       end_bio_bh_io_sync+0xb0/0x184 fs/buffer.c:2776
->                       bio_endio+0x8d4/0x910 block/bio.c:1675
->                       blk_complete_request block/blk-mq.c:908 [inline]
->                       blk_mq_end_request_batch+0x49c/0x105c block/blk-mq.=
-c:1202
->                       nvme_complete_batch drivers/nvme/host/nvme.h:802 [i=
-nline]
->                       nvme_pci_complete_batch drivers/nvme/host/pci.c:134=
-8 [inline]
->                       nvme_irq+0x1ec/0x240 drivers/nvme/host/pci.c:1450
->                       __handle_irq_event_percpu+0x20c/0x8e4 kernel/irq/ha=
-ndle.c:211
->                       handle_irq_event_percpu kernel/irq/handle.c:248 [in=
-line]
->                       handle_irq_event+0x9c/0x1d0 kernel/irq/handle.c:265
->                       handle_fasteoi_irq+0x328/0x8d8 kernel/irq/chip.c:76=
-4
->                       generic_handle_irq_desc include/linux/irqdesc.h:172=
- [inline]
->                       handle_irq_desc kernel/irq/irqdesc.c:669 [inline]
->                       generic_handle_domain_irq+0xe0/0x140 kernel/irq/irq=
-desc.c:725
->                       __gic_handle_irq drivers/irqchip/irq-gic-v3.c:825 [=
-inline]
->                       __gic_handle_irq_from_irqson drivers/irqchip/irq-gi=
-c-v3.c:876 [inline]
->                       gic_handle_irq+0x6c/0x18c drivers/irqchip/irq-gic-v=
-3.c:920
->                       call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry=
-.S:891
->                       do_interrupt_handler+0xd4/0x138 arch/arm64/kernel/e=
-ntry-common.c:135
->                       __el1_irq arch/arm64/kernel/entry-common.c:497 [inl=
-ine]
->                       el1_interrupt+0x3c/0x60 arch/arm64/kernel/entry-com=
-mon.c:510
->                       el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/ent=
-ry-common.c:515
->                       el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->                       __daif_local_irq_restore arch/arm64/include/asm/irq=
-flags.h:175 [inline]
->                       arch_local_irq_restore arch/arm64/include/asm/irqfl=
-ags.h:195 [inline]
->                       kasan_quarantine_put+0xbc/0x1c8 mm/kasan/quarantine=
-.c:234
->                       __kasan_slab_free+0x8c/0xa4 mm/kasan/common.c:295
->                       kasan_slab_free include/linux/kasan.h:235 [inline]
->                       slab_free_hook mm/slub.c:2540 [inline]
->                       slab_free_after_rcu_debug+0x120/0x2f8 mm/slub.c:672=
-9
->                       rcu_do_batch kernel/rcu/tree.c:2605 [inline]
->                       rcu_core+0x848/0x1774 kernel/rcu/tree.c:2857
->                       rcu_core_si+0x10/0x1c kernel/rcu/tree.c:2874
->                       handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
->                       run_ksoftirqd+0x70/0xc0 kernel/softirq.c:1063
->                       smpboot_thread_fn+0x4d8/0x9cc kernel/smpboot.c:160
->                       kthread+0x5fc/0x75c kernel/kthread.c:463
->                       ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:8=
-44
->     INITIAL USE at:
->                      lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:58=
-68
->                      __raw_spin_lock_irq include/linux/spinlock_api_smp.h=
-:119 [inline]
->                      _raw_spin_lock_irq+0x58/0x70 kernel/locking/spinlock=
-.c:170
->                      spin_lock_irq include/linux/spinlock.h:376 [inline]
->                      shmem_add_to_page_cache+0x564/0xa24 mm/shmem.c:904
->                      shmem_alloc_and_add_folio+0x758/0x10c4 mm/shmem.c:19=
-58
->                      shmem_get_folio_gfp+0x4d4/0x159c mm/shmem.c:2556
->                      shmem_read_folio_gfp+0x8c/0xf0 mm/shmem.c:5970
->                      drm_gem_get_pages+0x1cc/0x7c0 drivers/gpu/drm/drm_ge=
-m.c:654
->                      drm_gem_shmem_get_pages_locked+0x1d4/0x364 drivers/g=
-pu/drm/drm_gem_shmem_helper.c:240
->                      drm_gem_shmem_pin_locked+0x1f8/0x410 drivers/gpu/drm=
-/drm_gem_shmem_helper.c:301
->                      drm_gem_shmem_vmap_locked+0x3cc/0x658 drivers/gpu/dr=
-m/drm_gem_shmem_helper.c:405
->                      drm_gem_shmem_object_vmap+0x28/0x38 include/drm/drm_=
-gem_shmem_helper.h:245
->                      drm_gem_vmap_locked drivers/gpu/drm/drm_gem.c:1273 [=
-inline]
->                      drm_gem_vmap+0x104/0x1d8 drivers/gpu/drm/drm_gem.c:1=
-315
->                      drm_client_buffer_vmap+0x68/0xb0 drivers/gpu/drm/drm=
-_client.c:355
->                      drm_fbdev_shmem_driver_fbdev_probe+0x1f4/0x700 drive=
-rs/gpu/drm/drm_fbdev_shmem.c:159
->                      drm_fb_helper_single_fb_probe drivers/gpu/drm/drm_fb=
-_helper.c:1562 [inline]
->                      __drm_fb_helper_initial_config_and_unlock+0x108c/0x1=
-728 drivers/gpu/drm/drm_fb_helper.c:1741
->                      drm_fb_helper_initial_config+0x3c/0x58 drivers/gpu/d=
-rm/drm_fb_helper.c:1828
->                      drm_fbdev_client_hotplug+0x154/0x22c drivers/gpu/drm=
-/clients/drm_fbdev_client.c:66
->                      drm_client_register+0x13c/0x1d4 drivers/gpu/drm/drm_=
-client.c:143
->                      drm_fbdev_client_setup+0x194/0x3d0 drivers/gpu/drm/c=
-lients/drm_fbdev_client.c:168
->                      drm_client_setup+0x114/0x228 drivers/gpu/drm/clients=
-/drm_client_setup.c:46
->                      vkms_create+0x370/0x420 drivers/gpu/drm/vkms/vkms_dr=
-v.c:211
->                      vkms_init+0x64/0x9c drivers/gpu/drm/vkms/vkms_drv.c:=
-239
->                      do_one_initcall+0x248/0x9b4 init/main.c:1378
->                      do_initcall_level+0x128/0x1c4 init/main.c:1440
->                      do_initcalls+0x70/0xd0 init/main.c:1456
->                      do_basic_setup+0x78/0x8c init/main.c:1475
->                      kernel_init_freeable+0x268/0x39c init/main.c:1688
->                      kernel_init+0x24/0x1dc init/main.c:1578
->                      ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:84=
-4
->   }
->   ... key      at: [<ffff80009764a620>] xa_init_flags.__key+0x0/0x20
->   ... acquired at:
->    seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
->    fprop_fraction_percpu+0xf0/0x270 lib/flex_proportions.c:155
->    __fprop_add_percpu_max+0x130/0x1f4 lib/flex_proportions.c:186
->    wb_domain_writeout_add mm/page-writeback.c:562 [inline]
->    __wb_writeout_add+0xbc/0x27c mm/page-writeback.c:586
->    __folio_end_writeback+0x380/0x6f8 mm/page-writeback.c:2997
->    folio_end_writeback_no_dropbehind+0xd0/0x204 mm/filemap.c:1661
->    folio_end_writeback+0xd8/0x248 mm/filemap.c:1687
->    iomap_finish_folio_write+0x1c0/0x2a4 fs/iomap/buffered-io.c:1713
->    fuse_writepage_finish fs/fuse/file.c:1903 [inline]
->    fuse_writepage_end+0x238/0x454 fs/fuse/file.c:2003
->    fuse_request_end+0x898/0xc10 fs/fuse/dev.c:507
->    fuse_dev_end_requests fs/fuse/dev.c:2415 [inline]
->    fuse_abort_conn+0xe88/0x10a0 fs/fuse/dev.c:2513
->    fuse_dev_release+0x430/0x4c8 fs/fuse/dev.c:2556
->    __fput+0x340/0x75c fs/file_table.c:468
->    fput_close_sync+0x100/0x264 fs/file_table.c:573
->    __do_sys_close fs/open.c:1573 [inline]
->    __se_sys_close fs/open.c:1558 [inline]
->    __arm64_sys_close+0x7c/0x118 fs/open.c:1558
->    __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->    invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
->    el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c:132
->    do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
->    el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:724
->    el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:743
->    el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
->
-> -> (&p->sequence){+.-.}-{0:0} {
->    HARDIRQ-ON-W at:
->                     lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:586=
-8
->                     do_write_seqcount_begin_nested include/linux/seqlock.=
-h:477 [inline]
->                     do_write_seqcount_begin include/linux/seqlock.h:503 [=
-inline]
->                     fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:7=
-4
->                     writeout_period+0x94/0x11c mm/page-writeback.c:615
->                     call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
->                     expire_timers kernel/time/timer.c:1799 [inline]
->                     __run_timers kernel/time/timer.c:2373 [inline]
->                     __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
->                     run_timer_base kernel/time/timer.c:2394 [inline]
->                     run_timer_softirq+0x11c/0x194 kernel/time/timer.c:240=
-5
->                     handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
->                     __do_softirq+0x14/0x20 kernel/softirq.c:656
->                     ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
->                     call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S=
-:891
->                     do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.=
-c:73
->                     invoke_softirq kernel/softirq.c:503 [inline]
->                     __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
->                     irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
->                     __el1_irq arch/arm64/kernel/entry-common.c:498 [inlin=
-e]
->                     el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-commo=
-n.c:510
->                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
--common.c:515
->                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->                     __daif_local_irq_enable arch/arm64/include/asm/irqfla=
-gs.h:26 [inline]
->                     arch_local_irq_enable arch/arm64/include/asm/irqflags=
-.h:48 [inline]
->                     preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7=
-189
->                     raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry=
-/common.c:173
->                     irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
->                     exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry=
--common.c:58
->                     __el1_irq arch/arm64/kernel/entry-common.c:500 [inlin=
-e]
->                     el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-commo=
-n.c:510
->                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
--common.c:515
->                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->                     __daif_local_irq_restore arch/arm64/include/asm/irqfl=
-ags.h:175 [inline]
->                     arch_local_irq_restore arch/arm64/include/asm/irqflag=
-s.h:195 [inline]
->                     class_irqsave_destructor include/linux/irqflags.h:266=
- [inline]
->                     __free_object+0x514/0x720 lib/debugobjects.c:524
->                     free_object lib/debugobjects.c:532 [inline]
->                     debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
->                     destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [i=
-nline]
->                     hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2=
-178
->                     common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:13=
-52
->                     __do_sys_clock_nanosleep kernel/time/posix-timers.c:1=
-398 [inline]
->                     __se_sys_clock_nanosleep kernel/time/posix-timers.c:1=
-375 [inline]
->                     __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/p=
-osix-timers.c:1375
->                     __invoke_syscall arch/arm64/kernel/syscall.c:35 [inli=
-ne]
->                     invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c=
-:49
->                     el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c=
-:132
->                     do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
->                     el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:7=
-24
->                     el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/ent=
-ry-common.c:743
->                     el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:59=
-6
->    IN-SOFTIRQ-W at:
->                     lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:586=
-8
->                     do_write_seqcount_begin_nested include/linux/seqlock.=
-h:477 [inline]
->                     do_write_seqcount_begin include/linux/seqlock.h:503 [=
-inline]
->                     fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:7=
-4
->                     writeout_period+0x94/0x11c mm/page-writeback.c:615
->                     call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
->                     expire_timers kernel/time/timer.c:1799 [inline]
->                     __run_timers kernel/time/timer.c:2373 [inline]
->                     __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
->                     run_timer_base kernel/time/timer.c:2394 [inline]
->                     run_timer_softirq+0x11c/0x194 kernel/time/timer.c:240=
-5
->                     handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
->                     __do_softirq+0x14/0x20 kernel/softirq.c:656
->                     ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
->                     call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S=
-:891
->                     do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.=
-c:73
->                     invoke_softirq kernel/softirq.c:503 [inline]
->                     __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
->                     irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
->                     __el1_irq arch/arm64/kernel/entry-common.c:498 [inlin=
-e]
->                     el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-commo=
-n.c:510
->                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
--common.c:515
->                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->                     __daif_local_irq_enable arch/arm64/include/asm/irqfla=
-gs.h:26 [inline]
->                     arch_local_irq_enable arch/arm64/include/asm/irqflags=
-.h:48 [inline]
->                     preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7=
-189
->                     raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry=
-/common.c:173
->                     irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
->                     exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry=
--common.c:58
->                     __el1_irq arch/arm64/kernel/entry-common.c:500 [inlin=
-e]
->                     el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-commo=
-n.c:510
->                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
--common.c:515
->                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->                     __daif_local_irq_restore arch/arm64/include/asm/irqfl=
-ags.h:175 [inline]
->                     arch_local_irq_restore arch/arm64/include/asm/irqflag=
-s.h:195 [inline]
->                     class_irqsave_destructor include/linux/irqflags.h:266=
- [inline]
->                     __free_object+0x514/0x720 lib/debugobjects.c:524
->                     free_object lib/debugobjects.c:532 [inline]
->                     debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
->                     destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [i=
-nline]
->                     hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2=
-178
->                     common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:13=
-52
->                     __do_sys_clock_nanosleep kernel/time/posix-timers.c:1=
-398 [inline]
->                     __se_sys_clock_nanosleep kernel/time/posix-timers.c:1=
-375 [inline]
->                     __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/p=
-osix-timers.c:1375
->                     __invoke_syscall arch/arm64/kernel/syscall.c:35 [inli=
-ne]
->                     invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c=
-:49
->                     el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c=
-:132
->                     do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
->                     el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:7=
-24
->                     el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/ent=
-ry-common.c:743
->                     el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:59=
-6
->    INITIAL READ USE at:
->                         lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c=
-:5868
->                         seqcount_lockdep_reader_access include/linux/seql=
-ock.h:72 [inline]
->                         fprop_fraction_percpu+0xac/0x270 lib/flex_proport=
-ions.c:155
->                         __wb_calc_thresh+0xfc/0x3b0 mm/page-writeback.c:9=
-13
->                         wb_bg_dirty_limits mm/page-writeback.c:2130 [inli=
-ne]
->                         domain_over_bg_thresh+0xb8/0x1f0 mm/page-writebac=
-k.c:2144
->                         wb_over_bg_thresh+0xf8/0x17c mm/page-writeback.c:=
-2165
->                         wb_check_background_flush fs/fs-writeback.c:2278 =
-[inline]
->                         wb_do_writeback fs/fs-writeback.c:2376 [inline]
->                         wb_workfn+0xa30/0xdc0 fs/fs-writeback.c:2403
->                         process_one_work+0x7c0/0x1558 kernel/workqueue.c:=
-3257
->                         process_scheduled_works kernel/workqueue.c:3340 [=
-inline]
->                         worker_thread+0x958/0xed8 kernel/workqueue.c:3421
->                         kthread+0x5fc/0x75c kernel/kthread.c:463
->                         ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S=
-:844
->  }
->  ... key      at: [<ffff800097b9a340>] fprop_global_init.__key.1+0x0/0x20
->  ... acquired at:
->    mark_lock+0x170/0x1d0 kernel/locking/lockdep.c:4753
->    mark_usage kernel/locking/lockdep.c:4662 [inline]
->    __lock_acquire+0x9a0/0x30a4 kernel/locking/lockdep.c:5191
->    lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5868
->    do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
->    do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
->    fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:74
->    writeout_period+0x94/0x11c mm/page-writeback.c:615
->    call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
->    expire_timers kernel/time/timer.c:1799 [inline]
->    __run_timers kernel/time/timer.c:2373 [inline]
->    __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
->    run_timer_base kernel/time/timer.c:2394 [inline]
->    run_timer_softirq+0x11c/0x194 kernel/time/timer.c:2405
->    handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
->    __do_softirq+0x14/0x20 kernel/softirq.c:656
->    ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
->    call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S:891
->    do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:73
->    invoke_softirq kernel/softirq.c:503 [inline]
->    __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
->    irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
->    __el1_irq arch/arm64/kernel/entry-common.c:498 [inline]
->    el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-common.c:510
->    el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
->    el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->    __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:26 [inline]
->    arch_local_irq_enable arch/arm64/include/asm/irqflags.h:48 [inline]
->    preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7189
->    raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry/common.c:173
->    irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
->    exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry-common.c:58
->    __el1_irq arch/arm64/kernel/entry-common.c:500 [inline]
->    el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-common.c:510
->    el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
->    el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->    __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline=
-]
->    arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline]
->    class_irqsave_destructor include/linux/irqflags.h:266 [inline]
->    __free_object+0x514/0x720 lib/debugobjects.c:524
->    free_object lib/debugobjects.c:532 [inline]
->    debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
->    destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [inline]
->    hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2178
->    common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:1352
->    __do_sys_clock_nanosleep kernel/time/posix-timers.c:1398 [inline]
->    __se_sys_clock_nanosleep kernel/time/posix-timers.c:1375 [inline]
->    __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/posix-timers.c:137=
-5
->    __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->    invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
->    el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c:132
->    do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
->    el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:724
->    el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:743
->    el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
->
->
-> stack backtrace:
-> CPU: 1 UID: 0 PID: 6572 Comm: syz-executor Not tainted syzkaller #0 PREEM=
-PT
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 10/03/2025
-> Call trace:
->  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
->  __dump_stack+0x30/0x40 lib/dump_stack.c:94
->  dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
->  dump_stack+0x1c/0x28 lib/dump_stack.c:129
->  print_irq_inversion_bug+0x1f8/0x1fc kernel/locking/lockdep.c:4125
->  mark_lock_irq+0x3b4/0x47c kernel/locking/lockdep.c:-1
->  mark_lock+0x170/0x1d0 kernel/locking/lockdep.c:4753
->  mark_usage kernel/locking/lockdep.c:4662 [inline]
->  __lock_acquire+0x9a0/0x30a4 kernel/locking/lockdep.c:5191
->  lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5868
->  do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
->  do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
->  fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:74
->  writeout_period+0x94/0x11c mm/page-writeback.c:615
->  call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
->  expire_timers kernel/time/timer.c:1799 [inline]
->  __run_timers kernel/time/timer.c:2373 [inline]
->  __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
->  run_timer_base kernel/time/timer.c:2394 [inline]
->  run_timer_softirq+0x11c/0x194 kernel/time/timer.c:2405
->  handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
->  __do_softirq+0x14/0x20 kernel/softirq.c:656
->  ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
->  call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S:891
->  do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:73
->  invoke_softirq kernel/softirq.c:503 [inline]
->  __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
->  irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
->  __el1_irq arch/arm64/kernel/entry-common.c:498 [inline]
->  el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-common.c:510
->  el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
->  el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->  __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:26 [inline] (P=
-)
->  arch_local_irq_enable arch/arm64/include/asm/irqflags.h:48 [inline] (P)
->  preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7189 (P)
->  raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry/common.c:173
->  irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
->  exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry-common.c:58
->  __el1_irq arch/arm64/kernel/entry-common.c:500 [inline]
->  el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-common.c:510
->  el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
->  el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
->  __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline] =
-(P)
->  arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline] (P=
-)
->  class_irqsave_destructor include/linux/irqflags.h:266 [inline] (P)
->  __free_object+0x514/0x720 lib/debugobjects.c:524 (P)
->  free_object lib/debugobjects.c:532 [inline]
->  debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
->  destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [inline]
->  hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2178
->  common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:1352
->  __do_sys_clock_nanosleep kernel/time/posix-timers.c:1398 [inline]
->  __se_sys_clock_nanosleep kernel/time/posix-timers.c:1375 [inline]
->  __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/posix-timers.c:1375
->  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->  invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
->  el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c:132
->  do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
->  el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:724
->  el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:743
->  el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
->
+> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Tested-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Gavin Guo <gavinguo@igalia.com>
+> Acked-by: David Hildenbrand (arm) <david@kernel.org>
+> Cc: Gavin Guo <gavinguo@igalia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Lance Yang <lance.yang@linux.dev>
+> Cc: <stable@vger.kernel.org>
 >
 > ---
-> This report is generated by a bot. It may contain errors.
-> See https://goo.gl/tpsmEJ for more information about syzbot.
-> syzbot engineers can be reached at syzkaller@googlegroups.com.
->
-> syzbot will keep track of this issue. See:
-> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
->
-> If the report is already addressed, let syzbot know by replying with:
-> #syz fix: exact-commit-title
+> v3:
+>   * gather RB
+>   * adjust the commit log and comment per David
 
-#syz fix: flex_proportions: make fprop_new_period() hardirq safe
+Clearly not enough :)
 
-This was fixed by Jan a few weeks ago (commit dd9e2f5b38f1f in the
-linux-next tree) [1]. I think Jan's fix just hasn't been
-pulled into the arm64 tree yet [2].
+>   * add userspace-visible runtime effect in change log
 
-Thanks,
-Joanne
+Which one was that?
 
-[1] https://lore.kernel.org/all/20260121112729.24463-2-jack@suse.cz/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?qt=
-=3Dauthor&q=3DJan+Kara
+> v2:
+>   * restart page_vma_mapped_walk() after split_huge_pmd_locked()
+> ---
+>  mm/rmap.c | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/rmap.c b/mm/rmap.c
+> index 618df3385c8b..1041a64b8e6b 100644
+> --- a/mm/rmap.c
+> +++ b/mm/rmap.c
+> @@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+>  			__maybe_unused pmd_t pmdval;
+>
+>  			if (flags & TTU_SPLIT_HUGE_PMD) {
+> +				/*
+> +				 * split_huge_pmd_locked() might leave the
+> +				 * folio mapped through PTEs. Retry the walk
+> +				 * so we can detect this scenario and properly
+> +				 * abort the walk.
+> +				 */
 
+This comment is a lot clearer than the commit msg :)
+
+>  				split_huge_pmd_locked(vma, pvmw.address,
+>  						      pvmw.pmd, true);
+> -				ret = false;
+> -				page_vma_mapped_walk_done(&pvmw);
+> -				break;
+> +				flags &= ~TTU_SPLIT_HUGE_PMD;
+> +				page_vma_mapped_walk_restart(&pvmw);
+> +				continue;
+
+This logic does lok reasonable.
+
+>  			}
+>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
+>  			pmdval = pmdp_get(pvmw.pmd);
+> --
+> 2.34.1
 >
-> If you want to overwrite report's subsystems, reply with:
-> #syz set subsystems: new-subsystem
-> (See the list of subsystem names on the web dashboard)
->
-> If the report is a duplicate of another one, reply with:
-> #syz dup: exact-subject-of-another-report
->
-> If you want to undo deduplication, reply with:
-> #syz undup
->
+
+Cheers, Lorenzo
 
