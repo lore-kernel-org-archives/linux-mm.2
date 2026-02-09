@@ -4,239 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D365E81BAA
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 12:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DB11E81BAD
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 12:20:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B50C56B0088; Mon,  9 Feb 2026 07:10:58 -0500 (EST)
+	id DFA706B0005; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFAA66B0089; Mon,  9 Feb 2026 07:10:58 -0500 (EST)
+	id DC8566B0088; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B5D66B008C; Mon,  9 Feb 2026 07:10:58 -0500 (EST)
+	id CA6A86B0089; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 887046B0088
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 07:10:58 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2CE5713BAF4
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:10:58 +0000 (UTC)
-X-FDA: 84424802196.16.C191248
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A55384000B
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:10:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=MIeyOs4P;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=YEK4KpE9;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf17.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770639054;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B28406B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 07:20:38 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 66F7E1BBF5
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:38 +0000 (UTC)
+X-FDA: 84424826556.12.39EA6D4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6024E180005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nS59lMNy;
+	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770639636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DoramIqBon95M4uMPqqTUFlJEVCsY8epak9+7ir1nwY=;
-	b=lyHvfH5ypAf19rS1aAQdQdH0N/JObVMu/tto8V2ejRbCk7RteIFIt9jCT78uzyMYaI3+vj
-	xAEY8C+Rd8m5p4FTJiVMrV76EScWUj9ikM0ETZvSTIcEmPuSBmBbg4EH3nr8D4poFuavm9
-	L3kC24A6nkO6tQ6sBL6a9gh8E/3pLgI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770639054; a=rsa-sha256;
-	cv=pass;
-	b=Aiust55uHd3Ro1Csjl2r28CdndSBMJUwzSvysI60M2Z52OsBwx5pcgc7Ev/GMwvBZfBEPm
-	71rJgzepdu8R2GOs9hCJ6qGA4NmhPZ5aMorOYqpJyAZS2TZmmunVGPZip4tS9W9lO3YJhA
-	1Hc1d9q+pTX0SvS8wYpbUyWXzfdi0do=
-ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=MIeyOs4P;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=YEK4KpE9;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf17.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619BvANJ2699348;
-	Mon, 9 Feb 2026 12:10:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=DoramIqBon95M4uMPqqTUFlJEVCsY8epak9+7ir1nwY=; b=
-	MIeyOs4Ph8CtvqT1gjnr50qdq1KVdDRU4FrBWuWoRNKd1dSjtlxtv6hyIEI1EuiN
-	VM80Cc92T/RHVCuAKaXvxJxdFe+9FLYg4zwT/FYaJLzvtXxpY9MFA/jZYgTaTsdm
-	VtBZanzF7ie67jxq3noOwfPH8Zfsm5Zvk45AeFL7qtYKjvwYPUZt8fGySmqlfC0M
-	9cNvR5mhKTxD/rnZIdykD+uhijJMnIQtgMgl9f4BhPamElbKmRIz4iLMvq7v4LRZ
-	diVucRe8wGh8GLldmrLFpHDWptVD664GwGQDFSAPQun9jwIqw0sp9/oKK4vlXiVs
-	D0VwBj4P+gaquXgOUcoPrw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c5xf3suv0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Feb 2026 12:10:47 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 619AYTNR000510;
-	Mon, 9 Feb 2026 12:10:37 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013059.outbound.protection.outlook.com [40.107.201.59])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c5uucxt2r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 09 Feb 2026 12:10:37 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u2XYJ1BIswz07QGVPlbj1wgrVOC3/Ey7ULTRM5cLPWganEPiHuKfujWbYqGYVIpbOhh+E9Bf5oCJPqmk9kVhjpIQG+vK1J9zrXeW5ZceKADWAvJSUvljA0v1mpubtCCq8N01eZzMeBFl0E5rUVKUq0GF9hHl/FbsZ++Q9ktuqlix6F9zRpr1PTWu9DivUNbtywgbKq+bpY74woxyu3DCrju+D/9F81T3aAxaPNHqY0HAGUjaA/7ExJcMRt485fcHU1COw+UlR1olcthE4h8aXwg9AszSUS6UH1kPvMETfOLvIWVCRnVQUZ92UBhYdoxx+eUjTG/bkAy8k9el7OppbA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DoramIqBon95M4uMPqqTUFlJEVCsY8epak9+7ir1nwY=;
- b=IB0NQnVZ9nff+nfNLyhyMp5V8v8hbjUuDj6LY4J8hRPpaWigUueecHV9GkGWf2cyMp88hyOUqNaj4I336UcVjlYZP92txkBYjhcWEt0pLQAGTIymBM7NeNMPLuZOinj/BuQscqEm/wA1Nj94Hr91OHgTFUg0g3yl4b9YDZ0FlM/VG8K5nIMbZyHt+nID1iieke4FlkZn77sXalKfMDcpr1vc8Sm9lxpWQCZou8GmT2xXaIwcE1OfV7PSSg/UPJFDALzHnQJO71+6rjXKYebWKyysUMFadpNi+mOT5VL0Rg0ZcK7wRhuFfYBqOfOpJM4iu7KCVGOYnxh4CQd6sUvfXQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DoramIqBon95M4uMPqqTUFlJEVCsY8epak9+7ir1nwY=;
- b=YEK4KpE9k8X3oTQKbpcVPxVef6MBChmJ5PxXhrrq68OM2FbkBdLI5S6fJFDPDs6DdHhy53k+PJ5WHtsQJq4Gx2NDRYlXr01OBww5BejNtBg6MKQfmboYYUjwzeWU2mhAkXxByE0NxFcpJJkRtJ2iyEv+5kdkdHxJEAtqVu3wJS4=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by DS4PPF376CF97B3.namprd10.prod.outlook.com (2603:10b6:f:fc00::d13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Mon, 9 Feb
- 2026 12:10:33 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9587.017; Mon, 9 Feb 2026
- 12:10:33 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org,
-        Harry Yoo <harry.yoo@oracle.com>
-Subject: [PATCH 1/2] mm/slab: allow freeing kmalloc_nolock()'d objects using kfree[_rcu]()
-Date: Mon,  9 Feb 2026 21:10:12 +0900
-Message-ID: <20260209121013.50475-2-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260209121013.50475-1-harry.yoo@oracle.com>
-References: <20260209121013.50475-1-harry.yoo@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SE2P216CA0048.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:115::14) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	bh=kqSWunoz+E6ZMe2l8bS+mn7oVK/00VEfRifqDWML6RQ=;
+	b=HcJ6/l5YreyMmP9GkeKxAPJEJAytBW12k8GMMiw6rPgdQUwl8H5L9o39OAKUiaTNtBnEi8
+	I56Rr4YtP0gvIO1GhF3Jk6KTXlLVUhVVsbZbNiY4vKvwEs/1nvks6M3U4GWt1uv0EUBhmT
+	aHIwRjV1RSR2ePRSVDhiJmbdHyof6q0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nS59lMNy;
+	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770639636; a=rsa-sha256;
+	cv=none;
+	b=UYIMmLHR1oyD6NDoNs3VgznMjWmd8LLuigqm9RBW3G4ID0tX92E6LGVwIeN4T11wzc61+Z
+	nmGyhKG8DO6mYc9MHQkgLacUKU2KV4/xgqoQRbrbJyRe1Z6ICLWycdL/nxTOlaKklV7QoG
+	6kOiRmMtk/DXYOfUcjbHT3oGRvUi9Qk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 50623445A5
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2961CC16AAE
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 12:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770639635;
+	bh=6D6LeMNA2nHolaHXRnfLbh8Q3Uq6J6Gi+ROI9jGFKp8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nS59lMNyhfwqY708p/h3M7cQcRZI/OiUubeR+IUkm+6nh36mNQt8ysCk1DWO4u4lJ
+	 szXoeu7qZRrHN5QQGpohDKsNAquhd0hRtiy6JQkz3cvqQ6U/dGT6z4zwZM43b/dIiy
+	 ya9JKsieFyz5YTSdrGtJfljmYemY4DmI/scee19nvlRMMgVfmNJbfzHw07xcwXJ71v
+	 5tj9N+x6f8X1vuffAIbRj+TgGsqI9dqDrsFkWXiJcKuGQn6Vc967NbOIso7oE6J3lb
+	 QRXWSUTH/mSyquNQhT1Le9RUeVrFFZH5+s3bLW171HCZm1/E06lPpogsWg2QbgaJ3x
+	 HNmZZU6PEXUMg==
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-79430ef54c3so25270327b3.2
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 04:20:35 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXPYbNyAI4w8KvHZ9sjoSosODX/dO7ELHoHGqoVB0COTSzIaT5tDXZGfMhK8QoFrC7r+tAkKMWz2g==@kvack.org
+X-Gm-Message-State: AOJu0YwJeKSTGgCy4mbZj3nTXE6pqHbziagYrTwg6fZeyXg94hAPkEYC
+	3QW9ussC96fy06PHir/pLVd/w1sTiIWSFRdrUs2KG0iPsrsc9eaol8/+4ugewKE0/3fBxUl9iON
+	9ITf2sGvrqKawi2bKlRGyoxXwwrO87HoEIQn0lvARFg==
+X-Received: by 2002:a05:690c:ed6:b0:796:37bb:9eb2 with SMTP id
+ 00721157ae682-79637bba28cmr52773487b3.5.1770639633751; Mon, 09 Feb 2026
+ 04:20:33 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DS4PPF376CF97B3:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f8c6b12-113d-41ce-b2cd-08de67d43a00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?0QHfCitBPV6YH4AgSt0zRERAW5RloNwbGJZPPUjcJ5jFGSSfQJfr9dK8Unos?=
- =?us-ascii?Q?ypxwrLPdCHhrx/MvD2+36Y9WIwSSPrWeuRHkX5mZ9VHpHWbaSnrAH0TZlsMN?=
- =?us-ascii?Q?BkUJGt4EwgKctd88YW/ULXUgD0s71y8MMF93bl5ubyr3/+R3WLqhF+BQwM1c?=
- =?us-ascii?Q?ZMvU70bmzHfFJEt36mYYZQ5YETO8fx2WwKNLGB1w30GVJLCEnKJiQaySBKiH?=
- =?us-ascii?Q?OWIeW5H5AxLOy5OnSc1oJ41082p3lPv4CLhHgVX9EXCwwpjGVImAy5r2pJPf?=
- =?us-ascii?Q?gkZY76bE8IbdRnE+sl0QCG+kCppzJIDGXjNP9/Qs4xM1B8XFBnQ0AmRSvn/+?=
- =?us-ascii?Q?IgNHxF6/H7FiinijcpHZKxZxwnWFYrvdq3Txaw+wZLZI/mVS5doz2uc2b957?=
- =?us-ascii?Q?IQr8xQfxOI0vzhOFSJGSUbU3dXaxRw/93D55xYpkT9VwMeSnubii3UXeRnoU?=
- =?us-ascii?Q?wWDm3jDX1VMPvi+f0S/i4IAAlXq6cWX+2ITImhFQWxMLgZfiKFYto5KPC37x?=
- =?us-ascii?Q?pxMhG8DRfIz05YBbdPD2+EjtmPoQwcY6sEPg1mjsEXH0AXC49mY21/fIoEw8?=
- =?us-ascii?Q?o1ToAxK6EHbifspaykh2J4805H5G7AAVxCqzEq7oT3/3v0Rwh9nT7DkVDnFl?=
- =?us-ascii?Q?ZjId3u5zvGXyOeHr77NICHUSv9QV2kcGp1jjocOOfJvRvaFWLW9XVKM4FOww?=
- =?us-ascii?Q?JyIlkmLUNpxHxDOW0Hcxcaz4FdUoSptn1AjNnKrgPGKACUJIGrQHFQuFcM/P?=
- =?us-ascii?Q?idQrYTSFrNR3DZPSgWPpET43QGkecpnuYia8e71dmdeYVUjtRhU1LBvoNSJ1?=
- =?us-ascii?Q?Sjl8LUmQnaiV2eg/EErB//p2KbT+Do3x+T8cSPq7uuEkq4JsBq16hF/Rby2H?=
- =?us-ascii?Q?z+2yyJ2/N8kPV9Bmea3Uu2ufFyJnNwz+6qm1IYqg1Zz6GHpOWR8rYYOnWC2c?=
- =?us-ascii?Q?ZTcqI7At4XmCIRdxddg6O0fzNPPjmpbC+O6zJY67ktq2BMT8lEitTkAyO/L5?=
- =?us-ascii?Q?HFo1nZoNWUtUC/v97/w80xwv9s8Otw2vDbaW0CnU/BaZMEzwOWoRcjqBEbe4?=
- =?us-ascii?Q?XW9fFdYjqZbUSsnbrQc6a703OcTUQ/CEP2ZGYEiaXx8zZHttI2arWbUjJwbE?=
- =?us-ascii?Q?zUe9UmQmcfTBW3dwzNTmJHgudIZiTsaOS9g6DhZLyxcnz6UrerMM3Q+v0kDW?=
- =?us-ascii?Q?nRCtLO6B+1yHyx+TYJtC8nnt+JNZYeEPhYGIfES47dh5SroiztaLvoBkNoyL?=
- =?us-ascii?Q?IaKNmi2wCRcbfHXdLSG7FOSHzJkld4fnN+kJPtrFu/59xNR5jj/NwoRZQN2A?=
- =?us-ascii?Q?A6U69wc11KgMxgJF5XlDj6icwx4Jr8kz42V06XZfthXTAW6hRJFGp84zWW3S?=
- =?us-ascii?Q?hwwxCDXfMgVdkB1d5iM0re6EbXvU9lIMz8AAC+5EYWo/J1LbGsBvYy8dRuFH?=
- =?us-ascii?Q?zDlfgzEfqV0Ii1qenaec5rIrnnoGYH1T31cVNDTKIUq/55+fND6bjXC+CQaN?=
- =?us-ascii?Q?8/LhuZGigqFVar0yIFkxTrmPFoQkIxl6lHpX/WSyI8vvYoPMLP7LUp8Hebr/?=
- =?us-ascii?Q?nXbDgMMZ5yMP+AA6S08=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+F8OUYHKKjcspxs3CO5nEw2I66J+kZ60pTuwdDgZ2na2Gb5gXn5/zdr6IwY5?=
- =?us-ascii?Q?NEz5B75Sb7iRTWXEo4lUDdrAmPwMUNxSlD1L15O7uAX3HyPtpstRL+2HVVW9?=
- =?us-ascii?Q?7+yK/KEVD0ssDsdS36y0c9f8lBGPQGpDg5QURhGI1oPJCKHB2825sLYL1pqe?=
- =?us-ascii?Q?sm2j6SX608eA1JYDctPjc2a+pvKk/KQ6suMfIhQq8mXSiX1MO8wPEM15eEpR?=
- =?us-ascii?Q?9QrfV6NO6+cjEHDQwieQqqF/lpciEmREuNORCquAhlQJ89sMFtHADr7AkjmU?=
- =?us-ascii?Q?HwyQsCi9zZ2NvFun8t8QWRVuNaRwgTVLgSJxlT/y9Kp+3pG2zg3hAknNxJX2?=
- =?us-ascii?Q?FW3egib60IKw0oBHFD9r/lQ/Hxdfpg4VXriUSrHkQRCdCl7sjJGuqlLU8+Bv?=
- =?us-ascii?Q?i8nrLQ3bkwWKY8rpv9gUW3yWPw/0YiefFWRxj6MTKDJVscXL+s+TLvcHE2v3?=
- =?us-ascii?Q?5wb2gmNOIP8BBCSLp3lLjNPYZXQqTHrJ3LQj/8xN59d7j8zYhqCqa7ljlBT1?=
- =?us-ascii?Q?5iQasGKkmN/lkMuOhxYIz9lK8AGokdSRCzgco1XqEe6wJljhgBJSEb8E8ETS?=
- =?us-ascii?Q?XMqfYMMSdf38Gn06ntjNxjc9USlDj5er3vMJLZD4agV/Jr9zkbSvpIA/seZA?=
- =?us-ascii?Q?PIxYfmwk4GIhQfZu0JvRGdVDF6tXnGM7jH/hEyRYUlpBoRlRq81e4DAcwUgG?=
- =?us-ascii?Q?iQb89OR8tWow9y3c8IFvLfErp0P+txbGAI3aAA8qn7Uut1aoNFpyFB74z16B?=
- =?us-ascii?Q?SxKCIWqHzeiy1pWgCwb83YdnFzaLZ9TS/L+sXUvjy+kp37BwLqX7CM/kTp0c?=
- =?us-ascii?Q?RxLL7B9iI3GMbFpUVsqgyWhy7hcwairZe9vU4mA0ZA9FI9YB8o7EoPNRtSw0?=
- =?us-ascii?Q?UMeMhTUcEo7gFV6cFegT1VccmZEMDB7uw+2/QtCDaC3oCdRxiDJ1Kfpd2zsV?=
- =?us-ascii?Q?CYK4lU1N+p6sLm4PYtTZkQkb1TlMnrZxNmpo72JDZMKPlnBNbFnWRTkrdFmU?=
- =?us-ascii?Q?HrmoALhEm/MC3C1dkIm3v2z+MMHtoUYhGKO6QIpP3uMptP2XDiy/1pn62tbT?=
- =?us-ascii?Q?T5EcJFtyQY8cZC9j3Ueyk6dgW8Ly82r/HwYlh+FPgB4NgzV9sGOPoGAfcqyp?=
- =?us-ascii?Q?7gFUSDTAvgxQwTi5PQY4duVcgFaeK0Nb2qNQFqWOolRWqVeQfoIrT2/DG+FF?=
- =?us-ascii?Q?6s8SiyEsZSVDGfJFCBe+e6BYai9reO7FF+BzoVwbNytkJiXE/QRjr44m2GfC?=
- =?us-ascii?Q?GItIXYTUca5gQ3O7q//9VNxiKkOiq7wdYC0QRP8pdxJLowb5RIUK4tihLDUU?=
- =?us-ascii?Q?hA1lysuzNvS2ASKEtF15GgU7APaozCocYWfYHR1YlyZF2B6L2VOz844Jza38?=
- =?us-ascii?Q?VPP/OqKfUpmDKX/o+Ep+uds7h0d4RCurdtT3Vhz3pPorALPdlv8VyU7qobd2?=
- =?us-ascii?Q?7EoW0qi9idKutO4hStQouyVSYJTmaHBbijW3Barc5mI2TP9cYHY+1pTMtcPk?=
- =?us-ascii?Q?1eb/pe/cp6DTlyNIWqatPTX8jZQ4vnvLnwZaOnZgJ9THhK7j5XFZzZI/w3qm?=
- =?us-ascii?Q?MKMqfexJXnmEohKAfCw27grsJFsesDFJnvYa/SSu/Ufy2WFSogsWpyhX4mwJ?=
- =?us-ascii?Q?XCSnj02E7axwZ4Y0nVFF8tO4vHH2MgB0jeZ5RVCy9vf3LBDqf8w2YE92q0ZV?=
- =?us-ascii?Q?BdAKSzMYSVOHTfJTCMeSiyblGShbo19TiCHTk5yS+G2fLSnewz5ZoHIlmt+g?=
- =?us-ascii?Q?o2tmsYZXng=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	u/DFXeNlmLbOf7eRXo0JtErfZXX2uoAic1C+4onzLODVkahxDQWgJqR3W6/yAtVv/toJ0nnRh2DEfveiJ9JNKn8Jtlb+0gz0Pwd7kjupXIUeoqhSts12OXzbiur28AkqyGIEpCriONGllsqy+R1TLTijRP6U9yHSL2EXp87gJLk6E+JeFmV6beqUjF21pyxeHlrIXcjC20mGLftkqtMqbE0A08GpBDzab7oMKdm3SckgQ+/t4wyCIm6gXSQNnXIGkNeVW1NHvctk2k00k9f8ACEcXUJEIVr+wfqtJl6Uu1tSvlhiRx3xl6XslNOcVpcRnzaJyGc134rcMcVqsH2VojmPjNoDBQ6U2DF+pF2IYlLRYI+6xYxWLRWopNE9Rxc3Sv9pp88xayPG2aEVvbp7NsQ3ZCNFj+UOta4gzCr98pqvSMgyjCng/p5MT/zH1YT4uA2yMdTio1x/80vNCRkksiPm5hkDTLJKS08Z8LFh/TeREurMFYR8efoZyp8m1+FSBPB4O6zn+4X5DCXfKgO4wdf4Dsznav3T59cSz+afCAYruZAsv6PU2Asmx3c1CLTyU0qOGK7NGDcHcgsN38Wkbpfx5xQswXCJEJ5ALRz38mY=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f8c6b12-113d-41ce-b2cd-08de67d43a00
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 12:10:33.8269
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +UNrzSNaM7nrDepE6np3ABYgtiUsgYgoAwg7r45T3BRI7jI6BSlCY4CqA3jsFAWAr9uSBWVODrAdNRHH5322LQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF376CF97B3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-08_05,2026-02-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 phishscore=0
- bulkscore=0 mlxlogscore=999 suspectscore=0 mlxscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602090101
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDEwMiBTYWx0ZWRfXz3QSsyzHYO+o
- wmB0pSh0HQlwoaNik9vgcKjU+TYCLyGUEm7nEvncmoArHrnxvEgA+sXGJrNXJ9Dub6lHqoLTpVd
- Tx0VS9IOKEJKgNNGyAYOxrbwNR+Tz4xpo7sqtg/2X1jsrg62oj7/KwXsuzumUyti057mDowZwOY
- LNfJLm8Dwcy2VyqbA9U8ieWIRY+SvQePnpROGIq7ZD42kj8G9WyAOOG50bs3iGxt8HmGHTMzOfw
- K1vypIj8YQYEMGdJn8HXCAs6nygEBlhukbSpBdGQSFPlKb5cWjg/rm1s3+y9QThM/YmKzOMRl4h
- b+VfREr5W2fRyjCd2nHN+qWW1m5QH8rGF/hYL/kZASzJ+kqF5QTSfeyobKjBaVbBiSckr43MoOX
- aSNIiVUn1zTRmVrnenonLrXkAMizdx6Nbi0Rc/CrMo0slB1dv/D2SM/fhZbFvDTUSGrRZNU7lyX
- AccuTqe+FDErMy05ny1FMMh4kM69fgKkFacY7Xl0=
-X-Proofpoint-GUID: 9F2nTAajTjA8o9xkrXS6WMg-m35shnYy
-X-Proofpoint-ORIG-GUID: 9F2nTAajTjA8o9xkrXS6WMg-m35shnYy
-X-Authority-Analysis: v=2.4 cv=KLNXzVFo c=1 sm=1 tr=0 ts=6989cec7 b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=HzLeVaNsDn8A:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=MQq_-n8oJk3kAu-yCuYA:9 cc=ntf awl=host:12103
-X-Rspamd-Queue-Id: A55384000B
-X-Stat-Signature: 36e3u5bbfw3hnxnfsemb5ud4diwgh4q4
+References: <20260208215839.87595-2-nphamcs@gmail.com> <20260208223143.366416-1-nphamcs@gmail.com>
+In-Reply-To: <20260208223143.366416-1-nphamcs@gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 9 Feb 2026 04:20:21 -0800
+X-Gmail-Original-Message-ID: <CACePvbXsngZmn0OrJZjvMhhHnL5FazxYX7ShEpbU9RwHSJaUuA@mail.gmail.com>
+X-Gm-Features: AZwV_QgrawpqSc96hXS3osxRNT9gK0yrZXayn3y2q6KwtRXx9G3p6M1k2h8G_zA
+Message-ID: <CACePvbXsngZmn0OrJZjvMhhHnL5FazxYX7ShEpbU9RwHSJaUuA@mail.gmail.com>
+Subject: Re: [PATCH v3 00/20] Virtual Swap Space
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: akpm@linux-foundation.org, hannes@cmpxchg.org, hughd@google.com, 
+	yosry.ahmed@linux.dev, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, len.brown@intel.com, 
+	chengming.zhou@linux.dev, kasong@tencent.com, huang.ying.caritas@gmail.com, 
+	ryan.roberts@arm.com, shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk, 
+	baohua@kernel.org, bhe@redhat.com, osalvador@suse.de, 
+	christophe.leroy@csgroup.eu, pavel@kernel.org, linux-mm@kvack.org, 
+	kernel-team@meta.com, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com, 
+	joshua.hahnjy@gmail.com, npache@redhat.com, gourry@gourry.net, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	rafael@kernel.org, jannh@google.com, pfalcato@suse.de, 
+	zhengqi.arch@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Stat-Signature: n536qqo76qw49aooyaaboxj116rags69
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770639054-994738
-X-HE-Meta: U2FsdGVkX19rc4pSgNSYcCOYNvSHbcZ7Ml4wG4Uxh6bFXjcWt2B7P2gTaOjEPOU25kQaUCssoHy1aPkkeEtJ6b4TdX3dBoQSMx3g8O6O6nBOyIcU9VVyBWlQ7ZkpJeAvDXFe63PaC66ZODIYPMDm1M0z93Ww3ncSFT95pjtq1lLw1TGKzY9jI7teBbbAMNbN7EcLDq745B5lTUcR9PL3jgCTpcS8+rCGxJcNlChmneU+xEfLEE0fR6OcbrubbXuobOhXcETpjeQFZBfRN6xGMbblbdYmVqBx2m49YeOoZJ1Zt+Hip9CohO2DTd+t6SmEuix6+FosOZan0bo2qJFNOswFP7PfbYUpHLiER1ImuBGSZXLQlafyOmd1k+mXyY3ELpejjfUNkOM8eeSyedkEfDjvZhODaHV8wqGz0Dy2gi/jc5M1wtID3lblehMxUXj7HzCOeZEi/Ky8ToxjWvsDoN/3rWC9Yrl/dIM2bLIHFnvbbK9JheDKZ+vvRsnYLWIgJUosKL20HBMcuM9IpvqDWWB+X0ZclEb2pDcGZWZQVZ53myE5r0MKgBL0EA7fzHeMmCESvwQUTip2bicpJdOrLLlZoTtoe3SPOIurmBUm0tLBSkfVBn6wluGKsV8b8k9IJq2EjbAilyxJIpRe/6k91eG5P5B+d6Dc9F3PxF5AbB0wn0fwQ7aezJmYuXZ3PsQJZtwgUueYupyQuw0Aoj0iCER0IwnP/OEGp+Os2h57kcrlkkrptnMguOq3OPMEmbxGVjk8QYI1iG6f4ntdrPD/EDHQTKpQKO9SEsvW8Jbh9Ef9EOxIbMwnSHcFPEB2QRGBPVMz6MTl5vq1kBO+KnAAMkvwYDZqnVJEzxoZlCvD8msdgdtZaDhCb/6MOaR4JJHJLAvSt595t+T//87YCZakyB3GZQqJIkZ9vJxgmX6hMJIwKr+5e/AWckYiVD8Xi1yXfSj72t8pNt5anVuD4JG
- DeJ1y+eg
- HBEQZKSr4zB2GbtIJLiJkOUvSC3tKYLdVtqEyrHrCXOHOkvg1kgAnldcAimS+duPIeqgqL/7jfuIPEKUiWCMCIQcHrgyZO66oieQxFzmzYLd1G846Syqdzu9QaiprRa89/crAxSOJGEAv0WTDmBxPSrGPnsGxcyMHi4qxqpGCEZuV/6WsS+LM4SbSKN+tplM74xb6z5SZm21kTKSjjBfolgQtndK9TMUFcqYfwwgHM4Zll6CjqwcSFll1q0TfqE0MOB4c260A57fBSgriKWW1lGg9HZ51ycrChbyPLvNUcNSHXD7YQx5yhFZItmHpz4v3bw3juMFAijee5j1cWNoQG56cJoefv6tTE34D19Uk2fdpVKjLX07paG4OKHjBd4gT85ggBMo3qAmITWyvPXJxWlOkKkUGOl3MBeWDKLuQ90FzqNKe3s/7r0VGkUfCdwbFYgJxyIWvehUEg6wCVt1lurbv3ppvB07LTFpNRb75ofqgf/c5gvTD8SV6CV6EFMIu35Pgk6tEItbBJH10L+SAeeAhHNumg/V4qQI9elmUDbIT5PcJT7QZ6Z0Ya6llZY1rv4zCskwp+978Kxvqf+eYjtWcgQ3keAU61KE8MtLRW5ahVdMZU+ZGoiuSbTRK1BYJFHN7xWbk5tbDAbB4ugVrwKlAZTUOz1an+VUsFaYUI6FIajhx1SeUB9HSYuHn5GYLER1GAMpWHxyp7o+tyF8negNnzw==
+X-Rspamd-Queue-Id: 6024E180005
+X-HE-Tag: 1770639636-666955
+X-HE-Meta: U2FsdGVkX19kU2XT8VDjfzg/LlxVd+memdaMz4UEWKkvxKsp5em+MEsft9a0Hl/vMHcVq0m1XEfyw+AnrIvoUexVA86la3f1bxuQ3AV1LOrnlF+pPSAp+p2760V//ID17r2Z8UFkVpAv/4ADSiWS7Vwq9NgZshiK2VCpG8uYuyORvxxjMio3Wu0TmeT+8dt8sSWWL9plnyDtpCNAXUztwJIESkohate9S4p7wsYO0QdCtk5DDSRpm+Y40kjN5OlB7/2B1d074vvg+e+cpOpmhNrMqElvIn8Svd4VzxhDM+xodpRnwicex1CgYjDJPnipq3+cS6a/TzFxiBhuKo++eAxCUJDZFUTtyOrg+SQx3GaZnPr5rQqwWagRNCiMC3lSeSOa1Wx5Gc3b3r7M26Txzt+gf1iQ0XTA8gM81XuDkOPCvc9dBf2AxHgAuJwkb+HTytGNhJUAoi68B5Q3fXfJFSU8fe/cIGEEqFnKGI+8asZAc2SMCgLOg4198zXXaiJkLD0f/l1uhE2kj981LTSqWtPQ0Tck8ZJm7BMeP0F44+KxiqDTB5p+aaM20vdh8vcKFFX6NXy144AF+nv1QU2ljFkZGhoRlLNNW+K5MQtd+UQaAXBIhO1fhTUy+Uqi8Uv2t493yx0E3nDW7AY95KeN8jBL2lcUfgjjSSuaGGtem2nQRC6p5N8rEDpCRvI/p7mzm8pb1/U5wACmXHQUGkqxEocRBQ9zTX1sRLq/SZbx2KxTjVYydOAUM6BDpGpD/4+7MaZ17JE7m9hPgfg8oMaeOxyxUvN0djpUJEAfO3Oq6VrNt5dLU2U8da3Sq/2c778MSy8cPhEpWeXgcBFH3UY3SwwtbwWBTaLEvHtYu5LvGLzcVBWtbY+ol6FxgxRXFzAcFU+xPT55Qa1fISTz4m4IZ3BogWtjE7Leud6YScpLS+slPpwrU9gzGSccMrdgRnuWjEwHWvTWXZhEJVIJ5HI
+ MZpNouhi
+ V+Sclh84F3UqyLGQnoFYqWjmpFLpv98FPAul06ZPym4BVBiDOotBgA44PDmR35KzXA9HkpIL7zT2ufA2vGEoGFp3tti/GF2B0+RBwVTjK0hsMlidAyaluwMN+CE1fT0rdARh3S+njLkOabcWfLYzEvaCumMFuyIdGFl9awpZ/LWzoS9DSzZ905HHFpz7ZXcROIXOpm8xhqhb7Q0eBdEzpoMryhDR8mPoU9d7eSGJh3cCGU2IfyLjhymfTY6POOBCr5Q5rFZb2yag5ZBqlrFHHbnFTQVHHmqlM0EhQFVbriaypMGGphx9KEgzrAHYJsePLdXf8IBSnAOgGVn/ewpUywjeeOUTTIBe29cpzzA22CMkwfjIWIXNc3buTZEEHm3rs8OvbWG0gxUO61/6ai1/JYBcd2PXLLa8fkjamvFE4P+9BdcCGZYKG5thINQAFValGGIJPPCThA6Hqa8NZ+aEVbTJZI9tuQ4fQuv21WJReq2PrL26jjksiO2CZJbrXG6/gWEvvcfwdr1v11ORdRcXcbUswUzdUXugz5qFjg6Gvx8dPfCNXfSwxexCarCwj7Y6grubp/aoWU7Mfxn4tMYpCrAUrw/b66Guxek5Y7XRqwYtG88cUDtS/ew6Upb3KSYApL9dF7WamWqTzsOY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,137 +114,525 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Slab objects that are allocated with kmalloc_nolock() must be freed
-using kfree_nolock() because only a subset of alloc hooks are called,
-since kmalloc_nolock() can't spin on a lock during allocation.
+On Sun, Feb 8, 2026 at 4:15=E2=80=AFPM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> My sincerest apologies - it seems like the cover letter (and just the
+> cover letter) fails to be sent out, for some reason. I'm trying to figure
+> out what happened - it works when I send the entire patch series to
+> myself...
+>
+> Anyway, resending this (in-reply-to patch 1 of the series):
 
-This imposes a limitation: such objects cannot be freed with kfree_rcu(),
-forcing users to work around this limitation by calling call_rcu()
-with a callback that frees the object using kfree_nolock().
+For the record I did receive your original V3 cover letter from the
+linux-mm mailing list.
 
-Remove this limitation by teaching kmemleak to gracefully ignore cases
-when kmemleak_free() or kmemleak_ignore() (called by kvfree_call_rcu())
-is called without a prior kmemleak_alloc().
+> Changelog:
+> * RFC v2 -> v3:
+>     * Implement a cluster-based allocation algorithm for virtual swap
+>       slots, inspired by Kairui Song and Chris Li's implementation, as
+>       well as Johannes Weiner's suggestions. This eliminates the lock
+>           contention issues on the virtual swap layer.
+>     * Re-use swap table for the reverse mapping.
+>     * Remove CONFIG_VIRTUAL_SWAP.
+>     * Reducing the size of the swap descriptor from 48 bytes to 24
 
-Unlike kmemleak, kfence already handles this case, because,
-due to its design, only a subset of allocations are served from kfence.
+Is the per swap slot entry overhead 24 bytes in your implementation?
+The current swap overhead is 3 static +8 dynamic, your 24 dynamic is a
+big jump. You can argue that 8->24 is not a big jump . But it is an
+unnecessary price compared to the alternatives, which is 8 dynamic +
+4(optional redirect).
 
-With this change, kfree() and kfree_rcu() can be used to free objects
-that are allocated using kmalloc_nolock().
+>       bytes, i.e another 50% reduction in memory overhead from v2.
+>     * Remove swap cache and zswap tree and use the swap descriptor
+>       for this.
+>     * Remove zeromap, and replace the swap_map bytemap with 2 bitmaps
+>       (one for allocated slots, and one for bad slots).
+>     * Rebase on top of 6.19 (7d0a66e4bb9081d75c82ec4957c50034cb0ea449)
 
-Suggested-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
- include/linux/rcupdate.h |  4 ++--
- mm/kmemleak.c            | 22 ++++++++++------------
- mm/slub.c                | 21 ++++++++++++++++++++-
- 3 files changed, 32 insertions(+), 15 deletions(-)
+My git log shows 7d0a66e4bb9081d75c82ec4957c50034cb0ea449 is tag "v6.18".
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index c5b30054cd01..72ba681360ad 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -1076,8 +1076,8 @@ static inline void rcu_read_unlock_migrate(void)
-  * either fall back to use of call_rcu() or rearrange the structure to
-  * position the rcu_head structure into the first 4096 bytes.
-  *
-- * The object to be freed can be allocated either by kmalloc() or
-- * kmem_cache_alloc().
-+ * The object to be freed can be allocated either by kmalloc(),
-+ * kmalloc_nolock(), or kmem_cache_alloc().
-  *
-  * Note that the allowable offset might decrease in the future.
-  *
-diff --git a/mm/kmemleak.c b/mm/kmemleak.c
-index 1ac56ceb29b6..95ad827fcd69 100644
---- a/mm/kmemleak.c
-+++ b/mm/kmemleak.c
-@@ -837,13 +837,12 @@ static void delete_object_full(unsigned long ptr, unsigned int objflags)
- 	struct kmemleak_object *object;
- 
- 	object = find_and_remove_object(ptr, 0, objflags);
--	if (!object) {
--#ifdef DEBUG
--		kmemleak_warn("Freeing unknown object at 0x%08lx\n",
--			      ptr);
--#endif
-+	if (!object)
-+		/*
-+		 * kmalloc_nolock() -> kfree() calls kmemleak_free()
-+		 * without kmemleak_alloc().
-+		 */
- 		return;
--	}
- 	__delete_object(object);
- }
- 
-@@ -926,13 +925,12 @@ static void paint_ptr(unsigned long ptr, int color, unsigned int objflags)
- 	struct kmemleak_object *object;
- 
- 	object = __find_and_get_object(ptr, 0, objflags);
--	if (!object) {
--		kmemleak_warn("Trying to color unknown object at 0x%08lx as %s\n",
--			      ptr,
--			      (color == KMEMLEAK_GREY) ? "Grey" :
--			      (color == KMEMLEAK_BLACK) ? "Black" : "Unknown");
-+	if (!object)
-+		/*
-+		 * kmalloc_nolock() -> kfree_rcu() calls kmemleak_ignore()
-+		 * without kmemleak_alloc().
-+		 */
- 		return;
--	}
- 	paint_it(object, color);
- 	put_object(object);
- }
-diff --git a/mm/slub.c b/mm/slub.c
-index 11a99bd06ac7..63b03fd62ca7 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2584,6 +2584,24 @@ struct rcu_delayed_free {
-  * Returns true if freeing of the object can proceed, false if its reuse
-  * was delayed by CONFIG_SLUB_RCU_DEBUG or KASAN quarantine, or it was returned
-  * to KFENCE.
-+ *
-+ * For objects allocated via kmalloc_nolock(), only a subset of alloc hooks
-+ * are invoked, so some free hooks must handle asymmetric hook calls.
-+ *
-+ * Alloc hooks called for kmalloc_nolock():
-+ * - kmsan_slab_alloc()
-+ * - kasan_slab_alloc()
-+ * - memcg_slab_post_alloc_hook()
-+ * - alloc_tagging_slab_alloc_hook()
-+ *
-+ * Free hooks that must handle missing corresponding alloc hooks:
-+ * - kmemleak_free_recursive()
-+ * - kfence_free()
-+ *
-+ * Free hooks that have no alloc hook counterpart, and thus safe to call:
-+ * - debug_check_no_locks_freed()
-+ * - debug_check_no_obj_freed()
-+ * - __kcsan_check_access()
-  */
- static __always_inline
- bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
-@@ -6368,7 +6386,7 @@ void kvfree_rcu_cb(struct rcu_head *head)
- 
- /**
-  * kfree - free previously allocated memory
-- * @object: pointer returned by kmalloc() or kmem_cache_alloc()
-+ * @object: pointer returned by kmalloc(), kmalloc_nolock(), or kmem_cache_alloc()
-  *
-  * If @object is NULL, no operation is performed.
-  */
-@@ -6387,6 +6405,7 @@ void kfree(const void *object)
- 	page = virt_to_page(object);
- 	slab = page_slab(page);
- 	if (!slab) {
-+		/* kmalloc_nolock() doesn't support large kmalloc */
- 		free_large_kmalloc(page, (void *)object);
- 		return;
- 	}
--- 
-2.43.0
+>         * Update cover letter to include new benchmark results and discus=
+sion
+>           on overhead in various cases.
+> * RFC v1 -> RFC v2:
+>     * Use a single atomic type (swap_refs) for reference counting
+>       purpose. This brings the size of the swap descriptor from 64 B
+>       down to 48 B (25% reduction). Suggested by Yosry Ahmed.
+>     * Zeromap bitmap is removed in the virtual swap implementation.
+>       This saves one bit per phyiscal swapfile slot.
+>     * Rearrange the patches and the code change to make things more
+>       reviewable. Suggested by Johannes Weiner.
+>     * Update the cover letter a bit.
+>
+> This patch series implements the virtual swap space idea, based on Yosry'=
+s
+> proposals at LSFMMBPF 2023 (see [1], [2], [3]), as well as valuable
+> inputs from Johannes Weiner. The same idea (with different
+> implementation details) has been floated by Rik van Riel since at least
+> 2011 (see [8]).
+>
+> This patch series is based on 6.19. There are a couple more
+> swap-related changes in the mm-stable branch that I would need to
+> coordinate with, but I would like to send this out as an update, to show
 
+Ah, you need to mention that in the first line to Andrew. Spell out
+this series is not for Andrew to consume in the MM series. It can't
+any way because it does not apply to mm-unstable nor mm-stable.
+
+BTW, I have the following compile error with this series (fedora 43).
+Same config compile fine on v6.19.
+
+In file included from ./include/linux/local_lock.h:5,
+                 from ./include/linux/mmzone.h:24,
+                 from ./include/linux/gfp.h:7,
+                 from ./include/linux/mm.h:7,
+                 from mm/vswap.c:7:
+mm/vswap.c: In function =E2=80=98vswap_cpu_dead=E2=80=99:
+./include/linux/percpu-defs.h:221:45: error: initialization from
+pointer to non-enclosed address space
+  221 |         const void __percpu *__vpp_verify =3D (typeof((ptr) +
+0))NULL;    \
+      |                                             ^
+./include/linux/local_lock_internal.h:105:40: note: in definition of
+macro =E2=80=98__local_lock_acquire=E2=80=99
+  105 |                 __l =3D (local_lock_t *)(lock);
+         \
+      |                                        ^~~~
+./include/linux/local_lock.h:17:41: note: in expansion of macro
+=E2=80=98__local_lock=E2=80=99
+   17 | #define local_lock(lock)                __local_lock(this_cpu_ptr(l=
+ock))
+      |                                         ^~~~~~~~~~~~
+./include/linux/percpu-defs.h:245:9: note: in expansion of macro
+=E2=80=98__verify_pcpu_ptr=E2=80=99
+  245 |         __verify_pcpu_ptr(ptr);
+         \
+      |         ^~~~~~~~~~~~~~~~~
+./include/linux/percpu-defs.h:256:27: note: in expansion of macro =E2=80=98=
+raw_cpu_ptr=E2=80=99
+  256 | #define this_cpu_ptr(ptr) raw_cpu_ptr(ptr)
+      |                           ^~~~~~~~~~~
+./include/linux/local_lock.h:17:54: note: in expansion of macro
+=E2=80=98this_cpu_ptr=E2=80=99
+   17 | #define local_lock(lock)
+__local_lock(this_cpu_ptr(lock))
+      |
+^~~~~~~~~~~~
+mm/vswap.c:1518:9: note: in expansion of macro =E2=80=98local_lock=E2=80=99
+ 1518 |         local_lock(&percpu_cluster->lock);
+      |         ^~~~~~~~~~
+
+> that the lock contention issues that plagued earlier versions have been
+> resolved and performance on the kernel build benchmark is now on-par with
+> baseline. Furthermore, memory overhead has been substantially reduced
+> compared to the last RFC version.
+>
+>
+> I. Motivation
+>
+> Currently, when an anon page is swapped out, a slot in a backing swap
+> device is allocated and stored in the page table entries that refer to
+> the original page. This slot is also used as the "key" to find the
+> swapped out content, as well as the index to swap data structures, such
+> as the swap cache, or the swap cgroup mapping. Tying a swap entry to its
+> backing slot in this way is performant and efficient when swap is purely
+> just disk space, and swapoff is rare.
+>
+> However, the advent of many swap optimizations has exposed major
+> drawbacks of this design. The first problem is that we occupy a physical
+> slot in the swap space, even for pages that are NEVER expected to hit
+> the disk: pages compressed and stored in the zswap pool, zero-filled
+> pages, or pages rejected by both of these optimizations when zswap
+> writeback is disabled. This is the arguably central shortcoming of
+> zswap:
+> * In deployments when no disk space can be afforded for swap (such as
+>   mobile and embedded devices), users cannot adopt zswap, and are forced
+>   to use zram. This is confusing for users, and creates extra burdens
+>   for developers, having to develop and maintain similar features for
+>   two separate swap backends (writeback, cgroup charging, THP support,
+>   etc.). For instance, see the discussion in [4].
+> * Resource-wise, it is hugely wasteful in terms of disk usage. At Meta,
+>   we have swapfile in the order of tens to hundreds of GBs, which are
+>   mostly unused and only exist to enable zswap usage and zero-filled
+>   pages swap optimizations.
+> * Tying zswap (and more generally, other in-memory swap backends) to
+>   the current physical swapfile infrastructure makes zswap implicitly
+>   statically sized. This does not make sense, as unlike disk swap, in
+>   which we consume a limited resource (disk space or swapfile space) to
+>   save another resource (memory), zswap consume the same resource it is
+>   saving (memory). The more we zswap, the more memory we have available,
+>   not less. We are not rationing a limited resource when we limit
+>   the size of he zswap pool, but rather we are capping the resource
+>   (memory) saving potential of zswap. Under memory pressure, using
+>   more zswap is almost always better than the alternative (disk IOs, or
+>   even worse, OOMs), and dynamically sizing the zswap pool on demand
+>   allows the system to flexibly respond to these precarious scenarios.
+> * Operationally, static provisioning the swapfile for zswap pose
+>   significant challenges, because the sysadmin has to prescribe how
+>   much swap is needed a priori, for each combination of
+>   (memory size x disk space x workload usage). It is even more
+>   complicated when we take into account the variance of memory
+>   compression, which changes the reclaim dynamics (and as a result,
+>   swap space size requirement). The problem is further exarcebated for
+>   users who rely on swap utilization (and exhaustion) as an OOM signal.
+>
+>   All of these factors make it very difficult to configure the swapfile
+>   for zswap: too small of a swapfile and we risk preventable OOMs and
+>   limit the memory saving potentials of zswap; too big of a swapfile
+>   and we waste disk space and memory due to swap metadata overhead.
+>   This dilemma becomes more drastic in high memory systems, which can
+>   have up to TBs worth of memory.
+>
+> Past attempts to decouple disk and compressed swap backends, namely the
+> ghost swapfile approach (see [13]), as well as the alternative
+> compressed swap backend zram, have mainly focused on eliminating the
+> disk space usage of compressed backends. We want a solution that not
+> only tackles that same problem, but also achieve the dyamicization of
+> swap space to maximize the memory saving potentials while reducing
+> operational and static memory overhead.
+>
+> Finally, any swap redesign should support efficient backend transfer,
+> i.e without having to perform the expensive page table walk to
+> update all the PTEs that refer to the swap entry:
+> * The main motivation for this requirement is zswap writeback. To quote
+>   Johannes (from [14]): "Combining compression with disk swap is
+>   extremely powerful, because it dramatically reduces the worst aspects
+>   of both: it reduces the memory footprint of compression by shedding
+>   the coldest data to disk; it reduces the IO latencies and flash wear
+>   of disk swap through the writeback cache. In practice, this reduces
+>   *average event rates of the entire reclaim/paging/IO stack*."
+> * Another motivation is to simplify swapoff, which is both complicated
+>   and expensive in the current design, precisely because we are storing
+>   an encoding of the backend positional information in the page table,
+>   and thus requires a full page table walk to remove these references.
+>
+>
+> II. High Level Design Overview
+>
+> To fix the aforementioned issues, we need an abstraction that separates
+> a swap entry from its physical backing storage. IOW, we need to
+> =E2=80=9Cvirtualize=E2=80=9D the swap space: swap clients will work with =
+a dynamically
+> allocated virtual swap slot, storing it in page table entries, and
+> using it to index into various swap-related data structures. The
+> backing storage is decoupled from the virtual swap slot, and the newly
+> introduced layer will =E2=80=9Cresolve=E2=80=9D the virtual swap slot to =
+the actual
+> storage. This layer also manages other metadata of the swap entry, such
+> as its lifetime information (swap count), via a dynamically allocated,
+> per-swap-entry descriptor:
+>
+> struct swp_desc {
+>         union {
+>                 swp_slot_t         slot;                 /*     0     8 *=
+/
+>                 struct zswap_entry * zswap_entry;        /*     0     8 *=
+/
+>         };                                               /*     0     8 *=
+/
+>         union {
+>                 struct folio *     swap_cache;           /*     8     8 *=
+/
+>                 void *             shadow;               /*     8     8 *=
+/
+>         };                                               /*     8     8 *=
+/
+>         unsigned int               swap_count;           /*    16     4 *=
+/
+>         unsigned short             memcgid:16;           /*    20: 0  2 *=
+/
+>         bool                       in_swapcache:1;       /*    22: 0  1 *=
+/
+>
+>         /* Bitfield combined with previous fields */
+>
+>         enum swap_type             type:2;               /*    20:17  4 *=
+/
+>
+>         /* size: 24, cachelines: 1, members: 6 */
+>         /* bit_padding: 13 bits */
+>         /* last cacheline: 24 bytes */
+> };
+>
+> (output from pahole).
+>
+> This design allows us to:
+> * Decouple zswap (and zeromapped swap entry) from backing swapfile:
+>   simply associate the virtual swap slot with one of the supported
+>   backends: a zswap entry, a zero-filled swap page, a slot on the
+>   swapfile, or an in-memory page.
+> * Simplify and optimize swapoff: we only have to fault the page in and
+>   have the virtual swap slot points to the page instead of the on-disk
+>   physical swap slot. No need to perform any page table walking.
+>
+> The size of the virtual swap descriptor is 24 bytes. Note that this is
+> not all "new" overhead, as the swap descriptor will replace:
+> * the swap_cgroup arrays (one per swap type) in the old design, which
+>   is a massive source of static memory overhead. With the new design,
+>   it is only allocated for used clusters.
+> * the swap tables, which holds the swap cache and workingset shadows.
+> * the zeromap bitmap, which is a bitmap of physical swap slots to
+>   indicate whether the swapped out page is zero-filled or not.
+> * huge chunk of the swap_map. The swap_map is now replaced by 2 bitmaps,
+>   one for allocated slots, and one for bad slots, representing 3 possible
+>   states of a slot on the swapfile: allocated, free, and bad.
+> * the zswap tree.
+>
+> So, in terms of additional memory overhead:
+> * For zswap entries, the added memory overhead is rather minimal. The
+>   new indirection pointer neatly replaces the existing zswap tree.
+>   We really only incur less than one word of overhead for swap count
+>   blow up (since we no longer use swap continuation) and the swap type.
+> * For physical swap entries, the new design will impose fewer than 3 word=
+s
+>   memory overhead. However, as noted above this overhead is only for
+>   actively used swap entries, whereas in the current design the overhead =
+is
+>   static (including the swap cgroup array for example).
+>
+>   The primary victim of this overhead will be zram users. However, as
+>   zswap now no longer takes up disk space, zram users can consider
+>   switching to zswap (which, as a bonus, has a lot of useful features
+>   out of the box, such as cgroup tracking, dynamic zswap pool sizing,
+>   LRU-ordering writeback, etc.).
+>
+> For a more concrete example, suppose we have a 32 GB swapfile (i.e.
+> 8,388,608 swap entries), and we use zswap.
+>
+> 0% usage, or 0 entries: 0.00 MB
+> * Old design total overhead: 25.00 MB
+> * Vswap total overhead: 0.00 MB
+>
+> 25% usage, or 2,097,152 entries:
+> * Old design total overhead: 57.00 MB
+> * Vswap total overhead: 48.25 MB
+>
+> 50% usage, or 4,194,304 entries:
+> * Old design total overhead: 89.00 MB
+> * Vswap total overhead: 96.50 MB
+>
+> 75% usage, or 6,291,456 entries:
+> * Old design total overhead: 121.00 MB
+> * Vswap total overhead: 144.75 MB
+>
+> 100% usage, or 8,388,608 entries:
+> * Old design total overhead: 153.00 MB
+> * Vswap total overhead: 193.00 MB
+>
+> So even in the worst case scenario for virtual swap, i.e when we
+> somehow have an oracle to correctly size the swapfile for zswap
+> pool to 32 GB, the added overhead is only 40 MB, which is a mere
+> 0.12% of the total swapfile :)
+>
+> In practice, the overhead will be closer to the 50-75% usage case, as
+> systems tend to leave swap headroom for pathological events or sudden
+> spikes in memory requirements. The added overhead in these cases are
+> practically neglible. And in deployments where swapfiles for zswap
+> are previously sparsely used, switching over to virtual swap will
+> actually reduce memory overhead.
+>
+> Doing the same math for the disk swap, which is the worst case for
+> virtual swap in terms of swap backends:
+>
+> 0% usage, or 0 entries: 0.00 MB
+> * Old design total overhead: 25.00 MB
+> * Vswap total overhead: 2.00 MB
+>
+> 25% usage, or 2,097,152 entries:
+> * Old design total overhead: 41.00 MB
+> * Vswap total overhead: 66.25 MB
+>
+> 50% usage, or 4,194,304 entries:
+> * Old design total overhead: 57.00 MB
+> * Vswap total overhead: 130.50 MB
+>
+> 75% usage, or 6,291,456 entries:
+> * Old design total overhead: 73.00 MB
+> * Vswap total overhead: 194.75 MB
+>
+> 100% usage, or 8,388,608 entries:
+> * Old design total overhead: 89.00 MB
+> * Vswap total overhead: 259.00 MB
+>
+> The added overhead is 170MB, which is 0.5% of the total swapfile size,
+> again in the worst case when we have a sizing oracle.
+>
+> Please see the attached patches for more implementation details.
+>
+>
+> III. Usage and Benchmarking
+>
+> This patch series introduce no new syscalls or userspace API. Existing
+> userspace setups will work as-is, except we no longer have to create a
+> swapfile or set memory.swap.max if we want to use zswap, as zswap is no
+> longer tied to physical swap. The zswap pool will be automatically and
+> dynamically sized based on memory usage and reclaim dynamics.
+>
+> To measure the performance of the new implementation, I have run the
+> following benchmarks:
+>
+> 1. Kernel building: 52 workers (one per processor), memory.max =3D 3G.
+>
+> Using zswap as the backend:
+>
+> Baseline:
+> real: mean: 185.2s, stdev: 0.93s
+> sys: mean: 683.7s, stdev: 33.77s
+>
+> Vswap:
+> real: mean: 184.88s, stdev: 0.57s
+> sys: mean: 675.14s, stdev: 32.8s
+
+Can you show your user space time as well to complete the picture?
+
+How many runs do you have for stdev 32.8s?
+
+>
+> We actually see a slight improvement in systime (by 1.5%) :) This is
+> likely because we no longer have to perform swap charging for zswap
+> entries, and virtual swap allocator is simpler than that of physical
+> swap.
+>
+> Using SSD swap as the backend:
+Please include zram swap test data as well. Android heavily uses zram
+for swapping.
+
+>
+> Baseline:
+> real: mean: 200.3s, stdev: 2.33s
+> sys: mean: 489.88s, stdev: 9.62s
+>
+> Vswap:
+> real: mean: 201.47s, stdev: 2.98s
+> sys: mean: 487.36s, stdev: 5.53s
+>
+> The performance is neck-to-neck.
+
+I strongly suspect there is some performance difference that hasn't
+been covered by your test yet. Need more conformation by others on the
+performance measurement. The swap testing is tricky. You want to push
+to stress barely within the OOM limit. Need more data.
+
+Chris
+
+>
+>
+> IV. Future Use Cases
+>
+> While the patch series focus on two applications (decoupling swap
+> backends and swapoff optimization/simplification), this new,
+> future-proof design also allows us to implement new swap features more
+> easily and efficiently:
+>
+> * Multi-tier swapping (as mentioned in [5]), with transparent
+>   transferring (promotion/demotion) of pages across tiers (see [8] and
+>   [9]). Similar to swapoff, with the old design we would need to
+>   perform the expensive page table walk.
+> * Swapfile compaction to alleviate fragmentation (as proposed by Ying
+>   Huang in [6]).
+> * Mixed backing THP swapin (see [7]): Once you have pinned down the
+>   backing store of THPs, then you can dispatch each range of subpages
+>   to appropriate backend swapin handler.
+> * Swapping a folio out with discontiguous physical swap slots
+>   (see [10]).
+> * Zswap writeback optimization: The current architecture pre-reserves
+>   physical swap space for pages when they enter the zswap pool, giving
+>   the kernel no flexibility at writeback time. With the virtual swap
+>   implementation, the backends are decoupled, and physical swap space
+>   is allocated on-demand at writeback time, at which point we can make
+>   much smarter decisions: we can batch multiple zswap writeback
+>   operations into a single IO request, allocating contiguous physical
+>   swap slots for that request. We can even perform compressed writeback
+>   (i.e writing these pages without decompressing them) (see [12]).
+>
+>
+> V. References
+>
+> [1]: https://lore.kernel.org/all/CAJD7tkbCnXJ95Qow_aOjNX6NOMU5ovMSHRC+95U=
+4wtW6cM+puw@mail.gmail.com/
+> [2]: https://lwn.net/Articles/932077/
+> [3]: https://www.youtube.com/watch?v=3DHwqw_TBGEhg
+> [4]: https://lore.kernel.org/all/Zqe_Nab-Df1CN7iW@infradead.org/
+> [5]: https://lore.kernel.org/lkml/CAF8kJuN-4UE0skVHvjUzpGefavkLULMonjgkXU=
+ZSBVJrcGFXCA@mail.gmail.com/
+> [6]: https://lore.kernel.org/linux-mm/87o78mzp24.fsf@yhuang6-desk2.ccr.co=
+rp.intel.com/
+> [7]: https://lore.kernel.org/all/CAGsJ_4ysCN6f7qt=3D6gvee1x3ttbOnifGneqcR=
+m9Hoeun=3DuFQ2w@mail.gmail.com/
+> [8]: https://lore.kernel.org/linux-mm/4DA25039.3020700@redhat.com/
+> [9]: https://lore.kernel.org/all/CA+ZsKJ7DCE8PMOSaVmsmYZL9poxK6rn0gvVXbjp=
+qxMwxS2C9TQ@mail.gmail.com/
+> [10]: https://lore.kernel.org/all/CACePvbUkMYMencuKfpDqtG1Ej7LiUS87VRAXb8=
+sBn1yANikEmQ@mail.gmail.com/
+> [11]: https://lore.kernel.org/all/CAMgjq7BvQ0ZXvyLGp2YP96+i+6COCBBJCYmjXH=
+GBnfisCAb8VA@mail.gmail.com/
+> [12]: https://lore.kernel.org/linux-mm/ZeZSDLWwDed0CgT3@casper.infradead.=
+org/
+> [13]: https://lore.kernel.org/all/20251121-ghost-v1-1-cfc0efcf3855@kernel=
+.org/
+> [14]: https://lore.kernel.org/linux-mm/20251202170222.GD430226@cmpxchg.or=
+g/
+>
+> Nhat Pham (20):
+>   mm/swap: decouple swap cache from physical swap infrastructure
+>   swap: rearrange the swap header file
+>   mm: swap: add an abstract API for locking out swapoff
+>   zswap: add new helpers for zswap entry operations
+>   mm/swap: add a new function to check if a swap entry is in swap
+>     cached.
+>   mm: swap: add a separate type for physical swap slots
+>   mm: create scaffolds for the new virtual swap implementation
+>   zswap: prepare zswap for swap virtualization
+>   mm: swap: allocate a virtual swap slot for each swapped out page
+>   swap: move swap cache to virtual swap descriptor
+>   zswap: move zswap entry management to the virtual swap descriptor
+>   swap: implement the swap_cgroup API using virtual swap
+>   swap: manage swap entry lifecycle at the virtual swap layer
+>   mm: swap: decouple virtual swap slot from backing store
+>   zswap: do not start zswap shrinker if there is no physical swap slots
+>   swap: do not unnecesarily pin readahead swap entries
+>   swapfile: remove zeromap bitmap
+>   memcg: swap: only charge physical swap slots
+>   swap: simplify swapoff using virtual swap
+>   swapfile: replace the swap map with bitmaps
+>
+>  Documentation/mm/swap-table.rst |   69 --
+>  MAINTAINERS                     |    2 +
+>  include/linux/cpuhotplug.h      |    1 +
+>  include/linux/mm_types.h        |   16 +
+>  include/linux/shmem_fs.h        |    7 +-
+>  include/linux/swap.h            |  135 ++-
+>  include/linux/swap_cgroup.h     |   13 -
+>  include/linux/swapops.h         |   25 +
+>  include/linux/zswap.h           |   17 +-
+>  kernel/power/swap.c             |    6 +-
+>  mm/Makefile                     |    5 +-
+>  mm/huge_memory.c                |   11 +-
+>  mm/internal.h                   |   12 +-
+>  mm/memcontrol-v1.c              |    6 +
+>  mm/memcontrol.c                 |  142 ++-
+>  mm/memory.c                     |  101 +-
+>  mm/migrate.c                    |   13 +-
+>  mm/mincore.c                    |   15 +-
+>  mm/page_io.c                    |   83 +-
+>  mm/shmem.c                      |  215 +---
+>  mm/swap.h                       |  157 +--
+>  mm/swap_cgroup.c                |  172 ---
+>  mm/swap_state.c                 |  306 +----
+>  mm/swap_table.h                 |   78 +-
+>  mm/swapfile.c                   | 1518 ++++-------------------
+>  mm/userfaultfd.c                |   18 +-
+>  mm/vmscan.c                     |   28 +-
+>  mm/vswap.c                      | 2025 +++++++++++++++++++++++++++++++
+>  mm/zswap.c                      |  142 +--
+>  29 files changed, 2853 insertions(+), 2485 deletions(-)
+>  delete mode 100644 Documentation/mm/swap-table.rst
+>  delete mode 100644 mm/swap_cgroup.c
+>  create mode 100644 mm/vswap.c
+>
+>
+> base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+> --
+> 2.47.3
+>
 
