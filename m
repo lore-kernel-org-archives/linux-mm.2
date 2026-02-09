@@ -4,114 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B110E81BCF
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:39:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7FF9E81BCF
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:41:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D40496B00AB; Mon,  9 Feb 2026 09:39:56 -0500 (EST)
+	id 558766B008A; Mon,  9 Feb 2026 09:41:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF71B6B00AD; Mon,  9 Feb 2026 09:39:56 -0500 (EST)
+	id 539C76B00AF; Mon,  9 Feb 2026 09:41:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0D826B00AE; Mon,  9 Feb 2026 09:39:56 -0500 (EST)
+	id 459186B00B0; Mon,  9 Feb 2026 09:41:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AEAD46B00AB
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:39:56 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 373C616018D
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:56 +0000 (UTC)
-X-FDA: 84425177592.03.CC2DC04
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 919011A000C
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W0LbIhu3;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 345476B008A
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:41:17 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D4EA65628B
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:41:16 +0000 (UTC)
+X-FDA: 84425180952.17.A6D7F7B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 4F736100003
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:41:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lNIMGaab;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770647994; a=rsa-sha256;
-	cv=none;
-	b=wgK0h2jQ27363VlZ43XkqVlVZEFI660NL+MFXZxgLRvTFzbYnQ50BhEqQPZfy4aquh15Z6
-	SZAEcpEZBEU38941OqJpiOyfQET96pBK0axeMa8yTWcyzfYQC/KW6Fjqhz+ZMGKin72xvW
-	AZbNTe7CWfuWIZgDjNoegEFn6NEdNI4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=W0LbIhu3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770647994;
+	s=arc-20220608; t=1770648075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MKg0Do/lzSCgl7PzmCRNDAWTy9AxFmrT2kRbJguGA2Y=;
-	b=chg+e0nIbpxr9rX019vt9UlRPxHNcVgeRKYk/wHBVIcH2wfgvgWOWkxEcHZ0JSLITQ2idC
-	pVVYKYQifnbcJGppSq3rLhdIimyP3TxMaxXEzce//HHGbR6b4MeJhMiasCnS+EYYZQGqcS
-	IblqqIkkcaj4p4oGekUBcr9NKVgJalY=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=KaemXTxQHMv9bpHkXsnfD0HaSN9qgB8hHzbd7NEhoKk=;
+	b=8ECwhLGmKC58+kD7Krz/6X0whYK/p8Xalfxuf66MXcCSOOwNLqM2v1+XLn7yDoq/HLNfQ6
+	oG2NCPVB09IBSbvtR3InhCWQhbVTwW7kdD2fyXFMO4h8dqvTDV228glKSulB+8Hosj/J60
+	inDpLVMheNtiuoCSu2G9TEQCKG79LRw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770648075; a=rsa-sha256;
+	cv=none;
+	b=4Xj10WVt6cJrsrp5fjnP9YJbd/lYiNR61ydxK5tiJMScaLvO+HpV6Q9/1OhC+ZuoY2Cx14
+	9twtoPlEF78gIIEVjKP1qlA6mkAV/k1usurIzKO8HSbn1r9yLvSf0IgF9ZF7BjtKEOlE0y
+	Hi42IZtUA8swRO7cCNetj0/+OB9aNeU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lNIMGaab;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 14E4660131;
-	Mon,  9 Feb 2026 14:39:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72255C19422;
-	Mon,  9 Feb 2026 14:39:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 75B9543BD8;
+	Mon,  9 Feb 2026 14:41:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 803B4C19422;
+	Mon,  9 Feb 2026 14:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770647993;
-	bh=ziAsziTOC+GzNf139Ut4jKaT94DhutbUW+Q40shocZ0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=W0LbIhu3yXflRjlR51USLzE6TCZblrZPirDrUOTQtPBBtw8E+4tXEVs83O6SNUJ1b
-	 yp6nZLa99Zuka8FviQlmEioGfKOP9SvbsquuhAHvTaT30J2/EpWzwX3vvFtiPwTBRT
-	 0svmi+1DGm/1KkGXe2Nt8+K0GQemFVPx4VZVdsE4uTOTrFH0A1LHLT04fOmHqXUYMb
-	 SdeLtezbZXJFSm/vhX4WVgZajI8YGyffgd3+mmlTfM0U8zDH2lk8bXrxjYvhJISkKM
-	 Y/vETLiIsKg9eEjO78ENWxTiqprHdyGoexU7OIT0HH1yV9z2NIbtb5hEy9tK1LVxmX
-	 whdxZYQjQJgjQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 09 Feb 2026 15:38:12 +0100
-Subject: [PATCH v3 07/12] rust: xarray: add `find_next` and `find_next_mut`
+	s=k20201202; t=1770648074;
+	bh=B2mkA4JyLV5P+26Kji7kOaADSMAhZAUHx96+BlD9dVA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lNIMGaabE0qBHyKmiQQ82ePHeKOk12FZcvy7uIhl99+FK8xY+dvBmwJnHq448tgU5
+	 yWCM6YFfxDvwT1wI5+Rt+hhXZLLV4D0u0LeJHpDec1IByx2uLPHCfHaX3Y6XpJ+rsw
+	 JJVxqM5D44XNcn4x0x+Kh3J6eZihZBMhmxySUsLGosdfZbLuXcXqIysNK+I7TUQbg9
+	 O8HeuEegeOHjXjoPICHlHeBzr1Z+8ulczKwGXjAXkwEVNlDEDH7KqeCc5+hLTfRZaH
+	 Codl9ykicppLg+KhR0t3MGY3QhvKdyqCU/tVEiccSKm1jaUu/OhlXAz7EKTzkg5T6F
+	 18AZs0Gxi+VGg==
+From: Mike Rapoport <rppt@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@kernel.org>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Matt Turner <mattst88@gmail.com>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Michal Simek <monstr@monstr.eu>,
+	Mike Rapoport <rppt@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>,
+	Stafford Horne <shorne@gmail.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Vineet Gupta <vgupta@kernel.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org,
+	linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-mm@kvack.org,
+	x86@kernel.org
+Subject: [PATCH v2 0/4] arch, mm: consolidate empty_zero_page
+Date: Mon,  9 Feb 2026 16:40:53 +0200
+Message-ID: <20260209144058.2092871-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260209-xarray-entry-send-v3-7-f777c65b8ae2@kernel.org>
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
-In-Reply-To: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
-To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
-Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4023; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=ziAsziTOC+GzNf139Ut4jKaT94DhutbUW+Q40shocZ0=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFb+WmuAcVCQgvEERtgQ/qOeo8uSZnzezgaA
- +8xw4pzCZmJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxWwAKCRDhuBo+eShj
- d4DhD/9wCbNkHivRJZdlO3SafsRrM1Jz/9FULnqXMomuVFOyx4R8DA04Vr1ryCJ05XWJyhekl4Z
- G5vVUO8k7DN6sWkUJEoaVgwaA+cAdqR6vETzYtNa8CNUYFrBH7F7IuNhOehoVVMRvTViVrfBiHn
- Omr9wEVK9MuXNHJWTwnGsLCVyGGgpqzlbwlL0r9HilBKQ2sJM4Ms/9G2LmyjDh8PExLTNxDxl/f
- n6TZWTg20i8MW5Ah6w0oDUrXSzduI0NuQTki4WxhKTtaRzvofUZuAztzg0lyT49muXqhhqMLBas
- JGmniyaN9E+oneAYw1iXPAZGQ6BSioVn5m6JPVB/FdUc3w7+4Yh6WG//E9j6bJHQn+Nwh0Csc/W
- OOVLjAamz/vGabbs7W8G+tWP3rJhq01jdtXaAONXcE/S2CT5B3exP5+ymlnemY9MqAVktGE2mvg
- 5OTbekmZVE37vqI9e9/9CjVsFw6dyC0espFckCrEbgE0zh6CpPt5IEaSGPF4sBhm9WyLmQsZCpw
- GdbWMoq0K9av8QM75C7DvHme4QBQJWpvAlBhaRNX4F+G2MzpBZZTMGes/bcWRSW+igfHxyum7j5
- /uriDRU6pIaS6gsbLqj+fjWHKwrsxdFBlP9Ix+nyDnMigT+SRQZm2PlAuEwSok+Ws/jmFTFBW/m
- GYLsZBX4KKU+Zrg==
-X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
- fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4F736100003
+X-Stat-Signature: rumkihnyrgbc6dinz6nhwox5kqnrh5d3
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 919011A000C
-X-Stat-Signature: tqx9f7prjzupjtsq3u468w3hpt8c5h63
-X-HE-Tag: 1770647994-676667
-X-HE-Meta: U2FsdGVkX1/ZCqqHFARmAfCSjdlKdpbE0palA7AdALvGTSiI+tTGCQ6/3tncACiWXpZ34/UmV8+ys91NAGvFFcwS+f6UyxRZw5VqhrL/csqsNOCdPUun478MptkZdDeCyMPK69ERGNtIgyTaKI+EtlG78n1rHc45rY6sOP40C5dW4wrryg3utMgzfcXQb2WHNBQ9I+msJXx0F0PQY749y7m7XrQ111WKE0NN2SnNfNP9k7lBv7TXoIW3/YTTqsMxCqUL9weh/RdJq2acpn6K+Y+4OsW9TFLNwSz09rnsB07MweeKICj4DJeKJBtU6mQ5iF9nsp2egrdRiw683zWO9rMc9bdQ9d0jGa6j8g+w6NoAcXQ4c5zCn0tcro2Vwxjw1nfuoXv+jOpWQzxqSJWOGrgHkJ/x90FEZXHb9PSqjQXmqr2r/9L1sH21GS/XUSqH4pkKnVfUF86UmvIE2zTgcdc71ZYkp2zfSKY+rUMZK0ZvPs/9UjK3Gy/OkBFz++W/9oWYKkGJ+X8u0Td+Xl2lKh1HsGndtBjVbxJc/dEqm7Zd3QLbzZbNnDn8sreRssRgzGKsZs4HomJXVsSOkN5G/Z0K6HFVI7TzssXF+AdMYoP/CwoSOePZqPym+sGooDB7Fd53ANmYefHchbvktPxnTQHiQlDDFwZYcQYyqBkebjoWIr60dVBXopFPkUqjsKAD+WrvE/sw68GV0lJ+N/xzXNqMmojjE+C7yGJqPHMqX2AsGM0gJ/yOv0WaLisGoF0sQ08NiCcrDAcVA5HhDQZrcT8qwlREYJAmbm3VBs9QI953GvGBzaQI2/9bzVtFZWYCiP3RTMjkK7kV2VfmW5dMDauBj7y/vXhBsHqPI05/eK5oF3ZS4G2//wXegAu8qDj9c7nT5cWMVNWFHowg5lObS/8hVDFqWoCYnbjV2tWfZwnGkkRY/+a98fTGGNoxAPj6qx74cOuA86fXaeisXu7
- ogK2JbNw
- kgjEdCjT81DSrRGW4luofJFn+990kYuYk4RPlUuH6BYlM2aU=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770648075-533971
+X-HE-Meta: U2FsdGVkX186qnlmt5QnSaS8Srz8PnhOdJsGeoJoyv88yJUJllRgGteK8wz+w6wIbT8ZEmOHb8XKy9f1fHn4fYWI8rp1JTgzbGI2YD3Uwl0OL8RWbeTG3JJfxlbYE+LDVUQ/96/VlKJHzs9I51dR3QSZiXCt+xixX1Wj3wqpVjO15fehIMFz5KChvo4o2ylWDpY1VEfyG4EWJ6UDpO2wgp5db7P0gcMLjqexGMIN9e3ek5ljgmbbjY/N1fb66f76TxNmbLEtOCmVhbJ5Ne0HepaER4Je41rPFHBds0ZjML/uzDT58bKND3LJbGwIQT4Uq+Se8ipjpHM/mqCYmSrkvm+/53Jcw5R+MOjS//sbXqfABCdI2iagFmX0DfF/f6YzKwD+hC+92fP6XBIBjMHdMSxfCtLhsb9/OKv4Sp+JLezS2WJF8ZfFksiPT7jPNJm3BagwAtUdPq2gigYXYHoWnUoeQOwQ09qvC2EK5uZPni6OY7ZU3He8TUk5Z/wtUq31YkMfOK5mmZ0B2jJvpBazK4R2wLsf4AEWe2mpn5Dj8rEeP+ofGNn6pMPXYEE50uKlwkqVmQi0UH0Na587W7cOgQcVtceEY5HiNxaeXOGNpgCNPlPEoFNsIn4qSmnlXMzrUMV/nPOyry/3lFbOgoto4IahjMOpAcFiSfFajq8naV3yBLm8C1akffzBYy3lquQs3vFN3nnuFCR2AC+L7Om0Lmms2ASWP1kHTtI23SeCpKKZOuvgf9CM/jxPp7N0hq4C4IXcydRgjs+4I99WankqfhtIA/aQ4KdtknrvG5B+o3GvqRGD/Bpb6zd0aGeEP8ZW42BsL/HnXd1zpkTSbfAPHxmzeFd5JCODqn8o3Ejf1kIr8oMPobP1oTq0XT12MvXfRLqZyIDTPbNsRGNcIs9MioJPh1rQaauWfcciH8U/3YiCAD6yRbJTg9qlgTgjzSPCw6EOK7Jh1Ckt2k/ICb6
+ ftTaQQ2k
+ mFnBZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,107 +139,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add methods to find the next element in an XArray starting from a
-given index. The methods return a tuple containing the index where the
-element was found and a reference to the element.
+From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-The implementation uses the XArray state API via `xas_find` to avoid taking
-the rcu lock as an exclusive lock is already held by `Guard`.
+Hi,
 
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
----
- rust/kernel/xarray.rs | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+These patches cleanup handling of ZERO_PAGE() and zero_pfn.
 
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index e654bf56dc97c..656ec897a0c41 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -251,6 +251,67 @@ pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
-         Some(unsafe { T::borrow_mut(ptr.as_ptr()) })
-     }
- 
-+    fn load_next(&self, index: usize) -> Option<(usize, NonNull<c_void>)> {
-+        XArrayState::new(self, index).load_next()
-+    }
-+
-+    /// Finds the next element starting from the given index.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(10, KBox::new(10u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    /// guard.store(20, KBox::new(20u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    ///
-+    /// if let Some((found_index, value)) = guard.find_next(11) {
-+    ///     assert_eq!(found_index, 20);
-+    ///     assert_eq!(*value, 20);
-+    /// }
-+    ///
-+    /// if let Some((found_index, value)) = guard.find_next(5) {
-+    ///     assert_eq!(found_index, 10);
-+    ///     assert_eq!(*value, 10);
-+    /// }
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn find_next(&self, index: usize) -> Option<(usize, T::Borrowed<'_>)> {
-+        self.load_next(index)
-+            // SAFETY: `ptr` came from `T::into_foreign`.
-+            .map(|(index, ptr)| (index, unsafe { T::borrow(ptr.as_ptr()) }))
-+    }
-+
-+    /// Finds the next element starting from the given index, returning a mutable reference.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
-+    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
-+    /// let mut guard = xa.lock();
-+    ///
-+    /// guard.store(10, KBox::new(10u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    /// guard.store(20, KBox::new(20u32, GFP_KERNEL)?, GFP_KERNEL)?;
-+    ///
-+    /// if let Some((found_index, mut_value)) = guard.find_next_mut(5) {
-+    ///     assert_eq!(found_index, 10);
-+    ///     *mut_value = 0x99;
-+    /// }
-+    ///
-+    /// assert_eq!(guard.get(10).copied(), Some(0x99));
-+    ///
-+    /// # Ok::<(), kernel::error::Error>(())
-+    /// ```
-+    pub fn find_next_mut(&mut self, index: usize) -> Option<(usize, T::BorrowedMut<'_>)> {
-+        self.load_next(index)
-+            // SAFETY: `ptr` came from `T::into_foreign`.
-+            .map(move |(index, ptr)| (index, unsafe { T::borrow_mut(ptr.as_ptr()) }))
-+    }
-+
-     /// Removes and returns the element at the given index.
-     pub fn remove(&mut self, index: usize) -> Option<T> {
-         // SAFETY:
-@@ -354,6 +415,13 @@ fn load(&mut self) -> Option<NonNull<c_void>> {
-         let ptr = unsafe { bindings::xas_load(&raw mut self.state) };
-         NonNull::new(ptr.cast())
-     }
-+
-+    fn load_next(&mut self) -> Option<(usize, NonNull<c_void>)> {
-+        // SAFETY: `self.state` is always valid by the type invariant of
-+        // `XArrayState` and the we hold the xarray lock.
-+        let ptr = unsafe { bindings::xas_find(&raw mut self.state, usize::MAX) };
-+        NonNull::new(ptr).map(|ptr| (self.state.xa_index, ptr))
-+    }
- }
- 
- // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
+v2 changes:
+* add patches that cleanup zero_pfn code a bit (patches 1,2)
+* add a patch that caches struct page for empty_zero_page (patch 4)
+* use uint8_t instead of unsigned long for empty_zero_page
+* fix sparc64 changes in patch 3
 
--- 
-2.51.2
+v1: https://lore.kernel.org/all/20260124095628.668870-1-rppt@kernel.org
+
+Mike Rapoport (Microsoft) (4):
+  mm: don't special case !MMU for is_zero_pfn() and my_zero_pfn()
+  mm: rename my_zero_pfn() to zero_pfn()
+  arch, mm: consolidate empty_zero_page
+  mm: cache struct page for empty_zero_page and return it from ZERO_PAGE()
+
+ arch/alpha/include/asm/pgtable.h          |  6 ---
+ arch/arc/include/asm/pgtable.h            |  3 --
+ arch/arc/mm/init.c                        |  2 -
+ arch/arm/include/asm/pgtable.h            |  9 -----
+ arch/arm/mm/mmu.c                         |  7 ----
+ arch/arm/mm/nommu.c                       |  7 ----
+ arch/arm64/include/asm/pgtable.h          |  7 ----
+ arch/arm64/mm/init.c                      |  5 +++
+ arch/arm64/mm/mmu.c                       |  7 ----
+ arch/csky/include/asm/pgtable.h           |  3 --
+ arch/csky/mm/init.c                       |  3 --
+ arch/hexagon/include/asm/pgtable.h        |  6 ---
+ arch/hexagon/kernel/head.S                |  5 ---
+ arch/hexagon/kernel/hexagon_ksyms.c       |  1 -
+ arch/loongarch/include/asm/pgtable.h      |  9 -----
+ arch/loongarch/mm/init.c                  |  3 --
+ arch/m68k/include/asm/pgtable_mm.h        |  9 -----
+ arch/m68k/include/asm/pgtable_no.h        |  7 ----
+ arch/m68k/mm/init.c                       |  9 -----
+ arch/m68k/mm/mcfmmu.c                     |  2 -
+ arch/m68k/mm/motorola.c                   |  6 ---
+ arch/m68k/mm/sun3mmu.c                    |  2 -
+ arch/microblaze/include/asm/pgtable.h     | 10 -----
+ arch/microblaze/kernel/head.S             |  4 --
+ arch/microblaze/kernel/microblaze_ksyms.c |  2 -
+ arch/mips/mm/init.c                       | 11 +-----
+ arch/nios2/include/asm/pgtable.h          |  7 ----
+ arch/nios2/kernel/head.S                  | 10 -----
+ arch/nios2/kernel/nios2_ksyms.c           |  1 -
+ arch/openrisc/include/asm/pgtable.h       |  4 --
+ arch/openrisc/kernel/head.S               |  3 --
+ arch/openrisc/kernel/or32_ksyms.c         |  1 -
+ arch/openrisc/mm/init.c                   |  3 --
+ arch/parisc/include/asm/pgtable.h         | 11 ------
+ arch/parisc/mm/init.c                     |  6 ---
+ arch/powerpc/include/asm/pgtable.h        |  6 ---
+ arch/powerpc/mm/mem.c                     |  3 --
+ arch/riscv/include/asm/pgtable.h          |  7 ----
+ arch/riscv/mm/init.c                      |  4 --
+ arch/s390/mm/init.c                       |  4 +-
+ arch/sh/include/asm/pgtable.h             |  8 ----
+ arch/sh/include/asm/setup.h               |  3 +-
+ arch/sh/kernel/head_32.S                  |  4 +-
+ arch/sh/kernel/sh_ksyms_32.c              |  1 -
+ arch/sh/mm/init.c                         |  1 -
+ arch/sparc/include/asm/pgtable_32.h       |  8 ----
+ arch/sparc/include/asm/pgtable_64.h       |  3 --
+ arch/sparc/include/asm/setup.h            |  2 -
+ arch/sparc/kernel/head_32.S               |  7 ----
+ arch/sparc/mm/init_32.c                   |  4 --
+ arch/sparc/mm/init_64.c                   | 24 +++++-------
+ arch/um/include/asm/pgtable.h             |  9 -----
+ arch/um/include/shared/kern_util.h        |  1 -
+ arch/um/kernel/mem.c                      | 16 --------
+ arch/um/kernel/um_arch.c                  |  1 -
+ arch/x86/include/asm/pgtable.h            |  8 ----
+ arch/x86/kernel/head_32.S                 |  4 --
+ arch/x86/kernel/head_64.S                 |  7 ----
+ arch/x86/kvm/mmu/spte.h                   |  2 +-
+ arch/xtensa/include/asm/pgtable.h         |  4 --
+ arch/xtensa/kernel/head.S                 |  3 --
+ arch/xtensa/kernel/xtensa_ksyms.c         |  2 -
+ fs/dax.c                                  |  2 +-
+ fs/proc/vmcore.c                          |  2 +-
+ include/linux/pgtable.h                   | 48 ++++++++++++++---------
+ mm/huge_memory.c                          |  2 +-
+ mm/memory.c                               | 15 +------
+ mm/migrate.c                              |  2 +-
+ mm/mm_init.c                              | 28 +++++++++++++
+ mm/userfaultfd.c                          |  4 +-
+ 70 files changed, 86 insertions(+), 354 deletions(-)
 
 
+base-commit: 50c7f34c5c7403a12003c6759f6f6ca9a5a10872
+--
+2.51.0
 
