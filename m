@@ -4,76 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B600EE0ADD
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:06:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31AB6EE20BD
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 08:11:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AED316B0005; Mon,  9 Feb 2026 03:06:15 -0500 (EST)
+	id 55A706B0005; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A70646B0088; Mon,  9 Feb 2026 03:06:15 -0500 (EST)
+	id 508186B0088; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 951F86B0089; Mon,  9 Feb 2026 03:06:15 -0500 (EST)
+	id 414686B0089; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 839906B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:06:15 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 20C4EBAB4C
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:06:15 +0000 (UTC)
-X-FDA: 84424185510.27.5654FF2
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 307AD6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 03:11:53 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 007EFD6338
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:11:52 +0000 (UTC)
+X-FDA: 84424199706.14.A2ACB95
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3F23E180006
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:06:13 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eM1R+TVu;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id 280A180005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 08:11:50 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hn+UPDqt;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770624373;
+	s=arc-20220608; t=1770624711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uOrumXSAeCYRbMmBX1zNFB7tsuqJXBKrIjoJzdYBq2U=;
-	b=tJt9f1qyODOq4rADaQIkgQX9OeKhJ8TM1VfC1v/cOIB9L9TNlXEpZsZBC9o4T3ZxLXLLg1
-	QBETGv65wjSoXP+5Fig5NJKCOYYMPg18fL9c5hVUnqVS74Ny5Q/7LzKBVeXeKiyLCH1Y4+
-	E/4VSqo3FDT06Fcv8jFwjkTwdNhu560=
+	bh=50l0l7arSP8Mc1SuJ0FPEfrM/K2HGzCxq+UPQbzFobs=;
+	b=Cnrta3gwG4A9N2pNRds+tJeNFXkVgGFhu3l8oowOO7a5/RAg4DRtzjp4SGpUcPY0NbhQJi
+	q4Mt59PdN0TL1hP9Ug4k8fRh9Q5VDvUTRL2Xd5R1eG0QCwLpiTUaS0V73vbiAwimSG+Lgl
+	ByPfQNnTKZoT75pHuwvyMe79c/BayCI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eM1R+TVu;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hn+UPDqt;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770624373; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770624711; a=rsa-sha256;
 	cv=none;
-	b=nDCSlDovlKkESqP6AIJLyvnX0IvSTOLmsbWZXBN4mc14oydw0c7OSAGbCbKHKHLR9rvru0
-	APsEjd+jPI3h0sny1Kk9cU3IEHVlF6uRMqEeQGoqMp+BQ2JHi6IxHp7aJkBOE3fB91eZuu
-	YaWuDj0qwwsP/HZg/biB/NM4TGfBe3w=
+	b=ImjEPelw6TI+lhyndYWVFE0fWia3Jv/TAc8j0kY5NSvm4fo+s9KpWECCr1CjrRHU/DVpLh
+	YsCLjOJa0ue97Sus2KTYuHeILkZFmiAEPPY/dOOuOOJ9Bwlh23P/Y/IStDSiDjzYD2q+v9
+	3jFVgU2CR96slHijdACatCvLph6xdRg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1533742DB1;
-	Mon,  9 Feb 2026 08:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBB2C116C6;
-	Mon,  9 Feb 2026 08:06:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 192D7443CB;
+	Mon,  9 Feb 2026 08:11:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A64C116C6;
+	Mon,  9 Feb 2026 08:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770624371;
-	bh=SzUJ17uIjUXWqMNjh2fsfaFW+MRAmFwhSaZyTibNZYk=;
+	s=k20201202; t=1770624710;
+	bh=L8oWFHABpYlRLKDFyyvLn/HsEWp3abYK8JEFHOpAh/k=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=eM1R+TVuODddEFR9CmmJJyGTyy0/KNJj3yq1ovylzoVIG2ViR5LDrCuOD5hGJS61A
-	 fg0E1/36evcKGBeYQ/2JIx8H4z3FxdQijDYoodBHb9QUGuFHdFuMgUgO+zl/hix3EA
-	 mqG7LfgybHymjL5PQqSI7B4N74MY7s3jp0tOqIsBvF2P6fD99ps9kBKb1mM6Qj2FOc
-	 NWToEw6xue9D47yKe9/QfC8K8yNHeMKoJ0boL1OVG8e0f3uRMuxIWmMlnAh7T+AOXV
-	 uUZxFvZOhEQa28vaXb3pjlBF4AEjPgmNtB84kw2jmH1YSU7664P+pkzy8iQMDF3YdH
-	 trQlWq2EFuPQg==
-Message-ID: <64fa130c-a87a-4c73-a2af-ff52c9268588@kernel.org>
-Date: Mon, 9 Feb 2026 09:06:06 +0100
+	b=hn+UPDqteqgyuGfdYJqtzLugJgNnz3dFTl2+L91tmqGVsEiIXGb5BXZ7HBHY5kFVV
+	 dJ+VvRlzEIi5JCC+FDp//whR6ivA9eqo7YbE4pFUeNTEKYmLM8KED1iXULCr68h2VD
+	 QOYyPrGu5PwBC3EO18Rx0b5Xe6enc9thv+Tk+3UnWB2r+AAg61FxyI/RwSxxrcUI+m
+	 TYON0Jlmnmoz58PifxllXgf4AjE/a8og863ddQiYNP2XESaqkOL6UyZh3YSrRZCZSm
+	 sYwbXwxRcFbR0uok4BuxbFPstcDrvX2q9ksdDNlfr2e+vmS7PkzmLh+P+1ZnmYRD+z
+	 HE3mzLwMw4xUw==
+Message-ID: <4fc5e312-b56a-4664-9722-81163ecef515@kernel.org>
+Date: Mon, 9 Feb 2026 09:11:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/fadvise: validate offset in generic_fadvise
-To: klourencodev@gmail.com, linux-mm@kvack.org
-Cc: jack@suse.cz, rppt@kernel.org, akpm@linux-foundation.org, vbabka@suse.cz,
- brauner@kernel.org, linux-fsdevel@vger.kernel.org
-References: <CAFveykMPrkb=VYwQAjCEARsC_WAGfQXMz_gf8Q0CTHWHooNHVA@mail.gmail.com>
- <20260208135738.18992-1-klourencodev@gmail.com>
+Subject: Re: [PATCH] mm: cma: Fix stub for cma_skip_dt_default_reserved_mem()
+To: Mark Brown <broonie@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Rob Herring (Arm)" <robh@kernel.org>,
+ Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260128-cma-fix-stubs-v1-1-e07a077d5b33@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260208135738.18992-1-klourencodev@gmail.com>
+In-Reply-To: <20260128-cma-fix-stubs-v1-1-e07a077d5b33@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ymapxtbnuwcscfgtyfpemofoynrjuttn
-X-Rspamd-Queue-Id: 3F23E180006
+X-Stat-Signature: 49cdryye5ta9h71dn7wgxgtjjfa99e1z
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770624373-583220
-X-HE-Meta: U2FsdGVkX1+eJCoeMlD6axY4Qgo6ioDSj8BNVs99SfDGKDkMPBovD7yiAjVmiLFmGqKb28bN9bQmasE4XTgNrlH/41Yg7/pVzausZVUHwuAT854OgjkyZwHFb49sTCvKSfWPtt4qymyUlIurcxxdznohN1D7H4+Bq3g13e9BaDUkGvNje9fDxNYfvldmLoNO7F3rjwRiJOId6L68AeP7qdDsoJFHOl7DIw0aD/JNmSs4/hcCs32fHunokoQ/eVdgCiYAc6cU2Xgbjl0O7iBPn4toQBYsLm9IZ/7oZayLKU6V0EFsJlps+IRjnHH15RKt4TI8rjamnkX49pa44FzIrdrZgPGLFnvh20BTEayjBKFWdMuCal0Foa2AA0k+NgRv9LPfGSuUCYjVktiFiVzC8ww4v3XU/MlC6OPBZT6eZcWRRC6ROMU+4Qib5ltx3wyaeDU7c7arZdMyNyxm3vJ4aZRp1hQ3FqAJlUb7oeL6N4aFmBcHbaJs/qjjjIhRkMgUJ5gTFU23cQvnnS0R4YGFei33TifGDhVtfWX4c1mD9HFwFirZfFjj6JyGZEKmTuraWkTGrIxx0OTSDq4VWgqc8/ZqZyiCxCp5KnBw8GMHjKeTV1J0FrZlkmAvX21seFLA1CYyeQAN9S8pPdBZ7qwkEptjisTgALJ9v0wwIZy9uxYu0J4IL60tdFlik5+O88oquTlci96KUgIPStV8aaqxQKKXbC+sFueSgmOZ+nUhlkt/gPrjMO10lvAj4ejAI2VD9+AeeQyG4x42HOZX5R8mYTIKz/0JSqmrTZEipFHfcYS+3NH6v44mVMC205eqHcWCzi9AufUof9EYqE39cEA+Bo2BIxR60z3/7IjiYq3AYuttANZodxjaHVoruvKII32PTdO/ZC7LXzC8+EM7YCK5mPCgmBj+t9xw3I0XhgOQ9ISFOaZpAQOq+bx+2P1rscC+ymLYj9VAYLzqhMSpsre
- 2+41LBPe
- mOiugCrkCgQIVYd/LSUFL1q24faG63dnintTK0diQJCXmsT62RXiXlNl0tGW/1tpAvbck92OsCE8gCttRcAQKQ9JNiojwzFwRAr6ro9Ni0NB6alt4Xv6XyWz3h+y5NV4D3VCOCR38Ws6kIfrauwbgxIm235ookT8x/WMiL8MXyUpLC/s6QmPUhX/hlh7wiJwYiJr89reRtYLq+Q/FjkJswKAsm5ZeYxPCe+/XctkHvlCe3WfssStRstJpoRQ7GqPnPrI+6dwFhGPaibAxitjJpfP7rk7HRI1t6pye5Z6CBvZAX/UTs7cIxFcZwf0bwmxObuNE7rnWjKJJneV6Y+HOIAmY+zdDBV1pCEPfwtMhLb6taOMPIV0EZR89Bhgxz8ujfiQ3
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 280A180005
+X-HE-Tag: 1770624710-617703
+X-HE-Meta: U2FsdGVkX18PU5o3HTzpT/ROY/pUBGOao+LV8omTQTQfbx8jT3Ny2irCwQQFxV8nsSzidImyD2jOj00fW2P3OJ6OyCNNe1NVQ6VdPdqI6qLNwZ9fSrm36YfMN/hRXNug3GAANxp2lq6HdZlBBtCImixLT0cwN3Gg9Ug3PQb/Kfm4+xsG33ojjHXrIhxmxM9JYyQrxyf4BCTVL7rq8oxL6IJ/aYccHretBnzPBcun82gT47yenxgaijpvvhLxclKMU1rKViRuVoHAkMMQkV057+gjOBRvnWqa82QRMtpY7KNVpD7oLjuUJnF4tNKIytWhrHLwcOqrqMx806TJmLk0h6kaJHxup2rQ3bKiPfAumUg6+P5WYX0ef67FzFhN7DZZqdmyH+ovGDjnhkYxknFOrCPCk6ICO5YufgjJCQ5sICe9qyhL/Z7dAWTWeG4oa5okQxI4VGenPyCKqo5UCqqeuEqHi15PVRgOQkyiF5wkcjvqAjuaxi52iNxHCFh6Rn0d8ihbKycexlYPJMiUxuLvRkTYp7PnA//+07VqBytY9lINS7yLRVj8OqPQiwILV0OD8OO7tNYmPuTG6U46LUvlyMAvkWkoRiZ+5T+izTplwRZ2IylCmnsqRbo28RtRRoZX2/B9FbwMZrEqdJgdpPNQVYmcX/5GTOKceW8yb5PwNMyrkhR8h7wFbU8ghps3q3coKVJIsANSicApfLYNkz2+949iW6HAgcUpLsKmUBkT60MxxXeC13xXWep3ziNvrv/ivC5Q1XsS+MnBmw50sY9aG6xO1MlbSJvg4iejijuFmejvuw5VTGEx3shVA3FS0+TATIHajxjabF/J0hTf15cOCVzZnmf+unCflQOzKjDoQk4B9OdNG+BfeJVUfKWorrVqNEOjlxJZNQxQPOAqVs7BkWWuKnP0oBvidtiq5u0Pbvfg94zHIcDmnZuCxNg4QC2LG14vIttdRQUkGOU3zoA
+ unoYrxf4
+ p7RGf+cs1KagpcKYM4H7tTK3cucPqVwyWe1XPBOSM8974sf5wI5NX6Leyf1ABMBSn0hJB+w7rGG1kkTgAhrWZFjZXh/OkLrJryuGgWt/l8Giojow5tdmdILRc8GYlzfMBFL1G0UkCVCAH1jATM6rFTvj7l9WKM/rsPd4UNVdHjtg2jtQ/8xu8jMALMV9XKNdFSGoehXAO7uNF2tEcGNZqaecbKrKFYIWdsieAve6mGL7Z+MfLtQcmFyzQPufsrHjjEbZB5OP8dv7dtPTgXx/1UEyDxPFQ61xDd+PwFn8q1e5kTUla+SBT1CISeO6AvrWrYKorh2zHskr+6mA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,25 +144,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/8/26 14:57, klourencodev@gmail.com wrote:
-> From: Kevin Lourenco <klourencodev@gmail.com>
+On 1/28/26 17:28, Mark Brown wrote:
+> The stub for cma_skip_dt_default_reserved_mem() is not inlined so
+> triggers build warnings:
 > 
-> When converted to (u64) for page calculations, a negative offset can
-> produce extremely large page indices. This may lead to issues in certain
-> advice modes (excessive readahead or cache invalidation).
+> In file included from /tmp/next/build/fs/proc/meminfo.c:18:
+> /tmp/next/build/include/linux/cma.h:68:13: warning: 'cma_skip_dt_default_reserved_mem' defined but not used [-Wunused-function]
+>     68 | static bool cma_skip_dt_default_reserved_mem(void)
+>        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 > 
-> Reject negative offsets with -EINVAL for consistent argument validation
-> and to avoid silent misbehavior.
+> which are fatal with -Werror.
 > 
-> POSIX and the man page do not clearly define behavior for negative
-> offset/len. FreeBSD rejects negative offsets as well, so failing with
-> -EINVAL is consistent with existing practice. The man page can be
-> updated separately to document the Linux behavior.
-> 
-> Signed-off-by: Kevin Lourenco <klourencodev@gmail.com>
-> ---
+> Fixes: 26332ae848f08 ("of: reserved_mem: Allow reserved_mem framework detect "cma=" kernel param")
+> Signed-off-by: Mark Brown <broonie@kernel.org>
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+$ git show 26332ae848f08
+fatal: ambiguous argument '26332ae848f08': unknown revision or path not 
+in the working tree.
+
+This is not upstream or against an mm tree. Against which tree is it?
 
 -- 
 Cheers,
