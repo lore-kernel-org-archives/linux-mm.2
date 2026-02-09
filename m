@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 179FDE81BD9
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 15:30:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F20CBE81BD3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 15:31:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 547AD6B0093; Mon,  9 Feb 2026 10:30:28 -0500 (EST)
+	id 3D3E56B0098; Mon,  9 Feb 2026 10:31:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 518FD6B0098; Mon,  9 Feb 2026 10:30:28 -0500 (EST)
+	id 3A4A36B009E; Mon,  9 Feb 2026 10:31:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 424EA6B009D; Mon,  9 Feb 2026 10:30:28 -0500 (EST)
+	id 29D6B6B009F; Mon,  9 Feb 2026 10:31:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3276B6B0093
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:30:28 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DEBBA1B2880
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:30:27 +0000 (UTC)
-X-FDA: 84425304894.13.250BEF8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id EA17D100008
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:30:25 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SqdHMa6Z;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 1B43D6B0098
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:31:26 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2084139813
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:31:25 +0000 (UTC)
+X-FDA: 84425307330.05.E7F8323
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id DE134C0018
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 15:31:23 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mZ3eeO11;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770651026;
+	s=arc-20220608; t=1770651083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VKAxm9xBTz/eb5vio0bs+wXtV5RFUrrt3e+Gwjv2pKM=;
-	b=LykjIbFmZ7H49OFNOdRCgSYacDX0i3ygiyjU35gvDGjg3k25eKkYsU3ViY76z7WDQCvMVj
-	UaynEYQoIJg0AQP5HMfNAXrJHy1xTEW4vLUfjTGSjuIqDAhSDRGZZHN5Px1n4la3YEuBlA
-	7r43xPD5j/HyK6BpKdxUGPTW9mvj+wc=
+	bh=WvjH4te4K5QrtEX1LrPlb0ORwoSqRJGo6cXSgpf/Q4A=;
+	b=N0Wk0HQYEwpIhZpUS6wzvLDY2xpQoJ226qrHsVDCuK98bFuB8918INwH2w1xBW2Cs9TjHb
+	mTUGoLd6xMsiPJkxwPZjRrDG0cOXmIq8cYISc4dtbOjwBFz+vkKILmrDLcHvrKAM5MDUmI
+	pU65P1sS5eOPWdW5AsO6G02ZA4W2bTQ=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SqdHMa6Z;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mZ3eeO11;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770651026; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770651083; a=rsa-sha256;
 	cv=none;
-	b=HiXhRNQjuJszVvU+FvFxwcDGLXaIhdv70ZllPq0SmAERMMevn8zmgf39uzuSKVNrr8fVib
-	tZ+tbkEekUK7MToei1YBudkeA2l6kZIrBfurS0QtIJfVCp4vWKEXT5ZOL9LPaS5jUXpTgj
-	8YRktRjr82tj3XhMlL2rYBUIyBf0srQ=
+	b=w3G7IVg4KWMXgc2Gybk0y76I8Y1Xye8rTFr9yDEFDGrDvZcwj9DKeQWhquUbTv1rKjmcVn
+	mDSI/TKnTgbOKi1f/LMscyad5RIzVUgG4Adc2u1lbk2Lon9Zkxc3oLR1ByqVbwbNvQyNbp
+	VdsCqUeZdAsRwzUxSGN3ZansZJAmmO8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 03AAA43DAC;
-	Mon,  9 Feb 2026 15:30:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D09EC116C6;
-	Mon,  9 Feb 2026 15:30:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 39CA060008;
+	Mon,  9 Feb 2026 15:31:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6D7C116C6;
+	Mon,  9 Feb 2026 15:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770651024;
-	bh=Syo2nfb/vozha/nQ+Z68XrYJGV/g5qSp+feAbh52S5c=;
+	s=k20201202; t=1770651082;
+	bh=RxzDyEjlTagEAtrPHYYasNPmARDPY4JPQgRHJpvLkVk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SqdHMa6ZFYZMW0NCI/VHNQ+3jxq5oc3uR44Yls619P07hTcg6a1dhw/KkixDq0Sr5
-	 e8mHUOXynARMvuuKER6zcpH3G3iynnCyThJJqbhqpDXgLOIJczmXHKEMaTxwAflX3p
-	 hAwUsI92FpOd1FRHqOMpClOAjBgRsk239HIn1ryBntwXfQ68Ergt5NamWFz3W3ScFC
-	 UO+ku5KRR1u2jzVe2UTSX6c+cGs60PZqJAn2Y/tsd6n3KFR8ISRA7snvtMz7xpSDJl
-	 oNYWjoGFvVC2NKBr76yhLHc+gvEHDI5+OYwY9lGL36ZA0RZrjNrEcU6YATFpByrTnG
-	 2Vz7rH2ogi/Nw==
-Message-ID: <10f061c9-5c9a-4e8a-8790-a2a68b38ff33@kernel.org>
-Date: Mon, 9 Feb 2026 16:30:15 +0100
+	b=mZ3eeO11D/oUQS5v/btfeH+KWSUiDv716YAlCn9LG2lty+rSDU7bVaDkiy2gsYbOc
+	 tb7t9bCUReDJg0aSKPdg6GDM4sIKmfN3JmSszRhtnEwwYou3j81zWwrsUVmezU6QZG
+	 9lVKlgakyr7WUWz+DNZB5R+9i9S3OHB3jUaWsdDowDqUv6/EISKW7HFFbAjnqwEe6d
+	 X6oDyTDHUz3gfJpDZJzPwXA+IUFh77CV8pnlEySdq5U8dreLDebPt+iHr6SKMtMcBK
+	 yKjq8uYdG03BfvkCR8MGJTmcaCExoQ02SlTgoH98wSKLPMUxTLTm2XyNs2nDcHEpE0
+	 QTAqgbBxufOHA==
+Message-ID: <9b7afb6a-b709-4b42-a4dc-fa12c2ca624c@kernel.org>
+Date: Mon, 9 Feb 2026 16:31:13 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] arm64: mm: implement the architecture-specific
- clear_flush_young_ptes()
+Subject: Re: [PATCH v6 5/5] mm: rmap: support batched unmapping for file large
+ folios
 To: Baolin Wang <baolin.wang@linux.alibaba.com>, akpm@linux-foundation.org,
  catalin.marinas@arm.com, will@kernel.org
 Cc: lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
@@ -79,7 +79,7 @@ Cc: lorenzo.stoakes@oracle.com, ryan.roberts@arm.com,
  linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
  linux-kernel@vger.kernel.org
 References: <cover.1770645603.git.baolin.wang@linux.alibaba.com>
- <ce749fbae3e900e733fa104a16fcb3ca9fe4f9bd.1770645603.git.baolin.wang@linux.alibaba.com>
+ <b53a16f67c93a3fe65e78092069ad135edf00eff.1770645603.git.baolin.wang@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +126,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <ce749fbae3e900e733fa104a16fcb3ca9fe4f9bd.1770645603.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <b53a16f67c93a3fe65e78092069ad135edf00eff.1770645603.git.baolin.wang@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: EA17D100008
-X-Stat-Signature: htiszhjpjateztcjj79ye87ikbbucpf5
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DE134C0018
+X-Stat-Signature: pan5jebfxps816zdx6gn6sur83dcoeob
 X-Rspam-User: 
-X-HE-Tag: 1770651025-843056
-X-HE-Meta: U2FsdGVkX19jgj67VreZn9OzLdTH443ZuWcQfgbkAMuOnb4fhIllzxvZJWw+Pvqsi+m30r4E2XsxXKgXzrJNaSPafLkVco3r6w8wHzu5G8jYHBK3pccFOz/nV8TPOq610fAFEfVsSVSFi7R6hVpk109o9M3JsOVipKVFMkOGiQHJit641N3UOvbLz5bONABvQvu+xIvODaq6zGiaOe9lA2BUU7v0S+eKs6oSzsaHOOX7FiPmS6i/ws+cl4vowtrelJ68dsc2j4WR0K/DIoQsTso95lY+9zfDhCtnNKgqhc/xHeHap3HqH/xflEuVieRet7Q9FGXL4ZMPkuU6cnbdciabiyef57jDeEI3cfsOZuDJgOrq5R3pgxWlUlnRs3mb7w1XC52cjVM3VzbBUeEkjJi2vxNe9xpMZCdda06T9QYK0cJGMLFFMAPEXczXLKMzOEydn+YjmdskrZMoPnk61GUxLaXeV/bxEFTyQ+DWSt0+lmxbmozeve4vy0ksQ3FSeGL2rxE/Tf8YpETwWsLQNUgWD9WbudUXb38U+NtVLhGI3eBuU+q3dcTOHsjeca7O0XAMZ2C1G0+l/LgQxqtEN3AVBZ+/1LcAJtKVqLzi9+5/kaGmcIW2xz01NLdlxcohMf7pA1HTw9YzFbWj04KYJDy9GotcM248i69EojrXANlFdxuzPJMm8cr3/FrE/KR4fYc9M0m5LVadUeiU/KfCU1y6L65gezVY0aYtUYPwB+Vk3BWD4wUJtCOIrhZVdSTqpF9n18rsYHxsa6vJf2AdWj8cOOFrCdbrktWi8JGkFHjusxY5cmZ3iE+vUqpNLCDf7WOAvl9HBuyPlzgaQGSjueODE5b4FlaxSuxaHo1bkLcU7jOAL3aGzoR8JhkyVWT7FPyovCGkFTWmGyIUUYXYsvxlObTwkk/cn9Jx+clnqfLCRZnUX23nEMSwMRd2EQCccnE6o6YTBrbGx8xHNuE
- l/Gn/jKh
- sO/cNkBkoVjypMDxyE4c9ObkK5H6Ch7HedvgzA+/r+TOuoZ1l8iWE6wBT6b1LLcOdc3iM/tR6/ypBcWsLKmfQjbMELhZ8pijZ6K3EjPGBBuVwi6epzAJJWIHA7Uq2ca9LZgJVTfHyAgEpOs8KXwLpa2jeLNIS0gjCa5HO8w5PLs5B51CYCHu2wsDwzsGll+vpdK+T9LDJGXbK+p3eTdboeslXW6vbnsNuOAcAcsXPaB4MBfIPTDskN1s6CEdgxYGSdozjaexkUmwFk49OiKPOORnH9d3mjGybBKsZ4bKjtEGohCe+9Vern/iNmXG9RGi/O371N/spGaO97fd97NpKiL4KOIDZXnOP8vIMzDFhxFRGPO0x6joKXhUpY0+UdGTGtRxR6Jii74PhhGk2mPDeEkFXdwuagusdiAm3
+X-HE-Tag: 1770651083-252148
+X-HE-Meta: U2FsdGVkX18jgMyhUbaNvY67Gw17Ufk+a1T2YX+vlGMHwz51eL89JNRRxFt/EKUwLhFiHqIf7LZX7LCtuoDi1cjUCktFo+P0eAOoA2L997V8DUuamztzCemC64OBzIzWEwSw1Ws7nxv4YnbsqNhb1AlZFUI5+kYcMXpowe4Fyyi8Ipl3DikmWCWwZNYzazxpTGZY1HhsnTgmYsucnohKRx1BR2uT8cZaCjrBafue35AfYxCL+KMHvwY6bCqilb6xpjTCL9UVUzfzjVJEG7nBwcMiVWtW6RSP9POwwnJD6CafOI8oY3qCGxw9i4zRLFTw2aQT6wzkV7t6YS+4TVOOwzcmBojPcMfDcIKoIpsWxJoKp2jjlG2d2HEWDMku6d+oB+hHJf7FEqi1vlGnm7IfHVwh8oCx0K2gyX5wKLNWVV2n7DamF2GhGwLvL0qljTP2Rp32pRaQhIv3bO5oaVkq8SdoIFVnz6Z1I2CNpPAfLEUBB2bXJSWuukT//Y0hO2hdaopvBL4c9qGm1McZohG+KkqxYkeubJatojYp/F/nAmz4BwW3r62RUhxLa31EaOYN/T0+re12BAdQao9c5Jyv4iERlSw5X235Bt9WnY6Agr7r2Zue/feqw3Gc9ojYdLOMFNoG3ItldtJb6D9POjgI9ewF+E74oeBv7mS48Fu0FjeBzAEKZdGL3vmYKfODgHxsC4fV42No3KcxYL2uamxC8tteTHGNZ9hLqDirAuumGXZT0NEldo163Osw04rjDLe1zQPVoenmPr62mGwyzNwKhz79fD3fYIpSdUqUS0moqlXdpcvs9KOG1e5YSPHOrX4C5C9OqgoeS0mN3It8MlJM3V9ntT5AC90KQcAk1PkBCkloHf17+ah17CgIO+yf7sScDB1rs3/54UVq0BuaTzoee43bJ1BF2OEkoEXdrZIM9FfjIig3BaICaM+5xn1pLD2y7Z7X7VQllarvGwW2f8V
+ TdyL2ARh
+ 7Lw9aB4Wo+6yZdNzL0IcKBDT38oegkhMq4KBp3azgvz0x7XVVTwb0rpU+MEdYM09zWYx8ytwBIE0sHUxw1gRsUrgRe8CyrLOPRtNjPeEIhzMzBquHKna4v9GPSdv/+8E1+XvM2PY+Cm8qrdyAKJBzlYSzqJm6+7pO4hBdZ1A3p+pJsLMINueMYMSJUQGEFKMC8iHE3ygAYnG8d25vx46/lZ398LA1wAEdOJtj95MQ+aO469EXtP5kPiFLj4wOOUvB2kaJde9oSXKSoiWU7a42JXlrMD2OOaPXDH7xnTaM+YbEbeRdd4aHeu5S4FBbR0a1ug81WlbQxa1hsaUfS4WXR9wWvUj3KKiTwwz9KRg346/GBLU9+4OAYIdWs8AALooPXWRwk0WxTmIISvBuoGoCMQ7epCMgW83U+vhU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,54 +146,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/9/26 15:07, Baolin Wang wrote:
-> Implement the Arm64 architecture-specific clear_flush_young_ptes() to enable
-> batched checking of young flags and TLB flushing, improving performance during
-> large folio reclamation.
+> Similar to folio_referenced_one(), we can apply batched unmapping for file
+> large folios to optimize the performance of file folios reclamation.
+> 
+> Barry previously implemented batched unmapping for lazyfree anonymous large
+> folios[1] and did not further optimize anonymous large folios or file-backed
+> large folios at that stage. As for file-backed large folios, the batched
+> unmapping support is relatively straightforward, as we only need to clear
+> the consecutive (present) PTE entries for file-backed large folios.
+> 
+> Note that it's not ready to support batched unmapping for uffd case, so
+> let's still fallback to per-page unmapping for the uffd case.
 > 
 > Performance testing:
 > Allocate 10G clean file-backed folios by mmap() in a memory cgroup, and try to
 > reclaim 8G file-backed folios via the memory.reclaim interface. I can observe
-> 33% performance improvement on my Arm64 32-core server (and 10%+ improvement
-> on my X86 machine). Meanwhile, the hotspot folio_check_references() dropped
-> from approximately 35% to around 5%.
+> 75% performance improvement on my Arm64 32-core server (and 50%+ improvement
+> on my X86 machine) with this patch.
 > 
-> W/o patchset:
-> real	0m1.518s
+> W/o patch:
+> real    0m1.018s
+> user    0m0.000s
+> sys     0m1.018s
+> 
+> W/ patch:
+> real	0m0.249s
 > user	0m0.000s
-> sys	0m1.518s
+> sys	0m0.249s
 > 
-> W/ patchset:
-> real	0m1.018s
-> user	0m0.000s
-> sys	0m1.018s
-> 
+> [1] https://lore.kernel.org/all/20250214093015.51024-4-21cnbao@gmail.com/T/#u
 > Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+> Acked-by: Barry Song <baohua@kernel.org>
+> Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
 > Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->   arch/arm64/include/asm/pgtable.h | 11 +++++++++++
->   1 file changed, 11 insertions(+)
-> 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-> index 3dabf5ea17fa..a17eb8a76788 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -1838,6 +1838,17 @@ static inline int ptep_clear_flush_young(struct vm_area_struct *vma,
->   	return contpte_clear_flush_young_ptes(vma, addr, ptep, 1);
->   }
->   
-> +#define clear_flush_young_ptes clear_flush_young_ptes
-> +static inline int clear_flush_young_ptes(struct vm_area_struct *vma,
-> +					 unsigned long addr, pte_t *ptep,
-> +					 unsigned int nr)
-> +{
-> +	if (likely(nr == 1 && !pte_cont(__ptep_get(ptep))))
-I guess similar cases where we should never end up with non-present ptes 
-should be updated accordingly.
 
-ptep_test_and_clear_young(), for example, should never be called on 
-non-present ptes.
-
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
