@@ -4,140 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94BC6E7E0C9
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 10:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF3AE7E0C3
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 11:11:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA7C6B0005; Mon,  9 Feb 2026 05:58:30 -0500 (EST)
+	id 806866B0005; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA1726B0088; Mon,  9 Feb 2026 05:58:30 -0500 (EST)
+	id 7B4BA6B0088; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BADCA6B0089; Mon,  9 Feb 2026 05:58:30 -0500 (EST)
+	id 66C3E6B0089; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA73C6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 05:58:30 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 33C828C3DB
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:58:30 +0000 (UTC)
-X-FDA: 84424619580.13.F6A81B2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 82585180011
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:58:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d39AbULa;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 53DE76B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1895140773
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:11:34 +0000 (UTC)
+X-FDA: 84424652508.23.C51AB8E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6F0A92000E
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:11:32 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770634708;
+	s=arc-20220608; t=1770635492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l5b5z8StpHUwzQz1ibw1pvTn6wMwCNVe7bbhLoYcjLI=;
-	b=V0IN5htCm9sxynj5fFHlV//oFhtV1hSlFdZcp5l+y/jcR8srrXzB6ffPXUDr0zQsWPEKPF
-	V6na2U3k5N4N5Uuio0NHsCValME1OWHZXv0FLnTo4oRFZgYcHJ396Qz7KohVHOAyp3rRAR
-	fNmcxOjWAH8G2rg6tN7Q4fdtEIpbQtY=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d39AbULa;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770634708; a=rsa-sha256;
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=zkmmv/ryqEhRyzCW7go0UyO9KX8f0ZOVh6dycf7znCrjm257tHn4JpUznUcYWUWH8YXWir
+	q77hMDadyjRHizAOT2XGN2/ij3rm7ZIVUJwmNQ/lcQhcFXDdDPWPKcw1Dl+1c4r0E/3ztn
+	E+aH1lEP/rT6vUJWvMw9T5FErncbfVE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770635492; a=rsa-sha256;
 	cv=none;
-	b=kvPuJhJo6A+vDFSey+rg1VtEf0Kf5dPe9mWIikat7BrC3WS+t6Sp6QuRNhuEAm4zaOKMea
-	FN7OCLU3TBt9ZxCUteetm0TQo5OS+hTlJLnOTLRAcbdmwAKDTNdw2Zo6gDpYhpVwkmlhRE
-	WnPOe8nLzviBlwbJcVKoTxYLnOOPaCQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id F216A60008;
-	Mon,  9 Feb 2026 10:58:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C685FC116C6;
-	Mon,  9 Feb 2026 10:58:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770634707;
-	bh=a1q0Q1/gBdV3sFnnGa8SAvl2LXoQkQCC/VQ3Tn+B3pI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=d39AbULaWTxHR69m1JKeOsmspto3HCcwxUHZ8hYeOSf2twIHEp9q0LF2UwS/CKzJs
-	 mAL7JXhCOj69MhzumwiVKU+CkfQSLeqYf6X2w9CbY59cNrq2F1V9f49u/iSklok/Y1
-	 /s8exz9tR4Z6lEiU1Yz1acsa2ff70/f4XV45GlS8NyaxVyLlgrgZJD0cIBpA1rGvDU
-	 sNR401hsTdbg+zrZC53pnJcfbvsEM5f3i5jOrsT3fZ9M2AOwMFhfz4e8NJvEHYuUMJ
-	 zmKmUZEIfIrHc9NH4ga+hdBSYQ/JV6UUM33niB2J0Cm/o3HdNfhC3WGGN4lUA3/+ra
-	 bkuLSIJlefT7g==
-Message-ID: <7e5f27b5-392e-43bd-8a47-b81395dbf9a7@kernel.org>
-Date: Mon, 9 Feb 2026 11:58:20 +0100
+	b=maNV5LQetrFQVA4RaEjn83jP/pk+9ahb9yV0OTpHsrnuTiLsCefnJNs2Ab2bovWt/qr2KU
+	NWChghkNxzk/6elAGPEp0zEG8nUHbe4EOBQpD9WyKQHFsesd3wfgKADrAlkEQ7Jl0aq3D1
+	P1jqk2SpTLMv8H1sr81Yc0lj69PeQDY=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A19F43E6F2;
+	Mon,  9 Feb 2026 11:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770635490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=NyVcXt2ocC1CVQAT2MPh2t32BXjCv7vkaP3a0lu3iDhzxYu/z2h3IG7qianf+MrpON5MXE
+	TcW8J5gfMgI1dkXFWaAXM7ZbY82FY3HXcAXm2p4UoAubsqjHUbTr7cFnewm5AECj9OGmoZ
+	+xdWcEyC3sP2MMiBBp0IUeaWgoMKCf4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770635490;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=9qYrvHqPlk3lkMfiMYtY7WmM5BFDggncyDFM6w9yLq2+8cw2wAcFKFiPxFSp2ov8WpNjlE
+	MO6BDDkcPrGDXYAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770635490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=NyVcXt2ocC1CVQAT2MPh2t32BXjCv7vkaP3a0lu3iDhzxYu/z2h3IG7qianf+MrpON5MXE
+	TcW8J5gfMgI1dkXFWaAXM7ZbY82FY3HXcAXm2p4UoAubsqjHUbTr7cFnewm5AECj9OGmoZ
+	+xdWcEyC3sP2MMiBBp0IUeaWgoMKCf4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770635490;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
+	b=9qYrvHqPlk3lkMfiMYtY7WmM5BFDggncyDFM6w9yLq2+8cw2wAcFKFiPxFSp2ov8WpNjlE
+	MO6BDDkcPrGDXYAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B7393EA63;
+	Mon,  9 Feb 2026 11:11:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wlXuFOLAiWlPSgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 09 Feb 2026 11:11:30 +0000
+Message-ID: <dc4c016c-90e7-4e60-a73a-a2515ad2f6e8@suse.cz>
+Date: Mon, 9 Feb 2026 12:11:30 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: rmap: skip batched unmapping for UFFD vmas
-To: Barry Song <21cnbao@gmail.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>, Liam.Howlett@oracle.com,
- akpm@linux-foundation.org, catalin.marinas@arm.com, dev.jain@arm.com,
- harry.yoo@oracle.com, jannh@google.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
- riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com,
- vbabka@suse.cz, will@kernel.org, willy@infradead.org
-References: <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
- <20260116162652.176054-1-baolin.wang@linux.alibaba.com>
- <e5175f66-56fd-437b-a183-b2ccc3f54f94@kernel.org>
- <CAGsJ_4w95tTGfanb0NdG5B+ajOUA4LaH7uh+Uxcq0ZNVaqK-Vg@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: Re: [PATCH v2] mm/page_alloc: clear page->private in
+ free_pages_prepare()
 Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAGsJ_4w95tTGfanb0NdG5B+ajOUA4LaH7uh+Uxcq0ZNVaqK-Vg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: gfqzjta9hxcnxu33caxim3y9ercn33hn
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
+ hughd@google.com, ryncsn@gmail.com, ziy@nvidia.com, stable@vger.kernel.org
+References: <17A126A7-BACA-49E5-8A89-F8E665981136@nvidia.com>
+ <20260207153716.59302-1-mikhail.v.gavrilov@gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260207153716.59302-1-mikhail.v.gavrilov@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6F0A92000E
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 82585180011
-X-HE-Tag: 1770634708-466201
-X-HE-Meta: U2FsdGVkX19/Wh2Lje5euMXVA/za+kb/Xk9Uc4HJ1j6qdNclU+8mHypGhwoYIjxqQC0dzwpaQdtWTs/vGO36DbQ4r6jMLoEAc20ruWOPcwdLEO2nC65Gi55MkJmuySzvJASVCc6HYFf1rcAyWOg+Xl84M+9tssjFYTwKb8NIrheWG+73EmLcn7mBpqEMY1X5e00CqS28SxSnd7JyNPg+Wvhq9PleQt2BycsSO7LXaaRZwmAm5NUX7Qm9vYo7zKZYhHopjXq2hLgPetFxg+x296GAzgey49dncLcZbZ1c5+iYlU0VdJz7LSs5f6VoipO7CldOVsnoRDmhwTBIOgArhE78k0Bty0QxoE4ox2UV4bkN7067XjIcw24MFEMivOpNrUobRMALm4qTsPmW/jYo5rHIDt8Uz6pgXDXVrLbMaWalpwNypqM8idslTSM1jhWvhASJOpXVP1KWzv+AZJ5n1ZEhEe6q4oJ++6NwAUE5Jicdvxss+0X6BhLmDQ5S2eTkSCfTq7gqAizq2JeL8bEVFB7lLmymedHop24rpVFsdEhyXHpMWQH0SbOAgJJ5teUljn59WCsolb1OaB4weY2LSMVg+/VX9CQy2EsKtUBLWYO9WXIt6o0/2eHU8S/cvFmMvlVEPqn43dnPwDnJt4HzrTNXJ540oe7ItCAj5UQyD2RO71GZRLLPGMbsFD2O3BMvCsybAbseE78Bo0x/e3sHQX1XYByn77nvyETWV8quSbvzZUhzBWbFmi90DIsZkjs2rhpNujLC7Gt1v3Ijd9NcvfIrsZnRhd9iEflz0iGuRT+2Tm48Jnoc8FMOn/ekMguXbGafjGQgJ6muPa86VUWb31WnYjLY44JZslSYmxs3xZRfPGPBRGeo6Z7wl4kXrXaZ3ZkE6h5sp4sNwLXqiE/1s9nZQJl9Vjqtt+eBqFvuZ+E9fj6+KUVp7QxwBokHfGEI3mP8Rvm5wtpek5yZ9KM
- SSqk3s7K
- pG1NrCfm9sUXtbopmQoIzCphA0+jLl+ClAeGOpYhmEj3rvST2BSjSm74Y6FpIDmGHP6R8y6KHxJhvmv45myG6EBShkS/OGMIj2M4EVyP1D2WYGtsHp7BXfP87e46jd/utg2G+0TyzeUI9kcIMQz+6SKHsY7SZK42jdF+yUTx7XV8m509SB6PA7TgCCqJoG9C0ZlKf0pEaZj+S20BxGnqY9vxfJNjxISv5ApKHG+dZGUF3Db761aSImRLkPMDUdGIKIhNdMSHEI3Cla5ENfJAf6MINGsGUYbnFFLB9r0yXlk1oWpyq20dSG68m0GQ1ZAE2gmt2jelEv517D0gEPOG1vY3dFcIO51lyElUA
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4knnzpsi6agpddu8a764n16hetin4cis
+X-HE-Tag: 1770635492-551487
+X-HE-Meta: U2FsdGVkX1/jMsY70D+del3MkwOmIucrj6VH6jfCroFP/f57+3n2JWEJGhj/sRfyyMi1PVwUo0LpktnbkftKte1fAm6/KxOkn+pg1swvReIjwJ8rMWUuUq9p9BeIiOGfs5EZvIsbfUBcddBOcecQp/1BnO4JCMPv7DcFVc2Jy1ZsmwvXI0aRa3dzuZQv84nVv8pIK7nEXQ+eTh8ruNLKS28ZWlblk33SWtrZOGfTjHDJnaGikZ8RtK2ZjXW/gvO4GqYU0nBbDNjSXZA92CegeCqsFGKB76p7fzKAj7zDp6H2of7TJ7vgSaLFUULkT7xM9rHqKXL3cuJqgk2uOqGr3oYrcSBSOokf5B7P1a5DGEhsLUY0PeKy4owplXtBcl2aVMjgviCYUqNmJyKVN7Iow2AcU90BCx1VHeZ60pcYF3oQUdfTz4uBN4DhExoexZ+b3V1BQfXyNdYTJS/HqWLciOQtsdHL6Yx7CHG/5tufFHdQAFgtJqmMXkpmD50zKK8YFQCQmeOM7ZSIajOQ+M2cTuzYsI8wekypV+SwSlSlaM8paEWfuINNsXtuTubtNBHRGr2BfjLmv5NbSDMOLv/TO7eSw7Loc8AB5xh0rNfT7lslUdRrgz/HMgQxuTDMnXh1OAz+CSxhPf4DFIONYXNJuL4ClbQhQypCgE4OIWf8U2+MwrPR6lutlil0QAzXf/ZidoEASwUdTpctiRDDMnc7h8qyBin2mgaxwD4QLj5AGyRJKGuAGCCRY8fvwQK4pro1YHeQrNKNuG8w9Z06NcQ5sawY3Teeyhk649LD2jZ78+g2wfGIcyeTKUKiajGY73ZkmCxNSA5jc5i8dKa6G9HBszdP/OgifeJQ8i4iC2XsB7cTQ3sck1UL7GE+s/D07E404UmS+8GhAo290XSbwDty1sljcgfBFRC9yqz+k+jNC7mN0zJtEmbiHxrggb287E3srXio2JiSiv2plq0bPbu
+ G/tmHRH5
+ ndcLWlTWTPi/aEITUpHjb+c7yp42qhTD8iI3puE0c27PHH8gpsFJXq2lHJNFCNpWB3idWYD5XDZu/Ht23DnZgTp3tV6Er1afzUmLxx+Peg4rzQtZCOQV/HNN9vrVcF28q6zRt+vq4YMQ/M06gAuzbWHDzmj3tzFT5Rg6wfVOT3pjm0vkR3wwiILiunJT/DyGH7+y2PJyH38WAO5Pe9aq7W503tXZH9wBQwJF+FpTeWio5KCj25LB0nRr9EZDZtsnfahmkbpkfA4nZumMLOULz4mnppN+lbQQkA0MNH8p+QKRl8EVqeSap02qRb2Vhr7aNlC6Yx3+rJCvgA6jx5nVQXSSVRfy9d9NP8smnxA3PfDC4O5Av5pmKRmueNRkul3HYs9Tzyeo4YslJ8omgHJWrlSlQI3KS5Zujj51IT2SV6EHsF1tA4pEiQFbfG+0H1s278LknS4p+8MnfXkilXq8bBXHmaqEGvKdwFV9a
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,162 +178,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/9/26 11:49, Barry Song wrote:
-> On Mon, Feb 9, 2026 at 5:54 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->> On 1/16/26 17:26, Baolin Wang wrote:
->>> As Dev reported[1], it's not ready to support batched unmapping for uffd case.
->>> Let's still fallback to per-page unmapping for the uffd case.
->>>
->>> [1] https://lore.kernel.org/linux-mm/20260116082721.275178-1-dev.jain@arm.com/
->>> Reported-by: Dev Jain <dev.jain@arm.com>
->>> Suggested-by: Barry Song <baohua@kernel.org>
->>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>> ---
->>>    mm/rmap.c | 3 +++
->>>    1 file changed, 3 insertions(+)
->>>
->>> diff --git a/mm/rmap.c b/mm/rmap.c
->>> index f13480cb9f2e..172643092dcf 100644
->>> --- a/mm/rmap.c
->>> +++ b/mm/rmap.c
->>> @@ -1953,6 +1953,9 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->>>        if (pte_unused(pte))
->>>                return 1;
->>>
->>> +     if (userfaultfd_wp(vma))
->>> +             return 1;
->>> +
->>
->> Interesting. I was just wondering why we didn't run into that with lazyfree folios.
->>
->> Staring at pte_install_uffd_wp_if_needed(), we never set the marker for
->> anonymous VMAs.
->>
->> So, yeah, if one sets lazyfree on a uffd-wp PTE, the uffd-wp bit will just get
->> zapped alongside. Just like MADV_DONTNEED.
->>
->>
->> I'm fine with that temporary fix. But I guess the non-hacky way to handle this would be:
->>
->>
->>   From 53d016d6e6f624425dbdbc2fb1dec7c91fbef15c Mon Sep 17 00:00:00 2001
->> From: "David Hildenbrand (Arm)" <david@kernel.org>
->> Date: Mon, 9 Feb 2026 10:52:59 +0100
->> Subject: [PATCH] tmp
->>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>    include/linux/mm_inline.h | 15 ++++++---------
->>    mm/memory.c               | 21 +--------------------
->>    mm/rmap.c                 |  2 +-
->>    3 files changed, 8 insertions(+), 30 deletions(-)
->>
->> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
->> index fa2d6ba811b5..8a9a2c5f5ee3 100644
->> --- a/include/linux/mm_inline.h
->> +++ b/include/linux/mm_inline.h
->> @@ -566,9 +566,8 @@ static inline pte_marker copy_pte_marker(
->>     *
->>     * Returns true if an uffd-wp pte was installed, false otherwise.
->>     */
->> -static inline bool
->> -pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
->> -                             pte_t *pte, pte_t pteval)
->> +static inline bool install_uffd_wp_ptes_if_needed(struct vm_area_struct *vma,
->> +               unsigned long addr, pte_t *pte, unsigned int nr, pte_t pteval)
->>    {
->>          bool arm_uffd_pte = false;
->>
->> @@ -598,13 +597,11 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
->>          if (unlikely(pte_swp_uffd_wp_any(pteval)))
->>                  arm_uffd_pte = true;
->>
->> -       if (unlikely(arm_uffd_pte)) {
->> -               set_pte_at(vma->vm_mm, addr, pte,
->> -                          make_pte_marker(PTE_MARKER_UFFD_WP));
->> -               return true;
->> -       }
->> +       if (likely(!arm_uffd_pte))
->> +               return false;
->>
->> -       return false;
->> +       set_ptes(vma->vm_mm, addr, pte, make_pte_marker(PTE_MARKER_UFFD_WP), nr);
->> +       return true;
->>    }
->>
->>    static inline bool vma_has_recency(const struct vm_area_struct *vma)
->> diff --git a/mm/memory.c b/mm/memory.c
->> index da360a6eb8a4..0a87d02a9a69 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -1592,29 +1592,10 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
->>                                unsigned long addr, pte_t *pte, int nr,
->>                                struct zap_details *details, pte_t pteval)
->>    {
->> -       bool was_installed = false;
->> -
->> -       if (!uffd_supports_wp_marker())
->> -               return false;
->> -
->> -       /* Zap on anonymous always means dropping everything */
->> -       if (vma_is_anonymous(vma))
->> -               return false;
->> -
->>          if (zap_drop_markers(details))
->>                  return false;
->>
->> -       for (;;) {
->> -               /* the PFN in the PTE is irrelevant. */
->> -               if (pte_install_uffd_wp_if_needed(vma, addr, pte, pteval))
->> -                       was_installed = true;
->> -               if (--nr == 0)
->> -                       break;
->> -               pte++;
->> -               addr += PAGE_SIZE;
->> -       }
->> -
->> -       return was_installed;
->> +       return install_uffd_wp_ptes_if_needed(vma, addr, pte, nr, pteval);
->>    }
->>
->>    static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 7b9879ef442d..f71aacf35925 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2061,7 +2061,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>                   * we may want to replace a none pte with a marker pte if
->>                   * it's file-backed, so we don't lose the tracking info.
->>                   */
->> -               pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
->> +               install_uffd_wp_ptes_if_needed(vma, address, pvmw.pte, nr_pages, pteval);
->>
->>                  /* Update high watermark before we lower rss */
->>                  update_hiwater_rss(mm);
->> --
->> 2.43.0
->>
->>
->>
->> Does somebody have time to look into that? We should also adjust the doc of pte_install_uffd_wp_if_needed()
->> and turn it into some proper kerneldoc.
+On 2/7/26 16:37, Mikhail Gavrilov wrote:
+> Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
+> clear it before freeing pages. When these pages are later allocated as
+> high-order pages and split via split_page(), tail pages retain stale
+> page->private values.
 > 
-> I'd nominate Dev, if he has the time, as he has been working on
-> related changes and is already familiar with this area :-)
+> This causes a use-after-free in the swap subsystem. The swap code uses
+> page->private to track swap count continuations, assuming freshly
+> allocated pages have page->private == 0. When stale values are present,
+> swap_count_continued() incorrectly assumes the continuation list is valid
+> and iterates over uninitialized page->lru containing LIST_POISON values,
+> causing a crash:
 > 
-> https://lore.kernel.org/linux-mm/20260116082721.275178-1-dev.jain@arm.com/
+>   KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
+>   RIP: 0010:__do_sys_swapoff+0x1151/0x1860
 > 
-> I assume this could be treated as a separate optimization, as
-> the current temporary fix seems acceptable?
+> Fix this by clearing page->private in free_pages_prepare(), ensuring all
+> freed pages have clean state regardless of previous use.
+> 
+> Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
 
-Let's call it a cleanup, because the way try_to_unmap_one() sometimes 
-respects "nr_pages" and sometimes doesn't (because it's hidden somewhere 
-that nr_pages will be 1) is just nasty and provoked the bug you ran into 
-in the first place. :)
+Seems cheap enough and robust to just do it. Could be different for tail
+pages (although we do modify them too anyway).
 
--- 
-Cheers,
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-David
+> ---
+>  mm/page_alloc.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index cbf758e27aa2..24ac34199f95 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1430,6 +1430,7 @@ __always_inline bool free_pages_prepare(struct page *page,
+>  
+>  	page_cpupid_reset_last(page);
+>  	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
+> +	page->private = 0;
+>  	reset_page_owner(page, order);
+>  	page_table_check_free(page, order);
+>  	pgalloc_tag_sub(page, 1 << order);
+
 
