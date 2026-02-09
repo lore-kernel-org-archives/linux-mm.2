@@ -4,141 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAFB4E7E0AF
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 10:01:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8714E7E0AF
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 10:03:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A6576B0088; Mon,  9 Feb 2026 05:01:54 -0500 (EST)
+	id 10C366B008C; Mon,  9 Feb 2026 05:03:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2737E6B0089; Mon,  9 Feb 2026 05:01:54 -0500 (EST)
+	id 0ED7C6B0092; Mon,  9 Feb 2026 05:03:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15F6C6B008C; Mon,  9 Feb 2026 05:01:54 -0500 (EST)
+	id 023946B0093; Mon,  9 Feb 2026 05:03:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 049346B0088
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 05:01:54 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C1F68BADB2
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:01:53 +0000 (UTC)
-X-FDA: 84424476906.14.A17A782
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E1DBA6B008C
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 05:03:33 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E7B88C3EC
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:03:33 +0000 (UTC)
+X-FDA: 84424481106.10.AF77394
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1C328140003
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:01:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o+6YwqIR;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id A039F40002
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:03:31 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mV7dtvyw;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770631312;
+	s=arc-20220608; t=1770631411;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RnanSNvsOGVda3/oY42ThE+rhpyr5W9/VuGNiunT2e4=;
-	b=G0HL3eIcH+BJFm0+B4aVqJb1UzuxSepLdI1ATQ8oq8l2/MChXet8UQeP0yl/2xg+5oxfgX
-	P1UrttDPhykG6vxRdwkt8w7akBMYQxKXfUVvTuLnZvm3ARlNz6hJDJFhZodorooODHeInC
-	+4UE3qo/vQ1aegdnZOxJiu4IkzDgFp8=
+	bh=rGb08lW+Zhk1I2JWNlQKbjEdw1lWShONuyidTRl6UAw=;
+	b=cz1lqVVgLAHcAHMua8PqiloFwAVjF+/IBYbatDdayoUhCbDhHAh8VnXmSyJxTLvy04Wown
+	MZiKyWhKoVLkLmtdg92HRM9KOuRfnXMZxNLYZdE7C6Q/n0tcH79V2xlm41Mr2iVozC3+6a
+	5hekaJ3OSASOnoPdgCqGGO8oVCYQqcw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o+6YwqIR;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mV7dtvyw;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770631312; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770631411; a=rsa-sha256;
 	cv=none;
-	b=uoUtTU6OGaHXOSZ9GBowzcUUFKyAIzKuRmxOB4rcOilgtripsOACc8O0gNV/6N4BOV1o6g
-	tSmZPyklcX8XY1a+BhBPJqvBAF/cLahQlRY6TgfW1QYYAsAGo3MCjaeUis4+uTx4GLG/v7
-	OfHjPpLDI7sB+q66xaXNFX3qIu7sPWM=
+	b=AS+ZySsK7lEDGyEPxYrin1+faSi/xlNiShyKVrizZN62FQkgj+LcY4XBw7X4HucwYm+7dz
+	z4I9rz+pM8DIQIASsMBIKsxYDU7/jMCbw/soldSKlrPvM09oVMMLM1b7ZtP+RkhLMb+LZ0
+	CPmK3k0xQPwTCVSuMFcg6ccjf0QnzP4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 75911600BB;
-	Mon,  9 Feb 2026 10:01:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A224C16AAE;
-	Mon,  9 Feb 2026 10:01:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D7E0C600C4
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:03:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FB7BC2BC9E
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 10:03:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770631311;
-	bh=92L8oTerNxwiJBJ5Y3oAL/m4tt7fM/2hqtMOf+F3OJA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=o+6YwqIRuDuLv6T1THpzWj7KbUUhI80bMEwjLWEnt4MeA0T3GoYf4LrmvLWPRfSc/
-	 ma4xN/OAPLI/NITdSi/llXZixpAsOzPjVeJN4dkrkcJ8v/l9sMTyfM1aj7LHzjewcg
-	 eLFoYFL2Qt6ME8GwyuN3KY6dkKku1V+wzU6rX/vNvWhe7E2tYwefvIGnXIhVv3B2tf
-	 IpTbVfd/REBG1R67Z7gc5FG/w4b4Q0vevyv0iy5N+LbkgQHjtfaKFgeIEcdwPDLjju
-	 mbTHu1oG2NO9Smyuatqg+fteB/Y0RLOBGXHA/O1YoZWkC17ChxOvAtGK4VSrVkhWEx
-	 eYaSGZCb2C6Gg==
-Message-ID: <2f1bc7e6-a981-4467-89ef-609080436286@kernel.org>
-Date: Mon, 9 Feb 2026 11:01:45 +0100
+	s=k20201202; t=1770631410;
+	bh=xE3j8NVU0S43Vi8Kms5RnGUIbpIPaxuF9l00xrrETBk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mV7dtvywDcK4sdTYnpzZZQuVwucy8E1GLlNUJTwp1CG8uVaqrXWuEKoS3ZjYuFMoa
+	 EZrljNF3VLwKvqQvVrzHao2TqI5a2GQTEVjNuQWeFhXKerBfgQxc6rMYPMCXqyZNbR
+	 vXu8UW/K8bTVQu7fgqs6B/p0XI8hXtoaExv5SBCulTjW9Ms86tcfyuQPXfK5W8CpDf
+	 Yv5SDO8afqoQYuSKao7FvYKK95mJhStPK3qggtxiJ0nDr3BpJawteKfQsp3ogcqstd
+	 f/z1p7B6nCAVAcoClHH6WHVfvJCBH+L/FSopgXSvy+5XBay2YGNEJW76Cn67g+c/rJ
+	 6UZ9ZHyMCktag==
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-790884840baso38699547b3.0
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 02:03:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXFukCBJz/aTQ/ekExvZdPSt7b8zVdPfxK3AIseOh2letnEQdCTbWSNJVIxHiQMWwWMoD/4KIUy+w==@kvack.org
+X-Gm-Message-State: AOJu0Yw6+MGwf57SKbTYsT8AlQA3yfG20R58qPRmOpoHT+Z73tpXBrFM
+	XGH0DoiWjP7mkQFv8GNaAC5yXGLDcREh+cDdE4Y+je+3orvdEbSRfyKzJI4w5kSTHvnlvSrTOuD
+	YloZsP97WHg5eeP77mtHbAdxYtM1rl4sxZrrF9K+5xA==
+X-Received: by 2002:a05:690c:a96:b0:795:e10:3c9c with SMTP id
+ 00721157ae682-7952aaa780dmr100866807b3.29.1770631409841; Mon, 09 Feb 2026
+ 02:03:29 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: cma: Fix stub for cma_skip_dt_default_reserved_mem()
-To: Marek Szyprowski <m.szyprowski@samsung.com>,
- Mark Brown <broonie@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Rob Herring (Arm)" <robh@kernel.org>,
- Oreoluwa Babatunde <oreoluwa.babatunde@oss.qualcomm.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260128-cma-fix-stubs-v1-1-e07a077d5b33@kernel.org>
- <CGME20260209081154eucas1p2ce1f3c7bd5cae843fd60355314c8d4ce@eucas1p2.samsung.com>
- <4fc5e312-b56a-4664-9722-81163ecef515@kernel.org>
- <67426771-7df6-4544-a77c-97f44ee08d99@samsung.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <67426771-7df6-4544-a77c-97f44ee08d99@samsung.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: neok7rsxs7t1kk8jcga6a4tbi1p18yhx
-X-Rspamd-Queue-Id: 1C328140003
+References: <47d21a6821c4b2d085f7b97bcdaa205bfcb0e0ad.camel@ibm.com>
+In-Reply-To: <47d21a6821c4b2d085f7b97bcdaa205bfcb0e0ad.camel@ibm.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Mon, 9 Feb 2026 02:03:18 -0800
+X-Gmail-Original-Message-ID: <CACePvbVH0ovOcBqCN7kJ3n0QFmvuf+_5tMeRXs-JAQ+m5fdoCg@mail.gmail.com>
+X-Gm-Features: AZwV_Qjeos_xGeoSPEqb_Nm-xUatLudlVqnasCFc34nCWxZ9Bx_b5Ln4iDFXUhQ
+Message-ID: <CACePvbVH0ovOcBqCN7kJ3n0QFmvuf+_5tMeRXs-JAQ+m5fdoCg@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] Machine Learning (ML) library in Linux kernel
+To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Cc: "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, 
+	Viacheslav Dubeyko <vdubeyko@redhat.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	Pavan Rallabhandi <Pavan.Rallabhandi@ibm.com>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	Chris Mason <clm@meta.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A039F40002
+X-Stat-Signature: gwti8rn5z5tjnudcyhcudy73rxssbrwp
 X-Rspam-User: 
-X-HE-Tag: 1770631311-820879
-X-HE-Meta: U2FsdGVkX19t3FXbpgXOZ8IuKa3yLPvrALp77SnFu/tQO4psBI1VTguMjbUmBw91q5Eqd44zz6QwyKooqCEteWrVPX1Yi0AWVcYp7qraWqJKivNcvTij4w3E0jRbuoKEk1dCFDV9N7a88YX6C93IVR6BspLWx/gFBt1PiGHWZkN4+jkzrKZrB11w/sTpz6+pLwkyNwoCTf8PIW5/iJIxdwta4gqScpOkL0XokO1CeGxWcxY3rLfmBcXeS0QodsSts1AzltROGSKcgsikVopLO4Hqo4DfAQGMFUJxV/rPu9RxLu0toRDWgyzvTXj8z5MurCTHHsSCwe3KhDzwG3uho60/EwuZZt8UQaRG2g5xa6KTbQwojh2yxI6OW/7gFUducrLK4/hqlidHeDcwx9zRa7VsNQwz4WOxzKTe70LPW2e9g3rwbAxOeN++DbhLIUkRTpmD7qFOzzVNoq/9QnK3geREgjX5RcEYKdNi4CB9Qc75rQvseHTbi1l28dSlxdwrugnEs460+K543avdlQ1jtRWkMW8jSrnEi4g9uLHlZLeEcLSjke4rPn7y08VJ+1a2/itrfL4Vq6n03M0uDT3n5fZO1FH9DCFYs3/UzYcMtHhYColyyFlCJuTuPqQsdv/WJZoxlOjjJxTMd+EbQ0ILpJ4Ftl4XO0e4JdRtKkuQ8qgKjz1kHYj6Pg9cEYPOCkwFK7fa177UDCuwmAlR5s4v2K2D6JktA+3QCrsmPxqdTKJXXrqYsbB4rGy3dJ5xtqhoj7uTgD1shMiOqdHqB0W2ZF+TjaOdASOiS4Cw7FQ/Smto++W+bhsddUg3k3k+nR1DS3XoMdDEcMrQJcEClVpvnJ7hogeIZU50v7xmxxHcLzQeHPxQSgw4J4cH7SRtQfvRsM3lENDqu50WCpPgvBf/4I8nAbbRbSYmEmZfze8HGQ1mxa3F4vY/gQpk7hZuMuz/qrWu3Sgkm9w9zCpl4wm
- lFb/bcSS
- Vup55jMD/KPYIRqB28WwwejY9eBjknNosPHr+HbpGHN9oxBqO2Y8Om9AZ0g5keAYx7zRlsjUSvvF8SRpvrxmu5Sw3N9K8FgD8y1rquSAWmXybiurpwNeRvtg0EN07/Rrw7sXWOaCW1LreqqwQ7btUZXRw6EzKL7exdOSss0aTw9ZRCjdozvVDL0oi2ZCuwoZPOWRq64AfzCUtLTroOjEya1Jni+QY5wGMUIgMn6fMDoNhgdAehpo4/lGAwIF3YNPTtL6+Zk7EWZ5MObKM1ryGrh5OoeuZQCqnclk5+0miCA/EFi5hplLif3DFBQAQu/feNlpbtrbWDFm7jkpMameWFT+EYyaKBxrJAwKZ
+X-HE-Tag: 1770631411-310134
+X-HE-Meta: U2FsdGVkX1/7e+vuT/Y1RIsQCC5xjPftaZ8iag/abkI31BEK9RdvCYzG2NPGHbBp9jBppj3KmwHSDHig9Mq1bk/kp1kluPYDLUNUI1dtsQhzhhhQzB52ATYAw53tOvSdpgPMda5yPz3SqPgAOYMeBQ340nZEyQmFdfvXr+f3d8N+L56Z7o+BX5JI6tzpF1PLHB9xFwVyHuBcgU1eXkUCJCkrE0VJD6k28Sm9OVBt3M0eiu8B2grRa+yDsXGCcTgkaTeq+lRL1bYf4xLcBCmLy21kh//giMGwkks666KB6lXY3xe6B4AkW0ee8fVx/a5VoRO/0PTboI16qH06LZPe9X2yB7y0to82waHUVpa2tXOcHLxksxvcb+9q/DOeUzXFq2coyuLL9anlqAHXm26s+nUYQs6iADiE49vIvlqtt6cKvxHIsOa62XUlGfexCBlSgTexSgZ0ytHryvhI0YlXitxVraujH9is3YKMcrIvRpxFzVm37IHq4dCTiuIMWS0iTPN5xMGcKTDDN4LpU1a/PtRpUTmeytNnzg8mfba/r6EsQLQ6D57V7ijD3WYlnL6IXC0tdCWBiVrgpNqOsIRtuM7P9quo8lD/gKkuxbjMmQKFut71NZUVN5ZzMRzMR0hh+HS3HmuZmokc3VaqCBU9BO71PomNKP+tFUF6jsssLG8ws8oz13TXfPPkqeAvBOKX/tawUC5HBAHmOfxxAR+eK9eeR8rv8wYoHFbpea2JLRirePGV6s3YaevmNJuOp+Hhe2x70XEhm28R2WOKMUze5CTNSi5plH5UtT284dD1v6DghpRtYAlvqD7J7Mfzs5yiw07/Uo2Kjp0NYW5cfX9RXwWBFnBQBoFyhsiwA4HUDMrn93+gpRIFTZoT2cnSjrBo2bxP4g8Wfhtx9Hg6SS0tmMGmX9anUBsLhF6iOsOkiQT7og0z+sRU7DicgSD6UPQkGvJpGTxr+AIOQiPVv+b
+ QWRFRGBu
+ 7tgj5+oCOEzbtelN7EXIoVodz+N7gotXfgZxWsH4DxF7HbjKK+Xra853Cg5wPpVWXx0n6SpK1V8A2cTsAe8W5vt3FudEjD4GtroNiJx2racP9OMsVOXzZ+u0Mrr2S1rCctIazveVU6kMxDc8Xbp39yzmgHZNuyeyDq0INt6RMbLfzO3WcbxcB9blyjJnslE4/MeLhRx/IMqZXgKvFta15pRnT9nekmWVqvFh0lMT/Ub2vkzpsIHD+cZRovKsIEk0022CPrwP9/vK/+ulqJBE40Z0FGEquFnVs1V5bnLT1PpIizXQCVXkFrnEsl9tNpo/COgcOu9UHSgthAClCUOXmZXA3LBGpOKN4v4/QoIfcFeSEYcMhED2n5u552g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,41 +107,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/9/26 10:59, Marek Szyprowski wrote:
-> On 09.02.2026 09:11, David Hildenbrand (Arm) wrote:
->> On 1/28/26 17:28, Mark Brown wrote:
->>> The stub for cma_skip_dt_default_reserved_mem() is not inlined so
->>> triggers build warnings:
->>>
->>> In file included from /tmp/next/build/fs/proc/meminfo.c:18:
->>> /tmp/next/build/include/linux/cma.h:68:13: warning:
->>> 'cma_skip_dt_default_reserved_mem' defined but not used
->>> [-Wunused-function]
->>>      68 | static bool cma_skip_dt_default_reserved_mem(void)
->>>         |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>>
->>> which are fatal with -Werror.
->>>
->>> Fixes: 26332ae848f08 ("of: reserved_mem: Allow reserved_mem framework
->>> detect "cma=" kernel param")
->>> Signed-off-by: Mark Brown <broonie@kernel.org>
->>
->> $ git show 26332ae848f08
->> fatal: ambiguous argument '26332ae848f08': unknown revision or path
->> not in the working tree.
->>
->> This is not upstream or against an mm tree. Against which tree is it?
-> 
-> The fix for this issue has been squashed into commit 0fd17e598333 ("of:
-> reserved_mem: Allow reserved_mem framework detect "cma=" kernel param")
-> and merged to v6.19-rc8, so the above fix is not longer needed.
+On Fri, Feb 6, 2026 at 11:38=E2=80=AFAM Viacheslav Dubeyko
+<Slava.Dubeyko@ibm.com> wrote:
+>
+> Hello,
+>
+> Machine Learning (ML) is approach/area of learning from data,
+> finding patterns, and making predictions without implementing algorithms
+> by developers. The number of areas of ML applications is growing
+> with every day. Generally speaking, ML can introduce a self-evolving and
+> self-learning capability in Linux kernel. There are already research work=
+s
+> and industry efforts to employ ML approaches for configuration and
+> optimization the Linux kernel. However, introduction of ML approaches
+> in Linux kernel is not so simple and straightforward way. There are multi=
+ple
+> problems and unanswered questions on this road. First of all, any ML mode=
+l
+> requires the floating-point operations (FPU) for running. But there is
+> no direct use of FPUs in kernel space. Also, ML model requires training p=
+hase
+> that can be a reason of significant performance degradation of Linux kern=
+el.
+> Even inference phase could be problematic from the performance point of v=
+iew
+> on kernel side. The using of ML approaches in Linux kernel is inevitable =
+step.
+> But, how can we use ML approaches in Linux kernel? Which infrastructure
+> do we need to adopt ML models in Linux kernel?
 
-Ah, that's just what I wanted to ask: can this be squashed :)
+I think there are two different things, I think you want the latter
+but I am not sure
 
-Thanks!
+1) using ML model to help kernel development, code reviews, generate
+patches by descriptions etc. For example, Chris Mason has a kernel
+review repo on github and he is sharing his review finding the mailing
+list:
+https://github.com/masoncl/review-prompts/tree/main
+It is kernel development related, but the ML agent code is running in
+the user space. The actual ML computation might run GPU/TPUs. That
+does not seem to be what you have in mind.
 
--- 
-Cheers,
+2) Run the ML model computation in the kernel space.
+Can you clarify if this is what you have in mind? You mention kernel
+FPU usage in the kernel for ML model. It is only relevant if you need
+to run the FP in the kernel CPU instructions. Most ML computations are
+not run in CPU instructions. They run on GPUs/TPUs. Why not keep the
+ML program (PyTorch/agents) in the user space and pass the data to the
+GPU/TPU driver to run? There will be some kernel instructure like
+VFIO/IOMMU involved with the GPU/TPU driver. For the most part the
+kernel is just facilitating the data passing to/from the GPU/TPU
+driver then to the GPU/TPU hardware. The ML hardware is doing the
+heavy lifting.
 
-David
+> What is the goal of using ML models in Linux kernel? The main goal is
+> to employ ML models for elaboration of a logic of particular Linux kernel
+> subsystem based on processing data or/and an efficient subsystem
+> configuration based on internal state of subsystem. As a result, it needs=
+:
+> (1) collect data for training, (2) execute ML model training phase,
+> (3) test trained ML model, (4) use ML model for executing the inference p=
+hase.
+
+As far as I can tell, a lot of those don't need to be in the kernel's
+business. It is more of a GPU/TPU driver user space interface thing,
+might be easier to allow the driver to convert their own kernel/user
+space API then expose common user space library API. Are you trying to
+define something like Nvidia CUDA at the kernel level?
+
+> The ML model inference can be used for recommendation of Linux kernel
+> subsystem configuration or/and for injecting a synthesized subsystem logi=
+c
+> into kernel space (for example, eBPF logic).
+
+That again sounds very much like a userspace issue, the above 1) usage case=
+.
+
+> How ML infrastructure can be designed in Linux kernel? It needs to introd=
+uce
+> in Linux kernel a special ML library that can implement a generalized
+> interface of interaction between ML model=E2=80=99s thread in user-space =
+and kernel
+> subsystem. Likewise interface requires to have the means:
+> (1) create/initialize/destroy ML model proxy in kernel subsystem,
+> (2) start/stop ML model proxy, (3) get/preprocess/publish data sets
+> from kernel space, (4) receive/preprocess/apply ML model recommendation(s=
+)
+> from user-space, (5) execute synthesized logic/recommendations in kernel-=
+space,
+> (6) estimate efficiency of synthesized logic/recommendations,
+> (7) execute error back-propagation with the goal of correction ML model
+> on user-space side.
+
+Unfortunately a lot of those will be tight to the internal
+implementation of the GPU/TPU. The model needs to be compiled into
+GPU/TPU machine instructions. So forcing a common interface will be
+hard because the lower interface requirement might be very different.
+Maybe having some common user space library or ML description language
+is better than forcing a kernel interface.
+
+> The create and initialize logic can be executed by kernel subsystem durin=
+g
+> module load or Linux kernel start (oppositely, module unload or kernel
+> shutdown will execute destroy of ML model proxy logic). ML model thread
+> in user-space will be capable to re-initialize and to execute
+> the start/stop logic of  ML model proxy on kernel side. First of all,
+> ML model needs to be trained by data from kernel space. The data can be
+> requested by ML model from user-space or data can be published by ML mode=
+l
+> proxy from kernel-space. The sysfs interface can be used to orchestrate
+> this interaction. As a result, ML model in user-space should be capable
+> to extract data set(s) from kernel space through sysfs, FUSE or character
+> device. Extracted data can be stored in persistent storage and, finally,
+> ML model can be trained in user-space by accessing these data.
+
+Currently a lot of those are happening in the GPU/TPU drivers and user
+space library. One challenging aspect is the hardware interface is
+very different between GPUs/TPUs, and might be challenging to expose
+common interfaces.
+
+> The continuous learning model can be adopted during training phase.
+> It implies that kernel subsystem can receive ML model recommendations
+> even during training phase. ML model proxy on kernel side can estimate
+> the current kernel subsystem state, tries to apply the ML model
+> recommendations, and estimate the efficiency of applied recommendations.
+> Generally speaking, ML model proxy on kernel side can consider several
+> modes of interaction with ML model recommendations: (1) emergency mode,
+
+That sounds like user space interaction again. Not sure it is for the
+kernel space.
+
+Chris
 
