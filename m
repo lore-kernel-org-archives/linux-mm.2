@@ -4,142 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E89B5E7E0CD
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 18:22:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9FDAE7E0D5
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 18:26:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FB5B6B0088; Mon,  9 Feb 2026 13:22:12 -0500 (EST)
+	id 38F696B0089; Mon,  9 Feb 2026 13:26:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1A8DF6B0089; Mon,  9 Feb 2026 13:22:12 -0500 (EST)
+	id 312A46B008A; Mon,  9 Feb 2026 13:26:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08AD26B008A; Mon,  9 Feb 2026 13:22:12 -0500 (EST)
+	id 211FF6B008C; Mon,  9 Feb 2026 13:26:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EB2666B0088
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 13:22:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8BEB71B2819
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 18:22:11 +0000 (UTC)
-X-FDA: 84425737662.14.D940696
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7DC264000C
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 18:22:09 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dX2FS4ui;
-	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770661329;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A7956B0089
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 13:26:31 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 993751601FB
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 18:26:30 +0000 (UTC)
+X-FDA: 84425748540.30.A2F0829
+Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E0B791C0012
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 18:26:28 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf18.hostedemail.com: domain of 30yaKaQkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.77 as permitted sender) smtp.mailfrom=30yaKaQkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770661589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tbNzYBZo9BUScy0n0qSEEP/X+PFYqoABoCMZm/T5fRY=;
-	b=tWewX4RsQyAyHjgKDTjGN1d4e3nwlBgFsB0C+RfNZscbTwAyI2Ol1XtyrmyHu9/BECB5FA
-	nH6PBM4SD4T6QAeRlIvVfsH+LSkPFUeLzgSGA5wNv0j2vIwcMhH2SmzDf33OQUPxVoIpZ4
-	Bj7pJN5WqT7rX+Zk9pqkqCGHArZHWP8=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dX2FS4ui;
-	spf=pass (imf01.hostedemail.com: domain of ackerleytng@google.com designates 209.85.217.51 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770661329; a=rsa-sha256;
-	cv=pass;
-	b=09fsFS/25l7xpKEXewSDmN4pr2yTWXBe+MhlFrjVfMVmQIcPkyMzACqcPDf2iMd5Vm43Uj
-	EcKIuQXrxI2bkRWZQTa4JkE9/hiZALDihAx/1YG2sKI1rScjK0D2qYv3a6V4nYoCR9Uwxh
-	VGDJ5CYZCkAVsLlYBe8jm+0xoJxhlMo=
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-5f5418c40daso5089826137.0
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 10:22:09 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770661328; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LYwAT40xNyCvZt/q9YMrAUU+xi6kXqeqWdW2cq5kIT2G8T6RP8mNjCPUdYMaXakmk+
-         eHmDUla7eMmkGA2LziE3rL9Lo5HORq5krjm905UF7kNTLO1IGVsPLlyaTK/tzEXSCCzH
-         R1YYLW5rAfQkN6FSJQEIadJRrUE+5b8vUbf0flOw+EZAP/9mYIOZGbAB+ltokJ1O4RrB
-         OrXJGEwe+a1Ci18g1OcaZLMIzQFTen4gDw1ChZlDOzfJrNg5wWAXSAtcvJkCLHkdyAQW
-         xlAcKXGzyAIrsksQjHrZMYR430f8hlakT/GI+4wsrGED4zjtSL2u0M5QNef7M42IeiRr
-         8rjQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=tbNzYBZo9BUScy0n0qSEEP/X+PFYqoABoCMZm/T5fRY=;
-        fh=sg7aNDDctrWSA/pdNs0Kixk9g4qYgNBHphPSC88hUpo=;
-        b=RpgQWSVVvE1tDdgb9vn3v3VwlTObFCRTVk4Xm1B6R2HkKswaLbrq0z4IzTF9ATnGRS
-         7R9T/X+NocOlUZrJ2JQ79hSm4QLR6JempH/cVkrUNz9srkjfwn6aLa5lJVYSs4JF85cM
-         Tc9b+Od4JyOw4f4DrJWbUvYH06VYscT6BU5N3/BSkFcN/OTeHL6bK8PbqLuyDa5Gt95e
-         F3ax2G3SOxgMduu2TApQJPxYMjYOPUWuNx1Jje0J6fJWUW5h29ax+5Wnh8LDSfxMDA9u
-         QNIFAyuWt4zIhg5+UeztfopVEm0rFG8S9teh2NgMQFG7d0Q2u3AnIQ3HGNuVFC2sv8mh
-         os3w==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770661328; x=1771266128; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tbNzYBZo9BUScy0n0qSEEP/X+PFYqoABoCMZm/T5fRY=;
-        b=dX2FS4uig1Uvx28Xpxly2TAvloIRPJnKOw6MR+98sME9VZ4iJx2PbuxLVBC/D906qA
-         9x7hlQW+tzg6JVfZKsNZGqMr6r8XWKkffxpRrsEkUUSzpZhf1WhsGRrwK40g1lT1bAr4
-         4DSyfC0FEtNF/0s6TTMht0J7giaxZdNCjdChelRPJMeEEmac3b7C2fGUHWDLI5ZpIEa9
-         qlwuY43eE7HWC0acSbERjxhRb31VcJByZfpzaP+bm7OV08isVlDl9+vl0Li8Fi4CSmbz
-         uLQAxipCyRtYI0QHLZ+UL2+zLdONxlkkVd7ONrJA35dBtxSL4bMJgbIzmaas77hyMTXC
-         MY6g==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=rHb1csLytyyiMKOXyYY5iKGtJrwFDhra+RzcW23fs9U=;
+	b=b3sDzNGlUvH8mBMXKVCuZqocJh+GIeMoY11sSj3Tsw8U/p8RMohI8OdD9YqvL1hKsK/Tah
+	Mp4oCcKC4aDeBSyKSq6ln/PVbezdeSEEBlWrzQk1CytBDLWe5WgTpEzio4u40GLKbFdoWH
+	Y4k2Ipl+gcX/VDqvuAMp6zPUeui6++M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770661589; a=rsa-sha256;
+	cv=none;
+	b=z2AucQ5j4WuG4n5Q4ACiOG7AyBfaeEKQWkxJa7rlV97hl449x1eZPVB+E/uwqy+rZEBMy5
+	tMU+RrjeBB3TscNnzONRFlCizqry1U91jfu9bIPjA+m8bJe+OZYPYTWyIv1fgRI9fiaHNB
+	MAp9A4dZjjFrKyMeXJwYd9t/6I8Akfk=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf18.hostedemail.com: domain of 30yaKaQkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.161.77 as permitted sender) smtp.mailfrom=30yaKaQkbAJwOUVG6HHAN6LLE9.CKKCHAQOAN8KJPAJP.8KI@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-662f839d680so8386411eaf.2
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 10:26:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770661328; x=1771266128;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
+        d=1e100.net; s=20230601; t=1770661588; x=1771266388;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tbNzYBZo9BUScy0n0qSEEP/X+PFYqoABoCMZm/T5fRY=;
-        b=jAZeoY6OkF8fovVFu12fwbSbFSTK/6kgPmXuGaOqaP4aW+AFH3UTFMqMsI8nyKko/p
-         wd7OP7F8hL5F7cs8R6MtpMRnwjyJwBKXL+WyZfjpN3Vjl8JU+D9sAqRkKtqHMKAoUJGD
-         45s82LVxd2fdlrc9UXrBX8ffCM3uOv94J+qKKWRqath/SEmwLFpQYQjTjz3GKqKsvIIf
-         2Vbt+AE5BO+Qvwhj2lY5Htqrulrqm3c6qfc3z13X32dX1QOVix/d8ZLFGE7KsQMI2BOZ
-         WP49c36JT7XkNDqjbmVZtSwe1iwzESYha7KoOKxhyYKOPXgx0wX6SwNtCbX4uBJbVr6j
-         sLdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWKz/GfmshPYywoI9CUDLEGbWWsZfAZ+9jrSph4nsIFATiMs2zct4JiGRndbtMiVa5FGEuK6HOfJw==@kvack.org
-X-Gm-Message-State: AOJu0Yyler7vUOAoVuCDYM6R2VEnRg2moUxg9INO37CbOh+V1ISruyFW
-	QWVU67RS3le0McolxWAKCTSH0Y7Hm/xUMn/LBQgD11g+zQ8eYrfqiMmcIjZOg1bEokMNllrpWEl
-	ChegS4VlF+D9wly6u127m8a2EVu+P9YmKny1u3dgS
-X-Gm-Gg: AZuq6aIO6mhgsDmB/ZGZ2BCUaow93wr++TSjDxvzTApOaEXB10Q9t9kzwFaC0Um7292
-	D2jSmzJlKckaVIssYoNtq7D9dpMOJ7JNieBRB4gYjjv3JKabqtMKrYwiLGFu+0n/1Irh/BOOvqH
-	PIDjTxWTMHRBCXk+obyYArhBMIgk0xPoqkcgtc0CIZbXRDmVDBPcgBXCWVwnTRCfxOnJzsrQWah
-	ENUke6p5AoyrFgTbg6LkE2+2zzuXeFUjj70puYmlfJkDe1nHcJ2ch6reZTAiaksJEWhMNj+Vc2D
-	XVbK2A13NuiU2oJhZFyg86B6zg==
-X-Received: by 2002:a05:6102:26d4:b0:5f5:3739:100d with SMTP id
- ada2fe7eead31-5fc42e49737mr167568137.0.1770661328010; Mon, 09 Feb 2026
- 10:22:08 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 9 Feb 2026 10:22:07 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 9 Feb 2026 10:22:06 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CADhLXY5nrTXmWMPeiLg37euyVeQsNDRUvKmQaPdxtE1YhPq_jQ@mail.gmail.com>
-References: <20260209033558.22943-1-kartikey406@gmail.com> <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
- <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org> <CADhLXY5nrTXmWMPeiLg37euyVeQsNDRUvKmQaPdxtE1YhPq_jQ@mail.gmail.com>
+        bh=rHb1csLytyyiMKOXyYY5iKGtJrwFDhra+RzcW23fs9U=;
+        b=ftg9NId49dZgjdmTXqDGTyD1PDmUjQggNwuzmUgDBvZ/LeFlcCMQ+lNH9ffQHd/iDw
+         A4ENzxmkzaT7JECnUT1HrVBtrdcXMGEOBtzsffpQ4Is9D89wgTmqJ8TAdrrPpr4AUItH
+         YBDGymdI8KSXuMwhQYeAo18hsYyUQMWD7c8BbGlP2xnWAauzM55gH+45DQTNgWKQJwNl
+         B0W94XQRZgeoFVghjJ48oWVSzE/nJjd/BY+pyvuR8qHtKYQRlf3KnuBoI1p1KDuYLInr
+         49Qq5Qj8zPwEvnfVRKLZ2ORm9F72toLlFea/GScQZHwEROdS/2cZ4yYINdVIblBswExa
+         FIHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUsqK8DUeWcH8VImfMyaf/TftHrmdkH+jmHDgVQ0xvb0NAz1bvTORwaioxb2cW22M1YG4x7V+SBYQ==@kvack.org
+X-Gm-Message-State: AOJu0YyqDkjm+vIPR/p2oy+sgKBV6DmtK0Y6ZwYhVB9hoOHmMAQk4A5p
+	+/LL/K1leX/gz1Dz+YmtrsnqvfhFYmsyYBkkS41rfmO3mqm79I3md988wNqEnQPnKb2UjSSNaWo
+	86flhzauR5JKq0Cy0o7/MiAsGsikSHXN4fe7ZA743qDI9ypOoK6VKfovjgX8=
 MIME-Version: 1.0
-Date: Mon, 9 Feb 2026 10:22:06 -0800
-X-Gm-Features: AZwV_QipdZ3jDVMHY-_ogWYPGgEyKyqzEeMCGF8rB9UqPWu_-IPvMP9sZmCT0BI
-Message-ID: <CAEvNRgEoPs5ia+u0ODra6N4BdOwpYa04j8nDxwfNVyfCOWnM6g@mail.gmail.com>
-Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in file_thp_enabled()
-To: Deepanshu Kartikey <kartikey406@gmail.com>, "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, seanjc@google.com, 
-	pbonzini@redhat.com, michael.roth@amd.com, vannapurve@google.com, 
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
+X-Received: by 2002:a05:6820:1614:b0:663:bad:9727 with SMTP id
+ 006d021491bc7-66d0d10b432mr5479618eaf.78.1770661587911; Mon, 09 Feb 2026
+ 10:26:27 -0800 (PST)
+Date: Mon, 09 Feb 2026 10:26:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <698a26d3.050a0220.3b3015.007e.GAE@google.com>
+Subject: [syzbot] [mm?] [f2fs?] [exfat?] memory leak in __kfree_rcu_sheaf
+From: syzbot <syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com>
+To: Liam.Howlett@oracle.com, akpm@linux-foundation.org, chao@kernel.org, 
+	jaegeuk@kernel.org, jannh@google.com, linkinjeon@kernel.org, 
+	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
+	pfalcato@suse.de, sj1557.seo@samsung.com, syzkaller-bugs@googlegroups.com, 
+	vbabka@suse.cz
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7DC264000C
-X-Stat-Signature: z6wrpm5n13t9k8rapfw5ufxei1ujd9ws
+X-Rspamd-Queue-Id: E0B791C0012
+X-Stat-Signature: scpxic9m4rugqq5ue1p1aor4zc1ku7ai
 X-Rspam-User: 
-X-HE-Tag: 1770661329-916593
-X-HE-Meta: U2FsdGVkX187B2JSCfVaIWvI9C2BnV+7Ax2p4SKW1gZ5emTxZJcPiH0qFr3/EJvIbKw9T6l1ONDv9T/hW5TRXuSKuNjsu29F1XAz1CoFCOxwL0P5yxW+tny3KeaqrLilqxXkszCLtP3Kf7B9aL8LEs+cAbkp8kzvkSzdnomSv1uSBcnR5QhyMuFpphmSv2zcohmHsKNN2kSPfnEceTXZgVWQaASUmq2V1LvUXLh/RcqhRYSDlTKgNCnPFPjcnM0P5hHiYBxwLNDsB71s0C9CGfUMXk17V0GyKkft2crfO6KFB+EjX+Lu9FQSswlDVM0YOSUA+tS3JSXvzLn5MY3Id1gzBGPcWWcg0/k8KlZZFfXmtkfn/+d5bvNxgbdRomMAyyJbYJHb1Nl435cAZn8DuQXdLl8FdWxQBfdkHgVvso6m7Mbbb6mneN49OrGnOeuQOjL2KZYeawUKCuSPovUgxPH6tJNsG1eo2Ysj1HhPn+yfO0Uh/EAm2LH+Dn+7pQcE5twrzsaRcDrvhW5tRVAh6Tqsj+Qj1KXJHpgpH9yKWqlz+HV6Sn8PxRF2lJSQc/rivP705F2bNB/MPPvEWCe24rLQ37fqcqkp4L5EubXqnN0OkpjNG58pFLKcxq+fpL73psx8j+nKJlPO2hSW8HF7DMwJoZXK6pEHUZ+AhYpMpQO6a5GLEQvRIYCsvLuiOEojuXnZHvx2RfJHj9mAwkMAQgCny85aHhCed+ovGW7zztJKIUOGtlGo7WAVy4ltmH4ZZbvvDvcPcoWJt1eDkJZITz4FLSRkHvD5NO13wZPqGsyH/cizX1YyHZLru5dsBjoy2b0o4LRsqZr8ctGAjhX3MkDcIUAAeN7h/7cvCBEyzc5eCJk2fJMD+ypBwuHAjqmDQZ/UX+K+1oTJ6TXNHnrWqi5gQhEmkCiNS7FBP6hKeUIPbBpoRiLfGvvgyTW1iqGPJPeOh8OLRO1m8K4SRRx
- NJUb460G
- JaMZg9xye/XirFD1v4yi11IYlXgMNexo6TJpSBd/0jegF92/akX8pqIp6KuibNtL4L0TnZw6+nw5FpQ+zkwOc2fewG2F91gkT4qrCtUmM2UpKgASKCKRtyKloToc6VqXm/IqnocovGL1MbD8CYennL9VMUMxMez96pOt1oWh/XnaGY7HBCorq6S+as2X1qoU+xT5ZHFGIz64GV3Ce4Nv7sUzWFM5pkM4c4TnjotP/w1OudaevCIPAnHBsvNF1dOGlkFkpkh/pjA8hXLiLO/wSQqx5A9K2Umz2zuTu9AvVBiU2z06313zOTlIOVYkXQm0m+ulr9Mwc7W4tS24HfiCmSK2xCo2+QUaucLnpQnEaiavBp7VpLdv27Tjk9UiRkwK4wWgQ+pxyw9a/fKbkghN7ivC6v9e2QVagLH466AkQGLdm+WuswCYhqTIEtnbPrI6BYRToSBnIG3wdakAxhCPzfWwWvrwjc6++nrLl0iZ1/xtrjaL0OfyQnUhH8RxzUHCRJkq712h6VjFDa0VljxOiCSsf2k8nSkFM1GjJwq7vmcK9IEAREjwfOcwZ18hIJHMtET/l
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770661588-427811
+X-HE-Meta: U2FsdGVkX19R4MzWKBUdb2UjJPH5VBJvN6oA2U7I1H7SOTf4yTd5/VY1vYAJu7GcbCVlRQ4DRovUrrzrkSi0hYUmemhkFMt4dyk9FdAwnthN7xKcLDfq2paSS1up0YNc+yYm0TNVJKbTD2nKLc1aK0MhAXe4LMjm13i3H5q6p20ZqHdT8GpFdC1RVB0gZUz+0zipGyNYNCOUeqcdp/0N1xZL/nIWD4qcyJTRMWiotPP9FGfS+DomuRRymLR2MgIbATZMMeu1H4TU8AysnWKmaS8yTV3xye/zP9hdkMXwywsscQBQmbUQdYjLxjTKeHgzLyOHjEc9uilmsPavQQuLTsarYQMHI7v1J1iHoGjsCydpy9DIRgrYr/CxfvKV+0YsQOHhEeemvUVc9sar7D9w777KH0BcBp3ZdoaycjLZw7CZS2QWzz3awfmaJW6pf0s3WuRXBrBCZiJKDkNoI5PVcCFPqA9nsjEyaF0kCPyOf8vUgBbmjlhHkd3pc/nDlhnnomlTzUHZ57ODDiOMYBaXDGUb4iKfju57XdECxK/C7KdwFAQkIPYYUeVE8tifqBU6HH4EheTJqrujL0m7Ch/bR9WvcMt+PTHMG5i7jbger6MEYsjB5XUZTGltLCx9zoIvrD8ycL2uYGEo2nL1scQipTx67qJfnobzgsWBbGXGu48fexsSSuHfTYeoFyTwyXZ8bNIHNk3BGYwGGDjBb6j9BHhZSj/ROXoazNLfphkI8APNy3Y1mjEqeJgZUyHQWUlN9tOjLsWNdEGaq6h5ZLZGVE+zzkka5k69lQ/PhqtQiMeg3SMRV9MsHOQ1dVAU0V7jXA7lMczeIKJ9Z3Z7ed7bETSYZGS3CrPmyjM0Hh9NvFnb8HhEEUA/xOjEgJeiOeUdslSqkHST5d3f6govNyxrpXVQA/8QshR04UCaVyuyAydBM+xZB/3foQvahN2InsICD/Yv8qrV//4MvSDC7aJ
+ 0p54XOOn
+ tRQZAaGLJOKILHh84FfqzdEhvJ+mh3FamYBmCRRQDcjl31tkFzJUfKitSNnn+d5/PW9LODvVMw4QneaMCnOypUZF+2PmOgakA10dNEvFJLjstGsEUJnJlMCBfsxndfn7ognHbNMuYRDMbCtGMouHqwTLxUTZK1oAkxMEWZ7F/PpUHhQhZFSeBl5Q8KnaPDPXayCkK305+EL7XcKNCvOOdFGa0mBL8ZFgpiS/VXFbGy44qSNFwsUFzhE5H4BVq/H9h/cMe4qsXPL+l88JK7E4hVNeBcMgh6hqXly86ZAYgVIV5vZV9okwEHZaRt/HLQV2KjI5sv6DTkvTP/WXPJL4C0I8S5S7FyfmImIHS4y9DSkP/B26o6NLvEM6VDrB4GixL229d1FmKDaobhfRFTPGvSxzhz7nIt85UJmZYcQD/ggIOBvh6X6tJPMZQ33qVcwQHUVeL30yxtXoEIU8DnwKsPhsCDRp+4s/JJBObyqvG/UjHtpDyQmBDxIFTUD5lfWyQdLlT35bZJNBxnJqjxWKfWUO1JLQcJCxL9ffpTVFl/UByNxo2ssX4lmThnSHTi/GzDMKHrYZ8Y01kBZhNpkKwPg9aymVYUfwudfx63ZiUCCUqbt1P9Yo+RrpotH52sgqaKk/nrpHyq3QtcamxRHJLSDUnDB9X2OkukuC7yhOkKLmBma/SyT2pJ+vlkojbEpc853sgubbKMsC56MBxqp5qwkTYy2UEfqLtEoghxcEgce4pkCHB7cLS4hU1yv1XKNPN4/gAXYmqrjO11o+rDyXDF7LioGIWgCpFyTT/YTzARHoseCdySjAif1m41o99w1wMqnXC7BC/F2AeR5OZnwBsYc1AI0qlw0c2QDbFGVhA41vOp0kNUVBOIIJ5odqRZLn+rYM0U/IZd3XZoZClRd+SRBt3YmAHQfyutlzAEW8cAmYCAobWqPQWUZadTExgw7nXOzv1UrdCzKxli19Ctjk/tZ+4lfo/
+ J2AuFKrc
+ UmhBJFiNsHBlS+lm9Nz1DNVad9gDaa70oTIoM1Z9wIbeElaCrFga3vM5b+UACYAfgSyZtzFDAS1Cnpp4ukiWb2VygWIDecYC0RH3g3ENyAYPJ4Rkh+dE+FmEH8vtBNKnC7QZrht8s2o6Xm2xzUrBO0sMu6fqee3Mr2u1fMmqNoSSJEJxADT33P4kIByCpmd64IRXYLoEyesj5g9+I7vek3r5tw3Mh5oHyjBps2spQjOyQj27v91WlCqYQCo0crcat4VOy9i/3AJVEF4V5q3FnIUrfkima/uXRHlmyI4wRFF/vriVxUnqkTnTLiBEnNs/83CEFnI/NKT1jjA26P0NuzGzAOPHe1mKGn3NJAy/Xv8+YSKd68+SAbY4U7QWS54Rqv0MLMCTsuIWF5YuC+LYrcjaPJ/qHpSPNg+5590rlF3efGxc27N3Sd85jb6dwqWb5jUhdnVLNIRc+rHZwc4YwU5YbyNaC1FO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,76 +99,217 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Deepanshu Kartikey <kartikey406@gmail.com> writes:
+Hello,
 
-> On Mon, Feb 9, 2026 at 4:12=E2=80=AFPM David Hildenbrand (Arm) <david@ker=
-nel.org> wrote:
->>
->> > Maybe introduce a AS_NO_READ_ONLY_THP_FOR_FS, which we can just easily
->> > rip out along with CONFIG_READ_ONLY_THP_FOR_FS later?
->>
->> On second thought, why do we pass the
->>
->>         !inode_is_open_for_write(inode)
->>
->> in file_thp_enabled()?
->>
->> Isn't that the main problem for these memfd things?
->>
->> Maybe a get_write_access() is missing somewhere?
->>
->
-> Hi David,
->
-> Thanks for the suggestion. I looked into the get_write_access() path.
->
-> Both guest_memfd and secretmem use alloc_file_pseudo() which skips
-> calling get_write_access(), so i_writecount stays 0. That's why
-> file_thp_enabled() sees them as read-only files.
->
-> We could add get_write_access() after alloc_file_pseudo() in both, but
-> I think that would be a hack rather than a proper fix:
->
-> - i_writecount has a specific semantic: tracking how many fds have the
-> file open for writing. We'd be bumping it just to influence
-> file_thp_enabled() behavior.
->
+syzbot found the following issue on:
 
-I agree re-using i_writecount feels odd since it is abusing the idea of
-being written to. I might have misunderstood the full context of
-i_writecount though.
+HEAD commit:    e7aa57247700 Merge tag 'spi-fix-v6.19-rc8' of git://git.ke..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=122ae7fa580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=9d7d0fbecb37bff8
+dashboard link: https://syzkaller.appspot.com/bug?extid=cae7809e9dc1459e4e63
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=130e2944580000
 
-> - It doesn't express the actual intent. The real issue is that
-> CONFIG_READ_ONLY_THP_FOR_FS was never meant for pseudo-filesystem
-> backed files.
->
-> I think the AS_NO_READ_ONLY_THP_FOR_FS flag you suggested earlier is
-> the cleaner approach. It is explicit, has no side effects, and is easy
-> to rip out when CONFIG_READ_ONLY_THP_FOR_FS goes away.
->
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/28d29c9b5ae2/disk-e7aa5724.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/0683244c7a0f/vmlinux-e7aa5724.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/cd8cc5cb8b94/bzImage-e7aa5724.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/f78f58e821b0/mount_0.gz
+  fsck result: failed (log: https://syzkaller.appspot.com/x/fsck.log?x=10f7165a580000)
 
-I was considering other address space flags and I think the best might
-be to make khugepaged respect AS_FOLIO_ORDER_MAX and have somewhere in
-__vma_thp_allowable_orders() check the maximum allowed order for the
-address space.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+cae7809e9dc1459e4e63@syzkaller.appspotmail.com
 
-khugepaged is about consolidating memory to huge pages, so if the
-address space doesn't allow a larger folio order, then khugepaged should
-not operate on that memory.
+BUG: memory leak
+unreferenced object 0xffff888113218600 (size 512):
+  comm "sed", pid 6046, jiffies 4294945902
+  hex dump (first 32 bytes):
+    00 8e 13 29 81 88 ff ff 00 12 86 27 81 88 ff ff  ...).......'....
+    00 5a 04 00 81 88 ff ff 00 00 00 00 00 00 00 00  .Z..............
+  backtrace (crc 49909e19):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    __do_kmalloc_node mm/slub.c:5656 [inline]
+    __kmalloc_noprof+0x465/0x680 mm/slub.c:5669
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    kzalloc_noprof include/linux/slab.h:1094 [inline]
+    alloc_empty_sheaf+0x36/0x50 mm/slub.c:2618
+    __kfree_rcu_sheaf+0x155/0x210 mm/slub.c:6304
+    kfree_rcu_sheaf mm/slab_common.c:1631 [inline]
+    kvfree_call_rcu+0x202/0x3d0 mm/slab_common.c:1981
+    ma_free_rcu lib/maple_tree.c:208 [inline]
+    ma_free_rcu+0x29/0x40 lib/maple_tree.c:205
+    mas_free lib/maple_tree.c:1174 [inline]
+    mas_replace_node lib/maple_tree.c:1581 [inline]
+    mas_wr_node_store+0x5fc/0x730 lib/maple_tree.c:3553
+    mas_wr_store_entry+0x4eb/0x760 lib/maple_tree.c:3764
+    mas_store_prealloc+0x358/0x740 lib/maple_tree.c:5169
+    vma_iter_store_overwrite mm/vma.h:544 [inline]
+    commit_merge+0x28e/0x490 mm/vma.c:763
+    vma_expand+0x264/0x460 mm/vma.c:1200
+    vma_merge_new_range+0xe3/0x350 mm/vma.c:1099
+    __mmap_region+0x54b/0x15b0 mm/vma.c:2747
+    mmap_region+0xfb/0x1e0 mm/vma.c:2830
+    do_mmap+0x7ac/0xb80 mm/mmap.c:558
+    vm_mmap_pgoff+0x1a6/0x2d0 mm/util.c:581
+    ksys_mmap_pgoff+0x233/0x2d0 mm/mmap.c:604
 
-The other options are
+BUG: memory leak
+unreferenced object 0xffff888127861200 (size 512):
+  comm "udevd", pid 6236, jiffies 4294948784
+  hex dump (first 32 bytes):
+    00 86 21 13 81 88 ff ff 18 e0 05 00 81 88 ff ff  ..!.............
+    00 5a 04 00 81 88 ff ff 00 00 00 00 00 00 00 00  .Z..............
+  backtrace (crc 5b72581e):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    __do_kmalloc_node mm/slub.c:5656 [inline]
+    __kmalloc_noprof+0x465/0x680 mm/slub.c:5669
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    kzalloc_noprof include/linux/slab.h:1094 [inline]
+    alloc_empty_sheaf+0x36/0x50 mm/slub.c:2618
+    __kfree_rcu_sheaf+0x155/0x210 mm/slub.c:6304
+    kfree_rcu_sheaf mm/slab_common.c:1631 [inline]
+    kvfree_call_rcu+0x202/0x3d0 mm/slab_common.c:1981
+    ma_free_rcu lib/maple_tree.c:208 [inline]
+    ma_free_rcu+0x29/0x40 lib/maple_tree.c:205
+    mas_topiary_node lib/maple_tree.c:2311 [inline]
+    mas_topiary_node lib/maple_tree.c:2299 [inline]
+    mas_topiary_replace+0xb0f/0x1400 lib/maple_tree.c:2410
+    mas_wmb_replace lib/maple_tree.c:2433 [inline]
+    mas_spanning_rebalance+0x14e1/0x24b0 lib/maple_tree.c:2738
+    mas_wr_spanning_store+0x983/0x10d0 lib/maple_tree.c:3479
+    mas_wr_store_entry+0x4d5/0x760 lib/maple_tree.c:3767
+    mas_store_gfp+0x341/0x640 lib/maple_tree.c:5138
+    vma_iter_clear_gfp include/linux/mm.h:1141 [inline]
+    do_vmi_align_munmap+0x259/0x2d0 mm/vma.c:1574
+    do_vmi_munmap+0x17c/0x280 mm/vma.c:1627
+    __vm_munmap+0xec/0x200 mm/vma.c:3247
+    __do_sys_munmap mm/mmap.c:1077 [inline]
+    __se_sys_munmap mm/mmap.c:1074 [inline]
+    __x64_sys_munmap+0x1f/0x30 mm/mmap.c:1074
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-+ AS_UNEVICTABLE: Sounds like khugepaged should respect AS_UNEVICTABLE,
-  but IIUC evictability is more closely related to swapping and
-  khugepaged might operate on swappable memory? Both guest_memfd and
-  secretmem set AS_UNEVICTABLE.
-+ AS_INACCESSIBLE: This is only used by guest_memfd, and is mostly used
-  to block migration. khugepaged kind of migrates the memory contents
-  too, but someday we want guest_memfd to support migration, and at that
-  time we would still want to block khugepaged, so I don't think we want
-  to reuse a flag that couples khugepaged to migration.
+BUG: memory leak
+unreferenced object 0xffff88812c458000 (size 4480):
+  comm "udevd", pid 5181, jiffies 4294950983
+  hex dump (first 32 bytes):
+    01 00 08 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 80 00 00 00 00 00 00 00  ................
+  backtrace (crc ad4af9e6):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    kmem_cache_alloc_node_noprof+0x422/0x590 mm/slub.c:5315
+    alloc_task_struct_node kernel/fork.c:184 [inline]
+    dup_task_struct kernel/fork.c:915 [inline]
+    copy_process+0x286/0x2870 kernel/fork.c:2052
+    kernel_clone+0xac/0x6e0 kernel/fork.c:2651
+    __do_sys_clone+0x7f/0xb0 kernel/fork.c:2792
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
->
-> [...snip...]
->
+BUG: memory leak
+unreferenced object 0xffff8881274a1540 (size 184):
+  comm "udevd", pid 5181, jiffies 4294950983
+  hex dump (first 32 bytes):
+    02 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 54e589bc):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    kmem_cache_alloc_noprof+0x412/0x580 mm/slub.c:5270
+    prepare_creds+0x22/0x600 kernel/cred.c:185
+    copy_creds+0x44/0x290 kernel/cred.c:286
+    copy_process+0x7a7/0x2870 kernel/fork.c:2086
+    kernel_clone+0xac/0x6e0 kernel/fork.c:2651
+    __do_sys_clone+0x7f/0xb0 kernel/fork.c:2792
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+BUG: memory leak
+unreferenced object 0xffff888109639020 (size 32):
+  comm "udevd", pid 5181, jiffies 4294950983
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    f8 52 86 00 81 88 ff ff 00 00 00 00 00 00 00 00  .R..............
+  backtrace (crc 336e1c5f):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    __do_kmalloc_node mm/slub.c:5656 [inline]
+    __kmalloc_noprof+0x465/0x680 mm/slub.c:5669
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    kzalloc_noprof include/linux/slab.h:1094 [inline]
+    lsm_blob_alloc+0x4d/0x80 security/security.c:192
+    lsm_cred_alloc security/security.c:209 [inline]
+    security_prepare_creds+0x2d/0x290 security/security.c:2763
+    prepare_creds+0x395/0x600 kernel/cred.c:215
+    copy_creds+0x44/0x290 kernel/cred.c:286
+    copy_process+0x7a7/0x2870 kernel/fork.c:2086
+    kernel_clone+0xac/0x6e0 kernel/fork.c:2651
+    __do_sys_clone+0x7f/0xb0 kernel/fork.c:2792
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+BUG: memory leak
+unreferenced object 0xffff888126fdbd80 (size 64):
+  comm "udevd", pid 5181, jiffies 4294950983
+  hex dump (first 32 bytes):
+    c0 c3 4e 46 81 88 ff ff 00 00 00 00 00 00 00 00  ..NF............
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 508a43e4):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4958 [inline]
+    slab_alloc_node mm/slub.c:5263 [inline]
+    __do_kmalloc_node mm/slub.c:5656 [inline]
+    __kmalloc_noprof+0x465/0x680 mm/slub.c:5669
+    kmalloc_noprof include/linux/slab.h:961 [inline]
+    kzalloc_noprof include/linux/slab.h:1094 [inline]
+    lsm_blob_alloc+0x4d/0x80 security/security.c:192
+    lsm_task_alloc security/security.c:244 [inline]
+    security_task_alloc+0x2a/0x260 security/security.c:2682
+    copy_process+0xf07/0x2870 kernel/fork.c:2203
+    kernel_clone+0xac/0x6e0 kernel/fork.c:2651
+    __do_sys_clone+0x7f/0xb0 kernel/fork.c:2792
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xf80 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+connection error: failed to recv *flatrpc.ExecutorMessageRawT: EOF
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
