@@ -4,86 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53C31E7E0D9
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 19:45:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 495E7E7E0D5
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 19:46:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5A5D36B0096; Mon,  9 Feb 2026 14:45:13 -0500 (EST)
+	id AE2396B00BD; Mon,  9 Feb 2026 14:46:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 553156B00A4; Mon,  9 Feb 2026 14:45:13 -0500 (EST)
+	id AB6B46B00BE; Mon,  9 Feb 2026 14:46:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 435506B00A6; Mon,  9 Feb 2026 14:45:13 -0500 (EST)
+	id 99CC26B00BF; Mon,  9 Feb 2026 14:46:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 309976B0096
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:45:13 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DBFB61B29F2
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 19:45:12 +0000 (UTC)
-X-FDA: 84425946864.30.68A3ED6
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 89E666B00BD
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:46:16 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BF18F16029E
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 19:46:15 +0000 (UTC)
+X-FDA: 84425949510.11.4ED1714
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 505F640010
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 19:45:11 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AYqSbQO9;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1717F1C000E
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 19:46:13 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tNizQ9Cz;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770666311;
+	s=arc-20220608; t=1770666374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=anRiDqZ1I1FkFHpEALKWyjVB65Kl7NV4v7lHDof6Khg=;
-	b=QwVdDfZvf6r2DipG3jFMiWwbG+I0LO0TdH27dAPpzGwhCaYru3YKCFN9NSAnImNWUjxHx2
-	Y4k796PAyeIPLTArGhBrUN7nrWX7GO6rXonq5KxMc5MDwpq2hoGcjE/SepzFNfJdONnEss
-	1JiZbT8n3sE7rXezqW7mSU15nWZLnRY=
+	bh=Bv5KK0kyOTw3kNXqVQlj54HU89NlrQh84HsWO7IAWSc=;
+	b=ZHESZTtvQXLEtQIWEuFOjsru75gbf0lWDAOslA4J8EghWGJV0r4KkXi91EbADVNpZlSR78
+	Ul18gFNIUDUY17BQM6bxUNCzSQbeMj7wR9WZk3tovLzPW5gMQ1c3AvbXLGumC8v7xfD2eg
+	vaG14XN15sbaGlcTE9z1gZzPvU4nlu8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=AYqSbQO9;
-	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tNizQ9Cz;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770666311; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770666374; a=rsa-sha256;
 	cv=none;
-	b=Jqb4KqcBKPp4tUwOR0s+GXtlyPVUWdoXJn7oM7kumOhU2i5KExHkocvV8tDdabd/XKjw7n
-	L1napop4cfPAerb8akqWfXJ9lYuhUBMSZMSpcCQzAKvfN77mciiQNxjuFusYLpfsd/IT1y
-	DDvCahPnBYqzJlRgQArj5/mh/4DdR1w=
+	b=cYD1Shkt+m8o1LHoSMoOPB6ahj5jW87seq7Zy+6AUB1nkL8HtE/bMZmiiK0MhwbVXZpCzj
+	jyv24ug7A9AnE7NwjNncRyZaxTRX6mF2WR3YR63FUsdkfhogWV3g6sTQgBv7OGBzcOeDDO
+	eW58Gyo4qUWzINvZXRzg9DuImWhbfuQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id BFA0D600CB;
-	Mon,  9 Feb 2026 19:45:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EECC116C6;
-	Mon,  9 Feb 2026 19:45:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6CCA8600B0;
+	Mon,  9 Feb 2026 19:46:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C501C116C6;
+	Mon,  9 Feb 2026 19:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770666310;
-	bh=1qU5/+CfNMmruXov119kn67QShisKpaOmbmaQuSvV9w=;
+	s=k20201202; t=1770666373;
+	bh=NjsLfTgcSHxbInEjowlv0DjeZPoEztoNp3YDgwdnlf0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AYqSbQO9SsD0PTRC2TIpIFdHQQB9bhI3th75y2dTSqrRStFPbjkueqYtrJUfGwIYp
-	 ERgQa79fBLPPuomyN7RPX1i04FpqdpK+SRtiN7+b5r9g2JsMWEBWqWN8foFmiQah2O
-	 JPuSy4yj2UPmlNlHy5lCLc0wuoRGsga9T9OJxif9qq6ubosSyCCFjL4TmSTyI1aeqA
-	 T1ZZ5oFqvVL34Pid2ZnNd0XLRMRTmQuO1UWvXONw19FReuRxWaymShqM+/bCRlh4vQ
-	 7MCX78Sk7PhEdb3wqfvmCgMoGnZWP9sUEr28tldBUEha+i+Ffq/XHaHIlTda3hh5MP
-	 5FUu7lO8/T6Gg==
-Message-ID: <4ed1b111-f2f1-4f89-9308-fdd9d706ca37@kernel.org>
-Date: Mon, 9 Feb 2026 20:45:02 +0100
+	b=tNizQ9Cz4zFrx+Aab+u/InMxiwoNYZQGZz/rYK7u+uYTkpwHGi7dHkFVAGf0CkQJ0
+	 Y8pRjFcAzj95DJOxx98TxAdIe0sHJtASEgP572Tz+UX/FecRBmhr4A9a739ETiTn3c
+	 SVIcJ9OO6PKVjKcG4W/LWHhqifgSOIHCEBl74venwHcvXb7AVhvQHwLZnnq0t+gAFW
+	 /MQ89ixqGCp/z8pwiqGRE1YryoI9ddd5OJv5pk1VQ+66gS+9XfWQM4NhoibsItxduS
+	 sCnuOjo7wCq0YaLBM46NZf6Zbfb79/Dc4814+MZkNATA0bfUMhfMlBU1xhxn1LqLxr
+	 UqRQbPqmhFYvA==
+Message-ID: <7e86e2f0-e581-4772-b468-1da04a214f07@kernel.org>
+Date: Mon, 9 Feb 2026 20:46:06 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in
- file_thp_enabled()
-To: Ackerley Tng <ackerleytng@google.com>,
- Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- seanjc@google.com, pbonzini@redhat.com, michael.roth@amd.com,
- vannapurve@google.com, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-References: <20260209033558.22943-1-kartikey406@gmail.com>
- <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
- <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org>
- <CADhLXY5nrTXmWMPeiLg37euyVeQsNDRUvKmQaPdxtE1YhPq_jQ@mail.gmail.com>
- <CAEvNRgEoPs5ia+u0ODra6N4BdOwpYa04j8nDxwfNVyfCOWnM6g@mail.gmail.com>
+Subject: Re: [PATCH v3] mm/page_alloc: clear page->private in
+ free_pages_prepare()
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
+ mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ npiggin@gmail.com, linux-kernel@vger.kernel.org, kasong@tencent.com,
+ hughd@google.com, chrisl@kernel.org, ryncsn@gmail.com,
+ stable@vger.kernel.org, willy@infradead.org
+References: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
+ <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,17 +124,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAEvNRgEoPs5ia+u0ODra6N4BdOwpYa04j8nDxwfNVyfCOWnM6g@mail.gmail.com>
+In-Reply-To: <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5x9wuzxz7konwic9m6ikop37xhuw9oxh
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1717F1C000E
+X-Stat-Signature: bpawquq9rpjikcg51pnpqo74hg15o8qs
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 505F640010
-X-HE-Tag: 1770666311-266932
-X-HE-Meta: U2FsdGVkX18dk3mUw4U2XTxjYqrMdXTDPvRXqdtK3REgdIgNk09s6QQ4Uvj9jjvIlfa2zXD+sWdn7nN4IQlG8FT28oQQsyJzhGz1TBC2pTiaFBhuplSgjNgJS74mKV2AUCbq2hb5v9SmUzaLFi2zqFEFYAEEBj9cceWhNlhi9EacgkrEu5YzElb4g6EX6mfqwbcx3CI7iBeU1iNrXugtIsHFeygFrnq6auHkWWkdhp6MXsBG04mV7aWogEuoVyeG+mYa1xcd0uKZKsKoREIgGKa2pG7STGUYRWxq19cBU3DRSD+63SWAtv2X3walStz8c/Pp7jGfURuj5wdVUaECYZIOd77VQrXZQSMlXQqkWJS34R8299qBIBNlU7cV5FwA6YUYy++IwOmX8gIgkBS6Xqh5isqf38L4vnLTSyR/pk1cZRZos3z/hxUsxZrHKYmltZhJkk3Ep3/kXMDxp3w7znWGjl9ynj1ztxRaz6KXFPx2q5Ch+LiiW5jDPNb/SeVjVwfwRJaYd3/2zpLcJmDRfEZSPWLJHZwI1XOqsKHekttLJDIK8RlbqwhYr+G/omXKQF5Lqzqc+RsZ+rA+IbUNBGTOVaRhF2nugapCsDT3KxZQZXAtLAHpM65XyKFzRRvPuaNP38mbD0mEkmBKGt8Hf2FBbVFB6q2/b8ilVcShibYVSbSDoSl92TSTYPXCA/BtCIEf0scsnx8SZQ8m3EwhjJzms49PhZZNgoLT10fBnFTOZm9WAPr2FdTOkzBnNInfCze4c7QkbzhJ5OMKninFOA0rMd5bSN8QdJsE8/ALPp5bbpcEZ+BOwNfXPpqPMQq56XaMR5jPKRYVmkGyFj1safg0XKGXNWWBq+b7K67U850mhD1Hrvg/B3Pc/LZHHlDHiDlR7DZlxsC71jp+YcsJY40myMU1kdf0B3CGJlDJMIYUupql6BbIj0fw72u14QlliXOpvPbq0DhifEH292n
- Lp0p65Eh
- W8Tt+Eu+jyHfoXr/4cOXuyeZu1iQfXQcKm/Pu1JFcjiHTMUA09BaNHss9AoWKE/yrYW8G
+X-HE-Tag: 1770666373-62499
+X-HE-Meta: U2FsdGVkX1+Fy1s1EepD1OI4y7T1+6C0FbORqNfp6IYMKMiDQfAP2OfJcUe337R4ROo8e14n9FNkaL6yeCB2Nq4OA0DashFFfd645dsqMKpamquc7SaRbAplpjuDhQ4tpqUjTsG1u0AbjSnMFSe0ZO5hGlu+tgMOuIFRfUD//OlSMseFb7rMdJXFepXBv6sktCcymuvtVq48r1D2YVBPB6OlJPmV2I46R5O2wNdhDLA+Aq616rf483XmUWaIYx6Gl4gUnIAT3ZIYfwhjcLL4TykJ8IR7X/RpcE/7HHKQNKIMRaalElWGI/lM2VIqmBfpUaDdrq59eK4UqoQbltpsXQYd9uVvneu0W09vfFTY2kk+KlQmVmsM7szEyLDeWicqI/oV2SzapDWS7k26PFTCrfNNgnYN9NWphdTP2vB2yC/P9wtW6mV0Vpip98cEXqmkCARKpKPv5yX3n9h/Im1AnSJ6inink2BMUZLVFLkECoQLXE7LZ4wmLxz9uC/rpHTHX6UVfoHaSiPIpVSYMdg46omC+yfg2epsfHYRELaVAbBUkFY6m9PyB3ZM+79Uy2LhpXftxhm9IDvubbTbvS5l/tQTuN5qoXFZTfS/CbGQo437OnYSX+BgUNH+JCD07Y0cCcEi4RLsULclk2yoCv2TVf0G2zWBqgO4XhLnm20Iy7GwPYlnK4XzvYnK18fNigDvVSTh0KT13+VSmlu9RLV+3tALNnGAIeMTeVOrJpDroVzZfaEVdaDL8nWiyXFWFG2r83OnHB04ybvjKn8+2GpMmtL0JfsKiwgEnT4U4c+bWGmoPGxm8NXOvyc7oVSve+IcjV2cehTPuvarhGi699Xq4er2dOM7QHThunD6Bg5IAKBh8S7upJuWRD3hhUTAHHwxv0wlf+6qbZEShJWcflE7QbS8I+qL9awUGF1qY841EbQ3dUqsw/zIC4hvaIMG/oKaYA8WEVLNMoip/P61Zxb
+ ZQ9HRzqu
+ w2zkOCgaV+cNMZKqKDPvE0QSDB5mlwLJrg+UXi79zmGc+NTEHwVqsAZZ8Oc3Fq3NL3+N0WIKEtoJ+bJ7bHIDesJYGoY4WFuCi4ei81LrPLoffE1UltrYB2h2qSPSk6qw/lHvb8isK9zgBsk7Nsapcgx6S4LYxKHFhwTNntcDWf1k0/Dbf4ITB7uHgfwAbY6y/cl4UwgjjQrTvDwKMDzzOFSDEhBP0lovhtnl4Vl4GVGfQ45QW2C5J7E+C/3z9Fv8+dbXzt7WQakaH2mnD3KR7UJKVGVnfNv2qdldYbl/6G1z+Q1aAeuBEZ7kqdu+vmHtm2Kts8ar3X2S9CudfqB2Jgk5NRnZO9Nkoh9cmLAtGOjcLbsQIZwZ1VMmniunuenjOpZbBRTkuPlq4jjF0a5h8NA/0Ncf5aP134/MD0eyiGVKuKR5z1Qp5jtQP2Ah9kGOIcG8C
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,89 +143,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/9/26 19:22, Ackerley Tng wrote:
-> Deepanshu Kartikey <kartikey406@gmail.com> writes:
+On 2/7/26 18:36, Mikhail Gavrilov wrote:
+> Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
+> clear it before freeing pages. When these pages are later allocated as
+> high-order pages and split via split_page(), tail pages retain stale
+> page->private values.
 > 
->> On Mon, Feb 9, 2026 at 4:12 PM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>>
->>>
->>> On second thought, why do we pass the
->>>
->>>          !inode_is_open_for_write(inode)
->>>
->>> in file_thp_enabled()?
->>>
->>> Isn't that the main problem for these memfd things?
->>>
->>> Maybe a get_write_access() is missing somewhere?
->>>
->>
->> Hi David,
->>
->> Thanks for the suggestion. I looked into the get_write_access() path.
->>
->> Both guest_memfd and secretmem use alloc_file_pseudo() which skips
->> calling get_write_access(), so i_writecount stays 0. That's why
->> file_thp_enabled() sees them as read-only files.
->>
->> We could add get_write_access() after alloc_file_pseudo() in both, but
->> I think that would be a hack rather than a proper fix:
->>
->> - i_writecount has a specific semantic: tracking how many fds have the
->> file open for writing. We'd be bumping it just to influence
->> file_thp_enabled() behavior.
->>
+> This causes a use-after-free in the swap subsystem. The swap code uses
+> page->private to track swap count continuations, assuming freshly
+> allocated pages have page->private == 0. When stale values are present,
+> swap_count_continued() incorrectly assumes the continuation list is valid
+> and iterates over uninitialized page->lru containing LIST_POISON values,
+> causing a crash:
 > 
-> I agree re-using i_writecount feels odd since it is abusing the idea of
-> being written to. I might have misunderstood the full context of
-> i_writecount though.
-
-i_writecount means "the file is open with write access" IIUC. So one can 
-mmap(PROT_WRITE) it etc.
-
-And that's kind of the thing: the virtual file is open with write 
-access. That's why I am still wondering whether mimicking that is 
-actually the right fix.
-
+>    KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
+>    RIP: 0010:__do_sys_swapoff+0x1151/0x1860
 > 
->> - It doesn't express the actual intent. The real issue is that
->> CONFIG_READ_ONLY_THP_FOR_FS was never meant for pseudo-filesystem
->> backed files.
->>
->> I think the AS_NO_READ_ONLY_THP_FOR_FS flag you suggested earlier is
->> the cleaner approach. It is explicit, has no side effects, and is easy
->> to rip out when CONFIG_READ_ONLY_THP_FOR_FS goes away.
->>
+> Fix this by clearing page->private in free_pages_prepare(), ensuring all
+> freed pages have clean state regardless of previous use.
 > 
-> I was considering other address space flags and I think the best might
-> be to make khugepaged respect AS_FOLIO_ORDER_MAX and have somewhere in
-> __vma_thp_allowable_orders() check the maximum allowed order for the
-> address space.
+> Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Zi Yan <ziy@nvidia.com>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> ---
 
-The thing is that CONFIG_READ_ONLY_THP_FOR_FS explicitly bypasses these 
-folio order checks. Changing it would degrade filesystems that do not 
-support large folios yet. IOW, it would be similar to ripping out 
-CONFIG_READ_ONLY_THP_FOR_FS. Which we plan for one of the next releases :)
+Okay, let's do this as a fix, and cleanup the page->private handling 
+separately.
 
-> 
-> khugepaged is about consolidating memory to huge pages, so if the
-> address space doesn't allow a larger folio order, then khugepaged should
-> not operate on that memory.
-> 
-> The other options are
-> 
-> + AS_UNEVICTABLE: Sounds like khugepaged should respect AS_UNEVICTABLE,
->    but IIUC evictability is more closely related to swapping and
->    khugepaged might operate on swappable memory?
-Right, it does not really make sense
+Thanks!
 
-> + AS_INACCESSIBLE: This is only used by guest_memfd, and is mostly used
->    to block migration. khugepaged kind of migrates the memory contents
->    too, but someday we want guest_memfd to support migration, and at that
->    time we would still want to block khugepaged, so I don't think we want
->    to reuse a flag that couples khugepaged to migration.
-
-It could be used at least for the time being and to fix the issue.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
