@@ -4,166 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8983FE7E0BC
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 16:45:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCC3EE7E0BC
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 16:56:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F00106B0005; Mon,  9 Feb 2026 11:45:47 -0500 (EST)
+	id EAA406B0005; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAD3F6B0088; Mon,  9 Feb 2026 11:45:47 -0500 (EST)
+	id E8BCF6B0088; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5DE46B0089; Mon,  9 Feb 2026 11:45:47 -0500 (EST)
+	id D602E6B0089; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C39A36B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:45:47 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 86D8F1C04C
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:45:47 +0000 (UTC)
-X-FDA: 84425494734.05.FF66898
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf05.hostedemail.com (Postfix) with ESMTP id DECEE10000F
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:45:44 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VYGBqoIq;
-	spf=pass (imf05.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770655545;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BE3566B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:56:25 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6DC8FB6DA3
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:56:25 +0000 (UTC)
+X-FDA: 84425521530.03.DC4ECA6
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 6A2302000D
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 16:56:23 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MNoZAGsK;
+	spf=pass (imf03.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770656183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mgWRp5BJpGIs54qvIzdHztXdVPFvfDEGzpCJ5H4U80U=;
-	b=q3PL4g2GoQMSoBYPD49x6zz6Bv7ZPZ3khWE/DqjSZhu1+mRiASJuaX/8gRxS7l6HfC+Utw
-	PDQX1tMkU/y60S+US5TTHO8vY0J2PMOhzFOQNMzuJ6LZ1Y7ginfP/oJqZZc3naWuaVs5K1
-	D6njiKB6NElqT687TPNDWP6INDcTVrg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=VYGBqoIq;
-	spf=pass (imf05.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770655545; a=rsa-sha256;
-	cv=none;
-	b=f/c+4qowucy/xAIi0F3HA2k47W2B56/cltudugKZ88Pba9WIoNl6qnqDcP4HFHsU0sT5Z0
-	EIgdaVeZel5ICQAd0xJEjqJ6kENxiadl5F+e9sAwI4tjx/xAcH4jETVagR5sgDSvRgDxi9
-	4U4au1WUtvHFIQif42bXP64AZPrsVNE=
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619F9Ugg198637;
-	Mon, 9 Feb 2026 16:45:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=mgWRp5
-	BJpGIs54qvIzdHztXdVPFvfDEGzpCJ5H4U80U=; b=VYGBqoIqN8crw+1FMR6MJz
-	2CJpZ1n3m2iW0HfwKjjiw/PvFOrJdC6/xtg9Q/ABP9cynXe29DYbA3/oJOCAmfpe
-	UH9fS06nzY1qHGGyH/0B7RV1gl8ZZmrJx0DmElXWysyt6IrCbtm9P7lUcKY4u1wO
-	ScNAmdgJj+gSdY6hq7IMNPmJ5czWJu1u+MxmAqgcKKiFgz1O/BM6Aq/V4Q/eZqQg
-	v49/VBn4Vea5OLSm9YrgGXvG6e9wcEfOxQt3C6VlFCLFUIRI0J1UwLlKFc0RXYHC
-	nGmh34I4jSkIF1vwYArwewClckrjXQAjKIz/shNEgHqdReLsh2kyxb4gI/QdhNqg
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696u87kg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Feb 2026 16:45:40 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 619COh3D002575;
-	Mon, 9 Feb 2026 16:45:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6fqse4g6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Feb 2026 16:45:39 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 619GjaQY61735258
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Feb 2026 16:45:36 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D9EF52004E;
-	Mon,  9 Feb 2026 16:45:35 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 30D6E20040;
-	Mon,  9 Feb 2026 16:45:34 +0000 (GMT)
-Received: from [9.111.207.126] (unknown [9.111.207.126])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Feb 2026 16:45:34 +0000 (GMT)
-Message-ID: <22bc8f74-1943-4ceb-bc6b-ea404ba013d9@linux.ibm.com>
-Date: Mon, 9 Feb 2026 17:45:33 +0100
+	bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
+	b=yU66yl/7HOu/nmXuJbucgqKwPlG15xmYKiD0uEDMQL2/y8+hTRoOonG6hHnBK5xYFqw6TD
+	oLwldueB9D3A9NNlCsacP3s1zPHnDCozwuaU4qy6GZx294eGAPPXiU+kOEEygwC6pGQoM7
+	S51svlwyZu3OG0pVs2WhFiKTT5XofPc=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=MNoZAGsK;
+	spf=pass (imf03.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770656183; a=rsa-sha256;
+	cv=pass;
+	b=qdW5lppZG15goJjN4saC2YRss3ELmRbg81orI/0OuaCvGFGgn/Wqz7VKxkIXJdvLwBCP4B
+	YQpH1a1TSmPy0EnYggpgGhu22x9pLMmNYumBINQZdssLzcQTqw2o2pRCdKGJX4tQXFIap3
+	yvwdmNc2R4Sl0d1+8o7Ewn89P/6lD2g=
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-501488a12cbso56341811cf.3
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 08:56:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770656182; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AyConJOV1iZIb5E5zwngl9EjDDmlmZClTmxpjqoLvccgSSKJvwlyjYeD42e4mvozf7
+         xnxOwDF+nhalcckcDiMSN1UFSotpm5PbrtHL5ngj/ZoN4H7Xk7QekQ/ggowKn38IODBU
+         FS2g2OpgfWsd7nDEJ8lC5MaEur5q12CwaNeMaEVhwdESoEndMtROMNS4nA/2FdPgY3ue
+         jWs8jfYecLI/VVmZau/1kfwx8gvFwErSXYUCiS0xnrGtNMbIB3QvtZh6J2MKZWvCQ5e5
+         2O+BRl81aDuuGrUBMaGTjaQpOfLLXAoqLMw9KGrA5AG5dJIihkNi9ZLyp1E45Lmo0xO+
+         rVUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
+        fh=1kosLxhiddin7y8t87Z4Z7zwNzypi/NUwLVMMEDm+bc=;
+        b=gTO+4jw22UKV+86P3UoUeEj95URRgU8eHZ/0UqTYxIdrhdKmQT9qMUEgCdwBTnlMQE
+         drxqcbncR8c+MpGdpFPfGPxH6sIPU2N+ymGWgBJG1xHSdwlCu3pN898iN6Hi7k7zV3qO
+         0MYctWwLNilGhfSY/bb7HH1v70c0fw9ZkQV1Y/+NeE9KjHgmq7ABR6DAsbIidJYshec7
+         TJs7nllLoWsIPWKxgwqQI/fIspEUjqaL2O1tfpb7mu/lSWbhXgqIx/U6Wtu5M6TWy31T
+         s6edEmUzmJbUT6KDVW7JmmBvMGXkMpw3zKbIvnYUlmVz+yGS4JHyKc9YqwFSa1lW8LHC
+         5GVQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770656182; x=1771260982; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
+        b=MNoZAGsKmvYECll8RLLY5/dDXj/aGjZU7mIzOKZfptbp3ZeuANNW1j4E340eQtbALM
+         sNA1cBCuFqwcOXLnPZ7lid0V7RhFu3oNUUvdm/JkozLSgqqNJy94QUelZFA/XaBW1p7J
+         tF7YUqEjHa9xwt4E9L97gasy1iuByOLT6MEVBifpj4zU6T0OmH5nu0vGJutHEnn9cRyD
+         LLfgdcZlpZXGXzjbZagEVc0p8lcfO2VAMBgaJF8v+7Hv19jSfc7DFyhyvqntUuXSpeMG
+         mqCXwf2+WYliObi1Ur8gqwDVMycLuIgi5UEUgrohChQZrkjWxllDix73mm1z1gXVhNV6
+         jwPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770656182; x=1771260982;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9gE/GnxbaquR/Jky0u1nc/LFQnx0zYTsDuMfOKy0HSo=;
+        b=ectYthl7DG9H3I0GEuo48OeoZMW/ygHPLPtQ2BWmt8+lF4I1HJoA+HeUT8fV7FBZMN
+         EuLCOqRPT4D3Gz2sPnJ3/jLrDYnCCert6Xr1ExZI+i0lf5rUdNFAljEUSpQWYy6/kSKi
+         o4ixCEUfvxHCAZVOjvO4IZfF7A7O3JYTAsPBxvIQHedag16lrDIgVhO72SumcjrTgosJ
+         FHEjfcRztlYW90R712cYjOR9w15uWjHngsY2neztB5wk12sZUmkPIIZFqE7sr/x+Cz3+
+         IdbcRFFQBbYDTWBN5LCWv25ZVAT/v59JUvxZzCSix0NNyJk8EeWdkXeONgTTInHsjVxp
+         h0lA==
+X-Forwarded-Encrypted: i=1; AJvYcCUo0NJiF0D1H/hjU/WYmIuxvChbu19vmj476j/W2EjVNexKgdZ8wo1hFrU3dWgWf/Ai5aypyquh4w==@kvack.org
+X-Gm-Message-State: AOJu0Yyg7oi6sg+ZEf3VNQ+fiG75jWxdz8xbypI2xYriQq1vSq8MpvAv
+	VdYQwNotUbXYCOTt+JgWVZAxtPWSbmj3QvIBw924kkR2wUwCceHsS8P4amHiREenor18qf6o6h+
+	vdA4/nsRhOOZ8Nd89cBhHeAH9Ho4OTQw=
+X-Gm-Gg: AZuq6aLJPIkGDdxGUspdGW4AEKyKR8Vhz7vs02tFDtKm0IHsATKJOQ7FhX+NLSGwMZF
+	mYa7WKkweHZ+7HoZzz/0Fy6zv5WY58IpJe80BE5R4pMKIzS69jb0bW8zN49B+rY3c7qHi54UXG5
+	5mSB0YlhL/AL7fOev4ySx0RY34Ne+J6GKhHmyNXLtHEXY1HjiWRi7rRTUXgr7RHojvGgZfP+dPZ
+	e4PUOvpw22GYYuu8gnehBHV0XlVtrVGSvtpOdaP1x5pANNcOabAvB4ktMpkipujXUh34l4aSBxg
+	7Ho2
+X-Received: by 2002:a05:622a:24f:b0:501:453e:bb34 with SMTP id
+ d75a77b69052e-50639995bf6mr139450531cf.63.1770656182247; Mon, 09 Feb 2026
+ 08:56:22 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 6/6] x86/vdso: Enable sframe generation in VDSO
-To: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        x86@kernel.org, linux-mm@kvack.org,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Steven Rostedt <rostedt@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-References: <20260206193642.1580787-1-jremus@linux.ibm.com>
- <20260206193642.1580787-7-jremus@linux.ibm.com>
- <4304d18a-f647-4709-9f29-43d9995cc24e@zytor.com>
-Content-Language: en-US
-From: Jens Remus <jremus@linux.ibm.com>
-Organization: IBM Deutschland Research & Development GmbH
-In-Reply-To: <4304d18a-f647-4709-9f29-43d9995cc24e@zytor.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=KZnfcAYD c=1 sm=1 tr=0 ts=698a0f34 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=CCpqsmhAAAAA:8
- a=p0WdMEafAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=9N4VBBPUECb1X48xbtsA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=ul9cdbp4aOFLsgKbc677:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDEzNyBTYWx0ZWRfXygjrYvM1MW3L
- 3sizdqIxHZ+wif6XZOz5yK/KXQ5K4/mfjuJLIdR0BHBvgMIpwocArcocHUIouFPPPnh7D+cKgJj
- CeyBsEzwC9H82+CgywwFjcfzNQizGDGj7OG6yQk9EbkOhLY5yUj4hHLtmEHo8KkEYT5/kTolkjz
- MuDhcNwT9RAYv+opTWHPrqvPmnTzyzldd6JmnOGCsAQ43JI3XMJaz3xKPc70g0Mz2y2ltq9negH
- cWEK3A1GW0IASw5RJDFhmEqBoOw6edrTWh5Z+/qT8u9LSHRL6ujkPW1OtYdA7O7j9l8aJ0jtRWN
- xR56tXxhgEObJx6aNJGAaUmGfeUEkOmR1ueKrEr7FpGZB0TeNjICbgHWYaS6VSlNtKzangGlfGm
- gHLVQMvmiO+Tupy1gsxVsk4Y/MG953kHRoahDecA6YnvgJpfumCEeqlK9aPTSFb8odfhMOjYxOS
- P3MD+QYIszbEajsvNmw==
-X-Proofpoint-ORIG-GUID: IAWdWS6llLM78oQw-7cCQ61JU4e_TcVq
-X-Proofpoint-GUID: IAWdWS6llLM78oQw-7cCQ61JU4e_TcVq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-09_01,2026-02-09_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602090137
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DECEE10000F
-X-Stat-Signature: 4xiopz41b8zycy96njhq3yxk5gta98we
+References: <6989f0f2.a00a0220.34fa92.0047.GAE@google.com>
+In-Reply-To: <6989f0f2.a00a0220.34fa92.0047.GAE@google.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Mon, 9 Feb 2026 08:56:11 -0800
+X-Gm-Features: AZwV_Qh99pe2lEvylN_7wH92Hz38dScLErHXd7OQR-VvW36k9zihYCjtVb-hPDQ
+Message-ID: <CAJnrk1bfZH=rJm3_7=0_JHN810akMTJsYkDsVs_fd1CSjjm3QQ@mail.gmail.com>
+Subject: Re: [syzbot] [fs?] [mm?] possible deadlock in writeout_period
+To: syzbot <syzbot+d38b792a5cbd941006fc@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	syzkaller-bugs@googlegroups.com, willy@infradead.org, Jan Kara <jack@suse.cz>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1770655544-338373
-X-HE-Meta: U2FsdGVkX18mLtOKBpaaLrhM4nnLt8dtfIK4T/2AqOQnXeg20TZwRvYwXMnnEhlSTo1p8l02beSlx+QTJ2LSPnGQgiBjK71Zr8rns5RD6tJ2A/5mn4AxnffMD0UAkN1BDWUQ6NGxtJ63llIAzoSF4ZjpfdNI29bbkNU46OFxKXkNfxsu7gYHHZUwdy5bMfdQo8vPTNioAB/URsuylVwgFho0BNyKnuZqiOkVM8+qz5yTazin3cGjxwfr1TW4X+21uk3eCqf0P6EyJa1WIWnMGPf6wewe6S13V3eJUEAEtTYbTYEz9QczmuYimKs/KRAfn6v/re95Hi8OWRvtNv6VIVjRn+wZLGNp6L4iT1+GjEMcbIqnHqbWPijCnNSArWEGZNzbz7yxxIpk/HUP8leGu1XRb5YQ1LbdLLw5K5mhkfMeEtQ2eCDCftnh7WlKgl50YO0k29X725vGTEb6h/tqa7bcf6cV7grV6zBD+gAZX3O3jQnY9IogSSYzor+CyHBpQTqWGU5lS40zUu2hrUhgBEkJQxWuWYBUDI+Qv/9S/R4eOyOgu+wWqQmeJAmJcLymR/7BtXwZHI+6qCOuLTQqW3Y8e6UYms+4bq9vjPzYP+/z/BTeKVgbQ4wjTkeohRp/ZcPkKZdt8Ezaov5OH7H7BT6vXAiknJfkFT45KNleymoS6bFfDAm04JxkRd0OAlzRhRPgcjBURQ1KDyzhV6DX1isY52/x+XDYfhty75/aeZ1s5TDPuTr6DmAufPPbkjRVOkrrob5I758soUwHYyOsdk8n7oYpb6vbxXyHCDpcCp1BbRaE68yYSiK0L3/9DHHbYfEm8uAP7c+Vu/7aWN+BQTecQwdAZ7xQI4Mg/YbobxLTEbKiIA8gyZdxg9kIS1rVmVCBCnZLbamsCVY/nKaDhu4vY/BgmPMKP8GNFEPtxVl+Y3mEdAyhejVB4t0/nADAa3CiOeRF/7Lu52usre4
- klRjEfiQ
- F3mSsnMOtg5dC/wc5wu72hU963RGVoxlBoQvI3uLmE7n2vz0LZ5mfdQBJ01byjiOSpA5iGeEIjljz7Ki4uvPL4F8IpKqFRvZ/C7qIewxXzCz0khh/6BLhIdKBgo+5Dvic0Vtqc98LfSUBoj0+Ie76M7RhjlDPUFEDaFfuvFI+k/s2CCchLgU+c1saTJP8JrUEUhYwmy8+WaigzLwAJhiuxjyYnJqqnX/6cY4z8RE7K+UQjV5ocJ3aaF0dQNL8kh5BsZCU7r4POMr91Tq3gd6+MqPKIHd5eV8YSpSVAdVO4zHehslQ8Ixb3hQjFqdVt0CNTFC0eXPASn6YDFWxW6Qz+PfVo6Xrh2YLIOOYmOknCoYmn1L1R1TU5vVzSo2Sqebt2xT73fqAkI+S6/KNoH56NZusoh3uLzxjGYZNckyNq/G5X/ZR/iWXQecbgvy20ubzcpffuBecWokkaLHiDhQ53cqXmjZRiL8p+eNTwbPrxHNlKlg+ydAbZFTR7rrAXntt3xXE
+X-Rspamd-Queue-Id: 6A2302000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 9wojkhehdyfgo5cpuau7qcuj46gzaiz7
+X-HE-Tag: 1770656183-955861
+X-HE-Meta: U2FsdGVkX1+jjQvfvgnOGXyLLEFgDKEKgNeOY/q9vKMH8ibmJfbPSTb9mqMYHLGXV6oo4hhYK0a73uXP70feQJ2sbUstUvHk1BRuHQha7bF09tDYU39O/fcDsztImcFt3uoxOniSH9qPToSv9rluV1xT5YxI3q19xf6QX7Zw0pyi9PTYdil6XyHg46XaDe7u3fbF2ON6yB8OAKB1nqWd5TxNHoSJhFazp6vPLyz/ATf7NeSc7CL/8Cvr9JnqzkcDp4SwphN6ILn0krRXSFz0XuPsfU7R/XWY5ejXRjFN6Gl9eYbhHBfv8v28ukAUwpv9rxzzpASkNLyX/0QVYsk+EhcNImT93MFGa8IpsYrce29eiujM1nhxv2ayYBtHoTb0d7k8TncKilC6hes6fRcAN1IKhzGXgLTwqI0jX5X+AcjhnW0yN74Wzw1+Df3B6oWAXW11R3ocVU9TGnN18GNUbPdvoESMmcApralVKtkcej5yT4qosJL10nAxyWX4qnA/ImNTr2/FHzxg1+4ie0t9uvLwzVdSQu/uTIvcZJRHtQMiosmV9Ms4XeTEu8W6+PNluWD/ko2X5T1ZWosj2qH7LoocO+ztVdQON4uPpSLsq/sckzoEK7NCMaAe4ppuUR7fGLvOfhS4vGedQjj5YlU4wte4/wjqNA2EEmU0/MOp4VyMsS0VT4agi/zdRDt8hxoxaS/DhFl1LCrcBTgixxkxHDvm1AkCU1uiOih1ARv14spLbdX4dOP1kFA90BaQEKl4EJqUBf8AS+PNZWTOouFwJEDMQW6lLypHyXMR4NsLJAkXKp9LQuEYrz3ToZP1EN6HiXHEIzaL0NZ+YetqFJ3AO3g2Uk26cAA2sTOEHJy+9JsgnfWB3xSt16SurHguVqfPAtRL2c48EfpQhnDSDQ0/KcnlBHVQ566PCXPj2obZ7QFjvv94IvBgJNSk/LSe3+0zXYm1bxdDUNBeAwfnU9x
+ 9Ec/OZ8T
+ m9baIZpv1co0BvKRtUb3CaxqXSoqkkHTC0erCeernEmYir/ccPjfpLHMZMoqLv9D58dNayiCLZBXjw24YHtKty7366/4La2Ps775xk1akNsmcHKig8sVdIivbYnjCleEO3skWqhQtZeyorAkfG+/iLZlUYHie+XkU0nWjbBcJAIxCrDi46gFszEBvttMWkC5Ffww0/37kOz54owQFUGhv6ZWMaGZ0SJtczJAGCFT79LnBwV3Ujx9zOy2ivdLEmyT615HpRAyAnb9pPRuAQhiwGdzq3TS0k+FN39S9gflmROyMiVV9R9ZZECr2c4Ob/kAaVOmQmSFL1DQ77Q7clyMK4+XMkeD5igAjSIpPCUa/6+pF07yZkGsD0kfKNSgTmk2RqPPJnYkBuLvX4zCxwo2oUjHPgHJBQrYP6aH0ZbyGgAQ4YVzwsZQ7LxsSMxPRJ5vf+KEceKM2DJXIgj7l9vswFZ/tEVSms/8aNqan8q4mcBit97hw2WVVr5P5x/vzMrGmiHZCin8ASjEFsYExF8r9peWHKGjHtJC7UAa2zrbc70I/S3z1JJgL0IN12YLlTcdQhhD73UQLjMxqs+ubJQPRM9j6TGmF+ExlYcVTmrJGVOqAui1wXXKyG12/OsKaXEnWOoG9MB/Egi8DZcBAH6q21kjklR75v4GPtE0LYgUq6ByUPoKqHGOFPzD7j8cdFdRhATpUdBVQEYWin7YSHxPCDTzhI1ZYszvmIrTrIwBTsSbr57evCCaTRy/AtLhPwiAuZAWJdJHRvgUMJKp6Obf9KjpPqM0/XhGRL3+TR9QqMFcVRw4vkA0uN+QmzJ2dY8U6Rv2zW6CoNki63Jx1CZLGiv4WRRinSHmRHnTS93W9gDISAQAc/ib18y3d6vzf2Hly+IcMJU/NC0Y8Jdf3ahtl0UHWwgn5o1WbJSWyWX4FmzfKCdF2m2RvqGktaHV8ncZHxlQXbyS6EtMRKaL6hmcyCcptWeMD
+ 6iM3i1eF
+ 8YiiFNVS3zbeEuoGGpO2vcKK1w3TQhEE6WpnqWXmZ2506mld2+NHG6CjlyGHbz+QVmDJqOZ6G7Us1d+97hJj8CCGuQYCksUtfApfHluefwV6o5R7V7LnjXSFPG3wbX1M+tH1J0xIgSPt+WVhnDn/bUlj2kHsJwWNpyyq+u2ssjOhF3pJfMCwyThKx+KSw0QVKUJjnsbe7axYgVqByp83/0MKXdpXv3D5Aamusm1hp6xmlEjAiun/L7ihdAjlXq15JKB6vjAK9Hk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -172,221 +142,678 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/7/2026 12:08 AM, H. Peter Anvin wrote:
-> On 2026-02-06 11:36, Jens Remus wrote:
->> From: Josh Poimboeuf <jpoimboe@kernel.org>
->>
->> Enable sframe generation in the VDSO library so kernel and user space
->> can unwind through it.
->>
->> SFrame isn't supported for x32 or x86-32.  Discard .sframe sections for
->> those VDSOs.
->>
->> [ Jens Remus: Add support for SFrame V3.  Prevent GNU_SFRAME program
->> table entry to empty .sframe section. ]
->>
-> 
-> This will not break the x86-32 build if the assembler encounters .sframe?
+On Mon, Feb 9, 2026 at 6:37=E2=80=AFAM syzbot
+<syzbot+d38b792a5cbd941006fc@syzkaller.appspotmail.com> wrote:
+>
+> Hello,
+>
+> syzbot found the following issue on:
+>
+> HEAD commit:    59e4d31a0470 Merge branches 'for-next/core' and 'for-next=
+/..
+> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux=
+.git for-kernelci
+> console output: https://syzkaller.appspot.com/x/log.txt?x=3D14454b2258000=
+0
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=3D8a8594efdc14f=
+07a
+> dashboard link: https://syzkaller.appspot.com/bug?extid=3Dd38b792a5cbd941=
+006fc
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b797=
+6-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> userspace arch: arm64
+>
+> Unfortunately, I don't have any reproducer for this issue yet.
+>
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/746a1d5c4188/dis=
+k-59e4d31a.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/2eefade79f10/vmlinu=
+x-59e4d31a.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/140624ef24ed/I=
+mage-59e4d31a.gz.xz
+>
+> IMPORTANT: if you fix the issue, please add the following tag to the comm=
+it:
+> Reported-by: syzbot+d38b792a5cbd941006fc@syzkaller.appspotmail.com
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
+> WARNING: possible irq lock inversion dependency detected
+> syzkaller #0 Not tainted
+> --------------------------------------------------------
+> syz-executor/6572 just changed the state of lock:
+> ffff800097626150 (&p->sequence){+.-.}-{0:0}, at: writeout_period+0x94/0x1=
+1c mm/page-writeback.c:615
+> but this lock was taken by another, HARDIRQ-safe lock in the past:
+>  (&xa->xa_lock#10){-.-.}-{3:3}
+>
+>
+> and interrupts could create inverse lock ordering between them.
+>
+>
+> other info that might help us debug this:
+>  Possible interrupt unsafe locking scenario:
+>
+>        CPU0                    CPU1
+>        ----                    ----
+>   lock(&p->sequence);
+>                                local_irq_disable();
+>                                lock(&xa->xa_lock#10);
+>                                lock(&p->sequence);
+>   <Interrupt>
+>     lock(&xa->xa_lock#10);
+>
+>  *** DEADLOCK ***
+>
+> 1 lock held by syz-executor/6572:
+>  #0: ffff800097bd7c40 ((&dom->period_timer)){+.-.}-{0:0}, at: lockdep_cop=
+y_map include/linux/lockdep.h:41 [inline]
+>  #0: ffff800097bd7c40 ((&dom->period_timer)){+.-.}-{0:0}, at: call_timer_=
+fn+0xd4/0x814 kernel/time/timer.c:1738
+>
+> the shortest dependencies between 2nd lock and 1st lock:
+>  -> (&xa->xa_lock#10){-.-.}-{3:3} {
+>     IN-HARDIRQ-W at:
+>                       lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5=
+868
+>                       __raw_spin_lock_irqsave include/linux/spinlock_api_=
+smp.h:110 [inline]
+>                       _raw_spin_lock_irqsave+0x5c/0x7c kernel/locking/spi=
+nlock.c:162
+>                       __folio_end_writeback+0x10c/0x6f8 mm/page-writeback=
+.c:2990
+>                       folio_end_writeback_no_dropbehind+0xd0/0x204 mm/fil=
+emap.c:1661
+>                       folio_end_writeback+0xd8/0x248 mm/filemap.c:1687
+>                       end_buffer_async_write+0x20c/0x350 fs/buffer.c:419
+>                       end_bio_bh_io_sync+0xb0/0x184 fs/buffer.c:2776
+>                       bio_endio+0x8d4/0x910 block/bio.c:1675
+>                       blk_complete_request block/blk-mq.c:908 [inline]
+>                       blk_mq_end_request_batch+0x49c/0x105c block/blk-mq.=
+c:1202
+>                       nvme_complete_batch drivers/nvme/host/nvme.h:802 [i=
+nline]
+>                       nvme_pci_complete_batch drivers/nvme/host/pci.c:134=
+8 [inline]
+>                       nvme_irq+0x1ec/0x240 drivers/nvme/host/pci.c:1450
+>                       __handle_irq_event_percpu+0x20c/0x8e4 kernel/irq/ha=
+ndle.c:211
+>                       handle_irq_event_percpu kernel/irq/handle.c:248 [in=
+line]
+>                       handle_irq_event+0x9c/0x1d0 kernel/irq/handle.c:265
+>                       handle_fasteoi_irq+0x328/0x8d8 kernel/irq/chip.c:76=
+4
+>                       generic_handle_irq_desc include/linux/irqdesc.h:172=
+ [inline]
+>                       handle_irq_desc kernel/irq/irqdesc.c:669 [inline]
+>                       generic_handle_domain_irq+0xe0/0x140 kernel/irq/irq=
+desc.c:725
+>                       __gic_handle_irq drivers/irqchip/irq-gic-v3.c:825 [=
+inline]
+>                       __gic_handle_irq_from_irqson drivers/irqchip/irq-gi=
+c-v3.c:876 [inline]
+>                       gic_handle_irq+0x6c/0x18c drivers/irqchip/irq-gic-v=
+3.c:920
+>                       call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry=
+.S:891
+>                       do_interrupt_handler+0xd4/0x138 arch/arm64/kernel/e=
+ntry-common.c:135
+>                       __el1_irq arch/arm64/kernel/entry-common.c:497 [inl=
+ine]
+>                       el1_interrupt+0x3c/0x60 arch/arm64/kernel/entry-com=
+mon.c:510
+>                       el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/ent=
+ry-common.c:515
+>                       el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>                       __daif_local_irq_restore arch/arm64/include/asm/irq=
+flags.h:175 [inline]
+>                       arch_local_irq_restore arch/arm64/include/asm/irqfl=
+ags.h:195 [inline]
+>                       kasan_quarantine_put+0xbc/0x1c8 mm/kasan/quarantine=
+.c:234
+>                       __kasan_slab_free+0x8c/0xa4 mm/kasan/common.c:295
+>                       kasan_slab_free include/linux/kasan.h:235 [inline]
+>                       slab_free_hook mm/slub.c:2540 [inline]
+>                       slab_free_after_rcu_debug+0x120/0x2f8 mm/slub.c:672=
+9
+>                       rcu_do_batch kernel/rcu/tree.c:2605 [inline]
+>                       rcu_core+0x848/0x1774 kernel/rcu/tree.c:2857
+>                       rcu_core_si+0x10/0x1c kernel/rcu/tree.c:2874
+>                       handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
+>                       run_ksoftirqd+0x70/0xc0 kernel/softirq.c:1063
+>                       smpboot_thread_fn+0x4d8/0x9cc kernel/smpboot.c:160
+>                       kthread+0x5fc/0x75c kernel/kthread.c:463
+>                       ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:8=
+44
+>     IN-SOFTIRQ-W at:
+>                       lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5=
+868
+>                       __raw_spin_lock_irqsave include/linux/spinlock_api_=
+smp.h:110 [inline]
+>                       _raw_spin_lock_irqsave+0x5c/0x7c kernel/locking/spi=
+nlock.c:162
+>                       __folio_end_writeback+0x10c/0x6f8 mm/page-writeback=
+.c:2990
+>                       folio_end_writeback_no_dropbehind+0xd0/0x204 mm/fil=
+emap.c:1661
+>                       folio_end_writeback+0xd8/0x248 mm/filemap.c:1687
+>                       end_buffer_async_write+0x20c/0x350 fs/buffer.c:419
+>                       end_bio_bh_io_sync+0xb0/0x184 fs/buffer.c:2776
+>                       bio_endio+0x8d4/0x910 block/bio.c:1675
+>                       blk_complete_request block/blk-mq.c:908 [inline]
+>                       blk_mq_end_request_batch+0x49c/0x105c block/blk-mq.=
+c:1202
+>                       nvme_complete_batch drivers/nvme/host/nvme.h:802 [i=
+nline]
+>                       nvme_pci_complete_batch drivers/nvme/host/pci.c:134=
+8 [inline]
+>                       nvme_irq+0x1ec/0x240 drivers/nvme/host/pci.c:1450
+>                       __handle_irq_event_percpu+0x20c/0x8e4 kernel/irq/ha=
+ndle.c:211
+>                       handle_irq_event_percpu kernel/irq/handle.c:248 [in=
+line]
+>                       handle_irq_event+0x9c/0x1d0 kernel/irq/handle.c:265
+>                       handle_fasteoi_irq+0x328/0x8d8 kernel/irq/chip.c:76=
+4
+>                       generic_handle_irq_desc include/linux/irqdesc.h:172=
+ [inline]
+>                       handle_irq_desc kernel/irq/irqdesc.c:669 [inline]
+>                       generic_handle_domain_irq+0xe0/0x140 kernel/irq/irq=
+desc.c:725
+>                       __gic_handle_irq drivers/irqchip/irq-gic-v3.c:825 [=
+inline]
+>                       __gic_handle_irq_from_irqson drivers/irqchip/irq-gi=
+c-v3.c:876 [inline]
+>                       gic_handle_irq+0x6c/0x18c drivers/irqchip/irq-gic-v=
+3.c:920
+>                       call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry=
+.S:891
+>                       do_interrupt_handler+0xd4/0x138 arch/arm64/kernel/e=
+ntry-common.c:135
+>                       __el1_irq arch/arm64/kernel/entry-common.c:497 [inl=
+ine]
+>                       el1_interrupt+0x3c/0x60 arch/arm64/kernel/entry-com=
+mon.c:510
+>                       el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/ent=
+ry-common.c:515
+>                       el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>                       __daif_local_irq_restore arch/arm64/include/asm/irq=
+flags.h:175 [inline]
+>                       arch_local_irq_restore arch/arm64/include/asm/irqfl=
+ags.h:195 [inline]
+>                       kasan_quarantine_put+0xbc/0x1c8 mm/kasan/quarantine=
+.c:234
+>                       __kasan_slab_free+0x8c/0xa4 mm/kasan/common.c:295
+>                       kasan_slab_free include/linux/kasan.h:235 [inline]
+>                       slab_free_hook mm/slub.c:2540 [inline]
+>                       slab_free_after_rcu_debug+0x120/0x2f8 mm/slub.c:672=
+9
+>                       rcu_do_batch kernel/rcu/tree.c:2605 [inline]
+>                       rcu_core+0x848/0x1774 kernel/rcu/tree.c:2857
+>                       rcu_core_si+0x10/0x1c kernel/rcu/tree.c:2874
+>                       handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
+>                       run_ksoftirqd+0x70/0xc0 kernel/softirq.c:1063
+>                       smpboot_thread_fn+0x4d8/0x9cc kernel/smpboot.c:160
+>                       kthread+0x5fc/0x75c kernel/kthread.c:463
+>                       ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:8=
+44
+>     INITIAL USE at:
+>                      lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:58=
+68
+>                      __raw_spin_lock_irq include/linux/spinlock_api_smp.h=
+:119 [inline]
+>                      _raw_spin_lock_irq+0x58/0x70 kernel/locking/spinlock=
+.c:170
+>                      spin_lock_irq include/linux/spinlock.h:376 [inline]
+>                      shmem_add_to_page_cache+0x564/0xa24 mm/shmem.c:904
+>                      shmem_alloc_and_add_folio+0x758/0x10c4 mm/shmem.c:19=
+58
+>                      shmem_get_folio_gfp+0x4d4/0x159c mm/shmem.c:2556
+>                      shmem_read_folio_gfp+0x8c/0xf0 mm/shmem.c:5970
+>                      drm_gem_get_pages+0x1cc/0x7c0 drivers/gpu/drm/drm_ge=
+m.c:654
+>                      drm_gem_shmem_get_pages_locked+0x1d4/0x364 drivers/g=
+pu/drm/drm_gem_shmem_helper.c:240
+>                      drm_gem_shmem_pin_locked+0x1f8/0x410 drivers/gpu/drm=
+/drm_gem_shmem_helper.c:301
+>                      drm_gem_shmem_vmap_locked+0x3cc/0x658 drivers/gpu/dr=
+m/drm_gem_shmem_helper.c:405
+>                      drm_gem_shmem_object_vmap+0x28/0x38 include/drm/drm_=
+gem_shmem_helper.h:245
+>                      drm_gem_vmap_locked drivers/gpu/drm/drm_gem.c:1273 [=
+inline]
+>                      drm_gem_vmap+0x104/0x1d8 drivers/gpu/drm/drm_gem.c:1=
+315
+>                      drm_client_buffer_vmap+0x68/0xb0 drivers/gpu/drm/drm=
+_client.c:355
+>                      drm_fbdev_shmem_driver_fbdev_probe+0x1f4/0x700 drive=
+rs/gpu/drm/drm_fbdev_shmem.c:159
+>                      drm_fb_helper_single_fb_probe drivers/gpu/drm/drm_fb=
+_helper.c:1562 [inline]
+>                      __drm_fb_helper_initial_config_and_unlock+0x108c/0x1=
+728 drivers/gpu/drm/drm_fb_helper.c:1741
+>                      drm_fb_helper_initial_config+0x3c/0x58 drivers/gpu/d=
+rm/drm_fb_helper.c:1828
+>                      drm_fbdev_client_hotplug+0x154/0x22c drivers/gpu/drm=
+/clients/drm_fbdev_client.c:66
+>                      drm_client_register+0x13c/0x1d4 drivers/gpu/drm/drm_=
+client.c:143
+>                      drm_fbdev_client_setup+0x194/0x3d0 drivers/gpu/drm/c=
+lients/drm_fbdev_client.c:168
+>                      drm_client_setup+0x114/0x228 drivers/gpu/drm/clients=
+/drm_client_setup.c:46
+>                      vkms_create+0x370/0x420 drivers/gpu/drm/vkms/vkms_dr=
+v.c:211
+>                      vkms_init+0x64/0x9c drivers/gpu/drm/vkms/vkms_drv.c:=
+239
+>                      do_one_initcall+0x248/0x9b4 init/main.c:1378
+>                      do_initcall_level+0x128/0x1c4 init/main.c:1440
+>                      do_initcalls+0x70/0xd0 init/main.c:1456
+>                      do_basic_setup+0x78/0x8c init/main.c:1475
+>                      kernel_init_freeable+0x268/0x39c init/main.c:1688
+>                      kernel_init+0x24/0x1dc init/main.c:1578
+>                      ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:84=
+4
+>   }
+>   ... key      at: [<ffff80009764a620>] xa_init_flags.__key+0x0/0x20
+>   ... acquired at:
+>    seqcount_lockdep_reader_access include/linux/seqlock.h:72 [inline]
+>    fprop_fraction_percpu+0xf0/0x270 lib/flex_proportions.c:155
+>    __fprop_add_percpu_max+0x130/0x1f4 lib/flex_proportions.c:186
+>    wb_domain_writeout_add mm/page-writeback.c:562 [inline]
+>    __wb_writeout_add+0xbc/0x27c mm/page-writeback.c:586
+>    __folio_end_writeback+0x380/0x6f8 mm/page-writeback.c:2997
+>    folio_end_writeback_no_dropbehind+0xd0/0x204 mm/filemap.c:1661
+>    folio_end_writeback+0xd8/0x248 mm/filemap.c:1687
+>    iomap_finish_folio_write+0x1c0/0x2a4 fs/iomap/buffered-io.c:1713
+>    fuse_writepage_finish fs/fuse/file.c:1903 [inline]
+>    fuse_writepage_end+0x238/0x454 fs/fuse/file.c:2003
+>    fuse_request_end+0x898/0xc10 fs/fuse/dev.c:507
+>    fuse_dev_end_requests fs/fuse/dev.c:2415 [inline]
+>    fuse_abort_conn+0xe88/0x10a0 fs/fuse/dev.c:2513
+>    fuse_dev_release+0x430/0x4c8 fs/fuse/dev.c:2556
+>    __fput+0x340/0x75c fs/file_table.c:468
+>    fput_close_sync+0x100/0x264 fs/file_table.c:573
+>    __do_sys_close fs/open.c:1573 [inline]
+>    __se_sys_close fs/open.c:1558 [inline]
+>    __arm64_sys_close+0x7c/0x118 fs/open.c:1558
+>    __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>    invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
+>    el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c:132
+>    do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+>    el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:724
+>    el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:743
+>    el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
+>
+> -> (&p->sequence){+.-.}-{0:0} {
+>    HARDIRQ-ON-W at:
+>                     lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:586=
+8
+>                     do_write_seqcount_begin_nested include/linux/seqlock.=
+h:477 [inline]
+>                     do_write_seqcount_begin include/linux/seqlock.h:503 [=
+inline]
+>                     fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:7=
+4
+>                     writeout_period+0x94/0x11c mm/page-writeback.c:615
+>                     call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
+>                     expire_timers kernel/time/timer.c:1799 [inline]
+>                     __run_timers kernel/time/timer.c:2373 [inline]
+>                     __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
+>                     run_timer_base kernel/time/timer.c:2394 [inline]
+>                     run_timer_softirq+0x11c/0x194 kernel/time/timer.c:240=
+5
+>                     handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
+>                     __do_softirq+0x14/0x20 kernel/softirq.c:656
+>                     ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
+>                     call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S=
+:891
+>                     do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.=
+c:73
+>                     invoke_softirq kernel/softirq.c:503 [inline]
+>                     __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
+>                     irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
+>                     __el1_irq arch/arm64/kernel/entry-common.c:498 [inlin=
+e]
+>                     el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-commo=
+n.c:510
+>                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
+-common.c:515
+>                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>                     __daif_local_irq_enable arch/arm64/include/asm/irqfla=
+gs.h:26 [inline]
+>                     arch_local_irq_enable arch/arm64/include/asm/irqflags=
+.h:48 [inline]
+>                     preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7=
+189
+>                     raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry=
+/common.c:173
+>                     irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
+>                     exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry=
+-common.c:58
+>                     __el1_irq arch/arm64/kernel/entry-common.c:500 [inlin=
+e]
+>                     el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-commo=
+n.c:510
+>                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
+-common.c:515
+>                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>                     __daif_local_irq_restore arch/arm64/include/asm/irqfl=
+ags.h:175 [inline]
+>                     arch_local_irq_restore arch/arm64/include/asm/irqflag=
+s.h:195 [inline]
+>                     class_irqsave_destructor include/linux/irqflags.h:266=
+ [inline]
+>                     __free_object+0x514/0x720 lib/debugobjects.c:524
+>                     free_object lib/debugobjects.c:532 [inline]
+>                     debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
+>                     destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [i=
+nline]
+>                     hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2=
+178
+>                     common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:13=
+52
+>                     __do_sys_clock_nanosleep kernel/time/posix-timers.c:1=
+398 [inline]
+>                     __se_sys_clock_nanosleep kernel/time/posix-timers.c:1=
+375 [inline]
+>                     __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/p=
+osix-timers.c:1375
+>                     __invoke_syscall arch/arm64/kernel/syscall.c:35 [inli=
+ne]
+>                     invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c=
+:49
+>                     el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c=
+:132
+>                     do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+>                     el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:7=
+24
+>                     el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/ent=
+ry-common.c:743
+>                     el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:59=
+6
+>    IN-SOFTIRQ-W at:
+>                     lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:586=
+8
+>                     do_write_seqcount_begin_nested include/linux/seqlock.=
+h:477 [inline]
+>                     do_write_seqcount_begin include/linux/seqlock.h:503 [=
+inline]
+>                     fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:7=
+4
+>                     writeout_period+0x94/0x11c mm/page-writeback.c:615
+>                     call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
+>                     expire_timers kernel/time/timer.c:1799 [inline]
+>                     __run_timers kernel/time/timer.c:2373 [inline]
+>                     __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
+>                     run_timer_base kernel/time/timer.c:2394 [inline]
+>                     run_timer_softirq+0x11c/0x194 kernel/time/timer.c:240=
+5
+>                     handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
+>                     __do_softirq+0x14/0x20 kernel/softirq.c:656
+>                     ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
+>                     call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S=
+:891
+>                     do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.=
+c:73
+>                     invoke_softirq kernel/softirq.c:503 [inline]
+>                     __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
+>                     irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
+>                     __el1_irq arch/arm64/kernel/entry-common.c:498 [inlin=
+e]
+>                     el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-commo=
+n.c:510
+>                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
+-common.c:515
+>                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>                     __daif_local_irq_enable arch/arm64/include/asm/irqfla=
+gs.h:26 [inline]
+>                     arch_local_irq_enable arch/arm64/include/asm/irqflags=
+.h:48 [inline]
+>                     preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7=
+189
+>                     raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry=
+/common.c:173
+>                     irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
+>                     exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry=
+-common.c:58
+>                     __el1_irq arch/arm64/kernel/entry-common.c:500 [inlin=
+e]
+>                     el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-commo=
+n.c:510
+>                     el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry=
+-common.c:515
+>                     el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>                     __daif_local_irq_restore arch/arm64/include/asm/irqfl=
+ags.h:175 [inline]
+>                     arch_local_irq_restore arch/arm64/include/asm/irqflag=
+s.h:195 [inline]
+>                     class_irqsave_destructor include/linux/irqflags.h:266=
+ [inline]
+>                     __free_object+0x514/0x720 lib/debugobjects.c:524
+>                     free_object lib/debugobjects.c:532 [inline]
+>                     debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
+>                     destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [i=
+nline]
+>                     hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2=
+178
+>                     common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:13=
+52
+>                     __do_sys_clock_nanosleep kernel/time/posix-timers.c:1=
+398 [inline]
+>                     __se_sys_clock_nanosleep kernel/time/posix-timers.c:1=
+375 [inline]
+>                     __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/p=
+osix-timers.c:1375
+>                     __invoke_syscall arch/arm64/kernel/syscall.c:35 [inli=
+ne]
+>                     invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c=
+:49
+>                     el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c=
+:132
+>                     do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+>                     el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:7=
+24
+>                     el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/ent=
+ry-common.c:743
+>                     el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:59=
+6
+>    INITIAL READ USE at:
+>                         lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c=
+:5868
+>                         seqcount_lockdep_reader_access include/linux/seql=
+ock.h:72 [inline]
+>                         fprop_fraction_percpu+0xac/0x270 lib/flex_proport=
+ions.c:155
+>                         __wb_calc_thresh+0xfc/0x3b0 mm/page-writeback.c:9=
+13
+>                         wb_bg_dirty_limits mm/page-writeback.c:2130 [inli=
+ne]
+>                         domain_over_bg_thresh+0xb8/0x1f0 mm/page-writebac=
+k.c:2144
+>                         wb_over_bg_thresh+0xf8/0x17c mm/page-writeback.c:=
+2165
+>                         wb_check_background_flush fs/fs-writeback.c:2278 =
+[inline]
+>                         wb_do_writeback fs/fs-writeback.c:2376 [inline]
+>                         wb_workfn+0xa30/0xdc0 fs/fs-writeback.c:2403
+>                         process_one_work+0x7c0/0x1558 kernel/workqueue.c:=
+3257
+>                         process_scheduled_works kernel/workqueue.c:3340 [=
+inline]
+>                         worker_thread+0x958/0xed8 kernel/workqueue.c:3421
+>                         kthread+0x5fc/0x75c kernel/kthread.c:463
+>                         ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S=
+:844
+>  }
+>  ... key      at: [<ffff800097b9a340>] fprop_global_init.__key.1+0x0/0x20
+>  ... acquired at:
+>    mark_lock+0x170/0x1d0 kernel/locking/lockdep.c:4753
+>    mark_usage kernel/locking/lockdep.c:4662 [inline]
+>    __lock_acquire+0x9a0/0x30a4 kernel/locking/lockdep.c:5191
+>    lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5868
+>    do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
+>    do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
+>    fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:74
+>    writeout_period+0x94/0x11c mm/page-writeback.c:615
+>    call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
+>    expire_timers kernel/time/timer.c:1799 [inline]
+>    __run_timers kernel/time/timer.c:2373 [inline]
+>    __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
+>    run_timer_base kernel/time/timer.c:2394 [inline]
+>    run_timer_softirq+0x11c/0x194 kernel/time/timer.c:2405
+>    handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
+>    __do_softirq+0x14/0x20 kernel/softirq.c:656
+>    ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
+>    call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S:891
+>    do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:73
+>    invoke_softirq kernel/softirq.c:503 [inline]
+>    __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
+>    irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
+>    __el1_irq arch/arm64/kernel/entry-common.c:498 [inline]
+>    el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-common.c:510
+>    el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
+>    el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>    __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:26 [inline]
+>    arch_local_irq_enable arch/arm64/include/asm/irqflags.h:48 [inline]
+>    preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7189
+>    raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry/common.c:173
+>    irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
+>    exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry-common.c:58
+>    __el1_irq arch/arm64/kernel/entry-common.c:500 [inline]
+>    el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-common.c:510
+>    el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
+>    el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>    __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline=
+]
+>    arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline]
+>    class_irqsave_destructor include/linux/irqflags.h:266 [inline]
+>    __free_object+0x514/0x720 lib/debugobjects.c:524
+>    free_object lib/debugobjects.c:532 [inline]
+>    debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
+>    destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [inline]
+>    hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2178
+>    common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:1352
+>    __do_sys_clock_nanosleep kernel/time/posix-timers.c:1398 [inline]
+>    __se_sys_clock_nanosleep kernel/time/posix-timers.c:1375 [inline]
+>    __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/posix-timers.c:137=
+5
+>    __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>    invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
+>    el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c:132
+>    do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+>    el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:724
+>    el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:743
+>    el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
+>
+>
+> stack backtrace:
+> CPU: 1 UID: 0 PID: 6572 Comm: syz-executor Not tainted syzkaller #0 PREEM=
+PT
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
+oogle 10/03/2025
+> Call trace:
+>  show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:499 (C)
+>  __dump_stack+0x30/0x40 lib/dump_stack.c:94
+>  dump_stack_lvl+0xd8/0x12c lib/dump_stack.c:120
+>  dump_stack+0x1c/0x28 lib/dump_stack.c:129
+>  print_irq_inversion_bug+0x1f8/0x1fc kernel/locking/lockdep.c:4125
+>  mark_lock_irq+0x3b4/0x47c kernel/locking/lockdep.c:-1
+>  mark_lock+0x170/0x1d0 kernel/locking/lockdep.c:4753
+>  mark_usage kernel/locking/lockdep.c:4662 [inline]
+>  __lock_acquire+0x9a0/0x30a4 kernel/locking/lockdep.c:5191
+>  lock_acquire+0x140/0x2e0 kernel/locking/lockdep.c:5868
+>  do_write_seqcount_begin_nested include/linux/seqlock.h:477 [inline]
+>  do_write_seqcount_begin include/linux/seqlock.h:503 [inline]
+>  fprop_new_period+0x3b8/0x718 lib/flex_proportions.c:74
+>  writeout_period+0x94/0x11c mm/page-writeback.c:615
+>  call_timer_fn+0x19c/0x814 kernel/time/timer.c:1748
+>  expire_timers kernel/time/timer.c:1799 [inline]
+>  __run_timers kernel/time/timer.c:2373 [inline]
+>  __run_timer_base+0x51c/0x76c kernel/time/timer.c:2385
+>  run_timer_base kernel/time/timer.c:2394 [inline]
+>  run_timer_softirq+0x11c/0x194 kernel/time/timer.c:2405
+>  handle_softirqs+0x31c/0xc88 kernel/softirq.c:622
+>  __do_softirq+0x14/0x20 kernel/softirq.c:656
+>  ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:68
+>  call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S:891
+>  do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:73
+>  invoke_softirq kernel/softirq.c:503 [inline]
+>  __irq_exit_rcu+0x1b0/0x478 kernel/softirq.c:723
+>  irq_exit_rcu+0x14/0x84 kernel/softirq.c:739
+>  __el1_irq arch/arm64/kernel/entry-common.c:498 [inline]
+>  el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-common.c:510
+>  el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
+>  el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>  __daif_local_irq_enable arch/arm64/include/asm/irqflags.h:26 [inline] (P=
+)
+>  arch_local_irq_enable arch/arm64/include/asm/irqflags.h:48 [inline] (P)
+>  preempt_schedule_irq+0x78/0x188 kernel/sched/core.c:7189 (P)
+>  raw_irqentry_exit_cond_resched+0x30/0x44 kernel/entry/common.c:173
+>  irqentry_exit+0x1b0/0x308 kernel/entry/common.c:216
+>  exit_to_kernel_mode+0x10/0x1c arch/arm64/kernel/entry-common.c:58
+>  __el1_irq arch/arm64/kernel/entry-common.c:500 [inline]
+>  el1_interrupt+0x4c/0x60 arch/arm64/kernel/entry-common.c:510
+>  el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:515
+>  el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:592
+>  __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline] =
+(P)
+>  arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline] (P=
+)
+>  class_irqsave_destructor include/linux/irqflags.h:266 [inline] (P)
+>  __free_object+0x514/0x720 lib/debugobjects.c:524 (P)
+>  free_object lib/debugobjects.c:532 [inline]
+>  debug_object_free+0x298/0x3e4 lib/debugobjects.c:976
+>  destroy_hrtimer_on_stack kernel/time/hrtimer.c:448 [inline]
+>  hrtimer_nanosleep+0x214/0x2a4 kernel/time/hrtimer.c:2178
+>  common_nsleep+0xa0/0xb8 kernel/time/posix-timers.c:1352
+>  __do_sys_clock_nanosleep kernel/time/posix-timers.c:1398 [inline]
+>  __se_sys_clock_nanosleep kernel/time/posix-timers.c:1375 [inline]
+>  __arm64_sys_clock_nanosleep+0x334/0x370 kernel/time/posix-timers.c:1375
+>  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
+>  invoke_syscall+0x98/0x254 arch/arm64/kernel/syscall.c:49
+>  el0_svc_common+0xe8/0x23c arch/arm64/kernel/syscall.c:132
+>  do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:151
+>  el0_svc+0x5c/0x26c arch/arm64/kernel/entry-common.c:724
+>  el0t_64_sync_handler+0x84/0x12c arch/arm64/kernel/entry-common.c:743
+>  el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:596
+>
+>
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+>
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+>
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
 
-I cannot follow.  Assembler option --gsframe-3 is only specified in
-vdso64/Makefile if CONFIG_AS_SFRAME3, which affects the x86-64 and x32
-VDSOs.  The latter as the x32 VDSO is built from x86-64 objects
-converted to x86-32 objects using the X32 build step.  Assembler
-directive ".cfi_sections .sframe" is no longer used in dwarf2.h, which
-affected the x86-32 VDSO if cross build on x86-64 (so that
-CONFIG_AS_SFRAME3=y).
+#syz fix: flex_proportions: make fprop_new_period() hardirq safe
 
-The reason to discard .sframe in the common VDSO linker script if
-!KEEP_SFRAME is to remove it from x32 VDSO (built from x86-64 objects
-having .sframe).  It should also prevent linker errors from linkers that
-do not support R_X86_64_PC64 in x32 mode, such as the meanwhile fixed
-GNU linker:
-https://www.sourceware.org/bugzilla/show_bug.cgi?id=33807
+This was fixed by Jan a few weeks ago (commit dd9e2f5b38f1f in the
+linux-next tree) [1]. I think Jan's fix just hasn't been
+pulled into the arm64 tree yet [2].
 
-> 
->> Notes (jremus):
->>     Changes in v8:
->>     - Discard .sframe for x32 and x86-32 VDSOs. (Josh/Indu)
->>       Note that the use of KEEP_SFRAME enables to define it for x86-64
->>       VDSO only.  Unlike CONFIG_AS_SFRAME, which may also be defined
->>       for x32 and x86-32 VDSO.  In x32 VDSO it would result in superfluous
->>       .sframe (copied from the x86-64 build - could be removed in X32
->>       build step).  In x86-32 VDSO it would cause a bogus GNU_SFRAME
->>       program table entry.
-> 
-> For x32, this would be a "valid" sframe, right, even if the tools currently
-> don't know how to consume it (and potentially never will)? If so, is there
-> really any reason to explicitly remove it?
+Thanks,
+Joanne
 
-I am not an x86 expert.  IIUC the x32 ABI uses 4-byte pointers.  But GCC
-with option -mx32 emits DWARF that suggests that at least the return
-address (RA) and frame pointer (FP; rbp) are still pushed as 8-byte
-values on the stack, which would be relevant for SFrame:
+[1] https://lore.kernel.org/all/20260121112729.24463-2-jack@suse.cz/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/log/?qt=
+=3Dauthor&q=3DJan+Kara
 
-00000000 <foo>:
-   0:   55                      push   %rbp
-   1:   89 e5                   mov    %esp,%ebp
-...
-
-   LOC           CFA      rbp   ra
-0000000000000000 rsp+8    u     c-8   <-- suggests RA is 8-bytes on stack
-0000000000000001 rsp+16   c-16  c-8   <-- suggests FP is 8-bytes on stack
-...
-
-That could mean that technically the .sframe would be mostly valid.  The
-fixed RA offset of -8 would be correct, the variable FP offset would be
-tracked, and the implicit SP rule SP=CFA should be correct as well.  But
-the SFrame header would incorrectly specify AMD64 as ABI/arch ID instead
-of ILP32 (if I got the ELF x86-64-ABI psABI [1] correct).
-
-AFAIK SFrame does not officially support ILP32.  At least GNU assembler
-does not:
-
-$ printf ".cfi_startproc\n.cfi_endproc\n" | as --gsframe-3 --x32 ; echo $?
-Assembler messages:
-{standard input}: Error: .sframe not supported for target
-1
-
-My take would be that it would be better to build x32 VDSO without
-.sframe (or discard .sframe from x32 VDSO), unless it is officially
-supported.
-
-@Indu: What are your thoughts as SFrame maintainer?
-
-[1]: ELF x86-64-ABI psABI,
-     https://gitlab.com/x86-psABIs/x86-64-ABI
-
->>  	/*
->>  	 * Text is well-separated from actual data: there's plenty of
->>  	 * stuff that isn't used at runtime in between.
->> @@ -80,6 +87,10 @@ SECTIONS
->>  		*(.discard)
->>  		*(.discard.*)
->>  		*(__bug_table)
->> +#ifndef KEEP_SFRAME
->> +		*(.sframe)
->> +		*(.sframe.*)
->> +#endif
-> 
-> This #ifndef is actually not necessary: if we have already "consumed" the
-> .sframe* sections they will not be encountered here.
-
-It is necessary to remove .sframe from x86-64 objects (created by the
-x86-64 VDSO build) converted to x86-32 objects in the X32 build step for
-x32 VDSO, provided SFrame is not supported for x32.  The x86-64 VDSO has
-.sframe, as the x86-64 VDSO linker script defines KEEP_SFRAME.  The x32
-VDSO has .sframe removed, as the x32 linker script does not define
-KEEP_SFRAME.
-
-An alternative to the #ifndef (or #if !KEEP_SFRAME) would be to remove
-the .sframe in the X32 build step:
-
-diff --git a/arch/x86/entry/vdso/vdso64/Makefile b/arch/x86/entry/vdso/vdso64/Makefile
-@@ -23,14 +24,14 @@ include $(src)/../common/Makefile.include
- #
- # Build x32 vDSO image:
- # 1. Compile x32 vDSO as 64bit.
--# 2. Convert object files to x32.
-+# 2. Convert object files to x32 and remove .sframe.
- # 3. Build x32 VDSO image with x32 objects, which contains 64bit codes
- # so that it can reach 64bit address space with 64bit pointers.
- #
-
- # Convert 64bit object file to x32 for x32 vDSO.
- quiet_cmd_x32 = X32     $@
--      cmd_x32 = $(OBJCOPY) -O elf32-x86-64 $< $@
-+      cmd_x32 = $(OBJCOPY) -O elf32-x86-64 -R .sframe $< $@
-
- $(obj)/%-x32.o: $(obj)/%.o FORCE
-	$(call if_changed,x32)
-
-KEEP_SFRAME (or then maybe better HAVE_SFRAME) would then still be
-required to only emit a program table entry, if .sframe was generated.
-
-Note that AS_SFRAME only indicates whether the assembler supports to
-generate .sframe.  Not whether if it should actually be done.  That is
-selected by adding the --gsframe-3 assembler option and defining
-KEEP_SFRAME to true, which is done in the respective VDSO Makefile and
-linker script.
-
-> I would prefer to have KEEP_SFRAME always defined (as true or false, and using
-> #if) instead of using #ifdef. I believe that also means you can do:
-> 
-> #define KEEP_SFRAME IS_ENABLED(CONFIG_AS_SFRAME)
-> 
-> ... instead of #ifdef.
-
-The following works and indeed looks nicer with #if KEEP_SFRAME.  Will
-wait for further feedback on whether or not to discard .sframe in x32
-VDSO before sending a v9.
-
-diff --git a/arch/x86/entry/vdso/common/vdso-layout.lds.S b/arch/x86/entry/vdso/common/vdso-layout.lds.S
-@@ -60,7 +60,7 @@ SECTIONS
- 		*(.eh_frame.*)
- 	}					:text
- 
--#ifdef KEEP_SFRAME
-+#if KEEP_SFRAME
- 	.sframe		: {
- 		KEEP (*(.sframe))
- 		*(.sframe.*)
-@@ -87,7 +87,7 @@ SECTIONS
- 		*(.discard)
- 		*(.discard.*)
- 		*(__bug_table)
--#ifndef KEEP_SFRAME
-+#if !KEEP_SFRAME
- 		*(.sframe)
- 		*(.sframe.*)
- #endif
-@@ -116,7 +116,7 @@ PHDRS
- 	dynamic		PT_DYNAMIC	PF_R;
- 	note		PT_NOTE		PF_R;
- 	eh_frame_hdr	PT_GNU_EH_FRAME PF_R;
--#ifdef KEEP_SFRAME
-+#if KEEP_SFRAME
- 	sframe		PT_GNU_SFRAME	PF_R;
- #endif
- 	gnu_stack	PT_GNU_STACK	PF_RW;
-diff --git a/arch/x86/entry/vdso/vdso32/vdso32.lds.S b/arch/x86/entry/vdso/vdso32/vdso32.lds.S
-@@ -10,6 +10,7 @@
- #include <asm/page.h>
- 
- #define BUILD_VDSO32
-+#define KEEP_SFRAME	false
- 
- #include "common/vdso-layout.lds.S"
- 
-diff --git a/arch/x86/entry/vdso/vdso64/vdso64.lds.S b/arch/x86/entry/vdso/vdso64/vdso64.lds.S
-@@ -8,10 +8,7 @@
-  */
- 
- #define BUILD_VDSO64
--
--#ifdef CONFIG_AS_SFRAME
--# define KEEP_SFRAME
--#endif
-+#define KEEP_SFRAME	(CONFIG_AS_SFRAME)
- 
- #include "common/vdso-layout.lds.S"
- 
-diff --git a/arch/x86/entry/vdso/vdso64/vdsox32.lds.S b/arch/x86/entry/vdso/vdso64/vdsox32.lds.S
-@@ -8,6 +8,7 @@
-  */
- 
- #define BUILD_VDSOX32
-+#define KEEP_SFRAME	false
- 
- #include "common/vdso-layout.lds.S"
- 
-Thanks and regards,
-Jens
--- 
-Jens Remus
-Linux on Z Development (D3303)
-jremus@de.ibm.com / jremus@linux.ibm.com
-
-IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
-IBM Data Privacy Statement: https://www.ibm.com/privacy/
-
+>
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+>
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+>
+> If you want to undo deduplication, reply with:
+> #syz undup
+>
 
