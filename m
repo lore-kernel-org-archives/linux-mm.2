@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31DF8E81BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D36FDE81BCF
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:39:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 988886B009D; Mon,  9 Feb 2026 09:39:25 -0500 (EST)
+	id 437BB6B00A4; Mon,  9 Feb 2026 09:39:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93F226B009E; Mon,  9 Feb 2026 09:39:25 -0500 (EST)
+	id 3EEE86B00A5; Mon,  9 Feb 2026 09:39:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82B3A6B009F; Mon,  9 Feb 2026 09:39:25 -0500 (EST)
+	id 2E4A36B00A6; Mon,  9 Feb 2026 09:39:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F9796B009D
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:39:25 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C2B6136DF1
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:25 +0000 (UTC)
-X-FDA: 84425176290.12.F0AB07C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 46B73180005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:23 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KsCOB8hv;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 197AD6B00A4
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:39:32 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DA6B6C075F
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:31 +0000 (UTC)
+X-FDA: 84425176542.07.C02A12C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id F0DA614000D
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:29 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lCpPM2ND;
+	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770647963;
+	s=arc-20220608; t=1770647970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ideqKXRl+KC8uyTipqZC2c0hD7mkSSa147PGCFe88zQ=;
-	b=rIuC2D+rPEGTp1PVG3/3VgwjOm+QpG1dzzv6tlSyuDixcai9kVBVRnhZDoZLyIaGWcS+Hr
-	GdA6v5rfmEkpEeO1pvrhtNfYVKhBDuwreMpkdi4yJY2KYzvOzwoG0S1vucvhzQ3JIva8xk
-	3FGt4WTG9CSbEIdM63iG8mVX89HzNso=
+	bh=7D7Sxisqp2Djs5piGCNcYYVVx35/upvy9akEW+RtHCk=;
+	b=Pdsuys4iQUutm0Aic0mK/dcRURNv13MSnB0MAJNNIWmMf9DE4hLcdCv+2zfDJDVYrZcXXD
+	nH2VIgXa17EDrjgg4vYRnO1ESIprUX+et3iE7NFcYM89xE5/f/VL/BJd85iBJWhF4RLYKN
+	Jsjrob1K3+pl5ywhS3gjuyGldCEOweg=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KsCOB8hv;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lCpPM2ND;
+	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770647963; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770647970; a=rsa-sha256;
 	cv=none;
-	b=um9FziSt4qNIFqmFGaLppXM9r6jdDAxOTSWamRIJlQ1LDJ1Dimml2O8qOlUhSSVEe5j8yO
-	5ZDWY7Q44plYQftj6WJaegpM1hEvM/VhPPxeewnqHK0bHRBSH3kcVRtvcyAjpAAY0nR140
-	WkuObM+fHRMZof+95ZiMU6v36dwMLq0=
+	b=RLW5HkDlhO/b2CMJhjj6cZfejQLPFFqUuDSt8WdR2mXv3i6eDWdlqqLoss3VhJg8TW+a9q
+	TsRWuw9j9sXKPO5QO+WjMgaBNL3998pAYMuGge67302Oc8ChOPNUtooc/wjY5nMkKHPJ19
+	sZStDZ3ERTWRRkwx1pMgboerCO7zcV4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C1938600CB;
-	Mon,  9 Feb 2026 14:39:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFB5C16AAE;
-	Mon,  9 Feb 2026 14:39:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2C93741950;
+	Mon,  9 Feb 2026 14:39:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C4BC116C6;
+	Mon,  9 Feb 2026 14:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770647962;
-	bh=QeBXOf7iICj0Ad5qHcIJv0VhQMqjDmVdKEV04oiCJGE=;
+	s=k20201202; t=1770647969;
+	bh=rKGd883t0mW5F1sVxQvZylDp/AAHhdrL4UTVDJdkRgM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=KsCOB8hvj7Gtk4r2EvVikB0I4H7vI12YU2LI1k0BQOQnCeokh6tjUPBHt71Q9pkdZ
-	 1lNhcWa9XKHUI8c1dl/BxAg8wdd4stVJralvwL6pR28PRYVYPslxkrZ/GSWS2he9TO
-	 3s6rWp7/K3KEbpBykpo4f+sVpz/vyJx3w9VsV81QqTq7sd8QwFVdaTtBKw8OcFuFro
-	 SedCpoe7++qniGqyVXi/+cdSI4xr69ogDjCnr0+9dBH4u/ExIVPzBsxc/7HdhrWNOY
-	 rNWc5pQf3vpU61ghIg0y8I57IxpcczFGnENVCPWsW+Kt5NmWivpJPsoJbtLRJR2F3a
-	 W3gCw7K8boG+g==
+	b=lCpPM2ND9onyRZvKor9ARgLCOMktp2aQHrqH1n8BQrGgfgOsTu/VQ4GBiOMRD5L66
+	 FASf74NjN3AvypbOawbaq+LllM5T0b0vLC1lPJ1pU/9ff4JmKKW7S2i7ku9qBes//Y
+	 seduQY1Vveo2bhfhmgvdt8ci3k9K2qKUp7zJhkXm1wNrcv4cstX/Wb0OsLm7+I/F9c
+	 57HOH/6cKUwqGt9rAJQ+AiwMgcuS83umxfaM9YyxcGWg++q7Nw9+YojpPJM2tnjfnK
+	 Q1DiUBphb1qWhFxzveQ8n4z+Ih+7GlEnVvKr/q0sjuhtWIaIhs7bT9WBrWzX5atEJh
+	 hsudSZQ/b8jQA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 09 Feb 2026 15:38:07 +0100
-Subject: [PATCH v3 02/12] rust: xarray: add debug format for `StoreError`
+Date: Mon, 09 Feb 2026 15:38:17 +0100
+Subject: [PATCH v3 12/12] rust: xarray: add preload API
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260209-xarray-entry-send-v3-2-f777c65b8ae2@kernel.org>
+Message-Id: <20260209-xarray-entry-send-v3-12-f777c65b8ae2@kernel.org>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 In-Reply-To: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -86,32 +86,34 @@ To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
 Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
+ Andreas Hindborg <a.hindborg@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1047; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=QeBXOf7iICj0Ad5qHcIJv0VhQMqjDmVdKEV04oiCJGE=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFW0J5aHNJu6sg5tbQ2bMQpjZ6diEOzfohIH
- ThYiryfIliJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxVgAKCRDhuBo+eShj
- d/aCD/9U7agBCp8sIBnhY4v7lk+rLva9/so2zOxVLJn+Ju2B2HRFE10h0Jx9KyJVbbvbeIcxgJf
- BBq2DOvK+m0c5GSw2uewYmJaqcLA4mxfaOzgtfFsA94TV0MBmp9XydMMTvx4/zRi9BeLIu7Uko3
- thaN5I1xUBYiVkhk3KlJ2BQujOvvZwmKqROn03pXpFBr0cBSKuHmFVVprzMRd7UpSMRqoBEoh60
- 9+Qe1KDMDPekp0CezkJurKJK/E5uVbdwSgRRAfXonDulmT2hhARoZBe4sJ1HaUczJUNWYzs2Wjr
- XOJO7pKsDEwGnK86gnShBPj/5VQ5PqicQmpGikFIwUcDDxWSLyA6nREmK8gl+fm0Fj7JQrvX/3O
- lg7dXPMeWFMCbN0aAitSXxaxYDIZf0xaTpeiUebEO+w8BU8zlW7ICOO7UUyhYuonKEg1aLQIiyP
- kTkcIlosy5t3uXD5hYKDLQ/ZnS3GQdxjEiw1uHS3W1Zd/I6P63lvkaPI9RIZbiiD/6kmKsgp1Zm
- wRMVg4srvYx1V2/ZkDxDE4b9qqXT/jxvkzKe5OuVwK4aa/P0kEs5NIO2g2vh4t7SJE7PlHA/eVT
- EW9eLL9eROuQmExyYOAAMvWNTC5fxcPKDH6gZWBkAwjID7zizU2AD1r3Puc1cMN6sBeNrOrr1+7
- HZgrFfLb68bznRQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=16827;
+ i=a.hindborg@kernel.org; h=from:subject:message-id;
+ bh=rKGd883t0mW5F1sVxQvZylDp/AAHhdrL4UTVDJdkRgM=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFf6NffzuXerL7xmFyC9b4KK7WEKpBgEWDYV
+ NTIqGYovkSJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxXwAKCRDhuBo+eShj
+ dy44EACNDxm6p+yj/FsUGdp4Qtxt98PxnZF1Fv09Kj81o8fMoLkBXYm72Ty5SLNtxRCu+bAb8jy
+ 71lkuOHueV1wmQ/Yxy2vmQW3rqhLOSQEYsI7IiieomAjg4fj1hUHkr50Ltw0zG1OdrtfZV5vR3E
+ Un0nV0ocP15tv4Qk2g9ajNXevmDzutOqc6qJWyJlYofzCTiQ7+5V/yQzyre2EfXTuKgQdLSk6+C
+ /gQst7h1JIQ/nEPuVAWVfYidFAvkg8v/xSIHMfYkiF4+yfwMW+L3XwKY6rFUgB5jfRljI6YiiGe
+ OYNmnsQACXRUoDLnpQ0ly6UR0KaZpLgbXLf+zjIKRQhr6/P9EpW0f5q4LTsduZWa2b2y8ITuMg8
+ ENP6Gkk/GlbYc+TMxjLMZeOpqgNQg36NQzRDjWabQr8lPrQpiWoijt0S/MRYA/tjz96DJS7mQW2
+ D5z1C3q2PDvSP/U/uE8LFDhtwn4hB67lzPPLwsjEtM1vNOxc3zJMcvmLOayJh+K7t0VvtX0gWcW
+ ZkB6BUY9vMSmG6M8fXbdYPVFXEP5iEGqb1BxexJqLHiRUunLVZ5c/VCCx+Cxfp7bgsBjDO9+GzZ
+ BZJGUkl+6aQrhj2QJbaJ+2R3RTLadNSUW8tpdZj4QvT9mp2m5uVVdlc6FxEbj636TMEw59r0Qn1
+ BXzwDdR4akoRAXg==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam11
-X-Stat-Signature: ufkmm9ew6dmunn8ah8hf8ptcq5j74jhx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 46B73180005
-X-HE-Tag: 1770647963-517307
-X-HE-Meta: U2FsdGVkX18Uhjk/kKcjLhiSaVMgEUS518WOy6AWL/VkEB0h9pwesxdn6Vc+lAQFz4pDMvG/Xb8f+0FcNgsFH/Mva0qBUqbXY4EnCkl8eTdqrForFXDmoyj8gQ7cdOz2g1hq1wUbbrouB+ayH8snKtXdyYE3uBvOzJLQ35Z/4yNdshKh4VgS1pPhbMV0vE66UOicOrcev9HPqxzJ/iKcL7xOhrfdIsy9bXmpnsu5Ds8GZ06Ruzu5qn9Fn2hmqaAyScQ38iPZdVQkZP7Ds9dTmoLrWTAb6JgVUw9W/wi3O8jdOT3GnkIfx9RGTzD96GSzV0klIssVW0l0oA4XY2KfooTxj28dW0E1UPNzF5ptgKtWdP9wKFu3tjnjrBSrFHZuBj51pxbqOCWpnFkjzhNwEofYylIdOZz4InAfji8byU40mW5WN2UuvtKQK5JhSMD2R84vmgV1spdmtsb5HT44QwXQYeYrJ/9WDgshdBYbaiDDk89vfbO+9LKUl35qx2fd1uuz4dSsPPwN5d1eim7YR7Tb2P3Ww/9ANgxDfe+QM4IJmYuxzdVUochQFobrLCwkOwXLvGlUUbkfbh1RHJGS2S6PVhs5xnUI++caytuNSm4tcUspRjgSFU1F5wKMQDPgxb4gEO2i8G3U5PO4yMk6fU5uTnu0Ow1p50i7fUdRnA2gePbr+T+mHIAXqEyFulc59KqkAjWtIy8bjoGrr6mLKrQSPrlQgas8tUekNFHj3e1s6IR+mYhLIKpkCPss5B2+pcU/iOQIzi9aZpKIPJSzvxcgOgjLIsepnB+tspGZ2p01d83dPYyZqAHxAyV+IQcUCLDYaKzCY7ApvONR3ALhGzkWb7Sbj/7jUm6VRY0yzEwNFhfB41RFsuvGGVir6xWaNBzj2QPu0U9WRHEwVQKjfoHvacgdokwNLpcFQsq6+6iUcliAV9xRAQJssH0TFi70iIf+8aubXvGW+OPgYH8
- 1ctpVQtZ
- AsnuXtOfCDSIDQRvdUV6BB9bXzUkfDM1KqvVlm4ie0vNkuzafbw7xptJKkIx7Cb+/yEZ0hJ5ox/pHxuIdjB1YBlh50xx4shov84737kivr1oSG15sZCHUGtrHQqkBspxYGhreHnAHkMKFGqnDAjnc3CF2bpA93dOXwLVbCz/rSO8DGRmKaarUlcxfQRqk2FIoAym+/bTlt9mwaaj9yLT6KBknHdfYdBxn7xfAjiDPfKhQsFHSUDB65G3lX/QYL7r2EC+/PxQY/G9X722Ptwr0KtLmEuF+S0hsOBNyCZks9VpPYTTDLeSQdXfHUCPDhaKJTrn9ITbx6iCG8aILLErK/oPFRBX3OXfx23hxYYJSYEO5IzNNEp8ByT55FKikM3sFdhtrivX1PSi5qn4=
+X-Rspamd-Queue-Id: F0DA614000D
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4pyxympns9map6zjrkzfs7bnsy7msg6u
+X-HE-Tag: 1770647969-41780
+X-HE-Meta: U2FsdGVkX1/BtZICgvSYQr7Xn/3H9CAqDuqKuTVEHGuhSuB74MJGVGkI6MsquSg5Qx6+5Tjj2JenD7znwjlDH0NRFGOLQXNkl+mv3JzM4fLPtzq8hByLXfTNm0LdMD3D2zlLPjVduU9Ogtd9L9YjeiwWkVaEfrX5+hisaIizWRh67XIiei6klI8jAC5GEeDqzYSXC4OrI48k0l8Hd8gM8leBDGNx7KeWGXUVLJHMbLpAfVSsVxI9uoFcgcaHcmz2CB771LHMA+cc5BwMZzojrhEaYP26chghLwS6eWCWYohXxcV8QaRgidknUszRxP82G7BOvaRYPxRR44+fK70dF2XV341k27kTFko8ijbvSZC+4aeLUzTXxFRfgXEhvZ0RNkHWn+tQPwG1LbdziOXEIaPy0keNbjbVW8HN8ICncfFUUpNLdaoeVSUK+z9CrG5yElZbBT1LLmfXJJx3f9DhIn40Fjy+v95jAc/UuHw+b2jW7ACKfEvd87zk6CRNfnoCTbdqBU90WyjycDqh//AjIiOGaA2A5L5J/yvqNxQSuecLXXEuMCcW4y+3/70eDusXh3XMhtNjkJsspnXtDD2XgqtC4klb07T2wprvrMhwvJLE13+A9rLBqwEhLgwgWe8wbfxM8GdrGj/vrhkCDdLDx7v2lj0hu3LmX0tz4//hLRtUWMQLzP3zL8E9gWLgb69wHsDs+WisI2omJOJ1vCYNPcn4elk04cPTizxFOrJoLF0fM+Mi8lDV3fp33xY5XRY/caLy+VhwjbwqUUkpy8MhBecC2s4LQPq/E8aYvmFodPUpex196fQwA5jC70SY45FJTgnH6BpDJXKbbQX8x+tl99NNTo23F+qf5f83ozaARGAvRDVy7A8bipQzaD0H4TNSt/o3YUU2iPCeqeX3Ur25UaD/gqJ/pXFc/b14mfq6y6a4sMXFLVKsHgmfaUouEV4PlWukoX/MG2mQg86FD5p
+ 4arGjuXb
+ sjsvLCJJIL2zTQzc+GljSM8Hg8h0+2giente2FSA3ZxbVfOFCG1NnTp4m6dMZamEJ0A4l0D2hdnBGt/6ydPVa3NNE56BuVBLdbIAJTXnrZzobcnjUPbOF/5sxvhwvzRIp8+R9IM4W8FuWSZT34G3A86Co1iYHHUFVrPNa/IN7qNotmqo+ie8HLLhpGN8VUzSMxcK4Jh2HoWqjBEv46t9mJlJBjIFhvpGuvXQYZh+31c5gBLKRcSfbLXtgtw/xTcAtFTQrG3QvDt8UYQmur/19EsFdNoI2Ed4SUF5HSL9cYn0eL9GrB0hYJfwB0zFZFQFs86n0F+oTavbJzKEVBsfngag+Ixj6E7nm86xnPydLpEhug6+DEA7qdWSIRBiawbC4iaOqTnGT7scSOGjt2DBY7z51EQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,36 +122,436 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a `Debug` implementation for `StoreError<T>` to enable better error
-reporting and debugging. The implementation only displays the `error`
-field and omits the `value` field, as `T` may not implement `Debug`.
+Add a preload API that allows preallocating memory for XArray
+insertions. This enables insertions to proceed without allocation
+failures in contexts where memory allocation is not desirable, such as
+in atomic contexts.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Acked-by: Tamir Duberstein <tamird@gmail.com>
+The implementation introduces `XArrayNode` representing a single XArray
+node and `XArraySheaf` as a type alias for a sheaf of preallocated
+nodes.
+
+Add the function `xarray_kmem_cache` to provide access to the global XArray
+node cache for creating sheaves.
+
+Update `VacantEntry::insert` and `VacantEntry::insert_entry` to accept
+an optional sheaf argument for preloaded memory. Add a new
+`Guard::insert_entry` method for inserting with preload support. When an
+insertion would fail due to ENOMEM, the XArray state API automatically
+consumes a preallocated node from the sheaf if available.
+
+Export `radix_tree_node_ctor` and `radix_tree_node_cachep` from C to
+enable Rust code to work with the radix tree node cache.
+
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/xarray.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/linux/radix-tree.h      |   3 +
+ lib/radix-tree.c                |   5 +-
+ rust/bindings/bindings_helper.h |   3 +
+ rust/kernel/xarray.rs           | 172 +++++++++++++++++++++++++++++++++++-----
+ rust/kernel/xarray/entry.rs     |  29 ++++---
+ 5 files changed, 182 insertions(+), 30 deletions(-)
 
+diff --git a/include/linux/radix-tree.h b/include/linux/radix-tree.h
+index eae67015ce51a..c3699f12b070c 100644
+--- a/include/linux/radix-tree.h
++++ b/include/linux/radix-tree.h
+@@ -469,4 +469,7 @@ static __always_inline void __rcu **radix_tree_next_slot(void __rcu **slot,
+ 	     slot = radix_tree_next_slot(slot, iter,			\
+ 				RADIX_TREE_ITER_TAGGED | tag))
+ 
++
++void radix_tree_node_ctor(void *arg);
++
+ #endif /* _LINUX_RADIX_TREE_H */
+diff --git a/lib/radix-tree.c b/lib/radix-tree.c
+index 1cf0012b15ade..ddd67ce672f5c 100644
+--- a/lib/radix-tree.c
++++ b/lib/radix-tree.c
+@@ -33,6 +33,7 @@
+  * Radix tree node cache.
+  */
+ struct kmem_cache *radix_tree_node_cachep;
++EXPORT_SYMBOL(radix_tree_node_cachep);
+ 
+ /*
+  * The radix tree is variable-height, so an insert operation not only has
+@@ -1566,14 +1567,14 @@ void idr_destroy(struct idr *idr)
+ }
+ EXPORT_SYMBOL(idr_destroy);
+ 
+-static void
+-radix_tree_node_ctor(void *arg)
++void radix_tree_node_ctor(void *arg)
+ {
+ 	struct radix_tree_node *node = arg;
+ 
+ 	memset(node, 0, sizeof(*node));
+ 	INIT_LIST_HEAD(&node->private_list);
+ }
++EXPORT_SYMBOL(radix_tree_node_ctor);
+ 
+ static int radix_tree_cpu_dead(unsigned int cpu)
+ {
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 58605c32e8102..652f08ad888cd 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -118,6 +118,9 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
+ const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
+ const size_t RUST_CONST_HELPER_XAS_RESTART = (size_t)XAS_RESTART;
++const size_t RUST_CONST_HELPER_XA_CHUNK_SHIFT = XA_CHUNK_SHIFT;
++const size_t RUST_CONST_HELPER_XA_CHUNK_SIZE = XA_CHUNK_SIZE;
++extern struct kmem_cache *radix_tree_node_cachep;
+ 
+ const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
+ const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index 88625c9abf4ef..d9762c6bef19c 100644
+index 8c10e8fd76f15..89bf531308c88 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -193,6 +193,14 @@ pub struct StoreError<T> {
-     pub value: T,
- }
+@@ -5,6 +5,7 @@
+ //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
  
-+impl<T> core::fmt::Debug for StoreError<T> {
-+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
-+        f.debug_struct("StoreError")
-+            .field("error", &self.error)
-+            .finish()
+ use core::{
++    convert::Infallible,
+     iter,
+     marker::PhantomData,
+     pin::Pin,
+@@ -23,11 +24,17 @@
+     bindings,
+     build_assert, //
+     error::{
++        code::*,
+         to_result,
+         Error,
+         Result, //
+     },
+     ffi::c_void,
++    mm::sheaf::{
++        KMemCache,
++        SBox,
++        StaticSheaf, //
++    },
+     types::{
+         ForeignOwnable,
+         NotThreadSafe,
+@@ -35,12 +42,54 @@
+     },
+ };
+ use pin_init::{
++    init,
+     pin_data,
+     pin_init,
+     pinned_drop,
++    Init,
+     PinInit, //
+ };
+ 
++/// Sheaf of preallocated [`XArray`] nodes.
++pub type XArraySheaf<'a> = StaticSheaf<'a, XArrayNode>;
++
++/// Returns a reference to the global XArray node cache.
++///
++/// This provides access to the kernel's `radix_tree_node_cachep`, which is the
++/// slab cache used for allocating internal XArray nodes. This cache can be used
++/// to create sheaves for preallocating XArray nodes.
++pub fn xarray_kmem_cache() -> &'static KMemCache<XArrayNode> {
++    // SAFETY: `radix_tree_node_cachep` is a valid, statically initialized
++    // kmem_cache that remains valid for the lifetime of the kernel. The cache
++    // is configured for `xa_node` objects which match our `XArrayNode` type.
++    unsafe { KMemCache::from_raw(bindings::radix_tree_node_cachep) }
++}
++
++/// An preallocated XArray node.
++///
++/// This represents a single preallocated internal node for an XArray.
++pub struct XArrayNode {
++    node: Opaque<bindings::xa_node>,
++}
++
++impl kernel::mm::sheaf::KMemCacheInit<XArrayNode> for XArrayNode {
++    fn init() -> impl Init<Self, Infallible> {
++        init!(Self {
++            // SAFETY:
++            // - This initialization cannot fail and will never return `Err`.
++            // - The xa_node does not move during initalization.
++            node <- unsafe {
++                pin_init::init_from_closure(
++                    |place: *mut Opaque<bindings::xa_node>| -> Result<(), Infallible> {
++                        bindings::radix_tree_node_ctor(place.cast::<c_void>());
++                        Ok(())
++                    },
++                )
++            }
++        })
 +    }
 +}
 +
- impl<T> From<StoreError<T>> for Error {
-     fn from(value: StoreError<T>) -> Self {
-         value.error
+ /// An array which efficiently maps sparse integer indices to owned objects.
+ ///
+ /// This is similar to a [`crate::alloc::kvec::Vec<Option<T>>`], but more efficient when there are
+@@ -137,15 +186,22 @@ fn iter(&self) -> impl Iterator<Item = NonNull<c_void>> + '_ {
+         let mut index = 0;
+ 
+         // SAFETY: `self.xa` is always valid by the type invariant.
+-        iter::once(unsafe {
+-            bindings::xa_find(self.xa.get(), &mut index, usize::MAX, bindings::XA_PRESENT)
+-        })
+-        .chain(iter::from_fn(move || {
+-            // SAFETY: `self.xa` is always valid by the type invariant.
+-            Some(unsafe {
+-                bindings::xa_find_after(self.xa.get(), &mut index, usize::MAX, bindings::XA_PRESENT)
+-            })
+-        }))
++        Iterator::chain(
++            iter::once(unsafe {
++                bindings::xa_find(self.xa.get(), &mut index, usize::MAX, bindings::XA_PRESENT)
++            }),
++            iter::from_fn(move || {
++                // SAFETY: `self.xa` is always valid by the type invariant.
++                Some(unsafe {
++                    bindings::xa_find_after(
++                        self.xa.get(),
++                        &mut index,
++                        usize::MAX,
++                        bindings::XA_PRESENT,
++                    )
++                })
++            }),
++        )
+         .map_while(|ptr| NonNull::new(ptr.cast()))
+     }
+ 
+@@ -166,7 +222,6 @@ pub fn try_lock(&self) -> Option<Guard<'_, T>> {
+     pub fn lock(&self) -> Guard<'_, T> {
+         // SAFETY: `self.xa` is always valid by the type invariant.
+         unsafe { bindings::xa_lock(self.xa.get()) };
+-
+         Guard {
+             xa: self,
+             _not_send: NotThreadSafe,
+@@ -270,7 +325,7 @@ pub fn get_mut(&mut self, index: usize) -> Option<T::BorrowedMut<'_>> {
+     ///
+     /// match guard.entry(42) {
+     ///     Entry::Vacant(entry) => {
+-    ///         entry.insert(KBox::new(0x1337u32, GFP_KERNEL)?)?;
++    ///         entry.insert(KBox::new(0x1337u32, GFP_KERNEL)?, None)?;
+     ///     }
+     ///     Entry::Occupied(_) => unreachable!("We did not insert an entry yet"),
+     /// }
+@@ -475,6 +530,45 @@ pub fn store(
+             Ok(unsafe { T::try_from_foreign(old) })
+         }
+     }
++
++    /// Inserts a value and returns an occupied entry for further operations.
++    ///
++    /// If a value is already present, the operation fails.
++    ///
++    /// This method will not drop the XArray lock. If memory allocation is
++    /// required for the operation to succeed, the user should supply memory
++    /// through the `preload` argument.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::{prelude::*, xarray::{AllocKind, XArray}};
++    /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
++    /// let mut guard = xa.lock();
++    ///
++    /// assert_eq!(guard.get(42), None);
++    ///
++    /// let value = KBox::new(0x1337u32, GFP_KERNEL)?;
++    /// let entry = guard.insert_entry(42, value, None)?;
++    /// let borrowed = entry.into_mut();
++    /// assert_eq!(borrowed, &0x1337);
++    ///
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn insert_entry<'b>(
++        &'b mut self,
++        index: usize,
++        value: T,
++        preload: Option<&mut XArraySheaf<'_>>,
++    ) -> Result<OccupiedEntry<'a, 'b, T>, StoreError<T>> {
++        match self.entry(index) {
++            Entry::Vacant(entry) => entry.insert_entry(value, preload),
++            Entry::Occupied(_) => Err(StoreError {
++                error: EBUSY,
++                value,
++            }),
++        }
++    }
+ }
+ 
+ /// Internal state for XArray iteration and entry operations.
+@@ -489,6 +583,25 @@ pub(crate) struct XArrayState<'a, 'b, T: ForeignOwnable> {
+     state: bindings::xa_state,
+ }
+ 
++impl<'a, 'b, T: ForeignOwnable> Drop for XArrayState<'a, 'b, T> {
++    fn drop(&mut self) {
++        if !self.state.xa_alloc.is_null() {
++            // SAFETY:
++            // - `xa_alloc` is only set via `SBox::into_ptr()` in `insert()` where
++            //   the node comes from an `XArraySheaf` backed by `radix_tree_node_cachep`.
++            // - `xa_alloc` points to a valid, initialized `XArrayNode`.
++            // - `XArrayState` has exclusive ownership of `xa_alloc`, and no other
++            //   `SBox` or reference exists for this value.
++            drop(unsafe {
++                SBox::<XArrayNode>::static_from_ptr(
++                    bindings::radix_tree_node_cachep,
++                    self.state.xa_alloc.cast(),
++                )
++            })
++        }
++    }
++}
++
+ impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
+     fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
+         let ptr = access.xa.xa.get();
+@@ -529,16 +642,37 @@ fn status(&self) -> Result {
+         to_result(unsafe { bindings::xas_error(&self.state) })
+     }
+ 
+-    fn insert(&mut self, value: T) -> Result<*mut c_void, StoreError<T>> {
++    fn insert(
++        &mut self,
++        value: T,
++        mut preload: Option<&mut XArraySheaf<'_>>,
++    ) -> Result<*mut c_void, StoreError<T>> {
+         let new = T::into_foreign(value).cast();
+ 
+-        // SAFETY: `self.state.state` is properly initialized and `new` came from `T::into_foreign`.
+-        // We hold the xarray lock.
+-        unsafe { bindings::xas_store(&mut self.state, new) };
+-
+-        self.status().map(|()| new).map_err(|error| {
+-            // SAFETY: `new` came from `T::into_foreign` and `xas_store` does not take ownership of
+-            // the value on error.
++        loop {
++            // SAFETY: `self.state` is properly initialized and `new` came from
++            // `T::into_foreign`. We hold the xarray lock.
++            unsafe { bindings::xas_store(&mut self.state, new) };
++
++            match self.status() {
++                Ok(()) => break Ok(new),
++                Err(ENOMEM) => {
++                    debug_assert!(self.state.xa_alloc.is_null());
++                    let node = match preload.as_mut().map(|sheaf| sheaf.alloc().ok_or(ENOMEM)) {
++                        None => break Err(ENOMEM),
++                        Some(Err(e)) => break Err(e),
++                        Some(Ok(node)) => node,
++                    };
++
++                    self.state.xa_alloc = node.into_ptr().cast();
++                    continue;
++                }
++                Err(e) => break Err(e),
++            }
++        }
++        .map_err(|error| {
++            // SAFETY: `new` came from `T::into_foreign` and `xas_store` does not take
++            // ownership of the value on error.
+             let value = unsafe { T::from_foreign(new) };
+             StoreError { value, error }
+         })
+diff --git a/rust/kernel/xarray/entry.rs b/rust/kernel/xarray/entry.rs
+index 1b1c21bed7022..ff500be3832b7 100644
+--- a/rust/kernel/xarray/entry.rs
++++ b/rust/kernel/xarray/entry.rs
+@@ -3,6 +3,7 @@
+ use super::{
+     Guard,
+     StoreError,
++    XArraySheaf,
+     XArrayState, //
+ };
+ use core::ptr::NonNull;
+@@ -29,9 +30,9 @@ impl<T: ForeignOwnable> Entry<'_, '_, T> {
+     /// let mut xa = KBox::pin_init(XArray::<KBox<u32>>::new(AllocKind::Alloc), GFP_KERNEL)?;
+     /// let mut guard = xa.lock();
+     ///
+-    ///
+     /// let entry = guard.entry(42);
+     /// assert_eq!(entry.is_occupied(), false);
++    /// drop(entry);
+     ///
+     /// guard.store(42, KBox::new(0x1337u32, GFP_KERNEL)?, GFP_KERNEL)?;
+     /// let entry = guard.entry(42);
+@@ -64,7 +65,8 @@ pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize) -> Self {
+     /// Returns a reference to the newly inserted value.
+     ///
+     /// - This method will fail if the nodes on the path to the index
+-    ///   represented by this entry are not present in the XArray.
++    ///   represented by this entry are not present in the XArray and no memory
++    ///   is available via the `preload` argument.
+     /// - This method will not drop the XArray lock.
+     ///
+     ///
+@@ -79,7 +81,7 @@ pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize) -> Self {
+     ///
+     /// if let Entry::Vacant(entry) = guard.entry(42) {
+     ///     let value = KBox::new(0x1337u32, GFP_KERNEL)?;
+-    ///     let borrowed = entry.insert(value)?;
++    ///     let borrowed = entry.insert(value, None)?;
+     ///     assert_eq!(*borrowed, 0x1337);
+     /// }
+     ///
+@@ -87,8 +89,12 @@ pub(crate) fn new(guard: &'b mut Guard<'a, T>, index: usize) -> Self {
+     ///
+     /// # Ok::<(), kernel::error::Error>(())
+     /// ```
+-    pub fn insert(mut self, value: T) -> Result<T::BorrowedMut<'b>, StoreError<T>> {
+-        let new = self.state.insert(value)?;
++    pub fn insert(
++        mut self,
++        value: T,
++        preload: Option<&mut XArraySheaf<'_>>,
++    ) -> Result<T::BorrowedMut<'b>, StoreError<T>> {
++        let new = self.state.insert(value, preload)?;
+ 
+         // SAFETY: `new` came from `T::into_foreign`. The entry has exclusive
+         // ownership of `new` as it holds a mutable reference to `Guard`.
+@@ -98,7 +104,8 @@ pub fn insert(mut self, value: T) -> Result<T::BorrowedMut<'b>, StoreError<T>> {
+     /// Inserts a value and returns an occupied entry representing the newly inserted value.
+     ///
+     /// - This method will fail if the nodes on the path to the index
+-    ///   represented by this entry are not present in the XArray.
++    ///   represented by this entry are not present in the XArray and no memory
++    ///   is available via the `preload` argument.
+     /// - This method will not drop the XArray lock.
+     ///
+     /// # Examples
+@@ -112,7 +119,7 @@ pub fn insert(mut self, value: T) -> Result<T::BorrowedMut<'b>, StoreError<T>> {
+     ///
+     /// if let Entry::Vacant(entry) = guard.entry(42) {
+     ///     let value = KBox::new(0x1337u32, GFP_KERNEL)?;
+-    ///     let occupied = entry.insert_entry(value)?;
++    ///     let occupied = entry.insert_entry(value, None)?;
+     ///     assert_eq!(occupied.index(), 42);
+     /// }
+     ///
+@@ -120,8 +127,12 @@ pub fn insert(mut self, value: T) -> Result<T::BorrowedMut<'b>, StoreError<T>> {
+     ///
+     /// # Ok::<(), kernel::error::Error>(())
+     /// ```
+-    pub fn insert_entry(mut self, value: T) -> Result<OccupiedEntry<'a, 'b, T>, StoreError<T>> {
+-        let new = self.state.insert(value)?;
++    pub fn insert_entry(
++        mut self,
++        value: T,
++        preload: Option<&mut XArraySheaf<'_>>,
++    ) -> Result<OccupiedEntry<'a, 'b, T>, StoreError<T>> {
++        let new = self.state.insert(value, preload)?;
+ 
+         Ok(OccupiedEntry::<'a, 'b, T> {
+             state: self.state,
 
 -- 
 2.51.2
