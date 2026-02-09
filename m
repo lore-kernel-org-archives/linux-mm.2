@@ -4,81 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1EFEE7E0B9
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 09:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1099DE7E0B9
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 09:55:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116C76B0005; Mon,  9 Feb 2026 04:54:42 -0500 (EST)
+	id 75E0A6B0005; Mon,  9 Feb 2026 04:55:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C4DF6B0088; Mon,  9 Feb 2026 04:54:42 -0500 (EST)
+	id 735C36B0088; Mon,  9 Feb 2026 04:55:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBE5E6B0089; Mon,  9 Feb 2026 04:54:41 -0500 (EST)
+	id 635076B0089; Mon,  9 Feb 2026 04:55:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DC06F6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 04:54:41 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 716BA1A0727
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:54:41 +0000 (UTC)
-X-FDA: 84424458762.09.0A1AE93
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 539166B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 04:55:44 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 030DED620E
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:55:43 +0000 (UTC)
+X-FDA: 84424461408.06.C8B32F0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C175FA0002
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:54:39 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ArfQZAoc;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf22.hostedemail.com (Postfix) with ESMTP id 57A5BC0010
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:55:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hp5YLrKC;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770630879;
+	s=arc-20220608; t=1770630942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IrDoYLyiC3yn1nM6rKNC2iEmkXxrMHxQFeD9sl87gjA=;
-	b=pSeYnRY4b5jwiFl+bU4B/29kiTlgZvtHw5QsAIHBXgfh7yR1Mq51mNr5bdGHlQGEWdeJeT
-	JBPOF8BS+QjYU2hrMaL83DO5GVXpYcIvXaX4cbJDjGL1+gHwD8HTIxJ027bVlNsYvpc8qr
-	oPRx4HSGDqn+FNeH9NEkPmiwIZ9joa0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770630879; a=rsa-sha256;
-	cv=none;
-	b=5N2n8JJiNin6ISTurs18rW5P9Uj9pLFsz6J3XxNKpRK8+2fucV102TW0qUjca0M97StUTO
-	y4ubf0X+Jvcu1oZIRU/ZhQa9gCrxwKgBHrvGv481rddbL/8uedfqJnGefceBVKIxDovIQm
-	M80gcp/g7qhpzzuiLlSELHoAgYygQlc=
+	bh=pWdUhgxDzRV7HRH4oVMdvkDRh1YzEzz4iZb5STB4kZI=;
+	b=RHR36lLRFSUUANfhQYehp62sG437iEhUpm+WsicqimNOJwrd8cjT5cEN7Xj5/BglMISozX
+	wwMEvnSgTP3Vy86MYEk8gYmKShu9Ip/qTsmd3Eukxq3Fz3hU9j0J6aTkmMrgTGdZ8Vt427
+	PR8+k/mdG5aQhV4LBeMWSS9xeUlnIoQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ArfQZAoc;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hp5YLrKC;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770630942; a=rsa-sha256;
+	cv=none;
+	b=hPz3iicz3ewanjuLW/Rr0W3p3lmbxKCiTM1jh9W+Ao7hnhRqzPQHyNcQH3DJTMm4k+dugt
+	UKgJ8yAJ3DAFcT6Hd7aLq0xXWTdgEB31dTUOsKRdtWkWeCiGji3mg6w4JXifTQV9nLcbBb
+	qb0kIrxaMrGidBJMiUYBZPzgR/5dnAQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1E94B600B0;
-	Mon,  9 Feb 2026 09:54:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E69C116C6;
-	Mon,  9 Feb 2026 09:54:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BF16260008;
+	Mon,  9 Feb 2026 09:55:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CBCC116C6;
+	Mon,  9 Feb 2026 09:55:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770630878;
-	bh=3tBHDDvBJjbjVnORXt//tsMxH53+PSsCsTP84KGDkeY=;
+	s=k20201202; t=1770630941;
+	bh=/zeD3Z28iae7zRiVNaHCzegaAUapv7q/BPbPb39QLDM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ArfQZAocn3bNOTGiysPVyOMe587mUPIZxvyXEE2Xhmcgglt7QoDFMi/M9Nnt6wohk
-	 NZz+f8NBf1if+1TK9UQz0R+uY005AH8rYmZJ1LVKkvfd3l1qkxuPW78axr7gpZDBFH
-	 unUm/P6Pn1tIvbeUobFDZLSk0Na8iGT96+hqTFrtI81ETKk24v5akjOiN5K/0AjD5x
-	 rI5UN5k8mVbb6/owKbo4OdpIsSyd/dpXw9HnhaVopbDBBZqI93jE3ObIL9nkmGkUsC
-	 AZbFx67KRYSxPSVl7oipYgkgroohTjeJP63MEAOZHaaK1Pgn601KvrBFay8s6kkfU2
-	 Z28pnDyucyYaw==
-Message-ID: <e5175f66-56fd-437b-a183-b2ccc3f54f94@kernel.org>
-Date: Mon, 9 Feb 2026 10:54:29 +0100
+	b=Hp5YLrKCuRwe3favx/ifQ0p0b6aYrjP4n19amuwxse5OmQguLmG0YyNj3EnDwckEH
+	 9gSsvHLNMTyKsKOLr6E5wN0uXlhlukk7/c7an/eOOp5NWFdPwxmLSbUvY0uKBYXBTZ
+	 H72u0JBu6aQyLFRN7l5Ep3mhYeZVVKHcKFpMJJh3q4qEU2c4IdRSe22N5szVcld7Vx
+	 OTIoSM/6N4MRj2VSA/+zk74U8Vj3sjb6L/+7zb7Gi09a7wChNKpBHLKTdQyMEOassi
+	 QjMMp48JEp1KzyUZFDv5/0duWDZGMtj+N8vNh2sNh+HKUvR+TXZWP4YVmpz0v/C26w
+	 Re0sRKfsAFAsQ==
+Message-ID: <16fb7985-ec0f-4b56-91e7-404c5114f899@kernel.org>
+Date: Mon, 9 Feb 2026 10:55:32 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: rmap: skip batched unmapping for UFFD vmas
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, baohua@kernel.org,
- catalin.marinas@arm.com, dev.jain@arm.com, harry.yoo@oracle.com,
- jannh@google.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, mhocko@suse.com, riel@surriel.com,
- rppt@kernel.org, ryan.roberts@arm.com, surenb@google.com, vbabka@suse.cz,
- will@kernel.org, willy@infradead.org
-References: <142919ac14d3cf70cba370808d85debe089df7b4.1766631066.git.baolin.wang@linux.alibaba.com>
- <20260116162652.176054-1-baolin.wang@linux.alibaba.com>
+Subject: Re: [PATCH v5 4/5] arm64: mm: implement the architecture-specific
+ clear_flush_young_ptes()
+To: Baolin Wang <baolin.wang@linux.alibaba.com>, Chris Mason <clm@meta.com>
+Cc: akpm@linux-foundation.org, catalin.marinas@arm.com, will@kernel.org,
+ lorenzo.stoakes@oracle.com, ryan.roberts@arm.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ riel@surriel.com, harry.yoo@oracle.com, jannh@google.com,
+ willy@infradead.org, baohua@kernel.org, dev.jain@arm.com,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1766631066.git.baolin.wang@linux.alibaba.com>
+ <9d866a2644051e13a41ef4d6ca3909c6e1f9e229.1766631066.git.baolin.wang@linux.alibaba.com>
+ <20260128114936.72280-1-clm@meta.com>
+ <de141225-a0c1-41fd-b3e1-bcab09827ddd@linux.alibaba.com>
+ <07d55759-a50a-457a-badd-85697174116f@kernel.org>
+ <280ae63e-d66e-438f-8045-6c870420fe76@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260116162652.176054-1-baolin.wang@linux.alibaba.com>
+In-Reply-To: <280ae63e-d66e-438f-8045-6c870420fe76@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: C175FA0002
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: xw61ysxgmsbjim4fo1ewuio69d1rursr
+X-Rspamd-Queue-Id: 57A5BC0010
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: wjjsbhy5xy39rdh1th3judztkuukifxz
-X-HE-Tag: 1770630879-529705
-X-HE-Meta: U2FsdGVkX18qBzHl6CrkScbbGs/Ghck83DJacKv3pJvXvpD1SuJM5E90ZqJQ84zY0zYQQJOL0SdxyR9AI9xPqah8Ti2AH6bgrMXm7lHQIT/curg+2O1T9fq46AT+Dmr7kXd6WaeUQpZYRx2zpW8xGnkskxGuv37vOE2OlELPmPNPLF5iWMOwTNojeA9fpb1N5DeRgXuRs8ihJSvt4IG9tNf1BDtEHqDiV4CL8EYRVFlIapSoaMw2C0yjehNYyyBn9qCYTaRYR0CB48a3nwsPAkhrfHSy3yl0XQP+nvshckrnvshaL4iTx2XmczeOtcJE0XEKshySohvkGqz0l3GHA96ILYbtzZm/XSfT1wpVQS22JDThPWnsEFvEDXxFaWGiwVFOkMBZ8loeOJyJzqbCeBzx/S1in+RjibfXDxTsB7XWxESqPAcdY/nycHh2OT6r7ObvIGUSfZlDvvtDcQgCeQF69B+hqmUm+74QzcDtsPYE3EoaSv35aXPgKem/vRs5Zc7Cxfma9pdL6W0+Emo4UmF4IufnXfrIoae3qpVffhDxw91ITnrFnvO0yPQ0mLD49Jjo9zbUv8aDpFn4gO9AnCt8yeHcWqtEp18CPQuQB2fmkAjntSHzz6GFMf3nmYyn9E2YY2OP4jFdoHTp5nZohzsud/kx24xdzmY2aKZq9ADxcI3YHoAme/DIwZySHQyi5PxYuH8uj8S8MRDTLk8BXNfxU4UMIsUAuph1+CoN4/mmxsyIAosEyyrnQigr/QelC/+GX2p413Lr5f3wpDvHyjOOodX+QHl/BCFy9fS/FoOofc6JLSq4pqs1q0cMnNumH4p2HZgapEJgafVNRqWoixdMHV/eU5MN3gTus8CQeKveD/v43ScUEkEaoFvnI4m7qVkg7nCYZYoGJhRYbG8RihdVa9tg5gfH8i5vBTZy81MDM8XLWJmXczwn/0j5kPPuDOr5bw564ogSKbohuJV
- rISlq2EL
- kJ5TNjGJnRALyppD07ezFGDWp66/mV+ambwUV3dCXw8FI5K3OeHqk5lFfMhs+tbfTUYN/z9v1w7yMTVBJLnT9xoxIr6B/69O7YV+sqV6Zs9JmsD3wnEOlEf2mj/fCX4bcIKFL8MSIoQGTh2PXjs1HisjhZN2nV8vI/JxLj3QdfgRss0XXotZfzkFro9afJnH5NoTc6J1qoYx8EPa2tNqH6eElnUTjN8ojAHUnn7XC3BV+OEIEdGa3QkvQYR3pi/5NHXsxNyO6e9UzDDzWmYRZbyaYrg5+iXLJpzt/wNrtXPNZyQiZIcFWeLjEGTntMpcmgQbo99XmwZJWepcHrJY0et4g7rE4DNzmGD3B+MJE+mE3gKXUsMJo7td8d+muICZqeHbvtjJbKJyXcZo=
+X-HE-Tag: 1770630942-296504
+X-HE-Meta: U2FsdGVkX1/gwOCMpqSV4t+ac1udccsaelO7ZjKV4VwFJZ7pxGwxrZtWKot6gg1ugTxopINxPi46WeXTB+xemK61UoRIrsWEUUm19stqh/K4A+MO18p1bwQ5wjo/OD98DSuOJoX/KaO9sroOxVG4Jchar8VL5X1u+AospLHk13gZIXH/SldxZWlcPQ60ri6p+tlECrEFPUHtR6nGtpashTUROFFp6M+RLSdC1lLH9fhtn7SX9yHUippodk7BDJxEIIhQMxxZyANJUdnQD2E5OeH4mr9o1KuQcIS6nZqjY6kG/LOVY51Gj66Qb/EQyFDpgC+lHe0bpww4+d7jAjisRlG6FWS+ut8wZcrGmCXX4HaMKY9kci8cxwDzJX8HHy7Eez0EI4g8/0lYTMyi3brPu4hG7BXAc4ypC7CwFD9Xs9t903bZRD987ZheIRtNY5iM3PfoOfDt9X7wH0M5jbo1VS7qNbTc3mNA1lJ4XSRLr5Sy+ZlMO8HJ2ueVZP+E/U8D7+R6U+xroO5KMSunkasxkp9uPDb3D5nHE+A7DIFdmL8WdM/xljKWX7pQaOjeXrGrFOJVUpei7N8cdsSXl1mJ/chigpZ/ZtNH0YmCizN107N19PAerwjGN9SEFDkvWhK+0O8RZ6C13Yx3MznOUMPJVbIwAfn40bmwORl3TeypQ/fujAps0Q+55j/LtojTCj4+xl5gOUdOJHHFEVOc8MbOUWTKiCcWUwR5m5qUNuMrDTqMzeyfPHkBsEIYSwFbam1DvR2S4IymLUJlH6dgB/Ho8XCicHoTzsDMwJUl+tGitKZTHEMtvoN04CKqrr9fRhi0Mn0G7VAKUeiv6P515xhvMHD9yT84RhbZeqSzPhoh4dtF7BmVbyItyL/q1aZSuqeWAXPAl5mX3a7Djly51Qttd/ewfWWp601l1IlnriaavCGgHmeb0Ye9rTzhHY+6LLoqJynZQy4mEfuiv1jEkZe
+ pLKPBMSo
+ 44FDzX+Lo4keQ3X0hfNixXhl77vkge4rBoxzOiUsK17q+fMGEGW3NvHmpINQmGwdpq7AC30ugFTe/JHNTwHB1Kkqac+cEzZvu6Ygau4TToD2vQlURuSMEr8umRQ8dfQoAS5Bzdnui2wMTpd5Z3VC2zcMPWFMlXqcYSVwySJyjJEoxqvRbAJWaGZdtFuQwCan5cjE2+UKcs6QXRbCX5AzoBx6Apk0JoL9qsp0HvpZIYNMNqaSupovxgxoGFKTCPx+y4ORXLON7dfXgBMvmCr888b27vdtdiY6hDuoWhmbeRCWc/eiapVgjXgGqc5N74E+wv/uh7AwgLu0NxW8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,143 +149,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 1/16/26 17:26, Baolin Wang wrote:
-> As Dev reported[1], it's not ready to support batched unmapping for uffd case.
-> Let's still fallback to per-page unmapping for the uffd case.
+On 2/9/26 10:36, Baolin Wang wrote:
 > 
-> [1] https://lore.kernel.org/linux-mm/20260116082721.275178-1-dev.jain@arm.com/
-> Reported-by: Dev Jain <dev.jain@arm.com>
-> Suggested-by: Barry Song <baohua@kernel.org>
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->   mm/rmap.c | 3 +++
->   1 file changed, 3 insertions(+)
 > 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index f13480cb9f2e..172643092dcf 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1953,6 +1953,9 @@ static inline unsigned int folio_unmap_pte_batch(struct folio *folio,
->   	if (pte_unused(pte))
->   		return 1;
->   
-> +	if (userfaultfd_wp(vma))
-> +		return 1;
-> +
+> On 2/9/26 5:09 PM, David Hildenbrand (Arm) wrote:
+>> On 1/29/26 02:42, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> Indeed. I previously discussed with Ryan whether using pte_cont() was 
+>>> enough, and we believed that invalid PTEs wouldn’t have the PTE_CONT 
+>>> bit set. But we clearly missed the device-folio cases. Thanks for 
+>>> reporting.
+>>>
+>>> Andrew, could you please squash the following fix into this patch? If 
+>>> you prefer a new version, please let me know. Thanks.
+>>
+>> Isn't the real problem that we should never ever ever ever, try 
+>> clearing the young bit on a non-present pte?
+>>
+>> See damon_ptep_mkold() how that is handled with the flushing/notify.
+>>
+>> There needs to be a pte_present() check in the caller.
+> 
+> The handling of ZONE_DEVICE memory in check_pte() makes me me doubt my 
+> earlier understanding. And I think you are right.
+> 
+>      } else if (pte_present(ptent)) {
+>          pfn = pte_pfn(ptent);
+>      } else {
+>          const softleaf_t entry = softleaf_from_pte(ptent);
+> 
+>          /* Handle un-addressable ZONE_DEVICE memory */
+>          if (!softleaf_is_device_private(entry) &&
+>              !softleaf_is_device_exclusive(entry))
+>              return false;
+> 
+>          pfn = softleaf_to_pfn(entry);
+>      }
+> 
+> 
+>> BUT
+>>
+>> I recall that folio_referenced() should never apply to ZONE_DEVICE 
+>> folios. folio_referenced() is only called from memory reclaim code, 
+>> and ZONE_DEVICE pages never get reclaimed through vmscan.c
+> 
+> Thanks for clarifying. So I can drop the pte valid check.
 
-Interesting. I was just wondering why we didn't run into that with lazyfree folios.
+We should probably add a safety check in folio_referenced(), warning
+if we would ever get a ZONE_DEVICE folio passed.
 
-Staring at pte_install_uffd_wp_if_needed(), we never set the marker for
-anonymous VMAs.
-
-So, yeah, if one sets lazyfree on a uffd-wp PTE, the uffd-wp bit will just get
-zapped alongside. Just like MADV_DONTNEED.
-
-
-I'm fine with that temporary fix. But I guess the non-hacky way to handle this would be:
-
-
- From 53d016d6e6f624425dbdbc2fb1dec7c91fbef15c Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 9 Feb 2026 10:52:59 +0100
-Subject: [PATCH] tmp
-
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-  include/linux/mm_inline.h | 15 ++++++---------
-  mm/memory.c               | 21 +--------------------
-  mm/rmap.c                 |  2 +-
-  3 files changed, 8 insertions(+), 30 deletions(-)
-
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index fa2d6ba811b5..8a9a2c5f5ee3 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -566,9 +566,8 @@ static inline pte_marker copy_pte_marker(
-   *
-   * Returns true if an uffd-wp pte was installed, false otherwise.
-   */
--static inline bool
--pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
--			      pte_t *pte, pte_t pteval)
-+static inline bool install_uffd_wp_ptes_if_needed(struct vm_area_struct *vma,
-+		unsigned long addr, pte_t *pte, unsigned int nr, pte_t pteval)
-  {
-  	bool arm_uffd_pte = false;
-  
-@@ -598,13 +597,11 @@ pte_install_uffd_wp_if_needed(struct vm_area_struct *vma, unsigned long addr,
-  	if (unlikely(pte_swp_uffd_wp_any(pteval)))
-  		arm_uffd_pte = true;
-  
--	if (unlikely(arm_uffd_pte)) {
--		set_pte_at(vma->vm_mm, addr, pte,
--			   make_pte_marker(PTE_MARKER_UFFD_WP));
--		return true;
--	}
-+	if (likely(!arm_uffd_pte))
-+		return false;
-  
--	return false;
-+	set_ptes(vma->vm_mm, addr, pte, make_pte_marker(PTE_MARKER_UFFD_WP), nr);
-+	return true;
-  }
-  
-  static inline bool vma_has_recency(const struct vm_area_struct *vma)
-diff --git a/mm/memory.c b/mm/memory.c
-index da360a6eb8a4..0a87d02a9a69 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1592,29 +1592,10 @@ zap_install_uffd_wp_if_needed(struct vm_area_struct *vma,
-  			      unsigned long addr, pte_t *pte, int nr,
-  			      struct zap_details *details, pte_t pteval)
-  {
--	bool was_installed = false;
--
--	if (!uffd_supports_wp_marker())
--		return false;
--
--	/* Zap on anonymous always means dropping everything */
--	if (vma_is_anonymous(vma))
--		return false;
--
-  	if (zap_drop_markers(details))
-  		return false;
-  
--	for (;;) {
--		/* the PFN in the PTE is irrelevant. */
--		if (pte_install_uffd_wp_if_needed(vma, addr, pte, pteval))
--			was_installed = true;
--		if (--nr == 0)
--			break;
--		pte++;
--		addr += PAGE_SIZE;
--	}
--
--	return was_installed;
-+	return install_uffd_wp_ptes_if_needed(vma, addr, pte, nr, pteval);
-  }
-  
-  static __always_inline void zap_present_folio_ptes(struct mmu_gather *tlb,
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 7b9879ef442d..f71aacf35925 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -2061,7 +2061,7 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
-  		 * we may want to replace a none pte with a marker pte if
-  		 * it's file-backed, so we don't lose the tracking info.
-  		 */
--		pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
-+		install_uffd_wp_ptes_if_needed(vma, address, pvmw.pte, nr_pages, pteval);
-  
-  		/* Update high watermark before we lower rss */
-  		update_hiwater_rss(mm);
--- 
-2.43.0
-
-
-
-Does somebody have time to look into that? We should also adjust the doc of pte_install_uffd_wp_if_needed()
-and turn it into some proper kerneldoc.
+Can someone look into that ? :)
 
 -- 
 Cheers,
