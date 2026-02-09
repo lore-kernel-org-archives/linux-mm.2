@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF474E81BCF
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:38:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E645CE81BCF
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:38:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 334806B0092; Mon,  9 Feb 2026 09:38:50 -0500 (EST)
+	id 58C116B0093; Mon,  9 Feb 2026 09:38:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3162B6B0093; Mon,  9 Feb 2026 09:38:50 -0500 (EST)
+	id 5434C6B0095; Mon,  9 Feb 2026 09:38:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218836B0095; Mon,  9 Feb 2026 09:38:50 -0500 (EST)
+	id 4633A6B0096; Mon,  9 Feb 2026 09:38:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1286B6B0092
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:38:50 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id B729C1A019F
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:38:49 +0000 (UTC)
-X-FDA: 84425174778.02.EDB4751
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id CB86F10000A
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:38:47 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ej84H0zM;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 36B196B0093
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:38:56 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D6A6A1C03C
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:38:55 +0000 (UTC)
+X-FDA: 84425175030.13.EBFBF89
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 28C44C0002
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:38:54 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MgUYcmvE;
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770647928;
+	s=arc-20220608; t=1770647934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t71Ku+BIWBO4d8AbhI1PVeEyur5fv3A4SddaTcFqxMk=;
-	b=eC0tA1yVJjl1sGRpjpDaFxwCkb+5EvLrUj/0nnW2ZtbecYncPlJJqWpzU239Hy3541NUWw
-	22Ot/Kztv1gaYz1eRn9EiVtwv0KVmA+YRePUPkL+Qwj2S5enaFWiZMlv1mQ0uuDTO4cuiC
-	GMY8GWefiLRp8IVqqrgO/YG3u0uQ10I=
+	bh=xf2CA3Q0xMY03NUgnPHCMc6U7qz2mHQ/rlWk9GQ8TvQ=;
+	b=SXWKYWeQ3fLWlkzzLKWz6wkxY3DfiTOv48parmPdS/3yq6Ace8HjxmTrOjX24JxnBgRkNi
+	2/4pdCmCKpi6l0SdjOJ907hzwAQRVs/5MsjrtbLYRwFkuQHn3vutv6P5CWQ0glkxOdyFUi
+	AyyWzO6Ep1eNsSmsdhThUl/OVjapuhg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ej84H0zM;
-	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MgUYcmvE;
+	spf=pass (imf10.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770647928; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770647934; a=rsa-sha256;
 	cv=none;
-	b=dNUfNc/xSAlbzCUHFwDP2ezHdF44bFs1rGlp8JTfv2wn5sNd/9L4ODJuVUfARMpiWKeI8W
-	Kggc38B1vxziSHb/AYvBwQ4EjQWgFQoTKmx7S9RpkE6wEX6D4ul07/JAur2g89aTv/F1lH
-	mFR8Aejz8u+y2fjOaiDOEiGsTeDLxME=
+	b=CSGe274uhHpJtXgI1NNxAbLAreiEhF1+8TjGAQA8F0PwjzoywcLZpzPKj+J+3eu+eArhA6
+	p05h7Nm5UJCdcDlGz5lt1QxD1c6B4f+fzkt6btee6uIM5SKEBqwGmIJurpaliDgxc2mNWX
+	gXHLlFWwi2oMumtNOsIIUsRRnoMIWjw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 086F644221;
+	by tor.source.kernel.org (Postfix) with ESMTP id 468C66013E;
+	Mon,  9 Feb 2026 14:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F823C19422;
 	Mon,  9 Feb 2026 14:38:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7670FC19424;
-	Mon,  9 Feb 2026 14:38:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770647926;
-	bh=IuZIeAbMbsdgaivN59tt1avMvbqBct88rIBvqOT1fR4=;
+	s=k20201202; t=1770647933;
+	bh=PrcApbk7BCNSPsQwnef2I6IdaZ2i07Y2ln8fzlwV9sQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Ej84H0zMEMGgPiMbNYWOo0DChrVkdP7DvC+nXkl3vvKX71T8AxtfNA8lGZqiX6vds
-	 ReWeu7Hg0qUhCJFGdLXVHD9eO5jE9c7j1PvVrr5CrhkIxkBXm+ih5ylQ4gTq6q6/QO
-	 RgERqiHV4Hn+XmdjDD0XOQaE5lDpmtDdKKt/ILzpzZWgjewqfRk3aC2qJI12LDzaeZ
-	 0/OmXxf2Y5tE3x4xbZ6Thjw7e65CpneFW0dAuyZn9E9/z2PXQVQVb5Tf8QPshgs3OM
-	 Pewd8FijlCH473aXx+2SQagSCXaE8Qxqw++NSgpHygGjUmYGDVeNqEY521s68ChpUg
-	 JdHOEq/YOHbPw==
+	b=MgUYcmvEUQ9An1F2rMEYfu+G6E7UYw7TRPeZBzGLNjCdhoccnuiCKATj05xiNBIa5
+	 WW2426/lh800d7CPoGN7MiYWSKlcZbPxcVOUrE18x56MH2iZ21Pz55+lqdDDsaWTCj
+	 djG0guEOEV7aSvbwvUkJvz7AM7lJv0ioRrrY86rkFuNoK2Z5nSuN5nMJrkky1Kz5Ty
+	 01oT52B0DvivieFrqElBXFDR5fOB1rpoleTMhAC8zZM8oqL81S3qez8nBVEgR7wHin
+	 HdNgoc3Sh59DHy47BYeSBYtXUQEsmpjB799aAYCZuF3sI5CcWKy1/3JTmUOq4fZEG9
+	 XYJYElhzXAdNQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 09 Feb 2026 15:38:06 +0100
-Subject: [PATCH v3 01/12] rust: xarray: minor formatting fixes
+Date: Mon, 09 Feb 2026 15:38:08 +0100
+Subject: [PATCH v3 03/12] rust: xarray: add `contains_index` method
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260209-xarray-entry-send-v3-1-f777c65b8ae2@kernel.org>
+Message-Id: <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 In-Reply-To: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -88,30 +88,30 @@ Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2161; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=IuZIeAbMbsdgaivN59tt1avMvbqBct88rIBvqOT1fR4=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFVZvzAtSDsr+CZ/ZQXchk3O+6YaG5edPjg5
- +kyPR0aS+6JAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxVQAKCRDhuBo+eShj
- d2b7D/9i4AnYsinT630ZGFRy/Kh8bYrxUBt/LUmTe30OOzGERcX8Ib50IC1qO3zs69GiuFbqRFi
- 9QiIaBN/0HodwyMFQAtubXEGX8gOm5kXkl+4cMPkQLDIJ2oKaL2TfPMtVcECwU260gOp4t5u9Jw
- LUDhX8V8RR/W1v8ca7+hnqjwauXgTZkNy3fquLEDQwM9tIt+jLCxljAbiTJeaGbOSg/Qp4fse31
- sgOgNzjJxhYqbSM0oAAPh0okko/NI9FXP5RazyAA3wSwVMu7ep7SUm9p6uVdDQXS8rYb1AGX8qd
- iZwB+5mmnE5GBrg0wGnWtWYuyX93FdjL85boyY3seBWIrgs4mHT3v6/NGDXxe+ftwWFruGucANT
- fNaymZGF+JgIawTniS/2g+uEa6c5G4qFNtuIQhWp5cawKpGEgF9r9OcfR2XMzcXugW1kdYv3bmn
- xf8gevt43sKknTy6JjKRi+wAkSo796bG5FV2k5r+lQs6C31hooZ7qVUNP7c+F8753wWcd5UGejX
- RKwmplbzFCh6mou5NQBraIYiSTy66YyxqLYro9HjYzE9FqPQ9bRCU5QXObA2Mre4dNT6YWILRsu
- FM0tWtdOIZOuDlL0lOmr+6DUXLf9OjO7Aa9xL8S8Km8QU4O92D0C11RM3ffiNhY436oiI5sIOfP
- 301iZwvcnhfZaOw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1538; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=PrcApbk7BCNSPsQwnef2I6IdaZ2i07Y2ln8fzlwV9sQ=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFXwEdzwCsucoKq2KE54BrulAwrQmBpO4yTF
+ HcVvqk8u0uJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxVwAKCRDhuBo+eShj
+ d3PQD/oDY7iFQvP7waZGcxclTVtbgYcbDsPw2BXqzs4G4r0nEmsZ/bc3z3fctpmk5Eu4QBQBSmz
+ GquJbOx7DS+XXhyisG/lSfDSZTcjM3B7djaHs6kv2X2GpCaUTA1D7we6YKiCLNQKKWSz8rPBedH
+ AS0WmyqMBJGsnjNcTB6ho2HB80mJuc87vpqgnong594U46aZH98gBMZjCR3WL+eFNZlbl2hFTQZ
+ Yxi8R/7glxzu6qhJhL1OVS2sNimeBM2TsYuj5g0a8QJCrRnNqOJum1BMAeieTDDW0j+3gnn1IOp
+ k4kdrK3jzQ6DLIQiKbLvV/dsCJ1qX8+wny8gwKWuB4f19wSKV55RUPzmUnlH/qMQdKK0ucjZEH0
+ yXg1X/DtCzjDdp4cTqS90gIquSlMVVcyZurN06hK/O8WdYHh/crxpDtb7Wtq3HHrsxnMTppHeK+
+ H5iFzc0pNaUVCFYuMEDzDv3EnVGt2uGtkQE37lz8ttk2jGr2WdhUnR0ARFRLItdTm5SXRml0ayX
+ cwBs5jBKuS70hr93mo9OvR/zboRwQUqq18WdAk5owQSaAEiwN0H5I49xml/jOydbTFc5S1udD5D
+ QbYxPkEFxloK1KgcD15RJX98bVmLwNWlICo9n9iBiD+TPmMsnMIkqWVNHgThONOrkFG1q6/6SO/
+ 7naUgNlrGsokBFA==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: CB86F10000A
+X-Rspamd-Queue-Id: 28C44C0002
 X-Rspamd-Server: rspam07
-X-Stat-Signature: do8f39c53kfeoof8g7yicxxof435gh9t
-X-HE-Tag: 1770647927-570517
-X-HE-Meta: U2FsdGVkX1/r/UP4yCgUI414GX9TustkSsV7s8Y3JZ8uZ21F8BHR+dmFcpOFoNKJZntOjFOlPvlPnhwztS6aPRVk5a/9k63nL6PP6990lvnMyK1S75IYGdFuAfwGTRwxgz+05h2fMy0nZXUWK9fojCm8sHET3/5r1uLdt6CzOZITmaXv/AHhodgvKhe1Jh5Tqe9XEAyennaAzg2JQibcmCb+h7dm0l3002b7Zuyg3g8+bhsIhMKfK2pOYWGuX5t1SgFeZnJ7CzsbEMl5Aq/7+zaZEvO/sK1sfIAcGzPIXTSUtFLCVrf/7GKRYgoNa1zF7d29MN28V/7qPDLufO+DEIOJAoP2cnEYlcE577utjRjwxIISPc4Wi+qP5cpalZn8mxgzpfpN3wQPIs4thTdApQww9frBkg39rqrkW0qkikI8T98VFEvQiax+p9I5iujNSNYbFa3pWQMq+glvhJSpju9RrHG7IAhJ+ZrYW9J26R8yXDI4UMu0Bg7limkH5IJHCaI82CzO2KYdjnxJnMDUQvR6A5XGYp8JBu7J7v8sG0yqv/fU44F/brI+vi8PCunhs2l9aa140SWsjXQrAwBLQL1TVFFv3EwVyhJ8tTz+B83FNY51zSgstlt3a2XPp4EHOMdBvB6LfRNlwUj3baW1aFv9Kvg2NzSYQMAAbCSwIJw5i5Nz8X3Nc9YuTu8Sy5u/wylhZcOIhQzWKfY2NzPo94VnHDTdQn0Z5rxQOmEgaN7973AbFU3p045Vb+xKDxHkwOmVAMrgqpCv/p9k4G5bhQF/NiBSvZuhJHE23hvO+7Ryn4hRQJUYD5sTjGQ+7t5cZbbod6VVTxIjmEB7ZossJelY3A8G6W7PFtQAGU+6MRuogfhriD0pmzV8qpYQr+uZE7Y23IbsgELwPmH90f4TWhtgqCDdZ3glpbcBqV5PdMfd4VeMae96STtfBvJPknvTGDoZtkXt6aSnMKyTKKz
- f0VKumj/
- wy/9vOccfhJdnMWsG3x2EQXS5EFwU6ewGV4V6Glsuael9JJNSTPO9y4xXu2S0Jfqc4rv0CMLq/CNBVUZ1qpUrPngEZMJMGu8pLO9Ys8PoFNFGLwbZ9XjaulMOUmq8yKTeSY7rSUkx+Ino6yQlWoiceh/5U+ZVayChV1efPy45g1yjMmFTxBLPfcakSTf3nZL7vFgEppNm3VUIwu1QaAY2TAf23RBvzjiri0zJvlTrq+HoUndQeoJt6vySUJRyNEikxJIxyiRwphgGYdvAcvj/qsleTpqWjAtXn6iALKbZFNAkhTd1ZREP09liHs41KvfOUNXPA5XrRwpyuNiszNzru3Si2SyqB7DDlGztdv9j/XkKmJ9FwK9ui5dIaB8zvm1GXMjkm58rWiELeXM=
+X-Stat-Signature: i8x7mo8bz4m6y5nije946gjycdchd6w8
+X-HE-Tag: 1770647934-212015
+X-HE-Meta: U2FsdGVkX19HxjXaRdbZv6IPmTetquBVGl0cPAWAQ19auxZOyhbviYBqAWLDHjPn1qPMDDRbzdISMFWNqWd/4oz9uJRF54vDEdRs75vjkp2EvPHF7OFNEYRa3h9WGX96KDhGuuaU3s571sjd7cnKc9g7FMR1OT/4inPWSAxn3ELhRZxTDq01MFVldQLWcHonsfYGa1AoJn0eovZpTGbq/ubK0FL7tKBj3AEkaDm9VAhQ6lepS8IqjPb5Y3t0iFtjiz0cUMSL0/OPGB6NDlUnNXIha67IadfOa99wYf5466rIk6c8PTWOvFKLR6j3tjhanfYZjxE5dsbXO9k+N9GYl87hWN7bj4hMetuPd1HMyW2tjYfY0H5g76s2P6yCXtzFScPDEdWCd3PkvslR4tA/ixBQFrPt7Tlx0RzVKTG8Z1BIeRPhfNjlLSgQxIMnzJtruCnWIROd1Fp/qecXIJGXDksM2ETLQ/v9DlIDNLdmbLIelKJkHYov3Yflp5+JbhE94FBYWIoM6wEjhXO7hvK48D/glQWG99BS85iB+n+g9MbrnaTei+7AogxHARJTIVxElBHu6bZy4/FlDJ5kREdEbOWj2aqZcAbE9+uXgV9N8m0d6HwKUI2SqQH7wOcyVmT4RJM95FkG3S2Ta/jKmHW1Mi4C8epzQWZgp+0F6jKrjrsP7fpL9BvIuG12FXFL1l7ouVG/66bqRLaLYbyKT3Bn8bw8615AVlQMH72tT3Av7l/7U2QpxIFVi3ltUsaSj4wWAtwkgbZyQxUNkURCzIRHidB7Ttv7Ff0lQS39tKLRYaEwlGLk986P7stOyQwfPgcLF6jeq2vf38l7TEmgdZT29Nq13ky7wtFQQl+8HI8qdE9Oon/yN0L0ozUvTwkDY0WMWZNL1vFHX6e/UUvK2RK+Zey2b9JMGbYlXyRFpfEtbMJ/rIylU+DQiCoxQ/sTO6oetUkuR+s7jXNPYziamCG
+ iiXmezTa
+ asTmSV04Er9DmkIIGUdiZTlI7l6/DKvrgVb+dw6mhBDYB7KEMy4CHEh54YuMAhhJcZg4DXI7kWYJ1p6le+7Siln13tKs8SdX7C3eQuMT8FJrPWhbiM2q/KE91Gk7hiQJkac01pHy1sSpVZ/HrQJMFqXK9P+7WGQzPAmq6oY26jae1oAhHi72PLeIxwf3ph23GitFuEQAEoFMPziQXKfyhLY1oPvb54CDBKVY04wABFT16RIVl9MxX2ibhHpKYhgxikIcDs4yPG5weyTf3WrXFf2vHrtzjIz2jKL9XUv8yjtp0zTQ+QjCqHWZ47wZ45QnTmMLRs+7hvF8wTz+smoNA2GtIJRnUvPqjt7mPlellZJ179CA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,80 +120,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Fix formatting in xarray module to comply with kernel coding
-guidelines:
+Add a convenience method `contains_index` to check whether an element
+exists at a given index in the XArray. This method provides a more
+ergonomic API compared to calling `get` and checking for `Some`.
 
-- Update use clauses to use vertical layout with each import on its
-  own line.
-- Add trailing empty comments to preserve formatting and prevent
-  rustfmt from collapsing imports.
-- Break long assert_eq! statement in documentation across multiple
-  lines for better readability.
-
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Acked-by: Tamir Duberstein <tamird@gmail.com>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/xarray.rs | 36 +++++++++++++++++++++++++++++-------
- 1 file changed, 29 insertions(+), 7 deletions(-)
+ rust/kernel/xarray.rs | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index a49d6db288458..88625c9abf4ef 100644
+index d9762c6bef19c..ede48b5e1dba3 100644
 --- a/rust/kernel/xarray.rs
 +++ b/rust/kernel/xarray.rs
-@@ -4,14 +4,33 @@
- //!
- //! C header: [`include/linux/xarray.h`](srctree/include/linux/xarray.h)
+@@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
+         Some(f(ptr))
+     }
  
--use crate::{
--    alloc, bindings, build_assert,
--    error::{Error, Result},
-+use core::{
-+    iter,
-+    marker::PhantomData,
-+    pin::Pin,
-+    ptr::NonNull, //
-+};
-+use kernel::{
-+    alloc,
-+    bindings,
-+    build_assert, //
-+    error::{
-+        Error,
-+        Result, //
-+    },
-     ffi::c_void,
--    types::{ForeignOwnable, NotThreadSafe, Opaque},
-+    types::{
-+        ForeignOwnable,
-+        NotThreadSafe,
-+        Opaque, //
-+    },
-+};
-+use pin_init::{
-+    pin_data,
-+    pin_init,
-+    pinned_drop,
-+    PinInit, //
- };
--use core::{iter, marker::PhantomData, pin::Pin, ptr::NonNull};
--use pin_init::{pin_data, pin_init, pinned_drop, PinInit};
- 
- /// An array which efficiently maps sparse integer indices to owned objects.
- ///
-@@ -44,7 +63,10 @@
- /// *guard.get_mut(0).unwrap() = 0xffff;
- /// assert_eq!(guard.get(0).copied(), Some(0xffff));
- ///
--/// assert_eq!(guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(), Some(0xffff));
-+/// assert_eq!(
-+///     guard.store(0, beef, GFP_KERNEL)?.as_deref().copied(),
-+///     Some(0xffff)
-+/// );
- /// assert_eq!(guard.get(0).copied(), Some(0xbeef));
- ///
- /// guard.remove(0);
++    /// Checks if the XArray contains an element at the specified index.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
++    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
++    ///
++    /// let mut guard = xa.lock();
++    /// assert_eq!(guard.contains_index(42), false);
++    ///
++    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
++    ///
++    /// assert_eq!(guard.contains_index(42), true);
++    ///
++    /// # Ok::<(), kernel::error::Error>(())
++    /// ```
++    pub fn contains_index(&self, index: usize) -> bool {
++        self.get(index).is_some()
++    }
++
+     /// Provides a reference to the element at the given index.
+     pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
+         self.load(index, |ptr| {
 
 -- 
 2.51.2
