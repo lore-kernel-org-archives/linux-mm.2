@@ -4,73 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA50BE81BD1
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C288E81BCF
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 14:39:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 395C06B00A5; Mon,  9 Feb 2026 09:39:38 -0500 (EST)
+	id 6EADF6B00A7; Mon,  9 Feb 2026 09:39:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34C6D6B00A7; Mon,  9 Feb 2026 09:39:38 -0500 (EST)
+	id 6CC206B00A9; Mon,  9 Feb 2026 09:39:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 26C7A6B00A8; Mon,  9 Feb 2026 09:39:38 -0500 (EST)
+	id 5EBA26B00AA; Mon,  9 Feb 2026 09:39:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 121456B00A5
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:39:38 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C1FE213865E
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:37 +0000 (UTC)
-X-FDA: 84425176794.08.0624AE2
+	by kanga.kvack.org (Postfix) with ESMTP id 4B7266B00A7
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 09:39:44 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0CC2C88168
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:44 +0000 (UTC)
+X-FDA: 84425177088.07.097BA23
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 1901BA0008
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:35 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f3/6c+CD";
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 54C434000B
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 14:39:42 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i41dtz0x;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770647976;
+	s=arc-20220608; t=1770647982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z+oMqxkPsm+SeIqFusF5Rf52C4m7bRaa8kb5aIAwKdU=;
-	b=xOQnuQMbhdUa+N8uQgggH3SOOo6GpfpoH+HD71Hcv32/jMmvVYEJ4dEe/GnOhsgGKaDEaQ
-	Daus0AxcdplSui5mGaOa/L1Xzd6WBDTmOX7Ot2Byv0yNIg/T4F5OcTV/FlxXMIqFgma0vL
-	d28vDOxv95SNRdQ1Ust1oZ5ANJ/hl0c=
+	bh=x+fVcIweGod2CQMuqXxo+qtno3UMnNWk2sK4IfiqyMY=;
+	b=lzPt3GP46bkD3Map/k9iaF3njmMSmZl9QsQCi9LDTxhm75VF9s7z240TNJqg3plaFqzGb9
+	5bRrZx7+VZ7MOUNU/xCyYNzeARtPxlOCmijFbp0/1cCc3Do6IuTABGr4zU99F9skej2RZV
+	w38pJ+4FuJ1e6YGQDFpIdNbM8tKxogA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f3/6c+CD";
-	spf=pass (imf25.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i41dtz0x;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770647976; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770647982; a=rsa-sha256;
 	cv=none;
-	b=AgTOc2zaUxAv9JK3bWTZoPl6DT+7jHozPUMRm9taNTVyr6GplI/fG+/aYzOxz1V6+DNi6t
-	lZRAuIpSuMbwubIGm6AF2XI2Vbyqr6TaDpIkDCmkdPgJJtRm46s00+hFQ3+hoxskKpcBrB
-	sGGo3Ek8AeXv5NBRAWjxI6FdjL4r5BI=
+	b=SVvl5weworMZYHv0UKonqTjxn9BA18josM99fKA+duEJTgNX9Bq9PnBCfJLzUEw4UIcBUr
+	khXFe00X06spXPTB7Niy/LJ9DC9+wjmbR6rww5HLRYUeB/dxcw5l/itakb+OqlGwh7wZda
+	72/Dp/M2lbRbH4bxXrdx0jjRiYEJc08=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 958FC6011E;
+	by tor.source.kernel.org (Postfix) with ESMTP id D1B616011E;
+	Mon,  9 Feb 2026 14:39:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDF3C19425;
 	Mon,  9 Feb 2026 14:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD43C19423;
-	Mon,  9 Feb 2026 14:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770647975;
-	bh=2aA6TsP5TqOXxamqOrEM+ulf/tg/RPrxh0tZsqKQ8Qk=;
+	s=k20201202; t=1770647981;
+	bh=VslDN1mPgFIPh4fOyBZhDN58qjpQH9gwwiiN+krVdpc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=f3/6c+CDPCNHcWfMSeuShETnmdtjswhGYyK9abyIPkMMLBHgipbzcxoFAn+ZhIw3W
-	 THwWkaLF5zs+2Cztg1ctGv0W03mRF8jvkMYsIUASGbyiOP/xL59u2z/vTd6hmaCsvZ
-	 aYCrroCi8cfkdVD6cJgS+mfq3Sxq1Au75al6b4C7EkPFqtJtn5ze1qlaTysLNVdmNR
-	 vVkuuhB6gkY5RQrr2akrRTx1196traXRoI3MPRJCkZIFN6dOzKNdnYu3cuGZNhouDD
-	 UX0hU8WZNM62DlEpSrxc0BAf635t9Rz3J9c393HtV7fOIkWOixLT0PFrJ7EttiYPC4
-	 WhHTWO4b4ppnQ==
+	b=i41dtz0xskrUok+uzr6C0WdKfzIZ4fXVrLBlLxCOk6zIViA9IMUrZWbY4l1jTHyiH
+	 8q39lKA1o3D7s+vHLG0Y0d55CSJg07xGLYt2EcioMSRA26dHW4F2IpGpyZF3YbfTJ4
+	 IatdZL1SyBG9AcRmkDKbpQ4Vk1r5jImqLCmctbbD/RjqXMg/ZALLuDtp9oXJ+/ET8B
+	 diWzf5VRTxiBdln3n3NORvW5jFAxjCw9DzAj5uhdNlAh8GPJ8VQ2TFstZ4QbYZ72LL
+	 8n1pq7Sd4Tu4Ru6x8Lqf+X3j6sD6mG11ePNDnEAZAYar+jyK0vGujiBqYt/t9d4En0
+	 77w3TEOXo83XQ==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Mon, 09 Feb 2026 15:38:09 +0100
-Subject: [PATCH v3 04/12] rust: xarray: add `XArrayState`
+Date: Mon, 09 Feb 2026 15:38:16 +0100
+Subject: [PATCH v3 11/12] xarray, radix-tree: enable sheaf support for
+ kmem_cache
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
+Message-Id: <20260209-xarray-entry-send-v3-11-f777c65b8ae2@kernel.org>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 In-Reply-To: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
 To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
@@ -86,32 +87,33 @@ To: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
 Cc: Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Andreas Hindborg <a.hindborg@kernel.org>
+ Andreas Hindborg <a.hindborg@kernel.org>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3142; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=2aA6TsP5TqOXxamqOrEM+ulf/tg/RPrxh0tZsqKQ8Qk=;
- b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFY1Yb/s0Cx5dL+ceTrbgCsO2VEgXHKl81NG
- XaSBz9rJQKJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxWAAKCRDhuBo+eShj
- d6GqD/9zwzHqTXewAxq/4Wup8VvXE1kLNVxZpeJpW/OsViwlFsajqwWV7FfAutYCIWFTcnPkTnj
- 0KKlFWUqLdmeYmIhfzpePwVrz2E5PlCGWXKO1XlVgVp0Q8iinr6dpXyEQxvsz8pYWXlWCkQSQZL
- eR44WTMOlaPhzuCALGKg+ijVlbokb4zq/j21bPjYozplxqlXPZud2oHZC/Rl2FOchlj5Zn5SVn1
- bgu9ICVxaFx1umTR83cLpYv5sZLz1+I285ESrQwJG4faCrDcA0GrB6nllbYOuf/3mTZC7tem+B6
- 1tY7L5iEy8CZKLz1m6GATAeqapHo94gkhOt13tuX08sI9dONC0VOBl6VCUWS5lthQX6j2ousEhA
- S8j3JKNfWmBtsjn9btygkJeN2mVG4sDN3iYuWnMxe/CNtrxMG6jHP/JFa97Ic1lMVbDZoMqXsAq
- n5qlRo7XpyBq+sYqYobnMzRXtKBl092PLTVDY0aY4dCKscf+MhHxF2GnyEuDR7UlMWSvHMwPfVu
- vuiZY7nQXW4LoyQXPak9P5Ot59iYBk6xlG2vB4x+f7MPFVwyQVOq3fNC0iOnsrtEd9Q36ZvV6op
- yazBSX4V79D0JXg+QCpSeCtGjNqI9IfmR26sZGs+X8DCdO8HerDf8MEImi1dwbbM54y1yQe6oZx
- uh9A7d6F+FrrOow==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1243; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=VslDN1mPgFIPh4fOyBZhDN58qjpQH9gwwiiN+krVdpc=;
+ b=owEBbQKS/ZANAwAKAeG4Gj55KGN3AcsmYgBpifFex2+rby13jaJSZme2/vU05ZzvMRP5UT6SK
+ VJQYMHYp8qJAjMEAAEKAB0WIQQSwflHVr98KhXWwBLhuBo+eShjdwUCaYnxXgAKCRDhuBo+eShj
+ d7xHD/48WEALFQfX+iMYXsiR/Mvn723D+YBjt2TOR/yfD7Sul4d8Iv02lIm3LGfCJsyUqsx0R/m
+ Qk2ZkCueXt8bvCuSssHdX0jFMrBRDz9DFgMbk5SHMC2hLN/W0x/AY4rHDH4HxWqA/09V2h9kX9l
+ by7veoXmADET0BEbdp15OIZLrP4+TbK6Md7Y98gcZZZZgKfyOgrWD9O+wZSe1jT4JSNrdw0pHhK
+ WEiy/1R+bNnLAmMOP7AjVxTRKZ5SQafFzXZwe1+F6+mZe2saG8I5hrDR+VxNKisA7vQl9/z3gF1
+ XuYWSv6bLte0vcgMNpzi5111T1Tky95jqKotdLtHq7sO+hUg0IAm1sGAzEr848kitJXmQWyyp8z
+ RtkHcd0kwQ/15cx2EZjuMGm32TRs79hH6cCTfvmf4CweWaQmqV+mC5uohtBCP7piEWMy/RrA1lx
+ Lk8TicZ76wcecqeZ8TeDdarQAI/oVX1NO6bP4HKm3wcdjn2HDq2AW5m3Ss2RyH1ZoffhLt7eyAY
+ HG8F4YbEif5r2ab7bGc75ROxcp9b9NTzghH7dtSdy8YrkyjeZNU9Uc1uq1KyyHMibe/jKSjYmPP
+ debQlj5Vy7aICDbaFtI+SvG1jp8hcOSvnmatndAdy79kxiL25JYhXQRUaqy4lc6Xcs8Um0+KbQA
+ EVG3kWV3B6ysnbw==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1901BA0008
-X-Stat-Signature: jmbrnxwr934xmngaaedodb614ic94udi
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 54C434000B
+X-Stat-Signature: sd5tigh1meygc46rg5iw3x9t84b9t9xk
 X-Rspam-User: 
-X-HE-Tag: 1770647975-557621
-X-HE-Meta: U2FsdGVkX1+MhDcmOEU29AvASeGvs9sDj7H+VJOokhXcRhdCp5YCMtuOXRdfRYkERok4ZRvlH1Q9iX3YYx6wVIgHtA29z3PXYDGi3n2mWrl33Go4y0FGCjVU+nILf7wbBcnN7EY6jQWMGFFTvwMwgZ/wetFHdNa+wRxyPuQ8f/J61d+iuqW8u2ZMIeVvDwpRc8C9wCKqz9++u2guLZQemg7vFOW5jFzhTa5PX6EMY7M87fo2xZ8NcwEF9ukAEf2kECUpan3mE4C6S0TBgE6ipuZek7/vsiLer5dMbN82gJV0bJexrbWYzZzP6EtIX0t0QFlfalAww4H2NKL3Y6idHyTHNlyEvKaRAM/iXIg0H8zs0iiLHtfRwdrQk14MVp2lxnxy5xIyj6oVIBo5Wy5SQM7rKGl2Of3HST6DhDPLA35jd9lx9op3c1YTPcbfKSPy2Q5nqyHywpbTRMefi6OctMIO03mZVJEs8M3+iLlFPk1vmVjRAA8CE/PzLedjoreQ0APjkBmVfEbf/g40m1RFNC0t3H7V+BbsUXP7Ze0On5q7uQcLf1r9X/vVPDIQz8VXGP7b79rsx60sofitM3iedN3dpk9quROGYxDjvX2a9jWizcWP4KdNo4G75FDl21eKmXU+uDCa3fIG5+kzLiYcR0++hzbhLFet+qQJWCndAFT5qJ6KVMJyVilWNPpdGODw59F68NvMT9YElx0ijDLqGtKvXyHFR0EcJ6mIz7RNn3GDsuzICYREcDSIUH4foMeSPH595zc01zIbFgJpcwlHoHUNz//+Y+6+bXW6sOoV1OYMuQKY1bFLxTAheWkKkikvb73NX7du2MMqUzOfn3bwBk8q1O1K5HpQtKboITiZ4rzeTeL228Xr8U0dP9XeRgxaYqw5s99EefMk9IzT1A2TgqNw9fbVcBYc2An2NsORRYA0lek8s6bPKN/GP+//sQImDf2Hck+wO873FjQMZ84
- UdqmBei6
- S9XMEFZPE8wDIbqC+eg3y+8fRNJtbGe37oa+Wfh+r4Jnr8otulPt3NdZmIpNm9p5JEScOhfF1Yfw5/LgkVjMKDFnNBFS+0S1dUVJlltIZ8m26r9Kqg1dQ9W1Xt4JTTKY20lrohhSuiLPI+njxUAAiAwxG2QKrcwB3Vr/XW8GKUMXQjUwCVPaYdNxb8vFgzdlwO/f3pYfLdxaq5phaTekdTi1hSOQczvH4EbP+BciF7xaqdRttp+S9tNV2u+ndKdACGy/S984B0rBs70VujpfvgCBw14rNVDiL8OuUuzRyXq9xRhGuutan0KUYZg==
+X-HE-Tag: 1770647982-51429
+X-HE-Meta: U2FsdGVkX1+7oFBuBRK5Haxio1jtklWqSaUP4LE69FR6et2EywVE4mE3UmqhMpt56ifmJEBRWZz6A5iJQCV1w40xLb17uFL7+7PVU+18GAEJxbR9dKq4r0aizUk6fMAkdXVbSsJ3Os2IJ0wN4iI6lkkpGVJ9t+te1wZfNeT7SyQ6BCJF2cpOFdUeHvAqWhyMQ+I4QBddsfKRBt4x3wBtwOzhtOYGGSNC7U/5KI86t40bBzL4qecdUixGHNQuluZWpca9lJRrlvtmiEJOupn7CJSA/9RusWiPv9jq0G5ry0eaA+EMDiCFQQ4StpA9OfuccGfvf48nlBW+5t7yvMlQha7xqOJzfC0IQlJ17uJqAPf/RHosCCVXNhdEFDu8+KTr1Je1wxyu01ryHq5IMARZm8+RRf4GnyRvdY271lLaia4PhOXY3ohX2msh3JIvGIuY2dFC3CD0VHd0tePiQJaS8NuTtgt5WiHMnQqV7UbDc6fYjrUbhzhArM4TKtSjFBq8zyTFYv1C4iqvYs+XcK5uNxb4Sn6TF0hXyvr1tQhu4bK2/LFFIclN5JIikKiocfDXjx0TzwJgS+qxjY9T4flzR8TPdSeJCThwFQhN5O1FuYk+vU6o7nmKA/zrYwkN5KiGe5tK1ru4go25hdYku6Td/QFTgb8Y2isgfbzzOlPtkrEVaXpLPtSXuAiPacP5pYXXFdG6zWPr1BPswQbr2e5jGkV5gyFNmtYHnFemLitD8IS7EBU4HL1Cu8X4K2KI+4rTZScrAc7NBo438gtxsvOVdIW3pIQyfKIjgGytQG1hYZQNguqheQQz3Lbb8jId2+otxlKuJit7CkEWtTHWvz65aKgXQnFPBch5Q4C9D4iA16/givi1AJKCkPLkQrV1DOShIT9QU6DcKPKqQLLFzApXy5hj1YQx9wTbOdtXiyk0d96LyVsZQbweVJvexDif0fRHDEaEZ5T7+TShuVHGnTk
+ T0diPc/o
+ jNYSuM4UG/cq5SDesgqdW4q4k2qNOt+dZ245tRRTr3gRLP3qEvoaQfDZLht5NiIvqbTQRm/Pc46Wt32wgaTUL5Kh0qCqspuJCYfPEqDkhZFIj8JWhbYzA0IH/g9xsm+m/TwSPV52GfQAtWTYah4mHBk9RinuWShlGCmTMeVlezxdZN4Cr8Ob2ky1HUb+rbwin4olxv05Xl+qRSuaN0yF0FbmcGn/DCarh+cgNDG6ZDWs1/EipjDfx6VizCEvT6k/Ppme+wgfelH7qY1MqO141ZDYjUCItb/4LKw6Tpjq6fMxesZ2a46w2V5LF30OVODcAoZF0rDOtiSJ88BgOjd3xhh6yE3W7n1jBCwn+YbaXPsLSUqENQM90PkIaXc+oCseOvKqKUduvcTvHPh0Gzk60YHVttbF/dDCVCqjG8owE6pGMYWs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,94 +122,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add `XArrayState` as internal state for XArray iteration and entry
-operations. This struct wraps the C `xa_state` structure and holds a
-reference to a `Guard` to ensure exclusive access to the XArray for the
-lifetime of the state object.
+The rust null block driver plans to rely on preloading xarray nodes from
+the radix_tree_node_cachep kmem_cache.
 
-The `XAS_RESTART` constant is also exposed through the bindings helper
-to properly initialize the `xa_node` field.
-
-The struct and its constructor are marked with `#[expect(dead_code)]` as
-there are no users yet. We will remove this annotation in a later patch.
-
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/xarray.rs           | 41 ++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 41 insertions(+), 1 deletion(-)
+ lib/radix-tree.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index a067038b4b422..58605c32e8102 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -117,6 +117,7 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT = XA_PRESENT;
- 
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC = XA_FLAGS_ALLOC;
- const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 = XA_FLAGS_ALLOC1;
-+const size_t RUST_CONST_HELPER_XAS_RESTART = (size_t)XAS_RESTART;
- 
- const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE = VM_MERGEABLE;
- const vm_flags_t RUST_CONST_HELPER_VM_READ = VM_READ;
-diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-index ede48b5e1dba3..d1246ec114898 100644
---- a/rust/kernel/xarray.rs
-+++ b/rust/kernel/xarray.rs
-@@ -8,7 +8,10 @@
-     iter,
-     marker::PhantomData,
-     pin::Pin,
--    ptr::NonNull, //
-+    ptr::{
-+        null_mut,
-+        NonNull, //
-+    },
- };
- use kernel::{
-     alloc,
-@@ -319,6 +322,42 @@ pub fn store(
-     }
- }
- 
-+/// Internal state for XArray iteration and entry operations.
-+///
-+/// # Invariants
-+///
-+/// - `state` is always a valid `bindings::xa_state`.
-+#[expect(dead_code)]
-+pub(crate) struct XArrayState<'a, 'b, T: ForeignOwnable> {
-+    /// Holds a reference to the lock guard to ensure the lock is not dropped
-+    /// while `Self` is live.
-+    _access: PhantomData<&'b Guard<'a, T>>,
-+    state: bindings::xa_state,
-+}
+diff --git a/lib/radix-tree.c b/lib/radix-tree.c
+index 976b9bd02a1b5..1cf0012b15ade 100644
+--- a/lib/radix-tree.c
++++ b/lib/radix-tree.c
+@@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
+ 	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
+ 	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
+ 	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
+-	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
+-			sizeof(struct radix_tree_node), 0,
+-			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
+-			radix_tree_node_ctor);
 +
-+impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
-+    #[expect(dead_code)]
-+    fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
-+        let ptr = access.xa.xa.get();
-+        // INVARIANT: We initialize `self.state` to a valid value below.
-+        Self {
-+            _access: PhantomData,
-+            state: bindings::xa_state {
-+                xa: ptr,
-+                xa_index: index,
-+                xa_shift: 0,
-+                xa_sibs: 0,
-+                xa_offset: 0,
-+                xa_pad: 0,
-+                xa_node: bindings::XAS_RESTART as *mut bindings::xa_node,
-+                xa_alloc: null_mut(),
-+                xa_update: None,
-+                xa_lru: null_mut(),
-+            },
-+        }
-+    }
-+}
++	struct kmem_cache_args args = {
++		.ctor = radix_tree_node_ctor,
++		.sheaf_capacity = 64,
++	};
 +
- // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `T` is `Send`.
- unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
- 
++	radix_tree_node_cachep = kmem_cache_create(
++		"radix_tree_node", sizeof(struct radix_tree_node), &args,
++		SLAB_PANIC | SLAB_RECLAIM_ACCOUNT);
++
+ 	ret = cpuhp_setup_state_nocalls(CPUHP_RADIX_DEAD, "lib/radix:dead",
+ 					NULL, radix_tree_cpu_dead);
+ 	WARN_ON(ret < 0);
 
 -- 
 2.51.2
