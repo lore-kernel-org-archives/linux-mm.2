@@ -4,121 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FF3AE7E0C3
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 11:11:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64C42E7E0CA
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Feb 2026 11:17:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 806866B0005; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
+	id 8F95E6B0005; Mon,  9 Feb 2026 06:17:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7B4BA6B0088; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
+	id 8A7276B0088; Mon,  9 Feb 2026 06:17:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66C3E6B0089; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
+	id 788F36B0089; Mon,  9 Feb 2026 06:17:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 53DE76B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 06:11:35 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 66B046B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 06:17:41 -0500 (EST)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F1895140773
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:11:34 +0000 (UTC)
-X-FDA: 84424652508.23.C51AB8E
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EC4621B333B
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:17:40 +0000 (UTC)
+X-FDA: 84424667880.23.5CF7B69
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6F0A92000E
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:11:32 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by imf01.hostedemail.com (Postfix) with ESMTP id 76E6A4000D
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 11:17:38 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QNYPF32C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r4sVteLd;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QNYPF32C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r4sVteLd;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770635492;
+	s=arc-20220608; t=1770635858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
-	b=zkmmv/ryqEhRyzCW7go0UyO9KX8f0ZOVh6dycf7znCrjm257tHn4JpUznUcYWUWH8YXWir
-	q77hMDadyjRHizAOT2XGN2/ij3rm7ZIVUJwmNQ/lcQhcFXDdDPWPKcw1Dl+1c4r0E/3ztn
-	E+aH1lEP/rT6vUJWvMw9T5FErncbfVE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770635492; a=rsa-sha256;
+	bh=QB/fUURelZzUZfFiB8QGjtTaUX+WAHkV6R8O7qOlYHw=;
+	b=w1qXOHTxzV/x2kWhL/ate8At7wTq/TehxszU5eQYNuDfT51F7tQvkBmdrBQq3gSr7RqjOk
+	B4qnWXsHz0/tKL3MqBGQ64ECkcbQPY8bhQZPJYzKSFLSExoRuBPylrQ5o6iZXUfMLG4Gy+
+	6M1SqmTTAXI6sbRThQ69ZIifUtHqo7I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770635858; a=rsa-sha256;
 	cv=none;
-	b=maNV5LQetrFQVA4RaEjn83jP/pk+9ahb9yV0OTpHsrnuTiLsCefnJNs2Ab2bovWt/qr2KU
-	NWChghkNxzk/6elAGPEp0zEG8nUHbe4EOBQpD9WyKQHFsesd3wfgKADrAlkEQ7Jl0aq3D1
-	P1jqk2SpTLMv8H1sr81Yc0lj69PeQDY=
+	b=M0kX64a15GQ28LZR34Nf5xwKNoQDSGNOV+eBGPdtqCHpNp+BirHwlClkJbseImjs4qZ0gG
+	LvYiBY8etLGam/ZvhOtJeh8gnMLVTmlT7YxYPcG0lo3v9tgOnsHlGK6OYdbHVAOZc/Jvw8
+	p6KrqUPll7659K9jDD6fwy657nBKGyU=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=NyVcXt2o;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9qYrvHqP;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QNYPF32C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r4sVteLd;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QNYPF32C;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=r4sVteLd;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A19F43E6F2;
-	Mon,  9 Feb 2026 11:11:30 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AD5663E6F2;
+	Mon,  9 Feb 2026 11:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770635490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770635856; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
-	b=NyVcXt2ocC1CVQAT2MPh2t32BXjCv7vkaP3a0lu3iDhzxYu/z2h3IG7qianf+MrpON5MXE
-	TcW8J5gfMgI1dkXFWaAXM7ZbY82FY3HXcAXm2p4UoAubsqjHUbTr7cFnewm5AECj9OGmoZ
-	+xdWcEyC3sP2MMiBBp0IUeaWgoMKCf4=
+	bh=QB/fUURelZzUZfFiB8QGjtTaUX+WAHkV6R8O7qOlYHw=;
+	b=QNYPF32CVU0OzgZCNLTj246JqlAS8kCBCLx9oMW8y41mEp49y2hjtVXvr4EEK0j7Agh2vv
+	F6ZiYAGc1GFq70027TyUSksnprXr7WD8KpVosPT1Y3i4fWebYBu3sr6cJyTHw3OoCdzN/r
+	i4bkZfNKV5pkqxKYudH7QPOm6LeowNw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770635490;
+	s=susede2_ed25519; t=1770635856;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
-	b=9qYrvHqPlk3lkMfiMYtY7WmM5BFDggncyDFM6w9yLq2+8cw2wAcFKFiPxFSp2ov8WpNjlE
-	MO6BDDkcPrGDXYAQ==
+	bh=QB/fUURelZzUZfFiB8QGjtTaUX+WAHkV6R8O7qOlYHw=;
+	b=r4sVteLdTIpcPwua2xbaIrarFALi14shcRUGkIayo3Y2PpQxcE+zFZVwQnY2yNsV5Fd9X5
+	6jILeWOXM7m1wTDQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770635490; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770635856; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
-	b=NyVcXt2ocC1CVQAT2MPh2t32BXjCv7vkaP3a0lu3iDhzxYu/z2h3IG7qianf+MrpON5MXE
-	TcW8J5gfMgI1dkXFWaAXM7ZbY82FY3HXcAXm2p4UoAubsqjHUbTr7cFnewm5AECj9OGmoZ
-	+xdWcEyC3sP2MMiBBp0IUeaWgoMKCf4=
+	bh=QB/fUURelZzUZfFiB8QGjtTaUX+WAHkV6R8O7qOlYHw=;
+	b=QNYPF32CVU0OzgZCNLTj246JqlAS8kCBCLx9oMW8y41mEp49y2hjtVXvr4EEK0j7Agh2vv
+	F6ZiYAGc1GFq70027TyUSksnprXr7WD8KpVosPT1Y3i4fWebYBu3sr6cJyTHw3OoCdzN/r
+	i4bkZfNKV5pkqxKYudH7QPOm6LeowNw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770635490;
+	s=susede2_ed25519; t=1770635856;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=t8qLFZbNZpSrx4c68k5jQfZ+EN35t8S+8YIiD1pqagE=;
-	b=9qYrvHqPlk3lkMfiMYtY7WmM5BFDggncyDFM6w9yLq2+8cw2wAcFKFiPxFSp2ov8WpNjlE
-	MO6BDDkcPrGDXYAQ==
+	bh=QB/fUURelZzUZfFiB8QGjtTaUX+WAHkV6R8O7qOlYHw=;
+	b=r4sVteLdTIpcPwua2xbaIrarFALi14shcRUGkIayo3Y2PpQxcE+zFZVwQnY2yNsV5Fd9X5
+	6jILeWOXM7m1wTDQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5B7393EA63;
-	Mon,  9 Feb 2026 11:11:30 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7A98B3EA63;
+	Mon,  9 Feb 2026 11:17:36 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wlXuFOLAiWlPSgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 09 Feb 2026 11:11:30 +0000
-Message-ID: <dc4c016c-90e7-4e60-a73a-a2515ad2f6e8@suse.cz>
-Date: Mon, 9 Feb 2026 12:11:30 +0100
+	id sRqUHVDCiWnTKwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 09 Feb 2026 11:17:36 +0000
+Message-ID: <a38fb457-c0e8-4089-a31a-ac59d06a796f@suse.cz>
+Date: Mon, 9 Feb 2026 12:17:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/page_alloc: clear page->private in
+Subject: Re: [PATCH v3] mm/page_alloc: clear page->private in
  free_pages_prepare()
 Content-Language: en-US
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, chrisl@kernel.org, kasong@tencent.com,
- hughd@google.com, ryncsn@gmail.com, ziy@nvidia.com, stable@vger.kernel.org
-References: <17A126A7-BACA-49E5-8A89-F8E665981136@nvidia.com>
- <20260207153716.59302-1-mikhail.v.gavrilov@gmail.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org
+Cc: akpm@linux-foundation.org, surenb@google.com, mhocko@suse.com,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, npiggin@gmail.com,
+ linux-kernel@vger.kernel.org, kasong@tencent.com, hughd@google.com,
+ chrisl@kernel.org, ryncsn@gmail.com, stable@vger.kernel.org,
+ willy@infradead.org
+References: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
+ <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
+ <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
+ <51f96b31-fb59-4cda-9d33-e3cebc45686b@kernel.org>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -159,17 +165,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20260207153716.59302-1-mikhail.v.gavrilov@gmail.com>
+In-Reply-To: <51f96b31-fb59-4cda-9d33-e3cebc45686b@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6F0A92000E
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 76E6A4000D
+X-Stat-Signature: haxfwc59sx8ugbtggxg6szpxeuj7wfzw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4knnzpsi6agpddu8a764n16hetin4cis
-X-HE-Tag: 1770635492-551487
-X-HE-Meta: U2FsdGVkX1/jMsY70D+del3MkwOmIucrj6VH6jfCroFP/f57+3n2JWEJGhj/sRfyyMi1PVwUo0LpktnbkftKte1fAm6/KxOkn+pg1swvReIjwJ8rMWUuUq9p9BeIiOGfs5EZvIsbfUBcddBOcecQp/1BnO4JCMPv7DcFVc2Jy1ZsmwvXI0aRa3dzuZQv84nVv8pIK7nEXQ+eTh8ruNLKS28ZWlblk33SWtrZOGfTjHDJnaGikZ8RtK2ZjXW/gvO4GqYU0nBbDNjSXZA92CegeCqsFGKB76p7fzKAj7zDp6H2of7TJ7vgSaLFUULkT7xM9rHqKXL3cuJqgk2uOqGr3oYrcSBSOokf5B7P1a5DGEhsLUY0PeKy4owplXtBcl2aVMjgviCYUqNmJyKVN7Iow2AcU90BCx1VHeZ60pcYF3oQUdfTz4uBN4DhExoexZ+b3V1BQfXyNdYTJS/HqWLciOQtsdHL6Yx7CHG/5tufFHdQAFgtJqmMXkpmD50zKK8YFQCQmeOM7ZSIajOQ+M2cTuzYsI8wekypV+SwSlSlaM8paEWfuINNsXtuTubtNBHRGr2BfjLmv5NbSDMOLv/TO7eSw7Loc8AB5xh0rNfT7lslUdRrgz/HMgQxuTDMnXh1OAz+CSxhPf4DFIONYXNJuL4ClbQhQypCgE4OIWf8U2+MwrPR6lutlil0QAzXf/ZidoEASwUdTpctiRDDMnc7h8qyBin2mgaxwD4QLj5AGyRJKGuAGCCRY8fvwQK4pro1YHeQrNKNuG8w9Z06NcQ5sawY3Teeyhk649LD2jZ78+g2wfGIcyeTKUKiajGY73ZkmCxNSA5jc5i8dKa6G9HBszdP/OgifeJQ8i4iC2XsB7cTQ3sck1UL7GE+s/D07E404UmS+8GhAo290XSbwDty1sljcgfBFRC9yqz+k+jNC7mN0zJtEmbiHxrggb287E3srXio2JiSiv2plq0bPbu
- G/tmHRH5
- ndcLWlTWTPi/aEITUpHjb+c7yp42qhTD8iI3puE0c27PHH8gpsFJXq2lHJNFCNpWB3idWYD5XDZu/Ht23DnZgTp3tV6Er1afzUmLxx+Peg4rzQtZCOQV/HNN9vrVcF28q6zRt+vq4YMQ/M06gAuzbWHDzmj3tzFT5Rg6wfVOT3pjm0vkR3wwiILiunJT/DyGH7+y2PJyH38WAO5Pe9aq7W503tXZH9wBQwJF+FpTeWio5KCj25LB0nRr9EZDZtsnfahmkbpkfA4nZumMLOULz4mnppN+lbQQkA0MNH8p+QKRl8EVqeSap02qRb2Vhr7aNlC6Yx3+rJCvgA6jx5nVQXSSVRfy9d9NP8smnxA3PfDC4O5Av5pmKRmueNRkul3HYs9Tzyeo4YslJ8omgHJWrlSlQI3KS5Zujj51IT2SV6EHsF1tA4pEiQFbfG+0H1s278LknS4p+8MnfXkilXq8bBXHmaqEGvKdwFV9a
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770635858-824008
+X-HE-Meta: U2FsdGVkX19Ar0PJLAm14bwHVf+44ME1ANIdk7+RUfXPTJfAKxYbLGF4mYXMg9JiSwvOcKZShLCzZSVXHSnzCmcMV0ic75yqRYxML9DievSzcqnfqToQTH0+UeQ3PSSw7Isa40zjvfuooa3Dy5g5UDgtk1RBTQeAwb7zIa6OVgfViACWrLuz3eq2nua4xt3yoCx9NrXjUNEyHV2OEj2wRPOlQzlc7+cZLbwSu/Fc4I8YQo7rQLNsfrxuZUGt3frNUTf1U3/+/X7ATaFSUSfQQQeqYdpSag1RUmiEfK1A0qvtJtiYigURUNcBi9389eZWAuu521B1Jbb2cH6Xh6yxAGoCaRTW6wOFUFXc2Klqss2lMZ9lQsU9OFkwdOrwzJRyNzhurP1GJxxn6Iy4J0f2KlIBNcA2aQDtWEit3Tk0Zdl0ZUM6YJPAwH0jQEojj9uT4zk5G0tsvt/LQTxdoNJ+qs8j/zxAMyHQN0XH4Xr1eMF9H02Msb5+Aod3gbTjRncta9k10/VRSdRBoO56jLQgFkc/EfVvgOqJiM+OozYh5DU2kK3Kx+OAWiPsQDIqOlq5XiPEVlcg10dgG4veNi61w//C/hN19vmzvCMN4MlbJk+k0SUWDFvkLM8qe/qEeUHFy67hI/4A0d6LTpJlu3rzdf7UkzzF+CRnfFCZ4hKZ26ewTlDquZ6d8HF809Zns73tVt6pySj/g6jAbDxm3vehokj3c0rHbTY/iLCBWZLrnBUzHIQen7sVPAURazRkaJM4mganFHKcLXQ40aNDzEY7ViL5Px6dyvsGApgSYfQkJKV4i0fRNqGwbmHeLSg7NQdhc6ODHxZff1WrLWm5087CdDN0zHbAbUQ+FBo2sw9BLXo6amZOr6MxW2FwlEPSa00WYepVbmNpWCnXsw183wnWgnQu5lFjDYO7UQSrr8kgZwCID7qKFQJzG8cPHAf9F9+O7c6bvr0iwylnBYKsr+J
+ npbwKZig
+ /4QxKVLokcrLwiiF0/dbz9tIdacotTFGzVioMQ7gKsI1sZgEebwFGEdsBcS691eh4gPBNdsawRi6F/szHg6cIMQdElLJ7SJKer/Xq4BApD47ckKXuhR2cKdZ2yGbI8wNmwYVO2J+PGZr+HMzvmeJBIwKhHRcYLwyOvDNHxj60lyPI79rib9Dw3ZfSgXCb3ClUjPJkhCrnNXqIrebsQ6Ki+EOcNtl0S55ARQtj2tSa+sNJpN1piuVMjzQcUhCdMwaYVnHc9DSUgu9Fi7SeLe8GIu52osrP9QwYarDM5Fbq0bFT6f+jf5PkB5nrHJkCb1+xSyZ8uyYdL5OJ36uerAIdza8ZZHyzFB4XFvBGtZXLB4BT9niQiPYogWsKexOw3gveMMREDXsn2ZH9BLs+u3fI0vdcq54DAyWzFYidSHdoeqp5DB4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,50 +185,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/7/26 16:37, Mikhail Gavrilov wrote:
-> Several subsystems (slub, shmem, ttm, etc.) use page->private but don't
-> clear it before freeing pages. When these pages are later allocated as
-> high-order pages and split via split_page(), tail pages retain stale
-> page->private values.
+On 2/7/26 23:08, David Hildenbrand (Arm) wrote:
+>> 
+>> -               /*
+>> -                * page->private should not be set in tail pages. Fix up 
+>> and warn once
+>> -                * if private is unexpectedly set.
+>> -                */
+>> -               if (unlikely(new_folio->private)) {
+>> -                       VM_WARN_ON_ONCE_PAGE(true, new_head);
+>> -                       new_folio->private = NULL;
+>> -               }
 > 
-> This causes a use-after-free in the swap subsystem. The swap code uses
-> page->private to track swap count continuations, assuming freshly
-> allocated pages have page->private == 0. When stale values are present,
-> swap_count_continued() incorrectly assumes the continuation list is valid
-> and iterates over uninitialized page->lru containing LIST_POISON values,
-> causing a crash:
-> 
->   KASAN: maybe wild-memory-access in range [0xdead000000000100-0xdead000000000107]
->   RIP: 0010:__do_sys_swapoff+0x1151/0x1860
-> 
-> Fix this by clearing page->private in free_pages_prepare(), ensuring all
-> freed pages have clean state regardless of previous use.
-> 
-> Fixes: 3b8000ae185c ("mm/vmalloc: huge vmalloc backing pages should be split rather than compound")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> BTW, I wonder whether we should bring that check back for non-device folios.
 
-Seems cheap enough and robust to just do it. Could be different for tail
-pages (although we do modify them too anyway).
+If the rule is now that when upon freeing in free_pages_prepare() we clear
+private in the head page and not tail pages (where we expect the owner of
+the page to do it), maybe that check for tail pages should be done in the
+is_check_pages_enabled() part of free_pages_prepare().
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
->  mm/page_alloc.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index cbf758e27aa2..24ac34199f95 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1430,6 +1430,7 @@ __always_inline bool free_pages_prepare(struct page *page,
->  
->  	page_cpupid_reset_last(page);
->  	page->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
-> +	page->private = 0;
->  	reset_page_owner(page, order);
->  	page_table_check_free(page, order);
->  	pgalloc_tag_sub(page, 1 << order);
-
+Or should the check be also in the split path because somebody can set a
+tail private between allocation and split? (and not just inherit it from a
+previous allocation that didn't clear it?).
 
