@@ -4,83 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0670EA3F09
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 06:17:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29770EA3F0D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 06:31:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C69826B0005; Tue, 10 Feb 2026 01:17:22 -0500 (EST)
+	id 4B8236B0005; Tue, 10 Feb 2026 01:31:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C17286B0088; Tue, 10 Feb 2026 01:17:22 -0500 (EST)
+	id 485F46B0088; Tue, 10 Feb 2026 01:31:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B15F46B0089; Tue, 10 Feb 2026 01:17:22 -0500 (EST)
+	id 364C96B0089; Tue, 10 Feb 2026 01:31:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B0FE6B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 01:17:22 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2AA9D58A19
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:17:22 +0000 (UTC)
-X-FDA: 84427539924.28.A0EFE1E
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 6AC50120009
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:17:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2595F6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 01:31:54 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A7EA78B78A
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:31:53 +0000 (UTC)
+X-FDA: 84427576506.29.69136C8
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 941771C000A
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:31:51 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=jPlD6xDk;
+	spf=pass (imf20.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.65 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770704240;
+	s=arc-20220608; t=1770705111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BPL24Vy+0EKks1jEf/6W3kTGZzkJXnFKRHmoabbB3SI=;
-	b=k7ejBYc81aVZQDf5lJ6M+rqn7/qOgmmr9A9h5enlPZ2pMzeGsC1Y+rAcp2OtjquRnNKZLb
-	zeHTxF/mmg5IbfiDIbN8ZqRnNThrJTmmeiFgER3M7wdhpId3pwLEGOajPT4g4oIPMSQz88
-	DGZvjc4Ss/tITCyAYSPUUDI29xPvmFA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=PuIvHjahYrqUwfgodntxdfFSIIlE9ggIgaeNW8+YxZc=;
+	b=3tCD6m9kGjXbvfG3kKrvrEKJ4YLKnR/ns7xsjjlVetdcZMG0/8utt1LWoCCDLe+pkS9LFY
+	uuB/2uEYYRHa9eNF6KD9Al4dc6ilklIsOcBBGu7IcBtvWqIfDX5TGX19XD0UdPwfUYumSS
+	GDglvqN3xUZrBRWIJYzVBEj1qYX1aHE=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770704240; a=rsa-sha256;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linaro.org header.s=google header.b=jPlD6xDk;
+	spf=pass (imf20.hostedemail.com: domain of dan.carpenter@linaro.org designates 209.85.128.65 as permitted sender) smtp.mailfrom=dan.carpenter@linaro.org;
+	dmarc=pass (policy=none) header.from=linaro.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770705111; a=rsa-sha256;
 	cv=none;
-	b=Rd/P2mzAS1ynM57CtX4Wpm1SE1eO7fthe1gYwFgKFWUBFxV38Jvng0toQMg6nlIaTuEKjD
-	uXbl6nY0y88bIyszEvnplHV3Jjwiwg0qzUN1BtQYLANz88vrf78rHgFogweUfsmqI2gf+D
-	NZ5t6NdzBWj5Keqh0Y9zPqd/gZR/9vk=
-Received: from [IPv6:::1] (localhost [127.0.0.1])
-	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 61A6H80H4129767;
-	Tue, 10 Feb 2026 00:17:09 -0600
-Message-ID: <5a44609fe992624573a3ca0a293888bd623e2a06.camel@kernel.crashing.org>
-Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct
- page
-From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>,
-        Marco Elver
-	 <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
-Date: Tue, 10 Feb 2026 17:17:08 +1100
-In-Reply-To: <e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org>
-References: 
-	<ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
-	 <aYJBBs17B-SQXFqq@kernel.org>
-	 <279931074239b7f3812c4cb3969f887303c8cc26.camel@kernel.crashing.org>
-	 <aYL3zxuTLT8N7C8-@kernel.org>
-	 <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
-	 <aYXDeN0WGQG8-cxe@kernel.org>
-	 <bf0231accb89709968efb4d8e1be9970aeb716f8.camel@kernel.crashing.org>
-	 <e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	b=U2UaA/McH1CeQXbxLGY6XSuDeoSyUqH5xgiG+uPGxUAv5+vzljqmv1HK6WUP7otW1ZDAlI
+	t4JfK8W9CFEBj25/9akaM2qWHxwFyNxQRfQicKfMeZdWSwtvbGujdbX0VfJwSVh5sD/5TG
+	5vLbxFlmL6eChSe2lELbya3xS7u4LMw=
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-48327b8350dso31542675e9.1
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 22:31:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770705110; x=1771309910; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PuIvHjahYrqUwfgodntxdfFSIIlE9ggIgaeNW8+YxZc=;
+        b=jPlD6xDknkHOkegZEPPCOx7R/RvDG+AR3w9ly6V4T0J7tNAdTtqGEzJ2WBPYQwZ2oa
+         5V89SX7KHbK8AT5E0wiOm2YXM1jQfI6igwJ+LKfHt8UONbSdTbRTBy2QOZAmv4pfeiRg
+         Vcu7SL3+/tAT9kknfSkqRuNSTyj2Tj76falnKHptGJRs9mhwd1TzCOaeWMWO93NePG9T
+         kFvlZ1hFKBpcNIV22/j+zhIbcFAD/0v9dCCv1T8fPAgk02LQxxvRqmSKwMTmlBm72IS3
+         iFdcoJ1GpUr6WOsoz0Rdkd78FjfqAbRL7c2bTEPTLgVYrYqAgyZ2b0amklaMBSn10whh
+         a+Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770705110; x=1771309910;
+        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
+         :to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PuIvHjahYrqUwfgodntxdfFSIIlE9ggIgaeNW8+YxZc=;
+        b=tnoGSLwjPmjVNOGGh5alWKTjVbydveUXBljfQ6Go95shrwAwcqMiomT2+5T97NbpwJ
+         TU2Z482dcn0ZM1i22QU1ZrkU3jzfSfsdefjuUZgniyr4MGb20dIISYOaqk/yx+qL6wWZ
+         sihIimK5voJZmJO6+ejZpTzC9SJ7hhXdfwL3heVkGhoZq4HH1jAvU/M0orn6TmUDD56v
+         j2aEjXKKhiNmdkjpcXBVNOCNyIY/s7zpCM78ydchAGORbBBVMygTJeyTbieZR4Z2nUx5
+         4cMzuWdocg8cebHHlQ0wCZkLawTJQKSZfZhZzfTcAKfMz+bOAGa+YH3NOOUgxcFqzbdw
+         NP+A==
+X-Forwarded-Encrypted: i=1; AJvYcCV7hjndPdsZoC/pErP+nJAgCNtAk6VKeyGYRn+TilBVlJcKClY0kOxRDI/Ak+HyineJLZW1y4bt4w==@kvack.org
+X-Gm-Message-State: AOJu0YzOi3VdWrDRR2yb2r+d0I4bBzh0kaM/Zs1AGBRxSTRneKvVsnjc
+	Y06xqi46AupPieaOZgugcZaib2smq2G62WZtew+G4/yGLMPnhf4oh56qqskGAx4P8+Q=
+X-Gm-Gg: AZuq6aKcxLVOhiVLxd0BiwowTe+ZYfhN/qs7ZtNj32R/MVwKxsw7Rq3Nr8lxw6z/w74
+	akBHJNw0lsgSfCmrghPTvzwaGDFS7DBg3OHTPD9lviPevWofeCcfd9ovmFeV5NRE6tWmKkl7iYL
+	cPXye+pINjhjmal4HH19DzZu/maSBztvMRzbRkl6mEeiV321ko3LY45jWntTGpZmwu6B2GkYXxI
+	O6rmlmRhYAx/F2xsK2uqtgIA82L7wQjhSMX+LUJFmswra+awiyZJ8NB5zBY3uUKEHqWtU53sc4Z
+	G/eBBe/AsdG5voL3WfkcVDJRXce4UaFdf6y5TVlmlOeuNxECpfnScwuIegHfvaILAbQTZHQi77A
+	ujGyhpRc2h8PlHIbyUpgHpYnaU8IGKSh6V1Es0LhNX3kmLe4Ih1RrrGz5lO79WIgrLlsrkBpLuB
+	Gd4LANxYhOnnD6xrwe9BgdiOuXMSVW
+X-Received: by 2002:a05:600c:4f8a:b0:47a:8cce:2940 with SMTP id 5b1f17b1804b1-483201e3aaemr189459165e9.14.1770705109669;
+        Mon, 09 Feb 2026 22:31:49 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48320961505sm215017735e9.4.2026.02.09.22.31.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 22:31:49 -0800 (PST)
+Date: Tue, 10 Feb 2026 09:31:46 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev, Nhat Pham <nphamcs@gmail.com>,
+	linux-mm@kvack.org
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev, akpm@linux-foundation.org,
+	hannes@cmpxchg.org, hughd@google.com, yosry.ahmed@linux.dev,
+	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, len.brown@intel.com,
+	chengming.zhou@linux.dev, kasong@tencent.com, chrisl@kernel.org,
+	huang.ying.caritas@gmail.com, ryan.roberts@arm.com,
+	shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk,
+	baohua@kernel.org, bhe@redhat.com, osalvador@suse.de,
+	lorenzo.stoakes@oracle.com, christophe.leroy@csgroup.eu,
+	pavel@kernel.org, kernel-team@meta.com,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com,
+	joshua.hahnjy@gmail.com
+Subject: Re: [PATCH v3 14/20] mm: swap: decouple virtual swap slot from
+ backing store
+Message-ID: <202602092300.lZO4Ee4N-lkp@intel.com>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6AC50120009
-X-Stat-Signature: a3afnpwme57bni3y4kynukn5j7puypn8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260208215839.87595-15-nphamcs@gmail.com>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 941771C000A
+X-Stat-Signature: beujyomj6pg4xoxoautsmrnrengimwwn
 X-Rspam-User: 
-X-HE-Tag: 1770704238-114865
-X-HE-Meta: U2FsdGVkX18E4yX4MjO1RfSsLcpDjeP5yyaUsXqXvxfWjXRl0bIKYoMqR/u6nCyGWJQsnBOli/6VkhOvCIZma0qvPkQzyFJQQZKv1aJLl7/JWnq9Dp7IglXgEwy7FyR4YBajenFmak+M7yCjDc2BNcke12yWdfwvV88rxnXMS/TXKlQxZwfMsq3H9kl5eTLTPv2eAxqGLTMU+RtuIPVBZKuqm59IW5x07RG8MVRO0l7wwR1woDpttuVWDfZLnyL7812yQeaEubeI9GsfVIe2XMD6A7yFhhNOujUzN7rHafituqLML/9cBbIf7HglEIfKWcV3bevk9eDZlPdp3U5uMj/NVdBCmUfCt1Q6i3fXpRKhAaJ+t9jdc+/ODoaCn7TM03Ru3zPKlv76yik33ffpJWVV0sKeZXvVuWqIkk8qUw6xwn+5i/FW6s5llepNmC4l4ExJS2eqlelQxrewGCLSLm3c6h4L2ucb0juZF+sK6mJWradTF77yCJows9H6+vfd68oy5hDbTo6dIA4Uar+cS5jKo//VDfthZLiYmZ7S3/kRRFoK1sWoBDWGDst7DVgNZefBR1geOhn68kc+YB+sWG9xOhbpA1JX9Ky9SWL7NN5O5JDpEktPWvhTzDsdoVcaT7wVNALUj0FimGFnM9XlKjmLqr19lQpwswxwz6ZXONpdvLNT38VJT4D7TUsdvPYY7MQEhC1T29A9OoQMfQScH2G7sGBoQlMy0p7gbFkZWwnNGZ6LGVe/HLMFqh/kdRlIFc2B6U0iRdPpcqhZzFGMkknrh8vA0xb/B9+I13bgiQLcYnA66+3ivBaB9fFEkptcUccciQ1DJmfnRdXcPRqk27kAJKhP73Gq4t0T+rzXgyLTaxaw20+0IvONlZ0eiaycQKEGUc9/uFu5O+s59zujd0Sk8aVL0ewJu7cop5le7098VA2M9q2u7cj/ZIy7lXQlMUeKh+s411Z+HOkP1nW
- ZQOByvdp
- dSD4evQbG54jtqdfiK/j99o5AhSVz2f1Owsw+kfr2Cp6ws9Mcn/OEH9mtSLpASZ3m5GxTwURl6OWCaLJHVisSw37LOugTKAkPFWS3KBeDjLNxuxUCf52XVP5RVA==
+X-HE-Tag: 1770705111-858303
+X-HE-Meta: U2FsdGVkX1/ytTJyh5ubuWuxrXD5tor9uHC9wApuNSqNp1sTQj3wBSZxviU/A5RiYwyy/yGZJveEmD86Ihlfczk8TIRBNuA2tlOMkZbv5xiSRuPcRxX/SVHnbSaIriMfZFldEiUSeJoXnmpEBFQh8s88Mjaaggy8ZOo19YsMjTo4iymJuXXDEAbbCixCrTJpDhg5ubzkds/ogaXD0nN4iqQcLkpIJ6BBJskv7NoKpqiE+v3vy1L1seLs3cikEAXncbd7oqZd66ZtGx/nqUOLIiMnJJc11kl4ZfeZ/UpBr/5Y94NYDdclplLlqugOdaU0r/6gm5yj5fcjmfaAOrOvafunC7A/sIKBomG5bcqzndZAjKYYaEaQHNW/0qyz6N+97VRe1Ov/jxBLIDCWjJ63h5RZOk7p2MwM8fHnlZ+W2Bsuchg7gxBIeQEtr6P32ekUNqOOae4bk/15RL/hJ1Ll9AN8yhJSUgZZE30bjPXEWvFb+7JfLzrA9yR7q9CXroFFNBTFUjVIJdiv/5xXNEtbofZiwzmy8fXAOsaXe6HVNufbgHseNbHAGW7rwQ9Uk3h05tRZzTDScFXIO+KDjqBOAg0lWluyqkHyiCnekIkSBGBFMVgZR/D8B7J2QjrsJwxzyxhY0k04sUqvM4hMxfcCfUQOSrdLMmy6WmcU9plclwlYkqJTEiSfIkhrO97XM8QryLEKOcEyZ5oGwNpiiBXCq7SG/vtFe3dpdAQOu2rB4MiVxsicYHvKXVEzzIvhhZ+O5qZADhw5skvpiqBBxmmXMdoP/JhmJiWjmTY7OVJ7SvQ5PurZ1fduW18anx/q6hSiM1qUuQJi5kqqy005iQp6IyY+ZzOafpq+ghvxsYalOydp2N9ksXw2ZnaqZJ94ygQZigUjE3QmSnFIFPPT1q4NLMn8c2k0GdzDeqK880DX9sMbs362wpLZQWoZSuV05FHWf/xedm9rkcOVBgKV6Zv
+ lfZowjOv
+ oZZ+HrSe0uhw8u+u3/Wkbz1eAiQQRWoIYdaZrgDb104XutVIngh/TVb2K/womTID4fU1SRaymOoaRRocRYYKRER2ahgr5Bc5u5MgeZy6yZXnOLR2T794ZgXUTEqZNuo6zF1cKTDzGj2w0luw84MkwSO8jDzm+9dSowgSP82Mil93bVcmnIokk8CKLH1oAufK3RpZmlXIuPRIDtrRcQMx5tD20r7Yd+FMhqozB+BhXEjKZ9hNo2lGFESK6LqQYfOvLejfVQoD/haKaYKuelQziphjrMIgC2OsGiml2YTffpmbrvQkkLsUfoPJfbBIXQtmgA49Njq7d2sXSaMVVTvucUx/V7m+dzR8NJrmY88EeRWl4SW0hj8/7DM3poU3lJBg4xlinn7NcNbQFl/hQpNRm+zoYoXQatiByLDAFkVkepymHH5P1/YZuyKGGMh2qDgRQFFPRne5zUh7/4t+7DIziz63GK5fVjGMML5rZHn1qiVXw+Z2SUd1RsKw30asKQmZdLXldfKUtqjUspZKK6/dQaIIt4ctksGutscJzbn6ZyxXu+RURtzG5byTttgjWOlVCPkZM42CxhQRztUaqSzqBjSBqVZpTgfKF4jeNchUtRBpoIlAbHew0dzwdve54rqzry2THM3ZmXVcOlk7o0nICJXXJ7SfJ95BXwFCVBOT/ELlRDv25/wcM9UVnVA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,293 +129,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Nhat,
 
-So ... that was a backport to 6.12.68 and my original patch is crashing
-the same way ! (it was working last week interestingly enough,
-something else got backported that gets in the way maybe ?).
+kernel test robot noticed the following build warnings:
 
-I'm going to have to go back to digging :-(
+url:    https://github.com/intel-lab-lkp/linux/commits/Nhat-Pham/mm-swap-decouple-swap-cache-from-physical-swap-infrastructure/20260209-120606
+base:   05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+patch link:    https://lore.kernel.org/r/20260208215839.87595-15-nphamcs%40gmail.com
+patch subject: [PATCH v3 14/20] mm: swap: decouple virtual swap slot from backing store
+config: powerpc-randconfig-r073-20260209 (https://download.01.org/0day-ci/archive/20260209/202602092300.lZO4Ee4N-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 15.2.0
+smatch version: v0.5.0-8994-gd50c5a4c
 
-I suspect the pages aren't reserved. I swear this was working :-)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202602092300.lZO4Ee4N-lkp@intel.com/
 
-Cheers,
-Ben.
+smatch warnings:
+mm/vswap.c:733 vswap_alloc_swap_slot() warn: variable dereferenced before check 'folio' (see line 701)
 
-[    0.033998] RETBleed: WARNING: Spectre v2 mitigation leaves CPU vulnerab=
-le to RETBleed attacks, data leaks possible!
-[    0.043386] BUG: unable to handle page fault for address: ffffe49c803073=
-88
-[    0.043386] #PF: supervisor read access in kernel mode
-[    0.043386] #PF: error_code(0x0000) - not-present page
-[    0.043386] PGD 1024067 P4D 1024067 PUD 0=20
-[    0.043386] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-[    0.043386] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.68-92.=
-123.amzn2023.x86_64 #1
-[    0.043386] Hardware name: Amazon EC2 t3.nano/, BIOS 1.0 10/16/2017
-[    0.043386] RIP: 0010:__list_del_entry_valid_or_report+0x32/0xb0
-[    0.043386] Code: 89 fe 48 85 d2 74 3e 48 85 c9 74 47 48 b8 00 01 00 00 =
-00 00 ad de 48 39 c2 74 46 48 b8 22 01 00 00 00 00 ad de 48 39 c1 74 45 <4c=
-> 8b 01 49 39 f8 75 4e 4c 8b 4a 08 4d 39 c1 75 56 b8 01 00 00 00
-[    0.043386] RSP: 0000:ffffffffb3c03da0 EFLAGS: 00010006
-[    0.043386] RAX: dead000000000122 RBX: fffff44480600300 RCX: ffffe49c803=
-07388
-[    0.043386] RDX: ffffe49c804e5288 RSI: fffff44480600308 RDI: fffff444806=
-00308
-[    0.043386] RBP: 0000000000000000 R08: ffffffffffffffc0 R09: 00000000000=
-00002
-[    0.043386] R10: 0000000000000000 R11: 0000000000000200 R12: ffff8cf21b8=
-cbc80
-[    0.043386] R13: 0000000000000000 R14: 000000000001800d R15: fffff444806=
-00340
-[    0.043386] FS:  0000000000000000(0000) GS:ffff8cf21aa00000(0000) knlGS:=
-0000000000000000
-[    0.043386] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.043386] CR2: ffffe49c80307388 CR3: 0000000006c34001 CR4: 00000000007=
-706f0
-[    0.043386] PKRU: 55555554
-[    0.043386] Call Trace:
-[    0.043386]  <TASK>
-[    0.043386]  __free_one_page+0x170/0x520
-[    0.043386]  free_one_page+0x4c/0x80
-[    0.043386]  memblock_free_late+0x72/0xd0
-[    0.043386]  efi_free_boot_services+0x11f/0x2e0
-[    0.043386]  __efi_enter_virtual_mode+0x181/0x210
-[    0.043386]  efi_enter_virtual_mode+0xcd/0x110
-[    0.043386]  start_kernel+0x393/0x500
-[    0.043386]  x86_64_start_reservations+0x14/0x30
-[    0.043386]  x86_64_start_kernel+0x77/0x80
-[    0.043386]  common_startup_64+0x13e/0x141
-[    0.043386]  </TASK>
-[    0.043386] Modules linked in:
-[    0.043386] CR2: ffffe49c80307388
-[    0.043386] ---[ end trace 0000000000000000 ]---
-[    0.043386] RIP: 0010:__list_del_entry_valid_or_report+0x32/0xb0
-[    0.043386] Code: 89 fe 48 85 d2 74 3e 48 85 c9 74 47 48 b8 00 01 00 00 =
-00 00 ad de 48 39 c2 74 46 48 b8 22 01 00 00 00 00 ad de 48 39 c1 74 45 <4c=
-> 8b 01 49 39 f8 75 4e 4c 8b 4a 08 4d 39 c1 75 56 b8 01 00 00 00
-[    0.043386] RSP: 0000:ffffffffb3c03da0 EFLAGS: 00010006
-[    0.043386] RAX: dead000000000122 RBX: fffff44480600300 RCX: ffffe49c803=
-07388
-[    0.043386] RDX: ffffe49c804e5288 RSI: fffff44480600308 RDI: fffff444806=
-00308
-[    0.043386] RBP: 0000000000000000 R08: ffffffffffffffc0 R09: 00000000000=
-00002
-[    0.043386] R10: 0000000000000000 R11: 0000000000000200 R12: ffff8cf21b8=
-cbc80
-[    0.043386] R13: 0000000000000000 R14: 000000000001800d R15: fffff444806=
-00340
-[    0.043386] FS:  0000000000000000(0000) GS:ffff8cf21aa00000(0000) knlGS:=
-0000000000000000
-[    0.043386] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.043386] CR2: ffffe49c80307388 CR3: 0000000006c34001 CR4: 00000000007=
-706f0
-[    0.043386] PKRU: 55555554
-[    0.043386] Kernel panic - not syncing: Fatal exception
-[    0.043386] ---[ end Kernel panic - not syncing: Fatal exception ]---
-[    0.033998] RETBleed: WARNING: Spectre v2 mitigation leaves CPU vulnerab=
-le to RETBleed attacks, data leaks possible!
-[    0.043386] BUG: unable to handle page fault for address: ffffe49c803073=
-88
-[    0.043386] #PF: supervisor read access in kernel mode
-[    0.043386] #PF: error_code(0x0000) - not-present page
-[    0.043386] PGD 1024067 P4D 1024067 PUD 0=20
-[    0.043386] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-[    0.043386] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.12.68-92.=
-123.amzn2023.x86_64 #1
-[    0.043386] Hardware name: Amazon EC2 t3.nano/, BIOS 1.0 10/16/2017
-[    0.043386] RIP: 0010:__list_del_entry_valid_or_report+0x32/0xb0
-[    0.043386] Code: 89 fe 48 85 d2 74 3e 48 85 c9 74 47 48 b8 00 01 00 00 =
-00 00 ad de 48 39 c2 74 46 48 b8 22 01 00 00 00 00 ad de 48 39 c1 74 45 <4c=
-> 8b 01 49 39 f8 75 4e 4c 8b 4a 08 4d 39 c1 75 56 b8 01 00 00 00
-[    0.043386] RSP: 0000:ffffffffb3c03da0 EFLAGS: 00010006
-[    0.043386] RAX: dead000000000122 RBX: fffff44480600300 RCX: ffffe49c803=
-07388
-[    0.043386] RDX: ffffe49c804e5288 RSI: fffff44480600308 RDI: fffff444806=
-00308
-[    0.043386] RBP: 0000000000000000 R08: ffffffffffffffc0 R09: 00000000000=
-00002
-[    0.043386] R10: 0000000000000000 R11: 0000000000000200 R12: ffff8cf21b8=
-cbc80
-[    0.043386] R13: 0000000000000000 R14: 000000000001800d R15: fffff444806=
-00340
-[    0.043386] FS:  0000000000000000(0000) GS:ffff8cf21aa00000(0000) knlGS:=
-0000000000000000
-[    0.043386] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.043386] CR2: ffffe49c80307388 CR3: 0000000006c34001 CR4: 00000000007=
-706f0
-[    0.043386] PKRU: 55555554
-[    0.043386] Call Trace:
-[    0.043386]  <TASK>
-[    0.043386]  __free_one_page+0x170/0x520
-[    0.043386]  free_one_page+0x4c/0x80
-[    0.043386]  memblock_free_late+0x72/0xd0
-[    0.043386]  efi_free_boot_services+0x11f/0x2e0
-[    0.043386]  __efi_enter_virtual_mode+0x181/0x210
-[    0.043386]  efi_enter_virtual_mode+0xcd/0x110
-[    0.043386]  start_kernel+0x393/0x500
-[    0.043386]  x86_64_start_reservations+0x14/0x30
-[    0.043386]  x86_64_start_kernel+0x77/0x80
-[    0.043386]  common_startup_64+0x13e/0x141
-[    0.043386]  </TASK>
-[    0.043386] Modules linked in:
-[    0.043386] CR2: ffffe49c80307388
-[    0.043386] ---[ end trace 0000000000000000 ]---
-[    0.043386] RIP: 0010:__list_del_entry_valid_or_report+0x32/0xb0
-[    0.043386] Code: 89 fe 48 85 d2 74 3e 48 85 c9 74 47 48 b8 00 01 00 00 =
-00 00 ad de 48 39 c2 74 46 48 b8 22 01 00 00 00 00 ad de 48 39 c1 74 45 <4c=
-> 8b 01 49 39 f8 75 4e 4c 8b 4a 08 4d 39 c1 75 56 b8 01 00 00 00
-[    0.043386] RSP: 0000:ffffffffb3c03da0 EFLAGS: 00010006
-[    0.043386] RAX: dead000000000122 RBX: fffff44480600300 RCX: ffffe49c803=
-07388
-[    0.043386] RDX: ffffe49c804e5288 RSI: fffff44480600308 RDI: fffff444806=
-00308
-[    0.043386] RBP: 0000000000000000 R08: ffffffffffffffc0 R09: 00000000000=
-00002
-[    0.043386] R10: 0000000000000000 R11: 0000000000000200 R12: ffff8cf21b8=
-cbc80
-[    0.043386] R13: 0000000000000000 R14: 000000000001800d R15: fffff444806=
-00340
-[    0.043386] FS:  0000000000000000(0000) GS:ffff8cf21aa00000(0000) knlGS:=
-0000000000000000
-[    0.043386] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    0.043386] CR2: ffffe49c80307388 CR3: 0000000006c34001 CR4: 00000000007=
-706f0
-[    0.043386] PKRU: 55555554
-[    0.043386] Kernel panic - not syncing: Fatal exception
-[    0.043386] ---[ end Kernel panic - not syncing: Fatal exception ]---
+vim +/folio +733 mm/vswap.c
 
+19a5fe94e9aae4 Nhat Pham 2026-02-08  694  bool vswap_alloc_swap_slot(struct folio *folio)
+19a5fe94e9aae4 Nhat Pham 2026-02-08  695  {
+19a5fe94e9aae4 Nhat Pham 2026-02-08  696  	int i, nr = folio_nr_pages(folio);
+19a5fe94e9aae4 Nhat Pham 2026-02-08  697  	struct vswap_cluster *cluster = NULL;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  698  	struct swap_info_struct *si;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  699  	struct swap_cluster_info *ci;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  700  	swp_slot_t slot = { .val = 0 };
+19a5fe94e9aae4 Nhat Pham 2026-02-08 @701  	swp_entry_t entry = folio->swap;
 
-On Tue, 2026-02-10 at 13:10 +1100, Benjamin Herrenschmidt wrote:
-> On Tue, 2026-02-10 at 12:04 +1100, Benjamin Herrenschmidt wrote:
-> > On Fri, 2026-02-06 at 12:33 +0200, Mike Rapoport wrote:
-> > >=20
-> > > So it essentially becomes "oneliner" :)
-> > >=20
-> > > diff --git a/mm/memblock.c b/mm/memblock.c
-> > > index e76255e4ff36..6e984bcdf6cd 100644
-> > > --- a/mm/memblock.c
-> > > +++ b/mm/memblock.c
-> > > @@ -1770,10 +1770,8 @@ void __init memblock_free_late(phys_addr_t
-> > > base, phys_addr_t size)
-> > > =C2=A0	cursor =3D PFN_UP(base);
-> > > =C2=A0	end =3D PFN_DOWN(base + size);
-> > > =C2=A0
-> > > -	for (; cursor < end; cursor++) {
-> > > -		memblock_free_pages(pfn_to_page(cursor), cursor,
-> > > 0);
-> > > -		totalram_pages_inc();
-> > > -	}
-> > > +	for (; cursor < end; cursor++)
-> > > +		free_reserved_page(pfn_to_page(cursor));
-> > > =C2=A0}
-> >=20
-> > Nice and sweet :-)
-> >=20
-> > I'll spin that & test it and send a v2. Thanks !
->=20
-> Tadaaa ! Looks like I'll need to dig deeper... Busy with something
-> else
-> today but I'll get back to this asap.
->=20
-> [=C2=A0=C2=A0=C2=A0 0.076840] BUG: unable to handle page fault for addres=
-s:
-> ffffce1a005a0788
-> [=C2=A0=C2=A0=C2=A0 0.078226] #PF: supervisor read access in kernel mode
-> [=C2=A0=C2=A0=C2=A0 0.078226] #PF: error_code(0x0000) - not-present page
-> [=C2=A0=C2=A0=C2=A0 0.078226] PGD 0 P4D 0=20
-> [=C2=A0=C2=A0=C2=A0 0.078226] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [=C2=A0=C2=A0=C2=A0 0.078226] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not ta=
-inted
-> 6.12.68-92.123.amzn2023.x86_64 #1
-> [=C2=A0=C2=A0=C2=A0 0.078226] Hardware name: Amazon EC2 t3a.nano/, BIOS 1=
-.0
-> 10/16/2017
-> [=C2=A0=C2=A0=C2=A0 0.078226] RIP: 0010:__list_del_entry_valid_or_report+=
-0x32/0xb0
-> [=C2=A0=C2=A0=C2=A0 0.078226] Code: 89 fe 48 85 d2 74 3e 48 85 c9 74 47 4=
-8 b8 00 01
-> 00 00 00 00 ad de 48 39 c2 74 46 48 b8 22 01 00 00 00 00 ad de 48 39
-> c1 74 45 <4c> 8b 01 49 39 f8 75 4e 4c 8b 4a 08 4d 39 c1 75 56 b8 01
-> 00 00 00
-> [=C2=A0=C2=A0=C2=A0 0.078226] RSP: 0000:ffffffff9ac03cc0 EFLAGS: 00010006
-> [=C2=A0=C2=A0=C2=A0 0.078226] RAX: dead000000000122 RBX: fffff56600459c80=
- RCX:
-> ffffce1a005a0788
-> [=C2=A0=C2=A0=C2=A0 0.078226] RDX: ffffce1a005e3e08 RSI: fffff56600459c88=
- RDI:
-> fffff56600459c88
-> [=C2=A0=C2=A0=C2=A0 0.078226] RBP: 0000000000000000 R08: ffffffffffffffc0=
- R09:
-> 0000000000000000
-> [=C2=A0=C2=A0=C2=A0 0.078226] R10: 000000000000001c R11: 0000000000000200=
- R12:
-> ffff8ca75bacbc80
-> [=C2=A0=C2=A0=C2=A0 0.078226] R13: 0000000000000000 R14: 0000000000011673=
- R15:
-> fffff56600459cc0
-> [=C2=A0=C2=A0=C2=A0 0.078226] FS:=C2=A0 0000000000000000(0000) GS:ffff8ca=
-752c00000(0000)
-> knlGS:0000000000000000
-> [=C2=A0=C2=A0=C2=A0 0.078226] CS:=C2=A0 0010 DS: 0000 ES: 0000 CR0: 00000=
-00080050033
-> [=C2=A0=C2=A0=C2=A0 0.078226] CR2: ffffce1a005a0788 CR3: 0000000006c34000=
- CR4:
-> 00000000003506f0
-> [=C2=A0=C2=A0=C2=A0 0.078226] Call Trace:
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 <TASK>
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 __free_one_page+0x170/0x520
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 free_pcppages_bulk+0x151/0x1e0
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 free_unref_page_commit+0x263/0x320
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 free_unref_page+0x2c8/0x5b0
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 ? srso_return_thunk+0x5/0x5f
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 free_reserved_page+0x1c/0x30
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 memblock_free_late+0x6c/0xc0
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 efi_free_boot_services+0x11f/0x2e0
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 __efi_enter_virtual_mode+0x181/0x210
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 efi_enter_virtual_mode+0xcd/0x110
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 start_kernel+0x393/0x500
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 x86_64_start_reservations+0x14/0x30
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 x86_64_start_kernel+0x77/0x80
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 common_startup_64+0x13e/0x141
-> [=C2=A0=C2=A0=C2=A0 0.078226]=C2=A0 </TASK>
-> [=C2=A0=C2=A0=C2=A0 0.078226] Modules linked in:
-> [=C2=A0=C2=A0=C2=A0 0.078226] CR2: ffffce1a005a0788
-> [=C2=A0=C2=A0=C2=A0 0.078226] ---[ end trace 0000000000000000 ]---
-> [=C2=A0=C2=A0=C2=A0 0.078226] RIP: 0010:__list_del_entry_valid_or_report+=
-0x32/0xb0
-> [=C2=A0=C2=A0=C2=A0 0.078226] Code: 89 fe 48 85 d2 74 3e 48 85 c9 74 47 4=
-8 b8 00 01
-> 00 00 00 00 ad de 48 39 c2 74 46 48 b8 22 01 00 00 00 00 ad de 48 39
-> c1 74 45 <4c> 8b 01 49 39 f8 75 4e 4c 8b 4a 08 4d 39 c1 75 56 b8 01
-> 00 00 00
-> [=C2=A0=C2=A0=C2=A0 0.078226] RSP: 0000:ffffffff9ac03cc0 EFLAGS: 00010006
-> [=C2=A0=C2=A0=C2=A0 0.078226] RAX: dead000000000122 RBX: fffff56600459c80=
- RCX:
-> ffffce1a005a0788
-> [=C2=A0=C2=A0=C2=A0 0.078226] RDX: ffffce1a005e3e08 RSI: fffff56600459c88=
- RDI:
-> fffff56600459c88
-> [=C2=A0=C2=A0=C2=A0 0.078226] RBP: 0000000000000000 R08: ffffffffffffffc0=
- R09:
-> 0000000000000000
-> [=C2=A0=C2=A0=C2=A0 0.078226] R10: 000000000000001c R11: 0000000000000200=
- R12:
-> ffff8ca75bacbc80
-> [=C2=A0=C2=A0=C2=A0 0.078226] R13: 0000000000000000 R14: 0000000000011673=
- R15:
-> fffff56600459cc0
-> [=C2=A0=C2=A0=C2=A0 0.078226] FS:=C2=A0 0000000000000000(0000) GS:ffff8ca=
-752c00000(0000)
-> knlGS:0000000000000000
-> [=C2=A0=C2=A0=C2=A0 0.078226] CS:=C2=A0 0010 DS: 0000 ES: 0000 CR0: 00000=
-00080050033
-> [=C2=A0=C2=A0=C2=A0 0.078226] CR2: ffffce1a005a0788 CR3: 0000000006c34000=
- CR4:
-> 00000000003506f0
-> [=C2=A0=C2=A0=C2=A0 0.078226] Kernel panic - not syncing: Fatal exception
-> [=C2=A0=C2=A0=C2=A0 0.078226] ---[ end Kernel panic - not syncing: Fatal =
-exception
-> ]---
->=20
+folio dereference here
+
+19a5fe94e9aae4 Nhat Pham 2026-02-08  702  	struct swp_desc *desc;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  703  	bool fallback = false;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  704  
+19a5fe94e9aae4 Nhat Pham 2026-02-08  705  	/*
+19a5fe94e9aae4 Nhat Pham 2026-02-08  706  	 * We might have already allocated a backing physical swap slot in past
+19a5fe94e9aae4 Nhat Pham 2026-02-08  707  	 * attempts (for instance, when we disable zswap). If the entire range is
+19a5fe94e9aae4 Nhat Pham 2026-02-08  708  	 * already swapfile-backed we can skip swapfile case.
+19a5fe94e9aae4 Nhat Pham 2026-02-08  709  	 */
+19a5fe94e9aae4 Nhat Pham 2026-02-08  710  	if (vswap_swapfile_backed(entry, nr))
+19a5fe94e9aae4 Nhat Pham 2026-02-08  711  		return true;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  712  
+19a5fe94e9aae4 Nhat Pham 2026-02-08  713  	if (swap_slot_alloc(&slot, folio_order(folio)))
+
+and here
+
+19a5fe94e9aae4 Nhat Pham 2026-02-08  714  		return false;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  715  
+19a5fe94e9aae4 Nhat Pham 2026-02-08  716  	if (!slot.val)
+19a5fe94e9aae4 Nhat Pham 2026-02-08  717  		return false;
+19a5fe94e9aae4 Nhat Pham 2026-02-08  718  
+7f88e3ea20f231 Nhat Pham 2026-02-08  719  	/* establish the vrtual <-> physical swap slots linkages. */
+7f88e3ea20f231 Nhat Pham 2026-02-08  720  	si = __swap_slot_to_info(slot);
+7f88e3ea20f231 Nhat Pham 2026-02-08  721  	ci = swap_cluster_lock(si, swp_slot_offset(slot));
+7f88e3ea20f231 Nhat Pham 2026-02-08  722  	vswap_rmap_set(ci, slot, entry.val, nr);
+7f88e3ea20f231 Nhat Pham 2026-02-08  723  	swap_cluster_unlock(ci);
+7f88e3ea20f231 Nhat Pham 2026-02-08  724  
+7f88e3ea20f231 Nhat Pham 2026-02-08  725  	rcu_read_lock();
+7f88e3ea20f231 Nhat Pham 2026-02-08  726  	for (i = 0; i < nr; i++) {
+7f88e3ea20f231 Nhat Pham 2026-02-08  727  		desc = vswap_iter(&cluster, entry.val + i);
+7f88e3ea20f231 Nhat Pham 2026-02-08  728  		VM_WARN_ON(!desc);
+7f88e3ea20f231 Nhat Pham 2026-02-08  729  
+19a5fe94e9aae4 Nhat Pham 2026-02-08  730  		if (desc->type == VSWAP_FOLIO) {
+19a5fe94e9aae4 Nhat Pham 2026-02-08  731  			/* case 1: fallback from zswap store failure */
+19a5fe94e9aae4 Nhat Pham 2026-02-08  732  			fallback = true;
+19a5fe94e9aae4 Nhat Pham 2026-02-08 @733  			if (!folio)
+
+So it can't be NULL here.
+
+19a5fe94e9aae4 Nhat Pham 2026-02-08  734  				folio = desc->swap_cache;
+
+So we'll never do this assignment and it will never become NULL.
+
+19a5fe94e9aae4 Nhat Pham 2026-02-08  735  			else
+19a5fe94e9aae4 Nhat Pham 2026-02-08  736  				VM_WARN_ON(folio != desc->swap_cache);
+19a5fe94e9aae4 Nhat Pham 2026-02-08  737  		} else {
+19a5fe94e9aae4 Nhat Pham 2026-02-08  738  			/*
+19a5fe94e9aae4 Nhat Pham 2026-02-08  739  			 * Case 2: zswap writeback.
+19a5fe94e9aae4 Nhat Pham 2026-02-08  740  			 *
+19a5fe94e9aae4 Nhat Pham 2026-02-08  741  			 * No need to free zswap entry here - it will be freed once zswap
+19a5fe94e9aae4 Nhat Pham 2026-02-08  742  			 * writeback suceeds.
+19a5fe94e9aae4 Nhat Pham 2026-02-08  743  			 */
+19a5fe94e9aae4 Nhat Pham 2026-02-08  744  			VM_WARN_ON(desc->type != VSWAP_ZSWAP);
+19a5fe94e9aae4 Nhat Pham 2026-02-08  745  			VM_WARN_ON(fallback);
+19a5fe94e9aae4 Nhat Pham 2026-02-08  746  		}
+19a5fe94e9aae4 Nhat Pham 2026-02-08  747  		desc->type = VSWAP_SWAPFILE;
+7f88e3ea20f231 Nhat Pham 2026-02-08  748  		desc->slot.val = slot.val + i;
+7f88e3ea20f231 Nhat Pham 2026-02-08  749  	}
+7f88e3ea20f231 Nhat Pham 2026-02-08  750  	spin_unlock(&cluster->lock);
+7f88e3ea20f231 Nhat Pham 2026-02-08  751  	rcu_read_unlock();
+19a5fe94e9aae4 Nhat Pham 2026-02-08  752  	return true;
+7f88e3ea20f231 Nhat Pham 2026-02-08  753  }
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 
