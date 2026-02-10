@@ -4,122 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB288E94636
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 03:23:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C200EEE6B73
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 03:51:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EAB206B008C; Mon,  9 Feb 2026 22:23:13 -0500 (EST)
+	id B66656B0005; Mon,  9 Feb 2026 22:51:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7BE36B0092; Mon,  9 Feb 2026 22:23:13 -0500 (EST)
+	id B13F16B0088; Mon,  9 Feb 2026 22:51:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D61716B0093; Mon,  9 Feb 2026 22:23:13 -0500 (EST)
+	id A13D46B0089; Mon,  9 Feb 2026 22:51:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C27FC6B008C
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 22:23:13 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77D2DC1610
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 03:23:11 +0000 (UTC)
-X-FDA: 84427100982.17.4FC4476
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 79A0C40007
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 03:23:09 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=foX4CJ0e;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 90DB96B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 22:51:43 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4AF1B1A0343
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 03:51:43 +0000 (UTC)
+X-FDA: 84427172886.09.DBC0D1B
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7A92D180005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 03:51:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=PDlu0e8L;
+	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770693789;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1770695501;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Hc6QPKraklZc802qcURShhVzZIMv2vVuwuGAuOaJIEo=;
-	b=j1qcJXkxa4ZvFN93tibGD5ARsFgh6HtwJ8IxNlo8Wfy5bW1ST0Qlo9xhotlB9tdIb60w9H
-	84tNf3rGtJ30xzCBzozyaLsoj6BQOPIBFXtOzJfZ/hT98ecFWP/bSV4gCIQeNy4eHa/xN7
-	rG0oA/Ri4BHNj5Ud3jc8CN+cBn1KZR8=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=oWBrWovJfp5dTcCCQ+5p+inQe0fMxZzVyOmIoUXcNY4=;
+	b=8fw9f4Q2Hso8u/RnLDjcQWzXH7GVmjV8+iMacT8rQkL+KKBhjP25xsPykjf6/w1xRlD0o8
+	NURGZy+4LHO8bqkej+P8Wz1IdTUhtEFr1xqEDk9Koe3Dz3mSs8kFgfk81wR3bZy8C8CAUt
+	vms5uAGNtRd4OlYTP0ilB9QcR7mcj7s=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=foX4CJ0e;
-	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770693789; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=PDlu0e8L;
+	spf=pass (imf06.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.174 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770695501; a=rsa-sha256;
 	cv=none;
-	b=qGseGtae0T+sKS95CDF/18xY+RjcBd5m1Pdp1apUhi/euLYsw5sDJ2PwtV8pKXcBx1JShr
-	4F/ZJYkBMc4CzmVTA33HA1BUhteeQu3kh/NV4aWYUjC5cf58FeUlGH2NB/kzQM66PVJJ7q
-	nYWtU7i34MzKLrOovkT7/faI1HIGvHU=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6505d141d02so465715a12.3
-        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 19:23:09 -0800 (PST)
+	b=qDFOeqT0F1IqXeA84BbcLV3HBaTGrh1TeAuU38eRnLk3xpZuPvqAzAulbQF1iRlCy63n7C
+	R5dzM9fEEomLJFvRSKcKK4gM2hrI/plZwmVpT9wiqWFaTPB7cGBTTI43sLlyJ1bbwlh2I+
+	+avpTIgpgMiWCGHvGLg3nf3p+joZ0Sg=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-b4755f37c3eso2398924a12.3
+        for <linux-mm@kvack.org>; Mon, 09 Feb 2026 19:51:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770693788; x=1771298588; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hc6QPKraklZc802qcURShhVzZIMv2vVuwuGAuOaJIEo=;
-        b=foX4CJ0e8rutO9/868J7XN/4bwDs3csXbC04UtQDDcaM8R6xh1LNKpb6H9AArCAmEP
-         58MHrX8yErllLON2th9zjw3Cg5dUMMv5t4qpdGCIUWg/09geqzFFoA99eolLIraCnyFg
-         Cfiru+GRpQRpxDYfPpZI0KJjC2iUFL5gpMYUE6rJFYa4Z1PsWEF4/FS6Z0xmKW19c4A4
-         OVKOPsx5ZYJ0Oqt6INZ/mdfIuSlqvAdRNDMH1tgIwQOmb92YriWoJ4HuG747Ub4pjLO1
-         EoP1Ibr++Mb4h98lVc8MGdeOuRDKSzuUKtNF/CB3DN6FmDAujWe6F4yIgcOLQcpAw6WK
-         Iceg==
+        d=chromium.org; s=google; t=1770695500; x=1771300300; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oWBrWovJfp5dTcCCQ+5p+inQe0fMxZzVyOmIoUXcNY4=;
+        b=PDlu0e8LGogkuSwt7In0l3HI1gbol+OCTVj68rJDp/ZsQiRitl8Lof/o2y+A+2n3Lc
+         SBh1XZCz04kMWah/4FW5GgzZtmO/mGGQ5OLxJFzRRrCJpkIs+ofiRYkyhk6mgUx6Uki2
+         IsIJZSfTtnCRtRUYpDFMlmH3dRBCPZe7zY/EQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770693788; x=1771298588;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Hc6QPKraklZc802qcURShhVzZIMv2vVuwuGAuOaJIEo=;
-        b=n8JDNx5SCJCL3hZrlG5haj+NgwGGHxnJnFnd1dJa8nllqF6H2JD6nNtIDV1sf17BOx
-         HeDrdNUAYrL03SUfT5iiybsONCtb+Bv7FLOFpeKDCc/yPZ7yHxux8S08e/UC/qPrpn/8
-         H3DWrwgvPclAEEXNZbr4bax9C9bdBQr/GUNc/TXFUGg0TuRjiy73trqmB345UfotwU5X
-         R4tVYEAbJqOcmxK2w4lfwuAocrsKbMDf7F9xce18XGPNoa/VEkFOgWPLr+Gc50P1NlE3
-         wAwFkDaqiWKadE9Fqyy70mbltyOoxruELwLliYsdzcCnEc5XE3LxAau7ZZF4RHSgEEP5
-         4Zww==
-X-Forwarded-Encrypted: i=1; AJvYcCW6CMQ2spA62l6D36RARp9TBfpMyZiy+PtWVCjIZey9sd4ZmTKDtOhR0vx5eW58EyVX6qjDr+cYeA==@kvack.org
-X-Gm-Message-State: AOJu0Yyzsw8btwwDHrRoFWiLIGjZmFALnDheWvkEZU/yCazYaJ11+bmP
-	NMfrd3YkOLbLDf/kEIjueJ5A8e5CgU64r9XNMEkYJTj/GmF9s54okk/4
-X-Gm-Gg: AZuq6aI2r9pwo/8pWhEXQz8FUcEispZg+bAmEoJzjiptSOwULzFzHT1NxJneItd7TDQ
-	F0XIja3j8Mhztj/4sRWWPuMOESbe8EtiXlSpX9BcwcrOCzddEvzqYMKcTTy68qtsOSzNTFIJJ/i
-	Gd44qQ1t1fMd8fFv+DFPrmb5+faN4OAP8YfgDCn+a/d/RkRkxQbMMrMioNxx9tfhSHNXP5cpsEs
-	hANRQ/WTphwuZjpGtqLjgKIMmLs8WStNlFs8bNLclp/b3ZazHOGlOMhPv3il8vi/bDdO57QWdHk
-	iVnFivLhKwwvbBBOw3ditwnnE2bynNC8XD8HT4PkshWlqUoe2d3CFb6sStfFmMFQfBhQ8qps7UZ
-	S+yEC9SytiQzSJEXxReIc7W80ninyiwGeV02+AJglrR593GcS+1uxufRkV5CBwXtyiwqs36czww
-	lF7E8137uvZGVeLyTQ9vwbcA==
-X-Received: by 2002:a17:907:a03:b0:b87:5464:8b5c with SMTP id a640c23a62f3a-b8edf48fac1mr816411666b.63.1770693787443;
-        Mon, 09 Feb 2026 19:23:07 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8edacb1d3fsm444339366b.34.2026.02.09.19.23.05
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 09 Feb 2026 19:23:06 -0800 (PST)
-Date: Tue, 10 Feb 2026 03:23:04 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@kernel.org, riel@surriel.com, Liam.Howlett@oracle.com,
-	vbabka@suse.cz, harry.yoo@oracle.com, jannh@google.com,
-	gavinguo@igalia.com, baolin.wang@linux.alibaba.com, ziy@nvidia.com,
-	linux-mm@kvack.org, Lance Yang <lance.yang@linux.dev>,
-	stable@vger.kernel.org
-Subject: Re: [Patch v3] mm/huge_memory: fix early failure try_to_migrate()
- when split huge pmd for shared thp
-Message-ID: <20260210032304.j4k5izweewouabqb@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20260205033113.30724-1-richard.weiyang@gmail.com>
- <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
+        d=1e100.net; s=20230601; t=1770695500; x=1771300300;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oWBrWovJfp5dTcCCQ+5p+inQe0fMxZzVyOmIoUXcNY4=;
+        b=V+4NO8QmhaC+f70ho1re+fHKqvz/vN0uo+RbesDjgaWH/05pNbwN0G6xK34xjWNJFJ
+         JKaiqCTTIEPikTajhkWF1CdnI9aM13Jwv3SdXF5NNRcI62aEBEOhMMKCOTlknfkQnYcO
+         EKLY6mxnNcdhPRZy69c/mydZTP38Q6jj3FFKKgHD0XHeF1N/lz3OD+6Bd5RnJreFhqqM
+         XZzpk58Umd8Jf5kjwfALA2MG2iS26mP7eKnPCcJlJ5hWeA8TpnIeIQtt2DCRzPOKOlte
+         zkEErGScDfUd1O5/qtZDpPI9PRLQshWOy69nSpp6I63X1AY3fHTCqGWEeEM4BAK6k0ds
+         y9Dw==
+X-Forwarded-Encrypted: i=1; AJvYcCUnfsgMJ7VqIbGHFbVHtsafLD39yGjpZiuzprQ6EtDCR7Y4vM6keBPCTNmFqHOY7mLgvNCY81oapQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyf7fjAyugNo1KtOO7F5PCLww4XbZMSlJJiDpMRprVhYXWptYAM
+	RuqcgSo++t8RHmDAov88xl/kJWAtynaTXHCBBVY/Ilpzf1HShjgKbpLjJpH5oFQ2Dw==
+X-Gm-Gg: AZuq6aJGdM55FpxZlZ9OrB/4PFr4kmXcvdnh6xNnjvQrKnfA6rCG4P5bPEF+PgoCYr8
+	QLZPg3sfuokNo4kM5NDcCy8agCYtLBJx/9ptV+AovtcOUsVKQudvQ6Qy030xWRu3f0aP/7lnaZa
+	vzhS2/Ee+YAYPJd+SSaauiLF4U7h20+rVyL7WEQ5bJIpMLO0MfHt3J8EtUH+a0JBGvJkjsGklHh
+	p63c5fFhusS2iKtqVMXSh4mDl7gvPhU2nbTaNQdZ5Zt338VKOc+NXROV3eGx0FJt3SKZXzM49/N
+	T5Z1RtVCKYrZHRHRCIEU4sTjN+boV+Dzxwo2Y6bkasCpmKAzcUQJLoHW/ATE0aPLObFwGznLcf1
+	/tGuyZymqS9fmuu+ZG+IvPFuxvDXLdZj6lEqQVYmLdz72su5g9YDU3Ot3eLKRBwLAEVKtyYAAB0
+	G8M3OqAZ5SQueVg5hRol3ut+0EBWk3YgzjTZ+sG4dSaQgUGrMyAIfnOvo+5RM18hqYOoZTyUyBA
+	V4eJhzKYDk=
+X-Received: by 2002:a17:902:d48a:b0:2a7:51b3:859c with SMTP id d9443c01a7336-2a9519b5a9fmr127587185ad.57.1770695500190;
+        Mon, 09 Feb 2026 19:51:40 -0800 (PST)
+Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:3f6:92b2:887b:120])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aadeb4d345sm65979895ad.54.2026.02.09.19.51.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 19:51:39 -0800 (PST)
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Minchan Kim <minchan@kernel.org>,
+	Brian Geffon <bgeffon@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Richard Chang <richardycc@google.com>,
+	David Stevens <stevensd@google.com>
+Subject: [PATCH] zram: drop slot trylock and miss_free
+Date: Tue, 10 Feb 2026 12:50:37 +0900
+Message-ID: <20260210035045.3817297-1-senozhatsky@chromium.org>
+X-Mailer: git-send-email 2.53.0.239.g8d8fc8a987-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fbd6c31f-7f35-4986-86e3-76bf8963433d@lucifer.local>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 79A0C40007
-X-Stat-Signature: bpmka6ngy1hppfcy8rb1w3c53zxkdh6p
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: or79ugpduutewjpga86f8e6f65rk1i5b
 X-Rspam-User: 
-X-HE-Tag: 1770693789-810605
-X-HE-Meta: U2FsdGVkX18DF3M0VFLFzi0W4jmBeBWoIVOwiFebtJejAnPobXufSTN2lKjY5okpOqFO78jToRsrzE0IRy/9hVt4K+Pmmhas9zGuNYHr+yr63DLPFbq6t54YnElDlFfAO4wdWw1eD0zbdtTDlDg2Smg52zXaHqXxA2GumTzX+KLpRrIgmw0pO+HFvLtOweVPT2RnK1+4bcnk/JXVM3oIwXR54A4gTd8CezB4gyNzpHaPjQpKRunGzXooxTRxSWCrWnONX7AhsnkqcukoSJ4431yVfe8UwCXtk9o+COam28GUCfcZjeCs9oL7E6PBYHZ8oXyan4mTBCtvs9wppFQFgXmvG8IFSDSCpKUW3RwpOZ0ptfRA/xQGAoElnLckoymyeBrwJmAJgF7OnWEuLpSgq7DFNq6GlSMIFeharbPCGWE/35IBLfRtquGF7+gCu2SxYJk+TZd5O0F30p7QgT4qsvYKgZhyYW3RQwo1nzDIdy6n6j8QYFXsIvit7OsLzshCjKUT9Mardgvm7phUsc9rQ2ZN15Nqvnu5kq0nRnvoAYyVMjCzUl9VyBNmEarz5OdTxWlsvLui7Qo7Vmv2uzBOJc94e7mFC9mQfkDMH3SHy5qIQD18J/N2uINP/3ajX9JZbhwv7X1VDLLXCyZm2W5BeowT56PblB+rbqoLgBosxPo5V3tsJn96rBLFc77ryV1WM3hG3egC/1X7QTHbkOLRAlDOSEakTpTkQylhWFzsfEEQPScDdgXnyNtFme/7/e21H6dKinlshWOmw0jEVIehgSvOngMce/6/rfLHniaX8fe81MoYZr2Zx7fmVepQR1bZ9NK2pH38XUaKc5j9bfpWlPEZitvHAWI5FR5R0UsxBc59gRGrdeKR0YPgbJSN9Q8pFzAu2ByClIki21yctJg2sEkQTZ1qW0s5B8TGXhux7hnquDsQ6ZF6XMQw+DfrPTs6pLd2kjY8vMlHlvAuKTm
- pHO/hy6G
- wQCdpR/EvTpX0/qEfoPGG1CMa31CmRSbTv8YjQ5Q70eb4aQ0N7DxibiDCX8Rez6vOhY2hQVuiqIqT955QlUnuxwNuBUpYet2KStQJTLM4ZhHaLh6ZwIR6a12OPCaHWfatl15GCxynqOfHcsl+z30mhLrRzSAJn+5V5dzdkDfR0LAnNna60x7MwAH5pULaixEUSphGsdoyWcQwwj+NhdHhoOwMfX67QShtWPRhXaDsBb+xxkC8Tnyyz55mo7ZYC8/HeG++Gce7bcRa3Z12FfkdaB7NhMsNjlpBLFnOSGZriWD0bs87m9Y68uPJOdvtddq34G9iOW3AaRq6A7TbmgVkZTgowK9GFn/ArIIBwA4gZkttj8u5JoOjImVJ1PCunbkOgpTveXvx/Wh4/mJpsgET4GkIY66MRUiWSx2iVaSS6LcC04z4QCx5Ca9S+BMae/S1kQxYHDfgt6H3Fe7GXzau9OuH4kpaQg71G1hyUvr8ovb5cgIdU5FCTI/lmyuBZcFI9iORcgY9D/hFmUpzkMjnbfny+rr9LsK7HJnlYWpGx33lSKYpbXnktj+ldDZJFBP5Z5/YGjJCA/fm54Asos4hCWTOqPDdSp5B9JRvJF1W8woxVCakygfTPZUIQiQKXj5iv3vhlXihPgmOEDnsWA6MqABFbbNkSMKK2aeMBkkhzE5dK6kVgdIf4qgsIUmmtu8FkX0aWk26Bb/jNbQQY6tD+xlTCMVghPi4VpIV66hXf9lZlHpd2fLDlogoBoI43O0MkY+cGpDSYkFdWs37Rz0mckAOkBrjfMSGDAOFwYmJlHC+8JiBl16VTSFVSbR0SXY8YAtDovDaZOhhLIMLYjo/yBTffgC0MeoxbCMldgPGCSYMguomnHbBLhgEsq13AC4NR6+4Ytlv/wHpYX0SROdknvN9gugaxUjltTGEh2u7dwnqrT+JFHl2aXhe2GjWdRkZBPQ6gzQU/xUw5Jj/wgPZOYgY2oVq
- Z6ouzYXF
- qq05qfxABUcWdkpG55SaaQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7A92D180005
+X-HE-Tag: 1770695501-7846
+X-HE-Meta: U2FsdGVkX198bJueSipq1bufvRcaQgMTKCMSjCg5A4QygQOPWJe375qk9OeFpdfFCO5Z773ExgjHAEIprAULdfue4KCI0z9G5aPC9iNr9lEsf2rvVzB8OFj4cCY6fZ7wu8l986PyK1OYW4DZCQRd6uiGxODdzBLamfy3f7TvZVr3UJ+byyX5d8J5qj1r0EFN7ulE40tA1LaXypTvpEp3c9qHzySHW7qCxrGtf+Bq6/YQZh0dCCv78VRGLv+j5ee1Ydg/kAdHqPF7w/CkFTiRCgtwO+t3RJpXUzWNrx3qtVLN8Aku1II1L4RodezErfQgmiflBMNkGAB/FjGW2fHKdu4q4kHQ01vzCU1yqHSdNfi9uyKEXXgrN/AJ+8X1Jm0E78t+7nlcNZXx8CRWZ8wCQkBSuFO49j1DrnUBc75ixFo+cWvNXE5a7+o36hQNrfpwajvTiAr9mo2Rv7fMlzS6w7pxY5qKOn4Dn1+yV+131+c30ElgUYy7g6iBaUOYEwA6LJfkaRR/yGpRHT3wLp1QFrPVy1/tvv3VFErfi3ZyZcv1nAeEulyRK0on85OSaZgSb0sOMlRSumhzPp6NVWpdHk72KE9ppZ4tUJHtRnZI2s1fog0xw2F/b6tGB17VyJW+g5uNG3KsamOgLJ81VN/WNtIurgb9Pt+IOAbqhVeF3SDS84/HMqHS7nNNztO2F9HevgHbHeOKT+F8JPYbVgs+30i3Kzv9spb3vBxYKJi6p3TAhsXnxbyW9us2PlISdAO+aPo8pWA2Qa9apMKItsFLlN9+oiyYWBAFoI6cP/HYkWChkYUqVNF7KynKoYKdrQcARpwQ3rFRQBIiNFFEi/5NBwjNBl9KojGcU/NGd/mmPmb10LjQDjv9MFTkOn2miUgX8FxGclU6QP6XweBB+2BC+nrk9t9xIMe1/WrbYaaKMO+i7JjHb536KHqJDcb5/L7m8Qxlbfzp9JziQQcRTxA
+ 2KjFO88D
+ NriQORBWjNeqFN8msbeHDgdoreiTe4WXbf5RXHLBO5OMrMB8AIVhbLr5iWlsRkAWxlfyw6+b393EULv57mnzE2bbJ8C16Wz1jW2XvKiaZ71qTDBIocXixWQOqfLvvWoIHe58cvzCRy6wmYwF30+NbQFHM/4AgGEogZDccWLg82IF4HC9hAympSc4VsYGmY2rJW/wsgXB7JPuQSdGqGRoWPhSPz38pdQzIJErqfM/qGrmcTTgdGrm4IT/giMD7NsehONeNOT2yPeSFfw5linTTfrl/tix2pmyBcdY82fMsTDIN9jdTT43+AsvN5yK/NM0vB67mR0sDhvnlpoudM8Msgxbxxb682W3EDx1KxBlKLBcWJ1Qs9ZKyYgGEoA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,209 +120,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 09, 2026 at 05:08:16PM +0000, Lorenzo Stoakes wrote:
->On Thu, Feb 05, 2026 at 03:31:13AM +0000, Wei Yang wrote:
->> Commit 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and
->> split_huge_pmd_locked()") return false unconditionally after
->> split_huge_pmd_locked() which may fail early during try_to_migrate() for
->> shared thp. This will lead to unexpected folio split failure.
->
->I think this could be put more clearly. 'When splitting a PMD THP migration
->entry in try_to_migrate_one() in a rmap walk invoked by try_to_migrate() when
+Commit e914d8f00391 ("mm: fix unexpected zeroed page
+mapping with zram swap") removed swap_slot_free_notify()
+calls from end_io callbacks.  This means that there is
+no more slot_free_notify() from IRQ context and hence
+slot-free cannot deadlock on slot lock any more.  Drop
+slot trylock.
 
-split_huge_pmd_locked() could split a PMD THP migration entry, but here we
-expect a PMD THP normal entry.
+Suggested-by: Richard Chang <richardycc@google.com>
+Suggested-by: David Stevens <stevensd@google.com>
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/block/zram/zram_drv.c | 34 +++-------------------------------
+ drivers/block/zram/zram_drv.h |  1 -
+ 2 files changed, 3 insertions(+), 32 deletions(-)
 
->TTU_SPLIT_HUGE_PMD is specified.' or something like that.
->
->>
->> One way to reproduce:
->>
->>     Create an anonymous thp range and fork 512 children, so we have a
->>     thp shared mapped in 513 processes. Then trigger folio split with
->>     /sys/kernel/debug/split_huge_pages debugfs to split the thp folio to
->>     order 0.
->
->I think you should explain the issue before the repro. This is just confusing
->things. Mention the repro _afterwards_.
->
-
-OK, will move afterwards.
-
->>
->> Without the above commit, we can successfully split to order 0.
->> With the above commit, the folio is still a large folio.
->>
->> The reason is the above commit return false after split pmd
->
->This sentence doesn't really make sense. Returns false where? And under what
->circumstances?
->
->I'm having to look through 60fbb14396d5 to understand this which isn't a good
->sign.
->
->'This patch adjusted try_to_migrate_one() to, when a PMD-mapped THP migration
-
-I am afraid the original intention of commit 60fbb14396d5 is not just for
-migration entry.
-
->entry is found, and TTU_SPLIT_HUGE_PMD is specified (for example, via
->unmap_folio()), exit the walk and return false unconditionally'.
->
->> unconditionally in the first process and break try_to_migrate().
->>
->> On memory pressure or failure, we would try to reclaim unused memory or
->> limit bad memory after folio split. If failed to split it, we will leave
->
->Limit bad memory? What does that mean? Also should be If '_we_' or '_it_' or
->something like that.
->
-
-What I want to mean is in memory_failure() we use try_to_split_thp_page() and
-the PG_has_hwpoisoned bit is only set in the after-split folio contains
-@split_at.
-
->> some more memory unusable than expected.
->
->'We will leave some more memory unusable than expected' is super unclear.
->
->You mean we will fail to migrate THP entries at the PTE level?
->
-
-No. 
-
-Hmm... I would like to clarify before continue.
-
-This fix is not to fix migration case. This is to fix folio split for a shared
-mapped PMD THP. Current folio split leverage migration entry during split
-anonymous folio. So the action here is not to migrate it.
-
-I am a little lost here.
-
->Can we say this instead please?
->
->>
->> The tricky thing in above reproduce method is current debugfs interface
->> leverage function split_huge_pages_pid(), which will iterate the whole
->> pmd range and do folio split on each base page address. This means it
->> will try 512 times, and each time split one pmd from pmd mapped to pte
->> mapped thp. If there are less than 512 shared mapped process,
->> the folio is still split successfully at last. But in real world, we
->> usually try it for once.
->
->This whole sentence could be dropped I think I don't think it adds anything.
->
->And you're really confusing the issue by dwelling on this I think.
->
->You need to restart the walk in this case in order for the PTEs to be correctly
->handled right?
->
->Can you explain why we can't just essentially revert 60fbb14396d5? Or at least
->the bit that did this change?
->
->Also is unmap_folio() the only caller with TTU_SPLIT_HUGE_PMD as the comment
->that was deleted by 60fbb14396d5 implied? Or are there others? If it is, please
->mention the commit msg.
->
->
->>
->> This patch fixes this by restart page_vma_mapped_walk() after
->> split_huge_pmd_locked(). We cannot simply return "true" to fix the
->> problem, as that would affect another case:
->
->I mean how would it fix the problem to incorrectly have it return true when the
->walk had not in fact completed?
->
->I'm not sure why you're dwelling on this idea in the commit msg?
->
->> split_huge_pmd_locked()->folio_try_share_anon_rmap_pmd() can failed and
->> leave the folio mapped through PTEs; we would return "true" from
->> try_to_migrate_one() in that case as well. While that is mostly
->> harmless, we could end up walking the rmap, wasting some cycles.
->
->I mean I think we can just drop this whole paragraph no?
->
->You might think I'm being picky about the commit msg here, but as is I find it
->pretty much incomprehensible and that's not helpful if we have to go back and
->read this in future.
->
-
-Never mind.
-
-A clearer and comprehensive change log is helpful for all. And my English is
-not native language, so your suggestion helps a lot.
-
->>
->> Fixes: 60fbb14396d5 ("mm/huge_memory: adjust try_to_migrate_one() and split_huge_pmd_locked()")
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Reviewed-by: Zi Yan <ziy@nvidia.com>
->> Tested-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Gavin Guo <gavinguo@igalia.com>
->> Acked-by: David Hildenbrand (arm) <david@kernel.org>
->> Cc: Gavin Guo <gavinguo@igalia.com>
->> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
->> Cc: Zi Yan <ziy@nvidia.com>
->> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
->> Cc: Lance Yang <lance.yang@linux.dev>
->> Cc: <stable@vger.kernel.org>
->>
->> ---
->> v3:
->>   * gather RB
->>   * adjust the commit log and comment per David
->
->Clearly not enough :)
->
->>   * add userspace-visible runtime effect in change log
->
->Which one was that?
->
->> v2:
->>   * restart page_vma_mapped_walk() after split_huge_pmd_locked()
->> ---
->>  mm/rmap.c | 12 +++++++++---
->>  1 file changed, 9 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 618df3385c8b..1041a64b8e6b 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -2446,11 +2446,17 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>  			__maybe_unused pmd_t pmdval;
->>
->>  			if (flags & TTU_SPLIT_HUGE_PMD) {
->> +				/*
->> +				 * split_huge_pmd_locked() might leave the
->> +				 * folio mapped through PTEs. Retry the walk
->> +				 * so we can detect this scenario and properly
->> +				 * abort the walk.
->> +				 */
->
->This comment is a lot clearer than the commit msg :)
->
->>  				split_huge_pmd_locked(vma, pvmw.address,
->>  						      pvmw.pmd, true);
->> -				ret = false;
->> -				page_vma_mapped_walk_done(&pvmw);
->> -				break;
->> +				flags &= ~TTU_SPLIT_HUGE_PMD;
->> +				page_vma_mapped_walk_restart(&pvmw);
->> +				continue;
->
->This logic does lok reasonable.
->
->>  			}
->>  #ifdef CONFIG_ARCH_ENABLE_THP_MIGRATION
->>  			pmdval = pmdp_get(pvmw.pmd);
->> --
->> 2.34.1
->>
->
->Cheers, Lorenzo
-
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 61d3e2c74901..c2894023c0cd 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -74,23 +74,7 @@ static void slot_lock_init(struct zram *zram, u32 index)
+  * 2) lock() function can sleep waiting for the lock
+  *
+  * 3) Lock owner can sleep
+- *
+- * 4) Use TRY lock variant when in atomic context
+- *    - must check return value and handle locking failers
+  */
+-static __must_check bool slot_trylock(struct zram *zram, u32 index)
+-{
+-	unsigned long *lock = &zram->table[index].__lock;
+-
+-	if (!test_and_set_bit_lock(ZRAM_ENTRY_LOCK, lock)) {
+-		mutex_acquire(slot_dep_map(zram, index), 0, 1, _RET_IP_);
+-		lock_acquired(slot_dep_map(zram, index), _RET_IP_);
+-		return true;
+-	}
+-
+-	return false;
+-}
+-
+ static void slot_lock(struct zram *zram, u32 index)
+ {
+ 	unsigned long *lock = &zram->table[index].__lock;
+@@ -1943,15 +1927,9 @@ static ssize_t debug_stat_show(struct device *dev,
+ {
+ 	int version = 1;
+ 	struct zram *zram = dev_to_zram(dev);
+-	ssize_t ret;
+ 
+ 	guard(rwsem_read)(&zram->dev_lock);
+-	ret = sysfs_emit(buf,
+-			"version: %d\n0 %8llu\n",
+-			version,
+-			(u64)atomic64_read(&zram->stats.miss_free));
+-
+-	return ret;
++	return sysfs_emit(buf, "version: %d\n0 0\n", version);
+ }
+ 
+ static void zram_meta_free(struct zram *zram, u64 disksize)
+@@ -2814,16 +2792,10 @@ static void zram_submit_bio(struct bio *bio)
+ static void zram_slot_free_notify(struct block_device *bdev,
+ 				unsigned long index)
+ {
+-	struct zram *zram;
+-
+-	zram = bdev->bd_disk->private_data;
++	struct zram *zram = bdev->bd_disk->private_data;
+ 
+ 	atomic64_inc(&zram->stats.notify_free);
+-	if (!slot_trylock(zram, index)) {
+-		atomic64_inc(&zram->stats.miss_free);
+-		return;
+-	}
+-
++	slot_lock(zram, index);
+ 	slot_free(zram, index);
+ 	slot_unlock(zram, index);
+ }
+diff --git a/drivers/block/zram/zram_drv.h b/drivers/block/zram/zram_drv.h
+index 515a72d9c06f..d90d9b6c9575 100644
+--- a/drivers/block/zram/zram_drv.h
++++ b/drivers/block/zram/zram_drv.h
+@@ -87,7 +87,6 @@ struct zram_stats {
+ 	atomic64_t huge_pages_since;	/* no. of huge pages since zram set up */
+ 	atomic64_t pages_stored;	/* no. of pages currently stored */
+ 	atomic_long_t max_used_pages;	/* no. of maximum pages stored */
+-	atomic64_t miss_free;		/* no. of missed free */
+ #ifdef	CONFIG_ZRAM_WRITEBACK
+ 	atomic64_t bd_count;		/* no. of pages in backing device */
+ 	atomic64_t bd_reads;		/* no. of reads from backing device */
 -- 
-Wei Yang
-Help you, Help me
+2.53.0.239.g8d8fc8a987-goog
+
 
