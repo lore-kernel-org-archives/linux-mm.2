@@ -4,88 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03607EB26E1
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:27:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B33DCEB26E5
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:30:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D8606B0005; Tue, 10 Feb 2026 11:27:34 -0500 (EST)
+	id 095C26B0005; Tue, 10 Feb 2026 11:30:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2AEF16B0089; Tue, 10 Feb 2026 11:27:34 -0500 (EST)
+	id 0190F6B0089; Tue, 10 Feb 2026 11:30:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 206656B008A; Tue, 10 Feb 2026 11:27:34 -0500 (EST)
+	id E5D626B008A; Tue, 10 Feb 2026 11:30:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 13E896B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:27:34 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A12761C623
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:27:33 +0000 (UTC)
-X-FDA: 84429077586.20.4AEB6BB
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0AA6C140002
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:27:30 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vvcKPWrp;
-	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D5BB06B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:30:18 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 52D948C17B
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:30:18 +0000 (UTC)
+X-FDA: 84429084516.24.FF21F01
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 66EDA40018
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:30:16 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dDBNiYK3;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770740852;
+	s=arc-20220608; t=1770741016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8QfAoeexURF3xNLX3k+kUOdLmxKsQpukJ46ztP6jhSE=;
-	b=tdsl+VrXBBX3BB7wfM+UlSFHXqB1+422ZcqyG/duf6+Pnon0ArDPTwyFhRpf5K2UV16P19
-	8n23tYngrV4VrgvfSnniWAbvqYQHo6Ae4ioTy3fYREpbW/dDHX4MEKTnJ8HNZwJMMRaiu2
-	pIZtdb+T40e+7sv3Oi1Od1SEgGH2Bwc=
+	bh=ciUjhVvToHNuGHTWYUtNytWkQjP8xnn0ronWwShe/v4=;
+	b=55O+wuwx4/RXvrVL/c19a5e4Srq4C/DIPyu7bJwrts0JK1Debu6obAFjh4V+80NY8Zj28x
+	VHG/0XdPBWHbNzLkWadRiEmgR3TAxLi1S+AGkoXI/4f6ORXuw+on9J+bb/VoVLxGH+9bmT
+	iO7QjaG9NGIDnCQPgYZO74At98nc6/o=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=vvcKPWrp;
-	spf=none (imf09.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770740852; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=dDBNiYK3;
+	spf=pass (imf27.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770741016; a=rsa-sha256;
 	cv=none;
-	b=KL2mhnIEmAbaIVkdm28mD6YzM5PSm5voAYuAPGKn5t2GN42bhegP30egIx0DBx8RTgxF4K
-	ND9jr/cN9MOQH1a41gD7mU1bJ4lYo5bRilXb0UrSmwc4Wdi3ewlGhnZfYRhzRd3Tu4KWlG
-	1ya4H3YDCc2FmXJTX0sfhheGDrH1qw0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8QfAoeexURF3xNLX3k+kUOdLmxKsQpukJ46ztP6jhSE=; b=vvcKPWrpnF0WIX6d6ydro8WGu0
-	JCIbSgFDOYi5HlN9JCoR9L9ULRPHHccl54Hqmr9aO4zaZONyvUamD5Er53kYH7qCUD5xy8+1ECwSO
-	at0T5nOsyHRdkhzSS2Bop4gfvKrRv6XmHq1PcRHKYiIYJth7zMCa6IOHbGr+i5nRKven3rItjgyh4
-	rJ5FL78y5C6rWhQdfFVZ3HNE6wOMIkU2FTE0D+gIpyffbelx5vJxEExQRdjw0kQvOfh8VO05OtbfZ
-	tnejMyU3yzXCFRr918Bn2lfZApCUPcbNEuzT8iAzkRsCy+iUEWWNWyTttZvSbsmcCtKaZ8J0112iM
-	mGIO+qTw==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpqa9-0000000BKsu-2Izr;
-	Tue, 10 Feb 2026 16:27:21 +0000
-Date: Tue, 10 Feb 2026 16:27:21 +0000
-From: Matthew Wilcox <willy@infradead.org>
+	b=sJIwLzLA4gBHjjY9hbgjnnEiw8vYjJLwEb4S72ZUbWvZKCpx4KcDo8nz76EB9E4S6oiEEq
+	yJFaH6zC2WEpRuehiAyP36b8ouK7WSPObeLMCRqkfXNq81EiDqMjN3I/XIcUW0LmyavT8+
+	cRutRJcrRGUlhDa35UeAaXJzomm9eCY=
+Date: Tue, 10 Feb 2026 08:29:58 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770741012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ciUjhVvToHNuGHTWYUtNytWkQjP8xnn0ronWwShe/v4=;
+	b=dDBNiYK3kAcBNyjmK6tAsif/GJhG5jdJ6YP36U3pdsspXExzOFwt0xJmk971+m1noj6eBs
+	QZcarLuLNpMR2MvCWsG+jNIfEbgwuGDnS3piJxgnie6cUiXA6SytzhmUoZ+V00noIJdLz+
+	sGQN6ankIQEd6jfvWZverOQFyGwElss=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
 To: Dev Jain <dev.jain@arm.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
-	anshuman.khandual@arm.com, kirill@shutemov.name
-Subject: Re: [PATCH] mm: map maximum pages possible in finish_fault
-Message-ID: <aYtcadXtbV1Ng-Oc@casper.infradead.org>
-References: <20260206135648.38164-1-dev.jain@arm.com>
- <aYYHGisOQFQINXwR@casper.infradead.org>
- <397482e7-3c89-48e5-9e8c-0798ac92cc05@arm.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Vlastimil Babka <vbabka@suse.cz>, 
+	linux-mm@kvack.org, cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
+Message-ID: <aYtbevHEwx_3fn0Q@linux.dev>
+References: <1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com>
+ <aYAmGc6lu973jRwu@linux.dev>
+ <2638bd96-d8cc-4733-a4ce-efdf8f223183@arm.com>
+ <51819ca5a15d8928caac720426cd1ce82e89b429@linux.dev>
+ <05aec69b-8e73-49ac-aa89-47b371fb6269@arm.com>
+ <aYOuCmjQ5lGm8Mup@linux.dev>
+ <4847c300-c7bb-4259-867c-4bbf4d760576@arm.com>
+ <aYQuj6Ot-JS4tXvY@hyeyoo>
+ <7df681ae0f8254f09de0b8e258b909eaacafadf4@linux.dev>
+ <b77dc11e-fe09-4f0c-a912-d05faa01ff1c@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <397482e7-3c89-48e5-9e8c-0798ac92cc05@arm.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0AA6C140002
-X-Stat-Signature: cay9xu1obzrjhjfxi81qqrzdhnhs3h8f
+In-Reply-To: <b77dc11e-fe09-4f0c-a912-d05faa01ff1c@arm.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Stat-Signature: nzkju6tchjysieozeuh981kmz7c99cx9
+X-Rspamd-Queue-Id: 66EDA40018
 X-Rspam-User: 
-X-HE-Tag: 1770740850-512747
-X-HE-Meta: U2FsdGVkX18kku0Pz5fKZHOC3kbtYYuXmuibfzFl6DhmYBJ9pNrjvBT3iFDxBT9rJZaZ5zuP0+/J0INh8wHbxjEmy6vTKnGwWuq0+jQyMk07udAPZNHBhfaPa9NyrrHupr5nzCjHZVe0PYCtxR6dnnRXKwNFqWkH27RiJ9l6/6+CJDijUjrpCcNcAFFcd/yV22CSy8bzDQEyaOsYeUm8Pfhw4gjkdXWDoEFHv9Fok/QIulczASjWjpGr9bztSa0WxKy4Fl1b3t71a7t3DbfXQGWv/vPvfhS7f9kjL6qwlt5bxPm0oOkofPJFiQKr+P7qu/t6mcmv/2lEUSNbLT+szFbjTU0hre7U8Qd7Uy1c6Gh6O6eKlBXyagac5qulUldstE9P5IJsCn9IqnZZWZMGZkdJSVPGBVFIHb6bJsftVk503TBo3ormW+i9Xk7lUySapxWrKIg5VFZhIOHcxrH06n1gvrL2SG0q0qM/+xoNjo2ZbwvTh2xNjNuHRAAdCSsLRXg1RZK+2yk41So13VbMkzVrHXERclDaktmsLmLguIhOjbmZrJMp95aYswIHq+lY39bGwPARyVjT131c0wOTLSnxB64B7Y581vP1RZUQ8tol6Oxge5z7THT2p/xYG4Tup4vhjlnoYJOOQo6WWwgQFYbk2ZIO0a1RinKJcALCHPxiaM7lxY0qLm6WXO+BRdNSiRad1gWDeikKxs9WtOmxP4WQeUIVIhf3RPBKtp36uYUJiWbGr8C9lN6jGUngV4THXAxEJaFFHncbtcZDmxLHmhIAjhhdAAfSVQj0soLZ6Ar6rLFKVQAz68KEh1K0jj8ox3kr5uE8AZOajQOMFoYScj13QW3fRzRQKGmqAXYUcUtIfBllYT54Xr12KgBr+97/jTUOzqg+AHQSx83ftH5kSAvtF5zLlsVWpoIe0u+6eESaZRhsGrD30qsttvS7WuU2t2t4+SL1I1xRe6QVNh8
- i6oFdFN+
- FJWOIZBCzTOBf3UmS3rOJT5RoxJJofhzxBtVrbRCwaDnPaeiOOWwysF3O6qVTEulnw1DgHLpo4M+i7EUOdHszb8cGbiC/g+W4mmxQ5J0ME4YO0UPYB3uzG+nSm1mXHQ+WmsWH1h2vQOOP1R16Zr6bziqj03DMCDi/eFOQsl77H820MhMzoEM2DL1OWazdeXaSfdfrN089qsZf5xtRY92wgSwrLmr4sA3iFi90fXG2xRoVwdMYrTnmvtF0WJk5Z/kBhs2TpwhC3S/UGHkofco8E8rJk8XEHNKMUDrtH+6CYpSblmI=
+X-HE-Tag: 1770741016-786763
+X-HE-Meta: U2FsdGVkX1/51BLNF9mpMGJgmMFroVX/lqkSHb5MhOVFG6n41/TzKBTK04XWIXObo9SCQI6JMUQbWM5s42yqNhe/oGe5hpe10W//Sg5RzGzLjSIZ9ITcmP1GgplkfhePAfU5GMaU8JnQWBiGKNGjVX0mD92lYlaMLxg7bIeqk1+Kteu0Vq4tqH+1hlMgncO86rV9NPbx3/hxDbcIo+Ft/2j2jzYhjlnOLgr2QcLWANtWlFmrt0tqQ5Tas3E57lZDVZRG+RN/gAiOIRYSEeeP8PG/2scrYHf9A8pl1kOKUmlZ0AyGy1Wiq+OW7TY0joBTkv4OfCGIKt0HKTcLnJaunP9RsdcX3MF8/i1LbKINvzdSqmjs3RyepqkH4DPNdR1Pulp0H4AWMpvixAUzt7cPXrnHVl7zk5l/r1OweBCRM0N7/X9tvhyQB6VkvW6ppvezDftW7OFozZkaLY15y95P2yRPXqAPoqLkHoxwxjbhLWlceUDUaK7sOSAXgzc+WcLYmrebwxHfIQoUyFCcogN5O3hYApmAZbNd8pUSb2vHr9j+6xuER8NmClEjobqewzOkNleRfiwhRuEPcQCqJrlv/u8fY5eYz5idjMd18yvG5y66q5R5eZPGSvnM4tYrJj25Ffi9EPdsx8MhonCMy3e2nB3z/lMVb4GTASaXcwjZqSVwiP6PJx/zFpZpR1qs9APCX9uky1VKE9yvE/KHYDfwQOiqHvpaNkvHKzwu888cznzI/psjreixyLUmLrNcML0RLk4Ykg1tuFxWyKizK5fOjAVs86wmI+wkoryFDQKEFWNcc74K57ai++67c2eH7IKJSzcszefUFXM2I77TFzAhLAW7V2dCIGHBL3c6G8wyy64UZSiwo7tsbCC50RDqAwofNxeLL7uxTuy/TO/Qk9IbfFJGEOMpTCvTooacZxdRVjWM7sbZeSmZpx5T4kOngSsZsuOUnP7hsdI6hqy/sj2
+ KCQv8SEm
+ /WCX0ZAw6hWQwBwzNjoH9xfuzuV6bLO+gvewEHIydQSNt5rQWzTQBKeGkNYNFHBwHwsSsco8enpDVNOB+HzV3Vq5EIdGTWT5PWhpQxKbD6p+1VMZQL/toy3QWAo2F3kcD1cZuutJ1VB/EFJnXMo2sO2ECCnoN1AVEpAOD2x0Xf6I8qyq7gdOPpYBxv7VDsucOx6ehND3YxMPC4PASBkQK4Jrq6rPFxsTMfY5izQ7dOKE473Fmnrteira+GWuKHGq9V3g9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,32 +100,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 10, 2026 at 06:58:37PM +0530, Dev Jain wrote:
-> On 06/02/26 8:52 pm, Matthew Wilcox wrote:
-> > It's nice that you can construct a test-case that shows improvement, but
-> > is there any real workload that benefits from this?
+On Tue, Feb 10, 2026 at 01:08:49PM +0530, Dev Jain wrote:
+[...]
 > 
-> I can try to measure this. But, I constructed that testcase to test the
-> code path, not to show a perf boost (although the boost is obvious enough
-> so why not show it). As I say in the description:
+> >>
+> > Oh so it is arm64 specific issue. I tested on x86-64 machine and it solves
+> > the little regression it had before. So, on arm64 all this_cpu_ops i.e. without
+> > double underscore, uses LL/SC instructions. 
+> >
+> > Need more thought on this. 
+> >
+> >>> Also can you confirm whether my analysis of the regression was correct?
+> >>>  Because if it was, then this diff looks wrong - AFAIU preempt_disable()
+> >>>  won't stop an irq handler from interrupting the execution, so this
+> >>>  will introduce a bug for code paths running in irq context.
+> >>>
+> >> I was worried about the correctness too, but this_cpu_add() is safe
+> >> against IRQs and so the stat will be _eventually_ consistent?
+> >>
+> >> Ofc it's so confusing! Maybe I'm the one confused.
+> > Yeah there is no issue with proposed patch as it is making the function
+> > re-entrant safe.
 > 
-> "Align finish_fault with filemap_map_pages, and map as many pages as
-> possible, without crossing VMA/PMD/file boundaries."
+> Ah yes, this_cpu_add() does the addition in one shot without read-modify-write.
 > 
-> The patch should rather be seen as an extension to 19773df031bc
-> ("mm/fault: try to map the entire file folio in finish_fault()").
-> The code which my patch removes, was added when the norm was to still
-> perform per-page fault, the argument being, RSS inflation.
-> 
-> Perhaps I can polish the patch description so that it clearly mentions
-> what the objective is.
+> I am still puzzled whether the original patch was a bug fix or an optimization.
 
-You say "removing code".  Diffstat says "no real difference in amount of
-code".
+The original patch was a cleanup patch. The memcg stats update functions
+were already irq/nmi safe without disabling irqs and that patch did the
+same for the numa stats. Though it seems like that is causing regression
+for arm64 as this_cpu* ops are expensive on arm64. 
 
- 1 file changed, 38 insertions(+), 34 deletions(-)
+> The patch description says that node stat updation uses irq unsafe interface.
+> Therefore, we had foo() calling __foo() nested with local_irq_save/restore. But
+> there were code paths which directly called __foo() - so, your patch fixes a bug right
 
-You're messing with some complex code and you haven't said why it's
-important for us to spend effort making sure you haven't made a mistake.
-Please persuade us that this is worth doing.
+No, those places were already disabling irqs and should be fine.
+
+I am working on adding batched stats update functionality in the hope
+that will fix the regression.
+> 
 
