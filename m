@@ -4,80 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4D5DEA3F35
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 09:56:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26B5FEA3F35
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 09:59:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 11A176B0005; Tue, 10 Feb 2026 04:56:19 -0500 (EST)
+	id 8B4916B0005; Tue, 10 Feb 2026 04:59:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C8776B0088; Tue, 10 Feb 2026 04:56:19 -0500 (EST)
+	id 862546B0088; Tue, 10 Feb 2026 04:59:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F160A6B0089; Tue, 10 Feb 2026 04:56:18 -0500 (EST)
+	id 73A686B0089; Tue, 10 Feb 2026 04:59:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E21DC6B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 04:56:18 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 85F2413AFF1
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 09:56:18 +0000 (UTC)
-X-FDA: 84428091636.04.343BDAD
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
-	by imf06.hostedemail.com (Postfix) with ESMTP id AC7E418000D
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 09:56:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Wo9jxiFw;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 601DD6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 04:59:02 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E7CB5C1ABF
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 09:59:01 +0000 (UTC)
+X-FDA: 84428098482.01.B554737
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 95A17140007
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 09:58:59 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WqJPW+Sc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yfvxgddK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jsjNvcsR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+zis9JZy;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770717376;
+	s=arc-20220608; t=1770717540;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g3w4Ro/Mrn1bvyLjMw2VNSGjYzqSkpMN6eH9+J0A5QY=;
-	b=pMwdvhD49PhuFkabUNlL0h9aZ1St8qfOcTzqAnNUKZGWoMN4CSYkhREdaUX+RkG374b8Gy
-	oSyngQl2sJ0lQNvDmzfpWJWe1LWeD0ym4xULLgJPpITh6cApR9WxEPMha7+oq+m4sHi8QG
-	uaJr+RicagcOnJR9r/Cm42YiFoV/2NU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Wo9jxiFw;
-	spf=pass (imf06.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.100 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770717376; a=rsa-sha256;
+	bh=+ErpO1/mo6MLCsg7ossIPnTy5U0UzlNYCmCh8RRuT6U=;
+	b=TQHDbMusImPlDYyNRoXWTxHRd8sbAvjf0JVIro+LlbUgK6+5sJslBDBvdkDqdAjQaw7+Ai
+	hOwMtrtQJmKx68yWJhUlHkKhGunG56oj4XlthF4qsGRyDPaBWZplKjXFA7td3UPUa6+tb6
+	ITu512MJyKMsbfW9d7SFRk+xbDc42zI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770717540; a=rsa-sha256;
 	cv=none;
-	b=wdbsKnxvYCzthV0oe/bxgzWgFxtGHk72Rdw1kgHTU6u2IAUlCeg0br2OysVoxD6he8eT+w
-	eLqKHZhzjHdBYeSHj+oiGPizo743bkHBJLypO6OQaey8Nzf/rn6zJM560ftM5S/BGQ8c6/
-	N7ddW+o2Agum29d37PrGO4BX4idwbpk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770717372; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=g3w4Ro/Mrn1bvyLjMw2VNSGjYzqSkpMN6eH9+J0A5QY=;
-	b=Wo9jxiFwshE9fRawB9+WWUaBVdE1UcAW+iLmfBBEoYJAZge9xKjLpsUap4sj80lZKbO9QfA6M83Sq5t1Ga4npEeY8dOa1JAmOpbwW5Jm6UjwaFc3yPqMjZQoSZbbQQ9xEbCgMjg7SJL1w3EvE7V4e4W5XVULi5BHzCv94RFn678=
-Received: from 30.74.144.109(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WyyoplG_1770717371 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Feb 2026 17:56:11 +0800
-Message-ID: <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
-Date: Tue, 10 Feb 2026 17:56:09 +0800
+	b=tRxd+t8/Z9eWLC5OvphlgKPXnHsGrGdyJRFoKCPqu5eFVkyBdKvXuSu/AHel0p86s9OD4l
+	TULTek9wGenUrk4DUYsVOx1tgMEWW5D6TjlnIvF53aD+A3K3kY3kD4c1ntW6tTtbPYZvXP
+	cAvSmRfgMkRzInp3mbncPiwrPPmbl80=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WqJPW+Sc;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yfvxgddK;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=jsjNvcsR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+zis9JZy;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A78D63E712;
+	Tue, 10 Feb 2026 09:58:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770717537; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+ErpO1/mo6MLCsg7ossIPnTy5U0UzlNYCmCh8RRuT6U=;
+	b=WqJPW+ScWxutmzD1EjNPn2gI/+Z/PkqCrw/H3F7XZBuxCg4DOjz0uZpDs1fwZUtgV+3WrW
+	ruDt6pLnH09FUKmqUfn8P8XxfJ2A8fu/bFqH4Gjvq34kkdhK7jo1CeW5JH7AquX0iMfQXn
+	4Ttla0R/6auumozOnZADL4mfi7+NeZA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770717537;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+ErpO1/mo6MLCsg7ossIPnTy5U0UzlNYCmCh8RRuT6U=;
+	b=yfvxgddKltvd4IAArSdsZx6e9Da+ALtsybkx4lJHTGEk2RUvdwq3N/GXQMUE1lTkkBIZez
+	IMELmulNwijwoxAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770717536; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+ErpO1/mo6MLCsg7ossIPnTy5U0UzlNYCmCh8RRuT6U=;
+	b=jsjNvcsRl1/pjz5iHBUHLsU9QqDK+eBiBsKNePQ4wsyCYLjoz1UvChOOkhZ582PXWlW9gd
+	zLDe+wscRG0WJGhxZVWPTj2QvfzGy5RrL0HUt54RI/wNJQitAuY8Z8sklEi6sE0yf+NdI3
+	hKb+lX3X+s/6g5EM9Nx4lqWf1hspt4g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770717536;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=+ErpO1/mo6MLCsg7ossIPnTy5U0UzlNYCmCh8RRuT6U=;
+	b=+zis9JZy314f212smcIAmp8xWWtq7EnUj6vrJK9pXg7jAe7II6C7LHE1HAutSDZHeaQzqa
+	PRIXHamC8Ut4XCBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C9923EA62;
+	Tue, 10 Feb 2026 09:58:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5REdHmABi2meIAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 10 Feb 2026 09:58:56 +0000
+Message-ID: <7c3549cd-35a9-48cd-b49c-e3a211b8c811@suse.cz>
+Date: Tue, 10 Feb 2026 10:58:56 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/11] mm: thp: always enable mTHP support
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, david@kernel.org
-Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <cover.1770675272.git.luizcap@redhat.com>
- <29e8dfc2772af4b6e0db24134ca3563ec422b91a.1770675272.git.luizcap@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <29e8dfc2772af4b6e0db24134ca3563ec422b91a.1770675272.git.luizcap@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH V2 0/2] fix lockdep warnings with kmalloc_nolock()
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
+ linux-mm@kvack.org
+References: <20260210081900.329447-1-harry.yoo@oracle.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260210081900.329447-1-harry.yoo@oracle.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: b44h6mfi9frjzkmykwgow848f43w7k9w
+X-Rspamd-Queue-Id: 95A17140007
+X-Stat-Signature: xnb4kfyq56d963m1px4q7feu7owk4ry4
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: AC7E418000D
-X-HE-Tag: 1770717375-863157
-X-HE-Meta: U2FsdGVkX1+fvbWQ9kmc2WJYgTgNARu3TIlw+zzk/rW8CautTKDsDJ+B/2Pz1vqikXuEmqQUqlBusHoIs1+z6ZeG/bWP4FARohc5Wgj0FmgD3fYursiN2g163KrmTSzc1xdK7LSmdVL4ufIFH8QN+E+ztTYpcx0but9dQQVSM5QQCy1RB75Dl7C4GGC5bJtxehMUI6Iz+IYzszScNq3MTi/t65EVI2mBpM/YYmocsVdMp6QnmZSS4IDBVwzr4hgkEvkuwFI+pKLMuP0ibuCYEJahPMP61TcaH4np5XuPYQ5DYKw50iNLIuWRhfcu/7blg12i+4VZdYvDjFDanRDLfoJ9CVHkTc1V/QRBPLy9/0JmZ9GHT6zgC7m+aJMGqqwCF9Rxtw+YtD9RjjO0fR0gqhmnfBZNlYflA6h904bCw/dilpO6uZVGsvBPUIefvF5DTkQVjuswYkILj4+2pQxMbSERbnCcwcUprHhwGLrONPRJYEesRjF6ouPPHji4sxFk8BJUBaAH8NxcHtb40S6NiuqmMOfB0bPOgUbXT07X1/6jdH3PFvHMOUFrJFgWqU9sRS5gTDq1DWy825+fFtWN+nog2SXfh7R6OWS5Knaw/T49BVWh+pKs3DNeAvd8MVf1DPn+hU0N5xqXMsWkQ/nM+pgvobF8F1GFUsi0yqmSlk+V9SXJ/537aJFcxuUzYLAOO/9fOzIwsk68RMjoXdCR7sL//6NReM17ICpQyW3TSi/3pOZ+eFm1pHVp3xOEawLvMgz4YWQiiDCjUpvlnN6s3Mu6FEgo7KXEoR2/mEYEGL7Ew+8kIbZSofNuvWcl/qPiFDBvY7JKQyY+QOvXqDvXm1GDX5Vj0iQmQ29sO4hgCqnsQfaoh24bpA==
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770717539-345370
+X-HE-Meta: U2FsdGVkX1+KkfsL3IMsIRoIFkE//+3dgwHuk4iW8V8QjXUWd3hxTwWevgc7abwnos/fEtBKvDi+Dc+D3HUP5Z3Hx2JFWhA00Xf2MVPgqVE2aABL7J1Hz6EsHGGakObjtDMKuL8I44xNh9HasDyPUMnjmK+IHZ90A5+S2I16sQmjf6SDOEIKI5lLkYzV/ueMN3wjzoPaRQQ4TZ6qtQu+iZVznJxVSePi6DGM2Tgc8D0ncyRiQJvkyAuuo8fjik7JEfIkR5nvpdBAT5B6TIFJlQRaNfPq2Fvb65aiYTvwEpyNL6uqp/cJ+6doiOgcbrM2eb2RTG4tFWUAZU2dcEpFNYTMm1uw+bIqRqeM8stCrfqSW2NLR/TpHJ/4Z0wiXw3Yck+2OMhEF8NX5XIikT5Ez4HHWtZjq6mn/VF2PayUJOzyo9UzVo3h+MRv2TQyfDDMEbWLHtSBsuRDPBYLzIwRzolVTrVoECYSAAy6p3wMSXWnvsb9UEyEZwHjUh5U5h5HvcgmxpSKe8J67MpesToUdwHXOWAGAO+va2oHIFt2yOs8nhATETGRf0zqbk52dH2XCfN4S5d4oezeiDnzLjvc+7QvM590bl5nM57ux3rzl1yShreMecbUNS9CD8liKadP68RuMYUiufaXB3BwvXsffjl6lVzf9H3bVzktIRb69+uxTn2pG6nUP3qmweCZ9ySw2Z6WOFxxEVPQPxVrjSnxgCTU0Q9QjXvO9PWGDcbnBphoDfSg32bJIP9aMp27wZNyubxxBLEfXnVzr3ANS3Dhg6ka8GA6cEt1bMxTEohNlmWeGs3HOAsFUZI4QFLd2QqzYPsiUbqwkSOm3eSZxMY7TrtPmD7ESTCUivhpv/9fq/XfXRD4M+l8nnYauds157ybIrBIo108Q1SaCCC8AhJQhcgwV93Weot6/RLjXNq0bTklD4iAri1YtxvrXdi+y/H28uD8mC2Ntw+6psciez+
+ Q6SK0wel
+ +V4KdB1WR+ckyBG0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,105 +179,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2/10/26 6:14 AM, Luiz Capitulino wrote:
-> If PMD-sized pages are not supported on an architecture (ie. the
-> arch implements arch_has_pmd_leaves() and it returns false) then the
-> current code disables all THP, including mTHP.
+On 2/10/26 09:18, Harry Yoo wrote:
+> Hi, I've observed two lockdep warnings while testing
+> kmalloc_nolock() in NMI:
 > 
-> This commit fixes this by allowing mTHP to be always enabled for all
-> archs. When PMD-sized pages are not supported, its sysfs entry won't be
-> created and their mapping will be disallowed at page-fault time.
+>   1. Accessing current->mems_allowed_seq seqlock in NMI isn't safe
+>      and lockdep complains.
 > 
-> Similarly, this commit implements the following changes for shmem:
+>   2. w/ CONFIG_SLAB_FREELIST_RANDOM, get_random_u32() acquires
+>      a local_lock, which isn't safe in NMI and could cause a deadlock.
 > 
->   - In shmem_allowable_huge_orders(): drop the pgtable_has_pmd_leaves()
->     check so that mTHP sizes are considered
->   - In shmem_alloc_and_add_folio(): don't consider PMD and PUD orders
->     when PMD-sized pages are not supported by the CPU
+> Let's fix them.
 > 
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
-> ---
->   mm/huge_memory.c | 11 +++++++----
->   mm/shmem.c       |  4 +++-
->   2 files changed, 10 insertions(+), 5 deletions(-)
+> Note: This is based on the latest slab/for-next. It wasn't clear to me
+> if I should base it on slab/for-next or slab/for-next-fixes,
+> because the merge window has started, this series needs some exposure
+> in -next, and the patches in slab/for-next might land in mainline
+> in the meantime.
+
+Right, adding to slab/for-next on top of the submitted PR, so I can send
+another next week. Thanks!
+
+> But the conflict resolution should be trivial even if it should have
+> been based on slab/for-next-fixes.
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 1e5ea2e47f79..882331592928 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -115,6 +115,9 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->   	else
->   		supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
->   
-> +	if (!pgtable_has_pmd_leaves())
-> +		supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-> +
->   	orders &= supported_orders;
->   	if (!orders)
->   		return 0;
-> @@ -122,7 +125,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->   	if (!vma->vm_mm)		/* vdso */
->   		return 0;
->   
-> -	if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
-> +	if (vma_thp_disabled(vma, vm_flags, forced_collapse))
->   		return 0;
->   
->   	/* khugepaged doesn't collapse DAX vma, but page fault is fine. */
-> @@ -806,6 +809,9 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
->   	}
->   
->   	orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
-> +	if (!pgtable_has_pmd_leaves())
-> +		orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-
-I think you should also handle the 'huge_anon_orders_inherit' setting in 
-this function if pgtable_has_pmd_leaves() returns false. Shmem as well.
-
-if (!anon_orders_configured)
-	huge_anon_orders_inherit = BIT(PMD_ORDER);
-
-> +
->   	order = highest_order(orders);
->   	while (orders) {
->   		thpsize = thpsize_create(order, *hugepage_kobj);
-> @@ -905,9 +911,6 @@ static int __init hugepage_init(void)
->   	int err;
->   	struct kobject *hugepage_kobj;
->   
-> -	if (!pgtable_has_pmd_leaves())
-> -		return -EINVAL;
-> -
->   	/*
->   	 * hugepages can't be allocated by the buddy allocator
->   	 */
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 1c98e84667a4..cb325d1e2d1e 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -1827,7 +1827,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
->   	vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
->   	unsigned int global_orders;
->   
-> -	if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
-> +	if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
->   		return 0;
->   
->   	global_orders = shmem_huge_global_enabled(inode, index, write_end,
-> @@ -1935,6 +1935,8 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
->   
->   	if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
->   		orders = 0;
-> +	else if (!pgtable_has_pmd_leaves())
-> +		orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-
-Moving this check into shmem_allowable_huge_orders() would be more 
-appropriate.
-
->   
->   	if (orders > 0) {
->   		suitable_orders = shmem_suitable_orders(inode, vmf,
+> v1 -> v2:
+>   - Patch 1: per Vlastimil's suggestion, do not access
+>     current->mems_allowed_seq and avoid retry if !allow_spin,
+>     rather than returning NULL.
+> 
+> v1: https://lore.kernel.org/linux-mm/20260206171348.35886-1-harry.yoo@oracle.com
+> 
+> Harry Yoo (2):
+>   mm/slab: do not access current->mems_allowed_seq if !allow_spin
+>   mm/slab: use prandom if !allow_spin
+> 
+>  mm/slub.c | 41 +++++++++++++++++++++++++++++++++++------
+>  1 file changed, 35 insertions(+), 6 deletions(-)
+> 
+> 
+> base-commit: f6ed7e47c1fc78e78c9bfeb668b1ad9ba5c58120
+> 
 
 
