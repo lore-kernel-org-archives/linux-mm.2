@@ -4,81 +4,184 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 315ECEA8130
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 15:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A38BEA8133
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 15:40:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FDDE6B0005; Tue, 10 Feb 2026 10:39:02 -0500 (EST)
+	id D33D36B0005; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6819D6B0089; Tue, 10 Feb 2026 10:39:02 -0500 (EST)
+	id CF1886B0089; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58D706B008A; Tue, 10 Feb 2026 10:39:02 -0500 (EST)
+	id B95836B008A; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4783D6B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:39:02 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EAD3959742
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:39:01 +0000 (UTC)
-X-FDA: 84428955282.21.AF75163
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 024CC1C0006
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:38:59 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AB9726B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 576BB597A9
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:40:39 +0000 (UTC)
+X-FDA: 84428959398.13.5946CC1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 146401C000B
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:40:36 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R07jyVUr;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="vro/yLie";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y948V8dL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ImZ6N4Ck;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770737940;
+	s=arc-20220608; t=1770738037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=h9BOkWtvgTvRTmNeQqi90JUw63So8RnIFY/BIVnov08=;
-	b=OTHrh+J5KNnVB5mQjYd61tqaseAGHhSTUWfrH7SRBRhCJIdigm2Ithm28su0uiSTQuHUQ+
-	mQwIpBpLlXBmGhIBxnplbvIES/x7HXYvOAGTocdbTiwHlb3k08NY64XZxSSWLwe41eWj15
-	SPLE3XDpTIw2A+L48Cnd69THfG/DeVI=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
+	b=habIsHr/LEP8FaDbbakmWuE8DmoaCSRa8Ufc7OTNkmviEUTMorVEoaQQNfURvAhG4Z0Q7j
+	La8l6Pkh807h1g/lzJsws1f0X+HMpPjckl3YNda8PB5HaYqYwP3xi4EyzHl590/vZIyon0
+	r3A5v/2ZyLGY4SdE2fDk7CaMMtzb0sc=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf20.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770737940; a=rsa-sha256;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R07jyVUr;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="vro/yLie";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y948V8dL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ImZ6N4Ck;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770738037; a=rsa-sha256;
 	cv=none;
-	b=kRKhUTelK1OnPUEqxFxOh0mzJnvHKeefgJnvN+Tg/jfKxxItTlz6QeQQXV4Y03XXQRXPIG
-	i+WC6wh5VqjRiyf0yOpVUp4Rw5NTro2DuRyYiVVcjw1E7WNNFVj26dlwvKVte3Kn+brGXp
-	PwlcnjQIZsG0zJ9dyfoROj2mjG05qoY=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id E3B9468CFE; Tue, 10 Feb 2026 16:38:54 +0100 (CET)
-Date: Tue, 10 Feb 2026 16:38:54 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: Christoph Hellwig <hch@lst.de>, Brian Foster <bfoster@redhat.com>,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
-	david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
-	ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
-	cem@kernel.org, wangyufei@vivo.com, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, linux-xfs@vger.kernel.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v3 0/6] AG aware parallel writeback for XFS
-Message-ID: <20260210153854.GA2484@lst.de>
-References: <CGME20260116101236epcas5p12ba3de776976f4ea6666e16a33ab6ec4@epcas5p1.samsung.com> <20260116100818.7576-1-kundan.kumar@samsung.com> <aXEvAD5Rf5QLp4Ma@bfoster> <ca048ecf-5aec-4a0d-8faf-ad9fcd310e21@samsung.com> <aXN3EtxKFXX8DEbl@bfoster> <e7413e3b-3fae-4aab-90a1-4a6695156b2e@samsung.com> <20260206062527.GA25841@lst.de> <5b11145d-15e2-485c-a978-365b58854371@samsung.com>
+	b=SXNtHsbq1ZkyKIo2pUQh2kvjICJti53JdfMdzsyw6J8hz6Izb0Hb/hbkw+joGq4Ss1LS97
+	CVH3FhMCPbulD/dh9QGyvpHD8ZLbeNuYokMQmgFMGlAY9k5B7AFdsz2AF3TOghh0cpB5Di
+	parnkxXEF3b3Mr4FQ4mkCWqFz8kxpXM=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 845DB5BD70;
+	Tue, 10 Feb 2026 15:40:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770738035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
+	b=R07jyVUrORVmME1tz6d4RAcxWtYFSxWruoYeWOgeKxj/oXwfoKORCI2Qyg2T08C2+MgsDJ
+	/znzwTCoSMjQjW12XYhz8kBE7luRX+qO45YENuYsD+bZZhx20c/4TUgoZOeSyheBH7GlJj
+	zq7bcTbyXj+cCfcLS0U5U5KSdWFqLlQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770738035;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
+	b=vro/yLieGuw6paUeVmci1At6eI3Ahp/S6PtPoMNDXXG/zClgKfVTfxVvzmpnCgWmrkGm6p
+	c5vSnK/Gw1rIzYCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770738034; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
+	b=Y948V8dLau51t+6BB1cC/p1m2+JQMMnbAdgk7g0rLQcebP1LYqJE0CZznfBdh997VQYkmc
+	7k1ohgLVwN/Mami0n7j4Ouev3cUhQ6i7dc6pBE9bLY28vvIhJbpFOpknapjNjlinA6RIzk
+	QcQ+W6upfrqeIv5VWx5EOQsi+GLv9tQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770738034;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
+	b=ImZ6N4Ck9+LL7JcKWdCAdPyiK+Vrw/yHZU+ozaIVDUA6hW77kj+EyMas8oGDv+9XnhOCRt
+	ISC3+HdBvNI1iwBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 416E53EA62;
+	Tue, 10 Feb 2026 15:40:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id KVJmDnJRi2k7ewAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 10 Feb 2026 15:40:34 +0000
+Message-ID: <12237347-e997-489b-9a62-dfb8ae00c9e3@suse.cz>
+Date: Tue, 10 Feb 2026 16:40:33 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5b11145d-15e2-485c-a978-365b58854371@samsung.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 024CC1C0006
-X-Stat-Signature: gbtn9jyeh55mm9bpyy5gyiiumjych4r5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCHv6 07/17] mm: Rework compound_head() for power-of-2
+ sizeof(struct page)
+Content-Language: en-US
+To: Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
+ Frank van der Linden <fvdl@google.com>
+Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
+References: <20260202155634.650837-1-kas@kernel.org>
+ <20260202155634.650837-8-kas@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260202155634.650837-8-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mo8zjq11rdfakaejzosqebmxfwnmjcnw
+X-Rspamd-Queue-Id: 146401C000B
 X-Rspam-User: 
-X-HE-Tag: 1770737939-110684
-X-HE-Meta: U2FsdGVkX19mz4a395kOcRdEI4mIqBuPnVN/abps8qVb0ob+6lcb0MOAZ0ZbsCg+5EhalhOQ9UMi62BD9Dme7pymyb6phYHDLvPxd+omMJpcLQrO6uUXCVw/KB28iYp+zK+ikJ1cKhtSTiMIG2HxCposFJAVFIdpQEb9F33+JDElrmZG7kQNZIGZ2DQCp9EoqW43wHPoz1/d22Hc5E1RCaQwPVTvIJd++asxKH40KWJ+DvAmK1qmtxpBfVTBckLlrWHqKMyquooImOXndFCL0yUoGZ5FFvzs7VjDQB5K1Le6IrtnsyFET6yttt4bbOaG4TSRZtBd+wzpFU7R1OzNMSwB8oes99nmUeaCRcGbfASF/U33SN6RznXKS7nwQZV1tAQKtSKKPKfopm8bFAhZPKpIehoahGsmMYvHHEsSXKxXTd1ttyOsqgrsYVgG2yqM3ZP2eOVzK0Tp1ShZ8hfLvUrfgipEbX5lUvY1S1gR7Iy3JmOfwAc7vjJcOzCziZMqaGrMGoomiQy5SmFVnsNqr29JZ7lMXucvr7C9kUa3qdQRLckfjQD/9Ev8zxRvLnNchku4VGQPvEucvpbiN76j+rJRyvo/Sn2S1KXJuJKmKdqqggYPx7GSyDkUUvNCYNb5cUjGyAtj7sl8L5cqro6on0q7evnRlhZezGPzIikdVF4Nok5BZ/FENPvee3853bwAm3witG7WBJxJ0JE+ExueleMchJw3INIEsnZ79Z9cwPD9kl9rpzfNTYaAzDcFv+f77If8bIc6PZWjzJg3XConrpCTXklDeAQvMMoYPPYoplGfTpBtoB/cFBPwTX8fXc3C8qgQM4YRUclINQY9aAztlNtkPK53zc4vhJFC2l1YhZNA/L1KCLgGQzhm8RmDh9U3acOdnQEuAn70CiZ2ROd2Q16YjIQUxgRKqKmmbtO4Avs+hVg9dvCXvLqmcvRou9NAb7r0ZO6ejXfC9DxOLjC
- /kRfo+Fq
- XEMfk78RGoIymwWFCi4llQWJzObPLquAoiN9sMCrZ2PKDhfDpVTyOYnT7TVOmp6sIHikrcD15mdMIgY5IdVXAfUdPPmuwETEVMBVEMLagFnCStNjFuP6kxBYNy5ngmO54SeFBGmFki4NI5UzlRaMKxWsjQXVk2DTFEztlfmsvRpYcarzaVmP97E5BvkIPbS1JYdF/
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770738036-170535
+X-HE-Meta: U2FsdGVkX18CLL1CxacZ5/IKVx1dRL0jdGvABo7xBmCQlhV13fLzIY+UFB8cBzFDOfZdY/uvCSOw5Q5iPdPlBN6oo4ebwa7c1lvzP26MdDK39F8VFyQITixHx4WKtf64SaxrMl9yaATWzuT0cmNjZhBOUQU5VZRsOJ/WWvrtQz6vdZ5ca8/XKtYQ/GyHA/Mo0JJr6nwAFCn81CmCQTZXudne12ppVt9PDrCDCImpcEZRdFCrVPG8+fUGlsXfX7JhjeE6pwYe0znKolsgt2ELnwvzkZ8TOxgfW0RlWY+IYzJdgOsMQ1YtQQVNTHSVPdIarCMSRgzetHmKVz6e5Kgdx6lMupQH3zNSKlJvGSyS1nEvJ0i0vbkyEKCh0KrIWYSjF8fvwi59kC1bRDVHKX+xpgwKl7KR1fNJoSdvtbIWFMRmmmRZdxQeOGHth3whrRZsSwHCZgbEVl4GD/v7Tzwed6EjkjxeBcr5U2HAftZcNUVbuAtsO9Q+aDu0vFMzbUl6TzV/FjNFbpQ/kArQca2v/DCCc3+2t1y8Rp0SGkLvjyqlyZiAgcbz0GmBWZkVlfhuG7Okhvy5z0rfVH/X0w5F9k+sxnx9x/TiPxu7SISefHy3WQZPHhwt/Exs1igqj+GzWlopVbg7RoIDtBQkwm5falwRvcj6hE6fJNACi0kXb/S6vdiDGpHEU+1SPvwTBbG+G/1nsJo8LOc+ehxGp/CoO3a45hK0IJCKZ2TkfUhP83sCT0fOm4H3MNAEMQdmaK7vp50gMxXHBKrT1BONSyTFpzI+tQdTP8MkpqvUCqx851mqS9CNMJZMeZuELRUa9WrLmOV5i5e0nmZo39KDoMyJYWpEN82Qsj4hYIQ1AigpuoeBeQgcfhKEnUKD5HHQq2JWiOuktitAr6wsLg1qXMrGJvRJAH70wjOudyexhiUXZFsX56dyZlkOM/hTwRQ8kESzw6mMeDnKcSVVULV7Hhl
+ iY4DRxRB
+ 3MQIT802sBrdM1IM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,31 +190,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 09, 2026 at 09:24:49PM +0530, Kundan Kumar wrote:
-> - Create a bounded number of bdi wb contexts at mount time (capped,
-> e.g. ≤ agcount).
+On 2/2/26 16:56, Kiryl Shutsemau wrote:
+> For tail pages, the kernel uses the 'compound_info' field to get to the
+> head page. The bit 0 of the field indicates whether the page is a
+> tail page, and if set, the remaining bits represent a pointer to the
+> head page.
+> 
+> For cases when size of struct page is power-of-2, change the encoding of
+> compound_info to store a mask that can be applied to the virtual address
+> of the tail page in order to access the head page. It is possible
+> because struct page of the head page is naturally aligned with regards
+> to order of the page.
+> 
+> The significant impact of this modification is that all tail pages of
+> the same order will now have identical 'compound_info', regardless of
+> the compound page they are associated with. This paves the way for
+> eliminating fake heads.
+> 
+> The HugeTLB Vmemmap Optimization (HVO) creates fake heads and it is only
+> applied when the sizeof(struct page) is power-of-2. Having identical
+> tail pages allows the same page to be mapped into the vmemmap of all
+> pages, maintaining memory savings without fake heads.
+> 
+> If sizeof(struct page) is not power-of-2, there is no functional
+> changes.
+> 
+> Limit mask usage to HugeTLB vmemmap optimization (HVO) where it makes
+> a difference. The approach with mask would work in the wider set of
+> conditions, but it requires validating that struct pages are naturally
+> aligned for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-Yeah.  And then optimally map them to CPU cores, similar to the
-blk-mq cpumap.
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
-> - Store a per-inode stream/shard id (no per-folio state).
+nit:
 
-Yes.
+> ---
+>  include/linux/page-flags.h | 81 ++++++++++++++++++++++++++++++++++----
+>  mm/slab.h                  | 16 ++++++--
+>  mm/util.c                  | 16 ++++++--
+>  3 files changed, 97 insertions(+), 16 deletions(-)
+> 
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index d14a17ffb55b..8f2c7fbc739b 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -198,6 +198,29 @@ enum pageflags {
+>  
+>  #ifndef __GENERATING_BOUNDS_H
+>  
+> +/*
+> + * For tail pages, if the size of struct page is power-of-2 ->compound_info
+> + * encodes the mask that converts the address of the tail page address to
+> + * the head page address.
+> + *
+> + * Otherwise, ->compound_info has direct pointer to head pages.
+> + */
+> +static __always_inline bool compound_info_has_mask(void)
+> +{
+> +	/*
+> +	 * Limit mask usage to HugeTLB vmemmap optimization (HVO) where it
+> +	 * makes a difference.
+> +	 *
+> +	 * The approach with mask would work in the wider set of conditions,
+> +	 * but it requires validating that struct pages are naturally aligned
+> +	 * for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
+> +	 */
+> +	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
+> +		return false;
+> +
+> +	return is_power_of_2(sizeof(struct page));
+> +}
+> +
+>  #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
+>  DECLARE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
+>  
+> @@ -210,6 +233,10 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
+>  	if (!static_branch_unlikely(&hugetlb_optimize_vmemmap_key))
+>  		return page;
+>  
+> +	/* Fake heads only exists if compound_info_has_mask() is true */
+> +	if (!compound_info_has_mask())
+> +		return page;
+> +
 
-> - Assign the stream id once and use it to select the wb context for
-> writeback.
+Could we move this compile-time-constant test above the static branch test?
 
-Yes.
-
-> - In the delalloc allocator, bias AG selection from the stream id by
-> partitioning AG space into per-stream "bands" and rotating the start
-> AG within that band; fall back to the existing allocator when
-> allocation can't be satisfied.
-
-Yes.
-
-We might also need something that falls back to less helpers if
-the free space is distributed unevently, but probably not for the
-first prototype.
-
+>  	/*
+>  	 * Only addresses aligned with PAGE_SIZE of struct page may be fake head
+>  	 * struct page. The alignment check aims to avoid access the fields (
+> @@ -223,10 +250,14 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
+>  		 * because the @page is a compound page composed with at least
+>  		 * two contiguous pages.
+>  		 */
+> -		unsigned long head = READ_ONCE(page[1].compound_info);
+> +		unsigned long info = READ_ONCE(page[1].compound_info);
+>  
+> -		if (likely(head & 1))
+> -			return (const struct page *)(head - 1);
+> +		/* See set_compound_head() */
+> +		if (likely(info & 1)) {
+> +			unsigned long p = (unsigned long)page;
+> +
+> +			return (const struct page *)(p & info);
+> +		}
+>  	}
+>  	return page;
+>  }
 
