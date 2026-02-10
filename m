@@ -4,87 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16B13EB2711
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 21:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C4BBEB2700
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 21:19:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 36BF06B0005; Tue, 10 Feb 2026 16:07:22 -0500 (EST)
+	id 41D346B0005; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 318A86B0089; Tue, 10 Feb 2026 16:07:22 -0500 (EST)
+	id 3CB086B0089; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 224D46B008A; Tue, 10 Feb 2026 16:07:22 -0500 (EST)
+	id 2ACAA6B008A; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 127B16B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:07:22 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A59E8C2525
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:07:21 +0000 (UTC)
-X-FDA: 84429782682.26.359298E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2B26D40009
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:07:20 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LyF7e4Vo;
-	spf=pass (imf27.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770757640;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1721F6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A467E59FFB
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:19:27 +0000 (UTC)
+X-FDA: 84429813174.20.73164D8
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 98E26A0014
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:19:25 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AqOBENUK;
+	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770758365;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ydS9yAFrAmUIMu8jskYYeyDaaknZK0/DweflNy2scOo=;
-	b=eC2dXwtbNS3Nzpz9BM/wxSc4dq8o1NPOlGofkz/DrpONdiMku7pkbvA6waNJBAAQPCQAEe
-	bH544An3w3T4qHz/fltrJhM7JqWGPgAcieGVYq6aLJQsqxLwkh4aGn90typPdJVkDd7vr/
-	xLKy/g19ir91GfdCCHL5qYAeW2FT88E=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LyF7e4Vo;
-	spf=pass (imf27.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770757640; a=rsa-sha256;
-	cv=none;
-	b=3zMYoR8Kt6msZS+5hqMnh/7ZlQ/CxM4B0Tjw9s4BRMhJdrimnubgb1N0wBXtYa+hlqhCNe
-	CewnIIBlVQHAvMcYwk8wZLTkMd7YiKO32AL9GPyu8Xd0ugzo2mETUMdjil2p0O2mQ2gknc
-	dCPLOwkdkx+4fgdZATjuvxGf45xKSYs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8C2BC60130;
-	Tue, 10 Feb 2026 21:07:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13A9C116C6;
-	Tue, 10 Feb 2026 21:07:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770757639;
-	bh=ydS9yAFrAmUIMu8jskYYeyDaaknZK0/DweflNy2scOo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=LyF7e4VoeCocyD3Vbvq6qOdyDlozU2ixwVjoZAxENS06BAIZQDedOydD0w/gSIBSZ
-	 osUCwKX6PhwW56VKK0xYFFADnnKZT+smqwFdhNM5Ut9LHuzgd4QdFreD3o5NvlmfIX
-	 NH3YU2McEzSVuJ1JoDCP+bd6oaPiVfqio+4dHebyJsa29TEFlTH3NqksmPPihrUG9o
-	 kKQeTHjkwOsnsmGo12Ccplq56OFeUXNPsxVbkTTRiQg3rJtauN97aqkgYM+2PVK0cC
-	 psq9TKt0upYvogmUC4uKQkD8SsgefUJ+Efd5t0DCYj8C3zSiaYb8wlgrwOZL8h5rSy
-	 yYjgQFKdeeOhA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Andrii Nakryiko <andrii@kernel.org>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, surenb@google.com,
- shakeel.butt@linux.dev, Andrii Nakryiko <andrii@kernel.org>, Ruikai Peng
- <ruikai@pwno.io>, syzbot+237b5b985b78c1da9600@syzkaller.appspotmail.com
-Subject: Re: [PATCH mm-hotfixes-stable] procfs: fix possible double mmput()
- in do_procmap_query()
-In-Reply-To: <20260210192738.3041609-1-andrii@kernel.org>
-References: <20260210192738.3041609-1-andrii@kernel.org>
-Date: Tue, 10 Feb 2026 22:07:15 +0100
-Message-ID: <87fr789ukc.ffs@tglx>
+	bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
+	b=jIfpuzF+QzA31cxgSAJJVw5c0l0rOEmv4HBzFZrbvBRHTwjZ1wos3x+sCBUbaLWD4sW0vM
+	vEN3Yvcino7EO6h53Zbzstshp8jcaMC7dgKKAkY9FMiBKd56GzQk275S91GT06JyP5+w5H
+	OQVi9FCvdcO5z2eGmrz2r0LtbUtfK78=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=AqOBENUK;
+	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770758365; a=rsa-sha256;
+	cv=pass;
+	b=6VyihjPap9IZouGMyTs62fM1hzyj82H25EiBWwDS6hMTCovb+PextxVMhhKx3VPdJnRK7F
+	ZNJUIrelyCPF2vGySOA/uvxMTinv0Rgx3iRpEr4mYoxS/8YLCxfvXHYKCPO5JRKq/S9LS5
+	u8UZLmX9/6fLjs9M+tOmaBx6IAWhHEI=
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-65a38c42037so940a12.0
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:19:25 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770758364; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LAxYMwClLkgVQXeIvlpizhVTh+yp0Z0b2ESVfHc65ePzX7GXGxMidJ+5CQOAsEZEZ+
+         tKqFgl9BuE9ROO/7LE0/CvgiQ1uF5UnLwJ13o0b2OwyDUbLgu2W+kMDy7zwwOgCooJFI
+         wH3OFb82waUDSbxNVBol97wl+t8c4r0mI+bVBUgBIvcFIo0Vx4uHOOeu/fn7OeVYGsyz
+         BtuQGI12iqZ0R6c30Jam3EnCPOrp+ZiDez2SrCuEcCv62Az82YuHR7KCWcPcML3AWaxx
+         7YD1ilMUSUpJhTeg0iiP9GivnfWDf9hOTLdMjs82v3pnR6vxzprMcJWNfh4oOg/tIezf
+         AjXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
+        fh=xbzmviQE+WWjKiSP0DfQZSUOUw4QICV/hEV3pqH/0ak=;
+        b=NRllaMOlv3jJMSd8Mi1eljgi9p+Sk536nf9qIVlwelzA71jkRKQ2GMO7pXiBe+baJT
+         Vri3xsvpVmV6iKkUqkT1g6jexUWMToC+DLP9TOW1tfwJXuF/z+7Ipkgrex48PasRlLi5
+         zrZ1PzeTuzjD+YDxAwl1wJdtxCgd/ayCWPg9E7Z1cVba1ideJ5LYK8sAHBgyTTUpl9V7
+         57FlJ3hZ1hEEn9tawj7etugHW83xPKYUh59DQXk7n4wVACn4r2NR7q8TVy0hcOeF+sxx
+         qnlee7rZbsQkCP3pQaz+/w1Mh8bp9M6DDTOtIVf4n6S/POAkTWk1vVajO1eLuXdoU4LP
+         szwQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770758364; x=1771363164; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
+        b=AqOBENUK1Xi7FS8gaqsvqh09LXwKDCxSLoGOYbcnNANNoVqtWGLeWFnit8Ueb9MYhT
+         FKKmSIgVMvZkjhbg1ZDTEcxlbWYa77jLynHXgxVv0nH828q8/TOHgByEeTGUARK3W6YO
+         Mxwy14inmuQ9SU3qUWqTp0G71ZgDCK/rbJXnd7Y0xyOyxwIOfqJI2bx6xY4i89dgo+Yr
+         0kWN/ZgHMa11RyhaXDCydYhtxp37OXe0UvlW1BAEYquAFL+J75d4yeK5aU4YEO4PQBM4
+         O/JlEoGYqq8C5pgooNRgQEnriXKQzytISRSfetft496tDbnCpgnZWZFrN9dzkWbw73S+
+         h5PA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770758364; x=1771363164;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
+        b=OhHjmglMj44walNQv6/qmzEYPYCAybuEakNdaibV7hmtbfeHpWV3UU5GfFr8s/3hIs
+         7wsrelk9mJQZba+1e6wmWfawLrFuPGh/c48KE5yNdv3WU1LFqc4L2qjV+VwOsT+NsleW
+         lzO6hXkhHsjkeFsoDSNOvl+vuFiGivRT6jF6F4qoDqn2VJZwfVSISY4v55kQGr+in3qH
+         pWFc+V8lHTw1n+KwDgP/g9J28BgVYpKQx+l1zUAH2M9U3IBma47LTwqyJOwMQldkVt8N
+         MGZgYmFPIee4ZCAHynEuI8RWiN0dp6QzNXVD59SZFQ+5QTVyaWEGzKddl7f7/OJXz9pj
+         iLPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmf0Ok+BBt9/sS2nw/b9lwdI+540Ver3ZoOouTp4ec8fdwPVFB6QQvCvjFTPOAaHifRg1jBTYmPw==@kvack.org
+X-Gm-Message-State: AOJu0Yx8yl8mzR30MIlT03a7TElf6bpcq0qHfvDDXpjCVIwcUCl/Q5qs
+	jVRegNSLDuebj2KMre/KqHAYOUBqYJUGHYzlquZwPlu2mNbe8OXCUCsGLU1ovCkKvfd50InSAdN
+	hZECBIHm0/CdMtA+ac2afqMdK6ouE+m5WULG5rYsl
+X-Gm-Gg: AZuq6aJjFyJt9Y+7m/e8GHLuh0Q+pqzIYEZiI6f8ykXUm+88w+LgJkGO7kHhedqUjhb
+	IVbQ1X7axjIc6udNPKdnCKqHi5DyuaeW9gGI8XoxJAnInUPyhvBZIPy4cytP56MI8PFvs0+wbkI
+	O/kT9cIJV3vzdHUXudLuoYcbwyA0omyVHnhSGNOx6kSBYek5/Kfn08fpGpyOxYCO141WInyLeFO
+	IBBWVpzbJlJu5l6WKfMVj7wWKMtpyYJ+lljUTdCe4Mj7z3aTPLRkmKiymKT1ijUoEeu5PDwrSK6
+	hjFLmm6UJ5T0o4g8asfIbEOf1rqLqHaGoAgH
+X-Received: by 2002:a05:6402:8cf:b0:659:7696:432c with SMTP id
+ 4fb4d7f45d1cf-65a390b5a13mr6380a12.16.1770758363456; Tue, 10 Feb 2026
+ 13:19:23 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260209220849.2126486-1-surenb@google.com>
+In-Reply-To: <20260209220849.2126486-1-surenb@google.com>
+From: Jann Horn <jannh@google.com>
+Date: Tue, 10 Feb 2026 22:18:47 +0100
+X-Gm-Features: AZwV_Qj1nCcIQNkC6tpOVx93iwKZtT2dbqwR4XsX_m7M7cfMNKnVzbH_C365zC4
+Message-ID: <CAG48ez2zFfCO7RKhHKaATFge7DWzaTfO+Yta0y4_HXGHZAtkqw@mail.gmail.com>
+Subject: Re: [PATCH 1/1] mm: replace vma_start_write() with vma_start_write_killable()
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
+	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
+	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
+	lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, mhocko@suse.com, 
+	pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, 
+	mpe@ellerman.id.au, chleroy@kernel.org, linux-mm@kvack.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 98E26A0014
+X-Stat-Signature: sjpnai65h7yxt15zopofcetcfpm5dgez
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2B26D40009
-X-Rspamd-Server: rspam07
-X-Stat-Signature: nybxmj6o5coxck9hmyzk1jyugekgojh3
-X-HE-Tag: 1770757640-4107
-X-HE-Meta: U2FsdGVkX19LLfHKngXgMl3mq19Nb96T2aKoUCF4XkoA7I3Vxro/LBI4jZsHRuhJ+0NjXChhRUP7f2kB6fS6kHL8joC1BNa8OulizJd181sCWFUweK3gx0vWT6jcXge7smHCuX5A5WBVmssJOLzyYsfdnwz61k39dEnLo8WFfBZCnL8B/egIyPegXYbNTc71ya/P/H0ZpkxzMm5xftvZ6RQRnW6aceFih7iowRLpJLemQE73Rvr/FRGAzLJ6ouf3JOGWq4Bpg83LMc+mW3eN5LV6vqoCrCPdKY8NuD/YCT7hL/7u4eAs4r6TScH4gNYMKeuI6F8CffAk+L4wGIj0/vVwnrtt2H/kGieBeIqdX5i/AjVFuiGnk8tJgVJ5uPLZjI9hZwQYv8ZljiAD7N0w/l1LOevaq6I3zJmQ0LZvjL3uskTXxz1X37pDVP1/L9F5LuHh/hiQt+MZUUairO7bjWzvmDWo9OyDcK5S9f/0Wcns9wkhBFRrlViK7DayVeiCMcHbPcwhlQKX89ckavTdq/9stCbHD+L9jY68mCBrsSb5Y/AZYrDmTkz1ZbnkU3L6nBomgLEFPptaocFGUMh9N7FwZVd2DHUaPtS0dq2wYWAOFu0KJVvMafY/+rrXdjCj2zIQcnjn6J7hRfPxZ5E6Ri7CGjxuT8CMe89Ac1U5UTr7zG+vpqima7T5BUxROdhnpsx3zOmNXD9ui0N3iD68QppYb4Wur/0czymJ+tPB0VmGFbDOHH6re1z6YvbMr3/Ji2SADt6dFyde3XMEvqEmLAuSuqx/Qv0O6pBgIGGEiId72HpJKDN7E66lfdTqHhoVdEe8SJaTcLEX1x+YB85BhZQO+CpilLoWof+JP12hoWXYKIeUjzH2DEC3GB++uAA6d3g7EW6cEigEt5OKSoSKWdgmrqUCQWoXPWvH++VPAYHh2jLXvgu0jFL0FOPhs57Vitxq6W/nDdf70mHLveZ
- SiwTmxCf
- cAa+EoDSYK5SL908vfFBIErb11Ql0j2LS5qSw8ajfGHmQovbkhJLL/Ob/rz9x+CGe32BNfttg2B6j/NYn9efTJ+rXjI9qocF9VCkWk0QyLeQY1x1Q2QxEO3hEPViP+9NLBajDqn1ZIe6VAGlmPWfmfx084hNHLR7O96s77ch5xGMrUTSX9+uRq51pL630sCqfdjqZqglxap63ExhjOio2d9Yw7I3G1DXYXUWYVCLkFHLy8GDolHrmQZTLNvvaQA/dquPvN1KkrXt+m75p/5a61uK0LJ/wFW+NFlBG6CCp/raQmuxd/td+WspLCcVp5266z1WNnaILBvXHoN+lKc3bHUMTWrTyO8vx0TJc7HcZIg6rBbXnV/8M+N/kQh5xEy8tJT2tmNdsiOr5rdBo/RGGVUjUy54jnCetHPZ87N2as83oa7qp8I0Aagvq4cgR3MabS6OPd/nL/tTCUfRLLCU10GOoWSuHqO5nAZWcRD1h6CWuvJJCf/1oLP7vlQ==
+X-HE-Tag: 1770758365-575409
+X-HE-Meta: U2FsdGVkX192rX0ikVG5V1cH6Hc6Inxune5Wu8zAdjKGWQuGSP/0+Po95Fg6pyJY7LTr0o7gmwMlYrkuXdVMocquu0EmhwmngCTgM0EcummIpkSLKEF81ZdXVNpQ3mQ9AE9G+uw7Nchg6f66k9DFqOxKYxTwAlHUPqJ63ZKIzPgFbstJefXIy7o6Jz817vsD7dq4pY9OB+Dv/Mp7N87MwAf7tfCaSz//Gft9nJG7/GCkIlr7kRGh64wTZKu5zedsiQpe4lxFR1ojMK+JJoaga1sN5YUeSM0f7RwXLEZdVRDLTjmixgvXoVPoXqI+AommV2ow3LaL4eh5bVyREWNuHXTcstvaUCkxpu5YsbNM9DlpnpD8A3h6MAoMUD3W1w8PO9LRuFCPbEYnhNukMVTjZSul/s/SeW5dEClghMHtXyIscOwPNWl2UgaXEh30pLJQoadhMuDpUD92oWvsM8u6BHFOliF3+OYc9rdnYpWG8AcggdphnRGenSuUjt7anhBx8y/85c986kqFb3WatbXHTHM2xJ7UbDI1kUR6bD2G7RFhMpA1JI87VZl/RX7kEP6xrPFV6janxWB2x53l34Ns4pEqjZawvny1XHocm8aVeUbkS4sdJ7PFMBJKOWlp9VCSuRfvmOgGi476A0tZOHCTZmI3qljt8LFUJ7XAWVEzQjKqy/v+HYXjsKrb2s2OHpCTw8qn5FoVZwu3peM9NuVHmK9rAExJkjKn6E6+D2qgOemuxcfxosOjJybobRZNdMHrlCWSXB2sac3jyJ0GvFlSOhxpq2OltfaOuAmepDb67yl9mvUzDouJw6HQOWcyxbTUsmsZ2TNz3OPDrM9wpvY/9TbOufuNYCPWUvhb9xpDdwKzGGLEkNxnO4DpazW/tXbDfqaUjqcDHGZPErWlCoUOnIiKVkrqnVYvC/c/9cYIwogAIlFB5xyL7y1jtzImGgN+lxzP1aUx2v0/2/4WXgf
+ J9dzoz6l
+ NwozCtFk3i9WCRakQrM9KAW72PS9GY8ZjWNqepZi8zohR1AtEgFRCpGC4IzCHUe1XIlS2bh5qen0g5rqFRav8lMWuB0l0QU2nj2gxAJq/Al11tTOGV7HyjhQbtMFE6f5NlgNl0cKPd6LLb1AogRJ5xMbJsmWKeCsJZpJMb71HE776XdEf5jYK6VS06hMhY8ztbQLpq739qEkiD4+lNrsU4KmEcGnRNarHDhkyuGNPfOBgc9CoDxOnHUngWoragSxDBTbszEidUP34o134HjWqFH9b3ltHBp7IqzefDyQJcOyCMfJiYIkcmTSX2xZtmh3U1F6umfHyx9n3ckPonkS2U80/mVb3rlvkBdBKJ5swCb09FhCGRQ2YeyqSTlRx+zyQxzNx/QF6lQ0JD77k7cxqssKfAl3dElEU/dX9kZWx3a2auBY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,20 +148,168 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 10 2026 at 11:27, Andrii Nakryiko wrote:
-> When user provides incorrectly sized buffer for build ID for PROCMAP_QUERY we
-> return with -ENAMETOOLONG error. After recent changes this condition happens
-> later, after we unlocked mmap_lock/per-VMA lock and did mmput(), so original
-> goto out is now wrong and will double-mmput() mm_struct. Fix by jumping
-> further to clean up only vm_file and name_buf.
+On Mon, Feb 9, 2026 at 11:08=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
+om> wrote:
+> Now that we have vma_start_write_killable() we can replace most of the
+> vma_start_write() calls with it, improving reaction time to the kill
+> signal.
+[...]
+> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+> index dbd48502ac24..3de7ab4f4cee 100644
+> --- a/mm/mempolicy.c
+> +++ b/mm/mempolicy.c
+[...]
+> @@ -1808,7 +1817,11 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned =
+long, start, unsigned long, le
+>                         break;
+>                 }
 >
-> Fixes: b5cbacd7f86f ("procfs: avoid fetching build ID while holding VMA lock")
-> Reported-by: Ruikai Peng <ruikai@pwno.io>
-> Reported-by: Thomas Gleixner <tglx@kernel.org>
-> Reported-by: syzbot+237b5b985b78c1da9600@syzkaller.appspotmail.com
-> Signed-off-by: Andrii Nakryiko <andrii@kernel.fs>
+> -               vma_start_write(vma);
+> +               if (vma_start_write_killable(vma)) {
+> +                       err =3D -EINTR;
 
-Tested-by: Thomas Gleixner <tglx@kernel.org>
+Doesn't this need mpol_put(new)? Or less complicated, move the
+vma_start_write_killable() up to somewhere above the mpol_dup() call.
 
-I did not test this one, but the identical fix I did myself :)
+> +                       break;
+> +               }
+> +
+>                 new->home_node =3D home_node;
+>                 err =3D mbind_range(&vmi, vma, &prev, start, end, new);
+>                 mpol_put(new);
+[...]
+> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
+> index a94c401ab2cf..dc9f7a7709c6 100644
+> --- a/mm/pagewalk.c
+> +++ b/mm/pagewalk.c
+> @@ -425,14 +425,13 @@ static inline void process_mm_walk_lock(struct mm_s=
+truct *mm,
+>                 mmap_assert_write_locked(mm);
+>  }
+>
+> -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
+> +static inline int process_vma_walk_lock(struct vm_area_struct *vma,
+>                                          enum page_walk_lock walk_lock)
+>  {
+>  #ifdef CONFIG_PER_VMA_LOCK
+>         switch (walk_lock) {
+>         case PGWALK_WRLOCK:
+> -               vma_start_write(vma);
+> -               break;
+> +               return vma_start_write_killable(vma);
+
+There are two users of PGWALK_WRLOCK in arch/s390/mm/gmap.c code that
+don't check pagewalk return values, have you checked that they are not
+negatively affected by this new possible error return?
+
+>         case PGWALK_WRLOCK_VERIFY:
+>                 vma_assert_write_locked(vma);
+>                 break;
+[...]
+> diff --git a/mm/vma.c b/mm/vma.c
+> index be64f781a3aa..3cfb81b3b7cf 100644
+> --- a/mm/vma.c
+> +++ b/mm/vma.c
+> @@ -540,8 +540,12 @@ __split_vma(struct vma_iterator *vmi, struct vm_area=
+_struct *vma,
+>         if (new->vm_ops && new->vm_ops->open)
+>                 new->vm_ops->open(new);
+>
+> -       vma_start_write(vma);
+> -       vma_start_write(new);
+> +       err =3D vma_start_write_killable(vma);
+> +       if (err)
+> +               goto out_fput;
+> +       err =3D vma_start_write_killable(new);
+> +       if (err)
+> +               goto out_fput;
+
+What about the new->vm_ops->open() call and the anon_vma_clone()
+above? I don't think the error path properly undoes either. These
+calls should probably be moved further up, so that the point of no
+return in this function stays where it was.
+
+>         init_vma_prep(&vp, vma);
+>         vp.insert =3D new;
+[...]
+> @@ -1155,10 +1168,12 @@ int vma_expand(struct vma_merge_struct *vmg)
+>         struct vm_area_struct *next =3D vmg->next;
+>         bool remove_next =3D false;
+>         vm_flags_t sticky_flags;
+> -       int ret =3D 0;
+> +       int ret;
+>
+>         mmap_assert_write_locked(vmg->mm);
+> -       vma_start_write(target);
+> +       ret =3D vma_start_write_killable(target);
+> +       if (ret)
+> +               return ret;
+>
+>         if (next && target !=3D next && vmg->end =3D=3D next->vm_end)
+>                 remove_next =3D true;
+> @@ -1186,17 +1201,19 @@ int vma_expand(struct vma_merge_struct *vmg)
+>          * Note that, by convention, callers ignore OOM for this case, so
+>          * we don't need to account for vmg->give_up_on_mm here.
+>          */
+> -       if (remove_next)
+> +       if (remove_next) {
+> +               ret =3D vma_start_write_killable(next);
+> +               if (ret)
+> +                       return ret;
+>                 ret =3D dup_anon_vma(target, next, &anon_dup);
+> +       }
+>         if (!ret && vmg->copied_from)
+>                 ret =3D dup_anon_vma(target, vmg->copied_from, &anon_dup)=
+;
+>         if (ret)
+>                 return ret;
+
+nit: the control flow here is kinda chaotic, with some "if (ret)
+return ret;" mixed with "if (!ret && ...) ret =3D ...;".
+
+>
+> -       if (remove_next) {
+> -               vma_start_write(next);
+> +       if (remove_next)
+>                 vmg->__remove_next =3D true;
+> -       }
+>         if (commit_merge(vmg))
+>                 goto nomem;
+>
+[...]
+> @@ -2211,9 +2240,8 @@ int mm_take_all_locks(struct mm_struct *mm)
+>          * is reached.
+>          */
+>         for_each_vma(vmi, vma) {
+> -               if (signal_pending(current))
+> +               if (vma_start_write_killable(vma))
+>                         goto out_unlock;
+> -               vma_start_write(vma);
+
+nit: might want to keep the signal_pending() so that this can sort of
+be interrupted by non-fatal signals, which seems to be the intention
+
+>         }
+>
+>         vma_iter_init(&vmi, mm, 0);
+> @@ -2549,7 +2577,9 @@ static int __mmap_new_vma(struct mmap_state *map, s=
+truct vm_area_struct **vmap)
+>  #endif
+>
+>         /* Lock the VMA since it is modified after insertion into VMA tre=
+e */
+> -       vma_start_write(vma);
+> +       error =3D vma_start_write_killable(vma);
+> +       if (error)
+> +               goto free_iter_vma;
+
+This seems way past the point of no return, we've already called the
+->mmap() handler which I think means removing the VMA again would
+require a ->close() call. The VMA should be locked further up if we
+want to do it killably.
+
+>         vma_iter_store_new(vmi, vma);
+>         map->mm->map_count++;
+>         vma_link_file(vma, map->hold_file_rmap_lock);
+>
 
