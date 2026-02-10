@@ -4,93 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C616EA810C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26511EA8114
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:28:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 631BB6B0088; Tue, 10 Feb 2026 08:15:56 -0500 (EST)
+	id 54E5B6B0005; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E03A6B0089; Tue, 10 Feb 2026 08:15:56 -0500 (EST)
+	id 525B66B0088; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DF0E6B008A; Tue, 10 Feb 2026 08:15:56 -0500 (EST)
+	id 431BA6B0089; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CEFE6B0088
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:15:56 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E8F47B9D39
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:15:55 +0000 (UTC)
-X-FDA: 84428594670.05.D617E82
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1DD1E140008
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:15:52 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CjfTqjjZ;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 318276B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D1E281C21F
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:28:36 +0000 (UTC)
+X-FDA: 84428626632.06.DFEFAE1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6529F1C0018
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:28:34 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXkYspqr;
+	spf=pass (imf18.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770729353;
+	s=arc-20220608; t=1770730114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x0SPraHkWY4ytIGa3ssvCkBPtYNsoLRqE5+KaHhxgq0=;
-	b=d4Q03sYMhN1uzVzlnVAXM03osMWwaydUZOSpmtCxSkvIH/b3yRtUktHps2nOgBzP1sW35X
-	uc/dwxM7oFWyyoxCadiMpAX4L/vl7QIVjqfDX4EHYeg95LWA7eVoGH04Zk6MeM1ezxOAZz
-	UGCuoshcu6UUbjnoQGgBH5Tv/ghekvg=
+	bh=l03HnZXbsOr3bfTMcnwfLvCVQcb4y4TgKk1IHdA354w=;
+	b=h71YSEWON+HyCrVM+VfPS7TW1q8vl0DMRCub2csELTTSfZ9zFN76/coyzj8yRuCgac883K
+	D1Vqz5cfzXgUf/vca+wtTY7aGQNZVUGZk95iDGaqpciAv5H3yN4Ho5akgABrd4G9ghXcaM
+	yatl2VZV57PwemOmm/uOxLoeHGARXzs=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CjfTqjjZ;
-	spf=pass (imf23.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770729353; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXkYspqr;
+	spf=pass (imf18.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770730114; a=rsa-sha256;
 	cv=none;
-	b=YSXPDpUrKAe8DnW8rAPJhDyaMeQRUwvJk/23O7dlzSD9vM1HdEic1cZ74005EYXMQ1YZFl
-	VIcelr+5qEZbOuGJewLEibxaJYZDPf1og0mi7tJhaP8YX+La+8MV2ODEi03q0x2ieJfJHO
-	86zTkmvdTvH4a2k1lhO32IplZgXa0zY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7C4F260097;
-	Tue, 10 Feb 2026 13:15:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D52C116C6;
-	Tue, 10 Feb 2026 13:15:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770729352;
-	bh=IV/D02QN8hR7lkLeDhxWOSdoEhss8wgB/k3cihsIPIY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=CjfTqjjZ07zhsQQs7536tQfJMZz4vCamo5ynyp/Pr4qbqJzAgqa/Q3peYK6WevRaq
-	 FSWd0GQUj0rxiU+rMen13hnT1r1VOq7xnjrOnW6/1cNeAr3FjOmigw786oy4/Rg0ak
-	 21/fUUSNVzUuXxdEZcCEEsr98oJTm1BDskt4yhJAy/IZ3mnvGdweeP3W/s/cdz9hun
-	 CDQXcO66W1hcNsKKcoXIK/UF+LNL4z0n3LsFS2pTzU0mU9b3Rz2dGXGNCPiiASuh15
-	 egAoYqh8GXpta28pgfRUofLlZDYHy9hlwZdMi6YflhOjd5L4NV6DzqlUpfP+hXatng
-	 It1tMCEsIc/XA==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,
-  Pasha Tatashin <pasha.tatashin@soleen.com>,  Hugh Dickins
- <hughd@google.com>,  Baolin Wang <baolin.wang@linux.alibaba.com>,  Andrew
- Morton <akpm@linux-foundation.org>,  Jason Gunthorpe <jgg@nvidia.com>,
-  Samiullah Khawaja <skhawaja@google.com>,  kexec@lists.infradead.org,
-  linux-mm@kvack.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: memfd_luo: preserve file seals
-In-Reply-To: <aXd8I4czYUpl72qq@kernel.org> (Mike Rapoport's message of "Mon,
-	26 Jan 2026 16:37:23 +0200")
-References: <20260123095854.535058-1-pratyush@kernel.org>
-	<20260123095854.535058-3-pratyush@kernel.org>
-	<aXYGkb-QtYNaWYw4@kernel.org> <2vxzqzrca6cm.fsf@kernel.org>
-	<aXd8I4czYUpl72qq@kernel.org>
-Date: Tue, 10 Feb 2026 14:15:48 +0100
-Message-ID: <2vxzo6lwu4cb.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	b=wd0K1M93NsH8x2D9geYfsWrzdFGuaDoKJyYy0Qkgxjjd1l+osg/ZlucQER6oSYQp0ap6J+
+	8X1GYIGNPKgtxm0NpYB7DdG9N53NffOmCiy25oeCcHeVt3jIefXkBuUBRwHlYoYH61C+rB
+	ez67ZVmgDnVmQLKJfPFlTVhmQZDOA9M=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770730113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l03HnZXbsOr3bfTMcnwfLvCVQcb4y4TgKk1IHdA354w=;
+	b=BXkYspqre13wxC8n8CTHEbpL5sscVK2NFHYatd87YKwqygNEhjIodHXE3DUMY7RU1N3BDL
+	QxNP/JH4Vs+8jbTao0A7agCznkWTOSIIbhHsmLmOZparqqq31ehkULSgDORQPj2QOb+OEI
+	oXc7oxebhUqEAHqmQIkgCTuFVY6Jr60=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-J7HbQg95PFiUOs7eZi_ARA-1; Tue, 10 Feb 2026 08:28:28 -0500
+X-MC-Unique: J7HbQg95PFiUOs7eZi_ARA-1
+X-Mimecast-MFC-AGG-ID: J7HbQg95PFiUOs7eZi_ARA_1770730108
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5059656723eso190909991cf.0
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 05:28:28 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770730108; x=1771334908;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=l03HnZXbsOr3bfTMcnwfLvCVQcb4y4TgKk1IHdA354w=;
+        b=kTIaz+wnyZCCm4UwHLAx51s0iWtS5BvPFswo/PLsoaplgMyepvBdfeA5KqUHjfQln2
+         pOjkVftgdYQggBLwmusdCTLNVkZ4dtQvsSUzR3gC7BwUjKh5nbkG2P8tBOw/4byBabQq
+         JlCXdHdoKMTEHcfc7U8fZw9JIsnniEA5gX+ekLUVisJ011Bi2Qxj8fItQP0Ya4ERnU/+
+         TAZjXo98l52s7ITLIgci8UqPZpQL3SLgkFgQUzspdxcVC4bmDKJfXOqTkuwQk2OPxDdM
+         xPo+lnI3eVDWKXFMFpKJQRlJ+0dSm5r/PLoHkMLkVYmmZnAV5/7m9HVLix68/tA7gi7V
+         Op9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVo63Tlejhh8SgMVu7J+YJ59MUNOn1+4pmJ1ufBr+0/hIvv49sjJUC0tyoQrXxRtY7bVkAotli8iw==@kvack.org
+X-Gm-Message-State: AOJu0YxN3YfDs6WCxdqa8R5QiPiN2UqMdpjfxod1EJ80jUqaKaS/ebEW
+	S1L6fC5fFuLzvsBCNOC9x2FPFJetI0dxC8YK/j0tndb8isG+QvfQKX2f4yaFUO7BbSchSc0RQ3B
+	tnZJTPiVXZhMkZlPAFltIINHnfqF7jOMaTEJfhXj38bnekoPfyCqJ
+X-Gm-Gg: AZuq6aJBIykiogOj07whOK+An/lHdCiorm3Ep3FWbHvyZhrixOY0B2lypesrr73Sb5R
+	32MAtMEQV05zxcNbNnCsQBqtEUFBPgYAgW/NGLGjaziU1G02C7MyDXgDHelKVu49lN0suRd2R6P
+	WjPAP0JtJXSWr6mgkrfMSR6T7Whtyfzuo6UZ8BmI2yzH4+ZmaDOYPM2euSQPYwhNk4PsWv0dNIW
+	ld34CYXoJ5awDw8YmodnqfyxhymAzxEWuN5uoBJwr5tq02uCNZ8R/nPT5Q8WA9XrVTIv8d+B8pm
+	+9zBCMKqiVPcqUnBzaSchyL8SbdenXpVwDlSkG5oH2rDyUEotbYP8dQ6DatUkXo82r8b61/gbkp
+	4ZKz5/geq5ONLBrkJpgpoB3Y=
+X-Received: by 2002:ac8:7f55:0:b0:4ee:c1a:f11f with SMTP id d75a77b69052e-506399e4b33mr199812691cf.84.1770730107821;
+        Tue, 10 Feb 2026 05:28:27 -0800 (PST)
+X-Received: by 2002:ac8:7f55:0:b0:4ee:c1a:f11f with SMTP id d75a77b69052e-506399e4b33mr199812401cf.84.1770730107444;
+        Tue, 10 Feb 2026 05:28:27 -0800 (PST)
+Received: from [192.168.2.110] ([76.65.77.217])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9fdfa1bsm1047769185a.45.2026.02.10.05.28.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Feb 2026 05:28:27 -0800 (PST)
+Message-ID: <0c0886d5-2561-40e4-94e9-6fca15f25127@redhat.com>
+Date: Tue, 10 Feb 2026 08:28:16 -0500
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam12
-X-Stat-Signature: w67y4zjqqsjoofuchzwmaeqmsnsagtno
-X-Rspamd-Queue-Id: 1DD1E140008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 10/11] mm: thp: always enable mTHP support
+To: Baolin Wang <baolin.wang@linux.alibaba.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org
+Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com
+References: <cover.1770675272.git.luizcap@redhat.com>
+ <29e8dfc2772af4b6e0db24134ca3563ec422b91a.1770675272.git.luizcap@redhat.com>
+ <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: aN9DsbBSsvDyNinglysF7JEAljJL8S3vxLa2Mmleeeg_1770730108
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1770729352-596356
-X-HE-Meta: U2FsdGVkX1/S+iBy6RghHNAXAcvc6X8RUy9bCSE5qE96hc9twOS1U5kqYV4/y62jpSQjSPxAScWiTU6Oc7JwL0Qjm6Rs86eoXP0KeXUHoDIZZJFkaDu7tCElNk+2Rk2BuMmkK9S3DpxUsf0TFzIwMcO/FWeGP0HYXD5JVeC4pgpY5u8nfBxpLma0mrsZseeyvbaOZkUD5QWefXbpsiO+ktQGCfU60OietN5+Hk8N72XqaWpbooWLJyN/5T46eln4uwOpgegJK4RcPMLx+Gvchd1ZYGsVtOyWHAj4PJNRuw9xxePPOKAnETdNPuksOmuKfaGp/9dd4r5iRvdMn126d1K145T7uv9fnNjhAcf8B1E9KyXu8l6GmmGMNV0KDAXctDI6gnHfK2/mKtI2FtrCt4XI5RB3TU/mpw2t5UHMFXOsDLVk0BldkzSBr9S3IUbblpnPisYak4f/sccfcDud89kMGLUSaL2PI+RxRI070LaD06Cjmrqcjp/9QVgXNAZ0WzNg2Qs7Km6Fn197yksvEXwOrtAEeP81yXqgTpK6/VQRmuZdV2HsnnWepKRMAn/HV87uxzk5CPUchbCmMIVsj7VgfhBz1eqeEwdNemNWA6b6bvw+6ZcddQrmOyYEANx9thGGYXDEUhglCBrwliLaCpCZ3Ae0sCdUu4kwwdCRwr2quU+YA3BGJTyIbmLKuSrjoNKBBQlmv6N022zPj1TvLbRrgTlsWwyBXVhlh3nKwRZGxjxF2D1yzsCqEk/gpLs8DXUul0z0F4yS1K+DRTsruAvCt+cfHGLi5qnkqAWJhuo52uTO5vHnNtlYSBD+lkCJLYvaRLCMODA72nGUC5CpMD8CTNXFTc3mJ8Ons98Wv1vQrineUe2ZjbQUgqdGtM2ofrsnPYzaO4owCHg+RB3AmkujtGZdr4ax8IDk/zBXsgH59mEZGdi1rFLPqjYwKEsXGB/OfCWEh7GpRkMADpF
- HkutSn70
- Cwqfn76ekRjQeqRD7fHyLkjQ12JN57m4KW73q3RfhQ4zIdap1Fy0WLeqlbu+KvPYd9ZxzvM5B52C7sqxwaqdCjEiMwqpaTooILDYL73KNaBt03PjD4an/ZPHhdPE9jBzMmjUz7PzODqqWd+4rYBzvB4wK4gDcldRV3h8N09VXM3R+LfFZOdsunhU2gd++8L62/Xr9e60AIiW9UpZRwAa/hyS478e5BsB7mpMKRc5Ap9pnJ3lp0+pQYZ8RqA==
+X-Rspamd-Queue-Id: 6529F1C0018
+X-Rspamd-Server: rspam07
+X-Stat-Signature: n9wxhkhhu5eq5sdtoqwf4zoa8o7m1nzn
+X-HE-Tag: 1770730114-299307
+X-HE-Meta: U2FsdGVkX18b8+WFIwQdEJC/PRx08rCYDkXlksRMEjdwB8DPwfvbNSZ8gZjNjQR8Bg8cqbgSElARoIkXNjs1In7AB2yMw87XuXA3gs4Aur53yNBmuCZ0mMbErDQY8T/DdlXeU/dTOcCBP6fxHyVfWNYWEXP77Nmew4bCxKR5PymIW0KDaAXHcRb6OGTZLdhXhJPF79hDQipiCadI060ePLkqMHpRUckPjLWzSRDZCRuIJe19nrmBQu2TRcfOXQ65tjzO9SWpsZ3k84Q5lYmVee+ky1ZhiDhfZxwUpVlktBXtnwlkCvi4MUWcFvkDjeli3H9sAjQnV8gPyBNWB0w3zlX/4rQ7Qq65Y/wdPfcxZct+4bCFW41aCF7M7K5ceGjE0c2kwTBEX5kVhBIiFh+h7IAmfaR1GfH88SLqKPeoCEC//i7H+/5oXYqH6002gk6B+j4dNrMM6ND2kRZU9ZI06W6xCeqnfGumwGzuBQ+0IREUmgXwfwj5z8cSmUpkBbvQAYAD4H3tXKQGqSBKcqhZr/NfeOyGarLqghG+zrisuUAJKqy4076ImtLcWlsJmozUBiOue5D2ipLgbKNFSMfr4Zw6ZZrHA4e5ILaoD1nUCrHpsmf8VW1plVzrnMWYPGr5wLerkh/o7xdwo0mXeSXDHH7LnVGgQNt6sGsRIFp04yiHTj6x21wY/EkNAE1UqmH0AEgZHYFrwB3XdS5JRgrJH8+sH8h+kFIiMicoilELilhx3y/eE1mgEFaAAy3tjIionrFz1kdO+Ok0Ld6XTsp4RgwP386XjpFe5UJP9l0BSxqbfrI/ARDOAHfw4bgH5DXaLK8onpemqlyO+Qc7OnL6Qqd8DH8ufVV5IG80GY1KfqFV/pAqXyR+AjtFIeuP5YuXPF8bn2zU8E2fk5LIcVZ7bpz1CpAXwJzuZBLKJri0ccjM+GMqRiQUhfZ89V7lUDEy6Z85vS3M6lbmgARv2DL
+ tUXxZzek
+ LDD08z65fUAZIXeDARrJ3IMz/wIPxjdKuYeJ0xMK67uTP9RmXvKHP6bLfkVzgSPiX9Lq/BYLZPhpjGVTlNZW91NqUclLWN9rpmDIfCPs+1TXLqcdnhyqTTIBgMbK2eWyCJKksN1wVyLZypaiWay3Carid/O5UWyJyk23iZXaUR2hHxoVl0VxDCQz1X+a0Wo2xwxKkQBV0ktakDNA3afV0mNqtPpy5D6yvPbJTZBBURTcBC9fbjMMuuBhzcLfaORliyqB9nZu2BnNbztIpbrWSXxugJPDYSBo6WlZ1ESvwlQM6R1Sq11CyaSgVAfYdmH4oESrjpfFQRH6YB/m/lRfU2PjtHbLqLL7Wd7N4NTVbMf13pnFlefg3mY3ymSv/z4ZzQOCAFMnWc/D5mWMnTNjJkEG5Gp3AChNOzHuM
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,67 +134,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Jan 26 2026, Mike Rapoport wrote:
-
-> Hi Pratyush,
->
-> On Mon, Jan 26, 2026 at 01:47:21PM +0100, Pratyush Yadav wrote:
->> Hi Mike,
->> 
->> On Sun, Jan 25 2026, Mike Rapoport wrote:
->> > On Fri, Jan 23, 2026 at 10:58:51AM +0100, Pratyush Yadav wrote:
->
-> ...
->
->> >> -	file = memfd_alloc_file("", 0);
->> >> +	/*
->> >> +	 * The seals are preserved. Allow sealing here so they can be added
->> >> +	 * later.
->> >> +	 */
->> >> +	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
->> >
->> > I think we should select flags passed to memfd_alloc_file() based on
->> > ser->seals (and later based on ser->seals and ser->flags).
->> 
->> Not sure what you mean.
->> 
->> I think the only seal we can set via memfd_alloc_file() flags is
->> MFD_NOEXEC_SEAL, which is really a F_SEAL_EXEC and plus a change of the
->> inode's mode. And now that I think of it, that is a valid use case that
->> we might as well support. But I think that should be done by preserving
->> the mode of the inode directly, and then copying the seals back. The
->> main reason for that is that the mode can be changed after the memfd is
->> created too.
+On 2026-02-10 04:56, Baolin Wang wrote:
+> 
+> 
+> On 2/10/26 6:14 AM, Luiz Capitulino wrote:
+>> If PMD-sized pages are not supported on an architecture (ie. the
+>> arch implements arch_has_pmd_leaves() and it returns false) then the
+>> current code disables all THP, including mTHP.
 >>
->> Other than that, all other seals are set by fcntl (via
->> memfd_add_seals()), so I don't see what else we can pass to
->> memfd_alloc_file().
->
-> Hmm, "using ser->seals" was bad phrasing :)
->
-> Now we add support for creating memfd with MFD_ALLOW_SEALING and at some
-> point we'd want MFD_HUGETLB and huge page size.
-> So I think we should have a field in ser that will define what flags should
-> be used for creation of memfd and based on the value of that field pass the
-> flags to memfd_alloc_file().
+>> This commit fixes this by allowing mTHP to be always enabled for all
+>> archs. When PMD-sized pages are not supported, its sysfs entry won't be
+>> created and their mapping will be disallowed at page-fault time.
+>>
+>> Similarly, this commit implements the following changes for shmem:
+>>
+>>   - In shmem_allowable_huge_orders(): drop the pgtable_has_pmd_leaves()
+>>     check so that mTHP sizes are considered
+>>   - In shmem_alloc_and_add_folio(): don't consider PMD and PUD orders
+>>     when PMD-sized pages are not supported by the CPU
+>>
+>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>> ---
+>>   mm/huge_memory.c | 11 +++++++----
+>>   mm/shmem.c       |  4 +++-
+>>   2 files changed, 10 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 1e5ea2e47f79..882331592928 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -115,6 +115,9 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>>       else
+>>           supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
+>> +    if (!pgtable_has_pmd_leaves())
+>> +        supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+>> +
+>>       orders &= supported_orders;
+>>       if (!orders)
+>>           return 0;
+>> @@ -122,7 +125,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
+>>       if (!vma->vm_mm)        /* vdso */
+>>           return 0;
+>> -    if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
+>> +    if (vma_thp_disabled(vma, vm_flags, forced_collapse))
+>>           return 0;
+>>       /* khugepaged doesn't collapse DAX vma, but page fault is fine. */
+>> @@ -806,6 +809,9 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
+>>       }
+>>       orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
+>> +    if (!pgtable_has_pmd_leaves())
+>> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+> 
+> I think you should also handle the 'huge_anon_orders_inherit' setting in this function if pgtable_has_pmd_leaves() returns false. Shmem as well.
+> 
+> if (!anon_orders_configured)
+>      huge_anon_orders_inherit = BIT(PMD_ORDER);
 
-I am not planning to re-use any of memfd machinery we have now for
-HugeTLB. The main reason is that the HugeTLB support is different enough
-that any shared code or data structures aren't worth the extra
-complexity.
+Good catch. So, would you agree that should set it to BIT(PMD_ORDER - 1)
+in this case?
 
-So HugeTLB gets its own serialization structures and file handlers.
-struct hugemfd_ser in [0] has a field for order which we can use to
-decide the flags.
+> 
+>> +
+>>       order = highest_order(orders);
+>>       while (orders) {
+>>           thpsize = thpsize_create(order, *hugepage_kobj);
+>> @@ -905,9 +911,6 @@ static int __init hugepage_init(void)
+>>       int err;
+>>       struct kobject *hugepage_kobj;
+>> -    if (!pgtable_has_pmd_leaves())
+>> -        return -EINVAL;
+>> -
+>>       /*
+>>        * hugepages can't be allocated by the buddy allocator
+>>        */
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index 1c98e84667a4..cb325d1e2d1e 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -1827,7 +1827,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
+>>       vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
+>>       unsigned int global_orders;
+>> -    if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
+>> +    if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
+>>           return 0;
+>>       global_orders = shmem_huge_global_enabled(inode, index, write_end,
+>> @@ -1935,6 +1935,8 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
+>>       if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
+>>           orders = 0;
+>> +    else if (!pgtable_has_pmd_leaves())
+>> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+> 
+> Moving this check into shmem_allowable_huge_orders() would be more appropriate.
 
-[0] https://lore.kernel.org/linux-mm/20251206230222.853493-11-pratyush@kernel.org/
+Will do.
 
->
-> For seals support this field can be hardwired to MFD_ALLOW_SEALING at preserve
-> time.
-[...]
+Thanks a lot for the very fast review.
 
--- 
-Regards,
-Pratyush Yadav
+> 
+>>       if (orders > 0) {
+>>           suitable_orders = shmem_suitable_orders(inode, vmf,
+> 
+
 
