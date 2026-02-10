@@ -4,114 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81F11EB26F8
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 18:39:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDD8DEB26F8
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 18:41:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 758776B0088; Tue, 10 Feb 2026 13:39:57 -0500 (EST)
+	id 1A6086B0088; Tue, 10 Feb 2026 13:41:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 705C76B0089; Tue, 10 Feb 2026 13:39:57 -0500 (EST)
+	id 17DA66B0089; Tue, 10 Feb 2026 13:41:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 611B36B008A; Tue, 10 Feb 2026 13:39:57 -0500 (EST)
+	id 07CBD6B008A; Tue, 10 Feb 2026 13:41:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CC616B0088
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:39:57 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D16198C3C6
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:39:56 +0000 (UTC)
-X-FDA: 84429411192.26.46F0C71
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C7EAFA0009
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:39:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PAGKPMXD;
-	spf=pass (imf25.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EC0B66B0088
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:41:19 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C52F5A524
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:41:19 +0000 (UTC)
+X-FDA: 84429414678.16.5500B23
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id C9BFC1A000C
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:41:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IUPdjKUb;
+	spf=pass (imf19.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770748795;
+	s=arc-20220608; t=1770748877;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZQ846SBG+nP/4stgxv7mhMOSp1tkPJTwAIeCH8UHcFg=;
-	b=cdh8RGH22ickP0tVsIdpeDDMdItEWAwJQOazqG27Pn+lD3FkP2+08FtOu9XjdmYedhVrWj
-	+pM/9HCSARn72DTAWOHD/S/LD76IUHZ994EA/YD+45FBytva7mW04SYLnpwGQxM7CSenW3
-	M5EEqFUHUWfuxgOOul4sI5Xx3O1uE50=
+	bh=iXzEd+bQSPYE24IpRzFiYeDGAkU4bPaTEVegZk2rxZM=;
+	b=YTAOzQK0Trklt0GoJj67GqEGd7S8szmlSzjNXRo3sHv02tkO1oIpTKZqwCJJCGO5Tntqhz
+	zQauMh59SQgSZw+KPzIl/4p6NiHUI/SNeuptZfpJIfHs6bW7mUF0Ng7qNrFHtdJC7jeFbV
+	09GnGQn3nujj0l68Jyae0aMZb6A1Bm8=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PAGKPMXD;
-	spf=pass (imf25.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770748795; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IUPdjKUb;
+	spf=pass (imf19.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770748877; a=rsa-sha256;
 	cv=none;
-	b=pDF1PqxwVsjvnvnIKVu8K+Rp2/vgEu8f3aoh0bDGNdsRV4p4ak5DpPVdqHfuWiXVNT2fQ3
-	DOw9wvPy+TpGrjhmtqsrrfSm2/3RyXBLCn/kjJcBiCnovKJC+uQ/5PxltR/cxhU0QS1M8w
-	H5l6c46BOiefdvOp2biYTy3zQbY8AKI=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-8230f8f27cfso2852700b3a.0
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:39:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770748793; x=1771353593; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZQ846SBG+nP/4stgxv7mhMOSp1tkPJTwAIeCH8UHcFg=;
-        b=PAGKPMXDPxz2P2LmavTv2LrGXh4R3q5mbzDqS4toq/9gj/ymqxwzfLR32K7VtCcTAP
-         MICu4k2PwSL13K4mgTzDfD9H1+X1vrG1mClGndxw2lCwfzun6nUVX+rqT92t8fnCr9NM
-         HRJpwS6Yza3DZtspRyuDGUD4b9umEW34mfuMJ57lirOTJN837GP+CKtkJtmexD3EIN5w
-         f/TLuhwT7x8ZfyFd57Sh6zInId5lw6mk0pRsVHnmnRpWwWj/4EMdPLhzyloo2eOE7SgI
-         s7aK9iv5qtnmDEUS+KU55lX3D36lftBcMzN9zdIeOdS4KLw2BMDjsEsVsy5lyDBIs64T
-         ak8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770748793; x=1771353593;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZQ846SBG+nP/4stgxv7mhMOSp1tkPJTwAIeCH8UHcFg=;
-        b=UxCddnjEJrFDuxfIx9r0ep+sdn88XX9GWbxYkbS6T+0Y1GRpO6vmClV1E+gQpERJXf
-         dRBahonqarN0huHoRh5jRdWnlWNnz5BPCJ80qTui64NVMKmIRYkL2xXWw9Q3lgP0NQPi
-         czRhMIYMVyWEVEl+qwP7jnjpWak05lxyGfLrehxMacvMNpx9+3oyY0OB3vXUYY0TMSMj
-         x5SFYNVSOYOmNsBBzgFh46rUkYj93RS2KL8Zb1sdYtLC+VZoQ36PEyhpkQNYr+1cJQne
-         BAoUMVs3sm3N0Q/TI0Ze7n6XuxYn0bytMbKzJNrBcc7dPefZFVs/IULeYGcqpoXZc9sW
-         Ex3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXIUXSHXdjj+daGEt0YEc4+kgjHlV9R41rg7phdpKw2TiwJk+e4svdhg5rWMaGTzMtGw9u5Ioa0CQ==@kvack.org
-X-Gm-Message-State: AOJu0YyrbO/gSvwSSSgsaI8mf7xRyTo77FmSili9aNPsN7hske3Nl367
-	8X3Ezpy8rUpKXPH7WDwTDKla0hoS254tzzItzCvxb5eClfTty3/uONoN
-X-Gm-Gg: AZuq6aLj+WKvAo8dIZh9Iyyrn6dFDh7zbd5z9OANZP55WcqeZvE2El/YWpBUFVmlsHl
-	oVYpvF0PB0b1+rDuBXgEq2ynuE866bsv1yTslf5tFnW3507Zdf52x/ub3qz4wL5T4VrXD2JQhYs
-	leVJUTQktgQ5A0tsq+qj4bswmi5lmU9FAN+y1TFjRa6ZQpAzD5lb4sODBCAvhGYXl8On2XqzcsC
-	SHYqLvP2sj8rtzDeNwJrTdO+eAQiiWiB2JagvZbfkAKEwsqDuw3KqLSZDuP6THRt/Cvha5sB0P9
-	a15aU2HO70FXSVcmDHkYZy9Dv1gvCjTQK0lyPWSn/rRiOtswXhI8ibW4VB2En77ija0Yu8ricvs
-	gM9plPIdZqilXMbHMXNWgIyqwpgclQB3SoE3qoEBt1QlJfbkblgcDwqI+an/b3yzo2F+L1D/240
-	K6T9eCu0QI1k+nqU++0E822A82avkf/s4SZYNJxy58rP/n2YiApoZ+QivP9Hw=
-X-Received: by 2002:a05:6a00:22c7:b0:81f:9f41:34bb with SMTP id d2e1a72fcca58-82487ae59cfmr3152744b3a.56.1770748793470;
-        Tue, 10 Feb 2026 10:39:53 -0800 (PST)
-Received: from KASONG-MC4 ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-824418b5373sm14553760b3a.53.2026.02.10.10.39.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 10:39:52 -0800 (PST)
-Date: Wed, 11 Feb 2026 02:39:48 +0800
-From: Kairui Song <ryncsn@gmail.com>
-To: carstengrohmann@gmx.de, Andrew Morton <akpm@linux-foundation.org>
-Cc: bugzilla-daemon@kernel.org, Kairui Song <kasong@tencent.com>, 
-	Baoquan He <bhe@redhat.com>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosryahmed@google.com>, linux-mm@kvack.org
-Subject: Re: [Bug 221055] New: Hibernate image write 10x slower since commit
- 0ff67f990bd4 ("mm,  swap: remove swap slot cache")
-Message-ID: <aYt4RwxqH1W_zHez@KASONG-MC4>
-References: <bug-221055-27@https.bugzilla.kernel.org/>
- <20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org>
+	b=qWNIN30Zy6vS4FX/tWEpLElx2i8V/dv8ekMR2OtESRhU7NcMAM+veSw8DLIJogekvewy5q
+	Wi3uJ5DoJyD1xikXw1ia6b+bBWkau3aKaA0V9B/+Bk94fRFLssJS984ghMGCSSUJefcRcX
+	Y7YTxdcjSYsglr7KhQ9W0ICMPOtR1rg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0904960130;
+	Tue, 10 Feb 2026 18:41:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D29EC116C6;
+	Tue, 10 Feb 2026 18:41:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770748876;
+	bh=xyaw/tigngjCc+lT0XSZU87P0bu/6oUrpBcq/awZ6pg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=IUPdjKUblQnCIt8Q/w/JRLJb8Gx7ptOW77kn3FGAXaYjfly5xRyki92go3bp75Y7d
+	 1r0x4yHnke4si+ewjkp6ktvmAQr8YuW8B3AdLZKGoMqDMqoCBkMCwCv8VpNYR0PqJH
+	 e081OwOi4as9xBzv+Ekzl+N99A+gJf4Hy2v+N7Vc+wEjU6pevo8G+WdsxcXigvR50y
+	 GHDiEuYWEKW58PnOPcjSVwH64bM43R8KyFtpQYQydT6mwhkV8dagbuHyrcQQKIgFJv
+	 h0fdSq7WQyjqjONaLQHvJFcT0dEDhedr+gNUH+PogPba5pMM3lqL9d3AMrEoixEgwj
+	 u8wyX4jpaxf2g==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Andrii Nakryiko <andrii@kernel.org>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, surenb@google.com,
+ shakeel.butt@linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+ syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com,
+ syzbot+237b5b985b78c1da9600@syzkaller.appspotmail.com, Peter Zijlstra
+ <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Subject: [BUG] [PATCH v2 mm-stable] procfs: avoid fetching build ID while
+ holding VMA lock
+In-Reply-To: <20260129215340.3742283-1-andrii@kernel.org>
+References: <20260129215340.3742283-1-andrii@kernel.org>
+Date: Tue, 10 Feb 2026 19:41:12 +0100
+Message-ID: <87qzqsa1br.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206121151.dea3633d1f0ded7bbf49c22e@linux-foundation.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C7EAFA0009
-X-Stat-Signature: 9n7nkab7te7hbmg4gtaw1erzme8a8xuo
+Content-Type: text/plain
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C9BFC1A000C
+X-Stat-Signature: tgt6icj7doa6sewwcxazfexj84h898tm
 X-Rspam-User: 
-X-HE-Tag: 1770748794-803351
-X-HE-Meta: U2FsdGVkX19v7xB//cWaqTRzMxRDDMdduWD3o8L1fKbLKGO82JRH6eC4Irx496RFyTqZVneRHJ/9tFAUfwK1d2isxwZmZQJQxciNhrlWl1dzgtghXoUJf7AktsOITuQlOP8HsqNfxOKs0LrVsdRRvmDrFGL6ryEMCcJiVlRCbWBZgtz9LoNJ4lJ3OxrkJgAVFFAkzXFha6boHaZwZ6UBrN2ucUGdkEktF8yA2wtU6U7g/Sg8z2XPOptMy6jJxQwUWy0ZmHtDWr8TonEr6nG6BlNo3255cxvJUSFwWaQz63X2Q25t//UsbeLHx9tOa40yIUwMG74TB+e1ot75PHlqxDfAqerzhgZDMtFeyFC+Dw2irBgNx03btBbHuTZ7z7qD6ORGU2B5uv7viusDjhbNoR9/NMknQYAlEscoXpin7eMeN2W2S/ZFWGjpxMchaxUq+nkxwm8M3yi9HBfN2GkXkTAQKGkYIn+0J54HkKTuLSuliYDDwLwfWO6AuIgvutgIq09SpQaLH/MrmK8iXWuLpELNpkygUTGuzQ6oskMKo6qxhMDlKWCIZHkGnvHvoJxNsH0ghbBBS9XoBGt7up5lPeDM6hm85sxnzjYNbWOQeYl3QcXt2l9YxSm7ke45w5kez0ge15afh+kI1ZlP1Kv82yYIN+SIjRWPZti+Gpo0r3h6DkBF+QArbLBSxvPlZP1nnBm6TyA0JrI/p9dS9RMwe6B5hLmVb3SS5QyavTrS6HWImWvf/1bDf5UVE6jCoPXNxPOtGACX/jkx/BegWhF72CxXlBz+XKUR1dtsmlcTL8n50vLWVvxvw/rVv8Yv0e9KuzE5gNOngzFsaatC0Y5iLMA9ZPrfwoP4rvblkB42UgYN+XpqU4+ueDlxfq81kcOjCLIOZTw2rpSBsCqZ0Ez9cD5/DltiGQfV3pLxffiG7FRb1A8+f2lDTMi1dp3WRn0WYWZxHsCvw//OC6BWTzH
- hTXOO0QX
- EsZaVSMJCUEvkojq/TBIb2/DYQLkiKQZEhS7nMb+5+tvYomlA2SnL+j5XFy+6o6MnTMrOAymvrq1mJTuGg/8jx0Y3tfMz65u5I+oZnvpafkiPs2eEo1yZpJw02EEwlWxwT3bD54O/XODfqrtT7StjxvGTroRqiTex4RbQb9P3jhFJ7amfl0o5t/ROA5bPMpoQmxiK+rPy7Jvxd5PdmlIxp1+OAQAkBN/628ZDB4Wv59r3n0H/2oacoodiYr9fu8zpmKut06Fl/k6MI+2wt3FYHiTb87FkNaza4ExniF1lRuw4U5lW+y1jupJFM1WGjPPqD8dcgu2MI6yMzWKdrG0j76nBJGYQMog2LIUv7UidL6AhQXSjsTaQuL07pceOEk4f30ogOP3GC0VUyo40+B3POM7dI1OBvCf5J91K2T1o0VEwyUTNkUn7aIdbredRpAw0NB1y19UjNOH1b9YD98o4ogsDYwBcL24YyRXl4yMUj0fVgIgYafIr+idNpYIuGEA3pAV/VTes+82iCJM=
+X-HE-Tag: 1770748877-17911
+X-HE-Meta: U2FsdGVkX18nVp88iMpH3/eoDv1ku6c7WbaxxcOYl5TgfdH2POo1DoC3c0SSBjdighgs9DVQgFGalURqyQc31FCm4EFFMUsrygZNT2xtI8SToWBugxcp05R+UvSrdwQecyyk5rYPLdRJyTbbcmSV/A1balVWbOqwCKuKoFdH7xjZn/cen9SZSXAXffaOEf43hOG2dh0iLrsUkTyBHZQcskQ38fvQ6FgRzHHQjd7zYAWwnjiTfuVemVEi95mvLXwf23yEkH98agFybf0qCYlFQJZhqXJdhwQLNBhF9WoR5cqrUpc1bmhxbjDcocTXl9vXDcNyBXlTJ+D34WhxtoYNbLaVqiH+OX8HSaKhkfJglyPds5JWOYwuy8YAFzwWmtxYqBYqrnKIwxNyrbq4otK9/kuPf5mfEoWkSIBA8rCrP0sO8ZfLXoGriI9n4MydJaZcLCP5l9O+Qf93osHz7boQnp0RpGRJJu6hLyimzZZ205d0gTzQPFHI8p1DSD9TVSpfurE6kpf+x49Jd7DpZNTMxDIay5Je+WhCvkMTmgxvIkidenV97JrEhfKopEG9zl2bsrObo+Lp3fNc61Mpoyvkhij4CWa9Q5/+n17SFjdGLQUVEMP/tUqxN543b02KwujY110ro6SBTn1g1oo5iZqXAOePEWw6cJokCtOBAufmNdV7izYm6lteYKFAsK0WZLukOiCtMGa1WWrIjOHevs8oi8shQi5HRZhVI8Reh0l2OR61ZyS4DZcQTFY7aEFfx2M2yMti8QXezF9ka+5bkaztsFQtHk9ZqFKnphkGORBUhmT3WW8saAxdUVwRekZHBmT987jksuDpBzf87XdF25XQ2mddJ5cBI8ol55aYYW6/+wJYW+HiUXRJfGvT8tDKS61vzMK6zZeqBihXeYi2KIUBKSmhX9mSH0+2yDhlxebdQTayMgB7rNKQWNtwLu7ilQ5DiQ1ZNVAuVPgDmPPeREd
+ SjpsUESU
+ owbMb/PnwqK4XLXsCEl9OQE64swrNwBY9pfH40h+Jn+O1ZE4f5Ylm+pVRshK08dT5DUK4vR1uj0p9o1M5msx1lkArWlCSUng2S5hZ2RzV2VzyzjGGdLGp2ceq1IEB+BdbEiUAGmMdhbBBQQXpW3ba5NIblAf7X6Yy6XRC9ieFoMWUKsJgi9ZoFmxa81OfT1ndJDJRSe16f07cQSq1dCE7P0pX9bOWFgq0RDVMEkJLHvqCn4ctR6vp8ZpCk29FgYn63ZQvJP/CU77/b8UtdLzBkpr1XQRhnim7Q9svCUl+PkE/lLDn0eF2/blB9LGndPbKz2FHMbDgfgMvBbqdvRY4pxYeMCz0bRxkrE6GHpkXry4CnrA1fNl55I9pCwfRbTgYjy8jM/07oH8nv4/dWRxubM0WKobgbnmuD+31eH2JFEouEAxtU/lCusYPDMakxjgksjkA7VDhsNCKOfY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,80 +95,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 06, 2026 at 12:11:51PM +0800, Andrew Morton wrote:
-> On Fri, 06 Feb 2026 19:51:38 +0000 bugzilla-daemon@kernel.org wrote:
-> 
-> > https://bugzilla.kernel.org/show_bug.cgi?id=221055
-> 
-> Dear Deity, I do wish kernel MM bugzilla would just go away.  Sigh.
-> 
-> Canned response follows:
-> 
-> (switched to email.  Please respond via emailed reply-to-all, not via the
-> bugzilla web interface).
-> 
-> 
-> >             Bug ID: 221055
-> >            Summary: Hibernate image write 10x slower since commit
-> >                     0ff67f990bd4 ("mm,  swap: remove swap slot cache")
-> >            Product: Memory Management
-> >            Version: 2.5
-> >           Hardware: All
-> >                 OS: Linux
-> >             Status: NEW
-> >           Severity: normal
-> >           Priority: P3
-> >          Component: Other
-> >           Assignee: akpm@linux-foundation.org
-> >           Reporter: carstengrohmann@gmx.de
-> >         Regression: No
-> > 
-> > === Summary ===
-> > 
-> > Hibernate image write 10x slower since commit 0ff67f990bd4 ("mm, 
-> > swap: remove swap slot cache")
-> 
-> Thanks for all the work you put into this.
+On Thu, Jan 29 2026 at 13:53, Andrii Nakryiko wrote:
+>  	/* unlock vma or mmap_lock, and put mm_struct before copying data to user */
+>  	query_vma_teardown(&lock_ctx);
+>  	mmput(mm);
+>  
+> +	if (karg.build_id_size) {
+> +		__u32 build_id_sz;
+> +
+> +		if (vm_file)
+> +			err = build_id_parse_file(vm_file, build_id_buf, &build_id_sz);
+> +		else
+> +			err = -ENOENT;
+> +		if (err) {
+> +			karg.build_id_size = 0;
+> +		} else {
+> +			if (karg.build_id_size < build_id_sz) {
+> +				err = -ENAMETOOLONG;
+> +				goto out;
 
-Thanks for letting me know!
+Introduces a double mmput() here.
 
-> 
-> > === Description ===
-> > 
-> > Since kernel 6.15, writing the hibernate image to swap has become
-> > approximately 10x slower. The regression was introduced by commit
-> > 0ff67f990bd45726e0d9e91111d998e7a3595b32 ("mm, swap: remove swap slot
-> > cache") authored by Kairui Song and merged by Andrew Morton.
-> > 
-> > === Performance Data ===
-> > 
-> >                  Before (6.14)   After (6.15+)
-> > Hibernate        28-32 seconds   290-342 seconds
-> > Effective rate   ~60 MB/s        ~4.5 MB/s
-> > 
-> > The swap partition's raw sequential write speed (measured with dd)
-> > is 255-450 MB/s, confirming the hardware is not the bottleneck.
-> > 
-> > === Bisect Result ===
-> > 
-> > A full git bisect on the vanilla kernel repository
-> > (git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git)
-> > between v6.14 (good) and v6.15 (bad) with 14 iterations
-> > consistently identified this commit:
-> > 
-> >   # first bad commit: [0ff67f990bd45726e0d9e91111d998e7a3595b32]
-> >   #   mm, swap: remove swap slot cache
+> +			}
+> +			karg.build_id_size = build_id_sz;
+> +		}
+> +	}
+> +
+> +	if (vm_file)
+> +		fput(vm_file);
+> +
+>  	if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_name_addr),
+>  					       name, karg.vma_name_size)) {
+>  		kfree(name_buf);
+> @@ -798,6 +808,8 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
+>  out:
+>  	query_vma_teardown(&lock_ctx);
+>  	mmput(mm);
+> +	if (vm_file)
+> +		fput(vm_file);
+>  	kfree(name_buf);
+>  	return err;
 
-Oh, I took a look and I think I know the problem now, the new added
-fast path in that series is only used by allocation from vmscan,
-for hibernation it always use the slow path, as I didn't expect the
-slow path is below hibernation's requirement.
+See:
 
-Or maybe, it not the allocation path that is slow, but because
-cluster rotation in slow path splatted the allocation to every
-cluster makes the IO much slower.
+        https://lore.kernel.org/all/698aaf3c.050a0220.3b3015.0088.GAE@google.com/T/#u
 
-Both are not too hard to fix. Is that's SSD only issue? And
-should we fix this in every LTS or just mainline? It could
-be a bit trouble some if every LTS needs a fix.
+Thanks
+
+        tglx
 
