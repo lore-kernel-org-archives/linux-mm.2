@@ -4,184 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A38BEA8133
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 15:40:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82457EA8131
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 15:45:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D33D36B0005; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
+	id BB7156B0005; Tue, 10 Feb 2026 10:45:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF1886B0089; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
+	id B8F186B0089; Tue, 10 Feb 2026 10:45:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B95836B008A; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
+	id A66F26B008A; Tue, 10 Feb 2026 10:45:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AB9726B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:40:39 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 576BB597A9
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:40:39 +0000 (UTC)
-X-FDA: 84428959398.13.5946CC1
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 146401C000B
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:40:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R07jyVUr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="vro/yLie";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y948V8dL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ImZ6N4Ck;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 96CB96B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:45:51 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 326631C5B9
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:45:51 +0000 (UTC)
+X-FDA: 84428972502.11.D0D2D4C
+Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 563004000B
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:45:49 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf17.hostedemail.com: domain of 3rFKLaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.71 as permitted sender) smtp.mailfrom=3rFKLaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770738037;
+	s=arc-20220608; t=1770738349;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
-	b=habIsHr/LEP8FaDbbakmWuE8DmoaCSRa8Ufc7OTNkmviEUTMorVEoaQQNfURvAhG4Z0Q7j
-	La8l6Pkh807h1g/lzJsws1f0X+HMpPjckl3YNda8PB5HaYqYwP3xi4EyzHl590/vZIyon0
-	r3A5v/2ZyLGY4SdE2fDk7CaMMtzb0sc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=umYiyPeqfv4hz6b8WdCAw8Mf6WoinfgY1PV/QiXW0KY=;
+	b=RIGwnlErPMp99aUZ7qgR7pX0B7bzX6+q7x8sUav/CEHSI1e91VJT4VnHLQk8FEnZdn+6Zz
+	dXl/Mgxj3fEB4Pvy14Rclr2oNHxupGkV2W2aGend2ZkvL4r9GTFd6prp/E+ggPb+iLE0qM
+	4P1G8oLVr6pTAn1WnNtIBAC/FGcD2Y8=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=R07jyVUr;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="vro/yLie";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Y948V8dL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ImZ6N4Ck;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770738037; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf17.hostedemail.com: domain of 3rFKLaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.160.71 as permitted sender) smtp.mailfrom=3rFKLaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770738349; a=rsa-sha256;
 	cv=none;
-	b=SXNtHsbq1ZkyKIo2pUQh2kvjICJti53JdfMdzsyw6J8hz6Izb0Hb/hbkw+joGq4Ss1LS97
-	CVH3FhMCPbulD/dh9QGyvpHD8ZLbeNuYokMQmgFMGlAY9k5B7AFdsz2AF3TOghh0cpB5Di
-	parnkxXEF3b3Mr4FQ4mkCWqFz8kxpXM=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 845DB5BD70;
-	Tue, 10 Feb 2026 15:40:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770738035; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
-	b=R07jyVUrORVmME1tz6d4RAcxWtYFSxWruoYeWOgeKxj/oXwfoKORCI2Qyg2T08C2+MgsDJ
-	/znzwTCoSMjQjW12XYhz8kBE7luRX+qO45YENuYsD+bZZhx20c/4TUgoZOeSyheBH7GlJj
-	zq7bcTbyXj+cCfcLS0U5U5KSdWFqLlQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770738035;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
-	b=vro/yLieGuw6paUeVmci1At6eI3Ahp/S6PtPoMNDXXG/zClgKfVTfxVvzmpnCgWmrkGm6p
-	c5vSnK/Gw1rIzYCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770738034; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
-	b=Y948V8dLau51t+6BB1cC/p1m2+JQMMnbAdgk7g0rLQcebP1LYqJE0CZznfBdh997VQYkmc
-	7k1ohgLVwN/Mami0n7j4Ouev3cUhQ6i7dc6pBE9bLY28vvIhJbpFOpknapjNjlinA6RIzk
-	QcQ+W6upfrqeIv5VWx5EOQsi+GLv9tQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770738034;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=w1SBLCqUDehKLVPMXDlPrAAaq85Rv1cIjWdbaILAeeM=;
-	b=ImZ6N4Ck9+LL7JcKWdCAdPyiK+Vrw/yHZU+ozaIVDUA6hW77kj+EyMas8oGDv+9XnhOCRt
-	ISC3+HdBvNI1iwBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 416E53EA62;
-	Tue, 10 Feb 2026 15:40:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KVJmDnJRi2k7ewAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 10 Feb 2026 15:40:34 +0000
-Message-ID: <12237347-e997-489b-9a62-dfb8ae00c9e3@suse.cz>
-Date: Tue, 10 Feb 2026 16:40:33 +0100
+	b=3jsibM6BcMMgU8sR0tt14BfkQZkyz7wnVkfNcSBzmZ7J1CfPOySScN+Cm5YGpE+ZxD3qmh
+	FI9KC2iarR80bcIdCEtiIviq2deUMiLSzZDw8oxOU+02VkkODR7MGgJ1lyi+GHbmNoE5/z
+	MQOxMKfEbLtQsOdti2FshieRQyHttE0=
+Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-4097bb790e5so28855243fac.1
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:45:49 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770738348; x=1771343148;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=umYiyPeqfv4hz6b8WdCAw8Mf6WoinfgY1PV/QiXW0KY=;
+        b=AE2Kckw3FXTdHjwJKt38KV/9sI5IX6kTOfuQGGiKDK/yOU42QobntP0jM6BXjZon+e
+         wH+INv+H460TxQjOFZ7mIR17fy+25knuKOQVcYnGrAX+67eOYxxUtKGwFttW7qQb2ieW
+         sF4XsImiwdjBVsMvgc0BdZueUZxPczkMXKv9cRFRNtnzDFNG1o8dQErrMlHQnCZ8em+C
+         uUXEYwsNjcu3clI9Up/Sn+fGQ26ElvERMcQ52u2WTM/Fs4sE4zEDL+GAfDam7X/y+z81
+         comy0tVJLu+nibA3IwLg1Vv6HAv98dAv855ypTy3YnejO0H5C/33we5ZNDVF7ZdIMBWr
+         pqMg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSQhWJ9T0UXLXv0t/m9jYlG95U1z/o8g6VP0KnW7KNEhM8A8/VioMRDcd9hwXVayi9J2G5xan/Rg==@kvack.org
+X-Gm-Message-State: AOJu0YyhSwk2YJwt9jWuMo0otT70M6Cr0OGlIDTyXM9F9rScLHlePrWC
+	DMYjoxdVKmFw5OrXtwNSpXJJ+2wM0Wby561AmEikC/9LT1UkG6rwwDLJl8jhPkZjkOGxTJz7ZXw
+	EmuqQaaaP5ivYoqQTUYDTf9DoSJTEa5ZjBIaFkakk2qDK6lBpEbE5WLIPxv0=
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 07/17] mm: Rework compound_head() for power-of-2
- sizeof(struct page)
-Content-Language: en-US
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-8-kas@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260202155634.650837-8-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mo8zjq11rdfakaejzosqebmxfwnmjcnw
-X-Rspamd-Queue-Id: 146401C000B
+X-Received: by 2002:a05:6820:818b:b0:66d:ecba:b3f4 with SMTP id
+ 006d021491bc7-672e62cc5a8mr1455324eaf.31.1770738348353; Tue, 10 Feb 2026
+ 07:45:48 -0800 (PST)
+Date: Tue, 10 Feb 2026 07:45:48 -0800
+In-Reply-To: <20260208215839.87595-1-nphamcs@gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <698b52ac.a70a0220.2c38d7.0076.GAE@google.com>
+Subject: [syzbot ci] Re: Virtual Swap Space
+From: syzbot ci <syzbot+ci0e6a00c2d76396f3@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, 
+	bhe@redhat.com, cgroups@vger.kernel.org, chengming.zhou@linux.dev, 
+	chrisl@kernel.org, christophe.leroy@csgroup.eu, gourry@gourry.net, 
+	hannes@cmpxchg.org, huang.ying.caritas@gmail.com, hughd@google.com, 
+	jannh@google.com, joshua.hahnjy@gmail.com, kasong@tencent.com, 
+	kernel-team@meta.com, len.brown@intel.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-pm@vger.kernel.org, lorenzo.stoakes@oracle.com, 
+	mhocko@kernel.org, muchun.song@linux.dev, npache@redhat.com, 
+	nphamcs@gmail.com, osalvador@suse.de, pavel@kernel.org, peterx@redhat.com, 
+	pfalcato@suse.de, rafael@kernel.org, riel@surriel.com, 
+	roman.gushchin@linux.dev, ryan.roberts@arm.com, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk, weixugc@google.com, 
+	yosry.ahmed@linux.dev, yuanchu@google.com, zhengqi.arch@bytedance.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 67iwecw5y4ht77j78km68mo9osoh1b67
+X-Rspamd-Queue-Id: 563004000B
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1770738036-170535
-X-HE-Meta: U2FsdGVkX18CLL1CxacZ5/IKVx1dRL0jdGvABo7xBmCQlhV13fLzIY+UFB8cBzFDOfZdY/uvCSOw5Q5iPdPlBN6oo4ebwa7c1lvzP26MdDK39F8VFyQITixHx4WKtf64SaxrMl9yaATWzuT0cmNjZhBOUQU5VZRsOJ/WWvrtQz6vdZ5ca8/XKtYQ/GyHA/Mo0JJr6nwAFCn81CmCQTZXudne12ppVt9PDrCDCImpcEZRdFCrVPG8+fUGlsXfX7JhjeE6pwYe0znKolsgt2ELnwvzkZ8TOxgfW0RlWY+IYzJdgOsMQ1YtQQVNTHSVPdIarCMSRgzetHmKVz6e5Kgdx6lMupQH3zNSKlJvGSyS1nEvJ0i0vbkyEKCh0KrIWYSjF8fvwi59kC1bRDVHKX+xpgwKl7KR1fNJoSdvtbIWFMRmmmRZdxQeOGHth3whrRZsSwHCZgbEVl4GD/v7Tzwed6EjkjxeBcr5U2HAftZcNUVbuAtsO9Q+aDu0vFMzbUl6TzV/FjNFbpQ/kArQca2v/DCCc3+2t1y8Rp0SGkLvjyqlyZiAgcbz0GmBWZkVlfhuG7Okhvy5z0rfVH/X0w5F9k+sxnx9x/TiPxu7SISefHy3WQZPHhwt/Exs1igqj+GzWlopVbg7RoIDtBQkwm5falwRvcj6hE6fJNACi0kXb/S6vdiDGpHEU+1SPvwTBbG+G/1nsJo8LOc+ehxGp/CoO3a45hK0IJCKZ2TkfUhP83sCT0fOm4H3MNAEMQdmaK7vp50gMxXHBKrT1BONSyTFpzI+tQdTP8MkpqvUCqx851mqS9CNMJZMeZuELRUa9WrLmOV5i5e0nmZo39KDoMyJYWpEN82Qsj4hYIQ1AigpuoeBeQgcfhKEnUKD5HHQq2JWiOuktitAr6wsLg1qXMrGJvRJAH70wjOudyexhiUXZFsX56dyZlkOM/hTwRQ8kESzw6mMeDnKcSVVULV7Hhl
- iY4DRxRB
- 3MQIT802sBrdM1IM=
+X-HE-Tag: 1770738349-634278
+X-HE-Meta: U2FsdGVkX1+Z5kfjIk+fuRIpfXiOwiO5xsiiY58Ic0wtHsil0QtxktULelDkDT719VfgwTlvulR60nhbrUk0dXes6OnRlK1xZII4077DLPzni1/1Rw9D6RUTKnM1L4nBjeWX2fu4FDKXZmiQy0JBS3IrBhLOZVVd9LudNbdbsKA1bKG5wAWyNvlDEwR7oJi7lo1QiIrje8iX+oLycR7uCC6i8o9OxLz7DXk0w8DOwa+opC9RJTlCx69o00lbDkktpltoLwfJpWZl2dfk0ZN/SQhDE/eyKtWFfs5bO+cmEHYulxmURDld/oKM2/WwmCZrvsUBE8yA6OjC6gTT7anGbcZLRcYH2Ml1dGQzwqxDvPg0xS4pt8ZtnzjTcCOIBMWhP14DL7dVfx6UGhP3pAHHkCH9EKoWd0HFbw8oOWq3751X7QblTj/YDm9yVtNBF+T6Tenxy5+LDnJCtfMhBCfoiUhxbXb8uc1CE+DI0KBhAOJhYtw3pN3SXhPx6yuCxM4dTpXfKqLTCI9UF7D8LMLXKMrYWY9KemkdjaXk7T75E6psJZDMH8JLFfYttCheFK/ASN+bx1zKGIpsezqAnremh7Qfm5vQT/ax4uhHWnIE9exzNk9YFJJgjSyWGrtMNIlD8ueCdHIewzRxL3P+tdSt0ytf2/rqEZNQS/qLe3utNyVPHz1cyo/Rpx/8fIK9fv122sOXSkGQLazvRt3W4/BJbyjribL7+zPln+CvrsKR5f9rI6YoQuYKV+JWnMmJLB+bTH5RlP3ykJc9ke2AtQ7coZI4TuTwQQcFwXoKmIupIbhLhyM7hBmr+zBooGTtxa+EJXIVO7hfQTSz7Tx4uplVD3GtU2ubAwvr9h9CJVl8h16rhMSmPbU5LIMEYz9PFUOAD6NPb5jGR9KHA+OWxqi68kbLOpk+lk4zAgv6zcrHAGzyh+w0zquZ5a6rqA4xrGPreYzam/c2cJ/NR2b03dQ
+ iZXfiFBo
+ FZV1ZahlVdQHZeeo5bpUz7Bq74wIbnx1fTzzjhxKfQW2g54y//5MJBpweG1zt5ycz0Og+nbOpPrEBoQtxPo2H6LUHWgDQVxQ7sTZ3ZcHEDaPRwL5+OqXlnl1zuiARoeRMw3k0CcINmG26/XDPrgJAvrEzH2D6BF9QN5FIhmokgv6/IcOlrBV31tWhmoN8m7nOdtYMMJPOkIAQkXzXHkCPaiyWYpQzgDcQTAJVPOJR5dDSWnCTLBPR9Q3JMv359iO8ziaXahM62poi7o27cPDsKV415Wza7GqX6DBfOecA8VvcZd3HzsX6b0GXr5etcustomBgRvPsJOzHBo8yuRiofR4UijaBych0g/WrD8fGELwj8wmWDS6PW67u1P4wCxWcFEw07+N/ZFWyJ2jMICrRy+jdge1RAJoL431ApD6A6OoCJ1gCrQyToTU9nTnaRk7GtlPUglSeEL97RaRhLIw4P/Eh2ZsQGytbo3h5FdUBtYI3BE3nt2N9j/SP/1PxFePsGpRxUfd5mBFP2CM8gNE7mLalkbdfb06QHEd71j2nS0xaApXX1KREISd6+ehegMWBclV340uBD3lH8OyJlcTH8dBXmmzxYfSmmc4pKnW34nHyT4KGwt1odGwzsbWLkU2dOhd8RFfGlOQVaquqhAyo305tnJiqoMuYMo0BsbGuVzyBQJ2qhFN2Hy7ldL1F4KovR8vpbnzV3dFJHKMnqNiyZp+a7QXnTIoJw7H5wTEpyjy4Pdi0DyMPRBgy5BGuZMfTAB9lgZuJKyoDX3R+1VyKxvCVZ6rfw1IPNLc9DhLSSglxDF1u+ty3tQOnKrKMkOvF+iu/YgoNLVWmmgN5ST130ycPKnoZyKWzCbUCVRE/JJ66dzS1h33kWKeb+NMeFwxx/WEZTHL4ttzKcdRMhK0D3sW8VUh6AqngG8cmvf5Evl8QwnqjnZC/uiAopps72Gc7lRbXiTKxiDpJDqsEBzZpvG2e4FQR
+ P43J7U5D
+ 1Hal7DS6t64JrScGuaf6DUy8wJ9Ew3iTRp04riu0yAEmeTcvWFVCQv+zJAVZ2iQd6s0/a3p+su3xW9rdl3lrNJtE0sUbvajOoLYQ/i3xnJU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -190,114 +109,94 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> For tail pages, the kernel uses the 'compound_info' field to get to the
-> head page. The bit 0 of the field indicates whether the page is a
-> tail page, and if set, the remaining bits represent a pointer to the
-> head page.
-> 
-> For cases when size of struct page is power-of-2, change the encoding of
-> compound_info to store a mask that can be applied to the virtual address
-> of the tail page in order to access the head page. It is possible
-> because struct page of the head page is naturally aligned with regards
-> to order of the page.
-> 
-> The significant impact of this modification is that all tail pages of
-> the same order will now have identical 'compound_info', regardless of
-> the compound page they are associated with. This paves the way for
-> eliminating fake heads.
-> 
-> The HugeTLB Vmemmap Optimization (HVO) creates fake heads and it is only
-> applied when the sizeof(struct page) is power-of-2. Having identical
-> tail pages allows the same page to be mapped into the vmemmap of all
-> pages, maintaining memory savings without fake heads.
-> 
-> If sizeof(struct page) is not power-of-2, there is no functional
-> changes.
-> 
-> Limit mask usage to HugeTLB vmemmap optimization (HVO) where it makes
-> a difference. The approach with mask would work in the wider set of
-> conditions, but it requires validating that struct pages are naturally
-> aligned for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
-> 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+syzbot ci has tested the following series
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+[v3] Virtual Swap Space
+https://lore.kernel.org/all/20260208215839.87595-1-nphamcs@gmail.com
+* [PATCH v3 01/20] mm/swap: decouple swap cache from physical swap infrastructure
+* [PATCH v3 02/20] swap: rearrange the swap header file
+* [PATCH v3 03/20] mm: swap: add an abstract API for locking out swapoff
+* [PATCH v3 04/20] zswap: add new helpers for zswap entry operations
+* [PATCH v3 05/20] mm/swap: add a new function to check if a swap entry is in swap cached.
+* [PATCH v3 06/20] mm: swap: add a separate type for physical swap slots
+* [PATCH v3 07/20] mm: create scaffolds for the new virtual swap implementation
+* [PATCH v3 08/20] zswap: prepare zswap for swap virtualization
+* [PATCH v3 09/20] mm: swap: allocate a virtual swap slot for each swapped out page
+* [PATCH v3 10/20] swap: move swap cache to virtual swap descriptor
+* [PATCH v3 11/20] zswap: move zswap entry management to the virtual swap descriptor
+* [PATCH v3 12/20] swap: implement the swap_cgroup API using virtual swap
+* [PATCH v3 13/20] swap: manage swap entry lifecycle at the virtual swap layer
+* [PATCH v3 14/20] mm: swap: decouple virtual swap slot from backing store
+* [PATCH v3 15/20] zswap: do not start zswap shrinker if there is no physical swap slots
+* [PATCH v3 16/20] swap: do not unnecesarily pin readahead swap entries
+* [PATCH v3 17/20] swapfile: remove zeromap bitmap
+* [PATCH v3 18/20] memcg: swap: only charge physical swap slots
+* [PATCH v3 19/20] swap: simplify swapoff using virtual swap
+* [PATCH v3 20/20] swapfile: replace the swap map with bitmaps
 
-nit:
+and found the following issue:
+possible deadlock in vswap_iter
 
-> ---
->  include/linux/page-flags.h | 81 ++++++++++++++++++++++++++++++++++----
->  mm/slab.h                  | 16 ++++++--
->  mm/util.c                  | 16 ++++++--
->  3 files changed, 97 insertions(+), 16 deletions(-)
-> 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index d14a17ffb55b..8f2c7fbc739b 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -198,6 +198,29 @@ enum pageflags {
->  
->  #ifndef __GENERATING_BOUNDS_H
->  
-> +/*
-> + * For tail pages, if the size of struct page is power-of-2 ->compound_info
-> + * encodes the mask that converts the address of the tail page address to
-> + * the head page address.
-> + *
-> + * Otherwise, ->compound_info has direct pointer to head pages.
-> + */
-> +static __always_inline bool compound_info_has_mask(void)
-> +{
-> +	/*
-> +	 * Limit mask usage to HugeTLB vmemmap optimization (HVO) where it
-> +	 * makes a difference.
-> +	 *
-> +	 * The approach with mask would work in the wider set of conditions,
-> +	 * but it requires validating that struct pages are naturally aligned
-> +	 * for all orders up to the MAX_FOLIO_ORDER, which can be tricky.
-> +	 */
-> +	if (!IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP))
-> +		return false;
-> +
-> +	return is_power_of_2(sizeof(struct page));
-> +}
-> +
->  #ifdef CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP
->  DECLARE_STATIC_KEY_FALSE(hugetlb_optimize_vmemmap_key);
->  
-> @@ -210,6 +233,10 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
->  	if (!static_branch_unlikely(&hugetlb_optimize_vmemmap_key))
->  		return page;
->  
-> +	/* Fake heads only exists if compound_info_has_mask() is true */
-> +	if (!compound_info_has_mask())
-> +		return page;
-> +
+Full report is available here:
+https://ci.syzbot.org/series/b9defda6-daec-4c41-bbf9-7d3b7fabd7cb
 
-Could we move this compile-time-constant test above the static branch test?
+***
 
->  	/*
->  	 * Only addresses aligned with PAGE_SIZE of struct page may be fake head
->  	 * struct page. The alignment check aims to avoid access the fields (
-> @@ -223,10 +250,14 @@ static __always_inline const struct page *page_fixed_fake_head(const struct page
->  		 * because the @page is a compound page composed with at least
->  		 * two contiguous pages.
->  		 */
-> -		unsigned long head = READ_ONCE(page[1].compound_info);
-> +		unsigned long info = READ_ONCE(page[1].compound_info);
->  
-> -		if (likely(head & 1))
-> -			return (const struct page *)(head - 1);
-> +		/* See set_compound_head() */
-> +		if (likely(info & 1)) {
-> +			unsigned long p = (unsigned long)page;
-> +
-> +			return (const struct page *)(p & info);
-> +		}
->  	}
->  	return page;
->  }
+possible deadlock in vswap_iter
+
+tree:      bpf
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/bpf/bpf.git
+base:      05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
+arch:      amd64
+compiler:  Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+config:    https://ci.syzbot.org/builds/f444cfbe-4ce0-4917-94aa-3a8bd96ee376/config
+C repro:   https://ci.syzbot.org/findings/7b8c50b1-47d6-42e0-bcfc-814e7b3bb596/c_repro
+syz repro: https://ci.syzbot.org/findings/7b8c50b1-47d6-42e0-bcfc-814e7b3bb596/syz_repro
+
+loop0: detected capacity change from 0 to 764
+============================================
+WARNING: possible recursive locking detected
+syzkaller #0 Not tainted
+--------------------------------------------
+syz-executor625/5806 is trying to acquire lock:
+ffff88811884c018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock.h:351 [inline]
+ffff88811884c018 (&cluster->lock){+.+.}-{3:3}, at: vswap_iter+0xfa/0x1b0 mm/vswap.c:274
+
+but task is already holding lock:
+ffff88811884c018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock_irq include/linux/spinlock.h:376 [inline]
+ffff88811884c018 (&cluster->lock){+.+.}-{3:3}, at: swap_cache_lock_irq+0xe2/0x190 mm/vswap.c:1586
+
+other info that might help us debug this:
+ Possible unsafe locking scenario:
+
+       CPU0
+       ----
+  lock(&cluster->lock);
+  lock(&cluster->lock);
+
+ *** DEADLOCK ***
+
+ May be due to missing lock nesting notation
+
+3 locks held by syz-executor625/5806:
+ #0: ffff888174bc2800 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock include/linux/mmap_lock.h:391 [inline]
+ #0: ffff888174bc2800 (&mm->mmap_lock){++++}-{4:4}, at: madvise_lock+0x152/0x2e0 mm/madvise.c:1789
+ #1: ffff88811884c018 (&cluster->lock){+.+.}-{3:3}, at: spin_lock_irq include/linux/spinlock.h:376 [inline]
+ #1: ffff88811884c018 (&cluster->lock){+.+.}-{3:3}, at: swap_cache_lock_irq+0xe2/0x190 mm/vswap.c:1586
+ #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire include/linux/rcupdate.h:331 [inline]
+ #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: rcu_read_lock include/linux/rcupdate.h:867 [inline]
+ #2: ffffffff8e55a360 (rcu_read_lock){....}-{1:3}, at: vswap_cgroup_record+0x40/0x290 mm/vswap.c:1925
+
+stack backtrace:
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
