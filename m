@@ -4,124 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 318EBEB2703
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 19:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB87DEB270B
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 19:54:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 71F186B0089; Tue, 10 Feb 2026 14:28:15 -0500 (EST)
+	id 8AD6E6B0005; Tue, 10 Feb 2026 14:54:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 700726B008A; Tue, 10 Feb 2026 14:28:15 -0500 (EST)
+	id 85AA26B0089; Tue, 10 Feb 2026 14:54:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6209E6B008C; Tue, 10 Feb 2026 14:28:15 -0500 (EST)
+	id 75CA36B008A; Tue, 10 Feb 2026 14:54:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 512DE6B0089
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 14:28:15 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E6677C2476
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:28:14 +0000 (UTC)
-X-FDA: 84429532908.03.9087133
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E96BCA000F
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:28:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JzoAX4C4;
-	spf=pass (imf25.hostedemail.com: domain of gorcunov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=gorcunov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 630306B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 14:54:09 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 950A513B970
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:54:08 +0000 (UTC)
+X-FDA: 84429598176.30.6D9331D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id C3E3BC0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:54:06 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d1UTD7KT;
+	spf=pass (imf22.hostedemail.com: domain of tamird@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tamird@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770751693;
+	s=arc-20220608; t=1770753247;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LFyGR2DyLRU+91jbuLD+/fzhLRHaNo946KYs1mYXfdg=;
-	b=X9Pcs2fzcW5DUs/CmjxAxHKqYUchQ4wtl5NLMgBIIt8LNiPEV5PLK9cpBKthKN+aZStUxb
-	NssG1Lqz3rheJeBelBHj/MlTHlQugi8snDApDw3PM5QchI85SvVSydzkZUuob7gd0/RAbH
-	PQnLz4TLbYwlv2kaCH4f05IslH4f13Y=
+	bh=Gmme+HsT8PRM+pCnvV616AXhlG38S0SdWN48Sjzid+4=;
+	b=AXMyIsCg/vsYbIilVxH8uYnHD7TfEKQwSPRTcTEK13ZaOhZ8NAy8QA8PNgaB1j4j+5cMb5
+	p7Y7uofRoiExYZ8W/ez8WK1y/K4IJGkUJSOLXnEj7D+jaa46QY6/WPbRF9RngoFPBV3lYO
+	37XLBHhnodmXGB+7nH9sqILyJhjz5gE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JzoAX4C4;
-	spf=pass (imf25.hostedemail.com: domain of gorcunov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=gorcunov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770751693; a=rsa-sha256;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=d1UTD7KT;
+	spf=pass (imf22.hostedemail.com: domain of tamird@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tamird@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770753247; a=rsa-sha256;
 	cv=none;
-	b=nDQGo67ZBgu4H8w6ysf5DJRPOge7eFGlO1uiTZaJs8875vXVpIBKwFaT6OIU85bhtribzS
-	hWqwtvxBeMFunPJJ6r7DTn1PLs2Wy8J9wdq+4cfJ6kTy90zgvvLerbgHGNMxdGZ36DoZAj
-	2j79pDqZg+a7X0BNY9VVXLHEuuDUqGo=
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4801d7c72a5so36574755e9.0
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:28:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770751691; x=1771356491; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LFyGR2DyLRU+91jbuLD+/fzhLRHaNo946KYs1mYXfdg=;
-        b=JzoAX4C4XyQmXVOFo382w5cDu/6NtczkkGf8PXzMBUR4SQmz3ajA243f606nxH0+Ny
-         LaFyjLeaOGdO7IzE/+RYa7VtmgDh7dYogh8sxWIowtfJBsNsVe8uw0xYPxzzEwOXZ3aX
-         5qzp+8/PqgvKAaJpxuzmavoGfgLJxCm7mEvMo6A8hDmbxjPpn74AEub9Yh9o226D3uMz
-         OP4Vxxd7mMx5uhuipdj/HMlVeFIe928h7a2UgWnE/Vz4z8WLE43f1SULpD4y/LrJd/Tr
-         drdKAhWAEvhj1S5Y+biFXltQLiKTUad6HzWHMt4KomOEeeRQwolDDiXwXKZYu80mxSPs
-         hVaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770751691; x=1771356491;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=LFyGR2DyLRU+91jbuLD+/fzhLRHaNo946KYs1mYXfdg=;
-        b=WjXjYWqLOK24/2Q0aewFjBnxN4pkozW/quHyAatMCxmXT38pFT8FXrIzMDxD6oEgH5
-         ajfUr4FpBNysi3I0SC1Rd9op8xYtGhrLosXVU1T7S1+Dh3bwDnD3r3wqTMbCy1DzwTaw
-         9NRMO/OHHsoRpjBes1Ea7g/jLjLt5rb3XYwtFph4175pMRGkVBOrslomD7yRNIBvfKYC
-         6mY+53SNsn2lUImoIt8dkU/Rsoi28RGRqZqiQeGA7nLc/LSiTcjGtb3XHBdPfilAV9jA
-         9bVu1YXqPYfLUmByZxx1Na7QN3TKAov7/6cpiQY5ZlYZ5e1nkRhTaOKsHEpH1fnC3siY
-         o3Tw==
-X-Forwarded-Encrypted: i=1; AJvYcCXsSeYIijkccLqgH3I+XkQFbo+/Jm24/mNv7ZZDqhIbCvirBwlTbK0R9Hh7XH3GYgDI9k+zN10K1g==@kvack.org
-X-Gm-Message-State: AOJu0YzW08MgWvvRFLUwdRnU3KMT4sUkQ0OvGP5NSTWU8sWiA8t6l8aB
-	VsdEUM7Gb8O+HScX5B7NnrRgLb6JeoNNH9gTc1EvEV7EhY+GnAASR+FP
-X-Gm-Gg: AZuq6aIt24RL4z/g2RlDSdwUrD1/vkKQb+nAUpXkYtz3jCmFPOSZcV7IO1aEBOpUOWK
-	bzMlCTK+sQsroJWXt1K6XjF3hER/HXxyR7bBNEMm1bCQ8YZHWpUkYdWnZyMu54SpEVnS0D0Xi6H
-	s/k5fDemo2dhO5hXqkV92UvW4VVTQP6iP5mU4PdsdzLnNTDNRVFdy4TwDE5vE4/eiIPgOKIkwl6
-	FsUUBrdsSS4WVPyPPZB7NJSP8Sc5tV6lLtmXXPfbyTh260hEWo1E1dv1p781FnFQdLvx6WtVsww
-	IuA8VEKlMUcNvzMfapAUyUQPo+j/0KtghPe1kLptEv5emndDnstTaLb75yQv2r5iOhelwjky5eU
-	Wd2LgM93/3MyhlPMa8dqGNhJdYAwDfubfiy2DazDXE4+Rs4ToOXlEG15Bb6Qu9vpFpL39uSmOwg
-	pC7vugKgUYQOalmpnNFj8o29Rc/ZE=
-X-Received: by 2002:a05:600c:470b:b0:477:7ae0:cd6e with SMTP id 5b1f17b1804b1-4835b8bbf77mr1193155e9.5.1770751691077;
-        Tue, 10 Feb 2026 11:28:11 -0800 (PST)
-Received: from grain.localdomain ([212.46.38.55])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436297462a8sm33795335f8f.30.2026.02.10.11.28.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 11:28:10 -0800 (PST)
-Received: by grain.localdomain (Postfix, from userid 1000)
-	id 8CBD35A004A; Tue, 10 Feb 2026 22:28:06 +0300 (MSK)
-Date: Tue, 10 Feb 2026 22:28:06 +0300
-From: Cyrill Gorcunov <gorcunov@gmail.com>
-To: Andrei Vagin <avagin@google.com>
-Cc: Kees Cook <kees@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, criu@lists.linux.dev,
-	Chen Ridong <chenridong@huawei.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Koutny <mkoutny@suse.com>
-Subject: Re: [PATCH 0/4 v3] exec: inherit HWCAPs from the parent process
-Message-ID: <aYuGxmLOWXhIpoMj@grain>
-References: <20260209190605.1564597-1-avagin@google.com>
+	b=cTneXaXbYxWSJQzqVRfoBbCdAbwShgNBgpYDFwSmEFlhmpwcbGeFCZTtr/OEnu3App0DFr
+	BaczhOKzeuO30xZDm9DGin4IMwoI3RMhouH0QhIdg0PnxyjoPT5JYKjga8vdYl7YybLErh
+	kpifGnnj52bG3zrkA338r+DobxZkfkg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 721D744513
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:54:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDBBC19425
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:54:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770753245;
+	bh=rfXEyqIrDHyrzS+eIZXLL/nqGWHyUSEscNUumSMxSv4=;
+	h=References:In-Reply-To:From:Date:Subject:To:From;
+	b=d1UTD7KTB4CkcLdRb64+SSf9kxATKD+moA8hAtETPuRNM+LRDypx53hMVjz6XuCL6
+	 vDb1gGq8bJLvZzKt1LQQjVe8qQOBhq0yqwSUkEqLWR7TdIBtfngaUrUHLy3myRfWqD
+	 rN5WwL3a121uvf9I7UOFHVUi03ni6Pky/oa1EDBjCMjpyxQFXpxRaEgqs37vCtqKeR
+	 QshC40FRR5CudQrq+bhdH8uxMYXoC85mVcrCz3dFnwj9uCPVlCq0+QdQuCD3/NmVKd
+	 lr9uQfyXo9XDWxGbCMkJQknHjGqytIndCi1cecNcOFcAGJ0gqqDcQqc8mUAxDd5Eo7
+	 9sehp2Meyj1BQ==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-382f9211cbfso41150201fa.0
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:54:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUyWcai866wvQfcH9xOoiDoWdktzYjf2sBBOG4SZrimFJHc+kZihgWDeUoPrbbou7pxQZMY4gmnBw==@kvack.org
+X-Gm-Message-State: AOJu0Yz1Wg4C6kso+TLmgiTvsftoNsTBCbPwgDYD1rVc4KI7fCo+MApt
+	rwKYaCE8jyDDZ3RxV9fVPhUHOgQqE3arqEhdRojqxp86dQmgMy1MD+s6i8qrS5KbHSvm7VaAJAN
+	XpA8ZxD6lC+unvbYVrmCeqcUqdYAWwAo=
+X-Received: by 2002:a2e:bc10:0:b0:385:d78a:1f34 with SMTP id
+ 38308e7fff4ca-38703055079mr214791fa.17.1770753243639; Tue, 10 Feb 2026
+ 11:54:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209190605.1564597-1-avagin@google.com>
-User-Agent: Mutt/2.2.14 (2025-02-20)
-X-Stat-Signature: i5swb6xpt6owmhdxn5jremwarfhj3wwt
-X-Rspamd-Queue-Id: E96BCA000F
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-5-f777c65b8ae2@kernel.org> <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
+In-Reply-To: <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 10 Feb 2026 14:53:27 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com>
+X-Gm-Features: AZwV_Qhd-O5disfUdXHYeoc8tMIXKrEn06Ut5qaMpJq38pAn-iSAamGwNgY1AVU
+Message-ID: <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com>
+Subject: Re: [PATCH v3 05/12] rust: xarray: use `xas_load` instead of
+ `xa_load` in `Guard::load`
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 9csza61ktyiy51fmoydo7xjy1w81er88
+X-Rspamd-Queue-Id: C3E3BC0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770751692-508967
-X-HE-Meta: U2FsdGVkX1/UVBenA48o6vl+ejOX8RjUiVyTzAVtcS0S23VZ1RN7J9NGN4cYkecbn9Ssg6aZOHXO2YltUxG+qpkVRc3Qf1dmQF3fkUetnHq9Xvc/n56KKlQK/+XHSGkRWwUA8K8QZnNpwimRFrUDDWTpXhx4igYLMRxPPWsvUGOSA0/zQR2WWV2MGZoUwHvESAu+Ex1BxO72RlEIGT+VBciFUrachL1mormaqADDosu95P9Pe3eoLOUEqFTxXxjRfosJzvOWOZtIDW5QJM0aVFqGIvAg9fiq5fCqgvmup/QzwgAVi+TSwUu4ANNVi8mqYUJ31cuJt8SIpjctCUqJHH1moK6i9napitV0QPEG/blnsCR6TvqfmeU8DeVbiPmvY8khuI+70VjY6YKp3Gd0JMTF845/aAqjI8dHbyxmZ9kUbxDtiW9ySAnJnDErtXW6+G/sX9YLq9WItzatlVrTAZUZ3bI2roVKI0/GX9YGwxmjceEbD21aNKWs0xQmD8O8VnswCSFgkQM6eO8aiF3qzZjwrcO1vV3KayZTFSzK6g4MrJi+sEbyI6D7B+qOcjKqLji3RdJL6Mj/XEhIzGadvTx/lCazXgSIn/uLZqM16G3SSgLCFbKLDcefGG9l+Dpm6rlCObCl6NQfi/5fg6/B7tUkgDhTiUBmCPFaCusjd0Qfmrxns4N00JSAb/y6qILI7+2ONYVvOgu45TDo+8gVzE7DqQ7vFDYVueI9bLD4kLBSgX32e4ewanLJZjF7RFfu8PwJydIb5xHlYvPjPrnohZXKy5WSi77blrSmzHgCCg232BvnpV7rHeYFjefml1YHXJgLI0v3poWx6fXRDsAPTAtpd+WXCIZmj5Q47k6ay92Jul/xmmwb91VOIzLKZ7NooNLPWB/aUqd1pEgMAEWvsJwSuU4AntvVDAO/9z4cm6FBe0u6h9FSvkeiv403HByWQH87hsjipQwPP5hQPKO
- KEMCCB23
- 07GU+ZnaaElozMNsKHPnZJ46X9+ytox3592K6QxdaWq7eP+WeW0UkvIfkMjfkRbZwLb7C1u5U63kaLwMwX/Kf2V2BzyezNxq01plTofn+ZxAoqGTwJWiluwEDaRgypLVpldRKXVXVASe/fdn+sU0/MuJH7pQXO3dVJdg36KRNpu3Lkf81lhD8gd/rwjorp2LDRBpKn1gJ7FhsOsdJnmrBIa7TqrUdISjoe2LxhCyD8kxmjIf7xWmKNJYYigDL2M+ws34k5VLnz+Yo8f2YAIhBfGbTkccEN7Ko2f8sqW25LOOQOJvMTOlxdMtLld5nHUPFnDjrrjXNhnlxOmBEUutqdHZDxPgIiBfm+N1Ws5wC/hZKhNOEOT12aUmNI28KcF63YXm9aPydWWBMhytbyCkMmW2lpRDOnuHTvV/CD66pFCL2boQx81u5/qihNUo0I7/b+TBQcqbyqcsEHuiomiVQ9RN3GGfu9qI4FFYV0Rtqo0a8ClIFOzEd1cBKpDWoIrpRuzt5dtv+cDIgwEVYZteXKU2XF0v88x5+4H1GRSUelMupgc0x8wjyziijV4zI4wwKmIvUiONsorSh4k+uxXLFyMSDoRUGySskWmZ+foTDnFwD3LAEYeFH3LFWU8rtl1CpL56ujUrHuehBjvlwS/Kw/dyj0IlN0sqGfUjEIv9mIy+f88fM6thY7yut6iGk1VEKdW1GgDo2Mv0MqsFWW7HaihrGYjdS+qzdKaN6QdSVA2aRKpU=
+X-HE-Tag: 1770753246-974206
+X-HE-Meta: U2FsdGVkX19TmRTh+7w8ksIphN+3XAEot6VasvfN8CXybIuRP7cLtN+iyYTUxe9/IyF50FoylCxVciYs/WlCyQTYMCc1hrDc0uuG+W3bsh1m71cSr+ndHh/OGxwgYriBH2Ee13WHieigz3R1St/mRkURrMQfZCi2nY8zxwuQBB9wt4JO/mdEX3Novsx/z9PKNZaRbJgF+GO3TESAlAhy1hzpkUOZGN2OhSy6BAGlA4t5meG3s/21YkBhLBZ41BMW+VNoyG7OwhnyivZ2sOzvI6882IGIrW1RlLDq8BztQoBSL6ptGt4Nx3Gw0JlRkbRZh095x0OLmZxvr7aBcK4vDihESkMlxSQzJ0mI7GpJcwtDyUPIXGs/19ITRXZfDifD1cDAPrIo4LiMPhuJ5+KSIcSE1p5aRGUXvL7fZXb1nQnmFKIGsBFNiUC4MeFN7ZW2z75q8EQIXsReCt+WVqhLEYfa1trpRwoNt09FJdunsHosFFRMDSzTQOPrnXQbcR76iYyqYuplvZZePhaStsilSFcw3eHuZAYTUKxf7ORXbWvBoMHBkKX4a1q0GnX5doEkaMlMqycqkZ8GwllAlRG3qXWE1bOox8EJXubpTyVFleRIq9Yhq6O5G1KEJ+r9XfxTkVNxxpnPDXd4NKzSMIGMTn/O3xKOaw/5ByfDV2w8Sbfpk32/oBZQX0CXwlg0bqxE+F/o+nLt4+/PBrXKYPWFivAMy1T3FgWz1XVPpHiOSJj0qN6B3yznC4MvtXKA1Q5rncg8SrKg2fadCMeFvRWhHC5r++nQdC//xVKEFefnMJtQkAf2PeP4s+2Yhz0KrdUn/c1j2NijzT0ODXGah0E1O4SJQNysV7SXbHDsOYscmrH5yxrWCVlDaOTg/ZphuepbkqoOY1ry8xry4kDn09VziIIS6Rky11V5xLeuhevGA45hpST8bFyxvEx2qzkAkQuwkidNiP7Cry6p1WcQys8
+ jiWL2IER
+ tHdfjsqMQzxPUU/iYvh7acK6Mgn6Yufsxq9hRg+4HhHs8DK0bWEfJ5/+G3Hp8T5KZ5iXxPH19QHyUMqeGFToWbNqliKIlmOxvvuCGA6zub9GbRSg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,49 +114,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 09, 2026 at 07:06:01PM +0000, Andrei Vagin wrote:
-> This patch series introduces a mechanism to inherit hardware capabilities
-> (AT_HWCAP, AT_HWCAP2, etc.) from a parent process when they have been
-> modified via prctl.
-> 
-> To support C/R operations (snapshots, live migration) in heterogeneous
-> clusters, we must ensure that processes utilize CPU features available
-> on all potential target nodes. To solve this, we need to advertise a
-> common feature set across the cluster.
-> 
-> Initially, a cgroup-based approach was considered, but it was decided
-> that inheriting HWCAPs from a parent process that has set its own
-> auxiliary vector via prctl is a simpler and more flexible solution.
-> 
-> This implementation adds a new mm flag MMF_USER_HWCAP, which is set when the
-> auxiliary vector is modified via prctl(PR_SET_MM_AUXV). When execve() is
-> called, if the current process has MMF_USER_HWCAP set, the HWCAP values are
-> extracted from the current auxiliary vector and inherited by the new process.
-> 
-> The first patch fixes AUXV size calculation for ELF_HWCAP3 and ELF_HWCAP4
-> in binfmt_elf_fdpic and updates AT_VECTOR_SIZE_BASE.
-> 
-> The second patch implements the core inheritance logic in execve().
-> 
-> The third patch adds a selftest to verify that HWCAPs are correctly
-> inherited across execve().
-> 
-> v3: synchronize saved_auxv access with arg_lock
-> 
-> v1: https://lkml.org/lkml/2025/12/5/65
-> v2: https://lkml.org/lkml/2026/1/8/219
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Chen Ridong <chenridong@huawei.com>
-> Cc: Christian Brauner <brauner@kernel.org>
-> Cc: David Hildenbrand <david@kernel.org>
-> Cc: Eric Biederman <ebiederm@xmission.com>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Cc: Michal Koutny <mkoutny@suse.com>
-> Cc: Cyrill Gorcunov <gorcunov@gmail.com>
+On Tue, Feb 10, 2026 at 10:16=E2=80=AFAM Liam R. Howlett
+<Liam.Howlett@oracle.com> wrote:
+>
+> * Andreas Hindborg <a.hindborg@kernel.org> [260209 14:39]:
+> > Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
+> > `xa_load` function takes the RCU lock internally, which we do not need,
+> > since the `Guard` already holds an exclusive lock on the `XArray`. The
+> > `xas_load` function operates on `xa_state` and assumes the required loc=
+ks
+> > are already held.
+> >
+> > This change also removes the `#[expect(dead_code)]` annotation from
+> > `XArrayState` and its constructor, as they are now in use.
+>
+> I don't understand the locking here.
+>
+> You are saying that, since you hold the xarray write lock, you won't be
+> taking the rcu read lock, but then you change the api of load?  That
+> seems wrong to me.
 
-Looks ok to me. Thanks, Andrei!
+This patch doesn't change the API of load. Andreas is saying that the
+type system already requires the caller to hold the xarray spin lock
+when load is called, meaning acquiring the RCU lock isn't necessary.
 
-Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
+>
+> Any readers of the api that calls load will now need to hold the rcu
+> read lock externally.  If you're doing this, then you should indicate
+> that is necessary in the function name, like the C side does.  Otherwise
+> you are limiting the users to the advanced API, aren't you?
+
+The existing API already requires users to hold the xarray lock.
+
+>
+> Or are you saying that xarray can only be used if you hold the exclusive
+> lock, which is now a read and write lock?
+
+Yes - except for the word "now"; I'm not sure what you mean by it.
+
+>
+> >
+> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+Acked-by: Tamir Duberstein <tamird@kernel.org>
+
+> > ---
+> >  rust/kernel/xarray.rs | 15 +++++++++------
+> >  1 file changed, 9 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> > index d1246ec114898..eadddafb180ec 100644
+> > --- a/rust/kernel/xarray.rs
+> > +++ b/rust/kernel/xarray.rs
+> > @@ -215,10 +215,8 @@ fn load<F, U>(&self, index: usize, f: F) -> Option=
+<U>
+> >      where
+> >          F: FnOnce(NonNull<c_void>) -> U,
+> >      {
+> > -        // SAFETY: `self.xa.xa` is always valid by the type invariant.
+> > -        let ptr =3D unsafe { bindings::xa_load(self.xa.xa.get(), index=
+) };
+> > -        let ptr =3D NonNull::new(ptr.cast())?;
+> > -        Some(f(ptr))
+> > +        let mut state =3D XArrayState::new(self, index);
+> > +        Some(f(state.load()?))
+
+This can probably be written as `state.load().map(f)`.
+
+> >      }
+> >
+> >      /// Checks if the XArray contains an element at the specified inde=
+x.
+> > @@ -327,7 +325,6 @@ pub fn store(
+> >  /// # Invariants
+> >  ///
+> >  /// - `state` is always a valid `bindings::xa_state`.
+> > -#[expect(dead_code)]
+> >  pub(crate) struct XArrayState<'a, 'b, T: ForeignOwnable> {
+> >      /// Holds a reference to the lock guard to ensure the lock is not =
+dropped
+> >      /// while `Self` is live.
+> > @@ -336,7 +333,6 @@ pub(crate) struct XArrayState<'a, 'b, T: ForeignOwn=
+able> {
+> >  }
+> >
+> >  impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
+> > -    #[expect(dead_code)]
+> >      fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
+> >          let ptr =3D access.xa.xa.get();
+> >          // INVARIANT: We initialize `self.state` to a valid value belo=
+w.
+> > @@ -356,6 +352,13 @@ fn new(access: &'b Guard<'a, T>, index: usize) -> =
+Self {
+> >              },
+> >          }
+> >      }
+> > +
+> > +    fn load(&mut self) -> Option<NonNull<c_void>> {
+> > +        // SAFETY: `state.state` is always valid by the type invariant=
+ of
+> > +        // `XArrayState and we hold the xarray lock`.
+> > +        let ptr =3D unsafe { bindings::xas_load(&raw mut self.state) }=
+;
+> > +        NonNull::new(ptr.cast())
+> > +    }
+> >  }
+> >
+> >  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff=
+ `T` is `Send`.
+> >
+> > --
+> > 2.51.2
+> >
+> >
+> >
 
