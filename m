@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD095EA8126
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 15:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95BADEA812A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 15:06:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EEF06B0005; Tue, 10 Feb 2026 10:01:41 -0500 (EST)
+	id D3BB26B008A; Tue, 10 Feb 2026 10:06:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29BDD6B0089; Tue, 10 Feb 2026 10:01:41 -0500 (EST)
+	id CE8786B008C; Tue, 10 Feb 2026 10:06:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17AFB6B008A; Tue, 10 Feb 2026 10:01:41 -0500 (EST)
+	id BCAAF6B0092; Tue, 10 Feb 2026 10:06:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 07B746B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:01:41 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id A2C7D1C596
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:01:40 +0000 (UTC)
-X-FDA: 84428861160.21.2AE9E2C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AC7FC6B008A
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:06:08 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7F8798C063
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:06:08 +0000 (UTC)
+X-FDA: 84428872416.02.3F1A499
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D521740028
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:01:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="XC/9NCnQ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="lmci/dhU";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fk8FRDvX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kPnQW0Ly;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770735698; a=rsa-sha256;
-	cv=none;
-	b=FV7QDrBYj7Wd6uAjdTpq9VwBhdDejaDkRQZ7/3Qsz+W4WxQcmFeFV7IS/YV7g5VDYFsrjH
-	mgQIxrBWNGXe7k63/QhI397B2gDJ9GOK4uLZyDgxngXenxyDzvMIyNzn4zrU4cz/6rOHxU
-	a3dXENkDlANRqhFNBjAkSXXpF5kxVj0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="XC/9NCnQ";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="lmci/dhU";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fk8FRDvX;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kPnQW0Ly;
-	dmarc=none;
-	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by imf16.hostedemail.com (Postfix) with ESMTP id 05FE8180017
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:06:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CPHUk0Hf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3LHBHABW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CPHUk0Hf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3LHBHABW;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770735698;
+	s=arc-20220608; t=1770735966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enWOYPPHiCLyhXlcbo5nS1X+LVkknsIs3XIgzsK/0vk=;
-	b=D/YavxlSQHS4kVIbbA3OXILxRBg8OxbKLQS+jY7FN4wT5WqVo7l1CTjzV2ta1tZu40gm1q
-	NHJs33ubdLGRq0IcLc1FSbxUVSAhT0TQIsSkwkO13xPEN6jYBy0icmXhQWqAEvCuLvghcl
-	4ffVyG8zRVabLRRZQXYmqHWdJjvf3YM=
+	bh=Ol82LLZH5V29RbSzfWc13E4nnPF8saO5omNFaIbCybk=;
+	b=mgqjI/cPS0r7hmAWTN81kiE+N6cEs6YoTqNcrIUx1Yk7zt2RF9K1LKKLJSb2IJrhCStgXU
+	tBOCxJZjUFQCiWIfutXpYYsvMxvYnQh5xo/+KOXkL7Xv4FpQ0LHXMh6+fStF7IdeaiXKR+
+	Tw+gsNa9xutHg4d2gnsLzUkOcrV6SBI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CPHUk0Hf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3LHBHABW;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CPHUk0Hf;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3LHBHABW;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770735966; a=rsa-sha256;
+	cv=none;
+	b=EJy8VY4jZzyT6mvCjYVHkkjFi4FEMeiacjH9zFcmHjXCJxyIgZUj/ZRxosTQYKuPfye889
+	TiTZ0AkspXscKV8PVtiU7JXheDBh40mEMR8yv7G4x/AUNnphlVsXQ9j98VtyF/e1SrwrAt
+	59FofPn5iWat1MlPwNVfacoFHWDXXZY=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1BD353E6FE;
-	Tue, 10 Feb 2026 15:01:26 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 837043E71C;
+	Tue, 10 Feb 2026 15:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770735691; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770735964; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=enWOYPPHiCLyhXlcbo5nS1X+LVkknsIs3XIgzsK/0vk=;
-	b=XC/9NCnQwhNaJYiExqY3UTcMKUdUnF43Sm7do0sPq+Ot4E4axbBll9UN+GszP4NFShF4Yk
-	U82v+6rkikz5BqMcHb88G9bRnT/zwTVCcMkSzlSM8iBaqOwnKQNJlcdQyBSZ0lDeHRk2RD
-	ZUqhaTgXU0jh8OOb8GARx/1ObdH7gr0=
+	bh=Ol82LLZH5V29RbSzfWc13E4nnPF8saO5omNFaIbCybk=;
+	b=CPHUk0HfVZmqMat5wYRSNnqyitz4vsV2uWllTwlzrcPF258jA9+iAkE7Tf0xVoGJDBBdcU
+	T9Lw+0emBAFKHVl3oSGcpNEKWW8lW8FzEub58RGYjhmgfQEP4DZNKofzMFhRtoz9yFtQ6C
+	45M7GBa+9uhKQc0pwcvs1yF9ErRKCwE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770735691;
+	s=susede2_ed25519; t=1770735964;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=enWOYPPHiCLyhXlcbo5nS1X+LVkknsIs3XIgzsK/0vk=;
-	b=lmci/dhUu1V70MmFsaLXKy1fNv9YG+4jc7fBEc6RjW7deQc2JcK7EbpGHopB+FIcuut1kw
-	+N5rpYWYELS4wJAQ==
+	bh=Ol82LLZH5V29RbSzfWc13E4nnPF8saO5omNFaIbCybk=;
+	b=3LHBHABW8+md1RPXhNWocRi7FSVTGhWqVkxXm8D9V+9KTe/ioSLsbTj6+qs1cVAny5IEWG
+	Q3puUYDYCSvMihCA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770735686; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770735964; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=enWOYPPHiCLyhXlcbo5nS1X+LVkknsIs3XIgzsK/0vk=;
-	b=fk8FRDvXAmxhZ+l1vQXrDiQFpuC69QUTi3NUMtuVWxbxy/L/BVv0kNY3p3aGsEf6QChMi6
-	+B7vPAgZKuJWzRU41wp0iUt3htUpwWLnYhdqohVmI4/XaUv8Cd09fmJ79t4T61WXjTpmG9
-	xogXzwOTTSnPpeV1f7ful5khrTSVmBI=
+	bh=Ol82LLZH5V29RbSzfWc13E4nnPF8saO5omNFaIbCybk=;
+	b=CPHUk0HfVZmqMat5wYRSNnqyitz4vsV2uWllTwlzrcPF258jA9+iAkE7Tf0xVoGJDBBdcU
+	T9Lw+0emBAFKHVl3oSGcpNEKWW8lW8FzEub58RGYjhmgfQEP4DZNKofzMFhRtoz9yFtQ6C
+	45M7GBa+9uhKQc0pwcvs1yF9ErRKCwE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770735686;
+	s=susede2_ed25519; t=1770735964;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=enWOYPPHiCLyhXlcbo5nS1X+LVkknsIs3XIgzsK/0vk=;
-	b=kPnQW0LyTLA+3pdCtjNPh3D0S8Dqw4DIsERQAKj+Osm3r3pc+Yy0EHGuupSI9SB/zTBLxt
-	p2sbPWkWlK4eOQBQ==
+	bh=Ol82LLZH5V29RbSzfWc13E4nnPF8saO5omNFaIbCybk=;
+	b=3LHBHABW8+md1RPXhNWocRi7FSVTGhWqVkxXm8D9V+9KTe/ioSLsbTj6+qs1cVAny5IEWG
+	Q3puUYDYCSvMihCA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D1E1B3EA62;
-	Tue, 10 Feb 2026 15:01:25 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 404BF3EA62;
+	Tue, 10 Feb 2026 15:06:04 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CY/vMkVIi2klCQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 10 Feb 2026 15:01:25 +0000
-Message-ID: <ae2be3d3-57a2-44ed-9a3d-c7de2ea79970@suse.cz>
-Date: Tue, 10 Feb 2026 16:01:25 +0100
+	id 0/HQDlxJi2njUgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 10 Feb 2026 15:06:04 +0000
+Message-ID: <4dd46022-b534-4aea-889a-03a7ac25da22@suse.cz>
+Date: Tue, 10 Feb 2026 16:06:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 01/17] mm: Move MAX_FOLIO_ORDER definition to mmzone.h
+Subject: Re: [PATCHv6 02/17] mm: Change the interface of prep_compound_tail()
 Content-Language: en-US
 To: Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -127,10 +127,9 @@ Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
  <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
  Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
- "David Hildenbrand (Red Hat)" <david@kernel.org>
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
 References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-2-kas@kernel.org>
+ <20260202155634.650837-3-kas@kernel.org>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -171,17 +170,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20260202155634.650837-2-kas@kernel.org>
+In-Reply-To: <20260202155634.650837-3-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 05FE8180017
+X-Stat-Signature: idibeknpsc5kpwuignqgqoyh76b4byb6
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D521740028
-X-Stat-Signature: g3j3whe8qqjrhz5rasajyb99qgnwaydq
-X-HE-Tag: 1770735697-96987
-X-HE-Meta: U2FsdGVkX1/u0Ss6XeKSraPlgjvb+ErdmytoeLQM32QtTIFw1e2jYGn91P9ZQv2y9uhNyRMA9s+kzGC7i675NjudgMF7bMEAauP4OUF272Wm5bUV1eEZVvpj22nxNR6cGKSCP+TdIeQpjQFtRjf5msqjLrTOfQoaq9P2V3NaSAD8IHsFRwQPL/Un/qKhwRa6zbE13HWiSeeaDka5sjHHcsi9cKGxbOo+4mSzoxBX8ixHg0SjXrqwLiEGXv2qoiRyMFaJ9+i8u5CUxB2P9lcNGPNUEfcTmKMNSbWIovXf8kcG5Wc+BUFjPoCqA/zl7DK4Qzs/G0VzkCFJVTESY/40EnWKXvHfw/owdQ/0Gjpo43DqUmYKb0E3lBwgK49UT4WSnPipZImmqUDO43URvwaD4vljdsBA7wOlkFSRHe1iuDJNIMU8X0m7IBLpMkA13DjwxUE4iIoJcHwR1KthHGwExhZ8JhOXhWY8MiHS47y76fXUTMV7qIdabDPb8G7mxj9jkI6T8igDGQHgYfmzyIVpoQym3cuxGiO26UisRXs4kOb6EM8/wD1NEYdN5UOoZ9qyNfz2QjzISBjzpK7OV05wBgJi2kqRIPWk89P472BoXA37fdQk1je8RxofLPN/KgE79Kah4tfHgkhRk2QSdtCsaBJax+4KSYjQoft2oWoCKxMr5Aemweriu+wNvr2i4T/h2WG255UTvqLZUNCqMLf/V+4FQw9dM1I0d2xutPp6RV1Br2pWoAVjSv1gAMT/qHKnjyo/DHEfKrtlC9B1FyarzaQZNf3mPFLSS004kTdUgFDjGbQ5nIXcCKn+ZLXiuyU5lIfFHhMXplrMeRJimDPOD3eGR4D33PuSJH1XsZAGkW1gqkQZ7X1kWE7qMXRX/a70YjDyQhmUZjw66yZqd2nVcgRNvjUq1da5X+boMR+dAVCz8q1srPy0B18JLW3GM1cLOBNd1sRpk5wkaMilLHO
- dbbaKAnm
- 5Qf5FZ4vwjBeZHBkH3DrnkYQS13JcxEL4t9P3FcYBfGUiDImlXH7aZ+Qgrj48H+pA/8fiFKu8cRN+IZyYugWpg7hpOHo9n92dDqmwIrMZOlUfB6sm7UHz0UaCnuHlN0QoD2KTL7xaxAvOsdSjPv+/SvO0F9jzoTbAh/5LczjAKo3dMP/dyAOaGsWsSxO6v14aJ2h9nNMFfEP8G3/DzyGLOU9O67HZybxQDiS0PyH7Yhkh/nlfSQzOeTUgO5kO8Vx2o0s8YtZRdeRg6Whx9et+OwxHsCGkRw0ztktOn7CIhdG6VVyqHb7FEJ9fJCpZK5C5KlmJlUH4Tks4G3iree2YubpPfWED7jA0WCA4sEHVLNvDSWAaoCJfWom2IGmaFDKDTEwi
+X-HE-Tag: 1770735965-212144
+X-HE-Meta: U2FsdGVkX18HJDlCUvG9y0Y305sG2UFtI5eHuNNFeXaobHPoHgOgd4kcYBYOUUnV7iQIoYoN/8NG0DHXkzynVcTZ2uwfDJNpIvZ8KsLVHu/IJpP4lBwjzRI6wo4Dtpog0POL7q7mffMz77ouh+FeM/GsbkyWmpxl9BKQpX/2TMcecThD4dyJMMKXXaGu2SEEDEec8LSLw++rIobT4EoiyoOoR6tnpSNXGpF9xrV3n5lvKiAK2hj0NQsEDukz10tGqj6co61IUp+NDxi9NZ835SDZdwl0MMzoJ3ZowiHdZjPNRDG+wWdT9Ut8sdUvT1qFo9e05us8VAOBPKR0fGqaNRKzX/OLwKF929wvKz/NKEzaJU5mtPMp0psIbeOVFpeOmaxXssgJPaLRogCOCbmWownHNLHmMsYW3bmlS2gVdaiQ2oUC3EEh+dWas3YZgxnPWZQQvs6+9q6xvGp0Ojsb49KR0AKdohMG9hdrL5YJHrLYIv92rfqOmU34MKa1snV24BbdYQkCwTGqo55VG2eiZsHtmSBTvEegvNohAAZmO+aDe2EMiIVZ9OTidlTGguaj93qJa1tPTws4cEi+vJrf0OBxPO4xTQmtJbA61f71JX1X/Zt/dosqS85MU17aQuLTseSRiBsLrpS/grIOk6lIhzsLxTDbMWNr+MzUu4xnxAuyLYlPeVyb74xfZ/GpV5aOu3mO0J7HcQDu9jErQir/++s9Py+G6P3Ns9Nwv75huWscEjEUhJEoZI4yywTmrY9sncR/PaK5cMfdfr5zMVIyKXQ34q+uWC293VRFKrXBD2Iev8dhJhJtSLAw6Y2FfNYC5BFvk8koe/mcuKtePof6YlYkqqth9NzonBY2dg5pqBCpLPnj/0I1UchaZmAYrU1Cuvml9R1HKTkyp2OI6Tif9JC9WkUWJY3JM2oeZiXvPT/lgNxV4WBeQNhBLfFH9hvxaiS9TN1v+1wB9lcliNR
+ g031dSkt
+ qLmwYWhyyLE1ODPPeZ1CKwhIMzYCwY9JyfqI9OStWYvVkgOrHwlKL8DIkkkfCEI8sqZF6+mdEuDf3dD/aAaJ1EisRIxPTC6HR1khaD9Cewl0X+Gsby8Pqm3JM8+AcTsXRHW0a1a9IuK7zuhhYqg+w5JoUKk5DyhLeqAnRGns2OGSVJjnKVlIp+FoMTir4mV5xJ8o+NlU2wOvmXTos/t/hs8jIun3KcEPn96ih9rrC+iBxXfQGYM79qIzQNHOICjIXOGMrWjSMW5R3IjSmTjkDSIfaZnmj4t8+T+TosM/odSJhvQu6MFgt3l4y5VaPIip7Fh4w0NP7cMaCqhdt8O2UfwTubJxJyW8tfIWWbfloWwTOIdwj97uAATAsMN058/obks7b
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,15 +190,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> Move MAX_FOLIO_ORDER definition from mm.h to mmzone.h.
+> Instead of passing down the head page and tail page index, pass the tail
+> and head pages directly, as well as the order of the compound page.
 > 
-> This is preparation for adding the vmemmap_tails array to struct
-> pglist_data, which requires MAX_FOLIO_ORDER to be available in mmzone.h.
+> This is a preparation for changing how the head position is encoded in
+> the tail page.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: Muchun Song <muchun.song@linux.dev>
+> Reviewed-by: Muchun Song <muchun.song@linux.dev>
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
 Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
 
