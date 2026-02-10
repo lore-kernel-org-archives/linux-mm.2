@@ -4,83 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5359EA8115
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 466ACEA8114
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 14E936B008A; Tue, 10 Feb 2026 08:29:26 -0500 (EST)
+	id B0D4A6B008C; Tue, 10 Feb 2026 08:30:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EBA46B008C; Tue, 10 Feb 2026 08:29:26 -0500 (EST)
+	id ACAA96B0092; Tue, 10 Feb 2026 08:30:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 026016B0092; Tue, 10 Feb 2026 08:29:25 -0500 (EST)
+	id A13E66B0093; Tue, 10 Feb 2026 08:30:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E74076B008A
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:29:25 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A59913AE2C
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:29:25 +0000 (UTC)
-X-FDA: 84428628690.27.97398E8
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BC197A0009
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:29:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 90FCF6B008C
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:30:51 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 320D11A0550
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:30:51 +0000 (UTC)
+X-FDA: 84428632302.19.E775BE6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 799EF1A0015
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:30:49 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q+KMZT6u;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770730164;
+	s=arc-20220608; t=1770730249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HCJ907E6pfC1y4wBaOaT6SkZD6XlI1iFlZOQCFr2fG0=;
-	b=0X7YOH3xzwqrqiQugD4+aoz2jL2rXNNJcOURpwMM6okql3YJhZTwKlHDozBKfdGSisk9Dg
-	1zvzI1ZTIe8vZ1tovBTjefdFJ42QSOWa0laJmSP860Oi2NylkcsTQSAiLvr3hNydyx46ZH
-	FMw4TMJ89q6mvwdAElnjNGeXBTJNLNU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yBwIG2wQSDsiUiYiqArj4u79Eah9t6u78KhgKsVdJu0=;
+	b=kFq+2ZbZdCSyXMtki6h8E7nl8FuEwHBqJieBiL1V2oznl3A2C8EzIGIvHXP2ejCQdR4hkg
+	pcbzmkd7jfqOaEJ0icymbProDqsw6IlX4C/B5c2bnM/cPFAleVoNceTfdq6xnTUKyKRWq9
+	O/zgIZAY4soq0dGFnUjCL64rT7Qjb6E=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	spf=pass (imf15.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770730164; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q+KMZT6u;
+	spf=pass (imf19.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770730249; a=rsa-sha256;
 	cv=none;
-	b=dDbcZBRFNQrK35XtGpp7OuhhtVQhQCrueNNHdFUi4C3tlWAGBv+r1p7WtvbJDKLkeNeFcW
-	ZyDsnF4pGLONBcFXSxMUQI/aI5ili2dSVU3bBv0etJr2eqtjFWxoabS5pbjTnHz/VSu9cS
-	xGKPtKg6iqJLY3nvD2Sy6WITx71LSW0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9370B339;
-	Tue, 10 Feb 2026 05:29:16 -0800 (PST)
-Received: from [10.164.19.61] (unknown [10.164.19.61])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7AAC93F63F;
-	Tue, 10 Feb 2026 05:29:18 -0800 (PST)
-Message-ID: <a2cdcf67-ca27-4d8a-96e0-d5a677e7dbc6@arm.com>
-Date: Tue, 10 Feb 2026 18:59:15 +0530
+	b=iA3Y4RxcUfInNQ3/oJ6G0g/EgnghVCxgxMJ7uZKdNDkZJ98SjB/FiJMh8oxgB3/IDmflKO
+	+R5s/x5pBAc+9cONOp+K/ELTVRik/m15RSDw5yoEQfXDEAzdYx9oKOVkTQoVrwyEwwF2dd
+	81NNpKf/7CJDu29QNqFV3a0kHtbdotg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C64CD60097;
+	Tue, 10 Feb 2026 13:30:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE95C116C6;
+	Tue, 10 Feb 2026 13:30:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770730248;
+	bh=tFOyTVhR+WU/OkMF4qkv7WslBiNhFBOO/Y7SpuCXXwk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=q+KMZT6uGMPekyGMrCG4ahzu+wWRYsoPqQ7zO4ONkJ78fzq87BqZDvFgxphBGDdVJ
+	 ZK1o3eUvKE8YHbFFeY90FmOVnGh2VZLImCjghnJ//SkZMvdvLgCXY8wH8OAruoEYYm
+	 1Wdh22uw6fmf3GZubBv/kS5gXg7qT4SfC+uQqo2Pl8YJUoC4t9J6IObqi16XJbI98U
+	 0/n4eSKrQoKjuWP5AjAKI2T8dn2MJ+/Z/3DfAuydeUIJOg1B9mazxPtzGDolDAEIq6
+	 IlkQaWO20DvSOWdIUgqprUQeSrS1/433CMo2J5/EBkNjiCArWr4wjA0oMaYlAjVfJO
+	 owSOBNTwlgCfw==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Andrew Morton <akpm@linux-foundation.org>,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] liveupdate: luo_file: remember retrieve() status
+In-Reply-To: <aXn05ADvj0X7N5bK@kernel.org> (Mike Rapoport's message of "Wed,
+	28 Jan 2026 13:37:08 +0200")
+References: <20260126230302.2936817-1-pratyush@kernel.org>
+	<20260126230302.2936817-3-pratyush@kernel.org>
+	<aXn05ADvj0X7N5bK@kernel.org>
+Date: Tue, 10 Feb 2026 14:30:45 +0100
+Message-ID: <2vxzfr78u3ne.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: map maximum pages possible in finish_fault
-To: Usama Arif <usamaarif642@gmail.com>, akpm@linux-foundation.org,
- david@kernel.org
-Cc: lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ryan.roberts@arm.com,
- anshuman.khandual@arm.com, kirill@shutemov.name, willy@infradead.org
-References: <20260206135648.38164-1-dev.jain@arm.com>
- <687c7173-31c9-457a-9900-68e7f38688ed@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <687c7173-31c9-457a-9900-68e7f38688ed@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: qcrcw5rsjhrpnwzwm5s67qtzdjwym8rw
-X-Rspamd-Queue-Id: BC197A0009
+Content-Type: text/plain
+X-Stat-Signature: 79grde5cwa1qeym8srdqmdj4u3bbt7z5
+X-Rspamd-Queue-Id: 799EF1A0015
 X-Rspam-User: 
-X-HE-Tag: 1770730163-770880
-X-HE-Meta: U2FsdGVkX19T/zzONJwmoBmmRurBXYovYBKOXfB2eUzkwndlzj6FDWljJ2n88eQs9Av8AXsSDdFKEgYb5ltIetHlpubbAXJ+Re9ehatj9lVS9ZOZitTZPlKDN1LekkWfaNtmM9mqz0A05VyZPglK7TG4p3On12H1qxxt/0IEzLw7lbUQzgqvBkq/jzfR1qLSblK8vQrsmIM5uAwM2LK8IQaOJwrIvBYbEmQ/DcPXaOGBPiwGpFpMHqXeVxX3VSMjLPx3ojA2pqKgsOr/MNM+8ApHCcdqsjMCirW1FxzrTLFTta2DIUwJ8yhoHDNVinPIvCLdLAQK2xuOcn5EQVb/ZY2rpkqYvZy1gvafpdUzIQgtorTbKvxIz1vx5WFNV4e0IyfI5nzoacXwMZmjopeNA42cLEJgS74z6lyJeP7+VcTnrLC7+UCqYkf4Vt5bgF4fjWOc3ftpmzUc4TuwqV54DcYEI+3QTWTEs8/oQVJ0L/qtbEw3BQFUqfFZGgSJjJ8xspfI8I2HOyuEEgRNQTrvCBMEyWm3rW1nWbKPvMKnRIc0iorlc2S1BvqnPG+8BjceMQZoTrIUhnc1g5xIm05k7nDPFCq6zqmQi3uhy6030O6qE5OIE3hF4U83RScGBC4XNo2/hKuWRaCCXzPUgIZbbG7PPcDLG/ZGL9AuSZjW7qVSyPdTkiO+y4Ki5vYnHNEls1JsN7Fjkt62cLq63HIcUjHLho/YCxv11txfWCn8gbpGDT7LnX8jThm7TnrH5KsZmlX7k3f+xSsPxeovivtxCQWdupezQ6HImXd9/u9P1zukf9AAMx0qEGz4pq/rQg/nunKKLbIrXgiB/HvM3kA7hw+O3Bsa/m3KKQFZcN0p2vQap3/puEOStPqLhHYfdQz3bjfufu7/a/cTvyzy/M4TiPTNBN/BVaDujNFUHM9KlFadvetFxsJhkh3I51seIf321zHIqmjBvEvTKmzCybm
- KfgejNp2
- QY+YfiAqlZ/G4zG6KNg4Q6Pgs56HINkIzKxGFV+jXTu5cUiCMmRBE067LnlR9hbE46U9QVeHy6u/e9gxJJQ2Ru1MM4Nm22kwMuGFZ0ZIgaxKvpa1xgLPTCyRM6QhoZAjl2wFCpBnplCwwfIRIbmfXTvB+XbHBs9viuyitJqtU8sGVGutomaGnr4A7yLyRbgx0eqmZ
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770730249-631749
+X-HE-Meta: U2FsdGVkX1/OQFSTkMrsAw+nkXZls/dXC2acazDI1qTDmcTiPa6a/68Xg+UkwSQ+o4kxujGkYHLUAnCnpHlZ1Q355vBt8hUTYK/d90x1rmVhuX25q5Ge2tNZwsUb1FrdflRb8oqxSJMDt9MJbFbFakBOG7KqhBVp1pDSYts9yy2THa6gcBWzscttHdBxMKMz9WgOwgD2nxAOCfCBqu/ieggZRWzz9X75bAQoL79LhCHhYB5YsXirRWE64/x1WoHo6w34gHm3jjsxFscpw+RUHljefy7pBLjydqm3AGtgwpHvKMjkmiroXKhICPNArFRmGqYYIlu0PnnQECy7CHyh7nSqqL6pwTlFKQD5RzuT9CijdVvhn2xCP8rILDYJ0caCo9ID5NUt/GAQ3I9iHemKq67wxlbZVXsDbxp2+MUHwkMPkC4XQDO5qd1E3pEWm2chuswFEJ2wXuvR/yqzL71FfZzBpmy2x6L/qZX+CNbxcp8mMpEDt4jbEDIPama7LoJLqY0mO9vXJEamSLFD/SFAzg/37ReL7aGCSaRMdtxhfnslTgowhyJB/8EPD1MISviUR82+e9QAbKjSMcFmjlAFH+3wP8hrv1vwUrd5r8C3KTmLpMgTSjKpJuAvzHRmKzV2PrjERC1oG5mnHWahacpNAQ2PIX12R4C4vLCA0lGV1Yis53Evk7T+pfRYJxMy6es9tBjO+IpLDqOZxVaBT1JPilVUfy2w7qVNs5WoTvCkI7KfIB6Bq/T+/WZa0Z23sIwr4Ifxk2EdQNmaINwQ0IYqjE8RfqxwqP1Ncoh/clymC8VaPjOXvzsXi3qnjxwHxVa1K/YFH1wqjiMJQrwCnqybDmnjhhb9TjRIpUgARq3P+TERkpp979Fgx2t1MRb2O+38WLeQ0Fl+GKMENs0piPlqdLb83c4rsRSvz0GZfQrsGtLpVEyQQppri68cjmTU5z7UITbx9+04S1DxAJbLUQU
+ UBzH0uEl
+ lpnn8CooMZJR8iVXOzJT7BITmxvQAzdPlc/1WABLTB14MX6ZWMrYOY8LyGZyiNRUhWHc3tcpSeYm59ENtHAcJBvV6R/cA1bJgtg7uzEFiHVNGtCcTQvlgth2WM733Ggjs5rE1wn2D2gUwqWWUZrloRREh8VI1f0haBIMIpHRbTOc7y+/aGHorIavGDJ3vkwxkIOLYXX7ENNQbQXOLxYLogy025FlhWP6E5yHb6dRZEehrspA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,99 +95,272 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Mike,
 
-On 07/02/26 11:38 pm, Usama Arif wrote:
->> @@ -5619,49 +5619,53 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
->>  	nr_pages = folio_nr_pages(folio);
+Thanks for the review.
+
+On Wed, Jan 28 2026, Mike Rapoport wrote:
+
+> Hi Pratyush,
+>
+> On Tue, Jan 27, 2026 at 12:02:53AM +0100, Pratyush Yadav wrote:
+>> From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
+>> 
+>> LUO keeps track of successful retrieve attempts on a LUO file. It does
+>> so to avoid multiple retrievals of the same file. Doing so will cause
+>
+> 						  ^ Multiple  retrievals
+
+Will fix.
+
+>
+>> problems because once the file is retrieved, the serialized data
+>> structures are likely freed and the file is likely in a very different
+>> state from what the code expects.
+>> 
+>> This is kept track of by the retrieved boolean in struct luo_file, and
+>
+> The 'retrieve' boolean in struct luo_file keeps track of this,
+
+ACK.
+
+>
+>> is passed to the finish callback so it knows what work was already done
+>> and what it has left to do.
+>> 
+>> All this works well when retrieve succeeds. When it fails,
+>> luo_retrieve_file() returns the error immediately, without ever storing
+>> anywhere that a retrieve was attempted or what its error code was. This
+>> results in an errored LIVEUPDATE_SESSION_RETRIEVE_FD ioctl to userspace,
+>> but nothing prevents it from trying this again.
+>> 
+>> The retry is problematic for much of the same reasons listed above. The
+>> file is likely in a very different state than what the retrieve logic
+>> normally expects, and it might even have freed some serialization data
+>> structures. Attempting to access them or free them again is going to
+>> break things.
+>> 
+>> For example, if memfd managed to restore 8 of its 10 folios, but fails
+>> on the 9th, a subsequent retrieve attempt will try to call
+>> kho_restore_folio() on the first folio again, and that will fail with a
+>> warning since it is an invalid operation.
+>> 
+>> Apart from the retry, finish() also breaks. Since on failure the
+>> retrieved bool in luo_file is never touched, the finish() call on
+>> session close will tell the file handler that retrieve was never
+>> attempted, and it will try to access or free the data structures that
+>> might not exist, much in the same way as the retry attempt.
+>> 
+>> There is no sane way of attempting the retrieve again. Remember the
+>> error retrieve returned and directly return it on a retry. Also pass
+>> this status code to finish() so it can make the right decision on the
+>> work it needs to do.
+>> 
+>> This is done by changing the bool to an integer. A value of 0 means
+>> retrieve was never attempted, a positive value means it succeeded, and a
+>> negative value means it failed and the error code is the value.
+>> 
+>> Fixes: 7c722a7f44e0 ("liveupdate: luo_file: implement file systems callbacks")
+>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>> ---
+>>  include/linux/liveupdate.h   |  7 ++++--
+>>  kernel/liveupdate/luo_file.c | 41 ++++++++++++++++++++++--------------
+>>  mm/memfd_luo.c               |  7 +++++-
+>>  3 files changed, 36 insertions(+), 19 deletions(-)
+>> 
+>> diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+>> index a7f6ee5b6771..a543a3a8e837 100644
+>> --- a/include/linux/liveupdate.h
+>> +++ b/include/linux/liveupdate.h
+>> @@ -21,7 +21,10 @@ struct file;
+>>   * struct liveupdate_file_op_args - Arguments for file operation callbacks.
+>>   * @handler:          The file handler being called.
+>>   * @retrieved:        The retrieve status for the 'can_finish / finish'
+>> - *                    operation.
+>> + *                    operation. A value of 0 means the retrieve has not been
+>> + *                    attempted, a positive value means the retrieve was
+>> + *                    successful, and a negative value means the retrieve failed,
+>> + *                    and the value is the error code of the call.
+>>   * @file:             The file object. For retrieve: [OUT] The callback sets
+>>   *                    this to the new file. For other ops: [IN] The caller sets
+>>   *                    this to the file being operated on.
+>> @@ -37,7 +40,7 @@ struct file;
+>>   */
+>>  struct liveupdate_file_op_args {
+>>  	struct liveupdate_file_handler *handler;
+>> -	bool retrieved;
+>> +	bool retrieve_sts;
+>
+> int retrieve_sts?
+
+Ugh, stupid mistake... Thanks for catching.
+
+>
+> and maybe spell out _status rather than _sts?
+
+Will do.
+
+>
+>>  	struct file *file;
+>>  	u64 serialized_data;
+>>  	void *private_data;
+>> diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+>> index 9f7283379ebc..82577b4cca2b 100644
+>> --- a/kernel/liveupdate/luo_file.c
+>> +++ b/kernel/liveupdate/luo_file.c
+>> @@ -133,9 +133,12 @@ static LIST_HEAD(luo_file_handler_list);
+>>   *                 state that is not preserved. Set by the handler's .preserve()
+>>   *                 callback, and must be freed in the handler's .unpreserve()
+>>   *                 callback.
+>> - * @retrieved:     A flag indicating whether a user/kernel in the new kernel has
+>> + * @retrieve_sts:  Status code indicating whether a user/kernel in the new kernel has
+>>   *                 successfully called retrieve() on this file. This prevents
+>> - *                 multiple retrieval attempts.
+>> + *                 multiple retrieval attempts. A value of 0 means a retrieve()
+>> + *                 has not been attempted, a positive value means the retrieve()
+>> + *                 was successful, and a negative value means the retrieve()
+>> + *                 failed, and the value is the error code of the call.
+>>   * @mutex:         A mutex that protects the fields of this specific instance
+>>   *                 (e.g., @retrieved, @file), ensuring that operations like
+>>   *                 retrieving or finishing a file are atomic.
+>> @@ -160,7 +163,7 @@ struct luo_file {
+>>  	struct file *file;
+>>  	u64 serialized_data;
+>>  	void *private_data;
+>> -	bool retrieved;
+>> +	int retrieve_sts;
+>>  	struct mutex mutex;
+>>  	struct list_head list;
+>>  	u64 token;
+>> @@ -293,7 +296,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+>>  	luo_file->file = file;
+>>  	luo_file->fh = fh;
+>>  	luo_file->token = token;
+>> -	luo_file->retrieved = false;
+>> +	luo_file->retrieve_sts = 0;
+>
+> We kzalloc() luo_file, so this is not strictly required.
+
+Okay, will drop.
+
+>
+>>  	mutex_init(&luo_file->mutex);
 >>  
->>  	/* Using per-page fault to maintain the uffd semantics */
->> -	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
->> +	if (unlikely(userfaultfd_armed(vma)) || unlikely(single_page_fallback)) {
->>  		nr_pages = 1;
->>  	} else if (nr_pages > 1) {
->> -		pgoff_t idx = folio_page_idx(folio, page);
->> -		/* The page offset of vmf->address within the VMA. */
->> -		pgoff_t vma_off = vmf->pgoff - vmf->vma->vm_pgoff;
->> -		/* The index of the entry in the pagetable for fault page. */
->> -		pgoff_t pte_off = pte_index(vmf->address);
->> +
->> +		/* Ensure mapping stays within VMA and PMD boundaries */
->> +		unsigned long pmd_boundary_start = ALIGN_DOWN(vmf->address, PMD_SIZE);
->> +		unsigned long pmd_boundary_end = pmd_boundary_start + PMD_SIZE;
->> +		unsigned long va_of_folio_start = vmf->address - ((vmf->pgoff - folio->index) * PAGE_SIZE);
->> +		unsigned long va_of_folio_end = va_of_folio_start + nr_pages * PAGE_SIZE;
->> +		unsigned long end_addr;
->
-> Hello!
->
-> Can va_of_folio_start underflow here? For e.g. if you MAP_FIXED at a very low address and
-> vmf->pgoff is big.
->
->
-> max3() would then pick this huge value as start_addr/
->
-> I think the old code guarded against this explicitly below:
->     if (unlikely(vma_off < idx || ...)) {
->         nr_pages = 1;
->     }
-
-Indeed! Thanks for the spot, I'll fix this.
-
->
->> +
->> +		start_addr = max3(vma->vm_start, pmd_boundary_start, va_of_folio_start);
->> +		end_addr = min3(vma->vm_end, pmd_boundary_end, va_of_folio_end);
+>>  	args.handler = fh;
+>> @@ -569,7 +572,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+>>  		return -ENOENT;
 >>  
+>>  	guard(mutex)(&luo_file->mutex);
+>> -	if (luo_file->retrieved) {
+>> +	if (luo_file->retrieve_sts > 0) {
 >>  		/*
->> -		 * Fallback to per-page fault in case the folio size in page
->> -		 * cache beyond the VMA limits and PMD pagetable limits.
->> +		 * Do not allow to map with PTEs across i_size to preserve
->> +		 * SIGBUS semantics.
->> +		 *
->> +		 * Make an exception for shmem/tmpfs that for long time
->> +		 * intentionally mapped with PMDs across i_size.
->>  		 */
->> -		if (unlikely(vma_off < idx ||
->> -			    vma_off + (nr_pages - idx) > vma_pages(vma) ||
->> -			    pte_off < idx ||
->> -			    pte_off + (nr_pages - idx)  > PTRS_PER_PTE)) {
->> -			nr_pages = 1;
->> -		} else {
->> -			/* Now we can set mappings for the whole large folio. */
->> -			addr = vmf->address - idx * PAGE_SIZE;
->> -			page = &folio->page;
->> -		}
->> +		if (mapping && !shmem_mapping(mapping))
->> +			end_addr = min(end_addr, va_of_folio_start + (file_end - folio->index) * PAGE_SIZE);
+>>  		 * Someone is asking for this file again, so get a reference
+>>  		 * for them.
+>> @@ -577,21 +580,27 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+>>  		get_file(luo_file->file);
+>>  		*filep = luo_file->file;
+>>  		return 0;
+>> +	} else if (luo_file->retrieve_sts < 0) {
+>> +		/* Retrieve was attempted and it failed. Return the error code. */
+>> +		return luo_file->retrieve_sts;
+>>  	}
+>
+> I'd put it before the check for > 0, i.e
+>
+> 	if (luo_file->retrieve_sts < 0)
+> 		return luo_file->retrieve_sts;
+>
+> 	if (luo_file->retrieve_sts > 0) 
+> 		...
+
+ACK. Will do.
+
+>
+>   
+>>  	args.handler = luo_file->fh;
+>>  	args.serialized_data = luo_file->serialized_data;
+>>  	err = luo_file->fh->ops->retrieve(&args);
+>> -	if (!err) {
+>> -		luo_file->file = args.file;
+>> -
+>> -		/* Get reference so we can keep this file in LUO until finish */
+>> -		get_file(luo_file->file);
+>> -		*filep = luo_file->file;
+>> -		luo_file->retrieved = true;
+>> +	if (err) {
+>> +		/* Keep the error code for later use. */
+>> +		luo_file->retrieve_sts = err;
+>> +		return err;
+>>  	}
+>>  
+>> -	return err;
+>> +	luo_file->file = args.file;
+>> +	/* Get reference so we can keep this file in LUO until finish */
+>> +	get_file(luo_file->file);
+>> +	*filep = luo_file->file;
+>> +	luo_file->retrieve_sts = 1;
 >> +
->> +		nr_pages = (end_addr - start_addr) >> PAGE_SHIFT;
->> +		page = folio_page(folio, (start_addr - va_of_folio_start) >> PAGE_SHIFT);
+>> +	return 0;
+>>  }
+>>  
+>>  static int luo_file_can_finish_one(struct luo_file_set *file_set,
+>> @@ -607,7 +616,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
+>>  		args.handler = luo_file->fh;
+>>  		args.file = luo_file->file;
+>>  		args.serialized_data = luo_file->serialized_data;
+>> -		args.retrieved = luo_file->retrieved;
+>> +		args.retrieve_sts = luo_file->retrieve_sts;
+>>  		can_finish = luo_file->fh->ops->can_finish(&args);
 >>  	}
 >>  
->>  	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
->> -				       addr, &vmf->ptl);
->> +				       start_addr, &vmf->ptl);
->>  	if (!vmf->pte)
->>  		return VM_FAULT_NOPAGE;
+>> @@ -624,7 +633,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
+>>  	args.handler = luo_file->fh;
+>>  	args.file = luo_file->file;
+>>  	args.serialized_data = luo_file->serialized_data;
+>> -	args.retrieved = luo_file->retrieved;
+>> +	args.retrieve_sts = luo_file->retrieve_sts;
 >>  
->>  	/* Re-check under ptl */
->>  	if (nr_pages == 1 && unlikely(vmf_pte_changed(vmf))) {
->> -		update_mmu_tlb(vma, addr, vmf->pte);
->> +		update_mmu_tlb(vma, start_addr, vmf->pte);
->>  		ret = VM_FAULT_NOPAGE;
->>  		goto unlock;
->>  	} else if (nr_pages > 1 && !pte_range_none(vmf->pte, nr_pages)) {
->> -		needs_fallback = true;
->> +		single_page_fallback = true;
->> +		try_pmd_mapping = false;
->>  		pte_unmap_unlock(vmf->pte, vmf->ptl);
->>  		goto fallback;
+>>  	luo_file->fh->ops->finish(&args);
+>>  }
+>> @@ -779,7 +788,7 @@ int luo_file_deserialize(struct luo_file_set *file_set,
+>>  		luo_file->file = NULL;
+>>  		luo_file->serialized_data = file_ser[i].data;
+>>  		luo_file->token = file_ser[i].token;
+>> -		luo_file->retrieved = false;
+>> +		luo_file->retrieve_sts = 0;
+>
+> Here as well, we kzalloc() luo_file, so zeroing out of the fields is not
+> strictly required.
+
+ACK.
+
+>
+>>  		mutex_init(&luo_file->mutex);
+>>  		list_add_tail(&luo_file->list, &file_set->files_list);
 >>  	}
+>> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+>> index a34fccc23b6a..ffc9f879833b 100644
+>> --- a/mm/memfd_luo.c
+>> +++ b/mm/memfd_luo.c
+>> @@ -326,7 +326,12 @@ static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+>>  	struct memfd_luo_folio_ser *folios_ser;
+>>  	struct memfd_luo_ser *ser;
 >>  
->>  	folio_ref_add(folio, nr_pages - 1);
->> -	set_pte_range(vmf, folio, page, nr_pages, addr);
->> +	set_pte_range(vmf, folio, page, nr_pages, start_addr);
->>  	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
->>  	add_mm_counter(vma->vm_mm, type, nr_pages);
->>  	ret = 0;
+>> -	if (args->retrieved)
+>> +	/*
+>> +	 * If retrieve was successful, nothing to do. If it failed, retrieve()
+>> +	 * already cleaned up everything it could. So nothing to do there
+>> +	 * either. Only need to clean up when retrieve was not called.
+>> +	 */
+>> +	if (args->retrieve_sts)
+>>  		return;
+>>  
+>>  	ser = phys_to_virt(args->serialized_data);
+>> -- 
+>> 2.52.0.457.g6b5491de43-goog
+>> 
+
+-- 
+Regards,
+Pratyush Yadav
 
