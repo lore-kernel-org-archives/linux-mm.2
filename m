@@ -4,128 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26511EA8114
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:28:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1A70EA8114
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:28:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54E5B6B0005; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
+	id 0F5206B0088; Tue, 10 Feb 2026 08:28:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 525B66B0088; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
+	id 088D76B0089; Tue, 10 Feb 2026 08:28:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 431BA6B0089; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
+	id F053B6B008A; Tue, 10 Feb 2026 08:28:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 318276B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:28:37 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D1E281C21F
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:28:36 +0000 (UTC)
-X-FDA: 84428626632.06.DFEFAE1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 6529F1C0018
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:28:34 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXkYspqr;
-	spf=pass (imf18.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id DFFBA6B0088
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:28:47 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3F81160541
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:28:47 +0000 (UTC)
+X-FDA: 84428627094.23.B16B378
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 8158B120007
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:28:45 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770730114;
+	s=arc-20220608; t=1770730126;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l03HnZXbsOr3bfTMcnwfLvCVQcb4y4TgKk1IHdA354w=;
-	b=h71YSEWON+HyCrVM+VfPS7TW1q8vl0DMRCub2csELTTSfZ9zFN76/coyzj8yRuCgac883K
-	D1Vqz5cfzXgUf/vca+wtTY7aGQNZVUGZk95iDGaqpciAv5H3yN4Ho5akgABrd4G9ghXcaM
-	yatl2VZV57PwemOmm/uOxLoeHGARXzs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BXkYspqr;
-	spf=pass (imf18.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770730114; a=rsa-sha256;
-	cv=none;
-	b=wd0K1M93NsH8x2D9geYfsWrzdFGuaDoKJyYy0Qkgxjjd1l+osg/ZlucQER6oSYQp0ap6J+
-	8X1GYIGNPKgtxm0NpYB7DdG9N53NffOmCiy25oeCcHeVt3jIefXkBuUBRwHlYoYH61C+rB
-	ez67ZVmgDnVmQLKJfPFlTVhmQZDOA9M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770730113;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=l03HnZXbsOr3bfTMcnwfLvCVQcb4y4TgKk1IHdA354w=;
-	b=BXkYspqre13wxC8n8CTHEbpL5sscVK2NFHYatd87YKwqygNEhjIodHXE3DUMY7RU1N3BDL
-	QxNP/JH4Vs+8jbTao0A7agCznkWTOSIIbhHsmLmOZparqqq31ehkULSgDORQPj2QOb+OEI
-	oXc7oxebhUqEAHqmQIkgCTuFVY6Jr60=
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-539-J7HbQg95PFiUOs7eZi_ARA-1; Tue, 10 Feb 2026 08:28:28 -0500
-X-MC-Unique: J7HbQg95PFiUOs7eZi_ARA-1
-X-Mimecast-MFC-AGG-ID: J7HbQg95PFiUOs7eZi_ARA_1770730108
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5059656723eso190909991cf.0
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 05:28:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770730108; x=1771334908;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=l03HnZXbsOr3bfTMcnwfLvCVQcb4y4TgKk1IHdA354w=;
-        b=kTIaz+wnyZCCm4UwHLAx51s0iWtS5BvPFswo/PLsoaplgMyepvBdfeA5KqUHjfQln2
-         pOjkVftgdYQggBLwmusdCTLNVkZ4dtQvsSUzR3gC7BwUjKh5nbkG2P8tBOw/4byBabQq
-         JlCXdHdoKMTEHcfc7U8fZw9JIsnniEA5gX+ekLUVisJ011Bi2Qxj8fItQP0Ya4ERnU/+
-         TAZjXo98l52s7ITLIgci8UqPZpQL3SLgkFgQUzspdxcVC4bmDKJfXOqTkuwQk2OPxDdM
-         xPo+lnI3eVDWKXFMFpKJQRlJ+0dSm5r/PLoHkMLkVYmmZnAV5/7m9HVLix68/tA7gi7V
-         Op9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVo63Tlejhh8SgMVu7J+YJ59MUNOn1+4pmJ1ufBr+0/hIvv49sjJUC0tyoQrXxRtY7bVkAotli8iw==@kvack.org
-X-Gm-Message-State: AOJu0YxN3YfDs6WCxdqa8R5QiPiN2UqMdpjfxod1EJ80jUqaKaS/ebEW
-	S1L6fC5fFuLzvsBCNOC9x2FPFJetI0dxC8YK/j0tndb8isG+QvfQKX2f4yaFUO7BbSchSc0RQ3B
-	tnZJTPiVXZhMkZlPAFltIINHnfqF7jOMaTEJfhXj38bnekoPfyCqJ
-X-Gm-Gg: AZuq6aJBIykiogOj07whOK+An/lHdCiorm3Ep3FWbHvyZhrixOY0B2lypesrr73Sb5R
-	32MAtMEQV05zxcNbNnCsQBqtEUFBPgYAgW/NGLGjaziU1G02C7MyDXgDHelKVu49lN0suRd2R6P
-	WjPAP0JtJXSWr6mgkrfMSR6T7Whtyfzuo6UZ8BmI2yzH4+ZmaDOYPM2euSQPYwhNk4PsWv0dNIW
-	ld34CYXoJ5awDw8YmodnqfyxhymAzxEWuN5uoBJwr5tq02uCNZ8R/nPT5Q8WA9XrVTIv8d+B8pm
-	+9zBCMKqiVPcqUnBzaSchyL8SbdenXpVwDlSkG5oH2rDyUEotbYP8dQ6DatUkXo82r8b61/gbkp
-	4ZKz5/geq5ONLBrkJpgpoB3Y=
-X-Received: by 2002:ac8:7f55:0:b0:4ee:c1a:f11f with SMTP id d75a77b69052e-506399e4b33mr199812691cf.84.1770730107821;
-        Tue, 10 Feb 2026 05:28:27 -0800 (PST)
-X-Received: by 2002:ac8:7f55:0:b0:4ee:c1a:f11f with SMTP id d75a77b69052e-506399e4b33mr199812401cf.84.1770730107444;
-        Tue, 10 Feb 2026 05:28:27 -0800 (PST)
-Received: from [192.168.2.110] ([76.65.77.217])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9fdfa1bsm1047769185a.45.2026.02.10.05.28.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Feb 2026 05:28:27 -0800 (PST)
-Message-ID: <0c0886d5-2561-40e4-94e9-6fca15f25127@redhat.com>
-Date: Tue, 10 Feb 2026 08:28:16 -0500
+	bh=qhoLeiYkDLOdznlHrXM/eR5uFDLkmSSaPYc4hadio7g=;
+	b=iM8nVDe4tMsze1aSB5TtmJSAopinO7APabYKj/95RzEuVZpKnOIwFpc5qbQCiYLDo7W5IP
+	xt0IMFn0VJcjLHMJkZrGGrJAHRuuKy1uPvjGOLBW1+9t/2KDbv37VC2YUHDlcPCTcZYdBv
+	6lEU9UP7vvTcSToDHgpGkGmEPmFLaq8=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770730126; a=rsa-sha256;
+	cv=none;
+	b=UXO2qUennIrOyIzhEQ2tKCGETHZP7T1SZ3LBEt32pPbo3QGWNh2rttYDAgE/NdXYtj3viW
+	l/ckEf0HN31tUdBNY+yqj7NYPeX5xmJUaevyUuWBEumhoQau1LjaiTZmoKpGQUkhsV3PUe
+	YbGeMYFTg12W1iI2wxyGqDnc6Tolymw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1941C339;
+	Tue, 10 Feb 2026 05:28:38 -0800 (PST)
+Received: from [10.164.19.61] (unknown [10.164.19.61])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A55413F63F;
+	Tue, 10 Feb 2026 05:28:40 -0800 (PST)
+Message-ID: <397482e7-3c89-48e5-9e8c-0798ac92cc05@arm.com>
+Date: Tue, 10 Feb 2026 18:58:37 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/11] mm: thp: always enable mTHP support
-To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, david@kernel.org
-Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <cover.1770675272.git.luizcap@redhat.com>
- <29e8dfc2772af4b6e0db24134ca3563ec422b91a.1770675272.git.luizcap@redhat.com>
- <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: aN9DsbBSsvDyNinglysF7JEAljJL8S3vxLa2Mmleeeg_1770730108
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] mm: map maximum pages possible in finish_fault
+To: Matthew Wilcox <willy@infradead.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com, kirill@shutemov.name
+References: <20260206135648.38164-1-dev.jain@arm.com>
+ <aYYHGisOQFQINXwR@casper.infradead.org>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <aYYHGisOQFQINXwR@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ou79rb45aftekkiudux9eeyms6goxk9w
+X-Rspamd-Queue-Id: 8158B120007
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6529F1C0018
-X-Rspamd-Server: rspam07
-X-Stat-Signature: n9wxhkhhu5eq5sdtoqwf4zoa8o7m1nzn
-X-HE-Tag: 1770730114-299307
-X-HE-Meta: U2FsdGVkX18b8+WFIwQdEJC/PRx08rCYDkXlksRMEjdwB8DPwfvbNSZ8gZjNjQR8Bg8cqbgSElARoIkXNjs1In7AB2yMw87XuXA3gs4Aur53yNBmuCZ0mMbErDQY8T/DdlXeU/dTOcCBP6fxHyVfWNYWEXP77Nmew4bCxKR5PymIW0KDaAXHcRb6OGTZLdhXhJPF79hDQipiCadI060ePLkqMHpRUckPjLWzSRDZCRuIJe19nrmBQu2TRcfOXQ65tjzO9SWpsZ3k84Q5lYmVee+ky1ZhiDhfZxwUpVlktBXtnwlkCvi4MUWcFvkDjeli3H9sAjQnV8gPyBNWB0w3zlX/4rQ7Qq65Y/wdPfcxZct+4bCFW41aCF7M7K5ceGjE0c2kwTBEX5kVhBIiFh+h7IAmfaR1GfH88SLqKPeoCEC//i7H+/5oXYqH6002gk6B+j4dNrMM6ND2kRZU9ZI06W6xCeqnfGumwGzuBQ+0IREUmgXwfwj5z8cSmUpkBbvQAYAD4H3tXKQGqSBKcqhZr/NfeOyGarLqghG+zrisuUAJKqy4076ImtLcWlsJmozUBiOue5D2ipLgbKNFSMfr4Zw6ZZrHA4e5ILaoD1nUCrHpsmf8VW1plVzrnMWYPGr5wLerkh/o7xdwo0mXeSXDHH7LnVGgQNt6sGsRIFp04yiHTj6x21wY/EkNAE1UqmH0AEgZHYFrwB3XdS5JRgrJH8+sH8h+kFIiMicoilELilhx3y/eE1mgEFaAAy3tjIionrFz1kdO+Ok0Ld6XTsp4RgwP386XjpFe5UJP9l0BSxqbfrI/ARDOAHfw4bgH5DXaLK8onpemqlyO+Qc7OnL6Qqd8DH8ufVV5IG80GY1KfqFV/pAqXyR+AjtFIeuP5YuXPF8bn2zU8E2fk5LIcVZ7bpz1CpAXwJzuZBLKJri0ccjM+GMqRiQUhfZ89V7lUDEy6Z85vS3M6lbmgARv2DL
- tUXxZzek
- LDD08z65fUAZIXeDARrJ3IMz/wIPxjdKuYeJ0xMK67uTP9RmXvKHP6bLfkVzgSPiX9Lq/BYLZPhpjGVTlNZW91NqUclLWN9rpmDIfCPs+1TXLqcdnhyqTTIBgMbK2eWyCJKksN1wVyLZypaiWay3Carid/O5UWyJyk23iZXaUR2hHxoVl0VxDCQz1X+a0Wo2xwxKkQBV0ktakDNA3afV0mNqtPpy5D6yvPbJTZBBURTcBC9fbjMMuuBhzcLfaORliyqB9nZu2BnNbztIpbrWSXxugJPDYSBo6WlZ1ESvwlQM6R1Sq11CyaSgVAfYdmH4oESrjpfFQRH6YB/m/lRfU2PjtHbLqLL7Wd7N4NTVbMf13pnFlefg3mY3ymSv/z4ZzQOCAFMnWc/D5mWMnTNjJkEG5Gp3AChNOzHuM
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770730125-567336
+X-HE-Meta: U2FsdGVkX19Vc+9nG+XzfIQjcUOnU0GE+F+Wuiutsnn0/TET6Ku3jOwjDT0Jf404fs/QiYyIqCRUn00crzMXiW/8RtNe/zJRRz+M1EnpzMNiHOSKcXookZrF2+bbIV2nfOe2PNVwqXRtXV9GQjVj0HqQbqPrK+G2fda9OkJW6sasA9Yac+fhwos3d+nW9JiucdgtN5S0vwxzI3AvzystWAOrhSVMX2RaEmFjSimfsgJz3bA3DHBc9Ua2zwf6TqV4qDAamDmOvVXKNYL25T1LCuL4MxEuEqyOAUIcDo67mWs93VKqCLJHKHFfhMjRDxbMVx6RnHTfK9Yopa4yZqprTw+FeUM6H4CbqMvcpluXKcMkCVV9maELd8SlDv7kCowZHM+CYa/KRuntFCHqlytWaSN/PhwzkhKYLxhgCSlm27p0bKZR8InUB13GcZ20+EVji85LoLbLvQ+c7Vnyo2aUUWbb2mIIvj9hw5X0CxQ91P0jHz5jb4U1vgcMo1wLLSp1l7RDdox9AYybXmkodIXQ93GjacLGTMGtVFKE+EJyteGS2NGEMkRetshHwdqLpJIHDHUBADRdEYo4PurwQcXZYQNm2laaXxeq2CHZ6HYPuf4PBrQqe+io74cVLNBa3pmSSN0Cj/7Lg/G1JWnGnHQh964A+lS4zb3TFEmjZJhnBx669FAA8fBFo0IXmHwxKSSzfCx3O+cunINEWRCw3QWEPxB62kNimLte1Cdn5VOcE9HYTjWlEXev7jhmUHfZv0nolriteGaMY2LKBKVzlwNOWwAKS9GfAdHWfWXI8UVbKFLohwGbw59PfJlc2zRHDfgr9rl1Slttm/iQ27No00ZvuU/u61LctBLrV4dL8PiPUMdBvSDXFxLSemp9E4D1TWJRGGDHqb6v/Mzy6WvEViYq2GQ+BJai0QAXGlLpX59ewRF16KqdWv1sAF/5tz1bAR7Yso/drxVaa8ejTUAExcX
+ D8uLerkU
+ 89RR+2DZjHZWtkNi/Vdt7eOtj1waQpMjw0OnvQoWeB+B6/l98OQH1KVgnND7h6DizfchiDIBvQdUbHHnyzoaA/b9Q7sbk4PCaUNX5PtB9YQbK2L8JRgU9jy2FrMKDuukN++X8ElJAcIE1u2zAoFv2ri9NbyTuQqo9dtYUavdzkOFg19yPp8fTer+4v3icO2dwf/EW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,105 +88,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-10 04:56, Baolin Wang wrote:
-> 
-> 
-> On 2/10/26 6:14 AM, Luiz Capitulino wrote:
->> If PMD-sized pages are not supported on an architecture (ie. the
->> arch implements arch_has_pmd_leaves() and it returns false) then the
->> current code disables all THP, including mTHP.
->>
->> This commit fixes this by allowing mTHP to be always enabled for all
->> archs. When PMD-sized pages are not supported, its sysfs entry won't be
->> created and their mapping will be disallowed at page-fault time.
->>
->> Similarly, this commit implements the following changes for shmem:
->>
->>   - In shmem_allowable_huge_orders(): drop the pgtable_has_pmd_leaves()
->>     check so that mTHP sizes are considered
->>   - In shmem_alloc_and_add_folio(): don't consider PMD and PUD orders
->>     when PMD-sized pages are not supported by the CPU
->>
->> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->> ---
->>   mm/huge_memory.c | 11 +++++++----
->>   mm/shmem.c       |  4 +++-
->>   2 files changed, 10 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 1e5ea2e47f79..882331592928 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -115,6 +115,9 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>       else
->>           supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
->> +    if (!pgtable_has_pmd_leaves())
->> +        supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
->> +
->>       orders &= supported_orders;
->>       if (!orders)
->>           return 0;
->> @@ -122,7 +125,7 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
->>       if (!vma->vm_mm)        /* vdso */
->>           return 0;
->> -    if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, forced_collapse))
->> +    if (vma_thp_disabled(vma, vm_flags, forced_collapse))
->>           return 0;
->>       /* khugepaged doesn't collapse DAX vma, but page fault is fine. */
->> @@ -806,6 +809,9 @@ static int __init hugepage_init_sysfs(struct kobject **hugepage_kobj)
->>       }
->>       orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
->> +    if (!pgtable_has_pmd_leaves())
->> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-> 
-> I think you should also handle the 'huge_anon_orders_inherit' setting in this function if pgtable_has_pmd_leaves() returns false. Shmem as well.
-> 
-> if (!anon_orders_configured)
->      huge_anon_orders_inherit = BIT(PMD_ORDER);
 
-Good catch. So, would you agree that should set it to BIT(PMD_ORDER - 1)
-in this case?
+On 06/02/26 8:52 pm, Matthew Wilcox wrote:
+> On Fri, Feb 06, 2026 at 07:26:48PM +0530, Dev Jain wrote:
+>> We test the patch with the following userspace program. A shmem VMA of
+>> 2M is created, and faulted in, with sysfs setting
+>> hugepages-2048k/shmem_enabled = always, so that the pagecache is populated
+>> with a 2M folio. Then, a 64K VMA is created, and we fault on each page.
+>> Then, we do MADV_DONTNEED to zap the pagetable, so that we can fault again
+>> in the next iteration. We measure the accumulated time taken during
+>> faulting the VMA.
+>>
+>> On arm64,
+>>
+>> without patch:
+>> Total time taken by inner loop: 4701721766 ns
+>>
+>> with patch:
+>> Total time taken by inner loop: 516043507 ns
+>>
+>> giving a 9x improvement.
+> It's nice that you can construct a test-case that shows improvement, but
+> is there any real workload that benefits from this?
 
-> 
->> +
->>       order = highest_order(orders);
->>       while (orders) {
->>           thpsize = thpsize_create(order, *hugepage_kobj);
->> @@ -905,9 +911,6 @@ static int __init hugepage_init(void)
->>       int err;
->>       struct kobject *hugepage_kobj;
->> -    if (!pgtable_has_pmd_leaves())
->> -        return -EINVAL;
->> -
->>       /*
->>        * hugepages can't be allocated by the buddy allocator
->>        */
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index 1c98e84667a4..cb325d1e2d1e 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -1827,7 +1827,7 @@ unsigned long shmem_allowable_huge_orders(struct inode *inode,
->>       vm_flags_t vm_flags = vma ? vma->vm_flags : 0;
->>       unsigned int global_orders;
->> -    if (!pgtable_has_pmd_leaves() || (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force)))
->> +    if (vma && vma_thp_disabled(vma, vm_flags, shmem_huge_force))
->>           return 0;
->>       global_orders = shmem_huge_global_enabled(inode, index, write_end,
->> @@ -1935,6 +1935,8 @@ static struct folio *shmem_alloc_and_add_folio(struct vm_fault *vmf,
->>       if (!IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE))
->>           orders = 0;
->> +    else if (!pgtable_has_pmd_leaves())
->> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
-> 
-> Moving this check into shmem_allowable_huge_orders() would be more appropriate.
+I can try to measure this. But, I constructed that testcase to test the
+code path, not to show a perf boost (although the boost is obvious enough
+so why not show it). As I say in the description:
 
-Will do.
+"Align finish_fault with filemap_map_pages, and map as many pages as
+possible, without crossing VMA/PMD/file boundaries."
 
-Thanks a lot for the very fast review.
+The patch should rather be seen as an extension to 19773df031bc
+("mm/fault: try to map the entire file folio in finish_fault()").
+The code which my patch removes, was added when the norm was to still
+perform per-page fault, the argument being, RSS inflation.
 
-> 
->>       if (orders > 0) {
->>           suitable_orders = shmem_suitable_orders(inode, vmf,
-> 
+Perhaps I can polish the patch description so that it clearly mentions
+what the objective is.
 
 
