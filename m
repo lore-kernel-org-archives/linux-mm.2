@@ -4,258 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7531EB26F3
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 17:52:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BF86EB26F7
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 18:00:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 188446B008A; Tue, 10 Feb 2026 12:52:38 -0500 (EST)
+	id B88956B0088; Tue, 10 Feb 2026 13:00:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1602F6B008C; Tue, 10 Feb 2026 12:52:38 -0500 (EST)
+	id B33106B0089; Tue, 10 Feb 2026 13:00:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0002A6B0092; Tue, 10 Feb 2026 12:52:37 -0500 (EST)
+	id A0A7B6B008A; Tue, 10 Feb 2026 13:00:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E0BB16B008A
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 12:52:37 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 870A9137F88
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 17:52:37 +0000 (UTC)
-X-FDA: 84429291954.29.3B17855
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf15.hostedemail.com (Postfix) with ESMTP id E9EC7A000B
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 17:52:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VT+Tp5q3;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="QccE/fXK";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C6AC6B0088
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:00:16 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 42C5A1B39C3
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:00:16 +0000 (UTC)
+X-FDA: 84429311232.09.141264F
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 0F54C140011
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:00:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="a/F41Kk7";
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770745954;
+	s=arc-20220608; t=1770746414;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eBK88/pJcK6y5OOaXalTDRegASjdn3F3jwGLyzwbLnw=;
-	b=a995ihPJr6aoeAWrYoVdGKhuyYlbl2hWGiexiWhF/wszP78oBBvFzJpA9OSPE61aQdBvRQ
-	tk/h4sce5ysDhzTgwxARXP5MpCP9ehHuRGMFek4g8cQMrho6uB76EgsUFF07xexXmxxso5
-	fcMY1flWr2kHl4m9qzEY3VWEmswCKzg=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770745954; a=rsa-sha256;
-	cv=pass;
-	b=Y5+Ai7Mjx1c6M5ff6cN1mJXSA7nEOayYpW5mvXoeAwizRQL/rD4lMIcGR6BMHGI6LyRmC/
-	88aDH5fojF7gIm5AtSEwOv4xUgDJGu/gBWHMD8WekBRMcOSIQ4rAEriju54HIsCHJZCSEl
-	XZt2Bg8Gq10EjT0wjsgBv9OhWD2qFkY=
+	bh=0M5Ou8Dr19t94K73pKgRAsY639KugQQU9W89/USRqN0=;
+	b=vWMpDN/g/9Wv2IbTemTP5pRxsP8qDDrxmfpKiWijx8RwKfjlp0Q6GPsJ4jlMcOKFK4/Md0
+	qQNO3Z4hxHYR1s8TpyuJiy/MDTLjaJNz0LPKVN9/nY0ONowuhyXg5ZmLk5RICH+7gp+mlZ
+	p2GZgr8f3C/IHDp9BLwnegV+PH8+R1c=
 ARC-Authentication-Results: i=2;
-	imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=VT+Tp5q3;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="QccE/fXK";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf15.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61AGjweN3810310;
-	Tue, 10 Feb 2026 17:52:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=eBK88/pJcK6y5OOaXa
-	lTDRegASjdn3F3jwGLyzwbLnw=; b=VT+Tp5q3N+ToGep8/GvN/oxuxAwykGOerA
-	zTyEQ6Bd/vvfwaQRRuFplTBCKsUg8JseeYvtcMTADAPIVNCL51qdmGf1/bZGUus5
-	/NPW/mstAk0CaVC8VgT6p+u73x7i+5X6V2s3HCV6Ya5yfa0qzJDPAf8dRY77e7jI
-	A9DrRRmDrP4e+89zKStkPG6oKQ9I11tSptaO8/Xrb01FT5MIYK5SNTeCPrinIQxO
-	U1E3+aIKwdGx/0SN61eFgJs4arO1ZGTB2sYFS8OJIhYcsM0ImOXrXJAaJyxbzIM2
-	zblJz+bNUo2CgzYC67z8vh5wfF80KqcTK3H5etxuIJHKgsu6Vv2Q==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88fv0441-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 17:52:13 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61AGHhqh013085;
-	Tue, 10 Feb 2026 17:52:12 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012015.outbound.protection.outlook.com [52.101.48.15])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c826yb1aq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 17:52:12 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TfGGlaNCKRsG0lq/chkQ6goVXb7gKRNjdg9QgjYdswyDxnwqBwj3iSRSN27Jhqos/moNM0U/jC6OHpmGC4oCB+RxHA7pUx5+mJIjtIc6VabFxeg0maWyMxBhAVb0TQfgflmcngq57WUCPMuKtipPeuCTTvlZPLEklg0JdHCyjvrs/b4IrholnmcRDJRnTP3ce7v31rUduEbr4oy1EQMFe6R6wjWPOCKVdr0/2cU1RSjrdJ76FQ8+WkpAOefGweQU+EzSl+ToPjgN5ebBG1AN6WXkeNz1E2xFVEbi9+ws1vH7ulA54YzSGzA8u59S8KxKO9WO98qwDFtWdrEWwFOMNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eBK88/pJcK6y5OOaXalTDRegASjdn3F3jwGLyzwbLnw=;
- b=ds5lsrD5NDWx3WmY/6dJN8yyu+VstckaKAB1E7ogEcg8J19LSIqaW0ZDNZI3hYVTCIIA8kPAIpJul8j4QohZszUcrw3hxirmjr5T6N3PLlnjrxK7wlvqjNYH3H8EDGWazWEEpm0mFEf3pO61vs2P75B4Y85/lxoNILWEgedXs9lcl2j0kjsxMPO1AwVC37bgnGcDHdLkyKZzSPpmC6fQsK0NSGpK7wjmKdOCvyUH2bAmmdYvk9XPlSutyUgvnFoiAiR82AfF2quqHUbSyzrFKLlFtLl2xEAh7G9vPMwyn+LId9QHfqd6khHpJXvcBZm8iZis1dMMNPBRw2GBkY9RUQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="a/F41Kk7";
+	spf=pass (imf26.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770746414; a=rsa-sha256;
+	cv=pass;
+	b=Qbu/Z+ZPQX0Rn9DkWXFrfVkMb2ipgj/FMgqMeoeYjQ+L+VI8/8/J8qE+aNnKKMUlmZsnWz
+	wvc5os8dzaai7xNn3qbqMNH3ZPQDK9twDi+8csFtW+4cOO3ICS4NRA6WsrFDbtvXltfFv6
+	SS+NNLhXTOKudIiB2Wy5FJJlw3EoPtk=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b884ad1026cso196143566b.2
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:00:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770746412; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SmBpyd3Hb7IEWwKFYr6NVXY9rVyomXo0oEhN4+jm1R4hP5dyZbuFJ8+cfOdpAHcZjK
+         GB6bVc/TExovcgKnKHxU45wZSKRcsANuh9xVStayVd7qfCYtToU/xQyRcTEbCOPq++kQ
+         HsW0d9y7RbUiPGEkt0PqrUC55qA+WRWG87MgCt+w8RCYHTXIrRg4qZb8Dttnd+gikiL5
+         gsad68/zsVgFFlr3VMuX4k+YVCcC6aQixxl/fHuQI6qsyeCBhpwFp4eMc73UMCVRPdjG
+         ZiMUlrr4PeN9mit3Zp56z1mSnq6HICnwrw1n3DBLcBt+QDpn8CsWd3OjEvkmVfIgyLHW
+         krDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0M5Ou8Dr19t94K73pKgRAsY639KugQQU9W89/USRqN0=;
+        fh=QRP/ovttb8Jb/cZvuG2akPqFdIuVC6ob5sX64S2PJhI=;
+        b=DxPLg6hY4STg4yb14KAIvglZ/eQIvhjTIgrpO+EskXsewVNxv/HClXqbQg9mvfinbi
+         7gKu11UgRkL1hElkJexFPx1Mfq5UiB9LYCsMkmwZXESqT6dNwsThzHEQVrNfMoN1wADW
+         jpor/0KYk+Qif+/xLB2ucSNXg4VFf+vZVM5CzJKwTbzPoGZ+MtU9rhaTelpBH9doxqL3
+         wgQc39AjN+rnOJ8kXmG4No9EGvZdacfqzshqHw/yuEXfhWGw28tYYuDvv6QdiFisn8sB
+         hFiZXKW8f3Hbf5wus9+DAMp+Xo7l+3fnruMZUK6xkjEF9rhJHgEQUAMbBusHVriRzJjj
+         iVMA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eBK88/pJcK6y5OOaXalTDRegASjdn3F3jwGLyzwbLnw=;
- b=QccE/fXKyTNpoj8ILV16/OGJPDPQpC7oLv5JigmVwsHRkxr1mT93nQFjICXvg0VJzNIld3w7ZBYue5KzZ4Z4cGqzbiBVb83uA9HjAyC68CzXags3iMg9H11Jp0sUQkE1JOb1f4YdhSLPbMhxfRAung32eEom8BEC7E8x3k84N00=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by CH3PR10MB7307.namprd10.prod.outlook.com (2603:10b6:610:12f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 10 Feb
- 2026 17:52:07 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
- 17:52:07 +0000
-Date: Tue, 10 Feb 2026 17:52:03 +0000
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-        Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
-Message-ID: <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT4P288CA0044.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d3::26) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=gmail.com; s=20230601; t=1770746412; x=1771351212; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0M5Ou8Dr19t94K73pKgRAsY639KugQQU9W89/USRqN0=;
+        b=a/F41Kk7vuwSY9F9SiYGLcab87UES1EDR6BV7zHiJ15VAAkgLXCPYzSzIjetoftIhk
+         qwHOe4P2vqj8Yk4t6YvDZBM+JnupE+oI8sypw9Vt/CBR7l6JV9yLszB0u91Z3U+avn43
+         VYOjOo/jb5vWYXSxIj+pJAD75UH9QxMKMQmB5lXo902euA25lV4oz8spFEcEzg1dFgHm
+         9ex27KYUrDzfwjoGxf20WWbDStEm1HeAW6Lxd1PDzfKKwXP97EVw+rZJcfQoQ78qN0lN
+         DLQyDDCVa9H6YXlN2C2vO0xP0oUA5np0BNDVxWvmZWsO2iraRg6HMhDEg9BRCINyS5xV
+         EcXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770746412; x=1771351212;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0M5Ou8Dr19t94K73pKgRAsY639KugQQU9W89/USRqN0=;
+        b=L03ESnb2jiKU3wUQSyrVhOANQBaGK/F3HeXJo9N7s3FjT0WP2OigqELlg1ZgtHHvAx
+         NKxsTBa7uuruWBzCjanaGJxMjFsuAJdU1CmlQVtn/4/500xdvSBAhoU6gqAHOczuA3XX
+         ERRVFJVifNj52Yp+N51aa1ANS/4SR7Tmawniw3+kSRS7Jxxmp4wtIOEDO3EclvNMBfrO
+         lv2B5CwbC4M8a1gTOoZ/19dY3jHcvNg4HsldJqUfC1cb7e0sg/dCSvAc1jXtxSr7Bn+e
+         ZFucGwrOFHwZhZvxYl7B+9HpmwbMJFoBxCK4YwVz0N8gLeDWgpZhvg+8sQpdpO+ileUl
+         E0NA==
+X-Gm-Message-State: AOJu0YyippH62S6UGKMtvbJICCTLRew0o4+PoAoFrVd/yf08z6EsF4bP
+	mNyT4LJHC8wBdklql6KhrQAHHmdy1Uursmnn3XnX5eMG8qUwG6xBJ7+9pN3UMJdfSS2l0e6vDes
+	dlUKMCYwrzNRJ3qtzyktC7mOlwS6Hf6E=
+X-Gm-Gg: AZuq6aLrcf7j35eIcsBOxvFlf2RgLntYksfJCo6Fura1jFlduBxHj5HMWhUKzxtG5Mc
+	s2Luei4B1x2NXch2sj3QT3VdeuGBEVZ7I5OCK9q//AW67Dls/VkEK01VZQ5BLxBeZ4lwcrLQ2sn
+	pz3UzBtOTYhchm8hiV03HZ4TTLJCV0e4hM1D1YZC0XQJl9tkQs/WbYC7+Sd1oW2fba3xltgDfEj
+	ntBCFMnqMQowR+hWg8hY8fKWyN/nA0tUD2qwCO0LLW+1nz8gud7vI3fDdet3CXJFA0ElV48s3f6
+	kM5pktgIqTqGKR+zzBr7p6bQBxJnVFiUfKnwRuct8Bmc57gcBd4=
+X-Received: by 2002:a17:907:97cc:b0:b8e:3877:d1cb with SMTP id
+ a640c23a62f3a-b8edf45cf7fmr962300066b.62.1770746411856; Tue, 10 Feb 2026
+ 10:00:11 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|CH3PR10MB7307:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3bda800-8eb7-4dee-e287-08de68cd1b7b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7fu2wqAYGXzKKC7RTrPLiAZDCH7PbyhnDLBVcPQtUrofEJJG4wkR2KAvILJh?=
- =?us-ascii?Q?EZDs7DAdCz/Y3Z/H+zMcyVSjj7/nceV4Yo/+0u4LbT+BmQu4zzfFg2OVdAPu?=
- =?us-ascii?Q?gcaNq3fjDJBwbpQn/RcxZVbW5mD7XrwCKcrZqIX6B8VnH6EtlOlDZf9HbfIi?=
- =?us-ascii?Q?CvDrzMulm6P3k0kVB/kk8W5MYc3CuaucjenF+Usxg8vXTyTono/ZGyDzQ6dH?=
- =?us-ascii?Q?yrIGqrcZcvLDZUNitZBQDCPRkj2XOp/xXbj/HbtBQsbbYM5A642a89Wkg0ks?=
- =?us-ascii?Q?n09Ow/R+zpdxGfmuoA071+LTJrRKtnDCPxqslXHlpA4LpSyQ7zq93Au8tScM?=
- =?us-ascii?Q?PMq8WlWHPprzO6ywGUkrRqFzQNQKwGfQHXbqVPvdz7jrTulkg1eEYX3QD3UF?=
- =?us-ascii?Q?u9x2ILgjKFRNeo7EEbdU4wbHGLhctHeeM+VIx4fOBidXhplQIeU3d1evbEcX?=
- =?us-ascii?Q?LgmBlZ9CcD/sgsQntgcMH+z5Qt4B4OKSRisXFog5Dd5WwEcqiRD4763+SP+C?=
- =?us-ascii?Q?VNfGt4vt4Q9Nr8JrqHg5sJW6TWnzGSXbJ85dsqqjMTEiS3we7r7vhiqb4cb9?=
- =?us-ascii?Q?c9Wgf+JKMUbKrhhEwwqGE2Rq/7k8TmEFJcUkMVYayXbpzJHwg1pyYYembinr?=
- =?us-ascii?Q?E100/WqVydL+fUxEeBiwG6PiWPR4XE+XBffyei+xZyOP2ClWxkFYJvZMF/sc?=
- =?us-ascii?Q?etp/HYgyAc2QyezJMJDKqc0W4UFClPHfkahUaIxwEVQ7tbj0Vxc2Oq1bMvvp?=
- =?us-ascii?Q?FCh71+rMAsyMHhjKXzq0fMKjWSELmdrp9m7ppBPpEq8Osim559PoTnzlIIpZ?=
- =?us-ascii?Q?zgtbhVWSHbK8SgeWAAi8oePJdfFDY/Vq7zavJqjtxWiMUSrNzlGI77rQ0737?=
- =?us-ascii?Q?CM17pDlEZnFpYGYrT9pqvaMngJFKPIAbDTyWfQ5d48ki+W4CwDpOKqHi2+4/?=
- =?us-ascii?Q?/VFZMSo12a4lUMnvUfsAhcVGkXUDVYLRWrm6JK0JHgEOAQxAuUlWx+c6Fj0P?=
- =?us-ascii?Q?9JMiUFDj7tsEfhOmrdCd1zJ1s2bQoVarF2Vld/SqKzBxc8q1JwSuddMPQXuZ?=
- =?us-ascii?Q?BGPMR74yRLRgkWCIdPxWi3ybQ02yn5b9cZne2hyTPSXCpq//sqT2XzGUkFBi?=
- =?us-ascii?Q?WlPL3FIEY0Zw4v4XMBayaTWsHsQb3MfSbQxBvQ+EmU0SwEVyvsDlSNAwjunI?=
- =?us-ascii?Q?j5ImPQE4jcZ7F7nmy7jWl4CtXSJ4+EoJP3/mE4Sow7ghSkzw+PpEIjmqdyAr?=
- =?us-ascii?Q?p3KRX+++AFnbDIeNUjqu6//o4pvsMErcT9xM/nSQJ7XARyPCLgYDXRAql5oZ?=
- =?us-ascii?Q?B4uVQBRqcvl+oRIp1gRfai1WaFkyAL10AkimwMp6Zy5f03HiZHKuxkk+SrfR?=
- =?us-ascii?Q?dLeYzy9akIKpnLMfYiPmc8SO6JchZgbvud9CLiKWA5nJ9GdOIqJcgKfSUdXg?=
- =?us-ascii?Q?mgRTQSI8YhEJDCLm4JV7Acnqgb4//NYUQb0lW9xiVeMWBIYv2r5hpSai+P0W?=
- =?us-ascii?Q?WtshS5Gg5VPK8xg5Mn9n19QLVpNq8rD5XU24HJUNF/VbtIxxZ6hmF/A30Mbp?=
- =?us-ascii?Q?T9ulqBlqDFAKOLI9i/w=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5LFh6AoUxCOsF5VKFk2JcrQoF+K034Q8jpW424GFbmIHV9P2d9qrliEQXBX6?=
- =?us-ascii?Q?I7AIuK3B1/yeVdoKwG7UEO/EhAWws78OPo76fcH6nns53fIlFkM4hcpK89yG?=
- =?us-ascii?Q?qYn6HAubD4C4e9iNORgiH92OcrbE8MjWX6uAF85HCAAL0rbJmE2Wc7v+elFe?=
- =?us-ascii?Q?YF07sU3D8qsfn5k0JjSqzzeu42yyQfa0MEJdPvCvOzjU/kdiET2WZ4/b7sMR?=
- =?us-ascii?Q?ssnVIEvYnO9RhwUiHVGJqL86tYeUazzHwPTXiJJb24mtdB4FR2wNweJSlc5e?=
- =?us-ascii?Q?3eAF4+5cwDkI0kzSr31RJyyWUFujvnC4X7zQg2wChmX+ePqL08QyIifhFgvr?=
- =?us-ascii?Q?IVdXbWfosy60e40vYoSaqrtBVRjK8HWUcIJ113s9ekIJvUVefwyo3XZpWfYw?=
- =?us-ascii?Q?fKg+QQIqayKTSAqT++GvLG2/9e6GTFBMSVwnYOIHENGKxggJNJ+oUMW9g6Kq?=
- =?us-ascii?Q?fUWaove4ycQkcAszlFy1EbWo5dgFqIywQQDbF5xNk+rnU0f/B5xUDacxPjmh?=
- =?us-ascii?Q?7hl8sJJyL/GW9OizBIjerp23yGOgJci3O40DAwlgnKlXRAQBr6N7wwFnTNau?=
- =?us-ascii?Q?TINE5B2fGYApxVyFcwQ2/mIJ9adknXicIdhNamcobh3JLojnoIAb7JUgDSdo?=
- =?us-ascii?Q?PdF9tXdJzozFWPKssDPuZgWfewMjWa3yKVvBpXU/M8I5PSaED/F2nIuhkQ2A?=
- =?us-ascii?Q?qmZ0RfrlivWve5KIbbxnv01+uHlhBHD71v/Wk97f/aBp++6an8KQukOO/GwS?=
- =?us-ascii?Q?ogfg0myL8rUmhzE+ECTDZIQrVhunV1inoU0taneeHonPBwt/HNvnYTGD1ODP?=
- =?us-ascii?Q?4Ay9ZJ9MovbnPwtQGi3z/NY7uIRnrjDhPnSXkp995XUXyw4RG830wiIUVG9z?=
- =?us-ascii?Q?a5cLIZ38SBXKJMW6dNra/7GVrv3tpy1lHrvvkb2Xr5vrfcBuKfEvE/E2JFW0?=
- =?us-ascii?Q?C5QlNTOiZQX25tdinEiGMVFf41QfjXH/U0DQSb+ouAd8hfDwQkxigA0e94vT?=
- =?us-ascii?Q?j+tfFH6hYuaYFKhZgBM7q6hfu/uFKgw0xywCiGQCKZd9G8nMnnOqu0z1hrmt?=
- =?us-ascii?Q?doi2+iQVUZfP+0UkpklZsycSuPEgP3RqczBpTAV8mJ6h4U3yhrRVma2BXbAO?=
- =?us-ascii?Q?OXPyrZHUUjGWiuJW/iXC+iPjr+Bm7e+Kp9pXsrUflY7kY9AnCwt58ayBoD3t?=
- =?us-ascii?Q?zvwBv8KntL+WOAXpeeSH/QjiYyyig3zkjVI5KX6adJd6g85EHm0JHriv5Ukb?=
- =?us-ascii?Q?6Z1sMeAEzKbkU+3eHTWfbJpIugiC4UZWEJcKoxRP/V4iqFKnOHWhFY7B1sOe?=
- =?us-ascii?Q?4NGaUBuwxd1Dw6G8ubTHnd36wqe3HAzKp2chJKCExWJ2vsAp4UHeL9u9FCQB?=
- =?us-ascii?Q?qWgKIsa2Iryy+ydHlFqaaSEsUUNIt8mQADlurE2vteNoEAcZnLb3Ytukoxpb?=
- =?us-ascii?Q?YCIpR77Lt4YbgBVUm/RXGArCjMdHtK8+JcZb0qZJDqHbCksrOJ4vZSvFmt6N?=
- =?us-ascii?Q?SSqJmSOPfr+BUGMCeWBpbz5oIwWpzXLRiNdK9+c6vLxrZSJQrZZL1tv699WM?=
- =?us-ascii?Q?n25Rdc4wV61xJzfBqyp/R/9u7ovk/tGn6xftweKmJN6I4OWwt1zbF+vtXPhv?=
- =?us-ascii?Q?c8ETFziajXkOpURM4JChSevpwYYHDLjT/Usrt2E+/FIP9LQoNne0pXWbrjtr?=
- =?us-ascii?Q?5l2WUAu92SncX03TvFZwCFx0dqmbt6GwkWep9hWCtHXkS73MvG0Ddwj05CRk?=
- =?us-ascii?Q?pmnekP6vgw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	ksLBGc2L6Lje9TvVnaz9/nMdrTRqIoyLWQJZvmyuGWFAhUcpmOJVP4I9jjH8GBvA45q0wnYVPKFIZ5Xrjfq2yFznbGjkei/fxhlUI64Ge0rLivDOdgRzCcCnXI+8WcFauzKF1fEpGL5oZ5bwFofyekJwyOThRSDbh7m8Txhajy2TWI+uIZc1geDpwe5rfC8F1UpSyFps5gYTUfsVIjzF4yAn7kwwTlDd/DiqRpdBVNYjBlgSxc5szV2ZZ4YtfEys387PKbVa+Hox/+wXz2hFCBBo5SqB/n0ukJuVODj/lBh+s0hnTat8g7ymma5jxIJxhlpjF0fpUrpY1jtN8BLx1+zvP39SjMPsdgUjYi+KRigfXj7khpKZFVE5ewf184Anwyn6DWY4MTEiovtNAjFKkjyqw6zClXA42NaBg0sNSSdDR1jIqe7QermsZZLVyVC0LxxauY/MVy6VXoB9d637LOe6lBTAck+4J7RBXw4IpnZM0JogDMSLhqrFYHoc7FUijziXvzL2lX2zRl9+RGZXskP/qaZLQNwQnASAiDLBDIjNxKdr+HhSCMaBsZXRFvKfr7xNYugZwRopEqxyCX+p8q7wcsOVz1wt764bpZuyF1g=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3bda800-8eb7-4dee-e287-08de68cd1b7b
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 17:52:07.2720
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: kLxzZty2FiFmKqCIGU+lrlgy6Cp1gOJZoBtVOh3iZiKK0QQYeI07KeRyyj2kMDVc40CPozGpK9dZ+MgvwGpbAQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR10MB7307
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-10_02,2026-02-10_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
- adultscore=0 phishscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602100149
-X-Proofpoint-ORIG-GUID: Io_wWHCPcGIhVQmZjwAam7SBjFWg3tdd
-X-Authority-Analysis: v=2.4 cv=Qchrf8bv c=1 sm=1 tr=0 ts=698b704e b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=c-wpql0DFEiiU-M0XAMA:9 a=CjuIK1q_8ugA:10 cc=ntf awl=host:13697
-X-Proofpoint-GUID: Io_wWHCPcGIhVQmZjwAam7SBjFWg3tdd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDE0OSBTYWx0ZWRfX1Ch3C1rga7uG
- Ve9yCIdZbGwdZdE2EgXaThozlPPkHihPcOMZWfJkLYuncMo2HlKxDvHlHeTSMbr4z50uH0RmZOS
- aC2oR1H70ZLy+b2uzMfieorrnbbooO9+kSyn4CYqMQIfN+ASonJNUIuOGtkbZbw350jfJUD/F4P
- X3SM5XeKiz/oLEHUHgj6KpWKH3/O403LuyWO0P5w1orgtyVkr7j34DeR/9UDcSOoIM8AkJUFpsK
- tKBusewwQMjBRKO+I5m6cXdH0R3i3funriev0PeOdlOKXxvKIwGpPcIGhcxh0U9S6w2Vnue8Uf9
- mESXFJlEAE9UfZMEX+AzpeC9aW1vHSkwerV+6XZVAv/pAZScnP1ejQRZtzpvyjYxNJDCjYZ7P/z
- 8tvi1L7cNpWjDPpzYdgGgc656NlLdL/BIOaxjPTaOQUDjkwOZbeUBVaH8TLQsQQ3CRwuFcILCrH
- oOPMrlRTr1dxw2gnZxGz1RaRJzofySbSAMEhjWUw=
-X-Rspamd-Queue-Id: E9EC7A000B
+References: <20260208215839.87595-2-nphamcs@gmail.com> <20260208222652.328284-1-nphamcs@gmail.com>
+In-Reply-To: <20260208222652.328284-1-nphamcs@gmail.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Wed, 11 Feb 2026 01:59:34 +0800
+X-Gm-Features: AZwV_QgjgrVezF-d_BQ-9HaqLNY-NJc1Y-8aDIlBfdscQkLqG0fjwgzeysl6W44
+Message-ID: <CAMgjq7AQNGK-a=AOgvn4-V+zGO21QMbMTVbrYSW_R2oDSLoC+A@mail.gmail.com>
+Subject: Re: [PATCH v3 00/20] Virtual Swap Space
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	hughd@google.com, yosry.ahmed@linux.dev, mhocko@kernel.org, 
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
+	len.brown@intel.com, chengming.zhou@linux.dev, chrisl@kernel.org, 
+	huang.ying.caritas@gmail.com, ryan.roberts@arm.com, shikemeng@huaweicloud.com, 
+	viro@zeniv.linux.org.uk, baohua@kernel.org, bhe@redhat.com, osalvador@suse.de, 
+	christophe.leroy@csgroup.eu, pavel@kernel.org, kernel-team@meta.com, 
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com, 
+	joshua.hahnjy@gmail.com, npache@redhat.com, gourry@gourry.net, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	rafael@kernel.org, jannh@google.com, pfalcato@suse.de, 
+	zhengqi.arch@bytedance.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: xdcb7bz7gkjzzy8dcut79857fsx6jcbj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ksj17x7co9ik6no51dhipgrsadmwgfdk
-X-HE-Tag: 1770745953-640302
-X-HE-Meta: U2FsdGVkX1+zYQ0bGW80Lt9X2q9rfk+3rQo+MsrVrzNvEV4o3IFmuHO//3XzgDlx0TwDbEENpIvgPdmA/yJvuGheU1WdBHerR1S0ERUzK0asi9xyS6nrOUV415jIEKDRsIZtH6HBf/MHHqeGuZOSHBKk1POuErm7RdJSBodsGMmP0bKzq+cNu2uQ0Qxoa0klbaW8G4qhNGlr4BwwMZ1yDctJjNGAZZ6Cbeq0Ftzi1aVXX+t6RDwqVOwUZXk9IJPM3UpkIzQIPdMbF/jHyHtpzMj45Hn1CAziydUtk3deQbdiyYgPnikhCe7F47+887kdcujSNoTkZUQF3exezhYzeNJ2rZ+1XlLHGzRKAyqjDKrHI3JDnDamSZgMx2Bz9Ub6uJQULbgfq6TtNtHUBnrA15050zdgTBZYJ1Wq5lRUyz8EPEL+yEH6XZaNjY9Jyy5lArTV/gvxFEDkyPDHiuFIBmyHQyAN8aoEFs4p7KUkhpqAyz4kM2mmIQp7mpTc6TQcX9WpaCWl3KMcjt9ze4k4xOKk3ZVyvARBPQNhdMB/DlNesDMP7TsbijTyluPg4CW4lrlIYflYMfLAd27bJ7ck1dEuAO5HOTQ2JY8KrBcY6EMJ4a1U1PlVg34TRsOkxHk2HegC9bK+scayKAFk8DZiXk2cYLyHEpwUS2N9palnEBIU7bNmPpDIFaztz8DvIoeZNqBfszmG04WMVbBfcmwXfLvLuCZxIGb/NfkxF7ta1JEhWE3u2TFhMVAaFSV8AUNNy/0WJkXWxKNMX416UB3ZQEpAq0RAOvGHmRvWygB2hYdkXNl+Om4e/4K5siu7mN+nFL3F8i1MuwLaPHPkVyA4dc1uP0AE2YRtnXADZhQOj8xsl3I2MhlGSzw+f4tDMXm2V/WNyQrJ+h9Tgm0yk0oHB9L7i6pyLrwwlEXzJrs85hwdI6Lul8V7xlnKsgb0T6mOZR+MGm3UFwlNU/y1sgr
- /EV7RGrj
- 1x7Dwj71XFJT5lD34PnvIU6S2HMGYODuXDSSkb7yN4hrvXmRCMoPxd4o0GBgfaKzz30CJbTkXkaUg0durs98wlsLOdinRtYZFi+TCQe1H22skhQpZhw59kFW5esjoWpxQPHZAEK8lq9/oRLG2qlIywqBFQvEqsehPcQehnrwbJlox7sFoQSKL8enk3saVlYnlInbEhjvTm6ow6sW2ZhpxXu3i3esvguili8BlrnvWqA1FVrybFTlYcxksv5FghK6o4e2OP/nOx2w1X8zbkmG6On94Y1feKKAf+7blvqKVXXLdgjMPDvFCd0we00Jxn40nZw+p9gWJ4jX4AHaxcYEQE1HIjafDsg/7e2JKi0K7CipwG4OEbWm1Ul9MPsx1fWIDQBj883WvIOUYOuRgJ7MzFOtlvnlUhOj16Z/6Bik5Bz5tkhEzUCKakx7v8iRf9AkUp0C0gVshO8iYACD+rU3xg0427lE19xTaqiMoq2ucbvgW6OMAb3K009FOmvMKEA6LgXRRxpZtVuWbbQYKbb9cCPlI/C7OCNJWluhV0lv0Po1bcBNOW+aDwgqx4+VCRzmPwZYJ5fplf4KOzIMoAou+5hvfZeS0GzqqVEux2Bl2ZfzSUUXGjIBM0ZkbwAA7P4OJU4HskjRBxNx/5SNRduP8vteilw1FmD/6UfqAfGbpj25Y81sffCzqnySIJZXwtnFEjg5TUH651wiCtrhWctgFFAzB2EAnCA+1r/si+gi3vI+BQgzBXQU8F1tlE9SYzvXCi8RVm1eTZDK6Ckk=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 0F54C140011
+X-HE-Tag: 1770746413-490354
+X-HE-Meta: U2FsdGVkX1+lL9h0OrHDzOXWRVPo4yNAIemr65u+FlA53kBfDE4Jmz1j/05TwwJMPeyI+ZVWmaUkfFi1fZHY2K/UixiRp5x7cI7LMCSCOsAt/0mHXGc3BH8aDyjfh8mdmP+OMoG5wNRZRTWIAPoQ/bjRFNMpeouZ7bvhRWR6PRTAxjZUbF/hSed/0XPsjM9Bav76DJ2vpfeLzGOcaOSTxXPrPl/5i0H+QxkfqzMOJxB64bjyx764lKgchLMZ5zx1ZXVBu7j/IQTeVSLD05u63Mi17owGtavpCCygwmCEdHXSMVHvLDGPR3pymfiO6ekQ473oS0HrosRJTfo48XzSQf5hQjbigXErPiIxl63cITEgXlru0PepErGoy7lEVIJXHWYQ8OzVSbV5VpIcdGiQbugOMm5WGQyH+ABtUwDgxPA7TxYEbBp3dQmt06yNOwlLu6XWMcaZScF75rAiaadU7utLlIeMyNCaK9ZFVTMj23kgFtChvXwFRWaF+EQEBgSFxCXqgtj3XFhAwXKDpm8TJZkC6MZggKesYGC7VeqUt25lZdGj7c3zzV9Wsp5NywixcHK9xS+NtR2hfKa06PIl7RMZfPO/fOgIMH9sqzsLqfq25+DFxD1RjINR9EZb4HBSjtItTLsVDRUxDIcZZeIdnKmxCpyrENOYLZ7z7wXone6u/8nbqLSwVro4JlbctnbSshUqCwYBcS3VhG2gs7GsntHP6rzezslQ9DtKv4xwlpdf6M/ofCK/zjJ7jALX8DicTeNyHLf5j9LWF3EzWznGfG3gm1HaRecCOonAsDIAC8468gQ7sz9/ZEJHw1dqlZMMyddPxa5jYoq7M2IJdbSOtprXr5iQmEP3TAKvsGSXLPM30z3oy/jNx3I8eF6B7bQQgsnXYN98lBvyC/8flVIrkqiZdvb940L5DINkb5CT+4rQ0eLCSTDrIZKWo9DSUQg2GfuK/nIwIeJBxtyHQLN
+ RS6ivoT5
+ e9uYxGPqP3RxmQsvHXVD0PyJK0S969cDZfYGKHs48GKi9BowsIzlC3biJDxc4AO2fKRotzByN47d7Lk0UCUWcGDVmtW/t4wBeRDPBZB3NSWClcACP5JKhMPO3uVKzvDnnXZHz4sLiX95zL3mecOvoHJ9FiZMoQGvUXNziLyNVm41WIfOT3VXRYSi+MOMeDc2DbZXYsoFN/jVldCprzdoHvbXoFZd+OjkX+dB3fAYJC8VtmWm9mlh6H4QYlqJUuwF+ULa37QrnpfkGLOdbsDqLCrkJt9BukfCCxg/72BNwudOkZ23bnXA7WGrY6tvSb+YdAYVNLUyXvRbw+MMj6aMTbJhrGyIaTzuxt4V3NhIrQx4go7+mdvPAxlP1EL9HNAkwVlMO13IzeHWC+bVZWCH+/7bVHAk35DR0rJUxkFqW4sEqelJRGti537ywCEcdg8U0497F/xGPl6sE705ypSNEvmDIuzhljy0UhigYJ0WltRvQRQ/TuwwD2VWkCSXR8A+AtixvgTQYp/hNqCgQ31NgyOowsgE0iln3Ds3lpWOOIvIVaOVTVkB4lCy/HkmiQ6VIqHO/Jm50bDkVrmQCa+D5tFSDNS5B5qBvLJzejv4fV0Vl6oy3hMmqACAg54YM6PZpVd9o5oh/Rc24G9MAlZWtgLAK4NikP2L4tdYR9NjtMVZSp5I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -264,63 +149,338 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Andreas Hindborg <a.hindborg@kernel.org> [260209 14:38]:
-> Add a convenience method `contains_index` to check whether an element
-> exists at a given index in the XArray. This method provides a more
-> ergonomic API compared to calling `get` and checking for `Some`.
+On Mon, Feb 9, 2026 at 7:57=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> Anyway, resending this (in-reply-to patch 1 of the series):
 
-I think this is going to result in less efficient code for most uses.
+Hi Nhat,
 
-Most users use the results returned, not just checking if there is or is
-not a value.  So if you find the value an xarray state and then just
-throw it away and find it again, it'll be less efficient.
+> Changelog:
+> * RFC v2 -> v3:
+>     * Implement a cluster-based allocation algorithm for virtual swap
+>       slots, inspired by Kairui Song and Chris Li's implementation, as
+>       well as Johannes Weiner's suggestions. This eliminates the lock
+>           contention issues on the virtual swap layer.
+>     * Re-use swap table for the reverse mapping.
+>     * Remove CONFIG_VIRTUAL_SWAP.
 
-If there are users that do use the xarray to just check if something
-exists or not (which there probably are?), then it should be in a
-wrapper for that code and not the generic API.  Otherwise we will have
-users pop up to use this method when they should not.
+I really do think we better make this optional, not a replacement or
+mandatory. There are many hard to evaluate effects as this
+fundamentally changes the swap workflow with a lot of behavior changes
+at once. e.g. it seems the folio will be reactivated instead of
+splitted if the physical swap device is fragmented; slot is allocated
+at IO and not at unmap, and maybe many others. Just like zswap is
+optional. Some common workloads would see an obvious performance or
+memory usage regression following this design, see below.
 
-> 
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  rust/kernel/xarray.rs | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
-> index d9762c6bef19c..ede48b5e1dba3 100644
-> --- a/rust/kernel/xarray.rs
-> +++ b/rust/kernel/xarray.rs
-> @@ -218,6 +218,27 @@ fn load<F, U>(&self, index: usize, f: F) -> Option<U>
->          Some(f(ptr))
->      }
->  
-> +    /// Checks if the XArray contains an element at the specified index.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # use kernel::{alloc::{flags::GFP_KERNEL, kbox::KBox}, xarray::{AllocKind, XArray}};
-> +    /// let xa = KBox::pin_init(XArray::new(AllocKind::Alloc), GFP_KERNEL)?;
-> +    ///
-> +    /// let mut guard = xa.lock();
-> +    /// assert_eq!(guard.contains_index(42), false);
-> +    ///
-> +    /// guard.store(42, KBox::new(0u32, GFP_KERNEL)?, GFP_KERNEL)?;
-> +    ///
-> +    /// assert_eq!(guard.contains_index(42), true);
-> +    ///
-> +    /// # Ok::<(), kernel::error::Error>(())
-> +    /// ```
-> +    pub fn contains_index(&self, index: usize) -> bool {
-> +        self.get(index).is_some()
-> +    }
-> +
->      /// Provides a reference to the element at the given index.
->      pub fn get(&self, index: usize) -> Option<T::Borrowed<'_>> {
->          self.load(index, |ptr| {
-> 
-> -- 
-> 2.51.2
-> 
-> 
+>     * Reducing the size of the swap descriptor from 48 bytes to 24
+>       bytes, i.e another 50% reduction in memory overhead from v2.
+
+Honestly if you keep reducing that you might just end up
+reimplementing the swap table format :)
+
+> This patch series is based on 6.19. There are a couple more
+> swap-related changes in the mm-stable branch that I would need to
+> coordinate with, but I would like to send this out as an update, to show
+> that the lock contention issues that plagued earlier versions have been
+> resolved and performance on the kernel build benchmark is now on-par with
+> baseline. Furthermore, memory overhead has been substantially reduced
+> compared to the last RFC version.
+
+Thanks for the effort!
+
+> * Operationally, static provisioning the swapfile for zswap pose
+>   significant challenges, because the sysadmin has to prescribe how
+>   much swap is needed a priori, for each combination of
+>   (memory size x disk space x workload usage). It is even more
+>   complicated when we take into account the variance of memory
+>   compression, which changes the reclaim dynamics (and as a result,
+>   swap space size requirement). The problem is further exarcebated for
+>   users who rely on swap utilization (and exhaustion) as an OOM signal.
+
+So I thought about it again, this one seems not to be an issue. In
+most cases, having a 1:1 virtual swap setup is enough, and very soon
+the static overhead will be really trivial. There won't even be any
+fragmentation issue either, since if the physical memory size is
+identical to swap space, then you can always find a matching part. And
+besides, dynamic growth of swap files is actually very doable and
+useful, that will make physical swap files adjustable at runtime, so
+users won't need to waste a swap type id to extend physical swap
+space.
+
+> * Another motivation is to simplify swapoff, which is both complicated
+>   and expensive in the current design, precisely because we are storing
+>   an encoding of the backend positional information in the page table,
+>   and thus requires a full page table walk to remove these references.
+
+The swapoff here is not really a clean swapoff, minor faults will
+still be triggered afterwards, and metadata is not released. So this
+new swapoff cannot really guarantee the same performance as the old
+swapoff. And on the other hand we can already just read everything
+into the swap cache then ignore the page table walk with the older
+design too, that's just not a clean swapoff.
+
+> struct swp_desc {
+>         union {
+>                 swp_slot_t         slot;                 /*     0     8 *=
+/
+>                 struct zswap_entry * zswap_entry;        /*     0     8 *=
+/
+>         };                                               /*     0     8 *=
+/
+>         union {
+>                 struct folio *     swap_cache;           /*     8     8 *=
+/
+>                 void *             shadow;               /*     8     8 *=
+/
+>         };                                               /*     8     8 *=
+/
+>         unsigned int               swap_count;           /*    16     4 *=
+/
+>         unsigned short             memcgid:16;           /*    20: 0  2 *=
+/
+>         bool                       in_swapcache:1;       /*    22: 0  1 *=
+/
+
+A standalone bit for swapcache looks like the old SWAP_HAS_CACHE that
+causes many issues...
+
+>
+>         /* Bitfield combined with previous fields */
+>
+>         enum swap_type             type:2;               /*    20:17  4 *=
+/
+>
+>         /* size: 24, cachelines: 1, members: 6 */
+>         /* bit_padding: 13 bits */
+>         /* last cacheline: 24 bytes */
+> };
+
+Having a struct larger than 8 bytes means you can't load it
+atomically, that limits your lock design. About a year ago Chris
+shared with me an idea to use CAS on swap entries once they are small
+and unified, that's why swap table is using atomic_long_t and have
+helpers like __swap_table_xchg, we are not making good use of them yet
+though. Meanwhile we have already consolidated the lock scope to folio
+in many places, holding the folio lock then doing the CAS without
+touching cluster lock at all for many swap operations might be
+feasible soon.
+
+E.g. we already have a cluster-lockless version of swap check in swap table=
+ p3:
+https://lore.kernel.org/linux-mm/20260128-swap-table-p3-v2-11-fe0b67ef0215@=
+tencent.com/
+
+That might also greatly simplify the locking on IO and migration
+performance between swap devices.
+
+> Doing the same math for the disk swap, which is the worst case for
+> virtual swap in terms of swap backends:
+
+Actually this worst case is a very common case... see below.
+
+> 0% usage, or 0 entries: 0.00 MB
+> * Old design total overhead: 25.00 MB
+> * Vswap total overhead: 2.00 MB
+>
+> 25% usage, or 2,097,152 entries:
+> * Old design total overhead: 41.00 MB
+> * Vswap total overhead: 66.25 MB
+>
+> 50% usage, or 4,194,304 entries:
+> * Old design total overhead: 57.00 MB
+> * Vswap total overhead: 130.50 MB
+>
+> 75% usage, or 6,291,456 entries:
+> * Old design total overhead: 73.00 MB
+> * Vswap total overhead: 194.75 MB
+>
+> 100% usage, or 8,388,608 entries:
+> * Old design total overhead: 89.00 MB
+> * Vswap total overhead: 259.00 MB
+>
+> The added overhead is 170MB, which is 0.5% of the total swapfile size,
+> again in the worst case when we have a sizing oracle.
+
+Hmm.. With the swap table we will have a stable 8 bytes per slot in
+all cases, in current mm-stable we use 11 bytes (8 bytes dyn and 3
+bytes static), and in the posted p3 we already get 10 bytes (8 bytes
+dyn and 2 bytes static). P4 or follow up was already demonstrated
+last year with working code, and it makes everything dynamic
+(8 bytes fully dyn, I'll rebase and send that once p3 is merged).
+
+So with mm-stable and follow up, for 32G swap device:
+
+0% usage, or 0/8,388,608 entries: 0.00 MB
+* mm-stable total overhead: 25.50 MB (which is swap table p2)
+* swap-table p3 overhead: 17.50 MB
+* swap-table p4 overhead: 0.50 MB
+* Vswap total overhead: 2.00 MB
+
+100% usage, or 8,388,608/8,388,608 entries:
+* mm-stable total overhead: 89.5 MB (which is swap table p2)
+* swap-table p3 overhead: 81.5 MB
+* swap-table p4 overhead: 64.5 MB
+* Vswap total overhead: 259.00 MB
+
+That 3 - 4 times more memory usage, quite a trade off. With a
+128G device, which is not something rare, it would be 1G of memory.
+Swap table p3 / p4 is about 320M / 256M, and we do have a way to cut
+that down close to be <1 byte or 3 byte per page with swap table
+compaction, which was discussed in LSFMM last year, or even 1 bit
+which was once suggested by Baolin, that would make it much smaller
+down to <24MB (This is just an idea for now, but the compaction is
+very doable as we already have "LRU"s for swap clusters in swap
+allocator).
+
+I don't think it looks good as a mandatory overhead. We do have a huge
+user base of swap over many different kinds of devices, it was not
+long ago two new kernel bugzilla issue  or bug reported was sent to
+the maillist about swap over disk, and I'm still trying to investigate
+one of them which seems to be actually a page LRU issue and not swap
+problem..  OK a little off topic, anyway, I'm not saying that we don't
+want more features, as I mentioned above, it would be better if this
+can be optional and minimal. See more test info below.
+
+> We actually see a slight improvement in systime (by 1.5%) :) This is
+> likely because we no longer have to perform swap charging for zswap
+> entries, and virtual swap allocator is simpler than that of physical
+> swap.
+
+Congrats! Yeah, I guess that's because vswap has a smaller lock scope
+than zswap with a reduced callpath?
+
+>
+> Using SSD swap as the backend:
+>
+> Baseline:
+> real: mean: 200.3s, stdev: 2.33s
+> sys: mean: 489.88s, stdev: 9.62s
+>
+> Vswap:
+> real: mean: 201.47s, stdev: 2.98s
+> sys: mean: 487.36s, stdev: 5.53s
+>
+> The performance is neck-to-neck.
+
+Thanks for the bench, but please also test with global pressure too.
+One mistake I made when working on the prototype of swap tables was
+only focusing on cgroup memory pressure, which is really not how
+everyone uses Linux, and that's why I reworked it for a long time to
+tweak the RCU allocation / freeing of swap table pages so there won't
+be any regression even for lowend and global pressure. That's kind of
+critical for devices like Android.
+
+I did an overnight bench on this with global pressure, comparing to
+mainline 6.19 and swap table p3 (I do include such test for each swap
+table serie, p2 / p3 is close so I just rebase and latest p3 on top of
+your base commit just to be fair and that's easier for me too) and it
+doesn't look that good.
+
+Test machine setup for vm-scalability:
+# lscpu | grep "Model name"
+Model name:          AMD EPYC 7K62 48-Core Processor
+
+# free -m
+              total        used        free      shared  buff/cache   avail=
+able
+Mem:          31582         909       26388           8        4284       2=
+9989
+Swap:         40959          41       40918
+
+The swap setup follows the recommendation from Huang
+(https://lore.kernel.org/linux-mm/87ed474kvx.fsf@yhuang6-desk2.ccr.corp.int=
+el.com/).
+
+Test (average of 18 test run):
+vm-scalability/usemem --init-time -O -y -x -n 1 56G
+
+6.19:
+Throughput: 618.49 MB/s (stdev 31.3)
+Free latency: 5754780.50us (stdev 69542.7)
+
+swap-table-p3 (3.8%, 0.5% better):
+Throughput: 642.02 MB/s (stdev 25.1)
+Free latency: 5728544.16us (stdev 48592.51)
+
+vswap (3.2%, 244% worse):
+Throughput: 598.67 MB/s (stdev 25.1)
+Free latency: 13987175.66us (stdev 125148.57)
+
+That's a huge regression with freeing. I have a vm-scatiliby test
+matrix, not every setup has such significant >200% regression, but on
+average the freeing time is about at least 15 - 50% slower (for
+example /data/vm-scalability/usemem --init-time -O -y -x -n 32 1536M
+the regression is about 2583221.62us vs 2153735.59us). Throughput is
+all lower too.
+
+Freeing is important as it was causing many problems before, it's the
+reason why we had a swap slot freeing cache years ago (and later we
+removed that since the freeing cache causes more problems and swap
+allocator already improved it better than having the cache). People
+even tried to optimize that:
+https://lore.kernel.org/linux-mm/20250909065349.574894-1-liulei.rjpt@vivo.c=
+om/
+(This seems a already fixed downstream issue, solved by swap allocator
+or swap table). Some workloads might amplify the free latency greatly
+and cause serious lags as shown above.
+
+Another thing I personally cares about is how swap works on my daily
+laptop :), building the kernel in a 2G test VM using NVME as swap,
+which is a very practical workload I do everyday, the result is also
+not good (average of 8 test run, make -j12):
+#free -m
+               total        used        free      shared  buff/cache   avai=
+lable
+Mem:            1465         216        1026           0         300       =
+ 1248
+Swap:           4095          36        4059
+
+6.19 systime:
+109.6s
+swap-table p3:
+108.9s
+vswap systime:
+118.7s
+
+On a build server, it's also slower (make -j48 with 4G memory VM and
+NVME swap, average of 10 testrun):
+# free -m
+               total        used        free      shared  buff/cache   avai=
+lable
+Mem:            3877        1444        2019         737        1376       =
+ 2432
+Swap:          32767        1886       30881
+
+# lscpu | grep "Model name"
+Model name:                              Intel(R) Xeon(R) Platinum
+8255C CPU @ 2.50GHz
+
+6.19 systime:
+435.601s
+swap-table p3:
+432.793s
+vswap systime:
+455.652s
+
+In conclusion it's about 4.3 - 8.3% slower for common workloads under
+global pressure, and there is a up to 200% regression on freeing. ZRAM
+shows an even larger workload regression but I'll skip that part since
+your series is focusing on zswap now. Redis is also ~20% slower
+compared to mm-stable (327515.00 RPS vs 405827.81 RPS), that's mostly
+due to swap-table-p2 in mm-stable so I didn't do further comparisons.
+
+So if that's not a bug with this series, I think the double free or
+decoupling of swap / underlying slots might be the problem with the
+freeing regression shown above. That's really a serious issue, and the
+global pressure might be a critical issue too as the metadata is much
+larger, and is already causing regressions for very common workloads.
+Low end users could hit the min watermark easily and could have
+serious jitters or allocation failures.
+
+That's part of the issue I've found, so I really do think we need a
+flexible way to implementa that and not have a mandatory layer. After
+swap table P4 we should be able to figure out a way to fit all needs,
+with a clean defined set of swap API, metadata and layers, as was
+discussed at LSFMM last year.
 
