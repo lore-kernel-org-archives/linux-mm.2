@@ -4,121 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8957EB26EA
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A38D0EB26EA
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:58:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3D0CE6B0005; Tue, 10 Feb 2026 11:57:06 -0500 (EST)
+	id 03F766B0005; Tue, 10 Feb 2026 11:58:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3881C6B0089; Tue, 10 Feb 2026 11:57:06 -0500 (EST)
+	id 023976B0089; Tue, 10 Feb 2026 11:57:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B4C86B008A; Tue, 10 Feb 2026 11:57:06 -0500 (EST)
+	id E45E26B008A; Tue, 10 Feb 2026 11:57:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F0436B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:57:06 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6FB91B37CF
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:57:05 +0000 (UTC)
-X-FDA: 84429152010.28.B334160
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B12BA80005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:57:03 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dlOrvZvM;
-	spf=pass (imf02.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=tamird@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D5D5A6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:57:59 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 99FF4BA2EF
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:57:59 +0000 (UTC)
+X-FDA: 84429154278.27.364F709
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B1376A0008
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:57:57 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aKrzPkr5;
+	spf=pass (imf15.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770742623;
+	s=arc-20220608; t=1770742677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NM8yzmMo0YvFNuzUYh1WtYxgc6x1N2Dyjb0Z3/nF1tA=;
-	b=MZ/7WFOswbOG4qjloN2dcngHVH9MACEnMqtqaJcuNCvYQaCJcIammTzWF2l1JX3dGG6kmj
-	21r/RVJ1YBFnzBzkl65MT7nOp3szJHRU9tRpgVcmGst+Si/iqSSwBNc6oSnqJ6pZY6Z9UP
-	643UhG2Yvgaml0FJJz78xJyVxm1HAoE=
+	bh=JuTr1v7vZJwrCLefGdygjnFVcvKYo7h+RejLuFTqn2c=;
+	b=u7wtMObsCBxt5868NpOUNYoHbPQSlq/fn4eyU4lihqumLfDgUWDh3l72NdCLcIwGgeE38c
+	RSpVrwOEHOQ6/1ScLzLmg9kxOPFjALQ84Ot9KgBhupRusNn1UHpm1Ncob4nZsSFQBlz4Fi
+	ilqeQaQ3oJxeyjBtLtnmtl+VnXsZAWo=
 ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dlOrvZvM;
-	spf=pass (imf02.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=tamird@gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770742623; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=aKrzPkr5;
+	spf=pass (imf15.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770742677; a=rsa-sha256;
 	cv=pass;
-	b=Z4FCdj/opRVg0JCnpiAIuwrSw5/aM/34bjuxI7EPCHl8WgRWJQODWEsgVZPUh+cPhwJuPD
-	5X/scyj/FueA8lnuZUDDQayQ5o6CZVkuWlDYEh0caSMCid3Ckf1432wzRo4gMtILP1r1//
-	M/zMUfeVdVUqm61rExhe6yC5Dfy6bss=
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-382fb275271so43787201fa.0
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:57:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770742622; cv=none;
+	b=C01snJa7amQlmOnNxFUV5Z/m5kzLrZytzZmhY+nSjgmOTOlbUAVOHyvGZdZWfvNXvZDMEm
+	tYsV1i0ZUJnjYlDvKITUQhyZAl9x/MeavDzD2fm8CnRwwTQyBr34Nrm+pcg/zdubBbTDUw
+	ampXhZ9m7blprAnxBt0EfkPw4Om18q8=
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-385b9be0759so7618131fa.3
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:57:57 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770742676; cv=none;
         d=google.com; s=arc-20240605;
-        b=cS5VsYiH7VCpVhO0MbKG/PNJzJlXjGd6EVI6rWHfqgYkcEALyv7JwR4NxzIA73xKtD
-         dcO8Y10KC4flrjm4eQEfJnlyxebo3nzzph/aPMki6jBy0epr8W/SlDawKu2mzM/2XAki
-         yi3tY7cYb/zZVl+lmskZD++6rjoY5qo+RbE8BsP3wgQ05zYIa92DMuaw3Iy32FSe0sH0
-         mEct8ju75Tr4YPOQEDPOwxTl+26MFOOG5GKvC2+PaTbPuaDD4jkze/Em3MnFVHq2v2w0
-         jbw6XcCWWxDB0QnGIo3qiI9SdmGnNBDB04QA9avVxxVmR4lDARTusaJzDry+HwoprZot
-         PBCQ==
+        b=lbfc2ba/GDkRgm6cuPVq3s+1wIF6mPJbPwtickyB6PxbvZICT5H9UsyuZuQJqGi+cF
+         QsqvCQpHU1+wHfe/JMHBOZAfjT9Bd2zfM1LjNA6oRWdRdY/o2DhO27754wU0ZEKgisaL
+         P5QGUnotyK63x+vR0y38S73rl0dOGYRya3RXew1COjAnjKgLMMc899WsonhmXRA0ssV5
+         SkSK63KsUx2XTbeFE11uS1c5FiUCPoQvBoVv2FbXqz+VFP9IFTRrf5dNL+yXR7OcCbgg
+         o08L+ZSz+FfMA56JmLdILFAPvkIyv6KL8txPVIIIqmr4HrYO0qMNiJjSjxoUWMzYFUjR
+         ZPRQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=NM8yzmMo0YvFNuzUYh1WtYxgc6x1N2Dyjb0Z3/nF1tA=;
-        fh=pIiqZwVm47APITnp9jPFJXk+XLANRr47knqZZTCTq5E=;
-        b=Hk4URgfE1ZSXbq0d71/EZQOgOiEnCI1PpLec3zt4YictTcRHUToLo3wVJQLQvDxB7J
-         jeVO2hjdBABBQ5EsM/Qt0hK7UTgm62mMt5nH4REI+ET4+2cdU02+JrzCg92fyuAuo7St
-         2NG1fUKDMvqietaX6wbl0QISv8cQnk+hfhNGHYy+/F9A8hyb8R6Z/P/6YWQ3h1khphId
-         9tqPNKoK+LKWM2Oy2dh5GJpYWg572VXRfWFIotta5fu7gOdFpJiXFZ0TlReDYpQUh1zl
-         jZtDE42Y/lil/IQbA3yN7Y1qkfaivJtmsgA3+75KSXg+gCa4dQh+cVd2qyzAcAE3KX01
-         LogA==;
+        bh=JuTr1v7vZJwrCLefGdygjnFVcvKYo7h+RejLuFTqn2c=;
+        fh=L/zBlkZELLzlCKNCZoYkBkns6uvha11MkSNmO5sAuUg=;
+        b=JU6Qxj+8IgQZBbC1Gxx6DO7QR0kA282QgotqDJ3miv1s7JX/HSQC9ACF7esxdP/+u0
+         WJ6eRZnEgcg0ph+HyF0frl81OkdZo8L+BAtklYxP6J4SqfDFnoRF/qxOTZ3CnCLbiZM6
+         PBz6CXNuQUQgvj037OtAizNalC606XCNmHmuCEtxJzNb9fnO/rQExoQTlLsyme2aRZz7
+         Jlv5wgdo3jHHqYtaMAkasyTOiwoNuSJcbK/V5BnkAf7AvtDOuId8cbELrxfP9ShdPBVD
+         2nUG/2zWQwqFeXqjX/IvldxUbV97uV2i8WcDorsQDjYXLShybaQdYLhfKlakmsRVKRNU
+         srew==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770742622; x=1771347422; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1770742676; x=1771347476; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NM8yzmMo0YvFNuzUYh1WtYxgc6x1N2Dyjb0Z3/nF1tA=;
-        b=dlOrvZvMB+Ie2PV3ftlKHCI3OvY2XpdkXz98WP7oZ9OB/VmTJTbsu2U13K+cvkHsZJ
-         PuOjfFkSRRZa0D4oDEcuQdWXSE3V2XhAxtml8Wkk9DZUCV3ybD0uk+fXhrI7h89GEnYQ
-         qkqy+VWxeQQqHsdeKtGyxKOsOGXyfKf0nDA+UynulCFNW9hSW9DebIML2zfCJIZGxjLl
-         46Qot2532IjIzwpI/pxk7b6P1xzGRxV9uLlzXQOjl4rtXuWiM06twbzYG6G85g50843x
-         c32uoSxYjGJfu1sEq4NOn+fvJZJOoHZyys9G5RzzmSyOtFaAtJuYb25WEFpq9qN3cJq4
-         oPmA==
+        bh=JuTr1v7vZJwrCLefGdygjnFVcvKYo7h+RejLuFTqn2c=;
+        b=aKrzPkr5kMfv3EkuBJ7qcafHgZw9Zt+7fy+I8efxAQT/u3rWUBdOxEueeoXsz/yzoC
+         4cKWpK1RXg74H9FwRKeULtLf5XqpLvdS2N93nXfmt0yKZJIP11WARaBCbFQ5+fg35uAO
+         YMq/edFCkxTUCGulLhRlxfz8PD/U3zELyY+jGTbzSr6vxkG/GHlOIkqdWv/GhsFtIgvK
+         J6nZb8xFMaYa02W4r8JuFRU0ZmQ3AM1lyhWHjBmF8QMngGw1PlvUnT235U+EelmKYusv
+         WyOJCkm24joRNHHA3pIhx3sN5fc8xyIQN54X/H+ut7cur0a1q500q5ZHkxqyF9nztw3t
+         Ml9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770742622; x=1771347422;
+        d=1e100.net; s=20230601; t=1770742676; x=1771347476;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=NM8yzmMo0YvFNuzUYh1WtYxgc6x1N2Dyjb0Z3/nF1tA=;
-        b=O0vpl0gxR7RFLRBVlo0+iCo3RZKqf5lRi3hfqkR2Hc02gjrL+oy0NpldmGkj21Afca
-         7/E8oG1n7/gJ6i8JwFHZuevByjECgR6Fzl/tpu+rWjbfvWS3KPSsYC/p8HRbuzrUgdp7
-         1qQMS4DNhpQv4cXzEPHQnYBj0IpKkF9b6BPj3+xE4+mKDu5JjIUzzKkOQZVkpyA+cXaL
-         Qf7r4ND2C3wx4yKAU6/3F71Z/RZ0LpjGRvjkt5aNPi5ipB+mQpdByZ3fKzenSeNG9x85
-         P96GlxKGIzj7FnHRxmWvUHL9zYDXuO9Kao1sZFbnrflIxgU7M8B+OqYp+ih85GhfJV7N
-         7Csw==
-X-Forwarded-Encrypted: i=1; AJvYcCW66Po2/Vrcg+OW/yodxLEjR7f/hO2tePaEkKjwfJjVD676x8GS6aevNs1zQfja7aIJYbizavHX5w==@kvack.org
-X-Gm-Message-State: AOJu0YyRGcVxL91Lqw49sGlmXdxQf8MJ5iUC9bHs42R6DdXIsJdXf9dU
-	keXUFqm+8eciWKA5BnP9FKKdiCjI3muEGTjC+NHdCjmOkTItIZyZ63AJlsGaCAN1DtObVxAt8HR
-	wGOY/EPblm5wcNaYc9F3BSA/SsvDbSSc=
-X-Gm-Gg: AZuq6aJ0jQXHmcM99vn4AF3VC+INitEX9DsDfv2P4sGcvXmOHOZ2h9wCPqmt6Yjg4p3
-	gKJ1aPkPXm0G23cmfXIVxAEEtHJ4ld2WuTHm603wkQ2XIrSvrFLE83xpwwoD2B+OqaRyRCa1ynj
-	jt9XcgfbVLa7vbrYtY4V+Ng3BQ1PEN+qQyvBjSb42JoGVOSr+MpCqUOYqPmCwprSNpfi9wDBV5U
-	D6zbFhlC8cWQ3L0P267V9u3PhPVfgicKmkOGuJ0yb6J2Ga5C8/pYL7nEcteZ0eGFibskXHXCUu0
-	TQN+PCSkBY/Nv4os4Oho9hoYgFKm+arYBjqNTO3BPQ2uY+Tq/1qeQ4fFjwIMRtqpaCNHwoMyetd
-	we47JPCtR23/b5zzZUkqt
-X-Received: by 2002:a2e:a58b:0:b0:385:f7ce:f31a with SMTP id
- 38308e7fff4ca-386b4edd477mr50694621fa.10.1770742621694; Tue, 10 Feb 2026
- 08:57:01 -0800 (PST)
+        bh=JuTr1v7vZJwrCLefGdygjnFVcvKYo7h+RejLuFTqn2c=;
+        b=bFVdHdnndRaOw2RZsUVDdKEnXwLasge5cAiwKGv4QL/hBsrcVPsNZY/YwzcjXIL3tI
+         /ttY2YBcfa+wIv3SsDvVw9g3w/3/HTA+GP1BTPnYltLFEnCkqQNEBICclenXfFkGNbDb
+         2Ng/DgAX/DhltppIJ6vl6+p7mvfRR3dn1y8JKvJIZsIxe6Q9ayOx3sU6j8HoNKYjx8wk
+         aQt8yJvXGyVSLzkgJ+79w/tKwjRZuHq2T60VyvFKwQ6QmoMM3fL49K5iDmHUbe7s+/i2
+         pBhp5vFNZioOO9id7HrNqspdk1sWd6BQDr/C2LIuX4qplDSmZKT2FZhWDTmpbDu6TG9A
+         ajNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWP5Y4xTistxJ+kjLhzvQs6p/kVl7RZvUjulbLhnG/RXZW9AENrjXv80/4jNdJwirbjh7Ruw9iyGA==@kvack.org
+X-Gm-Message-State: AOJu0Yzl20lNGQOyEuZYd9bdwBCO1ZdbLmaaI/Bb7JZgvvAYHUk4elKP
+	aYSmb/n8PJ23P8YBOMseRnYt2TByzfPj8ZDlH+OoYT6zQVzDtvY4St15xeolQEFbylZp9bq3k/f
+	UeQAoFipfYEUEAI+VKjCzqn0a3KkWs9s=
+X-Gm-Gg: AZuq6aLL1+6KoJHtqgRmzb4aNDxu2fK4vUubaa/08o6T/gYREfNkrZd5u18u04/7nz4
+	XuOze01lhXUmBA2AZs5yLfZQAKWfWOP6eo1Cif2Qy57t//HDIerK+kPcMtdreuFraofDK7RI27b
+	miCitu+pd1OJWCYud+hP3SGx65PtvrdVEyp0CaAibqJjoHpIk791ZcvOhZVsFa9NrDBHW+KTzVy
+	K3Hojp+s80AVpIOg55RKeyThwKAaAdbCxM71g95dAo2tVW10vTgrb6AqajDCnJIRptKNjL94+oz
+	UAibHxHlzUatJPCzVAhI7PYBerWNQzeoOfCxIlYZCVjqtNEkB6IFb2VyIG9elQ7XAhJ8KWa9O8z
+	AQhRRgIy7nMDd4VmJKvT5
+X-Received: by 2002:a2e:a5cb:0:b0:386:8f97:d0b8 with SMTP id
+ 38308e7fff4ca-386b5106ef5mr52202351fa.20.1770742675630; Tue, 10 Feb 2026
+ 08:57:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org> <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
-In-Reply-To: <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org> <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
+In-Reply-To: <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Tue, 10 Feb 2026 11:56:25 -0500
-X-Gm-Features: AZwV_QhGTu-A3iYfBvY7CEYwEttuJWC6gRlgajiCgkGLDyHNWBy2jB23t8hDt-Y
-Message-ID: <CAJ-ks9mF5x5mAUcfN6dWN-NWoaE=j-8h0y_F5AM2Pnfn8RcV6g@mail.gmail.com>
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
+Date: Tue, 10 Feb 2026 11:57:18 -0500
+X-Gm-Features: AZwV_QjO2-EsPct575RPXi7JROMwJ92pVr3PLA-_MmegBYrDreR1XZieS5jWe_Q
+Message-ID: <CAJ-ks9=hWB2eFcEj1obfsoLvK15=YR9y=hifxVyeB=mJOz+gXQ@mail.gmail.com>
+Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
 To: Andreas Hindborg <a.hindborg@kernel.org>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -133,14 +133,14 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B12BA80005
-X-Stat-Signature: w5h8emfk59bd7figa36c5gsuo7foi5ca
+X-Stat-Signature: d8p5xwzfowgcshx6x55m91giob5t4bhq
+X-Rspamd-Queue-Id: B1376A0008
 X-Rspam-User: 
-X-HE-Tag: 1770742623-771727
-X-HE-Meta: U2FsdGVkX1/gCYcphHaYr0JxJU9YHq0BiYPU+OGbjzyp4WMqmDWaZfGQyftQE5yAkgFfTBbZgnG1lytheF+Rq4psFvEX3oxI8DaBIo44UAcF5bEA9rBgcaeT8I31r3WGfUehmuT/JNXFjwGyxvsweaj0vgVO2AKFULuSw0Ll7PLHHFfpp189QerfY+5Q5qF1fGYUSA2rFkYMkKr35Ekvv2ZiKJIrYZUwzTCwbzcdJWqP4IB+WbLbacf8BA8QQIKkFG9Yr2DOzly3g7ETTRF1CbRh7brG5SmkMGtrJy00PXvtiw/x7VNgrzewCtN0bYJnADp/JzulncHkik6/H5LY2lVksJHUsfHGZkcGNHMNB+o1WOvqwrxibzH2bVKWTxXnx2dLa2WKPOMJcyVBbv9UepKO3mfvv2iDLOiBh3ggHUt3OFX+HB3/hSNNMIiRyqIZzaHXQMeep5DhHy82t7Xs3vZ+5aNSQsjBroJ7UBu9MlVQnwJwl07/NnsvILGrMzG4ql37r2uQ8BN4cydTPcvmNdIKe7SkhLdCgzKfzzx79eMLaEQ7cg46zqLdnqm7j/0M2Nz5AtbNG2FeVGxCwcWXeQBQmb8knvfUpjYrnmKfCsOH6GXFN/S2QxC1LQLlfwLu5XrqnaxAsqOxDKU9ydIWAD90LoYwzdP2pfIkamoqkDKxCpybq7tMgnIY69AdgQHAP4nO1My8HHpL2mcw1slw5uODKC2KB/8y92PtIiEYQZoSyqIz4mrz2Nr9E1ub/xaU/eVYwNJyNVvJSRbY2Ei9IzCwInCDKsAyWDBP/bY8V/u7mnjSpHb/+Mi4tf2CVAGK7hjzOz4Kd2zcu2owqLhccNS3jnb9Bh8v4QMxtQ5kvlIi1vkkGQKSXuXdQLE/0NtRk2yiuySqSGNl2EwbtpV9+6WwOLWvaGNJCem77PD4/MczV0mQZSsRs+XOOPogK3bEves0RMC3OMEMri4+NFX
- XKng9yZB
- K5UmJrF56b5ktZvy0MqDH7BSZDN34oAot2+FeYrfoAGsP0q2HVjF2tZqPvycF6dw8X4JDH+WNT+7bIQSCGAg31C07uNWyucYblvUT82d+OvwTNlT5LcrvHU42D42Gb/KtLOMdEc5hJ4ui/JKqCSUlLmUVu6DAw4nVmIP25t75eBQ3L2PqR+6ywoJ5pzpiXMdCDmjVkEafJUohWBUqaK6puiRMD9tds5DzKk4EfYriiJucc6Q5Z/OoWCiAbbbcU5r09fz2xmi6ZTi3oFPHtXrFfruKV+1MqwknamHtKh0SdVnlxJvf6jNQvpD6X5lMvSYaIRazWwVCpUWdD+Ucm8MlncVA2QLEOaw+Uv90pUvZ2U5wpTXqK/Z0CGFlrDdEU+PRWDeboDJKRvs+xA/yNNqaAtLOrBFfJznpqGLay9ihLBPiOk8kMycc2bCX6yyYYHCPSHi22crms4VWA3DGTyZu+35gB/trUM+2vKKnxwNjUzJFWNOZq/kcBepwQk/Ewget8Si5ykQIEYvefC6JbRs7YVFX2yI53/nBB1fsxovcTk+HVYM+EEsmSvcuDyPcvC2Pslt0
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770742677-810356
+X-HE-Meta: U2FsdGVkX18072xag4HPwnYCQ5djL6UdN875+aLRXirYHQh95exnT/SEz3AiXIrijteqEo1tDCXOQ9jsQz6EORYoefDpzXfxdehb+TekEiuUwuA1RP6FA7D3NPLUQwiO2xP9JdNUyH+vzsNv5xH2N3G4tX8Xg/ag62e259bUjTICtyaS1+wD8WJGOaVpPeviGY7bGOVtbmyeNpEeGEDTIx7rzsLU2OIz653SgwTcO3O8ADZocDt3mjhHQS/i3SCBaRyaVzHsR+34cXudVyUIw+rfDzi/lZ6M9DS2qx6ypcwSYsRZGH/OyMZJrEy0tKvIlYHfupwW0xVjw8LL9fHft88Vh+qTeAhNOKbUDpdxMk3yaeUgRzrY2QOp9Be00iv9TXJWBRCG6/+iGuOkBlil2fCJ7FbCBFzHhX5orTwoORxv0swTTimyzokcnBWPHTr/r9qYbsQoWtJvq8+5TMF2PTJUUWJ+tSHXCjXXOXDngHhUmPJuVJPj9oA0XileCK3IphM7Mjrm+TEfp0tghbQylFC2vOwKkxb+p5sQTVicYWC59QZwi8+YEYPOC9NGIikIuXRSIOnsVlCwUCy1ucRKUutcIqTOldcM8pcxodLaGIqSYJT7rW8cAdTPFxd8OCyi99UaWq0Pqyfbh7xmKdgVikG0gDB/s8wgf6T/3+escFkVOkW0xcON21jsSKWikrxC8URgRG7sIcy1hXYjdn4+5RjPu1md3+xHK8SqLe0SiVhQ2YnmOfmrTKIY0bKYVNmw9I+xzrSYPXa8//Te46qybmJx30pGTk+V5Phz+Kn690w/XnWo6fA2fzrH2ng+LETFv18U15dgdtBI4x/hl5wanUE8aMOLfvRygRLv9MvgCyhEnf6ciAz/HPFhw2CQ2beR/qmsUyBIY9CVOzSofSl28gr1NkYUKnOfhWQaPRtqrhLTnc2+eYNZwNhr1nzHmew4JBC40TtPzSecNTyM/sL
+ OSdaZxEX
+ rxpW+NcOz2PxIS9YjjhBVUzBuGHt+IewnSpqYEJboAMPPOAdDWgNFIVFKlAJ6ZiqKkUxLlo2zZiZsWCmtXpGUfXJu4r9jhrRhqysKwcQ9HtW+ic0SeFyEsSZye2GeqIa5DiSb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,15 +149,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 9, 2026 at 6:38=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
+On Mon, Feb 9, 2026 at 6:39=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel.=
 org> wrote:
 >
-> Add a convenience method `contains_index` to check whether an element
-> exists at a given index in the XArray. This method provides a more
-> ergonomic API compared to calling `get` and checking for `Some`.
+> Add `XArrayState` as internal state for XArray iteration and entry
+> operations. This struct wraps the C `xa_state` structure and holds a
+> reference to a `Guard` to ensure exclusive access to the XArray for the
+> lifetime of the state object.
+>
+> The `XAS_RESTART` constant is also exposed through the bindings helper
+> to properly initialize the `xa_node` field.
+>
+> The struct and its constructor are marked with `#[expect(dead_code)]` as
+> there are no users yet. We will remove this annotation in a later patch.
 >
 > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/kernel/xarray.rs           | 41 +++++++++++++++++++++++++++++++++++=
++++++-
+>  2 files changed, 41 insertions(+), 1 deletion(-)
+>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index a067038b4b422..58605c32e8102 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -117,6 +117,7 @@ const xa_mark_t RUST_CONST_HELPER_XA_PRESENT =3D XA_P=
+RESENT;
+>
+>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC =3D XA_FLAGS_ALLOC;
+>  const gfp_t RUST_CONST_HELPER_XA_FLAGS_ALLOC1 =3D XA_FLAGS_ALLOC1;
+> +const size_t RUST_CONST_HELPER_XAS_RESTART =3D (size_t)XAS_RESTART;
 
-As I said in v1 I'm -1 on this change. As gregkh would say: it's hard
-to review a new API without seeing its user.
+Please add a comment to explain the cast.
+
+>
+>  const vm_flags_t RUST_CONST_HELPER_VM_MERGEABLE =3D VM_MERGEABLE;
+>  const vm_flags_t RUST_CONST_HELPER_VM_READ =3D VM_READ;
+> diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> index ede48b5e1dba3..d1246ec114898 100644
+> --- a/rust/kernel/xarray.rs
+> +++ b/rust/kernel/xarray.rs
+> @@ -8,7 +8,10 @@
+>      iter,
+>      marker::PhantomData,
+>      pin::Pin,
+> -    ptr::NonNull, //
+> +    ptr::{
+> +        null_mut,
+> +        NonNull, //
+> +    },
+>  };
+>  use kernel::{
+>      alloc,
+> @@ -319,6 +322,42 @@ pub fn store(
+>      }
+>  }
+>
+> +/// Internal state for XArray iteration and entry operations.
+> +///
+> +/// # Invariants
+> +///
+> +/// - `state` is always a valid `bindings::xa_state`.
+> +#[expect(dead_code)]
+> +pub(crate) struct XArrayState<'a, 'b, T: ForeignOwnable> {
+> +    /// Holds a reference to the lock guard to ensure the lock is not dr=
+opped
+> +    /// while `Self` is live.
+> +    _access: PhantomData<&'b Guard<'a, T>>,
+> +    state: bindings::xa_state,
+> +}
+> +
+> +impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
+> +    #[expect(dead_code)]
+> +    fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
+> +        let ptr =3D access.xa.xa.get();
+> +        // INVARIANT: We initialize `self.state` to a valid value below.
+> +        Self {
+> +            _access: PhantomData,
+> +            state: bindings::xa_state {
+> +                xa: ptr,
+> +                xa_index: index,
+> +                xa_shift: 0,
+> +                xa_sibs: 0,
+> +                xa_offset: 0,
+> +                xa_pad: 0,
+> +                xa_node: bindings::XAS_RESTART as *mut bindings::xa_node=
+,
+> +                xa_alloc: null_mut(),
+> +                xa_update: None,
+> +                xa_lru: null_mut(),
+> +            },
+> +        }
+> +    }
+> +}
+> +
+>  // SAFETY: `XArray<T>` has no shared mutable state so it is `Send` iff `=
+T` is `Send`.
+>  unsafe impl<T: ForeignOwnable + Send> Send for XArray<T> {}
+>
+>
+> --
+> 2.51.2
+>
+>
 
