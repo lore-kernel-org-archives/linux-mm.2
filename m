@@ -4,129 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E77EEB26FC
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 18:53:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7B59EB26FF
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 19:04:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93D7D6B0088; Tue, 10 Feb 2026 13:53:01 -0500 (EST)
+	id E04B56B0088; Tue, 10 Feb 2026 14:04:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EAD26B008C; Tue, 10 Feb 2026 13:53:01 -0500 (EST)
+	id DB2436B0089; Tue, 10 Feb 2026 14:04:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7CBCD6B0092; Tue, 10 Feb 2026 13:53:01 -0500 (EST)
+	id CB0C56B008A; Tue, 10 Feb 2026 14:04:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DF706B0088
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:53:01 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id B842C6B0088
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 14:04:58 -0500 (EST)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 11F9E59DEF
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:53:01 +0000 (UTC)
-X-FDA: 84429444162.17.C85373E
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 1BDBF10000A
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 18:52:58 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="P5rAbC3/";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770749579;
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7251E16077D
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:04:58 +0000 (UTC)
+X-FDA: 84429474276.17.309FA21
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 94EC41C0003
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:04:56 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kyzfv1Lc;
+	spf=pass (imf21.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770750296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dYxAK4MfxkNTvDSky4rly7XqGqYb657cJCOkNsVbPkc=;
-	b=zaHB5Ikk/705jsAXVkU5pqsK5fXgFGdj/oqC8qia4BL+bwHcaEY+r1uKT957KZVtZeT5NH
-	B0G+DSU8X1hWiWqEPu0wrqe4/ZDzAR9r2vm09IJA9Q7rT6w+dJJY3baXJRs5ZZHzx23jLq
-	hA+hoAsvpgcH1msaUEE3Ql7AKUMOaCs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770749579; a=rsa-sha256;
-	cv=none;
-	b=qy9mqI00eKzw2Ofm/3y67WTvWt/ijeuXBBstAMA6GM3Y2cAKtptGEsrSWO7UwDVLugGn1L
-	7zbh+GnDqd9y/tCWXPemAtkT/Xnz6JggzzFEn6H55Oo8C1M5+xyB4Bk3XPaNIZ/5K0Q+st
-	R109yeLViPNdyv6D/hJUTl8IGoRQqng=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b="P5rAbC3/";
-	dmarc=pass (policy=none) header.from=cmpxchg.org;
-	spf=pass (imf05.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.178 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-8c5386f1c9fso610015185a.1
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:52:58 -0800 (PST)
+	bh=zA1TNrRJqKyG8q/TmmtSKmp3ptZDT+TpaazJ5Y0UgEs=;
+	b=atFhrmoMUX7SDsrffFG3RyYqn/4WELhxz7JCzFt4CpETa6S0Nb+tW9bYanqIZQvsgfUKP2
+	38yPRlTWHQ4Twe+EDG+fm2i6KaTVqDJTzkwPplWnKXF2UpTA7awQ5Q2uj4pB0Bgq0paGDv
+	eGv8hxaoNNmmau0yjVl+JdNWlyrGjX0=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=kyzfv1Lc;
+	spf=pass (imf21.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770750296; a=rsa-sha256;
+	cv=pass;
+	b=nzUT4oDwBWfnFWOmeUJxixJVC+HO5gRkaCbW119UcsqGK5pxYRHAMjovTXjwV8rjm6xLhC
+	OjqGlpI49iNu5/4UNrsN9O0A8GO+CaFRQXXOPxK/wOEKgAwnIgqeKVipbOQPaRIQQ6O3MR
+	ntcLfzMQYnKJbH7SfSTwpQlwqbNJg7w=
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-35480b0827bso96488a91.0
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:04:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770750295; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kMDak/GBmNrrvqSmBZPuUYvTxkWlln4jHju7Dw0e6EqzbDY/TIuhvwCsgNsyjMnWTA
+         sPXxslgQXcNaOwRzQJ6tEduCskY1g69JjPzK5Bn0CB4Vy3zSv8fc5YHpQWgySVgeLZ/s
+         3Apciqdmyso4QqzOwkCF8SBlWx9wGbupqYFObgGLFpWW3OeUNW2sFTbA+dkZ7JeAklcP
+         94RLexSVPXZjqwp8RVZMZAlWgzn2mQTWZGTPU6ZqgWiCx9LSEFLEY6sKDdAM2LimTB7j
+         gbN0l46FYOPMJQGt9xbQoaSHxyAlX0/AAq2sP2Img27QGuo/+WTtbqdMJsa4rtsRxGQf
+         Ws1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zA1TNrRJqKyG8q/TmmtSKmp3ptZDT+TpaazJ5Y0UgEs=;
+        fh=9bRoNBlsPuLQBYh5tQiU8DhjjCrl3R8+O9kELlhqVag=;
+        b=aOW+KmUvxnAi0S0fEjtPlQb3wOidrQrDdYOXqEhBHxJv56vBrh3CZGdVUmuTHfouPJ
+         CcFzcufehbc6o0jauFMy3UrS3cb0HaDm7YjjDNn93kdqcrth1qgZW18brx6uMLf7QmGL
+         5EzrZ4hBanpQ7Y34cd1orJq4JVPThEPk/fUK+HMkH4qp8cVnJXCmzwlc4SbGnbP+PmYX
+         iUzNuxikWM/P5V7FMvbfGukMEqbHTxmlDGdzY64DVnMhC8LzOWWHmndUUEft3GV+CC8T
+         zMzNTfjQKOgZWMV/nY29pRzn+nEffZW7zHNcQs6N3naDi5VzcZn9rKJwmXDw9D0qhhSP
+         puOQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1770749578; x=1771354378; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dYxAK4MfxkNTvDSky4rly7XqGqYb657cJCOkNsVbPkc=;
-        b=P5rAbC3/owiXFIDcIDP2HQl3rxnrMtIALAZ2G2/7hsnQ7iYJ9KtNpFgFdnsazRqraZ
-         HRikfkyp3hr74u75ndyNGHLCs2Po5L3E4rdHmWlTnd/tDf3+NIrACWxu7PPiJMCRCIr6
-         6M3Ptxdga29K/ORDjjlDaFgFyePycp9BOvSp6fQkm2cm/RdnI0s4rO7Xmo/x4of3FBza
-         3+SITPnwfWgbYcRlHgmcnuv1TKxmqrOTkrRzWoyNAWvFHiVRpOAQBMFdXMP6mE20iOCM
-         L7H7Yk7aSWlxTuBaIjcL0jTtUe0Un1kEqjv+MbSVYD6lZ+jhsCKqKAhRHN7TR0Jjx2/p
-         i32Q==
+        d=gmail.com; s=20230601; t=1770750295; x=1771355095; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zA1TNrRJqKyG8q/TmmtSKmp3ptZDT+TpaazJ5Y0UgEs=;
+        b=kyzfv1Lco9H0S4EgpYHri4nSt1LUoaDBmVD6JJUHOczHhGIIAV0IoV+xpOX5ag4tvo
+         evfxLkqXTRkumtF1bbSzPpY43pNiPD0MwaEYLmx8JrKtbKmnpZNikRSZvYtLs8KJL/8H
+         L8j6OsEzrgujG8Q+3HRHZTn45MMWNUhXGRS8LNMmJu2PW45olIrgXZcAMxiqLay6+0NE
+         ny8Db4yfveHj1RXLJlAj6wL/aYae8AwGPn+I/lKGDILMaHS3TPatEZGA5J/6zT/vSMjT
+         dT5Pw9vV+oJsWGSdjlNjfMJYexG0BMrS8EqnfpmITW6Uk8uSfYmMCooWLuakb70jy6EK
+         ImTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770749578; x=1771354378;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dYxAK4MfxkNTvDSky4rly7XqGqYb657cJCOkNsVbPkc=;
-        b=jef+1bdAjHITwDIVoU72BBFflCcKBMgY4hmheIfM33qs34V6jrfmwN7PUVm7z4a1cp
-         z4anPQdDvAaKBrTK85g1gc0bw6J6lUFMotR8EZOzvcrf0LZK6ohMer5+cUObvSUNsSjV
-         hNytAITh3JUP0HT2bev5xN3B2qkKlsfKtm1CEu/0YcvlBUAOPWvXi3Fsng83/IoZDGVU
-         3Hm4dcMNI+n2N9CbTzgGZjAA3HTiozIqhBKPw4vdI6K9L4t6wCqPqi37VY53vjd3uUiz
-         QaAAQR0W4KKCzKaQQY1mkoGxPInoBAdRXu8cQHOy5rdxd2y+INDapPaSPe6DNFg8tHIV
-         S/kw==
-X-Forwarded-Encrypted: i=1; AJvYcCWF4LY4JnUOYf8gtB/Y79ZutpOZLlU8iIlrdmp8AFQxasP7CRoicbthOzVeaGnEd80sD4N5wRJNng==@kvack.org
-X-Gm-Message-State: AOJu0YxvEXSdJX180rCYNRG2g/R8WFqv71AYZjFMI7jUCwXFGrg4aygS
-	TqhRwPdd8ATNtaHx/UcoyOdznqm7aXLVtAk/kNDDDqI7R10t3uJAy1Zhkjon9biEqc0=
-X-Gm-Gg: AZuq6aKL0pL/mYoscE8pTKt4cax+UuxMLMSyQR2oN0A7NG7IpKi51hweabpvCIQH04U
-	2iXUQ/Pu2Puf55UxsrG+XFMEG/ng21R9ma3l6WHZfJKrtv4Vif6mFw5ty287LrK2SRtMS0eeqY0
-	F0S1el+vAqELLMtxVuPcy+s7I2sYjU6PKnHmzrmnskPirZWy8q2gOaXwixxa1L/J14cad7G0t5a
-	NDVFXoYbH/CpiZHgS2hiGSXQRxpH7QkyrVLC46VYXk0EA8mrweqoel/0MgFv/O547mqzG2TbC+b
-	Waflw7SyXJNNdAs85x1wpkiEAbEq3wZfmsxzgdk+MfdtRBYsCHKwGTAoy2RcnXvItrARJMKrMhG
-	m8iMDxYyTadfBrq2fqWTZadg5nBe9tgiugzxZ7EHZCGKiBmI4rg+QlQX4Oi4bt/WqX9xcBxeIrM
-	aEvw07UiYfl5Z/ovLRAgR/c/1H0x24xbQ=
-X-Received: by 2002:a05:620a:690e:b0:8b6:1877:3689 with SMTP id af79cd13be357-8cb27fc2b12mr39809385a.35.1770749577839;
-        Tue, 10 Feb 2026 10:52:57 -0800 (PST)
-Received: from localhost ([2603:7000:c00:100:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8caf9a16240sm1107793485a.35.2026.02.10.10.52.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 10:52:57 -0800 (PST)
-Date: Tue, 10 Feb 2026 13:52:53 -0500
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Kairui Song <ryncsn@gmail.com>
-Cc: Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, hughd@google.com, yosry.ahmed@linux.dev,
-	mhocko@kernel.org, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
-	muchun.song@linux.dev, len.brown@intel.com,
-	chengming.zhou@linux.dev, chrisl@kernel.org,
-	huang.ying.caritas@gmail.com, ryan.roberts@arm.com,
-	shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk,
-	baohua@kernel.org, bhe@redhat.com, osalvador@suse.de,
-	christophe.leroy@csgroup.eu, pavel@kernel.org, kernel-team@meta.com,
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com,
-	joshua.hahnjy@gmail.com, npache@redhat.com, gourry@gourry.net,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	rafael@kernel.org, jannh@google.com, pfalcato@suse.de,
-	zhengqi.arch@bytedance.com
-Subject: Re: [PATCH v3 00/20] Virtual Swap Space
-Message-ID: <aYt-havagZ8kUmov@cmpxchg.org>
-References: <20260208215839.87595-2-nphamcs@gmail.com>
- <20260208222652.328284-1-nphamcs@gmail.com>
- <CAMgjq7AQNGK-a=AOgvn4-V+zGO21QMbMTVbrYSW_R2oDSLoC+A@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1770750295; x=1771355095;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zA1TNrRJqKyG8q/TmmtSKmp3ptZDT+TpaazJ5Y0UgEs=;
+        b=TvunKfoPHKtcSBEXR3Hy55oNq22+W2cjctbd4yzXRLvjzsumFs10MUHe33B2tMklCw
+         A53aJsl3GVwtIhzILkdHeHyJxWUOxufxHktLyq6OMG/QvEbiikTCrz+FS2df9Kb3fLIv
+         ulbLN14i81rhA3PcP38rtgiBdySjpoks1VUCvntvghT5SL/3otKN5igDHSrgFUff7Bus
+         cuIu0plDhMzh3WN1J2uTNfhoaMyIbDe0Ij5kQ6lFazvvsNbryEjT+2DRVt9oNt+6HHQA
+         Ks+XyC2xyD6OlzmdSkXONjsOuZBQD6aDW4g96kfbTmrkXcXskwsgUNVilu61hhw911EP
+         IqoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVKCfEtk/uy3ALpzpFAvnVE7bNzHOtTraTqlEwJlJkGZIc6rgw58HmcaRiNlQJKDk1ggDePXnKrjg==@kvack.org
+X-Gm-Message-State: AOJu0YwBI2YGroel6pkJ77cg46t3JjEq6/h7PbYF/rzv8pQYQ+OikKL1
+	Qm9PeK5M4SxnV7pW4/C3vCoNUcALey9pFcEb6wEHdnesfFFUVnP44VXC7YGsPkzeZqQAQqYrAMW
+	Svo3v8guN4nrlW4CZT1tAbpYxJqAJbmI=
+X-Gm-Gg: AZuq6aJfKWaWyIikqI71ak09v1MHkwNp2trOvANDMPh4aSt4jDrM4vxspunsAPJTvhS
+	QsIwr388sfj1hHkqp+7dOvo+Iz8lbFzs4MiR+l8qSvR72yzW6yMOBhaG2ZEKlzXwS4Ee1yx6OVT
+	mNH6f1Ax0ykORTn03cXi+c7oyMk30aR3Vrebf2OGYqCGHLuYhqlwY0W3eU4D9yxZ68J+AXQyZE8
+	SNzuSVlYCuBYtRAFfD/GPMVGg9nE90fVFPWZ7oY5MO5PAY15B7iJDF+Hi5xfw6tdMLG19dIdBL6
+	LJRsDMJHoF+M5BkSk2pBc1U=
+X-Received: by 2002:a17:90a:c2c8:b0:356:26c5:aaa9 with SMTP id
+ 98e67ed59e1d1-3566615404amr2614078a91.2.1770750295328; Tue, 10 Feb 2026
+ 11:04:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMgjq7AQNGK-a=AOgvn4-V+zGO21QMbMTVbrYSW_R2oDSLoC+A@mail.gmail.com>
-X-Rspamd-Queue-Id: 1BDBF10000A
-X-Stat-Signature: fpd4tjge64pquc8kfuq1jni8fm6jrcy5
+References: <20260129215340.3742283-1-andrii@kernel.org> <87qzqsa1br.ffs@tglx>
+In-Reply-To: <87qzqsa1br.ffs@tglx>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 10 Feb 2026 11:04:42 -0800
+X-Gm-Features: AZwV_QioTD-2tB90VI5wBvuDYhjyIi8I9OHw4H2v3xPsXfvoZ1RNWowMJzaHBTc
+Message-ID: <CAEf4BzZHktcrxO0_PnMer-oEsAm++R4VZKj-gCmft-mVi58P8g@mail.gmail.com>
+Subject: Re: [BUG] [PATCH v2 mm-stable] procfs: avoid fetching build ID while
+ holding VMA lock
+To: Thomas Gleixner <tglx@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, bpf@vger.kernel.org, surenb@google.com, 
+	shakeel.butt@linux.dev, syzbot+4e70c8e0a2017b432f7a@syzkaller.appspotmail.com, 
+	syzbot+237b5b985b78c1da9600@syzkaller.appspotmail.com, 
+	Peter Zijlstra <peterz@infradead.org>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: odjxcnps7qxga7oqqxtijjkekod5484f
+X-Rspamd-Queue-Id: 94EC41C0003
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770749578-621534
-X-HE-Meta: U2FsdGVkX1+YwmyGbjF00vg6tBlKu3ub7N5xD8DyWer9FBt59vo5zvBwWQQpDCbU16RDw5HXVrXsbChNvmAG+1dvD1u+TvoDjRiNO58z9Ef5pq3QKI0v2VhgJf0EL77ZiktlEx8oHbs9UJ5ThHNg+jX30yhNjVNLgmgfyzAeZyZySrPuwEYtiY+3lE+Gwrpyu9MtfQfD1sk8Jp57axVGMDfQ3b3+D05Gow71XFzSQdPpLYSq3dfkkJXB6rwKhlbA4eFh2zp1I/NwJ/TrcHJH2iqvz48yIKH0F6XJ+15dS52jyLEwq9l/hQEru1dWgoX64PggmQrMw5y0aoWqL+TKr343ft5VZOC12YO+qM36RfU4mY90unsUijgLRjCAEnMSjUeJPrRIGjjREDYdECrwSZVvnA2bmoI/vQSVa5zQWoEIQogkrPNFGJsCdY6ay8G5FDRH/FyS2upVB3d+zV7DClfpIkJP33PCdXNoxwwzYjyg3yPsCMRl7+E3rsT0J5Shek0/vaPpPo55cEUrOZ+h6BhyN/ob2BZ3zPYPSqcXDUkKSRB+2bLCu2DyJCFuhMLIxYYXAMJJ2mSv3I3LWWBxUWokBUxHTBLkcpHpQ2oIzh4tqIx4SwyoyBRT6fHzygIclGgAjrOS9zhRh9HOMPYA42cRlK5wQgeihs0R7Vho8HEco8rcN/IBUBn+NMfxwtxFChuxjedfqFtp+9PI5y4xaJ89yDAUKvJ54B3KyYX6F+Z3eKJ0BTU41y6zbLP4GFW5gH6v1nlGGWJdhj8WYYEXeLLkvRxOrgLK8pwXDwf8hh+gD73Lbspm6yIurtqbX6jQDg1qdaducRu7CUyJ4m44HB8cMz8M5J492qp/mB973FxmWTXXcjAJj+ZYqRVPSmDmTM6QDc/wcUa+zhL8OBboCMvruYz+2ncfiDyD43KA2hvznHTH1y1min+4im0MxlwNVSTIcY4J/iICdp82za9
- Z83HiW8f
- /Hk3T4cf/m4U0zY57ehzC6dNCC3fI5Efl0pl4Zu9JOFcKc+7tVi+4mjihae8dSJPm2+e3YecNgFRZ7aDUgJqmU+ztQCCOZHfMv6rFE3m03B2yiPC/EoW9cGzh1qnEFduCgDfRGKNqlCMlWyo=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770750296-228282
+X-HE-Meta: U2FsdGVkX18yXalmkyf3OMo29RXDQ8S3EgxbPyhMNU+Ksg9I/e6CvDoVtubQW/4vtOg4wFiexgUX8NtqY+ZQNJfhcGLFnDzm+Up1jgo5ybEg6X8hRPCc7k5KDqEV2OZ3itqpJYfUmNGGiKr0Q0xw1fXx4nOUl3dkI6rmuTtpv4rZ9Crxx1oxu3nfjZHI8nz8aSWjEF+OLCAFmy1WI5xarXdQ6KPWcOoJaKBMKtcohU+5rSBqBsETxzBsOnBsQ2Nb74MheqjMYkGHizjAUsTrVsVgreA2tpyT9DUcHU1cyA8JkjmfjN5st51HdbilgGbpDP4Xw9hC6iISCjPNxm67XSDfS4md4A8crczowMEOXGMgg1/kE4weMJVrhfrpyunQtdjhoMQsc8eqKqHPxMZ1dlCP8XWFw9tG5fiSX3wo2nRFMuyTtxif15F2rgSHMdreQjA9ObQUgUa6iEjQB23xx3FPZzGsvm24WE2MVKnN7IGTz8ompf61Wc3EO2bkVio09xIBC9CET7sHoaDojS3biUNIKffZnvoyBL4JAKkRwKS6Ns3kWRUduxC+1a4i28CBg3BY6GGivLkd8zcGsPNhl+/K8ZFb4g+c8uXASIZGhZ+XEdeLia9vUav1TNGtIMycQt5TlIFBVOMLySt8ZG37Da6mrvK8k6FjATaW2KzW1NiYLtXH2Ul+dPtY1KHtTxJA9nTboVix//8Nk4DSZEwsW1QSGmP4lSlqLOL5i+mxzEwS4xmzGn0ND+7jUbC4dKsyuQLQ8hvcsc+kVAppRG1Wp1FIEFHunyZx2JnlcHhRBNd1B2M52NrovdE7fmTcaqu2n4K4SvDmo7nHZB0dn+FLzn1x+MpG4+pqm/d3EHyATlLoGC/PKHv3ViYjVok0gmgn5EuPclzD+f6VmQDV+zTS/LbPaXzhSFn74Tn+zfbdmpOWOJaIMP59ZZwQsB2YJyJs9K+8R902jG2popir8uY
+ ClUiAMTc
+ tuolk8GZVYuJWhTMryjvFF2QPxCVg86sMjgsGHsprYapJkFRCIRqTPLTgWI0jF2HQsqkfhIE6+8gz9HmePM9xF5vVM1vNc6Q/Cp0l1uEOe2dnaAv+5SUMozY6hDKeMPrEt9hsdnw+q8f6XgSIWeswPvnzXR7hGjeYHdHvPkNH+Hyk3UPtqhpzAkgwK4TzHAk90OGsWsz3Gz5Q7EIF/T8+0wBlSw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,74 +143,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Kairui,
+On Tue, Feb 10, 2026 at 10:41=E2=80=AFAM Thomas Gleixner <tglx@kernel.org> =
+wrote:
+>
+> On Thu, Jan 29 2026 at 13:53, Andrii Nakryiko wrote:
+> >       /* unlock vma or mmap_lock, and put mm_struct before copying data=
+ to user */
+> >       query_vma_teardown(&lock_ctx);
+> >       mmput(mm);
+> >
+> > +     if (karg.build_id_size) {
+> > +             __u32 build_id_sz;
+> > +
+> > +             if (vm_file)
+> > +                     err =3D build_id_parse_file(vm_file, build_id_buf=
+, &build_id_sz);
+> > +             else
+> > +                     err =3D -ENOENT;
+> > +             if (err) {
+> > +                     karg.build_id_size =3D 0;
+> > +             } else {
+> > +                     if (karg.build_id_size < build_id_sz) {
+> > +                             err =3D -ENAMETOOLONG;
+> > +                             goto out;
+>
+> Introduces a double mmput() here.
+>
+> > +                     }
+> > +                     karg.build_id_size =3D build_id_sz;
+> > +             }
+> > +     }
+> > +
+> > +     if (vm_file)
+> > +             fput(vm_file);
+> > +
+> >       if (karg.vma_name_size && copy_to_user(u64_to_user_ptr(karg.vma_n=
+ame_addr),
+> >                                              name, karg.vma_name_size))=
+ {
+> >               kfree(name_buf);
+> > @@ -798,6 +808,8 @@ static int do_procmap_query(struct mm_struct *mm, v=
+oid __user *uarg)
+> >  out:
+> >       query_vma_teardown(&lock_ctx);
+> >       mmput(mm);
+> > +     if (vm_file)
+> > +             fput(vm_file);
+> >       kfree(name_buf);
+> >       return err;
+>
+> See:
+>
+>         https://lore.kernel.org/all/698aaf3c.050a0220.3b3015.0088.GAE@goo=
+gle.com/T/#u
+>
 
-On Wed, Feb 11, 2026 at 01:59:34AM +0800, Kairui Song wrote:
-> On Mon, Feb 9, 2026 at 7:57 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> >     * Reducing the size of the swap descriptor from 48 bytes to 24
-> >       bytes, i.e another 50% reduction in memory overhead from v2.
-> 
-> Honestly if you keep reducing that you might just end up
-> reimplementing the swap table format :)
+Ah, silly mistake on my part, thanks for the heads up, I'll send a fix shor=
+tly
 
-Yeah, it turns out we need the same data points to describe and track
-a swapped out page ;)
-
-> > * Operationally, static provisioning the swapfile for zswap pose
-> >   significant challenges, because the sysadmin has to prescribe how
-> >   much swap is needed a priori, for each combination of
-> >   (memory size x disk space x workload usage). It is even more
-> >   complicated when we take into account the variance of memory
-> >   compression, which changes the reclaim dynamics (and as a result,
-> >   swap space size requirement). The problem is further exarcebated for
-> >   users who rely on swap utilization (and exhaustion) as an OOM signal.
-> 
-> So I thought about it again, this one seems not to be an issue. In
-> most cases, having a 1:1 virtual swap setup is enough, and very soon
-> the static overhead will be really trivial. There won't even be any
-> fragmentation issue either, since if the physical memory size is
-> identical to swap space, then you can always find a matching part. And
-> besides, dynamic growth of swap files is actually very doable and
-> useful, that will make physical swap files adjustable at runtime, so
-> users won't need to waste a swap type id to extend physical swap
-> space.
-
-The issue is address space separation. We don't want things inside the
-compressed pool to consume disk space; nor do we want entries that
-live on disk to take usable space away from the compressed pool.
-
-The regression reports are fair, thanks for highlighting those. And
-whether to make this optional is also a fair discussion.
-
-But some of the numbers comparisons really strike me as apples to
-oranges comparisons. It seems to miss the core issue this series is
-trying to address.
-
-> > * Another motivation is to simplify swapoff, which is both complicated
-> >   and expensive in the current design, precisely because we are storing
-> >   an encoding of the backend positional information in the page table,
-> >   and thus requires a full page table walk to remove these references.
-> 
-> The swapoff here is not really a clean swapoff, minor faults will
-> still be triggered afterwards, and metadata is not released. So this
-> new swapoff cannot really guarantee the same performance as the old
-> swapoff.
-
-That seems very academic to me. The goal is to relinquish disk space,
-and these patches make that a lot faster.
-
-Let's put it the other way round: if today we had a fast swapoff read
-sequence with lazy minor faults to resolve page tables, would we
-accept patches that implement the expensive try_to_unuse() scans and
-make it mandatory? Considering the worst-case runtime it can cause?
-
-I don't think so. We have this scan because the page table references
-are pointing to disk slots, and this is the only way to free them.
-
-> And on the other hand we can already just read everything
-> into the swap cache then ignore the page table walk with the older
-> design too, that's just not a clean swapoff.
-
-How can you relinquish the disk slot as long as the swp_entry_t is in
-circulation?
+> Thanks
+>
+>         tglx
 
