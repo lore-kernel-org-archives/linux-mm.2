@@ -4,240 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83D49EA3F35
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 10:33:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC7CEF06ED
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 11:44:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AD05C6B0005; Tue, 10 Feb 2026 05:33:17 -0500 (EST)
+	id 177C06B0005; Tue, 10 Feb 2026 06:44:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A53E66B0088; Tue, 10 Feb 2026 05:33:17 -0500 (EST)
+	id 14F586B0088; Tue, 10 Feb 2026 06:44:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E0CB6B0089; Tue, 10 Feb 2026 05:33:17 -0500 (EST)
+	id 05B316B0089; Tue, 10 Feb 2026 06:44:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 76A506B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 05:33:17 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2729B13B114
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:33:17 +0000 (UTC)
-X-FDA: 84428184834.25.D029E5E
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf20.hostedemail.com (Postfix) with ESMTP id ABB381C0006
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 10:33:13 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=RF+FUa4M;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Flr78xSO;
-	spf=pass (imf20.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770719593;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E65A56B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:44:18 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CD8113B1E1
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:44:18 +0000 (UTC)
+X-FDA: 84428363796.08.704F37C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id D4811A000C
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:44:16 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2WSgoei;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770723856; a=rsa-sha256;
+	cv=none;
+	b=es24TFkdHmB/vJbEwj5fXDSF52D3SezmWigfoMz8daVZP8AGeOWiY+l7kVYBg3wqzP8lJr
+	6TtfWcxaGRWznvDKcNXoAfnWEC69DjAh4gS/d5aNz1Psgu/wLSNi60ID1xJNX2+VCTCqcw
+	TdTr4rTofhB189ar3V7N6VZgSmOG41o=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2WSgoei;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770723856;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8RabIK12CxUDEo+p1FGADTJzrHc0taQF6VMtTT1t0uQ=;
-	b=8ONZQjJK2b0CynNEIXIvR667sdDRMZSvpRbH/5q1Elf5ms+vP9l/JJhUyY3VbR4RDCk9xO
-	IRo5ccHmQhYUn1GVQ777RdXjXmfB3bVTZSaECevuBelvKvhQe7R8Yy+s+jm26uiEagTFdz
-	Sr9toh39BXIHKI5gYHFWTJvnKRwpjmQ=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=RF+FUa4M;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Flr78xSO;
-	spf=pass (imf20.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770719593; a=rsa-sha256;
-	cv=pass;
-	b=i723F81dWQTL5Vu8j2Z4C6HwW8rO7Lrv221nNiyFDI6/Dyzl7OVsTE/Ou8rqOoAKROm7NP
-	yizPduQYGQsr1sm5RuNcsJxPjPi7dWs9HgEJthQSKAKzPVIy2Mcfg5fas9k/xsEmwtKVWe
-	QsjlWFxEAgteVMf1NiDEISC7zU0XI7s=
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61A9vHnn3608181;
-	Tue, 10 Feb 2026 10:32:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=8RabIK12CxUDEo+p1F
-	GADTJzrHc0taQF6VMtTT1t0uQ=; b=RF+FUa4MrCISiLerL8gq11UUwbN9KvKIng
-	gfXtR0hSy3OeWA8qXSaBUcVj+GMBBl0l/dfwKzAHOxQUl/3gMD63uEzLG0vOtZzw
-	BG+gPM41HO1WUzk1nmqxiiEHT+fOekgfK/psYfCi7EzX7kaUxq4gJuyHcYhU0qyt
-	mHOrCkFlG+KgwclnYxOLoMGXMdf8jbUjneifILlwL/HhauK5RWyLxIG75oxWAsp+
-	pw8eWqU1gD2VT4spgaXS4/4k67GYtaBBbea6YZumy189ZAseGChvtzAzvkqaBOVc
-	JxrFxr3emQHLjBkfPwVIjCO/qthRgXc8Gnurz9PWo2coh7bXuqdA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c5xh8ur4r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 10:32:57 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61AA1uq5013195;
-	Tue, 10 Feb 2026 10:32:56 GMT
-Received: from bn1pr04cu002.outbound.protection.outlook.com (mail-eastus2azon11010052.outbound.protection.outlook.com [52.101.56.52])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c826xjcqc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 10:32:56 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QB0BvTghYFcwvvRS/kfHlo2R58Jfxdpe4YrdDOK3mUMqcvf8xArQUYKo9Ii5Uh+J1vgJrYlTzkP4Gnbsa1IZZ277AT2GBCIt8zPkHZK+nlozAqW/28OKULiS65HaAuBVjD6VyZzVUHtozxsRjCK0ciRnir7aVZ2sx5OeBgApeLZpwrSG0ZuFU5ePmPBPr8xUa300Eit0X7IqlCd4sZE6BNkz9X2uF1ZpygfNw9CAgvKWvalG1sRHq+qy6by9AnhUID6X0IQp1j3O4J6J7S02XxytXU0xyNzY74safhmt84B21Jd/LqSvS4lyRFw4Rh6zxmp2a3cxulRmHOcPxuFCrw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8RabIK12CxUDEo+p1FGADTJzrHc0taQF6VMtTT1t0uQ=;
- b=lRf4jwjLIg3HBhMM+duwDAkbYmpX5C2ahSaX2NEaM40ZdK5QRVFmsXODxNLjQ4fVYWlgMzxyCyCjzTCyTcQlQFG3RKFVnoSVLLuXs26F+qVk3EofGPlk3s83VLTkgCCPzGUKfBPAuPjiWACSfgHAN0eNgb5FoDF45Zq1e1UvspZ9Gzkp2+9eW7QnpbJHA7x+GpF41/wkuI6eNysD/1kqsKIJ8rIjijomw5mnVUa+LlQtNi6FlPEceL554kR6A01irPfs0pIClzP7hu6RrzhRIbVY+HD++R1xFC+awWE/kpMpMVe4V38pCiYJtet2GvfzAY13CYr+PSvIQeNcOjv3pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8RabIK12CxUDEo+p1FGADTJzrHc0taQF6VMtTT1t0uQ=;
- b=Flr78xSOgBYp4EfG2w3i7LIIP2Fq4qqtfdsYMK1qvM3Vl9Pa0BJ5WEkWIlMgc3jGNNB6E4T/uobCFu6oiKhv1/eSl5FVEzd4tuDp0WZ1MoCivWxjWuFFfltLNN46WRKiEiTB76SN7L7aNRuWCigRUOUeUtQN+o32QJUpdiWLZGA=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by SA1PR10MB5844.namprd10.prod.outlook.com (2603:10b6:806:22b::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.8; Tue, 10 Feb
- 2026 10:32:53 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
- 10:32:53 +0000
-Date: Tue, 10 Feb 2026 19:32:45 +0900
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Hao Li <hao.li@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>, Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org
-Subject: Re: [PATCH V2 2/2] mm/slab: drop the OBJEXTS_NOSPIN_ALLOC flag from
- enum objext_flags
-Message-ID: <aYsJTWFQrDcCVsuX@hyeyoo>
-References: <20260210044642.139482-1-harry.yoo@oracle.com>
- <20260210044642.139482-3-harry.yoo@oracle.com>
- <ym376ht2w32x3zmfpteiezo6goelaiokvk6ujgp4imdwpw6o2s@tz2f5hvm3ezs>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ym376ht2w32x3zmfpteiezo6goelaiokvk6ujgp4imdwpw6o2s@tz2f5hvm3ezs>
-X-ClientProxiedBy: SE2P216CA0053.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:115::6) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	bh=DhfA+f26qy91GaqS70Xa5ZE/hVgVxhlLrt4vzPLjP+o=;
+	b=S5c4m2Nb22c05R7EqMtfZc4FUBpgysUZ3/plH/3timLcug3sUiiRdGqoH+/QqWUCkqnvzz
+	66Rf7UtUWN6/0l4T/J+CDGWODIgQIldIH+Ls7Tt+0aO9t1vRXr+amAwqauaJSHeS7gBf+s
+	REWPi1PxC8o/old0OEpYN32MaVpPfZ4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id E669B60097;
+	Tue, 10 Feb 2026 11:44:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F44C116C6;
+	Tue, 10 Feb 2026 11:44:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770723855;
+	bh=c/LuO3h/ogw7+uxXHVt9bSCf4zxpAHJmVI4//b+328k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=L2WSgoeivO7hQ8rAteqrSiA4TPLeyzNT//Os4ZOCS3fjeqsDF3XViQQO2KGiy+zYX
+	 8vGdIcQAuGd3TzUIZZ+WZEccw5I8H6vq3U0h2eIujPuMR/dGFo2u8SrbDsKUM/AhS9
+	 ZxIJxLiEFR7J3hkN3c/q8glgYKto5zY6skueot3HuZoIS5BzrFORIy4zN0/qYtd1Qu
+	 C0yhDy8Bsk8V/MWWnHzkwta/Kw/pxBFPhcO/W99DGdhUneu535ZZ1YldZ4Ze08//e1
+	 mlAsDcbgqg/b4Tg7h7ATyF8W2Inffqnad9u3dZb6Zq7fJl3reu0glUQfy5QKsncSGG
+	 WC0OOy9qz4AWw==
+Date: Tue, 10 Feb 2026 13:44:06 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
+	Yuan Liu <yuan1.liu@intel.com>,
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
+	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
+ zone->contiguous update when changes pfn range
+Message-ID: <aYsaBkMecDG595Xg@kernel.org>
+References: <20260130163756.2674225-1-tianyou.li@intel.com>
+ <20260130163756.2674225-3-tianyou.li@intel.com>
+ <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
+ <aYjmcZ4hg9bNbmiY@kernel.org>
+ <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
+ <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SA1PR10MB5844:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9088f049-cb54-49d1-f3fb-08de688fbf53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?rMHhmJF3U9NwrlvGlaXTDgcxnuwLRojnLvxb7rAwyyeeJqJ6d4iCsqTeeBsK?=
- =?us-ascii?Q?9f18IlGpJ6XJKNhESjvdr1qZ5G71TzFhWSHn4cLzJCJrByZyL9nuN7uRROJp?=
- =?us-ascii?Q?sPwwUioEQe9sq3uQbkm9wm9p01c4hhoBLYDpwTWWW7Co/JIhPcHqSGlopp2V?=
- =?us-ascii?Q?dgkD+v2BET0UKBNEKUSEdV/v9vacvbphpjcLF3aTuVCyw1LHOGww6dSByP+v?=
- =?us-ascii?Q?nc1SIC1DW8BlzkIkgOpPwjOAy5MQbHBb0LkW8oP20GboGvii+b9+o8kP6fc7?=
- =?us-ascii?Q?eGdfMFWCrNbHVV8zQodtl3AW895DOFs9jDW+4WErW7NyGihPQODXB5SKGUov?=
- =?us-ascii?Q?eWACnDdW30OmJXBnXxt6XPVPeiG8SRbQHblyOinCQI4GOXHtOE+RsLzEfcMg?=
- =?us-ascii?Q?Fvfq5hxWxd2ZN2R8Kx1v//2FUVZhAqaGOvMKGtSh5qQ1SehLrab0RzQ3A4Gr?=
- =?us-ascii?Q?hoZf8j1XAa25ZLpDpP8xSOpdysePYseJNcAatUHHXdSM6e+E8GMrw6SLNJeS?=
- =?us-ascii?Q?KwYNr2dgrU8squEuCRYDGKWm5+MOPt0lfPEwT4h8jUejRWHK6JuYblQ4jJim?=
- =?us-ascii?Q?ww6d52wudTBLb0jbVCNf4mSdrNcbxjzUmmh3ng4Pt1vRiTfLUgvaqFkQ3X5t?=
- =?us-ascii?Q?qj5Wb7IzVRxaL+p5gH8nXP1LbVK+Stjqb69oh8H2ne8MrL0LlVeRGYyePPzs?=
- =?us-ascii?Q?xhVgr9pSwONxHFTpXCza0vFcNUnFDC4iQBGZg475n8YgKPcsPOvySAMHv/dA?=
- =?us-ascii?Q?scW0LPUdOjeDduHreO2J1iZ2l7izq0RxjwjYVEl7eHL80mbpmHko6D1biD0E?=
- =?us-ascii?Q?NX229wcRlOZaM4ICfy9uFJ365InichIx3hNr5mMcT76x99YHNmggVxOknxT7?=
- =?us-ascii?Q?72SpivtCBu5O93yqPh0erJufGM88Bbu1O022S30etyPSck6QFyt3LdR4RA1H?=
- =?us-ascii?Q?QmAImytNo3G8cFZJqJ8TE0fJYjfnm2IdIhH9ZE3p7cfEb8Tf3dZpH+tWp1IE?=
- =?us-ascii?Q?ZbT65NvPi+xonAzWHs6Olrm5v9Yi5RKji5kTOvTJziKOzLbkgqH7jWiyrrZ9?=
- =?us-ascii?Q?tEMpXZatjaNrx/JQU7rI48j4afAaNQz2HiIGNCE137RGyXlcJF06cQctig0+?=
- =?us-ascii?Q?bC0XaEHc/1jMazjeI+m3sWWmPVgh/HmapLHXzeac8ys46nu5vrUD3DFPbsMw?=
- =?us-ascii?Q?1TMhrs/v/Qtpbg8y9uXvVOiuWzbTPTVvwhQlwj9wXQaa14mToIz2iP1hbLXs?=
- =?us-ascii?Q?myH2gS86HZsgLqPyye5qa8DxJphPErFMqtvrZSX/uiHHvNn1Vk2j01sUvOzF?=
- =?us-ascii?Q?c3gpC5Dmo4TjQLsvQJIgGurg2A1WAvHfA2zBxQfL0HYFDdtY7RBDTaeeWeeI?=
- =?us-ascii?Q?H7s6HOJcLUveNQIxIEUCg3kt4kUc+axNRGXJd+qg9pLxLLsu/AwgOV675VPr?=
- =?us-ascii?Q?m0slhYYTI/9gn1u7mWDNqOuV+QE1PKeZbQVrxDv5fftulS3nhIi91qNjDZW6?=
- =?us-ascii?Q?34gJ6Ug52gxm5ao0i6kmFEIbqRAK+VHzXbb9m5tUJhaOHCph/4O5SMhK8eP3?=
- =?us-ascii?Q?EbhuNOFf79trhOPp0fI=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pTnb9IuwjgEZ2DB2fdLwhNgC3MbCiIoEVWRWSofIKMoLkjQvuZ8Gjtn1GnHm?=
- =?us-ascii?Q?3sXrhsga8EYtTumpUIe8BbPe4kXCsBitgzmM8iO/5b3ODdMbczox4ON8zAk0?=
- =?us-ascii?Q?zCTevJXlCUkuU67ZRnDBzpT/OZjTerin+QcDmQW9JzTsLPUzWcl/ckT0gFgC?=
- =?us-ascii?Q?ZvbGvbj5tsNIO7v7WRAlPuvv36FHojfWsiYaDYqE3MWU/g15M3kD8J2C2pSY?=
- =?us-ascii?Q?Wl6F+iiWV1W+YiryAXrpEdeZ8+1+utkaZsGvU54g9BGbfCvDTbHWvtG6/1TQ?=
- =?us-ascii?Q?8UJ71Nvm2yOuVXARvbSTbGg9gg6zek+TEXITwt46ehE+pxYMkG+5waXswsDr?=
- =?us-ascii?Q?bwgBb3k0NiMSVO9uQLnLfQYlCQreLr8XQBgl/ofBmAVkJR2osn/lKFzg2S7P?=
- =?us-ascii?Q?keixApAXqZremVO6eCn+GE1qdF3Yp4r7GnSbY4aajE+IR1ZJNPFljG1biFc+?=
- =?us-ascii?Q?lFuvRkU/etfwuy67YlqWzqaqQTqRKSYejRGuaZsRapluPH/NdttXJxOrdn6f?=
- =?us-ascii?Q?dgEWOm9/g/3Il/sZ7iMzEeearp6fTGuTKiNBoew6kCG+YKi/A5xoytiY+Yxg?=
- =?us-ascii?Q?sW4Nd5UYsYvRTJmwjpf1HieGqLE9UGSiZDBLuT6hQRJyvBBTWtS2/GW7rqjv?=
- =?us-ascii?Q?tPCfkN5HpJWNdWsRzkcP0IZ9V2sUzSnoR+yE7qpwmrzoOe8+2ExTjXxzLCse?=
- =?us-ascii?Q?5grV+pbt/TjA4fD3DihU56nEIqKwANPCqjzYefn83hW28LU77d2hvsi6r8B6?=
- =?us-ascii?Q?46e+Zi7vvKyKgPJP6yS6S2SETDVSlMfVcRZiY7maWXk3K+WCzOgjxic0iym5?=
- =?us-ascii?Q?Npvqdnl/8e41Ca1pqY4VlZk044iN6ucEvYTPJ85O78g7ws5JCDqHSCFm5T4s?=
- =?us-ascii?Q?px9yBP9KXkXppwXZk8vtEzl5akHPYzD/hPUhBEkVUl95cSu+quUpObU5spyU?=
- =?us-ascii?Q?mGTiU/pSuhDsOjylHdQ53dw49B4c8vO2yLJpRuVtlP4B/fok8lgVHBwLNYjw?=
- =?us-ascii?Q?MYovPvtV9JlvmN4xRz5LrjlNJ9ZEV5AGU57L3953yQv7UmPH+qToG6RhZkVZ?=
- =?us-ascii?Q?DlXTtj3Um7eiu1xdp4pCAwQ4JsyZobIHAMbhW6fJDjCEDZg0VI6/W3XRV0V2?=
- =?us-ascii?Q?p5PJBLBtkVw+oJPMNDX5+qrB1ptBWJmtj5DeuWQFrFlncFE7LQNteSBhZavi?=
- =?us-ascii?Q?IyZp9AVWOIVGNQFnvgdH5Ldf5xa4GJOhOQVxY2wxJvB/EAw5vqXc6zFbzLcn?=
- =?us-ascii?Q?D8l/10+5XxtZeQ+41ELbWOTAwJdvBMRwXraWIEgIubXnvTpAgztFtwyJ0gIR?=
- =?us-ascii?Q?Jpz/Iditbr4lYEUtjQwPZd8zhn1o0jqW87SxqFI4N7n9yoiF/B9aBRaURpTR?=
- =?us-ascii?Q?C5KZjzWk9UDoePTsO++ZwufyuVazYciQkwVKYjD0soxmZcwmnbc4RsEXOdcH?=
- =?us-ascii?Q?gofqwLYHAAy9uviHv1HMYSV8wxsNh/Jc9qOkGPjy5/5TqypJdSC8D7yIIDOr?=
- =?us-ascii?Q?TnponsmsVPtxnEuzFM50Th6cvR+qmP0MWeNCzJPy4EYmeO7o+GOPHZeFUETl?=
- =?us-ascii?Q?l4/USZWe4iFrnz3+Qcc2YkaliFSWv4pzNiP9lWwdbwyYgsTePBD+ETOVXU/G?=
- =?us-ascii?Q?K8x8pLmwD90l/u3T52q1f2KfdAKbY4c95FucD0O45gxGKlVjqNDrJ5nt//yU?=
- =?us-ascii?Q?s+2m6k62nFF9TpiLkPu0dbkOatQqb8OK2Iv8un6J6SSV8TqbKaKM0AN2iUJU?=
- =?us-ascii?Q?hU6y6/84Pg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	ZNv75SI8zu+QYBmy079zvXEf47z+w/y59jqkxgNP1JdzFFlzd+LPL6NPJ7RngYK96ZlcfcyEiHqiNJuN16RISA2BPCGq50RP8OdBZoPL8Ze4r+8M9xeJLhfuCoHxunwgwqbaQHUg+cLmH3hAb+9byxgqgSESuCOjPExpf+NkPKgzWSlH82h3E0Yxk1pWPcFOL70YhW0wmVgw1ZdjLU5UUsPFaip3rBfaec8FWXOdSzsMlAUBE8vxOktQAOoAha0lvegPl1KNJApSkDGGLy4U+Du93I6IKVBD9jTBaAP2d63Ughvguah6OV4ARLgiTZG3RuKtG9eRzVXBw1XF+jh7zkjR+04WkOl5/G+L2QH7g4BrPk/JnphhbtE67RAN6uH52JC4Ai6JgQ58e3i4nxQBJ5yVZFnd0XHuj3+jw1KtE6xPVyuKoUgVGjh6dszy+ZtvcNCCSrbRPwtYYKolHIprdJKVktN8Ok9qeSMSE3ys7RoZk+tBEw+geE+m49UyQmpQbD0KleHyorlqtf+nz3eFC+Yj5QOldmRu1hPz6mZAagAKzNuQ7REfFpQcJ8Izv6BhLcIy7OEfpGkEXxUoImhxC1n1hxwFhjUQ5fFeyoviJI0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9088f049-cb54-49d1-f3fb-08de688fbf53
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 10:32:53.6362
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pFXuxvgbUS2cmH9zA4XnSoACPOoqrmyoY9D/47UMPNsraXHW/oNB7H/7JSZkHNZSqAXC6ocVzLcxnaYtv91t2w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB5844
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-10_01,2026-02-09_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
- adultscore=0 phishscore=0 mlxlogscore=999 suspectscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
- definitions=main-2602100088
-X-Authority-Analysis: v=2.4 cv=YbOwJgRf c=1 sm=1 tr=0 ts=698b0959 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=qhPkHFQOtCETH79-tycA:9 a=CjuIK1q_8ugA:10 cc=ntf
- awl=host:13697
-X-Proofpoint-ORIG-GUID: 7T3v5IwBAYQbSPPjs1tk21pNWB_-oDx7
-X-Proofpoint-GUID: 7T3v5IwBAYQbSPPjs1tk21pNWB_-oDx7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDA4OCBTYWx0ZWRfX7s9+4nhGkgOY
- M9Pp302LnHXtKo8Y3ZNPcJMoHAIHiZqO2pU1K4HNbwyCDxyd4UELusu08NzgLqe7mHENjay1+j8
- 5R2b/i6xaikRtIR5Ah/2T/sK4tczJo7htnoITk4mH66pToL1lXjrEshPjyGHbVv8R9Yhc6k1Al7
- PBpeZ+ByDUIB0ZqideLgkCdm5fYZbatWqWKtPXNHPG/gNlJ8Ss37zNTGHRdAujsRkkbnpuJBtbO
- Ea9LjzFQx7mRJ3rEGmYLkdyayhon8ebFsdnm4gOPWVkdxkiQixH5lgNgSD0cmWeCZFyTD1FdlAZ
- R/ZxJgoY92t9QS6UVPER5pSSKplljw/+yNBHjLeOq7nSWsaQ2/+vWi0c6s4QaVOgSiUlGxOGKbh
- gPfsn5iZbgKIKDwpaRqHNbp+b9m1OwfdbqHucWweo18mDgtWRgFYixTADXMQx6gXv7jm0lzujfI
- Blplo5uUZKR3Ck0URAavXizRO6hhI6hU5EKH/X04=
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 67cn1kxznp9iz4apdzt84ju8i1wnkrty
-X-Rspamd-Queue-Id: ABB381C0006
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1770719593-995313
-X-HE-Meta: U2FsdGVkX18USlHArRM84S571IK3GNS6OGJA3r2TtFrp74AUzY951IkWGDvKX22VyYLa8XIlZmJjr847tyqRCI0ZAr4MAkULy5wT0H+LVWFeSi5Utd4v43D6KW7f01FRT9+5gaA/9mcjeEeWQPlFrcNPt3qH2XhuGbNtAglskU5jNCK8PlvjlzJDgr4Hsxq0jEeqImR8n6SegckGM/XGF8JFSnc26G7jM/FWh7vxA/6jc2Pj3JOKBFp6EgxP2Am45aWWToFHyO5PgwS+MNuXw7MQxOOxMQJY/p/IgnQe8GTp6ifw3WXtOlfaz4xoU1KnYBNxmoDY0zHjwO8FcrsISoysk9aGRLjgeL+aVuUNbZ8IchzmXY8APHPmogKL9k+ZRX+nCCXbhSzkFPCcJhn03OsXB1Yiq7AdDvS4KMflYWsD9rhgGfijeLzDlkbDPEKPq5l9eunZvw7KllBjuO6RrOhgZiTP8utcZRGnzv4zqsPW0ODT5hNZU4FI5BGvqhohAWXlofMhAu3j52uvu8dK55b6JXT4QBmo1e1A/J972owlCHCzZ8g4bDJkCyw117toij8lPUc/tymzt0UgR8kaCPiOOZvqqOByhxGe2ba6C4qC4C4ISw3ivxrHoHkIwug3896VfcGkK+rKt/4tfYAVd7o+szHWP7IWGVDQxhf4B0Qw0caCDiz3nC8VTs7jDuuVoN9z6peoOeVVfvDIgtPLIiCWZ4MSLv3cYAqc7fdxaiN3zJVeqq1OKq+4tu/mBNP7D+wR91EiElrgYA254MDFeNc/D5jKZrSO4pZUbjpmH9SFziwYU0akTG8SbMTflYIHgsvbOB/RXGe2M6tHkY1BLt+MVNhIhQqEcK0CI6gXP0om2bpiek0Hc6kMDFDiNdirg4ApLoM4INAVyXEsMoRjL09cB6E1WwpuyCMZ6hP64bXxbgWXn00W3Uz4OKioxVrpCenpVdRl08blqk8ANOl
- J5wufXIM
- RKp5FHe5vmrx248oWNbxBMfAnixg4bOI9lCDb1ULAAb4ftozXrBrK/ieBh+lzJdfB2clQzOy86Xtez/IXiJTyOaS+U94NgBwprSdtjYgubRv3sOx1zkSd+BU3vn/YAimlSczx+fyZ82WmJ3AXr8L1baIYAhA463oSnvUDL8gqPTalqi/6jN0Um3Po0t9Zvn+TvPE0aPPxh8w/A8wwkAoeGmPtJAKEfU2/7tiQnLavEnMsHjMgqsjgSIWx4LMauhKn/FGcdntEBMog+ONtiv6EhEBTDNTq8GqHWhpfqeL8l5/OIC04aSlNE23HGalJdmPw2EBRFt5krbbPMmWb+Znnd4CYp+tc+gxRPY8bCH/mn/xQ81o9lqV9fJMyzPaMWm/vnaLg67VxK5/oF0q5REiQBRGRskGcxocBYKkyjqwFxF1IyhlhwBGWe03p9tY+yajsjCVVFKzA1Tz+oMTcs94M/EBYtpE3HeXcEbOtU5iAvgOPO9I7wRItvJrXlq8xouxyR7Cixafe7/+vcDv6O32vEmAspHQMTWLLYsVLflaBa/iVMaMx4YN2f5OtZ0tq2lRHy6nhJ/mmKArdsG4t0/roQzZQbOzLjKBNa35cAlSbG9ipov5hXGHle8R8wsnfW8o14bni9e5Sk2i3PFQIZJnI1CPL+bbqMilbK7n73lGE1Ia422TwVcIjZNGH1sUX2D0uF5X0Gzc2QEPCAmZrFW5C4AbYS4FMyhpU8r03Kn6P/Bhh45WXh7WJFUOrmA==
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: D4811A000C
+X-Stat-Signature: rsujch8e3uie6s71p3619ycfxfodmhnd
+X-HE-Tag: 1770723856-960927
+X-HE-Meta: U2FsdGVkX18X/PmvTRdk6hp37KgU3h77tzxGegKx24d2mtBT98LUSgWM5t6WhDzBhNd8XXz5o+1aKHjaELhPx45jXrAUrC0Wv89ZXOJmHtzd7h3/w/mkYxSP6YuN2VPUJkQTnd6kvrDfPOwkgW3FHvQ/yRI3KSEthtY1K9a2/eTCmdPukn28APhgBjOcYpGr0fFgs7OTLX7QwXd0FIb0cL6GWiJv+Wb/70Xm1qEf0wXQQ0yKkWY6xF1WyHNjY2FZPS/1P5K9xfUihl6bmg5KT2O1nULtnXIiroQEvVPpz3ON+7K51btTGX6UsFqOdv01lX310sYVv/koDF9S3wuFrROv0QEHbgyJtWwmZmeHXwNjh2S5Rfq+BNNZtcCur/Cj8+6WDOe1eIxRGi4X06NiebgdnrQGCv4BdEIr4TbeWkQrVr1jX/5+IgkgL1KXakD5SyRvOv3cqQUyk9M+uM+gn7EBWbpqN/W2M6ejjCGYk5DxshXLf6zStIi1q8GGmSFMZOPg3JRKr+mwuBxqOLqUr5Z4pUv01EvimUoZDI7fOrVt0wBYYZ5UvCBrpYF4CAxQFvYJjM0+hdvML2SpMCPgJW5riWe/GiaguDq5pvy/WFwt1fAn0Bq1HcfQuk8uoFU1mgDQT95K/yHDHl4Qllg086UBRWtJVRHQLwm6b+DKDH2mvd5McUgmW3h8QqkGQZVyMIKQs0t+d2bdRDCJfnomkD2sKxX0FvqdsXHkuxulqe5p4JbscFlV4Yz8e7NoMxiRePi4/ddYoZ+O7OsjWdhz/KUHE9iEUo5Bjc/B82g6QfhX1y3rgYN/PZSXRArjPPHcq9SnYxKE8lceL9SQgL8yNrkQBGItJ4OjzLbZnMEoS0Dg9og7mBdCBt9baL1hKZaIzNDEsYUZyiRvFp21bFKMV/hBbal+IHmKpbn3addwcs0UW9sLuw/Z2ZdCMxXMCMxAioexJRzREfnJFZv67aq
+ XA7aVAT1
+ lgkOJdYiDdDmGz8uyq4QKh1vvdlHKzTqzKb/nONrTZKTb7NyTanaAQg947NDCEbS2farzgy1c597qKju/yFh+Q7iLuQ/a5jDzXSg/s14WD/oK1Q2Cn0avx00HcmmQ8CUkZOkBpy3WRoca0v0J9/bfI2vQjOwkjpkgoRvgz5/njsBykj9Mp1R3Eo16Zpqgnn7kUL+5f1ErgxwsAovJCVWuM0nBrTaY0OXW7Gn/tst4T08iOjH9Y+/ZVzXLsqifIvWkxFkxfp5VkZgkEZX6QTfAM60/vLf5JXkY+JtljyUav33M95FFRRn3fQLa9W9qShLy/wxMoR72mBMqtdAr+M4lD5Y+U4ojZB38wbVdRURoow11x6C0o5EWzNaFhg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -246,107 +106,361 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Feb 10, 2026 at 04:57:42PM +0800, Hao Li wrote:
-> On Tue, Feb 10, 2026 at 01:46:42PM +0900, Harry Yoo wrote:
-> > OBJEXTS_NOSPIN_ALLOC was used to remember whether a slabobj_ext vector
-> > was allocated via kmalloc_nolock(), so that free_slab_obj_exts() could
-> > call kfree_nolock() instead of kfree().
+On Mon, Feb 09, 2026 at 01:44:45PM +0100, David Hildenbrand (Arm) wrote:
+> On 2/9/26 11:52, David Hildenbrand (Arm) wrote:
+> > On 2/8/26 20:39, Mike Rapoport wrote:
+> > > On Sat, Feb 07, 2026 at 12:00:09PM +0100, David Hildenbrand (Arm) wrote:
+> > > > 
+> > > > Thanks for all your work on this and sorry for being slower with
+> > > > review the last month.
+> > > > 
+> > > > While I was in the shower I was thinking about how much I hate
+> > > > zone->contiguous + the pageblock walking, and how we could just get
+> > > > rid of it.
+> > > > 
+> > > > You know, just what you do while having a relaxing shower.
+> > > > 
+> > > > 
+> > > > And I was wondering:
+> > > > 
+> > > > (a) in which case would we have zone_spanned_pages == zone_present_pages
+> > > > and the zone *not* being contiguous? I assume this just cannot happen,
+> > > > otherwise BUG.
+> > > > 
+> > > > (b) in which case would we have zone_spanned_pages != zone_present_pages
+> > > > and the zone *being* contiguous? I assume in some cases where we
+> > > > have small
+> > > > holes within a pageblock?
+> > > > 
+> > > > Reading the doc of __pageblock_pfn_to_page(), there are some weird
+> > > > scenarios with holes in pageblocks.
+> > > It seems that "zone->contigous" is really bad name for what this thing
+> > > represents.
+> > > 
+> > > tl;dr I don't think zone_spanned_pages == zone_present_pages is
+> > > related to
+> > > zone->contigous at all :)
 > > 
-> > Now that kfree() supports freeing kmalloc_nolock() objects, this flag is
-> > no longer needed. Instead, pass the allow_spin parameter down to
-> > free_slab_obj_exts() to determine whether kfree_nolock() or kfree()
-> > should be called in the free path, and free one bit in
-> > enum objext_flags.
+> > My point in (a) was that with "zone_spanned_pages == zone_present_pages"
+> > there are no holes so -> contiguous.
 > > 
-> > Acked-by: Alexei Starovoitov <ast@kernel.org>
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > ---
-> >  include/linux/memcontrol.h |  3 +--
-> >  mm/slub.c                  | 18 ++++++++----------
-> >  2 files changed, 9 insertions(+), 12 deletions(-)
+> > (b), and what I said further below, is exactly about memory holes where
+> > we have a memmap, but it's not present memory.
 > > 
-> > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> > index 0651865a4564..bb789ec4a2a2 100644
-> > --- a/include/linux/memcontrol.h
-> > +++ b/include/linux/memcontrol.h
-> > @@ -359,8 +359,7 @@ enum objext_flags {
-> >  	 * MEMCG_DATA_OBJEXTS.
-> >  	 */
-> >  	OBJEXTS_ALLOC_FAIL = __OBJEXTS_ALLOC_FAIL,
-> > -	/* slabobj_ext vector allocated with kmalloc_nolock() */
-> > -	OBJEXTS_NOSPIN_ALLOC = __FIRST_OBJEXT_FLAG,
-> > +	__OBJEXTS_FLAG_UNUSED = __FIRST_OBJEXT_FLAG,
-> >  	/* the next bit after the last actual flag */
-> >  	__NR_OBJEXTS_FLAGS  = (__FIRST_OBJEXT_FLAG << 1),
-> >  };
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 63b03fd62ca7..a73a80b33ff9 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -2189,8 +2189,6 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
-> >  			virt_to_slab(vec)->slab_cache == s);
-> >  
-> >  	new_exts = (unsigned long)vec;
-> > -	if (unlikely(!allow_spin))
-> > -		new_exts |= OBJEXTS_NOSPIN_ALLOC;
-> >  #ifdef CONFIG_MEMCG
-> >  	new_exts |= MEMCG_DATA_OBJEXTS;
-> >  #endif
-> > @@ -2228,7 +2226,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
-> >  	return 0;
-> >  }
-> >  
-> > -static inline void free_slab_obj_exts(struct slab *slab)
-> > +static inline void free_slab_obj_exts(struct slab *slab, bool allow_spin)
-> >  {
-> >  	struct slabobj_ext *obj_exts;
-> >  
-> > @@ -2256,10 +2254,10 @@ static inline void free_slab_obj_exts(struct slab *slab)
-> >  	 * the extension for obj_exts is expected to be NULL.
-> >  	 */
-> >  	mark_objexts_empty(obj_exts);
-> > -	if (unlikely(READ_ONCE(slab->obj_exts) & OBJEXTS_NOSPIN_ALLOC))
-> > -		kfree_nolock(obj_exts);
-> > -	else
-> > +	if (allow_spin)
-> >  		kfree(obj_exts);
-> > +	else
-> > +		kfree_nolock(obj_exts);
+> > > 
+> > > If you look at pageblock_pfn_to_page() and __pageblock_pfn_to_page(), the
+> > > check for zone->contigous should guarantee that the entire pageblock
+> > > has a
+> > > valid memory map and that the entire pageblock fits a zone and does not
+> > > cross zone/node boundaries.
+> > 
+> > Right. But that must hold for each and ever pageblock in the spanned
+> > zone range for it to be contiguous.
+> > 
+> > zone->contigous tells you "pfn_to_page()" is valid on the complete zone
+> > range"
+> > 
+> > That's why set_zone_contiguous() probes __pageblock_pfn_to_page() on ech
+> > and ever pageblock.
+> > 
+> > > 
+> > > For coldplug memory the memory map is valid for every section that has
+> > > present memory, i.e. even it there is a hole in a section, it's
+> > > memory map
+> > > will be populated and will have struct pages.
+> > 
+> > There is this sub-section thing, and holes larger than a section might
+> > not have a memmap (unless reserved I guess).
+> > 
+> > > 
+> > > When zone->contigous is false, the slow path in __pageblock_pfn_to_page()
+> > > essentially checks if the first page in a pageblock is online and if
+> > > first
+> > > and last pages are in the zone being compacted.
+> > > AFAIU, in the hotplug case an entire pageblock is always onlined to the
+> > > same zone, so zone->contigous won't change after the hotplug is complete.
+> > 
+> > I think you are missing a point: hotp(un)plug might create holes in the
+> > zone span. Then, pfn_to_page() is no longer valid to be called on
+> > arbitrary pageblocks within the zone.
+> > 
+> > > 
+> > > We might set it to false in the beginning of the hotplug to avoid
+> > > scanning
+> > > offline pages, although I'm not sure if it's possible.
+> > > 
+> > > But in the end of hotplug we can simply restore the old value and
+> > > move on.
+> > 
+> > No, you might create holes.
+> > 
+> > > 
+> > > For the coldplug case I'm also not sure it's worth the hassle, we could
+> > > just let compaction scan a few more pfns for those rare weird pageblocks
+> > > and bail out on wrong page conditions.
+> > 
+> > To recap:
+> > 
+> > My idea is that "zone_spanned_pages == zone_present_pages" tells you
+> > that the zone is contiguous because there are no holes.
+> > 
+> > To handle "non-memory with a struct page", you'd have to check
+> > 
+> >      "zone_spanned_pages == zone_present_pages +
+> >           zone_non_present_memmap_pages"
+> > 
+> > Or shorter
+> > 
+> >      "zone_spanned_pages == zone_pages_with_memmap"
+> > 
+> > Then, pfn_to_page() is valid within the complete zone.
+> > 
+> > The question is how to best calculate the "zone_pages_with_memmap"
+> > during boot.
+> > 
+> > During hot(un)plug we only add/remove zone_present_pages. The
+> > zone_non_present_memmap_pages will not change due to hot(un)plug later.
+> > 
 > 
-> Looks good to me.
+> The following hack does the trick. But
 > 
-> One small observation from my side: at first glance I briefly wondered if we
-> could ever allocate in an allow_spin=true context but free in an
-> allow_spin=false context, potentially resulting in a kmalloc() -> kfree_nolock()
-> mismatch.
+> (a) I wish we could get rid of the pageblock walking in calc_online_pages().
+> (b) "online_pages" has weird semantics due to the pageblock handling.
+>     "online_pageblock_pages"? not sure.
+> (c) Calculating "online_pages" when we know there is a hole does not make sense,
+>     as we could just keep it 0 if there are holes and simply set it to
+>     zone->online_pageblock_pages->zone->spanned_pages in case all are online.
+> 
+> 
+> From d4cb825e91a6363afc68fb994c5d9b29c38c5f42 Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> Date: Mon, 9 Feb 2026 13:40:24 +0100
+> Subject: [PATCH] tmp
+> 
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  include/linux/mmzone.h | 25 +++++++++++++++++++++++--
+>  mm/internal.h          |  8 +-------
+>  mm/memory_hotplug.c    | 20 ++++++--------------
+>  mm/mm_init.c           | 12 ++++++------
+>  4 files changed, 36 insertions(+), 29 deletions(-)
+> 
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index fc5d6c88d2f0..3f7d8d88c597 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -943,6 +943,11 @@ struct zone {
+>  	 * cma pages is present pages that are assigned for CMA use
+>  	 * (MIGRATE_CMA).
+>  	 *
+> +	 * online_pages is pages within the zone that have an online memmap.
+> +	 * online_pages include present pages and memory holes that have a
+> +	 * memmap. When spanned_pages == online_pages, pfn_to_page() can be
+> +	 * performed without further checks on any pfn within the zone span.
 
-Right, kmalloc() -> kfree_nolock() is not supported and must be avoided.
+Maybe pages_with_memmap? It would stand off from managed, spanned and
+present, but it's clearer than online IMHO.
 
-> After taking a closer look, the only case where "free_new_slab_nolock() -> ...
-> -> free_slab_obj_exts()" runs with allow_spin=false is along the "___slab_alloc
-> -> alloc_single_from_new_slab()/alloc_from_new_slab()" path.
+> +	 *
+>  	 * So present_pages may be used by memory hotplug or memory power
+>  	 * management logic to figure out unmanaged pages by checking
+>  	 * (present_pages - managed_pages). And managed_pages should be used
+> @@ -967,6 +972,7 @@ struct zone {
+>  	atomic_long_t		managed_pages;
+>  	unsigned long		spanned_pages;
+>  	unsigned long		present_pages;
+> +	unsigned long		online_pages;
+>  #if defined(CONFIG_MEMORY_HOTPLUG)
+>  	unsigned long		present_early_pages;
+>  #endif
+> @@ -1051,8 +1057,6 @@ struct zone {
+>  	bool			compact_blockskip_flush;
+>  #endif
+> -	bool			contiguous;
+> -
+>  	CACHELINE_PADDING(_pad3_);
+>  	/* Zone statistics */
+>  	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
+> @@ -1124,6 +1128,23 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
+>  	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
+>  }
+> +/**
+> + * zone_is_contiguous - test whether a zone is contiguous
+> + * @zone: the zone to test.
+> + *
+> + * In a contiguous zone, it is valid to call pfn_to_page() on any pfn in the
+> + * spanned zone without requiting pfn_valid() or pfn_to_online_page() checks.
+> + *
+> + * Returns: true if contiguous, otherwise false.
+> + */
+> +static inline bool zone_is_contiguous(const struct zone *zone)
+> +{
+> +	return READ_ONCE(zone->spanned_pages) == READ_ONCE(zone->online_pages);
+> +}
+> +
+>  static inline bool zone_is_initialized(const struct zone *zone)
+>  {
+>  	return zone->initialized;
+> diff --git a/mm/internal.h b/mm/internal.h
+> index f35dbcf99a86..6062f9b8ee62 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -716,21 +716,15 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
+>  static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
+>  				unsigned long end_pfn, struct zone *zone)
+>  {
+> -	if (zone->contiguous)
+> +	if (zone_is_contiguous(zone))
+>  		return pfn_to_page(start_pfn);
+>  	return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
+>  }
+> -void set_zone_contiguous(struct zone *zone);
+>  bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
+>  			   unsigned long nr_pages);
+> -static inline void clear_zone_contiguous(struct zone *zone)
+> -{
+> -	zone->contiguous = false;
+> -}
+> -
+>  extern int __isolate_free_page(struct page *page, unsigned int order);
+>  extern void __putback_isolated_page(struct page *page, unsigned int order,
+>  				    int mt);
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index a63ec679d861..76496c1039a9 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -492,11 +492,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+>  		pfn = find_smallest_section_pfn(nid, zone, end_pfn,
+>  						zone_end_pfn(zone));
+>  		if (pfn) {
+> -			zone->spanned_pages = zone_end_pfn(zone) - pfn;
+> +			WRITE_ONCE(zone->spanned_pages, zone_end_pfn(zone) - pfn);
+>  			zone->zone_start_pfn = pfn;
+>  		} else {
+>  			zone->zone_start_pfn = 0;
+> -			zone->spanned_pages = 0;
+> +			WRITE_ONCE(zone->spanned_pages, 0);
+>  		}
+>  	} else if (zone_end_pfn(zone) == end_pfn) {
+>  		/*
+> @@ -508,10 +508,10 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
+>  		pfn = find_biggest_section_pfn(nid, zone, zone->zone_start_pfn,
+>  					       start_pfn);
+>  		if (pfn)
+> -			zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
+> +			WRITE_ONCE(zone->spanned_pages, pfn - zone->zone_start_pfn + 1);
+>  		else {
+>  			zone->zone_start_pfn = 0;
+> -			zone->spanned_pages = 0;
+> +			WRITE_ONCE(zone->spanned_pages, 0);
+>  		}
+>  	}
+>  }
+> @@ -565,18 +565,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
+>  	/*
+>  	 * Zone shrinking code cannot properly deal with ZONE_DEVICE. So
+> -	 * we will not try to shrink the zones - which is okay as
+> -	 * set_zone_contiguous() cannot deal with ZONE_DEVICE either way.
+> +	 * we will not try to shrink the zones.
+>  	 */
+>  	if (zone_is_zone_device(zone))
+>  		return;
+> -	clear_zone_contiguous(zone);
+> -
+>  	shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
+>  	update_pgdat_span(pgdat);
+> -
+> -	set_zone_contiguous(zone);
+>  }
+>  /**
+> @@ -753,8 +748,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  	struct pglist_data *pgdat = zone->zone_pgdat;
+>  	int nid = pgdat->node_id;
+> -	clear_zone_contiguous(zone);
+> -
+>  	if (zone_is_empty(zone))
+>  		init_currently_empty_zone(zone, start_pfn, nr_pages);
+>  	resize_zone_range(zone, start_pfn, nr_pages);
+> @@ -782,8 +775,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
+>  	memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
+>  			 MEMINIT_HOTPLUG, altmap, migratetype,
+>  			 isolate_pageblock);
+> -
+> -	set_zone_contiguous(zone);
+>  }
+>  struct auto_movable_stats {
+> @@ -1079,6 +1070,7 @@ void adjust_present_page_count(struct page *page, struct memory_group *group,
+>  	if (early_section(__pfn_to_section(page_to_pfn(page))))
+>  		zone->present_early_pages += nr_pages;
+>  	zone->present_pages += nr_pages;
+> +	WRITE_ONCE(zone->online_pages,  zone->online_pages + nr_pages);
+>  	zone->zone_pgdat->node_present_pages += nr_pages;
+>  	if (group && movable)
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 2a809cd8e7fa..e33caa6fb6fc 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2263,9 +2263,10 @@ void __init init_cma_pageblock(struct page *page)
+>  }
+>  #endif
+> -void set_zone_contiguous(struct zone *zone)
+> +static void calc_online_pages(struct zone *zone)
+>  {
+>  	unsigned long block_start_pfn = zone->zone_start_pfn;
+> +	unsigned long online_pages = 0;
+>  	unsigned long block_end_pfn;
+>  	block_end_pfn = pageblock_end_pfn(block_start_pfn);
+> @@ -2277,12 +2278,11 @@ void set_zone_contiguous(struct zone *zone)
+>  		if (!__pageblock_pfn_to_page(block_start_pfn,
+>  					     block_end_pfn, zone))
+> -			return;
+> +			continue;
+>  		cond_resched();
+> +		online_pages += block_end_pfn - block_start_pfn;
 
-Right, this is when trylock failed after allocating new slab.
+I think we can completely get rid of this with something like this untested
+patch to calculate zone->online_pages for coldplug:
 
-> In that scenario, alloc_slab_obj_exts() is also called under allow_spin=false
-> and uses kmalloc_nolock(), so the allocation/free paths remain consistent.
-> So "kmalloc() -> kfree_nolock()" case can't happen,
-> and the code looks solid to me!
-
-Nice analysis, thanks!
-
-Yeah, for this reason, we should not free slabs that are allocated
-with allow_spin == true, when allow_spin is false.
-
-kfree_nolock() avoids this by deferring frees in the slowpath.
-If someone is tempated to rework kfree_nolock() slowpath, he or she
-should be careful :)
-
-> Reviewed-by: Hao Li <hao.li@linux.dev>
-
-Thanks for review, Hao!
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index e33caa6fb6fc..ff2f75e7b49f 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -845,9 +845,9 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
+  *   zone/node above the hole except for the trailing pages in the last
+  *   section that will be appended to the zone/node below.
+  */
+-static void __init init_unavailable_range(unsigned long spfn,
+-					  unsigned long epfn,
+-					  int zone, int node)
++static u64 __init init_unavailable_range(unsigned long spfn,
++					 unsigned long epfn,
++					 int zone, int node)
+ {
+ 	unsigned long pfn;
+ 	u64 pgcnt = 0;
+@@ -861,6 +861,8 @@ static void __init init_unavailable_range(unsigned long spfn,
+ 	if (pgcnt)
+ 		pr_info("On node %d, zone %s: %lld pages in unavailable ranges\n",
+ 			node, zone_names[zone], pgcnt);
++
++	return pgcnt;
+ }
+ 
+ /*
+@@ -959,9 +961,10 @@ static void __init memmap_init_zone_range(struct zone *zone,
+ 	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
+ 			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
+ 			  false);
++	zone->online_pages += (end_pfn - start_pfn);
+ 
+ 	if (*hole_pfn < start_pfn)
+-		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
++		zone->online_pages += init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
+ 
+ 	*hole_pfn = end_pfn;
+ }
 
 -- 
-Cheers,
-Harry / Hyeonggon
+Sincerely yours,
+Mike.
 
