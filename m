@@ -4,123 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2041EA8102
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 11:56:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9153DEA8103
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 11:57:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0814C6B0088; Tue, 10 Feb 2026 06:56:24 -0500 (EST)
+	id 08B6D6B0005; Tue, 10 Feb 2026 06:57:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02B246B0089; Tue, 10 Feb 2026 06:56:23 -0500 (EST)
+	id 055926B008A; Tue, 10 Feb 2026 06:57:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EADD16B008A; Tue, 10 Feb 2026 06:56:23 -0500 (EST)
+	id ECEC86B008C; Tue, 10 Feb 2026 06:57:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DBCE16B0088
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:56:23 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 930521C41B
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:56:23 +0000 (UTC)
-X-FDA: 84428394246.17.46F6C9A
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AB13CA0008
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:56:21 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Us+s9BFm;
-	spf=pass (imf25.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DC3A76B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:57:34 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9602D589F0
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:57:34 +0000 (UTC)
+X-FDA: 84428397228.21.40EB490
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1F61620011
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:57:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HElx798Q;
+	spf=pass (imf03.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770724581;
+	s=arc-20220608; t=1770724652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nh7yAl8rufONh7m/CgHms/EgFK1saZrvUpQU2nWdB00=;
-	b=CLSPvxublERiY5wA2qGFNtXBgSC1F3sixnfzPIIppH6AvNpAhhR/9BZORSnoLcH5tyPPoP
-	KrTVvUQI8VLHe49HAAXgAPxrwyU+vnzmf3BtcAD+4r4Lj6vE05WOJ4MUJqNsVbHjp8gGfD
-	OBH1geWBihFWtR8Uq7LnrItFOo20DrM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770724581; a=rsa-sha256;
-	cv=none;
-	b=fm2/7balBZEAG9hH+ZCFvmjcY+khIYahibVOTsRU3gIwmBAPFhImdmx25buLBI2YleHWZ0
-	JRgv2/rcJlWXajKacztOaekVSW4xHIdtbtYochzY0GdFMet6Kfo/mFXGRIaDhpXb5jRK5y
-	ssxFkIsebLIUzVwepWBxkENVEWeXBvc=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=fMBycn+6Hqv/SqgZRPKg6DJ/QECGq8agdmypoIIoct0=;
+	b=ejHtjs4Y5IyDzHqcfkBzptujKmujnX/dlKkbbAojF+77iqGhTRllguRwTfzxrLCFQy8M1R
+	27khiFSndSAQhk4G54nDSAvwzKrgHlddi6u0OarKHD5Fo77IINKYbPorWr+Pqbr8jfB11q
+	NKrtbFHOhaI7CER0DFlQO01OFU7yP5Q=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Us+s9BFm;
-	spf=pass (imf25.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-81ed3e6b8e3so1906554b3a.2
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 03:56:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770724580; x=1771329380; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nh7yAl8rufONh7m/CgHms/EgFK1saZrvUpQU2nWdB00=;
-        b=Us+s9BFm1MmGvZSpCcQ9YkVuCRbiXoCk5cEu6r0vufgjTZwIub5mGSGCnrmqfcrjwP
-         cycm1QzeZja3VUopyZ/li7NK7Jmx7//uAkm08UDbiR7UJlPzQfpGBhr+DgOSxH7Di0uW
-         mZ8T+RaLxE5Qzit1zFefzodvNp8369F/a3hzeHsgYRvVGptUboJzUvHzA+aDUDjTldwF
-         4MITx+Cz4HtxdTlfbto6RbRJJFrA4ZoABUZTJ/WER/OWjgFTWpHXQ+NOT8Z8s/9K4N99
-         C28QqGHZFo3Ivh2beAo19cnQFAN6qMlROVPl3es0k/hLn4Iiduyewuw96+pRjF8jOBFw
-         OlJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770724580; x=1771329380;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nh7yAl8rufONh7m/CgHms/EgFK1saZrvUpQU2nWdB00=;
-        b=QrS/I2Xt3407ylUFDq8L3oozJsvZWBtFnur+i1E0NqQNUC5xMEQBPwnXIy4fg1yViA
-         +jmK42q0xGEmxWDbfDWDPx5pHTsFzvM0JDGRDowrNx81DZ7zaetRq93DN4Nnrjcrm33m
-         5G+JyC809c3nT0TtYv6oV+5H3s0N/P3DGGf+hf2ZmsjvFef2B/Fv9LikDy8c5Qk/GEBX
-         /Onp974sKyRwM6jzttsZeVeFWgizxuh3MLSkWJpDMueff3zCqRIwmmRtInP38xO8BACY
-         rjvDN/L0qnoKmilS0MzvS3wv2BM0PpEgM3YAFIjujClQlF1xTrWo9RHoNNxckvkmRKZZ
-         6u2g==
-X-Forwarded-Encrypted: i=1; AJvYcCVhpYY+LZ8X3J5gznwMdioQqDnhRoX+qDYFCho1+UuklJk+iNBHMyPYuH1iNjF65KaCNkZQm0MYJA==@kvack.org
-X-Gm-Message-State: AOJu0YxSVFWB8G8jzeM1hKJM+q6Lvb0m70htuNfND5G1LxIf8hfQj+Az
-	OB6EDqyc5EheUlu58btNDzfZ8CuoGIeH/6NNnKWDEEUTr8Eoo4rJsnyJ
-X-Gm-Gg: AZuq6aJR5rky8HscnkwEy8wIzQz+1IpgNfKyGCYOPAtecyP9ob7fchUW3EhRaqaJq7w
-	x3XTiWeN6L0VhAamheWN56sID0kkvMLoOGiKaYivja6/l6o9wFOebl+zZrc4KSeKguwu16L7bo/
-	ESKFuq3h9Wt49/mFIaqjt4fyqsRwnwt8VzJEbT5tiIglfIW6RRdIUJ0Dbo+R6X8lZ1j6HU/2Zj/
-	tnoF177DMIyU6Az9qRc4WkuN9zMKBwJyNK71F2wja6wGhNpuweeRFc/0FYX68ypC90KQNcJmlS3
-	rLGgONJfB16a5GIuKmmBHvRZ1yqqr/PpNE3qKlNksl8FDtK/l/nwYMcT0zzi74oq5sEvxDVsrwI
-	e75DaEJcordCfZRr6opUHpxHpvYxqfmykB/5TRvjwnAjqkdr4ZSncAZCh5euuGiuZiCJjT34ETO
-	QOdzCADF0GNJ+BWnEpW3ezMRCajtopiCqM18S+3KbiYpv9ydHqOdsPsSpGcs0kGw0BTrNA+zixM
-	2Ho
-X-Received: by 2002:a05:6a00:4fd6:b0:81e:96c9:1325 with SMTP id d2e1a72fcca58-824417f97cbmr13212298b3a.70.1770724580368;
-        Tue, 10 Feb 2026 03:56:20 -0800 (PST)
-Received: from li-5d80d4cc-2782-11b2-a85c-bed59fe4c9e5.ibm.com ([49.207.208.177])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-824418a70fesm12972619b3a.45.2026.02.10.03.56.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 03:56:19 -0800 (PST)
-Message-ID: <46a56cbf1ead927d0bc109b8106ae3b5237ec721.camel@gmail.com>
-Subject: Re: [PATCH v3 5/6] xfs: add per-AG writeback workqueue
- infrastructure
-From: "Nirjhar Roy (IBM)" <nirjhar.roy.lists@gmail.com>
-To: Kundan Kumar <kundan.kumar@samsung.com>, viro@zeniv.linux.org.uk, 
- brauner@kernel.org, jack@suse.cz, willy@infradead.org, mcgrof@kernel.org, 
- clm@meta.com, david@fromorbit.com, amir73il@gmail.com, axboe@kernel.dk,
- hch@lst.de,  ritesh.list@gmail.com, djwong@kernel.org, dave@stgolabs.net,
- cem@kernel.org,  wangyufei@vivo.com
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-xfs@vger.kernel.org, gost.dev@samsung.com, anuj20.g@samsung.com, 
-	vishak.g@samsung.com, joshi.k@samsung.com
-Date: Tue, 10 Feb 2026 17:26:11 +0530
-In-Reply-To: <20260116100818.7576-6-kundan.kumar@samsung.com>
-References: <20260116100818.7576-1-kundan.kumar@samsung.com>
-	 <CGME20260116101259epcas5p1cfa6ab02e5a01f7c46cc78df95c57ce0@epcas5p1.samsung.com>
-	 <20260116100818.7576-6-kundan.kumar@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: AB13CA0008
+	imf03.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HElx798Q;
+	spf=pass (imf03.hostedemail.com: domain of thomas.hellstrom@linux.intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=thomas.hellstrom@linux.intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770724652; a=rsa-sha256;
+	cv=none;
+	b=q2Eohd6hqyF+q7Y6es+51B6+jSi3FNrIDfQB7pPRJ2jUtn01ckQyEyyRlXThdNj0pFW2Fa
+	svwaQisLsmOYqGQ38uOsn/pB+R1aYdho+hPSZ/gKxMH+17taKx5QAIssydMxVPTCBpjovf
+	70bZNfbIpe56V75gFby/mPI7Uvwczzk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770724652; x=1802260652;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=pwErsOgwLbr3un5GzP9BcdCLJrLywj7KiDxutoyTg04=;
+  b=HElx798Q9rEVfmy7qomFmKmYllqsRJc6ZFh1EmnU7CCxg/3PHmuz9GtS
+   AHR86CsrLC4O5pYydCweZ5rjAukitcHRU77kvVOVhXXmGX7BfCSNcK3HD
+   j3RD6v3Ctxj30qmdYWHaWEj08p3S/BJoEhLXzVzTPZVxrzyPo6Emvxr9l
+   TaSKRo1sHqj01HgQHCqZAV3LtrUVVzLrfNlaNb3Jf9Jnn4ZmYP76HV0Df
+   mbdHtcCjScN7qfUd4OUBhPchV2apnGhVIqknIk1B8pPvb3V4r1NKJm97S
+   HXOG0KQQEnGi7ccbzRRYSFc9PsiMGuXR0b+WHsHR0ShnhdmrWwUUwAnBA
+   A==;
+X-CSE-ConnectionGUID: XOvJjjFrQbeua/DaOA+Zmw==
+X-CSE-MsgGUID: hk1MMrMgSBq7E4jgWKiH/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="82173452"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="82173452"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 03:57:31 -0800
+X-CSE-ConnectionGUID: FotHYaynQ8i5KDPZZW0qiw==
+X-CSE-MsgGUID: jDhgKCpJR7u9maQ00bUpdQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="211076283"
+Received: from egrumbac-mobl6.ger.corp.intel.com (HELO fedora) ([10.245.244.80])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 03:57:27 -0800
+From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH v5] mm: Fix a hmm_range_fault() livelock / starvation problem
+Date: Tue, 10 Feb 2026 12:56:53 +0100
+Message-ID: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam11
+X-Stat-Signature: z1afkfk3dj9pji5x8s3bcpw8ypjxb6cc
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: hqzfsap95rif7rmuq3pam15q1q737afs
-X-HE-Tag: 1770724581-138997
-X-HE-Meta: U2FsdGVkX19t2QAjg5CDGhCaM5NNsh0NvWz34O2hfHlBePMNrKiSsIskMORTC+kYzjr/oQghdDqKs1xOUD8ka2ZH5cyKl9udI5IbOuBpMAcZXYtwp4dFNF5IswZSEk+o01UHbagSMwAONVIta7fEqplBFjldU7KDlYGlFZYucaDlEGHO2SlaKX6mGWE5siotQJnwurTc5rRx8CXVvteHD/2XPj4snB+PHe0XN46PAEQwR5m5IzOhW+sI9hDXEgcXZHUI4WrI7OV9AJCX/7XM6h51tuxQV3lJhJK3kZEl9e2SKvUmr+29tjTwfT9CmrKoF8B0Ta+tAWUsnZD05hYwYUn0O8VqSufRd21tV9F5gS1SYJk5yL1XtxB9FEO8l+dzH3E8F9gTZVAOqYabRsJWxTZdjx+8xpEslSTbOHcjfrHAWTm5mv0wqi3CwfmvbDTqWGbRNtPLvhKMriXZMqM02YMUpoOVUkC1A0chrTNuQm36l4DfRNJQIZyh9knSE6Mh6n6Mol473qyATFfZf3sl7klJGi0PhjU3AGC1YgAOI4xKgEhwuPTes0M4uqfCImBUDORNWrOjHmMyIIYmKh7ye7GNcf1XT9dhvNU8cZIT1FNs0LqYQhhmeygi0knNnlfoCYPiYO1ZaKfRtsbycPNjUOtSjaEiguDIM+E30UfUJMEA7Sc+eeyU3SKzm5CkKqFWBBcbb8NdvBCXiaoZt8cwM/fDdUjZr7R9DvfnNwMuROqIc7iG9orBquhwIBRTKDyJLVF/BdBOLPRzvrMRvg5YmY5PP63800Nyu7l0R4AQ9gDIXQ8X4v9IR/XrtkdhSRyimTsXCeIzcBzOLUPA02lIIP9zy1tc6JXBqTDA1YHGfrVdAqNkDp1uVFrdLtR/2u+vTEUipa4x+xugBjASm0hI2dWvRj8vYUejl3lZqrw4vVJZk61e48pgpsGNOsYk6dR7jriPAbMMfSqwtZMYTub
- tOqpldpa
- u7T4w8p+ibQ93hpglt33958/A6gqzoJBMpEWd3WDDr2+CtUvlOzE39PJJNQ/apghiFuAvUl/vLS1Dyz1ZNuk3Ux+OD5QCC3I3zD8wTA5/kwEqoGjBtndAnOSs5uHnOZ/q2A7QX7tIvGVSzNEU/EJmWrtygnzK1+8trUEXxAmdcGiwyCXsotfGDqzBV5r8sFnUUm06GUUP0rXYWG70PCx6qvdHpwHqq+R89Z/zSBoa/B4fOnF5RTT4cnrkrZJKXcCnrqkj9PauzQTqCEL68ZvEkrIDL29EORSBsjeBtxK2GQZsZ49Iw1AlV+zZgX0acDrH700V6hItLYbeThKmc3d631+elCGqafn9fY7AX4GPTl+qUGFzahSl6ZArB/y18vqs4ezQRNYGRvJ7wfSx1ZwkmK/YDGIIcmhdGE6/rqBWo0o+zeRNFzkv5BNXFgihY6M7SosrKZhQ8t+dAtaZb+lKNWpLbi/TIADsJ+qcnAnSWDh2RUrFASfvAkpjM+gEehe3cgaEjOGgiG8vQ2xaKBBaDEN5/dKgW4YZ+/vc5WCSYsoIVxI=
+X-Rspamd-Queue-Id: 1F61620011
+X-HE-Tag: 1770724651-652966
+X-HE-Meta: U2FsdGVkX19ceqVM6kZjGgxA5i5sMTgPBu+H1FyUoiRCENtjqFq0wK94MksX3kP7sTUDxpIrkfWLPu/kSnvnUG/AV7Wm6803moVcZEeJd6ZpJi5crh/ffKPE243sFBEByqyp9C6UAOhobrS9C0fPnyYD0fgyRPntX+sMlZTPhJ0k9sHe78T9Ynpx9bmwYP7bJ/pr6aDKAyRR6aENsOAMrt9xXTLLAzLO3butvUwyQbDSp3ZpbZGJ5ZsSKIyGIzKZ0nlJ5O7fxY9Q1ZZzmAyIpcuzKA3sun2K6NfCNfbiuUaX3lLVpXrJqNOksF3zQw3DW3Bpl2Uuv/me2TIzc5KwhBcKzaA4qQwgazNQIxI2/Fd8L0OjzCfGBy6FiIhdUP/wGikFl8+l1UdDVQf+G6L90NSHalVTS/zjifegp0IZ19NaMq1gK7iBIiJMHPBlBaJC764pvVpft4yAjyMU+2mFjus2TR6Uw9h/QKP5dNmMQo3YX5hsSbUt8Qk8f4lqtTR11s9X7tsHUH/5e3aluMGAHr0glczF26OX+w0oUZr75+75FkkaYCN1euPoFtIQz+t5LqngcLFizoSHHEsPjmjg7fPBHSATOjqm16LZNTl8AC8yO2kPnE+jpfvD+TFdIejAw3O8iEb3NQ2Ve+mTySfGnuFBrk06/5gJ6lkE6yxQuAPV4ncAjcpZinYrJIvT9lvUFfRXNPymOf29KEnd4V5UGdI/kyOkCwCyj96ZoJCGljOgv2znfNbibPtfIMIQVDyWrDzMoSuibVjcvFmEN6eB0Q00WusR4SYM+E6sYlmfRG3xkYcJAfb2pPcBidxfG+zX5vFieWNYJF8+G9YXxCvFQwKLKrzuLfFvei4NW36ccXvXEf5dd/H/pA+pPpvuRWkOvcqZkkuBBKBRHMEdyk+EyqEVhcK/nrnfSYUNtJdjoPQI5qBiFzziFj24FPEVumnjP8kina0xQsJOsBoiQAq
+ Wnq7y2IP
+ ggrh7Fp3Nbt1OKj/L0xWV6qprDvCUtysmea8tuIqZMMaEZI92hGJbslR2GjAN+pTHbfzKNu7U+1L8XBHYFZJPR9hKzhTWf0A9oMKjQ5u23iP+R4addtx/eeavGrXJwVql5qQO0FT1iRyo8u98tEPCOvUoIpuWQ5LM8hxmfJcBcfmexWMVgRAHW9sGuaghxSBQ6DdpPlbsH4JBzBlI5W+HyrXqzpTi8a8/clZxntd4TuP5hHgoL0/Lner7+3JPLFv/Peipar5NZUg7fvz/q+lP54zxqsppHJ2mqMn1n9G21w8iUEM5yLBbzTaqGTjzPDzxImUHBerUZyeIuJo/adzJznff6Ajpnc6NtNXc+wd+L3/tCQNKnn2zgmOIGmGK+i2gvjxpub1rThoSOLrpVpFmKkn8QeY/29zx0b9L7Mu8eBDpWP6KOTolN/bRCk7hiLxzk610jgU5G/tJ0Ah7gnPEa+S5gPpOdQGiFRctW/lG9uRSCzM0/gWwVc9U0rVkfOtbhaMqYRJefEcNyX2m3GWWeLQqQvlzz83jHI6ictUF/mZHaCdKG8IJjRneze6H07OzIOgBxOv8F7r1GqMBxvQafybGxg+tszcTQbGVVNb3F1GPCuIJ/X30H1vV5V3xN1osiZ+PiYVawqrcYuQFEi8Qb9dL2A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,196 +113,223 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2026-01-16 at 15:38 +0530, Kundan Kumar wrote:
-> Introduce per-AG writeback worker infrastructure at mount time.
-> This patch adds initialization and teardown only, without changing
-> writeback behavior.
-> 
-> Signed-off-by: Kundan Kumar <kundan.kumar@samsung.com>
-> Signed-off-by: Anuj Gupta <anuj20.g@samsung.com>
-> ---
->  fs/xfs/xfs_aops.c  | 79 ++++++++++++++++++++++++++++++++++++++++++++++
->  fs/xfs/xfs_aops.h  |  3 ++
->  fs/xfs/xfs_mount.c |  2 ++
->  fs/xfs/xfs_mount.h | 10 ++++++
->  fs/xfs/xfs_super.c |  2 ++
->  5 files changed, 96 insertions(+)
-> 
-> diff --git a/fs/xfs/xfs_aops.c b/fs/xfs/xfs_aops.c
-> index a26f79815533..9d5b65922cd2 100644
-> --- a/fs/xfs/xfs_aops.c
-> +++ b/fs/xfs/xfs_aops.c
-> @@ -23,6 +23,23 @@
->  #include "xfs_zone_alloc.h"
->  #include "xfs_rtgroup.h"
->  
-> +#define XFS_AG_TASK_POOL_MIN 1024
-> +
-> +struct xfs_ag_wb_task {
-> +	struct list_head list;
-> +	struct xfs_inode *ip;
-> +	struct writeback_control wbc;
-> +	xfs_agnumber_t agno;
+If hmm_range_fault() fails a folio_trylock() in do_swap_page,
+trying to acquire the lock of a device-private folio for migration,
+to ram, the function will spin until it succeeds grabbing the lock.
 
-agno where the ip resides or the agno of any one the blocks which belongs to this ip?
-> +};
+However, if the process holding the lock is depending on a work
+item to be completed, which is scheduled on the same CPU as the
+spinning hmm_range_fault(), that work item might be starved and
+we end up in a livelock / starvation situation which is never
+resolved.
 
-Nit: Coding style - tab between data type and the indentifier
-> +
-> +struct xfs_ag_wb {
-> +	struct delayed_work ag_work;
-> +	spinlock_t lock;
-> +	struct list_head task_list;
-> +	xfs_agnumber_t agno;
-> +	struct xfs_mount *mp;
-> +};
-> +
->  struct xfs_writepage_ctx {
->  	struct iomap_writepage_ctx ctx;
->  	unsigned int		data_seq;
-> @@ -666,6 +683,68 @@ static const struct iomap_writeback_ops xfs_zoned_writeback_ops = {
->  	.writeback_submit	= xfs_zoned_writeback_submit,
->  };
->  
-> +void
-> +xfs_init_ag_writeback(struct xfs_mount *mp)
-> +{
-> +	xfs_agnumber_t agno;
-> +
-> +	mp->m_ag_wq = alloc_workqueue("xfs-ag-wb", WQ_UNBOUND | WQ_MEM_RECLAIM,
-> +				      0);
+This can happen, for example if the process holding the
+device-private folio lock is stuck in
+   migrate_device_unmap()->lru_add_drain_all()
+sinc lru_add_drain_all() requires a short work-item
+to be run on all online cpus to complete.
 
-Nit: I think we follow 2 tabs indentation of the parameter list length exceeds per line limit count.
-Similar comments for such changes in the below function call sites.
-> +	if (!mp->m_ag_wq)
-> +		return;
-> +
-> +	mp->m_ag_wb = kcalloc(mp->m_sb.sb_agcount,
-> +				sizeof(struct xfs_ag_wb),
-> +				GFP_KERNEL);
-> +
-> +	if (!mp->m_ag_wb) {
-> +		destroy_workqueue(mp->m_ag_wq);
-> +		mp->m_ag_wq = NULL;
-> +		return;
-> +	}
-> +
-> +	for (agno = 0; agno < mp->m_sb.sb_agcount; agno++) {
-> +		struct xfs_ag_wb *awb = &mp->m_ag_wb[agno];
-> +
-> +		spin_lock_init(&awb->lock);
-> +		INIT_LIST_HEAD(&awb->task_list);
-> +		awb->agno = agno;
-> +		awb->mp = mp;
-> +	}
-> +
-> +	mp->m_ag_task_cachep = kmem_cache_create("xfs_ag_wb_task",
-> +						sizeof(struct xfs_ag_wb_task),
-> +						0,
-> +						SLAB_RECLAIM_ACCOUNT,
-> +						NULL);
-> +
-> +	mp->m_ag_task_pool = mempool_create_slab_pool(XFS_AG_TASK_POOL_MIN,
-> +	mp->m_ag_task_cachep);
+A prerequisite for this to happen is:
+a) Both zone device and system memory folios are considered in
+   migrate_device_unmap(), so that there is a reason to call
+   lru_add_drain_all() for a system memory folio while a
+   folio lock is held on a zone device folio.
+b) The zone device folio has an initial mapcount > 1 which causes
+   at least one migration PTE entry insertion to be deferred to
+   try_to_migrate(), which can happen after the call to
+   lru_add_drain_all().
+c) No or voluntary only preemption.
 
-Nit: 2 tabs indentation
-> +
-> +	if (!mp->m_ag_task_pool) {
-> +		kmem_cache_destroy(mp->m_ag_task_cachep);
-> +		mp->m_ag_task_cachep = NULL;
+This all seems pretty unlikely to happen, but indeed is hit by
+the "xe_exec_system_allocator" igt test.
 
-Shouldn't we be also freeing mp->m_ag_wq and the array mp->m_ag_wb[] array ?
-> +	}
-> +}
-> +
-> +void
-> +xfs_destroy_ag_writeback(struct xfs_mount *mp)
-> +{
-> +	if (mp->m_ag_wq) {
-> +		flush_workqueue(mp->m_ag_wq);
-> +		destroy_workqueue(mp->m_ag_wq);
-> +		mp->m_ag_wq = NULL;
-> +	}
-> +	kfree(mp->m_ag_wb);
-> +	mp->m_ag_wb = NULL;
-> +
-> +	mempool_destroy(mp->m_ag_task_pool);
-> +	mp->m_ag_task_pool = NULL;
-> +
-> +	kmem_cache_destroy(mp->m_ag_task_cachep);
-> +	mp->m_ag_task_cachep = NULL;
-> +}
-> +
->  STATIC int
->  xfs_vm_writepages(
->  	struct address_space	*mapping,
-> diff --git a/fs/xfs/xfs_aops.h b/fs/xfs/xfs_aops.h
-> index 5a7a0f1a0b49..e84acb7e8ca8 100644
-> --- a/fs/xfs/xfs_aops.h
-> +++ b/fs/xfs/xfs_aops.h
-> @@ -12,4 +12,7 @@ extern const struct address_space_operations xfs_dax_aops;
->  int xfs_setfilesize(struct xfs_inode *ip, xfs_off_t offset, size_t size);
->  void xfs_end_bio(struct bio *bio);
->  
-> +void xfs_init_ag_writeback(struct xfs_mount *mp);
-> +void xfs_destroy_ag_writeback(struct xfs_mount *mp);
-> +
->  #endif /* __XFS_AOPS_H__ */
-> diff --git a/fs/xfs/xfs_mount.c b/fs/xfs/xfs_mount.c
-> index 0953f6ae94ab..26224503c4bf 100644
-> --- a/fs/xfs/xfs_mount.c
-> +++ b/fs/xfs/xfs_mount.c
-> @@ -1323,6 +1323,8 @@ xfs_unmountfs(
->  
->  	xfs_qm_unmount(mp);
->  
-> +	xfs_destroy_ag_writeback(mp);
-> +
->  	/*
->  	 * Unreserve any blocks we have so that when we unmount we don't account
->  	 * the reserved free space as used. This is really only necessary for
-> diff --git a/fs/xfs/xfs_mount.h b/fs/xfs/xfs_mount.h
-> index b871dfde372b..c44155de2883 100644
-> --- a/fs/xfs/xfs_mount.h
-> +++ b/fs/xfs/xfs_mount.h
-> @@ -342,6 +342,16 @@ typedef struct xfs_mount {
->  
->  	/* Hook to feed dirent updates to an active online repair. */
->  	struct xfs_hooks	m_dir_update_hooks;
-> +
-> +
-> +	/* global XFS AG writeback wq */
-> +	struct workqueue_struct *m_ag_wq;
-> +	/* array of [sb_agcount] */
-> +	struct xfs_ag_wb        *m_ag_wb;
-> +
-> +	/* task cache and pool */
-> +	struct kmem_cache *m_ag_task_cachep;
-> +	mempool_t *m_ag_task_pool;
+Resolve this by waiting for the folio to be unlocked if the
+folio_trylock() fails in do_swap_page().
 
-Again Nit: - Coding style - tab between data type and the identifier
+Rename migration_entry_wait_on_locked() to
+softleaf_entry_wait_unlock() and update its documentation to
+indicate the new use-case.
 
+Future code improvements might consider moving
+the lru_add_drain_all() call in migrate_device_unmap() to be
+called *after* all pages have migration entries inserted.
+That would eliminate also b) above.
 
->  } xfs_mount_t;
->  
->  #define M_IGEO(mp)		(&(mp)->m_ino_geo)
-> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-> index bc71aa9dcee8..73f8d2942df4 100644
-> --- a/fs/xfs/xfs_super.c
-> +++ b/fs/xfs/xfs_super.c
-> @@ -1765,6 +1765,8 @@ xfs_fs_fill_super(
->  	if (error)
->  		goto out_free_sb;
->  
-> +	xfs_init_ag_writeback(mp);
+v2:
+- Instead of a cond_resched() in hmm_range_fault(),
+  eliminate the problem by waiting for the folio to be unlocked
+  in do_swap_page() (Alistair Popple, Andrew Morton)
+v3:
+- Add a stub migration_entry_wait_on_locked() for the
+  !CONFIG_MIGRATION case. (Kernel Test Robot)
+v4:
+- Rename migrate_entry_wait_on_locked() to
+  softleaf_entry_wait_on_locked() and update docs (Alistair Popple)
+v5:
+- Add a WARN_ON_ONCE() for the !CONFIG_MIGRATION
+  version of softleaf_entry_wait_on_locked().
+- Modify wording around function names in the commit message
+  (Andrew Morton)
 
-So if we are not able to init the write back workqueue infra, we are still okay to mount the fs
-except that the AG aware write back facility won't be available i.e, we aren't treating it as a
-fatal error, correct?
---NR
-> +
->  	/*
->  	 * V4 support is undergoing deprecation.
->  	 *
+Suggested-by: Alistair Popple <apopple@nvidia.com>
+Fixes: 1afaeb8293c9 ("mm/migrate: Trylock device page in do_swap_page")
+Cc: Ralph Campbell <rcampbell@nvidia.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Jason Gunthorpe <jgg@mellanox.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Alistair Popple <apopple@nvidia.com>
+Cc: linux-mm@kvack.org
+Cc: <dri-devel@lists.freedesktop.org>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.15+
+Reviewed-by: John Hubbard <jhubbard@nvidia.com> #v3
+---
+ include/linux/migrate.h | 10 +++++++++-
+ mm/filemap.c            | 15 ++++++++++-----
+ mm/memory.c             |  3 ++-
+ mm/migrate.c            |  8 ++++----
+ mm/migrate_device.c     |  2 +-
+ 5 files changed, 26 insertions(+), 12 deletions(-)
+
+diff --git a/include/linux/migrate.h b/include/linux/migrate.h
+index 26ca00c325d9..d5af2b7f577b 100644
+--- a/include/linux/migrate.h
++++ b/include/linux/migrate.h
+@@ -65,7 +65,7 @@ bool isolate_folio_to_list(struct folio *folio, struct list_head *list);
+ 
+ int migrate_huge_page_move_mapping(struct address_space *mapping,
+ 		struct folio *dst, struct folio *src);
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 		__releases(ptl);
+ void folio_migrate_flags(struct folio *newfolio, struct folio *folio);
+ int folio_migrate_mapping(struct address_space *mapping,
+@@ -97,6 +97,14 @@ static inline int set_movable_ops(const struct movable_operations *ops, enum pag
+ 	return -ENOSYS;
+ }
+ 
++static inline void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++	__releases(ptl)
++{
++	WARN_ON_ONCE(1);
++
++	spin_unlock(ptl);
++}
++
+ #endif /* CONFIG_MIGRATION */
+ 
+ #ifdef CONFIG_NUMA_BALANCING
+diff --git a/mm/filemap.c b/mm/filemap.c
+index ebd75684cb0a..d98e4883f13d 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -1379,14 +1379,16 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+ 
+ #ifdef CONFIG_MIGRATION
+ /**
+- * migration_entry_wait_on_locked - Wait for a migration entry to be removed
+- * @entry: migration swap entry.
++ * softleaf_entry_wait_on_locked - Wait for a migration entry or
++ * device_private entry to be removed.
++ * @entry: migration or device_private swap entry.
+  * @ptl: already locked ptl. This function will drop the lock.
+  *
+- * Wait for a migration entry referencing the given page to be removed. This is
++ * Wait for a migration entry referencing the given page, or device_private
++ * entry referencing a dvice_private page to be unlocked. This is
+  * equivalent to folio_put_wait_locked(folio, TASK_UNINTERRUPTIBLE) except
+  * this can be called without taking a reference on the page. Instead this
+- * should be called while holding the ptl for the migration entry referencing
++ * should be called while holding the ptl for @entry referencing
+  * the page.
+  *
+  * Returns after unlocking the ptl.
+@@ -1394,7 +1396,7 @@ static inline int folio_wait_bit_common(struct folio *folio, int bit_nr,
+  * This follows the same logic as folio_wait_bit_common() so see the comments
+  * there.
+  */
+-void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
++void softleaf_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	__releases(ptl)
+ {
+ 	struct wait_page_queue wait_page;
+@@ -1428,6 +1430,9 @@ void migration_entry_wait_on_locked(softleaf_t entry, spinlock_t *ptl)
+ 	 * If a migration entry exists for the page the migration path must hold
+ 	 * a valid reference to the page, and it must take the ptl to remove the
+ 	 * migration entry. So the page is valid until the ptl is dropped.
++	 * Similarly any path attempting to drop the last reference to a
++	 * device-private page needs to grab the ptl to remove the device-private
++	 * entry.
+ 	 */
+ 	spin_unlock(ptl);
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index da360a6eb8a4..20172476a57f 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 				unlock_page(vmf->page);
+ 				put_page(vmf->page);
+ 			} else {
+-				pte_unmap_unlock(vmf->pte, vmf->ptl);
++				pte_unmap(vmf->pte);
++				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+ 			}
+ 		} else if (softleaf_is_hwpoison(entry)) {
+ 			ret = VM_FAULT_HWPOISON;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 4688b9e38cd2..cf6449b4202e 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -499,7 +499,7 @@ void migration_entry_wait(struct mm_struct *mm, pmd_t *pmd,
+ 	if (!softleaf_is_migration(entry))
+ 		goto out;
+ 
+-	migration_entry_wait_on_locked(entry, ptl);
++	softleaf_entry_wait_on_locked(entry, ptl);
+ 	return;
+ out:
+ 	spin_unlock(ptl);
+@@ -531,10 +531,10 @@ void migration_entry_wait_huge(struct vm_area_struct *vma, unsigned long addr, p
+ 		 * If migration entry existed, safe to release vma lock
+ 		 * here because the pgtable page won't be freed without the
+ 		 * pgtable lock released.  See comment right above pgtable
+-		 * lock release in migration_entry_wait_on_locked().
++		 * lock release in softleaf_entry_wait_on_locked().
+ 		 */
+ 		hugetlb_vma_unlock_read(vma);
+-		migration_entry_wait_on_locked(entry, ptl);
++		softleaf_entry_wait_on_locked(entry, ptl);
+ 		return;
+ 	}
+ 
+@@ -552,7 +552,7 @@ void pmd_migration_entry_wait(struct mm_struct *mm, pmd_t *pmd)
+ 	ptl = pmd_lock(mm, pmd);
+ 	if (!pmd_is_migration_entry(*pmd))
+ 		goto unlock;
+-	migration_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
++	softleaf_entry_wait_on_locked(softleaf_from_pmd(*pmd), ptl);
+ 	return;
+ unlock:
+ 	spin_unlock(ptl);
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 23379663b1e1..deab89fd4541 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+ 		}
+ 
+ 		if (softleaf_is_migration(entry)) {
+-			migration_entry_wait_on_locked(entry, ptl);
++			softleaf_entry_wait_on_locked(entry, ptl);
+ 			spin_unlock(ptl);
+ 			return -EAGAIN;
+ 		}
+-- 
+2.52.0
 
 
