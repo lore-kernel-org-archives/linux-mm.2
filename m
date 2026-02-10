@@ -4,236 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27933EA3F21
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 08:19:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C543EA3F25
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 08:34:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 92E756B0089; Tue, 10 Feb 2026 03:19:35 -0500 (EST)
+	id 50EFB6B0005; Tue, 10 Feb 2026 03:34:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 903286B008A; Tue, 10 Feb 2026 03:19:35 -0500 (EST)
+	id 4BC606B0088; Tue, 10 Feb 2026 03:34:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B9F66B008C; Tue, 10 Feb 2026 03:19:35 -0500 (EST)
+	id 3BB546B0089; Tue, 10 Feb 2026 03:34:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 677366B0089
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 03:19:35 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 18B23140427
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:19:35 +0000 (UTC)
-X-FDA: 84427847910.17.0474DC9
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8E6EE100005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:19:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FZmpBe9m;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=J7bZO4nz;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770711571;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B6746B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 03:34:27 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD7581B315B
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:34:26 +0000 (UTC)
+X-FDA: 84427885332.23.1D37441
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 05926120009
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:34:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	spf=pass (imf29.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770712465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M0noEGrgDeX1XuGB62XSq2oH5Xqfv5a8GR9UoGEvkKs=;
-	b=qhj7rbzp8zCfDrFnrPia4m12tiTQf/avDT9hpyJ4+iou03CHbZEoSBGtqoqoMvZjXH11b6
-	HgBI/xANNEzOsvtpR02e39TEBCmcO11pP/G/EEelwHN1wsas4B1PHqoIH+nYQ3rtVdeHXN
-	V0ggI0y6DBJCc5g/m2t+S5EBZwWeNas=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770711571; a=rsa-sha256;
-	cv=pass;
-	b=tjvNtXLJZ0QJfcCDzJbQOkBtuE0AuJJMJMR2uw3mnwjccE2fxfz2TNqnUJfPT0ZOcjEZ+Z
-	29yWa0qSSOLLxbKuxpZHOoIqVHBLOkGk45Hc8pQMvdedjvYtiFtpP2aFSQEM2rnb/m5Jh0
-	JvNQvk9aOl7V5hZy0shHId2kA8z/0Ok=
-ARC-Authentication-Results: i=2;
-	imf05.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FZmpBe9m;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=J7bZO4nz;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf05.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619LmTSX1628310;
-	Tue, 10 Feb 2026 08:19:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=M0noEGrgDeX1XuGB62XSq2oH5Xqfv5a8GR9UoGEvkKs=; b=
-	FZmpBe9mRJuTCAQZyyMC1ogXevOemekTrKUghoWWo4WR247+mE3u77+ryXopUUfu
-	FGO8u9Jcgmqfk7Rb3E297fPE5lKmKUFgsz2E8nuWVinNOyVmUzYtDnElMOGT7sm2
-	Ho42sfLHATREuQ4UXrvBpCbj7evvSM3qp8yuAj8F1V43/1jrVv6GHMy3G4Q3IIY8
-	rw/qArQTgCjT4iiKzvY3sFBAD6ThvmH9eFftUov1q3QhILC1CsGLHfx4Ix708vre
-	e3xJYHe5Mmu1l13VrcJ3Z4iG0njXsSMhanemmR5Ff+1vIZNpJX52qjbvh5DAJuBb
-	IHyacZRGPluJCW+vp4O70w==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c5xh8uhcm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 08:19:24 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61A6UCuv040629;
-	Tue, 10 Feb 2026 08:19:22 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012025.outbound.protection.outlook.com [52.101.48.25])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c5uum95eg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 08:19:22 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lH4hqEQGM3vWUt4/0befksIZsViQBcBdBF66dE+cs8+hKwv0aQaOZ3YdaCzWsQCle8W+ZYXJtfOA14Tiu0CxQwQ19ZiX1PNevGp/w/0lSeo4ot+HObLFco/YMEEocZm77SH9fD+8K/9Lg5q4aZvsE+V4i6/l8lnMChDI6XnMABQ+m3W8U0rZeVdS8zoocFDtdXvH0EGSpa32pA/0LhK71Xkf9uOCd6ESKr58UORNa525xZVIps5xGzi0yyHiNeyg/Nl3SPHaMKO+pm6l67UkpDyGYZDIC2diDbWCeXJ/PCSrZP5vXancxYJgBGRBEf9fxnEOt8s1Feq69yw7dzbxmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=M0noEGrgDeX1XuGB62XSq2oH5Xqfv5a8GR9UoGEvkKs=;
- b=t7HgIts2y1Uc22HEcDmwiISuFvs+u3G8mvAUss5NRRhHQAEHADF7hqgjrTfqHnS2gmFAUxIIkSFTnXKZFicE0ZTF8FJRG6hyEe7P64yrRFcL0fART7lFcJomoVOkDTcO5ybRcxTFpW+Sbbqy3pQDUyUtcGPvhkV9PAbKCN00Si2HLGk5kkv2jgfKz+ENsOSmwo5LAWRUauM84VfZBe7+y3SdyAZgiTn72MT7w2BZYI7j7JWY7wYLjLYJ06pAjCF/yffxhr0SoAt3c/5nI7KxME5x7l9VzADiGcU5Yn5tCgt4dIRlKXlNB9CE8T+Y3ra1aTyzSCDZaHf0HDwzyXF0vA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=M0noEGrgDeX1XuGB62XSq2oH5Xqfv5a8GR9UoGEvkKs=;
- b=J7bZO4nz9vcPaaDX5g3cPXFmEavLm/lT1D3bSwEeH33wZkL2K/gykFLEleIdsCzs1VLcKCmVCtDwOQlbiahGPKJIKVRhJg141JOEyeCqpoqQRDdhiEUqzga2vfM4IhX2ZleVge5BX232ELUCxhaOkRN5rqwvjx9q4YZJt0LOm44=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by BLAPR10MB4961.namprd10.prod.outlook.com (2603:10b6:208:332::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.8; Tue, 10 Feb
- 2026 08:19:19 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
- 08:19:19 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, Alexei Starovoitov <ast@kernel.org>,
-        Hao Li <hao.li@linux.dev>, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: [PATCH V2 2/2] mm/slab: use prandom if !allow_spin
-Date: Tue, 10 Feb 2026 17:19:00 +0900
-Message-ID: <20260210081900.329447-3-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260210081900.329447-1-harry.yoo@oracle.com>
-References: <20260210081900.329447-1-harry.yoo@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SE2P216CA0162.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2cb::7) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 in-reply-to:in-reply-to:references:references;
+	bh=cUWhJYIqCHE6+fQF466XUzbO26OAh8cHmdRaiCnMAzA=;
+	b=4BHECCP+r4V7qvPMsOEHtmyo/+mELstchkLJemymSOrq2RcuJCJ7/6c4qxnTHVQn07ThGI
+	j9JFwfek6T96rrvKdPYCRhCyx5TEvhwxcl56ARbitEKKEcHQwJx+7MbVAW4ee9W3pYiiZV
+	G5RJ+Ffdyo8itCGSV9LlsZX8KkkQdCI=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of benh@kernel.crashing.org designates 63.228.1.57 as permitted sender) smtp.mailfrom=benh@kernel.crashing.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770712465; a=rsa-sha256;
+	cv=none;
+	b=i5310CxjUh+/zczROPWa4wX0xSD9WxVSZml0d4ppH/EidyV0Pxcj962XAgQGKASVNaiR/a
+	ap41CCw3kOJ2onmKMltc0NCfPBIiKbtQD9gt7G/CyzFqFEl2Lo2R43F5cvPxLFlSeWmbZM
+	wxIHoo84BD4atzj65lBOxwEoQInylKQ=
+Received: from [IPv6:::1] (localhost [127.0.0.1])
+	by gate.crashing.org (8.18.1/8.18.1/Debian-2) with ESMTP id 61A8YFsX4138079;
+	Tue, 10 Feb 2026 02:34:15 -0600
+Message-ID: <0344bfbeb017cafc0f7bd4433eeacd9bc802d9c9.camel@kernel.crashing.org>
+Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct
+ page
+From: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>,
+        Marco Elver
+	 <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
+Date: Tue, 10 Feb 2026 19:34:15 +1100
+In-Reply-To: <5a44609fe992624573a3ca0a293888bd623e2a06.camel@kernel.crashing.org>
+References: 
+	<ec2aaef14783869b3be6e3c253b2dcbf67dbc12a.camel@kernel.crashing.org>
+	 <aYJBBs17B-SQXFqq@kernel.org>
+	 <279931074239b7f3812c4cb3969f887303c8cc26.camel@kernel.crashing.org>
+	 <aYL3zxuTLT8N7C8-@kernel.org>
+	 <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
+	 <aYXDeN0WGQG8-cxe@kernel.org>
+	 <bf0231accb89709968efb4d8e1be9970aeb716f8.camel@kernel.crashing.org>
+	 <e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org>
+	 <5a44609fe992624573a3ca0a293888bd623e2a06.camel@kernel.crashing.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|BLAPR10MB4961:EE_
-X-MS-Office365-Filtering-Correlation-Id: fdc19c5e-eecb-42ba-a2ec-08de687d16a2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xXmukgqDOjRK6Krxu0gk26vBbQj+TPtMt+OZM+iP4+4IsMVTfnh69cpWvTHx?=
- =?us-ascii?Q?EDBT5Rds5BAQuaattrG4xEIxUaKvHiG/k0xv8bCs3/nyuYExjapJzx4DAZG8?=
- =?us-ascii?Q?D0LE62nKUmnkROPOV49CtdY0G+sRFNcPipekChFlAq2CuP52AciYeVmHeBp0?=
- =?us-ascii?Q?CDrM1TFtPwLiJAO9+cBzr13DDoUS3i6bzpFAY1Mkq9qwBlH9xVGFcOWizAnv?=
- =?us-ascii?Q?+55eNh8KkpRbIvhKI6HIqHZb0B78SaofqLty2DEQ5txxIFeDplZhOOOZTBM2?=
- =?us-ascii?Q?OBL3B70Cp5eNFRowVtAEiDoToPfVIFJfmMUk4TqGUTphF/5pSelwmWNE1fK7?=
- =?us-ascii?Q?5I/JjEP39HUWe9gxhcf3Fsufi/kIwujrBidJp5NgX86g/eezgFiRvNuvBsQF?=
- =?us-ascii?Q?uQXoZcTmeUxdb7hivg9SDsXwizodk5T6qvGyMXBI+9xxgZKksWBXUKyk6CXE?=
- =?us-ascii?Q?gvi5x/fO2gVl8qRlwLxnR3UU921du568tCuy/gudH2PD2J7+YkLUWlO+R70v?=
- =?us-ascii?Q?jucDHH4808KmE926qCe4f8VLDLzQObCzvhm1GdCmxJ9GEI2o/qQJiK2bi+Na?=
- =?us-ascii?Q?FcW1SjzopSZfr1qhFTj+wNU7TzYya5C946QMuZF3829canN85oP94gD0eLQb?=
- =?us-ascii?Q?5x/LVkasMCMHbzoRODi21OLk9qcQkUYJcfVvi4TYgX0k4cy/D/whQ4CN+H+q?=
- =?us-ascii?Q?e9+kacfWBv5absxTzJ1glmMq5s5tceNosg+WtykfmOCU6TRgsEp3XUCPZTNI?=
- =?us-ascii?Q?3w0TF4WbJpSnGK1I6AdU6PSzyezT6kxRn/65DaOSwh2lNviPFJmPNOVmG+I3?=
- =?us-ascii?Q?prHnNw+vR9y7MoVU/U7/7KQhRXJtRRext7ecg1CRErykAkRhuv7otk5SOS6W?=
- =?us-ascii?Q?jZxI8ShiXI2eBCrO/9thDJInQ2SaEZk+Ldt3graQ9EftonE95uhJgpxjlG2Z?=
- =?us-ascii?Q?EQupqVlOfzoCqMVgpNatY85PiRqQF1FoRWSgoDmAnFOY0mK9tOs/VBTup3wj?=
- =?us-ascii?Q?IObZWptokyxJ6mxAsg+rJNTw13eDtarxARwhDHmyOXNMcuZx++Tq8/u0H6IF?=
- =?us-ascii?Q?P0SISa7eD4F8TbRPDL7FjGThdHYRLmj+vNZ2/V7KaxnLcXchFZiAFLxDc287?=
- =?us-ascii?Q?sFN6Ob1oBE8Et+tsMyisoxZldiHydfGGpRDP20nmbsPL5sks84BoVdElmTfD?=
- =?us-ascii?Q?ENvud/3Xvvll4hTjYqmKe7Pf5dzTxW+P8PTXCGNtdXWAp/Zs5tj0fNhRzs8Y?=
- =?us-ascii?Q?5JovQX/m/tTa4U5OefQcOLTDJHxBJKoiuOIw/aJQ7Cexy/voIpuWHTOVJ8gB?=
- =?us-ascii?Q?MwsVFy3X1kuXqk8CmNc7WJjZkmrAVghsDPQ+agxZWjQb8Zax+VfwmVcWGBGm?=
- =?us-ascii?Q?/vpwONV5bWH8/y74/xYqdYulS0kztvwOt6AMVwptnl2SC6qsnaRSQ68NS9Lo?=
- =?us-ascii?Q?SJ6u0UFf2VsnrbkCr8ILs5HNAdO7k7ZuNA2LIYAxpKAqkqZUs9I8qlhPLWo+?=
- =?us-ascii?Q?qfi4T6AfwSKZzSNgvn6L78BSrwVPP7DagMCuOKrXUC3qQBJjzqvNuDt8E9rh?=
- =?us-ascii?Q?tuAuTF8fAThJet8u4ts=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?8WX2b56Ub4MOvPgx9sn6WfSl+LuOm2p9f+uMr+g8P+rx5GTKbS42bCGX6s1W?=
- =?us-ascii?Q?PK18a9BDTPjZpxVcNcooZlnbUEjVs4VgMy4rWsSec0xY9ywlsC8LQSUSt53v?=
- =?us-ascii?Q?0377Izu2hYXQLMn5PWKaz8hngziH28UsaXACkX/y3elZOonW6DHTvpuQxEqH?=
- =?us-ascii?Q?6uSNYrdPciaqu3Ss4ZfajlIHvOduOjiKGGc1bzHsrip4e2CWrqNkBd+rvCgL?=
- =?us-ascii?Q?VbXmcy62Lj4dWAazDNIun2eL6tH26YycVP2zJ9eiR1GF+Lgaog3GQiudvaMJ?=
- =?us-ascii?Q?0aCC9xCLXxwHuhySYdJ5pNje4lOBQZXBZpgWv6/YY+Y2S0FwEVBy7TISte9L?=
- =?us-ascii?Q?DtiyLTq8ZzRo1QQZb3OCxzXyrc04/5f/J4FJOa5/glvq8+cmSQiUMibebF8M?=
- =?us-ascii?Q?pSjuvPoVorI8SPm/i778W4/Gt/hN4NUPlgLDBXDCLA3UGxKmA4f1GFGebdSv?=
- =?us-ascii?Q?gje4i66OhhiVOFfuXR4jT1P+TTTZRpbnXS2/rcAhl1MqOZ+TaA9BLdBdHlCg?=
- =?us-ascii?Q?zAiBkLlCeWnfsxrNBox0wyP2mnC9xGZz2nB+DTLaoovTrSyE3qCWMRTP7HVW?=
- =?us-ascii?Q?jhkG1eagM2DEe3tUp/f/a2TqXbpRPNPG/E34EZwmca9wN1FKDMkWPU7vuCUA?=
- =?us-ascii?Q?ZWE8EatGxwGWA8PNnWpQqNatXh/3gXky6ecohCsdaernZVoI7ITxRamQuf1h?=
- =?us-ascii?Q?yckYYt+ZeqdjZQ+yb/2CUi3B6El9Tj634LqV80JDla/kWzQOYSqYYSBTahPH?=
- =?us-ascii?Q?Ra8XJwPar1ZJ5Ev/gBWiYw7lD72miMdpObyYzTQKPuSoAqEQ6wbbM8NJLmmm?=
- =?us-ascii?Q?eWVznE411DGclrGUAEClEA/ITBNk7pvYAqDIZvfSq0JRqERZy19twXag3ojx?=
- =?us-ascii?Q?5sA6225t2Nzi7KjvgaWKCcTWsbdT0TGlh7b2xVPUCQVF1eruGU5QZouWn4W2?=
- =?us-ascii?Q?pL0beKy6FhiA98qGWVP38h93Cp7kcUT5KC2N0qrLqkD3oHxOvvFc12t6Z0jT?=
- =?us-ascii?Q?M88mRMt0JVgwdoIS5SbgBMmLsOT6l52rG1E5PvRiFMNIKZ/pcLB1c/vdZLPp?=
- =?us-ascii?Q?Noek3M0KYSToSuDY5aeAil0rP9fWyGOglsFX6KnsedjW2vCLbgXvtxjpLhb0?=
- =?us-ascii?Q?WzlJmnGV8cxC0VdLxpU/gZ+EhiAjWiwM/1vy6Ghxm3AVpbsVEOoOOkZwWF6E?=
- =?us-ascii?Q?uFlet3uXaTVaekHFqWLxf0nw1zU3H7HnhFq4jXc6IY3ze14ro2EpayrUspfe?=
- =?us-ascii?Q?hsA6emRFCKKp4/V8jn7y6cCUBj6j2jssIPI0EhnLYBCwPHMz2aUW5v+Ydmmx?=
- =?us-ascii?Q?/z/VLfshe32GPEeNCXUU8tXKCNdzi+oV+XE2ay5w6WnG5DSZk19aqYOZf/rx?=
- =?us-ascii?Q?5xAHwvsHXA4JJTnUPg8weHkS4wQLA4CrcApRNg+VZXOS5Cg7Zu68L9UrOR4v?=
- =?us-ascii?Q?Z2CsSsDecipqkkAEo1QbWKKGCqLL0zfJ3ctyKfOcovN1qCex+/k+feBf1Rj1?=
- =?us-ascii?Q?ej/UsZT8e3zdfHSRkS8/A2sgkazDMUFtOE8QftAKbJDVt6s5cRnVTHMX5fnC?=
- =?us-ascii?Q?PjORPNxkFPXbUGeUCoy6hKh9fKQbRwyjq+VazQCVy0MpJqDeKl3oUWOuMuPT?=
- =?us-ascii?Q?h1YSZ7uHt3yhYZC2nOwo1/z04kf/G6QLZlkuaoo5Er1QNQ6mxYW9HWN0L9p2?=
- =?us-ascii?Q?fTCcdNKj2kOPuaT/KoDp0RS1V4FEpCp2QNEJEiwL3K3jCZSrCq4fWjADeIAU?=
- =?us-ascii?Q?lNobs9JA/w=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	FdBNxezt7E2ngC+A6sBDQT4ARPr5mvOoL4O1EoSWw57xM/w8yzAAP1eEpDo4IhxxpW6N/5yLRKGNUkvWPC5aQUt0a6hNj4KephnLCt1es8Q0MUcHaHKC2DY1fBXhK8BoFvcP+54/4paDTY/QAEsl0csk5TFv59QgbF4+OHoIS65N5X6Wpwj8JRI6wOn0rst4GfUKcAo+mIoTe4JqLnI8G908Jy5lHoEFrpC/xGjqu7DQnB7hOx2h5RVUyZhXa3iqRIkiVqrYzAUkYV0DbWQwg6YfZZa6POx/GaMVcbBjxBrqOSBlppFNtSaZOnlZDFS837Z9FKKak8Pj4xF1UOatQJm4o0Y2EFVqE3AfSxtRpng2hfFWKuMLgWtLxFeNH1jOB7Ya79en5iPvv0EkMqcZG3fpaSU7p5yRVUysZ702H8PSmSKt3o1kv6+tmBC2MVXADC+izp2W+saYBgjahIf4cgjXNJykPP2y5Tc3vh3WCmWAh/Zw5m7LdxCQimy3mRdSDgvV/NUcZghiRrKg8Gq3Mx7SaoYcQIEd+wHNY4oPHGhI3mXo7Nn4TeWUlp0bAlsrT8eqK/KFczmgmxHd0HACCSoIU2xHm+ZGyJZoWF2RyE8=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fdc19c5e-eecb-42ba-a2ec-08de687d16a2
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 08:19:19.5288
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wkW3w3SPrWxTnKXzQcoL+sbCaQkYssJF3GI5EhzV4TEJ6PNNub2eWC2CmXEyC8S+h8E9LsVq8EJX9vQZHIfo9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BLAPR10MB4961
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-09_01,2026-02-09_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
- malwarescore=0 phishscore=0 bulkscore=0 mlxscore=0 spamscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2602100069
-X-Authority-Analysis: v=2.4 cv=YbOwJgRf c=1 sm=1 tr=0 ts=698aea0c b=1 cx=c_pps
- a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=HzLeVaNsDn8A:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=fFAbNiGV370v5-WorDQA:9 cc=ntf awl=host:12149
-X-Proofpoint-ORIG-GUID: 71rR-8d1uO3EkZx3rVtoK3hY7rLvIIlV
-X-Proofpoint-GUID: 71rR-8d1uO3EkZx3rVtoK3hY7rLvIIlV
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDA2OSBTYWx0ZWRfX2fJrU57QCBle
- Qx/3S/RyiYD7fP+Ubj1qfWdoyUINQyFBKBXGKpgt3h+bYftZBzCNGOcdsNs2avq20VfJ6H7+/PC
- y6bEWVyEyfjol/pFE9ht09AVmIsevewOyhaKqT3HxfBG6IJ/194+HIPdlta4fhDbTS2w5MssNtO
- jadRFwvLAYOcdXgLTRPg09ciUL/mEm4Ky0oela0iGwi6j1BTUM7O/jEJS4hegVu3VjMRAIaS32R
- lPZWl0SaFozyb/eTECzvdGP7Bl5L6ZwH4Wn/cEN53YqEDu+nUq4qMUOLrV3Dwqor2FEpR/qOgFk
- GfjRKgKj42lUCnxRfH09ZN2P9LZBViKglduA0rO4Ssq8Ori78eg+JBoRotH8g9XdrjRnYmc0J8l
- AMhctvZYkfFxqLzVCM7zHJg9nTBFuyy1Ihlk8NkNR4z1ofJ+EUd2uBgRn1dyubAQmStXnM7cXT/
- znkK/B3E+8NQMwyqQyf32VCAqI64m9n/ugtseeVs=
-X-Rspamd-Queue-Id: 8E6EE100005
+X-Rspamd-Server: rspam11
+X-Stat-Signature: g5a769sn5rydn6tk9zim14op78g7brrg
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 8qxth3phbu6auwukr5h9gwao4ezyc36u
-X-HE-Tag: 1770711571-300786
-X-HE-Meta: U2FsdGVkX18WwDsyZ3aeIKHaHoavb61/RFep+2pCgNwBuB9BjorAcDjEJ3oO+EbSGHQkhEQR15bXnwSYy/Rw0i4zGv5zoJL3RiWdedhRiAWu6QZi3TiqL5kHa5XK6FCfVTW1DRV6N0ROzMXaHSFUJcm4PTXgj7yup1bXKysiaiH1UuYCI5aHJtWUt4tOxb20VB+oMpwF9vrCah0kp/I6roHSuO+TVmSewbW+FT6E8B9+qhhw+UiJUAD2GNTeYZhmoAd7pbCLdtHSeTqgBEFp/2tVVv6wF3vzM6VADUAkHqvnIbCN7POd9imOIp+wcZ0ylK24lUwHhwi0ejWl2/GdeArzMEWhKlyrs+VJ1hFUEbayGk2t0yj9b/OTPd7aRWoAoxwO3RJ3harXB8i4H0/yd+acLeMNYVIZjWaJFOKtVN4hPkyJ4it+FGvjWpFBAB302RUy/yNfX51AlJyVVk+mDkRBk7Fyl0T5YTmW8VDZJltg5Hl2+XLrfU+VoNDdDtlEJVtjEmLFrhunGQCzNScfpBMlesflboYQk58rVuW4hMTfsYWnqqhLEGNA69i2fhElvotrZUawcGhtsXkFBGJ5fOcTNDqbkRJO1xszf7+gcDot6tdcEP++wYdpr9xbaJJGPKmLkURKhkDTQuLGes2yCIFV8CYzrUDimFkApNkIjJQZdtAMPyuj3dGjAskdnlo/ExQBpG2i4q0bIHrGk1KmXhmleadIwlRfMZhMYbz3BtNFCtUrYLY3UOaL2tQysdgtsUERP6s7pCJqsdttONhKcACbBzgJqwoioQynzIdMI12I7Wz0QfkCiCLTLWbU1m+haWQ4StAz3yWQI8dSY4fAm+YdhI79BRRfM8ZuscaRvHA1W/5qPze0/YHzJFh9nt+AEb/7hJu+YQLrK/0TtiXNPHB2T1jhV3M1IsL8ZxNYa4+P6M97e5O87JFwsFj3tG5wAAr6PmJS/M590ZdTzcy
- 6ij7N904
- Ji80txfj5ADIiPUVD7WhOxmJK3EwiZ/kJRZjZqEkhuC2Q2MjEX6Sy5I8vID6LwqVDVCyEgjYNcgGjN17iBKaWDodOjba/JMSM3jFAPqForHA6pSfTIE5dwdT2FrM/vWaTWSTn8P+rQvuItvWJpClVl0AeU7ZvkQ3qm+XtVkqx3wGTWXwzbULQnCqgolglnb8Osv3OYITaA+4x+7Au5q+8twJRN/bxinqMPSvo6K4twpKZy6zkpt6CF83icGXKuELHtNm7nXPLwtpdLp6Jmg+EvtlSUgJy+LcumBogLIOm/hH/3cbebnsKtHDa51dhCRvS4Vlt1kGWnCov74f6XUtwKTKZx0oGE6LIQlTcU8LYQsybvaL9GoeKR5nFfuwPCQ1uZWKeNy3rCHIYQRgqq13zUzDUuqH9+/nbq+GWu04r3PXoku1OEe8CxPJfQXBDSgEV7jBlXD2CBrgu7EkTsBKWGt6o074JdJbVdmjknH8GbFqYz3GLm8M5dWOjdui8+aeSiCJgnuQPGCLriOLSWnXbAnzwqLcI47yg1gnU3xyBJLZMKxmcgiCXDJkhKJS6JVP9+1ftZb017YwNuLhi2CYRt/gVhNF5cMwFZyLD+i07DtiOj0pcnYOSNWyu5jBneGW43HZuwzJDwLCiq3Tma8xlziYqlBO8texnh/fO0G/hLgR7R8ZVEQnoJUlJrN1cKDW8UMdqonGqvCVWMSWlnQrJdS1ukr4oh3n/6S+hEUVd+wco5VajeupkHEesBUaLfH8kE8VG0XnNKS54EjFy5cXizIUlOIL+BxYtYEcP
+X-Rspamd-Queue-Id: 05926120009
+X-HE-Tag: 1770712464-611296
+X-HE-Meta: U2FsdGVkX1/Eylnh9K4XvsOsqtQHGczqUPSBuH7VZXb5jfHk7/aRwYlhViBJdsTLUIfnmSsnOBx77whN99yQoA7BF7KbII4bGZuidrSNLF+A3zpgxGxvXGqPv54tKOH2/goFl2Tt+37xQK7LZba66VdkjwuJ3MKbw4HYiuFST4FfMzDrur1CyRLUUnJQ3Q1GWNxznTNAg5O6gUadYTS32KdVSByVMfPhEjoPZ7X/XuVtWN3kSsVB3SGjhUa7gXtSlAKd7uGjLcC9jw3hFeg/m2oF/iylERXs48+nyS/c27Gq3xxTw3Z8gz0oi9aczBVcm5kFWo6YUrK24wjXvyuFr60cdtXyvwg52Cu1K8FuNonPeKxLQs+aGoPCGaoqRK67HHUE5XO0lt/ICJG9YxhdCprrVEJVXzzKmBlI4WHv+Pj4vH0jR4kqX3vGO2izTn4J64GKx5Ib3LPFhJVBOdcFjBObEKj5alb6gy7odWx0ZcpT2vmokhebOd1lsK7RlTsC1uxorXH3yx6k4qXwFJhcs4vYGA9jUXpiC1RfdRu2Xe6aoW3rK4nR5myNQZH/wwCG5XNuIfTagg3l6OXnFrZd0pHpUjOUYA4em4tnatxClWq/ncZx2t7/ypfRV/6qj2HNaJ97FmvG0ivY6KPzGV/PnuHdbuk+vnRbwam55xnR4OfRwwq4XGiuFPbqiid2q2kO4TmzxFjEC+r+NZ3BmwKrDj2SpTgCi+/N5FI0OS6/++HReDsp7Z5ABY1YddaY5ISCzyRatg11PjM3l8tnInP0PMqq0Djo2eQ6o+4crqu1suRIXPUymxBc1yUMg1UdSJXyiyKKrbWc58wR2avfWRp/w3PE7fXwdcbJdjDKo5+k0RbNV15OwB+iGOsrZ5k/59/BAuBj0VqPKYITsUfizIsyL2puATXTYKbY1k7/68spkh9T4NjjELAS1neP3kTu2B2imQ7whHRlzhQjbNaN1UL
+ eX7IuE5e
+ MYp9tqfMPZIIbERheHKzwSnysj2nwWuxd8Z6x0D8XGJ9F/bcf1ozeCGysSw1PYyxa4su+vXB8G7WBuh2tkGkxR78WVa6LD/oYJQgMWG25NhejHv8Mrj1NjEQceKi0jqCmwRsbEdV7+uNxkmM0mbtolPGMKBze8hxZOYDOoE9LpFQ8Em2fKWB+Rlmkr2ZRSUEqmdLKcPQ6BTBakv/Y0sSUTPEmpoeLHXlEhy01ZmisKkqE+9s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -242,140 +90,205 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When CONFIG_SLAB_FREELIST_RANDOM is enabled and get_random_u32()
-is called in an NMI context, lockdep complains because it acquires
-a local_lock:
+On Tue, 2026-02-10 at 17:17 +1100, Benjamin Herrenschmidt wrote:
+>=20
+> So ... that was a backport to 6.12.68 and my original patch is
+> crashing
+> the same way ! (it was working last week interestingly enough,
+> something else got backported that gets in the way maybe ?).
+>=20
+> I'm going to have to go back to digging :-(
+>=20
+> I suspect the pages aren't reserved. I swear this was working :-)
 
-  ================================
-  WARNING: inconsistent lock state
-  6.19.0-rc5-slab-for-next+ #325 Tainted: G                 N
-  --------------------------------
-  inconsistent {INITIAL USE} -> {IN-NMI} usage.
-  kunit_try_catch/8312 [HC2[2]:SC0[0]:HE0:SE1] takes:
-  ffff88a02ec49cc0 (batched_entropy_u32.lock){-.-.}-{3:3}, at: get_random_u32+0x7f/0x2e0
-  {INITIAL USE} state was registered at:
-    lock_acquire+0xd9/0x2f0
-    get_random_u32+0x93/0x2e0
-    __get_random_u32_below+0x17/0x70
-    cache_random_seq_create+0x121/0x1c0
-    init_cache_random_seq+0x5d/0x110
-    do_kmem_cache_create+0x1e0/0xa30
-    __kmem_cache_create_args+0x4ec/0x830
-    create_kmalloc_caches+0xe6/0x130
-    kmem_cache_init+0x1b1/0x660
-    mm_core_init+0x1d8/0x4b0
-    start_kernel+0x620/0xcd0
-    x86_64_start_reservations+0x18/0x30
-    x86_64_start_kernel+0xf3/0x140
-    common_startup_64+0x13e/0x148
-  irq event stamp: 76
-  hardirqs last  enabled at (75): [<ffffffff8298b77a>] exc_nmi+0x11a/0x240
-  hardirqs last disabled at (76): [<ffffffff8298b991>] sysvec_irq_work+0x11/0x110
-  softirqs last  enabled at (0): [<ffffffff813b2dda>] copy_process+0xc7a/0x2350
-  softirqs last disabled at (0): [<0000000000000000>] 0x0
+So I rebuilt with a bit of extra debug prints, CONFIG_DEBUG_VM on, and
+memblock=3Ddebug ... it's not hitting the reserved check, but it's also
+not crashing the same way (still 6.12, I'll play with upstream again
+later):
 
-  other info that might help us debug this:
-   Possible unsafe locking scenario:
+ .../...
 
-         CPU0
-         ----
-    lock(batched_entropy_u32.lock);
-    <Interrupt>
-      lock(batched_entropy_u32.lock);
 
-   *** DEADLOCK ***
+[    0.045633] Freeing SMP alternatives memory: 36K
+[    0.045633] pid_max: default: 32768 minimum: 301
+[    0.045633] memblock_free_late: [0x000000003d36b000-0x000000003d37bfff] =
+efi_free_boot_services+0x11f/0x2e0
+[    0.045633] memblock_free_late: [0x000000003b336000-0x000000003d36afff] =
+efi_free_boot_services+0x11f/0x2e0
+[    0.045633] memblock_free_late: [0x000000003b317000-0x000000003b335fff] =
+efi_free_boot_services+0x11f/0x2e0
+[    0.045633] memblock_free_late: [0x000000003b2f7000-0x000000003b316fff] =
+efi_free_boot_services+0x11f/0x2e0
+[    0.045633] memblock_free_late: [0x000000003b000000-0x000000003b1fffff] =
+efi_free_boot_services+0x11f/0x2e0
+[    0.045633] memblock_free_late: [0x00000000393de000-0x00000000393defff] =
+efi_free_boot_services+0x11f/0x2e0
+[    0.045633] memblock_free_late: [0x0000000038e73000-0x00000000390cdfff] =
+efi_free_boot_services+0x11f/0x2e0
+[    0.045633] LSM: initializing lsm=3Dlockdown,capability,landlock,yama,sa=
+fesetid,selinux,bpf,ima
+[    0.045633] landlock: Up and running.
+[    0.045633] Yama: becoming mindful.
+[    0.045633] SELinux:  Initializing.
+[    0.045633] LSM support for eBPF active
+[    0.045633] Mount-cache hash table entries: 2048 (order: 2, 16384 bytes,=
+ linear)
+[    0.045633] Mountpoint-cache hash table entries: 2048 (order: 2, 16384 b=
+ytes, linear)
+[    0.045633] smpboot: CPU0: Intel(R) Xeon(R) Platinum 8259CL CPU @ 2.50GH=
+z (family: 0x6, model: 0x55, stepping: 0x7)
+[    0.045633] Performance Events: unsupported p6 CPU model 85 no PMU drive=
+r, software events only.
+[    0.045633] signal: max sigframe size: 3632
+[    0.045633] rcu: Hierarchical SRCU implementation.
+[    0.045633] rcu: 	Max phase no-delay instances is 1000.
+[    0.045633] Timer migration: 1 hierarchy levels; 8 children per group; 1=
+ crossnode level
+[    0.045633] smp: Bringing up secondary CPUs ...
+[    0.045633] smpboot: x86: Booting SMP configuration:
+[    0.045633] .... node  #0, CPUs:      #1
+[    0.045633] MDS CPU bug present and SMT on, data leak possible. See http=
+s://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/mds.html for more de=
+tails.
+[    0.045633] MMIO Stale Data CPU bug present and SMT on, data leak possib=
+le. See https://www.kernel.org/doc/html/latest/admin-guide/hw-vuln/processo=
+r_mmio_stale_data.html for more details.
+[    0.045633] smp: Brought up 1 node, 2 CPUs
+[    0.045633] smpboot: Total of 2 processors activated (9999.97 BogoMIPS)
+[    0.045633] node 0 deferred pages initialised in 0ms
+[    0.045633] Memory: 900460K/999468K available (16384K kernel code, 9440K=
+ rwdata, 11364K rodata, 3740K init, 6440K bss, 94600K reserved, 0K cma-rese=
+rved)
+[    0.045633] devtmpfs: initialized
+[    0.045633] x86/mm: Memory block size: 128MB
+[    0.045633] ------------[ cut here ]------------
+[    0.045633] page type is 1, passed migratetype is 0 (nr=3D16)
+[    0.045633] WARNING: CPU: 1 PID: 2 at mm/page_alloc.c:721 rmqueue_bulk+0=
+x82e/0x880
+[    0.045633] Modules linked in:
+[    0.045633] CPU: 1 UID: 0 PID: 2 Comm: kthreadd Not tainted 6.12.68-93.1=
+23.amzn2023.x86_64 #1
+[    0.045633] Hardware name: Amazon EC2 t3.micro/, BIOS 1.0 10/16/2017
+[    0.045633] RIP: 0010:rmqueue_bulk+0x82e/0x880
+[    0.045633] Code: c6 05 be be 13 02 01 e8 b0 b5 ff ff 44 89 e9 8b 14 24 =
+48 c7 c7 a8 6d 51 8e 48 89 c6 b8 01 00 00 00 d3 e0 89 c1 e8 32 4f d2 ff <0f=
+> 0b 4c 8b 44 24 48 e9 79 fc ff ff 48 c7 c6 e0 77 51 8e 4c 89 e7
+[    0.045633] RSP: 0000:ffffd592c002f898 EFLAGS: 00010086
+[    0.045633] RAX: 0000000000000000 RBX: ffff8e363b2cbc80 RCX: ffffffff8f1=
+f0c68
+[    0.045633] RDX: 0000000000000000 RSI: 00000000fffeffff RDI: 00000000000=
+00001
+[    0.045633] RBP: fffffb9c40e3a408 R08: 0000000000000000 R09: ffffd592c00=
+2f740
+[    0.045633] R10: ffffd592c002f738 R11: ffffffff8f370ca8 R12: fffffb9c40e=
+3a400
+[    0.045633] R13: 0000000000000004 R14: 0000000000000003 R15: 00000000000=
+38e90
+[    0.045633] FS:  0000000000000000(0000) GS:ffff8e3639f00000(0000) knlGS:=
+0000000000000000
+[    0.045633] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.045633] CR2: 0000000000000000 CR3: 000000001bc34001 CR4: 00000000007=
+706f0
+[    0.045633] PKRU: 55555554
+[    0.045633] Call Trace:
+[    0.045633]  <TASK>
+[    0.045633]  __rmqueue_pcplist+0x233/0x2c0
+[    0.045633]  rmqueue.constprop.0+0x4b6/0xe80
+[    0.045633]  ? _raw_spin_unlock+0xa/0x30
+[    0.045633]  ? rmqueue.constprop.0+0x557/0xe80
+[    0.045633]  ? _raw_spin_unlock_irqrestore+0xa/0x30
+[    0.045633]  get_page_from_freelist+0x16e/0x5f0
+[    0.045633]  __alloc_pages_noprof+0x18a/0x350
+[    0.045633]  alloc_pages_mpol_noprof+0xf2/0x1e0
+[    0.045633]  ? shuffle_freelist+0x126/0x1b0
+[    0.045633]  allocate_slab+0x2b3/0x410
+[    0.045633]  ___slab_alloc+0x396/0x830
+[    0.045633]  ? switch_hrtimer_base+0x8e/0x190
+[    0.045633]  ? timerqueue_add+0x9b/0xc0
+[    0.045633]  ? dup_task_struct+0x2d/0x1b0
+[    0.045633]  ? _raw_spin_unlock_irqrestore+0xa/0x30
+[    0.045633]  ? start_dl_timer+0xb0/0x140
+[    0.045633]  kmem_cache_alloc_node_noprof+0x271/0x2e0
+[    0.045633]  ? dup_task_struct+0x2d/0x1b0
+[    0.045633]  dup_task_struct+0x2d/0x1b0
+[    0.045633]  copy_process+0x195/0x17e0
+[    0.045633]  kernel_clone+0x9a/0x3b0
+[    0.045633]  ? psi_task_switch+0x105/0x290
+[    0.045633]  kernel_thread+0x6b/0x90
+[    0.045633]  ? __pfx_kthread+0x10/0x10
+[    0.045633]  kthreadd+0x276/0x2d0
+[    0.045633]  ? __pfx_kthreadd+0x10/0x10
+[    0.045633]  ret_from_fork+0x30/0x50
+[    0.045633]  ? __pfx_kthreadd+0x10/0x10
+[    0.045633]  ret_from_fork_asm+0x1a/0x30
+[    0.045633]  </TASK>
+[    0.045633] ---[ end trace 0000000000000000 ]---
+[    0.045633] ------------[ cut here ]------------
+[    0.045633] page type is 1, passed migratetype is 0 (nr=3D8)
+[    0.045633] WARNING: CPU: 1 PID: 2 at mm/page_alloc.c:686 expand+0x1af/0=
+x1e0
+[    0.045633] Modules linked in:
+[    0.045633] CPU: 1 UID: 0 PID: 2 Comm: kthreadd Tainted: G        W     =
+     6.12.68-93.123.amzn2023.x86_64 #1
+[    0.045633] Tainted: [W]=3DWARN
+[    0.045633] Hardware name: Amazon EC2 t3.micro/, BIOS 1.0 10/16/2017
+[    0.045633] RIP: 0010:expand+0x1af/0x1e0
+[    0.045633] Code: c6 05 af 06 14 02 01 e8 9f fd ff ff 89 e9 8b 54 24 34 =
+48 c7 c7 a8 6d 51 8e 48 89 c6 b8 01 00 00 00 d3 e0 89 c1 e8 21 97 d2 ff <0f=
+> 0b e9 e5 fe ff ff 48 c7 c6 e0 6d 51 8e 4c 89 ff e8 eb 23 fc ff
+[    0.045633] RSP: 0000:ffffd592c002f828 EFLAGS: 00010082
+[    0.045633] RAX: 0000000000000000 RBX: ffff8e363b2cbc80 RCX: ffffffff8f1=
+f0c68
+[    0.045633] RDX: 0000000000000000 RSI: 00000000fffeffff RDI: 00000000000=
+00001
+[    0.045633] RBP: 0000000000000003 R08: 0000000000000000 R09: ffffd592c00=
+2f6d0
+[    0.045633] R10: ffffd592c002f6c8 R11: ffffffff8f370ca8 R12: 00000000000=
+00008
+[    0.045633] R13: 0000000000038e98 R14: 0000000000000003 R15: fffffb9c40e=
+3a600
+[    0.045633] FS:  0000000000000000(0000) GS:ffff8e3639f00000(0000) knlGS:=
+0000000000000000
+[    0.045633] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.045633] CR2: 0000000000000000 CR3: 000000001bc34001 CR4: 00000000007=
+706f0
+[    0.045633] PKRU: 55555554
+[    0.045633] Call Trace:
+[    0.045633]  <TASK>
+[    0.045633]  rmqueue_bulk+0x541/0x880
+[    0.045633]  __rmqueue_pcplist+0x233/0x2c0
+[    0.045633]  rmqueue.constprop.0+0x4b6/0xe80
+[    0.045633]  ? _raw_spin_unlock+0xa/0x30
+[    0.045633]  ? rmqueue.constprop.0+0x557/0xe80
+[    0.045633]  ? _raw_spin_unlock_irqrestore+0xa/0x30
+[    0.045633]  get_page_from_freelist+0x16e/0x5f0
+[    0.045633]  __alloc_pages_noprof+0x18a/0x350
+[    0.045633]  alloc_pages_mpol_noprof+0xf2/0x1e0
+[    0.045633]  ? shuffle_freelist+0x126/0x1b0
+[    0.045633]  allocate_slab+0x2b3/0x410
+[    0.045633]  ___slab_alloc+0x396/0x830
+[    0.045633]  ? switch_hrtimer_base+0x8e/0x190
+[    0.045633]  ? timerqueue_add+0x9b/0xc0
+[    0.045633]  ? dup_task_struct+0x2d/0x1b0
+[    0.045633]  ? _raw_spin_unlock_irqrestore+0xa/0x30
+[    0.045633]  ? start_dl_timer+0xb0/0x140
+[    0.045633]  kmem_cache_alloc_node_noprof+0x271/0x2e0
+[    0.045633]  ? dup_task_struct+0x2d/0x1b0
+[    0.045633]  dup_task_struct+0x2d/0x1b0
+[    0.045633]  copy_process+0x195/0x17e0
+[    0.045633]  kernel_clone+0x9a/0x3b0
+[    0.045633]  ? psi_task_switch+0x105/0x290
+[    0.045633]  kernel_thread+0x6b/0x90
+[    0.045633]  ? __pfx_kthread+0x10/0x10
+[    0.045633]  kthreadd+0x276/0x2d0
+[    0.045633]  ? __pfx_kthreadd+0x10/0x10
+[    0.045633]  ret_from_fork+0x30/0x50
+[    0.045633]  ? __pfx_kthreadd+0x10/0x10
+[    0.045633]  ret_from_fork_asm+0x1a/0x30
+[    0.045633]  </TASK>
+[    0.045633] ---[ end trace 0000000000000000 ]---
 
-Fix this by using pseudo-random number generator if !allow_spin.
-This means kmalloc_nolock() users won't get truly random numbers,
-but there is not much we can do about it.
-
-Note that an NMI handler might interrupt prandom_u32_state() and
-change the random state, but that's safe.
-
-Link: https://lore.kernel.org/all/0c33bdee-6de8-4d9f-92ca-4f72c1b6fb9f@suse.cz
-Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-Cc: stable@vger.kernel.org
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/slub.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index 90f0e6667130..591e41e5acc4 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -43,6 +43,7 @@
- #include <linux/prefetch.h>
- #include <linux/memcontrol.h>
- #include <linux/random.h>
-+#include <linux/prandom.h>
- #include <kunit/test.h>
- #include <kunit/test-bug.h>
- #include <linux/sort.h>
-@@ -3311,8 +3312,11 @@ static void *next_freelist_entry(struct kmem_cache *s,
- 	return (char *)start + idx;
- }
- 
-+static DEFINE_PER_CPU(struct rnd_state, slab_rnd_state);
-+
- /* Shuffle the single linked freelist based on a random pre-computed sequence */
--static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
-+static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
-+			     bool allow_spin)
- {
- 	void *start;
- 	void *cur;
-@@ -3323,7 +3327,19 @@ static bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
- 		return false;
- 
- 	freelist_count = oo_objects(s->oo);
--	pos = get_random_u32_below(freelist_count);
-+	if (allow_spin) {
-+		pos = get_random_u32_below(freelist_count);
-+	} else {
-+		struct rnd_state *state;
-+
-+		/*
-+		 * An interrupt or NMI handler might interrupt and change
-+		 * the state in the middle, but that's safe.
-+		 */
-+		state = &get_cpu_var(slab_rnd_state);
-+		pos = prandom_u32_state(state) % freelist_count;
-+		put_cpu_var(slab_rnd_state);
-+	}
- 
- 	page_limit = slab->objects * s->size;
- 	start = fixup_red_left(s, slab_address(slab));
-@@ -3350,7 +3366,8 @@ static inline int init_cache_random_seq(struct kmem_cache *s)
- 	return 0;
- }
- static inline void init_freelist_randomization(void) { }
--static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
-+static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab,
-+				    bool allow_spin)
- {
- 	return false;
- }
-@@ -3441,7 +3458,7 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
- 	alloc_slab_obj_exts_early(s, slab);
- 	account_slab(slab, oo_order(oo), s, flags);
- 
--	shuffle = shuffle_freelist(s, slab);
-+	shuffle = shuffle_freelist(s, slab, allow_spin);
- 
- 	if (!shuffle) {
- 		start = fixup_red_left(s, start);
-@@ -8341,6 +8358,9 @@ void __init kmem_cache_init_late(void)
- {
- 	flushwq = alloc_workqueue("slub_flushwq", WQ_MEM_RECLAIM, 0);
- 	WARN_ON(!flushwq);
-+#ifdef CONFIG_SLAB_FREELIST_RANDOM
-+	prandom_init_once(&slab_rnd_state);
-+#endif
- }
- 
- int do_kmem_cache_create(struct kmem_cache *s, const char *name,
--- 
-2.43.0
+> >=20
+>=20
 
 
