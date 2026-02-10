@@ -4,100 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EC7CEF06ED
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 11:44:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16C1BE7E0DB
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 11:47:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 177C06B0005; Tue, 10 Feb 2026 06:44:19 -0500 (EST)
+	id 6D6B76B0005; Tue, 10 Feb 2026 06:47:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14F586B0088; Tue, 10 Feb 2026 06:44:19 -0500 (EST)
+	id 659956B0088; Tue, 10 Feb 2026 06:47:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 05B316B0089; Tue, 10 Feb 2026 06:44:19 -0500 (EST)
+	id 52E4F6B0089; Tue, 10 Feb 2026 06:47:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E65A56B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:44:18 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7CD8113B1E1
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:44:18 +0000 (UTC)
-X-FDA: 84428363796.08.704F37C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D4811A000C
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:44:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2WSgoei;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770723856; a=rsa-sha256;
-	cv=none;
-	b=es24TFkdHmB/vJbEwj5fXDSF52D3SezmWigfoMz8daVZP8AGeOWiY+l7kVYBg3wqzP8lJr
-	6TtfWcxaGRWznvDKcNXoAfnWEC69DjAh4gS/d5aNz1Psgu/wLSNi60ID1xJNX2+VCTCqcw
-	TdTr4rTofhB189ar3V7N6VZgSmOG41o=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L2WSgoei;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3D6BA6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 06:47:33 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D8A441C490
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:47:32 +0000 (UTC)
+X-FDA: 84428371944.21.C236E4C
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf21.hostedemail.com (Postfix) with ESMTP id CE6091C0007
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:47:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	spf=pass (imf21.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770723856;
+	s=arc-20220608; t=1770724051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DhfA+f26qy91GaqS70Xa5ZE/hVgVxhlLrt4vzPLjP+o=;
-	b=S5c4m2Nb22c05R7EqMtfZc4FUBpgysUZ3/plH/3timLcug3sUiiRdGqoH+/QqWUCkqnvzz
-	66Rf7UtUWN6/0l4T/J+CDGWODIgQIldIH+Ls7Tt+0aO9t1vRXr+amAwqauaJSHeS7gBf+s
-	REWPi1PxC8o/old0OEpYN32MaVpPfZ4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E669B60097;
-	Tue, 10 Feb 2026 11:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F44C116C6;
-	Tue, 10 Feb 2026 11:44:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770723855;
-	bh=c/LuO3h/ogw7+uxXHVt9bSCf4zxpAHJmVI4//b+328k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=L2WSgoeivO7hQ8rAteqrSiA4TPLeyzNT//Os4ZOCS3fjeqsDF3XViQQO2KGiy+zYX
-	 8vGdIcQAuGd3TzUIZZ+WZEccw5I8H6vq3U0h2eIujPuMR/dGFo2u8SrbDsKUM/AhS9
-	 ZxIJxLiEFR7J3hkN3c/q8glgYKto5zY6skueot3HuZoIS5BzrFORIy4zN0/qYtd1Qu
-	 C0yhDy8Bsk8V/MWWnHzkwta/Kw/pxBFPhcO/W99DGdhUneu535ZZ1YldZ4Ze08//e1
-	 mlAsDcbgqg/b4Tg7h7ATyF8W2Inffqnad9u3dZb6Zq7fJl3reu0glUQfy5QKsncSGG
-	 WC0OOy9qz4AWw==
-Date: Tue, 10 Feb 2026 13:44:06 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
-	Yong Hu <yong.hu@intel.com>, Nanhai Zou <nanhai.zou@intel.com>,
-	Yuan Liu <yuan1.liu@intel.com>,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>, Yu C Chen <yu.c.chen@intel.com>,
-	Pan Deng <pan.deng@intel.com>, Chen Zhang <zhangchen.kidd@jd.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
- zone->contiguous update when changes pfn range
-Message-ID: <aYsaBkMecDG595Xg@kernel.org>
-References: <20260130163756.2674225-1-tianyou.li@intel.com>
- <20260130163756.2674225-3-tianyou.li@intel.com>
- <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
- <aYjmcZ4hg9bNbmiY@kernel.org>
- <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
- <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=DNIyMnOCGyvarJHW49br60MVEWOCGgY6x0gAXVgS45o=;
+	b=ilVlvC0jh53kO/UpCfyryPvbtlw2l+zL/EgEY9OGh7KORHSYRtVHms03ooFNJR3aB2sphk
+	wEA1Xdmo8+h2QPfaJ0rcNz0S2cKrQSCpsbtt4/X63qksNnOnrvkCkJZQT0lLEkMK/71rbg
+	6dBSV7fOdNH/+PKi+iS06OnkAk3luko=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770724051; a=rsa-sha256;
+	cv=none;
+	b=z9gsJ2SdV/OaNUkRgjvt5sGUC39f9azY3lxXzyyW8EwJcvwEIdQQmG1hiN/dhhIO9OPf49
+	iDsUfXA5LsVPvUUOFc9QSdLsPYLtboQ3ydxVc6iTXxHxAZO2qYDVglFycEQRllG9iksfHm
+	a/9DZRHVkeGXjpjsO6KByKT3Uoj7nWs=
+X-AuditID: a67dfc5b-c45ff70000001609-d3-698b1accddd2
+From: Byungchul Park <byungchul@sk.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	horms@kernel.org,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ilias.apalodimas@linaro.org,
+	willy@infradead.org,
+	brauner@kernel.org,
+	kas@kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	almasrymina@google.com,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au,
+	dw@davidwei.uk,
+	ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: [PATCH v3] mm: introduce a new page type for page pool in page type
+Date: Tue, 10 Feb 2026 20:47:12 +0900
+Message-Id: <20260210114712.55072-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SfUzMcRzH9/19f/f7/Tqd/ZynX5nhNjM2ecr2YWn+8904Q8aw0U2/1XGF
+	60EZc9WNSiXycF2HS6NHjoseboUepGRKyQ7VJRR6QJGu2nLVGv+9935/Xq+/PhyWWyWenDok
+	TNSGqDQKRkpLe91vLn/heU698t2LhWCy5DOQNxQJWe3FEnDmd1Fgyi1E8Mv5noWxsmoEA1XP
+	GOiu7EeQmTGIwVSvp+G3ZRhDia0LwTfDHQY+V3ewkGdVguN2Jw2lZ4swdJyvYSBJP4KhzNnH
+	QkxxtktcoGOhoTBZApeGb2Eo0rWz0GQzMdCWPyaBzookGmqNOTT8uFyFwZG8EarNc2CwrgdB
+	laWIgsHEaww0p9koeFjWzEJqo5mBj3oHgsbKDhouj8YxkB6djGBkyKXsS/klgfSnbexGLxJt
+	tzOksuc7Jg9y3lLkjeECTeyPnlOkxNjKErM1nBRkLyMJ9kZMrLnxDLH2X2RJy5tShtQYRmhS
+	8mEdKSkeoEhSbB+zbfZeqU+AqFFHiNoVvv7SoKZWydHEPZE1mTqkQ5UkAblxAu8tjMVdZ6fy
+	z4KmiczwSwS73YnH8yxeKdwtfI0SkJTDfB8rlD7+w4wPM/ktQpPu1USm+cWC3po1Acv4tUKt
+	aYyalC4Q8u49wZP9DKE27ROdgDiXaIlguS4fr7HrJPZhOh73C3wLJ/Tm1KNJ1kMoz7bTKWi6
+	8T/c+A83/oebEc5FcnVIRLBKrfH2CooKUUd6HTwSbEWuT7p9anRfMepv8KtAPIcU7jL/L/Fq
+	uUQVERoVXIEEDitmyZTeZ9VyWYAq6oSoPXJAG64RQyvQPI5WzJWtHjweIOcDVWHiYVE8Kmqn
+	Vopz89ShQJ9p5S/N3rnnd1+to6yb3Cinn81hWeB/pevLfbpn+txpMRmaG82tYZnVsDUrz3Jn
+	R/eB2ecW7Uo9vEpzOiaj7MGZvS+DfPsNGyyfwo/pts/5uj/Wc/3nS0qmpTd1syNgkfu2pa2B
+	p55p9GuyPTT6x+HiaTa23DJ/WGk4lLrT5p54UkGHBqlWLcPaUNVfSmVJckUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRjG+853ds5pNTgts4MFxSqCSq3IeMMMI7CPyIoKukCXqQc9qFO2
+	NO0CM9dtNbtoYXOGFZmptZrXiVY4M2c32ywWXbyUdhNTM8uUbBZR/z08z+/9/fVyWJkl8+Mk
+	zS5Rq1HHqRg5LV8TnO7/wO+YNP9zqRws1mIGir6nwJXWShkMFr+jwFJYjqB/8AULIzX1CL7U
+	3WPgk6MPwaULAxgsjw00fLX+wGCveofgY/Y1Bjrq21kosoVDS34nDdWHKzC0n2hgwGQYwlAz
+	2M3CgcoCr7hEz4Ij1ymDpvIMGWT9uIyhQt/KgrvKwsDr4hEZdNaaaHCar9LQc6YOQ0tGKNTn
+	+cLA/S4EddYKCgaO5zLw9FwVBWU1T1nIdOUx8MbQgsDlaKfhzPARBnLSMhAMffcqu0/2yyDn
+	7ms2NJCkeTwMcXR9xqT06nOKPMs+RRPPrUaK2M2vWJJnSyIlBXOI0ePCxFZ4lCG2vtMsefms
+	miEN2UM0sbctIfbKLxQxpXcz63y3ypdGiXFSsqgNXLZTHuN+JUs8viWl4ZIe6ZGDGNFYTuAX
+	Cb0lbnY0M/xsweMZxKPZhw8Xrpc3IyOSc5jvZoXq29+Y0WEiv1pw65/8zjQ/SzDYrvw+VvBB
+	gtMyQv2RThOKbtzBf/oJgvPcW9qIOK9otmA9rxytsRdJL8vBJ9E483+U+R9l/o/KQ7gQ+Uia
+	5Hi1FBcUoIuNSdVIKQGRCfE25P2V/P3DpypRv3tlLeI5pBqvEIxGSSlTJ+tS42uRwGGVjyJ8
+	0WFJqYhSp+4RtQk7tElxoq4WTeFo1WTFqk3iTiUfrd4lxopioqj9u1LcWD89WhwUsc8088SY
+	qbb4bf5n833Wlg5tRj/nakKWT5J6Hz3PnuGeJ9/REN7TsX5qCJXxxGZeMfxQ53aF5ZDQ8zfb
+	9GFVdFTL3u2NvvOmXCyL7HNZl+0OKIiOCBSCj0QNJBo+bUnKfG/fsNrk3L25+cOdmsgm5cJx
+	nRunxxw85ApbKwmxsSpaF6NeMAdrdepf9kDtrCcDAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CE6091C0007
+X-Stat-Signature: jx3euufkxay8bcbfhpyjo9q1yu1euden
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: D4811A000C
-X-Stat-Signature: rsujch8e3uie6s71p3619ycfxfodmhnd
-X-HE-Tag: 1770723856-960927
-X-HE-Meta: U2FsdGVkX18X/PmvTRdk6hp37KgU3h77tzxGegKx24d2mtBT98LUSgWM5t6WhDzBhNd8XXz5o+1aKHjaELhPx45jXrAUrC0Wv89ZXOJmHtzd7h3/w/mkYxSP6YuN2VPUJkQTnd6kvrDfPOwkgW3FHvQ/yRI3KSEthtY1K9a2/eTCmdPukn28APhgBjOcYpGr0fFgs7OTLX7QwXd0FIb0cL6GWiJv+Wb/70Xm1qEf0wXQQ0yKkWY6xF1WyHNjY2FZPS/1P5K9xfUihl6bmg5KT2O1nULtnXIiroQEvVPpz3ON+7K51btTGX6UsFqOdv01lX310sYVv/koDF9S3wuFrROv0QEHbgyJtWwmZmeHXwNjh2S5Rfq+BNNZtcCur/Cj8+6WDOe1eIxRGi4X06NiebgdnrQGCv4BdEIr4TbeWkQrVr1jX/5+IgkgL1KXakD5SyRvOv3cqQUyk9M+uM+gn7EBWbpqN/W2M6ejjCGYk5DxshXLf6zStIi1q8GGmSFMZOPg3JRKr+mwuBxqOLqUr5Z4pUv01EvimUoZDI7fOrVt0wBYYZ5UvCBrpYF4CAxQFvYJjM0+hdvML2SpMCPgJW5riWe/GiaguDq5pvy/WFwt1fAn0Bq1HcfQuk8uoFU1mgDQT95K/yHDHl4Qllg086UBRWtJVRHQLwm6b+DKDH2mvd5McUgmW3h8QqkGQZVyMIKQs0t+d2bdRDCJfnomkD2sKxX0FvqdsXHkuxulqe5p4JbscFlV4Yz8e7NoMxiRePi4/ddYoZ+O7OsjWdhz/KUHE9iEUo5Bjc/B82g6QfhX1y3rgYN/PZSXRArjPPHcq9SnYxKE8lceL9SQgL8yNrkQBGItJ4OjzLbZnMEoS0Dg9og7mBdCBt9baL1hKZaIzNDEsYUZyiRvFp21bFKMV/hBbal+IHmKpbn3addwcs0UW9sLuw/Z2ZdCMxXMCMxAioexJRzREfnJFZv67aq
- XA7aVAT1
- lgkOJdYiDdDmGz8uyq4QKh1vvdlHKzTqzKb/nONrTZKTb7NyTanaAQg947NDCEbS2farzgy1c597qKju/yFh+Q7iLuQ/a5jDzXSg/s14WD/oK1Q2Cn0avx00HcmmQ8CUkZOkBpy3WRoca0v0J9/bfI2vQjOwkjpkgoRvgz5/njsBykj9Mp1R3Eo16Zpqgnn7kUL+5f1ErgxwsAovJCVWuM0nBrTaY0OXW7Gn/tst4T08iOjH9Y+/ZVzXLsqifIvWkxFkxfp5VkZgkEZX6QTfAM60/vLf5JXkY+JtljyUav33M95FFRRn3fQLa9W9qShLy/wxMoR72mBMqtdAr+M4lD5Y+U4ojZB38wbVdRURoow11x6C0o5EWzNaFhg==
+X-HE-Tag: 1770724048-132395
+X-HE-Meta: U2FsdGVkX1+ruhnz3HBH9e16kwOE422tq/fWe/3lF6LOrA7hajMbcSRG+DDkzcpfEu9VvO8KbfY3EUnzKM42rcLuYjm2iCOeK/yLT9BFPgWQ4QU1ViGIIHxDAXVQW4TfrbEIEPQTCZaGACl61ORsAZMKGMUsjReJDHLp9D5bFdwf3qDjRdsB8Vf9VV0H2jw1zCjPoAHexV89bmX/iX3e5trqnLE5q/cqLfv3cBjJvdHmHLJ6jbjJ6BHVAqQqS1VE5wbsiJPuAKQsyM6JKTzTAJTCP7tyDXHnyR01l6k/GzZm7v2J0hgeo+/BArhvz3JFomjVWDNWUSENPAMMoo/CoGuOBTOdYPVPFZuxFEfral23AJQdiq+LBiUGBuoc/Qr2lv0FuqlBfJ8DjGYfISTYAhghvV8APkch+WlTp3olf+YbscUY2iM/d5JR1YtqgKtqIE8rcgrMChXgauNu2UUfQYSWtN55dNdqsl/pZjV/vnjxGL336jhZyhVQrjkEtjWxEWJd1JMJ1qiwIHljnq9XWohIESUjgaDHZrNFvY2w1FSGcuTxYB6XuAWhnF+7AUA1HqTMak9Fis+FPpvNqkLqsSqiYUAZS+Y3T8MJBCiMs4PQsOOVJlZPgJOaH+Rz88ZKHP7e2NrL33qZVqT7fboZkbTG6kLhIFt/mou6eBdqxgw9uKAPqR1jSvNWXJJqYde5I+/uBMkd5Zr+OfmCdVG3vDsxGn/hSq6El/Q8t1cPY65pR9uLC/dQAhd3UJmGRGDXgQUFNzsWDZtgPay7SNN4QdS+Qqh2YLjX+NiPmXopeOjW38v0p3Ml/cpSYf0p/YlNhyUZbV954fnPyWSrX2+0dhH63QwZR+m1bCH0gPOIbVmTVj25l23POkdSrJ8DIqUa/ch3ZSx2NRRdunMv0w6zUcSyQo1Z/fidAJMeRmYO1C3YOiphUmMfnmcPC/Z/tHkLvtnWCjb2mqgOIkMTaov
+ rvfQoW98
+ bRhvmdeje/YgnM5oE6x6+n2CimBS6dDrSVFVPNHV5K0Lrsh/ZmBkI1ujaJK9YvvcRA64hLe6etlMxsrKmGbXqemu08gWJeNs3riyEYGQGwW/rp1tJ2RFUlvCN6tjdXbd9dG76niMi8Xcz5j5Lc/TIpQriEY42ECAva5nlZMjKeDWVsf5H3leJL/CVm8GxW9ejXT8ZbOSth/T4upAAI+LJ2Nb+lQ73jPxPYzf7/VcrIeRAdDo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,361 +149,301 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 09, 2026 at 01:44:45PM +0100, David Hildenbrand (Arm) wrote:
-> On 2/9/26 11:52, David Hildenbrand (Arm) wrote:
-> > On 2/8/26 20:39, Mike Rapoport wrote:
-> > > On Sat, Feb 07, 2026 at 12:00:09PM +0100, David Hildenbrand (Arm) wrote:
-> > > > 
-> > > > Thanks for all your work on this and sorry for being slower with
-> > > > review the last month.
-> > > > 
-> > > > While I was in the shower I was thinking about how much I hate
-> > > > zone->contiguous + the pageblock walking, and how we could just get
-> > > > rid of it.
-> > > > 
-> > > > You know, just what you do while having a relaxing shower.
-> > > > 
-> > > > 
-> > > > And I was wondering:
-> > > > 
-> > > > (a) in which case would we have zone_spanned_pages == zone_present_pages
-> > > > and the zone *not* being contiguous? I assume this just cannot happen,
-> > > > otherwise BUG.
-> > > > 
-> > > > (b) in which case would we have zone_spanned_pages != zone_present_pages
-> > > > and the zone *being* contiguous? I assume in some cases where we
-> > > > have small
-> > > > holes within a pageblock?
-> > > > 
-> > > > Reading the doc of __pageblock_pfn_to_page(), there are some weird
-> > > > scenarios with holes in pageblocks.
-> > > It seems that "zone->contigous" is really bad name for what this thing
-> > > represents.
-> > > 
-> > > tl;dr I don't think zone_spanned_pages == zone_present_pages is
-> > > related to
-> > > zone->contigous at all :)
-> > 
-> > My point in (a) was that with "zone_spanned_pages == zone_present_pages"
-> > there are no holes so -> contiguous.
-> > 
-> > (b), and what I said further below, is exactly about memory holes where
-> > we have a memmap, but it's not present memory.
-> > 
-> > > 
-> > > If you look at pageblock_pfn_to_page() and __pageblock_pfn_to_page(), the
-> > > check for zone->contigous should guarantee that the entire pageblock
-> > > has a
-> > > valid memory map and that the entire pageblock fits a zone and does not
-> > > cross zone/node boundaries.
-> > 
-> > Right. But that must hold for each and ever pageblock in the spanned
-> > zone range for it to be contiguous.
-> > 
-> > zone->contigous tells you "pfn_to_page()" is valid on the complete zone
-> > range"
-> > 
-> > That's why set_zone_contiguous() probes __pageblock_pfn_to_page() on ech
-> > and ever pageblock.
-> > 
-> > > 
-> > > For coldplug memory the memory map is valid for every section that has
-> > > present memory, i.e. even it there is a hole in a section, it's
-> > > memory map
-> > > will be populated and will have struct pages.
-> > 
-> > There is this sub-section thing, and holes larger than a section might
-> > not have a memmap (unless reserved I guess).
-> > 
-> > > 
-> > > When zone->contigous is false, the slow path in __pageblock_pfn_to_page()
-> > > essentially checks if the first page in a pageblock is online and if
-> > > first
-> > > and last pages are in the zone being compacted.
-> > > AFAIU, in the hotplug case an entire pageblock is always onlined to the
-> > > same zone, so zone->contigous won't change after the hotplug is complete.
-> > 
-> > I think you are missing a point: hotp(un)plug might create holes in the
-> > zone span. Then, pfn_to_page() is no longer valid to be called on
-> > arbitrary pageblocks within the zone.
-> > 
-> > > 
-> > > We might set it to false in the beginning of the hotplug to avoid
-> > > scanning
-> > > offline pages, although I'm not sure if it's possible.
-> > > 
-> > > But in the end of hotplug we can simply restore the old value and
-> > > move on.
-> > 
-> > No, you might create holes.
-> > 
-> > > 
-> > > For the coldplug case I'm also not sure it's worth the hassle, we could
-> > > just let compaction scan a few more pfns for those rare weird pageblocks
-> > > and bail out on wrong page conditions.
-> > 
-> > To recap:
-> > 
-> > My idea is that "zone_spanned_pages == zone_present_pages" tells you
-> > that the zone is contiguous because there are no holes.
-> > 
-> > To handle "non-memory with a struct page", you'd have to check
-> > 
-> >      "zone_spanned_pages == zone_present_pages +
-> >           zone_non_present_memmap_pages"
-> > 
-> > Or shorter
-> > 
-> >      "zone_spanned_pages == zone_pages_with_memmap"
-> > 
-> > Then, pfn_to_page() is valid within the complete zone.
-> > 
-> > The question is how to best calculate the "zone_pages_with_memmap"
-> > during boot.
-> > 
-> > During hot(un)plug we only add/remove zone_present_pages. The
-> > zone_non_present_memmap_pages will not change due to hot(un)plug later.
-> > 
-> 
-> The following hack does the trick. But
-> 
-> (a) I wish we could get rid of the pageblock walking in calc_online_pages().
-> (b) "online_pages" has weird semantics due to the pageblock handling.
->     "online_pageblock_pages"? not sure.
-> (c) Calculating "online_pages" when we know there is a hole does not make sense,
->     as we could just keep it 0 if there are holes and simply set it to
->     zone->online_pageblock_pages->zone->spanned_pages in case all are online.
-> 
-> 
-> From d4cb825e91a6363afc68fb994c5d9b29c38c5f42 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> Date: Mon, 9 Feb 2026 13:40:24 +0100
-> Subject: [PATCH] tmp
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
->  include/linux/mmzone.h | 25 +++++++++++++++++++++++--
->  mm/internal.h          |  8 +-------
->  mm/memory_hotplug.c    | 20 ++++++--------------
->  mm/mm_init.c           | 12 ++++++------
->  4 files changed, 36 insertions(+), 29 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index fc5d6c88d2f0..3f7d8d88c597 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -943,6 +943,11 @@ struct zone {
->  	 * cma pages is present pages that are assigned for CMA use
->  	 * (MIGRATE_CMA).
->  	 *
-> +	 * online_pages is pages within the zone that have an online memmap.
-> +	 * online_pages include present pages and memory holes that have a
-> +	 * memmap. When spanned_pages == online_pages, pfn_to_page() can be
-> +	 * performed without further checks on any pfn within the zone span.
+Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+determine if a page belongs to a page pool.  However, with the planned
+removal of @pp_magic, we should instead leverage the page_type in struct
+page, such as PGTY_netpp, for this purpose.
 
-Maybe pages_with_memmap? It would stand off from managed, spanned and
-present, but it's clearer than online IMHO.
+Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+and __ClearPageNetpp() instead, and remove the existing APIs accessing
+@pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+netmem_clear_pp_magic().
 
-> +	 *
->  	 * So present_pages may be used by memory hotplug or memory power
->  	 * management logic to figure out unmanaged pages by checking
->  	 * (present_pages - managed_pages). And managed_pages should be used
-> @@ -967,6 +972,7 @@ struct zone {
->  	atomic_long_t		managed_pages;
->  	unsigned long		spanned_pages;
->  	unsigned long		present_pages;
-> +	unsigned long		online_pages;
->  #if defined(CONFIG_MEMORY_HOTPLUG)
->  	unsigned long		present_early_pages;
->  #endif
-> @@ -1051,8 +1057,6 @@ struct zone {
->  	bool			compact_blockskip_flush;
->  #endif
-> -	bool			contiguous;
-> -
->  	CACHELINE_PADDING(_pad3_);
->  	/* Zone statistics */
->  	atomic_long_t		vm_stat[NR_VM_ZONE_STAT_ITEMS];
-> @@ -1124,6 +1128,23 @@ static inline bool zone_spans_pfn(const struct zone *zone, unsigned long pfn)
->  	return zone->zone_start_pfn <= pfn && pfn < zone_end_pfn(zone);
->  }
-> +/**
-> + * zone_is_contiguous - test whether a zone is contiguous
-> + * @zone: the zone to test.
-> + *
-> + * In a contiguous zone, it is valid to call pfn_to_page() on any pfn in the
-> + * spanned zone without requiting pfn_valid() or pfn_to_online_page() checks.
-> + *
-> + * Returns: true if contiguous, otherwise false.
-> + */
-> +static inline bool zone_is_contiguous(const struct zone *zone)
-> +{
-> +	return READ_ONCE(zone->spanned_pages) == READ_ONCE(zone->online_pages);
-> +}
-> +
->  static inline bool zone_is_initialized(const struct zone *zone)
->  {
->  	return zone->initialized;
-> diff --git a/mm/internal.h b/mm/internal.h
-> index f35dbcf99a86..6062f9b8ee62 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -716,21 +716,15 @@ extern struct page *__pageblock_pfn_to_page(unsigned long start_pfn,
->  static inline struct page *pageblock_pfn_to_page(unsigned long start_pfn,
->  				unsigned long end_pfn, struct zone *zone)
->  {
-> -	if (zone->contiguous)
-> +	if (zone_is_contiguous(zone))
->  		return pfn_to_page(start_pfn);
->  	return __pageblock_pfn_to_page(start_pfn, end_pfn, zone);
->  }
-> -void set_zone_contiguous(struct zone *zone);
->  bool pfn_range_intersects_zones(int nid, unsigned long start_pfn,
->  			   unsigned long nr_pages);
-> -static inline void clear_zone_contiguous(struct zone *zone)
-> -{
-> -	zone->contiguous = false;
-> -}
-> -
->  extern int __isolate_free_page(struct page *page, unsigned int order);
->  extern void __putback_isolated_page(struct page *page, unsigned int order,
->  				    int mt);
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index a63ec679d861..76496c1039a9 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -492,11 +492,11 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
->  		pfn = find_smallest_section_pfn(nid, zone, end_pfn,
->  						zone_end_pfn(zone));
->  		if (pfn) {
-> -			zone->spanned_pages = zone_end_pfn(zone) - pfn;
-> +			WRITE_ONCE(zone->spanned_pages, zone_end_pfn(zone) - pfn);
->  			zone->zone_start_pfn = pfn;
->  		} else {
->  			zone->zone_start_pfn = 0;
-> -			zone->spanned_pages = 0;
-> +			WRITE_ONCE(zone->spanned_pages, 0);
->  		}
->  	} else if (zone_end_pfn(zone) == end_pfn) {
->  		/*
-> @@ -508,10 +508,10 @@ static void shrink_zone_span(struct zone *zone, unsigned long start_pfn,
->  		pfn = find_biggest_section_pfn(nid, zone, zone->zone_start_pfn,
->  					       start_pfn);
->  		if (pfn)
-> -			zone->spanned_pages = pfn - zone->zone_start_pfn + 1;
-> +			WRITE_ONCE(zone->spanned_pages, pfn - zone->zone_start_pfn + 1);
->  		else {
->  			zone->zone_start_pfn = 0;
-> -			zone->spanned_pages = 0;
-> +			WRITE_ONCE(zone->spanned_pages, 0);
->  		}
->  	}
->  }
-> @@ -565,18 +565,13 @@ void remove_pfn_range_from_zone(struct zone *zone,
->  	/*
->  	 * Zone shrinking code cannot properly deal with ZONE_DEVICE. So
-> -	 * we will not try to shrink the zones - which is okay as
-> -	 * set_zone_contiguous() cannot deal with ZONE_DEVICE either way.
-> +	 * we will not try to shrink the zones.
->  	 */
->  	if (zone_is_zone_device(zone))
->  		return;
-> -	clear_zone_contiguous(zone);
-> -
->  	shrink_zone_span(zone, start_pfn, start_pfn + nr_pages);
->  	update_pgdat_span(pgdat);
-> -
-> -	set_zone_contiguous(zone);
->  }
->  /**
-> @@ -753,8 +748,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
->  	struct pglist_data *pgdat = zone->zone_pgdat;
->  	int nid = pgdat->node_id;
-> -	clear_zone_contiguous(zone);
-> -
->  	if (zone_is_empty(zone))
->  		init_currently_empty_zone(zone, start_pfn, nr_pages);
->  	resize_zone_range(zone, start_pfn, nr_pages);
-> @@ -782,8 +775,6 @@ void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
->  	memmap_init_range(nr_pages, nid, zone_idx(zone), start_pfn, 0,
->  			 MEMINIT_HOTPLUG, altmap, migratetype,
->  			 isolate_pageblock);
-> -
-> -	set_zone_contiguous(zone);
->  }
->  struct auto_movable_stats {
-> @@ -1079,6 +1070,7 @@ void adjust_present_page_count(struct page *page, struct memory_group *group,
->  	if (early_section(__pfn_to_section(page_to_pfn(page))))
->  		zone->present_early_pages += nr_pages;
->  	zone->present_pages += nr_pages;
-> +	WRITE_ONCE(zone->online_pages,  zone->online_pages + nr_pages);
->  	zone->zone_pgdat->node_present_pages += nr_pages;
->  	if (group && movable)
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 2a809cd8e7fa..e33caa6fb6fc 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2263,9 +2263,10 @@ void __init init_cma_pageblock(struct page *page)
->  }
->  #endif
-> -void set_zone_contiguous(struct zone *zone)
-> +static void calc_online_pages(struct zone *zone)
->  {
->  	unsigned long block_start_pfn = zone->zone_start_pfn;
-> +	unsigned long online_pages = 0;
->  	unsigned long block_end_pfn;
->  	block_end_pfn = pageblock_end_pfn(block_start_pfn);
-> @@ -2277,12 +2278,11 @@ void set_zone_contiguous(struct zone *zone)
->  		if (!__pageblock_pfn_to_page(block_start_pfn,
->  					     block_end_pfn, zone))
-> -			return;
-> +			continue;
->  		cond_resched();
-> +		online_pages += block_end_pfn - block_start_pfn;
+Plus, add @page_type to struct net_iov at the same offset as struct page
+so as to use the page_type APIs for struct net_iov as well.  While at it,
+reorder @type and @owner in struct net_iov to avoid a hole and
+increasing the struct size.
 
-I think we can completely get rid of this with something like this untested
-patch to calculate zone->online_pages for coldplug:
+This work was inspired by the following link:
 
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index e33caa6fb6fc..ff2f75e7b49f 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -845,9 +845,9 @@ overlap_memmap_init(unsigned long zone, unsigned long *pfn)
-  *   zone/node above the hole except for the trailing pages in the last
-  *   section that will be appended to the zone/node below.
-  */
--static void __init init_unavailable_range(unsigned long spfn,
--					  unsigned long epfn,
--					  int zone, int node)
-+static u64 __init init_unavailable_range(unsigned long spfn,
-+					 unsigned long epfn,
-+					 int zone, int node)
- {
- 	unsigned long pfn;
- 	u64 pgcnt = 0;
-@@ -861,6 +861,8 @@ static void __init init_unavailable_range(unsigned long spfn,
- 	if (pgcnt)
- 		pr_info("On node %d, zone %s: %lld pages in unavailable ranges\n",
- 			node, zone_names[zone], pgcnt);
+  https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+
+While at it, move the sanity check for page pool to on the free path.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Toke HÃ¸iland-JÃ¸rgensen <toke@redhat.com>
+---
+The following 'Acked-by's were given only for mm part:
+
+  Acked-by: David Hildenbrand <david@redhat.com>
+  Acked-by: Zi Yan <ziy@nvidia.com>
+
+This patch changes both mm and page-pool, but I'm currently targetting
+mm tree because Jakub asked and I also think it's more about mm change.
+See the following link:
+
+  https://lore.kernel.org/all/20250813075212.051b5178@kernel.org/
+
+Changes from v2:
+	1. Fix a issue reported by kernel test robot due to incorrect
+	   type in argument of __netmem_to_page().
+
+Changes from v1:
+	1. Drop the finalizing patch removing the pp fields of struct
+	   page since I found that there is still code accessing a pp
+	   field via struct page.  I will retry the finalizing patch
+	   after resolving the issue.
+---
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
+ include/linux/mm.h                            | 27 +++----------------
+ include/linux/page-flags.h                    |  6 +++++
+ include/net/netmem.h                          | 15 +++++++++--
+ mm/page_alloc.c                               | 11 +++++---
+ net/core/netmem_priv.h                        | 23 +++++++---------
+ net/core/page_pool.c                          | 24 +++++++++++++++--
+ 7 files changed, 62 insertions(+), 46 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 80f9fc10877ad..7d90d2485c787 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+ 				page = xdpi.page.page;
+ 
+-				/* No need to check page_pool_page_is_pp() as we
++				/* No need to check PageNetpp() as we
+ 				 * know this is a page_pool page.
+ 				 */
+ 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index f8a8fd47399c4..15465f1bd68fc 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4839,10 +4839,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+  * DMA mapping IDs for page_pool
+  *
+  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
+- * stashes it in the upper bits of page->pp_magic. We always want to be able to
+- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
+- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
+- * (since it overlaps with page->lru.next), so we must ensure that we cannot
++ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
++ * arbitrary kernel pointers stored in the same field as pp_magic (since
++ * it overlaps with page->lru.next), so we must ensure that we cannot
+  * mistake a valid kernel pointer with any of the values we write into this
+  * field.
+  *
+@@ -4877,26 +4876,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+ #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+ 				  PP_DMA_INDEX_SHIFT)
+ 
+-/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+- * bits used for the DMA index. page_is_pfmemalloc() is checked in
+- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+- */
+-#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
+-
+-#ifdef CONFIG_PAGE_POOL
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+-}
+-#else
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return false;
+-}
+-#endif
+-
+ #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+ #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+ #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index f7a0e4af0c734..39a21ee87b437 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -934,6 +934,7 @@ enum pagetype {
+ 	PGTY_zsmalloc		= 0xf6,
+ 	PGTY_unaccepted		= 0xf7,
+ 	PGTY_large_kmalloc	= 0xf8,
++	PGTY_netpp		= 0xf9,
+ 
+ 	PGTY_mapcount_underflow = 0xff
+ };
+@@ -1066,6 +1067,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+ PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+ PAGE_TYPE_OPS(LargeKmalloc, large_kmalloc, large_kmalloc)
+ 
++/*
++ * Marks page_pool allocated pages.
++ */
++PAGE_TYPE_OPS(Netpp, netpp, netpp)
 +
-+	return pgcnt;
+ /**
+  * PageHuge - Determine if the page belongs to hugetlbfs
+  * @page: The page to test.
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index 9e10f4ac50c3d..2a73b68f16b15 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -110,10 +110,21 @@ struct net_iov {
+ 			atomic_long_t pp_ref_count;
+ 		};
+ 	};
+-	struct net_iov_area *owner;
++
++	unsigned int page_type;
+ 	enum net_iov_type type;
++	struct net_iov_area *owner;
+ };
+ 
++/* Make sure 'the offset of page_type in struct page == the offset of
++ * type in struct net_iov'.
++ */
++#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
++	static_assert(offsetof(struct page, pg) ==	\
++		      offsetof(struct net_iov, iov))
++NET_IOV_ASSERT_OFFSET(page_type, page_type);
++#undef NET_IOV_ASSERT_OFFSET
++
+ struct net_iov_area {
+ 	/* Array of net_iovs for this area. */
+ 	struct net_iov *niovs;
+@@ -256,7 +267,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
+  */
+ #define pp_page_to_nmdesc(p)						\
+ ({									\
+-	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
++	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
+ 	__pp_page_to_nmdesc(p);						\
+ })
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 81a9789c40013..206bfe98af285 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1079,7 +1079,6 @@ static inline bool page_expected_state(struct page *page,
+ #ifdef CONFIG_MEMCG
+ 			page->memcg_data |
+ #endif
+-			page_pool_page_is_pp(page) |
+ 			(page->flags.f & check_flags)))
+ 		return false;
+ 
+@@ -1106,8 +1105,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+ 	if (unlikely(page->memcg_data))
+ 		bad_reason = "page still charged to cgroup";
+ #endif
+-	if (unlikely(page_pool_page_is_pp(page)))
+-		bad_reason = "page_pool leak";
+ 	return bad_reason;
  }
  
- /*
-@@ -959,9 +961,10 @@ static void __init memmap_init_zone_range(struct zone *zone,
- 	memmap_init_range(end_pfn - start_pfn, nid, zone_id, start_pfn,
- 			  zone_end_pfn, MEMINIT_EARLY, NULL, MIGRATE_MOVABLE,
- 			  false);
-+	zone->online_pages += (end_pfn - start_pfn);
+@@ -1416,9 +1413,15 @@ __always_inline bool __free_pages_prepare(struct page *page,
+ 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+ 		folio->mapping = NULL;
+ 	}
+-	if (unlikely(page_has_type(page)))
++	if (unlikely(page_has_type(page))) {
++		/* networking expects to clear its page type before releasing */
++		if (unlikely(PageNetpp(page))) {
++			bad_page(page, "page_pool leak");
++			return false;
++		}
+ 		/* Reset the page_type (which overlays _mapcount) */
+ 		page->page_type = UINT_MAX;
++	}
  
- 	if (*hole_pfn < start_pfn)
--		init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
-+		zone->online_pages += init_unavailable_range(*hole_pfn, start_pfn, zone_id, nid);
- 
- 	*hole_pfn = end_pfn;
+ 	if (is_check_pages_enabled()) {
+ 		if (free_page_is_bad(page))
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 23175cb2bd866..02fbc4545ffa9 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -8,21 +8,18 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
+ 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
  }
-
+ 
+-static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
+-{
+-	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
+-}
+-
+-static inline void netmem_clear_pp_magic(netmem_ref netmem)
+-{
+-	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
+-
+-	netmem_to_nmdesc(netmem)->pp_magic = 0;
+-}
+-
+ static inline bool netmem_is_pp(netmem_ref netmem)
+ {
+-	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
++	netmem_ref clr_ref;
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	clr_ref = (netmem_ref)((__force unsigned long)netmem & ~NET_IOV);
++	return PageNetpp(__netmem_to_page(clr_ref));
+ }
+ 
+ static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 265a729431bb7..32a13a065ad30 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -702,8 +702,18 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ 
+ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
++	netmem_ref clr_ref;
++
+ 	netmem_set_pp(netmem, pool);
+-	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	clr_ref = (netmem_ref)((__force unsigned long)netmem & ~NET_IOV);
++	__SetPageNetpp(__netmem_to_page(clr_ref));
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+ 	 * page_pool_set_pp_info() is only called once for every page when it
+@@ -718,7 +728,17 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 
+ void page_pool_clear_pp_info(netmem_ref netmem)
+ {
+-	netmem_clear_pp_magic(netmem);
++	netmem_ref clr_ref;
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	clr_ref = (netmem_ref)((__force unsigned long)netmem & ~NET_IOV);
++	__ClearPageNetpp(__netmem_to_page(clr_ref));
++
+ 	netmem_set_pp(netmem, NULL);
+ }
+ 
 -- 
-Sincerely yours,
-Mike.
+2.17.1
+
 
