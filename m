@@ -4,183 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49636EB26E9
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:42:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38650EB26E9
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:44:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E9CF6B0005; Tue, 10 Feb 2026 11:42:28 -0500 (EST)
+	id 7A9286B0089; Tue, 10 Feb 2026 11:44:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 597D16B0089; Tue, 10 Feb 2026 11:42:28 -0500 (EST)
+	id 757056B008A; Tue, 10 Feb 2026 11:44:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 479746B008A; Tue, 10 Feb 2026 11:42:28 -0500 (EST)
+	id 6804E6B008C; Tue, 10 Feb 2026 11:44:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3813B6B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:42:28 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C62C91405FA
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:42:27 +0000 (UTC)
-X-FDA: 84429115134.21.EB631CE
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3662940009
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:42:24 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MmwFjtpI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+H8pOSBx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MmwFjtpI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+H8pOSBx;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 521996B0089
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:44:56 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 27B1C8C19F
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:44:56 +0000 (UTC)
+X-FDA: 84429121392.18.D262A43
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 773082000A
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:44:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t5cIAjV0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770741745;
+	s=arc-20220608; t=1770741894;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=USoLikAerZRv3MReWwa4j20dP6GBkJFN1kwtKunN8SI=;
-	b=NeREuZ8IG93YIo5iMZ+i+d6PphK09i6j+P2bDp+0iJTE5+Xh8P794E2EzgcYksN2Xg9nlt
-	96cqWgV5WtjS62kL06+7YzuRKCKMt+7GXBeT0nYbWVU2vRQXQSLr5OcX/+Lb0yedkjcjD0
-	O2Js5eslBqi9X5ZUVdfz7qlZiyVi774=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MmwFjtpI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+H8pOSBx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MmwFjtpI;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=+H8pOSBx;
-	spf=pass (imf07.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770741745; a=rsa-sha256;
+	bh=TSplslQth4HakT6Lf4hfia4DuU001LaXkJo8b0hRA9U=;
+	b=Up7Ioi2uM+OTvljZBf2AVIK0c5ysCs+HMqIIWu2gtszObhigQpWqGx3CZ57ZmHsBA1yFv3
+	BOD7d//tZATHzq6geYlXPbo5/MHF5cNzLpEXe96QjAm+wa5dtbedPN6AFja2IRvoxYHCGb
+	Iz2Fbqr4v0Jz5nvPw7Qpt4wJAvBIFPk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770741894; a=rsa-sha256;
 	cv=none;
-	b=YT5F17nVua23Js/DSNtNxIBZ0PcRk5p8pZqiodHIFibLZSkWtxejVqwaGS0/pf9mnku+ci
-	WD0nG+oJgxsfwDFAvfmGCubCjVo7/dtGPxwjLWA8g8DR+8rkmtUsU5Nev+j1ngfCybdp6L
-	nctY3wKRJbmEw0MJ5yzHrM2/1JihuTo=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2F86B5BD6B;
-	Tue, 10 Feb 2026 16:42:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770741743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=USoLikAerZRv3MReWwa4j20dP6GBkJFN1kwtKunN8SI=;
-	b=MmwFjtpIPDEIl2vxov+/gYVl1xz901bss+y63s52uS9ZEiemSCpJyMnWXpj5g9VLNPMgtk
-	ZEs3zirJHjWbzIpNfsXgO9OW/jBFJxXPRZFI+h25xTm6L7pd8BIrd9jtzKZPcNEcqTXjJe
-	9ZgU4wobjoYtwJTMdvP/4Yu7aF3+DMs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770741743;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=USoLikAerZRv3MReWwa4j20dP6GBkJFN1kwtKunN8SI=;
-	b=+H8pOSBxdHMKysWrhnAQxA76eY15Rl1pmx6/8SmrTh316iQS7Uag/YuGQkpJAbGfT1YW9f
-	8oCPEBWI8bqyFcAA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770741743; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=USoLikAerZRv3MReWwa4j20dP6GBkJFN1kwtKunN8SI=;
-	b=MmwFjtpIPDEIl2vxov+/gYVl1xz901bss+y63s52uS9ZEiemSCpJyMnWXpj5g9VLNPMgtk
-	ZEs3zirJHjWbzIpNfsXgO9OW/jBFJxXPRZFI+h25xTm6L7pd8BIrd9jtzKZPcNEcqTXjJe
-	9ZgU4wobjoYtwJTMdvP/4Yu7aF3+DMs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770741743;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=USoLikAerZRv3MReWwa4j20dP6GBkJFN1kwtKunN8SI=;
-	b=+H8pOSBxdHMKysWrhnAQxA76eY15Rl1pmx6/8SmrTh316iQS7Uag/YuGQkpJAbGfT1YW9f
-	8oCPEBWI8bqyFcAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D9F393EA62;
-	Tue, 10 Feb 2026 16:42:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id g5F6M+5fi2k6XQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 10 Feb 2026 16:42:22 +0000
-Message-ID: <3a5ef8c7-3a75-4014-b565-540af09f7d06@suse.cz>
-Date: Tue, 10 Feb 2026 17:42:22 +0100
+	b=7EogCLI0NflqBoFUVevzaT6P2w4XtTrVF92ytmWxgLcZ/CRdmv/42RBLwNMwd4nE+pFAaU
+	+b+4b2jRQP3gEaaSSkAXCRCzNcbjdXhHlUMf1z/3xAX06xzI/49J/RsighL/+52PjVjL9i
+	hTYz0bi28OwF5MpnqDH1gkpLmHsLS+c=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=t5cIAjV0;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F14560097;
+	Tue, 10 Feb 2026 16:44:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F198C19425;
+	Tue, 10 Feb 2026 16:44:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770741893;
+	bh=ORE3cLC1BF2Tpcff5rGilSnuUUkcmfnBkr0UpJFyaho=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=t5cIAjV0w0eD3o/U5mUoo0u3nku/rYzUWjSKXhM2/DL1t+1YrAP2bGDy+6xOyTnhX
+	 KAQhWxdiByuJpc48yB7KFtG4nS8BD3aNUPFJPuq3TlQ/fmRbUSkadxjBtmuIdzamwm
+	 eX82YuhwxEzllhbvIf+xGdiUBVcbdPUGL3ngw1eFAQ+VEzHB+lLiuzo8xeLyqSxinp
+	 gH+OKsMXE9LsjfFSknw5OEI577OLOcVlsxd7P1sX7NrNsoS7S/VvxIcokb9aZq82sq
+	 KRsZvfc9d+4oZrBRU+W1LJEPSkr4KUu9EuxRS30uJpB2MdIHXs3cOTsJfeoFFCVH04
+	 I/ddVaMz1z71w==
+Date: Tue, 10 Feb 2026 17:44:47 +0100
+From: Daniel Gomez <da.gomez@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 01/12] rust: xarray: minor formatting fixes
+Message-ID: <aYr8WL_neMB3Crt_@macos>
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-1-f777c65b8ae2@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 15/17] mm: Remove the branch from compound_head()
-Content-Language: en-US
-To: Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, David Hildenbrand <david@redhat.com>,
- Matthew Wilcox <willy@infradead.org>, Usama Arif <usamaarif642@gmail.com>,
- Frank van der Linden <fvdl@google.com>
-Cc: Oscar Salvador <osalvador@suse.de>, Mike Rapoport <rppt@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baoquan He <bhe@redhat.com>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Jonathan Corbet <corbet@lwn.net>,
- Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
- Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Alexandre Ghiti <alex@ghiti.fr>, kernel-team@meta.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- loongarch@lists.linux.dev, linux-riscv@lists.infradead.org
-References: <20260202155634.650837-1-kas@kernel.org>
- <20260202155634.650837-16-kas@kernel.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260202155634.650837-16-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3662940009
-X-Stat-Signature: dsbmsnnzwm6ik5u5jntiknrgnf57y4og
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260209-xarray-entry-send-v3-1-f777c65b8ae2@kernel.org>
+X-Rspamd-Queue-Id: 773082000A
+X-Stat-Signature: 6e1ooif5ru3dfr9e7hk7jb6ke1no71bq
 X-Rspam-User: 
-X-HE-Tag: 1770741744-710272
-X-HE-Meta: U2FsdGVkX18n3ZXZ70EUcYHK6Cy3auXTbmf2RwacN0MjCMf2PA68T8TyFv5bw1VTp9nk049eKWpDzfN6Reuh7slW4Rb468VHPURv9O++mrDIfNiOQidxZnYbvM0cSAWdkrBhw7BEh+LSorOibttA8vfQtFG6y8Fzs6RiE4lyEln8NjfDqPxfJLKbGl7Yt4iQZ6cRHLD7wz93p0UM+brTMieBlVggY2NJgzVOEDMwqT0LCxplFa1HbgrIjrV/0DmZGeIbuNmVk0zZGvULuql38+xpYa1Mb6woO4SDRQ/FCl7SrByyQrf2e3nA1kyZb9q32Gv4SUtC53qAI07n7Ar0J1o4pKR5ewSaWnu1AX6cVgtga8gT4MC9WjyLBUVaEUxbmW7gAQJjfkVq/IBtS2biYDfxjBVbuiV+Nr0OZ5l1gIcZMYLh41fuIuQFE2TJD1U/Hay5NHepm0ubWfnEqJrCDKA1pxAX7AcPS6vaea7KXr82ynhg5hnVvpwGFNAyl67Hd2GqfMdTv9xzNdnl+Yi8YcRSa2RwGh6z6U2nTrHeKUPxONXfSNBL08hz6/tgBFFqce0lQ7qOSzSNSaRtoeL83hZCrvOkmLfuTIjVifIicn1iBSXybhGK38BVX2Pu2r84JqxWn5sb6L2F3TJK1Vf1DPRk/WARb7duZJ7R8DXDIJOkRgBTjEqh8nyjLPZBXzzQdmLLvq2Op6zI7v+bQcxrM+dmYca5IsDawr+SmqKUqzlnF5pIRtNQ6fVEwkoyZWo8wU0bUFj8ihraWaxRr3Wx9Wf1L2B588SfsTwL67nNxbcyDQ+mzxhkjCkRT/XKWRULM74QgFu5Yoq0wP2Dt4teHb6K98Q+U5KG7q0IU2KkE11vh/2+odlv18eRR4/nQGSKLFwgP3oDUHYmscpdfTVNtYpA79dPKgolF95TUQz+GBhw4THsrsVTlfTe7CAFzVPvYouhf7v4F9yz61q3vsJ
- CY9LkmAH
- 45OfcAEi4Nah3/P328GXTVl4Lk/6BAEsCE/Gq/urRMrb5JLfpOU0CRBlW4zPxMyFUCSeK+L2iHRklg2/F+eKIksSGo4h3NeILyskCu5nVNkyN1knNfUIX9FgqVd8MlQpJxwuWwAAPHpE/7GSAYaW4DM7XGZwu8AjMswk0y1cTP9MXOgT6qwj80aUT3nqXgPFjb+UIAwiWkZ9DVgtlUovcfHquggKTRNctm9zL/d8W0LZuQ8P44WGyzYRTfWQF908RAICb0K26q20a1lZxg14siHzv45JOH9JQ8mtK60E5RFuDpuCXOYNR8UIKwYH5y9evv9GZKDkFF5DWfLdpHwi+S/tUiXQOuR6CU8WV6YZP04HPbSX6XviSXH1lt5UTW1EVTC4C
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770741894-476906
+X-HE-Meta: U2FsdGVkX1+qGk3yvuyZHmHfpxoY9DE2inTFnwaiui3TDjKWc3aAI1iW9ZBY8gE8Z41PYWcwp4gFqMTK/gI7mOPKf5+/0+ntiAa8BPixCNqveMiQIpA84JFgf/J+bPS9BzoZ/exKv7ohcRXAD1EJfGHFYUdRTnNWrRFJnF7yaUhyHiz7qPC6qsVe0D4shx58ywI3KTrrDGfIGXEugJ3yTpvFgXH8qmnycvM/f4/O1LVB3HhrXGIplD3BEgTKuupSHxhcl46FQ03tbfkNwoRZCOfpcSfXq2coZexYfQCwymRz1xq1SRTxI2VJ1aONEhWB3Y6eB0gZmQEoqtI0WnsJnT1qYqnDEdBkpzHrmYJP6qVWqRDX3C3fRf/DihjDpemvNlgP5FYWOpOvRzUhi9dqQDNnKFk+pl3tQTEbhjI8HCAWFydf/RHKsR5iGvRzPot4nJSZfWFfX1qZ+Z+mMbr1AzMmWsVf5uCCMcHhhnH+bTp+nBM1CpHhnTBfUL5hdttcansy/E5G5L6Ltcd9TX2LCrs637EnUD0jSZ0m1r7pRz9PMBCDSKGpqt88WIS1Udt8oIWNjv85689hWRzJMwLOeyuijLa0rHIyfbp4E6nX7j6eK/kHOc702ILZprhD7i4nGb4vU46c/N3zWPd4zgzdOW/PBbjXbsrxBr7pmpIh7ajjQQgo9/7We/ZhGtmsmpdTXJ5j6NF7iY3cTBgzsXbcDv+nlE9ofOiZTlkBwE+oEjmxUFdbxugNxdsO9ALyyPBNo9rsz2DK6OdWNJM7MLU6nU451Ko1/QFGpD1JVLQ/D0JTNhUWuID7RIA7priBBkvvl/1aQwuIXTZzZUvLgERam75OMTxz/jTk9OyiMzsG52yAoc6Oa6vaGgRlCsNRzvWm5/XUCSb5ZDAbNqQJkiEiN4qg1cnbeg/cIGLSDdGWmyzlUuxB4Ra2q0M74S9U6vAU2FYZu2wlmAeqWIkDdXp
+ 3/WP1c68
+ uKqcQR/5SCmBjn/qh7NtW5q0bHhOOjIwplBAOdAXc6V+OXnix9tKbotVvgUcZKs4PYoFi7lts0uCSAYzFCO71kcjCAi7ZHI4YF5bXTUV1pi4VDR0nYp2in+YwTQc7BjrsNJE3hpH/w+j52aj8GHISMAWQ3wmsOaDVwVv5CfS2hE+AlqA4pz9axXJCL1Gs9HtfEfcxNJLE76yWu1xtJ5ykuKMH1aOh8pkjPza6L5IZBmdHeShBOUk5w9oD9FAOdy1WWoPG+R9KP/rlUsMQWqvS1dHuR/SYZHiPlGV7vpo9tgJcTWoe3lCr7UHa+KGJ7IkaXwtYjK/BVSbbgw9VjVJdvqY0LfRpwmF2ypccfWxFPyxGFLMjbrIQP8OY4NAuRJ4dVTiLvROsU8QE7jus7Sxy9jkFeUqutO1aO2fzXDKVDH6VETBTpX+5Hba5dk8p1VtCePaimRYHFZmYZeg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -189,17 +100,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/2/26 16:56, Kiryl Shutsemau wrote:
-> The compound_head() function is a hot path. For example, the zap path
-> calls it for every leaf page table entry.
+On 2026-02-09 15:38, Andreas Hindborg wrote:
+> Fix formatting in xarray module to comply with kernel coding
+> guidelines:
 > 
-> Rewrite the helper function in a branchless manner to eliminate the risk
-> of CPU branch misprediction.
+> - Update use clauses to use vertical layout with each import on its
+>   own line.
+> - Add trailing empty comments to preserve formatting and prevent
+>   rustfmt from collapsing imports.
+> - Break long assert_eq! statement in documentation across multiple
+>   lines for better readability.
 > 
-> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> Reviewed-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Reviewed-by: Tamir Duberstein <tamird@gmail.com>
+> Acked-by: Tamir Duberstein <tamird@gmail.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-
+Reviewed-by: Daniel Gomez <da.gomez@samsung.com>
+ 
 
