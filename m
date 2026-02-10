@@ -4,142 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C4BBEB2700
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 21:19:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75081EB2700
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 21:23:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41D346B0005; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
+	id DB5D46B0005; Tue, 10 Feb 2026 16:23:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CB086B0089; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
+	id D63776B0089; Tue, 10 Feb 2026 16:23:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2ACAA6B008A; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
+	id C45016B008A; Tue, 10 Feb 2026 16:23:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1721F6B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:19:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A467E59FFB
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:19:27 +0000 (UTC)
-X-FDA: 84429813174.20.73164D8
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 98E26A0014
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:19:25 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AqOBENUK;
-	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770758365;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B30146B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:23:16 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 75E94C233D
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:23:15 +0000 (UTC)
+X-FDA: 84429822750.21.1710ED2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 443B1180009
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:23:13 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q0cDRD8m;
+	spf=pass (imf06.hostedemail.com: domain of tamird@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tamird@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770758593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
-	b=jIfpuzF+QzA31cxgSAJJVw5c0l0rOEmv4HBzFZrbvBRHTwjZ1wos3x+sCBUbaLWD4sW0vM
-	vEN3Yvcino7EO6h53Zbzstshp8jcaMC7dgKKAkY9FMiBKd56GzQk275S91GT06JyP5+w5H
-	OQVi9FCvdcO5z2eGmrz2r0LtbUtfK78=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=AqOBENUK;
-	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=jannh@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770758365; a=rsa-sha256;
-	cv=pass;
-	b=6VyihjPap9IZouGMyTs62fM1hzyj82H25EiBWwDS6hMTCovb+PextxVMhhKx3VPdJnRK7F
-	ZNJUIrelyCPF2vGySOA/uvxMTinv0Rgx3iRpEr4mYoxS/8YLCxfvXHYKCPO5JRKq/S9LS5
-	u8UZLmX9/6fLjs9M+tOmaBx6IAWhHEI=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-65a38c42037so940a12.0
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:19:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770758364; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LAxYMwClLkgVQXeIvlpizhVTh+yp0Z0b2ESVfHc65ePzX7GXGxMidJ+5CQOAsEZEZ+
-         tKqFgl9BuE9ROO/7LE0/CvgiQ1uF5UnLwJ13o0b2OwyDUbLgu2W+kMDy7zwwOgCooJFI
-         wH3OFb82waUDSbxNVBol97wl+t8c4r0mI+bVBUgBIvcFIo0Vx4uHOOeu/fn7OeVYGsyz
-         BtuQGI12iqZ0R6c30Jam3EnCPOrp+ZiDez2SrCuEcCv62Az82YuHR7KCWcPcML3AWaxx
-         7YD1ilMUSUpJhTeg0iiP9GivnfWDf9hOTLdMjs82v3pnR6vxzprMcJWNfh4oOg/tIezf
-         AjXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
-        fh=xbzmviQE+WWjKiSP0DfQZSUOUw4QICV/hEV3pqH/0ak=;
-        b=NRllaMOlv3jJMSd8Mi1eljgi9p+Sk536nf9qIVlwelzA71jkRKQ2GMO7pXiBe+baJT
-         Vri3xsvpVmV6iKkUqkT1g6jexUWMToC+DLP9TOW1tfwJXuF/z+7Ipkgrex48PasRlLi5
-         zrZ1PzeTuzjD+YDxAwl1wJdtxCgd/ayCWPg9E7Z1cVba1ideJ5LYK8sAHBgyTTUpl9V7
-         57FlJ3hZ1hEEn9tawj7etugHW83xPKYUh59DQXk7n4wVACn4r2NR7q8TVy0hcOeF+sxx
-         qnlee7rZbsQkCP3pQaz+/w1Mh8bp9M6DDTOtIVf4n6S/POAkTWk1vVajO1eLuXdoU4LP
-         szwQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770758364; x=1771363164; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
-        b=AqOBENUK1Xi7FS8gaqsvqh09LXwKDCxSLoGOYbcnNANNoVqtWGLeWFnit8Ueb9MYhT
-         FKKmSIgVMvZkjhbg1ZDTEcxlbWYa77jLynHXgxVv0nH828q8/TOHgByEeTGUARK3W6YO
-         Mxwy14inmuQ9SU3qUWqTp0G71ZgDCK/rbJXnd7Y0xyOyxwIOfqJI2bx6xY4i89dgo+Yr
-         0kWN/ZgHMa11RyhaXDCydYhtxp37OXe0UvlW1BAEYquAFL+J75d4yeK5aU4YEO4PQBM4
-         O/JlEoGYqq8C5pgooNRgQEnriXKQzytISRSfetft496tDbnCpgnZWZFrN9dzkWbw73S+
-         h5PA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770758364; x=1771363164;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7ueb2XLAZgSMqdZ7FzkgHkbOJxEx/nDgdsJxz5kcjsQ=;
-        b=OhHjmglMj44walNQv6/qmzEYPYCAybuEakNdaibV7hmtbfeHpWV3UU5GfFr8s/3hIs
-         7wsrelk9mJQZba+1e6wmWfawLrFuPGh/c48KE5yNdv3WU1LFqc4L2qjV+VwOsT+NsleW
-         lzO6hXkhHsjkeFsoDSNOvl+vuFiGivRT6jF6F4qoDqn2VJZwfVSISY4v55kQGr+in3qH
-         pWFc+V8lHTw1n+KwDgP/g9J28BgVYpKQx+l1zUAH2M9U3IBma47LTwqyJOwMQldkVt8N
-         MGZgYmFPIee4ZCAHynEuI8RWiN0dp6QzNXVD59SZFQ+5QTVyaWEGzKddl7f7/OJXz9pj
-         iLPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUmf0Ok+BBt9/sS2nw/b9lwdI+540Ver3ZoOouTp4ec8fdwPVFB6QQvCvjFTPOAaHifRg1jBTYmPw==@kvack.org
-X-Gm-Message-State: AOJu0Yx8yl8mzR30MIlT03a7TElf6bpcq0qHfvDDXpjCVIwcUCl/Q5qs
-	jVRegNSLDuebj2KMre/KqHAYOUBqYJUGHYzlquZwPlu2mNbe8OXCUCsGLU1ovCkKvfd50InSAdN
-	hZECBIHm0/CdMtA+ac2afqMdK6ouE+m5WULG5rYsl
-X-Gm-Gg: AZuq6aJjFyJt9Y+7m/e8GHLuh0Q+pqzIYEZiI6f8ykXUm+88w+LgJkGO7kHhedqUjhb
-	IVbQ1X7axjIc6udNPKdnCKqHi5DyuaeW9gGI8XoxJAnInUPyhvBZIPy4cytP56MI8PFvs0+wbkI
-	O/kT9cIJV3vzdHUXudLuoYcbwyA0omyVHnhSGNOx6kSBYek5/Kfn08fpGpyOxYCO141WInyLeFO
-	IBBWVpzbJlJu5l6WKfMVj7wWKMtpyYJ+lljUTdCe4Mj7z3aTPLRkmKiymKT1ijUoEeu5PDwrSK6
-	hjFLmm6UJ5T0o4g8asfIbEOf1rqLqHaGoAgH
-X-Received: by 2002:a05:6402:8cf:b0:659:7696:432c with SMTP id
- 4fb4d7f45d1cf-65a390b5a13mr6380a12.16.1770758363456; Tue, 10 Feb 2026
- 13:19:23 -0800 (PST)
+	bh=RADxl9zn/8eWCUoY572xkaoD6D8QMUzJOyrn3h0VZsc=;
+	b=BDMb8Tq+NN7X+Nc4qGGGcqJ/4WbEx0CpYVMssd5+/taJ2MwF7UoS6i2P7KbCwsC4uStQ0b
+	RLdM+y+hSxMGQQUnrOBCyli8V58LodS8B9rsvedYLLKORYue/JLqZvXHPJWgiy9t1w80W0
+	vv96i/t3dU5kTu5Au9lKRYsIYPDRu/w=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q0cDRD8m;
+	spf=pass (imf06.hostedemail.com: domain of tamird@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tamird@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770758593; a=rsa-sha256;
+	cv=none;
+	b=pRrs4OlPyTfsfjJcp7TkEcCxBUihH1VdF2p/tqLDLJv8RO2JvhLukK65aW9e917i8YScDm
+	phN96WsfS+5NoUAEq8vKiXBKyOqN6ZDp+Xu6/N+z8EwhurhLQCbsq7fPo5JsLb2O+JJVgp
+	ctVQaGq1SjmXfPFfZtgI/AxY1NAhErw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id EE47844548
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:23:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FE4C2BCB1
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 21:23:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770758591;
+	bh=4AT+RXGXSCyro2xakJSwLzTq0XsfHO41wcMZUtz2SOQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:From;
+	b=q0cDRD8mtEGWivMSLFYqUgHyW9VQVCSGtBXgVyD0aW6HcIaXSxV9EGhF3Yhl3z7nS
+	 +K8aT6MGliLiyKiRge3PyaMU5vLukQ7ED8BgrxaAupsAlgu2Nsp05FZMfg5Aa+Qf3g
+	 8mvb1LRF0YUGmMnKExfL5QQ1X+erIzyIOvgkZenTyHzQvVkDO4PK+/SJHr91k5A8Ua
+	 kVaWFLnuP+F+hvS62coIQI+ne1F6V4vfArdiFtpLKUa+C9n3vMf/3U+sVeFKXq+Ucx
+	 dvt8IOYhgKXE7LOPcbfOBlJpS5lxGmIycV31LNIyIHaUNj80Km/Y+xaIIRPE+kTAs2
+	 sCuPaYnIuB1ig==
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-38319cbc8fbso38093631fa.1
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:23:11 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXu7xDFLtSWUcyp6y5GWlpIMSr2pnMcQ/I0tOFS1Z1k3V8gXBKxZcSkgjSm4TZink7freMXYaBsEQ==@kvack.org
+X-Gm-Message-State: AOJu0Yz8R8Q9lMD8WpF72PLJOQH3YMbgw8EhlOISXgrCHToaol6yug83
+	z8je8uTA7iKIB3ccZ+iuLmwwY3XEOkMNzPC/w06mAtUKICR/EHu4AbWbmuN4qtCzPuZY/LhH2jb
+	3CDyEwm5hbbwN3CuK97dGbh/ZoQjYS+M=
+X-Received: by 2002:a2e:be8f:0:b0:383:26ac:4fd8 with SMTP id
+ 38308e7fff4ca-38702e9bf3dmr998591fa.0.1770758590169; Tue, 10 Feb 2026
+ 13:23:10 -0800 (PST)
 MIME-Version: 1.0
-References: <20260209220849.2126486-1-surenb@google.com>
-In-Reply-To: <20260209220849.2126486-1-surenb@google.com>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 10 Feb 2026 22:18:47 +0100
-X-Gm-Features: AZwV_Qj1nCcIQNkC6tpOVx93iwKZtT2dbqwR4XsX_m7M7cfMNKnVzbH_C365zC4
-Message-ID: <CAG48ez2zFfCO7RKhHKaATFge7DWzaTfO+Yta0y4_HXGHZAtkqw@mail.gmail.com>
-Subject: Re: [PATCH 1/1] mm: replace vma_start_write() with vma_start_write_killable()
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@kernel.org, 
-	ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
-	rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, 
-	ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, 
-	lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, mhocko@suse.com, 
-	pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, 
-	mpe@ellerman.id.au, chleroy@kernel.org, linux-mm@kvack.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-5-f777c65b8ae2@kernel.org> <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
+ <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com> <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
+In-Reply-To: <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
+From: Tamir Duberstein <tamird@kernel.org>
+Date: Tue, 10 Feb 2026 16:22:33 -0500
+X-Gmail-Original-Message-ID: <CAJ-ks9knC3pKpiMaG6f3C1Kr6su9p26hM7YvVMzsVwYVHGtm2Q@mail.gmail.com>
+X-Gm-Features: AZwV_QhdvZH0ulXOwC7qepwpvm2i9242YLhbIsO38rOa_1y-e9PY-uFALj98NOE
+Message-ID: <CAJ-ks9knC3pKpiMaG6f3C1Kr6su9p26hM7YvVMzsVwYVHGtm2Q@mail.gmail.com>
+Subject: Re: [PATCH v3 05/12] rust: xarray: use `xas_load` instead of
+ `xa_load` in `Guard::load`
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Tamir Duberstein <tamird@kernel.org>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 98E26A0014
-X-Stat-Signature: sjpnai65h7yxt15zopofcetcfpm5dgez
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 443B1180009
+X-Stat-Signature: fgs1i96enb5dyb1s3itnubkp8ffd1st8
 X-Rspam-User: 
-X-HE-Tag: 1770758365-575409
-X-HE-Meta: U2FsdGVkX192rX0ikVG5V1cH6Hc6Inxune5Wu8zAdjKGWQuGSP/0+Po95Fg6pyJY7LTr0o7gmwMlYrkuXdVMocquu0EmhwmngCTgM0EcummIpkSLKEF81ZdXVNpQ3mQ9AE9G+uw7Nchg6f66k9DFqOxKYxTwAlHUPqJ63ZKIzPgFbstJefXIy7o6Jz817vsD7dq4pY9OB+Dv/Mp7N87MwAf7tfCaSz//Gft9nJG7/GCkIlr7kRGh64wTZKu5zedsiQpe4lxFR1ojMK+JJoaga1sN5YUeSM0f7RwXLEZdVRDLTjmixgvXoVPoXqI+AommV2ow3LaL4eh5bVyREWNuHXTcstvaUCkxpu5YsbNM9DlpnpD8A3h6MAoMUD3W1w8PO9LRuFCPbEYnhNukMVTjZSul/s/SeW5dEClghMHtXyIscOwPNWl2UgaXEh30pLJQoadhMuDpUD92oWvsM8u6BHFOliF3+OYc9rdnYpWG8AcggdphnRGenSuUjt7anhBx8y/85c986kqFb3WatbXHTHM2xJ7UbDI1kUR6bD2G7RFhMpA1JI87VZl/RX7kEP6xrPFV6janxWB2x53l34Ns4pEqjZawvny1XHocm8aVeUbkS4sdJ7PFMBJKOWlp9VCSuRfvmOgGi476A0tZOHCTZmI3qljt8LFUJ7XAWVEzQjKqy/v+HYXjsKrb2s2OHpCTw8qn5FoVZwu3peM9NuVHmK9rAExJkjKn6E6+D2qgOemuxcfxosOjJybobRZNdMHrlCWSXB2sac3jyJ0GvFlSOhxpq2OltfaOuAmepDb67yl9mvUzDouJw6HQOWcyxbTUsmsZ2TNz3OPDrM9wpvY/9TbOufuNYCPWUvhb9xpDdwKzGGLEkNxnO4DpazW/tXbDfqaUjqcDHGZPErWlCoUOnIiKVkrqnVYvC/c/9cYIwogAIlFB5xyL7y1jtzImGgN+lxzP1aUx2v0/2/4WXgf
- J9dzoz6l
- NwozCtFk3i9WCRakQrM9KAW72PS9GY8ZjWNqepZi8zohR1AtEgFRCpGC4IzCHUe1XIlS2bh5qen0g5rqFRav8lMWuB0l0QU2nj2gxAJq/Al11tTOGV7HyjhQbtMFE6f5NlgNl0cKPd6LLb1AogRJ5xMbJsmWKeCsJZpJMb71HE776XdEf5jYK6VS06hMhY8ztbQLpq739qEkiD4+lNrsU4KmEcGnRNarHDhkyuGNPfOBgc9CoDxOnHUngWoragSxDBTbszEidUP34o134HjWqFH9b3ltHBp7IqzefDyQJcOyCMfJiYIkcmTSX2xZtmh3U1F6umfHyx9n3ckPonkS2U80/mVb3rlvkBdBKJ5swCb09FhCGRQ2YeyqSTlRx+zyQxzNx/QF6lQ0JD77k7cxqssKfAl3dElEU/dX9kZWx3a2auBY=
+X-HE-Tag: 1770758593-897524
+X-HE-Meta: U2FsdGVkX19YV8EFywUquln/CPnj+OvfyFwiivyQ6hf7zzJgPchgZP9J4Odeh0/VxzRc5LscaecIgb+zm8NMHOKcDN53zFagllDhthdQW023pVpOyrmU2CX9aJcBGkndRFBUf5CPEiWFEagsXabcIqEuoQY9fTx0FXL7IMaIkuzOP0jCzr7j8wc4F4Bm52y3jkyLp493hIjCXyPARnT18zVctH6HmjZZ0we6+/ZLf40DVc+8S3n8UEOxSMfTHkV1aqMUppJhMvms+zJYE7dHao46qZVsfiRFcPp4jOZYalIKjeq0xInDLC/Hjhl4nEMkh5Uanqo77ryOBsA7nX+ux6T2FNXlgtKEYch5YfDv5pijNE+WW5XlBvV3LMzauoBk663JJ/wRl3NJRGAn7G2zpFbLCI/YgejKgc2IwCBtmyyWkt0fdDWn5X26UOfw2dDz0ZZ+lUraYCNILfWMm69zY41teiQ9aOzaOINYkTsznqh3k860Ta5nE7NXRtsc3tlVCTb8/2YaiJsL6niVmyfSJS9WNgFlXJvdvOS9vBfZxkPyIdB5qKOdrtd8ZWlnzZEOxYK5bkhwtNesILE91pV1OF9hBvsoCsbyjPlZ+RfGQ5qh/sU8/8/Xc52DWv+1NhFIh5dEDQSj/EihRaETN5+/cF8EZ3GGmJeGpU6ZUyMeb0es/WZREcg4NBd1LlI5/5EndQjqRDEs//+i+3HRgjBoPmsbuaJxW072ONA042TCzsHW4wF+aM10x2Vuoa/4q5O1ln5pTU9mF/MSfiPY6DwqxC5/u58W2H9lDNxBfre7KIdpYKrUV546Cp9xuovwPYo+Wl9kX7hgSZX9WfcUth9Ao7lKcfwZteb3xA0yDIekZh797760tI9G0e4JkI2l8VD2mj9SmEOTwUEvWvYxZQqR72uRJ+mmHK2p/TgMGGjry4KYOR9qcC/m3uBVIMqz9gHoMYuW+YEnkbJ851MpYnR
+ W99v6IP+
+ Hl0v9/t4tNex2Dl18ef72WH1KH2wGN8dzK6MeVuvYsERTLYLzf0N4hs58Yuwsohe31agwKhT9I9qDdSNup450bA0EuvDp8vbtZJlQz9B0BulacupmQ104yS5QWAZ3t3bR9JrYVR5sxdLIeDjburwQP86XvXROZWRD9L+2zU+TX56JDPy30lC2GQdafLPD7v9bP5qrfp1m2hqe4Y8YjiHKMKKMrWpK2DIlDfO36+uNkhbi3PvkipY0bmYQi8dqo1/l/GctVpLJWYY20VvchLg4YAGEcErhoI0kiYaEawLP0oadP3D+BVvwfmZfTJoIU0vAV4AajljvF6rqifWwLgrs8kLSe2baNk1TeeLcWv9I7XAXWUKvpqhvRpN3qL6T5odpJif2RrSPk7vfMdo5mMzxZbJEi6XK1wJ9g/Tw4+ter0jkioIdrPfIdxA1iQy7/ei1WJav
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,168 +116,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 9, 2026 at 11:08=E2=80=AFPM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
-> Now that we have vma_start_write_killable() we can replace most of the
-> vma_start_write() calls with it, improving reaction time to the kill
-> signal.
-[...]
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index dbd48502ac24..3de7ab4f4cee 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-[...]
-> @@ -1808,7 +1817,11 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned =
-long, start, unsigned long, le
->                         break;
->                 }
+On Tue, Feb 10, 2026 at 12:59=E2=80=AFPM Liam R. Howlett
+<Liam.Howlett@oracle.com> wrote:
 >
-> -               vma_start_write(vma);
-> +               if (vma_start_write_killable(vma)) {
-> +                       err =3D -EINTR;
-
-Doesn't this need mpol_put(new)? Or less complicated, move the
-vma_start_write_killable() up to somewhere above the mpol_dup() call.
-
-> +                       break;
-> +               }
-> +
->                 new->home_node =3D home_node;
->                 err =3D mbind_range(&vmi, vma, &prev, start, end, new);
->                 mpol_put(new);
-[...]
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index a94c401ab2cf..dc9f7a7709c6 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -425,14 +425,13 @@ static inline void process_mm_walk_lock(struct mm_s=
-truct *mm,
->                 mmap_assert_write_locked(mm);
->  }
+> * Tamir Duberstein <tamird@kernel.org> [260210 19:54]:
+> > On Tue, Feb 10, 2026 at 10:16=E2=80=AFAM Liam R. Howlett
+> > <Liam.Howlett@oracle.com> wrote:
+> > >
+> > > * Andreas Hindborg <a.hindborg@kernel.org> [260209 14:39]:
+> > > > Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
+> > > > `xa_load` function takes the RCU lock internally, which we do not n=
+eed,
+> > > > since the `Guard` already holds an exclusive lock on the `XArray`. =
+The
+> > > > `xas_load` function operates on `xa_state` and assumes the required=
+ locks
+> > > > are already held.
+> > > >
+> > > > This change also removes the `#[expect(dead_code)]` annotation from
+> > > > `XArrayState` and its constructor, as they are now in use.
+> > >
+> > > I don't understand the locking here.
+> > >
+> > > You are saying that, since you hold the xarray write lock, you won't =
+be
+> > > taking the rcu read lock, but then you change the api of load?  That
+> > > seems wrong to me.
+> >
+> > This patch doesn't change the API of load. Andreas is saying that the
+> > type system already requires the caller to hold the xarray spin lock
+> > when load is called, meaning acquiring the RCU lock isn't necessary.
 >
-> -static inline void process_vma_walk_lock(struct vm_area_struct *vma,
-> +static inline int process_vma_walk_lock(struct vm_area_struct *vma,
->                                          enum page_walk_lock walk_lock)
->  {
->  #ifdef CONFIG_PER_VMA_LOCK
->         switch (walk_lock) {
->         case PGWALK_WRLOCK:
-> -               vma_start_write(vma);
-> -               break;
-> +               return vma_start_write_killable(vma);
-
-There are two users of PGWALK_WRLOCK in arch/s390/mm/gmap.c code that
-don't check pagewalk return values, have you checked that they are not
-negatively affected by this new possible error return?
-
->         case PGWALK_WRLOCK_VERIFY:
->                 vma_assert_write_locked(vma);
->                 break;
-[...]
-> diff --git a/mm/vma.c b/mm/vma.c
-> index be64f781a3aa..3cfb81b3b7cf 100644
-> --- a/mm/vma.c
-> +++ b/mm/vma.c
-> @@ -540,8 +540,12 @@ __split_vma(struct vma_iterator *vmi, struct vm_area=
-_struct *vma,
->         if (new->vm_ops && new->vm_ops->open)
->                 new->vm_ops->open(new);
+> What I mean is that the API can no longer be called when holding the RCU
+> read lock.  You seem to imply this is already the case though.
 >
-> -       vma_start_write(vma);
-> -       vma_start_write(new);
-> +       err =3D vma_start_write_killable(vma);
-> +       if (err)
-> +               goto out_fput;
-> +       err =3D vma_start_write_killable(new);
-> +       if (err)
-> +               goto out_fput;
-
-What about the new->vm_ops->open() call and the anon_vma_clone()
-above? I don't think the error path properly undoes either. These
-calls should probably be moved further up, so that the point of no
-return in this function stays where it was.
-
->         init_vma_prep(&vp, vma);
->         vp.insert =3D new;
-[...]
-> @@ -1155,10 +1168,12 @@ int vma_expand(struct vma_merge_struct *vmg)
->         struct vm_area_struct *next =3D vmg->next;
->         bool remove_next =3D false;
->         vm_flags_t sticky_flags;
-> -       int ret =3D 0;
-> +       int ret;
+> >
+> > >
+> > > Any readers of the api that calls load will now need to hold the rcu
+> > > read lock externally.  If you're doing this, then you should indicate
+> > > that is necessary in the function name, like the C side does.  Otherw=
+ise
+> > > you are limiting the users to the advanced API, aren't you?
+> >
+> > The existing API already requires users to hold the xarray lock.
+> >
+> > >
+> > > Or are you saying that xarray can only be used if you hold the exclus=
+ive
+> > > lock, which is now a read and write lock?
+> >
+> > Yes - except for the word "now"; I'm not sure what you mean by it.
 >
->         mmap_assert_write_locked(vmg->mm);
-> -       vma_start_write(target);
-> +       ret =3D vma_start_write_killable(target);
-> +       if (ret)
-> +               return ret;
+> I'm trying to understand the locking on the rust side.
 >
->         if (next && target !=3D next && vmg->end =3D=3D next->vm_end)
->                 remove_next =3D true;
-> @@ -1186,17 +1201,19 @@ int vma_expand(struct vma_merge_struct *vmg)
->          * Note that, by convention, callers ignore OOM for this case, so
->          * we don't need to account for vmg->give_up_on_mm here.
->          */
-> -       if (remove_next)
-> +       if (remove_next) {
-> +               ret =3D vma_start_write_killable(next);
-> +               if (ret)
-> +                       return ret;
->                 ret =3D dup_anon_vma(target, next, &anon_dup);
-> +       }
->         if (!ret && vmg->copied_from)
->                 ret =3D dup_anon_vma(target, vmg->copied_from, &anon_dup)=
-;
->         if (ret)
->                 return ret;
+> I think you answered it by telling me that all readers and writers use
+> the spinlock.
 
-nit: the control flow here is kinda chaotic, with some "if (ret)
-return ret;" mixed with "if (!ret && ...) ret =3D ...;".
+Indeed. The current API doesn't expose load on the xarray at all; load
+is only available on the "guard" type. An instance of "guard" can
+exist only when the lock is held. The lock is unlocked when the guard
+is dropped.
 
 >
-> -       if (remove_next) {
-> -               vma_start_write(next);
-> +       if (remove_next)
->                 vmg->__remove_next =3D true;
-> -       }
->         if (commit_merge(vmg))
->                 goto nomem;
->
-[...]
-> @@ -2211,9 +2240,8 @@ int mm_take_all_locks(struct mm_struct *mm)
->          * is reached.
->          */
->         for_each_vma(vmi, vma) {
-> -               if (signal_pending(current))
-> +               if (vma_start_write_killable(vma))
->                         goto out_unlock;
-> -               vma_start_write(vma);
+> Is this a temporary limitation?
 
-nit: might want to keep the signal_pending() so that this can sort of
-be interrupted by non-fatal signals, which seems to be the intention
+Maybe? I don't think RfL has good abstractions for RCU yet. For
+example, exposing load directly on the xarray using xa_load would
+require a way to guarantee that the returned pointer's target isn't
+being concurrently mutated (e.g. under the xarray lock). I'm not aware
+of anyone asking for this, though.
 
->         }
->
->         vma_iter_init(&vmi, mm, 0);
-> @@ -2549,7 +2577,9 @@ static int __mmap_new_vma(struct mmap_state *map, s=
-truct vm_area_struct **vmap)
->  #endif
->
->         /* Lock the VMA since it is modified after insertion into VMA tre=
-e */
-> -       vma_start_write(vma);
-> +       error =3D vma_start_write_killable(vma);
-> +       if (error)
-> +               goto free_iter_vma;
 
-This seems way past the point of no return, we've already called the
-->mmap() handler which I think means removing the VMA again would
-require a ->close() call. The VMA should be locked further up if we
-want to do it killably.
-
->         vma_iter_store_new(vmi, vma);
->         map->mm->map_count++;
->         vma_link_file(vma, map->hold_file_rmap_lock);
 >
+> Thanks,
+> Liam
 
