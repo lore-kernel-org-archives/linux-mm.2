@@ -4,95 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7564DE94627
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 01:20:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DC14E94626
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 01:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AD156B0098; Mon,  9 Feb 2026 20:20:13 -0500 (EST)
+	id B7DE26B0005; Mon,  9 Feb 2026 20:34:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 95A916B0099; Mon,  9 Feb 2026 20:20:13 -0500 (EST)
+	id B010C6B0088; Mon,  9 Feb 2026 20:34:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 866A46B009B; Mon,  9 Feb 2026 20:20:13 -0500 (EST)
+	id A0D456B0089; Mon,  9 Feb 2026 20:34:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 72C486B0098
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 20:20:13 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F11985867B
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 01:20:12 +0000 (UTC)
-X-FDA: 84426791064.25.93308F8
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 698B320010
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 01:20:08 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Ase/T4mh";
-	spf=pass (imf03.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EA0D6B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 20:34:50 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C64813A9E2
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 01:34:50 +0000 (UTC)
+X-FDA: 84426827940.24.578E2DE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6DD68180009
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 01:34:48 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2n4Qvnv3;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770686411;
+	s=arc-20220608; t=1770687288;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cN85VGoE32TAaBeuh7trX4TvvDZc5iL4HxTbBbIYYCc=;
-	b=kEOtOoVt84z6vX8PhdM5/QucqBAyWe2otiEtWQM6rDyBAhNQubEqbN9cr9iv8YgFb/LdKf
-	4J8rMb5fXo1ZglnU/oOxRuPnWH0duw8jJloK11cSrKROHjcDSoPUoKgrO6e+sS2L1J/ag3
-	7KE/k1JRF7jJgfPZ2awx2vqXII0OpFg=
+	bh=ibsmmNgtHVgGF5VxdsiZ9xT0EmCVs8D2/ureK6LnfEY=;
+	b=kowiU53Ss7eK/MsyacT+p+G5+1QT1QWYpPlsMLtAMLcAtI2J1m1AzN7o+3sXbMR3SmZDVY
+	b9rZiK3eKBrK0uMbsXB+QQn+N4q9IXzBM1A6SkSUhkgf+8vHAcmdP7Y2rspGVeRnOEXmkD
+	a+5wakUNvhZhAtgvtN2Bzv71qtzhoks=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="Ase/T4mh";
-	spf=pass (imf03.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.111 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770686411; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=2n4Qvnv3;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770687288; a=rsa-sha256;
 	cv=none;
-	b=WMiSBbiuRuXys4X5kNL8WumogSjlba0PXQa/swPHjssBKqhK32i8Qoc81rL3V7wQ1vS7Nv
-	4Azmp6naUiXo81KaX/u4S86tyxRts4Y85QxxbyYnkmZhUIZdMu9GzptNJF64eEtZGBTiZr
-	jrcv0cXB6xZQqJsyTjYuzc8HztkUAd4=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770686405; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=cN85VGoE32TAaBeuh7trX4TvvDZc5iL4HxTbBbIYYCc=;
-	b=Ase/T4mhl3RrGkZ6tAe2ff08C4JAymQaeH/U/xvL0ghquwN1d8P2+lnmqR+Km58vPuK7j4F17WQm8tse8D1Y3RQYWER6qTnLyDct9IW9qbL0AW2e0JN3Gp9+wND5eEPM84srkSrAUWf9sI1GlB2X/pLfn1kZeOcFEAgTJuHB9d8=
-Received: from 30.74.144.109(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wyx9JBp_1770686404 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Feb 2026 09:20:05 +0800
-Message-ID: <e69270cf-dac1-448c-ace8-3f789e5cdc6e@linux.alibaba.com>
-Date: Tue, 10 Feb 2026 09:20:04 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/page_alloc: clear page->private in
- free_pages_prepare()
-To: Zi Yan <ziy@nvidia.com>, "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>, linux-mm@kvack.org,
- akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
- mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, npiggin@gmail.com,
- linux-kernel@vger.kernel.org, kasong@tencent.com, hughd@google.com,
- chrisl@kernel.org, ryncsn@gmail.com, stable@vger.kernel.org,
- willy@infradead.org
-References: <209207FE-D3A9-4BE2-8DA7-9BE38A19F387@nvidia.com>
- <20260207173615.146159-1-mikhail.v.gavrilov@gmail.com>
- <cbc3b5b3-09b5-4e3c-99f0-a1f67582afff@kernel.org>
- <0BC1D792-80CA-4E60-AEA0-187F73BD4723@nvidia.com>
- <bc0b6d03-4309-463d-a112-aae57cee335d@kernel.org>
- <22431471-b569-4ade-9881-387debada00b@kernel.org>
- <91F2E741-5473-4D34-ADA1-C9E6EDCBF5E0@nvidia.com>
- <546b200d-5b70-4db4-99f1-f50f6a343c10@kernel.org>
- <3E055DAD-647A-456B-9230-4DD2574D4E8E@nvidia.com>
- <4a759288-baf9-4fe6-9d16-034edf6615f0@kernel.org>
- <72534BCC-2581-4BFA-B3BC-2CC6FF1B1E7A@nvidia.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <72534BCC-2581-4BFA-B3BC-2CC6FF1B1E7A@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 698B320010
-X-Stat-Signature: eb6ot5j1j18zqth4hmitrwuo5n3refum
+	b=a+0fGtEfgFGDAE7IW5GqpT+CUXWRGB2gYHP4j5/r+c1/gh/IaonIDsD4Q7242QZap0M4wN
+	59Ig2t7UDlYkrPzAxM+KjL+3xkfFa6DzgJVUUTptLopYGdzvHNWlD5W9WxPHXGH5Kjbyim
+	/MLqy8JBsp4YBdiGhPJ8wAdMRF8fP0s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6F2CE60008;
+	Tue, 10 Feb 2026 01:34:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F5BC116C6;
+	Tue, 10 Feb 2026 01:34:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1770687287;
+	bh=T/HCmpcNqFcFD7xZ86y+ZqO8jXnLnbpyYwBENPJl2eI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=2n4Qvnv3dtojiMggwW254KgxnSn9CjO1dUWy3GOSer8V7sbAUuJUTPUZ4qine7txY
+	 V0v6T4Ggpk2LSpnLqB0OWN7YCvMGMU4/BzUzjxpvxFWoZLP+xlzPqjvxQstWW9Gw/O
+	 Yq/kTGRQ24+XqR4ouSD4ZmCR29P6yO2J3fgcgqNA=
+Date: Mon, 9 Feb 2026 17:34:46 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+Cc: intel-xe@lists.freedesktop.org, Alistair Popple <apopple@nvidia.com>,
+ Ralph Campbell <rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>,
+ Jason Gunthorpe <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>, Leon
+ Romanovsky <leon@kernel.org>, Matthew Brost <matthew.brost@intel.com>, John
+ Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
+ dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-Id: <20260209173446.b76547c4028132f71de1b8eb@linux-foundation.org>
+In-Reply-To: <89cb1d4744789702cd80dba8eb40dd50bf053b4e.camel@linux.intel.com>
+References: <20260205111028.200506-1-thomas.hellstrom@linux.intel.com>
+	<89cb1d4744789702cd80dba8eb40dd50bf053b4e.camel@linux.intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6DD68180009
+X-Stat-Signature: gciaojeuipeqczg3wzcqyf6773jrw43r
 X-Rspam-User: 
-X-HE-Tag: 1770686408-944425
-X-HE-Meta: U2FsdGVkX19T5YW+UBnFSgg1UatCUeDAubVAwYe7XnHFEdBKYgA/Q6+0zNmuMZATNo3HdAmyyl4sba3tfsWbx6Bfkn01BPm/MdInOsH4Neys/3TssSnbx+8CeCh8LYJs/NLTkd7RdeY0hIy3nCELmo7IFKe97Nl/LnsxWMEMHtbOZ219IJHH/YCUVeSzc9TPpRj1uHgxh1nqNoOoSbsfDCsZGfL74hC8y0zoNIE2xD0vzgeoY7C2iUzcA7IeChS3bWsQ5Os+IZ68JD27VgUdQVlecRBUuMMw0Zh+8ogabZf6XrG/AZfajDM1rgXZCT4g+ixd0vlyylxwivHWT3ExlAnukex8vf4GMhhwHp/eHY5Ia8zf9vDQvXPCcfIs/k9jrLS0aaXJCqrTIPjPb4L5jR8PX2g8Aay3bTQRRUBYRw4Pp44dI3cp1VGOnT4sizrU9fBVcwn8sf+75FJ+vkbF/Y3inMFlHbQtGSz768+9eVJv3JghuPqgptdLOPhGwfhEcHQVd56AeWD72QKnHBen4RRKTXuYD0mn9SdVyhoTlW/pulrhoGUAsXYkDwglnMSt9CPpo9Im+kJfJ0P3mLZIXaZmAAySjw+l3L7P28qr7zDFPoNKnHr87VsdlsIuEdq5NxG/RyK0hlNh09BKdK8VbKrzjkKX0tI+hjS7Me6kuQFp/kJQqX4L1zU+JxtFTttu/YNisu0g5tJgPORglD3ZO7ayNXYO2bplGxwNWiEcXdEFgIYuHraGqsWBiD0rZeh0IgOiI59iQJRUbcFof8DzSkRO6Z90lTvq3TNn+q5L0AunK2FocsAnnBn7vb7NzKYcbqPtwdudlYhXUqeQDLxbtswloh3VN38B3/0Ptb1ch4aP+wyYWLZDVI7nzrQVKWVGthqX2umiBu/euNJq4TuxYH3TddEtGMHmekUjVOX3m4CSTX7U2BXD69px2lGMH03QGKU21qkhCko9qxjuZWI
- Zp6OQMVE
- bqvQL/6sTW1UsD2RKTplSebOp4Stydnl0zFA2QIaizCE/M20Z6xrNBPUc/Q==
+X-HE-Tag: 1770687288-770973
+X-HE-Meta: U2FsdGVkX18eCkjxBDlnjG6SpjNQBUC50kLaCa3KSrIonwnLgnQDjAAmDFzmvyT6kBkmPjrMkZmKrY63SDzNQ0SAu1IFQlaeYSXAHLkZ1T3gclGr+FDUk+YD2SnqlweJ8kMB/paGNAZlwkpiRF29tIFv4q2izXqY95E0zHpXaWvkkmsTMCnIiSW7XXnzeut3K2cLSuS7WyBCvvyXNY2A4Tn3h6JaIvcMDF9Td17VkVu8N0xVZdRnJ0kr3i4lL7JvrgVgKwY/SXBElEulXMOoshN1Jk/Jyb98hc88ZX+j4eGuq+Tv3c5+zkDkxnqC2R+HjFcPHQQyIirZ3Edv2Odbb9oIfftQZXC1vx+Bbisr4hMKnPz2zJj4ujq2/IErufXJWyyU31Rcy308+oRbFh4mvBv3uOq4wvQquBWNQU5u0XbhkQlWxOM5JQv2RmZDDFy3UyKex2HIAvmGfywvj+5UYTKCpX/LgJJCD8wmF5jhUDBKegdLxI3JCmPZbq6yNPgTcbIDhSCf9oIwbKgI8fxvFv+JKFjij1pWZFnxkDE0RpMoZHABcuAAzYJ377/badspM4vF/9UNRC22md/+lSIE35fuJw/xXIE4g7lC0QkUmHOZxqKWGQrDKD+44Y3GZ2hsK1ltD3QrY4gQFL2uM0eHmcXmHwXunMQEc+3TW/g3OjBVj1OWpmjDKhmVByKE6wtqHD5UEqoSp+S5LEXSRK3F+nG/ZwiOE86UBQ1nTiCBUGOu8WOP8rR1YZmPV8WFL8DyCWb8jwSL0fhkjLM549gU3mZTCfBj8u954i2Hfcy5SN2D4Ck7Sz2n1Hu0rpMdJ+WJwuVwbO+hHfS1YtRgTOgQcyImOwcrVRc2CibOATkgY18Zirt/DFh54/lUsJI3v55gNlJouNWLMuD8WlL2EtWQig+LR/tOxUmRuBl0mhBeb6/i8wd1AhyicWV2LWsqMaP3cgsqaNVGr/TyLx7NxEF
+ n0LYT1Li
+ 82byQAOeK+FXab1OrnQdfmx18WT+fiEcM+c9eTnOVLpu233O3C3c/6uSIYWK/aj2zaiMged2Y09dyk+5paPTpQA2lP42SiVXg89JiNW/DKgFP+q9qZ7fVbzfMVW/NZVbLduoH1Lv5rn+0xi79lLEKdDWS5JZSoUApOsiS3q780WbOBjinKZZcCtzBferg2swyelkh7yFTd/ZmE2eWVNSm6n+Yj7uPo/QaepPbq5lvy3a3rPdQDRzhh+vbGYCa4I+1vFcV1tc0GzQaSxNYoqxJ8GSIQ6STnCTprKmQZnOWOyLC7ixpqweZgjmSATRJKIuXHFyLwfKncPFMiN/DAE/U+5LUiH8HwVwNjqRZlSEKGoj4IAXksHPEKyb2V2GkxNfwDxWo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,40 +96,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, 09 Feb 2026 15:47:38 +0100 Thomas Hellstr=F6m <thomas.hellstrom@lin=
+ux.intel.com> wrote:
 
+> @Alistair, any chance of an R-B for the below version?
 
-On 2/10/26 3:42 AM, Zi Yan wrote:
-> On 9 Feb 2026, at 14:39, David Hildenbrand (Arm) wrote:
-> 
->> On 2/9/26 18:44, Zi Yan wrote:
->>> On 9 Feb 2026, at 12:36, David Hildenbrand (Arm) wrote:
->>>
->>>> On 2/9/26 17:33, Zi Yan wrote:
->>>>>
->>>>>
->>>>> I agree. Silently fixing non zero ->private just moves the work/responsibility
->>>>> from users to core mm. They could do better. :)
->>>>>
->>>>> We can have a patch or multiple patches to fix users do not zero ->private
->>>>> when freeing a page and add the patch below.
->>>>
->>>> Do we know roughly which ones don't zero it out?
->>>
->>> So far based on [1], I found:
->>>
->>> 1. shmem_swapin_folio() in mm/shmem.c does not zero ->swap.val (overlapping
->>> with private);
+Yes please.
 
-After Kairui’s series [1], the shmem part looks good to me. As we no 
-longer skip the swapcache now, we shouldn’t clear the ->swap.val of a 
-swapcache folio if failed to swap-in.
+> @Andrew, will this go through the -mm tree or alternaltively an ack for
+> merging through drm-xe-fixes?
 
-[1]https://lore.kernel.org/all/20251219195751.61328-1-ryncsn@gmail.com/T/#mcba8a32e1021dc28ce1e824c9d042dca316a30d7
+Either works.  I'll grab a copy.  It you want to take this via drm then
+I'll drop the mm.git copy once the drm tree's version appears in linux-next.
 
->>> 2. __free_slab() in mm/slub.c does not zero ->inuse, ->objects, ->frozen
->>> (overlapping with private).
->>>
->>> Mikhail found ttm_pool_unmap_and_free() in drivers/gpu/drm/ttm/ttm_pool.c
->>> does not zero ->private, which stores page order.
+Acked-by: Andrew Morton <akpm@linux-foundation.org>
 
+> > The lru_add_drain_all() function requires a short work-item
+
+Pet peeve: s/the foo() function/foo()/g.  It's just as good!
+
+> > --- a/mm/memory.c
+> > +++ b/mm/memory.c
+> > @@ -4684,7 +4684,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > =A0				unlock_page(vmf->page);
+> > =A0				put_page(vmf->page);
+> > =A0			} else {
+> > -				pte_unmap_unlock(vmf->pte, vmf->ptl);
+> > +				pte_unmap(vmf->pte);
+> > +				softleaf_entry_wait_on_locked(entry, vmf->ptl);
+> > =A0			}
+> > =A0		} else if (softleaf_is_hwpoison(entry)) {
+> > =A0			ret =3D VM_FAULT_HWPOISON;
+
+So apart from the rename, this is the whole patch.  This got nicer!
 
