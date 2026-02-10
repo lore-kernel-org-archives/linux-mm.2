@@ -4,93 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1135BEA8112
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:10:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D7B0EA810F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2ED946B0005; Tue, 10 Feb 2026 08:10:52 -0500 (EST)
+	id DBCF76B0088; Tue, 10 Feb 2026 08:13:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29B9B6B0088; Tue, 10 Feb 2026 08:10:52 -0500 (EST)
+	id D403A6B0089; Tue, 10 Feb 2026 08:13:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1C7CD6B0089; Tue, 10 Feb 2026 08:10:52 -0500 (EST)
+	id BF7566B008A; Tue, 10 Feb 2026 08:13:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F2566B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:10:52 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9A94D14017C
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:10:51 +0000 (UTC)
-X-FDA: 84428581902.08.E911DAE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 16EE94000D
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:10:49 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YAK2dF3e;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770729050;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id ABAF26B0088
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:13:20 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 54762160567
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:13:20 +0000 (UTC)
+X-FDA: 84428588160.27.651B543
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012051.outbound.protection.outlook.com [52.101.48.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 8DB7D16000F
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:13:17 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NuO+aV2K;
+	spf=pass (imf08.hostedemail.com: domain of jgg@nvidia.com designates 52.101.48.51 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770729197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n0h9spvQPsXRmFyX7NfVe0MGvBvIuwiJh1xd+Oy7s8A=;
-	b=beV+8TaWEiN+MMnUTeop1L1KF06Snyql7CU7hqfO/WbzBDjqFM6EKWa1fZcCtu8cep6xKP
-	q2l0ctzD8d6yMsLI75jOo56CVlmCrjjdJQbrtycp57nBMwyAUmx5KniGtlcUTCQaUCF11j
-	Jif3n0oK2LrmkHV0ugVpoVGHq2T//gk=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YAK2dF3e;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770729050; a=rsa-sha256;
-	cv=none;
-	b=bB2zfYEtJpdGdEVRXuPSeUh1SBIKlBa1stE6OF4zgcgogD0+chTjSdSeeLMI/0J4nGbSk6
-	H9oAU08PWVGEXZj3BcomVckX85bC03AI3pzz3psfuPHkF1F8lnBx84VKDHtMEY44sESA7q
-	Kk52IqdeTAPpYTygVAn5YwD1XejHwh4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7D5BD60127;
-	Tue, 10 Feb 2026 13:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F91C19423;
-	Tue, 10 Feb 2026 13:10:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770729049;
-	bh=y/HJEMaa/rbv0tW6eu8usmweDN19KKP/8uDNCBZhhIk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=YAK2dF3e6lqB6pnmA+92RZmQ0JxS3hdmtrlWH7Jz+RnEUeWsrg3LJAlPHl0GcrSPf
-	 my0Bd3/hU8KVKgVRr8mk3XkU42cjfs7f/8ciBFxBoxeDYXWLAx+2bZTTkPsx1P55d9
-	 YYVWLtMai04SQzbJBBrCHbgEJdcL0PR7Ck7B5H8f6ihl46obqnBWV9l5W14fWQObk1
-	 0NSh4d6EpTsapeDSGqPVuBK+9SyLfyNrJaKSFL1sQYnkH/LsvWUeEayowKhUorndES
-	 JEdDncgOcjnhgUgHsZ+cA+TMccqh1vJqyUBBoV78whC6k2Gu9R5OqwcJzOheqBow8c
-	 CWN/XFgXUw8yQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Mike Rapoport <rppt@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,
-  Alexander Graf <graf@amazon.com>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Hugh Dickins <hughd@google.com>,  Baolin
- Wang <baolin.wang@linux.alibaba.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Samiullah Khawaja <skhawaja@google.com>,
-  kexec@lists.infradead.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org
+	bh=v4d38eeijqML1QQrQYHP0U44Ags7wvQs5ZCf5GP4Syc=;
+	b=taqcHa3foMXQ2HlsGz1SSaN/v1xvKl4Rvxak8TXta4yptEifwEW9IqkPilvhPqnqlZY0IX
+	GaJu8P10eXVK1OfzQwLRw4GMxz0vSSU1SINHBi5O6DiPNyj8UNNHdlYtGlbq4+k65WqYtJ
+	FIF5lAJVbDeAB9ea+ubrfg1Px+RA8II=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=NuO+aV2K;
+	spf=pass (imf08.hostedemail.com: domain of jgg@nvidia.com designates 52.101.48.51 as permitted sender) smtp.mailfrom=jgg@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770729197; a=rsa-sha256;
+	cv=pass;
+	b=xmhf3C4V5ofVuTD2fWYA5OvaSfClv3zmjL6/hJCYr8SlmQPUhu544jmXFbmqw/yCnfsj/F
+	sP4bmnNZMaXRr0leXsGuvzgHiv6w49GhcMve+LYxaGq27Hqnf+cN5SWG8WYqSW7vurj4F8
+	DGk5eC5FWPQldWfEnXy5G2FxsRIzwMA=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MDYkENJZ7J49mdor3Neh4qXi8oGNAH/3p+Wm/dCMifQeVqFT44M2zWHwx1uN6QK1D9ahu5echh5S6HtQuDUZeH0NJJShZEJ5CXUj9KZOtffhQbUPCJ3ORMmwk9I/hDSUfOeqqiJGnbGD4mL1OZDI3xpRLTHiSE2A7SysPhZY81Wn7a4UBCIQryqnd4+wJtfGGxIgNVf2LYAFE0vR3gJUCeOr7DOm5P6MH5YxvcfR93kxTQaVgfnZiKdo77nYuDMegZZ92gPGWaCXBof0UvrvXlWPG+m6IeTEIQSM59sv5rLtv+j32aolzt121yd9HJ42z/Zi496j0KR7GBtGnHVAFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=v4d38eeijqML1QQrQYHP0U44Ags7wvQs5ZCf5GP4Syc=;
+ b=YgQd5w6qKM5TlQwwE6N4BFIGPvvo5gYWxdUrZMJzYrOIbtpv4LB36qTtL6r/3w/8xavFgxhc7TalK6qnRU6elloHJEnpIvvo7JzQkgYpyWMghGe/Pn8jslnH+8jHKCv7AfmPppn67FM05RiZyBcDsi7bUikVFl5RCHvHNzFqn7Fg4RzSzhBG1HGmpzVxHEMI7VlfpjijihwoCemJHeObSeZsT6XQPRYlnkDRvYydhpEEIl37/hWrwWLmQ5InvfY9hVE07FhgtHJXgwATJpljjFiJZ2xU97ZvnRK8rh40lqb6EN9l5kPmyKslY7HRZyryCDqSTjRwDDHQ8KRxQP5vuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=v4d38eeijqML1QQrQYHP0U44Ags7wvQs5ZCf5GP4Syc=;
+ b=NuO+aV2KtVrNEIX6Ppf4MnQTfadYXH0MdGWcsTsuPB2GfUUHopBdD3xhWwf0LAkuI7oUG1LvsEv01LEpDq/+BSHSd3AoagD1V/MFjesuaeXYHvBuqg+TRFWoo3EwCJb1qnWokOwDsc7NRtDIfnQLc/VBxsSN/Gx2qCDGmNLiOlR8ENkXVHoNFqOD/N7sBVTDpuckf4c1uAxPK1lkBN26XeG5YVD1gD9FqroMuHs5YHXm4uw3A9sS+Q45vI6mf1/4LgGq7IAnLRw5ApxbXIbg9qvviCjT0RCSsk5CRr1LFOlAz2ZoN3gPXc+Va6qgpKjExefad9WL5CRFde73L8VC9g==
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by DS2PR12MB9591.namprd12.prod.outlook.com (2603:10b6:8:27c::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Tue, 10 Feb
+ 2026 13:13:08 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
+ 13:13:08 +0000
+Date: Tue, 10 Feb 2026 09:13:07 -0400
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Mike Rapoport <rppt@kernel.org>, Alexander Graf <graf@amazon.com>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Samiullah Khawaja <skhawaja@google.com>, kexec@lists.infradead.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 2/2] mm: memfd_luo: preserve file seals
-In-Reply-To: <20260126183115.GU1134360@nvidia.com> (Jason Gunthorpe's message
-	of "Mon, 26 Jan 2026 14:31:15 -0400")
+Message-ID: <20260210131307.GD3076640@nvidia.com>
 References: <20260123095854.535058-1-pratyush@kernel.org>
-	<20260123095854.535058-3-pratyush@kernel.org>
-	<aXYGkb-QtYNaWYw4@kernel.org> <20260126183115.GU1134360@nvidia.com>
-Date: Tue, 10 Feb 2026 14:10:45 +0100
-Message-ID: <2vxzseb8u4kq.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+ <20260123095854.535058-3-pratyush@kernel.org>
+ <aXYGkb-QtYNaWYw4@kernel.org>
+ <20260126183115.GU1134360@nvidia.com>
+ <2vxzseb8u4kq.fsf@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxzseb8u4kq.fsf@kernel.org>
+X-ClientProxiedBy: IA4P221CA0012.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:559::15) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|DS2PR12MB9591:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53ef2e98-069e-4e56-4460-08de68a62246
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Pu+4zd8e9olI8mWycAlf9XkQou4t1BVKQdhS9YqGh30EloVmHSScgLA3++zC?=
+ =?us-ascii?Q?0a5QpC6np59KJjF9WAjVbF8FXNYF3+4ekEpB/2vDkCabiyYw5QfYn3P+L455?=
+ =?us-ascii?Q?AfCUoMvek9fHJPIzvXsCVm2xb4uEgCPkpc1+oglAWHVR+0h8s8WB1+ifHn12?=
+ =?us-ascii?Q?pDxp3DLCZBr752RhXX2043UOKYDXQbJfdDeCwMZpNN9HQKDWW//+RhakfIri?=
+ =?us-ascii?Q?OeJQJyQzx3oykIqt1krctS0b8UWYBjwtNGNJIRUJQeHIpZDKwsuRBPv336iU?=
+ =?us-ascii?Q?hGxW1SInnyUBc1abaeDCjh0Kcy81/MMXK1NbqryI85GTptO72oiSv27tyjJN?=
+ =?us-ascii?Q?qi+BxEu/H8d8nMxcFDQ0iiwXVnkHIw5Spgdf1qxF4FA+XVfnx6OlX7J1BD6X?=
+ =?us-ascii?Q?7GhTJONkCchVIqZKpxWs9QPqTbxuvnUAZEztYGsNVkaYXjZNg1ihHA7XZO5a?=
+ =?us-ascii?Q?80Z1BkT+n8elnbFapPh9Av7yciiQfIlyRB+/w4dFzaIG0w7v1exvRX5BwBh4?=
+ =?us-ascii?Q?ANSJIBlTRp1oWsaWrKWU/cHrcyqTub6auZCVEaEDXWtqZn7W6FqH+lodKX4V?=
+ =?us-ascii?Q?UuJZLtykffiLfi5gYRDQa6vaMRNDZRqWFliqgwspzmXGJu5rT8H3rPrYXsaI?=
+ =?us-ascii?Q?zewdSWuY1SdwpsPyW42FHG72lCfPltlK5ZKiTUFBUy0tfBAdGCG5ooco6LOR?=
+ =?us-ascii?Q?beFZ34UMLS52WOPSsmLs/guVi9WQMcogncr+lGfY5k+Z1MrQo9RvAT8Gi79x?=
+ =?us-ascii?Q?QZNEcmB8GHx1gPM4xw/zE11GdkNqztkjhOcdK3CjHrYiNgEU/rl8x/1rrtNk?=
+ =?us-ascii?Q?b0kuV5TY2EdnFNZ0Xv8o7KcQ8smlUSKJMjA5Evabhr9yzydWNrgwvy8/nhxw?=
+ =?us-ascii?Q?YpcMCJLk4BtK01vxfX36z1axRw+TV8hZDeNJvcIbbquraYCMglMTmjpGMpUI?=
+ =?us-ascii?Q?k01pIpGzHJEy2VDpDk82OZ7ZqCyeTqZb2sP0yEX15SW9pygN4DuQjio8h+In?=
+ =?us-ascii?Q?FSm9c/XV4Nf6t58a5Yr46TYjeAFaPyq+8VWdd2CueLwXF7QOGZVZNpn79eih?=
+ =?us-ascii?Q?uUL93QVrfMnTVaJyNlj/BSevI+EGrUUKwfHjf6ZfMoURHhZuARlQJjL2hBHy?=
+ =?us-ascii?Q?lFFp9ur0Li7vw3EcuSNxE+jwUElqqXY/55PedzQAACzEdLAs16xgTrDz/awp?=
+ =?us-ascii?Q?lxpRU7v1q25OoB4+NshX239DHnU7Sgy+aAUshCBczOY6gbx80nKKPhlypJWI?=
+ =?us-ascii?Q?JRhhSGu1RCtfGq9knGL4YLikOMOk+XX17KyKROY6oauIldoNE2yi2JjzSITD?=
+ =?us-ascii?Q?V48kLxi67bIsrm0LiY5azUWBW1fgmJM+SGBgga/YBWydi977Zt/qB89uoGjw?=
+ =?us-ascii?Q?mfO1cBWaVcdaSpLu5wpDh6AtaRZGFWNnWgzdt2P4S0AGr3x1g5UsCok6X1vx?=
+ =?us-ascii?Q?Y23sFiFGfaoONq3WE4Z0WCmmzO7/l3+MXLl6DqTgt91e0gdBC/jxy4Uj/k22?=
+ =?us-ascii?Q?MiXZl5QTZ1MEvEvrX629zkn+jsNZzG1AxHQOqzIau68orda2EFRZC5WVE1ZG?=
+ =?us-ascii?Q?AzIj6tNUVLumxTlWh+A=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ym483R3xLaEVZqDHfTU7lIWhdIhnSkybptJsuyoORHg2qNa1isPHvY2k9DRo?=
+ =?us-ascii?Q?A8HMQLTgtvVGdmI4juNUPVeAt6EP5eZtuFW2wkIwfbzsBAiKMaw/HyZsAKZZ?=
+ =?us-ascii?Q?dsfLQm3F4a/w67BrSHV+rfH/ORGCa6m0FmPiMPSo6F2Nl7qkV1jeBDx9C0Fi?=
+ =?us-ascii?Q?HZGBIpe96nAUrRcnUyryE1FYRID+/pubH8ydQRNfpMoXYsR6+II0f5sTrwJg?=
+ =?us-ascii?Q?s+R1Y8JRTvpZUgAB0ALgTDY7DmvWMmC1cB0usUgyroHTRhqS48c5Iyor3VbI?=
+ =?us-ascii?Q?HX8DUMvpkDrLMGHUIT5LkWlM/QUR7bgZC7wKxmtLjuT21x8JtLxVFTIkZxH+?=
+ =?us-ascii?Q?tXvnH1J6X4FczwJD3vcSw5pXHAnYS0I+Y+1H8yDu2bh5o+KvovPgihfklDQ9?=
+ =?us-ascii?Q?3zvVOxyoARrNYxdmXto6mQDSXhXXlMxyJC4jEX51TTZslE7eBJqKTiGYcns9?=
+ =?us-ascii?Q?YCb6q1QwLJPdP27cp9WhtjsTEQ/lQV+BFtmjo2p/iILGnQAlmGsYJ5P31d3X?=
+ =?us-ascii?Q?LxTG1w0qsRP5NLKDtjkExVASppkriWKWJDA1uB6Kfqabtzjg7o6nVWbmCDsJ?=
+ =?us-ascii?Q?P073qOX4/2dNseGiQq4UkszkH5THQlqlMa///3BSMq5fSKSIcsOHgBN+xFF/?=
+ =?us-ascii?Q?QiTK/M5uMASpnr//Y50wJhWeYrCSAEXOHXAWVBZlS+jm8r4sOLOR76lO78Et?=
+ =?us-ascii?Q?njueqoUs3PnVZ2X/vz0B8Szzt1Wbz1dLrN5N5BBbvXkqpofRt/hqN+PwFB4i?=
+ =?us-ascii?Q?9tWweqMSZaZMtaQ4+XrAY+jqoG2Q78zGX7kXkkWh56xstMnJLO0/yiCI78I5?=
+ =?us-ascii?Q?T+Yob6N8U5t4ERmKehoMtXKe+mqkhhfQ/OaJ9Va9Fb9nb/YdDuHBZVU0VCUW?=
+ =?us-ascii?Q?Gu5qUvoe646MrGNwfhq6SQEkl/BmvOHqgPS9uvLfjYxrfT+24xX5cTi+PdMz?=
+ =?us-ascii?Q?0m5hEbPzc/B27K/VOn8gw/zsWE17rRqTLZYOtvuHocfsoVBzJS2NDzM/tNOR?=
+ =?us-ascii?Q?I4lMy6xZ5ChHJukQ8EzFCeLU6jWbPxN6NBRfA9VC9tN9TaWomNYrjK/sNbhz?=
+ =?us-ascii?Q?5mpevnkeU7xFBmrHlxHttto5bQPD1suiHZehlXFNCO+LRCYKg3ZlZi27YoPk?=
+ =?us-ascii?Q?z/MPaMM3azU70KZXHB/WcA2NlzhCXvQOw4/9Zs9EcKk6KREKl/fjlP4yz5gc?=
+ =?us-ascii?Q?HIQYHE5WebrM54NWwOcn4ShT+FpT6sEAIvpmlNeoJiA3shFdf41p3G2tHdRA?=
+ =?us-ascii?Q?LCro5RiyxnXauzIzw1elUEE81olCR8Lgta5fxxdreARSI6VmrUDhmO0MAzIj?=
+ =?us-ascii?Q?v34Bwpsid2JfOiIQZFBVCKg7v/6aSG+2Jw0ueR6zQsgk/5yWqWGfPs3jyfsu?=
+ =?us-ascii?Q?XTpZxXxW1B0irW9ur9LmbK8gkFXWE/FgjARGMqGMm8yscmIbGV8xae0ozqH+?=
+ =?us-ascii?Q?vnzsG789F1nmwznhGvnPV0zvicuYqya1oNuJVGk7ju5wr3LkQn2RaBeaLpx6?=
+ =?us-ascii?Q?8UjTalxDKNqMwORUDYzx5q1N88E2DEmAsNQmbVsWba5jQJLOq5EFKcoRGhnf?=
+ =?us-ascii?Q?lG0bnV4ckb82YBXm1st1mhW9UsNvtVfZYwB67Cko46ME5ICOenFtMzT+hldL?=
+ =?us-ascii?Q?EYvMDzbrprbYYRkSK3JrKO1oxgUsON9KDDko8o58nMLbEl5Zf4S5tUlwBQ6k?=
+ =?us-ascii?Q?qyBJZPWT5EFF8b5XRX06uXq3W8eikdljOwPRgbvC9/4Pfs9j9Usbovzadnxk?=
+ =?us-ascii?Q?VlGJmGDkBw=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53ef2e98-069e-4e56-4460-08de68a62246
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 13:13:08.3884
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: U3uEcOYDG2VoaKlqbEJVKlvnyY/SdFuEf1LafflM1t49nje7Yaca3EatgWOB9i8/
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9591
+X-Stat-Signature: 9jyatk8nxy38bc3ha5fkku8hp85ob8j5
+X-Rspamd-Queue-Id: 8DB7D16000F
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 16EE94000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: c6ey7orpk8usdf1x1qdbhzcrqzw4c8qb
-X-HE-Tag: 1770729049-471545
-X-HE-Meta: U2FsdGVkX18JFtXuybUSzreL7Qm7JVteXlgGKgd2+CSH1lUy7+qAIXaLdK3B5Aw8vzCty3xmIOJLzMg/5br8ldK6nrPlEj6T+sYoPLvbV6qlnAKHORMFFdH7W3+EbgqE5SRCzUbPs9aElUrbVG4TCJ7/uL2B5V+Z5Y1rW8ZrdvNZHC/Xvh1RQRDTCxbkIhN3HWyFnZHA+qXyO/vZYO87Cm7Os4+Uu/85OrYim25/SzITDbY5CnL/F/PoQsbEROQT2FxtIyrtMchNOZp5HgK4pdsynQ+TKR8QOhTgxevXW2SkeCgRzTovuNjFAr/9VTYCPGM94Ej2zTsxnRtrva/0XvEHa4Yw4FThqPd/89vZ5bXGNRci99Bt9jCz/2a4Mt4KougC3N+Jk0rbL98AysN+OkIi8fJr0N/ex4h4+vS7ZOcYF7CrcLwe00xnh0MUWIKDnAZ1V0qYnrGF18sc8EmV2eciuFIumyG6FeFiATLtkJC0nx+Cbty+cmDKWbtvFLtxMsy6GqDUAcKjFPRkEgfeivMk0KEam3KcZMRyALCXylpcFzCtNf1+bhMzGadeRyAwLNoZa2aZYO4fPhN/taKpMDzgZsy9aILcIZfS0Yy+xIYFsZlnVHu1c+EAkw6yvOz94xpu/19f+ua5QRx0yeAfdBxpne5c8OPD6VH8Ed2d9GxXNoZLyih5CCCEPJJIHNlSM1N+ScyAwmZ5NYMWzAEWiiC8HLlEGLaoSx7wq3DL2fR5q1YgpaYfdxLN+060XuIkN+N8DQ3F7377Wf1vjmFR0qgcw0ncpsV4lpSKXDiVUbFBq/5tngja7VNOIYWmLnIENEeX+oMEyAXggrl2t83ypTgDh4/idK0IN9uBwhVquNPY82Tukci721GFosFrdGChqcLDIcBGPy/QYm0jMDvEi4ldpcJgTwJgZ5Uy0wESWwxzLu1I6yCzP5wfLkSCvAtswFjp952a7PcCZo2AVrs
- ov7OLjkS
- TF/qDV+TXlWqrLHdEtIqet6rAqxD2yit8IXYyzuuLzC/O6ti3xJ3ZmmZfDplWCCDeT+ekmnfbwa3U5Jh1wctUDrgVTWCCCL97ECZQFAN9Ae+Qs11arrCBxW/zvKcwDK7bWBh9KN68FnfLHQl/D2KgGWlWZjTlJS01n/NedeVwjngb+GuJ9VevWL3z8jEa7bDEfqYx0Pjec9NGHOAlsr/DizU8lg==
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770729197-695260
+X-HE-Meta: U2FsdGVkX19u8uPWE/Jo9uhyqtOGW+8r4/wrOP6R4OY/pux83l/7IxLJz/7KI7VHkYZxNbQso2h06K9CcmXt+aLJjGO0Z4joILwPoFLrwOr8kvOGo3WdF/oJ3K3bYMCp9XsU5ZIvGC/13xtmRjburYKUrMCh4+9g5NO+EkGLNK9qx8WXm1XA3tkXnCgcjwXXMxMrPtT6iGDefmQ12Cpm//X1EV+sJtYOQETpEwXJxjYjcqAQbbS77uDp/DTQxgT4CJOAhcPXqkFkBM8oQyuno783Dr+IjXq8YL2K36OMh3WBlZp8mBx9XOA5LRiCarQihom9XIN6ERvQYb97mnnm5bz7clzDgrPl0LeooWi2rEysUqoJt0DPIfrjwK760NNGcgQn64uewCBXza+7zCfyhyYcS2ClIiMMyG8kfixXXsCLYKjxY6FqeeVi+sgtb2rtVMLu9CbqANKv/py+XjEZm+hKY2TgMq8ZEZCpJghFFC/1ZuDpjLQkR6WSEE8ULj+fEYZgqwNCF92WmcGaZvAsXI72f0wNYSo81n/c++kBzKKzN65fY4IHFtIg7zb9Bj5uTS1UFPrY6IlaE0i9HD2K4lYR7gNTEgahICQ7wEnWVY5xRGnkctaBjnfYpVylavFZ/G6+tp++q69TGLvJsgddb2T/LaORl6K6I/9SXM5SjpcHzeQPTq4Z+KO2jNROQQKOpKf9NWyX4QCsmzr8wdN/ujFuxi/YDFTftBgpp88soU9ERzy1hBNM0d3Ryfip5enc2gxpFTHltCc3zWHgaGIn2GfPk9M4O9xDM0/R39gq13pXfrLzqqoQyORx9pdsXKkWzf86wpM6jbSOd8uWwop2P+oV6V0Bdpu13DWSYTlPGW4AGzHEOqyZYK8WGT8Thcc86ZhqAGWuz2XEP6Fdsx9VuXXMRRWoo2CqP8KWSmESMat4Yl/lVPSZfYO44QfS3ebLvKjpM1A6jLOCRgy3dUj
+ 38Cl7zja
+ yVzMcjAGTcRzZbB3XukzrSP71S4V2Kkclsw8ozN/QRLFRhatnU96T4Mdp5z9qKvleyiTClWKohF+DN+j+0l1Zo4zEYbPT5wN/EIP9RWReZGSsEM3+Gc/q9pSWG9M1EY2dV9mjUqHgKil7zitc3ts1Krx09GnRh1MaPuZVmMkq82ybmehWZSKb388/czZfH6nKuLGpHITWNL+xO5LOw4uGCl15Le+3hTJM2kE8p+D48ULIhH/67b0CC4rKnYKCOIS1++KloUFwhkvMUSq8Thzcsmxi7p0PfYHw5eD9SUJctfw4jx42BTbM3YqmMi98Wku4s6OlhOaOaNjxiffcmksd9OUuDbpMxDCnqAJx29/YjBxPDMgmyrJv0USJ2CfjHg+p3xgNMNNwvdRUaEj7CNdl0uCl8xb4bIKckb9Su8GfKmtr1y+Lscg2pw8ppZqoYrwdq7NrVuMgbe8HupU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,69 +193,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Jason,
+On Tue, Feb 10, 2026 at 02:10:45PM +0100, Pratyush Yadav wrote:
+> Hi Jason,
+> 
+> On Mon, Jan 26 2026, Jason Gunthorpe wrote:
+> 
+> > On Sun, Jan 25, 2026 at 02:03:29PM +0200, Mike Rapoport wrote:
+> >> > @@ -67,11 +72,13 @@ struct memfd_luo_folio_ser {
+> >> >  struct memfd_luo_ser {
+> >> >  	u64 pos;
+> >> >  	u64 size;
+> >> > +	u64 seals:8;
+> >> 
+> >> Kernel uABI defines seals as unsigned int, I think we can spare u32 for
+> >> them and reserve a u32 flags for other memfd flags (MFD_CLOEXEC,
+> >> MFD_HUGETLB etc).
+> >
+> > It is a bit worse than that, the "v2" version is only going to support
+> > some set of seals (probably the set defined in v6.19) and if there are
+> > new seals down the road then this needs a version bump.
+> 
+> If we are running say kernel X, then X + 1 will always support a
+> superset of the seals, since the seals are UAPI. So it should be able to
+> handle all the seals that are given to it by X. This only becomes a
+> problem on rollbacks. Is this what you are worried about or am I missing
+> something?
 
-On Mon, Jan 26 2026, Jason Gunthorpe wrote:
+I think you need a check at some point only permitting seals that are
+defined right now.
 
-> On Sun, Jan 25, 2026 at 02:03:29PM +0200, Mike Rapoport wrote:
->> > @@ -67,11 +72,13 @@ struct memfd_luo_folio_ser {
->> >  struct memfd_luo_ser {
->> >  	u64 pos;
->> >  	u64 size;
->> > +	u64 seals:8;
->> 
->> Kernel uABI defines seals as unsigned int, I think we can spare u32 for
->> them and reserve a u32 flags for other memfd flags (MFD_CLOEXEC,
->> MFD_HUGETLB etc).
->
-> It is a bit worse than that, the "v2" version is only going to support
-> some set of seals (probably the set defined in v6.19) and if there are
-> new seals down the road then this needs a version bump.
+Eg some future v7.19 kernel has MEMFD_SEAL_XX it should not be allowed
+through luo until the API is bumped to v3
 
-If we are running say kernel X, then X + 1 will always support a
-superset of the seals, since the seals are UAPI. So it should be able to
-handle all the seals that are given to it by X. This only becomes a
-problem on rollbacks. Is this what you are worried about or am I missing
-something?
-
->
-> So I'd check that only supported seals are set here:
->
->> > +     seals = memfd_get_seals(args->file);
->> > +     if (seals < 0) {
->> > +             err = seals;
->> > +             goto err_free_ser;
->> > +     }
->> > +
->> >       ser->pos = args->file->f_pos;
->> >       ser->size = i_size_read(inode);
->> > +     ser->seals = seals;
->
-> ..
->
->> > @@ -444,13 +453,23 @@ static int memfd_luo_retrieve(struct liveupdate_file_op_args *args)
->> >  	if (!ser)
->> >  		return -EINVAL;
->> >  
->> > -	file = memfd_alloc_file("", 0);
->> > +	/*
->> > +	 * The seals are preserved. Allow sealing here so they can be added
->> > +	 * later.
->> > +	 */
->> > +	file = memfd_alloc_file("", MFD_ALLOW_SEALING);
->> >  	if (IS_ERR(file)) {
->> >  		pr_err("failed to setup file: %pe\n", file);
->> >  		err = PTR_ERR(file);
->> >  		goto free_ser;
->> >  	}
->> >  
->> > +	err = memfd_add_seals(file, ser->seals);
->
-> Because we really don't want this to fail :\
->
-> Jason
-
--- 
-Regards,
-Pratyush Yadav
+Jason
 
