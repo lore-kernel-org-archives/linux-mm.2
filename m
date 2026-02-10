@@ -4,115 +4,284 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15C59EB2700
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 20:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 129A0EB2718
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 20:59:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 514106B0005; Tue, 10 Feb 2026 15:52:26 -0500 (EST)
+	id F30386B0005; Tue, 10 Feb 2026 15:59:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C21B6B0089; Tue, 10 Feb 2026 15:52:26 -0500 (EST)
+	id EB5906B0089; Tue, 10 Feb 2026 15:59:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3A3296B008A; Tue, 10 Feb 2026 15:52:26 -0500 (EST)
+	id D34266B008A; Tue, 10 Feb 2026 15:59:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2AE736B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:52:26 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E9F8EBA3F5
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:52:25 +0000 (UTC)
-X-FDA: 84429745050.04.1CD38AE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 95C0740010
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:52:23 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PywHh+/Y";
-	spf=pass (imf07.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770756743;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BCA256B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 15:59:56 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 00FCBC2551
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:59:55 +0000 (UTC)
+X-FDA: 84429763992.25.2D56F2C
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 71CB2160002
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:59:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="EnFd/9Nj";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=HrPXdBdz;
+	spf=pass (imf08.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770757192;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=MrCEFLIbdwEIb4gpQxK0QNreKVswbTUWGMdqr2Xi3hA=;
-	b=H5gBTC7dQwkAhjwSEaTGhjuusub/to9RMLmLAbQYA+idF+v6HGkuhet8vHIfTMd3qE02UU
-	Oaqhb7gEqD2huWYFNHfuRxGcKnz6i+HKq4wDCCQ05hboNR1CNHCQcGt2kEreGFrlkA/mkJ
-	NHBXOsdf84OYD7RBjhyPr0kYZsONIcQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="PywHh+/Y";
-	spf=pass (imf07.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770756743; a=rsa-sha256;
-	cv=none;
-	b=y4DZ89Xy6GwPTcPjrpeREhdq8jTWxmxlfJGo9n3HGG5A9L1b3aJDqO+N4if7cnACxYk5LG
-	cdUU4cFv/T1bPfIdI9tJfhGwYQxzDmqeY89EOxGgbZFaABPy5pFIsLx5IRNDrqM3Zi4yLC
-	/7QXN3Pxd/bak9Qfma924lf/H1+YTwg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770756743;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type;
-	bh=MrCEFLIbdwEIb4gpQxK0QNreKVswbTUWGMdqr2Xi3hA=;
-	b=PywHh+/YRX/oVPDU8N+ceZN0YdY7lrEHAxMp2AP9J3NkXMCDqiHGIlX6j6B6t0uAeMSrom
-	hcY5VBLsGmLrFCA0yUZAA+lO3Qd9z3YNjy4pdtuWa+JXdqCnj6R+CkMkPvOG1LBmDUyCm6
-	9RqkfxXwWF8QSExqD02SO6WX4Z5PQCw=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-380-TWuGZ_tROb-ASQpFHqGqTQ-1; Tue, 10 Feb 2026 15:52:20 -0500
-X-MC-Unique: TWuGZ_tROb-ASQpFHqGqTQ-1
-X-Mimecast-MFC-AGG-ID: TWuGZ_tROb-ASQpFHqGqTQ_1770756740
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-5033c6265d2so48078011cf.2
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 12:52:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770756740; x=1771361540;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MrCEFLIbdwEIb4gpQxK0QNreKVswbTUWGMdqr2Xi3hA=;
-        b=qgVeunaTblzZnCrp22qMWJskMzJmYSqr/ofh3n7L3u6LcDjxfPXyB4YrpF0SI7oBCn
-         XHMb7pJ+uYm8RGwaC65AuQCEhTd3anH8IMGjm87Kvog2QsPZt0Ho9x2f40x/9dGXk6te
-         Ot8AeFSDMd8/xeBEQuI4uqnOiR8lfzOzgW3LrmI6Nyw0D2cgG9xgJGcpzjgtYUCNpti8
-         q940WQfoBMMEUhToQa3llkVGLStgd8Soa/Qe9nl1MNFK5PG0LB7UtPwfCEmtxlMJUkav
-         h2WbCs205olERuGUIR/Rvn8FOgSaadAKmvzd0ICLz6LvS4EndLoj/Uatx+Ybjj7rZnav
-         AABA==
-X-Forwarded-Encrypted: i=1; AJvYcCVE5/KI3xuNKErzcTQhXtpNL+GjqP2M2N5/kbkhtsgYwl/HiQh5NfdRImeFcqKvg5Ge9+ftpvVTlg==@kvack.org
-X-Gm-Message-State: AOJu0YxcQReCZBD+rHEH4JdblyvLhFzQMItLW51T/QAz3FMRXGLqTS8v
-	4TCqLAd5RoLysEf1UOsMUFeMxPHmaZY4qqycntmgtZBJSvwsYt4t7cwoBiA0CIjpFjO+UtY/0Ot
-	DjR9QIxoWNruduGt36O8pupKKn7VdjOjPJd8gHboU3XVBfzBDRU43
-X-Gm-Gg: AZuq6aJQqchkzSwZlpGFxKsdn7ZekY7BeLa8lUeCbf+DmYGjy8tWH1/5kAN8qx5HcN6
-	o1bFP/Tyh9oZBLdEhkf1WYpDqVoE4YuIZXPwlRdG61XcdxRSVhlZUnPBi+UI1ZiVhkV6vuhaE5e
-	8YjOiHnt17FA+ovW7Xwc5SN0lEMVlx3pmlRZE9xa3OUxmB0tL5EXH6dTqCrRVKdPtNc3C1ogp3F
-	F5HztYGZ1+0TLLThyg/x8XQTxgRIr7j4Nobcdgy7IgI1UprheMyt7fbIL7SjIXA3Xt+D6s8SYN5
-	h1CkYsqUo6cnUizS4IB4VLrg9GAF7HSuUuCsIA/EI8WBImSvwVavGIISiclv8zd7LbULRYUkqCW
-	MJ9wfBN58q9UCOg==
-X-Received: by 2002:a05:622a:54d:b0:4ed:2edb:92b9 with SMTP id d75a77b69052e-506399da643mr228209531cf.81.1770756740025;
-        Tue, 10 Feb 2026 12:52:20 -0800 (PST)
-X-Received: by 2002:a05:622a:54d:b0:4ed:2edb:92b9 with SMTP id d75a77b69052e-506399da643mr228209331cf.81.1770756739560;
-        Tue, 10 Feb 2026 12:52:19 -0800 (PST)
-Received: from x1.local ([174.91.117.149])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8953c056e78sm109453876d6.39.2026.02.10.12.52.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 12:52:19 -0800 (PST)
-Date: Tue, 10 Feb 2026 15:52:07 -0500
-From: Peter Xu <peterx@redhat.com>
-To: lsf-pc@lists.linux-foundation.org, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [LSF/MM/BPF TOPIC] Userspace-driven memory tiering
-Message-ID: <aYuad2k75iD9bnBE@x1.local>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: YKboaQYdk8O2KYwOOlIbsSjRHvteJJh0MYybqqQUQ6Y_1770756740
-X-Mimecast-Originator: redhat.com
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=s0rr4N5/hKRU18mXWtNjt+roRH8Kd8ZnAJTyxHGtG08=;
+	b=eBd6dxWnhHGX1HvuoB5Gp9N/4Sz4dOnXMcP4dfuMm1ZyNc+CVbilj/SBACzwGWHmoxfAn1
+	lRWLC3keAIwcFitr57O1a22d6+JH4/gLVePEWsnqwM2tUJeq/+AWkZFNccPrqvPAhm5ePC
+	VfFsq/OUjOblhWP/969ETPpdJJzgnz8=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="EnFd/9Nj";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=HrPXdBdz;
+	spf=pass (imf08.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770757192; a=rsa-sha256;
+	cv=pass;
+	b=rJz4xbc49GYGl7lehNt6UQU5oeg+SUcJ7YOwGG6Lhv/bOKLW5BzKCkDhyMS2Ii9ejc6gG5
+	Z3+4GF6vrpbStcVdKdsS7Mb2MGSgLnzilhvTGvk8uOahJAlAe0bDB2R3wO4hpW1bk/prvr
+	FtnrZ9pvyMhDDQUlsD3cikvqx5HNROk=
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61AGegZT1407140;
+	Tue, 10 Feb 2026 20:59:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=s0rr4N5/hKRU18mXWtNjt+roRH8Kd8ZnAJTyxHGtG08=; b=
+	EnFd/9Nj+LcIwGZ0cj2XXZL6IE8CILKq4Cq1ctUzabPPS7UHs9XO6qKiajVy1stL
+	aR0iGpV+U029IT4KCZgt2uFLxxsP6F62RdYMAAisq1DiaBQKQg/f7wr+fbzF86he
+	SUCTR97uPcSuW+tdNIMWYkHedKAgtZ/Zd2VrA3tbeRzOnNgSQ85fvBfGQgsau5SM
+	VdRvCO1phBxqL8pwtKiJmKKXTg6YuMtmkISCW1uVbCdIxyBUKOGOJhnsEgWFvnXK
+	dnCtoZ7wp73MlJQ0PgvIsQO72xy5j0xi9Wsla1nrl1ey6MehohWVBG9jHBwTNxM7
+	Dk1d6IBb2t6eGt+ejThakw==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88df0gcw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Feb 2026 20:59:44 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61AJqR1F013032;
+	Tue, 10 Feb 2026 20:59:43 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012029.outbound.protection.outlook.com [52.101.48.29])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4c826ykqf5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 10 Feb 2026 20:59:43 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cd8OKyU1s2mWAuUWTlnQ7pk2m6n1Q6mbyRQLrt9ved+euANVoZSTFMAvVC8pxWMT58RIU3qgMe0m1U1ooh/iGjNc2H07ff3Wx6UmA98c4uVieftE1vOYLfBKI/bwQuO014u6DMozqVEA9jNW4S7/+/GZAWQ3mpuN/dgFK8rb9foX4ZlCC/S1vcIptuhWiQfJjpCXMEK/NKB1prcnYkPYeJ/zUOi/YltOFUPofGsfxGYITAimJ6ucnU1QgPSco3jiCwK2RcytQEqmhHselNX4r3vq4ZduWlWwL7PPtHDI0hT4Jy33LVdcaSnPobsCvbZAwn+zD4Kh1OV+yrOjm8yQIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s0rr4N5/hKRU18mXWtNjt+roRH8Kd8ZnAJTyxHGtG08=;
+ b=NmPXN0OCn/DVmNnQoNW4U2Gc9ccYnkyhDsdK2a2+/Mlld21ZrXz+NhOIAfErlRd2AJ/HsV9cmfstbAIbn7r9OGnSyuucy8BXrQZXP9pr1nSRbbFpi9hExqurlQQOPCa9iZj8kNwyqUfaR/93Ie86jT/0j1BVIb0CC/Y19FI+IP7eKQXc8ERfyPI9X8uyfnhvtb7333lOZdVfjFL2sBPhHVcQTqUVW/3cTT3S1SGCzavt5kleXQTbMRK+Mbq5bDJUFFlI6l5PZ8I3Ok00RHOun/s0koCl2tmlkfwtT0vd5iiM0VhkH+P2q6wjZLJnj/GXC0fBSD3biku+B5AdLG7UYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s0rr4N5/hKRU18mXWtNjt+roRH8Kd8ZnAJTyxHGtG08=;
+ b=HrPXdBdzqepvmYZyF9tqX80kuVL9wOQubjEczOjXiUgIDpBx08D3nuE8dVjmXTh5SsqB19HLAEpZkpPufzoymmKDZ2772mCF4g8lK+vRaNaWwFY4zYyCXTpgKMFKDytgm+IrmHR/ah21R9MZjShru4SU2HGwR9QkI+LEyQ2CC3Q=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by MN2PR10MB4192.namprd10.prod.outlook.com (2603:10b6:208:1d9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Tue, 10 Feb
+ 2026 20:59:39 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9587.017; Tue, 10 Feb 2026
+ 20:59:39 +0000
+Date: Tue, 10 Feb 2026 20:59:35 +0000
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Tamir Duberstein <tamird@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+        Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+        Gary Guo <gary@garyguo.net>,
+        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+        Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org
+Subject: Re: [PATCH v3 05/12] rust: xarray: use `xas_load` instead of
+ `xa_load` in `Guard::load`
+Message-ID: <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Tamir Duberstein <tamird@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-5-f777c65b8ae2@kernel.org>
+ <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
+ <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Stat-Signature: 9nfbs86t5q56c3yy9fpibwqgsw1jcrcb
-X-Rspamd-Queue-Id: 95C0740010
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com>
+User-Agent: NeoMutt/20250510
+X-ClientProxiedBy: YT3PR01CA0063.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:84::28) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|MN2PR10MB4192:EE_
+X-MS-Office365-Filtering-Correlation-Id: f35f1b35-cfd9-4db6-760e-08de68e74e5f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dVJOeHQvM2xiaDFNc3JHb290MW5Gb0FTRks5VER6NnFDWkVuU3B2RUJXR294?=
+ =?utf-8?B?bnJiUnMwWmlYcUp0UlAraDdpbUNPYncrdnB2L0ZvZzlaU2krMDNERXhNRDBo?=
+ =?utf-8?B?OTRHZEc2QzBsTWVkVUxpaTBJeEhDSHdkTnEvL2RKSmNRcVVkNVdJRVFXZ2ph?=
+ =?utf-8?B?SVdoSjNHeW16dFd6K0xTWjd1MVdQRWRDalNEVHJObDFFT1Q1VmZ4MWdCcG5X?=
+ =?utf-8?B?amxDY3ZXMXlOeE9adWlEaVJsY3NEWXN1Qkdoam00QnJFYjEzRTlZZ2FQMWFE?=
+ =?utf-8?B?K2NyWG1lanJJZ2t0UTQrR0NMRVNzd3A0QnJVU1pTdFhMUTBUY000WCtjaytI?=
+ =?utf-8?B?RnhOK3BNaDgrYSs2bFJ5dlMrS3J6eTExTG1nejFuaUJVVEpJN1FmcHZIRlRw?=
+ =?utf-8?B?Q09KQW5jNkZJZm5vNERPV0h6M3dGUlE5NTYyRG52ZHo0anYzekhwMlJSVTVN?=
+ =?utf-8?B?dFlLZWNGb1AvL2ZNYzl6VDlwQXZZS25Dc2c3cW5jQktxSjRZZXZscHRkR3pK?=
+ =?utf-8?B?aUFVdjV3cWtadnp3RFBnRHVOQzB0c090dUxiY0R5YlJBcmRONHFLNlVNOXZI?=
+ =?utf-8?B?U1pLZWQzR2hucTlDeXNhTVFiKytPelVtbXZiTGVTZmR4YkdIZkg5K1h1bzhL?=
+ =?utf-8?B?R1c3RFFVK2RBakplNG92Rm90N2tqbEZsaGVuR2RrS0RsZEdRcDlHRjJJMENY?=
+ =?utf-8?B?OFp5UGpHeng0VGdSeFdLQWJYeUo4TUVWQkh5NHREMDVwZ3JsVnA4Z0l1enZq?=
+ =?utf-8?B?VmpiVXBhNWJiM0dIWDc0QmQ2MC9uYWE3TGdIRkl3VGFWVXdIRGhmcUNmR2E1?=
+ =?utf-8?B?NXp5M2lxY0FHTEdzSW5xcUFYYzNZdEk4NStvRkEwWU5xazlHNG1hOVdPZUhF?=
+ =?utf-8?B?WU9MUDd0c3RHOTJvZHc2dFpqVzRWc3JCbzhmUFNtSE1USCsvSEY2SllhVWg2?=
+ =?utf-8?B?SmswWi9DUmtaUU9JNmg4Tng5VDhWb1ZseCs5bWJMdnpkZkVGVlNNdEVaTEpP?=
+ =?utf-8?B?ekIzaDZ3MnlTcHVlWFlwSkg4OXMrSkx2aHJSTDdleE1XbjhsQlhTRlh0OWdT?=
+ =?utf-8?B?cGpIMVg0RTYvNUZQQ2lPaWtta2RLN1dIUFBiYWp2WVM1Ni9GS0hrcnZLc3Zs?=
+ =?utf-8?B?SkQ4eVRjR3hDU3cwR2E0VGMzenQ0TE1GOUZnVmptUUtwOU81aTltSlVwV0pL?=
+ =?utf-8?B?d0dqaitoSXRxUng5aVNuMWN4bEZaOVRPKzBjVXBqVGcwVE0vSmFpN1hWOXhS?=
+ =?utf-8?B?bXU5MmZVQkV0SDBYVTJndlRhQVJlTEc0SW8vdTJYL3ZLQU1SOGRHQzVLNG1r?=
+ =?utf-8?B?VndjcXF4WTZHMmNaSjNXbEIrWVNlbUxYSllURExJRjZTeGZPVkpDclhNVnpS?=
+ =?utf-8?B?NVR4Ymc2N2FhNGpKQU4wL2RJUDF5V2xUcS9GMk9mMC93ejZ1V1I3UkNTMjdN?=
+ =?utf-8?B?cmJiV0RBS3hYaGlqMURZOWZvV1g1OHJuaUJKb3VHS2RZSHJhYStKZHA4Ykxz?=
+ =?utf-8?B?ZVhDWm1xRTZXNVNLQUUxU25lUlI3dFFCTEhVZXNuSVhhRWZTcEpLeCtpempW?=
+ =?utf-8?B?Q1BDWnFGejF5UVVwS0xWOVliZkNzZG95ZEhHQWlwNWZNbXg5bWVZTjZjeHh0?=
+ =?utf-8?B?ZE4vNWY1emNSVkVmUFpJRVlKNkpwMXAyWU1ScWN4NnBmM1lwVTA4OUQ3Vlhr?=
+ =?utf-8?B?bEFQR0ZFbDVDN3E2YmI2SmdjWEw5bXhURGhyeitwVGNleGlhTFVJSnNHcDVV?=
+ =?utf-8?B?ZkJjd0ZZTXhSZ2MxWUtHWERUZ0VLZzRNYTdudkVJNFhFVHpESXhHNlVwRVJD?=
+ =?utf-8?B?TDlxZHcvUklnaUx4dGdVY2VhVTVSVjFWWjJtZ0N1QjFaV2dHSzJQemVtcmxq?=
+ =?utf-8?B?THZEbGUweUszSGRvQ25CajRpYjJrNGVJWjFDMDNnNmx6dklJcHFSbmJzbWtW?=
+ =?utf-8?B?VUo3ZlF4UEo5b1JKamZNa3h6cW90UTZxY2VoYjFMZGM5VE4vMS9UUDFZb3pO?=
+ =?utf-8?B?ZHNpOHZZVCtTeTNJb0FzSkFhaUFGWXRTYTY3WWNWUWFqdWhiMis5Vm1jV2tV?=
+ =?utf-8?B?NnRNaGkvZ3Zka3I3K1BjRmhMVlNGK1hvazZEZG9uaDlheVRleFF6MkZNci9C?=
+ =?utf-8?Q?fxdM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?OHhnRU82K09LSDlMdjhZKzRVL3lVZ1pVeHhNcTBSdU9iTmVFVXlucVlIdnVT?=
+ =?utf-8?B?SzJYLzJoQjVsbmxlZXFjYnVvcThiZngxUGhIY3dZZmlrR2tOeU1yVzZXUWVm?=
+ =?utf-8?B?bUx5RUkrWmhyaVNIT1lKQzlZaHp0YVZkVUZZOC9CaG55TksxU1lUcVQ1QU5P?=
+ =?utf-8?B?OXlrU2ZYZW03TXptemVBTi9hNERObDJQa2VoM0NnK0dWeWRLZldlcVk4YmdS?=
+ =?utf-8?B?UHg0NjZvZmthdUdEZFN0bGpXemxxQUdxOXB1TFhzV3JoMUdTQ2orMzZaM0hY?=
+ =?utf-8?B?SmJhY1pWS0FIV1NqMC9hNXczd2syNlYzWjl1bldNWld3TndOVGdWNWt6WEpl?=
+ =?utf-8?B?SmowNzNUNHZmR3BsZERZaXZsTGJvN1ZhT1hwcm5jVXZnaHhpN2ZITzZYclNk?=
+ =?utf-8?B?SG5OTldHZEVnSTJIYS8va0FQc2JSWU1YVjJxVVoxRGhVQnVsb2c4SXBZbzc0?=
+ =?utf-8?B?enMzUndSb0RadnJqOFV5cWlaSWVOcWozbjBwR1A3ZEd5YzI2dmdpMnUxYzlr?=
+ =?utf-8?B?RmxzZ3Eyb0Zza2JOYThFVW1YQVlpTUJueTVCMWpCTWhsVkxPRm1KcFVkRkIz?=
+ =?utf-8?B?TU0ydWtObGJyZWlnc3lES1lpVC9lbGtZT05oamVWMTBzZUJaRDVFc05LcmYy?=
+ =?utf-8?B?MzVkbnVkeVIzbzM2ZElMRmorcjlMUXVYRm5vUjQrS2JOVEh4MTdpZ2VWb05j?=
+ =?utf-8?B?Q3FtbHY3a3AzR3YrSDZxblJNbTh2ZVJ2ckN2aFFCZ3lmVmpheFA0Z0V2dU5n?=
+ =?utf-8?B?ekY2cllKcHR6Vlc4ek5xR08xZ2toNWEvL2JWMk9GSVROeW5Nem9EbUhKNE8w?=
+ =?utf-8?B?aUxYRFYvQjhKS1FqWFRUY0RHMVRiUGQ2Q1QvSW9MNm5jU3p3YXk0NEhqdFdt?=
+ =?utf-8?B?eW9qYnFVWE5UQkFSTis5aVI2elFudFdKaXFQa09KVzNlOVJ6THBrUFdNSkw1?=
+ =?utf-8?B?RC9hTERRTFROVlJQTG95N2lDdHJxZVluWlp4eUNFUTRhOGRsMFhvZS80NHV3?=
+ =?utf-8?B?d01tYUlwd1FrUE02R0Ria0h4QjNuRGlCWlY0Y3IvQzFJSjN4SUJQRXFXMnVy?=
+ =?utf-8?B?UlR2TEJhMnNDa0VDUjVZTXJCTU1DanBOakFPV3BtaUtPYmtRaHN2NURPbi9N?=
+ =?utf-8?B?d29CQ3NMUE1NUWFkb2w5N1VmemRHTmhITkcxRjhGc2NhRTVKYWgyZll2Sk5W?=
+ =?utf-8?B?cHZ3a2prTmtmQjhUTFYvZDljQVFRbjJOT2srUklHNmdCYzdlYVVWY3V3Zmxk?=
+ =?utf-8?B?NE5vTVNBZ3Fuc2NLRjVCSDh2ZVlXMGx6WHN5b2crUXJ5NHQrUHhvcHV1Zlcr?=
+ =?utf-8?B?V2kxZWdlMGhZZCsraFZ4M2krWHpyZlgrSDZLR2FUMU9rbEROKzFCUnR0MU9n?=
+ =?utf-8?B?S2JMSmZTcHEyWFBJVkxOOVF3cUMzZXdMMlpEdFRjS3NVbldzWTBEVVY3ZWRQ?=
+ =?utf-8?B?dUtJRzNmMFpuUnlVeHJFWHhJa0kwSGtJZnJzd2tTblJ6YkI3RU5NVE13eTR3?=
+ =?utf-8?B?M1ppNHZBVHFVd2NJNWZ3akkxcWtkaDNKVW8yZndvcXducW9SNUt6ZUpDWUFF?=
+ =?utf-8?B?ejZnTElzdm9hV0dPVTd6aU9zQnlvTTlQMkJ1OXM2a21iUlNTZ1l1ditGOHFn?=
+ =?utf-8?B?aGNTaGFHa3dhZEpNYVJmNkZRTXNLQW9sYm1kb01PSjZQUG4wSEtIOTA1OW93?=
+ =?utf-8?B?RnBIQ1lZbmpLQ2tYUWVrK1lvbDJjSWphVjl3dm9kV0RaMzhML2FqbUs0QVlm?=
+ =?utf-8?B?dzlUZ2UveHZuZUp5VXcrbCs0KzBMRXkvNnRpeW9IbzdRT3dYY3pYNVRlNHhL?=
+ =?utf-8?B?NUhNWnRYVmhBY2NvUW1zT3d1eGdCYmsyUDJVb3B6WUxiakYwbHpvYjZsam8v?=
+ =?utf-8?B?d0tNdGE4SFE1TUJiM2h4N3hUek9iYXJDOWt0c0R6Y3YwLzZIZTZnTlJ5SUha?=
+ =?utf-8?B?Z09Pbk56K25yRzV3N3VLSEhxdXJqL2dUYVFoVHlROGtrenJUZ2pqTkh3VTlY?=
+ =?utf-8?B?YThDNFZNNm0rdkpVejdacFRBUXNkdHNjK1krcXdjams5Ti9mbnB3UDVxWi9R?=
+ =?utf-8?B?aVh0RmlSY3FnSkw1OUQrVnpXUmVjazE4ZURJN0ZMbGZJM3FWVmN5TEJYY2FH?=
+ =?utf-8?B?dWhqN1laNHlac0p3MHY2TGhidmt5Rk5Nejh5dFBXRWt4SGVaRWlhVHh5ZEhI?=
+ =?utf-8?B?YVpvQ25sQ3JiK1lpSkUxYndDL0pwYWVmSEpBd0poYVBmZkthOU1hejR1RVJn?=
+ =?utf-8?B?SW8wQjBMUlhmQ3h6Z2tySnB4L1Z5Nk5uaFN0Umc0U0dTRUhnZ3pEQjNxR3NO?=
+ =?utf-8?B?TWp1Qm9wditTYWoza1M5alh2cVpMSmF3VC9CaGh6dDZNcElGMzRkZz09?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	6F9EFm/SGYkeIn9sAbdlZgFfDwclKtaTsSJjVtf9q4p+vaNQTVNJUwMqMZUk2ubYlDjst37i7/NOY2fXm0caOsb2D7NxiGWZotC1qDKt9mOr4PgZ8uYkoIEGPA3h5IvqJ3u4m8ypV4D07TsXHa57UfqvqhqWj7NpLY7GDkuG2Yxa4eDgQn2x4YfpU8rrfE/HVjAk4MoORKtgtWBVp1gtUl+RitIIgiO7FoQwiEPruPYW9E2JqTNSMXBsrQfn2jhIO/qGCk4r8xXVAdhUobKX8oS3t6IHLVDTXr4uDmKygaurF2QkDekTxCL9/ktnT09eAUwX7efp4h9hIDQZAr3CEdDnpZ9JIOlJsIlmdorlj8uqNWPtlyf0cloI92f3aeNDw0dr0dZr7LySt1JHzGDOkhYNk47MgcT7Bbxuh3cPrLJRGDMNFR5ntW6H4wYJTBreZ9Yvmker3DcAasGinMhue7Q1NbfwCu1MGeN/fxmNr55vwC56u1a8tOrZZI1dzN56T2fvnetHH/EcXg1UrTUukBGYKUlnbJ78ykJ2ZT69BF2McUoTsB5cDO3bHSybVoXf+EL2HyBvYTb+IWTm9imzYWQlYkO1VTjdWBvIJY2Y9Aw=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f35f1b35-cfd9-4db6-760e-08de68e74e5f
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2026 20:59:39.6840
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nCvR1m16GNgM+xbGdHHQgheqxd8vl4dY0rFEdefhtBjSpFqGKRhQTjylKg9df5XmYK0b9wTYx62sZheiWIkoVg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR10MB4192
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-10_03,2026-02-10_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 spamscore=0
+ adultscore=0 phishscore=0 mlxlogscore=718 suspectscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2601150000
+ definitions=main-2602100174
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDE3NCBTYWx0ZWRfXyx1LyQHMJEd3
+ OBRVFUS07NIwHZDDAwaRg/YrgBHcFrjLMCPKyhkGQzDhSxsH8ITrHjpBcMJZhKL0+I9JXVPvls/
+ F/4vAnhezmEhxAlHCOQ+BiJ2KlKmHnr7fU1p9cYcNZpQzeuWMr9HXGYBKEo+ibdJ9wZ2QglPumA
+ Q+kwn9crQaTc5dZkkrBtHCZsx2esIsC5jtKdg2xrvcEvKHR4Nm63HCEsfAGopAWpbVpDpBYe7Cb
+ qw1rcusAfuhNsQVNWo9OJ7MjRdktwCD3VHg4a/GviZdNkNccRTW6ETn1kQTHs9xGct+ZaCaE8mD
+ oJ/jHVscH7RZyu5Nwii54GrOSyNQgJzjz6xkxZAn5TOYvbgjl5/NWWLAj/0VYdMYQP+e0Fg9AFv
+ MqDnrEVz7WUc0Cte+IxIwdI+lnVSUROi+T7zmAhLJ6/93W+0UzgKEkDDB6/yqRnjEzrrSUL5zCp
+ KUbbQLb9Pwx6AzbVeIgAdw5HH3bOsd29GdXFb0QQ=
+X-Proofpoint-GUID: T0LzXeCJ2JQzTbXX7MtIixj669YoOeJV
+X-Authority-Analysis: v=2.4 cv=AqbjHe9P c=1 sm=1 tr=0 ts=698b9c40 b=1 cx=c_pps
+ a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=yPCof4ZbAAAA:8 a=WOsYOCEZ9s9qqDn6mjgA:9 a=QEXdDO2ut3YA:10 cc=ntf
+ awl=host:13697
+X-Proofpoint-ORIG-GUID: T0LzXeCJ2JQzTbXX7MtIixj669YoOeJV
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 54fy87k8dcofhum7usj87uc56kg4uuuk
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770756743-960635
-X-HE-Meta: U2FsdGVkX19UWJmFZ0zaI95e2eXpVcEPcG2fdaWJ7GANm+JWBbSGey9olp+0qj9/cCaM5rQF38T2OOVunLH7PSdt2Af1SL1579ocQwjcZxzk0bG9J0vHq7EdjBF9/NQMtqQanwDEcIMwN37brNDbGYdwQE1nwiKRoOoLp5ug8nTXAciN7Zvz8qJ29oHcmhj/Vtrykan6V0N0+E7SSI9bRgooFZaZPKc5g8NwJ+iHNYif7sHKAi54D5poN9J77xN305edxLYWcKESAXYsjpLmrsENeprIsiF2wHTQnBphIRe0XQ8oRR3Ma/vPjPEFUwftAxgBGng8N8wRMBLFm58OxZ1Frrylgj/Tk6/40kXFPfBtFavMZerRdT7f5n8u5C36H+SjGs/WQ2KH/MarqisaYhWcYVkWsl4JcnsInNd6VElyiH0+waiuFw9p/N9iIAnboVkYA84vuhl9FaAMKmv5umFVZYlC5+IJe6Ek6u+SZecOtktcUeWc2REjl9fqSL1wIANea12mroefKa4NbHQhO0Yv90Bm9quLfimExgD/8Ee4ohRh5N6QZjnHcTz5vMmkL35sRtrjdYgpPrhzOx0IHAvNyzpyN1uWadRuyrfw9O5K1cufdRE5XrCfI2I6JM+L4g0xGd8Z2Go9jmIBGcILEFA2IHvWb/fzOgwijvgXJvKT8E/g7D+I/EPYVGYHqwqE1DcGCf+HJTqbxavL96yu9Qwc8td5gAQfu6Rek8LqQUlf62yPF4wiIJXKOP420lAK4iIH98hM9H8D0woSloPS3bHc8QThNEGsu67/2Ywl2+w4mHfD0z1sjRh+gID5urwF+Q1T5jjRqqZAxVjZ3UWxYyCQc+zbRc8iHFA+zCm+Bzdvn7D1XJAQHrgktbWEy37soXLlstiVqDVhns2IWhw8RnkLMbEJ353+waecQYlQ/xZaxuQTWHtuKVttBafn9HYwb1tiqN9zVs7MbxbSk+o
- Mr9Fk4Uk
- qUhFfNHJBIEIHGsvk1zeW0dBvCNQKhCioiCgPSg8FwTMEJITh1VUm9fC8EVHug9Bgx5yh88pLVytSBUjZ1lq5PBRr57K8Di8OkOrvrxku/YtpBow8o0gXo4/Wbv1EOo2r03ZJ/i6OfMJka8v5wmPo5gj+AKFtfDMsZD9MLEFaECgaudQ7vFo3N9729vPWncMn1xPLnrLG8o0HXfBOyoLja4fMsRafHaAdzP87SVgvNf7zvzAls266aLBbBCYU0w5QXfQKnXXWpuQJjXogwUurN8UnA0VJs5H3cNXykvpRz3/q/qt9NcOJ1kynBNeE4aFtEZIY72PSTtZ6OvJC2JToQkiPkR+qmWAQaO+dUL4PMt3bV1XMvmiUhrnWOH+pr5X+bJCs
+X-Rspamd-Queue-Id: 71CB2160002
+X-HE-Tag: 1770757192-662657
+X-HE-Meta: U2FsdGVkX1+pPZ/T7qWJEde/JbBtNi7ARKZmAszEHLFiXoc+u7Mc1Lz7DmbtBKKvTQdiKjU0NhzNaPk2e2VuM0YY6DYwFu5AIhqVJpQ1l+ULZknTCZROkmfkQNYh97Vvdo4MJRpLVi01RtnS1uvYPTqJtYe586B/YLXDFRFIwNHPksNMNT9WcvvNFjCd3fGKbk96Sa6bUZtuUQtSxgMdwVbYd9B49Kq9zZBjDdmpX1c2WtDfqpIDyAkD6B67lLtGQ3uTZde8G/C7NWaC0PUc+oWU5kCn8RWd/h8Ib56D37hsFcqt6r/ba8oMEUf23qpnv0ak9U8aGHHFZq+isJmS/4GroeDdWn/FmaMDqP6OTxx9NzSZS2Nql2YBespQm9zD2d5OTh94f15jRXcv92voH9qDR/+agScdGarkd/4cOeiyGDwcOq53gM8VIsid6MVt+0vQOj3vEf+SLt6nEk6bgwd40Dmy8B3qPRWvaNvZ9ufIIEjAuyxAQyjqKWBrOIHg/bXWApY4ALCAuHPrKh6vijdt3So6ictLFePX55HJmz+jB23a3VLVD6YvM6AOhOIn1obZaKX+uHbXlkqgKgntLg3kf85htIKoxWgJzzpzbG9m408nMdCZ6Bdx8qzJBuW+m2EM+e2tddRhpsw4aalDGSt+PoaeXXjB73uUvAwXphkaajqBL+ySuyEDoLh6kZMx/URmyL7gN5q3kK3mO9rO14sTPMmu1K4o8U+hOtYw/qa4SxWafRHuftlpr6PxcKafxyzPXO4vJ4EobG26JmMS2lwojNOqJulBvl/J7QJHpehXG+nrbkjyvuE09Hc8bJzgD+YFDxnyfGIWukD9X/WrwiDy1DgbpPe/EnOCmsI+FTR9Pir8H7DioHF0oNbfaMM89LNHB8Aa7EvF4RNJv0fPWTjVxJojygp6qN1N9rEPdxAjxlq8eGlkzLLITfUOgpUXQY5Ah/MIILvzXfG3nHK
+ nDpCmjhC
+ MgpCcXuu8bbdTuSzFoJzqSgjxqtQ6SD7bCW46oOxo4uBo/QSM75bWbpEstsI1UNrVzQTkpXY3DN3G9NH/BIVsJFZr0WXrYgxZn3QVDM8vxv4xvrSE6Tx2xPFH4v85UCavRcSR+LYQcbG9eobmB43NcRDuLAjAVyLcY2fsd1GaPMrP6qT2KFnstq3uyErLaSN1babo8Nb3xGrqUuKhoe3iUK8o/L8xg3CIuHbxGbFRI9HE3LQ41EE400eSoOSIEBi3LqC7OvG4tV9qLbp+okkBdPY+mxgI07oBuEaBD431rXykatbegu33/uIuvZSHPZdAit7pdawGko90eVGy/sUeTOZDuUDE1EyQP1m/fNBQ0tuCJtdFsD0MUQMzQRSjFmyTTlZDEd9AQMlQj3cq3WY6/Qbo2drpRP/afqyiS4u9RChrCyW3MomeqRUQIG2KT5Y8cM3GDoB9xRXpMLFRULkpM6XYtpSYwxwnBl+XJNkk2/ImakjtgAii5P/bwLIM/y/qEAczdXlFswBLKoou9H6Mp7DNwFsfJAB2xpMyxniPRad2nCCmLGkIiECdDrBz5xq+dePAXAnnP52fXMhBSS2I/8OmJlBHrTS0BSVhMPfVVjbMWRnDTPyhV9G3GbmEDINONgjxk4zlrqk7A5//3PmMR7Y/wjObZr+elk/55yQ1b9B1FF2fwQK6o67+TDtBIAWnaU3R0oUUhrnWUT3e6JZ3nRJyu+gvvNl907Hdd6MqFd3bFW7nIkuwAx/TWfON+tx4g8N7ymawBr2Fn2U0b4kZCJp6jVDyBbXh5b6d
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,177 +290,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi,
+* Tamir Duberstein <tamird@kernel.org> [260210 19:54]:
+> On Tue, Feb 10, 2026 at 10:16=E2=80=AFAM Liam R. Howlett
+> <Liam.Howlett@oracle.com> wrote:
+> >
+> > * Andreas Hindborg <a.hindborg@kernel.org> [260209 14:39]:
+> > > Replace the call to `xa_load` with `xas_load` in `Guard::load`. The
+> > > `xa_load` function takes the RCU lock internally, which we do not nee=
+d,
+> > > since the `Guard` already holds an exclusive lock on the `XArray`. Th=
+e
+> > > `xas_load` function operates on `xa_state` and assumes the required l=
+ocks
+> > > are already held.
+> > >
+> > > This change also removes the `#[expect(dead_code)]` annotation from
+> > > `XArrayState` and its constructor, as they are now in use.
+> >
+> > I don't understand the locking here.
+> >
+> > You are saying that, since you hold the xarray write lock, you won't be
+> > taking the rcu read lock, but then you change the api of load?  That
+> > seems wrong to me.
+>=20
+> This patch doesn't change the API of load. Andreas is saying that the
+> type system already requires the caller to hold the xarray spin lock
+> when load is called, meaning acquiring the RCU lock isn't necessary.
 
-I would like to propose a topic to discuss userspace-driven memory tiering.
+What I mean is that the API can no longer be called when holding the RCU
+read lock.  You seem to imply this is already the case though.
 
-Note, that neither the subject nor contents are stablized; currently, the
-only thing that is for certain is the use case.  The hope is below content
-will define well on the topic, and especially, the use case to be discussed
-here to collect feedbacks.
+>=20
+> >
+> > Any readers of the api that calls load will now need to hold the rcu
+> > read lock externally.  If you're doing this, then you should indicate
+> > that is necessary in the function name, like the C side does.  Otherwis=
+e
+> > you are limiting the users to the advanced API, aren't you?
+>=20
+> The existing API already requires users to hold the xarray lock.
+>=20
+> >
+> > Or are you saying that xarray can only be used if you hold the exclusiv=
+e
+> > lock, which is now a read and write lock?
+>=20
+> Yes - except for the word "now"; I'm not sure what you mean by it.
 
-I'll try to make the topic more condensed and focused if this will be
-selected and discussed on the conference.  If anyone thinks below is too
-much for one topic, I am open to spit it into two or more.
+I'm trying to understand the locking on the rust side.
 
-It's also possible I make stupid mistakes below as I didn't code anything
-up or test yet so I may overlook things, please kindly bare with me if so.
+I think you answered it by telling me that all readers and writers use
+the spinlock.
 
-Problem
-=======
+Is this a temporary limitation?
 
-Here, I'm not yet looking for anything more complex than two tiers.  The
-use case can be as simple as: one process, having only a portion of its
-memory serviced by fast devices (like DRAM), the rest serviced by slow
-devices (e.g. SSDs). In a VM use case, it allows a host to service more VMs
-with over provisioning.
-
-With the help of memcg and MGLRU, Linux swap system can do this well
-enough, except that it misses one pillar stone of VM where we want to be
-flexible enough to move VMs around all over the cluster.
-
-When that happens, the hypervisor needs to scan the VM pages one by one and
-copy them to a peer host in a busy loop.  Here, by the nature of swap
-transparency, the userspace will need to fault in all the cold pages to
-fetch the data for moving.  Meanwhile, after migration the hotness
-information is also lost because of such "transparency", because we must
-apply those data on top of RAMs first.
-
-In this use case, memcg is almost great to service multiple needs.
-However, it is still coarse grained from some aspects: it allows specify
-swap usage, whilst it doesn't yet allow to specify swap device to use for a
-process, or IOPS allowed to be consumed on the swap devices.  This is less
-of a concern in the whole picture, but would be nice to have.
-
-Some possible solutions I would like to collect some inputs below.  NACKs
-are more than welcomed, then it may also help to find the right path
-acceptable to everyone.
-
-I'll start with the solution that I think might be the most efficient and
-straightforward, and I'll only try to discuss the solutions from the kernel
-perspective.  The last solution will be fully userspace-implemented.  I'll
-only mention it; there's nothing we need to change from Linux POV.
-
-Possible Solutions
-==================
-
-(1) Backend-aware Swap Data Access
-
-To solve the major problem above, we want to know if there is way an
-userspace can directly access a swap device but without causing it to be
-faulted, polluting hotness information (in case of MGLRU, on generations or
-tierings), or consuming DRAM / causing folio allocations while doing so.
-
-Considering we have mincore(2) system call, would it be possible we can
-provide a similar syscall, besides knowing "whether the page is resident in
-RAM", also access the data on the back when it's a swap?
-
-(1.a) New syscall swap_access()
-
-  swap_access(addr, len, flags, *vec, *buffer)
-
-  addr:   start virtual address of the range
-  len:    len of the virtual address range
-  flags:  operation flags (e.g. read / write for swap)
-  vec:    an array containing pgtable info (e.g. is it a swap?)
-  buffer: an array containing data buffers (for either read / write)
-
-Examples:
-
-When the userapp finds mincore() reports a swap entry, to read the data
-instead of fault it into the mapping, it can bypass the mapping and issue:
-
-  swap_access(addr, PSIZE, SWAP_OP_READ, vec[], buffer[])
-
-It will check the page in the pgtable to see if it's a swap entry first, if
-so, read from the swap backend, put the data into buffer[0], setting
-SWAP_FL_READ_OK in vec[0] saying it's a swap entry and read successfully.
-It doesn't touch the pgtable and keep the entry to be a swap entry.
-
-OTOH, when the userapp knows some data is cold (but still useful), and want
-to populate some data directly from swap without allocating folios at all,
-one can use:
-
-  swap_access(addr, PSIZE, SWAP_OP_WRITE, vec[], buffer[])
-
-It will first check if the pgtable is empty and not allocated, if so,
-allocate a swap entry, put the data (in buffer[0]) to swap device, then set
-vec[0] to SWAP_FL_WRITE_OK saying data populated.  The pgtable (after
-syscall returns) should have one swap entry populated without any folio
-being allocated.
-
-NOTE: due to the transparency, there might be race conditions on
-swap_access() v.s. the page being swapped in/out on the fly.  We can either
-make the swap_access() be serialized with those, or directly fail those
-swap_access() saying "concurrent access / -EBUSY".  Normally it means some
-page are being promoted to hotter tiers, hence failure to userspace would
-be fine; it implies to the userspace that this is a hot page now and it can
-directly access from DRAM.
-
-Both anonymous and shmem support should suffice in this regard.  We could
-really start from one of them, say, anonymous, if this would ever be
-anything useful.
-
-(1.b) Genuine O_DIRECT support for shmem
-
-Shmem supports O_DIRECT since Hugh's commit e88e0d366f9cf ("tmpfs: trivial
-support for direct IO") in 2023 (v6.6+).  At that time, it was only for
-easier testing purpose, and I believe there's no real use case.  Maybe we
-can re-define this API so that O_DIRECT means "read/write to swap"?
-
-It means reads/writes will need to be 4K-aligned with shmem O_DIRECT, all
-operations happen directly on swap devices without updating the page cache
-with real folios.  We'll likely need to properly serialize concurrent
-accesses but it's fine; when doing O_DIRECT it means this shmem page is
-already cold, so slower is OK.
-
-It also means we can't easily support anonymous use this method,
-unfortunately.
-
-(2) Hotness Information API
-
-One step back, if above solution won't work out for whatever reason, it may
-mean the userapp needs to implement the swap on its own to be able to
-access the backends directly.  Then, there's still chance we can share the
-information on page hotness with the kernel's vmscan logic.  Here as MGLRU
-seems to be a better candidate now, I'll focus on it.
-
-MGLRU by default doesn't work well with idle page tracking.  It's likely
-because nobody should be using idle page tracking when MGLRU is
-present.. However if an userapp needs to manage swap for one single process
-for whatever reason, we may want to allow most of the host run with MGLRU,
-however for the specific process it will manage swap on its own.  The
-single process may still need page hotness info.
-
-Then the question is: can this process still be able to share page hotness
-information with the kernel, so that we don't need idle page tracking
-(which will almost stop working well with MGLRU enabled)?
-
-It means allows per-page / per-folio reporting of MGLRU hotness information
-on either generations and tiers.  One way we can do it is via pagemap or
-similar interface.  Would this be acceptable?
-
-To make things further, consider if we move a cold page from one host to
-another, then we want to apply the page with the same hotness alongside
-with the data to be applied: would we allow a reverse operation of such so
-that we can provide hotness hint to kernel from userspace?  E.g., consider
-ioctl(UFFDIO_COPY) with a gen+tier information attached, so when the new
-folio is atomically created and populated, it will be put into proper
-gen+tier.
-
-(3) Fully Userspace Swap Implementation
-
-This will almost always work with no kernel change needed, with the help of
-userfaultfd.  I'll skip all details whatever to happen in an userapp.
-
-Except that we may still need idle page tracking in this case if above (2)
-will not be accepted upstream.. so either we may want to conditionally
-enable idle page tracking with a CONFIG_ option (so distro can opt-in
-enabling idle page tracking together with MGLRU), or somehow allow MGLRU to
-work properly with this specific process knowing it may use idle page
-tracking.
-
--- 
-Peter Xu
-
+Thanks,
+Liam
 
