@@ -4,93 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2597EA8115
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:47:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22230EA8118
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 13:53:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 594616B0089; Tue, 10 Feb 2026 08:47:50 -0500 (EST)
+	id 4AC0B6B0005; Tue, 10 Feb 2026 08:53:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 552486B008A; Tue, 10 Feb 2026 08:47:50 -0500 (EST)
+	id 459EB6B0088; Tue, 10 Feb 2026 08:53:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 454A66B008C; Tue, 10 Feb 2026 08:47:50 -0500 (EST)
+	id 366556B008C; Tue, 10 Feb 2026 08:53:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 374486B0089
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:47:50 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EBC865932F
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:47:49 +0000 (UTC)
-X-FDA: 84428675058.22.406F9B9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 5ED1640005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:47:48 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P9/T/C4+";
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 251186B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:53:58 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BE7E41C13A
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:53:57 +0000 (UTC)
+X-FDA: 84428690514.10.575D61A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1B117A0009
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 13:53:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="vDd/q0az";
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770731268;
+	s=arc-20220608; t=1770731636;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AIqjsvjCj+pLH+AQ0hEHXNvRgeu87feFSoEl3S8co14=;
-	b=LH1wpDiem0iT56jWN55OkEUKoRecY0Pa4mz0A1RBTG1z6ViPRYNpvjd1ziye+YDIKRj0Dw
-	0Q+AlJXZK6FTiKeEchy9AZsHtE6Gg4FzncUKcqyuQIdG0P+HKVuuMQhKNHNwesTp1myvJK
-	jaskN6TtjWzOu6xm/zMFmO08aQJeSYo=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="P9/T/C4+";
-	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770731268; a=rsa-sha256;
+	bh=Cx2qFC8zKSktmx2f3TdcwYh+PzGsWeNescQ9pa/hiL0=;
+	b=tS68/oynpvfgg226S6HEEy8GJWvdSo1cEeZ2vLx7ksGEVNPdG9Avg82rDTbK4SCSlTGqQ6
+	sSLvbRh7OMdtUNRtgUntr6szIrbHOI5xzofvb//TerHNgMTCiUYvk0DCvDwV9WtLToi3pz
+	bNR8bPbLhJXuU+MVGr1GNV2FeH4s5kg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770731636; a=rsa-sha256;
 	cv=none;
-	b=RjIHC+eA/wNvl0CWU0LIbYzFL6uBq2fXx6si6f4e9HNv4MN9f//yCi72LJFwphpzjFe1jt
-	1x75m9vO6owbbJT32tdQpy7QBaVe/JpUid1fRuOAxssJ9R09XugSjKUfcoOviR+Ap1zHCb
-	QPpCQzCa5ehxjCsEWxZimAns4jYZ+aA=
+	b=JH5EgIqKyquSEc1YB5nIgTa8a+thOqw4CeqJEghdPX2GegkQL2EAOWZp5iakZubvYvCGW3
+	6NQdl4vh9JwW8v8NDZStwAvM+4I5M4uyB0JVU0BeT7EoLAu+fsCumtP/pUqraOTKrEYgk0
+	MxfJukaXVd9IpiiKNsK5h0NN938xlU8=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="vDd/q0az";
+	spf=pass (imf25.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6A9860097;
-	Tue, 10 Feb 2026 13:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98671C16AAE;
-	Tue, 10 Feb 2026 13:47:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 230A743C53;
+	Tue, 10 Feb 2026 13:53:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5FBAC2BC87;
+	Tue, 10 Feb 2026 13:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770731267;
-	bh=AIqjsvjCj+pLH+AQ0hEHXNvRgeu87feFSoEl3S8co14=;
+	s=k20201202; t=1770731634;
+	bh=VjfuewZzYWww0CFJ55+XO3WsL/dZMjCPGMxVFhP69TA=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=P9/T/C4+DQWqHEIA1MoTbGMoBRNFLJrpXYIZhMdJAt0H7icjnSl5ziMckSUpLNGVS
-	 awZahl3ejlwlNMkhPxFZwj5mFiQwMYumgnStxIOEG2fcvFjrvdwjfwHgWATzaJGoCA
-	 JwGeanc1xWH4ih5RY6ijMUzN0PQVqQo2XR55ZrtV78CURLnLOlVXIObY75z1aRlaH+
-	 xlghd96giFex5Apzl/bE5NKzCC2S+ThoHE+J6IZfZZirepUTJ0Nj4L9YucYI+cm7cD
-	 Vt1etHebMXaRr2SbVKpwPfLABRl4h7YEiA2dSOe5m/h27Rd1ICT3JRSdqTxoxMcMqo
-	 WXA5Cg13ZTZQA==
+	b=vDd/q0azdMtrp2hKtDQkpUaA9emXt02SSh7+uAg7CkpQJk1RE3gahzbaGsioInj1p
+	 x7WJ1rPOuQyw1aQfAXLKw+brfi4W4qFZw6Y/xB5+DC66567PDhAYMiwJFiOGSMfV3n
+	 d7QuxkkYNLvVmuk8EzCaEHAmNYk6YJiG1L1N4e/QG+NZkbBbWSpwtkZd5vImwdQJFx
+	 QpOktu/gxks+TfF96NyQq/n2BihpMTOVQfaBpfUYSPHLJGegZHwCsdNWrypoaOSbnO
+	 enWdJBd0Wn10LU/ZXuSRfbCPw0f8Ua2BygD1+kWCSc5WKthVKRxoqWdPd6/zS8EGU2
+	 WO6dD/9RiQ3jA==
 From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  linux-mm@kvack.org,
-  lsf-pc@lists.linux-foundation.org,  Mike Rapoport <rppt@kernel.org>,
-  David Rientjes <rientjes@google.com>,  Muchun Song
- <muchun.song@linux.dev>,  Oscar Salvador <osalvador@suse.de>,  David
- Hildenbrand <david@kernel.org>,  Jason Gunthorpe <jgg@ziepe.ca>,
-  Alexander Graf <graf@amazon.com>,  David Matlack <dmatlack@google.com>
-Subject: Re: [LSF/MM/BPF TOPIC] HugeTLB file preservation across live update
-In-Reply-To: <CA+CK2bCkLKrP6yvS=qpao1krfCbxUbj73bq8m8JnmKqtjp3tKQ@mail.gmail.com>
-	(Pasha Tatashin's message of "Sat, 7 Feb 2026 11:21:45 -0500")
-References: <2vxz1pixvk4m.fsf@kernel.org>
-	<CA+CK2bCkLKrP6yvS=qpao1krfCbxUbj73bq8m8JnmKqtjp3tKQ@mail.gmail.com>
-Date: Tue, 10 Feb 2026 14:47:44 +0100
-Message-ID: <2vxzms1gsoan.fsf@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Alexander Graf <graf@amazon.com>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  Hugh Dickins <hughd@google.com>,  Baolin
+ Wang <baolin.wang@linux.alibaba.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Samiullah Khawaja <skhawaja@google.com>,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] mm: memfd_luo: preserve file seals
+In-Reply-To: <20260210131307.GD3076640@nvidia.com> (Jason Gunthorpe's message
+	of "Tue, 10 Feb 2026 09:13:07 -0400")
+References: <20260123095854.535058-1-pratyush@kernel.org>
+	<20260123095854.535058-3-pratyush@kernel.org>
+	<aXYGkb-QtYNaWYw4@kernel.org> <20260126183115.GU1134360@nvidia.com>
+	<2vxzseb8u4kq.fsf@kernel.org> <20260210131307.GD3076640@nvidia.com>
+Date: Tue, 10 Feb 2026 14:53:51 +0100
+Message-ID: <2vxzikc4so0g.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5ED1640005
-X-Stat-Signature: t4ys1ofi6ysxqi7z8oer65gx7xmswajd
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 1B117A0009
 X-Rspam-User: 
-X-HE-Tag: 1770731268-997815
-X-HE-Meta: U2FsdGVkX1+M3x7Fkrq7z/Cl/gcGzeaOh47zlk8R5npoOR13xcQqErujxJDQQ8HXLLjnV7a1/Fd/b1bUUEYLNWFVkC7r1ZE6yta2Vl5wkjgns1J48EKisYVUVaW1jfG0+027Jot2JFiHnQm0JGKx9OkyH5tMk8hc50hHMA6YJIuRd6F1buEBYXzX1YKKCyHCIbZcAWJNUojsLMwpq0lpuA/8fmMWCJ4IxB0zHxcrzZbPFcey83B0IUde3F6A7Pu7behw3c9NKJZX9JCf0LXWFIJ6DTaKLhCDe4KrOBsWCP6yNRkwrl7DaJP0L8Ks02AOUvFzjlVQFkegVsw2jPR8G6Jy07wra2bX3iK/siDQ0y/KGz4vD/LZm074aCdfuZQ9NoowJgJgeoDkVhsRlrkU+9iLBJM39ZhRk3yDI/T96KgayFuNj5W88qQDYnP8xRdz4SbGNiHYtxpr5ou+nZ5F57OocHDRFnPiYW00iblysIMjR9OBS+/Us1dzJw/02oV466bJyoL6JeIjWIbQNZIdiNbM6CAAfaLvs34WoIpeFUnPemuaetrEBYWaCZgx3wuJJlg0inZmAdl+by23TzVJ6xN+m4okN9utqJoV2rI3U02uLQzbaxEYN6dukuBU8rV71dObRWjsrho75d15cxofO5SqQfTb6zE9MrID9xS82TvDfRvtCOpZXVihrCz217EF98sG7NPUdUzOZX5F96UVgNGN/MX/j9js8w/oxkCedH1CnZpKA4cR/KzaOb0AdM3dZa/gSxtGd2K4r0Jq0uw3t4zx7ArbIlf74Rq1sLJsJ+DaTBdwwhw2v9b4Hr/2wrezTvbnoI/cURQYxH/f+UnV8DJWXpCEjOfAtia3vKPuawkeUxeybV78MO+x1IKIhdeLsMLEDKcKwVA0goiweBGVQki4DQkLJCzNDLOVTU6bW19OigZqXcCeYtc/pP30c2jOB+USIf94lmz6ZIbUnCs
- Nm/sx3ZA
- CcWk0fFafGZ0Jb4FA8/UX4+Ae9KAMPlu8k18Q+8sfXYT6O6eVQYnFaNe2asOEqNU2YS1fgSc9fel7OgdxiSccNp88AFn7nNXUXEPyR56W/rPBODXrk2sCUK9uaUcVl2OX8vyTW3RZd1A2G/In04b3IO25sjBkha6ATLv8rkdm+rPLX6nOrlE5p7mdKKd1zdHalguz346j9nCin05wF8NOaOy2O2W3C6MQblFFcyosC8jITsJhlqxKLtMh9A==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 5k5zbnrhf3w1dh3amx5cgbp1et6x84un
+X-HE-Tag: 1770731635-703308
+X-HE-Meta: U2FsdGVkX195S9rTjEiRVwdIbkP5aiGNd+6giF/AS80bpWBh9C2NOnaYSc3lUpW8T5KK9H8f994K7IaKbPj/RX7RHcrsI8GOSsZGhNYS0j04PHmnuPDTnN0k4P5SlJ22GcV6MOiCsCwY5qxUqVOir+k76K5kXU28OeiNYe5lclo0fVln/B3KaPX84J8DtewJj2iQ+jxcpMWehq4ZXgaOiwprWt5PXYuWK1dfiirv8tub05h3+c4kJmoYHYt5+G27cgN5CVGlwKdXFRllb6Y1iWDY5aw2XyPhowiYE3yB+f9K5W3mv7nIn6MBM9C1/w6iDMwrIgMCdYRIfyzURm8sxDxdRcVdDxlAGcIJICDSSw7UzoiYFQdRpQSFEVLNl9d15JfGbD084EZ5oGgs6Udcl09kulCP3xmm6E9nuqgO5QlsLLW1xV+jm0X0rVobNxv2GXTIqtXvq8xdqNT/Qmud6UQq8CS8xWFm5fcJW4Q3v6bdoU9MC33QHD+LozUg17DzMxE6RiZJojcjv9h4MIBFV/WD/4ICi33NUX895wgw4cq/5mQQLAVfCTd8dWNsuYryx3H3b+H2VFTuhBBpGrRWSbWhXVlmRZLIqz69xHF5yaJwCHwuPh/GN+owyKZNk8a8kSOTGRYPa3OtLwQOTVU6DmVwu+xOSPOi7oiAzTkJPb2g1kRBbnsUBKb3bolKYRHWKrkYO6itRg9O/HQK9tKpRupq3lPmNA/Ph92/WTcceOGDrpfO0M2/7PY1taIFo4uGXJZesBY2aDlbd5Ixr1IqSs5ZNm3Xb6kcWVuj0Gk+dGpAGrhNeEPBjWOx+cAk8hPcr7hnpAKeL32HcFRt8j/1QJ/G7z9ROHt6yWVkx8Y87thMChI6ngZszJ90MUEBMA0MMIcdsOgMn1eh9ixr7sMgW5Cf/kc3B9ag0BwUl4cIGL26hB0FVoDmvIJYGlaPD/8ac7P8FBNK9CvPMCcrgw6
+ j86orOFG
+ NrQ8EixwzxFRKgUp3hCORhT7vRgL5+ygM6+d9S+EraQHLfrxnJKMmTg3ePEEzH+QKrdqG/Po+fJl5mbQjrNSzGL9AyBTfmoYhjdr59BSLTeN31so2HnU+ZFhN8glDA5Wrb3S8WjccGVn8FaKSgoDWbjgzCSEkKZGSjjS4f7wtmjDtkTnCI/mUFtcME9YTpYh+DKc8thai6GPWJabywnHfU3r2Eg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,38 +100,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
+On Tue, Feb 10 2026, Jason Gunthorpe wrote:
 
-On Sat, Feb 07 2026, Pasha Tatashin wrote:
-
-> On Fri, Feb 6, 2026 at 12:48=E2=80=AFPM Pratyush Yadav <pratyush@kernel.o=
-rg> wrote:
->>
-[...]
->> Goals of the discussion
->> -----------------------
->>
->> This session will aim to present the topic, explain why it is needed,
->> show how the support works, and most importantly, collect feedback on
->> how to proceed with this work.
->>
->> PS: if any HugeTLB developers or maintainers are reading this, it would
->> be great to have your initial thoughts on the RFC [4] so I can present a
->> more polished patchset at the conference and make the most of the
->> discussion.
+> On Tue, Feb 10, 2026 at 02:10:45PM +0100, Pratyush Yadav wrote:
+>> Hi Jason,
+>> 
+>> On Mon, Jan 26 2026, Jason Gunthorpe wrote:
+>> 
+>> > On Sun, Jan 25, 2026 at 02:03:29PM +0200, Mike Rapoport wrote:
+>> >> > @@ -67,11 +72,13 @@ struct memfd_luo_folio_ser {
+>> >> >  struct memfd_luo_ser {
+>> >> >  	u64 pos;
+>> >> >  	u64 size;
+>> >> > +	u64 seals:8;
+>> >> 
+>> >> Kernel uABI defines seals as unsigned int, I think we can spare u32 for
+>> >> them and reserve a u32 flags for other memfd flags (MFD_CLOEXEC,
+>> >> MFD_HUGETLB etc).
+>> >
+>> > It is a bit worse than that, the "v2" version is only going to support
+>> > some set of seals (probably the set defined in v6.19) and if there are
+>> > new seals down the road then this needs a version bump.
+>> 
+>> If we are running say kernel X, then X + 1 will always support a
+>> superset of the seals, since the seals are UAPI. So it should be able to
+>> handle all the seals that are given to it by X. This only becomes a
+>> problem on rollbacks. Is this what you are worried about or am I missing
+>> something?
 >
-> Thank you Pratyush for proposing this topic. A few more thoughts:
-> While the discussion should be about memfd+hugetlb support, the long
-> term goal is to make this work as an enabler for guestmemfd+hugetlb
-> preservation support.
+> I think you need a check at some point only permitting seals that are
+> defined right now.
+>
+> Eg some future v7.19 kernel has MEMFD_SEAL_XX it should not be allowed
+> through luo until the API is bumped to v3
 
-Yes, I plan to use the HugeTLB work here as the backend for
-guest_memfd+hugetlb preservation. I can discuss some ideas for that in
-my talk if time permits. Or do you think that should be a separate talk?
+Makes sense. Will add.
 
-[...]
-
---=20
+-- 
 Regards,
 Pratyush Yadav
 
