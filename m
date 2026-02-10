@@ -4,95 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9520EB26E9
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:49:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13AB1EB26EA
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 288206B009B; Tue, 10 Feb 2026 11:49:25 -0500 (EST)
+	id 50FBD6B0005; Tue, 10 Feb 2026 11:55:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 253846B009D; Tue, 10 Feb 2026 11:49:25 -0500 (EST)
+	id 4BE046B0089; Tue, 10 Feb 2026 11:55:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 180AF6B009E; Tue, 10 Feb 2026 11:49:25 -0500 (EST)
+	id 3CAA56B008A; Tue, 10 Feb 2026 11:55:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 066DD6B009B
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:49:25 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D293656E72
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:49:24 +0000 (UTC)
-X-FDA: 84429132648.07.38B395B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4638040019
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:49:23 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R9vIlW6H;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770742163; a=rsa-sha256;
-	cv=none;
-	b=w0JqeeED4UA8KoMn31nXRUhV8I+P64l3GLmjAFINeM00/9/VSFmSTZE1fQvMjFfk7a2GE6
-	syTLX/gk+Uw5n+mBQ2ZX9Ha1Gc3NymtTrVxiuPa5PPmJlOoorTNwb8mHZLKLmWsh7+QMPG
-	iuKAzJja7RUKn3n8qrekJJAz2OFyZko=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=R9vIlW6H;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770742163;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2CCE26B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:55:59 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CD6F81B38B6
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:55:58 +0000 (UTC)
+X-FDA: 84429149196.29.6C918B3
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A6F37A000C
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:55:56 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C8UAP8HC;
+	spf=pass (imf25.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770742556;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qi8iDKUVdHGqjf9CfxkOJPviVYER9yqHzUtpOvNOdJY=;
-	b=G5FHvhLiw/RPSMq/Hp0V63m7GxdTMsUiN5smUyX45tkZqAp+trMBd4wE87Z0iurA5OJF27
-	C0AGseStsVbanFEhD0CHjIG52/nnyM6QDXyzCHUe6qlcirQW8uGRMvctqpAppGNZ58uIKz
-	vItna5ih+M4xC9VscqFqUIuDjHvDH7U=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C38F560130;
-	Tue, 10 Feb 2026 16:49:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27058C116C6;
-	Tue, 10 Feb 2026 16:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770742162;
-	bh=qiunUbsKEW7gX0zCCMDrQrvoSAJfNHBqrIU7Es8yzS8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R9vIlW6HRyYc4jDn6t3F8VDRwTUXJ6L2WxDYx1nGhK3O2j9faUFEVV+RmNw8Y/hYC
-	 5HBGHZA7wdLvjS5SbrLzXnbp/DtZbySJdS4J3u+0GRASNNkAOC/cm4fUPgTJVkEDjN
-	 TPZZ5BQdL2F8iVKa+RauLwA/aem/K7ZIhZjjvUwZF1GdwqMFkN/DSImphRoNkR+GKx
-	 1LUKL4FM7KR1OJW0viBvkQjPqAvmZTwiTa/4GZRt+zX9eKE1fRujNwnCeMAulHHkSB
-	 UG2R/q+s3UN2fi3q2bxBuuiWxUHeXIVQVt/NbWCSuSwqSGK/gs1lC+FEkQ0sFwx7wm
-	 TRv0HUkZflnWA==
-Date: Tue, 10 Feb 2026 17:49:17 +0100
-From: Daniel Gomez <da.gomez@kernel.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: Re: [PATCH v3 11/12] xarray, radix-tree: enable sheaf support for
- kmem_cache
-Message-ID: <aYrsR5VYH9JHeIoZ@macos>
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-11-f777c65b8ae2@kernel.org>
+	bh=fkE6wX1mSJ65eu9tW2JxtPMNM6UoIxgvLwNvwjU7SoE=;
+	b=lmrch5uNp8lli3uKWta+BRE5LDsWLgX3D0XDIkabL0JnKfEUSK6OAIPPxI9ANfOWgCdXH5
+	5t3xirsVOH9k6hiBtKPALVOijK/lci08RsTu4SxYTUejaZgGubfaJbtip42FnxERRGrRCI
+	zEHuT737ZDTS9L2IPmmK6pg8yGDPXjs=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C8UAP8HC;
+	spf=pass (imf25.hostedemail.com: domain of tamird@gmail.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=tamird@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770742556; a=rsa-sha256;
+	cv=pass;
+	b=P35PHw3mJXAQl6mheQ5nVznjWMriDGbRWz+oRsaqsgWkQQqNtoSCtgf6kUVdrXwMGUIrgU
+	vPZqoeYatbo6MA8VaYtHWNlTdjFyX/49TDVlfQrVnDyZ+HJfkzgmPL/PqqldbCRD1Mde3M
+	hgmm5yGGvZj+UY4FVU8RD1RRrTQPzZA=
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-386914b8e81so232001fa.0
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 08:55:56 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770742555; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VL7qVazw2FXyj0I1ZarIyWzHDJSB+f6fWqSbImIgIte9S6TV/Z53VkipV+gfW9bPYR
+         Cn4pt/HXESV6/y8XQ2GVhvD7GLfiprNEJ+0UL9gfnlXy1wdy9eDGE+eXG9YKS2RGAgVO
+         0dihb5T2HqOAt3eaKyFon0mADXeVc5ccokOGA3rMdvOfLs9Xd1RkG7ymQdzrzabuA4cS
+         CP6JQI8yR0QPIlowvI6GyyG0a9v9uFkvpg/RdtO5o+4aGieETyzlfTTUT/8gMl6BnUC6
+         YU3lX+n0RPDIV2rNqdm2PmV9+B/i3exU+pD2OLOUEJ7Sobkv+abBYWS1ZH257yY9mQFk
+         SMlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fkE6wX1mSJ65eu9tW2JxtPMNM6UoIxgvLwNvwjU7SoE=;
+        fh=dgCiQmi1GrIT4Xt6qAWQZShu5rty6VLuVJniAeq5srs=;
+        b=VL+KxwyhHd7IiewNOBFWVNch63svhGuhpTSqMmmnFK+j1yzoRhLecmz92+2fvAcIkd
+         U/+2RbT2pAtbYQT1acV5CGOv2gh9bOT6o39Int9vaJ2wwt2w7+08mQ1QybGs/BRnJY/n
+         wWIb8fDTGdDTVgQ/zr3iiQ2QyNkN0z/qizAcC2U/OHOQ3bSiea+ehR9aCwniZmnVSEXh
+         SFyGSTvQssSgMweYdbI8eB2DALJ9JDZTSrfTMxkA8n5EDVevT2CexLuG/T0rVolkZk3s
+         jJTOh45NeRGma00+XjRrUPHP9qmzxUxhQS6TCesPvibXCufAmfaBmCIjuMHLu6QGrKsA
+         ylxg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770742555; x=1771347355; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fkE6wX1mSJ65eu9tW2JxtPMNM6UoIxgvLwNvwjU7SoE=;
+        b=C8UAP8HCT9CA7hOlsfFT2Ush+CFXCaJABCb1v34n1zBJbo8+3GgFbh0uxeZh5K2hHe
+         flUEUGacm72O6Qa9tf18I/VwDdLqKdK1AhEFsCIGYyNyjIlO88+/cQvhBhY10tl70Rwt
+         6tLfR7aLUAKaH5RPrlVev4pjoH9rDTRnLS+wesk4w6XXSXL96w4WZ8jEBC0Ihvrsgubw
+         L1nLDRVHXd9K33DDcTxi0yzk9Anhgw+KbH7L5NTw1bLrUVToM+8qROq42tVB6YDyOw57
+         pX6vhH0MIEHBS7o2b6H7vRmPS0v6qy4RwCqJP0X32+fWyEmL3lQf33NKVh5NOWSpOgYe
+         vfKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770742555; x=1771347355;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=fkE6wX1mSJ65eu9tW2JxtPMNM6UoIxgvLwNvwjU7SoE=;
+        b=GNYLzIlZFbq3RnyKyG0C57jXn9+QUq1aysTmnhoeS+B5V1a7+3Jh1wBvHJC1qsVOjb
+         hGB1nhlVBaE/8N86AH8To1P7N1uEQ4I8v08objmOCI6tENqhb4UFxWV0twGapvUz7Pvr
+         YBc6wQgECjHtbjIBzz9xyjbHsDTB5Zl3HwlKEdMz6pm3gL0tNzH0gowjO4+uQzfzcq9C
+         YMFuSj2D6gcnjKWX0yjWoQDSHkoESAto7RVH3cBu+vGbrErTWK0Iw2PWcTWcB9r/oaz8
+         60uuMW/nnbsLnBjgIIrlBGiz6puH11/54ZKv2JmqcdlU3lSBkS8dwnjOFXbW/pFbFzna
+         HKEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKtjBaJU/jvK/8kSf+WTGnAR3sntwuVjnx3Km61UwBuYQduAdKLHjZILGlsVEECaxYVFY3lobckg==@kvack.org
+X-Gm-Message-State: AOJu0YyxMnok7v3UmdwSYxjAmkVmee8AFc0HrSDSLFjGpWuCPIWP4Plx
+	M2wcA3znWndSxTfv3alrCDzzWeWw1qAVLQC/Uu9VcbkCg5NgNlfbBfH1sEDiqDiT3IjmJzkYaed
+	m0bNliY4S7XopNqHrHtOz06aT1cry0Ck=
+X-Gm-Gg: AZuq6aJXZN3ztTwaX3OcfZMU4VMSnqoQHISutHApG56ss02RgETZ1d1yrWmhC8fI9SJ
+	BGk2ldmJ3AvSVJ0vCgM4ocEfyxq7vQ/zrt8C7CldJAUthu2KJlNvu1dcpe9SNuS4s6AbyusZCVT
+	1MVCN2BWJ4O8lS1FpE/IB6T2Y4epZmMN8OtHIADQCpFKIuu+Fwl8AIWaqEPd5f5K0+vhyp7xkg7
+	GP+A1Z5VoTNS5gb0zXd3HQjiZJLwZsrTapo/JLqTroctnpkNJeoIkovj156ejMvJUfDGBBA6XPF
+	HmhlQqXbNpiYRHH3i3Qqad0HSJRz7Qt9YGuGqx3uEma7chZaHOARg2AFWNuB7GvtUZAQFfS2dcd
+	CYz1rK1DhWifRO4ERfi84
+X-Received: by 2002:a2e:a99c:0:b0:385:c15f:6bd with SMTP id
+ 38308e7fff4ca-386ee5df4afmr10380621fa.10.1770742554544; Tue, 10 Feb 2026
+ 08:55:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209-xarray-entry-send-v3-11-f777c65b8ae2@kernel.org>
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-2-f777c65b8ae2@kernel.org> <aYr-gyQN_AaIJkSH@macos>
+In-Reply-To: <aYr-gyQN_AaIJkSH@macos>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Tue, 10 Feb 2026 11:55:17 -0500
+X-Gm-Features: AZwV_Qj3n2_xEKJZHh_pbAQqJQF7fvAcEJlcOkIYSsdo9vdtJYW7WyHeI0xwRFg
+Message-ID: <CAJ-ks9k5=jGFWRsTmHbsvzJF3YTYzbDTQ43-uUNe8gaZfsnc8w@mail.gmail.com>
+Subject: Re: [PATCH v3 02/12] rust: xarray: add debug format for `StoreError`
+To: Daniel Gomez <da.gomez@kernel.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 5yddnmf6e374m8pijhiiongftyemcq9t
+X-Rspamd-Queue-Id: A6F37A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4638040019
-X-Stat-Signature: ufa33nxmsadjz81cgq5isqj4z3ym9mts
-X-HE-Tag: 1770742163-780449
-X-HE-Meta: U2FsdGVkX1/buGZbwhZWIcyhpGQQhIAXlrdpVT4ikEq3I8x6hZMKnI5G0T5lHc0uHDuCcFcs54KVNre2Q+AI2WXOL/mHT1gsHtoMGglJkqcOP/ZxVSMZ+um3ksD0UKlqg+7OBPz1l/FLK/wXjJ6OzeTh4F8Gg4EsqRgooaTtnoI3JreGJ+jCllrklJ214tsB3e9sA06XFE4Hb3oPBmd5Xx78yJNcYo8NBHLBOQsjof4sOmXyjeX5E4nb3CsPqHvkLU0GziM/Q9olk1NHxi8QHvnk2olwJbvvRWan7rppr7nL8STtAuhkiVGZb7iJQY8VaoA8z6COVx9hIsA688yFlqc4DQlycnDOLv55RHNU5ihv8w0eTJOPvDRS+QlkBR23j1NINugP82FsOdsz0vYy89LRnzcYzaBoUBDT8TzUxZkYjj6w6rsy6Y4UAZIVS6Uf5VGUtK8Qo9nP/7DS3+PVfOGdhR6cPJHG82vAD4o66griUGOuL6zqG6forTWHKavCGQsd3SpNsgbPuO/BN/tWXEXcnVjyes101PgAyZEvB7I2WTzl4Foj2Mgtx0G4qjjQ02yEZPkWq6ByhiiWbA1p716MZGZ2C/fGx0RISfCF9ymulUBqjM3tRY/clxJ6T8EBCDKMKu1Hn+eRzJfJ6pcs0pVB68WTE+bueFlRtXtaMA8Oclwa7dlRCor9a30UzDH4C3GRY7RYLcDS8C7vTBLtWRjpkfqTcDvcw6+Vz6kv6+nnZOdygXDtOVUc1E56tWiXnK+LrWDP66p8ljx13wETMogk9jnjaXKdRXhRznZPbNO342Es6jqJvi22qcB11Nz8Oq1AyYRbS4DeMUBqhchc9fTKHJarCqvgC16pUyGCXTiLV+NgmiT7vxcMjnrQHISeCxM/OuUJZ0kxyNrx0E1eDYfK5RghW8OZct0TmdZTUWZlW6gQaIx+6xRt1WojdNBf2rGXxCxzklr+eK09e1q
- UBhvXGMJ
- Z8L5uqUc1YbjBbSo2XRUak1J6UF2VlK3NiGmiyswwMt2Tt0KOwivZMeRNTZFIjsR4vgQVChCgemGlm/k9dYeXf0Fqp60SacnoNTle7UIlHR4t9A0xFttPgy3Tmx8ZwR54ZV09WMYpjnXp77sE4GvuKhozlYDK9KD9Y7Ixn277YNCkRsnHU4Ys80RJYCgr4eD6Q2+LhwkrUwSrwmYhMILLhtzlU2B+dWltFMX6gqQjaJyG/5LXarTl281zKxaWkk+fl9WpwIqUrQsbdL33bj3WsLHZFiEYOHDGd6aI1mZWdQfeiOSswoQWW05rT03qEmVfBGxTnJ7J47pOe7HY0B+th7G88aazDadHPpOBJrfJtA/iRpPLQBwRhz/8KSJtaFT7QkCEAEudMY9vww2GawZX56Ikkh/1OhdgNSqrDOvlQ+zjY+VWY+R1ImFX+WKSZ+ZMuZRUvYwxJY6BrIY=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770742556-109762
+X-HE-Meta: U2FsdGVkX1+tU5Noln0L3r4s3JSYzFShq5/b/VU6RJ9uZmwP4szrZJo4wa7zJ5Y8T/DdjCD+PyBdQmRV3Sr8A2fMP911WI3UC6Bk8bS9pky4y8tjTdnLnYwVWWpEchWIExpLMNGBybWDfJUgkMdyk6I/YEE6YA/lx8U3PBFa1m4xfDEwULGRXrQwclFWkUlFLrCUTKf6SwLwy4KEuYT/KZUihCSMJI2bjsq2oGESS8o/PjEoVY4tXFjH8oGf+m7NlMeaSI3kmQBrLOmgqrMKsxH3oR0CmZSpTgfsAHMxykZmeFQq7qQoGYHPiKEia3iZt2TGc2avyzUtMP9/cOIBp5vuOlQ/gOEsWZukWTtMEq5f2YEvAd3KtRrNvLiNU3dUxK9hbqIgLgZP681DBkXvpsO7mZzDnbiay7XzPBvvhcKMBIhMgOzzz3AnkQ0Kyc8N00WVvF2IsjBmQ2ftb2dA5IEhBXQ2bQqsfP5/tUorVBfpW78/tXTocdMPPIpblZNCUo5uGybjKV61GzOdzx2PfWPxADd8RfZkglOCIiRjEb9C2tP6KZIAZaj52E0rZO4SyKFjb4MB6yzUXGr8IX9AMFH1rl+G6txcv6mCEE5ZzRLIm7E50yOhJ4UB4EalAkA3P5caPy+zj7PrgspS6lU9pUBVCmhpdWpnU9F1Skg8zeWFeDrLwAcQNSBJ4cBDTaSMfnrdLTKDQUZgvs3iRH/rdypLJeX2ABknjwNCgmfOLse9Stm6DjSVl42aBQIRZYDCHlT4tZNJKtjM8dT+DRP1fUe1GUi46FonYAkOVKUank6oh0mZbCRnTyPQ32Iyadua8LJk8Qoq2aTNEAv0Vx7F+5INLk45LGcsMCtTZbgHGxdvZhj2VOUZVdkpU+v4H8mdQ3Vr5sO6BoDW2jfaBCsgtthRazH5pFZWCjQCI/symq6mugWRPCZ541p92ndxoyXxMn3hIkNnSwpKoPabtTE
+ YImqLTDU
+ ifj/GAucizgMJHoHgZQOswbfQSiHtduHMGqHY9Zx4L1z9OsM718PGqgBHQQEfZbT0eSHnpBtdwlOcSlW/bWqaisQaY8L7fm7t9kJW++87u0ATfo55Ee7DQrBxbR0/vgO4JfrZ5UabHB4RJE8Vwp5KdrWBhwm4vKGxu7WNb5d/PbmDTofgzImGd5+SKeid+BcvpvLH46qaWIrIxJJ9ND8QvxKdZZN3+1AM3n2mC1ukAM8zDtP6kHw9UBmn2WYPiXhI6KTqjslK6Z6Hp1wfe2lGl4ZpylTBTM5NQ9sB1lLOanTCvVddGycSJ+XYf1n9mb2DB2rfAcoDdatgH4RRA9fGRUBLbuUTKVk1mqGKTeeK0EZF8vKxrWFAnESmG8UDLtOFsHOo3AtmFdcn5VAVvVulejML1hecUGhXLLuhtFXIo2bnD851SzGsxiucSQvQprCSGWkcj4+aB1Ck0JY2iCGmgYmAAW2OEJ4XX4w9utnFFv2iPQQEx8VjA8h6qjGOtWFAf0eSmXf8dpwVYDRKUgDQXVVMyUEjCqzOiNJUv+Q6M+EXJLMCqUfN/sqpBYhILp6wcgr1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,34 +150,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-09 15:38, Andreas Hindborg wrote:
-> The rust null block driver plans to rely on preloading xarray nodes from
-> the radix_tree_node_cachep kmem_cache.
-> 
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> ---
->  lib/radix-tree.c | 14 ++++++++++----
->  1 file changed, 10 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/radix-tree.c b/lib/radix-tree.c
-> index 976b9bd02a1b5..1cf0012b15ade 100644
-> --- a/lib/radix-tree.c
-> +++ b/lib/radix-tree.c
-> @@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
->  	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
->  	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
->  	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
-> -	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
-> -			sizeof(struct radix_tree_node), 0,
-> -			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
-> -			radix_tree_node_ctor);
-> +
-> +	struct kmem_cache_args args = {
-> +		.ctor = radix_tree_node_ctor,
-> +		.sheaf_capacity = 64,
-> +	};
+On Tue, Feb 10, 2026 at 8:45=E2=80=AFAM Daniel Gomez <da.gomez@kernel.org> =
+wrote:
+>
+> On 2026-02-09 15:38, Andreas Hindborg wrote:
+> > Add a `Debug` implementation for `StoreError<T>` to enable better error
+> > reporting and debugging. The implementation only displays the `error`
+> > field and omits the `value` field, as `T` may not implement `Debug`.
+> >
+> > Reviewed-by: Gary Guo <gary@garyguo.net>
+> > Acked-by: Tamir Duberstein <tamird@gmail.com>
+> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > ---
+> >  rust/kernel/xarray.rs | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> >
+> > diff --git a/rust/kernel/xarray.rs b/rust/kernel/xarray.rs
+> > index 88625c9abf4ef..d9762c6bef19c 100644
+> > --- a/rust/kernel/xarray.rs
+> > +++ b/rust/kernel/xarray.rs
+> > @@ -193,6 +193,14 @@ pub struct StoreError<T> {
+> >      pub value: T,
+> >  }
+> >
+> > +impl<T> core::fmt::Debug for StoreError<T> {
+> > +    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Resu=
+lt {
+> > +        f.debug_struct("StoreError")
+> > +            .field("error", &self.error)
+> > +            .finish()
+> > +    }
+> > +}
+> > +
+>
+> Is there any best practice for when to include use core::fmt::*, so you c=
+an
+> avoid being verbose here?
+>
+> I see other cases like this, but I couldn't find anything in the code
+> guidelines.
 
-Is the sheaf_capacity matching the number of slots in an XArray node? If so,
-this should be bindings::XA_CHUNK_SIZE.
+It would probably be better to use kernel::fmt::* rather than
+core::fmt so that we can interpose our own trait in the future, if we
+want.
 
