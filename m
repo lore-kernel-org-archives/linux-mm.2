@@ -4,109 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87820EA3F16
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 07:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CCF6EA3F16
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 07:39:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4AF06B0005; Tue, 10 Feb 2026 02:31:40 -0500 (EST)
+	id 33D4D6B0089; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CF8406B0088; Tue, 10 Feb 2026 02:31:40 -0500 (EST)
+	id 2DB1A6B0088; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFAC56B0089; Tue, 10 Feb 2026 02:31:40 -0500 (EST)
+	id 1F4DF6B0089; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AD91A6B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 02:31:40 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DFD231B3355
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:31:39 +0000 (UTC)
-X-FDA: 84427727118.08.164C5B1
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 68B83180005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:31:36 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QqAZweSc;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0D16C6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A72C816040E
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:38:58 +0000 (UTC)
+X-FDA: 84427745556.22.2A4CB31
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C72D31C0006
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:38:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770708698;
+	s=arc-20220608; t=1770709137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JnPhcm04RgXUByNiUINhP/lHOk9f0CuIXS0OCcNO/mI=;
-	b=5Ihs2ctMk+wLyoYPdi56K5P+NqtMjqjsv2jgCtYdrVClcGcMC04pFOu/xtjXyxsaRfb/AP
-	h0xbTmmS71XwWyRFWOeJ3qIXPxKFapAkNiA9wZGT/ZXwfeMySfIaoM617RI7MWBYlUOqpb
-	kK1PLmTHPeaxxzxN4YR90ETiv8TMkbc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770708698; a=rsa-sha256;
-	cv=none;
-	b=eYBXb47CwC0TiQ/l86kUSrHYpOu8FZ6YycGw8w6qUlRs3nmEKfnOQ3wZ/6ONcbJW6vGZWB
-	cajIqqqIaGhQ1hAgq77VmrwUkyRWxgswP5n56X/GbBcrmYtMfDoavX6aLBHlU5xnV9Ta55
-	yvq8+a+EwxkS529dcgTFGnk7uatLdtM=
+	 in-reply-to:in-reply-to:references:references;
+	bh=NVqfXZFieKJgW7wqXCfcV0Gq8P5xSqrtgXrA3fcBA/o=;
+	b=LWpOIXjAYo1RI1pMgt7S2JhJm51zcbidxdTVLFv4LelqZDdEtsyAwMeyOcOiIVxGsb4OED
+	8Acwi95DSABQuyJ34tzzk/haPaIZAGey3RVSjFWpUSfTN2mVy9gj3bca/pFZ1GdKpWuVjC
+	WsEEw3Kh1gGC9Z+GIiFNvDAVrKaLTOY=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=QqAZweSc;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf06.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=JnPhcm04RgXUByNiUINhP/lHOk9f0CuIXS0OCcNO/mI=;
-	b=QqAZweScfKIM0otUDQqRMBYp4ndRK7LYYcRAz9om1y/6VCdCqZmLRdebrW1x/l1F6G7yJZcbL
-	dW3H7vlomSaq0K2bkM43blnD/hAM7e4DQ1uvAda6EULhNQR29GEe3l67MEjd906ROoaUqHRH6yr
-	wZ/sZSH0NHCUEjNIWYH7sDc=
-Received: from mail.maildlp.com (unknown [172.19.163.0])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4f9Cn040KTz1T4JY;
-	Tue, 10 Feb 2026 15:27:00 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 430AB4036C;
-	Tue, 10 Feb 2026 15:31:31 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Feb 2026 15:31:31 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 10 Feb 2026 15:31:29 +0800
-Subject: Re: [PATCH v3 1/3] mm: memfd/hugetlb: introduce memfd-based userspace
- MFR policy
-To: Jiaqi Yan <jiaqiyan@google.com>
-CC: <nao.horiguchi@gmail.com>, <tony.luck@intel.com>,
-	<wangkefeng.wang@huawei.com>, <willy@infradead.org>,
-	<akpm@linux-foundation.org>, <osalvador@suse.de>, <rientjes@google.com>,
-	<duenwen@google.com>, <jthoughton@google.com>, <jgg@nvidia.com>,
-	<ankita@nvidia.com>, <peterx@redhat.com>, <sidhartha.kumar@oracle.com>,
-	<ziy@nvidia.com>, <david@redhat.com>, <dave.hansen@linux.intel.com>,
-	<muchun.song@linux.dev>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<william.roche@oracle.com>, <harry.yoo@oracle.com>, <jane.chu@oracle.com>
-References: <20260203192352.2674184-1-jiaqiyan@google.com>
- <20260203192352.2674184-2-jiaqiyan@google.com>
- <7ad34b69-2fb4-770b-14e5-bea13cf63d2f@huawei.com>
- <CACw3F50PwJ+sSOX0wySQgBzrEW2XOctxuX5jM37OG0HS_kHdbQ@mail.gmail.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <31cc7bed-c30f-489c-3ac3-4842aa00b869@huawei.com>
-Date: Tue, 10 Feb 2026 15:31:29 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf18.hostedemail.com;
+	dkim=none;
+	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770709137; a=rsa-sha256;
+	cv=none;
+	b=f7ezC4RP0X5vjd9C/WWxcNLadRy/qQcFE5/BSwXd0eQNquAWVrV8lUJheRtsfBbjwF3BIK
+	AhjyUCz2eU2TUSY3/k+2QoUS4ciDEJbZ3YYwTeGq3cLgP6HOjqAOZ1lUshF8/ieAUvLXyd
+	GxFkIc00WwQb57DxNuD70Ux5G2Y5cPw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F2F9339;
+	Mon,  9 Feb 2026 23:38:49 -0800 (PST)
+Received: from [10.164.19.61] (unknown [10.164.19.61])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 46E0D3F740;
+	Mon,  9 Feb 2026 23:38:52 -0800 (PST)
+Message-ID: <b77dc11e-fe09-4f0c-a912-d05faa01ff1c@arm.com>
+Date: Tue, 10 Feb 2026 13:08:49 +0530
 MIME-Version: 1.0
-In-Reply-To: <CACw3F50PwJ+sSOX0wySQgBzrEW2XOctxuX5jM37OG0HS_kHdbQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
+To: Shakeel Butt <shakeel.butt@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+ Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Meta kernel team <kernel-team@meta.com>
+References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+ <20251110232008.1352063-2-shakeel.butt@linux.dev>
+ <1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com> <aYAmGc6lu973jRwu@linux.dev>
+ <2638bd96-d8cc-4733-a4ce-efdf8f223183@arm.com>
+ <51819ca5a15d8928caac720426cd1ce82e89b429@linux.dev>
+ <05aec69b-8e73-49ac-aa89-47b371fb6269@arm.com> <aYOuCmjQ5lGm8Mup@linux.dev>
+ <4847c300-c7bb-4259-867c-4bbf4d760576@arm.com> <aYQuj6Ot-JS4tXvY@hyeyoo>
+ <7df681ae0f8254f09de0b8e258b909eaacafadf4@linux.dev>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Rspamd-Queue-Id: 68B83180005
-X-Stat-Signature: cgwk4d53qfn9eab1rhmzubosy43y3kxz
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <7df681ae0f8254f09de0b8e258b909eaacafadf4@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: r3r4tttsn698mer5xdztju98fs4wo4qe
+X-Rspamd-Queue-Id: C72D31C0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770708696-617362
-X-HE-Meta: U2FsdGVkX18zcxEcS/19/WUK/Po/vnM/OjNAx/+75J2ca26sZiY11TyHIBqWKKcb0zd/8dLFT02YPGnENjC5l/vnScsDxrqORmv2wtDn4S3ZiATbhTMYsc+Ntqu+8t2QV7oOLEIAnGXZI045G7+nlpOKJNzrmuY8MVw3QjtmawhFcHYBljBLTM8y6oKC1GAk1UxTm4o6GhK4XGC99J4lwTTGL+NB7+GXevw6CyK7fC2vMlAa0BmgXrOrB2wCbmRGGnGiiG4moqTqwLQ0gqg8RLg7ShuHzXUt+VbJ1FKBSpo5vqtxxwgg49t4y0rifpsyiB0bXDNP2PIR8qdO5OvbmRimIO52zA5Ng5SFhfjFwO6ORcBDuPJTn6pgIk7aqdEj1fihjIiy6SK03XcSMVdbXas8eT9oFe3HtVk4fFLDMbYUxcKzww8C/aJlNb1DzdLtuheXFL/7BJb95ZZ/M4kQi+BwS/ByW6NUTqjcRS0Njwrhiqq954BsWCQjATn14+5+2UxU/KdrxMiV/AGbt5/xWKrQepVZ5q3+58/HFhVr/H3WF8Vb0H1j72snJZwbGL8BPe2RsTUnJ+JppWb7u2ZHbvF9qgRHlvYTCzGGeiAKvXJ0kjOuhC4WJbEOObS2b1DW9PSFDwvDMkOARZuIxAQuK2ouSKF6oFdIdtOWGpX/iyJeOd2Qa7nAgmHQYw5TjGjq+I5zFLEXU72PMdlyFJtEHk8tjn0Rh8VNR0sb3uKaqXv0X76zqiyasoU3g9K4I0SL0uiFsf70wIRZF/mib10xaem1Z3B/t+GSFBJfzQrNgWRbWjsvZoiyJNe0uKCqm182pKqZorgfpTDCeTkgNthjvoTsTQuWJXNvfNuOfS6HpMNjaGkOjgE0yx93+8S9LihEtjE3PFFoKq6fVpmQmpO4kg4s4lTiDeqkTokkHddehiN1yvsm0lOAii/wZaVFgGpM/8md3eN2ovSwuKTAbY9
- /utq5F5H
- MTv2NsiDL8tTHtFpSryY2GTo3neZXDMLBMkFuZB8MXHOY5ujHnFYMTMn/r1Ly7dI34YbSuP5wTSA6E4Gae2FGcj0cuQA7oC9CvfsG7FarmkZ+jcGJ/1ivvYqz15MkTy7CG6/m1ozzjU6/dwJJUTgGPNf3c68hlKEeJY977pG11wWouL2gdVCYwtGWlcX9YtTkOwZnL0oAlQ7qD4QOKhQcg0sQrAnSZ4lMCdNbXVh9ujfYfwhR9kVEFQNm/Oxp0/YD9vOmQQdWR8M6lt0gunWB+jhMlLgY6GpeXozrQZs1KnWZROX/kOuRk+CAnsZbp9pAv9mDLo7NghE21K41hklUG/zZkn1DO4EINJQ5Csi8ApCTtzJBtAlB1qrxRlbHul8Pq3yNRe3IWy9ASVhaVdSPiiuVqw==
+X-HE-Tag: 1770709136-278503
+X-HE-Meta: U2FsdGVkX1+hyRrJsqkPV5TSc8dCgA2KZ0ZZWbvA01agQHYoT1yK0wtfXKrs1QgsrtaCzbE1b7sIPNbc86FJofTbI1iSkd6hcH38WEBTZyyPpGTBzbOZJz7Bb5MV/Ymb35H3UhzZ2BsF/P8B/zXLhUbl8immsHTcjW8bSGiRECFKAiNDjBlr8bXIXAANOR9fkoKTDOdS4b5oT/bljxAaHyi00cE6XCBDzWtHgRf/Qi02gKelzonvYhY0Hcj+iHbErHPRIoDYzhuWrj5nxMdyr70S7evmgSjXFYZIomDpR3ECt+Q9BqzPGIr/Ya3cxt/PU8StmyzhM5np4q2Woj20BIt7zROleTqOt+awnJr88RddjH836uNblC5zQi54bByUJzgutekDsGFCpgPUuzi601lrKVzbmfdwtr1MbYDVFUumfky4nPw1jKVonc82CfPLnUwBzdsS2LKbpUrydbITKplPTRHT0C1y6+YEnvOnBKeB13G47rCW8FGSzK8MwlrWvaMzzGlC/eWKjfZXDBerWO/+ZqnXn6oBIh5IuErP/+M2X92kX26oMcwffJutiqm6I7EJf0LJVMfhpEnKNtW9S0mp7NYy5B0SnCmRZZkK7S3WcV3SC/3lbDFi9Esphvbut5tdYFW1ZpUR5ypwuGARo9hTLxwkpzjgNDi4V3BX+M/7W8oFksTtmfWB763Qe8T5edhpSNpC07BiSEXctVGhgFcDDFEq3ajzFfRzDyyHaGtpjzdYyp4sLq7JIdUo6wBvjDDeN4ZNmdf412CQJTJ5vHeXJq8wY1M+OTYkru6VotbHyeBQs7qr7CtD3WBN4oBIh33lq/IDoFGIdKe0J31qfc8nSZ5eVNkxEeB3e+l4R9X/cwnUnUnRDq6ICo9S5ntsqdeeVEbDDx+hqLP/Xcpt43m+yhcXX1aG61UD/pHRqbaMwYiVu8/eqz53x5ysg/2Yi4KHT96tN0/+0dngfUP
+ 2tmBN+KW
+ cHOSU6XZqSyw+utHEkNI+s1VKga0DyYY1u+o1y1IkROLyAels9UfDrtb9wZnM16x+KCXq29WwC2Mbw2ZUFxiUjm9fIfCpr3lQyFl8gXNYBubqrD7QkSYsMzRyWQcArXPTqv1h8x/a7rgNU4XRrgzdCTOzdKhXOeUyRCdt2XDBitVGdbjQOG3wdA2cH/iVPZ1SNZ5dcdnnEq0jGAoUZqsahQEkN40dlWXNOVICmhumQe3ECqO9ZrDvUWzbgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,185 +97,100 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026/2/10 12:47, Jiaqi Yan wrote:
-> On Mon, Feb 9, 2026 at 3:54 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
+
+On 05/02/26 11:28 am, Shakeel Butt wrote:
+>> On Thu, Feb 05, 2026 at 10:50:06AM +0530, Dev Jain wrote:
 >>
->> On 2026/2/4 3:23, Jiaqi Yan wrote:
->>> Sometimes immediately hard offlining a large chunk of contigous memory
->>> having uncorrected memory errors (UE) may not be the best option.
->>> Cloud providers usually serve capacity- and performance-critical guest
->>> memory with 1G HugeTLB hugepages, as this significantly reduces the
->>> overhead associated with managing page tables and TLB misses. However,
->>> for today's HugeTLB system, once a byte of memory in a hugepage is
->>> hardware corrupted, the kernel discards the whole hugepage, including
->>> the healthy portion. Customer workload running in the VM can hardly
->>> recover from such a great loss of memory.
->>
->> Thanks for your patch. Some questions below.
->>
+>>> On 05/02/26 2:08 am, Shakeel Butt wrote:
+>>>  On Mon, Feb 02, 2026 at 02:23:54PM +0530, Dev Jain wrote:
+>>>  On 02/02/26 10:24 am, Shakeel Butt wrote:
+>>>  Hello Shakeel,
 >>>
->>> Therefore keeping or discarding a large chunk of contiguous memory
->>> owned by userspace (particularly to serve guest memory) due to
->>> recoverable UE may better be controlled by userspace process
->>> that owns the memory, e.g. VMM in the Cloud environment.
+>>>  We are seeing a regression in micromm/munmap benchmark with this patch, on arm64 -
+>>>  the benchmark mmmaps a lot of memory, memsets it, and measures the time taken
+>>>  to munmap. Please see below if my understanding of this patch is correct.
 >>>
->>> Introduce a memfd-based userspace memory failure (MFR) policy,
->>> MFD_MF_KEEP_UE_MAPPED. It is possible to support for other memfd,
->>> but the current implementation only covers HugeTLB.
+>>>  Thanks for the report. Are you seeing regression in just the benchmark
+>>>  or some real workload as well? Also how much regression are you seeing?
+>>>  I have a kernel rebot regression report [1] for this patch as well which
+>>>  says 2.6% regression and thus it was on the back-burner for now. I will
+>>>  take look at this again soon.
 >>>
->>> For a hugepage associated with MFD_MF_KEEP_UE_MAPPED enabled memfd,
->>> whenever it runs into a new UE,
+>>>  The munmap regression is ~24%. Haven't observed a regression in any other
+>>>  benchmark yet.
+>>>  Please share the code/benchmark which shows such regression, also if you can
+>>>  share the perf profile, that would be awesome.
+>>>  https://gitlab.arm.com/tooling/fastpath/-/blob/main/containers/microbench/micromm.c
+>>>  You can run this with
+>>>  ./micromm 0 munmap 10
 >>>
->>> * MFR defers hard offline operations, i.e., unmapping and
+>>>  Don't have a perf profile, I measured the time taken by above command, with and
+>>>  without the patch.
+>>>
+>>>  Hi Dev, can you please try the following patch?
+>>>
+>>>  From 40155feca7e7bc846800ab8449735bdb03164d6d Mon Sep 17 00:00:00 2001
+>>>  From: Shakeel Butt <shakeel.butt@linux.dev>
+>>>  Date: Wed, 4 Feb 2026 08:46:08 -0800
+>>>  Subject: [PATCH] vmstat: use preempt disable instead of try_cmpxchg
+>>>
+>>>  Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+>>>  ---
+>>>
+>> [...snip...]
 >>
->> So the folio can't be unpoisoned until hugetlb folio becomes free?
-> 
-> Are you asking from testing perspective, are we still able to clean up
-> injected test errors via unpoison_memory() with MFD_MF_KEEP_UE_MAPPED?
-> 
-> If so, unpoison_memory() can't turn the HWPoison hugetlb page to
-> normal hugetlb page as MFD_MF_KEEP_UE_MAPPED automatically dissolves
-
-We might loss some testability but that should be an acceptable compromise.
-
-> it. unpoison_memory(pfn) can probably still turn the HWPoison raw page
-> back to a normal one, but you already lost the hugetlb page.
-> 
->>
->>>   dissolving. MFR still sets HWPoison flag, holds a refcount
->>>   for every raw HWPoison page, record them in a list, sends SIGBUS
->>>   to the consuming thread, but si_addr_lsb is reduced to PAGE_SHIFT.
->>>   If userspace is able to handle the SIGBUS, the HWPoison hugepage
->>>   remains accessible via the mapping created with that memfd.
+>>> Thanks for looking into this.
+>>>  
+>>>  But this doesn't solve it :( preempt_disable() contains a compiler barrier,
+>>>  probably that's why.
 >>>
->>> * If the memory was not faulted in yet, the fault handler also
->>>   allows fault in the HWPoison folio.
+>> I think the reason why it doesn't solve the regression is because of how
+>> arm64 implements this_cpu_add_8() and this_cpu_try_cmpxchg_8().
+>>
+>> On arm64, IIUC both this_cpu_try_cmpxchg_8() and this_cpu_add_8() are
+>> implemented using LL/SC instructions or LSE atomics (if supported).
+>>
+>> See:
+>> - this_cpu_add_8()
+>>  -> __percpu_add_case_64
+>>  (which is generated from PERCPU_OP)
+>>
+>> - this_cpu_try_cmpxchg_8()
+>>  -> __cpu_fallback_try_cmpxchg(..., this_cpu_cmpxchg_8)
+>>  -> this_cpu_cmpxchg_8()
+>>  -> cmpxchg_relaxed()
+>>  -> raw_cmpxchg_relaxed()
+>>  -> arch_cmpxchg_relaxed()
+>>  -> __cmpxchg_wrapper()
+>>  -> __cmpxchg_case_64()
+>>  -> __lse_ll_sc_body(_cmpxchg_case_64, ...)
+>>
+> Oh so it is arm64 specific issue. I tested on x86-64 machine and it solves
+> the little regression it had before. So, on arm64 all this_cpu_ops i.e. without
+> double underscore, uses LL/SC instructions. 
+>
+> Need more thought on this. 
+>
+>>> Also can you confirm whether my analysis of the regression was correct?
+>>>  Because if it was, then this diff looks wrong - AFAIU preempt_disable()
+>>>  won't stop an irq handler from interrupting the execution, so this
+>>>  will introduce a bug for code paths running in irq context.
 >>>
->>> For a MFD_MF_KEEP_UE_MAPPED enabled memfd, when it is closed, or
->>> when userspace process truncates its hugepages:
->>>
->>> * When the HugeTLB in-memory file system removes the filemap's
->>>   folios one by one, it asks MFR to deal with HWPoison folios
->>>   on the fly, implemented by filemap_offline_hwpoison_folio().
->>>
->>> * MFR drops the refcounts being held for the raw HWPoison
->>>   pages within the folio. Now that the HWPoison folio becomes
->>>   free, MFR dissolves it into a set of raw pages. The healthy pages
->>>   are recycled into buddy allocator, while the HWPoison ones are
->>>   prevented from re-allocation.
->>>
->> ...
+>> I was worried about the correctness too, but this_cpu_add() is safe
+>> against IRQs and so the stat will be _eventually_ consistent?
 >>
->>>
->>> +static void filemap_offline_hwpoison_folio_hugetlb(struct folio *folio)
->>> +{
->>> +     int ret;
->>> +     struct llist_node *head;
->>> +     struct raw_hwp_page *curr, *next;
->>> +
->>> +     /*
->>> +      * Since folio is still in the folio_batch, drop the refcount
->>> +      * elevated by filemap_get_folios.
->>> +      */
->>> +     folio_put_refs(folio, 1);
->>> +     head = llist_del_all(raw_hwp_list_head(folio));
->>
->> We might race with get_huge_page_for_hwpoison()? llist_add() might be called
->> by folio_set_hugetlb_hwpoison() just after llist_del_all()?
-> 
-> Oh, when there is a new UE while we releasing the folio here, right?
+>> Ofc it's so confusing! Maybe I'm the one confused.
+> Yeah there is no issue with proposed patch as it is making the function
+> re-entrant safe.
 
-Right.
+Ah yes, this_cpu_add() does the addition in one shot without read-modify-write.
 
-> In that case, would mutex_lock(&mf_mutex) eliminate potential race?
+I am still puzzled whether the original patch was a bug fix or an optimization.
+The patch description says that node stat updation uses irq unsafe interface.
+Therefore, we had foo() calling __foo() nested with local_irq_save/restore. But
+there were code paths which directly called __foo() - so, your patch fixes a bug right
+(in which case we should have a Fixes tag)? The patch ensures that mod_node_page_state
+is used, and depending on HAVE_CMPXCHG_LOCAL, either uses irq disabling or
+preempt_disable + cmpxchg - making the interface irq safe.
 
-IMO spin_lock_irq(&hugetlb_lock) might be better.
-
-> 
->>
->>> +
->>> +     /*
->>> +      * Release refcounts held by try_memory_failure_hugetlb, one per
->>> +      * HWPoison-ed page in the raw hwp list.
->>> +      *
->>> +      * Set HWPoison flag on each page so that free_has_hwpoisoned()
->>> +      * can exclude them during dissolve_free_hugetlb_folio().
->>> +      */
->>> +     llist_for_each_entry_safe(curr, next, head, node) {
->>> +             folio_put(folio);
->>
->> The hugetlb folio refcnt will only be increased once even if it contains multiple UE sub-pages.
->> See __get_huge_page_for_hwpoison() for details. So folio_put() might be called more times than
->> folio_try_get() in __get_huge_page_for_hwpoison().
-> 
-> The changes in folio_set_hugetlb_hwpoison() should make
-> __get_huge_page_for_hwpoison() not to take the "out" path which
-> decrease the increased refcount for folio. IOW, every time a new UE
-> happens, we handle the hugetlb page as if it is an in-use hugetlb
-> page.
-
-See below code snippet (comment [1] and [2]):
-
-int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
-				 bool *migratable_cleared)
-{
-	struct page *page = pfn_to_page(pfn);
-	struct folio *folio = page_folio(page);
-	int ret = 2;	/* fallback to normal page handling */
-	bool count_increased = false;
-
-	if (!folio_test_hugetlb(folio))
-		goto out;
-
-	if (flags & MF_COUNT_INCREASED) {
-		ret = 1;
-		count_increased = true;
-	} else if (folio_test_hugetlb_freed(folio)) {
-		ret = 0;
-	} else if (folio_test_hugetlb_migratable(folio)) {
-
-		   ^^^^*hugetlb_migratable is checked before trying to get folio refcnt* [1]
-
-		ret = folio_try_get(folio);
-		if (ret)
-			count_increased = true;
-	} else {
-		ret = -EBUSY;
-		if (!(flags & MF_NO_RETRY))
-			goto out;
-	}
-
-	if (folio_set_hugetlb_hwpoison(folio, page)) {
-		ret = -EHWPOISON;
-		goto out;
-	}
-
-	/*
-	 * Clearing hugetlb_migratable for hwpoisoned hugepages to prevent them
-	 * from being migrated by memory hotremove.
-	 */
-	if (count_increased && folio_test_hugetlb_migratable(folio)) {
-		folio_clear_hugetlb_migratable(folio);
-
-		^^^^^*hugetlb_migratable is cleared when first time seeing folio* [2]
-
-		*migratable_cleared = true;
-	}
-
-Or am I miss something?
-
-> 
->>
->>> +             SetPageHWPoison(curr->page);
->>
->> If hugetlb folio vmemmap is optimized, I think SetPageHWPoison might trigger BUG.
-> 
-> Ah, I see, vmemmap optimization doesn't allow us to move flags from
-> raw_hwp_list to tail pages. I guess the best I can do is to bail out
-> if vmemmap is enabled like folio_clear_hugetlb_hwpoison().
-
-I think you can do this after hugetlb_vmemmap_restore_folio() is called.
-
-Thanks.
-.
 
