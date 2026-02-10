@@ -4,113 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0C0EF0702
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 04:54:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7726BEF0702
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 04:57:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 017DE6B0005; Mon,  9 Feb 2026 23:54:23 -0500 (EST)
+	id D9EA56B0005; Mon,  9 Feb 2026 23:57:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3AB06B0088; Mon,  9 Feb 2026 23:54:22 -0500 (EST)
+	id D4BD26B0088; Mon,  9 Feb 2026 23:57:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D176B0089; Mon,  9 Feb 2026 23:54:22 -0500 (EST)
+	id C240B6B0089; Mon,  9 Feb 2026 23:57:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D315A6B0005
-	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 23:54:22 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8E45216037F
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 04:54:22 +0000 (UTC)
-X-FDA: 84427330764.03.FEF66F5
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9E4B0140006
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 04:54:20 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=yNvTN0pe;
-	spf=pass (imf26.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AF7C26B0005
+	for <linux-mm@kvack.org>; Mon,  9 Feb 2026 23:57:00 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66D151B3101
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 04:57:00 +0000 (UTC)
+X-FDA: 84427337400.27.60FACC6
+Received: from xry111.site (xry111.site [89.208.246.23])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 65CD64000C
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 04:56:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=xry111.site header.s=default header.b=kUW2q5N7;
+	spf=pass (imf04.hostedemail.com: domain of xry111@xry111.site designates 89.208.246.23 as permitted sender) smtp.mailfrom=xry111@xry111.site;
+	dmarc=pass (policy=reject) header.from=xry111.site
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770699260;
+	s=arc-20220608; t=1770699418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2bNWrVed5hiVY9k9jymxZoTWwuaSvQ8Ymeerd9cVzBw=;
-	b=C8LyYOBaG73TSRznVcud++5fapFuIYaTqvAzCzWJQ8gh8oNvuiO+kEPfnvYQmvaYFa4tU4
-	MezRl0nYdjMSy3GtFCiG3YfEuXaTBZgZrmqoQyAQiH/ZDhMuiIa3pe0zEbYjnl63Qys389
-	F/lg9P9XXOFZWrqGBbLbWa3YUKwjGuw=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2026012301 header.b=yNvTN0pe;
-	spf=pass (imf26.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770699260; a=rsa-sha256;
+	bh=S7S/RwYpthg8tXjbrJE4w6sTQLQrQ7h2vcjko87DBKI=;
+	b=BDXPV/jXrg94ktN9aGkijN+xbc7xTV1g30nAwTnc5fynkd/0TBX3gS6Mb6DYhjS2n3A+Xd
+	CGqFLPJx1Vo33Z5woVddYYatOuHrVZFi7FUzhGh0fcLg6LPNFrqoor+l+1tB0XZ1Ftrq3f
+	HAde3exmn8YHcxw65jbTUYY384oKgG8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770699418; a=rsa-sha256;
 	cv=none;
-	b=ZDPWuqj8DUcHHJVUQY+XVvs61DpOjyHNsnZivnRw4GTtxvlHDVtvadnI9HtQn0gSM5izsR
-	Xrl2anG7zSrH4OIta8tbsLij3wQIxjSh4Uwjohj+yIiF6AQugtXKyw0q7zwWUP0vdrP5Yz
-	JFzyQ1t84iHpqI5orY9fY9amjPmUfzo=
-Received: from [172.27.2.41] (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 61A4rgZ73161123
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Mon, 9 Feb 2026 20:53:46 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 61A4rgZ73161123
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026012301; t=1770699228;
-	bh=2bNWrVed5hiVY9k9jymxZoTWwuaSvQ8Ymeerd9cVzBw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=yNvTN0pe26bHPATpWFRmwqoqklz5c582dxuNgT4A/bKgN5pLU0jFAk575K6BAd7+z
-	 xjLjpkuwenalssCyfl3PszY8fLDEayQ8hcTTGn+tB/8kkpANRtL2yyfT0pzKn3Qk/Q
-	 Oybo3fCBQomkN8XJpiXZRSKFK69skiMIqwSuGPXoIZBFmoMQHX2YBhcbdwfnuv5ORE
-	 +eNmfFqsmXqBFZyJkX9HByk17dT4BABUHjI8Yrf6HqPH7iGhASa66yiYG7MiA0BZy2
-	 9/8VepqAkbm9byqAFURrIdCJTM2jyWhYHNcFYVz15MkRx4dBdpBG5B3zZ/dEbXygw6
-	 ZpOAU1e3xBIBw==
-Message-ID: <bbd9ee1e-d604-43d6-9cb5-77e2972807ef@zytor.com>
-Date: Mon, 9 Feb 2026 20:53:37 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	b=oDpFTNsP2wZK4MZGOyOdIfKPsRu78IweUs7jm8Ey0VwTKGEavoUrDyRU4r0KXjc1NEHqDH
+	xRItjOuZFMGMkvhh0ip6znqJf85pJWJZOWgMWcbV3VPESWuRoDUw4PR+ApMyl+5UybKBWm
+	yOni4nxByxh5wh5nLgak51DW8CuUYYQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=xry111.site header.s=default header.b=kUW2q5N7;
+	spf=pass (imf04.hostedemail.com: domain of xry111@xry111.site designates 89.208.246.23 as permitted sender) smtp.mailfrom=xry111@xry111.site;
+	dmarc=pass (policy=reject) header.from=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1770699409;
+	bh=S7S/RwYpthg8tXjbrJE4w6sTQLQrQ7h2vcjko87DBKI=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=kUW2q5N76xasLaNR97zoGtQHnIvmUOvDpWavvSP0MvJkmykc3ybvyrdM4KaLzHgoC
+	 Fcnw1yUeADhSYiqx1WEjmTiMvGcWZxeIBs0wc04T3hV2COZu8glN1w5vd0t25QbdGc
+	 THeZf+UtqzZtojSxSzPa5sSEzqjbT270FTExl3uI=
+Received: from [127.0.0.1] (2607-8700-5500-e873-0000-0000-0000-1001.16clouds.com [IPv6:2607:8700:5500:e873::1001])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 1DD061A43D2;
+	Mon,  9 Feb 2026 23:56:41 -0500 (EST)
+Message-ID: <32ec2da7ad9b0c65f41b7c3e14fb6d8e1a5c1865.camel@xry111.site>
 Subject: Re: [PATCH v4.1 06/10] x86/entry/vdso32: remove open-coded DWARF in
  sigreturn.S
-To: Xi Ruoyao <xry111@xry111.site>, Jens Remus <jremus@linux.ibm.com>
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-        Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>,
-        Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, Brian Gerst <brgerst@gmail.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>,
-        Nam Cao <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
-        Perry Yuan <perry.yuan@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-sgx@vger.kernel.org, x86@kernel.org,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        Claudiu Zissulescu-Ianculescu <claudiu.zissulescu-ianculescu@oracle.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+From: Xi Ruoyao <xry111@xry111.site>
+To: "H. Peter Anvin" <hpa@zytor.com>, Jens Remus <jremus@linux.ibm.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Peter Zijlstra (Intel)"	
+ <peterz@infradead.org>, Theodore Ts'o <tytso@mit.edu>, Thomas
+ =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>, Xin Li
+ <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>, Andy Lutomirski
+ <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov
+ <bp@alien8.de>, Brian Gerst <brgerst@gmail.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Ingo Molnar	 <mingo@redhat.com>, James Morse
+ <james.morse@arm.com>, Jarkko Sakkinen	 <jarkko@kernel.org>, Josh Poimboeuf
+ <jpoimboe@kernel.org>, Kees Cook	 <kees@kernel.org>, Nam Cao
+ <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,  Perry Yuan
+ <perry.yuan@amd.com>, Thomas Gleixner <tglx@linutronix.de>, Thomas Huth
+ <thuth@redhat.com>,  Uros Bizjak <ubizjak@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sgx@vger.kernel.org, x86@kernel.org, Indu Bhagat
+ <indu.bhagat@oracle.com>,  Claudiu Zissulescu-Ianculescu
+ <claudiu.zissulescu-ianculescu@oracle.com>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Date: Tue, 10 Feb 2026 12:56:39 +0800
+In-Reply-To: <e31817cb-c102-485c-8844-d81c39eac442@zytor.com>
 References: <vdso-cleanup-patch-4.1@zytor.com>
- <20260106211856.560186-6-hpa@zytor.com>
- <223707e2-3231-4037-bd1f-490ddf6aeeb6@linux.ibm.com>
- <B4C09939-9216-457E-8C93-052521FFE96F@zytor.com>
- <f3412cc3e8f66d1853cc9d572c0f2fab076872b1.camel@xry111.site>
- <29D95765-BD93-451D-8FD8-54250ADE1DEB@zytor.com>
- <0ee773dea213f6efbdac03009ee80f350b17c949.camel@xry111.site>
-Content-Language: en-US, sv-SE
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <0ee773dea213f6efbdac03009ee80f350b17c949.camel@xry111.site>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9E4B0140006
-X-Stat-Signature: 44ofghb66waid8o5ktf9h6qi6datzwms
+	 <20260106211856.560186-6-hpa@zytor.com>
+	 <223707e2-3231-4037-bd1f-490ddf6aeeb6@linux.ibm.com>
+	 <B4C09939-9216-457E-8C93-052521FFE96F@zytor.com>
+	 <f3412cc3e8f66d1853cc9d572c0f2fab076872b1.camel@xry111.site>
+	 <e31817cb-c102-485c-8844-d81c39eac442@zytor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 65CD64000C
 X-Rspam-User: 
-X-HE-Tag: 1770699260-970720
-X-HE-Meta: U2FsdGVkX1/KGb8Bo8cX/4bk07XkytAKyIERNEadqcjqzvbwxUQ55OOu4YBD9tyjiF0ocb0dPvRLhOyB68auuaTs42vAqpfBaVhKz9wy7NR469jdxouL8i9Dx25/APh5MF8CLXumheebTMu0TqzBv69htKfLRTzH2/Zhd6TmK4XNZOmV80qlyLAZVFdqlHPmbijCzO2meQAXreQhTNA5/jw47gc7EmX0m+pQW2Yps/Epy769FWT3Q8+81XRY1W2z2mjoKQi1KWbY+BX8dnHJt0xNdnFJW8+efjQHVQ76Xv5ylFdFl3ZxeGr5MzjLAo4P6u7vCbFLYSBZ+X2VH5Os6UklrZGPt7yPNf34Ok3KjZppMEhklBIWjfDRtb2DzMhq1f83oT2Dku0H+wKg6p1FRNyXuBMzGlPlK2XPCW3+BcCpVCLazv2uprMl3tVtcLh8YgvAICGFpHrPS5FVPhz44JvUdhcVKipEtOLrO+5JeHphgmkFFHB+KCsaUyxRtTPKEjaKjQyrfL9TxOQWTVFI5Ui82WpwJih8hXjvYjBwwVvpOK0GlPJ7B3CMPIbqE/uIW+M3kkJG1QlLhCUlbl3ZYppketxjkF6ZbuXodWUJRkBhcw+IOaS4v5PLA46NQ4gqzMwZ0nDVQNUmuLtA+HyPBh+Qo5A9KPIKFk77XyaYqPD9G8bwcAm9LdyTnPqSNOD519764SmBAjGSZq1zhfTz1qwdQWhCvlSxMJ5J2V89XPxHJwBInaq48lUDVZMerx62rtUOhMt6FvsiLaHTRimGqnNTSLvtgWYL6xqMqtDV+DITeQT1mDRAO2lt3KIK4hc+6tjcAsabssS9hl4svT9dCEkeYZvW//iJR0O8LCV6VyR4BHAGUn97WOPoqqtdAwnH8BgYgjxZT8BYEW/jo/9gPHzgn96CrD0bcy2/R2bSGNgu0twVg/TFgYjhUcGUSjWGciz9ZtDArNDRxuzBXa3
- jCzg1IrX
- 7SWPb9FqSQOttvk/b4LLudj2GhnGgfpfDJo3J866GfiIEPYeRe3c+MFK/TTdwUte0P3n/OPMT9sPA3o8y7cK/w6Yht2HMRQ8Xp5LeWaCl9AK97jsRGItnKaoFIY6H0yiI4RZqUhWgOScJinls1c7GDRQepoq47hyXV6Np/5HWYztKoHqsr0U9jIpfB24fiBKoEwZiTIwL6AesIL4eAOnb/21T4PWObUjDBDiFbKa0l0qoIiLXvU5jarefs1I5LKLVeZEIIrhnqApWuoL7D/diWeXEe9mFiRN3mVhQNt/68YtDPS2GhOcP4+HFv3YkVRVfLZOjwZ6O9EGGCKwN0oNrPwy6Rg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 9wys97dw1pkx5h6pwbk8tocmtrg8mdx5
+X-HE-Tag: 1770699418-69520
+X-HE-Meta: U2FsdGVkX18cUwRXiOXSFJEC6OfrK1l0XSyLmLspnNvDCTR0a8zOJCdV0PMZVoN55V8j8SwzaOrqghwEU9iibZo2VKb1ACpyvWkr7dE3vGRgSnignRoOfDB9jHfckeXJ+N2xYgFrRRKrlBTC9KRyQ8Rwl68FfOJ5PBEBJe8iES8QxC6kZLNYmlkaZdtBMHTakFK+ngILavhauy8YXWoLAs4tZJutBg1RBOm1wUc8R5h1PQzQIrQSIhN8PY17XZxp3ary2IipSL5Of6Vv1Qj+Fl80444WgNUOicJVDTP5tMvaSly5G8yugdGsHjNKgdMGAUSiRYMSVxspqSy1BPIyAsug2hmw8u/TFkJJoODytYQFhPhIOOy7NHoHOFhME53Os0fV3ewdIx22d02C5zQNvbQhb4A23BVkeSDLK+r5fPFUARjIAr/77VANFICbhmG23huHFEKKLe2GEZGG0SrHM3Y+vdyg/g7R6BaCVRB9Nv4JF1GLENEPFdT7LPMRvieedL3KyHz7Imay1Y6yvJluDV9e7UcYHDtOiE2J3cVNZj7XmIubcWoKnpWB2JKx8LbQsJd06iS/PXXPuwwv1nJijhqyZIJhRJ3z8EUd9fcl8hMUxadeMFlTtk6BlyAQD2kMxtTknYSOFjwJym1n1aJJ4y5sX+N6x9XVxhcu8JH2inlJguq4/1sx6NvnrRJZ6UXjRzcz+zSGP6+GoE4dDD5gHSemj6VPuAEmcBsEW+5Uibm/VZlBhuMAYD48BrCmHUSSUM4vJah6qwtiL9YSFzjMpTGrAlnsarbvJrPcQsC5ChEaeTzRnGaFqQ3+Lu8a7RvxQKM67yRo3hdtKAToRHwjn757ckE8FV1BaN3TocDioyA509kDazaFn0XIpIFJUOptfWO9tjTZS0gqs9fKGO0OdCYOwUjgJYevayc0H+77JeCeIHQnNNpB9aSKrSUiJl1urBqdixCbWlQxHJNEknq
+ 1SjjwxB/
+ NYuyW/AoJa+o4v/kySePr60wiICraCuh+odSoa2fZMu79EUCXYCWFbLJ8IF6H4QuBHJdZEJuLpFWHnj1o7La1TUz3DfBu90PnDjf/doDqDzcc7dkxv+1YTjiChEb4xw313sHhO7j5/1vd9d9a3IPEXOrqUS31pdAsk/WQc6MmJGljLlrVCWMPd7g96vX6VL6iHC//yEGLqdBBfSIvuPLXE7UFSOwBVHQJtrPqa/BBK7wVjRUul/05ilX35QZ5djeecv3Et1rN6D5O1t70Ztg8kwTuep1ZTCdG/y6Ym1RxLPJ2BtEjtcpExEcx/csYTYQ9UigWJdd70zuq/B0SHcsCTpp+QjiSJb0XQHsMh+A+lDPC4uZ6FpZp3y6DnYZ1Z3qBurj4hyurKTi6Y/mAeecZJc+Nff8MNOkOX/WMI2kG6R4+ZPhqaudeh13/Ultu0Zbz6RW7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,35 +113,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2026-02-09 20:45, Xi Ruoyao wrote:
->>
->> Oh, good grief...
->>
->> How does this possibly work on non-x86 platforms?
-> 
-> On ARM64 the vdso does not have eh_frame_hdr at all, on LoongArch
-> eh_frame_hdr is empty (note that an ampty en_frame_hdr is actually buggy
-> and I'm trying to fix it), so _Unwind_Find_FDE returns NULL and libgcc
-> falls back to MD_FALLBACK_FRAME_STATE_FOR, which handles the sigreturn
-> trampoline using some machine-dependant logic.
-> 
-> On RISC-V things are more theatrical: the sigreturn trampoline happens
-> to be at the beginning of the vdso .text section, so after subtracting 1
-> from the PC, the result is out of the .text section and so not in any
-> FDE.  Thus _Unwind_Find_FDE returns NULL and libgcc again falls back to
-> MD_FALLBACK_FRAME_STATE_FOR.
-> 
-> If the RISC-V sigreturn trampoline was not the first in .text,
-> subtracting 1 would cause the PC to be in the FDE of the previous
-> function and then _Unwind_Find_FDE would return that FDE, then RISC-V
-> would have some big trouble.
-> 
-> I've not taken a serious look at other architectures yet.
-> 
+On Mon, 2026-02-09 at 20:51 -0800, H. Peter Anvin wrote:
+> On 2026-02-09 19:11, Xi Ruoyao wrote:
+> > On Mon, 2026-02-02 at 19:57 -0800, H. Peter Anvin wrote:
+> > > That hack dates back from before the signal frame extension. It is no
+> > > longer necessary.
+> >=20
+> > Unfortunately at least it seems libgcc unwinder does not handle the
+> > signal frame extension properly.=C2=A0 The code reads:
+> >=20
+> > =C2=A0 fde =3D _Unwind_Find_FDE (context->ra + _Unwind_IsSignalFrame (c=
+ontext) - 1,=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 &context->bases);
+> > =C2=A0 if (fde =3D=3D NULL)
+> > =C2=A0=C2=A0=C2=A0 {=C2=A0=C2=A0=C2=A0=20
+> > #ifdef MD_FALLBACK_FRAME_STATE_FOR
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Couldn't find frame unwind info for t=
+his function.=C2=A0 Try a
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target-specific fallba=
+ck mechanism.=C2=A0 This will necessarily
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 not provide a personal=
+ity routine or LSDA.=C2=A0 */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return MD_FALLBACK_FRAME_STATE_FOR (cont=
+ext, fs);=20
+> > #else
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return _URC_END_OF_STACK;
+> > #endif
+> > =C2=A0=C2=A0=C2=A0 }=C2=A0=C2=A0=C2=A0=20
+> >=20
+> > =C2=A0 fs->pc =3D context->bases.func;
+> >=20
+> > =C2=A0 cie =3D get_cie (fde);
+> > =C2=A0 insn =3D extract_cie_info (cie, context, fs);=20
+> >=20
+> > Thus, it indeed attempts to avoid subtracting 1 for a signal frame, but
+> > ... _Unwind_IsSignalFrame (context) actually extracts a flag in context
+> > which will only be raised up by extract_cie_info.
+> >=20
+> > Or am I missing something here?
+> >=20
+>=20
+> Well, it looks like this might be a non-manifest bug on x86 *IN THIS CASE=
+*,
 
-In other words, it is broken on pretty much all architectures and it ends up
-using the hacky fallbacks on every single platform...
+But only if after the patch _Unwind_Find_FDE returns NULL here (instead
+of a FDE of another function).  I've not verified it on x86.  If glibc
+tests (specifically misc/tst-sigcontext-get_pc) work fine things should
+be fine.
 
-	-hpa
+/* snip */
 
+> Could you file a gcc bug on this?
+
+Will do.
+
+
+--=20
+Xi Ruoyao <xry111@xry111.site>
 
