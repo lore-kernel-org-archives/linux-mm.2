@@ -4,167 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D22FDEB26E0
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:47:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7C71EB26E9
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 16:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 425E06B008C; Tue, 10 Feb 2026 11:47:14 -0500 (EST)
+	id 110DE6B0005; Tue, 10 Feb 2026 11:48:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D96F6B0096; Tue, 10 Feb 2026 11:47:14 -0500 (EST)
+	id 0DB666B0099; Tue, 10 Feb 2026 11:48:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2CE476B0098; Tue, 10 Feb 2026 11:47:14 -0500 (EST)
+	id 008546B009B; Tue, 10 Feb 2026 11:48:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EA7B6B008C
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:47:14 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B78D81B23B7
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:47:13 +0000 (UTC)
-X-FDA: 84429127146.30.2BA7EBC
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 3A8F41C0004
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:47:11 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="kysmhW/u";
-	spf=pass (imf20.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E40326B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 11:48:25 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 96F7B56E72
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:48:25 +0000 (UTC)
+X-FDA: 84429130170.21.23A2D40
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id DF99580005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:48:23 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=duEGMgzn;
+	spf=pass (imf30.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770742031;
+	s=arc-20220608; t=1770742103;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hWIG4kTyswI9jcJ/eF4E6+Aw6IleHIzONJBK1RVFQNA=;
-	b=rkdRY6ObMKXv2Qb3cfdr8floQJM8AUIOrJgCOxKPQd7ohr5b/4ugXpU5hWEjKnOvyaaa1G
-	5t7+4jpFAGeAjmZmD39JyIYPHe9anW83qsiZihyZWXBZyn773AQHkyfAS8spxsSefXz/r5
-	5NdLK0Mb3vYu+J1QrhpNH2x2VGE757o=
+	bh=ua1UcmKFbhVp1CPFm5SMB9gDeU0/Sg4jgMpR45JaAjw=;
+	b=Epa830tU7oaqxJTvChU1gdx3GWbR+WNlxafeO5EU0iJEdUViRCLKGQuyNuI1dEr1RkvX5Y
+	VBTldsLa3zCjKlmTiIGrn4SbOm/zJ1N8d1TLZEFJ5TxB4EJjFF9VOqBeLtp6sJCcis+jh6
+	nxZ4VdGfg7GI5rY9i0G5/HMNUGxfHjE=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="kysmhW/u";
-	spf=pass (imf20.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770742031; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=duEGMgzn;
+	spf=pass (imf30.hostedemail.com: domain of da.gomez@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=da.gomez@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770742103; a=rsa-sha256;
 	cv=none;
-	b=XZyuSGRYu0R9LtuDxYSh6h6a5SaxtuwNOIrL8RXoRzxmzELzJYyzQjfhXrq0//+QFzZOpl
-	Qbn3brx5qQcoAZ7gTPmM7/sp5PTdMCSQTRqpj5SapNkOWHJv46Jo9YVF07zL9BxW2XtkVp
-	qvGqTDkiGH+T2impY9XX4+13adU+NKA=
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61A3aBC93408670;
-	Tue, 10 Feb 2026 16:46:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hWIG4k
-	TyswI9jcJ/eF4E6+Aw6IleHIzONJBK1RVFQNA=; b=kysmhW/utq4d6wdVlZnUaF
-	r/IRwiaChYl1wuGU3Uh8Wxo+msm6lJsXuxQfn7GsTpZJ9C62AKdIOQqgHrl9xwYS
-	5BVJVGZ7LaQ19aQmhYkyPDunPolrBVTrc013Jh/HAe0kJ0+3ber0+89Z7VbNQttU
-	zexHliC+wz/QSQA41kHSt9zwK/cxvSxQwZJS0AAmOKUy+N/RgTpKLOFaz4V01UzI
-	sXvP6h5MpJEiZCZR0D0O3diDeHCVU/RH79T5Cg/vQJejaYG3H9m/DJ7XsLmXOLx6
-	abDnwzd6xLbC2+zEzw6ZceagIEemby/9fcebel9/Sh8VrRya9Lx1fdezqUoNJ4ww
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696uu4qr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Feb 2026 16:46:40 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61AEbFxq001499;
-	Tue, 10 Feb 2026 16:46:39 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6gqn27jx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Feb 2026 16:46:39 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61AGkZf230605964
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 16:46:35 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EBBD620040;
-	Tue, 10 Feb 2026 16:46:34 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6E7C020043;
-	Tue, 10 Feb 2026 16:46:34 +0000 (GMT)
-Received: from [9.52.200.149] (unknown [9.52.200.149])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 10 Feb 2026 16:46:34 +0000 (GMT)
-Message-ID: <15f2af3b-be33-46fc-b972-6b8e7e0aa52e@linux.ibm.com>
-Date: Tue, 10 Feb 2026 17:46:33 +0100
+	b=iAH37n9dfFs792Pkaq7+WTjvu5UsqAZ5rl+/fY1xdcmzqyHDRwcrVWm5fZCsyL0au2NzQF
+	LUH9nJ5CYm9h06CsYxgHB0Uz+meLxfmChyh3ifNdLv3Wls0Tk46rvqRE+yT/0Uvos+U2KH
+	fSIASUIFA6Jc04v3XDnNR4QKLRSfG8U=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4D00460130;
+	Tue, 10 Feb 2026 16:48:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098CAC116C6;
+	Tue, 10 Feb 2026 16:48:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770742103;
+	bh=dbU65BlIpoty7iANfnMUj5LC3wQ9NypEMYFqKBMtFNM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=duEGMgznopIsNjn7WQGLrZdYtLHW88WzN9tTcIXtOsQON/YFK27PpTV4y/PMxcmPV
+	 vyC0sd9d09b5lzjdooeuwg3IDXZxdOe70puulAmC9peMETXOLWlBOg8Vpzzzyg0HSo
+	 WWaMMuhuJWnneGxOzGa5mcSKKzIW0/RZcepXWobvi4VVKKqMGiBPKoKYYiHeZseXIt
+	 471PwB+TaYtKdfQgBYFsNYYfx1MLUEOUKfdbT0fmyspmoJcG/hmFbzZPqipuCfUzs0
+	 a4cBvqzRQjEoAXUj4am/BRTzfrIqcQ/TGsoRbJef/jjauCcrpafiGesOelQIjlJSru
+	 5VrvrVKJNpEpw==
+Date: Tue, 10 Feb 2026 17:48:18 +0100
+From: Daniel Gomez <da.gomez@kernel.org>
+To: Andreas Hindborg <a.hindborg@kernel.org>
+Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
+Message-ID: <aYtcdGk8zcwaHfsd@macos>
+References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
+ <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 6/6] x86/vdso: Enable sframe generation in VDSO
-To: "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org,
-        x86@kernel.org, linux-mm@kvack.org,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-References: <20260206193642.1580787-1-jremus@linux.ibm.com>
- <20260206193642.1580787-7-jremus@linux.ibm.com>
-Content-Language: en-US
-From: Jens Remus <jremus@linux.ibm.com>
-Organization: IBM Deutschland Research & Development GmbH
-In-Reply-To: <20260206193642.1580787-7-jremus@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEwMDEzNiBTYWx0ZWRfXx0hBg5sfg+Sm
- RCuatqOyNDSemteUA5F+r4Ge2cM0/zQOT5n/ZqVCnhyWG/QDD8i2JZhH1g/2iNZAlUWMjFcAQVv
- pLQReX4/gIcOywzLhe9vqmurQ5b392gkE0KkGwkYXtgA5vQqorSZO05XXfmGA7F3cHoV7IuOb0W
- SVobFFKAR0XUxdXlnR4vIoqeLG8O3jVoiY7hQ6NzvemQWA+EtgEVvD5AlP3e/vVG9Qaa3drVQy9
- /sgxePwtuEN1f8WRa82RYtNS9SVWFZlrfXcicv/IhhD80u3BXV48SQ2VkPvaBjKDUA9TbF4+KFb
- tMseD+WNlwQAAB+vVNDVm8wRqwnIolO5Etlys3u7FIrx9imuqvSssMtnTBNkfnBTmdc43e0kyV8
- 9aIDMBhrzcmT5khDY9al2AMmIMlQjsBL1iF949YpEinx01JHeY8jM/0sXyRV+4rbE/yYRPRyR05
- 564StLrk5fLK2GaTHmw==
-X-Proofpoint-ORIG-GUID: lFUhbotL6mZHHQBIGQHNWFr4iFqXQvoQ
-X-Proofpoint-GUID: yXXBPSDw6CtLkz2VIBzGSNLoMPEAqhQX
-X-Authority-Analysis: v=2.4 cv=O+Y0fR9W c=1 sm=1 tr=0 ts=698b60f1 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VnNF1IyMAAAA:8
- a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=1YTvd-3GSpCLN8fQQIoA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-10_01,2026-02-10_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 phishscore=0 adultscore=0
- malwarescore=0 impostorscore=0 bulkscore=0 clxscore=1015 spamscore=0
- suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602100136
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 3A8F41C0004
-X-Stat-Signature: mqh7mstb56cz7c44x43ua6ta1fqaddac
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
+X-Stat-Signature: 1mywe9a6hwwrbpi7un71g7cmg9tjanpd
+X-Rspamd-Queue-Id: DF99580005
 X-Rspam-User: 
-X-HE-Tag: 1770742031-338046
-X-HE-Meta: U2FsdGVkX1/Z6JSffBOR6pyH8HOerIUiTqfkKiGVzk5+MEdLmH7TlPs9IrtoZm0MJgi00kDFJ0Z4S+zccLQgbxaBUx67kvj99OJR2I+OrJs8uDQTSXFbEefDK/Bph/qCkCo/0Bq0wst5Y+KJoP+KihZ9S9opB940cLTt8m1iCRG7WGI5uNo7LDphUOiSVqc8g0xJmN0QL4gwRh+va/f+Oqc0uBevBaYiQ14GyZQ5qImqvND/3F6j8RYrsQGiLmqNvobbv8zhnSnvlNG95UpVLHyrunrXQo2XcOOHjuioQ09YMl6ylfBFj0EvsqbL6Q+0JFZx2NDRXBVsi0eNRKAh6eOAJcsXuIvNotoLGxyPFCYcyTFImRyqfJYJ8ta6ytJHD1pZlxUEsuZDRvG3oVIxXgIsJalo5AZdho009ZuB+9aQD0G1pcn0VWm9DwwZAix1qFaYHoRTk4X3E9IPfSoCEYPAYWCZfsZ8iMj60kPXj0hj0cjBbCQN4G52R4TmB00Y+q22m4f+nvW8GYDd22efJZIYTNHfC0oYNwmUhnQgsaLHbvxLARPVE/7ZapYH3wqsQPFt4NmAuNY27k0Q2/DkaaGr+ESsi5GdZQftAmgnb8Nsxth3RcWGPXx0Q0Bt8HuVCv+Pi7WUdFb2TwxLx5koJedI1RN8786m5BM0KsAlsFc0918QmjWrpwy6LM8twC8Y/j5N+YrwmoWs5418oVEQrLsuKSIVJxhN0F3mRgEHF7SBkgFdLvr8Em5CbRYfXZoGSIEf0TwIMH/Xqlb65C8mAII6KHXbXqIsEgPriAEu5mqlWe0Tvtvl6Sqba6WdaJh27nNSz4M1jy7OYmAmaHB7s2QBuW8BHO328CEJG/RzeGlJWIH0K6W4IalwDIKAGwQW71H/SnjpfMdzM/NRlQquHhH94uWNXlEP8psM4eNG6H7z2cbJ5ZxS3vJTIVsU5tg1rDckx9V7/VnGW5BzAWo
- VAvRTmxe
- K7ywG4OJQl684Cmy4qVvlLjWBmXeOBszXlWq+AEU0QT+MZ7LleOrvGh4sc2jHifPtqcFfGnzdfibYHCjC25Gfj8CAH4+61NqNvU5yzSFgwieVsXAtZEegPcVStMqR+Ck6b72yu8GVG6AUo2GVVlAoRi0udjHHW+TgIIPXfLuHK8XnN56FHb9UdWavVgYuqeBxXrLmWcjsR2dvO9xoCULdyx9zztzhKa8/je+/UwzMpXz1k0w6pf1wO8mG3pNCZpP66RnTxrbRnn5R4V9F2qOwM1KkCAogWu9ttL+uYN1A+N/TJwXxVr32eC/F+jf53adROzrY22uWG+frDZgqLoQYKpCGNSadIj5VgCpXZIZ4RtZqHUrT40wd+ic107jlNSLn47/KbMqyWiTdHCs=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770742103-540935
+X-HE-Meta: U2FsdGVkX1/w7DemXSSHhmTT47+5ExStTDDU4yb6k5XQFdLIuXajT6IGDITj/At1CiXuqHYIEQz9WsiejQTUGU6e8cwxn6E7m/L5GGY+UzXO6WB1mYt1Q8xTW/y4yChfP9UAUJmBRkqqYTCxzA2WHHxTWain0EN8yQjm2tRYAhRiMGcoMK1vBbKIi3OrwoPwqjCTqmlyrlBi/JsaCE8Em+HnPxdFReX5awpGdPcHjfZGucf9kC/re2Tk4dBzi5izPElXAZ9ytXuxp1Dh8WzgXy22j7a0Na/n5A76xPo56Q4e8XrGCNYaQibNcDW+kovz/Kb0mFdXxjaqjhNgEYaw+QrZHkEyMYBOT5h/XKDcIl6MflSznxynOUKgJHy2nft2SQ4HAHf7ojACqpJrkHu87A5bitWWHS0atK7U4G1881uQbVzJQLDxUzrj8qpj3yJDOmpP80n1+N3Sh+AdFdsdo/xgjhMfK8j8FlXAJZYCqo4+lDynGdN+JKSz6BCepzYwj35hDWc0VDDMbs8BULazsSysCRgWTQ5WqfUGBGnOYdcyjr45FnBwFioPBcbr3Us6joPddnc92Ag1H7evU4Gl0GEDqnNkGbr4iSDr3waLyVilKCsxPH+oRRkiu3WnNfF8/ijxr0Ej4Xn21ZRM5zDak1BJHPiwkM7O45hXnMSFlGGkNyOrXCam/zclx40ENlbk/axxfII0DnJtfhU+59lNSRBEs4miuWQb6OkQk3zdGK1knab08JmrEkWcHzv6ZZBVOhVu1Vt1mbk3N7mK7DBQwQUIIaj/S+KZi1+9mi/TvOhl/hl/ofeoyHVJme8w0ETTRGnIj+K094ejfpSXAVdaeZOVxIyUAc+kGO/LMI75F+XN1plhllV1L1egnBOCx0czx7sbzQZM7lnUNoE/MHptXjf/0dT8Ek1j4ai90npB6vDtrtmwyDL299dgeBFDiYJJV/nEpU4dzWcWwEjDBYY
+ 6Xd5M2vT
+ 6MlE6O9DBnjWqvrU7VdMfXje+tDltubAg29KwkCZVwFSfs8RgSOPvJvPf1bxSLjp5pQJn05Cjim2ZVaDpThdI+mHTUvlvW39VpYvPFItU0nK+aK+3J3AyjzxRHG/lvPnmwCrZ4TijgYnAVJzVcbHNeKhgRXCSKndZCTkCIyEklZLA41gOtYQJciRLFTAcxWbCGG5El3cd3RXYvl3LqXdDUbu33Zqo5rz/oOWlMp7XAR5M6PA7zc6kgHtcN6bolOIOxNnF8x3V7aNfFds9/DJd2tcBFHUa8LdAGHvgke2ygw6FuuCs41rU8mj4DeQsmlEoZkwMnPJHxoEoTW80JqZJP/O9ag==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -173,96 +100,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/6/2026 8:36 PM, Jens Remus wrote:
-> From: Josh Poimboeuf <jpoimboe@kernel.org>
+On 2026-02-09 15:38, Andreas Hindborg wrote:
+> Add `XArrayState` as internal state for XArray iteration and entry
+> operations. This struct wraps the C `xa_state` structure and holds a
+> reference to a `Guard` to ensure exclusive access to the XArray for the
+> lifetime of the state object.
 > 
-> Enable sframe generation in the VDSO library so kernel and user space
-> can unwind through it.
+> The `XAS_RESTART` constant is also exposed through the bindings helper
+> to properly initialize the `xa_node` field.
 > 
-> SFrame isn't supported for x32 or x86-32.  Discard .sframe sections for
-> those VDSOs.
+> The struct and its constructor are marked with `#[expect(dead_code)]` as
+> there are no users yet. We will remove this annotation in a later patch.
+
+It makes sense to me to merge patch 4 and 5 to avoid this.
+
 > 
-> [ Jens Remus: Add support for SFrame V3.  Prevent GNU_SFRAME program
-> table entry to empty .sframe section. ]
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/kernel/xarray.rs           | 41 ++++++++++++++++++++++++++++++++++++++++-
+>  2 files changed, 41 insertions(+), 1 deletion(-)
 > 
-> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index a067038b4b422..58605c32e8102 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+...
+> @@ -319,6 +322,42 @@ pub fn store(
+...
+> +impl<'a, 'b, T: ForeignOwnable> XArrayState<'a, 'b, T> {
+> +    #[expect(dead_code)]
+> +    fn new(access: &'b Guard<'a, T>, index: usize) -> Self {
+> +        let ptr = access.xa.xa.get();
+> +        // INVARIANT: We initialize `self.state` to a valid value below.
+> +        Self {
+> +            _access: PhantomData,
+> +            state: bindings::xa_state {
+> +                xa: ptr,
+> +                xa_index: index,
+> +                xa_shift: 0,
+> +                xa_sibs: 0,
+> +                xa_offset: 0,
 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-
-> @@ -479,6 +479,13 @@ config HAVE_HARDLOCKUP_DETECTOR_ARCH
->  	  It uses the same command line parameters, and sysctl interface,
->  	  as the generic hardlockup detectors.
->  
-> +config AS_SFRAME
-> +	bool
-> +
-> +config AS_SFRAME3
-> +	def_bool $(as-instr,.cfi_startproc\n.cfi_endproc,-Wa$(comma)--gsframe-3)
-
-Above tests whether the assembler supports --gsframe-3 to generate
-.sframe in SFrame V3 format.  GNU assembler only supports to generate
-SFrame for x86-64.  If the assembler is built for i386 (x86-32) the test
-will fail unless option --64 is specified.  I wonder whether that could
-happen in (the rather hypothetical?) case, when the kernel is cross built
-for x86-64 on i386?  Should this therefore be changed to the following?
-
-config AS_SFRAME_64
-	def_bool $(as-instr,.cfi_startproc\n.cfi_endproc,$(m64-flag) -Wa$(comma)--gsframe)
-
-An alternative would be to enable as-instr64 to accept an optional flag
-operand, similar to as-instr, and use as-instr64 instead of as-instr.
-
-Or is this not required, as in a cross build for 64-bit on a 32-bit
-platform (or inverse) a respective cross toolchain is a prerequisite and
-the m64-flag (or m32-flag) is not used?
-
-I tried to simulate this using docker and an i386 image and then using
-the i386 tool in the container to switch "uname -m" to "i686".  But both
-of my following attempts to build for x86-64 on i386 fail with fixdep
-not found:
-
-$ docker run -it --rm -v "$HOME/linux:$HOME/linux" --platform i386 public.ecr.aws/docker/library/debian:13.3
-# sed -i -s 's/^Types: deb/& deb-src/' /etc/apt/sources.list.d/debian.sources
-# apt update
-# apt -y build-dep linux
-
-# make mrproper
-# i386 make ARCH=x86_64 defconfig
-# i386 make ARCH=x86_64 arch/x86/entry/vdso/
-
-# make mrproper
-# apt -y install gcc-x86-64-linux-gnu
-# i386 make ARCH=x86_64 CROSS_COMPILE=x86_64-linux-gnu- defconfig
-# i386 make ARCH=x86_64 CROSS_COMPILE=x86_64-linux-gnu- arch/x86/entry/vdso/
-
-> +	select AS_SFRAME
-> +
->  config UNWIND_USER
->  	bool
-
-> diff --git a/arch/x86/entry/vdso/vdso64/Makefile b/arch/x86/entry/vdso/vdso64/Makefile
-
-> @@ -14,6 +14,7 @@ vobjs-$(CONFIG_X86_SGX)		+= vsgx.o
->  
->  # Compilation flags
->  flags-y				:= -DBUILD_VDSO64 -m64 -mcmodel=small
-> +flags-$(CONFIG_AS_SFRAME3)	+= -Wa,--gsframe-3
-
-flags-$(CONFIG_AS_SFRAME3_64)	+= -Wa,--gsframe-3
-
->  
->  # The location of this include matters!
->  include $(src)/../common/Makefile.include
-Thanks and regards,
-Jens
--- 
-Jens Remus
-Linux on Z Development (D3303)
-jremus@de.ibm.com / jremus@linux.ibm.com
-
-IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
-IBM Data Privacy Statement: https://www.ibm.com/privacy/
-
+To match C XArray __XA_STATE() we should also pass shift and sibs. Even if the
+only use case we have currently is setting these to 0 (XA_STATE()).
 
