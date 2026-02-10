@@ -4,91 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CCF6EA3F16
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 07:39:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 593A7EA3F16
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Feb 2026 07:45:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 33D4D6B0089; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
+	id 7C5126B0005; Tue, 10 Feb 2026 02:45:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DB1A6B0088; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
+	id 748746B0088; Tue, 10 Feb 2026 02:45:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F4DF6B0089; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
+	id 6478A6B0089; Tue, 10 Feb 2026 02:45:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0D16C6B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 02:38:59 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A72C816040E
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:38:58 +0000 (UTC)
-X-FDA: 84427745556.22.2A4CB31
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C72D31C0006
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:38:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 568E76B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 02:45:36 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 06477C1B99
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:45:36 +0000 (UTC)
+X-FDA: 84427762272.14.0EBE562
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 4FDB5140008
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 07:45:33 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PrZQSAkx;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770709137;
+	s=arc-20220608; t=1770709534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NVqfXZFieKJgW7wqXCfcV0Gq8P5xSqrtgXrA3fcBA/o=;
-	b=LWpOIXjAYo1RI1pMgt7S2JhJm51zcbidxdTVLFv4LelqZDdEtsyAwMeyOcOiIVxGsb4OED
-	8Acwi95DSABQuyJ34tzzk/haPaIZAGey3RVSjFWpUSfTN2mVy9gj3bca/pFZ1GdKpWuVjC
-	WsEEw3Kh1gGC9Z+GIiFNvDAVrKaLTOY=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0NNluPR1qrBvwTR58SCT0U/BUQcTW1FGfFjXRsyE+I0=;
+	b=ZDrnHQPli/X+OpcZrBjyuatyuZQUOCPtvmqtyVTl1sWOImiDZlXnqqZagaTho6fOvgl8D/
+	Cr86foozqBjQWsUxszuN9OiM+oP4t3sV92TCTItcMdrMt9eaHwPvTwCfmMX3bO4Z3uSNi4
+	dApOlUoE5vsfc+g7f9N7CjG+m9B2I8w=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	spf=pass (imf18.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770709137; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PrZQSAkx;
+	spf=pass (imf09.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770709534; a=rsa-sha256;
 	cv=none;
-	b=f7ezC4RP0X5vjd9C/WWxcNLadRy/qQcFE5/BSwXd0eQNquAWVrV8lUJheRtsfBbjwF3BIK
-	AhjyUCz2eU2TUSY3/k+2QoUS4ciDEJbZ3YYwTeGq3cLgP6HOjqAOZ1lUshF8/ieAUvLXyd
-	GxFkIc00WwQb57DxNuD70Ux5G2Y5cPw=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F2F9339;
-	Mon,  9 Feb 2026 23:38:49 -0800 (PST)
-Received: from [10.164.19.61] (unknown [10.164.19.61])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 46E0D3F740;
-	Mon,  9 Feb 2026 23:38:52 -0800 (PST)
-Message-ID: <b77dc11e-fe09-4f0c-a912-d05faa01ff1c@arm.com>
-Date: Tue, 10 Feb 2026 13:08:49 +0530
+	b=HA5H8wEeMdAWuFqTNRomnLAY1X+RA+3E4cGNaYSxlqBb5tYKl4gM/e9zq8mjcLwcTc7FOQ
+	IHuaTPkVNj5LIMoT12Ym2Snr1tTUY5jXqJnxEY096QRuijejT//1WmsVPlwiyX6RJJgNz9
+	0O2iwNqJILiykuIYJfZOwpnBbc1Hwhc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770709533; x=1802245533;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=sJGjG6kg446tp3EparQy4R1qSHF3uD3BHRcp+JD38W4=;
+  b=PrZQSAkxJCqyy5Xarc3jCp8HEvxZCDM68nqPqer6LStZF0L+9AnrTF3/
+   tFs/Ni5ZZ09e32xlPCC2U4d7CqD+L+gO4wmC1Cb6XxguaZfUlJhMgy8bC
+   QPLjkpavUGPtsEVQZHYNCKDYeuhoQMDt1HEvtQ+9VcYoI/PNyAYJ7bBkG
+   /3NkNMUdh+sJj5PVTaLheEPgU5k6CfmbX3xpn0zVJ/YntfwAW7dwDqshC
+   /jeYcMnB1aMJVyGxIO1pcnRJFtKZBybbLoFcZe2SHm/lKMvmuF37TxUW5
+   aIZ3gja8P3sPVcvjnUJZ35DAAWpxDIClDxdzwR/k+kubr9NJPRgX6Fgur
+   w==;
+X-CSE-ConnectionGUID: Cs7CEHYbQv69X9lG7CilSA==
+X-CSE-MsgGUID: V3XT6p+NTouMogoNGV9XHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11696"; a="59397516"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="59397516"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2026 23:45:32 -0800
+X-CSE-ConnectionGUID: MLtRNXcZQyWsNMJxLg+mhQ==
+X-CSE-MsgGUID: 9nFpA0/HRhStRt3vD635+g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="234797933"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 09 Feb 2026 23:45:29 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vpiR5-00000000omy-1aOM;
+	Tue, 10 Feb 2026 07:45:27 +0000
+Date: Tue, 10 Feb 2026 15:45:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, david@kernel.org, baolin.wang@linux.alibaba.com
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	ryan.roberts@arm.com, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com
+Subject: Re: [PATCH v2 02/11] mm: introduce pgtable_has_pmd_leaves()
+Message-ID: <202602101556.msl493OX-lkp@intel.com>
+References: <f55ca6204336f52f1651d02dc370bc3b771df3d0.1770675272.git.luizcap@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
-To: Shakeel Butt <shakeel.butt@linux.dev>, Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
- Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
- cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
- Meta kernel team <kernel-team@meta.com>
-References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
- <20251110232008.1352063-2-shakeel.butt@linux.dev>
- <1052a452-9ba3-4da7-be47-7d27d27b3d1d@arm.com> <aYAmGc6lu973jRwu@linux.dev>
- <2638bd96-d8cc-4733-a4ce-efdf8f223183@arm.com>
- <51819ca5a15d8928caac720426cd1ce82e89b429@linux.dev>
- <05aec69b-8e73-49ac-aa89-47b371fb6269@arm.com> <aYOuCmjQ5lGm8Mup@linux.dev>
- <4847c300-c7bb-4259-867c-4bbf4d760576@arm.com> <aYQuj6Ot-JS4tXvY@hyeyoo>
- <7df681ae0f8254f09de0b8e258b909eaacafadf4@linux.dev>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <7df681ae0f8254f09de0b8e258b909eaacafadf4@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: r3r4tttsn698mer5xdztju98fs4wo4qe
-X-Rspamd-Queue-Id: C72D31C0006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f55ca6204336f52f1651d02dc370bc3b771df3d0.1770675272.git.luizcap@redhat.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: jc5a74tiw8fx641dgnr7q3ey8u9q171i
 X-Rspam-User: 
-X-HE-Tag: 1770709136-278503
-X-HE-Meta: U2FsdGVkX1+hyRrJsqkPV5TSc8dCgA2KZ0ZZWbvA01agQHYoT1yK0wtfXKrs1QgsrtaCzbE1b7sIPNbc86FJofTbI1iSkd6hcH38WEBTZyyPpGTBzbOZJz7Bb5MV/Ymb35H3UhzZ2BsF/P8B/zXLhUbl8immsHTcjW8bSGiRECFKAiNDjBlr8bXIXAANOR9fkoKTDOdS4b5oT/bljxAaHyi00cE6XCBDzWtHgRf/Qi02gKelzonvYhY0Hcj+iHbErHPRIoDYzhuWrj5nxMdyr70S7evmgSjXFYZIomDpR3ECt+Q9BqzPGIr/Ya3cxt/PU8StmyzhM5np4q2Woj20BIt7zROleTqOt+awnJr88RddjH836uNblC5zQi54bByUJzgutekDsGFCpgPUuzi601lrKVzbmfdwtr1MbYDVFUumfky4nPw1jKVonc82CfPLnUwBzdsS2LKbpUrydbITKplPTRHT0C1y6+YEnvOnBKeB13G47rCW8FGSzK8MwlrWvaMzzGlC/eWKjfZXDBerWO/+ZqnXn6oBIh5IuErP/+M2X92kX26oMcwffJutiqm6I7EJf0LJVMfhpEnKNtW9S0mp7NYy5B0SnCmRZZkK7S3WcV3SC/3lbDFi9Esphvbut5tdYFW1ZpUR5ypwuGARo9hTLxwkpzjgNDi4V3BX+M/7W8oFksTtmfWB763Qe8T5edhpSNpC07BiSEXctVGhgFcDDFEq3ajzFfRzDyyHaGtpjzdYyp4sLq7JIdUo6wBvjDDeN4ZNmdf412CQJTJ5vHeXJq8wY1M+OTYkru6VotbHyeBQs7qr7CtD3WBN4oBIh33lq/IDoFGIdKe0J31qfc8nSZ5eVNkxEeB3e+l4R9X/cwnUnUnRDq6ICo9S5ntsqdeeVEbDDx+hqLP/Xcpt43m+yhcXX1aG61UD/pHRqbaMwYiVu8/eqz53x5ysg/2Yi4KHT96tN0/+0dngfUP
- 2tmBN+KW
- cHOSU6XZqSyw+utHEkNI+s1VKga0DyYY1u+o1y1IkROLyAels9UfDrtb9wZnM16x+KCXq29WwC2Mbw2ZUFxiUjm9fIfCpr3lQyFl8gXNYBubqrD7QkSYsMzRyWQcArXPTqv1h8x/a7rgNU4XRrgzdCTOzdKhXOeUyRCdt2XDBitVGdbjQOG3wdA2cH/iVPZ1SNZ5dcdnnEq0jGAoUZqsahQEkN40dlWXNOVICmhumQe3ECqO9ZrDvUWzbgA==
+X-Rspamd-Queue-Id: 4FDB5140008
+X-HE-Tag: 1770709533-615470
+X-HE-Meta: U2FsdGVkX1/FriakqfsGG7+Y8iGHlI7fC/AU/7lGXwmrkeYfsJrrcq0v3YPDWMj7Dw+ZwxI4tbszn4jLoiRZQos1+K3t6MfuNsRxXj7eNXjL8Gmlq31y+1A/Ip/A92RwtDuJhxGrEKpZC+mQ/4A0EE0s7SfrdQdc/uQDnT8BiIIV8nYFC3KVCr77FAKG4rEGEOGS1KmijqIc00/yj3XViLkz8Xbc1xfU8X7L+gMsEuTAxeG5veNUZlwVfKx1eIxJJPMnxdx5s+/dkLVSxeTPH87q6E4ULfESzhlvUrT0XnJVNB0gg76VjA4nYa9DLpgECsMBfTnZ4DyapAMtcRQrglZi5leZbR6b3JHEXazxl1UCwWI2BwGPEvwaDVfJ4W1x/K/q/xziuPlY4ouBq+kJ6hfj3uqpA94vTwMsx5k49TY8mxK96nzjth091e455E+IFLyEEwieQ8+G+/ImFGicnP2w6QfY4ivxvDx/50Wyx4SQv2b7KJ2YaMskp9BMu8mHPKGG3BOtQk+1SojAZPO5UaUswvTWCAjfqbLm4t75VBRqFKuimpai9QOhr67VcGOk5qasdajeNF+pZnuPONWKNuKHnmtxK3j3iYaTt8V0FQKTiTF1fK0995BF5ymdhVNuAiR5/EoUFGlsyqY/+IidK4E3WJ0hFPNYqYstLiCIyz4onsTqUV5cHYwGMfYFkjG7sHSckJumBAJh2P/bP5h/dBFO4sxikr+FPhB29QnbNycEDB+a8QN2MbrBb1YzlKTmW6SmMRm0UJVRWMhWxCgkvU1ABhjf/opdWL2tBRC1xr0d7UTuEyQeyhEW9PiPlN7SxUWjJh2CWnGZ9LCSqpl9hEedqNGIhb6WbaeKwf3TNF9Q+mNuemkaGuGPL4vS6DbuxiWqD9BtU3i8VqHopp66Ta5PViGOQVFWPvT2OFX7A2Yd/sID2JA/+m4WYQksFr9gQb/bxnzaPfHxNAnlyyy
+ tzu+SnaG
+ EMeRegHcj54mpDcIA/NbkqIYFnaKZdLjEWHNcg4QDceduPVZImcSmt2oucWPa+dfwTQ3WlyrFCnua0CUKRH8F+ORIFzxIurP7yhg2jNJ6yND3YPRFDBucUDMAkdkR/jaofVU4BOiXoNyzZNZ4imSyDRpdwcvI9/3Qr0Bn5UsPwFDHOwOMsvXDYpd+5o80+0uc0TEVrrhh0oQk82j252nj1vnpHp1g34PX5KLkKMNtbTOdZL5NykN5vhyvhLdQjOZDJiq6uWkTVYQ8mlcDDe9V5xG9KY4f87tdZBVUmA5nBwp5lR/X0uW3PQV+ClCeaahl45cK7u9R3ZFb6Y+C76iP86ZNTBO1yXE8xAqA0mq+13Phm/prqbjcKrNLBE+jwectTn70
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,100 +109,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Luiz,
 
-On 05/02/26 11:28 am, Shakeel Butt wrote:
->> On Thu, Feb 05, 2026 at 10:50:06AM +0530, Dev Jain wrote:
->>
->>> On 05/02/26 2:08 am, Shakeel Butt wrote:
->>>  On Mon, Feb 02, 2026 at 02:23:54PM +0530, Dev Jain wrote:
->>>  On 02/02/26 10:24 am, Shakeel Butt wrote:
->>>  Hello Shakeel,
->>>
->>>  We are seeing a regression in micromm/munmap benchmark with this patch, on arm64 -
->>>  the benchmark mmmaps a lot of memory, memsets it, and measures the time taken
->>>  to munmap. Please see below if my understanding of this patch is correct.
->>>
->>>  Thanks for the report. Are you seeing regression in just the benchmark
->>>  or some real workload as well? Also how much regression are you seeing?
->>>  I have a kernel rebot regression report [1] for this patch as well which
->>>  says 2.6% regression and thus it was on the back-burner for now. I will
->>>  take look at this again soon.
->>>
->>>  The munmap regression is ~24%. Haven't observed a regression in any other
->>>  benchmark yet.
->>>  Please share the code/benchmark which shows such regression, also if you can
->>>  share the perf profile, that would be awesome.
->>>  https://gitlab.arm.com/tooling/fastpath/-/blob/main/containers/microbench/micromm.c
->>>  You can run this with
->>>  ./micromm 0 munmap 10
->>>
->>>  Don't have a perf profile, I measured the time taken by above command, with and
->>>  without the patch.
->>>
->>>  Hi Dev, can you please try the following patch?
->>>
->>>  From 40155feca7e7bc846800ab8449735bdb03164d6d Mon Sep 17 00:00:00 2001
->>>  From: Shakeel Butt <shakeel.butt@linux.dev>
->>>  Date: Wed, 4 Feb 2026 08:46:08 -0800
->>>  Subject: [PATCH] vmstat: use preempt disable instead of try_cmpxchg
->>>
->>>  Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
->>>  ---
->>>
->> [...snip...]
->>
->>> Thanks for looking into this.
->>>  
->>>  But this doesn't solve it :( preempt_disable() contains a compiler barrier,
->>>  probably that's why.
->>>
->> I think the reason why it doesn't solve the regression is because of how
->> arm64 implements this_cpu_add_8() and this_cpu_try_cmpxchg_8().
->>
->> On arm64, IIUC both this_cpu_try_cmpxchg_8() and this_cpu_add_8() are
->> implemented using LL/SC instructions or LSE atomics (if supported).
->>
->> See:
->> - this_cpu_add_8()
->>  -> __percpu_add_case_64
->>  (which is generated from PERCPU_OP)
->>
->> - this_cpu_try_cmpxchg_8()
->>  -> __cpu_fallback_try_cmpxchg(..., this_cpu_cmpxchg_8)
->>  -> this_cpu_cmpxchg_8()
->>  -> cmpxchg_relaxed()
->>  -> raw_cmpxchg_relaxed()
->>  -> arch_cmpxchg_relaxed()
->>  -> __cmpxchg_wrapper()
->>  -> __cmpxchg_case_64()
->>  -> __lse_ll_sc_body(_cmpxchg_case_64, ...)
->>
-> Oh so it is arm64 specific issue. I tested on x86-64 machine and it solves
-> the little regression it had before. So, on arm64 all this_cpu_ops i.e. without
-> double underscore, uses LL/SC instructions. 
->
-> Need more thought on this. 
->
->>> Also can you confirm whether my analysis of the regression was correct?
->>>  Because if it was, then this diff looks wrong - AFAIU preempt_disable()
->>>  won't stop an irq handler from interrupting the execution, so this
->>>  will introduce a bug for code paths running in irq context.
->>>
->> I was worried about the correctness too, but this_cpu_add() is safe
->> against IRQs and so the stat will be _eventually_ consistent?
->>
->> Ofc it's so confusing! Maybe I'm the one confused.
-> Yeah there is no issue with proposed patch as it is making the function
-> re-entrant safe.
+kernel test robot noticed the following build errors:
 
-Ah yes, this_cpu_add() does the addition in one shot without read-modify-write.
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/fixes tip/x86/core linus/master v6.19 next-20260209]
+[cannot apply to akpm-mm/mm-everything]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I am still puzzled whether the original patch was a bug fix or an optimization.
-The patch description says that node stat updation uses irq unsafe interface.
-Therefore, we had foo() calling __foo() nested with local_irq_save/restore. But
-there were code paths which directly called __foo() - so, your patch fixes a bug right
-(in which case we should have a Fixes tag)? The patch ensures that mod_node_page_state
-is used, and depending on HAVE_CMPXCHG_LOCAL, either uses irq disabling or
-preempt_disable + cmpxchg - making the interface irq safe.
+url:    https://github.com/intel-lab-lkp/linux/commits/Luiz-Capitulino/docs-tmpfs-remove-implementation-detail-reference/20260210-061806
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/f55ca6204336f52f1651d02dc370bc3b771df3d0.1770675272.git.luizcap%40redhat.com
+patch subject: [PATCH v2 02/11] mm: introduce pgtable_has_pmd_leaves()
+config: arm-allnoconfig (https://download.01.org/0day-ci/archive/20260210/202602101556.msl493OX-lkp@intel.com/config)
+compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project 9b8addffa70cee5b2acc5454712d9cf78ce45710)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602101556.msl493OX-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602101556.msl493OX-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> ld.lld: error: undefined symbol: init_arch_has_pmd_leaves
+   >>> referenced by main.c
+   >>>               init/main.o:(start_kernel) in archive vmlinux.a
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
