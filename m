@@ -4,103 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E0EFEB5969
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 06:04:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1503CEB596A
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 06:16:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E59796B0005; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
+	id 2430A6B0005; Wed, 11 Feb 2026 01:16:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E078F6B0089; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
+	id 1F0086B0089; Wed, 11 Feb 2026 01:16:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D09D56B008A; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
+	id 0D1E76B008A; Wed, 11 Feb 2026 01:16:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BDEC26B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D18C139F16
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 06:04:23 +0000 (UTC)
-X-FDA: 84431136006.19.E9C41F8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id ACC5520005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 06:04:21 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xu5Mobm0;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EF21D6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:16:23 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 811C4C124F
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 06:16:23 +0000 (UTC)
+X-FDA: 84431166246.09.DDEDADF
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2E487160005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 06:16:21 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ChOF3ywZ;
+	spf=pass (imf08.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770789861;
+	s=arc-20220608; t=1770790581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M2QJeawPBO58Ez7fEeRAJa3KHsKkABAUpuXTFFFJztI=;
-	b=denuLLQsHa9GLrm42xl05uejmcHzj6M7VI1VJzvSvquH5TDo7wu45O72coJU5ev9MPmw9i
-	dEkm3hGig7SNLLYbfX2DhWpKlkMYfWkjMe/CBTTDhuvoDsoIH0mjlAZhYkG9TCNBMf3ire
-	e2/rO6uRtutpqnojsCuC2g3M2nnr9hY=
+	bh=9YkPanqxTe0ehKn/AVX6jzupRDYp87zz+QBp9N9tfSY=;
+	b=Zgws/EKOtQ2U9RWJzVeqf55uqKFLZ4iHvZ0e/cnZOAiIjcs/v88Pdo65EC52Rr4QtLrX5U
+	Ddv33EWZhm9SXeQjIb2IvpdzH56hTsrCFphIx2pL39fP5tvXywbPzuqqSt1PsqzHGkKsJP
+	V5vUesI/BNR0vCwUG93oaz/mceywdYU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xu5Mobm0;
-	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770789861; a=rsa-sha256;
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ChOF3ywZ;
+	spf=pass (imf08.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770790581; a=rsa-sha256;
 	cv=none;
-	b=I2eXobHFapqEVmIByaLQGEJvhsiYvGTPDAt7rgtdnbhl2Vr9CKgKx4uPTSnzatHWbUohi8
-	pSIxfYAW8YH/S1pAYIVOEDz3wOi89Wu64sZDjuTpMGr4fiYfJ8R9CYk3ztgmotd2ySioGX
-	1PEk/D2WIWyw4ztOHW7L4/MVUcVTWFg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B864F41744;
-	Wed, 11 Feb 2026 06:04:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB967C4CEF7;
-	Wed, 11 Feb 2026 06:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770789860;
-	bh=1ba4HtqH6wJILWm4/0xJUBvvlpODk4MGkINVKN5zbxU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Xu5Mobm0F8wyhieAmIGzh63x8lptqVNcvo43aLWfKj6Tzv+Zl/kKchoY9ZdsHpeY9
-	 7VY7AX4De2TIfQU33FMKPr6fbkei4k9WsONs2oo7VhZtr3CQp7M+FrWIMR0CcEV2Bw
-	 idpILaIQ8PtxB+tqtiZhDkYCY0OamXU/ZQC6DQvOWE0CgBDJ4sBAW/xcziwr/oevAp
-	 ATuo35V/KFJp1kLKUH/ym/DEQd7QymS16+vW/OsOhdX9h0EfVKeWyVrw07I45sDb7d
-	 0FXA6azSR3Rqcixdu+T53iaoPlH+4auPPf+s5B2tud/yLWQPikgXkLOxXx/3AwixPf
-	 Fpqc4cdK//yzQ==
-Date: Wed, 11 Feb 2026 08:04:09 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Hugh Dickins <hughd@google.com>,
-	James Houghton <jthoughton@google.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 00/17] mm, kvm: allow uffd suppot in guest_memfd
-Message-ID: <aYwb2XgRiFayzBXS@kernel.org>
-References: <20260127192936.1250096-1-rppt@kernel.org>
- <aYJg5lT9MG0BQFkG@x1.local>
- <0032ac8b-06ba-4f4b-ad66-f0195eea1c15@kernel.org>
+	b=5FPbfdqtSVhdZlXwF9tYZ64LfZ6U03s+fS8/YH4XTX4FmRKJSMLZiA1A4FTse1A+9/bTmI
+	0nNx5WZ4a70RTTF828XhPLN0uU2g695rUqFjjavcGv2xfXlgMWBNZGtYDbM4cDBnR9i4W+
+	nzQ1PaQxFhW+dIUzincskzzX03DE+M0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770790580;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9YkPanqxTe0ehKn/AVX6jzupRDYp87zz+QBp9N9tfSY=;
+	b=ChOF3ywZuzI3v4AvugiYPHT1rasahDolJFDksw1OWWmOMAvmDMXEh6kcNsVfY5rsjtNRkg
+	0RcEZH8DszawEP9dcfMSDSs1mgRWKihRcnMTxqEmYL3HeLdc57ioeSJYk/eN/nEL/aypDz
+	VtTM9+E007VR1IagCG5tuyrXHo/0b5Y=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-241-2HMZPe3yNLibxjgq9fwTBA-1; Wed, 11 Feb 2026 01:16:19 -0500
+X-MC-Unique: 2HMZPe3yNLibxjgq9fwTBA-1
+X-Mimecast-MFC-AGG-ID: 2HMZPe3yNLibxjgq9fwTBA_1770790578
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-78fc790162bso62191767b3.1
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 22:16:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770790578; x=1771395378;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9YkPanqxTe0ehKn/AVX6jzupRDYp87zz+QBp9N9tfSY=;
+        b=tAWTm/NXP2DiKUunXZqy4g5tRWj2unt17pH6mCCPAFuRqtBpMSbh+dZ9Lfb5djPar4
+         ne6OsZSh0VtUYeedLbPAjBzmHWcplTM5v158Feq+F/Jk8FprQe0oBwQIAm7jhHc64Qrz
+         7hq8xsZip25M9rnyjPeCuurc3kNmyhMKnz95UCQNMS1OxKS9retdCvaDVSK9lbc1WbQX
+         guiL34HybUEt6tQBpo8VXfQfcLk0BrhWgitR5+isHLZtviTAbgc7aOz/jSL5YO4oUcBm
+         Yiuw+GYkpRSYOAktl+i2xXkcEjyjIARw2txQVILN0zztz3a+z4+I5daPwHl5TxhNMY2g
+         W+hw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqyjoaI/iK2XuVdcy8fVmDNp+jbPsOCMU8ZgWFf3xCupRpHIUsrRnO14Cfg40raDCF3h97fIo8sA==@kvack.org
+X-Gm-Message-State: AOJu0Yx35mzoWbXqCNhaMOtc2OTE9PuuJZN+z9AikAi+nx/5NgSBm4TY
+	oK+DxIW3Pmc/H/8X0Fh2U8yfOAQaCxzHFMn0kdAvGPAXNcuV3o179/to5OEN1liho45yCj+ytOd
+	hZjqhjseK7m4WlioX5e/0aICn2lCT+Y/w9wHi0D70eHyIQupbtIso/uHFCYVbgCePpF6M6H23+Q
+	lr9jcLjAeKLGlXRd2qunwsCyvfWg4=
+X-Gm-Gg: AZuq6aL1qgEmNRFfzF8rGLptDhA5/oDzIgkKVC3CxPIkvfO8KOVDlZ6Hzo4yYnvaoM7
+	vaoaaiVQg2ZxTJLOxO3pOzgXf6Pz7jkT9hCpMyEStw1MiUipsJt3MNl76sVf8N94MZYokHAjYya
+	roBDpS7kpT6I5gey9Gld383WzNMv5O3aRNK8s3AqBWm2tSaNJzxyJCpci2OZSz3dDeZCaWZLSVj
+	VLH
+X-Received: by 2002:a05:690c:c50b:b0:794:b5aa:9c71 with SMTP id 00721157ae682-7966aaa4a87mr12337647b3.34.1770790578548;
+        Tue, 10 Feb 2026 22:16:18 -0800 (PST)
+X-Received: by 2002:a05:690c:c50b:b0:794:b5aa:9c71 with SMTP id
+ 00721157ae682-7966aaa4a87mr12337537b3.34.1770790578186; Tue, 10 Feb 2026
+ 22:16:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0032ac8b-06ba-4f4b-ad66-f0195eea1c15@kernel.org>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: ACC5520005
-X-Stat-Signature: ssrrimm641b339x35m6tco5u7xt79s74
+References: <20260211031512.261127-1-senozhatsky@chromium.org>
+In-Reply-To: <20260211031512.261127-1-senozhatsky@chromium.org>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 10 Feb 2026 23:15:52 -0700
+X-Gm-Features: AZwV_Qh_iVpvEC5HEA7kAQ_X-Ds2o1CqyyYvsjm4JoFkdA9yHt0YUMrrpuO2d9I
+Message-ID: <CAA1CXcA-V7FtK-QkyRHak1GBtepiFiTHFtF7g93P7mM41_2LMw@mail.gmail.com>
+Subject: Re: [PATCHv2] mm: khugepaged: make scan loops suspend aware
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: s7sBp-70_h2O1QvRic5j1eLTzQts7kEzmDLPvXbxPtU_1770790578
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1770789861-85182
-X-HE-Meta: U2FsdGVkX1+oBQZ7x4oS0T1DGxJj3rUedN4Hiv0npCQsN9Q0cSuTqwdXouM/u5hsgvNTZNurBCWZfw0yI3Aq+T2pcFehTUUF26bmNgaqsuKx84BrTpiy2RFVV+IqrZTHyOgP+2Xitk0ZDZYEBK2SpGVsLHakiFg67tTQlinWQBRkXyKL326fp3bpmJifXm0c8Aqb7CCSy6MzR1w3kCGB9hRiD6AgACZko0VWGL50gAbV65wdBrpOHdKhuwRY03LHv7+S3nPkq9Onlthmo00Sar8QLMO4dXDd/o13vVFkkMGOL/DS3Yf6+01OYbaGT81sDHv7AH1ucQu+ryrIfs44/nxgd86WtaujYS6Pd6jK7ePuAbAsXsDYxGeLn2sGmytkHI1YBMkKqbRwUbZtmZYmT8gcy8j2d0gPJ+jtTJ3kLHxulf/IY5s7a6j1hyrChVoL4H8f6U44k0RtQJg+qIAyUMpGqLKCq7oo+2He7vFPX3fCg7wTb+wpplekM5uZqG3vE/GuyhOkIIC9wtQkutKAtvQjSKaXv4lzzMdA+ot+ZLZRrYQTR761Rikqc+SwCYYmWSLJostVB8lHAxuTyoWNvr60ATD2QBC7xaJAfzz8UgSFdl57YvohTiUS3f6N1VnKdGcxt5QksgVB+6QMX6Hyqnc+KVctZYmQWcgwqC6ubACexUcOYYLpGZNBCn8jhy+u8W2NCT8pTz4aOWwguGO9iKtt0DFdncBfS4nxs3zVXBwtTsQyOu5ve4DlE3s2blJBRqn9GXLSID6Cwdi6dRQd3lJu8FgwzXstiOCFDxc4/WYkoDVxX6Gt7nfJQabyecmKd4rJPvoidzaCaBPqhIQ35rmfCS+bg1+zM5RlVikAEAoe8rk6pzgEmYMxYbxF+qf3w0+xoE6f/nO9XneAJ1MEdLTf9KY1FYrIC57bO/3mRg20DEp5WO2srVtoqXOFik/InoWA3KK7sFvQ5Pk9cHj
- yk2vXftK
- hbKvHorQ+/2fn1ttugQAgpjYsD3lFcDnWi9/hlvjzgxWmKG4kJooQmbmm3JV6pWDhqlRrIS+Eog/8kgeJ2dvmz3QoS8C1oXacsFN5MrC7+2+JWTvQmZYL2esD47u1VwYmOe6x07QrX/hTxR62nCafr+UazUG/gDJ000JnZo98mI2FmtGS82m8JfPVbF7vKCU9QKw7Z6jGW1M1v+7RjG/4aAva9rn7SLJ/7NM4TL9SztGGgwluRmTCNBpc1ct8zMjvov1rxIeA5eyp+L5RB+Pk/P3hhH7Dq6UZ6ZvzGDn16XXkRFA=
+X-Rspamd-Queue-Id: 2E487160005
+X-Rspamd-Server: rspam07
+X-Stat-Signature: m6y4o7fqcpsxp7iw8km4yex8m5ythey8
+X-HE-Tag: 1770790581-261536
+X-HE-Meta: U2FsdGVkX1+IpzE93TDISex3I5KieoLDus5RTxcwovLtxxCI8/bSn/x7A3JE4Lm79f9EERoliWeK+daEuF+DHhbrDxuB9dgm5xYJ9R2H6TraKiUWRIuHMpgk6fk+L4ndYrxFWlm/7nu0H9yqxLuNtx9648O6yG9ApHv1bAPm8zYA7H5HpnRglkwB4VCUkC8u8yYr+7L2X6+UJRuW8ocKpDujOyogCK9rxkJW44OBxhwKeXD+oCOPPrSvHpJ6aeeT/n4Vx3geh/kTbjz3HswJgJteRVstJFwHOjvT3neAr6zFOWjA2SIfKUgoNlnkvgLMBrqR8J8fwe1+qywn04zaz6g2VFQ9qAsHv8Um1O8/GyskxwoO0LDQt4tsA5c+fZpAtKlDSnt9EgK/8Me8BEOT+JzeX84YsguSckbL2mKcMuScCrxXaynHjgoo5qj9WtKaDE7L79oKrF5QF4O5rqrshWDgDZZ5rrQLA9qO/r5ZdeO79TnkJ5FvDQbTu0maY4I3tYI3lS21BkvKBQwdIlsteYE17hSosoJKoNeMdXjIpdxKsso8ZojahJbwhJTJnFx5khY6E5c1dGmhyt85X0jkO2f8RYXdGJ72wFnq9LwVsGtNgHEWuos1OD0X1j/SdwodmVTw2qO2UDpefuotykisCLcaQCcw0uCNTr8vmHohy/FLASjzPRE/x8ZsnK7ql4BGdNlCa4qPgSvJPazKZ0EN2S486ChhUtvnLDzueIWWlPaij419rto2yraEnq2Y5d92k6HMBoBKfF1swG97Oryw3JgEkqErxXrMloYx2Yz9BSP0u78Ik5X08Zln0mo/9Hi00LHzLSlvUGgurQBIbAWhBS+ENYKoxFKOnGm8z2DxKGQV9Vxk8fi4zEdm7vCEmkKAwkZRPdaRbeWl564DFv1BtBqnMEzIyzHfqQZWx9T6ZrdrsbY8e+5YXWagCVeqaeeIV5LjMB7SKgug5l2p9VW
+ 64USdS3H
+ P+PGoC3OBpyHRUDRYw42gk8SoAWMOpFWtrHV4QwEtdzfWC0g+aOuRIKiXr2veBdxzKvI5Te3qv27EuhBB7jowATiVbpu7T++MmO2Y6JOskMZ7SzKJaV7ZpgE0IJvlYMFiUUEwO+k/0JDV/oti7pMHl0sZq8UgsmiFAnUA4YG84SViJxWx81+RrzZUpGE9zo8Vwvhkq0td0YTsZbY7SljSfJ//deNgo0wYy7lMQcSsxMpe4G1n16+rkjNH7NrUK+jRKMS/W4CI8fnXLcXj1SgbceAQ6UxaJdzwd0wAbqxNNr2O+PQhcI90ecExRQUUysCt3fEDVEh1V42hM4Eihw1EExFTMGwF+RMoRgGg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,140 +128,158 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 09, 2026 at 04:35:47PM +0100, David Hildenbrand (Arm) wrote:
-> On 2/3/26 21:56, Peter Xu wrote:
+On Tue, Feb 10, 2026 at 8:15=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> > +static vm_fault_t fault_process_userfaultfd(struct vm_fault *vmf)
-> > +{
-> > +	struct vm_area_struct *vma = vmf->vma;
-> > +	struct inode *inode = file_inode(vma->vm_file);
-> > +	/*
-> > +	 * NOTE: we could double check this hook present when
-> > +	 * UFFDIO_REGISTER on MISSING or MINOR for a file driver.
-> > +	 */
-> > +	struct folio *folio =
-> > +	    vma->vm_ops->uffd_ops->get_folio_noalloc(inode, vmf->pgoff);
-> > +
-> > +	if (!IS_ERR_OR_NULL(folio)) {
-> > +		/*
-> > +		 * TODO: provide a flag for get_folio_noalloc() to avoid
-> > +		 * locking (or even the extra reference?)
-> > +		 */
-> > +		folio_unlock(folio);
-> > +		folio_put(folio);
-> > +		if (userfaultfd_minor(vma))
-> > +			return handle_userfault(vmf, VM_UFFD_MINOR);
-> > +	} else {
-> > +		return handle_userfault(vmf, VM_UFFD_MISSING);
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >   /*
-> >    * The mmap_lock must have been held on entry, and may have been
-> >    * released depending on flags and vma->vm_ops->fault() return value.
-> > @@ -5370,16 +5397,20 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
-> >   			return VM_FAULT_OOM;
-> >   	}
-> > +	/*
-> > +	 * If this is an userfaultfd trap, process it in advance before
-> > +	 * triggering the genuine fault handler.
-> > +	 */
-> > +	if (userfaultfd_missing(vma) || userfaultfd_minor(vma)) {
-> > +		ret = fault_process_userfaultfd(vmf);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
+> A number of khugepaaged's loops, e.g. khugepaged_scan_mm_slot(),
+> are time unbound, which can become problematic during system
+> suspend:
+>
+> PM: suspend entry (s2idle)
+> Filesystems sync: 0.003 seconds
+> Freezing user space processes
+> Freezing user space processes completed (elapsed 0.003 seconds)
+> OOM killer disabled.
+> Freezing remaining freezable tasks
+> Freezing remaining freezable tasks failed after 20.004 seconds (1 tasks r=
+efusing to freeze, wq_busy=3D0):
+> task:khugepaged      state:D stack:0     pid:1345  ppid:2      flags:0x00=
+004000
+> Call Trace:
+>  <TASK>
+>  schedule+0x523/0x16a0
+>  schedule_timeout+0x23b/0x6e0
+>  io_schedule_timeout+0x3f/0x80
+>  wait_for_completion_io_timeout+0xe4/0x170
+>  submit_bio_wait+0x79/0xc0
+>  swap_readpage+0x150/0x2d0
+>  swap_cluster_readahead+0x3be/0x750
+>  shmem_swapin+0xa7/0x100
+>  shmem_swapin_folio+0xcd/0x2e0
+>  shmem_get_folio+0x237/0x580
+>  collapse_file+0x247/0x1280
+>  hpage_collapse_scan_file+0x26e/0x380
+>  khugepaged+0x43b/0x810
+>  kthread+0xfb/0x120
+>  </TASK>
+>
+> Make hpage_collapse_test_exit_or_disable() suspend aware so
+> that khugepaaged's scan loops can terminate in a timely manner
+> and let system enter the sleep state.
+>
+> Co-developed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-I agree this is neater than handling VM_FAULT_UFFD.
-I'd just move the checks for userfaultfd_minor() and userfaultfd_missing()
-inside fault_process_userfaultfd().
+Hi Sergey!
 
-> > +
-> >   	ret = vma->vm_ops->fault(vmf);
-> >   	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
-> > -			    VM_FAULT_DONE_COW | VM_FAULT_UFFD_MINOR |
-> > -			    VM_FAULT_UFFD_MISSING))) {
-> > -		if (ret & VM_FAULT_UFFD_MINOR)
-> > -			return handle_userfault(vmf, VM_UFFD_MINOR);
-> > -		if (ret & VM_FAULT_UFFD_MISSING)
-> > -			return handle_userfault(vmf, VM_UFFD_MISSING);
-> > +			    VM_FAULT_DONE_COW)))
-> >   		return ret;
-> > -	}
-> >   	folio = page_folio(vmf->page);
-> >   	if (unlikely(PageHWPoison(vmf->page))) {
-> > diff --git a/mm/shmem.c b/mm/shmem.c
-> > index eafd7986fc2ec..5286f28b3e443 100644
-> > --- a/mm/shmem.c
-> > +++ b/mm/shmem.c
-> > @@ -2484,13 +2484,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
-> >   	fault_mm = vma ? vma->vm_mm : NULL;
-> >   	folio = filemap_get_entry(inode->i_mapping, index);
-> > -	if (folio && vma && userfaultfd_minor(vma)) {
-> > -		if (!xa_is_value(folio))
-> > -			folio_put(folio);
-> > -		*fault_type = VM_FAULT_UFFD_MINOR;
-> > -		return 0;
-> > -	}
-> > -
-> >   	if (xa_is_value(folio)) {
-> >   		error = shmem_swapin_folio(inode, index, &folio,
-> >   					   sgp, gfp, vma, fault_type);
-> > @@ -2535,11 +2528,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
-> >   	 * Fast cache lookup and swap lookup did not find it: allocate.
-> >   	 */
-> > -	if (vma && userfaultfd_missing(vma)) {
-> > -		*fault_type = VM_FAULT_UFFD_MISSING;
-> > -		return 0;
-> > -	}
-> > -
-> >   	/* Find hugepage orders that are allowed for anonymous shmem and tmpfs. */
-> >   	orders = shmem_allowable_huge_orders(inode, vma, index, write_end, false);
-> >   	if (orders > 0) {
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 14cca057fc0ec..bd0de685f42f8 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -421,26 +421,6 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
-> >   	folio = __filemap_get_folio(inode->i_mapping, vmf->pgoff,
-> >   				    FGP_LOCK | FGP_ACCESSED, 0);
-> > -	if (userfaultfd_armed(vmf->vma)) {
-> > -		/*
-> > -		 * If userfaultfd is registered in minor mode and a folio
-> > -		 * exists, return VM_FAULT_UFFD_MINOR to trigger the
-> > -		 * userfaultfd handler.
-> > -		 */
-> > -		if (userfaultfd_minor(vmf->vma) && !IS_ERR_OR_NULL(folio)) {
-> > -			ret = VM_FAULT_UFFD_MINOR;
-> > -			goto out_folio;
-> > -		}
-> > -
-> > -		/*
-> > -		 * Check if userfaultfd is registered in missing mode. If so,
-> > -		 * check if a folio exists in the page cache. If not, return
-> > -		 * VM_FAULT_UFFD_MISSING to trigger the userfaultfd handler.
-> > -		 */
-> > -		if (userfaultfd_missing(vmf->vma) && IS_ERR_OR_NULL(folio))
-> > -			return VM_FAULT_UFFD_MISSING;
-> > -	}
-> > -
-> >   	/* folio not in the pagecache, try to allocate */
-> >   	if (IS_ERR(folio))
-> >   		folio = __kvm_gmem_folio_alloc(inode, vmf->pgoff);
-> 
-> That looks better in general. We should likely find a better/more consistent
-> name for fault_process_userfaultfd().
+Thank you for reporting this and taking the time to investigate a fix.
 
-__do_userfault()? :)
- 
-> -- 
-> Cheers,
-> 
-> David
+Here are some simple review points then I'll comment on the code below.
 
--- 
-Sincerely yours,
-Mike.
+- We usually send "To:" the mailing lists and "CC:" to all other people.
+- Your subject contains "PATCHv2" there should be a space there
+- It would be worth noting the "HOW" in the commit message
+
+> ---
+>
+> v1->v2: Actually pass "cc" to hpage_collapse_test_exit_or_disable()
+>
+>  mm/khugepaged.c | 22 +++++++++++++++-------
+>  1 file changed, 15 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index eff9e3061925..d32a5ad27097 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -392,10 +392,18 @@ static inline int hpage_collapse_test_exit(struct m=
+m_struct *mm)
+>         return atomic_read(&mm->mm_users) =3D=3D 0;
+>  }
+>
+> -static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *=
+mm)
+> +static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *=
+mm,
+> +                                               struct collapse_control *=
+cc)
+>  {
+> +       bool was_frozen =3D false;
+> +
+> +       if (cc->is_khugepaged &&
+> +           unlikely(kthread_freezable_should_stop(&was_frozen)))
+> +               return 1;
+> +
+>         return hpage_collapse_test_exit(mm) ||
+> -               mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
+> +               mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm) ||
+> +               was_frozen;
+
+I dont really understand the freezer code, and there are few examples
+of this. But given how other callers do it, this seems correct.
+
+>  }
+>
+>  static bool hugepage_pmd_enabled(void)
+> @@ -895,7 +903,7 @@ static enum scan_result hugepage_vma_revalidate(struc=
+t mm_struct *mm, unsigned l
+>         enum tva_type type =3D cc->is_khugepaged ? TVA_KHUGEPAGED :
+>                                  TVA_FORCED_COLLAPSE;
+>
+> -       if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+> +       if (unlikely(hpage_collapse_test_exit_or_disable(mm, cc)))
+>                 return SCAN_ANY_PROCESS;
+>
+>         *vmap =3D vma =3D find_vma(mm, address);
+> @@ -2420,7 +2428,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
+d int pages, enum scan_result
+>                 goto breakouterloop_mmap_lock;
+>
+>         progress++;
+> -       if (unlikely(hpage_collapse_test_exit_or_disable(mm)))
+> +       if (unlikely(hpage_collapse_test_exit_or_disable(mm, cc)))
+>                 goto breakouterloop;
+>
+>         vma_iter_init(&vmi, mm, khugepaged_scan.address);
+> @@ -2428,7 +2436,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
+d int pages, enum scan_result
+>                 unsigned long hstart, hend;
+>
+>                 cond_resched();
+> -               if (unlikely(hpage_collapse_test_exit_or_disable(mm))) {
+> +               if (unlikely(hpage_collapse_test_exit_or_disable(mm, cc))=
+) {
+>                         progress++;
+>                         break;
+>                 }
+> @@ -2450,7 +2458,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
+d int pages, enum scan_result
+>                         bool mmap_locked =3D true;
+>
+>                         cond_resched();
+> -                       if (unlikely(hpage_collapse_test_exit_or_disable(=
+mm)))
+> +                       if (unlikely(hpage_collapse_test_exit_or_disable(=
+mm, cc)))
+>                                 goto breakouterloop;
+>
+>                         VM_BUG_ON(khugepaged_scan.address < hstart ||
+> @@ -2468,7 +2476,7 @@ static unsigned int khugepaged_scan_mm_slot(unsigne=
+d int pages, enum scan_result
+>                                 fput(file);
+>                                 if (*result =3D=3D SCAN_PTE_MAPPED_HUGEPA=
+GE) {
+>                                         mmap_read_lock(mm);
+> -                                       if (hpage_collapse_test_exit_or_d=
+isable(mm))
+> +                                       if (hpage_collapse_test_exit_or_d=
+isable(mm, cc))
+>                                                 goto breakouterloop;
+>                                         *result =3D try_collapse_pte_mapp=
+ed_thp(mm,
+>                                                 khugepaged_scan.address, =
+false);
+> --
+> 2.53.0.239.g8d8fc8a987-goog
+>
+
 
