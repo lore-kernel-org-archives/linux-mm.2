@@ -4,192 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E027E9E311
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 15:40:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4789FE9E31B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 15:43:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F341E6B008A; Wed, 11 Feb 2026 10:40:48 -0500 (EST)
+	id AD25D6B0092; Wed, 11 Feb 2026 10:43:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE1D46B008C; Wed, 11 Feb 2026 10:40:48 -0500 (EST)
+	id A7FFC6B0093; Wed, 11 Feb 2026 10:43:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC34C6B0092; Wed, 11 Feb 2026 10:40:48 -0500 (EST)
+	id 98C496B0095; Wed, 11 Feb 2026 10:43:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C85016B008A
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:40:48 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 64D4FD693C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:40:48 +0000 (UTC)
-X-FDA: 84432588576.10.E1F666C
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011028.outbound.protection.outlook.com [40.93.194.28])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8EB0C140003
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:40:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Ra8rSJkE;
-	spf=pass (imf09.hostedemail.com: domain of bharata@amd.com designates 40.93.194.28 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770824445;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8A2A46B0092
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:43:13 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2E52FB9555
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:43:13 +0000 (UTC)
+X-FDA: 84432594666.24.25E1970
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf20.hostedemail.com (Postfix) with ESMTP id EBA961C0006
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:43:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="fVc7/mIe";
+	spf=pass (imf20.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770824591;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mGfiXZpq3NNEVqG6mTdtoZ+x/STFgG9p8aIfa09KLSo=;
-	b=JXqitGCbegm2C86NCPQSruWJgERNCxpgcRbAOGA7OrY9d1cPUIyghgAj6dSmogWOZQjGJL
-	Q9dWRiwGBfEZd08EhPxVsmPeXBzg1rl73TA0bCusPLT4qHn+XF5h9lRK5yDaSUztWnliND
-	TkmNGI46YOilw1WVND3yXZ2LXuMmctk=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=Ra8rSJkE;
-	spf=pass (imf09.hostedemail.com: domain of bharata@amd.com designates 40.93.194.28 as permitted sender) smtp.mailfrom=bharata@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770824445; a=rsa-sha256;
-	cv=pass;
-	b=42SE6azRYOq1eRUnkLt1HWfT52WwdojuX+dN4ELWSzmwwzqELrh1SbpbFkpkAif9VFNQ1F
-	pL+vhikqCGyY0EgYdTl1YLsMqUiYZ0D53ZV6QF30VJ3qpyhu8WKyqwN+JKycm7OFYQdRZD
-	cGQA881OTK078XD1fqW95rfD0onkW24=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GGXzgr6XWnH3dQQ84/uMcE6sxggX2bB5/Y1v5dgP0xFtoNRFAxnv18rJeevxpe7jSKDY8iJzc0KJFgMd21JQNy1+2YZb2mtRFbGKldJd7eEJSDD3fl16k70I9qLhOgGI9fo1kSpG9kqlqxTaz3nZdvOuf1dVC3fIs9px7o2JaDgcgNq7kow3kv4vwUgc9pS3et+Srn/46ZN3tPwZ0nYm1X7cqRw6nbdvP3W98txlt7u9kNGBxlhUKWf9SFsrOY7EO2yGjVFZy5zKCIkCmW+Bb8SuxAeZAeOGkZZ6zRl/ifK75rdetITYF9ZAg3jE91zRKQgf4Q714vwxT4E6hB+ANQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mGfiXZpq3NNEVqG6mTdtoZ+x/STFgG9p8aIfa09KLSo=;
- b=no06H8qvH9rrxuSM4nO8YsQyXcqQl1V+qDmkICMpfet7pi6Upv9yoq8Uv1CByfJnxGkViu8UqzY0qe8VImHAk0GfWj8f+4xNz4nX3n/hbyKZAhVHtXQh6p6LoK5lQ2RWapfSdFKqdS4iIp9X2kAxmefswcFvtgbvhwIupQ/ReVKyLPhDFF0fa9sdYHCPxWWq6xJXmdKun/zt8qHxeoZQ643e+CO0ISM4HJ8lG27WeTtPQe5pk+1bneH5hDR2OPLVfQcsP9XPnuABe3DmRtHDct4ol2lI5txkIpe+k9SJgSBLWkSjnVR7FTtk9VM6Ph1pby+wIr3NnKJjWGqf4IPyFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mGfiXZpq3NNEVqG6mTdtoZ+x/STFgG9p8aIfa09KLSo=;
- b=Ra8rSJkEkhRluL7ez386pKNAHzX0Ux59MSVHEiWyd1PDqPo2ObqXNI0aQxXK45inqo+fpvgEpxfhpUlianXJPMjAdhbnrdCHY3zMPK0cna0Cr9prY2knOVIMd4qUkNCIYoE7QUqe0f3CGZgKrAif9rj+kKUkd/QdOl7Np3sBMwE=
-Received: from SJ0PR03CA0235.namprd03.prod.outlook.com (2603:10b6:a03:39f::30)
- by IA1PR12MB9532.namprd12.prod.outlook.com (2603:10b6:208:595::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Wed, 11 Feb
- 2026 15:40:38 +0000
-Received: from CO1PEPF00012E84.namprd03.prod.outlook.com
- (2603:10b6:a03:39f:cafe::44) by SJ0PR03CA0235.outlook.office365.com
- (2603:10b6:a03:39f::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9611.8 via Frontend Transport; Wed,
- 11 Feb 2026 15:40:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CO1PEPF00012E84.mail.protection.outlook.com (10.167.249.59) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9611.8 via Frontend Transport; Wed, 11 Feb 2026 15:40:38 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 11 Feb
- 2026 09:40:37 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 11 Feb
- 2026 07:40:37 -0800
-Received: from [10.252.192.21] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 11 Feb 2026 09:40:29 -0600
-Message-ID: <7c6d427a-9fe4-4af0-93c8-18ecb2296e36@amd.com>
-Date: Wed, 11 Feb 2026 21:10:23 +0530
+	bh=QAsCSJyvhO4BKRpaZq8qCLo9xLrC1Bu2FU5B/EJQXzA=;
+	b=XBJ9L2rJnOyRzVoZp4mZq1ippwrOP7Y9P51+t2Wrkj/93LnPvncf3rBmjcGow78AFB6b0n
+	qvR827dxUqacNTywnuyojbUg3aSliA/L5XNQo9lQjIPMfzQKAW3DXmwljx97uZPAFO7qvh
+	PNW8mbhtE2+2ULnQauYx4dEkg6RBTns=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="fVc7/mIe";
+	spf=pass (imf20.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770824591; a=rsa-sha256;
+	cv=none;
+	b=H+HuR3kGQdvX+blxWfdtQCPmk6L5Ph8Xy3cS6bkyiLqvPm2xkFhdEDjgxY1hempUgxRfUR
+	rVRIatovbBHMxsXFL320P6tQoJP7EJ6TJyWQAFT3BaJZu9/UXpNxuu2/3OBKNF9Wp5ecrQ
+	X64XfdBdKZKW8tPi4KL4Iaq7/Begc5o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770824590;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QAsCSJyvhO4BKRpaZq8qCLo9xLrC1Bu2FU5B/EJQXzA=;
+	b=fVc7/mIejKqxg3q6sUgGOM1cUtTs8f7Kr4rU/MDJp0BH8eIjDdgx5nIf8wcyGyzGF8F2vU
+	I2/i7SsoRT2+iRD3Ti2wcmrcyvPNaHapAzuycKNZ734wO0lH7+g7zS2nJpTzQfXYteLQAE
+	0DZBJo9/8/uQ3leV7VO6YKKBgO9C6pI=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-608-VY_sHjiSNkmUh9yogSGtRA-1; Wed,
+ 11 Feb 2026 10:43:06 -0500
+X-MC-Unique: VY_sHjiSNkmUh9yogSGtRA-1
+X-Mimecast-MFC-AGG-ID: VY_sHjiSNkmUh9yogSGtRA_1770824584
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DA8E7180057E;
+	Wed, 11 Feb 2026 15:43:03 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.3])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0104D19560B7;
+	Wed, 11 Feb 2026 15:43:02 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id 5CE154036F1D0; Wed, 11 Feb 2026 09:01:12 -0300 (-03)
+Date: Wed, 11 Feb 2026 09:01:12 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <aYxviLoWsrLqDU7o@tpad>
+References: <20260206143430.021026873@redhat.com>
+ <aYs6Ju2G4bm6_tl2@tiehlicka>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v5 03/10] mm: Hot page tracking and promotion
-To: <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
-CC: <Jonathan.Cameron@huawei.com>, <dave.hansen@intel.com>,
-	<gourry@gourry.net>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
-	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
-	<rientjes@google.com>, <sj@kernel.org>, <weixugc@google.com>,
-	<willy@infradead.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
-	<dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
-	<yiannis@zptcorp.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<byungchul@sk.com>, <kinseyho@google.com>, <joshua.hahnjy@gmail.com>,
-	<yuanchu@google.com>, <balbirs@nvidia.com>, <alok.rathore@samsung.com>,
-	<shivankg@amd.com>
-References: <20260129144043.231636-1-bharata@amd.com>
- <20260129144043.231636-4-bharata@amd.com>
-Content-Language: en-US
-From: Bharata B Rao <bharata@amd.com>
-In-Reply-To: <20260129144043.231636-4-bharata@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E84:EE_|IA1PR12MB9532:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2fce5dab-3c20-46ad-0839-08de6983e7b3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RnFxVi95RlhvM1cwcFdVb2RZazd6V0VKcUs5ckQ1SGcwMWpFZG0rRFFZR09S?=
- =?utf-8?B?YVVJOWZrbFF5Z3huLzJ5Tm5FSURSOFJQN0VIQlh1M2ZvSkVPWVZXNStGc3ZP?=
- =?utf-8?B?eksycldva1pEcEp1aUVhL0U5WjRjemQ2NitKNzNTdVAra09iWlZMME4yd28y?=
- =?utf-8?B?WHVRb0kwMW9oYkIxVVlrNVZBYnZBcXlnZ05CMnlqSWpWNjExTjhRVFFGZmE0?=
- =?utf-8?B?dERFYnJ6S3JVQmt6aS9URzcxcXhSb2pHWm1kVmoxdm9RZVpla2FPNkdGa1U0?=
- =?utf-8?B?ZXVlT1BwODF5eUowN0h2NFdsYmFmWjNQZmEzQ3BpTFFJeE1GMFVmQlhScEFk?=
- =?utf-8?B?S2ZMZnJQMGdIMmF0MmpEWTg0cklpTklSd1hFcFlONFRMeDgzVUlhM04veUtz?=
- =?utf-8?B?SnNhdFZNVi9rVDFHMVlkdjBzNFZXL1BEMXZrS3dwQ3B5cldscjgwTENTMkZx?=
- =?utf-8?B?Y1JhSjgvcnZjcWVKdm11d2tMTDRlRFNCTFdxZzJzdGR2ZnpvaFc1ZEo1cUtG?=
- =?utf-8?B?bkp1K3J1UGp6OXRSUGpXaE02MTZFb2hMZVBYRmNaM3NTNCswcmFVZUw2cm5X?=
- =?utf-8?B?MFBXSE9RTFRGUyttRzBYREtYdnpvb3VuRTZTTnI3enJuSWJmSHRkL3RXekdq?=
- =?utf-8?B?T2szdmlVU0d1S04vN3JLUVJMSGQrdy9iSkExZW5QeC9pSGR6c0tkdkJIcjRH?=
- =?utf-8?B?RnVkQU9GNDEvbmFKNWJodmc4SzZ5eWg5SXEyVHFBNmJHTUpCc3ZLVjEvTmJ3?=
- =?utf-8?B?aW9YSzlkOXZyeVNER1RhQnRCUTJpeG9nQldUdFRZMFBlNkMrUXRqalYrSVp0?=
- =?utf-8?B?NWNsYVdlNm5XcjRnN1NXRUhzc3lVMk1vTnhYUml4TG42cG9UOW5MOHppRkg2?=
- =?utf-8?B?MitaTFRuaUlDRFhGUjREcmVXUGRjUnRTQnZQSWhGbDRicHpPdENIVXlkRjFM?=
- =?utf-8?B?RHFtVVZqcEI3emI0aE5WZE1zNEFORmtOUm16cUdiNEVqM0FCdVNzbHJXK0g5?=
- =?utf-8?B?LzUvYXc1M29FM3NTQ3NNTTVtNnlPRjU5UUIvaVFuM0kweUZveDZ2VU90Z29p?=
- =?utf-8?B?WnRGSHpSNFp3ZThLeXFsUG5pd05Fc1lnSk1TV3cwczdmUTdvUStSMCsxUnc3?=
- =?utf-8?B?ZUNkbWdvT2JTb2J6S2xJSUxEb1hBdnVEQjd4MStJbnhlcFpkd2Y3YUFBQy9R?=
- =?utf-8?B?T05hL0ZxQ2ZlaUV2d2tvWWpzZkxVVTZSNEZGYzNxRTFlZlpLSXBwbENPS1ZL?=
- =?utf-8?B?dWVzcHB4SFBBRFhOK2JtMU04UU1IdFh1M0lQRFI4RFNKQXpMMUVQSk9BTVdJ?=
- =?utf-8?B?U0lsNkh6SWovZ1gxYitkRjdJRi9sb0N6emRWNW9rbkEvU0tlYXpEeWpGU3Rv?=
- =?utf-8?B?alJvL21MMkpLdEo1ayszTGRSVllJM290OWV1YnRDKzhyd3lyYUpIeTFBaFh5?=
- =?utf-8?B?UzVXN0ovN3BYL2xkNWhucTZBOXZOZUtFb0RWNzR0UW9IbHhOUUUrMzF1dmRK?=
- =?utf-8?B?SmRNZ0JHWGdWWldEWW9RdTZJQmlxbzRzYm5vU0dOdVdoWmg5cnFLcFU0K0Qr?=
- =?utf-8?B?MU51blc2SVJvbDlQUTZyVHlMbjRlWVlXV0trZWhZWGRqSHVnckE1L3dqQUdR?=
- =?utf-8?B?N2pMYzlEdExXUUMwcSs4cDlSYSt2K1kxU1ZhV0dNbzVyTGVuOTVSRzFDWDN6?=
- =?utf-8?B?WkxNN1Z6SVlJMGpYQVQ3Q3RoeGM1b3hoSmdIQ1NRaGhHWU1DVzRsM0VmdEdX?=
- =?utf-8?B?RjZseERES3BHc29oZ3dKcnl4TE9mR0NoVlNVSVl4Zk9JVGhrWTJUd2hzTHBJ?=
- =?utf-8?B?MGVRTGJYa1RXUkE4aXlyQlNBTGhtZGFiTWpGT2tnVjdHWE1sUE1zVFdPTW9M?=
- =?utf-8?B?VWxHdXVvSk5MZit0SXd6ZUprSEZtUEtjZ1ZDKzAzNHBleGlGQ1NGOTh6UE9O?=
- =?utf-8?B?dG1yNnBYdStrRTQxUGJVOVhXRGpFb2ErVFN6N1hwbWYzN2tOSnoyWWZDWkdN?=
- =?utf-8?B?TElEdzdmS2JYaHhuTUZIaHZDWGc5VXNYbjRWVGFNWWVVdVZweUhlaUUvTk5o?=
- =?utf-8?B?VlRDMWhlMnFnSnVlS0VQd2w4cE9lQ3VvdE9ZUHJSbVc4dHhXazFha2I2a0h4?=
- =?utf-8?B?ZHJJQkZCU1Z4dlFJdlRFQVFjajk2b0NKSTJtT090dGVDSFRkQ0xJaFA0L2Yv?=
- =?utf-8?Q?BXgFa+MoeeAEEKDf7yB0EnQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	/4Uvou78eQ234Z5owItnZ2KzCy3eNFXIN7k7b3IX7jnYFImzdss9LfN1oi7o+DFhjOG5KDIZcmcgQ46aGE9jot6N74CzxTG3Pzt9XBUqB+1pTdScmKquEdsXRSw2Ozj2maj96D2k0ip3LbYXfeGPInNrEwVEUBr6R0gI6UA7pLrPoFLPozTc0DbEKKZlu7IxVn4ZHjlZi9A4kmEFRIIhwqFCZxu/AvKpbQuvjdop8Yb4VTwxYGErF5mYUSqyd8UDW1u87elp46kFELirq7/DDEM+2eDQWsRREncfqtauaqyzoypuIHZ8lP+L4AD1hhBVbx/R5qwLESNMwESg01joPs+22TMd+ReJkFA+QZzWLQ+G6XJ2LyKrlmCcPx3RAP3/p4zIeusUmbY9DRgaEB6SqAHmxNTpG+/eweuytNsnVyHz+OdesdSX6rvsr5rA/IRq
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 15:40:38.1004
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fce5dab-3c20-46ad-0839-08de6983e7b3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E84.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB9532
-X-Rspamd-Server: rspam12
-X-Stat-Signature: nmi3of9inecae6wrdurd5ef34tg4k5wt
-X-Rspamd-Queue-Id: 8EB0C140003
+In-Reply-To: <aYs6Ju2G4bm6_tl2@tiehlicka>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: z1_br-YVefUs_4kB1B-xkG0tpMK3T6rlj6wbrNe9Y4Q_1770824584
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EBA961C0006
+X-Stat-Signature: y753zp16czge4sm8k4jfgo6j3jot84b7
 X-Rspam-User: 
-X-HE-Tag: 1770824443-915265
-X-HE-Meta: U2FsdGVkX1+LAQQ/IhFs9tkrdATqZUgJaumuvkvg1UOgVUZ39NMOj0mC3E9w8Ac0CU4yCeQaLm0M4op6pIeYh9dqp2VJX+5k9sO4haFm44k3LEjenRegeHkxVvn6NzVRk1T3iMti0jyg0QxOYz3O707eH41xEk6dkr1ZoOKbRT+X9vUld4Ap5gsykHbKbrkRuYXou4qRWMH2+/0pKAnYg0bARtG/KY71n2qgy9EmjJLE7nnmjKnXzI/x2ypwqEi8pSrrqWxrdM7vS3n7UT5VP8qdNNnO1FpkqvONX6y58EkfQZ21j/EdXjxrPjO6kB0U5JtFMuUagioMBaKtWWm1bWL4AMpbje2/xcq3h/s/Owvun/PS7moEJvSRO3e9nfR7HHcbbWOlg/YBndzQbyY406vqz4R9PeXITdFEiYZuXwd7Mo4LmrGzVBBVQfbHNjMVgWtHxifs1s5SFvwNpAtyVP1oA6v73sKf+vMtAn1uXQZH3etw6IVxEkqXVzMoJwkNsVD8PZqVtfrrGfO8cDGx1LRFVKu7Xgs+oOyiVYmRvSUo7C1MQ9gpEDhrO+rTHFaQYGIZEic3sB06fM0vAMpv3Cin+CIgqWPGl/nC0wNST9WVYDq9zkbcO17ZMkmP54LqKO5bpb7eihKhmAuYK5+vrzBiPuogxASl+SkZLE+JC7NElonrzd7EXFw75OKrBrOBK0ADaCO+NKzVruk51rAgYex5bnWUdWzZ/LtQ5OJ2Zkx54fYV4+1GlgM+K93sJRD0e5KvF/nBEyBcImAJILi3HOx0Qcsxt+P2XHlDSI/m2gOEXDKes/VAKbqht10hT+I0496VUXJIT9Frdqf+yqhj1Zdu1twHgo1fW50cR+syKgJYMf6SzE3JSm+ZMhyqscV4S1luX4/8hWDvHyEEUJHE3yTVvJMZIaA6syaUCTm2cDyP0IErtvZTynoX13WeX36HeM0B4a0fg1ToDL1wP4f
- 4fmJ+D36
- rI920DbD0cZH6daonxYl3JyVaH4SyCKG1czOL
+X-HE-Tag: 1770824590-839426
+X-HE-Meta: U2FsdGVkX18LwjZCeNA/hUbuLjptM6ezUGX1wIInjRe2bUMrVCvXPP2skRQSwdHBL1bGvQxGGz2uJ123RuyH7zcfekMtX8/4i9cts1654/CcZfhHrdOH7ddzw08Gh3bcXlaNMMq+Z0ut5wGxa4qkDOyDKVeB9zVn5qjlAXK7SGSvxBsgpG/Z3TMo8RBq+TS0mStoGiDRBJGtYww/pKc7MWX2+J4zcIaSIa0ZQwMIYIOlOoEkNEnOwAlSO7pSRHsJ9gmF6snnF8zgz+t5tq+wmmebUK8/h8sbsYDkRr7Qc5/IK7TpCiDmSt/SPvK80rjpkOLlnjtkdbcrsYfYc8LpcgDbeljpsE2PA2TygqFi6x44xCeC8LYO2dQfsMc1757VrcXVqNFvqg0gdjxV9ht2gTTpj/Dthow+fW2378AoUE8ccsU4PGh13r9LPHcCSa45IuUF7W1fs5O7b9ktaQ5lF03j6Oedkldab3nRx2kEZvss+9TinGXjXjiFYN3CPgo0MMJy2ovbA+HHujx/VJRwOIQj4DebF+F4zE0bOGGlaDwqWqAMreNZ+0nCjfeyKHdPVhYkU7hlJe/XVjf0eeYnsn2ThFdmfsep+y/ky+OS4/EGfnIzgQBIkujVhsKpQefzh/AZdFmLCbONBr/IFnIg8r7/4PoRHflNSlLGdGHxkYVTix2ACesCeZCqo3OW9vpc4HSQaGptDS83MhZYXDqf1UqfFUJZYPtakKqIYOWrFvhgKWfrcTpGrPtyDUvVtNRirmdwLYmNKYuP+mzZyhw9w9Kg21AbjSn6bZ/DfoKF4EUz+xhREUldHZBcHKaF3mEpZestZETwj8/BUfplHwvOQNy6HofNnIKArFhQPyqMdbf6hA40txQDV48BqvAbwGNkp3crwpg7Nz1QXHKwhGeSxO6MroEpqny1dIvJQideUrPhJE0YxZzC4lhsn4dcrGlR5KCcZvr60w9iY2zrR6l
+ YW8Yelgq
+ rRGrGFH3Mh0+Ap1J9SO1gaQ6CQFrudm4y3jiaFoz9Z3+IyHpUocuuQvf9B9A4wYpHZdOysQRKKSj4o+Vd9zZXEqySN/IZVnqaGRfO9dqDv5j9W2YINF1d2KGe7RPCle81aWvQNaRo2kTqRRY/g/tb/96Gqs4SU3AC13FDvJyQp2b1AtD1fDzWCdETpc1XGyDZe0KaNc0hc+dnc7+OqkNT059UKMhyC+nIDZ6Go8ndyG/MtWQJKHKNCBKCGTeZH2YH/NdfAaEBhz2C+MXaZc+fDmmAiHc15WsYwYxSkjKBLFVLOytCXVwLFTutCML1cEE/Qqe3xO9ISiMHAUC7/NilNjs/zlseCHtGiWGp/3cRH8+etBz9UJcV0D5YdulCjoBuSDcRoMvXK9rMw+k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -198,67 +120,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29-Jan-26 8:10 PM, Bharata B Rao wrote:
-> +
-> +/*
-> + * Walks the PFNs of the zone, isolates and migrates them in batches.
-> + */
-> +static void kmigrated_walk_zone(unsigned long start_pfn, unsigned long end_pfn,
-> +				int src_nid)
-> +{
-> +	int cur_nid = NUMA_NO_NODE;
-> +	LIST_HEAD(migrate_list);
-> +	int batch_count = 0;
-> +	struct folio *folio;
-> +	struct page *page;
-> +	unsigned long pfn;
-> +
-> +	pfn = start_pfn;
-> +	do {
-> +		int nid = NUMA_NO_NODE, nr = 1;
-> +		int freq = 0;
-> +		unsigned long time = 0;
-> +
-> +		if (!pfn_valid(pfn))
-> +			goto out_next;
-> +
-> +		page = pfn_to_online_page(pfn);
-> +		if (!page)
-> +			goto out_next;
-> +
-> +		folio = page_folio(page);
-> +		nr = folio_nr_pages(folio);
-> +		if (folio_nid(folio) != src_nid)
-> +			goto out_next;
-> +
-> +		if (!folio_test_lru(folio))
-> +			goto out_next;
-> +
-> +		if (pghot_get_hotness(pfn, &nid, &freq, &time))
-> +			goto out_next;
-> +
-> +		if (nid == NUMA_NO_NODE)
-> +			nid = pghot_target_nid;
-> +
-> +		if (folio_nid(folio) == nid)
-> +			goto out_next;
-> +
-> +		if (migrate_misplaced_folio_prepare(folio, NULL, nid))
-> +			goto out_next;
+On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
+> On Fri 06-02-26 11:34:30, Marcelo Tosatti wrote:
+> > The problem:
+> > Some places in the kernel implement a parallel programming strategy
+> > consisting on local_locks() for most of the work, and some rare remote
+> > operations are scheduled on target cpu. This keeps cache bouncing low since
+> > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
+> > kernels, even though the very few remote operations will be expensive due
+> > to scheduling overhead.
+> > 
+> > On the other hand, for RT workloads this can represent a problem: getting
+> > an important workload scheduled out to deal with remote requests is
+> > sure to introduce unexpected deadline misses.
+> > 
+> > The idea:
+> > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
+> > In this case, instead of scheduling work on a remote cpu, it should
+> > be safe to grab that remote cpu's per-cpu spinlock and run the required
+> > work locally. That major cost, which is un/locking in every local function,
+> > already happens in PREEMPT_RT.
+> > 
+> > Also, there is no need to worry about extra cache bouncing:
+> > The cacheline invalidation already happens due to schedule_work_on().
+> > 
+> > This will avoid schedule_work_on(), and thus avoid scheduling-out an
+> > RT workload.
+> > 
+> > Proposed solution:
+> > A new interface called Queue PerCPU Work (QPW), which should replace
+> > Work Queue in the above mentioned use case.
+> > 
+> > If PREEMPT_RT=n this interfaces just wraps the current
+> > local_locks + WorkQueue behavior, so no expected change in runtime.
+> > 
+> > If PREEMPT_RT=y, or CONFIG_QPW=y, queue_percpu_work_on(cpu,...) will
+> > lock that cpu's per-cpu structure and perform work on it locally. 
+> > This is possible because on functions that can be used for performing
+> > remote work on remote per-cpu structures, the local_lock (which is already
+> > a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
+> > is able to get the per_cpu spinlock() for the cpu passed as parameter.
+> 
+> What about !PREEMPT_RT? We have people running isolated workloads and
+> these sorts of pcp disruptions are really unwelcome as well. They do not
+> have requirements as strong as RT workloads but the underlying
+> fundamental problem is the same. Frederic (now CCed) is working on
+> moving those pcp book keeping activities to be executed to the return to
+> the userspace which should be taking care of both RT and non-RT
+> configurations AFAICS.
 
-We should hold a folio reference before the above call which will isolate the
-folio from LRU. Otherwise we may hit
+Michal,
 
-VM_BUG_ON_FOLIO(!folio_ref_count(folio), folio)
+For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
+boot option qpw=y/n, which controls whether the behaviour will be
+similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
 
-in folio_isolate_lru().
+If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
+(and remote work via work_queue) is used.
 
-I hit this only when running Graph500 benchmark and have fixed it in
-the github at: https://github.com/AMDESE/linux-mm/tree/bharata/pghot-rfcv6-pre
+What "pcp book keeping activities" you refer to ? I don't see how
+moving certain activities that happen under SLUB or LRU spinlocks
+to happen before return to userspace changes things related 
+to avoidance of CPU interruption ?
 
-The numbers that I have posted for micro-benchmarks and redis-memtier are
-without this fix while Graph500 numbers are with this fix.
+Thanks
 
-Regards,
-Bharata.
 
