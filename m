@@ -4,149 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C8E5ECD6DA
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 19:46:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A46ECD6DA
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 19:52:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BE6796B0088; Wed, 11 Feb 2026 14:46:05 -0500 (EST)
+	id 8FC1D6B0088; Wed, 11 Feb 2026 14:52:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B69C66B0089; Wed, 11 Feb 2026 14:46:05 -0500 (EST)
+	id 8AA366B0089; Wed, 11 Feb 2026 14:52:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4B846B008A; Wed, 11 Feb 2026 14:46:05 -0500 (EST)
+	id 7A27F6B008A; Wed, 11 Feb 2026 14:52:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8FD7A6B0088
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:46:05 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C286C2190
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:46:05 +0000 (UTC)
-X-FDA: 84433206690.23.9D85EC5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 0759480008
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:46:02 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 672BE6B0088
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:52:48 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 05EDE1B3D09
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:52:48 +0000 (UTC)
+X-FDA: 84433223616.01.B4D0FF2
+Received: from mail-dy1-f178.google.com (mail-dy1-f178.google.com [74.125.82.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3EB1080003
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:52:46 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CspSwGnl;
-	spf=pass (imf02.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770839163;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U+9TEMtB91d9J6lbB8rO+N3i8rJC/63T1Uk4NbR/td4=;
-	b=2x5cB7MJAT3a5YB7sX1c6UmdjypTmMUq7UFKv/ZWDboCYRHqy02SX6MpHixUnM4DGszIFf
-	lPdjL0+giCiC733WxVLUUkUQTgzL26+83XWZeTuJvh0FkxOtZu98GjEFpg2T0TxLIYi9gT
-	iNqWa5+AZ3C/O/w+vxe+HpUUnyRupFs=
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="TX/NQLWF";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770839566; a=rsa-sha256;
+	cv=none;
+	b=rvdcrz3b8JKtKZeKs9YSSkGB0CKuCTXw9fiXT/9PTCODal+Zmnt/X1s8zrXk+5oc/1mwCq
+	0Yix6v6BXeeqCa6QEkTYk9DD04IygGzjbD83f3j3CeJi/TZ6M0mmAcyeDLwLgG8F23qXTG
+	ttOM/K2H/rpGJuFlEjuDKkA9zVZWCfY=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CspSwGnl;
-	spf=pass (imf02.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770839163; a=rsa-sha256;
-	cv=none;
-	b=bKY8sj4OLleN0PUVUcdUq/x+dWE3skNKMepif8V2nNUuPgB4Uw0Fy+UmlGYTnMrJH2Og+D
-	2iKfvO/dB9JnNZzR3IFiCkjxx3r/cB+TL6/7LkIGGzVybR/IwhPbcUZa4U7aygIBg2je0n
-	8k0FehYT2nS2sYHVa0/bYqyuauU+7wU=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6403460018;
-	Wed, 11 Feb 2026 19:46:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 456ECC4AF0B;
-	Wed, 11 Feb 2026 19:46:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770839162;
-	bh=HaxVebRUVDnlA69yJZ31bR4UMU60zYr0ZNnrO2CdKa8=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=CspSwGnl0hFf/OKHrPCRuIgLSa3An7yv0ZdVgsTTpnQYoS6S2YAPNlPK7CazA588y
-	 rP8PLHDM/wCOKCv0Xzx6T0kW3+JRvUvft/gg9UqwDsKgDmnX1IY09rAa2Aw/qE2qhb
-	 7tU0I1OPOv1AfEJ+kiclIos4drJqh4YG6BGVBFF2nGYVnfKyhKs4P0Wqud8VO/1Cfk
-	 JcgQ89wCunpW3I/awq4wRDLhfdKHZA250fSqRg2em9gf3TcYIdZcOkUxVGSxfX8HHF
-	 EO2V7fczRXTwVSBdxZgpgWwai2+4+KR5O3iXcG/5YDC3cHv8EKNr5BLN6GcyZbBjdr
-	 4q/7Bi1QTNHBw==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 57657F4006E;
-	Wed, 11 Feb 2026 14:46:00 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Wed, 11 Feb 2026 14:46:00 -0500
-X-ME-Sender: <xms:eNyMab3Cq8HUvmOl61nU1w4hI_a4h7HwEIaoRKhDhfBDyMJA2-B8fg>
-    <xme:eNyMaVHJL6Wj4ii1RATklZDxnu2ZTpI_gAf0YBK89PD2cB-m4Au2YyoUOfJss-AZb
-    tDZhsM8mZ5Rg0EQqLMGSIdCywJ0Lm5JtMHzYWUo4hOuPgNHQeYhYw>
-X-ME-Received: <xmr:eNyMaSjQq-ePJBXJbQjHdr6L6YPaz6EjLr9W5a0a61qL1NukpvW10SvONI9j9ezzubb_Yv1PB2fMeONdJ1P0-1awxMZJYtvH>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdefgedvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvffukfhfgggtugfgjgesthekrodttddtjeenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ejieehffdvveeuffevieeigeehkeehgfevhfeivdetudefhfetieelgedtvdetffenucff
-    ohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
-    hrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhn
-    rghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkhgvrh
-    hnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdehpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlh
-    gvrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhr
-    tghpthhtohepthgrmhhirhgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhih
-    hnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthgrmhhirhgusehgmhgr
-    ihhlrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphhtthhopegsohhq
-    uhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihgh
-    huohdrnhgvth
-X-ME-Proxy: <xmx:eNyMaeeiVJWEwxzv3VRxZUmOMg1T14Jsl9roVWXypW4YdyT3EaN_yg>
-    <xmx:eNyMaYwMSm7ZQvgNtZxJMxEsJ07uDn-dVec2OK18izYnlB4HocDkKA>
-    <xmx:eNyMaYZOf86EVdJOpd3kQMz3Xm1f6FAkO39cRt7Udy1w8B7FDGY0Xw>
-    <xmx:eNyMaWIfkwwyhR2qAZ9P8wV3EgG9pO8fG1TtJ5SuZeF7nDAbYCxI-g>
-    <xmx:eNyMaf0DiwZRdikJ0WB5P-Sr96s-IAbbwe9RNVtZaDaEIIdBi2DV2IaZ>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 11 Feb 2026 14:45:59 -0500 (EST)
-Date: Wed, 11 Feb 2026 11:45:58 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Tamir Duberstein <tamird@kernel.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Tamir Duberstein <tamird@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 05/12] rust: xarray: use `xas_load` instead of
- `xa_load` in `Guard::load`
-Message-ID: <aYzcdqiNMtCSOlxA@tardis.local>
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-5-f777c65b8ae2@kernel.org>
- <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
- <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com>
- <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
- <CAJ-ks9knC3pKpiMaG6f3C1Kr6su9p26hM7YvVMzsVwYVHGtm2Q@mail.gmail.com>
- <CAH5fLghKwNEdVeRi3H3LQ9NTPYprpAeY41-jgfq8YEST9PaGdw@mail.gmail.com>
- <hq46fcdy6zvwcwlbtbjynqadiwy3wjs7raxioime2et5amzez6@wvzzlkiijwvf>
- <aYzDzeh1cTN2TEVz@tardis.local>
- <55jeqjcqqldnvkpnmigc5pbys5ee5xfdo3in7fhbxe7uqnm634@xsykemyms4sy>
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="TX/NQLWF";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.178 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770839566;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=DwdVRQZqmcdkGwX+Scl6BVHlEeEKeFsTpXtbTUh4wFU=;
+	b=UT/gerJOCOj54SVqTLv5nBMZNuWHLQ03NG3YdrFAbe7g6rXR+TM19NHCMqBf82x7m3X79b
+	qqbSVxvbyvjHKcqFA9WWObVsW3TgYjV3kpFtX82KTQXd0+Kic9mV+gh3ZvERW/QywgxKS1
+	G6xpdbj5fYFv3VopI6ugKA9XqgbGZqY=
+Received: by mail-dy1-f178.google.com with SMTP id 5a478bee46e88-2ba895adfeaso2418357eec.0
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:52:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770839565; x=1771444365; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DwdVRQZqmcdkGwX+Scl6BVHlEeEKeFsTpXtbTUh4wFU=;
+        b=TX/NQLWFalsqI3Q/lAJEGNgPxEr3hHlUvPUCjg3vTW9liFuVZ8YLhAtjvbrALuMaCu
+         +KIR+bxE7Xm8R/1wAgbcLR6rPdD+vGaZXJ+zWfvR2/sbil/2aLiIWnRd46eKaOV8Emi5
+         ZLItNC9Blvc5KxRww4WAhZYgf0wltlWP3D8oKKjIbhbBhNXuHV8dvP3pZRbu8MWKykod
+         o7BBsTByR9SD8gTD2EECgykUMG+4kBjBlU3X+mFCv7UyuH62xrMxr6vzNQgZ6Fyl5s66
+         /kv5t8zqLHO+7NlM6WJpnf2hwIIZiVgRQqWPGcKE7a5Zt0a9s2ymeKEsE5G2qnsmQLpb
+         l04Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770839565; x=1771444365;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DwdVRQZqmcdkGwX+Scl6BVHlEeEKeFsTpXtbTUh4wFU=;
+        b=PY/pYbJC9pAYoJxtWLhtVXuaFN31k5JsQqxAkDakjtWFWy4DqNvMYjFIF+3+bQzLBW
+         sikNRx1VHJYYaJZwcVI5xAMn527ravbhWOu7ihNA0H05lFtQGYQAmhUQvkMfa2Bs3Vto
+         +ICeHQXec1lJQpl3EGR3d2Ys7zRLjNA2UpAm5Z3xuCSizcRCMBLrdwkL8zTrgs8VCfA2
+         d8Y9aEUBOvI2L0pUNfo9fMVtxx60YKVIxTZZtgyvm99e1rG0J51EONcMhVFrg62OdUNy
+         whTZfEvR8wb6uhUZsCGihcGZXGrourcAmApckzLPgrfNBZbz35OwOzwHSraL4IzCQ+kW
+         LDeA==
+X-Forwarded-Encrypted: i=1; AJvYcCXj8nk1Mup6AffaUmNNv9TO2ZhDAr27ZpmsuUl7QBaQ9JIGiLhHH4vklPJ/j/JeHLzHP93hg3LU/A==@kvack.org
+X-Gm-Message-State: AOJu0YxDR0a+3Ul/GyTY599XiJEKNuOAe/LIwqzPTMey63IAjUYj+3eb
+	zS5bWGvIGrhWMwlj2+HfkHTbGiYGzQhlE4LFZQmkJ8wD3WF1dm7MrMtS
+X-Gm-Gg: AZuq6aJUFjtCGAb1hum6tKjyBleyuzbrUqaoLpCt77uPjJiqCjBKGUIahcbDD1n1r/i
+	+5WYtNS5tzh6Y3fUX5eFEiRVA+MrUF/2CooJvRl3Bjn00q7yHH4Gv4hCKrir+ldWgtmeeNNKy4M
+	hflWtlh9mILxZBXTdrOsWHenRMQJvqK99Mh9KvEZy9HoiImD99jTNF/bv/nVMBoEOV1bUJnPd70
+	bmsqhZGcoVUTmPn3xz9CFbCrlrhTRTpRP2Gooi048pBZuOTLJLOphy+ZCYptUgV9LXWquPUnP1S
+	G0y67caG4moSp6hjm3FGAHaXqxTdSwJVnV5TSqEqHqfp/YnSXTutfZjFTdAwrJLbmMi1puWWukA
+	W71tLxpqBX9McvxHAS+3xygiCM/j7Td+R+G99Y46n8ok9NORmoiltCupRtMwObPEsA/CBwpWaHd
+	vhleV8IQCqArwU37ql/y+FTnxNFRwAbhS2l0EVLPO94C5o+IADPO6GFvI=
+X-Received: by 2002:a05:7300:aca6:b0:2b7:32a6:82bc with SMTP id 5a478bee46e88-2baa806e047mr251899eec.26.1770839564897;
+        Wed, 11 Feb 2026 11:52:44 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.googlemail.com with ESMTPSA id 5a478bee46e88-2ba9dcfe6b7sm2426463eec.29.2026.02.11.11.52.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 11:52:44 -0800 (PST)
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: akpm@linux-foundation.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Subject: [PATCH v5 0/4] Convert 64-bit x86/mm/pat to ptdescs
+Date: Wed, 11 Feb 2026 11:52:29 -0800
+Message-ID: <20260211195233.368497-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <55jeqjcqqldnvkpnmigc5pbys5ee5xfdo3in7fhbxe7uqnm634@xsykemyms4sy>
-X-Stat-Signature: ncnug8d37w9naxhmumzmpizhxf9d66oe
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0759480008
-X-HE-Tag: 1770839162-773404
-X-HE-Meta: U2FsdGVkX1/AwThDZgCF/KiUeAy6fyPNPL81Z71UkAUM94qgese6TbNIcrk1xTVMklFQQcAwRmmjzCZuguyCI/yte+IGv36Tg2DDSSBH5Wgr2meYFDs/FDvh9juwDFubpPxFPfhOXog2KLy760mDYiNrMDg5IMN/YE6LM0o8cP/BCZ0+7YGvO3MBPIBX630jdIMY6ubuf9JZ/lrk9UgRcfNbbMzIDTqdFChj81hiyDIiQ+0Qv69hJJlvWgXYxwrNe6ZngJJn+Q4ssD7MVXEW3yyzKGRYKOugBfPkyFy5hc11FVSl+4KzGXpqHVvQks18Ug6iTnZngO2w7hF0Nzb7us4tSh86t49LF4DKtTgQ3pry61cndwnXt8WF99EXtAatsjYUCzmlMVSdm+jetyFeoXcGI06KG+OgbUEynE7IELR1pnnKhX4+WnoZsaXW/aeCUmSeMrnq/tEZE/qk2CV3ukNhw+W66ZLMmcxyuxbruIoyrE8RMVE8Kr0usrb3S4Wbv54qumIkOjZUqLHMxh+tqvd+AAbT1uCDlS6gHH37Lmr55fBIipYTYUTXoXg4ajKndAWgk9n26RqZSdEw5+Cl+yHgA89ivJSt76rmkJ1ekkzWrWitNJSr20QbmnqVcefQnaxUTR/LQn1zBWWXUubteB6wzHFDsJFvKPE/GXq32igTDeIXzOb5gF9U5TfN/XJ+mjjeiwGQgpwBqPDKm0mrOdFJTk+1l+G/NQ/DF5/zIxfIf17BwxlnBWublYq86yyeGUv7U4MArQ3UXqccnmktSU1UxlMOSq3FHFu6GSFOP83hNEJ+BG23r8ap4uLz3WS29rEt9q6UYKboSCLquVsIguqHF/Vp431sA48qFwzh7Mu8ggqemAm8H/RfcD10G3LhWL7PAaOVxL5dMRFrYIofESxdPULurqoRvrY7ZqWCG1r9e/PSYoKgLFHWZS4eo2aZEFM3RJ3MkNAQ2EtqwKk
- DP0+xbXw
- VFq2gXdc/y5C/ZUrK9aLDwDEYPgaX5hKJ9tfPBso8gjyptYcqSn/z/RGI6IVb3acwZv/V3v/GEpJhdfc7NiaKdG3OE0AIFiD7HvNY2dkiutRTD0IZaYX0OVGe1SMjtEGcYoXmLw040FyrEBFbgvdUxd0pxzXW6sWm5Id3UeXDvX9BZpqoK4USoVFEtVX5UDR1RtsZsOxSrIb5hoBITFVEOJAPwi3Patur4Vh5LjW7icJlR/lBeQR36puwTUD/WBhVSbTAWOi7RgCVm2yxIxZDYq+bvrA0GRZUPNGDtRzEDLE8glI7s0lHUvm8XHQ42jT1c/4wc0nIsSzg5m9ohBoail0T/M+W8x1aQa6YvIZokM7EXkiHnTB1B/KX6OxjU6a1fRpHxDGmpP4UJfd6kJUkX/z9cUlOVhfisg1CIaMJmHpGJSK/xjixEYE83TK4Qbk19tLCbBVzHp/J5t0=
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 3EB1080003
+X-Stat-Signature: c7xzy47dnsyhspgztxcu9p34md7ycuok
+X-HE-Tag: 1770839566-629456
+X-HE-Meta: U2FsdGVkX19luyONJbpUSuezsxLTVfboUFC3qk319xesDuyb4UdmZFnGKHOXAfu0BB91mMDkTl16NB+CnTp+xgAFybmWejt7X2z4S9KyXpMoLMU3Ds+5oUP4U9kbVO1LeAuXQWhRtozFY1w9GGmOmG8sdjDs2aIr9usLph9N3Yfj3nvYCGSUdixwakKWDjk/Cztjpz/42zkSKucvcTjut0x3kiuauCGO/3fpLi/r37l1Jyr5UERNB7WNR3soitq10cF4LuIJTAIhUTcPiCoD0OooSG/BC/HptHSWeoK/eOgKDiOmm0bJY2g9zQvOkfLmvQ7Nnmh2R1ilcs8yT0z9WqfuQkYw7evgcMxFDf5FWqzABY+gXN5lRcbPy0WguX58jt7POeCI9n43CJOKXfryv0XidtF6K4ozXlOD6PfvxiJUFJpoTKTJ2pCspRdzlFNXTf0RQjTUmenZMFjHmdn2R0fX7hAU0fxTF1WmMnPdNLK7HJdKQ+FbKeuba0wOoJRj/g0vwdwPhpjgc74y/vZ+txXcJ5lQDliB1Ll6KiTIQ2AGAgCBlU5GnRYFzJLIB6IG/d2IJQemToljm/vjGI5jOot6DSH+jmKVgL88IWRK5eO8bERjEgCR8aYohEuIodYqfwSxdSFEvFvUBPpTZzjKm1QEBSvxLR+UCJB+v5dHU2sODR9ehRE2d/z0gK6idSA30bvyT3qk2qSdkpekblqLgHhemOzAlqfvWyZSpQQ+9qBbH2Ntd6JbX3WXDkWXgwW6zThIZ95pV8fanjKIIORoBy8gWaEtew2Auo0NOdTlyN9dHARtbaXOCGiKUT8/4IvHX75hX0PTq85w14jPsm0+8nrv8whmPqyQot98zNMo+Y2o5bNa0aGkGbOID5D2kPOVJVl9Odg6AYSEbm9Kw5ZYLU9DtEGbNt39dYAn0s+rntZvT0mQIn9bv4RpN7TOKqqnv1zl/zwcT9a7V3/dkgp
+ IXRWuux0
+ Hq31xbX+9tvMtQAn0k7tpgxkb7udWrOxrSJkzUxIGbdP2BHA5RsppMtFe4Az3J/Gbvm9+9mSeiKFgv/nwhW1YxNPTl1FQhGkYdFR7s/H6mdK2GUh192VmZVrwRzea4mdVePx0lVFRluNOGJDjWAgzP/9crd6MzEl5FAwPYfyNgjMxTsEnVXf3uARF3nE1m3Sfw4/ztDCcZKbJUZ68bWWlPg3YgXvdkfs93/m6IgAlR4gRZIm7VmRBSRjkGAeCftvcfqHjP17UqAINpdnovGk1khh3oNz2fqEoIjzzXqN+xtC5c92kUmLsMx5vtP6Jq3MsmuXVVk5Ldc4s9Wb9xqYwj59Q6l9tvjLyR40mIs8RHWbabEZM8jwzZMBCeVkx2ItgqTHN9fOlHH51G6SHiCPnMxT2tTttBusnEZG18zHeWfVuWLZVmiayfYKM1s6xJ1u6U0O5kqoIj/PMcdt/KuUJBFnEwpIWzHmotuaB7zPox+U7lKSxr85Q3Dikui7NRNSGKP8VxHrfbEEgTa4WWaCVrbG8Va2euxIbzirxZJF8eUdqLMMUtwW/Nnqtu8dUdKSi9DDdR8lq6ZDsGMfEkinQ7gZB81cbZvTVfHDCB1Yux2C+r+5JdGma29VlSA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,135 +122,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 01:55:43PM -0500, Liam R. Howlett wrote:
-> * Boqun Feng <boqun@kernel.org> [260211 13:00]:
-> > On Wed, Feb 11, 2026 at 09:32:36AM -0500, Liam R. Howlett wrote:
-> > > * Alice Ryhl <aliceryhl@google.com> [260210 16:34]:
-> > > > On Tue, Feb 10, 2026 at 10:23 PM Tamir Duberstein <tamird@kernel.org> wrote:
-> > > > >
-> > > > > On Tue, Feb 10, 2026 at 12:59 PM Liam R. Howlett
-> > > > > <Liam.Howlett@oracle.com> wrote:
-> > > > > > Is this a temporary limitation?
-> > > > >
-> > > > > Maybe? I don't think RfL has good abstractions for RCU yet. For
-> > > > > example, exposing load directly on the xarray using xa_load would
-> > > > > require a way to guarantee that the returned pointer's target isn't
-> > 
-> > Well, if we only return a pointer, we don't need to guarantee that,
-> > right? Because it's up to the user to provide that guarantee. So we
-> > could have XArray::load() (not Guard::load()) that just calls xa_load().
-> > Also see below.
-> > 
-> > > > > being concurrently mutated (e.g. under the xarray lock). I'm not aware
-> > > > > of anyone asking for this, though.
-> > > > 
-> > > > It's relatively easy to add an rcu-backed load using the RCU
-> > > > abstractions we have today. I already shared an RFC containing such a
-> > > > method for the maple tree, and it would not be much different for
-> > > > xarray.
-> > > > https://lore.kernel.org/all/20260116-rcu-box-v1-0-38ebfbcd53f0@google.com/
-> > 
-> > I need to point out a difference between xas_load() and Alice's usage
-> > (also what Tamir mentioned above) there, what Alice needs (at least from
-> > her patchset) is the existence of the object is protected by RCU, i.e.
-> > if there is someone else dropping the object, a RCU read lock would
-> > still guarantee the access to the object is valid.
-> > 
-> > However, the internal RCU usage of both xarray and maple tree is to
-> > protect the *internal* data structure if I'm not missing anything, i.e.
-> > an writer may change the array or the tree while a reader is reading,
-> > the internal structure itself is still consistent and valid. But the
-> > nothing guarantees the object you read is still valid. For example, you
-> > can have an xa_erase() racing with an xa_load():
-> > 
-> > 	<writer>			<reader>
-> > 	ptr = xa_erase(xa, idx);
-> > 					ptr = xa_load(xa, idx);
-> > 	reclaim(ptr);
-> > 					use(ptr); // <- object may be gone
-> > 
-> > the users of xarray needs to use other mechanism to guarantee the
-> > existence of the object.
-> > 
-> > In Alice's case, she in fact used an RCU read side critical section with
-> > a larger scope to protect the object as well, which is definitely nice
-> > to have, but not only way of using maple/xarray.
-> 
-> The lock surrounding the ptr is only useful if your ptr is rcu
-> protected, which isn't always the case.  So having the rcu read side
+x86/mm/pat should be using ptdescs. One line has already been
+converted to pagetable_free(), while the allocation sites use
+get_free_pages(). This causes issues separately allocating ptdescs
+from struct page.
 
-Right, so what Alice had in her patchset linked was introducing an RCU
-protected type wrapper for an object, so that is particularly for the
-case where the object is under RCU protection. (I would like to arrange
-the implementation and API in a slight different way for that patchset,
-but the idea is solid)
+The first patch introduces new ptdesc apis that operate on addresses.
+These are like get_free_pages() and free_pages() helper functions.
 
-> critical section extended to the life of the ptr means you've extended
-> the rcu window for no reason when the ptr is protected in another way.
-> This may perform poorly, depending on the situation.
-> 
-> > 
-> > > > 
-> > > 
-> > > It would probably be worth having two loads then, one that does
-> > > rcu_read_lock()/unlock() and one for writer/advanced users like we have
-> > > on the C side of things.
-> > > 
-> > 
-> > Agreed. But we may need more ;-)
-> > 
-> > Here IIUC that Andreas does is adding a `load()` for `Guard` of
-> > `XArray`, which is the load for a writer and most certainly you won't
-> > need to take an RCU read lock for that. The load of a reader can be
-> > added as I suggested above (similar as your "rcu_read_lock()/unlock()"
-> > suggestion above), but no object existence guarantee. We likely
-> > need a third API that can provide the object existence similar to what
-> > Alice had in maple tree.
-> > 
-> > > Or at least name the load() function to indicate which is implemented
-> > > today?
-> > > 
-> > 
-> > It's a namespace thing ;-) , the function in this patch is
-> > kernel::xarray::Guard::load(), and as I suggest here
-> > kernel::xarray::XArray::load() should be the same as xa_load().
-> 
-> Ah, okay.. this might be hard to follow in code, but I guess the
-> compiler will catch the wrong user.  That is, Guard::load() would not be
-> written out, we'd just see array.load() in both cases?
-> 
+The remaining patches convert the allocation/free sites to use ptdescs. In
+the short term, this helps enable Matthew's work to allocate frozen
+pagetables[1]. And in the long term, this will help us cleanly split
+ptdesc allocations from struct page[2].
 
-For `Guard::load()` case, you will need to write:
+The pgd_list should also be using ptdescs (for 32bit in this file). This
+can be done in a different patchset since there's other users of pgd_list
+that still need to be converted.
 
-	let ptr = xa.lock().load();
+[1] https://lore.kernel.org/linux-mm/20251113140448.1814860-1-willy@infradead.org/
+[2] https://lore.kernel.org/linux-mm/20251020001652.2116669-1-willy@infradead.org/
 
-or
+------
 
-	let guard = xa.lock();
-	let ptr = guard.load();
+Based on current mm-new.
 
-for `XArray::load()` case, you will need to write:
+v5:
+  - Return a void pointer instead of unsigned long in allocation
+  - More imperative voice in commit logs
 
-	let ptr = xa.load();
+Vishal Moola (Oracle) (4):
+  mm: Add address apis for ptdescs
+  x86/mm/pat: Convert pte code to use ptdescs
+  x86/mm/pat: Convert pmd code to use ptdescs
+  x86/mm/pat: Convert split_large_page() to use ptdescs
 
-> It's also more confusing with the borrowck false positive issue in play.
-> That is, using Guard::load() will do more work than necessary, I believe?
-> 
+ arch/x86/mm/pat/set_memory.c | 49 ++++++++++++++++++------------------
+ include/linux/mm.h           |  4 +++
+ mm/memory.c                  | 34 +++++++++++++++++++++++++
+ 3 files changed, 63 insertions(+), 24 deletions(-)
 
-I'm not following that thread closely, but seem so.
+-- 
+2.52.0
 
-> It is odd that only one of these exist, especially considering we have
-> users for both on the C side.  I guess the other one will be added once
-> it's needed.
-> 
-
-Yeah, this is the place where I don't agree with the "you must have a
-user to upstream an API" rule ;-) A reader's `load()`, even with no
-user, would completes the concept of what an XArrary is.
-
-Regards,
-Boqun
-
-> Thanks,
-> Liam
 
