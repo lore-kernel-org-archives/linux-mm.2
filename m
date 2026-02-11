@@ -4,144 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 330A0ECD6C6
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 16:16:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC9C5ECD6C7
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 16:16:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E0716B00A2; Wed, 11 Feb 2026 11:16:11 -0500 (EST)
+	id 5DB2B6B00A3; Wed, 11 Feb 2026 11:16:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78D596B00A3; Wed, 11 Feb 2026 11:16:11 -0500 (EST)
+	id 586246B00A4; Wed, 11 Feb 2026 11:16:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66F936B00A4; Wed, 11 Feb 2026 11:16:11 -0500 (EST)
+	id 45D946B00A5; Wed, 11 Feb 2026 11:16:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5317D6B00A2
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:16:11 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F376316048C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:16:10 +0000 (UTC)
-X-FDA: 84432677700.08.3492570
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0D613180009
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:16:08 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Al9uI8L9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770826569;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 361246B00A3
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:16:15 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D73A3B97B0
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:16:14 +0000 (UTC)
+X-FDA: 84432677868.09.35A36A8
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 2D3E1A0008
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:16:11 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=i+NG86ra;
+	spf=pass (imf25.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770826572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jgAqT9no1A9t/LdhObPgCM4EjqEnJggY8Ul2fOiZjWM=;
-	b=q8PNplk70zwKu0aptpnpYGaG/eRiPw75uXg56cQ+ppCUTaRYOMkW/w3Fw8OyIB23Wysh7m
-	Fru4EYNi3sCESr3MjrSDlG8MQ3sW0p1Q/AyGwZzrDwsV6jhxQt3+gh/ZKjVv1YPwNRsHCF
-	UZpdHBT6i5YHSS4AVONmURblxv2TbeU=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770826569; a=rsa-sha256;
-	cv=pass;
-	b=gCXdIRVYLJt8IUrn91BUx/B6TUxnORSsFNec0cS+wUzXIOZu3XYkx3WkDnmsZU5AfAiGrV
-	stClISOpEfC7x7pDqewb9LME4vnapjdgXaF8QPtPd4pWcUescxYavMfRRkYbS/TaOnuRnS
-	gVfMYLMuyzUTWonPS5YbyQRN6jK1rqg=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Al9uI8L9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of ackerleytng@google.com designates 209.85.221.175 as permitted sender) smtp.mailfrom=ackerleytng@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-56743b33c67so649734e0c.2
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:16:08 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770826568; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kmpnC1IyR5SdP8RbtU8M/TOj4YoQuI2IufcZufEIF0g73FNZ9V7u9rHh0UwBOCTo3L
-         3ZwGIstokVgQS1gEHL9aIw0eygBZLfnwVgIqKEDJlbdmiPrNqLsYJxkn8DysQ+cZMac0
-         7+NTewsHk6m3Xa9CmLjuGsqwX07eFfw7ZZz2ndcExtoPSFKXSM/CMZHaxPqE7Tq6zoQn
-         2cuScnsv8+pL3n2lBBbkAcf6DfwXmHQISatFEOf9EKWAYKeCnRx60aPfPgqrXg66xlWe
-         rI3KY2ZLDcRtXLUbhfL3Vz4hCH+P6CArsmdvKJyte/xG9KMoh9Oe0cWapm1kbhiw+B9h
-         +DKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=jgAqT9no1A9t/LdhObPgCM4EjqEnJggY8Ul2fOiZjWM=;
-        fh=rq90h+vWSpPrqGX+KewoAj6Afri1oDPDvYuVnpE+d4k=;
-        b=SaAlAO5Aek8LoX6kHoGJEixdshnPC59kN08dRJiURzfQCnsWL9+XnvGs3PO10KLKeD
-         LRegTfpbmeX3zyvq8O48wGOEznXU8+v+KMj5YBmcdZS3ORi4vu5M3Sz10yZA8a0HYYzX
-         BvAGxhF+iK/rMRkGLGm3WUwPerVNGeW9QVdy4SDjZsb6BKf9DK9Nx5V/e1q1dM5peWsC
-         zhLE9XY/xtwEmjW2JSlLQjRKB5eEYf/bkgNWOghIpbEohBYahICviCUzILhqP2Tolupi
-         72fpBqSjft7DcHlh4CoBrn9eGIgm8F4uCRnW6wNPVfZD4SmeCT392wA8Exq3gmx6bY4f
-         9VpQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770826568; x=1771431368; darn=kvack.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jgAqT9no1A9t/LdhObPgCM4EjqEnJggY8Ul2fOiZjWM=;
-        b=Al9uI8L9HCBrnDBARUDkx0hH0ZjhxD0IeeFEn/GBiuffVZsYZT5L06cgnEwU0oomQi
-         kZ3mep3QWxaxfusRKiB2PutMs+MPVo2nYv+0nEfqZ1NTNLtixGU7v7+kRvsHIRJpKFy3
-         rVBgZXCB1X6SETotTiekQLZE0TFGyWeOh9gOG+sflNmKmxmrYksQqpQvsuW2Cc5a0s87
-         hLHwC8BPEJUy1WCp3xUDh8ISLM128gtRhdLvJ83FWmVpdV0O1WQ9kKYNV+CkcVaUFLeU
-         PRiZYyIPiNzChouuJq3Cnlq1zGOsunpmrAQN8f2IfkvEEP+zRcFTbKhdvLcVOeoXhCTa
-         JTKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770826568; x=1771431368;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jgAqT9no1A9t/LdhObPgCM4EjqEnJggY8Ul2fOiZjWM=;
-        b=Yc9AR9TXBHtFdbx0PwkRNCvH/J+hCARVNbTKUPdhjknM3fSnGX5aiFaF9KCOzRI3eS
-         qRA8kt1blrybuUD6uLyugqooTgGovLLLiH9fYZIRTQU6amy3nhoxCFiw8vAjReTYKzNu
-         TPhdHDDrGXuBQJur4vKtwE8OE3Oz22pXMYWs4RxqPNp9IBJFwfsNgZZqY8/FV6d7Mn96
-         V3qqh4rkfK5vuQyQ5X2epw62vSACL+11gCeyNt1MsCrBnZeZiI2mtQ845HIpZZOd/DuG
-         Fybpjk50qId3HMSqK56v2DAOM5Bkv/AatkfXb9XIHnXrr3KU91jGmb6ODkRD97AOrh9o
-         il9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUEuw1ggXchDfowwG/7a1bnMqf4vDMueD7R50Ztz9G5fDJKIy54IGrPHfmbS5rStgCS5zqpMuBzKQ==@kvack.org
-X-Gm-Message-State: AOJu0YwY345VY0XlPnQrfa18HqGoD+hdkbJM3JyWeyObsC/QEpgaNQ/0
-	DrvyHO/QPTniCJqQZ+SsolhVXqacdbxjJA/hJBYr1FL8IisXwrbndipelUtB3qgAseoaZ39rK9U
-	JucEsdou4fTIBT5fV4A2ClYkY1tI3xJhEz42r+Zwi
-X-Gm-Gg: AZuq6aIfWVP507Ec2RFqGimE0cxwvkjCE84idsFQwWp1jGG+Fzs07MGmjeKB2jJH5mf
-	pWd2GnC2SqzL6F7JkvgnfoBEYNMzPSFuEoVzbIubLAZRAas7aJu7RyphpCpbvK8u7x2tsjBK/xg
-	VRhtlFInlXqQTfceP5PX5Y9dBq7YPDzwTEOhjal9quNp34UVKv6vDucqZMy842VhCgcWz4WRrYm
-	WtWj20o2+lt0Qr88uQMq/dnXqccreJPq19BSAJOvnDZG9sHwyxIbYrlj3IUDqYWdxpKuAwVbIOW
-	t5mWp/qlpWHHLwcBBsiM3F404L/6AfAs4cnr+Q==
-X-Received: by 2002:a05:6122:46a8:b0:559:6e78:a43a with SMTP id
- 71dfb90a1353d-56749dca0f5mr914919e0c.9.1770826567640; Wed, 11 Feb 2026
- 08:16:07 -0800 (PST)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 11 Feb 2026 08:16:06 -0800
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 11 Feb 2026 08:16:06 -0800
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <5759bfba-f235-4b2d-bb30-919dcdfe7b2c@kernel.org>
-References: <20260209033558.22943-1-kartikey406@gmail.com> <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
- <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org> <CADhLXY5nrTXmWMPeiLg37euyVeQsNDRUvKmQaPdxtE1YhPq_jQ@mail.gmail.com>
- <CAEvNRgEoPs5ia+u0ODra6N4BdOwpYa04j8nDxwfNVyfCOWnM6g@mail.gmail.com>
- <4ed1b111-f2f1-4f89-9308-fdd9d706ca37@kernel.org> <8f188d73-fc97-414b-bdaa-e72032b2bf82@kernel.org>
- <CAEvNRgFw_P-GZ=Z4irGheM4O-RnXkd_bdAd0AT7fUuwXEnSqHQ@mail.gmail.com>
- <c4c06a75-e50e-4530-80e3-13724c08a949@kernel.org> <CAEvNRgGg245-TQn2HFSadZ7gmz-FxsAQ6=N14BUgiYGHhZeLeQ@mail.gmail.com>
- <CAEvNRgGvZbRLcb4JbXjsLUX_V59EApHYTQc49X3Jq70GxovD2w@mail.gmail.com> <5759bfba-f235-4b2d-bb30-919dcdfe7b2c@kernel.org>
+	bh=umi07jpeP2Tr6jMEZnWWMP6LArkgwK0Dnoab54QNTbQ=;
+	b=vqNytK1hUpNzkGmDIQztOV7css6FKMTwiKjNcMwT2J2/Ok28FGj8DdNWYTRwglZTgwvPkL
+	fJFM7ZhlYse8Dv7rsOnyBs9zXbuplVFUNDisQBRydPrMdrHzp20qnZ0P85srKmWNCgo/HU
+	n7AJOVRnEtdWYflaMO0QQATQroIQStg=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=i+NG86ra;
+	spf=pass (imf25.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770826572; a=rsa-sha256;
+	cv=none;
+	b=Js2jOxSCQdR2sRlUwwEQvVaYDaTQvL92omhk48Ox72+s8EzoSV55c/pxtnrKO1pMMG1Qgb
+	M7gpxFyNvl0rR8k6XJYjIv9Wwa07Sm47/E31YSuB7SP/Nrn/jc+l9zDANEu8gF973Gsvn3
+	kptW+XUV7Io+QO448KjDORIxzvRbaRY=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61BEnOYm455148;
+	Wed, 11 Feb 2026 16:15:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=umi07j
+	peP2Tr6jMEZnWWMP6LArkgwK0Dnoab54QNTbQ=; b=i+NG86raRz50IPD6K0xZ1h
+	NENwJmYfaqqhgbCXaKX+jJYlxALR7AtD4u2bZzxrRSJsvs7MxIWgPMkFtBjYDZyk
+	FW+3a/vlerAcWWsE4hLgQ/4GK54Ti6zIce3ekIGzQzdEPVDpUWdjikyF0hKNBrzt
+	XiWDnjZQgzTJT0hdLBgrUDNNsYRh00XAKn45NGL2mKGqYD4Z8XQRM8pI3rhdJYbE
+	Ffvbb8JvHjvMvXW2rH24Q2q1a6lOo9oTSL9Vacnfg91Cm+kyA/qRo65e9KXfdqpy
+	e7ud9ET/rFn9cS2lKP+vW5l9tKFNyNFVEF6TX1iS6MdZNAy1xshNsijnUrh390lQ
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696uj3h1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Feb 2026 16:15:47 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BE6KrV001499;
+	Wed, 11 Feb 2026 16:15:45 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6gqn6gqb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Feb 2026 16:15:45 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BGFf7t52625716
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Feb 2026 16:15:41 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD14920043;
+	Wed, 11 Feb 2026 16:15:41 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2E89D20040;
+	Wed, 11 Feb 2026 16:15:41 +0000 (GMT)
+Received: from [9.52.200.149] (unknown [9.52.200.149])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Feb 2026 16:15:41 +0000 (GMT)
+Message-ID: <29c760a9-7dbf-4fe7-ad78-44c95bc00c4f@linux.ibm.com>
+Date: Wed, 11 Feb 2026 17:15:40 +0100
 MIME-Version: 1.0
-Date: Wed, 11 Feb 2026 08:16:06 -0800
-X-Gm-Features: AZwV_QgQ7r_3lH9Aj7yhn8j8us0bHR_cQtnixpMPdHLE2O42Gfq5J2j8Tc-MA1I
-Message-ID: <CAEvNRgH1rzZopht8HoKh_Z+HsESMnpbgb8n3o5ezf9it_CrLsA@mail.gmail.com>
-Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in file_thp_enabled()
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, seanjc@google.com, 
-	pbonzini@redhat.com, michael.roth@amd.com, vannapurve@google.com, 
-	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Queue-Id: 0D613180009
-X-Stat-Signature: 1hb6az8x4if7e9tdxzhdb7y8umq1t7h6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v13 00/18] unwind_deferred: Implement sframe handling
+To: Dylan Hatch <dylanbhatch@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+References: <20260127150554.2760964-1-jremus@linux.ibm.com>
+ <CADBMgpyHw_kgb+Fc+h+Z3ytwMBwDG9B=yai=7g4UWP6AErE77w@mail.gmail.com>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <CADBMgpyHw_kgb+Fc+h+Z3ytwMBwDG9B=yai=7g4UWP6AErE77w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=KZnfcAYD c=1 sm=1 tr=0 ts=698cab33 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=CCpqsmhAAAAA:8 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8 a=6YJJy05I97Y9SfkmSYwA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=ul9cdbp4aOFLsgKbc677:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDEyMiBTYWx0ZWRfX/I6pD2K4TFEy
+ Ztk8SRCKRSzVUREMPCRJPBuULx1AE9K15Jei1Yw8pkzWe0xVpmAJ7bww5rxSyAL6biaNkaGFSCG
+ COP+d5VXrxgD75hp3lbA2s6p3+geiZ3cLHUrCmSUoNxBTRf75XhWbwZ9/U3TLzfQu/vZXkqmyAj
+ CKlrNna/pG7N76+vvV9MAgDZdme6jBMnyIxJoulJ9Ox4ahQIdi2/PP9pgnPZ9ZExIU60ZxUBCJ8
+ aVcHwwhuu+JnHYkC2337ZQ1PzyiP7spbcoDUiSMPqS7IBSWejA3b4h1MZOIhk+/HeaW0BgAgGx6
+ AffB3ACJicsOvCYVjhxPXu4mY6gMyyvMXrYcBcY99Hwvy8nPA21uxMq23Z+fM6ByRTMO3Pt9CrZ
+ 3/gVJtId9yGdahi5mrd8N2eKe7CBFwW/YBVAySVsH4AdUTxL07YoDuMUrMxCB/4uqBVCztJwiUR
+ xTW7BgPeNUarLir2zAQ==
+X-Proofpoint-ORIG-GUID: 4l_lO-46vS7Iysb2OZJZw1RAe6BrHG2z
+X-Proofpoint-GUID: TFUcd-LP_fOH215WDHCHEKfbKeHlNYfN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-11_02,2026-02-11_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
+ clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602110122
+X-Rspamd-Server: rspam11
+X-Stat-Signature: dqdqyfw8rxdenp3hq8s7rzmhnd3od9by
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770826568-911902
-X-HE-Meta: U2FsdGVkX1/m+lEdrIqNGN/NesPeszd7SwALnjIWqlakiKgoUVJdkM8/YINQ0YD9MPw5MmLC9MAcQ5QobnQJHcfPWeyD16x/CEkHRmInBtYH0wE/sJ+SC6bSUbYnY5sYrg8Pd5z/bGzU2ITHFgOZHgortiGhkw/n06iadanzOom4XrWtxP1J1bqBnub9G0vEC80NmMoBx8+ZUZZF0IGA6qyATP4komWAumBrgR/6kDxGnSd1FM0lgx+P/cCtTIcrswi/j1HQ0YTd3SOoyaZeCAykNxwOGjy4cq4SRiuNF8+KzCNt87S2l8m3nxCnDwhgpK4g1L/uQQhMGw3cb4Kf8VC83emez+sP9MRMEySMjowzF7EvH/WWa0f6fCEn++aBUYWlK80ZfzwaP/G4PtarEaD3RAzbJKFQuZqCTPvl7w0hL/fhz+b4WHsjN0Ns0NcQ1hNIdnCFc0skEgM/4foDZMJwY0Nuh9KyKEl3NMqrfbc+N/8m4piRhmYxCKCTOoQ/zagjiznRN+XiPOHpt6D4SKvHSts3g/YHnCobjdzeyFQzh7czXskc6BJ+UgZ2WfWsXuO18Yl542z3cmvdh21mOk7kXTJVGsEZyhrycf2dv44AiSfBchlfQeLeEA/H5GaM5tBLIc2EW1JgRsbOhV9HgdEJHlX2dthMGaBdEvNtF9Ock0tb9y0iVqMGb1evd1mVDh9sOfd14dzu6vmm3qLOKIDEd6xnPQaIHY25DFPcIVYW+gLpYU7o0UiqDKkQH/+/nmJ69yzqfFMSLcWGWc503uYkLdRIdI5Jqe59gD8YGAg14y4P8dWSmSano0x5zPPRJMiiZla5ioFd79z2yr0EH5TtNTNj1wNHa3PpBzY4XqR6TbEb97RJ91feAYhqt2GE7xLzzMLyJ8J6Qk5/8eeHgTfh6PnxpMfhnwM50L0XeZzUR537FO7fq0V0Gr/LX9gSbepjEOk7vocPLhHAOPN
- 7mgT7pms
- Vwb4Z+vf6LtIlIfuiXZjRE4O0jSiEeJJsPOU21Lz39UF4AIGKZSTV5CAFjfvFyD+odAzh8t3Kh1zBeS4Pmier9jT+YuCP+dpPWeG2l21ixrhREo4GoMOJlYwlDX2dLdEVBg4Z
+X-Rspamd-Queue-Id: 2D3E1A0008
+X-HE-Tag: 1770826571-585934
+X-HE-Meta: U2FsdGVkX18SdHQr/MqR9m9xnNYm46vxXsL0YjQjZT0+7xhhNZvS/98YfITTWnr32SPbEbm50SPmCsY9IWjJh1ofxXoQ3gA+XizSsYAONuT/Dnm9ulZWbGu0K4ceac3wMvAVOpIhNM5RjrNLSFdpOJ6XyECzJsQN/+ZJI0Fq/9DytQdIbJvjhmUubtHB000agn/5wCJ9gBHD6xKzGZ7zf1f0sy2PyrN3Qz+2tLolstiX7XKHYm8kh7Kl3tMpi8LIgs46xWloqxgmjx/NfSvk6oDQnm8y5DcjMYYF4P/lsbrYPDo9C050u1297guQ8OOxRIncAwAn0/jyupbvS8zwpPlr902wwzWvn6u/42eYTgwImhrOnzRzEA7A8AfrpC37aRvC4AYX8oAy1mahfGirGOOU8MyI6LDd3PH6QCb4SaTIoK4IIIyUhTNa6abrV+7nQEoVmC5uekJIXIIm/7BPATBb+h6kIonbwKaUEzoq1SEbLVZVu1TRu8BAE5ljSmGCHw/5ZaYdr30/Hw6abgHkvlZhS2EXTSrAjNNv8wgH8ZjxpQUq3nrgdfPS+17rBlt6sTKwKGB9857HEAuxRMLG4Cf0l8qdsXEgvdTghL/jN2Uolh1EuMUuNKmRfudta3MwD8CoMUX3WSu8KuIzYpD/cEsFafNECcWmwlMXmWqoFExRJ7g4dZ7mAkVOW8xouG8x8j4TI9fLEiUtZ2HdswyoYeVrjpLYTqolP3DH+xyedMkkuMr9D0MCLqhcqJrv6NoClSDKlf0DI3jbN10sVPChhH9bPeYWVISRb2G5YgtM4EnpWkU1D7RIO8svlfSX3cduKFEfjTyDDQUfcUDqxToOMXlVuAmUmgcD61CD3Ym9QwwXFbAm67R4AOaQrQ2krq+gEakb5xeDTZW81vIpYRTO7AbwRCH8S/Ezhu/8w1rtycSt23uvVhV84ygVSKKtglkyS4b1Vcn20msiHHGp31Q
+ J9GnRE9l
+ yaOznAyuokf7B45mD1ZWfHBT/E1UWrcB1hYHGCCedNaj2tLGpGwULgb+gEbipDyBFHYApI2svSs5jHwt3UGUKqlGDfJy+tsgoX3ebMWxEsKn9ypnW3greARGNktTWCEutYKmGPMvkRNW1vyz268DIumvh0tMq8Fdh/vIC7CRfzq4wzb12xiLqhx7SvGjpSo/e/xXvV/avouD2mk/32SvwYHP+Gq5H4NlIoslWbVTNBxeyEcKXTXkl9uPIhqIV8492rZNpDygde1A8SydmXhSkA6MC3lPxDksD9cq9+121fh3czPhT+ZJOqHhm1zkL4q0a/S3KBuBlLVTXXdhm7M/exQO7AalaL6v2IWrloMOG8Ff/ZVskrV4zlkp3kFlr2Ima0R5Saw+NAdnFZmnBsGoUNJefv+BlsKJiU7Oob/PpnQtZKH7VlcIg7JC82XPmU/U3hZz9CnXl/+hxZfAM78wft6R2+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,47 +171,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 2/11/2026 2:47 AM, Dylan Hatch wrote:
+> On Tue, Jan 27, 2026 at 7:06 AM Jens Remus <jremus@linux.ibm.com> wrote:
+>>
+>> This is the implementation of parsing the SFrame V3 stack trace information
+>> from an .sframe section in an ELF file.  It's a continuation of Josh's and
+>> Steve's work that can be found here:
+>>
+>>    https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
+>>    https://lore.kernel.org/all/20250827201548.448472904@kernel.org/
+>>
+>> Currently the only way to get a user space stack trace from a stack
+>> walk (and not just copying large amount of user stack into the kernel
+>> ring buffer) is to use frame pointers. This has a few issues. The biggest
+>> one is that compiling frame pointers into every application and library
+>> has been shown to cause performance overhead.
+>>
+>> Another issue is that the format of the frames may not always be consistent
+>> between different compilers and some architectures (s390) has no defined
+>> format to do a reliable stack walk. The only way to perform user space
+>> profiling on these architectures is to copy the user stack into the kernel
+>> buffer.
+>>
+>> SFrame [1] is now supported in binutils (x86-64, ARM64, and s390). There is
+>> discussions going on about supporting SFrame in LLVM. SFrame acts more like
+>> ORC, and lives in the ELF executable file as its own section. Like ORC it
+>> has two tables where the first table is sorted by instruction pointers (IP)
+>> and using the current IP and finding it's entry in the first table, it will
+>> take you to the second table which will tell you where the return address
+>> of the current function is located and then you can use that address to
+>> look it up in the first table to find the return address of that function,
+>> and so on. This performs a user space stack walk.
+>>
+>> Now because the .sframe section lives in the ELF file it needs to be faulted
+>> into memory when it is used. This means that walking the user space stack
+>> requires being in a faultable context. As profilers like perf request a stack
+>> trace in interrupt or NMI context, it cannot do the walking when it is
+>> requested. Instead it must be deferred until it is safe to fault in user
+>> space. One place this is known to be safe is when the task is about to return
+>> back to user space.
+>>
+>> This series makes the deferred unwind user code implement SFrame format V3
+>> and enables it on x86-64.
+>>
+>> [1]: https://sourceware.org/binutils/wiki/sframe
+>>
+>>
+>> This series applies on top of the tip perf/core branch:
+>>
+>>   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  perf/core
+>>
+>> The to be stack-traced user space programs (and libraries) need to be
+>> built with the recent SFrame stack trace information format V3, as
+>> generated by the upcoming binutils 2.46 with assembler option --gsframe.
+>> It can be built from source from the binutils-2_46-branch branch:
+>>
+>>   git://sourceware.org/git/binutils-gdb.git  binutils-2_46-branch
 
-> On 2/11/26 01:58, Ackerley Tng wrote:
->> Ackerley Tng <ackerleytng@google.com> writes:
->>
->>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->>>
->>>>
->>>> Yes. If there is no guest_memfd we wouldn't need it.
->>>>
->>>
->>> Seems like on 5.15.199 there's a hugepage_vma_check(), which will return
->>> false since secretmem has vma->vm_ops defined [1], so secretmem VMAs are
->>> skipped.
->>>
->>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/mm/khugepaged.c?h=v5.15.199#n469
->>>
->>
->> On 6.1.162, secretmem VMAs are skipped since secretmem VMAs are not
->> anonymous [2].
->>
->> [2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/mm/huge_memory.c?h=v6.1.162#n135
->>
->> Same for 6.6.123 [3].
->>
->> [3] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/mm/huge_memory.c?h=v6.6.123#n125
->>
->> It breaks in 6.12.69 [4].
->
->
-> Do you have a reproducer? If so, which behavior does it trigger?
->
-> I would assume that we would suddenly have secretmem pages (THP) that
-> have a directmap. Or some page copy would crash the kernel.
->
+> Do you by chance have this work uploaded in a public branch somewhere?
+> I'd like to get a new version of the SFrame for reliable stacktrace on
+> arm64 patch series [1] working for SFrame V3, ideally with the SFrame
+> library in your patch series here.
+> 
+> https://lore.kernel.org/lkml/20250904223850.884188-1-dylanbhatch@google.com/
+No, I don't.  Following is how you can easily get to tip:perf/core with
+this work applied using b4:
 
-Is there a good way to verify from userspace that the directmap hasn't
-been restored? Should I use CONFIG_PTDUMP_DEBUGFS?
+$ git checkout -b sframe v6.18
+$ git pull --no-rebase git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git perf/core # pre-req for [PATCH v13 00/18] unwind_deferred: Implement sframe handling
+$ b4 shazam -T 20260127150554.2760964-1-jremus@linux.ibm.com # [PATCH v13 00/18] unwind_deferred: Implement sframe handling
 
-> --
-> Cheers,
->
-> David
+Following is how you can get to a tervolds:master with all of the latest
+sframe related series on top using b4:
+
+$ git fetch git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master:sframe
+$ git checkout sframe
+$ b4 shazam -T 20260127150554.2760964-1-jremus@linux.ibm.com # [PATCH v13 00/18] unwind_deferred: Implement sframe handling
+$ git am -3 # resolve "unwind_user/sframe: Store .sframe section data in per-mm maple tree"
+$ git am -3 # partially resolve "unwind_user/sframe: Add prctl() interface for registering .sframe sections"
+$ git mergetool # manually resolve prctl.h and kernel/sys.c conflicts; bump PR_ADD_SFRAME and PR_REMOVE_SFRAME; each case must end with break;
+$ git am --continue
+$ b4 shazam -T 20260211141357.271402-1-jremus@linux.ibm.com # optional [PATCH v9 0/6] x86/vdso: VDSO updates and fixes for sframes
+$ b4 shazam -T 20260127151926.2805123-1-jremus@linux.ibm.com # optional [PATCH v4 00/12] s390: SFrame user space unwinding
+$ git am -3 # partially resolve "s390/vdso: Enable SFrame V3 generation in vDSO"
+$ git mergetool # manually resolve arch/s390/kernel/vdso/Makefile conflict
+$ git am --continue
+$ git am -3 # resolve "s390/ptrace: Convert function macros to inline functions"
+
+Regards,
+Jens
+-- 
+Jens Remus
+Linux on Z Development (D3303)
+jremus@de.ibm.com / jremus@linux.ibm.com
+
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Ehningen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
+
 
