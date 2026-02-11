@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F601E81BD2
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 09:28:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 251B5EA3F27
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 09:29:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BEAC86B0005; Wed, 11 Feb 2026 04:28:39 -0500 (EST)
+	id 662716B0005; Wed, 11 Feb 2026 04:29:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B99206B0089; Wed, 11 Feb 2026 04:28:39 -0500 (EST)
+	id 616986B0089; Wed, 11 Feb 2026 04:29:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7A306B008A; Wed, 11 Feb 2026 04:28:39 -0500 (EST)
+	id 50FCD6B008A; Wed, 11 Feb 2026 04:29:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 965DE6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:28:39 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 522F713A13E
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:28:39 +0000 (UTC)
-X-FDA: 84431650758.19.C695B49
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 7928E4000B
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:28:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qZVXYvqU;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FAEF6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:29:50 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D3313B7CCA
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:29:49 +0000 (UTC)
+X-FDA: 84431653698.17.F947A5B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2B1C68000B
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:29:48 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BMaLRZBS;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770802117;
+	s=arc-20220608; t=1770802188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I7c5vh71thlyay7cNKJKDYQ9pnXHyz94LTTNgoVfOF4=;
-	b=RpW7LpTHPeBza0kf1eNg1PmNp3e2XvUtdT7rAbZEpLuhqLXQ75CdWmT5nYWCkW3iXstrVr
-	sT+ZhKo0XYvSgCE/L3RPaWhQThhrN9imlGxs1NapaITUiZkJiLAD5uDXgp1Ofet8ph73ZC
-	QO+AhwZd3sYvNPGYiWvqJcUwIBknI/w=
+	bh=0fwc1IZVDl5koKvbhTGOWNT1lDUqHawCcT/+1npsTxQ=;
+	b=ArjjntuTzMMlW3jaIz10VBBZSo21e7wExxCMsfa3aZ2GeJw3t27OQW4GlKYla7OzNNuRUj
+	PW+l/N0hzbVaWQtStytKZ69MsfdRk1ldbWQHFChdjeSLSBacWRH/lVEYZHf1xo0mWWAZFE
+	e+VGO8YTPM1ShovpkUZbkGoOSYI7zf0=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qZVXYvqU;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=BMaLRZBS;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770802117; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770802188; a=rsa-sha256;
 	cv=none;
-	b=14jcL1zgbQYhr49DmZPuPpru04TZe88p7RhbZKytXQjJ/bYXlNtGYdh1SLkJYvcmRPda8t
-	o5mA3ojCPi8+uo4DCUv3dahg94l1ft08LVr7B7jUeVtQc1ZgTKZx+z07htCesaEdUw1isV
-	RM7Jwp+Lujlmce4dDsDjOFZNdz3nj1U=
+	b=bpxfYU/J7taya6FS8r1p0ZHjedu1skolW4zUqvaMQ+LIuqWG4SpbvB+P/SUy6HGv9G4s85
+	frzpCvfeaFnXTlWt5iB6SMGQ0iEU/z5frAgG7/Le8EqmQQ+W02BWROqLIDsobbWZ+4PTxV
+	Yjw51P9YsckRargtN67csdSpHzlINSI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3C06C40BD6;
-	Wed, 11 Feb 2026 09:28:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB15C4CEF7;
-	Wed, 11 Feb 2026 09:28:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9378F60018;
+	Wed, 11 Feb 2026 09:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AF60C4CEF7;
+	Wed, 11 Feb 2026 09:29:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770802116;
-	bh=pOY9HpZc4cB550PofSf69VKd4oFcGg+ZGQ9glPc/n7w=;
+	s=k20201202; t=1770802187;
+	bh=3JiC8/bVFvEvx5XbMpJxOW9AXyw3Kn6clSPJCGhCMfg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qZVXYvqUVMAUSYIwLAk/cf3Wu9vMlZicQ6LPzFPuA9V/7EpX5AL9sGet580dOCPom
-	 ihDG0C0ROWQLZ1SbhAMn/JFLDf119UKmA3N6MLgIZ49ijOVl0YMAoXAtkPEkx2xLCj
-	 Bs0jfRkyyFJmqxUmmInMf6yjah4js0nnZBRyLfT4iJDkdslrcAZJKRnfFRzcNw6NwX
-	 uz0Wt8++Kt1+mjG7pbeCi94DuNuTKkeN65M69JqO6r03joQLfyXNKlrrs0jiL9IyhA
-	 cvoPltyeWbvFPIJdUZXxrpdRyNzh/CvemjMQrbCFmL8puUHydjrWZ04VtSvNCdhkxl
-	 2KqNkxFEMnluw==
-Message-ID: <bac19363-0705-4bb2-b022-66054e1f28cd@kernel.org>
-Date: Wed, 11 Feb 2026 10:28:28 +0100
+	b=BMaLRZBSoyJej9h8rFbWett7fI7DOWV01JMoluJ9BEXoEd5AIF4J7k9wct136eI9U
+	 zk9Bc6kwY3f0KkRVUwzu5DdBtmEg1chlAnqZYJSHxBQLpnca04PdXtNGANKu8r2eU/
+	 hpcipX0X6sYrojfkh3i3oaPQePjYXTmXnKcNv6BeNI1CfHVQlzq5XOGjZ0IvN3MRjz
+	 th9ztcw5lWynGDAHr6IlsolYXGVF1pL78gR7EFWjjynsdV44InfyEoyHSs+XfyLtFt
+	 GTEVICd9mm7h0JuFjfLSTrlmtRV/QgpT8oA5si0ejdsnJ5txVNRD/54hrc3NLVJu1L
+	 qpWP78YC4CEZQ==
+Message-ID: <5759bfba-f235-4b2d-bb30-919dcdfe7b2c@kernel.org>
+Date: Wed, 11 Feb 2026 10:29:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in
@@ -78,8 +78,7 @@ Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
  seanjc@google.com, pbonzini@redhat.com, michael.roth@amd.com,
  vannapurve@google.com, ziy@nvidia.com, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org,
- syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com,
- Fangrui Song <i@maskray.me>
+ syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
 References: <20260209033558.22943-1-kartikey406@gmail.com>
  <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
  <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org>
@@ -90,6 +89,7 @@ References: <20260209033558.22943-1-kartikey406@gmail.com>
  <CAEvNRgFw_P-GZ=Z4irGheM4O-RnXkd_bdAd0AT7fUuwXEnSqHQ@mail.gmail.com>
  <c4c06a75-e50e-4530-80e3-13724c08a949@kernel.org>
  <CAEvNRgGg245-TQn2HFSadZ7gmz-FxsAQ6=N14BUgiYGHhZeLeQ@mail.gmail.com>
+ <CAEvNRgGvZbRLcb4JbXjsLUX_V59EApHYTQc49X3Jq70GxovD2w@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -136,17 +136,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAEvNRgGg245-TQn2HFSadZ7gmz-FxsAQ6=N14BUgiYGHhZeLeQ@mail.gmail.com>
+In-Reply-To: <CAEvNRgGvZbRLcb4JbXjsLUX_V59EApHYTQc49X3Jq70GxovD2w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: xrt38z1upcdgjuhxw8iowqibprkj7epe
-X-Rspamd-Queue-Id: 7928E4000B
+X-Rspamd-Server: rspam12
+X-Stat-Signature: xph9f3ya95rkdbsok9w69d5e1smyw3o6
+X-Rspamd-Queue-Id: 2B1C68000B
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770802117-158564
-X-HE-Meta: U2FsdGVkX19nJQEp4RsC0gCV9qzQu2R4lgLw7VKBUkw2UVx+mqXDgGB5MKg+gf8UKTXVS1nQ56K0qaXgKWINsp/p0TGgmQ3qzt5jC7nbn1tdEVB5t3JKmp6RXptBFPjrk6ktqu8nrOeECHJZfF96M7C43J1zQRrZ6yeHN2jdQeMfOm9XBcG+96mxC43XB890BTG3mAyeFJb5gKcCRtzH5Vi8DWlyhE+Txums61H8AxtVVILokxdWUFbRN4LD6bUkg7wQN2PS1CWdap4L8Y39tHHOyCcW/bzoyUFaUjuSwzTDHJfU7XUvn3PNDxdeXxipozFhEtYfozVTI4EUFIfulUjeHYCEL7VnEbUVrBhC6G4+gvyIFmpERw/oCHj1Zvf9yJXxbqOPPq4W+G+BQq884fQo0TIEccmjqxIaTOTALF6t9a//6nE6TL68T0fFxiklrbfAilg4T9A9Wzq4RCnfetMFBvo7HqHFdE54rvpy0UeIlQ6bf5ZnfFeQIYNB8ba63ZDddFj2PSX0gHZf3c6OETZEfd72Rd7QbOzKIwlKOvKMshAEaXuCZ8E1SAmD18PeYJxZ5XwlNYsfNZFRINfS7A8Ct7Fge/U12aGy135JSjfhk7OOIKdbKUrPCtFpa4Y7nzA/jtakbyhugxsX5aWmTF8NJghe5Ik7UXdnOLl2CqmxLIXiKrVOGNU6qB+kqlgsKPQ3L8Fek58nzEuWcGI0ZH7WNfHuWdYfBia3HMZwzP2ikJj+dzosl+QPlTRnb6IQQDu13RQkm87JDeailmRHdK0a3UQiQ/YO8nGK7pw/feFhUuIu3Fxiqc/QXp95V2jhjaUJiOUpvDiD1Fyszd6OZbwil2OBeeje9tPrq6u1UolFOnuQHU95OvPoGjffV5eIxA+Sy8Jjpytl3mHjGLSMs2bq2yqEH9GcV1VGeLJ+c/ZQfH1qS77/wrR+yY0Wlv+xua6XcsnhLSO1di9FMBc
- ga9Em32K
- Hazd40Ee5XXC6lbn52CVnczpYX5jOndLRuh+4qmqDQul37m++QiHfpnxem4SApqWXVodJ+gb3rAyX9IGyGO2P/tmlG+QTiNXFbwLKOyL3HQu7norThcPgTCEi1rSmd1XvkMEbDa4792OphtpkxTdci3t5dqbwSxdIVRVpLqkCkuIcm3TH9S9XgpC9l626GQ5bqXY/rp3qTjvwbWMnxoIY4zn+qt4n/qQy1xR1ccKKL+QJRYeK4tHzmpA3BGaiZxeCivnTJgowdgouaKIBzDi+m9loHHdxTtmWXpR42+o1lVbhY6Iri3tr9v0XxNFtgPQ4X7wKTZToV7Sdq4P7K9KxxucZBIEGyCFlgxIXjvLJIaMRKRofFku/sPgGfz3gGffHeEZk48hCTM6+ToT9L0qTXFmgfk0K4RIo9sT0BF6zQyOJ8u0=
+X-HE-Tag: 1770802188-81084
+X-HE-Meta: U2FsdGVkX1/g5aDJ0GuBMwBVjdfEjSZy3OAxxKCLGiTePNhUa3upLYGmYq79CNe/6u1TAeK9bMwpBEx4iq3SHxBo+L6U4qhUliYMNaccx1C3AgX/i3WyMH5AtNT3seVUC2yUk9o7Wydlr0KTrPTPAr6wLa5oiGTvkeAxGnNFykXvq9Z8XCo+iJb2hWyNn5556ija/2UniaqaEqN61020FknOaShKdyCs5F1ctY8WxYX9BMjwT5FwcUanVbiRCvidSNE1vT1N6DAcmSdtwHHeSVBpEPkkUTcczAuVtIhEfriqLX9Quomy2Zsc7GEUR/IG+6tuCfJRh0SGTTl2bSf7ar/g6L5qRJiPaXF2iTJ0Vc/hucZkp4MQDeFOSMlPOPUg0fKFB1/UNZ7ZOdgiA2ciZN5muDAO9mB4rLEODuHnxLDhtohv0CXAo7ydTSFdcmtLlZD/i/EgLsXdxTqg38mJQeMvNdZ0Vtftg/hKoahqnnRhgwnOlf5m6mTqm3IKBsGt5yleAayocHmwpnoDjkd9y2dzTMoVlieKXTW7VvHnP5yhREqMOlIXnAp2K/gAfoRmnaeY6l6OYaO9RZTP/siF4esp9QC6Ijt2gMu2PKNP4d0Vj0sd4SNoJc/slgJsdlA7V6Av2qWA5gdO78sXEyztRjFNjhpRG4VggwO77DsSUOdL8B1Ur3KKPJbwE70SuwZ0xen9QxUCcyVw+7fotSVvr5YOI2SbgLAIXngF0ZIlZVG/ZA0Ne2uATAUk/VoGuwAJ5j4C/xe2s+1g4kpTWRTRyp0xE2ojmEz/AxZ1YNYMctBR8FD5LhqDRZYn3mjYzgbZpKdaesVQ4eT/diPlDY7a7PumUqRgcst6FlOGL78x8Uf/seWh2SWd4wN56EsNSk/YU98LYRvw4ZYXdaTlk+5M+Otg754Z2nc02OExdvAlvmxCX2UMhgUPX7BIuUnxVskaCKQibybZueaArdt4Atz
+ 56rd91Va
+ CwBuy6bI8JGezBQz+9c/J0ErcqJEwHs0m6UD92l2701k/xTZPwMpJM35TyUn4qa4I4BXs3deDHJRYrEpIIdXJynL1Ioy82S3fSLecAL438e5tAQCLHCI69LOANtyUUfduGml8Mt/IQ+GDIOGl76ggeSAchl295MKX6KtgghaOGv4CRN71HiFUxs4CZR3j1s/wrC30RfVD0cwRGgNUbspBBIXnfHsKr1tZAJuX93NrvGeNrFQZuXaQynMI0wRqug+3BNTew8AWXpr4lhax33Rr6JuJO3Nt6lxAdD8pnQCndA2toHnbGgGqDZqrDR3Q707IwEWXQpW47S/1Sw/G3gmnzViFHGyAbVWmQvWl01OzvwQrbU1qWE98MSa1euzff++VRev9dGqhJlBjDtNKsXeTXgSse3CsxcZE0TFOk974Wt/7sq+gkm/Oy7KbAyQNDO65Ltrg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,80 +155,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 00:00, Ackerley Tng wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+On 2/11/26 01:58, Ackerley Tng wrote:
+> Ackerley Tng <ackerleytng@google.com> writes:
 > 
+>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+>>
 >>>
->>> I could give this a shot. 5.15.199 doesn't have AS_INACCESSIBLE. Should
->>> we backport AS_INACCESSIBLE there or could the fix for 5.15.199 just be
->>> special-casing secretmem like you suggested below?
+>>> Yes. If there is no guest_memfd we wouldn't need it.
+>>>
 >>
->> Yes. If there is no guest_memfd we wouldn't need it.
+>> Seems like on 5.15.199 there's a hugepage_vma_check(), which will return
+>> false since secretmem has vma->vm_ops defined [1], so secretmem VMAs are
+>> skipped.
+>>
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/mm/khugepaged.c?h=v5.15.199#n469
 >>
 > 
-> Seems like on 5.15.199 there's a hugepage_vma_check(), which will return
-> false since secretmem has vma->vm_ops defined [1], so secretmem VMAs are
-> skipped.
-
-Are you sure? We check for CONFIG_READ_ONLY_THP_FOR_FS before that:
-
-	/* Only regular file is valid */
-	if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && vma->vm_file &&
-	    (vm_flags & VM_EXEC)) {
-		struct inode *inode = vma->vm_file->f_inode;
-
-		return !inode_is_open_for_write(inode) &&
-			S_ISREG(inode->i_mode);
-	}
+> On 6.1.162, secretmem VMAs are skipped since secretmem VMAs are not
+> anonymous [2].
+> 
+> [2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/mm/huge_memory.c?h=v6.1.162#n135
+> 
+> Same for 6.6.123 [3].
+> 
+> [3] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/mm/huge_memory.c?h=v6.6.123#n125
+> 
+> It breaks in 6.12.69 [4].
 
 
-So if you have VM_EXEC on the VMA (mmaped with PROT_EXEC), it would work.
-I think secretmem sets SB_I_NOEXEC, which prevents that. Same for guest_memfd.
+Do you have a reproducer? If so, which behavior does it trigger?
 
-v6.6.123 still has that VM_EXEC check in file_thp_enabled().
-
-The check was dropped in commit:
-
-commit 7fbb5e188248c50f737720825da1864ce42536d1
-Author: Fangrui Song <i@maskray.me>
-Date:   Tue Dec 19 21:41:23 2023 -0800
-
-     mm: remove VM_EXEC requirement for THP eligibility
-     
-     Commit e6be37b2e7bd ("mm/huge_memory.c: add missing read-only THP checking
-     in transparent_hugepage_enabled()") introduced the VM_EXEC requirement,
-     which is not strictly needed.
-     
-     lld's default --rosegment option and GNU ld's -z separate-code option
-     (default on Linux/x86 since binutils 2.31) create a read-only PT_LOAD
-     segment without the PF_X flag, which should be eligible for THP.
-
-
-So that one broke secretmem.
-
-
-So when we fix it, we should
-
-Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
-
-
-What about the following:
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 44ff8a648afd..9fbe5c28a6bc 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -94,6 +94,9 @@ static inline bool file_thp_enabled(struct vm_area_struct *vma)
-  
-         inode = file_inode(vma->vm_file);
-  
-+       if (IS_ANON_FILE(inode))
-+               return false;
-+
-         return !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
-  }
-  
-
+I would assume that we would suddenly have secretmem pages (THP) that 
+have a directmap. Or some page copy would crash the kernel.
 
 -- 
 Cheers,
