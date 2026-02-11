@@ -4,89 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 260E8EB5949
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 00:45:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F459EB5948
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 00:49:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 312B16B0005; Tue, 10 Feb 2026 19:45:01 -0500 (EST)
+	id DA9B36B0005; Tue, 10 Feb 2026 19:49:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 296446B0089; Tue, 10 Feb 2026 19:45:01 -0500 (EST)
+	id D2D276B0089; Tue, 10 Feb 2026 19:49:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A1A26B008A; Tue, 10 Feb 2026 19:45:01 -0500 (EST)
+	id C0EB86B008A; Tue, 10 Feb 2026 19:49:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BCF76B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:45:01 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 969C41B28C1
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:45:00 +0000 (UTC)
-X-FDA: 84430331160.13.667EC27
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf03.hostedemail.com (Postfix) with ESMTP id E669920005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:44:58 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ogz/RM0G";
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770770699;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AC2866B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:49:51 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46EEB1390D2
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:49:51 +0000 (UTC)
+X-FDA: 84430343382.23.E6A7048
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 50F4B18000F
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:49:49 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IVlGNIt2;
+	spf=pass (imf06.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770770989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q3aJnr/OplGPAFmy1GI/fCChhGWEtuYa5I8f+gitr6E=;
-	b=LtVw0yt4xGVJHW49zzLSDJbzxNSGfhE8rNjegcM9hBdGvl29+eHqTXlF7vl9yZzZ6v3jQV
-	7lJyfCWqGuumdvZpQo516NY76VDoVUGxp/MyzAIjcbTEDLPhdRwxwjXUbivtTDiNZPDuLi
-	d4YCymz9sknKERlWUm7uA5UZibpvc7E=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="ogz/RM0G";
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770770699; a=rsa-sha256;
-	cv=none;
-	b=DR7SvenwnnHlGkd6XTmIMAgLeNg9Igh/a7Laemk9tK3PKbVepa8b5D94IGmw/rI+/1CRPj
-	cntGAJbXCTl9gbnub5HSWJKkk3qrHXkSjXSYcx1boSOjMwrZp/e9geCClPRPslwog5ACIH
-	bbc+sTtU2KexkQYEJYRfv4JJ1uX6q00=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770770696;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q3aJnr/OplGPAFmy1GI/fCChhGWEtuYa5I8f+gitr6E=;
-	b=ogz/RM0Gal0DKCePsJrRFYXBUFaCmlyOfJSgqV5bM5gS/PpkBBMe5t9pa8uNMEdmwTjj6S
-	ClJRpQ2A8D1XL/Rsioh9iFckh6maXSSEWcYoeV0oKgDFFelSResKvN41xh9IF6rawrwXsi
-	fVKzTqjA03Olw1uOiaVy+WE6WvHe8mc=
-From: Usama Arif <usama.arif@linux.dev>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Wupeng Ma <mawupeng1@huawei.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	stable@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/hugetlb: Restore failed global reservations to subpool
-Date: Tue, 10 Feb 2026 16:44:44 -0800
-Message-ID: <20260211004449.3731199-1-usama.arif@linux.dev>
-In-Reply-To: <20260116204037.2270096-1-joshua.hahnjy@gmail.com>
-References: 
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hT/HnxlJenN8jdxAr8ezONSXNmtdGkz90N1VSEnejpk=;
+	b=EsjSdoeDXPvSeWnJYwti1tR1LCON5lHhfQCJH8Bjm3y//lpiX9T47Q0by1l1MGolflTM+e
+	LXXN2NQjAP22hHzttmYh9Jl7xHL1IrOcKexehE66Fcjchnk1c9ZBc/kzcrEBzhferrN2bc
+	DdmWLpHCK4yJiKJ6WR5ebToN6Ven1jg=
+ARC-Authentication-Results: i=2;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IVlGNIt2;
+	spf=pass (imf06.hostedemail.com: domain of haowenchao22@gmail.com designates 74.125.224.47 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770770989; a=rsa-sha256;
+	cv=pass;
+	b=iatGp/t0DiD4BR9/cxxRo6UHcw/HR9/NKpT/Gb3U3Ej2OWAwZbS0awC12Avvhhf16uUWe9
+	XHFmzwPji9A7IXjQkels/wMdo48jwwcmnnShIU7++NT8u+y1XfiNs6R7b8SBR7+DvuMAlY
+	eb6klS0nf3LfiCL44ljGVgS703vRRQc=
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-649278a69c5so5614322d50.3
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 16:49:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770770988; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iDMbJPoL3ONUPI3y0UJrmJsgUNpJzC5rETUgjyDZFk8E7u9N7Dy0siyZ+lV5fcZlxm
+         DNtpx2yNyPX7CqdLZ4nwnHv48oEb1sXBQARZVdpy7frbk80+DeVH/aciLm7yTw0HAChR
+         HbSI+VnkOXXokzOVhdD7FIOMOkprwXV38DOVKxYQvEjN7ajYtTNBzcgVAPjBDR4UH/cy
+         xjiozxNYMuaEXAPobGhbSi7H1HFG2ejqi12qavUVSIX8a3p/yB6DK3mmUXF/wUJ6ABgm
+         Qdn3oCy9j8xYOwP1cz0pjlOqVHCJsVLejoM9VLyHmWIy0NyWo6H/cUwABgqVXBIgxuY3
+         mBsw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hT/HnxlJenN8jdxAr8ezONSXNmtdGkz90N1VSEnejpk=;
+        fh=5v5l+NF0A08kkNtqaulod0l8xHJvupyiBiYZ0eRIgew=;
+        b=VDFrica0bCoe38iVWJOTQzz0fWlg7XViW53Wo/Co0/9m6MeiXeXmh/3JAegR6Lsafi
+         alkWxAM1oJ7z/4D6uFOhEOdpN2g7+IwKNIZxXlSzwx+4hbxC8oXn9okC7og4g29P5HtH
+         H2DXE1M7rKEuiuHi9rdGcOTYok7A8wCI2ffscr6bk3LPg5e6ITSwipkVZGs2CEpaDf1N
+         mAwm2W0XDx3d/D2XUQVGKUCj4D0tbFPxdOh2s++r3iwo9ca5d1vy7oFqoIZ6Tqsvfnvh
+         ilALtB4bsvLkONOq6XPG1oYWspIccIuVOrxuV56JKHYYEmjdJOyzH/BWcwiYn0zUnJWS
+         tuXg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770770988; x=1771375788; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hT/HnxlJenN8jdxAr8ezONSXNmtdGkz90N1VSEnejpk=;
+        b=IVlGNIt2tmHOoA6LF708UN7JQhOoqi83c4/C5CRY/HkoUt0KfiCFv2CtGUTLUZnCg8
+         4VSL0Ya7IclgdJjMH1Bay7ALF7402c2YzKSwxXIWAhlirjm/tquxcFXy4S9FLzzkK+fW
+         I8M/wvj+pf7fXzgTIGUAe1mueZHvZo9j5w1XHBtNLzPGdNE1MEY7Z056sAZdFYsiYyUQ
+         ZSpcHs/d/iglhTKZGJ2BrX3G8zCkm7wxpXx/jZ4ojAer6jlIetFZAiZzXmfRdmNGFJeu
+         VO+dsHiwJi5zQVRnu1BwLFpW+d1rm7LycCZ8UzraQu7FXXqaBM0B8DpxSJ98msuigjLh
+         42ZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770770988; x=1771375788;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hT/HnxlJenN8jdxAr8ezONSXNmtdGkz90N1VSEnejpk=;
+        b=mPZc4bdZSCM8NDvZ9iymU10EwkjQpouFnhWYrZg9kGFpATNTMMzfaFHMMmVO2TlYFb
+         +YAJoiWqy3THcg/sT90Hgzk+TMJAW+QQ7fy6xY9M92BV17hnSYhJdt9HVABQX7CKZ/2W
+         bTqIkxJABgKk4HjCLAbdVpx9fdi+ixSVkB2yF7RKPaLyY2Aty4fDJXJoYkJxFBP36AMI
+         zRsbL7u+goY/HNNrCFjfkJIFtdhsiIn4jZABmcMZtTcN2pcXo3c9mvTOZ3drqZe+sJW3
+         SphOlhgatXllduRT53HLVP0ATL1rEfwmfDXJouJMflvT3eKaGYWPXsBPOKGklA8I+k/m
+         I6Ow==
+X-Forwarded-Encrypted: i=1; AJvYcCV4qVsmL0RW3AFYHL3jlARa1+9pEhxyC5l+uDHWRZs3Lb1ZHDLUMy1jdhCrWyCR7XEl1O1qfUjOzg==@kvack.org
+X-Gm-Message-State: AOJu0Ywcnpm2DvMFLH+3nDnbaAIn9wB8wZHb9B3aHOJWLyNmR4Zbk23d
+	J7OopgJ2klsIdpQ0R8mYsPJ9D8H7wXD7dtwuutvh1wcdO6f81wldHtwHis7aVIAAyU8VvZuoMIp
+	+X6WRrqYhXfhbLfAabVbvRdehZBcN5DU=
+X-Gm-Gg: AZuq6aIt0fltebIBsE+fWoLa7OdpkiSFUngotY4MAlWJp8DvmHO4vxzsFzgbiV5TyOE
+	pskDHfzKXewLP5XmKFjFmQHFhqRWV/TtKtNuUIqyMvrQo6ox7CxW+ugSB/If4LGslfCtzzlEyA3
+	KqFx9+InXIVRFrQIwvl4orsOXWiZV0mmwNOhB314bbGFXzuYz9Q0qEGo86Ypz9Aa/cb6AsZXfD5
+	pbwOWplgiRvyeP8mWT05AjnX9v7Fx70/1hdeelGDQ3J5GFoGusYEbp9hxqW3cvFRz6ixAZIHDSv
+	9hhq5p3j
+X-Received: by 2002:a05:690e:14c9:b0:649:97a4:d5d4 with SMTP id
+ 956f58d0204a3-64afe41afe5mr36285d50.78.1770770988216; Tue, 10 Feb 2026
+ 16:49:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E669920005
-X-Stat-Signature: ktim1qtbj7pq1xapgi6cc9urzoa81pqm
+References: <20260210043456.2137482-1-haowenchao22@gmail.com> <5c4d773c-e3e7-4a71-b250-91701cbdd4a2@kernel.org>
+In-Reply-To: <5c4d773c-e3e7-4a71-b250-91701cbdd4a2@kernel.org>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Wed, 11 Feb 2026 08:49:37 +0800
+X-Gm-Features: AZwV_Qh2VwhdMHufNtmkqrs4k6dnmFwaH9Rzv6VTTy5D7qsAsm5F-ip15Qvc4xE
+Message-ID: <CAOptpSPuntL5dy+D7-wWcWuOgxugD+_uLzEO8e4fyGjS_ZkUWQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: only set fault addrsss' access bit in do_anonymous_page
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam11
+X-Stat-Signature: jp4ope4h83uu1rkiiq4a3ny31inokmho
 X-Rspam-User: 
-X-HE-Tag: 1770770698-463398
-X-HE-Meta: U2FsdGVkX19ypDm6kXXk3LX/0sMmsWNGS4PVEN6CGkzQot0Ii8ymejq1unCpvWtOVz2Z2Jc+62vRDPBg+1TMA3uW3RBKGsYYtgaVYQCA5G70lVCte8erRB8ytd8mNdVQBrvJ/Oun6D7cTm5FmI5wXCGTlcMQG9QYuh9qi/PqtTXr4zB8crRQuYWJKNuTFthGihvkh2ySJdFPoOVQ7WlXFeTAp7S0j4vxk9Tgt1so89tqzQqiYLZSH6YYbW4bO6ADxVk+chNzkUPvOvuslGIXV1PnpdS1YlVEyWYPOeVrfZW0wo/vY1l55oKAjxe3qGTtzqRBeX4k6cRva2vb0LtuRrxR74r+LKRFv3vlEqjYF1l03bU1sGBze0DRv2n0NxEEbN1SVazhgDOisybP9K56ddb9AwCSKHIT2aK5mXoXrQVJHm+eaJsuml4Q+V0yKW1p4WDzci5Ua6Hs7vn28XHo/JU1H53rawsSuP1sdhICyrXKJtEQ7VZ7bKfEJ+0GxHXci/MC2XUR18Awnhi1/8Bn/vYomCGmYCQLuh3ndKrbL42vPrIGOj3k7htC8yszYYLU9DHwo3h2VUAwowy5JuSxozypmx+ZkFZbRzRIcmFu3UvMGGDuLtTzXU8/B6YNW1VRA0kMc5gDsji4Ev48vO1JEsu8efncfgVN3NBPc8nPIouofcaKyWrTndHwPWtW38fEZf3lgAE+S7JuuCf9wGtR4fHWzGeAbDm0OUMUSZuGE37KQmHYdJC7dEhj3PeULIe2ruzJkh4fJIBsoHqXo8pvs46TTNEf0a8125U9Hu4SOYfoyq8Ipt2EbXZm3UW29rp5JjN9focgXfcctaZGKf/PLOYjx53mg3OvvzqYhUhhTcV5XMbeVb/aGvPItkUPIKW6sJyMgRHfkBMl2e7Xrmk/vr/4hGpnZfQ9yo4OTxQ4xUKfxkWzdx5tg7Du6HwZTPj0+lDrRz+XsPCjgKtyjKL
- AzcpvIXn
- MNIWi06NYvR2WS+4xmXIrQFa7yQLup0/AeDgjk/orxj0Tzp2RyVGcbjvGBv/sWnzg7avlOsAnV7GHvHtHyz9fU+FwkF5GHBH0tAfjkMMpUesMTaQTZlQrMPzj4xhQcJMj2VVBk7mw3HZnxTIGF2Ne8dXKzNd+zgttqzVMul8p0E5lRlrF7t+HcHKfQtczxSL4Q7aNnhVylFoVJnmueoAFdjvY6NlvLzfk5hwifQ8z7i/tYzInoCCbCIrsyE1439UejTw/bXf0fIe+k4NWpua41gQtp7/D6MTfv0xdZDMb6sIaiSsR2OMqRTOKl2TFClsx8uiU
+X-Rspamd-Queue-Id: 50F4B18000F
+X-HE-Tag: 1770770989-713056
+X-HE-Meta: U2FsdGVkX18pPZ+h87T1vvbJOKvSftRdlOUumtXiVr6wMFgJ+aOkRjMVSgYJS/e9xO5+pzpjDcIdWmq+M4z9C2n0zygYXEMjePNjGOGCCAlanhG66iqgETzbbpewdtRKL00ibtx8OnbHsrmBOsXyq36lrHi7bBgNkbtcihPebRRcbmSNuQ4fv+qwWNHL9EneAIrdfnBT1kIXdzuIfLvLu6NNChBBRgiF47HwZv1pYCtXIVtD60PfapF6WNSPLmF9xUnuSoLSgtD+QHjnCLmdZDfwmiQSq/f6yktExGfwg8QCx55IANfospRlT7bt49jUy3nKbksuv0yngDa10lCiGwXcpgUQSqVB0dFi0a46x9UI8PHVse/H91kGt665s7/yjHs/UPinsOdZCPUFnqUI5T0AjCuXWYTPWo9p3Tt0wY+wxOSii42hUC/WC7aPNkFp6+rz9gRCKKD3VegZY/FVCGtM9Vnutni9rGKLJN5mrrb4Y8Gz/2/wUdrjgFIzTZaKBSkZE2WQqd9XVdTXc4pou/noA8FS6IvFIkpClUzfQyD4LrMuZSPMrW+v6ome3oc2tUBZXKN9igtqYEj+lXbCQ4IdFGdY8HGjQcb32/B10DzMQ0YvjcA/3OOf1RaDWDAul1hJ+aGk8ptt1RQGBVBK9E0rJKZDR78kb4rlRWCO2+YhjTlnktdefNinVPbgJpPorBdnzowow2H/YN/ltSzGs6xju4jp4/quuq0voBCec68wftrB2m75IWUMuEy9z3xvxK05xyoT1LCk/3+6ycOl6dI2NspFPAhktHgUCvIB1XqtzhIcw2BotefHWpR9iuKbjrxRiXMI40Xtq7zcxlMEKWvSKhE5U9v0E6jWOcIxDS93QTY+kgz6bwItEFMznUJRXM1eksI3eCR6sDdVa/1Wq60G189ZQSCnE6vIj9UGIAXhJPL5Tg4CET4ZImivrDNXH4xESeqD8DtR8gbDpng
+ YQ2/5Sli
+ V2PoI4u02wsWJBfmHarlu1yv6jr0UZKXmo1gkIH5+Wrf2YkwxhcS44YCxm1MyK3ETCQkIw7T5s5rO0grmH6N2gUYBMG0sWC8r2tDZJRPv08xVA3HYfw9FJ5nZ/8cYRw4g+LNM4DvZ4gDdvYI/b//lunARU/MFmSQsnvaUCktBhoB+3e7PcPdumvK+LghT7Z5JugW7NVyjCD+tq5tDsRJWxpapV6Qq90adF9FTLtmI2iV+o9Vsp2kfHfDt2xx48KjeNyIP+nLH2K8m9b5gvokKrQVgZ8/3jbldCRYVliOEcszUl2ZhK0xu+zNrMCDwadBH/LFBybklGFXy+4AasdfEu9rx5anGyNOqE1XhrIbIs6SSq7bdsNTfey20zIxTH4XwStRQ6lBjJhoA1lTIttyR+2MCwhZJQM7lcqU4ievUPfrY0mmCbHkY9593a+TT7LW09gB/NJm2YjRY+CobpSQFqIsk6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,86 +141,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 16 Jan 2026 15:40:36 -0500 Joshua Hahn <joshua.hahnjy@gmail.com> wrote:
+On Tue, Feb 10, 2026 at 5:07=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 2/10/26 05:34, Wenchao Hao wrote:
+> > When do_anonymous_page() creates mappings for huge pages, it currently =
+sets
+> > the access bit for all mapped PTEs (Page Table Entries) by default.
+> >
+> > This causes an issue where the Referenced field in /proc/pid/smaps cann=
+ot
+> > distinguish whether a page was actually accessed.
+>
+> What is the use case that cares about that?
+>
 
-> Commit a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-> fixed an underflow error for hstate->resv_huge_pages caused by
-> incorrectly attributing globally requested pages to the subpool's
-> reservation.
-> 
-> Unfortunately, this fix also introduced the opposite problem, which would
-> leave spool->used_hpages elevated if the globally requested pages could
-> not be acquired. This is because while a subpool's reserve pages only
-> accounts for what is requested and allocated from the subpool, its
-> "used" counter keeps track of what is consumed in total, both from the
-> subpool and globally. Thus, we need to adjust spool->used_hpages in the
-> other direction, and make sure that globally requested pages are
-> uncharged from the subpool's used counter.
-> 
-> Each failed allocation attempt increments the used_hpages counter by
-> how many pages were requested from the global pool. Ultimately, this
-> renders the subpool unusable, as used_hpages approaches the max limit.
-> 
-> The issue can be reproduced as follows:
-> 1. Allocate 4 hugetlb pages
-> 2. Create a hugetlb mount with max=4, min=2
-> 3. Consume 2 pages globally
-> 4. Request 3 pages from the subpool (2 from subpool + 1 from global)
-> 	4.1 hugepage_subpool_get_pages(spool, 3) succeeds.
-> 		used_hpages += 3
-> 	4.2 hugetlb_acct_memory(h, 1) fails: no global pages left
-> 		used_hpages -= 2
-> 5. Subpool now has used_hpages = 1, despite not being able to
->    successfully allocate any hugepages. It believes it can now only
->    allocate 3 more hugepages, not 4.
-> 
-> Repeating this process will ultimately render the subpool unable to
-> allocate any hugepages, since it believes that it is using the maximum
-> number of hugepages that the subpool has been allotted.
-> 
-> The underflow issue that the original commit fixes still remains fixed
-> as well.
-> 
-> Fixes: a833a693a490 ("mm: hugetlb: fix incorrect fallback for subpool")
-> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-> Cc: stable@vger.kernel.org
-> ---
-> v1 --> v2
-> - Moved "unsigned long flags" definition into the if statement it is used in
-> - Separated fix patch from cleanup patches for easier backporting for stable.
-> 
->  mm/hugetlb.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+We have enabled 64KB large folios on Android devices, which may introduce
+some memory waste. I want to figure out the proportion of memory waste
+caused by large folios. Reading the "Referenced" field from /proc/pid/smaps
+is a relatively low-cost method.
 
-Makes sense. Without this, used_hpages would keep on leaking if
-hugetlb_acct_memory fails.
+Additionally, considering future hot/cold page identification, we aim to
+detect 64KB large folios where some pages are actually unaccessed and split
+them into normal pages to avoid memory waste.
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+However, the current large folio implementation sets the access bit for all
+page table entries (PTEs) of the large folio in the do_anonymous_page
+function, making it hard to distinguish whether pre-allocated pages were
+truly accessed.
 
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 5a147026633f..e48ff0c771f8 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -6713,6 +6713,15 @@ long hugetlb_reserve_pages(struct inode *inode,
->  		 */
->  		hugetlb_acct_memory(h, -gbl_resv);
->  	}
-> +	/* Restore used_hpages for pages that failed global reservation */
-> +	if (gbl_reserve && spool) {
-> +		unsigned long flags;
-> +
-> +		spin_lock_irqsave(&spool->lock, flags);
-> +		if (spool->max_hpages != -1)
-> +			spool->used_hpages -= gbl_reserve;
-> +		unlock_or_release_subpool(spool, flags);
-> +	}
->  out_uncharge_cgroup:
->  	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
->  					    chg * pages_per_huge_page(h), h_cg);
-> 
-> base-commit: c1a60bf0f6df5c8a6cb6840a0d2fb0e9caf9f7cc
-> -- 
-> 2.47.3
-> 
+> What we have right now is the exact same behavior as if you would get a
+> PMD THP that has a single access+dirty bit at fault time.
+>
+> Also, architectures that support transparent PTE coalescing will not be
+> able to coalesce until all PTE bits are equal.
+>
+> This level of imprecision is to be expected with large folios that only
+> have a single access+dirty bit.
+>
+
+Thanks a lot for the response.
+
+I saw this description in the ARM manual, =E2=80=9CD8.5.5 Use of the Contig=
+uous bit
+with hardware updates to the translation tables=E2=80=9D:
+
+
+> If hardware updates a translation table entry, and if the Contiguous bit =
+in
+> that entry is 1, then the members in a group of contiguous translation ta=
+ble
+> entries can have different AF, AP[2], and S2AP[1] values.
+
+Does this mean that after hardware aggregates multiple PTEs, it can still
+independently set the AF and other flag bits corresponding to specific
+sub-PTE?
+
+If so, can software also set different AF bits for a group of 16 PTEs
+without affecting the transparent PTE coalescing function?
+
+The reason I have this confusion is that there is such a description in
+=E2=80=9CD8.7.1 The Contiguous bit:=E2=80=9D
+
+> Software is required to ensure that all of the adjacent translation table
+> entries for the contiguous region point to a contiguous OA range with
+> consistent attributes and permissions.
+
+It does not specify whether attributes and permissions include the AF bit.
+
+> --
+> Cheers,
+>
+> David
 
