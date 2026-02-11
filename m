@@ -4,111 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C929CE9E2F9
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 12:32:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B069E9E301
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 12:55:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB5006B0005; Wed, 11 Feb 2026 07:32:46 -0500 (EST)
+	id 1B65C6B0005; Wed, 11 Feb 2026 07:55:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D62E36B0089; Wed, 11 Feb 2026 07:32:46 -0500 (EST)
+	id 164696B0089; Wed, 11 Feb 2026 07:55:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C433D6B008A; Wed, 11 Feb 2026 07:32:46 -0500 (EST)
+	id 046316B008A; Wed, 11 Feb 2026 07:55:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B3AB16B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 07:32:46 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5FE661403C5
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 12:32:46 +0000 (UTC)
-X-FDA: 84432114732.27.F1F3CD3
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A0171180014
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 12:32:43 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dX1GSjYQ;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E86196B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 07:55:23 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79FE4B89E4
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 12:55:23 +0000 (UTC)
+X-FDA: 84432171726.14.9875E8F
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 933F480007
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 12:55:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SWq7b2JH;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770813164;
+	s=arc-20220608; t=1770814522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gpbkHMVOiy7h6xzUa+olz5JyQXkDzh45qhabu9+m2n4=;
-	b=sSC3eu0dq10Z7WYnUIZ0ESdK9zaxYYbRXHxks9DSND4JeATHuIczF+nkizn9yhJIaoPorr
-	pFNId2DfKH7KS4ozO9HeO/iideNczQD+mEBwmYD6l/g4P+VHG+7jKPvLilDs/TObBUjpRd
-	SaeAG1+TXodwD+qOub9ejCAvBaxi6us=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=+YanjR3U4weMG4VW1vewWJqflQleiBR1ZTIDoCsnaFE=;
+	b=YSR+uvG0tTkAs2dwUOQj+rxYoYlAWEr5ZjIZoJbnbpgXRQyYFBiVr+4n3IJdWWaHf7CA9c
+	DK6H21mnHGokvEq3JzLkEeME0983vrhP82YRc1YLgVO0r6Ip1vtiuAjNiPhfuXJKuR47Aa
+	8MPpxyUvPzNRFMJjh3vetz7lgohFzU8=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=dX1GSjYQ;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770813164; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SWq7b2JH;
+	spf=pass (imf30.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770814522; a=rsa-sha256;
 	cv=none;
-	b=ynLjCee7aAvC3ZClhIARYkaf0Wq6q2b8RFvSMIfcT51wJiMeCZyBRy/rjmvnL5vJvGDLRr
-	eR3fddiiK7WCqBfXPfWfBsgpqIxt57OaBwUI4DxQt23+toFHD+pT41DfkPkUC5gfzcmq/W
-	iZxwIUN/c9Ss0dpP/Uq2HrPkDzMGa9o=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770813164; x=1802349164;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QAByPVqT09++FJk0uuU+1F6APVuMo+EbFVRjVQuki6A=;
-  b=dX1GSjYQnQtK6RMIDfmq57Kz7lzyzuv/21PiSXrpXuQvALj4OX4OpQQF
-   w9AHKJhw7GurDl/o8A/xj2nT8RfhkjlnKjTY3euXOy1XHUxVvlUSeKdNl
-   I3VLLFgoL7GKnGt+Gq2hYcga/mlNv9o0nsJrj27+JHQjRFAeTNzBg5JM9
-   7r7SILOxOfsNNh+4530wuBNJReYvVdIYZMuEIXcHQAIib6psBKRle3pIv
-   Rs7mIQJ9nvjZOzZs2eoe3usR5jsRX8Z3xX7ZqodA0tJTndqunLlxDVCQn
-   ZqI21eCWmIM0DiQOABd8bT/nyo52D5xxDyFThQIwsyBVnaYwPMdjJF8Cc
-   A==;
-X-CSE-ConnectionGUID: YpIQTDxuSVyjsMle6GQGog==
-X-CSE-MsgGUID: b6nEoF09SGeOgVX4U9+Exw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="72145098"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="72145098"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 04:32:42 -0800
-X-CSE-ConnectionGUID: Lp5x3XOyS7a+N5GY+/X3LQ==
-X-CSE-MsgGUID: VWmLSFPXRma1eVX+c5/yVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="212327590"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 11 Feb 2026 04:32:29 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vq9OL-00000000py8-3rO7;
-	Wed, 11 Feb 2026 12:32:25 +0000
-Date: Wed, 11 Feb 2026 20:31:53 +0800
-From: kernel test robot <lkp@intel.com>
-To: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
-	akpm@linux-foundation.org, netdev@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org,
-	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org,
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me,
-	saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
-	mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
-	pabeni@redhat.com, david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	jackmanb@google.com, hannes@cmpxchg.org
-Subject: Re: [PATCH v3] mm: introduce a new page type for page pool in page
- type
-Message-ID: <202602112054.QKfqC0UR-lkp@intel.com>
-References: <20260210114712.55072-1-byungchul@sk.com>
+	b=FG5ZD+po1fpVPhbSml6kT8FwlzJvrF7nXOl/9aF5isU1IyqUQRiPECZIzWeHkx6jtsntHZ
+	Y63ym6053IEQlmcE+8YS1NFRs3Y+qAp8spOyaIkzDGXZRspeIr8pXFS+8PyNMcCF+Byj/L
+	Dhcs7J8lpNDND+S4cyJg+gjwroRMKmQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770814519;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+YanjR3U4weMG4VW1vewWJqflQleiBR1ZTIDoCsnaFE=;
+	b=SWq7b2JH1CPOwxMheZnHimW9HJpL8AZg6obmI0m2dIL+Pom0a96tDKGXBlm8ruKKKsFrn+
+	TnH/GuegF2B4bovwZO9eQapE+u5h2PEERC2fOJL4Wx93p3PofpYC/8qjmJhDNI7R61Z2sX
+	OwEvT520XSi/SJcKyf0n2epz/VtjbD0=
+From: Usama Arif <usama.arif@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	willy@infradead.org,
+	linux-mm@kvack.org
+Cc: fvdl@google.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	npache@redhat.com,
+	Liam.Howlett@oracle.com,
+	ryan.roberts@arm.com,
+	vbabka@suse.cz,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com,
+	Usama Arif <usama.arif@linux.dev>
+Subject: [RFC 0/2] mm: thp: split time allocation of page table for THPs
+Date: Wed, 11 Feb 2026 04:49:44 -0800
+Message-ID: <20260211125507.4175026-1-usama.arif@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260210114712.55072-1-byungchul@sk.com>
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam11
-X-Stat-Signature: xf4md1eoirexqyrp8w6nj7nbfk1enujx
+X-Stat-Signature: 6fnd544whfqe6dyc6pnf1kjyny4dr19z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A0171180014
-X-HE-Tag: 1770813163-197690
-X-HE-Meta: U2FsdGVkX1/sMJODFT+zWSFweXmzUg2tE9xO6qwa+nqga85jqiNPPHbDwGmEy9rO+5h4lboGK1EY5VafSnFN/Ptlz7pVnwMnC9a7Okx0vPavi7HIWhR2jxmyuf+Q/BrjEtnzXkwDozsBR/tfdopraPIRx7JZSAefTpDIQD5npS6g8fHNPatbR6jGXzFa4XR/vgdzz+lfyfBIANWroTyB6IwUuSmJeNqyISqUVjw8GE3RQdUxPJUUubfmDpv53xN+CRW+lRLvIb1qKHGp+HlJzApToHfVtVCny6APadt6FmDsy0/4FvyaqsZicH7XuXSQd9J5hYzm5A1uShJKYqjlO369ZRf9VSSMvKWy4+xcFm6zojAAe4Fu8qJcthCQRNWppu0BvaCPR+Vk1NZVlGhfWrGrfAzoK9ojZftd8nkdxZi5EyyS0uGfnqgE+f1rxf1xef/EGSX4CBWnU1FHVzusDUstVrNIehSuYLMSXMRyF2IPOTuOm/WsAadfIXVO5tQBgu7v61W8LhaK6uWKgfdR7r2z2h7lyaRiFOU+aQeTfxiL5wfkW9xBYccXXUsO5I0J/BFyX1cFntaKX/I3MOdyaU2s71TMiS6YDhK/O0gFsKB2v0sW8TYvBY8yKfmhbw4+tJr/HCpX5aFUICOAXsXWh06ZhyEBrFEx1c8G841uMntr+3J+gaU/ucCE+63Dip5c9viuWoh2qHA4I6fT1mv9HT53JNUxya3em2Gd+wkY1L3N8T8JtXmCT8CBTAD54CDBUrErZN38lXJEpGY4wvOuLLRaVoW62NBtH45nSItRab4GKAkt9HM9ZyUW/o/f5hmy8S2Ljz0rlWGTE77UAmWFYfPNF35nzNDUukhjldmtE4ULqoaIpV85f7AMa0H5rA/+Z7IOkvtNXle7mlLlqahDOgLHcgEvcv1aGVVYtyJSxLGL/JvzVk0xnYkmCYMZ1OWLYoJOirbNJsd4FoT+fE6
- Hb2KMCp7
- XdH/yzjFxhidokSEPJgDXaHdntaFXDAuRVfvaYtsxOi0R48znQWYRJ+HzYHg81EWiNaur7iAGghw3wm5AxGg720FG9ZOXHBRjKbJjFzPam8VdvLUC+xTKpX2a08PyMFCzU3YnWAgnFYvBpC1rRYHrv1nc82wJ3VN5i1/SMAv5268h01FNooZ0tQyQSStOOLyAizlOsJ9as6+DctbgIa7FyqCTIeFowMYLxIT8xRGvHn5AcNNTwb2bi4R3cNvE8UpdUlqXTLOYnSmU6P7yLcuE96MP7hMYmeB5Ci7yBkCvDq4x3YKNfGuhmYOdV+t8meUUqqnA9BJ66RqnO7yOHVy6ehrwIuAF1rUhy7AHBRF9nzXJ22HWSf5RUgSirhSQKmFACmtDh/dIRANX5aqXD7G1u+MKkhrZo+AaXkDHMNB0PwNLNEXageUMHX6LTVXZS3Iu+Q7SUjhczSmn+6RkO6TXFXDciAPa2ZeHdeghby4b9um3ktZot0mMSkK+iA==
+X-Rspamd-Queue-Id: 933F480007
+X-HE-Tag: 1770814521-950610
+X-HE-Meta: U2FsdGVkX19laRw1RZieeQAUuk0ahcIaEVRTsp1x3pVsxPqYVRCCOY9Vx5+ml0S7JDtyHGwUdWYQvFt0yzv1KsHVn2wHMU+h1Zl6fYS1FUE7eKFOUY23qHPMtSMxylcRWw5Yj4l4vc+DOBuEOhLUFoCTBo7AJKdWUaFOp2T3X4YswDNtj99gywNyu4A94t7qc47jHxRAhXLbK6V7RAsvqXnHE7FmZYpZfzhs0ydo6Y9dngOixv2PUqvAT/Hn1sI0jyvgn8ySuXpTIqD5pmqDmN4Ahjg9IayC6n3mZNun7kDzKLCyGLsqHJ8VMaV49ktVtSSRpet4lcgP//UVmmvLfZM77rP8q3LT5Xf2OrhoCxUWddCTflJarXeFjjvj0Acnc6Bf/ZyE2jsIju6bdSdLVRXJLMMj1AhJjxpI9x3S8LGTvxF05h1IAOow3rI7os1h30lEo2y6xVOwX6tzZLPiFoiZyspiEQ6gq6TYEUC6NveCysUXE32GgvMGV7PYjFDFwKFeoKDdy/vXDaAFlwRefMLnMKlzPzSRotJGdDYaF2Kpv2kZUq2U9K07z3ZhCfpei92KbcGhLAS9i6ikRpbKLGR0+6UwW/A4zhuyzxhLK/KKeQ1I+ZpDZGcaFFvjInzu11/LAPM7FeAladAXkmiXXdCedKtTBzFqvojkMyxQMwizH9Q3SQ8KYj+J1aoiwSwZrbcsUAySF3EPDXywIydZdTOVy5pqYoOhUsnpcSmaYMrlaLxWekJ6qEpNxp1/cAlfPMY1JSAHbSJs6lk+GdxiDjSS9CtN0MsUvv5sk3aF+u18hIEe9VFgFOnR52aaltDuuAQ5itKU4iRmFpZz/cwGWyUR0ge/cxWanUaUzpvjv3qzU1STRJwZh/8OJlLD3FVNT819mnauWS9uSQ89DCMACrRA8gGRnvUh7jTc2gdbp4pAXjHqc7/UpO1RGKOvJIgG1eiO9mU+G6SyykLnY6I
+ 6H+MFe1+
+ NV83DOIMVMVJKkhNEIBrnBZF0ZC3e95RvYikDrJI1zpHssR2rco9c9QEeYllTbSS9Ppsp4mgPKgfGSfCLNCU5aPHgsnGq1A/UZ9iBupoBSRfyPj8Z5C2M/Qmc5CpnH8O3s5qrZvPCqbnKO15u2dQ5wyQNEH13VQOW14n7ejklH3VW+3U4+hFiUK3Xx4Oxtu3mTdKO0vzZv9W8bdGsEQaN4V14HHw+SG+jUm4h
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,56 +102,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Byungchul,
+This is an RFC patch to allocate the PTE page table at split time only
+and not do pre-deposit for THPs as suggested by David [1].
+The core patch is the first one. The second one is not needed and its
+just vmstat counters I used to show that split doesn't fail. Its going to be
+0 all the time and won't include it in future revisions.
 
-kernel test robot noticed the following build warnings:
+It would have been ideal if all pre-deposit code was removed but its not
+possible due to PowerPC. The rationale and further details are covered
+in the commit message of the first patch, including why the patch is safe.
 
-[auto build test WARNING on akpm-mm/mm-everything]
+[1] https://lore.kernel.org/all/ee5bd77f-87ad-4640-a974-304b488e4c64@kernel.org/
+ 
+Usama Arif (2):
+  mm: thp: allocate PTE page tables lazily at split time
+  mm: thp: add THP_SPLIT_PMD_PTE_ALLOC_FAILED counter
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Byungchul-Park/mm-introduce-a-new-page-type-for-page-pool-in-page-type/20260210-194920
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20260210114712.55072-1-byungchul%40sk.com
-patch subject: [PATCH v3] mm: introduce a new page type for page pool in page type
-config: microblaze-randconfig-r134-20260211 (https://download.01.org/0day-ci/archive/20260211/202602112054.QKfqC0UR-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260211/202602112054.QKfqC0UR-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602112054.QKfqC0UR-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
-   net/core/skbuff.c: note: in included file:
->> net/core/netmem_priv.h:21:20: sparse: sparse: cast to restricted netmem_ref
->> net/core/netmem_priv.h:21:20: sparse: sparse: cast to restricted netmem_ref
-   net/core/skbuff.c: note: in included file (through include/linux/skbuff.h, include/net/net_namespace.h, include/linux/inet.h):
-   include/net/checksum.h:33:39: sparse: sparse: incorrect type in argument 3 (different base types) @@     expected restricted __wsum [usertype] sum @@     got unsigned int @@
-   include/net/checksum.h:33:39: sparse:     expected restricted __wsum [usertype] sum
-   include/net/checksum.h:33:39: sparse:     got unsigned int
---
->> net/core/page_pool.c:715:20: sparse: sparse: cast to restricted netmem_ref
-   net/core/page_pool.c:739:20: sparse: sparse: cast to restricted netmem_ref
-
-vim +21 net/core/netmem_priv.h
-
-    10	
-    11	static inline bool netmem_is_pp(netmem_ref netmem)
-    12	{
-    13		netmem_ref clr_ref;
-    14	
-    15		/* XXX: Now that the offset of page_type is shared between
-    16		 * struct page and net_iov, just cast the netmem to struct page
-    17		 * unconditionally by clearing NET_IOV if any, no matter whether
-    18		 * it comes from struct net_iov or struct page.  This should be
-    19		 * adjusted once the offset is no longer shared.
-    20		 */
-  > 21		clr_ref = (netmem_ref)((__force unsigned long)netmem & ~NET_IOV);
-    22		return PageNetpp(__netmem_to_page(clr_ref));
-    23	}
-    24	
+ include/linux/huge_mm.h       |   4 +-
+ include/linux/vm_event_item.h |   1 +
+ mm/huge_memory.c              | 145 ++++++++++++++++++++++++----------
+ mm/khugepaged.c               |   7 +-
+ mm/migrate_device.c           |  15 ++--
+ mm/rmap.c                     |  42 +++++++++-
+ mm/vmstat.c                   |   1 +
+ 7 files changed, 162 insertions(+), 53 deletions(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.3
+
 
