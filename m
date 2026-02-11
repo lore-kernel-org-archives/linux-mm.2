@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C1A4EB595D
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 03:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D1E8EB595C
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 03:30:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 89EF26B0089; Tue, 10 Feb 2026 22:29:59 -0500 (EST)
+	id E5AD46B008A; Tue, 10 Feb 2026 22:30:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FD616B008C; Tue, 10 Feb 2026 22:29:59 -0500 (EST)
+	id E0EFB6B008C; Tue, 10 Feb 2026 22:30:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B63F6B0089; Tue, 10 Feb 2026 22:29:59 -0500 (EST)
+	id D35536B0092; Tue, 10 Feb 2026 22:30:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 55B106B0089
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 22:29:59 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1569E1A01E8
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:29:59 +0000 (UTC)
-X-FDA: 84430746918.17.847209B
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
-	by imf13.hostedemail.com (Postfix) with ESMTP id AD7722000C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:29:56 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=cvzJ3MJ+;
-	spf=pass (imf13.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C464B6B008A
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 22:30:08 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 768361B29B2
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:30:08 +0000 (UTC)
+X-FDA: 84430747296.30.531BD02
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DA0604000B
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:30:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="Vx/PWKIP";
+	spf=pass (imf17.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
 	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770780597;
+	s=arc-20220608; t=1770780606;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=DlxKDEX9Ctkf0ydS0qNB4rwbKcVtPfAX274yJ3VsAXk=;
-	b=DkjhXb/O88UG/V6qheTqoku/6MteJ+jbVKtBZpREIa6Vz262/ZgLNf7Br+XtQpLi9/Uecu
-	7mohqcf/Xy9C/DxSTGvbWhTisd/BkT8yn3M1MlQ1dxb6xcd9/GFLOwdm5Sy8RBSrC7Gr2J
-	G4ckPIYZkGG7iPTmoSTgxxRuu41mhjQ=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ORVMZK9TTKMl+jFhx+5kZzvswRYg3GhA/r8yrkv73eE=;
+	b=XTZ6m5qio4ERhTS+fTwsW95j8FBjdTCqvKlzYX9Gk9YKkJJPx+EQKss7jl2Xtm/H1cztzT
+	I3x3nemZ0iUEk6gqmYynV1gWf41Z5SEKLKvNVDJtm3yfoCdM6lK0MnggPZfWQfczpyBj5b
+	x09/mwx0gjd46TLTbKoo8j8qg9MzM+E=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=163.com header.s=s110527 header.b=cvzJ3MJ+;
-	spf=pass (imf13.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	imf17.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="Vx/PWKIP";
+	spf=pass (imf17.hostedemail.com: domain of ranxiaokai627@163.com designates 220.197.31.5 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
 	dmarc=pass (policy=none) header.from=163.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770780597; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770780606; a=rsa-sha256;
 	cv=none;
-	b=vSQ9W8YdEIT4r0Jn9hUicF9KQChw6NPys6AqXSE8TFJGxtO4IyrV/QoQgF41waaEW32SoC
-	Ah9dz0frPNbS6Oog6Jeo52lN8rMoQkbtohdnT7FoSY388G5zyUl6ilhoS4nhA6s1vfdq1P
-	y7NRrwAtcZRitwV4kBT8+5gNQrVnPVQ=
+	b=gZlmogz+8CNYgfHd5EmRpZ6ob1cXlQRCs8bG/HkDwddeoDtZervjm3XP9y//sCRFloqjE3
+	Yp8ZaeBC3KsPHmC1Nup/DgI5+h5Axy00pU9JLhvoB4l66P6mE6KQhTTo9vT04ulq3lY89R
+	bHMkSx9Ws0G8atqrd3ITxrlJF4NpNw8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=Dl
-	xKDEX9Ctkf0ydS0qNB4rwbKcVtPfAX274yJ3VsAXk=; b=cvzJ3MJ+YOEPmUlHfA
-	KOHspA5h8LCAicPdcvUEdYV18aaeGrO3E19tTcpfRbhyz+0FpPt/Q88gXXsitx+m
-	iShjgzO1T5xxdtdVWCoRG1dHMeoS0PSNUT51VDxIUJoHIXn1kin+mswPDpDhd/7N
-	wnPJMtuu9EA75lXxErsC3AsiA=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=OR
+	VMZK9TTKMl+jFhx+5kZzvswRYg3GhA/r8yrkv73eE=; b=Vx/PWKIPqvGfFelh/g
+	KfFjktTZZm9TEtVUQeXkFYUO2aQlZM+uQwAIUZMjUcLhCq2LVsIP6O+esfL3QYVZ
+	my8xCJRgIrWl2aNHNts4LZ77merEU1LF/uR9WM8mSi1Fai9gH00SZLvkomwfSo4S
+	KAw0+FtvoH3dBRBzspho2KudQ=
 Received: from ubuntu24-z.. (unknown [])
-	by gzsmtp2 (Coremail) with SMTP id PSgvCgC3f96j94tpMZp0RA--.2981S2;
-	Wed, 11 Feb 2026 11:29:40 +0800 (CST)
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgC3f96j94tpMZp0RA--.2981S4;
+	Wed, 11 Feb 2026 11:29:43 +0800 (CST)
 From: ranxiaokai627@163.com
 To: graf@amazon.com,
 	rppt@kernel.org,
@@ -68,26 +68,30 @@ Cc: kexec@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	ran.xiaokai@zte.com.cn,
 	ranxiaokai627@163.com
-Subject: [PATCH v2 0/2] two fixes in kho_populate()
-Date: Wed, 11 Feb 2026 03:29:35 +0000
-Message-ID: <20260211032937.208353-1-ranxiaokai627@163.com>
+Subject: [PATCH v2 2/2] kho: remove unnecessary WARN_ON(err) in kho_populate()
+Date: Wed, 11 Feb 2026 03:29:37 +0000
+Message-ID: <20260211032937.208353-3-ranxiaokai627@163.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260211032937.208353-1-ranxiaokai627@163.com>
+References: <20260211032937.208353-1-ranxiaokai627@163.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PSgvCgC3f96j94tpMZp0RA--.2981S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvj4Rf9N-UUUUU
+X-CM-TRANSID:PSgvCgC3f96j94tpMZp0RA--.2981S4
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtw1xXw17Cw4DGFW8XF4Dtwb_yoWDKFc_WF
+	4xtw1Ikr4qvrn0vr1Yk39avFWrKw40qFyvv3W3XFWxt3W5tayj9393Zw4DAFn8W34qkryD
+	Ar1kWrZ8tr4fWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRCHq2DUUUUU==
 X-Originating-IP: [117.176.243.201]
-X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxgRksGmL96TACQAA3u
-X-Stat-Signature: aqt4cgutwm1rh6o5aaxbnqjeaxiyc335
-X-Rspamd-Queue-Id: AD7722000C
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbCxgdksGmL96fAXQAA36
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: DA0604000B
+X-Stat-Signature: hct7zwn35mqwwcjq97wbyw9m4frbhzi5
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770780596-738800
-X-HE-Meta: U2FsdGVkX192YEP5sUIqDt1Lir8PEsuRlAUTPHyeZXmtAqkvDkSS+fAlDQMjhua10hvkPG+3HNbNXJen/f/vXyKAuGEuai2HmXDZ/P7DZKy1uFE+wPisK6uPq1ixnx5Y6b6ypNk93inMR1g8LsOy1WAPTa9ySEkEGa4pyrOU5OZzoMEMxfTcwI2zXFjf5TxoV36FjxREPtIYA1jQfSvmEUqYEMvO1nR0jPjlyLaNVV7DLCe4c+8zEsUj2JwCNPF4W6qQMrG0nfRcKGeR2o69s5N3/BGlUNJcHAXAOwEVZXGJOrFJCR10O9hH1hnk09l32VLEXWa9ypaCbR3xvpBq3dx3oSqmqlG57tTE1mJYkJfmo58AfZUbEIY90XWK4TtITxf9PQft5hPTRCDGfkriJQq2eWKcDHuqkPmps+mCQhawtgWPZiskmGgHy4e4Bv0oIZIHhG2XoX4wblrUJJuRpqKeU5RGqWndJYGVfKnVCJDgfaBT5Va4ucEvRhXKHktoKS7TVcaxVIeclf7OaMSRjfVaob0C+KpG9xyBZWMCST5qoWfZbo3Zj4NWhE1z0MaaXQylATvA/VGykF8Bi0Kt1Zn4toTZWvnABU42YqZaYY073hzD9KdK5To+vS1tRf6WZ/OFauvR12TKB27xDu6L5RCMdHv/f5r/tiSNxBDregX15jj/kWyJTGQUMxgtr0uyju2m5kBvpF1fULDSTuLk1xthV3HpRw9F90QE64Spj1heAlou/b8r7hfguyAxsuyWmyByYQVgvelDoTHPSpqBlMx9cD4mFe335AoKf4LR9f3G7NF+OOEq/Da6g0kvrja3JtlFqgWbKvHllERpejHkknR4U+ENg0R+BQW8lnnGWBxrlIyQn6++ymFBguceXyJjeoa7dJaUwahTRcKqUGI/Bvb+q3TAXT12dOS7NVkhOIvu4rXFeO1f9JoPhWcSPhURJkaTd8eYhU65WTmMsAU
- 884MMfVC
- SDcyRkPDDKMsY6G0tGM3SvbrgWgNo+K+UYrOZhaUz6CTqaeoRlGFg+qrJaJGU10y28KdTVqdMweXtniYFF1XDRX56ThQllKfp4VxqKOVeyQvkanBm4WOXZS7YZTn6myH5K3IHgB2t0p+L7hcY3LB7uy2zaCW8rrgdUnIGnTGfYzWNWQ4cbqHMtITeCcClGPp5c3uoUoNsTirh8WJWiweormGZ7Uei9F5glSlt9DvCX3U95wD0YkB2bhnrmclXpRBOGXR5ifyXFFlp5g8n4mYySz+7annyqUZl+eP/1r2gomMd24CA3ivT09UeuFKnzo8R8ouPjsdZ9Q8qqN85brWuCLESyEWiZHE02Zbr9Mn2NJBcVenHUDml0vF1IHWEnBaG81NzXE+ifYnfZ5SnE0EXZnPkz88a7L4HzKdQHKSUJjUXpCIiMUBDCvunANwbj1jPXU8+
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000013, version=1.2.4
+X-HE-Tag: 1770780605-527173
+X-HE-Meta: U2FsdGVkX19Coed0F3MHwoRtq9ExuT6dl3pFcrDoehu30+70JUZ4oKPEWPA08EV4aS5dPjnSmdjY+UjpzLZpi0/u3E+qiMKq2gaVwrocAwK24axdQNANZnih9sa17QZ69sb9FBT5iq847yrsS12F9wMs5ZZiS/z+u8t38fQqv3769jiXyRj19D6bhbpqKioXmD/+Mb08/OP1lzuA2zz1aAp6MuAZwkFohB6HRni4dbZJ5+PCM/mmqGLfvk3TNsfEb2tNTv9ElYYLhecVnciNSWLg4rC55qVOr3iAcxX2JqNzIP7UdYsK8+1uoBhvHncCTQbEfnnoHvqdc6YGmwpNRlNmuwNUCgAfcfFJkfl0Ge5Ud2D1N2bfn2hsMppe75jpLIZBCk0zO06vDmxTcK3y3ypTXH4XgPEgzETSayfDdJwbB6e7l41satJy4BQHV0RbGNsfSKfpWcHJncIa3PSmykRiuLM8p1ZkI11eLmd/sjhN9Q/7HRYwc1wUjK8eSgfGzGsgbr+d0DoRYpaibadS5Hr90sYgwAvl8ETNuMhnhEGqsRmgRh2jB88NtBaHN3cy1dR5PMKlKm7soU53QQ22cw6grl4L8MldCsaEV594zKzk2XvXfds4jGOoNb2Cz7NtgxORkNNksDmFwIz1yZMtWpT8/g1Upxis3ylPfwGjOA/zQy3zPu+JQgi5jIIw33SuDHFLVr4uSjaV1g15gQqypa8fHAQ5WDDdMe/7WylxgxhvqSqvllfRhPwDC7APLLDYPdlriaXVb4bbKv/XhK+AvV/rtIL64zwmn+RaAur/+OwlFHZHNtvpD7hUMU34oTPFn747k9bgqR+B9YGA6NlmNeB5a7gQSc/jRS4aipfSDlkI2uLjoq+tcc5tRJ3QmtJ/yQosKC/fjwrnYnNI4eoR8w1D4Gb7KsTLWuso4zxXFKKakIvrzglJXIf1T2eoLvCJEqcNdymGlGFT+SCdhcK
+ 7v3U/htS
+ 2JGFWn59Z8u/c2vdlidRM32KSdNr9iekk/1yIZdN2NQpiUa2LJUCbMYvWjvyzmaVaoUSqnYRgw80+weem6uWDAbzLDJiZcbfTklZsxl3oU+ShHg39pcR/MJTlnifcNkyPbqiNZOr1pu01KcVH1y8ykkUtDpFHad+66qfrIqVGew8yfRC/VN6plD4k35DfI3YmpuSNIxFhRuB8ZcTWIgEb0QpU4Al/A99OJp8dJC3EvPsoftEu5Ispovu0fvADLdJwgbTTfoN7TBBsyW1NnAiK9eyVkp6t+4fxsWqprrQhWRHjchPLsJPmKmLJ/ZQzsTBSMlHZXyBf4lGZpgdTDJfJUZzL5Z4bj/Pue+vOAYaWcXLDCZyYAllqerLpK4igBd3W+Q49fyA6JDouR3Ky2r6j7ttHAnZzcCKlEzTDUt9H1I1l4cFilmyC+J7KOpWuvxeR7OdgI9ZfqxeKGv7IZ/wLvylmW4W5LiVLmJOLEBiNOB02LRo=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,20 +101,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-Patch1 fixes unpaired call of early_memmap()/early_memunmap()
-Patch2 cleans up unnecessary call of WARN_ON()
+The following pr_warn() provides detailed error and location
+information, WARN_ON(err) adds no additional debugging value,
+so remove the redundant WARN_ON() call.
 
-v2
- - Improve code readability suggested by Pratyush
- - collect reviewed-by
+Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ kernel/liveupdate/kexec_handover.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Ran Xiaokai (2):
-  kho: fix missing early_memunmap() call in kho_populate()
-  kho: remove unnecessary WARN_ON(err) in kho_populate()
-
- kernel/liveupdate/kexec_handover.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 3c705b08a489..eb87d23e8da6 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -1507,7 +1507,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+ 
+ 		memblock_add(area->addr, size);
+ 		err = memblock_mark_kho_scratch(area->addr, size);
+-		if (WARN_ON(err)) {
++		if (err) {
+ 			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %pe",
+ 				&area->addr, &size, ERR_PTR(err));
+ 			goto err_unmap_scratch;
 -- 
 2.25.1
 
