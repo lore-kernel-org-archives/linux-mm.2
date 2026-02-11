@@ -4,81 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82CEDEB5954
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 09:51:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF9DEA3F27
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 09:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A3CC16B0005; Wed, 11 Feb 2026 04:51:02 -0500 (EST)
+	id AD9296B0005; Wed, 11 Feb 2026 04:52:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9EA6C6B0089; Wed, 11 Feb 2026 04:51:02 -0500 (EST)
+	id A868F6B0089; Wed, 11 Feb 2026 04:52:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CC4B6B008A; Wed, 11 Feb 2026 04:51:02 -0500 (EST)
+	id 989B56B008A; Wed, 11 Feb 2026 04:52:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DCE06B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:51:02 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 15E4BD6806
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:51:02 +0000 (UTC)
-X-FDA: 84431707164.17.63337B8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 892B96B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:52:31 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 37FEA1B34A7
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:52:31 +0000 (UTC)
+X-FDA: 84431710902.16.2964665
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 12EF2A0008
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:50:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrMsKA4u;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 693A24000A
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:52:29 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D7y272Pw;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770803460;
+	s=arc-20220608; t=1770803549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sj0sah4VH9KTOHdfbdaQs1GgmaRHR/mXBHJT0TnWSVE=;
-	b=4SmPWz89Ql752Z5jqUE+3wSMUgRhySeRtvlSvx1V7j3w+yISGiWAH/laQ501T3VXQMDs4D
-	kaVSBrTWdqugd6VgKkkr4NV3KS4OmkfRLYzudRKB6LCPf3KI99NHeLIecbhvKejrtcDgXP
-	FnpWP4Ufz59L/ZiO3ITrFG9JvALTOBM=
+	bh=MznkiduodhFwqc6+s4tdAQKjuitI7SIA33mvKF2Zmj0=;
+	b=tzzUuqSAJGHNZO60HWgS6SovTXB0jcOwIe6aMeCP8lmSx7P0zu9b0LMEMyl013An50BWef
+	qe5/r+8rOoAiQkzz/1RXjzrPg2UY04zjEa6tNatKxLv2YVLKWMzRtzziSmklLeaHPhhPQs
+	eu/QZYbfE0SAkiJGyNFBPebDFNeh91o=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nrMsKA4u;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D7y272Pw;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770803460; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770803549; a=rsa-sha256;
 	cv=none;
-	b=Y9lvRaw9KngqqjMv+aHonDef0ek00UO4VojWIAmBfD6uvR/TD+/a6pCuQ0thH4QQbcf50a
-	UwjevNxZBP9XyOPyL5Q0TIeqr3SZCS//0KUrdXZvvO6WEVL4drITeStz+xDpRNVkT/ukhR
-	H9IKOk1Y48H3sU2TVPomfS/BktPaSWE=
+	b=6WHYjvZt1Pg4NU0Tb77b4U0E+ywDobUn1PQQ6PYZYy9HNVeC6JGoRONo9+sRWwcqwSVvxY
+	LIEbPkMrb13joKt/mY/3260mpLMZK4w/1Wj9dHR1sAJAhEaIbWEp94x0gljGSQ0Si8OSAy
+	Mv1MOTVLhgz+lOXSboQJSnB0qkrhMz4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2035040851;
-	Wed, 11 Feb 2026 09:50:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5EBC4CEF7;
-	Wed, 11 Feb 2026 09:50:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5607540C1C;
+	Wed, 11 Feb 2026 09:52:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F36C4CEF7;
+	Wed, 11 Feb 2026 09:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770803459;
-	bh=ZVeXWMRpsI+QKoTo0IuGPihZpAUQgyQRlBxDPNaqAvw=;
+	s=k20201202; t=1770803548;
+	bh=jZE7p6/Tv2joRtC8XY1WotTMk8EeJ2cN3zlOCKCCW/8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nrMsKA4uTT5YLaV0n/vYdPqUxTR6HUY2N2/XMJ50J7UPYQOQQ472+MQHXX80z356o
-	 /58G5utRAeOUcJ3jlg0R1Blqrjh2vyn4UoSmkUn00AHsCQCfS4z1owbET8rWJ2s2oQ
-	 3sxAR2X+JQC8oHJF3OR+VfApferqYuy6+An4ISPVIRppOg/WP4hoqzv9HtntBggdxW
-	 PjScxcT9zwZsuzWxZ2ZJgQXMM/Qc6VwtZHkWR6tcAmQM4/WXTsg2tK+uDAROAkKLMq
-	 +uTWkllbRatVvON50IRAMpAs9qoJqZkI4PvZJfSyoclfvnLVnonAkGoQph+E9PohJ8
-	 jg0pys/2B4vqw==
-Message-ID: <104bc764-5a20-4ac2-95a8-b31f41255766@kernel.org>
-Date: Wed, 11 Feb 2026 10:50:52 +0100
+	b=D7y272Pw07UiclTv6Ke7GjHzbWPj31xJLtLZxihUrsfYCYOC+KEXlnBcepfQpmEEM
+	 ibl72TcF8jxAjdy2n/KD5ZFvBOn4bqZn2Qb3SHmAAaoo8tLMDy5Yqj94OHtEsjR/5u
+	 WJtqNIatEzBwsLk+IEn3/UG42hYwZ4TtCSWYMihVDmrKS4qNbo/yt8b5Hu13yipqd9
+	 WoH+CuCxowHU4f+fkQv7b2ZwsGY6SFO4lYh01XpypD3yrLDjVpCGkwmZss2t2xzXIF
+	 um2LslDR9HlTxT9rtNVcdAdGHM9l1ce9EmfTeAfiwzt+Dn+RYx0oSDvUgArXAGFDm4
+	 R6KNvmWrWgOJQ==
+Message-ID: <2359d7d3-61fa-4b29-9205-b9ad96839729@kernel.org>
+Date: Wed, 11 Feb 2026 10:52:19 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2] mm: khugepaged: make scan loops suspend aware
-To: Sergey Senozhatsky <senozhatsky@chromium.org>,
+Subject: Re: [PATCH RFC 00/17] mm, kvm: allow uffd suppot in guest_memfd
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+ Andrea Arcangeli <aarcange@redhat.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260211031512.261127-1-senozhatsky@chromium.org>
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, James Houghton <jthoughton@google.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Nikita Kalyazin <kalyazin@amazon.com>, Oscar Salvador <osalvador@suse.de>,
+ Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>, Shuah Khan <shuah@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20260127192936.1250096-1-rppt@kernel.org>
+ <aYJg5lT9MG0BQFkG@x1.local> <0032ac8b-06ba-4f4b-ad66-f0195eea1c15@kernel.org>
+ <aYwb2XgRiFayzBXS@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,17 +134,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260211031512.261127-1-senozhatsky@chromium.org>
+In-Reply-To: <aYwb2XgRiFayzBXS@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 693A24000A
+X-Stat-Signature: 7be87un4tji1h4z9ez67dekme3wiascq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 12EF2A0008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: batinmkqbycg9cxcou1mepwo8hiw5hx6
-X-HE-Tag: 1770803459-885665
-X-HE-Meta: U2FsdGVkX1++PFCfoCuWtaveTAFV6LrwSe8BJ5mq8W4FeuytSB7MkfB3mxFqAt0TdH3hBHy0JD4tFcZpz7Ka4+iRAicshS7LeO5nTP18VRmnQf62wgSkK8FN6uqpKfP5BSENgGmYGgE8C0KkhnLMo+qSxDbbvdx2dx0DFLeA2hl8Vd4KJitHEDYeML/Vk88ran3UsFA1H9DG8DzMTmpstLliZ0DlPd9WxuL+wJkuGtT5D1X1MgA2RG4c8IVa6FYpLfZDDu+80TYrJiupdYR95RAty79Z6QVcnUxNRNPUoemYbkpneVUl/w0XSTPeyLqsGRK7hDs3znx0uyxysf89y6WblHY1RFNA3eIyCBYGA6yD9Cm4WkApNSQwLDAiDCY1yiTjveGBTXgkXlZ0zJ0OuuLTNUOVwJ+1p4QdkK8mreXQE8roNKbNkobRVkpq6s1ZQ4HxCjfvOA3+9/4m1mriCqJmD3qtOyw82BZ1FjWbi3oZ7zzhM6IzgPYsxbDAIHTYK6bTUNtxyxtAftLVJFzodTwdDoYsGfZR4JPnuuno8uyGe3i65ZUueDxSUsowM0ffLWc7t/dZDsO/ncYavDfms8Icm+e+SiLr5h+xFEYIqfp8cdu/5FMFGjoy2c17EBReNCScSUFLX1lwQ/N/HImzb19aiv/NvfafcPZkbajrOgjTFrSgQf+Z+CfdfUgko55XhsNNjd+LKMXL0LME+Gu3VXFHwKeIkqCBoHsx8JzBEL97j7pa6KYiFFANA+MTYgpGgdAE9W62XDUI6pML6aiXSpRGVmcS9JxF/2skzwkHeaVJ61eD6WzkIpKHot0nLfliC9Kc/5Sgm0j4vaGAqGCgTH99Z/fDNGKQ/vRaQ4PxuZ3QAFhsK72drpuyAhxrP+Xkad61/3dK/0y7OtY+79zo463AGnNmud7Q2CWfv/NQDgkAntUf/qLJ8qIzMAG62LDmMU9fN0kIw5vTR8K2wdI
- bdnHsXTq
- ID/fcUHk0/1UdsXJOTRCwTOR80dbYtoZp+flzlyQDXVrfevo720X232vfWtaDr7uElXECg2Z1r1DQ1PVUnTFi3KRfOiTZ0ytGfZ2pqQtHOf06SCGIzaY3xKIdfjCI0yEf5v5Z9YokV715K/eW4OV+OiMazCVX7FkdGk1tdzOOO8u2NBVCrQaU0T2A3zK/mEwtbvyMA1ZBYaHCAbP8WYE4uvSLWi4bdkeJoPOlwUOuhKHwkPuvl+Da/ctSysvvw3S1EZq1J39q2k2jz/0IowJEXpbWh0rfoUZselKBtcHWy2CJXLn0dWdNsd1/Ww==
+X-HE-Tag: 1770803549-385708
+X-HE-Meta: U2FsdGVkX1/fS15zvyWZGhXU5IaSVfkbSpv/rMOCj2KPFHC8r1x9Ay0GXP1qUC2tex8JARASEkgv1Y8NPOU1d7ecj/dWEzXxLWPhz+cvYkXlSp5kTtmelE+qAvdRbztBve6oUK05lQeU1vv740obFFh/e8kaKIKZNvex9c3R+m2jLa6LNqprN8Qp2rGLsRGIDfAlRyE4+Dohw/zgYshwfdi2uFfhnCKYqOAEKu1QgspUpjC/vcdmVjUG1l25VhOSC2LsWIU8YJuhwytwVmqv1s2WCffX66aTbxAMS2CTx9GVb6lMZAP4l5Kh0qz1/cnjGbPG9SkW1zvWhbgs/TdD09KVsIlPg8LqyA1u6jcWzHX0a3423QN/iIajkKZi4fpB5RHgrG6KsUxghjbeLhROYjpW2QC4Glk/akDWE3uiEFkUoIrzjIzAea+WQTm+OvEBfF4lhpxlz50z3+HZY1Odhm78xu+u+Ao2UN3hcutVUNuf3ccymYI7t1G10JecJajrYBtQtSQ/gGovLiYDGb2bgNSlfNzIx/7uHOb+0ukGpZm6RX1RNjM024vZ1375JKDeeCqG525sdei5hlLChBgD43O5capwL7JEH2K83n8xl3gh2FHR3AxgODRbyzHvWGDI5ZYuaLMSb6uoZa9YyUvKr5BfuVqD94jD2zDkKAIp17ergAf23cG7l4N7fx8J+D7sTOkfwdMhr0jJBwA62JISODCkqMSBelWegG20cK/Q4dbMc0Hu1CCc1FPXbfXWS/idgl/u27wa2BsomJo9RzmxlsqfSmk3wmSdA4YJX/QkCEhRnKLuxCyuYmnDv8T5JBww3MPq1OKn/pHi1YkVs2Z+PfHvRBNZPF7t+aXNvrWq51rPcfFlg8xkNmPsVsoh70aY6tv91WDIshgUuhr+l00Uk7mXJAX53L7Aspl4ioh3dbN4dYyP7s+utt7YnERbAzR8cImUbEu8WZkPmk6mn5E
+ ewi23nr7
+ DyRZeLLALFbHC+18nDFS3wjzEYYB73k1yXNZIPAOcGB5Y0D/+uP4+awjuUfWcVfo+mNEA5t480STIHu0Czl3cr8V4tqGtgaLng8w/KPO3KoUAyPtg3RysQFGDsACgTqPgyL7ix2g5xDwMBagFqECND4a28sxA2m8e5otqVq86qAbZps03HSuum2H8xBV9dsLAHaOH7p+71JmFqcGLXm8nMWbwlHCYr+tJ6xw6NzfTANLq0tHkqj2h9lUbEKv1+/CC501mEzPfDO5nWddDWM+ymzsLhQmDJzoGmqZGu8QuXPFnPJSIzY/8mM/yiA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,100 +153,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 04:15, Sergey Senozhatsky wrote:
-> A number of khugepaaged's loops, e.g. khugepaged_scan_mm_slot(),
-> are time unbound, which can become problematic during system
-> suspend:
+
+>>> -
+>>>    	/* folio not in the pagecache, try to allocate */
+>>>    	if (IS_ERR(folio))
+>>>    		folio = __kvm_gmem_folio_alloc(inode, vmf->pgoff);
+>>
+>> That looks better in general. We should likely find a better/more consistent
+>> name for fault_process_userfaultfd().
 > 
-> PM: suspend entry (s2idle)
-> Filesystems sync: 0.003 seconds
-> Freezing user space processes
-> Freezing user space processes completed (elapsed 0.003 seconds)
-> OOM killer disabled.
-> Freezing remaining freezable tasks
-> Freezing remaining freezable tasks failed after 20.004 seconds (1 tasks refusing to freeze, wq_busy=0):
-> task:khugepaged      state:D stack:0     pid:1345  ppid:2      flags:0x00004000
-> Call Trace:
->   <TASK>
->   schedule+0x523/0x16a0
->   schedule_timeout+0x23b/0x6e0
->   io_schedule_timeout+0x3f/0x80
->   wait_for_completion_io_timeout+0xe4/0x170
->   submit_bio_wait+0x79/0xc0
->   swap_readpage+0x150/0x2d0
->   swap_cluster_readahead+0x3be/0x750
->   shmem_swapin+0xa7/0x100
->   shmem_swapin_folio+0xcd/0x2e0
->   shmem_get_folio+0x237/0x580
->   collapse_file+0x247/0x1280
->   hpage_collapse_scan_file+0x26e/0x380
->   khugepaged+0x43b/0x810
->   kthread+0xfb/0x120
->   </TASK>
-> 
-> Make hpage_collapse_test_exit_or_disable() suspend aware so
-> that khugepaaged's scan loops can terminate in a timely manner
-> and let system enter the sleep state.
-> 
+> __do_userfault()? :)
 
-Do we want a Fixes: tag, and maybe backport this to stable kernels?
-
-> Co-developed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> ---
-> 
-> v1->v2: Actually pass "cc" to hpage_collapse_test_exit_or_disable()
-> 
->   mm/khugepaged.c | 22 +++++++++++++++-------
->   1 file changed, 15 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index eff9e3061925..d32a5ad27097 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -392,10 +392,18 @@ static inline int hpage_collapse_test_exit(struct mm_struct *mm)
->   	return atomic_read(&mm->mm_users) == 0;
->   }
->   
-> -static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
-> +static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm,
-> +						struct collapse_control *cc)
-
-Two-tab indent, please.
-
->   {
-> +	bool was_frozen = false;
-> +
-> +	if (cc->is_khugepaged &&
-> +	    unlikely(kthread_freezable_should_stop(&was_frozen)))
-> +		return 1;
-
-I'm trying to understand why kthread_freezable_should_stop() is so 
-confusing.
-
-It has this !kthread_should_stop() logic in there, which, IIUC, is not 
-really required for the issue here.
-
-But it doesn't hurt to check here whether the kthread is getting shut down.
-
-Relevant for the fix is for us to quit when was_frozen is set, so we can 
-end up in khugepaged_wait_work()->wait_event_freezable_timeout().
-
-
-So using kthread_freezable_should_stop() is fine.
-
-
-> +
->   	return hpage_collapse_test_exit(mm) ||
-> -		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
-> +		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm) ||
-> +		was_frozen;
->   }
-
-
-Do we also have to enlighten the kthread_should_stop() check in 
-khugepaged_do_scan() to check kthread_freezable_should_stop() instead?
-
+Yes, that matches the naming scheme :)
 -- 
 Cheers,
 
