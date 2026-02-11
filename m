@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B674BECD6C3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 16:07:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE236ECD6C4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 16:09:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 09F2B6B009D; Wed, 11 Feb 2026 11:07:03 -0500 (EST)
+	id 405616B009F; Wed, 11 Feb 2026 11:09:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 04C4C6B009F; Wed, 11 Feb 2026 11:07:02 -0500 (EST)
+	id 3B2EE6B00A1; Wed, 11 Feb 2026 11:09:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E91146B00A0; Wed, 11 Feb 2026 11:07:02 -0500 (EST)
+	id 2B2A16B00A2; Wed, 11 Feb 2026 11:09:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D7F7F6B009D
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:07:02 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8041C58F94
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:07:02 +0000 (UTC)
-X-FDA: 84432654684.14.AE639E9
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9A71DA0008
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:07:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Bf7QB1RX;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D3626B009F
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:09:05 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E6DA31B3BD1
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:09:04 +0000 (UTC)
+X-FDA: 84432659808.03.AC627E6
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 16DC5120014
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:09:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ktUA/uul";
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770826020;
+	s=arc-20220608; t=1770826143;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yZ6DHhy5X0Na+gJDeHC2tBaf7GDTkeGvvSeEIpATl0U=;
-	b=SS0aBME/d0xmcD888760sGJqSCbFM0M5HxRDGDXDvOLljqvoecmC2vg1Xxm521fc43xvLN
-	eDCDNFwd+wYjHQ+YUPsb1XdzH++NJwWiYi6zrxbs64lDjL41g/zTZR8yuaZlsoDmSBIitO
-	E4Nw32M+7RoHN9lr2qAu59sLZZnhLxc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770826020; a=rsa-sha256;
-	cv=none;
-	b=nLim5Bzf9uC08LKDr6wSB65pqsNZOig9P+w88A1G50YprPs51U+uBl/05aA6mpK1mbjpai
-	1YUZjNszzz0uziW2m9blFYre7jw7cSFjtORk1u25V8ejg988BffFLGn3+aL+G2mHp7n3b4
-	iy1IEBjf8Lr53PNjyjwh81RUfFq4Lek=
+	bh=HM2IjAcTUnEdBWt63uoKHzhXSYFluNXHm3QawevxRTY=;
+	b=3/oAotBc2cWvld94eXrx5h9pLglymhHGgDHW+puIv+c4omTUffP1P1zjNnr2OnuZt8Waf9
+	ekaj3CffVR2A0BNph0cCOS8FGjVWHZIFZraw0FE70RRfjfdj0DxaX9wq7bk4e5RFj8rD9Y
+	z+eQTDJA2vr0JCrYwRCbMmPDFcAlVBw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Bf7QB1RX;
-	dmarc=none;
-	spf=pass (imf25.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.177 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8c7120353f1so560057385a.3
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:07:00 -0800 (PST)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ktUA/uul";
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.172 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770826143; a=rsa-sha256;
+	cv=none;
+	b=qW5NuOTaB4yAMZJxZQ8ve+ZZXrJTwKob6lar0y8VWoMLwGgVkq1sIObobt59Xp+rXRDjma
+	F249u9w8wkKma1/zcNhuAv1PzlxVlGEg60JbSKlLHe9JTNjbq8CVHW1F2pn7JAuKHsRzsL
+	6bLm1wv9Xk++aZpTMee5asvAn0tr0Go=
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8c70ce93afaso229029585a.0
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:09:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1770826020; x=1771430820; darn=kvack.org;
+        d=gourry.net; s=google; t=1770826142; x=1771430942; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yZ6DHhy5X0Na+gJDeHC2tBaf7GDTkeGvvSeEIpATl0U=;
-        b=Bf7QB1RXTQMdb9RCcZhyHxwghhXb7WavQJyyfJ+IpVcjsi3sPW9oZP2WuGgNb06GTe
-         le4d4l4LVSvUcfUF+sGE4Uhogx6SbJhaF+w24emAVjRbEoxJ7RQX2YAGbMH9nRclLYOU
-         V4r3Hpa6XhxdENybb9+mcMKLc4m43VOOqgScj8vFG1w9lcP1gzXcIK+1hXBuwJgz83Y5
-         maDf/glr2fCsD/vN56tPPqHhJQpOAUTbrdC9ZLAYmb7kCdkkYScx0AfybsX2kmkuhcVp
-         pA1N8aiWEjnsnMAjvVRs5/YUGhcTgqUvRNeKHF6JaZ73Jd/wKg96MoZhvvJUaay7B0Nk
-         d94A==
+        bh=HM2IjAcTUnEdBWt63uoKHzhXSYFluNXHm3QawevxRTY=;
+        b=ktUA/uulMR+2dKfRLsHQZNrt1o3z+jOtUpXnOIXrRNd77/Yg4Xskb/kII3+BNyMU15
+         ENjahBswg+QAfGu2Pc8pbatXzi99t56b0yRzBMQzbcjNA1kFAOa1BstxoAb800uGs9BH
+         W/Sx13bDUnWu6X4fuQixp8U1/Tful4xeePVaRo5SmiLCov8kgxRLzz+xAR3W6hAFHqOH
+         06ylIvom1hlZUYIc85h26cz+htCz8GiPKbqJpYUsOtLBPMa/VWF/SRHt1VYKCQKPmmVP
+         bz9nBkEpH6WPPQde507OKqMrdnjLAZoQDqju7sCYKX9syAQ1pRFxA9MKGrwZ2s+seXw4
+         56Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770826020; x=1771430820;
+        d=1e100.net; s=20230601; t=1770826142; x=1771430942;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=yZ6DHhy5X0Na+gJDeHC2tBaf7GDTkeGvvSeEIpATl0U=;
-        b=VSaeXPjlJJ6Z6nqNH1+vzSEeR8J/BxZH1tAbRxsQX83mVrvlMMC6/Cbnl6lntlFLER
-         OODW/1GQoYq+5nOpnRRgxZcbAOY0H2/O3VSb9zX4M66lM9oRDxcwBLGV7GhweEeVEaVc
-         LzH52O5ZkXEHaHbUs91Hfao7DM9GoAeNcG0aa2qUMG7D40rIZLSFLKHuxqkcUF2zp8Sf
-         /s5WU5qq1c3COj90Vak2x6SiQDtSLWTio5pedQF+55Bx3TiDKh59avPfhbVDSGuYcWyQ
-         Tf1qDj16Tvq9Klo4mjZtFnD73OJNEJ5A9khv2YFv1KGTcit7vr0N6k8O98LaIRmTh6do
-         0NYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqz28iggHYhv6Lx1KsHgHOTqG2PDY9TKgujgkiNgngmrTVr/iFMoNFOl6XX245s1cJL0CK4B8xNA==@kvack.org
-X-Gm-Message-State: AOJu0YzaKkKRFEC2ajIP1EHjT/vMPORPZrrX2HqwMl818vwdA9fjOPL8
-	1Oy6AA1RA70hSLXh+RQB1ktIG3dGjimVgv5mVryL0V66gyaBHV1/U3YaPoUMBJQOnkQ=
-X-Gm-Gg: AZuq6aL/AblKAS7uJMAoF78cM07M3/fNc2k+LarBXTNZDMXKmLu+AiXfb9vmBD5Iipe
-	DB1vv4LQuVHcpJ7S/9w5chCyd/5dgV0EMKZ6p46g2IrBanpPjWRhKjvan12AYjrVqBz0s6AEM65
-	u0dzY+hCGomzYIDgOXz5d83nL1FILAjlQMCTgc4rlbky+vKPUNc4BYpRRPL7WJWmJcuxJjKcKU3
-	qMsnfqb8uK36Y0Zhddjte7SGFsi9mg2bI9uYvMTH/8xVgApEwukRZSyMbR5MiuDTH8O561aMvjb
-	prD7dr7uc1BJAph31qSPBIQkU6U3FrIJWCoj35moV1TM+7ZZJbD6CLtgpZFYndS+Bo32FvOtAYB
-	G9yCi4dIhehVHr4tFny+z8/bVqnwMEK1e1suaUxA7pWBUT004j8+R69vP69sMzPF7+Id/Kl7sFW
-	RQ4GrAV9erMf8VyvHwZHahgX0Zw+ypyJll9BMNah9hi31GCtLoppxvRI5DPXxRwj6DetrUfZBqS
-	BQ6anoq5Q==
-X-Received: by 2002:a05:620a:29d2:b0:8c9:fb29:e1a0 with SMTP id af79cd13be357-8cb27f73434mr451398285a.7.1770826019496;
-        Wed, 11 Feb 2026 08:06:59 -0800 (PST)
+        bh=HM2IjAcTUnEdBWt63uoKHzhXSYFluNXHm3QawevxRTY=;
+        b=QGXLM0gzZEZQZKFzkqXWdMtw3KourjPHrzOGEE0JA0BriSyy52QrjqsuwNcaDZgJNy
+         DViD4qpeXfSex4yX4knVA7RdrhgHcS1IRDk97QXuYRfxu0L1xmX1Fr+josIre1Z6EI1d
+         dAm4Y+j4YUVTcPJcKuaGpAnED21QnbsItv+CrNvgthC0hWr+n8cFEFGZXfiYJ6ANEr+u
+         u75jv1K0tQZcc6D3+fyg2IhYGMPV3aqCTvTwum+Aq2d0c7M6fZz5lqV7B+nxUms0CpoW
+         7HJXL1qOVZfdSNcXOYzyrk6LR405xAcFkXyRmGVoASB08aZl2gg7tJsnHjBZYoELy9Oh
+         unpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTiqNTYhhnrM9d3EuWhB9hFFv4t8L+lgIwfievl++5H4X/sYB5XkE8gDsrYKD05CyyhzX5ZbOroA==@kvack.org
+X-Gm-Message-State: AOJu0YwD5T+LZlefpDkNglJo+uuUGDDANyiMl/g11W3jLBM9T6xxEue2
+	8FLt7W8xnJ5vVoHxXKPuXwPM2hD9oFgGp54gXal7TOubdsR/Qx+xy4V2Qre+FmSJHJY=
+X-Gm-Gg: AZuq6aLKoqS/uzztFtPN2BypfdWpE2XnnBr85VZ2Gj4XK8fOCLWty/CXJILz6Gp6844
+	q2RdsNwp4haGJP4EsGClysOTFatfeax7wJyfehxZ25VU2TguUjgdbHjgmWMZJm5xvc8q9cfI/kZ
+	Qo8mZSS/WntfI5y9kcasoa1EfqbnEUivJREQ7XWzjgBx3fZorOOrGVsm+DzEDgO5p/NVkALrZkg
+	yRYrJxV6rvLmbVaHBii8u0P/5Akh6IfdXNUj2urPar9CizYUhCSh4aOib9Q+g3+CHXoO5UAaM2h
+	rDRUbiYt16l3VhXyeNJSw/DuVwOwIgHY1PfhbyF6nQSKmlOathSuoG8lu9c5TzbzfN61nrBQPq3
+	X+/1eRDux1YhlQRlRjEdCYyw77lB82kPE841o4oE84NGneYkNzZxlY/9SZSJr45MozVld/V4Ei4
+	zSwDs0Oe9eQqR+Ac070acO3/yxUhohkznxcqrKyjeavmieP8F6H77iTRQAPvW8mi3WMqo3TVlLc
+	/85elZ9/w==
+X-Received: by 2002:ac8:5fca:0:b0:502:6ed5:7b0c with SMTP id d75a77b69052e-50639a0decemr242931101cf.71.1770826141985;
+        Wed, 11 Feb 2026 08:09:01 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8971cda750dsm19906386d6.35.2026.02.11.08.06.58
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8971cca9b6bsm18300556d6.23.2026.02.11.08.09.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Feb 2026 08:06:59 -0800 (PST)
-Date: Wed, 11 Feb 2026 11:06:57 -0500
+        Wed, 11 Feb 2026 08:09:01 -0800 (PST)
+Date: Wed, 11 Feb 2026 11:08:59 -0500
 From: Gregory Price <gourry@gourry.net>
 To: Bharata B Rao <bharata@amd.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
@@ -103,23 +103,23 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
 	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
 	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
-Subject: Re: [RFC PATCH v5 00/10] mm: Hot page tracking and promotion
- infrastructure
-Message-ID: <aYypIYOktgaVLqDM@gourry-fedora-PF4VCD3F>
+Subject: Re: [RFC PATCH v5 03/10] mm: Hot page tracking and promotion
+Message-ID: <aYypm59N7SlS3Gme@gourry-fedora-PF4VCD3F>
 References: <20260129144043.231636-1-bharata@amd.com>
- <911f316b-87cf-45eb-8d9e-412473d7176a@amd.com>
+ <20260129144043.231636-4-bharata@amd.com>
+ <7c6d427a-9fe4-4af0-93c8-18ecb2296e36@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <911f316b-87cf-45eb-8d9e-412473d7176a@amd.com>
-X-Rspamd-Queue-Id: 9A71DA0008
-X-Stat-Signature: bp3mqhhcnj8jg8zd1r7xhr34a7w1ancr
+In-Reply-To: <7c6d427a-9fe4-4af0-93c8-18ecb2296e36@amd.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 16DC5120014
+X-Stat-Signature: ho9usa67x378chomamjehba6xno715fg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770826020-708391
-X-HE-Meta: U2FsdGVkX1+q3GS212khwn9gZ24x6nHVWe4NKzjmHg5sntV38Xw93TsaIO+g0fvzXsgfZBrqKca2+pBac925YM0De0Jif+RZMa8ulH0VO4Z/5/FlbKqobZRuXSKtoUZpDrP7qnAxScazHESys/5vvnR0MgZ8Uln3NwT0/YhfevNmZxOjRkOPyZvPjtDNAzyAEgcFxeI51e5Y9J5VN5sQFetlP92EvFxes3Zg/noN4Cy7LcClFqA43W/9Ummew15t45Sce7IVuWDWzxUflDz0eqiUJGkLGPlPBTycQ1wgJ5Q62aumx6FE+xmlRDZ8afSJ9WsKxkyM899YHY5arud48hspb3lF8ywgTGX7fbFwjNxnUB9c8qnhfiiC+H01U7Z14G0BRO3Msr0XS+sBVTSzh7rKluu3IbvooizEwgPJuAfwQqRWIZ3icVU1fbUC38ZYtEoA1wczyu9pckFYtfPB3FC6lOITT4tJkdk4C2l8q0kQFK2uJBFkT9a0YpMWywj90skiFy46GDJ4shmQN/4Lf/+2fIf3LVScXL500btZutIzZilMqgx1Tf9njJHyc7lzebQcE2uEJiBZVLGeWoCgX0ygwWGz0s+L9gnLZk5Jay7sZVNUq9b7uZflgco01NXgiceJ+WCFhXhT3iQXJ15UkzxQvxW1361GyY+uMx1mWJKGvxqm8YaWtPRa5f5+C1tQpMH5NqYjcnKhOgeqxAr9kguRMchEswMEIU0kEDOQ1hOMWZxESIX/5MyvIDTCtZ8VRYtYTI5jgMLYbMUvxpX+k57jIXmaH4PkK0x4IhKumhGvutvdSWVxl9PAgIQQ4+u6CRwdHE/e5Vx1X44zLO2i4UufOcHFu97mLrlLpoRP9jfUeHoKZtQHhKMOLzy8qDRUK6eJKjTRhkRkat6hIE+axps06/BECX/XOzTFLZXln6j3OmsQ34I7X3F4s/5aakGWyYCtN15nZizbDQDMqO7
- aEr924QN
- jE/9fJvWiDCmyC3KvOu2QsAro2RzSuocJyMWBh2ppqVSnA7GITQhsrD2wsUJ0H4mpPXVNU43+7tD72HbyCKoy1Au3VwuflKIr0k8ogTyX4gqCAUAXgIgpefH936K+znbyLBo5Fc+KPeYaj0/yslIr88D1Y9T2CJ2co3lPwPLJ5ypvOUn6csHr5/TAIqy7foTxZhwc1aRDhVPGhIHQxRXi2Z0LBVqc1cPoic0uubqNobi8vGpR+s7ApCiMpcUWROd0JDUpM2coBlhXxpCvImF8vOwENIqphWZoD5ZNsH9wkMayJLuuHxyRTpR3P1Vj5TZ2CLzxqyboVyTl9yGrY/idIeOgSnXsB/Ue7aNv4LOQKteTzut/pUEX/DXFKYP4Nk5M7pLI5W39885XuCPI9CUIqVn0yaqQJhsjOG+TH5WwojljhRM=
+X-HE-Tag: 1770826142-459179
+X-HE-Meta: U2FsdGVkX1/Q39rUpgEIptZJOE6Zcg/dskqADxtBBVsPCVAK8i+D2ax9Z5aO6mZh1dDCJxr3e4nPeH44AyRw6cwSv/vmnXkTFW5EnspBOg+GEh6co214X4XyQweXH1JuNtviHgGtZXXLkU67UXanAVxExckty3D3tSXegRoWtUh34TLO+MsBEa7GwKUepoaROPsRGyJWfXd4s6HZSC5LZ1C/GsxAFnYizEt21Y9SVlOBtoJBvt1d4a8BWJ/dw1qrWupzm3PCOT+SNOGUostQNuWMYLNEVjNTCBO51CtTpwMuB4ASaZzcTrdQi7yVm5VPslCmaH+ea86Zx91srGaCqNPGNfY5pKw4rUH8Zdwic+jDT3Hsbvzi3WU2URdAR9Rg4PB9GvTJPpJ6eFNuMhFGKTP4irXVEkh+jvf2nMVTT5Zdig8zl3uh3ZUZs3+KO3M1aoaB34KzB3SQd6Z0xYqtQUAY6rjT28EVmVyPgL+lsApbzV0KgxKmnzlhalfbIasDMhn9bXZ16rprNXPq1fJfH4VLYQtpYvLSURnSwKMhvyGkahVdORaa/3lNshelN/pFghf+6S+XDGl3usfnKR8NWkhSIg0/S393N9FGUM3m1flz8NRMzBl04ik5d2afKDTFB222STWmKFwaVqMtkNjm+7SXBIIIsUCFczk6C+zEjAdUfpfk33Wq/OdHvz/BD4sYpclPQdPUr5CY9rWNc4txOudmgjHTXXX5SUiUI8fg964CQrC8USqv/eyaYGAVwhx1ohwbjNIEcSI63Ix8yAqcbxab3iR5pmfQY75Q7IOTqZmskdJDl7swh5JaMoc1vmgsPTjke2VHu+Das6clN0uuqA+pcUpqiwpLGpGRN1w7mBSSdaIFTbQOo13tep8P36p7Truby7kGqGW0jZHiBYAKTZpcscgiZA+XGnTfDp+c1AfCMyx83lS/jpAWzkw8F1wwj+tlu8sBWM7yqtgEWNB
+ TnDyeZqt
+ EAtG9PfMbVXClbEHseCpgh0gSFBl/ZPhBHdGBmCi0V06PEw5y02Zc4qxDZfvwqn/v9Yu3AqzL/Zfns23XMgNAoK/kko8gyYKLHln0wT4K/Rf0QIWjLr8VuOcYGJwV3Xhze3HUR3LJy9Oti9y4SwVNwj77tkR5Bz9aK771Zj5yBd5ci0N9Jyum4BDNSymRCWf9OCiFTCXD+fmGLPmP8uFtWgbT+hdqEZDiUyBWczzxpSeDZKvu9KZKCVJ8Il6g8KfI93gv9VPx9KZMcSb+Qh41151irgb0pK5/46V0GAJxd4TkKy0pHqux2+H0DpjVSqq2lHGCxcnsymyJ1sUpTyky26kcA1fOhX5wIvNoSIWzuhHMDqYEsohTcee6d4FKQ2h3f5/xe8I7u/jxWiwBrwi9RK8ldw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,16 +128,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 09:00:26PM +0530, Bharata B Rao wrote:
-> - pghot-default mode doesn't show benefit even when achieving similar page promotion
->   numbers. This mode doesn't track accessing NID and by default promotes to NID=0
->   which probably isn't all that beneficial as processes are running on both Node 0
->   and Node 1.
->
+On Wed, Feb 11, 2026 at 09:10:23PM +0530, Bharata B Rao wrote:
+> On 29-Jan-26 8:10 PM, Bharata B Rao wrote:
+> > +
+> > +/*
+> > + * Walks the PFNs of the zone, isolates and migrates them in batches.
+> > + */
+> > +static void kmigrated_walk_zone(unsigned long start_pfn, unsigned long end_pfn,
+> > +				int src_nid)
+> > +{
+> > +	int cur_nid = NUMA_NO_NODE;
+> > +	LIST_HEAD(migrate_list);
+> > +	int batch_count = 0;
+> > +	struct folio *folio;
+> > +	struct page *page;
+> > +	unsigned long pfn;
+> > +
+> > +	pfn = start_pfn;
+> > +	do {
+> > +		int nid = NUMA_NO_NODE, nr = 1;
+> > +		int freq = 0;
+> > +		unsigned long time = 0;
+> > +
+> > +		if (!pfn_valid(pfn))
+> > +			goto out_next;
+> > +
+> > +		page = pfn_to_online_page(pfn);
+> > +		if (!page)
+> > +			goto out_next;
+> > +
+> > +		folio = page_folio(page);
+> > +		nr = folio_nr_pages(folio);
+> > +		if (folio_nid(folio) != src_nid)
+> > +			goto out_next;
+> > +
+> > +		if (!folio_test_lru(folio))
+> > +			goto out_next;
+> > +
+> > +		if (pghot_get_hotness(pfn, &nid, &freq, &time))
+> > +			goto out_next;
+> > +
+> > +		if (nid == NUMA_NO_NODE)
+> > +			nid = pghot_target_nid;
+> > +
+> > +		if (folio_nid(folio) == nid)
+> > +			goto out_next;
+> > +
+> > +		if (migrate_misplaced_folio_prepare(folio, NULL, nid))
+> > +			goto out_next;
+> 
+> We should hold a folio reference before the above call which will isolate the
+> folio from LRU. Otherwise we may hit
+> 
 
-Lacking access-nid data, maybe it's better to select a random (or
-round-robin) node in the upper tier?  That would at least approach 1/N
-accuracy in promotion for most access patterns.
+Also relevant note from other work I'm doing, we may want a fast-out for
+zone-device folios here.  We should not bother tracking those at all.
+
+(this may also become relevant for private-node memory as well, but I
+may try to generalize zone_device & private-node checks as the
+conditions are very similar).
 
 ~Gregory
 
