@@ -4,262 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E58ECD6D3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 18:22:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F0DDECD6DA
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 18:24:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C2376B0005; Wed, 11 Feb 2026 13:22:09 -0500 (EST)
+	id 64F9B6B0005; Wed, 11 Feb 2026 13:24:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66FCD6B0089; Wed, 11 Feb 2026 13:22:09 -0500 (EST)
+	id 5FDB56B0089; Wed, 11 Feb 2026 13:24:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D2956B008A; Wed, 11 Feb 2026 13:22:09 -0500 (EST)
+	id 4FFC76B008A; Wed, 11 Feb 2026 13:24:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 38C796B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:22:09 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D3B538B4E6
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:22:08 +0000 (UTC)
-X-FDA: 84432995136.06.6406D5B
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 0C1DE1C0014
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:22:04 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FpzWCZ1t;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=SXtpJJVt;
-	spf=pass (imf18.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770834125;
+	by kanga.kvack.org (Postfix) with ESMTP id 3DABB6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:24:38 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 092F1D6BB4
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:24:38 +0000 (UTC)
+X-FDA: 84433001436.17.4244C95
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0944BC000C
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:24:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YSwi50FD;
+	spf=pass (imf28.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770834276;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CfZVEEb74swq2m0sRyvOUeaFgBk5HYVc9+WQMjbzgcU=;
-	b=JJ9YVw5WIbp+sE9Ugm8kqWcHHBOhidOXPiM0Wj1HgEo3Dn8JLDvlqEuh9pWwjFM7/y84Eb
-	uAakHzRCPygOfb6q9guT51WU6EieY4SIjjx4bZDkLkcObqw65gEJ7jmXFqy+FbKYCSmYnR
-	k7kRbPtzwtsVGSPyYrbFmwiBh5fJO5I=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=FpzWCZ1t;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=SXtpJJVt;
-	spf=pass (imf18.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770834125; a=rsa-sha256;
-	cv=pass;
-	b=MhtNuZmEarovnucmU5LUH621MGPNVYN3ahPI9yHtzRK9E0rjoYMShYxV1OWF6Iha0IKOmj
-	fOHhbhbpnYLie1NDifPAFOGn4+NNdVG2TPknFnoCdQpgZsf7B/JZ5T32IbbJIqargpy0mT
-	yjZvImHz66DCf3zybOFYsFxOv5oiYZY=
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61B9wSN01759149;
-	Wed, 11 Feb 2026 18:21:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=CfZVEEb74swq2m0sRyvOUeaFgBk5HYVc9+WQMjbzgcU=; b=
-	FpzWCZ1tdZkSHWVvMlfk1h3EjD1wH7Ad99Kso36XJGrwOVvk6C0nEB2bDPi643sL
-	LrGS3yXxeLynRz12qtkstHtGHyT6YAkuUQgrceFGFjlkMYgEa/NRhyZNWANaQ7a5
-	U5D4oN5gn6eovINbhBZacz0XxvfbPu/WBQ+1RcqhXNkf/ep+m1Oeglf4nhqzFfi3
-	DPl6/2YJfJIrumw9vpAOtZIZCXtq3NP44pBuJRPcswZIwrSG6kT7SAkefLEqINd+
-	Z60o8n103RAkEX+YwYqZagQp0OR0okgnLd9zj0pXM0rLO/XWwFzRrmUG5xTISug/
-	PT1ICS5X/iC8Z3eQLduTBg==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88n7j20u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Feb 2026 18:21:41 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61BH60IL030143;
-	Wed, 11 Feb 2026 18:21:41 GMT
-Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010059.outbound.protection.outlook.com [52.101.61.59])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c8229wkfy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Feb 2026 18:21:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RRQrd4ExcvImGU0fqaDoLnbKiBny3BEOFGZ0cK6t5mZ07pOTgP1tj8MdhN32z3B22HG5pi+lpKBKfWCdHfWf8oUw6jflu+bvWZDN6nd15RFKICIxAhll0HRk6/aQUh/DK9mSdQwOXOtBjdYpffVzoTZJV7qJRy7H6yZkN8kCpKLnAtNMee//PeonI7/exD7iSVL4hEsvV1Tn5XZPPWzZ6wLlc21ndNTb3L/psLpVsAYgmd5ir4PZBriVlHXk2y9YELQMIQHN2qCY62zV5zYx6+AXXn5Dw7MAmVXRZ5AujmzQA1Tiy8lbXsuL+cACDZ5owDC549WD9MJRvvDe6dOIcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CfZVEEb74swq2m0sRyvOUeaFgBk5HYVc9+WQMjbzgcU=;
- b=AJmBV8FbSRk12OTYQQgPSNORAZyxrUrCT2SiT/N+NflsEe9QSfvPLLZ6DRZLU2rW2J/asnmA2wMMGdRpoFioezKkdj2AJTR/YW5d1iJOpgYr4U+gZl/zCHyRpfYmwc4XUwYW899zdzH7U3g0bAQP+y7c7UM5nLDiBDeDaQnP0Iv7A6WFSuXLDDVWXErwLjZbwfxBACHvLTlUUtNRTdgY9iLOrYYLpli4SMr6gfktyTXQKgLS0D9rQY4kF6FAxHtEcoSbLl3FcCmTaYMWcvJWMLECIfJ4eGrUg61O7XyAyfznu+Eq6nTxeGJqlZuqMxfokH9b5A0qoAZe+mJG4KCj2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CfZVEEb74swq2m0sRyvOUeaFgBk5HYVc9+WQMjbzgcU=;
- b=SXtpJJVtLx6JpNupO1ntA00aL9nvkEpLYQH83sN+uoapYORIiCADvA8x+2UsEI1hm8pWyVXhy3MoOjpsBcIQ6ozUrTQ2FITX39sxumQn7zMwpcn9u7b5X/RZApMw3epOgxC64cxhAKy7jwKTuxp/ZLUCJeH7429lU019D9SLTZ8=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by SJ0PR10MB5568.namprd10.prod.outlook.com (2603:10b6:a03:3d3::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Wed, 11 Feb
- 2026 18:21:30 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9587.017; Wed, 11 Feb 2026
- 18:21:30 +0000
-Date: Wed, 11 Feb 2026 13:21:26 -0500
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Gary Guo <gary@garyguo.net>,
-        =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-        Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
-        Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>,
-        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
-Message-ID: <gta2wjt4tkcvyu7g56gqyipiigbmbk2ca3biqzmxc2npch3rk7@ccwzwgnk7mcz>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Tamir Duberstein <tamird@gmail.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
-	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
+	bh=8MvqNmSQwpT4/+ikv8C4uKJXx/Cpay4DtAwscanL//M=;
+	b=DWgrpm2OWcT8OcZz92KH0pFBiZEM0L4wl9z4yoM8yy5j1RNqryPqWYqRl8WeUat2xkfqZW
+	hpKHG9xEvhGXSRqeJgPpfUUVyCLMUCIIWHUi0+wFIsWBGhMeB3H7UfQ+tER7uZ3UmWjzAn
+	eAnTKv+ELUWjlbuUSarc3GyulFgMv50=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YSwi50FD;
+	spf=pass (imf28.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770834276; a=rsa-sha256;
+	cv=none;
+	b=QfkRHySQL7yPsK4ERzVm6bvuli3VqY3ADX52/tj3ZS7quGY4pYV2HYPnOfJ7R5PkIvpzgb
+	wJg3PKOUiFuHCF6FyO3zqe8ktGiGQaUzNsw34HppsV17QGm9kWdhYE1IIwS3ZlynfPS84K
+	e3WXaR83fWJFF8pytfKAHcVFe9Xxcyo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5FB2360122;
+	Wed, 11 Feb 2026 18:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28370C4AF0B;
+	Wed, 11 Feb 2026 18:24:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770834275;
+	bh=HpiSg+mkwqHgx2x64frOPx+L7lBkmxTpS7thY1MR8H8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YSwi50FDOsk1M8piqFrSGHTqEtzTxSyhZiXCPiXDV2um4XknRBy9JTiuLBRG+UaBR
+	 PaoxsAxaF81vnYM6yDQspUdBCwORgF9i7ifnYPM1PHNyPiC+GBgPeXFkFgMHfUQIgH
+	 zt9F7PzzjlutkStzFYa5U+En1y5JyWALfn15c18mWq9NiYYyyRSAl1geZc9saD1UwA
+	 gCtdofuUrjwyZ2m8+huGmuGbw/4zIvnTVy9OFE1TLbkhOy3aaAmjDyloG54c5wC+jT
+	 mtKB5TC5OLBf50JrCdrzQQvKM+UJVhFO/1Pi+jOSogEZt6r7U9uHOBbO+8pArzRPn2
+	 6BuhTa3Ew8jpg==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 46457F40068;
+	Wed, 11 Feb 2026 13:24:33 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 11 Feb 2026 13:24:33 -0500
+X-ME-Sender: <xms:YcmMaXsPKu4C8fwVMBpmz_YXB1komgXe9Z1xKGRHCvUfmGV8c5M32A>
+    <xme:YcmMadUMhiP7rNy62978_pU0TBQ0PLdEVjgD3Cs0Ny9rhg6bTfsW8MEabjuu3DYdV
+    rVzs8Iknza-eVX5Fw_bHNZIxOdgxNOmfXpaji6vznzZDvKEg_mG>
+X-ME-Received: <xmr:YcmMaYXlInLkzrqucIVl0_oP0vvECdZTaR0kagIsSnTeYMqqtMiTHGKyhZOeDQBVk_bPlSUaXro6D_YHBySFr1kYW6E5fuzY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdefvdeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnsehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvghrnh
+    epteelkeejledtledtvefhhedtfeeghfeuhfeljeevffelgeeltefhieefvdeuteehnecu
+    ffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurf
+    grrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshho
+    nhgrlhhithihqdduieejtdelkeegjeduqddujeejkeehheehvddqsghoqhhunheppehkvg
+    hrnhgvlhdrohhrghesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvgedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepthgrmhhirhgusehgmhgrihhlrdgtohhmpd
+    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphht
+    thhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopegrrdhhih
+    hnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhn
+    vghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomh
+    dprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtghomhdprhgtphhtthho
+    pehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhse
+    hprhhothhonhhmrghilhdrtghomh
+X-ME-Proxy: <xmx:YcmMaYQHUOxucR5jbTDRgfmIKNOkSlP6eFGjLJ1UIeSXp7L-srXKCQ>
+    <xmx:YcmMaXEkzIYMXeXUGXuM44BUwS-TDtJV8poDPC6b3zhxc68GIBiqbw>
+    <xmx:YcmMaYRR_zENEXjwshpBzZUAoaDwYzFhbjOnjNJ0iMkaUz8s_vSF7Q>
+    <xmx:YcmMaRqNX5MFLBFMC_9fwT-e3Xts55hgf99nzMI8U0BufmbIlZbGrg>
+    <xmx:YcmMaeqASKp3Dm0cX16EDAZKK5w2uE65TScbe4pAKAN3TLcSNNxChRD8>
+Feedback-ID: i8dbe485b:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 11 Feb 2026 13:24:32 -0500 (EST)
+Date: Wed, 11 Feb 2026 10:24:31 -0800
+From: Boqun Feng <boqun@kernel.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Daniel Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 05/12] rust: xarray: use `xas_load` instead of
+ `xa_load` in `Guard::load`
+Message-ID: <aYzJX5OML418GYsg@tardis.local>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
- <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
- <87fr77viat.fsf@t14s.mail-host-address-is-not-set>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <87fr77viat.fsf@t14s.mail-host-address-is-not-set>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT2PR01CA0025.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:38::30) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+ <20260209-xarray-entry-send-v3-5-f777c65b8ae2@kernel.org>
+ <zqo3qcdqlrxnqxl63kqeuvdacpbbywdrcir2kfwh7j6zvbfuq5@wspy4e75axfz>
+ <CAJ-ks9njGhT85pgUSahki989Y9vn3XOBNO5wxB8wE+KvbL00wA@mail.gmail.com>
+ <6sd4numrxigibwynr2lfmtdj5uabggrx2l57igtjbnq4uwddrm@wipmwcmqbkjn>
+ <CAJ-ks9knC3pKpiMaG6f3C1Kr6su9p26hM7YvVMzsVwYVHGtm2Q@mail.gmail.com>
+ <CAH5fLghKwNEdVeRi3H3LQ9NTPYprpAeY41-jgfq8YEST9PaGdw@mail.gmail.com>
+ <hq46fcdy6zvwcwlbtbjynqadiwy3wjs7raxioime2et5amzez6@wvzzlkiijwvf>
+ <aYzDzeh1cTN2TEVz@tardis.local>
+ <CAJ-ks9n0-Uy0n7CsZwPr37PSc_wo5qYG2YGVsGN50oPZN4MrSg@mail.gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|SJ0PR10MB5568:EE_
-X-MS-Office365-Filtering-Correlation-Id: 994f0660-f0b9-448b-de41-08de699a60d9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ulxfrppl+Su6c7gJAGxV/Qjez6EsGVoPi/c52pas3fdrYcpacZ8zWvW3GAH7?=
- =?us-ascii?Q?79MEibEkX+rixb7SAWBFMNI0gLs9AnQ7PDMRqsKnMtKp4NcdJwvoX8xhCoUR?=
- =?us-ascii?Q?/m+SuFJik3Bdk4YO9toYTcieoM4M0WBuMkiBKld3dUVpWqjeZvnEYuhnEgOI?=
- =?us-ascii?Q?WDSTwG3A1xj1VyCEseSMlT1uWfqaNuVqMhAJtUtwEYwU3/E93f7ShH1vqgb1?=
- =?us-ascii?Q?JF0E7Yb/iRyseVVVwB1CHERFpjh+S1JPs6O3DUxFG8vvDvqk7xvt2GvNhQ2L?=
- =?us-ascii?Q?+spUhsnmYoroqKHLst+tduj2eE/Tytm2rhQxprsCfMkiaMqc6VBAfuPxFvew?=
- =?us-ascii?Q?+w1Ong8CjP9YGsDNgA2JTOIDNLcFnjQv99ZEEhHhsD17KUQIHYoanuS4Z7z3?=
- =?us-ascii?Q?q0gm93SoJeGJxRHlIPmTFJLWXU56fZlOzmyqOqPiMDo2VAoB44Z2Q59G8nqt?=
- =?us-ascii?Q?WxYHKk3NIyesCS9jnCpqqgs118Kk3DhxaP6Bp+d50w5NHQHhZgLEZjHI8UbQ?=
- =?us-ascii?Q?02Z8gD7RzrMrbJsGA89hTsUyJRRqGj+YQIw+XtwjK7C+GY5n1Lok5pjjd7dV?=
- =?us-ascii?Q?hvvKCt98FLqViRTB2OoTUJhQsyA9x7kUq/5dHubNTvQo+Yb1IgdZOQFWDoH3?=
- =?us-ascii?Q?Nhpxatqm7mwSGTYnSWYKSh+Nl2ZknTyI+n+YWy6l8Hnip2nYmLT2UHmb1VBp?=
- =?us-ascii?Q?9zV5/Qdm3U8t0r1vtUxCwuS8JP+/Bk/CkAnx2ESlDw4v/wKqRNMJu+6mHjgG?=
- =?us-ascii?Q?R/QMLhbOIPgmn0+lmH9SQJ/2ipyp9Lvc4FhMpo39/9IDdi0QQJ2KGbp7+TDR?=
- =?us-ascii?Q?3kd/CMYdWwXRL4KrSicDqdv6HbHIg0KQF28p2wBwZ9XeSJQekSo/ZyMyWnnn?=
- =?us-ascii?Q?ugflTVxvcoZs9uD+b3wf+0xmuITIfD45t5s2vSxKlzO+rsfK7CzrvTvwe2oG?=
- =?us-ascii?Q?H9DimfcUHQ2vjonnnmrKMtJh8lde2o0LuuToF4LfQBXvSbHkTPaF2pmem0aj?=
- =?us-ascii?Q?zO7iupkQkca+F3w0/1AYf1mQ0ofU7YGAKWm8TQFN52zJZfLCzRvbZfJR9amw?=
- =?us-ascii?Q?DoFoutHHCI6JfAPoP/ZgFYuxLomSwVd/RSxVQ5bHsMcU+A76pawj/Mpao6DY?=
- =?us-ascii?Q?UQCOKge0lOhZiY4yMROTWi63ev9LmSvm5uoeFKVGZ+WUDj4M8I9DpdGPKz/T?=
- =?us-ascii?Q?olBdJfdAOCTdfAoYBmLNIHjqyTLDIoqtYtyRuWemO7QnLEYua0xncezYRR8Y?=
- =?us-ascii?Q?Vzy2GI4p46uWeGrLS5GyAeZu/r8evSKt/hUvshhAH/iSwClnaNYTwz8PpOnP?=
- =?us-ascii?Q?OYaxgnH1zpYygg8WfI7WxuM+vIptOeqaIdow2REI8l9WTT47PcBY+B2Umubr?=
- =?us-ascii?Q?yR79e8E0aWnN+//6s6kQcGuNNApVNClsKBRm/Gjzh/HlzTxFu0z3FiW1av3p?=
- =?us-ascii?Q?MReZS9ShuFEr3kVEcUHGFOlUzHbMDT6DxJXPpmBoFNgiZ9C8Z76OlPipCaFG?=
- =?us-ascii?Q?2radhnuDtzf1pQg7tCRHL0wBt9mtxiQG55Qz?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?3Jdy4MO5D+j4DMsvPFTXWJoFCSc5GVQhoBW4wLEQz80HQHqBdJeaKLbSiXdU?=
- =?us-ascii?Q?1HTFaEs7mwD9NOpJYuKc0lElUZqmrec53soywleHgCdntLdBpE5gtrp3mLRD?=
- =?us-ascii?Q?rCtoweo5qXDdslpq0xwPWEYs909/n5NKiQWgPWiJopMxBrHrX2L9vDK3fGPd?=
- =?us-ascii?Q?rOa//KISA4aNceBLiRUPiAauSyJCfAD/K9X2woYXftFv3cHHmHU3mv//HMR1?=
- =?us-ascii?Q?eg67fagAp2BH1DbuZ/aONZRM95Cw5rbYjCetRLVwLokPCjmGyMsmT/jfzt3A?=
- =?us-ascii?Q?h6mP//ByKE7vLf2LbUJxfltFC37eChWYmXgIuYPg7sQRqXgU2jiaLL+3UJQv?=
- =?us-ascii?Q?aNKO+NniUQt3TkC+dwN7fiqpCDERJ9zL+0qNtHIkP586nQ8j90yPSIA43TGy?=
- =?us-ascii?Q?8uTaj2AgM2VT9rTwzailKSqT3Aj6g3RnO52AEh335a4FYmWk8IgfsghDey3J?=
- =?us-ascii?Q?n8AGVhxuklUb+eTVxvyj77Ct+mblSZ+IzCZRgMQV69Qt1HaXvV4N1l7eiDIf?=
- =?us-ascii?Q?IoYbAptxFcT63tZwvb2ujmZ1LGc23faWpnb9WUbYNfkMQXD+2rFGupaxJkUw?=
- =?us-ascii?Q?GXZz2ObUPF2FKRC7uJ8X+cBNZZPCXemZYCALpHCBblr8MBEpW38COV11B8Dp?=
- =?us-ascii?Q?8vp8gP6klNxtF7tIi/+t5a6VEbkmjBrjPZz6uMfdXgK1RAO/2hDM3zoBhExd?=
- =?us-ascii?Q?ry5R0xc/MoMNtktJEqI0DZzzFSJh4lc6IGKjZfMNys6Vc99NSJutDiAq4ZiB?=
- =?us-ascii?Q?iMYJGmCbyb8cTiOyCbnMHXGQtBYwNaQvOHK2ppb68ZNIgUECIXE9RtC7Ruc5?=
- =?us-ascii?Q?xHkCpkSBNUSaoWN4zn6ySu8W7luy9ESnuRNdwGYmltYdv6jDckVBj8ezzR+/?=
- =?us-ascii?Q?lMliGWQKzWk3Y+lR/kwzfwuKzcCgIB07tZojlXKg2n23/50BjGkAOE1Fo/GY?=
- =?us-ascii?Q?0eR+/rGFnIsXvxxen07m5xeeZkDSbQ0odH+CkDgyc1xW3Q+xeA76thDhp2nu?=
- =?us-ascii?Q?4zOaEf+R0fZH32fVOXWLV++6a0n3vMVxDyR8mPiHIbWApVD3/vpRhBGRV/Cy?=
- =?us-ascii?Q?Zx20ZICTc3F8rn/OUwCyObjwHgwyWiiyVmQeiA9r9g6+r6wERGPamjJXXxA4?=
- =?us-ascii?Q?WsCETv57jE7wwjhDSDgwhBU8IiByxNyxaRMavYs7I9ff6+qOi2AcBf3qLW/4?=
- =?us-ascii?Q?Zzasvw9TPMIJdcBzuaUScZeytxJBB6AzktK1q7iGkSJ9wZakBfhRzBb3DJWY?=
- =?us-ascii?Q?pTjYBcxD/WKzk0b/UNryLWbjWRIophyrH4DzhLE/5PFguCXbIAKOJtxfrzPv?=
- =?us-ascii?Q?cT7dKCo6I+EXpYxyUNAr+/wYquubUeWMpFeg9Y/hTR8ryN1x7u3oJ0S8rrwr?=
- =?us-ascii?Q?gadvdOyuPR8VeRXrLzgnUJBMBjeQYrCua/sH0/WXN/iT/F2dNZ5jZAwWN5O8?=
- =?us-ascii?Q?zRmXQ0CSUK99iCq/imRNjJIEV55dLfLwfVdqz6Fkwej5PQXx8an6eoOHLVwK?=
- =?us-ascii?Q?5SSLg/HGskV2JqtIte4ALPtAeNcHtoSaaohpnW5gFRiyrp6H490ZF4lT6cls?=
- =?us-ascii?Q?TPAo6vEtrgFlYk1llHo5apVuHuNd+RCHcyhtpn3Cq+mBbKUrFOO+INn1Qlkg?=
- =?us-ascii?Q?brfjjnKiwKUDL1XuP0PU6bNNa7NxfqYvnsdpozFosCaB5M2Qu/h4BCDooGqi?=
- =?us-ascii?Q?1QR0T50NaumwXDY43auqJRIRUjn9C4vd2U5xyyh+BYs1B3dT2FalHtWvRCq+?=
- =?us-ascii?Q?2ZL2zhbHCw=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	faR4N3ITdlBJODVxyfS+jKPcVCBlTcNrX9pHdbn/2iOhe/r1j/bQbb5nR2z538npmn0jW1XvrNqiwEUbquRFjgXkvTzul+n9Bt6wSsR2ThduVZ3I8+3cz6h/WxZ24MlYdoDVj/hMPj1VBZKuqNiKl4QAP07G/506Pfgrq1xwfSL4VOmmLkqXvrin15E24eymG9nFI2c5BD+6vvXeDCGM4Jf9gbxkrC4NWfa9Q9i5n+c3q10g2i4GTiSdeV7YtvKsAAl4ugcFaiX1CowZyI0n1H2cfQncCodunZi0SkNxf4BpKLgltls32go6uodn3iSlC3DoLDckzVaIes1S30sWX5spDIJBDPIpE7wCc0lQeq/89hvmeKF2M6ciaI+5KDJduWnWjrKxEl4rMSTUYpLgSWA2h2cP8arQVBPBqmE6wZTpu0iPiti/7PoDEmZVSAGkt/hCNwvryCDD2YhA60IUy3TeUKV9kAXLsFe5+yw8B4LMSihp+jqt2CDp0WNxGOWQ9S7frffiyGUTuoYrnRiiqmwEsfDU9j7Hks+rxBq4U98aWePdjIpZHD1q4YECJENsSCh2VQZSFmIhhHvtidr/EuaY4a93lUgkPxVfAi1TRSQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 994f0660-f0b9-448b-de41-08de699a60d9
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 18:21:30.5338
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uLuWO2yj4+psC+vOxTOd1LgnwnyaFoN4BaYFJgWjBghpCbJ9d4FL94Sa0Sa034EXKTlp3CIYTN0qqI3rD3O5UQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5568
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-11_02,2026-02-11_04,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 phishscore=0 suspectscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2602110141
-X-Proofpoint-ORIG-GUID: J01nSVrnjuVkv3o7ewqXPdaM37a4fmc0
-X-Proofpoint-GUID: J01nSVrnjuVkv3o7ewqXPdaM37a4fmc0
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDE0MiBTYWx0ZWRfX5Ve8WaRB+N5Y
- 2H8efafMYqFsslTMLF0MuxR4hvM9G5kYpbH4GlkKyCzackXOqNjwOq52006w9A401g+3/wOTEEe
- PmdAvmc9RGRAiZfIYJpGhS7iDBMcQM8VI17kNL8lK02a5sDzh/UZPZm3Fh9HsdP2IyMV8MapvFy
- o65xCU6BwS5rPz4VMdEkJsC5UoQ0lIkbgWif1bQeI7B8ijGQtMi/UdLfeni2wi6oIUPuIkb1fGf
- 42jVPF+PHXVUjQNNrwyoWaHA8uwYsspK6sjzaxXtcXpvtg4TsqyY7RqrhAYgjPxF32iO+OYNBfg
- fsiVPfuStbJh/xBqJ905GDcg/8zKMI9h1JKK/hYY+j7Q5LUFB4GPAKQE7PI6t41cdJI/4ZPzKAT
- ZlkzKLJh+3cD2+zAsmZKdIUL2gsUKhtL+BPAcJ1Cfh5v6cLvet2RpfIYTMT7eOQ27nTbLHuSpHJ
- L7jh0zEgOCAtbniIxZQ==
-X-Authority-Analysis: v=2.4 cv=O5c0fR9W c=1 sm=1 tr=0 ts=698cc8b6 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=NQ9segQSpgSptwzz7iwA:9 a=CjuIK1q_8ugA:10
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0C1DE1C0014
-X-Stat-Signature: qgzeheapwfihsp8kxa4thxaftj15ijxb
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJ-ks9n0-Uy0n7CsZwPr37PSc_wo5qYG2YGVsGN50oPZN4MrSg@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4ua99r5b3rths3sbuzo8dyhek8gimfds
+X-Rspamd-Queue-Id: 0944BC000C
 X-Rspam-User: 
-X-HE-Tag: 1770834124-353239
-X-HE-Meta: U2FsdGVkX19i3NZMwTK5e6edk5JftqEMWOua9F5kp5p0Zoqef6zjgnM+zqKugSIgP/zyJcBrlzx66gh3FlZBv4IwdZk7ZqC6cXUK7mbU180AhSJxrlyOFZBP8qZ2zYrElNh0VWFeS2pv957WY4pekvFtWTkD+TqVkAa8NMqxeyfnBYzMLIDeJ32xiBYUizcrDPySUFxPsCoxmk/+Y2brX2V2lGFwlH2Ozt79W8Kw01t5cH/bukVmaN6ItlTo8jVMMQ28mO/Z7lEeXmtRr4ZnoevDioZjclJn1ZqMq1aVx9FR6npyM94YEIJhnsiv15pe46qql+T/eWjELi100AtBxKoPLDrtIjvhwbA2qSe15T9qm4aB//wo8azTJhrqvr8TSCY0PY9hBGQD0WsmvcUkTYsMua1gy+19h+nAnuqVtFgyKi9J5IRw/j/D8Tzniu0x66cy8K9PibFIO+jP9hwVT1aHdOuPRChO2tr/mrk/CYJoT9kmhYqUm87+7WysSG26H7q45hU65MGTBe2aQBPPXb3l07WkITJe1ctD2aJsODT76xnGU0WeUkB13kkr/gh8kKORam9Nlf88uppFAg+vpvEhgcQeU0yvRIfIwIOhBbcAR32KAMLIs5t1QbbnJygR8Lsqqf+WREElY4T7Mfh0QoQxGjkSykBz6sacBTv4zNptjtQQfrebHH1wfTiS1qfOa1s5LieQY5xhV5hVsSMv34yVxbkDhjndRdN+9DiJeWNCQznD5BqWstY41Sl3RjP7CXqlAEF66pXyML4PZkzfuMmbY+tj4BoFOG895CmR6vH6CXano44mlsgxoDESSWRSbuRvWj9UzqARuw1ZQ7P9xS5TGCkoL8RkcKIc+0vAGF2ikZokHpNhJDFkT9An6bTZZFdV8jw7EM+LexnWGdHeXU9ETxZ1L4ZUrq1cERaFKyKKNkDJ2JAtJb/a57PK/E7vRQTTtL52VOQpegdSjCN
- GqnNLvSl
- VXSxOxCh4UWDYkYY1lLqZjgYuBtLCODQdgSwnqet+7+P91bt9gi5SCVVdwBuZJTR3RZnqwC0N6pefVq6oJ2sqfMsMrBwYbKyDyU+0SFwj7dXArGzykPDPpZWVmv7W8X9jFOn77LshudQ1BjSAs3AdDeZBymwaKSSDelS+TspxuRkssz0Sq+zveorgJ3RJn4GQM6R8uqAUG3DzaiErL5F4rT6jjb9sJE6DYETXRdIE2FrBLLEjoGcUUc1vuAp2uWydfAVBRT3yxaei17q+QctAT8KiLz3X4xjS6sDgmQMFUwJc37mESW7RP4VSG3zpdTdk6x3qbPi8bi+mV26yjIGBcmeRRdGfubSoCIf0gq+6JwcxyMMl6RQ+EmTGyp4Ax4XfaQ8MHiJsDHID99qEcoJRizki44KjZEC19TCXmxjJj/DT63yAAUvQIajcHwYY2vzATbuQZhdsiRKxeJ+WEut/heJsMlSJ4FwQuuihzB9pd9ZnR0zpeXBKmQ+o8uTOASRt8gWEiS2jpQ7iHTdzAkBMYzTcfsWVe+aQwsvcZWOxwfc8LUFySNtQX5uW9lhaAlLo5Po4FDN+YVT004Ohh6Vgmv8eSklJlLnAKU92W5F7pTp9sRx5rdrjGYzCR4uqMuRI3hcrfCr5wo5fQbTZJBtQ4vGxom+4TBmV5BGPeB1+fX2aixXyBoLO9wtREN1b7i1toAxwIPiNbEXesgquhr9o0KAhzm0g80/JrLBbPVx1vZe/R28ToIBAUOiaQpo0Rz+m4NGe
+X-HE-Tag: 1770834275-388645
+X-HE-Meta: U2FsdGVkX19pBusMpFoBoo0pMItRKrPO6mduqOtlH/l/sdXY8Irqa3KbX8lQCsiU4xg4RvsBVo/97EUBHchGyZzfGIorVB5782gCn6vJkUe3x3DQNQyDoVBCMPbZTikaP7Dui6eSKBxwuG1HHuFXp3kTd9yP0T7tTIWVvbvgIELZu6yUo1Sk/7JXnV16bJ7iP2ys56+NniRKkCBNlLK7Fiy6iWXajH/1+Vxa5aMm+lRj6viEmiE3h5HngKeSAjcUWevdzUY/TFh27AWHWfXgqdm0Gk78yqGvXmmlI+jPVPj1qpqtBvk6Yea410aVTd+xORea+brnAvD+Ax9q1IwSG1+Fm16dAl5RjYt/KyxNxJ61qRG5bj/385KIZQy51KdplctRd4wnCXPzeUv3x2DfYGL8Yh+Zilgrl9xDmHHsUVp2+NHZzwGyBShdrAgd6Wcj0Uc2MMAu8AAMsDjhoUUSymYvAf1yqesQOANz2RAA4pGuUsdBR94X1l8/6V0z92R9ssQOdEUmB8t6K8Id1WQlY+uS3JrUxYjLuG5Nb5+BKl3YaV/xCiXeAIMpJwNi30a7/o7IFlAjggDjpiCFp4t+ghM6JA14XU8kLScGWVTBjDmj744NnWG7blNwrrYT5DY+rxU4Hf2XlwscV6th0J5VVV8fZ+X9jCi0kmKU5XF+JP4BzvXYHnxL3PO46F6M+YSzLHIpQZiLcX5DQPZrDgFuLCdvmDoX+Mc8kyOrhf3IWUFkBF7BxgG63953EBiDl38TPN1mJpIOBhQ4ZG3rdPCeVzJbMTLj9Sm3YKhqdqycbzg6z6cxwLU7imnwB9GOy0P8FG1ciSFWl78syPaJxLjcO8/2H0/UKoDAQcaJr4LdFv/KgL1GzM/P3oL+jziRaxAy5uHBN/O6pOKaHj7inSCWysaiPQXwOovoj/bAgzJxZMBi0DGmQx7Il32Deu22bS9cWj/Bv5fbcErhqnK1JpL
+ MQEKIe3M
+ L294E9uRGBmTV/2EcoU5IrQSN2X+mFzkwBnM5A2Xahq7R8YOAK3G3sfDGDkB1k+T/YrQNWKCa7htCnRUqaKDaHKHKeyOg73ApUWheEdasdvkek7HWkxV3oHEhVQ3mVKm9iiotFnMjWbULqVlVMigSYR604zMk/H/roY+sDY4rO92+5A0Sq7l+lOS1C3YwkEXnak/ThGd+mRLkNJQM83ZMK5QpWavLdNQZTrK9gHmDpy3P5JII8ugdKXJc5hMPIEczdz3tvXiPj9zdDMjDxHLUhbU1/v3ze6fYOV2JzDtZRfirxgtkg/M1q8oZKduJxTXWLIO5owMBjRBxH2OZDf0sSvGR4Gcn5OVO5/3H/3XgaPqI3xOlrABnjaqPdtBroTmv8PpzU1m0qm5bWIAVrvKcKd3lTMAR65waj+IZ/FfYCr7jf9dAV3nm9Q6jqhm5aUAIbjQl8lETET2SDqs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -268,118 +154,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Andreas Hindborg <a.hindborg@kernel.org> [260211 02:41]:
-> "Liam R. Howlett" <Liam.Howlett@oracle.com> writes:
->=20
-> > * Andreas Hindborg <a.hindborg@kernel.org> [260209 14:38]:
-> >> Add a convenience method `contains_index` to check whether an element
-> >> exists at a given index in the XArray. This method provides a more
-> >> ergonomic API compared to calling `get` and checking for `Some`.
+On Wed, Feb 11, 2026 at 01:19:23PM -0500, Tamir Duberstein wrote:
+> On Wed, Feb 11, 2026 at 10:00 AM Boqun Feng <boqun@kernel.org> wrote:
 > >
-> > I think this is going to result in less efficient code for most uses.
+> > On Wed, Feb 11, 2026 at 09:32:36AM -0500, Liam R. Howlett wrote:
+> > > * Alice Ryhl <aliceryhl@google.com> [260210 16:34]:
+> > > > On Tue, Feb 10, 2026 at 10:23 PM Tamir Duberstein <tamird@kernel.org> wrote:
+> > > > >
+> > > > > On Tue, Feb 10, 2026 at 12:59 PM Liam R. Howlett
+> > > > > <Liam.Howlett@oracle.com> wrote:
+> > > > > > Is this a temporary limitation?
+> > > > >
+> > > > > Maybe? I don't think RfL has good abstractions for RCU yet. For
+> > > > > example, exposing load directly on the xarray using xa_load would
+> > > > > require a way to guarantee that the returned pointer's target isn't
 > >
-> > Most users use the results returned, not just checking if there is or i=
-s
-> > not a value.  So if you find the value an xarray state and then just
-> > throw it away and find it again, it'll be less efficient.
+> > Well, if we only return a pointer, we don't need to guarantee that,
+> > right? Because it's up to the user to provide that guarantee. So we
+> > could have XArray::load() (not Guard::load()) that just calls xa_load().
+> > Also see below.
 > >
-> > If there are users that do use the xarray to just check if something
-> > exists or not (which there probably are?), then it should be in a
-> > wrapper for that code and not the generic API.  Otherwise we will have
-> > users pop up to use this method when they should not.
->=20
-> I agree in that I would prefer matching on the result of a lookup and
-> using that result. This is not always possible due to a limitation in
-> the current implementation of the borrow checker. Please see my response
-> to Tamir [1], it has all the pointers.
->=20
-> Since we cannot use a match statement in certain situations, we have to
-> fall back to something that does not borrow from the collections, like
-> `array.get(index).is_some()`. I would argue that
->=20
->   if array.contains_index(foo) { ... }
->=20
-> is easier to read than
->=20
->   if array.get(foo).is_some() { ... }
->=20
-> And I don't think `array.contains()` is going to have worse codegen than
-> `array.get(index).is_some()`.
+> > > > > being concurrently mutated (e.g. under the xarray lock). I'm not aware
+> > > > > of anyone asking for this, though.
+> > > >
+> > > > It's relatively easy to add an rcu-backed load using the RCU
+> > > > abstractions we have today. I already shared an RFC containing such a
+> > > > method for the maple tree, and it would not be much different for
+> > > > xarray.
+> > > > https://lore.kernel.org/all/20260116-rcu-box-v1-0-38ebfbcd53f0@google.com/
+> >
+> > I need to point out a difference between xas_load() and Alice's usage
+> > (also what Tamir mentioned above) there, what Alice needs (at least from
+> > her patchset) is the existence of the object is protected by RCU, i.e.
+> > if there is someone else dropping the object, a RCU read lock would
+> > still guarantee the access to the object is valid.
+> >
+> > However, the internal RCU usage of both xarray and maple tree is to
+> > protect the *internal* data structure if I'm not missing anything, i.e.
+> > an writer may change the array or the tree while a reader is reading,
+> > the internal structure itself is still consistent and valid. But the
+> > nothing guarantees the object you read is still valid. For example, you
+> > can have an xa_erase() racing with an xa_load():
+> >
+> >         <writer>                        <reader>
+> >         ptr = xa_erase(xa, idx);
+> >                                         ptr = xa_load(xa, idx);
+> >         reclaim(ptr);
+> >                                         use(ptr); // <- object may be gone
+> >
+> > the users of xarray needs to use other mechanism to guarantee the
+> > existence of the object.
+> >
+> > In Alice's case, she in fact used an RCU read side critical section with
+> > a larger scope to protect the object as well, which is definitely nice
+> > to have, but not only way of using maple/xarray.
+> >
+> > > >
+> > >
+> > > It would probably be worth having two loads then, one that does
+> > > rcu_read_lock()/unlock() and one for writer/advanced users like we have
+> > > on the C side of things.
+> > >
+> >
+> > Agreed. But we may need more ;-)
+> >
+> > Here IIUC that Andreas does is adding a `load()` for `Guard` of
+> > `XArray`, which is the load for a writer and most certainly you won't
+> > need to take an RCU read lock for that. The load of a reader can be
+> > added as I suggested above (similar as your "rcu_read_lock()/unlock()"
+> > suggestion above), but no object existence guarantee. We likely
+> > need a third API that can provide the object existence similar to what
+> > Alice had in maple tree.
+> >
+> > > Or at least name the load() function to indicate which is implemented
+> > > today?
+> > >
+> >
+> > It's a namespace thing ;-) , the function in this patch is
+> > kernel::xarray::Guard::load(), and as I suggest here
+> > kernel::xarray::XArray::load() should be the same as xa_load().
+> 
+> Just to clarify: `kernel::xarray::XArray::load()` does not currently
+> exist and no one has yet asked for it.
+> 
 
-This is probably my lack of rust knowledge...
+Yeah ;-) I meant to say we can add it if there is a user and we can use
+xa_load() to implement that.
 
+Regards,
+Boqun
 
-My concern is around API usage.  I am concerned people will use xas as a
-throw-away lookup with this API and cause more walks of the xarray to
-the same location.
-
-In the normal API, we have lookups like this; you take a lock, look
-something up, drop the lock and return it.  Since the life cycle of the
-stored information is outside the scope of the xarray, the user is
-dependent on the entry being stable by some other means after the xarray
-lock is dropped.
-
-In the advanced API, we do more within the locked area, usually.
-
-Usually, applications don't just print out there is a value, they do
-something with it.  So I would expect a real example to be something
-like (this horrible psudo-c/rust mangled mess):
-
-let entry =3D array.get_mut(foo);
-
-if (entry.is_some()) {
-        /* do something with entry */
-        send_to_party(entry);
-} else {
-        /* deal with it not existing */
-}
-
-What I don't want to do:
-
-if (array.contains_index(foo)) {
-        entry =3D array.get_mut(foo);
-} else {
-        ...
-}
-
-Where contains_index(foo) sets up an xas, walks to the location, returns
-the entry (or not) and then translates into a boolean.. then if it's
-true we set up another xas to walk to the same location.
-
-That is, the worst code gen would come from this:
-if (array.get(foo).is_some()) { array.get_mut(foo).. }
-
-From what you said here and the link, you are saying we need to do this
-in certain situations due to rust's borrow checker and the lifetime, but
-I cannot see why we would need to walk the xarray twice from the example
-provided.
-
-And making it easier to do this could result in a lot more users
-doubling xarray walks without realising that it's a bad idea (unless
-it's this special case).
-
-...
->=20
-> [1] https://lore.kernel.org/rust-for-linux/20260209-xarray-entry-send-v3-=
-0-f777c65b8ae2@kernel.org/T/#m95fb90870c511491f4f487dbf852c689cd0733f4
->=20
-
-I have trouble following 'the taken arm' in your link.  I think you mean
-one of the branches based on the existence of the entry, but I don't
-know which is the 'taken' and how 'self' is out of scope.
-
-Other links off the above link seem to indicate it is a problem with the
-rust borrow checking hitting a false positive.
-
-It seems we need to look up things twice to work around the false
-positive - or implement something like get_or_insert()?
-
-Or, wait for the new checker to be released - but that doesn't fix all
-the false positives, just this one?
-
-So, do all users of the xarray suffer from this false positive?
-
-Thanks,
-Liam
-
+> >
+> > Regards,
+> > Boqun
+> >
+> > > At least on the maple tree side, we have both interfaces and users for
+> > > both.  I just found the change to remove the rcu safety odd because I
+> > > assumed both are needed.
+> > >
+> > > Thanks,
+> > > Liam
+> >
 
