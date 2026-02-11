@@ -4,132 +4,238 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4470ECD6D6
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 23:15:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A7EEECD6F8
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 23:22:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B12256B0005; Wed, 11 Feb 2026 18:15:14 -0500 (EST)
+	id CC6FF6B0005; Wed, 11 Feb 2026 18:22:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC8D56B0089; Wed, 11 Feb 2026 18:15:14 -0500 (EST)
+	id C749F6B0089; Wed, 11 Feb 2026 18:22:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C7FE6B008A; Wed, 11 Feb 2026 18:15:14 -0500 (EST)
+	id B2BEE6B008A; Wed, 11 Feb 2026 18:22:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 89FE36B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:15:14 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BDA36C1F6F
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:15:13 +0000 (UTC)
-X-FDA: 84433733706.08.8448D4A
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id AE767A0008
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:15:11 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KzzZFM5N;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=shy828301@gmail.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770851711; a=rsa-sha256;
-	cv=pass;
-	b=UiyP24lUcQMBBSRem6Xf6ec39TB0SFIQyDRTFXatPZIx6cpNZT4WABZyFyqWUjYFfU91qd
-	TsaZPiiY3f6F925kCuxKakJUWvrvUa9ZVGq9QhST3hpq4yW8exvYBltK/ZfC+DtNh5oHJs
-	ezH2c3cUNVeTePQT6rwtk9q43OlTFXQ=
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A1DBE6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:22:37 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 575E6D6CD2
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:22:37 +0000 (UTC)
+X-FDA: 84433752354.09.F7584F3
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BE1FBA0003
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:22:32 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hOw16r7h;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770852153; a=rsa-sha256;
+	cv=fail;
+	b=nq9OfB/4pv4zCnfnRlF7hXr4wOHYz2FODLAGxpfKe+NkOAMptcupQVPtNBK0mFDFDJclKm
+	V/sbm5VTwQuTLQwGOzADG8Ci0e+b323iyb6KL6xHnzZ+MdU8k38kLL2Y8Xu7Sxh4HZv/oj
+	AEjlNIrbxrBPc4MNVoCpGkJO+3SVZRo=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KzzZFM5N;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	spf=pass (imf25.hostedemail.com: domain of shy828301@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=shy828301@gmail.com
+	imf15.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=hOw16r7h;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}");
+	spf=pass (imf15.hostedemail.com: domain of matthew.brost@intel.com designates 192.198.163.13 as permitted sender) smtp.mailfrom=matthew.brost@intel.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770851711;
+	s=arc-20220608; t=1770852153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xKKRlCrmtvFwI88hY4WIqSlHXfMV0165I6waG2fSmDE=;
-	b=Aotdzn03mjSmQpmb5rA6i7tRyNgkL2PdwZTym65VRgqwd4kJqzqwDLIi7b/lf5Puq5n2dI
-	CSY0Df7JKdeg2RvFWYUQqzjgY8R1lsO7qOTjmg3M8u8rKCVcGK0ICQKeC6hR8HTCIXpxlR
-	D90OVIVdOpZRrbR8MZrwN/1qzeqzlN8=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65a36583ef9so2571803a12.0
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:15:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770851710; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VMbJ5oAkvWc0Tlgt43UCwV2S9MP9rOe8li6OAPVzc4wV/y/R0F7kVLtNEaj1ISpygs
-         YxTgzVo1hPlWxMaQN7CKdtnT39tgHjZxtUjjPrJTIzwKdymmtATAhHZHFa3JnBIHAJa5
-         mGk+1e+4of4w3jtuc2Fs0JKJ3iStsojB8GX8oiFullrBfKmFhCcm19K+/M22JrG4ck9z
-         V5tfX8HNRQUnVNNTnUiBJT8YNYPCgAXpx5++e4FogjhHm51wBzljmGWxBc+jBRpG3lwm
-         nQ53YXWxTv5aZY4/YiMkkR8VQBu61qUlrxXq6uPzoeJBSmywHJ4effUVLs7bfs9yF6i1
-         00mA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=xKKRlCrmtvFwI88hY4WIqSlHXfMV0165I6waG2fSmDE=;
-        fh=zk6wMhpxJKCvBWriYPVEbryJvrbLmHqF2/6bbLo1pDU=;
-        b=S/okRqi0No0voxMsKpzh5TZdv7q5gFgEyL1j1nDtZkcrViL6QY9+/fTjPsUdW2JBws
-         Xy/mCjIPSJgdpv3l8okdEIsgfZJe6YlufMdyGT3xo+i7n5h6cB/zTqd/I45tMGLraWpa
-         Wu+7oJBOr5ggSRejd4CmynJpSlxlgBEeFlU49/I/9+Jzuaye+tXyA2IoOyxUC27WSpuV
-         dgMUcJ5VGV/oxAVXC2638RRyI5GbMoHGBsQrjva+olTD7PrC5siGzdykc9KSLf1loChd
-         Gf6TZUkmL4droMoUq9FT7CB/nCAXZezQTaLRSDtJCdgCPK63UUFr/BQUSx3lfNA2SH0m
-         CsXA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770851710; x=1771456510; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xKKRlCrmtvFwI88hY4WIqSlHXfMV0165I6waG2fSmDE=;
-        b=KzzZFM5ND0JNF641fFFnMVqFX6iaQbfyJu+B8sP8xX/A5ZtMHBQWpu5v0sxgHnKuPP
-         5/Gi9nCMUoIqEouo3D7Z5txbCkXWUO2B3F4PxnXzFB9YnHpNtKMUVskGYGDIidL4g+55
-         OQrE3WWerCRznVnN1WwMd+/PBWquOlPg10kRlFzSNd/RTNA6XVKVALjg409ira8jvgMw
-         jBLIJUWE8dmicPCpGpRwFStH3Ixct5mudbKz18qOSjewAtzGTZVs5ku5opJeN6becmQE
-         8wWwWOt3Alp7bpaBTuDRjbshDKMTXiZH8x25ShNoPMf3rBAMPLJOVKIRvSR1mm57dTkB
-         DSBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770851710; x=1771456510;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xKKRlCrmtvFwI88hY4WIqSlHXfMV0165I6waG2fSmDE=;
-        b=bgfaRnFEY59Axy3BC0gJu1Qwoc2ad7dqXWaQFXAgg2upDs39KZhfzC52TRZgWS6I2b
-         HnreFyYwpDQZmnHqEg5KJi0CksLFJCRLUM3obU25HyAtEY3at2ywTiJZeIDgLVz2PDaV
-         7mKNZ+jbx9cTGdDmlhETVs/MJp11mH4LT/CtNC4D3t4/nrScc80vhXTJ7edoU6Vsn9hD
-         G2Vz3Tv7U2uW42DNJWuOT81+8JtyiRWJajIHtED2Wsb5haIZbNvs/KUII9IM+hLfzNT7
-         fcGx7W7kM55bmnWVijPypY7ydav+PiDbIa9R38Puxa16LzRisR4J3ktFcGWml7w+7Gmi
-         8njw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHKcxJEtpCXtyLwaMnqBPz041EaCRa3t5yxdDD2YLfosfF0BeoF+yHwbG/CntLclXEmHOZAz4s9A==@kvack.org
-X-Gm-Message-State: AOJu0YxYr7IRKSG6Iz1lutyLg5QDS0ZUjMmeIHRTf04L/vGdptqhwIMJ
-	jMkzLYG35Hrn7hlAeHmjTPtB0RXzwj146RT2o4H4iNenzBrMOTIl/ZlZ7nZBis+dX0uDLXVJKk8
-	zih0dPGowHmDDq+1zuQ/8b3D/dmzXZMA=
-X-Gm-Gg: AZuq6aKNqcW+3+bDJOsgPzF9e34YNDQ/EFN6WNvXhOJMwzkSgDdgl8LGQVho2kdtiBq
-	riPi6C0MpChQVORKDYwvir98ye/tdUTh2Eegdy4UFBKxaKnEdPB+WRYGVWHhfwv0s75YKIzriyh
-	Ug7FZ2gKxQR7PamoczhEhycfj3AOo3BRdQaBE5xSUKNllhMdZxGmjUy0/Y5kkZk3VFeSDp25Ujz
-	mMvu0tUrZHR3ItCt9QGZRMIMI7LpZ/6GwYHOXShcqXhDA7amvuk4/ndMggB87Qs0WuJn5j3L7Wi
-	kCc6b2/t7Q==
-X-Received: by 2002:a05:6402:4494:b0:658:ecd:3787 with SMTP id
- 4fb4d7f45d1cf-65b9b90c8abmr257840a12.6.1770851709756; Wed, 11 Feb 2026
- 15:15:09 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=x2ZBqF8HFXzK6gRbo3LAZ/6KmMWTZvu7Op5RQpGRQKc=;
+	b=ELVZTr4nYnuXJ0b8j1xPSmMchXfOBok9MLgOptW0tVnBt2WOZ6ZY4AxHALoPPYjjJ8LfL6
+	biayxd1H+vzGMCpOVkxylf8kCGvEmFXGu45oI+WDiCVXi7gfwN87tAppRY+3a1TO48tR3Q
+	OcSe+FOHs+7jz/47vuJrRKn3tFZLosQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770852153; x=1802388153;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=+zllo6eZsbwwXjxfRSPUR6nIB0jP4z7wJis3mNtLNp4=;
+  b=hOw16r7hxOhNjMUw6WPnVSBoqPJUTwgghFjb/iqj2uejocXRg5BQvHw4
+   n4EDjZkdLrZvzddCuRKgVScc0kZKU6eDeoaCeTUwnf6FQJNJ6rn12eAva
+   dKm9abJXnXbr5+oArwrtYgoY6ks+Ou3DnBFijV7t0dC9PnoUmTH80Cdua
+   gsyQNs+MhxVYL5af41XoDip6kAFQEsLZRl18cWgGAC1l5ZMLSQU1Sixln
+   wNr/iSpr1cWp1E3nIR5UJOEhJpZZZ0BeRT5IYiX29Fukw8FcQepu8FZ3f
+   B9svprSR2rdslvCXQQ0KB5ez8fI104RlmXRU95umor8DyLjjaabsKs8Jw
+   A==;
+X-CSE-ConnectionGUID: mrqBBs2hRWOqan/XE87gpQ==
+X-CSE-MsgGUID: U/tKJ4/ZTD+L/aug4/pMfA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="74613508"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
+   d="scan'208";a="74613508"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 15:22:31 -0800
+X-CSE-ConnectionGUID: TKPXUsUyT/qkIqyYMIfkpQ==
+X-CSE-MsgGUID: nLGoBIYVR/O8wYsSXYHfMQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
+   d="scan'208";a="211279747"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 15:22:31 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 11 Feb 2026 15:22:30 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Wed, 11 Feb 2026 15:22:30 -0800
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.5) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 11 Feb 2026 15:22:30 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=eo5DOZdhDL87YLM9/YQP5vc5ERsXR0ki5rO6DS1a17jxX9gbXMx3EF9hDEFrIajBbduZQ18yeE5lckep9WJN3bwULgXHrVR1U4LVJBo6B6Nx51go1NW7iZkPm3EDoAmM2oftiqqbZNKErBz3xlJtjQnRqYSU+AjxP0taKPQ1k+xktoeT/C1K8Nrl2PBxd/94eAtTwXlPTsVSFFlOBs0nsFnZjeNg96dv8VGOnoBiEep6PACRMuN3KHcfpR2o68cqCEsnpNXcpcju/PmKd4fE7qjs7/8Dd/KpXdJ5cEKZdyIB4yr4HCdg6EYtfYFFO5OeXHPLf6SI5TNowjKg7pXskA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x2ZBqF8HFXzK6gRbo3LAZ/6KmMWTZvu7Op5RQpGRQKc=;
+ b=sQ06/Q45TFSbt/HHzCbn21wqB1JNuDb4W+elXjqzcjZj38u+sevAPgvXZUp5j+RBAxw2zbecSgY6Md58yXmHZSl2aBETpfz70rCD2AGJXD/reGrG7Wsgz7DPcO3xrcmVMLWDonB8KUVqHRh/OL24s870zcvZm99Sk92/gtnJ8UiIhZpx0w+t9Bfdl9Iuf6KuI8mmmTd4baw+W1m/s6YiLczdJm1dhAzBExSxJcvuidcbRNR3e+RbpDcuK13Nz65zpdyMe4Q1mmzq+CWh72kUX8iYuYOiq1m1v4VBXmIq+qeaBA8dmTcGXDlnM6e5b/dOYnLU82vz8dH9t2Jbvz3hTw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by LV2PR11MB5999.namprd11.prod.outlook.com (2603:10b6:408:17d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.14; Wed, 11 Feb
+ 2026 23:22:23 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::e0c5:6cd8:6e67:dc0c%6]) with mapi id 15.20.9587.017; Wed, 11 Feb 2026
+ 23:22:23 +0000
+Date: Wed, 11 Feb 2026 15:22:21 -0800
+From: Matthew Brost <matthew.brost@intel.com>
+To: Alistair Popple <apopple@nvidia.com>
+CC: Thomas =?iso-8859-1?B?SGVsbHN0cu+/vW0=?=
+	<thomas.hellstrom@linux.intel.com>, <intel-xe@lists.freedesktop.org>, "Ralph
+ Campbell" <rcampbell@nvidia.com>, Christoph Hellwig <hch@lst.de>, "Jason
+ Gunthorpe" <jgg@mellanox.com>, Jason Gunthorpe <jgg@ziepe.ca>, Leon
+ Romanovsky <leon@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, John
+ Hubbard <jhubbard@nvidia.com>, <linux-mm@kvack.org>,
+	<dri-devel@lists.freedesktop.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v5] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-ID: <aY0PLeNTYXOOoV0R@lstrano-desk.jf.intel.com>
+References: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
+ <20260211222303.42qfp6rqxxnpfkr4@offworld>
+ <vfviexoy6uj6cifcbyezshgssomgu2f3jxpckjnapx5fzqb2bd@dpcaefu5m6du>
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <vfviexoy6uj6cifcbyezshgssomgu2f3jxpckjnapx5fzqb2bd@dpcaefu5m6du>
+X-ClientProxiedBy: BYAPR11CA0106.namprd11.prod.outlook.com
+ (2603:10b6:a03:f4::47) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
-From: Yang Shi <shy828301@gmail.com>
-Date: Wed, 11 Feb 2026 15:14:57 -0800
-X-Gm-Features: AZwV_QjKtzZ7EKADjV0Km4eVa1wH3_Q223RhY_d7w2LH2asH2VfD0bZ1-9PfvTM
-Message-ID: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
-Subject: [LSF/MM/BPF TOPIC] Improve this_cpu_ops performance for ARM64 (and
- potentially other architectures)
-To: lsf-pc@lists.linux-foundation.org, Linux MM <linux-mm@kvack.org>, 
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>, dennis@kernel.org, Tejun Heo <tj@kernel.org>, urezki@gmail.com, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <yang@os.amperecomputing.com>, Yang Shi <shy828301@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|LV2PR11MB5999:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e8452f4-c7b2-441a-bca4-08de69c4692d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZGJaWUpTSzk3eFJwOTVYUG5TT0RIWmNMT2kxUzNwY1NRcEw4ODkvM0JhZXcw?=
+ =?utf-8?B?RzBqdlJxc3dxRThhdVVHRnBpY0pQa1ErS0RUNytPbFYxQnlUU092R1ZmSVl0?=
+ =?utf-8?B?RFE1b1c0MklUWXJJNDYxQzVWcXJtMlBLTU1vVUhsU1oyblBRZ09IdkJkSGNC?=
+ =?utf-8?B?MVFuV0w5N2l0YXZ0RFZrRXVUWEdmTWJ2Nks3MGlUcHk2R3VFU0ZGY3RMM2tu?=
+ =?utf-8?B?SXJKT0o3SHBBNlNvVDRPdERFeDlvczkyc3JyUGdYbndPSjJYTjhYYmZBc3NR?=
+ =?utf-8?B?b1g3YU5XWjFSNG9aN0tHL2tJcjBWNTVpai9KYU85aC8xaUZBYU9RdXM1RlFn?=
+ =?utf-8?B?QTk0NjJsNUJsTm1OSWRaK0o2dk1lb0FReGo4SEgxYzlRTWFzL2RuNzVjZ3VT?=
+ =?utf-8?B?dDV6TlJCOWgyd214R2dtQ0cvelNrMllzUStrTHFhZm05OXdUdDBvWkNUYWJ3?=
+ =?utf-8?B?UTlCOFM3bzljM0ljR3hqQW1aQTY0bjFZNWo3OXdVUzJFRVUyaWJvSjRNQmNB?=
+ =?utf-8?B?M3N1R2NOaE5nMUx5S01SS0ZKV1BXbWswQmVCaVhaZERUd1Q1SElhM2lES2h4?=
+ =?utf-8?B?OXMybCsyT2pMK1JlSlRQREVYTENtU1lDellqVHJNMm5HVDM2K0dSeVluRFFM?=
+ =?utf-8?B?SXhLdk54dk5GUGpJMHQ1VlZxWnBCSGZxYWUyUkU3bEZPUTBMb3IrT1R0bW0z?=
+ =?utf-8?B?a0hSYWlKZkY1aVNTaE9IdkQzSFJrZGREdjQ0Vno1d3dSYis1ajJ2alZVODlF?=
+ =?utf-8?B?SkZKMXpxNlYxeXJCRXJkNll6ZmZiZXUzdGhoZGxsSUVjRnJWNmJmcVhvWHMx?=
+ =?utf-8?B?dGVJWHhIbEUza1R6K3dJN3FEUHlsaXY5Q3llLzQ4aURLZFBMZ0hvVXplTHlB?=
+ =?utf-8?B?elR4K3NBdEozVHEwWnFJWjZ1b1JOeU0vQ21FdnFsYWFkTm5lTGI3Vk1odUU0?=
+ =?utf-8?B?NlBYSEMySytrc28wK3Vtc1oxOUdjdmpzMFB0K1BVSDA1Y3BsMWNSZnNzL1hy?=
+ =?utf-8?B?ZjBCTk1vbDdZRVQ4ZzlmSEg3TFZhWE81K2s3VTViSjlPb0JJNEV3QzU3NFRW?=
+ =?utf-8?B?NTExUTZwNlRMQzhlMmlvVm9QS3hLSWtNbEVuNUQ3cTcwSjlHUUdCQUM0aVd1?=
+ =?utf-8?B?NTF5TjlJdVA0SEtGbk0zQUlXRm1pUDlpVTR5ZUZRQmFWN3dGaVE1dEVZdHZr?=
+ =?utf-8?B?dU1UZmdHeXMwWFhkWXRMQ1RvRENGUkxpcXViRGpTK3VwN2haTFBoKytqSzZu?=
+ =?utf-8?B?ODZhUlZ6bHQ3OTJaUzlBL3ZuQnVkRjdMcjFGTm00U3Y2aTlCUnVJekM5TFlq?=
+ =?utf-8?B?Mmtsdkt4ZUs3NnJIN1JlbGloMkFzTldLYmVvR3Rqd3ZqZXJJaFlweDdYTG93?=
+ =?utf-8?B?SnVJS2N4eWZET2t3aFpmeHhYdTk5UFhlbkFzUFhNL3Rvc3dlM3VTbklEaUZD?=
+ =?utf-8?B?UWkwQ1VpaDJwQUE1bzRPZ3RUeExXdDZVdXNWYlVJWi9IRzFmWUtCOFE4cGw0?=
+ =?utf-8?B?NVM1Z3lHUWFOVUtLRXgvcm9odE9SR0d1MzBqN281TkhnOHR5ekkzWTB0QW1Q?=
+ =?utf-8?B?QmRXVW9ZWG55cmpBMC96N3BOLzNIR3FuKzZxaWREbGpMSEpCa2VZMzBHQnly?=
+ =?utf-8?B?T2k5WCtFQ2tuMThyVTZ6czE3MXZ4RG9jaGwwaUZaZVpRYktEVzQwM0lNWXhO?=
+ =?utf-8?B?LytFVi9jRGFjWmF6djZwdVlXZGJiZ3pMYlI4eW9ubERNV0liZGdxYnl5QllM?=
+ =?utf-8?B?UUk2a0VsalU2Rm0rVGlvb1BERWs4RFNaSzVvODlhWG1QMFUvNEhsUVh5RWNE?=
+ =?utf-8?B?NG0vK2tUNm56dDNPOTFaazN4U2dXeHR1Q1Nmai9aellNcDl3NUZJekhrU1Fn?=
+ =?utf-8?B?WFZ3bWlVbDZBUkhYVEFUc0JYbE05SXF1ZHl6Y3pMTXhkQjVsTDI5SjVxN0Rw?=
+ =?utf-8?B?QnJqcVhYMThlL0FmaXU0OWViWWFGOW1tVTdRRG5GQ3gzR0ZjMHQzWjdKYlFE?=
+ =?utf-8?B?SmZxQkFKdkF4bEovSmsyVXZnS3pSQTNVZVFZWnNUcHluazRnM2tFdUw5cWYx?=
+ =?utf-8?B?RElDdXFraVM0N21IL0xkWW5JNXVNUFZBOGVKNklCOUZNREhEdm1OaThlem1N?=
+ =?utf-8?Q?GU8A=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VHF5ZGlWUDVhOHJudCt6bmYrVk1aeXVIWkRMREZLWndqcVBhaHUyUk5CUWRu?=
+ =?utf-8?B?bGxyejMrWTUrYisrVXZvZ0pHaGo5R3hHQXMweXhVU1ZWSEs3ZGlTeEdPVno0?=
+ =?utf-8?B?NnN4MkIwclBxVGpqS0YyWjFGMGkza1g5dkx6UjhsZnpiZzc0NURvWFBvazQ0?=
+ =?utf-8?B?Q2VjN3NIR3VVdWZPcWZ2U2tJWVVuc0RhbjVIc3BrSEZveCs1WEJlSjk1TlFS?=
+ =?utf-8?B?bzM4UW1laEh1TDBUNm5PMmN4dE5iZDBEempIbzJoYjFFTldxU0lVTjBlOGJY?=
+ =?utf-8?B?a0xqOGhLaWZ4MEJETUh1OVVlK282WU91V2E5WlJIOWFFVVkvZDY1SjBQYkdH?=
+ =?utf-8?B?SkRiajJadzNwYmdMWEZKcFJrcEhUcTV0WHFSd1BXaExDSFVrVzBsT016UzZs?=
+ =?utf-8?B?ME9yNlRRc1Y5YUl2dXFKamVtTVZTZS9JN0NDdGNXQTBDRnV3TDNKdVUrbFpl?=
+ =?utf-8?B?RElNSGRNMXRKeDc5eVJCUDJaMGl4YzN3bDlrM205ekN6Z3MwMkovSjU3cUEz?=
+ =?utf-8?B?NDYrUjUrT240NFZLbmNtUzNwRFpEbEp4Q0VzV00ySy84MysyQm8vclJaVDRC?=
+ =?utf-8?B?TmlaM1pBZTNLKzVqY050ekFOSUZEUjcydHFkR0NnVGpzVjBwNDJubmJ6c1Yy?=
+ =?utf-8?B?bEdMU09sa28vOURlUEZuOE9rY0NLUVpiUTNzMTBsUk5SSEJpd3hhaWN4TG9l?=
+ =?utf-8?B?VkltLzdUaGZXbVVEUHpKWXgwTkQ1Tlk2cDdqVUYvR0tZNm1TWVZKMGxEL2Vu?=
+ =?utf-8?B?ajJBZVNiMG9kZlZpRUVkTzUzUzdiY3Z6Rk4vQ1k2bnljMGRVeEhOSFNmalV5?=
+ =?utf-8?B?MjNGYTRMc29HY0FYeS9kRlBsMnk4Qk9SbURYVkVrSUs2dlY5WThTVlF3WWx0?=
+ =?utf-8?B?eU9DNURrUzJ2dHZvNHQxUG51L3EzWGJqQkVIYWYrTCsyWFBMWGRCYzhLNG9z?=
+ =?utf-8?B?TW9GOWxVQmE3YzdkUmh1VlU0YkxHeFhyWGZqSXZrcm1hV05rRS9KUFcrYUYr?=
+ =?utf-8?B?THR4aDVIaGIzYTZudmdHVy80UStWTGVsdGE0ZXA2c1UrNFV1ZnFTaDAyS09h?=
+ =?utf-8?B?eGpTWjhaRXpoOXExL2JWVzUxYmRUV1Azd0xkdHJwMGtsdWJVbWNFYjA2OFNS?=
+ =?utf-8?B?akZMVUlUVGRjQlppZkJ0MHpQcFhqcGhWQ0JzK1pVc3Z1bnJLbUREM1kyRzJN?=
+ =?utf-8?B?WE1ISUdBa0NxYkdvYjJRYUlROHRvS3kvZjFsbi9WS05nMW1lZVNOQWVPbWhR?=
+ =?utf-8?B?QnhOMDh5TEU5YjFzSTN6UmRMSVlGTDg1bDduMVR3TVpkZ2RaRHh6QVJGbFV4?=
+ =?utf-8?B?U2pHYllVeGJDM2pveHFGOFVnUWJPSVg2ZXBiK3dKQW1xNGRUNEUrYjBnT0FO?=
+ =?utf-8?B?MDZ4akh0ZFlyRy9PeTY4K2tzdVl3d21LbzdhM21wZC9zMEp3UVRvRTRRYThS?=
+ =?utf-8?B?Q0lOYkN1MWxFRTBET0tKNGRWRVIvMDdLMDhGUmVGaFlQSStFR0hhQWxjNXlI?=
+ =?utf-8?B?VjFpWkNNSjVzQm1yMTFsdkkvUEJnTzBTSmJUYVlPdlNDcUJyL2tZS3RrNjcv?=
+ =?utf-8?B?d1BMYU9na0hRdEpwcHVxeU9YeGR1WFNCUVdIeUVtaHRjZS8wYlk3d0x4WEtO?=
+ =?utf-8?B?Mld1cStsVEtxeENDRmxiZmN3Nm54SExZM1hpa3R2eVhRUEU2bFBpWWd3aVZz?=
+ =?utf-8?B?VzI1VjJRQTJVQmQwMEcxbjVoS3BiSHBqMFBMR2pYVk9jdk5Za1M2SnJWZjFS?=
+ =?utf-8?B?NGlaWUdwWVRNOEdwMEJNeWtmeXhvK3J0THpMWU1kRFhwZ2VOS2VnTzFOTExU?=
+ =?utf-8?B?RUJMaHdTbjRDREh0OTFBajVDM3h4U05GTXloMHZvWER1MTBOeGJxK3lPL21B?=
+ =?utf-8?B?MkQwUHpOREpyVThyNHNhT3ZlZW1aUU1VWUFaQjU0R1QzZVVSUGFlZHM3MHlp?=
+ =?utf-8?B?SFQ4NmUxY1MxdGg0di9Yd09aSmpIbzd3NmNJRFNpSXVKN1l2aWlYZzE5L0U4?=
+ =?utf-8?B?eng0NlprQm9iL2xSZnVQRFlEdVZNUlJKdGdaT0J2eWg3cWxqbkZIck1vVHVw?=
+ =?utf-8?B?MDRMczlGR01nL0twOFgwWDd0bzczcU0raGhZdWk2R2RReGhXSEU5aERnUXZZ?=
+ =?utf-8?B?M0Y2R2MxRUc2ODlDZ053MVJaWWZZeDRONHBuWUZNdHJ2TTlzUkJYdmYyak5n?=
+ =?utf-8?B?amVSK2Q0QjEwVElVWXBhU3B4OXVmNU9QVGl0eExBYVhrRFhYcEtoVkYybHdQ?=
+ =?utf-8?B?cFgyeE5jRDlCZDhZWGdxT1lPME42REt6ZzdZMllpeEYyb0ZpbkZIYk90STRZ?=
+ =?utf-8?B?UTlxR1pXMC80L2l6YVBZN1paMFkvSDJDNUR0QWY3SmVJYWlBVGtzZ3k1Umgv?=
+ =?utf-8?Q?oe0HvddTMXmprUC0=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e8452f4-c7b2-441a-bca4-08de69c4692d
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 23:22:23.3825
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5/PlJfxqGbJ5iibnMAANi+ux29CcLWorVL9aW7RLglPLPWJyalM/96vznl5om6gCclVA7yHG6FFeOkN2Le7QCg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB5999
+X-OriginatorOrg: intel.com
 X-Rspam-User: 
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AE767A0008
-X-Stat-Signature: etxdcshqaz3jnz63uk6uf19jxzaqqmcq
-X-HE-Tag: 1770851711-387503
-X-HE-Meta: U2FsdGVkX1/D9K/lKGHM9Qcu/TSkR5mFujXVYLQL7jFcGFs+olnK3atEY+nc3mJqWBbMs+L+O5oWGmTZfyjEnGMS7T+96k/HynsxczrLKIi5Z18NvwdTgcwwaTlUsBFCjddhIVAtYGfsXAFn5ScZtMZ1XIeivTuQCtQGqa5fWiwtBLqGBdhX9kmTmzM9Cz0ZHuXLvSqMydYSIWA6KBWJpMPt1q3YtXDt6NnA1+hXhedDU1+U8fqRHlu+mwLW5SMk2/gacW+1uJDrTyN9tkWj1kQe27vXNWdKNWoo9lXZ7acvue0uuQd02GGNewZiutgGg571Qans91ErqtqT6n2udblLVBdH662TmRAqyX7Zqlzjq6hyxdR5MVALqNrFPeELeTIyRpLx/ipg0rF9DvYIl4BiQRPDFLSl6HdWSM7OqaQ6gy2nWY4jnBSr8IDhWO+kDhTdEwz/XGhEJ078N3xjO4qZJv8TRChUKvhnAanqw79b9MpmpBIgEugIrjLSFinElAjr1M43POk5eOfNREaZ0eJ+EGJ0yTAQgvINraFeHo7U9wFOByyu2Fp1XMMaqw3cqhl33bvCIy2tYKTpWfTWFGF4Ll5pHLFxyWF5FbfuwhrjMq2vSgVvgX1X6Xb7F2rnYQ4shev7U71jXxhpZ4z+zk7tQY0JbY2KDorGN5wtdmTtWh02iw6BLzqzG3NoNGZBHQJDD3d2kp2rX6+bT9SOQKu6CEkF/0GsX9nncPG6atqH4JGaeCsSEf+4ZW4wyA7cPwJ2NHAtvByZ7KrOvQhhODQhTKkXkHNWUdTBeEySPKDreo/MYJvg+WObsXFXeibAAhcYPCknSF0m8z0qvqHVQ+QbVqlEghjIFyGtUbBxaGS3YXbzM0hXDbg9jAVuFKJ3r3kcPjWkm+BNXlEb+6Q+xQ5nN/7c3BqpaJXvmjFkX6PgaP9CG0O5RUZQHzGD8v1ZGf0CGY9wgrRyqzIHAEt
- BHYYBQOG
- z7d7pF0qrRCE6pks0F3Fcn60D8pV5pkCZC8QGEvcocUyTF2j6TwJoCrYz33LoLlwcBec7/2WUQRVXI7dv7nHKCkkk0iw49PLzTHUkOWmhBazb+PSf2qzpbLky5AHap/ZnnRXWdqPdZNYWhRoaGrnjK5CLyKGeFXn/qf86K3K1n+GQnbOlldNHTyVpwAeN4mYPK9/CDqJHcQ09aXeKszHLFFGpsNLwb8VSs4oFC6YuMNErp/Llv373u7/LcksmYsbZRw9AsAtHbNurYLVDIDeppVOIBN7b0WBd84QHIIwpkbAga/yxNKLEF8qMylVdynAaWOHhs4raDEY9AciZB40jelMBMWgZIP2m53u2e2LeigSYGMPa2ETRmmqEcN0h8wRv2qk3Q3lNrWUMn/hdLyAqZJI+8ECAjSaGZEsVVTiKE2Hrvl0IEqCOpE8IYHC+XYbhMIFA53prrpk6PSgnDB2JYwwtsmrMckLbfO+ZdmdGM3maGV9WP7xXMp1LpsUmMvtUpwBzFeM43ijlWcWV8Wh/PX7fEu08X0+Q+cfbF1vKyPuWxh+PNpshNpKdTjPDCJR/S/EnCsPslqV8oi7FupSLQ/q+hA==
+X-Rspamd-Queue-Id: BE1FBA0003
+X-Stat-Signature: nt1cbrsayfxpb6rz3zzxrfctz66gdsy9
+X-HE-Tag: 1770852152-842286
+X-HE-Meta: U2FsdGVkX19hwFj0jMBBYZOUZWCQTVmFGNU2RNLNmUX5rICVCJgQKSZfFPenONTQm1MnrEPW3ufBChA9Bkogv/2yNcXmB7ILgJSy9kXfMnFm2F1lNF/cGZNjmGb7bx/JdKvgJ1mtyXDWQPzv3TsiQTKLbTOku19amHeaO3GcmD7QMx3thZzy7SG+HWzHhuj4XGDNnzou1KP5i2618oDImsfvx8s1+ZCdet0cTdysE+vlztxroiqRKvRaQERvVfjmUqgevrm1183Qxb+VxiMjlT12noFwdE+xQI9z5ru5NuB3PL8fjjhZ21/yrFvX2/y7bWIwYzVJjTZbJLMJ8O7g+XSppU4yhkUTuGfZKNLr0AL29TolG0HH628+TeOUpq2tQdOvUZFcP6fDl6TswjzMxNumSca/EmCZaoz35CLUe6Ao8SHxe7PWOvx1iz5wUWJExvauZkY2Z0V9I/3g/pD8hvEcXgPOiSWCQSW8pmr+xzRyic/IBmVHJHVyqaIwGyI5W+y36gyAYnBwfvBhli2yBjBD/bS7rkvLLU57E96+tBQxEAtcdXAIB4NN6xe2VSZsYEMGEB29960Zskhn3BEVxy2Z6mfQgl7fIWPQ7xOoRR4z2iwloIh/N7phGhp+hQua8NirlT3wneOtOqTKZhF+NqnOBTb0mcXE2A82szEWNbqVqEZaSA0cJ6xFyDz+cCB00GzI793sG5w7UUbVfWhkuxLEwzQ1XNJjQo1/Qq1bzWLi+tGSqxxxIcHBcIA8Q4MLFb742di+VwVPGzmytaF6PnP2rvvc4zorQe+MjZKCUfV7Zst8JaODT38UwW7TzU/CJaqABEYHgML60xn7XFI3Nq/uWV4xVPNuMbYwDCv69f8O+VZsbTCKWwJlTf5q/3mX7aPxSdHHKvNVALIKKDOAsY2TB5bXMwaMQsW0s0wyhRWS1nyToSH5Y0gKV9/cR9hHcUXjr/Zfvko8vHNgE4J
+ SoREAUo9
+ MrnEnYslSLrruEthXwkImAJ6qxbgD+m62Qrz7YS9aI6mo4g/c668Il8XQAY7TxM9HdAgQMvPL9LpfZ2UnsDPZ9+RFYprhFRLoi7sKMzJza/QuujSyjptPILge+09fcc9okeM75YjffKDeZVeT0ZkyZcdBl0bwmSbOYjdf17wdKC8Ti8cxT1stuIR1jN1mxzVXFn008DM77L4fKhRUHuMV+syg64hG7K7mLuTlF/6iQHXRI/bsfkz1iJGgwTvYoUUu2K1bqOqkarw1EfY+eqXBlA1CRNdj9CMidoW4L9aYyhW3VTCQzhDLCcW2oRzVXojg7Izob2W5bxidM4cexQXNtosFmt1Q7+yyQHBzL2MvC8zOPaTBPseswftSFZ1/9YJ8PrmXICb02cOGKCNCOypArZ8HxTqP9GDJ3G/e4/5vaKAYmQaSeFRqH33iIawgm2wq9l+2SGk2VZ1rwvTGEoW9UVo9JA+M9YBWqPSNmUNHg2a32kbmGrXWHr++YK1M2EUkGRuNsbhmPsASboVX5yeKuA8GKGlBiCdAWIwOLFR0uInJwoaoGidYBfCrrTFdWcshxh9XSYeuk9EZ/1Ext/ffwCs9Ra6PYc6Fayb6O2DDQOto2jQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,209 +244,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Background
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-The APIs using this_cpu_*() operate on a local copy of a percpu
-variable for the current processor. In order to obtain the address of
-this cpu specific variable a cpu specific offset has to be added to
-the address.
-On x86 this address calculation can be created by prefixing an
-instruction with a segment register. x86 can increment a percpu
-counter with a single instruction. Since the address calculation and
-the RMV operation occurs within one instruction it is atomic vs the
-scheduler. So no preemption is needed.
-f.e
-INC %gs:[my_counter]
-See https://www.kernel.org/doc/Documentation/this_cpu_ops.txt for more deta=
-ils.
+On Thu, Feb 12, 2026 at 09:54:50AM +1100, Alistair Popple wrote:
+> On 2026-02-12 at 09:23 +1100, Davidlohr Bueso <dave@stgolabs.net> wrote...
+> > On Tue, 10 Feb 2026, Thomas Hellstrï¿½m wrote:
+> > 
+> > > @@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
+> > > 		}
+> > > 
+> > > 		if (softleaf_is_migration(entry)) {
+> > > -			migration_entry_wait_on_locked(entry, ptl);
+> > > +			softleaf_entry_wait_on_locked(entry, ptl);
+> > > 			spin_unlock(ptl);
+> > 
+> > softleaf_entry_wait_on_locked() unconditionally drops the ptl.
+> 
+> As does migration_entry_wait_on_locked() so obviously a pre-existing issue.
+> I'm not sure why we would wait on a migration entry here though, maybe Balbir
+> can help?
 
-ARM64 and some other non-x86 architectures don't have a segment
-register. The address of the current percpu variable has to be
-calculated and then that address can be used for an operation on
-percpu data. This process must be atomic vs the scheduler. Therefore,
-it is necessary to disable preemption, perform the address calculation
-and then the increment operation. The cpu specific offset is in a MSR
-that also needs to be accessed on ARM64. The code flow looks like:
-    Disable preemption
-    Calculate the current CPU copy address by using the offset
-    Manipulate the counter
-    Enable preemption
+I noticed this recently as being odd, given that we don’t wait on PTE
+migration entries.
 
-This process is inefficient relative to x86 and has to be repeated for
-every access to per cpu data.
-ARM64 has an increment instruction but this increment does not allow
-the use of a base register or a segment register like on x86. So an
-address calculation is always necessary even if the atomic instruction
-is used.
-A page table allows us to do remapping of addresses. So if the atomic
-instruction would be using a virtual address and the page tables for
-the local processor would map this area to the local per cpu data then
-we can also create a single instruction on ARM64 (hopefully for some
-other non-x86 architectures too) and be as efficient as x86 is.
+Looking again, this is unreachable code, since we bail out just above
+this if statement on !softleaf_is_device_private(entry). So we should
+just delete this entire if statement.
 
-So, the code flow should just become:
-INC VIRTUAL_BASE + percpu_variable_offset
+Matt
 
-In order to do that we need to have the same virtual address mapped
-differently for each processor. This means we need different page
-tables for each processor. These page tables
-can map almost all of the address space in the same way. The only area
-that will be special is the area starting at VIRTUAL_BASE.
-
-In addition, the percpu counters also can be accessed from other CPUs
-by using per_cpu_ptr() APIs. This is usually used by counters
-initialization code. For example,
-for_each_possible_cpu(cpu) {
-    p =3D per_cpu_ptr(ptr, cpu);
-    initialize(p);
-}
-
-Percpu allocator
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-When calling alloc_percpu(), kernel allocates contiguous virtual
-memory area from vmalloc area. It is called =E2=80=9Cchunk=E2=80=9D. The ch=
-unk looks
-like:
-| CPU 0 | CPU 1 | =E2=80=A6=E2=80=A6 | CPU n|
-
-The size of the chunk is the percpu_unit_size * nr_cpus. Then kernel
-maps them to physical memory. It returns an offset.
-
-Design
-=3D=3D=3D=3D=3D=3D
-To improve the performance for this_cpu_ops on ARM64 and potentially
-some other non-x86 architectures, I and Christopher Lameter proposed
-the below solution.
-
-To remove the preemption disable/enable, we need to guarantee
-this_cpu_*() APIs actually convert the offset returned by
-alloc_percpu() to a pointer which should be the same on all CPUs. But
-it should not break per_cpu_ptr() APIs usecase either.
-To achieve this, we need to modify the percpu allocator to allocate
-extra virtual memory other than the virtual memory area shown in the
-above diagram. The size of the extra allocation is percpu_unit_size.
-this_cpu_*() APIs will convert the offset returned by alloc_percpu()
-to a pointer to this area. It is the same for all CPUs. I call the
-extra allocated area =E2=80=9Clocal mapping=E2=80=9D and the original area =
-=E2=80=9Cglobal
-mapping=E2=80=9D in order to simplify the discussion. So the percpu chunk w=
-ill
-look like:
-| CPU 0 | CPU 1 | =E2=80=A6=E2=80=A6 | CPU n| xxxxxxxxx | CPU |
-           Global mapping                                     local mapping
-
-this_cpu_*() APIs will just access the local mapping, per_cpu_ptr()
-APIs continue to use the global mapping.
-
-The local mapping requires mapping to different physical memory
-(shared physical memory mapped by global mapping, no need to allocate
-extra physical memory) on different CPUs in order to manipulate the
-right copy. This can be achieved by using the percpu page table in
-arch-dependent code. Each CPU just sees its own kernel page table copy
-instead of sharing one single kernel page table. However the most
-contents of the page tables can be shared except the area for percpu
-local mapping. So they basically can share PUD/PMD/PTE except PGD.
-
-The kernel also maintains a base address for global mapping in order
-to convert the offset returned by alloc_percpu() to the correct
-pointer. The local mapping also needs a base address, and the offset
-between local mapping base address and allocated local mapping area
-must be the same with the offset returned by alloc_percpu(). So the
-local mapping has to happen in a specific address range. This may need
-a dedicated percpu local mapping area which can=E2=80=99t be used by vmallo=
-c()
-in order to avoid conflicts.
-
-I have done some PoC on ARM64. Hopefully I can post them to the
-mailing list to ease the discussion before the conference.
-
-Overhead
-=3D=3D=3D=3D=3D=3D=3D=3D
-1. Some extra virtual memory space. But it shouldn=E2=80=99t be too much. I
-saw 960K with Fedora default kernel config. Given terabytes virtual
-memory space on 64 bit machine, 960K is negligible.
-2. Some extra physical memory for percpu kernel page table. 4K *
-(nr_cpus =E2=80=93 1) for PGD pages, plus the page tables used by percpu lo=
-cal
-mapping area. A couple of megabytes with Fedora default kernel config
-on AmpereOne with 160 cores.
-3. Percpu allocation and free will be slower due to extra virtual
-memory allocation and page table manipulation. However, percpu is
-allocated by chunk. One chunk typically holds a lot percpu variables.
-So the slowdown should be negligible. The test result below also
-proved it.
-
-Performance Test
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-I have done a PoC on ARM64. So all the tests were run on AmpereOne
-with 160 cores.
-1. Kernel build
---------------------
-Run kernel build (make -j160) with default Fedora kernel config in a memcg.
-Roughly 13% - 15% systime improvement for my kernel build workload.
-
-2. stress-ng
-----------------
-stress-ng --vm 160 --vm-bytes 128M --vm-ops 100000000
-6% improvement for systime
-
-3. vm-scalability
-----------------------
-Single digit (0 =E2=80=93 8%) improvement for systime for some vm-scalabili=
-ty test cases
-
-4. will-it-scale
-------------------
-3% - 8% improvement for pagefault cases from will-it-scale
-And profiling to page_fault3_processes from will-it-scale also shows
-the reduction in percpu counters manipulation (perf diff output):
-5.91%     -1.82%  [kernel.kallsyms]        [k] mod_memcg_lruvec_state
-2.84%     -1.30%  [kernel.kallsyms]        [k] percpu_counter_add_batch
-
-Regression Test
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Create 10K cgroups.
-Creating cgroups need to call percpu allocators multiple times. For
-example, creating one memcg needs to allocate percpu refcnt, rstat and
-objcg percpu refcnt.
-
-It consumed 2112K more virtual memory for percpu local mapping. A few
-more megabytes consumed by percpu page table to map local mapping. The
-memory consumption depends on the number of CPUs.
-
-Execution time is basically the same. No noticeable regression is
-found. The profiling shows (perf diff):
-0.35%     -0.33%  [kernel.kallsyms]                               [k]
-percpu_ref_get_many
-0.61%     -0.30%  [kernel.kallsyms]                               [k]
-percpu_counter_add_batch
-0.34%     +0.02%  [kernel.kallsyms]                               [k]
-pcpu_alloc_noprof
-0.00%     +0.05%  [kernel.kallsyms]                               [k]
-free_percpu.part.0
-The gain from manipulating percpu counters outweigh the slowdown from
-percpu allocation and free. There is even a little bit of net gain.
-
-Future usecases
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Some potential usecases may be unlocked by percpu page table, for
-example, kernel text replication, off the top of my head. Anyway this
-is not the main point for this proposal.
-
-Key attendees
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-This work will incur changes to percpu allocator, vmalloc (just need
-to add a new interface to take pgdir pointer as an argument) and arch
-dependent code (percpu page table implementation is arch-dependent).
-So the percpu allocator maintainers, vmalloc maintainers and arch
-experts (for example, ARM64) should be key attendees. I don't know who
-can attend so I just list all of them.
-
-Christopher Lameter (co-presenter and percpu allocator maintainer)
-Dennis Zhou/Tejun Heo (percpu allocator maintainer)
-Uladzislau Rezki (vmalloc maintainer)
-Catalin Marinas/Will Deacon/Ryan Roberts (ARM64 memory management)
-
-Thanks,
-Yang
+> 
+> > > 			return -EAGAIN;
+> > > 		}
 
