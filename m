@@ -4,86 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD34E9E30F
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 14:14:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AC3DE9E310
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 14:14:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 840486B0088; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
+	id 89E936B0092; Wed, 11 Feb 2026 09:14:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EDA16B0089; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
+	id 818996B0089; Wed, 11 Feb 2026 09:14:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EF926B008A; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
+	id 5DB506B008C; Wed, 11 Feb 2026 09:14:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 60E516B0088
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06A7D1403FD
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:31 +0000 (UTC)
-X-FDA: 84432371142.30.5A20208
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CEAE6B0089
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:14:32 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 087C358BE7
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:32 +0000 (UTC)
+X-FDA: 84432371184.25.4E56DAB
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A30924000E
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FT9AP11Z;
-	spf=pass (imf07.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id AFD4BA000B
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=aX6wkzsO;
+	spf=pass (imf15.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770819268;
+	s=arc-20220608; t=1770819269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nZ3DtYU6oaP7UVk4PzUNWALcciYCvdSqiN7dJ9VBjQ0=;
-	b=Un3SWsFiY4YcrlZjTNgAbLvhiCjWI8UERTO8SoFL0/z4rZrccsnI5yB2WhfH8feS1GJkbz
-	OUBi4xzwDxJVwGpQntMk4DQri90TSK1Qi5vi+GaPdciaBkda7F/uZioI4JQ7BmtqIZaapf
-	N39FHdb9Mq+cXsqXo0y3JqR618a6Hjc=
+	bh=Zcp5Naq2FPjOG1kV+prJJdfvki9PYjEAiotKE3UfUD8=;
+	b=Y66g3J8qufAJKgBnmcmaxqnIVBLCnZFhhdLpAxb5AkcBU6y2mykProNxDo40O6jh3BgtA3
+	dAzopOgE6qvTGftyEETU9GU++Qnk8S6L+OVkRZhhESvuYYr4P6huSKm9JtnoZeXs7SJiwW
+	tman/pxXDSD1g1RFLwpWAjgI0o1xj8s=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=FT9AP11Z;
-	spf=pass (imf07.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=aX6wkzsO;
+	spf=pass (imf15.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770819268; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770819269; a=rsa-sha256;
 	cv=none;
-	b=E+A2jk5gfwm3Wl7jVaOs7SFLDNe2G/OW4fOhkf5O7Qv7g4ifxIprUPawW7piH75KJVoQ+k
-	41LWUVEt3utM0e3aYt3Ax90/aoUyobGFzHh0WoKsN2yimvmjuNmmD8qH41wpeCNmXZikTB
-	NwrVnamlQVgPZwO/JUCRm+v10YVoN5w=
+	b=FMxX+KLNXoJUQftgm7xgy8vtS/5frpFnmYYO2GidNhvp5Eb2uLYdXZEkqRe0TjRhnP/iUP
+	W6MwSqGoiX/Oysdl7KFkAH6XUFOMh28XEUlvPsDC2/zXdue89+uOuYA3XiHmnDVosNuU/N
+	oPAEwmlWAM5B+perWwos0tfn/KEBATc=
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61B1gTxK2771696;
-	Wed, 11 Feb 2026 14:14:09 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61B1m5jN565607;
+	Wed, 11 Feb 2026 14:14:07 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=nZ3DtYU6oaP7UVk4P
-	zUNWALcciYCvdSqiN7dJ9VBjQ0=; b=FT9AP11Z+GCNfyF5lav+mCn3P9v+8aSza
-	lMI0b0Ge4bjElNawf6zvpIGpXP/rU2a28nD0+WDthkqDL7Ul/0kvci9tkmhtJUyc
-	xe358SlIoVjWqGVohKo9r7rfmbjvRwQ6iJyFLBqslxD3uHj5Wx+cFGSU3GPZhTte
-	k+7T1LHv5XTcTolBXr5CUTVeGAsr6a8A+vy36hIJGfMZzWvRD3iknfx5LhTztH8P
-	f5k5Ib/tmi88uisq1S+7/GSEcZ7682v96OxJhcOMWqu0BKh7OzxDTo0RmaS61bpb
-	MXJy3VB9GgSOh49nlaOqghPfT4DxsPwsbg1m3bUnABW73VnZe6VSA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696wy13s-1
+	:mime-version:references:subject:to; s=pp1; bh=Zcp5Naq2FPjOG1kV+
+	prJJdfvki9PYjEAiotKE3UfUD8=; b=aX6wkzsOomJrnSmZTnsjodoMr2cJgje9G
+	neRJdVXnwNsAICQIey5kLmYoRnzsSmWGdq0oDBjiCsqyu4B6QsZXiK+EkLEmtv9s
+	gp9zKxXAnPfElnNdgNYxySwl8/7XORzEvkNKfmPRl70HWXIwGcw6qcjxKzG+5xr8
+	CFy8V8L7hG8qAorXM9ZAJl0cWVcN1NuIOMFmgzqTo45/cWiHthQIyI6u9baR24NC
+	JVZ148EOh1IIRgOSYfOkWmIHsIoK8f4ti48UKdJZx4YaVu/Dwib0XVF1zvx/FIjL
+	Hv8xURBqOGa91hvNL09m2SPSTJmlqu/HAC5cbO3hRUF94CPZEL9aA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696wy13y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 14:14:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BBA3LT001847;
-	Wed, 11 Feb 2026 14:14:03 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6je25spj-1
+	Wed, 11 Feb 2026 14:14:06 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61B9v0YZ019277;
+	Wed, 11 Feb 2026 14:14:05 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxk5waj-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 14:14:03 +0000
+	Wed, 11 Feb 2026 14:14:05 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BEDxTO59769306
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BEE12x28967514
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Feb 2026 14:13:59 GMT
+	Wed, 11 Feb 2026 14:14:01 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8FEC020040;
-	Wed, 11 Feb 2026 14:13:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 5584220040;
+	Wed, 11 Feb 2026 14:14:01 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 050B62004D;
-	Wed, 11 Feb 2026 14:13:59 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id C61F220043;
+	Wed, 11 Feb 2026 14:14:00 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Feb 2026 14:13:58 +0000 (GMT)
+	Wed, 11 Feb 2026 14:14:00 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
@@ -114,9 +114,9 @@ Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
         Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v9 1/6] x86/vdso: Fix DWARF generation for getrandom()
-Date: Wed, 11 Feb 2026 15:13:52 +0100
-Message-ID: <20260211141357.271402-2-jremus@linux.ibm.com>
+Subject: [PATCH v9 4/6] x86/vdso: Use SYM_FUNC_{START,END} in __kernel_vsyscall()
+Date: Wed, 11 Feb 2026 15:13:55 +0100
+Message-ID: <20260211141357.271402-5-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211141357.271402-1-jremus@linux.ibm.com>
 References: <20260211141357.271402-1-jremus@linux.ibm.com>
@@ -124,22 +124,22 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=WZYBqkhX c=1 sm=1 tr=0 ts=698c8ead cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+X-Authority-Analysis: v=2.4 cv=WZYBqkhX c=1 sm=1 tr=0 ts=698c8eae cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
  a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=oGMlB6cnAAAA:8
- a=VnNF1IyMAAAA:8 a=rsc5PF6bQGhcUx5MhlsA:9 a=2JgSa4NbpEOStq-L5dxp:22
+ a=VnNF1IyMAAAA:8 a=lbqDleH5ITP0AWbVeFgA:9 a=2JgSa4NbpEOStq-L5dxp:22
  a=NdAtdrkLVvyUPsUoGJp4:22
-X-Proofpoint-GUID: coOlGK5_Y3eioVjFxn1dt-jFO-6QXvjH
-X-Proofpoint-ORIG-GUID: hCiBiAg_lSUcbnUCAx289HQUzG6fCHkp
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDEwNyBTYWx0ZWRfX2URJV1E8ko/V
- FYOQMGVlZpMxXxdGg9YmrhVbUUEC99giRAiNLHyPm6TJGCSYZAOBPL3g0Q1mB+br2n/IOiPaOSL
- OaSumIDOrcUrdU7Lb+zF6eoHEcK+hVidv3PV/kdQec4Bnj/jAq93gUKvY1EnC4h3mSKfUBUQWS3
- L1wBJzwcxTeT6PmNX5CdS6Jmf4YGHzLzO+Ep1wxYd0osZaaMuLyHob071b1rwIGsgKERKp9Dp/X
- tzApMzOMBdHt02bysDTv0YQ0voHL0RY4ZG2IpfnO3+PvhhTIOrS/sr61M3ph+FAqLWa2k5aErYe
- /TKcYXJ1JOFaBXWTzjlAXo08wAs+VVtIU55hUqeSY1joNSx+pMW93SwgTyt/zIKUAWd/EpD4XB9
- le0veV4Poz/qdFd9Hqh0VQxadQ+1rb4LAHKyi6mqNBK/RfDYktYxVs0aZBeVXVokBi2NLl9bGQn
- KumaDRN5X6qvgdLfSqw==
+X-Proofpoint-GUID: kz4-PgsEcTSzm-2r0wzqb-Lk3s4dyfyA
+X-Proofpoint-ORIG-GUID: O-HOHeIoS3U04pkYu2_SbRe2Ovc3uHRr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDEwNyBTYWx0ZWRfX+Eyu6SdqHHJY
+ OnDHDX8s6SkYNUyTyuWAMGkV+wFFcvS75c8fY5jaUoHjOPJ8bn/cQRJPN2ALRxeGbShs1cdFcWZ
+ H9UTcg2vGHAsnkBOtn/kZE1STpq05s11yUFOqFPCNMyi5F0eSPK5TypLqeaoswFGynJE6YDOyBb
+ 7QCVhuNAyqWYaGiS3AsPooE5qDpItfFxdAy8mTfpxPbELI8RM9X2mnBeopUXGjeR+FcdsOJ1bX3
+ gY+GY3APOnbaRV+IQf8ViygA9vXk6/gLLHLQdI4brNZ/QLjNWc3xCsG056Z1iCdYVPvniqG9bRF
+ 6OR62eLELk0N2lW9liqlHwaMHhtVfJOhdQm6aHRi9lNVpqDQi3vGFd3kSh0R9Y/apLGXaAeO8Cj
+ e4sWWsBiKu1p5yZRs7vqY6poa5WS0tWQyYsnMunhL2OVd2sBGc+aKlBoGqmnIeo1mcZFfH2gSme
+ xmbh7DTQIFuVXTtKMHw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-11_01,2026-02-11_02,2025-10-01_01
@@ -149,14 +149,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
  definitions=main-2602110107
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A30924000E
-X-Stat-Signature: wk4h4x5zkj5zhjfez95uumq9ezzzuf89
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: AFD4BA000B
+X-Stat-Signature: rmq6xs8pp7tfsg9jzbsuu8oarj9rfn8b
 X-Rspam-User: 
-X-HE-Tag: 1770819268-211262
-X-HE-Meta: U2FsdGVkX1+SWaTuJSWbcjU38V8fiZlcortwW6UrGZpgjmoE4w69sDHXqLFCd5xefOej0unY+MxFYXOb6UQUQf1eJcPfDG7tt5Uy8zgiUs+QMCfjUHrzZrR4N3fa+SPL6rwHMWn/5b3VaRjiqYryI182Li3g4MXjgNVJKiZ1sE8pSaLeaKsPjXOpdtPMW0HcVFIXSCgcMiLBzC1212NUqtZnk95OkvkiT57Vt4ScCSOQgnbLIJp2TUY/mubRTjzK4tPSYdO4t90NFpDWZL0uLYVKYoTTL80r+fGv3RN5lZ4tm7/edOKrfD7GsCK+8aDBNy0XESp7+7QugzR4rGzYeaZjlY9JDk8Q+1DpFpIXboVY4Strey7jNbFFL4Mf9wNlTrP9XdElvtmwV71PhDv6AcZUhm16FIBB5S5qvjo8RUuYlAqwaMbbuhvFiOr6aoShWPFjHtqb0cnzm5mWqN39NwyWlENwGvcxoWQEnXKiXYpzGXoElvV7mR9UNdEpQeancPi1GucYFq5swbSPKTkBGpOrRgcdQuG+xTZQoUMdSlaiACRAvHWgfHEOFSqHXh6VwVFvjCK+J8rYm1WNXm+NlStS4hx+af6h3MTEA6Xuv60AiN+46BhY2+W3C8/tHyQVGFF2q4NDXZRbBtJC1qiXKIvhL9RZk3jswjogoV0jMe9V3k6zYztfszJEuWr/IzghYDTjb8q2K+Ble6ToCU663uKpf4A4fPyd+pbPmmqlMs2bSlx/r3/wBs6hWoxwGjJAVG4gtjzNipbaSlN0aXEjkt1TSM9LbFA7LVqcJzrf/DfLEbh4ArumZeV7W0MBzEtd2sNrybdf/4sb0QPFXNfJfscmcY+Mf4AxhvLo6M5Vp7BQK1+/4AtVCF2rvVTVYP7Ql51aJ+EZ/VqKpSs2yldwqPg7BrWES1evSfhgsBXwqBT6aCFuUIvxkr+QFsq6yv3cNFTcegnMx79b44Pvc2J
- ZJQZ0LjF
- ADQGcnSe3TRGsAQFrNJZA9CDLa49d4GTECyzRqUVGI1GZ33KzXQRJUk78aa6WKPsRnICjaYQb77xxbOu18MELu25MDIIYW3nlSneQxCiPOJJPDajjl1zWbXtCwitqwAXadV0xU8Qk50c1nW/5E302sT70rghTxrw4uMyMozQ6BtqI3bw4U8DNIq3/JBMPIyL6FmjczXjO0CXa4YcwIBGXjluvVVeFy3HJ4Bl0N/R46JPzVlrzegk3VlcaF8Kpt4jir8Uq1gxd4yGOWVwyhraOMmOKU71qcq4atcGBp/igoQx4t4O/ihXNQskkm3Lzseb3yoC+Eipncyez8Ehax2WsCVOB0qwSGXE914n9FbJ+/fXFwrd4L1ZqJW5LbP+XdVcEW21sR1nHzMkLiIBl8UyqelyH1ISu67nESguBvV3cbUa1G18x3UXPDMsSKA==
+X-HE-Tag: 1770819269-285409
+X-HE-Meta: U2FsdGVkX19VBJkoS856vRVlyEzChx/pHJIDAIlm4XEAx+6JBcHi48sVfFTJZSMAMbXfNTBPUwNncm1DzFQCQp8Hfroz+3ZW3rgKOkMV7NuOgD/kN0nNa9SVPH0/joKVXQLxUbijaIe02VQ4VIDyarxU9hc/BSfe09Zui0Jl/5KzF59dQjI+nT4pRyG3GnHgX3POUEyI0lc6qbiv2Y+kDlkz8Qu/HE+6XTiADea+3WXiC2UeNrY5FeE3iWGWXX7f+jBUKjZlzGq11ate3dJNF9vRtxBBGJpRJOIguv1vSDAjpgV8/vQpp0F5HLTYjHLDXIGKHTF/57v7xLXOag777V5/EfxN5FGmhwSMho8G7zn03wV22cJeTDf9JmDS9BaLoZ2B6xVA1NpW60/qC1+QK7Au/7tD70inoT4eBYnR4pSQ8sP587WCxDqez5CvJCHyALEFOJv+GyxlAFzTWoRoSlLQ8rbYkNclwaZ4C82uyOFJRvSl15hnuXL+F4Xk07INIoAkOsF3FBwQqW0HNoS+e25GJNtIbQ1eTi4cSAXbPZ7vGPm4bXdRgHFlACqfrEU4NmKItYwz9I9uKNOYcb7Cyv+/WYjcR1ocfsUtjeGgKtT7yUZHDlZVEAWfcI3DnqRv0359tuqSYpXke/Efvnw8QQpxnjAuB5Ao34XhiiVSvtABC7zc2FDVUJKivipL3Vzgis2mKkU8VM3bFC8OxNJzOE5A3kg01E+VeWRfj2Q72MSD61RhKZgWFb9GodM3xhpGuLKVHwH5UExEuqWpFcCQ8gW/C5WKDaAx5yZc+ZKLowROCANIZv6RYZWFHFxx2XMXLZLA04NA6/gu5YF8wMFuOVHv6Wa1sFY9hrbMSg6o+4FrU22O8Ko/euyUyDFD0DT5bdvwKJUrD+S63pmmOImQkTmy9CXILrFs1ZFLWWEh75T0zEddtUN0QxDiITcIHRvcPYCBmy3H/mhVmTeSpx/
+ FhNmkCDr
+ TpynoxrUCKUZj+Gp9eWTsA2Kskzf6Z/k4iOMFPYb6NMACEUK0QvJaXuR3Rp1WvsYZHckvZoaiMBHhFVBjg9OREQKHNlotPcv9eD1ue4KcW7b4WvJEbFo2oDd72LaZzLV9P0UlC5aRg8lnJ+N1p9p/aclPEPvf/uX8xm9jnaetYkvLYzvvGlJIJi7yFWe7WPlDo7nBhSjOoMhzaR507P4VuoJRg5RIMHPKtK/fOGxYXAuP1e1ZV+VDAZAOV0B8Gs3bUg0+0scTRmZXPZSFz6SlnMLdRQyvG0q9DXI9gF1Vudu97N3tzkbV3rkm7T8UGDCoQ2uAYitIEtjOvNpPC6FR4Bz3r2zz6/dedBzobCkbI5etGOcFpByXhyTO+MjRa+1UNAqh7NBOIJ183GLGAIzxtueLT0sNSAhAdxu9DyyWZBzvupxGU+JPbNEvFc0AMC/dORIFunVthkbNhyv59fSrKZcQA9UOUX7c/ciYqYPDQPrur1c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,46 +167,43 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-Add CFI annotations to the VDSO implementation of getrandom() so it will
-have valid DWARF unwinding metadata.
+Use SYM_FUNC_{START,END} instead of all the boilerplate.  No functional
+change.
 
-Fixes: 33385150ac45 ("x86: vdso: Wire up getrandom() vDSO implementation")
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 ---
- arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/entry/vdso/vdso32/system_call.S | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
-index bcba5639b8ee..cc82da9216fb 100644
---- a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
-+++ b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
-@@ -4,7 +4,7 @@
-  */
+diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vdso/vdso32/system_call.S
+index 9157cf9c5749..a90f4f7de396 100644
+--- a/arch/x86/entry/vdso/vdso32/system_call.S
++++ b/arch/x86/entry/vdso/vdso32/system_call.S
+@@ -9,11 +9,7 @@
+ #include <asm/alternative.h>
  
- #include <linux/linkage.h>
--#include <asm/frame.h>
-+#include <asm/dwarf2.h>
+ 	.text
+-	.globl __kernel_vsyscall
+-	.type __kernel_vsyscall,@function
+-	ALIGN
+-__kernel_vsyscall:
+-	CFI_STARTPROC
++SYM_FUNC_START(__kernel_vsyscall)
  
- .section	.rodata, "a"
- .align 16
-@@ -22,7 +22,7 @@ CONSTANTS:	.octa 0x6b20657479622d323320646e61707865
-  *	rcx: number of 64-byte blocks to write to output
-  */
- SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+ 	/*
+ 	 * If using int $0x80, there is no reason to muck about with the
+@@ -85,7 +81,5 @@ SYM_INNER_LABEL(int80_landing_pad, SYM_L_GLOBAL)
+ 	CFI_RESTORE		ecx
+ 	CFI_ADJUST_CFA_OFFSET	-4
+ 	RET
+-	CFI_ENDPROC
 -
-+	CFI_STARTPROC
- .set	output,		%rdi
- .set	key,		%rsi
- .set	counter,	%rdx
-@@ -175,4 +175,5 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
- 	pxor		temp,temp
- 
- 	ret
-+	CFI_ENDPROC
- SYM_FUNC_END(__arch_chacha20_blocks_nostack)
+-	.size __kernel_vsyscall,.-__kernel_vsyscall
++SYM_FUNC_END(__kernel_vsyscall)
+ 	.previous
 -- 
 2.51.0
 
