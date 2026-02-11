@@ -4,115 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15099E9E31B
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 15:43:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 837B9ECD6C4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 16:04:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 34BD96B0096; Wed, 11 Feb 2026 10:43:15 -0500 (EST)
+	id A13686B009B; Wed, 11 Feb 2026 11:04:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DF7B6B0098; Wed, 11 Feb 2026 10:43:15 -0500 (EST)
+	id 9F41E6B009D; Wed, 11 Feb 2026 11:04:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 218E16B0099; Wed, 11 Feb 2026 10:43:15 -0500 (EST)
+	id 900256B009E; Wed, 11 Feb 2026 11:04:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id F2E846B0096
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:43:14 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B5907C1C30
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:43:14 +0000 (UTC)
-X-FDA: 84432594708.14.09A9642
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C0DAE2000F
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:43:12 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CjX0bdPK;
-	spf=pass (imf03.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 803686B009B
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:04:48 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D96FE58E04
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:04:47 +0000 (UTC)
+X-FDA: 84432649014.20.9509986
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 01C29C0014
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:04:45 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=YBfHC4fA;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770824592;
+	s=arc-20220608; t=1770825886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1jx1hsuuG7ObMhO/uK+TRbv/qG1QFFvi3Ae/jdkXmec=;
-	b=lSgTHV7pJTokItQJFqU6T22FXEpvMOL2WMvNvPNN98sYnBof6D7pbiqPms1goaWyExEhfX
-	zAU8x9dIy5A+5G12x/HLGYauzXx5GuagyRgvgUeyh8iHEjixko15jMoSvhiTYmkFi3sV6z
-	ui3CQvZYhC7RdXf8Cjrp1puAXIe8cMA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770824592; a=rsa-sha256;
-	cv=none;
-	b=6qRXXaJioeptSo3c67KTWLmoSbETn0qBtMBfCYbIg/HrHuRWQ8SFmsnatH7nPDSFX46knw
-	6JGTVDLJ8k/3o5racwpCm+jplFY4R8pKKKbQCv45619YE0Nr4kdA6xOGKGr5sFUKZks0cn
-	OTqiLFW3XWeuJNGEgOP6N5u0n/rnMoo=
+	bh=N9ZsmGOHu5DYwJv3dMDY0xSryZqTJu2IEY2Yi2UfgZY=;
+	b=hww35lHkU4qkxTMejBzU8833I08q6N3Pili58cXs3txEEdvx0a5Kgs+ctXt0CrhZuB7F5H
+	bvsdfeghXSC7D/XI85XubEijiBOkUgHXQ8l2PM79kj0gdP2WJ7qUKFxyCWPM17kGpKWOmF
+	4zqZGtJjhiUc4Z27yg38xf/iIXvoqgA=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CjX0bdPK;
-	spf=pass (imf03.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770824592;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1jx1hsuuG7ObMhO/uK+TRbv/qG1QFFvi3Ae/jdkXmec=;
-	b=CjX0bdPKri6qEk8TbxBjcpctU4GlOVlr5VtFLaFprJGfybIYpizHlUOcFy3NkdHZBASZTP
-	ySd8Nz/RavuDDaldZ0tSV+AXB1n3fb8eoLuZ2yrkYNOCHHaSannElXEihjXE9ySOO+HaE9
-	OxbDtChymHLYzNaUygfWo2YpL4TrDq8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-121-hUcKwGwXPeOaG_WdkWuOAw-1; Wed,
- 11 Feb 2026 10:43:06 -0500
-X-MC-Unique: hUcKwGwXPeOaG_WdkWuOAw-1
-X-Mimecast-MFC-AGG-ID: hUcKwGwXPeOaG_WdkWuOAw_1770824584
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DCECD1800370;
-	Wed, 11 Feb 2026 15:43:03 +0000 (UTC)
-Received: from tpad.localdomain (unknown [10.96.133.3])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 057AA30002D5;
-	Wed, 11 Feb 2026 15:43:02 +0000 (UTC)
-Received: by tpad.localdomain (Postfix, from userid 1000)
-	id 492B8400DF78C; Wed, 11 Feb 2026 09:09:02 -0300 (-03)
-Date: Wed, 11 Feb 2026 09:09:02 -0300
-From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Leonardo Bras <leobras.c@gmail.com>
-Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Leonardo Bras <leobras@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>
-Subject: Re: [PATCH 1/4] Introducing qpw_lock() and per-cpu queue & flush work
-Message-ID: <aYxxXrG1UVvHUGHP@tpad>
-References: <20260206143430.021026873@redhat.com>
- <20260206143741.525190180@redhat.com>
- <aYaEZGImn7qayP12@WindFlash>
+	imf22.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=YBfHC4fA;
+	spf=pass (imf22.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.177 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770825886; a=rsa-sha256;
+	cv=none;
+	b=Y2GYbBRyTysIHiIBBVReJuPc0eyLPmfXzypjvk0fRTTyUoz1uHnO/s246wQz58KMPhI2Iz
+	KZxsc/6SrZ+xDiN7fYJU8PoOJd/1eUfbsWW08ov09lfaHqOP2pR21186R5LjL9Fn6Y4/bH
+	z1gNh40UDnIQPlDueg4/CHPNuZRkuvE=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50334dd44d2so62398301cf.1
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:04:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1770825885; x=1771430685; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=N9ZsmGOHu5DYwJv3dMDY0xSryZqTJu2IEY2Yi2UfgZY=;
+        b=YBfHC4fAWJ5SDzlkz+BbVsO4+Af9atdQukmJpDiA2TGW14kvXiuz0iuNwiju5zP98Y
+         89HUS1Hlw1rKXARGfcte4JmYsbwrPLZ5vbaz1h6oduUoLRflK2hfUMeMEt1K4oNWijf1
+         sqGLzELEhhChuI3PNwDsdL1x/wkQlubV/VFWNjkdlMczETXB5qcROCWd41blFeLn2V4I
+         IUVZoRvlOUs8XzemUWYuaoiM1KW7ekhd/6HlyaBjhMkg80261R6oWpY0GIKtB1or8fm8
+         /P1jIN3wDf4ilheN+9JH2zMuX537BOeOMv7e2GpsRiF5ATwnBzbFJnb6TVX+XCQWSCrJ
+         lFwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770825885; x=1771430685;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N9ZsmGOHu5DYwJv3dMDY0xSryZqTJu2IEY2Yi2UfgZY=;
+        b=Blbj5JqYpl3HjxLMD75hmMm0KGZcH08jh8q+OnrUlJeVS++UK1R7GXUA79x7c6LSOM
+         E1p8WZc0oEXMJVBt7Gcv4MGedHUWvFTs7CVZDY+nkwJkvY5tzGr/g6ealfm+5EQUtSTV
+         m/xReLPklY3lEfsfed1+/0hA9SJJQimD1fCKB0xfDxBjGFdsUUNxQVKJfx1gRuV3pkqI
+         K+9XNrk2pmu6VzMZ9HOdZ2CHK3eVjET7fweYmGS+2ujktOTUqlX9pPK29AJ+x3RuJlIi
+         VWAtIJdcBa7qKka6pQN2Z9p2Aujrkgzm0+iuXcmPY0qLngg3LpZ9jAqdJUT2CfNBRvS/
+         0bbg==
+X-Forwarded-Encrypted: i=1; AJvYcCXHwoJdoK9tvgdfMPARp850Gz0gW1NRElGc0Ep8qzlWp+h+Ec87g4jLPriyeJHE0n1zHEkwts6keQ==@kvack.org
+X-Gm-Message-State: AOJu0YwIuZez8/nEhBID5tGBkItWg4xpk4K+1kFPiH9n6Agwu4s92erL
+	3JetXB6G8Vsc7+hJPYL3hOn1D2LOn/TfzOcEr14oZ1TjCDApBfATlYqA7HJN9vZzuyKrkbSFsfe
+	BK/yl
+X-Gm-Gg: AZuq6aJM5uJopwLK4sV+OwwApkPxLMxi5u0PHJsi24Gu9c7XMxIK9EDJqEJQEut9Usb
+	9nqwBDbomZg8A3+UWP4GhkwCZIky92ulcmN5pfC1uUKLXVHInca1NvMXcr4GzdBJF700kH0ue+y
+	YAzaWcJWgf7bQLdhSGKB1MfSBWbx07B6QD7qNlvIay3/lcjSpy73DpjCitzMFOYqGDh0dLHnasz
+	+UafljW3DRnxlwKlomFs3/K3dcfFN6Xh/Vi9NEfGEDXofBYvCyUDSUc4C6eh71KCLolyP8OH53U
+	Zpz7/+LBHl4rHIQz+rYwPRy4/WjsIz9ng6O7zw5hDP0X3PZ15jPXeFZqtI5L4yLEHGkQbmFWLKn
+	5prhw0NYHkIWPbsj2fHr7fwi5PAo6POHkYRfdmAs5RDwfSF3O228G3wY9CGXuEyYPmPB0wR0jvV
+	oe6dxUmK3sQVB3vy4I0hOCLpwcKtk3D+3xJCujiDz1vpP9ImXp8VM1K8Cu8x5MhdkuXWeqbCJsF
+	PmcOKe0hw==
+X-Received: by 2002:ac8:5fcf:0:b0:4f4:d2c3:b236 with SMTP id d75a77b69052e-50681210fc2mr45915911cf.47.1770825884823;
+        Wed, 11 Feb 2026 08:04:44 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8971cdb5f26sm17471676d6.42.2026.02.11.08.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 08:04:44 -0800 (PST)
+Date: Wed, 11 Feb 2026 11:04:42 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Bharata B Rao <bharata@amd.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Jonathan.Cameron@huawei.com, dave.hansen@intel.com,
+	mgorman@techsingularity.net, mingo@redhat.com, peterz@infradead.org,
+	raghavendra.kt@amd.com, riel@surriel.com, rientjes@google.com,
+	sj@kernel.org, weixugc@google.com, willy@infradead.org,
+	ying.huang@linux.alibaba.com, ziy@nvidia.com, dave@stgolabs.net,
+	nifan.cxl@gmail.com, xuezhengchu@huawei.com, yiannis@zptcorp.com,
+	akpm@linux-foundation.org, david@redhat.com, byungchul@sk.com,
+	kinseyho@google.com, joshua.hahnjy@gmail.com, yuanchu@google.com,
+	balbirs@nvidia.com, alok.rathore@samsung.com, shivankg@amd.com
+Subject: Re: [RFC PATCH v5 00/10] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <aYyomjsBpZ2KFxKG@gourry-fedora-PF4VCD3F>
+References: <20260129144043.231636-1-bharata@amd.com>
+ <911f316b-87cf-45eb-8d9e-412473d7176a@amd.com>
 MIME-Version: 1.0
-In-Reply-To: <aYaEZGImn7qayP12@WindFlash>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: lgp76TpgR0vph7Ym6upQt6M5GciUwpuXTS-7VeDPqak_1770824584
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: C0DAE2000F
+In-Reply-To: <911f316b-87cf-45eb-8d9e-412473d7176a@amd.com>
+X-Stat-Signature: rchb57x8ym9rnwuqci1ze9o3xecnbnx8
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6fmja97yiyufxrtgbw9c8bqy15g3f1eb
-X-HE-Tag: 1770824592-380063
-X-HE-Meta: U2FsdGVkX180eZ6k+HoMjUb5jPuSz/LYixJmAoY4tMzH/Lp7QWuFL7hhRp2lPYvv09Z+n0sEAhJb3J/l6r+XRasNnBEU/YpT5Ipq9qMDSm3TOW/NzmH82Vwxs1MYjbAB+SiHa/zRjT7+j6iYx1TdD0mghFw2c6MCyOspBbcEkpzcGd9u4qfB2lv3+nRn394FjIlHLHuw+Apckgxvf4ayox1b0hrcedTeYe5ObCpfLRY+zsQO7BXaNQ1PCnx2OCYEAwfU1QLxApNotClMiq3WCWsv0aLVYROaD9QHOr4BKO7mVUY5Ac/RxZf0Y/73JcGTNWGlPQ++5RpMusfrOoN+W+NH+ISd8FFtXRItuA4BjnxxL851583S3SSKPAgk83g3xhxW+ELNnlI6Eg28BcNmV8UdvSAtscrKKUVQYiIYBXeg4evXHbKD7S+a3Loe6oBMnqs4EXTl6Xk3n+hdLkub8wn/3+/q83AQeLRO+6MDMv6PSkQBCwv0x71VFB57S02N+xBWQ/RamJxj+C+enjA6PqY8IWm3f/Hpuy5EJ+oLy5qPNYPHViAu4wHZ6UoQmlnwfEzXaMyN9IiKCvInaXKm6r1rkWbRcqSJshhWBR0ZgZjWYSoFx5bOs6ovQKof30KcUVz0ftEVFU6xHEyK9yMMh0fo74gj2VQthIM91rM0btr+H08DtEILLmAr3yoBqwiyUkGzMPkdQ7wQ2YEn9r9m/XIsb6mjtsUO/vxJbXvryntZ1c9UrgvcMWCFuAG14ZReJk+Pr5okAwiId7CuK6gXSDI+T1g4yCaIqqxqXXr1tlanyaRLXnragZ9VJ+dGUhkCOmJDBIl7aziFKLaLU5MPzQjMv/FQs8tPm1eCjlzMs2IN89JWiBLwu3ugW1aLel3UGu/A7QNyzngCvIrXgfzenv3xDMzHlDnJJFPcdj42PoPPSJ3TR7k0jJevEWgpcPQM7Xu25TWeDah/UrrHFMz
- i0J0q/e4
- Rm/RR95YURIe5F8S5L55rBh537Lb6VxMcZZo7GkWPyc8l2cU+IWR3G9uRu9OaeKYdbr0Cw9jVbdhti7pB0z2CZGE0A9D++nbpHHCRC3GBv9FzcK0j6cSfLEHj6pvBZ2+2+xb5Ge+IYeIDBqgmi05U1HfuUjjAh3IBjBZJoAZizTlxefdbH7nVnHLy32UXeDcxqTOcNOS6/tXtVaDccDYbw3vZjvbe5XrDAeObO3woKUMuhNq9pHbqCQPgim9bklhXn9LTH6L40Qz/KkTKIF+7Gvy/sn4eKxLQYG5OKLLPNhMGTNG2x2F5tkgHgzDonRw5La7LBB3ZZ6lygDslv0XlTHtegNQfLvE3go5QvkXo+iluQNe9Y7kAAiD/SokYCtOR3d+SfOGHhG8ew5XRhf3oNQL7XadukofrewIac5SeeGxhjHy8ByWpSbJY0ae8nd5dE/yb0s1B92HY8ekftgkb6kkan7FKORrVSCqJ
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 01C29C0014
+X-HE-Tag: 1770825885-464707
+X-HE-Meta: U2FsdGVkX1+PTaObZ9e9iVRxuY7c74tYJ5IAiDM7TEOns0dpS38jGjp/CKDtWRxQK2RQak4DK4M5/H4p6OiPU1QvY8Bvyhnqo5ze71TgX3IBW9OoL2SyusePbhWETsqrevtHNCRKwEvmRCgmjh/MT8jyo30tdZmjI/BUeFdV2L8AX9uxNT6GzbKWOa2C3ncA+1maFVvVt0xNC82OvgYpmbc4q79SE7TOUFehgSACcXLBZ7jQ26Jvgz8fwG5EWq8LHpjvZJYPgHm2tMD9c3oWdK/Gkkh5N5IgUv+gFJs6bZtrVHpn3+A6+HoeyZUs2t/dWQrqhnT1Wnew1/Whq0qOn11P1EjNHPij/UMRX/lWiLDzfIJQgdoyuGE+eM8yC/+OI+B2AFP+ST+aZT+dZUb/jb8831/FMpugdJK3K/tLBzWl072K7cx3QMwQN/iqPHnPmdObJxnTaf66Vhk+LX8z+fTiJmk9QA+JXravvCWl3eMssBKejj16UJPCWxY1doV8qg5h4nnqNaPmKdjvr20RQrY5W1dlMSl0KU4e8xYzEenFXCMJkXJwK3LbvUMvNyx70zr+CXl8/y7EU+iKWxwmmgs5E7mD9ERF/k7cnDSnJhhv/fHCV5Oo/BHoTfaJ+fZyVlNFSlwxLMtogcWe/sx/eaeh2pBXPdKpcuB987HsGaYtVdMH1gjRQxLaS4yLKLWAT+EPKwD0qy9SmztCM93BcDGamicXZlQe53hlzxwC2sZJJPO2mdSVaTOKvoYEw5Lin298YqhYFdr327bxH3NUcPa+RzYX3wjIyatZg1kwqUMgwVCjdTDPE5KZYzVOhBqeBkZ/rzLp/zNI5qUKjsP5ARI/vriPqYxRac6yXQJzN8zj9xRDIOkqqqnDrfFQqdVqppLCnR31sf4yeMu8sGVUgzu6423/CamC94ee8rYBV2mvL/RIsN6BieSlLOnOURxK1oBH5OeRS3O4jHWcdfE
+ RjGim5A5
+ 7Wui8x/skQ08b9JhJkLyYK2s46PbvK/XAcgLy5QBekuBcAcLaofQ/fhktLllizkcPFnqCzrIbVnD23W7XRXwpitsa9Vio5JSNNvV0VYf3PTXGJvUM3ZEUvA26sEy3QftKXJfghMudvjZrV1wlfFj8RqV1a7Fu6i2n/s+/pgel5g0ajYwn/vPUkBlsEtYVK3dsB37dhkK2b2JYyrro6JUjbrbT9qCnIAh0kCzDwkszaqtXAnBz9/llziSsX2PWJE6KSVZPfIMidknnYGUhIm0gp00g4Fy78CcYKBv0PBYdAIH9SsORqoL4SrkzblCkpfkO72NpjE0fJrj+Z4GqCqjdP71Ddq1Iyuh50IyweeAA9VJzPp8Re49TJp4CVOptcTsTwbBZlGoY5rRblIyU2KhA4Oxpuw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,89 +129,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Leonardo,
-
-On Fri, Feb 06, 2026 at 09:16:36PM -0300, Leonardo Bras wrote:
-> > ===================================================================
-> > --- slab.orig/MAINTAINERS
-> > +++ slab/MAINTAINERS
-> > @@ -21291,6 +21291,12 @@ F:	Documentation/networking/device_drive
-> >  F:	drivers/bus/fsl-mc/
-> >  F:	include/uapi/linux/fsl_mc.h
-> >  
-> > +QPW
-> > +M:	Leonardo Bras <leobras@redhat.com>
+On Wed, Feb 11, 2026 at 09:00:26PM +0530, Bharata B Rao wrote:
+> =====================================================================================
+>                         Base            Base            pghot-default
+> pghot-precise
+>                         NUMAB0          NUMAB2          NUMAB2          NUMAB2
+> =====================================================================================
+> harmonic_mean_TEPS      5.10676e+08     7.56804e+08     5.92473e+08     7.47091e+08
+> mean_time               8.41027         5.67508         7.24915         5.74886
+> median_TEPS             5.11535e+08     7.24252e+08     5.63155e+08     7.71638e+08
+> max_TEPS                5.1785e+08      1.06051e+09     7.88018e+08     1.0504e+09
 > 
-> Thanks for keeping that up :)
-> Could you please change this line to 
-> 
-> +M:	Leonardo Bras <leobras.c@gmail.com>
-> 
-> As I don't have access to Red Hat's mail anymore.
-> The signoffs on each commit should be fine to keep :)
-
-Done.
-
-> 
-> > +S:	Supported
-> > +F:	include/linux/qpw.h
-> > +F:	kernel/qpw.c
-> > +
-> 
-> Should we also add the Documentation file as well?
-> 
-> +F:	Documentation/locking/qpwlocks.rst
-
-Done.
-
-> > +The queue work related functions (analogous to queue_work_on and flush_work) are:
-> > +queue_percpu_work_on and flush_percpu_work.
-> > +
-> > +The behaviour of the QPW functions is as follows:
-> > +
-> > +* !CONFIG_PREEMPT_RT and !CONFIG_QPW (or CONFIG_QPW and qpw=off kernel
-> 
-> I don't think PREEMPT_RT is needed here (maybe it was copied from the 
-> previous QPW version which was dependent on PREEMPT_RT?)
-
-Ah, OK, my bad. Well, shouldnt CONFIG_PREEMPT_RT select CONFIG_QPW and
-CONFIG_QPW_DEFAULT=y ?
-
-> > +boot parameter):
-> > +        - qpw_lock:                     local_lock
-> > +        - qpw_lock_irqsave:             local_lock_irqsave
-> > +        - qpw_trylock:                  local_trylock
-> > +        - qpw_trylock_irqsave:          local_trylock_irqsave
-> > +        - qpw_unlock:                   local_unlock
-> > +        - queue_percpu_work_on:         queue_work_on
-> > +        - flush_percpu_work:            flush_work
-> > +
-> > +* CONFIG_PREEMPT_RT or CONFIG_QPW (and CONFIG_QPW_DEFAULT or qpw=on kernel
-> 
-> Same here
-> 
-> > +boot parameter),
-> > +        - qpw_lock:                     spin_lock
-> > +        - qpw_lock_irqsave:             spin_lock_irqsave
-> > +        - qpw_trylock:                  spin_trylock
-> > +        - qpw_trylock_irqsave:          spin_trylock_irqsave
-> > +        - qpw_unlock:                   spin_unlock
-> > +        - queue_percpu_work_on:         executes work function on caller cpu
-> > +        - flush_percpu_work:            empty
-> > +
-> > +qpw_get_cpu(work_struct), to be called from within qpw work function,
-> > +returns the target cpu.
-> > 
-> > 
-> 
-> 
-> Other than that, LGTM!
-> 
-> Reviewed-by: Leonardo Bras <leobras.c@gmail.com>
-> 
-> Thanks!
-> Leo
-> 
+> pgpromote_success       0               13557718        13737730        13734469
+> numa_pte_updates        0               26491591        26848847        26726856
+> numa_hint_faults        0               13558077        13882743        13798024
+> =====================================================================================
 > 
 
+Can you contextualize TEPS?  Higher better? Higher worse? etc.
+Unfamiliar with this benchmark.
+
+~Gregory
 
