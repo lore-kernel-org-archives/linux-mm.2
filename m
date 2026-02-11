@@ -4,117 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0504ECD6F3
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:09:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A8EDECD6F4
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:13:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A9A16B0005; Wed, 11 Feb 2026 17:09:17 -0500 (EST)
+	id 7E3846B0005; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 058336B0089; Wed, 11 Feb 2026 17:09:17 -0500 (EST)
+	id 7910A6B0089; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E7B376B008A; Wed, 11 Feb 2026 17:09:16 -0500 (EST)
+	id 668AE6B008A; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D29DB6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:09:16 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7B0ADC1F3C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:09:16 +0000 (UTC)
-X-FDA: 84433567512.21.2F49957
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7AD5540012
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:09:14 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ky+ScIGn;
-	spf=pass (imf27.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 548706B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EF0E1A048C
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:13:28 +0000 (UTC)
+X-FDA: 84433578096.24.24052F7
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 8212D140007
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:13:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=16fpF054;
+	spf=pass (imf09.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=tjmercier@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770847754;
+	s=arc-20220608; t=1770848006;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u2TVXkn8GKJaNCSush/gOYSj2oJpP8vJ7tbUxFj10ak=;
-	b=ccqWwq1AqhXzYRLa5iQz+rbb0TAr1Q62vXIaqS52zvk1dxI8dXJVkk9q4mpcu2QhLl58zC
-	RRtrM+TTSKC3ZWNoiw52wPdP3XEbFEOiduUNpzf/lDyc2x0iK5rtSBbVEJZvAd0KbXrfeY
-	How0VFR/SDOoBECTQM7ZQ99tVI4yRGA=
+	bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
+	b=6NvWjYM3Yd2Hfdkwfmc6YBmwUjG+y6F10UwHtpWzxXWZ+OL5v3CeUo3hhnrJPBPYFMcCUq
+	IOy0sjKK43x14IyWEqaHVd2LUVz4qS9Tql1ArO239NZmDGIVhSMCAsm23tVBW68TlzjaWX
+	cdPR89+m+vxqc8o1NZn/mtudlXzwm6I=
 ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Ky+ScIGn;
-	spf=pass (imf27.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=tjmercier@google.com;
+	imf09.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=16fpF054;
+	spf=pass (imf09.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=tjmercier@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770847754; a=rsa-sha256;
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770848006; a=rsa-sha256;
 	cv=pass;
-	b=7ZJBiIg3X3u3L53WtR1olTVTXaZqWRUjwPf/n8KlomLFAwtCkMkWUgtBoJk4vwO2mOi/5e
-	dkGApt8cjGTw+UVeJqKTFSSqmz09rMYZtolXSzUHnLPCpaTiJO9Oe5h4ZdbqKhmr3y+CIb
-	RN3tSA3nvU0c3cvEGonipbew9Pi5K84=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-483298ff272so6765e9.1
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:09:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770847753; cv=none;
+	b=BDxRYV4OF37eBxRYR15QD+D9QnGWXWk/LnfJ7IBAsZIFZ7n5JRyMB2oDrEcAEVWVVvegz9
+	naMrIx+7gYs7F0HrTQZtek6McblCC9K6SMx+rN0xq3zKx6tjO7dMVe9cV8Hr/qmCvsDnKk
+	ehR5xbRzsueUuDdNpPVNRkMJtVHiQXE=
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so10455e9.0
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:13:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770848005; cv=none;
         d=google.com; s=arc-20240605;
-        b=dNhiJkaMwqxPwaA9VU7605/FfVHM7v/mlZRjn9TC8/eXcLsFSYW1LpLuCQe34s81WD
-         ciybuxqcKbZVAk7mwRvTXR4y7rLCiSkCxFQPjXc7g53BpC6QWW9tq4XFOIZ7wNn6ky4m
-         4DBzQpz8Q00bYYaRtFmam2d3hj631F2E/z9p8IcFj+w8R7VqTyvmJuTL9wQqpzZh/rgE
-         ls09rV/1hGEKNH/tu2hzrcQyFdNthzugc0c6/repkaDAb4wstv5eO53wG3VGRYUL9QK7
-         SRq446L2hU49IX47McZw1ClQgIQ8z9XutuPIlTHMONXFD46PpnoDS+04huXLWXRVwqNa
-         pjAQ==
+        b=MA0mN4QMJBfkBcEIDKJFZtZZlgcWMuTbEtIkRWl37vQtQYGKGcEhCR0MHAV/ib595e
+         T50PCzGb1qy3YkPGrb7Ms4ZlWZ1QXGR0rka8V4eoaxRwk1Np5wbBQpqylIXw1n4sf87w
+         Up/iaGHt0ZHWJNo3KXHTyBLE5V9JyR00YeVF93rsT0Zs8IXG9mXIEiqmMIV7QpvO0Dul
+         aV/DtkzjpOQ89Zly1dZiBS5cumCtHfsNnSIP4YA0yQPvAhaeoABdsIJevisZ56W7atbc
+         GYQ/lFr4ovnqsk8ur48T63wX+jNvdgxofHx0JnmAH3Ccs+RjHHnfOMeYLgtQABGZ+g1i
+         DYAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=u2TVXkn8GKJaNCSush/gOYSj2oJpP8vJ7tbUxFj10ak=;
-        fh=KIDw5HYdkZuh6UJdDOHGtrrZTIbLa88fGSQw1qzMxkU=;
-        b=jeybg7+jAnLV9lrTn89Z+k9z6x4Cl+f28po6SPVa72x+cX7HynjPfknuFWsBmZOHUc
-         +cHUHaOiwNo5YuP5ok9gpSnAvx4pg5JnGAQhaOhHxejzBo6rrJLCOLzU2BgRIsDWYALU
-         grjuI9qZUDN3Bulb31lXeOWn9idett5SfXjOGR5isAgzul+/nYRwdfbeZkHOBJgfHnUb
-         V8LsLlb3ZkluWoTbKSaPzK85S8kuEc371joXYHMbGjd7y76INw1hsf0NATYR7DD/541G
-         w63BbmHVbX+nU+A2zn8wHGey+wvGKQvq+sk1FXi5Mu1nWA9fCKY/ZbWVYSFNFf/9arPP
-         dU5g==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
+        fh=/LMzejJHqtMtm2bG8Ut5RY7ZVNFR9rkFtZ0HPACVYIA=;
+        b=fLFiOwvcbYYpxArIDSGUlPTagmenP3V645tWHvDnMxoBvOqC72lDvArjh3LmdAFt81
+         InNGwQNFLOq1DYOqdhIxGhz96h6X7RvGxFdriM58UG2TfRZVv04wABqNvoIkiusXv13J
+         O2ND+ScJdl8nOMbhl2sUv62rEm86sHvdwAVLazzJ37HRtUAAoRGOYMgqAZTg+bywUF61
+         vbWaSS5JoUCkjUDk4+mM8d624Pc+QNIrLtPG7BSAWBjvL6eAz5e5He7bINbYrs6EsGna
+         AkmkXcERxV0tZpgnEr0u8pN9VpT9fYPgVEkWeYI9gunJgxPHxoyl1eGJMGPfJE0Rsdod
+         5K8Q==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770847753; x=1771452553; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=u2TVXkn8GKJaNCSush/gOYSj2oJpP8vJ7tbUxFj10ak=;
-        b=Ky+ScIGnH8oNKWoWnSSPkRpgO4p0VYxIrFom1IEq5bNzufO7C3ESre2Neocr2thn44
-         a0nAR7rA66AOABh7QJnDNpL4CnwRu0cv43XxeOG0f+Mehuj/43jx9PDMow02Qd7hE6hY
-         WEYRmDumdpcpLzT1+O8DkfVD0KJdEivbtRFFRyH9fqIY/8dh6vkQ1Ckw0MprE2BAegTo
-         ETsUuwasXo5l2ZvkZXOtGxB50kAzNK6buOF86dGvejagBJhV6LhH+quQhE7Lsq1aVUoe
-         lRUVEOVVDWFje5TKXpmqKkAxVGVCJ9eZvVP+dUzAzb9iRWg0EeA6ixbVd9ibvIDXhlOn
-         0MJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770847753; x=1771452553;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1770848005; x=1771452805; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=u2TVXkn8GKJaNCSush/gOYSj2oJpP8vJ7tbUxFj10ak=;
-        b=MK6Slb/NcMXoELo6C2ieJMMkhaKmVPxvOTANW17QE2oH3DMyrhkPj2+WtnaHW2SAoX
-         lDz9zBIyWQYjnZSf0EzIBSMdkl+IbzQedN4KJvP4TLbwAJd5kHYZz3Ulv5lZzlqEiWG7
-         ZuRraLqf8FNwDKNVwvdk7oSU1DYAPyRgmlIudVuXnaeSvqv0MgndagzXufn5uihGimrj
-         Y2KlUu6glttxxlvbTOPR1exBv0DPyCsDSylkQvtq+NE9c+xFM+OK8+AaOimRUFlrGvfK
-         rcNdbX2TUq7+Tp8S7yRw8FRYKVSg82O28sbHnGpLEnteduQKrJoeJInPUMV4E5C2uMdI
-         x3/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXvO+0ITJwpWUBsrRaf+Fq68P+Ri1vtXGBUKsxWfTzIPKVdMhfRWcNLz8+xoJC8gHIIGqIGPMrcow==@kvack.org
-X-Gm-Message-State: AOJu0YwlX/TUz8ZTPt5bHSAB4N0rJl0vU/84BY13B4zf8rbvZcnFaTVx
-	2iimGmLpGSDh+sFbG+9c7X/hIBPMZwVCN+D8r+DMcz/1rWbkTDNCfy1Fr69K7eu3zHF2DZuKWpu
-	WkDkiVoLZ1JnSQHUPDKFoxWYhHiOXpCsQcUVy9wlk
-X-Gm-Gg: AZuq6aKTgkwlMdfpn0Toq13qTyYbcrjNL/mPUFJbkZoUwUT6x1lSI1JpIgWxi1tzHst
-	8W+CLaTNXNzIDdHwXU0SRvBwZSif63ydHrgdd4a2jmcPp16RRIRVOg2Ds/7Z9WkDDnK/bAXgF17
-	zrZGl1IE97opr3Rhjk4EwoOIAJG2yAOqIuHU4cHSR4G4tCWtUJzKudzaRBWVvrjRxVJZ2vR9bRo
-	qtjmwH/oMewFiiURVcc4kUe0tpnxsyatM4tluXk8w7bjlduD4d/xqbVuZ4J2K84jpu9GPIo02FR
-	pGGhy89W/vpliDB7OSQzKPepz22JCTJcJjjv7rKCvQTFBSQbiAq59S/Di8qKJbLc/dAf
-X-Received: by 2002:a05:600c:6c47:b0:47e:dc0a:8591 with SMTP id
- 5b1f17b1804b1-48365710159mr244695e9.2.1770847752560; Wed, 11 Feb 2026
- 14:09:12 -0800 (PST)
+        bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
+        b=16fpF054KhmUrJVriYRXvuv3W4mEyr818o5F1kwLF3HUhmWcUU/65EGMWdYxD4BM+I
+         YNXbfgcqFBuj1iz5QlDQv2iVeVMpyJmsUsjSwr9i2gJI+DMO6IC2cTHvbbsaUaKHm+XE
+         1vtjKD/TZKyW7mvoV7nZ4VjciLZjCurlUsVaYNBFFQnlNj8qIAHWqmC4TUcjTMjCY5T7
+         iiENTrt2vOBAEHNRUTZAY7ppo1sMedzGkDmhy6f33sWppTYxJfzekLM3OwhaccqqGUu7
+         uAugBzWY9APeqdL6Kgz6YaMSbmPpbkZrQpdLAQd6ZbacFpTmGUck9E0z5kw1YRaudINZ
+         ykSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770848005; x=1771452805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
+        b=UeUWN3HoHXewMaid+8IW/nWZ5YET3KJQNm/3xpYq1dkBi5VtI3VapJ7BkDyhfYufD6
+         BQRcOTX/ia/YvitVrS2A3vGvPLI/hQmHmB0z07tLF3o+t6ly7uFRkpkdSDHt2zgpR8iP
+         QUkIuv9y01wvPlJmxVFDwqvh6KM46RltgI+wItv+QbWOidVgKwyS+Qu9/45PHJYWSvdR
+         4zVukF+TZI89At3wkZFPciGTMOt70kosQs26Pao9O5D2vT+PaG6obp2YfdTh/i2D9yhy
+         oHVkLNOy6O5LfcvLcAzBBwMTwpfEjy7UOAYbJZHwkKMnDGnxt+FVS7GnRN1x8BIgDCNM
+         XuEw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQzd+xaYUTdNXaOttAu3VLJdsPG6APlQ1WpRW+0xDdPDMQCKFwMb0XsdysyL/gHmXwTUtJSg9Lnw==@kvack.org
+X-Gm-Message-State: AOJu0Yz8jCA1etxEbwKIQ9XH8ubjEjA+/ICixxCkxDRDsoc++bMivB4v
+	qKOM/2uSrfXuxfW8cw2Qo75r4keuNH3rT8jN6th3suZp+wutYgglAHMyod48fNo2i2Bc+YvbJ7V
+	FQKpvnZkKY/z780UUpv4nOpl7pMb/WaftVnrspBKX
+X-Gm-Gg: AZuq6aIaRrTPRu03DA1WfEcFTHwN8ICDMn0mhPvy64kxuCpptB6QL6jfZkKnAAq2FjW
+	YX/0wyebX/RlFlTELJQIeHvP8M7r5kWgc11GmBZOGL5Tultuwqgk1TFZpubhRCT1NV5NcTNeDs7
+	EgKAbfeWJuKu2+SlN7TI9+4yCcUyukZp6bd/EEEu8VrWbbhEhUw9xpTShLWyDxAt5MASOwbTJ7c
+	qdwxNbRsD3vAgPueTRtdiIDP1d8qB8/WohMwxx4fIYWO4aE3aoxZiQAjbVB5Fm2bHGa2kR430Ku
+	1WxrYbE9VcLfuwZxcTccoZhR5bnDs4ccJwfclbP1Hb4RkufRwLugHZXcOXeiHjp0nvyu
+X-Received: by 2002:a05:600c:1f95:b0:47e:de3a:a929 with SMTP id
+ 5b1f17b1804b1-4836593aa13mr288975e9.12.1770848004791; Wed, 11 Feb 2026
+ 14:13:24 -0800 (PST)
 MIME-Version: 1.0
 References: <20260210054312.303129-1-zhaoyang.huang@unisoc.com>
 In-Reply-To: <20260210054312.303129-1-zhaoyang.huang@unisoc.com>
 From: "T.J. Mercier" <tjmercier@google.com>
-Date: Wed, 11 Feb 2026 14:09:00 -0800
-X-Gm-Features: AZwV_QiyMoYSZ3qpAy5Bj4PbrblUWbMWLnYYylNSpCqtABShihCbJ-MW6LW3AiI
-Message-ID: <CABdmKX0jUrb0x7M0JymG9fojk_fKO0TKaqMQt9BxrHUz-Y3NfA@mail.gmail.com>
+Date: Wed, 11 Feb 2026 14:13:13 -0800
+X-Gm-Features: AZwV_QjqVVYGT8M6YAgIey6AhsPAthcjRE6Z-ZAt_af8BUqaz_X5P0TcvME4d58
+Message-ID: <CABdmKX1NZJ5jOQH_9cxuxTVmn=CiCkXHK7rNrpvGBTT_+405Rw@mail.gmail.com>
 Subject: Re: [RESEND PATCH] mm: bail out from partial cgroup_reclaim inside shrink_lruvec
 To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
@@ -122,15 +124,16 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
 	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Content-Type: multipart/alternative; boundary="0000000000003edbeb064a939f71"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 7AD5540012
-X-Stat-Signature: a9gx94j6ey6p5agtm3wc3y9mogubddup
+X-Rspamd-Queue-Id: 8212D140007
+X-Stat-Signature: j8z73jndho343pet1wo8tayhzaj1ttuy
 X-Rspam-User: 
-X-HE-Tag: 1770847754-773803
-X-HE-Meta: U2FsdGVkX1+mXIR8N7kEll6biWKYJ+CcH9gXygbfAv0wmkKrfNaBLCmO+I3skCEP/pOnavXS6APSpGOtugQFk9jLopjsSRV2sx3lvOFJH6lvOgl5LgzdJcZn90u59Xhl7eDft5+sk9NbtHytsR8BXto8Ycw5W6gjZ+MiyFsP4LYPD/KLIjEK8R6KrTIaqXJLszeikgqPd2+tVjsO0IwSx00ZPzSeDAiT/UGksewsblWjYLxwP5oqKb21gYs3nx5+GhBJiEDPJLwg2Q+0akWyRgiy90Su9/ckkPZrSWEfWJepEkQQk8luZd5w+V8sc7I7Fd65a8jN2oxSaapTl31KY7op46nVkNHdylzgl3QdzOgiYpUW1I8ZwWmyfxBHCSWdCdxSnPRHr1yZtAu00Em8du6lqXACZ9C6TuXiHMbSWc9v//DjiAOs+3vlI6oQqfJRMsnqOh3mF0OjSZQXGB4uGZtgLiUlQJBPKUgez4HOi3fjkA+2jpItpx24WHdjhFkpjxcxAbz7JbEavINZw6wx6veTR2ewlKm61x50C3khjJKkKgIPWgIHboV6QIIbplrEwj2uaNRVtNkRlPTlvZhNnFq0URpxpKx47as6OBJ9owlZjxPOd3MxMyW9aY7uoybB0d5FzjHcVMZK48/KgL4jmPLAIml0aSmvuRcGdIUDwUldzRl9HUblbpYDw++puFaBnrp4+HQdJWSflMAkUuoSVE7Hhg80AAwWdcZzZ2llLMRC4GrsdXEpeGUQ94DsFA1ssbZ6JYDKuZ6A3hvypW13Kf/mbHhw11/PUuI/oMJGB4ifz9KA6RLlXWbwVIxZZT1QRnTKwoon2dRDoXpS0FcOcXlS67soClgVV7DP8X9U5iyw0I2rztBOaCpghjs4JNEeWymNjugKCfrBGk7tqRNSns+PUNKdyRJtpsPVxmCtXDqszlzcsvLuNYBYgOt5uNq3sLkFouWaBhO7ppKAlSG
- aZiDg+KZ
- IwkhQ9akSqaEmJ2j5nP7b88fTJks2y2c3gfrt4HQIOsKY1wkwMWLfRqpM/ZJazDRluD4sO81rb784CAqG9ZMoEqmNkbWCWCWnxJNxCPTa6sKqgiBxX3EuOojV4crjNyveKYGrBZLiYDmz2H95rfVVkXFP5e/QNm5o/ZmGe5vfXR/9QpjaO2mta6NHiFGbyeMveHqPjgO+nL/+EAr9rJEGdhjjjZjB9qGrnqqyH2zZrQmLWLPkKVK94KP9O+t5lBA9nmfWBkd1xnffxfHGaB9C0D3q/TVfSiz1rdfP66pUV1ECVKKbaNBusSLgoAhMGcfRgxtzFifGfLZJpoRNCed3uKDXgOYdKoI8iw6wF0uKIMtyHkiuomM3Tf5ye22q5vZvwjtE/Zht3sqHTh/0j6wOxtr7rL3akEtLBFOqCck9NzUPzdimUDloahoZnxDn+7HFPf6z
+X-HE-Tag: 1770848006-59339
+X-HE-Meta: U2FsdGVkX1/A8oUeVknnVJvJPz3wE974cIEY08ESk146T8ukHvpL5fAvXHP6va0ztCUeYjDrRVZ+S1cC+293JA1xBHqbug+WG5pvXXbCN0j6v3J2Z30Gc00T8KX2/qxj/zrCecZs4i3Bs417dfDYYSduR+roV4aXjYnOUZBwDEo2JcrkPa06lBnUQILoiET+qWsaQVOh2u3/RqJlzKeQMJ5zauscokmIBK/I7Aj22BAIGVq6XtMMwa/WkxilC3Bx/wBkCPdfwJwfqd+2i8vpNEgUNJhOQA572erUWKvlo61AJbq4kzH9ma/oqVQ9G1W7M6hFVnd/O+lvwykQCkM4pev2ww30zKb2jGplmfUXV7IgGoBTiKwteWqkNT4ygOBhDvSMD0xDsjAloAxHNmPWj1F7tVn4HjbwUDmuoA5CMCL/eRmN5S/MQPNgTo2U/dfp9guH0JW8ScKQ2RTjSLH87A8QaP7ToZJZrRPQxWaBOXTqfHK2BTtR2+LBTxUK2HpzfwZGP0/tu+IkcbTUPC89Tb1Hb3eRbag0dbqU0UTTBRxFbPHbeWyUqXFzLkVP2L9mi8/y7mUQxkaK30NUZUyrOd9+UZksBgqGflccHiWu+UeFgRMiscIEiDxGwSgfqWFettFu+bLwgOBaDwoqW+nkC5qOHaoNG63cd5IVFY5esORqEcaWRcRvPmcttD5w1Jjs3UNUNqL6uBBku7ueDGDNla43t9QOcS2p908X3V0QCIrM65hKDU4T6SjRQsljFaf3xEPul2ounakseHrdD83351KLL97UxzkgTKaIxl3fX4H3RztX7RlI1mqZfCVI1EiGTJdv/vc5uvB3zM0svpj09+8ouxUGwRwsLO+N4NnTBoH+wzqKVvGTLM71fz1NjhzQ9q3izeMv2V6eS7NQx0x57X1bGgJSXI9fpceyxg5zrLeTOwC8aY82b93G3vVY8fMsGoV2mSnNZDEVsmiPQfi
+ 5tPTv/4g
+ D2f+8DEVchX6QJ6xM6lkBgj9tZ8+x2W9O+KneljfZv5IrQtIm0ITXIOJzbK3Ms7oPcDFMxP1KTo9UvOzoGriD5gMk43ouJBwe2n9pKfy/k+qITowOPYkubcv0gvDhYMY6rO/Wix22CtE0w8VsgXYbYAbEegf1sBptF9kVnIruRZ2RMHR9QFZDal6r5bs3OhhnsBHZgtOxQsrY7bd1hD87YBDKEyj5RINAE2AI5wR5relxyOqWU/uC9mgTlDCCF+ncygtaOjcq1kP4ygTLMZriO3//A/pkb1+hflpGpXyp7yV+QONuFHBhJqn9LR0AdE48+BhaZ5Bs6T1Ho2SUTIujb8ojslkOOF5l93TH3Bccwc/LkbZ9reHZ/eUkkW9rU7l+sYKv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,13 +142,8 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---0000000000003edbeb064a939f71
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
 On Mon, Feb 9, 2026 at 9:44=E2=80=AFPM zhaoyang.huang <zhaoyang.huang@uniso=
-c.com>
-wrote:
+c.com> wrote:
 >
 > From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
@@ -154,8 +152,8 @@ Hi Zhaoyang,
 > Nowadays, ANDROID system replaces madivse with memory.reclaim to implemen=
 t
 > user space memory management which desires to reclaim a certain amount of
-> memcg's memory. However, oversized reclaiming and high latency are
-observed
+> memcg's memory. However, oversized reclaiming and high latency are observ=
+ed
 > as there is no limitation over nr_reclaimed inside try_to_shrink_lruvec
 > when MGLRU enabled. Besides, this could also affect all none root_reclaim
 > such as reclaim_high etc.
@@ -174,8 +172,8 @@ observed
 > index 670fe9fae5ba..03bda1094621 100644
 > --- a/mm/vmscan.c
 > +++ b/mm/vmscan.c
-> @@ -4832,8 +4832,8 @@ static bool should_abort_scan(struct lruvec
-*lruvec, struct scan_control *sc)
+> @@ -4832,8 +4832,8 @@ static bool should_abort_scan(struct lruvec *lruvec=
+, struct scan_control *sc)
 >         int i;
 >         enum zone_watermarks mark;
 >
@@ -183,52 +181,14 @@ observed
 > -       if (!root_reclaim(sc))
 > +       /* don't abort full walk memcg reclaim to ensure fairness */
 > +       if (!root_reclaim(sc) && sc->memcg_full_walk)
+>                 return false;
 
-Can't we just get rid of this if (!root_reclaim(sc)) check entirely now
-that commit 'b82b530740b9' ("mm: vmscan: restore incremental cgroup
-iteration") provides eventual fairness for the proactive reclaim case? That
-wasn't true when this check was added initially.
+Can't we just get rid of this if (!root_reclaim(sc)) check entirely
+now that commit 'b82b530740b9' ("mm: vmscan: restore incremental
+cgroup
+iteration") provides eventual fairness for the proactive reclaim case?
+That wasn't true when this check was added initially.
 
 Thanks,
 T.J.
-
---0000000000003edbeb064a939f71
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><br><br>On Mon, Feb 9, 2026 at 9:44=E2=80=AFPM zhaoyang.hu=
-ang &lt;<a href=3D"mailto:zhaoyang.huang@unisoc.com">zhaoyang.huang@unisoc.=
-com</a>&gt; wrote:<br>&gt;<br>&gt; From: Zhaoyang Huang &lt;<a href=3D"mail=
-to:zhaoyang.huang@unisoc.com">zhaoyang.huang@unisoc.com</a>&gt;<br><br>Hi Z=
-haoyang,<br><br>&gt; Nowadays, ANDROID system replaces madivse with memory.=
-reclaim to implement<br>&gt; user space memory management which desires to =
-reclaim a certain amount of<br>&gt; memcg&#39;s memory. However, oversized =
-reclaiming and high latency are observed<br>&gt; as there is no limitation =
-over nr_reclaimed inside try_to_shrink_lruvec<br>&gt; when MGLRU enabled. B=
-esides, this could also affect all none root_reclaim<br>&gt; such as reclai=
-m_high etc.<br>&gt; The commit &#39;b82b530740b9&#39; (&quot;mm: vmscan: re=
-store incremental cgroup<br>&gt; iteration&quot;) introduces sc-&gt;memcg_f=
-ull_walk to limit the walk range of<br>&gt; mem_cgroup_iter. This commit wo=
-uld like to make single memcg&#39;s scanning<br>&gt; more precised by judgi=
-ng if nr_reclaimed reached when sc-&gt;memcg_full_walk<br>&gt; not set.<br>=
-&gt;<br>&gt; Signed-off-by: Zhaoyang Huang &lt;<a href=3D"mailto:zhaoyang.h=
-uang@unisoc.com">zhaoyang.huang@unisoc.com</a>&gt;<br>&gt; ---<br>&gt; =C2=
-=A0mm/vmscan.c | 4 ++--<br>&gt; =C2=A01 file changed, 2 insertions(+), 2 de=
-letions(-)<br>&gt;<br>&gt; diff --git a/mm/vmscan.c b/mm/vmscan.c<br>&gt; i=
-ndex 670fe9fae5ba..03bda1094621 100644<br>&gt; --- a/mm/vmscan.c<br>&gt; ++=
-+ b/mm/vmscan.c<br>&gt; @@ -4832,8 +4832,8 @@ static bool should_abort_scan=
-(struct lruvec *lruvec, struct scan_control *sc)<br>&gt; =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 int i;<br>&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 enum zone_watermarks =
-mark;<br>&gt;<br>&gt; - =C2=A0 =C2=A0 =C2=A0 /* don&#39;t abort memcg recla=
-im to ensure fairness */<br>&gt; - =C2=A0 =C2=A0 =C2=A0 if (!root_reclaim(s=
-c))<br>&gt; + =C2=A0 =C2=A0 =C2=A0 /* don&#39;t abort full walk memcg recla=
-im to ensure fairness */<br>&gt; + =C2=A0 =C2=A0 =C2=A0 if (!root_reclaim(s=
-c) &amp;&amp; sc-&gt;memcg_full_walk)<br><br>Can&#39;t we just get rid of t=
-his if (!root_reclaim(sc)) check entirely now that commit &#39;b82b530740b9=
-&#39; (&quot;mm: vmscan: restore incremental cgroup<br>iteration&quot;) pro=
-vides eventual fairness for the proactive reclaim case? That wasn&#39;t tru=
-e when this check was added initially.<div><br></div><div>Thanks,</div><div=
->T.J.</div></div>
-
---0000000000003edbeb064a939f71--
 
