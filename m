@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CBA7EB5979
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 07:43:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91226EB5976
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 07:46:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B9EE6B0089; Wed, 11 Feb 2026 02:43:06 -0500 (EST)
+	id 793C86B0005; Wed, 11 Feb 2026 02:46:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 683D86B008A; Wed, 11 Feb 2026 02:43:06 -0500 (EST)
+	id 74AD66B0089; Wed, 11 Feb 2026 02:46:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59DDF6B008C; Wed, 11 Feb 2026 02:43:06 -0500 (EST)
+	id 677596B008A; Wed, 11 Feb 2026 02:46:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A7116B0089
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 02:43:06 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B9D91A02A8
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 07:43:06 +0000 (UTC)
-X-FDA: 84431384772.13.0FD8487
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6069C20007
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 07:43:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rVhm/HRD";
-	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A06B6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 02:46:04 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 122111A0287
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 07:46:04 +0000 (UTC)
+X-FDA: 84431392248.05.1DC47F6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8D4E9A000A
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 07:46:02 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WjoXhLin;
+	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770795784;
+	s=arc-20220608; t=1770795962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8DHYPWc9qq0NwUTMFE5Zyp7B8aU2GKwRoK5gec/F18g=;
-	b=OJyVn/qOybLuH38dAHJ3Z6XjquTIyLMUL5Qv559PhR0h1DDSjOiGQCgJKi3EwcgYBAd2C5
-	Dtsp4Dt4fsTZdmKtOjfRpurwh5dl3AKVfaSniZeb8tBS0EgTUjj0FZtUOinl1uCXnxP8Mg
-	bnxIi38k2XosDbxx+pFnv4SYgDAQ1dE=
+	bh=TXJeQmJooF7lpDMCyPkjYa2bR8jfGqyQvIQ04fS75uI=;
+	b=DfNHNBFtAn8aFf3rHlLTgoRKU/TG99KEDYFBfF1UYLLISiwVs9XgZztNfk93U/cqv8b0nt
+	I9KnOMIvQNdRm8a4tNjAMSRKmqTN7x+psygkj0TxO+tfjPyjWs69qGXSXHl48/tG4EGejP
+	49rmuuhSflJTjwGh62ToQF4sS9LANoU=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="rVhm/HRD";
-	spf=pass (imf13.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WjoXhLin;
+	spf=pass (imf15.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770795784; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770795962; a=rsa-sha256;
 	cv=none;
-	b=yyAqqsXM7Zu++gMNL5rfE9p3wjVk/puOzHpI1L/zLGs7Z45+dbs0XKRiaw6xTY0ASc2KvH
-	+MuVax7F2JwnuH+88xylIZpphCSPL4VAwQek7/RiSgYVAm3a3Aem4IKz9HCw1pGRBurPt3
-	9cvAUNod3hUAGdAl5icEKMHzC1oCsQ0=
+	b=dprL10ENMxOWF345K2YKfqR3aeWacLK49oOXFNhOQGvXTpfvWG/rmv6rcpw8OWJUtF/9GN
+	gho2+gmSK03rByhip0CW2ctytrDGZSvmxBKIrfhseDz534VCUr5Q3+oJ2+F84b291Zc35h
+	NtWyjpC4m+KoZSVxVsFv44kFfobSa3U=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 816FD4364F;
-	Wed, 11 Feb 2026 07:43:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2682DC4CEF7;
-	Wed, 11 Feb 2026 07:42:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E1F5160018;
+	Wed, 11 Feb 2026 07:46:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358C9C16AAE;
+	Wed, 11 Feb 2026 07:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770795783;
-	bh=ica1Ebj/m1NL4pYs6l4iDuSVu6qcBN3gjo8gIeyJWkA=;
+	s=k20201202; t=1770795961;
+	bh=hau6d3ZhCXyylwP7O8OXnAGlNr0yKooB+0BVaN+WS84=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=rVhm/HRDb0EmeUqovVDPd7UlILZrIz5H7xyocmof1XPFUQjsyHTeZAhql8GLZrEcw
-	 2+kZMr6lvN/VuC+dDLcfOyXpoRahv5qMzU9Fityj9/dmJvls8NcwT4j+PlA1sKA5t4
-	 GkeHF5kSqkvjF+S3pe85Zub0ITcs1ioJxjezXv1m/HOxJSMnCyy6ng5M3WfjWpQtTx
-	 QuHAhbA1dQngY93qiR8h6C8i+1axp+Wqh3mpG8wCtDXFWTrWi3D3M0YSV9rvVDrF8r
-	 MfzSB/ya/xDQTzU+wupQZFTzzKjLQKkLUGVBu0XGM/HWaWjl5LwsOLmXzhiDUYRpIY
-	 ueB8yoQlz/TMg==
+	b=WjoXhLinl3f1PL5VSdMkEFx7huQUHpF/rhUM44BTvCN82ViE3apyK8REuLM9j/DZ/
+	 e8GNF9PyhxwXU8PfxztL1juUg/eYmbdAeUPvSETxtxhc7dLQOs+k4/8daYlOnUVKxv
+	 e9ee+fqB7o01kNZ3+6h8bSkqp3k3iveXaqCxjQ16w8spJA6jz5zy2npWbbVFPgj2up
+	 q9G5gnVVo0RczCvDFRaOU1Cxe43loYU4HJDWiso8DOJgySlYXQmy+P5K73dalB61mr
+	 NEYpfidta5sUar5G1LDYJuC2u8Nbnwnb2rJUxoqs/ked56KpiUdeTYKR5pFJv3uHp+
+	 6D9cGFXqV6ljA==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Daniel Gomez <da.gomez@kernel.org>
 Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
@@ -76,24 +76,26 @@ Cc: Tamir Duberstein <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
  <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
  Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
  Harry Yoo <harry.yoo@oracle.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 04/12] rust: xarray: add `XArrayState`
-In-Reply-To: <aYtcdGk8zcwaHfsd@macos>
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, "Matthew Wilcox
+ (Oracle)" <willy@infradead.org>
+Subject: Re: [PATCH v3 11/12] xarray, radix-tree: enable sheaf support for
+ kmem_cache
+In-Reply-To: <aYrsR5VYH9JHeIoZ@macos>
 References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-4-f777c65b8ae2@kernel.org>
- <aYtcdGk8zcwaHfsd@macos>
-Date: Wed, 11 Feb 2026 08:42:50 +0100
-Message-ID: <87cy2bvi85.fsf@t14s.mail-host-address-is-not-set>
+ <20260209-xarray-entry-send-v3-11-f777c65b8ae2@kernel.org>
+ <aYrsR5VYH9JHeIoZ@macos>
+Date: Wed, 11 Feb 2026 08:45:52 +0100
+Message-ID: <87a4xfvi33.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam11
-X-Stat-Signature: iuahe1uapsfw4yo3bhmotym5ju6ioq8m
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8D4E9A000A
+X-Stat-Signature: kkh9w69g4ba7f9gdjuq8nfnjoz1ginb4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6069C20007
-X-HE-Tag: 1770795784-920748
-X-HE-Meta: U2FsdGVkX18vrfF1F0QG0RpPYT8saDm0lAZ85aEzdbeluOWxbarFWzH10XsJW6EPF97Gj1p/OE5gSwrnCtFuXUfOwPcP9DgS1taMtOs2cFmcPE+II4We9eFv+lbpfoYtv53QWCC5//khbQb8zivD8B5xOdsja2WXZH2TOiGZ3aw53NQX2w19MwehhRewqDv39IoVPHAQeSdB4IzJaNUBeki3I1zBBC6XiLgA+VM7DYRKlHEyhMyxXkhDGP7iHIkElX1m2g69Rz6pFSfGqkcnfcJTLGMCCM9wi0fZ8zOYpt+qhWpCdG2skODUfwsWHf3Eqq5Qt7BUKdknaF4rht6AixGCtfIyabng+s3HQvPbWldpYGgSVPnopAx7pHLyEBdYAw7sSkIFuoeKYtu8bftDIFRB8XMNYs3STIAnPFUVqbba1zZT6Pnhu9F1QBzCOy7/Oe3+skhg+DoUT5V1423o1FvtMMNTCqKVumzF9RGAuV+GdWUaaDVnsKnfHzz3UnLo9qK8kXQrmlmVXLrh5STK0dWWbc3OKzIiSsW21YAeFaN2JehhZjYfPDUaBaQZvQJVmvpiqd5b8lnKiiCzsiNaRRFmwuNPl1OWXLr0qTnZ9p+RExptCcj4vp50yUrtMiUHiKkPFP7Yi4Eei37TtzGXNQQw3b/LbiOBvTANXt/j09zALFjNNkr70H1D6eB5jKyJ7p24l430Hvfwu+LWOaNDR1509XI62cODkjJIHL/YLfaRGE0eHITiwg2R2gKNKLA/ua5Io0N1zQAtBizP1YmZY62mj9b2Zn6ska7SK5Cj01vKAHQDt63nKguakIbshmt0xqgTotJ85+fBiXOQc0ZwLJDQi66ASPhQSsPen2QUmFF26hIrD1NnYY5KTb4jjX9gdBg7r6hDrDDEygKOcnBrzuGubfBCpMW9RZWuHvix6NUwP/AcVK3VbpbRbAh0d4+bJh+NZIKvDq+dOthoIhd
- AN1XBMpI
- 5qfjI+O2U5QARa1/EWRX4MUbCwDCUjoa7HzL2MRHKTOTjAq41qkzEZVjw7IS6K+y5+X9kw6yaKrx0p5gufjPssPGOLCyzLlznms4iIMgjXnBZoXPPM5he46t7PcR+hu/z2cV66OUDqXQ0cC1nnD6RX5SG/SViIsKOP437lW67kMslnbOSA0oJ8kQ2zibHJUeDybrUh2j6DSFFqb0ul4Vsy/z3bY0UDAF9ie65n3OhUALuq4HaKSr3znSAJRbuFObGMn0mtxTi1g0xeQ305dO2eLl+i19awYzUOSxZ
+X-HE-Tag: 1770795962-604207
+X-HE-Meta: U2FsdGVkX18cQYxPw6EPI6pTiCGDMUCpfahvvUoxqTRSvQTobRhwZZ/FmUy51tbkLmNL8r1n+cebWZ7WNbJqWznoYpWnmhkoCqAQceI5LuwY1xdPgmkdVQxo1NKdlQIqwBbCDOmBxJ6pl9T6TEI6J8W82m9o/ct69a2bNIe+B0bOXp+4NS7pRN6si6pY1zXX5hwK4IshqmbhDVWXAsuZQGirBbNgqKPBcRvthZ/Jv9WQo0sNWMVAUioxZIGd687MQYd3pKDpoBpdlKjyYtXR2H1awTfG+s1F4M4JUesKnMJJlSLILDyw/sAB+21e05PBWI+IruUMBOXEi189og/AFEDVfAveU3t0L6UEU8h/t4kn8v90OaCYRHTfBaTkpnwacmSyhr5Q3RQVSaXOpk1h4h2tDQTdBATK9mpVtahjE1R4eRUV91ABnb8RfROh0efvfCF3s5xExzcBLe38/P3B3UMDUs6HMWx8Z1MpnBPhpZn96WLrxuNf3E/1qBIShwggiboKy9QekLWHSYDCaY+sKpe4MoN1KKCV6VwyhS/W1xawgS2ukjyZFz6H5LTIC0HukI39Iqijoh+wRjm5aZUAHwWp79l5ro9JcAd2u4deB55Nd3ObRb41XXGG/bpgrSNh75u4A3k4SaDF1JCbjC2r+J8qgvk4Af1plal5okVNXDPLpdf5voMKVA100onNrrMi4ZQ6xKzBnfTD/HG/kYj875PSRrYfWfQEqSe208fqB3Q34janKHqKulaRSh9f1E9oNjMIuCGHiu710DLUdYGNYv4iOxfgkLfd6aVUno4OPwzvrgUA15XNqht56iGG1cHn20Levp3x+dGHVb+AbiedU9E5CFetQQRa/40lh+AU1M6ntzIUmRhbHkcByXFmO9q436B8ggSVxIqDUrhrK6fBpcna0Y9wKhJr4+RGL0mCeXJVoDG8t2Vvyqk58aFlX4pBctyXZ242FGu2TRHC9f5
+ ZFvZxOmV
+ 2hveO1k2MU7Oo8hrj2nYU41gE8KJqJNqy5yv0wTfbXJcq+jOucTjEYwrVkZUvj2Igg921d5V2cbGANfW0XCwv2JUNprBKbZgwII99EY+SYc2tgaED/18NGxUrejS4rWOeqqrIYioJAT8NLEABtqLyEaPsLxSSOdqKODW4ITH8sqJmrJV5S0iW7JzGaGR88YloulONGKF3D0o3f+w0EWgxyPZxB5cFLqlYiCskMXJHIfMsHuFs8Ocx2fD5tTT6KyMkygtNv9Gdc+sATmoAk5Ti+o1Fs0alRe7WJrFGlC4xAZLbbsc7ZvvplwmKSoBnqmO90tZJ00xyv/N2T3VJokFEKgUkIMeBTaT3G6RN1LLgVa3rfXM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,21 +107,41 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 Daniel Gomez <da.gomez@kernel.org> writes:
 
 > On 2026-02-09 15:38, Andreas Hindborg wrote:
->> Add `XArrayState` as internal state for XArray iteration and entry
->> operations. This struct wraps the C `xa_state` structure and holds a
->> reference to a `Guard` to ensure exclusive access to the XArray for the
->> lifetime of the state object.
+>> The rust null block driver plans to rely on preloading xarray nodes from
+>> the radix_tree_node_cachep kmem_cache.
 >> 
->> The `XAS_RESTART` constant is also exposed through the bindings helper
->> to properly initialize the `xa_node` field.
+>> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>> ---
+>>  lib/radix-tree.c | 14 ++++++++++----
+>>  1 file changed, 10 insertions(+), 4 deletions(-)
 >> 
->> The struct and its constructor are marked with `#[expect(dead_code)]` as
->> there are no users yet. We will remove this annotation in a later patch.
+>> diff --git a/lib/radix-tree.c b/lib/radix-tree.c
+>> index 976b9bd02a1b5..1cf0012b15ade 100644
+>> --- a/lib/radix-tree.c
+>> +++ b/lib/radix-tree.c
+>> @@ -1598,10 +1598,16 @@ void __init radix_tree_init(void)
+>>  	BUILD_BUG_ON(RADIX_TREE_MAX_TAGS + __GFP_BITS_SHIFT > 32);
+>>  	BUILD_BUG_ON(ROOT_IS_IDR & ~GFP_ZONEMASK);
+>>  	BUILD_BUG_ON(XA_CHUNK_SIZE > 255);
+>> -	radix_tree_node_cachep = kmem_cache_create("radix_tree_node",
+>> -			sizeof(struct radix_tree_node), 0,
+>> -			SLAB_PANIC | SLAB_RECLAIM_ACCOUNT,
+>> -			radix_tree_node_ctor);
+>> +
+>> +	struct kmem_cache_args args = {
+>> +		.ctor = radix_tree_node_ctor,
+>> +		.sheaf_capacity = 64,
+>> +	};
 >
-> It makes sense to me to merge patch 4 and 5 to avoid this.
+> Is the sheaf_capacity matching the number of slots in an XArray node? If so,
+> this should be bindings::XA_CHUNK_SIZE.
 
-It's always a balance. When I merge things I tend to get comments that I
-should split things out to make them easier to digest and review.
+It is not, it is arbitrarily chosen to large enough to gain an advantage
+but small enough to not waste too much memory.
+
+For rust null block, it needs to be at least large enough to insert two
+leaf nodes.
 
 
 Best regards,
