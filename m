@@ -4,154 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CBBFE9E310
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 14:14:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60154E9E30D
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 14:21:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 685566B008C; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
+	id A09076B0088; Wed, 11 Feb 2026 09:21:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 626056B0098; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
+	id 996176B009F; Wed, 11 Feb 2026 09:21:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40A166B009B; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
+	id 8C3596B00A0; Wed, 11 Feb 2026 09:21:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1276C6B008C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CEC3D13AB87
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:35 +0000 (UTC)
-X-FDA: 84432371310.21.599055A
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 8484E80008
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:33 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=pUKOPhDn;
-	spf=pass (imf30.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BBEF6B0088
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:21:51 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 30FE11403F1
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:21:51 +0000 (UTC)
+X-FDA: 84432389622.23.413BFAF
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 5725840010
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:21:49 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cTNcurcr;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770819273;
+	s=arc-20220608; t=1770819709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=C7xAfdpMOTvilgbGfl6MI5ZAQDEnBGLGaHCN4H4rSHg=;
-	b=jcKGBMhBfuDBD4Vg+iKHPEf3pQZCXdvfMkhXnKaW1edecuT+vb9nulIEbay7qdpPQUaw9a
-	tyqi80NqSw3oHFGFb1gm7Y36QFfGnXX5Q4QgebW0hNz3ZB4Js5cnOnSyEEm2U2NMee0STZ
-	AaUsg+Slc4EYcUw5jeUtsl5pMm99wn8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770819273; a=rsa-sha256;
-	cv=none;
-	b=JEnovtic5phQxdqp1qC0marVFpefV4IfK4+yhZ0Zu1Ju7cbAWRBVjvIuO9JZ5I7UhdgpEF
-	nlEsHgK2cKNa6y6ihj0dFiobxCOWTPf+8MsiyQIES9Z23lfIYGhxdNytcbleAWObDsUDh8
-	m+4NBQX+kIe2RttxNeGQPyWk6acmzZU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dEL3esNNatCbr/bkbGQf1MBlSa4lnjGnRCnp5HwHRC4=;
+	b=HvRk+oKYzhePGYpJnv6SSNkD7LBFGnQClADEkeJ8+kdtZ972q+R/cqOFzHb3Vzvcu63Hpe
+	HTyAWe7bNOqTfIXbUuL/tclMiRwhcxH0qT2J2ARditWO+gf9p4EpLmwmqssTX2BcQluvds
+	fKqzZyRLpeUYf8nQ2YdTNownXNXmiGU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=pUKOPhDn;
-	spf=pass (imf30.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61B3UgPQ1915889;
-	Wed, 11 Feb 2026 14:14:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=C7xAfdpMOTvilgbGfl6MI5ZAQDEnBGLGaHCN4H4rS
-	Hg=; b=pUKOPhDnck4Q9STWjISIYOiIe41lRR24JfmI/37W1Yo1912gMHl/Ecjx1
-	3jNWqtHbLjmnUFOQ3AS7XFRJ+F9l4IVuZwi5R/XBh0TLAMgCRDxNIdEt9dhzQ79f
-	usGQgbeWHDJRKKTWAsMmM48Ok+F+2mujMvr8DWyWIqEPbvOCJ59IAC8nob4WMn2W
-	Ha83VXo1S7odKUt1jxm4CGcWqMglcLOmgb780cw2MsEOEjGtn4ghlmCWBLNBp/IJ
-	MXctnV0p2umjNVoDYnr6+G8/ayjYZ45B5HSFyhOM/ggYyMDMXa0kzpRiF/gTgg7e
-	HW6Qstp1yatVyq8tcCyUBLMIY2aFA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696uhjjd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 14:14:03 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BAKMMg019225;
-	Wed, 11 Feb 2026 14:14:02 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxk5wae-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Feb 2026 14:14:02 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BEDxIi61735212
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Feb 2026 14:13:59 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F10BF2004B;
-	Wed, 11 Feb 2026 14:13:58 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6669B20040;
-	Wed, 11 Feb 2026 14:13:58 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Feb 2026 14:13:58 +0000 (GMT)
-From: Jens Remus <jremus@linux.ibm.com>
-To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
-        Steven Rostedt <rostedt@kernel.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Indu Bhagat <indu.bhagat@oracle.com>,
-        "Jose E. Marchesi" <jemarch@gnu.org>,
-        Beau Belgrave <beaub@linux.microsoft.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
-        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
-        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH v9 0/6] x86/vdso: VDSO updates and fixes for sframes
-Date: Wed, 11 Feb 2026 15:13:51 +0100
-Message-ID: <20260211141357.271402-1-jremus@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	imf11.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=cTNcurcr;
+	spf=pass (imf11.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.170 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770819709; a=rsa-sha256;
+	cv=none;
+	b=IwjoanHUSUFL1O0P1+T7EROTQ4Dds82wDefpRDgRPP4GwiottxZLgtuj1q26bjlwu4BXLp
+	2Derp+OgonhnQD+Rh3V0umDT3miBLKAhbB8t70ylP6STztUMK9K0VoQ2KJ0/Aa6Ler6/2+
+	jEhsA5oyOy0Cu6sMM+YA8lC+RkC320w=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-505a1789a27so11578111cf.3
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 06:21:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1770819708; x=1771424508; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dEL3esNNatCbr/bkbGQf1MBlSa4lnjGnRCnp5HwHRC4=;
+        b=cTNcurcrJRnMtL1FhIU1jsqI/EFA5kbNLVoNIbRbGLykhi8Nj2cX9yFw/ybPDrV6Os
+         mU6NzIQ5Thph+1dkgONUFRB6KfF0rIi0IocKFSN4zbFyBQIAphpK345F4s8Mi0jqos8k
+         sH54izRu/FbrQd9OX3IDLP0sgTELZrL64Fq3SEl3e9t8spEMuymfuUS0iYqVInBl3gyr
+         bTaaYcevSrMMTuJBQWoZBVPK499fS+bUlFRgeWqXtL2V/Pz6wkm3c4cPNsFmKQ/KrGdr
+         AgtuTINBu8Rsw7gXnTGFeW1XxR/f33YbsacvyRFDnWujL8/GMWvnPGJHDxctch+73RTo
+         AVXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770819708; x=1771424508;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dEL3esNNatCbr/bkbGQf1MBlSa4lnjGnRCnp5HwHRC4=;
+        b=JbRdXaw23hWfze+TmG8Fs+zjQGlRu8wXQYCagFLH2u8Uy4EsYt0EokBPKpu5O7iPaa
+         0TUnX6Hj7Ya3nLROeDjgBMw2bLSkyQ3sauI1r+YUKb0R9EuXSyJA9k8oW7BEnH5+3hDR
+         wuLhYedxWU0BQDFhrUkNk6NyPFycinSN2A9TPEtrN8da+DvULlPMiPYm1aMqVbI0Evk5
+         nK8WXe7uIqxpcWujRDTvwLI02H4PUcdYusdgjReTRf5N9pztcmyBFANE35evVRi534sT
+         8VAklnLpC43pU3z6JraB6KPoUQZ0eFTCUuAhsrAwvX/GConSqu6m/RB2yLbfbPwOOHOi
+         xKsg==
+X-Forwarded-Encrypted: i=1; AJvYcCU3AL6mUuzDE+nkjx1LHvkLevKYXN7t2EeEF/G8/Wl5nV2DLcpm6miG6iWMVgeBvHrcgAlQx706wg==@kvack.org
+X-Gm-Message-State: AOJu0YzhnI7U0bRNFATM+Dk3RPs8el9I3kPKiKZrCyWY5PBEUEEbKBtj
+	03amW1RzfJfAMI3darrNkzMrKJnFHMFadrJHkDsWP+WQ7oM4ymcF/Zmo0tdseoaCbbk=
+X-Gm-Gg: AZuq6aLkTsjcUrEJnjv05H5Tm4DHaeFKslsfCFFVt3FtIfEsqsOG2X8swwY0sGZ666p
+	dBkviEFY6yIEGMcis4Ba1+XMMbk15qWupeYEn7cV/Ynj6bXphsAnV+oj0k/5QxOaANPSHh8RnXt
+	yMy/JZwDmXtVG0yhLHqx6hItcagPzTJDvDyrV/CtYuiWU/MwxmOMjmqb1raOTaf1gyw30NsGXnf
+	vqnkOUc2Lkp1RSQVOm251AiQIvu1EPfIb4X0+ReZb/iPQHrnMsLRU5sWkwEnoug69kJpckmFVdX
+	M1vp2xOj8U6wf/u8dAfyg0NfNbuGGFOIDhFDNLLY0xOeNoOYgK/4OBA0ZtKfoHlAu/PFv/+0n7D
+	8PxsZoRhXyxhP++BCmF6UH61WDS6uRVB4jCtWV4ae2uK5qoTktSm3XH8RIq1f1H/dLhF/NhEWoF
+	IAwvniFfVAwx4AMJFRcohAEf2hImQSV0ADCrnquEuT+X3ky1d3hBa60fdhk0mLdl7YKyoqL1Cqb
+	AY63EyoAQ==
+X-Received: by 2002:a05:622a:646:b0:502:6ed5:7b04 with SMTP id d75a77b69052e-50639a199b4mr244208631cf.74.1770819707999;
+        Wed, 11 Feb 2026 06:21:47 -0800 (PST)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-506847d7bdesm14877131cf.6.2026.02.11.06.21.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 06:21:47 -0800 (PST)
+Date: Wed, 11 Feb 2026 09:21:45 -0500
+From: Gregory Price <gourry@gourry.net>
+To: Cui Chao <cuichao1753@phytium.com.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Wang Yinfeng <wangyinfeng@phytium.com.cn>, dan.j.williams@intel.com,
+	Pratyush Brahma <pratyush.brahma@oss.qualcomm.com>,
+	David Hildenbrand <david@kernel.org>, linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH v3 1/1] mm: numa_memblks: Identify the accurate NUMA ID
+ of CFMW
+Message-ID: <aYyQeSzSjBaUjMCJ@gourry-fedora-PF4VCD3F>
+References: <20260211103320.2064211-1-cuichao1753@phytium.com.cn>
+ <20260211103320.2064211-2-cuichao1753@phytium.com.cn>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=KZnfcAYD c=1 sm=1 tr=0 ts=698c8eac cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=VnNF1IyMAAAA:8
- a=yyHzTi5TPZ6eMx7n6w4A:9 a=2JgSa4NbpEOStq-L5dxp:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDEwNyBTYWx0ZWRfX07i6X+fQf8zN
- c3Rc2RJMzzVpF375bNDDCP/Dutmx87jRngoa45cIAraPPJeHJH748qXpNHLe99uUUdtyjoM4Z8c
- YQFbVUXqszB/yNASEr3dnEULNKOaq2NPbqlD6gQDgYFIGEV4Rd/jp7Emk2V7F0ROk3u1VOmNx0U
- OI/xiPPnyUUS+MrD8zfP+gcgBueUpNW9XuA3Wv+XJ0uK4dRkCzXNQUEwE5toP5XRDGO03ZlDJGb
- TbfqMc0RkOB8cABLEIzLln5qRD+YZcGOQe7jx08MRFz6WY+qM4gcnkcxKH/ESVjGZW3XUGyBgdV
- Xm/gO1PWbcX2VCLIZ4LizNCsY6y1sTR1843mobX5QOTcrFu/PWenfmh9T89F9a0ub1shMkWnFgO
- c98JwA1naCOOK48mDgkSH1AYsLzIMWFKmWTZi9rhgSHuvr5ix/6xw4tq3uaS/4MOlJbgS55/C7V
- uaMhAJN8DRq2UgdTBPA==
-X-Proofpoint-ORIG-GUID: fYxGIuKxI2IysMn88FGH_RM0GYztilz-
-X-Proofpoint-GUID: Cud1plyvitWwUQ8LOQUCZYatGYKgBM46
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-11_01,2026-02-11_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 adultscore=0
- clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602110107
-X-Rspamd-Queue-Id: 8484E80008
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260211103320.2064211-2-cuichao1753@phytium.com.cn>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fki5wg5kutaxtn1wgypde4acsw41ro5f
+X-Rspamd-Queue-Id: 5725840010
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: rcf4yjstire86w41ndcj6omijyk5m816
-X-HE-Tag: 1770819273-214608
-X-HE-Meta: U2FsdGVkX18zr7exOEOeCssXKL03B87qe2JnNDV1z5vxvvs31zvzmzxM/Xe9e8Sq/BG51pVTDfOVS17mKyMz9wR7MNwFDBhyhFhm7T/IJvfJ2mCV2HXPV0wcPJ0Pbaij5wA1Z2kVhd2OOjxLsc1ao/RgD3/G2B+cXoad67TGONWq/B4fvoXY1dqmtLurqu3zw2a9P4c3hwBsrRhdAfqJM4HY2QbOA9GH5cmw6F5bABHCzxXlNLb9HnCYNRaaYW66s5MKYv0h2RUUhW2zAZyq2+V0g15N0cfwc0fRdwjo1hW0EJ5A68/xZ0pa1I1bfgbeollXkQ/kpuSSV7SfyYT9mekILCAGJhp3tSlN91fZ6gN4NHfzlDMCQ4J7KEvbwxIhuh7BFm6jKiG3Y49PTEkfmXc9ns6SKxheE2Ay5z/GgABnruc+MUWnkHVrkc+lgnvYu2+Aw6ztctdQd5EggblFt0IE6vAYnqU3uysmYBCg82Ggli00c7+M4p3/7MtTOfJLYWa5IBEPGr3HT8XBSAJ8sEQRdAxiPk1pD8yYYeCF+KcpVSYnoIVAx9kwf2u2rJUN26Bivig1F5Oq2sbD/DIp3EkHZSvl00S5QhxAHBgu32FRz0svc6T0PMfHa4JB3SslqlKg/xdBLtQf/pFlMmgtVtF5Fui6FFvSTGy/pT6TC85BzkrMY8tfegawh5JrT0HFH+FTm0abUqRnypqYILdjLK+uopNX5RTUb1ZKyZr9hlIqRkm4M79Z6p5Pn2qrHI/QF8DcTNzpDtxvIxLZmjCv/5C35rv3UhV59UUPxg2MX+nlyrazWzHjme+GpRAFF3pt4DXtDKp6aHmx/AW/aGT+QCOHjr4+sE9U2EfFamJJ/asVVZchLU8YuJ0LNjuDUAvXXbVTB4B4aVIYF4s1lebp3R6RV/mp9Qo+uXAjUoV+98VKOa2StDk+1sqIOaWIX2JX7RFO/XVmT5wN40FzVqy
- 9hqfS5S8
- nIZFWiP93+iQgaqoEh1Gb7xe8z8JTkf7xkfq+V2DgLcopelcAh1RwpbyIJ8h4c4fw7I213ebTwDzqirU4q2YUp3LT15uVNIvnCyxN+5zie551h1lLstOPLJX5MWZ7GYmQeSJIY6s6pRKXv7Sg1ddCy1bKr7LxviZPl7iakNLASTex+bjYXzoIqoRM/XadWx9wkimuAbFsMAzCwiz3KS9pGETeMASqn8sYsZkBnlLf9cZk2AjYArlFmjwMko5+k7upDz/xgGCmtSVTmw6TXszrX+lCNGQuHOS5d4V6WRByPYIazf5wZznhMrSOTa0fFU127NL4gEUEY/qmvFZU8Y35gglnno63hOk5pugv3SF0ewnt+L+uuu8Ib8VqsA==
+X-HE-Tag: 1770819709-160907
+X-HE-Meta: U2FsdGVkX1/Phqt/ElxiCSBuNTOj8LzzPkxcy7BAFtYjBPGRHJ0BDtXiLXPj28CvQhdhXyVGFw2QvrCKPpbJrBDW/I/wRL0lswLv0CZobnwmiOKMFWyLDQdlKco3/LmRNWHQYg3xfTuN2d8REtCQ4ebehCcQ4mW7vV0kmL1bJjj77XtS+zz253rpvcwU8ASb8B94zisz7/cKLjdK9B4aGki+w6ZCCxbe30Zk0l+O6fGlJ4gQAGAWP3RPk6eyYJbwsWptWbeidm3Nq9iTgS5+areKBfsH+DsRx02xFEl0oW4ZrQj8gKxftr60QT09gL4YEpzdVpcfaPORw6Un00AHeI5zalMdM1ldEJ/vtfPV5KRP1PX5deabkGK8af3TnrmATTK2K+/TcAox/8ksHF5ylujmm2uAeikC/hMe/9ttMIDIMAVmCeYBR3A7d0ij+cqRzW+kkxvt0n7pIoY5tdJaWBFQsF/AcmiJPjAB7ampe06CGLM32mLhNs1fGar41AUA3GVf5gv0J8ttgwna97SCqeAsJXMPLDDVSNs3tpu9VpNpEy7xiZawsdDJtDBTKS6kbAOdTzmKB79XSO1ckzpsKm+Vx1bd/eKPbcwuSIjUT53QxMFZ8EPvMydqM0njLlkDdxM8bR0VaeXctfUgxkndqxuUtiomXudxJd/uuK4vTHPlMjlCosbxzcgyF2URDKuCyg9H08xvlPxmnCNVtxnAJWWgOTFOPH6F6QIniScOnvQKe3ZRLOeAeg5fdkvQT0/w6A0KlNHib+zHMTCku0n/4mQXny5LjlqofT+YnF2E994DL96mckeMdn7B1L2A6CPOHGMuqW/3pJ8pdbYPJpnMjZKtsvztQkfbiK/f/ZFo5aV6PmWkaBblVQeSgWOjMpudyFTM4KNi+AWtR+MCplGW/nDt/vVQGzkP7THbn53eViV0Zsa0ZNTCg56MpB6tpv/T59nfj9ko9936AmyF141
+ BJTWxEFC
+ 8EY3JHTLR7W5fB9bWRiNATcDsaK6lbEd2GHN+Xtie6FWCmx5bBAxcZuRv6sZXE8ZjgKIoTvxUCv73riVC4o5t+zD5s1hQPFhd/XXOsaxAWUvrt9EbFcvjOC44AVYL+H48jLZEVetSOUax7BIhT/92outQBdhjaCyRlhBS/x0ZxDBCCsFZBym23Cgtiw+SWDeA/5TOmrNWEWEf0FFZ+PMokvTRCq64peFk432TL3FjT+c0DdoGpDwvRLCy1xIYV4Q/RK1B2npIiCMwR4RDt3Uu0lkyZs9e609RDFeTHsZRKAPcdXt59ZRDtiSIhw9p8fTbTEaMr+uF/ZIItFTtomCozh7LAuzcozwIbFmkh+NjfEVdpdBGgKYjcLbfgN5oPlM3FCAssmHZJR+yRWSY3+bmO9dNtl319wQdWw02y+5QXnENgTo3vL4oDxIUkFNHmCYXU9j0L5yyx7PsqBb4vb5T/BVvK2Eytq2ou+Vnen8lJH8fYny+FM6wVQOGJHMT74ItnhV6ePty05KVCVQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,85 +126,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Feb 11, 2026 at 06:33:20PM +0800, Cui Chao wrote:
+> In some physical memory layout designs, the address space of CFMW (CXL
+> Fixed Memory Window) resides between multiple segments of system memory
+> belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
+> segments of system memory are merged into a larger numa_memblk. When
+> identifying which NUMA node the CFMW belongs to, it may be incorrectly
+> assigned to the NUMA node of the merged system memory.
+> 
+> When a CXL RAM region is created in userspace, the memory capacity of
+> the newly created region is not added to the CFMW-dedicated NUMA node.
+> Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
+> containing RAM). This makes it impossible to clearly distinguish
+> between the two types of memory, which may affect memory-tiering
+> applications.
+> 
+> Example memory layout:
+> 
+> Physical address space:
+>     0x00000000 - 0x1FFFFFFF  System RAM (node0)
+>     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+>     0x40000000 - 0x5FFFFFFF  System RAM (node0)
+>     0x60000000 - 0x7FFFFFFF  System RAM (node1)
+> 
+> After numa_cleanup_meminfo, the two node0 segments are merged into one:
+>     0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
+>     0x60000000 - 0x7FFFFFFF  System RAM (node1)
+> 
+> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+> 
+> To address this scenario, accurately identifying the correct NUMA node
+> can be achieved by checking whether the region belongs to both
+> numa_meminfo and numa_reserved_meminfo.
+> 
 
-This enables generation of SFrame V3 stack trace information for VDSO on
-x86-64.  It's a continuation of Josh's and Steve's work:
+Changelog comments after this are a bit much but other than that
 
-   https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
-   https://lore.kernel.org/all/20250425023750.669174660@goodmis.org/
+> 
+> Fixes: 779dd20cfb56 ("cxl/region: Add region creation support")
+> Signed-off-by: Cui Chao <cuichao1753@phytium.com.cn>
+> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 
-This series focuses only on the VDSO code. They are helpful fixes
-and updates that doesn't rely on sframes (although the last patch
-is sframe related).
-
-This series applies on top of tip:x86/entry:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  x86/entry
-
-Like the unwind user sframe series [1] it depends on the binutils 2.46
-release to be used to build the VDSO with SFrame V3 stack trace
-information (using the assembler option --gsframe-3).
-
-[1]: [PATCH v13 00/18] unwind_deferred: Implement sframe handling,
-    https://lore.kernel.org/all/20260127150554.2760964-1-jremus@linux.ibm.com/
-
-Changes in v9 (see indivicual patch notes):
-- Always define KEEP_SFRAME to either true/false in specific VDSO linker
-  scripts and use #if instead of #ifdef in common one. (Peter)
-- Reword patch 6 commit message to provide more details.
-- Note: Binutils 2.46 with SFrame V3 support has been released.
-
-Changes in v8:
-- Discard .sframe for x32 and x86-32 VDSOs. (Josh/Indu)
-- Define CFI_SIGNAL_FRAME for !BUILD_VDSO.
-- Drop .cfi_sections .sframe in dwarf2.h in favor of the explicitly
-  specified more specific assembler option --gsframe-3.
-- Incorporate missing changes and review feedback from Steven's v6
-  (I erroneously based my v6 on Steven's v5):
-  - Reword patch 3 commit subject to Steven's v6 one.
-  - Remove SYM_F_ALIGN in __vdso_sgx_enter_enclave(). (Josh)
-
-Changes in v7:
-- Rebase on H. Peter Anvin's vDSO changes on tip:x86/entry. (Peter)
-- Simplify adding assembler option -Wa,--gsframe-3.  Add for vdso64
-  only.
-- Align to .eh_frame and mark .sframe as KEEP in vDSO linker script.
-  Note that GNU linker 2.46 will mark .sframe as KEEP in its default
-  linker script as well.
-
-Changes in v6:
-- SFrame V3 support (SFrame V2 is not supported).
-- Prevent GNU_SFRAME program table entry to empty .sframe section.
-- Integrate v5 review feedback. (Josh)
-
-Regards,
-Jens
-
-
-Josh Poimboeuf (6):
-  x86/vdso: Fix DWARF generation for getrandom()
-  x86/asm: Avoid emitting DWARF CFI for non-VDSO
-  x86/asm: Use CFI_* macros in SYM_FUNC_* macros so they can be added to
-    VDSO
-  x86/vdso: Use SYM_FUNC_{START,END} in __kernel_vsyscall()
-  x86/vdso: Use CFI macros in __vdso_sgx_enter_enclave()
-  x86/vdso: Enable sframe generation in VDSO
-
- arch/Kconfig                                  |  7 +++
- arch/x86/entry/vdso/common/vdso-layout.lds.S  | 17 +++++-
- arch/x86/entry/vdso/vdso32/system_call.S      | 10 +---
- arch/x86/entry/vdso/vdso32/vdso32.lds.S       |  3 ++
- arch/x86/entry/vdso/vdso64/Makefile           |  1 +
- arch/x86/entry/vdso/vdso64/vdso64.lds.S       |  2 +
- arch/x86/entry/vdso/vdso64/vdsox32.lds.S      |  6 +++
- .../x86/entry/vdso/vdso64/vgetrandom-chacha.S |  3 +-
- arch/x86/entry/vdso/vdso64/vsgx.S             | 18 +++----
- arch/x86/include/asm/dwarf2.h                 | 52 +++++++++++++------
- arch/x86/include/asm/linkage.h                | 33 +++++++++---
- arch/x86/include/asm/vdso.h                   |  1 -
- 12 files changed, 107 insertions(+), 46 deletions(-)
-
--- 
-2.51.0
+Reviewed-by: Gregory Price <gourry@gourry.net>
 
 
