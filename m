@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4580BE9E311
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 15:43:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15099E9E31B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 15:43:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C1D76B0093; Wed, 11 Feb 2026 10:43:14 -0500 (EST)
+	id 34BD96B0096; Wed, 11 Feb 2026 10:43:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 451FB6B0095; Wed, 11 Feb 2026 10:43:14 -0500 (EST)
+	id 2DF7B6B0098; Wed, 11 Feb 2026 10:43:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B9376B0096; Wed, 11 Feb 2026 10:43:14 -0500 (EST)
+	id 218E16B0099; Wed, 11 Feb 2026 10:43:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D9166B0093
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F2E846B0096
 	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:43:14 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id DFD68B8270
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:43:13 +0000 (UTC)
-X-FDA: 84432594666.01.F942847
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B5907C1C30
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:43:14 +0000 (UTC)
+X-FDA: 84432594708.14.09A9642
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 32D788000D
+	by imf03.hostedemail.com (Postfix) with ESMTP id C0DAE2000F
 	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:43:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UDb9hAux;
-	spf=pass (imf30.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CjX0bdPK;
+	spf=pass (imf03.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1770824592;
@@ -34,52 +34,53 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wE7la7K/IKWK0kSdZLLaAcmHE3mv3hvFTPaHbiBOxk8=;
-	b=Z3KPN+88RoY9o/xpiVimySx7ByF9oKvRNTEbqWIppzusN0Kz5REU4mG+xgWTsHxT4w2cw+
-	ATgv56XkpzzN+4jjMvOuySEgT/bG54v3q86CxQQZNmGVGwOjbB8i9KoT9PK7Bzo7oCyo/N
-	UwhqTrcRSUxwnF79ft/+7mXp+sf5V/A=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UDb9hAux;
-	spf=pass (imf30.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=1jx1hsuuG7ObMhO/uK+TRbv/qG1QFFvi3Ae/jdkXmec=;
+	b=lSgTHV7pJTokItQJFqU6T22FXEpvMOL2WMvNvPNN98sYnBof6D7pbiqPms1goaWyExEhfX
+	zAU8x9dIy5A+5G12x/HLGYauzXx5GuagyRgvgUeyh8iHEjixko15jMoSvhiTYmkFi3sV6z
+	ui3CQvZYhC7RdXf8Cjrp1puAXIe8cMA=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770824592; a=rsa-sha256;
 	cv=none;
-	b=GOObWkxe14Px2nywllikds3trUevnSdG4oaSPy4vOm24gVQTgxnA+7TwU1/gntnSpO8OcZ
-	+PjEF2ovRC1pSArtolMqyxjKpKHNY8sUS7RFbIrPNzNynyYO9fix07q/XacjNi2oFP6Lul
-	+wcIRrxU1B8QWScl53oct29zVtaL1xQ=
+	b=6qRXXaJioeptSo3c67KTWLmoSbETn0qBtMBfCYbIg/HrHuRWQ8SFmsnatH7nPDSFX46knw
+	6JGTVDLJ8k/3o5racwpCm+jplFY4R8pKKKbQCv45619YE0Nr4kdA6xOGKGr5sFUKZks0cn
+	OTqiLFW3XWeuJNGEgOP6N5u0n/rnMoo=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=CjX0bdPK;
+	spf=pass (imf03.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770824591;
+	s=mimecast20190719; t=1770824592;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wE7la7K/IKWK0kSdZLLaAcmHE3mv3hvFTPaHbiBOxk8=;
-	b=UDb9hAux+qJH2e75ZO/z/a2h9EOA84fAhccaZ1tiGzSSYLt9La2GZ/mI2gdyrN7Msr/2We
-	KBM1XxMNVsylYQyFxMik0dIV3N2FFWfl4xem+EgbeSd4Om+e1PDfPMNP1r+imRVTYht2CM
-	AojUOG4YviyG8UJA6zPGy62DQLl+ZpE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=1jx1hsuuG7ObMhO/uK+TRbv/qG1QFFvi3Ae/jdkXmec=;
+	b=CjX0bdPKri6qEk8TbxBjcpctU4GlOVlr5VtFLaFprJGfybIYpizHlUOcFy3NkdHZBASZTP
+	ySd8Nz/RavuDDaldZ0tSV+AXB1n3fb8eoLuZ2yrkYNOCHHaSannElXEihjXE9ySOO+HaE9
+	OxbDtChymHLYzNaUygfWo2YpL4TrDq8=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-CvMfWgf9MqKHQQmxAVGhcg-1; Wed,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-121-hUcKwGwXPeOaG_WdkWuOAw-1; Wed,
  11 Feb 2026 10:43:06 -0500
-X-MC-Unique: CvMfWgf9MqKHQQmxAVGhcg-1
-X-Mimecast-MFC-AGG-ID: CvMfWgf9MqKHQQmxAVGhcg_1770824584
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+X-MC-Unique: hUcKwGwXPeOaG_WdkWuOAw-1
+X-Mimecast-MFC-AGG-ID: hUcKwGwXPeOaG_WdkWuOAw_1770824584
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0E0861955F28;
-	Wed, 11 Feb 2026 15:43:04 +0000 (UTC)
-Received: from tpad.localdomain (unknown [10.96.133.3])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0F7911800668;
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DCECD1800370;
 	Wed, 11 Feb 2026 15:43:03 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.3])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 057AA30002D5;
+	Wed, 11 Feb 2026 15:43:02 +0000 (UTC)
 Received: by tpad.localdomain (Postfix, from userid 1000)
-	id 7DAC1400DF589; Wed, 11 Feb 2026 09:11:21 -0300 (-03)
-Date: Wed, 11 Feb 2026 09:11:21 -0300
+	id 492B8400DF78C; Wed, 11 Feb 2026 09:09:02 -0300 (-03)
+Date: Wed, 11 Feb 2026 09:09:02 -0300
 From: Marcelo Tosatti <mtosatti@redhat.com>
-To: Michal Hocko <mhocko@suse.com>
+To: Leonardo Bras <leobras.c@gmail.com>
 Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
 	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -91,28 +92,27 @@ Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
 	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
 	Leonardo Bras <leobras@redhat.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Frederic Weisbecker <fweisbecker@suse.de>
-Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
-Message-ID: <aYxx6cq6he6jTIZI@tpad>
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>
+Subject: Re: [PATCH 1/4] Introducing qpw_lock() and per-cpu queue & flush work
+Message-ID: <aYxxXrG1UVvHUGHP@tpad>
 References: <20260206143430.021026873@redhat.com>
- <aYs6Ju2G4bm6_tl2@tiehlicka>
- <aYxviLoWsrLqDU7o@tpad>
+ <20260206143741.525190180@redhat.com>
+ <aYaEZGImn7qayP12@WindFlash>
 MIME-Version: 1.0
-In-Reply-To: <aYxviLoWsrLqDU7o@tpad>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Mimecast-MFC-PROC-ID: 4h4xWowPss_Tbp3VuWbWN3RVyddRbFMGtLIIe7vdIcg_1770824584
+In-Reply-To: <aYaEZGImn7qayP12@WindFlash>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: lgp76TpgR0vph7Ym6upQt6M5GciUwpuXTS-7VeDPqak_1770824584
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: 5p9ydsc8tqj1ai6qm3tepfu5e7cruyk3
-X-Rspamd-Queue-Id: 32D788000D
+X-Rspamd-Queue-Id: C0DAE2000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770824592-732496
-X-HE-Meta: U2FsdGVkX18tqKANU0CWev8liUxje5XjYKSJ9trESiMX1LQG4OSwsmuGTMKR0tMYhje62VXaBFn1p6y/LVAbWqR5oHsLVTKEiDC+kitNVjpb68qp8z1WO+KNOl+mfR6aANCSRYRE6TkxuQWPM2lVIA5QVerRhGBHjtYPAtClJSkVjVrVrPjFx2h6rAkUCdXln4xAtqqA2P0HtYKgBikF28dxE172+8cTHh/FhtM8UGp3DCbh/s0g6F5NHRgcOoY3Dqno4zJxWoK5oDZaNfXvt2JKhoUdS2YcevBMNQ/QS5QV/WT8jFnqclfWhP0zv11JtXBDOno+9amrDfrqKOb7YcroM1qgtQW3rhGcVOyUk24o9FCDgj+C5r7A4qtG/9DEKLe4VYeSzaAm1LNxcMCtQIA0x8sTwa1PN5RmeE9oILGVzCYIziF6NUmr96iVib518U9cTK2w3SuJeEt8gdBoKUNYUvEl8BMDCjgcO0EsTsCgbqu2qlLIJgbGU2zCRt1vy0fhWESJWCe6khSyCGOfC+mueUSv6D5HpP2seeXkzAdBxVFcFf8FrsH7S8oWZk7rCuC1LUwCpDa+D1Xr77F1zKNWCwDcDYTbfC0fGiSLgjTxW752EefbgL9dJj3H5G3B4qxcKHO2ayusK1wvIH6PzRJQfUMs++/H/rGwZbodydm8JMRjjp9WietMO4S7t2H3yZyV4tFNvOLS4XYR20plMAuRXgILXzloaRQqk8mDdoaI8vnoT6o+p6tnFlEJW07POPvJqqeHuCZ+2wwGETOBlv7R6ha63L4UyCdbjV2jyWkvBHA21/20qSl6SHmVOtXaeXRx9jCehPnCI/qs6URFEs1uJtaqnBZN97s67fH85GYNlNdusuII+njWpdI3Xw77WQDmkBqbB4wKuMUyqLgt6HwBkUGLnN3CEE22NVHA31kmRtUh7IpbOYoG48ghZNx8OnSWG9iyMvYKYJBS/su
- ZihAzBc+
- Wga1SbIOU8Np+X1zK50RgclxBky7c9Tj6Iqh0fW38ExrPUzNd1j7vs05iWmKqNY119KEHDCKTKs5XYixRHmIhN0E9bg==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6fmja97yiyufxrtgbw9c8bqy15g3f1eb
+X-HE-Tag: 1770824592-380063
+X-HE-Meta: U2FsdGVkX180eZ6k+HoMjUb5jPuSz/LYixJmAoY4tMzH/Lp7QWuFL7hhRp2lPYvv09Z+n0sEAhJb3J/l6r+XRasNnBEU/YpT5Ipq9qMDSm3TOW/NzmH82Vwxs1MYjbAB+SiHa/zRjT7+j6iYx1TdD0mghFw2c6MCyOspBbcEkpzcGd9u4qfB2lv3+nRn394FjIlHLHuw+Apckgxvf4ayox1b0hrcedTeYe5ObCpfLRY+zsQO7BXaNQ1PCnx2OCYEAwfU1QLxApNotClMiq3WCWsv0aLVYROaD9QHOr4BKO7mVUY5Ac/RxZf0Y/73JcGTNWGlPQ++5RpMusfrOoN+W+NH+ISd8FFtXRItuA4BjnxxL851583S3SSKPAgk83g3xhxW+ELNnlI6Eg28BcNmV8UdvSAtscrKKUVQYiIYBXeg4evXHbKD7S+a3Loe6oBMnqs4EXTl6Xk3n+hdLkub8wn/3+/q83AQeLRO+6MDMv6PSkQBCwv0x71VFB57S02N+xBWQ/RamJxj+C+enjA6PqY8IWm3f/Hpuy5EJ+oLy5qPNYPHViAu4wHZ6UoQmlnwfEzXaMyN9IiKCvInaXKm6r1rkWbRcqSJshhWBR0ZgZjWYSoFx5bOs6ovQKof30KcUVz0ftEVFU6xHEyK9yMMh0fo74gj2VQthIM91rM0btr+H08DtEILLmAr3yoBqwiyUkGzMPkdQ7wQ2YEn9r9m/XIsb6mjtsUO/vxJbXvryntZ1c9UrgvcMWCFuAG14ZReJk+Pr5okAwiId7CuK6gXSDI+T1g4yCaIqqxqXXr1tlanyaRLXnragZ9VJ+dGUhkCOmJDBIl7aziFKLaLU5MPzQjMv/FQs8tPm1eCjlzMs2IN89JWiBLwu3ugW1aLel3UGu/A7QNyzngCvIrXgfzenv3xDMzHlDnJJFPcdj42PoPPSJ3TR7k0jJevEWgpcPQM7Xu25TWeDah/UrrHFMz
+ i0J0q/e4
+ Rm/RR95YURIe5F8S5L55rBh537Lb6VxMcZZo7GkWPyc8l2cU+IWR3G9uRu9OaeKYdbr0Cw9jVbdhti7pB0z2CZGE0A9D++nbpHHCRC3GBv9FzcK0j6cSfLEHj6pvBZ2+2+xb5Ge+IYeIDBqgmi05U1HfuUjjAh3IBjBZJoAZizTlxefdbH7nVnHLy32UXeDcxqTOcNOS6/tXtVaDccDYbw3vZjvbe5XrDAeObO3woKUMuhNq9pHbqCQPgim9bklhXn9LTH6L40Qz/KkTKIF+7Gvy/sn4eKxLQYG5OKLLPNhMGTNG2x2F5tkgHgzDonRw5La7LBB3ZZ6lygDslv0XlTHtegNQfLvE3go5QvkXo+iluQNe9Y7kAAiD/SokYCtOR3d+SfOGHhG8ew5XRhf3oNQL7XadukofrewIac5SeeGxhjHy8ByWpSbJY0ae8nd5dE/yb0s1B92HY8ekftgkb6kkan7FKORrVSCqJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,77 +121,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 09:01:12AM -0300, Marcelo Tosatti wrote:
-> On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
-> > On Fri 06-02-26 11:34:30, Marcelo Tosatti wrote:
-> > > The problem:
-> > > Some places in the kernel implement a parallel programming strategy
-> > > consisting on local_locks() for most of the work, and some rare remote
-> > > operations are scheduled on target cpu. This keeps cache bouncing low since
-> > > cacheline tends to be mostly local, and avoids the cost of locks in non-RT
-> > > kernels, even though the very few remote operations will be expensive due
-> > > to scheduling overhead.
-> > > 
-> > > On the other hand, for RT workloads this can represent a problem: getting
-> > > an important workload scheduled out to deal with remote requests is
-> > > sure to introduce unexpected deadline misses.
-> > > 
-> > > The idea:
-> > > Currently with PREEMPT_RT=y, local_locks() become per-cpu spinlocks.
-> > > In this case, instead of scheduling work on a remote cpu, it should
-> > > be safe to grab that remote cpu's per-cpu spinlock and run the required
-> > > work locally. That major cost, which is un/locking in every local function,
-> > > already happens in PREEMPT_RT.
-> > > 
-> > > Also, there is no need to worry about extra cache bouncing:
-> > > The cacheline invalidation already happens due to schedule_work_on().
-> > > 
-> > > This will avoid schedule_work_on(), and thus avoid scheduling-out an
-> > > RT workload.
-> > > 
-> > > Proposed solution:
-> > > A new interface called Queue PerCPU Work (QPW), which should replace
-> > > Work Queue in the above mentioned use case.
-> > > 
-> > > If PREEMPT_RT=n this interfaces just wraps the current
-> > > local_locks + WorkQueue behavior, so no expected change in runtime.
-> > > 
-> > > If PREEMPT_RT=y, or CONFIG_QPW=y, queue_percpu_work_on(cpu,...) will
-> > > lock that cpu's per-cpu structure and perform work on it locally. 
-> > > This is possible because on functions that can be used for performing
-> > > remote work on remote per-cpu structures, the local_lock (which is already
-> > > a this_cpu spinlock()), will be replaced by a qpw_spinlock(), which
-> > > is able to get the per_cpu spinlock() for the cpu passed as parameter.
+Hi Leonardo,
+
+On Fri, Feb 06, 2026 at 09:16:36PM -0300, Leonardo Bras wrote:
+> > ===================================================================
+> > --- slab.orig/MAINTAINERS
+> > +++ slab/MAINTAINERS
+> > @@ -21291,6 +21291,12 @@ F:	Documentation/networking/device_drive
+> >  F:	drivers/bus/fsl-mc/
+> >  F:	include/uapi/linux/fsl_mc.h
+> >  
+> > +QPW
+> > +M:	Leonardo Bras <leobras@redhat.com>
+> 
+> Thanks for keeping that up :)
+> Could you please change this line to 
+> 
+> +M:	Leonardo Bras <leobras.c@gmail.com>
+> 
+> As I don't have access to Red Hat's mail anymore.
+> The signoffs on each commit should be fine to keep :)
+
+Done.
+
+> 
+> > +S:	Supported
+> > +F:	include/linux/qpw.h
+> > +F:	kernel/qpw.c
+> > +
+> 
+> Should we also add the Documentation file as well?
+> 
+> +F:	Documentation/locking/qpwlocks.rst
+
+Done.
+
+> > +The queue work related functions (analogous to queue_work_on and flush_work) are:
+> > +queue_percpu_work_on and flush_percpu_work.
+> > +
+> > +The behaviour of the QPW functions is as follows:
+> > +
+> > +* !CONFIG_PREEMPT_RT and !CONFIG_QPW (or CONFIG_QPW and qpw=off kernel
+> 
+> I don't think PREEMPT_RT is needed here (maybe it was copied from the 
+> previous QPW version which was dependent on PREEMPT_RT?)
+
+Ah, OK, my bad. Well, shouldnt CONFIG_PREEMPT_RT select CONFIG_QPW and
+CONFIG_QPW_DEFAULT=y ?
+
+> > +boot parameter):
+> > +        - qpw_lock:                     local_lock
+> > +        - qpw_lock_irqsave:             local_lock_irqsave
+> > +        - qpw_trylock:                  local_trylock
+> > +        - qpw_trylock_irqsave:          local_trylock_irqsave
+> > +        - qpw_unlock:                   local_unlock
+> > +        - queue_percpu_work_on:         queue_work_on
+> > +        - flush_percpu_work:            flush_work
+> > +
+> > +* CONFIG_PREEMPT_RT or CONFIG_QPW (and CONFIG_QPW_DEFAULT or qpw=on kernel
+> 
+> Same here
+> 
+> > +boot parameter),
+> > +        - qpw_lock:                     spin_lock
+> > +        - qpw_lock_irqsave:             spin_lock_irqsave
+> > +        - qpw_trylock:                  spin_trylock
+> > +        - qpw_trylock_irqsave:          spin_trylock_irqsave
+> > +        - qpw_unlock:                   spin_unlock
+> > +        - queue_percpu_work_on:         executes work function on caller cpu
+> > +        - flush_percpu_work:            empty
+> > +
+> > +qpw_get_cpu(work_struct), to be called from within qpw work function,
+> > +returns the target cpu.
 > > 
-> > What about !PREEMPT_RT? We have people running isolated workloads and
-> > these sorts of pcp disruptions are really unwelcome as well. They do not
-> > have requirements as strong as RT workloads but the underlying
-> > fundamental problem is the same. Frederic (now CCed) is working on
-> > moving those pcp book keeping activities to be executed to the return to
-> > the userspace which should be taking care of both RT and non-RT
-> > configurations AFAICS.
+> > 
 > 
-> Michal,
 > 
-> For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
-> boot option qpw=y/n, which controls whether the behaviour will be
-> similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
+> Other than that, LGTM!
 > 
-> If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
-> (and remote work via work_queue) is used.
-
-OK, this is not true. There is only CONFIG_QPW and the qpw=yes/no kernel 
-boot option for control.
-
-CONFIG_PREEMPT_RT should probably select CONFIG_QPW=y and
-CONFIG_QPW_DEFAULT=y.
-
-> What "pcp book keeping activities" you refer to ? I don't see how
-> moving certain activities that happen under SLUB or LRU spinlocks
-> to happen before return to userspace changes things related 
-> to avoidance of CPU interruption ?
+> Reviewed-by: Leonardo Bras <leobras.c@gmail.com>
 > 
-> Thanks
+> Thanks!
+> Leo
+> 
 > 
 
 
