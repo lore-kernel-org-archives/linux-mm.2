@@ -4,84 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 697BBEB5949
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 01:12:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5439AEB5946
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 01:24:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4EE46B0005; Tue, 10 Feb 2026 20:12:50 -0500 (EST)
+	id 525626B0005; Tue, 10 Feb 2026 20:24:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD1F16B0089; Tue, 10 Feb 2026 20:12:50 -0500 (EST)
+	id 5067C6B0089; Tue, 10 Feb 2026 20:24:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACA416B008A; Tue, 10 Feb 2026 20:12:50 -0500 (EST)
+	id 432C36B008A; Tue, 10 Feb 2026 20:24:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 99FF96B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:12:50 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 28D4D1B29B7
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:12:50 +0000 (UTC)
-X-FDA: 84430401300.23.ACB0E56
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AEA93120007
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:12:46 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=i8nAa+au;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 334EB6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:24:08 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AD3F61A01E0
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:24:07 +0000 (UTC)
+X-FDA: 84430429734.04.34A8ED0
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 1EDBD100008
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:24:04 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="b86/g32+";
+	spf=pass (imf14.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770772367;
+	s=arc-20220608; t=1770773046;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=faQqNuYtBPQaP3ZQXG1razFHoF3o8CJE3mR/YmkHui8=;
-	b=nFEQRZkMJVAqrKMBEToLfg6bwk6qRfGFmkuDgPzEvjW1MofVc5nASIGJK8dpdPpHhxwccP
-	HNKFpWzA3nh8PYGLSRqnmIrmvULR94xL/5+EyAWlrTTidawhCNSpS9ZeXDCXQeX5jORVpd
-	rlQpTrska4JgfWJ6SnbKY3a3pfv+Hnk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770772367; a=rsa-sha256;
-	cv=none;
-	b=PBb20GvS6b+bQh4mw9Hm5lGZcL6EE2D2Vv5VUtp6JzRtcCCO43VZrDIa+KO/s5VyQvZvhr
-	SxylCNzeE0EHc0PqAMstbwmCsPouPvvFp0U6ztRahOCss8UweU7ih662pyNz+pTQv5UndG
-	HyfolnneEWk7P6lYuFEWW4a4qdrShQA=
+	bh=+MnDmV5IQu/jnXX+pmPU4nJ4kwJNeE3fTXXAd2vIReY=;
+	b=xIvEmroN+yptp61wojrdijw6U92Ipkh8wlMSCudPGRu4NFvXxoZerpJpTIIJv+VE31h5Ft
+	DvOmQX9/3vt0qugMtGA8xsCDA5oZcH+ESpoUP0+k/eNJSaRgsBTCb25VDMLbb5ROXT80x7
+	r36yMVpi091N9oVV+0MhUJA49X2/l0k=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=i8nAa+au;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770772362; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=faQqNuYtBPQaP3ZQXG1razFHoF3o8CJE3mR/YmkHui8=;
-	b=i8nAa+auUf8wYBuWzrCzulaOVqCTbjNxbpVf0N1HIzqSSW5yA5a/vC7GCMIxA1uvG/DA87e0K9rnzYs9XUkMVKUKAnLrWkIjd7DgECSd3hYxg9mld28NXZ2IIJsmIlYFQE33tK1r+TBF3cl0YKx8d6D83OuXIwfY1wBrx/9jmLg=
-Received: from 30.74.144.106(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wz-u6Mf_1770772361 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Feb 2026 09:12:42 +0800
-Message-ID: <f7596f9b-5796-452e-82e1-f8cc6e042eef@linux.alibaba.com>
-Date: Wed, 11 Feb 2026 09:12:41 +0800
+	imf14.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b="b86/g32+";
+	spf=pass (imf14.hostedemail.com: domain of ranxiaokai627@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=ranxiaokai627@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770773046; a=rsa-sha256;
+	cv=none;
+	b=mGrCqyr2x+c4sZxGHlOLexarG1rWn2DeXenCYleC9etKMfvI6G0m39IF4VIyxjrj8yOifQ
+	8HmMC1T/+/IDZFDaOjUS+ilS61E5P/pyMzZQdhkHTwZtDikjBP3tKrLQY2z2rV7fiGT3hj
+	50y9WqZYcR7piZGrxXIb64kLr0UubUk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=+M
+	nDmV5IQu/jnXX+pmPU4nJ4kwJNeE3fTXXAd2vIReY=; b=b86/g32+FT4tra5Zfh
+	v4CunaMUZab3+RGQnBJb3CR5/vASUYw3wrGhdN0qoK7D2vF5R0A6MDTVxNYlug05
+	XlObd8HIgY2u6o7KCIHbYwyeKPD0g5rFunf+hPlIDKU74f9KVBfFWmerb2yLH8gy
+	cdIO0xn1JnPe0WP7LoitnFpMw=
+Received: from ubuntu24-z.. (unknown [])
+	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wBHL1Yj2otp2VksLA--.37135S2;
+	Wed, 11 Feb 2026 09:23:47 +0800 (CST)
+From: ranxiaokai627@163.com
+To: pratyush@kernel.org
+Cc: akpm@linux-foundation.org,
+	graf@amazon.com,
+	kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	pasha.tatashin@soleen.com,
+	ran.xiaokai@zte.com.cn,
+	ranxiaokai627@163.com,
+	rppt@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH -next 1/2] kho: fix missing early_memunmap() call in kho_populate()
+Date: Wed, 11 Feb 2026 01:23:46 +0000
+Message-ID: <20260211012346.208225-1-ranxiaokai627@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2vxzv7g4sof5.fsf@kernel.org>
+References: <2vxzv7g4sof5.fsf@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/11] mm: thp: always enable mTHP support
-To: Luiz Capitulino <luizcap@redhat.com>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, david@kernel.org
-Cc: ryan.roberts@arm.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com
-References: <cover.1770675272.git.luizcap@redhat.com>
- <29e8dfc2772af4b6e0db24134ca3563ec422b91a.1770675272.git.luizcap@redhat.com>
- <d2bc3d79-5d00-4943-80bd-01b144529177@linux.alibaba.com>
- <0c0886d5-2561-40e4-94e9-6fca15f25127@redhat.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <0c0886d5-2561-40e4-94e9-6fca15f25127@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: AEA93120007
-X-Stat-Signature: ug5cewpeedqs7w89h6tb3zzbdq63ej9b
+X-CM-TRANSID:_____wBHL1Yj2otp2VksLA--.37135S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7try3tr18Gw45uFy5GF15urg_yoW8tr4kpF
+	WrGa1jkw48tayjqa12gF12934Fgw4ktw1fta4UAa4fJF1DZrnaq3yxGa40vFnrXr1S93WS
+	yF4vqayfW3WkCrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUpVbDUUUUU=
+X-Originating-IP: [117.176.243.201]
+X-CM-SenderInfo: xudq5x5drntxqwsxqiywtou0bp/xtbC7gP7SGmL2iPjdwAA3R
+X-Rspamd-Server: rspam11
+X-Stat-Signature: py4iocch9hgsg9619xwy8fkfuxoo8qta
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770772366-250948
-X-HE-Meta: U2FsdGVkX18x4HOvzVOlRSTyRI9e052rUN/0uLJAwGWcoPiVnwNzn/9oV+KPMkJ/+7njP/FOGstxz2nBqFSRjvetZ8twEYcOHmK1YX8B9tlJP4HrNxKNV9hscoPKQ+ZTDeVtwHA67GyU2H8XZva1eFdd7IST8Jh0SDcfUZItoFB5CIb7najGZAb3wwAB2q/O4Asx+DsQfkHNWTgAxff5MlSubiK7aX5lN0D4EcOIDDldPl/4+Xwry05n3dD6LwKlZERoL52vevoysgwuTfM3AYaQyTiUWY3yWwjkjnxzFpDiN2wy/+5/Av3WehD//EQbXcvZuZ9Ir1A9RbAZ98p7eHadBGdwyAx4a15PWIYFJc19wyrOgG0UvTQjQk63KugnrtXOsQuCAvuYWwBX21lICQ7EFUnM5f4JVesuyBBgzuKja5WuPh1Mlv71TCvdVI1iHGIeDDfVAnC7Mn3t6067JVjqgv5ARfvlzRh3lQ/ZuV0juk4dCsqKRRooCsOu3tg6NROkWlSWXamrAQWBEQTd+CHuomWIeTjlV0COdgSjL9b3s4bZRxwXpankH6hiiZ/CjII6v+f0Hic51xRLrysxla/MxHGwUUa8zeifWfYkhimd5PHkW+q3ahZUXzl6U90Ai5kAT2IkWifUV3AhxdByM8SPULIke4BycSepKgLlbWShUan2semjl1wrvndEqJmcM8fUNcyVsFY0lj7MrV8m1PiDkCLh/hGXcAp+OvKFoWWIyq8TcKAiqDsG4rRGdHjITFD1EWKI+N3zRLh84W7rrVyxjqnhW9pMCao1l9EpJvQnDtUHNHM/wyUwsDk8breyhVY8oFOqvcZm7oyYHEsOKgnwZhkIdY5gamduntr/H2oY+Q5qzl4pLg/5g9XAMQhtz6bpK6U2b39kWxO8aIr5qM7/gjDEM01mZ4oSUQ0xziBGYx5wJtUB2l8AtjhLZOJFPuDZNkzjLXtEAwrdqrQ
- hd2Ro9D5
- 6952SM7kcaF5PM9a2PGSigaB4Fb7ZlA8dekJFEg6Pa1UihKhd9QFZb2k+pJb1ijhVQotB5K1wLIibmB8bmUTO62I41JMKmPWUAt8Md2UZouCagIjxMmu7KoAw+0taHGxu7p3f4KVVS7BP+wKXmCFFQmdSFwqXTQtLq3R61oEsAU14uvoLQvrg4U29LEAA1PA00/eZV7ghMkLaGzdOj8+kGDvLQroKbFGF2Uj3VreqqAZfbZNONGQgAuXhm7RQwQ3tbsCkAFm7gpxzTQBxBApx3jb/AX664CUhDRR+b3uU48MOXnKnUsBpSNMEP+B5ogJ8gCV3KzBJVNUaGEJjPUFBLeGZ9OcpgfHBOJignEGUbr94VIU=
+X-Rspamd-Queue-Id: 1EDBD100008
+X-HE-Tag: 1770773044-356260
+X-HE-Meta: U2FsdGVkX18WwNfSvZlUbLadq39DnccNMS3Mr8IQHcOGV1tjV4rwGDKdtxVnimWuIiWaJESrN3p/IWC0FtCmNSddsXtoE5nOhaNniUSrentYE3KERyZasKANvBedEFu9RkKTj1VMl3rOXMNpv6Whu1cMf0cWki1un1y753s+q6VMAVIHXpQNLusIn4ELjxEgTMN5fQh/jPM1Ov5+9sb+/uKI51ddM8Rw8mGsCroRey1T0nebin0uZOD6sZEJQSyx+DReWQ7h3U3eQv1vwyznzQZVaVx+qmzF8fjlPZ40hvIN/Ii4ssSSQovIpl4DsHLG66fVh+e4anWjy4zY98VU4UwIl1Gvg5OztTUjGIqmRanZDTfeGKBJXcxGr1kvDIphVwY7ulBph6igncsEXxupD2hy/SmSFcF6v2GVr3KQLTIsRwCX4ZmUgDTsCk+K/Qs2SNrsKCPgoGdUsmavxwI084zRJozy5vhMI0/CFJNRMy0hvD20Osp4fzIQeZKBGFNeAeKqEijIN2n80FanwufNxBHf8dTM1c0BLuzg5TjV9hfL+QaYNilTxpLC7m924F/Cg+p10JrX7yKwzOkqJSi+JhNsGhmOhZ4gmCZ75SHFam3JPx4anHzLXIZZMSnpXZgXBGsrE/pDj1qs1+Ic30ADP/GSqcHGtSOtUSMkUqkZRJU3oshUyMRztfiQSZhbV/0hSoJYDh796qnbNjRhrhsxAa/U+JfYJQQbDrFSp6drOqDh1cNEoM8/vzWunQxfNuMj1p75K9WEedZMrdMb9eW/ox9T9sjl1+412L6zp9sspPMZqi/S52k3yMesJpcD8chhi8Qx8mL6AzadIUyBrpbF4PZxlLMsXFTCQEZE5oGFpG6phMuTg+gehgPMM6WQqOW6EitfzoKhlo78J4Hsg7M9WFh2arrOlHJqJs8Y3yyImHd73+co/sFGEeF3syJQlpGrPW/v40p/CCIW4BoyqjP
+ WVXOucha
+ mfAJL4WuZ/f6N4d52/sNh5b01uoBt+sdri4v4wrb1vNOPA9hAr9XSe/jeGXW7B7tWtT4U052flYpwcHAX2tFz4AQwRmTE5PsIIOHfFLIv75sWTlXmCoPMj+iAJusWxwRfEr2fvXtRppRAGUysjIfhoLpfDknGYlhAL3uuWQxIZco9AxzOZt6miNuhzkbb4mjam+MjHm2C92Xj6T6yzILKDBSpAZ2OMlvm/PLNnyG126lKqMK6FL1Fql5BX7n4RwWC5z3ySnPw9MTX+0sdZvCn4dD1WITQ73SDTUa7EZWPgcgolm5m0LT1b7ML9YevcGXq6TOK6loMtoshIidfcUeGna1iBWB924BSSxkIBWTPZxNxe70X4XhLYmHth4/Tg5+gdLcqwovUkWTLgEbYRZDSLBziYJYEUVElsWUPCIftwQNAg/zoSbJnxGZS1wBdGaQ1rli1D6jaAQl7IKkW+jW5lPZohOfxQVQZJ1TrIcCIwGk+4fq5XlN+ReTuBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,83 +100,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2/10/26 9:28 PM, Luiz Capitulino wrote:
-> On 2026-02-10 04:56, Baolin Wang wrote:
+>Hi Ran,
+>
+>Thanks for the fix.
+>
+>On Fri, Feb 06 2026, ranxiaokai627@163.com wrote:
+>
+>> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 >>
+>> kho_populate() returns without calling early_memunmap() on success
+>> path, this will cause early ioremap virtual address space leak.
 >>
->> On 2/10/26 6:14 AM, Luiz Capitulino wrote:
->>> If PMD-sized pages are not supported on an architecture (ie. the
->>> arch implements arch_has_pmd_leaves() and it returns false) then the
->>> current code disables all THP, including mTHP.
->>>
->>> This commit fixes this by allowing mTHP to be always enabled for all
->>> archs. When PMD-sized pages are not supported, its sysfs entry won't be
->>> created and their mapping will be disallowed at page-fault time.
->>>
->>> Similarly, this commit implements the following changes for shmem:
->>>
->>>   - In shmem_allowable_huge_orders(): drop the pgtable_has_pmd_leaves()
->>>     check so that mTHP sizes are considered
->>>   - In shmem_alloc_and_add_folio(): don't consider PMD and PUD orders
->>>     when PMD-sized pages are not supported by the CPU
->>>
->>> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
->>> ---
->>>   mm/huge_memory.c | 11 +++++++----
->>>   mm/shmem.c       |  4 +++-
->>>   2 files changed, 10 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index 1e5ea2e47f79..882331592928 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -115,6 +115,9 @@ unsigned long __thp_vma_allowable_orders(struct 
->>> vm_area_struct *vma,
->>>       else
->>>           supported_orders = THP_ORDERS_ALL_FILE_DEFAULT;
->>> +    if (!pgtable_has_pmd_leaves())
->>> +        supported_orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
->>> +
->>>       orders &= supported_orders;
->>>       if (!orders)
->>>           return 0;
->>> @@ -122,7 +125,7 @@ unsigned long __thp_vma_allowable_orders(struct 
->>> vm_area_struct *vma,
->>>       if (!vma->vm_mm)        /* vdso */
->>>           return 0;
->>> -    if (!pgtable_has_pmd_leaves() || vma_thp_disabled(vma, vm_flags, 
->>> forced_collapse))
->>> +    if (vma_thp_disabled(vma, vm_flags, forced_collapse))
->>>           return 0;
->>>       /* khugepaged doesn't collapse DAX vma, but page fault is fine. */
->>> @@ -806,6 +809,9 @@ static int __init hugepage_init_sysfs(struct 
->>> kobject **hugepage_kobj)
->>>       }
->>>       orders = THP_ORDERS_ALL_ANON | THP_ORDERS_ALL_FILE_DEFAULT;
->>> +    if (!pgtable_has_pmd_leaves())
->>> +        orders &= ~(BIT(PMD_ORDER) | BIT(PUD_ORDER));
+>> Fixes: b50634c5e84a ("kho: cleanup error handling in kho_populate()")
+>> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>> ---
 >>
->> I think you should also handle the 'huge_anon_orders_inherit' setting 
->> in this function if pgtable_has_pmd_leaves() returns false. Shmem as 
->> well.
+>> b50634c5e84a ("kho: cleanup error handling in kho_populate()")
+>> has not landed in upstream, so
+>> Cc: <stable@vger.kernel.org> is unnecessary?
 >>
->> if (!anon_orders_configured)
->>      huge_anon_orders_inherit = BIT(PMD_ORDER);
-> 
-> Good catch. So, would you agree that should set it to BIT(PMD_ORDER - 1)
-> in this case?
+>>  kernel/liveupdate/kexec_handover.c | 8 +++++---
+>>  1 file changed, 5 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+>> index fb3a7b67676e..76b714db175d 100644
+>> --- a/kernel/liveupdate/kexec_handover.c
+>> +++ b/kernel/liveupdate/kexec_handover.c
+>> @@ -1463,6 +1463,7 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>>  	struct kho_scratch *scratch = NULL;
+>>  	phys_addr_t mem_map_phys;
+>>  	void *fdt = NULL;
+>> +	int populated = 0;
+>
+>Nit: Please use a bool and true/false. I think it reads much nicer.
 
- From the documentation:
-"
-By default, PMD-sized hugepages have enabled="inherit" and all other
-hugepage sizes have enabled="never".
-"
+yes.
 
-So if pgtable_has_pmd_leaves() returns false, IMO, we should just skip 
-setting the PMD-sized order for huge_anon_orders_inherit. What I mean is:
+>>  	int err;
+>>  
+>>  	/* Validate the input FDT */
+>> @@ -1529,16 +1530,17 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>>  	kho_in.scratch_phys = scratch_phys;
+>>  	kho_in.mem_map_phys = mem_map_phys;
+>>  	kho_scratch_cnt = scratch_cnt;
+>> -	pr_info("found kexec handover data.\n");
+>>  
+>> -	return;
+>> +	populated = 1;
+>> +	pr_info("found kexec handover data.\n");
+>>  
+>>  err_unmap_scratch:
+>>  	early_memunmap(scratch, scratch_len);
+>>  err_unmap_fdt:
+>>  	early_memunmap(fdt, fdt_len);
+>>  err_report:
+>
+>Nit: now that this code can be reached by non-error paths, we should
+>re-name the labels. I think dropping the "err_" prefix should be enough.
 
-if (!anon_orders_configured && pgtable_has_pmd_leaves())
-	huge_anon_orders_inherit = BIT(PMD_ORDER);
+Thanks for your review.
+Very helpful suggestion. I will send a v2.
+
+>With these fixed,
+>
+>Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+>
+>> -	pr_warn("disabling KHO revival\n");
+>> +	if (!populated)
+>> +		pr_warn("disabling KHO revival\n");
+>>  }
+>>  
+>>  /* Helper functions for kexec_file_load */
+
 
