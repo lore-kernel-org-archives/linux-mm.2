@@ -4,29 +4,29 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4634E9E311
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 14:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0B09E9E30F
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 14:14:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 300656B0093; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
+	id 4DF2B6B0095; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D9426B0098; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
+	id 4A5CA6B008C; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EF5D6B0096; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
+	id 1E0396B0095; Wed, 11 Feb 2026 09:14:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E4D8A6B008C
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E54016B0093
 	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:14:35 -0500 (EST)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60BBD13AADF
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2693C140407
 	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:35 +0000 (UTC)
-X-FDA: 84432371310.10.A6E2B49
+X-FDA: 84432371310.10.A625F90
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B665640016
+	by imf13.hostedemail.com (Postfix) with ESMTP id B869D2000C
 	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:32 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OtHCEJS9;
-	spf=pass (imf27.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="kz3/r5BN";
+	spf=pass (imf13.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1770819272;
@@ -34,56 +34,56 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qiH+5t/dirTrzjD9ZdtQxW3Rb7kBj9PpVkHn0IEvdoQ=;
-	b=aOqFIDIlRenWvuyBFkfvAth2sOjO+QSrMdwUMnOw/gN6avWvQ0ry8a9E3sBByLjByS+wMN
-	zVI0UJhFaep4Wosth1PLMLIFmNLhLWsxJCr9vTwm9FBlni5MEL+EbBggeMf7XedzWVXvBG
-	QM10LB+u0rparo4Kf2kj4o6112YjP2c=
+	bh=cSiBsMiyvS7cygGX52RlC3XdEyvxbuMMGQjKtYeDTPg=;
+	b=fwHNm+izV/SH+PXPoGAh74kmCiAA90Ek+jtoj3d0FRtMHWyaU2xJQPhbG6FBEt9bBy9XmR
+	43fkDSVJyXxntG3eKQR0KTTbDA1LkR+fe9ky8skMRg3slUO5BnFdN88JxteHR7IIJhROCy
+	eq/Vp/d6KSpgUj+WDW4Ho/z/Qq6o+LQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=OtHCEJS9;
-	spf=pass (imf27.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	imf13.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="kz3/r5BN";
+	spf=pass (imf13.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
 	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770819272; a=rsa-sha256;
 	cv=none;
-	b=wrutzNV/gWxd9jPZTX8A5eZUwjOppyIkFWVcdIoa7YQsEw3N7ajV/WRfnmJLrPFY5N5Xsg
-	KUl6mWniL2KhvfPinrKVI946b7/J7DXZpOfLUwQJ1/XaKxj5quDjHL74rvkjKYu2BdUJ3u
-	HIUnu1I0BvAhKKVWLBU3/7TiVFoVLR8=
+	b=aZ07dPT1M8EaAsaNDFcm1JGVZmeksijsZ/P8PXlo+Vut59PNjbN5Zbr+lr9h5/M+wVh7vf
+	UHXYr4L3f5ZHnyQ9OWy8OumDRJzJIj9ych6NaIv592R9TAG8Y2kpK8k2OGKM45pPX9mR/p
+	pRpoCQcoZacEglIYtCa9FFhM/G2FqmA=
 Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ALUH8n111923;
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61AMPxUu091358;
 	Wed, 11 Feb 2026 14:14:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=qiH+5t/dirTrzjD9Z
-	dtQxW3Rb7kBj9PpVkHn0IEvdoQ=; b=OtHCEJS9FYwWQwev3XdeyV80sYiX60gha
-	1o/sM9KcwYWvyQ8bAD3QYfkFgHibOqhVyYfH1+YFimppjc0nl6BEpUnydRmJfHxI
-	Vha+nJjpbJM6+kswkEvy4AJUmYLP0/PKZpboICxCFaGP8mRmpUSIRS0ScOn4SOpH
-	hDdwG9eLauie4j1MHHe0dPE74SstV5E+7OEBKOYhLhe9BagCycw7qERpzBAqCzV6
-	zIDGYgr/W0AsSPK/Cnf+ScRCjBtq9o/Y917pFiH0OWOuTdU7O9V6EQafh7UHn48E
-	JlkKfJuWyHolj8NAvKTN05URL7lLlk/2zM010EhPPpa74Z+/1hiVA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696uhfmh-1
+	:mime-version:references:subject:to; s=pp1; bh=cSiBsMiyvS7cygGX5
+	2RlC3XdEyvxbuMMGQjKtYeDTPg=; b=kz3/r5BNvOSuPyChC5xPDRz+Snhhv+bl6
+	ubTrEO9TxQhY3Fixxws+ivvSF87HDzy+8XbDr/Yua2mN0+d6x6wSSKhvi09OxgVu
+	mebMiZ9Hz615vzeiGu861YEWc5kIDHsyV/NIwRhmA4nkYul4zMYODpwy+vhotGYl
+	zhelUsKlkmJCgBtAI2STG2LIRDBHSzLfvHJFpSjwWR2Xy0A3atHcGAqHMwXjRtoY
+	c8QJu1sZn7uHefU+H7dCWWNAe2+6rtwMuhMS/gncg8RpOEdPV8/1DPL+kE8DQmt5
+	0KOUj94zunLDkcvd+e6hcXDt2zz94++nk/i2TgY3oaHNOaw6RxXSA==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696uhfmg-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 11 Feb 2026 14:14:05 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BA3Bx3012611;
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BAomEB019258;
 	Wed, 11 Feb 2026 14:14:04 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4c6h7kdy99-1
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6hxk5wag-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 11 Feb 2026 14:14:03 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BEE2dT28967518
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BEE0OH59113890
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Feb 2026 14:14:02 GMT
+	Wed, 11 Feb 2026 14:14:00 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E128920040;
-	Wed, 11 Feb 2026 14:14:01 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2FAD920043;
+	Wed, 11 Feb 2026 14:14:00 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5DA172004B;
-	Wed, 11 Feb 2026 14:14:01 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 9822F2004F;
+	Wed, 11 Feb 2026 14:13:59 +0000 (GMT)
 Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Feb 2026 14:14:01 +0000 (GMT)
+	Wed, 11 Feb 2026 14:13:59 +0000 (GMT)
 From: Jens Remus <jremus@linux.ibm.com>
 To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
         bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
@@ -114,9 +114,9 @@ Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
         Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>,
         "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH v9 5/6] x86/vdso: Use CFI macros in __vdso_sgx_enter_enclave()
-Date: Wed, 11 Feb 2026 15:13:56 +0100
-Message-ID: <20260211141357.271402-6-jremus@linux.ibm.com>
+Subject: [PATCH v9 2/6] x86/asm: Avoid emitting DWARF CFI for non-VDSO
+Date: Wed, 11 Feb 2026 15:13:53 +0100
+Message-ID: <20260211141357.271402-3-jremus@linux.ibm.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260211141357.271402-1-jremus@linux.ibm.com>
 References: <20260211141357.271402-1-jremus@linux.ibm.com>
@@ -125,21 +125,21 @@ Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
 X-Proofpoint-Reinject: loops=2 maxloops=12
 X-Authority-Analysis: v=2.4 cv=YZiwJgRf c=1 sm=1 tr=0 ts=698c8ead cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
  a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=oGMlB6cnAAAA:8
- a=VnNF1IyMAAAA:8 a=zHpKlsP_3zAlDdbrjxAA:9 a=2JgSa4NbpEOStq-L5dxp:22
+ a=VnNF1IyMAAAA:8 a=zOOTxvlrTZNIKiBVQswA:9 a=2JgSa4NbpEOStq-L5dxp:22
  a=NdAtdrkLVvyUPsUoGJp4:22
-X-Proofpoint-ORIG-GUID: -gdRSFuNxD8GhVPJMs-jCnse1443Lxpw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDEwNyBTYWx0ZWRfX1ReMu2KCVkfu
- ZN0r/55zCFkn/SPqGxL+kneTVoBlTgbwr1qFAv2AQkMduD4/AGxoOxXQza9mztMOLal9nYY3bY8
- NHKbuhb0vbi9dzsgC7O6QJ2J7WZiqs1G5aw79P0gbM0csAaD2M/LLlP0Lv38hD0QBZqA31lH0P3
- H/YlCgtPIp1JnWJJsqH8n9RbQItWjVV1Ei4WiNp4aNT09BOy+vliacWWT1ZfVPTQ4RwTHJrCZ8p
- XU3WPaGcJIApxypuDEfrnEdJ8LkG+IXmwuzM08u4PmDtN2le1IqGIB0hQ6drQmdjmb5hbeKPHd4
- uZz0pRRrbBlJDO9OOt1FvkCTfvm1rsSuAjRwAwcl3TIqgqeXvHrVg6KZzGf5zyHYw8Nn9fIwxg5
- kr87/xH9tquhGNcluPAibFqJt3YvL9A3/iMAxjegDgd+Lm39VLeLXm+yZdW48cw45R6IMDEihwd
- MC/xkSzlylzN3lUoDrg==
-X-Proofpoint-GUID: HEqKmnsoSR16Jfq_QSRBrMc9AjQH6I1R
+X-Proofpoint-ORIG-GUID: x44cYHj-o3vU4pGpJe8M9L_He5W8_tnK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDEwNyBTYWx0ZWRfXxH/OxxGB55JO
+ qBUnCbUmHRLSbbJAIZu+XQXLey7Y2Ch+IBMyV2QNdzdRzH6UvzIMEiciXzVh9wR4Uy9RCMFIvBw
+ x3MeMCK64plX9iWAL+GCBFZpSkVpapzcKbCAAYJmTKt2slOMOMlki2Z3T1WzO26sun6KfBDPRKV
+ oT0bo0zlZOxZn5zdvei7LBvNiL6wVgBhKLh5Lq+9Bz35NuRoH+rwp9V7SfB51VbMgCLKxrOOvT8
+ 2i4BFQlnaNQIeqm78PmOSqIivRwTahmfJaOg0v5c3O+LuCON08U/Lq/L9dpoSPxdMs2gaRC/S+I
+ ks62tke4+92z14Y1f6OT+YygLXEFae6Sp4Cj4JeJ573ncloPaaFfaA99Sxm9+nv7X5nQfPxFa7J
+ GEsYTYQdRP6+LOOkoK3Alt0P6n2J/GwJ3bEErSlBntqfnNSdmPQdut7e57hGhs5HGSxiztJDIG8
+ qpCHOTDyntY9XeiN1eA==
+X-Proofpoint-GUID: RUCt7kZLLE97Paz9uCofjiQX3_DqMij0
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-11_01,2026-02-11_02,2025-10-01_01
@@ -148,14 +148,14 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  phishscore=0 bulkscore=0 adultscore=0 clxscore=1015 lowpriorityscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602110107
-X-Rspamd-Server: rspam11
-X-Stat-Signature: rwc37upt4yjfzf4wjs34shkujdtoks5o
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B869D2000C
+X-Stat-Signature: r1h83jt7xiajj9aryeasbg54yktuos9t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B665640016
-X-HE-Tag: 1770819272-470267
-X-HE-Meta: U2FsdGVkX1+hTIhikoQy/1fPGyTPLwoa5orjcPaQYHsB7zPI2nLn5wv/Euq3Bo+E519mv35Jb1INTZqX6rt2w5jcs0yVqYO2NHlaPQhw3XVRP6nv3x8pci7w3Maly56orHTvBZlEKhzk3qZaFCcD6HpVjOd7yvz8NmT8mOgHv8iudATFG9QA1JYt9C5hxEm4pOIUWbMYcE7/lY7SE2bXN029XxWQGjYOgIK0EbJrSaUn3sLmFn52DKsuJIy0f7D99QqFmOLJKEUvTDRRSFNqaygMHQ4rJKhVA8d26ILBEVi2nC46wj7WGzSgcTP3vc0N1AiRmI+WwitgpKW2MsA/tbTj2GNbcvKhTHuX4lHyRJVo+cBcRX5XWd5Ptq52dmWVBegFiNm+B4BJ8SLL0Ca/Cxv0p9lIbj1bnvFjnhlFufg5aX6iRy+BE52HAQcPbSX6g92XOgX3FN3z5xW+M+z7fOwdiY5/C5VmsNbzW/2xrdNe8j5KK4fYPqVMtemyZ790Lx+pxkcxMnGn3+QRrd56V0XhRK1FzONgyOohYLPH9Yc3diuZhXQvjuO3WjNoupYpm5uybVyoXD5ByFBJuEg7NTmcW999oqxuBviFWSqbhOldX3rbezbtMC0F/olKnLSx3h74qlj/inSG4oq6KeXIx0lIkWm9wJW4M7ebs38L5Q4LB28cAujKu4Zjmy7P/bAbSIQeoxRZ3kfO3PTrz8NxeOsZbeMbcn0puhHEMmYoZWhaTMWOVyUU4K/viKzaJbGuQMYq4CDylRNgOar9oT0gSc5eSYf7xkgz/EJHoGcrUs4waQQTUWFVVB1MkU8NvmMoGsTML8bZtsMu2d3lX5/I/V8EjZe6PLJg2qub4oz4dNqWMU2R4iI47KDcjNUvImPA3R+w6IC0x9MYj9T16A6VNDAuZJCd8qLZWcPW96wHdGSatBcFfS4CTi97H9aB23vK44Hs/j48Qsu3iis5cO9
- boUO5Bl4
- ze6KQuSDFpI0+b79XH9iLcYRAwWTodOsG+9+rCxBtoi6wf7PRp10yfxvxEkkj28/HoCtwj4a8Wj2CGI3mmq6mElCJbFcwtBeI1Gvi5QjI8yLGW5vEF5c35a65lc6Wej9cMfHgdGV7TpvL1BAcjyYZ6H8SmmKZodpkpz3whGJ5K/kCtyiS0j+f19lEfIj+2v6FaiPqVfvULOJuFBPAZ5QOhYf8jlOgUqYxhptKNUe4ndbpsqMRCMm4qYjmWbX+XZ80dWLQwtgw0jtvrPzKJrsggv7TbX0Rk1eidn1Hyny13SFYvTAftvKhMwNdDcq6JKDuuKU2Fhu197hO/uWm/5Dsl1piyhH7n9uYSakgzB7qxLnW5vQ/+cfqoMN+USM4PCVkOjwmorlaPfjcm8Y=
+X-HE-Tag: 1770819272-131362
+X-HE-Meta: U2FsdGVkX18+T14IsjX6vJ+vFkjZUVybnNPW3ibz4q+JqZiiqLRZoltE+xJj5y5Eevfx3sD+aLTDjs8jJen17CsUQJnJQPXpg5GrIiffclB2HGabNrFpan73P6IcSRRSF7VJ+nmXRlW/iWk52CEigJiVhMc3+a8NTx5l4I40BuItAzZGLrOPouMWveVpyqwvmiSthIuzjR17k9JY5A9ivbq0U4TQbZp3BqOPl53mrvTAk/n/L/FQr1n9FZVoOEGTkoNOZyVZv4KDZe8H5TWyts8PcEPpYCBKaaR88CL44xIZ5wnFKNE2qQ+dfAt1Cwo5eg58HoVOiqYgqaRn3Z69YVRmLfyGsdebdiE7HCUYRdRG9Zb0gpO6llpLdqHAqY5WBxTnBa3D2YE10JJW9kftyeC/RaogkRUWnxzUqxVxdlFuhwOIIUsxcR//sfBBbAmY3UPAFeRnSU4Jy4nJiI2cbH4r+DMrseHcTZtmrmXH52GIAnLJdVZaPeq2KMPLaoYpPJxxfAo6r460NYgWsf/Dqt2nNbKO7kEuqn6wjZAtHxbtoyfHx66hUMGwm2X1ycAsekBoPDlKXPIGWxuaHB0Fj3Vp86MX02b+yMI5mN9NvR9vIKuT6AZAGA8sBXFJvYur8RpJOQlBvDkDpQorXdScCe1xKlPnzuszPALKgYKL928Gnhx1AuoApmlyllR4XCLDKaQ6oLO9hWhEqCaIpt6oazM4efhSDzzrj3PFuU3hZ4DF3cR7gnosgry738JEyBasPX0p80l5tL6vaPCH88JjU/hsATQ/DYMcyDZ5Xt4VlIxnlHBHbQKGoflGheqI7+Lc8jpOw5F0PbW4B95rPUepwbCMzp7nGL6ryDMwQIyPmsTvIwEmHNkbAO7AVqsbwA5joMdIDSrodZILqQE8KDwLc3U69RALh+AKcErmiFev6IAX5Wh/w9d1ZEeBkS+Xuu42cuGQPIxrZV7+kluXTGl
+ iyMK6/eN
+ YztQZwqUT5XOwfaJbDUSTfyn4EcUa5d4QwsqZIXzRwznXhcrVZloib7KvgQvneF83v6SdEHWxjJGZWVrm4jgAnP0iEd7PSDywuXv4nhqu7FWvapPtH/W4W3shXYFsj+Rckqe9xVAv4dUjdoLqhfAxXatdWyZoywHlt//oHkbbp9TKfQ99oh4y1G/UvzaqYyDrcURVQ6dZevwb7kyKg3LVo7LfOaxpRSRUO6IGgmgWt5Ld4qxNxS5jWWlPLtsiftYSvmbYDjO1PsSg3ling1tJYrnuo/MB/W+UcEr89e/1hm0RGBpsacuEUQFerhZ1D8Arnf/uyX8r34vzNLdficaTlNYagdacmY1s4nqO4BE+Qc6AFAf9kvgkxpAf7toqLKN0yqPDEvhL6/gQverZGhGt7WbvT1OjXT9wBTzVJckByA3mepFfaKBkN9UiSg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -166,56 +166,95 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-Use the CFI macros instead of the raw .cfi_* directives to be consistent
-with the rest of the VDSO asm.  It's also easier on the eyes.
+It was decided years ago that .cfi_* annotations aren't maintainable in
+the kernel.  They were replaced by objtool unwind hints.  For the kernel
+proper, ensure the CFI_* macros don't do anything.
 
-No functional changes.
+On the other hand the VDSO library *does* use them, so user space can
+unwind through it.
+
+Make sure these macros only work for VDSO.  They aren't actually being
+used outside of VDSO anyway, so there's no functional change.
+
+[ Jens Remus: Define CFI_SIGNAL_FRAME for !BUILD_VDSO. ]
 
 Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 Signed-off-by: Jens Remus <jremus@linux.ibm.com>
 ---
- arch/x86/entry/vdso/vdso64/vsgx.S | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/dwarf2.h | 52 ++++++++++++++++++++++++-----------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vdso64/vsgx.S b/arch/x86/entry/vdso/vdso64/vsgx.S
-index c0342238c976..76efbeb1e287 100644
---- a/arch/x86/entry/vdso/vdso64/vsgx.S
-+++ b/arch/x86/entry/vdso/vdso64/vsgx.S
-@@ -25,12 +25,12 @@
+diff --git a/arch/x86/include/asm/dwarf2.h b/arch/x86/include/asm/dwarf2.h
+index 09c9684d3ad6..13e2e64ef265 100644
+--- a/arch/x86/include/asm/dwarf2.h
++++ b/arch/x86/include/asm/dwarf2.h
+@@ -6,6 +6,15 @@
+ #warning "asm/dwarf2.h should be only included in pure assembly files"
+ #endif
  
- SYM_FUNC_START(__vdso_sgx_enter_enclave)
- 	push	%rbp
--	.cfi_adjust_cfa_offset	8
--	.cfi_rel_offset		%rbp, 0
-+	CFI_ADJUST_CFA_OFFSET	8
-+	CFI_REL_OFFSET		%rbp, 0
- 	mov	%rsp, %rbp
--	.cfi_def_cfa_register	%rbp
-+	CFI_DEF_CFA_REGISTER	%rbp
- 	push	%rbx
--	.cfi_rel_offset		%rbx, -8
-+	CFI_REL_OFFSET		%rbx, -8
++#ifdef BUILD_VDSO
++
++	/*
++	 * For the vDSO, emit both runtime unwind information and debug
++	 * symbols for the .dbg file.
++	 */
++
++	.cfi_sections .eh_frame, .debug_frame
++
+ #define CFI_STARTPROC		.cfi_startproc
+ #define CFI_ENDPROC		.cfi_endproc
+ #define CFI_DEF_CFA		.cfi_def_cfa
+@@ -22,21 +31,32 @@
+ #define CFI_ESCAPE		.cfi_escape
+ #define CFI_SIGNAL_FRAME	.cfi_signal_frame
  
- 	mov	%ecx, %eax
- .Lenter_enclave:
-@@ -77,13 +77,11 @@ SYM_FUNC_START(__vdso_sgx_enter_enclave)
- .Lout:
- 	pop	%rbx
- 	leave
--	.cfi_def_cfa		%rsp, 8
-+	CFI_DEF_CFA		%rsp, 8
- 	RET
+-#ifndef BUILD_VDSO
+-	/*
+-	 * Emit CFI data in .debug_frame sections, not .eh_frame sections.
+-	 * The latter we currently just discard since we don't do DWARF
+-	 * unwinding at runtime.  So only the offline DWARF information is
+-	 * useful to anyone.  Note we should not use this directive if we
+-	 * ever decide to enable DWARF unwinding at runtime.
+-	 */
+-	.cfi_sections .debug_frame
+-#else
+-	 /*
+-	  * For the vDSO, emit both runtime unwind information and debug
+-	  * symbols for the .dbg file.
+-	  */
+-	.cfi_sections .eh_frame, .debug_frame
+-#endif
++#else /* !BUILD_VDSO */
++
++/*
++ * On x86, these macros aren't used outside VDSO.  As well they shouldn't be:
++ * they're fragile and very difficult to maintain.
++ */
++
++.macro nocfi args:vararg
++.endm
++
++#define CFI_STARTPROC		nocfi
++#define CFI_ENDPROC		nocfi
++#define CFI_DEF_CFA		nocfi
++#define CFI_DEF_CFA_REGISTER	nocfi
++#define CFI_DEF_CFA_OFFSET	nocfi
++#define CFI_ADJUST_CFA_OFFSET	nocfi
++#define CFI_OFFSET		nocfi
++#define CFI_REL_OFFSET		nocfi
++#define CFI_REGISTER		nocfi
++#define CFI_RESTORE		nocfi
++#define CFI_REMEMBER_STATE	nocfi
++#define CFI_RESTORE_STATE	nocfi
++#define CFI_UNDEFINED		nocfi
++#define CFI_ESCAPE		nocfi
++#define CFI_SIGNAL_FRAME	nocfi
++
++#endif /* !BUILD_VDSO */
  
--	/* The out-of-line code runs with the pre-leave stack frame. */
--	.cfi_def_cfa		%rbp, 16
--
- .Linvalid_input:
-+	CFI_DEF_CFA		%rbp, 16
- 	mov	$(-EINVAL), %eax
- 	jmp	.Lout
- 
+ #endif /* _ASM_X86_DWARF2_H */
 -- 
 2.51.0
 
