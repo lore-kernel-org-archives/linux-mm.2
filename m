@@ -4,118 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DB8ECD6EE
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:18:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D5EECD6F6
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:18:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4B0B6B0005; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
+	id 7BC956B0089; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B225F6B0089; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
+	id 794A66B008A; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A24D06B008A; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
+	id 676116B008C; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EC4E6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 357A313B002
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:27 +0000 (UTC)
-X-FDA: 84433590654.25.1B87B99
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 57D0820015
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:25 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=beB+Iwte;
-	spf=pass (imf03.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770848305;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 558C26B0089
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01D18140526
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:57 +0000 (UTC)
+X-FDA: 84433591956.06.8DD089B
+Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013026.outbound.protection.outlook.com [40.107.201.26])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CF79FA0013
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=upa43FXx;
+	spf=pass (imf25.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 40.107.201.26 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770848335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E9Z7wrUPu/eDtNPIgAA170h+g7/v16GEGL2FZHaFyG4=;
-	b=vit49lAjGmha5S3KYWm4dyQ+mYpORU/5XiJfV/7CWzD+bfsaet/AqE+Yt3RrFWpJpkoAg0
-	IjhD2HKsxQH/VEvn7C/dcquWPcdItkHLBwkJSIvoesqe/Wzhmo+ShHCSKyg79RUtDM0bW/
-	FRztnSIrPDp4mHisyFI+jn3g+okkQHw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=beB+Iwte;
-	spf=pass (imf03.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770848305; a=rsa-sha256;
-	cv=none;
-	b=XTYdq/+MR763j0AP+VdNOFNyrfB9YcfEiKWiHXzuFKlhHjRM+Z2jBhnUrUxA5ooUHm6SiA
-	yrhS9mYoQ6y4Y9VMVwVfW+EJ4iZnAgVwtYavYVPLLXbqpPETbPqqgHuv363HlKSOkNeu2d
-	lCBJ8S3MvbvPnZA/tD6AUcNSClXgQ2c=
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1233bb90317so1128893c88.1
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:18:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770848304; x=1771453104; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E9Z7wrUPu/eDtNPIgAA170h+g7/v16GEGL2FZHaFyG4=;
-        b=beB+Iwte2fhC8ffC0zEyIlruTVkuMF++339Hw7Tml7g1brmYkEHArPXUIm7Hm+b6XK
-         RRMMXD/+IF++st82tflh8tpSFqGzd5cUqs9YcyPJBpeOLuzJXRPV6Inbjrc7w90tIPLK
-         p/5SXkKPu1V4ZUiVSePfMeI2UCjJyKf6fSJNPr+T/Zaim2cVx6oIpw8aIeF/MYOjP4FC
-         irFzoXoNK/BGy8x83uU6jVwIw8npl4KGFRdKeD3REVRnEu8bJQUZYiQkESvqfPhx2L+b
-         0Vmqq2Nd5rsqTlTrGkQ1vi/91OzVjyFpP8J+9dhpz6bXP/0Z+eJeXPCK5m21I0/94OsX
-         UJ9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770848304; x=1771453104;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E9Z7wrUPu/eDtNPIgAA170h+g7/v16GEGL2FZHaFyG4=;
-        b=ASqBSevmpATx2Tf+TrOjCIck+i3wKJVT4LzL3lCOy7Qq7Fpv8YbWE3I81V9lKkKQSw
-         rs4aBjtfJQSYcQTLfaCghgY5Go+TiH9q5WiohKkT6TZV426bU0dF7b/IUtYOiWM+/sJ1
-         oIR+cd5HyDVK0zFA3CUTkGkxQcUr4KzxllgSj9kOE1O815d0PVrhUwXxwLiM09F1RtuD
-         ouLkIz8UPT8LlthYoEbh/vwXHLupaLm2gg34jW6BLV0JeMIxkwRMjiemeK50i9t/Th+Z
-         +yXpuloGEUIquQ4wo0iQFffBuEhfPBKKhj5sa9AEH4D3xOvRbl7D7rDAWlvsPMPurvSM
-         ornA==
-X-Forwarded-Encrypted: i=1; AJvYcCXVT+3FMaqtwApYrEh01mMJliJpy6xf11/Ntgi/evlVDvBRn5j/AOVDdRIqViBEOFaDJWkzSnTK7g==@kvack.org
-X-Gm-Message-State: AOJu0Yzxm/T+EeMmnXhFWpcKSMDK9ca9J4jzUfvVOrbA/o57TIrYGHfV
-	nium2YmdrxhnpHAfNDmHH6P2fppd6UjPwOqr6Qp4VNuXRJRXejbCVJWC
-X-Gm-Gg: AZuq6aI6ffImMeFWRNhNSOrbplgBAKn24coaSg2vpO0WkEVv8uDVukCO1YuHh4UgSoV
-	NQPYAaiNxDtknGu/dmwhgFX1MHcMB1DHCgQ07fmVQzk5cBAiRbXoM+EV0dxQClzK5hlEvZVZLWL
-	eL4uQ9xnhe9FFI8XVS5LXu/BiPIHBzRZiW1tqEejUmao0xoU/501ZodPK2YTRxU5NcBeCqpnJ5g
-	vSmZ91Dj7VPb9S8ijEUih70hrfYRx1DA9IfWhGLx8ZYppklqxS92VGpcLf02559w1Ig2aHMcj2f
-	03t7g+B18UCpCZ24m4ZbNwkR8JLn//Jm8QeRgdiVVDnOdF8T/Q+Utk1uRN5k1ZWGfMK1ygaSYkc
-	FiwOUBAXu0khvnoDHh/BPX0i5naT78Hr1ffzks6O0HGJNSqtyV6lAzNWDjpt5fHf6trQAYuNROJ
-	eQN+lZ1FpLRLzsAM3QirkWMrZuTuf4RVjra/pMUkgUhSiGuSdMEL84vb4=
-X-Received: by 2002:a05:7022:619a:b0:123:3c65:d724 with SMTP id a92af1059eb24-1272fdc842amr209524c88.25.1770848303872;
-        Wed, 11 Feb 2026 14:18:23 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dcfe6b7sm2713774eec.29.2026.02.11.14.18.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Feb 2026 14:18:23 -0800 (PST)
-Date: Wed, 11 Feb 2026 14:18:20 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	akpm@linux-foundation.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v5 1/4] mm: Add address apis for ptdescs
-Message-ID: <aY0ALB5yKXLY-M-X@fedora>
-References: <20260211195233.368497-1-vishal.moola@gmail.com>
- <20260211195233.368497-2-vishal.moola@gmail.com>
- <0ead4a2d-c88c-4c89-b1dd-5954c28edb99@intel.com>
+	bh=ygQ8QyM5Sk+6SaQfAa+bZC+ruPXAgwaotlv1LECVyNc=;
+	b=Na3SVL1yy/Q9Ub4LqRF5HWmbPWojytV4d4zPqPd/WIKg16ZKjLlXHPpSWAznr2ICEnIBsl
+	jQRtAmhnkQvaTiZB6sO2O/zKEDTWhK8+dsUTUSdeK1SXNZDbybU34wdSRq41sRv6iEHDGm
+	wRk4VaBFNmTvglr5IVya8VlHK5U6yWE=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=upa43FXx;
+	spf=pass (imf25.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 40.107.201.26 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770848335; a=rsa-sha256;
+	cv=pass;
+	b=eU1I1m6M/MDHgWt710q7pcIJcrsSAor2/+zmHrhh3UHMM7GL3mkxfJszooJSZ6APD6G/DJ
+	EKnqahFgJ4F2v+0OyqguUsCMat575IVjWhtEklswwNdE6TSEySDpbg1D+r1v52/mkT0wjJ
+	5jojEu3eyS7FmCY6zN+KnrmvY9feCVk=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FQL2/oZeg3HxpemppptXfi/Nc6c5+lt0Pm/r3TgCEEjFWD2+WWLfqZbu/oMgqz3W/xxBFeoE//0pi3C3bTWEz2y80RGPulGjhN8YD+zup0MuaVkSig7fih2hZSYE3nYEYLL6VS+558UaWeKXleAhkUIKKZJlmnoQ5JfGxCR5IpYAJM2vRPDbSzaSVy+M7bbzlhicIzlz9oAvNoLHHm6U4AybzOaaqBg8Aub5C1PW1jpACWIthaNcllSpQp5pqj2WjaeL5iB2lE9VJ3nSJM9vtH7b2sToF5LamzpSkeOJ3wXj/t+qQ1NislyAcx6GjfuI4LbP1bLi85ZhGohUvCRxLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ygQ8QyM5Sk+6SaQfAa+bZC+ruPXAgwaotlv1LECVyNc=;
+ b=OSxRAGxVpuQJnQYwIt+tx6Tjfv6qyiD82BaRDc5k8KakdagMWoWgYVeKdAJf+d/3Nbjub87zOaMCJG4Fxy8F9aROyOG4hfeQ6mnz9GgHEXUNdsxxymoJ1bw/uGdyw6j2GDY6qAud+Zo19c1jd0hnU1TthYof6D64VUzfxNIr7+Zo1oEY38JpSlO6OByJemS9gfBiq3RNdgVsSUcZT3jpcR6eUr3josVYAup4v8g8MG919/VQ/xIZBj6Wc8Q1USRsvgk43OS4sLShJu37vAqwqk2HuKhjzdLeRTpENrbxsXsW5ryyThv2VVBZvEFPRGXHu3seb7oX4fo+YMZaHwP8mg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=gourry.net smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ygQ8QyM5Sk+6SaQfAa+bZC+ruPXAgwaotlv1LECVyNc=;
+ b=upa43FXxpL3902jeH8kTSrrSvbWSIVfuRtmgKlxSq/hQ+Lbik8Ss330L5zP7oe9huGZQqDyzsmz4aOAROujYmqf1Ci2CYYrSEO+l4DMjbaoAXu569K73Mg9+i9wJE+86IpVPy0ukIHq/K51BTq7zurqsAASl7keRKkuuD7FW2t0=
+Received: from SJ0PR05CA0031.namprd05.prod.outlook.com (2603:10b6:a03:33f::6)
+ by MN2PR12MB4440.namprd12.prod.outlook.com (2603:10b6:208:26e::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Wed, 11 Feb
+ 2026 22:18:48 +0000
+Received: from CO1PEPF00012E82.namprd03.prod.outlook.com
+ (2603:10b6:a03:33f:cafe::81) by SJ0PR05CA0031.outlook.office365.com
+ (2603:10b6:a03:33f::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9611.7 via Frontend Transport; Wed,
+ 11 Feb 2026 22:18:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CO1PEPF00012E82.mail.protection.outlook.com (10.167.249.57) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9611.8 via Frontend Transport; Wed, 11 Feb 2026 22:18:48 +0000
+Received: from [10.31.203.44] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 11 Feb
+ 2026 16:18:46 -0600
+Message-ID: <35db57ae-64cd-40ed-8353-7d3b64069471@amd.com>
+Date: Wed, 11 Feb 2026 16:18:45 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0ead4a2d-c88c-4c89-b1dd-5954c28edb99@intel.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 57D0820015
-X-Stat-Signature: im7n7b6i9fzcoug665an15gihsowm88m
+User-Agent: Mozilla Thunderbird
+From: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
+Subject: Re: [PATCH] mm: name the anonymous MMOP enum as enum mmop
+To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>
+CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kernel-team@meta.com>, <david@kernel.org>, <osalvador@suse.de>,
+	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
+	<akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
+	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, Jonathan Cameron
+	<jonathan.cameron@huawei.com>
+References: <20260211215447.2194189-1-gourry@gourry.net>
+Content-Language: en-US
+In-Reply-To: <20260211215447.2194189-1-gourry@gourry.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF00012E82:EE_|MN2PR12MB4440:EE_
+X-MS-Office365-Filtering-Correlation-Id: 25174c4d-67eb-4739-60e7-08de69bb875b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|36860700013|13003099007|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VmZUMlpWb0Zhamw0eEcwWDI2QUJWbGtYWlR1S1FxRUI0ZFBzVDc0U0JiL3lh?=
+ =?utf-8?B?UjV2MGJhbE1yL1kreUhyQ1htV2hWN0Uvd1FxZmZUYU9ZSGFDU0oyNDNzdmc5?=
+ =?utf-8?B?a2N0ZVZZQWp1YWVic0tsNmd3VUIvZGd5VmsxaHJ1L0JSOS9ORFF6UGt1R0E4?=
+ =?utf-8?B?MTZwNHJmTml5bmQvRkxaSGRhVTA1YnpHblBGMjN0WUx5b3lSZnpIRklMeDNj?=
+ =?utf-8?B?OGtVbUxnUm0zNHhpR3pXcXJtZWZZK0oxODBVcWo2bkhZdlF6TE5KY2Y1d3BN?=
+ =?utf-8?B?MUpTL2FrZGhFU1Vnb3dIYjBsUE55L1BNT1J2eVlMa3ZFN3ZFMUJyY1ZmVkxr?=
+ =?utf-8?B?MmdxaFFMa2V5YmVPalk2c1FmM0RtcGpPaGFhZnhRZE9JdEF3QXpnR1hiUnZ4?=
+ =?utf-8?B?Qy90NVVVWUdYSDJrV3JiSVpjbzVBb2FUbmlsMXJCTDBQbW4zMTh4VVpLQ1d3?=
+ =?utf-8?B?TGl6d2hOR29PcFhNODhSVXliNUFGYy92U1RabEJ0Zy9FUTdpc2czNStOSmxJ?=
+ =?utf-8?B?VkVFdm1MYmFSZW5zTGRoRCtGak9zMlFOMkt5dWo3OXRHelphaEhzNVF4ZkRi?=
+ =?utf-8?B?UW9pZmtLSmFYMmlGVE9VMVdyM3MybjI3Z2JvdGFtbTVnbkx5MVIrMUJwd2hJ?=
+ =?utf-8?B?M0RoT0RWeWw5V05pMWN1UHpyVjkwNTFjMFUwSHhwV0FJcHUyalR3Mm02YTM2?=
+ =?utf-8?B?eGpIanl6S29oVlg5NXdxQk11OUQwUkZMSndBMzNaMHorNFMxd0lXRXd0bjls?=
+ =?utf-8?B?SFFlRFl2a1Y3SDQ1eUxqS0M0c1Y1QWJTTTBremJIWlBlVVdVdkt1ZGc0a0pQ?=
+ =?utf-8?B?V0hDYkZ3OW91OE10Z2ovZkczRFFadmNDYW5jeC8rYUxNVzFpMWtsNFFHcHgw?=
+ =?utf-8?B?ZGIrWSsvbFdnNFpBVTQwVUNzZ0RMTHFEWHlMeEp0cmVhbklFK09TNnlPWTY0?=
+ =?utf-8?B?Rk5ZQTdmdFV5bmpaN0NkbHFSUlB4dHdUdGZNanZKcko5cXlqWXUrRzdnbHEz?=
+ =?utf-8?B?VWtVUUFhK1NDUUpacFR1VGNWT0JIKzZ6ZzZwOWZtK1Y1UHVNQm9XSjlwVHhv?=
+ =?utf-8?B?S3hNbU9WOUlNbkVwcXZWMTZEVmlmZHI5c1JZdEd3aHkyWGJPN3FMc0lmTk5L?=
+ =?utf-8?B?YU1nbUNkTVI0UTM3NmFJRTdnV1BKVzJHZmUzVWZhMnpjSUdQbFJXUHpZdEFG?=
+ =?utf-8?B?Uk9zQ3FKZGwxeU82OUJxQjFFOVZzTW9JUlViUnVUazBla00yTlgxMU14LzEz?=
+ =?utf-8?B?U3JjdTNKL2lQV1doK1ZkMVhvaVdNek9tMVQzNE9lSlNhQ21STnhvR0ZMVHpt?=
+ =?utf-8?B?eUI4WjJIb0JBcGR3NzhpRUlPU005aFVWNGJvTVV3R0w4aEJzL04vWXpYNWJq?=
+ =?utf-8?B?L0I0b0JoTGJha2dZZHIwcEJ6ZGUyVW5IREdhVkRUY1l4dHZyR2dqQzhJQ09h?=
+ =?utf-8?B?VmM2dWRydXRZUEVRZEhhbUc3RTU5QkFYY1JVdEJIV1hUTXFVVW5DbnpwKzBF?=
+ =?utf-8?B?eGozcC9wM3ljMktxK2tQQ0x6MDlmYVdOVGFOM1JSZlNFbWdxV2VWUm85Snhh?=
+ =?utf-8?B?aFRwdGlyS0N5ZWlETjMyVUlRdWhPUlJUV0t2MThNeDNyN1hpMVlKazVkT0NN?=
+ =?utf-8?B?Ui9Ja0JMUkVPc3VTWlF2bDJxM0VvSTFsV29LWFdyckpRajFXV0VsT1pRNk5C?=
+ =?utf-8?B?MEpvZ2JFMVVtb1RDNEh5M3V5eDRQUTFWbGZOQ2F4N29Nc3pnL3hhYUFzYnlM?=
+ =?utf-8?B?SzVWR2ZkWGkwajRQeW93VDg1am5kaDdYT0JVR08yYk1VNkFLSUVaQlRFMzh5?=
+ =?utf-8?B?S0xvSE1qU2pmZWNEL1BrY1BNU3FIeVpVbW9oTlUwQkZIMldnaHpSM01zT1cy?=
+ =?utf-8?B?Vk1yck8vbE5FdHJVb0RzeDMxZ3dvemI5R1lBeUQ4SG1jOXZLUnVyeWNGaUVx?=
+ =?utf-8?B?ekdiTWRMVHRhQUtOVGl5VDRMU2lCS1FXQ1ZySFVPQzZ4YkNnUVZHTWl1cVF6?=
+ =?utf-8?B?dTV1eHlYYk1VWWJWYVNFWHdsV2cyVm1KTHlodDh0SVBOOXp1L2srM0lJTjZN?=
+ =?utf-8?B?U0dVa0lwZFcvZzRBWldBZExRYm11dlBkRFRRRlVLRXJiMTNmUFRWTklzRHhW?=
+ =?utf-8?B?cG5hQXZvMFBlWUNwekp5Tk1hM3JhQ2FaNEhsejJpVXI4cWs5b2tsMUcwdnFU?=
+ =?utf-8?B?YWZmZUVlQXluSnk2K0RkQnZJWnBXbDZhTW1pUmkxR0xPV3pzMWhTejFGZFI5?=
+ =?utf-8?B?aHFDYysrcGtxa2k3eldMRUxEYVNnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(36860700013)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	iockf9cwFVPJZe2ahVAM8wEBMFueXV8yokryQVi9n2eTtKSOZO/JFBDc+kh9YVhaHgoCCd9hH7pJRt/aoVygof1EKwsCOuN1tZo/wBFV+kbVHd0zrPOq/r2qj+YrEFJPrt9wsi2sTtsHksmWUH+my7/rgviA7QrkGuljLv7BjFUCnJPtP7jRfZHYMuD915a/KuDe01ZKKjNKCKAodzBEoQIH6ywFTgaIDa6kuMXhxliUGND1o9fZYl/FB94PSQeES1A0c3obL36f7+lv4lp3srpPkY7p7xswhW80xNLsRsf3wZ6nH3wfUTCggeevqmZYzyeHcjnBhJBGoGYooheXZjhLjOG2VWBexmHh2apJnqm6NNwG9CLKbOzujqngUE2Xq2awlIUd1KhEIjkrKMER4HaaIzjP8tsx2fx2jZIXxMleMl2pSsbzTV6vF1mKvq3F
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 22:18:48.3080
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 25174c4d-67eb-4739-60e7-08de69bb875b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF00012E82.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4440
+X-Rspamd-Server: rspam12
+X-Stat-Signature: x8kbojsh8j3uuzgpi8xi1qp6xbmje4co
+X-Rspamd-Queue-Id: CF79FA0013
 X-Rspam-User: 
-X-HE-Tag: 1770848305-213240
-X-HE-Meta: U2FsdGVkX1/x23V71KqHTM7oM3ge0+TX0xWmwzVGbpQIs71ptMFNbbMPuMTyr/Hxv2q+/qKFhOY7gHJVy6l3n12Orj+Yy4qG5HD4p01B1+iOM8NIJGFswGCMbSh4MMYYCg+B/Yp6AcaR3VbwD9aS7kt7KXP+CLRTVQclivPZGOClNmNtEiIEMtOt2iZ/FZMa69HOGUyES5d9zHW/yeiuX8WyNOzXmTX/nf+hQt8fplXcgSNi1yCE+b8UCe7vreftTAVkgAfoT9irF8djmIT3M/KC2ntdCXHVhfucPq5o4of8U97/mLvV1W/xN40TSZbnH4276tpL3SJ/n/I8mrlHhSp/PcvNbKRrF2BebzKtZ4g3uTk7L4Nyk/KwtfzFk8yn2qFtfZ1OtMr3oWjPrSXzwkWCmnBn7B9pU3HE5eO3E6Aw7Sqh5QrvCYc7EtB8YQwKww+B9TUay1G6CLbrNMmQo9wXBEbSVZQHg2P43uMFXe3TaUlXsV7h0MTU0FEYVo9c8MegyxbsazfDSNEt2Zeo40GAV2ZZBy/yuv4jEa/jlt7TAhdwttJTaOOmzyydB0RjhkQ9P9rwDQeBuLC7k5Z7OJDQNyNXaxZz7i4Zs2BwCEZbcJc5rvKt0QWzTkcsI8TUs/8vEf840yfaAIEDfjtOiaEMaC7PbCl6LYx7eMVdsBRKIZrnL8rJbNiVGkyfxhsqm708b6kv8cKWNVhTcfgXoAY+xXpnZn6eL0/3RLdK5JD+UmqUvHvF6P6deSacqpfs6ieHuJeBFrVope+MUFefky9rtgbv7Ldkfts6L0YOiylwsh5MYdFbXE/z4PJdvZ/YlAe0KNwfBsllOMjUj3MxJacxyvG1VE9FLNMdBSdG/1LOmFXiNL/Hy6qdXKHIn0Jkw38HKvzUQCr3ljguWXl+7xqBLohRAQWx4sWL4zNckgYc+n+XRy/1zDhRPhordvMMQjM4c3lRhj200EX2ehC
- dZ9v2Gvi
- mXBWAQEoxtGXy2gSvbOvS1eflLL2rgB1nBMnPOYhq0ryZJxk3BATryMH7mOUXACpV206EuWphlo1VP7FJhfW7QmEaczBXPSIBb31g9FRyG55L+IFC/H7bFrGyyZtPy/gbPdr++HT0Ly7yPvF+it+5fgWaxVot1YkYmvz9jMQmJRAUqWYXwxPO1ec+xAUqrR7Zo/l3SIqexzpNT+f/xZXCw1N+n9wMp+vojxncWLJVJkp2dtaLSj3h6C5mQzuF2MndahrzaPgpneBQ4WGL5KJ0jOr2AsNFY/xxzOQgO6WGk9KbiyTv3wU7DKuiN4fHwzVZVcgQ+jz+AeAuaw6QN/LPYSpT3gzpXud60FwQPLp5/6RNLzahi9bz8rZeJaJWNaAWsWrpeG1QI+++4uPcqL+AyyCbWXFwzxf8xE4zIenw0pHtB1nFQrIO5JxG1SnQeG6vyWM8vecldfKDvctZ+tAvxL10hKQHJoE7rGx6zOnSo7EGIfueZ8Ixa/Oog6c429ajWwH9WYnFFazGJIl9aDOLMaI7fRctgmicjDa7k4PewKJIDE0=
+X-HE-Tag: 1770848334-425940
+X-HE-Meta: U2FsdGVkX19k2SswhuQMyiJdjFa8icWjuGycCERYkhRdl44iHZoThwO1/edWOb7EuXM7KKTHXOpun1KmzI/YWmusgNdI9ya7TD3giGrB3p6a1QFWYK0k2bpIQ3tokDaT7reB94dkAbtbLNDW7FT0GFZ9dOwBFdzDmP1IZ9UtvgZUyFDNl4wTeNhM3M/Bou5PqR0WQeVq/JsFyGVojoao3IxitwwWgP32i3BEDKgYXScrWlFE/raehXRbhKdkfsIMaMpgm/h4TFl1qagDDHe/JYguMlDdvMDhnYCsf2PMAiK+4S3Ucj+1k3Ws6jBYNbrkIgBlymWAUt1NAegbjYYQi617Wwg3ZmgxzW5cJJtBgQjwb+BsjlVbe0eC8X24x2h+h5Agph9DtVXBTTkknQ7wHY4l4SZx1C4LovfJKWnwwajDPJIjZoQzYynoYTWxfmbvNnYbht2NNAxxJX8mds0fcUVnuryldrkztSeCtS/peoocOr4KooIxhylseeLryf+9R9qWI/yVC+oNFcVx9YEZZUeTTv4Bjw6OPEroynZShI/pB7g2RZNIT9N/YB6vPsQN+9mKyGXBUqhPTQS9Aa2nmWxAkiu9gg3kv9WAtNrCJQPP2MRCkX4VPVHPPauQUthIUKKid7i+4IPbirFxc+M6ngy444cLGwEdHyr9Y6tulqsmDUrLqqnP0kEPkw7M+LhJhJdf2ZGtPt9yrj7dvoj++FVr7iqaNzgVcAkFEnw5pjvUegUQ6o18CtThqV/I8KQGqYqC3oxeQEM3JmkjnV6p1hWWr1qnqROZghPClLrlhE/xpc2J5vdcccIzDP53YMJRLtDELfGIBAkCld1IVAs/zjMtpgdMt9aUWGhW3VEyLrFCCqln/RkDagP8ILAz7PwAcOuEz5wVrSfeyx0evke8xtGHZM0dF6YAFiVxXn92RHbmgtouC9YvyySTkldjK2jIvClBHhSdWyKM4OQKeWb
+ 8CsEFaME
+ T9FAA8dgZG41FxLP7vk6R9bZw8xAyB19M0NLxpl3tt/hKWmFVlth6XMEmPMD1eWXEC+Ywx4ZDjSz2X7ijqqqcDlSmhtkAifEG2zu+zeH+NQZXVS0pRe12eVVZvYAiCJTL28nMcgXo6Zdzjr4aB5yNqhhGUhum/2SQmFg5XjyJXmCvup7/YzfeUvFSSaDCd5RcvA9u41NtrHmEM3yh55c2hk6vtdXdnmkj1zbuxzS0bVnPVyLv7RtdhZ/nV1Jc8OZnjgS7yRIzOytP6V7froHy7gnDNaVej0jDf4bkkKm1hmURiS4G+v/SLtiMgAX9KY8EJWlpAoqQNvYOOqaJ0S8fvsvFtAbFG4gmMvh6n1cS/d5r5k2xrGveJwsxL9gPa6P8y9O2WjqWlHIF+wjolMwuIqpgOsyQrEfzbd/A6oLbsiywCSdv0FCE7zEf+SkJFHsPgLW6lj6JLFzKcY5d6WtlUVjZhJ/N9zcWqktUeDKBXAptKQLVrWsb91thRpcJ8MdWAEbz3GthHe8D7PgO4DbcX7qs4KtaCwhoF3MEiw/h00/HNPVoWd3x8Ut3/HTBvvacwxpfTxF7arvqDvWVlyOnzP7B1KTILMic5Kde3twc9DMetyDV95k01xGVInjxzvtZT/t0UBrgrfNC+a8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,32 +191,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 12:13:10PM -0800, Dave Hansen wrote:
-> On 2/11/26 11:52, Vishal Moola (Oracle) wrote:
-> > +/**
-> > + * pgtable_alloc_addr - Allocate pagetables to get an address
-> > + * @gfp:       GFP flags
-> > + * @order:     desired pagetable order
+On 2/11/2026 3:54 PM, Gregory Price wrote:
+> Give the MMOP enum (MMOP_OFFLINE, MMOP_ONLINE, etc) a proper type
+> name so the compiler can help catch invalid values being assigned to
+> variables of this type.
 > 
-> FWIW, I don't like how pgtable_alloc_addr() looks in practice. It reads
-> like it is: "allocate a page table address", not "allocate a page
-> table". I don't have a better suggestion other than having:
-
-Hmmm. I meant for it to read "allocate a page table and get its address."
-
-> 	pgtable_alloc()
+> Leave the existing functions returning int alone to allow for
+> value-or-error pattern to remain unchanged without churn.
 > 
-> that returns a page table pointer, a void*, and:
-
-Initially, I intended to name it pgtable_alloc() & pgtable_free(). I saw
-arm using pgtable_alloc() and powerpc using pgtable_free(), so I looked
-for another name.
-
-> 	ptdesc_alloc()
+> mmop_default_online_type is left as int because it uses the -1
+> sentinal value to signal it hasn't been initialized yet.
 > 
-> which returns a ptdesc*. But I suspect that would get confusing at the
-> point that ptdescs _themselves_ start getting allocated.
+> Keep the uint8_t buffer in offline_and_remove_memory() as-is for
+> space efficiency, with an explicit cast when we consume the value.
+> 
+> Move the enum definition before the CONFIG_MEMORY_HOTPLUG guard so
+> it is unconditionally available for struct memory_block in memory.h.
+> 
+> No functional change.
+> 
+> Link: https://lore.kernel.org/linux-mm/3424eba7-523b-4351-abd0-3a888a3e5e61@kernel.org/
+> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Suggested-by: "David Hildenbrand (arm)" <david@kernel.org>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
+> ---
 
-The ptdesc_alloc() equivalent right now is named pagetable_alloc(), so I
-don't think it'd get confusing.
+I saw this when reviewing another set of yours and thought about mentioning it, glad you cleaned it up!
+
+One small nit below, otherwise:
+Reviewed-by: Ben Cheatham <benjamin.cheatham@amd.com>
+
+>  drivers/base/memory.c          |  2 +-
+>  include/linux/memory.h         |  3 ++-
+>  include/linux/memory_hotplug.h | 16 ++++++++--------
+>  mm/memory_hotplug.c            | 10 +++++-----
+>  4 files changed, 16 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 751f248ca4a8..3753ca80069d 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -452,7 +452,7 @@ static ssize_t phys_device_show(struct device *dev,
+>  static int print_allowed_zone(char *buf, int len, int nid,
+>  			      struct memory_group *group,
+>  			      unsigned long start_pfn, unsigned long nr_pages,
+> -			      int online_type, struct zone *default_zone)
+> +			      enum mmop online_type, struct zone *default_zone)
+>  {
+>  	struct zone *zone;
+>  
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index faeaa921e55b..5bb5599c6b2b 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -19,6 +19,7 @@
+>  #include <linux/node.h>
+>  #include <linux/compiler.h>
+>  #include <linux/mutex.h>
+> +#include <linux/memory_hotplug.h>
+>  
+>  #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
+>  
+> @@ -77,7 +78,7 @@ enum memory_block_state {
+>  struct memory_block {
+>  	unsigned long start_section_nr;
+>  	enum memory_block_state state;	/* serialized by the dev->lock */
+> -	int online_type;		/* for passing data to online routine */
+> +	enum mmop online_type;	/* for passing data to online routine */
+
+Comment looks unaligned.
+
+Thanks,
+Ben
 
