@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48FC4ECD6EE
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 21:55:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3372CECD6EE
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 21:59:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A15CE6B0005; Wed, 11 Feb 2026 16:55:55 -0500 (EST)
+	id 742906B0005; Wed, 11 Feb 2026 16:59:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C0586B0088; Wed, 11 Feb 2026 16:55:55 -0500 (EST)
+	id 6C5A96B0089; Wed, 11 Feb 2026 16:59:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E6556B0089; Wed, 11 Feb 2026 16:55:55 -0500 (EST)
+	id 5D1DD6B008A; Wed, 11 Feb 2026 16:59:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E5AC6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:55:55 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4542B8BFE9
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 21:55:55 +0000 (UTC)
-X-FDA: 84433533870.03.8B21E80
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EAF16B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:59:24 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E1B87160504
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 21:59:23 +0000 (UTC)
+X-FDA: 84433542606.28.D9AC1F3
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A5C01140006
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 21:55:53 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QHBu58CM;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 438FBC0004
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 21:59:22 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hOneO5Cg;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770846953;
+	s=arc-20220608; t=1770847162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rb+VtnPgyX+Ra6gHU58goRwQsnZt12jPG+cuPbuWzX4=;
-	b=eBlCD2LqSNX+5JndJf9moblP+q0EmTIwp8R8PrhVJHB3aM3TSsrIGco+fqZoT684jiKOkE
-	CNChV159aKFZC7INMsSU71sSygweRr+0NdafJ0SL/uG79ydFbSdOOAHRem7eAQ237VkJ1M
-	vmriQJEMYevMvVa/cLRsikzdcSbrMbU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=QHBu58CM;
-	spf=none (imf26.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770846953; a=rsa-sha256;
+	bh=AojB6NpczDdBWw2M9YMCKzlkDQzN1cz5fhoVcgmRVBw=;
+	b=iJZxCBaDSnz9cDz6SwUK2uEh+91OpT/M9bzeApmHSddFBbg/2Hfm7i0X2ZAb8HljljPkzT
+	CIgxgFcfwiGKHWvhZ3K2Zfp1fXUNBtk3g8ZIvBGcIwv4ZNVReJ8NHD7FKZEvGe2bKJdyKN
+	s992oLG6SJvRYUySR0S6flIEy1Wjwuw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770847162; a=rsa-sha256;
 	cv=none;
-	b=EdIW2Pzz+z198Vb4VF7Z8DBG/0gydh36Q8yUtz07TLYabHVUcXY7cdg2WU7G0N5BkL5gYX
-	/JDMvAIMQK81Skg+9XpTu6+KLt1xhySH5vyBhtJ0vioZldLIFzEAi0pjPyrRyLfNgPOmgL
-	W62Y6ohC9nYEN20OKyh2zJufpHN8Jn4=
+	b=YXT5lLlQDVyUPG58Kjgw+itJyXfI5IdCIhSgwxuRIICBZTTH6Sj85HYtVPqkRt90wS0hYK
+	nSkfZbrpcfCClU+/Sn99Qe6V8mEiN3DY/4rzFcNysNahEFP0qL7EpIfULFb7PVG7D5E0H6
+	X8dmWTARf3AGNbmAR/AC1uyZh7gjJC4=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hOneO5Cg;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=rb+VtnPgyX+Ra6gHU58goRwQsnZt12jPG+cuPbuWzX4=; b=QHBu58CMP9tNGFBXLo00CWoUgJ
-	Y/e1K+fN7H/+BYMDo2p5sXu6oExAbkm/rRjpXDBw4gyADeIDwOjmQ9k6EyiQCb6XNfWoAsSqZbv8t
-	FVfVIyuSh3VYYVI21zYKqxUXNWOVTtveWh+zOr2kHqkJCvmE3/Lz59W/DKjaYy0AYNbpUEowi/nD1
-	jQYecxJnZ2/bBD8/YMVbHSrMeYDI0KZdhoP4VJjq3PZd308Ad6jJz3Gyo8AsSiF5IimVC9rnA2y9B
-	RT9ZIkfgJ/bG8NrFzhWWDSh06riVgmoJWiurCvG4imqWb/T7ceHZQUh4Suy/e6weCQZYY1RO1K7rz
-	Be37hsVg==;
+	bh=AojB6NpczDdBWw2M9YMCKzlkDQzN1cz5fhoVcgmRVBw=; b=hOneO5CgSAB+iYuHLNcUFBM+56
+	0XSkW/HJXC9QQ4LHCud43RZ8Qoyfrd/pfKLBvxOa3bv8Sq+4fJwQtJfthP3pQF4WhdrXSJXhm2X6G
+	RmVxlvuMggL1TW2SgchHqqh7cG/doykpZyqFEaqFwTtikdVv/ST4e4O2oRCHBkG9O8X8M6hIRETo0
+	RcZP5xVmDFsaGHI22zs4juls23fntMtRXbWDR8xhlR3RzN29JL8lYjuWRwByJK+PwbDVEKpb+qPiF
+	eg+hddPmGULyvWvvMgqBYoeY/4LFsjKMCz/sANGfYTzhoeXcxcCW8cLqN8x1/hRANlWjs8Gc2TR5d
+	6la2ocbg==;
 Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqIBc-0000000DFI8-0UIM;
-	Wed, 11 Feb 2026 21:55:52 +0000
-Date: Wed, 11 Feb 2026 21:55:51 +0000
+	id 1vqIEx-0000000DFOW-1Wjj;
+	Wed, 11 Feb 2026 21:59:19 +0000
+Date: Wed, 11 Feb 2026 21:59:19 +0000
 From: Matthew Wilcox <willy@infradead.org>
 To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
@@ -70,22 +70,23 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Andy Lutomirski <luto@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v5 2/4] x86/mm/pat: Convert pte code to use ptdescs
-Message-ID: <aYz65w4TP37_t97o@casper.infradead.org>
+Subject: Re: [PATCH v5 4/4] x86/mm/pat: Convert split_large_page() to use
+ ptdescs
+Message-ID: <aYz7t7vG2W8ieEgx@casper.infradead.org>
 References: <20260211195233.368497-1-vishal.moola@gmail.com>
- <20260211195233.368497-3-vishal.moola@gmail.com>
+ <20260211195233.368497-5-vishal.moola@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260211195233.368497-3-vishal.moola@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A5C01140006
-X-Stat-Signature: na1fne8gyjequr36w57zr7aw9e6ci454
+In-Reply-To: <20260211195233.368497-5-vishal.moola@gmail.com>
+X-Rspamd-Queue-Id: 438FBC0004
+X-Stat-Signature: 5f3rwknyw9cc5t6rim1gouggjzgw8hdj
 X-Rspam-User: 
-X-HE-Tag: 1770846953-452892
-X-HE-Meta: U2FsdGVkX1+KqQaec+vMIM65sj7MBzdLTF4OEtwqCBCA8Hqq5NMIMb/4GwelmS4WPX8/Ov1AQFG0Jf3n9tnWumS1LHhkgRXGbEb21cScMe49AGWLaWMaRJBWp8ghHgfHCA5s0HxmbT5wNQzsuMC0k+1UFDRTD4FHvtfXQgLhKfxptzQkuEkP1Reuww6ZZ5oAxANi8kNumTrb8x57e/gu23QUNQ72dxfet9iGh6964GAzDNMepw7vRumeTLxD4s8CQFGarkmLMHbKCYfjzr1cNHoJUEzMl1DpxmprSsfY48z1D7MfJrZqFClraH/pXvzh9Ypl/oIPATs41md7FbzKSbEUpJB12u2RJIF86c6+TL7tJxrK1RLmRoWUbMmBeRPB2J08bpgNDviouQiA0ZlOMLgb34UTeQTRhpYC96NHTfBuzucssYgXqsX3JlDsKAF1FH7DSY5DpPXZyR2wgCHRaoIXVrZKe/lUDa3fStHM2aYGVfNIRJ6ZPMawg1+T35pQXUfqgEatWObmY1rY1Z43RcSMaDqunU/4W37lgbpGnY6nQuyF4lIZpJsE7SxbekGdg4rRZRKXBm6hhhC9GPAlv89jpCFit56H5o+1nQFkXxaZ266d+PpjNEk/wRcgrraKXKr1FjOj914jtG5bom0mnUro/XEbFtjHbd0dnyX3uS46L76OZCMxlan+hhEjdPxBVGDBjJaqolNK4P40AUmAOvH5s2/dfGuBrLtV4dLX/Y89CYtMZlNcBPa1W+2h2Cf4bU+wcjEO3qzo09ghtwB7iXhDxIK6sZ4EN8Z/4+SZv6C0y/AzsF3khTrJBqiM88wyQjm2e1dmvxzjEKJq4Fv+jHzmyFYVL16g0dIn7SAJ+mCClQlKvwf5tig2s4ioQLoQ8TTQDMeN3ifaMaA4BbOiyqfcVbkqfmYSax8CTRqzsoAJIgmGAyVgF0r314pQ9mG0MPI1pOOTMLFeaT4Dfc7
- F53LjLdf
- ca5sOjMyhz0JS3YHoNFAEaabAiUMbDbHRP85sS9koRiNmmLt8ivuFKF1cV0BcWcAwb6Q/wCINSdGheMeUi3CVuWdXUXITSnVXoC3021/WbWfY42qmvcidZlf9OT22auuYJUw/wVev7bjoevu3ahi3W+o1qN0DQ1y4g7PjoVov96aDMBEfkuAbBmbGYyIUNqYMqCAu24lDK5n4ITp5WND3Bl/GkMLvfEehjOMlz1KWx7ULo6RugF0kcrF0oiCbFXSOtl5q2BSDTSe2RY7jLN6K632M7pRyeUfFmGpXeiFQxh+9mI93LbiCskD1K+5NEBg/bwVJ
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770847162-850062
+X-HE-Meta: U2FsdGVkX1+7BpJq/FPp2riyxqAQpxImUi+dVu9UlrJ9ecUfB1mqDkPvtESe3mP+RHMjcBqNuLjtClU0HFqynQWt/OjOdoy2WxqIp0iTHtZ/uqbdXZSk0cDYfRz8KJM+ZvMVlR2tfVccEMguZMCva626+iVOUUMbTL/91VKcbmVJbhhyVVGGnSxxY/W3TXELM0VQTgij4q7+UJNumEWM5StFbmIvcO2i9tfoBMPoEQa66Zk7ut51q5T/SRZU09kmlOQzhpLG+XLGaQQJ95fAlzk9jpsH0lmuYRO0N25hCfCV7z1vxrNd+kVCMu7RTvsV/HsaL/yz3DwB2PofI1K4sta54bWz2Sr0O0Dnz+4JcrNTY4q/vDnFz1j9Gaemr5IAB7eSxiiP5XUY7w4Iuod5GKyppFsZhTJNFzzUoYKLgtBI4taZ/6jGVGjOBI+arSCxMbN4W7c2Kx3LdILYi7jxxaTdVYdf72R1yLNNDHT8DdvyXLq93yXBoZRj5PL5+gqpGsK4bOYRYONXIGMwtBcTrqFzjwSE9ZxOxbwV0Rvsw9+DJVFkoyG/UwpKruUvraIX3Oo4KBcZsQqwiPd9HLnjJAAhZLZciPOOcMxhSFoLk+VzQ4sfwjioSlU2e7BVfYByeUwHJ+P3RmyIcrM0rbzNhyoRfEXYn1z2J1lhmgm+DSDCWWhqKL8iHxEE9bNBlegu6Av/tjIuyudHEGroU6pTvpVx/woTqevtfVaueUBCgX2VQzGy6SKK3y4t9yLl3HAxUvb/04FviIcUjdUIVgngM/btIFsv7dXQDsGh7q751hCUo/NlBS8sWQcbj9cKXCEZyzIyfDlnGDvmw6nzngxR879cIziGW+iBloQh80JdvwyP6U7OXJ2Nf4yUEUBqlhuy3gx9bb2cuQNhOPCiBVNMmDTHJ4E8NuRW4GFIF0ay9sNq3eb08FjmDeXFGQkp6Eqf6hwWN8y4T4u8UmSHkuu
+ bD+X1a8K
+ g8fayYk+1gLaCg9jY0NKJ+fkrYX5GT/cuNxN4/jvNMsLZKqWjlF9pdoMc1qqmM0wHaqqw7L2SNySSQ4p0KnybG2XTfek8zjCDoJRyrTxzeAsVte/1yEGHsYmxT5a1BaHFfX/0p64rIgvwfYcwKN3sA3ttu91hPDL2JPBgDbjQZCMT/mKqJXGT651ZQCYey7+cBwlFYC7muFfvrbmtCmlsWzFZJ6bouaqCfvkfA0KkiSZvZUHVkA1Vu0zlF2sCUBZrSGgiTQ3Xcr6R7PUF2y5+UAbREn6FL5p/LMHsNQ1RoDlJ9kNFPTpSrMei+xne+l0V69XNaovxWDg8Qa0k7jBlHA66XfN9YbUHLpguYILT4Ja6N5HwWXEsSaKi7q4uigZJ0WKNofHoS0fQD78=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,12 +95,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 11:52:31AM -0800, Vishal Moola (Oracle) wrote:
-> -static bool try_to_free_pte_page(pte_t *pte)
-> +static bool try_to_free_pte(pte_t *pte)
+On Wed, Feb 11, 2026 at 11:52:33AM -0800, Vishal Moola (Oracle) wrote:
+>  static int
+>  __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
+> -		   struct page *base)
+> +		   struct ptdesc *ptdesc)
+>  {
+>  	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc = 1;
+> +	struct page *base = ptdesc_page(ptdesc);
+>  	pte_t *pbase = (pte_t *)page_address(base);
 
-I don't like this name though.  You're not freeing a single PTE,
-you're freeing a level of page tables.  How about
-try_to_free_pte_table()?
+We have ptdesc_address() already.  Can we avoid the other uses of
+'base' in this function?
 
 
