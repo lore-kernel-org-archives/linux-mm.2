@@ -4,97 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2417ECD6E0
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 19:35:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FEEDECD6D6
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 19:37:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 102DF6B0088; Wed, 11 Feb 2026 14:35:42 -0500 (EST)
+	id 839666B0088; Wed, 11 Feb 2026 14:37:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DB9E6B0089; Wed, 11 Feb 2026 14:35:42 -0500 (EST)
+	id 7E7886B0089; Wed, 11 Feb 2026 14:37:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F29746B008A; Wed, 11 Feb 2026 14:35:41 -0500 (EST)
+	id 6C92E6B008A; Wed, 11 Feb 2026 14:37:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E30816B0088
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:35:41 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D858D6CF1
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:35:41 +0000 (UTC)
-X-FDA: 84433180482.10.AE419BF
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 13A8180016
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:35:38 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=baG4KHJq;
-	spf=pass (imf30.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 58B306B0088
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:37:34 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E33B7C2273
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:37:33 +0000 (UTC)
+X-FDA: 84433185186.13.85AA983
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 955D1100017
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:37:31 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dL7pYdy9;
+	spf=pass (imf14.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770838539;
+	s=arc-20220608; t=1770838651;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MHfswB8BrOCWLJXsVwUk+XHyA8BLSR/huUJvBA9oUpg=;
-	b=rd/6Ee28dRBRLs+5irfRGC0OqLO9cprlHYrUy7fe9XCwN7f/XGDFap/N+f8AR4lNf6NrnT
-	r4FiZVYxVKUz3B063FWDg0dCv+DaPM8bI4afbIVeSYYDx44kbJiS88SNSmKJXf6vjYOHLS
-	lBXMxu34KaZ5bmSu/c61/cy0JzKDY+8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=baG4KHJq;
-	spf=pass (imf30.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770838539; a=rsa-sha256;
+	bh=3HnSln6BmAeJW+dBA3yyxX0sDcUZ80hLGHPfC7uKPVU=;
+	b=B4p7VL7bQ6qjM9oX+lWuvRSMzJmPvYq1P1scTSba/nU+zwZRfruyQY+R5zKIxMK4pkHEvC
+	pm8x95qlScvGTGv2zUcq17UoAt6YE9/yNajlT8+2YanWYaxyZr+Unq66f0htu5X15tLauV
+	+qeSZjHtOP/4T47NHQGw2nUKZLcUXVY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770838651; a=rsa-sha256;
 	cv=none;
-	b=xfyMnP/XT3UWCJTh33QSeik5Gly1J2tH2TZE14GHP3a4qZd65x9uXidgLJvJ3DvQ4NOYD+
-	e7bFYOsEf7wsiLOreQXVg8htLksEAYnRF0yNvtrZezIA9e9PxNtt/nkKGwXxXA+xjD0gI+
-	Rd52ovrAuyC6SAM+fh6iAesqmSI2Jpk=
+	b=4vltlGf2XgSG01HQ+A8MY9e+Sno48xRx1zdufCYpm76nbELLMLXetZkNHCcxj4VD4y9xJV
+	Q6goPSxpuRP0Ia4MJAm0sqosmEy3d0m7syiVdSr0W18gqvjHkaz5cV+9+sWEQlEa40KZWo
+	1H20AwzqhNiyLzD1hHxHY75BYWJxPO0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dL7pYdy9;
+	spf=pass (imf14.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770838538;
+	s=mimecast20190719; t=1770838651;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MHfswB8BrOCWLJXsVwUk+XHyA8BLSR/huUJvBA9oUpg=;
-	b=baG4KHJqInD+sIF+F8t0TEtdyb5leB8tDvQ04fXgR8vMXhpBJMOJssxvE5wVKZanDW4cd4
-	ZuZfIpAG0visRLJDTUR1ewemqd04+EUx5DTp2rUZlsv+rW1MfrYbxvwc+S1bSglYY3hI7P
-	geBMa+inEvOTAGS8/0kghzqwelX94ls=
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=3HnSln6BmAeJW+dBA3yyxX0sDcUZ80hLGHPfC7uKPVU=;
+	b=dL7pYdy9tSzhHLNqJjvANSeaOX8It7q1xcytV+wrqVwY2vx3BKivbK8Qa9/aeYSeTwpDQF
+	VpZPVvY1J/ve7IsgW/D/T7BIHqAQOdQF19gcjZ0N33sU8trxq5GG65CtmOyHK0XLcicaZi
+	Wwcsgm75IM7cWep2k7sdtoSIjbDG2qA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-584-KhzZXpzPNMW1--51S9kmBQ-1; Wed, 11 Feb 2026 14:35:36 -0500
-X-MC-Unique: KhzZXpzPNMW1--51S9kmBQ-1
-X-Mimecast-MFC-AGG-ID: KhzZXpzPNMW1--51S9kmBQ_1770838536
-Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-896fae4073fso32157796d6.2
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:35:36 -0800 (PST)
+ us-mta-615-IPM6PLuuOjG4EyrULSmODA-1; Wed, 11 Feb 2026 14:37:29 -0500
+X-MC-Unique: IPM6PLuuOjG4EyrULSmODA-1
+X-Mimecast-MFC-AGG-ID: IPM6PLuuOjG4EyrULSmODA_1770838649
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8ca3e7722f1so379113085a.1
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:37:29 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770838536; x=1771443336;
+        d=1e100.net; s=20230601; t=1770838649; x=1771443449;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=MHfswB8BrOCWLJXsVwUk+XHyA8BLSR/huUJvBA9oUpg=;
-        b=uqkhujj8TG9Q3JY9V2jNDe0/6gX4iVKvbHDSFntbBU1NRr4BYKpaxD1ioF4OAHCn+N
-         JQ6s/hU0m2w9WF9H5Q1xMjfBu8gj7Y79OjibZI3aC2fE4wIkfWVV+pSskXr5JIejo3Hd
-         uR/xNlXVV0jDOfA1VC1UUD9WSz/jVh/aUIw6nEvCbi+gm80jTxFNorfYHTdi8tJb4Hkl
-         yPJAzPT9PFWTC+2BFxhiBDDTfc3crfleh+7nUywYb0ChccEndGXY31/JMlDdbJbJ8V2S
-         gNYriGrRKdzHOHE/MKhQX2pSpRrxd1ro/xPOAx1Hjebe36o7l7jTrU8lllHQefdN2D2r
-         +Y4g==
-X-Gm-Message-State: AOJu0Yyd+USqItdoV1ADV5O+gnIbSRdKkJHqsofEakd3Fv4MbuWbpbrj
-	x9tkspEGvxpVh42+3YH9wu7ZxGYkI60syYuuzTGB7aID9XLJ1Nw2sd81S4ClBjvtm0EM80IKjap
-	oaxqxC92sAN9nwFnwhEXQhI9Ns34gqlhvfG8uU3f+4Bo8ZoH/gKiC
-X-Gm-Gg: AZuq6aKLu3OdsaALdfeht65ILC8PNHM7S9sMSGBm+8KkenXGu2yT/ZcoczcYpdFb5f1
-	/YDZwMWyGcglSnGAaeSZHfUkXJZ335Hx/pwv7crmvsr2Ld3+Kb0zzWjp2PY0cU8dDo7CBNovlBp
-	segl46CYt0MfQBUtF3zFfgbtnubWaGb3JvSwiTazf5iUE68C5wLonbGcxoguA+G3QZfw1FTpUVS
-	5z4jho4LJEEPp8T1xNnjUQ+dMnjrl1yjv2yTq4N6sqz9MKQnzKDO56yWwNjo6qzIQ4iPikaxuGz
-	EK+7Zr08J6lD4yj/WT4lZ+IbyIYcn5qHv5oEbcEzPGw225YvUILBb1T52MX0XKRNhAaLkhQAGvi
-	SmB4K1oKRz9IFoA==
-X-Received: by 2002:a05:6214:e66:b0:896:a692:caba with SMTP id 6a1803df08f44-89727899bdamr10537116d6.31.1770838536107;
-        Wed, 11 Feb 2026 11:35:36 -0800 (PST)
-X-Received: by 2002:a05:6214:e66:b0:896:a692:caba with SMTP id 6a1803df08f44-89727899bdamr10536576d6.31.1770838535519;
-        Wed, 11 Feb 2026 11:35:35 -0800 (PST)
-Received: from x1.local ([174.91.117.149])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8971cdb19b6sm22142416d6.40.2026.02.11.11.35.33
+        bh=3HnSln6BmAeJW+dBA3yyxX0sDcUZ80hLGHPfC7uKPVU=;
+        b=LwyYH2vs7+YueeH6my0rRxVqbFkP6KQcGwyjmmSkf3/QkHjeINV8JVzqWmvnv55bTG
+         xYe6Fy8Ek764xm/E9TO8gw2skvS5pRyN1sLmgCEREr+A3dWiiS3SmsdkLLqQiuseGsq1
+         REAnHzO8H+7PNizKqE07JtpA3kHCCvpqxvGzqmaMa0gvIXwtCB6z8B/crTJb5wXLLGCo
+         jNJ3oSBpp3ZUZmdR3Sa0dp7JdEQAF/L30Ev7tVLbzfzcBA+Pn28ZO51yulzdpY/rNYSb
+         afBNg2FDyn2UEh3Tygcbaj0GprWqZ1MVhKSOU1rilSZ7VE3I0Acq6saqaNJ14Yk8mQmH
+         gCzw==
+X-Gm-Message-State: AOJu0YwCJVoStajV0KXt7Rm9j9xPqS2HPcoQm1aN9gcWOkDJBrmwdGQa
+	KgdQRjXoQpT00wqIJyei4KGDHGL6joFVPQYvO/Vix19PIeU/1150xw6y02buTTxQwFuuUV1Te3y
+	Gv8VjyTD1eUU5s9vB6vXk5rVuH9P+v5nxAI1KtNhdfXD77oeXuW2SWnRmkCmc
+X-Gm-Gg: AZuq6aKGQ7VG7lJl2Jen1LHF0VfLy5eIGFVEmtFZlMkFUdZ6oyne9G0FijiUN8ahe86
+	gs6UuPlABOY5t5nNxz3ISA9tt1utOmKTpo2hU7rdGgYYJT2oUwXr1h6PXi4nqAs8FSPVyTdEnyZ
+	4psL7p8N/xJyAvChGtHU3Emjin1Ni1PFNqG7ImjRb0iP7BejrFcxZ68RdF+w5WapUgl4zDDiybL
+	YFjdxlKbbAxkyUZG2OuvKM1nTz0+WI9TNs83YJVXu5Jt1AbmtdpzS9zV+JrQG7WX65ZOy8lnA4k
+	kcvh74Xe+/oobkwP9+lnti3FlkKyBxCQ5Ce7m/UL22dGxLWZka5J/S+uM7n1Df6VNFhD2cPrNnt
+	1OA54qlJSYAUB9gs2weYq85fu6yQefphqPN6Bkd0+T6VCXj5nZFFT9usaEVVCC+mZ6tq5Nwa05E
+	62DjFl8A==
+X-Received: by 2002:a05:620a:bcd:b0:8c7:110e:9cd5 with SMTP id af79cd13be357-8cb33d8c6fdmr4442585a.45.1770838648992;
+        Wed, 11 Feb 2026 11:37:28 -0800 (PST)
+X-Received: by 2002:a05:620a:bcd:b0:8c7:110e:9cd5 with SMTP id af79cd13be357-8cb33d8c6fdmr4438985a.45.1770838648496;
+        Wed, 11 Feb 2026 11:37:28 -0800 (PST)
+Received: from x1.local (bras-vprn-aurron9134w-lp130-03-174-91-117-149.dsl.bell.ca. [174.91.117.149])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8971cd8aff6sm21074646d6.27.2026.02.11.11.37.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Feb 2026 11:35:35 -0800 (PST)
-Date: Wed, 11 Feb 2026 14:35:23 -0500
+        Wed, 11 Feb 2026 11:37:28 -0800 (PST)
+Date: Wed, 11 Feb 2026 14:37:26 -0500
 From: Peter Xu <peterx@redhat.com>
 To: Mike Rapoport <rppt@kernel.org>
 Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
@@ -115,27 +116,28 @@ Cc: linux-mm@kvack.org, Andrea Arcangeli <aarcange@redhat.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 07/17] userfaultfd: introduce vm_uffd_ops
-Message-ID: <aYzZ-zBipYQ2OA_n@x1.local>
+Subject: Re: [PATCH RFC 09/17] userfaultfd: introduce
+ vm_uffd_ops->alloc_folio()
+Message-ID: <aYzadvQRCw3iOVsc@x1.local>
 References: <20260127192936.1250096-1-rppt@kernel.org>
- <20260127192936.1250096-8-rppt@kernel.org>
- <aYEY6PC0Qfu0m5gu@x1.local>
- <aYhh2XzyFsJbohll@kernel.org>
+ <20260127192936.1250096-10-rppt@kernel.org>
+ <aYEhgA1dY0biVYb8@x1.local>
+ <aYhj_H2X141wU3oF@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aYhh2XzyFsJbohll@kernel.org>
+In-Reply-To: <aYhj_H2X141wU3oF@kernel.org>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -T3Hs0SEcLdJAQWFmIG3okgFSGMq74of-yTj1eOKQJU_1770838536
+X-Mimecast-MFC-PROC-ID: wwRvzyDtSxLk5GdVvugl9ym4IoyofUHEj8LMyFAAaKQ_1770838649
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 13A8180016
-X-Stat-Signature: 3syq931nwycckahow46wf7t669py7pb5
+X-Rspamd-Queue-Id: 955D1100017
 X-Rspam-User: 
-X-HE-Tag: 1770838538-810258
-X-HE-Meta: U2FsdGVkX1/RFyOW+2e5AyBWDC9BAxiHAjLSMeoZiykqi2QYWP2dLZvyB/AkfCDCdFlmI9bTNNYnvsNltxBOPBzy7IP4fhe2XH3KHNX61X+F74fbretCeyfpyURmfWZBbANHCTABZzdlQ+z9q/EfJ3clHTlftuo0BZl87fu89nYo3uTQp1rIxFfEv5mwvyDX9HCv1ctwr/FwhoniJjOqOxAVnY96X6rTFzl48lqGyhKLr9iFABwlKvZqjfTZ9W5LPAKC0vrHeJCFn1IjmJnQ4Z/tnU4xpFaRj91m2YfM8JfjKvQBty4fdVyEMs/cZom4/+J8ShWYjFuA7JxTFHV81edC8nJ8grARGQM8hDDycEhZ3UDshgGFleFH4r27dU6NrUpYYbqyUqGh5M8DYhhKBla/9721OD5arApWC8FzFnWgyh3/CuldpQmXvMtJ79Sm86FjX88E1DoVWJdmcn4q2mqshdybbZYfoeqFg2N0r9tN0+Q4R5XfFOXlBfJck8Q04y8CyagMVNXeTxCgFa+Ii7Rf182m+6VLRh3hoe2RdncJFGoc1GHs+I68l8xlDyDnQZ/fiYG/+EOD/ek09/hoBlCCKMbC25aPi7NyZxz4AxAIg7eK6RtbR00OrsOA4BiT4TAMdB8RuKM/2kGfWlTbWO0Z3BNYJf1l57NBvWFLSrbuRBTEJeGRuM6DyaSZD5syBxjJ7qeNzgeABcF925i/3CKLtW0BRXkrA4b47a2g+HQSrXjZkjadqwplDVeIwl0jbNKdrmcdbJzmWw5Qb93Ttc4CaZvyfmZktApCNUALkK2AmLSMmTl+xOMX9GoBqi4Lw5o8DkksijV4R+HWcgugQ1Z21F5LHdyqpHOlmdlxidD9L3fUDwQgTTX48sJU/UmOciQbQa71MFxDPalsr7+CHRkz2MM9rtXuWyLuScwdcHUdHZGbhBiCJ/nt3nTbVm960+1KvivoJXm1SVkvQpk
- mo6sZ+m+
- J6YaIgrrPOiS5pskTw6y6CMydPEdiCyn7M0Bv8UvlpMbCPIsQM8rcClrA5enOsBgPn40z9oF1cLZZXxcjG2KGDuWmeh5csV+s0CThmpsmPXutR8Ik2++AdURAPVhAHBDQHmnoaOx3MIm9pdI4WYeO6hDlEJP1FVIbcOXt3He44tUfA7hjxglRPVodH0NW3ocmQKsJ1uhRyQ4FHZsAO4GWMb/coCGvb3YJow7EonY9541Hrg9movaq0c4PfMe8WgxqNO4p+swVMlDPEwqELUnxLwMDwWu8ZrpnpDAXK0MM+GwRLPfQK/qKvsOeki56laCjVDblfyZq7q6JMJ20GN650jF7UC9GJUQxjjnC2Rn196etZthbo9Rx8X/EnUWH3jygQIF8fcjPOn6l3OdBfCsw8HEUO5pmIvScJaoQ4syhOcI+Rl2A7nWtTb5AxO46CYzHsERzfYsS9/oCspg=
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 3j9jau5dmzd9cgqpaqbxw9gnbq1rc3w8
+X-HE-Tag: 1770838651-763790
+X-HE-Meta: U2FsdGVkX1+7I3W8pllLucf7uD5xlJ4KbYc22O+MSZ268fYoveJy/rc9lAv2QEi7+XLAH5m6uO4TzHsQfOqDVTIPL/yC8K9JdLbKV7DRwmgyG/KUHWMjibNgM8uSkA8IDKtcC+9Nqq97rqCqoalMysCa5Au/NRArJv9OZj+dH3jV6NLemsva1x8AIKmNGociHCokzjAf1ZdcnhVDFOtF0Eqj5kzZ7wBgPfx9u+jp9sLV215QdsGkBqBc/WPnImbBLQXy4R059V1TaZJ77nlzA01uWQ6Kef8cq/N8AN9H4fZlfMid6Q40moQYKD185RLh+spJUqZwLLRrN3/hWr6MAcl7DoXME5fZbPXhZYlOPwBtHQ5AgRAM9bShcUfs0Gp5P31W8akP9hBNjtaBVrngWcMMEvXhVbVNCoo6bo7gma3V7cED5LqaKZQLmZVUzLXpeyXBjbs9OGDHqBJRMewweDA/R+H9LvWOBWjlYxLoCPguTXc0Lf2I7pu47NTMbrAkUXq0nUE+F+4wrvlPlzJccLvI8PxkpRZdjHrzrg1+Bw0RSpeoZPTveUBO2VnB9rE1uLZTtLE/s5XMwZa3yOQ7xh0po0TspeENIxMRQEqlXCVLZzlh/78uVkb/4piE0SmxjWI2SDzyWkhnuf1JOVzHPYG5U8ctNGfRVPofZLirphpr4ndYWNZAqF/U9SnXnz4Ze//b0bywScCcikQ/R8HUm5h75hotM7XeFs4xXzJWR75fL729PaTnBOF6X/zXwaUb43bmalI3+dV9yW7pQ5NVwJVcfGVIeRvFzYwGgKDtQ6oBvM+rlFJE8ysbjTlmkHVhb5HUMEHyzmcF4xWts0bFyeWBgKzM+XyrJTecpWA8jcLc8DIVEotBr6hEsHiWqE7CxNij+TumkKXwVhFdvMktR79anPPlHHN3jMdv36XpgQc6bXu3kWWF6LTk7+9z0rXyktSV0rDLGQ2MH9m5Xj/
+ I5PEthaT
+ +uWC3tBECoJTErnJgJ9kn2n/7Re8auR5ePONDTrV+ApvCWbL9UUrQlT3SDzsv/vQYmyr6rVdbhxM7FkX5XxLKNjRo3yHmZlgyKe/0tbCenlRMywoGfA9CBMG1J6hWx/em2uNUvythG9PjPqYlvC2rXR6tRzGhX5Ndu1R4+o/PKFuG8Uovo4strbn2YfH+QNkzGRV7dV0+f0rottT8QjUn/GoawVSFnZnw2P2oBnhC7fhGJcdjYWo1SwVifJwQBf/LqPLiYQYS9v/QPP2dfPRMy0bVWISSL52E7OLeqn+BmejrEE+LGLL8hkllqYlfcpLpd/WgmZTlhBikAGI5dBTvKkptRo+SnOOGuBOnr0pFmA1Us/GUIMx0lF565Cc27Npns7DgsFHTxxgOiVehFTP2LF19W6bIOFcahWklXf2MtB56EC56OqcKRGMEXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,163 +146,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Feb 08, 2026 at 12:13:45PM +0200, Mike Rapoport wrote:
-> Hi Peter,
-> 
-> On Mon, Feb 02, 2026 at 04:36:40PM -0500, Peter Xu wrote:
-> > On Tue, Jan 27, 2026 at 09:29:26PM +0200, Mike Rapoport wrote:
-> > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> > > 
-> > > Current userfaultfd implementation works only with memory managed by
-> > > core MM: anonymous, shmem and hugetlb.
-> > > 
-> > > First, there is no fundamental reason to limit userfaultfd support only
-> > > to the core memory types and userfaults can be handled similarly to
-> > > regular page faults provided a VMA owner implements appropriate
-> > > callbacks.
-> > > 
-> > > Second, historically various code paths were conditioned on
-> > > vma_is_anonymous(), vma_is_shmem() and is_vm_hugetlb_page() and some of
-> > > these conditions can be expressed as operations implemented by a
-> > > particular memory type.
-> > > 
-> > > Introduce vm_uffd_ops extension to vm_operations_struct that will
-> > > delegate memory type specific operations to a VMA owner.
-> > > 
-> > > Operations for anonymous memory are handled internally in userfaultfd
-> > > using anon_uffd_ops that implicitly assigned to anonymous VMAs.
-> > > 
-> > > Start with a single operation, ->can_userfault() that will verify that a
-> > > VMA meets requirements for userfaultfd support at registration time.
-> > > 
-> > > Implement that method for anonymous, shmem and hugetlb and move relevant
-> > > parts of vma_can_userfault() into the new callbacks.
-> > > 
-> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > > ---
-> > >  include/linux/mm.h            |  5 +++++
-> > >  include/linux/userfaultfd_k.h |  6 +++++
-> > >  mm/hugetlb.c                  | 21 ++++++++++++++++++
-> > >  mm/shmem.c                    | 23 ++++++++++++++++++++
-> > >  mm/userfaultfd.c              | 41 ++++++++++++++++++++++-------------
-> > >  5 files changed, 81 insertions(+), 15 deletions(-)
-> > > 
-> > > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> > > index 15076261d0c2..3c2caff646c3 100644
-> > > --- a/include/linux/mm.h
-> > > +++ b/include/linux/mm.h
-> > > @@ -732,6 +732,8 @@ struct vm_fault {
-> > >  					 */
-> > >  };
+On Sun, Feb 08, 2026 at 12:22:52PM +0200, Mike Rapoport wrote:
+> On Mon, Feb 02, 2026 at 05:13:20PM -0500, Peter Xu wrote:
+> > On Tue, Jan 27, 2026 at 09:29:28PM +0200, Mike Rapoport wrote:
+> > 
+> > [...]
+> > 
+> > > -static int mfill_atomic_pte_zeroed_folio(pmd_t *dst_pmd,
+> > > -					 struct vm_area_struct *dst_vma,
+> > > -					 unsigned long dst_addr)
+> > > +static int mfill_atomic_pte_copy(struct mfill_state *state)
+> > >  {
+> > > -	struct folio *folio;
+> > > -	int ret = -ENOMEM;
+> > > -
+> > > -	folio = vma_alloc_zeroed_movable_folio(dst_vma, dst_addr);
+> > > -	if (!folio)
+> > > -		return ret;
+> > > -
+> > > -	if (mem_cgroup_charge(folio, dst_vma->vm_mm, GFP_KERNEL))
+> > > -		goto out_put;
+> > > +	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
 > > >  
-> > > +struct vm_uffd_ops;
-> > > +
-> > >  /*
-> > >   * These are the virtual MM functions - opening of an area, closing and
-> > >   * unmapping it (needed to keep files on disk up-to-date etc), pointer
-> > > @@ -817,6 +819,9 @@ struct vm_operations_struct {
-> > >  	struct page *(*find_normal_page)(struct vm_area_struct *vma,
-> > >  					 unsigned long addr);
-> > >  #endif /* CONFIG_FIND_NORMAL_PAGE */
-> > > +#ifdef CONFIG_USERFAULTFD
-> > > +	const struct vm_uffd_ops *uffd_ops;
-> > > +#endif
-> > >  };
+> > > -	/*
+> > > -	 * The memory barrier inside __folio_mark_uptodate makes sure that
+> > > -	 * zeroing out the folio become visible before mapping the page
+> > > -	 * using set_pte_at(). See do_anonymous_page().
+> > > -	 */
+> > > -	__folio_mark_uptodate(folio);
+> > > +	return __mfill_atomic_pte(state, ops);
+> > > +}
 > > >  
-> > >  #ifdef CONFIG_NUMA_BALANCING
-> > > diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> > > index a49cf750e803..56e85ab166c7 100644
-> > > --- a/include/linux/userfaultfd_k.h
-> > > +++ b/include/linux/userfaultfd_k.h
-> > > @@ -80,6 +80,12 @@ struct userfaultfd_ctx {
+> > > -	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, dst_addr,
+> > > -				       &folio->page, true, 0);
+> > > -	if (ret)
+> > > -		goto out_put;
+> > > +static int mfill_atomic_pte_zeroed_folio(struct mfill_state *state)
+> > > +{
+> > > +	const struct vm_uffd_ops *ops = vma_uffd_ops(state->vma);
 > > >  
-> > >  extern vm_fault_t handle_userfault(struct vm_fault *vmf, unsigned long reason);
-> > >  
-> > > +/* VMA userfaultfd operations */
-> > > +struct vm_uffd_ops {
-> > > +	/* Checks if a VMA can support userfaultfd */
-> > > +	bool (*can_userfault)(struct vm_area_struct *vma, vm_flags_t vm_flags);
-> > > +};
-> > > +
-> > >  /* A combined operation mode + behavior flags. */
-> > >  typedef unsigned int __bitwise uffd_flags_t;
-> > >  
-> > > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> > > index 51273baec9e5..909131910c43 100644
-> > > --- a/mm/hugetlb.c
-> > > +++ b/mm/hugetlb.c
-> > > @@ -4797,6 +4797,24 @@ static vm_fault_t hugetlb_vm_op_fault(struct vm_fault *vmf)
-> > >  	return 0;
+> > > -	return 0;
+> > > -out_put:
+> > > -	folio_put(folio);
+> > > -	return ret;
+> > > +	return __mfill_atomic_pte(state, ops);
 > > >  }
 > > >  
-> > > +#ifdef CONFIG_USERFAULTFD
-> > > +static bool hugetlb_can_userfault(struct vm_area_struct *vma,
-> > > +				  vm_flags_t vm_flags)
-> > > +{
-> > > +	/*
-> > > +	 * If user requested uffd-wp but not enabled pte markers for
-> > > +	 * uffd-wp, then hugetlb is not supported.
-> > > +	 */
-> > > +	if (!uffd_supports_wp_marker() && (vm_flags & VM_UFFD_WP))
-> > > +		return false;
+> > >  static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+> > > @@ -542,7 +546,7 @@ static int mfill_atomic_pte_zeropage(struct mfill_state *state)
+> > >  	int ret;
+> > >  
+> > >  	if (mm_forbids_zeropage(dst_vma->vm_mm))
+> > > -		return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, dst_addr);
+> > > +		return mfill_atomic_pte_zeroed_folio(state);
 > > 
-> > IMHO we don't need to dup this for every vm_uffd_ops driver.  It might be
-> > unnecessary to even make driver be aware how pte marker plays the role
-> > here, because pte markers are needed for all page cache file systems
-> > anyway.  There should have no outliers.  Instead we can just let
-> > can_userfault() report whether the driver generically supports userfaultfd,
-> > leaving the detail checks for core mm.
-> > 
-> > I understand you wanted to also make anon to be a driver, so this line
-> > won't apply to anon.  However IMHO anon is special enough so we can still
-> > make this in the generic path.
+> > After this patch, mfill_atomic_pte_zeroed_folio() should be 100% the same
+> > impl with mfill_atomic_pte_copy(), so IIUC we can drop it.
 > 
-> Well, the idea is to drop all vma_is*() in can_userfault(). And maybe
-> eventually in entire mm/userfaultfd.c
-> 
-> If all page cache filesystems need this, something like this should work,
-> right?
-> 
-> 	if (!uffd_supports_wp_marker() && (vma->vm_flags & VM_SHARED) &&
-> 	    (vm_flags & VM_UFFD_WP))
-> 		return false;
+> It will be slightly different after the next patch to emphasize that
+> copying into MAP_PRIVATE actually creates anonymous memory.
 
-Sorry for a late response.
-
-IIUC we can't check against VM_SHARED, because we need pte markers also for
-MAP_PRIVATE on file mappings.
-
-The need of pte markers come from the fact that the vma has a page cache
-backing it, rather than whether it's a shared or private mapping.  Consider
-if a file mapping vma + MAP_PRIVATE, if we wr-protect the vma with nothing
-populated, we want to still get notified whenever there's a write.
-
-So the original check should be good.
-
-I'm fine with most of the rest comments in this series I left and I'm OK if
-you prefer settle things down first.  For this one, I still want to see if
-we can move this to uffd core code.
-
-The whole point is I want to have zero info leaked about pte marker into
-module ops.
-
-For that, IMHO it'll be fine we use one vma_is_anonymous() is uffd core
-code once.
-
-Actually, I don't think uffd core can get rid of handling anon specially.
-With this series applied, mfill_atomic_pte_copy() will still need to
-hard-code anon processing on MAP_PRIVATE and I don't think it can go away..
-
-mfill_atomic_pte_copy():
-	if (!(state->vma->vm_flags & VM_SHARED))
-		ops = &anon_uffd_ops;
-
-IMHO using vma_is_anonymous() for one more time should be better than
-leaking pte marker whole concept to modules. So the driver should only
-report if the driver supports UFFD_WP in general.  It shouldn't care about
-anything the core mm would already do otherwise, including this one on
-"whether system config / arch has globally enabled pte markers" and the
-relation between that config and the WP feature impl details.
+True.  It might be helpful to leave a line in the commit message so it's
+intentional to temporarily have two functions do the same thing, but I'm OK
+either way.
 
 Thanks,
 
