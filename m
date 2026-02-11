@@ -4,112 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64B9EB5955
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 03:07:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E23FEB594B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 03:10:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E0BD66B0005; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
+	id 02BCA6B0005; Tue, 10 Feb 2026 22:10:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE0166B0089; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
+	id F1BBC6B0089; Tue, 10 Feb 2026 22:10:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1A786B008A; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
+	id E1DA46B008A; Tue, 10 Feb 2026 22:10:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C29C36B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9730C1C0AC
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:07:38 +0000 (UTC)
-X-FDA: 84430690596.27.1500DA4
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf30.hostedemail.com (Postfix) with ESMTP id B17CA80006
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:07:36 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cmGwWh+G;
-	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D1D486B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 22:10:44 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7EA7F16020D
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:10:44 +0000 (UTC)
+X-FDA: 84430698408.11.F34559B
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A1A6BC0004
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:10:42 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ISvADKd0;
+	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770779256;
+	s=arc-20220608; t=1770779442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2kdwUSceZmDAkePxcpaC3kPf3XjbthHmmdDCwpY/AiM=;
-	b=YuU2z9qbd8zydD0CXxjQOF+kT7tnctBhtiQRU26YRF3FjNW992XqZoBMIFMnSCXQs3PoQU
-	VD+JSwjLYUh/vBlBLdWRYgg0IdiXJHPQ3v2yrHLmzIP+1XyRFbhff7lgPBSHMYyyQEL4Pa
-	Nhd9AlQ+pRdmT2I02s9aUjXlQsbaKUo=
+	bh=otN3HWjoBQ/smxM0XlD9RDdB/oqUvMvHXQX1dEgOjYo=;
+	b=w6/tzG5ivKQuB41+sxVFHr8vB7fVMWFZdbnGw3azTOYxuYNNkFaS7yh08PpcoIGpgW5JkZ
+	6wwlgj4c9K78fkdNoXDHxfqyi/y70vDEENiwjw3JulMyjQfGYk1uV/MceMegTyRJK9ftnZ
+	43TlkBIIdKNQ+lMKxfmVq0umj0STGuU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cmGwWh+G;
-	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=ISvADKd0;
+	spf=pass (imf10.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.177 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770779256; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770779442; a=rsa-sha256;
 	cv=none;
-	b=4tKwpU9RXuuhTJsjI3GZQeIBTBADnqMczoZBgjB6PkmmsYlSNLWYEhfHmtIijKkLPXbL7V
-	4T/wWPgnFzbf94+ckDZFN/N9ennN0W+++x95VuBCTGuW1QKQbrT9Y67hgy7pjwLNUFCUD/
-	mQvWK8PnbtLhkHv/2hKJ15RfIT9YkP8=
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82418b0178cso917273b3a.1
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:07:36 -0800 (PST)
+	b=boIdfE3FETb/1422i4/i05k+ViVD7JxI6iRY5R1G7S9PlxVXCBdxF68Gc/e6bKqHP0WYLf
+	9m1qGsV4Uz2z8L+JDUGw/mVdx4ZI7qAICiA3wuu8/Rj/S0pkR6cAnqj8OFtR6lDberuBB2
+	TBefp98GOWdRpxSd+lyxqeC+AkkOigc=
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ab232cc803so3106745ad.3
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:10:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1770779255; x=1771384055; darn=kvack.org;
+        d=chromium.org; s=google; t=1770779441; x=1771384241; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2kdwUSceZmDAkePxcpaC3kPf3XjbthHmmdDCwpY/AiM=;
-        b=cmGwWh+Gu3NPVtswP1JnmFJV3lL6Qp9X+LIK4MLR5KpFRiwPB/QacMKjBwMMObNl4Z
-         T/UjYwmb9iIENq1DZwtwrrRs1OYWy/B9K4yO6EPYlHI/ofXsp8YE8yUWYBEw+9HTGXnC
-         rKGx9qS7/Qr+haxUjr9PNt/kPBjMQCmhgBdSM=
+        bh=otN3HWjoBQ/smxM0XlD9RDdB/oqUvMvHXQX1dEgOjYo=;
+        b=ISvADKd0Jg0X32/tn8yTY4bgADtPz/iDBebsYdwFCrbEQ93UrYetD33tX3s5rz8Me2
+         g7KKbFaFbkYB+OqM4+b4GiuY81hUCUM6p786PCsevhMrlOgcl5Bp8x96xG2RwYZkf6uZ
+         4EOM43dPb9MN5Zh2rjj+xCluXPNAZ7woiYP0w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770779255; x=1771384055;
+        d=1e100.net; s=20230601; t=1770779441; x=1771384241;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2kdwUSceZmDAkePxcpaC3kPf3XjbthHmmdDCwpY/AiM=;
-        b=I62r8yqPYcVhUR6+Yqs8famd1V6N52OFeCAQcQ8lWUnWoYcb3Vt4TMA2CO80kkcY7U
-         ttTJII2dyWpc2PI5ziF1iINQfjI6ijAymB9gI/tHV+Kds0jRBMrau2b7laqEd90bs9K/
-         S56Dm9j89834q/x9JlCpQsNoScOqKFEFNoQ+jOG1/1u1B/q8esartx+2HJvdH77vNc5a
-         OafCkxDtEjGEcXYeLGje0MrUKeGlKsVKG56wmMlduVZmPwUBxISAmhBWUhMFxhMWZ/rn
-         Cjcio1pC75oMMeSqJCUsZZ+Lvl5A5ObASuQRN1WD/9FRULFHZ9PJrXlW7ApzjguVnQkE
-         K4pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUR4FvWS7R/GNAiUuNIC8Ik39vmCIFZtT4i/wLE8SGEIyU5Qjw5SayTQgpvzdPIbUJM+dXFJqutzw==@kvack.org
-X-Gm-Message-State: AOJu0YxRqMdZVMdMaZ6DFsZBL9FyCG50BCZXHGEDOpXeTsaOsFPHMfvY
-	3YYXMAnN/xdMPv5vO8ythrKdvnsFdtandMVdt8p3ulqCyeNknhOKUOOR+maa+I8AQw==
-X-Gm-Gg: AZuq6aKtOT9DjLcRXkjcjBJaQo6CCy3HwEbIcP3X2iD4BCuROZeNsqh8NMOcncFbs3V
-	dqFW93udhPsZ0GKgnp73ft8rf572SICe23vG5ppUMCTaMR9ueHkFcGygcV03BMrVWeVReMkMv8L
-	rlbjdqMjGr+jwRefW0cxCEs4jveoSMEkcxYEOtQKJj8YC3lg3BPz4o801P0Q93j/jAMZ5zbrYN2
-	x2Kr7ZRoNOtPRpNitDMZRQSf1CJnZHVZyaUEUN2CjGU0hCbmJFGwIlz3qxrIXT1h8kKzqxvhVqB
-	yUGhbM9R6ldEdK8RkF7KCw1H/PQwC2+xCf9sBuOMjGn5OfI/Ld/OVQ/r5Rq4H7OvpnhxmtJ2yJL
-	wPzArbH+j+6ijbRFqtYvp6oGmTHnyKXjlqnYUrk8IgSC0w06nCEs6QW/UzcIged4EgsyyERD9iZ
-	f63hLefOM7fvGwACynTF42KPga/2rbTwLhfY6I/r8xC4R7Hssz2mJAGFY5zYnJIw==
-X-Received: by 2002:a05:6a00:3014:b0:822:1dbc:e75d with SMTP id d2e1a72fcca58-8244160a9d0mr14781080b3a.1.1770779255616;
-        Tue, 10 Feb 2026 19:07:35 -0800 (PST)
+        bh=otN3HWjoBQ/smxM0XlD9RDdB/oqUvMvHXQX1dEgOjYo=;
+        b=kjzn3JE4tuVBRS0Hsk6FuS2ZcZDq1e+h7OGDLelnctcGJXUwkEuiB1rBHoUeNv6Y67
+         jjFq4qVteVF9xFcWnouqb6VE0oBHGVtEmq/SXqSVi6S7rgRYn/A/yt9ov8fnFymVABju
+         UCMLtB6hXs5qmUjSEl4d77aFiYIL63yNLfHfcjjB87uAjofqYgPJCfCpM1iPyrA9IMqf
+         RChHiYPU83inoJWSLAt98RgM6z9DILjfByycSM0ZhPW4jdYCbvFLqpMhnqWYZJll/HDR
+         QOWF5Xtu8nX5gue+YRqxnwyXTMChdH1mzulRvAkKwS4sKPGNMN++aqR5h932zmSBzRKR
+         d/NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOX4JpFdNrjKk+wbrzBMmrKM+6iQ5eIHRTFD/9IDqauDBkI/eTkFsaossfbeXC/srGydrgDpxhBA==@kvack.org
+X-Gm-Message-State: AOJu0YyR+Xn0cqLe76gMZcubcSwug394bI1SSlV+PcvJ80oXZXVILyyC
+	halB/RGsypQM1WxwCs0khe3KxRNd4lYlMIswvKqdh1tMgo9W3Uw5IEadeeaQE2KpWQ==
+X-Gm-Gg: AZuq6aJUKXSvYk1FJmpGvmHXtClgG3YX2sVLliSL22B9uisF8xz5EVeoKAbeoqQW36v
+	NcT0APy8HlYs2jiwbiJgJd1jizl2/ySiLHREJM8KEp1nofzgwkva9Bt7uYLSQX12lzRPlvuGSoM
+	4ry90g+1iFlb7Uxw6HMOX3JW3SFaVj6dg1r/FSFnqV80/8ecpnSlaVxaYR2q2+BeThb2iq4uqCz
+	2nLcxyAftsRN96i95sVuNVqInV2+B4TKsUza/+Hbb1ub9cXDcWWIAbge0yHgzVSjfP+a80dmAVL
+	ldjWouQtWpTY/YGcMaDM5uNBLcQVYoz9M9Yq4Nqdw5NqPAlFVG21B5f2q4oh7S2MnJ15a6KekqP
+	7QbcGQWuiyP4jHiyU4oKkNAgL0m9Fi04CmooHF/bLOF9ILYcicL9TFT7HBv2yk1T1pfQXJjGk1N
+	8tOCrrQE3QgMi8gmCGZS9uNGNv3VNVSutsqqBB9uAwJD4qxQZ/4zq1QrqK7ASlqQ==
+X-Received: by 2002:a17:903:1b24:b0:2aa:d506:d189 with SMTP id d9443c01a7336-2ab27f3820dmr12671865ad.34.1770779441534;
+        Tue, 10 Feb 2026 19:10:41 -0800 (PST)
 Received: from google.com ([2a00:79e0:2031:6:ec5:3497:e96b:e7be])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e3af080sm423001b3a.15.2026.02.10.19.07.33
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ab29965093sm5406665ad.52.2026.02.10.19.10.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 19:07:34 -0800 (PST)
-Date: Wed, 11 Feb 2026 12:07:31 +0900
+        Tue, 10 Feb 2026 19:10:40 -0800 (PST)
+Date: Wed, 11 Feb 2026 12:10:37 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Matthew Wilcox <willy@infradead.org>
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
 Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
-	Brian Geffon <bgeffon@google.com>, Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org, Richard Chang <richardycc@google.com>, 
-	David Stevens <stevensd@google.com>
-Subject: Re: [PATCH] zram: drop slot trylock and miss_free
-Message-ID: <d2wp2s3jj4lm6shynryqwkvamyrpn3g5larn6z3yeyplel6by4@5ew3ii7v5sjz>
-References: <20260210035045.3817297-1-senozhatsky@chromium.org>
- <aYtAz5vQTod7DXqV@casper.infradead.org>
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: khugepaged: make scan loops suspend aware
+Message-ID: <ury75ckufz7rf3n4ksrufa6baxmslwlk3zt6hwijn5dbnbd4os@ximgbxiw6su2>
+References: <20260211030024.232964-1-senozhatsky@chromium.org>
+ <a441c762-1f57-4124-93a8-aac55f32d846@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aYtAz5vQTod7DXqV@casper.infradead.org>
+In-Reply-To: <a441c762-1f57-4124-93a8-aac55f32d846@linux.alibaba.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A1A6BC0004
+X-Stat-Signature: zpmqoa3bfqeyus9c4k3udznq9mnesh17
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B17CA80006
-X-Rspamd-Server: rspam07
-X-Stat-Signature: cmorsjrpgqja8eyb3ck9ukybkb36iygu
-X-HE-Tag: 1770779256-279195
-X-HE-Meta: U2FsdGVkX194NiboXQLk9B1/uiD1q+R/QyT7dAEai7YAgKVV9l7f0B7tKKYS+c5LNaJP1OuM91vtC//9ONiHXiD0wnOM4vg60br9aYR3Os7FG9izIs2fXH7ljfBpqoxnrigw7LqpFyErGR1z7fw506rJJ/9ZIIGPQsQR5+GXjrwqTri8vBOqLMGgChP8xl8QVUeFHNs/h2qkA6y1CIzgRtzULfhOxHCbS6MJL3ua2P0GVlOeSId9gNC0qC2w6j0NOopLxzqRc0waDFEOEnzhq8mcjvqmjiOpCF4sPDb65LVt0PF6EdnYuz8mTAtXt6UCpfI8WpMHTZ+UUmc8oCXQ0m9c7KBa9dIhvG66NUsHqDTYxoWjGt7eRZBicQdiMQbXsAzsi1qF2DyUHgl9ZFyV873OqoudP1E1yoY5xoMnJipPk8nQeeYqW1x+fzMwKNdzMMJTj+sto6KLq2TXxbv/jtlO5fnkBnAh1W5Lgm3lSLUA2pFeIdlTepp/wuIen4m4/2KyUQ2oc9In2aTPC+fTQQZTllGX1LZiV0U4XhPnrl15lhCmPHHQyhCQDYm65ADAYd9/MKiw23vOSZ263PTfagWyk9j2eKvbla1r8K9lMgTP34252VE9LduHxnB8OO9BxyoACATpl09boFXeBO1PNmseQR+ArLzbXRvx5/8THS/Srk+J4pAndkf/LzMJWcaOSe4qbPLJrIrgG8K5R/fV4sE06Pa7WXY6a09iPZ2GOom3mXry5Qv2QDwb0bjncen8BJys7Y7yswVQNhoqEQu9bSR4mkO6jYi+Y1pq3jSsDINryhKlEy3Itnr9BprpVSi29G0yUOlWfhx5Fu9a0mwO7/bFFVp3Plykj8IAsF3Nlvlb1AtRqRe9UsE9FHK1yLFFfb+JoIag+1a1iorTbExGYdOrcSe4QssQcRuR44qEa9vQtosNfNj+moUr/NU7VGeNgQeRBqpFcqSDYRR88h3
- pw7OhXNJ
- CCkHPrcy1RRbHl52JpFguLElC7jnE9IwJpz+HuuNsDcAjQscaOrbC7jXkels6suDC0na7vMqUbj2TmC1OQG7zdHzJV0Q4oCm2uPE/MZUGldl3f8TkAiGqxxvWyfqrZSaTbWqJU5Z1jDknRbIR8gFSlPYzZ6y8w1HemnS8ozxwKYOi2OQmYSRVLLboYwUYz3UZBARXPYJ6D9K4QIgHFzBTo8gmpkJQjzAp8gvV5iGD6zp2mpRXU8Ar58xyfPdSPOLqkV3cteJ05QCFt/Eg8jZmFT0lLHb0PlO1bK4ftOowYIud1CScKsog9yhp+/TKiMnexps/CW78uVRgF0um56wrsGaHfyKdpyYxEtk7aHYwj969utmkJHtUYIheQ3LZDCRW/cYqxh1QeknrWrVN0x50UoYILg==
+X-HE-Tag: 1770779442-375333
+X-HE-Meta: U2FsdGVkX19DKu+7U7Eqj1+ENYCav+llu4UKVKviIEZ9onpI0IA4dGf9xBFboIbNzB9f+Hf5yQtIEfXYp81of33jcm+xPR/yzOj4sRhT7l4I9mA4C49lDt2FGVVeGcsfiJoSziTCc8NGPPJGxztv2jg5c7jNq4bqOFXTMIxxkfMgWMpTPvxHlM3kQ7fj0QJctCWTe56faLONdFNURU2tDGA8glBdxzEQCtpkC/njhzGQmH9a3C5m7Z+7+ouXlilfTJAJwYHtUcZHzJ2sJj+hMKHYpyqIQOAS7cJJ8E318GtJNKh5SLtrwMUajI9k0MHp0v51UeDB0BxIbMNNzh+KSaxbzB0xEQOeCN0UQ0a7BrEQ/uJ9YkLdx/hgbUMhISyUai8YzI+KdjJi1LhYfM39ciDtFC/B93k16VK3ixgxSZ0YjnsErJu1Pyelxl5YpRlmd/BKiNL1EmwCWejpmu1Y/x+SuiplEiTftPLUGwSwfuGqEuZaXkkpt9VH8TZ8h3l0IhOwVbYCQTsBxsaoUuLkgIRR/CIpDb1gJ1rJtVQ/t8MPxmhEggF+bDkfBwCAccHibEj7TEiLJ4mO59GAHZYW/azYZM5UNYezxhbaoqZ7HDAy+Dote9tfSZYdo41rPNFIK2TAhSDVCE8Z8AFzldZcwJ0kTc7K+D60qP9macwOYNhgtZ1yfnJGSV2yngaaRK3Y3974qvpSRCW6ltYzhoP1b1oll/xd2h/696S1CSmA2WmxPB37MVuUXuZUFBU0VLOXzftk/NwSmknRNkMe5w2wR8Fj6WYCLBLKzm5ZNoGTGSsuq80cxQ2KA95IxP99ysDLZiaI3r/7pFU2HGMDs+dNX1DZ5JbFdZYd5eA25qviBKbtcFlSYnNrDolFObnl1wpseN/S9AEmzqenIrHwZn3sbYVlm0gtVinODLmB2Zmw4LVwlbY2X0FTBeu/NhOc9oPCI9mLz3COMa7fBGxLaJQ
+ y9Lgexed
+ OFidcHR10nJ56k5FmOsNffK+N3Cx0kRhmlCcHMfqYV8ss+AJ7vOmfMZTdaFXcWOZATLNgAlEnCVZPbMTJdlPRchJ/4GdAIykDQXflIA8c1FirqCHIZgqi7jYkoChJPBT9vK5gSUYjkzpmVvi9F9QJu/FclQ1IkXx7LQ1bMu6bO2uJjCVxYOcI3iN71LQeRUGUw2SQrq7ywsdmY4zcS2fLwdnTN2xTFSg5Tj8DIL1sGA3z9V61+Ceda8jOF5L6Rrj8hgCDCX+AjCY/w1IcV3IRaCVRvmR2EYl0zgA/J2IX04ET57ipC/9PDWG+XbMd52QUOT33WFjy85y7s9zTX9ecpoYGyQ6DptTNjFaSVbZGl9PSVq/3N4rmPBp1qsjyH7Oh6VupSo2cLiNlupE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,43 +119,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On (26/02/10 14:29), Matthew Wilcox wrote:
-> On Tue, Feb 10, 2026 at 12:50:37PM +0900, Sergey Senozhatsky wrote:
-> > @@ -1943,15 +1927,9 @@ static ssize_t debug_stat_show(struct device *dev,
-> >  {
-> >  	int version = 1;
-> >  	struct zram *zram = dev_to_zram(dev);
-> > -	ssize_t ret;
-> >  
-> >  	guard(rwsem_read)(&zram->dev_lock);
-> > -	ret = sysfs_emit(buf,
-> > -			"version: %d\n0 %8llu\n",
-> > -			version,
-> > -			(u64)atomic64_read(&zram->stats.miss_free));
-> > -
-> > -	return ret;
-> > +	return sysfs_emit(buf, "version: %d\n0 0\n", version);
-> >  }
-> 
-> You don't need the dev_lock any more to just report the version.
+On (26/02/11 11:04), Baolin Wang wrote:
+> I just provided some sample code. Please make sure your patch can be built
+> before submitting a formal patch.
 
-True.  I'll think if I want to send out a v2 with just miss_free
-removal.  The objective was to remove trylock (and all the things
-around it), but trylock has to stay.  While we cannot have
-
-	slot_lock(42)
-	<IRQ>
-	slot_lock(42)
-
-any more, the slot-free-notify is still called under spin_lock, and
-slot_lock() might_sleep().  So trylock has to stay around.
-
-> And should the version be changed now that you've changed the format to
-> not include miss_free?
-
-The idea was to bump the version only when the format changes.  You
-normally (well, technically "always", since e914d8f00391) would see
-0 miss_free, and with the patch it's just a hard-coded 0.
-
-Thanks for taking a look, Matthew.
+Oh... Sorry about that!  I forgot to squash the commits.
 
