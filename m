@@ -4,87 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F71EB5965
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 05:07:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE76AEB5961
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 05:20:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7939F6B0005; Wed, 11 Feb 2026 00:07:34 -0500 (EST)
+	id 995296B0005; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7411E6B0089; Wed, 11 Feb 2026 00:07:34 -0500 (EST)
+	id 9430C6B0089; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 619576B008A; Wed, 11 Feb 2026 00:07:34 -0500 (EST)
+	id 84F1C6B008A; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FA456B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:07:34 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DDF29138B37
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:07:33 +0000 (UTC)
-X-FDA: 84430992786.07.17AE3E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7871020003
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:07:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yt4r16Bz;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 720796B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C45A488B2D
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:20:15 +0000 (UTC)
+X-FDA: 84431024790.19.ECC7D40
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 18182160002
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:20:13 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rryqsuCk;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770786452;
+	s=arc-20220608; t=1770787214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BBuuxltTKAXl/yzZAgw0qG78+5kd3eQ5QBMaQcaGzzo=;
-	b=1U8mg8d1oq0ZBQFjJaGBna1OtoPo7Db22eIwQOTGCln76FQVO+LfSe8/TO26wA3VR1Z/o9
-	OH4Ndp5JUFccDHOPVYLErGWzJeT/nh4HwQ4MB6DkKHwpnz427CJMOS1t1QhRvZTQtA9Hfd
-	uhAOeI9k+XMbitBZ8EQfYOkSb5u5AXI=
+	bh=tSRn7LYq7bnXwyk5PY05gVUZNySxO94RBH5QOr3ID8A=;
+	b=GBRC1ZcaaHf1bSr9CG+EZ1Ma1CfJmjNC0G91lkOaNmfCiWqZDaErF/3tgKOBPxnFdm49AJ
+	fkzbq0y4JR94iswCcnpYSdC14T4orByFHxHqk+l0afgv8MdIf2WMLIz8GHNYYXMRnaX4hL
+	VqG0a4ZZZVw8CwDwukLbOa0BXwV+PlA=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Yt4r16Bz;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rryqsuCk;
+	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770786452; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770787214; a=rsa-sha256;
 	cv=none;
-	b=f1+t8nWmeiBVuRroSs2jxPvjLv1XwD0h2UPk4dvqzXLfWOJiP3YttM9wDLEznHC21ckJtS
-	mt4MhJ8dlcpXpCvuZiaOMKvTwmTpSaDFyhNPJwNs4v+zTeI87dSVtQko98pBFfD09wp4kX
-	L6AEP60vs/ctmVYnavUcNYDyig07zcI=
+	b=OzMQWWfAeqEzobka/voTmGYfqYjDkOe1byQKk09Dt6oBLx2311EO7D7RlljVHe6SJjiWH/
+	oCS6NvEthSfbfJk9rGSREXtS4Yr4avvbu9XFBR2ihbez9EobdJOsPn6mw/f4AG8AMhk53K
+	l6iy4yIT1BHKGY4xXMtd8Q9sFhq7KJg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id DA25960130;
-	Wed, 11 Feb 2026 05:07:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7713DC4CEF7;
-	Wed, 11 Feb 2026 05:07:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D3A7444021;
+	Wed, 11 Feb 2026 05:20:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B7DC2BC86;
+	Wed, 11 Feb 2026 05:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770786451;
-	bh=UTpjsZww6YPPiWFz55VMFdksp+RP1wddMHWtM/ylmIY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yt4r16BzYI4WeotGZ0dx3l13TAzZEJ7pDFFXMu0AraLYNQiFZTqgnyClgwHC6VAE4
-	 m9wCXzt8mqsrCWV6v9XxCcQQKZEdNj3xYxOXX+E7P8IiJ6rUWAnsoJJ6pu8J2Xw/f7
-	 Cj9giHjT3BwMx7ngk+oJLDxYVWpPr2cI69sDAU5qdSvL2aaP9A19J4apIyhCx+gngp
-	 pPjfLr/8THLNbPIrmbRCoj9ydHZYAIf9+bUugyIiblY3Fv5bA6MGkbvRPnz+7QgA1l
-	 U1FnOUvC5jDQ9YKZF1aB0XJb4iNIVIAK3a+pGY9wE+5Orwzsiu5I57/etCCabfuaKr
-	 f8RK5y/zFN8wQ==
-From: SeongJae Park <sj@kernel.org>
-To: 
-Cc: SeongJae Park <sj@kernel.org>,
-	linux-mm@kvack.org,
-	Asier Gutierrez <gutierrez.asier@huawei-partners.com>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lsf-pc@lists.linux-foundation.org
-Subject: Re: [LSF/MM/BPF TOPIC] Data Access-aware Transparent Hugepages
-Date: Tue, 10 Feb 2026 21:07:28 -0800
-Message-ID: <20260211050729.69719-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260211044533.69515-1-sj@kernel.org>
-References: 
+	s=k20201202; t=1770787212;
+	bh=JplVZb2hPJHGSjo9zbzDnnP9KpCnKpC4XDGriMrERSk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rryqsuCksMEbOdlKRVbg+eh4HniIZ1p2H1OAHKFYoFwi6Dhath1jM4TzxA5MxJ7PG
+	 Hd6NvDYyLj2GjfwwO1RImnzuOelyqrU9cVCBc8y43yOXLKIDyqBVaH/+fpdstQnAB5
+	 CAb5KMUBg67nK6F4Cl4eUmVc1ZSY7GLZ/xKDgtT5Ba033+n+cbz6mXWk16V0H0VVyl
+	 D4SAO2XQuJifB6meAc9Pb1S7vJjkel9trgam1Ez8WSiswVP6H6Qrus7cgNWwm5PCvF
+	 968eoRB6w+efBf8INuez7sPsUhWmTcoHd9Y+lx9uxolKgcTtInEzUghK4Qnp8LZUyT
+	 qFnR1MShovlyA==
+Date: Wed, 11 Feb 2026 07:20:02 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>,
+	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
+Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct
+ page
+Message-ID: <aYwRgvjvAgKhNsTq@kernel.org>
+References: <279931074239b7f3812c4cb3969f887303c8cc26.camel@kernel.crashing.org>
+ <aYL3zxuTLT8N7C8-@kernel.org>
+ <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
+ <aYXDeN0WGQG8-cxe@kernel.org>
+ <bf0231accb89709968efb4d8e1be9970aeb716f8.camel@kernel.crashing.org>
+ <e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org>
+ <5a44609fe992624573a3ca0a293888bd623e2a06.camel@kernel.crashing.org>
+ <0344bfbeb017cafc0f7bd4433eeacd9bc802d9c9.camel@kernel.crashing.org>
+ <aYtBctm4TlHGnzXV@kernel.org>
+ <684d84272e7dcd2ead0770843a7e0afc625c87c9.camel@kernel.crashing.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: hxjyuzphaw43gqmosqwqmtb7r1pmpgzj
-X-Rspamd-Queue-Id: 7871020003
+In-Reply-To: <684d84272e7dcd2ead0770843a7e0afc625c87c9.camel@kernel.crashing.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 18182160002
+X-Stat-Signature: msronky97hoykgd4mjwopcybxeh5i9wq
 X-Rspam-User: 
-X-HE-Tag: 1770786452-921725
-X-HE-Meta: U2FsdGVkX1/zKoY3QiHG2SjqjiqQefh1l0ZRl0Fuck3/TCS78vXXyKa39q3il7cizoYkFdp7pkehmbjab3wmoIc5ajgMSBNqszwc0qA73BdRG26l9En3Wy4TdgGGkwuHABV5GN0fmSUL6tpF0NVs+oH6oJG9rh1Ac/WfERVjFNvTSsj0GPCI2b+fKGdOiDNV4CLotlwAJsSDVLCULIYW2+8juOQjw+uisDWneNkr8EWD8oph9tvAcgv6i1OmGrrgxASILRvqbQ6XmJ+fdHuGn2aImNIAs8Vf7d+6sg1r9W9RxKN/1X1CD+QUtzBSt2PfTUTj7Aps5eLvIpEqj6iIqsZxK/jWqZZpLLnBw+QGzJv1OVKQnMi5utH33IsCnLpM7ptINHzIPImndYKbrt7ZvkVOKme9f8v+bZLVN9GbafPiGcnlHGzozybtbFnTmvUOJxEZnHTBwd8p4r7RDwWWL+KdMkRpsDiNTm03DcsK9b50gyWwhFzscrtOy7UtUD+m57tNRqR3XT/g7wTFp7TxfgflFj+ICs83qYQhFCfcEcHR+72lQaEpDFUQcfqSaiFIthC5TNelnRMVyNPxJL+QPxgQX1Zc79T9l4zL6HSDKfcBQXDqamGmEi7qZqB9U6KaXmJhpQGDULeQyTGUsvdfV30mqcFpgdWcM60d8hUIkgjOS2TFAi784YOra1ZUwfH7mZ7QKuidaOgvq2spKX09hO0G8b6Ug6tflCbowkYR6N+3V01BTJxCfVIKUj+2Fxs29z/J3vXwxJ9CxmWXuYpwhqQlIRxyEnrGKxvy/VrG2y/PZzwBsKym12Bkns2SMbGpne2fxDVnD7shY9xieT5KuYjaQWNNoxK1SKzEVZpCLhXZ2sxgKKALXAHLdikybVerlKkZkWwJeLUjWusrBX2x6pbD+2fHfG/ZKROXo7hhcNSNYsZj06/W2Q==
+X-HE-Tag: 1770787213-766316
+X-HE-Meta: U2FsdGVkX1/F2p5opBEvZMue6HVasDfGmFnX9a7GsYJWdU718cA7owVr0saqk8hhcRNTVcMn81SJIrlZbbvUiJphRjJZhIklRPcmAajr+QcXDHLSsavvcyRwvGezuW+vA4R3xTjgICbSaBd8fffTuEUitdNXRf4z4rg8sGMmXX3sd9hpaNL85ZWdBmQmFYrieqx9nwVhQ3fnIcYbdu7lFnx4ZOFvIvlFpEc3TiEHvTtq38rvssDeHUNruZ15BQlaV2p9bj9j2eyB3Im8p0ggjMueJpp+2jGj3iQE47t10+TFSJYfA2AOvCaWLG2EPK55Nva0TZw1fgq5T87HSqXmxnKcV0aM0JT3FqU/mMaM+0JhMtkxXBgWEi6zUvOvK9zxvVFYWijEM1PSZH9BpfGWtxdyZC2hnM4Lt4jViNkeLWQ+oN8rx4imBggqF1AL+LRZoCFbB6vL9Edpr9G1Qa8otkXmPo7nebZBqaEd8ECscKrM5szuDW0Q7hGAlSHrefxQNC09Spg/XcAUI0uUiXEJgcq0kIBeFz+yIxQsh+FlUw8YdGNNpXL29UBDQJ/ju2O4gesSukivO3ZRr84mMMR6RUSs0dP6xxr6erHCTbJuiNqqp+Fp2ZF/252LgyLYxNX148VsAiQzYUXkG0Jan2zhzbI+9qucnYt1Im3DEEFs+edFpdcUnvBaS3BQX/PJ6toDlHEn4KKfqCzMj4pznf2rtnx93IAb0mkhe9dQrn4sCAEtKFi760jY8RRPHHpE104eZiVZjl4F4SPBMsKbcqhjdjA/3WjcXoHK/+j+dGHI8QLf0VnwvuQftzQcTn0AIulL7ntwedXyyuegKQKG9moy6ZR/eqH8Ogww4bGd0HXXdhmLYAoxUmxtUIMWkrpp4dnZRPoTLflM7C+MBAJ7ngZTcTL9CFZPcW5hz3ITUZt9cR8dPLLYWHBBItnD9lDwVr0CoO6cb6Wzj/5HrEmQPU5
+ hCgZMw3i
+ Y4Lu7Cr9nHEVL2UbUpBzvaVhAlwoMsGW+9vNIJLgQZaR5+0kk9cfnCH5Vk3Jrr3R3QkSbq8OATUXKjF4HZBM0ssl9JcM3t3Vy8bJv0GxjlXRyxWGOM5O/S76kTlkhat1N00nvt2ic7JXmuQDUR3KOpFAl2vZVokuhDn1Z2hw5qSFmzf0Ya626EQ5PsTcGvJoRLaDY8iF0qrDUpJ6vWmtBxjOTobcCM6Usqp6ZNGG30bvOkx6KNa6DesHkk9YrNz5Qs82vkYQXXhgNMkqEuQlXsoEyNJWn7vkZz+AF/f5cHWvgQKD9awkYcNeCK4YPjYzfv2uQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,44 +103,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 10 Feb 2026 20:45:33 -0800 SeongJae Park <sj@kernel.org> wrote:
-
-> Forgot Cc-ing damon@ and linux-kernel@.  Adding those.  Sorry for noise.
-
-And lsf-pc@ ...
-
+On Wed, Feb 11, 2026 at 10:23:06AM +1100, Benjamin Herrenschmidt wrote:
+> On Tue, 2026-02-10 at 16:32 +0200, Mike Rapoport wrote:
+> > Hi Ben,
+> > 
+> > On Tue, Feb 10, 2026 at 07:34:15PM +1100, Benjamin Herrenschmidt wrote:
+> > > On Tue, 2026-02-10 at 17:17 +1100, Benjamin Herrenschmidt wrote:
+> > > > 
+> > > > So ... that was a backport to 6.12.68 and my original patch is
+> > > > crashing
+> > > > the same way ! (it was working last week interestingly enough,
+> > > > something else got backported that gets in the way maybe ?).
+> > > > 
+> > > > I'm going to have to go back to digging :-(
+> > > > 
+> > > > I suspect the pages aren't reserved. I swear this was working :-)
+> > > 
+> > > So I rebuilt with a bit of extra debug prints, CONFIG_DEBUG_VM on, and
+> > > memblock=debug ... it's not hitting the reserved check, but it's also
+> > > not crashing the same way (still 6.12, I'll play with upstream again
+> > > later):
+> > > 
+> > >   .../...
+> > 
+> > Do you mind sending the entire log?
 > 
-> On Tue, 10 Feb 2026 18:28:55 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > Hello,
-> > 
-> > 
-> > Transparent Huge Pages (THP) could be more efficient if those are used only for
-> > frequently accessed data.  DAMON is one of the ways for fidning such hot data,
-> > and hence there were interests in utilizing DAMON for access-aware THP.  A
-> > simple experiment leveraging MADV_[NO]HUGEPAGE based on DAMON-identifed hot and
-> > cold memory regions was conducted as a proof of the concept.  The experiment
-> > demonstrated [1] an 80% reduction in memory overhead while retaining 46% of THP
-> > performance gains.
-> > 
-> > Multiple discussions for further developing production level access-aware THP
-> > solutions have followed.  Most of the discussions were made in private, though
-> > Asier recently proposed yet another approach [2] on the mailing list.  As a
-> > result, we collected interesting challenges and ideas for the production level
-> > data access-aware THP.  Some of the ideas are not yet public, could be
-> > controversial, and missing important things that more eyeballs can find.  I
-> > want to discuss those in LSF/MM/BPF to get more ideas and make high level
-> > community alignments for next steps.
-> > 
-> > [1] https://assets.amazon.science/b7/2b/ce53222247739b174f2b54498d1a/daos-data-access-aware-operating-system.pdf
-> > [2] https://lore.kernel.org/20260202145650.1795854-1-gutierrez.asier@huawei-partners.com
-> > 
-> > 
-> > Thanks,
-> > SJ
-> > 
-> 
-> Sent using hkml (https://github.com/sjp38/hackermail)
+> I misplaced it, but give me a few days to dig see if I can find what's going on.
 
-Sent using hkml (https://github.com/sjp38/hackermail)
+A log from any nano instance even without debug would be helpful. I'd like
+to see what e820 table it has.
+
+There always been some gap between e820 and memblock because historically
+e820 does not consider some of the reserved memory as memory. 
+If large enough parts of the boot services memory are E820_TYPE_RESERVED,
+there might be no memory map for them at all.
+ 
+> Cheers
+> Ben.
+
+-- 
+Sincerely yours,
+Mike.
 
