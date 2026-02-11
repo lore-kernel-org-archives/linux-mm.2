@@ -4,89 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5BA4E9E309
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 13:47:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FD34E9E30F
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 14:14:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44B746B008C; Wed, 11 Feb 2026 08:47:35 -0500 (EST)
+	id 840486B0088; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 413856B0092; Wed, 11 Feb 2026 08:47:35 -0500 (EST)
+	id 7EDA16B0089; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33FFB6B0093; Wed, 11 Feb 2026 08:47:35 -0500 (EST)
+	id 6EF926B008A; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 213FF6B008C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:47:35 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E39831403F0
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:47:34 +0000 (UTC)
-X-FDA: 84432303228.05.A358F62
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F080618000F
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:47:32 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ePR8jNxW;
-	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 60E516B0088
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:14:31 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06A7D1403FD
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:31 +0000 (UTC)
+X-FDA: 84432371142.30.5A20208
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A30924000E
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:14:28 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=FT9AP11Z;
+	spf=pass (imf07.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770817653;
+	s=arc-20220608; t=1770819268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q94aU8hVrD2Cz9Q+Vt3sOezauMMhEOzzF4ikGazY7U8=;
-	b=1bwM3Pw6T88cYKYfkrFvpb3Y4FNDb7w8c7kGBN25659JaoLfZICxNEtl0G2HEqvRKisnxL
-	0eawUt3yQH93pSvAv7W5nZ1sZC8m+bFAvdFmdUl35U8SE2sFa70TppGlWB8Wl7EmtXV1AP
-	IfECwzm9Itnbfiwm8ymJnfl7z1Drwm4=
+	bh=nZ3DtYU6oaP7UVk4PzUNWALcciYCvdSqiN7dJ9VBjQ0=;
+	b=Un3SWsFiY4YcrlZjTNgAbLvhiCjWI8UERTO8SoFL0/z4rZrccsnI5yB2WhfH8feS1GJkbz
+	OUBi4xzwDxJVwGpQntMk4DQri90TSK1Qi5vi+GaPdciaBkda7F/uZioI4JQ7BmtqIZaapf
+	N39FHdb9Mq+cXsqXo0y3JqR618a6Hjc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ePR8jNxW;
-	spf=pass (imf16.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770817653; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=FT9AP11Z;
+	spf=pass (imf07.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770819268; a=rsa-sha256;
 	cv=none;
-	b=svE1Z1Aj2VFwLvBJfnNiTKyXgVlqZNyBIqKkqONTqGxg869BdWo0JbX2BZZBGteoCL7xNT
-	Bx1TiL98Eb8o26WKRb68IqUt7g6wfrymxcjUlWfmL3JfVMqUymzkxblPmR4jjqRojeg9Jn
-	czBG2CBSv2BRjZRzEjkpnBAcFFEW14s=
-Message-ID: <82d2de0a-c321-4254-aca0-7d63abd4f1af@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770817649;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q94aU8hVrD2Cz9Q+Vt3sOezauMMhEOzzF4ikGazY7U8=;
-	b=ePR8jNxWp/RuWD44UuIUtV57CJJ7MC5AGmEzSnqV3vvJ03qCM00qY4daJZSFUJSXAwKwsd
-	Tio7FkevYDNIuek/76fxn2jECMZfh3KDngQhN1FcqvsD8FlX9ODOgwh5xckVXBiGBaYI1L
-	BdOX+hd8CPTcKWowjtGFEvdxtokg3OY=
-Date: Wed, 11 Feb 2026 13:47:16 +0000
+	b=E+A2jk5gfwm3Wl7jVaOs7SFLDNe2G/OW4fOhkf5O7Qv7g4ifxIprUPawW7piH75KJVoQ+k
+	41LWUVEt3utM0e3aYt3Ax90/aoUyobGFzHh0WoKsN2yimvmjuNmmD8qH41wpeCNmXZikTB
+	NwrVnamlQVgPZwO/JUCRm+v10YVoN5w=
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61B1gTxK2771696;
+	Wed, 11 Feb 2026 14:14:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=nZ3DtYU6oaP7UVk4P
+	zUNWALcciYCvdSqiN7dJ9VBjQ0=; b=FT9AP11Z+GCNfyF5lav+mCn3P9v+8aSza
+	lMI0b0Ge4bjElNawf6zvpIGpXP/rU2a28nD0+WDthkqDL7Ul/0kvci9tkmhtJUyc
+	xe358SlIoVjWqGVohKo9r7rfmbjvRwQ6iJyFLBqslxD3uHj5Wx+cFGSU3GPZhTte
+	k+7T1LHv5XTcTolBXr5CUTVeGAsr6a8A+vy36hIJGfMZzWvRD3iknfx5LhTztH8P
+	f5k5Ib/tmi88uisq1S+7/GSEcZ7682v96OxJhcOMWqu0BKh7OzxDTo0RmaS61bpb
+	MXJy3VB9GgSOh49nlaOqghPfT4DxsPwsbg1m3bUnABW73VnZe6VSA==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c696wy13s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Feb 2026 14:14:04 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 61BBA3LT001847;
+	Wed, 11 Feb 2026 14:14:03 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c6je25spj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Feb 2026 14:14:03 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 61BEDxTO59769306
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Feb 2026 14:13:59 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8FEC020040;
+	Wed, 11 Feb 2026 14:13:59 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 050B62004D;
+	Wed, 11 Feb 2026 14:13:59 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 11 Feb 2026 14:13:58 +0000 (GMT)
+From: Jens Remus <jremus@linux.ibm.com>
+To: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Steven Rostedt <rostedt@kernel.org>
+Cc: Jens Remus <jremus@linux.ibm.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>,
+        Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Dylan Hatch <dylanbhatch@google.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH v9 1/6] x86/vdso: Fix DWARF generation for getrandom()
+Date: Wed, 11 Feb 2026 15:13:52 +0100
+Message-ID: <20260211141357.271402-2-jremus@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260211141357.271402-1-jremus@linux.ibm.com>
+References: <20260211141357.271402-1-jremus@linux.ibm.com>
 MIME-Version: 1.0
-Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
-Content-Language: en-GB
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
- willy@infradead.org, linux-mm@kvack.org
-Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <20260211125507.4175026-1-usama.arif@linux.dev>
- <20260211125507.4175026-2-usama.arif@linux.dev>
- <66386da6-6a7c-4968-9167-71f99dd498ad@kernel.org>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <66386da6-6a7c-4968-9167-71f99dd498ad@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=WZYBqkhX c=1 sm=1 tr=0 ts=698c8ead cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=meVymXHHAAAA:8 a=oGMlB6cnAAAA:8
+ a=VnNF1IyMAAAA:8 a=rsc5PF6bQGhcUx5MhlsA:9 a=2JgSa4NbpEOStq-L5dxp:22
+ a=NdAtdrkLVvyUPsUoGJp4:22
+X-Proofpoint-GUID: coOlGK5_Y3eioVjFxn1dt-jFO-6QXvjH
+X-Proofpoint-ORIG-GUID: hCiBiAg_lSUcbnUCAx289HQUzG6fCHkp
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDEwNyBTYWx0ZWRfX2URJV1E8ko/V
+ FYOQMGVlZpMxXxdGg9YmrhVbUUEC99giRAiNLHyPm6TJGCSYZAOBPL3g0Q1mB+br2n/IOiPaOSL
+ OaSumIDOrcUrdU7Lb+zF6eoHEcK+hVidv3PV/kdQec4Bnj/jAq93gUKvY1EnC4h3mSKfUBUQWS3
+ L1wBJzwcxTeT6PmNX5CdS6Jmf4YGHzLzO+Ep1wxYd0osZaaMuLyHob071b1rwIGsgKERKp9Dp/X
+ tzApMzOMBdHt02bysDTv0YQ0voHL0RY4ZG2IpfnO3+PvhhTIOrS/sr61M3ph+FAqLWa2k5aErYe
+ /TKcYXJ1JOFaBXWTzjlAXo08wAs+VVtIU55hUqeSY1joNSx+pMW93SwgTyt/zIKUAWd/EpD4XB9
+ le0veV4Poz/qdFd9Hqh0VQxadQ+1rb4LAHKyi6mqNBK/RfDYktYxVs0aZBeVXVokBi2NLl9bGQn
+ KumaDRN5X6qvgdLfSqw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-11_01,2026-02-11_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 clxscore=1015 phishscore=0 bulkscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
+ definitions=main-2602110107
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F080618000F
-X-Stat-Signature: 7z3p1yz9wg5jprchuoge1an9ctc5fmm5
+X-Rspamd-Queue-Id: A30924000E
+X-Stat-Signature: wk4h4x5zkj5zhjfez95uumq9ezzzuf89
 X-Rspam-User: 
-X-HE-Tag: 1770817652-66160
-X-HE-Meta: U2FsdGVkX18nFx3HJTfwUl0WKfZWeRxyPwZk2l528J8OtqcZdPQQ0LxssCyyxtxOy+xmVR8GRiwKJhQ7oFrDUhPec0ZN6VY7ZKT17ZUiR9xDwXz/IdJ1W9I1YOKQtS1DUW2cl0P8WNHrrsVk5BMbek9/Bhxc0aafjkxqw0iBJk1WeR4YT6itlEcdP1qL+hThqfJRYPFaGAKWVER1EBfhMUp+Y7DT706hA4eo/MhdEzBAXik9fEO9Ywv52Sxs3+I8m/7TqXCB2T47nmAPVEGjTo1Al6hptLtQWhzytvhfkd33qrLAlveJTZW6I8RxhqYaB3vk0aMjEfD/n0oz8oFqftQf0tV/3XwHIZvv734ipDJdB6g0dk0/AEoh5mc++htwWecSDO/l7QnXjbYJTvwMhWwXWadsQt8LZevWcETAa+PUXKOsfqcPV2RO/iNPvj1LWsy3tV4GRbfT7x0u8KNHjPgKB4BicRXjnWWh2VDhNnPgn3kXNn7FlGJUj+MGYma9nOgtciU5O9Rgz9KbfzClS1osqTnsxZqX5bEHyhy1QtC7ijs2oA55pR480WWIs/Oi3/KNlkcBCG7awTgvZEQ81ptHsdEHUSRZg+bMB75Ti0rWyPSdVnWQQzxOwz4H5sTtbAio/A7+nMAkOoePq+cSiMiJ6VBeR+2wOEN4Wx1NRe0DiB8K4Jd2TnML2fOT64A2jKYIW1qAYDSlp2Q7NW8QPJ/x024gs+qYbDQQ+2rJLKsA2CWW4+RZLKikRAEawcaAdjUuewAnE4xy5NJ2Y/85y98c+CjVfIttQwIAk/puL/JmKUV+uak18PWds4iYqOgY/KaiZ/dDLoIA1Jq4Uj6IBcc1YFl98txFUZ+wLl7sBIi2j//Y3KAWVg==
+X-HE-Tag: 1770819268-211262
+X-HE-Meta: U2FsdGVkX1+SWaTuJSWbcjU38V8fiZlcortwW6UrGZpgjmoE4w69sDHXqLFCd5xefOej0unY+MxFYXOb6UQUQf1eJcPfDG7tt5Uy8zgiUs+QMCfjUHrzZrR4N3fa+SPL6rwHMWn/5b3VaRjiqYryI182Li3g4MXjgNVJKiZ1sE8pSaLeaKsPjXOpdtPMW0HcVFIXSCgcMiLBzC1212NUqtZnk95OkvkiT57Vt4ScCSOQgnbLIJp2TUY/mubRTjzK4tPSYdO4t90NFpDWZL0uLYVKYoTTL80r+fGv3RN5lZ4tm7/edOKrfD7GsCK+8aDBNy0XESp7+7QugzR4rGzYeaZjlY9JDk8Q+1DpFpIXboVY4Strey7jNbFFL4Mf9wNlTrP9XdElvtmwV71PhDv6AcZUhm16FIBB5S5qvjo8RUuYlAqwaMbbuhvFiOr6aoShWPFjHtqb0cnzm5mWqN39NwyWlENwGvcxoWQEnXKiXYpzGXoElvV7mR9UNdEpQeancPi1GucYFq5swbSPKTkBGpOrRgcdQuG+xTZQoUMdSlaiACRAvHWgfHEOFSqHXh6VwVFvjCK+J8rYm1WNXm+NlStS4hx+af6h3MTEA6Xuv60AiN+46BhY2+W3C8/tHyQVGFF2q4NDXZRbBtJC1qiXKIvhL9RZk3jswjogoV0jMe9V3k6zYztfszJEuWr/IzghYDTjb8q2K+Ble6ToCU663uKpf4A4fPyd+pbPmmqlMs2bSlx/r3/wBs6hWoxwGjJAVG4gtjzNipbaSlN0aXEjkt1TSM9LbFA7LVqcJzrf/DfLEbh4ArumZeV7W0MBzEtd2sNrybdf/4sb0QPFXNfJfscmcY+Mf4AxhvLo6M5Vp7BQK1+/4AtVCF2rvVTVYP7Ql51aJ+EZ/VqKpSs2yldwqPg7BrWES1evSfhgsBXwqBT6aCFuUIvxkr+QFsq6yv3cNFTcegnMx79b44Pvc2J
+ ZJQZ0LjF
+ ADQGcnSe3TRGsAQFrNJZA9CDLa49d4GTECyzRqUVGI1GZ33KzXQRJUk78aa6WKPsRnICjaYQb77xxbOu18MELu25MDIIYW3nlSneQxCiPOJJPDajjl1zWbXtCwitqwAXadV0xU8Qk50c1nW/5E302sT70rghTxrw4uMyMozQ6BtqI3bw4U8DNIq3/JBMPIyL6FmjczXjO0CXa4YcwIBGXjluvVVeFy3HJ4Bl0N/R46JPzVlrzegk3VlcaF8Kpt4jir8Uq1gxd4yGOWVwyhraOMmOKU71qcq4atcGBp/igoQx4t4O/ihXNQskkm3Lzseb3yoC+Eipncyez8Ehax2WsCVOB0qwSGXE914n9FbJ+/fXFwrd4L1ZqJW5LbP+XdVcEW21sR1nHzMkLiIBl8UyqelyH1ISu67nESguBvV3cbUa1G18x3UXPDMsSKA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,442 +165,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
+Add CFI annotations to the VDSO implementation of getrandom() so it will
+have valid DWARF unwinding metadata.
 
-On 11/02/2026 13:35, David Hildenbrand (Arm) wrote:
-> On 2/11/26 13:49, Usama Arif wrote:
->> When the kernel creates a PMD-level THP mapping for anonymous pages,
->> it pre-allocates a PTE page table and deposits it via
->> pgtable_trans_huge_deposit(). This deposited table is withdrawn during
->> PMD split or zap. The rationale was that split must not fail—if the
->> kernel decides to split a THP, it needs a PTE table to populate.
->>
->> However, every anon THP wastes 4KB (one page table page) that sits
->> unused in the deposit list for the lifetime of the mapping. On systems
->> with many THPs, this adds up to significant memory waste. The original
->> rationale is also not an issue. It is ok for split to fail, and if the
->> kernel can't find an order 0 allocation for split, there are much bigger
->> problems. On large servers where you can easily have 100s of GBs of THPs,
->> the memory usage for these tables is 200M per 100G. This memory could be
->> used for any other usecase, which include allocating the pagetables
->> required during split.
->>
->> This patch removes the pre-deposit for anonymous pages on architectures
->> where arch_needs_pgtable_deposit() returns false (every arch apart from
->> powerpc, and only when radix hash tables are not enabled) and allocates
->> the PTE table lazily—only when a split actually occurs. The split path
->> is modified to accept a caller-provided page table.
->>
->> PowerPC exception:
->>
->> It would have been great if we can completely remove the pagetable
->> deposit code and this commit would mostly have been a code cleanup patch,
->> unfortunately PowerPC has hash MMU, it stores hash slot information in
->> the deposited page table and pre-deposit is necessary. All deposit/
->> withdraw paths are guarded by arch_needs_pgtable_deposit(), so PowerPC
->> behavior is unchanged with this patch. On a better note,
->> arch_needs_pgtable_deposit will always evaluate to false at compile time
->> on non PowerPC architectures and the pre-deposit code will not be
->> compiled in.
->>
->> Why Split Failures Are Safe:
->>
->> If a system is under severe memory pressure that even a 4K allocation
->> fails for a PTE table, there are far greater problems than a THP split
->> being delayed. The OOM killer will likely intervene before this becomes an
->> issue.
->> When pte_alloc_one() fails due to not being able to allocate a 4K page,
->> the PMD split is aborted and the THP remains intact. I could not get split
->> to fail, as its very difficult to make order-0 allocation to fail.
->> Code analysis of what would happen if it does:
->>
->> - mprotect(): If split fails in change_pmd_range, it will fallback
->> to change_pte_range, which will return an error which will cause the
->> whole function to be retried again.
->>
->> - munmap() (partial THP range): zap_pte_range() returns early when
->> pte_offset_map_lock() fails, causing zap_pmd_range() to retry via pmd--.
->> For full THP range, zap_huge_pmd() unmaps the entire PMD without
->> split.
->>
->> - Memory reclaim (try_to_unmap()): Returns false, folio rotated back
->> LRU, retried in next reclaim cycle.
->>
->> - Migration / compaction (try_to_migrate()): Returns -EAGAIN, migration
->> skips this folio, retried later.
->>
->> - CoW fault (wp_huge_pmd()): Returns VM_FAULT_FALLBACK, fault retried.
->>
->> -  madvise (MADV_COLD/PAGEOUT): split_folio() internally calls
->> try_to_migrate() with TTU_SPLIT_HUGE_PMD. If PMD split fails,
->> try_to_migrate() returns false, split_folio() returns -EAGAIN,
->> and madvise returns 0 (success) silently skipping the region. This
->> should be fine. madvise is just an advice and can fail for other
->> reasons as well.
->>
->> Suggested-by: David Hildenbrand <david@kernel.org>
->> Signed-off-by: Usama Arif <usama.arif@linux.dev>
->> ---
->>   include/linux/huge_mm.h |   4 +-
->>   mm/huge_memory.c        | 144 ++++++++++++++++++++++++++++------------
->>   mm/khugepaged.c         |   7 +-
->>   mm/migrate_device.c     |  15 +++--
->>   mm/rmap.c               |  39 ++++++++++-
->>   5 files changed, 156 insertions(+), 53 deletions(-)
->>
->> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> index a4d9f964dfdea..b21bb72a298c9 100644
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -562,7 +562,7 @@ static inline bool thp_migration_supported(void)
->>   }
->>     void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
->> -               pmd_t *pmd, bool freeze);
->> +               pmd_t *pmd, bool freeze, pgtable_t pgtable);
->>   bool unmap_huge_pmd_locked(struct vm_area_struct *vma, unsigned long addr,
->>                  pmd_t *pmdp, struct folio *folio);
->>   void map_anon_folio_pmd_nopf(struct folio *folio, pmd_t *pmd,
->> @@ -660,7 +660,7 @@ static inline void split_huge_pmd_address(struct vm_area_struct *vma,
->>           unsigned long address, bool freeze) {}
->>   static inline void split_huge_pmd_locked(struct vm_area_struct *vma,
->>                        unsigned long address, pmd_t *pmd,
->> -                     bool freeze) {}
->> +                     bool freeze, pgtable_t pgtable) {}
->>     static inline bool unmap_huge_pmd_locked(struct vm_area_struct *vma,
->>                        unsigned long addr, pmd_t *pmdp,
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index 44ff8a648afd5..4c9a8d89fc8aa 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -1322,17 +1322,19 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->>       unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
->>       struct vm_area_struct *vma = vmf->vma;
->>       struct folio *folio;
->> -    pgtable_t pgtable;
->> +    pgtable_t pgtable = NULL;
->>       vm_fault_t ret = 0;
->>         folio = vma_alloc_anon_folio_pmd(vma, vmf->address);
->>       if (unlikely(!folio))
->>           return VM_FAULT_FALLBACK;
->>   -    pgtable = pte_alloc_one(vma->vm_mm);
->> -    if (unlikely(!pgtable)) {
->> -        ret = VM_FAULT_OOM;
->> -        goto release;
->> +    if (arch_needs_pgtable_deposit()) {
->> +        pgtable = pte_alloc_one(vma->vm_mm);
->> +        if (unlikely(!pgtable)) {
->> +            ret = VM_FAULT_OOM;
->> +            goto release;
->> +        }
->>       }
->>         vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
->> @@ -1347,14 +1349,18 @@ static vm_fault_t __do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->>           if (userfaultfd_missing(vma)) {
->>               spin_unlock(vmf->ptl);
->>               folio_put(folio);
->> -            pte_free(vma->vm_mm, pgtable);
->> +            if (pgtable)
->> +                pte_free(vma->vm_mm, pgtable);
->>               ret = handle_userfault(vmf, VM_UFFD_MISSING);
->>               VM_BUG_ON(ret & VM_FAULT_FALLBACK);
->>               return ret;
->>           }
->> -        pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd, pgtable);
->> +        if (pgtable) {
->> +            pgtable_trans_huge_deposit(vma->vm_mm, vmf->pmd,
->> +                           pgtable);
->> +            mm_inc_nr_ptes(vma->vm_mm);
->> +        }
->>           map_anon_folio_pmd_pf(folio, vmf->pmd, vma, haddr);
->> -        mm_inc_nr_ptes(vma->vm_mm);
->>           spin_unlock(vmf->ptl);
->>       }
->>   @@ -1450,9 +1456,11 @@ static void set_huge_zero_folio(pgtable_t pgtable, struct mm_struct *mm,
->>       pmd_t entry;
->>       entry = folio_mk_pmd(zero_folio, vma->vm_page_prot);
->>       entry = pmd_mkspecial(entry);
->> -    pgtable_trans_huge_deposit(mm, pmd, pgtable);
->> +    if (pgtable) {
->> +        pgtable_trans_huge_deposit(mm, pmd, pgtable);
->> +        mm_inc_nr_ptes(mm);
->> +    }
->>       set_pmd_at(mm, haddr, pmd, entry);
->> -    mm_inc_nr_ptes(mm);
->>   }
->>     vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->> @@ -1471,16 +1479,19 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->>       if (!(vmf->flags & FAULT_FLAG_WRITE) &&
->>               !mm_forbids_zeropage(vma->vm_mm) &&
->>               transparent_hugepage_use_zero_page()) {
->> -        pgtable_t pgtable;
->> +        pgtable_t pgtable = NULL;
->>           struct folio *zero_folio;
->>           vm_fault_t ret;
->>   -        pgtable = pte_alloc_one(vma->vm_mm);
->> -        if (unlikely(!pgtable))
->> -            return VM_FAULT_OOM;
->> +        if (arch_needs_pgtable_deposit()) {
->> +            pgtable = pte_alloc_one(vma->vm_mm);
->> +            if (unlikely(!pgtable))
->> +                return VM_FAULT_OOM;
->> +        }
->>           zero_folio = mm_get_huge_zero_folio(vma->vm_mm);
->>           if (unlikely(!zero_folio)) {
->> -            pte_free(vma->vm_mm, pgtable);
->> +            if (pgtable)
->> +                pte_free(vma->vm_mm, pgtable);
->>               count_vm_event(THP_FAULT_FALLBACK);
->>               return VM_FAULT_FALLBACK;
->>           }
->> @@ -1490,10 +1501,12 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->>               ret = check_stable_address_space(vma->vm_mm);
->>               if (ret) {
->>                   spin_unlock(vmf->ptl);
->> -                pte_free(vma->vm_mm, pgtable);
->> +                if (pgtable)
->> +                    pte_free(vma->vm_mm, pgtable);
->>               } else if (userfaultfd_missing(vma)) {
->>                   spin_unlock(vmf->ptl);
->> -                pte_free(vma->vm_mm, pgtable);
->> +                if (pgtable)
->> +                    pte_free(vma->vm_mm, pgtable);
->>                   ret = handle_userfault(vmf, VM_UFFD_MISSING);
->>                   VM_BUG_ON(ret & VM_FAULT_FALLBACK);
->>               } else {
->> @@ -1504,7 +1517,8 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf)
->>               }
->>           } else {
->>               spin_unlock(vmf->ptl);
->> -            pte_free(vma->vm_mm, pgtable);
->> +            if (pgtable)
->> +                pte_free(vma->vm_mm, pgtable);
->>           }
->>           return ret;
->>       }
->> @@ -1836,8 +1850,10 @@ static void copy_huge_non_present_pmd(
->>       }
->>         add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->> -    mm_inc_nr_ptes(dst_mm);
->> -    pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
->> +    if (pgtable) {
->> +        mm_inc_nr_ptes(dst_mm);
->> +        pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
->> +    }
->>       if (!userfaultfd_wp(dst_vma))
->>           pmd = pmd_swp_clear_uffd_wp(pmd);
->>       set_pmd_at(dst_mm, addr, dst_pmd, pmd);
->> @@ -1877,9 +1893,11 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>       if (!vma_is_anonymous(dst_vma))
->>           return 0;
->>   -    pgtable = pte_alloc_one(dst_mm);
->> -    if (unlikely(!pgtable))
->> -        goto out;
->> +    if (arch_needs_pgtable_deposit()) {
->> +        pgtable = pte_alloc_one(dst_mm);
->> +        if (unlikely(!pgtable))
->> +            goto out;
->> +    }
->>         dst_ptl = pmd_lock(dst_mm, dst_pmd);
->>       src_ptl = pmd_lockptr(src_mm, src_pmd);
->> @@ -1897,7 +1915,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>       }
->>         if (unlikely(!pmd_trans_huge(pmd))) {
->> -        pte_free(dst_mm, pgtable);
->> +        if (pgtable)
->> +            pte_free(dst_mm, pgtable);
->>           goto out_unlock;
->>       }
->>       /*
->> @@ -1923,7 +1942,8 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>       if (unlikely(folio_try_dup_anon_rmap_pmd(src_folio, src_page, dst_vma, src_vma))) {
->>           /* Page maybe pinned: split and retry the fault on PTEs. */
->>           folio_put(src_folio);
->> -        pte_free(dst_mm, pgtable);
->> +        if (pgtable)
->> +            pte_free(dst_mm, pgtable);
->>           spin_unlock(src_ptl);
->>           spin_unlock(dst_ptl);
->>           __split_huge_pmd(src_vma, src_pmd, addr, false);
->> @@ -1931,8 +1951,10 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->>       }
->>       add_mm_counter(dst_mm, MM_ANONPAGES, HPAGE_PMD_NR);
->>   out_zero_page:
->> -    mm_inc_nr_ptes(dst_mm);
->> -    pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
->> +    if (pgtable) {
->> +        mm_inc_nr_ptes(dst_mm);
->> +        pgtable_trans_huge_deposit(dst_mm, dst_pmd, pgtable);
->> +    }
->>       pmdp_set_wrprotect(src_mm, addr, src_pmd);
->>       if (!userfaultfd_wp(dst_vma))
->>           pmd = pmd_clear_uffd_wp(pmd);
->> @@ -2364,7 +2386,7 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>               zap_deposited_table(tlb->mm, pmd);
->>           spin_unlock(ptl);
->>       } else if (is_huge_zero_pmd(orig_pmd)) {
->> -        if (!vma_is_dax(vma) || arch_needs_pgtable_deposit())
->> +        if (arch_needs_pgtable_deposit())
->>               zap_deposited_table(tlb->mm, pmd);
->>           spin_unlock(ptl);
->>       } else {
->> @@ -2389,7 +2411,8 @@ int zap_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
->>           }
->>             if (folio_test_anon(folio)) {
->> -            zap_deposited_table(tlb->mm, pmd);
->> +            if (arch_needs_pgtable_deposit())
->> +                zap_deposited_table(tlb->mm, pmd);
->>               add_mm_counter(tlb->mm, MM_ANONPAGES, -HPAGE_PMD_NR);
->>           } else {
->>               if (arch_needs_pgtable_deposit())
->> @@ -2490,7 +2513,8 @@ bool move_huge_pmd(struct vm_area_struct *vma, unsigned long old_addr,
->>               force_flush = true;
->>           VM_BUG_ON(!pmd_none(*new_pmd));
->>   -        if (pmd_move_must_withdraw(new_ptl, old_ptl, vma)) {
->> +        if (pmd_move_must_withdraw(new_ptl, old_ptl, vma) &&
->> +            arch_needs_pgtable_deposit()) {
->>               pgtable_t pgtable;
->>               pgtable = pgtable_trans_huge_withdraw(mm, old_pmd);
->>               pgtable_trans_huge_deposit(mm, new_pmd, pgtable);
->> @@ -2798,8 +2822,10 @@ int move_pages_huge_pmd(struct mm_struct *mm, pmd_t *dst_pmd, pmd_t *src_pmd, pm
->>       }
->>       set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
->>   -    src_pgtable = pgtable_trans_huge_withdraw(mm, src_pmd);
->> -    pgtable_trans_huge_deposit(mm, dst_pmd, src_pgtable);
->> +    if (arch_needs_pgtable_deposit()) {
->> +        src_pgtable = pgtable_trans_huge_withdraw(mm, src_pmd);
->> +        pgtable_trans_huge_deposit(mm, dst_pmd, src_pgtable);
->> +    }
->>   unlock_ptls:
->>       double_pt_unlock(src_ptl, dst_ptl);
->>       /* unblock rmap walks */
->> @@ -2941,10 +2967,9 @@ void __split_huge_pud(struct vm_area_struct *vma, pud_t *pud,
->>   #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
->>     static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
->> -        unsigned long haddr, pmd_t *pmd)
->> +        unsigned long haddr, pmd_t *pmd, pgtable_t pgtable)
->>   {
->>       struct mm_struct *mm = vma->vm_mm;
->> -    pgtable_t pgtable;
->>       pmd_t _pmd, old_pmd;
->>       unsigned long addr;
->>       pte_t *pte;
->> @@ -2960,7 +2985,16 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
->>        */
->>       old_pmd = pmdp_huge_clear_flush(vma, haddr, pmd);
->>   -    pgtable = pgtable_trans_huge_withdraw(mm, pmd);
->> +    if (arch_needs_pgtable_deposit()) {
->> +        pgtable = pgtable_trans_huge_withdraw(mm, pmd);
->> +    } else {
->> +        VM_BUG_ON(!pgtable);
->> +        /*
->> +         * Account for the freshly allocated (in __split_huge_pmd) pgtable
->> +         * being used in mm.
->> +         */
->> +        mm_inc_nr_ptes(mm);
->> +    }
->>       pmd_populate(mm, &_pmd, pgtable);
->>         pte = pte_offset_map(&_pmd, haddr);
->> @@ -2982,12 +3016,11 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
->>   }
->>     static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->> -        unsigned long haddr, bool freeze)
->> +        unsigned long haddr, bool freeze, pgtable_t pgtable)
->>   {
->>       struct mm_struct *mm = vma->vm_mm;
->>       struct folio *folio;
->>       struct page *page;
->> -    pgtable_t pgtable;
->>       pmd_t old_pmd, _pmd;
->>       bool soft_dirty, uffd_wp = false, young = false, write = false;
->>       bool anon_exclusive = false, dirty = false;
->> @@ -3011,6 +3044,8 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>            */
->>           if (arch_needs_pgtable_deposit())
->>               zap_deposited_table(mm, pmd);
->> +        if (pgtable)
->> +            pte_free(mm, pgtable);
->>           if (!vma_is_dax(vma) && vma_is_special_huge(vma))
->>               return;
->>           if (unlikely(pmd_is_migration_entry(old_pmd))) {
->> @@ -3043,7 +3078,7 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>            * small page also write protected so it does not seems useful
->>            * to invalidate secondary mmu at this time.
->>            */
->> -        return __split_huge_zero_page_pmd(vma, haddr, pmd);
->> +        return __split_huge_zero_page_pmd(vma, haddr, pmd, pgtable);
->>       }
->>         if (pmd_is_migration_entry(*pmd)) {
->> @@ -3167,7 +3202,16 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>        * Withdraw the table only after we mark the pmd entry invalid.
->>        * This's critical for some architectures (Power).
->>        */
->> -    pgtable = pgtable_trans_huge_withdraw(mm, pmd);
->> +    if (arch_needs_pgtable_deposit()) {
->> +        pgtable = pgtable_trans_huge_withdraw(mm, pmd);
->> +    } else {
->> +        VM_BUG_ON(!pgtable);
->> +        /*
->> +         * Account for the freshly allocated (in __split_huge_pmd) pgtable
->> +         * being used in mm.
->> +         */
->> +        mm_inc_nr_ptes(mm);
->> +    }
->>       pmd_populate(mm, &_pmd, pgtable);
->>         pte = pte_offset_map(&_pmd, haddr);
->> @@ -3263,11 +3307,13 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
->>   }
->>     void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
->> -               pmd_t *pmd, bool freeze)
->> +               pmd_t *pmd, bool freeze, pgtable_t pgtable)
->>   {
->>       VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
->>       if (pmd_trans_huge(*pmd) || pmd_is_valid_softleaf(*pmd))
->> -        __split_huge_pmd_locked(vma, pmd, address, freeze);
->> +        __split_huge_pmd_locked(vma, pmd, address, freeze, pgtable);
->> +    else if (pgtable)
->> +        pte_free(vma->vm_mm, pgtable);
->>   }
->>     void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->> @@ -3275,13 +3321,24 @@ void __split_huge_pmd(struct vm_area_struct *vma, pmd_t *pmd,
->>   {
->>       spinlock_t *ptl;
->>       struct mmu_notifier_range range;
->> +    pgtable_t pgtable = NULL;
->>         mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
->>                   address & HPAGE_PMD_MASK,
->>                   (address & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE);
->>       mmu_notifier_invalidate_range_start(&range);
->> +
->> +    /* allocate pagetable before acquiring pmd lock */
->> +    if (vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()) {
->> +        pgtable = pte_alloc_one(vma->vm_mm);
->> +        if (!pgtable) {
->> +            mmu_notifier_invalidate_range_end(&range);
-> 
-> What I last looked at this, I thought the clean thing to do is to let __split_huge_pmd() and friends return an error.
-> 
-> Let's take a look at walk_pmd_range() as one example:
-> 
-> if (walk->vma)
->     split_huge_pmd(walk->vma, pmd, addr);
-> else if (pmd_leaf(*pmd) || !pmd_present(*pmd))
->     continue;
-> 
-> err = walk_pte_range(pmd, addr, next, walk);
-> 
-> Where walk_pte_range() just does a pte_offset_map_lock.
-> 
->     pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
-> 
-> But if that fails (as the remapping failed), we will silently skip this range.
-> 
-> I don't think silently skipping is the right thing to do.
-> 
-> So I would think that all splitting functions have to be taught to return an error and handle it accordingly. Then we can actually start returning errors.
-> 
+Fixes: 33385150ac45 ("x86: vdso: Wire up getrandom() vDSO implementation")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+Signed-off-by: Jens Remus <jremus@linux.ibm.com>
+---
+ arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-Ack. This was one of the cases where we would try again if needed.
-I did manual code analysis which I included at the end of the commit message
-but agreed, its best to return an error and handle accordingly.
-I will look into doing this for the next revision.
+diff --git a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+index bcba5639b8ee..cc82da9216fb 100644
+--- a/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
++++ b/arch/x86/entry/vdso/vdso64/vgetrandom-chacha.S
+@@ -4,7 +4,7 @@
+  */
+ 
+ #include <linux/linkage.h>
+-#include <asm/frame.h>
++#include <asm/dwarf2.h>
+ 
+ .section	.rodata, "a"
+ .align 16
+@@ -22,7 +22,7 @@ CONSTANTS:	.octa 0x6b20657479622d323320646e61707865
+  *	rcx: number of 64-byte blocks to write to output
+  */
+ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+-
++	CFI_STARTPROC
+ .set	output,		%rdi
+ .set	key,		%rsi
+ .set	counter,	%rdx
+@@ -175,4 +175,5 @@ SYM_FUNC_START(__arch_chacha20_blocks_nostack)
+ 	pxor		temp,temp
+ 
+ 	ret
++	CFI_ENDPROC
+ SYM_FUNC_END(__arch_chacha20_blocks_nostack)
+-- 
+2.51.0
+
 
