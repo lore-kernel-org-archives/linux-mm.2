@@ -4,185 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D5EECD6F6
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:18:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15423ECD6F7
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:23:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7BC956B0089; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
+	id 7EC646B0005; Wed, 11 Feb 2026 17:23:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 794A66B008A; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
+	id 76F5C6B0089; Wed, 11 Feb 2026 17:23:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 676116B008C; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
+	id 643BC6B008A; Wed, 11 Feb 2026 17:23:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 558C26B0089
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:18:58 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 01D18140526
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:57 +0000 (UTC)
-X-FDA: 84433591956.06.8DD089B
-Received: from CH4PR04CU002.outbound.protection.outlook.com (mail-northcentralusazon11013026.outbound.protection.outlook.com [40.107.201.26])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CF79FA0013
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=upa43FXx;
-	spf=pass (imf25.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 40.107.201.26 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EC866B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:23:12 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E63BD593B4
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:23:11 +0000 (UTC)
+X-FDA: 84433602582.14.18C5AA9
+Received: from olivedrab.birch.relay.mailchannels.net (olivedrab.birch.relay.mailchannels.net [23.83.209.135])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 4641A1C0010
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:23:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=QU7y1Ajr;
+	spf=softfail (imf18.hostedemail.com: 23.83.209.135 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770848335;
+	s=arc-20220608; t=1770848589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ygQ8QyM5Sk+6SaQfAa+bZC+ruPXAgwaotlv1LECVyNc=;
-	b=Na3SVL1yy/Q9Ub4LqRF5HWmbPWojytV4d4zPqPd/WIKg16ZKjLlXHPpSWAznr2ICEnIBsl
-	jQRtAmhnkQvaTiZB6sO2O/zKEDTWhK8+dsUTUSdeK1SXNZDbybU34wdSRq41sRv6iEHDGm
-	wRk4VaBFNmTvglr5IVya8VlHK5U6yWE=
+	bh=PONYIdbDGRxdo56DTcMpUfL2VeqX9vWTpesN1Ub95bk=;
+	b=r55XaiGRD9pMNjB0H6zW3lQgVuxx3mCyr03kkP9kQ68FMI7EgS/S4TgDX+NGybx6zlY283
+	Ro/K9lRcteNiOqfDC//q46rwvjgCPaObpHMWbLIfmUP62C4zjWUAkBSB0rWlsYAEZbk6LX
+	HWgUHjGe60at/E6ZcmKEpROOiVKpyt0=
 ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b=upa43FXx;
-	spf=pass (imf25.hostedemail.com: domain of Benjamin.Cheatham@amd.com designates 40.107.201.26 as permitted sender) smtp.mailfrom=Benjamin.Cheatham@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770848335; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=stgolabs.net header.s=dreamhost header.b=QU7y1Ajr;
+	spf=softfail (imf18.hostedemail.com: 23.83.209.135 is neither permitted nor denied by domain of dave@stgolabs.net) smtp.mailfrom=dave@stgolabs.net;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770848589; a=rsa-sha256;
 	cv=pass;
-	b=eU1I1m6M/MDHgWt710q7pcIJcrsSAor2/+zmHrhh3UHMM7GL3mkxfJszooJSZ6APD6G/DJ
-	EKnqahFgJ4F2v+0OyqguUsCMat575IVjWhtEklswwNdE6TSEySDpbg1D+r1v52/mkT0wjJ
-	5jojEu3eyS7FmCY6zN+KnrmvY9feCVk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FQL2/oZeg3HxpemppptXfi/Nc6c5+lt0Pm/r3TgCEEjFWD2+WWLfqZbu/oMgqz3W/xxBFeoE//0pi3C3bTWEz2y80RGPulGjhN8YD+zup0MuaVkSig7fih2hZSYE3nYEYLL6VS+558UaWeKXleAhkUIKKZJlmnoQ5JfGxCR5IpYAJM2vRPDbSzaSVy+M7bbzlhicIzlz9oAvNoLHHm6U4AybzOaaqBg8Aub5C1PW1jpACWIthaNcllSpQp5pqj2WjaeL5iB2lE9VJ3nSJM9vtH7b2sToF5LamzpSkeOJ3wXj/t+qQ1NislyAcx6GjfuI4LbP1bLi85ZhGohUvCRxLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ygQ8QyM5Sk+6SaQfAa+bZC+ruPXAgwaotlv1LECVyNc=;
- b=OSxRAGxVpuQJnQYwIt+tx6Tjfv6qyiD82BaRDc5k8KakdagMWoWgYVeKdAJf+d/3Nbjub87zOaMCJG4Fxy8F9aROyOG4hfeQ6mnz9GgHEXUNdsxxymoJ1bw/uGdyw6j2GDY6qAud+Zo19c1jd0hnU1TthYof6D64VUzfxNIr7+Zo1oEY38JpSlO6OByJemS9gfBiq3RNdgVsSUcZT3jpcR6eUr3josVYAup4v8g8MG919/VQ/xIZBj6Wc8Q1USRsvgk43OS4sLShJu37vAqwqk2HuKhjzdLeRTpENrbxsXsW5ryyThv2VVBZvEFPRGXHu3seb7oX4fo+YMZaHwP8mg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=gourry.net smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ygQ8QyM5Sk+6SaQfAa+bZC+ruPXAgwaotlv1LECVyNc=;
- b=upa43FXxpL3902jeH8kTSrrSvbWSIVfuRtmgKlxSq/hQ+Lbik8Ss330L5zP7oe9huGZQqDyzsmz4aOAROujYmqf1Ci2CYYrSEO+l4DMjbaoAXu569K73Mg9+i9wJE+86IpVPy0ukIHq/K51BTq7zurqsAASl7keRKkuuD7FW2t0=
-Received: from SJ0PR05CA0031.namprd05.prod.outlook.com (2603:10b6:a03:33f::6)
- by MN2PR12MB4440.namprd12.prod.outlook.com (2603:10b6:208:26e::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Wed, 11 Feb
- 2026 22:18:48 +0000
-Received: from CO1PEPF00012E82.namprd03.prod.outlook.com
- (2603:10b6:a03:33f:cafe::81) by SJ0PR05CA0031.outlook.office365.com
- (2603:10b6:a03:33f::6) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9611.7 via Frontend Transport; Wed,
- 11 Feb 2026 22:18:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CO1PEPF00012E82.mail.protection.outlook.com (10.167.249.57) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9611.8 via Frontend Transport; Wed, 11 Feb 2026 22:18:48 +0000
-Received: from [10.31.203.44] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 11 Feb
- 2026 16:18:46 -0600
-Message-ID: <35db57ae-64cd-40ed-8353-7d3b64069471@amd.com>
-Date: Wed, 11 Feb 2026 16:18:45 -0600
+	b=vHhdy5tY657FrPDpL+3cDjYIV90lkvXNhTwfgP45mCSZ120Qby3xYf0LD9gRbFHEBaHZXu
+	fbwW7IqZZRszQYdWxZbhsMjEj0JKpbNJSXrGNYv488LFbNPefJoIOAe69bjAP0GWgq2WJK
+	2JtdPEXXnncowKgUOJ5/25WPNixXQ6M=
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id C10F944199D;
+	Wed, 11 Feb 2026 22:23:07 +0000 (UTC)
+Received: from pdx1-sub0-mail-a251.dreamhost.com (100-96-86-174.trex-nlb.outbound.svc.cluster.local [100.96.86.174])
+	(Authenticated sender: dreamhost)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 452BC441A1E;
+	Wed, 11 Feb 2026 22:23:07 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; d=mailchannels.net; s=arc-2022; cv=none;
+	t=1770848587;
+	b=IypmqsYIeBZwbj16uTuPsarvT3ON3Vy6pmMNPSgl0hoZ/VDvuZn55ohmZIIJ/Lfw3iS/23
+	TeecAD390LyowofmK6q82MAlgP/9J33ZPx168sTiW2/Wla6RLNHWuDx99jCL1PwK3VWxC9
+	uFK4wEXzWPR7hIz1UvtYoVXqLXJ05LMczQZjeHFkDsocFcrOtvyOOVSTaM43RVGahcAGXw
+	OpyDd1C1YQMU3F/VY9tYNoc0fmweffGKs3YDcZn8eeL1Se0axDaqO+IpwVM1TYzS434Jt0
+	r728vEwhDuj3ork9F0xFX3YdtQdmZYJBuSHGw2OeeqVICCFngLqVItVhIO3HHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1770848587;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=PONYIdbDGRxdo56DTcMpUfL2VeqX9vWTpesN1Ub95bk=;
+	b=uzdNdLen5mvUQkOu5dpYKKJEMNRGNPMAEcAwpbj75UB4hGdKqS4mHN8EMH+EN08PvL6oRw
+	MZ68A+4ktRQwOIslbUNj48aiyX7cmZxRnXavnAqdjWK1EhjiOjt5YZWrIXoZA3JqdmT0oc
+	AsYZgix4nuOJWVr0+hNrmtnH8IMBy1EwAKunjxj2Z770lsdvNR/GDtETV8EBGKOy0dMWy5
+	1FxW8W1vHroev4Rut5gNj4/DOxlMgnF2k0a217Tp57u+nBXo/tBAKH2mCgcMPfKBR6vTcC
+	0dD83sUWjMEJXZBGtHpgoeAHKpilyffkvQmwxu7NMa+najGhEBpWp7kt1xenNw==
+ARC-Authentication-Results: i=1;
+	rspamd-79bdc9947c-w8xzw;
+	auth=pass smtp.auth=dreamhost smtp.mailfrom=dave@stgolabs.net
+X-Sender-Id: dreamhost|x-authsender|dave@stgolabs.net
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: dreamhost|x-authsender|dave@stgolabs.net
+X-MailChannels-Auth-Id: dreamhost
+X-Befitting-Dime: 0ddd63e94dd79c47_1770848587598_223137175
+X-MC-Loop-Signature: 1770848587598:2068019580
+X-MC-Ingress-Time: 1770848587597
+Received: from pdx1-sub0-mail-a251.dreamhost.com (pop.dreamhost.com
+ [64.90.62.162])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.96.86.174 (trex/7.1.3);
+	Wed, 11 Feb 2026 22:23:07 +0000
+Received: from offworld (unknown [76.167.199.67])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: dave@stgolabs.net)
+	by pdx1-sub0-mail-a251.dreamhost.com (Postfix) with ESMTPSA id 4fBCcV2qX7z1041;
+	Wed, 11 Feb 2026 14:23:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=stgolabs.net;
+	s=dreamhost; t=1770848587;
+	bh=PONYIdbDGRxdo56DTcMpUfL2VeqX9vWTpesN1Ub95bk=;
+	h=Date:From:To:Cc:Subject:Content-Type:Content-Transfer-Encoding;
+	b=QU7y1Ajr1a7JKLxkXZWmXPu5llbF+rk9H33Ux5srLDRFR3jGMgNXO3EazwSlJOO74
+	 rFzzSWY8KbDsbgkCUv/ors6d/cg3U6taTgULmVYzyIJCvN1NDpg6BMRs8KPueHJxfZ
+	 IuOXzmXb4dpnKIw8uLnHETQifiWtSKFjg4BufO4boU+UPABj5fXjNZsXAYjgCv8T/s
+	 q5gktzcj2f6PNrjlJssrVGxJy6Gd/JM8mHRC/WLkVhWxK3JBxn39Vj9pcGh0Hmg1b5
+	 e1PC/NSuvJz3ANjmx+pCcsT8JKySIzDb2g/hLIcMCgHCJaefuF80oZUPOHyGKrfeNZ
+	 XGMPLpCreYB2w==
+Date: Wed, 11 Feb 2026 14:23:03 -0800
+From: Davidlohr Bueso <dave@stgolabs.net>
+To: Thomas =?utf-8?B?SGVsbHN0csOvwr/CvW0=?= <thomas.hellstrom@linux.intel.com>
+Cc: intel-xe@lists.freedesktop.org, Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5] mm: Fix a hmm_range_fault() livelock / starvation
+ problem
+Message-ID: <20260211222303.42qfp6rqxxnpfkr4@offworld>
+Mail-Followup-To: Thomas =?utf-8?B?SGVsbHN0csOvwr/CvW0=?= <thomas.hellstrom@linux.intel.com>,
+	intel-xe@lists.freedesktop.org,
+	Alistair Popple <apopple@nvidia.com>,
+	Ralph Campbell <rcampbell@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>, Jason Gunthorpe <jgg@mellanox.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Brost <matthew.brost@intel.com>,
+	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
+	dri-devel@lists.freedesktop.org, stable@vger.kernel.org
+References: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>
-Subject: Re: [PATCH] mm: name the anonymous MMOP enum as enum mmop
-To: Gregory Price <gourry@gourry.net>, <linux-mm@kvack.org>
-CC: <linux-cxl@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<kernel-team@meta.com>, <david@kernel.org>, <osalvador@suse.de>,
-	<gregkh@linuxfoundation.org>, <rafael@kernel.org>, <dakr@kernel.org>,
-	<akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, Jonathan Cameron
-	<jonathan.cameron@huawei.com>
-References: <20260211215447.2194189-1-gourry@gourry.net>
-Content-Language: en-US
-In-Reply-To: <20260211215447.2194189-1-gourry@gourry.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E82:EE_|MN2PR12MB4440:EE_
-X-MS-Office365-Filtering-Correlation-Id: 25174c4d-67eb-4739-60e7-08de69bb875b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|82310400026|36860700013|13003099007|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?VmZUMlpWb0Zhamw0eEcwWDI2QUJWbGtYWlR1S1FxRUI0ZFBzVDc0U0JiL3lh?=
- =?utf-8?B?UjV2MGJhbE1yL1kreUhyQ1htV2hWN0Uvd1FxZmZUYU9ZSGFDU0oyNDNzdmc5?=
- =?utf-8?B?a2N0ZVZZQWp1YWVic0tsNmd3VUIvZGd5VmsxaHJ1L0JSOS9ORFF6UGt1R0E4?=
- =?utf-8?B?MTZwNHJmTml5bmQvRkxaSGRhVTA1YnpHblBGMjN0WUx5b3lSZnpIRklMeDNj?=
- =?utf-8?B?OGtVbUxnUm0zNHhpR3pXcXJtZWZZK0oxODBVcWo2bkhZdlF6TE5KY2Y1d3BN?=
- =?utf-8?B?MUpTL2FrZGhFU1Vnb3dIYjBsUE55L1BNT1J2eVlMa3ZFN3ZFMUJyY1ZmVkxr?=
- =?utf-8?B?MmdxaFFMa2V5YmVPalk2c1FmM0RtcGpPaGFhZnhRZE9JdEF3QXpnR1hiUnZ4?=
- =?utf-8?B?Qy90NVVVWUdYSDJrV3JiSVpjbzVBb2FUbmlsMXJCTDBQbW4zMTh4VVpLQ1d3?=
- =?utf-8?B?TGl6d2hOR29PcFhNODhSVXliNUFGYy92U1RabEJ0Zy9FUTdpc2czNStOSmxJ?=
- =?utf-8?B?VkVFdm1MYmFSZW5zTGRoRCtGak9zMlFOMkt5dWo3OXRHelphaEhzNVF4ZkRi?=
- =?utf-8?B?UW9pZmtLSmFYMmlGVE9VMVdyM3MybjI3Z2JvdGFtbTVnbkx5MVIrMUJwd2hJ?=
- =?utf-8?B?M0RoT0RWeWw5V05pMWN1UHpyVjkwNTFjMFUwSHhwV0FJcHUyalR3Mm02YTM2?=
- =?utf-8?B?eGpIanl6S29oVlg5NXdxQk11OUQwUkZMSndBMzNaMHorNFMxd0lXRXd0bjls?=
- =?utf-8?B?SFFlRFl2a1Y3SDQ1eUxqS0M0c1Y1QWJTTTBremJIWlBlVVdVdkt1ZGc0a0pQ?=
- =?utf-8?B?V0hDYkZ3OW91OE10Z2ovZkczRFFadmNDYW5jeC8rYUxNVzFpMWtsNFFHcHgw?=
- =?utf-8?B?ZGIrWSsvbFdnNFpBVTQwVUNzZ0RMTHFEWHlMeEp0cmVhbklFK09TNnlPWTY0?=
- =?utf-8?B?Rk5ZQTdmdFV5bmpaN0NkbHFSUlB4dHdUdGZNanZKcko5cXlqWXUrRzdnbHEz?=
- =?utf-8?B?VWtVUUFhK1NDUUpacFR1VGNWT0JIKzZ6ZzZwOWZtK1Y1UHVNQm9XSjlwVHhv?=
- =?utf-8?B?S3hNbU9WOUlNbkVwcXZWMTZEVmlmZHI5c1JZdEd3aHkyWGJPN3FMc0lmTk5L?=
- =?utf-8?B?YU1nbUNkTVI0UTM3NmFJRTdnV1BKVzJHZmUzVWZhMnpjSUdQbFJXUHpZdEFG?=
- =?utf-8?B?Uk9zQ3FKZGwxeU82OUJxQjFFOVZzTW9JUlViUnVUazBla00yTlgxMU14LzEz?=
- =?utf-8?B?U3JjdTNKL2lQV1doK1ZkMVhvaVdNek9tMVQzNE9lSlNhQ21STnhvR0ZMVHpt?=
- =?utf-8?B?eUI4WjJIb0JBcGR3NzhpRUlPU005aFVWNGJvTVV3R0w4aEJzL04vWXpYNWJq?=
- =?utf-8?B?L0I0b0JoTGJha2dZZHIwcEJ6ZGUyVW5IREdhVkRUY1l4dHZyR2dqQzhJQ09h?=
- =?utf-8?B?VmM2dWRydXRZUEVRZEhhbUc3RTU5QkFYY1JVdEJIV1hUTXFVVW5DbnpwKzBF?=
- =?utf-8?B?eGozcC9wM3ljMktxK2tQQ0x6MDlmYVdOVGFOM1JSZlNFbWdxV2VWUm85Snhh?=
- =?utf-8?B?aFRwdGlyS0N5ZWlETjMyVUlRdWhPUlJUV0t2MThNeDNyN1hpMVlKazVkT0NN?=
- =?utf-8?B?Ui9Ja0JMUkVPc3VTWlF2bDJxM0VvSTFsV29LWFdyckpRajFXV0VsT1pRNk5C?=
- =?utf-8?B?MEpvZ2JFMVVtb1RDNEh5M3V5eDRQUTFWbGZOQ2F4N29Nc3pnL3hhYUFzYnlM?=
- =?utf-8?B?SzVWR2ZkWGkwajRQeW93VDg1am5kaDdYT0JVR08yYk1VNkFLSUVaQlRFMzh5?=
- =?utf-8?B?S0xvSE1qU2pmZWNEL1BrY1BNU3FIeVpVbW9oTlUwQkZIMldnaHpSM01zT1cy?=
- =?utf-8?B?Vk1yck8vbE5FdHJVb0RzeDMxZ3dvemI5R1lBeUQ4SG1jOXZLUnVyeWNGaUVx?=
- =?utf-8?B?ekdiTWRMVHRhQUtOVGl5VDRMU2lCS1FXQ1ZySFVPQzZ4YkNnUVZHTWl1cVF6?=
- =?utf-8?B?dTV1eHlYYk1VWWJWYVNFWHdsV2cyVm1KTHlodDh0SVBOOXp1L2srM0lJTjZN?=
- =?utf-8?B?U0dVa0lwZFcvZzRBWldBZExRYm11dlBkRFRRRlVLRXJiMTNmUFRWTklzRHhW?=
- =?utf-8?B?cG5hQXZvMFBlWUNwekp5Tk1hM3JhQ2FaNEhsejJpVXI4cWs5b2tsMUcwdnFU?=
- =?utf-8?B?YWZmZUVlQXluSnk2K0RkQnZJWnBXbDZhTW1pUmkxR0xPV3pzMWhTejFGZFI5?=
- =?utf-8?B?aHFDYysrcGtxa2k3eldMRUxEYVNnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(82310400026)(36860700013)(13003099007)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	iockf9cwFVPJZe2ahVAM8wEBMFueXV8yokryQVi9n2eTtKSOZO/JFBDc+kh9YVhaHgoCCd9hH7pJRt/aoVygof1EKwsCOuN1tZo/wBFV+kbVHd0zrPOq/r2qj+YrEFJPrt9wsi2sTtsHksmWUH+my7/rgviA7QrkGuljLv7BjFUCnJPtP7jRfZHYMuD915a/KuDe01ZKKjNKCKAodzBEoQIH6ywFTgaIDa6kuMXhxliUGND1o9fZYl/FB94PSQeES1A0c3obL36f7+lv4lp3srpPkY7p7xswhW80xNLsRsf3wZ6nH3wfUTCggeevqmZYzyeHcjnBhJBGoGYooheXZjhLjOG2VWBexmHh2apJnqm6NNwG9CLKbOzujqngUE2Xq2awlIUd1KhEIjkrKMER4HaaIzjP8tsx2fx2jZIXxMleMl2pSsbzTV6vF1mKvq3F
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 22:18:48.3080
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25174c4d-67eb-4739-60e7-08de69bb875b
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E82.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4440
-X-Rspamd-Server: rspam12
-X-Stat-Signature: x8kbojsh8j3uuzgpi8xi1qp6xbmje4co
-X-Rspamd-Queue-Id: CF79FA0013
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20260210115653.92413-1-thomas.hellstrom@linux.intel.com>
+User-Agent: NeoMutt/20220429
+X-Stat-Signature: qzhjimxt4fxyhmd1s8hgg9ursrhdy7qs
 X-Rspam-User: 
-X-HE-Tag: 1770848334-425940
-X-HE-Meta: U2FsdGVkX19k2SswhuQMyiJdjFa8icWjuGycCERYkhRdl44iHZoThwO1/edWOb7EuXM7KKTHXOpun1KmzI/YWmusgNdI9ya7TD3giGrB3p6a1QFWYK0k2bpIQ3tokDaT7reB94dkAbtbLNDW7FT0GFZ9dOwBFdzDmP1IZ9UtvgZUyFDNl4wTeNhM3M/Bou5PqR0WQeVq/JsFyGVojoao3IxitwwWgP32i3BEDKgYXScrWlFE/raehXRbhKdkfsIMaMpgm/h4TFl1qagDDHe/JYguMlDdvMDhnYCsf2PMAiK+4S3Ucj+1k3Ws6jBYNbrkIgBlymWAUt1NAegbjYYQi617Wwg3ZmgxzW5cJJtBgQjwb+BsjlVbe0eC8X24x2h+h5Agph9DtVXBTTkknQ7wHY4l4SZx1C4LovfJKWnwwajDPJIjZoQzYynoYTWxfmbvNnYbht2NNAxxJX8mds0fcUVnuryldrkztSeCtS/peoocOr4KooIxhylseeLryf+9R9qWI/yVC+oNFcVx9YEZZUeTTv4Bjw6OPEroynZShI/pB7g2RZNIT9N/YB6vPsQN+9mKyGXBUqhPTQS9Aa2nmWxAkiu9gg3kv9WAtNrCJQPP2MRCkX4VPVHPPauQUthIUKKid7i+4IPbirFxc+M6ngy444cLGwEdHyr9Y6tulqsmDUrLqqnP0kEPkw7M+LhJhJdf2ZGtPt9yrj7dvoj++FVr7iqaNzgVcAkFEnw5pjvUegUQ6o18CtThqV/I8KQGqYqC3oxeQEM3JmkjnV6p1hWWr1qnqROZghPClLrlhE/xpc2J5vdcccIzDP53YMJRLtDELfGIBAkCld1IVAs/zjMtpgdMt9aUWGhW3VEyLrFCCqln/RkDagP8ILAz7PwAcOuEz5wVrSfeyx0evke8xtGHZM0dF6YAFiVxXn92RHbmgtouC9YvyySTkldjK2jIvClBHhSdWyKM4OQKeWb
- 8CsEFaME
- T9FAA8dgZG41FxLP7vk6R9bZw8xAyB19M0NLxpl3tt/hKWmFVlth6XMEmPMD1eWXEC+Ywx4ZDjSz2X7ijqqqcDlSmhtkAifEG2zu+zeH+NQZXVS0pRe12eVVZvYAiCJTL28nMcgXo6Zdzjr4aB5yNqhhGUhum/2SQmFg5XjyJXmCvup7/YzfeUvFSSaDCd5RcvA9u41NtrHmEM3yh55c2hk6vtdXdnmkj1zbuxzS0bVnPVyLv7RtdhZ/nV1Jc8OZnjgS7yRIzOytP6V7froHy7gnDNaVej0jDf4bkkKm1hmURiS4G+v/SLtiMgAX9KY8EJWlpAoqQNvYOOqaJ0S8fvsvFtAbFG4gmMvh6n1cS/d5r5k2xrGveJwsxL9gPa6P8y9O2WjqWlHIF+wjolMwuIqpgOsyQrEfzbd/A6oLbsiywCSdv0FCE7zEf+SkJFHsPgLW6lj6JLFzKcY5d6WtlUVjZhJ/N9zcWqktUeDKBXAptKQLVrWsb91thRpcJ8MdWAEbz3GthHe8D7PgO4DbcX7qs4KtaCwhoF3MEiw/h00/HNPVoWd3x8Ut3/HTBvvacwxpfTxF7arvqDvWVlyOnzP7B1KTILMic5Kde3twc9DMetyDV95k01xGVInjxzvtZT/t0UBrgrfNC+a8=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4641A1C0010
+X-HE-Tag: 1770848588-189023
+X-HE-Meta: U2FsdGVkX18X4EZ28zXQNAJvZjVk+hfsfdVp+Ia3UliQbozRme1Fll1Sbre2wMvBcjgc8CeJKvimX6qywXHdOHSA39Pq8byCcanNjnpMeaMMdMCqh2JOUj0rpn6Cgy95yEr1QFWaUzrh02I5GAku8pzs5TIV0cH8cLL0uqGruQD2Zluh8TKFk8Erg9J21CzcApCglg09ErDWqZp4W4EuZSEA1UBqIuwNLg0Oa8G6mk+mj7sVYuAAeyQhaE2umoQbsdCfhL936lz3UUHARTCCYYb2p2mUJsOUyF+z//a2xjFCmy6sch7gmVyleJ/TAEE2qQSNkjzZaDbQPVfCnzIXHGi7RDgHunabX/ZTKf+Fa1QpsO+I7Ud26HICW3l6yDH+xSbhkie1B0+KgxzlPvz2aYqqO+2xwgBRCqz2NM/NfF5T3FvD4NSLGog8FqzpdfMVuRkAyo5hus5OrbpQfK4W3g3bmE9uZWLxNip+T4agPcPzx2zv301RhEzq8cHhd99mSwwkiZomk4AsqrKyMUPjyEbE9Q+zkUJphQnVesxyeTskzCutyaThicB/o7ulgLvJzCTcIe5mSsjnGBK+iVWopl2Xo2Y7pc92nfQQGVCX00jrc3FIq8S1d0vJsFaleSoo+sMkTTs5DaRHYOyicSKXiFKPZwr3zSUdvRYFJttWXCLrw0KwqmLL9RRaVZaXac6u9fVBddYs8XM+ombyfJHH1nOKgDW/gX1LerROY+A6kdXfBtzKE9jB0IVdxoiriGjVvX2IG2W8ZOOlRuWuOEVUZFUzfSJw0tv3KQSf2B2F9cPE3NvhVJee9YXshg3ZYkThIYVWaeklMiTN6nkKSmahGHxRxdsnu6hZ9DkposwE9W7aVP1cDMKJoYwCX4IGx8vqX31mv7shPFG9f8lAKYtGSszZNKx1EF/qh+2Ik9FxdWqUNfDNd5XJoP5o3klgq/76lfaXsavQChspY2fa7t6
+ JGletWEL
+ mIzsaOnPZsOIdVJJlcrn0Q8Ta8fDi1eJWRi9UDRydlRGBF8WS0bZHku+7OIWoz7R2sVW+bEgLtGbGKTgwQegFonKzn86sceZjL0LZm/Gv25H6YClKGDKwbPlW8RCd1XHoy6OWsyVxLTi0eVJk73KF1m+IBR8E68qxuTr3C8zJCxX32+h/j9wS9n0SiNH6YKvEQOoyEPMv+t2jEW+U5xaxuHrxhh/EXYesvodBtLvVW+5eR2xOOvI1ZrDxUcIJ0JJg3ug5WXOhCl4hvnU+Fhsw7G072HWoeWT6iVbYDj6BIq4V9lLS0xVjcvmpV+Y5/nEu0ASrCaFG5L05dF8wcMmzAhy5mT8shLNYKpNoP7GecZfZ5s8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,76 +158,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/2026 3:54 PM, Gregory Price wrote:
-> Give the MMOP enum (MMOP_OFFLINE, MMOP_ONLINE, etc) a proper type
-> name so the compiler can help catch invalid values being assigned to
-> variables of this type.
-> 
-> Leave the existing functions returning int alone to allow for
-> value-or-error pattern to remain unchanged without churn.
-> 
-> mmop_default_online_type is left as int because it uses the -1
-> sentinal value to signal it hasn't been initialized yet.
-> 
-> Keep the uint8_t buffer in offline_and_remove_memory() as-is for
-> space efficiency, with an explicit cast when we consume the value.
-> 
-> Move the enum definition before the CONFIG_MEMORY_HOTPLUG guard so
-> it is unconditionally available for struct memory_block in memory.h.
-> 
-> No functional change.
-> 
-> Link: https://lore.kernel.org/linux-mm/3424eba7-523b-4351-abd0-3a888a3e5e61@kernel.org/
-> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Suggested-by: "David Hildenbrand (arm)" <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> ---
+On Tue, 10 Feb 2026, Thomas Hellstr=EF=BF=BDm wrote:
 
-I saw this when reviewing another set of yours and thought about mentioning it, glad you cleaned it up!
+>@@ -176,7 +176,7 @@ static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, u=
+nsigned long start,
+> 		}
+>
+> 		if (softleaf_is_migration(entry)) {
+>-			migration_entry_wait_on_locked(entry, ptl);
+>+			softleaf_entry_wait_on_locked(entry, ptl);
+> 			spin_unlock(ptl);
 
-One small nit below, otherwise:
-Reviewed-by: Ben Cheatham <benjamin.cheatham@amd.com>
+softleaf_entry_wait_on_locked() unconditionally drops the ptl.
 
->  drivers/base/memory.c          |  2 +-
->  include/linux/memory.h         |  3 ++-
->  include/linux/memory_hotplug.h | 16 ++++++++--------
->  mm/memory_hotplug.c            | 10 +++++-----
->  4 files changed, 16 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-> index 751f248ca4a8..3753ca80069d 100644
-> --- a/drivers/base/memory.c
-> +++ b/drivers/base/memory.c
-> @@ -452,7 +452,7 @@ static ssize_t phys_device_show(struct device *dev,
->  static int print_allowed_zone(char *buf, int len, int nid,
->  			      struct memory_group *group,
->  			      unsigned long start_pfn, unsigned long nr_pages,
-> -			      int online_type, struct zone *default_zone)
-> +			      enum mmop online_type, struct zone *default_zone)
->  {
->  	struct zone *zone;
->  
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index faeaa921e55b..5bb5599c6b2b 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -19,6 +19,7 @@
->  #include <linux/node.h>
->  #include <linux/compiler.h>
->  #include <linux/mutex.h>
-> +#include <linux/memory_hotplug.h>
->  
->  #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
->  
-> @@ -77,7 +78,7 @@ enum memory_block_state {
->  struct memory_block {
->  	unsigned long start_section_nr;
->  	enum memory_block_state state;	/* serialized by the dev->lock */
-> -	int online_type;		/* for passing data to online routine */
-> +	enum mmop online_type;	/* for passing data to online routine */
-
-Comment looks unaligned.
-
-Thanks,
-Ben
+> 			return -EAGAIN;
+> 		}
 
