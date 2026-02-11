@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3C13E9E305
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 13:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9E3E9E309
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 13:27:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AEFD66B0005; Wed, 11 Feb 2026 08:25:34 -0500 (EST)
+	id 8082D6B0005; Wed, 11 Feb 2026 08:27:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A73D06B0089; Wed, 11 Feb 2026 08:25:34 -0500 (EST)
+	id 7B5756B0089; Wed, 11 Feb 2026 08:27:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 954FD6B008A; Wed, 11 Feb 2026 08:25:34 -0500 (EST)
+	id 6C69D6B008A; Wed, 11 Feb 2026 08:27:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 83F856B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:25:34 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34E7AD696B
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:25:34 +0000 (UTC)
-X-FDA: 84432247788.04.F2F14C7
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 589B26B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:27:17 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF6E313A87E
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:27:16 +0000 (UTC)
+X-FDA: 84432252072.06.55DAB99
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3EEC2100009
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:25:31 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IY1BLjfx;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0A13040009
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 13:27:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gESZg5XO;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770816332;
+	s=arc-20220608; t=1770816435;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0PIwUSQnjigR7OzC+8/roaEtOWyhHvSG2Ks4ERE2LUI=;
-	b=fVWG/NzBRXocwysHhcXVe8o4D/HbU+VrDAgv5qZrlG5E9bez4R3AqtKB2AS8TUURpdroQ8
-	SVqN7+UMgfvJzG1yPJk+emjnV5E5V77BgP1Nj70sVsMPDd+8+tRrURAsvGs+vpaB7R14H8
-	AbKqF759e/S8o1qWSGd4Km7lOMg200U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770816332; a=rsa-sha256;
-	cv=none;
-	b=FQG0Uw9Hs8uPyeWDpGfAClKcVppwhoKaJN5jFp7V115F6dC9zOQGpXBGnCoq530xloKxdu
-	1iyLss95M127JVsaqQorQtfzquX+9VCZu7ztDIkhxPb9cIUg5y2teFJUYIIHrV1YxxrC6V
-	yl24y311V0ReUMlxe8ZN6JKOZqxeRFA=
+	bh=vX2r2SXm1aa30ata/T20YR29moz+krv2EI9xojJLN0o=;
+	b=pQxtJVsmTzn9/fT6HYui4oqHbfSTjhrSbvCnsCHL5rEciCTNujStg3460HWMUX79EDAtK7
+	6TNES3XIWb2t1zI3ugaK9SZnycL7xrUr0ofA5cy/gW0gd5wnPO4EC+O+eC6oIlRMP3F60k
+	BiISgo7WQfw80maQ9Duf8SqgVG5hIto=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IY1BLjfx;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gESZg5XO;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770816435; a=rsa-sha256;
+	cv=none;
+	b=PXnW77ZCTGY/fVbjauV2MUx4H3B5WVuR5YbGWYWbQZLcMHx3UVjlgMz9BCfyvYNfT1w2lo
+	v7IG3N+z/IkJUN+zrNkQK+65PCU4s6xUEhqoIBUSCU1cbpfMalHt4wMHD+JdmPkm8PnixC
+	Ohvu+rrl90Xi85bb/prV+CF+avRJbEQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CAC5E43842;
-	Wed, 11 Feb 2026 13:25:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A817C4CEF7;
-	Wed, 11 Feb 2026 13:25:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 17D51442D4;
+	Wed, 11 Feb 2026 13:27:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1482CC19421;
+	Wed, 11 Feb 2026 13:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770816330;
-	bh=8bP6jIC/KRpZ5dRqDOGx3ic6z30NOvMZ0jo3/v/qgNo=;
+	s=k20201202; t=1770816433;
+	bh=0uP5UPuCcOjvjVPIOHJi6JaNThiYbN5b4+mZkZ7BzMA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IY1BLjfxsgjinT3MEUNF7AFOKffzITdIZjopxTyKR6rQR70TxHPeohVo/zmDu3S+D
-	 jGJg75qVkd9JA5PGyzxeLus7oPrLKFJZ48dP8de+Z7ZEkhHmvqWpOMLsg45xAY/HV/
-	 XLL2W56ya5+sAzctEcRROezBTxi9J8VOP/sMDUDhAQRFP5ZH3k1BnF6hXqk4XCYNeY
-	 iy6qNPABWgwNnPUl7XiuZj70VWvAr0UWH0eXl0iDUWkybAzqBX529aglOS6iXAU3/V
-	 w3HJztIob+TfOTWk4s4zPrNrvsdFd3O2hVTDRmpqwEtQI80foZrUxJRNPa0JuVahi5
-	 E7kBwyvLbcfHA==
-Message-ID: <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
-Date: Wed, 11 Feb 2026 14:25:21 +0100
+	b=gESZg5XOzVJp8bm1+NSar2k+AMzvag49xHUbcEtfZRkqsce9HfomqkIifWnbjM7O7
+	 s3n7UfUpnUiIWUb9mopQJuAF361CFl5EgMEct4+SkdJyGYZilG1n2u9XrF4zNZLUnX
+	 WAPcQDFJISN7bllhkCA2J9HbOjSKtwjdX9GRzmbrC8DV5vcC+LJ/GgDy84s3bQSVjJ
+	 Vhu7M3Uw536q4fWES+GMN32spgoDjRGVfEhzZ7N88tzvtQCeTdbd57wdUbgRSl9YZX
+	 qTillyEMxp0sczn87bx2G5HdboaOgAI/F8OdXV/DqfGYqCzounB1VdlpEUCYMoeny+
+	 ob2iOz15L4UFA==
+Message-ID: <b980ef1c-2dc2-4853-a873-7338e2d36178@kernel.org>
+Date: Wed, 11 Feb 2026 14:27:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
+Subject: Re: [RFC 2/2] mm: thp: add THP_SPLIT_PMD_PTE_ALLOC_FAILED counter
 To: Usama Arif <usama.arif@linux.dev>,
  Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
  willy@infradead.org, linux-mm@kvack.org
@@ -76,11 +76,9 @@ Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
  shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
  baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
  ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
 References: <20260211125507.4175026-1-usama.arif@linux.dev>
- <20260211125507.4175026-2-usama.arif@linux.dev>
+ <20260211125507.4175026-3-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,17 +125,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260211125507.4175026-2-usama.arif@linux.dev>
+In-Reply-To: <20260211125507.4175026-3-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3EEC2100009
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 0A13040009
+X-Stat-Signature: qi3zfkrid6mqucbotr61c7ft3jqucsnj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4k5s845emqdnngthwc1z34ng49rrkozs
-X-HE-Tag: 1770816331-181636
-X-HE-Meta: U2FsdGVkX18UNLtJMMvCUtsz+wijMXwuzV7Szp5wfmj5k+8LyBRhbMS7iax7kBnGPStsbjxxNTpjEeSziWAUOh/jiaLVyj750BQoqMsYBEgVEmm40UGDBQ7zAHXcTBKM+dTHBQuQteo+uenE0vaCVE/seQk1JhWHGhtk/eBjpBiMH/+Ey6rKp5M+0aYg2nTxcoMdHd4V3SKYQQjED4OgnxBdL64tY/Rzw83x4tdZ+KcAwYhJ1eG6uCtMR/02aQnMGcO7qK/2EnKW/5NonzFfBBjhgNDoQRWm6CkT7LHAh+6XJk/Ir8a3C+IjhcbKJUD1xch9pivdTUn32Dx2NJeLlFZxIGXs/ZvKcXkZw/uSJQHxaPp2v9I9Y2zF2PbVGau/+o9aKH7XSzL10ubaD9cGtHrYLSBf9Wd4OZ8DURIznt9zl2K3m4YFRcprq4LmTNzhueL05Af1gi/lSa9VeylJe2AJwAwiCltfCL8LRgHBY3oAanyYQPCFmWZRrmZyYSyugICLxvHL+ZSNiyIEUp4jLKfF/PqmLk6szzIV/tYFOC7mWh0uAb1fDdZNPgcQ3rArjgMk6o6Ati7s42Mr8scWetSwxwutqKAOIHnuhdx5y71T4YT4gSsASZFuevupK74kGwOvs5IwqIv3k2pQJWECDVb2QdLqy6eWkOO5AuOwtUhgSz+M/vyygoMIieM5Z8ASYj4JUMv9VIW8TC/5TcthOuCJYWHR2rGxTYrHBUwYPR/wZ/YFF/5D7RZghZ9mw6kA9CsP9DaCOVv1z3WRe+fQPgGQzn/jXrc1rL6SrC6lQwF6YlkUNQoP6corXS4roySVE7XiTpLX68J0ZGQu/Ul45OeOlDsbxXnooRki3685MyppMTnztte1fCXeZJ4kdVAuAynimFUWzdUGjUuNV+jqUsb89QgB8+manoEDymG6pYvvQYa4l1wOpO2i1WedqnTtGs5Rq5ZmcQKqdN/Lyev
- 7wqBcOiD
- NB9phEg8VxJwQJ8vXbZingBB1JaGE5YPB0unBLoQFeQmiKHXp8IQ6NOdl/OfQWbPStDoyZ2R/XZzXqIW5ugy5knpkp92SgIakaGH7Lo8QRFcPkt0UDTEO746KWJzBrZEkX+Ru6fLQuLo2CGo99GIIswWX6iHyKA4pbyV8Se/PLLwloR3u3udZ65YSiFH/JMZVU0+Xj4SB0Gi4SjHTColvZE0D1ZJ+Z+OnEw8b29XnqEJbPbNzzgsrbdEdfXrufCgyVuTC2Zr8Wo8QXXmeX0t/nrAzaUQ/bslI1MjY
+X-HE-Tag: 1770816434-963346
+X-HE-Meta: U2FsdGVkX1/0BoWkKp4X2BuANTo/bCWz7cic2msWsrs7OBznERPfNZI1V1F/9omneAIKcKORTCUc0RMN6QcR2vedSh9x2escF0Z3hQ/Fn7uzhB7TK8+6P481fIWSiIfR1hX9byTHLBipHik1Z62cVr2FXYJJ5gW3ad8jdjI2CIQWC+A5Iju6kqYKxZHFA/lgMGRJZc7+vWxPDq6uVE3D5lBdbLiwnRLM4IcwTb+Fr8OI2aju4mFt6o8WkUT7+V11OxT+tFJxs2KQsAHb9PWmt27AaUqlk77mvrfojn/NJaD9VOXPVuO4zkYmwVuxk1YtRhB0RdO4fibsifWGj0/HQ+D4Cl04p+o4meXQkaLyecMyEOjNGm7DM8dU25Hk4Ie0Usnb1riuTOSaTKV5SZ6NMo9PXP7jLTioSQP+1bocYYeeAYTsXxYK9mEZ0BvfccWnp5m+TPwJ8Yyoxolctp65qojN83dczcq9y3Gj/rr11Rl02/pQoyvBua/zTor1b0eieyOPcC153iiriLudUk0kgl4DAUSFpOJr1IgMrf8K6NeyzZBv9DZHsP+aoGSotudR5uQcIPKj67o8MVdfiL5VF1XLfXfBZnoejRbaZqbpHVwrc7+/p+kVVCmwYvF32BOnH3sa/Zq0qKc8qZV50sWwhj6kOOjwLWfkUhwt4aAvwuB7Gxu6TnnBfLY/eAxlJUmVyIkalafYua/9kMiLskTExYQlWRA+wVEO7Kb0zp9AEviifquQlHQDkL5XOg2vB3vwI+7VSpJFP3MUpCIOM+9DaaRT9vaPE2eMahr1F8bhqKAnmKI349NdAzIhVt5hq7/MIQdHKUeKkDeKu4ZyAhiY9n40TmVdHuEFblbgcKEKnh5Vy8/+IdgYnNg3/M5euenwuK8YBkQIgnNzdPYXuN9eoW1EpiAPG55gIRIdybCGo1dQZcK4usrHutlPY5abAsJkc7SaTZZSb4TG7LMwjoK
+ skncY6IT
+ rGcHIS1dmFjXOVh6Izzn25V2Au7gIRT3PkVAWTvIX4dyPvTjJq9dNag97kQWSxXoY1SOuQih1qYdKymFU7yBlyRfuHloe41KZVFYJek6zWcRhRQxM8OVmnB/P586egBn2lp1W5mGgpdUDv0D+sU8PsrM37S3xt+eBLgY6duWe+NnLO6+izEY2f80kOse/1Ee3TK8fges7O4zT38kSEo3XKuWstM2VlrV196uZ+CuAfkNbFz0hdVq6BQ3T8VTnvAx8ocRGijjC+c0rxlHpGUEoZwm75cJwj/m6boFgmQ2koyjWnX5Z9l8hZwGvZg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,67 +144,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-CCing ppc folks
-
 On 2/11/26 13:49, Usama Arif wrote:
-> When the kernel creates a PMD-level THP mapping for anonymous pages,
-> it pre-allocates a PTE page table and deposits it via
-> pgtable_trans_huge_deposit(). This deposited table is withdrawn during
-> PMD split or zap. The rationale was that split must not fail—if the
-> kernel decides to split a THP, it needs a PTE table to populate.
+> Add a vmstat counter to track PTE allocation failures during PMD split.
+> This enables monitoring of split failures due to memory pressure after
+> the lazy PTE page table allocation change.
 > 
-> However, every anon THP wastes 4KB (one page table page) that sits
-> unused in the deposit list for the lifetime of the mapping. On systems
-> with many THPs, this adds up to significant memory waste. The original
-> rationale is also not an issue. It is ok for split to fail, and if the
-> kernel can't find an order 0 allocation for split, there are much bigger
-> problems. On large servers where you can easily have 100s of GBs of THPs,
-> the memory usage for these tables is 200M per 100G. This memory could be
-> used for any other usecase, which include allocating the pagetables
-> required during split.
+> The counter is incremented in three places:
+> - __split_huge_pmd(): Main entry point for splitting a PMD
+> - try_to_unmap_one(): When reclaim needs to split a PMD-mapped THP
+> - try_to_migrate_one(): When migration needs to split a PMD-mapped THP
 > 
-> This patch removes the pre-deposit for anonymous pages on architectures
-> where arch_needs_pgtable_deposit() returns false (every arch apart from
-> powerpc, and only when radix hash tables are not enabled) and allocates
-> the PTE table lazily—only when a split actually occurs. The split path
-> is modified to accept a caller-provided page table.
+> Visible via /proc/vmstat as thp_split_pmd_pte_alloc_failed.
 > 
-> PowerPC exception:
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>   include/linux/vm_event_item.h | 1 +
+>   mm/huge_memory.c              | 1 +
+>   mm/rmap.c                     | 3 +++
+>   mm/vmstat.c                   | 1 +
+>   4 files changed, 6 insertions(+)
 > 
-> It would have been great if we can completely remove the pagetable
-> deposit code and this commit would mostly have been a code cleanup patch,
-> unfortunately PowerPC has hash MMU, it stores hash slot information in
-> the deposited page table and pre-deposit is necessary. All deposit/
-> withdraw paths are guarded by arch_needs_pgtable_deposit(), so PowerPC
-> behavior is unchanged with this patch. On a better note,
-> arch_needs_pgtable_deposit will always evaluate to false at compile time
-> on non PowerPC architectures and the pre-deposit code will not be
-> compiled in.
+> diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
+> index 22a139f82d75f..827c9a8c251de 100644
+> --- a/include/linux/vm_event_item.h
+> +++ b/include/linux/vm_event_item.h
+> @@ -111,6 +111,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
+>   		THP_DEFERRED_SPLIT_PAGE,
+>   		THP_UNDERUSED_SPLIT_PAGE,
+>   		THP_SPLIT_PMD,
+> +		THP_SPLIT_PMD_PTE_ALLOC_FAILED,
 
-Is there a way to remove this? It's always been a confusing hack, now 
-it's unpleasant to have around :)
+Probably sufficient to call this THP_SPLIT_PMD_FAILED and count any 
+(future) failures (if any) as well.
 
-In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1 
-copied generic pgtable_trans_huge_deposit() hurts my belly.
-
-
-IIUC, hash is mostly used on legacy power systems, radix on newer ones.
-
-So one obvious solution: remove PMD THP support for hash MMUs along with 
-all this hacky deposit code.
-
-
-the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar 
-checks need to be wrapped in a reasonable helper and likely this all 
-needs to get cleaned up further.
-
-The implementation if the generic pgtable_trans_huge_deposit and the 
-radix handlers etc must be removed. If any code would trigger them it 
-would be a bug.
-
-If we have to keep this around, pgtable_trans_huge_deposit() should 
-likely get renamed to arch_pgtable_trans_huge_deposit() etc, as there 
-will not be generic support for it.
+It's a shame that we called a remapping a "split" and keep causing 
+confusion.
 
 -- 
 Cheers,
