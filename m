@@ -4,135 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05B9DEB5954
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 09:55:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DB3FEA812E
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 10:11:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 199116B0089; Wed, 11 Feb 2026 04:55:43 -0500 (EST)
+	id B1AE76B0005; Wed, 11 Feb 2026 05:11:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 146DF6B008A; Wed, 11 Feb 2026 04:55:43 -0500 (EST)
+	id A9EE46B0089; Wed, 11 Feb 2026 05:11:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0462C6B008C; Wed, 11 Feb 2026 04:55:43 -0500 (EST)
+	id 94C4D6B008A; Wed, 11 Feb 2026 05:11:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E44B86B0089
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:55:42 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE79157F3E
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:55:42 +0000 (UTC)
-X-FDA: 84431718924.11.3F3732D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 75A5918000E
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 09:55:40 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WlVAYeH2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1u7Y5xHk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WlVAYeH2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1u7Y5xHk;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 82A9C6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:11:36 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16504160310
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:11:36 +0000 (UTC)
+X-FDA: 84431758992.20.6EA4D2A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9177D1A000D
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:11:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0ELd9rp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3kfR7uDB;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0ELd9rp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3kfR7uDB;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770803740;
+	s=arc-20220608; t=1770804694;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=898l2kNBLwLT/cEDuaztbrg3Plv0whiKcCcpSo3dc/w=;
-	b=rzebjC5O9H83iU46s+LlMeyS+DdVk+Z+YQsvuRDWtjCe3VUgDckvkapPJPhU5Geh+aNZhb
-	1VRglQxWam5w1SDcQDHqHWO3YOwOzsFKfkb9Mn5PJFjuxSCXsJjCQ0HTa1by/jWzvXJxgY
-	6eJvonMXBylv+mon4C+u7K7pD62ru8g=
+	bh=nruCXAx74WveJM2K/8+k0Dm+0X0usQHifZgTPdJV990=;
+	b=M5EPSNItSf+hLzqHO90aAJFNGY09oQ01AL+/Sw/gF4DyuNoCYe2SG6TMlK262sOLyBupp2
+	SUQYBmBj6TyLNh0kh7poE4mhtshZKOZaKnxvtNBpUvR7+BLxuIpoOBf2ufVcBCKJ1PKcHQ
+	GZw15qW0EpFRYHcMPHMOnjmGvhg9Gdg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WlVAYeH2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1u7Y5xHk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=WlVAYeH2;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1u7Y5xHk;
-	spf=pass (imf24.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0ELd9rp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3kfR7uDB;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T0ELd9rp;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3kfR7uDB;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770803740; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770804694; a=rsa-sha256;
 	cv=none;
-	b=s7hALZAcQipCoOL3jYuiPqj9JTBhL69ZfYRWnOWXntOaGk9SVxs7elWHafjDvjI/Biq+Md
-	f/TJZm4qCdUeXxa0dy9hUFc77n3noNOvzPpmBzNtDAlcqPJJoHWXP+Vft5O4YVAgt9bM+a
-	r45Ewjwi5tGw3EPiqVX7ynwkQ9iDrCk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=SNB31CHJPFtgHSvSew9IbJnwLIlYUwZMSkFid49wAeqm69C7RqPH0ZUUeYTk8fF7fL3gKy
+	DPX2yHZXfyMRBG03sDGzmYuVt1mkH/VtFIJt6CRCJ3Gre+Zefo+V7d97iLglxGvIpPgIA5
+	U2xRH+w5SzCps5tzMv1QoQbM5IKBVag=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D368C5BD8B;
-	Wed, 11 Feb 2026 09:55:38 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AEC213E714;
+	Wed, 11 Feb 2026 10:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770803738; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770804691; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=898l2kNBLwLT/cEDuaztbrg3Plv0whiKcCcpSo3dc/w=;
-	b=WlVAYeH2n9GNpytFw++ml+lbeok4zNXE8LFwu3OZl7GVYpNeh1Q4aRlcsywCnQ+t4/5o9Z
-	IUuGM0Pe8ZSYqleqs6Qo6qBKrP56HF2RU9QodbBleLbte0oKAbJ43+nv6e+e1tajGJEd6L
-	N4Iwp/B4I8RYOV6LO5lFsg7LK4o6CFo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nruCXAx74WveJM2K/8+k0Dm+0X0usQHifZgTPdJV990=;
+	b=T0ELd9rp3GeVuj4TLdR3dr/hNb0Cika9yzBgRs0FhiSWSc1MqQAnL97RrY4vOwPUe2vk7I
+	i8LRVFFyq//INL2tUz0svYT+yDeB8UMWTAXYhOJeUmKub3ubxVRg0j+o4+X5aZdFMrFsx2
+	RsZJHaYUr9Yo2a31l+htisFCRymCH50=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770803738;
+	s=susede2_ed25519; t=1770804691;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=898l2kNBLwLT/cEDuaztbrg3Plv0whiKcCcpSo3dc/w=;
-	b=1u7Y5xHkk9EDIq/NEaJ4p17IB/GM2Jnh2PLYPPfWqoGoSw/FnUDiyem+MjccT9n81AKp2p
-	CARDiOHPaEGfm1Bw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nruCXAx74WveJM2K/8+k0Dm+0X0usQHifZgTPdJV990=;
+	b=3kfR7uDB3xl6HUy45/FpCoJY0wRcFUNW+QVuq26A6tfrURWVGS+PtqpD5CklnjcKYrVyci
+	o6e6rzNfZUyDu7Bg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770803738; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770804691; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=898l2kNBLwLT/cEDuaztbrg3Plv0whiKcCcpSo3dc/w=;
-	b=WlVAYeH2n9GNpytFw++ml+lbeok4zNXE8LFwu3OZl7GVYpNeh1Q4aRlcsywCnQ+t4/5o9Z
-	IUuGM0Pe8ZSYqleqs6Qo6qBKrP56HF2RU9QodbBleLbte0oKAbJ43+nv6e+e1tajGJEd6L
-	N4Iwp/B4I8RYOV6LO5lFsg7LK4o6CFo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nruCXAx74WveJM2K/8+k0Dm+0X0usQHifZgTPdJV990=;
+	b=T0ELd9rp3GeVuj4TLdR3dr/hNb0Cika9yzBgRs0FhiSWSc1MqQAnL97RrY4vOwPUe2vk7I
+	i8LRVFFyq//INL2tUz0svYT+yDeB8UMWTAXYhOJeUmKub3ubxVRg0j+o4+X5aZdFMrFsx2
+	RsZJHaYUr9Yo2a31l+htisFCRymCH50=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770803738;
+	s=susede2_ed25519; t=1770804691;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=898l2kNBLwLT/cEDuaztbrg3Plv0whiKcCcpSo3dc/w=;
-	b=1u7Y5xHkk9EDIq/NEaJ4p17IB/GM2Jnh2PLYPPfWqoGoSw/FnUDiyem+MjccT9n81AKp2p
-	CARDiOHPaEGfm1Bw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=nruCXAx74WveJM2K/8+k0Dm+0X0usQHifZgTPdJV990=;
+	b=3kfR7uDB3xl6HUy45/FpCoJY0wRcFUNW+QVuq26A6tfrURWVGS+PtqpD5CklnjcKYrVyci
+	o6e6rzNfZUyDu7Bg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BBA223EA64;
-	Wed, 11 Feb 2026 09:55:38 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3CBE93EA62;
+	Wed, 11 Feb 2026 10:11:31 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id S3/KLRpSjGmdbQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 11 Feb 2026 09:55:38 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 755E0A0A4E; Wed, 11 Feb 2026 10:55:34 +0100 (CET)
-Date: Wed, 11 Feb 2026 10:55:34 +0100
-From: Jan Kara <jack@suse.cz>
-To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Cc: "jack@suse.cz" <jack@suse.cz>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "chrisl@kernel.org" <chrisl@kernel.org>, 
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, Pavan Rallabhandi <Pavan.Rallabhandi@ibm.com>, 
-	"clm@meta.com" <clm@meta.com>
-Subject: Re: [Lsf-pc] [LSF/MM/BPF TOPIC] Machine Learning (ML) library in
- Linux kernel
-Message-ID: <kw4qco6aq4bq55nmb4c5ibicmj7ga77vtgzlj65jtdhzowks5m@buhefb6m4eqx>
-References: <47d21a6821c4b2d085f7b97bcdaa205bfcb0e0ad.camel@ibm.com>
- <CACePvbVH0ovOcBqCN7kJ3n0QFmvuf+_5tMeRXs-JAQ+m5fdoCg@mail.gmail.com>
- <a994bdedca7d966168076044249a58e52754c6ac.camel@ibm.com>
- <6ek3nhulz72niscw2iz2n5xhczz4ta6a6hvyrlneuyk2d36ngx@4ymlemzifugr>
- <11f659fd88f887b9fe4c88a386f1a5c2157968a6.camel@ibm.com>
+	id jH8IDtNVjGkKbQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 11 Feb 2026 10:11:31 +0000
+Message-ID: <183f1ce7-d45f-49cf-8dec-570a7e11dc9f@suse.cz>
+Date: Wed, 11 Feb 2026 11:11:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11f659fd88f887b9fe4c88a386f1a5c2157968a6.camel@ibm.com>
-X-Stat-Signature: rwoy64mu44nne1rribxwn1ta4wiuim1x
-X-Rspamd-Queue-Id: 75A5918000E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: introduce a new page type for page pool in page
+ type
+Content-Language: en-US
+To: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+ harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+ davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
+ david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
+ jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+ ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
+ kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
+ baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
+ asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+ sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com
+References: <20260210114712.55072-1-byungchul@sk.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260210114712.55072-1-byungchul@sk.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Stat-Signature: 8rdrfuyjja5qhxyipyxqtf3ii11mso4x
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770803740-707728
-X-HE-Meta: U2FsdGVkX19qOzM6rS3+JSHFHc81da7pmghuNz+LnCSCIcYeLZA3WcGNk1FiQbjzE3rsR1Y6w+LJxgtreg1dxfbaTIniUMFjAmTy0Zk5QaFpIIsaAsnRBZZJ+UznBcLBJu6G8GpowoSMmM1iT3y/HPHiu3nymEu3NObL46nfRkTMgRh5cfEUAf6V2QibGW8laR9c+W+vr2FQ7A4opDqNp/iNBwAIzGwfjhLGRlJnPFXTYfVuOK4uQkko3E+imhTzXf2zlSodya9Zcv7OLNeAybty8EwBENFJZa8tqcsthD8Fv1J0G0272u5kcWH67to104VpzCktV0i5Drz9fvcAblEpeoe1RfnqTkU0L8CAlMGPVUQvmFtpcFuQlIJ2solA9xMwuPyTDeR5GyCLWEVUty6lM6/KIrPJrfV94MmkJ9MsKiBGwxaNQ9nBhtE5mNWLt7DPtny5io9DUt4T9wWz2qp5lREfEL0rZKvNtJ/h5mpKKTsh0YxXsGutGWyE8mt0eIQJGhLrKg6OhhvZX03RxPEolqFPRoWZFaiYNPdNtASjRUZQn/skX5DrgU/BGPRgU/sDwvQnm0cXgyQaVKcdGc+SNuJs8U9cHDsfNHHkEQQ3R+GQhNkAHpE/7bjFOXLx3Zcl/LRSAe5z6tnxmpxeHHYMfPcwSLvo80Iq8igg6B3oJSWCoxXi6zlpxK5+6aVhGd1RdjJpRxw3zkl4k7C81YRjSAe9q2KPrGdB9JL5ZGB5gx7bqVop141qTi5D+VQLoYQgAns8COwtEMdzJ/HgD+hLoWUj0fSkJMg+x8Jy2FkynJuUfAa+qGo8y96WDQ0RFRi8jtfSWVkxKcwKS6C0F1rQYCieOahwPYGEcYJr2Sy3NzI+bcO0LB+teuOPhJzeDhXZBByk2KFuhxZAB0bWmBNZciqMUMvZLQDl4fFcYuqxumSeAsKpAWmh/KhMULOKrMgYG61csLu4SW8fvR1
- lRyHoiHF
- 1VhqU
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9177D1A000D
+X-HE-Tag: 1770804693-282807
+X-HE-Meta: U2FsdGVkX1+09g32OeqYf0j7tIPVvPpsRGS/fNj+G2Fi6je3iOj7iTcESaKWuMp1FCvIw48oIljOlCNXddPhQaVtbCNr27W9lSExf7uHknIjFvahYKO0onDayv78c//pGo8Iw/v8j9yN4qa9OEnEmiWbZeeZRZjDN0J89+dS/IyUyqqBgpQp2XjJ4mYWDz3gJ59veX8WYgYrxi7I1qF6aXg8kWyOarJT9Ft+4qgTN5ePDn5jyQ/NSxyitFwKw7uupyzQuTJs/08GzEla3px+geFkl/riUcIhRJ0+nsJGlBu+TMkFeQyVrjUIicdgp4fQJCp1qEs0NJ5XQ7Je94RpQS6nv+ITtHWyWT+foFDbhoOfeeGsimzl9D3bLs0ckk6beOYwj1Bqs8wH6XUvoXElUVK8P0IMXz8kG6L287m10p9c8cCnBj/mJ1HENa1IXtU1gxX5c/o9piUlHUiFXZA4ldDVnjgkKnHaWtvjRQOzvkGX+yotbJT6qHphY22YbTwWaCGIwd2ewun27kypRIv65O8Hn8IdwNYmwOhM1dggTJHwpHMklfzzHhQRvWscEH33k09O6D+AoiINt+hjL7AC2nptfau7Ef4ctbVWsM7sSgtHbb2lvUU/vU8trGf44tgK33FTVyQX5jWcVqgLiQDfIC4ai9xkdKY1WiT0Qg1jUeDKBKCutcCEvNnTLI338FDy9dXsBTUO2WlcYPQdrknd82muwni77Ee2dbFksEUcRoXU8mXbe0w4ZpqkcRo6iLT6n1GuBiS6fDK/QsPc+WxRqwEM83quQbSWPCkLl8pG/Grdd28rAA4s6hgHOQ7+xi9o5/O1Kz43Y7Qi2oULnkvTQWat45DCxXWoo9ccyHWNun/xOkHBvX6EOegJ4f1ySjT+1rLeFf/b+5WxVCHKHfO64Z9zPXMpbhMy5wzJuoGPdrF2NGYQekleaXcoqafqXsRygFX8noYcG9bRMIrD4Co
+ ABvkykVx
+ hHkSWLprIIMq1QFpp7nnMG0BbhqsWrOpbqIXvbgutYQvVhBdfntpjKpNo6cXIO3/J98uK+lkY3kTwusWoeyEQim6y8c1TPGBQBCGYTtLSa8NyB5Z7tZZBdAfHGTTQuMha9xZZfE33uUnwJQxlalruhEuHLYhXfvcafJulvAML3aMj/bYS1KiIoqIbLuoXX8OTLKX+0NLXZgNHzCjgHfN2g6b2iOn3NNlIyVveAGD550UNpZQVyvapSPkcqYrviGCPt27ZG2TfnCJrlEWkUfKBseQnPoeZ0JJ/VnRJo6MPziY9IvJzFaIPDfGY45SNXyYrhoRyxmU3Ad997aB0RV6a83RyDrUfM5Sz8sYLbFA/kb5H7rtctlGoUAcu5FLPRK86o7gdE3LO+OzWpHJMeknp4sm3DsNH+XmfVX0lztmuLjYssLN5/Ijg3mOMA15p8WELoFDPXbQi47Zy+AJ5D6N4ceL2nZkrDAd9/z3mdaRwuE87WQBJ32qnDxSpZDKlGi9wbMMUXfY2BRGDnN3oTESztM51yd+mjxctK4+thO1e3w89vOhv3T4zuvxTbWgD4/ov9DU4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,88 +191,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 10-02-26 21:02:12, Viacheslav Dubeyko wrote:
-> On Tue, 2026-02-10 at 14:47 +0100, Jan Kara wrote:
-> > On Mon 09-02-26 22:28:59, Viacheslav Dubeyko via Lsf-pc wrote:
-> > > The idea is to have ML model running in user-space and kernel subsystem can
-> > > interact with ML model in user-space. As the next step, I am considering two
-> > > real-life use-cases: (1) GC subsystem of LFS file system, (2) ML-based DAMON
-> > > approach. So, for example, GC can be represented by ML model in user-space. GC
-> > > can request data (segments state) from kernel-space and ML model in user-space
-> > > can do training or/and inference. As a result, ML model in user-space can select
-> > > victim segments and instruct kernel-space logic of moving valid data from victim
-> > > segment(s) into clean/current one(s). 
-> > 
-> > To be honest I'm skeptical about how generic this can be. Essentially
-> > you're describing a generic interface to offload arbitrary kernel decision
-> > to userspace. ML is a userspace bussiness here and not really relevant for
-> > the concept AFAICT. And we already have several ways of kernel asking
-> > userspace to do something for it and unless it is very restricted and well
-> > defined it is rather painful, prone to deadlocks, security issues etc.
+On 2/10/26 12:47, Byungchul Park wrote:
+> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+> determine if a page belongs to a page pool.  However, with the planned
+> removal of @pp_magic, we should instead leverage the page_type in struct
+> page, such as PGTY_netpp, for this purpose.
 > 
-> Scepticism is normal reaction. :) So, nothing wrong is to be sceptical.
+> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+> netmem_clear_pp_magic().
 > 
-> I believe it can be pretty generic from the data flow point of view. Probably,
-> different kernel subsystems could require different ways of interaction with
-> user-space. However, if we are talking about data flow but NOT execution flow,
-> then it could be generic enough. And if it can be generic, then we can suggest
-> generic way of extending any kernel subsystem by ML support.
+> Plus, add @page_type to struct net_iov at the same offset as struct page
+> so as to use the page_type APIs for struct net_iov as well.  While at it,
+> reorder @type and @owner in struct net_iov to avoid a hole and
+> increasing the struct size.
 > 
-> I don't think that we need to consider the ML library appraoch like "kernel
-> asking userspace to do something". Rather it needs to consider the model like
-> "kernel share data with user-space and user-space recommends something to
-> kernel". So, user-space agent (ML model) can request data from kernel space or
-> kernel subsystem can notify the user-space agent that data is available. And
-> it's up to kernel subsystem implementation which data could be shared with user-
-> space. So, ML model can be trained in user-space and, then, share
-> recommendations (or eBPF code, for example) with kernel space. Finally, it's up
-> to kernel subsystem how and when to apply these recommendations on kernel side.
-
-I guess I have to see some examples. Because so far it sounds so generic
-that I'm failing to see a value in this :)
-
-> > So by all means if you want to do GC decisions for your filesystem in
-> > userspace by ML, be my guest, it does make some sense although I'd be wary
-> > of issues where we need to writeback dirty pages to free memory which may
-> > now depend on your userspace helper to make a decision which may need the
-> > memory to do the decision... But I don't see why you need all the ML fluff
-> > around it when it seems like just another way to call userspace helper and
-> > why some of the existing methods would not suffice.
-> > 
+> This work was inspired by the following link:
 > 
-> OK. I see. :) You understood GC like a subsystem that helps to kernel
-> memory subsystem to manage the writeback dirty memory pages. :) It's
-> potential direction and I like your suggestion. :) But I meant something
-> different because I consider of LFS file system's GC subsystem. So, if we
-> are using Copy-On-Write (COW) policy, then we have segments or erase
-> blocks with a mixture of valid and invalid logical blocks after update
-> operations. And we need GC subsystem to clean old segments by means of
-> moving valid logical blocks from exhausted segments into clean/current
-> ones. The problem here is to find an efficient algorithm of selecting
-> victim segments with smallest amount of valid blocks with the goal of
-> decreasing write amplification. So, file system needs to share the
-> metadata details (segments state, for example), ML model can share the
-> recommendations, and kernel code of file system can finally move valid
-> blocks in the background.
+>   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+> 
+> While at it, move the sanity check for page pool to on the free path.
+> 
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Acked-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+> ---
+> The following 'Acked-by's were given only for mm part:
+> 
+>   Acked-by: David Hildenbrand <david@redhat.com>
+>   Acked-by: Zi Yan <ziy@nvidia.com>
 
-No, I actually meant the LFS file system GC as you talk about it. But I was
-just too terse about my concerns: As you said an LFS with COW needs to
-select a new position to write each block. When there is no free block
-available, it has to select partially used erase block (some logical blocks
-in it became invalid) to reuse. And for this selection you want to use ML
-AFAIU. Hence we have a dependency folio writeback -> COW block allocation ->
-GC to make some block free -> ML decision. And now you have to be really
-careful so that "ML decision" doesn't even indirectly depend on folio
-writeback to complete. And bear in mind that e.g. if the code doing "ML
-decision" dirties some mmaped file pages it *will* block waiting for page
-writeback to complete to get the system below the limit of dirty pages.
-This is the kind of deadlock I'm talking about that is hard to avoid when
-offloading kernel decisions to userspace (and yes, I've seen these kind of
-deadlocks in practice in various shapes and forms with various methods when
-kernel depended on userspace to make forward progress).
+Also for the mm parts:
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+
+Thanks.
 
