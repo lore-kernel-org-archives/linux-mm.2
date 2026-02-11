@@ -4,81 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD08AECD6E8
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 20:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E615DECD6E8
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 20:13:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1505C6B0005; Wed, 11 Feb 2026 15:07:23 -0500 (EST)
+	id 2C3E66B0005; Wed, 11 Feb 2026 15:13:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FDC16B0088; Wed, 11 Feb 2026 15:07:23 -0500 (EST)
+	id 2846F6B0088; Wed, 11 Feb 2026 15:13:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17F56B0089; Wed, 11 Feb 2026 15:07:22 -0500 (EST)
+	id 187986B0089; Wed, 11 Feb 2026 15:13:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DE2F56B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:07:22 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7E99C8BEF0
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 20:07:22 +0000 (UTC)
-X-FDA: 84433260324.09.1D323C1
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 33371180038
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 20:07:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XNS48cTp;
-	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A5BF6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 15:13:15 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C10038BFB4
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 20:13:14 +0000 (UTC)
+X-FDA: 84433275108.12.62C6702
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4099210000F
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 20:13:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ErZ1zPfi;
+	spf=pass (imf05.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770840440;
+	s=arc-20220608; t=1770840792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sqBidFRQ+ST/YGTo9ZDnULRr+F+RZE96QEIcss1eeHk=;
-	b=X4Ys2KcII9tt5Ucy7p3lMArVOEh35NWtJyb/GG3j7w0vv/fHSRyFg9c1mOZ3L7l1gplzz0
-	kirvi4J56H6ArEs5pPs2pD10CJq9LP4SaLtbvDOSONxMQrO41yTqOq9DfVgZ0pKmMquQMm
-	MO3UrkWM2JydgEWWRLMyX3b2he7n4Ro=
+	bh=EHbeHaJkawriZPhofQU6ad/c+sJK4oUU/4eorLzhbks=;
+	b=EWuvCHpWjnt1/nuNqKOcKwB9QG7Yc94i0pYvuXVfpJf8ug0K4ruCFqJBjLMGXNpRLfzoI2
+	bk6kwQ6P92a4+3B6oWOd9tjvaNdRT30TW+3r6pqLpLvkNOL39rWM2fITAwhlwruqKAmTsk
+	bjJprgGgK43+x7dDz58x/nqerAuRx+Q=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XNS48cTp;
-	spf=pass (imf16.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=ErZ1zPfi;
+	spf=pass (imf05.hostedemail.com: domain of dave.hansen@intel.com designates 192.198.163.7 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
 	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770840440; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770840792; a=rsa-sha256;
 	cv=none;
-	b=CGOq5lqQrf3kg5YyiAAWdy++gzu2NWmFY1pX2IZICVe4bNMv7wxJVYopIgC3aNsvdnZqEj
-	hco6AtEy6KLoH7VOHQJ0BBGsDlQ9KP25vv/5VBEB/6zsihhZ/WKmLYdzG38hG8XNdFXDSA
-	CkVgMk8fbgY/9gMKls2Y2ncZR8105PE=
+	b=DM9lYMELUMBGNo8Je789jyIx4Oluera8hFy7VrRegufkUTVoywJdApKoyZpi/DP8wAkahh
+	/ZR7SkqJQTdpbASbsUfy/sO8E/YMdqY8gcw/r/V4GkhoWwkpItf4Jm7zenDaox+dw9Iz9J
+	8WFFSdeg2vufLYz8KUR7DThurjUheTE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770840439; x=1802376439;
+  t=1770840792; x=1802376792;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=sqBidFRQ+ST/YGTo9ZDnULRr+F+RZE96QEIcss1eeHk=;
-  b=XNS48cTpgOl+BcQ/Yxhm4prgofKolB99StFbPxc+NRGqHUqS/n3VojS1
-   wG2oHXDLDMAaR2twRG9+oLJ67kLg4rHlSTPj9G+lXa7fJCSH6qJklDMQk
-   9nb19LJI2sS1FtSRhnurMJtUbzEkb3ppqAAPkwS21zAUCCS7QRfW9IlEx
-   bKVmoZKAhdIGk92//Viq1VqwzXQdYYB1jzoVeo2xkm3THXSJ1mCSM5WSc
-   GR3fndnHg7idmrQN5T583wG3+U/188JWiUr4Eo/XRubWugVSHOeV4TnUE
-   ZYWJn/9DNVtHWLhpZZirOrVPwGB0t8yHyyV5wzLw0eWWCHJr+dag9M4EB
-   A==;
-X-CSE-ConnectionGUID: NXZbqXoQQISOyo2b2wfKOg==
-X-CSE-MsgGUID: AMKU4CbWRX2pl8uGM0KZrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="82324695"
+  bh=4qWoIzqklk5CjRX5mZLDzkQjYyxvVRRXeruY5T7q05s=;
+  b=ErZ1zPfiDJKyhhXSJhLz1gGRDrGlTiYpY47WSD111n1y8bIGS55CuTd4
+   gctVtTwf1/Q5Tri7LBbncN5gefsvpcoeTB5Nc8KaX94qLQFwZSKS1QrHb
+   biaRK8N/L0Ys7IieeFVxCpYi/Z8mDc5jPD3aQxVKeRl1h3iPpMWoJMpLi
+   dZCv4uLRplB/6C4ahckNVH3/OmAvVxVAoTY2YskcCZg5WLR5api9VhbQv
+   z1tRZykLPJoH/sgpu6Esvte+f2c2gc5OSFaFByoLCvsMKKAttJrmcuZ/J
+   xxuYndg8cPlPcxXgc7Lai6cvL79CcabzK/kBR62H1ZnKUbJdI3i8/qq3x
+   Q==;
+X-CSE-ConnectionGUID: aRKb7JLGR4KRcsEf6x39fw==
+X-CSE-MsgGUID: pDeiSp06QgON6k//oNlTRw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="97457869"
 X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
-   d="scan'208";a="82324695"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 12:07:07 -0800
-X-CSE-ConnectionGUID: 3tI4nEuBS5OPg9kHE/5ToQ==
-X-CSE-MsgGUID: 4LUtJmqFQEmxSs+x2ppV7Q==
+   d="scan'208";a="97457869"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 12:13:11 -0800
+X-CSE-ConnectionGUID: Uc+oAK0ZSuCPNhuMV1vT6g==
+X-CSE-MsgGUID: KtgB+QUdQeS/k2R1iMQToQ==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
+   d="scan'208";a="212180727"
 Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.108.146]) ([10.125.108.146])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 12:07:06 -0800
-Message-ID: <29599d4e-c2c7-4f40-a444-28dcc3768ce4@intel.com>
-Date: Wed, 11 Feb 2026 12:07:05 -0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 12:13:11 -0800
+Message-ID: <0ead4a2d-c88c-4c89-b1dd-5954c28edb99@intel.com>
+Date: Wed, 11 Feb 2026 12:13:10 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] x86/mm/pat: Convert pmd code to use ptdescs
+Subject: Re: [PATCH v5 1/4] mm: Add address apis for ptdescs
 To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
  linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
  "Mike Rapoport (Microsoft)" <rppt@kernel.org>
@@ -86,7 +88,7 @@ Cc: akpm@linux-foundation.org, "Matthew Wilcox (Oracle)"
  <willy@infradead.org>, Dave Hansen <dave.hansen@linux.intel.com>,
  Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>
 References: <20260211195233.368497-1-vishal.moola@gmail.com>
- <20260211195233.368497-4-vishal.moola@gmail.com>
+ <20260211195233.368497-2-vishal.moola@gmail.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -132,17 +134,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260211195233.368497-4-vishal.moola@gmail.com>
+In-Reply-To: <20260211195233.368497-2-vishal.moola@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 33371180038
-X-Stat-Signature: mfq7ytbnejqbq4x3nqwbm5f58wm3yoik
+X-Stat-Signature: mx7euj8zyuwbsom4u78jro8zawh8zqmq
+X-Rspamd-Queue-Id: 4099210000F
 X-Rspam-User: 
-X-HE-Tag: 1770840427-26815
-X-HE-Meta: U2FsdGVkX1+oTV6x282VQTSAPOzqWRZSZUOEDvwJBciKLBkNAAJCWx8X/eDts/sAo8ma0NeljSEPb6IsTEKNo4jlIaTbYXnNdRqfnlhjqPmoUWLGFsBYL3DgK+aXC4pMb1ZpfVZN/Q4YmMGPAqimwoqN3oX4wPRJQRx+fvTPnqJJocgnRywO/LYO/oZWGPqCSl+uDZNMjRmohgeMpo7+u9ztQPImiPeSDCWqbU9zVPcxqDzJrGn0EQ+fXF61sToHslpRMVr7IQj/PgL3yMtjMQzwQ9yVmZMD6enREqwJ7ume+3qzrAXuS+nNAXtKBuX9RRYTa/4I++rCQlRQmGSe8cy0oXq30vxhHAfsekOArqs2ou3X6eZL7CzvTKEeVADgYkhHcB/a0rhnbsz8a25L8RmO/ah1tA5DTdLRXoed4c0K0r2XE2T36jecPCb0UnlgVRgby/vR78mn1ALbeq8Hi3jpt06Z8ANd8P5PbevebWJGoA/qZn3Ktbz1KxksS2oTIZTmzRQbMqtSHNbuGb8xXX+SKV5YWzTHHMST2b2lHpEORmV2ki7LMmQPqwwC+YAI60kvISuLXEmJLGOcbwgIgC+qIRCFWH1IWDZRsO2bxe1oTiZwUaMUtdBHVS+1Jtpcx20TrotdCvC/T6Q89Q3veGXhgTJpSNnhsdByqN30vIofVyeD4UPpkK35gTBOKSDgwq9jQE3df/SD43NckKi/k3BkASE54A19cn+f44+78ow47i5fwke1W8FUxcGvNtknPsXGdxzHKrdQihnrNnYANCSLpZAD4lLZpvEpB5AYHksPVOpeVetfn2dwHgcD/2+oI15QtAWswt+iyW5eTCxX+USnQJ7C8GNxn58kImjLMO6DIuez7OmAY22Ba2aJouYaF2DMQrL+sKB3lGCYfNect78W5K+nm/lMq+HxTUfYrzWIfVRpKuKKwS+wFIVGl1ALY3RF2mrfvnilrvvugT7
- fMYsn1PN
- CxbsrFFiJH7PuvzbNea9Du8tlqjpf/lp9PCw7lx2H+6OofOAjKQTh6PdQ0F9PfA+tcT1YBWv24pzWz6JCYdOBxJKJ1IABnym/wSyx3PhDZqWeO/RDfJdByYBxCWw4PI7kP1K4ZwOENIXljtITdFPQQQR2OZW11BfDJAo6MtB3usVbkiR25gVpTVDroOEFa1q0QDB27XhAXYcadUclcIRFq6O50Qt6k3vgv11ScR30Y4/tGXQTX5HFOt1OAYMxHXbt7Zxwisly1Xdh3TLe8b0/x9yBhO1GcKcYgbmtX7KMFSOcOpo=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770840792-670009
+X-HE-Meta: U2FsdGVkX18Ku0Z2FZZDHsK+mdMH6bN6gjKDF9/E6YSLs87XrTeqUbpEH3Zcgui3JCpWkX9uy2DqvmVregCgaQusmJKVAcbYFg75wu3WKKgWYKt2FpCjbHDhPssteKoaKH62ZXuCm4VOSJk1oVfHwTtGqwpX3lbpfOawih5FM/K9WbW/6/pSOqUktDQf+2CA4yIp0YRg7aTMFLwEzGR8Cq1WxCANI7kgKU+aSsYjPNob9KPIWYz0l3fiwp9THWlnjoIMLcPOTuDC4si1bZiocpuZ1D5CoC/yZaCd4IG1T6BDAw92jL2tLQjiy1+jdEljd77SSAjSzs9DYcwOfy2i09fl+LxjPz1ZzrgyRtZSc5ejGJ2pbM38ueVVpqWx7bpIZpCdTDffvO8YSmxRe6w6FsaouEulN0OexJS6OSluFPW31jRbeYeI+n6pJ+O/QKvqoYTwVnMhHmhOigQWF4yxNVyoDdSj79L20ekSQSG09Gn5w9syFSFCrYmRlPxT5ZUlIn1pRYHV6krhClj10jNmZRwcN3l99z5JYtdZjVbb926hPfVPsxWjDcyFdjIoL2zqbnVPyFluNEXw6uokUZERgkR380oS/cUjVyeQWRRor3Z823ItstpO+iqTaXe1y1+oRmYbrNFpCQo+RTB9ZZ7tITwntHZHRhPNQo/qA4CY9vRqq7YFfYZ6CtyqFKukpg0qwvtm1iH9a966oFuAgMSEsb6yRQ4mDDNnajgWKqLhcT0cMIZhknj4IOd52b7WiKYjlmZGyM2NxsTpX/bTFWqIK7vSZH+AoE7ySyL5PbhJr31BhNQJ6YYLMLX0cye+2Ube6Z1DkuLhXwIwcwjpd0WtRx+yWWZiGwVqzR0lynEFBP3qPHUbaSS9aMdc9d5MU/zxwpHc0D7A5U8RLhGASWmmpIXcc8pvuyjy5Zf/n4jqUvx697BIkFXzsRfi9Izob6Bgikct1Dc0bdhgjt7GGEs
+ wuYzn6Bx
+ sUE1V4zSaya22PFQsR4bGJZIklpHFk843dX9g5f9gvrufQ8o2jK5xApb16UmFjOeNNOwgcTLmqYnkj9pFQqYG5bIYNiksaEx8HTZ/MJYIfuc1p8EXl4vz6lt66oeDIAn+os9EQtkIw8PYdEuwSENOD3/s/odr5clccnL1P9mFolnYFveiK+Ttysuao1M3Y0zfDzoRlSqi32h/XQlTlEOlnXtI/FI09hYftiB+vLQoyy8XT4g=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,12 +154,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/11/26 11:52, Vishal Moola (Oracle) wrote:
-> Also, rename *_pmd_page() functions to *_pmd(). Rename them now to avoid
-> any confusion later. Eventually these allocations will be backed by a
-> ptdesc not a page, but that's not important to callers either.
+> +/**
+> + * pgtable_alloc_addr - Allocate pagetables to get an address
+> + * @gfp:       GFP flags
+> + * @order:     desired pagetable order
 
-So, pages are still a thing, whether the API says 'struct page' or not.
-The hardware kinda uses pages for page tables. ;)
+FWIW, I don't like how pgtable_alloc_addr() looks in practice. It reads
+like it is: "allocate a page table address", not "allocate a page
+table". I don't have a better suggestion other than having:
 
-Could we please leave out the unnecessary churn from the renames?
+	pgtable_alloc()
+
+that returns a page table pointer, a void*, and:
+
+	ptdesc_alloc()
+
+which returns a ptdesc*. But I suspect that would get confusing at the
+point that ptdescs _themselves_ start getting allocated.
 
