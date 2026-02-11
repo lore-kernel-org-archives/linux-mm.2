@@ -4,151 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 854BEECD6C1
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 16:45:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3949DECD6C1
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 16:51:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E509E6B0005; Wed, 11 Feb 2026 11:45:41 -0500 (EST)
+	id 75BD76B0089; Wed, 11 Feb 2026 11:51:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E28516B0089; Wed, 11 Feb 2026 11:45:41 -0500 (EST)
+	id 70A546B008A; Wed, 11 Feb 2026 11:51:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D55A36B008A; Wed, 11 Feb 2026 11:45:41 -0500 (EST)
+	id 5EF886B008C; Wed, 11 Feb 2026 11:51:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C5C736B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:45:41 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7F1731B3C29
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:45:41 +0000 (UTC)
-X-FDA: 84432752082.26.AF80F6E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id C950D8000F
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:45:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pk4QdTTS;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BDC66B0089
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 11:51:20 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3CA5C1D56
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:51:19 +0000 (UTC)
+X-FDA: 84432766278.30.5B8C072
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id D573B1A000C
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:51:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BTeDQtjn;
+	spf=pass (imf19.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770828339;
+	s=arc-20220608; t=1770828678;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iN5IMdiagIW6su5kp6dtoWyAVJD+SHgfdwugEL+R9T8=;
-	b=hBriNWyNy3TkOpkoijjeqx/dv/XYsJAyChgS43+FHysfMXXYGfqM2nCZdeG5MEzCV8tY3K
-	7UE3vCoZ1pWOK86whJI/egqnwQKH35wZJpnCAIjqRqkgeKaRgZhQad0dtV3lqReIYrLjCb
-	UQVOE8leC8QrQf+JBBWyXVsb1Ql5/xQ=
+	bh=7xFvXHAT/zMR6zjSA8LwINVX0TELcD51yiOWZ67mo54=;
+	b=e4ujsE+8KLO9+KovdQCwnSC2il2GlraZUiAgVlL5qnGDI8j5wl5tRPH44Y4lX2zvV7Kwzk
+	I2MeFqd548ikZiCc2mEnLv2wMPsaV2jy7WTyBJhVkbDK9QEWITabhLoW5GGOvWULqd0Ddt
+	IqGE25Cz0yN2+evkAXt3jNFl+6Rg7q8=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pk4QdTTS;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770828339; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BTeDQtjn;
+	spf=pass (imf19.hostedemail.com: domain of mtosatti@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mtosatti@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770828678; a=rsa-sha256;
 	cv=none;
-	b=UZqvG2KtzZMNncZz4+51rG4CgKWZRBfgxzQ9l6ky8NwZi+vOn3byJ4CiOe6fqvd88j1zxn
-	PlRP9glfAnoXFmLtVjoIMyzfXa3b+ue845O/dUQbvZqJsrSRH9ohGB3Sj8I5CToa1c2gRh
-	S8gRGrSqcXjczPMEE4NHUo1Lvy6AyVw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38EB5600AD;
-	Wed, 11 Feb 2026 16:45:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 437EEC4CEF7;
-	Wed, 11 Feb 2026 16:45:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770828338;
-	bh=ptfH5xoqmieZP4iCxFCvPxbGMO4BUbpqj9XhdYwlR9A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pk4QdTTSql2H+vUPzMiVYTA1JaIOQqoGNh7f/wwtMJeYLY90MlFXBFhj46bvXc3bJ
-	 YyS21HWNl+M5Ttedla5BcyoN3buJ8CXGRmeKzHAMd+QTACA2dqv4pXQUhWMUGc6Ri3
-	 5KNIb8FEztaP2N6IPxdJkByDItclGB4Re/iMJnotgYwN+xYZtex691b9J1vFyKpYPn
-	 p2128rlGoXOIabfUi61qyyORkGmGQGCUbwAmNxE2nnR8BYOc5rqYVH8nnVs+R1zNbB
-	 AI4ZnVAlfTUh6N4jDMKqV0cErfDgOd1kepVXgmotOCQdtJmu64Q/lWgzfVKpVB44aM
-	 Avir8haEx5nQg==
-Message-ID: <5eb7aae7-f642-43d2-810b-d7afd867d665@kernel.org>
-Date: Wed, 11 Feb 2026 17:45:30 +0100
+	b=WpBHlv81LjIORPoTv+jyAxWoLK6Mc+BlmltvBMUWzUepGmjQrtvH25YAbk4S29RXyhnRFb
+	ACfItQBe9FvWO5yBnP69m2p/hniTjsuGxJqEuTFHvIbI4gf2eGLQQWjwnOyKwFiuj93/xJ
+	gIV8GEbIiHRe7sHqoQTcEFnFKbZCc/c=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770828677;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7xFvXHAT/zMR6zjSA8LwINVX0TELcD51yiOWZ67mo54=;
+	b=BTeDQtjnUJWEsFtLWDWSus2llPj5ID0ZypT0IMiofDJ1INuT3W1wfV9PRWy3Sk+YZuP5J+
+	GaRmPQMs8zVKGCTdPKj70bLqaD+sPkOh3mlwzjVyoG0RzHvAxL/4MyPazAh8lrBc4S86yT
+	ofPyHbbUmrNyxeHTQSCT2swUdDSedmo=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-644-Eh2aTJWBPDOU7fau04qHuQ-1; Wed,
+ 11 Feb 2026 11:51:13 -0500
+X-MC-Unique: Eh2aTJWBPDOU7fau04qHuQ-1
+X-Mimecast-MFC-AGG-ID: Eh2aTJWBPDOU7fau04qHuQ_1770828671
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1BA9319560B3;
+	Wed, 11 Feb 2026 16:51:10 +0000 (UTC)
+Received: from tpad.localdomain (unknown [10.96.133.3])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2A49919560B7;
+	Wed, 11 Feb 2026 16:51:07 +0000 (UTC)
+Received: by tpad.localdomain (Postfix, from userid 1000)
+	id 974654084501B; Wed, 11 Feb 2026 13:50:45 -0300 (-03)
+Date: Wed, 11 Feb 2026 13:50:45 -0300
+From: Marcelo Tosatti <mtosatti@redhat.com>
+To: Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Waiman Long <longman@redhat.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Frederic Weisbecker <fweisbecker@suse.de>
+Subject: Re: [PATCH 0/4] Introduce QPW for per-cpu operations
+Message-ID: <aYyzZbh/YRMDcviS@tpad>
+References: <20260206143430.021026873@redhat.com>
+ <aYs6Ju2G4bm6_tl2@tiehlicka>
+ <aYxviLoWsrLqDU7o@tpad>
+ <aYywl1hdBQP2_slo@tiehlicka>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in
- file_thp_enabled()
-To: Ackerley Tng <ackerleytng@google.com>,
- Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- seanjc@google.com, pbonzini@redhat.com, michael.roth@amd.com,
- vannapurve@google.com, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com,
- Fangrui Song <i@maskray.me>
-References: <20260209033558.22943-1-kartikey406@gmail.com>
- <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
- <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org>
- <CADhLXY5nrTXmWMPeiLg37euyVeQsNDRUvKmQaPdxtE1YhPq_jQ@mail.gmail.com>
- <CAEvNRgEoPs5ia+u0ODra6N4BdOwpYa04j8nDxwfNVyfCOWnM6g@mail.gmail.com>
- <4ed1b111-f2f1-4f89-9308-fdd9d706ca37@kernel.org>
- <8f188d73-fc97-414b-bdaa-e72032b2bf82@kernel.org>
- <CAEvNRgFw_P-GZ=Z4irGheM4O-RnXkd_bdAd0AT7fUuwXEnSqHQ@mail.gmail.com>
- <c4c06a75-e50e-4530-80e3-13724c08a949@kernel.org>
- <CAEvNRgGg245-TQn2HFSadZ7gmz-FxsAQ6=N14BUgiYGHhZeLeQ@mail.gmail.com>
- <bac19363-0705-4bb2-b022-66054e1f28cd@kernel.org>
- <CAEvNRgH6yfFtOK3E3__hCjkNTQr55y-_N=SpBBr0i9_q6E2_8g@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAEvNRgH6yfFtOK3E3__hCjkNTQr55y-_N=SpBBr0i9_q6E2_8g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam11
-X-Stat-Signature: k3jfoopn4cbp4e7193yeh5s7cj6tbpbp
+In-Reply-To: <aYywl1hdBQP2_slo@tiehlicka>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Mimecast-MFC-PROC-ID: CSoBLjrVQCHbF6R8bDGVfw4Hkl926SG9025lBFPfkM4_1770828671
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C950D8000F
-X-HE-Tag: 1770828339-202266
-X-HE-Meta: U2FsdGVkX19TWY9JVE1fxO2a+Y3ITHBE1YylRdHYI6iWn3vhu8qAUjtC/BjPcmvZybHhM58Rg6TJeGO3Rlei6Lm3WVaMyrDcoYOD3/xlr4lwG3OjMDlcWXUUVZLBdeEe6rtl2CBW+HMYENdlkT/w4a0QGqiE6czGKr6IYlwedyNqE1fn3eM4Jf53Aqt2e7Zoo0xoSF/bLKZlVuWjEjOSu0bm3an3WJHxNZthlebGl697LH+J8Vb2lRbKZBp/h7pmWsSq0y9to+ZDyni+wqOxZMBrmi9XJBbKvgf49QSLb78mOX2KHZlP8/Fn8t26E9/fJOAGmTGrTzZpXcjlW2Mwituo2sBkbU3bhrP01jfm4mpWRM5rXhXqg3ZD+eLbVkdNGQOfzL/n9zsMyDaiiXK17qVJ8oLUoacexbg8ERm03k+33an26UVUVWm4yWUX5LrKJFklWYSie5+m1sQutW9IzYNcirQfI8cQibe1o2qPPdNX9Ikz6l7qRgRbk2yH9YoIBUZZfaa82MxiXlCFvqqicnIFwhfbzNheYsqlfjqRBp6yNa3mRfSvOyFoqvq48xWStX1XfZOrrWh2N9dAFrxSNil/S0dr/0eF5/Nn7QAmjh/kg7E3mlKz+5cgAgBieCcCoe/dh3L6lorxTjWqhxTVZIHxbbMeHGjf0fblEl+r0Xn70b/Ruatx4d2SBSbGsCo78AMbthHQuhxixdHc1ZgCfRGe+hHRIhVhLz9MowT1J/wdY+msyA4KWeiJuyJPA7pwfh9vEDyvxRttFOhavEyfszTarwgDI2WCUKgl2/3bkceCHz301G+pDDUzYHiuL9rIZ87ZBjGt8zrP/Xqxlg6G/K2t19k7zUW5JIjLwyyXUEccs8aUI1vv70QHnDeA4WsxTOtNAIz7PaVudajEmIJr+/IlfjdPpk2V3Tzirw7Fb6mAf5pHZjWy9LDuVRTGHV1l4aCbDXyECLH7c3zKoNf
- fsGL5IDU
- Y0ggj9E6VLxcPjXmIBC9gpRm0BaFD3nDYolOmZ7VLE6lgfh4ZH+b2c05l7Y73WoQ3fjfZQAED3kZp5flaeRkRVwQ5hVeTVZsaSoiOpy7Bvs9+AZoj6YZmsp+hboHAN7LAU72vfEpQBF9GsO0SAnOMqd7BR34w7Gm+3aFkdffVBsyRDGVaAzjMLgVsCNO2fvbIWexv9CaD6zcKgu3MMOgNLdeOPWybIFNYLtzQdDRA0JKsp2ukGuHtPduNRVhf9E5EIbRWEnnhe9ugsuZs481Yta53j+UMuzxUBw4AM0l0GuKgE42EeePQSGE8TjtnoS8pk0+vdwPM0YbMjkIdDNWxJEGWWTcwXe2av4gyEiY9fUih5zmoFMWqOFle9pXC0uh5inDwSbyzKWgmMeoNOKJ+XR2k2Y433aBkfgsGqpmgjDMxVsI=
+X-Rspamd-Queue-Id: D573B1A000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: dkjd5bqd49u157c5ecqyhkjznei16wst
+X-HE-Tag: 1770828677-235750
+X-HE-Meta: U2FsdGVkX1+YOarK5muVfBhHzajIq7iurDP//p9rSU8YU4i6JMu/iaHFeHfUbeIvtjeltSbuSm2VFbfQEQ5RiRaUxBthWjov4NyJSvfGoQ0Wmov8tDBVPHT25CFIdb9nnPOIccEv5DIHHnexaJgBm2Llt0/iSF19n8lGBgZB70zG1UxIM4cGz+VzgcCvXcTr188S/w55DW0efuBBFJ5kiRIrUpuThC/nN4JdmsplO2VDVtjgEFU9tD+AyFZ0MXR9ila3e8GSNOMkVyXG20fTg7pbPxSd94Di3VKtEVng6raGb4FNLXhmd7oZ9IS7PvD3EZzPeNKQQro/PCe1b3U4ZmyREMg1YmYjl1JP6HpaM4A0x5LPQ3SyRcoirDJv2OwgoZcfdx55pycKjH7UKjcctTCSfzfMOl7jiIn5Qlo1Eqp0nD8y3trN609myGYz9KG+9gRIxMY1dqwZRTXZv4FmDyibKhjIuW87VDrg1Ho9P4T9WJ5dya/ZlCbb0aS47149hsheqdXBs5p7FNVsPXbhrT3MDSO4eF/EBwgC41pSeZgF91esqhaWTghdGmSHRj+GinzGe0sSaGoJnxMRkSdN2Eu6SPAReyeTRolruH15AAcQqI5dVKQ49aL+MTred/bsrGWGsjeVI+HV+cI9/WWwYLySct4+TUUQf6sdK0CSyy87JoG3PR9GPmAqPqq/Vf5tXAvu9829BJ3P8gY5HXxyUUoRaY152UY1+VUwA59f6MmPClP/A9zTn2Ds+P6xXBpPivo71omqdSHt7qgx2GEvAI0qODpaXpJZJd+56nKYvkDtsOF0reFcDM2864xZ0WqjFF3YC1Te4P33CtD3DKb2ZOlQYDflg41lUutv5RXwGsTOHsTIKhElHCoFJ3zEz/FzoQuZkLYfF2eq0GTuTKc5yoIEtz0nWfFAotnMCBsA3sXoUeaTu+uIB4KiAiJcBBtdefjVnG6t9gz1ZxgbqU1
+ zE3pOAik
+ XeV3K+tsMTuDyT9PN49PRTWiSa3wtSVeBAmfsrU7xyJRIKV5b6OLtapuyDCUm38qFA7rIBECK74Vv9kF21JrEufJ/M+FPqGHg6XDVNFL2B+3tvCQgtdE3w1aMYHn6LP1WJIRylpae/xk4QUaKP2VeuZ6uE7HzbJkmkJaLsfk9kbUelXA2R6MeNOPF4+UlDejI2XyYQyRXNCQdT1Kld728/XIwn1ODtUWpunpyBr/ueKTjRAIyXfb99Q5EO7Ck8SUHIouHJF1OIkor7W6GWdriiwPNq5MfD/fXau5mDBqqCnp+C0TbAQm/Lgj0q7UKhDw0Yl9AhFJtEv6grV88bhcHgP9Eq9EnTYsq3g5qDcN/3+rJLIETzoIYT8VWD4QsKTddMaaArPumYa/ZuvA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,94 +122,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 16:38, Ackerley Tng wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+On Wed, Feb 11, 2026 at 05:38:47PM +0100, Michal Hocko wrote:
+> On Wed 11-02-26 09:01:12, Marcelo Tosatti wrote:
+> > On Tue, Feb 10, 2026 at 03:01:10PM +0100, Michal Hocko wrote:
+> [...]
+> > > What about !PREEMPT_RT? We have people running isolated workloads and
+> > > these sorts of pcp disruptions are really unwelcome as well. They do not
+> > > have requirements as strong as RT workloads but the underlying
+> > > fundamental problem is the same. Frederic (now CCed) is working on
+> > > moving those pcp book keeping activities to be executed to the return to
+> > > the userspace which should be taking care of both RT and non-RT
+> > > configurations AFAICS.
+> > 
+> > Michal,
+> > 
+> > For !PREEMPT_RT, _if_ you select CONFIG_QPW=y, then there is a kernel
+> > boot option qpw=y/n, which controls whether the behaviour will be
+> > similar (the spinlock is taken on local_lock, similar to PREEMPT_RT).
 > 
->> On 2/11/26 00:00, Ackerley Tng wrote:
->>> "David Hildenbrand (Arm)" <david@kernel.org> writes:
->>>
->>>
->>> Seems like on 5.15.199 there's a hugepage_vma_check(), which will return
->>> false since secretmem has vma->vm_ops defined [1], so secretmem VMAs are
->>> skipped.
->>
->> Are you sure? We check for CONFIG_READ_ONLY_THP_FOR_FS before that:
->>
-> 
-> Ah... I was working on a reproducer then I realized 5.15 doesn't have
-> MADV_COLLAPSE, then I tried to hack in an ioctl to trigger
-> khugepaged. That turned out to be awkward but it got me to look at
-> hugepage_vma_check(), and then I went down the rabbit hole to keep
-> looking for the similar check function throughout the other stable
-> kernels... and amongst all of that forgot that
-> CONFIG_READ_ONLY_THP_FOR_FS was unset :(
-> 
-> You're probably right about VM_EXEC.
-> 
-> Here's the reproducer for 6.12, I put this in
-> tools/testing/selftests/mm/memfd_secret.c and called repro() from
-> main(). This time I enabled CONFIG_READ_ONLY_THP_FOR_FS :).
-> 
-> void repro(void)
-> {
-> 	uint8_t *mem;
-> 	int ret;
-> 	int fd;
-> 	int i;
-> 
-> 	printf("%d triggering secretmem\n", __LINE__);
-> 
-> 	fd = memfd_secret(0);
-> 	if (fd < 0) {
-> 		if (errno == ENOSYS)
-> 			ksft_exit_skip("memfd_secret is not supported\n");
-> 		else
-> 			ksft_exit_fail_msg("memfd_secret failed: %s\n",
-> 					   strerror(errno));
-> 	}
-> 
-> 	if (ftruncate(fd, SZ_2M))
-> 		ksft_exit_fail_msg("ftruncate failed: %s\n", strerror(errno));
-> 
-> #define ALIGNED_ADDRESS ((void*)0x400000000UL)
-> 
-> 	mem = mmap(ALIGNED_ADDRESS, SZ_2M, PROT_READ | PROT_WRITE, MAP_FIXED
-> | MAP_SHARED, fd, 0);
-> 	if (mem != ALIGNED_ADDRESS)
-> 		ksft_exit_fail_msg("Couldn't allocate memory\n");
-> 
-> 	ret = madvise(mem, SZ_2M, MADV_HUGEPAGE);
-> 	if (ret)
-> 		ksft_exit_fail_msg("MADV_HUGEPAGE failed mem=%p ret=%d errno=%d\n",
-> mem, ret, errno);
-> 
-> #define READ_ONCE(x) (*(volatile typeof(x) *) &(x))
-> 	for (i = 0; i < SZ_2M; i += getpagesize())
-> 		READ_ONCE(mem[i]);
-> 
-> 	ret = madvise(mem, SZ_2M, MADV_COLLAPSE);
-> 	if (ret)
-> 		ksft_exit_fail_msg("MADV_COLLAPSE failed ret=%d errno=%d\n", ret, errno);
-> 
-> 	munmap(mem, SZ_2M);
-> 	close(fd);
-> }
-> 
-> This reproducer gets us to madvise_collapse() ->
-> hpage_collapse_scan_file() -> collapse_file(), and copy_mc_highpage()
-> fails because copy_mc_to_kernel() returns 4096.
-> 
-> memory_failure_queue() causes this to be printed on the console
-> 
-> [ 1068.322578] Memory failure: 0x106d96f: recovery action for clean
-> unevictable LRU page: Recovered
-> 
-> No crash :) Is a crash the requirement for a backport to stable kernels?
-I'd say being able to trigger that is sufficient. There is no real 
-memory failure :)
+> My bad. I've misread the config space of this.
 
--- 
-Cheers,
+My bad, actually. Its only CONFIG_QPW on the current patchset.
 
-David
+> > If CONFIG_QPW=n, or kernel boot option qpw=n, then only local_lock 
+> > (and remote work via work_queue) is used.
+> > 
+> > What "pcp book keeping activities" you refer to ? I don't see how
+> > moving certain activities that happen under SLUB or LRU spinlocks
+> > to happen before return to userspace changes things related 
+> > to avoidance of CPU interruption ?
+> 
+> Essentially delayed operations like pcp state flushing happens on return
+> to the userspace on isolated CPUs. No locking changes are required as
+> the work is still per-cpu.
+> 
+> In other words the approach Frederic is working on is to not change the
+> locking of pcp delayed work but instead move that work into well defined
+> place - i.e. return to the userspace.
+> 
+> Btw. have you measure the impact of preempt_disbale -> spinlock on hot
+> paths like SLUB sheeves?
+
+Nope, i have not. What is/are the standard benchmarks for SLUB/SLAB
+allocation ?
+
 
