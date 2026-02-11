@@ -4,106 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B38ACEB5961
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 04:08:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B55EB5965
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 04:18:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ABFF16B0005; Tue, 10 Feb 2026 23:08:33 -0500 (EST)
+	id 297236B0005; Tue, 10 Feb 2026 23:18:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A6E196B0089; Tue, 10 Feb 2026 23:08:33 -0500 (EST)
+	id 243D36B0089; Tue, 10 Feb 2026 23:18:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96CC86B008A; Tue, 10 Feb 2026 23:08:33 -0500 (EST)
+	id 1503E6B008A; Tue, 10 Feb 2026 23:18:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 836F56B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 23:08:33 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D8288571FE
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:08:32 +0000 (UTC)
-X-FDA: 84430844064.05.08E8405
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1F0C24000E
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:08:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QMKZovQU;
-	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 016FA6B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 23:18:56 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E437140228
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:18:56 +0000 (UTC)
+X-FDA: 84430870272.14.B9AE0B2
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7CB1920002
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 04:18:54 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770782911;
+	s=arc-20220608; t=1770783535;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=D2eMYc+39p5sjw2VZLfFJ4kKNtq8lBxRgNa5raKSCaw=;
-	b=vfsaCJowgCht8ROjfQYHD0a5lO8fFHbRCMIYsJOI3xqcyX56fmtdhPYZ2V/ClbrEPshF2+
-	+Qko3WTk0wQvf8GbOJSStjH53RkeZt0IIt4bLQxejihfzDatQF1gD8OTZDKGeOgjpv18wq
-	vdP9Jd/mzXXA299J+cjb0xBml/0rQr8=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GoNia19sE5JxJTF/7e9eEhNBEgLtCnk0qUI/60l/U14=;
+	b=qi9Yt/18aKY34wMz4fEn33R0W+VEa+j+7PVBbeSiN4pSrKwDoe5bs9+WgScgB+VLVJ2GGW
+	9v+0F3zW2QguLqxpRz9K7PnqtNQ2AZHrz7fjZjpTXcwwBKks8fX4HUyLs9BF+Dl0STkEoP
+	NIJkv/JiMn/ldo8QUIobGQ4a/vpq13M=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=QMKZovQU;
-	spf=pass (imf11.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770782911; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770783535; a=rsa-sha256;
 	cv=none;
-	b=eCJp5BUPYHJ1vkOzIx35o3mJPt+9fnFMBb2tl/TCcA27nv6mCJjp7oCuoedzIw8CppFUqo
-	QtDd6JOe/YZ+rQDonNqPzKIia7R4IGHM5fuESL7VUm4eU0bTWgFUv2vIxR1/1jM1lGHIGh
-	VNbj+SCIVDnzbd7QZTzVVUYm1/w3dgQ=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8230c2d3128so763808b3a.0
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:08:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770782910; x=1771387710; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=D2eMYc+39p5sjw2VZLfFJ4kKNtq8lBxRgNa5raKSCaw=;
-        b=QMKZovQUxSRwDaAyuSb9nMxygpgYbZjw2PAPhlyAGTmHbMtb1gDH+15ZUaxitOpK85
-         fMtmFu5n9K5O5Ybdjqx4v3r86EjiKdGmJnjh/hbQudyaBaIxlMxhP46udG8Z97ZBy8bi
-         h3k7yu7FSFxhh4hdPeWiJdP+qMfbRIet+cttNInusGtdIUv41LJ2JOiPIV45avJ4yKFw
-         7eBBsa3ulUxtmNji/wIf180uGFL+uMjXCfHiuTdOLIM4yVWKDnX1sRTus1YBX4Cj3tX+
-         qhTptmNVrNDa/dfOyaIQQaSTW8y0X+e+PWkKRVp9o2X+4sWhfdeeQjs7XhfqVo7uzvzn
-         yWCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770782910; x=1771387710;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D2eMYc+39p5sjw2VZLfFJ4kKNtq8lBxRgNa5raKSCaw=;
-        b=ZTfXOHug5gFI3hUeAKwZ9zKlSdIKRTu+2Kq2qS8svQYmySj2R2RZ5P4In27nEgkSsH
-         APjozX1b/Mjb/+HFrl5FQ9Q4iyYFfNiMGauT+gQDtTdcXB31lIEuKFQNVLzUfWF9a8kp
-         8jWaOxJsPYePlgcuS/Ff76IIwvFVWrgNDg1fjVE6OtvUtpEavpaz0UvoiCo7qa+q0zZm
-         LClMHncww8e2qlhUrEKHxhvcJv8fFXKm2x2hd0Myt/6om9f8eQc+WSzYjgqpT+Kkdb16
-         /xvDFxmGzhl5a/fpVFP0RhCrIRqqNdvJIk62BfGVJuKNX2SAscRH6uosqD1KEuaI6HTT
-         VWyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWrlfP8yR2voLNftMZk9FIbKYjed+rGK3stFL3akoOAyk3Ssj8zF1CZDUDtl6HdBpHLhDt+CUzWAA==@kvack.org
-X-Gm-Message-State: AOJu0Yy+IbqEX3IMfka42FeMZE5UVNUJRdG2CU5duT6slJQiFULem4x4
-	ubuHcCYqwaDe13sbJbjlaW/fTwM/6uwCHjHMpD9QVGGvkAuuh7AgCRCD
-X-Gm-Gg: AZuq6aLafnufSwwCPR5co4tk4ZKTLzdHRiNd/E2fnVoWry5wPCLoqJxeVeS/ssbcOhb
-	m7hP/qESmuUADiZYewNhEs7tkWLin0rbcnimpGaBvhnakzx7Ts93ZfeKH+8Y507yas4tCp7Iloc
-	gxEPJoPAeT1ZhVWs/END/QbEVtAAa9QnZO9GDlTiyLWG3O21Z2ZbWuATQVpiOXRa3CVEktP3TKX
-	5q8Llec4/6tk64ZViza3qwFhx2GLRM+4vKY9eNzfLgNnt1ggjhkra1Ot/n2ErUHvW39Jym/kryN
-	tpFc6omIxj1OreScohXSWBV3Fd/k0pdVR5b509i8/omHs0XxUf7Qsn3a2+2/2rsyr+sLkOojmfY
-	BC+sIzcWcBTzdOX1cz2A401m41azxc0EVfHd3U3A6TaghxjfyZZy78/LcH74afMYIn/Q1gpgkds
-	V7Y6klXE//GP1v3iRH
-X-Received: by 2002:a05:6a20:c995:b0:38b:ee34:24f4 with SMTP id adf61e73a8af0-393acf8d036mr17280014637.15.1770782909791;
-        Tue, 10 Feb 2026 20:08:29 -0800 (PST)
-Received: from dw-tp ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e7d5e7csm568794b3a.33.2026.02.10.20.08.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 20:08:29 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: willy@infradead.org, david@kernel.org, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, rakie.kim@sk.com, byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com, lorenzo.stoakes@oracle.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev, vbabka@suse.cz, jannh@google.com, rppt@kernel.org, mhocko@suse.com, pfalcato@suse.de, kees@kernel.org, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, surenb@google.com
-Subject: Re: [PATCH 1/1] mm: replace vma_start_write() with vma_start_write_killable()
-In-Reply-To: <20260209220849.2126486-1-surenb@google.com>
-Date: Wed, 11 Feb 2026 09:25:51 +0530
-Message-ID: <874ino0w8o.ritesh.list@gmail.com>
-References: <20260209220849.2126486-1-surenb@google.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1F0C24000E
-X-Stat-Signature: kogznugd3b645wuyut3f3p9od5fzefnf
+	b=ij0sYVO9yTCSFpt8c8gfXnkc305hoJYlljvUspWlLrbAZmvV03qJoBFIP3+4GyfDdohIS/
+	Rt79l2Fqn98zU4tghn2EDDuq6Ru24jAWD4boKWPfEcR4xyDfHoG7e74AMkxLncqKH2Tmpv
+	UrjXCLOSMf6NZHnGGGpXAlQcOi/Ste0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1667D339;
+	Tue, 10 Feb 2026 20:18:47 -0800 (PST)
+Received: from [10.164.148.41] (MacBook-Pro.blr.arm.com [10.164.148.41])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ED8933F632;
+	Tue, 10 Feb 2026 20:18:49 -0800 (PST)
+Message-ID: <52ab55c0-6b70-4afc-866d-dd505ff3e85b@arm.com>
+Date: Wed, 11 Feb 2026 09:48:40 +0530
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: only set fault addrsss' access bit in
+ do_anonymous_page
+To: Wenchao Hao <haowenchao22@gmail.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260210043456.2137482-1-haowenchao22@gmail.com>
+ <5c4d773c-e3e7-4a71-b250-91701cbdd4a2@kernel.org>
+ <CAOptpSPuntL5dy+D7-wWcWuOgxugD+_uLzEO8e4fyGjS_ZkUWQ@mail.gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <CAOptpSPuntL5dy+D7-wWcWuOgxugD+_uLzEO8e4fyGjS_ZkUWQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7CB1920002
+X-Stat-Signature: tryoa1adgt86qgc94u6oyojs3t3dkzw8
 X-Rspam-User: 
-X-HE-Tag: 1770782910-956562
-X-HE-Meta: U2FsdGVkX1+/hZ712kZ+XrBX8jl8CiNmA9ukTuIxMoKCdWA06+7HlWgH73IRtX0QyhE8LIY/A771X8fHCOPivO3HQQ8yM0qBfhWGJtxOztikPUGOCZWAy5FzkHDIpGdYaBBfkNXVr31dRP7zzKjb9mmdjeEvxU9a+q3gTSdZoNjfqRJ2WncpRdcbMuhdny7G2+ljFnZ8tuRdYf8eZqVs3Fmvgjs3GZe70KjtKLo75S6+UIRqtty8sfJ+UVb7AqXafiL4N2q/CGm2X+slkOu33JqxpY3/XEQoXt9QxfsfMWr3ji2JG4NyBoIzYI5q5jsz+B4gkaurjN5r1Qkjphg02ZD26CvrG0qUhO0GHHdNBjSdCyY9BdcviX2U4yh+bs2YBnsBH+GN85Q7AaujZOqNruGnoon/MSXTE9oHa5GeAB4AdqpjOl8DvcCnVaiAbnj55c7Vv9P08IVcaGHGRUoNu+Qwj0VFe6SnuRevQEvG68w9LqFDTkkdkKya0dh0NLB+ztnJk7U+CoJyCCb9eajrenp8jhpEr5J9ITG8IhA2kSegzBQ1llYNXQPZiD7PB/t5gVDpJqfymqe7ny4n0AhK+QhVOworh29hZy9PmJzCdYe/HeXL6hbCZk3X0g0qk4g0EIG9avxPZbxh0WmFba3jmXYh3Ha7HGLmvs1BsHOrcJIxq+zIjtSEyOTmQM6t7ST+OaM89org63gqAezG8U9JlTFBumygulxK/YBTWo8Z4XhEshZHGa4qIMqr4VZvAMKMy6aGAc767+klMm1fvGLb814QgBn538cIhaDqz/h+XTmffeaJqs4p0T0nIB3lWjrww/N0K6C/mpym2nTq+mIYfKrW/VNrlOlZ/J3PABxv7IEgOAlQy+nmfvzwfcZK8wpnYTctNQtOCQfu+9hx4qwgseWK6/brHPtCqAw64Jtu6Z4vef/RNqOGzIu66wm9W3nBMpkz10o7NijyO6t7nvc
- wbaCaHji
- yypB64BfT2dLHnCKCw2NL0mwT2r8G1vXFvB0F5kZDnDQA4o0YbXeloavLK7pbqdK3j+9t75RtFl6+yE0BN9p9LslnDQ/qKACMPDYhA3mhtb+IHeimq02n9iGrJVDipbpXLtMKgHLVKNKuE0r8ANxvGyKyhx4cA1geSr3Dya1XLkGCLIBgcNhDGaoIttoHbrWXsV3ZEGDFyhy2iCEIB/uQFR2DWiXR80hkhB2ufJReEv3nzylO0beTHnkmNfGqjjQusz6R++9ndedDl08EEMgUyjbt1/LIPg6T49gSsst870R9LB+96LBMeSq3XEd0HrcLk7Tp0kv/FIVhv4vFSXak/rMtj4k7t3K010Ss9jb2NdphsuGVTZnb6EPiYZWSvBDwcCyv8KD6D4wzPe0I0gvxIicDNWbB9+EiteM7VzI/SfqsoN8xCv1L3OJly3e7gnxWisQAfVeIoFNRZFu+VOMDYoh/rIGyvqd0KAQp2OzJoeubh8WhOC3E3m9xInMwW7OIExjjyzJYU4MkegE0bDig8m6TyfOydMUJvpY8qq2rC99LTprfddXXDWm9CpyMuI6kk0FhyKf53lHtqgKy3RmaOvGhMbxaodUO+vSDtkuoeKSbPvzQ1TKYFnFjXgGT1bsi6cphJ9YNAxNQZv4=
+X-HE-Tag: 1770783534-916420
+X-HE-Meta: U2FsdGVkX1/vFnXARo1MKY+NW4/ey82Y6CXAFjD0Bso2xITJUp/JiWmXPQ4o49i5CH2HslQMzF9Z+SZ5JUo4AMC+oXIF5lsF33C2fk2MA+LCZviC1/D9t0PoJq5p0XzcGHBSqBvRdsKhIyQlYNCWDJsP69LM6TKT8hI7zOxkY3jcIRNlZErATAgRwWhfw6C+Cjy+48UKvNrmJvALp5tVVTo0yXWo+stQUNvLh0d/4OUlg1xmAj+mRitQZ+KSCGHbDwAldFLjv8QFmP2RDkl3HMZrR10rnG7d4rygErsksgpS0/jbBAcM+mlN/zsl0uBZwsqMM2N3L+eW3kuL7Ml5kW/bzaPW3vv4kQ836ZFlSmIU0nps3gDyyWIebNN02tnLJeRfPztzugAckTrojIw69tsNF83B+5kW/1TQSs2/9VDrnphxj/mBXUeTE7l2KnEJsfNcxrxbyu/cygHgIS8BnSZ92o4erjOkPVP0y1TLNKoRpi/hEUJwKA/crbqEz2gyOlgzFpxZ40sXSVm5Z1/z/y1BhbIH10AvNiG0jSgD7Lql7S+5Fn+bnsA+0GKV2cJ+9N0gr4Se4F8oV2G+vuaLnhRhb46POhjdtnHJWB/VYyvKkR2LMnaaLu2c+F9oApNmMRF4Jagm8BbLosV229r2RYA/ni6cph9QpH6dcQXEnYvZIGvGChYTIW9YpSbfx5CAmnVC/zgL1hs+i9LD3pCasjLjVVR4Rmyixb8WNU/xyD1+3bBzrVE1LEt6gCB6XRp0NtVBP7Zo1U3d80COn3DAtsk9yOeKDz1wZIlbodmWUDiJxIL5owdQUoOD+KMcTD78cTSFuamiQePPjEy1763r+uVX6psDrCHPdLOF2oZ75F7SA4hjQrCJ+UEanD87mJKul86jPSa4z2GKdLdI93nqiBmjqEos73Fmv9nIWNZvqypfGXndsoVTBtlicTWXe9OZPyVheXMeuufJuxO3ALw
+ SnQmzfMw
+ N5P7cErpSZmq1OO/+nCJgC2qBEmQy/7F0IW16EbEgSc5RkzIK7dDwJYZi1cprl7c4t1l+9fdg63msjV06eA8ZAn3E8guPef10sdduKvtyvpaz8P+/3nokndvybqBZ5B5fUTVgxoDIo/AI5Mb5EUQgg5Mg/ZH+zOTb+QPsnMRyB0Fin4JkpQVuUzNY5TdnDsrbhXi4/Aolrw1DjYHxVEH599pqiwpde20QF3NQykQVVZ4TElKr8qM3DIC2Juh054lvcKr5RQNpAxdXfxLnJYeAITNl+g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,66 +93,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Suren Baghdasaryan <surenb@google.com> writes:
 
-> Now that we have vma_start_write_killable() we can replace most of the
-> vma_start_write() calls with it, improving reaction time to the kill
-> signal.
+On 11/02/26 6:19 am, Wenchao Hao wrote:
+> On Tue, Feb 10, 2026 at 5:07 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
+>> On 2/10/26 05:34, Wenchao Hao wrote:
+>>> When do_anonymous_page() creates mappings for huge pages, it currently sets
+>>> the access bit for all mapped PTEs (Page Table Entries) by default.
+>>>
+>>> This causes an issue where the Referenced field in /proc/pid/smaps cannot
+>>> distinguish whether a page was actually accessed.
+>> What is the use case that cares about that?
+>>
+> We have enabled 64KB large folios on Android devices, which may introduce
+> some memory waste. I want to figure out the proportion of memory waste
+> caused by large folios. Reading the "Referenced" field from /proc/pid/smaps
+> is a relatively low-cost method.
 >
-> There are several places which are left untouched by this patch:
+> Additionally, considering future hot/cold page identification, we aim to
+> detect 64KB large folios where some pages are actually unaccessed and split
+> them into normal pages to avoid memory waste.
 >
-> 1. free_pgtables() because function should free page tables even if a
-> fatal signal is pending.
+> However, the current large folio implementation sets the access bit for all
+> page table entries (PTEs) of the large folio in the do_anonymous_page
+> function, making it hard to distinguish whether pre-allocated pages were
+> truly accessed.
 >
-> 2. userfaultd code, where some paths calling vma_start_write() can
-> handle EINTR and some can't without a deeper code refactoring.
+>> What we have right now is the exact same behavior as if you would get a
+>> PMD THP that has a single access+dirty bit at fault time.
+>>
+>> Also, architectures that support transparent PTE coalescing will not be
+>> able to coalesce until all PTE bits are equal.
+>>
+>> This level of imprecision is to be expected with large folios that only
+>> have a single access+dirty bit.
+>>
+> Thanks a lot for the response.
 >
-> 3. vm_flags_{set|mod|clear} require refactoring that involves moving
-> vma_start_write() out of these functions and replacing it with
-> vma_assert_write_locked(), then callers of these functions should
-> lock the vma themselves using vma_start_write_killable() whenever
-> possible.
+> I saw this description in the ARM manual, “D8.5.5 Use of the Contiguous bit
+> with hardware updates to the translation tables”:
 >
-> Suggested-by: Matthew Wilcox <willy@infradead.org>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  arch/powerpc/kvm/book3s_hv_uvmem.c |  5 +-
->  include/linux/mempolicy.h          |  5 +-
->  mm/khugepaged.c                    |  5 +-
->  mm/madvise.c                       |  4 +-
->  mm/memory.c                        |  2 +
->  mm/mempolicy.c                     | 23 ++++++--
->  mm/mlock.c                         | 20 +++++--
->  mm/mprotect.c                      |  4 +-
->  mm/mremap.c                        |  4 +-
->  mm/pagewalk.c                      | 20 +++++--
->  mm/vma.c                           | 94 +++++++++++++++++++++---------
->  mm/vma_exec.c                      |  6 +-
->  12 files changed, 139 insertions(+), 53 deletions(-)
 >
-> diff --git a/arch/powerpc/kvm/book3s_hv_uvmem.c b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> index 7cf9310de0ec..69750edcf8d5 100644
-> --- a/arch/powerpc/kvm/book3s_hv_uvmem.c
-> +++ b/arch/powerpc/kvm/book3s_hv_uvmem.c
-> @@ -410,7 +410,10 @@ static int kvmppc_memslot_page_merge(struct kvm *kvm,
->  			ret = H_STATE;
->  			break;
->  		}
-> -		vma_start_write(vma);
-> +		if (vma_start_write_killable(vma)) {
-> +			ret = H_STATE;
-> +			break;
-> +		}
->  		/* Copy vm_flags to avoid partial modifications in ksm_madvise */
->  		vm_flags = vma->vm_flags;
->  		ret = ksm_madvise(vma, vma->vm_start, vma->vm_end,
+>> If hardware updates a translation table entry, and if the Contiguous bit in
+>> that entry is 1, then the members in a group of contiguous translation table
+>> entries can have different AF, AP[2], and S2AP[1] values.
+> Does this mean that after hardware aggregates multiple PTEs, it can still
+> independently set the AF and other flag bits corresponding to specific
+> sub-PTE?
 
+Yes. Hardware can update access and dirty bits per-pte. It is the job
+of software to aggregate them.
 
-The above change w.r.t. powerpc error handling in function
-kvmppc_memslot_page_merge() looks good to me. 
+>
+> If so, can software also set different AF bits for a group of 16 PTEs
+> without affecting the transparent PTE coalescing function?
 
-Please feel free to add:
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> # powerpc
+Yes. See set_ptes -> __contpte_try_fold: look at pte_mkold(pte_mkclean()).
+We ignore the a/d bits while constructing the next expected pte.
 
--ritesh
+>
+> The reason I have this confusion is that there is such a description in
+> “D8.7.1 The Contiguous bit:”
+>
+>> Software is required to ensure that all of the adjacent translation table
+>> entries for the contiguous region point to a contiguous OA range with
+>> consistent attributes and permissions.
+> It does not specify whether attributes and permissions include the AF bit.
+>
+>> --
+>> Cheers,
+>>
+>> David
 
