@@ -4,86 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3DF7EB594B
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 03:04:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A64B9EB5955
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 03:07:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 636F26B0005; Tue, 10 Feb 2026 22:04:48 -0500 (EST)
+	id E0BD66B0005; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E4B76B0089; Tue, 10 Feb 2026 22:04:48 -0500 (EST)
+	id DE0166B0089; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F0456B008A; Tue, 10 Feb 2026 22:04:48 -0500 (EST)
+	id D1A786B008A; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F6256B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 22:04:48 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id C29C36B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 22:07:38 -0500 (EST)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A2FEBC101B
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:04:47 +0000 (UTC)
-X-FDA: 84430683414.27.5785682
-Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 24C2B8000B
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:04:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c5QFIhh3;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9730C1C0AC
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:07:38 +0000 (UTC)
+X-FDA: 84430690596.27.1500DA4
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	by imf30.hostedemail.com (Postfix) with ESMTP id B17CA80006
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:07:36 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=cmGwWh+G;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770779086;
+	s=arc-20220608; t=1770779256;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1fvkuiHH7HqSqBbMLyMhpWj5hv20P71nPqWvwq16YUQ=;
-	b=k5oioX73cIQG4pkZwK3yALuE5JIVn4FizkZLa5bgaXslQLUm990Doxr8HgItkdR7pVKC1n
-	0lrnabwj+QVfSk75b9gr/yF7YzRFv+m67LLKh+Uhv5xjGe+9ZZKE16aplppv/v1SKBjtis
-	RoNLf6bAy0/TG71vT10MBqAsHtvL8NA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770779086; a=rsa-sha256;
-	cv=none;
-	b=RVDB+cZji84vGZ4xhE7RsDActrFd401jiRNM3yk1dggejkSoaOsQXnREbM8wNcXs16wDoD
-	+xVpLDl+D0RyV00NeUazwwgDc5DXXGECPup6LGHc3M3JZThVtxmRlsBcpWryqkjjFQHMkg
-	BuL8sr9lGpOiJmjEZlazYLJTpOob2B4=
+	bh=2kdwUSceZmDAkePxcpaC3kPf3XjbthHmmdDCwpY/AiM=;
+	b=YuU2z9qbd8zydD0CXxjQOF+kT7tnctBhtiQRU26YRF3FjNW992XqZoBMIFMnSCXQs3PoQU
+	VD+JSwjLYUh/vBlBLdWRYgg0IdiXJHPQ3v2yrHLmzIP+1XyRFbhff7lgPBSHMYyyQEL4Pa
+	Nhd9AlQ+pRdmT2I02s9aUjXlQsbaKUo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=c5QFIhh3;
-	spf=pass (imf02.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770779080; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=1fvkuiHH7HqSqBbMLyMhpWj5hv20P71nPqWvwq16YUQ=;
-	b=c5QFIhh3ymebP4SJHZxYm/Ei2MSnbo7iwjMu6y8Wvkr37yYrudh1QveEAAYS6Wp/z0OKrq3CobtmOky3KxDC+ZhyoIcXFn6rbyiMeWsxe+iThtROw/0fqHSMECDf1CuSJdYygztbAbLENWnHJrnbZR3dcnlSGlCnSuaJGTHmQV8=
-Received: from 30.74.144.106(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wz.HSpq_1770779079 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 11 Feb 2026 11:04:40 +0800
-Message-ID: <a441c762-1f57-4124-93a8-aac55f32d846@linux.alibaba.com>
-Date: Wed, 11 Feb 2026 11:04:39 +0800
+	imf30.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=cmGwWh+G;
+	spf=pass (imf30.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.179 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770779256; a=rsa-sha256;
+	cv=none;
+	b=4tKwpU9RXuuhTJsjI3GZQeIBTBADnqMczoZBgjB6PkmmsYlSNLWYEhfHmtIijKkLPXbL7V
+	4T/wWPgnFzbf94+ckDZFN/N9ennN0W+++x95VuBCTGuW1QKQbrT9Y67hgy7pjwLNUFCUD/
+	mQvWK8PnbtLhkHv/2hKJ15RfIT9YkP8=
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82418b0178cso917273b3a.1
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 19:07:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1770779255; x=1771384055; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2kdwUSceZmDAkePxcpaC3kPf3XjbthHmmdDCwpY/AiM=;
+        b=cmGwWh+Gu3NPVtswP1JnmFJV3lL6Qp9X+LIK4MLR5KpFRiwPB/QacMKjBwMMObNl4Z
+         T/UjYwmb9iIENq1DZwtwrrRs1OYWy/B9K4yO6EPYlHI/ofXsp8YE8yUWYBEw+9HTGXnC
+         rKGx9qS7/Qr+haxUjr9PNt/kPBjMQCmhgBdSM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770779255; x=1771384055;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2kdwUSceZmDAkePxcpaC3kPf3XjbthHmmdDCwpY/AiM=;
+        b=I62r8yqPYcVhUR6+Yqs8famd1V6N52OFeCAQcQ8lWUnWoYcb3Vt4TMA2CO80kkcY7U
+         ttTJII2dyWpc2PI5ziF1iINQfjI6ijAymB9gI/tHV+Kds0jRBMrau2b7laqEd90bs9K/
+         S56Dm9j89834q/x9JlCpQsNoScOqKFEFNoQ+jOG1/1u1B/q8esartx+2HJvdH77vNc5a
+         OafCkxDtEjGEcXYeLGje0MrUKeGlKsVKG56wmMlduVZmPwUBxISAmhBWUhMFxhMWZ/rn
+         Cjcio1pC75oMMeSqJCUsZZ+Lvl5A5ObASuQRN1WD/9FRULFHZ9PJrXlW7ApzjguVnQkE
+         K4pQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUR4FvWS7R/GNAiUuNIC8Ik39vmCIFZtT4i/wLE8SGEIyU5Qjw5SayTQgpvzdPIbUJM+dXFJqutzw==@kvack.org
+X-Gm-Message-State: AOJu0YxRqMdZVMdMaZ6DFsZBL9FyCG50BCZXHGEDOpXeTsaOsFPHMfvY
+	3YYXMAnN/xdMPv5vO8ythrKdvnsFdtandMVdt8p3ulqCyeNknhOKUOOR+maa+I8AQw==
+X-Gm-Gg: AZuq6aKtOT9DjLcRXkjcjBJaQo6CCy3HwEbIcP3X2iD4BCuROZeNsqh8NMOcncFbs3V
+	dqFW93udhPsZ0GKgnp73ft8rf572SICe23vG5ppUMCTaMR9ueHkFcGygcV03BMrVWeVReMkMv8L
+	rlbjdqMjGr+jwRefW0cxCEs4jveoSMEkcxYEOtQKJj8YC3lg3BPz4o801P0Q93j/jAMZ5zbrYN2
+	x2Kr7ZRoNOtPRpNitDMZRQSf1CJnZHVZyaUEUN2CjGU0hCbmJFGwIlz3qxrIXT1h8kKzqxvhVqB
+	yUGhbM9R6ldEdK8RkF7KCw1H/PQwC2+xCf9sBuOMjGn5OfI/Ld/OVQ/r5Rq4H7OvpnhxmtJ2yJL
+	wPzArbH+j+6ijbRFqtYvp6oGmTHnyKXjlqnYUrk8IgSC0w06nCEs6QW/UzcIged4EgsyyERD9iZ
+	f63hLefOM7fvGwACynTF42KPga/2rbTwLhfY6I/r8xC4R7Hssz2mJAGFY5zYnJIw==
+X-Received: by 2002:a05:6a00:3014:b0:822:1dbc:e75d with SMTP id d2e1a72fcca58-8244160a9d0mr14781080b3a.1.1770779255616;
+        Tue, 10 Feb 2026 19:07:35 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:ec5:3497:e96b:e7be])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e3af080sm423001b3a.15.2026.02.10.19.07.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Feb 2026 19:07:34 -0800 (PST)
+Date: Wed, 11 Feb 2026 12:07:31 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Minchan Kim <minchan@kernel.org>, 
+	Brian Geffon <bgeffon@google.com>, Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org, Richard Chang <richardycc@google.com>, 
+	David Stevens <stevensd@google.com>
+Subject: Re: [PATCH] zram: drop slot trylock and miss_free
+Message-ID: <d2wp2s3jj4lm6shynryqwkvamyrpn3g5larn6z3yeyplel6by4@5ew3ii7v5sjz>
+References: <20260210035045.3817297-1-senozhatsky@chromium.org>
+ <aYtAz5vQTod7DXqV@casper.infradead.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: khugepaged: make scan loops suspend aware
-To: Sergey Senozhatsky <senozhatsky@chromium.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20260211030024.232964-1-senozhatsky@chromium.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20260211030024.232964-1-senozhatsky@chromium.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 24C2B8000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aYtAz5vQTod7DXqV@casper.infradead.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: p591xdw8zgojajjnjjkfri9za9xocohy
-X-HE-Tag: 1770779083-51270
-X-HE-Meta: U2FsdGVkX1+ci1OKRDoKW/0wkwnlqrxTj2zUhJyj5+ogEJRQqbeumdGxS2mq2bdJi6eLfTP5WZrKFtDoSINZQcS/0Qu45Z+JJ6PakxYXqYHYPHSFoY/miuvD+qjGYHG9kQMZ3QmKQiA0dFEWHEDOLeLt7Ze13JnIrO+4ksmf8ajl21z5hoUPl7YoPREsi0jBW/O4ly2MiI39Dbnzc+4RDxQ4ghf0+v7zq8cfm7mUI17AOMHT5NnxAD+b10+12nWaidlBsItXW8lqvlOrdX9dIKrExKuOgBLR0tJkrZn6QYQ4L3XnIGZ56xbuQNNcahjzbXjjqUy3rMR/cGcriYuOlt94ZpZ6B+HL5oXzK6aVL4hxiwZHjQ8tnA1WRBYefRvP/U0wdArsFGJGFdvyk2VskYB3IYj2Csm4t4bo+I8bBis6bA0W6H4shDIpMlCixXyA7Sybc+tbensfvzRVg+UBJphE4JcBpBBYNyV6TXbG6EjCPeuOkw0ijmdafx0JXqmF9KEEnShFyvAM1bm+gzKbXg4avxs2rxq/ZUkShRvErhBPtZ6pX3CTlX4ckDcsQmkWqE0tr4BkPL5B50PaVjuqWurMlDqmvBGtKXQrilNWJbR3mduEZeqJuS7z0WduzmWKkiYM453i47WkIoAmpdUWbnl/oqZ42H+GFVONqL+2jXwgmOBVLQxPTqnHA2wgo7iHBYbXiUlEofXlM1NW8mK0SQKa1itvFbkfZ5TVTy8dxZUhr/vGYSIdlNMYGpX3MLvWfNknEZKLly+WoCgCKbUWo7Pw9f7HwZybux4xL1vo0J1uixaSNy40Y9x6HZfy5ZcSHiz08iKLA7q3sB6xfZ1CyxSZ9+5S8KnJ9O1Onfz0Rkg1yh/+6d9+7s5PLCqoknwQCK25TqTfGw41z29VRy7+mmwm3Iago9gCtpMtNSqpEN+DtxpqIach1rJB5deRwjVYdRe32i+LoozaQeu/gNx
- OaEHdQke
- 97Wu5gKJkyEOMjfYDQdzc57I7/H8L8gesBzVSY0+ppzOe5cZ0s2/+UI3kCpCXkt2HCCCjqKRAhWiiwKw0lKXpDZJJwff5YTTvr1F4kBNOMnsuFnQQjluALqE9TVHDrOvZeZrnhJecLmYvJ1PIuHiJDSi9nvRIXIWhMrYtwahMI33DFGaO2Cae+S/V7sZYCnCIernDFIFQUhBKW+qvuug9k/cwy1HRhjOLRiVDOfE0zhib9eqqPesOk/bZpRupOLThKWNLXpXLsCEA/4jEUZJkvVTww+5wi2M5rjuw44i4hQDWRLG4uckYdx1bz5PW+EdkfXH6ZJNOfR0/Ns5+S9hoGU7iQQiKXSdjOtY4pCibe+tH1yE=
+X-Rspamd-Queue-Id: B17CA80006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cmorsjrpgqja8eyb3ck9ukybkb36iygu
+X-HE-Tag: 1770779256-279195
+X-HE-Meta: U2FsdGVkX194NiboXQLk9B1/uiD1q+R/QyT7dAEai7YAgKVV9l7f0B7tKKYS+c5LNaJP1OuM91vtC//9ONiHXiD0wnOM4vg60br9aYR3Os7FG9izIs2fXH7ljfBpqoxnrigw7LqpFyErGR1z7fw506rJJ/9ZIIGPQsQR5+GXjrwqTri8vBOqLMGgChP8xl8QVUeFHNs/h2qkA6y1CIzgRtzULfhOxHCbS6MJL3ua2P0GVlOeSId9gNC0qC2w6j0NOopLxzqRc0waDFEOEnzhq8mcjvqmjiOpCF4sPDb65LVt0PF6EdnYuz8mTAtXt6UCpfI8WpMHTZ+UUmc8oCXQ0m9c7KBa9dIhvG66NUsHqDTYxoWjGt7eRZBicQdiMQbXsAzsi1qF2DyUHgl9ZFyV873OqoudP1E1yoY5xoMnJipPk8nQeeYqW1x+fzMwKNdzMMJTj+sto6KLq2TXxbv/jtlO5fnkBnAh1W5Lgm3lSLUA2pFeIdlTepp/wuIen4m4/2KyUQ2oc9In2aTPC+fTQQZTllGX1LZiV0U4XhPnrl15lhCmPHHQyhCQDYm65ADAYd9/MKiw23vOSZ263PTfagWyk9j2eKvbla1r8K9lMgTP34252VE9LduHxnB8OO9BxyoACATpl09boFXeBO1PNmseQR+ArLzbXRvx5/8THS/Srk+J4pAndkf/LzMJWcaOSe4qbPLJrIrgG8K5R/fV4sE06Pa7WXY6a09iPZ2GOom3mXry5Qv2QDwb0bjncen8BJys7Y7yswVQNhoqEQu9bSR4mkO6jYi+Y1pq3jSsDINryhKlEy3Itnr9BprpVSi29G0yUOlWfhx5Fu9a0mwO7/bFFVp3Plykj8IAsF3Nlvlb1AtRqRe9UsE9FHK1yLFFfb+JoIag+1a1iorTbExGYdOrcSe4QssQcRuR44qEa9vQtosNfNj+moUr/NU7VGeNgQeRBqpFcqSDYRR88h3
+ pw7OhXNJ
+ CCkHPrcy1RRbHl52JpFguLElC7jnE9IwJpz+HuuNsDcAjQscaOrbC7jXkels6suDC0na7vMqUbj2TmC1OQG7zdHzJV0Q4oCm2uPE/MZUGldl3f8TkAiGqxxvWyfqrZSaTbWqJU5Z1jDknRbIR8gFSlPYzZ6y8w1HemnS8ozxwKYOi2OQmYSRVLLboYwUYz3UZBARXPYJ6D9K4QIgHFzBTo8gmpkJQjzAp8gvV5iGD6zp2mpRXU8Ar58xyfPdSPOLqkV3cteJ05QCFt/Eg8jZmFT0lLHb0PlO1bK4ftOowYIud1CScKsog9yhp+/TKiMnexps/CW78uVRgF0um56wrsGaHfyKdpyYxEtk7aHYwj969utmkJHtUYIheQ3LZDCRW/cYqxh1QeknrWrVN0x50UoYILg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,79 +118,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sergey,
-
-On 2/11/26 10:59 AM, Sergey Senozhatsky wrote:
-> A number of khugepaaged's loops, e.g. khugepaged_scan_mm_slot(),
-> are time unbound, which can become problematic during system
-> suspend:
+On (26/02/10 14:29), Matthew Wilcox wrote:
+> On Tue, Feb 10, 2026 at 12:50:37PM +0900, Sergey Senozhatsky wrote:
+> > @@ -1943,15 +1927,9 @@ static ssize_t debug_stat_show(struct device *dev,
+> >  {
+> >  	int version = 1;
+> >  	struct zram *zram = dev_to_zram(dev);
+> > -	ssize_t ret;
+> >  
+> >  	guard(rwsem_read)(&zram->dev_lock);
+> > -	ret = sysfs_emit(buf,
+> > -			"version: %d\n0 %8llu\n",
+> > -			version,
+> > -			(u64)atomic64_read(&zram->stats.miss_free));
+> > -
+> > -	return ret;
+> > +	return sysfs_emit(buf, "version: %d\n0 0\n", version);
+> >  }
 > 
-> PM: suspend entry (s2idle)
-> Filesystems sync: 0.003 seconds
-> Freezing user space processes
-> Freezing user space processes completed (elapsed 0.003 seconds)
-> OOM killer disabled.
-> Freezing remaining freezable tasks
-> Freezing remaining freezable tasks failed after 20.004 seconds (1 tasks refusing to freeze, wq_busy=0):
-> task:khugepaged      state:D stack:0     pid:1345  ppid:2      flags:0x00004000
-> Call Trace:
->   <TASK>
->   schedule+0x523/0x16a0
->   schedule_timeout+0x23b/0x6e0
->   io_schedule_timeout+0x3f/0x80
->   wait_for_completion_io_timeout+0xe4/0x170
->   submit_bio_wait+0x79/0xc0
->   swap_readpage+0x150/0x2d0
->   swap_cluster_readahead+0x3be/0x750
->   shmem_swapin+0xa7/0x100
->   shmem_swapin_folio+0xcd/0x2e0
->   shmem_get_folio+0x237/0x580
->   collapse_file+0x247/0x1280
->   hpage_collapse_scan_file+0x26e/0x380
->   khugepaged+0x43b/0x810
->   kthread+0xfb/0x120
->   </TASK>
-> 
-> Make hpage_collapse_test_exit_or_disable() suspend aware so
-> that khugepaaged's scan loops can terminate in a timely manner
-> and let system enter the sleep state.
-> 
-> Co-developed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> ---
+> You don't need the dev_lock any more to just report the version.
 
-I just provided some sample code. Please make sure your patch can be 
-built before submitting a formal patch.
+True.  I'll think if I want to send out a v2 with just miss_free
+removal.  The objective was to remove trylock (and all the things
+around it), but trylock has to stay.  While we cannot have
 
-Obviously, you should also modify the callers to pass in the 'cc' pointer.
+	slot_lock(42)
+	<IRQ>
+	slot_lock(42)
 
->   mm/khugepaged.c | 12 ++++++++++--
->   1 file changed, 10 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index eff9e3061925..9b3201fb6840 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -392,10 +392,18 @@ static inline int hpage_collapse_test_exit(struct mm_struct *mm)
->   	return atomic_read(&mm->mm_users) == 0;
->   }
->   
-> -static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm)
-> +static inline int hpage_collapse_test_exit_or_disable(struct mm_struct *mm,
-> +						struct collapse_control *cc)
->   {
-> +	bool was_frozen = false;
-> +
-> +	if (cc->is_khugepaged &&
-> +	    unlikely(kthread_freezable_should_stop(&was_frozen)))
-> +		return 1;
-> +
->   	return hpage_collapse_test_exit(mm) ||
-> -		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm);
-> +		mm_flags_test(MMF_DISABLE_THP_COMPLETELY, mm) ||
-> +		was_frozen;
->   }
->   
->   static bool hugepage_pmd_enabled(void)
+any more, the slot-free-notify is still called under spin_lock, and
+slot_lock() might_sleep().  So trylock has to stay around.
 
+> And should the version be changed now that you've changed the format to
+> not include miss_free?
+
+The idea was to bump the version only when the format changes.  You
+normally (well, technically "always", since e914d8f00391) would see
+0 miss_free, and with the patch it's just a hard-coded 0.
+
+Thanks for taking a look, Matthew.
 
