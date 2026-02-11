@@ -4,148 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59634EB594B
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 01:48:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B225EEB594B
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 01:59:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 145836B0005; Tue, 10 Feb 2026 20:48:11 -0500 (EST)
+	id C8EF56B0005; Tue, 10 Feb 2026 20:59:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F40E6B0089; Tue, 10 Feb 2026 20:48:11 -0500 (EST)
+	id C3CBB6B0089; Tue, 10 Feb 2026 20:59:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EECE66B008A; Tue, 10 Feb 2026 20:48:10 -0500 (EST)
+	id B3FAA6B008A; Tue, 10 Feb 2026 20:59:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DCE316B0005
-	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:48:10 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 64AD988CB4
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:48:10 +0000 (UTC)
-X-FDA: 84430490340.12.1EE6B47
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6B346160007
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:48:08 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=USn2fp5U;
-	spf=pass (imf08.hostedemail.com: domain of dylanbhatch@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=dylanbhatch@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id A49046B0005
+	for <linux-mm@kvack.org>; Tue, 10 Feb 2026 20:59:38 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F351160131
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:59:38 +0000 (UTC)
+X-FDA: 84430519236.13.64DF766
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4EEB1C0008
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:59:36 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bb6fXYBy;
+	spf=pass (imf10.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770774488;
+	s=arc-20220608; t=1770775176;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nIhDAJJR+YXegWy/wL3i8yaBjUwW4vdjx7/rh4TvX9Y=;
-	b=wiLyXfFwuTnFmTG53Ycrozhs53j7XNXRRwrhUHqMBk1CHxHpfVX0DeDpCm6MdFZptIP6H1
-	ANxdL6BztCxWAKF1EdZAW0sd82WdnpRw9TKI4eTlUcUOdIQnh24AmviGtAoL2QtSoZYSQv
-	fdBBshvgrMcOdHei0qAXEFlqyZ22/Ms=
+	bh=jcJDMNR9Tn0ilBGLdQTOxUQSH3ZRsLWx9Xgt9aF0KKA=;
+	b=l5geldcxOYuLDjE+iWlU+vdEVtM9engeY4hfGFLJ1AVOtZcNLxXzg5DIF8fSZ5pj5icNGl
+	0dwYO5R4X1NKCI2xEQQs/RcO1QQn2ZXumg4bl00IkrcQUU8k8bhYr/yBR38jSUAt2Fcb/+
+	JcLUBjj7y2TckybV3+zu1jj9WJvRAQQ=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=USn2fp5U;
-	spf=pass (imf08.hostedemail.com: domain of dylanbhatch@google.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=dylanbhatch@google.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Bb6fXYBy;
+	spf=pass (imf10.hostedemail.com: domain of kartikey406@gmail.com designates 74.125.224.43 as permitted sender) smtp.mailfrom=kartikey406@gmail.com;
 	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770774488; a=rsa-sha256;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770775176; a=rsa-sha256;
 	cv=pass;
-	b=PPtbz2H2cKvHbow0e9vlxKTQO5unxj/GakJ2gv2EimcJa/aN8PNFM/9oGpROOaKWiAO8uG
-	+t1aBHcQ5m8g7TjL3JTRb+uaYjIdSMjT1gHwagsRhlssWvJ8m9V1AFodfgCDD6kMlSYrqq
-	I7fJ/X2uFWp3HAsTLT35s3DiqQhv02A=
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7950881727cso10541547b3.3
-        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 17:48:08 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770774487; cv=none;
+	b=NSpZ9x71WGzQ1t5s4ZpOD0AKdKRkLYBH6meK5l1wOYEP6gGNnVkXji0Vgd3upF/6o4EXmy
+	WY6BW34fzebMDipv3qLhcFlERtChoFnm7lAudLa27mZJd8p+eS1917O5381Fjj0vVAFwOb
+	1OV9a26NThV/3AdG7OSKyrPwHz/xoTY=
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-649df3c22d4so4221325d50.3
+        for <linux-mm@kvack.org>; Tue, 10 Feb 2026 17:59:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770775175; cv=none;
         d=google.com; s=arc-20240605;
-        b=FlpK0lwugAptMnThkRBcAo3fB6IMHiiG/LbOS0y5bcbr2NuJIyojmO/tyhAW8l8RFG
-         BQrCEmePf+9d+iH1gPl97sLKuXQ3FmEdtimIlxDTZIwnh2R+Y2xtS6XSzN8EUGbML+/D
-         Pfas3ItHhBdswNR/Tfwyjpm1qhHNUmgFk7x4hAdL9X+v0YB43EohW5imALxuw2KEen7k
-         hx9/6+g7CSJpqnCp1F7EquidWydXPO5LNPQAQtZwqDpHp86ID6pdUWIoZXu6tgT1+pXm
-         3oKJc1I4pxlBQTA4U/04ae9kYOy9Nx4Lw65IdMxOkCSYqh7X/sjyahMhH69AWEwxYXXm
-         g86Q==
+        b=E4c4cviqOmqkrRLPtH/61EDKztV1tylHyA24M5NuuDmac3t5fPm7YPoa0DuCesyixp
+         b3jduOA8QhrLi+xCGl1JEpcQOqZSML6mjw+E6f0shD/UnKt6x4IkK2diKMH24AITMqeJ
+         eEWCFy2QXAqcLffxMsHI33VjDo91wXJ9ai0xJ1gP7gD6sG2Rf/B+RTrvIwPMVPdW3DoD
+         o5eWqgxneyy6/e3UFQgN1HUWPw3JbcEpvdAJkZ307778AyliX1e2vD8ok8UbCVTVGI26
+         IzxbQzhC1vqbTbd7vfkK9p+55pC+B291Tz5adUJXrt1/WUOG0ZutKJjmBbORpILDAH8a
+         jdOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=nIhDAJJR+YXegWy/wL3i8yaBjUwW4vdjx7/rh4TvX9Y=;
-        fh=C7/7vWcK6twxQpU0GSwpyvMZGnjC0KIpcrdNk8BpLYw=;
-        b=h4mvaqnvScnbpXCygAvn3bZOSXdlpSy0RtBCKx3X73s9lDzxq/rtbj20LvMtMmgY2L
-         /JMdedCrbpLRPvPymfAfISlKR7XJQCGu/NMqVqHcf5nIXjxAojr9nj3A6219DsWO/rKC
-         Q8hcLMDJHrlcNaozOLSO+lA6ZKI6I06rjGhvtorzuoxiiFsuGxlqwExH6xWgOpeD4g+x
-         Ky6jXKeoqCqXyUMyPAR5ixQ/KeqrMM4FjL2jV4sbgiNoWtStyzYR8+5go7qlNYACuahg
-         4satUCEA8gWtNL+PHIJggXOoSdrixoqx8fc5ZkwZxb229pYep4MpV8vtMvPD88Jog5xh
-         AYNg==;
+        bh=jcJDMNR9Tn0ilBGLdQTOxUQSH3ZRsLWx9Xgt9aF0KKA=;
+        fh=uVrwb4zI4sWcQkSYkrmKn3YnapFsFJObLAEHpg8qYtE=;
+        b=Oitr/e4OeEsPn/i3BtV8Me7y9HSRka7ruOBHSIX4Le25d4pt1CLgN/TLOpY1S5MI6P
+         TCm1YnYfM+k3cAwRZy/VB4o8/STX4Ia3D/fQ759E4l/7hJy9JHsLAm7o72SDxZverNvQ
+         qD6aZiB6ZKpCKzhg7LWYB2Q+TDs6T5kvwko3m1FWAERV92Op5TRzhBRfd/jLbuGoho7G
+         zuaSFKOeCTbjZbK+nDEfOet1+0EZULtQ5Cez/F2lQ/05Muz93wjdC4HXFL66wRUfR7g0
+         Xr7pyMakrWqqOcF5PNG6nzoKzs8vlXv9am+fIzcTDLwk+CKuVBoUktj6rVa9h01weVIc
+         F+BQ==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770774487; x=1771379287; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1770775175; x=1771379975; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nIhDAJJR+YXegWy/wL3i8yaBjUwW4vdjx7/rh4TvX9Y=;
-        b=USn2fp5Uk5U5KupGNLFg9U3l5SIg7VFN7JPXO0z6g5WVJpBgwhEttSiIyufnr5i8l3
-         UjUTfG7grVZwqr1uPm2KpTRDeFCbnFmxnndAs0W4jhXlXXLsYoMF+Bg+pkCj30l0CaQr
-         C53iXvWJgslcHkrRUaVET9win5ZymQC36CzoqC3y/CxVL/sySPcuMn6TN+mMCTLWHskt
-         A6NsFE8QbxB3n8VK8l3mydLpnthedW3f9kN2v7GKVeAMVvidBYqgeLQL1vlv/xxIQE5Q
-         pXUldrQDtS1V/QraMW9M8k+49RxjKD5iY4/j8QTbdc8SDGKb0U1NLzUQNdAK/GYXIlqa
-         +ZQQ==
+        bh=jcJDMNR9Tn0ilBGLdQTOxUQSH3ZRsLWx9Xgt9aF0KKA=;
+        b=Bb6fXYBySB0+7OkoG+9mZf8Bvx2JJoD0Rf2zZ0sp4fVJ0yMZ8VIgnyGxUm9iSWjmmQ
+         80I8vJNhJF1WoJG4D56sw33UJo+j2dOf8eHq7mj45uvA5di1vmPLQQrjcENePJ3I3p+c
+         F8vFMpvgrt9hNfaxysYGo8oceRcqDbO4UYNdVbcdBjqpHZfT1SgeuZnW0A4axNI4LPMm
+         7rrBW2keHzOfyVPJDlVkjtyPaGNsDtOU2/LaRQtrSWItrV37AinuG/lgDZqQ503e2Sz7
+         perdje0UNklWWBbAjsQBtWVJ4Nrtt1KyuFAJOm/grd55NvBZ6OulyOFmFNLelLw4RnTE
+         zYCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770774487; x=1771379287;
+        d=1e100.net; s=20230601; t=1770775175; x=1771379975;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=nIhDAJJR+YXegWy/wL3i8yaBjUwW4vdjx7/rh4TvX9Y=;
-        b=vC54FS/OkzP6EY0NcVO2d90oNWSLDX8vJgDEtSESzUeYQUtPPDZBBYKwD4dLMA6Wu3
-         pP226nRPB0PT9a37N6Yk4QmlRAZEjVLpKB1YLfLyrbXaxWNGr3j5uZCZKKpXd5UBqxJG
-         hQ2OkzTo9kVsa0yo8iSV0CvW7PbPYC0DszK4PN/piXM7vDtHRSOHABJHxHAEN8IpDvgZ
-         7t2ClmDd4v3P0UXBSgnjPwIQyfntoBwzvZdY/fRFCnUqcbiPTTBw1BsF6ec7a0OghyCo
-         GYbAGTQWHGnKHqJUNCnZyjX86mM7LOVxGoH/EygQARU62hjyede3rwslK35Q+OJmJpWe
-         VTFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWzcK/+IQwBmwwwc4uM/IVLcegKPQfofKTcWZV6JF85w5iTT1VPxHJj7K8aoyngTGWc8CUU3EYC7A==@kvack.org
-X-Gm-Message-State: AOJu0Yx6xWPO12nrV+batoOyxMn3H9fsNMaCxAVgvf8VjBdB/+pImEko
-	cp5S+DyMA8kVFmuKqi2rb3Tdh+r1Ri/O+n470/7NVNWYhiwgeZkfSfx2GBdGLJo0ChBcjnS9MgI
-	9hUQNSQQY/dWSXGm8jBfxxv/VOQTsQ0RlYeCxPpjN
-X-Gm-Gg: AZuq6aKryjrcS4FZRS1/fxPvdH+pEsochmuzyRgVG01HIe03DKgs4ZWXApbUcry+HLW
-	y+ogBw9sSnNv41m2d144IvVuK7NS8g/PdbQCzOgDk/VQrt+0nrf0kvgY9YgelMg35Ztb9RdvqRz
-	KpvNl1kOtoWbPu5nS91me8se+TODbHobPxyYGdmv6bCpo7miAjs6bS4joC+orpECUzCFksSeMlk
-	j+2Is+bbhbtV4jvtEOBTzrHGuf6gNOMTLcpvDYrJmn8mVk6vHzIcOC5//wESZZiH0U5zkpPkQIb
-	0Z9M25oiTBC4o7Q8jTPsBz/LzPoX1/ULvXozvxxuT22D05U=
-X-Received: by 2002:a05:690c:60c6:b0:794:d4c3:3152 with SMTP id
- 00721157ae682-7952aaa7866mr322145887b3.31.1770774486955; Tue, 10 Feb 2026
- 17:48:06 -0800 (PST)
+        bh=jcJDMNR9Tn0ilBGLdQTOxUQSH3ZRsLWx9Xgt9aF0KKA=;
+        b=wXSxYyxIwkdwwXqr9o+VKoBXlch4df7irU8WE4iNvbZNCbd8XK4z+JVZlRQouGx9Jm
+         u2lMkQGNpCLAOw03A8C5ZjX2GmwC95nAGl+9enojPe3A0jsD8Lh1+rpvxegQARZpGAm2
+         s72oXfavTyphTLu35Hr4AiJDOAxDM8bLhP714raNKMbxRNS+sYTD2CWGhqBOTOBsJxDi
+         LtkrqpdqYGCELGSEYaCEY3kQBQ0U0rZaK186hugZI4yrU671ouXR+IYOAEfrlLH+duRl
+         b1aNcp0IJi1wOEKA9Mf2zvgfgYeTRxinBdAFM48z1E4c+KyNydQJAEqtAfyBRktT6R2d
+         CCJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVs8U+/rS+bJbpzfygmXEBDF+01ZaYrpS2Zeh6a7F2YmGEUvwjt+nhCiealp7A9JlTjoeaoqUW0sg==@kvack.org
+X-Gm-Message-State: AOJu0YyV7v2MSav8A583CoknUK93hQ/1Guyaxj0u+CpVUaNO5K30GHc6
+	BT9Y/HF+fd0LDt/pi7dqbvOshdbYOb8oQ2Kq1W8hkdV55mUDGPPqqcbA9quVjxVnyhIcRexfFig
+	JwysBIB5R9wmFo4fWjbn8ur78vcsMZsA=
+X-Gm-Gg: AZuq6aKxDObv9Z/MsEM+uolQfp9PRgg70xm+fXYIaK06K0f/mj6yM67KIlmKMri/Qz0
+	N1CQUVbk2NyO5srtbHpqz5e+5+J9ZWY+IIKXJ4vHUszaV3j8t3+O80sh1GUgP4nRzN27IxQX7ID
+	/CJtYPRrqu71fbymZlonPMEdVZxp8ckbj8yMkw9HHNJLVsJzQVEhR+KgPb5rYIyjaDPe8zQqOxf
+	AsKUK42d7ph1BP3EPOu9zrWy6irwtlb/G/0P97RteVHohF5tXZ9hIo4C1+JtHlQ98C/bG+hJufO
+	mJGHuNBVcCTYZVtUGaRDqa3L4hhXuQTgAmQlP+MS7GKhIqSCCPorDqiVIdLL/qWL5tZvt9XgQo5
+	qHkSu3wE=
+X-Received: by 2002:a05:690e:16a0:b0:64a:de2a:e6e9 with SMTP id
+ 956f58d0204a3-64afb8dc562mr1007272d50.24.1770775175263; Tue, 10 Feb 2026
+ 17:59:35 -0800 (PST)
 MIME-Version: 1.0
-References: <20260127150554.2760964-1-jremus@linux.ibm.com>
-In-Reply-To: <20260127150554.2760964-1-jremus@linux.ibm.com>
-From: Dylan Hatch <dylanbhatch@google.com>
-Date: Tue, 10 Feb 2026 17:47:55 -0800
-X-Gm-Features: AZwV_QhqlaaRHUZ_sLIEmaOa0r2FI4v1zw3ijD25N_cAxghl966m-JoOQmBSKPk
-Message-ID: <CADBMgpyHw_kgb+Fc+h+Z3ytwMBwDG9B=yai=7g4UWP6AErE77w@mail.gmail.com>
-Subject: Re: [PATCH v13 00/18] unwind_deferred: Implement sframe handling
-To: Jens Remus <jremus@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org, 
-	Steven Rostedt <rostedt@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Andrii Nakryiko <andrii@kernel.org>, 
-	Indu Bhagat <indu.bhagat@oracle.com>, "Jose E. Marchesi" <jemarch@gnu.org>, 
-	Beau Belgrave <beaub@linux.microsoft.com>, Linus Torvalds <torvalds@linux-foundation.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Florian Weimer <fweimer@redhat.com>, 
-	Kees Cook <kees@kernel.org>, "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>
+References: <20260209033558.22943-1-kartikey406@gmail.com> <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
+ <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org> <CADhLXY5nrTXmWMPeiLg37euyVeQsNDRUvKmQaPdxtE1YhPq_jQ@mail.gmail.com>
+ <CAEvNRgEoPs5ia+u0ODra6N4BdOwpYa04j8nDxwfNVyfCOWnM6g@mail.gmail.com>
+ <4ed1b111-f2f1-4f89-9308-fdd9d706ca37@kernel.org> <8f188d73-fc97-414b-bdaa-e72032b2bf82@kernel.org>
+ <CAEvNRgFw_P-GZ=Z4irGheM4O-RnXkd_bdAd0AT7fUuwXEnSqHQ@mail.gmail.com>
+ <c4c06a75-e50e-4530-80e3-13724c08a949@kernel.org> <CAEvNRgGg245-TQn2HFSadZ7gmz-FxsAQ6=N14BUgiYGHhZeLeQ@mail.gmail.com>
+In-Reply-To: <CAEvNRgGg245-TQn2HFSadZ7gmz-FxsAQ6=N14BUgiYGHhZeLeQ@mail.gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Date: Wed, 11 Feb 2026 07:29:23 +0530
+X-Gm-Features: AZwV_Qg3e3DLlPtLr0FMRkXA-24Zu6q8lzeHImpYKVgBS09u4-NVv29V3PEUAUE
+Message-ID: <CADhLXY6PxJ3q5Q_aqMPSKcPQVA66T0+6Eud4ghv3AQH2ZdMV6g@mail.gmail.com>
+Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in file_thp_enabled()
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, 
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, seanjc@google.com, 
+	pbonzini@redhat.com, michael.roth@amd.com, vannapurve@google.com, 
+	ziy@nvidia.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6B346160007
-X-Stat-Signature: 4k18fhbyyw9sx6n9otedd5kkp1wps7s5
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4EEB1C0008
+X-Stat-Signature: dcahc3gnda5p7hk6g1nmnfdtcwcw9m6o
 X-Rspam-User: 
-X-HE-Tag: 1770774488-513165
-X-HE-Meta: U2FsdGVkX1+W1DqeAhsPxnOKLXek2tE4ubpBpZEf400iEBABqRvWCzkX+dJ7uclOMCvBLewXD6yM2ktc9y7+5LQMSMtgBJCIFwiZu1tlXzcJ0cLm3ZQlRR9YoNLNkpzePSx3LeTcnSTqCDJw9YAjnZk9quF8f0Rynwd10POBzn2y03+//Ce8Y0B2/4KSA63sKF59JLS93eSVZNdN7WyvpdoaNYoP4QSXpLTUoUPT+zWkx+lkcYUw3Q9UUz1zSc3odED/CB5UC9xwG2yOLTXh8ZLJt8DrAACk8xcGFh8XH+MQ69kgesovxCMkC3q28KgUCZYfCG/cCtG1Q4/IVrO7Jr2fFxg5P3xt1AEHA5fJHneV4C41sMtExDJdMkyL/5bZbh5d2e1Bu7xdyJd6YJshyXybylGpFJ37kW9QDXGVcDN63ds7iUBl3Y7+7nNncf28Bq8EXIAmy61vPJh591pBXblBFXWij+jedzZ1xzGYfMpwEGIBXb3cQ+/hYLTZjL+0aPIOXymqaU3T8cah6ztAN87BzbnXd6eIE/97nmYm5nzbJ+6LFmSTFAawGIghhkyPP9NplHxMUN5MfSi9E6O4xhLLQBRuoXJn97ymvljtDtdO/t6bHW7JpnPhHKUzlKnhfcQ4zbiwctscLXXOR3Mr66T8CoXUQwQ6iQqCTTxgRshBKh2oNA+BxGQajIan6Ez5cC//DR57BIGg9slzwlvtYDlY6Agbu6/Olc9t2/jkV+rT2FQzSm/ImkdT5Ytj2P0VMlQ7WEec9HBeta84KdBXHvqRbUCAjDiG5spjCp2KrPeYvkFiUp4+3mLLMoaEKWo6ISqBdFqMPgPBOythZ6iOYykx5LHDK0eTNAwtWbTm/rFNucbaQI35mN314fG2TWcf56YQjOurF+2oY54PBBSO5GGPhIpy122LStSIbU8KQMso2u0kDDVmZ7/iyPBFUgtSu13mt5quesPYyWp91u1
- E9d+XmIC
- rM/8+16WHlQvOf4IjqQU4TfZY1zoKkUdlFpBtWL4HZCfaryPAbTzbki+qohV35ngNlGmcRcNaqnL3rpO40ToH/61MBE6ntNKRJSnPQgMrREP8hMVo0HHMCVVuDh0UrXaadeImZMzQS7fqMW0zajEfMY/ELnX5Zsu6rnfw4UXaiRgylEjyGjPnPl6qMazfBfGFN+52Jszt0ms33LpBoMz5itW76PH5LKfZgONWvVfmmMlhRNfIO9DmmGezMltsbtvBHheFDL7HGxZ1BAZ9PlZMxculvUM3RnOqH35mEDmxBxS6l5hfssyuTbgIb2w5ud02A3NUFd9imyGPZxk2T7GivSUCjsXu4B8pNMMQudg06i/hl0DJQc5AfmgwulJHParA6MkweqIshjgiqeeJwR/QlxrC0jsOCqsc7RGR
+X-HE-Tag: 1770775176-91555
+X-HE-Meta: U2FsdGVkX18juiG0EFQW7+vQDSMt2aMPm+u8E+d26UI9QzRwwG/RKuM/IjdrPetoWFDwmh+dkhtU7l3kvGowLA+xlwjCa+fuBlljS3mJ+mrukEUdTBh/75h5Nt1QFGmaFYya8FMKOM/BiPss0ROKgXjY1iBe7weauZK0NkBHBUTbG2r2dD94ggh8NJVMQ9DzJ6CKvU2FIGOnFATapSwc06DhpduZrvg8yU3k8gxIWKlMEl312nH3sVaQQNmxuZjBHeA/W2kWzoAt7r6gvKIGl1TAGu17oZ3wMmTpD0ybHjDIwt7RV26TjXmrbmeQs2tyzzuq8Ml2qqpgDnmJHuEf7lq//hCG4Tvxfi4/XO1oZHeHfcp7Qp8JHEQ61nvfJWUQCAGTiK4EWpdDQcD0U5QqOCWLXq4rIfpPOy1nNc/iIThILEPtO7Af7E/8AkMXO0D13TW0m9qeU4FfXWP24NXES5Kzh4fTwb3HyTQgqfaZBBM8t0gsvWJVFmX5h9Rn/EX2z0ve5xUBXxLQPDsD9rbn0HLKphRaSmELONrmTVrpuX1WgPXZORM8hy7+mH9PAi01B2NtUik7UspVJQMgZp+wvlhorYr/TjnYPzR89z0xjiNLMP9U/2muEWzkIKLTCrMjKOBqbvZcQ7Xp8CAHThuv9vpgBzdiRpqV4d89OK5SwWA73l3cTkG6BDfX1Z8BdCveZayoRPfIU1OmdJ94gztoYLgnIddrm1zzw1bRw89IA06KK685kxW0kV3YCOjGFekIcKZDWogfrEvGN2VHydKOOAPQAuZjHd61ZgTpvJUBfd68dZa0lVt+kBEbjKpxUknHfciyCJrv11McIbdNGxU17QUXTfMIps89Pviw7gcoazoLdi4TpAiyMC2BJoY9gsGf+l435VA+nIxj0gqEvKlXH+OJkxoQyVQiKnxiqD6iMWdLt9F9uCV2NdbfVYbTVyFAQspPa6hxmqTURL1VsV1
+ Yr+f3FiP
+ cZijBqCkqOSuOyKINDGFSbiaNyxqCOFa77j2l+3ZUnjvlyvUhlg1Y23AzFBL5QfEWJrO0dkdeL6Q+C6oVF7vByh+/eySrBrOI3MBr4H0+ZgcHFLmzQl6SolG0OgMFu1jbKEIftqzibdlJI6kdlxDPShznWh8ux9nl/RjQAWLM/EG50WepEwv9n2ZaL+EunRaN+GH/z5DaKa1QCfpNTVDuO8EUe3aWGoQDgXXuuKLsIga0KjbQ1mV+u92m+E1ogX/9H1DU10znra5Puz533CJn7mjPbF8lExjSfrPbZFC4TOSp4lNVJwe8Zrcj8EAyFE27NaoDmNjCdQwKiIDKg4rEQFZ7dzokAaCo673zC4P5n+KGAJmO0CLpfH3M6PzyjWlgLMzsEY+MoQi139SJnrj1cItFl8mqKTy0AoL5LL5dcB4CE5cioxhbNZ4jdtikdlgUwg7TWeFB1k54fKBaWfE/L0Udc9M/bw0/HQkqmqgFBQAjGFt4cMx+BgLbvM2DYcvXp3T8/kw8itOFz5APkm8qlUhiGDnexRHYN78Wv8C+lIErs0dqk70lNgg5bO73yrv8e/BhFSmTxo3Sb8XoMPS0C8Y+p87BQM0QXfypPQ39jspx2HU9p0OX0MgTc4VPuH8HhG0NP5NvNQAWu+M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,190 +149,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Jan 27, 2026 at 7:06=E2=80=AFAM Jens Remus <jremus@linux.ibm.com> w=
-rote:
+On Wed, Feb 11, 2026 at 4:30=E2=80=AFAM Ackerley Tng <ackerleytng@google.co=
+m> wrote:
 >
-> This is the implementation of parsing the SFrame V3 stack trace informati=
-on
-> from an .sframe section in an ELF file.  It's a continuation of Josh's an=
+> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+>
+> >>> BUT, something just occurred to me.
+> >>>
+> >>> We added the mc-handling in
+> >>>
+> >>> commit 98c76c9f1ef7599b39bfd4bd99b8a760d4a8cd3b
+> >>> Author: Jiaqi Yan <jiaqiyan@google.com>
+> >>> Date:   Wed Mar 29 08:11:19 2023 -0700
+> >>>
+> >>>       mm/khugepaged: recover from poisoned anonymous memory
+> >>>
+> >>> ..
+> >>>
+> >>> So I assume kernels before that would crash when collapsing?
+> >>>
+> >>> Looking at 5.15.199, it does not contain 98c76c9f1e [1].
+> >>>
+> >>> So I suspect we need a fix+stable backport.
+> >>>
+> >>> Who volunteers to try a secretmem reproducer on a stable kernel? :)
+> >>>
+> >>
+> >> I could give this a shot. 5.15.199 doesn't have AS_INACCESSIBLE. Shoul=
 d
-> Steve's work that can be found here:
+> >> we backport AS_INACCESSIBLE there or could the fix for 5.15.199 just b=
+e
+> >> special-casing secretmem like you suggested below?
+> >
+> > Yes. If there is no guest_memfd we wouldn't need it.
+> >
 >
->    https://lore.kernel.org/all/cover.1737511963.git.jpoimboe@kernel.org/
->    https://lore.kernel.org/all/20250827201548.448472904@kernel.org/
+> Seems like on 5.15.199 there's a hugepage_vma_check(), which will return
+> false since secretmem has vma->vm_ops defined [1], so secretmem VMAs are
+> skipped.
 >
-> Currently the only way to get a user space stack trace from a stack
-> walk (and not just copying large amount of user stack into the kernel
-> ring buffer) is to use frame pointers. This has a few issues. The biggest
-> one is that compiling frame pointers into every application and library
-> has been shown to cause performance overhead.
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree=
+/mm/khugepaged.c?h=3Dv5.15.199#n469
 >
-> Another issue is that the format of the frames may not always be consiste=
-nt
-> between different compilers and some architectures (s390) has no defined
-> format to do a reliable stack walk. The only way to perform user space
-> profiling on these architectures is to copy the user stack into the kerne=
-l
-> buffer.
+> >>
+> >>>
+> >>> The following is a bit nasty as well but should do the trick until we=
+ rip
+> >>> out the CONFIG_READ_ONLY_THP_FOR_FS stuff.
+> >>>
+> >>>
+> >>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> >>> index 03886d4ccecc..4ac1cb36b861 100644
+> >>> --- a/mm/huge_memory.c
+> >>> +++ b/mm/huge_memory.c
+> >>> @@ -40,6 +40,7 @@
+> >>>    #include <linux/pgalloc.h>
+> >>>    #include <linux/pgalloc_tag.h>
+> >>>    #include <linux/pagewalk.h>
+> >>> +#include <linux/secretmem.h>
+> >>>
+> >>>    #include <asm/tlb.h>
+> >>>    #include "internal.h"
+> >>> @@ -94,6 +95,10 @@ static inline bool file_thp_enabled(struct vm_area=
+_struct *vma)
+> >>>
+> >>>           inode =3D file_inode(vma->vm_file);
+> >>>
+> >>> +       if (mapping_inaccessible(inode->i_mapping) ||
+> >>> +           secretmem_mapping(inode->i_mapping))
+> >>> +               return false;
+> >>> +
 >
-> SFrame [1] is now supported in binutils (x86-64, ARM64, and s390). There =
-is
-> discussions going on about supporting SFrame in LLVM. SFrame acts more li=
-ke
-> ORC, and lives in the ELF executable file as its own section. Like ORC it
-> has two tables where the first table is sorted by instruction pointers (I=
-P)
-> and using the current IP and finding it's entry in the first table, it wi=
-ll
-> take you to the second table which will tell you where the return address
-> of the current function is located and then you can use that address to
-> look it up in the first table to find the return address of that function=
-,
-> and so on. This performs a user space stack walk.
+> Regarding checking mapping, is there any chance of racing with inode
+> release? (Might the mapping be freed?)
 >
-> Now because the .sframe section lives in the ELF file it needs to be faul=
-ted
-> into memory when it is used. This means that walking the user space stack
-> requires being in a faultable context. As profilers like perf request a s=
-tack
-> trace in interrupt or NMI context, it cannot do the walking when it is
-> requested. Instead it must be deferred until it is safe to fault in user
-> space. One place this is known to be safe is when the task is about to re=
-turn
-> back to user space.
->
-> This series makes the deferred unwind user code implement SFrame format V=
-3
-> and enables it on x86-64.
->
-> [1]: https://sourceware.org/binutils/wiki/sframe
->
->
-> This series applies on top of the tip perf/core branch:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git  perf/core
->
-> The to be stack-traced user space programs (and libraries) need to be
-> built with the recent SFrame stack trace information format V3, as
-> generated by the upcoming binutils 2.46 with assembler option --gsframe.
-> It can be built from source from the binutils-2_46-branch branch:
->
->   git://sourceware.org/git/binutils-gdb.git  binutils-2_46-branch
->
-> Namhyung Kim's related perf tools deferred callchain support can be used
-> for testing ("perf record --call-graph fp,defer" and "perf report/script"=
-).
->
->
-> Changes since v12 (see patch notes for details):
-> - Rebase on tip perf/core branch (d55c571e4333).
-> - Add support for SFrame V3, including its new flexible FDEs.  SFrame V2
->   is not supported.
->
-> Changes since v11 (see patch notes for details):
-> - Rebase on tip master branch (f8fdee44bf2f) with Namhyung Kim's
->   perf/defer-callchain-v4 branch merged on top.
-> - Adjust to Peter's latest undwind user enhancements.
-> - Simplify logic by using an internal SFrame FDE representation, whose
->   FDE function start address field is an address instead of a PC-relative
->   offset (from FDE).
-> - Rename struct sframe_fre to sframe_fre_internal to align with
->   struct sframe_fde_internal.
-> - Remove unused pt_regs from unwind_user_next_common() and its
->   callers. (Peter)
-> - Simplify unwind_user_next_sframe(). (Peter)
-> - Fix a few checkpatch errors and warnings.
-> - Minor cleanups (e.g. move includes, fix indentation).
->
-> Changes since v10:
-> - Support for SFrame V2 PC-relative FDE function start address.
-> - Support for SFrame V2 representing RA undefined as indication for
->   outermost frames.
->
->
-> Patches 1, 4, 11, and 17 have been updated to exclusively support the
-> latest SFrame V3 stack trace information format, that is generated by
-> the upcoming binutils 2.46 release.  Old SFrame V2 sections get rejected
-> with dynamic debug message "bad/unsupported sframe header".
->
-> Patches 7 and 8 add support to unwind user (sframe) for outermost frames.
->
-> Patches 12-15 add support to unwind user (sframe) for the new SFrame V3
-> flexible FDEs.
->
-> Patch 16 improves the performance of searching the SFrame FRE for an IP.
->
-> Regards,
-> Jens
->
->
-> Jens Remus (7):
->   unwind_user: Stop when reaching an outermost frame
->   unwind_user/sframe: Add support for outermost frame indication
->   unwind_user: Enable archs that pass RA in a register
->   unwind_user: Flexible FP/RA recovery rules
->   unwind_user: Flexible CFA recovery rules
->   unwind_user/sframe: Add support for SFrame V3 flexible FDEs
->   unwind_user/sframe: Separate reading of FRE from reading of FRE data
->     words
->
-> Josh Poimboeuf (11):
->   unwind_user/sframe: Add support for reading .sframe headers
->   unwind_user/sframe: Store .sframe section data in per-mm maple tree
->   x86/uaccess: Add unsafe_copy_from_user() implementation
->   unwind_user/sframe: Add support for reading .sframe contents
->   unwind_user/sframe: Detect .sframe sections in executables
->   unwind_user/sframe: Wire up unwind_user to sframe
->   unwind_user/sframe: Remove .sframe section on detected corruption
->   unwind_user/sframe: Show file name in debug output
->   unwind_user/sframe: Add .sframe validation option
->   unwind_user/sframe/x86: Enable sframe unwinding on x86
->   unwind_user/sframe: Add prctl() interface for registering .sframe
->     sections
->
->  MAINTAINERS                               |   1 +
->  arch/Kconfig                              |  23 +
->  arch/x86/Kconfig                          |   1 +
->  arch/x86/include/asm/mmu.h                |   2 +-
->  arch/x86/include/asm/uaccess.h            |  39 +-
->  arch/x86/include/asm/unwind_user.h        |  69 +-
->  arch/x86/include/asm/unwind_user_sframe.h |  12 +
->  fs/binfmt_elf.c                           |  48 +-
->  include/linux/mm_types.h                  |   3 +
->  include/linux/sframe.h                    |  60 ++
->  include/linux/unwind_user.h               |  18 +
->  include/linux/unwind_user_types.h         |  46 +-
->  include/uapi/linux/elf.h                  |   1 +
->  include/uapi/linux/prctl.h                |   6 +-
->  kernel/fork.c                             |  10 +
->  kernel/sys.c                              |   9 +
->  kernel/unwind/Makefile                    |   3 +-
->  kernel/unwind/sframe.c                    | 840 ++++++++++++++++++++++
->  kernel/unwind/sframe.h                    |  87 +++
->  kernel/unwind/sframe_debug.h              |  68 ++
->  kernel/unwind/user.c                      | 105 ++-
->  mm/init-mm.c                              |   2 +
->  22 files changed, 1414 insertions(+), 39 deletions(-)
->  create mode 100644 arch/x86/include/asm/unwind_user_sframe.h
->  create mode 100644 include/linux/sframe.h
->  create mode 100644 kernel/unwind/sframe.c
->  create mode 100644 kernel/unwind/sframe.h
->  create mode 100644 kernel/unwind/sframe_debug.h
->
-> --
-> 2.51.0
->
+> >>
 
-Hi Jens,
-
-Do you by chance have this work uploaded in a public branch somewhere?
-I'd like to get a new version of the SFrame for reliable stacktrace on
-arm64 patch series [1] working for SFrame V3, ideally with the SFrame
-library in your patch series here.
-
-https://lore.kernel.org/lkml/20250904223850.884188-1-dylanbhatch@google.com=
-/
-
-Thanks,
-Dylan
+I don't think so. file_thp_enabled() is called from
+__thp_vma_allowable_orders(), which is reached via khugepaged,
+MADV_COLLAPSE, or page faults. All these paths hold mmap_lock and
+operate on a valid VMA. The VMA holds a reference to the file
+(vma->vm_file), which holds a reference on the inode, so the inode
+and its mapping cannot be freed while we are checking it..
 
