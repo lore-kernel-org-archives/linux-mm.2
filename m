@@ -4,136 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A8EDECD6F4
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:13:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91DB8ECD6EE
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:18:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7E3846B0005; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
+	id B4B0B6B0005; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7910A6B0089; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
+	id B225F6B0089; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 668AE6B008A; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
+	id A24D06B008A; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 548706B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:13:29 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8EF0E1A048C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:13:28 +0000 (UTC)
-X-FDA: 84433578096.24.24052F7
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8212D140007
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:13:26 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=16fpF054;
-	spf=pass (imf09.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770848006;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EC4E6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:18:27 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 357A313B002
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:27 +0000 (UTC)
+X-FDA: 84433590654.25.1B87B99
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 57D0820015
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:18:25 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=beB+Iwte;
+	spf=pass (imf03.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770848305;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
-	b=6NvWjYM3Yd2Hfdkwfmc6YBmwUjG+y6F10UwHtpWzxXWZ+OL5v3CeUo3hhnrJPBPYFMcCUq
-	IOy0sjKK43x14IyWEqaHVd2LUVz4qS9Tql1ArO239NZmDGIVhSMCAsm23tVBW68TlzjaWX
-	cdPR89+m+vxqc8o1NZn/mtudlXzwm6I=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=16fpF054;
-	spf=pass (imf09.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770848006; a=rsa-sha256;
-	cv=pass;
-	b=BDxRYV4OF37eBxRYR15QD+D9QnGWXWk/LnfJ7IBAsZIFZ7n5JRyMB2oDrEcAEVWVVvegz9
-	naMrIx+7gYs7F0HrTQZtek6McblCC9K6SMx+rN0xq3zKx6tjO7dMVe9cV8Hr/qmCvsDnKk
-	ehR5xbRzsueUuDdNpPVNRkMJtVHiQXE=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so10455e9.0
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:13:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770848005; cv=none;
-        d=google.com; s=arc-20240605;
-        b=MA0mN4QMJBfkBcEIDKJFZtZZlgcWMuTbEtIkRWl37vQtQYGKGcEhCR0MHAV/ib595e
-         T50PCzGb1qy3YkPGrb7Ms4ZlWZ1QXGR0rka8V4eoaxRwk1Np5wbBQpqylIXw1n4sf87w
-         Up/iaGHt0ZHWJNo3KXHTyBLE5V9JyR00YeVF93rsT0Zs8IXG9mXIEiqmMIV7QpvO0Dul
-         aV/DtkzjpOQ89Zly1dZiBS5cumCtHfsNnSIP4YA0yQPvAhaeoABdsIJevisZ56W7atbc
-         GYQ/lFr4ovnqsk8ur48T63wX+jNvdgxofHx0JnmAH3Ccs+RjHHnfOMeYLgtQABGZ+g1i
-         DYAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
-        fh=/LMzejJHqtMtm2bG8Ut5RY7ZVNFR9rkFtZ0HPACVYIA=;
-        b=fLFiOwvcbYYpxArIDSGUlPTagmenP3V645tWHvDnMxoBvOqC72lDvArjh3LmdAFt81
-         InNGwQNFLOq1DYOqdhIxGhz96h6X7RvGxFdriM58UG2TfRZVv04wABqNvoIkiusXv13J
-         O2ND+ScJdl8nOMbhl2sUv62rEm86sHvdwAVLazzJ37HRtUAAoRGOYMgqAZTg+bywUF61
-         vbWaSS5JoUCkjUDk4+mM8d624Pc+QNIrLtPG7BSAWBjvL6eAz5e5He7bINbYrs6EsGna
-         AkmkXcERxV0tZpgnEr0u8pN9VpT9fYPgVEkWeYI9gunJgxPHxoyl1eGJMGPfJE0Rsdod
-         5K8Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=E9Z7wrUPu/eDtNPIgAA170h+g7/v16GEGL2FZHaFyG4=;
+	b=vit49lAjGmha5S3KYWm4dyQ+mYpORU/5XiJfV/7CWzD+bfsaet/AqE+Yt3RrFWpJpkoAg0
+	IjhD2HKsxQH/VEvn7C/dcquWPcdItkHLBwkJSIvoesqe/Wzhmo+ShHCSKyg79RUtDM0bW/
+	FRztnSIrPDp4mHisyFI+jn3g+okkQHw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=beB+Iwte;
+	spf=pass (imf03.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.47 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770848305; a=rsa-sha256;
+	cv=none;
+	b=XTYdq/+MR763j0AP+VdNOFNyrfB9YcfEiKWiHXzuFKlhHjRM+Z2jBhnUrUxA5ooUHm6SiA
+	yrhS9mYoQ6y4Y9VMVwVfW+EJ4iZnAgVwtYavYVPLLXbqpPETbPqqgHuv363HlKSOkNeu2d
+	lCBJ8S3MvbvPnZA/tD6AUcNSClXgQ2c=
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1233bb90317so1128893c88.1
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:18:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770848005; x=1771452805; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
-        b=16fpF054KhmUrJVriYRXvuv3W4mEyr818o5F1kwLF3HUhmWcUU/65EGMWdYxD4BM+I
-         YNXbfgcqFBuj1iz5QlDQv2iVeVMpyJmsUsjSwr9i2gJI+DMO6IC2cTHvbbsaUaKHm+XE
-         1vtjKD/TZKyW7mvoV7nZ4VjciLZjCurlUsVaYNBFFQnlNj8qIAHWqmC4TUcjTMjCY5T7
-         iiENTrt2vOBAEHNRUTZAY7ppo1sMedzGkDmhy6f33sWppTYxJfzekLM3OwhaccqqGUu7
-         uAugBzWY9APeqdL6Kgz6YaMSbmPpbkZrQpdLAQd6ZbacFpTmGUck9E0z5kw1YRaudINZ
-         ykSg==
+        d=gmail.com; s=20230601; t=1770848304; x=1771453104; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=E9Z7wrUPu/eDtNPIgAA170h+g7/v16GEGL2FZHaFyG4=;
+        b=beB+Iwte2fhC8ffC0zEyIlruTVkuMF++339Hw7Tml7g1brmYkEHArPXUIm7Hm+b6XK
+         RRMMXD/+IF++st82tflh8tpSFqGzd5cUqs9YcyPJBpeOLuzJXRPV6Inbjrc7w90tIPLK
+         p/5SXkKPu1V4ZUiVSePfMeI2UCjJyKf6fSJNPr+T/Zaim2cVx6oIpw8aIeF/MYOjP4FC
+         irFzoXoNK/BGy8x83uU6jVwIw8npl4KGFRdKeD3REVRnEu8bJQUZYiQkESvqfPhx2L+b
+         0Vmqq2Nd5rsqTlTrGkQ1vi/91OzVjyFpP8J+9dhpz6bXP/0Z+eJeXPCK5m21I0/94OsX
+         UJ9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770848005; x=1771452805;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xzY7TU/FGzvvQLfgVE3KqJN4JKT9kFfaraiSnLaG6BQ=;
-        b=UeUWN3HoHXewMaid+8IW/nWZ5YET3KJQNm/3xpYq1dkBi5VtI3VapJ7BkDyhfYufD6
-         BQRcOTX/ia/YvitVrS2A3vGvPLI/hQmHmB0z07tLF3o+t6ly7uFRkpkdSDHt2zgpR8iP
-         QUkIuv9y01wvPlJmxVFDwqvh6KM46RltgI+wItv+QbWOidVgKwyS+Qu9/45PHJYWSvdR
-         4zVukF+TZI89At3wkZFPciGTMOt70kosQs26Pao9O5D2vT+PaG6obp2YfdTh/i2D9yhy
-         oHVkLNOy6O5LfcvLcAzBBwMTwpfEjy7UOAYbJZHwkKMnDGnxt+FVS7GnRN1x8BIgDCNM
-         XuEw==
-X-Forwarded-Encrypted: i=1; AJvYcCWQzd+xaYUTdNXaOttAu3VLJdsPG6APlQ1WpRW+0xDdPDMQCKFwMb0XsdysyL/gHmXwTUtJSg9Lnw==@kvack.org
-X-Gm-Message-State: AOJu0Yz8jCA1etxEbwKIQ9XH8ubjEjA+/ICixxCkxDRDsoc++bMivB4v
-	qKOM/2uSrfXuxfW8cw2Qo75r4keuNH3rT8jN6th3suZp+wutYgglAHMyod48fNo2i2Bc+YvbJ7V
-	FQKpvnZkKY/z780UUpv4nOpl7pMb/WaftVnrspBKX
-X-Gm-Gg: AZuq6aIaRrTPRu03DA1WfEcFTHwN8ICDMn0mhPvy64kxuCpptB6QL6jfZkKnAAq2FjW
-	YX/0wyebX/RlFlTELJQIeHvP8M7r5kWgc11GmBZOGL5Tultuwqgk1TFZpubhRCT1NV5NcTNeDs7
-	EgKAbfeWJuKu2+SlN7TI9+4yCcUyukZp6bd/EEEu8VrWbbhEhUw9xpTShLWyDxAt5MASOwbTJ7c
-	qdwxNbRsD3vAgPueTRtdiIDP1d8qB8/WohMwxx4fIYWO4aE3aoxZiQAjbVB5Fm2bHGa2kR430Ku
-	1WxrYbE9VcLfuwZxcTccoZhR5bnDs4ccJwfclbP1Hb4RkufRwLugHZXcOXeiHjp0nvyu
-X-Received: by 2002:a05:600c:1f95:b0:47e:de3a:a929 with SMTP id
- 5b1f17b1804b1-4836593aa13mr288975e9.12.1770848004791; Wed, 11 Feb 2026
- 14:13:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770848304; x=1771453104;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=E9Z7wrUPu/eDtNPIgAA170h+g7/v16GEGL2FZHaFyG4=;
+        b=ASqBSevmpATx2Tf+TrOjCIck+i3wKJVT4LzL3lCOy7Qq7Fpv8YbWE3I81V9lKkKQSw
+         rs4aBjtfJQSYcQTLfaCghgY5Go+TiH9q5WiohKkT6TZV426bU0dF7b/IUtYOiWM+/sJ1
+         oIR+cd5HyDVK0zFA3CUTkGkxQcUr4KzxllgSj9kOE1O815d0PVrhUwXxwLiM09F1RtuD
+         ouLkIz8UPT8LlthYoEbh/vwXHLupaLm2gg34jW6BLV0JeMIxkwRMjiemeK50i9t/Th+Z
+         +yXpuloGEUIquQ4wo0iQFffBuEhfPBKKhj5sa9AEH4D3xOvRbl7D7rDAWlvsPMPurvSM
+         ornA==
+X-Forwarded-Encrypted: i=1; AJvYcCXVT+3FMaqtwApYrEh01mMJliJpy6xf11/Ntgi/evlVDvBRn5j/AOVDdRIqViBEOFaDJWkzSnTK7g==@kvack.org
+X-Gm-Message-State: AOJu0Yzxm/T+EeMmnXhFWpcKSMDK9ca9J4jzUfvVOrbA/o57TIrYGHfV
+	nium2YmdrxhnpHAfNDmHH6P2fppd6UjPwOqr6Qp4VNuXRJRXejbCVJWC
+X-Gm-Gg: AZuq6aI6ffImMeFWRNhNSOrbplgBAKn24coaSg2vpO0WkEVv8uDVukCO1YuHh4UgSoV
+	NQPYAaiNxDtknGu/dmwhgFX1MHcMB1DHCgQ07fmVQzk5cBAiRbXoM+EV0dxQClzK5hlEvZVZLWL
+	eL4uQ9xnhe9FFI8XVS5LXu/BiPIHBzRZiW1tqEejUmao0xoU/501ZodPK2YTRxU5NcBeCqpnJ5g
+	vSmZ91Dj7VPb9S8ijEUih70hrfYRx1DA9IfWhGLx8ZYppklqxS92VGpcLf02559w1Ig2aHMcj2f
+	03t7g+B18UCpCZ24m4ZbNwkR8JLn//Jm8QeRgdiVVDnOdF8T/Q+Utk1uRN5k1ZWGfMK1ygaSYkc
+	FiwOUBAXu0khvnoDHh/BPX0i5naT78Hr1ffzks6O0HGJNSqtyV6lAzNWDjpt5fHf6trQAYuNROJ
+	eQN+lZ1FpLRLzsAM3QirkWMrZuTuf4RVjra/pMUkgUhSiGuSdMEL84vb4=
+X-Received: by 2002:a05:7022:619a:b0:123:3c65:d724 with SMTP id a92af1059eb24-1272fdc842amr209524c88.25.1770848303872;
+        Wed, 11 Feb 2026 14:18:23 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dcfe6b7sm2713774eec.29.2026.02.11.14.18.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 14:18:23 -0800 (PST)
+Date: Wed, 11 Feb 2026 14:18:20 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	akpm@linux-foundation.org,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v5 1/4] mm: Add address apis for ptdescs
+Message-ID: <aY0ALB5yKXLY-M-X@fedora>
+References: <20260211195233.368497-1-vishal.moola@gmail.com>
+ <20260211195233.368497-2-vishal.moola@gmail.com>
+ <0ead4a2d-c88c-4c89-b1dd-5954c28edb99@intel.com>
 MIME-Version: 1.0
-References: <20260210054312.303129-1-zhaoyang.huang@unisoc.com>
-In-Reply-To: <20260210054312.303129-1-zhaoyang.huang@unisoc.com>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Wed, 11 Feb 2026 14:13:13 -0800
-X-Gm-Features: AZwV_QjqVVYGT8M6YAgIey6AhsPAthcjRE6Z-ZAt_af8BUqaz_X5P0TcvME4d58
-Message-ID: <CABdmKX1NZJ5jOQH_9cxuxTVmn=CiCkXHK7rNrpvGBTT_+405Rw@mail.gmail.com>
-Subject: Re: [RESEND PATCH] mm: bail out from partial cgroup_reclaim inside shrink_lruvec
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
-	Michal Hocko <mhocko@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 8212D140007
-X-Stat-Signature: j8z73jndho343pet1wo8tayhzaj1ttuy
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ead4a2d-c88c-4c89-b1dd-5954c28edb99@intel.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 57D0820015
+X-Stat-Signature: im7n7b6i9fzcoug665an15gihsowm88m
 X-Rspam-User: 
-X-HE-Tag: 1770848006-59339
-X-HE-Meta: U2FsdGVkX1/A8oUeVknnVJvJPz3wE974cIEY08ESk146T8ukHvpL5fAvXHP6va0ztCUeYjDrRVZ+S1cC+293JA1xBHqbug+WG5pvXXbCN0j6v3J2Z30Gc00T8KX2/qxj/zrCecZs4i3Bs417dfDYYSduR+roV4aXjYnOUZBwDEo2JcrkPa06lBnUQILoiET+qWsaQVOh2u3/RqJlzKeQMJ5zauscokmIBK/I7Aj22BAIGVq6XtMMwa/WkxilC3Bx/wBkCPdfwJwfqd+2i8vpNEgUNJhOQA572erUWKvlo61AJbq4kzH9ma/oqVQ9G1W7M6hFVnd/O+lvwykQCkM4pev2ww30zKb2jGplmfUXV7IgGoBTiKwteWqkNT4ygOBhDvSMD0xDsjAloAxHNmPWj1F7tVn4HjbwUDmuoA5CMCL/eRmN5S/MQPNgTo2U/dfp9guH0JW8ScKQ2RTjSLH87A8QaP7ToZJZrRPQxWaBOXTqfHK2BTtR2+LBTxUK2HpzfwZGP0/tu+IkcbTUPC89Tb1Hb3eRbag0dbqU0UTTBRxFbPHbeWyUqXFzLkVP2L9mi8/y7mUQxkaK30NUZUyrOd9+UZksBgqGflccHiWu+UeFgRMiscIEiDxGwSgfqWFettFu+bLwgOBaDwoqW+nkC5qOHaoNG63cd5IVFY5esORqEcaWRcRvPmcttD5w1Jjs3UNUNqL6uBBku7ueDGDNla43t9QOcS2p908X3V0QCIrM65hKDU4T6SjRQsljFaf3xEPul2ounakseHrdD83351KLL97UxzkgTKaIxl3fX4H3RztX7RlI1mqZfCVI1EiGTJdv/vc5uvB3zM0svpj09+8ouxUGwRwsLO+N4NnTBoH+wzqKVvGTLM71fz1NjhzQ9q3izeMv2V6eS7NQx0x57X1bGgJSXI9fpceyxg5zrLeTOwC8aY82b93G3vVY8fMsGoV2mSnNZDEVsmiPQfi
- 5tPTv/4g
- D2f+8DEVchX6QJ6xM6lkBgj9tZ8+x2W9O+KneljfZv5IrQtIm0ITXIOJzbK3Ms7oPcDFMxP1KTo9UvOzoGriD5gMk43ouJBwe2n9pKfy/k+qITowOPYkubcv0gvDhYMY6rO/Wix22CtE0w8VsgXYbYAbEegf1sBptF9kVnIruRZ2RMHR9QFZDal6r5bs3OhhnsBHZgtOxQsrY7bd1hD87YBDKEyj5RINAE2AI5wR5relxyOqWU/uC9mgTlDCCF+ncygtaOjcq1kP4ygTLMZriO3//A/pkb1+hflpGpXyp7yV+QONuFHBhJqn9LR0AdE48+BhaZ5Bs6T1Ho2SUTIujb8ojslkOOF5l93TH3Bccwc/LkbZ9reHZ/eUkkW9rU7l+sYKv
+X-HE-Tag: 1770848305-213240
+X-HE-Meta: U2FsdGVkX1/x23V71KqHTM7oM3ge0+TX0xWmwzVGbpQIs71ptMFNbbMPuMTyr/Hxv2q+/qKFhOY7gHJVy6l3n12Orj+Yy4qG5HD4p01B1+iOM8NIJGFswGCMbSh4MMYYCg+B/Yp6AcaR3VbwD9aS7kt7KXP+CLRTVQclivPZGOClNmNtEiIEMtOt2iZ/FZMa69HOGUyES5d9zHW/yeiuX8WyNOzXmTX/nf+hQt8fplXcgSNi1yCE+b8UCe7vreftTAVkgAfoT9irF8djmIT3M/KC2ntdCXHVhfucPq5o4of8U97/mLvV1W/xN40TSZbnH4276tpL3SJ/n/I8mrlHhSp/PcvNbKRrF2BebzKtZ4g3uTk7L4Nyk/KwtfzFk8yn2qFtfZ1OtMr3oWjPrSXzwkWCmnBn7B9pU3HE5eO3E6Aw7Sqh5QrvCYc7EtB8YQwKww+B9TUay1G6CLbrNMmQo9wXBEbSVZQHg2P43uMFXe3TaUlXsV7h0MTU0FEYVo9c8MegyxbsazfDSNEt2Zeo40GAV2ZZBy/yuv4jEa/jlt7TAhdwttJTaOOmzyydB0RjhkQ9P9rwDQeBuLC7k5Z7OJDQNyNXaxZz7i4Zs2BwCEZbcJc5rvKt0QWzTkcsI8TUs/8vEf840yfaAIEDfjtOiaEMaC7PbCl6LYx7eMVdsBRKIZrnL8rJbNiVGkyfxhsqm708b6kv8cKWNVhTcfgXoAY+xXpnZn6eL0/3RLdK5JD+UmqUvHvF6P6deSacqpfs6ieHuJeBFrVope+MUFefky9rtgbv7Ldkfts6L0YOiylwsh5MYdFbXE/z4PJdvZ/YlAe0KNwfBsllOMjUj3MxJacxyvG1VE9FLNMdBSdG/1LOmFXiNL/Hy6qdXKHIn0Jkw38HKvzUQCr3ljguWXl+7xqBLohRAQWx4sWL4zNckgYc+n+XRy/1zDhRPhordvMMQjM4c3lRhj200EX2ehC
+ dZ9v2Gvi
+ mXBWAQEoxtGXy2gSvbOvS1eflLL2rgB1nBMnPOYhq0ryZJxk3BATryMH7mOUXACpV206EuWphlo1VP7FJhfW7QmEaczBXPSIBb31g9FRyG55L+IFC/H7bFrGyyZtPy/gbPdr++HT0Ly7yPvF+it+5fgWaxVot1YkYmvz9jMQmJRAUqWYXwxPO1ec+xAUqrR7Zo/l3SIqexzpNT+f/xZXCw1N+n9wMp+vojxncWLJVJkp2dtaLSj3h6C5mQzuF2MndahrzaPgpneBQ4WGL5KJ0jOr2AsNFY/xxzOQgO6WGk9KbiyTv3wU7DKuiN4fHwzVZVcgQ+jz+AeAuaw6QN/LPYSpT3gzpXud60FwQPLp5/6RNLzahi9bz8rZeJaJWNaAWsWrpeG1QI+++4uPcqL+AyyCbWXFwzxf8xE4zIenw0pHtB1nFQrIO5JxG1SnQeG6vyWM8vecldfKDvctZ+tAvxL10hKQHJoE7rGx6zOnSo7EGIfueZ8Ixa/Oog6c429ajWwH9WYnFFazGJIl9aDOLMaI7fRctgmicjDa7k4PewKJIDE0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,53 +124,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 9, 2026 at 9:44=E2=80=AFPM zhaoyang.huang <zhaoyang.huang@uniso=
-c.com> wrote:
->
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+On Wed, Feb 11, 2026 at 12:13:10PM -0800, Dave Hansen wrote:
+> On 2/11/26 11:52, Vishal Moola (Oracle) wrote:
+> > +/**
+> > + * pgtable_alloc_addr - Allocate pagetables to get an address
+> > + * @gfp:       GFP flags
+> > + * @order:     desired pagetable order
+> 
+> FWIW, I don't like how pgtable_alloc_addr() looks in practice. It reads
+> like it is: "allocate a page table address", not "allocate a page
+> table". I don't have a better suggestion other than having:
 
-Hi Zhaoyang,
+Hmmm. I meant for it to read "allocate a page table and get its address."
 
-> Nowadays, ANDROID system replaces madivse with memory.reclaim to implemen=
-t
-> user space memory management which desires to reclaim a certain amount of
-> memcg's memory. However, oversized reclaiming and high latency are observ=
-ed
-> as there is no limitation over nr_reclaimed inside try_to_shrink_lruvec
-> when MGLRU enabled. Besides, this could also affect all none root_reclaim
-> such as reclaim_high etc.
-> The commit 'b82b530740b9' ("mm: vmscan: restore incremental cgroup
-> iteration") introduces sc->memcg_full_walk to limit the walk range of
-> mem_cgroup_iter. This commit would like to make single memcg's scanning
-> more precised by judging if nr_reclaimed reached when sc->memcg_full_walk
-> not set.
->
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-> ---
->  mm/vmscan.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 670fe9fae5ba..03bda1094621 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -4832,8 +4832,8 @@ static bool should_abort_scan(struct lruvec *lruvec=
-, struct scan_control *sc)
->         int i;
->         enum zone_watermarks mark;
->
-> -       /* don't abort memcg reclaim to ensure fairness */
-> -       if (!root_reclaim(sc))
-> +       /* don't abort full walk memcg reclaim to ensure fairness */
-> +       if (!root_reclaim(sc) && sc->memcg_full_walk)
->                 return false;
+> 	pgtable_alloc()
+> 
+> that returns a page table pointer, a void*, and:
 
-Can't we just get rid of this if (!root_reclaim(sc)) check entirely
-now that commit 'b82b530740b9' ("mm: vmscan: restore incremental
-cgroup
-iteration") provides eventual fairness for the proactive reclaim case?
-That wasn't true when this check was added initially.
+Initially, I intended to name it pgtable_alloc() & pgtable_free(). I saw
+arm using pgtable_alloc() and powerpc using pgtable_free(), so I looked
+for another name.
 
-Thanks,
-T.J.
+> 	ptdesc_alloc()
+> 
+> which returns a ptdesc*. But I suspect that would get confusing at the
+> point that ptdescs _themselves_ start getting allocated.
+
+The ptdesc_alloc() equivalent right now is named pagetable_alloc(), so I
+don't think it'd get confusing.
 
