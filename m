@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC8A3EB2700
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 10:32:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A611EA8125
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 10:32:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA2796B0005; Wed, 11 Feb 2026 05:32:01 -0500 (EST)
+	id 889006B0089; Wed, 11 Feb 2026 05:32:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E26F96B0089; Wed, 11 Feb 2026 05:32:01 -0500 (EST)
+	id 836FD6B008A; Wed, 11 Feb 2026 05:32:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFB376B008A; Wed, 11 Feb 2026 05:32:01 -0500 (EST)
+	id 736A86B008C; Wed, 11 Feb 2026 05:32:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id BAFE06B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:32:01 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5583016031D
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:32:01 +0000 (UTC)
-X-FDA: 84431810442.07.C7F075F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 634106B0089
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:32:17 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 141A858475
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:32:17 +0000 (UTC)
+X-FDA: 84431811114.15.E24B72D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id B1FE7C0004
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:31:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PV/jXKpF";
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 57E9A4000C
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 10:32:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TFe7/nLN";
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770805919;
+	s=arc-20220608; t=1770805935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=icF2+PwVaSY7S9HGXldpzB+lF1cDxRtpf0+cMzX32GE=;
-	b=NWj/DtTkCGrCeqsVRGnecROboKBJhifyLnmeJT17TTEiA104+hqW7MoDCSneHFmmnnQiBj
-	Pt5jSt5I+FXYK7BSYpKAh7eKrXHizDKmvzk7NXakErvcvdopfJclPwaS9d7yIqBaBfMt20
-	J4uOIti7xeNM6NBuBIvKVrhqK1GBuXI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PV/jXKpF";
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770805919; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8fVTXwM0zNvbjsVMJfP4P1PkSZuOtnuFk6QAlesaSE0=;
+	b=Mk42b9cdi0Uyn5fJcQM7QSJmYN0Lq2hdLLkusP3xLCYKVJ0qrdUYBHRaySFscHATGTAjkx
+	g5npupqa2tyHAT714APSoyOe1QC6YyvYdzRpSNcraVFQKy9bzQ2uXwXc1gXh+twkxnig91
+	pBhKZV0gn8t501C9nU4wIxUaP5I55Jk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770805935; a=rsa-sha256;
 	cv=none;
-	b=VyD/EGXgDhACTmtTzsrDcfDB9yfaggafDPOt2Lz1IffM4qbExhHHV2sDKAi/ukY09EHRQh
-	6A0VlxUeElsUs9MCRe56L6EL/Fp3jHq4kCI6lHHRdprIWwgTnXYt0ua0EE2FmQCwc1ysa3
-	zR7LWaBhItkyt/OKDsTL0ffPHJupMAw=
+	b=YrBn/PhfKgRAVx/iD5GgrZVzoJy437QvwNT0wYTyP+vjjwF5xM5g8PS56IBwjoVFwa6md4
+	2oSDF8zUL7jl/h18me2UjrtezkTCuNCXdStVeNuvRrH0YXvDjKbxiOQASBXAaDZWMpWPeo
+	lbpE3QEFFPJWtg7xYiIggWRae1IPI6c=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="TFe7/nLN";
+	spf=pass (imf04.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80DAE43D75;
-	Wed, 11 Feb 2026 10:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D364AC19421;
-	Wed, 11 Feb 2026 10:31:46 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7659543D75;
+	Wed, 11 Feb 2026 10:32:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BD6C4CEF7;
+	Wed, 11 Feb 2026 10:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770805918;
-	bh=BzPjss/o79E8vniYif3vhWCcMbpnh+bfpm0PwJifv0s=;
-	h=From:To:Cc:Subject:Date:From;
-	b=PV/jXKpFwT8Fev+iuIdzwDQGCp1d9tQZwQOxpL0LXiHzOkF4CIyDk3VR8KHKDtHPW
-	 95broCDwDG6FDa0dsrh08bvjDtJvEVi+8U3bdfQGt0/3GFehuGtNXEfr5rcfZqIyHe
-	 4Gas0OFpDJ0b6cdfz9zvpAFeNg4A3xRSvqWBEmxAoCac9/v12nM5/tozP4vCWoIt3t
-	 WM1Df8XDDZbZ4yrkjS35IzQoTegVuVT5cx/AIkgGipbvq47QF+8iCUbZqSYaNcR9kd
-	 /L0GUWtHeBli4O4MUGnMTsxwsezchH/soEQNYXQrx3YIGnwJ/R226FAA4/HIBChyBn
-	 bpfII91wxqjeA==
+	s=k20201202; t=1770805934;
+	bh=IrP0HcvbxJyr+QPUUgTWRvTOZExBIyn/P520HSFeTE0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TFe7/nLN+rKkMzW67S9vCNdZrax/kPne+WpMF87k95gqGlUzqF+fR5WSEUhJQdT3j
+	 pPxb8u1Ax2zDRwbXDSOUkXQnSyyGT9ATA7S3mMXNx2TRCmDY+UML8uqdt2x5uN5KOn
+	 Myw0c7iyqZfsQ6nIDluj/Ct6feChieIpAVe31sKpg0gTQ8BQT8IA1FdMJRou60J6Id
+	 rBVyOi00C1KINFPks7VJijlaVTWk5jn2wnNxzaifUW5ZIAAy72z1/aL01QcnnfNWRP
+	 Oom4Kb7P8HeZb9qPQLur3tBkv0FhMqGVt2yWCiPLRGAsku2RHRh3DuKoejRqRBa2Dx
+	 Gdc7juu6vCfng==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Andreas Larsson <andreas@gaisler.com>,
@@ -117,20 +117,22 @@ Cc: Andreas Larsson <andreas@gaisler.com>,
 	linux-um@lists.infradead.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [PATCH v3 0/4] arch, mm: consolidate empty_zero_page
-Date: Wed, 11 Feb 2026 12:31:37 +0200
-Message-ID: <20260211103141.3215197-1-rppt@kernel.org>
+Subject: [PATCH v3 1/4] mm: don't special case !MMU for is_zero_pfn() and my_zero_pfn()
+Date: Wed, 11 Feb 2026 12:31:38 +0200
+Message-ID: <20260211103141.3215197-2-rppt@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260211103141.3215197-1-rppt@kernel.org>
+References: <20260211103141.3215197-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: B1FE7C0004
-X-Stat-Signature: sr154bqah7dpwsprwqu9qzfyc6c38k6x
+X-Rspamd-Queue-Id: 57E9A4000C
 X-Rspam-User: 
-X-HE-Tag: 1770805919-209352
-X-HE-Meta: U2FsdGVkX187UOpGkyx+wURDKO7yLGZo998kdjkRg6DX921k+6yBKuoOD5z0Te/jzc3XA/dbmSd8wMiZ3+vMJPFfOj6dotryWqPK4D7XT6UvXLJMVq8tG3QqS7uYvSWMbiQwO5SU9HwCPEyntdRc6vj4vNpRRYDe1NL+FzY9lgpfa9HtmQ5o+1ns2NJgGPI0awUupEYOzeiQhfO6lmBjMuQxd2hfsdPRguHbEZgD5cz7ebX1JZpYNPi+9zAZjPsbIPH55u9tDCwKnF7iWE1RnlzAyuhndwKO+8mpgCi/Tm4xaICpTfsqi7NORBSaJj5LdUv6o+oSqSt+Uo81Pb4v6w1dLE1/ltmeBekSmFaVD90m1kysKZkSUYjrktyJ9nVem7GXiU5AC38Otj3o3ucdwIpQsJOu7e8YfuIlK6VtR5e0/5DiV0QyFL7P3nZACxJV5B3PHBIL9TEWRdX/v2b/i3G8e/HZpQSCMGb4d+hhWA9qjgLi6bN+x6I8YRK7q+Q1TZugtGJsuQJztGAbYhexfoWX3OdKofcBF3OIy99pL8N5ulrTVJDouKykR5V/D38Uo60STxvld49Q8/kzJH0HyZnez5BCPEYveTlTNhOnvqJcvVQDP0GAtPgkodPjqLw1KiJjE7aXIv4KUgzIyanBYbfOmRt7RaleCNMV1512BspRT8OzJ/RhvETMvG1Ndc69mvbRkIYvEKPyyEl+GJHbuNtkK9X2jmc8hS+eehBwWu0qYvvaC4Yb5akIU4o3f1saVizN76NzCaXqZ3YkvyjZE02/sJtK3eWvQvR7j/xUg6OgbFJVcOXwKV8U948I7zr3PzCp80pdJMHhjZvHL4LY0rbb9KVte42UbrQwLqY4q90CIUE/I4sXjB1T6Bj6dOo5F34xzov//TC5oTNp6yX2uSAN8KsB9TzoC6eT/pp2swJWCsaj8TzV1KFxxytvggPBWwRKrVNN3O3LkbVVzJz
- TGg9FIaO
- 7tKRQ6L5l+ml+Yy8lJw/rrjP9CadNkhs31XaBcABPpKjNm/SNEGJX3CAENWMQvbWX+TK/U4Kg1pmy7pc9d/5sag53aKCcJl77dmlgH3KaCyhbYE+5VSHSaELmsNbmgq0i8qwOkg3Z1Aa95R7R3EEPw/wvQzm9m97OQY2ZnBoe5dotNzldKPZxlmWoc0IpjznNnj/g0qG2PzIm11Rz8aaBkXPTsQfhVFNsz9q3QdbYc4nRRJPYVP3IWz0R/9Mo7qAXPl+xEG4h7/xCiom/CxuH0P1YVw==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: p7wfmkik45j5kp4ydpfqo85ornw5nz9o
+X-HE-Tag: 1770805935-568169
+X-HE-Meta: U2FsdGVkX19FUlr2ffPJwi4jpuz9pK5klnnJybsNGwnc/fwbtWDN13X5LSlzs+x8bc2gn1Z3zISNUZ86P+xPZ7s1ESR2ApbQbmvxGto0osxghQBCO10fN6s8/9im2uUMfgpZJgycCDsWmcZv7xHLgwID3Kt9CWmFpwvWqgB6OAv8zVR4vvS9fzYggofLxawvq8nXyaI8EZLbff5LipiF3IxUjVPtdXh9tMsztHVMxkEXCz2iiZVSPP2VuloqEUG4PpDahcQXpzmyTPXvYMvL+alTZ+xES49NAOIaOwbdDeLr/boQnX6AECQjD78EraQnu5mJ496etL2FBX6Jl2SyEQ4534Bznc7dmqj+SDRNg8Oc6iu6ZnThaXqcq1iSt+muW/cV7gK5z6OE5OqgMxvfSNwLPu5ho9l/tCvltz3vH+Jv2U6j7KMrescD2YrMuDRCXJBLVtK1+RtOIyacmnISMGVPpBiK2iq/iQcgJwvjvknKI1XY2o3LRHboODkl10JdHR7jg0Mc5BXsUvGPOOa/SWf/eWD6zhLqNL0ex3cYizBO+wEtA7keE/4Zt3aQYDiE1cQZ4DQkDViSIxnWK4L5/tThBH09qqZYgKzbLQ+uiYaL3h+LSWUUQ0rHcqJJjsdXjxzA4DAW+uWMsEEbidp3O9ARovSDeGYiFvxb57L2sP7FEaJ0fsWNOjoA7+4mes/QGrdoA9HSfgnXguPeAHGg72Az4X/A3eXJO4T6x6ckCjIHfUt0s5pA4AQ9nJkr0YhgauS811EuRhI7wZJHedEnJKMTVUIuLLjHMCZrZjEeTY/98NNPViymU8f7kX+ltV8dH9KkyKQJ87vIddy20IonvPn6WydhVq2qKbXs5RW2DORHj9w8LPDefVLHbZdhEeMeslz9ubOGyuLt0xuRlMjuytzIpf9R8maaTTMoVsKWDIMGufh5YTuK7cBAHD5SnoInRCfLxOiCBX998scIhQ3
+ XjwrGBGH
+ 9Rk4I53W8/cot9RD7Nso/gtYw38ctX3ChkIdik8r0b4DrWjpGtiGt6Ztv0j98xj2NOySKoANPKlPTlWR8WKmCj0tlh8ZLBM6RXxPfCCNCYchnegnDbq5ZbA3qGLLrEoUY/HgXaJq9Twmjwzq5ZNihvY3t+FyE0uIIipy/kYcslBBPJzBemWPrUFswCbrXGnNRjmvpFGCtOJURivX8kAXyFmyE/yGI8XSc6FQV29USo/lrhOxNAVVALkUTGN6yJ2DbfGjAs7bz6gyye6c6fMNrstS7tNj4Ua5nCn+gme74W7PBPH59NdANVmCOv3FNHWs2Ym3a5qJQJQ5oAFgb7Vf8v/v38vFMB5ZwYP777Whn/V0c09I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,188 +143,110 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Hi,
+nommu architectures have empty_zero_page and define ZERO_PAGE() and
+although they don't really use it to populate page tables, there is no
+reason to hardwire !MMU implementation of is_zero_pfn() and my_zero_pfn()
+to 0.
 
-These patches cleanup handling of ZERO_PAGE() and zero_pfn.
+Drop #ifdef CONFIG_MMU around implementations of is_zero_pfn() and
+my_zero_pfn() and remove !MMU version.
 
-v3 changes:
-* move zero_page_pfn extern declaration back inside the helpers
-* add tags, thanks all!
+While on it, make zero_pfn __ro_after_init.
 
-v2: https://lore.kernel.org/all/20260209144058.2092871-1-rppt@kernel.org
-* add patches that cleanup zero_pfn code a bit (patches 1,2)
-* add a patch that caches struct page for empty_zero_page (patch 4)
-* use uint8_t instead of unsigned long for empty_zero_page
-* fix sparc64 changes in patch 3
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+---
+ include/linux/pgtable.h | 14 +-------------
+ mm/memory.c             | 13 -------------
+ mm/mm_init.c            | 10 ++++++++++
+ 3 files changed, 11 insertions(+), 26 deletions(-)
 
-v1: https://lore.kernel.org/all/20260124095628.668870-1-rppt@kernel.org
-
-Mike Rapoport (Microsoft) (4):
-  mm: don't special case !MMU for is_zero_pfn() and my_zero_pfn()
-  mm: rename my_zero_pfn() to zero_pfn()
-  arch, mm: consolidate empty_zero_page
-  mm: cache struct page for empty_zero_page and return it from ZERO_PAGE()
-
- arch/alpha/include/asm/pgtable.h          |  6 ---
- arch/arc/include/asm/pgtable.h            |  3 --
- arch/arc/mm/init.c                        |  2 -
- arch/arm/include/asm/pgtable.h            |  9 -----
- arch/arm/mm/mmu.c                         |  7 ----
- arch/arm/mm/nommu.c                       |  7 ----
- arch/arm64/include/asm/pgtable.h          |  7 ----
- arch/arm64/mm/init.c                      |  5 +++
- arch/arm64/mm/mmu.c                       |  7 ----
- arch/csky/include/asm/pgtable.h           |  3 --
- arch/csky/mm/init.c                       |  3 --
- arch/hexagon/include/asm/pgtable.h        |  6 ---
- arch/hexagon/kernel/head.S                |  5 ---
- arch/hexagon/kernel/hexagon_ksyms.c       |  1 -
- arch/loongarch/include/asm/pgtable.h      |  9 -----
- arch/loongarch/mm/init.c                  |  3 --
- arch/m68k/include/asm/pgtable_mm.h        |  9 -----
- arch/m68k/include/asm/pgtable_no.h        |  7 ----
- arch/m68k/mm/init.c                       |  9 -----
- arch/m68k/mm/mcfmmu.c                     |  2 -
- arch/m68k/mm/motorola.c                   |  6 ---
- arch/m68k/mm/sun3mmu.c                    |  2 -
- arch/microblaze/include/asm/pgtable.h     | 10 -----
- arch/microblaze/kernel/head.S             |  4 --
- arch/microblaze/kernel/microblaze_ksyms.c |  2 -
- arch/mips/mm/init.c                       | 11 +-----
- arch/nios2/include/asm/pgtable.h          |  7 ----
- arch/nios2/kernel/head.S                  | 10 -----
- arch/nios2/kernel/nios2_ksyms.c           |  1 -
- arch/openrisc/include/asm/pgtable.h       |  4 --
- arch/openrisc/kernel/head.S               |  3 --
- arch/openrisc/kernel/or32_ksyms.c         |  1 -
- arch/openrisc/mm/init.c                   |  3 --
- arch/parisc/include/asm/pgtable.h         | 11 ------
- arch/parisc/mm/init.c                     |  6 ---
- arch/powerpc/include/asm/pgtable.h        |  6 ---
- arch/powerpc/mm/mem.c                     |  3 --
- arch/riscv/include/asm/pgtable.h          |  7 ----
- arch/riscv/mm/init.c                      |  4 --
- arch/s390/mm/init.c                       |  4 +-
- arch/sh/include/asm/pgtable.h             |  8 ----
- arch/sh/include/asm/setup.h               |  3 +-
- arch/sh/kernel/head_32.S                  |  4 +-
- arch/sh/kernel/sh_ksyms_32.c              |  1 -
- arch/sh/mm/init.c                         |  1 -
- arch/sparc/include/asm/pgtable_32.h       |  8 ----
- arch/sparc/include/asm/pgtable_64.h       |  3 --
- arch/sparc/include/asm/setup.h            |  2 -
- arch/sparc/kernel/head_32.S               |  7 ----
- arch/sparc/mm/init_32.c                   |  4 --
- arch/sparc/mm/init_64.c                   | 24 +++++-------
- arch/um/include/asm/pgtable.h             |  9 -----
- arch/um/include/shared/kern_util.h        |  1 -
- arch/um/kernel/mem.c                      | 16 --------
- arch/um/kernel/um_arch.c                  |  1 -
- arch/x86/include/asm/pgtable.h            |  8 ----
- arch/x86/kernel/head_32.S                 |  4 --
- arch/x86/kernel/head_64.S                 |  7 ----
- arch/x86/kvm/mmu/spte.h                   |  2 +-
- arch/xtensa/include/asm/pgtable.h         |  4 --
- arch/xtensa/kernel/head.S                 |  3 --
- arch/xtensa/kernel/xtensa_ksyms.c         |  2 -
- fs/dax.c                                  |  2 +-
- fs/proc/vmcore.c                          |  2 +-
- include/linux/pgtable.h                   | 48 ++++++++++++++---------
- mm/huge_memory.c                          |  2 +-
- mm/memory.c                               | 15 +------
- mm/migrate.c                              |  2 +-
- mm/mm_init.c                              | 28 +++++++++++++
- mm/userfaultfd.c                          |  4 +-
- 70 files changed, 86 insertions(+), 354 deletions(-)
-
-
-base-commit: 50c7f34c5c7403a12003c6759f6f6ca9a5a10872
---
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 827dca25c0bc..08a88b0d56e5 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1882,7 +1882,6 @@ static inline void pfnmap_setup_cachemode_pfn(unsigned long pfn, pgprot_t *prot)
+ 	pfnmap_setup_cachemode(pfn, PAGE_SIZE, prot);
+ }
+ 
+-#ifdef CONFIG_MMU
+ #ifdef __HAVE_COLOR_ZERO_PAGE
+ static inline int is_zero_pfn(unsigned long pfn)
+ {
+@@ -1905,18 +1904,7 @@ static inline unsigned long my_zero_pfn(unsigned long addr)
+ 	extern unsigned long zero_pfn;
+ 	return zero_pfn;
+ }
+-#endif
+-#else
+-static inline int is_zero_pfn(unsigned long pfn)
+-{
+-	return 0;
+-}
+-
+-static inline unsigned long my_zero_pfn(unsigned long addr)
+-{
+-	return 0;
+-}
+-#endif /* CONFIG_MMU */
++#endif /* __HAVE_COLOR_ZERO_PAGE */
+ 
+ #ifdef CONFIG_MMU
+ 
+diff --git a/mm/memory.c b/mm/memory.c
+index 187f16b7e996..51d2018a387a 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -162,21 +162,8 @@ static int __init disable_randmaps(char *s)
+ }
+ __setup("norandmaps", disable_randmaps);
+ 
+-unsigned long zero_pfn __read_mostly;
+-EXPORT_SYMBOL(zero_pfn);
+-
+ unsigned long highest_memmap_pfn __read_mostly;
+ 
+-/*
+- * CONFIG_MMU architectures set up ZERO_PAGE in their paging_init()
+- */
+-static int __init init_zero_pfn(void)
+-{
+-	zero_pfn = page_to_pfn(ZERO_PAGE(0));
+-	return 0;
+-}
+-early_initcall(init_zero_pfn);
+-
+ void mm_trace_rss_stat(struct mm_struct *mm, int member)
+ {
+ 	trace_rss_stat(mm, member);
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 1a29a719af58..dcf9eff34f83 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -53,6 +53,9 @@ EXPORT_SYMBOL(mem_map);
+ void *high_memory;
+ EXPORT_SYMBOL(high_memory);
+ 
++unsigned long zero_pfn __ro_after_init;
++EXPORT_SYMBOL(zero_pfn);
++
+ #ifdef CONFIG_DEBUG_MEMORY_INIT
+ int __meminitdata mminit_loglevel;
+ 
+@@ -2667,6 +2670,13 @@ static void __init mem_init_print_info(void)
+ 		);
+ }
+ 
++static int __init init_zero_pfn(void)
++{
++	zero_pfn = page_to_pfn(ZERO_PAGE(0));
++	return 0;
++}
++early_initcall(init_zero_pfn);
++
+ void __init __weak arch_mm_preinit(void)
+ {
+ }
+-- 
 2.51.0
 
-*** BLURB HERE ***
-
-Mike Rapoport (Microsoft) (4):
-  mm: don't special case !MMU for is_zero_pfn() and my_zero_pfn()
-  mm: rename my_zero_pfn() to zero_pfn()
-  arch, mm: consolidate empty_zero_page
-  mm: cache struct page for empty_zero_page and return it from
-    ZERO_PAGE()
-
- arch/alpha/include/asm/pgtable.h          |  6 ---
- arch/arc/include/asm/pgtable.h            |  3 --
- arch/arc/mm/init.c                        |  2 -
- arch/arm/include/asm/pgtable.h            |  9 ----
- arch/arm/mm/mmu.c                         |  7 ----
- arch/arm/mm/nommu.c                       |  7 ----
- arch/arm64/include/asm/pgtable.h          |  7 ----
- arch/arm64/mm/init.c                      |  5 +++
- arch/arm64/mm/mmu.c                       |  7 ----
- arch/csky/include/asm/pgtable.h           |  3 --
- arch/csky/mm/init.c                       |  3 --
- arch/hexagon/include/asm/pgtable.h        |  6 ---
- arch/hexagon/kernel/head.S                |  5 ---
- arch/hexagon/kernel/hexagon_ksyms.c       |  1 -
- arch/loongarch/include/asm/pgtable.h      |  9 ----
- arch/loongarch/mm/init.c                  |  3 --
- arch/m68k/include/asm/pgtable_mm.h        |  9 ----
- arch/m68k/include/asm/pgtable_no.h        |  7 ----
- arch/m68k/mm/init.c                       |  9 ----
- arch/m68k/mm/mcfmmu.c                     |  2 -
- arch/m68k/mm/motorola.c                   |  6 ---
- arch/m68k/mm/sun3mmu.c                    |  2 -
- arch/microblaze/include/asm/pgtable.h     | 10 -----
- arch/microblaze/kernel/head.S             |  4 --
- arch/microblaze/kernel/microblaze_ksyms.c |  2 -
- arch/mips/mm/init.c                       | 11 +----
- arch/nios2/include/asm/pgtable.h          |  7 ----
- arch/nios2/kernel/head.S                  | 10 -----
- arch/nios2/kernel/nios2_ksyms.c           |  1 -
- arch/openrisc/include/asm/pgtable.h       |  4 --
- arch/openrisc/kernel/head.S               |  3 --
- arch/openrisc/kernel/or32_ksyms.c         |  1 -
- arch/openrisc/mm/init.c                   |  3 --
- arch/parisc/include/asm/pgtable.h         | 11 -----
- arch/parisc/mm/init.c                     |  6 ---
- arch/powerpc/include/asm/pgtable.h        |  6 ---
- arch/powerpc/mm/mem.c                     |  3 --
- arch/riscv/include/asm/pgtable.h          |  7 ----
- arch/riscv/mm/init.c                      |  4 --
- arch/s390/mm/init.c                       |  4 +-
- arch/sh/include/asm/pgtable.h             |  8 ----
- arch/sh/include/asm/setup.h               |  3 +-
- arch/sh/kernel/head_32.S                  |  4 +-
- arch/sh/kernel/sh_ksyms_32.c              |  1 -
- arch/sh/mm/init.c                         |  1 -
- arch/sparc/include/asm/pgtable_32.h       |  8 ----
- arch/sparc/include/asm/pgtable_64.h       |  3 --
- arch/sparc/include/asm/setup.h            |  2 -
- arch/sparc/kernel/head_32.S               |  7 ----
- arch/sparc/mm/init_32.c                   |  4 --
- arch/sparc/mm/init_64.c                   | 24 ++++-------
- arch/um/include/asm/pgtable.h             |  9 ----
- arch/um/include/shared/kern_util.h        |  1 -
- arch/um/kernel/mem.c                      | 16 -------
- arch/um/kernel/um_arch.c                  |  1 -
- arch/x86/include/asm/pgtable.h            |  8 ----
- arch/x86/kernel/head_32.S                 |  4 --
- arch/x86/kernel/head_64.S                 |  7 ----
- arch/x86/kvm/mmu/spte.h                   |  2 +-
- arch/xtensa/include/asm/pgtable.h         |  4 --
- arch/xtensa/kernel/head.S                 |  3 --
- arch/xtensa/kernel/xtensa_ksyms.c         |  2 -
- fs/dax.c                                  |  2 +-
- fs/proc/vmcore.c                          |  2 +-
- include/linux/pgtable.h                   | 51 +++++++++++++++--------
- mm/huge_memory.c                          |  2 +-
- mm/memory.c                               | 15 +------
- mm/migrate.c                              |  2 +-
- mm/mm_init.c                              | 28 +++++++++++++
- mm/userfaultfd.c                          |  4 +-
- 70 files changed, 89 insertions(+), 354 deletions(-)
-
-
-base-commit: 50c7f34c5c7403a12003c6759f6f6ca9a5a10872
---
-2.51.0
 
