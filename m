@@ -4,130 +4,246 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2125FEB5979
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 08:13:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4303FE81BD2
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 08:54:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C01A16B0095; Wed, 11 Feb 2026 03:13:48 -0500 (EST)
+	id 1CF2A6B0005; Wed, 11 Feb 2026 03:54:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE4366B0096; Wed, 11 Feb 2026 03:13:48 -0500 (EST)
+	id 17D6E6B0089; Wed, 11 Feb 2026 03:54:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA5446B0098; Wed, 11 Feb 2026 03:13:48 -0500 (EST)
+	id 034206B008A; Wed, 11 Feb 2026 03:54:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 906A46B0095
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:13:48 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 32BCB8AE4B
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:13:48 +0000 (UTC)
-X-FDA: 84431462136.13.5D43680
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0CC31180009
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:13:45 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cMMvvI6q;
-	spf=pass (imf16.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770797626;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DF3DE6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 03:54:05 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 66F6B8B05C
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:54:05 +0000 (UTC)
+X-FDA: 84431563650.25.EDAB0DE
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E7E12160002
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 08:54:01 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=M7TFJewa;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=rEWy9pmU;
+	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770800042;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9a7Ah8KhQUYqdzePV22BgRQqWm8tswB+g3476B/ANtM=;
-	b=HJyIFLmQfGNL1YR9jwzNTXtofIhMvUenfOUivVZswsg5c67EUlbRVIYk7FAtdWy1ySYItd
-	T6n9Wz1RPcYhgdxyrnLjKNPkQLiVVSEsLNQgTPfwS0xWkQ8JUzODxnzTsuO3zFIfy/0Gdw
-	qkWYJtCUK6Y8makrM7skI0R1lf6nyQc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=cMMvvI6q;
-	spf=pass (imf16.hostedemail.com: domain of mpenttil@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpenttil@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770797626; a=rsa-sha256;
-	cv=none;
-	b=TIRPCPjVVr9P0lPew8Fjbd/EjNbgd7ZP5mjNATJqclb+ySVuSXBgJfHAq9MpbNr9gHEVnV
-	3fZl4NsdrZ6S7y3WeGLAN/o6My11GBffP3+I/zghLk1WPtpa+CdJ2RRVgnjAtUiECs5Btq
-	U10CicmH9popQlWVrV506u14+fE7DuA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770797625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9a7Ah8KhQUYqdzePV22BgRQqWm8tswB+g3476B/ANtM=;
-	b=cMMvvI6qDIxMf1EIvCyDCimy5fonnwHRkuGIAaRGU+vrXa8n2flKthfSz5gyileORfakbc
-	8EqG4yUUBAkvPaK7kC8FimnilH0yfUom/pOBSOffGiRz7vOrIVte80zzSC9HKhCsgHS9tT
-	cHthHRC/MW4LTfspOXk4ck4qIv+qppI=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-oByFNV2vMIG7Lx8j83Qw1g-1; Wed, 11 Feb 2026 03:13:44 -0500
-X-MC-Unique: oByFNV2vMIG7Lx8j83Qw1g-1
-X-Mimecast-MFC-AGG-ID: oByFNV2vMIG7Lx8j83Qw1g_1770797623
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-59e53ea9a0bso893195e87.2
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:13:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770797622; x=1771402422;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9a7Ah8KhQUYqdzePV22BgRQqWm8tswB+g3476B/ANtM=;
-        b=rkgdhKcvfcGOvS5rKWt0ygi+vOEBH6extDS1SKWkH6pQ3Yhk10uXfnO7Ba89iz+6SU
-         GkzR5Ba6JrBVzgU2+iRaciMd55wLvUAgmCNKri52IWelwD2goroJkgnbRrNxg9R0W1bx
-         ePKDbPbfVfS/kflSL3qq705AmI+M3jaQ/dfDt/YwnfJ7H2n7hxa1sKAwATuSL6D2H+iP
-         CTGE9drQNtdP4lYZldOu/pNcuJ+KVct0ZZEEuqDiA2ciNI+twGjAbicoOj/GMPCAoIg1
-         2u1wycJet+htORoLYUXEqsmTvrIij/5ByW4VQFU1miy5Opy3LgPH1ymfyqqSHyNP02wf
-         foOg==
-X-Gm-Message-State: AOJu0YwC0eZwysOD0ax65de2s7M8gKsazXCFw3lYcCVmfLnIxAVv3DYT
-	klJw+0TEAPX6CeFaq6MHYA4G6KcTf+469ntBuDehYt6RDX+NW+ILgsa/XcD7/xIlSnZwf4sAqns
-	y1jBVssFTmmvYz0PokGRzV5dJduIh1lwLiZfXiFWVDXAZGGdkYBM6trradaIsmKSgowBE1JrtlT
-	cZb9qNKm+v9n2pBvZLNRL1Ggbm/3Lk93dvpGU=
-X-Gm-Gg: AZuq6aK7F3ZtH5mHj4zc6IWPOr38tiqkNdXi4hqjU2xMkc5r4koXPe44Ax0VRwpV6rA
-	5398rdLOnTxT1mr+bTRtpZrSP1s+SDCZo1FyEjGbminCA7Q1bEdVZx0b/c3jMOvfk9Y9VnzLXK6
-	6IKqf08EfuoPAYNk2ST//zTWeem6dk/BUkJssy7Dx3/dJVL6b+qD0S6JTA0jmjZP9IEUiOXHgN2
-	8mG018Ve/hhdZybWIk0oUnoLj03zislVUx8jfkWHQ08dIX8Psp2PMsRvNik3dNycZXODNeV2djn
-	SaY7ame0OpU9sRq72qcVu8mX6+vL1agcKsyW/oyNFogRGVVz95p/0cNLOFy3oBbWTNsK7JeUsMZ
-	UpuiisDQNExbTtP6ZP6MeaHoJ0UOKDfcA5ZXS
-X-Received: by 2002:a05:6512:12cc:b0:59e:16c1:a988 with SMTP id 2adb3069b0e04-59e45171382mr5457577e87.47.1770797622234;
-        Wed, 11 Feb 2026 00:13:42 -0800 (PST)
-X-Received: by 2002:a05:6512:12cc:b0:59e:16c1:a988 with SMTP id 2adb3069b0e04-59e45171382mr5457558e87.47.1770797621657;
-        Wed, 11 Feb 2026 00:13:41 -0800 (PST)
-Received: from fedora (85-23-51-1.bb.dnainternet.fi. [85.23.51.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59e5f568737sm188515e87.21.2026.02.11.00.13.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Feb 2026 00:13:41 -0800 (PST)
-From: mpenttil@redhat.com
-To: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org,
-	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Matthew Brost <matthew.brost@intel.com>
-Subject: [PATCH v5 6/6] mm:/migrate_device.c: remove migrate_vma_collect_*()
-Date: Wed, 11 Feb 2026 10:13:01 +0200
-Message-ID: <20260211081301.2940672-7-mpenttil@redhat.com>
-X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20260211081301.2940672-1-mpenttil@redhat.com>
-References: <20260211081301.2940672-1-mpenttil@redhat.com>
+	bh=KorXeNvNh/2bF2nV4i2MzMaxcrAO4N9h0IwiNlgknj0=;
+	b=T0+OXa/MJhegmUWQIXP4KO4MURGWfChGOp2cz9o+DIqHElx4mlJ5oN/QxUxJ9Sa8NT9A73
+	b+PxBuSpYZDuNxp4Zze+c7OqupTQFCa5vLiTaps6MHrwvoNoK93f4ZEtUM7expx9gLO7OG
+	6TktSlWwcdKzTXt3D7BSh7WPuB4+3QM=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=M7TFJewa;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=rEWy9pmU;
+	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770800042; a=rsa-sha256;
+	cv=pass;
+	b=ONMRp/uWrJ6bB3u6rk0PYN4gz5N9q/dYCblRKt4aasJeLtAgX9g++1bs+jEJF5DDms2Mdg
+	5lPhjAzeOvrSNF2DWhznJ8ivxbrFs0ufKSqEtu2AuWoecUeNyzmvdIrtzVApvN77VOwwqB
+	jg+BLTsVSfln3isHaqSrtSHaAncxDo4=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61B6g90V064746;
+	Wed, 11 Feb 2026 08:53:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=KorXeNvNh/2bF2nV4i
+	2MzMaxcrAO4N9h0IwiNlgknj0=; b=M7TFJewa/mGc0qrMD9HOa60St9hzMX1o84
+	UW2S3In0/vP0lzrTx6m8+Uq5zsh8zLLUkc4qzW79lCWvfx7906XtV0mO/OhXOgh/
+	WwwP+MGbUihXabHo6Hqh5hPR0KHebYWL7gqVuLZ/p08KuUV9d/FbKxzmNc9LNkmx
+	k+SVMavAhATupmY88GCBlG6kzYarNEQXLQTa7qkllWMJc/vfuvM/WzHjB8VjPcHS
+	USuaIuGtJjYuyyO3zX1c8gWvWSqDf5/hSjr7puRvBAlD9GsmicLvRmnY+hFu4gi4
+	TD6yRo9hXQDwTx5ba5fX+m70tDEWuHmRBdMdX6uazXIeIo+6i7iQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c88n7h31m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Feb 2026 08:53:52 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61B8QEFE030032;
+	Wed, 11 Feb 2026 08:53:51 GMT
+Received: from cy3pr05cu001.outbound.protection.outlook.com (mail-westcentralusazon11013028.outbound.protection.outlook.com [40.93.201.28])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c82299yy8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 11 Feb 2026 08:53:51 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=F5RnTnIYTfhZtqxPflCDt9cNqyoR8jA/YFf9nlIOusPUY+oVgtFYJoMS1XskeZYCoyj5NXMXYu7xTZNiwpynWEg9v4yGqbepzwcahnhfgO07a+GwHpZ4I+XZRGBQLYYN6LPPeH4m1/Yn1mvJa1cF+rT5Wd8P5QHoVDptYObV4kEj3z+F25GY/TMJ3a3Tg5RC4MqSQ1reOB0Bbn2RVkQQixMSVKhdllLDTvBV1RGWBUWF9YoR5qlSTL04uSyYB5zhcAbm0JYggPgwzksQJbsuikJqGu5Rx89n4HFjJh/z/VIZgQ9Ci5dTnTvzMz6riiKM8eGygA+gceMbrMOWMBu25A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KorXeNvNh/2bF2nV4i2MzMaxcrAO4N9h0IwiNlgknj0=;
+ b=FBZIJ/Cl/k8HAV/oDk0sIHXvqbDCPmA2aUIC2YlIia24WXWxdGClPIN/6EetcBy4LzXLslb7d9dKZrHr8gsUd5k/Fe2ogJFL+PBwLCb34Kr5Z/yZV3cqVuoine+gduZKsNfxSAIEiCLV1gFSB92FjQNwNdgzXbaxdxMGzu+WK577GStkJw8mYVi2+GpXHcJRogSK3pvjR9eWfrZaMJnmL64uLB5gMTHDYUrpBkkRg7No847sT3Z+yEgUg5jDqWMV+QKHvyI8KUcWyMO1IuC+cg22UdtgW9dndzyCQJwhgY6DFuwdavej34P4h0lnWVc3h6ktyCj7deE785UP1d3ZWw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KorXeNvNh/2bF2nV4i2MzMaxcrAO4N9h0IwiNlgknj0=;
+ b=rEWy9pmU4SIuh4VyAivZBW7/nK3YMSiIhEb7yczBfwdpDJop7BKjkyPp3VVotl+wBRtx90avU1i2uKe8TfVWBV4yEhNxhZpfIw4EkO2pq/onXLDr9tokfbcyMPFGf71QCJQ/Z1DsHUOsRrvpw7v+r4b9IDqYL7Fvv1mvgDbtdQw=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by SJ5PPF6998A7572.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::7a3) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Wed, 11 Feb
+ 2026 08:53:47 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::c2a4:fdda:f0c2:6f71%7]) with mapi id 15.20.9587.017; Wed, 11 Feb 2026
+ 08:53:47 +0000
+Date: Wed, 11 Feb 2026 17:53:38 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Dev Jain <dev.jain@arm.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
+        Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org,
+        cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH 1/4] memcg: use mod_node_page_state to update stats
+Message-ID: <aYxDkkDI4mk3r011@hyeyoo>
+References: <2638bd96-d8cc-4733-a4ce-efdf8f223183@arm.com>
+ <51819ca5a15d8928caac720426cd1ce82e89b429@linux.dev>
+ <05aec69b-8e73-49ac-aa89-47b371fb6269@arm.com>
+ <aYOuCmjQ5lGm8Mup@linux.dev>
+ <4847c300-c7bb-4259-867c-4bbf4d760576@arm.com>
+ <aYQuj6Ot-JS4tXvY@hyeyoo>
+ <7df681ae0f8254f09de0b8e258b909eaacafadf4@linux.dev>
+ <b77dc11e-fe09-4f0c-a912-d05faa01ff1c@arm.com>
+ <aYtbevHEwx_3fn0Q@linux.dev>
+ <5a6782f3-d758-4d9c-975b-5ae4b5d80d4e@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5a6782f3-d758-4d9c-975b-5ae4b5d80d4e@arm.com>
+X-ClientProxiedBy: SE2P216CA0124.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2c7::8) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6fb9-ncp1FZaHgaxFyrYQ5RbBPfyKd4lRs3GX9zdhmA_1770797623
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0CC31180009
-X-Stat-Signature: 6a5c1suxdyxeqd4omesnx38nborxcxmq
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|SJ5PPF6998A7572:EE_
+X-MS-Office365-Filtering-Correlation-Id: dec19e74-d170-41c0-796e-08de694b1164
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?/mKvH1P+GmfrqU6h3CJ9H2diCX6LXQwScJaDeURcrD8p6reGXMNNblZz16DW?=
+ =?us-ascii?Q?EJKFmNuNo/teT7kR22OHxC044K35Rq8h5BAFhxGprUmyYyazrfFvOTVemB9U?=
+ =?us-ascii?Q?mjUHT27r6TSptQHmJbRdQgghlWy/MEyQmcOca2AzpMIppYUcW1gq2Xfa3MSO?=
+ =?us-ascii?Q?WJ2qmi9eUPZ53rHozj7JSgUU++9T+p08u6OKTRZEHeR3BlSmh55J+rECnehZ?=
+ =?us-ascii?Q?8iLV5KUBApvgr1H7oXxUN4hsFIUx+ulF/Vd73L5+wIHwpuvtoAun0QqveZZN?=
+ =?us-ascii?Q?XubKDvIVb3lGUSrDm+mdSRPp9I/hSlxCERj+auWAJFJwKq3LyZdTHC5UVhig?=
+ =?us-ascii?Q?NpnOta1RcMceESUas867GISJNJLQHEDegxfbveaslVpUpQ8MgW2F3gajtXoE?=
+ =?us-ascii?Q?b2kx4yhXh0jj3DoeDnbySIORJ7St7AmDNWeZUR4zpHmVmm7lnIMeWWI4ALFG?=
+ =?us-ascii?Q?Hk5r9NxO5SyEx+K4hA7zF74zkXn3S0x7Fah7YHZZqcINSixyhKdrDiMvSlrt?=
+ =?us-ascii?Q?MbPy70aDadFDNbuwFPHYlywUUrPBhxsuZgPah6N71ibu/t2F4vB3/9qoa/fl?=
+ =?us-ascii?Q?IICCUgpUBlyIKd96rvGcJqEtIWmONyR1tMarqJ5GTyliSbI1pbGYrjFnEKng?=
+ =?us-ascii?Q?0TvxvRpbUxNjO4aJX/D1N2gnZkG9oecItPqgrs5i3+ODzuhfKIWTjbJEyXIt?=
+ =?us-ascii?Q?V6eRtNuEHpy4tBut+Z2aHIMrPPJ1GdlCrxyRQpvVZBdl70MoT6uSSyhF28Qc?=
+ =?us-ascii?Q?qttjGMPDWaIviwKzK6Os/+1P25Iacch7gjPCrXJwZNFjAwmRNRVLGYPNA++j?=
+ =?us-ascii?Q?svZLxjmogEqPyXUiLdyqf61fClH7MKYxyMtntgVw5rNtcfKjAP3Wusymx2Is?=
+ =?us-ascii?Q?TmhuSE4ymIb/HJukQ0Q3/WuzHPv7Ia3fpdW4fyk6POPxgNBDd9HhExp2qaMK?=
+ =?us-ascii?Q?EVJIoTAB+1wJ5BHnOFa3NSmBzzTiBL2xeJoWiPEUz8Enj3ewXr319yu49oLx?=
+ =?us-ascii?Q?yqWs9teNWcsYrfWdfMzuly4qesHvqOv64YRC0pq8L0KbALX6p93d6Xfr1PQp?=
+ =?us-ascii?Q?r3KXh89z0RdV4nHiQ/oQpG+ntfcnpX+USw/rJDdvyIA9OxwDvTbfzyTfnbSI?=
+ =?us-ascii?Q?n/i+Ee9v6LWRBN8WNktTaE/PXfUr/dRlqqKKEqm5k3Btzo9my/yFSVFTMK1k?=
+ =?us-ascii?Q?po9efuMSDVRrcjg6HbocNkx2om1ugDZYqO0rzPE8e98kXFv8ucEml9o9i8E3?=
+ =?us-ascii?Q?cBxvjpAJUjZgQxaowdp8QHfjim1DGtFxMp3lt2Uagj3CMo/6UAGluxCm9YQS?=
+ =?us-ascii?Q?un7m6L+VmP6d3/M3wBIEMzIlvZdWD+Rf0trTcdRAJVB5B1qGMV61dQn05h/4?=
+ =?us-ascii?Q?EdUrZLND84OwBsetBhP25ZAJQuj4Rl31HgqQuvq0SLfKcxUretSXGhDctY07?=
+ =?us-ascii?Q?D6eW0duYOhbY7WAjCHkPKo/+hzVSM2/wShJICUSZZeFa/l57VCTbioJNMtMA?=
+ =?us-ascii?Q?VAPgWjYbEXwoZ534di8eCXTp/RSYpHEkadUkCkIt4MWKv7D8jDW+s75SNpGA?=
+ =?us-ascii?Q?g/UdGWOjEKj+pbaJY7k=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?M3AUvqQgHB/jw+++P/uSOc+WHaXCg6QMIKtqbvJMBUeJRKcxoeC1Y5+nduyL?=
+ =?us-ascii?Q?ocop/tshQnh+vmW42ahiglUtq8GulxCT3WGHfdODukQdRhMcR9RC+qdUxUJ8?=
+ =?us-ascii?Q?HqndSVoorqE1qXkVl03e9Z4o6XzUHVulGVZsldHlMtvAOAFCrbwFJTUVdGAg?=
+ =?us-ascii?Q?zS0apQPgE4xXkvdTtzl8EYDdOifojfcCQ95s2kVptggG9lsNlRPKfIBP0xN/?=
+ =?us-ascii?Q?Zx7Ue1pyhvun1zT5yC7JHTcz+reM3R7akefdbDYvHwAsFlho6s7BUdY3jod8?=
+ =?us-ascii?Q?qWJxaDtzpn27zr0ns/EJuXELvgsh8kgsgXSixWOFuRxFF11beH9FzcEjtPeJ?=
+ =?us-ascii?Q?Umgjx/S72/tq4RLbGXvF7OSaIeKeWvdT0XZIWUvuwJJnh10ssBK3jXiiKSTT?=
+ =?us-ascii?Q?cayqO2lVsVGHRPRdWKvA0bT4cGLxF/gwoHeZfQRatgLzvYPWWsktC0cNeQTl?=
+ =?us-ascii?Q?+Y92Eoh3TkU9qpUCEz2x5KUew9PZAffPe6QJTekbOo+8JHXJBUNKUF9whasd?=
+ =?us-ascii?Q?g2nDFrXBDjtqRo29ctu6uTskHxkL2F2TX/8qHSnxGQl8rwJjA4TCTDiGrSZM?=
+ =?us-ascii?Q?VReTavvz2J+V4x/7XpXaXIekd6qc9oSIXfC7DruzoFPRx9Ar9pTZ7m/IxHXr?=
+ =?us-ascii?Q?vOuH2ElDkXGsUAr1eJIfcw7ERK0KO5GXGOQms4dR0pep2txLP3WQjhH7dSsq?=
+ =?us-ascii?Q?xHwM5cbJd1lo+H2Gn5MYwXT6SfdWuGunAPzOSDJ2LwrFAPvTWHa+8ofWbAOt?=
+ =?us-ascii?Q?QkMDcEce6iZqMeBV54FhY1IRoZGRe6hE+yPBhCyzj3uZobqhkdV3YBNZ92Jm?=
+ =?us-ascii?Q?gKTZiOXTzjdBc6cTnFGVZSFm/jXy73NvPaZCMFAiDa/YzSvD/qiXZ+bTk/mk?=
+ =?us-ascii?Q?l1u2PMw/A3xiiN1a80vU8LUieP+0mSj/ey8+fD3ewSSMrKc79JfOgD6xgIOt?=
+ =?us-ascii?Q?YMHsrXfDgqpVapaQ0GE327dF+gEN+Qw5nIZVePvHeVwwQU0xAPekzss9Lo0K?=
+ =?us-ascii?Q?KTbeLhA7TPVGJFEAHcLLP0kZmaoKMSwxgbItJ8/v62TA/I73R5N+ErJF73hy?=
+ =?us-ascii?Q?cXIf6LV6J7LKa3lgIUUZfIwho9inTa0gtvDZPHcjaAmjV9n50OV6HoCewtNz?=
+ =?us-ascii?Q?Q24iT0uSmV++XGpi1Z4LUkVn1IGusRD46km6fIMW0VYRkSBBTj84EyraYfLz?=
+ =?us-ascii?Q?AnnjLc596s1r5ITUplWPSBU82NdzKT/ilPtqepR+JAHkGoxEsQPfS17l7w9L?=
+ =?us-ascii?Q?e0kNP6nKy1ePyLiwvhiI/yft9Cz5xCOH0L3M5l+EEw5Q5/MR9FdNW+IZJq8s?=
+ =?us-ascii?Q?NrUA8RhSlMYBXxdJcOTqr7QyGyfgko0QJn+gUdgrSiiI8u3CBfU6ZQK+Lt5z?=
+ =?us-ascii?Q?nc2yf3MJBsnHSsthUFgu6yyDrBq9ByqFcAYb+tYWGpyIwHBMsIvuFr+jd1lP?=
+ =?us-ascii?Q?g2Rfr48PE992BnB+Y5BDiu81czoxhF8513B0oFAbf8gG5TVR2oJKZ8ENWw7x?=
+ =?us-ascii?Q?uXKxHfdFS8t00BnAOiJkX/9L8q1Yl9rb6GtxNogTrBqRI+JFCm8x8/+FKh8c?=
+ =?us-ascii?Q?nxQiKGlcftonjYeuQbonjjALG0uTwJiVip24g4UspRVPvWDPPfM8uQ22YIp1?=
+ =?us-ascii?Q?6jSSXWHGIkXQqZl8YkaEzpEhR9GlIZZMx3QLO7Xnmtc7MqCC6CA15MD9HVax?=
+ =?us-ascii?Q?TOwzAs4gcPf+7r7HeiQIoEXol99EoG3zXpbku8EXXpAUvf111jSM0qkVhpFf?=
+ =?us-ascii?Q?zGPc1ZVvNw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	/ZcW2Gc9pPReAm9saJwGDldLkuQlpvPeOge9ljfOKjq8r50ZUl1NEOJW6MwZDoGIcxAEu8f2rawM282aCgK5hffzHhtL/E1BRfprZ9kMOmZPP1raUCypadTEsEvUvd4iIDagKHdziMbVV6Q7AXmYduNoLIFxPSx3HRGxkU2QbZkjTApEkg1ET1ia3/C59zu/tEZwBfqtRRxcht4kl2qBm7pjpm7dlp4efENhipwhNWVIQDC375/WTyabkrlOcR0+oLtioizgfcUk3tCs5RVMIkMJMTrFE0luvaf+GPou+tasB4KpY+WfJPTjQldFSEnvczBtnXmBR6ErBxyGa3KSgbgX73+JSYWgXCdnAHfe2uBMapVIlC9WMBcKblab4PPbwr+t+RipE32VIbpgasV5TDzMQJ/Sag6wmKoqOEyDfN3TfUTOOmpf+OEPTkpSMNToAypGhqPgIRsE/mEf66zrJ/Ymr8pe2tePOjZ/YvU2jbd4JdhdlgZOnA9uOmI2NuTH4hWbYQxA/eu4pndcZeX9M8A0hs0Jyxn44GR6uBB5ayfdSpG6jmAenZpoXUOLHT8oyyZT5drFcq92keO2fFD4gFkoj0riGR2L9UBrHgg3sN8=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dec19e74-d170-41c0-796e-08de694b1164
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 08:53:47.1010
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ty7FAozu9YFbT1CJV9PIX+J7MsxRZGrVzbBTZBW9aPtfvp8vaQHy2dEAUxpmwGEHfpLlDGuEn7u1yaH0gR9nUA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF6998A7572
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-10_03,2026-02-10_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
+ mlxlogscore=999 malwarescore=0 phishscore=0 suspectscore=0 bulkscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2601150000 definitions=main-2602110072
+X-Proofpoint-ORIG-GUID: MnryAtHr-6ZRf7Dtx_TTUoOFWrGED301
+X-Proofpoint-GUID: MnryAtHr-6ZRf7Dtx_TTUoOFWrGED301
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjExMDA3MSBTYWx0ZWRfX3lvWaPH7D9bh
+ BpYMYTGhh2W4Dst7bqrgVjoQc4MAwobbc4kySz+cWvcbHEAFNpzs80NIbEa1AR+cM3vCrpVRglQ
+ s0vonZbQKeR5oaJNUFhagJFcEDYEFXwy9YaxvIrm7HHSkhAS0DMv/nw+FyoJz75GkRiFMPVLBPx
+ i1r1rOKRnTXJ3rNIN+wXEQkac6dJ2Ccifg3V+oXt+ym3hVsvowy0et9yIn3l4czPxJ6rU4qLhdP
+ MA3WEeezrC9gh/HzBQtMX13RMV6WxVJv48vi97eOvOSr+QMamsFUYnvnstkAm2NaCTFvc3S10IN
+ FQumkfnzaCxzdtG06pXiAE1CMHnYLI37JLNIKSHSH3wn5RhEGDXIOpWfGJ+BhrN7G5VLGX8QMAI
+ 8ycn1eQssfcxDjmaMpumt9tJqp/AoGqiOBffuLvKhEDB5o/b/DtyMJ5cEBBgSonz/2CzlzjaI5m
+ tlYybtDypTTE539gh6g==
+X-Authority-Analysis: v=2.4 cv=O5c0fR9W c=1 sm=1 tr=0 ts=698c43a0 cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
+ a=7CQSdrXTAAAA:8 a=Cy7045DbtAwES53Bu6YA:9 a=CjuIK1q_8ugA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: E7E12160002
+X-Stat-Signature: zhgw44cr47sbsssogfzhgzwjehjxd6y7
 X-Rspam-User: 
-X-HE-Tag: 1770797625-843199
-X-HE-Meta: U2FsdGVkX1/Ut/pW6Aw72LIaWW9zyY6qJkmkNN/XdNJTiKUaYnMWeFcDiuoeBNbWjob9ZpMzUrjhTuo5AcEdH+9ufCyKdD1Is0oSApt63iM+EIyKTn/UjmqJCoUeYttMeatVNSD1TOUfC/1JgPQfKyF30f0LN7DEYdkuVtM+7hri13B3aSU+mp73uwWk5p/zvAgX/ihA1o6ch3fe6vdQEf5t2tTdejHFZc6Tu222vaLIquel2s1hsUo1ik8oiOcG0dknV/OHyuK8BNDOW2qxq4KlZP08XgcsHtW09weXIIYISsvmxzKFXwZOX8X8W/I4tA3wOyoPIHaXBNm3jSj8wTBn4K7oSaK7tgWgFJRW3QWkd4nyVnAcOS7fLjZgVvYsl0aAW+BQXVUilEBzSkJifCWmoaRAzizVrDPlP8Gb28nExC8GRdVr3p9iw8jCP4l2Wp5pHiUHFaCEl2JFOzy5cG82cTKr4URz7IJ2ta/L49PB4RkScLMT5MjOn7pjE8CO26HOfd+xviCtxgJrVTHfoDgd87+GEfYeyw6xGmUPlFWbjpOpR25FmiF5fiwGxfg7zoWRoI3lNjLZHEZYePFSZny8gBCcJJl6ZbNcuadtJjb+pG7pHqOBtYnzTQhwlr1mbtcKPU7Dx2plKNnF/MZaslwD1qXeb8xgI9k8b4gN/l5w3nbxOT3ZU4+amenTyrL2A49Oa5K+KuGSfdsMfs41Fa/jNG9msh5llqRlxYA4Nsle3tTmZEL3X/bBueRrV9Cq5/USUvf6mCmqTxyfTkWyV4/MQxLrZuV8WWOBn+JWmDxVZvoWLhmMy/u4IyUX888zCGeAdEmBo+A9azwRtRKQ/SY18HkcQEfPNn7w8sf5yG44lp18Q/3zcXM+Z2/FsNDdRGYFBVlvqZdJ4DRPUkqhUbFo/PAdiZxiA5Jact6y7+dU1p1uIFizzMZv7hQ2HpBz5fA2rNyM4WlJMdOLbJ3
- dX6yrb+D
- ipA8Bce/a+aCi5v50OHKm8OyREziLlGvsxmGFeRbpbXuWSHjY8xE53vnPhgf/oTPjeex2v7U9qzMnv3NNq7qvVsK7mTtZ4hcBBbVu3F88WrDi2OhE31+BCUfnx/fSdsWrT9tMEZ5w8dg2N+hWTcJh/GYMK+Dn5IcK6vE/9knDFD0qsQhdC8G0S7VwPKpTjduBAV0f11uAPeQ7KHJ9YzD8JOf05s8Udjnp5AUvq0JE5btxwWiCPr5J1smrYeif6wHEe2fSv5fPT1emd6DMCaX/2WaIb85zdL70kzyGNXuXMm3blzpruGSzD40acf6zxRY/njuKfbKsycuVH+4Or7h/16uaz2xkSAXpeaWZ6F3MYzb1CWXZKAIR40GN8WI47U4cciHh3H3pwReFPzKduwWhNR+sGQv9T4/MztdkKmFmv1ZrB5z8kyGYgQ79IU2Mx/b8OGvCyty1AodP4MFb6KIl4HjVtA==
+X-HE-Tag: 1770800041-988994
+X-HE-Meta: U2FsdGVkX18fS1jRKEjUgWrJ1CCZ06pmSXKDwgPN0cR/b5GBywCJUe9c/HHxPzx9D/MTHt7TpN+O9oifvWWuWgIFcJOiGZzbDc+WHofWa6IvFUzukOZz+MlRWgTf3g4RkwbFRDP+hOaeW+pelp1zi6SAeVo7mItwW9OfaoXFFCZHqvWm7BBwmlMMnGd19eU/FSVtyFhk6QvVmw4UNcklQdtjyuQuX2/wyne8kQNsBbqAjnLAxJ2aTLeoUrnSAKjEhb2CmJqnp2JJrtgVJVUhhKV5t098+V/ceoTM7WIuTaF6HTKDEWCQbtyvoZ3TdxCEZdP0m0xEJiPmIgxrxxdGXc5IY+4feZoXxZXqabFjvoL1ZUhJ7ElMG1IuteLd3K71JuALo7P7kqtD40c63zqZrivnALaqUWZ5OuNfFJCVLxM7lxworTYHVBNWx4t/uC9QxIRsd416QSHLZe98k0Eq61ggn4GN21ByDXXP8z5ete/exOW8GeUH0850IiYoeII7sB5PC597yNK9F/wIQgGXWLYoRd7KVQ1M76JibfA4p9HgVY87fCY8hkBUD7NAMGcprMD7jQV7RsPsL2djBlP8sb2gwwcfrI4TXaiLCPxtSV0f60V5DEFx4sE4cZQ9Av1runN6oD/266rkojpK6WQ3i2XFMWvnRvwehs/Inp0oP+kveVyjvNcwNX0bjyGDHkzrEZ7te+B1bCMxB9qnhochWzEVkjoXmIQ+R2F/i3oz8xeZ5wLvrzhNA4EopbfB6RUVqMZ89tJlJIxjpNEN7ZM9L8CF19k7p9Qjo8DvhMmTjlQhQw8kbXOlwpCg0E0EXsmVfuNx+Up0fcDiijBoRQhBTLhOSMm2RfFHWDTF3fW8VhsJlRDciW3f7Sg1PsJC7nCCP8YDZxjdchhgBWHRlf1RmahTyu+SZjdjNJoc4EelvYuIKO/xzGwy0u2w4HhkZoH33d4sbdB83kEDrImDKYI
+ CTZC48Zz
+ E8oV1JXo+iOGCb7D5fdKyKsyIzi6jsSqS1Vyd+Bul98kMzB/9GDl5LsKheGIhQvavDOhWAzBBX9SMRY/wNw5sizzFoECpDRgPO4eyFmA++li8nSaSEBxcc4Ne4FpnhHh8A64Zw+zDwY9NcDzS3kOrKqjlZgJX/4oTuW853rJjGdmFGESNa4Xy88AzduQZlDYFjujbW95mEkGLBoQkgjTr2Dhf41hL0GYXTyxI2i5IbGtSJdbA6Jna1cQL0QSkemXKh3zI0FKGujkoXXTOnLivYcqucIei0Lnubfe49qRWUkD/zhNmh3FUa68Ro/wgSyDkHktCcRPjd1baJ0WR0ZL3nTya7mjmNPJTjipxsiU1/gJe7hvU0DKjNneNN44/ViCo2r37PU2LFwxcreypB7jmrUIu6VGkH4iRfze/3lr+prC9Bi/8RTOPx3qPIWQOpw/8HSi3bHSRg23tVCLJzo9mri6wm+pGmIoNt5PMuyxLeh+hlcLykQjIDjsgdsQcWy2FU554+tHyKlYMEVk1tOxu6Kx7Vwcwfn/g6XD1eTzTKSyvJpTxAqMpvTUOFKIO72ShmYQvgW0BZWKt5dYQfQE4C/jkE9cDIGMJwSaRro6JSTJM3JbEj95oIlQbMSv6+EOVaHsxobWzV9wS5A4qK1yTLFiu0+3XZKqyDcSVnRMWDJ0+IQ7/r8orPSZ2BrK3iUyVPKwpqzEZQ0p+Um93dA2KKQZfaIo1kUvjvg8+bmNE60Zfpr3jzidwg3uAjsjapxetgBUv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,544 +252,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Mika Penttilä <mpenttil@redhat.com>
+On Wed, Feb 11, 2026 at 01:07:40PM +0530, Dev Jain wrote:
+> 
+> On 10/02/26 9:59 pm, Shakeel Butt wrote:
+> > On Tue, Feb 10, 2026 at 01:08:49PM +0530, Dev Jain wrote:
+> > [...]
+> >>> Oh so it is arm64 specific issue. I tested on x86-64 machine and it solves
+> >>> the little regression it had before. So, on arm64 all this_cpu_ops i.e. without
+> >>> double underscore, uses LL/SC instructions. 
+> >>>
+> >>> Need more thought on this. 
+> >>>
+> >>>>> Also can you confirm whether my analysis of the regression was correct?
+> >>>>>  Because if it was, then this diff looks wrong - AFAIU preempt_disable()
+> >>>>>  won't stop an irq handler from interrupting the execution, so this
+> >>>>>  will introduce a bug for code paths running in irq context.
+> >>>>>
+> >>>> I was worried about the correctness too, but this_cpu_add() is safe
+> >>>> against IRQs and so the stat will be _eventually_ consistent?
+> >>>>
+> >>>> Ofc it's so confusing! Maybe I'm the one confused.
+> >>> Yeah there is no issue with proposed patch as it is making the function
+> >>> re-entrant safe.
+> >> Ah yes, this_cpu_add() does the addition in one shot without read-modify-write.
+> >>
+> >> I am still puzzled whether the original patch was a bug fix or an optimization.
+> > The original patch was a cleanup patch. The memcg stats update functions
+> > were already irq/nmi safe without disabling irqs and that patch did the
+> > same for the numa stats. Though it seems like that is causing regression
+> > for arm64 as this_cpu* ops are expensive on arm64. 
+> >
+> >> The patch description says that node stat updation uses irq unsafe interface.
+> >> Therefore, we had foo() calling __foo() nested with local_irq_save/restore. But
+> >> there were code paths which directly called __foo() - so, your patch fixes a bug right
+> > No, those places were already disabling irqs and should be fine.
+> 
+> Please correct me if I am missing something here. Simply putting an
+> if (!irqs_disabled()) -> dump_stack() in __lruvec_stat_mod_folio, before
+> calling __mod_node_page_state, reveals:
+> 
+> [ 6.486375] Call trace:
+> [ 6.486376] show_stack+0x20/0x38 (C)
+> [ 6.486379] dump_stack_lvl+0x74/0x90
+> [ 6.486382] dump_stack+0x18/0x28
+> [ 6.486383] __lruvec_stat_mod_folio+0x160/0x180
+> [ 6.486385] folio_add_file_rmap_ptes+0x128/0x480
+> [ 6.486388] set_pte_range+0xe8/0x320
+> [ 6.486389] finish_fault+0x260/0x508
+> [ 6.486390] do_fault+0x2d0/0x598
+> [ 6.486391] __handle_mm_fault+0x398/0xb60
+> [ 6.486393] handle_mm_fault+0x15c/0x298
+> [ 6.486394] __get_user_pages+0x204/0xb88
+> [ 6.486395] populate_vma_page_range+0xbc/0x1b8
+> [ 6.486396] __mm_populate+0xcc/0x1e0
+> [ 6.486397] __arm64_sys_mlockall+0x1d4/0x1f8
+> [ 6.486398] invoke_syscall+0x50/0x120
+> [ 6.486399] el0_svc_common.constprop.0+0x48/0xf0
+> [ 6.486400] do_el0_svc+0x24/0x38
+> [ 6.486400] el0_svc+0x34/0xf0
+> [ 6.486402] el0t_64_sync_handler+0xa0/0xe8
+> [ 6.486404] el0t_64_sync+0x198/0x1a0
+> 
+> Indeed finish_fault() takes a PTL spin lock without irq disablement.
 
-With the unified fault handling and migrate path,
-the migrate_vma_collect_*() functions are unused,
-let's remove them.
+That indeed looks incorrect to me.
+I was assuming __foo() is always called with IRQs disabled!
 
-Cc: David Hildenbrand <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leonro@nvidia.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Balbir Singh <balbirs@nvidia.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Mika Penttilä <mpenttil@redhat.com>
----
- mm/migrate_device.c | 508 --------------------------------------------
- 1 file changed, 508 deletions(-)
+> > I am working on adding batched stats update functionality in the hope
+> > that will fix the regression.
+> 
+> Thanks! FYI, I have zeroed in the issue on to preempt_disable(). Dropping this
+> from _pcpu_protect_return solves the regression.
 
-diff --git a/mm/migrate_device.c b/mm/migrate_device.c
-index 222cce2e934d..f130ddbdd12c 100644
---- a/mm/migrate_device.c
-+++ b/mm/migrate_device.c
-@@ -18,514 +18,6 @@
- #include <asm/tlbflush.h>
- #include "internal.h"
- 
--static int migrate_vma_collect_skip(unsigned long start,
--				    unsigned long end,
--				    struct mm_walk *walk)
--{
--	struct migrate_vma *migrate = walk->private;
--	unsigned long addr;
--
--	for (addr = start; addr < end; addr += PAGE_SIZE) {
--		migrate->dst[migrate->npages] = 0;
--		migrate->src[migrate->npages++] = 0;
--	}
--
--	return 0;
--}
--
--static int migrate_vma_collect_hole(unsigned long start,
--				    unsigned long end,
--				    __always_unused int depth,
--				    struct mm_walk *walk)
--{
--	struct migrate_vma *migrate = walk->private;
--	unsigned long addr;
--
--	/* Only allow populating anonymous memory. */
--	if (!vma_is_anonymous(walk->vma))
--		return migrate_vma_collect_skip(start, end, walk);
--
--	if (thp_migration_supported() &&
--		(migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
--		(IS_ALIGNED(start, HPAGE_PMD_SIZE) &&
--		 IS_ALIGNED(end, HPAGE_PMD_SIZE))) {
--		migrate->src[migrate->npages] = MIGRATE_PFN_MIGRATE |
--						MIGRATE_PFN_COMPOUND;
--		migrate->dst[migrate->npages] = 0;
--		migrate->npages++;
--		migrate->cpages++;
--
--		/*
--		 * Collect the remaining entries as holes, in case we
--		 * need to split later
--		 */
--		return migrate_vma_collect_skip(start + PAGE_SIZE, end, walk);
--	}
--
--	for (addr = start; addr < end; addr += PAGE_SIZE) {
--		migrate->src[migrate->npages] = MIGRATE_PFN_MIGRATE;
--		migrate->dst[migrate->npages] = 0;
--		migrate->npages++;
--		migrate->cpages++;
--	}
--
--	return 0;
--}
--
--/**
-- * migrate_vma_split_folio() - Helper function to split a THP folio
-- * @folio: the folio to split
-- * @fault_page: struct page associated with the fault if any
-- *
-- * Returns 0 on success
-- */
--static int migrate_vma_split_folio(struct folio *folio,
--				   struct page *fault_page)
--{
--	int ret;
--	struct folio *fault_folio = fault_page ? page_folio(fault_page) : NULL;
--	struct folio *new_fault_folio = NULL;
--
--	if (folio != fault_folio) {
--		folio_get(folio);
--		folio_lock(folio);
--	}
--
--	ret = split_folio(folio);
--	if (ret) {
--		if (folio != fault_folio) {
--			folio_unlock(folio);
--			folio_put(folio);
--		}
--		return ret;
--	}
--
--	new_fault_folio = fault_page ? page_folio(fault_page) : NULL;
--
--	/*
--	 * Ensure the lock is held on the correct
--	 * folio after the split
--	 */
--	if (!new_fault_folio) {
--		folio_unlock(folio);
--		folio_put(folio);
--	} else if (folio != new_fault_folio) {
--		if (new_fault_folio != fault_folio) {
--			folio_get(new_fault_folio);
--			folio_lock(new_fault_folio);
--		}
--		folio_unlock(folio);
--		folio_put(folio);
--	}
--
--	return 0;
--}
--
--/** migrate_vma_collect_huge_pmd - collect THP pages without splitting the
-- * folio for device private pages.
-- * @pmdp: pointer to pmd entry
-- * @start: start address of the range for migration
-- * @end: end address of the range for migration
-- * @walk: mm_walk callback structure
-- * @fault_folio: folio associated with the fault if any
-- *
-- * Collect the huge pmd entry at @pmdp for migration and set the
-- * MIGRATE_PFN_COMPOUND flag in the migrate src entry to indicate that
-- * migration will occur at HPAGE_PMD granularity
-- */
--static int migrate_vma_collect_huge_pmd(pmd_t *pmdp, unsigned long start,
--					unsigned long end, struct mm_walk *walk,
--					struct folio *fault_folio)
--{
--	struct mm_struct *mm = walk->mm;
--	struct folio *folio;
--	struct migrate_vma *migrate = walk->private;
--	spinlock_t *ptl;
--	int ret;
--	unsigned long write = 0;
--
--	ptl = pmd_lock(mm, pmdp);
--	if (pmd_none(*pmdp)) {
--		spin_unlock(ptl);
--		return migrate_vma_collect_hole(start, end, -1, walk);
--	}
--
--	if (pmd_trans_huge(*pmdp)) {
--		if (!(migrate->flags & MIGRATE_VMA_SELECT_SYSTEM)) {
--			spin_unlock(ptl);
--			return migrate_vma_collect_skip(start, end, walk);
--		}
--
--		folio = pmd_folio(*pmdp);
--		if (is_huge_zero_folio(folio)) {
--			spin_unlock(ptl);
--			return migrate_vma_collect_hole(start, end, -1, walk);
--		}
--		if (pmd_write(*pmdp))
--			write = MIGRATE_PFN_WRITE;
--	} else if (!pmd_present(*pmdp)) {
--		const softleaf_t entry = softleaf_from_pmd(*pmdp);
--
--		folio = softleaf_to_folio(entry);
--
--		if (!softleaf_is_device_private(entry) ||
--			!(migrate->flags & MIGRATE_VMA_SELECT_DEVICE_PRIVATE) ||
--			(folio->pgmap->owner != migrate->pgmap_owner)) {
--			spin_unlock(ptl);
--			return migrate_vma_collect_skip(start, end, walk);
--		}
--
--		if (softleaf_is_migration(entry)) {
--			migration_entry_wait_on_locked(entry, ptl);
--			spin_unlock(ptl);
--			return -EAGAIN;
--		}
--
--		if (softleaf_is_device_private_write(entry))
--			write = MIGRATE_PFN_WRITE;
--	} else {
--		spin_unlock(ptl);
--		return -EAGAIN;
--	}
--
--	folio_get(folio);
--	if (folio != fault_folio && unlikely(!folio_trylock(folio))) {
--		spin_unlock(ptl);
--		folio_put(folio);
--		return migrate_vma_collect_skip(start, end, walk);
--	}
--
--	if (thp_migration_supported() &&
--		(migrate->flags & MIGRATE_VMA_SELECT_COMPOUND) &&
--		(IS_ALIGNED(start, HPAGE_PMD_SIZE) &&
--		 IS_ALIGNED(end, HPAGE_PMD_SIZE))) {
--
--		struct page_vma_mapped_walk pvmw = {
--			.ptl = ptl,
--			.address = start,
--			.pmd = pmdp,
--			.vma = walk->vma,
--		};
--
--		unsigned long pfn = page_to_pfn(folio_page(folio, 0));
--
--		migrate->src[migrate->npages] = migrate_pfn(pfn) | write
--						| MIGRATE_PFN_MIGRATE
--						| MIGRATE_PFN_COMPOUND;
--		migrate->dst[migrate->npages++] = 0;
--		migrate->cpages++;
--		ret = set_pmd_migration_entry(&pvmw, folio_page(folio, 0));
--		if (ret) {
--			migrate->npages--;
--			migrate->cpages--;
--			migrate->src[migrate->npages] = 0;
--			migrate->dst[migrate->npages] = 0;
--			goto fallback;
--		}
--		migrate_vma_collect_skip(start + PAGE_SIZE, end, walk);
--		spin_unlock(ptl);
--		return 0;
--	}
--
--fallback:
--	spin_unlock(ptl);
--	if (!folio_test_large(folio))
--		goto done;
--	ret = split_folio(folio);
--	if (fault_folio != folio)
--		folio_unlock(folio);
--	folio_put(folio);
--	if (ret)
--		return migrate_vma_collect_skip(start, end, walk);
--	if (pmd_none(pmdp_get_lockless(pmdp)))
--		return migrate_vma_collect_hole(start, end, -1, walk);
--
--done:
--	return -ENOENT;
--}
--
--static int migrate_vma_collect_pmd(pmd_t *pmdp,
--				   unsigned long start,
--				   unsigned long end,
--				   struct mm_walk *walk)
--{
--	struct migrate_vma *migrate = walk->private;
--	struct vm_area_struct *vma = walk->vma;
--	struct mm_struct *mm = vma->vm_mm;
--	unsigned long addr = start, unmapped = 0;
--	spinlock_t *ptl;
--	struct folio *fault_folio = migrate->fault_page ?
--		page_folio(migrate->fault_page) : NULL;
--	pte_t *ptep;
--
--again:
--	if (pmd_trans_huge(*pmdp) || !pmd_present(*pmdp)) {
--		int ret = migrate_vma_collect_huge_pmd(pmdp, start, end, walk, fault_folio);
--
--		if (ret == -EAGAIN)
--			goto again;
--		if (ret == 0)
--			return 0;
--	}
--
--	ptep = pte_offset_map_lock(mm, pmdp, start, &ptl);
--	if (!ptep)
--		goto again;
--	arch_enter_lazy_mmu_mode();
--	ptep += (addr - start) / PAGE_SIZE;
--
--	for (; addr < end; addr += PAGE_SIZE, ptep++) {
--		struct dev_pagemap *pgmap;
--		unsigned long mpfn = 0, pfn;
--		struct folio *folio;
--		struct page *page;
--		softleaf_t entry;
--		pte_t pte;
--
--		pte = ptep_get(ptep);
--
--		if (pte_none(pte)) {
--			if (vma_is_anonymous(vma)) {
--				mpfn = MIGRATE_PFN_MIGRATE;
--				migrate->cpages++;
--			}
--			goto next;
--		}
--
--		if (!pte_present(pte)) {
--			/*
--			 * Only care about unaddressable device page special
--			 * page table entry. Other special swap entries are not
--			 * migratable, and we ignore regular swapped page.
--			 */
--			entry = softleaf_from_pte(pte);
--			if (!softleaf_is_device_private(entry))
--				goto next;
--
--			page = softleaf_to_page(entry);
--			pgmap = page_pgmap(page);
--			if (!(migrate->flags &
--				MIGRATE_VMA_SELECT_DEVICE_PRIVATE) ||
--			    pgmap->owner != migrate->pgmap_owner)
--				goto next;
--
--			folio = page_folio(page);
--			if (folio_test_large(folio)) {
--				int ret;
--
--				arch_leave_lazy_mmu_mode();
--				pte_unmap_unlock(ptep, ptl);
--				ret = migrate_vma_split_folio(folio,
--							  migrate->fault_page);
--
--				if (ret) {
--					if (unmapped)
--						flush_tlb_range(walk->vma, start, end);
--
--					return migrate_vma_collect_skip(addr, end, walk);
--				}
--
--				goto again;
--			}
--
--			mpfn = migrate_pfn(page_to_pfn(page)) |
--					MIGRATE_PFN_MIGRATE;
--			if (softleaf_is_device_private_write(entry))
--				mpfn |= MIGRATE_PFN_WRITE;
--		} else {
--			pfn = pte_pfn(pte);
--			if (is_zero_pfn(pfn) &&
--			    (migrate->flags & MIGRATE_VMA_SELECT_SYSTEM)) {
--				mpfn = MIGRATE_PFN_MIGRATE;
--				migrate->cpages++;
--				goto next;
--			}
--			page = vm_normal_page(migrate->vma, addr, pte);
--			if (page && !is_zone_device_page(page) &&
--			    !(migrate->flags & MIGRATE_VMA_SELECT_SYSTEM)) {
--				goto next;
--			} else if (page && is_device_coherent_page(page)) {
--				pgmap = page_pgmap(page);
--
--				if (!(migrate->flags &
--					MIGRATE_VMA_SELECT_DEVICE_COHERENT) ||
--					pgmap->owner != migrate->pgmap_owner)
--					goto next;
--			}
--			folio = page ? page_folio(page) : NULL;
--			if (folio && folio_test_large(folio)) {
--				int ret;
--
--				arch_leave_lazy_mmu_mode();
--				pte_unmap_unlock(ptep, ptl);
--				ret = migrate_vma_split_folio(folio,
--							  migrate->fault_page);
--
--				if (ret) {
--					if (unmapped)
--						flush_tlb_range(walk->vma, start, end);
--
--					return migrate_vma_collect_skip(addr, end, walk);
--				}
--
--				goto again;
--			}
--			mpfn = migrate_pfn(pfn) | MIGRATE_PFN_MIGRATE;
--			mpfn |= pte_write(pte) ? MIGRATE_PFN_WRITE : 0;
--		}
--
--		if (!page || !page->mapping) {
--			mpfn = 0;
--			goto next;
--		}
--
--		/*
--		 * By getting a reference on the folio we pin it and that blocks
--		 * any kind of migration. Side effect is that it "freezes" the
--		 * pte.
--		 *
--		 * We drop this reference after isolating the folio from the lru
--		 * for non device folio (device folio are not on the lru and thus
--		 * can't be dropped from it).
--		 */
--		folio = page_folio(page);
--		folio_get(folio);
--
--		/*
--		 * We rely on folio_trylock() to avoid deadlock between
--		 * concurrent migrations where each is waiting on the others
--		 * folio lock. If we can't immediately lock the folio we fail this
--		 * migration as it is only best effort anyway.
--		 *
--		 * If we can lock the folio it's safe to set up a migration entry
--		 * now. In the common case where the folio is mapped once in a
--		 * single process setting up the migration entry now is an
--		 * optimisation to avoid walking the rmap later with
--		 * try_to_migrate().
--		 */
--		if (fault_folio == folio || folio_trylock(folio)) {
--			bool anon_exclusive;
--			pte_t swp_pte;
--
--			flush_cache_page(vma, addr, pte_pfn(pte));
--			anon_exclusive = folio_test_anon(folio) &&
--					  PageAnonExclusive(page);
--			if (anon_exclusive) {
--				pte = ptep_clear_flush(vma, addr, ptep);
--
--				if (folio_try_share_anon_rmap_pte(folio, page)) {
--					set_pte_at(mm, addr, ptep, pte);
--					if (fault_folio != folio)
--						folio_unlock(folio);
--					folio_put(folio);
--					mpfn = 0;
--					goto next;
--				}
--			} else {
--				pte = ptep_get_and_clear(mm, addr, ptep);
--			}
--
--			migrate->cpages++;
--
--			/* Set the dirty flag on the folio now the pte is gone. */
--			if (pte_dirty(pte))
--				folio_mark_dirty(folio);
--
--			/* Setup special migration page table entry */
--			if (mpfn & MIGRATE_PFN_WRITE)
--				entry = make_writable_migration_entry(
--							page_to_pfn(page));
--			else if (anon_exclusive)
--				entry = make_readable_exclusive_migration_entry(
--							page_to_pfn(page));
--			else
--				entry = make_readable_migration_entry(
--							page_to_pfn(page));
--			if (pte_present(pte)) {
--				if (pte_young(pte))
--					entry = make_migration_entry_young(entry);
--				if (pte_dirty(pte))
--					entry = make_migration_entry_dirty(entry);
--			}
--			swp_pte = swp_entry_to_pte(entry);
--			if (pte_present(pte)) {
--				if (pte_soft_dirty(pte))
--					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_uffd_wp(pte))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
--			} else {
--				if (pte_swp_soft_dirty(pte))
--					swp_pte = pte_swp_mksoft_dirty(swp_pte);
--				if (pte_swp_uffd_wp(pte))
--					swp_pte = pte_swp_mkuffd_wp(swp_pte);
--			}
--			set_pte_at(mm, addr, ptep, swp_pte);
--
--			/*
--			 * This is like regular unmap: we remove the rmap and
--			 * drop the folio refcount. The folio won't be freed, as
--			 * we took a reference just above.
--			 */
--			folio_remove_rmap_pte(folio, page, vma);
--			folio_put(folio);
--
--			if (pte_present(pte))
--				unmapped++;
--		} else {
--			folio_put(folio);
--			mpfn = 0;
--		}
--
--next:
--		migrate->dst[migrate->npages] = 0;
--		migrate->src[migrate->npages++] = mpfn;
--	}
--
--	/* Only flush the TLB if we actually modified any entries */
--	if (unmapped)
--		flush_tlb_range(walk->vma, start, end);
--
--	arch_leave_lazy_mmu_mode();
--	pte_unmap_unlock(ptep - 1, ptl);
--
--	return 0;
--}
--
--static const struct mm_walk_ops migrate_vma_walk_ops = {
--	.pmd_entry		= migrate_vma_collect_pmd,
--	.pte_hole		= migrate_vma_collect_hole,
--	.walk_lock		= PGWALK_RDLOCK,
--};
--
--/*
-- * migrate_vma_collect() - collect pages over a range of virtual addresses
-- * @migrate: migrate struct containing all migration information
-- *
-- * This will walk the CPU page table. For each virtual address backed by a
-- * valid page, it updates the src array and takes a reference on the page, in
-- * order to pin the page until we lock it and unmap it.
-- */
--static void migrate_vma_collect(struct migrate_vma *migrate)
--{
--	struct mmu_notifier_range range;
--
--	/*
--	 * Note that the pgmap_owner is passed to the mmu notifier callback so
--	 * that the registered device driver can skip invalidating device
--	 * private page mappings that won't be migrated.
--	 */
--	mmu_notifier_range_init_owner(&range, MMU_NOTIFY_MIGRATE, 0,
--		migrate->vma->vm_mm, migrate->start, migrate->end,
--		migrate->pgmap_owner);
--	mmu_notifier_invalidate_range_start(&range);
--
--	walk_page_range(migrate->vma->vm_mm, migrate->start, migrate->end,
--			&migrate_vma_walk_ops, migrate);
--
--	mmu_notifier_invalidate_range_end(&range);
--	migrate->end = migrate->start + (migrate->npages << PAGE_SHIFT);
--}
--
- /*
-  * migrate_vma_check_page() - check if page is pinned or not
-  * @page: struct page to check
+That's interesting, why is the cost of preempt disable/enable so high?
+
+> Unlike x86, arm64 does a preempt_disable
+> when doing this_cpu_*. On a cursory look it seems like this is unnecessary - since we
+> are doing preempt_enable() immediately after reading the pointer, CPU migration is
+> possible anyways, so there is nothing to be gained by reading pcpu pointer with
+> preemption disabled. I am investigating whether we can simply drop this in general.
+
+Let me quote an old email from Mark Rutland [1]:
+> We also thought that initially, but there's a sbutle race that can
+> occur, and so we added code to disable preemption in commit:
+> 
+>   f3eab7184ddcd486 ("arm64: percpu: Make this_cpu accessors pre-empt safe")
+> 
+> The problem on arm64 is that our atomics take a single base register,
+> and we have to generate the percpu address with separate instructions
+> from the atomic itself. That means we can get preempted between address
+> generation and the atomic, which is problematic for sequences like:
+> 
+> 	// Thread-A			// Thread-B
+> 
+> 	this_cpu_add(var)
+> 					local_irq_disable(flags)
+> 					...
+> 					v = __this_cpu_read(var);
+> 					v = some_function(v);
+> 					__this_cpu_write(var, v);
+> 					...
+> 					local_irq_restore(flags)
+> 
+> ... which can unexpectedly race as:
+> 
+> 
+> 	// Thread-A			// Thread-B
+> 
+> 	< generate CPU X addr >
+> 	< preempted >
+> 
+> 					< scheduled on CPU X >
+> 					local_irq_disable(flags);
+> 					v = __this_cpu_read(var);
+> 
+> 	< scheduled on CPU Y >
+> 	< add to CPU X's var >
+> 					v = some_function(v);
+> 					__this_cpu_write(var, v);
+> 					local_irq_restore(flags);
+> 
+> ... and hence we lose an update to a percpu variable.
+
+... so, removing preempt disable _in general_ is probably not a good idea.
+
+[1] https://lore.kernel.org/all/20190311164837.GD24275@lakrids.cambridge.arm.com
+
 -- 
-2.50.0
-
+Cheers,
+Harry / Hyeonggon
 
