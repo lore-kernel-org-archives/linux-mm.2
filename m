@@ -4,91 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C9C6ECD6F7
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 23:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ADCCECD6EE
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 23:39:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 44C076B0005; Wed, 11 Feb 2026 18:29:54 -0500 (EST)
+	id CDFED6B0005; Wed, 11 Feb 2026 18:39:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 409896B0089; Wed, 11 Feb 2026 18:29:54 -0500 (EST)
+	id C8D636B0089; Wed, 11 Feb 2026 18:39:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 339F16B008A; Wed, 11 Feb 2026 18:29:54 -0500 (EST)
+	id BB9F96B008A; Wed, 11 Feb 2026 18:39:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 205F16B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:29:54 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A8634C1D66
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:29:53 +0000 (UTC)
-X-FDA: 84433770666.24.575B3D8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 0A068140006
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:29:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kFHQAkTL;
-	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AC01E6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 18:39:06 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3B16E1B3CD7
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:39:06 +0000 (UTC)
+X-FDA: 84433793892.04.4DA9C04
+Received: from gentwo.org (gentwo.org [62.72.0.81])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5BFD8180006
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:39:04 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b="Th/f4JVF";
+	spf=pass (imf24.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770852592;
+	s=arc-20220608; t=1770853144;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wdkAyqOxQzeiR6MxWaLzGE+euNpsbW7kx9JKwmXauEI=;
-	b=wwqiioaGWwMLMj9vkmRSG3Lf91cvpy8jqgiNKG23nCb5Oafq5rmtz3PjiXy8SJ7fmChSg+
-	eD0LDdddifBOJfMxb/O62Vl4xypi4nDkMKMnxEsoK/nXsgP6avuGHiYCsQe4bL/klc6Qxi
-	DONLS6SKL3lHWsYKFfbyqJRoG3UFzVU=
+	bh=vAcRO/WmRaYKNRMytp9/Kta0ZFKTLDhhs58Vz/QOHK0=;
+	b=DzDkv/+gocPo9Q6kr8GHb9wz5XahT5ccIvIzjEdZLU+IoGxOTcQEPaurppJlRIW50xCZAJ
+	JU3/5kMglve5jKXsf40QW2vNQ58n596P/OX1R3V6P5MN+sYs3nom7wDPQBkxKP3qmYPgLe
+	hcIgSZljGEQbnBfZIoQpLMxf486aNKg=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kFHQAkTL;
-	spf=pass (imf26.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770852592; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b="Th/f4JVF";
+	spf=pass (imf24.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770853144; a=rsa-sha256;
 	cv=none;
-	b=rH2yfgXaJhSZcZvcFiMSx5++jzf9T/LZbSF7czM+02EyL58EyGnCrrUtw42E8/jeFeppKn
-	lf4KR7odet12m2228JMwUs7TMw6lkZ7uSMTeeeig3K+RflFTI3NBP3aycl6wwYMI0nxMzz
-	0+cZmVEsSKn0N5Y6cS9A7o4AvoMmBD0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4A06560010;
-	Wed, 11 Feb 2026 23:29:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC73C4CEF7;
-	Wed, 11 Feb 2026 23:29:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770852591;
-	bh=EFGDBChHSWhZIzXFNT6SF4SbDuFM7V8Yj3FQO96fPYA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kFHQAkTL6mZ7e1gCkxJJhlIPS3A8+QHxbdi+oq9pi1psvQS2i9K5j17+D8/8R1Cp3
-	 05lv83nUterCehqd5tJX//yLKumKuBUzMlBykeco/EQAbGV/9KmoZFPdK9HMsXbyPg
-	 mx6fxgjGFQ+ua9ySeEpHoeaJGUuWm8KIzuVeIoEDwQIannCpni9nVDSMh5KvRdALnk
-	 AuxjD5ShSEJwAtwbqRzPKswPxyqxlC7KvBjTzCaa33Z+yGcdKwgi02o/dlcwMTkuBc
-	 0Akt9VQP0kEsm25IUX4mX/Nv6+Vl86qfxjzonS8oe78z8gy1vI3EMWkcZayCmtIQEL
-	 E6FVrOg10ZhdQ==
-Date: Wed, 11 Feb 2026 13:29:49 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Yang Shi <shy828301@gmail.com>
-Cc: lsf-pc@lists.linux-foundation.org, Linux MM <linux-mm@kvack.org>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>, dennis@kernel.org,
-	urezki@gmail.com, Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>
+	b=r2rjHSNdaI+CkqCrUi3dnSdcBnVf22ruQMZWNUy5Mv8C1r3IADmKhqUCNh7MclF2/IffkD
+	EEyhGgyujHkRqFLScYD1yyGVdygNsIajmFMSBxC6FmT8KAxlJdFuVlNXeqxGakYn2LcxiG
+	iELxoGHJlATLXLRZ4XatAM0IR3Ja/z8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1770853142;
+	bh=vAcRO/WmRaYKNRMytp9/Kta0ZFKTLDhhs58Vz/QOHK0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=Th/f4JVFRKr7JgmTwZK8qFzlsudyYzT9AHecmGVBUdDVmuEnWy3dx/hxvDnkMyCSP
+	 JAcGXaFl6Fcs+EiCZED1v87aoi2cGchIOrUpsf4NsqJsMvfMTww8h8i8ORhCMh91rE
+	 Fh0AsoZMXe3gU60a41fywcgT0onpQRbfYEvTv3lM=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id D1A7240B01; Wed, 11 Feb 2026 15:39:02 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id C98C24028B;
+	Wed, 11 Feb 2026 15:39:02 -0800 (PST)
+Date: Wed, 11 Feb 2026 15:39:02 -0800 (PST)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: Tejun Heo <tj@kernel.org>
+cc: Yang Shi <shy828301@gmail.com>, lsf-pc@lists.linux-foundation.org, 
+    Linux MM <linux-mm@kvack.org>, dennis@kernel.org, urezki@gmail.com, 
+    Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+    Ryan Roberts <ryan.roberts@arm.com>, 
+    Yang Shi <yang@os.amperecomputing.com>
 Subject: Re: [LSF/MM/BPF TOPIC] Improve this_cpu_ops performance for ARM64
  (and potentially other architectures)
-Message-ID: <aY0Q7QhGDKwKk2ie@slm.duckdns.org>
-References: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
+In-Reply-To: <aY0Q7QhGDKwKk2ie@slm.duckdns.org>
+Message-ID: <c6ef0444-9423-4026-5a3f-123183246ddb@gentwo.org>
+References: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com> <aY0Q7QhGDKwKk2ie@slm.duckdns.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
-X-Rspamd-Server: rspam11
-X-Stat-Signature: yia1aqpc5do31wcpctpkeytqkbspy7gs
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ugjisyihunco3occo5hphao5j9on5wfi
+X-Rspamd-Queue-Id: 5BFD8180006
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0A068140006
-X-HE-Tag: 1770852591-236042
-X-HE-Meta: U2FsdGVkX18tvzwJbEs/NPE6jm7JFT1rvoi9jk7FDrEHB6F2szAHH2FgK5qY8J0w9FcgI9BW17oAgHPz+Rr/kIZ1d2QsgcIz6gvTfYyu7NQOA4jb1mb52GQpZlFBeOTHqlgr1X8roQRQ7cGcTYJdS9QLpRsLLyUSmCmK4VafbjzQ4Wm99m7+3cE9yRJSqb0JtagZUuZutjb3++JN41i4UVE2pLEuAjBH+9+kDGCy6FcbTd1/0IwC5ote6LPWagiA1YEcOuRDHeorBlEORYZ75SBL8vz3v+kF+As34UwJGyhvDZZrX5eeOe838gd1rJG42WjogpWP4LQUxjWNPGhfuB3LWKOVGoDos9Jh34akIFBmdStGBx7Lk4eF15MnltoMVNB8VrB3Ds7w8d11AmKGvvl2naxeKp+hcjoGvbPImyO6DqELJRTKLXo3UqxxPzH+Qw4jmrSlmP8+uZjojfZkAbodLKjFf34s2GoHsBZ67ofoTi2ZthrJZQ3GpAs7H4ATdWRtncavaMWeYFGhpdV1AR6Cp8wXC6MfVHm+YvRaQVtuECb4v57oaKHH/aGMkHzmziINE10FMlqGZHFLATcar/23NNF6Bas0D3oArApZd33CNiPiG8xYIpVU51DwS/nxOaa1E94NPI17n59qJug9zKPscRy0CLATOe6gY1tDfYs17G+Oo/SOzV4JHWQTmJqmBhSGzx/Y+a4Yj9ULd5nr0OIwIjuOCFgPJzNZz0M81oEnnY9qYhDgiRe5uVbFPhcenBbHB1j4wlX5eFnhVpj5L+1xQAH25QKbAbecvG9CKzf6DZMxQzRCDGfBgE8nM3oqNBPInABIoPffchCPDPKNlFT+AALJg7RuEk3iYHwu0wmIW/1M+e7ji8rHyzo6fHqMBFwZkPOWkSaEZQJosIEjn3xjJvA0L3ZGPq+fZbVhVMJzzYGCN2Xk2xnDmsCMCgtRQPa5lf4mNE+qCL68YCZ
- +KK98YW/
- P03lZ5S1BwBdNHxXKvt3ZxBDmyRbfacSuxDiYI/wK2x9IpLXAiL2tGNqcZjO79WLTWPTlQVJ1n/fHWeA4BnhzKPh1GqHQgw1B/T/U2oo0Z2z/QMDgGis0uZlTy2dS6z5g0suBTaBQGQqm2RW5ulKODRVH9AHV/XdiD6GxRM2kLdrqQ+MK/tPVAbYRTV48E2y5EkXSU81sPjTcNo4Iz5NEKjrekngzyKxujIctdmPjPK8mnsJQu2b0pIWz5KKVVvdOZ6dA4QN6UOP+7XMJytxi2j3bl7DlfW784epP
+X-HE-Tag: 1770853144-453258
+X-HE-Meta: U2FsdGVkX19QsSlRmf1c08C9fdRWODsmq/pXp+Kfr05OSFRBZ1MTwQDtarImRDUkzJ8gL6QMfNryf13jC+TEgPMZ7Ab6335Ws9I+pS8GSNUCIHNOYji1RzEfweETBti2pKYC9PDCQ3GXa3tn4wc9tVSmfQ6kjY9MvPFVFOJObXItilxC2umBLkJgt409ysJFQV8Ezk6dTwR9ny0xVtYTb+kOym3dy0uAmpmVy17T2jhHossvvsq7srPTf3ihn/WCW7ZqVoRFHGCcGG4a5jaDkeC5FX3z/x+iUxHGfduyoc35XFe42RKhLF8YsCej5QvcnFTpjg45DBpWKgtG2wxyVTaRGcrmmCVeqdu94cF7jDDpiMcMs5gLvNCgD/v50jii1EtxNBKlETz5vd5ciHpkpTEV5+OMBvPy8Bm9yoK+Vhxm4Kke8oDe109k4Adbmu55Istxiti0puOxG6Z6Q/dXOpJ6TCH3TwNgGPcEjPV/moSYjNB1HiGHacjSJ7qIm+z0Jr9kP9UGdOxtEpSshmgT3aI5Trgdf8DeRRnjmwzFflECQPITH69dOB+q41VwS/hkbLDQV7zJ8BSCGlMXSjqzTOmn6tNWGES2Px3CH1HE1ogISdQ9D5jTZ06EQbk8yYh/dY+BYWxvRObpMTk/virYqyM0pB6CJsUj8nERRnvXy4vKoiYQKn9MYjsrVq7R3qfPRzq5Y4QYHx3sb3tjDx3eMQEU8LYwOUE7QiL7Yc4CJXhgwIcpNxFnGFGFOgp6/foJ9rGcBc5VR/oMheEx/bcM15+EwbkylP6GS4QhPm3JCrX/tWjHj6CXWzcMTqzKvp8HL0n0YhDsA9XlWg5XXyS7Ww3PNe6HCrtKwn090PzO6IsoT6x4SC1CdljMxmC7GG/nle6UgeqVEsQBMGqzUcgWmM1Ps8FcS44i2PQLAwtkKJLoaQTQUkWS3QiZPPL++ju19Jrg54cJyeS0C1UO8F/
+ L6DMwB/i
+ FV2FZYFOm3WIx4c9DyHWvbefX22KWPXKR+uRlThWOuZjuIQho4skgDq0in7b6bI1KXmZLVi/jHEGcVpI4TQO2vuOOy6V9qi7hcQfnCGoKjG7nLo/njOTfePRX4p8GDqIHfeyxuvJmgR3Ku9BD/wwa4AEHivNZu86/0m688b46qzwA6QN2jkLOXjPjnV+J15w8Pq5sBpBVyOjptqUhelr6zIPGb4xBLoXcy58g8vDF0wgtqbhXpuWxsKKatr3eeZhaIWApY9aSZS70COU4dpxBBMxxOFuNQNnIvnyuHna7uArFJuFNtvgGemmZNOHvUSdR5cOv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,43 +91,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Wed, 11 Feb 2026, Tejun Heo wrote:
 
-On Wed, Feb 11, 2026 at 03:14:57PM -0800, Yang Shi wrote:
-...
-> Overhead
-> ========
-> 1. Some extra virtual memory space. But it shouldn’t be too much. I
-> saw 960K with Fedora default kernel config. Given terabytes virtual
-> memory space on 64 bit machine, 960K is negligible.
-> 2. Some extra physical memory for percpu kernel page table. 4K *
-> (nr_cpus – 1) for PGD pages, plus the page tables used by percpu local
-> mapping area. A couple of megabytes with Fedora default kernel config
-> on AmpereOne with 160 cores.
-> 3. Percpu allocation and free will be slower due to extra virtual
-> memory allocation and page table manipulation. However, percpu is
-> allocated by chunk. One chunk typically holds a lot percpu variables.
-> So the slowdown should be negligible. The test result below also
-> proved it.
+> One property that this breaks is per_cpu_ptr() of a given CPU disagreeing
+> with this_cpu_ptr(). e.g. If there are users that take this_cpu_ptr() and
+> uses that outside preempt disable block (which is a bit odd but allowed),
 
-It will also add a bit of TLB pressure as a lot of percpu allocations are
-currently embedded in the linear address space backed by large page
-mappings. Likely immaterial compared to the reduced overhead of
-this_cpu_*().
+this_cpu_ptr converts a percpu variable offset to a normal pointer that
+can be used without preemption.
 
-One property that this breaks is per_cpu_ptr() of a given CPU disagreeing
-with this_cpu_ptr(). e.g. If there are users that take this_cpu_ptr() and
-uses that outside preempt disable block (which is a bit odd but allowed),
-the end result would be surprising. Hmm... I wonder whether it'd be
-worthwhile to keep this_cpu_ptr() returning the global address - ie. make it
-access global offset from local mapping and then return the computed global
-address. This should still be pretty cheap and gets rid of surprising and
-potentially extremely subtle corner cases.
+If the scheduler changes the cpu then you would remotely access that per
+cpu data in a remote cpu. Read only acces is fine. Writing could be dicey
+in some cases.
 
-Generally sounds like a great solution for !x86.
+> Generally sounds like a great solution for !x86.
 
 Thanks.
 
--- 
-tejun
 
