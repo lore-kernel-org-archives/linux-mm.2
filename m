@@ -4,119 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E79AECD6D6
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:37:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1626DECD6EE
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 22:38:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 746066B0005; Wed, 11 Feb 2026 17:37:03 -0500 (EST)
+	id 62EB86B0005; Wed, 11 Feb 2026 17:38:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F3916B0089; Wed, 11 Feb 2026 17:37:03 -0500 (EST)
+	id 5B2CE6B0089; Wed, 11 Feb 2026 17:38:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D55E6B008A; Wed, 11 Feb 2026 17:37:03 -0500 (EST)
+	id 487206B008A; Wed, 11 Feb 2026 17:38:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 494CE6B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:37:03 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 079C38BD99
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:37:03 +0000 (UTC)
-X-FDA: 84433637526.03.5E52D76
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf06.hostedemail.com (Postfix) with ESMTP id BA96F180006
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:37:00 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H9IFnpqi;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 342E16B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 17:38:59 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF6E313ABDE
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:38:58 +0000 (UTC)
+X-FDA: 84433642356.13.DE6AF8E
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 04833180008
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:38:56 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gR7zpHrS;
+	spf=pass (imf16.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770849421;
+	s=arc-20220608; t=1770849537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7Eu5WXcIuBe88Xd8eCDaS+uTqxUL8W+UWJopLy1W8/I=;
-	b=LgR69pq8p7xYS+jmhHpIhA8BcwfgdI/MjVe3qushEXE4vpLF3g9D5SCoPIApv4Wzc1RTW2
-	J82jDH2iI6RcfwR9x0t/pUg1lNXvnAmUAo9+e+k6nzw7rHtuVqtYqPLswYhYn+BpXVOFhR
-	m+vGf8TfwbiEasAoFA/A0pTvPlCVyJY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=H9IFnpqi;
-	spf=pass (imf06.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770849421; a=rsa-sha256;
+	bh=KBtZyZv/k/CWYzcfXcthUFUg18flW9coOP2MiyQMzYQ=;
+	b=464jJpKr2F+locH0aDPej20iYi8v/LHFpHeRJ3oFTa4j8ISX6qZwB0Rw6B/92ygFR4tQKx
+	vep4Ij892CRPd0Mplbi3MC01xkwQrJoab1dycTPjEvAnrWDltyVe7pZPrDRgyt2lkUw916
+	MV+/ZyVNDK1BUE7btNLO8Rmd+SBJrIs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770849537; a=rsa-sha256;
 	cv=none;
-	b=rLJwz+Ia+7Zk6yvT19gWEqcwe98G+hwZKh0cBlJORgLYL0YngmEwia1yXJF2lr86n7taBh
-	qBeWLQiqtj1/CkwPEBeJrc/Vqo0CqxiTjDd5eUPELULcmHBxVXAGxzhm6z/RQbnhHWlsRq
-	icDCHIDBW0DnuMwD5hSLqd7fwDDOUbA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770849421; x=1802385421;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5lBrMrSUEvT4lx29b/VzGz7vn6FI2f6WHH0Xp1tO82E=;
-  b=H9IFnpqib5B5sQaUWQazzfPAnodGsQHfyaN4C7EBwhanVSDCozvTM+ce
-   CAF3v27b0p0XkUqhwcv29wd+MoxtKQx6h3zXuH8GzjUlqzZLPdfaz0ndd
-   i8hcElhZrMDmnYMyl1gccgq9uw4AVyy/EEoGmj9Qk2Ersi+LqT3MIHnG4
-   DCAt/8OTck5zzG/RjI8mvpef2t8oSqv2Jv4uLspBkY+JRPODjJFd9zs6+
-   gPjyPutn4LVTpYw3DGUzAO5h+v27DPEAUgzjlsTONUdJbdA5nAUAi1whb
-   rbZSBUP0D1RMSUr8OgAReMmbn6/5pYzf/Cx63XyGVXpPsTeO7t9xPRXH6
-   Q==;
-X-CSE-ConnectionGUID: qzhhyDp8Q+KVLlR3roRgGA==
-X-CSE-MsgGUID: a59Gfn6QRSi2BGBSyXkg3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="71911092"
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
-   d="scan'208";a="71911092"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 14:36:59 -0800
-X-CSE-ConnectionGUID: ZabLUBVpQsqUdFupslNNvQ==
-X-CSE-MsgGUID: MSBEmk28TJaeA0OfdScegg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
-   d="scan'208";a="212403937"
-Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 11 Feb 2026 14:36:53 -0800
-Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vqIpH-00000000qRi-0j3G;
-	Wed, 11 Feb 2026 22:36:51 +0000
-Date: Thu, 12 Feb 2026 06:35:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Coiby Xu <coxu@redhat.com>, kexec@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	devicetree@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Arnaud Lefebvre <arnaud.lefebvre@clever-cloud.com>,
-	Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-	Kairui Song <ryncsn@gmail.com>, Pingfan Liu <kernelfans@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Rob Herring <robh@kernel.org>, Thomas Staudt <tstaudt@de.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] arm64,ppc64le/kdump: pass dm-crypt keys to kdump
- kernel
-Message-ID: <202602120648.RgQALnnI-lkp@intel.com>
-References: <20260211082401.2407853-3-coxu@redhat.com>
+	b=L5RVAl7LsXS9qhIC0dnSY9R75xKDoQXt1t3O5Sod3YIiHaM6Sgr7BOpgVJjoR5DSHHSK9C
+	cA8z0fNJy70Fm8O95uoxg/jAv8FLHbmFlmhIvK/BtgtL7PThYnr+sElh9xo1v9End0/4qb
+	TknEfn00afVg46UyPoo28yTlkaGEDMU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gR7zpHrS;
+	spf=pass (imf16.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-2b7da62b487so54810eec.1
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 14:38:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770849536; x=1771454336; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KBtZyZv/k/CWYzcfXcthUFUg18flW9coOP2MiyQMzYQ=;
+        b=gR7zpHrSc1OLouBK+4u6yAB1K0khzqZc7ZxSMkcWxOxhrYksggiY6cMStsaYv8HwZM
+         5eC8erQsX0nbgdTDY7QLNqH4XhITLmm8/27OlP9orB0DUFAp58DCOytAwW6YUdL+QzSf
+         weID1QBdLB9XhkriJ1q9TN6WI6W0t43TzUBGXYxV8h09A1yFWMczWwdOapjQ2DJOUVDx
+         daQUipszlVYjx9tunk30nViBfa1xYqlO5FE0LP2t6Izy45/Xj/kRqMhBJOSdUykLKatd
+         It/E9O6xnadvdNpN8lfvjaBrhu60yY9qtSpn+UL9423SgAngtSU6rR4QUTcCyL0zuPEE
+         J+TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770849536; x=1771454336;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KBtZyZv/k/CWYzcfXcthUFUg18flW9coOP2MiyQMzYQ=;
+        b=Y/I3w4/2Mdm+norfI/PAiNnax5dw8hYMmTK6y2436Oo37vKqpOtBqtPJqrwed1MVN0
+         qVY+7q8AbaNAMUK61q6z+STSOrAul4UX2SU2LfLq/9cV5iJVtwa/yxHgHX5Ht4lCh2Hf
+         WxGeiJauG7YVGmGZ9mNHwR/vciacTMaMTxnAsujbk13XPCmESW/LWX43kqaN2W0X2Bvp
+         GV6pjj5AAW+4f6FuCTKKmeWg3tSJ4hu2dZH2B++V/bjfbC+1xqaH9pumvl8VP8atH89b
+         dVJCt/pKLWo5oKNCKyIGUfI4h+LNyCoesvJ/1Ut4DY5uJNq71x87rtzqoGFK6plJalaq
+         LIlg==
+X-Forwarded-Encrypted: i=1; AJvYcCWxH7TQXWzUWVUbuQK2tUg1Im8BumAJPTvyjxk++Pr9rl5xHNyevtXxkbCReo/U4eWQvr5T2fpDZg==@kvack.org
+X-Gm-Message-State: AOJu0Yx3Y8y1AsuQCSQCRYFTPvUjLxA3D1rQBhxbQwlTPhA/vn1XbXGm
+	yuoMnvT2hhlngo/H+01dt+yzR+D11AAo6a2HqQM9pw4bn5J8Vp6wS5/dIqhKUw==
+X-Gm-Gg: AZuq6aJeAi94iYNQXnV9GxHkWg8kj+LYdfl+uSVQ/qBiaxrc/5xVlWlRXhDgQ8hFW/p
+	+K7H8asCR1cVI91NheF5rPTgwLU4sUPmcXVqL8oH64cY4MRk79EhJx3xDgJP1+yIWU3+1rp/6cW
+	Gi65HbIfR8NJxrUCYPgaGAELps3HBk0Y/W8VjbGr/br0AhJAQy9Vztvuvmf5uCEHfvC7mbwgFlK
+	76C1dfxRhgGovXfqnMBoBbnRmGiOpZnSv90squg0BmvVFEYwKXFxwOSIV6W/wDyYgcP93m6CHpL
+	gNyVxa8yVnXKWnZPp6bOATJLom2vXTJ805eYiLpssK0qsv3EU6PxCe7FBqPJVGnJIGI01LuLpIL
+	0yogdbYdCBQUTOK79w+DY9D8wzNYvianOUjeQFCRWCbxgyGeV/5NOAx00t7UfBq6g8KmoGF5NoO
+	j9BsxCCD5GNRrjZKFr5FRRbGDy584baJuG6dZwQGbz4iu6RF5zCfG36Tw=
+X-Received: by 2002:a05:7300:7c10:b0:2b9:1375:b546 with SMTP id 5a478bee46e88-2baa7fbc0a0mr449042eec.16.1770849535629;
+        Wed, 11 Feb 2026 14:38:55 -0800 (PST)
+Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dba3317sm2328461eec.5.2026.02.11.14.38.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 14:38:55 -0800 (PST)
+Date: Wed, 11 Feb 2026 14:38:52 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	akpm@linux-foundation.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v5 4/4] x86/mm/pat: Convert split_large_page() to use
+ ptdescs
+Message-ID: <aY0E_EKc_yx_mPS7@fedora>
+References: <20260211195233.368497-1-vishal.moola@gmail.com>
+ <20260211195233.368497-5-vishal.moola@gmail.com>
+ <aYz7t7vG2W8ieEgx@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260211082401.2407853-3-coxu@redhat.com>
-X-Rspamd-Server: rspam12
-X-Stat-Signature: wk6rmre85gwm5z3d1poqq3z16oonxeny
-X-Rspamd-Queue-Id: BA96F180006
+In-Reply-To: <aYz7t7vG2W8ieEgx@casper.infradead.org>
+X-Rspamd-Queue-Id: 04833180008
 X-Rspam-User: 
-X-HE-Tag: 1770849420-613079
-X-HE-Meta: U2FsdGVkX18N53bdzUqI3D8HTXaCf6VGUET3FvGOFCvdw4FvVFceEdHO6r92WUPdc09YVdOnSwNfMHYk/gaU9GKdaoKHstGQgpohxxpwSf58qKF0X8oLw5PP4mjA2LtI3tW9NhK0OBmgq2XwY8twQaSal6nI3sG9zolrrJOTln9czTezcrY2eu37L63MAmG72xZkpo3+L4VfUoL5KLnzEi+MVl390+/+7LN4Iiuf7n/g7Asbm1C4Nbl09ECms3inb9YAt4xZow1bDb1Tr0lewAjT+ZhIgFUFQLqY7QSEXKFexVf2BzGCnKmCzSc9l4SdJs5Wyqum90/XScM18kAYvawH74risLZcCFqcHfxi1Pky+xXH14oAC90i/PQlbnJx4qqz/H3u1bhVDvREUoSDo3PytT8Pq0FESnWVb02PoFIW+1ofWmjetiYfA9Gl8Zh188OhCbucCS/paVj0r5TivpOB8owW1j2Ctsa0cvH8QBa2dI5M2jB8cjJdTAv19dxUdo5VHywz8+OUWa2gSwQtSs9SUhIv3ZOp/JEYtqMSb1Xm1cc3Q8hTnk7FFpPTDVSf/SF/7rQdKQL+G/ScaC3lHnbm1RPIOeKJfUWOsxEgk7l/XI6h9lzkhf1+NHq4d/wxi00c2amFp066SgV9i8cp00oDEHBt34F6mgkkRnkTk+Hyq1r5bH2C+qA4QsRMQNutmts2Khiw3sqo2l7rgaZWo3PLHCsMplCFNcDF3GGxghgCNSN33yasdUwRchrrwwffeTUDVO/GIi04oZbMGeXeFKO1BZsS15EnyWWJed8yYMFSCV7cNf1B78LuJ6duqirHy3cvqSwIUXOeg4PxGroLYc6V3uS7fp6/TP9/3Y0njjo+7kOzz2GoQS0zYjRpXhclLBFkxeMB/8FODE5qq5WbhKSY7EVQwoRzuaEC3dmzfxzmNGykW4UentGq+MoVmcXlQiY9HsW1IYr2XMqNzlu
- DELUH5os
- sWFLHvT3O6YSXOZO2sUC58/iyiTqTJiy0QVkbOpL2k5yx4jmv+VvK7ak3Mkse7IPIeK6kwS3v23BtqHuh7zZcOT+ilGZ6OSlBDdVtipP7Neie1kOynKGkrdEWenhlZZOaZRb4ltISgINrjhtx5pzIuZEstQMygHtS4oN0OZw7ET3WZSFW/aB6dvB4/HWTH9YR7uSB0Srgl+WkZyKGlH3PqBQlAhuOyxGFGHF6lxSPJwPTJ998sQo3p3T4wfT1oOhQFt80zorYkj40mKqi3tH9hEk0fhJJcx6s3dM79JfUjeQjSRQo1s5fn50DiblRG0DmkktqFvczitiM2C6xT/wjiRaFDl8v0ZWJSsIv
+X-Rspamd-Server: rspam05
+X-Stat-Signature: bfip6cq9u77hudx1fby4458iu16u95on
+X-HE-Tag: 1770849536-323267
+X-HE-Meta: U2FsdGVkX1/tDP+eO78fXEcSEBz+Co/BZwDygq8mcG2Og17WCcL4kBGnsj5XX/4Ia/Idd7J4haFu5ESQmPFH85Q7G8fgCElGpA1trcUyJ5rmFpOc2quHuNhUu3yGIyHJjWcLajzozBux1IvIKkEx/b0DblStD2C40RWuEnTHTthQMOt+y4zNTAFFNNNyZWj2e4DKLemKrSQnOPyyBad0WCKoGMgo1TZmtDL2os/q0LC1ytkafpwaWYF4mGP+8izlvk5WbJq6CtdI0FDkyv0P/H5Anbs7uwLsAtcSRf13XRjM7IiSkeMcIFXVEV6t6u2w1fyIAj7uphEadqK4/0sGhE0gBf19YUvIlsFg61LrJSTFa9h46IISBRGuuxfF0fmHZF0uXbxfPlcatpT/3HKcWvnNB11KOeNqTZ7Y7lXHxBswAMbwZPeBWeOjSLD6rYyrUU9Z91fsp0HSN5xxY4W18ZZNQZ+DBZVDSbkTai0EvL6TDtnQC6TP4qkN+LvUtW7CCr4eax63Ma7p7KSLUKBq0K/WJoq78ezZj9HhRW0NqhdKEjS7gX26YGsYiaM4OTlSsX9USahnj6DnzXrsp7+zu1YoK8Qdurun7qvRA+Xt9/UAWcHem/lYMJlJMD1viGiwJu/80WIeEh+PMv4WVmf9BftTvcOevCLryGInHIBqcnEmJ4IBvwXIOqfRt41ypqfoJa4oG7i8i0o4JJq1/8C+yORNp/B8zTt8bORI9J461FJ0frIfa4a62K3k7uYDxlrOg/ROQrNDMLty/GR3H0b6F1The+44q2Y/skYxhXaz9895ZsRPIK6UFzZqDOZUTxq9h2orUzLht4M3DHA+rymc7QPjK7yihm8yGlUU9VWMGedOCzK9s58jpze3Qw4EcnLfcDaoHA2Il+I6NA1a57nRvhsPoUS/7HFjOBXTHObhjyG3huo3Y+jXxbvKteMEeRqPkKbJ1cxGRmF03ifIU07
+ MO6ecVIW
+ P0jBUdZX/Rjri7K1eLc71lnVZjR7W7EY1WLPNxBXhM3wGiKFkps7IXXIgeFQMgKTLn0/xPg8UxRFadbnjLV6vEaB1CLBmGczuDJGokY3upLWgjuyGl0nnntcc77m4yOzxg0/N8iTaQk8XIvNHdD18jhiEhPaMrrJ5zov3dA93ftOTmME/r/8GhVCH/oZBL60dO1jy/+B5tU/pNhL9ADtsT1+XYCiwq047Lyn4T2zxZb6vIQhtsWFl7hWlK5lQMePEoTrbvvZPk4Auxm/Y559kdRbovU28hdiIlpdK5vngKh7bfzUpfdGFpbQX97iwBhPLydS2Mk5uGuutpzKU/EXGlEGosOA6DzdZ0BU1yVwCVPZu81kC26Kry8xID/OvRCL/b3XqpIdzpOLokbYUCfPD6e4w8qgcMOA7AYsDZoZ571YAEfHbYL/E6UKMpPKrnpWhc6Cnw7584oRggl6mxy2VWiKNn2uGWirp36q+8tMpUvMgrPE/NPIGEExwObEPKUayP9wv2kS6kVtk8PUhIsZR0nnxwA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,176 +124,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Coiby,
+On Wed, Feb 11, 2026 at 09:59:19PM +0000, Matthew Wilcox wrote:
+> On Wed, Feb 11, 2026 at 11:52:33AM -0800, Vishal Moola (Oracle) wrote:
+> >  static int
+> >  __split_large_page(struct cpa_data *cpa, pte_t *kpte, unsigned long address,
+> > -		   struct page *base)
+> > +		   struct ptdesc *ptdesc)
+> >  {
+> >  	unsigned long lpaddr, lpinc, ref_pfn, pfn, pfninc = 1;
+> > +	struct page *base = ptdesc_page(ptdesc);
+> >  	pte_t *pbase = (pte_t *)page_address(base);
+> 
+> We have ptdesc_address() already.  Can we avoid the other uses of
+> 'base' in this function?
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 2619c62b7ef2f463bcbbb34af122689c09855c23]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Coiby-Xu/crash_dump-dm-crypt-Don-t-print-in-arch-specific-code/20260211-162729
-base:   2619c62b7ef2f463bcbbb34af122689c09855c23
-patch link:    https://lore.kernel.org/r/20260211082401.2407853-3-coxu%40redhat.com
-patch subject: [PATCH v4 2/2] arm64,ppc64le/kdump: pass dm-crypt keys to kdump kernel
-config: powerpc64-randconfig-r111-20260212 (https://download.01.org/0day-ci/archive/20260212/202602120648.RgQALnnI-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260212/202602120648.RgQALnnI-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202602120648.RgQALnnI-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   arch/powerpc/kexec/elf_64.c: In function 'elf64_load':
->> arch/powerpc/kexec/elf_64.c:82:23: error: implicit declaration of function 'crash_load_dm_crypt_keys' [-Werror=implicit-function-declaration]
-      82 |                 ret = crash_load_dm_crypt_keys(image);
-         |                       ^~~~~~~~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/crash_load_dm_crypt_keys +82 arch/powerpc/kexec/elf_64.c
-
-    27	
-    28	static void *elf64_load(struct kimage *image, char *kernel_buf,
-    29				unsigned long kernel_len, char *initrd,
-    30				unsigned long initrd_len, char *cmdline,
-    31				unsigned long cmdline_len)
-    32	{
-    33		int ret;
-    34		unsigned long kernel_load_addr;
-    35		unsigned long initrd_load_addr = 0, fdt_load_addr;
-    36		void *fdt;
-    37		const void *slave_code;
-    38		struct elfhdr ehdr;
-    39		char *modified_cmdline = NULL;
-    40		struct crash_mem *rmem = NULL;
-    41		struct kexec_elf_info elf_info;
-    42		struct kexec_buf kbuf = { .image = image, .buf_min = 0,
-    43					  .buf_max = ppc64_rma_size };
-    44		struct kexec_buf pbuf = { .image = image, .buf_min = 0,
-    45					  .buf_max = ppc64_rma_size, .top_down = true,
-    46					  .mem = KEXEC_BUF_MEM_UNKNOWN };
-    47	
-    48		ret = kexec_build_elf_info(kernel_buf, kernel_len, &ehdr, &elf_info);
-    49		if (ret)
-    50			return ERR_PTR(ret);
-    51	
-    52		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
-    53			/* min & max buffer values for kdump case */
-    54			kbuf.buf_min = pbuf.buf_min = crashk_res.start;
-    55			kbuf.buf_max = pbuf.buf_max =
-    56					((crashk_res.end < ppc64_rma_size) ?
-    57					 crashk_res.end : (ppc64_rma_size - 1));
-    58		}
-    59	
-    60		ret = kexec_elf_load(image, &ehdr, &elf_info, &kbuf, &kernel_load_addr);
-    61		if (ret)
-    62			goto out;
-    63	
-    64		kexec_dprintk("Loaded the kernel at 0x%lx\n", kernel_load_addr);
-    65	
-    66		ret = kexec_load_purgatory(image, &pbuf);
-    67		if (ret) {
-    68			pr_err("Loading purgatory failed.\n");
-    69			goto out;
-    70		}
-    71	
-    72		kexec_dprintk("Loaded purgatory at 0x%lx\n", pbuf.mem);
-    73	
-    74		/* Load additional segments needed for panic kernel */
-    75		if (IS_ENABLED(CONFIG_CRASH_DUMP) && image->type == KEXEC_TYPE_CRASH) {
-    76			ret = load_crashdump_segments_ppc64(image, &kbuf);
-    77			if (ret) {
-    78				pr_err("Failed to load kdump kernel segments\n");
-    79				goto out;
-    80			}
-    81	
-  > 82			ret = crash_load_dm_crypt_keys(image);
-    83			if (ret)
-    84				goto out;
-    85	
-    86			/* Setup cmdline for kdump kernel case */
-    87			modified_cmdline = setup_kdump_cmdline(image, cmdline,
-    88							       cmdline_len);
-    89			if (!modified_cmdline) {
-    90				pr_err("Setting up cmdline for kdump kernel failed\n");
-    91				ret = -EINVAL;
-    92				goto out;
-    93			}
-    94			cmdline = modified_cmdline;
-    95		}
-    96	
-    97		if (initrd != NULL) {
-    98			kbuf.buffer = initrd;
-    99			kbuf.bufsz = kbuf.memsz = initrd_len;
-   100			kbuf.buf_align = PAGE_SIZE;
-   101			kbuf.top_down = false;
-   102			kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
-   103			ret = kexec_add_buffer(&kbuf);
-   104			if (ret)
-   105				goto out;
-   106			initrd_load_addr = kbuf.mem;
-   107	
-   108			kexec_dprintk("Loaded initrd at 0x%lx\n", initrd_load_addr);
-   109		}
-   110	
-   111		ret = get_reserved_memory_ranges(&rmem);
-   112		if (ret)
-   113			goto out;
-   114	
-   115		fdt = of_kexec_alloc_and_setup_fdt(image, initrd_load_addr,
-   116						   initrd_len, cmdline,
-   117						   kexec_extra_fdt_size_ppc64(image, rmem));
-   118		if (!fdt) {
-   119			pr_err("Error setting up the new device tree.\n");
-   120			ret = -EINVAL;
-   121			goto out;
-   122		}
-   123	
-   124		ret = setup_new_fdt_ppc64(image, fdt, rmem);
-   125		if (ret)
-   126			goto out_free_fdt;
-   127	
-   128		if (!IS_ENABLED(CONFIG_CRASH_HOTPLUG) || image->type != KEXEC_TYPE_CRASH)
-   129			fdt_pack(fdt);
-   130	
-   131		kbuf.buffer = fdt;
-   132		kbuf.bufsz = kbuf.memsz = fdt_totalsize(fdt);
-   133		kbuf.buf_align = PAGE_SIZE;
-   134		kbuf.top_down = true;
-   135		kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
-   136		ret = kexec_add_buffer(&kbuf);
-   137		if (ret)
-   138			goto out_free_fdt;
-   139	
-   140		/* FDT will be freed in arch_kimage_file_post_load_cleanup */
-   141		image->arch.fdt = fdt;
-   142	
-   143		fdt_load_addr = kbuf.mem;
-   144	
-   145		kexec_dprintk("Loaded device tree at 0x%lx\n", fdt_load_addr);
-   146	
-   147		slave_code = elf_info.buffer + elf_info.proghdrs[0].p_offset;
-   148		ret = setup_purgatory_ppc64(image, slave_code, fdt, kernel_load_addr,
-   149					    fdt_load_addr);
-   150		if (ret)
-   151			pr_err("Error setting up the purgatory.\n");
-   152	
-   153		goto out;
-   154	
-   155	out_free_fdt:
-   156		kvfree(fdt);
-   157	out:
-   158		kfree(rmem);
-   159		kfree(modified_cmdline);
-   160		kexec_free_elf_info(&elf_info);
-   161	
-   162		return ret ? ERR_PTR(ret) : NULL;
-   163	}
-   164	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+We could, but not without helpers similar to folio_pfn() and
+folio_mk_pte(). I hadn't added those in this patchset since my primary
+goal right now is to ensure all the allocation/free sites are using the
+proper apis.
 
