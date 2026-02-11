@@ -4,97 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE76AEB5961
-	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 05:20:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E0EFEB5969
+	for <linux-mm@archiver.kernel.org>; Wed, 11 Feb 2026 06:04:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 995296B0005; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
+	id E59796B0005; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9430C6B0089; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
+	id E078F6B0089; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 84F1C6B008A; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
+	id D09D56B008A; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 720796B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 00:20:16 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id BDEC26B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 01:04:23 -0500 (EST)
 Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C45A488B2D
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:20:15 +0000 (UTC)
-X-FDA: 84431024790.19.ECC7D40
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5D18C139F16
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 06:04:23 +0000 (UTC)
+X-FDA: 84431136006.19.E9C41F8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 18182160002
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 05:20:13 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rryqsuCk;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id ACC5520005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 06:04:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xu5Mobm0;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770787214;
+	s=arc-20220608; t=1770789861;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tSRn7LYq7bnXwyk5PY05gVUZNySxO94RBH5QOr3ID8A=;
-	b=GBRC1ZcaaHf1bSr9CG+EZ1Ma1CfJmjNC0G91lkOaNmfCiWqZDaErF/3tgKOBPxnFdm49AJ
-	fkzbq0y4JR94iswCcnpYSdC14T4orByFHxHqk+l0afgv8MdIf2WMLIz8GHNYYXMRnaX4hL
-	VqG0a4ZZZVw8CwDwukLbOa0BXwV+PlA=
+	bh=M2QJeawPBO58Ez7fEeRAJa3KHsKkABAUpuXTFFFJztI=;
+	b=denuLLQsHa9GLrm42xl05uejmcHzj6M7VI1VJzvSvquH5TDo7wu45O72coJU5ev9MPmw9i
+	dEkm3hGig7SNLLYbfX2DhWpKlkMYfWkjMe/CBTTDhuvoDsoIH0mjlAZhYkG9TCNBMf3ire
+	e2/rO6uRtutpqnojsCuC2g3M2nnr9hY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rryqsuCk;
-	spf=pass (imf08.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Xu5Mobm0;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770787214; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770789861; a=rsa-sha256;
 	cv=none;
-	b=OzMQWWfAeqEzobka/voTmGYfqYjDkOe1byQKk09Dt6oBLx2311EO7D7RlljVHe6SJjiWH/
-	oCS6NvEthSfbfJk9rGSREXtS4Yr4avvbu9XFBR2ihbez9EobdJOsPn6mw/f4AG8AMhk53K
-	l6iy4yIT1BHKGY4xXMtd8Q9sFhq7KJg=
+	b=I2eXobHFapqEVmIByaLQGEJvhsiYvGTPDAt7rgtdnbhl2Vr9CKgKx4uPTSnzatHWbUohi8
+	pSIxfYAW8YH/S1pAYIVOEDz3wOi89Wu64sZDjuTpMGr4fiYfJ8R9CYk3ztgmotd2ySioGX
+	1PEk/D2WIWyw4ztOHW7L4/MVUcVTWFg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D3A7444021;
-	Wed, 11 Feb 2026 05:20:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B7DC2BC86;
-	Wed, 11 Feb 2026 05:20:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B864F41744;
+	Wed, 11 Feb 2026 06:04:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB967C4CEF7;
+	Wed, 11 Feb 2026 06:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770787212;
-	bh=JplVZb2hPJHGSjo9zbzDnnP9KpCnKpC4XDGriMrERSk=;
+	s=k20201202; t=1770789860;
+	bh=1ba4HtqH6wJILWm4/0xJUBvvlpODk4MGkINVKN5zbxU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rryqsuCksMEbOdlKRVbg+eh4HniIZ1p2H1OAHKFYoFwi6Dhath1jM4TzxA5MxJ7PG
-	 Hd6NvDYyLj2GjfwwO1RImnzuOelyqrU9cVCBc8y43yOXLKIDyqBVaH/+fpdstQnAB5
-	 CAb5KMUBg67nK6F4Cl4eUmVc1ZSY7GLZ/xKDgtT5Ba033+n+cbz6mXWk16V0H0VVyl
-	 D4SAO2XQuJifB6meAc9Pb1S7vJjkel9trgam1Ez8WSiswVP6H6Qrus7cgNWwm5PCvF
-	 968eoRB6w+efBf8INuez7sPsUhWmTcoHd9Y+lx9uxolKgcTtInEzUghK4Qnp8LZUyT
-	 qFnR1MShovlyA==
-Date: Wed, 11 Feb 2026 07:20:02 +0200
+	b=Xu5Mobm0F8wyhieAmIGzh63x8lptqVNcvo43aLWfKj6Tzv+Zl/kKchoY9ZdsHpeY9
+	 7VY7AX4De2TIfQU33FMKPr6fbkei4k9WsONs2oo7VhZtr3CQp7M+FrWIMR0CcEV2Bw
+	 idpILaIQ8PtxB+tqtiZhDkYCY0OamXU/ZQC6DQvOWE0CgBDJ4sBAW/xcziwr/oevAp
+	 ATuo35V/KFJp1kLKUH/ym/DEQd7QymS16+vW/OsOhdX9h0EfVKeWyVrw07I45sDb7d
+	 0FXA6azSR3Rqcixdu+T53iaoPlH+4auPPf+s5B2tud/yLWQPikgXkLOxXx/3AwixPf
+	 Fpqc4cdK//yzQ==
+Date: Wed, 11 Feb 2026 08:04:09 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: linux-mm@kvack.org, Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
-Subject: Re: [PATCH] mm: Fix memblock_free_late() when using deferred struct
- page
-Message-ID: <aYwRgvjvAgKhNsTq@kernel.org>
-References: <279931074239b7f3812c4cb3969f887303c8cc26.camel@kernel.crashing.org>
- <aYL3zxuTLT8N7C8-@kernel.org>
- <c3769af482913dd7ee9d5302c8afa990255691a5.camel@kernel.crashing.org>
- <aYXDeN0WGQG8-cxe@kernel.org>
- <bf0231accb89709968efb4d8e1be9970aeb716f8.camel@kernel.crashing.org>
- <e5d5a1105d90ee1e7fe7eafaed2ed03bbad0c46b.camel@kernel.crashing.org>
- <5a44609fe992624573a3ca0a293888bd623e2a06.camel@kernel.crashing.org>
- <0344bfbeb017cafc0f7bd4433eeacd9bc802d9c9.camel@kernel.crashing.org>
- <aYtBctm4TlHGnzXV@kernel.org>
- <684d84272e7dcd2ead0770843a7e0afc625c87c9.camel@kernel.crashing.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Hugh Dickins <hughd@google.com>,
+	James Houghton <jthoughton@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 00/17] mm, kvm: allow uffd suppot in guest_memfd
+Message-ID: <aYwb2XgRiFayzBXS@kernel.org>
+References: <20260127192936.1250096-1-rppt@kernel.org>
+ <aYJg5lT9MG0BQFkG@x1.local>
+ <0032ac8b-06ba-4f4b-ad66-f0195eea1c15@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <684d84272e7dcd2ead0770843a7e0afc625c87c9.camel@kernel.crashing.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 18182160002
-X-Stat-Signature: msronky97hoykgd4mjwopcybxeh5i9wq
+In-Reply-To: <0032ac8b-06ba-4f4b-ad66-f0195eea1c15@kernel.org>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: ACC5520005
+X-Stat-Signature: ssrrimm641b339x35m6tco5u7xt79s74
 X-Rspam-User: 
-X-HE-Tag: 1770787213-766316
-X-HE-Meta: U2FsdGVkX1/F2p5opBEvZMue6HVasDfGmFnX9a7GsYJWdU718cA7owVr0saqk8hhcRNTVcMn81SJIrlZbbvUiJphRjJZhIklRPcmAajr+QcXDHLSsavvcyRwvGezuW+vA4R3xTjgICbSaBd8fffTuEUitdNXRf4z4rg8sGMmXX3sd9hpaNL85ZWdBmQmFYrieqx9nwVhQ3fnIcYbdu7lFnx4ZOFvIvlFpEc3TiEHvTtq38rvssDeHUNruZ15BQlaV2p9bj9j2eyB3Im8p0ggjMueJpp+2jGj3iQE47t10+TFSJYfA2AOvCaWLG2EPK55Nva0TZw1fgq5T87HSqXmxnKcV0aM0JT3FqU/mMaM+0JhMtkxXBgWEi6zUvOvK9zxvVFYWijEM1PSZH9BpfGWtxdyZC2hnM4Lt4jViNkeLWQ+oN8rx4imBggqF1AL+LRZoCFbB6vL9Edpr9G1Qa8otkXmPo7nebZBqaEd8ECscKrM5szuDW0Q7hGAlSHrefxQNC09Spg/XcAUI0uUiXEJgcq0kIBeFz+yIxQsh+FlUw8YdGNNpXL29UBDQJ/ju2O4gesSukivO3ZRr84mMMR6RUSs0dP6xxr6erHCTbJuiNqqp+Fp2ZF/252LgyLYxNX148VsAiQzYUXkG0Jan2zhzbI+9qucnYt1Im3DEEFs+edFpdcUnvBaS3BQX/PJ6toDlHEn4KKfqCzMj4pznf2rtnx93IAb0mkhe9dQrn4sCAEtKFi760jY8RRPHHpE104eZiVZjl4F4SPBMsKbcqhjdjA/3WjcXoHK/+j+dGHI8QLf0VnwvuQftzQcTn0AIulL7ntwedXyyuegKQKG9moy6ZR/eqH8Ogww4bGd0HXXdhmLYAoxUmxtUIMWkrpp4dnZRPoTLflM7C+MBAJ7ngZTcTL9CFZPcW5hz3ITUZt9cR8dPLLYWHBBItnD9lDwVr0CoO6cb6Wzj/5HrEmQPU5
- hCgZMw3i
- Y4Lu7Cr9nHEVL2UbUpBzvaVhAlwoMsGW+9vNIJLgQZaR5+0kk9cfnCH5Vk3Jrr3R3QkSbq8OATUXKjF4HZBM0ssl9JcM3t3Vy8bJv0GxjlXRyxWGOM5O/S76kTlkhat1N00nvt2ic7JXmuQDUR3KOpFAl2vZVokuhDn1Z2hw5qSFmzf0Ya626EQ5PsTcGvJoRLaDY8iF0qrDUpJ6vWmtBxjOTobcCM6Usqp6ZNGG30bvOkx6KNa6DesHkk9YrNz5Qs82vkYQXXhgNMkqEuQlXsoEyNJWn7vkZz+AF/f5cHWvgQKD9awkYcNeCK4YPjYzfv2uQ
+X-HE-Tag: 1770789861-85182
+X-HE-Meta: U2FsdGVkX1+oBQZ7x4oS0T1DGxJj3rUedN4Hiv0npCQsN9Q0cSuTqwdXouM/u5hsgvNTZNurBCWZfw0yI3Aq+T2pcFehTUUF26bmNgaqsuKx84BrTpiy2RFVV+IqrZTHyOgP+2Xitk0ZDZYEBK2SpGVsLHakiFg67tTQlinWQBRkXyKL326fp3bpmJifXm0c8Aqb7CCSy6MzR1w3kCGB9hRiD6AgACZko0VWGL50gAbV65wdBrpOHdKhuwRY03LHv7+S3nPkq9Onlthmo00Sar8QLMO4dXDd/o13vVFkkMGOL/DS3Yf6+01OYbaGT81sDHv7AH1ucQu+ryrIfs44/nxgd86WtaujYS6Pd6jK7ePuAbAsXsDYxGeLn2sGmytkHI1YBMkKqbRwUbZtmZYmT8gcy8j2d0gPJ+jtTJ3kLHxulf/IY5s7a6j1hyrChVoL4H8f6U44k0RtQJg+qIAyUMpGqLKCq7oo+2He7vFPX3fCg7wTb+wpplekM5uZqG3vE/GuyhOkIIC9wtQkutKAtvQjSKaXv4lzzMdA+ot+ZLZRrYQTR761Rikqc+SwCYYmWSLJostVB8lHAxuTyoWNvr60ATD2QBC7xaJAfzz8UgSFdl57YvohTiUS3f6N1VnKdGcxt5QksgVB+6QMX6Hyqnc+KVctZYmQWcgwqC6ubACexUcOYYLpGZNBCn8jhy+u8W2NCT8pTz4aOWwguGO9iKtt0DFdncBfS4nxs3zVXBwtTsQyOu5ve4DlE3s2blJBRqn9GXLSID6Cwdi6dRQd3lJu8FgwzXstiOCFDxc4/WYkoDVxX6Gt7nfJQabyecmKd4rJPvoidzaCaBPqhIQ35rmfCS+bg1+zM5RlVikAEAoe8rk6pzgEmYMxYbxF+qf3w0+xoE6f/nO9XneAJ1MEdLTf9KY1FYrIC57bO/3mRg20DEp5WO2srVtoqXOFik/InoWA3KK7sFvQ5Pk9cHj
+ yk2vXftK
+ hbKvHorQ+/2fn1ttugQAgpjYsD3lFcDnWi9/hlvjzgxWmKG4kJooQmbmm3JV6pWDhqlRrIS+Eog/8kgeJ2dvmz3QoS8C1oXacsFN5MrC7+2+JWTvQmZYL2esD47u1VwYmOe6x07QrX/hTxR62nCafr+UazUG/gDJ000JnZo98mI2FmtGS82m8JfPVbF7vKCU9QKw7Z6jGW1M1v+7RjG/4aAva9rn7SLJ/7NM4TL9SztGGgwluRmTCNBpc1ct8zMjvov1rxIeA5eyp+L5RB+Pk/P3hhH7Dq6UZ6ZvzGDn16XXkRFA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,43 +109,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 10:23:06AM +1100, Benjamin Herrenschmidt wrote:
-> On Tue, 2026-02-10 at 16:32 +0200, Mike Rapoport wrote:
-> > Hi Ben,
-> > 
-> > On Tue, Feb 10, 2026 at 07:34:15PM +1100, Benjamin Herrenschmidt wrote:
-> > > On Tue, 2026-02-10 at 17:17 +1100, Benjamin Herrenschmidt wrote:
-> > > > 
-> > > > So ... that was a backport to 6.12.68 and my original patch is
-> > > > crashing
-> > > > the same way ! (it was working last week interestingly enough,
-> > > > something else got backported that gets in the way maybe ?).
-> > > > 
-> > > > I'm going to have to go back to digging :-(
-> > > > 
-> > > > I suspect the pages aren't reserved. I swear this was working :-)
-> > > 
-> > > So I rebuilt with a bit of extra debug prints, CONFIG_DEBUG_VM on, and
-> > > memblock=debug ... it's not hitting the reserved check, but it's also
-> > > not crashing the same way (still 6.12, I'll play with upstream again
-> > > later):
-> > > 
-> > >   .../...
-> > 
-> > Do you mind sending the entire log?
+On Mon, Feb 09, 2026 at 04:35:47PM +0100, David Hildenbrand (Arm) wrote:
+> On 2/3/26 21:56, Peter Xu wrote:
+>
+> > +static vm_fault_t fault_process_userfaultfd(struct vm_fault *vmf)
+> > +{
+> > +	struct vm_area_struct *vma = vmf->vma;
+> > +	struct inode *inode = file_inode(vma->vm_file);
+> > +	/*
+> > +	 * NOTE: we could double check this hook present when
+> > +	 * UFFDIO_REGISTER on MISSING or MINOR for a file driver.
+> > +	 */
+> > +	struct folio *folio =
+> > +	    vma->vm_ops->uffd_ops->get_folio_noalloc(inode, vmf->pgoff);
+> > +
+> > +	if (!IS_ERR_OR_NULL(folio)) {
+> > +		/*
+> > +		 * TODO: provide a flag for get_folio_noalloc() to avoid
+> > +		 * locking (or even the extra reference?)
+> > +		 */
+> > +		folio_unlock(folio);
+> > +		folio_put(folio);
+> > +		if (userfaultfd_minor(vma))
+> > +			return handle_userfault(vmf, VM_UFFD_MINOR);
+> > +	} else {
+> > +		return handle_userfault(vmf, VM_UFFD_MISSING);
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >   /*
+> >    * The mmap_lock must have been held on entry, and may have been
+> >    * released depending on flags and vma->vm_ops->fault() return value.
+> > @@ -5370,16 +5397,20 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
+> >   			return VM_FAULT_OOM;
+> >   	}
+> > +	/*
+> > +	 * If this is an userfaultfd trap, process it in advance before
+> > +	 * triggering the genuine fault handler.
+> > +	 */
+> > +	if (userfaultfd_missing(vma) || userfaultfd_minor(vma)) {
+> > +		ret = fault_process_userfaultfd(vmf);
+> > +		if (ret)
+> > +			return ret;
+> > +	}
+
+I agree this is neater than handling VM_FAULT_UFFD.
+I'd just move the checks for userfaultfd_minor() and userfaultfd_missing()
+inside fault_process_userfaultfd().
+
+> > +
+> >   	ret = vma->vm_ops->fault(vmf);
+> >   	if (unlikely(ret & (VM_FAULT_ERROR | VM_FAULT_NOPAGE | VM_FAULT_RETRY |
+> > -			    VM_FAULT_DONE_COW | VM_FAULT_UFFD_MINOR |
+> > -			    VM_FAULT_UFFD_MISSING))) {
+> > -		if (ret & VM_FAULT_UFFD_MINOR)
+> > -			return handle_userfault(vmf, VM_UFFD_MINOR);
+> > -		if (ret & VM_FAULT_UFFD_MISSING)
+> > -			return handle_userfault(vmf, VM_UFFD_MISSING);
+> > +			    VM_FAULT_DONE_COW)))
+> >   		return ret;
+> > -	}
+> >   	folio = page_folio(vmf->page);
+> >   	if (unlikely(PageHWPoison(vmf->page))) {
+> > diff --git a/mm/shmem.c b/mm/shmem.c
+> > index eafd7986fc2ec..5286f28b3e443 100644
+> > --- a/mm/shmem.c
+> > +++ b/mm/shmem.c
+> > @@ -2484,13 +2484,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+> >   	fault_mm = vma ? vma->vm_mm : NULL;
+> >   	folio = filemap_get_entry(inode->i_mapping, index);
+> > -	if (folio && vma && userfaultfd_minor(vma)) {
+> > -		if (!xa_is_value(folio))
+> > -			folio_put(folio);
+> > -		*fault_type = VM_FAULT_UFFD_MINOR;
+> > -		return 0;
+> > -	}
+> > -
+> >   	if (xa_is_value(folio)) {
+> >   		error = shmem_swapin_folio(inode, index, &folio,
+> >   					   sgp, gfp, vma, fault_type);
+> > @@ -2535,11 +2528,6 @@ static int shmem_get_folio_gfp(struct inode *inode, pgoff_t index,
+> >   	 * Fast cache lookup and swap lookup did not find it: allocate.
+> >   	 */
+> > -	if (vma && userfaultfd_missing(vma)) {
+> > -		*fault_type = VM_FAULT_UFFD_MISSING;
+> > -		return 0;
+> > -	}
+> > -
+> >   	/* Find hugepage orders that are allowed for anonymous shmem and tmpfs. */
+> >   	orders = shmem_allowable_huge_orders(inode, vma, index, write_end, false);
+> >   	if (orders > 0) {
+> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> > index 14cca057fc0ec..bd0de685f42f8 100644
+> > --- a/virt/kvm/guest_memfd.c
+> > +++ b/virt/kvm/guest_memfd.c
+> > @@ -421,26 +421,6 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+> >   	folio = __filemap_get_folio(inode->i_mapping, vmf->pgoff,
+> >   				    FGP_LOCK | FGP_ACCESSED, 0);
+> > -	if (userfaultfd_armed(vmf->vma)) {
+> > -		/*
+> > -		 * If userfaultfd is registered in minor mode and a folio
+> > -		 * exists, return VM_FAULT_UFFD_MINOR to trigger the
+> > -		 * userfaultfd handler.
+> > -		 */
+> > -		if (userfaultfd_minor(vmf->vma) && !IS_ERR_OR_NULL(folio)) {
+> > -			ret = VM_FAULT_UFFD_MINOR;
+> > -			goto out_folio;
+> > -		}
+> > -
+> > -		/*
+> > -		 * Check if userfaultfd is registered in missing mode. If so,
+> > -		 * check if a folio exists in the page cache. If not, return
+> > -		 * VM_FAULT_UFFD_MISSING to trigger the userfaultfd handler.
+> > -		 */
+> > -		if (userfaultfd_missing(vmf->vma) && IS_ERR_OR_NULL(folio))
+> > -			return VM_FAULT_UFFD_MISSING;
+> > -	}
+> > -
+> >   	/* folio not in the pagecache, try to allocate */
+> >   	if (IS_ERR(folio))
+> >   		folio = __kvm_gmem_folio_alloc(inode, vmf->pgoff);
 > 
-> I misplaced it, but give me a few days to dig see if I can find what's going on.
+> That looks better in general. We should likely find a better/more consistent
+> name for fault_process_userfaultfd().
 
-A log from any nano instance even without debug would be helpful. I'd like
-to see what e820 table it has.
-
-There always been some gap between e820 and memblock because historically
-e820 does not consider some of the reserved memory as memory. 
-If large enough parts of the boot services memory are E820_TYPE_RESERVED,
-there might be no memory map for them at all.
+__do_userfault()? :)
  
-> Cheers
-> Ben.
+> -- 
+> Cheers,
+> 
+> David
 
 -- 
 Sincerely yours,
