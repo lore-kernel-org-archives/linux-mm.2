@@ -4,165 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8D08EE3698
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:55:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76734EE369D
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 16:03:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 296F86B0088; Thu, 12 Feb 2026 10:55:45 -0500 (EST)
+	id B6FC76B0005; Thu, 12 Feb 2026 11:03:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 244306B0089; Thu, 12 Feb 2026 10:55:45 -0500 (EST)
+	id AFD1F6B0088; Thu, 12 Feb 2026 11:03:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1192E6B008A; Thu, 12 Feb 2026 10:55:45 -0500 (EST)
+	id A29306B008A; Thu, 12 Feb 2026 11:03:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F25946B0088
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:55:44 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8B94E1601D4
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:55:44 +0000 (UTC)
-X-FDA: 84436255008.06.09A8C7B
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AACAEC000C
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:55:42 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=J5hRBPsT;
-	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 902136B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 11:03:32 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 26FFE1B37F4
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 16:03:32 +0000 (UTC)
+X-FDA: 84436274664.02.8841AE9
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 413BE40013
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 16:03:29 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XIM+yHLJ;
+	spf=pass (imf17.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770911742;
+	s=arc-20220608; t=1770912210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=80BMXqYZnRP+l4Whym0ERcqzOxVWFsGz4LdhGlNuIrs=;
-	b=bl23Uso8hwhJDX0n0fBzlbZ0390Kd3JTnvgtqwpouxwYBaOhqjjAw5PGUm+O/r4gp/Be5X
-	9FfDniJlHKXNFZWsC02gEgTb2jbrXPvthxmGRRar1qJqcnKRof3RF6Q++tYtUcYVjOAn9+
-	IoyL7mDmJjuHgWQhLQjkmi9t9Ht/u4U=
+	bh=dfB8sYnqeXbZ8+ffK0AiALU2iMNWAjVfv8J2wFjT0wA=;
+	b=bXzZph0cPeBHsz4NXW/QRKDSOiqHZdllqrYywPTucn3skic5n3HM4lQVP4KwmUSFAD1jA2
+	Er5A1v7W8bq6ciiPX8vIg9g/jtAgq/fySwaJRVLzQm+TY8GAcGPxS2/ijqpNXyAAAh7UyC
+	JBMbtkB+Mvn+7/Pja0NVgl9UOJl2BaE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=J5hRBPsT;
-	spf=pass (imf22.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.210.42 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770911742; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=XIM+yHLJ;
+	spf=pass (imf17.hostedemail.com: domain of dave.jiang@intel.com designates 192.198.163.9 as permitted sender) smtp.mailfrom=dave.jiang@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770912210; a=rsa-sha256;
 	cv=none;
-	b=qS6W3PG5divIdCpEER8SNVMxcqiCJrgQAR1bv2KN9WFTzjhc1bRLyX3+fUclNGs7NwKjmL
-	fogYjr9LAVUJfPGGS12a4ZbhZoFmqolBFrAh86THtw7ScS7T1IeDRNQDPAqI8m/LN7COcq
-	ZoX3VYQTwb8yKUELjk7Wl16ZuMcy2Bo=
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7d4be94eeacso130846a34.2
-        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:55:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770911741; x=1771516541; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=80BMXqYZnRP+l4Whym0ERcqzOxVWFsGz4LdhGlNuIrs=;
-        b=J5hRBPsTt42KusXjjjDSWJHAa2YFjA4Lq2rt4zkIzEJlIhifLq1KNb8zFG5qZl9sak
-         gbD7g4y+XiFoUpGCUJ4MMJj3sBAi3JlRvQjJxdzFki6sLbIhmsSLiRoEtIdCivfN+h/Q
-         ah3X4jh8aZNn9Ltd+vbuoEe4piI5yokZbjLlfEMgT2WfJl0m5lcJOxMwPU65w/Ug9CL4
-         ffBWJrkWr08VLFXSCojrYjRhmS2m6mQL0AflrLILLUUaXWyIE/LoShKKqk3nOqjgNLak
-         jDtPj2R6GRr8f0N/9xPvdQSo0UvCdnU1etuVQNRl5Nr2pTwwTPLCGCbJc1qW8JXgOlRR
-         DiQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770911741; x=1771516541;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=80BMXqYZnRP+l4Whym0ERcqzOxVWFsGz4LdhGlNuIrs=;
-        b=Pv/IM8w9d0gqr6Gd88SAP440x/kQ6JExN+PbEwlaENLybQHACPe1mx9x10KPCHO5wa
-         GOoF1eIlAIdd1HZr+00oCsXSfSj+ZaYGTfGDBY2/uTSB9Es4b5idHZzNTbOC0toRFTdp
-         xVyyCis7759S6F3mT05h7LfFklHiZZ/kKxQaQil4ITy69WDeo/rlrWdrKOh5OUY+eaYB
-         liWY3wxcuO5mdiuSNSKoEtJw97ERs0ijeOWk/lpDJUS36+HEJJZs8KAjnGJD5905Vald
-         4XNCbC0sFMJKkeexjhbj9I+7wmeYiDGrXVojcybh4/xG3MMAjlFU+6M1fpXGnw9DL2Xm
-         17EA==
-X-Forwarded-Encrypted: i=1; AJvYcCUZhXpiAgZmakLeyFrPMAzPp1EW7LnLL0hXp3s+7EjXL9i/FYofKUQyV1F6S8wlCsyrJhOlMjQZlQ==@kvack.org
-X-Gm-Message-State: AOJu0YzJh19SAnDplPB6b/WfbFnUThsK4w03sMR+asM653WSxrNEjnl/
-	JI4FtJkefwOLKyfD1KwRa9Z9aCMNa+17IhIqJcW+Uh5sl+i+V1Z+a/iF
-X-Gm-Gg: AZuq6aIleTX+H/e8OqPB4PA9iKQcvEnwUCc/6z4dzAHyf9oI/IwF/D6WUqkkwDhjv7+
-	53j80dlNf8It1WWAr0lWeFE3WDBIdymbwvVaBJCdzBPQsFdct9L01DNHQsxXiuv5g8aVY8SWKWG
-	jCZwUWq+C7hRS3PDJugRRNNtUgRSr16QiBMdgr9nbQ7b3uEi1VnUmcNkZG7tGzPPDpgxD839Bx2
-	wDItXocWrAk2qZH83sfsKfGjR9Eq1hL8v4/rFd73s96nMYjHD9dZT7uxIJIWLvL9I+mzdGBJ/Sj
-	0NrqOh+JN9PPivag8CpzBNnYyjbyAYGhAwJYN8EWqkZRJRmuU31UVOR945VsdCM++R/gtGpqeTV
-	OU56+Lb5TxWO7tT1xDPG+w5rg1BJ6GnRPbAI+fPkurH6Dq5iGb38bncKc+SWaXiQum+J4qr5th+
-	JlIGMNHKALSo33IbXPt+korZvLyVV5Qtfz
-X-Received: by 2002:a05:6830:470a:b0:7c7:2c63:f2d6 with SMTP id 46e09a7af769-7d4b3fd76d9mr1758721a34.11.1770911741509;
-        Thu, 12 Feb 2026 07:55:41 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:53::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d4a7547bfbsm4001881a34.8.2026.02.12.07.55.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 07:55:40 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	anshuman.khandual@arm.com,
-	apopple@nvidia.com,
-	baohua@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	byungchul@sk.com,
-	catalin.marinas@arm.com,
-	cl@gentwo.org,
-	corbet@lwn.net,
-	dave.hansen@linux.intel.com,
-	david@kernel.org,
-	dev.jain@arm.com,
-	gourry@gourry.net,
-	hannes@cmpxchg.org,
-	hughd@google.com,
-	jackmanb@google.com,
-	jack@suse.cz,
-	jannh@google.com,
-	jglisse@google.com,
-	joshua.hahnjy@gmail.com,
-	kas@kernel.org,
-	lance.yang@linux.dev,
-	Liam.Howlett@oracle.com,
-	lorenzo.stoakes@oracle.com,
-	mathieu.desnoyers@efficios.com,
-	matthew.brost@intel.com,
-	mhiramat@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	pfalcato@suse.de,
-	rakie.kim@sk.com,
-	raquini@redhat.com,
-	rdunlap@infradead.org,
-	richard.weiyang@gmail.com,
-	rientjes@google.com,
-	rostedt@goodmis.org,
-	rppt@kernel.org,
-	ryan.roberts@arm.com,
-	shivankg@amd.com,
-	sunnanyong@huawei.com,
-	surenb@google.com,
-	thomas.hellstrom@linux.intel.com,
-	tiwai@suse.de,
-	usamaarif642@gmail.com,
-	vbabka@suse.cz,
-	vishal.moola@gmail.com,
-	wangkefeng.wang@huawei.com,
-	will@kernel.org,
-	willy@infradead.org,
-	yang@os.amperecomputing.com,
-	ying.huang@linux.alibaba.com,
-	ziy@nvidia.com,
-	zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v1 1/5] mm: consolidate anonymous folio PTE mapping into helpers
-Date: Thu, 12 Feb 2026 07:55:38 -0800
-Message-ID: <20260212155539.2083102-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260212021835.17755-2-npache@redhat.com>
-References: 
+	b=tC8e/YCvYQuvgnYB9F9pbBCfee1AOqk4/zMFJaD0FJitunmzOQgqyvWNrGYX7rPRXp7Cdm
+	y/uJTDnowh1plSv4RdC+zFhqE1J4ZHiAhR36WFO1nFeQoE9jy2rOXtmOjuOrgcRL/rmjZu
+	3dk9durcb8wEC3GTaZdSEsS5owubqVw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770912209; x=1802448209;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4fNG3CvKr4wbi0rfYGfQ4Cqr/mMgMiKPkb2OL6y6uAM=;
+  b=XIM+yHLJOW28/mCfelHyIoHiVw1B6hzQcZvSadiolgn60mIpFkcTcbx9
+   in2X+1AuMiyCZW8m2SYUBXx1ycUqdSSS2nmEQJQ7M2cL8kRm2r4Pxd8tr
+   yUpjt6m4N4Z8LkkRiqQSg28VI4ED+EzHkIuMoVzkfX1eXe4Scf2F3tyl1
+   PnXM40eoQ14EXGZ1TQZSe9WX+EjQChaoZi+048Xu3a2upLZ37COKFHW/O
+   5weQPvdZpERVssNBXBqBAlyR+tttUbZAskSyqK+RLTvujYt4FEqDKUfxT
+   0eUBoxM5Kvd4MmhI032cZ4LA6yAvLLYgwpkQehV3pXIIXXHg65Xn3Wdyj
+   w==;
+X-CSE-ConnectionGUID: MXhEEAFyTlyf3aJEnGoa7Q==
+X-CSE-MsgGUID: b0KSxgIUTlKdwSrqHiToIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="82813826"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="82813826"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 08:03:28 -0800
+X-CSE-ConnectionGUID: dnElJ8ayQoicUF6JOOrR1w==
+X-CSE-MsgGUID: IpkXjC5sRe6ez8ntWDGTVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="217167749"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.108.204]) ([10.125.108.204])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 08:03:27 -0800
+Message-ID: <82bf721a-6e22-4e73-ad19-7a4744f9d145@intel.com>
+Date: Thu, 12 Feb 2026 09:03:25 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: ywp5ytb7e75oui1i4ysbhdthg1fsmiz8
-X-Rspamd-Queue-Id: AACAEC000C
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: name the anonymous MMOP enum as enum mmop
+To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
+Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com, david@kernel.org, osalvador@suse.de,
+ gregkh@linuxfoundation.org, rafael@kernel.org, dakr@kernel.org,
+ akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, Jonathan Cameron <jonathan.cameron@huawei.com>
+References: <20260211215447.2194189-1-gourry@gourry.net>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <20260211215447.2194189-1-gourry@gourry.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 413BE40013
+X-Stat-Signature: guegx94zste5dos9axoy8qs9sacd5p9q
 X-Rspam-User: 
-X-HE-Tag: 1770911742-105085
-X-HE-Meta: U2FsdGVkX181bgt5i/QjFDBi+7z7g9OW7lyEe7ubHftX6Ih/HwNQv85BAtbtq5/YxknzQBsEwWs3zHtsLmYJRxxkhaRqmydOmar/Ko/WfiEcDo58X9Q+QUiuUvQ0kJ0hMXlWrf21gMXAHAOY8TV6lrkLhnA0mnZN6QPYdK3PQsCjDkfPXuohLISZVNA2gnsRS2j6hNICi/1FY9D9tHuZmAObngApcdGpJM6tTrVTPEhuC93T8KJZzggU2GKQd5hsfA/w1lQFwbjT2kYV0TDIgYeT3z0roSI5H0N48ADmFhKqJppPYVnmwPNZNH3b0eaDUhjDihw+o1X1xDnWO5xtbnj+9UD3icHCQq0MexLvtZKUXgVT6Dujrff026Jk7qd3kuH5wsYrFUvZnxEKT5862GE6b8uPtT1d75dvhKzrYJe8+5MZFFYO2e7YHV+8LBcLgYdnLtUGNNWxpb56kyDJr6yPDtoEUd/+TMLemjildhMi5CLDcSh5UneVnx2GQWrHiYBgqkmI4fGUgdn54IlgBY1Ug5iF6Al0BbUAc5wUVmY/wqOTm3kkj/8UkC3EKRK86Udf1+QY45T/vgDm9S7+MNxKIFJX27a2c2z8jb3MhN4B+MGOnib/vfz/WzqM0pdBzIz8JbjF7mWIPRKM3XuB6o/DRy/Pp5j74BaDwo58Ez22Y25isqJ6ffYhjRt8WdiOZmOAym7JMVQcv4Txu8ZiAfBgr1A2e/RgHWrOU6m8j33jFVuq/PcBWEGCU7pKU86DT6zjClbblQpSjgmLB5/KD43HziY2ezKPNNhvINWRz5PFTJ1fefLtcbVkMwkxAYQ9F0a6+bODByK3rPpGAcYmOmY3KaNT4qknSLm0G9BMSOQB4roc2b29u2vQjQznNhkaMCRr2to8kxgXAV3UzW+j7OXdpvXx5IFNzE0LpJMJi7MaX/ampeOmkwwrZkJt0eAXPzIUCd5B7UgJ9uXuVrW
- 7RNEnRz+
- dUvSirdpIo6/0cCUm3OTeZa+nwVXzQr0VcjoM2hu9m2pFtWcCyjxCkVhIfHZe0QWw5Pq6mJ83gQt249VjkDwHbLfSkcNE5kHcIFBMMb4lQxpvD8cVpkMdcnx0Gn22Lj2BcTiZIZJQsZRIyc0glpthdKl34/kojbgzf0PgQ4B//2usxLU6gLD303Nw+C8wP+dMQUVQvscl73xUPocsoD+28wZ/rW4JlDT8Up1VuVpQitEzqQioLO8I42+wwIIpuwW9flCuv7uVTknFW/1AI1DYQ8TgQ3PgOG+0NUsOZsijWp08PUKHUD5k5TXnt5WRGc2pmVUJY6JAxbF7QKNS03x3sBBUXmGixiuiScd0CEZZb/+6ei2Znca4w3qhpmEttfCFxgkLf8djaswUt8xzWz1VTZCldCngXqu6OeOW7EoDH4Q08LCyTKFThpylXpPjWlql1ndv8v8BAn2wkDgblQ2qaLNtVDFpEq6o5Y2gpqziA+ca1Jn2a29tewg5MjtlzqroaIgfeweJtY07M9vx5i8D1jg8frxhp0ZmbP7MKqeGaQK8Ij+tiImNmGphAmuEkR7ufeT2+QXl9X17WP9FVCSZEJG8WD7bqj5LuUK9
+X-HE-Tag: 1770912209-158020
+X-HE-Meta: U2FsdGVkX1/2DMGb/oTTj87G0MBOxdzDZaD102ougURXi2kHzI/m2O6CKfc91Jikdot2/UAGaaXuVhbMXbal6QwQnSKPwa+e1SDHm41bC+HpcV66FiFK3gvUIfPovZqi2EscI2s29yN9QaTEfXYgmxjaA81+76IywEl20G4ocZ+0kgF5kvvPnWJnJu8OYtSvYT7iPdmipYaavI+c9DfVWXy6IiKwGf8evrI4TmDAwD5RTAql++T33kLsXDax/viOHmraGbEIGxasUupTBPCwwy6/i9PtKcCWTwhA7kpVQvwtllp04b1qJZ9nfUlsixUVsnrQV7yxqhzFbvzoMZLF0TOQl/FYD98ME0FwrFNZ1t3jHlcLmpbG6e9uUhpeK23fPwn45UXY+mDM/T5T62LNyqojACdoncqYfPNb2SNqoRUx+hVBsKFswdgshz8tfM0hx2kiOvk/7k+TSgSm+L0EGgtQKBSJ7RGMCcxMv47FR+35FKGoVv55ZC8pIbKX3RKFyQOl3MHrMuuhWHZ8F9mcD1J9uyFmC3flFjQ3VXBkNvLgYHYIvSm21/vN8UTKzgRFPzaZuwyfvb9NrJPit/vHpIxox0NdCMBgZUJ3Yi7Mk9KRs/DHXbgVhP/4ZnavwqDradtsjkyK0BRdw/uE+fpEXUS5kciCaOwQlCw8lZW8/65f+vCvpba64ddyyl1GMxE6B14OX4b0C/o0Xx5j0SpLkfHdwknkhI2lIxHzCPPAibirEVAmV8NwJz+RC3+dBEPjmZk8Bb5m5wBtE2LP2RD+rrOo0SMVct9kNIvfGjcX3LghoeAnmNZqJPVnSq8S5wq9jKuRnNFUbC3QHlUMtIz++R0BUfxgjPrQ0SJHxJiBe89Zlj8KZhtPzFIPTO6PbKHheL+/0gIWQkGc3HtyqfEB9RYxn4KuLXy8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -171,174 +108,172 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 11 Feb 2026 19:18:31 -0700 Nico Pache <npache@redhat.com> wrote:
 
-Hello Nico,
 
-Thank you for the patch! I hope you are having a good day.
+On 2/11/26 2:54 PM, Gregory Price wrote:
+> Give the MMOP enum (MMOP_OFFLINE, MMOP_ONLINE, etc) a proper type
+> name so the compiler can help catch invalid values being assigned to
+> variables of this type.
+> 
+> Leave the existing functions returning int alone to allow for
+> value-or-error pattern to remain unchanged without churn.
+> 
+> mmop_default_online_type is left as int because it uses the -1
+> sentinal value to signal it hasn't been initialized yet.
+> 
+> Keep the uint8_t buffer in offline_and_remove_memory() as-is for
+> space efficiency, with an explicit cast when we consume the value.
+> 
+> Move the enum definition before the CONFIG_MEMORY_HOTPLUG guard so
+> it is unconditionally available for struct memory_block in memory.h.
+> 
+> No functional change.
+> 
+> Link: https://lore.kernel.org/linux-mm/3424eba7-523b-4351-abd0-3a888a3e5e61@kernel.org/
+> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+> Suggested-by: "David Hildenbrand (arm)" <david@kernel.org>
+> Signed-off-by: Gregory Price <gourry@gourry.net>
 
-> The anonymous page fault handler in do_anonymous_page() open-codes the
-> sequence to map a newly allocated anonymous folio at the PTE level:
-> 	- construct the PTE entry
-> 	- add rmap
-> 	- add to LRU
-> 	- set the PTEs
-> 	- update the MMU cache.
-> 
-> Introduce a two helpers to consolidate this duplicated logic, mirroring the
-> existing map_anon_folio_pmd_nopf() pattern for PMD-level mappings:
-> 
-> 	map_anon_folio_pte_nopf(): constructs the PTE entry, takes folio
-> 	references, adds anon rmap and LRU. This function also handles the
-> 	uffd_wp that can occur in the pf variant.
-> 
-> 	map_anon_folio_pte_pf(): extends the nopf variant to handle MM_ANONPAGES
-> 	counter updates, and mTHP fault allocation statistics for the page fault
-> 	path.
-> 
-> The zero-page read path in do_anonymous_page() is also untangled from the
-> shared setpte label, since it does not allocate a folio and should not
-> share the same mapping sequence as the write path. Make nr_pages = 1
-> rather than relying on the variable. This makes it more clear that we
-> are operating on the zero page only.
-> 
-> This refactoring will also help reduce code duplication between mm/memory.c
-> and mm/khugepaged.c, and provides a clean API for PTE-level anonymous folio
-> mapping that can be reused by future callers.
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 
-It seems that based on this description, there should be no functional change
-in the code below. Is that correct?
-
-> Signed-off-by: Nico Pache <npache@redhat.com>
 > ---
->  include/linux/mm.h |  4 ++++
->  mm/memory.c        | 56 ++++++++++++++++++++++++++++++----------------
->  2 files changed, 41 insertions(+), 19 deletions(-)
+>  drivers/base/memory.c          |  2 +-
+>  include/linux/memory.h         |  3 ++-
+>  include/linux/memory_hotplug.h | 16 ++++++++--------
+>  mm/memory_hotplug.c            | 10 +++++-----
+>  4 files changed, 16 insertions(+), 15 deletions(-)
 > 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index f8a8fd47399c..c3aa1f51e020 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -4916,4 +4916,8 @@ static inline bool snapshot_page_is_faithful(const struct page_snapshot *ps)
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index 751f248ca4a8..3753ca80069d 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -452,7 +452,7 @@ static ssize_t phys_device_show(struct device *dev,
+>  static int print_allowed_zone(char *buf, int len, int nid,
+>  			      struct memory_group *group,
+>  			      unsigned long start_pfn, unsigned long nr_pages,
+> -			      int online_type, struct zone *default_zone)
+> +			      enum mmop online_type, struct zone *default_zone)
+>  {
+>  	struct zone *zone;
 >  
->  void snapshot_page(struct page_snapshot *ps, const struct page *page);
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index faeaa921e55b..5bb5599c6b2b 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -19,6 +19,7 @@
+>  #include <linux/node.h>
+>  #include <linux/compiler.h>
+>  #include <linux/mutex.h>
+> +#include <linux/memory_hotplug.h>
 >  
-> +void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
-> +		struct vm_area_struct *vma, unsigned long addr,
-> +		bool uffd_wp);
+>  #define MIN_MEMORY_BLOCK_SIZE     (1UL << SECTION_SIZE_BITS)
+>  
+> @@ -77,7 +78,7 @@ enum memory_block_state {
+>  struct memory_block {
+>  	unsigned long start_section_nr;
+>  	enum memory_block_state state;	/* serialized by the dev->lock */
+> -	int online_type;		/* for passing data to online routine */
+> +	enum mmop online_type;	/* for passing data to online routine */
+>  	int nid;			/* NID for this memory block */
+>  	/*
+>  	 * The single zone of this memory block if all PFNs of this memory block
+> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+> index f2f16cdd73ee..e77ef3d7ff73 100644
+> --- a/include/linux/memory_hotplug.h
+> +++ b/include/linux/memory_hotplug.h
+> @@ -16,11 +16,8 @@ struct resource;
+>  struct vmem_altmap;
+>  struct dev_pagemap;
+>  
+> -#ifdef CONFIG_MEMORY_HOTPLUG
+> -struct page *pfn_to_online_page(unsigned long pfn);
+> -
+>  /* Types for control the zone type of onlined and offlined memory */
+> -enum {
+> +enum mmop {
+>  	/* Offline the memory. */
+>  	MMOP_OFFLINE = 0,
+>  	/* Online the memory. Zone depends, see default_zone_for_pfn(). */
+> @@ -31,6 +28,9 @@ enum {
+>  	MMOP_ONLINE_MOVABLE,
+>  };
+>  
+> +#ifdef CONFIG_MEMORY_HOTPLUG
+> +struct page *pfn_to_online_page(unsigned long pfn);
 > +
->  #endif /* _LINUX_MM_H */
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 8c19af97f0a0..61c2277c9d9f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5211,6 +5211,35 @@ static struct folio *alloc_anon_folio(struct vm_fault *vmf)
->  	return folio_prealloc(vma->vm_mm, vma, vmf->address, true);
+>  /* Flags for add_memory() and friends to specify memory hotplug details. */
+>  typedef int __bitwise mhp_t;
+>  
+> @@ -286,8 +286,8 @@ static inline void __remove_memory(u64 start, u64 size) {}
+>  
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+>  /* Default online_type (MMOP_*) when new memory blocks are added. */
+> -extern int mhp_get_default_online_type(void);
+> -extern void mhp_set_default_online_type(int online_type);
+> +extern enum mmop mhp_get_default_online_type(void);
+> +extern void mhp_set_default_online_type(enum mmop online_type);
+>  extern void __ref free_area_init_core_hotplug(struct pglist_data *pgdat);
+>  extern int __add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+>  extern int add_memory(int nid, u64 start, u64 size, mhp_t mhp_flags);
+> @@ -310,8 +310,8 @@ extern void sparse_remove_section(unsigned long pfn, unsigned long nr_pages,
+>  				  struct vmem_altmap *altmap);
+>  extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
+>  					  unsigned long pnum);
+> -extern struct zone *zone_for_pfn_range(int online_type, int nid,
+> -		struct memory_group *group, unsigned long start_pfn,
+> +extern struct zone *zone_for_pfn_range(enum mmop online_type,
+> +		int nid, struct memory_group *group, unsigned long start_pfn,
+>  		unsigned long nr_pages);
+>  extern int arch_create_linear_mapping(int nid, u64 start, u64 size,
+>  				      struct mhp_params *params);
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index a63ec679d861..41f48f493b8e 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -221,7 +221,7 @@ void put_online_mems(void)
+>  bool movable_node_enabled = false;
+>  
+>  static int mhp_default_online_type = -1;
+> -int mhp_get_default_online_type(void)
+> +enum mmop mhp_get_default_online_type(void)
+>  {
+>  	if (mhp_default_online_type >= 0)
+>  		return mhp_default_online_type;
+> @@ -240,7 +240,7 @@ int mhp_get_default_online_type(void)
+>  	return mhp_default_online_type;
 >  }
 >  
-> +
-
-^^^ extra newline?
-
-> +void map_anon_folio_pte_nopf(struct folio *folio, pte_t *pte,
-> +		struct vm_area_struct *vma, unsigned long addr,
-> +		bool uffd_wp)
-> +{
-> +	pte_t entry = folio_mk_pte(folio, vma->vm_page_prot);
-> +	unsigned int nr_pages = folio_nr_pages(folio);
-
-Just reading through the code below on what was deleted and what was added,
-Maybe we are missing a pte_sw_mkyoung(entry) here? Seems like this would
-matter for MIPS systmes, but I couldn't find this change in the changelog.
-
-> +	entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-> +	if (uffd_wp)
-> +		entry = pte_mkuffd_wp(entry);
-
-The ordering here was also changed, but it wasn't immediately obvious to me
-why it was changed.
-
-> +
-> +	folio_ref_add(folio, nr_pages - 1);
-> +	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
-> +	folio_add_lru_vma(folio, vma);
-> +	set_ptes(vma->vm_mm, addr, pte, entry, nr_pages);
-> +	update_mmu_cache_range(NULL, vma, addr, pte, nr_pages);
-> +}
-> +
-> +static void map_anon_folio_pte_pf(struct folio *folio, pte_t *pte,
-> +		struct vm_area_struct *vma, unsigned long addr,
-> +		unsigned int nr_pages, bool uffd_wp)
-> +{
-> +	map_anon_folio_pte_nopf(folio, pte, vma, addr, uffd_wp);
-> +	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
-> +	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
-> +}
-> +
-> +
-
-^^^ extra newline?
-
->  /*
->   * We enter with non-exclusive mmap_lock (to exclude vma changes,
->   * but allow concurrent faults), and pte mapped but not yet locked.
-> @@ -5257,7 +5286,13 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
->  			pte_unmap_unlock(vmf->pte, vmf->ptl);
->  			return handle_userfault(vmf, VM_UFFD_MISSING);
->  		}
-> -		goto setpte;
-> +		if (vmf_orig_pte_uffd_wp(vmf))
-> +			entry = pte_mkuffd_wp(entry);
-> +		set_pte_at(vma->vm_mm, addr, vmf->pte, entry);
-> +
-> +		/* No need to invalidate - it was non-present before */
-> +		update_mmu_cache_range(vmf, vma, addr, vmf->pte, /*nr_pages=*/ 1);
-
-NIT: Should we try to keep the line under 80 columns? ; -)
-
-> +		goto unlock;
->  	}
+> -void mhp_set_default_online_type(int online_type)
+> +void mhp_set_default_online_type(enum mmop online_type)
+>  {
+>  	mhp_default_online_type = online_type;
+>  }
+> @@ -1046,7 +1046,7 @@ static inline struct zone *default_zone_for_pfn(int nid, unsigned long start_pfn
+>  	return movable_node_enabled ? movable_zone : kernel_zone;
+>  }
 >  
->  	/* Allocate our own private page. */
-> @@ -5281,11 +5316,6 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
->  	 */
->  	__folio_mark_uptodate(folio);
+> -struct zone *zone_for_pfn_range(int online_type, int nid,
+> +struct zone *zone_for_pfn_range(enum mmop online_type, int nid,
+>  		struct memory_group *group, unsigned long start_pfn,
+>  		unsigned long nr_pages)
+>  {
+> @@ -2305,7 +2305,7 @@ EXPORT_SYMBOL_GPL(remove_memory);
 >  
-> -	entry = folio_mk_pte(folio, vma->vm_page_prot);
-> -	entry = pte_sw_mkyoung(entry);
-> -	if (vma->vm_flags & VM_WRITE)
-> -		entry = pte_mkwrite(pte_mkdirty(entry), vma);
-> -
->  	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd, addr, &vmf->ptl);
->  	if (!vmf->pte)
->  		goto release;
-> @@ -5307,19 +5337,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
->  		folio_put(folio);
->  		return handle_userfault(vmf, VM_UFFD_MISSING);
->  	}
-> -
-> -	folio_ref_add(folio, nr_pages - 1);
-> -	add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
-> -	count_mthp_stat(folio_order(folio), MTHP_STAT_ANON_FAULT_ALLOC);
-> -	folio_add_new_anon_rmap(folio, vma, addr, RMAP_EXCLUSIVE);
-> -	folio_add_lru_vma(folio, vma);
-> -setpte:
-> -	if (vmf_orig_pte_uffd_wp(vmf))
-> -		entry = pte_mkuffd_wp(entry);
-> -	set_ptes(vma->vm_mm, addr, vmf->pte, entry, nr_pages);
-> -
-> -	/* No need to invalidate - it was non-present before */
-> -	update_mmu_cache_range(vmf, vma, addr, vmf->pte, nr_pages);
-> +	map_anon_folio_pte_pf(folio, vmf->pte, vma, addr, nr_pages, vmf_orig_pte_uffd_wp(vmf));
+>  static int try_offline_memory_block(struct memory_block *mem, void *arg)
+>  {
+> -	uint8_t online_type = MMOP_ONLINE_KERNEL;
+> +	enum mmop online_type = MMOP_ONLINE_KERNEL;
+>  	uint8_t **online_types = arg;
+>  	struct page *page;
+>  	int rc;
+> @@ -2338,7 +2338,7 @@ static int try_reonline_memory_block(struct memory_block *mem, void *arg)
+>  	int rc;
+>  
+>  	if (**online_types != MMOP_OFFLINE) {
+> -		mem->online_type = **online_types;
+> +		mem->online_type = (enum mmop)**online_types;
+>  		rc = device_online(&mem->dev);
+>  		if (rc < 0)
+>  			pr_warn("%s: Failed to re-online memory: %d",
 
-NIT: Maybe here as well?
-
->  unlock:
->  	if (vmf->pte)
->  		pte_unmap_unlock(vmf->pte, vmf->ptl);
-> -- 
-> 2.53.0
-
-Thank you for the patch again. I hope you have a great day!
-Joshua
 
