@@ -4,75 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C894EEB491C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 12:49:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BDE3EB491C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 12:49:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 232876B0089; Thu, 12 Feb 2026 07:49:46 -0500 (EST)
+	id E46416B008A; Thu, 12 Feb 2026 07:49:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DCBE6B008A; Thu, 12 Feb 2026 07:49:46 -0500 (EST)
+	id DD07D6B008C; Thu, 12 Feb 2026 07:49:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D3786B008C; Thu, 12 Feb 2026 07:49:46 -0500 (EST)
+	id CBBC66B0092; Thu, 12 Feb 2026 07:49:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EA2496B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:49:45 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C9E6138B37
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:49:45 +0000 (UTC)
-X-FDA: 84435786330.25.AF0983F
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8A2F9180005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:49:43 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i7EGIJJW;
-	spf=pass (imf06.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC9196B008A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:49:49 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6507F160142
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:49:49 +0000 (UTC)
+X-FDA: 84435786498.02.FB1E4BA
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7B3FB80005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:49:47 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i+ghlEhU;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf30.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770900583;
+	s=arc-20220608; t=1770900587;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=mUo0gQwIqPNU9R/kZzDp0f/U84FL9/zC5A+f15msgTw=;
-	b=RYqbZZlppBV2WlHHONL4kI2qeC9jU61NFihaiSK1hFia4SNAsOvDPL296y6liwnmrxAcp9
-	OIRk3Jz6k9nZAhpiU4LPUBGuOzHJxNqWWmJSZyw0yE4m/dLmXH9VdYsFLtXusU2mcdS1sX
-	GDzY9M+1VPWSdvs3Kz6gJ4CaJGKm3Ts=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i7EGIJJW;
-	spf=pass (imf06.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770900583; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7YM719y7E+mTkz8X3h+0EF62k2rhu1PY3VU/uXfzYDg=;
+	b=QGonzpHoFJ3TzLyWtr+A7vDKA+N4WMQ58E7//4il/7GH/hTs+lEWpJkK2jksircCq1EuvW
+	FV0hofYdAlU71pPK79iwb/jFFQ6PxzaZJ77qYBbN4n9JNOTh8/5PWulv57lF/MYF18kMEU
+	YQOirTyHKcinz0zg2bjBYvjCOjJ0Vho=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770900587; a=rsa-sha256;
 	cv=none;
-	b=mWHeTiGjoMTpFR9ze0UTGtxo9gFIgLSbbpd2tbg0hwz/dHYGs9WYw4VhKLHB/1j8scl8Fz
-	EilmHo94lQ1Q5KG0bq0PegYqAsDVb+aSXaYy3x1yC+/puN0S7HzV5m4Akk7bM8tAdnV/YD
-	976OVhTNin+njfmbp2Ek0TX2q+3xZHM=
+	b=RWyzfznPkwH6wnvl1lZ6Nd9h825mrIMqp8iRide8q+H+AQKWSXAPYRi03j9ZCYRMDOP3jx
+	qXOICEaJWDkqZM4QXDUR/Oc8BVJrqh65vQDAy1ddo3irywv0sL09YarxEyi6KrYKhYKSta
+	hJpIOJXVfyFbr8iVL9Y6Jv+JGXrEQeU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i+ghlEhU;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf30.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770900582;
+	s=mimecast20190719; t=1770900586;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=mUo0gQwIqPNU9R/kZzDp0f/U84FL9/zC5A+f15msgTw=;
-	b=i7EGIJJWz/8TJLfV11Yf/sfpnsaIMnW7yfuhi52aGRRQusDoUpKkaHsiJhRvY45uq15l7x
-	KpiiB8q3K7jmCBYjetBmVMxUZWXQtkMTwMNQcpJwERMm2lv0H85qkBabe+MyBUuYkxRhj3
-	QoXnikZldxuPsElODAGdQlLZbeampmg=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7YM719y7E+mTkz8X3h+0EF62k2rhu1PY3VU/uXfzYDg=;
+	b=i+ghlEhUBAokYF6pWq4F4U1TvQZATos5uqJqduNi7L9OvvBthfuJGE8a2DK+XoRyJNKeI+
+	KrZoR/BIkThME8qfQsof+yyHWgm61UfRXa3YIk7Tbstmo+HrDdLBps6JGNcZOS7fusPF07
+	f2AAYfC2FR+UDlZyCcfTr5Gv7PbNcgk=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-ffetXpVyO_6xxqiGsxf1rw-1; Thu,
- 12 Feb 2026 07:49:39 -0500
-X-MC-Unique: ffetXpVyO_6xxqiGsxf1rw-1
-X-Mimecast-MFC-AGG-ID: ffetXpVyO_6xxqiGsxf1rw_1770900577
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-602-pIi6mzgSOEWpbxei4jKU1g-1; Thu,
+ 12 Feb 2026 07:49:45 -0500
+X-MC-Unique: pIi6mzgSOEWpbxei4jKU1g-1
+X-Mimecast-MFC-AGG-ID: pIi6mzgSOEWpbxei4jKU1g_1770900583
 Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E804A1800365;
-	Thu, 12 Feb 2026 12:49:36 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 443481955E88;
+	Thu, 12 Feb 2026 12:49:43 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.44.22.11])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1546830001B9;
-	Thu, 12 Feb 2026 12:49:30 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7F8F430001BB;
+	Thu, 12 Feb 2026 12:49:37 +0000 (UTC)
 From: Gabriele Paoloni <gpaoloni@redhat.com>
 To: corbet@lwn.net,
 	skhan@linuxfoundation.org,
@@ -90,23 +92,25 @@ Cc: acarminati@nvidia.com,
 	kstewart@linuxfoundation.org,
 	chuckwolber@gmail.com,
 	gpaoloni@redhat.com
-Subject: [RFC PATCH v3 0/6] some /dev/mem specifications and traced testing
-Date: Thu, 12 Feb 2026 13:49:17 +0100
-Message-ID: <20260212124923.222484-1-gpaoloni@redhat.com>
+Subject: [RFC PATCH v3 1/6] Documentation: extend the 'Function documentation' with expected behavior and constraints of use
+Date: Thu, 12 Feb 2026 13:49:18 +0100
+Message-ID: <20260212124923.222484-2-gpaoloni@redhat.com>
+In-Reply-To: <20260212124923.222484-1-gpaoloni@redhat.com>
+References: <20260212124923.222484-1-gpaoloni@redhat.com>
 MIME-Version: 1.0
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Mimecast-MFC-PROC-ID: g2a4uFQRGMPKtLptN6gPwNIVn42CPnTFBROIUOU9pkk_1770900577
+X-Mimecast-MFC-PROC-ID: NcYdkw6CDbwYNk57wslik7qgtuiR_x0z3hZitng_9Sc_1770900583
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Rspamd-Server: rspam11
-X-Stat-Signature: 5j3rdrfx6yzgsdc1eyyfiozdpf3myyfu
+X-Rspamd-Queue-Id: 7B3FB80005
+X-Stat-Signature: 9rrbz46arq4na76zefzyis3iwu47ykay
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A2F9180005
-X-HE-Tag: 1770900583-325339
-X-HE-Meta: U2FsdGVkX1+uRLHTsu9xQ58dHDDIBzObvVxoiGnUsvwEsqrY1NJXpm9BvA8GDeMh16CGQSFuppW185CDU2MAGLPxr5cWmve96IdaqepVskmFWo1wGu/ZSlK3xhV+7qFCPTfxE2HbTSH2BsqtJEOX8WiJ5zg/zhWDNHWtTtwGfng1WXnC6gZwgfdX+iKCGz29gvDfyP3gPXuqohnJb11Ack0/0Xzgxi0XzgYmw9VhFckx274yQ+nX/hULvm/TCidaFWtXuplfZc6iWEDIEJLjJHNMyXI6/VWK1FEM+WL/41flJPCT2dNLs8rs/pWN0mC0SQZTDUgcl3wT0WY3BwaqtLUFaAdJNRe94FNh+31pgoVTvZnNzmKY8Kun6w5OFniD9hK3bggOZYpIrQ9USirBV6fIC7GrALW0DQ5TCqMIES01ej41hhOTBRzEfl4eoWkerz0GDr0ZuwMULC/D7sOCYUkKfshJVPZehu1/jn7cp76ySQrBr3VQ0LeUBDMRLVfKyTAph78IekDnLvDPchXQ+MTKJ9JovwnNVUbc45N6Vb1utQa96YsYA9EsK31Ixf8wO50seBjHe8wlizjlis/k28NQJeBdD6fxxgskk8vi6GvTXxwVagn/kqFrNELaZGuGLfa2CrjFDsNHgd+I7T7wqvp+I1jNX2IIrTh6muAgZ5dV8oBbWJFO6ruqrObDMyOAsdnf+viN/TnrJhXsaiYVPzP9ruBAb5f6HRI9LbU32aD9nfUWWZWYPFxHuzIl9RnvQOz+O63RwLkXPAWIm/ETN9REx9DRT3223A4Xt88L4rQT10ktNe5DZDHRpRJm0KKLfXzE4K34ji3pdx88oyZZ/cZUGZDWvwxNCve+p5Y5dMpr4Xxrer/YZkhROfzcT/hidu1gBwxlMMVGfNpd/Ke0428doR4Jr+XXjNmsZ4aTSJM99tQI/OTmlJvxidEwOhqy1JHHlpej4M4lk0Ymgna
- s85KZ06s
- IWuvKKt4UHxnhoSmtFbdvttMecZflHErcu8zAOZjfjXHvhglR4aTk5eJsswJF4gAkMOj89+2bqbrvLA+NYRd5RaqTNoQ1i6UCfh5wKK+ot7h3ekN+PcILL51PRakJm03BYzeKoeqFJDqfKWIQtmGyZQRE0G21NG9qwp73QAl0rqJYyKr0m56VtcB70oGEKC7wbteLhdKtkJvz5D1GCHRA/7P9HA6jkRNM+pqhbyqZOiN87Q89iXLEe8cbY6cJ95l4ytdWkBNtmQaTQw2TuzpTf0YH8vRgjyXWE8jkgmOVloA1WrhXpqyObg/LXNbPcdMUniuFacbHb80sH3aGhsystJE+r3l1ajS2US6jXnCMq34F+2c=
+X-Rspamd-Server: rspam02
+X-HE-Tag: 1770900587-16664
+X-HE-Meta: U2FsdGVkX199hme66ZMxIZjXkZkdX9L6KjGX6Z+EqItFhXXPQ5/mh+39ViDKjXHJy49lyN/p+mInNNvshzK5E0pFHdyNMojld1xHt4zTFA6bG5mDEYKr0rZw09wveDHrMpAG0vdchXfULnmVYbh2FHM8BL3XVzpHRV0l8cxBgyZgHk9wYFx2EvxAawYsTiFPBllVdPZsFJLK1vQgfk1e/9gzR4PDtZUtaQVml8p+lRV0MOQRY9ZR8mAIbJFOaNfpfpaktOKzlOtX3S3TMBrSH2VyNymS4BGqZbRt+xxJr1Z0Va18BMR5RaPLcWaerUyokiDKb/U8PQsB/vybgu/0FRY9dgexGEK/QnC73GLPPWjskAPBBzMklbAEQEdd0tlHE8B4RMjhoD91l6UptUQLbRngQQkxYGgrRjR7xrjGegZu8fwSjaGsjTB6NutB3AKFimBguB43IDGVKVjUhUcCRLA5ogzkI9x0pXoJ4wtaMyQzEvtiiay5svPD7b4Zga90MmPOwVcQ7yjLp4CnGzqRDxYmcsB3D/sOgcM0hhpmokc3EqFjendBcc96HuvQWIG0akZ4fR+XYWfEyJs8fhYFEUciBpxxZf3UA9HRCPmHMgqZUigiisaduVjEeGfdqU7qWMH1eb1eSUIbx/DG7/C5ZA2lKPyGakfpNQrPfpEsmTSGRWusJ2NAiMSPUjA0EUfbqlFe+Qrwoe7n8aaCyfi8zoy7yBe3hIX3jCnIJX/wsNneJLNFY1+9CNirLF+7lI44KYgWc6P3igZXQF1+7XjDcjhfU8EhV1bSHZCgQPrmWWEigZcmNLvYv6pKNXyvYfy5EGSTptSFFSoXe+K132Rq9BlBvPgmsBkanggagsiGD9ImneSyIlTkOaZzXs+nLU2vNVhPYyGU52rEKO2D69sCdFtoIYIIdynNL78IDOs6ETOrKdnnacy2hkUAWLYPq97zLlvrcF6cf4Z9No9uNnE
+ y17izCy6
+ AzuSRzzPiZEGKvZlmcQRfiYaXG6tXl9wDSqP5gH4+iCdd9uRWd+v+0LkmuJjj7KNxJO3twmLVhhF05mqU2knJ0JbdeYWFFDnrURiOhWVkpz4NCwIZHsEgwDVmW7TW34sC7Vl5qkVWhYBJbXpTwCnLlv3LgLup6vEtzLTzy3BvtXH4LSKXutWN6Bt09yuiUrrqmiSkHHISLwRTK5mvFO1dHz9CZeZ5efStNtOoppRN9c+tNTiFNu1LdIt8kpChy24FhXq9E3YhTjbhAAO3edQDMfjNOG9oNUt5mH69vUr0DeeGhcS8uiVIAUaOGy+aA+vhSwvFBAe76IkcMpgEVZd2TMQQMw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,50 +119,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-RFCv1 [1] was an initial proposal defining testable code specifications for
-some functions in /drivers/char/mem.c. However it was not clear how to
-write specifications according to the format and wording used for them, plus
-tests were missing.
+Extend the longer description section of a function kernel-doc
+header with an itemised list of function's behaviors and
+constraints of use.
+These are useful to link and trace test cases (e.g. KUnit) to
+the different behavior IDs and define the constraints to be
+met by the function's caller.
 
-RFCv2 [2] proposed a guideline explaining how to write such testable code
-specifications and also added kselftest for read_mem, however there was
-reluctance to accept the proposed addition before having clarity on who needs
-it, who is going to maintain it and for which APIs in the kernel it is
-needed.
+Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
+---
+ Documentation/doc-guide/kernel-doc.rst | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-RFCv3 (this one) proposes kernel-doc API documentation according to the
-current doc-guide for some APIs of /dev/mem introducing the concept of
-traceable specifications to KUnit tests.
-For read_mem() Kunit tests traced to the corresponding specifications
-are also introduced, so that in case of test failure it is clear which
-specification is violated and it would be easier to review incoming
-patches agaisnt the intended behavior of the code.
-
-[1] https://lore.kernel.org/all/20250821170419.70668-1-gpaoloni@redhat.com/
-[2] https://lore.kernel.org/all/20250910170000.6475-1-gpaoloni@redhat.com/
-
-Alessandro Carminati (4):
-  kunit: add visibility helpers for static inline functions
-  char: mem: expose devmem helpers for KUnit testing
-  char: mem: add KUnit tests for /dev/mem read_mem()
-  char: mem: add Kconfig option for devmem KUnit tests
-
-Gabriele Paoloni (2):
-  Documentation: extend the 'Function documentation' with expected
-    behavior and constraints of use
-  /dev/mem: Add initial documentation of memory_open() and mem_fops
-
- Documentation/doc-guide/kernel-doc.rst |   19 +
- drivers/char/Kconfig                   |   21 +
- drivers/char/Makefile                  |    1 +
- drivers/char/mem.c                     |  211 +++-
- drivers/char/mem.h                     |   17 +
- drivers/char/mem_kunit_test.c          | 1323 ++++++++++++++++++++++++
- include/kunit/visibility.h             |    2 +
- 7 files changed, 1584 insertions(+), 10 deletions(-)
- create mode 100644 drivers/char/mem.h
- create mode 100644 drivers/char/mem_kunit_test.c
-
+diff --git a/Documentation/doc-guide/kernel-doc.rst b/Documentation/doc-guide/kernel-doc.rst
+index 8d2c09fb36e4..23e6c4b45b14 100644
+--- a/Documentation/doc-guide/kernel-doc.rst
++++ b/Documentation/doc-guide/kernel-doc.rst
+@@ -83,6 +83,25 @@ The general format of a function and function-like macro kernel-doc comment is::
+    *
+    * The longer description may have multiple paragraphs.
+    *
++   * When specifying testable code behaviour the longer description must contain
++   * a paragraph formatted as follows:
++   *
++   * function_name behavior:
++   * [ID1] - [expected behavior]
++   *
++   * [ID2] - [expected behavior]
++   *
++   * [...]
++   *
++   * [IDn] - [expected behavior]
++   *
++   * function_name constraints of use:
++   * [ID1] - [constraint to be met by the caller]
++   *
++   * [ID2] - [constraint to be met by the caller]
++   *
++   * [IDn] - [constraint to be met by the caller]
++   *
+    * Context: Describes whether the function can sleep, what locks it takes,
+    *          releases, or expects to be held. It can extend over multiple
+    *          lines.
 -- 
 2.48.1
 
