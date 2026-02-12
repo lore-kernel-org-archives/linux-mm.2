@@ -4,105 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2476EE3690
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 14:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7419CEE368E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 14:40:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D491F6B0005; Thu, 12 Feb 2026 09:38:28 -0500 (EST)
+	id CCF146B0089; Thu, 12 Feb 2026 09:40:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D27A06B0089; Thu, 12 Feb 2026 09:38:28 -0500 (EST)
+	id C525D6B008A; Thu, 12 Feb 2026 09:40:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C343E6B008A; Thu, 12 Feb 2026 09:38:28 -0500 (EST)
+	id B34606B008C; Thu, 12 Feb 2026 09:40:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B2F116B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:38:28 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5EBA41B08A3
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:38:28 +0000 (UTC)
-X-FDA: 84436060296.02.59B0C27
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1283F8000F
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:38:25 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mC359Kfl;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=97qx0vHp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mC359Kfl;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=97qx0vHp;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A05406B0089
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:40:37 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 317ED1A01AE
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:40:37 +0000 (UTC)
+X-FDA: 84436065714.07.B5E7874
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0BEE61C0010
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:40:34 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LN3lYR4f;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qahlf8Li;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LN3lYR4f;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qahlf8Li;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770907106;
+	s=arc-20220608; t=1770907235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7uDhaRO4oEHg/T49tFFB/x95ODaieXVvFOfUWumOZbw=;
-	b=U2DyHejuBNg5dY7KbZsDoZ4hNYSEVW80X1lOIO2SujZ47/zdR1J+0EtqMBJpmNCYaQcnTh
-	wMwaXs/BsWQkJCLFno5D+BCMZTry1ZDj8yL2ENAvh0q6zjZYUDiX7iE0NNHkhFEott06A2
-	GaLKoaYOQ1U1ty9CwmXytMjSse4OMdw=
+	bh=HCS/67r+A8FLWb8UmkH97r+VgraLo3LgWSaF84flvO4=;
+	b=YkJ3dqtdXGf8fHuf1WffMBiAmt2eoCvM/XB8fefQLIBphmKsyg+4DZFmQMgniMB4PVzJS6
+	9j4ALRqD30hyau5UAKGR0OKzyaSYgbDlXoWX4gpG/Z3oWxZlBj0d6c1ELi/MQMVnRBUHRf
+	MZp/u5uCAr/FUmuMXC8AJhadUsyJ7hc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mC359Kfl;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=97qx0vHp;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=mC359Kfl;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=97qx0vHp;
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LN3lYR4f;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qahlf8Li;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=LN3lYR4f;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Qahlf8Li;
+	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770907106; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770907235; a=rsa-sha256;
 	cv=none;
-	b=Z4k9ddKWZIPcJ/XK8HLKw4ceQKiEKXBMpgpG29nsNEJSOt5YUVbzA/VGrISyMWE/Kd52py
-	UdcGgxoYPFwRjIsELUw5eWewCqTX74+NCFofOln8Q+OIy80sWYfnFt5KU3UjA2PD7VlCoV
-	Hfu8t/jnf1r8AqLdk1+HWVl/Zf9+st4=
+	b=dr6w9q+d30snwj1rIWgioxIgM/yQrXp1M8adK/pNzKPlxJcNjhRgp9EwBDvcRKHwkw4p07
+	UfuT/E8vBO/XUHZkIeN6ZmFzcBTjvLL6sYUyXXlC1ugmUR4ybjtfRlHBQS6BZefBNlYgZ5
+	9gtMORoOpUx4s4Dh8cyadKLjlMOt1AI=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9F1533E6DC;
-	Thu, 12 Feb 2026 14:38:24 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 71C3D5BDB1;
+	Thu, 12 Feb 2026 14:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770907104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770907233; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7uDhaRO4oEHg/T49tFFB/x95ODaieXVvFOfUWumOZbw=;
-	b=mC359KfltbMvc9WmPjvE+steespHWVvPWTi4E3qUU1TEPXaw+wM8l1UC+Y1gaN2LOSAkok
-	+YwH725Ye+IQk8YaW2zMncMmRD7t6MimsKRNPI7MYbHRnfCIvt+Y3yUOQVMH2r4AxZE2xD
-	jQ125vgulxYoaq+AACrNjVUkSqVFh0M=
+	bh=HCS/67r+A8FLWb8UmkH97r+VgraLo3LgWSaF84flvO4=;
+	b=LN3lYR4fOAQxRJ/LjBQkiekIUD/olGUgMqNKBJ/kgy6SdNy7KCSnSCd+v9qMsbELne6s34
+	6PJjEYFeJXkdVdfyj8lb29kyVFJG2Z4yBSgxrA7kzBnqTeJoktWR9rFQEEr34/QsCrjQiE
+	3dLwS3IZVRi0piTwIjo5cCmpbm/GsiA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770907104;
+	s=susede2_ed25519; t=1770907233;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7uDhaRO4oEHg/T49tFFB/x95ODaieXVvFOfUWumOZbw=;
-	b=97qx0vHphksQAWDm5t0IV+7AjzEYJiHsUT6bAEWDCxqkPnsOn9TFlXFEVHl+mGbxTE/HWP
-	Q+e8d/bK9or/c5CA==
+	bh=HCS/67r+A8FLWb8UmkH97r+VgraLo3LgWSaF84flvO4=;
+	b=Qahlf8LikZHOsotQs3kDVoB7fmtOyHv1Fn0jLF1phIoBw9aqJo0ItjLIr31nCQVnj9ALSG
+	bQyVn13QCZSVpkBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770907104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770907233; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7uDhaRO4oEHg/T49tFFB/x95ODaieXVvFOfUWumOZbw=;
-	b=mC359KfltbMvc9WmPjvE+steespHWVvPWTi4E3qUU1TEPXaw+wM8l1UC+Y1gaN2LOSAkok
-	+YwH725Ye+IQk8YaW2zMncMmRD7t6MimsKRNPI7MYbHRnfCIvt+Y3yUOQVMH2r4AxZE2xD
-	jQ125vgulxYoaq+AACrNjVUkSqVFh0M=
+	bh=HCS/67r+A8FLWb8UmkH97r+VgraLo3LgWSaF84flvO4=;
+	b=LN3lYR4fOAQxRJ/LjBQkiekIUD/olGUgMqNKBJ/kgy6SdNy7KCSnSCd+v9qMsbELne6s34
+	6PJjEYFeJXkdVdfyj8lb29kyVFJG2Z4yBSgxrA7kzBnqTeJoktWR9rFQEEr34/QsCrjQiE
+	3dLwS3IZVRi0piTwIjo5cCmpbm/GsiA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770907104;
+	s=susede2_ed25519; t=1770907233;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7uDhaRO4oEHg/T49tFFB/x95ODaieXVvFOfUWumOZbw=;
-	b=97qx0vHphksQAWDm5t0IV+7AjzEYJiHsUT6bAEWDCxqkPnsOn9TFlXFEVHl+mGbxTE/HWP
-	Q+e8d/bK9or/c5CA==
+	bh=HCS/67r+A8FLWb8UmkH97r+VgraLo3LgWSaF84flvO4=;
+	b=Qahlf8LikZHOsotQs3kDVoB7fmtOyHv1Fn0jLF1phIoBw9aqJo0ItjLIr31nCQVnj9ALSG
+	bQyVn13QCZSVpkBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B13A3EA62;
-	Thu, 12 Feb 2026 14:38:21 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1876A3EA62;
+	Thu, 12 Feb 2026 14:40:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id hTL1Dt3ljWnNWgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 12 Feb 2026 14:38:21 +0000
-Date: Thu, 12 Feb 2026 14:38:19 +0000
+	id oKqwAl7mjWl6ewAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Feb 2026 14:40:30 +0000
+Date: Thu, 12 Feb 2026 14:40:28 +0000
 From: Pedro Falcato <pfalcato@suse.de>
 To: Nico Pache <npache@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com, 
@@ -120,23 +120,22 @@ Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
 	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
 	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
 	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
-Subject: Re: [PATCH mm-unstable v1 1/5] mm: consolidate anonymous folio PTE
- mapping into helpers
-Message-ID: <b27vb7b4ntj2xagzbdnvt5p4snh7c36mwmaosvat6lztj5cywn@ppnq2i4akaxu>
+Subject: Re: [PATCH mm-unstable v1 2/5] mm: introduce is_pmd_order helper
+Message-ID: <2tveyrrlb5upsx4pak7y7o4gxx5e6lcusyj45or56xel7lpd3t@u4fhc643qsn3>
 References: <20260212021835.17755-1-npache@redhat.com>
- <20260212021835.17755-2-npache@redhat.com>
+ <20260212021835.17755-3-npache@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260212021835.17755-2-npache@redhat.com>
-X-Stat-Signature: 3aufm1syztgaw5jbuiku3qqq6rckgef8
-X-Rspamd-Queue-Id: 1283F8000F
+In-Reply-To: <20260212021835.17755-3-npache@redhat.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 58izemgpfu1kbbtt3ogpjcpm7frjg4ht
+X-Rspamd-Queue-Id: 0BEE61C0010
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770907105-511994
-X-HE-Meta: U2FsdGVkX19a4zGPjH9bVfoLxsgEXSC3gjRTVJh/FqSYJYs1Hta1k7QKZvtGZ9SzCnVj4NNgzaO5D3cEMR7Y6ZlGv57nfk1qcZwuWxZlleSIJW/hgXseDzezp9NFJCfO4Cgk/M6Zlj70fMFHNpfFAl35NFI0iUjzmEvjHHSPI8HNwwle06ERiugcRFVK+LGLGhwEULkM1cP1Mde8mK8bUfX3H1md92KI8Lq8sZ6+eEeDcVYUgz/QOfsWZ6UxS+o4FBDf+ZrMw50JhzPApiJxcI6Yb5qkMaZO3A6qCwKbMu5JvzuGwVrzaDXiWkHJZmgYJmfykCFzYYqxmEEqeiVcsJ2M+YPhhxbXYRR7umkUuP4WaK6Ci0YwKAu9ujfaIQZgXA/X68kCoDLnG0q2Ad0SsGLCC3QJAy8mr8Ovj73TADsqCguKmhAHzechjT/fDSoYHNhOAAAYZ5R0lwgJ9UlYVnLMCCqdQIy+JB84mACnNRCupr238wGq+J7BM6uC3L7utU/Ysx45CYYrE6nmkSnRYAQpsjI9al93gfXA9Sdoc1O+iIMCCvUR2POLpGVX1TFkjQIrGWax3Ll7/oQn4AkFtkmqmjYAffi0ciBzj1iLTiOURMu69Tx9q/O1EHOMJHmM5CHiCl/iswklXlUy/iW88XzEcSWD/D9mY+43JXXxP95sHFU6UBq2+JuUlLDAZYl+PGbchhsV78paiIEpl9pPZStcp9d7KtKWFriqZVAlv2Sf3otB7XvpgSVjYdwZhgWaixbgTlMatxixFPZjmSHQ410Al3i9j84Pvq8PsUku3UfStLYa/lviFRsg/9MuwK1vyGRwpvWJPagB1IjiAu4maqAGgT2JZGQ9JQxTzaX4H2YM0syNgfZTcyNhLADnFhJQb88uftUbVqBLD66lXXWotdt5W9xUBXdqSTxdGjMNyiMdZ6fZk9GCesjbNVEyLwM1BuTKxR0KaCwIXpDm9x1
- NPVe0Tu4
- EBjCgswMv5Tu4j0FVx9n/wSjzaHiIkR4039wiECFd2wq3sLa3sPv4hd+rZdpNv81yPgyVEd527dzqbDBL//uXU5iRQLtjXzfE5jJvQDYpJmsGRXro3iWW0+ykdCc7t27ET03xYTb5R+Q8QLK7rHYCXFg3Sy2PblROBG+1R5CaOHQL+pgGeYoqwk8xD5Fp4zpAMhl7sXeBgomq+ODQBjIXJoxPLuqca3GGOzsHPVum82S9eHsIOqNIvuaRvBFdIkGT3Yz8nyLNw4ZiutVbK5Ywfz9ngHMUxz6FcxGFHuf0eaqdKHngvlZbw6Ru+MZkFGlTa663ZjHwKPPJqUGMMCdDve7Ag8FGEZ1JgmhX+RriE1jgByisrDzrTiaiIkOawTLXEq3QeEweJWPikxU=
+X-HE-Tag: 1770907234-672962
+X-HE-Meta: U2FsdGVkX1/GEIlarqtZwxQNSCzzBVavzLwGZ+nyuuO73dgUoLcEqwdMk6SY3boQjBm5GKMK4AJ8VSXGgJ0dClas0ELB8AHmI21qkmBITrKGOmbWtAn1+oyqwx3JrCtrK3w/Iv/iPyhSeHp6yY5uZzY5wyzrvdhjDZOJUIbtQdYZGIsraVViOQB286T2/O38TR8gwbZtkhYiRBS1tYaHAWaMsM3j9+TEF1HlDA8grnK9dwhNKLG0UV2LwaLmlHRZFa6UzT1KjPmqTJoSkCPNXXjhFp4NYLziBVQq2QfqcfAo26incUsNUAs6oQUdgTDLZB6chBPE7fbBnSxwtsvcQTKKwHEvDdSn8lcSxRgiwljBFD+B+Rkne9d/CD1pzSS9S3LTAe0e41XI8oNF0sIUYBSF4pmVnTGIVosREOB4vKMWZQhNeZ3A2z5jIWg6TbbG5EvHTRSwAo+V3qeGgZiqKV91vGUlT3sU73JVpKZYZ4R6r8lP9vjjf2+qIMaKBhmgNE+uaIl+L4s/3n2o07R51Bprw7N/T9a/KapRn2/vJHDB+OgzS4pf4HC8GPHbTl5SlfnyIf4ZbtZe1Y02Diw8iKKOfDKAidHdTArnunaJiuxAMOhwq8AcSgmvAmyVtyysGLR6yEKE7IbKnr32OcxsvzjhFoHYPat91QgongH34HYVO9qkvZKLC/DGc25MtSH8T/JI6NcEcltA+2WBhRMEdqlPZ+tk1qvwOdyIgmxEaccMND/s2GMVDFqVAZ4BjnuSGTqIbkppMdiBdhZKyZNhsLXfRCBX1NzR2ptbC2iTbE3e5j2pF2fxNH2Q7xOtazBWbCRnpcmOgjoB14zhFiTBeqr6IGgMP8KszW7n9P0sKElbUuXyRumzqkxJWDUxjpxV3ds+3Fxw7mKRltxKcurI/XQnBqopFmome8Qs15tWkXrbl+XvaY1rLHo4u41IYwyWUjyKEmMP+tUG2dlWu++
+ B4n1T1p6
+ NBk52Lr4gIkrrlJl2gxc+yBxcaUC3ZDUxGlF1BzPM2DYrqPIJpiO1amhtwMayzy5swx8WC23jFg0XnOkx40b3CO/8CsQbBNT8uAYHwjsog7eyhGdta1KUbytOapUeQ4ZoskGquDm7TRMxrBCen3OJx5INozeeSKyXahbOaB89KoNg9RAy3VbF6R8zHlRlCcLaNOLG9hiuzgg6+BPrHWXRp1PSTbDC2pQPp4B/IUV1g9rpVKkjTCQqhioZlVtjZoXS9x3lIisYixtMQStaGq0Swq/8ZG2kd7D1/A63HQEf0hu27D0ApITfKoHP53/OSKYpBKmpcGNOV/RtUzck8JfoGwEvyKYIJjLez8Q2Ql7yxXRxyNCHe1MqzEfKDGnxzHPY5fITOMwV9O4xYUkVA4+RUw3Gn1q4taVxkOUqLfKj0VynVti3pVAwuFABmgSZGss+CwF/lbgdMPd8uTI4FgyNNk4HFCOoIrcr8t8fikJXLhUQp0M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,41 +144,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 07:18:31PM -0700, Nico Pache wrote:
-> The anonymous page fault handler in do_anonymous_page() open-codes the
-> sequence to map a newly allocated anonymous folio at the PTE level:
-> 	- construct the PTE entry
-> 	- add rmap
-> 	- add to LRU
-> 	- set the PTEs
-> 	- update the MMU cache.
+On Wed, Feb 11, 2026 at 07:18:32PM -0700, Nico Pache wrote:
+> In order to add mTHP support to khugepaged, we will often be checking if a
+> given order is (or is not) a PMD order. Some places in the kernel already
+> use this check, so lets create a simple helper function to keep the code
+> clean and readable.
 > 
-> Introduce a two helpers to consolidate this duplicated logic, mirroring the
-> existing map_anon_folio_pmd_nopf() pattern for PMD-level mappings:
-> 
-> 	map_anon_folio_pte_nopf(): constructs the PTE entry, takes folio
-> 	references, adds anon rmap and LRU. This function also handles the
-> 	uffd_wp that can occur in the pf variant.
-> 
-> 	map_anon_folio_pte_pf(): extends the nopf variant to handle MM_ANONPAGES
-> 	counter updates, and mTHP fault allocation statistics for the page fault
-> 	path.
-> 
-> The zero-page read path in do_anonymous_page() is also untangled from the
-> shared setpte label, since it does not allocate a folio and should not
-> share the same mapping sequence as the write path. Make nr_pages = 1
-> rather than relying on the variable. This makes it more clear that we
-> are operating on the zero page only.
-> 
-> This refactoring will also help reduce code duplication between mm/memory.c
-> and mm/khugepaged.c, and provides a clean API for PTE-level anonymous folio
-> mapping that can be reused by future callers.
-> 
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > Signed-off-by: Nico Pache <npache@redhat.com>
 
-Acked-by: Pedro Falcato <pfalcato@suse.de>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
-Looks a little nicer, thanks :)
+> 
+> arches#    pick b3ace8be204f # mm/khugepaged: rename hpage_collapse_* to collapse_*
+
+^^Oops?
 
 -- 
 Pedro
