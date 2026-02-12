@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC2E0ECD6FC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 00:37:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2DCFECD6FE
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 00:37:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9AE986B008C; Wed, 11 Feb 2026 19:37:34 -0500 (EST)
+	id 106276B0092; Wed, 11 Feb 2026 19:37:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 958EC6B0092; Wed, 11 Feb 2026 19:37:34 -0500 (EST)
+	id 011B16B0093; Wed, 11 Feb 2026 19:37:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 844BA6B0093; Wed, 11 Feb 2026 19:37:34 -0500 (EST)
+	id E017C6B0095; Wed, 11 Feb 2026 19:37:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 75C566B008C
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:37:34 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 24BBAD6E0D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:34 +0000 (UTC)
-X-FDA: 84433941228.09.5E4904A
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 5F21D14000B
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:32 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ivmliXvB;
-	spf=pass (imf09.hostedemail.com: domain of 3yyCNaQsKCJQy082F92MHB44CC492.0CA96BIL-AA8Jy08.CF4@flex--ackerleytng.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3yyCNaQsKCJQy082F92MHB44CC492.0CA96BIL-AA8Jy08.CF4@flex--ackerleytng.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C39F46B0092
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:37:35 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8516AD6DFF
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:35 +0000 (UTC)
+X-FDA: 84433941270.13.21ABB3F
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C2E878000E
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:33 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bjs1xeZV;
+	spf=pass (imf30.hostedemail.com: domain of 3zCCNaQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3zCCNaQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770856652;
+	s=arc-20220608; t=1770856653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TcMLX2Xy1jOIpMds+I1gs4yK1mnZMXU9mzbbwG+o564=;
-	b=dn6XaTR2yc2yNi30F3FsjAfcLLo3nI+fh4SO/uyHDZhevDHLMsUoqNwnwy+Bv/ekQRW2LU
-	9IGhJi8L77/ES60PWJ/Hisl0kvWPE8J4tZUbQBUhRsf7huQjQWREsH03GbTotVfpuSDJqt
-	h43SZF0TxG+OSVA3CVyd0PKi+cCEY3I=
+	bh=ertUY3NkBRFTSuB1WAHz0tc6nOs7Jytmk4LTXJXAt1E=;
+	b=C79mwBgpUm8OwAC1glsbDasJBJg4fJCoa3VyLRAjUq04ambe/wKRaFHbS642qN5ab/Fp2R
+	CYNJIKCgyNHfCnRF0txQsh63bXnOH5OXuIvkM/eCoSWy0hku8z2M6iRY5SOrrFe9LTj2hW
+	on/PB+vnAe959/+jFvqjPRTvRrhgmv0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=ivmliXvB;
-	spf=pass (imf09.hostedemail.com: domain of 3yyCNaQsKCJQy082F92MHB44CC492.0CA96BIL-AA8Jy08.CF4@flex--ackerleytng.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3yyCNaQsKCJQy082F92MHB44CC492.0CA96BIL-AA8Jy08.CF4@flex--ackerleytng.bounces.google.com;
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=bjs1xeZV;
+	spf=pass (imf30.hostedemail.com: domain of 3zCCNaQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com designates 209.85.216.74 as permitted sender) smtp.mailfrom=3zCCNaQsKCJUz193GA3NIC55DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ackerleytng.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770856652; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770856653; a=rsa-sha256;
 	cv=none;
-	b=jmxb2MDeGtvLGS+VJqqPvoeSE6+cxFXi0zB7/ju1uP3siawF8c7Z5HFVsJr/IhylVTz6uK
-	FI/UMjaoaXbtLtrNKM/UlBt29VbyyX3KH0UxOhsPyZAgxSJHW7whwPdv195z4fmQxa7uHy
-	wYOSBcgaHWyt2Rva7tPMNlvMqDQswAI=
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c6df833e1efso6374010a12.2
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:37:32 -0800 (PST)
+	b=iaYgiVG+hyJgt+CgkambF8DZkwOL94RN2Ou/LRE7fVxpVdoOkUvS6xOZbirqzrYeWAK2e7
+	Rf59jU/SvDjrjATVv9WehDCbRA5BqXPlKQq4r1E5A91uze5d6FOXYWSS9L27BbnGoyM8Ts
+	D9R1n0JOlcvZyehUdq6k3OqZ/M3xQeA=
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3562171b56dso5248037a91.2
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:37:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770856651; x=1771461451; darn=kvack.org;
+        d=google.com; s=20230601; t=1770856653; x=1771461453; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TcMLX2Xy1jOIpMds+I1gs4yK1mnZMXU9mzbbwG+o564=;
-        b=ivmliXvBP97mylHOs84WHXM8iReezQFVqnziG7bFgsvL21SFi5GQABIvGnnVMFenDk
-         0EFWY/SpOUd8cBL0QS9TYxw2WGlhKwIB4iq+/k6onnYhe4Ka5imVGNucPrW7DpUaGs+S
-         W0MmnSwDjl91R45nAsLb9ZCDFe37vHKHU1JNBGLeriH3ON4MJY+yP5udPuHCaIyxRsZv
-         iPc6Kw8VtkHgsi4ZXYkHF5dGPvGcnPKRYoLlDzt2FX77ay8ViGHXMlq/GZH1P8tISWIv
-         xzj3OkoNotpCzaendoNVlC3aawi6lQgqNEJ+bkQBU4IUkYu7KNDw1M1yVmqXBPJ26o1Y
-         ytkw==
+        bh=ertUY3NkBRFTSuB1WAHz0tc6nOs7Jytmk4LTXJXAt1E=;
+        b=bjs1xeZVS4IpT8HeayEytovktg8BKx/51ioLQtmN+5Ulf3GftrX5ZB2Ta2mQmGQCZS
+         pZ1JPqwkej5njybKpdcNzK26zDaBD4mdAa4HSzurqehwETZ2VxcTeen4U2MCXuMzC3pY
+         0I/bxNquQpKHd9uYrsZTGpkmyQJQVs8oud25ASnRAXTthtCuLwLqFh+cI1blCfME+VDd
+         wA+63Yrefiv9ppGQEDANucfg2DPiZfiWRKW7hlrWNPkvrJTPnOZ0yYVDT1RVAjWZr/B2
+         /EKJ1mY/2KLiZIkd4xqNjXWcwR1DdO4A4MpIxQWPzAzkQsbmNn6AKgeB1RCu/oX/eR7p
+         +KtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770856651; x=1771461451;
+        d=1e100.net; s=20230601; t=1770856653; x=1771461453;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TcMLX2Xy1jOIpMds+I1gs4yK1mnZMXU9mzbbwG+o564=;
-        b=J/i6WWdS5EyqE6vCPCzcmh8IoIZsj8GEI84tnOgO+VI8zuW1zpeg/rbVnkOdyTxvKo
-         vFRRz/Ic1YkehcGC9V3pPXC93y8ipLJASpIQM9qbi4vcxqQv/2QS3ef/G/YbnEXyEzwK
-         eINCoy+Gd/mxSQQpv04W+0IGXmqYvlfdTaWjForA4URLUjJcXrhj5S5Ji10F8BLvfa6B
-         bXbsp97U3VRBCyTiIAfmn1+YRcB1CzDHEpIgGL13m9zg9hwzFjNRBQoHmQvqNrNBTC9r
-         LNTBDpv0Quty4A2VthXVfYRsA0OA8xwVVdSea7lBQY1F5hri9PjuCgswMj+dYwDdRVyT
-         ZsYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWrLiQ2j+OqPO3v9DdseUQ8Uiqd9SCGD4IzDrFtcT/DCF+pWlXQSCNiW1j/IRAXlPzYlWmp1K3fWg==@kvack.org
-X-Gm-Message-State: AOJu0YzpenYU0MKSIrEdS44cGct5UaLngQun3yGuis1mVtWsC+q8SBqk
-	Iw8CdhBsjtrWAPsYbq9Hg/a3WbKseMrIhWlWWYOW5dYtsXu4b2OmiCDXOCxrudY/m3Se72lRlqd
-	u14rosAzw5SNnCmADdmsdfgmajg==
-X-Received: from pfnz7.prod.google.com ([2002:aa7:85c7:0:b0:824:9b2f:783])
+        bh=ertUY3NkBRFTSuB1WAHz0tc6nOs7Jytmk4LTXJXAt1E=;
+        b=Zn+zfgUh/f/FVU2/qof+a2l6AhZEicpKnsr82CQqYtows7xn+ALpkNiWnyi/KsxSoZ
+         ovg6n+NQDAcXGmA5R9TBMuLrJVqNfI0rWdkZZVbx1et2o6akuIfUcUBnUXYYKr5O+PhP
+         ASpWSXfNdHI9UBa35sKjili38w4C4ttbNFW9mh5YgxWbbzJ5oa0BnAnH7FlZDC3d/jJI
+         IAnepvyOcbdxvC11+BEWy0KzoPw+Pb7vQ67wqq0KKazbhtM/Nz3Naxma1WZQuEoulR+u
+         ubAbw23GSaBSkxWs9az5O4EbqLKxJ3l2f+C4pABWVDLbATeOUbvlixbkVyMVfkvjq6DE
+         eZGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPTlhH2Yq43AFHl7NfzCwQuYgMf+QL+djbu58OM0Lj18CZyFls+J+vMcwT3VlQU3TKLHreM3ef1g==@kvack.org
+X-Gm-Message-State: AOJu0Yz2L/FD6qwhQM7SmvHdhmwZLGJYssNYlYX8Duk+k0xKjSN/zxeg
+	UXMS8vZPqRQi32z//LAm31dZ9/8FiJ0BXEXY/7VMaPDY00pcugXdFUhhIQudaNTwJ4uhSwC8LGM
+	6FiX9F3NjaezE+tRhYvJ7xcBoeg==
+X-Received: from pgax34.prod.google.com ([2002:a05:6a02:2e62:b0:c65:c5fc:1707])
  (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a00:4fc3:b0:81f:4d18:65c4 with SMTP id d2e1a72fcca58-824b05ce226mr768557b3a.59.1770856651067;
- Wed, 11 Feb 2026 16:37:31 -0800 (PST)
-Date: Wed, 11 Feb 2026 16:37:14 -0800
+ 2002:a05:6a20:c702:b0:38e:9e77:c9e5 with SMTP id adf61e73a8af0-3944886d6f3mr806864637.72.1770856652565;
+ Wed, 11 Feb 2026 16:37:32 -0800 (PST)
+Date: Wed, 11 Feb 2026 16:37:15 -0800
 In-Reply-To: <cover.1770854662.git.ackerleytng@google.com>
 Mime-Version: 1.0
 References: <cover.1770854662.git.ackerleytng@google.com>
 X-Mailer: git-send-email 2.53.0.310.g728cabbaf7-goog
-Message-ID: <67a62716952c806c2a512e98bcac1f5224ada324.1770854662.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 3/7] mm: hugetlb: Move mpol interpretation out of dequeue_hugetlb_folio_vma()
+Message-ID: <24f2962dcbd369a2e01590aca0a365e5118778fe.1770854662.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 4/7] Revert "memcg/hugetlb: remove memcg hugetlb
+ try-commit-cancel protocol"
 From: Ackerley Tng <ackerleytng@google.com>
 To: akpm@linux-foundation.org, dan.j.williams@intel.com, david@kernel.org, 
 	fvdl@google.com, hannes@cmpxchg.org, jgg@nvidia.com, jiaqiyan@google.com, 
@@ -99,14 +100,14 @@ To: akpm@linux-foundation.org, dan.j.williams@intel.com, david@kernel.org,
 Cc: ackerleytng@google.com, cgroups@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C2E878000E
+X-Stat-Signature: i6a7e5p94ht4smq9qxhhfffx7cfbamwd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5F21D14000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 8wumatsh34uhw7e5qtcfne3rbsth6ib3
-X-HE-Tag: 1770856652-718786
-X-HE-Meta: U2FsdGVkX193BQOGdBr0TzBA881aLJrfb9kIogk7Hb5J590XVL7/mf7GtEIZYLEQ7vdzbKT1aMvr8LgaCzmzzySFhCoHqKEn+SUwnBhemqdKIeSAX3Gjv4aotUJSy/haGPUgITe+0qqKcssqsWAP6qWBfKIsZX2DcT3BiLwLpNtTDyCgi30feEaN8sYDSzJCqu+M8IYSHVkvdL9exEXCWQayo3RVrAYbMbgxZ9RbV5/zvVOU412vySr3/3eoa7RrpfbCsjrZl9CJu97WqvKB2YL+c1w+aKoo/0NyUBQv2Tj1M/rQPkN94F6IZL4EmWpob630mcnbX5qAdJJdbBq1W8W/u9rhGT98xQhujyRXNUxSmL4HW35gyUrFgtmKMEu2rxcNmuC+XfguMvZ7WP1SeLIp9xX72e0znFmeXbCSTItxAlKLnGhg7SMOr12WHwFHxn7cUcIERCkyuQ5VmyZbZ3PSn/CtFKRKJCXQltQDk0no2NR+LjjYzu+L1XxCPrt37qY1AE+H4KMJR2s1+6s6ikQRZiLLKbnL/JunaiMWPYgPEtzO7DRU6wZAEnh/nHOqX6xQa37Liy5UzI9+3fKDBbDNFOiJZCHUiu3J/UZaMKIL+qsHW9QudHIlGNB+o9COak5WIbyTVZ1TM4YIxyGMxP3T1gEIMkAlCyCppP9RqToPMdQZt34iXw5WqZ0LtdyXm30Uf+pWRjKnUf3BSCb48Wp/K98mvT2TZLQx0Vp4ntnrswRk25QT1qw4KUpADMf4PAsSnjO3o9ilKaCNdkEc45tkEIi9m6emQFjaFIFRj5VN3ulY08PJTsSQ2US+KgaSrDOYNoo5wfeR0RX6bxpYy2lTR1nSHQdRLEBwON+Naa9AasIoLniITtXWDyvEuOA/0hxSxmu+hV9vMkDidvmkFRtuy2Kqrts7Ux16FcJtQXZlncBHPqda/KJiMOg71DQM6vgFun0qHk6kbxMjHI+
- LAXG3zQE
- RpQFUNgD+E3DxpioOR+PTd+mc6FAXE/kePhUNBx6OEOXB3yh9WwNJzQi6C0GFGAtsGzcjBHBMwnNdGM7y2mnQjc0/KlwB7FfEkrwBHfz3ksA5JL7NtGLjDEddjetbv1mmSRyjlUFjWu/odNmkKlvkdNTC0CJyBmcqm32ITcC7ZLgyIOdfmd4rqZVnoawWp3p7R0IwXDDnDL3LSc7oPwjkwqnRriG+DtpNYDB6jq85UjeW28iiQTW54egzVa9UQHBWNTu3dJSfhXbA07/lEwKCrH0pv/+M0zOpkPkSTbp6jVkLaFhGi0i5r0JCH+qvY/Xi1HPJVNmfUvG7jkc3Wp9FY+0wvY3l+V5QK2vlD5v7AJxry02HBCLsIZ6hodhn9slwyHN8+E2sPTUXjga0abmVYtkwtv5Dt7agCV0AjEArWSvw07DJ7oqrCOYamfjjDq5Cb+cnu0l0/3zzT0XEK+vZ1OWJOAayX9Pzho9HlCgxFxdgepqeHf5rh8GkMB68dQYoD42MRFiYvWZqVcsxsZryKQgpCqmg7n95Cn3gbcM+0kcml94HJ+26hr6b7xBmXPaluHcfeI789Hs3g0MdxyLvaHzN6Q==
+X-HE-Tag: 1770856653-263147
+X-HE-Meta: U2FsdGVkX185xgRDD1bmdtIRJCRDiUmPzeZfPr9PhNenqpbXjtLclhWnltGbN/wt/d2P8sX2vid+dhDeieOL+uUsp2EqKhq5aJJvuWzLkK1La5Baj/eybyvp20UluDoUIV3r+9r1K+MhyT78cCsbqdszqKYE5c/CTAbuaYPPKi8mJDU0+R4zTZmu/5GfhzHZGKjt/BPXhtLrQbg6Wn57DX+5MwIKAaHBVz/lELcFk2ktWbB+O/db9KX6yp0Pkv+lpf8AvNvp66M/8NMv+bRX660XBW/5qI8DtorAVEXyf+RDzXSKThF8bW5r9UY8blbJR2MpTV+lJJOnpZGCfYKNjA/lGmOYGw2RbkbOpaVb7LnlUmE/CcKP9GjhUiOVIwUP1WHdcLfpRiRsx5V7r+GLeLylwJ2QH6ZbzxWb4JK4hiVz/fv8Uzcypv1tr6h9kd+VYwDGCbXleBu3IhlYa3C419NtOYZ3pokzLyRRFEF0wOA60IhJJ6TrSLpPGLFg0K24GNdTEB4u+27yCWrTtTDh2+k/Om8NFSGTAvecJFBRAm7mdUpPaAcWs7Db1uvX+CFfF0NFeYTwRKpVTie244TkyvspdKMtxJjtF2hsJ94lw1lfsY0zGPgJnfyZty+xwEazZYu497iCVuHskYTuBqzv/ZQY/KeD8YE4gMKkpKM0mpyCgsJp3SpN487E8wePPloGf4apI72XGtPpw9/kx3Ki936mEZl7tmKDB72+WZMdH7k9Klw4sxS0vcToLAp6Z70At7ERYNywf7kG+YG45dCgczeavJ9gTf1h3E+RmBsLM6o9KoqCw/8gyH8dXEacoFY3VPXTp2YBQNx55H8E2t7N/B21MBIEiat3F3yoRmKA+fym44i4APgkBWXxV+9QP9OQ8yOuRqm4OztkWlJHj8SAv15cNPcKWWljUUZqmcitWonImdzZksr64sYbpFPaQ+UhwOPRKFd4YuyEiJMDYab
+ WQcvdlrf
+ dLuqkVsooENWjmJNmLpj2p6OOKkxIaoXoMrGdaTb3vQtufkC6JPM4+W4dIvxukdAgoZ/VF7ctsJoAy/2ErRB56B3zO7DS6HR+Oy2SM01EgHqO+m1xhRLZiSyKsbDCPZXOtKa0rHDi+ls2lLYHunw+pPuNwQ6YfLqK5PoGFmxKW3taFSsXuUmIq1a6Wx/Ey47hQUPOc6mTgELqbT7xCAY/h2UF+gKErJetjB/sdknhnTzJG/A8gXKs/86YEURKZfhwOswtrRlDILXie7+vPWTZPopX1kAsNikCHt0CJHXKygAKAzpQa1qzs/g+Q6UDhYwnqMGE1/KPyTICOMrjHuatoAd6Ga/pR+dPvAyEG1aqz3astHodDI+qIR5y6ag5mzt3sV1PdlwGsjrmsVW13CTM66Iy+BeWAjlVdf61JdOlbk4RxaN0NxUY2E0fV87GkuqIzpRnwvrpVUhj6vWdCW16GcRu+zdIqtw0A/m2+PyGNVc8aPtNyjwoH5kB8cGHRZMiG+xVwBt9Le44Y6IYd4WQ8lalC2Ggwt59OO0jCCFBt/Y8hs1GkV0et1wttWTXRrbJKFcXlsPKhWVFjnMSSFKvjjEw1mJ3Ja/fuvUsYrqsuSIzblUW8TCict4WTXKk/LlJRe/S0wls+lAckrN1K1QzywZoEyfHPZj5g8un
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,113 +116,181 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Move memory policy interpretation out of dequeue_hugetlb_folio_vma() and
-into alloc_hugetlb_folio() to separate reading and interpretation of memory
-policy from actual allocation.
+This reverts commit 1d8f136a421f26747e58c01281cba5bffae8d289.
 
-Also rename dequeue_hugetlb_folio_vma() to
-dequeue_hugetlb_folio_with_mpol() to remove association with vma and to
-align with alloc_buddy_hugetlb_folio_with_mpol().
-
-This will later allow memory policy to be interpreted outside of the
-process of allocating a hugetlb folio entirely. This opens doors for other
-callers of the HugeTLB folio allocation function, such as guest_memfd,
-where memory may not always be mapped and hence may not have an associated
-vma.
-
-No functional change intended.
+Restore try-commit-cancel protocol for memory charging for HugeTLB, to be
+used in later patches.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- mm/hugetlb.c | 34 +++++++++++++++-------------------
- 1 file changed, 15 insertions(+), 19 deletions(-)
+ include/linux/memcontrol.h | 22 +++++++++++++
+ mm/memcontrol.c            | 65 ++++++++++++++++++++++++++++++++++++--
+ 2 files changed, 84 insertions(+), 3 deletions(-)
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index aaa23d995b65c..74b5136fdeb54 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1378,18 +1378,11 @@ static unsigned long available_huge_pages(struct hstate *h)
- 	return h->free_huge_pages - h->resv_huge_pages;
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index f29d4969c0c36..59eab4caa01fa 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -639,6 +639,8 @@ static inline bool mem_cgroup_below_min(struct mem_cgroup *target,
+ 		page_counter_read(&memcg->memory);
  }
  
--static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
--				struct vm_area_struct *vma,
--				unsigned long address)
-+static struct folio *dequeue_hugetlb_folio_with_mpol(struct hstate *h,
-+		struct mempolicy *mpol, int nid, nodemask_t *nodemask)
++void mem_cgroup_commit_charge(struct folio *folio, struct mem_cgroup *memcg);
++
+ int __mem_cgroup_charge(struct folio *folio, struct mm_struct *mm, gfp_t gfp);
+ 
+ /**
+@@ -663,6 +665,9 @@ static inline int mem_cgroup_charge(struct folio *folio, struct mm_struct *mm,
+ 	return __mem_cgroup_charge(folio, mm, gfp);
+ }
+ 
++int mem_cgroup_hugetlb_try_charge(struct mem_cgroup *memcg, gfp_t gfp,
++		long nr_pages);
++
+ int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp);
+ 
+ int mem_cgroup_swapin_charge_folio(struct folio *folio, struct mm_struct *mm,
+@@ -691,6 +696,7 @@ static inline void mem_cgroup_uncharge_folios(struct folio_batch *folios)
+ 	__mem_cgroup_uncharge_folios(folios);
+ }
+ 
++void mem_cgroup_cancel_charge(struct mem_cgroup *memcg, unsigned int nr_pages);
+ void mem_cgroup_replace_folio(struct folio *old, struct folio *new);
+ void mem_cgroup_migrate(struct folio *old, struct folio *new);
+ 
+@@ -1135,12 +1141,23 @@ static inline bool mem_cgroup_below_min(struct mem_cgroup *target,
+ 	return false;
+ }
+ 
++static inline void mem_cgroup_commit_charge(struct folio *folio,
++		struct mem_cgroup *memcg)
++{
++}
++
+ static inline int mem_cgroup_charge(struct folio *folio,
+ 		struct mm_struct *mm, gfp_t gfp)
  {
- 	struct folio *folio = NULL;
--	struct mempolicy *mpol;
--	gfp_t gfp_mask;
--	nodemask_t *nodemask;
--	int nid;
--
--	gfp_mask = htlb_alloc_mask(h);
--	nid = huge_node(vma, address, gfp_mask, &mpol, &nodemask);
-+	gfp_t gfp_mask = htlb_alloc_mask(h);
- 
- 	if (mpol_is_preferred_many(mpol)) {
- 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
-@@ -1403,7 +1396,6 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
- 		folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask,
- 							nid, nodemask);
- 
--	mpol_cond_put(mpol);
- 	return folio;
+ 	return 0;
  }
  
-@@ -2889,6 +2881,9 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
- 	gfp_t gfp = htlb_alloc_mask(h);
-+	struct mempolicy *mpol;
-+	nodemask_t *nodemask;
-+	int nid;
- 
- 	idx = hstate_index(h);
- 
-@@ -2949,6 +2944,9 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 
- 	spin_lock_irq(&hugetlb_lock);
- 
-+	/* Takes reference on mpol. */
-+	nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
++static inline int mem_cgroup_hugetlb_try_charge(struct mem_cgroup *memcg,
++		gfp_t gfp, long nr_pages)
++{
++	return 0;
++}
 +
- 	/*
- 	 * gbl_chg == 0 indicates a reservation exists for the allocation - so
- 	 * try dequeuing a page. If there are available_huge_pages(), try using
-@@ -2956,25 +2954,23 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	 */
- 	folio = NULL;
- 	if (!gbl_chg || available_huge_pages(h))
--		folio = dequeue_hugetlb_folio_vma(h, vma, addr);
-+		folio = dequeue_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
+ static inline int mem_cgroup_charge_hugetlb(struct folio* folio, gfp_t gfp)
+ {
+         return 0;
+@@ -1160,6 +1177,11 @@ static inline void mem_cgroup_uncharge_folios(struct folio_batch *folios)
+ {
+ }
  
- 	if (!folio) {
--		struct mempolicy *mpol;
--		nodemask_t *nodemask;
--		int nid;
--
- 		spin_unlock_irq(&hugetlb_lock);
--		nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
- 		folio = alloc_buddy_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
--		mpol_cond_put(mpol);
--		if (!folio)
-+		if (!folio) {
-+			mpol_cond_put(mpol);
- 			goto out_uncharge_cgroup;
-+		}
- 		spin_lock_irq(&hugetlb_lock);
- 		list_add(&folio->lru, &h->hugepage_activelist);
- 		folio_ref_unfreeze(folio, 1);
- 		/* Fall through */
- 	}
- 
-+	mpol_cond_put(mpol);
++static inline void mem_cgroup_cancel_charge(struct mem_cgroup *memcg,
++		unsigned int nr_pages)
++{
++}
 +
- 	/*
- 	 * Either dequeued or buddy-allocated folio needs to add special
- 	 * mark to the folio when it consumes a global reservation.
+ static inline void mem_cgroup_replace_folio(struct folio *old,
+ 		struct folio *new)
+ {
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 36ab9897b61b2..70d762ba465b1 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2561,6 +2561,21 @@ static inline int try_charge(struct mem_cgroup *memcg, gfp_t gfp_mask,
+ 	return try_charge_memcg(memcg, gfp_mask, nr_pages);
+ }
+ 
++/**
++ * mem_cgroup_cancel_charge() - cancel an uncommitted try_charge() call.
++ * @memcg: memcg previously charged.
++ * @nr_pages: number of pages previously charged.
++ */
++void mem_cgroup_cancel_charge(struct mem_cgroup *memcg, unsigned int nr_pages)
++{
++	if (mem_cgroup_is_root(memcg))
++		return;
++
++	page_counter_uncharge(&memcg->memory, nr_pages);
++	if (do_memsw_account())
++		page_counter_uncharge(&memcg->memsw, nr_pages);
++}
++
+ static void commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+ {
+ 	VM_BUG_ON_FOLIO(folio_memcg_charged(folio), folio);
+@@ -2574,6 +2589,18 @@ static void commit_charge(struct folio *folio, struct mem_cgroup *memcg)
+ 	folio->memcg_data = (unsigned long)memcg;
+ }
+ 
++/**
++ * mem_cgroup_commit_charge - commit a previously successful try_charge().
++ * @folio: folio to commit the charge to.
++ * @memcg: memcg previously charged.
++ */
++void mem_cgroup_commit_charge(struct folio *folio, struct mem_cgroup *memcg)
++{
++	css_get(&memcg->css);
++	commit_charge(folio, memcg);
++	memcg1_commit_charge(folio, memcg);
++}
++
+ #ifdef CONFIG_MEMCG_NMI_SAFETY_REQUIRES_ATOMIC
+ static inline void account_slab_nmi_safe(struct mem_cgroup *memcg,
+ 					 struct pglist_data *pgdat,
+@@ -4777,9 +4804,7 @@ static int charge_memcg(struct folio *folio, struct mem_cgroup *memcg,
+ 	if (ret)
+ 		goto out;
+ 
+-	css_get(&memcg->css);
+-	commit_charge(folio, memcg);
+-	memcg1_commit_charge(folio, memcg);
++	mem_cgroup_commit_charge(folio, memcg);
+ out:
+ 	return ret;
+ }
+@@ -4796,6 +4821,40 @@ int __mem_cgroup_charge(struct folio *folio, struct mm_struct *mm, gfp_t gfp)
+ 	return ret;
+ }
+ 
++/**
++ * mem_cgroup_hugetlb_try_charge - try to charge the memcg for a hugetlb folio
++ * @memcg: memcg to charge.
++ * @gfp: reclaim mode.
++ * @nr_pages: number of pages to charge.
++ *
++ * This function is called when allocating a huge page folio to determine if
++ * the memcg has the capacity for it. It does not commit the charge yet,
++ * as the hugetlb folio itself has not been obtained from the hugetlb pool.
++ *
++ * Once we have obtained the hugetlb folio, we can call
++ * mem_cgroup_commit_charge() to commit the charge. If we fail to obtain the
++ * folio, we should instead call mem_cgroup_cancel_charge() to undo the effect
++ * of try_charge().
++ *
++ * Returns 0 on success. Otherwise, an error code is returned.
++ */
++int mem_cgroup_hugetlb_try_charge(struct mem_cgroup *memcg, gfp_t gfp,
++			long nr_pages)
++{
++	/*
++	 * If hugetlb memcg charging is not enabled, do not fail hugetlb allocation,
++	 * but do not attempt to commit charge later (or cancel on error) either.
++	 */
++	if (mem_cgroup_disabled() || !memcg ||
++		!cgroup_subsys_on_dfl(memory_cgrp_subsys) || !memcg_accounts_hugetlb())
++		return -EOPNOTSUPP;
++
++	if (try_charge(memcg, gfp, nr_pages))
++		return -ENOMEM;
++
++	return 0;
++}
++
+ /**
+  * mem_cgroup_charge_hugetlb - charge the memcg for a hugetlb folio
+  * @folio: folio being charged
 -- 
 2.53.0.310.g728cabbaf7-goog
 
