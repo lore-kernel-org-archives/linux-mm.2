@@ -4,79 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4415CEB48E8
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:57:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73D93EB48EA
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A736D6B0005; Thu, 12 Feb 2026 03:57:00 -0500 (EST)
+	id B284D6B0005; Thu, 12 Feb 2026 03:58:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A216D6B0089; Thu, 12 Feb 2026 03:57:00 -0500 (EST)
+	id ADFB76B0089; Thu, 12 Feb 2026 03:58:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D8686B008A; Thu, 12 Feb 2026 03:57:00 -0500 (EST)
+	id 9E20A6B008A; Thu, 12 Feb 2026 03:58:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 79BAE6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:57:00 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3C9C814061A
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:57:00 +0000 (UTC)
-X-FDA: 84435199800.24.C66C12E
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BA056B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:58:46 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EE03EBB08C
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:58:45 +0000 (UTC)
+X-FDA: 84435204210.26.1D48A02
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 77A874000B
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:56:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S3P+tnYd;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2FD5C4000A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:58:44 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HT5R6kpv;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770886618;
+	s=arc-20220608; t=1770886724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e3af+MlltrUJA/uboRMs/erPVn7vNghqV5n1Ad2OB+I=;
-	b=lf1mP7mds3yEel2dgBttfukk8bG6fPXaUfGmUPq0z0ngYoLFXEUGvpkTChgx9zdWi9ovbf
-	tgZ1HLDmrA0fnSlTMZCsck+1fi0e3HPyiGciUUF2paBJ9Rx7FvFkPMB/UgUCRWBRrog36k
-	ewrnFKT91LxJ/iE2yLRwrk0j4FkOyoA=
+	bh=YDZYxDalqWS4jpiN6DyzwpwDXVyHMVpKrE+0rILK6hg=;
+	b=0f6//u3UjNxPgPS5ugHPzVE+G8PmNq5alLmkokSmyA/0jTncTFjso+SQa7c6DK4xjr6XWq
+	+70TVbIhCAwmyBe8ej+K+UpItp6N0+YlNGI50VPHPh4NZtPpeDpQClj8V4RezsVGvMUb2i
+	yRI1CXin2yUjC3RLZhL/pr0XiI6wRHc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=S3P+tnYd;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HT5R6kpv;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770886618; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770886724; a=rsa-sha256;
 	cv=none;
-	b=8qgX4mb1qaXgLf8n4plS65+z1252DTHn6QERAn8awgEKyGQvLfBkc48Y20IJYug+6GJOrC
-	3GHQzLg+uwdToT7HQk0niPWYeiMuzRBB9/zn4MkyWkIL1xvQiLRTkVjDlK4//Tjffa9hB1
-	8EaRwTshxnzfgNKKj7n6rdn1nX1lmhY=
+	b=1iaahUfVfUaK5UwbUD63xAIU+qlZMiDHUYhrCDnTbyB9K4MAc3/UJ2Av9/TO4WyFedl4CB
+	c9m52fIGkUil9CRItglWLTZVcFkTHvV6Gs9vdtuKJQyXp18e9+iqWdgGO3fKKfzMO9SCWS
+	0CDvEUCeRYwqdU3WUOeYzUvtLcjP4Pg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABDA260148;
-	Thu, 12 Feb 2026 08:56:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D63CC16AAE;
-	Thu, 12 Feb 2026 08:56:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7B62960128;
+	Thu, 12 Feb 2026 08:58:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0155DC16AAE;
+	Thu, 12 Feb 2026 08:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770886617;
-	bh=GSFGi6Wo2gbSRWUm5kmTNakdsDg392jncu06ZCo6F2c=;
+	s=k20201202; t=1770886723;
+	bh=O72aDxD0jjZlGGwbJFSDSKCAXe0FHSLzulcP/3B+3gA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=S3P+tnYdoMFREIUFIC069mQQC4uLJ6Dt1oCYwvaxKDa2e8zNEtLTI1vx97FaBuZAW
-	 5xrzYTctJzVhHKi0XVOJUIY5DH46zCoKA+33SzqDZy9a4lmVQL55+/JhxVDvoFPrtT
-	 eEaJbr37tKv1s7fZVD6BhE3Mv1ZK/7BxxHOQC0lTSud89gI6SsuU97cjf3dGZCESb0
-	 jPFgelLVbcNJ6wXavCb11wYhxCM+IHiqZIbppRhdxYCquLIVbmkl6qJYfiHnUL9SZf
-	 CMeZaqcd1/zfangSWxJz1rirNkrYlbdfbHd/Hg8/yBuxR+ueZIVHPnt7DynXedsC3x
-	 UNH9k22cBlm0Q==
-Message-ID: <39da9858-7e7e-4df7-be58-9d6ec32a4473@kernel.org>
-Date: Thu, 12 Feb 2026 09:56:48 +0100
+	b=HT5R6kpvSukfg5IN9nlS4YbpAP2leknMovU4Qa/hAHCkiDLHNZCK/gaEeXQHxyP1T
+	 EeaWGdiI6XLZNPc7qylXP4VxUBbfiWCiPR0OOrU3ukw4sHt8o/tbgJHm1EXYuVKv5l
+	 TBZNfkmh8mxb3m+xGctyA2sWLPBXy+8bVH6k/ChG6pgU9xLYtMCirmrNSdekZUSMr1
+	 rcLqmGD6U2Zf3RltXhzmv3O0aVtAoGjJuEnP61CUcxzzuUEYvxoWOwO1f80x8bs6UX
+	 gPY2bh3g5BAn1TNdodmkMMpjKpSAgB1l7qIcZJmbGe5SiaAuLLViJ5jFEfzgOeHrZb
+	 3ef+PtYkktc6A==
+Message-ID: <a9834da2-67c5-4641-8ca1-fc5ba067572e@kernel.org>
+Date: Thu, 12 Feb 2026 09:58:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: name the anonymous MMOP enum as enum mmop
-To: Gregory Price <gourry@gourry.net>, linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-team@meta.com, osalvador@suse.de, gregkh@linuxfoundation.org,
- rafael@kernel.org, dakr@kernel.org, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- Jonathan Cameron <jonathan.cameron@huawei.com>
-References: <20260211215447.2194189-1-gourry@gourry.net>
+Subject: Re: [PATCH v3 1/4] mm: don't special case !MMU for is_zero_pfn() and
+ my_zero_pfn()
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen
+ <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+ linux-mm@kvack.org, x86@kernel.org
+References: <20260211103141.3215197-1-rppt@kernel.org>
+ <20260211103141.3215197-2-rppt@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,17 +148,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260211215447.2194189-1-gourry@gourry.net>
+In-Reply-To: <20260211103141.3215197-2-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8z6ysy4zku338ejnhopcqfrzgbofrpjt
-X-Rspamd-Queue-Id: 77A874000B
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 2FD5C4000A
+X-Stat-Signature: 9dr9uz6jdiaugjj7rmc4k85jf7pzufpb
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770886618-980548
-X-HE-Meta: U2FsdGVkX1+dxeuk0/rgsAB8bdWG5swZluD85DP02BLVIagcRBRBeueKu3ojZvwq/GF1NWjf7iyVJbF9EpS56Rk8N3/60WJnUp49y6y8cI86FJ5O5AmNuVUuNwAbQD5zirmzGFc8EfnDzK8mqd9pMggWboniC56vQhfW6AiwVvDdwXaS3unp1F00g2vYxU2VDCK2pDUZu/l3158y3iaOWvTc8Uoqk66AXtjidaSuUExfGLooTGpOig2Kf+FNHZo1avr3duRjFZEULlUZM58Jpk403yOlN+8s8wSs3UU0Mcu6UQrDRytE92w+jyPtT6D2RHHwh10Gbo4+8cQORIJt5CxVb+/NPZAQw7CIeXHSZKBT2Og8dMw5HWuzZEpitFT+bGYQ69jr2C2UI6y1OcHn4fTOsNnUUU7r6mE7Dl6ZUUDpfj1UEsU4q9idWxoLcHrYgYBBWT/oKFHtmBNbJRynjdSgWOdEIfiyoNSmsjsGFo9oasY/lUO35dwQY79f19/1h2tBzasHIwpY4dFWu8yObi8dvQmsuw9nOWeDsYRo3EHlgWDsx3yzCgb01zzCz2xbZlOpR8rwuz8KrWDJ9EKOa7fK+8rKGAFiXOAsy6/glFNfKWVWRWI7jTfylMYsgaUYWJdhgPZW3yxAXGezHnlKfzfALydvTJDAFWP+y5hTPyeM8cne2nFbbE/ngHAdKcp8oEzshSP3ptkpYPaIMFMCR1KLkBzTKIWCYy7GpvskN0gDpXnYV3KFq9B8TBinw1AKpxITsWXzIofJbHGfrOKQ80xFEJ7PqxlUx7BetpwYAnXYofgKFOFUvH0O8i5RSC3j2PEFMLyqhzf59/YxHJXxfqUnwfAKVOrI0PSB8F9soGdATtRZlGFaTM5lVRiuMp5GphU2qs+3LgmJIdzcJziZ+v4v+tkgAQMLBgrjGns8L97T47qZC94mQMc0w6ZTJQ+QlrVLwo1RxXW1GakPdHZ
- a/KwjH+R
- wbEdjv62BB60bGB1SOdnuJAs8bLoIZiYl0Cl01yA9aldRXPOkbMHyTeYW8z1k/x+jx+uDP776YJBmF7BQjh8FvUDspYWEWGY/MUEJyAd3lOitAPggAeHkPStERoMSDVz8DAIUPyp+4lL1foI/aWo1MTmgTUp9wZRPcYjvgboW/ypRLzXRRlt67KGEAeIIszy5jF6Sb/fBZ48qs4Q1zE70EsS/O6KEGUNT1COKpDkftfS7iY0EHvuMQb8uTqKe/YwCzwi4StgTTY6C56ZhmB2/EzPUgTzte8VgQ729MyPRSO30wocBx/04Jc/Ad7gDhCuUrE6vts8Nt4GWt4aD15unA4//rYcqBxkrv3nbOCUJvY0xfpA=
+X-HE-Tag: 1770886724-463288
+X-HE-Meta: U2FsdGVkX1+RetTkfVo0um8MmD6Uy89kuRrqhCmEoflWyqZz1rF2A+Xbes573g/JcSwXtaOe1XTJfW+zbJJZ7dSPEW/e/DZkEeJuzF5AmhuYuVUJ+/cooaD0GoqAQWGeNSager/BhptHmB2Q3qeqeMDzkJkH8L549KwR66pm0GC+tdUejRA8NPro3pzdmXO6vJ8HC9Utbej9V+mFbdEj3UhZAoulWD2gSJnKZ2im1YzJOclbd61wb70JIB0jIWhzDIyzTHkZ2/A+abDO3wznZcqBQ82QBlaL2qAcIm4olYKOrC23PGuDb3CvIpdhFRwObhCFuN55QSBjAEPykexaaYHXaeHf0rOMFNyEsGq1MAQ8b+IejF4dWZuFzO+koL/iq5tHFjPUoA8tm5MDQeem+kU+GpsRKgSa4aG5HIs/lpZhT+pt/rP5sS2TNxG6NiBOssEc3vmHNvPh/JzPqEX2u6NSlbLZUfsqaiYIrMPTcL1HFNQX8vfp6fYEHTo60Gh2qzu3TgPBmDb/93Ls+6dc2PfoBMi31xc4Zrf0NCxIpe6+okXzBLCMNfWj9nNhHp1wkc8Qb03WRdb5GeSNMVvDxTESrmM1BFkdbn87xz7K4G/uopGBhFXfrv38NtkaqCqLH31M+oWNG0xOcyk/w8lO7sV0qsKr43ZpldLJ2Q4gWpDpKWSfKp2arxnthDJrzbI1sPRV4VyX7ALvz27hVx5kXP1xvgFWs6Lh7HFGlxtGYqpjpPVw9gGkXOHiwPi3xhlHyqYPwdP6L6xhfuyJEn8ugq1FBio3mIYv2WjNz+LQUJapbl01MrfCYVCoW4I5wRGuRJtf7VYrG7j4/1kvHJmX0xAwsqVy+06NNcx0esXfkrlmWbm1YBU4X3rJs3liPrmWdAfeKUUUkcxgVhmVxpFCAno26CSCCpm90eo95JwHvaYdwJ6FkrpcqjB8t7t9h9GoqVEyMeEL6SvK+cgAoCd
+ 7lKKWEal
+ IN+fSVVjaoqnYGk5TuwnJM4Yvaq3nUHeqMRXRzECiadTh/zc9ONFcWWQ98xPhdkZlVpdYX5UJNZ58xRTPgYZTYgBllSOeg0B8vcoLMQFgOwKS1fgSmuvTl7mZKbcp4a6M+fYZ2mipLDd1FIo2KZjjAishr9q4u7P/8g3UadXL3cCkRLkWZvRXmWMgAQQqEg4HX2p0LiEgzQhF1klsAumdw9IYerleSS4eweDtweGPV8O52xrq5kb8fCJ/xJVCJPO3SLTy03hcxdG4L/P9rUTvUPYHbBSeRW1nIi0Az8yVQ/MDHfb7/3mcnZNT1ESLhz9oo+iteKYcLc1OvSRGxrGSc4GuMEoqlACAlJIfl+4ohyR0Uzys0/QeeZdDAQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,29 +167,20 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 22:54, Gregory Price wrote:
-> Give the MMOP enum (MMOP_OFFLINE, MMOP_ONLINE, etc) a proper type
-> name so the compiler can help catch invalid values being assigned to
-> variables of this type.
+On 2/11/26 11:31, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> Leave the existing functions returning int alone to allow for
-> value-or-error pattern to remain unchanged without churn.
+> nommu architectures have empty_zero_page and define ZERO_PAGE() and
+> although they don't really use it to populate page tables, there is no
+> reason to hardwire !MMU implementation of is_zero_pfn() and my_zero_pfn()
+> to 0.
 > 
-> mmop_default_online_type is left as int because it uses the -1
-> sentinal value to signal it hasn't been initialized yet.
+> Drop #ifdef CONFIG_MMU around implementations of is_zero_pfn() and
+> my_zero_pfn() and remove !MMU version.
 > 
-> Keep the uint8_t buffer in offline_and_remove_memory() as-is for
-> space efficiency, with an explicit cast when we consume the value.
+> While on it, make zero_pfn __ro_after_init.
 > 
-> Move the enum definition before the CONFIG_MEMORY_HOTPLUG guard so
-> it is unconditionally available for struct memory_block in memory.h.
-> 
-> No functional change.
-> 
-> Link: https://lore.kernel.org/linux-mm/3424eba7-523b-4351-abd0-3a888a3e5e61@kernel.org/
-> Suggested-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-> Suggested-by: "David Hildenbrand (arm)" <david@kernel.org>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > ---
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
