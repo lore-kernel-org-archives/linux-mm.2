@@ -4,85 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58D5EEE36B4
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 17:54:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAC6CEE36B4
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 17:57:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADB276B0089; Thu, 12 Feb 2026 12:54:27 -0500 (EST)
+	id 1E8256B0088; Thu, 12 Feb 2026 12:57:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB3146B008A; Thu, 12 Feb 2026 12:54:27 -0500 (EST)
+	id 196546B008A; Thu, 12 Feb 2026 12:57:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E97D6B008C; Thu, 12 Feb 2026 12:54:27 -0500 (EST)
+	id 04DB46B008C; Thu, 12 Feb 2026 12:57:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D9E06B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:54:27 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 44DABC1382
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 17:54:27 +0000 (UTC)
-X-FDA: 84436554174.23.1991BAA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 51A13140008
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 17:54:25 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770918865; a=rsa-sha256;
-	cv=none;
-	b=HwY9GNpEKH+i+0vpeAOvsizD75G4O8M5vJnNHTmWLO33PwqTktWozBCDIQDPZ/QIa1tgmB
-	WaUpHCm+9BzXHpJ2438/kTKnW2VVgV4iqNs6pfR480JM42nbfbMHp86MXxGQy4fsO4ZSBH
-	6v9jwHd7gkyTnx0WgrLCc9A3xmbxneU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf23.hostedemail.com: domain of catalin.marinas@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=catalin.marinas@arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770918865;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E840E6B0088
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:57:55 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8000D579D2
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 17:57:55 +0000 (UTC)
+X-FDA: 84436562910.19.7D28F0D
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7040F20005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 17:57:53 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CTtgrtnp;
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770919073;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XjwRo3/aNHQI0fko4fjuhSSl5Zy+5yR8Y/GvkeqBeMM=;
-	b=zKk8ZmZnuipq7uLnwmu8m8WKWdLTNnpBcGqIhjbVylJ6XY0MrAyyQ/KxRcLgtjE7KiWQ8v
-	jlP8irnQJJWx1E9U12cPE0eJuNQ9YeMFEGsTE0fwC6f2yFNo7oFjg2whoGDwyWy2LlZioK
-	tf//76uS3ZJY+FDUJ0uMPzaJ4EcUpaQ=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 250EA339;
-	Thu, 12 Feb 2026 09:54:18 -0800 (PST)
-Received: from arm.com (arrakis.cambridge.arm.com [10.1.197.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E4D33F63F;
-	Thu, 12 Feb 2026 09:54:22 -0800 (PST)
-Date: Thu, 12 Feb 2026 17:54:19 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Yang Shi <shy828301@gmail.com>
-Cc: Tejun Heo <tj@kernel.org>, lsf-pc@lists.linux-foundation.org,
-	Linux MM <linux-mm@kvack.org>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>, dennis@kernel.org,
-	urezki@gmail.com, Will Deacon <will@kernel.org>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>
-Subject: Re: [LSF/MM/BPF TOPIC] Improve this_cpu_ops performance for ARM64
- (and potentially other architectures)
-Message-ID: <aY4Ty6G6A3478_JS@arm.com>
-References: <CAHbLzkpcN-T8MH6=W3jCxcFj1gVZp8fRqe231yzZT-rV_E_org@mail.gmail.com>
- <aY0Q7QhGDKwKk2ie@slm.duckdns.org>
- <CAHbLzkoE0UQLZSKQJttv1_XGT-6HPKdj5o7aYnpuiXEyvbAHxA@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IYldN8nJ8BmowaE9ITlpD7cTPMulBlt1j14V9uSN+rI=;
+	b=xRI2Dt3wt+M2II/eGjUVtSOYuXbUOPXf31pTIIfQMAfJ1KjVWAuDn8nuDVytWuVZCaiSfl
+	ClpZIEORV3KL/WF0Yrskx9fAmgD6zt2J9EDe1nkLjAjHCJXWtfHqI2n4mPCslcX46hHw80
+	cgCmskXCPDaX4XCOiJlT0y4urkIlH6c=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=CTtgrtnp;
+	spf=pass (imf13.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770919073; a=rsa-sha256;
+	cv=pass;
+	b=rmE7Q3dHjJeRepWXef2bMrAhtuTWEKDEcvtjyvNeH0AQyQCSuRX+Az1P+Oa48LOnpWkwIo
+	cezC5LaSXH3Ix2tcnvljk/fvOoD8VAPHaK1IatLmQhl3Ev6vkwRJbbNXZ7On43kZXZF5ji
+	Qu+JUKf07yh6CWIVixUs2cDc0FaHCRg=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-4359a16a400so129626f8f.1
+        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:57:53 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770919072; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PFvSwdw0E9eWK0IRhHtjAelXwQO19nMU7mD0Uui9Ay1wGstov8ses4oJHNTjGEWQIA
+         ZVvQiltz0IWx6XjRTP/SklxfgEm86i9WF3m2Kjcz9lAsRG/jxC/THfLqVSTUlIPiXkem
+         t1TJuVcWWCcXg1iOIaEIu7bXGkWiOoyAe9chxTUSEIs0KfZRMm4D/u2lXdC6fPG7rm2H
+         pjPvOLhDL32DUancObCliBsohtxy9ewh0mjXcVoyfiQ+oEBxluvSZmV3GcM0nchCseLG
+         Y3gqp6UwqzIOYyJbpPM7pO2J7hfgt17n0ry5fhYtrEPFA5sTGCzSMhUHk/nf+MvWn47T
+         Sf0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=IYldN8nJ8BmowaE9ITlpD7cTPMulBlt1j14V9uSN+rI=;
+        fh=Yhuj/Qh6GsRRj/uWS0DuglmbnLUBq2d2hsp/TMQgWTw=;
+        b=hhyG1ZZG4nlTLYA7gnfqk9xIlD2Ozo1K33kv8LQ4cH6skpRY9kSDtP5qmnvmNVeYG7
+         C2IhfQbLcQH0Jz9Rpulb48wG5sJaKEthiLNos6WPSOu06S2FwlKtqg57bYw9iWIst5FV
+         cUmhW7vizSTlBPN/2hBBBtXFv9chIlbJ6hKlRRTmdTREUJKSHEZYm0iFfTmtDp3Jhysh
+         nX1iQ8VBBPlmoE8lzVHtRpSD45M8ehyA5B0rBAOmAhfjhY7eyAjnDCKqBrZbJD8CSDk5
+         xMYHm6YxVSOXWBFFG7i0LCNn4e+duoJuB6ekfjyE3wvGJwiM09OpiBy28yq5v6aIreB2
+         o2TQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770919072; x=1771523872; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IYldN8nJ8BmowaE9ITlpD7cTPMulBlt1j14V9uSN+rI=;
+        b=CTtgrtnpR9Jt3SA0rpEI49eEeG2eCg9g518KJXFstCvSS7DyMSREy3+e/lEuZgYC2T
+         Xru9vJbDBeu6FCSvBxPLSptDLZENznWfBOmkNQUyrRh5f1IiyS97Oi9qL+EZ1FmNYcrk
+         Cp2M2n6w2cxX0u37gOSlW16EDmQC2Og01ymT5J0ealgAHklBeEpV9JhE7RhIor5TIj/k
+         l/yKNN8YveFj9iSISmeWjVCmQeLjn6Vl+MuIMRsHHVPdOhyvRApGMGTG1kcooGJI5m6A
+         Wb9iIQNqMlvnnkLZj6fEbovR6jfjf82XCxZiYv8e4oGWgBfFlMcBNIHbGNgaFFiinMLw
+         IL5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770919072; x=1771523872;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IYldN8nJ8BmowaE9ITlpD7cTPMulBlt1j14V9uSN+rI=;
+        b=Mw94KkK9PxGdG7pyevUk9memDUz/UsXCx7APro7eXwv7KAkRHu7L5rllGsoAiFYsOl
+         oxP6Cyo8tqE8PVE8pgfHlJr6t+zvhFXACFP5xC9aHkEmiJKENidKPPg3WS2VM9T/mca+
+         nWZXzGb9/aikGBAnz6jY16v1vqw1tDbmJGvbDXtp5M5FMVUEY0lrhfRVAixh5Ukp6pd5
+         fNXZGx7LfIFerLR6Ccpp1n5QghWWsyuXgcPn3Pkjgo+f/EbD7vo3tPogyBkpAWMj2orw
+         obHJ1vTwubfeF+oDJT3fM3bUtLzhnHoE32kiZEq2EtRUzy/1CWygAvHi+EDUvxBEoHRR
+         PnXA==
+X-Forwarded-Encrypted: i=1; AJvYcCVmNxIuLjspt6iUmkOvvZ+YWEG4nN5SFbCO4SlloRhk+TpZ0HRxsM9N9xsuKf1Lh0MxMExUagBRHQ==@kvack.org
+X-Gm-Message-State: AOJu0YxSHgpvwnwwOQu26yvKabr8zWlujsr1V1h97PyrCYUyUjrz9zBp
+	FfBgKMFaDnLXQJRbh40mUgzEheYhaaPvEpok1MRrjw4vBklOoVb1wPQ7dUH0Nyai2cdiXBqWlYX
+	YKd1MrSvnxz/UijcuV8SNBDgYE9hegV8=
+X-Gm-Gg: AZuq6aJ0fDEQ/JeqX73FF+L9miMw68+bgINr4pPHG5GVMC0utbmJuPkZ56lgzjy5ILM
+	SdhdJzsDaTXoDNwmzNZ1ADzxdkj/I5mBbue2Gl+TbrdMaAHhwUnMVL8LJpRFuXoLB+s28k5zEau
+	8WwW+mkgzHK75Xlv5o6r/YZr6WGuqGTap/l3too8uiKy6nZeiksUuwkELnNcG3yNoWwIrZl/C55
+	5c0wSkDCoz37GSFR4bF2kH7+aQWSS0vAhGCt30IYDjtRgRP8YGI/JgZOl5sqRV7ZV93/RW+d/v8
+	5ZGm+TaEhCql4VUdvZYLrRhXr6c8idk8oKVvoCiO/p8SJObn1g==
+X-Received: by 2002:a05:6000:1acb:b0:430:fa58:a03d with SMTP id
+ ffacd0b85a97d-4378f171792mr6133718f8f.63.1770919071690; Thu, 12 Feb 2026
+ 09:57:51 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHbLzkoE0UQLZSKQJttv1_XGT-6HPKdj5o7aYnpuiXEyvbAHxA@mail.gmail.com>
+References: <20260126065242.1221862-1-youngjun.park@lge.com>
+In-Reply-To: <20260126065242.1221862-1-youngjun.park@lge.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Thu, 12 Feb 2026 09:57:40 -0800
+X-Gm-Features: AZwV_Qj8afqc0fwywStVAnuIAl3u22UxJ3GgjvwlQjimQSLzvC_WWxVKFk3xE_E
+Message-ID: <CAKEwX=M5nH3=aqSLybCfLrtScpYKz+jRWt3JYG7im70DCoyjJg@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
+ cgroup based swap control
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com, taejoon.song@lge.com, 
+	austin.kim@lge.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 7040F20005
+X-Stat-Signature: jtxf3tghxt6i96qdzjtgdh59j1x1ewm8
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 51A13140008
-X-Stat-Signature: gomdbwi3a6r81u7eup4aanbgnmspobfi
-X-HE-Tag: 1770918865-136024
-X-HE-Meta: U2FsdGVkX19IsZ1oX5KLn8qu9zXgpwyJUumU5/DZuTkgzIuIzGfErPFN/+1n4Wew6rn9iXZ0wpbvNIgvZ8t4rn/Zyi1ZNKrma+E+dRII+ZZRKMTNqNKuMWzIKRCMrle39WoRs21TufTpQH6wITl7RtejlEgtaQ/xtBB0XKGG/IhIXrVp2BwLoyCJjrIepBT9bm/gMv839ouYZtKOu2ymIldvwfyD98LCUFyRvdmgFyq1rsPoAJLd3aLARqkKgK+Z9ePwqZ8IiGetWUQAUKWhijjyez4IEJlAxoyrqeWDO6/1j8cQAyXdfjBSVVFphlJVZ+L/VVQTnXJkCs6Rc8HBF9x8i2RCBpDMmKxnOjc4WYxNH8II0DR4wUcedJzJEkBe+FgNcYBs3w1ZcIZnWSrV5xjhwLuRfwK9KYEuZke9PX5893Jmrfltl/B3KGx5FB3oQL8KR5dc+1Z+rli3/i+Xi5BXAednYC+KCC36UoT9fguXDraNj/n9NVITLAJIV02JQD0i1FcfltJTZDySPZW2zhwkT/jn2RuI1T2uDcZprEP4N70mJcWvvrqcYSkPrGINLTqhm8g9+TuAY+yUT434YSwkiUiXTjkUFM+7g8yUa8iX3WQKssc479SjskjHSjpIVJXqurCfRSAXQqMyPK//i0cUWEyKxt8fYKu+Fp+mf1SnIMnLnmE9VXwvpoY2T0cmXQFJ2jF3n8qHA6149QoorSJxSzbg8L1kOgh8bLBHuxe7UwOXSkbfbLi+RfM3gEj1emO8S4dFOyXGp6P1BtnsGqVJSj52p81rhBjoyd9584U0JzclxHjcvfyvPsceEVjdjf/Az0MY8NAt2SxzCtis1rUa/fMsXg9btcxh6hfoQVJ+IdUxrJG7b4YvO+zsHLWtGEp3i0YD5xG49HuTzM9lpH6jlqUrIGC/jHNsMCfL8jyu0mroN66B7qHd9+/CmuOIuvTuoR1FLTTVWrU4qoi
- s3QzkbrH
- hhZ+xuUZD8tpzUwTz9NtfsQkHnhRWDvh8R2y6cF25NBsV7dGWQArOVoYEaj6GfE/3R/6L7CX4Uwwa0/n61yL+K5M16wH37EXGP9t6e8laBEvwyNGREoevwEB4tMo2v43AVM6mBATOYsyFdPjTr7YVHOwzw4po/ldl7vu35EYtqu15VGmYtipWtCoEm6DsNhWTMp5C8oQcRbuzbvRlKK4hbIvAZ8C8hdlJC3OPx1BwXt8szeM=
+X-HE-Tag: 1770919073-125318
+X-HE-Meta: U2FsdGVkX18p0NJ9qgYXG0l5tpf43wSXTqbjSw60bBLxDIFAJyzZRrp4y5lgmGFZaP2oaVmhHi4DxaEWMAwEzP5tkNBvcAYH3TxCqOIJPMA2X/c77+TGVVeQJFwNi4d0JNzoC8TrIb5zyMoEJB4PHyUwNi618RVguNnkPamKwZvr+Fa/vheO5OsD5w4fzQ7yGpmofIAtw3Lor9/4bacmAIOHxVLw2nkBeBujUzWkgUOPGfw2Fjr7S7tURrSOeJXw0z4XK9xAfj75LmjTVAWv5gk2vclRMMHHMQgknLThkokQJJAuhmA/AJvXr5lq8zqWOH+Wa1dsCcq+pbDDNzD/nwmc/uoZ2dCXhzWQOTSyiBFqIsa+j4azdE+s8HQAWo3hkCAqjuEbC3PtSVEsHDemMqR4UZUhw9PH3Krlp8TxYH+6u0iK1Wjfbpq7yENax8h+C8fWT9Zk0DoJmh4i6cQWOJvR5SirJpj3Ujl4RTOPlkyvyDTuXwzbYY4StFUX3b8MV5/O6I3TOcUqNr/slPnixb+IZyB8jkX8YnMtoEhLdjnGw1dE8tLcyahBLSYSC0Sr5bQqzrXpMjTY23rizvfMrwJpfdnYhIlOP+zruQsBoJrwPCCGjRe5ATS8PTZ/Q2TU+WN+4d5ltYpxRnN8On976NMOx9I9HkTlj809xO8rVjytdx3MITRGGCHGPD0ncyFf5Fd2lBpP4/HS8nyrro294rci4PlyrQyylNLRKcyc68OSW8hCRa6wrJ6my+x5ntHqixDdigJQhDhW0/JsDUlZn9RZ1sZUrN6RKEdfH+iiOXYe+SaVp04Kai7xzmybW0iD+DdFcwf3qWHUfThZSnVA8hIcnhlhEvkWlI+ghy0PQXkCJR6STv4gLq71AhurEu/uhMzPP1DrQi9xlwS3p7qVxTgQpKUXxKrUbh/nbz1IejOOtEoYS1+58lVZCDgHCbKn+Co5LuIpMgxXXS7/rIr
+ hIK79yyU
+ OMlVwV7dA0BKAllq8Fdj6E4xB/JPjmyWDZF5lZlJsVtVpShrTxWVmfcKN1DrsfEqhf9u2hssstgG6fjgose/4HCE+mTpo4nKk+fMRLxorMwXDvsLcEypft0FOyyXkSsLA+ym8wNhM88fYQRBiCS45+3uYQrbY5MTNNd4KIXTzOCLXLePL9SbilRU3G1NPOApX0HlCkMkqfmxtWTiluUuTbqitutAzw/rU/CvDFUKv3tfagUREzpTOKXlDX7oLTs7OKwBIZ3nRmSKjB40Y3ff1RxLWr/TUcy4AqkXXlwKpyfxWe654O4aqRbWVK6txINjyQp7VD5anQ5qfMzWYTh0D2IDXxYqdWcvtGZdedM4iSE8Z6mMmEDPuqqro2xW86p6XdkC1X8KVY7KlVpBQjkdMMhgTvucJblvdE0PCnC6oeWbstAr8z0Wk9F/rsv8aEhj06ycNcD5Ci9p6YfbuyH+9kwkXiVAZt/b9wwlPeE28Z6FS4Mi3z18CDTR67g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,119 +145,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 03:58:50PM -0800, Yang Shi wrote:
-> On Wed, Feb 11, 2026 at 3:29 PM Tejun Heo <tj@kernel.org> wrote:
-> > On Wed, Feb 11, 2026 at 03:14:57PM -0800, Yang Shi wrote:
-> > ...
-> > > Overhead
-> > > ========
-> > > 1. Some extra virtual memory space. But it shouldn’t be too much. I
-> > > saw 960K with Fedora default kernel config. Given terabytes virtual
-> > > memory space on 64 bit machine, 960K is negligible.
-> > > 2. Some extra physical memory for percpu kernel page table. 4K *
-> > > (nr_cpus – 1) for PGD pages, plus the page tables used by percpu local
-> > > mapping area. A couple of megabytes with Fedora default kernel config
-> > > on AmpereOne with 160 cores.
-> > > 3. Percpu allocation and free will be slower due to extra virtual
-> > > memory allocation and page table manipulation. However, percpu is
-> > > allocated by chunk. One chunk typically holds a lot percpu variables.
-> > > So the slowdown should be negligible. The test result below also
-> > > proved it.
-[...]
-> > One property that this breaks is per_cpu_ptr() of a given CPU disagreeing
-> > with this_cpu_ptr(). e.g. If there are users that take this_cpu_ptr() and
-> > uses that outside preempt disable block (which is a bit odd but allowed),
-> > the end result would be surprising. Hmm... I wonder whether it'd be
-> > worthwhile to keep this_cpu_ptr() returning the global address - ie. make it
-> > access global offset from local mapping and then return the computed global
-> > address. This should still be pretty cheap and gets rid of surprising and
-> > potentially extremely subtle corner cases.
-> 
-> Yes, this is going to be a problem. So we don't change how
-> this_cpu_ptr() works and keep it returning the global address. Because
-> I noticed this may cause confusion for list APIs too. For example,
-> when initializing a list embedded into a percpu variable, the ->next
-> and ->prev will be initialized to global addresses by using
-> per_cpu_ptr(), but if the list is accessed via this_cpu_ptr(), list
-> head will be dereferenced by using local address, then list_empty()
-> will complain, which compare the list head pointer and ->next pointer.
-> This will cause some problems.
-> 
-> So we just use the local address for this_cpu_add/sub/inc/dec and so
-> on, which just manipulate a scalar counter.
+On Sun, Jan 25, 2026 at 10:53=E2=80=AFPM Youngjun Park <youngjun.park@lge.c=
+om> wrote:
+>
+> This is the second version of the RFC for the "Swap Tiers" concept.
+> Link to v1: https://lore.kernel.org/linux-mm/20251109124947.1101520-1-you=
+ngjun.park@lge.com/
+>
+> This version incorporates feedback received during LPC 2025 and addresses
+> comments from the previous review. We have also included experimental
+> results based on usage scenarios intended for our internal platforms.
+>
+> Motivation & Concept recap
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D
+> Current Linux swap allocation is global, limiting the ability to assign
+> faster devices to specific cgroups. Our initial attempt at per-cgroup
+> priorities proved over-engineered and caused LRU inversion.
+>
+> Following Chris Li's suggestion, we pivoted to "Swap Tiers." A tier is
+> simply a user-named group of swap devices sharing the same priority range=
+.
+> This abstraction facilitates swap device selection based on speed, allowi=
+ng
+> users to configure specific tiers for cgroups.
+>
+> For more details, please refer to the LPC 2025 presentation
+> https://lpc.events/event/19/contributions/2141/attachments/1857/3998/LPC2=
+025Finalss.pdf
+> or v1 patch.
+>
+> Changes in v2
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> 1. Respect cgroup hierarchy principle (LPC 2025 feedback)
+> - The logic now strictly follows standard cgroup hierarchy principles.
+>
+> Previous: Children could select any tier using "+" regardless of the
+> parent's configuration. "+" tier is referenced. (could not be silently di=
+sappeared)
+>
+> Current: The explicit selection ("+") concept is removed. By
+> default, all tiers are selected. Users now use "-" to exclude specific
+> tiers. Excluded tier could disappeared silently.
+> A child cgroup is always a subset of its parent. Even if a child
+> re-enables a tier with "+" that was excluded by the parent, the effective
+> tier list is limited to the parent's allowed subset.
 
-I wonder how much overhead is caused by calling into the scheduler on
-preempt_enable(). It would be good to get some numbers for something
-like the patch below (also removing the preempt disabling for
-this_cpu_read() as I don't think it matters - a thread cannot
-distinguish whether it was preempted between TPIDR read and variable
-read or immediately after the variable read; we can't do this for writes
-as other threads may notice unexpected updates).
+This comment seems a bit clunky to me. The "+" is removed, as noted
+above, but then why are we saying "even if a child re-enables a tier
+with "+"" here? Am I missing something?
 
-Another wild hack could be to read the kernel instruction at
-(current_pt_regs()->pc - 4) in arch_irqentry_exit_need_resched() and
-return false if it's a read from TPIDR_EL1/2, together with removing the
-preempt disabling. Or some other lighter way of detecting this_cpu_*
-constructs without full preemption disabling.
+>
+> Example:
+> Global Tiers: SSD, HDD, NET
+> Parent: SSD, NET (HDD excluded)
+> Child: HDD, NET (SSD excluded)
+> -> Effective Child Tier: NET (Intersection of Parent and Child)
 
------------------8<------------------------------------
-diff --git a/arch/arm64/include/asm/percpu.h b/arch/arm64/include/asm/percpu.h
-index b57b2bb00967..7194cc997293 100644
---- a/arch/arm64/include/asm/percpu.h
-+++ b/arch/arm64/include/asm/percpu.h
-@@ -153,11 +153,17 @@ PERCPU_RET_OP(add, add, ldadd)
-  * disabled.
-  */
- 
-+#ifdef preempt_enable_no_resched_notrace
-+#define _pcp_preempt_enable_notrace	preempt_enable_no_resched_notrace
-+#else
-+#define _pcp_preempt_enable_notrace	preempt_enable_notrace
-+#endif
-+
- #define _pcp_protect(op, pcp, ...)					\
- ({									\
- 	preempt_disable_notrace();					\
- 	op(raw_cpu_ptr(&(pcp)), __VA_ARGS__);				\
--	preempt_enable_notrace();					\
-+	_pcp_preempt_enable_notrace();					\
- })
- 
- #define _pcp_protect_return(op, pcp, args...)				\
-@@ -165,18 +171,21 @@ PERCPU_RET_OP(add, add, ldadd)
- 	typeof(pcp) __retval;						\
- 	preempt_disable_notrace();					\
- 	__retval = (typeof(pcp))op(raw_cpu_ptr(&(pcp)), ##args);	\
--	preempt_enable_notrace();					\
-+	_pcp_preempt_enable_notrace();					\
- 	__retval;							\
- })
- 
-+#define _pcp_return(op, pcp, args...)					\
-+	((typeof(pcp))op(raw_cpu_ptr(&(pcp)), ##args))
-+
- #define this_cpu_read_1(pcp)		\
--	_pcp_protect_return(__percpu_read_8, pcp)
-+	_pcp_return(__percpu_read_8, pcp)
- #define this_cpu_read_2(pcp)		\
--	_pcp_protect_return(__percpu_read_16, pcp)
-+	_pcp_return(__percpu_read_16, pcp)
- #define this_cpu_read_4(pcp)		\
--	_pcp_protect_return(__percpu_read_32, pcp)
-+	_pcp_return(__percpu_read_32, pcp)
- #define this_cpu_read_8(pcp)		\
--	_pcp_protect_return(__percpu_read_64, pcp)
-+	_pcp_return(__percpu_read_64, pcp)
- 
- #define this_cpu_write_1(pcp, val)	\
- 	_pcp_protect(__percpu_write_8, pcp, (unsigned long)val)
-@@ -253,7 +262,7 @@ PERCPU_RET_OP(add, add, ldadd)
- 	preempt_disable_notrace();					\
- 	ptr__ = raw_cpu_ptr(&(pcp));					\
- 	ret__ = cmpxchg128_local((void *)ptr__, old__, new__);		\
--	preempt_enable_notrace();					\
-+	_pcp_preempt_enable_notrace();					\
- 	ret__;								\
- })
- 
+But otherwise, I assume you mean to restrict child's allowed swap
+tiers to be a subset of children and its ancestors? That seems more
+straightforward to me than the last system :)
 
