@@ -4,109 +4,237 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B71F4ECD6FC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 00:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58B93ECD6FE
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 00:39:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02FFA6B0099; Wed, 11 Feb 2026 19:37:41 -0500 (EST)
+	id A80AE6B00A0; Wed, 11 Feb 2026 19:39:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDDE96B0098; Wed, 11 Feb 2026 19:37:40 -0500 (EST)
+	id A2E296B00A1; Wed, 11 Feb 2026 19:39:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE33F6B0099; Wed, 11 Feb 2026 19:37:40 -0500 (EST)
+	id 8EAD66B00A2; Wed, 11 Feb 2026 19:39:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B6C346B0096
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:37:40 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8CA93C229F
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:40 +0000 (UTC)
-X-FDA: 84433941480.15.971655A
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9A32280006
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:38 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xmTcSpli;
-	spf=pass (imf02.hostedemail.com: domain of 30SCNaQsKCJo46E8LF8SNHAAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ackerleytng.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=30SCNaQsKCJo46E8LF8SNHAAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770856658;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C9B16B00A0
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:39:41 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2DA431B3F55
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:39:41 +0000 (UTC)
+X-FDA: 84433946562.09.C24A1EE
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 17304A000B
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:39:36 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EBzlwr4N;
+	spf=pass (imf25.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770856777;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mW1n+uSYA6jLOEsvKLlQWfWVUyuDqSU/loYnlj1zbjs=;
-	b=pE+FsPS+r0LqBCJZeiBq3QJgdn00/1/1PGgjMmHw+5Gg2iOvgXB5DF9OTjha1c8zdlZgJi
-	sp4z8OO6/0YkQuA8x0sCcEOTcaHkQSuvT/2SHCcF4eGWXlcfVUwJ7YJSWW4HjlOqm3MUbJ
-	pdIQ/hBi/TqZ5XaCvq7EHbYwDrJ23bo=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xmTcSpli;
-	spf=pass (imf02.hostedemail.com: domain of 30SCNaQsKCJo46E8LF8SNHAAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ackerleytng.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=30SCNaQsKCJo46E8LF8SNHAAIIAF8.6IGFCHOR-GGEP46E.ILA@flex--ackerleytng.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770856658; a=rsa-sha256;
-	cv=none;
-	b=YZBq3YJDAYijU1iZc+jNspbZV6PkUQimcHN5DbEej7jF/Rrmzsq8xK63N+ezUoFtjVUWJx
-	6eSvC9eSKQ7LS7AyV9qjcL/EmfPuwvdOIhTuG+FN/QqOLvM7O4mHdjH9p9FKI9FQ6s+bCv
-	QDLvhSwPEOYU/Xqkh8MIz4rOIY6hW4Q=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a92a3f5de9so16550155ad.2
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:37:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770856657; x=1771461457; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mW1n+uSYA6jLOEsvKLlQWfWVUyuDqSU/loYnlj1zbjs=;
-        b=xmTcSpliIAGKGpY+vh/hp88AssCOpYMwnf9nfRFfJc1GEnJx3mLUjt5fEkst7sM1L8
-         9ZYp6oYyErHiD1/rKqFlSnr9NtNm1V5uM8UyK2FKDHDkPV1G8nX/9xMVSKD217gdyFGr
-         y/p8V05CRIl46PzOetzJI7hllTJ9Yi/Grivldg2kYxVgoZSOQVL63/zAOd82fq/8p32m
-         WNAdHmuBLlpzNlxUOlXIGpwZvp9vB3VU7wrom9J6GJEXI2cEyCNG7i9FDrZbvMtscvgj
-         Uq0Fq+vF2jegryX7Wb8ZSSeVRBHkT8d7VljaIeOu+SeJ4XHx5De84e88oHdekYssY4xO
-         M7jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770856657; x=1771461457;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mW1n+uSYA6jLOEsvKLlQWfWVUyuDqSU/loYnlj1zbjs=;
-        b=PGLIsswM9q0nzc+x1DPmIWs7SROIvx0+lYyilZz4Lk98wQMKCQ0HH4vwgoeBdpIpOP
-         2ZNmS/vlVOtl3JIqOIWd+DEcjwaZw1Wh31pETSkUclFb+O3ZfAgN2myPayHAnNtAcvNJ
-         kndJlDmo3ItEymbe6jo0JCoWSbv9zPZiDsaeeYBDAO3T/l/YceAuwawUw5kRfGduQJ6l
-         ceWOk0hMWMAnP0ZbeeKjKbrvkMHoE8nY3JlMZbRW1GFPYoOMbOhU5TNlYHxYR1Fk1n2x
-         fthz2duyWS2yAZ/gY6cR0wnujMLXv8rc2ngH+lKJ5/GzUpy72DXjf1jlKJ+27yL4UX81
-         upkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUw8C+bFJZY5V4KojYaYQULSvED4HMrJIKJUi2+KI4cdlz612kaB1T23o0vchZB1lDm2upBKTKxkA==@kvack.org
-X-Gm-Message-State: AOJu0Yyk7Uu5FQrjVKXnVBK8+pLpDi1VVFTl23q0VxROr2Z+3kuKRibg
-	QnSd8aswReZlcnXgra7COGmcVTFAWnlKgBcW9P70tR17jEL+yqd1vLFdRQiOLoiIXPJN8vzQC1P
-	oNIrBV0FyfqCywV0xgtJRKsCmkQ==
-X-Received: from plbla13.prod.google.com ([2002:a17:902:fa0d:b0:2a9:622c:47d6])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:903:9cf:b0:2a7:d5c0:c659 with SMTP id d9443c01a7336-2ab3b1581a3mr5091465ad.5.1770856657375;
- Wed, 11 Feb 2026 16:37:37 -0800 (PST)
-Date: Wed, 11 Feb 2026 16:37:18 -0800
-In-Reply-To: <cover.1770854662.git.ackerleytng@google.com>
-Mime-Version: 1.0
-References: <cover.1770854662.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.53.0.310.g728cabbaf7-goog
-Message-ID: <3803e96be57ab3201ab967ba47af22d12024f9e1.1770854662.git.ackerleytng@google.com>
-Subject: [RFC PATCH v1 7/7] mm: hugetlb: Refactor out hugetlb_alloc_folio()
-From: Ackerley Tng <ackerleytng@google.com>
-To: akpm@linux-foundation.org, dan.j.williams@intel.com, david@kernel.org, 
-	fvdl@google.com, hannes@cmpxchg.org, jgg@nvidia.com, jiaqiyan@google.com, 
-	jthoughton@google.com, kalyazin@amazon.com, mhocko@kernel.org, 
-	michael.roth@amd.com, muchun.song@linux.dev, osalvador@suse.de, 
-	pasha.tatashin@soleen.com, pbonzini@redhat.com, peterx@redhat.com, 
-	pratyush@kernel.org, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	roman.gushchin@linux.dev, seanjc@google.com, shakeel.butt@linux.dev, 
-	shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com
-Cc: ackerleytng@google.com, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 9A32280006
-X-Stat-Signature: kirfnisdmi9qfh6nuaxj6b8fdb6zwec7
+	bh=Le4ERL3ypsraOAWf1b4OyC03ZcWp5uvWPKMZu04UskM=;
+	b=hnEKnoruQH/zgKOXwdwz2Qxmn692X7jSQR73IJbAVrmg5SS0sqdR25Sxwp/QA+CzT7BHaJ
+	wcmsYCg8hYbjUOXUvIJQf0JTVddsXSLd1Kf3vPyGoezlOd2oErevwlxWg1SSAoeuYaHbcx
+	WYunSnvd8e6Nh/rLxvdf+KmRmuMowhg=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=EBzlwr4N;
+	spf=pass (imf25.hostedemail.com: domain of dan.j.williams@intel.com designates 192.198.163.15 as permitted sender) smtp.mailfrom=dan.j.williams@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com;
+	arc=reject ("signature check failed: fail, {[1] = sig:microsoft.com:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770856777; a=rsa-sha256;
+	cv=fail;
+	b=bYgmUlR7ZAFX2YPMd8NeI60T1T6rPolwVH8FM6xelEC3MvO4h7g3XjUXA4lg7YKLQvPvKx
+	XJISgyjdPOLn6e/nRfZPkJY7s00fv8cQ2Ye1/DpOwNyFbAlCCtHzGC+Xva+3nnDdwJslGX
+	ZntAUhCnLsH5Crh0apeXjRkzUtFn/SQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770856777; x=1802392777;
+  h=from:date:to:cc:message-id:in-reply-to:references:
+   subject:content-transfer-encoding:mime-version;
+  bh=zyrhul+D0zktNhyfQDH4Egw5dTJ0PXQejQDHenL/ewQ=;
+  b=EBzlwr4NNrqAklJLE8X/SzdS1wlHSLkv5cIJb4AozvAZElaT+2Hwo4wk
+   tHOQ4ZTX9FNjPHzlOHn16+AMDmH2LVgCOLe2j4qy8iUXmeJqb2jzk2Hwl
+   xnG2vM5oN6lMKwUXVxi7gA2ZHyHUpdqvYHowlt1gVd8e6SN2ZbEJsuUcM
+   NEpFiiGSuj7haJG4y8+sOu8SPCxo+18y8veA+6PvTOIrLzKkupjqIpavk
+   rfjdPbivJ/c5sLs2FgoGTb83eghTDqp59AqpypI7NPi2HoiD/bXOpbxLZ
+   ljfjB4iVJn3b/sbBjX8DICekBsApM117oSySMO0WUm4GB7rUqTRhFyxYd
+   g==;
+X-CSE-ConnectionGUID: VnlchmCNR3qpLDx8Y2kJJg==
+X-CSE-MsgGUID: mq9bbsrvRgexgEV0vwUFaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="72114964"
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
+   d="scan'208";a="72114964"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 16:39:35 -0800
+X-CSE-ConnectionGUID: mAw7n9z4TVyVQhJwc37txA==
+X-CSE-MsgGUID: gH9yfNqbSci+QUotVmvjoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,285,1763452800"; 
+   d="scan'208";a="242103892"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 16:39:34 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 11 Feb 2026 16:39:34 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Wed, 11 Feb 2026 16:39:34 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.33)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Wed, 11 Feb 2026 16:39:34 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YSKrPNchfV07fQxx6aArGp2fc3CWa5Sb0ZozP+CLZxklJzAG5j1hpm8xgpc7cv3Q1tEexM9fUmk8rB2WeoI9F/CYvhfz5qD7GMAlprQ1QJDIVdnARXpEZr/gas5LHW/FTWg+NKgB8FoUrtBU1R1LP7EpgFJSAi+9h2N2w/1VEPpmAkDltmc18UEZys7bO9JdYTSoenfTEhe/7sp87K8LLmea4EQVYGTWXLkEdcuvvSgxI2eW8hJDZ0pS62Vx3gDYrF8Qwa98kjTXk805EXP7m89YTCPOcu2A/RBNLPHTniVGt/lqtIZd+DvMg9+Yok4gGY710DIrazkdXG/D/uC+Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Le4ERL3ypsraOAWf1b4OyC03ZcWp5uvWPKMZu04UskM=;
+ b=buHvcEXQR3F1SSElAlTWdAN5xM7Pyj1Rc7EZukKbsJU/PN9RmK+ljfVyM2n2HWl5JVaShjmyok89tmUH9kyU5W1JQFmYD7KD4SxKQb4KLnWyopWbjeHjvpVKO/uUcGnNM1lbToE6wQlh4v6W6kKnjsBF6pY6tB5yCVv2mZY5acQa+X5gEOOjTJiyt5RCHk5NtYDSX3gno1GhLQaZeeQtFqT2sPIzTd+cE8/EQjLpa2Qs4Ou/IUAYSvZrxRpugLJ/5h+igAz1sLBH5SYGsWWO5Eswo/pYFk36rJb7234P2OF9xvydHqKSNSSzc4cJ6iWfA3QJmVofWv31530wMKCVHQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by SA2PR11MB5163.namprd11.prod.outlook.com (2603:10b6:806:113::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 12 Feb
+ 2026 00:39:32 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::1ff:1e09:994b:21ff%5]) with mapi id 15.20.9611.008; Thu, 12 Feb 2026
+ 00:39:32 +0000
+From: <dan.j.williams@intel.com>
+Date: Wed, 11 Feb 2026 16:39:30 -0800
+To: Cui Chao <cuichao1753@phytium.com.cn>, Andrew Morton
+	<akpm@linux-foundation.org>
+CC: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Mike Rapoport
+	<rppt@kernel.org>, Wang Yinfeng <wangyinfeng@phytium.com.cn>,
+	<dan.j.williams@intel.com>, Pratyush Brahma
+	<pratyush.brahma@oss.qualcomm.com>, Gregory Price <gourry@gourry.net>, "David
+ Hildenbrand" <david@kernel.org>, <linux-cxl@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<qemu-devel@nongnu.org>, Jonathan Cameron <jonathan.cameron@huawei.com>
+Message-ID: <698d2142a8421_8c321003a@dwillia2-mobl4.notmuch>
+In-Reply-To: <20260211103320.2064211-2-cuichao1753@phytium.com.cn>
+References: <20260211103320.2064211-1-cuichao1753@phytium.com.cn>
+ <20260211103320.2064211-2-cuichao1753@phytium.com.cn>
+Subject: Re: [PATCH v3 1/1] mm: numa_memblks: Identify the accurate NUMA ID of
+ CFMW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SJ0PR03CA0116.namprd03.prod.outlook.com
+ (2603:10b6:a03:333::31) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|SA2PR11MB5163:EE_
+X-MS-Office365-Filtering-Correlation-Id: d29e010e-f2c6-4675-acad-08de69cf300b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Q3F1N2c2WGxnR2tuYmZPQkRXWE9TQ3hiVXg1RGtPSHZxWlE2aVZNQXcwNHo1?=
+ =?utf-8?B?K004Tno2SCtxM05lYmpkQjQyUHhNODFBLzhmQnFzbmhnNkhzNjhTcDJqMERW?=
+ =?utf-8?B?ZlVKdldveGNXS1RuQ2syYThhZCtZeHNwVlAyUjZvOHFHbjVub1ZJTzBGbElw?=
+ =?utf-8?B?bmV2ODVPcERzWVRnZThwR3dBR1lZU1dSWEhaT2YzS2NYTUlvTXFhQVNSRVZX?=
+ =?utf-8?B?dk5MNGdwbEYyOFpwR2ZiQ3ZwejRJYS9uVXNwZnBBUHhRN2k5UHBjQnFuZzcz?=
+ =?utf-8?B?eDBielNpTGszOUxFQ09HRmliUEVpb29zcDFzYVYwN3FrcnliS0xoRzRsSVQv?=
+ =?utf-8?B?UnFlOGhaMU04YVdrY2pLaDBqN3VnckZOSXFGYlVVUHcrSHVPdDlRakhCd2pO?=
+ =?utf-8?B?RFIxcTN4ZWorNFJmYndTS1M1dkNnam16YklDdGoxeFJ6d2hyUDhDZFNhbGVx?=
+ =?utf-8?B?SFBCOGluSC9DdWtTQmN2YW5Eb1JndHpJd2c4VDBZWFJwd0JyTVZscDBTSHY0?=
+ =?utf-8?B?THpBWUZqUks0ZzRTRTl6ZWdpNE1VSzUrWDhHRjh2Tm93clQ1bmRHbUdJVEMr?=
+ =?utf-8?B?MUdjSkhOVHdwZGpxSUxiZno0UzN5dllMVlRta2tTS1k0NzhvV21sNytEeGVu?=
+ =?utf-8?B?NnQrR3VqZWllcjlNUkVVSll5SGpUcjlXWDFSZzRxWFZJMFVSVndPN2JHZUhF?=
+ =?utf-8?B?SS9WR1hXMXZtK200UXVZVytYcHpKV0hualBmMjZMSm8zTW01YmgzVHEvRWJh?=
+ =?utf-8?B?T21kejFOYWpxeHFWM04rMjIwb01mNzhkRWVwbFRyMGg4VUk5ZnZNeDJUSVNR?=
+ =?utf-8?B?SWptdmJRT2NqSG1MN3dBa2RLV1FRcnpKd1BBOTZaVTJYOTJIRklQN3RiOGEy?=
+ =?utf-8?B?Q0lXYk5mUmhNRU5kQkJPdko5cVZUZHYrRXhFd3o1eFJlZ3owYW1FRUdRa3ZF?=
+ =?utf-8?B?WWRsSkZrM0dieGduMlNvZGtXT3NqdDhablJ0WER2VCtsVnI4aHVnRFBONXo4?=
+ =?utf-8?B?bG9WSmxGQnp6V2dyd0N0TjRyVFhuU0FMZlkwOGNLYWlJdUFPdXZEakd6SWI0?=
+ =?utf-8?B?Y21XUHhkb0V3SDVqTS95dFNkZm9Ba1JLWkFWVnlNOG1pczY1QVAvYTgxSkpG?=
+ =?utf-8?B?dkQxNEY5aVJJdjJFeWNzRGd2cllQOEdRNjNNeUhWdUpUUE5aYWJsbC8wTnMr?=
+ =?utf-8?B?VDd4UkwwUUJ3RmVCSHFRbzVRWXJ4eWE0K3dXWHNNM1lrVmZPRUtRcGpvcXBv?=
+ =?utf-8?B?Q0tJU21OTkV3c1FjbVBBSXhjTWRqcEVyR0xTYm42MWNycFpiVzR6SDI4S3JD?=
+ =?utf-8?B?Z3BkeHRxWmFscDlVRFQxUmZoSUVwVnhzSGxNY0s5Y1VXcVdwQkhTMWxkMGQ1?=
+ =?utf-8?B?dWFoRjZLa0xmdHBwc2Q5ays4WXZVaHpiU0JVZ3Z4dDNWTXgvMHhQbjlaeDhz?=
+ =?utf-8?B?cHpxWU9QK1hxRDQwZ0JnVzhNZ3d4KzQ1MXVtQkNrczNRSEtJY1h3bklXbzdJ?=
+ =?utf-8?B?eGdrZEtrU2dldXlBMkE5dlo5UERkSVpRUHErVXZlMnJiN09ndWJDbVo2Y0Er?=
+ =?utf-8?B?R1NoWEJpWnNYQlM2dk9ETjc3SUthRFg5aDF3aG9GZFdYYzBpOWEyTjhvK01w?=
+ =?utf-8?B?UlZPVm1OaFg2VlBJdHllT1Q4MkJoQkdzUmN6NTFjOWdsWFV3bm04S1RDcTVP?=
+ =?utf-8?B?VVFxcFhkTjFyNng5VXZHRkFEazM2SFJKY0xXT3RCU2FobDJJQXJURDVJQjFS?=
+ =?utf-8?B?em5kMEpuTjFBcEJWdHpSbGt0WWtXOEpyakRNMDVuUFJtOGY5QktXV2ZaN2xZ?=
+ =?utf-8?B?SlYwZlRHbElDOHdZcUltaHgxbE1BKytWOE5lRlRBUDEyZlRIdFJPWHlRTDBQ?=
+ =?utf-8?B?Z25OT2tsU1lFQ09wVmEvQ09yZnIxQXVEbXFRb0lBdWhPdm56YzBYcXdkL1NK?=
+ =?utf-8?B?aGNsMFVJOTlsZXZJL0hpQWN0ZnNJYVBFaUxiK2RnMTdYWXBRY1ptRHVhc1V6?=
+ =?utf-8?B?aC9HaW1JR2x0Z3JuVDdlaCtpNHdHM0xxVUNGTTh0TDJHc0NWRmNEWlhFc3lX?=
+ =?utf-8?B?M2prUTNocUtYd3F3dkd5K1B2K3dTRzRsRVBLcXM3a2FJUWFoSXBTR0ttQ21x?=
+ =?utf-8?Q?sorg=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RFlteW5wdnU4RHBxWVNPM3lJeTl4RUs3Zlp0aUUvd2llYXlwOTNYb0NUaXZM?=
+ =?utf-8?B?U2RpN2VLL3EvUGVQSklkZ1BRTHB5MHFqVjdvcWlDT1p1SnV3d2o3UXJndkk5?=
+ =?utf-8?B?SFNaUm5pTDJpUlVOcHh2ZFpiMUo1VlFlM0tnTU5KaGlTbWZ1RDdHQXNqbnNz?=
+ =?utf-8?B?M2JFNGUxVWNkQm43VDlLcW1EbWhmQlV4RjQ1ZVhXMjRBOUZ1aStiYUVTaFhM?=
+ =?utf-8?B?K1Ezb3R2VzFGYzhEdTdBckhsYjJqOEJYNXhJN1hlTVZqZXdmUHdTcHdDMEY1?=
+ =?utf-8?B?VE9iT1BpUHlKKytaYmpBeGRBVjB6dGF2bm94OHkvTm9CN1YxbWJSOUx5ODl3?=
+ =?utf-8?B?eC8yWEpYaHRRYmVtTDBzWDdyZGdYVXlvWm5aQnNnbXFQQm4rQUpnWWpnY0FI?=
+ =?utf-8?B?enBmbkd4R3cxMTIzS0lIeStVK3MyQWJHRzMwTDkyWFgzQythR2o5WlNIVFlU?=
+ =?utf-8?B?VmVFeE9OOU03VWlOQVlEQnk1b3E1djNoSUFnNENLd2UwZjcxc2RtbThPeGlz?=
+ =?utf-8?B?RE1NV2xTUThQODBDaG1KMWluZ25ScC9VRlJuQ3VWZU1ZdGlKREpGZ1dQaW5z?=
+ =?utf-8?B?MlhTcVphNlJIUVFXUnpTMXNKOHBCL013ZzNob3lLZEl0L1ZJamFCa0FPZU5x?=
+ =?utf-8?B?S3cxdCsrNnNkK1V3WWE4Q1pHU0FvRmNzOWZaZTRjV1BheU53SXc2czc2QU0y?=
+ =?utf-8?B?SzE4eURYazdqdlhzQjFOZjAwWUhZUXdDNkVvRnVLRXcxSkJZcndKZjU1MFRw?=
+ =?utf-8?B?T0tHRm9lZ0hjZkRrc3dxT2dwd1BBWWh1QjRYRElVSWdBOGpKOVhjamRBaWMy?=
+ =?utf-8?B?K2dac1YzV1VBLzZ5Tk92SmpvRnJBKzBCMExWdUNIUFdiaWxtN3p1Z1pyQ1Av?=
+ =?utf-8?B?Q0FpTDZsNUdNVnhrYkpML2djc3hNdFB0byt3cldsVENWSWtoWmRiUGhBVUUw?=
+ =?utf-8?B?OThaVnJuNFRaQUpCYjIvKzJ6TEZYbGExN1l0MTlPUGtoRXV0S0JxRDZaMTBW?=
+ =?utf-8?B?cHFWdFBaSTJkeGNEVUk1bnM5RFNTQXJnYkJ3enlITHBPZ0hmQTBxMGR1WkpC?=
+ =?utf-8?B?N2ZKOTFrYlpOa2htVGJUUHZXTTIyN2JETUdoYVh6NXk2d1pUN3BBWE1lNmRl?=
+ =?utf-8?B?SGtOUmRsMUZvOHpsQmw2dUVYY0Q0MWcrNE9xdWhkZ2tTT0Nya0VVWWpnVFV0?=
+ =?utf-8?B?N2srVVpkS0xaT3Zja1pKdWxnQlJsb2dVYVNQV1ZHYzFzMzBOUU5wTEhSQ3cz?=
+ =?utf-8?B?NlpCL2g2VWsva3p1dHp5ZGU0QWduQnl3NG5HZ3JjaFhUN1Nucmt4bVpDMk9z?=
+ =?utf-8?B?TEZxOFRxTzU3S1ZQVkFETXEzdmlDb3Z5VjduWkphd1RrZUpCaFJ2QTNqUnE2?=
+ =?utf-8?B?TnFBNnJDaE1EOUJZdGNKYmpjcUlPVU5XRnIwMzJoMVZsZDEvVWdnRWkzMEZZ?=
+ =?utf-8?B?RUtIZU5ibWVIb2l5a1dkOVlENjZwNUd5RytNWStReVZFMnVYVURFcWZYVGI0?=
+ =?utf-8?B?YmZCODAzRnYrVTBreWVKN2RoVmRMTTB0ZnJPRzVPOGtnYS96L0xsamU2c3o1?=
+ =?utf-8?B?dW4xQ3Vqc0F4RlUxaHhwM0VialhneGxmZCtmYXVmcC9RZCs1blRmb3FrNDB4?=
+ =?utf-8?B?Mnh3aVdVOTh1THl4R0RjZ0NBWDg2Zjk1ajIwbGZ3eFpuL1pXWEVTUGkzY0tD?=
+ =?utf-8?B?Y3hkbjNVQTY3UCtWbDNFN0VadGRpWFhIMWU2Z2ZCWmovcnNhR2lXV2JmZlZn?=
+ =?utf-8?B?S2NFRjJPRnpFZHBBMzJyaGxCMDdIdkZnVG1SN3kwcUt6VzJjcHZHd21HRms4?=
+ =?utf-8?B?N2RzN3dZUHRGczErMnpBdU5RVFI4TlY3S1lIdENMRFI3VDcyS29UQ2dKWC9U?=
+ =?utf-8?B?VndmRy9kbUlMRG9WVHhuT2ZKTmc2TThnaXJTa3JWUCtrck9sYzI2V0N4bVNk?=
+ =?utf-8?B?dnhQd25wZWdSdEgrQUlrVkdFZVA2aE1DQWNaMEVGbTFjVzllUXpYQlBGcUZG?=
+ =?utf-8?B?cGE1NmtQV1l1OFlRUXhYVUZneGZVc0U4c1J2cEI3MEs5M2kyZHNPYTRPRGdy?=
+ =?utf-8?B?RjR4ZFg3UVBsYmJoaDFGUmQ3SDY2Z1oyVFErWEV3UFJ3VkpFdllzVVpyeG1Y?=
+ =?utf-8?B?QjE3Z2lpUUIwdkRJZXpoRTRvcHdhZ2l5eDM5eDUyUGxXTStoQWlEUEdUdVJ6?=
+ =?utf-8?B?bTc3eUtUVDNMY0pQVnB6L3hUSXdlUnp2azNTbStkYWhxUkRkRURkcGpvS1N5?=
+ =?utf-8?B?cU9SQXYvVEFHM2JqK1hJYTQrakE5ZUgvczk1aXBQR3dzb1Uzamtsa2c3TFhj?=
+ =?utf-8?B?dnlzQ05YVkZtWFRVL2tOalczM01UZndYcmpXVDlUWmg2eHphTjNUeWhQWjhY?=
+ =?utf-8?Q?Dl/q1LH2UWk97TGg=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d29e010e-f2c6-4675-acad-08de69cf300b
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 00:39:31.9510
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3F6EV5TbkO1XWNk7cPqIT+gHd3L5vpv7JZW6FvZA70dJfR1TOQlIU8KbfuqohECEq0ZlJbCft5Frqb/kFToCoIJL3oF9fOei+bDqFVROqrU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB5163
+X-OriginatorOrg: intel.com
+X-Stat-Signature: ja6t38n3zicfj8chdchponxetteuj8yt
 X-Rspam-User: 
-X-HE-Tag: 1770856658-909737
-X-HE-Meta: U2FsdGVkX18UI+q4Q7fcjT5eKJGhtNnvSjtWxrvWxJSgj6pJGL5c+NkorTxiYanBop2JZwv9AfcIB3CyROZOipYpPLRaSYi2vQg7+T4QyGpqO7wnfXTLm/6D9Xllie3tQbj/MKzfkFHxzd+yvFdsNEiykFNOoXu53NeP826Tkg/FDotCHeqLI/XxbKrZieuS1YSYpk+0RVVaWckvuErW2u5nVf2k9n+Y020Ia7oXlwtyjTwxTiA4W96rUpTTxmyeIb0zGkIP1acRQ/eYz3FFrlBUa7sKIHSJupu2YduQRXfSoydk1AmeHdxjPDBJ8TFo+XAEgLhZdcaWoVTLBDSMRQiaBTVPIEv+mTdWt6PF7AyiBBOV/NI45Ve0yQSd/gkTG7KFXm99gVUPJyL2OxJg6sm6emRiPQLVQNQ5DbTPnRUpXYHy2uB/KJ0hTp5otm4jMc8kpxzl65FzTAkywAdRA0Alwh1bgSNgLJUH+AjgIeg9N63jrN7ZH3+8wZq7dUTZa11CRQc0HTj4N6eGZ3DeGdRl9atdSMjawb59p5nr97vq3948mVx+LYHAtdQPn/OR34Us09CBwx64J8ncwFoGRpHMWRtTu0twpnlVkpCAT13703Jbn6sHDrrAUOHceY+eBKIAWvD9vbzW6jZwiNEgEavzR855xP1tcpVJmtcIzSMj7ITWAuk/Pp01eoMAMdCsiDZhxaPdRcvvx8nFyCCZ9VDJPLCCGql60lboYCYEZBcPnUEcefSgbMLkFDldtAWKO8/DW6cM7UfplrvMgCSqmtRQS5W0pg+gmeMYYIp4WroTF5Js2qS0um3d4vuHIIK6B4h030CNTFBRZMhA+h1RM7fbugyzSVSFk1HuJ7p4TZUpBbEIHohQiEh7DTsRHznL8YMtwtufqAIR/Bahb5nYy0sCEFPJ7asLLdGR/2tfZBQoeF0jL0eLkwR9M6RnV1R6O/3UUSBBSjIEE9ptzCd
- SeIKhddA
- 3f+CI2rWUXNMizjFVHC6RyDG6RYC2v3y6Zb5vzSaqwJv5wOc/8nE/a1+sOmmGQuco7mykOmJ4Qi6IKzoSUnnl7npRhHxuR5S5MjvgM5bNq+fodaaBf1LWBHYhCEN07UAX5rmx6WyuHTg0aafbAjW9JAfD8quK4OtHl4KyDnR/CXvF/ZoV64xA5MCDgm0bvwvY/lG7xZRbQ/SWyB9S8Oml4Qe50ocVwewB7pTrg1XCqi7W6E9Te0I9/tWbRl+oNBLAHBHPhjW7QAzZxxjJ/jSchr2xdLmftIynup3hpxmtXvoBd4o4DccXFJqt0DK2ItfZGYW/naGTSCeFHf7kr5ku7LW/UTxj9LWvUMQABm+qFWJPQ0G+Wyw7VPVWAvmJZVFEUamOzs/m4l6MK67yfSRgpUfJvPCvCWBAg0jf+jX3XUxruLeMS3Xdm+RrovnhQYCFma65EtFTfcpZ5L1iuPsVXpzLsWUK/GrYYarRJ0aEvUOILdP4pC4rjUNrgGuIK98Hl2MsT7kBM/6gpmAWDPwmzBE6hml+FqJ9BRa07N6o3iQT9iTF4B/K1F9kv2FpiS7lFlXFo70t6uAGsRlZ1OUeB5GbW68kd9aAm8Q9/nXmGJCKbWuxTbPKZs8M7/j2PGyNX1UWXXw74kCiIeHla7bor0RNsRMtgizo7TnNfRe7hMFnadRlouj6tWbfVRW/HB1apIQdWyts9cFk7B+ZrPucq3b9IA==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 17304A000B
+X-HE-Tag: 1770856776-622350
+X-HE-Meta: U2FsdGVkX18p+waMwzPviBI8EIcahZfBdFEuuSSFxiUQAhm3MWbIXPcIERGKD+lZ5JckO8109CNpFRhUg/y8Ml8F604rt4FFq1xULOrLc5csJeKZuti53ibHulfK2nV3aJjzGHSw8GfdcWphUxUdRDqSE2UhgzS5OfpjmuiIp7n18EOt/RHDUdkjx7cEEOWxKSRqACXiQg62v6Os9gDWt518BanU2e4cjvX28TChg/3xTQkij0gCjMzZr7lc+63WIUJnfT9YnekLbzVTrznDfxJiYicfp3ri5/LLOwEZ2mQ0htQ5VcJ7IYFCn9zRydX8FeXpphB4hLVv+WCHG5Gqh2IGPQzm3YLj3qGeEgK4M3dL9ba8SQbsOQj2fbXYJ3Z/4hK4TRqPY1coIsA0gipRVDyOw3hwp0d7ZU/evYhEj6D+jWgSsfVcWDFQkZ/FtyBFjuAhx18tws6eXFfo+5hB58GlPpTg1FRvfd2xSJYafWR2U8RVwSWMYedze2dd5CB/7ZqKH8vsrQ9460gI57S+WYTs81Jy92GT7UwdfUvqPqJ6XynjtZeWOdqkJJAUK7iInZFNuh+dGbg+dRb2O9OGWnqCCNEGgUDdXVX4qRBxT+Ifv8aXuX4BSw9GZEDLWQIZ1TL5P2vQMkVkH0OeHH9xcKRSLGQS5FDG66MmtAVRvxtc+ndBvK+2loCYtvNOJhK046fYz4FWGCPBWogXnJpxy/f/sBAwAOYW+b8MAfBccnzxmpK+syeZx+u1toBSOozMPsqOVTHFfIYODaIPUxxXexSyJSnrhXjUJnwtXpgLvA7gILvWjiMUY7CHVZA1L+iJw2q4pw6i0UJBBGYdswIuZ2ou0ZR+e7q8z8acbnelF3sQBWP8lrTArxESQqyCib1wBfyVpjPANHTRJKh0vd5VWTdu1x9JCfqEE4q45mmj8mJcIr2+OaMUp15adZ7By/TS7B+2pQ+Ex+P0vFrvn9M
+ f/JeWYDT
+ DaNvo8mAvCyKFloJn63Z7E2CJERte9jZjr2XjI9PAp0s+zZvxIwjt7eyJZ88dspugxRHK/lb9wxkE66BCPB31M3CFB0L7ZWJnJlNcBsB+ciAvtgTCTXn1zeMUkH62z4ziGMQKW7277uFJC09+h/btN6PkLcbk2eEstXNtT49sN14aC9gGLEvKA5dSOMqQ7/SzRhG8UgxUjjQFkl0twVWJ1ZApPgKNFqwVcFvr8LfsAmnyz2p0gn4uc1z2RJCBRhMG1u+z8ksc6hLW61vRbxow3vBDgP//sqspJkaeMb04V4DwHoqbkKp1KS88HJV3DwicJVdbIAcKssmfxGVmXQaPvxNabL4Bpjm8Ei6Bn9nVLRx0/RTGb0X3QziE3NTzxn+533AzI3vTBaixV+Sag5luqfuOBcC1rimVJfhcqNWPaAOyqFv31pls24tWJvsXRST/huPIghlxOxoEYvXvg1wuLi6BvpM3FCaqTQ1ekmGTkOi3VutycEa0b8F+tOA+278YKpYxAlJWs93Dv92IIk8YJm4CBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,338 +243,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Refactor out hugetlb_alloc_folio() from alloc_hugetlb_folio(), which
-handles allocation of a folio and memory and HugeTLB charging to cgroups.
+Cui Chao wrote:
+> In some physical memory layout designs, the address space of CFMW (CXL
+> Fixed Memory Window) resides between multiple segments of system memory
+> belonging to the same NUMA node. In numa_cleanup_meminfo, these multiple
+> segments of system memory are merged into a larger numa_memblk. When
+> identifying which NUMA node the CFMW belongs to, it may be incorrectly
+> assigned to the NUMA node of the merged system memory.
+> 
+> When a CXL RAM region is created in userspace, the memory capacity of
+> the newly created region is not added to the CFMW-dedicated NUMA node.
+> Instead, it is accumulated into an existing NUMA node (e.g., NUMA0
+> containing RAM). This makes it impossible to clearly distinguish
+> between the two types of memory, which may affect memory-tiering
+> applications.
+> 
+> Example memory layout:
+> 
+> Physical address space:
+>     0x00000000 - 0x1FFFFFFF  System RAM (node0)
+>     0x20000000 - 0x2FFFFFFF  CXL CFMW (node2)
+>     0x40000000 - 0x5FFFFFFF  System RAM (node0)
+>     0x60000000 - 0x7FFFFFFF  System RAM (node1)
+> 
+> After numa_cleanup_meminfo, the two node0 segments are merged into one:
+>     0x00000000 - 0x5FFFFFFF  System RAM (node0) // CFMW is inside the range
+>     0x60000000 - 0x7FFFFFFF  System RAM (node1)
+> 
+> So the CFMW (0x20000000-0x2FFFFFFF) will be incorrectly assigned to node0.
+> 
+> To address this scenario, accurately identifying the correct NUMA node
+> can be achieved by checking whether the region belongs to both
+> numa_meminfo and numa_reserved_meminfo.
 
-Other than flags to control charging, hugetlb_alloc_folio() also takes
-parameters for memory policy and memcg to charge memory to.
+Looks good, thanks for the clear statement on why this matters. Going
+forward, conciseness is valued. So here is a potential condensed
+statement of impact:
 
-This refactoring decouples the HugeTLB page allocation from VMAs,
-specifically:
-
-1. Reservations (as in resv_map) are stored in the vma
-2. mpol is stored at vma->vm_policy
-3. A vma must be used for allocation even if the pages are not meant to be
-   used by host process.
-
-Without this coupling, VMAs are no longer a requirement for
-allocation. This opens up the allocation routine for usage without VMAs,
-which will allow guest_memfd to use HugeTLB as a more generic allocator of
-huge pages, since guest_memfd memory may not have any associated VMAs by
-design. In addition, direct allocations from HugeTLB could possibly be
-refactored to avoid the use of a pseudo-VMA.
-
-Also, this decouples HugeTLB page allocation from HugeTLBfs, where the
-subpool is stored at the fs mount. This is also a requirement for
-guest_memfd, where the plan is to have a subpool created per-fd and stored
-on the inode.
-
-No functional change intended.
-
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- include/linux/hugetlb.h |  11 +++
- mm/hugetlb.c            | 201 +++++++++++++++++++++++-----------------
- 2 files changed, 126 insertions(+), 86 deletions(-)
+While this issue is only observed in a QEMU configuration, and no known
+end users are impacted by this problem, it is likely that some firmware
+implementation is leaving memory map holes in a CXL Fixed Memory Window.
+CXL hotplug depends on mapping free window capacity, and it seems to be
+only a coincidence to have not hit this problem yet.
+---
 
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index e51b8ef0cebd9..e385945c04af0 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -704,6 +704,9 @@ bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_page *m);
- int isolate_or_dissolve_huge_folio(struct folio *folio, struct list_head *list);
- int replace_free_hugepage_folios(unsigned long start_pfn, unsigned long end_pfn);
- void wait_for_freed_hugetlb_folios(void);
-+struct folio *hugetlb_alloc_folio(struct hstate *h, struct mempolicy *mpol,
-+		int nid, nodemask_t *nodemask, struct mem_cgroup *memcg,
-+		bool charge_hugetlb_rsvd, bool use_existing_reservation);
- struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 				unsigned long addr, bool cow_from_owner);
- struct folio *alloc_hugetlb_folio_nodemask(struct hstate *h, int preferred_nid,
-@@ -1115,6 +1118,14 @@ static inline void wait_for_freed_hugetlb_folios(void)
- {
- }
- 
-+static inline struct folio *hugetlb_alloc_folio(struct hstate *h,
-+		struct mempolicy *mpol, int nid, nodemask_t *nodemask,
-+		struct mem_cgroup *memcg, bool charge_hugetlb_rsvd,
-+		bool use_existing_reservation)
-+{
-+	return NULL;
-+}
-+
- static inline struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 					   unsigned long addr,
- 					   bool cow_from_owner)
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 70e91edc47dc1..c6cfb268a527a 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2844,6 +2844,105 @@ void wait_for_freed_hugetlb_folios(void)
- 	flush_work(&free_hpage_work);
- }
- 
-+/**
-+ * hugetlb_alloc_folio() - Allocates a hugetlb folio.
-+ *
-+ * @h: struct hstate to allocate from.
-+ * @mpol: struct mempolicy to apply for this folio allocation.
-+ *        Caller must hold reference to mpol.
-+ * @nid: Node id, used together with mpol to determine folio allocation.
-+ * @nodemask: Nodemask, used together with mpol to determine folio allocation.
-+ * @memcg: Memory cgroup to charge for memory usage.
-+ *         Caller must hold reference on memcg.
-+ * @charge_hugetlb_rsvd: Set to true to charge hugetlb reservations in cgroup.
-+ * @use_existing_reservation: Set to true if this allocation should use an
-+ *                            existing hstate reservation.
-+ *
-+ * This function handles cgroup and global hstate reservations. VMA-related
-+ * reservations and subpool debiting must be handled by the caller if necessary.
-+ *
-+ * Return: folio on success or negated error otherwise.
-+ */
-+struct folio *hugetlb_alloc_folio(struct hstate *h, struct mempolicy *mpol,
-+		int nid, nodemask_t *nodemask, struct mem_cgroup *memcg,
-+		bool charge_hugetlb_rsvd, bool use_existing_reservation)
-+{
-+	size_t nr_pages = pages_per_huge_page(h);
-+	struct hugetlb_cgroup *h_cg = NULL;
-+	gfp_t gfp = htlb_alloc_mask(h);
-+	bool memory_charged = false;
-+	int idx = hstate_index(h);
-+	struct folio *folio;
-+	int ret;
-+
-+	if (charge_hugetlb_rsvd) {
-+		if (hugetlb_cgroup_charge_cgroup_rsvd(idx, nr_pages, &h_cg))
-+			return ERR_PTR(-ENOSPC);
-+	}
-+
-+	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, &h_cg)) {
-+		ret = -ENOSPC;
-+		goto out_uncharge_hugetlb_page_count;
-+	}
-+
-+	ret = mem_cgroup_hugetlb_try_charge(memcg, gfp | __GFP_RETRY_MAYFAIL,
-+					    nr_pages);
-+	if (ret == -ENOMEM)
-+		goto out_uncharge_memory;
-+
-+	memory_charged = !ret;
-+
-+	spin_lock_irq(&hugetlb_lock);
-+
-+	folio = NULL;
-+	if (use_existing_reservation || available_huge_pages(h))
-+		folio = dequeue_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
-+
-+	if (!folio) {
-+		spin_unlock_irq(&hugetlb_lock);
-+		folio = alloc_buddy_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
-+		if (!folio) {
-+			ret = -ENOSPC;
-+			goto out_uncharge_memory;
-+		}
-+		spin_lock_irq(&hugetlb_lock);
-+		list_add(&folio->lru, &h->hugepage_activelist);
-+		folio_ref_unfreeze(folio, 1);
-+		/* Fall through */
-+	}
-+
-+	if (use_existing_reservation) {
-+		folio_set_hugetlb_restore_reserve(folio);
-+		h->resv_huge_pages--;
-+	}
-+
-+	hugetlb_cgroup_commit_charge(idx, nr_pages, h_cg, folio);
-+
-+	if (charge_hugetlb_rsvd)
-+		hugetlb_cgroup_commit_charge_rsvd(idx, nr_pages, h_cg, folio);
-+
-+	spin_unlock_irq(&hugetlb_lock);
-+
-+	lruvec_stat_mod_folio(folio, NR_HUGETLB, nr_pages);
-+
-+	if (memory_charged)
-+		mem_cgroup_commit_charge(folio, memcg);
-+
-+	return folio;
-+
-+out_uncharge_memory:
-+	if (memory_charged)
-+		mem_cgroup_cancel_charge(memcg, nr_pages);
-+
-+	hugetlb_cgroup_uncharge_cgroup(idx, nr_pages, h_cg);
-+
-+out_uncharge_hugetlb_page_count:
-+	if (charge_hugetlb_rsvd)
-+		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, nr_pages, h_cg);
-+
-+	return ERR_PTR(ret);
-+}
-+
- typedef enum {
- 	/*
- 	 * For either 0/1: we checked the per-vma resv map, and one resv
-@@ -2878,17 +2977,14 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	struct folio *folio;
- 	long retval, gbl_chg, gbl_reserve;
- 	map_chg_state map_chg;
--	int ret, idx;
--	struct hugetlb_cgroup *h_cg = NULL;
- 	gfp_t gfp = htlb_alloc_mask(h);
--	bool memory_charged = false;
-+	bool charge_hugetlb_rsvd;
-+	bool use_existing_reservation;
- 	struct mem_cgroup *memcg;
- 	struct mempolicy *mpol;
- 	nodemask_t *nodemask;
- 	int nid;
- 
--	idx = hstate_index(h);
--
- 	/* Whether we need a separate per-vma reservation? */
- 	if (cow_from_owner) {
- 		/*
-@@ -2920,7 +3016,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	if (map_chg) {
- 		gbl_chg = hugepage_subpool_get_pages(spool, 1);
- 		if (gbl_chg < 0) {
--			ret = -ENOSPC;
-+			folio = ERR_PTR(-ENOSPC);
- 			goto out_end_reservation;
- 		}
- 	} else {
-@@ -2935,85 +3031,30 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	 * If this allocation is not consuming a per-vma reservation,
- 	 * charge the hugetlb cgroup now.
- 	 */
--	if (map_chg) {
--		ret = hugetlb_cgroup_charge_cgroup_rsvd(
--			idx, pages_per_huge_page(h), &h_cg);
--		if (ret) {
--			ret = -ENOSPC;
--			goto out_subpool_put;
--		}
--	}
-+	charge_hugetlb_rsvd = (bool)map_chg;
- 
--	ret = hugetlb_cgroup_charge_cgroup(idx, pages_per_huge_page(h), &h_cg);
--	if (ret) {
--		ret = -ENOSPC;
--		goto out_uncharge_cgroup_reservation;
--	}
-+	/*
-+	 * gbl_chg == 0 indicates a reservation exists for the allocation, so
-+	 * try to use it.
-+	 */
-+	use_existing_reservation = gbl_chg == 0;
- 
- 	memcg = get_mem_cgroup_from_current();
--	ret = mem_cgroup_hugetlb_try_charge(memcg, gfp | __GFP_RETRY_MAYFAIL,
--					    pages_per_huge_page(h));
--	if (ret == -ENOMEM)
--		goto out_put_memcg;
--
--	memory_charged = !ret;
--
--	spin_lock_irq(&hugetlb_lock);
- 
- 	/* Takes reference on mpol. */
- 	nid = huge_node(vma, addr, gfp, &mpol, &nodemask);
- 
--	/*
--	 * gbl_chg == 0 indicates a reservation exists for the allocation - so
--	 * try dequeuing a page. If there are available_huge_pages(), try using
--	 * them!
--	 */
--	folio = NULL;
--	if (!gbl_chg || available_huge_pages(h))
--		folio = dequeue_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
--
--	if (!folio) {
--		spin_unlock_irq(&hugetlb_lock);
--		folio = alloc_buddy_hugetlb_folio_with_mpol(h, mpol, nid, nodemask);
--		if (!folio) {
--			mpol_cond_put(mpol);
--			ret = -ENOSPC;
--			goto out_uncharge_memory;
--		}
--		spin_lock_irq(&hugetlb_lock);
--		list_add(&folio->lru, &h->hugepage_activelist);
--		folio_ref_unfreeze(folio, 1);
--		/* Fall through */
--	}
-+	folio = hugetlb_alloc_folio(h, mpol, nid, nodemask, memcg,
-+				    charge_hugetlb_rsvd,
-+				    use_existing_reservation);
- 
- 	mpol_cond_put(mpol);
- 
--	/*
--	 * Either dequeued or buddy-allocated folio needs to add special
--	 * mark to the folio when it consumes a global reservation.
--	 */
--	if (!gbl_chg) {
--		folio_set_hugetlb_restore_reserve(folio);
--		h->resv_huge_pages--;
--	}
--
--	hugetlb_cgroup_commit_charge(idx, pages_per_huge_page(h), h_cg, folio);
--	/* If allocation is not consuming a reservation, also store the
--	 * hugetlb_cgroup pointer on the page.
--	 */
--	if (map_chg) {
--		hugetlb_cgroup_commit_charge_rsvd(idx, pages_per_huge_page(h),
--						  h_cg, folio);
--	}
--
--	spin_unlock_irq(&hugetlb_lock);
--
--	lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
--
--	if (memory_charged)
--		mem_cgroup_commit_charge(folio, memcg);
- 	mem_cgroup_put(memcg);
- 
-+	if (IS_ERR(folio))
-+		goto out_subpool_put;
-+
- 	hugetlb_set_folio_subpool(folio, spool);
- 
- 	if (map_chg != MAP_CHG_ENFORCED) {
-@@ -3046,17 +3087,6 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 
- 	return folio;
- 
--out_uncharge_memory:
--	if (memory_charged)
--		mem_cgroup_cancel_charge(memcg, pages_per_huge_page(h));
--out_put_memcg:
--	mem_cgroup_put(memcg);
--
--	hugetlb_cgroup_uncharge_cgroup(idx, pages_per_huge_page(h), h_cg);
--out_uncharge_cgroup_reservation:
--	if (map_chg)
--		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
--						    h_cg);
- out_subpool_put:
- 	/*
- 	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-@@ -3067,11 +3097,10 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 		hugetlb_acct_memory(h, -gbl_reserve);
- 	}
- 
--
- out_end_reservation:
- 	if (map_chg != MAP_CHG_ENFORCED)
- 		vma_end_reservation(h, vma, addr);
--	return ERR_PTR(ret);
-+	return folio;
- }
- 
- static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
--- 
-2.53.0.310.g728cabbaf7-goog
+With that and adding:
 
+Cc: <stable@vger.kernel.org>
+
+You can add:
+
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
 
