@@ -4,143 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 477C8EE3695
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:39:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20F89EE3695
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:42:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ADF9E6B0089; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
+	id 873D56B0089; Thu, 12 Feb 2026 10:42:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A89AD6B008A; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
+	id 821916B008A; Thu, 12 Feb 2026 10:42:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9627E6B008C; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
+	id 7028A6B008C; Thu, 12 Feb 2026 10:42:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8481B6B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B69D1601A0
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:39:53 +0000 (UTC)
-X-FDA: 84436215066.07.62A4ECF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5FF80160012
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:39:51 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBGzJzgz;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BDC36B0089
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:42:02 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8C97C09B3
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:42:01 +0000 (UTC)
+X-FDA: 84436220442.14.B0EE7C1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2A06320014
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:41:59 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9OxGuWy;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770910791;
+	s=arc-20220608; t=1770910920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hrQnrLZGRkouZkW9Dz1FgaKn18/yK60/HNzprFfNtmk=;
-	b=K0otIemEyxE2eirL00qvj3bbw+cWjDPJSi9pVZ0uOwLz7SIi4DDmJnemQP5PWl+2sO0mnR
-	hRjlpxRxwgzBSyuHLGPyluEehfQGyF9aQDg9fKKG+k4JTIqjNtJfFEx3nE3qeh1nPISS3S
-	C5hVPOkl4vve3CayxbSr8FJtXv82ZsM=
+	bh=QIJrTJxxiDxr6zNVWDHd2vL2tYL/qzJggdXLJ8XcVoQ=;
+	b=pFV29IGEvGUmww3NV3LClG7dXSEkRsGKXAQYXAUjfsbCtlc8wJwlObV+L/UfAm3n8qZLO9
+	lIK4KokP3wiPIkKpnh3vokQ3NqKXHZDBFMmhLFNPjSs5iejcI1XZYiuG3gfvx3zwZaMgJe
+	PUMfKl0pW+vUTEMTaf5m/JUX6f7CUuc=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBGzJzgz;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9OxGuWy;
+	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770910791; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770910920; a=rsa-sha256;
 	cv=none;
-	b=8NhuLEDJhEVwyYvkuTPlxyKt0LpyqKLWSPZFHSw3Px0Wlycb4rOJl/mHh6oNjEXr0Vh48n
-	zOrOlkRPVHypjCeDUh/PfA+24dJ7q9xMFgo0wmaz63kt0doj/As+GkTgDTr2to4z0PKHmx
-	pja9Z3oEEB5TID0puCQERWOKDEqSS+w=
+	b=po2E+50rooUDfbggt5/y8RltMVh31OYJPSYyN164SiEBcRjkcu8P/YREhTSbnqlZWcNO3V
+	tmLdyflxKF9Mh4YOIVdEVPNCTtVKnSDCRwgy1YfH8g8ZbeEM08L3V9oURLNoNdRFQhlhhY
+	q4jJQjmntRjDmuY7Xem5zQwl4PGNGC0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B0E8460051;
-	Thu, 12 Feb 2026 15:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2372FC4CEF7;
-	Thu, 12 Feb 2026 15:39:44 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D324443C6;
+	Thu, 12 Feb 2026 15:41:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA3EC4CEF7;
+	Thu, 12 Feb 2026 15:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770910790;
-	bh=uDJdvdtdIL8nTfRDZsIpuEy7of+XLqGVIjb1L7/IFKw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dBGzJzgzSO+9iMjTj2UNcR0sC5r8JHSYQ3uy2B6LUzNIgTfbrP8Agr6brEbN4jaw/
-	 HhJ8JDU2JxGY8BLCuqt/vK04qyCcfpdhULqy6yG5QGdt46x8yPnvn3zRNQQazplva5
-	 7PB6l6YMhVa1KkIWwnfuDhz9rIPfHH2xdmifCv8i6E4xXJiMAfyDkmZM/gQxXekbT4
-	 wgFsMwWHmOCv0C/6By+Ou1mZyYTSgUp7hF617TVZTysJv8Wkq82MBKcVW4uURngvpA
-	 3VLAwJ1kpslP/ML4/IlrdIvHlCu98UbNzd8AT2+wblgqmgQnj7GreZfIDAmHi5X1vY
-	 CblqO/OqoNwHw==
-Message-ID: <22d65938-4569-4e5e-8f30-bfe9b38b6493@kernel.org>
-Date: Thu, 12 Feb 2026 16:39:41 +0100
+	s=k20201202; t=1770910919;
+	bh=lPmdnddKRkpLgqLzVEUhIh9YWowTDlxwVWyDcl8i5K4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=T9OxGuWyesVcuJd2eMzY7c/ltmDEBn811L79sxhQmFlCdwbL3+bKNZ+lInI8hSory
+	 9cbaE1rAIqlN7hfgiZMoiRcxUgZ6HlY+xZEVw1bHHLakl5Pz2+aJh7jCnK0Us524rB
+	 PC9xbdevqUVriwNg4hYIBqbUxQmrnUGYQzvzDivViwceHFjVtHYiLKMFG6WdEC/ZDU
+	 e3SFExn6Nph+DwDlLgcVqEZLXhS9kvbnbP+RHKGXFh9PF4lfbA+h2FnBc9V3Jn/Qj1
+	 CBc8es2omLl0gezCP1yrnwUgWc4vyuJtfjTN8alDKsY8QGzpW6BEoM/Xl1iOPnE79V
+	 X7i2qWzAilymA==
+From: SeongJae Park <sj@kernel.org>
+To: gutierrez.asier@huawei-partners.com
+Cc: SeongJae Park <sj@kernel.org>,
+	artem.kuzin@huawei.com,
+	stepanov.anatoly@huawei.com,
+	wangkefeng.wang@huawei.com,
+	yanquanmin1@huawei.com,
+	zuoze1@huawei.com,
+	damon@lists.linux.dev,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/damon: remove unused code
+Date: Thu, 12 Feb 2026 07:41:56 -0800
+Message-ID: <20260212154157.75372-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260212094326.906497-1-gutierrez.asier@huawei-partners.com>
+References: 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Usama Arif <usama.arif@linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
- willy@infradead.org, linux-mm@kvack.org
-Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20260211125507.4175026-1-usama.arif@linux.dev>
- <20260211125507.4175026-2-usama.arif@linux.dev>
- <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
- <875x82ma6q.ritesh.list@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <875x82ma6q.ritesh.list@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 5FF80160012
-X-Stat-Signature: dz3u4h7rhq7xz7ek96dotm91im1qfqnu
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: to8h5bryg55tdtkaamfz7i55ggx8kxua
+X-Rspamd-Queue-Id: 2A06320014
 X-Rspam-User: 
-X-HE-Tag: 1770910791-676408
-X-HE-Meta: U2FsdGVkX18P0TmQ5ZISfKjMgo7leMAvyhdAFDxQSLTKlDex0Fsm9S3ouaafRNjAiZQBvFrzLsOFYXWm1DXV/p2JUU8x8JTcS5lsOXr9zEwrR1l0bmxLgxYqj9XmvOSnYnw3saJeymg5PdQbn0BjUA+Il/k9Se0RRBwt5ZWQgAmQZ6zmZfQR94FtSio1qLN8rntvtRSUiazhn4+DU0HmhUgeyYtfgu8m0Sb7KnNK2X9JE2bMA+4ErL3fRkGWb7rqZKgmpq/XwCIW5S9P3P1XAomybzWuUgh/YNHRcnk1B4TfkyGmOg7uoQWuT+s7VDMWqgL+Hm0M0sJQNepISVXPQWgwHh9Y434/yCzC6nezAYot6Ff9YVfYy7imI4P6X59/JChIrkVg1WniPr6cU43JSSclWEneyz4czA3RRx6bR5xtCkTINpX4IBoH+NIsG2otd+xFGznaRhh0KFI7jmppPb5RBWxBbGVwM3DYehg26DrA26zsD1zO/82jMQbLzkPZl5yi7odQ9bA83up4v2CLO2pLemjt7eY0a0fJZDsuF8EfS+xuPx1lsnbevTBCQPZWjwelfka3cFzoL0oLGUdBNDPgDqPIMhJDuAG6GngXoLIfKigiEzNf5R3Y7X+wEp7WnX4p3ZKyjMKjIQMJiaKLz2GaE/kDyNI1yltnhBol8ExOXT9svtLjBAwX8Czyv7WV/Wcj8VbkdmTirqsRd8GyFaZbOwUwDm5NlIHtlHa83xTwlZgCqd8m+9N4EYLRu+2K3EleNaQRx6XaBU11Pj0aU+mrE1JBDaDcMHs+1flYacdolKOoumrRVOUtFo4KPfENRcb9bRWDRxwnXt69GpprJdYlAX0EN2wBiAq9AhAa9+v7YjLAJBovu+CrFBIxLoTMD4QhXvWnktncnRJwSWmO4dnBr9fx8yf8P5wqEuauU+dx06OxmX+196d6UY6RowIDfInUgqOU33unvVVU6CG
- Dil8CM0V
- 8I12dNEE95xkt/EFYD4IyA/+Va9vNKpcHUVsw9muNENvvzGjFA6tF70d0JcHsVIlG1O3S7PQ8TlSrAfTa5xLqQHZhtC/52PkNBrmaU9rSOGH+1fOp/6h90cDrxGEP5HzjKxe8r3TN7BBc5EF8gI8SvxkDvK197TyojWqtoj+HyZpP3xVXiFMERf2mYY4bKbzyYauCZS4HUNa0yEolozk8tza8uD6LQfVTeAEhGjPoYFCDT40jWvJRTYuFAXUsxZSQjbZAuPMsp+FsWhStT/z1963HZzO59ZCMAWIrd/m2iZGyRx2Xad95E2BmbnqdGyPqZFOrS5EbjSw46Ho=
+X-HE-Tag: 1770910919-923546
+X-HE-Meta: U2FsdGVkX18YtLczsmKj4jUT/FIJJQZro9q/jFU/dVobk4yf/2u15sJzWqx5obClSHxve5Nyg5BizR7JV4kNIF9TtgIRPHYLV1QfQWJzA7UcifOAd4rH/C/IW8JqalLm2B83ANsXw4zGUuwzOahRmZLL963vu6y+LhVulQUkgpYqoIP1AAC0OA8MbIXsMt0enOL5/CwIWz9esBHzdYgZ98ivktALKPuyclVAeMAsXzFfAmi/rxXKPk75Z/E517zLAEVg7DGCh9zIBFPMHgYHbNKKBC2+5dVWYBYAlZedWvNeBEJRcpy6hBKpsNR93YETSVFhXJGP8W6oFRcfPf1tD7le+xf5UD+bi6g3UrJua/ZrZRkYfZA4V9FDmqi21wZxM8syK6dUGPRYc7edLCklFemNEM5ampkwtIkIm+H8ZcDXjT+EelpxcARIgforGpLtWMHAgdGpgZwr2kCMjBvfcQ0ponvs4hqolJQk4AVF/okfrt6nU3gaMHnynf8Ay7ZtPk9fCnQIF319MRf+YpDC+B9Tt2/4LnGb+bpcf/WUVuMGddPydicBWsw2mDzvU/5yVWDB8bRpq3TamxgtM9jNSVFIcI1eMYu0AJFE9HmpB08ZOynvSMtavGsqV8oCJfkrHT6u9pmKApJzCImVPd7dAs6mhnD12SA51xoi7hoIrsvWNusj3noD7XG2de8TwdvyeDQTwye8Taab+BVXC32IKY9yY8sIgyveqDK6mCzi/mD5Rt5F+pr4F0XY488Glk2bi8snPoMBwGSWqviBzRv8q5nYkEa6lbYcu1gKsIPWts4WFsnDdKLGyMfwytFywQ6N/+ukiDyPtmWYpOSzzxf8ChP6wRoxfoYURrVAhdWLnf6TeeteK9lf1tdKNqK+K2L2dS5INX7Q5neAdg8pt12Pdn0wvDnYv62xhvH0Rt6rdAiM4OEXOZ2k4oZpM0HTcPHpkCveIUspmoeYL1jMn10
+ Ad6KMCld
+ +wcBVWWSNdnjLMpeK5xGObXEoTRj/472RLKXe5nvennBvSpkUQanBcwaDr5LOj0am1XXQh6F9qrPysfnPpiXuWmUyqrwg9lzaWU6SzA5D8BhxZ87WnjS76E4hdeIYkCji/SB/71tj7tjAaCEAaQ3oQd8ACsmhZPDnV1ZdT9eBfCHLSWy0sDODhmolYRjMDYsi88dNMFCx2y3afnUUfnQxGDKDBGqwylCrPiQM0PGvkBpVh9Kb3hkDxj74gmNBF15R1IdwRF9YuFjT+F9RISxLV4YlyWsOzoRetKFOnjG1jkqEdIdx7HNe41j5gpojIiOseN0mNSeSin7FwMrrA72GkzDKO+DsygR2+VewUF3LcI2UcQ+qx/70XNXLdn88ShgdEE2zBakwFyVmEY8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -149,84 +99,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->>
->> Is there a way to remove this? It's always been a confusing hack, now
->> it's unpleasant to have around :)
->>
-> 
-> Hash MMU on PowerPC works fundamentally different than other MMUs
-> (unlike Radix MMU on PowerPC). So yes, it requires few tricks to fit
-> into the Linux's multi-level SW page table model. ;)
+On Thu, 12 Feb 2026 09:43:26 +0000 <gutierrez.asier@huawei-partners.com> wrote:
 
-:)
+> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> 
+> damon_target is not used by get_scheme_score operations, nor with
+> virtual neither with physical addresses.
 
-> 
->> In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1
->> copied generic pgtable_trans_huge_deposit() hurts my belly.
->>
-> 
-> On PowerPC, pgtable_t can be a pte fragment.
-> 
-> typedef pte_t *pgtable_t;
-> 
-> That means a single page can be shared among other PTE page tables. So, we
-> cannot use page->lru which the generic implementation uses. I guess due
-> to this, there is a slight change in implementation of
-> radix__pgtable_trans_huge_deposit().
+Good finding, thank you for this patch, Asier!
 
-Ah, did not spot this difference, but makes sense. Still ugly, but make 
-sense. Fortunately it would go away with this RFC.
+The subject seems bit ambiguous, though.  What about "remove unused target
+param of get_scheme_score()" ?
 
 > 
-> Doing a grep search, I think that's the same for sparc and s390 as well.
+> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-... and I also did not realize that s390x+sparc have separate 
-implementations we can now get rid of as well.
+Other than the subject,
 
-> 
->>
->> IIUC, hash is mostly used on legacy power systems, radix on newer ones.
->>
->> So one obvious solution: remove PMD THP support for hash MMUs along with
->> all this hacky deposit code.
->>
-> 
-> Unfortunately, please no. There are real customers using Hash MMU on
-> Power9 and even on older generations and this would mean breaking Hash
-> PMD THP support for them.
-> 
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
-I was expecting this answer :)
+Also, DAMON patches are recommended to use mm-new as thier baseline [1] unless
+there are other reasons to not to do so.  But I found 'git am' of this patch on
+the mm-new fails.  It works on the master of mm.git, which is a commit of
+Linus' tree, though.  So, maybe this patch is not using mm-new as the baseline?
+Please consider using mm-new as the baseline next time, or specify why you use
+choose different tree as the baseline.
 
-> 
->>
->> the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar
->> checks need to be wrapped in a reasonable helper and likely this all
->> needs to get cleaned up further.
->>
->> The implementation if the generic pgtable_trans_huge_deposit and the
->> radix handlers etc must be removed. If any code would trigger them it
->> would be a bug.
->>
-> 
-> Sure, I think after this patch series, the radix__pgtable_trans_huge_deposit()
-> will mostly be a dead code anyways. I will spend some time going
-> through this series and will also give it a test on powerpc HW (with
-> both Hash and Radix MMU).
+Assuming you are ok to the subject change (let me know if you are not), I'm
+attaching a new version of this patch that has changed the subject with my
+suggestion, and manually resolved the conflicts on mm-new, for Andrew's
+convenience.  I also applied that to my tree (damon/next), and I will repost it
+if Andrew miss this (as we are in the middle of merge window, maintainers could
+miss many things).
 
-Thanks! The series will grow quite a bit I think, so retesting new 
-revisions will be very appreciated!
-
-> 
-> I guess, we should also look at removing pgtable_trans_huge_deposit() and
-> pgtable_trans_huge_withdraw() implementations from s390 and sparc, since
-> those too will be dead code after this.
-
-Exactly.
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
 
 
+Thanks,
+SJ
+
+[...]
+======= >8 =======
+From e09d66bb116604c9dc5b22540641e991d977ea6b Mon Sep 17 00:00:00 2001
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+Date: Thu, 12 Feb 2026 09:43:26 +0000
+Subject: [PATCH] mm/damon/: remove unused target param of get_scheme_score()
+
+damon_target is not used by get_scheme_score operations, nor with
+virtual neither with physical addresses.
+
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+
+Link: https://patch.msgid.link/20260212094326.906497-1-gutierrez.asier@huawei-partners.com
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ include/linux/damon.h |  3 +--
+ mm/damon/core.c       | 10 +++++-----
+ mm/damon/paddr.c      |  3 +--
+ mm/damon/vaddr.c      |  3 +--
+ 4 files changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index a4fea23da8576..9a88cf8d152d8 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -647,8 +647,7 @@ struct damon_operations {
+ 	void (*prepare_access_checks)(struct damon_ctx *context);
+ 	unsigned int (*check_accesses)(struct damon_ctx *context);
+ 	int (*get_scheme_score)(struct damon_ctx *context,
+-			struct damon_target *t, struct damon_region *r,
+-			struct damos *scheme);
++			struct damon_region *r, struct damos *scheme);
+ 	unsigned long (*apply_scheme)(struct damon_ctx *context,
+ 			struct damon_target *t, struct damon_region *r,
+ 			struct damos *scheme, unsigned long *sz_filter_passed);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 5e2724a4f285e..925908415a041 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1679,15 +1679,15 @@ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
+ 		r->age <= s->pattern.max_age_region;
+ }
+ 
+-static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
+-		struct damon_region *r, struct damos *s)
++static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
++		struct damos *s)
+ {
+ 	bool ret = __damos_valid_target(r, s);
+ 
+ 	if (!ret || !s->quota.esz || !c->ops.get_scheme_score)
+ 		return ret;
+ 
+-	return c->ops.get_scheme_score(c, t, r, s) >= s->quota.min_score;
++	return c->ops.get_scheme_score(c, r, s) >= s->quota.min_score;
+ }
+ 
+ /*
+@@ -2011,7 +2011,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 				s->max_nr_snapshots <= s->stat.nr_snapshots)
+ 			continue;
+ 
+-		if (damos_valid_target(c, t, r, s))
++		if (damos_valid_target(c, r, s))
+ 			damos_apply_scheme(c, t, r, s);
+ 
+ 		if (damon_is_last_region(r, t))
+@@ -2309,7 +2309,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 		damon_for_each_region(r, t) {
+ 			if (!__damos_valid_target(r, s))
+ 				continue;
+-			score = c->ops.get_scheme_score(c, t, r, s);
++			score = c->ops.get_scheme_score(c, r, s);
+ 			c->regions_score_histogram[score] +=
+ 				damon_sz_region(r);
+ 			if (score > max_score)
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 9bfe488268407..5cdcc5037cbc1 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -343,8 +343,7 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
+ }
+ 
+ static int damon_pa_scheme_score(struct damon_ctx *context,
+-		struct damon_target *t, struct damon_region *r,
+-		struct damos *scheme)
++		struct damon_region *r, struct damos *scheme)
+ {
+ 	switch (scheme->action) {
+ 	case DAMOS_PAGEOUT:
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 83ab3d8c37920..4e3430d4191d1 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -986,8 +986,7 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+ }
+ 
+ static int damon_va_scheme_score(struct damon_ctx *context,
+-		struct damon_target *t, struct damon_region *r,
+-		struct damos *scheme)
++		struct damon_region *r, struct damos *scheme)
+ {
+ 
+ 	switch (scheme->action) {
 -- 
-Cheers,
+2.47.3
 
-David
 
