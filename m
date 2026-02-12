@@ -4,106 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83368EB491C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 12:47:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B829EB491C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 12:47:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7E8E6B0005; Thu, 12 Feb 2026 07:47:17 -0500 (EST)
+	id 942A26B008A; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2BED6B008A; Thu, 12 Feb 2026 07:47:17 -0500 (EST)
+	id 8EC566B008C; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D37C46B008C; Thu, 12 Feb 2026 07:47:17 -0500 (EST)
+	id 7EF086B0092; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C01836B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:47:17 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 358641A012D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:47:17 +0000 (UTC)
-X-FDA: 84435780114.23.1A243DD
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 72E47180004
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:47:15 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dfDbqyH9;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E7286B008A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18EF955C90
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:47:42 +0000 (UTC)
+X-FDA: 84435781164.14.7432D38
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 61FFE1A000D
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:47:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lHionywG;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770900435;
+	s=arc-20220608; t=1770900460;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pt1XnH66Sa55/b3qs2K9wIweFwjrMnxiLDPWhMJ8v6o=;
-	b=qP527TGczhWtNaaZKBWqvdEGCOVD/i+P9b+PXVRME9JiE4cmBXruvF6xzPgHqTa2Gs6qJg
-	Wx8qQ60CGxsoKcVbQhkD7PhfFB83aIda+Lt/NzevvQyCDJqNjArnOfEmtd+0uJd4wJkmvA
-	EUy5OTKRWACCLDcnJL21ynOhNvDoKYs=
+	bh=njRlN4d6kNVdpMpfoVti+Ietl1nXYjRsUYDu/Y1qv5c=;
+	b=OnOdlGgZsZ8pJzJWwjHB06LK8qtZVWY1YtnAHXShLsCNgMwzV762HEF0QFjZ9zi5f/a3Z9
+	4o3FvyAcsdcsKiGPBT3uujhgAUhuIuch42Tx868PHAW8isf60twGOBghEQ2VgeYgASCC/i
+	+aMs0NWj8Eg6a9stLBBNu//Nn3A6M3U=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dfDbqyH9;
-	spf=pass (imf16.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lHionywG;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770900435; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770900460; a=rsa-sha256;
 	cv=none;
-	b=ZyYXkV21ayx/bxt6WTuL9daRvluktgMo0VtlV78hbjT1a7IGHecclj0xxcwNI7mrX8ugNG
-	iwuMTCtZzwfLvbCQe9n8DzokRf90t2zgu5p9SSG2PPsyWVkdl043pcd85GOdp/ItaPAAlH
-	RajRFp9Pf8K6ZXKUqIYhdUZRDeyIgos=
+	b=oQPponeKQF9dEI4uI+a88WU9pd33LamBLEJUP6jF2Xs4+Gc6jcI/ISTsNYNqGDf7/WndpN
+	aBTQbcYX/kwCnNflGg96AnDhFkyf6ooSBrt3xMqqXFC2IPfG1/dcecrjZsY0Yuk20rVj01
+	cvqfoZSfZ9WA4M/0CNfNf92syPvkMuI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3A025443B7;
-	Thu, 12 Feb 2026 12:47:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44B7C16AAE;
-	Thu, 12 Feb 2026 12:47:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CCB4160018;
+	Thu, 12 Feb 2026 12:47:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7E8C4CEF7;
+	Thu, 12 Feb 2026 12:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770900434;
-	bh=pt1XnH66Sa55/b3qs2K9wIweFwjrMnxiLDPWhMJ8v6o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dfDbqyH9m4z8P6PXY9Oelm114CRHUZ05O/TLtl7ODeJCsZaJJQjTFcD4I2gBcu6ZW
-	 z6vp/SEdWWGj2NbmOweqZNx53yTtFd1kP56PCARdiPKSM0fQ0Whrx9LEgkG6ES16UW
-	 q5zkAr6UsyHNSB8eaxZdUnkvlDK434bG2kWhEXQ2v676WhyZ3LOFRNVT60KF868JD0
-	 BGa9aMuRz6ffyf3aCWp/9sS9pwMxLncIplKdQx6Nv2JJBw3eMUltrbzW6g91sG7+9Q
-	 6fMv4JEXz6CLnpwyfrvrWIakzwc9Ee/RXm2Jrq+CRsZ3IOVsKzmZYJZm4zhKFevhUn
-	 bkSd0xXp1HgrA==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Tamir Duberstein
- <tamird@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Andrew
- Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, Daniel
- Gomez <da.gomez@kernel.org>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 03/12] rust: xarray: add `contains_index` method
-In-Reply-To: <CANiq72=n2=96dvcLXF05Ta4+h7CyUTQNn2b64U4j=VB0xO-0GQ@mail.gmail.com>
-References: <20260209-xarray-entry-send-v3-0-f777c65b8ae2@kernel.org>
- <20260209-xarray-entry-send-v3-3-f777c65b8ae2@kernel.org>
- <q43rzzvpfh6ke74eyn3nypiek2ihaq6nat552asiobqge4vxmn@knwkb5dexnga>
- <87fr77viat.fsf@t14s.mail-host-address-is-not-set>
- <fU1FEYt6-SY0KlyJy4VClCr5j6P4d5-wukzc_9TkSDSBuQNlY26xyOIprMbHEVMv-H-nrAJ1iN_9tcfIXEI1iw==@protonmail.internalid>
- <gta2wjt4tkcvyu7g56gqyipiigbmbk2ca3biqzmxc2npch3rk7@ccwzwgnk7mcz>
- <87y0kytggx.fsf@kernel.org> <87v7g2tesf.fsf@kernel.org>
- <WXzdKn94ED_qqocwnFPMLL4sIamZUFw57nW-NMKpdYCWhxdCutPl_wcMwF_aTpQvsmt-9NUQZMy7OokH-lQ_2w==@protonmail.internalid>
- <CANiq72=n2=96dvcLXF05Ta4+h7CyUTQNn2b64U4j=VB0xO-0GQ@mail.gmail.com>
-Date: Thu, 12 Feb 2026 13:47:04 +0100
-Message-ID: <87pl6at9h3.fsf@kernel.org>
+	s=k20201202; t=1770900459;
+	bh=7u+Ah2ekJpSaeBE0rGk9aSzT2yJ1QfSkFI/lI5g1dRE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lHionywGxDyubOlbZk8DN8Xy578RDJsEfrSCaGl3Cp11wK07buKXQadWsIpZkvqBZ
+	 LPA3baWtj7dYXkCyCPCYEIbvjN3CpJpph8flrnIkKEEJi4nqvIiSxli0s3Z2uauNqN
+	 wGDwvOE+VrBHjcP6Y75rSdJxG7VWjGl6KTtlZ49zJD+uvHv3vTWrJ2/o3zaASbX9Sm
+	 6s1lUJ7TSE1a9VGwGzD4fQi2KDzwKmPzbgyKX9j3Chc0sjibjfVBsRD5/ZOOQcrfik
+	 zuqF4zO/rJVZ4HthPS4m2KeudY4PFOO7U6ezhzHTS7tp/CG4B8up4FZrEFUvcmfXzt
+	 +G7Y9CTiNJc5Q==
+Message-ID: <21a9b331-58ec-4c04-a09e-545ac31f2eca@kernel.org>
+Date: Thu, 12 Feb 2026 13:47:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 72E47180004
-X-Stat-Signature: chuph8s163xi64ibdku6mqhrbg6q5zmd
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/userfaultfd: fix likely/unlikely annotation in
+ move_pages()
+To: Matthew Wilcox <willy@infradead.org>,
+ Aswin Kumar <aswinkumar3301@gmail.com>
+Cc: linux-mm@kvack.org, andrew.morton@linux-foundation.org,
+ linux-kernel@vger.kernel.org
+References: <20260204142350.1642-1-aswinkumar3301@gmail.com>
+ <aYNemlPABKnQkf-x@casper.infradead.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aYNemlPABKnQkf-x@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: wx7dqu3prr57gte7n1dok6sx4tsi3mkw
+X-Rspamd-Queue-Id: 61FFE1A000D
 X-Rspam-User: 
-X-HE-Tag: 1770900435-280546
-X-HE-Meta: U2FsdGVkX196zdEm91Bka5zfX6v5wd0RB64qysFizh1bOLF2mckgkzc2BLN+BEs7FB+7TI83Gt32gubiAOIJ7jplLrihvx1W5e+g/HYVm7nf1+G9a4ov/eRE0M0SoabKDu0TIdLjrnLG5sBbRP8N6ilOx6Ft3FDsa2p9+YQ6aMhllOcKiEPhFO8HPws6gAS5Gkcnb1+4iRKJLjp4N7YDAOmIvOtQh86dKV5ifo7IhwMvhVjbUmJO/+q3jmOzIydAZjzv7k0Ce+0RheWSDDgPgfHZfqEUrKx6NlHSVVaQJWA+UW9L+0gcl5ADQmlLJBI8PvFWuxw5lmXW8otX9LEp7UPiY+aMYj48+XxnH5l7kay08rFxFhDmJPXFIDjRkvzZNZ798Pc9PJ+2/AERoDd0259D5I+GVsQ9wA1/Qme89a9p79/FfI0zs/00yUt3PJ7kAz34JVGtDx1vUkvYI4cfyGG8CamG4LC7apfBew5lvX4u1Alkb+1mfklste0MsBSnkqLIgmCDZxa0lFuZ4QWU+2Zjy0l3qjDo/CDL5ph9vPvfWnQBa85tWFA3Sqp/Np/UonFQRXvWubb7U9Nmu7oxBs5FdkwhkllVnCyrMw+sSpir+Cr1zwnOA9bEJaQFOHUlBuyJdwuMEt60sn71mGHfQIFGNsjLUAnhwBXpiYK3Tyo09PR2mU33qV2XA7zua5AStuR2IMZ3vt6xOrHW0IKk+5SKJX9y0F/9OeAltoiJauG61xmezM3gv5Ae3iqIfmLiXAbdv80LOyrnOYn2nkgIeJ/gVIvCt1CvmGHhijeRwAAUSCdOeUSdrX7BvLaH2U/LYn2rxlkPvl9zZcjel8YuJQYltuEyyZzj2J4AJic+aSBfE9yDkn5DBoB783dn/kovtXQQqwkSxwWX/hGZ6Yi1rnfcUyzFWKi6hpQqcPVdmWmGTkkA4VJ0A00IIKQbBZAf/RYPttwjYG7+zfo7znj
- WQ9k7n36
- 1p5kEY0HzQx27xMeZQWI+Qo4wGLCttFHWy2GcHVBEv4JzQd/sa6Z6d/hnlR0wTbl8Zrp7IbJaTU76NyjWRBxVvK0U5/nZN4JZoWg2+zeLpGvb5DXBD+PfWWVrFaHb8FN2Z41XkCXHfMdI3FhN6A3KDS0muwT8pGWYqS4hS383Azkt0KVybA7m1whMiDjLOZSlKjBkiZjyu8q1gQnOx35d8BVWdiXLC5lvRwmws1S/K0/6mZ5dZI5AeN9MSwwATESGZsk3ASxQMzLPL0awKkXpmL6sC0YngOEWKilf9ieD1WhpGzgN27zyl1v1UQl1iGZDkW7LjggYCfIl7uaZuMiR9gmcd1lmZwpaO02g3cCEtgSXdUJcIuXt7eb77sAxEn4jfHa6
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1770900460-449770
+X-HE-Meta: U2FsdGVkX18I3gK85QeEH0d2ed6vT6H2oYyaqF7yWbb5qWms9fudXSxhi6DMxuRrxgKpZPk3dApWOHZtJaPvKvm9UvKpZfGbUW7h2aTsD4y4fme+4KSVn1pXoM/g6PaNzGpF+U8mcYLsg19uByGY2FDcrzbk0IRSjPfDFGTw4KpAmeP5vsKKqH70ZXGGNdChVrpt2zeBV+WWjefkunHges7N0tN0rDdYjs699oirMgHfZ/ui4KlfnVB49WPkoFoq2lZRvQAMGMkx8BCKUK1V7vakg1PBvmnHNmvi7cU2Ss6R1k0OpMFQlpVlkc+XczshuF82XsTGvVCWQsCt0MbKQbaA6bGbKvSHJI147+tIt6oyvcikb9Us0yDJFdTxRTuKRjjUf5GZAyHU2SEO4c7ZprrlwyA8Hvr3yRTp0p5EJz1OK6LQ2JQ7WFo0Ie59ALiIa/vkhLyzl0XicEa1HPcWEimf03bUdgIq6q8WxWANV6WtMxg4b031awELGXJm49bRx4okKvWL08PyledcXcg+hOFq7H2fg+bdS0Gm7zzDrp17ZTWn9otbt7t+IBlZffbrvULM2YHkrZ2cXSeiWdFbYh1VjjEuWXaLNlN/lhw3TkZTdH+lMRFtiMGxZjG9cQMXIJnzWaEWwwXl/V6/p0vMyLx0M0WmS9pp59ihmG22JtmJmfFsbpLB46lIHYTQbATfiAsdIF8bx9GNZkmanN29W+uHz9/6EvNj8wR1x1jJymo3q7bQSjp0Xp80fvcD/JNavikRYpMvbT9IeF18/ZFMljYG6fKjfgiVehl3gOZdB6Y+NMTcBvZUn9msSKGw951+GQKpFuXNGkL4MRqzQE4/IDCxMPbPVFbsL6HQY1fsU+J97RsN5LkaOwEW+89phPwAsfoitVTd8kBTi1EqZdjlHKwdASHHKOUTJOICZBlmQDbctAaXka90AL3C5TfSxfBs4qdDRufP8Gm/UqWWAnt
+ iRIlY7ah
+ qSiRtIAQ7w/ETemIIkvWFfaV3RZCHVCqbfSqjrLlhsInmVbWTHiOHKPECRfRQ70dwhDae9i4/U04S5Uz5eEJwWC8JWPipzddNgTHRvptNIc3gXU66WOGAohv8Zdmw5H/gG6Iq/s2BVDC36pUXivTsiz+AScN+ZUgQWrkUwHPQ7S0NdmQVUOpY4LYs4FLLFDJvfzvv0ERXJm6PAmbqTr/dHAbya+WVX0P2YXxkBjct6Bukq22AWXlKbtu/HPOC4IHNcW0Uor0hYFyfXe1Md+UyYp8UHFrvPlUtCejQ0SaJZduQDF0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,24 +141,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On 2/4/26 15:58, Matthew Wilcox wrote:
+> On Wed, Feb 04, 2026 at 02:23:50PM +0000, Aswin Kumar wrote:
+>> All other userfaultfd paths use unlikely() for the mmap_changing check,
+> 
+> No they don't?
+> 
+> $ git grep mmap_changing mm
+> mm/userfaultfd.c:               if (atomic_read(&ctx->mmap_changing))
+> mm/userfaultfd.c:       if (atomic_read(&ctx->mmap_changing))
+> mm/userfaultfd.c:       if (atomic_read(&ctx->mmap_changing))
+> mm/userfaultfd.c:       if (likely(atomic_read(&ctx->mmap_changing)))
+> 
+>> This is a performance-only fix - the logic is correct but the branch
+>> prediction annotation is wrong, potentially causing a minor performance
+>> penalty on the fast path.
+> 
+> Can you measure it?  Bet you can't.
+> 
+> Honestly, I'd just remove the likely() annotation, not change it to
+> unlikely().
 
-> On Thu, Feb 12, 2026 at 11:52=E2=80=AFAM Andreas Hindborg <a.hindborg@ker=
-nel.org> wrote:
->>
->> Apparently this kind of code used to be OK [1] but the Rust devs decided
->
-> I don't think it used to be OK -- I think that issue was talking about
-> code that required non-lexical lifetimes, which was an unstable
-> feature back then, and the behavior changed while they worked on it.
+Agreed.
 
-Right. The devil is in the details. My point is that the analysis to
-support this was deemed to be too computationally expensive to roll out,
-but the intention is to achieve a similar analysis at some point in the
-future, via Polonius.
+-- 
+Cheers,
 
-Best regards,
-Andreas Hindborg
-
-
+David
 
