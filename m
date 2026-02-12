@@ -4,119 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532A2ECD6F5
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 00:08:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33345ECD6FE
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 00:37:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FBF56B0005; Wed, 11 Feb 2026 19:08:01 -0500 (EST)
+	id 3C1926B0005; Wed, 11 Feb 2026 19:37:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A9756B0089; Wed, 11 Feb 2026 19:08:01 -0500 (EST)
+	id 344AE6B0089; Wed, 11 Feb 2026 19:37:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AB9A6B008A; Wed, 11 Feb 2026 19:08:01 -0500 (EST)
+	id 243D06B008A; Wed, 11 Feb 2026 19:37:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 570886B0005
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:08:01 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 04392C2046
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:08:00 +0000 (UTC)
-X-FDA: 84433866762.27.B981027
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 38BEB8000D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:07:59 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=deFBPbRC;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 14F9E6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 19:37:30 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 93AC1C22B9
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:29 +0000 (UTC)
+X-FDA: 84433941018.08.5644247
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DC08B4000F
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 00:37:27 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DSrUv1rc;
+	spf=pass (imf11.hostedemail.com: domain of 3xiCNaQsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3xiCNaQsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770854879;
+	s=arc-20220608; t=1770856647;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jod8g++UrMJjPGENywCHZK3vSzJ+1L5xwi8NVPgGzhg=;
-	b=eGfBoVv/U/NtNav8h7JYJMlfOj4d6F1JWCscpX/AggrTVmiBGoZKxVSUb00DSpu4fAHhN7
-	y1tFKwE5oT3lJ3xXmXWZLgXbpVrR9nTQYnPiFRwtim4CNNaUAe5o01/JHnclWqqtaiAkF7
-	Xc8UszuVWfdymhpJE4wPxYMHzu89xG8=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ZJpTlhiR4TRyjHrLxyY5K7IcESbEG+rqURvXdu9Kbh4=;
+	b=SNjUSsjNURsnr7lBhBi1AE2wV8c1/987QpXG6ukBw3C5uamTEoFC+dkI73xJXrIGfI11CV
+	qXmG6jG00RqewHwmI6wyE6ypoZlxbZddmVtXvrJ5p+3k9lN9EShe7uVj82F43ENzTRdTun
+	KQoRSDkxXZxlI6RuIRKWTmSSyV5RyRA=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=deFBPbRC;
-	spf=pass (imf02.hostedemail.com: domain of vishal.moola@gmail.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770854879; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=DSrUv1rc;
+	spf=pass (imf11.hostedemail.com: domain of 3xiCNaQsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com designates 209.85.210.201 as permitted sender) smtp.mailfrom=3xiCNaQsKCI8tv3xA4xHC6zz77z4x.v75416DG-553Etv3.7Az@flex--ackerleytng.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770856647; a=rsa-sha256;
 	cv=none;
-	b=dLPt2AZxHF7DgF7s+TqkgclMx1vSueblILMt0hMW/hAksM7jHCUuxUok7kyREulkfoA/S0
-	Owsp07zPM29LWdHCz6aTBzgR79/Por04P/Pluy+/ArDvlYdhakZYzKmzl72yIZkkT0q/sK
-	+vp/cS9z7DsEtDIl8P+sEck98gPET0Q=
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ba68df3687so6499245eec.1
-        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:07:59 -0800 (PST)
+	b=KBq0iko55eHV/cVFjT5KVDMO/tva9Vj0xSggAcwKn4dqcPDpYaq2mVJwTWFf1/7QrmVqJa
+	lPJHxSAhkL3SWjwa6Ai7Ftm3iHcYT8mJiPzU2HA6uHcWqgrYm4f6W4aDiUBGJX1wtLf6gw
+	9OvKe12IfAKYkf/T3L5/PLpAwG0nFW8=
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-824a02e4d29so487150b3a.1
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 16:37:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770854878; x=1771459678; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jod8g++UrMJjPGENywCHZK3vSzJ+1L5xwi8NVPgGzhg=;
-        b=deFBPbRCp6rlUOHlv0aomwyh78mivKmUtcH8O06R2VD7+X77MiKfvkqu5cWbz1vPNs
-         f5p25w954XQOHKJhxdbPc7/i5TLNM2TlqqOl6DEar01bADXxV2yO5XktpuLUAhS1XMV6
-         R8oLTab+Xtx7rvQ9J8Z8vAO9SVFKh4sX5+j+R8s1L+p9PP2mlkiFDB1vLrPEma22MzdM
-         bbbC1XBNMmgtfAYTy+OcwCGrHvO4b5wt8qws22qppRhZu1yrale5EOiRyhAjsfhdPNAf
-         CzqUWMhCIOGJ2SiO5fNm9wzkAfS38Gq4t4w6L5uESLDDNTMJfBe+L0D10UsdaS47lnTt
-         /lHw==
+        d=google.com; s=20230601; t=1770856646; x=1771461446; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZJpTlhiR4TRyjHrLxyY5K7IcESbEG+rqURvXdu9Kbh4=;
+        b=DSrUv1rcvs8yegrBUh7iXSlPYN+JwMJb+m4tieHLMvF39UsqAnH4FOD5GQ5Hz5XTjm
+         dWbzPkujxv6gm5XIAF/eSJH9jWcHIml5RX7UKb3+OagGRH11uUISoA4wGiSdku7i4+2p
+         teJa3NexW4pn7Qc7ufb9EsFjJgYP8sRFx+jLBswURvdPV0UF7asZOSjr3RKb9TtHzBg3
+         umvcOiBhyl4wAR5jMaDm7Oq33rK8abfGtCKU/J0rMRpSDgBIrjOZQeVCQ2SFTWaI/55x
+         RGV5UjYb1j42duBRc193sCPVTfjJ9qaAlohnqMR3HJZyvvhcvlNtCkeOsvpgngfWH2xf
+         4JBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770854878; x=1771459678;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jod8g++UrMJjPGENywCHZK3vSzJ+1L5xwi8NVPgGzhg=;
-        b=Af7jdMf9mDFpZIV+b6dn8dgSv0jucwv/Od5atXoxyXl40LDYCAFQK2DnBa+aQR0vAG
-         PD9tuwAk/PC9H3dKzbOjvhKR1s4Ou8qvI4skKNu4h12hD0RjjlemYHix0FehkfpjrmHD
-         13oQsTO+eGi4ABrOMHmoZbs2obcnGL2okZsb+5LfFveK1/HShm0NzOAx49a4WtEH8Law
-         ZH7wQGoeR/j/+r5J6xi+tN5ygEX7DbGn6FTuB06GHR2+DpZpxr8AXDyM/nIJYiclcvB0
-         5TxOWRYM6E1WOc0cY35AJBI+/bFWLN9e44ZK4a5G6C7nY7lgtYpHBQ5XGMe9TAreUO/m
-         YKbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjSPOW8ssQr0MVVLsnNDILMpYYCmwYKmsyLuQ2XVkS9FtX0fFe19cwH/JNtje85RiqDv8HrkU7nA==@kvack.org
-X-Gm-Message-State: AOJu0Yw6B4FX3X/jFsQaexC1rKbijX+ArdaXuDxRAT1TkzibhIdOZH/3
-	3I9/HqL5bxypmfYzRwvXOe7C7Er9JmVbTMiAHpEp4Tc0mN/oqsOVUT1i
-X-Gm-Gg: AZuq6aLguGwRScKeSNIUxLD6PqllT3gRZ4tfb12xb3WPNSBuO5BgyU6Yhp5tmsVi4WA
-	Cc3qI0p1TW/GOMvx+E/bREDQc8e6iswRmi6AMDI7nMBloBtUyH8rtZZ56+5RaSzVqveewHeMNBD
-	/g8fdR6bWoaL3U0jcbUh07+INzd1nwf9BuF3zMAw3rGnLnr3I6zrXHDEbloixnAKJrEXq76OkXp
-	G3oTlqv3rN21HHtEW9nl1Mb6AV++iCkV/m8MVQmJOfwdkA+kf5zIJt6l4+B/xp5eLhzWWgKzMe/
-	gatZX2W0yYgwptDYHzXU09X+WjGk00uEYSuoyLhwudlMAziCNFyDCQH0KPl02Kh+ReyZznna8Ze
-	Iy9Z2bF/lKTCJmj10eG3CccxLW/4Fp/TUAbdyMPILqGqZ3hI7NklTwVOJ3BLQI857RiQGVeUm6U
-	1FLEHbxe/kymgfLGinrfVhmXjFb297rOG5oxCWyligVpH6i4Ckbn6l+pWuzAGOGc0MZA==
-X-Received: by 2002:a05:7300:7b92:b0:2ba:8ae0:8576 with SMTP id 5a478bee46e88-2baa7f7064cmr548258eec.3.1770854877882;
-        Wed, 11 Feb 2026 16:07:57 -0800 (PST)
-Received: from fedora (c-67-164-59-41.hsd1.ca.comcast.net. [67.164.59.41])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dba2fe9sm2347889eec.7.2026.02.11.16.07.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Feb 2026 16:07:57 -0800 (PST)
-Date: Wed, 11 Feb 2026 16:07:54 -0800
-From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	akpm@linux-foundation.org,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v5 1/4] mm: Add address apis for ptdescs
-Message-ID: <aY0Z2qA1xiabEafk@fedora>
-References: <20260211195233.368497-1-vishal.moola@gmail.com>
- <20260211195233.368497-2-vishal.moola@gmail.com>
- <0ead4a2d-c88c-4c89-b1dd-5954c28edb99@intel.com>
- <aY0ALB5yKXLY-M-X@fedora>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aY0ALB5yKXLY-M-X@fedora>
-X-Stat-Signature: rsrz3kms1yaapkzznyaa4zbh31y78ehy
+        d=1e100.net; s=20230601; t=1770856646; x=1771461446;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZJpTlhiR4TRyjHrLxyY5K7IcESbEG+rqURvXdu9Kbh4=;
+        b=itEardxOPXyI05zh6vSUvLWoRIfGbaI8DJg3N3ammbulG0lPHCpIpzHav2O7eYkqrg
+         tQU/LItPt0z4SD2vNMBhiZdowEBkQ/9jxyC9Xm9V/E8HNjeUOnZ1pCwys4+eg5zBKqun
+         Hv4Bbuxr95fzukRsU2RFXfOBCqWuakDOd3jzHr08B0rA3TNrFDoC1858XH3zN7JNXR4C
+         i+B769ju9zzPEoz3tY4TzJDdOLk2+VZA6hTJurz/qKVeVUyPOB00NsigYv9oZIOufrLB
+         smBY+tErE+H6OAUcemH35Q1cRIAw2o0zyQQApdENhtyHccn1VXXep7mscmyEb3q18pJT
+         kqeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXgsoiWpKSZRCGnyWjqCUUOJ5bkdClizEmCsFFDaeUvmAnHEYUzAqg6BvnCXZjUHtmrqDLjdSYkvg==@kvack.org
+X-Gm-Message-State: AOJu0YzxofNgAEzvAZB7cfN69DR5kDEBxpSw2wLaFsjSXwMoDWEHeFSC
+	xYoRRtVR6o7i5J/GT4W/Fj/oF2+d8cUNBAqbuotNz6p7pDaq/h6E7GBVqOiYgAJrhRz8rTpu4ZK
+	lO27r9Ep6ruCnvusnvI8ILY0keQ==
+X-Received: from pfbih24.prod.google.com ([2002:a05:6a00:8c18:b0:824:b235:888c])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a00:2492:b0:821:8230:235d with SMTP id d2e1a72fcca58-824b04e5834mr661593b3a.39.1770856646414;
+ Wed, 11 Feb 2026 16:37:26 -0800 (PST)
+Date: Wed, 11 Feb 2026 16:37:11 -0800
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.310.g728cabbaf7-goog
+Message-ID: <cover.1770854662.git.ackerleytng@google.com>
+Subject: [RFC PATCH v1 0/7] Open HugeTLB allocation routine for more generic use
+From: Ackerley Tng <ackerleytng@google.com>
+To: akpm@linux-foundation.org, dan.j.williams@intel.com, david@kernel.org, 
+	fvdl@google.com, hannes@cmpxchg.org, jgg@nvidia.com, jiaqiyan@google.com, 
+	jthoughton@google.com, kalyazin@amazon.com, mhocko@kernel.org, 
+	michael.roth@amd.com, muchun.song@linux.dev, osalvador@suse.de, 
+	pasha.tatashin@soleen.com, pbonzini@redhat.com, peterx@redhat.com, 
+	pratyush@kernel.org, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	roman.gushchin@linux.dev, seanjc@google.com, shakeel.butt@linux.dev, 
+	shivankg@amd.com, vannapurve@google.com, yan.y.zhao@intel.com
+Cc: ackerleytng@google.com, cgroups@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: DC08B4000F
+X-Stat-Signature: xxifrgd7phgmx8y8rcw861jzhhg7g6om
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 38BEB8000D
-X-HE-Tag: 1770854879-925324
-X-HE-Meta: U2FsdGVkX1+/yvAVc2g+su74ECTy7woI4p6o5qrUN72jHIxaddy0t1+l0kp7sX+RoTIP/cqCudPBJ0/YGVdnxe7j2TfLqhRD7w3HnZuO+lKx1J+l8iwwK1dP5fRwQENw6YzwH5aupzGmkei8skvfzbrcv3C2bWaz4vtd0qcGW/t+ZnsFlfVgjDLANAJB/2QiVZYtdwyQktOR/XS6wm2Fa4VWiDKUFs2rRRUHldTRJWTCzox0c9xgHpib5vAeYyRPN0dlK/BxSw7Bhfhy2+4uAVpshze7EAlXt8uxIYAvFL9DO9h3ZPrDARjzRRPf1sorqnzSp6Ef6dFk+YHnr7d9LItD7MMaBKdKoLgC6CMqMNbquy4uuLDveU8X2vPO4+jg8dYlWYqOx4xdJiCWG3ZcnfWF4X4+fxe8DWtOX5q2h5Q2B9p3fTmjIE8KPf2njqm5DCNHs0R/fiDqSv/jVVEyjaXDX4E8Fn9sFAD7jz3mIH4GMv00AQv35L+XeBdTKxAcO806UaOf/1X9rkK82aAhAL5D4LzqWzgPk/QVM4aS5AdkuHwmMm+9LcJYEnva/LYWo0ylgN3M9wL9mACh/+REbd/gnxYey88J8yq52QgNIYz4b/4MRFirPvZvEXs/fdtx8zb/PxxR5lBKeYagZS4TG3AgChI5RgXy424sLu1v+DY5+Z0QcADDpinGePlHYRBUCvL+pHxGGIx/xNvC50hPsstk83MqmgZpRdJxNG6T16oDsJGvQiM9stJifyh0651T0PGNZ5LAEsn5BJ2j1awXK0T5gs0+DB/u7bQchneOCb1ZzNeq2t1eHljmqEDjBRD9QQk/AqRQRFdumCwtYnPCJsitNscWd09bal9kE8RD9kjcrRKKQQj25TOIOOclQ25LCWGzl7Rcodcr+PH4W5uiskLQOwHySQdtW7uymwYEsxyo4zH+sNx820IS7lglgnnvevqRENavHe0JbPMRXjv
- X7SHaG5v
- R61c7NVSKzwsFCYUQuQTqN+1MDhCzfZHe8xi8ZRuxtDRycmDSUZUMzjGJaVOljZmyXvUNr3Cr//GCBIjbCSbXCefYzsreyydK2VwExbKIm3rKp8a6k0REWpxRKU5J1I/NFjEVMYHj/4UsjJIb900JP0vOnWbFdKV0SBpbsN9Y9LaQ+NOzKS3WsPMvxD8CFWCTIcWgMVsg6akRFdVv9aRoX4TvzqlIj+m/RPNjiSE7Gf2wrdsl2vlvoFdQpRNBGk1RaL7DJKnjSl5cFwZdGmeRZVf5WZME+vulWLNRGHurTkx6X2du8TEXoOsOsIG1sHndL29kLQ9buYATyPj3b0nnFSXs4r/ofNsf6B1/GGf800tdT3sY/L93CeDn4JXoq+edX/24X65N+djD0ycSrTACYlCUHp/a2ey0ZvbVm4fm1ld2eik0f6zedfkDvkEsL5lFWQPBVAiFzcE4fc2Pw7LDrEEEIubj4BHohnUimtVaGU4wqzKywW0liivdCbrOWoyIJRgAZpBUJ9Eifk7AFFwFNYmY3xYwa5U47itRlca2lXOnFoI=
+X-HE-Tag: 1770856647-127279
+X-HE-Meta: U2FsdGVkX18j2zWg9LyAebhHO3ZlMuSWicZmD0qLrCiPjvls8xaY7ltd3zLvFZNopL/hH6oTJzK+Vu7m5RmJQVFDMdf5pbf5IhdSsNaj5UyudxInHTzZ0lFezMlCnVSL4GJvyYKejLuqY4aAojEhhkmih95EDNNN3fdZxwxzxIVddpsxeiTo5uexs0ydOM5q/k+NPirukCWQvHUk1Kdx2wLUtUXw8DmSqft3ArADOH5FlDEEOGA4o7zW70kv6g6iczyg3MTOVyQ1yBfgQw1vLF8VxC4XNhx68RRfCKh93u1Ga/hGeIhbeb3VhBs72FN5O5X+QVuXl3vh3FFUWObplozq4MaSuIuQE7y6iskUID3lIyDlx8LKTBvoCrTN9f/6qe4DfxdurbdXN39JXXBIa0gyfoDe1bbWYiZYqBD6k/p2rSH00SIkxCXn251rKfbWi9tIUQbU3HAJX8KH2J2YLCfMmQcwmEhoXkslUC6juh4krNI9FtPB8fFTbymUGDD9BnpoGDteeBjTgmN7P5Vffr2vwIe0XfCIcAblQwk/IBtd4Ocdsyf96oJtAFbLlbRlGJPWmZoAMU2zwQDhJQwz4Yul824IJ+obx1UAMkwldJGaZDtTtJFcYpx2r3Nx5o5YJGikKRJFb2FD5Ydwhzf/3doDpOt05kojIyyTTuMeUMnbVv7I1nDnnZXEJYj17N1yS5C1Cw6W9i6thOsX0OONlGH8dgOQS0YfJSyW232036vE93hIWH3C0eIe+47JakjF957SbZsdItFfByzOFpdABIMOdGNnwyWj/TWVGmXrxSbDdtXG7BYZZSC5aCdb3XtOi6W8SaYBAO4dqky5QEJFn5+NY+rOxHxzgjs9wyT3IawzHtd4SZLRm1sq1BdYJIZF9RpfXOWGgUrxgqPqGt2IT+AgfKNLNQgx5wrT5nKzAIdGGVYPlKUn+8Z3ESOadHK8YEssXDYMpOEAkw3GKL3
+ pAUBIMXC
+ 8fpFv6JG8oWjqQnAFdoASi756YlmlGbPEHc4PPnyLnFjavI6nmGtsKdWshP/vZ25XtKZ4eS6zvumwbboe1ZIXOfAopMxtFf2PXtLBYcGhTbiwW+gydwE2wp7qrP2nYLx+XeKe13wnNgRlKhai4RX8ACOa0bnbqzyXq/EjFo3FzsUFfeK1CQXiU61BLr0bCV5KWROFjYzpwSTi/MYwJCkmxwe3Q5nUKSlaNWmVQW9OzRIYuovwb39YJCMpjYn1vlpWlVPMgBHpvGFhVSi3vzAxhz/U7648sbVVWf2MQWgc6va7Tm7R/xdn73wyRN4as6QZCzKLCwRAJb2XlSj1+bYgQRCAHWyMYGBppnkeXRa3uiv/xlmmSOvWI7JYUNiwa+xNf0QXV554UEXv14UkQ9OUEUUo1ITcktHnVuDmDL6/ozw8/PMFsd94SH+wxrONsFmaybvIsT8WL2jo+xRcOasHpwN8bzjdrzux3lyUYg9KplPi1duHB+wJfh62C0XOex7Z6zftD+Xo0QOKMMzzkPR5W6lPTYJyX5hQFNMZkaIDJuMSdvYk/7iOyBJjAYeL+OhhuhzIol0EU2CnS51Ku8aIrKZjOYS4d13MXijcPXhZMtb4PU38ACW2VaPEY4nrL+xO1WrtyJGCMv1/R8BElCLEenZFuHjRaBfFTWOyOwuLbQSqupZkDknYX7SPGggiLy/EgUaPZY/UyOufHExGSrV1H7Sa6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,43 +112,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 02:18:20PM -0800, Vishal Moola (Oracle) wrote:
-> On Wed, Feb 11, 2026 at 12:13:10PM -0800, Dave Hansen wrote:
-> > On 2/11/26 11:52, Vishal Moola (Oracle) wrote:
-> > > +/**
-> > > + * pgtable_alloc_addr - Allocate pagetables to get an address
-> > > + * @gfp:       GFP flags
-> > > + * @order:     desired pagetable order
-> > 
-> > FWIW, I don't like how pgtable_alloc_addr() looks in practice. It reads
-> > like it is: "allocate a page table address", not "allocate a page
-> > table". I don't have a better suggestion other than having:
-> 
-> Hmmm. I meant for it to read "allocate a page table and get its address."
-> 
-> > 	pgtable_alloc()
-> > 
-> > that returns a page table pointer, a void*, and:
-> 
-> Initially, I intended to name it pgtable_alloc() & pgtable_free(). I saw
-> arm using pgtable_alloc() and powerpc using pgtable_free(), so I looked
-> for another name.
+Hi,
 
-I've done some digging about these names.
-The arm cases uses a function pointer, so we should be able to use that
-name without issue.
+The motivation for this patch series is guest_memfd, which would like
+to use HugeTLB as a generic source of huge pages but not adopt
+HugeTLB's reservation at mmap() time.
 
-What do you think is a reasonable name for freeing?
+By refactoring alloc_hugetlb_folio() and some dependent functions,
+there is now an option to allocate HugeTLB folios without providing a
+VMA. Specifically, HugeTLB allocation used to be dependent on the VMA
+to
 
-pgtable_free() is defined for sparc and powerpc. I could rename them
-prefixed with "__" to get the name since they only have 1-2 internal
-callers.
+1. Look up reservations in the resv_map
+2. Get mpol, stored at vma->vm_policy
 
-> > 	ptdesc_alloc()
-> > 
-> > which returns a ptdesc*. But I suspect that would get confusing at the
-> > point that ptdescs _themselves_ start getting allocated.
-> 
-> The ptdesc_alloc() equivalent right now is named pagetable_alloc(), so I
-> don't think it'd get confusing.
+This refactoring provides hugetlb_alloc_folio(), which focuses on just
+the allocation itself, and associated memory and HugeTLB charging
+(cgroups). alloc_hugetlb_folio() still handles reservations in the
+resv_map and subpools.
+
+Regarding naming, I'm definitely open to alternative names :) I chose
+hugetlb_alloc_folio() because I'm seeing this function as a general
+allocation function that is provided by the HugeTLB subsystem (hence
+the hugetlb_ prefix). I'm intending for alloc_hugetlb_folio() to be
+later refactored as a static function for use just by HugeTLB, and
+HugeTLBfs should probably use hugetlb_alloc_folio() directly.
+
+I would like to get feedback on:
+
+1. Opening up HugeTLB's allocation for more generic use
+2. Reverting and re-adopting the try-commit-cancel protocol for memory
+   charging
+
+To see how hugetlb_alloc_folio() is used by guest_memfd, the most
+recent patch series that uses this more generic HugeTLB allocation
+routine is at [1], and a newer revision of that patch series is at
+[2].
+
+Independently of guest_memfd, I believe this change is useful in
+simplifying alloc_hugetlb_folio(). alloc_hugetlb_folio() was so
+coupled to a VMA that even HugeTLBfs allocates HugeTLB folios using a
+pseudo-VMA.
+
+[1] https://lore.kernel.org/all/cover.1747264138.git.ackerleytng@google.com/T/
+[2] https://github.com/googleprodkernel/linux-cc/tree/wip-gmem-conversions-hugetlb-restructuring-12-08-25
+
+Ackerley Tng (7):
+  mm: hugetlb: Consolidate interpretation of gbl_chg within
+    alloc_hugetlb_folio()
+  mm: hugetlb: Move mpol interpretation out of
+    alloc_buddy_hugetlb_folio_with_mpol()
+  mm: hugetlb: Move mpol interpretation out of
+    dequeue_hugetlb_folio_vma()
+  Revert "memcg/hugetlb: remove memcg hugetlb try-commit-cancel
+    protocol"
+  mm: hugetlb: Adopt memcg try-commit-cancel protocol
+  mm: memcontrol: Remove now-unused function mem_cgroup_charge_hugetlb
+  mm: hugetlb: Refactor out hugetlb_alloc_folio()
+
+ include/linux/hugetlb.h    |  11 ++
+ include/linux/memcontrol.h |  21 +++-
+ mm/hugetlb.c               | 228 +++++++++++++++++++++----------------
+ mm/memcontrol.c            |  77 ++++++++-----
+ 4 files changed, 212 insertions(+), 125 deletions(-)
+
+
+base-commit: db9571a66156bfbc0273e66e5c77923869bda547
+--
+2.53.0.310.g728cabbaf7-goog
 
