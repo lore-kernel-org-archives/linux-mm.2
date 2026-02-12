@@ -4,182 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57F39EE3695
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:38:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 477C8EE3695
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:39:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 841706B0005; Thu, 12 Feb 2026 10:38:47 -0500 (EST)
+	id ADF9E6B0089; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EF566B0089; Thu, 12 Feb 2026 10:38:47 -0500 (EST)
+	id A89AD6B008A; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A69A6B008A; Thu, 12 Feb 2026 10:38:47 -0500 (EST)
+	id 9627E6B008C; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5894E6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:38:47 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 14C3C85E7A
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:38:47 +0000 (UTC)
-X-FDA: 84436212294.01.CCA7D71
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 5651018000D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:38:44 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N+o54+yK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kKHFIOue;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N+o54+yK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kKHFIOue;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770910724; a=rsa-sha256;
-	cv=none;
-	b=TWLymqBHFPEMcODY/Hd8FNFg9elS3yB/TfBX3gs4b6LnyiI6BULrIOwrIan/dXePuu+HQJ
-	6OdLB09x+muhS/NYO8rUuYpVvqvhuaDMtqn5v4n3YcLZY57El/l1SfTgwbNYS8jEBxlDFj
-	+T6P2WucR2M5YShQNsGx0RN9yE2cNx8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N+o54+yK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kKHFIOue;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=N+o54+yK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=kKHFIOue;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8481B6B0089
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:39:53 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B69D1601A0
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:39:53 +0000 (UTC)
+X-FDA: 84436215066.07.62A4ECF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5FF80160012
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:39:51 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBGzJzgz;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770910724;
+	s=arc-20220608; t=1770910791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PfGWL/rt1aEsogXnh1AKwuqYNfzYprrXYng+9VXrqZA=;
-	b=2BNFQfrQkKtCvSr09VlbQpHHgwaRUhGuBl3o/9x9pcIOKfVr8HPLrmmZ3ltHCvfHldiFxn
-	rhBH7uoYrJBnIjyw16/OAfW/FwfhQLG3k+mx7LpWwWuXTjkH0RglVnoShR1GmpK0mth6gN
-	/TVBcHLnrzePuKYgJLKwa7AluFovQEE=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A1EE63E6D6;
-	Thu, 12 Feb 2026 15:38:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770910722; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PfGWL/rt1aEsogXnh1AKwuqYNfzYprrXYng+9VXrqZA=;
-	b=N+o54+yKYeJrHDujmqUh7RpIiTYQkQejcc4VLsn0GiJ0tj8PliQ3ZZsIClejDZFDMpzorx
-	7qmBhMUJ8nlfmoudtU+2KjDQBQlX3/El+km+KXyRhSjsJxxY8fqrsjUHdmJpvttdiL01YJ
-	pbf7GgYuHnXLQimzMxLoBRtMV0ZwMdM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770910722;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PfGWL/rt1aEsogXnh1AKwuqYNfzYprrXYng+9VXrqZA=;
-	b=kKHFIOueeKtor6Ch0xJ1mQiqzOlhtqapCU6UMmytxmcWNqcEAVXuEgh1NmKHQCII2m/vem
-	ad/qv/iCiy8oDkAQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770910722; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PfGWL/rt1aEsogXnh1AKwuqYNfzYprrXYng+9VXrqZA=;
-	b=N+o54+yKYeJrHDujmqUh7RpIiTYQkQejcc4VLsn0GiJ0tj8PliQ3ZZsIClejDZFDMpzorx
-	7qmBhMUJ8nlfmoudtU+2KjDQBQlX3/El+km+KXyRhSjsJxxY8fqrsjUHdmJpvttdiL01YJ
-	pbf7GgYuHnXLQimzMxLoBRtMV0ZwMdM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770910722;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PfGWL/rt1aEsogXnh1AKwuqYNfzYprrXYng+9VXrqZA=;
-	b=kKHFIOueeKtor6Ch0xJ1mQiqzOlhtqapCU6UMmytxmcWNqcEAVXuEgh1NmKHQCII2m/vem
-	ad/qv/iCiy8oDkAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6051E3EA62;
-	Thu, 12 Feb 2026 15:38:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QgJZFgL0jWkaFgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 12 Feb 2026 15:38:42 +0000
-Message-ID: <fab33f4e-494e-4f21-8c1b-1a19e455b6f6@suse.cz>
-Date: Thu, 12 Feb 2026 16:38:42 +0100
+	bh=hrQnrLZGRkouZkW9Dz1FgaKn18/yK60/HNzprFfNtmk=;
+	b=K0otIemEyxE2eirL00qvj3bbw+cWjDPJSi9pVZ0uOwLz7SIi4DDmJnemQP5PWl+2sO0mnR
+	hRjlpxRxwgzBSyuHLGPyluEehfQGyF9aQDg9fKKG+k4JTIqjNtJfFEx3nE3qeh1nPISS3S
+	C5hVPOkl4vve3CayxbSr8FJtXv82ZsM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dBGzJzgz;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770910791; a=rsa-sha256;
+	cv=none;
+	b=8NhuLEDJhEVwyYvkuTPlxyKt0LpyqKLWSPZFHSw3Px0Wlycb4rOJl/mHh6oNjEXr0Vh48n
+	zOrOlkRPVHypjCeDUh/PfA+24dJ7q9xMFgo0wmaz63kt0doj/As+GkTgDTr2to4z0PKHmx
+	pja9Z3oEEB5TID0puCQERWOKDEqSS+w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B0E8460051;
+	Thu, 12 Feb 2026 15:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2372FC4CEF7;
+	Thu, 12 Feb 2026 15:39:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770910790;
+	bh=uDJdvdtdIL8nTfRDZsIpuEy7of+XLqGVIjb1L7/IFKw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=dBGzJzgzSO+9iMjTj2UNcR0sC5r8JHSYQ3uy2B6LUzNIgTfbrP8Agr6brEbN4jaw/
+	 HhJ8JDU2JxGY8BLCuqt/vK04qyCcfpdhULqy6yG5QGdt46x8yPnvn3zRNQQazplva5
+	 7PB6l6YMhVa1KkIWwnfuDhz9rIPfHH2xdmifCv8i6E4xXJiMAfyDkmZM/gQxXekbT4
+	 wgFsMwWHmOCv0C/6By+Ou1mZyYTSgUp7hF617TVZTysJv8Wkq82MBKcVW4uURngvpA
+	 3VLAwJ1kpslP/ML4/IlrdIvHlCu98UbNzd8AT2+wblgqmgQnj7GreZfIDAmHi5X1vY
+	 CblqO/OqoNwHw==
+Message-ID: <22d65938-4569-4e5e-8f30-bfe9b38b6493@kernel.org>
+Date: Thu, 12 Feb 2026 16:39:41 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND v8] mm/page_alloc: boost watermarks on atomic
- allocation failure
+Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Usama Arif <usama.arif@linux.dev>, Andrew Morton
+ <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
+ willy@infradead.org, linux-mm@kvack.org
+Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20260211125507.4175026-1-usama.arif@linux.dev>
+ <20260211125507.4175026-2-usama.arif@linux.dev>
+ <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
+ <875x82ma6q.ritesh.list@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-To: Qiliang Yuan <realwujing@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- kernel test robot <oliver.sang@intel.com>,
- Qiliang Yuan <yuanql9@chinatelecom.cn>
-References: <20260212-wujing-mm-page_alloc-v8-v8-1-daba38990cd3@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260212-wujing-mm-page_alloc-v8-v8-1-daba38990cd3@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <875x82ma6q.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 5FF80160012
+X-Stat-Signature: dz3u4h7rhq7xz7ek96dotm91im1qfqnu
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5651018000D
-X-Stat-Signature: 1dpu5buc7f1xpfizawrze4oi3h55tkth
-X-HE-Tag: 1770910724-955700
-X-HE-Meta: U2FsdGVkX1/v8ybz5bqrrAbNW2c3yf6yk7iMT8JUtmeaxVJd8yEgCdEKkYKtOe0rdUZLU/ELAio4IL3u2rj1jtL1LUVYRFlDK5iixrz3Lc1N6CGeGv7tQPG1AY/8JdoYx+BdwjkdBgh+D+X5D3UKipoFb8sZlquG81cRFExDdlsVzvbwrEdHJNLpX5TcH6tIQyAZajmodihI5H9Qza7CLuhXxQcmeykZBPj53SQmuMtitgdLSeHoDqpl56gSh8Vvvgu+uDrwlMf/mtjXc9pNeV9X/MPSuStiA5VKaK4JJ4upVseTscjBSeHFNR/zt6hhgYXelyzK9iPPVb85rEhPAaAt56plMZVm9av7fb5XN410auie1oOkbYaFO5XIZzRx6hG6wWfHyVyp7jXAV0d+WRBtvAnbC55Eddhw9Fptnolid5sHjPNQcG1kPXDDgRy/dqdBMWSurEnDpW5tkC690fzEyCD+rRD6kGLeEssLnuEB2Fz/atZvM7qaLXpGd1qUFRr7CWi2SiFdcORv8IzZ4Z5po6zjwPwBE8lbGp025KsxrKYAsiaxxmfePfk1Zhq1NOJC+aDUcgwyR6xL0CDU0YjETgIUtuZgwSw7UXq3Px7VQR5wf/VQejkR3lw48Q5AA+uwsLgOA2KV5cryRayw0UKf9rZhn0+244kx0M0bRHwsFoytnarpIfdMVI4gzyHu67iz2mir6OwKbILgLagv9+j/g1+9Jeyi8vQkV3L3Ij6uBJjezYcRNdYqp3VFPRGENhlLUNmXTstWYkDQrgK4pbAgBlGh1HFpHkmmoJslqoLJdIvBXHL2rrIvQhvL2zaJ3s9oGrA5O0z2XRHYNMnzKgBTErPJS/CHxmgZbgK0bvwKr8vmsL4WvdKZw4Y/Se0N0V0U7e0NPnAhjrkgxkJ3dcIO545AEAJPj6L1cy7W55QLy8UwVbYBUjPbZMViMmDGzl6QBkS7XLxL0CxVIJu
- Ekeg6Ch6
- Sw07Sv5LiEKQfVIDQEVaWQdF3IuFzPERvD/zdoVmjxcyVp1z5JZt9uW7YSR+BEJkjANL1RwhR9t39dsaQimDc5AEuaER12HYyd7Z1i5Njz8+sPINw7Mk9WrEoCRqB1Rs6Ih1zqOZg3X0yzwGp9As/smnzn5lqIRdkfeheaFb+4ZDyoKPb7u+/5eX44OMCxbjLQ+mlvUhSfRNbmM/gsY/46dX3rkVE6a2EJ+xqBNhJpjpXNbBJKTSUC5jJVvJWdLqMHFB9m/KbT8Y4NC3xrz/T27kZ53ETd15l+bVRZcEAxv2XGdWvKpqZ4Fms4NF3qKaqk3UoIkaG7ZlCuw1E7ivVSIVHBDMDeWJ2duY9qjgulq1tDR3ihDcIQkyKQjQKcqgaKgmFZkKgLMB7RVVuO1hFbyIH8g==
+X-HE-Tag: 1770910791-676408
+X-HE-Meta: U2FsdGVkX18P0TmQ5ZISfKjMgo7leMAvyhdAFDxQSLTKlDex0Fsm9S3ouaafRNjAiZQBvFrzLsOFYXWm1DXV/p2JUU8x8JTcS5lsOXr9zEwrR1l0bmxLgxYqj9XmvOSnYnw3saJeymg5PdQbn0BjUA+Il/k9Se0RRBwt5ZWQgAmQZ6zmZfQR94FtSio1qLN8rntvtRSUiazhn4+DU0HmhUgeyYtfgu8m0Sb7KnNK2X9JE2bMA+4ErL3fRkGWb7rqZKgmpq/XwCIW5S9P3P1XAomybzWuUgh/YNHRcnk1B4TfkyGmOg7uoQWuT+s7VDMWqgL+Hm0M0sJQNepISVXPQWgwHh9Y434/yCzC6nezAYot6Ff9YVfYy7imI4P6X59/JChIrkVg1WniPr6cU43JSSclWEneyz4czA3RRx6bR5xtCkTINpX4IBoH+NIsG2otd+xFGznaRhh0KFI7jmppPb5RBWxBbGVwM3DYehg26DrA26zsD1zO/82jMQbLzkPZl5yi7odQ9bA83up4v2CLO2pLemjt7eY0a0fJZDsuF8EfS+xuPx1lsnbevTBCQPZWjwelfka3cFzoL0oLGUdBNDPgDqPIMhJDuAG6GngXoLIfKigiEzNf5R3Y7X+wEp7WnX4p3ZKyjMKjIQMJiaKLz2GaE/kDyNI1yltnhBol8ExOXT9svtLjBAwX8Czyv7WV/Wcj8VbkdmTirqsRd8GyFaZbOwUwDm5NlIHtlHa83xTwlZgCqd8m+9N4EYLRu+2K3EleNaQRx6XaBU11Pj0aU+mrE1JBDaDcMHs+1flYacdolKOoumrRVOUtFo4KPfENRcb9bRWDRxwnXt69GpprJdYlAX0EN2wBiAq9AhAa9+v7YjLAJBovu+CrFBIxLoTMD4QhXvWnktncnRJwSWmO4dnBr9fx8yf8P5wqEuauU+dx06OxmX+196d6UY6RowIDfInUgqOU33unvVVU6CG
+ Dil8CM0V
+ 8I12dNEE95xkt/EFYD4IyA/+Va9vNKpcHUVsw9muNENvvzGjFA6tF70d0JcHsVIlG1O3S7PQ8TlSrAfTa5xLqQHZhtC/52PkNBrmaU9rSOGH+1fOp/6h90cDrxGEP5HzjKxe8r3TN7BBc5EF8gI8SvxkDvK197TyojWqtoj+HyZpP3xVXiFMERf2mYY4bKbzyYauCZS4HUNa0yEolozk8tza8uD6LQfVTeAEhGjPoYFCDT40jWvJRTYuFAXUsxZSQjbZAuPMsp+FsWhStT/z1963HZzO59ZCMAWIrd/m2iZGyRx2Xad95E2BmbnqdGyPqZFOrS5EbjSw46Ho=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,175 +149,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/12/26 08:27, Qiliang Yuan wrote:
-> Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
-> pressure as they cannot enter direct reclaim. This patch introduces a
-> watermark boost mechanism to mitigate this issue.
+>>
+>> Is there a way to remove this? It's always been a confusing hack, now
+>> it's unpleasant to have around :)
+>>
 > 
-> When a GFP_ATOMIC request enters the slowpath, the preferred zone's
-> watermark_boost is increased under zone->lock protection. This triggers
-> kswapd to proactively reclaim memory, creating a safety buffer for
-> future atomic allocations. A 1-second debounce timer prevents excessive
-> boosts during traffic bursts.
-> 
-> This approach reuses existing watermark_boost infrastructure with
-> minimal overhead and proper locking to ensure thread safety.
-> 
-> Allocation failure logs:
-> [38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
-> [38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
-> [38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
-> [38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
-> [38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535649.655523] warn_alloc: 59 callbacks suppressed
-> [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
-> [38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
-> 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202601271341.5d24a59f-lkp@intel.com
-> Signed-off-by: Qiliang Yuan <yuanql9@chinatelecom.cn>
-> Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
+> Hash MMU on PowerPC works fundamentally different than other MMUs
+> (unlike Radix MMU on PowerPC). So yes, it requires few tricks to fit
+> into the Linux's multi-level SW page table model. ;)
 
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+:)
 
-Nit:
-
-> ---
-> v8:
-> - Use spin_lock_irqsave() to prevent inconsistent lock state (softirq-on
->   vs in-softirq) as reported by LKP.
-> v7:
->   - Use local variable for boost_amount to improve code readability
->   - Add zone->lock protection in boost_zones_for_atomic()
->   - Add lockdep assertion in boost_watermark() to prevent locking mistakes
->   - Remove redundant boost call at fail label due to 1-second debounce
->   - Link: https://lore.kernel.org/all/20260123064231.250767-1-realwujing@gmail.com/
-> v6:
->   - Replace magic number ">> 10" with ATOMIC_BOOST_SCALE_SHIFT define
->   - Add documentation explaining 0.1% zone size boost rationale
-> v5:
->   - Simplify to use native boost_watermark() instead of custom logic
-> v4:
->   - Add watermark_scale_boost and gradual decay via balance_pgdat
-> v3:
->   - Move debounce timer to per-zone; optimize zone selection
-> v2:
->   - Add debounce logic and zone-proportional boosting
-> v1:
->   - Initial: boost min_free_kbytes on GFP_ATOMIC failure
-> ---
->  include/linux/mmzone.h |  1 +
->  mm/page_alloc.c        | 48 ++++++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 47 insertions(+), 2 deletions(-)
 > 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 75ef7c9f9307..8e37e4e6765b 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -882,6 +882,7 @@ struct zone {
->  	/* zone watermarks, access with *_wmark_pages(zone) macros */
->  	unsigned long _watermark[NR_WMARK];
->  	unsigned long watermark_boost;
-> +	unsigned long last_boost_jiffies;
->  
->  	unsigned long nr_reserved_highatomic;
->  	unsigned long nr_free_highatomic;
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index c380f063e8b7..7dc1e056a082 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
->  static void __free_pages_ok(struct page *page, unsigned int order,
->  			    fpi_t fpi_flags);
->  
-> +/*
-> + * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
-> + * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
-> + * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
-> + */
-> +#define ATOMIC_BOOST_SCALE_SHIFT 10
-> +
->  /*
->   * results with 256, 32 in the lowmem_reserve sysctl:
->   *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
-> @@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
->  static inline bool boost_watermark(struct zone *zone)
->  {
->  	unsigned long max_boost;
-> +	unsigned long boost_amount;
-> +
-> +	lockdep_assert_held(&zone->lock);
->  
->  	if (!watermark_boost_factor)
->  		return false;
-> @@ -2189,12 +2199,42 @@ static inline bool boost_watermark(struct zone *zone)
->  
->  	max_boost = max(pageblock_nr_pages, max_boost);
->  
-> -	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
-> -		max_boost);
-> +	boost_amount = max(pageblock_nr_pages,
-> +			   zone_managed_pages(zone) >> ATOMIC_BOOST_SCALE_SHIFT);
-> +	zone->watermark_boost = min(zone->watermark_boost + boost_amount,
-> +				    max_boost);
->  
->  	return true;
->  }
->  
-> +static void boost_zones_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
-> +{
-> +	struct zoneref *z;
-> +	struct zone *zone;
-> +	unsigned long now = jiffies;
-> +	bool should_wake;
-> +
-> +	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
-> +		/* Rate-limit boosts to once per second per zone */
-> +		if (time_after(now, zone->last_boost_jiffies + HZ)) {
-> +			unsigned long flags;
-> +
-> +			zone->last_boost_jiffies = now;
-> +
-> +			/* Modify watermark under lock, wake kswapd outside */
-> +			spin_lock_irqsave(&zone->lock, flags);
-> +			should_wake = boost_watermark(zone);
-> +			spin_unlock_irqrestore(&zone->lock, flags);
-> +
-> +			if (should_wake)
-> +				wakeup_kswapd(zone, gfp_mask, 0, ac->highest_zoneidx);
-> +
-> +			/* Boost only the preferred zone */
-> +			break;
-> +		}
-> +	}
-> +}
-> +
->  /*
->   * When we are falling back to another migratetype during allocation, should we
->   * try to claim an entire block to satisfy further allocations, instead of
-> @@ -4742,6 +4782,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	if (page)
->  		goto got_pg;
->  
-> +	/* Boost watermarks for atomic requests entering slowpath */
-> +	if ((gfp_mask & GFP_ATOMIC) && order == 0)
-
-I'd also test && !can_direct_reclaim, we don't want to boost for allocations
-that can reclaim and yet specify __GFP_HIGH.
-
-> +		boost_zones_for_atomic(ac, gfp_mask);
-> +
->  	/*
->  	 * For costly allocations, try direct compaction first, as it's likely
->  	 * that we have enough base pages and don't need to reclaim. For non-
+>> In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1
+>> copied generic pgtable_trans_huge_deposit() hurts my belly.
+>>
 > 
-> ---
-> base-commit: b54345928fa1dbde534e32ecaa138678fd5d2135
-> change-id: 20260206-wujing-mm-page_alloc-v8-fb1979bac6fe
+> On PowerPC, pgtable_t can be a pte fragment.
 > 
-> Best regards,
+> typedef pte_t *pgtable_t;
+> 
+> That means a single page can be shared among other PTE page tables. So, we
+> cannot use page->lru which the generic implementation uses. I guess due
+> to this, there is a slight change in implementation of
+> radix__pgtable_trans_huge_deposit().
 
+Ah, did not spot this difference, but makes sense. Still ugly, but make 
+sense. Fortunately it would go away with this RFC.
+
+> 
+> Doing a grep search, I think that's the same for sparc and s390 as well.
+
+... and I also did not realize that s390x+sparc have separate 
+implementations we can now get rid of as well.
+
+> 
+>>
+>> IIUC, hash is mostly used on legacy power systems, radix on newer ones.
+>>
+>> So one obvious solution: remove PMD THP support for hash MMUs along with
+>> all this hacky deposit code.
+>>
+> 
+> Unfortunately, please no. There are real customers using Hash MMU on
+> Power9 and even on older generations and this would mean breaking Hash
+> PMD THP support for them.
+> 
+
+I was expecting this answer :)
+
+> 
+>>
+>> the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar
+>> checks need to be wrapped in a reasonable helper and likely this all
+>> needs to get cleaned up further.
+>>
+>> The implementation if the generic pgtable_trans_huge_deposit and the
+>> radix handlers etc must be removed. If any code would trigger them it
+>> would be a bug.
+>>
+> 
+> Sure, I think after this patch series, the radix__pgtable_trans_huge_deposit()
+> will mostly be a dead code anyways. I will spend some time going
+> through this series and will also give it a test on powerpc HW (with
+> both Hash and Radix MMU).
+
+Thanks! The series will grow quite a bit I think, so retesting new 
+revisions will be very appreciated!
+
+> 
+> I guess, we should also look at removing pgtable_trans_huge_deposit() and
+> pgtable_trans_huge_withdraw() implementations from s390 and sparc, since
+> those too will be dead code after this.
+
+Exactly.
+
+
+-- 
+Cheers,
+
+David
 
