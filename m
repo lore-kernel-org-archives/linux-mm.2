@@ -4,90 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51CB0EB491F
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 12:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B937EB491B
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 13:00:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88CC96B0093; Thu, 12 Feb 2026 07:59:14 -0500 (EST)
+	id C48B76B0096; Thu, 12 Feb 2026 08:00:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83ADB6B0096; Thu, 12 Feb 2026 07:59:14 -0500 (EST)
+	id BCC746B0099; Thu, 12 Feb 2026 08:00:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7131B6B0098; Thu, 12 Feb 2026 07:59:14 -0500 (EST)
+	id B041E6B009B; Thu, 12 Feb 2026 08:00:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5FC9C6B0093
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:59:14 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0DF2F1BD60
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:59:14 +0000 (UTC)
-X-FDA: 84435810228.07.0B55BB3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 41ED2100013
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:59:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FILRQXDz;
-	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A06F16B0096
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:00:14 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1BC2855EAC
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:00:14 +0000 (UTC)
+X-FDA: 84435812748.01.276516D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 582EC1C0023
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:00:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MAiS7gpR;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770901152;
+	s=arc-20220608; t=1770901212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VrC+T3EC2WmBao965eJ8GXFqikx4iTal3qeLrhlTtMM=;
-	b=yMqvSYdLERFd9Y662WiCn/W63zIjpXKMmA/R7yx5o7J2VQ9g7/9HENQYyo2Szn0ZsldQEn
-	1KCNjxAQKyapkbvrMTXXtVFBCy7A+9PSzTBABSkQTmxneHMP/oTspg+1bPU8GHqnyt/GNE
-	de492CKLyJD2YjrKxg9OSji3qnj1jmA=
+	bh=BVBtdpurmpISIWqOJSTlNhu6Q9/g7LJUy4KVjqUl2oA=;
+	b=mlhQjkUm48jWHRipdp50jT+b8kgeJFO3cvmLSV3NtjCPtXJrwjM9HmpzENR9R+1cY2AFnz
+	tzLE0VXnZNeTkSfJAuWO573Az71THEH4SvvE6FUjrl1i6hBQ30q8NW6DRtAlUpdekIn3tJ
+	G/Qkm6cNL1I+iJVHADVQ5EHBs5TqEK0=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=FILRQXDz;
-	spf=pass (imf14.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770901152; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MAiS7gpR;
+	spf=pass (imf21.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770901212; a=rsa-sha256;
 	cv=none;
-	b=jRhvhS5Dbwtahyt3Sku4jjmvQNTWplSa5hIaM917NNXk3mtpJZDb2zGARbiSx9ZpZWMMeR
-	MegcxHPow7UzRYIZGFoK5stOiSZMhKOtKltfJ/zKCXVzSQ8gGnBqMKN5QAqC9KW2iP2X0P
-	HGoG2qiUmI1zBKJdSGQSfQvHWbrhtD4=
+	b=UjpOnnXly5QzMmS6vNVe/gGEFhte9nm4SrqRDUjSeR5PEH4qisyiIm3FhUi9UFjSmBgE40
+	QVIwyBq/Wqxroy6abhUZqJGcpyM3wlcw5Ni26atyKDAWHcWl1hJ6UVtsyfQGVt6pkVPf/G
+	YizKlhEH0lb0oFp6PJ9616KbZoX1CzI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3E5114429B;
-	Thu, 12 Feb 2026 12:59:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93959C16AAE;
-	Thu, 12 Feb 2026 12:59:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770901151;
-	bh=NpzLkdW8jXvjXyCAdGJ2aaYK5afE0bKYG7engXl5Z7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FILRQXDzGZKfXmuKAK5ZrnbeyItSpJgxWSqHXBdroPiHoCIqjbba730FzEi+WFI4W
-	 k+Fl4YWxJlJiZBcU9xiniAR8O6RhDjaRFAy/1FUP3U+k/IW7Tr115GvL+dz8ftH240
-	 bwu3kNGquh9vMZdHyJKw94B4PbK7jX9Q5h8vnyWA=
-Date: Thu, 12 Feb 2026 13:59:06 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Gabriele Paoloni <gpaoloni@redhat.com>
-Cc: corbet@lwn.net, skhan@linuxfoundation.org, arnd@arndb.de,
-	brendan.higgins@linux.dev, raemoar63@gmail.com,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
-	acarminati@nvidia.com, linux-mm@kvack.org,
-	safety-architecture@lists.elisa.tech, kstewart@linuxfoundation.org,
-	chuckwolber@gmail.com
-Subject: Re: [RFC PATCH v3 1/6] Documentation: extend the 'Function
- documentation' with expected behavior and constraints of use
-Message-ID: <2026021221-grading-clatter-b7bf@gregkh>
-References: <20260212124923.222484-1-gpaoloni@redhat.com>
- <20260212124923.222484-2-gpaoloni@redhat.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id B28D3600AD;
+	Thu, 12 Feb 2026 13:00:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C42C4CEF7;
+	Thu, 12 Feb 2026 13:00:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770901211;
+	bh=O5e7fgGGsspQKmJs+VnIOdoxwBywu0PNxcVSDMoHR1Q=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=MAiS7gpRChWMkBleP0fbfSBAS5JNHzbs5ICrudjJXMMMjh4MHvlq5PemVLmqQ4MHB
+	 b/MDSCX1rfLU7xJFGa4SzX8vukk6y1M57V3/A1bYZEV56rPQTOl6Pn61Qz3VsgMYQu
+	 nEsqFt3UOaAMRljHco7HCmC47DuKsNfJ7Ao929/JTI1OfGC1RqR0sIv38NZyOH8EGQ
+	 yLoo+35f/z5nYObdiNKFaHIsop4GYh2OOg12HNiPuUfg7GxWKB+PQEaI9q+LNzDMqE
+	 tLyz3+5ZgO4YszChx6U1WAhW/dc5SXOXX6BCSQZGex85g+eELXTgP9pKJY2qP+wl+0
+	 N78Y17TCV6Vlg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: ranxiaokai627@163.com
+Cc: graf@amazon.com,  rppt@kernel.org,  pasha.tatashin@soleen.com,
+  pratyush@kernel.org,  akpm@linux-foundation.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org,
+  linux-kernel@vger.kernel.org,  ran.xiaokai@zte.com.cn
+Subject: Re: [PATCH v3 1/2] kho: fix missing early_memunmap() call in
+ kho_populate()
+In-Reply-To: <20260212111146.210086-2-ranxiaokai627@163.com> (ranxiaokai's
+	message of "Thu, 12 Feb 2026 11:11:45 +0000")
+References: <20260212111146.210086-1-ranxiaokai627@163.com>
+	<20260212111146.210086-2-ranxiaokai627@163.com>
+Date: Thu, 12 Feb 2026 14:00:08 +0100
+Message-ID: <2vxztsvmqfqf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260212124923.222484-2-gpaoloni@redhat.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 41ED2100013
-X-Stat-Signature: nntgwdmzrh7j4z1tgnhj1jcabs85fweo
+Content-Type: text/plain
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 582EC1C0023
+X-Stat-Signature: jz465fpcrz4cd3ndddattn7bfn4gsobg
 X-Rspam-User: 
-X-HE-Tag: 1770901152-912731
-X-HE-Meta: U2FsdGVkX19mnnBROXSJMvH7/xUcZkGxe16JqQ2cpzBESUcttBnrlzVvCVDziE6dKRsKHwWgiEWtl61Q7CAZT7iPHiZCcyoaapfK1H2MWPZRBcduxW6UqEzBdpyDy56mT49lDiIHxVFVWPh2CGvl4EURshbS5apPSd/xXEz2PWAyYS5AgTAcMihrM1wd2BZW3RcCq3RU/BCy5ML/zuptPT8alJPf391/Ht5De3djLvtnbnbSh+Tyaek+PlZT24CbffwbRZtL9939rST/3DU3jMKvbcaae4RUAfkzHXpPlWXPgGuVZlVBIdJV4GVioOatumWT4ZlN5C8lomMCvKAt9gX2EyqyHz0JYjfZvEVFtln0F50z54ei3QIb0PQGkbwRUa++tO/HwOn0+jC9oD8Pwdkf7mU68CHxQsSk2yI4ZiVjgHRApQUGsT0/0HjEeO/Z+TamhFQvdEfAsy8G0aChjNwe6iouoHhx0MifSLY1yvrtKGHh4hEzJSAw3goe+ug081i7y72R32+kM7HxlBr7RdgNlKckiX7Sdo8zRCLFNfQ7AG8CNa/kNP3AH549nPWo9F7xcBMUnUB0XenzY/CODCxJ/icl8jwLH1imcEESA3lw2MXuAdY/KAxvo1Xl04aGmw2BdAjA9GEscyC/VBKtZPAcfGlEj8MjjZRKPGFaMYvMkAo3iTj9pmKA9TakthxLDFZ+Uo91KC5Ja85EDInqtvYjRzOOl7daCmDQExc+XlLBHM1CLyGCGt/BogH/FUbGL0nvjP9tS72pjV9mYMkCJRVysErDKtEimPmTJXXakl0CGXtWwQd24KqywINhWOejSUciYbelx9oLh9VHeytS6eGPHhYlYbbMWA8DNzoUswW4PS/z489WRPqr1ke4fYlJhyqfqwxyhbzfrvCmY6+EIwP5VFr6F1iMwIaSYe5BDnHcd4ZVuJybUo1xrUlUdqjIRmgyHuW5u54TX+4y83l
- 1XbXYMhN
- nqcNtlTwogKGKhznYvK8AgEMz7ERXK7B7cXlNG5pqzzDtIhhkHOfB6sQ5yk5p21nCEaNvjPjuEege+HiI3yOnSBQuWHO85h+E+5lzVprvcCWhFHQYbVfEaB4NYHJKJknV+uxhqiFQBgq07hc2tl7yGa6UPi/+LBd5PuyXfIVy8dBokC89CYjhQudGGSShW0MPPtE9ImOltcQcCbeTrqL9HOP/piuk54mY+PavXdEv/7AwBHm5QJu8Q5gjgX8J2y9QX+7sB4Uu0ETDuuDA62puxGaZVVM9mfV3xv2zp6iHFXGBsF6RS47Ve2JWCjlljGweKv0QsDZBZpvA6qnQL55FzUad1ZuFN+Zz8xro
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1770901212-21115
+X-HE-Meta: U2FsdGVkX1/mQJ08fgEp3pgXm05w5lRyXyGr5hS6VwJxaC7Hc0N9hYBFxQGBiQei/OaFrSNh7baC8bUqOryW4r7fgfsmXi+w2H9vfCFMFGhP1yuUKfo1tsXxUBdaVog5KWGgvF2NnWdMLUwBgGHNkpAz7z03Nz/rhB4di1kwWm1sNbz/yYmJzrlvISI0Jk8eLmVwitdkW9fhZeFSkbl6f3vj/r1H30WCUR5lVeXUP6iXs9UJnPugBjeK3ioDqAdg2Ed95obuFsMC9aV1pvTHIm8SDeRQbt5k+Vk6R0cf1ugEbf4se0u21/iSWDIhY53UQZqS7E7G5O6PSqfKsXu0YM6DhLxz3G138Wi6Ly1JlkzjhVkvntjfWuVj9CHTxkObNErE5z7VWJXQYCC5e9yUSFYnhVJ9CwupdgCxWw6Qtt6bVh4YOncAniAJP81jAPMJ5p6Lx+WFj7Qi+0ddL+2hU7xLL0+nOF1XrbrUbtE35Zau/rVQcofNwCOK5SvnfGi/S/LvzWquqQQISz8BEknC4WajmVPE/YQyvDUa+fr7X8l/feaexY5HlQHhej1t5+ji1lha3B4vl1ldqT3fOjznZNg2amLn/K/7H2GNQtzWKIYoq0F1cVEVF9+zd/VIBdYnr7shf834eDD6t4rO6RxyMf9SGT7SNOtXnRNSO4SPmQjgGJWpQiidqOH8r6tw42syq5sdiJ3keGU219W07MIwKeHmaHCZkkRakeGxiREsFEoravnJscqPJ0veGnDMHIab70MGhz+mx7kQBspLtELFMKkc6vEUojT3SiRmbzW4xrXHkgdxZDF0A4oIZErnFU2SNIPzX1HWnUTFqDwbticTMBkwPh70imhWJY17tBVAHFjFa1KRb2CROef/NQYmgjg6l+UIugpdB0/geC519/DGWDQQ+eQkqMOD3tR3rAxgHIQq1m9jpuTy2HTRPZi2+hYtACL5RUtwJMj89Un5NyW
+ za4Mlm7Z
+ QDvIysY2ky2V1/NOZty2LTvEXPoRWO8ukG93YnL58bNUZZBWmeI5AnQSB91oQXH66rRtbNwaKYhKvtUTSO6JzVWOuByKsU9/tJkHl47edaaSrKscpbxa6ZePpHXTAOi8MTPzn38iS4XrnQQfjPTSFX8a13pn6RFGwTNK00AsTGI7YkM30vMLwvnDhEOBoP3TlgWKXG5rYZdlw3WmACoT9dNbYJMSVHWNvhscEconh0SWUbPayoMl4fS0TMF7wGkw2iqCqEjkV6oi2MqWGQDv/61HQQmvFjmUkWKEUg4Y21ijbDoEbGby05p5/2UJwBtGG8jeU
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000002, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,58 +96,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 12, 2026 at 01:49:18PM +0100, Gabriele Paoloni wrote:
-> Extend the longer description section of a function kernel-doc
-> header with an itemised list of function's behaviors and
-> constraints of use.
-> These are useful to link and trace test cases (e.g. KUnit) to
-> the different behavior IDs and define the constraints to be
-> met by the function's caller.
-> 
-> Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
-> ---
->  Documentation/doc-guide/kernel-doc.rst | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/Documentation/doc-guide/kernel-doc.rst b/Documentation/doc-guide/kernel-doc.rst
-> index 8d2c09fb36e4..23e6c4b45b14 100644
-> --- a/Documentation/doc-guide/kernel-doc.rst
-> +++ b/Documentation/doc-guide/kernel-doc.rst
-> @@ -83,6 +83,25 @@ The general format of a function and function-like macro kernel-doc comment is::
->     *
->     * The longer description may have multiple paragraphs.
->     *
-> +   * When specifying testable code behaviour the longer description must contain
-> +   * a paragraph formatted as follows:
-> +   *
-> +   * function_name behavior:
-> +   * [ID1] - [expected behavior]
-> +   *
-> +   * [ID2] - [expected behavior]
-> +   *
-> +   * [...]
-> +   *
-> +   * [IDn] - [expected behavior]
-> +   *
-> +   * function_name constraints of use:
-> +   * [ID1] - [constraint to be met by the caller]
-> +   *
-> +   * [ID2] - [constraint to be met by the caller]
-> +   *
-> +   * [IDn] - [constraint to be met by the caller]
+On Thu, Feb 12 2026, ranxiaokai627@163.com wrote:
 
-So the same "id" is used for a behavior, AND a constraint?
+> From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
+>
+> kho_populate() returns without calling early_memunmap() on success
+> path, this will cause early ioremap virtual address space leak.
+>
+> Fixes: b50634c5e84a ("kho: cleanup error handling in kho_populate()")
+> Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
 
-And what defines an "id"?  I see in your example you use number.number,
-but is that specified?
+Thanks.
 
-And how is a id going to stay in sync across different files?  That
-feels impossible to maintain for any length of time, and puts a burden
-on the developer who wishes to add/remove a test or "id", AND a
-maintainer who has to remember to go and look in multiple places for
-such an id sync up.
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-That's just not going to work, sorry.
+[...]
 
-greg k-h
+-- 
+Regards,
+Pratyush Yadav
 
