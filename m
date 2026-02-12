@@ -4,91 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E66B3EB48F8
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 11:28:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 733BDEB48F8
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 11:29:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5DE8B6B0089; Thu, 12 Feb 2026 06:28:31 -0500 (EST)
+	id DAF096B0005; Thu, 12 Feb 2026 06:29:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 595206B008A; Thu, 12 Feb 2026 06:28:31 -0500 (EST)
+	id D6E106B0089; Thu, 12 Feb 2026 06:29:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4CB8B6B008C; Thu, 12 Feb 2026 06:28:31 -0500 (EST)
+	id C9B706B008A; Thu, 12 Feb 2026 06:29:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C4FE6B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 06:28:31 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EBCD51607E9
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 11:28:30 +0000 (UTC)
-X-FDA: 84435581580.14.5BB5294
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 0962AC0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 11:28:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B9E8F6B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 06:29:45 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 651511B424A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 11:29:45 +0000 (UTC)
+X-FDA: 84435584730.24.FA8CBC5
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+	by imf02.hostedemail.com (Postfix) with ESMTP id AEC2780004
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 11:29:42 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770895708;
+	s=arc-20220608; t=1770895783;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=8He8jOTROtAzqJ/oNeRwWbyH/rOy/ic8ciNMYGi1E7Y=;
-	b=Ocz5HGf/qOuSFTX4o1dRuHlA8DWc/u3ZplxjghS1Ep0s9nwRktwSJvWbNi2Am4IGi0ehAJ
-	c4milIK3fzKVi+qgROy78Orx7N8dno1HBf5zlMOPR53uxyIqtd38N/6KwumNI4xEi24YWC
-	wtmomw8c8lp2NhVOrOVTGLoWplylTI0=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U4Ql99OJ9qIgxTzuErKgw5AyVSatdhU7kE4LT06HM0I=;
+	b=hIUQPrNb0wZTT8DQuxoRsMQw76e+2PV/BfCe7n0U7YKm/4t2CVlopllMgdvjVziqZsRVsM
+	4TqV9SHhjgfILLb/tGD9/r/twbus6slY/vv3xPc4IMpUuTdtC7mLukc50bx1VhRjAcS+EH
+	2wMsIcQRxuXeDpdsUCAN6iLXmCjUJag=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
+	imf02.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=zte.com.cn;
-	spf=pass (imf22.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.34 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770895708; a=rsa-sha256;
+	spf=pass (imf02.hostedemail.com: domain of xu.xin16@zte.com.cn designates 160.30.148.35 as permitted sender) smtp.mailfrom=xu.xin16@zte.com.cn
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770895783; a=rsa-sha256;
 	cv=none;
-	b=SCM5TDZx7BqS4ofiih4wxwCHbdkHOqEbAcHw5u5gMRO0JobqwV+Yhc2VmVEGx/3CrZawxA
-	XVmPhpcgz0Fu9xmz0pWamu796YgO7MDyl20128qKRtwUvh2lLEHEbe50cJG/Fj2wYYFv9r
-	nkj6HvBhPYpiuKa/TFAUe4O43M24Tnw=
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	b=iKI2cfG/a0UvTzzY23lsgAbKYPnEDsB5QSs7aao4ZQ15lqbAphkAzMbrwnM/dzZUILLlF4
+	aGeuoYy8X07vuE2DYDzDl1AeZU1iLUnqv72AeQFqj1uallDGV+4QxGPW/AdoezoeMhi63m
+	go3r5MkhJZWLVNuTpKqqaLAmnz4rN34=
+Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fBY2b2fnHz5BNRf;
-	Thu, 12 Feb 2026 19:28:23 +0800 (CST)
-Received: from xaxapp02.zte.com.cn ([10.88.97.241])
-	by mse-fl2.zte.com.cn with SMTP id 61CBSHSc013012;
-	Thu, 12 Feb 2026 19:28:17 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4fBY432Nsqz8Xs6w;
+	Thu, 12 Feb 2026 19:29:39 +0800 (CST)
+Received: from xaxapp01.zte.com.cn ([10.88.99.176])
+	by mse-fl1.zte.com.cn with SMTP id 61CBTTM7085942;
+	Thu, 12 Feb 2026 19:29:30 +0800 (+08)
 	(envelope-from xu.xin16@zte.com.cn)
-Received: from mapi (xaxapp02[null])
+Received: from mapi (xaxapp01[null])
 	by mapi (Zmail) with MAPI id mid32;
-	Thu, 12 Feb 2026 19:28:20 +0800 (CST)
-X-Zmail-TransId: 2afa698db954efa-5ce08
+	Thu, 12 Feb 2026 19:29:32 +0800 (CST)
+X-Zmail-TransId: 2af9698db99c623-3d550
 X-Mailer: Zmail v1.0
-Message-ID: <20260212192820223O_r2NQzSEPG_C56cs-z4l@zte.com.cn>
-Date: Thu, 12 Feb 2026 19:28:20 +0800 (CST)
+Message-ID: <20260212192932941MSsJEAyoRW4YdLBN7_myn@zte.com.cn>
+In-Reply-To: <20260212192820223O_r2NQzSEPG_C56cs-z4l@zte.com.cn>
+References: 20260212192820223O_r2NQzSEPG_C56cs-z4l@zte.com.cn
+Date: Thu, 12 Feb 2026 19:29:32 +0800 (CST)
 Mime-Version: 1.0
 From: <xu.xin16@zte.com.cn>
-To: <david@kernel.org>, <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>
+To: <akpm@linux-foundation.org>, <xu.xin16@zte.com.cn>
 Cc: <chengming.zhou@linux.dev>, <hughd@google.com>, <wang.yaxin@zte.com.cn>,
         <yang.yang29@zte.com.cn>, <linux-mm@kvack.org>,
         <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?W1BBVENIIHYzIDAvMl0gS1NNOiBPcHRpbWl6YXRpb25zIGZvciBybWFwX3dhbGtfa3Nt?=
+Subject: =?UTF-8?B?W1BBVENIIHYzIDEvMl0ga3NtOiBJbml0aWFsaXplIHRoZSBhZGRyIG9ubHkgb25jZSBpbiBybWFwX3dhbGtfa3Nt?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 61CBSHSc013012
+X-MAIL:mse-fl1.zte.com.cn 61CBTTM7085942
 X-TLS: YES
 X-SPF-DOMAIN: zte.com.cn
 X-ENVELOPE-SENDER: xu.xin16@zte.com.cn
 X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Thu, 12 Feb 2026 19:28:23 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Thu, 12 Feb 2026 19:29:39 +0800
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 698DB957.000/4fBY2b2fnHz5BNRf
+X-Fangmail-MID-QID: 698DB9A3.000/4fBY432Nsqz8Xs6w
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0962AC0005
-X-Stat-Signature: xh8bhoqyaetc4anq1fshtysx9dcqd7tc
+X-Rspamd-Queue-Id: AEC2780004
+X-Stat-Signature: eqtrxbp37m8zyqff456w8wrjyoyfiokn
 X-Rspam-User: 
-X-HE-Tag: 1770895706-232718
-X-HE-Meta: U2FsdGVkX1/EITLxhOC6gAxLdDt2bgbwD0ucFPaHxzeWknCfJNVt2oulW52TCQeFyRYTrcMzcSnba4xWCR2cSi32Vv8wmYzu0a7VNi9re5Vu4X4VUi3u/IjXp24ydwlvQH4u9GhfqVN00Rv1U5ynT37Ex7jtgvxGAh0qQ0SVRi7BBoKKTfMwwpLIemu1tYsI5gEwtaqmmpD40LOFO9VA/ikrcRlTeyrHFfeEzOonIszHwPaewRoIye9uAv5N5BFU7B7nh3XhGhug3hpxVyXt+nxmjfRt75CaVFxEk/lY5P7HVRcsaDeAigmhHwnNKFYADMeQ2V/2e3HTKH22/qwlDBjW/JW1BQPoQCqeQlsn7mbxUE4OJ6pbcKCPbTkrRyjakzxT92QiWeeu03ktJ4bLQAKbghJDnfz3ZFlIwgZJyoK6GvqkjUOAmJtYNZaog5I2+xpwXbv2YKceRplXrASska2WYva+V39x5E5xStH5UbXOfew+gf2G1mgJJs8EsBp3pnexXrCLCOSMWwuIdrLsL8inTsIE4ZfPfuNlZT+r5QG3l8s+52ZQQPvBnp8Q6lgUYjzrZA1p64BALFf8SWOTVrl/yrIIKeydoOgSFMnnohTQh4JTg4Y2i3kF9dmYH5JB/BjwaGWXwiBceuRldvlW//BdHg9lCTme4u+8/CsPAsFy812DCZkZTCzSAICfsuWoVC9rfSqLxUygyEKtkfRw6FmPen889VTUDBufbvmXf00UXlOhWGnnn2MosXNQSwrPFmSnIQ8MBuBnX09g0p6z7EcoUIzLIS4GVzIMn3IOvBeeOn8gwtFQ3pxVhBYl1Z3t6fyzpTC0dra0HPRLvFLXRDsfBUcYwAkSqH1Oz/hM6fiwtNCQ2ZK/2b2aJuMw8h9kRHorpeg0h6E+gaqm/JHcu1aZzqneixVuTZ6lUNtk+DuAzWavmRUBFjAs6nIJeq/QIEHvRTP3E8xLc27GeLy
- L00Jt3on
- Bw5n2jGB9fUWJfNOeqCkBKcPAZ0bUjUBcR5b1OBunouWXlOwnp23JSZIY8lXTSfFSLweyzQDDJGBjuRz36HCSBS7mmDjHhq6SyQf0eGd1SNPRT9T8mCw2FLkjFUYm1BFCZ04GWtIcAvGz4h6h2StzYCRjJ6zglLcfQ3QxDgNvj4eXCMrcJ+2/dN4bzERg4xoduaFBPstVLMyER60xiqMqDqBHKHfha3lzCBiUR9+ubuSxxzM6AzdyHkg5KoGyyAbgaip0
+X-HE-Tag: 1770895782-914698
+X-HE-Meta: U2FsdGVkX18NC2AZeAK1YJns83CIC00beua+VpuKjbL6qelCzF92uBLx52q4fgENOMtc9U21dJTlaWrG9L11kP8z3ZMi9N8OZ+Ob8QQkPFUSK/Xib2q1IXWPv9zgv9/1yKCXsQSkGnY/GairBKKwWYiYzNzocAEdMFUyRJTCSbgOplzHSYY0hEePEPkQdZkmksJGYVpbfHwYiwRbWFV/gTK0UryMlioIcH5gO09UQqsIxRMK1QMQ6iRBemH9Tl3BduAjgwOA1XZ4qD6YOaG14Ub84OrXH0ebkd6k/rhBhvMjdaHrnT7+3K3SchdlKe3byzFQA0wvziT/I7JAutfNGYuUvkHSrc1g/d36bgMYcWuQKH3I0Tuo+VkwUqMdyRBwC/RkrfUw76PNzHcnmw+5z5JfGHIoM2t/IUJctEwYsBWteoAeAjNQJaqquYhAXBYZTDcBBJ7DFzPbuiYaDTeKYH8XoWcTbB2J0bo92v2k9bKlttvJ24tUKrOMQSgOF+Vp9Srd1nll6NrpuWzcsH+cZOcPwiyQUP+gaKIJ9L9BAuC0FwFCZ9XYhkbgRzeWnosrtMWn9gDIF43V5m4gWhgb2riXoD7vaVGLZ2MbfMMvHgJAAwHymL6YMvCfVH17dFXfob6Fbd993IpuleoqRSo4wlOFj24aoMBMVTxeJCs1RjrV1Is7HOGVRUjtkCOecgRaj2u2RV3KYNOtG3wrnZaA8/vz/VTlGIpYMG98QS/SHqxCZRsv9yadxO9R/uiIWfIyfx6iJn1m/vY/g6z3n/ui0tHyUvJy6yjh/tEH56B2vOEMvkDoGAqCz16mSLe8dGGOVTsKUcgITjL/3qFl10Ee/faORNA1fm90Mc9tMwgoGceg78Sz5mlZg3+EJzBNXXBxCv0ocR9ysoC53fZ9X99FLSeEOUaSmfb7fW2yfGvAG2qBtC0qE8HHzb1xKe+yzoU1MWNd6zCBt0tSVaZcZrR
+ mapXSmI9
+ LyjOkCesZnYeyz7R3la9QgW86H3M6pXzmQnW35wxAxV4XiFapYwmQ9KlPnR/YCFDPqyND4lJaFQFFzmUnfdvvAl4ImGxXHvKRiHbZfe8r//+xU1XMpwQ4kVmxKNgzDj44V61Ons74LmAbE692dQLRJgByOCD4KfaAiFuOV6/2ZHLSBccjyRixPELjZuzbz7SE2jLEnULmAKl1eGGmposDJ2hmElzGQ5GfYTfks6D5F+cpTvB/Xh0XES9TjvKOD7tkx6e4rrGLdFmWqcjj3zthYZeH4ccdLzgfm2HXCXt0KiwwooVkA3O4gLdLHIt2KlXd/C3WttD5BgmYRTjmUMqhRHVVtDdTY/1jHj7x9+4o7g1szeQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,33 +102,49 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: xu xin <xu.xin16@zte.com.cn>
 
-There are two performance optimization patches for rmap_walk_ksm.
+This is a minor performance optimization, especially when there are many
+for-loop iterations, because the addr variable doesn’t change across
+iterations.
 
-The patch [1/2] move the initializaion of addr from the position inside
-loop to the position before the loop, since the variable will not change
-in the loop.
+Therefore, it only needs to be initialized once before the loop.
 
-The patch [2/2] optimize rmap_walk_ksm by passing a suitable page offset
-range to the anon_vma_interval_tree_foreach loop to reduce ineffective
-checks.
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+ mm/ksm.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-The metric performance and reproducer can be found at patch[2/2].
+diff --git a/mm/ksm.c b/mm/ksm.c
+index 2d89a7c8b4eb..950e122bcbf4 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -3168,6 +3168,8 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 		return;
+ again:
+ 	hlist_for_each_entry(rmap_item, &stable_node->hlist, hlist) {
++		/* Ignore the stable/unstable/sqnr flags */
++		const unsigned long addr = rmap_item->address & PAGE_MASK;
+ 		struct anon_vma *anon_vma = rmap_item->anon_vma;
+ 		struct anon_vma_chain *vmac;
+ 		struct vm_area_struct *vma;
+@@ -3180,16 +3182,13 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+ 			}
+ 			anon_vma_lock_read(anon_vma);
+ 		}
++
+ 		anon_vma_interval_tree_foreach(vmac, &anon_vma->rb_root,
+ 					       0, ULONG_MAX) {
+-			unsigned long addr;
 
-Changes in v3:
-- Fix some typos in commit description
-- Replace "pgoff_start" and 'pgoff_end' by 'pgoff'.
+ 			cond_resched();
+ 			vma = vmac->vma;
 
-Changes in v2:
-- Use const variable to initialize 'addr'  "pgoff_start" and 'pgoff_end'
-- Let pgoff_end = pgoff_start, since KSM folios are always order-0 (Suggested by David)
-
-xu xin (2):
-  ksm: Initialize the addr only once in rmap_walk_ksm
-  ksm: Optimize rmap_walk_ksm by passing a suitable address range
-
- mm/ksm.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
+-			/* Ignore the stable/unstable/sqnr flags */
+-			addr = rmap_item->address & PAGE_MASK;
+-
+ 			if (addr < vma->vm_start || addr >= vma->vm_end)
+ 				continue;
+ 			/*
 -- 
 2.25.1
 
