@@ -4,126 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5018FEEA851
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 21:20:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE3AEEEA84E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 21:22:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FA176B0088; Thu, 12 Feb 2026 16:20:42 -0500 (EST)
+	id 443FD6B0088; Thu, 12 Feb 2026 16:22:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A84F6B0089; Thu, 12 Feb 2026 16:20:42 -0500 (EST)
+	id 41AE86B0089; Thu, 12 Feb 2026 16:22:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 789316B008A; Thu, 12 Feb 2026 16:20:42 -0500 (EST)
+	id 31CAB6B008A; Thu, 12 Feb 2026 16:22:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 67E296B0088
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 16:20:42 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 09E2E140241
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:20:42 +0000 (UTC)
-X-FDA: 84437073924.14.D181070
-Received: from mail-dy1-f174.google.com (mail-dy1-f174.google.com [74.125.82.174])
-	by imf15.hostedemail.com (Postfix) with ESMTP id F388AA0006
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:20:39 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kSCoiqJV;
-	spf=pass (imf15.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 21B176B0088
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 16:22:15 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE7F91C269
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:22:14 +0000 (UTC)
+X-FDA: 84437077788.09.8B10AA4
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F347240008
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:22:12 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PB1roJn8;
+	spf=pass (imf01.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770931240;
+	s=arc-20220608; t=1770931333;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m+vxOwDndj4zObe1CvOSxWnI7S8T1aXhKqAzJ6Mv/p0=;
-	b=X/AtjrMZ8ZL21QMc5EDp7Rv5eZulY4JyQHhuIfjp3D3So6zp+n4qgFgbuKo9oUtXjZb3fP
-	+bi8q9poya9Ya8bY4A2J2MdTycKLki3omdzUQlqoKF0bjrLDGRPC3dXeAjlRIWR8Q4m5lA
-	IRmhZ/bMgXSF5s4ALWaxGl2Hr20Lu9Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770931240; a=rsa-sha256;
-	cv=none;
-	b=SBxP0ta0x+kiyVhI+JwiVF6fUsUcWU3pVun50pzvBtwrbAlyR/OrTe0eG3bBZfK8/caHOY
-	SVK7oHXSXhZYosFfRkG/etmOq17KOVfN1S1plJ5qV9+hsXqZi60vraueuRKK0j6q9J46iE
-	KKEqGgaMuNRxrH5rvvpdWpqa9y7E7BM=
+	bh=R1no2tHnWUokc2knFQltcsvUs2YRSdVUtSLFMCjUwtQ=;
+	b=KVGlE2CdZszEZKRFenqZV/9io2Bw9vtI2zaLf3ugzLAJOzutP0hqqNvoEPIs0D+SkPhwQx
+	MZIrbEI8ebTDfEkGAFnbt2uUxrVkmzwfddwX9EihZZGV9H6+pJM/ep8ImG+rnOn0L3vTXg
+	yVhEoWzpMWhp2fXfDQS1vqDBNPZkBzA=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kSCoiqJV;
-	spf=pass (imf15.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.174 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+	imf01.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=PB1roJn8;
+	spf=pass (imf01.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.41 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f174.google.com with SMTP id 5a478bee46e88-2b785801c93so684945eec.0
-        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:20:39 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770931333; a=rsa-sha256;
+	cv=none;
+	b=3ibQlmydLV3bm1HVDfXt6CEHKmx/fL8bGn7PWuSPTzD6JpODuLxbPNrApTUH5a/hqXT57n
+	irRWzpLEu114YeIFL42hBt8RfYBIdLz/c8ua8SaGnHJN5d//mpfkNm1VPA1uPfPG4r2pqA
+	8hqogWQ5rQ55RGRkH4kd34R3tFvzXPc=
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-1271195d2a7so600655c88.0
+        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:22:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770931239; x=1771536039; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1770931332; x=1771536132; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=m+vxOwDndj4zObe1CvOSxWnI7S8T1aXhKqAzJ6Mv/p0=;
-        b=kSCoiqJVHWsrvaO0ESWsAPawKjwxVmOhuqPEtAZ+6kxY5HLW1TxoiYqbTrmLyvrBOl
-         a+YTWRXxsI5EHXB3tTEgKtJ8lBTUJkHDtT8FJrVyd8/CM0QlJjbz43CLAlGUW9yAPM1D
-         7bKYtA1oJVGQ2T7XNxytyM34xyiHEGeTgX+gILH7GppxJ0dseiN/ZUu9xKd/QihL9FHI
-         Y/PzE/ehbu46w/aW3U/eBMISxMNcf/eCz5c72fW6/7zSYrifSn4GygQibPm6t1G/w6K3
-         t7j2CBIlGCRCR2JVl8mu1fqCDNWrbFmkvXq3NBCxMz/NOnqpunk78Hruxe8KL8CQXICU
-         a++w==
+        bh=R1no2tHnWUokc2knFQltcsvUs2YRSdVUtSLFMCjUwtQ=;
+        b=PB1roJn81rGm7rxhWV/x9/6Cr1cBksNfgVp5n9V9G+MZ7Xom+LjTITtwo/tltNnzRB
+         qyyZsDJLQBHVn3bN3oIpEouIDY43kBoN6MgzBTwnlKFonBC749RrFop147drDW8vAUO/
+         xLRzrFfGXBI3k0qz3ZX0p/m4UgiY9mi5lpABXDd9LLuYWd9XGFgOVE/j9dNVr5QXdWoM
+         6MItY91nGr9Ie1C1d351vE+8YrZSsKa750WJdmQ4ZtUedp5j3EzBz/nT1UC66OI5vRwO
+         Ol3j08EqICfjQdh3TuAPe4+qsJacBxuSbNrtpwmjEVkyF3J/ltrp0zp/IxKh6ZV05R+/
+         VaFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770931239; x=1771536039;
+        d=1e100.net; s=20230601; t=1770931332; x=1771536132;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=m+vxOwDndj4zObe1CvOSxWnI7S8T1aXhKqAzJ6Mv/p0=;
-        b=jHSZBhF4T9QNPDAquqiOSZ6gDk5EBKGGqC7qAqMpEjHeOHg4OWAX++0o66Guip/fYB
-         rnIJeG1X+eXeLAGlSJTfLJwv/aVtadneeubU+sa/+FK2MQw+1hAC41rGKRSbv1J/6/Ba
-         Lc7LkYX6HsFReLMSFt1ztvgKw7HHe96lQH5D/nEqnR77H6aL0skHnqHItkcWikqMKe8+
-         w4w7tWB8myCpE4WvWoxnxuVmvXjRKEAPdZ08X6UIclCoFaWpSyxD/FSwaJ08ZJim77T/
-         XfSa1eIQ70hbPJqsk0Swhkwhqq2DfTLCfblymBUx+WFNKeOREpN0TGzv48njthdsp418
-         MzpA==
-X-Gm-Message-State: AOJu0YzazhJ6ITGqb7op/ltrLbmeTF4kXSFdSePgFaZxod3FLhWbO7io
-	eF/CcEpBy5XHIIgDiZviY7JDUfq+knySRPMb9b6qWM5XDRzCxVxTIBiw
-X-Gm-Gg: AZuq6aLxhztq0GzsMC/IVICsKSs2daLMrN+M4IQShRNE2Iye2LvFl3itdVhbEH8pBY6
-	sWZHysv/NairX+FCL1t3fQLrV9ks3QiR/leNXgawrJ8FvYVEnWZYeSeMUXpZmXPa3qHod2NKBqV
-	Rsimt/ACg+MH412s1SpBaDQVePwIVLW6ANi1hgTfiWlvMi+LMzkABoiJMx82AtYrSojaMBd7dDZ
-	ZUog4hFHMT1a3zPhXa3E4NZVbQ+TR/5FAjkPG5Z9Eq1uHYziTPi4+m6DXqtjQlSnlvJ3ufbHbfs
-	N7AcSsLHsY3dFiCH3xVC+aRQOskZlj0JNudDeAFgED/ZuMZwY77y1izaLK9d1Jcyp18OsF+JdFh
-	E7W5HIw8lFI/Wn0nQN2p0P0NZYWA06ZESRfwChrxFJCsvzGQI2YfBzskuYH+BB7BzCIK+1heLeC
-	L9Hs6FrzvMCwExlDis0AOYBKARL6OQikXe3xwQjN/aINs=
-X-Received: by 2002:a05:7022:250f:b0:11b:9386:a3bf with SMTP id a92af1059eb24-1273985be5cmr198075c88.42.1770931238369;
-        Thu, 12 Feb 2026 13:20:38 -0800 (PST)
+        bh=R1no2tHnWUokc2knFQltcsvUs2YRSdVUtSLFMCjUwtQ=;
+        b=jpNC4ddrseV6hqUa1j2N27UZhsvhixf7DalE5jN4xCrqp56hF+nWUOspyVul4PYWJa
+         vmGnfOIyhfFT3Au/H8g4EOJbGTqIbnl2MbaFhTm2EhnqtlZiJsebJx/30nkdisD2ljg+
+         0hosb6QYRGUhA47zw8mBoEMayigl4Qyg/JxfxsuTyWhIQuBCuJ9ZK8Oqm85TqmPr65x4
+         qe4r9OCx/E38Z16yim6K/exmvDt/KuOlyz2Wk6YKQEmnYYSfJXBgMvGwTWEMwM0g+7N+
+         wOYQmPEHVZz9h7lxtqklnAkTYKYTbIPxepAz7i3JFqMxm7VdTAshOPxzoLPI7LKMY/cI
+         pBGw==
+X-Gm-Message-State: AOJu0YwT+9T2RqIMYKXQpMMVpXAFOztM7RzihClv21BOqcMPBzNInlIs
+	DwxSAUp6tPCj6tPiAXe2jQj/RqUzbk70RRuim7XXxSad9T1Oebr+awuK
+X-Gm-Gg: AZuq6aL8kV9O6iY8/nw1+c5X91uwsdLDSFl7AuxbksTOiJP4BUm64bUsvMxjJaUHR1+
+	julkRCJcRI9BAbQD1kXv6DWrK8HYHxFIUUgjUKi1ZnP0nYsuarZmf85izmil+ceXGTVA4/MYj+J
+	vSYIazLNlB194HpZHmcXzJxJW9J0PbxRsgR4pCIxFAaJ4DdcCWD4xOrHhH9xn1hst3gLBcjEhAw
+	sG7ptZGCkO0WTPbL+4+1m08ddikfziHdGw/A9WGu2E3PEcY7CZF6tNzyMiMJZ0xxV/rNupPmmH6
+	6wpr8TX3zWhUzyLSqNFKigb2HmPuPilg3cT5evcurZQnUPlURHPKlQOcqVTKdicWoAEdcgSjgNY
+	t+wxruP6P0wly++fkhq7r7h38GKuieFqN2CV357LVy7of6TY+rL7FgiPz2MoywtAFWAkERVUnzT
+	9UKADjee6lCgEst9tsagQBcwkImD0LlJb7
+X-Received: by 2002:a05:7022:4395:b0:11d:f440:b758 with SMTP id a92af1059eb24-12739829f69mr179121c88.25.1770931331418;
+        Thu, 12 Feb 2026 13:22:11 -0800 (PST)
 Received: from [192.168.4.196] ([73.222.117.172])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1272a6942ccsm6165153c88.3.2026.02.12.13.20.36
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1272a6fe357sm5577294c88.16.2026.02.12.13.22.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Feb 2026 13:20:38 -0800 (PST)
-Message-ID: <ba761a76-78e1-4215-a95c-290f9ca8cb55@gmail.com>
-Date: Thu, 12 Feb 2026 13:20:35 -0800
+        Thu, 12 Feb 2026 13:22:11 -0800 (PST)
+Message-ID: <3bf72620-88ac-4c56-b3ec-0fcfa53c14c8@gmail.com>
+Date: Thu, 12 Feb 2026 13:22:09 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm: move pgscan and pgsteal to node stats
-To: Michal Hocko <mhocko@suse.com>
+Subject: Re: [PATCH 0/2] improve per-node allocation and reclaim visibility
+To: Matthew Wilcox <willy@infradead.org>
 Cc: linux-mm@kvack.org, apopple@nvidia.com, akpm@linux-foundation.org,
  axelrasmussen@google.com, byungchul@sk.com, cgroups@vger.kernel.org,
  david@kernel.org, eperezma@redhat.com, gourry@gourry.net,
  jasowang@redhat.com, hannes@cmpxchg.org, joshua.hahnjy@gmail.com,
  Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org,
  lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mst@redhat.com,
- rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com,
- rakie.kim@sk.com, roman.gushchin@linux.dev, shakeel.butt@linux.dev,
- surenb@google.com, virtualization@lists.linux.dev, vbabka@suse.cz,
- weixugc@google.com, xuanzhuo@linux.alibaba.com,
+ mhocko@suse.com, rppt@kernel.org, muchun.song@linux.dev,
+ zhengqi.arch@bytedance.com, rakie.kim@sk.com, roman.gushchin@linux.dev,
+ shakeel.butt@linux.dev, surenb@google.com, virtualization@lists.linux.dev,
+ vbabka@suse.cz, weixugc@google.com, xuanzhuo@linux.alibaba.com,
  ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com,
  kernel-team@meta.com
 References: <20260212045109.255391-1-inwardvessel@gmail.com>
- <20260212045109.255391-3-inwardvessel@gmail.com> <aY2BVsYlPa4QMbUC@tiehlicka>
+ <aY1dusLPzP2AHP6f@casper.infradead.org>
 Content-Language: en-US
 From: JP Kobryn <inwardvessel@gmail.com>
-In-Reply-To: <aY2BVsYlPa4QMbUC@tiehlicka>
+In-Reply-To: <aY1dusLPzP2AHP6f@casper.infradead.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: F388AA0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: gbyrdkkt6eo4xr8tf8jatuepsimejpq6
-X-HE-Tag: 1770931239-995840
-X-HE-Meta: U2FsdGVkX18v42ANSGvkdUAnobA0eZm2fChhH/ZpqjVhJxw3chkVZZp9pZfHzfCDXcVNaoUaLgh4Ahgmc+CKJXh5tSL6D9uGALP1m0CSmLTJ4Sr/su06Medl5VBJ7Csj/gn6diq3ReqMX1PukPjC9f2zZJiBkFjgy5Z0T4gWbcHWGS8OV/FGhEp0eMgjaoUOCZVNwvhCmK8NUrtW+GLsDnsOz3v6jZLrROkteuTpEmiXUAQ8i1uq3+dgUHJselDsa7fyYTR74l+2wMvc8cD1loK7J4ZomlLp+WP+Df7DK9wpWp1uLFztWiYDWaWx51EhIZRKzT39WqJ+eVMl5MgnYk02hVG9MeMQLjywVQ/0OMeB3K/swZiqPWSQUvEsCulI51/ywjYdQWPZrNMuagPiF4rfUMQDTBDMQJwXreEbPyc6f/rIsbnVGI8tgDAQ5R8D/F5thxpbh4ah3nkvB6G3c+OKc6oGWUlg/o+Y0rfi2eU7S5JrkvMeUD0aOfEGLMp03Mtx0ERwjUcDWKnD/NoKToQMN9wwRGOIg3B2hOMXWOm6Ry8N0GznmpXRvzDR//e5Bv7PUpfA4e+T2rlpiLYI9RIiDcsU20Tbn5UnWfoiq08IBt6IqLoJuXcK9qMNZWeZjUwZuaxE5c8+QGRc5Xg9sqZxh6ZO5QkSsEAgTNbf4+CN0yzFu14WKITmFxLWs9LTn530bWEgC3gwdPypRHar/g/9P9fwryQBiWAOQ8I2oJVYEouUZVaOkiZeYmsd50eZUQcJuW0rCKUwYLBiN5ze7E6uKg+Tr0/sCHCgXnQFIo8MiP2BynOCnokazFcXWqzP7IKFwnL2gyOU1A1KATK8G81XJcXLwe7PaZc9jA0/QBF8Xu+U0qHYoZcOFg8cajbkdrw2S7amsMKJSoctswrh7f10xQKSKaMHfM951pM1s4Eujg5D5Ngua7DArFDs1MtMVHvAN18Pb35U+lZ5WLH
- GN7KeAS1
- yJaQJwv82aJsFbn1EN/Ui+q7LWVafKSkaPZ6iybFb/XLChNgsdGAbtSttmFk29WJ+1q8dIowCDIjlGIedf528+r8sH4PBdhRO87VMOfkPwct2o0T9/gRnhMOpDF9i8C0cVkUpbQm0K9j0D31knhQR2/rkuaK7u/l0XJFJfgko6vU8vBPgsb9fmznFEdILd+ByeuA4l913xZTve8HN+gGx4/pIp7uHoterIBO6ketH2j76IQtnf1l3QHiVvUsjjqdBJgmftA3nq+DB1sWOrY9aoZ0O3Ks8ltDl4sMSjLPr0WTWspIoVpGChUA3VI8hP0WUo5ap0377RKzGY+PKwA8HSmj103+PHER1afrH3QzZx0aazVraKE4a8Tiu9Ft0f6AuEoRbzP6/KU2zTjkn0SnjUjNa3YCDhFFK7HIcrPKYfzH6St4Fim7bkfvVAQ0lTwRp3+3zfKQfSS7CK8M7t1C52ycLYYbTfpU/5kkEcc5UtpGr+E2DBYIECvtS1tIUK8mmEL7/yzG3FTUgtRbxBNqSMs1AZBsiKZ2w/vtGR0IggZCzuf4q3K6ikJEflBxxZ1DfulPZBko7gcvrXD5rIGJmwpHnyg==
+X-Rspamd-Queue-Id: F347240008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 8b4ij9684tqxwghnhm3rqqka8i3rrpy4
+X-HE-Tag: 1770931332-479465
+X-HE-Meta: U2FsdGVkX19Yg0ahH9ppRM6Ukbr27apK0/tfnHWEEMQi0y/k+/wLTvD6eRO0usgq++q5DFDpvGmmkU3ZNg2OFxZtBuC2pbyxuTvRRyCubHe5+svF9+5N1hbjyfR2CaC7WY8BlPovBgwY06NXU+/HSIjL+dZ5eJ5YyxUWp4zYs/ZxPhiS1wzVxA+udyOprKEOQIV5tL9DdF3esUzktcMzK5h/d4vUAGS09QhCRcpODI5x8XJYzbplbUr956Hj6bPygwC2AF4XhPG5mgJCwAHux8XY5JIO1e5BGP2mQZVLYHmeptMYBk0fhBZ/+OkvISXIsb7wJ0Q2qk8ri0uo0Sh/8NvyciobxpfpXG6Yz49oltCdbKfBQzxId1SCxQFx6otq2b6QswuCDPKhsmEBUtdCrQ+pBxxb+eBCLfRnXh3m1Q763j0jhhaEYLseWqN44MuGvx+Sa6irK4Efc+ivlJyaDHyMFlXbgmcuqi9bp41Mu9CYX7BPJo2Huq6BiHlb5Z45Wbq3/4edzAikFjjb6DfrfCj5Hr3dsmjKMcg1A0Zuv0ydTUeu1o+TwYL6NnzhDb8oVRuCXFe2nHyzKEqy7jyiKGkKpE1Yq6UuDmMCj2dNyD6aAXAzkAIIIMuDu9WSe9yFtcC1kkPwheZK2ectAUKkBHaev+h+nymgz21kM5OeBtlwBtWD3w1DXg5xzt33yp83NyjqjGL2qFnC0uubcLOm/GfxLyRUn+EhHqtfCQkAfGnat/TvupyOvNQjzP5/ooihPpQGo2dOsQ+2789Pd4BV8nPAThrJkl8quwl2QGAFb5i22OB7zQPReSt4Bfk2TrkoagbBNFuJZnhFesgOFhwuGKnhkwge14WKmdmGha2Q4/mNMUA+fnW3myOypdcaKXVStL6ziWkt6QPMZim42HDV1TBlK2PCkD7+TDsegfXqbjDVieQc71SDx2OtarD1tCPus8LQE/TPQNH5b5TDdQj
+ hR0hkUV7
+ wMtoVsKVKeVxYhA5x4tWKBg4eMbv5Q3dUOlpaudDLq5jNfwTXgHVDKvoda3W7MHd6/MFqd/J1SVjr8W5ehqZFcDqsupqHEtz7ZS8m1ML9yA2UMFZDC/+QFcNpTxN53I4WduzELuQg3c+OUTWMWyKKz6dbLexuF2Kspy0O+7GX5PMJ7XGp2goi1oHVfYbI1fWWd7iz2PDUEBkNNAUquruyccKbv0i9o1OGRltvjevMmSbezlhRckX/2qHrB/pAOTIY9M9K+oerTHlELw6i09tGNs9wTPya/P26+MztuGpt8vaPmemT/Mdt6QnTHJORY6QPKzX2lRXG0nWZetq7soSO2VkEcXprwlVNG2z/BkLKMiQ1oGfz2GyhO+qo85D0aaihWjo6yPFN2cdQ6qMIgqBZL70Ldpw0u+0/GSpcIL/+Fgb9FdFcTHD/PRDuycATeDEFB9PoUH6WhMWGmdpwfjzgmxAeE5GTZbqGE7nks+dKw6ZUcBK7iuqfjxyVreKfu9wn4iFsXOtMnvX8TcyedUPEO/e6N5ejLYOMPrj9XUfjptAqhpJq8cGFOJcSCimPghaVH82D5MsHJzUY29WB0fZQzXGgEg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,27 +132,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 11:29 PM, Michal Hocko wrote:
-> On Wed 11-02-26 20:51:09, JP Kobryn wrote:
->> It would be useful to narrow down reclaim to specific nodes.
->>
->> Provide per-node reclaim visibility by changing the pgscan and pgsteal
->> stats from global vm_event_item's to node_stat_item's. Note this change has
->> the side effect of now tracking these stats on a per-memcg basis.
+On 2/11/26 8:57 PM, Matthew Wilcox wrote:
+> On Wed, Feb 11, 2026 at 08:51:07PM -0800, JP Kobryn wrote:
+>> We sometimes find ourselves in situations where reclaim kicks in, yet there
 > 
-> The changelog could have been more clear about the actual changes as
-> this is not overly clear for untrained eyes. The most important parts
-> are that /proc/vmstat will preserve reclaim stats with slightly
-> different counters ordering (shouldn't break userspace much^W), per-node
-> stats will be now newly displayed in /proc/zoneinfo - this is presumably
-> the primary motivation to have a better insight of per-node reclaim
-> activity, and memcg stats will now show their share of the global memory
-> reclaim.
-> 
-> Have I missed anything?
+> who is we?  you haven't indicated any affiliation in your tags.
 
-That's accurate. Plus aside from reading /proc/zoneinfo they will also
-be in /sys/devices/system/node/nodeN/vmstat. I see I could have been
-more explicit about this. Let me make additions to the changelog in v2.
-Thanks for taking a look.
+Meta. Is there a preferred way of indicating this?
 
