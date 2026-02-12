@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 672A5EDF055
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:24:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98D9DEDF057
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:24:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8F1F6B008A; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
+	id 0A1CA6B008C; Thu, 12 Feb 2026 03:24:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C70566B008C; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
+	id 059EF6B0092; Thu, 12 Feb 2026 03:24:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B89C96B0092; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
+	id EDF566B0093; Thu, 12 Feb 2026 03:24:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A81E16B008A
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47609140731
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:24:00 +0000 (UTC)
-X-FDA: 84435116640.24.5F018FD
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A64F3A0002
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:23:58 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HJ0OIcoA;
-	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DEF696B008C
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:24:06 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A40A3160741
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:24:06 +0000 (UTC)
+X-FDA: 84435116892.23.25D5A2A
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 061A5120010
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:24:04 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mtLG1Cj7;
+	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770884638;
+	s=arc-20220608; t=1770884645;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6JEGc5je/wM02pWehmFOl3sKJ7z0YxNGSRtnUE/RPCI=;
-	b=jaG0JBPTLTX72lceV3Rao8FgQunos/SpS2eo6PPA2Bna6Zr6WbhdesfKhWlSR8/Crj+ELW
-	Zi0BELXvatYNuxMrimIAb3bJuk3dkqYE5xRl0VdA6bOLBOYZwm1e9o7S8i32/EXLwmzyTv
-	3H+We18a8M4YLzN9yYUmEYfisX1WNPM=
+	bh=Qa7yRxcpGL3PnKF4R1l2meMqj6ZYK13/0dyEKREpmhI=;
+	b=cJXSa44MkepvlDjSsLYlSZ4eweibv8dqxjF6LAvaQrARsdUFV2RAQY/8cr6GiHEM/92u1O
+	2Be296fJpqJl2ZRap0YqlytdmfaOogZcJbkN+oIpHA3F0yqHEdxKhB4acT8oNNuJPdJBj9
+	7olsc+eg1SEDVbHtD4fEdhfRfksX/hg=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HJ0OIcoA;
-	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mtLG1Cj7;
+	spf=pass (imf29.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770884638; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770884645; a=rsa-sha256;
 	cv=none;
-	b=vzKfJcGQnM00xhLgX2bvoyNCfuR/YvqYgTM9LTYhmmsvLg618FqOuPCp5mgGTe/c6A5ySF
-	Xpt8HqtDIhoXArSeahcMh5N5MfnoMwldu64XNGHcWfrshIMAZeFhRolZG5oM9xAQSvA8cA
-	qng3XVC/Bdx1AGaTMGYclx+q/BC5pfE=
+	b=1a89hfHbA+1JhlJeM1Zzgm0en5doSeUV8LerlByYep3KJsnfWWDKX29v7elI5M8BtYGWC9
+	ec/Y+0DKfbPgLfqsHyj3NFGWie2lnXTzawqyaqyvRgrJHUlzRQ9pzaSk7TqScry+hDtJm4
+	fcmRWLnmbNeXxoV4TiLEPDsOurVAOPY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770884637;
+	t=1770884643;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6JEGc5je/wM02pWehmFOl3sKJ7z0YxNGSRtnUE/RPCI=;
-	b=HJ0OIcoA3oOP4U35yiAgKDYaQEY7TuX0qZLIDHgEFaDpBmCxjWW09jCTIjMQzH8JMX5S9F
-	xrjh3BlaT9jvCMCDi44I3clcJ/Li+Q3ml5I/JJo7Viwh8gqwadztOu8XjVc6gL933c7r54
-	OCbBi0K4vo3sxio7V14h6YbB0bfqkCg=
+	bh=Qa7yRxcpGL3PnKF4R1l2meMqj6ZYK13/0dyEKREpmhI=;
+	b=mtLG1Cj7F/NN0pQvl1k5tAmMqtzQ0Q7TM4SCVi9GMjgpIDSLSvRuNgxNUBKEWiMccVbj7z
+	K8W4rDks82e97Z8KcgkhM8a3y1wY/HTQgqGjhSAkMrndvzi66dbkI4Pxi7c8hQrM0ljZR8
+	mAMheL03KE5ojdB75JZXNKsapNcnw0A=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -86,22 +86,22 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org,
 	bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf-next 2/3] mm/memcontrol: Return error when accessing kmem with nokmem
-Date: Thu, 12 Feb 2026 16:23:15 +0800
-Message-ID: <733422f72ccbac94126ae67b9e49f4a3d460b76a.1770883926.git.zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next 3/3] selftests/bpf: Skip test_kmem when cgroup.memory=nokmem
+Date: Thu, 12 Feb 2026 16:23:16 +0800
+Message-ID: <2f6ee1db173b67a636b2caa85744cb4ce8114e64.1770883926.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1770883926.git.zhuhui@kylinos.cn>
 References: <cover.1770883926.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 061A5120010
+X-Stat-Signature: qc1wg6wap9kqxk78un8885d3wke454ka
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A64F3A0002
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ycryx4jzjitppbbpyn35sne1uxeqwn14
-X-HE-Tag: 1770884638-216284
-X-HE-Meta: U2FsdGVkX1/KXFgRnVM5HKFVDK0MUkaXd+B+wypvk0n/naRyUyL7XMU7ClbSG+nN4YiiBxjFvrqm054kaJJsGAQq28pTTH5cXzZq/VBehe6pFGOLoLGucbZKlum1zQfCm07Ibdgg5TKFnlgbkIRrtduJIAoLXddR95Fr9WuibDjoat0IXcbPb8NHpAz1L2AurSJIkpJuShkDp+Nr174PAWoOw/+xzUcZ8GHANMPmxnDiP5tJuipvMOZS33zP5S8K3FstkTGe8oRfp3A9bw59fAeVrq5KUFNNTJ4PO+rzO3aravgSqtotoOJRAQbsk0RH2lLRFDDzb16ZuPOz+3bqdD3SxrZyXMmHCEz5mPF4ymbna20yrJ+0qhiQE4bavs/negeLM0Z8SO0btxN+tydYaD8hJAdl5IbL3Nz08ONoaQva0JPoSNF2XKyddhefc+PR4rQ3Un4cOfH9Yuz5z8rTJELWKy3O+ZkvmE/Hp0b9BjqtufnZo8P02iUbpqa3CLnfoweKbCRQtiV8kt542wZVe7UR5FcvcgFtcO03gjONjbUrCxZlZoAa64JvmiFupPeDGI/HVA0/Vl9XNDIaHno3EXfj79GWZ8kuM7NRhv4p8em4fW17jQF17BVTZ4SLEQJKaG8PKLfYUQa5NRPKP2usBy2UAxCUqcux89QninWsihZGyBikZDDETRdvXCKvcnsGNImHgZlqa+f47LmAAqPqs9OxdTFKSOqZuDllNrp0HLg4d5Jk7FhfsrdxAtxL4nzDYOkhoP+PqCb41B937hhtb7ZMizAGMetQeEm/XLcpd1p3oUHJ/wgHBv7hC4WygKPZFbS42WopE8i0BfX0Qwf9S9usq86t/TrLdSf/1RbWwAEHUFIK7ztvI/IF+Cr56UK+4bs7HH/ThdX58cLLf5mu+adLOhWTf6pW38n7hqPmEBmTYhIoANoBw0y7r8AEMMzAS2UoIbSUCafuAaxKs89
- xVVMrlr8
- yHMCs3cF+VvAhv0QmkZ9T3Tr3SfFP3bln5irFK7VMoFh1yqoVc8oZDHR/TrqsZkvcsa4y2d4WU47KMnOIjEbL6L2hkuOHJhpk4F6QXQntG3TTkcKob/CuKEkZ5WGMEIWeFcerK8dKajF8S2fafOI/joEHKME+CweXjGWzpy5+Z8HGh4oyt7En/cjfYyjkqQMGWN3YGlSVzAoKL+zDlfJmtHkuk3mVUJqlansPIIuSIfuaLsS378Nk/F6ehqISoE+RvbNqouK+yP6tfkQ=
+X-HE-Tag: 1770884644-453826
+X-HE-Meta: U2FsdGVkX1/tRN2dFhhwbxinzsLyjwLNs8AQvqsqMtmbL4Bqsb9Sh7p/NTdyF7M0ObED0ModXZgKRtAsCaAWM1OzgECTLjnCXbrNohQRec2/T2Buw7p8KuSqHJktcZE+XwerjEJ34RCPJiYAFNbYPV3N0pzCpHS6JqhJj12tKrO/At+Wp8OxW/+e7H9ft9hk61w4ElwYYpaoYPCgyMK5CSusWHYgI90wVtNh8Y1xBes9e8wEfYTg5WKn29nSsnryZ9Q1apMi8BoOVemqsDasqYiWSM4bQTDOo/Mar3C75IZhkoe8pVFzsZ6/mvf+8YyWnxjrz3qQY/bXaOl2w+I+uxU3ZjUA0xaUJkIaPVYZii3ZJur2lt829JNUFQo14SfljF4sfg772iM5+7bxmktpe545xgzkeW1NWbNZIC1ibYZyEE77CdJtOruZjVsUf0qwTenLyVZBHkl3gh80bTwfkWY+nJWHzVyNFB72eUuBNszn1r/gydO9zAAALQBY0v1xAMphnWtXz7QfYrW8+e9n5HkeYlTAi47YUmMbayQlN8y+YQH2nV34VQogmV5lJIeNMSiar8dSCa+7e1dCwnJmrSrpwRRr6kQLCfgkIFhqfcotjLUJP9r7n/CghEWaXn6zmrG1fgT7t6oJrKdGiVRdrmylRALgdWmvt6uokpbEvfBIDo0ES3nVUzev8tYJJFbm79odH0g7PMSb4pXbk0LJmwA3oy6Fh8LjeAxVkyt+liR8ZkJ0S1r09ZB/34Fj7xEDh59TvSZVlUhg4o7cYQZ59RXRwtXj/BKbHdKOJqiNQ4CT/mpgtXIaWH25GUli1ROT2R/htoL00cl8H97I2bXj+84UBrfzHKnvIAMVz33j6m2VgXSfbHVp9thnGADM2Jf1aMwQNVoH8MzP1Bbq94hUnAXUBxIJNcvYHOOCbHBjP+lwFMV1pX4TJoKh4kLDcoBk6YP1xH71/z4kofcIgpu
+ imI9Vf+0
+ 0qE/YDnUvE3uGmqivgvviaz/1zNuOMI8MnKF6YuJuPumZBRNtVHjCW+EtZLNpAAg+iMiKkD2jUhOLchqsCv8K0bspu+c/FA5TQO6jtx/bABlKiNYNCRKRYDK2jIoumME6Hr8LveqU8Sd8nkmnuj3kYr+dbP4nK+y7k+De477fqCV8S744uSkw7SqNxUC5Qce5EzUDoLXkPw1FCOknlcrRbBvQxLk45j+w2Uvt07xvnMsxXSwe7YndaT+99nW0igCpwOIGEGDy3HceD0Detp8/1ME9OA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,38 +112,60 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-When running tests on hosts with cgroup.memory=nokmem enabled for
-performance reasons, test_kmem always gets a value of 0 for kmem
-statistics.
+When cgroup.memory=nokmem is set in kernel command line, kmem
+accounting is disabled and the test_kmem subtest will fail.
 
-Since BPF programs cannot easily determine whether kmem is enabled,
-add a check in memcg_stat_item_valid() to return an error when
-attempting to access MEMCG_KMEM statistics while kmem accounting
-is disabled via cgroup_memory_nokmem.
-
-This prevents BPF programs from silently receiving zero values and
-allows them to properly handle the case where kmem accounting is
-unavailable.
+Add a check to skip this test when the parameter is present.
 
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- mm/memcontrol.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../bpf/prog_tests/cgroup_iter_memcg.c        | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 129eed3ff5bb..4d8419623d1c 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -667,7 +667,8 @@ unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx)
+diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
+index 13b299512429..203e6b091a21 100644
+--- a/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
++++ b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
+@@ -134,11 +134,39 @@ static void test_shmem(struct bpf_link *link, struct memcg_query *memcg_query)
+ 	shm_unlink("/tmp_shmem");
+ }
  
- bool memcg_stat_item_valid(int idx)
++static bool cmdline_has(const char *arg)
++{
++	char cmdline[4096];
++	int fd;
++	ssize_t len;
++	bool ret = false;
++
++	fd = open("/proc/cmdline", O_RDONLY);
++	if (fd < 0)
++		return false;
++
++	len = read(fd, cmdline, sizeof(cmdline) - 1);
++	close(fd);
++	if (len < 0)
++		return false;
++
++	cmdline[len] = '\0';
++	if (strstr(cmdline, arg))
++		ret = true;
++
++	return ret;
++}
++
+ #define NR_PIPES 64
+ static void test_kmem(struct bpf_link *link, struct memcg_query *memcg_query)
  {
--	if ((u32)idx >= MEMCG_NR_STAT)
-+	if ((u32)idx >= MEMCG_NR_STAT ||
-+	    (cgroup_memory_nokmem && (u32)idx == MEMCG_KMEM))
- 		return false;
+ 	int fds[NR_PIPES][2], i;
  
- 	return !BAD_STAT_IDX(memcg_stats_index(idx));
++	if (cmdline_has("cgroup.memory=nokmem")) {
++		test__skip();
++		return;
++	}
++
+ 	/*
+ 	 * Increase kmem value by creating pipes which will allocate some
+ 	 * kernel buffers.
 -- 
 2.43.0
 
