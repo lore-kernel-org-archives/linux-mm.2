@@ -4,289 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B65AEEA846
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 18:34:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0E6CEEA84B
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 18:37:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00AEF6B0089; Thu, 12 Feb 2026 13:34:21 -0500 (EST)
+	id BDED56B0089; Thu, 12 Feb 2026 13:37:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F0E626B008A; Thu, 12 Feb 2026 13:34:20 -0500 (EST)
+	id B8C7C6B008A; Thu, 12 Feb 2026 13:37:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA69F6B008C; Thu, 12 Feb 2026 13:34:20 -0500 (EST)
+	id A7C186B008C; Thu, 12 Feb 2026 13:37:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C6B646B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:34:20 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78F59140282
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 18:34:20 +0000 (UTC)
-X-FDA: 84436654680.18.6CB4F50
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 16238A000D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 18:34:16 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 92DB06B0089
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:37:25 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3B34F135DD0
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 18:37:25 +0000 (UTC)
+X-FDA: 84436662450.20.4AB8886
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 2EB1CA0011
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 18:37:22 +0000 (UTC)
 Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HpGvt8js;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="yBRq/Ar6";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf15.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YAZcy08I;
+	spf=pass (imf15.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770921257;
+	s=arc-20220608; t=1770921443;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vQv8vFiDd3ICXKSDGU0UihXLgsJez8R9LwJKHCtEd9w=;
-	b=0hCTVK2IUsew03OzOdhlRJMBzwwfxnIuEvNdSUH20UXag5katjXZTpWX2ijCVNF98DA5E8
-	YeMJjcpXfY3xmHLFfWH8kN8tImaDzr+JerCAVpQ+7mQvOBiZjg0tJBNYriHXsWKbZL7ElN
-	MGVkL9QnSf3H0EY6B75kfWBIYdrXfbc=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770921257; a=rsa-sha256;
-	cv=pass;
-	b=BoMIZV0Q/QNqz/+ELB2/BnYHjilmK1IgNqyaqp2mdf1p8B8iCdlkNwSO8J65UyIzByjNc6
-	hcnNAy0vp1hGlornXENSD+T0WOt3hmge3KzqsFVBg3j6SqrhjnHpQOWGXhEj6Wv4MpD7pp
-	zMsOwmr19TQnrC209QcIZBIycQ4SwaY=
+	bh=WLnTkMoihnLKB9Wj8wWo21U9EDR8kDp4XW1jqwP0b5c=;
+	b=fV99ZUbV6yN6Hua77KaOtTZUVluxLRq92svacRlR6PoUH9477LQQ160gwVu292B6UQ1Ddd
+	pR1AhNwgnDWvOUN4zkndCxH0zJNsxZWg8szkEgCc9gF8MExW/RMVDm/aCxi9m6tP7wuSfD
+	FMuhq2MTNLfhO6PEHi7Rbx9XQ7XN3ug=
 ARC-Authentication-Results: i=2;
 	imf15.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=HpGvt8js;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="yBRq/Ar6";
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf15.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61CGNJ8X839288;
-	Thu, 12 Feb 2026 18:33:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=vQv8vFiDd3ICXKSDGU
-	0UihXLgsJez8R9LwJKHCtEd9w=; b=HpGvt8jsPPUG9r7/391mkCPH9G6UO8iWfZ
-	BXYdTvx9tGYaz3sv+oCfV1bbNs3tKyFFlyOE+9BwS+/wOHev/iVR8WajVU8qzhQg
-	Y+tGX/DXKfHnRzd/Sxc8pMqW09NK7A/gXnJqcZPfvpxS7SvhJBOBiKjrsjv5ZUTe
-	cppg9yv5MtAW06BnNH0SbPbpNX6zIjZX47N7MBLVT+EA78BfKCQAo6+gNRzlMitq
-	HKUZJ5ID6qANRLw8xbEn8leuUCs8ppz1qEjNVRmsRFdnu9SUBD6y6WTuIRJa9LGB
-	O0cKhKVTLdKO6542f6nJPcXgXqhX+nnI+f4aL+SQXnZhTzI2bXdw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c7s7rwb51-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 18:33:43 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 61CIGa2r030120;
-	Thu, 12 Feb 2026 18:33:42 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013021.outbound.protection.outlook.com [40.107.201.21])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c822b9whu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Feb 2026 18:33:42 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KEvtv3l5KbE1NovKnFm1Xbl0jO34qeJaZ9u5oD+xqLgBLcM4z6Sz6anxEMtrkSJEndIDm73NWuKZsfEShqs0sCvpOpsnHeZTy3d7jTwtTaakgPIp2wVHovngEQUqAeV7xKl7QDDG9PrZeImvuujjw/FTG9eJJRcvdTI3u6AXCkC7HQRQgZm+fx4sW/vkN3q9YGQQ2DXPKfNkIfMvmdqOK1cUvs8/R3b5SGeZmydaGVp4PgYaUawe91maplCSUB0WjLk70Vt5aPyObeydSYJuCzODEkBk3YUpiNHd1jzWqzA2E+pilIxS+Qt//FZSf9JvjbEQrsCiNNZpuRUhicjCgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vQv8vFiDd3ICXKSDGU0UihXLgsJez8R9LwJKHCtEd9w=;
- b=do/E/fs5UFpy7GSb6qHcR8HvOZbPiVKplyDjn8MDKHq24g7NR9gLpgeWYw3yNzaR5rvPx/If3X5vlE3hedwxzYlfJ8jMGGaro9FHKKAcHx6HClUq1xXXkuuGwI+YH7T+hnYKfHozeGMLMyewaCp5z6RJ+a7BHfWPw7rRqCW0QNk6MFBfcux3+1SA8stbuR7n2CjYjLejBpYfgY5q88rDhb5Dyp0GIsDfetBen35wIGPnGkLfHT5+UWk4al7YpbBumbbZCiZPHDszYqtHCH/unl66ZEXrnLdLcXVCY8AytQG5iY3yYq5kgFQDBjsUmSDA1Vh1pVlxfM8RJzwRLljf/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=YAZcy08I;
+	spf=pass (imf15.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770921443; a=rsa-sha256;
+	cv=pass;
+	b=scck167x40skleTDwyIdAQx+SbOkrXFcdHhpCq2BsCdSRr4sl0V7iKJkZeEZh9iTqOH2+O
+	LPRdkmcRt4ELZnsfgvuRlGYDW9etENJYyZ8n75CQY8nEKGKppvn8/wztquxs+OZtQu4CQu
+	1Pi4i0f7SoQYoSsLHSBr2n9g1pAoKxM=
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48334ee0aeaso1251235e9.1
+        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:37:22 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770921441; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PV8WRvqj54+1RWqAjDQJ0VigWfTh2T+nW8so/O8/8EovwCu2y9+pDiGLQnPIrYqlQB
+         43cioom3RKsmVTYJYgAwGSZZ+AsguHy5pVR77oFnp+DzVmJHFeRePBhn4CXpY8HTc3LX
+         Gz5jzUi8SUM7FD2hE0u6V2tm8PhoSGa0uOWTRDVeWs2kyPkxIIJTRt3CibPAuuc1vSH+
+         WyzFFBBzvo0ioJXPmN/k9WdXv+MVFdIun01mwCxTLztOvsrk8aOt+WD8RNwnDJ44CwJk
+         blDlCuYTZPTUmzkXJrXlin68Et//59ivQPJjwJpE7FQX7Cnugw8Cv9kf8UtXijenLC8d
+         9KMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=WLnTkMoihnLKB9Wj8wWo21U9EDR8kDp4XW1jqwP0b5c=;
+        fh=bv+p+bzhWvOvyOtKtb9h85okr1iG4nA6WFlRSkbfK0k=;
+        b=KdPf/DtNmodKwdZaIW+kBCcmyBrGU+U5Q4YYq5+dCcpCVsx6soJneotDIttGISY4n+
+         bjDqNAtkZeeZ8JRUyzRp3oqjMx6/QIYEg1wLibvFePNnvX+OAG4xjEwyntkS88DmiJrN
+         utgaLC+SxYI57yIkx4vNUki+Lrpj456LPYPjtYHng4FD9d1C54u7AcbeF+C0CMYL/1vv
+         vD6q8yTAHAlabRNnSf+b/jy/cCtkb3kEjCMiP1ROgL6uLU/DGIYvZ8mFiLizvkxn4FPz
+         RpSE+kDwBA26sUfiFO4JH8bIESsFoFqgeZsI1bZ7XpuUDyY1ETm4epX/U+/5vT/VRQuW
+         yxKQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vQv8vFiDd3ICXKSDGU0UihXLgsJez8R9LwJKHCtEd9w=;
- b=yBRq/Ar6IkkZt4RhbBkDw00tn0hoHhluYAS9KDX0QoIO5l4z3Z6RM47sbyIKpVWLPVy1xZYA1/vJzKxykkuogU1V+3T2rTo+MDsLRJ043kvtqlJWOY3F/vMciUKCWcJdhebPPAN09PbDrhhTbr6n69B26zqqa57jHRlLxBTDxV4=
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
- by PH8PR10MB6337.namprd10.prod.outlook.com (2603:10b6:510:1cc::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 12 Feb
- 2026 18:33:35 +0000
-Received: from PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce]) by PH0PR10MB5777.namprd10.prod.outlook.com
- ([fe80::4b84:e58d:c708:c8ce%4]) with mapi id 15.20.9611.008; Thu, 12 Feb 2026
- 18:33:35 +0000
-Date: Thu, 12 Feb 2026 13:33:28 -0500
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
-        Brian Cain <bcain@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Hildenbrand <david@kernel.org>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
-        Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
-        Michal Simek <monstr@monstr.eu>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Thomas Gleixner <tglx@kernel.org>, Vineet Gupta <vgupta@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH v3 2/4] mm: rename my_zero_pfn() to zero_pfn()
-Message-ID: <zyvz4q6beuad4ltbbjhmocsej5ziayulvbwhlkyfvhyaigcxqe@kmsp4lgoh3ta>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>, 
-	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>, 
-	Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, 
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
-	linux-mm@kvack.org, x86@kernel.org
-References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-3-rppt@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260211103141.3215197-3-rppt@kernel.org>
-User-Agent: NeoMutt/20250510
-X-ClientProxiedBy: YT4PR01CA0456.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10d::20) To PH0PR10MB5777.namprd10.prod.outlook.com
- (2603:10b6:510:128::16)
+        d=gmail.com; s=20230601; t=1770921441; x=1771526241; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WLnTkMoihnLKB9Wj8wWo21U9EDR8kDp4XW1jqwP0b5c=;
+        b=YAZcy08I2DStN+ZpF92lHAAUNGc0AaWzBh/0FagjXSGpd9zayaFQwivMCklE7m6Nfa
+         iOVXfOY8EDS/8tQ5/IDiZb7auIhbOOcNZdJu6kwQ+bu4vP9bFVOejE/2mwEG3p6jOALp
+         RXY044QGQbwOQOglfW2nBwBpBFGgE2AhH04tx/MFpyQNUNcyueIOPzaw1Ll0odhzJ9Uo
+         Y6TkUivBXO8vmwLz7EqwVslbeLilA1yaJVX9YIGN8Y9xXYB/Q23wik4z/s2fyKo4xqo1
+         FN/yx1hr5o2zfPND2U2enhg5OsxzAQWT3pemTbbCDRtLzOnCV7FxThgmrbtAUheeW2c1
+         5rCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770921441; x=1771526241;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WLnTkMoihnLKB9Wj8wWo21U9EDR8kDp4XW1jqwP0b5c=;
+        b=vwYCKrAgv3r35fL2/K/ekWv4Fz68azctlB4ukMjjf3ptbowY7E+yJ4HJXwN1v62G2m
+         2iLSElEQo11NcLbdqcp3BSa5z6jiE/AxCd0IUTAX7iVbjlJHuEXMAXF4D9/iJH9fzOP5
+         qvEY3TTSsSxg5XKFxz3/MTjX04pXjgj73xXR6e8w/FrKp2LpwC5SAx45K8KomMPrYKhg
+         yVReKqi+d6e/FJZb3vpseIa8jFVOkDcW0YnZ4Wxwk9PnyXkjr8W+9Njjlyn6DiSV3oyo
+         hE9w06bBR0Eu58850NQGJrj9nopkM8AG68Yfc8YuNq5BTP9hRyPpo9zX/HiCpsT+VPzL
+         Q9sQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWnIe1SscUIwwaxtSm1tPXAfy42XRDjmeBXMxTFvsuPuiiOFWlMPdY8WJ2TrhXvKgx1BDkSwoa51A==@kvack.org
+X-Gm-Message-State: AOJu0YyGz7Z9hVJ77SsWC4rFZsAQZ2qAI6Ddk0yxYEr/0RtZWSBiB9SM
+	7Hufv4b8uQ/l5lLzxwncDO3DFOTil9FlmFzsS6no5flc6uxWo/n7CKPfUmpYtvcyeoX/nsxLeP5
+	d6+LWDeI7VYDNWTlsVtLUqHrhszKjD+0TIw==
+X-Gm-Gg: AZuq6aIvx/fmlcMNns3FN/phEaEpEG1qx8TedxyO5YM6hGZHTU/RQ9B8eItqYAnMCmu
+	H8NCiJ/WDXlGduKU8e5qUyrlUPCdo7ufkE7jptOwOeJL3AMDccL/KJBmp7ErfHHjgeH8JnFIdIR
+	6yohKh9zbxiWZlCDe8IogzCOZ5GVlljXfHx1LsfN03A5/8LcxXorcMENlWOgzO3FovB5R/6PD6d
+	ByZp2a3XQwNYawDWt0dryC4aa4R8AcHUu+CYgPYHaKShmVjHaqZTYxD5pvFkL6SToZqHg0TNmNS
+	Hko5rDMZy61DCHSzPWtRYb9lpD7FdvxtJ8FTp8M/Vb2Rs59UfOXgn5D/cAB4F6RjPj5GcCHFfCc
+	bq2Qtn10h
+X-Received: by 2002:a05:600c:4584:b0:471:700:f281 with SMTP id
+ 5b1f17b1804b1-4837103f325mr1212805e9.25.1770921441384; Thu, 12 Feb 2026
+ 10:37:21 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|PH8PR10MB6337:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9e5ac2f4-ce67-4862-c8c0-08de6a653b05
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|366016|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bW5RsQb/kIhg0piAqU32zZ+kWjzS8dZQJNEaISjhatEVA9rM2s041m0Gud8o?=
- =?us-ascii?Q?T3vcc9qaOvCDDH7iO8xB69H9C6QkUHe/RkP6Jf4EDWR9draHcwpd4jj4I3Dd?=
- =?us-ascii?Q?5VWFgyQ9zBqO0y8x11jSwZE1LUcsy3xQZU5yLSl7INFORw2k+au4Za/hmzMf?=
- =?us-ascii?Q?dWUpEFF4u2GTmhNeq635Iw/bj5EeIunBCFQvB/9c3fa8EDKUo+HRgdjNAYzu?=
- =?us-ascii?Q?SvliUlYqub6fWaUgFM9htSwf/OHLPGoXRg8nZy0683l5aCru6VMHg9GdxFKu?=
- =?us-ascii?Q?9HLrCNc4ANl4A0I1WTpPvHaZP7bAvb236aUQ5a3quTYeonZtEDSsOvYRA4Zr?=
- =?us-ascii?Q?X7wk1dgRtELOm1mjkE2mU5v6xUlb6Sae7y0XsHywL+CavdaxP4l7pILA+L0Q?=
- =?us-ascii?Q?SJkX88vwac78uq4B+/cJQdTWHJpZ+EAiZ4yw/BBmRXo/FQwk98JSgu6TFb7f?=
- =?us-ascii?Q?fgFZ36m/F2Trnqr4tTdmcZ7qQLuMAIMsCbgOkTb1IJlajt7SQgL7A0KipQMv?=
- =?us-ascii?Q?nrGel4SCYr0a+GDao9QpCtRe4hgIYZMFOqDghLrJcxsBWR0J0DbltOUa3iDJ?=
- =?us-ascii?Q?nPorqhRMIIAyUsF2FpNq8oCoUE4bQs3BVxj2IuLQ6RTqI38R+KU0452ayEt4?=
- =?us-ascii?Q?wzEZ4lOEIgjX+8lAFhucBaOKnhb+i+COkOIVovgg8f5SOcCm+OWQDIaGDVDQ?=
- =?us-ascii?Q?a2N7eyJ8tw3y+9GRJkYoDy5MueMIPl09AN4XAv11w77p+ZNc0nrJ7zETZHwa?=
- =?us-ascii?Q?ou1NTHhk3uGyEn4wnHh2vGUYTGKZkj5926R3g4Wc13hlVxDbzEL2U+vmgqvb?=
- =?us-ascii?Q?vYj8CmwAd5WWR7gOYJ5+tBMJje8FGP+4RoyNAb5gyZZQI0csbnJMsogMOwjv?=
- =?us-ascii?Q?2siCM4L5fIUwIvAgtjOFV3tXS3Dmhdyz9fqs1PoU8oAyqqhjqTNO5FButRke?=
- =?us-ascii?Q?uR29SAbxwPHSzvaTZwCrTjzikbL+y97vVnGUGN/vv04BWXAr4/QfV/eykSY1?=
- =?us-ascii?Q?litbKtJXe57YUHEWktg57Wdkn1Lr02Fau3sXbpe2CTbeWFb4T/86ZTfmUlsh?=
- =?us-ascii?Q?5+2fOgMEFfgOVk114khzqtJzRJlfGg6hKwT9MYUoNf+cDJCvFUER9NsmEPZn?=
- =?us-ascii?Q?LixTLy09kHWW2TY+c4ZNsmpc8Gtj1cnEyGNg+Rv5oAePUc9I+8Tn6VQvL4YP?=
- =?us-ascii?Q?9YkaSfTcPEedugdG5V785pPAq7elDpnyv69ifPncLSo0xZoUS8r0SCjz3IiL?=
- =?us-ascii?Q?NKkPT+MJ+wZygXtdoRA0WaZN3zIW07DyROR83mQefvXDImFW8y4PEhEvfxBt?=
- =?us-ascii?Q?MsjQ1yhwWPVn96nz4lNw8p28Cj12Komi0+TZIishPdV34Gn1TXb7847GE9h+?=
- =?us-ascii?Q?90FIR6anddrDhKM23C4L8JvGwu98Ei43e8Iq7tjDm6U4lVoMzzlGIfNHAz1H?=
- =?us-ascii?Q?eg1SvHD40kbXLV2Ixlzf5N+a+warcDOwsHn5aBHh2vJCQI0omwSCBRYcyBKZ?=
- =?us-ascii?Q?/itRm5SaBoMTqEr0fy23C1gqHaoTRENrWqm8fsvbIC9gfBH2uhGZF9fSFXA5?=
- =?us-ascii?Q?a/hbVtHt6TjfqueZk4Y=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?S3qwu88A/3xznq0YvgCZyKVMvKYT6COl1qN79bBPiABEDEnu8fi9mkTNbie4?=
- =?us-ascii?Q?vebYsMLLK8MGiEaOJtYi4YzEbyFY9KXZkZRpXeSBvfPS3/BDdeW/WlZ3BQPh?=
- =?us-ascii?Q?cpo9W0sDWX1sQtUhFfohG3Kx+ttNRIof/+meKwXjJp+xDqe83/jDWu183r2z?=
- =?us-ascii?Q?8FWfcyOo5ME6RXBJ7eemILP4xuvcwasZXSWXCU18+g3+RE3hOBfzyGU8YhxD?=
- =?us-ascii?Q?eOYjUrupVGcaEZNBGZ6XASTsoMVQyg9rHo8chpGWkwWx3QzWdz0b5m6GiCpB?=
- =?us-ascii?Q?QCiDNPEd2v0Lf0ymBILuRlCJr3U7CVDQFpN+/i1M/f6KcLKp3vVDJr2wBd0G?=
- =?us-ascii?Q?DJBdf+pwaO5il+Qm4g8Gr7Tswawm5tvkEqnU/zALpXMmh3pmkKXKLMOoxIVU?=
- =?us-ascii?Q?HEQ7vIacDw1hgCjfBf29Zn9R/07PEZDLakeEVZRMyv/EjAl6AStPPwuqjPWC?=
- =?us-ascii?Q?nWfYseTp9axbz0hKeTaHrUYhFxoCfoDb5egW/LI/C6qurArpgBp80yO7oSNM?=
- =?us-ascii?Q?PIvVElXw7C8uz5HPWJboYGHsrN368GRfnQjuXKIy4bMvw05IjlheEXABNw7h?=
- =?us-ascii?Q?H+VqK/QxfGzm9Rlsmw+WlQKVx+W8BF8rd0BQSYYGiV1wrGHfx3u+rWqDxyEN?=
- =?us-ascii?Q?VnBCYWDQvFtupjYJfdeNdFSv7QDdiY9s4hcAiU8w6yM/oQ4lTKRoG6jleWcX?=
- =?us-ascii?Q?E3mvqn8fdyuQRG9d6lCmtgS5JlJW5rZ0icE9PVpSr+A8xtH52D7A842H84gv?=
- =?us-ascii?Q?izzBEHI5aEzc0JbmvuaoqtkHJ/gUFG+RTVDujEZQg2TOljnlMWUrKK1YLDCO?=
- =?us-ascii?Q?slWNbs8m3jFXlxL0J2w8dbH01tCWCT1ey/OY6qWV1RntlnrsAKelakcPRvBc?=
- =?us-ascii?Q?0NFnuE+LK9/OF4QOdTdmjx1uNPWrp0OlUXecm10kdgLj4uWfU9uX+0aFNjef?=
- =?us-ascii?Q?ueT6I0NcCkLn1SoQcBOKsMJ8FaZlITyU2HJ1ZC+8yam8mCi3yxe/k1j0pG8p?=
- =?us-ascii?Q?quq0PH8SW1yvQFfOftYrIF+BMc3Hl89PttniM6MALFKfZTm7xAEqYHYdxc4z?=
- =?us-ascii?Q?beCHN+f186brxmFv9wqhiEaEEKHvHXTpumbDHuRG4ULP5ilNPveY4RSIVEYB?=
- =?us-ascii?Q?G0tIBXXbUas3jZlNNCJsdfLjdvpnkk1yd7G3/ZT7fhQd7YEMtiWZiZrO52mG?=
- =?us-ascii?Q?b8E7XFEkUhrofpugMXJ2zwETkxet4KnRhu8/EJJ3T4MFEaPIenjk5iRMlXXL?=
- =?us-ascii?Q?IdjSuqwlge1TTnhZgKj+oJEh5smHslUZw+P7GwRJ3dN4npxThD216RJLL1bd?=
- =?us-ascii?Q?lggYhUdH/AO6OsjFMJRayMTbOyEl547kIakrmZDRIA57cYFq7U9Hle9fFkVR?=
- =?us-ascii?Q?UJFiZbDR798jLdLQ7Hvp4lJaV+quqstdUhmA44P4bzj3J1+9vSUcU+NFiRX2?=
- =?us-ascii?Q?f3mP41xAicu1KZRoc8tc+ykW/2HsoxNOYdSlnV7uo/olZa9PimgAd2cYz8DS?=
- =?us-ascii?Q?WYBGqRnuSmrPE97w6kIYlWk74bpKyKOyeib1bfV6KS5Lz195YTwVYXegujR3?=
- =?us-ascii?Q?1D7rp0vyidE2pnmZLPZpgXWGQZIxpGKSIoLUqXTVC9RaUOsw5i+3okUe6AkO?=
- =?us-ascii?Q?zQZ2ggHOz4J5YUViqisTMyQkVdKw782Qav1FJDyU63Wdp+EY9tHxNoxGvKej?=
- =?us-ascii?Q?0NW+sBTicQGF2UUVp67MOnfRJpYMMt0KaIi8n9X/RONtA/6y3ngVuwBqLvGC?=
- =?us-ascii?Q?4dF2A17W3A=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	YF1rMXln+8gL6QqyYe0YtuKHQrL0S4VbB/SH4YClki8jhMfuMhVjc1v4W6YDe83tmwJSeDcKEvxW2MEaQymkdo3/1z9PPHBYWWQ+K8h2U1j2oVG4tA7gCbpb9fBJbH6KtHZ6TE+EFYE3DZ43CCw7IPBz9l+ZoPZg09PYPNnLDT/zT8BlDV+mzndTJ/MIL2/G0/puH4yEcLQZWqKR4yHhEv17bsvqHT+yxz8wfri3uSEfVm4tuGrvqvstOxtalvcnc+gKg/t8OizMkb6lrnRSL6AqW0tCy4LCU1qaRyuEMQ21P859ockkDSWd/RWFiQEAJilNAOUGSV3woy9/HUyhG9NgrDmaZoCJ1FXMYtouhwhZgplRRT6J0PPUJ21SRoM2cXtqwqz5EcF1rWDugIG56A4+n00RbxZJaxVr469W2KGqDS284IOi4PtM3dQeNYFbucp64BQgwWJrG1RoGAsXnOlN5mfwtB/gcWlizq0Z2jngU2Z4IEjC6UyMFgEGy2ZTFg8wQcNW4XWe+OI3rFrEoNXHNd3sn5p/g2eL9qa3e30LddFKxoJPkqsmRLug5OrF+lj+S29PBzawdcxp4X+IbSB2zOR5B2/9JyRxZdDoanY=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9e5ac2f4-ce67-4862-c8c0-08de6a653b05
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Feb 2026 18:33:34.9326
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2QiF1YvrpYQWBaYOhJYpMK3LZtMbtyAjBDZXYrcZNiulzrZQL+eM2DgRvC4K9xzdQOQgQr2uGjk/OFMPC2VsYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6337
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_05,2026-02-12_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0
- mlxlogscore=909 malwarescore=0 phishscore=0 suspectscore=0 bulkscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2602120143
-X-Authority-Analysis: v=2.4 cv=PZbyRyhd c=1 sm=1 tr=0 ts=698e1d07 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=HzLeVaNsDn8A:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=H6uFXMwvh0fExSW4sPAA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDE0MyBTYWx0ZWRfXwK4TJoNgGZAH
- 4bCOQyTFR36jsGFRxikcfm4QD5xyyUAx1EZLT4ZIx6cvowMKfUCyAtIpD/C8V6e6omhVkQ25NaE
- IiY10D/gyBzqL89v6eWUPAz/rbK+Ky37zD6a6egEYUGTSRuTcFN7Tk1pafsgHUT1nVqouSVbwX9
- QquwnUzl8sOz4xe5sw4/k8A0u5aPp/aLtMwSRPnVC9rVfsCUVRGJnz/+BE1zzSdRHP6uQYx4OSQ
- Kyrfux4A191iAqAugEkqLyU/Im8lIOGrCGaU1Zr5FhDGTJgJ50R5M7KxoEpjghJdgRsi+s7ipr3
- 19MeLYSm1YjXH/OC8WPo5Wudp6i5F/Zzs/felEV9MpPQMJHiUmnIijhczcD0YhFJauQxKQjcWwy
- 1aVOx6Ml4WMvnACbsAR1brdOuSo6YWCAgG0daX60YgA2AA9+5dpMLJtVCwpOCzA3odJr/mv4fN5
- y8Y7ViHRziUYSmswrpQ==
-X-Proofpoint-ORIG-GUID: nSL8eFYsAFw7EHjAosV5W1e01r5pdSMh
-X-Proofpoint-GUID: nSL8eFYsAFw7EHjAosV5W1e01r5pdSMh
-X-Rspamd-Queue-Id: 16238A000D
-X-Stat-Signature: da1jm863bsadbyuc94mitw3r6jjmjq6u
+References: <aY3+Raf8eZqipCd6@e129823.arm.com> <CAADnVQ+D7v+sGFFyTfSxFSEEcnGV111NeSaVtASYHfP-mDnV4w@mail.gmail.com>
+ <aY4Vipl+4rGa+u6D@e129823.arm.com>
+In-Reply-To: <aY4Vipl+4rGa+u6D@e129823.arm.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 12 Feb 2026 10:37:10 -0800
+X-Gm-Features: AZwV_Qh2H9arrkEzFgzvlw2KMGFV_EufEVAdwcgyUIVoqVCpCV_6wxWLmvz8MGY
+Message-ID: <CAADnVQ+ad1Eu34hS21HNLgzA5eeFHMvQmoC33xKpP0z247MaHA@mail.gmail.com>
+Subject: Re: [LSF/MM/BPF TOPIC] eBPF isolation with pkeys
+To: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: lsf-pc <lsf-pc@lists.linux-foundation.org>, linux-mm <linux-mm@kvack.org>, 
+	bpf <bpf@vger.kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, david@kernel.org, 
+	ryan.roberts@arm.com, kevin.brodsky@arm.com, sebastian.osterlund@intel.com, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2EB1CA0011
+X-Stat-Signature: sybsuxdmq7edqm6qf99pytbsw169du6o
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770921256-867382
-X-HE-Meta: U2FsdGVkX19015ZORUCLdVdQusdIoGU15oT2IvrxfSAnFhQU2uXMBG3l/8QmpAWy9ipCQ4ldcMLI9otNFt8elzjz/w5RdwAqx5vdSWsxCkypg8tmS15FmcpVvp5GwFsN+qoXG+u1lC4CXz7AuHw9sLHsiaCrYoGe7z3VViveVOReCzPWavCMKYkh39GS+ZiIjQyoUU3MtlLa4Egez+4g4PSc+jty6htJZArh3oRrkqZUaWaFGkqmLxp/V9Ddq7EvSDCegtSSMGUx83DagW4+A/vsFa9Je0ft1PLlcBnFHCuvrgyOk8iuR9dY1QCgOJtfY3i6xCh27PoJqqxbczYuo6ohmWWznmtWJ3zHJ3diPB8acDlr2kx03JKJMl/GXl7tFiugtRqPSMKkrdhQpYeK42LSNcAGW6Ue6ZluIEZ/+kz1qiiOjR770HPd55D1sRB/LUGzTBzU6gwhL30hWk0MLLrF6fmQiOpEmgNZsrD7t9m7ZlKueprRYtbfo16AZo7lxKQ1zZb705ENmH9Z9ViQiXxFaRlW3AfE3NQeLwjLP48ZAVdVdQPrgV5PptBCTdmYyc5jDwhRzn8c5etWKYK93t40IxuznPoR+aiHhhiCS6q1HLqLoExXKVByZqaktU5KmVIr4d1/2n/dwagYBgQ7QpK+aVROZvAiVhSbe5uRHF6DbmFFHg3Ivev/OMrsbU9WGFaOME3W5hFaUudTjMmX+4bf1y35OFHpkW2EbBiSUu9es8iXYooMkJD6T537A5vQyDc1GHwVgyEK/wcXzcH+xgIfbdyfCj9dcBY3I/lX8wi9dWdn4vVQzNhV8LtDXJLvur3uqnYmiEVAoPj3lFbSJC3dcRkXPGt8pClOaZq6BEt3/wYDVWYVsFux9mmtPIqbgt7ndPA0vuh/AXkpUi+mCrmWasCvgXtcs9AxEbXEFtRC5QPDB0IkRt/NVctYcnnk1D8/FipyHb1HzmFIXIA
- 7DcCZgda
- LqSnm7nSg1xbmMyV8P3bHjHESYl6u/ErfSrPe4lkJjo8+rWlCn+etMbzCUGt56O+SpwiXs+sMiYhfpTgj6RxZ8ZVmSmlqahraiaE5LDLmhHOGOoRbghl5CgAUsD/8rLDl1vvP5w72QJ4fY7GhwozduVJxo8Bywg3P+QMVJvTfstqQkA5bJClwXEMfTs+/8RnSIFhvt+lYLxOz9k3aNYVtfM0npmsIu6BPjGTI6mV5HyFC8QpEhD99Llrizl6demNyne/2T6a36JH2gs0sKpFDF+edBjQLYajRxa2uMfdhPmdlOIv5Kpx1JTF3jnxmPlfffQ7CMnfjGfNVdohd5ogbTuvW9lilQ/KZaMPYTyVk8u+AuKV+6YKGthnxU1EmxvpPWVCJTEnS1CwiZGN6rYHTNTP0T3EHKA+K09z6EOayjB8ip7tRZm7ZW5yE92xuGqBOn7bOXRKbuspWP6kOfzgDW/yNbB1Ztkjm8Aj/cjsRPNJUbP77dPtReQ3/Qp62Y08nOkgAzFgxeWIbSaUj9t+Ebmfsg8NqjThpsw8VefK51qRYv/nSlhxR1XYgtPDPQ20IHIGkXt0NycrDEpafxL6a/gRCqBBkBiqQSd1eVQ5gOjcPGVmSb+4j/ly2qVvG2aXdpCdzpwicA6ZBAipfb4r9svl6WM6E/8N+ktekOJ5EH0BeaI/AGvnK9JmB3xAJCz7IELqdQ8OFQTORbZOaX+EG9UHoGA==
+X-HE-Tag: 1770921442-864309
+X-HE-Meta: U2FsdGVkX18ujcNZfP4cpTx4HODu88WuphSiKFJ6vN5BJJ2OUZPOzPQDop2l+Lx/q5ZAbVkAuOg/2eKib3ma+NlG+P9+UIhL3zqIrMG8OZ04sfDnD9GIGo2kMVbBDUNF0gvAnRfDAlH4pf3q7D0FuDFfjpYKCZFzvJ6+5zSQW/QvFBsKEDTOWroRRupTepPQTSO5cZfrgO2LALn4GGKU7R3KTqtcKA6ioSDU0cElRyz2/z/+uZ2gnKO2wpbqOXNCZOPbAEu61TT6Gs/eG1TNdhQg6V5cuJ0PGZl7I4JmlP2jBOCLYyGqhcQHBjpnnXCyPTwlCbIstPpcr9VcmskOkzvLOuyxJmMvpgizgcZn5nD1ZbBRb9xLj+CJvePUdqn6CvfLH8hxw4+FPsIitZMaIaEoAPhMm+MHA/gQeBbIVLjKh6+moW8hPPiKPHp1/xkwRIhLULyxJiFnpHXcM2XxZlP1nV1QkB9v4aRjpmcXYwwTaH72gL6X57uqyojDsjcy3vqqepfQcw0i97MlS5E9gmMEWmn19ucLISEwW3OnCN+vQodilg6C30R1lU1qnEs1cy8VK4XAOV/jTG4GCt7I1H4FPbue/4FUSENjlD12/LlyVlL/46G0H3lFKHJcpL/Xk7m5vEAg2xFiKGjc6YVjKULgZd3M4YjkXhsK6vaRYj9nUDcX1lT6PajpWPdcLEVrgeKWWhdif3kPWfJW8xFjgK2oL1Eye8EjowSi5T5/HeWvbx31Ycuh5LbQAy4I1EpG3HVMQcavbpw2070/4x0hnWLNAAGmCpTQ0hMovYbykilaDzK59IDdPV0z/y4vhgl0ahbs/ZmeCRx2ZDgxGmjSeniJEEj6s8RV/YZAx50NMsfCa5HSIXbrfe3sYZZzS7fbsJmUkpxuIFudifZ/v196MUBL24ldMlBVleklx8+uid2K4cjaKvcpVRAKWbdTv/K+u4MYTP64Bi44tyVbNxQ
+ u6g2PJQD
+ oCe5z/Ut+ITH7c3PlX4mNVCi0WYtaratc31opesXJ+7LoEjIvz4eTP8YEk7FP3nDRO2qD/M+zaNI8xQhiutwiW2B0CI1VHy3US2jALGM6nBR6b8+vidTciVinx6L8u3qUMO7LPX5Vzqh8c0MCNp24Ste3CE3kWhuLsY3Xed1Trv1xcHrPulsfBXp6wU4K9Ki3/FA/cyTiS0v3js4uADDUx7VvlXYY6U9FftX8sVRI//Iee19nd1pFdQo47JZrj54AX09DsM4F+FTjqIcWXqmmOWYwgLt64HNN/XYc5GhiYT4E68iGzEoUMZ7HFmqfqzEyBAHLK5TZZz2QTHZno/WVrcotNUj1P7P3c9aSlH1+hjl8S5W8Z+36IGNoHtrAW1uBPRRhPgkgYNuZ1N70GZfCQHwbioHtXt78ZYpoEOCuIfECUQUQTNtIPlQqQkNsy0UEf14n2zcI+lCLqGAZObly1NfDG45gRv17Gb6zOBpVv7mwfi0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -295,217 +143,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-* Mike Rapoport <rppt@kernel.org> [260211 05:32]:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> 
-> my_zero_pfn() is a silly name.
-> 
-> Rename zero_pfn variable to zero_page_pfn and my_zero_pfn() function to
-> zero_pfn().
-> 
-> While on it, move extern declarations of zero_page_pfn outside the
-> functions that use it and add a comment about what ZERO_PAGE is.
-> 
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+On Thu, Feb 12, 2026 at 10:03=E2=80=AFAM Yeoreum Yun <yeoreum.yun@arm.com> =
+wrote:
+>
+> Hi Alexei,
+>
+> > On Thu, Feb 12, 2026 at 8:24=E2=80=AFAM Yeoreum Yun <yeoreum.yun@arm.co=
+m> wrote:
+> > >
+> > > Hi all,
+> > >
+> > > I would like to propose the topic of eBPF isolation with pkeys at the
+> > > upcoming LSF/MM/BPF summit.
+> > >
+> > >
+> > > Background
+> > > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > >
+> > > Today, eBPF programs provide powerful capabilities to extend kernel
+> > > functionality without requiring modifications to the kernel itself.
+> > > These capabilities are largely enabled by the eBPF verifier, which
+> > > enforces memory safety and other constraints to protect the kernel.
+> > >
+> > > However, vulnerabilities in the verifier have repeatedly demonstrated=
+ that
+> > > eBPF programs can also become a serious attack surface.  In several c=
+ases,
+> > > flaws in verifier logic have allowed malicious eBPF programs to bypas=
+s
+> > > safety guarantees and compromise kernel security.
+> >
+> > eBPF was restricted to root for many years, so the above is simply not =
+true.
+> >
+> > > Representative CVEs include:
+> > >
+> > >      - CVE-2020-8835   [1]
+> > >      - CVE-2021-3490   [2]
+> > >      - CVE-2022-23222  [3]
+> > >      - CVE-2023-2163   [4]
+> >
+> > None of them are security issues. They're just bugs.
+> > Like all those found by syzbot.
+> >
+> > > An RFC series is planned for around Q2 2026, and the experimental
+> > > implementations for eBPF isolation with pkey and pkey-aware memory
+> > > allocators have already been completed internally.  Using these
+> > > implementations, we verified that eBPF programs running under isolati=
+on
+> > > successfully execute several sched_ext applications provided by
+> > > tools/sched_ext, as well as some bpf kselftest cases.
+> >
+> > The stated goal is wrong, hence not interested in patches
+> > or discussion at lsfmm.
+> >
+> > arm has a nice hw feature. Sure, but this is not a place to apply it.
+>
+> That is correct =E2=80=94 this is a verifier bug.
+> However, the concern is that such a bug can lead to a security incident.
+> Not only root, but also users with CAP_BPF who are allowed to
+> load eBPF programs could potentially trigger additional security issues
+> through such bugs.
 
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-
-> ---
->  arch/x86/kvm/mmu/spte.h |  2 +-
->  fs/dax.c                |  2 +-
->  fs/proc/vmcore.c        |  2 +-
->  include/linux/pgtable.h | 28 ++++++++++++++++++++--------
->  mm/huge_memory.c        |  2 +-
->  mm/memory.c             |  2 +-
->  mm/migrate.c            |  2 +-
->  mm/mm_init.c            | 10 +++++-----
->  mm/userfaultfd.c        |  4 ++--
->  9 files changed, 33 insertions(+), 21 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-> index 91ce29fd6f1b..8c0ffa2cded6 100644
-> --- a/arch/x86/kvm/mmu/spte.h
-> +++ b/arch/x86/kvm/mmu/spte.h
-> @@ -248,7 +248,7 @@ extern u64 __read_mostly shadow_nonpresent_or_rsvd_lower_gfn_mask;
->  
->  static inline hpa_t kvm_mmu_get_dummy_root(void)
->  {
-> -	return my_zero_pfn(0) << PAGE_SHIFT;
-> +	return zero_pfn(0) << PAGE_SHIFT;
->  }
->  
->  static inline bool kvm_mmu_is_dummy_root(hpa_t shadow_page)
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 289e6254aa30..b78cff9c91b3 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -1360,7 +1360,7 @@ static vm_fault_t dax_load_hole(struct xa_state *xas, struct vm_fault *vmf,
->  {
->  	struct inode *inode = iter->inode;
->  	unsigned long vaddr = vmf->address;
-> -	unsigned long pfn = my_zero_pfn(vaddr);
-> +	unsigned long pfn = zero_pfn(vaddr);
->  	vm_fault_t ret;
->  
->  	*entry = dax_insert_entry(xas, vmf, iter, *entry, pfn, DAX_ZERO_PAGE);
-> diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-> index f188bd900eb2..44d15436439f 100644
-> --- a/fs/proc/vmcore.c
-> +++ b/fs/proc/vmcore.c
-> @@ -525,7 +525,7 @@ static int remap_oldmem_pfn_checked(struct vm_area_struct *vma,
->  {
->  	unsigned long map_size;
->  	unsigned long pos_start, pos_end, pos;
-> -	unsigned long zeropage_pfn = my_zero_pfn(0);
-> +	unsigned long zeropage_pfn = zero_pfn(0);
->  	size_t len = 0;
->  
->  	pos_start = pfn;
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 08a88b0d56e5..9bacf4df9769 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1882,27 +1882,39 @@ static inline void pfnmap_setup_cachemode_pfn(unsigned long pfn, pgprot_t *prot)
->  	pfnmap_setup_cachemode(pfn, PAGE_SIZE, prot);
->  }
->  
-> +/*
-> + * ZERO_PAGE() is global shared page(s) that is always zero. It is used for
-> + * zero-mapped memory areas, CoW etc.
-> + *
-> + * On architectures that __HAVE_COLOR_ZERO_PAGE there are several such pages
-> + * for different ranges in the virtual address space.
-> + *
-> + * zero_page_pfn identifies the first (or the only) pfn for these pages.
-> + */
->  #ifdef __HAVE_COLOR_ZERO_PAGE
->  static inline int is_zero_pfn(unsigned long pfn)
->  {
-> -	extern unsigned long zero_pfn;
-> -	unsigned long offset_from_zero_pfn = pfn - zero_pfn;
-> +	extern unsigned long zero_page_pfn;
-> +	unsigned long offset_from_zero_pfn = pfn - zero_page_pfn;
-> +
->  	return offset_from_zero_pfn <= (zero_page_mask >> PAGE_SHIFT);
->  }
->  
-> -#define my_zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
-> +#define zero_pfn(addr)	page_to_pfn(ZERO_PAGE(addr))
->  
->  #else
->  static inline int is_zero_pfn(unsigned long pfn)
->  {
-> -	extern unsigned long zero_pfn;
-> -	return pfn == zero_pfn;
-> +	extern unsigned long zero_page_pfn;
-> +
-> +	return pfn == zero_page_pfn;
->  }
->  
-> -static inline unsigned long my_zero_pfn(unsigned long addr)
-> +static inline unsigned long zero_pfn(unsigned long addr)
->  {
-> -	extern unsigned long zero_pfn;
-> -	return zero_pfn;
-> +	extern unsigned long zero_page_pfn;
-> +
-> +	return zero_page_pfn;
->  }
->  #endif /* __HAVE_COLOR_ZERO_PAGE */
->  
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 44ff8a648afd..bc15fd152526 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2968,7 +2968,7 @@ static void __split_huge_zero_page_pmd(struct vm_area_struct *vma,
->  	for (i = 0, addr = haddr; i < HPAGE_PMD_NR; i++, addr += PAGE_SIZE) {
->  		pte_t entry;
->  
-> -		entry = pfn_pte(my_zero_pfn(addr), vma->vm_page_prot);
-> +		entry = pfn_pte(zero_pfn(addr), vma->vm_page_prot);
->  		entry = pte_mkspecial(entry);
->  		if (pmd_uffd_wp(old_pmd))
->  			entry = pte_mkuffd_wp(entry);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 51d2018a387a..ae610afa9cea 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5165,7 +5165,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
->  	/* Use the zero-page for reads */
->  	if (!(vmf->flags & FAULT_FLAG_WRITE) &&
->  			!mm_forbids_zeropage(vma->vm_mm)) {
-> -		entry = pte_mkspecial(pfn_pte(my_zero_pfn(vmf->address),
-> +		entry = pte_mkspecial(pfn_pte(zero_pfn(vmf->address),
->  						vma->vm_page_prot));
->  		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
->  				vmf->address, &vmf->ptl);
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 1bf2cf8c44dd..739c4e03769b 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -321,7 +321,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
->  	if (!pages_identical(page, ZERO_PAGE(0)))
->  		return false;
->  
-> -	newpte = pte_mkspecial(pfn_pte(my_zero_pfn(pvmw->address),
-> +	newpte = pte_mkspecial(pfn_pte(zero_pfn(pvmw->address),
->  					pvmw->vma->vm_page_prot));
->  
->  	if (pte_swp_soft_dirty(old_pte))
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index dcf9eff34f83..a0ca236eb4f5 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -53,8 +53,8 @@ EXPORT_SYMBOL(mem_map);
->  void *high_memory;
->  EXPORT_SYMBOL(high_memory);
->  
-> -unsigned long zero_pfn __ro_after_init;
-> -EXPORT_SYMBOL(zero_pfn);
-> +unsigned long zero_page_pfn __ro_after_init;
-> +EXPORT_SYMBOL(zero_page_pfn);
->  
->  #ifdef CONFIG_DEBUG_MEMORY_INIT
->  int __meminitdata mminit_loglevel;
-> @@ -2670,12 +2670,12 @@ static void __init mem_init_print_info(void)
->  		);
->  }
->  
-> -static int __init init_zero_pfn(void)
-> +static int __init init_zero_page_pfn(void)
->  {
-> -	zero_pfn = page_to_pfn(ZERO_PAGE(0));
-> +	zero_page_pfn = page_to_pfn(ZERO_PAGE(0));
->  	return 0;
->  }
-> -early_initcall(init_zero_pfn);
-> +early_initcall(init_zero_page_pfn);
->  
->  void __init __weak arch_mm_preinit(void)
->  {
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 927086bb4a3c..e19872e51878 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-> @@ -357,7 +357,7 @@ static int mfill_atomic_pte_zeropage(pmd_t *dst_pmd,
->  	if (mm_forbids_zeropage(dst_vma->vm_mm))
->  		return mfill_atomic_pte_zeroed_folio(dst_pmd, dst_vma, dst_addr);
->  
-> -	_dst_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
-> +	_dst_pte = pte_mkspecial(pfn_pte(zero_pfn(dst_addr),
->  					 dst_vma->vm_page_prot));
->  	ret = -EAGAIN;
->  	dst_pte = pte_offset_map_lock(dst_vma->vm_mm, dst_pmd, dst_addr, &ptl);
-> @@ -1229,7 +1229,7 @@ static int move_zeropage_pte(struct mm_struct *mm,
->  		return -EAGAIN;
->  	}
->  
-> -	zero_pte = pte_mkspecial(pfn_pte(my_zero_pfn(dst_addr),
-> +	zero_pte = pte_mkspecial(pfn_pte(zero_pfn(dst_addr),
->  					 dst_vma->vm_page_prot));
->  	ptep_clear_flush(src_vma, src_addr, src_pte);
->  	set_pte_at(mm, dst_addr, dst_pte, zero_pte);
-> -- 
-> 2.51.0
-> 
+Again. They are not security issues. cap_bpf is effectively root.
+Just like cap_perfmon in tracing space is a root.
 
