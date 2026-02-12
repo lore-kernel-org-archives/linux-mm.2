@@ -4,89 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4E51EE368C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE377EE3698
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:23:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A93D66B0005; Thu, 12 Feb 2026 10:08:05 -0500 (EST)
+	id 218F56B0005; Thu, 12 Feb 2026 10:23:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A380D6B0089; Thu, 12 Feb 2026 10:08:05 -0500 (EST)
+	id 1C6F06B0089; Thu, 12 Feb 2026 10:23:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 943A46B008A; Thu, 12 Feb 2026 10:08:05 -0500 (EST)
+	id 0A9066B008A; Thu, 12 Feb 2026 10:23:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 80CAB6B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:08:05 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 11F42C0976
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:08:05 +0000 (UTC)
-X-FDA: 84436134930.08.E13B23E
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D320518000D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:08:02 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XxaWGlEC;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EDA3D6B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:23:21 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 686251B2F7D
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:23:20 +0000 (UTC)
+X-FDA: 84436173360.20.8BA23AA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AFC96C0004
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:23:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wngCniLs;
+	spf=pass (imf10.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770908883;
+	s=arc-20220608; t=1770909798;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nwOfzTHo9+0udcjtzr/t6KDnWYj44fvh58Cy5u0CarI=;
-	b=nrGTOxJp9TwwvBLMQ6zGxSgq/AhX62PcYQrrDZeJzUKj437H6trwblRan7gTTgixWtLu5I
-	oJQZSinS/b6YTXJFd7lTDy02Kxzu8AG2GP8JoA/tfPMdiUUoYiYPJSf+Sm5ZpRVsAXzTiR
-	XVg+1JsURRvYmWvaEDa3HgCLZmHQhiE=
+	bh=Xia0EUTLAwfvNV6z0o7rjaLmeBxyZx+b2OgjR9h/lAc=;
+	b=IHDryS6/ZuWrWwda8euCG+L/vTdR7mQooGDMRN/D0DXao6BvAjd5mUOQnEddPNljc2w5wj
+	PcZBp2i8sR6rOIU+eHUBuTzFgX1IyfS1XNGvkuqIS7Ds59kgXBHLbhTqKNbyuj0m4QA8Dn
+	E2h3yd9LZR15CiH9A1q4QbcB7yDSxAQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=XxaWGlEC;
-	spf=pass (imf24.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770908883; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=wngCniLs;
+	spf=pass (imf10.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770909798; a=rsa-sha256;
 	cv=none;
-	b=dclXXeIjQEyQ63OilLTK4GJGpGeQjtGckiG1vV+9oyjrHnjr0pf8PBJNlR5uXaUIiteLht
-	Lbj25UI5a1i5FLcXDjRGhWSWDEGwuLWEIcKf2opqIyGiFaTmc4FPdxXkRHClLyDv/5HSy7
-	3rqXhpjJwIECAOoy2Hyw5Kigb3r0OrE=
-Date: Thu, 12 Feb 2026 07:07:34 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770908880;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nwOfzTHo9+0udcjtzr/t6KDnWYj44fvh58Cy5u0CarI=;
-	b=XxaWGlECBN4a610iIpj/hxVRt0G79D1N7svcZQZiL0dTP19ojT1qgU0qS98Wddx7J0SXc8
-	IGi/YSGTIcDrI2HQgoyDrN67COuIc51tksr8vGdaB9ljvXyEwlm2cL8dA9cKXH18EO/RSu
-	EBGdEiAwXGwlIFEFzkdNeio4AIT4vyE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: JP Kobryn <inwardvessel@gmail.com>
-Cc: linux-mm@kvack.org, apopple@nvidia.com, akpm@linux-foundation.org, 
-	axelrasmussen@google.com, byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org, 
-	eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com, hannes@cmpxchg.org, 
-	joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com, linux-kernel@vger.kernel.org, 
-	lorenzo.stoakes@oracle.com, matthew.brost@intel.com, mst@redhat.com, mhocko@suse.com, 
-	rppt@kernel.org, muchun.song@linux.dev, zhengqi.arch@bytedance.com, 
-	rakie.kim@sk.com, roman.gushchin@linux.dev, surenb@google.com, 
-	virtualization@lists.linux.dev, vbabka@suse.cz, weixugc@google.com, xuanzhuo@linux.alibaba.com, 
-	ying.huang@linux.alibaba.com, yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
-Subject: Re: [PATCH 1/2] mm/mempolicy: track page allocations per mempolicy
-Message-ID: <aY3r75eewxbArKVu@linux.dev>
-References: <20260212045109.255391-1-inwardvessel@gmail.com>
- <20260212045109.255391-2-inwardvessel@gmail.com>
+	b=AzL4tMrMItfqD1JUU3aez21LjEdZc6vyu2AVW+qpKyfYt86V95RDUKd3kuL6XZwWXs2XnJ
+	uDb4gc0DlqqYTHDbFaImoABnHa3HrnIxRMw2r7U8QyK5jV5HzZGaETUV9VK1p+s2CprGLK
+	YVbD02YcfCVZUSg+WXPCG6WDoR/o/9g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 0D0EF60051;
+	Thu, 12 Feb 2026 15:23:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFDAC4CEF7;
+	Thu, 12 Feb 2026 15:23:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770909797;
+	bh=CXREZTqBenKo9jtPZTzM+VTNbxYZim0gWfWTgptwF30=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wngCniLsYobfy+cnJ0iQ8hJvHAE59mq29LzSxEBhVQD6cI6RhSToLCotLXlve5lyC
+	 8O9Cv1a38Xqxsewi18XZ0aua6LyV4dre6Smx82wZWl8uDMPY+BtIhiLNMp0LTdQ+lo
+	 QrW8b4Sy7tngQXd9V3e/ck2hvS4+DiaRwSdmf39A=
+Date: Thu, 12 Feb 2026 16:23:14 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gabriele Paoloni <gpaoloni@redhat.com>
+Cc: corbet@lwn.net, skhan@linuxfoundation.org, arnd@arndb.de,
+	brendan.higgins@linux.dev, raemoar63@gmail.com,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com,
+	acarminati@nvidia.com, linux-mm@kvack.org,
+	safety-architecture@lists.elisa.tech, kstewart@linuxfoundation.org,
+	chuckwolber@gmail.com
+Subject: Re: [RFC PATCH v3 1/6] Documentation: extend the 'Function
+ documentation' with expected behavior and constraints of use
+Message-ID: <2026021207-hatchery-spore-2800@gregkh>
+References: <20260212124923.222484-1-gpaoloni@redhat.com>
+ <20260212124923.222484-2-gpaoloni@redhat.com>
+ <2026021221-grading-clatter-b7bf@gregkh>
+ <CA+wEVJaFX4AE5ruKLvgYZhmNsOabovLp=2LAaLUYe5B9r51qEA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260212045109.255391-2-inwardvessel@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: io13cjo8mjtont8w9ss8886918kaqykj
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+wEVJaFX4AE5ruKLvgYZhmNsOabovLp=2LAaLUYe5B9r51qEA@mail.gmail.com>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AFC96C0004
+X-Stat-Signature: 8pi7nixk4h9zoj3ehyednocrfb5ihomq
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D320518000D
-X-HE-Tag: 1770908882-586445
-X-HE-Meta: U2FsdGVkX18iSGFbFxZrUYFo+t7NzSmDhstkyMdIv+XR4zCwwbBBoA9VaMoI3RsEI36FrsF3KwvgGxoCsd87SgkSoBmCwgNVeoQlqlYUK9JfA9GKISzkGc45FehrF2X6QC2iwQvCdzkNOl9bsKf7Cq0Wl/Cfs16BfynM5QM6w+UZn6IbvZOPlpyI3sT4XviLAOrdaEFaEKrRNmjP12qA7eH9plSFcrOnJyxA3WQCd6k463irZzo6YsDeLMb9n5hQ/A9DaFu7UIApmgCVWcqmAy2gnCErDau8n5GC7bDCfFAV8Nhq0FRIx/4OoMuL1KODqAqXNKLZ7UpysduJm3VxX9/iAJrD/FU+gClCpPtV7+lzKHx33f7a6nD66aRk3ekp9OkEQLn4yBz8apy8lu+oaqUDxsFjM2qp/0F8nvjz5uEVC6Jef1AQuitvx48RXoP8I/bj4ib+S57uci6KkfKZTdc+HuGaEmLHr+VrHr/gWlOb54jo4rrvv/rNJDWAHWj/T7/4mouuqvFoHMjOUJb++rZf8moABsVGzQoA4aQA0shL2D5glusNcg/GLdduEGpj7FSs+OAtlDRIX9DZCA2UceMQPmSfc1TmIYBv3K1sBWp4dVzxESwR/SC8LO1nL2OJyD3yDNDNOZBsi6qige+bLXFMtYBwpbFWtVTQk3/ifbpEiN5eb4wt91JMmilpjv4f500GXNEIW412cF0H7rqhW1e8jnHIzPN0OCkd9c18lVHN7GBrmANFehgddSOGfd17n2Mys+YKugHLuj1qWJc6h58Eq2ujgJQdkK3JQwNqoI+nMzp2e1fDY8S3YCfY/q1poksreBvkjbNtYAoWcCVzzY7X8p0lT3OuDFys6vuxlqJeJ0cbhwvjTUGxYSsF7JKzrKznBCm4w5pAM5A0jR9kn1pGT/l+GIe8WcuYgVK074GBIPg/vay0fzyY95QRiSr+TL05UP3/dnbTb4Mz0Yx
- sbWnb/CV
- AVOxeIHvyhj6MSg8+pCCcHmb7Few8+zXtuVxN0eZldaatljl2M/BwID5EZ4d/R8kCstnl+Y29I/KSoOf31tDS3dGAIhlkiQVdrpA4YHV4ig+mB0bd5FTsSpoQUgiXsBV9p8SrSJgybzbN5crPfehscnj3ZCFObuAlA8g3w3eVw91+h8tU+4JTX7wJ5OghAJRKwTh89jikpfGYgwr9wWL8ckGyeoOb+i2Da9CPWFxRl0BDHBmKJD9ILApqfu+Pvrqb7hnEM1Lr8BlbEDqjIuWSJV+rKMGCaspigNm9QcvGlpQQ1FFf1OkB/DDfvfnJQTl4pI8EOWr+NS/k5MLzuNpzfyBcDUI0DIzSyqRg0HCEuKZwn9U=
+X-HE-Tag: 1770909798-114388
+X-HE-Meta: U2FsdGVkX1+xxt4ggmaSUvop56TjVZ3/rqjXfRjPKU6uiGSNMrq43HT/U+fl5ircd0cQHmuUQQtE9WAkg6QlYGsLU/dAGE7alYsMICfeUtCNtvhcp1ehmYRK/LTm+Qr/PoAEGsaDSWUOuZUPWxVV/1vgYOZgV+qt+CGMa3MmfWLaNYrFbW1dQbEcVciOlhLW1x+kQh3jxXzhwR3vp4GVbck6bHJtqIi4MEjWwLxa7XxQ84fRluCU+ZpxdzKxD7M76TDrZ/ZpjRgZcH/J3HAY+yrDpwhSgPFBcsccwxlTIOcN+eGVUfZPGPUUVFRAu4uaN3BmSmiy6ms0ujnvtu+lCjfh7CkKS8taDJ4/xtWhvA5Sr+hlQtGrP5qfugu2hOU0/wWadRCs/v+SiDJ9gTF/4DnPzLSfQZdqHcYqu57qRQWsZCLrXz0u9UJcYh3oxhkII01jj3m074ckexX2OALslex/IoT8KsJ/IRgGHqseE0cw4Z71iiHehMjB+6w19eDkoCiDw1MT5qEU4uo4nlsAe6xZECK3K2E0tFthSFtlQXyfDg0W8QisX8oCWRfqd8nfASqWLAZS5RTZ1h5KH3FWBaW/ybU9tuOWknTfTRL6hC+NDoe4tn2q3mmbCOlm+UN1dRS/6ADZ9HaKLyRtuMU2GrTN9liThlvkQAC+JUuMEBs5KKQX+CjmPdumNORlzJKznIcI0KDfCcuq+1nKbwBlDnmtU+O2ybjP0w6P3IP2OMArE5YcWf/4lAcc8wW1QUDVazJpKEL2GMj1nt/HU6Yzo49EqYIq5+noIN5SeluO/AFQRzXE6NVvuscFD5bUUBMgvZFYpkGLhCGjr1CZZbRAha0YpAFb6IgDr87t3ElEvZUhxGqpwYECGUxlmBQvw8RiLLF1EeJeEjT0Y+N/6qaxnbrZOkvPDn+We/LJgJQ6SIQs2cXJn8/Ig8dUdlaYNCXixj+QSmFg6vJxMEPmDKm
+ 73hPTmPX
+ n1h9cGCF20DSmzhSH1PUdPSG38lwkkxGk3FnxsS1KQ2JYKunV6AqeBvNfe6bOuwT6oQ70EJNbBCxYMG31rRSZAdJSO+Ab/7Hdt0HcezhIJ9LJcDPC3LF6bxzCs2EMI5P0zqmd5vP2f0OhfKPb0S3twBuRuArzfwQ0TZCQjPylm+o5j/5WsA64rCLItrSPjcGo20TIYoxy2nljxnRYfET0+AVAn9lwiwk32CbhB8Nl4xzpKs8Ixqd1ifCGQ3H/d/E0Rcu2OJ/7rCWSNANM00oBOMX5YxP4RW2L8Xr4CFJ0qBjj92yvku6vDQZ1h+0rKzxdUnRyUtaa5/9r9KLF+F331Gcye4Vk4HCRnMGwH6IlZKS8FN4kvEWkFYqp/Txyn0VpKnU1Nwo9BqACn0sNoQwklUib9yLRnqvlYyDjrVBuR0OdIUc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,62 +99,111 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 08:51:08PM -0800, JP Kobryn wrote:
-> It would be useful to see a breakdown of allocations to understand which
-> NUMA policies are driving them. For example, when investigating memory
-> pressure, having policy-specific counts could show that allocations were
-> bound to the affected node (via MPOL_BIND).
+On Thu, Feb 12, 2026 at 03:00:01PM +0100, Gabriele Paoloni wrote:
+> On Thu, Feb 12, 2026 at 1:59 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Feb 12, 2026 at 01:49:18PM +0100, Gabriele Paoloni wrote:
+> > > Extend the longer description section of a function kernel-doc
+> > > header with an itemised list of function's behaviors and
+> > > constraints of use.
+> > > These are useful to link and trace test cases (e.g. KUnit) to
+> > > the different behavior IDs and define the constraints to be
+> > > met by the function's caller.
+> > >
+> > > Signed-off-by: Gabriele Paoloni <gpaoloni@redhat.com>
+> > > ---
+> > >  Documentation/doc-guide/kernel-doc.rst | 19 +++++++++++++++++++
+> > >  1 file changed, 19 insertions(+)
+> > >
+> > > diff --git a/Documentation/doc-guide/kernel-doc.rst b/Documentation/doc-guide/kernel-doc.rst
+> > > index 8d2c09fb36e4..23e6c4b45b14 100644
+> > > --- a/Documentation/doc-guide/kernel-doc.rst
+> > > +++ b/Documentation/doc-guide/kernel-doc.rst
+> > > @@ -83,6 +83,25 @@ The general format of a function and function-like macro kernel-doc comment is::
+> > >     *
+> > >     * The longer description may have multiple paragraphs.
+> > >     *
+> > > +   * When specifying testable code behaviour the longer description must contain
+> > > +   * a paragraph formatted as follows:
+> > > +   *
+> > > +   * function_name behavior:
+> > > +   * [ID1] - [expected behavior]
+> > > +   *
+> > > +   * [ID2] - [expected behavior]
+> > > +   *
+> > > +   * [...]
+> > > +   *
+> > > +   * [IDn] - [expected behavior]
+> > > +   *
+> > > +   * function_name constraints of use:
+> > > +   * [ID1] - [constraint to be met by the caller]
+> > > +   *
+> > > +   * [ID2] - [constraint to be met by the caller]
+> > > +   *
+> > > +   * [IDn] - [constraint to be met by the caller]
+> >
+> > So the same "id" is used for a behavior, AND a constraint?
 > 
-> Add per-policy page allocation counters as new node stat items. These
-> counters can provide correlation between a mempolicy and pressure on a
-> given node.
+> The idea is to have a specific behaviour or constraint of use
+> identified by the tuple [function_name behavior][ID].
+> So I think we could have a problem for duplicated symbols (but
+> it is a sort of corner case...)
+
+I am trying to say that you have ID1 listed in two places above.  So
+that's not unique with a [function_name][ID] pair, where does the
+"behavior" part come in?
+
+What is now parsing these comments to ensure that they are unique, in
+correct order, and are used elsewhere?  What is the text for such a
+behavior and constraint?
+
+Heck, what does a "constraint" mean?
+
+> > And what defines an "id"?  I see in your example you use number.number,
+> > but is that specified?
 > 
-> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+> I thought that there is no need to specify an ID format as long as the ID is
+> unique and referenced by the kunit tests testing the symbol.
+> Basically I thought that in some cases it is easier to enumerate 1, 2, 3,
+> whereas in others a, b, c can be used or even a mix 1a, 1b, 2a, 2b etc.
+> So I wanted to leave such freedom to the programmer.
 
-[...]
+Ok, so be aware that people will then put whatever they want in there,
+making it impossible for you to parse :(
 
->  int mempolicy_set_node_perf(unsigned int node, struct access_coordinate *coords)
->  {
->  	struct weighted_interleave_state *new_wi_state, *old_wi_state = NULL;
-> @@ -2446,8 +2461,14 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  
->  	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
->  
-> -	if (pol->mode == MPOL_PREFERRED_MANY)
-> -		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
-> +	if (pol->mode == MPOL_PREFERRED_MANY) {
-> +		page = alloc_pages_preferred_many(gfp, order, nid, nodemask);
-> +		if (page)
-> +			__mod_node_page_state(page_pgdat(page),
-> +					mpol_node_stat(MPOL_PREFERRED_MANY), 1 << order);
+> > And how is a id going to stay in sync across different files?  That
+> > feels impossible to maintain for any length of time, and puts a burden
+> > on the developer who wishes to add/remove a test or "id", AND a
+> > maintainer who has to remember to go and look in multiple places for
+> > such an id sync up.
+> 
+> Well given that the tested ids are defined by the tuples mentioned above,
+> the relation between a kunit test and the tested tuples should be not
+> ambiguous.
 
-Here and two places below, please use mod_node_page_state() instead of
-__mod_node_page_state() as __foo() requires preempt disable or if the
-given stat can be updated in IRQ, then IRQ disable. This code path does
-not do either of that.
+How do I "know" that there is a test that matches the tuple at all?
+Your patch series proves this, it adds the tuple in one, and then the
+test in another.  If you add another patch that adds another comment,
+how do I as a maintainer know if this refers to an existing test, or a
+new one somewhere else?
 
-> +
-> +		return page;
-> +	}
->  
->  	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->  	    /* filter "hugepage" allocation, unless from alloc_pages() */
-> @@ -2472,6 +2493,9 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  			page = __alloc_frozen_pages_noprof(
->  				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
->  				nid, NULL);
-> +			if (page)
-> +				__mod_node_page_state(page_pgdat(page),
-> +						mpol_node_stat(pol->mode), 1 << order);
->  			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
->  				return page;
->  			/*
-> @@ -2484,6 +2508,8 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  	}
->  
->  	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);
-> +	if (page)
-> +		__mod_node_page_state(page_pgdat(page), mpol_node_stat(pol->mode), 1 << order);
->  
+> Also I thought that, when writing a kunit test, the tester should know which
+> behavior is being tested and hence it should be easy to define the tested
+> tuples in the kunit header.
+> So I do not see much of a burden, but maybe I am missing something here...
+
+if there is no automatic way of linking a comment to a test, the ids
+WILL get out of sync.  We have 20+ years of history for "simple" things
+like enums and strings getting out of sync in the same exact file.
+Whenever you are going to allow a free-form structure like this, and yet
+expect a maintainer and developer to always know how to keep it in sync,
+that's just an impossible task, please do not do that.
+
+And let's go back to the root issue, why have an id at all?  Who
+benefits from this?  Who requires it?  Who wants it?  Who will do the
+work to add/maintain/update them all?
+
+thanks,
+
+greg k-h
 
