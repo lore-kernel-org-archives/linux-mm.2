@@ -4,100 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EF12EEA84E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 20:11:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC95CEEA84E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 20:13:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E13CC6B0088; Thu, 12 Feb 2026 15:11:46 -0500 (EST)
+	id F109E6B0088; Thu, 12 Feb 2026 15:13:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC15F6B0089; Thu, 12 Feb 2026 15:11:46 -0500 (EST)
+	id EC74F6B0089; Thu, 12 Feb 2026 15:13:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C78D16B008A; Thu, 12 Feb 2026 15:11:46 -0500 (EST)
+	id DC5F46B008A; Thu, 12 Feb 2026 15:13:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B58C66B0088
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:11:46 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 414BD57CF1
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 20:11:46 +0000 (UTC)
-X-FDA: 84436900212.17.D3E0945
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B5AB81C0016
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 20:11:44 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SLgEkl3q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id CA0516B0088
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:13:46 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8EFC0140282
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 20:13:46 +0000 (UTC)
+X-FDA: 84436905252.27.BD4B2D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id AF2B6140007
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 20:13:44 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpWR43F9;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770927104;
+	s=arc-20220608; t=1770927224;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2N3X8p9VxAj7TjH96Mh2ELpzUQPlZjTl2PxEqwOCI3I=;
-	b=I0JBbiyxGxXXqyxeQNJ7/6Eu1ajZxwB6BPQYx9lvtI+5oE/j/W6Ba10fzrdmyAzf81+ZWk
-	4feqdjZdgYZJ7OFbJ5Hej4sdfmbIjW0ssFG6RXdn51HhO0T5Xdvl+aqKemi+D2qyIfBT57
-	GUTN52rk567qYj4vXUhkWQqCxV46X90=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770927104; a=rsa-sha256;
-	cv=none;
-	b=2Fi/RfdmKSUllxZgx/r4OiAkKPtxbkRKLDNpS95uFB30kCI9thYGQA0TgHqFOSSaSlemWr
-	wglq09oQJGJY4dis6UXgkU2KR4tHq/df42PtjfSX62BeyFlnf1p3ZDFK1h9TGGYRObCqZp
-	Wz7DNq+AjbMoZvnZgAsix/cDcIv63s0=
+	bh=IcOFYUdaWh0SRfBwE4phYoDqNtv+2Nrr+GeOqaQ2/Do=;
+	b=XZJz0YLBd5ZXfxrCrM/ORUD3RpdvFSuAn0l4w4YX6WwKzfTRyPiMBwRs/6lbRFmsSHii6+
+	eMuMVDlsL/ah0ynen8tuwUGLCqPYGQCjEsjR3pBqEvImZT/hYT0sM9WN04EGM8fQbf8pkU
+	A/+uxM8UrG90ClML0SfcCIh7EPbSRCU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SLgEkl3q;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LpWR43F9;
+	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770927224; a=rsa-sha256;
+	cv=none;
+	b=mlQ81BlOD1L/A+nwj5wyXa9ito8kd6xcjA+DNrFQ1yjnBk5t+uAfXxtLrZdFnj0lv2a/jd
+	z9gSmHRnvFFvT4J0lVM54F4wiKZDTBW331ZSX4q1rYYoW8nD2cFR5hhiOpYTMBKTb/yOTn
+	OAoJUeIR4C87rbFb6m/deJy5wUQlOoY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id AA81C60018;
-	Thu, 12 Feb 2026 20:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DA9C4CEF7;
-	Thu, 12 Feb 2026 20:11:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 71F2444338;
+	Thu, 12 Feb 2026 20:13:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F820C4CEF7;
+	Thu, 12 Feb 2026 20:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770927103;
-	bh=IK0IJJY+g3N4QvkWaeqbKCUCsjOumbBwKibhA3wujiQ=;
+	s=k20201202; t=1770927223;
+	bh=PRhxMjd9z0vMov8ARGr3CMdfoqkeeAg10tB8JiIftfM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=SLgEkl3qH1H9gvePXVgNN/M0OR9dEJENlFkGVLYWohrsWiBivqvy64ZgXdmrJ5/W7
-	 wHziasqG2oFVk+dhxk9JD0jysxNh0OP+1k/UcEmA8gAhCFU7xztPHspsFjvY2037vz
-	 S5BoF2r8xL/nU/KPvMhmliF+g3hrQFYdYZFzMF7yRtEOYiRW7Pl5ggRLP++cIVSxcM
-	 CxXRwg/Re7Iiq+KLvE45bcRviD1LtBDkoe9sN/w+xWXz0AYd4fAvakG/Xq+O8Xgivs
-	 xQZ3uswjxURZq/xxGb+7WVvlLSr7umaWBI+uiCj+Ma43D4cI33gAahLDALtigluRPI
-	 laFvedRIaqZeQ==
-Message-ID: <dbfff44a-1a05-43be-8583-8aa59d49b8a2@kernel.org>
-Date: Thu, 12 Feb 2026 21:11:28 +0100
+	b=LpWR43F9hquCPkE/fuRAr/7u3FSeCqf2wjV+XkSXXm6oeymE5Fj9Wup2x1RkIlqdd
+	 EiVRIyKO/uSb5Nj3jcZr0X/wLJsC88vY5zBKaXIn7dD8YA2PDRqXrOMl/VH4OigS4h
+	 5S0o03LKKfqJUHW8yMmG8lIppu4thk95FB5aLTYW7JKJmCkNE/tn+OCmy2dvEEV3MV
+	 WY2SYXcG7D1CWXVh81g2uicXW/8DYS2b/Odd7UtpKegga+28jO+BQCd74+Zn3QpghJ
+	 rCVtXMm/MLDK6bKRVhU4WpzmDi3rfVwgbK6wkO1FZp2sCLsXtmREfdxkaDgLbpf7ka
+	 BEH81+FmWjrlA==
+Message-ID: <f348e466-cebe-43f2-ba8e-6ceea16955e4@kernel.org>
+Date: Thu, 12 Feb 2026 21:13:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 00/20] Virtual Swap Space
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
- hughd@google.com, yosry.ahmed@linux.dev, mhocko@kernel.org,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
- len.brown@intel.com, chengming.zhou@linux.dev, kasong@tencent.com,
- chrisl@kernel.org, huang.ying.caritas@gmail.com, ryan.roberts@arm.com,
- shikemeng@huaweicloud.com, viro@zeniv.linux.org.uk, baohua@kernel.org,
- bhe@redhat.com, osalvador@suse.de, lorenzo.stoakes@oracle.com,
- christophe.leroy@csgroup.eu, pavel@kernel.org, kernel-team@meta.com,
- linux-kernel@vger.kernel.org, cgroups@vger.kernel.org,
- linux-pm@vger.kernel.org, peterx@redhat.com, riel@surriel.com,
- joshua.hahnjy@gmail.com, npache@redhat.com, gourry@gourry.net,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- rafael@kernel.org, jannh@google.com, pfalcato@suse.de,
- zhengqi.arch@bytedance.com, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- =?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- tglx@kernel.org, Peter Zijlstra <peterz@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, lenb@kernel.org,
- Zi Yan <ziy@nvidia.com>, dev.jain@arm.com, lance.yang@linux.dev,
- matthew.brost@intel.com, rakie.kim@sk.com, byungchul@sk.com,
- "Huang, Ying" <ying.huang@linux.alibaba.com>, apopple@nvidia.com,
- linux-doc@vger.kernel.org
-References: <20260208215839.87595-1-nphamcs@gmail.com>
- <CAKEwX=OvuVPJzQsSQm8F+zsRgJFnbMmW2JMJbGebp=U8+jMRYA@mail.gmail.com>
- <13e3cada-60a3-4451-ab7e-16dfbab3c352@kernel.org>
- <CAKEwX=Pww3ZNw=VGZBa46NhKuvefRM7wnVuZy0aADoCoE1KSzA@mail.gmail.com>
- <CAKEwX=Oqn5vZrYnURqwoNBhBmA5xU9jy5-5ti8vzFs2DHDaWYg@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 1/5] mm: consolidate anonymous folio PTE
+ mapping into helpers
+To: Zi Yan <ziy@nvidia.com>, Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com,
+ akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com,
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
+ catalin.marinas@arm.com, cl@gentwo.org, corbet@lwn.net,
+ dave.hansen@linux.intel.com, dev.jain@arm.com, gourry@gourry.net,
+ hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, jack@suse.cz,
+ jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com,
+ kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com,
+ lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com,
+ matthew.brost@intel.com, mhiramat@kernel.org, mhocko@suse.com,
+ peterx@redhat.com, pfalcato@suse.de, rakie.kim@sk.com, raquini@redhat.com,
+ rdunlap@infradead.org, richard.weiyang@gmail.com, rientjes@google.com,
+ rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com,
+ shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com,
+ thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com,
+ vbabka@suse.cz, vishal.moola@gmail.com, wangkefeng.wang@huawei.com,
+ will@kernel.org, willy@infradead.org, yang@os.amperecomputing.com,
+ ying.huang@linux.alibaba.com, zokeefe@google.com
+References: <20260212021835.17755-1-npache@redhat.com>
+ <20260212021835.17755-2-npache@redhat.com>
+ <048C7077-3E54-4DFE-A25D-05D3CCB132D6@nvidia.com>
+ <CAA1CXcDNX6g8c09q=oaW6RdPYrpEfZP-Hk2rXo-2XqREm68Twg@mail.gmail.com>
+ <079A6B19-00E6-4895-AFF7-3F7CEED4170B@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -144,17 +140,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CAKEwX=Oqn5vZrYnURqwoNBhBmA5xU9jy5-5ti8vzFs2DHDaWYg@mail.gmail.com>
+In-Reply-To: <079A6B19-00E6-4895-AFF7-3F7CEED4170B@nvidia.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: B5AB81C0016
-X-Stat-Signature: mf65azyy154fqsnjam8dnncbg75r63oa
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: AF2B6140007
+X-Stat-Signature: pgnem93jsa8hhcqjy41t1sytucejs1nb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770927104-699997
-X-HE-Meta: U2FsdGVkX1/rb6T08YcOhUJ0/RCSSxPoTS54hqhotNnRuXSrrUCiO4SvWK8pdBvOXU6qnExHHOwcEhk7W6lzeqDeZgkb1Yex8nFn2BQTnz1e+eUFNZhdedsYC5ViF/EzsS1XUJNZCA+78f1vF3jnLGfdF0k1zv8DcF/x8ZkdqLerh7yEjB1xWRDPlpz/4yXJx8CQCkI+PWFsLQtuSQ3nzhQEtTYb8fWnHfc0lNyNswby7jZlQb8Y2knB23JlegFfQR8l+Q/gMNin65G5EvSqtN/aodol+BoIriP9PO3NA4AWu+j439FSJP5rxrXPmgpVcEqJYP0EvR9h7yxK5D7xKXMVgZwRxZgfgYTuBbUtTKoPcYFkGlwHRhYlCEOQUp35Eo5GXtiWwcidM4xuzCaHnTAMFHBXz9ZiNko1bmlrLsQFEYoU4rHZXPTw+I4D1+yn2Ughfmb7afyOchKwuJFvsZxNwa0Wu0HThH/ewjoW0mIgXr+hxFAAK2QUXBdYEH+FvextEyCoizKRwbZ5ASQ85xADANoLVBRl1CYbZgVxfQMwKbwQphWwV1hORyGNpa7xV++AWRHG5sTK+7+r8CEGausXE4AycBokoUwYKtSqKUXIkWGaee/4E1CgqzYLg5WRMASf8DAwTOSchrLwWuG+n9lBarjRQhepeei53FoETSDbF+kw/Bp43YMldKHBJ+Ya2Sjm/lbJ/rjH7KUmyPC5pxfvG2oKegpX822eqiSWfkmnrZGWYMBlFxRDH/j9er7UG7/Nq8euOb/amsiHpmQmwUoOvumWfEjgvX6tkPahd7Z/sLRI8ekxu4uGCYg4lQUG1d0HgqCoXKFFswXqTnWK9o+VHBz4V5vN4pdxfr+qfqNhxoM/HzE4pwl5xd9tVYd48qcTfSP7JazOTDvyzyWVMIu3XZ29oliLt7zQi852u74yGzo69cHxEFGeH2kHRg2g5T9CCWSMygcfph92XZt
- lpDHFDlW
- bcntlDoFukkZKmxJs8epPxWZtIRV29yA3Fvck
+X-HE-Tag: 1770927224-53498
+X-HE-Meta: U2FsdGVkX1/LqMe5AoA5XOt3SOquVnNDWJ++Zqkh//48ihPueOYglesklMv50/JfozgHlDL9xvFrV+Miw5CLBh6vW3Dz5BQwxcKeV+mH+V7SYiZrkNNow4W7fi9Ic9Zn/xjiSQnGutJfKzss4HnI/fUrRf4J0nFTxspvHOykxzl181Iios6fhr5GSfMzr2bbozd4vYRKTalNaOJAgbQy9wJ2njh9QN5LPlZ2GbkGGKRxUEzj5SoLzNlDJaKodk778DEWGLucxqeURBl+F8ZP9t+Y0FNiSxSEIGaXmijtGSFQB17eii1lzWvowJeHW1UT7uoymYItH8WRlrDywA76T54BsIjBtg/gO+iZ+BXKx7QI/18/zyVrKMuQjztpbon5QflqxP+jB/SwbZ58wiFxDHhxxjxGxEz0S6TnFTcn2BvhUf1JSfn472KSb2QzsRbmApqR06Abr1PI+XsKixWERpOMFOhoyd3qPlqkqsAb0EBINik8uiFwOJ7l8OgwcZaP8gUT03+YbBVXRI7YnVunuC/REr9oFMyMp4Yffd+J+bamwGKz4z88W1b+8kbAeoylqu0umswB43lLquNV3D5UknHNq5FUloKEc9tp6joJzQzWNb7YYa/VBbQ0ds/Id39v41Xt6G+CmxzvQFuOuQHktUyScKN+9GIJVqD+7PX5etDXeHcwmoeuH6xLuewjJYOxp9ZEKJwrhzOaDz9c0IXCFOZfhM+S55SsL54ro1TMdsVSZWKvUkAViRMtE/7IyXu5EEDeDd+S5QGW/iXrsFEddnBIu0lP0Yc4F5CJ+HzpXxHHiaMx+0FsO7ZWdbWldrTvVRkqLEmJlbysllrVUUAYxp1SwJb5XJWY6Kc9DWUt73YaFGa5JGWWB/cskEED20ocyDl7s/sYr1SFc8WdpOB+bzzg8FiWfFNMF7t8Q4TfeQrhHU4c2zGeCXIjecE9IomxdLk4bd9YVV0r44lpdhy
+ S8d4GSRN
+ RX8mcRkw/7X6+uICWb09ND46ETAgRFz8eW3bSX7DU0tn9HwHQgpZXv8W60U5B5u7cALjIb7Gwe9NWE8/kBu/KooHU7d4p0KdWQw55DniAHMbAiuJK9YeZJJITvYER103JiDByph4c5YYb/A/dA1i3dfBmqI88Y4czsElAuRewkoYOLW3DaWzNLbVL44tY6g7tqf1hQ6gxVZlXks3HNjkUYhe66NkbFoxRFj9Hif7gqqI67OcOAETLBnJnZSejAcc/7C3b31pMJeN8JQrrHJ+vSHFvrDPKO3MmKnraCTK2MDEeAxzkqYvZoXkoq3VkuOav58a42AAMlwmQkQs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -163,42 +159,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/12/26 18:39, Nhat Pham wrote:
-> On Thu, Feb 12, 2026 at 9:29 AM Nhat Pham <nphamcs@gmail.com> wrote:
->>
->> On Thu, Feb 12, 2026 at 4:23 AM David Hildenbrand (Arm)
->> <david@kernel.org> wrote:
->>> Are you CCing all maintainers that get_maintainers.pl suggests you to cc?
->>>
->>> --
->>> Cheers,
->>>
->>> David
->>
->> I hope so... did I miss someone? If so, my apologies - I manually add
->> them one at a time to be completely honest. The list is huge...
->>
->> I'll probably use a script to convert that huge output next time into "--cc".
->>
+On 2/12/26 21:06, Zi Yan wrote:
+> <snip>
 > 
-> Ok let's try... this :) Probably should have done it from the start,
-> but better late than never...
+>>>
+>>>
+>>> OK, this becomes maybe_mkwrite(pte_mkdirty(entry), vma).
+>>
+>> Yes, upon further investigation this does seem to slightly change the behavior.
 > 
+> I did not notice it when I was reviewing it. ;)
+> 
+>>
+>> pte_mkdirty() is now being called unconditionally from the VM_WRITE
+>> flag. I noticed other callers in the kernel doing this too.
+>>
+>> Is it ok to leave the pte_mkdirty() or should I go back to using
+>> pte_mkwrite with the conditional guarding both mkwrite and mkdirty?
+> 
+> 
+> IMHO, it is better to use the conditional guarding way.
+> We reach here when userspace reads an address (VM_WRITE is not set)
+> and no zero page is used. Using maybe_mkwrite(pte_mkdirty(entry), vma)
+> means we will get a dirty PTE pointing to the allocated page but user
+> only reads from it.
 
-It's usually not as easy as copying the output to the cover letter via Cc:.
-
-Sometimes you want to CC all maintainers+reviewers of some subsystem, 
-sometimes only the maintainers (heads-up, mostly simplistic unrelated 
-changes that don't need any real subsystem-specific review).
-
-Fine line between flooding people with patches or annoying people with 
-patches :)
-
-> Not sure who was missing from the first run - my apologies if I did
-> that.... I'll be more careful with huge cc list next time and just
-> scriptify it.
-
-No worries, I was just surprised to spot a v3 already!
+In general, it's best to not perform any such changes as part of a 
+bigger patch. :)
 
 -- 
 Cheers,
