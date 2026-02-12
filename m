@@ -4,160 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8365EB48EE
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 09:04:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A403EB48EC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 09:06:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D577B6B0005; Thu, 12 Feb 2026 04:04:25 -0500 (EST)
+	id 66D756B008A; Thu, 12 Feb 2026 04:05:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D18456B008A; Thu, 12 Feb 2026 04:04:25 -0500 (EST)
+	id 644D06B008C; Thu, 12 Feb 2026 04:05:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C31A56B008C; Thu, 12 Feb 2026 04:04:25 -0500 (EST)
+	id 544766B0092; Thu, 12 Feb 2026 04:05:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AFFF06B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 04:04:25 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5C802BB22F
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:04:25 +0000 (UTC)
-X-FDA: 84435218490.27.6CCB9CB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 83A5680006
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:04:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bNnfeoAt;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4454B6B008A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 04:05:59 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED83414050B
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:05:58 +0000 (UTC)
+X-FDA: 84435222396.22.9680D73
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0FB0140007
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:05:56 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=KaR81Cq9;
+	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770887063;
+	s=arc-20220608; t=1770887157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PDxX4Bl5Xr/BgdWguC8kIXgQbO6qTM/fd2AbuaAVfA4=;
-	b=COex/q2kjqx935eDaO8EAzwGwUeKTw0NVRKVGLSQUppArEQFq/8/pA8KH+WRAojeJevD7N
-	YuHpIzUnCwKtKCVSMT1AZ7n5ECv5vLCMpQlr9l7+gkWwjoc8RikIKuJad9Rl0e7jbPvYhk
-	wSsqTy3if9ltI/QXr0elCLKatbqKNuc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770887063; a=rsa-sha256;
+	bh=QvC8htwjlKjik6LPXThSan9sFlQa0sJHTxsZTnbz2Eo=;
+	b=008Lgzlsngo0SbFYeOGMFeJeMlMYqTvIcqSHXtmbqMxQnXmMYG1AiK66VTQMIhnfn7ihjW
+	zWJprkcriUQwqjxoKTKncYrgyxc6FQs0YB3U6TONplGR575x00JiT2gpjyTmbMjd2oSlX7
+	gWL3C8AhuFQFqrh7qqa2IIiFrSwUceM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770887157; a=rsa-sha256;
 	cv=none;
-	b=1613okTZK2wjIoMRdhyGk+iCKjnKlomlYHIC6lYW7x9XQPyCi0axJZAO83CT86P8My4PoX
-	r5frldn/PZXBJQimhJ+Z62t+m36h5Rp634GVewg/35NFW32nKJIMP3UbVzN5Zp53Aw3H5p
-	KGPxKK7C0n71TGBCbu7rV40F4Ll4xDU=
+	b=sc55opWp1TVqi3/+/5NJzXF1dxIWz7jFqaTrtsK8mJ/sNOMJXQUbPaewds6iol/dFmEb0S
+	f8hz5AhxDEtNrXU2HwOBl/08PWB+cRzTqUtx+qi8okLNERIsTlr+bta3r/WkLqr29FBSRp
+	b3lU2xW1JUS6q92v+DKPnQncShtM45I=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bNnfeoAt;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D21A43674;
-	Thu, 12 Feb 2026 09:04:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D11C4CEF7;
-	Thu, 12 Feb 2026 09:04:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770887062;
-	bh=YEYpkZLUlFlbKqsflfJtNOc0Ggxqs/f6W1To9Vfn59U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=bNnfeoAtLa0hXzqKvIHyMr+ZKSt/lTaoozr8i/6qDMdX4Qr32k5vitKFWpZlh6DUL
-	 oczE+Hxh/xEnDXFfN75yR2w3uM7CES3YXY+JPyKSIeq2VOME6/iAhIfRixWe2Rdadh
-	 m/AZVkOqqAKmd94qCKEq7WAenzya93vkXzxgMvl0UN23v/bMwExSikhLVZ8nbVOzxZ
-	 hs0J0u9sH20XFuQm0shKmxoYkayELZlvDkHTH3V8ZK9dVNOT7TDHe+AD+hVj4+Ir0K
-	 Jiil+G/E0XS9gXCgcx7aaQbCEAvbEQCHcOb8Su7LVvRbbF7CmIgrxOnRops3vHvHY+
-	 CXFHXEkFDaAcw==
-Message-ID: <79b41762-fb76-4443-9f38-98be1045322f@kernel.org>
-Date: Thu, 12 Feb 2026 10:04:03 +0100
+	imf27.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=KaR81Cq9;
+	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.214.181 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2aad1dc8856so33685265ad.1
+        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 01:05:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1770887156; x=1771491956; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QvC8htwjlKjik6LPXThSan9sFlQa0sJHTxsZTnbz2Eo=;
+        b=KaR81Cq9+R/lEi0J4hyZPp76gTFL9ADZB3QFJCVBPI0q5o/LBCXTswa/0a+CgIjTES
+         H3WYXeo3Sm32F1bZQbIEipKFY6ZrJpMRaXVvo+w+6KSt+DmTDAdnjcu7yMXJfgkQZgvJ
+         rMkRnf0Mm9e/WFwCeWabxNKrdyaQ+OhyeLPSs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770887156; x=1771491956;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QvC8htwjlKjik6LPXThSan9sFlQa0sJHTxsZTnbz2Eo=;
+        b=uIZRzaVAUDKJ9rM1boG71PgiDsHOCix0AOJ+7z2IN+GRq26MIz2ydoExdGy+3T4RyK
+         3khaPkD/jEdxHZNF3VI456oS+ul3mauYS1xfrW/IdufJfcwJj4aSqU+HeCLRDjzfXIf0
+         LouHx9irwIScIL8draNn1RNxAMVB2fEX8pJAO1swr29FPHvS/29s0Ih17GZ8h1RJEGDV
+         sWf7C1I+IFgcD9oT+eU/4UUEe/GkEkvqdrscPuinN3gRWrQRJICKfAMEfJ8xNQOLMdm6
+         OK/YlKblUAXuDiFHuIjD06XA9S6GTU12o3gNP7mDnsc2k9u0fvcPsPlUAfUijU4V0hB7
+         1ANQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOfPTYcJayMrts6nQ92MABZ6D0I8BgdVsNevG99/jYZd/6ELtPjBH08C2xnpLFEAfpMZFp5cjbyA==@kvack.org
+X-Gm-Message-State: AOJu0YytWEPDm8WNHtawLqd7HeAVBzBTrVw52oD5DMiaG94k0qQPzzuM
+	Wx423zG0rphUEp2mU/WF8oqSvviKvuPQaY3YjoZatferQxvro7p7nURdvuzcxMbEig==
+X-Gm-Gg: AZuq6aIfpN3TDz/1HtpuvTMZa/vWyWx9G+Ntc/8crHNHS131GQU4MPQszanWG3lxS1H
+	/7FPc3iAflO55VKF/O8YJpJDwHK4ezqCN0oYZSqol+1BuddasqXd8tay0kAcJPz1M2tV3khAueV
+	t27K6Ya+jrguABznRlJBB9eu1H2Y7Mxokfe8foXMOqJe6dsx4fbePY2kmGAcr4iflVhN5xm1mGn
+	pFf+C0wducTC6RfVTNrxJfSJi2dgCalSopD92jEKJ941G1Slls70DR8/u3JPDcMyfQ3r3vmPp98
+	e6C1a0mewqsveCfWkn0mgmJygQMNlOX3rliZioPfVZ/rKZWLE3VUA/LUhByiabKxJ59X2VYWAEK
+	/S/R4xBMCu5uB6Gdi3oL81JkxQFtbVYVVLRkG+PbiPnoIpdeBQQmWA8bajCW3/a5pkfObpgiCeA
+	4qkqHgR0MDcEevXwCduKVyzdhe+SYyc9kbz7K4m/xGzWFx210WGd9cxR78UBeY3w==
+X-Received: by 2002:a17:903:22c1:b0:2ab:344e:1400 with SMTP id d9443c01a7336-2ab39c563d8mr17517185ad.37.1770887155850;
+        Thu, 12 Feb 2026 01:05:55 -0800 (PST)
+Received: from google.com ([2a00:79e0:2031:6:725d:f34:4b56:7316])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ab29998eeasm47659115ad.87.2026.02.12.01.05.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Feb 2026 01:05:55 -0800 (PST)
+Date: Thu, 12 Feb 2026 18:05:51 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2] mm: khugepaged: make scan loops suspend aware
+Message-ID: <r6m6vdhbqada6i3gugtnj3lytjrkyiretihwebwci423vwslcr@ysrgdqvvno6b>
+References: <20260211031512.261127-1-senozhatsky@chromium.org>
+ <104bc764-5a20-4ac2-95a8-b31f41255766@kernel.org>
+ <jftqdosilzfkd4ku6pjuevkvuwmhlqtua62jwsmmgdfcseitb4@gopt2xzqhyrk>
+ <3571cf8b-9fb3-41b2-a402-a8537ee2c399@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] arch, mm: consolidate empty_zero_page
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
- Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen
- <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
- Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-4-rppt@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260211103141.3215197-4-rppt@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 83A5680006
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3571cf8b-9fb3-41b2-a402-a8537ee2c399@kernel.org>
+X-Rspamd-Queue-Id: 0FB0140007
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Stat-Signature: pdpibaeujj5d8bstxnkgnujb368kb71x
-X-HE-Tag: 1770887063-603880
-X-HE-Meta: U2FsdGVkX18Cy+oKZn8CO8teqboep8VWFQzaxNSMxLpQRHPubnbbwy3xYHs3y6aidYn0H2jKUqm1X59huD2+m/ws7ER3ihKRs6wu4c3B55zA6KI2iWceBA+b8gAACflO4WlfK9vkhf+EKp6FaSosZsYJNgzVfLaw3WHS2u6aLVHsQhGcHdrnLXmBvEZdpT6z0Xguk2wMc5WM9FcjQBFkzxM9kO3rYWgQapbw1xjL+yKAXZmm5mWO8o9lNTT3zAp5+PjxegzDv7L3mBvZdOSvkRG4ib2UhqroT0Smuzrgu2syNtgj7mC4sNpZNTdl/RTqTE+1pP8aPauqvPhP+caznGMLlxNrEf2O1GG2cdtMvoc+oLZfA7QB7xiCdvvmwGmCMJTaMXnclO4vohKDnJPIbxHam5gsriAYGyTeDOe2bWKcul7oqWCk51crRv+eOUlC41KI2GVkjpG2fyunnJKiyDXLW2WB8yAcrVsBZ5OdcF24y1DX56rWmzCN8ujf698AU++BWwjgRm1C2iOMTBCcgPXyEoRKW3MZo4v9XJgPe55HeZIBPwgUREaA7r5aY1euZdLNBv9x2p4eHMnS6lURrM7cSwEa/czAstIHPFi9Johq/ZC2XlbJBJjtJX/44tgdscZEiLe2Bf0hPCtOemH3p9lLaRYbzVkJSCXLUMSOdIMsJZax9GKc/zrbTMgvMD4HzgWdTVPTik2mMmHbbQ5v1WTw5ljQq2tJqG4sI2zKw889bW+SAbTqnrw0sygT2oxdUa2TFdjcGaSqCpvtwSI42NZn8wCeiTnSZNDMGDPkDOhESjxDgB5klsK03XXvLeo2HJbwR0kmxLDqjPTw8O1yaRtQYF+V1j5sX4uSZTcvG0vrBfNwbY3y+gxLRJpWwpiXJL5coJjSXPMhK7cJ8Mh+BQZfQNXIF4hHDCj4EUtWHRwMJU5forkeY7M9iRJf3dkeRn9l1Vwrph8Hc2zhno+
- CEAWskxX
- JMfGkBw3guauhFz1R2ITivNS3SPEKIt5kR55lPQhdoNAn83EMrT4+v/qXdRgrYcB3R+6T4F03L5jxu92+ZG4zw5NXSSM+/z1j59ARGaHVnLmrplW08k7Vfj9rusb4psnu975U1kdf0IuXvfb2npNU+T6Rsb6h/YN5LLd3gpdJX09EudMN7WVQrUEbxZCT8GWYPd+wbxaXkz/yvoDpYceaAtMWJ7s14pXS07tLCAB2fC7Kb16XzJVeGpX31qubl03mL2wD+BcrUY/97pcJlCabIZWYIJKAeLchuAnn7Fw3eD6qaJNSfliS7+7wc4kp+PUR9XbWZQABwu+0w3eBZeOIgiehMZ9nqaVn9ZxurhyZUdPqivGwiIQuVXEkhfkrOfW0Pnrm/6Yf8muW7+a8bL/zKMLoXWVc59GEoIIP
+X-Stat-Signature: ceptq6iuetagjgk55wk6kfcqb6oi1pez
+X-HE-Tag: 1770887156-52528
+X-HE-Meta: U2FsdGVkX1+6LWBDGiZHJVRzdRk5C/lNcYx/5UnhRgj7Y3IAfqvH+UvRY7X2slAU956GzMeBpQCh7aqT2hZjldEb3jr2B4l/LdGGVbY8WGErGjyLYYPUTDQ9Dadv7vM3DvOCFU6bMoWiQJaLUUlSkdOaE+Sztkky8XNxNUSxJdbtaHLhLRtYMwXYDaMsyCiixl9VR09fChf/pB4tuYLGL08/hnBL2AtRN9Y6Fhw4LXDfFH3LCyN+i5qWGl2KJUjtHbtYc2YQkYrQfekJEHqWBWGOxbVbzwWbP0g5KRXirpUWB3gDftTGglPt9EFoViYwo87XyIS8gehAHSpxndz9754YJEZ5p4/0NNudoFtSXuZRPh3ELEL2ZgMM6sOKKMFex3KqCur22NfM6m0LXmdh29yKFKNDNuq0u9llLtqvy4aUtjQCdxqB9jD5s7vPJkRAfLx838phTG+aXkQwSpJ/nqzVz/Xh0GPAHKcOfEPa6s/4HoeDlSeSRBoWqmRmsHq5JN/q27BxQggDtUROUeLmplZCnMF29rCM7OITvnp6KRQw6BAak7FkdST0a/uPDDMtmyeZv6s9UZSzFM8NdNvC10e5hIr1UEOZ8Y5D0BxLyMy0PTTTuKUkjB22E4TLbyQ7soQFCX9czEL8wDtHUEI0lgVaE6Al5WLw7DMqkgzczwiQ/FDGAgdGyl+9GSrzPFaKSr+PKM2HLBHi0zx+L+kADaJJlhVKN6Th6ntSHp0pOQId72S35bKLbIfVu54E5dMdZmTFKjuydov5rmwISTqaHw13aeXuY79FXU2gyiNWYXRstcd9ShayUM/Tx46/eveBemqmmJTy+qMAl+tSWBa/TOlnOmYnHmSBoPmPEAidy4h4g8n5qx02hB0BTqjY+IXTiFMQdmRTyYraie5k36uW0VTLocvlhZoBxtm0GO2kBPZdBNgmz4Td9mDGUuWb5FqjlA2NBGGxBkYiIbafZx3
+ VZDCehYq
+ IzW6ZsCadeXV9RgJ3e7HC7TrAtMvhGjD3nD+MIsMK/gHGdiciSGW/gPvpUqZxuA295GO7KSxfW/NRacXaYHeehNKUOb0M4wwNnDHWiptFSqzaRj8GyMs9P9OoFqtT3QLjlIu2gxpBYtR+WpZjBCSQm8VtatNB6ILlToJpkPlolt5J4wBKHrYdnllGZK2AY+W72aAc97WPffXu/f4EYqnv0rnO8NTTAH1OCM25b5bEVlh14WM0ogav6zICF2jEFdV288qpbEP+TPzPc4Wz8C83vym4zU0GB1BBFwPGdFrxbs4if7mO7bZ2Bh+2Cu5lxH4T5KG6kBzj+DLXKjZa9YjSu8b+aZom7mZZgm2h7LMv4k8BAdRTQOo0+Kij77wgfknhbfZn5StqM8fEBaG4HqowmVC1Tv+ge8La5gxp
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -166,58 +121,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 11:31, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On (26/02/12 09:44), David Hildenbrand (Arm) wrote:
+[..]
+> If we're fixing an issue, we usually try to identify which commit introduced the
+> issue.
 > 
-> Reduce 22 declarations of empty_zero_page to 3 and 23 declarations of
-> ZERO_PAGE() to 4.
+> For example, support for freezing was introduced in
 > 
-> Every architecture defines empty_zero_page that way or another, but for the
-> most of them it is always a page aligned page in BSS and most definitions
-> of ZERO_PAGE do virt_to_page(empty_zero_page).
+> commit 878aee7d6b5504e01b9caffce080e792b6b8d090
+> Author: Andrea Arcangeli <aarcange@redhat.com>
+> Date:   Thu Jan 13 15:47:10 2011 -0800
 > 
-> Move Linus vetted x86 definition of empty_zero_page and ZERO_PAGE() to the
-> core MM and drop these definitions in architectures that do not implement
-> colored zero page (MIPS and s390).
+>     thp: freeze khugepaged and ksmd
+>     It's unclear why schedule friendly kernel threads can't be taken away by
+>     the CPU through the scheduler itself.  It's safer to stop them as they can
+>     trigger memory allocation, if kswapd also freezes itself to avoid
+>     generating I/O they have too.
 > 
-> ZERO_PAGE() remains a macro because turning it to a wrapper for a static
-> inline causes severe pain in header dependencies.
 > 
-> For the most part the change is mechanical, with these being noteworthy:
 > 
-> * alpha: aliased empty_zero_page with ZERO_PGE that was also used for boot
->    parameters. Switching to a generic empty_zero_page removes the aliasing
->    and keeps ZERO_PGE for boot parameters only
-> * arm64: uses __pa_symbol() in ZERO_PAGE() so that definition of
->    ZERO_PAGE() is kept intact.
-> * m68k/parisc/um: allocated empty_zero_page from memblock,
->    although they do not support zero page coloring and having it in BSS
->    will work fine.
-> * sparc64 can have empty_zero_page in BSS rather allocate it, but it
->    can't use virt_to_page() for BSS. Keep it's definition of ZERO_PAGE()
->    but instead of allocating it, make mem_map_zero point to
->    empty_zero_page.
-> * sh: used empty_zero_page for boot parameters at the very early boot.
->    Rename the parameters page to boot_params_page and let sh use the generic
->    empty_zero_page.
-> * hexagon: had an amusing comment about empty_zero_page
+> Now that I am looking through the history, I find:
 > 
-> 	/* A handy thing to have if one has the RAM. Declared in head.S */
+> commit b39ca208403c8f2c17dab1fbfef1f5ecaff25e53
+> Author: Kevin Hao <haokexin@gmail.com>
+> Date:   Wed Dec 20 07:17:53 2023 +0800
 > 
->    that unfortunately had to go :)
+>     mm/khugepaged: remove redundant try_to_freeze()
+>     A freezable kernel thread can enter frozen state during freezing by either
+>     calling try_to_freeze() or using wait_event_freezable() and its variants.
+>     However, there is no need to use both methods simultaneously.  The
+>     freezable wait variants have been used in khugepaged_wait_work() and
+>     khugepaged_alloc_sleep(), so remove this redundant try_to_freeze().
+>     I used the following stress-ng command to generate some memory load on my
+>     Intel Alder Lake board (24 CPUs, 32G memory).
 > 
-> Acked-by: Helge Deller <deller@gmx.de>   # parisc
-> Tested-by: Helge Deller <deller@gmx.de>  # parisc
-> Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
+> 
+> I wonder if that made the issue more likely to appear?
+> 
+> 
+> Interestingly, we also had in the past:
+> 
+> commit 1dfb059b9438633b0546c5431538a47f6ed99028
+> Author: Andrea Arcangeli <aarcange@redhat.com>
+> Date:   Thu Dec 8 14:33:57 2011 -0800
+> 
+>     thp: reduce khugepaged freezing latency
+>     khugepaged can sometimes cause suspend to fail, requiring that the user
+>     retry the suspend operation.
+> 
+> 
+> So it's a recurring theme.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Interesting, so 1dfb059b9438633 and 878aee7d6b5504e fixed real
+problems "khugepaged can sometimes cause suspend to fail", but
+I don't see what exactly b39ca208403c8f2 fixed.  Sounds more
+like an "optimization"?
 
--- 
-Cheers,
+> Given that we only scan "khugepaged_pages_to_scan" pages/ptes/etc. before going back to sleep,
+> I wonder how that can take in your setup that long.
+> 
+> Why does it end up taking something around 20 seconds in your setup?
 
-David
+I only have bug reports at hands, I don't have a repro.  Can the fact
+that swap reads require S/W decompression (zram) add enough latency?
+
+> How is khugepaged_pages_to_scan set in your environment?
+
+Let me check.
+
+cat /sys/kernel/mm/transparent_hugepage/khugepaged/pages_to_scan
+4096
+
+Hmm, doesn't sound too high.  Let me look more.
 
