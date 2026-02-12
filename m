@@ -4,136 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EFE6EEA86D
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 22:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6D0CEEA86E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 23:49:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BD0F6B0005; Thu, 12 Feb 2026 17:57:36 -0500 (EST)
+	id D9B016B0005; Thu, 12 Feb 2026 18:49:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26A9B6B0089; Thu, 12 Feb 2026 17:57:36 -0500 (EST)
+	id D311C6B0089; Thu, 12 Feb 2026 18:49:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14C2A6B008A; Thu, 12 Feb 2026 17:57:36 -0500 (EST)
+	id C5E0E6B008A; Thu, 12 Feb 2026 18:49:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 056866B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 17:57:36 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9E02DB7C09
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 22:57:35 +0000 (UTC)
-X-FDA: 84437318070.12.A0E877A
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C8A971C0008
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 22:57:33 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0rlIDT6c;
-	spf=pass (imf20.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770937053;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B43926B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 18:49:36 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28C8B13A878
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 23:49:36 +0000 (UTC)
+X-FDA: 84437449152.04.9150163
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7B4B780002
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 23:49:34 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q/YdLykm";
+	spf=pass (imf02.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770940174;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IsL3Tv0VQD7alfW+TNnGdHtI6v7KRjX4CYS+WhxYbDs=;
-	b=AZdztnLF2z9yI8+mGl4Cwspd+kE4x21mvJ/pBzsYqqa5+QwsTFKshcBNuEb5NWG/aTokyo
-	Xx4qQqP5R7h1hSx0H/dGPppUTtmtxXXZ40OpXic4yAkEyQo3hLQAKXJOiJyfsed6Bz3YIb
-	QH27DOr8/Sa0jqezYW/tiwtoe9LbJOM=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0rlIDT6c;
-	spf=pass (imf20.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1");
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770937053; a=rsa-sha256;
-	cv=pass;
-	b=c90li8Kbkdv7RTEdFBNV7kj/FW0vqIw9jvesijrSiVkukGKWbapJQdquPSegJV5yGbIDht
-	Q7X4Tnw+buIrW2bfn6NbeT/Mjlhy3vsMEAyEyqn4gvgu1UY7goyulR1gIsEO7EsukYl11a
-	oN14VhiAuKwRXg2htwzoCafN/GyjZYs=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4806b0963a9so13375e9.0
-        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:57:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770937052; cv=none;
-        d=google.com; s=arc-20240605;
-        b=av5ml2eVtKTL77w1hyaTHn8Yld+eLSxp8P+ukqGoU7HU/jAV9wrxAoVEz2xGVEPFDk
-         DfFp4vBmwiULvQPgRsLs1LSO4fCAtzMKprbeIrjnDdOcEsxJp0KM3ZXAXTuvchfYSoh1
-         whIHzxyWWwzkml+a26c+CApl6xBlgsFAAB+whm66z651W1452iD0tUNssz59w3XAfsqr
-         JHIBuw11X06xfj4ZmTtHapA/YkPuo6aQi5q3liLnokYg1BotyzOFUmIBMO5xttLd2W2Y
-         wsc2oPlbhbF3OmbkRKJFTixCp4cdgkqwy7RZj8ZqW03FFYzL4t2KnsxqqN2n28ZhFZ5D
-         2ErQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IsL3Tv0VQD7alfW+TNnGdHtI6v7KRjX4CYS+WhxYbDs=;
-        fh=ssgqLsUBvpHx17vs8XdohFjDi/TROVVkmzDa0pGsvtw=;
-        b=giVoWOJdK9Yw6F5M781NcKuPpZGDv72ifDe9I3aJmwM3N/9V0nfeyvqmf9U1QD5kTe
-         R5CAy8D6CMFNnBWakQfIzMx3d+j4K7fBIKfHeCf5CD+vIGoo2sonKCQ6EEBZXfe7KvP0
-         QNwM2V7IIZ89//7vBQce49pflZaTpzlrh1sqKjr/Tmjf6O1V/8PsYlcXgDLE2rGo/4so
-         CgEFPLbVmu9Djbii2Iy4Z6cWpO+pHw2L2Pbw33Ys0L9c0tQvcoeV4yskQYncJxZ8BXfn
-         L5MsqnYskD/KdZquDwwc9l1n8PrlJijRF2T0gy42syNunO8WQ1mqRPSF3RoA1bPgRJiq
-         RlwQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770937052; x=1771541852; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IsL3Tv0VQD7alfW+TNnGdHtI6v7KRjX4CYS+WhxYbDs=;
-        b=0rlIDT6c/sDaCkuB4Y3+zPo2OOvTmMQUozWXNjNAjZs4LBbVSriUYQhYCDxXlNZpbW
-         syFcknaJRLLFEkZhdn61pXxfXQvd63kUgsxjpkFf1cs8BXn7Qb+y/mN9jDCs/hJRxGpa
-         M8U93eJVMOVoNvParNkgPSHvoMST/yrR16cyfwckkLbYrBiZMfJHRL0qZCUg4I5KFPTl
-         dtOGomkyu0PE4o8lGOju0G37u3CEDftGe3IbaDWS8tCClo51FfmMO9mhzKTlRrXBHzfy
-         Tol4WPRsVgwt2lMVGFq9d+LEoiOgzMMC2UXcCgw8dkXZGe5iZxx+mKiBfPpetTZCoZnz
-         Q7Sw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770937052; x=1771541852;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IsL3Tv0VQD7alfW+TNnGdHtI6v7KRjX4CYS+WhxYbDs=;
-        b=YNXug0qJMDJipkBEcGY+SGYQvLXoNPqkBPEBjyOBCOAu1YwoCWdKfDBO5h9eoAiZ6f
-         FI2MetxRQPl8YG+Y3f7tO6zG416XqZ7ppooXNXSTOftFycbsXqBSjih584oalcAAmggT
-         SPfbi8HSH9o7FiLciKl/w0O1c+LW610aC1ETuFUury8+zcGHTiNnaMjTNiJYCcCT1sqj
-         qsPv+TjNQVqWaV7FVCyZZhonGZNtTYEAuOZthJ96yAPOhtIOZMOvJVuUZjU6PYdCAO1T
-         8jrJx6zkeh/UZqOB9hne1olup2/U/w6Bxrc/euhBn8hdZHs8vTJbPq/k61HHHKTKmDDY
-         8D2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVOJQrMviMZkG7XJD+UNbm9f3VI0o/WB6P/VxW85ncG1lvCw/hYNyM3AVS7msE2HJxfqS3zoxmc2Q==@kvack.org
-X-Gm-Message-State: AOJu0YzpFpGGNTqoNVt5xbjF/GijUWLOqFGG/uMskm6gaHj2x0DOZdev
-	U2Tdj9wqu2mgEB+NPjBeZZRJXUTLoyX9o+VGzhuCXo73aydOcwJbUfHxY+/+wLNO6J51UfXH/bx
-	uH+5VWUOgCTDXYkDCvNoJr6fPQIisf8O8E3Aj/DAy
-X-Gm-Gg: AZuq6aLl8Ct/ke7u/PBXS8WYpIeUDr7JuqTjULImsmU7RQUsmfhQ7tQq5QiFhInjQD1
-	gShXawxSAxtzE9Q9TDZ/fAo8BP3isQuxUvqf5AlcUq8dCqM5k5nffLbnbtRH/ywA1qJfiD0QV2J
-	B3mrVFAPhy94nA+7Gced6Lekx+jUUtJxUI9aVsyt3H4yyaGFqVGzz4WPefsmE92+cHfiCVN96Qt
-	7EkCWmvU464ckKwMa7ecGsrZOA/UhkfFK9B58FP79Y1GfjTcus3RwYv89fRVYIkXL37JDBCJNv0
-	AnWmiawsEA4KNhCui8f0P7fch0E7PMmJIgMBCUjHFZIL5L+TUqQqtXRYn3UZfiEGZjLt
-X-Received: by 2002:a05:600c:a144:b0:477:86fd:fb1b with SMTP id
- 5b1f17b1804b1-48371cd32a3mr72565e9.11.1770937051849; Thu, 12 Feb 2026
- 14:57:31 -0800 (PST)
+	bh=lj+pRfOVX/cKq4rFR7NGKHi9MnkrpkoK7LfIyB86Nzo=;
+	b=DbPAsj7pByL+BXk17VWSLk99nUpkWxCanio5lyuMWdGxtcpjN63RWIwDyliztkc57Qnvn2
+	wA/wYE/dX5huoStadDSSCM/YcEkKdfmcOA1fuBDPmH03InCKERR3ZSoye2UAnssayxnPyY
+	FK9wW+VXhuwyoCzamp81cAPdjy2WwU8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Q/YdLykm";
+	spf=pass (imf02.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770940174; a=rsa-sha256;
+	cv=none;
+	b=tx86ST0OqMBZIiAvpPF8pHzU2Yw6lLhxMO/Aj6xUSxK3z1p3sDlp33C3UbiXqEQpGrR+mf
+	lrRUR85cexSJhIJZ0ZAr4ExD0kXC+tba3/fMnPOOm+gw6ixWy9svlQghObS/rdJVLFnh0c
+	Rybed/iDjSGx7Gw2/pwSWW+KY973rP8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D952E60018;
+	Thu, 12 Feb 2026 23:49:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8829AC4CEF7;
+	Thu, 12 Feb 2026 23:49:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770940173;
+	bh=BUnKZvCHoKZldYxIZ6f4S7349lRTK9sq5vQGPDLZwVM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q/YdLykmY2ZtXJhal8y2HPLVIlLFlec5+DIp9N7tGLqTcBNVtvo67QGoSvqSVcR9B
+	 5DZCNbN0BwGrV49Tu9Re6Sbt6ipN348Xbs6vE0RtHG6lbYoxou4DHUNTEkJRCC28U9
+	 AYocDimeGIJr6JwNTVjMoFF9oDmYy7rt+lJbZkxxbQW0Ml8HgSK2D7kIv8Ojk89/Gp
+	 5UOB5ZMs7t0Qc2nLOGhr3qREp3yAgOYrTX6uBBx5kiy9XPbDtpp62eqjZ3ytgIj85g
+	 txKdeabi/yZl8TAW9q2NlayY+LZXDjGvU0PJCHdv5KxBWMmg3fcf/nsBH1+32kREp/
+	 x8zHcSSjIoP3Q==
+Date: Thu, 12 Feb 2026 15:49:33 -0800
+From: Kees Cook <kees@kernel.org>
+To: Andrei Vagin <avagin@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Alexander Mikhalitsyn <alexander@mihalicyn.com>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, criu@lists.linux.dev,
+	Chen Ridong <chenridong@huawei.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Michal Koutny <mkoutny@suse.com>
+Subject: Re: [PATCH 2/4] exec: inherit HWCAPs from the parent process
+Message-ID: <202602121537.8F87466@keescook>
+References: <20260209190605.1564597-1-avagin@google.com>
+ <20260209190605.1564597-3-avagin@google.com>
 MIME-Version: 1.0
-References: <20260212032111.408865-1-zhaoyang.huang@unisoc.com>
-In-Reply-To: <20260212032111.408865-1-zhaoyang.huang@unisoc.com>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Thu, 12 Feb 2026 14:57:19 -0800
-X-Gm-Features: AZwV_Qj8ggz-blw4kj9aYSc9jaLwCHp32lTIaKxhWsQm0RofiyRFAm36Bqjgw5Q
-Message-ID: <CABdmKX2iqxfJCLO6=TGkN2rZpJd1yJiDx8e05HHGnRbf6W6W_A@mail.gmail.com>
-Subject: Re: [PATCH] mm: remove '!root_reclaim' checking in should_abort_scan()
-To: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
-	Michal Hocko <mhocko@kernel.org>, Rik van Riel <riel@surriel.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Zhaoyang Huang <huangzhaoyang@gmail.com>, steve.kang@unisoc.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C8A971C0008
-X-Stat-Signature: sd9j6sin4ig1oi9in73m1yhiqurge4s6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260209190605.1564597-3-avagin@google.com>
+X-Rspamd-Server: rspam11
+X-Stat-Signature: ri35twsrmame1i1a4bsuguwsjgkpxmdd
 X-Rspam-User: 
-X-HE-Tag: 1770937053-776736
-X-HE-Meta: U2FsdGVkX18LKufjVhi8BQBaSEsOyns2d2Au4G7uigt3D2QifJKULOKrPG7seJlOyHTinO/u0vPS2ZkBQGp/7b3gH5AszvhyyVgiZfB3rrjYD21QQi8luq8EIeAW+IuN3g1zB/qHJLKjlAhEFq1eT4zPztGJhsVRdWhzTNNGeLEaE/G1Y/iTX/swDdAg0C+3r+tvJpqWh4M3UA8ioU3gzjWTaE8/5CO4T1VPSSMVS2Q7SezbB/i+wvouEHAkgfmSZzg8cBTL3PooBKr/eUHZbHZKqEDNsVOUFJ+j1k4+GwTOYA7gU9jhn9W5+gvQ07sSMQB4nZn4wyi4Fu8vffVXcNLtfEQY8CsoYVrMAW1m4BIy2j4bR94gAR6kD3XrGfwkIDCrTrdGwEw+otwImgv29+0n/RQ/OmPQvxbE3GDwGtV2/83M0H91ZATR9RaxDKdnV1c9kbf8Oota5B+/rUPI92Yic9ilYVfs3LqMkoShqeirtxtAoUOzmnDpHD4fducw05y5USj/3U64AEkGKDTmzz+QE88ZCRHw6CeZq6v0QDuYo7n8Cvo3811qlt08wCF/zQbPtMKMm07ywDJXhTHdBXkH7LPxmR7jsww3dMssJ+Weaja6+4pxboeX0CMiS1W7j8SXimZkl3Jq3VSKNqqV/e5vPQxmx7QU6CxvXc3atEOlAVWYmwXyyKVegzAasaD1XrIBFfc3R8CvSz7mf7Upj+AV9YBubTrCM1iuwFliuNfNQOdkZieR3eQe+cd1RvN7+rV8OU3RNWAmUrhiL1KlT6PopPJZE7SXWFdnJJcpGsvJFHljmypWIaZji2VB1HSkaUYv7684bVQ/LgPa81XlTNFxzCvXLvbV0jtkI0AoxxTrDF47wmrVn+WpYd1u81LDPeKhEHylbNp039WpkRZc3pR2iway2vt6HGane9V7TFAwcAZWroDeC+nj4uB+Y4DqzSE25kbXIQVVGwFoDiM
- EWyoP4TD
- YN8EIvpmIdPK0mGK89n77njPhTZzZKBEc8z8evmtV13C2uCcZ8EAIGMIPtXjc3NG0ltnG3QbEdQ8x7TE=
+X-Rspamd-Queue-Id: 7B4B780002
+X-HE-Tag: 1770940174-281169
+X-HE-Meta: U2FsdGVkX1/+jvkxAjAR7fnitsbfbH1VoUO7mg6g0mOVAK6SKKWIvcWaEvZ6/u7JDGA+LJCgEudqpc11oCBkalNXyPA9ZSx2fIU4aFgn9RG+eWG81hSiuzzk2bPAntfvioNEcGf8AefLp3MQ0vKktzAsOty/Ju/q6CNJCI039lyqirfLMPCfk3ANPEhaT7b8PqJ00KadxtofeXbjUPrKKX8SFu/4We4rZl8FI/zYd5g3SlObBlx60mcBdN7f81sJ+rXnuvuFlwdR+4oF6cC5JTo9PIhP8X7CDAJxxoHufkE9OiOEtgag8T2pTza+EAwgixIICqHdiGFcOfPMhgsxF5U1YZ3VDSxm0cAB6oGxQj8Y8BTjAWjBvCnl0nCMPRCJkSQHPJw2JExIyXLEIEamv3WIZPEysj+bo9kbta/CwwP13X2hRPCgMy/SxaN5ziCfGusycn4dI+YQ5bRr7MCHQquKjz+3Rz9zSEBI9tISn+f3HUlvUKUU1AiGzOjORZr9B1EUOIiLN95RFY6QP2sbLtdbRoiJOmt9QK3GJjsejw8RjM/PPU/92kVfyHEKMLCXFQFF466shrZ49PqqJeQD4vSDBEX4iKFMjgb0C/CUIcxN9UqvvQQCjhFe9PASv95h2BTYMha9oEQvP3zef+uDqXyOiQE7F/bGMv0jfjvwTmeZJdLTT+P9/S3VEiVuTksArnBk+W0OlqLSQrAbT0bhqOC37N74lYbBLvOiBrVre7zap0Mj0wKa5oF/OVFEkEB7sbVNgengRMhv7IqiZx8O54SpMfFG2Z5h80ZCDxJV5tN4LBM4V7VFXERp0e/+VO9Qf6K5EggB8JdHJIA8/pynwnN4Aytc0s3emLGbCB3gAEnJrOH2CQwN0rnzH5x3VUFPSo00i8XmhbJmKVfOI5mZRXo3GqtcYUEV3LopFE8g6rzTGPCMv6F4VxuBMplykq63psWyuHOOwHP8VBtzj7V
+ eYjERFVG
+ mkFcUEnLaAdTmdWihl36RK11SgFG6Ieg4mT21DlE5mYRzaNglXofIqlggX2qlhtYlwdxZoqut1OcoLDSKQtyoJ+pUJJglLfDrWPLhybMu5KOgZ47rDvjl1mXe6GeaOok9DeD7FSgJFuAn9D5WIe/9ZEcH/eYnZKhKK13ES+o3ulFL1uv+DSEnC12zVPUiClrZA5SyTPpxbgb+room2zurzyr10Lnmy06+anq27BTtHGP9QY+OZBxdd51x93f6/Pn/viV2UUfYvxD7b9q1+XRcP6pk2nMuD1xO2wKF1rn+L1NinKluNZXsePDfskBVIJik3fzIXoeccx75ZuJGrTj7rSdbFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,30 +102,272 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Feb 11, 2026 at 7:22=E2=80=AFPM zhaoyang.huang
-<zhaoyang.huang@unisoc.com> wrote:
->
-> From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
->
-> Nowadays, ANDROID system replaces madivse with memory.reclaim to implemen=
-t
-> user space memory management which desires to reclaim a certain amount of
-> memcg's memory. However, oversized reclaiming and high latency are observ=
-ed
-> as there is no limitation over nr_reclaimed inside try_to_shrink_lruvec
-> when MGLRU enabled. Besides, this could also affect all none root_reclaim
-> such as reclaim_high etc.
-> Since the commit 'b82b530740b9' ("mm: vmscan: restore incremental cgroup
-> iteration") introduces sc->memcg_full_walk to limit the walk range of
-> mem_cgroup_iter and keep the fairness among the descendants of one memcg.
-> This commit would like to make single memcg's scanning more precised by
-> removing the criteria of 'if (!root_reclaim)' inside
-> should_abort_scan().
->
-> Suggested-by: T.J.Mercier <tjmercier@google.com>
-> Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+On Mon, Feb 09, 2026 at 07:06:03PM +0000, Andrei Vagin wrote:
+> Introduces a mechanism to inherit hardware capabilities (AT_HWCAP,
+> AT_HWCAP2, etc.) from a parent process when they have been modified via
+> prctl.
+> 
+> To support C/R operations (snapshots, live migration) in heterogeneous
+> clusters, we must ensure that processes utilize CPU features available
+> on all potential target nodes. To solve this, we need to advertise a
+> common feature set across the cluster.
+> 
+> This patch adds a new mm flag MMF_USER_HWCAP, which is set when the
+> auxiliary vector is modified via prctl(PR_SET_MM, PR_SET_MM_AUXV).  When
+> execve() is called, if the current process has MMF_USER_HWCAP set, the
+> HWCAP values are extracted from the current auxiliary vector and stored
+> in the linux_binprm structure. These values are then used to populate
+> the auxiliary vector of the new process, effectively inheriting the
+> hardware capabilities.
+> 
+> The inherited HWCAPs are masked with the hardware capabilities supported
+> by the current kernel to ensure that we don't report more features than
+> actually supported. This is important to avoid unexpected behavior,
+> especially for processes with additional privileges.
+> 
+> Signed-off-by: Andrei Vagin <avagin@google.com>
+> ---
+>  fs/binfmt_elf.c          |  8 +++---
+>  fs/binfmt_elf_fdpic.c    |  8 +++---
+>  fs/exec.c                | 61 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/binfmts.h  | 11 ++++++++
+>  include/linux/mm_types.h |  2 ++
+>  kernel/fork.c            |  3 ++
+>  kernel/sys.c             |  5 +++-
+>  7 files changed, 89 insertions(+), 9 deletions(-)
+> 
+> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> index 3eb734c192e9..aec129e33f0b 100644
+> --- a/fs/binfmt_elf.c
+> +++ b/fs/binfmt_elf.c
+> @@ -246,7 +246,7 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
+>  	 */
+>  	ARCH_DLINFO;
+>  #endif
+> -	NEW_AUX_ENT(AT_HWCAP, ELF_HWCAP);
+> +	NEW_AUX_ENT(AT_HWCAP, bprm->hwcap);
+>  	NEW_AUX_ENT(AT_PAGESZ, ELF_EXEC_PAGESIZE);
+>  	NEW_AUX_ENT(AT_CLKTCK, CLOCKS_PER_SEC);
+>  	NEW_AUX_ENT(AT_PHDR, phdr_addr);
+> @@ -264,13 +264,13 @@ create_elf_tables(struct linux_binprm *bprm, const struct elfhdr *exec,
+>  	NEW_AUX_ENT(AT_SECURE, bprm->secureexec);
+>  	NEW_AUX_ENT(AT_RANDOM, (elf_addr_t)(unsigned long)u_rand_bytes);
+>  #ifdef ELF_HWCAP2
+> -	NEW_AUX_ENT(AT_HWCAP2, ELF_HWCAP2);
+> +	NEW_AUX_ENT(AT_HWCAP2, bprm->hwcap2);
+>  #endif
+>  #ifdef ELF_HWCAP3
+> -	NEW_AUX_ENT(AT_HWCAP3, ELF_HWCAP3);
+> +	NEW_AUX_ENT(AT_HWCAP3, bprm->hwcap3);
+>  #endif
+>  #ifdef ELF_HWCAP4
+> -	NEW_AUX_ENT(AT_HWCAP4, ELF_HWCAP4);
+> +	NEW_AUX_ENT(AT_HWCAP4, bprm->hwcap4);
+>  #endif
+>  	NEW_AUX_ENT(AT_EXECFN, bprm->exec);
+>  	if (k_platform) {
+> diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+> index a3d4e6973b29..55b482f03c82 100644
+> --- a/fs/binfmt_elf_fdpic.c
+> +++ b/fs/binfmt_elf_fdpic.c
+> @@ -629,15 +629,15 @@ static int create_elf_fdpic_tables(struct linux_binprm *bprm,
+>  	 */
+>  	ARCH_DLINFO;
+>  #endif
+> -	NEW_AUX_ENT(AT_HWCAP,	ELF_HWCAP);
+> +	NEW_AUX_ENT(AT_HWCAP,	bprm->hwcap);
+>  #ifdef ELF_HWCAP2
+> -	NEW_AUX_ENT(AT_HWCAP2,	ELF_HWCAP2);
+> +	NEW_AUX_ENT(AT_HWCAP2,	bprm->hwcap2);
+>  #endif
+>  #ifdef ELF_HWCAP3
+> -	NEW_AUX_ENT(AT_HWCAP3,	ELF_HWCAP3);
+> +	NEW_AUX_ENT(AT_HWCAP3,	bprm->hwcap3);
+>  #endif
+>  #ifdef ELF_HWCAP4
+> -	NEW_AUX_ENT(AT_HWCAP4,	ELF_HWCAP4);
+> +	NEW_AUX_ENT(AT_HWCAP4,	bprm->hwcap4);
+>  #endif
+>  	NEW_AUX_ENT(AT_PAGESZ,	PAGE_SIZE);
+>  	NEW_AUX_ENT(AT_CLKTCK,	CLOCKS_PER_SEC);
+> diff --git a/fs/exec.c b/fs/exec.c
+> index 9d5ebc9d15b0..7401efbe4ba0 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -1462,6 +1462,17 @@ static struct linux_binprm *alloc_bprm(int fd, struct filename *filename, int fl
+>  	 */
+>  	bprm->is_check = !!(flags & AT_EXECVE_CHECK);
+>  
+> +	bprm->hwcap = ELF_HWCAP;
+> +#ifdef ELF_HWCAP2
+> +	bprm->hwcap2 = ELF_HWCAP2;
+> +#endif
+> +#ifdef ELF_HWCAP3
+> +	bprm->hwcap3 = ELF_HWCAP3;
+> +#endif
+> +#ifdef ELF_HWCAP4
+> +	bprm->hwcap4 = ELF_HWCAP4;
+> +#endif
+> +
+>  	retval = bprm_mm_init(bprm);
+>  	if (!retval)
+>  		return bprm;
+> @@ -1780,6 +1791,53 @@ static int bprm_execve(struct linux_binprm *bprm)
+>  	return retval;
+>  }
+>  
+> +static void inherit_hwcap(struct linux_binprm *bprm)
+> +{
+> +	int i, n;
+> +
+> +#ifdef ELF_HWCAP4
+> +	n = 4;
+> +#elif defined(ELF_HWCAP3)
+> +	n = 3;
+> +#elif defined(ELF_HWCAP2)
+> +	n = 2;
+> +#else
+> +	n = 1;
+> +#endif
+> +
+> +	for (i = 0; n && i < AT_VECTOR_SIZE; i += 2) {
+> +		long val = current->mm->saved_auxv[i + 1];
 
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
+Nit: saved_auxv[] are unsigned long, as are all the bprm->hwcap* vars.
 
-Thanks!
+> +
+> +		switch (current->mm->saved_auxv[i]) {
+> +		case AT_NULL:
+> +			goto done;
+> +		case AT_HWCAP:
+> +			bprm->hwcap = val & ELF_HWCAP;
+> +			break;
+> +#ifdef ELF_HWCAP2
+> +		case AT_HWCAP2:
+> +			bprm->hwcap2 = val & ELF_HWCAP2;
+> +			break;
+> +#endif
+> +#ifdef ELF_HWCAP3
+> +		case AT_HWCAP3:
+> +			bprm->hwcap3 = val & ELF_HWCAP3;
+> +			break;
+> +#endif
+> +#ifdef ELF_HWCAP4
+> +		case AT_HWCAP4:
+> +			bprm->hwcap4 = val & ELF_HWCAP4;
+> +			break;
+> +#endif
+> +		default:
+> +			continue;
+> +		}
+> +		n--;
+> +	}
+> +done:
+> +	mm_flags_set(MMF_USER_HWCAP, bprm->mm);
+> +}
+> +
+>  static int do_execveat_common(int fd, struct filename *filename,
+>  			      struct user_arg_ptr argv,
+>  			      struct user_arg_ptr envp,
+> @@ -1856,6 +1914,9 @@ static int do_execveat_common(int fd, struct filename *filename,
+>  			     current->comm, bprm->filename);
+>  	}
+>  
+> +	if (mm_flags_test(MMF_USER_HWCAP, current->mm))
+> +		inherit_hwcap(bprm);
+> +
+>  	retval = bprm_execve(bprm);
+>  out_free:
+>  	free_bprm(bprm);
+> diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+> index 65abd5ab8836..94a3dcf9b1d2 100644
+> --- a/include/linux/binfmts.h
+> +++ b/include/linux/binfmts.h
+> @@ -2,6 +2,7 @@
+>  #ifndef _LINUX_BINFMTS_H
+>  #define _LINUX_BINFMTS_H
+>  
+> +#include <linux/elf.h>
+>  #include <linux/sched.h>
+>  #include <linux/unistd.h>
+>  #include <asm/exec.h>
+> @@ -67,6 +68,16 @@ struct linux_binprm {
+>  	unsigned long exec;
+>  
+>  	struct rlimit rlim_stack; /* Saved RLIMIT_STACK used during exec. */
+> +	unsigned long hwcap;
+> +#ifdef ELF_HWCAP2
+> +	unsigned long hwcap2;
+> +#endif
+> +#ifdef ELF_HWCAP3
+> +	unsigned long hwcap3;
+> +#endif
+> +#ifdef ELF_HWCAP4
+> +	unsigned long hwcap4;
+> +#endif
+>  
+>  	char buf[BINPRM_BUF_SIZE];
+>  } __randomize_layout;
+> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+> index 78950eb8926d..68c9131dceee 100644
+> --- a/include/linux/mm_types.h
+> +++ b/include/linux/mm_types.h
+> @@ -1871,6 +1871,8 @@ enum {
+>  #define MMF_TOPDOWN		31	/* mm searches top down by default */
+>  #define MMF_TOPDOWN_MASK	BIT(MMF_TOPDOWN)
+>  
+> +#define MMF_USER_HWCAP		32	/* user-defined HWCAPs */
+
+NUM_MM_FLAG_BITS is already 64, but this seems to be the first user of
+the next u32 in the bitmap. It _should_ be safe, but we'll need to look
+for unexpected weird bugs. :)
+
+> +
+>  #define MMF_INIT_LEGACY_MASK	(MMF_DUMPABLE_MASK | MMF_DUMP_FILTER_MASK |\
+>  				 MMF_DISABLE_THP_MASK | MMF_HAS_MDWE_MASK |\
+>  				 MMF_VM_MERGE_ANY_MASK | MMF_TOPDOWN_MASK)
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index b1f3915d5f8e..0091315643de 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1103,6 +1103,9 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+>  
+>  		__mm_flags_overwrite_word(mm, mmf_init_legacy_flags(flags));
+>  		mm->def_flags = current->mm->def_flags & VM_INIT_DEF_MASK;
+> +
+> +		if (mm_flags_test(MMF_USER_HWCAP, current->mm))
+> +			mm_flags_set(MMF_USER_HWCAP, mm);
+>  	} else {
+>  		__mm_flags_overwrite_word(mm, default_dump_filter);
+>  		mm->def_flags = 0;
+> diff --git a/kernel/sys.c b/kernel/sys.c
+> index 8d199cf457ae..6fbd7be21a5f 100644
+> --- a/kernel/sys.c
+> +++ b/kernel/sys.c
+> @@ -2157,8 +2157,10 @@ static int prctl_set_mm_map(int opt, const void __user *addr, unsigned long data
+>  	 * not introduce additional locks here making the kernel
+>  	 * more complex.
+>  	 */
+> -	if (prctl_map.auxv_size)
+> +	if (prctl_map.auxv_size) {
+>  		memcpy(mm->saved_auxv, user_auxv, sizeof(user_auxv));
+> +		mm_flags_set(MMF_USER_HWCAP, current->mm);
+> +	}
+>  
+>  	mmap_read_unlock(mm);
+>  	return 0;
+> @@ -2190,6 +2192,7 @@ static int prctl_set_auxv(struct mm_struct *mm, unsigned long addr,
+>  
+>  	task_lock(current);
+>  	memcpy(mm->saved_auxv, user_auxv, len);
+> +	mm_flags_set(MMF_USER_HWCAP, current->mm);
+>  	task_unlock(current);
+>  
+>  	return 0;
+> -- 
+> 2.53.0.239.g8d8fc8a987-goog
+> 
+
+-- 
+Kees Cook
 
