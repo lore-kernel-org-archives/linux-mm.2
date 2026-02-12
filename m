@@ -4,104 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DC17EB48EC
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 09:09:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9E9EB48EC
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 09:11:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 163D86B0089; Thu, 12 Feb 2026 04:09:10 -0500 (EST)
+	id 0C50B6B008A; Thu, 12 Feb 2026 04:11:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11A7B6B008A; Thu, 12 Feb 2026 04:09:10 -0500 (EST)
+	id 072A96B008C; Thu, 12 Feb 2026 04:11:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 046EF6B008C; Thu, 12 Feb 2026 04:09:09 -0500 (EST)
+	id E6C126B0092; Thu, 12 Feb 2026 04:10:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E64BB6B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 04:09:09 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B8B25160783
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:09:09 +0000 (UTC)
-X-FDA: 84435230418.18.6FD98EF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 117EF180008
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:09:07 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JL7zXOIf;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D07566B008A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 04:10:59 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7FC42BB123
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:10:59 +0000 (UTC)
+X-FDA: 84435235038.29.5537253
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id A7C591C0008
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:10:57 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c2Fwrg2W;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770887348;
+	s=arc-20220608; t=1770887457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E+3mySfOCyr9xxEniwc0oVzeTFE2afaJqeWbH9jB1BI=;
-	b=NsRxFhl163yuSVUgvAY4DHvaWAZhvH8BtGAIRpaMxXdzd+GdAnNt9cOJ9+d0Nhnpe7vKyi
-	jUHOXf83FrHxfPHloc4VGyDf9Ia5iEjRublOWxOWq0X5iR9wJgpij2HPWRQ0RI9IYMHG8y
-	dwkKhT77XeEg0ikV92F4wxVHo9K/u/o=
+	bh=QjQDGtFNN2J1VmXqWgnD5xSGrgTNMhKvNE6JI7bwQ+w=;
+	b=ugRbyfx/KhQxXgn7Fr4U4i9Vl9e6ZxkWntcSVjCP/kjiQVxzm7CZj9zcuyIeRZi8KBQEGu
+	9Y94xFkRmQ/93Q7QIANZjnO6RRj0SGPyrJhFd4JAiEg43TKCr7YbpBGsAmNRN0KXTIOEFc
+	qeVF1zWKyMg6uS6kHXtb5g8UMZZ1w04=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JL7zXOIf;
-	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=c2Fwrg2W;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770887348; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770887457; a=rsa-sha256;
 	cv=none;
-	b=U649XyTqRkDTlxyy1QpBkEPpBZuVMy27dc7HXHIP9V7UDAaZRJ5AOtHeHXnTTbBRQuxatS
-	i+89hew0bvNQgR6s2ucEbplRCIZlAluC4AQLRjTZoRdiWgFeEkguVe85Y0lrJHuxx5Rktx
-	X5zXj1risBstETr/PUU3UyWKukmHinI=
+	b=OEqdbmsDYp55Qn7B57MhSkHxOQ0O4PZkbQ9E4D66uPIbwI68dFAl7y/ZNE4dF8fq0ZikPy
+	8eBpF1CtMO6ZYASojIwmjOvBLty4EGWba5CTA3O4DvHA6B9Rdc+SgbeP1jYVXXzx8KNBcI
+	ivoROZcfPnnnbjxdkiSlb2bU0L7YYi0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 640F260010;
-	Thu, 12 Feb 2026 09:09:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40AB9C4CEF7;
-	Thu, 12 Feb 2026 09:08:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B771C43B4E;
+	Thu, 12 Feb 2026 09:10:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FF4C4CEF7;
+	Thu, 12 Feb 2026 09:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770887347;
-	bh=l0CiImdGPEMjvntKjVO4vTyF7c5lEReGL3YH8ki5SX4=;
+	s=k20201202; t=1770887456;
+	bh=xQs/VONCVmMMX9dMzZmQ6NsgfiBgg83y6eg69h6scJM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JL7zXOIfmbtfplPYGRKggj+zQaJ/W4E7I3zHrBBeaXS5iyDfe15uR6ojcLyHoADhz
-	 ASVbwGBjjNrJqydFjg/nqkI8DF6MlCTjypxaCqPE7UE7nu4k27rSeN/ckWyOmHYMyW
-	 QIz9WT0uvqOIPHZYIXj1uDLn9QueOOng49umF+qfRWJw4gT8oj2WMC5dEJOCAMMUzU
-	 OKBluCHgAyknx+26IfmrH/jDAGseIPsZxPQ92lk7POP0Oyd43tN4La6jxIIHfHOk7i
-	 VbduYtT6sgmjpfTTRP+yI43QIuisDCWtzpophYjXrV3ZFcfBgWkthdmqpUCbklpfIn
-	 cSnnsPmseSZ+g==
-Message-ID: <612ea310-699a-4fa4-b007-5b4ab5019eda@kernel.org>
-Date: Thu, 12 Feb 2026 10:08:49 +0100
+	b=c2Fwrg2WKfAxdMW+LEhD9IDgnuJaxmVW+GRnftndIOq/z25H5YsYQ/ET0XPjWFFJ8
+	 ksa/UeIe8J6b7ZyFcaXRwTZqKylxPbJqfUUFhGY4o/jJmuFTf6uOpUdsr4Zm71L2qA
+	 9GcXlXAlDtcB2Fyanz0vomXDT1yfIRNo4p/g8wmcbC0TJ8QM2Aze/HhIDT1BexBOEq
+	 Lrvaub2W/HJI+C/kK7Q7lTzbLyULnNR4hUZgJy5JUJiZquljYX1jrbX6CtHvMOZdMI
+	 tcj841/bCxn3SBb3F5ks5XoFSWVNhqWLAzlToKw8aLxXAgVecmQmRg8lDbp9nObfjc
+	 qCe33v38obcuA==
+Message-ID: <16ce9ce2-8081-482c-a6ea-0932ebd081f1@kernel.org>
+Date: Thu, 12 Feb 2026 10:10:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] mm: cache struct page for empty_zero_page and
- return it from ZERO_PAGE()
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
- Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "David S. Miller" <davem@davemloft.net>,
- Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen
- <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
- Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
- Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
- Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
- Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Vineet Gupta <vgupta@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-openrisc@vger.kernel.org,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org
-References: <20260211103141.3215197-1-rppt@kernel.org>
- <20260211103141.3215197-5-rppt@kernel.org>
+Subject: Re: [PATCHv2] mm: khugepaged: make scan loops suspend aware
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260211031512.261127-1-senozhatsky@chromium.org>
+ <104bc764-5a20-4ac2-95a8-b31f41255766@kernel.org>
+ <jftqdosilzfkd4ku6pjuevkvuwmhlqtua62jwsmmgdfcseitb4@gopt2xzqhyrk>
+ <3571cf8b-9fb3-41b2-a402-a8537ee2c399@kernel.org>
+ <r6m6vdhbqada6i3gugtnj3lytjrkyiretihwebwci423vwslcr@ysrgdqvvno6b>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -148,17 +128,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260211103141.3215197-5-rppt@kernel.org>
+In-Reply-To: <r6m6vdhbqada6i3gugtnj3lytjrkyiretihwebwci423vwslcr@ysrgdqvvno6b>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 96i59qnggdot4g9qjidhm781cmxsjh59
-X-Rspamd-Queue-Id: 117EF180008
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A7C591C0008
+X-Stat-Signature: n33fpy75zkbuz5ituhtrdgoxgacwtbdh
 X-Rspam-User: 
-X-HE-Tag: 1770887347-876074
-X-HE-Meta: U2FsdGVkX1+aaT7hpDkfSsT47xNB6adfL5XPGro0ATe2ipvtUsYrk/1l1aAmaXm/UYVFpRdfHIPo2wG2ttGxoZXXt0fwmeQgDi8vRDAp9nF7d4PkkUVBDeQiEx84Lee4C0Dy8Uq07Ho1HGGLn+dPCJoCoGxYZy/SPdQb3X6nkwOah8AWr+D67k3Eb6pZFrSrlxnNBYwZDV9eG522MJqR/IPfVHrDIMEQbmcLnEoI7dYPY1ts4x4RhnsC03lvVqE0h0jCd/swWlK/mML0JAEYAnkgRz06/KC1wvjeWFHLINC+NNZPy11XZPdBVtylzIm/zMZQBr0KBXmKmhERHN0b5xJikDkUE+W2yjY5bJXSSbeKccTeHkRNIu0bA94/UkTzqFN5/QYGFurbUREjPYN/tJa+XCILksER4h3NhQRMvfRsZzOEYKPE1lMKDXTQRjWhxIs4LuNVt99+zoxC8x+01LRBE8DKYX11hmbsiWJTgyDorne2T0bTNeiQ6ZbdU9GVFB5Up/qf6zWjS1UerWLfCkY/tGOHCPEvEa5oi44bIXhV7SlPohbSxwIJiRcJifuHjkJvqSIdzVCsU8iwZp8DJJ3YsWzdz1ppC3VLaLPAOMSiR1SGjfym8z4ADCMEvgswtHCIwg+Y4rphx9IXgcO6cFiZnSVAdwyPBAuFJ4W8EJm8mQM8fOdd7pkGYx5S7HlCk17Ebk5+60HDg0WWj9Wve7nFAfyUogLNkDbwT9FmfanFPAAppahzydqsKFPidUvqwg1/gTdhgdyiLbU+wplKtm30xakjnCWHx1opmCbW3eoHHQEkqgxdGw101lfNjgCn2ZcYwHjiDXpjI6YcXp6Yn+FRpS4LkNRb3Kslyjs9CQAWBVgI94YD9NBfo8paUZKOnvB23YY19sntnE/jXKMCg6yO1r2vluSF9O/oPiAfQlc3/sWE66ewPlg7BWrQwmTnREPGJ5UACg/ujiA/nD+
- mqyM50Cc
- NgjuQq0d28+R9Cyey/u486MbeHbWqVpozavhzuZh5ef7LYfDd2X6cyG/hseJKHexZHCmf38DJiB8AEKKZU4dalyEUp6r71h7reIZAmedNeMsrgjcaHD09/MFT5k67NaEGcfog5oLELycj1WXX3VZlc4eEvRjTA1JAuldt4zrSQrQ48s2oyKRKL+PCZ2WD+Fj4ySwQoxShrEY5tFbfQNq1VA711hxqQjsQsIrVjzlEHo48+5MCpAIF8hOWOZzso/fOPuEgab97AaxROPp9uR0ECT7dzA0gTqWKqiDpw/ZIJ9kQvTTRex1SgTCYyAti9aNZJXuKQV2KKWw5+pGJxPRcXuz/MIPRDsNs7xBK+tLrzs8lNvm6ci5vhB+uzfuwR1+FPB0j8KLGM+/ne2Q=
+X-HE-Tag: 1770887457-919118
+X-HE-Meta: U2FsdGVkX18LJk5GIYrD0SLDOPCMzk/sTAwbVkkB3q/hZ4MJqPZA0OsV4oUroIlbm94xlB2+cxTKvxp2sio7fsIni+bebpw+BcsbskFsuSEH24vPEi53a/beZ8eDyVqj1OpBga5HuZqoWIIwIWtISrEJ0jl/HcNSbmDVce9gyEqogmy23MRrCiNhH3m2ZQd8pQthc8dQZQY5afSDou4rEiJvvobHG3tiY3AuyUsxyIQEzJZkNh34nW3/heTaiU8mQXgenjiaDCrIeoIHq9SdWU0Qw1/Jary6sMJkpSdO/M7hhknbu9po8Altt296LZDqM8ZjITE+hvYirXezhiTk6o1/iunw5aOwo9sENKI6chl2udykprYmYNseCHBtIWU2cDsm4vEbCJGiWe0m5XEXte+3+/6TwEWi7p1cKRC7v5vDzvKXKFAtVddSC/uI/p3CA1sXAi8wLc1UrCnJc+2uDPfdRuwwHhEcJ8RT79yUxm0q2fSvtTbsBrwa/0aavGs7YI25MVmmkEW0Sel08Ie+yA1oGDWHOzVd4AyQLpWS28cJvfv4fRpF7eEI1nGrUg2E+niB2zcKGVZ7nrEYRULO9YxsY/rKtf94urHfxhqoyB8IU2Dda2KiOA+U0pMjGkRDERJT8NE6nkqWTGT4LBAKzFICm2eiZ/ajM+uT78pQRkMXH+pxtLMLP4/180O32BOYPWZdjPbhUjXKxcT10V1btSyXE3swe7hT7pczQ6cZUkLJRbF5oGV+dHRSQe8uweLu6EKqwSjvMd9KRGYngdO1QiI+yKKyVJRabmWN+Tk2th/P+jnubTQ8aRsJX/Dl9R7QCNky3B+c4U8ou+LCU/7gBbL5YMGh3VqP0sXUwsxDkhImQz11UvXBwRmjjfAYSkVXQnXuDgzXmuo2OTVl/MKAuDzOL62bWN3nCA8PsthVN4Z9z8C+AStC4gLaTIGIKfXqXHa1twiRTnkgT/qOlFM
+ oe0PzWJ9
+ GMUpuJf89I2Lc/VIF0j4lKe6jjU8s3Yuc5WoP90gEMyGQl+eo3l/tUf6QZZ1eflmkmMhQy1Hyndk78ZQe46MyZpgNsIq+uiO6/R4fL/JwXgW8aLXjgm9pTPlK7oNyW11XBi+VE9wYoH/KO1cRalq2HguNsZdqYiE2/vF3S92TnTnBILmIOfN86rqOCaOYKIWovHkkPoRy3Pr5Utbqsy1k4wLqO3w20URzO1ZVMsIaO9Tf39pSqerdC2FItlGn+0vzzAlcAJDYeHwG9ulEtoNHSBHTHcXV/o3tlkCoGXQ8fBZSDHfsh4pcvszhGg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -167,30 +147,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/11/26 11:31, Mike Rapoport wrote:
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+On 2/12/26 10:05, Sergey Senozhatsky wrote:
+> On (26/02/12 09:44), David Hildenbrand (Arm) wrote:
+> [..]
+>> If we're fixing an issue, we usually try to identify which commit introduced the
+>> issue.
+>>
+>> For example, support for freezing was introduced in
+>>
+>> commit 878aee7d6b5504e01b9caffce080e792b6b8d090
+>> Author: Andrea Arcangeli <aarcange@redhat.com>
+>> Date:   Thu Jan 13 15:47:10 2011 -0800
+>>
+>>      thp: freeze khugepaged and ksmd
+>>      It's unclear why schedule friendly kernel threads can't be taken away by
+>>      the CPU through the scheduler itself.  It's safer to stop them as they can
+>>      trigger memory allocation, if kswapd also freezes itself to avoid
+>>      generating I/O they have too.
+>>
+>>
+>>
+>> Now that I am looking through the history, I find:
+>>
+>> commit b39ca208403c8f2c17dab1fbfef1f5ecaff25e53
+>> Author: Kevin Hao <haokexin@gmail.com>
+>> Date:   Wed Dec 20 07:17:53 2023 +0800
+>>
+>>      mm/khugepaged: remove redundant try_to_freeze()
+>>      A freezable kernel thread can enter frozen state during freezing by either
+>>      calling try_to_freeze() or using wait_event_freezable() and its variants.
+>>      However, there is no need to use both methods simultaneously.  The
+>>      freezable wait variants have been used in khugepaged_wait_work() and
+>>      khugepaged_alloc_sleep(), so remove this redundant try_to_freeze().
+>>      I used the following stress-ng command to generate some memory load on my
+>>      Intel Alder Lake board (24 CPUs, 32G memory).
+>>
+>>
+>> I wonder if that made the issue more likely to appear?
+>>
+>>
+>> Interestingly, we also had in the past:
+>>
+>> commit 1dfb059b9438633b0546c5431538a47f6ed99028
+>> Author: Andrea Arcangeli <aarcange@redhat.com>
+>> Date:   Thu Dec 8 14:33:57 2011 -0800
+>>
+>>      thp: reduce khugepaged freezing latency
+>>      khugepaged can sometimes cause suspend to fail, requiring that the user
+>>      retry the suspend operation.
+>>
+>>
+>> So it's a recurring theme.
 > 
-> For most architectures every invocation of ZERO_PAGE() does
-> virt_to_page(empty_zero_page). But empty_zero_page is in BSS and it is
-> enough to get its struct page once at initialization time and then use
-> it whenever a zero page should be accessed.
-> 
-> Add yet another __zero_page variable that will be initialized as
-> virt_to_page(empty_zero_page) for most architectures in a weak
-> arch_setup_zero_pages() function.
-> 
-> For architectures that use colored zero pages (MIPS and s390) rename their
-> setup_zero_pages() to arch_setup_zero_pages() and make it global rather
-> than static.
-> 
-> For architectures that cannot use virt_to_page() for BSS (arm64 and
-> sparc64) add override of arch_setup_zero_pages().
-> 
-> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
+> Interesting, so 1dfb059b9438633 and 878aee7d6b5504e fixed real
+> problems "khugepaged can sometimes cause suspend to fail", but
+> I don't see what exactly b39ca208403c8f2 fixed.  Sounds more
+> like an "optimization"?
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Yes, a cleanup. I wonder if it caused harm.
+
+> 
+>> Given that we only scan "khugepaged_pages_to_scan" pages/ptes/etc. before going back to sleep,
+>> I wonder how that can take in your setup that long.
+>>
+>> Why does it end up taking something around 20 seconds in your setup?
+> 
+> I only have bug reports at hands, I don't have a repro.  Can the fact
+> that swap reads require S/W decompression (zram) add enough latency?
+
+I guess so. 20 seconds is still a lot.
+
+> 
+>> How is khugepaged_pages_to_scan set in your environment?
+> 
+> Let me check.
+> 
+> cat /sys/kernel/mm/transparent_hugepage/khugepaged/pages_to_scan
+> 4096
+> 
+> Hmm, doesn't sound too high.  Let me look more.
+
+Yeah, that's not a lot of pages to scan. It's the default (8 * HPAGE_PMD_NR)
 
 -- 
 Cheers,
