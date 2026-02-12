@@ -4,180 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11A06EE3697
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:24:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4880DEE3698
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:25:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F5A16B0089; Thu, 12 Feb 2026 10:24:13 -0500 (EST)
+	id B25D16B008A; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5ACB66B008A; Thu, 12 Feb 2026 10:24:13 -0500 (EST)
+	id ABC846B008C; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 423276B008C; Thu, 12 Feb 2026 10:24:13 -0500 (EST)
+	id 9D2C56B0092; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2CD626B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:24:13 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 017641C0C7
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:24:12 +0000 (UTC)
-X-FDA: 84436175544.18.070DEF0
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id C2BC3160002
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:24:10 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Lytg6Qp9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4C9R0cYy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Lytg6Qp9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4C9R0cYy;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C5BB6B008A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4558B1A01E6
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:25:43 +0000 (UTC)
+X-FDA: 84436179366.08.9DB2E01
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A6A2E80010
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:25:39 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hjkncimN;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770909851;
+	s=arc-20220608; t=1770909941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F4SLcQ4z8GXHuyKxamRQrFsRBxtsMZ9MpcvRbYRiuiA=;
-	b=NPIAI+fBDFT8botE3vHZBpuhsPQr41Sknsi82PDNHt02PaghYdXyMpPXcOv0xGHOAeqEd/
-	QcmvRB+eJfoQraFRcljYtJdKAo+nObqK2vYRuLO3WWhrTfM/XRORZalcQGHcUizMKCMHcJ
-	aZlbUj58ssoA1zB0z7obZFz5/cDUHSA=
+	bh=3md81SdFS4TjjB0AXkEg5ItTPXkzpc4iibpel7Bvl6Q=;
+	b=GvDZr6jSDI0xLvrloFbaz8gvqBoxH6vw7LZ59HO3fvCYFeFf7mbPp6YZnmoIDz6nOt/YP2
+	DOKbu1p9iqKU+J5bm71LWfKLp6QtkDYzrmQcsKAnFKUgPkaAr8kP5PERcCCe88ZfaRHOpI
+	HiWDkVTVXHh+sYgZ7IwxDM15l+zPx9k=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Lytg6Qp9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4C9R0cYy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Lytg6Qp9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4C9R0cYy;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770909851; a=rsa-sha256;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hjkncimN;
+	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770909941; a=rsa-sha256;
 	cv=none;
-	b=hH4Un8t5ipMkCU5AwwkNJMc7Z+DZwHi2o+5MUminQC4dtOPk1LZw9Tdf7KE2fxPg5oEnYO
-	XoyXtg2xMLggBcAPdpxEZVktJI/K6p3ExjcFAZTFKSQ40rwks6QdqEksPeejjwlVuiygLv
-	0vR5g76aqjEL4w5Ur/35wmxpgg7M3Ow=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 20D905BDB6;
-	Thu, 12 Feb 2026 15:24:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770909849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	b=Of3V82NDXFxwj9YEdqic7+8oi6+ABAk8IBTQ8H/eA6treI0Ibf0cd1qLw+C/2+0Mk0uE1S
+	kTBhcy6SpPwkt82ivhYX995rF2jTz7X1h8EXDGndWGLIKaXw1D+6ZfveLPH1a4HwxatT02
+	CsxrhR+uRkk/K+wRysikSjU8vj82bH8=
+Message-ID: <93908945-e0a8-429c-b119-eff63ebb2479@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770909937;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F4SLcQ4z8GXHuyKxamRQrFsRBxtsMZ9MpcvRbYRiuiA=;
-	b=Lytg6Qp9fMZWWfA68K6rS0nZ9tB6WIjlKhzihmPwAsKyRLUNufE6+vXl258+/L/nuGNOZH
-	78aldcGJAIFPKUG+7Uzj0Ta7yUYceS0fiVjxX08JE3G+X3v5v4TYJyB9HGfq1t0BZzeM7Z
-	k029c8F0mBtir5mOsrgONpZSDT7CRx0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770909849;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F4SLcQ4z8GXHuyKxamRQrFsRBxtsMZ9MpcvRbYRiuiA=;
-	b=4C9R0cYywZzIR65rDSkiadbU1IYj33vAQw5u6/iQ6GolOz2eyv2lEEopqBUzsY14vfU//u
-	6xMMLyDPayt0OMDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770909849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F4SLcQ4z8GXHuyKxamRQrFsRBxtsMZ9MpcvRbYRiuiA=;
-	b=Lytg6Qp9fMZWWfA68K6rS0nZ9tB6WIjlKhzihmPwAsKyRLUNufE6+vXl258+/L/nuGNOZH
-	78aldcGJAIFPKUG+7Uzj0Ta7yUYceS0fiVjxX08JE3G+X3v5v4TYJyB9HGfq1t0BZzeM7Z
-	k029c8F0mBtir5mOsrgONpZSDT7CRx0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770909849;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=F4SLcQ4z8GXHuyKxamRQrFsRBxtsMZ9MpcvRbYRiuiA=;
-	b=4C9R0cYywZzIR65rDSkiadbU1IYj33vAQw5u6/iQ6GolOz2eyv2lEEopqBUzsY14vfU//u
-	6xMMLyDPayt0OMDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B9C533EA62;
-	Thu, 12 Feb 2026 15:24:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id fhAMLZjwjWkeMQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 12 Feb 2026 15:24:08 +0000
-Message-ID: <96b63efb-551f-4dd5-b4a2-ac67da577431@suse.cz>
-Date: Thu, 12 Feb 2026 16:24:08 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=3md81SdFS4TjjB0AXkEg5ItTPXkzpc4iibpel7Bvl6Q=;
+	b=hjkncimNaPPExvn/emeaq/h/AlfCnw+mVVCMpaG7jfK1AU3G5MNnceGQoxpZLRm+7s8TrG
+	SMgyuBDmGiF9cfQ+M2rMahOUxsaiyqzUKf7jsPpmGt1bnR/CpoXyBRoS/SAaXyBEptiUA9
+	w68x0WYS4Za0LU2R9RKu9ekkYbD3FhI=
+Date: Thu, 12 Feb 2026 15:25:33 +0000
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/mempolicy: track page allocations per mempolicy
-Content-Language: en-US
-To: JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org
-Cc: apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com,
- byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
- eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
- hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- matthew.brost@intel.com, mst@redhat.com, mhocko@suse.com, rppt@kernel.org,
- muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
- virtualization@lists.linux.dev, weixugc@google.com,
- xuanzhuo@linux.alibaba.com, ying.huang@linux.alibaba.com,
- yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
-References: <20260212045109.255391-1-inwardvessel@gmail.com>
- <20260212045109.255391-2-inwardvessel@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260212045109.255391-2-inwardvessel@gmail.com>
+Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
+Content-Language: en-GB
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
+ willy@infradead.org, linux-mm@kvack.org
+Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
+ shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
+ baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20260211125507.4175026-1-usama.arif@linux.dev>
+ <20260211125507.4175026-2-usama.arif@linux.dev>
+ <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
+ <875x82ma6q.ritesh.list@gmail.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Usama Arif <usama.arif@linux.dev>
+In-Reply-To: <875x82ma6q.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C2BC3160002
-X-Stat-Signature: 1sqy39afoxrwo9j5rwp9bp64nnf8gotp
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A6A2E80010
+X-Stat-Signature: 54acnba1a39s68di7g8hpo38anfe6dy4
 X-Rspam-User: 
-X-HE-Tag: 1770909850-369903
-X-HE-Meta: U2FsdGVkX186Eg1tyXszkUrKFk4G/zFtYo059Hl6a3FOCb3MZTscjmiT0bKN+ykprhVcuf4VDEJbEorGczJIg7hFR3BUDPNVVB4ULShyETphkUhpKu/TOA+cW/JbD2nvMdXQ2UMxbbt1Z4KQs5dsKEKpWNVb319yfhAaqBEQubWCM7lqmeNeSjmdqhiLfBloFSs2gUXckTIckCaU5q/uAKJuTHqYd+0EwmI3k1cXnqV3eJneovHXSb5aOMGlSrMDs3v1QO8H1CLbPfT9yG+fOnkFSzDkjztMffL9rDsIXfYEgy8XS7jhYy4qAGLBFysXng/TMP8ytKZtCnyVUxZnTSTjlpyHu4oZnAo7KKnOvs8BqzzGstOJsbeXGREEhXbB/ZCbhDeKQ1eM8ZViWSpKkJek2UhFfqKJP3OaGe9wpwODkeHy8T1ngafIhx3QYnV3FNecrsbFNvQbvFg5Gpv4lU/femKFzd2pSjfdEr/Wk9l+/nhPEB8n21+1DU/VQFgVUiX3hD09f0v+97rGWVaqzn9pixmo2wNsXxlMyGrO7Wcs+aNyg2j8lQs/LVqQODXRmgV8PVoXYSk4NluZiGJ2CgMkE9Tv9Pf8OJUOYC6pr+wCJ4q2wUvotVzsMSc0lxjv0GiIurFwM8i3vHO3L3OVDmZpUtGDOPfVuy79ucl7esLsg+5T2R5BdT5sZRtsozJ+BlDBMoL2zEBMVJWIkoAZyHiZm4XKmNsch5vW3qqpyM+3S6ze33SNlX5PgNHRbYpx49f2Wk9asUmvN0T6KDuFoROO5d77pWEEfQanYWByFOvCXRLOQleVnSDuLyuTPKHjVJeqAD4BuT39uIqSGchWYk6GXuKei1tQd35dzUyUQJN8cfgfqK9dKCYwggubJIDmZR8XeCGyCvgrDA2z3GKa978AqucaFObENw9Gst5YNTCopdszJGZruSCi9o9Ns4vWhJq6R/GZPT7lnd0nOks
- 3El2Enug
- xxnFVS+mszd3uQj6a+DpGQs5isH3KDB9Ut+Qu
+X-HE-Tag: 1770909939-40085
+X-HE-Meta: U2FsdGVkX1+0KPW4TtTEn0ZTK43AqpWIf0iT/MxeW3NpAMaJ0/gkMWuWv6obKTCbFJBGgqjUas9QYtNzpa9fAn8ZXETuiWFrRHM9V2bTfnbt8WkT32Z+mp8zbfMvuiOEJHo8b34C4Cit6aMexkQAts/+ewm3E9EJBoQF0KlH704agwNhj5EeoMNAYgyqgmgbOSCPHdhau2yFWL+usVaw3DhSrwW+d3KZ5Q6HpeBETLL2sz8NNF47eaOrjrBmREk+ZRMvxmSXYjygWBaizlQ18cJASvtvIaqhOwVTf0A1/O+smAf/qCTlcBZgHvetI4jAH/l5YfcFj2lyjkaKveJFJDVNr1G01WBEl5jhJxzOO+dg+IhvPsxypjOf1RqwM3EiGLJvZdvvmIREEMB34kfq1LHGLNSzptbnCxu5kERHzKtfJOt7V5QnvAFI+SLfkyESdjiNxMoUWsHoUy32jYTDEEXSAI71NnAuT++DMjhRQiYM5M2KmRVcVEL3bHJbjgakMXb88BYLfp9vAi2fKwve7wy13Rn63ULbW5GFC+Ytr7pTdtcEedA1xxgZ91/EnjLpfolmr5uZreM/uFiQQGQ8KEPCEPnOvvtX0NjN3gfXueJjk/4GgLKhReMGdRHOfUcqsI2vjYjzH5Y+nc0xilbeK02wnFpVk4Z6yLIabZc6nFDT5jPKRbw6++HijKbW19RwQaGg7y4WldE5+QxgnWGg2xxiUuRZTqrlYAgbUzFUCFvPll+hsIjzxgCGX7y5eZ8yyzHlo8AEL4YAsjPmMFuAU+cSc5X7tVpsVMNaSywb+2Psm18z/pBj15RgtgRciTVn4CUx8Eo0OY+FVk6IaDj26PQfrvCBWfsN+ZTLDoKUfvkoR+WWp9b+vHQw+YkUxcyeOzNU32rij6LRvapRX66dQvINz26vEFKGrcAiiqePQdXQY6g+58oQks3DQFB/2ETCwY0HICIovz71RIiwy9U
+ /219UqaP
+ 62DrSEZycmo6N6VoGF3p265k3gLx0CP3gjrxynq0pkNzaDKldrpyZcgWfYKIouzIQR2j1E5l7zLUWrFpsiIJ+9NP1j764E3zvfoHZSCk7H59ddOVTMfAblJ8cQkBuayqTgHEFbWrQwEOjgNHDz45a1TQgdulw1jtoZll3/2BjD24eqhCAAjuenenw7k6QQuFHHUf4FWZvlt69jSDOXBLZj8w18u7700U1+ndVRI9W2el63/fQkOLWRo216Br1wvqmJV95qs/xP7mnUNqbEMsSpOHVN4DrNBkBR8HZYMtgcYnlyu9VDbfDEtmjegawSluumiS5fowzGXTM9cg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,132 +101,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/12/26 05:51, JP Kobryn wrote:
-> It would be useful to see a breakdown of allocations to understand which
-> NUMA policies are driving them. For example, when investigating memory
-> pressure, having policy-specific counts could show that allocations were
-> bound to the affected node (via MPOL_BIND).
-> 
-> Add per-policy page allocation counters as new node stat items. These
-> counters can provide correlation between a mempolicy and pressure on a
-> given node.
-> 
-> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
 
-Are the numa_{hit,miss,etc.} counters insufficient? Could they be extended
-in a way that would capture any missing important details? A counter per
-policy type seems exhaustive, but then on one hand it might be not important
-to distinguish beetween some of them, and on the other hand it doesn't track
-the nodemask anyway.
 
-> ---
->  include/linux/mmzone.h |  9 +++++++++
->  mm/mempolicy.c         | 30 ++++++++++++++++++++++++++++--
->  mm/vmstat.c            |  9 +++++++++
->  3 files changed, 46 insertions(+), 2 deletions(-)
+On 12/02/2026 12:13, Ritesh Harjani (IBM) wrote:
+> "David Hildenbrand (Arm)" <david@kernel.org> writes:
 > 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index fc5d6c88d2f0..762609d5f0af 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -255,6 +255,15 @@ enum node_stat_item {
->  	PGDEMOTE_DIRECT,
->  	PGDEMOTE_KHUGEPAGED,
->  	PGDEMOTE_PROACTIVE,
-> +#ifdef CONFIG_NUMA
-> +	PGALLOC_MPOL_DEFAULT,
-> +	PGALLOC_MPOL_PREFERRED,
-> +	PGALLOC_MPOL_BIND,
-> +	PGALLOC_MPOL_INTERLEAVE,
-> +	PGALLOC_MPOL_LOCAL,
-> +	PGALLOC_MPOL_PREFERRED_MANY,
-> +	PGALLOC_MPOL_WEIGHTED_INTERLEAVE,
-> +#endif
->  #ifdef CONFIG_HUGETLB_PAGE
->  	NR_HUGETLB,
->  #endif
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index 68a98ba57882..3c64784af761 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -217,6 +217,21 @@ static void reduce_interleave_weights(unsigned int *bw, u8 *new_iw)
->  		new_iw[nid] /= iw_gcd;
->  }
->  
-> +#define CHECK_MPOL_NODE_STAT_OFFSET(mpol) \
-> +	BUILD_BUG_ON(PGALLOC_##mpol - mpol != PGALLOC_MPOL_DEFAULT)
-> +
-> +static enum node_stat_item mpol_node_stat(unsigned short mode)
-> +{
-> +	CHECK_MPOL_NODE_STAT_OFFSET(MPOL_PREFERRED);
-> +	CHECK_MPOL_NODE_STAT_OFFSET(MPOL_BIND);
-> +	CHECK_MPOL_NODE_STAT_OFFSET(MPOL_INTERLEAVE);
-> +	CHECK_MPOL_NODE_STAT_OFFSET(MPOL_LOCAL);
-> +	CHECK_MPOL_NODE_STAT_OFFSET(MPOL_PREFERRED_MANY);
-> +	CHECK_MPOL_NODE_STAT_OFFSET(MPOL_WEIGHTED_INTERLEAVE);
-> +
-> +	return PGALLOC_MPOL_DEFAULT + mode;
-> +}
-> +
->  int mempolicy_set_node_perf(unsigned int node, struct access_coordinate *coords)
->  {
->  	struct weighted_interleave_state *new_wi_state, *old_wi_state = NULL;
-> @@ -2446,8 +2461,14 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  
->  	nodemask = policy_nodemask(gfp, pol, ilx, &nid);
->  
-> -	if (pol->mode == MPOL_PREFERRED_MANY)
-> -		return alloc_pages_preferred_many(gfp, order, nid, nodemask);
-> +	if (pol->mode == MPOL_PREFERRED_MANY) {
-> +		page = alloc_pages_preferred_many(gfp, order, nid, nodemask);
-> +		if (page)
-> +			__mod_node_page_state(page_pgdat(page),
-> +					mpol_node_stat(MPOL_PREFERRED_MANY), 1 << order);
-> +
-> +		return page;
-> +	}
->  
->  	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
->  	    /* filter "hugepage" allocation, unless from alloc_pages() */
-> @@ -2472,6 +2493,9 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  			page = __alloc_frozen_pages_noprof(
->  				gfp | __GFP_THISNODE | __GFP_NORETRY, order,
->  				nid, NULL);
-> +			if (page)
-> +				__mod_node_page_state(page_pgdat(page),
-> +						mpol_node_stat(pol->mode), 1 << order);
->  			if (page || !(gfp & __GFP_DIRECT_RECLAIM))
->  				return page;
->  			/*
-> @@ -2484,6 +2508,8 @@ static struct page *alloc_pages_mpol(gfp_t gfp, unsigned int order,
->  	}
->  
->  	page = __alloc_frozen_pages_noprof(gfp, order, nid, nodemask);
-> +	if (page)
-> +		__mod_node_page_state(page_pgdat(page), mpol_node_stat(pol->mode), 1 << order);
->  
->  	if (unlikely(pol->mode == MPOL_INTERLEAVE ||
->  		     pol->mode == MPOL_WEIGHTED_INTERLEAVE) && page) {
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 65de88cdf40e..74e0ddde1e93 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -1291,6 +1291,15 @@ const char * const vmstat_text[] = {
->  	[I(PGDEMOTE_DIRECT)]			= "pgdemote_direct",
->  	[I(PGDEMOTE_KHUGEPAGED)]		= "pgdemote_khugepaged",
->  	[I(PGDEMOTE_PROACTIVE)]			= "pgdemote_proactive",
-> +#ifdef CONFIG_NUMA
-> +	[I(PGALLOC_MPOL_DEFAULT)]		= "pgalloc_mpol_default",
-> +	[I(PGALLOC_MPOL_PREFERRED)]		= "pgalloc_mpol_preferred",
-> +	[I(PGALLOC_MPOL_BIND)]			= "pgalloc_mpol_bind",
-> +	[I(PGALLOC_MPOL_INTERLEAVE)]		= "pgalloc_mpol_interleave",
-> +	[I(PGALLOC_MPOL_LOCAL)]			= "pgalloc_mpol_local",
-> +	[I(PGALLOC_MPOL_PREFERRED_MANY)]	= "pgalloc_mpol_preferred_many",
-> +	[I(PGALLOC_MPOL_WEIGHTED_INTERLEAVE)]	= "pgalloc_mpol_weighted_interleave",
-> +#endif
->  #ifdef CONFIG_HUGETLB_PAGE
->  	[I(NR_HUGETLB)]				= "nr_hugetlb",
->  #endif
+>> CCing ppc folks
+>>
+> 
+> Thanks David!
+> 
+>> On 2/11/26 13:49, Usama Arif wrote:
+>>> When the kernel creates a PMD-level THP mapping for anonymous pages,
+>>> it pre-allocates a PTE page table and deposits it via
+>>> pgtable_trans_huge_deposit(). This deposited table is withdrawn during
+>>> PMD split or zap. The rationale was that split must not fail—if the
+>>> kernel decides to split a THP, it needs a PTE table to populate.
+>>>
+>>> However, every anon THP wastes 4KB (one page table page) that sits
+>>> unused in the deposit list for the lifetime of the mapping. On systems
+>>> with many THPs, this adds up to significant memory waste. The original
+>>> rationale is also not an issue. It is ok for split to fail, and if the
+>>> kernel can't find an order 0 allocation for split, there are much bigger
+>>> problems. On large servers where you can easily have 100s of GBs of THPs,
+>>> the memory usage for these tables is 200M per 100G. This memory could be
+>>> used for any other usecase, which include allocating the pagetables
+>>> required during split.
+>>>
+>>> This patch removes the pre-deposit for anonymous pages on architectures
+>>> where arch_needs_pgtable_deposit() returns false (every arch apart from
+>>> powerpc, and only when radix hash tables are not enabled) and allocates
+>>> the PTE table lazily—only when a split actually occurs. The split path
+>>> is modified to accept a caller-provided page table.
+>>>
+>>> PowerPC exception:
+>>>
+>>> It would have been great if we can completely remove the pagetable
+>>> deposit code and this commit would mostly have been a code cleanup patch,
+>>> unfortunately PowerPC has hash MMU, it stores hash slot information in
+>>> the deposited page table and pre-deposit is necessary. All deposit/
+>>> withdraw paths are guarded by arch_needs_pgtable_deposit(), so PowerPC
+>>> behavior is unchanged with this patch. On a better note,
+>>> arch_needs_pgtable_deposit will always evaluate to false at compile time
+>>> on non PowerPC architectures and the pre-deposit code will not be
+>>> compiled in.
+>>
+>> Is there a way to remove this? It's always been a confusing hack, now 
+>> it's unpleasant to have around :)
+>>
+> 
+> Hash MMU on PowerPC works fundamentally different than other MMUs
+> (unlike Radix MMU on PowerPC). So yes, it requires few tricks to fit
+> into the Linux's multi-level SW page table model. ;) 
+> 
+> 
+>> In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1 
+>> copied generic pgtable_trans_huge_deposit() hurts my belly.
+>>
+> 
+> On PowerPC, pgtable_t can be a pte fragment. 
+> 
+> typedef pte_t *pgtable_t;
+> 
+> That means a single page can be shared among other PTE page tables. So, we
+> cannot use page->lru which the generic implementation uses. I guess due
+> to this, there is a slight change in implementation of
+> radix__pgtable_trans_huge_deposit(). 
+> 
+> Doing a grep search, I think that's the same for sparc and s390 as well.
+> 
+>>
+>> IIUC, hash is mostly used on legacy power systems, radix on newer ones.
+>>
+>> So one obvious solution: remove PMD THP support for hash MMUs along with 
+>> all this hacky deposit code.
+>>
+> 
+> Unfortunately, please no. There are real customers using Hash MMU on
+> Power9 and even on older generations and this would mean breaking Hash
+> PMD THP support for them. 
+> 
+> 
+
+Thanks for confirming! I will keep the pagetable deposit for powerpc
+in the next revision.
+I will rename pgtable_trans_huge_deposit to arch_pgtable_trans_huge_deposit
+and move it to arch/powerpc. It will an empty function for the rest of the
+architectures.
+
+>>
+>> the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar 
+>> checks need to be wrapped in a reasonable helper and likely this all 
+>> needs to get cleaned up further.
+>>
+>> The implementation if the generic pgtable_trans_huge_deposit and the 
+>> radix handlers etc must be removed. If any code would trigger them it 
+>> would be a bug.
+>>
+> 
+> Sure, I think after this patch series, the radix__pgtable_trans_huge_deposit() 
+> will mostly be a dead code anyways. I will spend some time going
+> through this series and will also give it a test on powerpc HW (with
+> both Hash and Radix MMU).
+> 
+> I guess, we should also look at removing pgtable_trans_huge_deposit() and
+> pgtable_trans_huge_withdraw() implementations from s390 and sparc, since
+> those too will be dead code after this.
+> 
+> 
+>> If we have to keep this around, pgtable_trans_huge_deposit() should 
+>> likely get renamed to arch_pgtable_trans_huge_deposit() etc, as there 
+>> will not be generic support for it.
+>>
+> 
+> Sure. That make sense since PowerPC Hash MMU will still need this.
+> 
+> -ritesh
 
 
