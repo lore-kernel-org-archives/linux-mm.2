@@ -4,127 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B64A2EEA851
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 21:25:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 86FCCEEA852
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 21:31:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A67F6B008A; Thu, 12 Feb 2026 16:25:33 -0500 (EST)
+	id 96FB46B0088; Thu, 12 Feb 2026 16:31:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 253AF6B008C; Thu, 12 Feb 2026 16:25:33 -0500 (EST)
+	id 947C66B0089; Thu, 12 Feb 2026 16:31:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 156446B0092; Thu, 12 Feb 2026 16:25:33 -0500 (EST)
+	id 854246B008A; Thu, 12 Feb 2026 16:31:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0339B6B008A
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 16:25:33 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9989A1C0F0
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:25:32 +0000 (UTC)
-X-FDA: 84437086104.12.6D45834
-Received: from mail-dy1-f193.google.com (mail-dy1-f193.google.com [74.125.82.193])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B1C0A16000D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:25:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k3FDW2V8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.193 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770931530; a=rsa-sha256;
-	cv=none;
-	b=FRQ7RxiTUj4deHrRtd09QlUKcJDX+iBhsYoU9MyT/v1T02TriQ430FukIpMbLdphtCgrzZ
-	ScGsr9EzRRrPlFcy6iRPRlfTIQwNDYBszvnUWGWjCLj2TD8KgVFqGVOR6wmIuDl+DlIR7q
-	WmoqDgxEPY5VIFN8IupsPn74y+EWfTU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=k3FDW2V8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.193 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770931530;
+	by kanga.kvack.org (Postfix) with ESMTP id 76E016B0088
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 16:31:02 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F506B7D3E
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:31:02 +0000 (UTC)
+X-FDA: 84437099964.22.DBC168D
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 18C7040019
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:30:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QngmuSOc;
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770931860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BCh0D1PgFCAnFv/ObCs8wiM+Hp+1ve3byqWcWmOrNFg=;
-	b=RASffkr/aTyay2nRJNU3XNczVcX2ko8CgO+C+rA84oKZHBpm8SNlH/lrdqXoSWIVCF8b8l
-	+d961WKOn57aRiB238rUQ/Fp6fwa22VHLX64EgZV44U1xcia4Y62hP4917RVWlMX+1S/Et
-	N2l8/ZagKOPS+goY/7JH/cdz1IgGcSE=
-Received: by mail-dy1-f193.google.com with SMTP id 5a478bee46e88-2b4520f6b32so386700eec.0
-        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:25:30 -0800 (PST)
+	bh=+1MnsyejUIguL7TdGy358PcnMB5B07knhPkkSDi0PzU=;
+	b=t+0o6p/6bKEwtyI20ac732nJ3O97NpRM60z6/zllPshlt+T3pQRcWw3Ypo3shyrlYNwrA3
+	MLO6lHzVtSm3wthiEeTw7ATji7/0tVxBWKDjMMg8QusW/+mJMRfxGYQ420vJlMwVJxM4Fg
+	IJIw+ZSXZhzEEg2uOuKaEVANY9SnMFU=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=QngmuSOc;
+	spf=pass (imf04.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770931860; a=rsa-sha256;
+	cv=pass;
+	b=aHg+AUeCIVMMT1cjgtXVCS5LE7rlVU0XSktZk49nkNtc/A65hi6cGHl1i7LX6yV/jxrgyi
+	KcjLgiVcJ0MeeZxYuPUMY3m9+Te+XEJk8uSBc4mEtiwUUvFj4DkTrM2/E8UFLoUGwa3l62
+	7fXiMIn/bTKUfLBrZm0wqOJeCfd4eUA=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-506a355aedfso53971cf.0
+        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 13:30:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770931859; cv=none;
+        d=google.com; s=arc-20240605;
+        b=LHchrNdJ149S7/TWqNeMlSXC62evJ6hAmqMYskg1mdDalcDk3GEDaeVpqs2MdmLT4W
+         mOYd6ZeIkS8u82agSDqGCfdZkB03rLlZcKM4gzcyNxWSSRgJBKf32gEBAE5AUSsbpM0u
+         mrVsph+u/Bfrl166p/0yEBmIy4aL4ZWHDjR+Ub9EKao83S3GjNOt/DjVvTedOcb33Xiw
+         hf3kAj5BRX1wVHZDOh8SraHJLLmD1EUSDYUYfwGHDvXS06dWXJdS+HFvc40DMGv3preo
+         VeK0B96SPpxMttnOOXR/DQ8jpRyFX1NrFQPyBhEDNzKJUWtm7FORjYpciAS4gNXcEUd9
+         z6/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+1MnsyejUIguL7TdGy358PcnMB5B07knhPkkSDi0PzU=;
+        fh=7HnIm/EVDe+Kug20WZcxtH+/uDPZO2jJrPNFva+8F5k=;
+        b=NY9z73VygxkQdm4zSmiTGVCxfGou9b5H/Dtm6TePIZlj7lm5xvVEVInTvG0uR4fUrQ
+         SINepa/kH3vVtfX6lAZmm3m8UZvjF6A9wT/3jIolNEuDtprxskxqqHe4WWBfojgHExbv
+         ebBC3C5oXZUNyeR1HgKXPPn3bZKEfEOVj7CJZHCxvg1eWv+DGFKD5ghspxRG1g5X2/I9
+         eqII8I7hoEy0ugDCZG/uefFx3pQOKDqA9qwC9NR5yfP0fQNFgVE6gRBErNTevNKnXwEd
+         tmq4Jz0Ppz7RKrdqAEK+BpeDsBG/YRl9hK1co76YDrNQ+nCwfKd7z77dMjnx4addY3qB
+         Mexw==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770931529; x=1771536329; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BCh0D1PgFCAnFv/ObCs8wiM+Hp+1ve3byqWcWmOrNFg=;
-        b=k3FDW2V8SW4d1CChwOLoNWXo1FA5mlxjPR8YBfI+rRcjgzztncpHZnsLwZDbGf5ixw
-         H/tpkofWN7hBfTIa9K9pnW9tu04pSDpR3MLBzxZ1CVE8ELqdjlubB7tYY5IWbuijptv1
-         htLxa8zbIM5sSJlbs4nSskWu1RUZCu6Jwrb1XuFLIrrwi1QRh9A0RiNVyYa14GcpsSTr
-         7fNe8b5N01jG4OI/C5cThJafoquadjwO0uGSwetdpg1SALyuvOJN1Bm5Rj4Jsu7Clxgh
-         W+Q/WsRnH2XIegybQg1YKWbsM1SpD98g1Qa5D66ixE7902RFLwH4yh/p7UwzVdM8hQN6
-         f2+Q==
+        d=google.com; s=20230601; t=1770931859; x=1771536659; darn=kvack.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+1MnsyejUIguL7TdGy358PcnMB5B07knhPkkSDi0PzU=;
+        b=QngmuSOcmFuzlWn5ubHgz033l0m8Nz5hbA8zr64kK6O3vWT7dN1vkF5G15NU9eGKRq
+         s++TaivufP6AkQXhNThG92ne5W8K314/AujJ7CfL2DjfCSCj+QuRXX+LNeJDgEV0paNW
+         fiG/J29dK6r4JGIVkFJ9uqZ2mOqzvHXIE7/h7J7CojvPZZRmRscpTGZpHcUTEGrkT9bl
+         ZsjigyTWByM4KTcBC2SDKmoTZwmndkRiWwyITY37CfVTjQiJ3HQshEktkYoCjPyPvPjK
+         H9powcJ5/bKu55s+TpT7QyDHPzOugldagNbfKq6H+bGpN5BRFcsddH7QoyXTzdI0xOmx
+         y97g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770931529; x=1771536329;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BCh0D1PgFCAnFv/ObCs8wiM+Hp+1ve3byqWcWmOrNFg=;
-        b=ZSGOHKDARhibYPX1QSXG5nrashGBDQpFqrheqBxCpnNQHcrg5tOH88AiUDOUZFsWLv
-         2lD/YyFyqhflNo74He0Nr6W/XkI4HB6skDgDhgYPmtyrepI4nwTjz3KJZ1blH2wvOS8X
-         ToUzI4TV+/FZGcuf6lCUfDEoZXhpHrqrqFsEPUYlq5WR2mInJFQBjNC+TqtF8KwQ0uBv
-         A6RMVZgzn/skk9EtclHDhjV5lXuzjiLHGkgtj0K/3fyWJHrZeTvzeLlHjF/DtoG4Dda9
-         AY0fcMRaOACA86kYgbNwgwKNfRCsdOXHUnV76E30ScdR3cdGxcyN8daVj5bzbl8FbvY4
-         2mRA==
-X-Forwarded-Encrypted: i=1; AJvYcCVRXl8Ywi7PyvSW4NoIiIH/ecOzZxbEOMmvAlfT1tFVh3HW2yKsKgaEgvCT2RqIHQymiIfbrFs09w==@kvack.org
-X-Gm-Message-State: AOJu0YwAaChzRyMsn6ytqzDlItDEljnd3hBjwkYa/1enT9o8K+4A5ywf
-	a5oeHarSTXZAYsPi4rr7S65vfWMkV85ymf9MwVR9ZmQ334AkRz5lvqXq
-X-Gm-Gg: AZuq6aJn7RnOYUA43z2O4VGyXmCsNNX4P+eXJ1wQ3j01hHYirx841K0QgsvlykcWn5n
-	IkLcma4lluffiAZcKE3Xmau0lRTFBZRTR4kXb4lVv9yqCsaBsdz2q6d9kEq/Ej1hKOwxHBs9exj
-	QI/mHT19kcDgZcA3a7zDpUNqTg4jq+tQJwf4k+4dvzggZVBDvWKlGp+Wu6zego40MnklncBK2r6
-	V0UdtummQRDIu7uwQxE630q/ggnICcezhHp4lXF4ZwJed+b01YNybWon5rfsrb6IBhL/U+iS1qq
-	Msc3yfEfCtHgcG5/EFEIdgXforevAJ5fH/an+xWKA+DYxJLQYUAKYPZIVMpZlkqRNkG6vJb4nNy
-	hDGWL4x7yNqkn8sNbDmWZlUAnl3WWhzBPlb7OoOndhfTmpZS5ZnK/Yz4WMT9kpy/TnCX01r0Lao
-	0skMzQ5bjnkH/4OUeYyDp9+nZN6vJMAjHu
-X-Received: by 2002:a05:7301:7c12:b0:2b7:f44a:a6ad with SMTP id 5a478bee46e88-2baba136a9cmr114756eec.42.1770931529389;
-        Thu, 12 Feb 2026 13:25:29 -0800 (PST)
-Received: from [192.168.4.196] ([73.222.117.172])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dcd0614sm4779914eec.22.2026.02.12.13.25.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Feb 2026 13:25:28 -0800 (PST)
-Message-ID: <b5927ae8-3108-4d65-bee9-be306fb697b4@gmail.com>
-Date: Thu, 12 Feb 2026 13:25:26 -0800
+        d=1e100.net; s=20230601; t=1770931859; x=1771536659;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+1MnsyejUIguL7TdGy358PcnMB5B07knhPkkSDi0PzU=;
+        b=Zd5Cx7ZQPquBhH7VFORHbeOKCHjWGeuNKiDm4aEVorV8MiRMrSDB7C3S6IaMVOBKlU
+         ghXO1jVbmHAnjQWkfqyRQDqmp063Bc6dRySYLFq8ubC375Kj0Xx8bGmdLZofhkw38Pjl
+         YDRvpmc4lsFQYIg4kUoK7lN1zG6lZnFr6obdtwoDZF5cxK2wHTLX4uk+UW9rSAxUYxqL
+         B11nW7BTk6o3cwRQpHHNKVu3CoAlzlJQFXlCPOQWnQ1aWevmZps1yEydvn1E5QcK6Cia
+         c795XVL4tzs2lmA8z9h2ctkVkQVepg2NynbSHwP6+B1WG57XLWrDjmjrzojV35fdvVpN
+         qgnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWsBvgPnc94GzJ724BO2C/hkDbj86bYZvv6qKh/H0cp/VxwzLYo+gjBO0Sc9GV/4yuXRMIU7A5bg==@kvack.org
+X-Gm-Message-State: AOJu0Yy52MZmueTtvfsoTJ813YKQLVbBSG4tdv83ADpIDnuKm4FRg4JH
+	nPlgVXQ6Kb/HDu2yto3UYKFmU0a2dfKp7c+uiB2RFMkhPUbo6EUMrxrZV47Sqs7gVvdYqVXeX8v
+	Aazuyht7OxDLaYIVPZu6c1agzVG4DqHvlhCzMIR3O6ErdOqQn+ugvw7fd/yo=
+X-Gm-Gg: AZuq6aICzb8J85K87jcRHCuhag5nsl/tcuR/CggX1+rC8rkqGXEyAQbui++DK41rmUL
+	wYnErhqeIenCshHJj6OVSn9h4x5DA+U9aYUfobrYBIa9757BHC9+jdmF5m5sFjOEOLCdU1igv+R
+	qxU2bT1t8n1r137F0hh4QufeJzkHTF3g3V0n/ZIPhtRdzGQ7iaci0A4gdl2T1w5V6tczhPDiEhZ
+	0/nX/HmrYAyzra5Bg1xzA2tcyHc0AOIwzelaxnzamKND01J0No4v+fxAqMEeUaV76GTTAmLJ9wk
+	asUG2VXPEi6vwFJQh7FjvuaurFGkvtF0XDuS4Q==
+X-Received: by 2002:a05:622a:64e:b0:4ff:bfd9:dd31 with SMTP id
+ d75a77b69052e-506a6b1ada1mr661841cf.5.1770931858680; Thu, 12 Feb 2026
+ 13:30:58 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/mempolicy: track page allocations per mempolicy
-To: Vlastimil Babka <vbabka@suse.cz>, linux-mm@kvack.org
-Cc: apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com,
- byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
- eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
- hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- matthew.brost@intel.com, mst@redhat.com, mhocko@suse.com, rppt@kernel.org,
- muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
- virtualization@lists.linux.dev, weixugc@google.com,
- xuanzhuo@linux.alibaba.com, ying.huang@linux.alibaba.com,
- yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
-References: <20260212045109.255391-1-inwardvessel@gmail.com>
- <20260212045109.255391-2-inwardvessel@gmail.com>
- <96b63efb-551f-4dd5-b4a2-ac67da577431@suse.cz>
-Content-Language: en-US
-From: JP Kobryn <inwardvessel@gmail.com>
-In-Reply-To: <96b63efb-551f-4dd5-b4a2-ac67da577431@suse.cz>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <698e287a.a70a0220.2c38d7.009f.GAE@google.com> <muuhcv22gzsr2a3g4lsu4zqsjkdbjqxn7bszh7r4nuqgq2oc5a@7jqpwr6v2vez>
+In-Reply-To: <muuhcv22gzsr2a3g4lsu4zqsjkdbjqxn7bszh7r4nuqgq2oc5a@7jqpwr6v2vez>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Thu, 12 Feb 2026 13:30:47 -0800
+X-Gm-Features: AZwV_QjMIniB--T1WOFYw8yxF2cSZNF29_haM7ARGBVWC_C-koM4OkUeUfM7p50
+Message-ID: <CAJuCfpFkHnmX_40RdjnWmicB46Miry6Bc6Lht2rfno0jopraUQ@mail.gmail.com>
+Subject: Re: [syzbot] [mm?] KASAN: slab-use-after-free Read in mas_walk
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	syzbot <syzbot+54245a237762e7cbecf0@syzkaller.appspotmail.com>, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	lorenzo.stoakes@oracle.com, shakeel.butt@linux.dev, surenb@google.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@suse.cz
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ye3jej3u64zh4pcpy6i7a51zhh57sjpc
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B1C0A16000D
-X-Stat-Signature: byyksyi97wn5dppqucfstcpbtxz4qu6a
-X-HE-Tag: 1770931530-519270
-X-HE-Meta: U2FsdGVkX195xQb+ycmqbyRgGgJ/M8Z0AqTfx8XuPs1+frLKlC4EBXBjZHgxLtkPEXc/nsceSPKTJKm9f1S4owrQrsfnpZ92OiYN23UwjxyenernNTTVFX9QMfPWR2V+/HOEzOmXotu5IqlyFP0Km+iLPzwTr8y6d30oWCeDXyJ7Hcqil39DRjbqZ1qobNhfcIjdlqfUuZ2oBO5r9Wyny/7+yJwaCtzeauS3w4KVXQQtOKUYHpvHmUJxqIT3hDx20K2dNlBLFin2vXEJl6mcnuJ8FIe0rRmBMsQ0Yec/KtSWVhi/I957jMFf16Srng8/f/wY+ZcQlJlMzj1EGOVo061npTyBhhiiCKcDVc0Z6zflStbkpXa1mmVoVwOsUEvDK24mCNkx8iowHm3pv04pfcVAn5y/LWbNjgwk5oZgT/JN3uzYPyj2MjdVPXEOh2tQSvBZJwElU2IBDS4nipf5453ziLi6M/BaZK5ujJ4fAYuCQFJqltkypFo4/AXKdCXTeqyjPpgEyZRknOVGj9058aanerJHOVKIMc3+80MOvEUK/TKPcM7j1wjwi9UlLEIQlFW/IWMqyOCdB5vwpcLFnzmiiSxSOpP3+PIhg9sTs4Kt2KylZWJvuAD4bpxTps/GGI1ifKOASWfajRx2Qz/M9o0RFRPzOgr9ETfwTeTHf2l/BhN+v6BsKlFuHq5XU8bxr9w74a8aqFRdNRubj2sX1djAbs6ogbEcAS5vNxghJtK73ILn6tMPPbse+4onalWeJZWYgx5MxbPeC5mc0dDPf2itEXIX4380Uo2KCAvTGKftVUpbPaVmgKnFSYVKS/GksWDao+QFBJp23XIrcsk6BT1YzQxZbtm8igowHMtuG+dLDmj44p8Lz6hzP7XxYQxqTSnukp6V3hMp2JkaoIVstfFKlv7BiPgdl6YIYQ6RcETY5IqH3yGPCN0sdvQCq+WA75CwVFds6qSFRPVVBqD
- 4COU0K5u
- s1nEPnARmlbrBnx4JQ3deOlVpXHBrg1O7YDygSccKfG7n/v10MscvRLIaw95SSXgF3EfTb5BBusjuKA7iw2yAWL50yXkNY5OkxDYL8PRQNJKmgweCKhHD1SzJdqo8fIKd0COfPr7XgIxIcLgIr/BuZXDWQL6DaG87IUx3Y6LuDnTrHPg+5URnbPToOqzWpJeuRrY1iDKDwbWI/MROV8/p0s4UWAUZrsvWOAwMMh5E3lC+29Y7G2+IA1BDWXYmIUvA8UhUDXpvMKaQrHrAq4be2CCHFZHRMn1OOx2PNeNwf2ijFED6I79vbaOzBmLiXAIZtHRp0C5na391Xr9Ci8v3pT3CM9FQ0bnHz0eYW02klD7AQw/YsOfHcKjW1I1xeKI5ygXunQbVG7HgGA9A7dwk4UyG5mTOJM61La/fNRhhYH0MzZG+0K2c90eMAw2bBKU4nwKSan7AOw5ily6lrZBRhQ/zlUbA68lReEU+PZTweGLLhCPkwHhJ+0xSDJBrV3aDbzkX5kXiBcj6cIljmdgC0uACYCeiCM1Ga5XzlbBXCb5jI4Sr84lzGm01cm5oyfyb8oBnYY+gaFeFnB9j9blpuQUxNJ06hwktdSQg6v7cMxtNDbWiFGCXvTQZ0zqMm9CydcZaceaVvkxF+ykgkOO5b0Wwy+Z44oH2SDwwGiu3mSfn5ks=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 18C7040019
+X-HE-Tag: 1770931859-93399
+X-HE-Meta: U2FsdGVkX19NWdaUkoBrRfze4m71YwaXJPNR2AwtW3Sqt7XeGHd5P8km7yGUSx5wSHc5oFVVYswVDk95eTaq8zwBq9eOcA4d0oktj1E6G/mEiv++BKsHVn0DXe1svT3Z3gBog4i1A+XhAAPVIIqt+rn0J6iZaKx3I2tVRUo6u+2m80I9tM1sNFNDsPV/sUkDTlbFKAMPFWSwdpS3UGo8QBkLR0Gjgu5F5Z+mq7zCPeUxHeupcXjkpIJMdVwv5fznZkd+ZyKLD1u56mwPZu+8YsIKdziSDgu3cnkg+vnJJxO4gsnNumhk/rpecR5r+J53T8OKm0bfChiry/ArM4mMkoZD8KQKry+jDW4pU06K3meE4Vs/rsP1YBIez2fF10OtsRi5z76+lq2ee2wdO2L2HIxln3UF4Mj5mbP64+ffC5ad0VFoyH5q0zrpNZLCAti0gOMHha2bglUoTf3zcuOsuHlyufBMtteXp88nRXpawoED6RQ58uG2jpLMWL0ngH/LivHXz3XuMSTzJ6p5epBbkyREQwjqpiAjKSBwsmFbATIb5eX/ZicvpVbO6LFS95NsDZ/ZF0IAznqsNOXz5kcxDlBfRoOlbBMrmEFxAB1wtHDWYrfYVFDDBc2IG/d/8CBtCn2LyYbWk1N1P2NwQM62jpTUoI14OZ30d0vbbbzrMEAtBatn0ltgXFJuVQ9JAvCkQaOw7YnXxuTcxMedYGyxfaW8T00uXsMgk4i/gFekkH38nmUKUelv/ElfBesbKTsXHSRPsGAaOv52uj05wReAAU+sYP0O9D+pZYomsdO/ojIdzZHhkci+GiXmZ71SKWtjxUqY2rSFhIkQ95a/HdZkW8w+zCItKZWZEbVCNr0vXfVhQMRJE69VHBnEAmd8E1mia8BdmMvcON30FM8YI7lVm37X4glTR91csfZhCar15K2OKA15NzJiWhllXRwDyOmbFTa1BCJq6sHqmmXNdQc
+ t/oB+z6s
+ k/E3QrC9I98yMJV6Fj23J5n/aMYxsdn1R+w/YAYtwn/rJsub4KRQl5vyOL/3iA46PRP5RleoCSEZAXGYMXEjcQVAA45N4dD2PjZWpReDjClho+jzwXq3T5LQio8EJs2m5TQ9JpFqQN7EpFj3FqdZrObU+47HbFRCvsFidnUYJUR9CLH3cRn8d1DR2h1YdVWH0Yssc8k8YtLibLC9hh7/dLtTSZ23mBHF0YIGdXNjHJCT/FtsU/P/10M6pqN6/W3kFa17n8maxv7Dt1SCsYEjGyZU+2UTPnkud+U9JyQjX14GbriuQgk7tpr+hY4sarGAkOOxATr1K9JpNBAq3i66mJTz9fvUL93uOMyyEBaBtZphZvviry3ETXk7qYYe2wn+XVZMJ+Mv1KHxBhtKnI1FEQdh9lUyqv2OnuedBuwSOSmZUN9gNue5Bbze4Xno+17Qps0Lsl5YyAcE81Qe3AivBYjJrZOn7k8H2/TkVKD8lfvxYjLKOQkxxGOTn4iIk9NunDN5rP3W4ftId9h0uGaTbaM3bGIVh2k/7GtZba/Ugz/WSV/2LIT0T7038DYRlbILVcoLeydZ4LPSGBzofeA5HApWvrXs78a0WtHGHwU/XnWbxRNUH010fUH0g01khYneP5Bo+t7VCoL9KXHFf/Khoe4jnELybFwBo5tZzhDorcdGD7FqwwTHlvycemPJXikfbmbj5x6eMkmNDZFrOtkarUGoHRecM7OJcimG4ZLpacVk0SlpG25sGQJ6dgcgBgtz28dYZuI1Wgzh5FZpsEWU74CAvFJ3ITGZrJ1tBbs0BPoYH/8ISD6KNoZhOUEpcdF0EpzWy+aQsbj47e/YYDK2d592mnc7I3zhv0uJCipubguKk/IMhILSEZhn6AajC21eIveKKOWU57osHyxMRvbrFuzrK2/ikQJ7QkzRTdYZaXqwDiAEVQ4HqHuR97xCDNVB3wTI+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,33 +141,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/12/26 7:24 AM, Vlastimil Babka wrote:
-> On 2/12/26 05:51, JP Kobryn wrote:
->> It would be useful to see a breakdown of allocations to understand which
->> NUMA policies are driving them. For example, when investigating memory
->> pressure, having policy-specific counts could show that allocations were
->> bound to the affected node (via MPOL_BIND).
->>
->> Add per-policy page allocation counters as new node stat items. These
->> counters can provide correlation between a mempolicy and pressure on a
->> given node.
->>
->> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
->> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
-> 
-> Are the numa_{hit,miss,etc.} counters insufficient? Could they be extended
-> in a way that would capture any missing important details? A counter per
-> policy type seems exhaustive, but then on one hand it might be not important
-> to distinguish beetween some of them, and on the other hand it doesn't track
-> the nodemask anyway.
+On Thu, Feb 12, 2026 at 12:56=E2=80=AFPM Liam R. Howlett
+<Liam.Howlett@oracle.com> wrote:
+>
+> * syzbot <syzbot+54245a237762e7cbecf0@syzkaller.appspotmail.com> [260212 =
+14:22]:
+> > Hello,
+> >
+> > syzbot found the following issue on:
+> >
+> > HEAD commit:    192c0159402e Merge tag 'powerpc-7.0-1' of git://git.ker=
+nel..
+> > git tree:       upstream
+> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D1304cc02580=
+000
+> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3Daaa1d655bee=
+4457b
+> > dashboard link: https://syzkaller.appspot.com/bug?extid=3D54245a237762e=
+7cbecf0
+> > compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for=
+ Debian) 2.44
+> > syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=3D13d40ffa5=
+80000
+> > C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=3D1704cc02580=
+000
+> >
+> > Downloadable assets:
+> > disk image: https://storage.googleapis.com/syzbot-assets/a42150718371/d=
+isk-192c0159.raw.xz
+> > vmlinux: https://storage.googleapis.com/syzbot-assets/4cda72c184d0/vmli=
+nux-192c0159.xz
+> > kernel image: https://storage.googleapis.com/syzbot-assets/404b09fd74ca=
+/bzImage-192c0159.xz
+> >
+> > IMPORTANT: if you fix the issue, please add the following tag to the co=
+mmit:
+> > Reported-by: syzbot+54245a237762e7cbecf0@syzkaller.appspotmail.com
+>
+> This looks like the mm is not reference counted correctly.
+>
+> The maple tree has been destroyed via exit_mmap() while
+> do_user_addr_fault() is executing.
+>
+> >
+> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > BUG: KASAN: slab-use-after-free in ma_dead_node lib/maple_tree.c:572 [i=
+nline]
+> > BUG: KASAN: slab-use-after-free in mte_dead_node lib/maple_tree.c:587 [=
+inline]
+> > BUG: KASAN: slab-use-after-free in mas_start lib/maple_tree.c:1207 [inl=
+ine]
+>
+> This shows it is the root node that is incorrect (which is stored in the
+> mm_struct directly).
+>
+> > BUG: KASAN: slab-use-after-free in mas_state_walk lib/maple_tree.c:3291=
+ [inline]
+> > BUG: KASAN: slab-use-after-free in mas_walk+0x8cf/0x9b0 lib/maple_tree.=
+c:4599
+> > Read of size 8 at addr ffff888078907400 by task syz.0.18/6008
+> >
+> > CPU: 0 UID: 0 PID: 6008 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT=
+(full)
+> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS=
+ Google 01/24/2026
+> > Call Trace:
+> >  <TASK>
+> >  __dump_stack lib/dump_stack.c:94 [inline]
+> >  dump_stack_lvl+0x100/0x190 lib/dump_stack.c:120
+> >  print_address_description mm/kasan/report.c:378 [inline]
+> >  print_report+0x156/0x4c9 mm/kasan/report.c:482
+> >  kasan_report+0xdf/0x1a0 mm/kasan/report.c:595
+> >  ma_dead_node lib/maple_tree.c:572 [inline]
+> >  mte_dead_node lib/maple_tree.c:587 [inline]
+> >  mas_start lib/maple_tree.c:1207 [inline]
+> >  mas_state_walk lib/maple_tree.c:3291 [inline]
+> >  mas_walk+0x8cf/0x9b0 lib/maple_tree.c:4599
+> >  lock_vma_under_rcu+0x101/0x5a0 mm/mmap_lock.c:253
+> >  do_user_addr_fault+0x41f/0x12f0 arch/x86/mm/fault.c:1325
+>
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>
+> >  handle_page_fault arch/x86/mm/fault.c:1474 [inline]
+> >  exc_page_fault+0x6f/0xd0 arch/x86/mm/fault.c:1527
+> >  asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+> > RIP: 0033:0x342000
+> > Code: Unable to access opcode bytes at 0x341fd6.
+> > RSP: 002b:000000000000000e EFLAGS: 00010246
+> > RAX: 0000000000000000 RBX: 00007ff2e4816090 RCX: 00007ff2e459bf79
+> > RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0002000020003b4a
+> > RBP: 00007ff2e46327e0 R08: 0000000000000103 R09: 0000000000000000
+> > R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> > R13: 00007ff2e4816128 R14: 00007ff2e4816090 R15: 00007ffc4f622688
+> >  </TASK>
+> >
+> > Allocated by task 5934:
+> >  kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
+> >  kasan_save_track+0x14/0x30 mm/kasan/common.c:78
+> >  unpoison_slab_object mm/kasan/common.c:340 [inline]
+> >  __kasan_slab_alloc+0x89/0x90 mm/kasan/common.c:366
+> >  kasan_slab_alloc include/linux/kasan.h:253 [inline]
+> >  slab_post_alloc_hook mm/slub.c:4953 [inline]
+> >  slab_alloc_node mm/slub.c:5263 [inline]
+> >  kmem_cache_alloc_noprof+0x2ad/0x780 mm/slub.c:5270
+> >  mt_alloc_one lib/maple_tree.c:174 [inline]
+> >  mas_dup_build lib/maple_tree.c:6299 [inline]
+> >  __mt_dup+0x5a8/0xc20 lib/maple_tree.c:6382
+> >  dup_mmap+0x36d/0x1e20 mm/mmap.c:1744
+> >  dup_mm kernel/fork.c:1530 [inline]
+> >  copy_mm kernel/fork.c:1582 [inline]
+> >  copy_process+0x7371/0x79b0 kernel/fork.c:2223
+> >  kernel_clone+0xfc/0x930 kernel/fork.c:2654
+> >  __do_sys_clone+0xd9/0x120 kernel/fork.c:2795
+> >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> >  do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> >
+> > Freed by task 6003:
+> >  kasan_save_stack+0x30/0x50 mm/kasan/common.c:57
+> >  kasan_save_track+0x14/0x30 mm/kasan/common.c:78
+> >  kasan_save_free_info+0x3b/0x70 mm/kasan/generic.c:584
+> >  poison_slab_object mm/kasan/common.c:253 [inline]
+> >  __kasan_slab_free+0x5f/0x80 mm/kasan/common.c:285
+> >  kasan_slab_free include/linux/kasan.h:235 [inline]
+> >  slab_free_hook mm/slub.c:2540 [inline]
+> >  slab_free mm/slub.c:6674 [inline]
+> >  kfree+0x1c7/0x690 mm/slub.c:6886
+> >  mt_destroy_walk+0xc0a/0xfa0 lib/maple_tree.c:5028
+> >  mte_destroy_walk lib/maple_tree.c:5049 [inline]
+> >  mte_destroy_walk lib/maple_tree.c:5040 [inline]
+> >  __mt_destroy+0x2d7/0x390 lib/maple_tree.c:6446
+>
+> __mt_destroy() is called with rcu disabled because the last mm_struct
+> user should be gone.
+>
+> exit_mmap() is only called when there are no mm users left, and then the
+> mm is write locked before removing the rcu protection on the tree.
+>
+> It appears that somehow the fault has the mm without holding a reference
+> to it.
 
-The two patches of the series should complement each other. When
-investigating memory pressure, we could identify the affected nodes
-(patch 2). Then we can cross-reference the policy-specific stats to find
-any correlation (this patch).
+I tried reproducing on my qemu with the same head commit, config and
+using C reproducer and it did not reproduce. I think the only
+difference I have is the GCC version I used. Mine is gcc (Debian
+15.2.0-3) 15.2.0.
 
-I think extending numa_* counters would call for more permutations to
-account for the numa stat per policy. I think distinguishing between
-MPOL_DEFAULT and MPOL_BIND is meaningful, for example. Am I
-understanding your question?
+>
+>
+> >  exit_mmap+0x5d3/0xae0 mm/mmap.c:1312
+> >  __mmput+0x12a/0x410 kernel/fork.c:1174
+> >  mmput+0x67/0x80 kernel/fork.c:1197
+> >  exit_mm kernel/exit.c:581 [inline]
+> >  do_exit+0x78a/0x2a30 kernel/exit.c:959
+> >  do_group_exit+0xd5/0x2a0 kernel/exit.c:1112
+> >  __do_sys_exit_group kernel/exit.c:1123 [inline]
+> >  __se_sys_exit_group kernel/exit.c:1121 [inline]
+> >  __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1121
+> >  x64_sys_call+0x102c/0x1530 arch/x86/include/generated/asm/syscalls_64.=
+h:232
+> >  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+> >  do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+> >  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> >
+>
+>
 
