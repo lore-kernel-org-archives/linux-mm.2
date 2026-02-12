@@ -4,135 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B829EB491C
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 12:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C894EEB491C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 12:49:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 942A26B008A; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
+	id 232876B0089; Thu, 12 Feb 2026 07:49:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8EC566B008C; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
+	id 1DCBE6B008A; Thu, 12 Feb 2026 07:49:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7EF086B0092; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
+	id 0D3786B008C; Thu, 12 Feb 2026 07:49:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E7286B008A
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:47:42 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 18EF955C90
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:47:42 +0000 (UTC)
-X-FDA: 84435781164.14.7432D38
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 61FFE1A000D
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:47:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lHionywG;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EA2496B0089
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 07:49:45 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8C9E6138B37
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:49:45 +0000 (UTC)
+X-FDA: 84435786330.25.AF0983F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A2F9180005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 12:49:43 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i7EGIJJW;
+	spf=pass (imf06.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770900460;
+	s=arc-20220608; t=1770900583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=njRlN4d6kNVdpMpfoVti+Ietl1nXYjRsUYDu/Y1qv5c=;
-	b=OnOdlGgZsZ8pJzJWwjHB06LK8qtZVWY1YtnAHXShLsCNgMwzV762HEF0QFjZ9zi5f/a3Z9
-	4o3FvyAcsdcsKiGPBT3uujhgAUhuIuch42Tx868PHAW8isf60twGOBghEQ2VgeYgASCC/i
-	+aMs0NWj8Eg6a9stLBBNu//Nn3A6M3U=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=mUo0gQwIqPNU9R/kZzDp0f/U84FL9/zC5A+f15msgTw=;
+	b=RYqbZZlppBV2WlHHONL4kI2qeC9jU61NFihaiSK1hFia4SNAsOvDPL296y6liwnmrxAcp9
+	OIRk3Jz6k9nZAhpiU4LPUBGuOzHJxNqWWmJSZyw0yE4m/dLmXH9VdYsFLtXusU2mcdS1sX
+	GDzY9M+1VPWSdvs3Kz6gJ4CaJGKm3Ts=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lHionywG;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770900460; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=i7EGIJJW;
+	spf=pass (imf06.hostedemail.com: domain of gpaoloni@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=gpaoloni@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770900583; a=rsa-sha256;
 	cv=none;
-	b=oQPponeKQF9dEI4uI+a88WU9pd33LamBLEJUP6jF2Xs4+Gc6jcI/ISTsNYNqGDf7/WndpN
-	aBTQbcYX/kwCnNflGg96AnDhFkyf6ooSBrt3xMqqXFC2IPfG1/dcecrjZsY0Yuk20rVj01
-	cvqfoZSfZ9WA4M/0CNfNf92syPvkMuI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CCB4160018;
-	Thu, 12 Feb 2026 12:47:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7E8C4CEF7;
-	Thu, 12 Feb 2026 12:47:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770900459;
-	bh=7u+Ah2ekJpSaeBE0rGk9aSzT2yJ1QfSkFI/lI5g1dRE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lHionywGxDyubOlbZk8DN8Xy578RDJsEfrSCaGl3Cp11wK07buKXQadWsIpZkvqBZ
-	 LPA3baWtj7dYXkCyCPCYEIbvjN3CpJpph8flrnIkKEEJi4nqvIiSxli0s3Z2uauNqN
-	 wGDwvOE+VrBHjcP6Y75rSdJxG7VWjGl6KTtlZ49zJD+uvHv3vTWrJ2/o3zaASbX9Sm
-	 6s1lUJ7TSE1a9VGwGzD4fQi2KDzwKmPzbgyKX9j3Chc0sjibjfVBsRD5/ZOOQcrfik
-	 zuqF4zO/rJVZ4HthPS4m2KeudY4PFOO7U6ezhzHTS7tp/CG4B8up4FZrEFUvcmfXzt
-	 +G7Y9CTiNJc5Q==
-Message-ID: <21a9b331-58ec-4c04-a09e-545ac31f2eca@kernel.org>
-Date: Thu, 12 Feb 2026 13:47:34 +0100
+	b=mWHeTiGjoMTpFR9ze0UTGtxo9gFIgLSbbpd2tbg0hwz/dHYGs9WYw4VhKLHB/1j8scl8Fz
+	EilmHo94lQ1Q5KG0bq0PegYqAsDVb+aSXaYy3x1yC+/puN0S7HzV5m4Akk7bM8tAdnV/YD
+	976OVhTNin+njfmbp2Ek0TX2q+3xZHM=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770900582;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mUo0gQwIqPNU9R/kZzDp0f/U84FL9/zC5A+f15msgTw=;
+	b=i7EGIJJWz/8TJLfV11Yf/sfpnsaIMnW7yfuhi52aGRRQusDoUpKkaHsiJhRvY45uq15l7x
+	KpiiB8q3K7jmCBYjetBmVMxUZWXQtkMTwMNQcpJwERMm2lv0H85qkBabe+MyBUuYkxRhj3
+	QoXnikZldxuPsElODAGdQlLZbeampmg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-619-ffetXpVyO_6xxqiGsxf1rw-1; Thu,
+ 12 Feb 2026 07:49:39 -0500
+X-MC-Unique: ffetXpVyO_6xxqiGsxf1rw-1
+X-Mimecast-MFC-AGG-ID: ffetXpVyO_6xxqiGsxf1rw_1770900577
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E804A1800365;
+	Thu, 12 Feb 2026 12:49:36 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.44.22.11])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1546830001B9;
+	Thu, 12 Feb 2026 12:49:30 +0000 (UTC)
+From: Gabriele Paoloni <gpaoloni@redhat.com>
+To: corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org,
+	brendan.higgins@linux.dev,
+	raemoar63@gmail.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com
+Cc: acarminati@nvidia.com,
+	linux-mm@kvack.org,
+	safety-architecture@lists.elisa.tech,
+	kstewart@linuxfoundation.org,
+	chuckwolber@gmail.com,
+	gpaoloni@redhat.com
+Subject: [RFC PATCH v3 0/6] some /dev/mem specifications and traced testing
+Date: Thu, 12 Feb 2026 13:49:17 +0100
+Message-ID: <20260212124923.222484-1-gpaoloni@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/userfaultfd: fix likely/unlikely annotation in
- move_pages()
-To: Matthew Wilcox <willy@infradead.org>,
- Aswin Kumar <aswinkumar3301@gmail.com>
-Cc: linux-mm@kvack.org, andrew.morton@linux-foundation.org,
- linux-kernel@vger.kernel.org
-References: <20260204142350.1642-1-aswinkumar3301@gmail.com>
- <aYNemlPABKnQkf-x@casper.infradead.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <aYNemlPABKnQkf-x@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wx7dqu3prr57gte7n1dok6sx4tsi3mkw
-X-Rspamd-Queue-Id: 61FFE1A000D
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-MFC-PROC-ID: g2a4uFQRGMPKtLptN6gPwNIVn42CPnTFBROIUOU9pkk_1770900577
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Rspamd-Server: rspam11
+X-Stat-Signature: 5j3rdrfx6yzgsdc1eyyfiozdpf3myyfu
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770900460-449770
-X-HE-Meta: U2FsdGVkX18I3gK85QeEH0d2ed6vT6H2oYyaqF7yWbb5qWms9fudXSxhi6DMxuRrxgKpZPk3dApWOHZtJaPvKvm9UvKpZfGbUW7h2aTsD4y4fme+4KSVn1pXoM/g6PaNzGpF+U8mcYLsg19uByGY2FDcrzbk0IRSjPfDFGTw4KpAmeP5vsKKqH70ZXGGNdChVrpt2zeBV+WWjefkunHges7N0tN0rDdYjs699oirMgHfZ/ui4KlfnVB49WPkoFoq2lZRvQAMGMkx8BCKUK1V7vakg1PBvmnHNmvi7cU2Ss6R1k0OpMFQlpVlkc+XczshuF82XsTGvVCWQsCt0MbKQbaA6bGbKvSHJI147+tIt6oyvcikb9Us0yDJFdTxRTuKRjjUf5GZAyHU2SEO4c7ZprrlwyA8Hvr3yRTp0p5EJz1OK6LQ2JQ7WFo0Ie59ALiIa/vkhLyzl0XicEa1HPcWEimf03bUdgIq6q8WxWANV6WtMxg4b031awELGXJm49bRx4okKvWL08PyledcXcg+hOFq7H2fg+bdS0Gm7zzDrp17ZTWn9otbt7t+IBlZffbrvULM2YHkrZ2cXSeiWdFbYh1VjjEuWXaLNlN/lhw3TkZTdH+lMRFtiMGxZjG9cQMXIJnzWaEWwwXl/V6/p0vMyLx0M0WmS9pp59ihmG22JtmJmfFsbpLB46lIHYTQbATfiAsdIF8bx9GNZkmanN29W+uHz9/6EvNj8wR1x1jJymo3q7bQSjp0Xp80fvcD/JNavikRYpMvbT9IeF18/ZFMljYG6fKjfgiVehl3gOZdB6Y+NMTcBvZUn9msSKGw951+GQKpFuXNGkL4MRqzQE4/IDCxMPbPVFbsL6HQY1fsU+J97RsN5LkaOwEW+89phPwAsfoitVTd8kBTi1EqZdjlHKwdASHHKOUTJOICZBlmQDbctAaXka90AL3C5TfSxfBs4qdDRufP8Gm/UqWWAnt
- iRIlY7ah
- qSiRtIAQ7w/ETemIIkvWFfaV3RZCHVCqbfSqjrLlhsInmVbWTHiOHKPECRfRQ70dwhDae9i4/U04S5Uz5eEJwWC8JWPipzddNgTHRvptNIc3gXU66WOGAohv8Zdmw5H/gG6Iq/s2BVDC36pUXivTsiz+AScN+ZUgQWrkUwHPQ7S0NdmQVUOpY4LYs4FLLFDJvfzvv0ERXJm6PAmbqTr/dHAbya+WVX0P2YXxkBjct6Bukq22AWXlKbtu/HPOC4IHNcW0Uor0hYFyfXe1Md+UyYp8UHFrvPlUtCejQ0SaJZduQDF0=
+X-Rspamd-Queue-Id: 8A2F9180005
+X-HE-Tag: 1770900583-325339
+X-HE-Meta: U2FsdGVkX1+uRLHTsu9xQ58dHDDIBzObvVxoiGnUsvwEsqrY1NJXpm9BvA8GDeMh16CGQSFuppW185CDU2MAGLPxr5cWmve96IdaqepVskmFWo1wGu/ZSlK3xhV+7qFCPTfxE2HbTSH2BsqtJEOX8WiJ5zg/zhWDNHWtTtwGfng1WXnC6gZwgfdX+iKCGz29gvDfyP3gPXuqohnJb11Ack0/0Xzgxi0XzgYmw9VhFckx274yQ+nX/hULvm/TCidaFWtXuplfZc6iWEDIEJLjJHNMyXI6/VWK1FEM+WL/41flJPCT2dNLs8rs/pWN0mC0SQZTDUgcl3wT0WY3BwaqtLUFaAdJNRe94FNh+31pgoVTvZnNzmKY8Kun6w5OFniD9hK3bggOZYpIrQ9USirBV6fIC7GrALW0DQ5TCqMIES01ej41hhOTBRzEfl4eoWkerz0GDr0ZuwMULC/D7sOCYUkKfshJVPZehu1/jn7cp76ySQrBr3VQ0LeUBDMRLVfKyTAph78IekDnLvDPchXQ+MTKJ9JovwnNVUbc45N6Vb1utQa96YsYA9EsK31Ixf8wO50seBjHe8wlizjlis/k28NQJeBdD6fxxgskk8vi6GvTXxwVagn/kqFrNELaZGuGLfa2CrjFDsNHgd+I7T7wqvp+I1jNX2IIrTh6muAgZ5dV8oBbWJFO6ruqrObDMyOAsdnf+viN/TnrJhXsaiYVPzP9ruBAb5f6HRI9LbU32aD9nfUWWZWYPFxHuzIl9RnvQOz+O63RwLkXPAWIm/ETN9REx9DRT3223A4Xt88L4rQT10ktNe5DZDHRpRJm0KKLfXzE4K34ji3pdx88oyZZ/cZUGZDWvwxNCve+p5Y5dMpr4Xxrer/YZkhROfzcT/hidu1gBwxlMMVGfNpd/Ke0428doR4Jr+XXjNmsZ4aTSJM99tQI/OTmlJvxidEwOhqy1JHHlpej4M4lk0Ymgna
+ s85KZ06s
+ IWuvKKt4UHxnhoSmtFbdvttMecZflHErcu8zAOZjfjXHvhglR4aTk5eJsswJF4gAkMOj89+2bqbrvLA+NYRd5RaqTNoQ1i6UCfh5wKK+ot7h3ekN+PcILL51PRakJm03BYzeKoeqFJDqfKWIQtmGyZQRE0G21NG9qwp73QAl0rqJYyKr0m56VtcB70oGEKC7wbteLhdKtkJvz5D1GCHRA/7P9HA6jkRNM+pqhbyqZOiN87Q89iXLEe8cbY6cJ95l4ytdWkBNtmQaTQw2TuzpTf0YH8vRgjyXWE8jkgmOVloA1WrhXpqyObg/LXNbPcdMUniuFacbHb80sH3aGhsystJE+r3l1ajS2US6jXnCMq34F+2c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,31 +115,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/4/26 15:58, Matthew Wilcox wrote:
-> On Wed, Feb 04, 2026 at 02:23:50PM +0000, Aswin Kumar wrote:
->> All other userfaultfd paths use unlikely() for the mmap_changing check,
-> 
-> No they don't?
-> 
-> $ git grep mmap_changing mm
-> mm/userfaultfd.c:               if (atomic_read(&ctx->mmap_changing))
-> mm/userfaultfd.c:       if (atomic_read(&ctx->mmap_changing))
-> mm/userfaultfd.c:       if (atomic_read(&ctx->mmap_changing))
-> mm/userfaultfd.c:       if (likely(atomic_read(&ctx->mmap_changing)))
-> 
->> This is a performance-only fix - the logic is correct but the branch
->> prediction annotation is wrong, potentially causing a minor performance
->> penalty on the fast path.
-> 
-> Can you measure it?  Bet you can't.
-> 
-> Honestly, I'd just remove the likely() annotation, not change it to
-> unlikely().
+RFCv1 [1] was an initial proposal defining testable code specifications for
+some functions in /drivers/char/mem.c. However it was not clear how to
+write specifications according to the format and wording used for them, plus
+tests were missing.
 
-Agreed.
+RFCv2 [2] proposed a guideline explaining how to write such testable code
+specifications and also added kselftest for read_mem, however there was
+reluctance to accept the proposed addition before having clarity on who needs
+it, who is going to maintain it and for which APIs in the kernel it is
+needed.
+
+RFCv3 (this one) proposes kernel-doc API documentation according to the
+current doc-guide for some APIs of /dev/mem introducing the concept of
+traceable specifications to KUnit tests.
+For read_mem() Kunit tests traced to the corresponding specifications
+are also introduced, so that in case of test failure it is clear which
+specification is violated and it would be easier to review incoming
+patches agaisnt the intended behavior of the code.
+
+[1] https://lore.kernel.org/all/20250821170419.70668-1-gpaoloni@redhat.com/
+[2] https://lore.kernel.org/all/20250910170000.6475-1-gpaoloni@redhat.com/
+
+Alessandro Carminati (4):
+  kunit: add visibility helpers for static inline functions
+  char: mem: expose devmem helpers for KUnit testing
+  char: mem: add KUnit tests for /dev/mem read_mem()
+  char: mem: add Kconfig option for devmem KUnit tests
+
+Gabriele Paoloni (2):
+  Documentation: extend the 'Function documentation' with expected
+    behavior and constraints of use
+  /dev/mem: Add initial documentation of memory_open() and mem_fops
+
+ Documentation/doc-guide/kernel-doc.rst |   19 +
+ drivers/char/Kconfig                   |   21 +
+ drivers/char/Makefile                  |    1 +
+ drivers/char/mem.c                     |  211 +++-
+ drivers/char/mem.h                     |   17 +
+ drivers/char/mem_kunit_test.c          | 1323 ++++++++++++++++++++++++
+ include/kunit/visibility.h             |    2 +
+ 7 files changed, 1584 insertions(+), 10 deletions(-)
+ create mode 100644 drivers/char/mem.h
+ create mode 100644 drivers/char/mem_kunit_test.c
 
 -- 
-Cheers,
+2.48.1
 
-David
 
