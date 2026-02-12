@@ -4,100 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF5E3EDF020
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 03:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DABE4EDF031
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 04:51:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E7E26B0089; Wed, 11 Feb 2026 22:24:08 -0500 (EST)
+	id E278F6B0005; Wed, 11 Feb 2026 23:51:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 092546B008A; Wed, 11 Feb 2026 22:24:08 -0500 (EST)
+	id DAB4C6B0089; Wed, 11 Feb 2026 23:51:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F00F76B008C; Wed, 11 Feb 2026 22:24:07 -0500 (EST)
+	id C8D656B008A; Wed, 11 Feb 2026 23:51:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E03CF6B0089
-	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 22:24:07 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6C35614064E
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:24:07 +0000 (UTC)
-X-FDA: 84434360934.16.170C556
-Received: from SHSQR01.spreadtrum.com (mx1.unisoc.com [222.66.158.135])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6603B40006
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:24:04 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=wGaPsTk5;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com;
-	spf=pass (imf01.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770866645; a=rsa-sha256;
-	cv=none;
-	b=SGJ3OTgJADkfag2UnJ/+L/B/spqb7Dl0FXcyD3HVoMCS/8xk3UacTVqQpVaYNA9F5s6BPd
-	QS/XYyd8gaN1iftiSn1cald0zO1DoA+FFLdbydB1HSMboyF1l7VY/GPauSlO8mf75lzJ0x
-	dszQu619/0kzM/BWcb/DklluwJYhvbU=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=unisoc.com header.s=default header.b=wGaPsTk5;
-	dmarc=pass (policy=quarantine) header.from=unisoc.com;
-	spf=pass (imf01.hostedemail.com: domain of zhaoyang.huang@unisoc.com designates 222.66.158.135 as permitted sender) smtp.mailfrom=zhaoyang.huang@unisoc.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B51BC6B0005
+	for <linux-mm@kvack.org>; Wed, 11 Feb 2026 23:51:32 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7B5FD59AB4
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 04:51:32 +0000 (UTC)
+X-FDA: 84434581224.03.0E12154
+Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C794E2000A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 04:51:30 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F1ADgQcx;
+	spf=pass (imf13.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770866645;
+	s=arc-20220608; t=1770871890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QdCMFrzogHkQ8spZQwepKtQEezu1njOGBCSt6rWNZlg=;
-	b=L+6ARVV46ahraxhOPMzzIFgfNyxlyf/UF3l1fF9cFRS1uPRghStfbTCkAb2eIxoBYkUswu
-	bXQbV0HMIzi0c3woycalTp0p1F7TRbaA8a7pSjN949aJbcPl/eiQuXropQhUF+OMlZOiom
-	jBLr0SVvm435JOOMmT3w3iAxGIFNstY=
-Received: from dlp.unisoc.com ([10.29.3.86])
-	by SHSQR01.spreadtrum.com with ESMTP id 61C3LR8E064229;
-	Thu, 12 Feb 2026 11:21:27 +0800 (+08)
-	(envelope-from zhaoyang.huang@unisoc.com)
-Received: from SHDLP.spreadtrum.com (BJMBX01.spreadtrum.com [10.0.64.7])
-	by dlp.unisoc.com (SkyGuard) with ESMTPS id 4fBLDM17bZz2N6JsN;
-	Thu, 12 Feb 2026 11:21:07 +0800 (CST)
-Received: from bj03382pcu03.spreadtrum.com (10.0.73.40) by
- BJMBX01.spreadtrum.com (10.0.64.7) with Microsoft SMTP Server (TLS) id
- 15.0.1497.48; Thu, 12 Feb 2026 11:21:25 +0800
-From: "zhaoyang.huang" <zhaoyang.huang@unisoc.com>
-To: Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>,
-        Michal Hocko <mhocko@kernel.org>, Rik van Riel <riel@surriel.com>,
-        Shakeel
- Butt <shakeel.butt@linux.dev>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        "T . J . Mercier"
-	<tjmercier@google.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>,
-        Zhaoyang Huang <huangzhaoyang@gmail.com>, <steve.kang@unisoc.com>
-Subject: [PATCH] mm: remove '!root_reclaim' checking in should_abort_scan()
-Date: Thu, 12 Feb 2026 11:21:11 +0800
-Message-ID: <20260212032111.408865-1-zhaoyang.huang@unisoc.com>
-X-Mailer: git-send-email 2.25.1
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=qoLkvcAtx2WTrKtSPpoAsMeiJqeenZRH0jOzHw3uF5Y=;
+	b=UtG4Ph0q7NXZ/e3DK9k/tHpp2/GRMsrKvhSXd/d/9WlfciINupURbYkdUGoHjDB4YeWQ0r
+	61ZgUkyhyP5K0vLWRUpF3IM/01LSqa91GapXPoU+WOasTCveWMKaPfCfiBOu28bcG0nJH2
+	4zny03KJkGTo74QER+JaBvsJo0jm8OY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=F1ADgQcx;
+	spf=pass (imf13.hostedemail.com: domain of inwardvessel@gmail.com designates 74.125.82.173 as permitted sender) smtp.mailfrom=inwardvessel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770871890; a=rsa-sha256;
+	cv=none;
+	b=TlQKjMooiruTlpuL6YZ+8C/xgvvVh+cb2IOCniZGWpA5L5TI4cnnnlbM15yp5oCRRYel0z
+	VqgH+SezH2rjY3XIPCVEikSBoNTVHiJGxXtkv6g5cidNQV+ebCVVvkOtkwUwXZ+YcrUq6z
+	4Ka9107RZ+/mNM3R8vlgMJcFku+IdJc=
+Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2ba94dbf739so2640697eec.1
+        for <linux-mm@kvack.org>; Wed, 11 Feb 2026 20:51:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770871889; x=1771476689; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qoLkvcAtx2WTrKtSPpoAsMeiJqeenZRH0jOzHw3uF5Y=;
+        b=F1ADgQcxCSQzAWdjJvsLi1yrLzq8RrrGJh/0FoMN9C15g0METogsNXrv42C/Wh/h+q
+         sP3+hY1wkFrdfgzIRmS4RViTka4pLLNytffscQYEwqAdiUyASQMpOmpVa2DJvbte01e5
+         ICrU1bTx3EkACRgAu+Eg+IxxM4qVoXGQ3/LJm9CnswI9BpYGjxrd8ZyM1ZX7fOM/IJzT
+         gCezO21xOFHwNm584R81lfeZhh3bvJmV5tPrAf8YFi91XM/ehlUFLmRnyCJpOyFSaUMJ
+         pswqYM00ry7s+BkIwGt+dOFNAfAvj/6RL3GFP5HyB1in32wq9Iw4FWIZqJm/80gD7d2f
+         qLGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770871889; x=1771476689;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qoLkvcAtx2WTrKtSPpoAsMeiJqeenZRH0jOzHw3uF5Y=;
+        b=Aoew8ijR59Xzqcb9OOWUq2ygMKeEuZLVp8jYyrPGAujOG0smeLmBH/Z22H8NP9MYCI
+         Smc2xFc1FIxJHBLLUQkYm501QIU212/L2FgZ4CYfb6LxpcTDyd6+zek7nGtKAcoREb18
+         ECllgQe4t9oYdsay+Af66IcueSzhxweifQAvqU+dEdP9g7iTSJiWsVr6OZfwS32Mc3V9
+         XyEv8HshQYZ83WpBUyRWOEcpT+I3uVU4WtkYFq2BaT19DwD4Bal0DoIh++LYK9kYhgbN
+         N4xXfJOS+Kv5nmf+LDI6zdh3AKtKtQiOMkWlfgfGyfZcJ8xkBeglkQEhIOABcsduUxeJ
+         9/MQ==
+X-Gm-Message-State: AOJu0YzqIEu5WevdiGLZtC0EeTqnIoClC28gqBjfmNsOupB0/6rGVkRd
+	BozcECDThuEVIU5umoQoa1+FzZkVoc4pLiq+XBY380nURoHyEMqS+Em/prqUsQ==
+X-Gm-Gg: AZuq6aITTIsfkgnBJen/+spwkVhsQEgFo1oeSk4DOigK7Wi7pUeOXCrFaxXi2OULQcY
+	loQ9kE7U61RjBITf+6eiJc6JyqCIXe9JxBsEpNOgEWy5S5pASFa0fKHuQYuPKhEPEtCgaOeNZIe
+	fQsYr8UyHvaDA3Yv5qNGYXdAdk/HSIxVTFlony3+JcWpS/xcm33zjx5Bb4G8zVuGIPOf8WFYiiz
+	PaN+MT52zTCy8mxaOOv58emQshU37hG9GPrY5QmUiObAy8smxafiHs5ctrHLWfnNcGq0ndZ2iRI
+	M6d2Z/mp2WUUH4bMmM76iD8iGuc3w+Vc3D+7nBrFLFqu9Gf89hwjuh2a8zXWt0jTI4emf2jC4qk
+	FYw+b97PZkg5NZx7+m1HR3TEGdO6DZE08vl60KwUOQ8seHjXrDQAG/fxyZibrACBZYtfyXTjwDH
+	FLCsd3f44VZUZp7Ev317nWBll8a4Du3MkPF8xI7zyXM/SB/QJdeQ==
+X-Received: by 2002:a05:7300:1907:b0:2ba:a3f2:958c with SMTP id 5a478bee46e88-2baac4769bfmr331153eec.0.1770871889305;
+        Wed, 11 Feb 2026 20:51:29 -0800 (PST)
+Received: from jpkobryn-fedora-PF5CFKNC.lan ([73.222.117.172])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9daa6151sm2878699eec.0.2026.02.11.20.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 20:51:29 -0800 (PST)
+From: JP Kobryn <inwardvessel@gmail.com>
+To: linux-mm@kvack.org
+Cc: apopple@nvidia.com,
+	akpm@linux-foundation.org,
+	axelrasmussen@google.com,
+	byungchul@sk.com,
+	cgroups@vger.kernel.org,
+	david@kernel.org,
+	eperezma@redhat.com,
+	gourry@gourry.net,
+	jasowang@redhat.com,
+	hannes@cmpxchg.org,
+	joshua.hahnjy@gmail.com,
+	Liam.Howlett@oracle.com,
+	linux-kernel@vger.kernel.org,
+	lorenzo.stoakes@oracle.com,
+	matthew.brost@intel.com,
+	mst@redhat.com,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	muchun.song@linux.dev,
+	zhengqi.arch@bytedance.com,
+	rakie.kim@sk.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	virtualization@lists.linux.dev,
+	vbabka@suse.cz,
+	weixugc@google.com,
+	xuanzhuo@linux.alibaba.com,
+	ying.huang@linux.alibaba.com,
+	yuanchu@google.com,
+	ziy@nvidia.com,
+	kernel-team@meta.com
+Subject: [PATCH 0/2] improve per-node allocation and reclaim visibility
+Date: Wed, 11 Feb 2026 20:51:07 -0800
+Message-ID: <20260212045109.255391-1-inwardvessel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.0.73.40]
-X-ClientProxiedBy: SHCAS03.spreadtrum.com (10.0.1.207) To
- BJMBX01.spreadtrum.com (10.0.64.7)
-X-MAIL:SHSQR01.spreadtrum.com 61C3LR8E064229
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=unisoc.com;
-	s=default; t=1770866497;
-	bh=QdCMFrzogHkQ8spZQwepKtQEezu1njOGBCSt6rWNZlg=;
-	h=From:To:Subject:Date;
-	b=wGaPsTk5TV4H4PErTPLlAMsGKYec+H7w4lynxRq2fSfwqbZuK6dIg1nwXzTmIm+sf
-	 xCm+uT4IIc+01tdSUVmU95iP5sJvJ5C+Q3OVO/gMMKL2fd3VLS03P2XZPT/GqOyJA4
-	 Uy4t29o1Sbdvgs72C4XEmadrRX39Qk4hBeP0WMpEUZZxv653sr+d9EH/eR3gZQpJIm
-	 7jUoTyLpjuiwXxI3c1uJveEypX1FUsurgt7eRYFINWxPedJQuN09HFgHDG1vy/rEPL
-	 77mRLKdIe3o4+DQUEIGf8gfBGnT56L3XVd8oqnMT0EIDn6VsLNuNlE1fMLQ0gRN3a7
-	 U43E7/iII/mLg==
+X-Rspamd-Server: rspam11
+X-Stat-Signature: wyhczpq9egxyrs3aypj4em4igzbinuij
 X-Rspam-User: 
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6603B40006
-X-Stat-Signature: 893hranojuasqbmyu7pdttahstua7hez
-X-HE-Tag: 1770866644-315925
-X-HE-Meta: U2FsdGVkX1+kLMjWHCc9edbJsFQ9K/vzVPcBYyo2XdvVqLwTCikRMtz0JP+osyd9+cftP1D4MXOshRe4F442nIPUZoaqD02SkRZExpFaIAljqqWnWcf8VwCTc/5c9lfMqNKNUEEPRo4MgMEwOTEJBx83DfmeofRM+HODO2grzxCb2tSq5JHRuloZw0fI+QC1GNDmj/9rHMlMQRNtOMgCx+L0GgylcJOqI/Vd0T1RX0OdTZ1hIS5ZeJwhamym68T1K/G70v68wi7f32046yMzGllHA1twYqbAgCzzGodca6yAHMwfdO0L1eC0vDwbOCtlmOCwPVGjvLy84XhqLXqVh08wLMKI+JkNCY0+8owLcCXDahZ/ryqSA+jhv8rd/Irw2FZ9UretSf3vTryh3iu/oWfTzFKWU43SNRd8am+tj7zCAMG443PAIUzlDPffoAMV20d63jSCA/WGVsjG+3+crPYcOQgCw0vRqSZUCPCeqKm2Mi93ezrf2wpUqzdZL7qBgsPRnli3FOLVR8iYahWHRW7KYarOgxA7dCG5YoCWx5/RuIQs5ShysKOXElRuoFytF4aH5L+cR6oaPThbbnI+ZriHf/qBASXFKfjHu3EtiSQDMPUYVe8yKgE/96cLD777bJ58CBm53NAJ+Gc81yLTNqqKMxt8cekSQsKrYCX6BBejgti0uoYMoXXzsG9faJNmqncKEN2El1qRPfrBvajC99XL5zF/536HtfVjFvkodFdABu0kzJUIyC+vpKc7z4I+pd0bsJGFXpbKS4+zAUJdUMHdgEiIA7zbnHvmdG6edrUrgRo6qNiTFyzuvSdEXZakd7G4SbJMgt8CGNjL6nhdA+wnI0+0PoWKgXWAc8flibS7gptQsPASYvm+L7P5gcHBwVupQL7dzrfvmiLYyY7qu8RCdZB2OLsOHu7s1MeaMAt4l6ruA0g6QqjD+fBfRmYzaGYaFHZNdDsVoZSOijA
- ndBEIlNx
- DShqUvFUJaNE2V1xhGfdM6qmt+XqtdQ6rFvUKhUQWnyhzhVbDftqe+7AehfigE08liT/zBgelXvcBQH1LXTCfZv650RrbLzCP59HIhQWJLuIUiuMQMO2/GT/HHWF7UfiiPdjT+T+JqUvafx15fqfk/ukW4mwNRFtI6Gmfyenmgiq6Q4pgmpxQJH1pdwSAXHsSOADpBy2g097Xv9mcw1g6bscFYlsB5mYiv6nET+Ac+IM+guwlDM9xoZbQynPpt1Z18hYSy09FdR+xrN51W6FV/w4ZNkYL/KvMlQJhggR0casn74171Z8IYmOKJNcGMyG43Zi3JL4nnjVvshZGYinmmdzWtBwINn2lGH6D0+y9l7SH4Etu4RIYbEa8OBEQcm/V7tOpCD4v5LoCKTcrLSQ3bCAb6nt4Dr4D8/dvsRpDGiHJMqIUmov8GYYj+w==
+X-Rspamd-Queue-Id: C794E2000A
+X-HE-Tag: 1770871890-725697
+X-HE-Meta: U2FsdGVkX18QoZQRwsLzWacgbGmqCas6DMxKDDc4hTtHnPeSbNfV5mbhJTRugKB663HrzE/J4zPwYAA4k0n4KRCKFhmfeHVNwKbOgBDW1TiLTACjEZiyojZ6lu1CCLejo/carpSXvnhUzTpIGX668r2dxpE+ozTqGhtifnLkXpyL/M0KUYMEo72l8Twy9U6m7iOKGHs0/7eUrg0Vorf/rbPGw+JIPvMuIiJid4xkXSIde/hkmTFA0TTk0njgeJVdhWzV1pk1btzh2dxFx7Octo48M16hO7WdsyWEHP1sdJV+reV7DQ/+pVoG4XZtHNYtHp8UD1UkDWmkONueMW98P9L2DNmz4tGnon9t3xGkyAMhFVbNRei8R0hvgokgQNOJo4m4jjYgpU2h0mrGBf9l0uLTTMJSD6aaKozCf/QNFKo9WQQb4k5Fahyl6aOxIPwrVvnl6aij892JIER2MhebLH/voyufDdZlc1W56r0acJKupt5UksqosC/4q0/DTElnX++G2onwYdWdhM+anbyQ0NSwOLNJJGegh5xt13gyLrl63ao7DZJMJwCLbzyj4JiU3LIfwTiDevFjw6hLFVUiGGP/ZHApfo16YFLMWPPQxqRpUPhwgu7QS7y+jwFBTuITo7Omhk5oMX0tjR0WgF1rML76KQ0A+ykXUtuSqvyFMyrw7/aAV0Ak87kwm3AFcvpUf50BkoALFPmZUbAlppG/8X6DmRN4e8JqEHKCfWl9GXEgXUpW8duo7Kap23CBjFEzIC50jsFurAXXMozHhG2oTdeR0+CnqtPgJEzwOuw+PyHjuMDYTyhyPzvYEeAaLbU+YAE3hdft62q/bRKNWjCeIM79DWLltw6FOZcA27HZkm9Eu8zJk4W64Whm+xs/ZmMnchWZlpN6qXeLzUAwMYC6oHnwVB2BtCkjvzzSLzsX/IlIZdl4M0LprROiKI+8+GSDrI4ckjtrSBx8qhwit92
+ NK2E6lIb
+ 8s0ckQO7UElZ15Xk6n0+obJLr0HdKqFTsAORr+85X3//lQLJZDHVfD/IOHTrpSqvu9Gak5YBQenFJM/ZyT8olYxS486CBPGJCY8Bdxf036f9tOB8RPT4skm1K7RUdXUbE3s6zXoRs0WkEJO+waCM3jrIuTnVfaZ7E/4h+pIYOD8z52UU1q/4W4Ov0Q4wXNoG9Q2lFH03gTzGX+N8w0fzcFYzf/JQ6WjX6ZMNkpkmq5YHGlZXHqg42ilcap+VxPro16MQVgE2E0spEqCA+FrXFEp0PRY1rpvelfH0621sujH3UFMlGuzcpvi0S9GFvtnXDQUzn03ync41TaPEmwFp2fdZM6bc/87i1vHRPOCgQWa4p8v+Xx1gGfxaQj6hvOp6KuOKLZa84XNnNURYIB5eRfWplKmkCtQ0mJQArBklYXf7g0/Vc3w/bS3H/oSeDqvBYuEZzd6FMvX9RwGIfC1wjlHH7o9NOJrMfp0mtybw1cdc6Qvht7KOqQDAA8G3RC4VVFd8S8AQAYWKpyKDuGgX9ABQMDoMX7kxmv9JYUhDPoCZTDxA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,43 +144,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+We sometimes find ourselves in situations where reclaim kicks in, yet there
+is free memory available on the system. One possible explanation is that a
+NUMA node under pressure has triggered the reclaim. This NUMA imbalance
+scenario could be made easier to diagnose if we had better visibility.
 
-Nowadays, ANDROID system replaces madivse with memory.reclaim to implement
-user space memory management which desires to reclaim a certain amount of
-memcg's memory. However, oversized reclaiming and high latency are observed
-as there is no limitation over nr_reclaimed inside try_to_shrink_lruvec
-when MGLRU enabled. Besides, this could also affect all none root_reclaim
-such as reclaim_high etc.
-Since the commit 'b82b530740b9' ("mm: vmscan: restore incremental cgroup
-iteration") introduces sc->memcg_full_walk to limit the walk range of
-mem_cgroup_iter and keep the fairness among the descendants of one memcg.
-This commit would like to make single memcg's scanning more precised by
-removing the criteria of 'if (!root_reclaim)' inside
-should_abort_scan().
+This series aims to provide that visibility by accounting for the cause and
+effect of the imbalance. First, the addition of new node stats allows for
+tracking of allocations done on a per-policy basis. If a node is under
+pressure, these stats can help reveal the cause of how it got there.
+Second, the stats associated with reclaim are changed from vm_event_item to
+node_stat_item. Having the pgsteal and pgscan counters tracked on a
+per-node basis reveals the effect of any pressure, and allows us to quickly
+narrow down the affected node(s).
 
-Suggested-by: T.J.Mercier <tjmercier@google.com>
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
----
- mm/vmscan.c | 4 ----
- 1 file changed, 4 deletions(-)
+JP Kobryn (2):
+  mm/mempolicy: track page allocations per mempolicy
+  mm: move pgscan and pgsteal to node stats
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 670fe9fae5ba..9d900be478ea 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4832,10 +4832,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
- 	int i;
- 	enum zone_watermarks mark;
- 
--	/* don't abort memcg reclaim to ensure fairness */
--	if (!root_reclaim(sc))
--		return false;
--
- 	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
- 		return true;
- 
+ drivers/virtio/virtio_balloon.c |  8 ++++----
+ include/linux/mmzone.h          | 21 +++++++++++++++++++
+ include/linux/vm_event_item.h   | 12 -----------
+ mm/memcontrol.c                 | 36 ++++++++++++++++++---------------
+ mm/mempolicy.c                  | 30 +++++++++++++++++++++++++--
+ mm/vmscan.c                     | 32 +++++++++++------------------
+ mm/vmstat.c                     | 33 +++++++++++++++++++-----------
+ 7 files changed, 106 insertions(+), 66 deletions(-)
+
 -- 
-2.25.1
+2.47.3
 
 
