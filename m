@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31C3CEDF055
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:23:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 672A5EDF055
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:24:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BB0E6B0089; Thu, 12 Feb 2026 03:23:54 -0500 (EST)
+	id C8F1F6B008A; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 83AE46B008A; Thu, 12 Feb 2026 03:23:54 -0500 (EST)
+	id C70566B008C; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 760CF6B008C; Thu, 12 Feb 2026 03:23:54 -0500 (EST)
+	id B89C96B0092; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 671436B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:23:54 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 07B3DC165B
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:23:54 +0000 (UTC)
-X-FDA: 84435116388.21.EEF6AF9
-Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 47BC680003
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:23:52 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TDKuVggx;
-	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A81E16B008A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:24:00 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 47609140731
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:24:00 +0000 (UTC)
+X-FDA: 84435116640.24.5F018FD
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	by imf25.hostedemail.com (Postfix) with ESMTP id A64F3A0002
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:23:58 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HJ0OIcoA;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770884632;
+	s=arc-20220608; t=1770884638;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=crYbU+ThqI1KboSIh+EReNJtidB4zxhxhtyNUFlO0rY=;
-	b=f9ZMDPaD2Yr/VnIxnHdQb1S06J8bGklEtQ4dRsy9m1ThnqS2t2+l4//EKoXKM9ZAKYyl6u
-	j0NJyXMx+a77JOklh4TmVDCXX/cch09LpiKF2OA1aCfcvEGxeZGPKneyDsXsGAVWi1QjXy
-	6RkqIJkuq9st/qf5MNwcDGHiqU+entQ=
+	bh=6JEGc5je/wM02pWehmFOl3sKJ7z0YxNGSRtnUE/RPCI=;
+	b=jaG0JBPTLTX72lceV3Rao8FgQunos/SpS2eo6PPA2Bna6Zr6WbhdesfKhWlSR8/Crj+ELW
+	Zi0BELXvatYNuxMrimIAb3bJuk3dkqYE5xRl0VdA6bOLBOYZwm1e9o7S8i32/EXLwmzyTv
+	3H+We18a8M4YLzN9yYUmEYfisX1WNPM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TDKuVggx;
-	spf=pass (imf02.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=HJ0OIcoA;
+	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.186 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770884632; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770884638; a=rsa-sha256;
 	cv=none;
-	b=kjfknFVKnwzZdWewfH/9DdtilwGXXxgmEkoDdRM44LLi4SjdIay7mXPsDWHpK0UV6pdpn7
-	qMkPVTU607hgqMa27GaPy6DfP/dlCt5sTryOuvx2QNIdpYu1+6gqsWNvWtRn3yybWOq/Ez
-	btdeAu8eK2LBwPOIFl2D60HiqYax0j4=
+	b=vzKfJcGQnM00xhLgX2bvoyNCfuR/YvqYgTM9LTYhmmsvLg618FqOuPCp5mgGTe/c6A5ySF
+	Xpt8HqtDIhoXArSeahcMh5N5MfnoMwldu64XNGHcWfrshIMAZeFhRolZG5oM9xAQSvA8cA
+	qng3XVC/Bdx1AGaTMGYclx+q/BC5pfE=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770884630;
+	t=1770884637;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=crYbU+ThqI1KboSIh+EReNJtidB4zxhxhtyNUFlO0rY=;
-	b=TDKuVggxscYGSctBSiDWdBR38fcvT+Z3PytbqBFCVFWT9qlg6PqmrB3xUNFaLH/XhUnQ0V
-	/cNlB+mkcXUIsmjYfm600iLmjAGnPJAZe3pq7FPg8OY0WRq6FSaPe0IjxmUObaf1pjtqLO
-	L5j2gXzjnb1A/e/bJWzIh5DBJ9GmIzg=
+	bh=6JEGc5je/wM02pWehmFOl3sKJ7z0YxNGSRtnUE/RPCI=;
+	b=HJ0OIcoA3oOP4U35yiAgKDYaQEY7TuX0qZLIDHgEFaDpBmCxjWW09jCTIjMQzH8JMX5S9F
+	xrjh3BlaT9jvCMCDi44I3clcJ/Li+Q3ml5I/JJo7Viwh8gqwadztOu8XjVc6gL933c7r54
+	OCbBi0K4vo3sxio7V14h6YbB0bfqkCg=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Johannes Weiner <hannes@cmpxchg.org>,
 	Michal Hocko <mhocko@kernel.org>,
@@ -86,22 +86,22 @@ To: Johannes Weiner <hannes@cmpxchg.org>,
 	linux-kernel@vger.kernel.org,
 	bpf@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf-next 1/3] selftests/bpf: Check bpf_mem_cgroup_page_state return value
-Date: Thu, 12 Feb 2026 16:23:14 +0800
-Message-ID: <042df9438d9e78bcd66f1fa0e7043b9ea8cda96c.1770883926.git.zhuhui@kylinos.cn>
+Subject: [PATCH bpf-next 2/3] mm/memcontrol: Return error when accessing kmem with nokmem
+Date: Thu, 12 Feb 2026 16:23:15 +0800
+Message-ID: <733422f72ccbac94126ae67b9e49f4a3d460b76a.1770883926.git.zhuhui@kylinos.cn>
 In-Reply-To: <cover.1770883926.git.zhuhui@kylinos.cn>
 References: <cover.1770883926.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 47BC680003
+X-Rspamd-Queue-Id: A64F3A0002
 X-Rspamd-Server: rspam07
-X-Stat-Signature: jp9qi975999751jb4qcqqahq5bq8ryde
-X-HE-Tag: 1770884632-946767
-X-HE-Meta: U2FsdGVkX1/0jOeklf1Pr0e8IHXwvTOjnvV3CGncOXk0cSpYYWaiXAmv+L5uNNxrJ+uiLmUopWbFgBRuZcj/7eH4YKxwWHd2QI6vM+T9g9pWPd6pW7mxNIoa6GyPESxKF99ofEBRWiQ3TQiUSjAtKNBlEKk94hB0z6c9MaAmdG+XHuithr1pYpEsgDQfrNW4vB8TFCg06yDA4QIyn3HCGE0u2J49teK93xW1MsfMEyOHpfBYrR9+tNpaPLWquTjOjS75ZIa9RqNSQTiFVdDiYogYom2uNnW7a8jB+jjU4b+BEGiNgbCC/P7MZIgbeDgaREPE1+dPrx2KqsqrVqhow0h52XR2I5nWz3n+HuAc9+9WdBFGqgv8M0hb8IVinBt/xIY2Jeq4d8y/Hc7DgJBATtB4STL85zjOEoQ4KSHc92pJ8c/UQHNVzicgh5uPfifDeNwzVLpEGg01gB8AtJYdRCY7JmoaLvKckfsuCHGfFxCSEVTZ+1qGEzRIckMGYPGxqRCzcssfU5t6989iN3G4Iu/r0bpLkobR/g5RiaPmPKQQBUMTxynySfcpagRNGofByqwuaNMNzIAMf03/ORI0X3/cP/2Msruqnv+A9cW+OkG4qNUdQpRQKAzQeuraLuNj4YMODge+/SBX844V0265yRXq9Bwafv4Sl9Np3hIIIqBqViQ9ECWMEWRN2pdpSmF2oho4la67qocVi9cPgvARCovmKJf7tTM+vHmxNQ8bOXjp0IwRvw3QrKPnLzQSzyMXHffZSpLwLwBm1lDTb/NWodmXw722CuQEGja+0UP6WkCFwMDsmFhwSqvyVjfa/xHOIHfRME761mUGA9fFHjZRAuVoA7dKMJJZQ2tKq8m0m77BQSYBdPZyBlh/EbodaoX+2YF3iQnD4aCFVjCw53db4A7c6BlQ8s6aztDnCX1cBoQVILEvsVkkQIzOBtqb+MLVwAcFyOPBWdH13wCYYFB
- SUsZ702Y
- JYaaoiBbMf06dWOIw731SBB5YPxHyjbd0O0WjHQTyYH5mtX40vutE5NlJR0yoFhdbhcmtNAGgQWvXDozKaV6gywFZDfs9Y9cbskiuO5r99tihXyuFnqy4B5PilXp9jPPYpWVtklnrTG6oKWJAG30gws/Fr1G7AgyboW2EX3dKydCYNpi66KelpgaIkVMqgr1GT2FV1KJBrncgOPlknbcnbRtCl7ZYGjoU6ZUvA3gGTb7mkTf5nFUG2t3Mu9Rw19MxsG6Z5wc4YTFU71b2yjCXMctmiw==
+X-Stat-Signature: ycryx4jzjitppbbpyn35sne1uxeqwn14
+X-HE-Tag: 1770884638-216284
+X-HE-Meta: U2FsdGVkX1/KXFgRnVM5HKFVDK0MUkaXd+B+wypvk0n/naRyUyL7XMU7ClbSG+nN4YiiBxjFvrqm054kaJJsGAQq28pTTH5cXzZq/VBehe6pFGOLoLGucbZKlum1zQfCm07Ibdgg5TKFnlgbkIRrtduJIAoLXddR95Fr9WuibDjoat0IXcbPb8NHpAz1L2AurSJIkpJuShkDp+Nr174PAWoOw/+xzUcZ8GHANMPmxnDiP5tJuipvMOZS33zP5S8K3FstkTGe8oRfp3A9bw59fAeVrq5KUFNNTJ4PO+rzO3aravgSqtotoOJRAQbsk0RH2lLRFDDzb16ZuPOz+3bqdD3SxrZyXMmHCEz5mPF4ymbna20yrJ+0qhiQE4bavs/negeLM0Z8SO0btxN+tydYaD8hJAdl5IbL3Nz08ONoaQva0JPoSNF2XKyddhefc+PR4rQ3Un4cOfH9Yuz5z8rTJELWKy3O+ZkvmE/Hp0b9BjqtufnZo8P02iUbpqa3CLnfoweKbCRQtiV8kt542wZVe7UR5FcvcgFtcO03gjONjbUrCxZlZoAa64JvmiFupPeDGI/HVA0/Vl9XNDIaHno3EXfj79GWZ8kuM7NRhv4p8em4fW17jQF17BVTZ4SLEQJKaG8PKLfYUQa5NRPKP2usBy2UAxCUqcux89QninWsihZGyBikZDDETRdvXCKvcnsGNImHgZlqa+f47LmAAqPqs9OxdTFKSOqZuDllNrp0HLg4d5Jk7FhfsrdxAtxL4nzDYOkhoP+PqCb41B937hhtb7ZMizAGMetQeEm/XLcpd1p3oUHJ/wgHBv7hC4WygKPZFbS42WopE8i0BfX0Qwf9S9usq86t/TrLdSf/1RbWwAEHUFIK7ztvI/IF+Cr56UK+4bs7HH/ThdX58cLLf5mu+adLOhWTf6pW38n7hqPmEBmTYhIoANoBw0y7r8AEMMzAS2UoIbSUCafuAaxKs89
+ xVVMrlr8
+ yHMCs3cF+VvAhv0QmkZ9T3Tr3SfFP3bln5irFK7VMoFh1yqoVc8oZDHR/TrqsZkvcsa4y2d4WU47KMnOIjEbL6L2hkuOHJhpk4F6QXQntG3TTkcKob/CuKEkZ5WGMEIWeFcerK8dKajF8S2fafOI/joEHKME+CweXjGWzpy5+Z8HGh4oyt7En/cjfYyjkqQMGWN3YGlSVzAoKL+zDlfJmtHkuk3mVUJqlansPIIuSIfuaLsS378Nk/F6ehqISoE+RvbNqouK+yP6tfkQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,77 +112,38 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-When back-porting test_progs to different kernel versions, I encountered
-an issue where the test_cgroup_iter_memcg test would falsely pass even
-when bpf_mem_cgroup_page_state() failed.
+When running tests on hosts with cgroup.memory=nokmem enabled for
+performance reasons, test_kmem always gets a value of 0 for kmem
+statistics.
 
-The problem occurs when test_progs compiled on one kernel version is
-executed on another kernel with different enum values for memory
-statistics (e.g., NR_ANON_MAPPED, NR_FILE_PAGES). In such cases,
-bpf_mem_cgroup_page_state() returns -1 to indicate failure, but the test
-didn't check for this error condition and incorrectly reported success.
+Since BPF programs cannot easily determine whether kmem is enabled,
+add a check in memcg_stat_item_valid() to return an error when
+attempting to access MEMCG_KMEM statistics while kmem accounting
+is disabled via cgroup_memory_nokmem.
 
-This patch adds explicit checks to ensure bpf_mem_cgroup_page_state()
-doesn't return -1 before validating the actual statistics values. This
-prevents false positives when running test_progs in cross-kernel
-environments.
+This prevents BPF programs from silently receiving zero values and
+allows them to properly handle the case where kmem accounting is
+unavailable.
 
 Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
 ---
- .../selftests/bpf/prog_tests/cgroup_iter_memcg.c     | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ mm/memcontrol.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
-index a5afd16705f0..13b299512429 100644
---- a/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
-+++ b/tools/testing/selftests/bpf/prog_tests/cgroup_iter_memcg.c
-@@ -53,6 +53,8 @@ static void test_anon(struct bpf_link *link, struct memcg_query *memcg_query)
- 	if (!ASSERT_OK(read_stats(link), "read stats"))
- 		goto cleanup;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 129eed3ff5bb..4d8419623d1c 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -667,7 +667,8 @@ unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx)
  
-+	ASSERT_NEQ(memcg_query->nr_anon_mapped, (unsigned long)-1,
-+		  "bpf_mem_cgroup_page_state NR_ANON_MAPPED");
- 	ASSERT_GT(memcg_query->nr_anon_mapped, 0, "final anon mapped val");
+ bool memcg_stat_item_valid(int idx)
+ {
+-	if ((u32)idx >= MEMCG_NR_STAT)
++	if ((u32)idx >= MEMCG_NR_STAT ||
++	    (cgroup_memory_nokmem && (u32)idx == MEMCG_KMEM))
+ 		return false;
  
- cleanup:
-@@ -88,6 +90,10 @@ static void test_file(struct bpf_link *link, struct memcg_query *memcg_query)
- 	if (!ASSERT_OK(read_stats(link), "read stats"))
- 		goto cleanup_map;
- 
-+	ASSERT_NEQ(memcg_query->nr_file_pages, (unsigned long)-1,
-+		  "bpf_mem_cgroup_page_state NR_FILE_PAGES");
-+	ASSERT_NEQ(memcg_query->nr_file_mapped, (unsigned long)-1,
-+		  "bpf_mem_cgroup_page_state NR_FILE_MAPPED");
- 	ASSERT_GT(memcg_query->nr_file_pages, 0, "final file value");
- 	ASSERT_GT(memcg_query->nr_file_mapped, 0, "final file mapped value");
- 
-@@ -119,6 +125,8 @@ static void test_shmem(struct bpf_link *link, struct memcg_query *memcg_query)
- 	if (!ASSERT_OK(read_stats(link), "read stats"))
- 		goto cleanup;
- 
-+	ASSERT_NEQ(memcg_query->nr_shmem, (unsigned long)-1,
-+		  "bpf_mem_cgroup_page_state NR_SHMEM");
- 	ASSERT_GT(memcg_query->nr_shmem, 0, "final shmem value");
- 
- cleanup:
-@@ -143,6 +151,8 @@ static void test_kmem(struct bpf_link *link, struct memcg_query *memcg_query)
- 	if (!ASSERT_OK(read_stats(link), "read stats"))
- 		goto cleanup;
- 
-+	ASSERT_NEQ(memcg_query->memcg_kmem, (unsigned long)-1,
-+		  "bpf_mem_cgroup_page_state MEMCG_KMEM");
- 	ASSERT_GT(memcg_query->memcg_kmem, 0, "kmem value");
- 
- cleanup:
-@@ -170,6 +180,8 @@ static void test_pgfault(struct bpf_link *link, struct memcg_query *memcg_query)
- 	if (!ASSERT_OK(read_stats(link), "read stats"))
- 		goto cleanup;
- 
-+	ASSERT_NEQ(memcg_query->pgfault, (unsigned long)-1,
-+		  "bpf_mem_cgroup_page_state PGFAULT");
- 	ASSERT_GT(memcg_query->pgfault, 0, "final pgfault val");
- 
- cleanup:
+ 	return !BAD_STAT_IDX(memcg_stats_index(idx));
 -- 
 2.43.0
 
