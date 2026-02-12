@@ -4,82 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 966C6ECD6F0
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AE82ECD6F0
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 08:46:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E15DB6B0005; Thu, 12 Feb 2026 03:44:24 -0500 (EST)
+	id 6F7E96B0005; Thu, 12 Feb 2026 03:46:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC4116B008A; Thu, 12 Feb 2026 03:44:24 -0500 (EST)
+	id 6AED96B0089; Thu, 12 Feb 2026 03:46:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7B0E6B008C; Thu, 12 Feb 2026 03:44:24 -0500 (EST)
+	id 59D986B008A; Thu, 12 Feb 2026 03:46:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5A806B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:44:24 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7C9FC5A358
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:44:24 +0000 (UTC)
-X-FDA: 84435168048.26.AABDE3E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 994B1140006
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:44:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jHj8cwZU;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B4C36B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 03:46:02 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B5CAA1B405D
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:46:01 +0000 (UTC)
+X-FDA: 84435172122.16.1C91479
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 0A68840004
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 08:45:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJPFMO6B;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770885862;
+	s=arc-20220608; t=1770885960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UTuLD0NRsdMObtunY4YwTBRtXGkzq2yALwbLzqMDPTk=;
-	b=RswMBkjLfqozht2Fosr2o2rYldWcu+NpSmyJ03M2D7lfwJ8STa/o/DZuaz7/LH27GqO8VZ
-	U6fzU+seJoCRNdzVWYtdDFGxK4Z8ARA2s+Iu72GjxyCdW2J7Ql4p1/h0O334NAQHqfSyfP
-	Gzviz+UNmOZME6Q/pqrQuBQtWlfzzdo=
+	bh=MpgRTUIfmhwPsV1DwWIesVOYjg+7JsGFp9FpmcgXtT4=;
+	b=pGUU+e+i/2WEoHpotf1+hZKoFsASX03RQcWbyNpRVtP4HOd9VpgnVQhY/yoq7kAEOEbB5q
+	Tw7dgamp7meaCtzNrDO/HI0M9FLb6/svcZz5j7fSRDwRlbO9dfPPDyE6ZRrFtXcRr4KSV9
+	AOaqlhWQNdI08IkWL2qlqEP8oWji9g8=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jHj8cwZU;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJPFMO6B;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770885862; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770885960; a=rsa-sha256;
 	cv=none;
-	b=JwCdXtcOLX/jOeIiuePO0iZ21G+nWhbj3EFa+x5tzv3vzmyQKdBaay3uQZPpXnYDJcTVIv
-	pAwJb963CsvQN7ioK+7BwxlYA5Cl0GnojyILRNyLd2d5+szeVsFhmDRHB8U0TRWZN8Qhcc
-	f/I+1dxmNvS+BRXOBoDzgQ+kMBV7RZw=
+	b=ZrN6ZnPYLllpTqidcw2/Vn04STtKBfbBvKOaLZ9Jxzhyi66A2q9yZ6YzjkmRh/CeLcwC32
+	5tAOlz769q+Vak+gc30OgDZIm3dYQ9odm1agGzmOGVZJLCY/A7IzCi7IpsXJDOQ7HFd5mx
+	RNO37qP/pQpvkD1j/W6UkSG46MIeytQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7E8AB41899;
-	Thu, 12 Feb 2026 08:44:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB23C4CEF7;
-	Thu, 12 Feb 2026 08:44:17 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C5A36013B;
+	Thu, 12 Feb 2026 08:45:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8494C4CEF7;
+	Thu, 12 Feb 2026 08:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770885861;
-	bh=khUwfsZrCJeC8y4xyRj4Ta7Ac2JXcbhabpcmZ5/6mug=;
+	s=k20201202; t=1770885959;
+	bh=/tzkdOLmLMilGxuBdRUu3mmednPk/rfApN1g63hFmME=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jHj8cwZUzt0P3rDlFMaOsNHcHv1Al+LMyPc/k6q6ykwZi4kyKp3s1y/ZtiNbK7KEE
-	 TFX+QBPCAfcJUJqGriUD1eyQbifA4Fj6qBN0q13+DAKcIU9C9G3LHSEO3ScJzArasX
-	 5n4M4Z69hgXfG1xyXt5jmCNA3Vzbxny9+APfwTaPcspnnCgbSsI0PueSqFc/Mza6yH
-	 0q8g+w0waGkFqNxgmLQSoy1fYxaAbXN2lYaoh7oJ3kB77lKXS6KYHzYxt1nhEwrbhF
-	 +Sc8r/SWET+rWXG5aqU4pzhnX7RN1S5uF1g0kFWD2Q7RwYo+sdMDkHW5NLzXdacZ2o
-	 E1coVw02xqjXg==
-Message-ID: <3571cf8b-9fb3-41b2-a402-a8537ee2c399@kernel.org>
-Date: Thu, 12 Feb 2026 09:44:13 +0100
+	b=XJPFMO6B+XI3ruG3pcxZDzH88tinRjsM+hw+GkAr3xewaegnZJRRv5c+XnhAUA1oQ
+	 IbWP3/qLogeraTc7i0nHHHTMU6cIM+67Xjs6btHJ1vLsQGLuDWhXnICddPN9q82At1
+	 A6Hd1FvKgJN9aaBWuPzqr+Kv0GenITOFBWpQqnVycP4M125W5PIIf29duLens4EzUr
+	 ECV4WyXl4xTlDt9wF9V0OJHVSA220imynmQi0qFbVhCjVteufhTt+ppa7m6FCt09zd
+	 Dc7HBHOxaTG2o2ORacpcFWSyR1PKpybytvR2l9g8EdRLqvN9ziMtC90gZyrHZF0n9n
+	 GdN5Y7JiZuZSw==
+Message-ID: <1a82c86e-4d3c-43ea-a729-0b11254264f5@kernel.org>
+Date: Thu, 12 Feb 2026 09:45:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2] mm: khugepaged: make scan loops suspend aware
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260211031512.261127-1-senozhatsky@chromium.org>
- <104bc764-5a20-4ac2-95a8-b31f41255766@kernel.org>
- <jftqdosilzfkd4ku6pjuevkvuwmhlqtua62jwsmmgdfcseitb4@gopt2xzqhyrk>
+Subject: Re: [PATCH v9 2/2] mm/memory hotplug/unplug: Optimize
+ zone->contiguous update when changes pfn range
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Tianyou Li <tianyou.li@intel.com>, Oscar Salvador <osalvador@suse.de>,
+ Wei Yang <richard.weiyang@gmail.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, Yong Hu <yong.hu@intel.com>,
+ Nanhai Zou <nanhai.zou@intel.com>, Yuan Liu <yuan1.liu@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+ Yu C Chen <yu.c.chen@intel.com>, Pan Deng <pan.deng@intel.com>,
+ Chen Zhang <zhangchen.kidd@jd.com>, linux-kernel@vger.kernel.org
+References: <20260130163756.2674225-1-tianyou.li@intel.com>
+ <20260130163756.2674225-3-tianyou.li@intel.com>
+ <3cb317fa-abe0-4946-9f00-da00bade2def@kernel.org>
+ <aYjmcZ4hg9bNbmiY@kernel.org>
+ <6ea2dbce-c919-49d6-b2cb-255a565a94e0@kernel.org>
+ <2cb55d76-4da7-4ebe-b23b-0abbc4d963f3@kernel.org>
+ <aYsaBkMecDG595Xg@kernel.org>
+ <b3777d0e-0b25-45bc-b387-e67fe5a0d328@kernel.org>
+ <aY2QEr-iYBukIkB-@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,17 +133,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <jftqdosilzfkd4ku6pjuevkvuwmhlqtua62jwsmmgdfcseitb4@gopt2xzqhyrk>
+In-Reply-To: <aY2QEr-iYBukIkB-@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ae5uhtz7xe5k8k76uyr5fkxykomtc5m5
-X-Rspamd-Queue-Id: 994B1140006
+X-Stat-Signature: aegncoodwexkdn9tm7opduu5458j1bn1
+X-Rspamd-Queue-Id: 0A68840004
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-HE-Tag: 1770885862-793762
-X-HE-Meta: U2FsdGVkX1/AUcvw6VQVK003u9/Lh2j6hAzONgSPiDV4SUqRueBH5blH9+ebco8ISKXpd2XQgrldrzsafS7nR6TpYPtBC/Wvim8MDRaEJwG32Itb3O7A6OL7Vm7JFKsy+945lf6H9TOdcI/FLJmWdlyhq5n6YTSatRjEdo9XexqWou4g5qNm6KOU/KvRKKq0Tj7bHeWmQradxAM2bnGMYqg6Ia41W0RZqpxgaZwUUpyjtVFPMBG3xOyY8rFKgCSlLQrMIloOnGS/QWuiAuWO5AoB9bKae+ck1CaL0FJMTW6smkUEBvl5F+mPc9yMqktVtmmtG4smRhtlY0z4jisJV5pHWYfMnioydNrvLIIHiLs8tNbAT4kNyX+6e4eglfoTzAZSjdhI1xprepseAdjLpuCCsx8YnihSp3+f0d0nU923sN4mQiE0uqloVUlWZoXal46WrKe1AIuOL1m3IjY/tFqLV4jhFARuUxhXoscUyYCCPBFtGHGMRdlgBBuXgME0ZqCDB8Q8uCgI8UtNiVLoem74eXZzJcay7ZKkUfrXPiyxqjySU2g6hHt+qsuKv+0unj1zHQIzDFfXPWamv2nrAR7R2zDtLaAQUWgf3HeUtUT+Lf4oUsNargp1oAiy/w7sENqkNO2MX0Jm9BkZClWcY29xo5O2NvooVuT+vZ0hLEpidcTjsfH/eOdzBzd1S1FNwTuN9FLaEYaENM5DolkJY1ZPrpRbR3Fxse3ME3t4g/eIxsMHyrVt01aWtL0WyPd5rW/QydnS3sxqsZ430KR8VoMsyjFzXhge1FcORh+t1dvGWEElEthkKYFt154SUGzAog56FNx2pmNZ5lJMgPaTuQvSnG2lOXPCs956QDH0DG0GSRFw+y5sMnQnc8O7TQrVzKLJMUu1dwm1cZG4OMjje7NGClLep+ILT9Cz/zCY32XFcMPs1H0wOCO2fPgZZKuA3jM6LD89r6yggPrHU2f
- z2Da2+GO
- FLUQojKjN7oH3++vhQVbIGWSEABxeoAzL2Fi+o1hon14S1oBXcpaDEvcI64sA4MvpKjnnzpjglmF4bTxxtPNslC36EOkvTDJjJX2WeSbruPy+jR8YLjSNv5US4jjVn7ACYfov/WcGfOb3QPLEj88fIZP2jaEg+cAHBi1+/aQ7tuMZPpuRDd85wvQMXb92tZ32U/VGJ912FJ1geSjCjBF5kBxWMcKOVfxaxD0FMxiluYWKtYb2psVu1P90+b7rriYCJ8rhMHVQnkVraxEEF2y6Lw8MAIYUgINYWn/XYlbjXGg0O3v11I2aDEEHqw==
+X-HE-Tag: 1770885959-247721
+X-HE-Meta: U2FsdGVkX1+S4Vcurl7Iob0w1hwFBlb3qQnnvkRXfMhBCVSUHEl+nn2ADPggKkYY/G/CjjMEC9/DnF/MCUV1qXbYult3W/rg0J3S9cImhSIu3qu5Nwk+S64EBtwibvpAva8svXPkcB0Tay3EQahrNaTdXQxOMZ3RhKMa8g3wpRgzSSJVplGyw2OJYViOnFuykl/sI3oUbycaXlGuBYUt6c//Asgrm8ic91Yg7DQ7CRmmcC3mSpoYTZLxmZbcm7wB1J7ZyAB88bEvTN0rTgNqFoAX3HouW6UGL62rK/6SUhxej7q/ni+Df9ug23vEZ0CuJPMfOr5ZyGqVK0Bsr5Clrn0vmSrO2mA3d9reMWGuIxy22dv4zHX+zb+H7Z+ZVyV0hFSWbg/gRbM5mOyhm8dh17R1yhf8sRTWDM4C8vaHrlgysSLLQjpWVaSjiDxavVtYRAxfcWNqd3BQfGjLnprHYec2rmFjhJhQcgO51W+vxq8Xes4wEDLhhp+2ukY/hE07koN1rJSj0/1t6fpbGLqfWoJ7ur/pd5Ir0gdlHpR2OpZAD2nRDZjiLMmN6sGavpCKSJ7K6HZloDnQ1vj8h6Q+cpRaXMphK4FyUbJlDHm6SB7NAHjrSxdzntUX9h9p/9a2zI1fntYarjU0OPA643RdXlYHZkJLJPjHNNuQ4s0X7OXDD7SqAML/c7GPEy2R2KEZYO2ldwkbuwsCzjgRQGIcmGtk4UlN7l2dBF2e5kmaLOka/vBQKA4ddMcfhLc3gm0G7fGDHEcWdxcd1q7vYC5HFEY1vIMww/5x8kNvNY7ZkUNXSLANYb2raB+g2RYy2iImzbbuZOmTTl/HNhcan7eBcdgsK91reH+ju5gehb/+gh6xEJAA+fXECT0+l0q5l2x4FWBZ2/BaHUc83JMh6JsVkPIJfOkTxdZYIVawvaQ4zrLsdIQWn/jjCrCqCuLS8wpCbfEe7qb9hhoJtdPv/Jm
+ vTsJgbzH
+ hW5g0X4w3ttLBRSJDTa09SVfpyTi6gr2+Zixpyw+fyeFHx/dZtXjpry5CFoI7BwIZyA2dThJZzx1+WC7A3I3jY6gjUCOrsYAfmb4Zzv/nuwwciI5l40UjThkFaTvc5EYYQtrA0CMxQXOtRO5NWtfrOH4MozWigQj2rkYywchqt/EbHbZCVSqvkNzNFu9ISCYXOQvddPNbi7Og1pi7TkLyd6taIi6l+AaahfXCbVogLQB+KYHeEFkBq838eZIYBpjjAaJBFigc8EWtKe0lgdCriJbcUMs+aNjtNxA/hNvnhOa6pGoB93tx9+O7Y/+57DRjbIIJruRSXYFu8lY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,111 +152,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/12/26 07:32, Sergey Senozhatsky wrote:
-> On (26/02/11 10:50), David Hildenbrand (Arm) wrote:
->> On 2/11/26 04:15, Sergey Senozhatsky wrote:
->>> A number of khugepaaged's loops, e.g. khugepaged_scan_mm_slot(),
->>> are time unbound, which can become problematic during system
->>> suspend:
+On 2/12/26 09:32, Mike Rapoport wrote:
+> On Wed, Feb 11, 2026 at 01:19:56PM +0100, David Hildenbrand (Arm) wrote:
 >>>
->>> PM: suspend entry (s2idle)
->>> Filesystems sync: 0.003 seconds
->>> Freezing user space processes
->>> Freezing user space processes completed (elapsed 0.003 seconds)
->>> OOM killer disabled.
->>> Freezing remaining freezable tasks
->>> Freezing remaining freezable tasks failed after 20.004 seconds (1 tasks refusing to freeze, wq_busy=0):
->>> task:khugepaged      state:D stack:0     pid:1345  ppid:2      flags:0x00004000
->>> Call Trace:
->>>    <TASK>
->>>    schedule+0x523/0x16a0
->>>    schedule_timeout+0x23b/0x6e0
->>>    io_schedule_timeout+0x3f/0x80
->>>    wait_for_completion_io_timeout+0xe4/0x170
->>>    submit_bio_wait+0x79/0xc0
->>>    swap_readpage+0x150/0x2d0
->>>    swap_cluster_readahead+0x3be/0x750
->>>    shmem_swapin+0xa7/0x100
->>>    shmem_swapin_folio+0xcd/0x2e0
->>>    shmem_get_folio+0x237/0x580
->>>    collapse_file+0x247/0x1280
->>>    hpage_collapse_scan_file+0x26e/0x380
->>>    khugepaged+0x43b/0x810
->>>    kthread+0xfb/0x120
->>>    </TASK>
->>>
->>> Make hpage_collapse_test_exit_or_disable() suspend aware so
->>> that khugepaaged's scan loops can terminate in a timely manner
->>> and let system enter the sleep state.
->>>
+>>> Maybe pages_with_memmap? It would stand off from managed, spanned and
+>>> present, but it's clearer than online IMHO.
 >>
->> Do we want a Fixes: tag, and maybe backport this to stable kernels?
+>> offline pages also have a memmap, but that should not be touched as it might
+>> contain garbage. So it's a bit more tricky :)
 > 
-> I can Cc stable, but I don't know about Fixes - we are adding something
-> that was never there, not fixing a regression.
+> Naming is hard :)
+> But I still think mentioning memmap there is useful :)
 
-Cc: stable is only possible with a valid Fixes:.
+pages_with_online_memmap
 
-If we're fixing an issue, we usually try to identify which commit introduced the
-issue.
-
-For example, support for freezing was introduced in
-
-commit 878aee7d6b5504e01b9caffce080e792b6b8d090
-Author: Andrea Arcangeli <aarcange@redhat.com>
-Date:   Thu Jan 13 15:47:10 2011 -0800
-
-     thp: freeze khugepaged and ksmd
-     
-     It's unclear why schedule friendly kernel threads can't be taken away by
-     the CPU through the scheduler itself.  It's safer to stop them as they can
-     trigger memory allocation, if kswapd also freezes itself to avoid
-     generating I/O they have too.
-
-
-
-Now that I am looking through the history, I find:
-
-commit b39ca208403c8f2c17dab1fbfef1f5ecaff25e53
-Author: Kevin Hao <haokexin@gmail.com>
-Date:   Wed Dec 20 07:17:53 2023 +0800
-
-     mm/khugepaged: remove redundant try_to_freeze()
-     
-     A freezable kernel thread can enter frozen state during freezing by either
-     calling try_to_freeze() or using wait_event_freezable() and its variants.
-     However, there is no need to use both methods simultaneously.  The
-     freezable wait variants have been used in khugepaged_wait_work() and
-     khugepaged_alloc_sleep(), so remove this redundant try_to_freeze().
-     
-     I used the following stress-ng command to generate some memory load on my
-     Intel Alder Lake board (24 CPUs, 32G memory).
-
-
-I wonder if that made the issue more likely to appear?
-
-
-Interestingly, we also had in the past:
-
-commit 1dfb059b9438633b0546c5431538a47f6ed99028
-Author: Andrea Arcangeli <aarcange@redhat.com>
-Date:   Thu Dec 8 14:33:57 2011 -0800
-
-     thp: reduce khugepaged freezing latency
-     
-     khugepaged can sometimes cause suspend to fail, requiring that the user
-     retry the suspend operation.
-
-
-So it's a recurring theme.
-
-
-Given that we only scan "khugepaged_pages_to_scan" pages/ptes/etc. before going back to sleep,
-I wonder how that can take in your setup that long.
-
-Why does it end up taking something around 20 seconds in your setup? How is khugepaged_pages_to_scan
-set in your environment?
-
+Is a bit mouthful, but that shouldn't really be a problem here.
 
 -- 
 Cheers,
