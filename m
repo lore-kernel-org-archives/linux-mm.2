@@ -4,95 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC594EE3693
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 14:44:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD912EE368C
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 14:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 356476B0005; Thu, 12 Feb 2026 09:44:17 -0500 (EST)
+	id 50DAF6B008A; Thu, 12 Feb 2026 09:45:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2FC836B008A; Thu, 12 Feb 2026 09:44:17 -0500 (EST)
+	id 4C4596B008C; Thu, 12 Feb 2026 09:45:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 200C16B008C; Thu, 12 Feb 2026 09:44:17 -0500 (EST)
+	id 39E006B0092; Thu, 12 Feb 2026 09:45:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BC566B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:44:17 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A499E1601C8
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:44:16 +0000 (UTC)
-X-FDA: 84436074912.25.BB6F3CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 045AF180014
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:44:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XkxyqDfd;
-	spf=pass (imf06.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BD786B008A
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 09:45:40 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C647FC09D8
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:45:39 +0000 (UTC)
+X-FDA: 84436078398.26.9707806
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9367DC0011
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:45:37 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YUwmYWU9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IFwzuFnU;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YUwmYWU9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IFwzuFnU;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770907455;
+	s=arc-20220608; t=1770907537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wsRfq4JQHV9EhUjp6BlIKRlXnA1FZ0qmUD3BISX7I1E=;
-	b=26kQ8IoFRj4B2saNbx58Xx4TxahAFoZDweDDiK1YaL8krwhGqtiz5/2ajfAFvSsWiE2Pv9
-	XH7ntxtKh/rU0hfop2F4r1+cz1lpcXeF38QwZFdzKR7Uo6HSZsEB8zM7OVRzcEYsayc96X
-	0WZu0cQbpBpRWkJQ5cJSQZHho2Fw68o=
+	bh=8yWiZpt7mAXel9iraTjJZeMPphqi5GEr73S5STPQUnI=;
+	b=LRaWkXL5lSaAXSsAFlDnMp6IXgYq3R5Ue5fzWQD2WFloCjcf6gUys8Hwsw9itlWfnYLzwL
+	ZVgwLt7FvM6th+ss7DJa0xgVcRSLMKVdtyjClktL/KvwMirMe07X+o+tCPKeIVXNyfO5TT
+	+3OcCeC4OcD5u2KiGFtrI8ZDiJSOp90=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XkxyqDfd;
-	spf=pass (imf06.hostedemail.com: domain of thierry.reding@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=thierry.reding@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770907455; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YUwmYWU9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IFwzuFnU;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YUwmYWU9;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=IFwzuFnU;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770907537; a=rsa-sha256;
 	cv=none;
-	b=5pMAvkBPf8k/tiLwi5IN7qzae/DplnXzfoCcSp0eft9bBQ855RfLYd+M6P3+jyJJwnPH/h
-	Wki1gRSEnFyxeKBCz/H/ef8c6MrtBOJZ4QpE2oSAiHzRFqczE5fMHhAFI6kSuj5wafSJXZ
-	oojJkMExFdleCpSd/c9qSix9yhbYP7A=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6209A6001A;
-	Thu, 12 Feb 2026 14:44:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E5AC4CEF7;
-	Thu, 12 Feb 2026 14:44:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770907454;
-	bh=wsRfq4JQHV9EhUjp6BlIKRlXnA1FZ0qmUD3BISX7I1E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XkxyqDfdIbc2bvCV2VBTnKQn9x0JFcTOZBtBFX9PB8A/2SpUcIM1nvBYIKLVp7Lmm
-	 lQadF0urGbstpA3g9OASJ+foqHw327u6Sa3rSgYzmtxZDbIqF8POCkoZL6HQ0uzA2n
-	 euVz7mNjkB/EnKj7QbbU4yEvU27No5zuj7siNzFWGIA4qqv9MeuF4DWoOhsyqGj+nQ
-	 YedwoFYYkkwAZIeXxE7U+M5M9UiuoXGQY1TTFXZs0kXeg0mCoNz2Ssbs09aLyqB1I6
-	 cG5j7sYjeMmNkVYyk0RePGcka/JK5TRHwlAEYq3Nqj2STN4KtIFqQSP7/eQ+SwpDmV
-	 N3yMaDkmI1QQQ==
-Date: Thu, 12 Feb 2026 15:44:11 +0100
-From: Thierry Reding <thierry.reding@kernel.org>
-To: Maxime Ripard <mripard@redhat.com>
-Cc: David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Sumit Semwal <sumit.semwal@linaro.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>, Brian Starkey <Brian.Starkey@arm.com>, 
-	John Stultz <jstultz@google.com>, "T . J . Mercier" <tjmercier@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Mike Rapoport <rppt@kernel.org>, Sumit Garg <sumit.garg@kernel.org>, 
-	dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, linux-tegra@vger.kernel.org, 
-	linaro-mm-sig@lists.linaro.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 04/10] mm/cma: Allow dynamically creating CMA areas
-Message-ID: <aY3j57xvdOY09EwQ@orome>
-References: <20260122161009.3865888-1-thierry.reding@kernel.org>
- <20260122161009.3865888-5-thierry.reding@kernel.org>
- <20260123-active-witty-rabbit-0fc5b9@houat>
+	b=VCTsXV/YQO3asPly3QZNmOeD537ikXr2hGtNwrZCIRSC+MMgqn50zpOiFCQrteeDuFbeRh
+	QtEvA10laoh13DgXCS8W6UcPopJv9dkgdyp7aSMtB33ZJ/ROpSn+mExpDgeGwe0YpW+mM+
+	Y2FJJAHi6R+YTc3p3RssVLI+py/TZNY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 02AF75BDB0;
+	Thu, 12 Feb 2026 14:45:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770907536; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8yWiZpt7mAXel9iraTjJZeMPphqi5GEr73S5STPQUnI=;
+	b=YUwmYWU9F4fICSa46OJide6CARfC1w0n4TwK5ZaZPXm5lf1q+GAjfytoTW5tDpVGjV/nPN
+	pZtEgFtdGv2UlcFD7fLjV+L8SAWFLX1JBf3hbAGgBG2weMTZuKZFczGxG74RqDrYX+yjUB
+	Txg1sKfRtJzC2vbpIkMgLW6eUHTkI/0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770907536;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8yWiZpt7mAXel9iraTjJZeMPphqi5GEr73S5STPQUnI=;
+	b=IFwzuFnUzczquIrFMN3nNqwBahn+0alV7b2nS8L4viHyycTpZy9wUR5JEN8DuxC5gTKUpB
+	WghJZeheGkW+5gCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770907536; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8yWiZpt7mAXel9iraTjJZeMPphqi5GEr73S5STPQUnI=;
+	b=YUwmYWU9F4fICSa46OJide6CARfC1w0n4TwK5ZaZPXm5lf1q+GAjfytoTW5tDpVGjV/nPN
+	pZtEgFtdGv2UlcFD7fLjV+L8SAWFLX1JBf3hbAGgBG2weMTZuKZFczGxG74RqDrYX+yjUB
+	Txg1sKfRtJzC2vbpIkMgLW6eUHTkI/0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770907536;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8yWiZpt7mAXel9iraTjJZeMPphqi5GEr73S5STPQUnI=;
+	b=IFwzuFnUzczquIrFMN3nNqwBahn+0alV7b2nS8L4viHyycTpZy9wUR5JEN8DuxC5gTKUpB
+	WghJZeheGkW+5gCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A41B73EA62;
+	Thu, 12 Feb 2026 14:45:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id i83MJIznjWl2TAAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 12 Feb 2026 14:45:32 +0000
+Date: Thu, 12 Feb 2026 14:45:30 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, aarcange@redhat.com, 
+	akpm@linux-foundation.org, anshuman.khandual@arm.com, apopple@nvidia.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, byungchul@sk.com, catalin.marinas@arm.com, cl@gentwo.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, dev.jain@arm.com, 
+	gourry@gourry.net, hannes@cmpxchg.org, hughd@google.com, jackmanb@google.com, 
+	jack@suse.cz, jannh@google.com, jglisse@google.com, joshua.hahnjy@gmail.com, 
+	kas@kernel.org, lance.yang@linux.dev, Liam.Howlett@oracle.com, 
+	lorenzo.stoakes@oracle.com, mathieu.desnoyers@efficios.com, matthew.brost@intel.com, 
+	mhiramat@kernel.org, mhocko@suse.com, peterx@redhat.com, rakie.kim@sk.com, 
+	raquini@redhat.com, rdunlap@infradead.org, richard.weiyang@gmail.com, 
+	rientjes@google.com, rostedt@goodmis.org, rppt@kernel.org, ryan.roberts@arm.com, 
+	shivankg@amd.com, sunnanyong@huawei.com, surenb@google.com, 
+	thomas.hellstrom@linux.intel.com, tiwai@suse.de, usamaarif642@gmail.com, vbabka@suse.cz, 
+	vishal.moola@gmail.com, wangkefeng.wang@huawei.com, will@kernel.org, willy@infradead.org, 
+	yang@os.amperecomputing.com, ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
+Subject: Re: [PATCH mm-unstable v1 3/5] mm/khugepaged: define
+ COLLAPSE_MAX_PTES_LIMIT as HPAGE_PMD_NR - 1
+Message-ID: <mluzy3dphgcmus37y5bdjg5prky3itn2ed7mwniycvnmjf7rn7@iszswich6mls>
+References: <20260212021835.17755-1-npache@redhat.com>
+ <20260212021835.17755-4-npache@redhat.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="glr5iu7kbaysq2rw"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260123-active-witty-rabbit-0fc5b9@houat>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 045AF180014
-X-Stat-Signature: zgyiuq357nqbzw4mp69dityitieef5g9
+In-Reply-To: <20260212021835.17755-4-npache@redhat.com>
+X-Rspamd-Server: rspam12
+X-Stat-Signature: ttd16pf7nz8kpibxhqxi5mbgt6tbwhai
+X-Rspamd-Queue-Id: 9367DC0011
 X-Rspam-User: 
-X-HE-Tag: 1770907454-857219
-X-HE-Meta: U2FsdGVkX1+6CkVUcKyYdD3JlpN/TQvD1gKxZc4k91b8M+NIfR1yDfPWultxQg5cFg9umDoxiE0mUwW3ckaQPhurh3iK5dEQBJu9bGiB4n50xY6s0OsGpEB8SB74dJul8+gmCM2MH+IwITgH2j/OTo6HevaB2lc+TQC73OG9h47HQaxH0x6tbQzhr2j8AVF3gfgBphxZJ1RKb8WJRHvJpnH0nbZutLt3jexlp18HSMvmAILGLUWB3YZAmc3ziP4p32TWWq+Lp3SppLtL0QfcDJj6vxMZ1N4Fj2N7BirdVZxPh9wdOD3BKS5OM4oL6tCvbl69Felv8RhPQTo7h5Osk2BClBg2Q2O1Emrsaivfxs3G336QF6h5iq9WE32zdpC4RIFuLGKMAbGbqW8dCWwCwF5yGMeYVEqAg+bZM7GAz9MwAszAu9ca5XT4/VPujUMypoMurlbkBfHmqmfoRQ1xJF8a7xMxTnL8u3KRU17akDAmso7p7ybkjIrhWwoFVlYI4YdqLjdVsGP7ElxqyGFsIE5tC9DT+8r4Jz0icEkGvCO48Dx+OKBjmigu3pbgXHvK2+BM6wyUYc/subykBz3/y1JTCLR5104dcTv92pEjnh/3JtE1GfclHrrusU5n2uG7EPadnfckqLg2DewAp4aaf5SzF6xD5RjpDDq+X9rG3UrzUtbMy+SYfmjzgbp/ZZ2/1HxOIT6ooQm1Hig3ybkkwbMJNUeqVpCOIFgUNyY5XQsurCuADkW+wnrOziMx6yvOZhxjFiMCztiWPeBK+71QTqkkjCEDc6/MWil5k7uYH1z8BE6p8WL/i/Y3z9aHyFivMdxz2L9QhLDYe/PwsG+BCFPToEuKTMyzRcPUewY69nH+zk/nLtDtxer+1ijmSYXclwMPCR+QBKPPKUwct7kUQoiw/dwEb2BY72ElbscAu8sG7heeR0A/6XlCni/mhT/dCCznC2WYKwoqEPvJaUk
- Nt6pVtyD
- wkpMr7cKd9knHK9wS9/IzRBSw1THaI+7Jo0mpWbSVdg9YKSyncdWK0Ba752OXC1m1q5sUm/Lk9v4GHGFfVUWriEa/8eSGie/WtQeWu7tMW23UAzpVlLvLx8ibDA2u4ck5b0Sz8JhU5PV6E2MdGLZJH8iYNlexoasaHpTFdJpqLyvuaHXJuF7iWG+WkYXCHRNAOL+xxxYaEBkEPVqi7qoYaM0B0vH9iEVOHTR9RG4VkRqah23wMEEk75v1nYBYu5nSadaUL4Us6IwEaTr30pMxByyL+zfgUABUfXU7Opado32zvNxev1yRBCWUFdvDfxS2Z0UFuJjA+efH/x+s+FtagrKCD943zGiXSRVOL7NpGHOZgJ1oNc70ftiAoYnrxu3dF9Emt+wn4IXMTQ+pTkQ08b+h1t0mqeAOAfmchkpEl1SanbTcJ+SHn43nmQ4GjHDDNQZs
+X-HE-Tag: 1770907537-627946
+X-HE-Meta: U2FsdGVkX19tk27rlxtrBfCXLfAms4IoBxXu8PrQ35wdnUBfuNjVQ7X/fQ/Ls88bWq6C95yp1fZDy4w+6yYhe7sH1yS3ZSFYBuCxOFLxZ0aUUVo/SqMCN57ga3fBKN6lxeH4GlwtV58DpUWP0yXXp2znM4OQMjDYA4f0wy8BzhPkWc3XuH3E7ve0Lixy2APSxN8G3sRG7JjdIl/CrayTsQ2855PI1TY8G0eXP/3Mqrij9lRpRhYYufqtPOgL8at16wI0IXkBjjkyDEe2ydOAH7CCaEeODq6C004qxIyt4BeE4e4qTGVgjfA7hIaPxImpLF/RMS3ASJbAqBzWJDIqgCASnHJAEaQL1D0Q4j4zDqQme15xffvqpmZxqkrICiG+D0F+5pUI2uCTTMFs4KXww3HgM4RwzsW/EMezxsDVX4FkqG9QloF1Z+7Z5Gf3C6srKcE0UgfFPIaWQnJaYK3Hs3HV1a/z4r34nL9vFA3BqHcQnIuFEIH9cD7illt/fF9Xfi3oTM/jr6gGlXkGN8nmquddGoJ3QgUoPeNEAVK3L+Z7uXF22pUA+LynhHawA/RyW34x3hiabgR/qR+53IhKnRY6ECXaCYYq0cmC/6zuND8yne4469yMMCnYlJB938KFIcAoKp/xMo1cPn1L0xbgnYmly+NigzDnt2QqixHyj9qiko6MYBreKBmp8NrsIpraTAtyeYU7YXydVd01lXrmUmu0HuTjks/3b5q5zhUWLt27VMt3p3tR2crjkBNuzQPInNKQu9VBGaEvDLe1s5B3gORiGlzEW8i8Hv8VSLwOvy2gK84KgzINvLPMui7GRe+ODtqtqVbT/1sdNKQRFORCDRw+UBBvBsQr0XMjU5/WggdhTBvAQQwGYIR2YxAZyhXA9isUDu6jLjsyBZkEYy8Cqo1/wjvoqiPIDvlVjP0cqgwQkhTqEDODMWTZvVrDfhcKbDce59ezWY1kc3jjuIv
+ /MZSUEFp
+ Q5mzmZmBw2ytuZRR6IImm4ZjlZZjl22OBNoNxF/SXlxcxg8xuWeTOs/SR+cF/+emdHE2B8s4LgDfE7pMw8b5RHV4UaXlhOKFJD+ug4+hVJoXkHr35yjuUMO844EtDCngBgJklhf3/vw5aYNUgw4mKON8mDQcOknq6ryLGvItgkitInWU98+lQiI3C+iPHOGfqoY8GhnsXNEh6o8f4rd+cCVEAD1sRYSGn0mV+wMwZyCFu6kVQSgzT2Q1al58OcWWupPfj3qYQvanR4YhWmwRCav5aoYh3R5tobE+pQp8eS3ALQYhyekCxBHQgVZrnPODVnvn82/My6oRm0sUTat6KhFxJhMDwBqsI4pFyGxHtPWe4D82lkV+aruiLiXDrCkilNNYOiX75ZL7TR+xsIc2AlxpS/fk4HRhT3HxTgd8aI0AnvohqgSEL1O4WXPkpaek0NSZE
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,91 +145,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Feb 11, 2026 at 07:18:33PM -0700, Nico Pache wrote:
+> The value (HPAGE_PMD_NR - 1) is used often in the khugepaged code to
+> signify the limit of the max_ptes_* values. Add a define for this to
+> increase code readability and reuse.
+> 
+> Signed-off-by: Nico Pache <npache@redhat.com>
 
---glr5iu7kbaysq2rw
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2 04/10] mm/cma: Allow dynamically creating CMA areas
-MIME-Version: 1.0
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
-On Fri, Jan 23, 2026 at 02:25:16PM +0100, Maxime Ripard wrote:
-> On Thu, Jan 22, 2026 at 05:10:03PM +0100, Thierry Reding wrote:
-> > From: Thierry Reding <treding@nvidia.com>
-> >=20
-> > There is no technical reason why there should be a limited number of CMA
-> > regions, so extract some code into helpers and use them to create extra
-> > functions (cma_create() and cma_free()) that allow creating and freeing,
-> > respectively, CMA regions dynamically at runtime.
-> >=20
-> > The static array of CMA areas cannot be replaced by dynamically created
-> > areas because for many of them, allocation must not fail and some cases
-> > may need to initialize them before the slab allocator is even available.
-> > To account for this, keep these "early" areas in a separate list and
-> > track the dynamic areas in a separate list.
-> >=20
-> > Signed-off-by: Thierry Reding <treding@nvidia.com>
->=20
-> AFAIU, this won't create a new cma heap when registering. This goes
-> against the recent work we did to create one for every cma region.
->=20
-> I guess, since you have a driver that would explicitly handle that
-> region, we should create some kind of opt-out mechanism, but by default,
-> we should still create such a heap.
+> ---
+>  mm/khugepaged.c | 15 ++++++++-------
+>  1 file changed, 8 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index c362b3b2e08a..3dcce6018f20 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -85,6 +85,7 @@ static DECLARE_WAIT_QUEUE_HEAD(khugepaged_wait);
+>   *
+>   * Note that these are only respected if collapse was initiated by khugepaged.
+>   */
+> +#define COLLAPSE_MAX_PTES_LIMIT (HPAGE_PMD_NR - 1)
+>  unsigned int khugepaged_max_ptes_none __read_mostly;
+>  static unsigned int khugepaged_max_ptes_swap __read_mostly;
+>  static unsigned int khugepaged_max_ptes_shared __read_mostly;
+> @@ -252,7 +253,7 @@ static ssize_t max_ptes_none_store(struct kobject *kobj,
+>  	unsigned long max_ptes_none;
+>  
+>  	err = kstrtoul(buf, 10, &max_ptes_none);
+> -	if (err || max_ptes_none > HPAGE_PMD_NR - 1)
+> +	if (err || max_ptes_none > COLLAPSE_MAX_PTES_LIMIT)
+>  		return -EINVAL;
+>  
+>  	khugepaged_max_ptes_none = max_ptes_none;
+> @@ -277,7 +278,7 @@ static ssize_t max_ptes_swap_store(struct kobject *kobj,
+>  	unsigned long max_ptes_swap;
+>  
+>  	err  = kstrtoul(buf, 10, &max_ptes_swap);
+> -	if (err || max_ptes_swap > HPAGE_PMD_NR - 1)
+> +	if (err || max_ptes_swap > COLLAPSE_MAX_PTES_LIMIT)
+>  		return -EINVAL;
+>  
+>  	khugepaged_max_ptes_swap = max_ptes_swap;
+> @@ -303,7 +304,7 @@ static ssize_t max_ptes_shared_store(struct kobject *kobj,
+>  	unsigned long max_ptes_shared;
+>  
+>  	err  = kstrtoul(buf, 10, &max_ptes_shared);
+> -	if (err || max_ptes_shared > HPAGE_PMD_NR - 1)
+> +	if (err || max_ptes_shared > COLLAPSE_MAX_PTES_LIMIT)
+>  		return -EINVAL;
+>  
+>  	khugepaged_max_ptes_shared = max_ptes_shared;
+> @@ -384,7 +385,7 @@ int __init khugepaged_init(void)
+>  		return -ENOMEM;
+>  
+>  	khugepaged_pages_to_scan = HPAGE_PMD_NR * 8;
+> -	khugepaged_max_ptes_none = HPAGE_PMD_NR - 1;
+> +	khugepaged_max_ptes_none = COLLAPSE_MAX_PTES_LIMIT;
+>  	khugepaged_max_ptes_swap = HPAGE_PMD_NR / 8;
+>  	khugepaged_max_ptes_shared = HPAGE_PMD_NR / 2;
+>  
+> @@ -1869,7 +1870,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>  	bool is_shmem = shmem_file(file);
+>  
+>  	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+> +	VM_BUG_ON(start & (COLLAPSE_MAX_PTES_LIMIT));
 
-It sounds like there's a bit of a conflict between what you want to
-achieve and what this series attempts to do.
+nit: no need for the () around COLLAPSE_MAX_PTES_LIMIT here
 
-The way I see it, the CMA code is more of a helper that gives you a
-specific functionality set. Exposing each CMA area as a heap that
-userspace can allocate from seems like a bad idea to me.
-
-Without knowing anything specific about a CMA area you don't know if it
-makes sense to expose it as a heap. Given that there is very little
-information associated with a CMA area there's only so much guessing
-that you can do. I think it'd be more sensible to make CMA areas opt-in
-to have a heap created for them rather than requiring opt-out. Exposing
-a heap publicly applies only to a (potentially) small subset of all CMA
-areas, albeit at the moment it may seem that that is what it's primarily
-used for.
-
-In fact, for this particular driver nobody must allocate from any of the
-CMA regions associated with the heap driver outside of that heap driver,
-simply because the heap driver maintains meta data about these CMA
-regions for things to work. If we allow access to it from anywhere,
-things are eventually going to explode.
-
-> That being said, it's not clear to me why the heap driver uses CMA in
-> the first place.
-
-We use CMA as a way of reclaiming memory if needed. The heap that we
-create is meant to be resizable, so that when nothing uses the heap, the
-memory can be reused for other purposes. However, when memory is
-allocated from the heap, we need to reclaim that memory for the heap and
-relocate any buffers allocated from the region somewhere else. CMA does
-all of that for us, so it seemed like the logical choice for this.
-
-Thierry
-
---glr5iu7kbaysq2rw
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmmN5zgACgkQ3SOs138+
-s6FSqRAAwWGzG1UjDgVwyR+isYP6DrFMGbojEtczHFxgKElBKoFjjqtdmpN97XRD
-7MIc1C6LGCLoJa++YXy7ZlL24CTzYRohVBnmy/Hygdz2uoaeW7GdR0M31slI/lG4
-TpliCL/GXNi1ZhmE8BjykmsEqgjHG+PH9Vd1/VEgo/5DoaX3uc+8TndO9hqh/Jgh
-gFScFbr/VRKDx8wdWyhOsWN4Nm52uJBCPbhJ8dGv4iabMopEwOlLpcm32aFNWMHv
-El8zIIeGzfw9lfWm2WZvtO8heFn3R0kT5yw4opDc7STvO7k6fC/ZQWbg86FR71/e
-DtrHMcjjg+75TIZemvKQwPrshL7CAdwcaNnT+QxVKE0oqHxjoIonRsUkEaTrFKyE
-6n6eqR8+enCtH3hamWE6rFocZQzL5zXxqILwbzeAR/4CBtXBh3pZL4SH6V0cye9h
-jci5Lfjh2SiLSggSKXsTBgrCLCvz8DuapM8GEtfkRS1YoKrix+uGe0nj+J3uAx+U
-SyvOCMoTb+WWQNOyNBMpS2Wk3KcNDMuadOtuxbZa1BInxUBOktPn/km1vJgiO0au
-5sWtH6xSgLF50qbTEFRVg+Pz31LIT+TZSA6L2gj5EmD1gKZeefPCtkiBgDZdsvwk
-KAejAHsfMS0kibucCHIgTg6cjifaVKfFVtiBh3BX8ZuSmmlqnOM=
-=TTIe
------END PGP SIGNATURE-----
-
---glr5iu7kbaysq2rw--
+-- 
+Pedro
 
