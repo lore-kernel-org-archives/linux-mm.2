@@ -4,71 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B5B5EEA845
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 19:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FE04EEA845
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 19:51:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0EFA66B0089; Thu, 12 Feb 2026 14:45:56 -0500 (EST)
+	id D0AF06B0088; Thu, 12 Feb 2026 14:51:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09A0D6B008A; Thu, 12 Feb 2026 14:45:56 -0500 (EST)
+	id CB8FA6B0089; Thu, 12 Feb 2026 14:51:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB4086B008C; Thu, 12 Feb 2026 14:45:55 -0500 (EST)
+	id B6F9B6B008A; Thu, 12 Feb 2026 14:51:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DC3DB6B0089
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:45:55 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8DC95B749E
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 19:45:55 +0000 (UTC)
-X-FDA: 84436835070.23.57C4183
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B3155140004
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 19:45:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJ59lTq8;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A60206B0088
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 14:51:44 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5CB7F1A0298
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 19:51:44 +0000 (UTC)
+X-FDA: 84436849728.13.4755242
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B37CC20005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 19:51:42 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fu2UCV+t;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770925553;
+	s=arc-20220608; t=1770925902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3sqyKvzr0YAFEebxYbHEeScYgp6FLkzBHlQXM1pkWA0=;
-	b=gpFWPj/yetc0wrpgBpXFjDWichlUFMi6vhUkXdndXzpy4mwjOa3fFWeY3rxNNcu+B+D8Om
-	FDYzj0BX1qpgM1A40K2zW8ppClw3WpVbJNW+pIjTh9ZPFMJIxK4oql3R1453dspra3KwlC
-	e6SUYEPj/+eXb/9DO/NAuHPLcTOhhoI=
+	bh=aGcizoUcNSVgurx7DZzxQZiYfROHQoyVla337L4LHmU=;
+	b=LFO0rRqkmcOHVpKvBVd8b49tZshwtmxrHbJxIu7hrlUDV4OHZ9EqKswPNEl3q5dsUMTKQt
+	UU8WGprQY9cjrvCuThyeeabmV2NGM4A5QQ9JIJBC+MQUx8T/CQ9/boKyTiBE+2wqCte8I4
+	YfIFMTnkdzMynopN8I3HFHIwSnk7bTE=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJ59lTq8;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Fu2UCV+t;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770925553; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770925902; a=rsa-sha256;
 	cv=none;
-	b=8jlaBfO+bFDQrSZZC+bkCzaG5Ja31mh8m/I5tDnthrlSvWnNVCs4oqBwvYrkDU3CGkXvux
-	gnrAS/jyy6R0fk9qdtdjkUzqEVzpQmuj80JyXc+uL2RhYDh7uelPYNz+QT07tcFzK5rNt4
-	7Ah+0PSAikzWL8N60Dd66etiCOwvukU=
+	b=bLqQUnrS0GhqTPJtq5xD+IHsBW2WuJSQzmsTZduoOF1zVaFgz5PclXvtdMLhqDOQizjJA1
+	z+gaeCwpqBwSEd+HuuubaC3kbZWANqAXHwYOlwaVbNkxAgkk1/2KlsOcDcy5xfi3q4zvqS
+	J5AI/swp2UXLgR68XsXDnDNnIXllgo4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 23BE14075F;
-	Thu, 12 Feb 2026 19:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D94C4CEF7;
-	Thu, 12 Feb 2026 19:45:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 87EC06132E;
+	Thu, 12 Feb 2026 19:51:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1138C19424;
+	Thu, 12 Feb 2026 19:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770925552;
-	bh=Ic65mngQtaJXVx3RmUW7BxomzrEKSbMbTTCrwVeU+JQ=;
+	s=k20201202; t=1770925901;
+	bh=ZGlUyowuJ/4IhUY0sQZKkJjYbYXoo0csOOP4hmRvPAg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XJ59lTq8UZ2u+Lh0XzobGED46KgmSHT058g4YXfjiYOFUYR0kHIa/J/A0+ZQvPEiO
-	 iLqL3/5TrFz+hX1F6sRsBpJYPD9DaAn1aHkNmX9FQpixCQlPz4foedvzlw59yi8COP
-	 yWiWie+4oNN18w+pLSFhL4mRxRPW8GZnl1PjsJwULgOrJuz5zM60d6z/h7gUjf6Ru3
-	 5TR8adl9ofiry4MBq9nKc1ddLP0Nu34EOBKwrhhXjoAG0l4nqACaNGTfy43LXi09DD
-	 DuO62fidnN3Yf0F6h6HMH+azgd1TCDe7V/fSDGkI9gK1QVykkt/xQxReE1JZIDQo//
-	 t1f+/bmObxBqg==
-Message-ID: <1d67ddd1-8549-4c49-bac9-29e49b540bd3@kernel.org>
-Date: Thu, 12 Feb 2026 20:45:34 +0100
+	b=Fu2UCV+tTzXaMHiosOBdTGAwWf2IhsIEijmp8dmTq06u07heLkC9cO9U4SLPg+L41
+	 5kDBzKJRACdJrJk4emsWT5IeM6TShLLPOm/Srk3fcqFkxkitXoU1GffsUHFMDhiHZL
+	 F/a7DN5FHcza8ctSzBqf+Ji9HhDrbl81F06giV0kJVvZ7S7M+KfrtbJqB4KIUpve4z
+	 5jiGNy+QLZ7Sco/XLsM5Hp2NvrBjLF1BK1c9ZtDui7bTxRg3Mp11to3rJpGs6eB7U5
+	 roiBruCj9Gqo916l8+Py+01JWQqwzafZ2CrHnE/QddfSoHuH+MogfRK0LtDfACY2k6
+	 rAU3BhXv/6j9w==
+Message-ID: <493d7898-c959-42ee-ad09-35ffc631ec21@kernel.org>
+Date: Thu, 12 Feb 2026 20:51:26 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH mm-unstable v1 2/5] mm: introduce is_pmd_order helper
+Subject: Re: [PATCH mm-unstable v1 3/5] mm/khugepaged: define
+ COLLAPSE_MAX_PTES_LIMIT as HPAGE_PMD_NR - 1
 To: Nico Pache <npache@redhat.com>, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org
 Cc: aarcange@redhat.com, akpm@linux-foundation.org,
@@ -90,7 +91,7 @@ Cc: aarcange@redhat.com, akpm@linux-foundation.org,
  willy@infradead.org, yang@os.amperecomputing.com,
  ying.huang@linux.alibaba.com, ziy@nvidia.com, zokeefe@google.com
 References: <20260212021835.17755-1-npache@redhat.com>
- <20260212021835.17755-3-npache@redhat.com>
+ <20260212021835.17755-4-npache@redhat.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -137,17 +138,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20260212021835.17755-3-npache@redhat.com>
+In-Reply-To: <20260212021835.17755-4-npache@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B3155140004
+X-Rspamd-Queue-Id: B37CC20005
 X-Rspamd-Server: rspam07
-X-Stat-Signature: 8u9dyj91t8a6fyifinccibddd4fxc3fk
-X-HE-Tag: 1770925553-933164
-X-HE-Meta: U2FsdGVkX1/ZbfgJG0ca0UddtfEWO4CB5l8YiFgawSEWfL/GnudlFi4fhPyIg2kMQpfFbQAG+FB7meXQ6o4WE2+nJfJY6tvOn1oEJhGEBO2HLymIWBiTja7Y8X7ATy3LoRGVjvcfE/++41uaGNeDc0T14b8G73YMGJY9yYfWxB5XKkCw1/2u6u/6HNp/uNwN8+GNgJAE2qVk7I0Q5oLTg8YrSoSEfY4XbZY8FTqtLAVKORLL0Wd8VIUqj7TIf+rXjdSb4AFrJvIrFGzOMJScun/zvRKySD4ZaqmcHriTN2uIq3jPrtS/oP80A84r+UNuvaiAx6ihyS7SvO855mrQnGKkyHg1j4T5E2Y6+ZRRnEIAQEtvyOVe3qrmAwIK3pz8+y/wA5TPcFN0By4OdT+bwnSa9lfPJpY+XaLOUyhvSNJ07I1mzHXy89eHoy4IFfJxaPpMJCh+d6S1XzZovzSKoHsLQ4gK+fcPbWL/gFGhpiKHiRQkErn0Xe5lhaSr2/00RNgI0EO76ICCgkNAuxWZYsFTi4x0TudUGG9wP/zmxUVJXQyWJkMV48DL3jkH5KMSQzrFeH5olg2glQc7kOoxFBmXIHjObGbhhZ86CIOaE2LWSHi3CWH11989Ygq4sqMMVV7b6GkY3WFpvAMWv3FPH5F+a29noamYJvwKfJAV2HNHqcgle2C7NG3dloZMo1Rz6+ABPPBw3XqZj0E521l5pQ24fEhNDKmdb9ct9iCXKeGubMfEgu4YI89nvKwnvNrO6EhIlRJyQWRBRH0vRlXXNp92Kh0pVtGkckbaKkGB4VcgJOAfg2VTZOSZyGBFKGg5PFAZAre+glxGYDm2SCM8ic4knujCE9kcfiGAVJPSmj7VxGaciAu94pqdgKXPpLuQeAk+WyLa+p9tTbabW9ByTF6ubF6DNl3qOcFeoFp35u8qfoOaylcPupxpBEYzwKzko38TtU2LhUVq+mx2pn0
- yy/0FI1Y
- szBoMaZkZmd5iavp8TmPdG9t8XZsCvqo10DTKoHB+3lvAv49khuS1ucZRCmdQ2gctqbNcgPmS9jE780jttm+CtTx6uH+7MO+9JpjirzeYISq9q6G173ARBOi2L0Kw1/8CSvg/w/TpikQS1HYuXUba81oh97C9NwNWGB447IaZLtiz4hSvgx1FlW+jjS9FiWpftKn+ioQ0yepSWvEnrjnSnFTQwTefSoWaMPaScfALPrd9gAMjZnuXC3JJvSXvwlb7hD6aG6KxcTMnokUNFsUoUho8cu66pbqElVmVLRoohZFKVBgcoTH1EpOq/VVtg928Etch+28taYoMzFEhIPfPgGlAZG7kqjdXdiXQDIBT6HSqetE/6X5YuFPLGUMPohjE7wZrrhRmieSQIH7kvRMq8PXP8AoanwuCDYMx6gQ8ej/j19X7pyYJdk2OhHXNvVtlv64lf9TK5gm9u4Rg0paFiv6ldw==
+X-Stat-Signature: ycza6f9p8zonnf57te6an4zkqyfy5akd
+X-HE-Tag: 1770925902-780971
+X-HE-Meta: U2FsdGVkX19iGQ0GGIpP2s/R/N2WycT/Y1mczFBO64tKd8iXFnyRtNg8HdLfABZGILyn83ZzVBY4aKw2i8oMTlZdTaDFOovQn3n0rgq2/dhrMwgbUQgC/xukWgz8RX6uGUewGnZNq4V+98xjhdLtyPwt/1ELXV/ssppVHG34cAwGa6EKiEo9wtMfl5aXYy8Gxqc1PlnY7SdniBHD8/qJQHfIroQl6gk5H/CvW34AG8ol3aaJ3a4z8jwGXwJgwJIJwH2fzyC6h+cQPQZXVgr66d1t9gpPBAuadKDv6IxYkS5hqWIQrAz5+DvXEFfLnBayp/uIn5p8sLD8vQMa9Wu4uRtuBoJaEF4Pg5E82p2zd5CguBQYbcmbewM6IvXXfQy7v5/TDwIl4ANBYaqR7F1jhV4ODQ0FT+uTLNCskiKbBMM9FZ+KCTM2UV4qJURbhdu+z0HyONbDJSeHFCicUF78ew+ulDhnxeXA10Euq7LJYjTd5uUEq0jFReD1FH/W4rai1IZ1J2uUIMN9cPvW98zkgpYni90fqsQys5kVgBEbSL303Ac5de5lfC8HuTzPF81Ve/5w1klwlTHOYuRiSMHgBaz/jwx39WUcmD+m6cPmMNPYk7JJQPKpvlBH91XSQnica5oAQr/C9AnIEUqVidwhLRKonfFgbvRPcmGA9T7ZTz9caN8JT+e9JQDpBLotIGk+rvPfRsr+7r/0w05Zee7tiXjgueZ9G9lxgfTSeKt4Fp1NSU2yIQ/z11zVGkfn+7rtTPtpGNz+sjZIunyad+jmJZAtefkCm7x2EiYlQauJnwrV2G+aKXqRrEZ7/qZN7VSR8u2KYHECAn8phuQxAW6aLdruJhGN6zoMtybpVuOAsIooycrdyE2KK5huikbyfAIpLHHgbrLMahXWoeYQUCdl9udl7zB501J9Lw7egxOm5uq7jgiMYegV//8msG+AhygOr9BAYJWIrrRJgV8JQUW
+ /4I7THot
+ g1QYXZ5qkUOxsdCb/i1/v/nvan+EkgJutY8WsVNUYHHX9uXcHy7buqZCLlRnWLYw55mf4d/pNKqNz8meLXsY9QjJH4E9FWb9T4Blfp+SE3BRJzVoCFRe6cP23N66UF3kW1wHLQpEPpZRzz70kkGtDzHYZtOTVV5qtk5nVPyL+oJCBh7a/097BsTXvAouPM/QOG3aAhPrZQmak9lGeoaRD6Q5QxpBGpPS2RWp27NqCVg13H1Q582fcBGwOquG5lC2rGTGpslIfOOoElU5rTskxCvWotLl7FP8jvRUddU+t/m1pLMCZDLdJAW24FHLT4QcMvTz5VVFdatzNsgY1qoEGFvOKV7+T2Wz6f+5F0H2oPmH6OazdKe+rUAxg674Q9y+gS2Ue7X/rgFmzB2s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -157,20 +158,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2/12/26 03:18, Nico Pache wrote:
-> In order to add mTHP support to khugepaged, we will often be checking if a
-> given order is (or is not) a PMD order. Some places in the kernel already
-> use this check, so lets create a simple helper function to keep the code
-> clean and readable.
+> The value (HPAGE_PMD_NR - 1) is used often in the khugepaged code to
+> signify the limit of the max_ptes_* values. Add a define for this to
+> increase code readability and reuse.
 > 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Suggested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 > Signed-off-by: Nico Pache <npache@redhat.com>
-> 
-> arches#    pick b3ace8be204f # mm/khugepaged: rename hpage_collapse_* to collapse_*
 > ---
+>   mm/khugepaged.c | 15 ++++++++-------
+>   1 file changed, 8 insertions(+), 7 deletions(-)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index c362b3b2e08a..3dcce6018f20 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -85,6 +85,7 @@ static DECLARE_WAIT_QUEUE_HEAD(khugepaged_wait);
+>    *
+>    * Note that these are only respected if collapse was initiated by khugepaged.
+>    */
+> +#define COLLAPSE_MAX_PTES_LIMIT (HPAGE_PMD_NR - 1)
+>   unsigned int khugepaged_max_ptes_none __read_mostly;
+>   static unsigned int khugepaged_max_ptes_swap __read_mostly;
+>   static unsigned int khugepaged_max_ptes_shared __read_mostly;
+> @@ -252,7 +253,7 @@ static ssize_t max_ptes_none_store(struct kobject *kobj,
+>   	unsigned long max_ptes_none;
+>   
+>   	err = kstrtoul(buf, 10, &max_ptes_none);
+> -	if (err || max_ptes_none > HPAGE_PMD_NR - 1)
+> +	if (err || max_ptes_none > COLLAPSE_MAX_PTES_LIMIT)
+>   		return -EINVAL;
+>   
+>   	khugepaged_max_ptes_none = max_ptes_none;
+> @@ -277,7 +278,7 @@ static ssize_t max_ptes_swap_store(struct kobject *kobj,
+>   	unsigned long max_ptes_swap;
+>   
+>   	err  = kstrtoul(buf, 10, &max_ptes_swap);
+> -	if (err || max_ptes_swap > HPAGE_PMD_NR - 1)
+> +	if (err || max_ptes_swap > COLLAPSE_MAX_PTES_LIMIT)
+>   		return -EINVAL;
+>   
+>   	khugepaged_max_ptes_swap = max_ptes_swap;
+> @@ -303,7 +304,7 @@ static ssize_t max_ptes_shared_store(struct kobject *kobj,
+>   	unsigned long max_ptes_shared;
+>   
+>   	err  = kstrtoul(buf, 10, &max_ptes_shared);
+> -	if (err || max_ptes_shared > HPAGE_PMD_NR - 1)
+> +	if (err || max_ptes_shared > COLLAPSE_MAX_PTES_LIMIT)
+>   		return -EINVAL;
+>   
+>   	khugepaged_max_ptes_shared = max_ptes_shared;
+> @@ -384,7 +385,7 @@ int __init khugepaged_init(void)
+>   		return -ENOMEM;
+>   
+>   	khugepaged_pages_to_scan = HPAGE_PMD_NR * 8;
+> -	khugepaged_max_ptes_none = HPAGE_PMD_NR - 1;
+> +	khugepaged_max_ptes_none = COLLAPSE_MAX_PTES_LIMIT;
+>   	khugepaged_max_ptes_swap = HPAGE_PMD_NR / 8;
+>   	khugepaged_max_ptes_shared = HPAGE_PMD_NR / 2;
 
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Changing these is ok. I don't like the name either.
+
+It should be clear that they all belong to the "khugepaged_max_ptes" * 
+values. (see below)
+
+>   
+> @@ -1869,7 +1870,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>   	bool is_shmem = shmem_file(file);
+>   
+>   	VM_BUG_ON(!IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) && !is_shmem);
+> -	VM_BUG_ON(start & (HPAGE_PMD_NR - 1));
+> +	VM_BUG_ON(start & (COLLAPSE_MAX_PTES_LIMIT));
+>   
+>   	result = alloc_charge_folio(&new_folio, mm, cc);
+>   	if (result != SCAN_SUCCEED)
+> @@ -2209,7 +2210,7 @@ static enum scan_result collapse_file(struct mm_struct *mm, unsigned long addr,
+>   	 * unwritten page.
+>   	 */
+>   	folio_mark_uptodate(new_folio);
+> -	folio_ref_add(new_folio, HPAGE_PMD_NR - 1);
+> +	folio_ref_add(new_folio, COLLAPSE_MAX_PTES_LIMIT);
+>   
+>   	if (is_shmem)
+>   		folio_mark_dirty(new_folio);
+> @@ -2303,7 +2304,7 @@ static enum scan_result hpage_collapse_scan_file(struct mm_struct *mm, unsigned
+>   	memset(cc->node_load, 0, sizeof(cc->node_load));
+>   	nodes_clear(cc->alloc_nmask);
+>   	rcu_read_lock();
+> -	xas_for_each(&xas, folio, start + HPAGE_PMD_NR - 1) {
+> +	xas_for_each(&xas, folio, start + COLLAPSE_MAX_PTES_LIMIT) {
+>   		if (xas_retry(&xas, folio))
+>   			continue;
+>   
+
+Changing these is not. They are semantically something different.
+
+E.g., folio_ref_add() adds "HPAGE_PMD_NR - 1" because we already 
+obtained a reference, and we need one per page -- HPAGE_PMD_NR.
+
+So it's something different than when messing with the magical 
+khugepaged_max_ptes_none values.
 
 -- 
 Cheers,
