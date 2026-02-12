@@ -4,95 +4,197 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4880DEE3698
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:25:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1BA6EE3697
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 15:28:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B25D16B008A; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
+	id 1A07B6B008C; Thu, 12 Feb 2026 10:28:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABC846B008C; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
+	id 16B216B0092; Thu, 12 Feb 2026 10:28:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D2C56B0092; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
+	id 042DF6B0093; Thu, 12 Feb 2026 10:28:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C5BB6B008A
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:25:43 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4558B1A01E6
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:25:43 +0000 (UTC)
-X-FDA: 84436179366.08.9DB2E01
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A6A2E80010
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:25:39 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hjkncimN;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E7E316B008C
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 10:28:28 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8D8051B2857
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:28:28 +0000 (UTC)
+X-FDA: 84436186296.06.13C0B13
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3AA14140008
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 15:28:25 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W27sjswi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jGwcCSjI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W27sjswi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jGwcCSjI;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770909941;
+	s=arc-20220608; t=1770910106;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3md81SdFS4TjjB0AXkEg5ItTPXkzpc4iibpel7Bvl6Q=;
-	b=GvDZr6jSDI0xLvrloFbaz8gvqBoxH6vw7LZ59HO3fvCYFeFf7mbPp6YZnmoIDz6nOt/YP2
-	DOKbu1p9iqKU+J5bm71LWfKLp6QtkDYzrmQcsKAnFKUgPkaAr8kP5PERcCCe88ZfaRHOpI
-	HiWDkVTVXHh+sYgZ7IwxDM15l+zPx9k=
+	bh=H6Ok7yayDSj8orWu5mTwXnKKhkzyIWcEaWvhkksfU+I=;
+	b=yuFJL28yThKOuRaGajvm2VAQNNbofYvYsLWTQ/bTClbsYuXq9pc+DZ8sD5d+Jaav0uG0Lo
+	xC+FHWE7EcaX02Sy3OaVXT/qaI7xB6fwzQwT26/jtGP0DhaOw1F136p6at4A+pF4zOanlY
+	NIDCtNYrfCU7A7caGrpL8aod29KLfxc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hjkncimN;
-	spf=pass (imf02.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770909941; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W27sjswi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jGwcCSjI;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=W27sjswi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=jGwcCSjI;
+	spf=pass (imf09.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770910106; a=rsa-sha256;
 	cv=none;
-	b=Of3V82NDXFxwj9YEdqic7+8oi6+ABAk8IBTQ8H/eA6treI0Ibf0cd1qLw+C/2+0Mk0uE1S
-	kTBhcy6SpPwkt82ivhYX995rF2jTz7X1h8EXDGndWGLIKaXw1D+6ZfveLPH1a4HwxatT02
-	CsxrhR+uRkk/K+wRysikSjU8vj82bH8=
-Message-ID: <93908945-e0a8-429c-b119-eff63ebb2479@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770909937;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	b=gBE79t1G/S6qLGUXlRNcrvG0KPuhmgH8+foc2zXBdm3jHsMHg95hMo3xp6F8tTWu8DnaV5
+	HqMUyNe1NeZ9vYHPcJFbFfl43cw5FfXb4QRKNMdx1TKQyvRKY/vdZPFLtS+fiWAGJzkSZ2
+	d6nmoukUq+iv/p6EwQ3tK6ecpI2/9U4=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 4FB745BDB1;
+	Thu, 12 Feb 2026 15:28:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770910104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3md81SdFS4TjjB0AXkEg5ItTPXkzpc4iibpel7Bvl6Q=;
-	b=hjkncimNaPPExvn/emeaq/h/AlfCnw+mVVCMpaG7jfK1AU3G5MNnceGQoxpZLRm+7s8TrG
-	SMgyuBDmGiF9cfQ+M2rMahOUxsaiyqzUKf7jsPpmGt1bnR/CpoXyBRoS/SAaXyBEptiUA9
-	w68x0WYS4Za0LU2R9RKu9ekkYbD3FhI=
-Date: Thu, 12 Feb 2026 15:25:33 +0000
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H6Ok7yayDSj8orWu5mTwXnKKhkzyIWcEaWvhkksfU+I=;
+	b=W27sjswiPFhRjFyxLmKyVhaHTw+oGCRytro4u60AS9rG1tmn/tcETrbEeCsYW76GH1CO9N
+	7beSRbDDVF5qLcQN5V9HLo+9/7x6UoM4dPnr+T7Y6SDV34AXz4FXpxTKwoGBY3cMxg4GNn
+	laBTaqE73JMHHxPiR6zYkHmL8ALXIUk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770910104;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H6Ok7yayDSj8orWu5mTwXnKKhkzyIWcEaWvhkksfU+I=;
+	b=jGwcCSjI8s00pX6bW9fUMyiN3/8PM0hFJkVOrvxvMRy28RDPVq/dz18/gDLKnzlJGXNCd5
+	NrWS+vbROHtGETAA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1770910104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H6Ok7yayDSj8orWu5mTwXnKKhkzyIWcEaWvhkksfU+I=;
+	b=W27sjswiPFhRjFyxLmKyVhaHTw+oGCRytro4u60AS9rG1tmn/tcETrbEeCsYW76GH1CO9N
+	7beSRbDDVF5qLcQN5V9HLo+9/7x6UoM4dPnr+T7Y6SDV34AXz4FXpxTKwoGBY3cMxg4GNn
+	laBTaqE73JMHHxPiR6zYkHmL8ALXIUk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1770910104;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=H6Ok7yayDSj8orWu5mTwXnKKhkzyIWcEaWvhkksfU+I=;
+	b=jGwcCSjI8s00pX6bW9fUMyiN3/8PM0hFJkVOrvxvMRy28RDPVq/dz18/gDLKnzlJGXNCd5
+	NrWS+vbROHtGETAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D39863EA62;
+	Thu, 12 Feb 2026 15:28:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id bltXM5fxjWmBcwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 12 Feb 2026 15:28:23 +0000
+Message-ID: <a5b8f7ab-b9cd-4ca1-9192-d0347a79a2c0@suse.cz>
+Date: Thu, 12 Feb 2026 16:28:23 +0100
 MIME-Version: 1.0
-Subject: Re: [RFC 1/2] mm: thp: allocate PTE page tables lazily at split time
-Content-Language: en-GB
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, lorenzo.stoakes@oracle.com,
- willy@infradead.org, linux-mm@kvack.org
-Cc: fvdl@google.com, hannes@cmpxchg.org, riel@surriel.com,
- shakeel.butt@linux.dev, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com,
- baolin.wang@linux.alibaba.com, npache@redhat.com, Liam.Howlett@oracle.com,
- ryan.roberts@arm.com, vbabka@suse.cz, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, kernel-team@meta.com,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/4] mm: rename my_zero_pfn() to zero_pfn()
+Content-Language: en-US
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Andreas Larsson <andreas@gaisler.com>, Borislav Petkov <bp@alien8.de>,
+ Brian Cain <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@kernel.org>, Dinh Nguyen <dinguyen@kernel.org>,
+ Geert Uytterhoeven <geert@linux-m68k.org>, Guo Ren <guoren@kernel.org>,
+ Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-References: <20260211125507.4175026-1-usama.arif@linux.dev>
- <20260211125507.4175026-2-usama.arif@linux.dev>
- <13ab56cb-7fdb-4ee4-9170-f9f4fa4b6e37@kernel.org>
- <875x82ma6q.ritesh.list@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Usama Arif <usama.arif@linux.dev>
-In-Reply-To: <875x82ma6q.ritesh.list@gmail.com>
+ Magnus Lindholm <linmag7@gmail.com>, Matt Turner <mattst88@gmail.com>,
+ Max Filippov <jcmvbkbc@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Michal Hocko <mhocko@suse.com>, Michal Simek <monstr@monstr.eu>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Stafford Horne <shorne@gmail.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+ linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-mm@kvack.org, x86@kernel.org
+References: <20260211103141.3215197-1-rppt@kernel.org>
+ <20260211103141.3215197-3-rppt@kernel.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260211103141.3215197-3-rppt@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A6A2E80010
-X-Stat-Signature: 54acnba1a39s68di7g8hpo38anfe6dy4
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: w7z4mk6ey5rynjfcx9ha88h8ysd9u7w9
 X-Rspam-User: 
-X-HE-Tag: 1770909939-40085
-X-HE-Meta: U2FsdGVkX1+0KPW4TtTEn0ZTK43AqpWIf0iT/MxeW3NpAMaJ0/gkMWuWv6obKTCbFJBGgqjUas9QYtNzpa9fAn8ZXETuiWFrRHM9V2bTfnbt8WkT32Z+mp8zbfMvuiOEJHo8b34C4Cit6aMexkQAts/+ewm3E9EJBoQF0KlH704agwNhj5EeoMNAYgyqgmgbOSCPHdhau2yFWL+usVaw3DhSrwW+d3KZ5Q6HpeBETLL2sz8NNF47eaOrjrBmREk+ZRMvxmSXYjygWBaizlQ18cJASvtvIaqhOwVTf0A1/O+smAf/qCTlcBZgHvetI4jAH/l5YfcFj2lyjkaKveJFJDVNr1G01WBEl5jhJxzOO+dg+IhvPsxypjOf1RqwM3EiGLJvZdvvmIREEMB34kfq1LHGLNSzptbnCxu5kERHzKtfJOt7V5QnvAFI+SLfkyESdjiNxMoUWsHoUy32jYTDEEXSAI71NnAuT++DMjhRQiYM5M2KmRVcVEL3bHJbjgakMXb88BYLfp9vAi2fKwve7wy13Rn63ULbW5GFC+Ytr7pTdtcEedA1xxgZ91/EnjLpfolmr5uZreM/uFiQQGQ8KEPCEPnOvvtX0NjN3gfXueJjk/4GgLKhReMGdRHOfUcqsI2vjYjzH5Y+nc0xilbeK02wnFpVk4Z6yLIabZc6nFDT5jPKRbw6++HijKbW19RwQaGg7y4WldE5+QxgnWGg2xxiUuRZTqrlYAgbUzFUCFvPll+hsIjzxgCGX7y5eZ8yyzHlo8AEL4YAsjPmMFuAU+cSc5X7tVpsVMNaSywb+2Psm18z/pBj15RgtgRciTVn4CUx8Eo0OY+FVk6IaDj26PQfrvCBWfsN+ZTLDoKUfvkoR+WWp9b+vHQw+YkUxcyeOzNU32rij6LRvapRX66dQvINz26vEFKGrcAiiqePQdXQY6g+58oQks3DQFB/2ETCwY0HICIovz71RIiwy9U
- /219UqaP
- 62DrSEZycmo6N6VoGF3p265k3gLx0CP3gjrxynq0pkNzaDKldrpyZcgWfYKIouzIQR2j1E5l7zLUWrFpsiIJ+9NP1j764E3zvfoHZSCk7H59ddOVTMfAblJ8cQkBuayqTgHEFbWrQwEOjgNHDz45a1TQgdulw1jtoZll3/2BjD24eqhCAAjuenenw7k6QQuFHHUf4FWZvlt69jSDOXBLZj8w18u7700U1+ndVRI9W2el63/fQkOLWRo216Br1wvqmJV95qs/xP7mnUNqbEMsSpOHVN4DrNBkBR8HZYMtgcYnlyu9VDbfDEtmjegawSluumiS5fowzGXTM9cg=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 3AA14140008
+X-HE-Tag: 1770910105-242619
+X-HE-Meta: U2FsdGVkX18ysXWPN+pNa7PHvWM+D/XnammL4AUjPWgwuHVQJgSFT1O9LAcZ9jaoaTK6GcWwD6dHkbKyHTp/a8sRP4Svl3J8Dzd4/6ycq9DIPBaXxN2nfb3tm11x9WQVr1Zgt0og2NtxDE6OOMZlf9IQ8fgJvk6JlQhFhLoUrTPCEcP2+Y8kHEzAJrHpJpp46HbkUORG9IcVzgj45Sl3E3yQ/yRRjErcJbJmkiOb6Ym9hxF7lyWuG1uS6i6olxIoG++THnih22YHdNBz0ylqxe9B6Ck74bz7AmvMBQO41dfIohbSu5A5HFnBwrmo3e3pMgt7341hlsyPEFbPbFRDaeL+UAhgqABEdylgIvKEL4OaKnD2QtU5WeFhYPusWc2cXyxcD2FnQYpzCchZEae1d5ufyrFVIJ7A2v0qDD3jtDPHA3w8xMRK6JxWnA9GQ8llVOsAR88javTWr+a5o5+Yn85tTGOUe81yvE+BXUp7YYTnkLkK4kfeDpo/gRWUz2ONcAU59PmOCkhgFYV4u6xD3zZfwNKdjzyiSvDVm//jpPuhESZsziLHYw0+RUyXHYfa8ANqvUyJqPQ9DzgQXcJSm8bZSwdwjpIgwbrLBcKxR+41c64t9x9LnLQxtbpFYt41QIL5W6qErMQqKYEoeyKnAVbd3HMI0GBc6PkNBCR6hTpE6o1r4rZXfaOt52WMvC7cw+TyImx210gPA9b6xzm2idxeGwwUUZj2q+YeRox+ZaA9vVrROikjBJRri8MCWiwSMKxB6mX/Et0zGmVVawOMIDVXWK+/J0l7Px+UtRa1wXu2Y3xb2KpNegIKO9u0LMIsoXz8XUqIKtkF8a0mW/OcywRIO0NLn/xazGm07VUL8CVaNBGd+rerj8fz1rIhvXbzCZNgZRWmWX2bOIiJ3ik9KJT7WXg+I0bwW0dA0eZmNGR4kqR5/TviZN0qQJKjsAcAwJ6irgOJJ5R9LEQrKjk
+ vXQR4g97
+ ON2dqxXWOgxBwfppDazCP9YdwJGf0PsHUQsqaM7//N3CNPPThj82n2wEsYo37ieubqo6ZmN3QNQmwYacd9VPqOxeqHEEus2T/N1BTmGHzFf07f6vTS8bUxgtVTnXC4NN4r+FlMDpnmlHztAkDCz5zpn2tL4s38lNOMtIGLBiubeWglJpcFRhZuFZpnUX09ldijz+LO0U4BAFN16ySuglTdC0iWTOVAzqdVyvnh+aIqXZI6mNvVOQVDR5nGulbTha0Tr4t5j7EZHOg6a6qMDoqFa15iqboCb4Zp1eTcKjEX2WBpOK+3S/i9+eneYbD5owUA4nnEFMT/JGFDnmw8dqImlAFWPwLzk9H5b05
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,121 +203,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On 2/11/26 11:31, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> my_zero_pfn() is a silly name.
+> 
+> Rename zero_pfn variable to zero_page_pfn and my_zero_pfn() function to
+> zero_pfn().
+> 
+> While on it, move extern declarations of zero_page_pfn outside the
+> functions that use it and add a comment about what ZERO_PAGE is.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-
-On 12/02/2026 12:13, Ritesh Harjani (IBM) wrote:
-> "David Hildenbrand (Arm)" <david@kernel.org> writes:
-> 
->> CCing ppc folks
->>
-> 
-> Thanks David!
-> 
->> On 2/11/26 13:49, Usama Arif wrote:
->>> When the kernel creates a PMD-level THP mapping for anonymous pages,
->>> it pre-allocates a PTE page table and deposits it via
->>> pgtable_trans_huge_deposit(). This deposited table is withdrawn during
->>> PMD split or zap. The rationale was that split must not fail—if the
->>> kernel decides to split a THP, it needs a PTE table to populate.
->>>
->>> However, every anon THP wastes 4KB (one page table page) that sits
->>> unused in the deposit list for the lifetime of the mapping. On systems
->>> with many THPs, this adds up to significant memory waste. The original
->>> rationale is also not an issue. It is ok for split to fail, and if the
->>> kernel can't find an order 0 allocation for split, there are much bigger
->>> problems. On large servers where you can easily have 100s of GBs of THPs,
->>> the memory usage for these tables is 200M per 100G. This memory could be
->>> used for any other usecase, which include allocating the pagetables
->>> required during split.
->>>
->>> This patch removes the pre-deposit for anonymous pages on architectures
->>> where arch_needs_pgtable_deposit() returns false (every arch apart from
->>> powerpc, and only when radix hash tables are not enabled) and allocates
->>> the PTE table lazily—only when a split actually occurs. The split path
->>> is modified to accept a caller-provided page table.
->>>
->>> PowerPC exception:
->>>
->>> It would have been great if we can completely remove the pagetable
->>> deposit code and this commit would mostly have been a code cleanup patch,
->>> unfortunately PowerPC has hash MMU, it stores hash slot information in
->>> the deposited page table and pre-deposit is necessary. All deposit/
->>> withdraw paths are guarded by arch_needs_pgtable_deposit(), so PowerPC
->>> behavior is unchanged with this patch. On a better note,
->>> arch_needs_pgtable_deposit will always evaluate to false at compile time
->>> on non PowerPC architectures and the pre-deposit code will not be
->>> compiled in.
->>
->> Is there a way to remove this? It's always been a confusing hack, now 
->> it's unpleasant to have around :)
->>
-> 
-> Hash MMU on PowerPC works fundamentally different than other MMUs
-> (unlike Radix MMU on PowerPC). So yes, it requires few tricks to fit
-> into the Linux's multi-level SW page table model. ;) 
-> 
-> 
->> In particular, seeing that radix__pgtable_trans_huge_deposit() just 1:1 
->> copied generic pgtable_trans_huge_deposit() hurts my belly.
->>
-> 
-> On PowerPC, pgtable_t can be a pte fragment. 
-> 
-> typedef pte_t *pgtable_t;
-> 
-> That means a single page can be shared among other PTE page tables. So, we
-> cannot use page->lru which the generic implementation uses. I guess due
-> to this, there is a slight change in implementation of
-> radix__pgtable_trans_huge_deposit(). 
-> 
-> Doing a grep search, I think that's the same for sparc and s390 as well.
-> 
->>
->> IIUC, hash is mostly used on legacy power systems, radix on newer ones.
->>
->> So one obvious solution: remove PMD THP support for hash MMUs along with 
->> all this hacky deposit code.
->>
-> 
-> Unfortunately, please no. There are real customers using Hash MMU on
-> Power9 and even on older generations and this would mean breaking Hash
-> PMD THP support for them. 
-> 
-> 
-
-Thanks for confirming! I will keep the pagetable deposit for powerpc
-in the next revision.
-I will rename pgtable_trans_huge_deposit to arch_pgtable_trans_huge_deposit
-and move it to arch/powerpc. It will an empty function for the rest of the
-architectures.
-
->>
->> the "vma_is_anonymous(vma) && !arch_needs_pgtable_deposit()" and similar 
->> checks need to be wrapped in a reasonable helper and likely this all 
->> needs to get cleaned up further.
->>
->> The implementation if the generic pgtable_trans_huge_deposit and the 
->> radix handlers etc must be removed. If any code would trigger them it 
->> would be a bug.
->>
-> 
-> Sure, I think after this patch series, the radix__pgtable_trans_huge_deposit() 
-> will mostly be a dead code anyways. I will spend some time going
-> through this series and will also give it a test on powerpc HW (with
-> both Hash and Radix MMU).
-> 
-> I guess, we should also look at removing pgtable_trans_huge_deposit() and
-> pgtable_trans_huge_withdraw() implementations from s390 and sparc, since
-> those too will be dead code after this.
-> 
-> 
->> If we have to keep this around, pgtable_trans_huge_deposit() should 
->> likely get renamed to arch_pgtable_trans_huge_deposit() etc, as there 
->> will not be generic support for it.
->>
-> 
-> Sure. That make sense since PowerPC Hash MMU will still need this.
-> 
-> -ritesh
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
 
