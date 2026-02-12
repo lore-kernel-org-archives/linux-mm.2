@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6A4EEA86E
-	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 23:53:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30045EEA86E
+	for <linux-mm@archiver.kernel.org>; Thu, 12 Feb 2026 23:57:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D04926B0005; Thu, 12 Feb 2026 18:53:39 -0500 (EST)
+	id 709926B0005; Thu, 12 Feb 2026 18:57:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB2816B0089; Thu, 12 Feb 2026 18:53:39 -0500 (EST)
+	id 6B7866B0089; Thu, 12 Feb 2026 18:57:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBE596B008A; Thu, 12 Feb 2026 18:53:39 -0500 (EST)
+	id 5EDB06B008A; Thu, 12 Feb 2026 18:57:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A7C186B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 18:53:39 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 52A3F1A02BE
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 23:53:39 +0000 (UTC)
-X-FDA: 84437459358.01.A911698
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id AC817A0006
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 23:53:37 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Htv2usbB;
-	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F3336B0005
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 18:57:31 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CF09DC1658
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 23:57:30 +0000 (UTC)
+X-FDA: 84437469060.03.B8064A8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4A592120006
+	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 23:57:29 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J8dUK+eV;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770940417;
+	s=arc-20220608; t=1770940649;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CYkm/2qOfdAzMN38BYuT71W/aoP8d4GmYJ9iS1lfObk=;
-	b=0NcQ6AH8bkMlFzag6AbZ/vvr9HqKOKdvoXdX0aW376tn3zhILG0+HmlJHMwkbdEyJY2nxL
-	s6k3daldPs26sWaOTy1JXHFrKidI5e/7uABcraqdlhJBRi+UA5w9yyglmaVYN9Iej3uUfw
-	KwEen3o13do7DJ/PQMQP4dnp0nCkETw=
+	bh=Q3FfjOYubxB0B5WuQhWA8OUAeyV+Di2BUs4kS1n/7vY=;
+	b=QXc5WQWgo0CF/txLoJlHtahf4o9xV1JcF07F2I6Jx4NYMWeaYsenxl25Fyg0fE5vkEA1CL
+	sPjnOYYa2VuZO5zmEpDzKr9P7Jh/fDOv8kLj/moLZZOKLHnHEI7wFQSthB0jtK7vL6Soo+
+	8rihINt48dywrW9J4rAkAyn/AudJI0Q=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Htv2usbB;
-	spf=pass (imf15.hostedemail.com: domain of kees@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kees@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J8dUK+eV;
+	spf=pass (imf29.hostedemail.com: domain of kees@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kees@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770940417; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770940649; a=rsa-sha256;
 	cv=none;
-	b=kL7GDSTHvQwHUrjf+Sg/Wt00xEtnOnGuWBA4Y1xUAZR/9QllNI5WP3AAfSA2enrkQvOkqG
-	c1yt83yWD0nfFv7E11wBThdjItqdkN65j5HFaQivVq5Rn/yh+fcspA4MULDkFFo3LsnM/o
-	oY/xtxNRnGjVBF/bZbBNo6X/kPNvRmc=
+	b=D6z+Wi8nzxGIdR/+zBeMEJeiSziItgfeVvYhbTEJXr0i66p+q5dbqOYUKtvg8nIIPbfwgw
+	k8+/tbPJddEm6VlReJeNmA0/egMbXSelNHuANw1065lQOPS5v9vhwpZTrQK6BRZ4gZ/+uX
+	DZzn9ebU+MfIIp84P/BlVsFBGZO7yV0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 781E043D6E;
-	Thu, 12 Feb 2026 23:53:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5155BC4CEF7;
-	Thu, 12 Feb 2026 23:53:36 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9B1F260018;
+	Thu, 12 Feb 2026 23:57:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1A2C4CEF7;
+	Thu, 12 Feb 2026 23:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770940416;
-	bh=7ylnb5ynWTDR1dFA48S7QJY3cFKZlh8+h3w7rMjeS64=;
+	s=k20201202; t=1770940648;
+	bh=qH3sZOAXgsUDZ09GEG/CPzjzapOeWhbOfDETc9hIRVI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Htv2usbBoStdACDrjbA/zXR9xkocBdtNNcQ5L79lRDrv0Rx3cLQLhmvwOrSSDgAXv
-	 4t/aG2Eo0BfncaZBH+xWtd18RRtWSu1/7O+CwAI2J4EspSsgW2pfMIqiqifqpnJDS4
-	 oY3zMJHRPHv4WshFj33munWouGyLJbBbsWN2UIZKUCA/drjl1WBW22ZG6d+TfrGuI5
-	 IXZlath0Pfl6YI7eJit9ugK6BeicQNe/0e28TyAGjEu0d1G53eZUpm7D4AGd1/yjYL
-	 ob+/SFIuqTQgJgNY38IouC+DOVtg6kvD3TZ0X8Co3lgc1cHdaRmI1dk04utFOhvKo7
-	 hjYb93vsik1zw==
-Date: Thu, 12 Feb 2026 15:53:35 -0800
+	b=J8dUK+eVatdS5vpKnijzt3yXjpo4a1kisPNMV6Nj89YrPja2m61ACXdWvBHURZEaD
+	 BEfYrXT9BR7U1+yaiyVHk4YUOEC0x0h9Qq+md7gpf7By5/rHIhpCQYwTEdS0WZRVHe
+	 G9w9+g6xy85JEtNj9JkmpDEyBJlI0gXfU864RlU8t2GcqBezA9IiC83UG8w8rau1by
+	 OKGS7m4nBKOcLRflfVy8bS5n+CsDQKjB4VIyokrnxFHkBBnKbuHyC7sRSLjcU1Nzzq
+	 uh+MGPtj5UN4kwaQuj8ggpZf+UTg3tHTHMOHQIg2YEF9p/Lc/vwFz0CUpI+GLYYAHq
+	 0LuO6W5jzs+8A==
+Date: Thu, 12 Feb 2026 15:57:27 -0800
 From: Kees Cook <kees@kernel.org>
 To: Andrei Vagin <avagin@google.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -78,22 +78,22 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	Eric Biederman <ebiederm@xmission.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	Michal Koutny <mkoutny@suse.com>
-Subject: Re: [PATCH 3/4] mm: synchronize saved_auxv access with arg_lock
-Message-ID: <202602121552.C2AFE712@keescook>
+Subject: Re: [PATCH 4/4] selftests/exec: add test for HWCAP inheritance
+Message-ID: <202602121557.5C1249F@keescook>
 References: <20260209190605.1564597-1-avagin@google.com>
- <20260209190605.1564597-4-avagin@google.com>
+ <20260209190605.1564597-5-avagin@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260209190605.1564597-4-avagin@google.com>
-X-Stat-Signature: qxkjocgtubajxgnkg7ezaz8ffgd1fpwf
-X-Rspamd-Queue-Id: AC817A0006
+In-Reply-To: <20260209190605.1564597-5-avagin@google.com>
+X-Stat-Signature: roksjc9ny6jiuura84w4farji67pqey1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-HE-Tag: 1770940417-797200
-X-HE-Meta: U2FsdGVkX18ZRg+iiPCoq9JelX5MkD/zFLoIazapDP6VvoiiNjVCdC5AK7jCSxdfS43m2Rj0Ubj8q1Syf1KFUBIz7oMV+hslmsAJSFRuqYEvKkpvJ8Tdp6Fk8chP/l3zyk9e5Sed8avqDbocQMOeDWHU7nP8jEa/p1oAd4iQB5o36sJ21UG1WOvP30uXrH4zOLRnHlCEc/4BCDxW+IiWhtEwc7InLjwKJ0HWvcBLzXMtETeh7pkW+B4C0fKirXtYzX1uSeo/cd9UbwRKeATwJ4QFc2ovgNkpYv4h6Z+dV+5NoszUKkdPMONqGF6TmDOGR2Mf3QGbw3feUMjNJ4iNJyn8l/yiKMEKYPWvbv9+rklVe9hNL29jdQPJQ16UaCCbO7e1xmza8jUU/Dc9+pCWZaOyURRSJH4c0nn07vGTtB26U5/4iRjVa7NuQXKjFAY3Pj7A7+/U2rc0bFPNa64AbJ5WqE+HkCaa+akdONJT2zbdNJXlm0bYD9650BRDYr4oJfElKdKVRGw4S1zi+TPGSkH/Kq6tUK2QIK31750b5uqAqrCap7dSWqAb8RIDUjkeb6B17nnEwdpXf7d96EOIbotu9WcAfz2NGZUZ01fC+DFEvbK/161q3IxNajaVkHEGP+ei0omNLtVtyG5flf2f0AyrFfRcfDsHpJIxAnnva15/5/LPDOcf7oAz3kggbkyaf32x6rsVcAIZN96/478YIx88C0VZ4pMu2/wKGLqarSAfueLc+0xwBCjXU6/kBdgpASfBUh+Vj1NuvjvtA57fHI7YcqSPPUibHoRvKvFu6M6FF08YePkx0RlVMRI7HqL4GZlI8m0YysxgfgXcVbWgZ3soGEF5J5WxIlcD3cOdR17dr+imBhdjPluEyUPbq7G0Dc/kuXnxgXokVpk1M9RL0AJwvqquv1P2obnDbIltQS15DBvuQ/ZD+MNDv+fIF2JWIpUPB6dUuv4zlFf9bnC
- 3uRdQQ9c
- evZ4IK5djaL18CZ/1qV+e1d0CD/DG4iZJyya1gmRB+rP0HUjT1L7LUrsQ/L85N9F5aosqlPo1DDDnn8vKNxQwhR0U8gAozW9wcCWdS8F0BZSN+5Zcpe5DjD5yuCwLQd91YC574pfFTPgRoriWHosmr8vZzb275wFHTYcDEzj+7e4jv/T3V1jCIRRuK2ku6kvLsDt5FvVpgg4s2rF9XvBwjwrOTvvtbDv038WzKKGu+98Y2Q8RHfGwlqHdw/BArtK4pECknSBYrzc23iCs9Rz5JIdNDtrZPM6NwZQSJoZYimnm5ON1ams5CzFHJVpzwtj34MIlwpXfKYBktn4yGUBmPS8L/VxbKjR007438kcwVBnB4fs=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4A592120006
+X-HE-Tag: 1770940649-223679
+X-HE-Meta: U2FsdGVkX1/lsM9d593yLFB+Ax3IuVcKSxtGW07E2QfKgi/c+jnOneXbLqsyeu8gj500pd3KHyay75erfitWdQAEmW4QRX2/JnQlIe5ALxJvnb7ESIUnYRC33txMj5G3z44Y8Ai7oA05FkwULZpQOyWhxg2/fes3yGaz1u8mJf8vcqiiHfn4dHMiBQRh4xVnD25Lwgu3nbmD11R4TimuVtwMmEe4SXmqHTWlAh57CRUP1axz/y7E9wRxrD0S3+tfySP39ktCuVPBLOD6IIwxjd16t/t4PlNajrfyl4ZCfNTDod9ZqTUR6wMZ3GI5HONJh0HNRDuD9eTRlCQDgle+X2s/m9fa3xiPrD28IO0bkO8WZZSBoGpUpXXMcCIlcuBkeFl/XnRgw69dMI8W9FCKbzseWKzG/jXvuAAoKvCekJ5337g9+0GUbwUkMzN3ss73/ZUGyFb3FG8aXnaszTm6VjgOiesG/l/f5v3mNwv5HuUaZ8m9FvTmSCtZNJZcZwu3ctOd/8V+fwcpE/41ZFsgBXJsipCfxnxBmRGZwIibfiKit2FT955UST/0xrqeE2UQQoaZ/l4Eb3/igqskzB3AhBOVC3oMr+mFG2j3DMjCdOLfvc5D/DzrSSqkT0YjT2YR0/iYastPCyrxwinPAPZdS8l+DqH4XLD9bDMCooAE7/2aziWfl1BNv4/r8xjQoKKWgErYpV1eaXoXK3hIi6E5VDCigO+Uob0qaOfCqAgjImx+e0x3FEU0kbCtVaSlMGHwfNky871qt8Roy3xj32XynkLVu/re28dcns2da3CRRH1Io9wc6EnoTy/mc9odlu/Hb/Imf8mLsq5B+qaz+klJmuDdeqd6mXB69THNCE7ozor2qX+10+Fh5Y4YfaceJum3NRyT0TcSY2bBfKbWL3b4pvEz1nJ/7wE/rIF3m1sNV6qzpUBS9majUaK7gYl/xmzKHVnkckYDWbDl0LwTatj
+ xZtYcj4Q
+ GJTxCqtfNH+x1yKL42CM3PSvKJ7SDmYznTY/7G0ng8ecrduc2c4lEo+DriZD7Ell4lXuEzzDGpu1tMOkm6J0lcUXAs0Bnb4BDZCQkXNur0jN1ngysej3obx7z5r0KJxzReCS5OwEjJr+EQwNe6pvYT0H1L0+TQuxu30a2MRqe9zDZauBRAtaUuFxWXdrvrTvpTqNOjrI1QIueHYNrqsICJSNHcb8heK59rwEQzcrdJZVK+Q+Ur0eDhZlvtqcnK6ZnN1MXIaF4jHZfmX7vC7GGvDtT+VGzqFbySYkoit0hA50Zd+38K9rh9/3I9TQ+8RXjipEcl4SptW5Ax24=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,59 +102,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Feb 09, 2026 at 07:06:04PM +0000, Andrei Vagin wrote:
-> The mm->saved_auxv array stores the auxiliary vector, which can be
-> modified via prctl(PR_SET_MM_AUXV) or prctl(PR_SET_MM_MAP). Previously,
-> accesses to saved_auxv were not synchronized. This was a intentional
-> trade-off, as the vector was only used to provide information to
-> userspace via /proc/PID/auxv or prctl(PR_GET_AUXV), and consistency
-> between the auxv values left to userspace.
+On Mon, Feb 09, 2026 at 07:06:05PM +0000, Andrei Vagin wrote:
+> Verify that HWCAPs are correctly inherited/preserved across execve() when
+> modified via prctl(PR_SET_MM_AUXV).
 > 
-> With the introduction of hardware capability (HWCAP) inheritance during
-> execve, the kernel now relies on the contents of saved_auxv to configure
-> the execution environment of new processes.  An unsynchronized read
-> during execve could result in a new process inheriting an inconsistent
-> set of capabilities if the parent process updates its auxiliary vector
-> concurrently.
-> 
-> While it is still not strictly required to guarantee the consistency of
-> auxv values on the kernel side, doing so is relatively straightforward.
-> This change implements synchronization using arg_lock.
+> The test performs the following steps:
+> * reads the current AUXV using prctl(PR_GET_AUXV);
+> * finds an HWCAP entry and toggles its most significant bit;
+> * replaces the AUXV of the current process with the modified one using
+>   prctl(PR_SET_MM, PR_SET_MM_AUXV);
+> * executes itself to verify that the new program sees the modified HWCAP
+>   value.
 > 
 > Signed-off-by: Andrei Vagin <avagin@google.com>
-> ---
->  fs/exec.c      |  8 ++++++--
->  fs/proc/base.c | 12 +++++++++---
->  kernel/fork.c  |  7 ++++++-
->  kernel/sys.c   | 29 ++++++++++++++---------------
->  4 files changed, 35 insertions(+), 21 deletions(-)
-> 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 7401efbe4ba0..d7e3ad8c8051 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1793,6 +1793,7 @@ static int bprm_execve(struct linux_binprm *bprm)
->  
->  static void inherit_hwcap(struct linux_binprm *bprm)
->  {
-> +	struct mm_struct *mm = current->mm;
->  	int i, n;
->  
->  #ifdef ELF_HWCAP4
-> @@ -1805,10 +1806,12 @@ static void inherit_hwcap(struct linux_binprm *bprm)
->  	n = 1;
->  #endif
->  
-> +	spin_lock(&mm->arg_lock);
->  	for (i = 0; n && i < AT_VECTOR_SIZE; i += 2) {
-> -		long val = current->mm->saved_auxv[i + 1];
-> +		unsigned long type = mm->saved_auxv[i];
-> +		unsigned long val = mm->saved_auxv[i + 1];
 
-Ah, I see the signed/unsigned is fixed here. :)
-
-I don't see anything in here that is fast-path, so the locking seems
-fine to me.
+Reviewed-by: Kees Cook <kees@kernel.org>
 
 -- 
 Kees Cook
