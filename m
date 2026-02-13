@@ -4,97 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2E5BEF48F6
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 09:07:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40ADEDF023
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 09:08:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 348746B0005; Fri, 13 Feb 2026 04:07:01 -0500 (EST)
+	id E448B6B0089; Fri, 13 Feb 2026 04:08:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2F6326B0089; Fri, 13 Feb 2026 04:07:01 -0500 (EST)
+	id DF1BC6B008A; Fri, 13 Feb 2026 04:08:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 202026B008A; Fri, 13 Feb 2026 04:07:01 -0500 (EST)
+	id CF4926B008C; Fri, 13 Feb 2026 04:08:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 10E776B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 04:07:01 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A611E1B4207
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:07:00 +0000 (UTC)
-X-FDA: 84438853800.30.EB8CEE1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BEF036B0089
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 04:08:08 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4EE0E8BA01
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:08:08 +0000 (UTC)
+X-FDA: 84438856656.03.04225B3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1E44980006
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:06:58 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qtYA64dX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8EBD240010
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:08:06 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JAowi5Yz;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770973619;
+	s=arc-20220608; t=1770973686;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xKpCoL1nTcfSyp6xQb0aqGH26bAtnoZMqrYFxk3T304=;
-	b=MK+cte+dRTiBFNpP+7BhxXJahgcXPDV6rQWv7OjWVEXZGNq9Ajilz8nMJfZquIs48haiVn
-	9NMZMPnkNiVQvYkXWf9LrydLmBrrqaVhbQ7Byayi10WCa8NdDty2vK+KMz8+voB2UamTS+
-	8L/2PDN76uFzplluuP6vHmX7wawkED0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770973619; a=rsa-sha256;
-	cv=none;
-	b=yQ+u5csU404jg5pIZJuL2MWCAVgXyJof/zTATjlur+v936Syfgs4PJHOzrAK/YYUon+bX6
-	BKfyLhB8yDDe1kMO9YbYE9Src/KL+MN2C0qC2eEUSUl8I9535HNJueU33GeHBxqCXNczJN
-	th7pBFzO0gyQ0DQ3UDE158RxX4iJ5OE=
+	bh=za1+0L2QF18SNEZLji57wmTbv9OGEdon4jMye9CqBt4=;
+	b=nsB2L82AYmBdf22z+L5UxgS0niOp9nmbbKIC2m35T49mykv2U+3won/eVDRjKfRz1wFfGH
+	sG3GC78zHyMN3+5qx2WMimYHd66aZwMREGiusKUfy6tgNDCmyAeJ+iWYlSenW0QiVs0Q2g
+	Z21Ei2hRIQzzWIW9zi4ehrDWFg1N4Zw=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qtYA64dX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JAowi5Yz;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770973686; a=rsa-sha256;
+	cv=none;
+	b=ho/fC4f4nAmDz7lLinW+Mu7tvndvAP8Uejr+73MfClLiGaZ0PI8lz2tqGH9XAw18whgX9m
+	p88bZf2uUXlZT42w/rPT3Hy8DyNe8PIuT+HlSdQuyrUYQvYAx1wLPfJW2AuwZN9BKFqTL/
+	6R6s1m7RIsDAziAVU4Xk+5C+G+AkLl4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 23F616001A;
-	Fri, 13 Feb 2026 09:06:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A01C116C6;
-	Fri, 13 Feb 2026 09:06:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B0E9B6001A;
+	Fri, 13 Feb 2026 09:08:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A976CC116C6;
+	Fri, 13 Feb 2026 09:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770973617;
-	bh=9nOpgB+2oiJLAAjO8nPt8OwgivgL6OPXtS1N7iKvB64=;
+	s=k20201202; t=1770973685;
+	bh=qYw/s+tVSm/qM7WwKuniHBby8k7wA9GpwnN8JhhmYFo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=qtYA64dX+fmmFALv+aBglF9HRGgNb1sEmNGdb0Cps6FtCz0iADj7FFpiYkMeAsDma
-	 n63Tbn6NBf6jfQB2gF1ziSYF0laYrpOqz9EX9OUnpMuRYvyvgh6MPAXsQpsqBP/JY/
-	 EifcBS22+9Ave9ThrEPvpb6gsbZyzdtEzFNfu55BQ1PQQ5Oz2SyyyCPr5AqKc6SQ2O
-	 5ZWwKnJNHECiOS5Y9bsHUFegkQQFMN5KXHpWW2Kp5nwBlY4kEnW/YO++n4LAHwBrG/
-	 kHGGUONP/m698cYb08coOgWRF39clbXyb4arq68v44NcR+mQhvvrPsHsLMv3yxAaA1
-	 df4PQF4mb/JgQ==
-Message-ID: <f3252a77-f41a-430a-bbb5-2f6d3c8a7c2c@kernel.org>
-Date: Fri, 13 Feb 2026 10:06:48 +0100
+	b=JAowi5YzJfgKhkcuBheQjBFOfD8QRSLcbXC4M3SkmT5FgBHUB1HQTJ84rQN6kYdeW
+	 OxeNZ8uU4e0UJTDmUOHFeMKCN9DWxX0JC3o5BSnhtDKSZUfctowiWhH7JYyO7Lj9Bm
+	 2A3kz6Q0PrptvJEGiEKRBvudnKVRq4DoEvCGwJYKytOhlk8ZcUujx6Lx3QoYyhOKiS
+	 DX9EbRqj+3FyxBpx1yk3yVlkQx4i0DjxwxTNVJWu3Lgs0qoxoccKrRVDiHz8Lrg0bv
+	 wBVlhiTg+WZcGrRuZh2ZxisglIQSDCpcLBq+gssDMm6SEDzTIwUsN8HMbkdnmOhKlt
+	 nK8ymODyG4fYA==
+Message-ID: <f5f0f666-b9e5-48a1-8e4b-e7647e4103f6@kernel.org>
+Date: Fri, 13 Feb 2026 10:07:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: thp: Deny THP for guest_memfd and secretmem in
- file_thp_enabled()
-To: Deepanshu Kartikey <kartikey406@gmail.com>,
- Ackerley Tng <ackerleytng@google.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- seanjc@google.com, pbonzini@redhat.com, michael.roth@amd.com,
- vannapurve@google.com, ziy@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org,
- syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com,
- Fangrui Song <i@maskray.me>
-References: <20260209033558.22943-1-kartikey406@gmail.com>
- <0d9cada8-7148-4a5c-a09d-120ef54559d7@kernel.org>
- <cbf76e1d-6b5d-4072-9f46-027cea4c0478@kernel.org>
- <CADhLXY5nrTXmWMPeiLg37euyVeQsNDRUvKmQaPdxtE1YhPq_jQ@mail.gmail.com>
- <CAEvNRgEoPs5ia+u0ODra6N4BdOwpYa04j8nDxwfNVyfCOWnM6g@mail.gmail.com>
- <4ed1b111-f2f1-4f89-9308-fdd9d706ca37@kernel.org>
- <8f188d73-fc97-414b-bdaa-e72032b2bf82@kernel.org>
- <CAEvNRgFw_P-GZ=Z4irGheM4O-RnXkd_bdAd0AT7fUuwXEnSqHQ@mail.gmail.com>
- <c4c06a75-e50e-4530-80e3-13724c08a949@kernel.org>
- <CAEvNRgGg245-TQn2HFSadZ7gmz-FxsAQ6=N14BUgiYGHhZeLeQ@mail.gmail.com>
- <bac19363-0705-4bb2-b022-66054e1f28cd@kernel.org>
- <CAEvNRgH6yfFtOK3E3__hCjkNTQr55y-_N=SpBBr0i9_q6E2_8g@mail.gmail.com>
- <5eb7aae7-f642-43d2-810b-d7afd867d665@kernel.org>
- <CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com>
- <CADhLXY6zzWJnu9ZLH8jThMx=z6JpYmnB_jdxRJe=QVjEMu6WFg@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: only set fault addrsss' access bit in
+ do_anonymous_page
+To: Wenchao Hao <haowenchao22@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20260210043456.2137482-1-haowenchao22@gmail.com>
+ <5c4d773c-e3e7-4a71-b250-91701cbdd4a2@kernel.org>
+ <CAOptpSPuntL5dy+D7-wWcWuOgxugD+_uLzEO8e4fyGjS_ZkUWQ@mail.gmail.com>
+ <201fcbb4-c43c-406c-ad54-f2c9301c12b0@kernel.org>
+ <CAOptpSN1_4N=e=_e6bVPWjEN2RUXG5=xJouhCaYjjqjLTCi=Rw@mail.gmail.com>
+ <c48511be-047c-4ab1-bd49-f2c4899e3cf5@kernel.org>
+ <CAOptpSPx8-APDtkrobTWrf10L36dRLdDTeZOwob6t6twmdbQ0g@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -141,17 +130,17 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <CADhLXY6zzWJnu9ZLH8jThMx=z6JpYmnB_jdxRJe=QVjEMu6WFg@mail.gmail.com>
+In-Reply-To: <CAOptpSPx8-APDtkrobTWrf10L36dRLdDTeZOwob6t6twmdbQ0g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1E44980006
-X-Stat-Signature: uds6xbkdjoeadcwu6ozidd7ni1i91te3
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8EBD240010
+X-Stat-Signature: i79sarhmdycpozisjmodnbg4qjnmbek9
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770973618-5045
-X-HE-Meta: U2FsdGVkX180m+e76XX+bdGxH9HP3Tm9IlNuCNiOjEAzRquSGWaZJ5ehJcGSz7f1z5CKepRdSLArHItbiOm3oXo97JH9temY63xs4odaffIO1HAEYucCqfq1m+8Dg3un7inhXaKTmZq/7OAq9rt066gXpjzGrpJftdBEtL1UMYt6V/mMJgDUa589DG7nDOPedEXODPe9D++InIZ87SlOIU7rmaQu0X4CJ6QveyXRtTW4w8+FzhsTGFbiuPfVjYEhWfocx7tWrBIxKrJosguJqiR4ErDPl9G1TPnXVR5u5C8He2SnGy+7e99pllPrzO0d+WB3oBygXMcrgu8lJcYdM6PSel2JKJk64yWW25Vx18R4YpV8KV1zcOTF6lCkvlzoZk+X1b2tgZdxJ2Kz5GcSxgtep3a8y5jXm98FJbL/6dIhwjxEtyx22avswYjz27kxslvKTCHKrluIBgtplP9mqMweRRKVd8kfN0bbXRfF4CH1MEgptd0crOXgPOIQ0WuREd2X1UFpAeeyYw3ghRj1e0N0ZDPc6UwODLma5G/ezT+QTS3nxmmOotqBqGIJcwL5NlvnQ4TnT3NoNzG3oWCssq/eg9zOtsLin5oOKOiCdXJnRY8mQH+SWnWfwf7hVwbn4XFyMkKsTai+p9ruX7AOdmhXHzWVcpB0V/e2iKUqT//z6AmjPo9HkgDJgdVCcjuBJpIEfDFPOXloFHW2OUh9th9EcFjf3QZ1UA13suiSJc821G2XCbjtTbJLejhSDEBupZHsq6dLP0jnmoXlYZtmkMCESz+FDRVfXBod8mDphDS+FUNYuv1a9LLnYiM0ix3+bVhsE9q5h8NKu/FpOXvKZqCzyI+58+bX13rO/p/3ZsTWQEBxTau0jcSaIXq9jG3EzFIlYkwpb6BW8WrRM9dsh2Btsad0t23lk98piIzLFMZOde5YPBW/f0E6q4r3DvaJ5fzT1RNvfNwUXOj1L6P
- 2rBAe2HF
- t4XCqH9vrXEdB7fzfe4gcjetnoEMht1uv3OdHCZtnrwCMCD6WFA4BR8zvSsKpacUNJHP8JF7X2h+mf0znnAE4Zk6mkTG1FefCKJ1edCTj8vU1eHA=
+X-HE-Tag: 1770973686-740646
+X-HE-Meta: U2FsdGVkX180aHXYUL9zM6nKuHFDEncnsylkSv250s0Vk6813xy93oSsYetaQiCdE41JnPfQ0nuOMvxHLkOJ+h38dbHyTSroIySnXNTEnl9M2fps3GvTlSJ8y8x1pl3k7cwmP+CHhltqWqSPp11kTb4MSEaFZ/QG5I1Vq5IVM5ZL4JbE5hCRYxL/zkcGv9eSVGOOoX316Cr3P/zODhUF15rMi9FMyiWSETgaEpEAunRZ9oQU/kX6bOzyMYdd7xI4OQhklQ2nWLIwfrqIJPHD19qpJjZyUnnKcZCslNEhZWJ7oOsXNO2RtDOSuZts20rZj1Ov9vobuPGtDJ40IHFVTw1dybEZD5y5XEpersHRaPnTIn2AAd9FPQAOnnkNDY/e0P3HyiF92FuYQzZ6LfBm34qfWMyONWO0ASopWwH4urP7h2j5GVdH+9MIxTkgXnyxB+R+lfKeOXfVp9sQmS/Ftx5pa02MsLRsnhnOToApK2xq2OI9E663n3N0HbHXM3/bAhRUXY7+IjBPbQF1Ae7o72YOOpSWS5I60RDgOgDoRzHmQu5kDsQzVgWke4RQ92WC+JtdlUUFcwXduLQoSzeDw5Pi76aEBu03Q4IW55Br1YXt0PWHWtw2bn0t5PXTWulKVMXkxLk8sMXmCztt5ofq/xMv1SGA3qBLr3Hkh3c6Fj3Oz4e7rTgEmZeKp9B8/8ezxqhbgDkh8C2KZeKP5cTJuo0i55R/4GK0/Hja1esFUE6Jvb38DhUTaXbklaSSnFiwcKxDQimBZrPc52L7r/MwONGsTOhZnGxayAjxhmYNorgIUMpWv5ez2Vt4yVzaw8++ugto4/kqmDevaBG1sdJfDsV0vbzH5BK2xq+VM7uXQVdhGIE86uo00A4dd6xhhuQ5JqXJmXx/mHQnw2QA8gZSvHbco3T7/MG20gGRXDo3MMg5vSiDbw1gWGekQflK6EL2JbiJhlXDVJs6kLw2B+u
+ 9uCSAK8B
+ TzKisOqX0zwwq1NcZWRreSCkPeufo32AY0Q2f+3ucky9yAa6AosAnkaycn4UazM2tFGIPMbeqoCBHCg1t7+LFmarst5xnbp49ufZDV73/xXictjvtAUf/JjLDFhN+EXoQoDeg9YIryoC6FPOyYoPhm2pTCk0YBIGS2JrLOR3eA41R+HdFgS9w1CzogU3azFNKevn+zmSdZqMn1pX/gEtYO4ediEjp4qvqZBEQ7HYrK8ENYhX8lL9NwRFumlPW3/Efyh/BvOFokjcQgTmXTvyY2JkpBcda0H8t8PrGPAk0zJq8J/lZ0ISyJfVUQZIBkhGwCDOifCXK9g9AiV+fo7Sk0YSPxuVflw8QE5hf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -160,84 +149,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/13/26 06:02, Deepanshu Kartikey wrote:
-> On Fri, Feb 13, 2026 at 3:49 AM Ackerley Tng <ackerleytng@google.com> wrote:
+On 2/13/26 10:02, Wenchao Hao wrote:
+> On Thu, Feb 12, 2026 at 4:54 PM David Hildenbrand (Arm)
+> <david@kernel.org> wrote:
 >>
->> "David Hildenbrand (Arm)" <david@kernel.org> writes:
+>> On 2/12/26 02:57, Wenchao Hao wrote:
+>>> On Wed, Feb 11, 2026 at 5:05 PM David Hildenbrand (Arm)
+>>> <david@kernel.org> wrote:
+>>>
+>>> Thanks for your explanation. I now understand the design logic.
+>>>
+>>> What I’m proposing is mainly for debugging. After enabling 64K large folio
+>>> on Android, we observed increased application memory footprint, especially
+>>> for anonymous pages.
+>>>
+>>> Since Android app memory usage depends on runtime scenarios, we cannot
+>>> confirm if the growth is directly caused by large folio. We want to
+>>> analyze memory
+>>> usage via the `Referenced` field in `/proc/[pid]/smaps`.
 >>
->> Going to try and summarize the findings/discussions here, copying from a
->> few earlier emails. David, you can jump directly to [Question].
+>> Scanning for zero-filled pages will be much easier and more reliable.
+>> For a debug feature good enough.
 >>
+>> I'm wondering what the best interface for something like that could be:
+>> we don't want to make "/proc/[pid]/smaps" slower for all users.
 >>
->> [Bug]
->> khugepaged (and MADV_COLLAPSE) will try to collapse secretmem pages with
->> MADV_HUGEPAGE applied. There is no crash, but there is a false memory
->> failure printout that looks like
+>> Maybe we could for debug kernels.
 >>
->>      [ 1068.322578] Memory failure: 0x106d96f: recovery action for
->> clean unevictable LRU page: Recovered
+>> For example, adding with CONFIG_DEBUG_KERNEL a new entry
 >>
->> The correct Fixes tag should be:
+>>          Anon_Zero:
 >>
->>      Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
->>
->> I was able to reproduce this on 6.12, 6.18 and HEAD
->>
->> [Stable Backports]
->> The first stable version this affects is 6.12.
->>
->> In 6.12, S_ANON_INODE does not yet exist, so I think in
->> file_thp_enabled() we can return false if vma_is_secretmem(vma).
->>
->> 6.18 needs a fix for both secretmem and guest_memfd.
->>
->> [Solution]
->> For 6.18 and later, David's suggestion of using IS_ANON_FILE() seems to
->> work. This affects more filesystems than just secretmem and guest_memfd
->> though.
->>
->> [Question]
->> I'm not familiar with the concept of anonymous inodes. What does that
->> entail? Why is it suitable in deciding THP eligibility?
->>
->> [Next Steps]
->> I'm going to be traveling over the next few weeks, so perhaps Deepanshu
->> can help with the fixup patches for 6.12, 6.18 and HEAD?
+>> counter that just tests whether the page content of an anonymous page is
+>> all zeroes could be doable.
 >>
 > 
-> Hi David,
+> Apologies for the delayed reply – I was just writing a demo to verify the
+> approach you mentioned.
 > 
-> Thanks Ackerley for the reproducer and analysis. Since Ackerley will be
-> traveling, I can take this forward.
+> Using the CONFIG_DEBUG_KERNEL compile-time macro to isolate this feature
+> is indeed an excellent idea.
 > 
-> Here is the approach I am planning:
-> 
-> For HEAD / 6.18:
->    - Add IS_ANON_FILE(inode) check in file_thp_enabled() as you suggested
->    - Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
->    - Cc: stable@vger.kernel.org
+> However, in engineering practice, it requires recompiling and
+> replacing the kernel,
+> which can be cumbersome. Could we instead use a dynamic switch to control
+> whether scan for zero-filled pages when reading /proc/[pid]/smaps?
 
-Right. Please link the mail with Ackerley's reproducers and carefully 
-describe the implications. Then describe how anon inodes never pass the 
-"opened writable" check and that the clean thing to do is to revert to 
-disallowing anon inodes altogether.
-
-Also describe how secretmem is not affected upstream, but triggers the 
-confusing memory failure errors.
-
-> 
-> For 6.12 stable backport:
->    - IS_ANON_FILE / S_ANON_INODE does not exist in 6.12, so use
->      mapping_inaccessible() || secretmem_mapping() in file_thp_enabled()
->      instead
-
-I think secretmem_mapping() is sufficient there given that guest_memfd 
-does not apply yet.
-
-But we can discuss the details about the backport once the upstream fix 
-is in.
-
-Thanks!
+Maybe a kernel cmdline option could do? Selectively enabling it for some 
+PIDs only is not really possible, but also, maybe it's not really needed.
 
 -- 
 Cheers,
