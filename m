@@ -4,93 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28DF3EDF170
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:19:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2788FEDF175
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:34:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 90DCA6B0005; Fri, 13 Feb 2026 10:19:17 -0500 (EST)
+	id 495796B0005; Fri, 13 Feb 2026 10:34:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BAA76B0088; Fri, 13 Feb 2026 10:19:17 -0500 (EST)
+	id 4430C6B0088; Fri, 13 Feb 2026 10:34:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7C7416B008A; Fri, 13 Feb 2026 10:19:17 -0500 (EST)
+	id 324EF6B008A; Fri, 13 Feb 2026 10:34:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6EBE16B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:19:17 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EC3811C524
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:19:16 +0000 (UTC)
-X-FDA: 84439791912.17.55F0EB6
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 219EA6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:34:10 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D631EC136D
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:34:09 +0000 (UTC)
+X-FDA: 84439829418.27.1F02A7E
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5545140006
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:19:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uvs9VpQk;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4F07D180009
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:34:08 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EjThWCDg;
+	spf=pass (imf06.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770995955;
+	s=arc-20220608; t=1770996848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SclNrYr7nJm5S3eJn/cpV4ydXXhe+tnS32nXzr1I8g0=;
-	b=8G2jsWjgMmzxY4o6OCUzZZadsYYXej1FU+Ac4Y5ZzqrelDsPm3SuqJyogl3IQnioXlA2fI
-	Dn2TsaHb3hKglXh9cLLAQbo/FL69GS3gfXmqKyI2/TIJuAn08Nqmh8j8iXPtVsIFJwYxVY
-	gkkbyXsDGOezKPfi6jF3dGowCS3q9xE=
+	bh=I67gEZyOc1qNvyItMzBIt/zvGrgE5TimEPWHsHHxKYI=;
+	b=LT+TMtg7rvWPGPIL+pKFcO38jJLPPiDEgid5xOKX3eMRJmXpVQutJKd+tqwI1pxwRdb/ZU
+	U4aLFmfAKF5xnGozDgAXiNren5ryo2bqVA3tRZRroh77XbSRMD+YykHyIO8XyXmkRuzZap
+	BaiWpSE21K+mDIsWF8Q7NlzYuI8Ugks=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uvs9VpQk;
-	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770995955; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=EjThWCDg;
+	spf=pass (imf06.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770996848; a=rsa-sha256;
 	cv=none;
-	b=xgih2QIqQerx9H1ar2/s/t8KdQWgLX8SlHlvqkQK3etsUUz6H+lz/U8gnwyotbU5Hzycti
-	D6JGsIW5IL/Q8GhGj4T5Qc+xUproNhLYjOOUaoQ+UWmsP6MAkQ8pQsxv3mZX8altjuCbNi
-	2WjfznrgaAcUz+n/38SiXURpofRwRoo=
+	b=cZG0Vg4ParZXudsO0/2wHyDfcRruzMbfFNupxe2ZIK3uMy+c3vrqHscHh2VXLnX9hUgt7b
+	SGi/KClEmEav3v5XGbP+1gMgE8q1E+8MJM0BgUWl6j+LOhFEb5vp6AOI37xksGDOeYaC5L
+	v2lLTlxaPvO8SEKGIgeeA7xLG8cIavM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8594E6001A;
-	Fri, 13 Feb 2026 15:19:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B07C116C6;
-	Fri, 13 Feb 2026 15:19:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770995954;
-	bh=tSn2VGHTk2dz7GxXDBVDU6D60bA8+I6ljFRm/Ed3mHM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uvs9VpQk9HQQsZXXmwGM+CC8dkC4X+xDs8Pz9vfvJdx5044sHazl+H0wrYSbzQLs9
-	 HxKsUKqCFESbgbX8GegXJnZ9DebdRKaisrrrdluvqAlM9Jb3hkNH1o1yNNPHLA1in/
-	 RIRRDvyma/UGkjgWuC549amzjxFpC6S5qCCDZDCf2vMSduegS5DwRxEJ/M98d68kF+
-	 Bh0g7QO8tGqXxju/l08Zxtdb9Y5iqqw/+bGEMVPQRCRckhfby7u8a8AXMMJ9IA+9cJ
-	 UBmCF53qwAk1IQfLzYRhOik1WmEAa0DNt4nYRUBxpumykLiTNv/bjhtylNfyzanwRO
-	 nVEOIRMhGRqZQ==
-From: SeongJae Park <sj@kernel.org>
-To: gutierrez.asier@huawei-partners.com
-Cc: SeongJae Park <sj@kernel.org>,
-	artem.kuzin@huawei.com,
-	stepanov.anatoly@huawei.com,
-	wangkefeng.wang@huawei.com,
-	yanquanmin1@huawei.com,
-	zuoze1@huawei.com,
-	damon@lists.linux.dev,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] mm/damon: remove unused target param of get_scheme_score()
-Date: Fri, 13 Feb 2026 07:19:05 -0800
-Message-ID: <20260213151906.74717-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260213145032.1740407-1-gutierrez.asier@huawei-partners.com>
-References: 
+	by tor.source.kernel.org (Postfix) with ESMTP id 7E47960054;
+	Fri, 13 Feb 2026 15:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98140C116C6;
+	Fri, 13 Feb 2026 15:34:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1770996847;
+	bh=36/Z6rZPm8oNQHcyjYevKW/IjMhRwzkHb/9A18Ph3Cc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EjThWCDggdVZsiY4hLoTcNGIfXz4yYtGFQIl5XKl6PmhNjKFq+boUqlEtjuRS+5NI
+	 boDwh6BeFOoBqEF7Y5zAq68Qjd4DpZDclyr7OTZ9BFQa7O9Ek4Loq/BfA3JlUCxEmh
+	 Y242uqstBw3Mpjf/vED3nv6RAuZEGAodfxzAyWDc=
+Date: Fri, 13 Feb 2026 16:34:04 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+Message-ID: <2026021311-shorten-veal-532c@gregkh>
+References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
+ <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
+ <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
+ <2026021343-germicide-baritone-efe8@gregkh>
+ <877bsgu7fb.fsf@kernel.org>
+ <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
+ <2026021313-embody-deprive-9da5@gregkh>
+ <873434u3yq.fsf@kernel.org>
+ <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 5545140006
-X-Stat-Signature: otchw6njzu3n3j1wkgkknwj3c9p4jzk8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 4F07D180009
+X-Stat-Signature: 8as76ytq913estjn5pq89fdgzcumaj49
 X-Rspam-User: 
-X-HE-Tag: 1770995955-75005
-X-HE-Meta: U2FsdGVkX19s0F/yVy5EkFIqVIdZebvyA6tZ+Cl8Tb0EQRHd4LOxFGzSWNg/yd4n/J8Gk4GItvvjVYPIu6aVwqJL2XzG15SFBRMX2dTl2dQH8DYHCrF3rIm4Rr0sK9jcY/ojvt83AnPvUi+NQYLagtNFSXOaAmJwJYzQ51PnmOlgSW5pTKzUW5XPrdWtsxJzLxJ47s84qYaNwhhpVsZ+Wi8BshZ65RFQrFRMOObJErLCaBYQn6BAQ1mg4VpLQOI1t1Ifv49W2MvTxrNw0rL9J3d2SfQHF1UB40+hqf5/Cbnb2Z4e2GLoTaSzTZI/0jJP5J+D7z3zfzbff97t1HQz1r557lDWo6tA9+xV+f6TwKqgfrqctNMgd3a06KiHcEVoDjdyGTP7cJ59Y5hN3/zCjkQOelTYvPzIPjTVVs02zhZDuu2bdrU7E36sPCCZUud6TDmZhVVTEwWlc5ICZAKGHca3UcjSon6HYxmatACfcaq0bIrksf7lDQ9hoM8i2LifoC9IPXjjE/0wn+J+PFjSk7jhbzOkBsZ8f0jNGAYxsG04CLdWJ6a+fnYWaCLdJrC7Dslu0xDm8OokekGvQ+suBa6eNqwCANEvb0EO3hHEvwuAF4ObA/MIRvTnv9y2Sp35m7TmaqqxgcZ2Hlj32ZxfWkL9P0YIAjkKv0AWnbzmqeBrsLCndsna+Hbp3/Bj+e/JbpghYXAXiZKQDO4lw6ekaOFs3IroJz2BlbjrGfHW9R9MAYRFEZ1wlpKsN/h665cnQtrCUfGpSvaIvWLRXd7AXyGfs1M1wbqbrpZ4RaqARdwGPsDOUq3pQW84utdycBfREsObnWbfg1iD3RQMQKtxEiX3/156IqxsyY4UgGYvt0co61jCJujVkxAyBC2zNnDiv+YyMGdzqhQmvdRuKTxBaYTFjmHOaQ1eu9WtaKKVkWPqLEf2uHN2g4jS+WoikpHc5dMEg2i0DL0HGrw66oq
- mdLFlWkd
- EpmpGYxZQuXkvkzda0kwxzZbo0rKqHUtBX8+nq2wHnoaiMNrgDmp6Q7W7Wz0GumhUBcrgZtF7SYZgD1sWsu0i9J/AghwtmRb72vX1x8S/NZZ7sm1kNHxVbsOh01yiXfGgyzqqZLmAkegmXH+LHwqzQyJyW6D/U19iYvZg7ImfkchqnJT4K4RZOJJ3ppMXGG7tbLhmzQlq8rTFtB1IiLSPoHVb6ilQIQ2W8QzNvqCD6EazopNfJWSTGqYU+8AcRpck7twAu95dSixPmjZD08mukq5tcPtrH4m2QRZ870qewvKoro+7dDJWYpoKGt1SK5zJTukh/5wZWOxWn8h+Xab7Kmc06TfMEXLmbGhgwTcrKwTvGckeJZxGzyB/BxYDtGz2AAHb
+X-HE-Tag: 1770996848-965206
+X-HE-Meta: U2FsdGVkX1971JyrzUYvc3zRXUepUdj+TSIEQZjU6boOnJ8OTvB4wGEp9tP29ybdZTof7V/rXdVMqnxhejisVDFEuEXamp8cXMLOCEqSuFVuvekV6kK9E6O9Qc6pcUBXB6eAdux8el8D4tnX3eFicQkcNv6KBHFVz48/eaCEFbQZdZzGIaepf5qo84PpA+gGVN+bcr9O0jlyEcWLv3t5ZC64PfuRtpeGdk2bWmOEXLW6kxvInZgiJa543KYHZJte47sCmTTat7hIv30HLOHM5Yl6jsRiM4/L65x0bV/N9cOClN8gnrcfaL6N+oXmNKJxJwzcBHBjSdLqXSMW3+D//fONR7aEifvrP8IYZfP4iZ3/C8gCGWIntoJjoLUMi245TU8WjqBuhKnralPHTNV6WYQ9mFxFMgbvS3u+PdE467vt++b9YhLiMtajnn+Fx5nGeMS9rI5jTBEfwu3QspAftLaWBimzRBA8PPDJp2fV/lUVe/7SxRGtHiM19Z162d4SyyOrQ3lyvSxeANC6lgNImCwDq+1eBbkqakbpT+uATax8bi/89rjQy1Z8je6kuyGvIrYLGC4r1w6ooSJEY0oR3mHOoEuQ5++nNJZshgSjdI1ENS+xgaKdYM3oFCJRtEe6X5+GN1+OIxNEJSyMDiUPPHiEFP/3YdD3CxdJOwms9YFEfIIweovppUmqbVGrwZPwmObyln/g7q9KGeWtyOJRDkRr3PzK6lGqzDeaND/vt3CiqvqlbqLJat4J07KUZFPs8xjpyb1SvsNdYEGBdNvxCpx523SKjsKn6fU0b3wyOPlw3v7mvE8n/y2RovLgwuAqCAR830VL+mGV6amQS3/zPiNiauzfonUi4B4rAJmMkViknCZ9n0Ga8IhDn5PR2KmG7t6MXxN/oQt+O1nSdo9QfM9WyJQ0UnoJGmaYz1vBc4davCnqAnVZFWJp5jfLOB3MXO6O5GDpJzNfVHhL+Tm
+ 2FTqrF37
+ hzmM/HlEsNmaWn8AZu3u0rkMz2xUdx8enXbLt4cofxB4Q8IPjVqbP8CsK1hdc1SnKQ7XDHKqTeZb5iBCZ/3XHKZ9P2AWmnxxyrDGj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,40 +105,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Feb 2026 14:50:32 +0000 <gutierrez.asier@huawei-partners.com> wrote:
-
-> From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+On Fri, Feb 13, 2026 at 03:26:08PM +0100, Peter Zijlstra wrote:
+> On Fri, Feb 13, 2026 at 03:13:01PM +0100, Andreas Hindborg wrote:
 > 
-> damon_target is not used by get_scheme_score operations,
-> nor with virtual neither with physical addresses.
+> > C uses memcpy as seen in `bio_copy_data_iter` [1] and in the null_blk
+> > driver [2].
 > 
-> Changes in v2:
->  - Patch against mm-next
-
-You mean mm-new ?
-
-You should put changelogs under below '---' line [1].  Also, pleae consider
-adding [2] link to the previous version if it is no big deal.  I understand the
-previous version of this patch is at lore.kernel.org [3].
-
+> Right. And that is *fine*.
 > 
-> Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+> > Rust has `core::ptr::copy` and `core::ptr::copy_nonoverlapping`. I was
+> > informed these are not safe to use if source or destination may incur
+> > data races, and that we need an operation that is volatile or byte-wise
+> > atomic [3].
+> 
+> Safe how? It should just copy N bytes. Whatever it thinks those bytes
+> are.
+> 
+> Nothing can guard against concurrent modification. If there is, you get
+> to keep the pieces. Pretending anything else is delusional.
+> 
+> Suppose the memory was 'AAAA' and while you're reading it, it is written
+> to be 'BBBB'. The resulting copy can be any combination of
+> '[AB][AB][AB][AB]'. Not one of them is better than the other.
+> 
+> No byte wise volatile barrier using nonsense is going to make this any
+> better.
+> 
 
-I believe Andrew would move the above changelog under the below commentary
-section when he adds this to mm-new.  So you don't need to do one more
-revision.
+I'm with Peter, just call memcpy() like the C code does, and you will be
+"fine" (with a note that "fine" better include checking the data really
+is what you think it is if you are going to do anything based on it and
+not just pass it off to the hardware.)
 
-Reviewed-by: SeongJae Park <sj@kernel.org>
+thanks,
 
-Thank you for this patch :)
-
-[1] https://docs.kernel.org/process/submitting-patches.html#commentary
-[2] https://origin.kernel.org/doc/html/next/process/submitting-patches.html#commentary
-[3] https://lore.kernel.org/20260212094326.906497-1-gutierrez.asier@huawei-partners.com
-
-
-Thanks,
-SJ
-
-[...]
+greg k-h
 
