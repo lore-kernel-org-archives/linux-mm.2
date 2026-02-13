@@ -4,182 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79158EF48ED
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 08:54:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46811EF48F3
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 08:59:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B90386B0005; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
+	id 98DD46B0005; Fri, 13 Feb 2026 03:59:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3E226B0089; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
+	id 93B6B6B0089; Fri, 13 Feb 2026 03:59:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F4E56B008A; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
+	id 865856B008A; Fri, 13 Feb 2026 03:59:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C7986B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 792BC6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:59:28 -0500 (EST)
 Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 017F813AD41
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:54:43 +0000 (UTC)
-X-FDA: 84438822888.30.783A835
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8F1FC1A000B
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:54:41 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CFdSP8lZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mDiFuDQx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FgV8zFMa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=U+0RTVn2;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3E6941C2F6
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:59:28 +0000 (UTC)
+X-FDA: 84438834816.30.C554A64
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C859280007
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:59:26 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r9Sz6PR1;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770972882;
+	s=arc-20220608; t=1770973166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
-	b=4EB07ZGs2LcG/KrajwOP9IRjaDS5dpchD2mL//ZgR3onmHF8qKZa6LlUO3rt4vCDrJA51m
-	L/1/Nywy9++ysE+WDJLNau62a2bWXDRKQbNinXReRUshSHAjCAVvEWATT1qSLfoPy3fJIz
-	mRwRMsoZS87VtsfD3nH6WsUdvmeF5Qo=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=S4B6XVJgrVzwO5DjJck58Vc1kxScEkMaUxP3BOD6O/Q=;
+	b=eusqO3sq3cTASD5KmSy+rOcVWpKHtNghpwwQocTJbatV2mN9dpj8JB8JJO8pddXjb75qTE
+	BHjYyeJsuRS/pBU6uQ5dPykhlStJe9noLF9PH1enf3chhF2c7rfIl/T8NmAQVoOokpzwrQ
+	/tm/qEMV53KoqjCTclmypTkzk/dWP6Q=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CFdSP8lZ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mDiFuDQx;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FgV8zFMa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=U+0RTVn2;
-	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770972882; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r9Sz6PR1;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770973166; a=rsa-sha256;
 	cv=none;
-	b=LEdHqq3NMzA3HbtGssD1JqkQXtaFD++CQx8qlVo1Mkzkl+AUOpbtNrvCOq2xL8YgW+7HrP
-	Q/++CDFalizpRejMAMkx7dC1Bg2O94HCNOk5lo7/VbU+z0clgn7XU1rL3YvsCngyZOXtBd
-	paN8a8FfENnLbuXBnEKeByNoE6QGYwI=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DF6633E6D4;
-	Fri, 13 Feb 2026 08:54:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770972880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
-	b=CFdSP8lZ1U/Ohf629Fb0N7KS7TBjNuJMRkLKlv62bktH3YUZXsIzesF+YF2QpiykquXnB1
-	v3QasxYb4MJkKft3eLYByNj8reZ1AvHh4Qhji2he/aJ8WI2Csuygk51lUEqzzcMzrRkRm4
-	srR775WqDmVLvOWQjwPPCpeCZAPzHiA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770972880;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
-	b=mDiFuDQxjJQZxli8cIVx2MERCTx+wRdZXox8cc1b9dSxjf3LOEQ4A3m0bTMvuW3kGPahj+
-	A+y7ZY+y8H61K2DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770972879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
-	b=FgV8zFMauwUnsS7NGZXy8kaOpJHOwGvBU8huqcbOK2wRjLQI0eAADnfN4zCt4QX9SHWyHd
-	ZBWH2bKA7oqhYRCxV6jGvwJF3xFGTr96YuJpyu4QKf4bgkj2ZJwnDcEgrcjXUXZMQHUQbP
-	zAVSiYy+aOIJVLqswlbgjO4b4WCp9mg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770972879;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
-	b=U+0RTVn2D2ptoWrYQB70sZ/KeJtHoVdJuz/aVR9oJCn1CNoLJXAdFQGQvNELjNex8L5Oj0
-	8KsqOLBO0blm6nBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9B56A3EA62;
-	Fri, 13 Feb 2026 08:54:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id NE+XJc/mjmkHOQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 13 Feb 2026 08:54:39 +0000
-Message-ID: <d52066f1-c83e-4406-adca-5a403adb4f44@suse.cz>
-Date: Fri, 13 Feb 2026 09:54:39 +0100
+	b=tnHrmkgfvbRZNKv3J99uaO4yqH/4fQSdBjGMa2MN3HOCeB1VmlxW3i99EcmpLoDRx7E34j
+	ePKd+XHkceisn7kMl/FqIZVCMgUQ5ZbUZaSdBoRwTVwEfUkv0xKkaHV2yWVc7WvsKxMMJ8
+	OPaAMrDJQW1p0iAsq4foDBIzxbE/i4M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 186376132B;
+	Fri, 13 Feb 2026 08:59:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6F5C116C6;
+	Fri, 13 Feb 2026 08:59:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770973165;
+	bh=uixbDt7OlKbJ5MtQyLaeFtlWYMi840nDFBt1QnEFSsc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=r9Sz6PR1rjD1VMrg9L/5/Ux78jvnREicHVYwULG0PiEJ4UwXVrVv/7uwmQpvHNhVM
+	 2kyITMiYnmhPCd9qvMdqUpAQ0+nvhhU1fWC0mXa4V8McB7UOAMvUkJsSeKze3g8xpC
+	 XBdvShAEp5sQBw35nMh0CpIKij/oHmN8//EVYE//lLCNG35Xr5evy6w8aPtN3cYGBB
+	 Kx+z1qNt7jz+Xgz4RSvwc96iu0rOIYEJYZ64FDLAKDf7riR7y3En8nhQ8ekOmJZ8zf
+	 XDSwaCWHGJKNV34mi0yptyGLH7Q4NKPZFReqTj2bR/XAypiWt9nZ1Of63p2H70ymIS
+	 oFewsJTbK+uug==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Graf <graf@amazon.com>
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] kho: move alloc tag init to kho_init_{folio,pages}()
+Date: Fri, 13 Feb 2026 09:59:12 +0100
+Message-ID: <20260213085914.2778107-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.53.0.335.g19a08e0c02-goog
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/mempolicy: track page allocations per mempolicy
-Content-Language: en-US
-To: JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org
-Cc: apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com,
- byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
- eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
- hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
- linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
- matthew.brost@intel.com, mst@redhat.com, mhocko@suse.com, rppt@kernel.org,
- muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
- virtualization@lists.linux.dev, weixugc@google.com,
- xuanzhuo@linux.alibaba.com, ying.huang@linux.alibaba.com,
- yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
-References: <20260212045109.255391-1-inwardvessel@gmail.com>
- <20260212045109.255391-2-inwardvessel@gmail.com>
- <96b63efb-551f-4dd5-b4a2-ac67da577431@suse.cz>
- <b5927ae8-3108-4d65-bee9-be306fb697b4@gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <b5927ae8-3108-4d65-bee9-be306fb697b4@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 8F1FC1A000B
-X-Stat-Signature: h7yqkaz965337no7ppucohqphb544wyj
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C859280007
+X-Stat-Signature: xz4iqns446wbzbn1mtmm17fhx8f35k6h
 X-Rspam-User: 
-X-HE-Tag: 1770972881-50304
-X-HE-Meta: U2FsdGVkX1+4u4Td888OFJNR1u060Gtsc0VXgPDOsYmiek0V3lTJJbPIyTP6ZPM8RidAYQ3mmPBESOy51cOmcRmYZ+Z/7D38YOZJF6nMe2q/CkhiFu/rf7ZXfsIXAegcLD7RV4SC4sQLVsnEhDGu2qv+4WrV6gQ+vePMb2/+aE5fJpKGTX4L6djDbzi6i4uBiDyf0d+tUs1/CNWynkisgOdk3RP5c/lCCppociuppiUBCo0r2N/cAYeO6VzrDkRi2EecF4sGX5DkA5iDrTbx+EMvYiHYtr7i9GYglE1e7K+Mj02baiToXlV5Hd7Z7yNvkXl6utu8AF/Hk3qhSujDwEwjJssDiEW2ytTlvsuFMxljuyL3fQTraKHB564nzjDvkvgPUU6kD8qD9ARFdFwpUQsLW2dyLMTHMGDHiMu0twyKmtq4D/YJncumyIv5YugABxq4++CQyUCE+KmUfz0JWU7ocEKvsGb2o07cHq2IQA/CBAitOKV3tYyLH9DHF3M1BpDxp8+hvlM6pzIWh9GvkM06oakYYO/tsQsmOfDyo8yqU2KtphKXvRytE6fBjl1Gw0jSsWHsBa9Qxf/y/WKCvKSgGAHQBcUZEmiNCYJS2EYr2EwZjHvLKYVSHPinKm2XQOlZnOYLIELKTH1/xMuSQ9pXl47qSlzQMsrtSyLodud07ayM8uURib/J1FjA6gMaD4ucRCYafZAvqPgYVCQLqLM6SOxwqquVlurOGtGUkD8ti9Dwpabmx+at2vUEao9Ac7o73ryTWIt+0wEqjRoZfC2qollR65m0oB/ryzE288FjUsCYxpFd7PPDO34HJAMwddiuHn3GuCFf6ynjd1olbmQASoSqc2W3XYTTgWpEkUgMVctLHOka3tt9S1qYhCcrW/c15DQUGiMeETzExlWflUbb2+Z3bq/esQO9XDyKXimHNSs6SD2IZF59SAYrnYvqmJeSWwNUKNsk7zjc1oF
- PyB0waf1
- E73WYrr9SfiID9A5aOK6uc235c37cNxnwVqD71ylYwlV6Nmo+/slDFWk1SbNEWjVga8QCyfGicrnyhuiY3OQYek8JYn7sLzqgPnncDyJwCL68S7HP0O04IGRiSX+o1zhfXUUjTV9JoJwibQdBpxMsaBXLnBSrgZzl/mYu4RGBSbdMaMiZWNVbRjzOolR/+XFql0zuKTh/YD/aS+laBPa8pEbYnVXVhiLuHOefTUsAEPrDGW+FoP4IVjKkKLiSdoOgeV+HweaEf6ena52ddb3VJA6QtH7o92fc81zDgEatQr+Ryv6Nwl0Uv5GpICjL+DGtd21QMpjzPAXmJhYUTtfcpyk29U29LQUZ6Q4VK1RXEdaC9FnuP3Nlv4/62H6WBMNbw8sdyXv9gGQBJbMDBc8I7oIcuU+Riby1Omgy7yaZ3I3mksgOoq9NFYxiMSGGlglFGRK7
+X-HE-Tag: 1770973166-982930
+X-HE-Meta: U2FsdGVkX1/RvX526ACotFQxzGp2+caNd1xTMctA6WLt4RynqxDA5A1KbGCP/o++1zKK66V5o5EbYIu+dxwtywAp7W53bvl0mrRK3PnAB46eCzJXxT4uO2yRomAqLElCQkLnvO41zg4H6TO2IQae0P/O+r0QuskRNvmCJ6ONAzsaK30XZYbGxf/NoMZyKsCcllddbANRLrMJYoeqA8wZ1/p9khWSv1nwccBbpE5gQeOORiKMBFuOwKfA6fkJ2FnOAwjkNb+ubkERReQPOKRLxMPlZmbSem/CwkBrh1eSbsVEf8L8zSa/jaTF6eSOhKa7ne/9b8jUaVNxZM97178glDXWFoT+Km8/NuQAWU/KsQVaPsANjh8WU+RzLrt8Hz7nIK6UV5ceifq+a+3hYLyz9gdQFXrloRITwVRavmW4ZWvdxxRNMPT0mJfd2mng8dWtIvyvq46YeNhn4uLMWfbb4i1xSKekzapRJWyMM/dOS8oH3LE+0RzPC6wBjCBUOTw0nNIvpEywFNN4rdrGyM84/CTC1PHHnfTNs4o+H8s9FgosB4UON56oj9byhcVFDAt0lO6B8+MAJlLdF6M5rKnzpLyakUrEiKFTX+wSv4aFBDh0sthixrzDoBwijQj0jmTtkR3xpE8fQNxdRb06R13l/JJC9LEjgYAS+gQhf69AtoGDQlaNong+PkoKZTUiXHNrEyg7OI/jq5m3Op/Mer7uqZUdnyE++YGVOHPuWlr0yTzFhlA0e8AEB/RBEgC/Lt8wr5gDxQV4i/tGkRQ1SaRa55jwD+YmpeSoyDqtdg67Sby+zaxo6RXkRdbc4LHWMNUA4rlJgRJrC/p7ulmTGHvExfV0ZuqnLaqXHUATuXhPDM3FXGLXP6PTQrCMmuT0RAtOtQslE6qZpUAGoODokbikUIKTnonMi2+sZ2mqBaDsSLnOYcOSj8rTLEHEILWIJuPlrsf2JnFJcGIFGW3ozae
+ ego4S979
+ +ek+wBs0kb2s75iEPSVQCM+t5HeSOx70hOkHm/3lGFoIZHzPWl+a3NJOeHYmlMfcLdo/+k0fx7QP4Bw+b3iDDk/6KYg1jK/YCtQVkJRX7dFt4gZSs4lHpkrqx6nHcgH7OpJ32NWA03t77awngjEb3V18dkSI5gIttFj2TcPwB1Wklek1m6/Sbh5GvIpK806f9umVkgFVSBsnAIyRXt0l6Dj7Odd4ul3ktwnOYASTgPjUESZn4+My2v/jbZ9Q3Xxu9C+rMjywvXrzXgxL7oUrI3idxZA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,43 +93,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/12/26 22:25, JP Kobryn wrote:
-> On 2/12/26 7:24 AM, Vlastimil Babka wrote:
->> On 2/12/26 05:51, JP Kobryn wrote:
->>> It would be useful to see a breakdown of allocations to understand which
->>> NUMA policies are driving them. For example, when investigating memory
->>> pressure, having policy-specific counts could show that allocations were
->>> bound to the affected node (via MPOL_BIND).
->>>
->>> Add per-policy page allocation counters as new node stat items. These
->>> counters can provide correlation between a mempolicy and pressure on a
->>> given node.
->>>
->>> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
->>> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
->> 
->> Are the numa_{hit,miss,etc.} counters insufficient? Could they be extended
->> in a way that would capture any missing important details? A counter per
->> policy type seems exhaustive, but then on one hand it might be not important
->> to distinguish beetween some of them, and on the other hand it doesn't track
->> the nodemask anyway.
-> 
-> The two patches of the series should complement each other. When
-> investigating memory pressure, we could identify the affected nodes
-> (patch 2). Then we can cross-reference the policy-specific stats to find
-> any correlation (this patch).
-> 
-> I think extending numa_* counters would call for more permutations to
-> account for the numa stat per policy. I think distinguishing between
-> MPOL_DEFAULT and MPOL_BIND is meaningful, for example. Am I
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Are there other useful examples or would it be enough to add e.g. a
-numa_bind counter to the numa_hit/miss/etc?
-What I'm trying to say the level of detail you are trying to add to the
-always-on counters seems like more suitable for tracepoints. The counters
-should be limited to what's known to be useful and not "everything we are
-able to track and possibly could need one day".
+Commit 8f1081892d62 ("kho: simplify page initialization in
+kho_restore_page()") cleaned up the page initialization logic by
+moving the folio and 0-order-page paths into separate functions. It
+missed moving the alloc tag initialization.
 
-> understanding your question?
+Do it now to keep the two paths cleanly separated. While at it, touch up
+the comments to be a tiny bit shorter (mainly so it doesn't end up
+splitting into a multiline comment). This is purely a cosmetic change
+and there should be no change in behaviour.
+
+Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+---
+
+Notes:
+    The patch for e86436ad0ad2 ("kho: init alloc tags when restoring pages
+    from reserved memory") was posted after the patch for
+    8f1081892d62 ("kho: simplify page initialization in
+    kho_restore_page()"), but landed in mainline before it because it went
+    through the hotfixes path. This led to the simplification patch missing
+    the code tag bits. I don't think any of this is worth explaining in the
+    commit message, so I just left it at "missed moving the alloc tags..."
+    
+    Tested on a qemu VM with CONFIG_MEM_ALLOC_PROFILING_DEBUG enabled.
+
+    Not adding a Fixes tag here since this isn't a bug fix, only a cosmetic
+    fix.
+
+ kernel/liveupdate/kexec_handover.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
+
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 95601623b4d6..7e5d805fa1fe 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -219,8 +219,11 @@ static int __kho_preserve_order(struct kho_mem_track *track, unsigned long pfn,
+ /* For physically contiguous 0-order pages. */
+ static void kho_init_pages(struct page *page, unsigned long nr_pages)
+ {
+-	for (unsigned long i = 0; i < nr_pages; i++)
++	for (unsigned long i = 0; i < nr_pages; i++) {
+ 		set_page_count(page + i, 1);
++		/* Clear each page's codetag to avoid accounting mismatch. */
++		clear_page_tag_ref(page + i);
++	}
+ }
+ 
+ static void kho_init_folio(struct page *page, unsigned int order)
+@@ -229,6 +232,8 @@ static void kho_init_folio(struct page *page, unsigned int order)
+ 
+ 	/* Head page gets refcount of 1. */
+ 	set_page_count(page, 1);
++	/* Clear head page's codetag to avoid accounting mismatch. */
++	clear_page_tag_ref(page);
+ 
+ 	/* For higher order folios, tail pages get a page count of zero. */
+ 	for (unsigned long i = 1; i < nr_pages; i++)
+@@ -265,14 +270,6 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+ 	else
+ 		kho_init_pages(page, nr_pages);
+ 
+-	/* Always mark headpage's codetag as empty to avoid accounting mismatch */
+-	clear_page_tag_ref(page);
+-	if (!is_folio) {
+-		/* Also do that for the non-compound tail pages */
+-		for (unsigned int i = 1; i < nr_pages; i++)
+-			clear_page_tag_ref(page + i);
+-	}
+-
+ 	adjust_managed_page_count(page, nr_pages);
+ 	return page;
+ }
+
+base-commit: 6c8dd4f02805de481c200636e567a871f25399a2
+-- 
+2.53.0.335.g19a08e0c02-goog
 
 
