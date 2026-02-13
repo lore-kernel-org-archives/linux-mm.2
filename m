@@ -4,84 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76EA5EDF16D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 14:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD08AEDF16D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 14:52:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7A2C6B0005; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
+	id 53B9A6B0005; Fri, 13 Feb 2026 09:52:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B27D46B0088; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
+	id 513F56B0088; Fri, 13 Feb 2026 09:52:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2A156B008A; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
+	id 416A66B008A; Fri, 13 Feb 2026 09:52:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EAF16B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18B87C203E
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:51:32 +0000 (UTC)
-X-FDA: 84439722024.24.3C83590
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf18.hostedemail.com (Postfix) with ESMTP id EB6D11C0006
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:51:29 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf18.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770994290;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 32E496B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:52:43 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D66B213B2BB
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:52:42 +0000 (UTC)
+X-FDA: 84439724964.05.49DF0FB
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D35FA100014
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:52:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DB837Hu4;
+	spf=pass (imf14.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770994360;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=/FM0Wiq/ZeKBX91tuQ16UlDgomzVlMPfBN2i8g1Yk18=;
-	b=lUHpN6+U3YgepkE8kE8M7oKT4EpMQuKTNJBslrf+HoPtEk1YMJufvBu9gVLiXDWeYm3dVK
-	KulOEAhOGVBb7y3LDsqj7Gy9kRSYSIp4++zPFukGkX2G1AzZacjNuRqQWMc1KKX5ecsUIL
-	hFaY0N80m/SbWGljNbrG8q6eWoPSyhE=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
-	spf=pass (imf18.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770994290; a=rsa-sha256;
-	cv=none;
-	b=RWdO2Gv2UuDvpzTksG7xQAPW2aWNcjCHLTYlISJwXJwHf2X1bRTPKn5iEVXqPM7c+II/qB
-	vEpjItaBvaYntgDNbMT+PuFYK9VlV3xW3wPg4JzSVB5hTKKG2elSfTNVyc65darPliUUXq
-	nFyR50RQYuaiuUFvYr0vZjDHdBWpqOQ=
-Received: from mail.maildlp.com (unknown [172.18.224.83])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fCFV20nGMzHnGgv;
-	Fri, 13 Feb 2026 22:51:06 +0800 (CST)
-Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7E3AE40569;
-	Fri, 13 Feb 2026 22:51:24 +0800 (CST)
-Received: from mscphis01197.huawei.com (10.123.65.218) by
- mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 13 Feb 2026 17:51:23 +0300
-From: <gutierrez.asier@huawei-partners.com>
-To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
-	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
-	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 1/1] mm/damon: remove unused target param of get_scheme_score()
-Date: Fri, 13 Feb 2026 14:50:32 +0000
-Message-ID: <20260213145032.1740407-1-gutierrez.asier@huawei-partners.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=E3wCxzBk+1lVwPPx3hpJY6M+kN5vjQjXLSUyhwRtH3k=;
+	b=MONZhd/4kG1k7s9mDOusx5pItUT0dujw8C7pfk15hJVHARrXz9NefNQyqv2ewLcYihsddK
+	JPV+gYkwouBJPyTVtFB3P9jkTuLk+RBghxumQ28yMpSH4IuglXy4zUncrmcPPjI1inFWCQ
+	XhrQg0P8D7O7ZsPzua/cs0wdZsrI9nA=
+ARC-Authentication-Results: i=2;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DB837Hu4;
+	spf=pass (imf14.hostedemail.com: domain of haowenchao22@gmail.com designates 209.85.128.182 as permitted sender) smtp.mailfrom=haowenchao22@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20240605:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770994360; a=rsa-sha256;
+	cv=pass;
+	b=Xjp9HQZkmsYjE8ZAqOcsFwpLj5AKPLcDqL5NR6JBle8gv6IHDKTvZyZmJBlwuqPZvWB/5k
+	U387LyuE2+WiMT5AY7P1Hu6vYKCqbsabe7r0swaNSWUziRm4dTONz8LyAL2sSr17UzLwws
+	BR6u5E4Tc+VOJ8EcrPyxEDNx/BIvV88=
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-794fe16d032so9928087b3.3
+        for <linux-mm@kvack.org>; Fri, 13 Feb 2026 06:52:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770994360; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JkWhh86JTZHw3UbcH5+2kwkZgUKwsfNqBw3Vv1S2ytJBsj9AwAVBKv3a5y5qKBCMZu
+         u5m2CA7dB7uojKPrNVn+saMsEUuprCcD0+xz2OR4XjZbIi2fAGt2WzcyHGajSjF1GIq8
+         TGr/P9FLNr+hKivuyhFLxNZFxf8b5fI8uscihoAKquLDVo0ynspi+FtfiQZ60WlXAs5s
+         e48EfroKUo6EZIIeCNA1wIp/NV0rMScdCJz/MoO5RDJ1NfvDU/MjnOJ8fXoaYy1ztuQO
+         I3Bn1BIHYOxSku81AiCH2QnWtzp7p8M/TWoQ8o3qz+XCRFsgEndbB5lfvR2JOZ+dSPx3
+         20iQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=E3wCxzBk+1lVwPPx3hpJY6M+kN5vjQjXLSUyhwRtH3k=;
+        fh=hVev4GQkYYKyynk46/iwe0q4OGa2JflmkqK8438pxF8=;
+        b=fnYqvDFFHBnoseDLyAPCSIruzfXlXROHJCl3fwho3ahGMBaoMcaBLqHRFKCjUSRbN/
+         uFVXQuZ2pWkTZaxhS5KV3n4mIR5wHT4x3Car02Nq+lghj8c0Lh9Mvnr2vxGlLm3EmbBT
+         mtVe+9JqwnBAIZbYD2XewjnV4Cdp26d4x/2MDAbWOW9nBVAz37keEAwQaBcVIcY2qOOK
+         1XQXEj7Ywjg1JwaCi3eVjq31UqaII0wVYevi4gShHlSMjXcztCgrUsVbdKltOT0l9UK3
+         UZujs5+uuQ4SdMc9O0jdE8MnPiO5gsaqyNPXInx/LzjeIdPGki6PGwpiVPhR8qOVvOJp
+         PGfQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770994360; x=1771599160; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E3wCxzBk+1lVwPPx3hpJY6M+kN5vjQjXLSUyhwRtH3k=;
+        b=DB837Hu4QgClZC20UTcH2Bc+4DMe51lrwS548naNERDZLmuWvhR9bisC/6eHTOxxf5
+         VZl9teGciQOh1fDSsuCPHWnng3PHZ8T8Y+Gs0gw4fe21YfQ4YvnN4nyMlUMrpZA9GU/R
+         bxgSTCAcY9I88bmiz8CGwRMKaGCXAsTDGbczmZD2aB5OIxjZvfTUcxENS+q0YlSs38QX
+         XIZtSu2WX2moA6JLaw/sSBKGf9qeCaaGJUIgdHctspbk2TfYSpp1OUY/GdzT7PBWgYem
+         TKCwuM7v/LGSCppdzudm8tsC4TBtiW2kjaxdKJQIdnvElAfz98a2dvvBAcA/kdAfEcvl
+         UtRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770994360; x=1771599160;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=E3wCxzBk+1lVwPPx3hpJY6M+kN5vjQjXLSUyhwRtH3k=;
+        b=vTBeCTic2nNiv9ncyEf4iy6Fzr8my7fHVJ65YB6FQHYb5JQ5h5FeC/4kmvxp6FFu4k
+         MoIpAsVy4dnS1eKIGnWw8vMJg6T+lRtZnnu0NjIp/VZZT+ppw0LlSp+A+AalgkWeHdEv
+         B2YUSk02hPsacRfcssxDpzM5Og/8ck/jN409gRDPDtYAVEcbX1DCt6eYmbEHQWWsKb1D
+         C4XzEqchns3RdllyElGGP8dtJ3xNS86/819yycf7BOrw+jdeo4v2MZjwjGHoBtGUbVhn
+         RsyemyzoHADh/fKFj0ojr2dFdDwVTzjFX8fuHMoVAqyjQeJJBU6Yd7waaAJUaey9lpGB
+         OysA==
+X-Forwarded-Encrypted: i=1; AJvYcCVWAAQc+OzJSKa2eXl7sSdSZMm7UAKI9DHqzSmDQ08TafsrQD0mGBL7qYpE8hxMmRS0bLsJdqVsyw==@kvack.org
+X-Gm-Message-State: AOJu0Yxqi9WV3hRaboc54Nsicqgilwxl8cEod81L1yBGSGoCX9L3egeX
+	56Ih1/J17UhlI6iShET62PFVs/NNjAHRb4Vx3MTRRxCX05qmXf/hoWnLefdp5Y3BYAJYbWPKTCY
+	S7dogI1o5HxgqWgoEalEKIcYBjz65/gU=
+X-Gm-Gg: AZuq6aIwoIhw1Lwsmrpibll1cZU+0yEDisNfCb148PmcWRhMki0lcfVm8h24KiB2dXz
+	e8X0IH7L+uGexy8mnlDUQVIcvXRr2qSZVq+D7hj5xi6NkGSyEtVS2Px+CYT4e9w0lDMX10VHLTI
+	bBqvJ9UguC2FELWUN0FmJaHPimSSVG72f8uxRNgtb5VN9JuLI/c0anP5ApC3B2GbKKobX2sLJYr
+	7qJ0IkOcTD7KNTTjhsCvwilPHH9e/hFXC1xkHpUGQxASGKWbwHwJNYMsBSWbd28icNSiN+MKDpy
+	W++tmSh3
+X-Received: by 2002:a05:690c:f08:b0:796:2976:a465 with SMTP id
+ 00721157ae682-797a0c61f76mr16250597b3.29.1770994359745; Fri, 13 Feb 2026
+ 06:52:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.123.65.218]
-X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
- mscpeml500003.china.huawei.com (7.188.49.51)
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EB6D11C0006
-X-Stat-Signature: dc48g1nu1bdgmny6wsajufex6ztitqps
+References: <20260210043456.2137482-1-haowenchao22@gmail.com>
+ <5c4d773c-e3e7-4a71-b250-91701cbdd4a2@kernel.org> <CAOptpSPuntL5dy+D7-wWcWuOgxugD+_uLzEO8e4fyGjS_ZkUWQ@mail.gmail.com>
+ <201fcbb4-c43c-406c-ad54-f2c9301c12b0@kernel.org> <CAOptpSN1_4N=e=_e6bVPWjEN2RUXG5=xJouhCaYjjqjLTCi=Rw@mail.gmail.com>
+ <c48511be-047c-4ab1-bd49-f2c4899e3cf5@kernel.org> <CAOptpSPx8-APDtkrobTWrf10L36dRLdDTeZOwob6t6twmdbQ0g@mail.gmail.com>
+ <f5f0f666-b9e5-48a1-8e4b-e7647e4103f6@kernel.org>
+In-Reply-To: <f5f0f666-b9e5-48a1-8e4b-e7647e4103f6@kernel.org>
+From: Wenchao Hao <haowenchao22@gmail.com>
+Date: Fri, 13 Feb 2026 22:52:28 +0800
+X-Gm-Features: AZwV_QjFh_hBIesWneXx_AGXafgFmkb2lL8_tH60Wk2lj6ZVnsRw1UVpkSgrwRM
+Message-ID: <CAOptpSPuWb7u+ONYAeqsAOCkheqg5oGW23ARc9D41mnHDAXajA@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm: only set fault addrsss' access bit in do_anonymous_page
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D35FA100014
+X-Stat-Signature: 7uqechc5xbb7811x1ikhsxap8pn9yoap
 X-Rspam-User: 
-X-HE-Tag: 1770994289-601910
-X-HE-Meta: U2FsdGVkX1+UX/w9iqi8GlBfwW/SiqOsr3cPUsjOw4Tbs9uobqby/A6RtL9xU+d5pCdYVPx2zKu3yIDKxSdqjS6ecMH4QIISPSl9UfXdLDNEa3fn6jYE9gQw6a224QugIOeUru2i1n0J4FOVqoWHNN+gcHtneWUAou42Jl9uAmlzRwEIRpFpWODc1pYDVPUmtHxX9lVfWjgnZtZyqclgdUeC+tqesHOx9jzgn/w2jbcZSjWNPlPRdxSsZMG6MUvQWcwN07qAKZxCdz/HPe0t4gMkE1aLKbrZm6clDJl9FkwIDpukoI/9ByjfqDeYYzykW8w/XERGp/G7tEt3adkTIzN87ACyO6Q5vu3G5aFb+emy6gzG+xNMth+uG52C+q/eq/nFtC3fWRkURVSdIW/x4CSBeUyD7Gl+kCUkGBn1xdKtNUHmxzQ7x0ttnAhpuE7zyGyTtr3QqRVAOYEDF6rRw/YDeZtild0Uu6gmd3C0xBqAp30owA6/qxmnfKFgUVJtVLtPF1KfgReenJuYBEwuurQWjvKwTsEaXcbF0Dj3kelUGMAWVaLfTSaR6h8eP0f1CyO+4/lV3JgxSbCWgRSSp0sd+LeqRgdtNlMZBnlOnY/7F3EnR3aWjLrfmA/xVN11HvfjUec5n5rEsvLrJnjFazKjZnEZHBfVm4cPjGiBncliXc7xMq4UdPbuCOxzdJRndrPY7iJLOo+KjcGxKdSfbt0MUmVCrPHEVwJ79ERGcKa61jALoh5yuuwWFozCCAxdd8Ik5mwJGD+G81k40MCOYXf1adi8uxlVrBhS8PkkzA/PFd4ZLE6yI6amERw50lpLoQp980awGg9wFMR4ru6oi1JYpdWP/G/3Foid04hUs73nbaS3z376q66aVwfEC0ZAPAVBA4Su/umdiflXs6Ic9U6R1aN4YVtbet0TYnfFjNYTJBizDPjPOhs4obFG8PIg74X/lsw1wH14htSsu/Z
- 4hunHI76
- NT9jF
+X-HE-Tag: 1770994360-446899
+X-HE-Meta: U2FsdGVkX1+/IydJ0IdfU1s/Dzj01GoBwFe41T86LQ1IGSWt0KzKbIvHUsgid9Cm5KNCoVVHBxc8sAba2Ti/JV8b+IMVCnDsz7PQ5zceCl7rUpK7v/R6I+rybHZCjq0fWTHx3y0mZfSJt+ep6VxG6GwQluLs0M10bphevUWH74rxgeDa8aW4FBcJsr6xllLMYWcLFQdETMct4J80g99Z1YZEB8V53T0H8KTeCvLB3XnMp5qJ2tEXf8OHwUhpvX+UZ/V/gaqhsbsS+tNeAubZIXaURutqKAJSaqHEas72HBQ6g5wGpkH7SGQ4e5qMkDMdnl3F43TmxKRADPnBgslmIeG4IsM/YLINe7xiukISRVjAtXTYKREUBJa405nl6NgEzZ8Qmed8UdMQJZ7Pk1RknLnzX/2V0ny94XgXm0wLmpzha2zJnZcmFK7M4V8EvUtcY20ekQWi1hPGLhoIv2n/6n/DE1JTtqlMMlNWO+lOtMMf10Q89m60vRsK34b5QbGR+JoOFkkU46d3ADJ2OCZk8hJjYG3H6ht1wzFD1DwgpsHcsNWawWZCUhG5TVrU78oUlxlyJOYBkcTvDKv6is1sqxT5Ben5izZsCRo3zUUNzgpROr7WksxOWMJZM8TVQDuYPVH8+rOhyusigyz2NQwq6ALWtBSiHBHQ66EsSzaHZQQj5Nd1rxixYtX26tlHqFAwD2Nvckh65bK5P/BsXbdhvMVSBRM1HYohfovoZrjkU2b4PE7NT3FjVYzz8r5hid3Tordd8o0nmgOmhrF5hMB61xuckCpLo4Yv6aGjvYNGlBh/6mwD85pueE/SJQoPUev/d+1uw5ro7ur5nYSihhecudElWCaj06CPg0BKxaSDR6aaMVHxKE/fDTAt9rdKH4DbjFPZfSRyzlC3HB1baYWL2qlcdo8mWPI6yp++oBOUz4ebgeJf1K0u9qT1nTh/RgBLHECqvEBLO5D684Yv1dI
+ WBqEMBvA
+ IQ/YTIbWwKFzsHMYFlLNaRxd8eg61rJpFx683a8qc90cZ8tqtkYd3wAOaqv5grFbyYfl2iAkjL6WG4KRcrIRDHGujaTbipesfMVoSc9qsKhAUb2h40YfpsHt8VIW36SIA9uCjtqyg0KvrzvNPy9n9yZqoRZ1nHB7uB58ZkA2iayHeCBffjBXA4FCkQUa4seQ8zkG9T89QQY9EE9o1PZorHQMnWkTErVF6AYKHH67/0o21S4ZvRFmXoVMrWH9PWLcY+9gQG5cTn61ojPJzNSe/EtD/wqonwann9CI9a9VdeGwK2jlnxKxyy5CKL4xnj/6m4v/Wb+U2z+4D6RsYeMbn9qFJcQVwiKJbMDrV3o0s9K1aarf7pfm334SqPxFVMPpXdAliJhxy0BUFgtbuFS37Z9V/QxTDsWTeA+2eV8DIjCoBFYFZZV9dY6UhJWG5SX8fzIIFmo4kOa68upUfcGPm+guZzw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,106 +145,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+On Fri, Feb 13, 2026 at 5:08=E2=80=AFPM David Hildenbrand (Arm)
+<david@kernel.org> wrote:
+>
+> On 2/13/26 10:02, Wenchao Hao wrote:
+> > On Thu, Feb 12, 2026 at 4:54=E2=80=AFPM David Hildenbrand (Arm)
+> > <david@kernel.org> wrote:
+> >>
+> >> On 2/12/26 02:57, Wenchao Hao wrote:
+> >>> On Wed, Feb 11, 2026 at 5:05=E2=80=AFPM David Hildenbrand (Arm)
+> >>> <david@kernel.org> wrote:
+> >>>
+> >>> Thanks for your explanation. I now understand the design logic.
+> >>>
+> >>> What I=E2=80=99m proposing is mainly for debugging. After enabling 64=
+K large folio
+> >>> on Android, we observed increased application memory footprint, espec=
+ially
+> >>> for anonymous pages.
+> >>>
+> >>> Since Android app memory usage depends on runtime scenarios, we canno=
+t
+> >>> confirm if the growth is directly caused by large folio. We want to
+> >>> analyze memory
+> >>> usage via the `Referenced` field in `/proc/[pid]/smaps`.
+> >>
+> >> Scanning for zero-filled pages will be much easier and more reliable.
+> >> For a debug feature good enough.
+> >>
+> >> I'm wondering what the best interface for something like that could be=
+:
+> >> we don't want to make "/proc/[pid]/smaps" slower for all users.
+> >>
+> >> Maybe we could for debug kernels.
+> >>
+> >> For example, adding with CONFIG_DEBUG_KERNEL a new entry
+> >>
+> >>          Anon_Zero:
+> >>
+> >> counter that just tests whether the page content of an anonymous page =
+is
+> >> all zeroes could be doable.
+> >>
+> >
+> > Apologies for the delayed reply =E2=80=93 I was just writing a demo to =
+verify the
+> > approach you mentioned.
+> >
+> > Using the CONFIG_DEBUG_KERNEL compile-time macro to isolate this featur=
+e
+> > is indeed an excellent idea.
+> >
+> > However, in engineering practice, it requires recompiling and
+> > replacing the kernel,
+> > which can be cumbersome. Could we instead use a dynamic switch to contr=
+ol
+> > whether scan for zero-filled pages when reading /proc/[pid]/smaps?
+>
+> Maybe a kernel cmdline option could do?
+Kernel command line parameters can meet our requirements.
 
-damon_target is not used by get_scheme_score operations,
-nor with virtual neither with physical addresses.
+> Selectively enabling it for some PIDs only is not really possible, but al=
+so, maybe it's not really needed.
+Yes, it is unnecessary to do that.
 
-Changes in v2:
- - Patch against mm-next
-
-Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
----
- include/linux/damon.h |  3 +--
- mm/damon/core.c       | 10 +++++-----
- mm/damon/paddr.c      |  3 +--
- mm/damon/vaddr.c      |  3 +--
- 4 files changed, 8 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index a4fea23da857..9a88cf8d152d 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -647,8 +647,7 @@ struct damon_operations {
- 	void (*prepare_access_checks)(struct damon_ctx *context);
- 	unsigned int (*check_accesses)(struct damon_ctx *context);
- 	int (*get_scheme_score)(struct damon_ctx *context,
--			struct damon_target *t, struct damon_region *r,
--			struct damos *scheme);
-+			struct damon_region *r, struct damos *scheme);
- 	unsigned long (*apply_scheme)(struct damon_ctx *context,
- 			struct damon_target *t, struct damon_region *r,
- 			struct damos *scheme, unsigned long *sz_filter_passed);
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 5e2724a4f285..925908415a04 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -1679,15 +1679,15 @@ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
- 		r->age <= s->pattern.max_age_region;
- }
- 
--static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
--		struct damon_region *r, struct damos *s)
-+static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
-+		struct damos *s)
- {
- 	bool ret = __damos_valid_target(r, s);
- 
- 	if (!ret || !s->quota.esz || !c->ops.get_scheme_score)
- 		return ret;
- 
--	return c->ops.get_scheme_score(c, t, r, s) >= s->quota.min_score;
-+	return c->ops.get_scheme_score(c, r, s) >= s->quota.min_score;
- }
- 
- /*
-@@ -2011,7 +2011,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
- 				s->max_nr_snapshots <= s->stat.nr_snapshots)
- 			continue;
- 
--		if (damos_valid_target(c, t, r, s))
-+		if (damos_valid_target(c, r, s))
- 			damos_apply_scheme(c, t, r, s);
- 
- 		if (damon_is_last_region(r, t))
-@@ -2309,7 +2309,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
- 		damon_for_each_region(r, t) {
- 			if (!__damos_valid_target(r, s))
- 				continue;
--			score = c->ops.get_scheme_score(c, t, r, s);
-+			score = c->ops.get_scheme_score(c, r, s);
- 			c->regions_score_histogram[score] +=
- 				damon_sz_region(r);
- 			if (score > max_score)
-diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
-index 9bfe48826840..5cdcc5037cbc 100644
---- a/mm/damon/paddr.c
-+++ b/mm/damon/paddr.c
-@@ -343,8 +343,7 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
- }
- 
- static int damon_pa_scheme_score(struct damon_ctx *context,
--		struct damon_target *t, struct damon_region *r,
--		struct damos *scheme)
-+		struct damon_region *r, struct damos *scheme)
- {
- 	switch (scheme->action) {
- 	case DAMOS_PAGEOUT:
-diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
-index 83ab3d8c3792..4e3430d4191d 100644
---- a/mm/damon/vaddr.c
-+++ b/mm/damon/vaddr.c
-@@ -986,8 +986,7 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
- }
- 
- static int damon_va_scheme_score(struct damon_ctx *context,
--		struct damon_target *t, struct damon_region *r,
--		struct damos *scheme)
-+		struct damon_region *r, struct damos *scheme)
- {
- 
- 	switch (scheme->action) {
--- 
-2.43.0
-
+By the way, will you send a new patch for this, or shall I take care of it?
+Thanks.
+>
+> --
+> Cheers,
+>
+> David
 
