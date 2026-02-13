@@ -4,129 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 365D2EF48E8
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 08:46:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79158EF48ED
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 08:54:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4922E6B0005; Fri, 13 Feb 2026 03:46:20 -0500 (EST)
+	id B90386B0005; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 440156B0089; Fri, 13 Feb 2026 03:46:20 -0500 (EST)
+	id B3E226B0089; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F7996B008A; Fri, 13 Feb 2026 03:46:20 -0500 (EST)
+	id 9F4E56B008A; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C7A76B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:46:20 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2393013AD41
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:46:19 +0000 (UTC)
-X-FDA: 84438801678.26.47C7DA5
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A35BE160006
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:46:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IfuFinF9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7bFjfbm7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HaAgs4JF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iCuEZKSA;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C7986B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:54:44 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 017F813AD41
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:54:43 +0000 (UTC)
+X-FDA: 84438822888.30.783A835
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8F1FC1A000B
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 08:54:41 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CFdSP8lZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mDiFuDQx;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FgV8zFMa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=U+0RTVn2;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770972377;
+	s=arc-20220608; t=1770972882;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=M6CtYIdpGRPdr5YJBB51g/H26wkAcNK4Ssdrvyg0HpU=;
-	b=xCZt76p8wPPIAdys2dYXHEmFvrKi1AePXJIwKFJM95CJnBmYBPl1/5n2DJ46IQ5L7azFVn
-	4U2NK5GU7Pj0rShAvwKXj5pdwuuF7SVqcbUYZhGKYvRb2wV/Q4SJOdxMhHOD0uhGxwpxw1
-	Knu83iQp7S2RClK7LJjDS1vQ8lD+73M=
+	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
+	b=4EB07ZGs2LcG/KrajwOP9IRjaDS5dpchD2mL//ZgR3onmHF8qKZa6LlUO3rt4vCDrJA51m
+	L/1/Nywy9++ysE+WDJLNau62a2bWXDRKQbNinXReRUshSHAjCAVvEWATT1qSLfoPy3fJIz
+	mRwRMsoZS87VtsfD3nH6WsUdvmeF5Qo=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IfuFinF9;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7bFjfbm7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=HaAgs4JF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iCuEZKSA;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf19.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CFdSP8lZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=mDiFuDQx;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FgV8zFMa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=U+0RTVn2;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770972377; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770972882; a=rsa-sha256;
 	cv=none;
-	b=Kau99ADiqzqHEunQem5/QRudIlsmfIGpg9+5EgHyBNYDdI0CBwpjQN4pJqu6EkLjoZ2n+R
-	OxjQxnCraCESCQ0kTorrKSR2FWjfZUwyyIl3XAegCJ4kxet1aI5/OWvrtnOMK/OYpzYUd8
-	MOjJZ5E1WZ4fDGcOxqISn3YzZqH3aMw=
+	b=LEdHqq3NMzA3HbtGssD1JqkQXtaFD++CQx8qlVo1Mkzkl+AUOpbtNrvCOq2xL8YgW+7HrP
+	Q/++CDFalizpRejMAMkx7dC1Bg2O94HCNOk5lo7/VbU+z0clgn7XU1rL3YvsCngyZOXtBd
+	paN8a8FfENnLbuXBnEKeByNoE6QGYwI=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B8CB65BCC4;
-	Fri, 13 Feb 2026 08:46:14 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DF6633E6D4;
+	Fri, 13 Feb 2026 08:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770972375; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770972880; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M6CtYIdpGRPdr5YJBB51g/H26wkAcNK4Ssdrvyg0HpU=;
-	b=IfuFinF9bZM04PjikfvkhahiDsVKI4RCmXM9xqk8pcd2UaCuvrDeLVXhnWMBeb2J8gNS1x
-	EMG9jVzhIkaHtMoabtyoMu1X4K23rwVI0amDLjNNhsX6hQGFPYByLiZlWWnXm0YhG2RciN
-	9uv/6GazI+QhV1iqNNi/k7WmdmckZDk=
+	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
+	b=CFdSP8lZ1U/Ohf629Fb0N7KS7TBjNuJMRkLKlv62bktH3YUZXsIzesF+YF2QpiykquXnB1
+	v3QasxYb4MJkKft3eLYByNj8reZ1AvHh4Qhji2he/aJ8WI2Csuygk51lUEqzzcMzrRkRm4
+	srR775WqDmVLvOWQjwPPCpeCZAPzHiA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770972375;
+	s=susede2_ed25519; t=1770972880;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M6CtYIdpGRPdr5YJBB51g/H26wkAcNK4Ssdrvyg0HpU=;
-	b=7bFjfbm7azFrch5t22beas6meSFYyvoJq3cmXtxZtpdLFCpuvaNNe8AaAYVMwmzFpVQguq
-	xdvnZN9Sv02oK+Ag==
+	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
+	b=mDiFuDQxjJQZxli8cIVx2MERCTx+wRdZXox8cc1b9dSxjf3LOEQ4A3m0bTMvuW3kGPahj+
+	A+y7ZY+y8H61K2DQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1770972374; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1770972879; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M6CtYIdpGRPdr5YJBB51g/H26wkAcNK4Ssdrvyg0HpU=;
-	b=HaAgs4JFQk/w+uSkmmKxOgZaFG13shzu/gE7pRO0txjbZ9a5rPn1BNf3vTRHvDl9XGcUI3
-	/l4NcL44dUX5/xtcEuTh3I96ofyPmz0mpjzhG9y4dKPLY6adSfjQIXNkFks/qN5sWxcQHx
-	50jpvYIvhKmqxSUh+z29nioVmPBzboY=
+	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
+	b=FgV8zFMauwUnsS7NGZXy8kaOpJHOwGvBU8huqcbOK2wRjLQI0eAADnfN4zCt4QX9SHWyHd
+	ZBWH2bKA7oqhYRCxV6jGvwJF3xFGTr96YuJpyu4QKf4bgkj2ZJwnDcEgrcjXUXZMQHUQbP
+	zAVSiYy+aOIJVLqswlbgjO4b4WCp9mg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1770972374;
+	s=susede2_ed25519; t=1770972879;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=M6CtYIdpGRPdr5YJBB51g/H26wkAcNK4Ssdrvyg0HpU=;
-	b=iCuEZKSABPYTXxrtHBx+i6jJY9t2wDqw8s6NR1g2H32fk0M8liXbY1t4WUEQ4UfRPR2M51
-	rUQ9+1po6jFeZ7Dg==
+	bh=R8IMx2PRe6DO7hTr/0m0nRiXAWYpDypxsMIyjb6YLgs=;
+	b=U+0RTVn2D2ptoWrYQB70sZ/KeJtHoVdJuz/aVR9oJCn1CNoLJXAdFQGQvNELjNex8L5Oj0
+	8KsqOLBO0blm6nBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E54C3EA62;
-	Fri, 13 Feb 2026 08:46:14 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9B56A3EA62;
+	Fri, 13 Feb 2026 08:54:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id BCMhItbkjml6MQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 13 Feb 2026 08:46:14 +0000
-Message-ID: <c2388a14-9ef1-419b-b86a-56629708be15@suse.cz>
-Date: Fri, 13 Feb 2026 09:46:14 +0100
+	id NE+XJc/mjmkHOQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 13 Feb 2026 08:54:39 +0000
+Message-ID: <d52066f1-c83e-4406-adca-5a403adb4f44@suse.cz>
+Date: Fri, 13 Feb 2026 09:54:39 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9] mm/page_alloc: boost watermarks on atomic allocation
- failure
+Subject: Re: [PATCH 1/2] mm/mempolicy: track page allocations per mempolicy
 Content-Language: en-US
-To: Qiliang Yuan <realwujing@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
- Brendan Jackman <jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Zi Yan <ziy@nvidia.com>, Lance Yang <lance.yang@linux.dev>,
- SeongJae Park <sj@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20260213-wujing-mm-page_alloc-v8-v9-1-cd99f3a6cb70@gmail.com>
+To: JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org
+Cc: apopple@nvidia.com, akpm@linux-foundation.org, axelrasmussen@google.com,
+ byungchul@sk.com, cgroups@vger.kernel.org, david@kernel.org,
+ eperezma@redhat.com, gourry@gourry.net, jasowang@redhat.com,
+ hannes@cmpxchg.org, joshua.hahnjy@gmail.com, Liam.Howlett@oracle.com,
+ linux-kernel@vger.kernel.org, lorenzo.stoakes@oracle.com,
+ matthew.brost@intel.com, mst@redhat.com, mhocko@suse.com, rppt@kernel.org,
+ muchun.song@linux.dev, zhengqi.arch@bytedance.com, rakie.kim@sk.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
+ virtualization@lists.linux.dev, weixugc@google.com,
+ xuanzhuo@linux.alibaba.com, ying.huang@linux.alibaba.com,
+ yuanchu@google.com, ziy@nvidia.com, kernel-team@meta.com
+References: <20260212045109.255391-1-inwardvessel@gmail.com>
+ <20260212045109.255391-2-inwardvessel@gmail.com>
+ <96b63efb-551f-4dd5-b4a2-ac67da577431@suse.cz>
+ <b5927ae8-3108-4d65-bee9-be306fb697b4@gmail.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -167,17 +169,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20260213-wujing-mm-page_alloc-v8-v9-1-cd99f3a6cb70@gmail.com>
+In-Reply-To: <b5927ae8-3108-4d65-bee9-be306fb697b4@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A35BE160006
-X-Stat-Signature: gm43pkbzk3owhwqjmje8zx3jom41jkub
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: 8F1FC1A000B
+X-Stat-Signature: h7yqkaz965337no7ppucohqphb544wyj
 X-Rspam-User: 
-X-HE-Tag: 1770972376-404222
-X-HE-Meta: U2FsdGVkX19BAbv2zT7xPgkKdLv+6raz/21rkezuTWsIKcZAmtD7N4OBWHQuDKtDDvu6CgPRnLnwrl3wCQhJqA0Ml4AtDDH7IQ2dxkR4PnJnU1eP5O8TLfPKKuPpqtkpqCI9/u1dhOYjX96B69EXfSaBLfveC499RzKirov92DBstUaq6yPpkpe1W2ToXoR7hqZqQzwLHRWpbKvoU+/oYS4wzRkU0X/Oy+sqW9LDLM2caSmYSzlmSsFS0bgkXaSPQ1MLZXeX8VQ7v8TJoFTMYiN+Lu1O7f0TnSI/VgnEcmz8PqlNGoUVgsyOt7oAkLgwu5WXiFE+IxMeJzSege19mbPIXiJ2Ohw08bZX46SgMgz1qSvd8sAmuWblAhZuVvYpkKRfBG9U1kFHxTpTeLGRouGl2TdKp3hfMsSejG9P2cQq6v+M/Er6F5xUi9v5rTndBTTsqNDjSK3fFPDVmgr1NRzx0ACiL2gMKJXMFKY8X0xuhqYYxT8iwlRrCPcDe5QDCcdrNb52XhLLDcFGSQy9bKDWKPFwwg1Fr9TwTFn+kZga47iw1yKgGNk6ksSSFlk878I7+ULj/1jT/2Oq5JQNbieQSsKLPwlNWEcUhY81jDLbyzI1LRXWLQAzK6o4T/lUIKYQuPPf+Fr9sCg+EiEMAkMUkoKBM/B6gOKO6mI2O52gihZRWj6aczgQ6WnpESem9PPbe6suq2XmhpqeNg9A+iBB+h4iGST8LJTyg0j03Qd9fcTHjkpZQDgsq5b+M4MTO172cp8JyHhQ2Kgi+liESEUvyz7Qke8jwgFn6nwaZVH/IsDcaO5zi+bWbOCa3DxaqOL7tMLQrfQnGJEn2V7k20ati9mu6Hz66nfJzsbnwVYmK94Zmz+uzNlwt5WdJbgK1Aw3fITzSQrb7co/dtBnZlWl9CQQybwpt4zclUDuV6DVEbjUC+2Xn2OwFk1CCuKLnzLxUZ5rV50j0bYVV5Q
- kyRw5yj1
- UytmG9S5y8wtYD3XlHnmdbwTmB5nNhkmmtlYzv/+ANio3lAlx8Knv/hJ5WgEl/jx4GeDfLGDXFkTblgp4ItZ9XsGfO3NM32t3zoIPTotvJ37rG7Zp7Kn/moTu489Gr1JUT0dzeNxRMujDWzQksz1Aqda0ucmbVo3FQhIAHPqS+sjmfey2vZO6MCHgv1jNK3O7L+BfFk/rFcKDsuw6J9DeScdaSaTQPt6MEE/j2l90y4kr4tNO9pbyxFv9sJb/S0SmQ8WRKukxOoviVohQnVqSBjHD+54afVeJhRZS5wu1gALs/Jea3fMwrUnwRP9/xATtpzoUEhzogK+A4D6J2BkzyRCAwQbg0jyf14kxvfUmCss0d2Ij2w+WoCsd+gz3u+uE4a7T
+X-HE-Tag: 1770972881-50304
+X-HE-Meta: U2FsdGVkX1+4u4Td888OFJNR1u060Gtsc0VXgPDOsYmiek0V3lTJJbPIyTP6ZPM8RidAYQ3mmPBESOy51cOmcRmYZ+Z/7D38YOZJF6nMe2q/CkhiFu/rf7ZXfsIXAegcLD7RV4SC4sQLVsnEhDGu2qv+4WrV6gQ+vePMb2/+aE5fJpKGTX4L6djDbzi6i4uBiDyf0d+tUs1/CNWynkisgOdk3RP5c/lCCppociuppiUBCo0r2N/cAYeO6VzrDkRi2EecF4sGX5DkA5iDrTbx+EMvYiHYtr7i9GYglE1e7K+Mj02baiToXlV5Hd7Z7yNvkXl6utu8AF/Hk3qhSujDwEwjJssDiEW2ytTlvsuFMxljuyL3fQTraKHB564nzjDvkvgPUU6kD8qD9ARFdFwpUQsLW2dyLMTHMGDHiMu0twyKmtq4D/YJncumyIv5YugABxq4++CQyUCE+KmUfz0JWU7ocEKvsGb2o07cHq2IQA/CBAitOKV3tYyLH9DHF3M1BpDxp8+hvlM6pzIWh9GvkM06oakYYO/tsQsmOfDyo8yqU2KtphKXvRytE6fBjl1Gw0jSsWHsBa9Qxf/y/WKCvKSgGAHQBcUZEmiNCYJS2EYr2EwZjHvLKYVSHPinKm2XQOlZnOYLIELKTH1/xMuSQ9pXl47qSlzQMsrtSyLodud07ayM8uURib/J1FjA6gMaD4ucRCYafZAvqPgYVCQLqLM6SOxwqquVlurOGtGUkD8ti9Dwpabmx+at2vUEao9Ac7o73ryTWIt+0wEqjRoZfC2qollR65m0oB/ryzE288FjUsCYxpFd7PPDO34HJAMwddiuHn3GuCFf6ynjd1olbmQASoSqc2W3XYTTgWpEkUgMVctLHOka3tt9S1qYhCcrW/c15DQUGiMeETzExlWflUbb2+Z3bq/esQO9XDyKXimHNSs6SD2IZF59SAYrnYvqmJeSWwNUKNsk7zjc1oF
+ PyB0waf1
+ E73WYrr9SfiID9A5aOK6uc235c37cNxnwVqD71ylYwlV6Nmo+/slDFWk1SbNEWjVga8QCyfGicrnyhuiY3OQYek8JYn7sLzqgPnncDyJwCL68S7HP0O04IGRiSX+o1zhfXUUjTV9JoJwibQdBpxMsaBXLnBSrgZzl/mYu4RGBSbdMaMiZWNVbRjzOolR/+XFql0zuKTh/YD/aS+laBPa8pEbYnVXVhiLuHOefTUsAEPrDGW+FoP4IVjKkKLiSdoOgeV+HweaEf6ena52ddb3VJA6QtH7o92fc81zDgEatQr+Ryv6Nwl0Uv5GpICjL+DGtd21QMpjzPAXmJhYUTtfcpyk29U29LQUZ6Q4VK1RXEdaC9FnuP3Nlv4/62H6WBMNbw8sdyXv9gGQBJbMDBc8I7oIcuU+Riby1Omgy7yaZ3I3mksgOoq9NFYxiMSGGlglFGRK7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,186 +188,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/13/26 04:17, Qiliang Yuan wrote:
-> Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
-> pressure as they cannot enter direct reclaim. This patch introduces a
-> watermark boost mechanism to mitigate this issue.
+On 2/12/26 22:25, JP Kobryn wrote:
+> On 2/12/26 7:24 AM, Vlastimil Babka wrote:
+>> On 2/12/26 05:51, JP Kobryn wrote:
+>>> It would be useful to see a breakdown of allocations to understand which
+>>> NUMA policies are driving them. For example, when investigating memory
+>>> pressure, having policy-specific counts could show that allocations were
+>>> bound to the affected node (via MPOL_BIND).
+>>>
+>>> Add per-policy page allocation counters as new node stat items. These
+>>> counters can provide correlation between a mempolicy and pressure on a
+>>> given node.
+>>>
+>>> Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+>>> Suggested-by: Johannes Weiner <hannes@cmpxchg.org>
+>> 
+>> Are the numa_{hit,miss,etc.} counters insufficient? Could they be extended
+>> in a way that would capture any missing important details? A counter per
+>> policy type seems exhaustive, but then on one hand it might be not important
+>> to distinguish beetween some of them, and on the other hand it doesn't track
+>> the nodemask anyway.
 > 
-> When a GFP_ATOMIC request enters the slowpath, the preferred zone's
-> watermark_boost is increased under zone->lock protection. This triggers
-> kswapd to proactively reclaim memory, creating a safety buffer for
-> future atomic allocations. A 1-second debounce timer prevents excessive
-> boosts during traffic bursts.
+> The two patches of the series should complement each other. When
+> investigating memory pressure, we could identify the affected nodes
+> (patch 2). Then we can cross-reference the policy-specific stats to find
+> any correlation (this patch).
 > 
-> This approach reuses existing watermark_boost infrastructure with
-> minimal overhead and proper locking to ensure thread safety.
-> 
-> Allocation failure logs:
-> [38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
-> [38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
-> [38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
-> [38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
-> [38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535649.655523] warn_alloc: 59 callbacks suppressed
-> [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
-> [38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
-> 
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
-> ---
-> v9:
-> - Use mult_frac() for boost calculation. (SJ)
-> - Add !can_direct_reclaim check. (Vlastimil)
-> - Code cleanup: naming, scope, and line limits. (SJ)
-> - Update tags: Add Vlastimil's Acked-by.
-> 
-> v8:
-> - Use spin_lock_irqsave() to prevent inconsistent lock state.
-> 
-> v7:
-> - Use local variable for boost_amount.
-> - Add zone->lock protection.
-> - Add lockdep assertion.
-> 
-> v6:
-> - Use ATOMIC_BOOST_SCALE_SHIFT define.
-> - Add documentation for 0.1% rationale.
-> 
-> v5:
-> - Use native boost_watermark().
-> 
-> v4:
-> - Add watermark_scale_boost and gradual decay.
-> 
-> v3:
-> - Per-zone debounce timer.
-> 
-> v2:
-> - Debounce logic and zone-proportional boosting.
-> 
-> v1:
-> - Initial version.
-> ---
-> Link to v8: https://lore.kernel.org/r/20260212-wujing-mm-page_alloc-v8-v8-1-daba38990cd3@gmail.com
-> ---
->  include/linux/mmzone.h |  1 +
->  mm/page_alloc.c        | 49 +++++++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 48 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 75ef7c9f9307..8e37e4e6765b 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -882,6 +882,7 @@ struct zone {
->  	/* zone watermarks, access with *_wmark_pages(zone) macros */
->  	unsigned long _watermark[NR_WMARK];
->  	unsigned long watermark_boost;
-> +	unsigned long last_boost_jiffies;
->  
->  	unsigned long nr_reserved_highatomic;
->  	unsigned long nr_free_highatomic;
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index c380f063e8b7..8af88584a8bd 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
->  static void __free_pages_ok(struct page *page, unsigned int order,
->  			    fpi_t fpi_flags);
->  
-> +/*
-> + * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
-> + * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
-> + * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
-> + */
-> +#define ATOMIC_BOOST_FACTOR 1
+> I think extending numa_* counters would call for more permutations to
+> account for the numa stat per policy. I think distinguishing between
+> MPOL_DEFAULT and MPOL_BIND is meaningful, for example. Am I
 
-... so now we #define 1 but it makes little sense without that hardcoded
-1000 below.
+Are there other useful examples or would it be enough to add e.g. a
+numa_bind counter to the numa_hit/miss/etc?
+What I'm trying to say the level of detail you are trying to add to the
+always-on counters seems like more suitable for tracepoints. The counters
+should be limited to what's known to be useful and not "everything we are
+able to track and possibly could need one day".
 
-> +
->  /*
->   * results with 256, 32 in the lowmem_reserve sysctl:
->   *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
-> @@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
->  static inline bool boost_watermark(struct zone *zone)
->  {
->  	unsigned long max_boost;
-> +	unsigned long boost_amount;
-> +
-> +	lockdep_assert_held(&zone->lock);
->  
->  	if (!watermark_boost_factor)
->  		return false;
-> @@ -2189,12 +2199,43 @@ static inline bool boost_watermark(struct zone *zone)
->  
->  	max_boost = max(pageblock_nr_pages, max_boost);
->  
-> -	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
-> -		max_boost);
-> +	boost_amount = max(pageblock_nr_pages,
-> +			   mult_frac(zone_managed_pages(zone), ATOMIC_BOOST_FACTOR, 1000));
-
-I don't think mult_frac() was a great suggestion. We're talking about right
-shifting by a constant 10. In the other cases of mult_frac() we use dynamic
-values for x and n so it's justified. But this IMHO is unnecessary complication.
-
-> +	zone->watermark_boost = min(zone->watermark_boost + boost_amount,
-> +				    max_boost);
->  
->  	return true;
->  }
->  
-> +static void boost_zone_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
-> +{
-> +	struct zoneref *z;
-> +	struct zone *zone;
-> +	unsigned long now = jiffies;
-> +
-> +	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
-> +		/* Rate-limit boosts to once per second per zone */
-> +		if (time_after(now, zone->last_boost_jiffies + HZ)) {
-> +			unsigned long flags;
-> +			bool should_wake;
-> +
-> +			zone->last_boost_jiffies = now;
-> +
-> +			/* Modify watermark under lock, wake kswapd outside */
-> +			spin_lock_irqsave(&zone->lock, flags);
-> +			should_wake = boost_watermark(zone);
-> +			spin_unlock_irqrestore(&zone->lock, flags);
-> +
-> +			if (should_wake)
-> +				wakeup_kswapd(zone, gfp_mask, 0,
-> +					      ac->highest_zoneidx);
-> +
-> +			/* Boost only the preferred zone */
-> +			break;
-> +		}
-> +	}
-> +}
-> +
->  /*
->   * When we are falling back to another migratetype during allocation, should we
->   * try to claim an entire block to satisfy further allocations, instead of
-> @@ -4742,6 +4783,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	if (page)
->  		goto got_pg;
->  
-> +	/* Boost watermarks for atomic requests entering slowpath */
-> +	if ((gfp_mask & GFP_ATOMIC) && order == 0 && !can_direct_reclaim)
-> +		boost_zone_for_atomic(ac, gfp_mask);
-> +
->  	/*
->  	 * For costly allocations, try direct compaction first, as it's likely
->  	 * that we have enough base pages and don't need to reclaim. For non-
-> 
-> ---
-> base-commit: b54345928fa1dbde534e32ecaa138678fd5d2135
-> change-id: 20260206-wujing-mm-page_alloc-v8-fb1979bac6fe
-> 
-> Best regards,
+> understanding your question?
 
 
