@@ -4,68 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 328ECEF48CC
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 07:18:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F256EF48CC
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 07:19:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81E606B0089; Fri, 13 Feb 2026 02:18:56 -0500 (EST)
+	id 814BC6B008A; Fri, 13 Feb 2026 02:19:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E89C6B008A; Fri, 13 Feb 2026 02:18:56 -0500 (EST)
+	id 7D6856B008C; Fri, 13 Feb 2026 02:19:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71F216B008C; Fri, 13 Feb 2026 02:18:56 -0500 (EST)
+	id 6F8796B0092; Fri, 13 Feb 2026 02:19:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 620AB6B0089
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 02:18:56 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3706113ABE4
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:18:56 +0000 (UTC)
-X-FDA: 84438581472.08.C140EC7
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 6DF3E40006
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:18:54 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q8s5gGk6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F98C6B008A
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 02:19:04 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88E421C2E8
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:19:03 +0000 (UTC)
+X-FDA: 84438581766.07.C3DDF83
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D09F8C0006
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:19:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lIXNPvSq;
+	spf=pass (imf10.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770967134;
+	s=arc-20220608; t=1770967142;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mHfHSc3Ob3QWgekFQ3UZMwloiqpQ6O0L56YYA+KphRQ=;
-	b=Z6bWDnE4BwUkoEgE76iQx+XxIt49s+H/g9tzkdz4ol7DdtbYCxlaB0PJJ5LluDG2cgzF6Q
-	uyh5rfeO863iVALDfBn8qKqXCUbrXxgGKt21/r1Pu40QEWMMwV2aykSrKwQSrCkd26jGOq
-	kRIaKcAJcLEcF3HYx3LQR8aIhYTWPOo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770967134; a=rsa-sha256;
-	cv=none;
-	b=fWCwnj9Kt3YP2kJerFaWOGWRDvL9kq+cuDd4VYJ3C9kDthe6MwgVWh3xPQclcntORwzP4Z
-	7vYaFzY0ojIEbCk3V6tcmu4iiCjNQ8h19DX8Y3CPnnre9gk4TC4ZgtI0P9ZM+tb2F9Qoxb
-	N6+dl+G/H5KtXTEMyI15P66l6ZvACCw=
+	bh=fHxD0q/WzMwerrB6ZvB9y/vH4lR5GGZkuNBvcMrlqCg=;
+	b=Ibewsu5Y//gg0Jx6bUHV1ontrgcA2o3tsAhWcd6sdol1uArO2qx0PPBFQVCjFBb+p8+eir
+	CJCrhkX0sIu6wg3IkPz+xqc+kcEAa3qdjvgk8Mzmw5mWxNyMdpcfitG9iEuBOB4UqixpTa
+	s4admTbCx6CtkJBPt1ftlE4R6SnczMw=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=q8s5gGk6;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lIXNPvSq;
+	spf=pass (imf10.hostedemail.com: domain of jiayuan.chen@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=jiayuan.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770967142; a=rsa-sha256;
+	cv=none;
+	b=1rs3odCxAv54C+2Bxb1PWhhFvjTJhefy0wokT/r4kQ1a0r70Q8xYQNhg594cDMyEsR11VM
+	FfXvn5tMKjkteRhvOvsq0j8QJQdl8H44Zk/XrPgxnsqTJAD0UmmqOusQvPScTfNAzIPgzE
+	ta3w1mhM7k8UP3tzOOAOcjQJ/uhp7VQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770967132;
+	t=1770967140;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mHfHSc3Ob3QWgekFQ3UZMwloiqpQ6O0L56YYA+KphRQ=;
-	b=q8s5gGk6nAy7TfViTElsNOtPlfFYJ5AKUJcxKKqU6N/XWwt2pCyQB3Kb7hQRh7V1JSa5Ew
-	L97yUQC6jl83wBZqHVzK6GLQtifrsAMqT29P+FF2tc20W5qyuG8nD3ekQkwUtTQDRt4B/o
-	WL2zvutLAMTUbwgTkfzHX2BiHTtzGo8=
+	bh=fHxD0q/WzMwerrB6ZvB9y/vH4lR5GGZkuNBvcMrlqCg=;
+	b=lIXNPvSqtq/mhCIHqxeszIYr/dYCcHPhuKv8BU2LzkjdLcK9P1zVhUyLfgrTBtWksG2iM/
+	Cd9uWmaQOjCZeDqnMhBfEkW5CxhEcfoN0N8H3l5JRit/TmtkhvnztmxIr2KOWqN/FtKzwx
+	XJKKxxEqFXLCORDZbvr0dcqUqxpn4b4=
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: linux-mm@kvack.org
 Cc: jiayuan.chen@linux.dev,
 	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Nhat Pham <nphamcs@gmail.com>,
 	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Nhat Pham <nphamcs@gmail.com>,
 	SeongJae Park <sj@kernel.org>,
 	Tejun Heo <tj@kernel.org>,
 	Johannes Weiner <hannes@cmpxchg.org>,
@@ -75,28 +74,29 @@ Cc: jiayuan.chen@linux.dev,
 	Roman Gushchin <roman.gushchin@linux.dev>,
 	Muchun Song <muchun.song@linux.dev>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	Chengming Zhou <chengming.zhou@linux.dev>,
 	Shuah Khan <shuah@kernel.org>,
 	cgroups@vger.kernel.org,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH mm-new v3 1/2] mm: zswap: add per-memcg stat for incompressible pages
-Date: Fri, 13 Feb 2026 15:18:22 +0800
-Message-ID: <20260213071827.5688-2-jiayuan.chen@linux.dev>
+Subject: [PATCH mm-new v3 2/2] selftests/cgroup: add test for zswap incompressible pages
+Date: Fri, 13 Feb 2026 15:18:23 +0800
+Message-ID: <20260213071827.5688-3-jiayuan.chen@linux.dev>
 In-Reply-To: <20260213071827.5688-1-jiayuan.chen@linux.dev>
 References: <20260213071827.5688-1-jiayuan.chen@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 6DF3E40006
-X-Stat-Signature: m5tbzp3hiz961n4nfr4wpd1ueeaqwdpz
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-HE-Tag: 1770967134-225027
-X-HE-Meta: U2FsdGVkX1/ZtJcmp1J4Yr2DlznkMl0MV+Q6fkadN/JJDNcXvJROiauuqlNtqF6ZQd76d/V2Jy2jFBKZZRgppmoKG7ZNACQFPLSqWgg2w4dP+r2GgiOLpyPNDSx6z2ZHGkg+jpd258zh3RC4N8kOz5g0U8RHcm55h0w+j9AJSRMwq6WMkM1VR7hfA7iYVoSFIVDvfwU42DUHWQfEziwT+mrYbv/o12WCui8y7Ovq1/zf0mMkQpCLQyQlIH9erjW9XApj0ZhgS9zUmVkUR+b2X2Z5NpElQpyCY38CU55a6P9CXYRjakf2IbQimAoqvv4F+uKeHOPZmKAKXs/+7xX/qaXP6+hqwclPtFZYtHx8nps7gerX+Qh9mov0bbyRIrY58un1q5UZ17XTReSP1yy6dFzrmsuFwdPFcor80uaSjME/G6UYoUrR6YP6LsFYParFovnGmqNdh1eSeQ/yzZGE2LKAttvZqZtu0QQtCW8N9fefF8F72j20LZJjF4OmLoqrdTf4wasJbvIClXbLf3fGJbluLlxGJc971FF16xgsMsewG9yBvjtPrjZFFnKWsijqUU/QlfoEeLCLNs+2QbcGVSOZDPe2iITZrVpi3Z2grHYQ2lsY3AGaIDu4e3auk4SKa+vHCnTdF6DlRGFLGnjxN2JV2d83r1cwmcdmMtR6ncDINLMRIiVQKz8oga35E1GPh1kjiVlxSDubNxRPAnb/cjc3P0W0V6THZjbMgkifGg6P2yF9yNPZJogzBvHUbx1w0+cA//UWV559xRdAbk/36EQE0JlsIaIPqLr8wJIkUrB5V1kMN/ay5ve9TcPnEl8k7DrzJNRyI26dqgGluWVaLbELhR56CRLPPXJgBCWk88mX5yTHHa5k1RjQT2lOwLW/9bamM4pmBZ0nOfCzkjgLuSPWW/QoZ/+OdTl1i7EGr8/j+KKKRYI3BeJ4EaLKNo01IEhezWgn6pas5rj/vT3
- +S0Hw9+m
- 0jSXxen17mvKg5uHQUX/fiBK0aqx/LiALS+Pqb+QfptVEETeoXnoMKZ3uFiBk0DqFdyUp51saxdprKr/tvJ0GG707HkosS7k9dNbGjwHS+fnHOERIe8pOpDrokcBUP4JQrOkDGVfdOo85Qsn3Q+F7z6/MM6+xMX8rBSTNBcS4ZCE2C+No0fKVuyK/3vIjBHOKb+UWYLSuuyg6sL3lC8N+bHdMZTvtjW7ck2/mI+aAN6m5PR0p2dFQiXZLYBS9/sps4VW2EauIBJpJtSxyCLs7ECy4ft/Hv0mAeoZ2m30wIsdTYU3KID7sUKTSXg==
+X-Rspamd-Queue-Id: D09F8C0006
+X-Rspamd-Server: rspam07
+X-Stat-Signature: m8tikp41wwtzm1ne18hdj51o9dcx8o8y
+X-HE-Tag: 1770967141-188831
+X-HE-Meta: U2FsdGVkX19Rre6FSrMvithdwx/XDrXPZbVPhIUyXc/rGxpPIsxNhhlE/FsyyAwCnHDmF4Hk7/aTw5VeXObhx7GDvtRMQwbrsqwpyerTwJNw+3MuKbOJm4p5rp9XBD6CU5vyyVPmXXy0+xP+08UE27uz2wx0dmViSGHhSVkiH1rIe7BsIMYj01U/pIB3Gh3zx95X/NEKrb4k3bDQDXGfHCXdO5bFd20VKWij4IPaSJ2eU8g9fhLiaBod9eJVmFHIpACCLThwF+uiyd/YNw8R+/uge2zp+fTHYyvwmj/e/eLNDz5tLQd6MOrJsjKwVcN82Qti9qksqRgQAI/3uYxgV78v9jDXNFVFfBtMsTtHiKOgiRvBRlSk85hy1mCAky3nr/fQPgWNytXmNBss8iBv+qzKLRGk1oMBctS4hs+Z/hLGdcj6H/7yJ1xA4WPLzEIEjCxT+un6Osg32PgzEjBQIpji1PUPQfOxdKNiKHh/C8rSQtukDy30mdLu4lLvfniHedUxMP3gnfAqsOvST7SwsgVrJ5HszLAYRiIq6wvlURXqHI+iQrpLcq7VkS45v7EhE22V5YIJ6D/C5MfH4ul/4+Yj32xwyxTyq8hbVS241xnIA39VaQR3GVOk/QDRDJmm08BuFiiqNIlgaXtzudvFvEezMjNIuxeAd6tt5zn3d1KBQoQ4vWeWlTn8Bw+Ki1ua2JqS0VuU39fMQf2ky12iFFGAsIkNarIiOtilEkquMNiWUE5N5lKsOmtjGhD4sCKHfwvw1XHwMWtQZlkgC0B5+yd3BxaO3/GE0/kmGh7IUm7p0a3DYwfL0U5mgy1Resu4Xk5m98KSOnAHfVMqmuYcOj8iSWO3iBl5TZBcv0ucfTnxNkYC5rDtHCxtn11S6JOwg4nXz39G5Fr0k7uThSMIn4tvBu6qRZ6eOdZVXZlWxyRjTJQ9yurF5K5U3KVStMqupddNNbMNVJDtM6tJg1p
+ 3u0ryBzG
+ Ipvqh8PABssAiz4yEBrUJ+0IX0g8vI6Ky/dzS7vGpvj9WaRf2+ZdtxuTSWj0ehpifBRnS8L6WpBeSLHNXqkv0wc450kV/SUzYhHE2TkTMsHlTxh15PqzcKyRYHL9iIuWuUIleBie51+bxbLEw9/IcdAKqhwyR/AjbWqkzyjRFMNpfBho3P7qPnHYyse6cWxD6MTNW9RZDyX6M049SzTTx9OA63nUD5JwYxHeWQ6K+02/IGBRCzOJqFa1NO9UkKq0ZzBMqBBjT4qjfFTe2E8CLnEnfryqco7LoRENiFZ74SAxeQOVb/ofUOON3ZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,111 +107,206 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-The global zswap_stored_incompressible_pages counter was added in commit
-dca4437a5861 ("mm/zswap: store <PAGE_SIZE compression failed page as-is")
-to track how many pages are stored in raw (uncompressed) form in zswap.
-However, in containerized environments, knowing which cgroup is
-contributing incompressible pages is essential for effective resource
-management [1].
+Add test_zswap_incompressible() to verify that the zswap_incomp memcg
+stat correctly tracks incompressible pages.
 
-Add a new memcg stat 'zswap_incomp' to track incompressible pages per
-cgroup. This helps administrators and orchestrators to:
+The test allocates memory filled with random data from /dev/urandom,
+which cannot be effectively compressed by zswap. When this data is
+swapped out to zswap, it should be stored as-is and tracked by the
+zswap_incomp counter.
 
-1. Identify workloads that produce incompressible data (e.g., encrypted
-   data, already-compressed media, random data) and may not benefit from
-   zswap.
+The test verifies that:
+1. Pages are swapped out to zswap (zswpout increases)
+2. Incompressible pages are tracked (zswap_incomp increases)
 
-2. Make informed decisions about workload placement - moving
-   incompressible workloads to nodes with larger swap backing devices
-   rather than relying on zswap.
+test:
+dd if=/dev/zero of=/swapfile bs=1M count=2048
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo Y > /sys/module/zswap/parameters/enabled
 
-3. Debug zswap efficiency issues at the cgroup level without needing to
-   correlate global stats with individual cgroups.
+./test_zswap
+ TAP version 13
+ 1..8
+ ok 1 test_zswap_usage
+ ok 2 test_swapin_nozswap
+ ok 3 test_zswapin
+ ok 4 test_zswap_writeback_enabled
+ ok 5 test_zswap_writeback_disabled
+ ok 6 test_no_kmem_bypass
+ ok 7 test_no_invasive_cgroup_shrink
+ ok 8 test_zswap_incompressible
+ Totals: pass:8 fail:0 xfail:0 xpass:0 skip:0 error:0
 
-While the compression ratio can be estimated from existing stats
-(zswap / zswapped * PAGE_SIZE), this doesn't distinguish between
-"uniformly poor compression" and "a few completely incompressible pages
-mixed with highly compressible ones". The zswap_incomp stat provides
-direct visibility into the latter case.
-
-[1] https://lore.kernel.org/linux-mm/CAF8kJuONDFj4NAksaR4j_WyDbNwNGYLmTe-o76rqU17La=nkOw@mail.gmail.com/
-
-Acked-by: Nhat Pham <nphamcs@gmail.com>
 Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 ---
- Documentation/admin-guide/cgroup-v2.rst | 5 +++++
- include/linux/memcontrol.h              | 1 +
- mm/memcontrol.c                         | 6 ++++++
- 3 files changed, 12 insertions(+)
+ tools/testing/selftests/cgroup/test_zswap.c | 136 ++++++++++++++++++++
+ 1 file changed, 136 insertions(+)
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 7f5b59d95fce..78a329414615 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1737,6 +1737,11 @@ The following nested keys are defined.
- 	  zswpwb
- 		Number of pages written from zswap to swap.
+diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
+index 64ebc3f3f203..a7bdcdd09d62 100644
+--- a/tools/testing/selftests/cgroup/test_zswap.c
++++ b/tools/testing/selftests/cgroup/test_zswap.c
+@@ -5,6 +5,8 @@
+ #include <unistd.h>
+ #include <stdio.h>
+ #include <signal.h>
++#include <errno.h>
++#include <fcntl.h>
+ #include <sys/sysinfo.h>
+ #include <string.h>
+ #include <sys/wait.h>
+@@ -574,6 +576,139 @@ static int test_no_kmem_bypass(const char *root)
+ 	return ret;
+ }
  
-+	  zswap_incomp
-+		Number of incompressible pages currently stored in zswap
-+		without compression. These pages could not be compressed to
-+		a size smaller than PAGE_SIZE, so they are stored as-is.
++struct incomp_child_args {
++	size_t size;
++	int pipefd[2];
++	int madvise_ret;
++	int madvise_errno;
++};
 +
- 	  thp_fault_alloc (npn)
- 		Number of transparent hugepages which were allocated to satisfy
- 		a page fault. This counter is not present when CONFIG_TRANSPARENT_HUGEPAGE
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index b6c82c8f73e1..d8ec05dd5d43 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -39,6 +39,7 @@ enum memcg_stat_item {
- 	MEMCG_KMEM,
- 	MEMCG_ZSWAP_B,
- 	MEMCG_ZSWAPPED,
-+	MEMCG_ZSWAP_INCOMP,
- 	MEMCG_NR_STAT,
++static int allocate_random_and_wait(const char *cgroup, void *arg)
++{
++	struct incomp_child_args *values = arg;
++	size_t size = values->size;
++	char *mem;
++	int fd;
++	ssize_t n;
++
++	close(values->pipefd[0]);
++
++	mem = mmap(NULL, size, PROT_READ | PROT_WRITE,
++		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	if (mem == MAP_FAILED)
++		return -1;
++
++	/* Fill with random data from /dev/urandom - incompressible */
++	fd = open("/dev/urandom", O_RDONLY);
++	if (fd < 0) {
++		munmap(mem, size);
++		return -1;
++	}
++
++	for (size_t i = 0; i < size; ) {
++		n = read(fd, mem + i, size - i);
++		if (n <= 0)
++			break;
++		i += n;
++	}
++	close(fd);
++
++	/* Touch all pages to ensure they're faulted in */
++	for (size_t i = 0; i < size; i += PAGE_SIZE)
++		mem[i] = mem[i];
++
++	/* Use MADV_PAGEOUT to push pages into zswap */
++	values->madvise_ret = madvise(mem, size, MADV_PAGEOUT);
++	values->madvise_errno = errno;
++
++	/* Notify parent that allocation and pageout are done */
++	write(values->pipefd[1], "x", 1);
++	close(values->pipefd[1]);
++
++	/* Keep memory alive for parent to check stats */
++	pause();
++	munmap(mem, size);
++	return 0;
++}
++
++static long get_zswap_incomp(const char *cgroup)
++{
++	return cg_read_key_long(cgroup, "memory.stat", "zswap_incomp ");
++}
++
++/*
++ * Test that incompressible pages (random data) are tracked by zswap_incomp.
++ *
++ * The child process allocates random data within memory.max, then uses
++ * MADV_PAGEOUT to push pages into zswap. The parent waits on a pipe for
++ * the child to finish, then checks the zswap_incomp stat before the child
++ * exits (zswap_incomp is a gauge that decreases on free).
++ */
++static int test_zswap_incompressible(const char *root)
++{
++	int ret = KSFT_FAIL;
++	struct incomp_child_args *values;
++	char *test_group;
++	long zswap_incomp;
++	pid_t child_pid;
++	int child_status;
++	char buf;
++
++	values = mmap(0, sizeof(struct incomp_child_args), PROT_READ |
++			PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
++	if (values == MAP_FAILED)
++		return KSFT_FAIL;
++
++	if (pipe(values->pipefd)) {
++		munmap(values, sizeof(struct incomp_child_args));
++		return KSFT_FAIL;
++	}
++
++	test_group = cg_name(root, "zswap_incompressible_test");
++	if (!test_group)
++		goto out;
++	if (cg_create(test_group))
++		goto out;
++	if (cg_write(test_group, "memory.max", "32M"))
++		goto out;
++
++	values->size = MB(4);
++	child_pid = cg_run_nowait(test_group, allocate_random_and_wait, values);
++	if (child_pid < 0)
++		goto out;
++
++	close(values->pipefd[1]);
++
++	/* Wait for child to finish allocating and pageout */
++	read(values->pipefd[0], &buf, 1);
++	close(values->pipefd[0]);
++
++	zswap_incomp = get_zswap_incomp(test_group);
++	if (zswap_incomp <= 0) {
++		long zswpout = get_zswpout(test_group);
++		long zswapped = cg_read_key_long(test_group, "memory.stat", "zswapped ");
++		long zswap_b = cg_read_key_long(test_group, "memory.stat", "zswap ");
++
++		ksft_print_msg("zswap_incomp not increased: %ld\n", zswap_incomp);
++		ksft_print_msg("debug: zswpout=%ld zswapped=%ld zswap_b=%ld\n",
++			       zswpout, zswapped, zswap_b);
++		ksft_print_msg("debug: madvise ret=%d errno=%d\n",
++			       values->madvise_ret, values->madvise_errno);
++		goto out_kill;
++	}
++
++	ret = KSFT_PASS;
++
++out_kill:
++	kill(child_pid, SIGTERM);
++	waitpid(child_pid, &child_status, 0);
++out:
++	cg_destroy(test_group);
++	free(test_group);
++	munmap(values, sizeof(struct incomp_child_args));
++	return ret;
++}
++
+ #define T(x) { x, #x }
+ struct zswap_test {
+ 	int (*fn)(const char *root);
+@@ -586,6 +721,7 @@ struct zswap_test {
+ 	T(test_zswap_writeback_disabled),
+ 	T(test_no_kmem_bypass),
+ 	T(test_no_invasive_cgroup_shrink),
++	T(test_zswap_incompressible),
  };
- 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 007413a53b45..4c5672169753 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -341,6 +341,7 @@ static const unsigned int memcg_stat_items[] = {
- 	MEMCG_KMEM,
- 	MEMCG_ZSWAP_B,
- 	MEMCG_ZSWAPPED,
-+	MEMCG_ZSWAP_INCOMP,
- };
- 
- #define NR_MEMCG_NODE_STAT_ITEMS ARRAY_SIZE(memcg_node_stat_items)
-@@ -1346,6 +1347,7 @@ static const struct memory_stat memory_stats[] = {
- #ifdef CONFIG_ZSWAP
- 	{ "zswap",			MEMCG_ZSWAP_B			},
- 	{ "zswapped",			MEMCG_ZSWAPPED			},
-+	{ "zswap_incomp",		MEMCG_ZSWAP_INCOMP		},
- #endif
- 	{ "file_mapped",		NR_FILE_MAPPED			},
- 	{ "file_dirty",			NR_FILE_DIRTY			},
-@@ -5458,6 +5460,8 @@ void obj_cgroup_charge_zswap(struct obj_cgroup *objcg, size_t size)
- 	memcg = obj_cgroup_memcg(objcg);
- 	mod_memcg_state(memcg, MEMCG_ZSWAP_B, size);
- 	mod_memcg_state(memcg, MEMCG_ZSWAPPED, 1);
-+	if (size == PAGE_SIZE)
-+		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, 1);
- 	rcu_read_unlock();
- }
- 
-@@ -5481,6 +5485,8 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
- 	memcg = obj_cgroup_memcg(objcg);
- 	mod_memcg_state(memcg, MEMCG_ZSWAP_B, -size);
- 	mod_memcg_state(memcg, MEMCG_ZSWAPPED, -1);
-+	if (size == PAGE_SIZE)
-+		mod_memcg_state(memcg, MEMCG_ZSWAP_INCOMP, -1);
- 	rcu_read_unlock();
- }
+ #undef T
  
 -- 
 2.43.0
