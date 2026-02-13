@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48213EDF154
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 12:45:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EE6DEDF15E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 12:58:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87FA76B0005; Fri, 13 Feb 2026 07:45:42 -0500 (EST)
+	id C631C6B0005; Fri, 13 Feb 2026 07:58:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8610D6B0089; Fri, 13 Feb 2026 07:45:42 -0500 (EST)
+	id C10F66B0089; Fri, 13 Feb 2026 07:58:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 763826B008A; Fri, 13 Feb 2026 07:45:42 -0500 (EST)
+	id B1CCC6B008A; Fri, 13 Feb 2026 07:58:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 690646B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:45:42 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 095F6C1E1E
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 12:45:42 +0000 (UTC)
-X-FDA: 84439404924.24.8308380
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 86268120009
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 12:45:40 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eb3XMWT0;
-	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D6E56B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 07:58:30 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 314F21A04DD
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 12:58:30 +0000 (UTC)
+X-FDA: 84439437180.07.E74F493
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 82652160004
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 12:58:28 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QKTNrLA9;
+	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770986740;
+	s=arc-20220608; t=1770987508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wy6EXxbv3f/6I1EFWhjgBzu/GuEETHq6yGUPnyDD7MQ=;
-	b=a5JS8ZisDcjeceOOoJeX8h2QsGtgcorum4iJF2KJTTM5hMuxKRuM88vVGZhrWX0f+vUpJa
-	Lee19ghuyXs3wG22dR1du7RdCrfm9VyUaYgDu/Qccd4+UPcNS2dQeaYsoSepDZmruuCRm4
-	BcNaFpXoxwv6AusSUVY954knJ0xm+o0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770986740; a=rsa-sha256;
-	cv=none;
-	b=sE5KLGfDA8m3TPKlCEZD5SPze4EH7pwVs4xpyUdPDbwweWILuueU5IONmvQTxX0xTILW2f
-	N4eqAeiXGovybh5CwU5C+gmJ4GL7CD56ms9J8KD7in4GDDQ46uCR68fGiIT7E5RpdNII5l
-	GHbrGuyIgnPa0OK7xvPP40r8sz3zoCw=
+	bh=YxGACJG5tjPrceJtCLu+Tcgl5Wr9ISlM1craYZAIvro=;
+	b=DVy+5Kj7G2/ZeswBA3+QpFt77AslUrmCUssO9g3s+c/Ck3ynj33aL9aito+efhyYCjspzg
+	TlkeVL+G7VQ5+wXHNmnAPBEvw1EfS48mk+peu0PqHIa1C+wg5lkvQYvadviTnaVu1RYna+
+	uKUH0eo6ZkJSQHNe+fg6oYkxUucIdns=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eb3XMWT0;
-	spf=pass (imf29.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QKTNrLA9;
+	spf=pass (imf08.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770987508; a=rsa-sha256;
+	cv=none;
+	b=xca+KjuVTyPRm2IgxWATeR5He1W7o+uCpILm2cKgSyuDHLuFg2hdDydMHNvXVqs51TRsjj
+	wt7QBfX2j/dpnJG8H5wgFBplDHvWyWjMTWozQjJ+sdReWygXLM5tvAIMXpHHMH8fuIl7vv
+	CFWGt/kPhzAgpa9At/oG0If5IGQ9TSw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D14886001A;
-	Fri, 13 Feb 2026 12:45:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61663C116C6;
-	Fri, 13 Feb 2026 12:45:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9495640764;
+	Fri, 13 Feb 2026 12:58:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A5BCC116C6;
+	Fri, 13 Feb 2026 12:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770986739;
-	bh=KS5OyQUGwYr7RjzTwiKXxGKlic/PWFi6BwMtgn/vHxc=;
+	s=k20201202; t=1770987507;
+	bh=mr+a0c/cTqCnHJ+pfrjOEc85QJabkVXEsS2N9SJdxf8=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Eb3XMWT0Y0yEZN4X+QeqeNspRK0AUqY0KUDwdhDD8l9ocB1RlRwwd4D5bB8FpVKm+
-	 o7JKqjUp2YhxtaKxdnWUYvusu7lX9pRjxmuavV/3kJVuTwdZI1oOu08O6iXAssNTof
-	 FozvICy9uiBZ1VwthY6RGmCG1wW6/Nq/zhqp2O5d1Gwr06WByfWZLAlbLwMuMRFLwq
-	 BF+xbltbYgYOQB/l8nc29cakD0j7VXIOWN8ID+PvH1A/euiOd5FAuevJ1pfYcBgu1q
-	 r6+b7yObGCE+XcNyoBYciMMgq1jIKdnPyb6yUONwWjtK0nduyV8A0zfFSD5QIEJi5e
-	 7cjPufpBajS3w==
+	b=QKTNrLA9TWhj72HiG/JezifSgEA2dqjhTgfGUZraAunZjWYJLwtRPLiAUmi7asc1/
+	 HVB7mKnJEzs6HLVTNJlaJ4Ic8lyaJKu874XrCUyn6gMHp4yUle2R3CYRtOYns+KGq5
+	 OKBmnrDeboYfquV1SDvUhNNpSHDvnGhL/+LohiimBNONgffogL5STY6WWBOAPHQ8TR
+	 9QB2dSxeADNJjp+8AKNyBsWijB+orJR8Fx61JdBMAPa/fqCbE3s7iSAHzNiOGsxFkT
+	 cgKT5jAW4bdOj7d+5f4MxYNW/s/ilEIK920D4dWYnwfUqisvnmnJgB2Uj0PNkCLhNM
+	 1ZDqJns12e+yw==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Peter Zijlstra <peterz@infradead.org>
+To: Greg KH <gregkh@linuxfoundation.org>, Peter Zijlstra <peterz@infradead.org>
 Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
  <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary
@@ -75,23 +75,24 @@ Cc: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes
  Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
  linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-In-Reply-To: <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <MJX-TLnHWp9yJ9t7suTC8ExghroIz2g2epZG9Rmp6l-9W7BylahrPTqXQBI3D0EUah4xdEt3UXh6ROBa4LdEDw==@protonmail.internalid>
- <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
-Date: Fri, 13 Feb 2026 13:45:28 +0100
-Message-ID: <87a4xcu80n.fsf@kernel.org>
+Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
+In-Reply-To: <2026021343-germicide-baritone-efe8@gregkh>
+References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
+ <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
+ <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
+ <2026021343-germicide-baritone-efe8@gregkh>
+Date: Fri, 13 Feb 2026 13:58:16 +0100
+Message-ID: <877bsgu7fb.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Queue-Id: 86268120009
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 82652160004
+X-Stat-Signature: rizocneeb7sxg9q1fcbjsz7k4atk9rhj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 9aj7kyzhy5xpiqbiji14ry3m35mdhgrq
-X-HE-Tag: 1770986740-647815
-X-HE-Meta: U2FsdGVkX1/BgX0C5DpS4/P9Sc4URy8iEohzqGHOdGlh31yyIFsNu/9NmmzfYBhI1s9NYYly0rifg9Nc2uhEEZrkt6wOMbgmjeU2BG4OBIGeGGPmS/cRx6gjKhQhGdH7uARrzXqxFTrVhEUXwI6V4EEo83j40dKnsDIWdUWPWxZos2jkIXjjVHOibJaLrTWx16UYEGtnOxmLNQujCmyJE+jwudefeJUS7YlskfgvijDzXt0AhZ4wdq2eszJ9UD0limeTmTf0aqvC6BhSDOcXKo7ADG1JZl0U+J8NkOpGv3JAusPvr3tSOnx6PjVXCZVBgpLnvnZitW5Z6YB9ZEc/4HQLEVpqWRywrn25z9u+8sQzR1dI6KBv1xmnCtsK9+E5G4Iov1cskkL1vmiRNnfFFJxS1QWeoCo3UxZKG5SLXCy3gJrlbEIa68Iu/cu3u5Pv5az2KK0fBg52JXIL3qcdZicWKsRid49VWk16U+PqlZ7FGUOXbtM/8bZawyORVwuj09MpqKWnBA/44ottnpwaBANP6BAT/3KQZA+QlBWzEm3q460AXLyyAhQcM5krCiXRLh4Ipfz/1q6gvD1UCG7ZH3aWPSL9u7AArE5RPwSLNSy0Y5ghL+6V04NO2KOzT35mA8Ok5VPFakH9tAVHgRuozzz14jbCEge1/+52a48JF9tIKG2z7zyNTdkKFQ84gsSnk+I4E6VA3Jr3tA4ZalahXKYudwOHxZhX3scoDLqf0q0Kkh/BKv4XTj5iokrTrV5JAurhUwIf2K9OgEMr5y47JAauMrTz708fC8DBRXOX9RLHjqP/zU+Lve1n3cFmi6krKKWTO53bUSP3xNBFZC7o4LAK8KEU4NdMi87Myv2QaARGxCIRtKTZV9uPNJ1pD6ka+iWotBRZj1WZOJhfhFN3zwurY6u5MM/AT4rqcyW8cQD0EHWu4skHVgQYuFzlUR5QuFy01HH4w/YInwWebdx
- 3ul22vhU
- GiMH/w0KqJjgHvxxbPpTmytKmr8jIPLg1N5otSd3P15An4LhGgQv/arYx4/b2ps4/imOv3II8jLxsn2MkhD5syvkX36lncaNsEEU+1QcR69pNz5XXsIMJoQ/elrckVdSPvHQamv2GVRRjQZ61eZtQmp5YwoUrntHx/GrZtCwa2l/4R68hjgb1ugTx5bdAleJKKRj3AjyRT2eqt8luBUCzUqTOugcbH0uSdcV4SEmiT/SUbFA+rG0jfLhbIqkANW5qwM5ZnoVvHzA1079rbY6z505Ni6q5HyvdSz3qXz7pNjwsYYqTxpdYC9iPx0qtwq4UbtCAf94jyRnTp90=
+X-HE-Tag: 1770987508-412014
+X-HE-Meta: U2FsdGVkX19ajJ+723RQzHkLnRfdAvZwJrtum8QpyiKhni5Y6n1oPySDTbeBl88Ev6hVr/3Ogur3F+WKD3pba0YRPkr4sxeV37TyT+0kIesbPNeh20c4tcRZqtJSw9eNM9fOabzcrbhpFmky1KY3PignUhnd9+I3Ie2+cItwiQosOoGvVO+vfS+Xg5Zat9Sbn7Ge7WhS+OsEgYB0oFCaNBAauCb+3HGWrGeA76VJ4Sm4T9WrFyY31g/2Rzma4QT2QdvPrs+9daPr99VeoaKe9Vlt0IIQwI6zjQeVJV+HQ3URS3SPbEzf4h7YgK9tAELsOm2Ux8HN4/CRGaSaKg0mO99iBwbWbZOCgIvZ9dWdmGa7o+Bo+1fTh5b0bE9oMWFHtJ7LHyY308378yD3T3NWLOm4iZBMS7nBRdYFqa4p9iksGqQc6ARTSuVXUVQLdE5m3WHJVPfbIdsPsmqf9WTlgwYqWetkRFITuQuMwB/7SiDFg0jXmN4+41p8v3QJ+2tMVkqPzFLKmWP6KYOI7K5NU7aN8+FijFgry/Dx0DBdfA69AG1HUXZ/eZPgq9R7qy9nFCLDrkn86CNBM/3z+6IBx72GgT7mQSE9DGUQprbATq7RoT9KwupngdZD5SnTwpcPy9PRqLRGaUeiDFOJCCXroKwNkzpihWzXxuXbgux3V8Qi1Bz4EfJzVYkv9Xdyr8/1fzL4/7bvO62SyC3rMZo6uglOYZMN1U/XvmjxUP9tOPfi0vO3iAYKM8LFBmsYaIuEQcK97teWreL+9u628z9HivbamPQc1vsP9sa3pCS4EqYmmwOsLwvEg1shcMbp2PVkiAKB+IB+ef7xf1wmhWUhe/NdXe0E+GhcxynGThn+Ox7tfSt4ckXrjpbC3bfm7/GtBnmzMBxKo0ymtZIcyTPNjWQJOcH+5CfRihbIMD5vmZuTX3UbCwuQoN0rLVmEBv0D+GRp6bv/yX2gse3DkOK
+ ePFC6975
+ Jf849LarCo5+9HbhFk9wPvOy4P3Q25BFVzZEKM8JeOyTCpj6AG2mUPd/9Fk9A5I4yVP2wiW8L+ngyURYAw4MDHHe/TcOe6oL2ztx7CDu61jSYLtCYHvi1F7coGGbnMhr2kQrseuBPKsn2DUSuycUCPLGLIku2heT9pgwZ/lNrMSH3u4vFvfOMW6PwLS6y/z4XiumXuV3L4gSP37tBAxU+/Wz7qWpUbsYBVnjnHx2KD5bXJIrOlWR4pNrqW0LCOf+VkmlsSvT7rnLRJo25wRiIIxfEDup5o3tZ9OTuqAOOk+SSlWSi1slorbtZDMJnSQ9NcLjnVmGjaTWwe8DH/Pgla1LSsg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,43 +101,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Peter Zijlstra" <peterz@infradead.org> writes:
+"Greg KH" <gregkh@linuxfoundation.org> writes:
 
-> On Fri, Feb 13, 2026 at 07:42:53AM +0100, Andreas Hindborg wrote:
->> When copying data from buffers that are mapped to user space, it is
->> impossible to guarantee absence of concurrent memory operations on those
->> buffers. Copying data to/from `Page` from/to these buffers would be
->> undefined behavior if no special considerations are made.
+> On Fri, Feb 13, 2026 at 10:55:57AM +0100, Peter Zijlstra wrote:
+>> On Thu, Feb 12, 2026 at 03:51:24PM +0100, Andreas Hindborg wrote:
+>> > When copying data from buffers that are mapped to user space, it is
+>> > impossible to guarantee absence of concurrent memory operations on those
+>> > buffers. Copying data to/from `Page` from/to these buffers would be
+>> > undefined behavior if no special considerations are made.
+>> >
+>> > Add methods on `Page` to read and write the contents using byte-wise atomic
+>> > operations.
 >>
->> Add methods on `Page` to read and write the contents using byte-wise atomic
->> operations.
+>> I'm completely failing to understand. What!?
 >>
->> Also improve clarity by specifying additional requirements on
->> `read_raw`/`write_raw` methods regarding concurrent operations on involved
->> buffers.
+>> There is no such thing as an 'atomic' byte load, nor does it help one
+>> whit against concurrent modification of the memory you're copying.
 >
->
->> +    /// - Callers must ensure that this call does not race with a write to the source page that
->> +    ///   overlaps with this read.
->
-> Yeah, but per the bit above, its user mapped, you *CANNOT* ensure this.
+> I too am totally confused when reading this patch, and the previous
+> ones.  Shouldn't the "normal" copy_from_user() stuff be used here
+> correctly?  Why is anything new needed?
 
-Not all pages are user mapped. If `self` is user mapped, you cannot use
-this function. As you say, it would not be possible to satisfy the
-safety precondition.
-
-If `self` is only mapped in the kernel and if you can guarantee that
-there are no other concurrent writes to it, you can use this function.
-
->
-> And same comment as for v2, none of this makes sense. Byte loads are not
-> magically atomic. And they don't actually fix anything.
-
-I am curious about on what architectures byte loads can tear?
-
+One use for this is copying data out of a `struct bio_vec`. As far as I
+know, there is no way to know where the pages backing a bio_vec are
+mapped. They could be mapped to user space.
 
 Best regards,
 Andreas Hindborg
+
 
 
 
