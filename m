@@ -4,150 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80293EDF17D
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 16:47:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E39DEEA860
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 16:58:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3DB26B0088; Fri, 13 Feb 2026 11:47:00 -0500 (EST)
+	id D26E36B0005; Fri, 13 Feb 2026 11:58:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEB7D6B008A; Fri, 13 Feb 2026 11:47:00 -0500 (EST)
+	id CFEA46B0088; Fri, 13 Feb 2026 11:58:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCD506B008C; Fri, 13 Feb 2026 11:47:00 -0500 (EST)
+	id BFDE26B008A; Fri, 13 Feb 2026 11:58:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id ACB4D6B0088
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:47:00 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 524688BFA4
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 16:47:00 +0000 (UTC)
-X-FDA: 84440013000.02.28036B2
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 79CC51C000E
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 16:46:57 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XRjHyziF;
-	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8FE6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:58:46 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D0CE5971D
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 16:58:46 +0000 (UTC)
+X-FDA: 84440042652.13.B757CB4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 51FC980005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 16:58:44 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fjWm5zFm;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771001218;
+	s=arc-20220608; t=1771001924;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gK+IGPsKClSzMrR9bBTM29/mXlJAO442P4BAUhU/mcc=;
-	b=ZOJM9arU+x923ni7ywBT3WumqlX6V0KE/l62vBWOhCK3ev4h78gn1cboC/YaaP0Zau/bzt
-	gdni9Q4SH/BBqeycUzkNEwt5URh5pDO4rddlKIFLVGHJNB2x79sl3TYQm0Hc52LSEQz3x/
-	XZeaw96ajLn0b77g+/LwIV5jKmleowo=
+	bh=HkHt4bwrUg+hwAU42ZEcLF5HyNKdGcOTZ97Zn0pTP/E=;
+	b=4umTC3GCZ1to9y/n3yC3QRGM0iOUEqVm7wkX25T3/Y/SUwW1lBuV4A0JWmyguHF35s7oz6
+	NWjZ1nMWoBoAjZLf7AizsY2hcA7QRs5la+YaToZ9waa8sAYqZYkSntAGNQjswdALelOfCo
+	+5ADVbTO8V5vniCL8ZviSUbIIcez/+U=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=XRjHyziF;
-	spf=pass (imf21.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=dave.hansen@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771001218; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=fjWm5zFm;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771001924; a=rsa-sha256;
 	cv=none;
-	b=1j/m8k+zWItcOrADoGzON0nr29mC2dClso59uBdL7FiJxV6NyUMktyJe87KdKGYAQnKtiJ
-	rRSKrTFk4gC5/XQxIvy680aLrt7f/KCrZQzcZnlMGdKhuAA8kcc7ult5RAkV1oaQ/f+19+
-	OCaFF+oJbSznAO+PlkyQz2POy/roACk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771001218; x=1802537218;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=gK+IGPsKClSzMrR9bBTM29/mXlJAO442P4BAUhU/mcc=;
-  b=XRjHyziFZsLke210QtLXsp+8PRhYhRGDeQ/jhvAmUIGQbUtp9c7j1oFs
-   7juX2GKXQr12j2wHdHB6IOhmuxGrL/Ko/8jZJ8Rp7X5vSgmCCqxS8SbZ2
-   BeUe1QjBiG90u/gD03G8LhI01rVE4S5FhimaDE3uykT3zdB5um3vHUvU3
-   SN2CsanRn3MUssScxAgQBNiRPsHHOcqXzTmFNmt/LvCQjSgkREa5ql63v
-   R5K9C4l/ZoYZoHgeOa3MXjjuNZ7eKY6XqSpG0hcsp+I2vKQk7rlV3UiaQ
-   jg+behlBzxyrVuunXL8ZrPBvM8phlUhdqVfAoGqCJz0tzfOHuSUJ8Ox6x
-   w==;
-X-CSE-ConnectionGUID: ye+5W0S2Qwigoxh1DGGJeQ==
-X-CSE-MsgGUID: RQHVkZViTdOuFWn856OMSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11700"; a="72363688"
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
-   d="scan'208";a="72363688"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2026 08:46:57 -0800
-X-CSE-ConnectionGUID: 1FgC5MfoRoCr1JF3/IGVDg==
-X-CSE-MsgGUID: G5hjvY7rQH24nVpK+B85qQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,288,1763452800"; 
-   d="scan'208";a="213068569"
-Received: from dwesterg-mobl1.amr.corp.intel.com (HELO [10.125.109.3]) ([10.125.109.3])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2026 08:46:56 -0800
-Message-ID: <6d6dd421-774c-4f29-84d5-3e449240eb93@intel.com>
-Date: Fri, 13 Feb 2026 08:46:55 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] efi: Fix reservation of unaccepted memory table
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
- linux-efi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Moritz Sanft <ms@edgeless.systems>
-References: <20260213154838.46567-1-kas@kernel.org>
- <20260213154838.46567-2-kas@kernel.org>
- <b3b073e4-d51e-4fd7-ad7c-7465dab412b6@intel.com>
- <aY9Mf8oZODGiDoXp@thinkstation>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <aY9Mf8oZODGiDoXp@thinkstation>
-Content-Type: text/plain; charset=UTF-8
+	b=BpjL//4EA7Ydjzpfz97+ImfmBE+jLNgjJomIAN+ajjIJ9efSdECbP0I//fPzsMmDBWNjPq
+	8vMmLv99cFWMKvOVRExtyQPOIolfXvPuNfFVyKKKr/dVK8VNDhEO+ZJ+UTSx9w48IS9E90
+	FD8bs+RuO3rQ3H63VSwmLbs3FF7I2Qk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CABF56001A;
+	Fri, 13 Feb 2026 16:58:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28D1C19421;
+	Fri, 13 Feb 2026 16:58:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771001923;
+	bh=r9SFGqR92Fs20HO4JolD+pt0pW/zrKMLfOUDHfwJ95M=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fjWm5zFmBi+HFOZUFT8lO339NLFh+VE9s/5khZImm3kWAU1wgPW9lvoDfTJuXgqOT
+	 uK6JswN6Ym0CLElSIPd8I6Bzjxn/nQ5B0qTUT44fW7nT4U+bXBJIdnEkB0qQiDAPrW
+	 ieP/quKnqWB88KmYr7JCaR/FEO/tiwIHPnQVKgPk=
+Date: Fri, 13 Feb 2026 08:58:42 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Axel Rasmussen
+ <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Arnd Bergmann
+ <arnd@arndb.de>, Wei Xu <weixugc@google.com>, David Hildenbrand
+ <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, Kairui Song <kasong@tencent.com>,
+ Davidlohr Bueso <dave@stgolabs.net>, Koichiro Den
+ <koichiro.den@canonical.com>, Jiayuan Chen <jiayuan.chen@shopee.com>,
+ Bertrand Wlodarczyk <bertrand.wlodarczyk@intel.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning
+Message-Id: <20260213085842.0654f70a73ec05d88908ec25@linux-foundation.org>
+In-Reply-To: <20260213123902.3466040-1-arnd@kernel.org>
+References: <20260213123902.3466040-1-arnd@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 79CC51C000E
-X-Stat-Signature: 3dhwqdpo43nd5unkkaeghyhpg338s6k6
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 51FC980005
+X-Stat-Signature: 3nr5tpyer444y4yzad17oecnw77sbs5g
 X-Rspam-User: 
-X-HE-Tag: 1771001217-532327
-X-HE-Meta: U2FsdGVkX19MSLPqrWwzM9kx52hDB0+hgftfgzJo6zd2Vaz/+12xOClWNfxDU8yba7/NkJvhA1XstpULjOw4PpErs/cJ8vsf9s3HNgV/7h8V1pqn7hae6783RD5Za3ssjRr6qgRJprAsvJE8H4OwxHegEG9871/Lq8Lsxhr+ANNixqZ+PLEJp+GiaYxQi4OBdQzG9igmqU1g3Xm4JhiP8L5Hoh46pjRa7eilQAijgP10PI8JpFFLs97R1XfeoZdYgEh+PFCF37t5F0ejRPQADALzTD1uiNkjE4tjCHWhcAbTByiYH20fvAW4XyR8ssk0nECHzzeMfrR8WQfwxR5l+lt1RhSbjO3zNkUTjnd7EMiNP51D9XFTjl2ZW0bGiK673T7BmypLblPUTN/j93YSjBPFMOIpNgTneB2C7f0Fth8C08si/xdLSw+TpWMMzoiBZtX9KQQsIpM8knMyLPI/M30ONY4liNlD1gKjQK49XxtE7mcNNWawIxNn+2qqLhQWU/FnhzXH5WZPX6DNbzqNK/COlPbSp5Z3R2jmHGxm52rMBbRaUbXUDi0wJBTM1OZa1wGTqFp9ck0M+nUmiQT8NLaoiVYXkTFmX3V6OxaZNKDBqwnr6Cwbk3RoKpDWewdS/jcwJev/N77QIW5mxAKXc98Ze1CztUdmg3GNty8/RKqZMikkLEXuxwaSfJwwGQ+3vhYQP9wCunSRe0oue9L7gYTw2DYHon4FmilkfbauZdGDf9xqCi9M1hCouDqdshwWIe4RhAGqbZ/UfSji+N42pib07pnCHhvACKVSACoZSJcUnl7hSvMT8ON5bGPwoTMwfFKP8JVVQ0wb4ni/dV+7AgauPNlAr3sP44wMYUmvTNzYzoRV09xQQ+kHCCMLWwHIq+CwtySB12609SXHqtppkOJP09F/PCimxWNsmAiCTux+kkWS2hp7kjfZOCrIEy9QhBRRA8V0PYsptAU7J55
- KUirCnxa
- VevS6LsKAfqmloobipnpeQN5hpRR73cjrCW98Dpms5kfgdjfOEmGLFPX7OtebuKNH+rieYKHgUZt+2lAeuyeAhK3FeCssKfPR24eh6MrRhjSe2QmzhsQd2u94/RuA08GwFuZzkvLuw5Z/1S1BpQi44uTSmR2k9uAMq6eKwHhJGwRDfXiZt7QVlSYrDjl/7r1ZKorpYiNxJvtcW/Y=
+X-HE-Tag: 1771001924-671983
+X-HE-Meta: U2FsdGVkX19qGfKZSXMHgKBfjrrshTFW/GdAGF6sHM0mnpHabimaQvft7YCabdnz3nj9DKa2oXc/7ekZsMSn3nEyX5a3GSdDTH6EbQpxokDCcteivanEnfIHMlX4nwF7xqpm3n2kgG2TS2kAIokk+EdXFOH65fwBJBYTpb1So8Uu68ELhhkDCCaJlENzzjuG49vCriCUtXseb66S+idGpTC35Ea8sM692f6IkOXDvMzM0D5CuksRMB47x0UTyjPQwZBBpgSsJMWwQSjqvh0tO24HJzfysSTz9t1fipE87hh1rfTjeb8G4nJ37nZ9KnWaY3yx1CfLaP+HcqeVu0fUZmFEObtC2wkovysQ2SnkYhmmcaKBU0fjAU4TjB/hC1YpnoC6H1b1GaSwECbb9FEDH+MBb65IP9OWJ7vzkyg538p0PJn0AueTSjhmIfhRGUNElnu9TxIlivQOv488/hJhsVElCxTELd5A42SRys8uDgIK3JX3mVxD4PDr9J5/ZF5IKyh0uaYqjmUMNIv6gGD+bTpbejDRJzT9VHn0GcoUaPGxUgYgrHza/3E0CvR+iIbemhfyoHwomQP8e5NfEJydX5vXdjvpknU3WrpJgmoTA8c/zPTZv+tvUElBsY56UNDyTsdWWTiRx/y9ydgyOC5uVSGg3XnKoed/ub2NeKOOrMTjMbo1DOpD20jttiDcFcpDYP1oH1OHYU+5oBzyKQCZQ/A7CuAJWtPQfXaWWw0Pkg7mD85pME1Exn6cwZxL1s9SkGl7zg00DHNbB6q8m7C3xlVDtKbfpYtZrbtnbPpp35/djUO+lWtfY56bL6dLtFquBnbkyJHTz3mhppL7Ab99pdl76Jfj8z/Z6q3D8tT5Z2/By0Bl9hSA4O38rMmxzXHVtl28tVTJowTD3iFpvkAkJthSFGG5bTuPod2yYE7QH5xM2YPN08pIJ7JmAzhtyx9yn/EM59ctlexj7MVh2fB
+ EKQr87MM
+ GamvQliW93hmjJ/6pmaljjoJwCe3J/l3T6fVoLX8ko7dxL9zlx5M5Lb9tbrCkrPNhEzoVieYDUU8DZdQH7bFMZCnzq0MaWXes0vRgkqlloxrvmum/FCDzaNqq7/eWa/4Ney35r6dvSzrS9Ygp20hozlZppcPQWWR1i6cd5AL2gm5rWGKQRqqefbL/VmZi3CH98vhaUY1VlZ6TWiMfk65eiGTOM21qL80u3Avw9Q9bnoqv0Nh9Ur1cvrKqgdqZEJil8N5cCRZDLz4QqD7ijAZ+Qs7VfQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,17 +99,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2/13/26 08:14, Kiryl Shutsemau wrote:
->> The memblock code seems to be able to handle arbitrary alignment just fine.
-> Memblock will track it, but, as the comment says, anything smaller than
-> page size will not be mapped, but we need the table to be accessible by
-> kernel.
+On Fri, 13 Feb 2026 13:38:56 +0100 Arnd Bergmann <arnd@kernel.org> wrote:
 
-That seems really, really fragile.
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> When the -fsanitize=bounds sanitizer is enabled,
 
-We should first make sure this is intentional memblock behavior and not
-a bug before we go add more hacks on top of it.
+Is this an option in current kernels?
 
-Why would you even present a byte-level reservation interface if it is
-free to just silently ignore some of the ranges by rounding them off later?
+> gcc-16 sometimes runs
+> into a corner case in the read_ctrl_pos() pos function, where it sees
+> possible undefined behavior from the 'tier' index overflowing, presumably
+> in the case that this was called with a negative tier:
+> 
+> In function 'get_tier_idx',
+>     inlined from 'isolate_folios' at mm/vmscan.c:4671:14:
+> mm/vmscan.c: In function 'isolate_folios':
+> mm/vmscan.c:4645:29: error: 'pv.refaulted' is used uninitialized [-Werror=uninitialized]
+> 
+> Part of the problem seems to be that read_ctrl_pos() has unusual calling
+> conventions since commit 37a260870f2c ("mm/mglru: rework type selection")
+> where passing MAX_NR_TIERS makes it accumulate all tiers but passing a
+> smaller positive number makes it read a single tier instead.
+> 
+> Avoid this case by splitting read_ctrl_pos() into two separate helpers
+> that each only do one of the two cases. This avoids the warning as far
+> as I can tell, and seems a bit easier to understand to me.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> This is currently the only such warning I get from gcc-16.0.1, and
+> none from any other version.
+> 
+> I'm not overly happy about having to work around it with a random
+> code chance, but hopefully the version I ended up with makes
+> sense regardless.
+
+Seems a large change just to squish a compiler warning.  People might
+prefer a simple 
+
+-	struct ctrl_pos sp, pv;
++	struct ctrl_pos sp, pv = {};
+
+?
+
+
 
