@@ -4,126 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D933FEEA860
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 17:20:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D27CAEDF17E
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 17:23:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2916A6B0005; Fri, 13 Feb 2026 12:20:27 -0500 (EST)
+	id 3F9E26B0005; Fri, 13 Feb 2026 12:23:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2692C6B0088; Fri, 13 Feb 2026 12:20:27 -0500 (EST)
+	id 3A74A6B0088; Fri, 13 Feb 2026 12:23:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14B8B6B008A; Fri, 13 Feb 2026 12:20:27 -0500 (EST)
+	id 2A9C66B008A; Fri, 13 Feb 2026 12:23:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 02D076B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 12:20:27 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A163ABA0C7
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 17:20:26 +0000 (UTC)
-X-FDA: 84440097252.11.DE2DC1D
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 19F8A6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 12:23:41 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C29D314050F
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 17:23:40 +0000 (UTC)
+X-FDA: 84440105400.25.F350073
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 772DA140003
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 17:20:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RJ1me+Rn;
-	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf12.hostedemail.com (Postfix) with ESMTP id 07EC040008
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 17:23:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ES8WK39v;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771003224;
+	s=arc-20220608; t=1771003419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zh8SVD2WW7L08qo1lqwlWlDZ1zt1JgPFEBPOEaIYn3I=;
-	b=ikki1vE3RWyTV83LxzOtJxvGia0fn4OyZEfI6ZTKgTGN2Fks1gFMEfyZTNkHRxBvWXIu2E
-	WSY05NenggllZBfJ++ZoGuqRGAKJgh9cI8E6wSHum07C1YfIl5rzzRawkGtmE8xmdoXBTI
-	+/U0fWRPLAHvvp6eeox7mWbOiMHe50s=
+	bh=wNl7dpTWRVmeABtEaOgG5j6kz78db6OCbD9diNRw44E=;
+	b=SIZ0s3SgMBNkgDsteh8eRrWoaWbY5hKjrkB+v1LTeSkz6NU24MYLG7NhDyTOQrQ2ccNCnR
+	Ov+IZ54rc/Fs/xTRWYzgfoQffH95fZnIZdqNVWknoq2w3rc53Cq6uo7WyhUGxd3Y7g/D/x
+	z7yywn5sLHcVOF2NUAdlhyMDYLbQUtA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RJ1me+Rn;
-	spf=pass (imf26.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771003224; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ES8WK39v;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771003419; a=rsa-sha256;
 	cv=none;
-	b=UYYKTwJaNF+1PO87am1G6rSN1PkSCKTKqFRF+tgUTAncmdywVHNijwvXF5ULpx/yGzGXtl
-	MNJvgVS6dCxysRUzV0r89KUmqBuXk0RtVH1anEgGcAwrbxOq4VJJ69L+WaPMANdUkjFAAZ
-	uutsio/3vsrN5C/J0G2aRKkbQ/nQl1s=
+	b=b5tvYn60Kel6hgrZgoTPJismLSE+SXbVcjRisK23Y1GYUmVmM6TWIa40SJcxp5VmP8BkzY
+	T+R0xtQNRbD//Hm6oLoW7YZG1ijhJRHPIJhfXKA+F9gRheLHV3nVBaPg9vqYkzrJkbk4G4
+	UIRil9sLCm973xNfczEX2eQfcDy90h0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 377BA44467;
-	Fri, 13 Feb 2026 17:20:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FD9C19421;
-	Fri, 13 Feb 2026 17:20:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771003223;
-	bh=+LclX38OrI0KgaAdB7NwBZq/cU/VxYfgDrGVgHh3Das=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RJ1me+RnKRGLhGoHAPL4YNLROdA/vGro/41iyTWVy2Gdt0KEOho9/SjGiqsbSefqf
-	 1xzDKDFPT5Szk6Fv+ZI9XQD/8usUWYcksgPbPB2OvRPKWvPcma06V4D2aiXS8aNyo3
-	 ZQYxqO/jyZFdFB9Qm/B6+pvxtb9fqWDSP7IHEkGLEM9+EbgmvHhrI1RUWyDbW3uYUX
-	 ZZ3FPkrz/y2ZzfNKqHPbnVfcOKuR47daLLJk063OmuAEYpPz2ng8Yi4iYlElrOBkaD
-	 YIHiDpB+adsNNxxEn+fEISFIwJalS78sZRd/4cfAQBW8afO+qI8hCnQIXs9G5mVech
-	 dp0LmRZQCJfjw==
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 9E448F4006E;
-	Fri, 13 Feb 2026 12:20:21 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Fri, 13 Feb 2026 12:20:21 -0500
-X-ME-Sender: <xms:VV2PacGI0vlgbrJvA39gHOcuxE4YgPqhU7MefajaiyfRWlNX0UQjTw>
-    <xme:VV2PadJbvhOg4g68wcGnSTfGTNvbpGZl6J8emGXTDlQrW3up2p1XkFMOxRpRB2PkE
-    t7ZSysWrAYhX_QBM10D1Cb3IpXTjDxQUkPf4zWbHViEh-e2X1qd9S4>
-X-ME-Received: <xmr:VV2PaRhdaJoBiwPaXM_lA57mR1QnuxltEpKLkKA6Q0mqUr-kS7-C58uJRaxoQQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdekkeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegurghvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhmpdhrtghpthhtoheprhhpph
-    htsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrhgusgeskhgvrhhnvghlrdhorhhg
-    pdhrtghpthhtohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhngh
-    hosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgt
-    phhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtg
-    hpthhtohepthhhohhmrghsrdhlvghnuggrtghkhiesrghmugdrtghomhdprhgtphhtthho
-    peigkeeisehkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:VV2PaX6L905tO5Mr7KmKd4hhofDyIrFl7INMJxQickKUh4SrdC6wCw>
-    <xmx:VV2PaWPKP9SD_bbiw0eouQFDQdKtnIhtgHG60lAHhwJ-BU2wDFFu-g>
-    <xmx:VV2PaWeHE2ZiaWd_w1MfW8B6fFyVeYiizWfo1zylnOftPfEo1pWP5g>
-    <xmx:VV2PaR2Q-mq8Ph_gQcFui3wOA7fhDsgAcP2gmv9PLuu_0WVkS-vNxg>
-    <xmx:VV2PaWMU1062Uene-WEpehlqjuxyfhf7P_zeDK_37MW4CAq2MjdB97XV>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Feb 2026 12:20:19 -0500 (EST)
-Date: Fri, 13 Feb 2026 17:20:14 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Dave Hansen <dave.hansen@intel.com>, Mike Rapoport <rppt@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org, 
-	linux-efi@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Moritz Sanft <ms@edgeless.systems>
-Subject: Re: [PATCH 1/2] efi: Fix reservation of unaccepted memory table
-Message-ID: <aY9c80nXefdXjGXh@thinkstation>
-References: <20260213154838.46567-1-kas@kernel.org>
- <20260213154838.46567-2-kas@kernel.org>
- <b3b073e4-d51e-4fd7-ad7c-7465dab412b6@intel.com>
- <aY9Mf8oZODGiDoXp@thinkstation>
- <6d6dd421-774c-4f29-84d5-3e449240eb93@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6d6dd421-774c-4f29-84d5-3e449240eb93@intel.com>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: 772DA140003
-X-Stat-Signature: n7artugxiyuwpih3njey5gw7izs7tybe
+	by sea.source.kernel.org (Postfix) with ESMTP id 07AA140D6B;
+	Fri, 13 Feb 2026 17:23:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D530C2BC9E;
+	Fri, 13 Feb 2026 17:23:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1771003417;
+	bh=GOkUPZVXOwDq9FSpdZJkLdBr0dSwWUaE8V8I4dJqcUE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ES8WK39vvoGESzTed4NVICd3ff7Wwz7GjtVdhcPiai0qa4UMnAytDMt5C+ZU9g0b2
+	 Ggvq8RvYnrZLXFsTGMQZtMAQhMnQ1gSAVsCfjAMJbOM1fLA+aZ5WyZ2Kl8UrMZK4cI
+	 /Zkair0tOk3/fRPChmrAn/LZZojJCAS0QG1v3rjs=
+Date: Fri, 13 Feb 2026 09:23:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Arnd Bergmann" <arnd@kernel.org>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Axel Rasmussen" <axelrasmussen@google.com>,
+ "Yuanchu Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>,
+ "David Hildenbrand (Red Hat)" <david@kernel.org>, "Michal Hocko"
+ <mhocko@kernel.org>, "Qi Zheng" <zhengqi.arch@bytedance.com>,
+ "Shakeel Butt" <shakeel.butt@linux.dev>, "Lorenzo Stoakes"
+ <lorenzo.stoakes@oracle.com>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Kairui Song" <kasong@tencent.com>,
+ "Davidlohr Bueso" <dave@stgolabs.net>, "Koichiro Den"
+ <koichiro.den@canonical.com>, "Jiayuan Chen" <jiayuan.chen@shopee.com>,
+ "Bertrand Wlodarczyk" <bertrand.wlodarczyk@intel.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/vmscan: avoid false-positive -Wuninitialized warning
+Message-Id: <20260213092336.c2b0f2d1be17f1e2e9856f11@linux-foundation.org>
+In-Reply-To: <b8f5244e-4ad8-4499-9cc4-c875121cdc2f@app.fastmail.com>
+References: <20260213123902.3466040-1-arnd@kernel.org>
+	<20260213085842.0654f70a73ec05d88908ec25@linux-foundation.org>
+	<b8f5244e-4ad8-4499-9cc4-c875121cdc2f@app.fastmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Stat-Signature: bf1z13pkiomm8hqb854prmc3pcwfwo7a
+X-Rspamd-Queue-Id: 07EC040008
 X-Rspam-User: 
-X-HE-Tag: 1771003224-291708
-X-HE-Meta: U2FsdGVkX19LVp9ZfhWRj637mKZE8bsBlZKxyil0Czy0cy2YNv0PGy9RI+x2jDhZdesal68t1QTe2jw4P2obj4RSC9IMyBaPehiY9s701mv4ZTBe33/sUjIpdb3nEObpvlbikOmpZqgo6gBTrwbX8zmF7pZdS6gQq54C5E5se29T6D8TliuNEiqGlkA2qghA45yxM2+uNz6bb2a6CO5FU7HE6ajTH4gmbt4OtBaiTPY7WaKToRH3Gmt0Ia1azG1ylm4JisxHsnQ1um12BIq+PnyzpYISX1hCQG8QjdFBv7fLiR6MGuwmQ1GmuiSsdpGpYSU/9ZV+g+Y9NUYOP9jLamKFnhVYt7iVYTqsrTIgurruG9q3H/v0hYHzrW/wHzShoXtbigEwxthuVJ/N6mGh0hTUXO2tAdGVHXpG+j2imAzEe8KGw2vn1modoD1cVj+kvtnETkgzXps1TOqlucn3a5xrc5xk1wH3v/9pVdC8mwXc8mi+wsC/0v/+s9L2cr8j4ACbp60zd6eCBobmCevEM5WXJB3nxxN1FxOboW3UscykfGx+9t9rOWp3flYaXn5ZBIHsUybQLHq4fhyIMUZWJEsxzHfJDDvNl3Vu/jjQZsBG8M4RqcZAZ7Tm9SCgj8/CRxuw9uALLuRIoLs6th25OHSoyKLrD5Q9HxG6CmqNKrxWmIy57BpdxgeKD/LbvaJTaQWe97rSOuyMYCkcrsHMkYlrGkM0LcPONlwe0f86Mt2Ralog3ZFFsbiLFnTCxHDgi2mNNn8bnhLvw5Aw3EC+9Xvnf3ETTzBY45B6hgDSXBbbUtwxz/2M1UEnJnuijgzhiE5BNCYcF3RRbqEExnNvFIjHeCotO2a6vdr8bFcUSdVLwlw0D3LCgeRjvWJ7tTPL52zZWibyIQExKxUHs5Y0ULWuRoNZLz3sr6wc9MjGpQOU7F6UZK4/OIC6J9QE4wd4A6Pk2+nEIpZlQXoLkth
- tLe3vk5N
- 22K+vN8ZREClZAOp+wGOQO6BPTOFM8kHLb30TZ2UwzHPyfUYGVfQd8No8JUZsMOjDl+JN6EdTjjMW8eV03mMtFtNn2P9YZzLXX4xXyXalhZKnCaDxe6F61hlKi6TqhXzwhR146WxYzjr4h0e+ZIcm0p2yUVc99/ka1ul/jcybBzzkjr2sj7Gl+fAPM+Ry3V5npf5RkDN5qyxyAEEITMwFVZEqXxLkfZNf8eDwKkrhnJht6TZ1ra3DG3IvdStpDqDY+8V7JlkIWiRn6wnD+MJV7Xp69A==
+X-HE-Tag: 1771003418-667748
+X-HE-Meta: U2FsdGVkX18NmVdAQqW6ckJbFeEoY2FZY374lV4xZH0hlbyvu3Suqdai0eTBuP5EE0UZpPrUBstOHN7yMLKRELohL/ZF5xaY+l9rpR/alxhHOLoKoUKfImaSihkZ9hwUqzhL30Cgu5n2eryNiAU+9XG8sCl3p1OfCCuKR6yh3/zYBCYumHlDwHvVI0yR4X8jsuxwpOTD0RvDaqaQkM0FnSayTtLMcih8kpRQCqEdCEvoICR9zwuYJUxRN7ow9VKshOKHtwrz1ZBY8sGZ46xQkSgXwBhuwxUpZtOhHYuHf9Lemlw5gFvZTuefDkXGv9L+2xInwn9UpAEEBRKy7d8vY8pTGmF06S9QMOXx7LQSJL67aAOVhcUiOJ1qdBEPqlJXfQ8gCuqsotUxFdA7MK1PtlCvrz4Ck3EqjpzGkOLfvNSdzqw2nvGiMHhQy3jEo4tdWsKW/KYT+yRst2vynajysmIq3eYLtjyqaIkrAbqQ8xbDRf99j1tqXxHiO+boZngeJCYBbcXe7XBAkQlVydN6W84YjRIuY49HEBOcxgSYIxbOPd1J2tR0CExg0xdsAoYXvaZcpJ2l2ugP3bThJ+dH8B4/9qPLMOtvoWC632gHvgZdt61i+ETnypcX7bDgliOY4ywUaVtgBCYLVvKfKTA128O6wlgjuM5n/JVdiNQwxXRcMz9t/yH+3elr4XMJiXHhy74SSNAb3vOyjulFeSrrxu6M/KjAmTAjV3yNEJ4lW8kewtWNwKNqI3p3Xx6HtfsUYzUJUZOAMztXViLhd3zTyQv3hQ0QqHj496f6ifP5FEuAXzjakk36wByydC/0VnDHLBmXppbrffuTo+So20W1usr7DHcCAxWT/sR6n82iGthKG66LaUpMolCsPbWgl8xf9wAVVtuTjGXIt++uPGuT8HKzfWkCzDBlECaEc3ZDg1AZ8D2VvdD/PY8JYZuZifLbw91nA99GCnpiuXMkU7S
+ bxu8Jr8Y
+ 9nGWRcWy+dviFF17vDRCbOI2sGSG6lUto8pmQM+NeKvYBgUbahi4QqXIrnaykZXyiziiq8HbwDjrkhnlzX95MUMJpMj/iRxOAVMW+nBh3ox/iKI+yAkybgENDtLbtii9cdIpucuD1z/NX8pugOmsIInV/IhEBh2YaHrlna0TJHaj7n41bkxWXShA32ektL1QGBK/PGFqQU6CBrg5pVP0rF4FeojWH9kiTod0A214RR4BBIm54oAFoVT2GYMraTweboVIl3J5MEJjP9evkBMONfJdFiA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,26 +102,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 08:46:55AM -0800, Dave Hansen wrote:
-> On 2/13/26 08:14, Kiryl Shutsemau wrote:
-> >> The memblock code seems to be able to handle arbitrary alignment just fine.
-> > Memblock will track it, but, as the comment says, anything smaller than
-> > page size will not be mapped, but we need the table to be accessible by
-> > kernel.
-> 
-> That seems really, really fragile.
-> 
-> We should first make sure this is intentional memblock behavior and not
-> a bug before we go add more hacks on top of it.
-> 
-> Why would you even present a byte-level reservation interface if it is
-> free to just silently ignore some of the ranges by rounding them off later?
+On Fri, 13 Feb 2026 18:07:04 +0100 "Arnd Bergmann" <arnd@arndb.de> wrote:
 
-+Mike.
+> On Fri, Feb 13, 2026, at 17:58, Andrew Morton wrote:
+> > On Fri, 13 Feb 2026 13:38:56 +0100 Arnd Bergmann <arnd@kernel.org> wrote:
+> >
+> >> From: Arnd Bergmann <arnd@arndb.de>
+> >> 
+> >> When the -fsanitize=bounds sanitizer is enabled,
+> >
+> > Is this an option in current kernels?
+> 
+> Yes, this is CONFIG_UBSAN_ARRAY_BOUNDS. The actual warning
+> only shows up in some configurations with that, so either there
+> is some other dependency, or an element of chance based on gcc
+> optimizations.
 
-My guess that multiple memblock_add() calls might add up to the full
-page size.
+OK, I'll put a cc:stable on this, as people will want to compile older
+kernels with gcc-16.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Aiming for upstreaming into 7.1-rc1 unless it's more urgent than I
+think.
+
+> > Seems a large change just to squish a compiler warning.  People might
+> > prefer a simple 
+> >
+> > -	struct ctrl_pos sp, pv;
+> > +	struct ctrl_pos sp, pv = {};
+> 
+> Right, that would clearly also shut up the warning.
+> 
+> To me this seems less intuitive without an extra comment,
+> since read_ctrl_pos() is meant to initialize the entire
+> struct, but please pick whichever you find most readable
+> here.
+
+Let's see what the MGLRU maintainers have to say.
 
