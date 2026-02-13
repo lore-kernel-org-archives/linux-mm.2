@@ -4,134 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FCB0EDF148
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 10:51:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B94FEDF150
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 11:02:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EA496B0005; Fri, 13 Feb 2026 05:51:10 -0500 (EST)
+	id 7F4036B0005; Fri, 13 Feb 2026 06:02:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 797F96B0089; Fri, 13 Feb 2026 05:51:10 -0500 (EST)
+	id 7A1566B0089; Fri, 13 Feb 2026 06:02:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 679946B008A; Fri, 13 Feb 2026 05:51:10 -0500 (EST)
+	id 6A0636B008A; Fri, 13 Feb 2026 06:02:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5574E6B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 05:51:10 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C7E56C1C9A
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:51:09 +0000 (UTC)
-X-FDA: 84439116258.15.4EB771A
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 0D6AF40002
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:51:06 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q4mghQap;
-	spf=pass (imf01.hostedemail.com: domain of elver@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770979867;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 54AFD6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 06:02:47 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0E0EEB98D4
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:02:47 +0000 (UTC)
+X-FDA: 84439145574.29.35DDA68
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	by imf22.hostedemail.com (Postfix) with ESMTP id E9008C0013
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:02:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=anFUloTR;
+	spf=none (imf22.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770980565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H2yjc4HwnZnDfH81aOY9V+Nb7nZlWZ+t7zlqHmmWMvI=;
-	b=0Y6XN3H5m5AKtqJEIhYUHRRYX9hHhJ4KtVuo22vU7a1KXVCnQkmLNPsD9Jt3v2xUK2qTi6
-	IJtsvM4d/Aygp/gYHQ430GP5JdPJkUDGivbP1mvncI6DZjt4UZ6+MuN2UVaWcsyatJhJMC
-	G3fN2xvaXzSVcnr8qOzuh1wSdE5k0DI=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=Q4mghQap;
-	spf=pass (imf01.hostedemail.com: domain of elver@google.com designates 74.125.82.48 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20240605:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770979867; a=rsa-sha256;
-	cv=pass;
-	b=laEcCEJXqmKMhkBqQHQP7IhLXbBPTc6YGaG1HU8hZwnS0EOz5e1CkTwYbmDGKcqfNm1tcR
-	WrcI9g2GCqMJPQBIHZ4dwQm+N1pUqaZeqr6sbTGk8S1yx1Bhlif2MRREBvICaaM8ztWhTh
-	U99nc+mQCtKt5DiatxRKo5zFuAhCWlM=
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-124a95e592fso538076c88.0
-        for <linux-mm@kvack.org>; Fri, 13 Feb 2026 02:51:06 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770979866; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Lwy3HkWY7acZiaTgZ0aXZNnbmqN7thJIhyi5MRES1pfjht/g9wE0lHOivioovvX/00
-         5lCEjlpxdSEfmLp6BxLnafmLndQRpznsenO6b3ZLoqQju0OlRjBXUBJEj9p8lJL6Ac4k
-         NspBlSMc93ypLjd3rDE9M8DCniCWXGrOSOlWe5LuAjjM3qlc6yWRMXwwHflTSj5y/X+l
-         5bL/iqE/eQcCIKAYkJ8BRTkBNSfJvQtoC/HmeSg2jzA3bONxcpMG7CG4QabxLBF1BZ86
-         JXQ7xEwh9HMM0GirQ3kbQkdvPq7ku4dp12XYSpamoqFcn6xZi7y7yb2VnColmbHmjyoI
-         8zMQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=H2yjc4HwnZnDfH81aOY9V+Nb7nZlWZ+t7zlqHmmWMvI=;
-        fh=dYzE6PV/VQiZGzTGlQWIEhzBdT7NSyO0LEQomuk6kao=;
-        b=c3MR5THwmj65gL9pgkOPzpBuZNh3RC3+Xw5lo6k/35hNXH+6u24hR0SRwXR3KOG8S1
-         qpqlMZ9qkytkG59/OuwYig+XCCrWKAUSANTfj5BGR6GSiJrtrJmLFPPjJpOH1zrwuQKb
-         hIfYcnHKdbGcfCQ3WzBbgHYaC5jspKyO8DycCnS3Xd65E5Xw1PTalOxmMdqWpAPNvCVt
-         6xRUHkQ8yVHtKWLMED2tovm+Z+tKTHh/L+8F8GQlmBJduRtb39FzCGjvFFBP1UhxcZJu
-         omNVJxB+g8ace75StNMH3H+nRpttOzrH3mnuel2+u/DhGfcOX9N+bzSwFuFlpgw08l3K
-         5keQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770979866; x=1771584666; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=H2yjc4HwnZnDfH81aOY9V+Nb7nZlWZ+t7zlqHmmWMvI=;
-        b=Q4mghQap4SY05stJKmP80qTgg3PVGbRSfTx0ZR291DYTKPtYN4cvptaSkbx+UIjUaY
-         G7BiWCowe7mB1mh5gtJJZE2Co7ymFxTOpUZ1EEzeHbYPdZsD+DuuGqLb8et9bfUcsGim
-         9ODKkLOvwXWwJHOfJTI42Ea8cA2BOx/sb9WizbyK/5oJbpjUhM/ayQGxJ+QaMNQqgbsl
-         ya2MFrsQrqH6iAwn3JREy+qDDgZjAoDsSfUSBKF9tFno9fzB5CC3kljcEfN6KglQ0DCN
-         c2Rloyg/U1zPhLV2cV5j1dMfP1G2+kSmquEljttwi5lx63YVZeBzBI3zG9wQQarfxkyR
-         TB8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770979866; x=1771584666;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H2yjc4HwnZnDfH81aOY9V+Nb7nZlWZ+t7zlqHmmWMvI=;
-        b=fyPscHOoW3PYOucgZv3b2rXZ2w7OwN3+zk1RrI8Wcmc06H4qaZOLZs2g7zSI55MDQx
-         0mdeM5mjY0v7mUKd2zZktLc4m4kTR8JX7l1C1UPWlhERhOHORfuF6i3F+jC/fakfVSCf
-         z6D2VDfaoHrQ8ID1tucb471YvxFfSxeQWc8igBYzUMx9MiK5iv3I6dmQoRujzPbLzGHo
-         0xoEFfq3LjLNTXsbZ4/fHkEqhoZvGRrEleLOXH6irqUj8/hLtgOS1EarO3vrHlsyRhoY
-         ouz8V/duYI90Zr+tNcOivPCZB9DhgnN837Ud2HCP7dAYNsXw65AIhnlZd5ngCJUKvIWv
-         tzLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXCXe7WNl1/oNzOTugR4zBy167lEafiZFYKCBqSIFJfvtlRqqPn1J4PUISyxsk3K40dBljhyDlyMA==@kvack.org
-X-Gm-Message-State: AOJu0YyEkhT4rZavhKMeA1/e61b40SZ2Vj3N1ZCsLuFJ18sbo0hXhpba
-	90UM+qHGmJ0A2Hc8aYHhs2NDTUwSRUztvdkl/gWte/fgASHyWGKa9mza22y1pUkpeTOg4efyPEk
-	3e/AXHe32dhV9EZu50Zd12EZIAECgkE1S+8Gw6Sgf
-X-Gm-Gg: AZuq6aJDGGR5TNiiBORqv3FjRQEcSxHgTLwsP0HCeGvpQCFDNJf2E8HHeMDbHfeGij1
-	kI6SfAdqsw3YtCERFpY1U6MWsao4ugRpSCxIsBlan82UPpKNN99RqZeGH+NBirEDupjJMOp+rsO
-	iyqNUky02Cv4/YGMghbayHt5uWjKu8f2wJcHIXjMa9HZz3dHbSfrsX3k9R9SUiVFB7jZtfN8n88
-	Bt5hkVBQ/O0kFYj4czOaXiwuXfWq660KNpEobiMYkhPd2YB+wXqbDfUjL84IyvD5PHCoCA6QJNr
-	yJ3k/EP3BLacrDxxlOtNKc93H/iyEdnTmj1efYCG3dlRJ6OvUg==
-X-Received: by 2002:a05:7022:403:b0:119:e569:fbb2 with SMTP id
- a92af1059eb24-1273ae47f17mr592920c88.33.1770979865034; Fri, 13 Feb 2026
- 02:51:05 -0800 (PST)
+	bh=gGY9mjNmnYiEGqmmSKnj+anrGWP6cFH8GMKxfF8SvcI=;
+	b=SUSlP7EuhryMDOFXBfI3wwl+nzqMJV92ZQWUBhLdcOwMA2/1HsOEFv+4GhwlaFyAD5SMtc
+	IwHcXvCGI8/nNOxIGjwxYnlat7xDDoHQjQNstyyT0S6l73C9nzC5fSZ72Q1mHuRFTJLxP7
+	a/Shh4xH6ZEB1Vk4+pndnhHnlaNPn9o=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770980565; a=rsa-sha256;
+	cv=none;
+	b=pxyZa5HYeHG+hAOWC83g4EcX4Phr5TEkqvs/kdIZVqU6cQsHh2wKyTduXIDmxrBkNh1UW3
+	p8B99cFOs3xE3VQm3dFitzWpEm4iS6kW+QcurZHJGlEvRQ/UH1vtmUamy2lVQnMo6jDRjc
+	zmTG/c5vmMXaYZcQEBS1HiMileb8LbU=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=desiato.20200630 header.b=anFUloTR;
+	spf=none (imf22.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.92.199) smtp.mailfrom=peterz@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=gGY9mjNmnYiEGqmmSKnj+anrGWP6cFH8GMKxfF8SvcI=; b=anFUloTR5e87QUrovEFgzRlF3N
+	Bq0w6Vgz4WwzBvkH/RITWQQJGLciH8j9utNJjniRskXcA2/WRSaUphtk80EuMiQnft0qc/TqP7wrU
+	NVgzxh34jK1COkrSmEcZmG4hNYDNie5hjbV5ppNHzCqajhg8yEMexyPS63MjfJ48wnR2txEYGyaWb
+	R6UVmqfpGFTaQ857oPuRVhHc/ssfpkafSr/xecuIlZTYzVU0oEizM3epsnwIYSP4GdaP9rsLXZLOX
+	cZqaBCdef/VRyTHXhRBjH4xtBCaMjreMqgv1pIKwKfyn6edQbH0oCjtYuOI9CIW0UH9+y/QN9pERM
+	APfe3wEA==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vqqwX-0000000C7oQ-2xs7;
+	Fri, 13 Feb 2026 11:02:38 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 1DC173007B5; Fri, 13 Feb 2026 12:02:37 +0100 (CET)
+Date: Fri, 13 Feb 2026 12:02:37 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Christian Brauner <christian@brauner.io>,
+	Shuah Khan <shuah@kernel.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>, pedro.falcato@gmail.com,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Oliver Sang <oliver.sang@intel.com>,
+	seanjc@google.com
+Subject: Re: [PATCH v3 3/3] selftests: pidfd: add tests for PIDFD_SELF_*
+Message-ID: <20260213110237.GC3031506@noisy.programming.kicks-ass.net>
+References: <cover.1729073310.git.lorenzo.stoakes@oracle.com>
+ <c083817403f98ae45a70e01f3f1873ec1ba6c215.1729073310.git.lorenzo.stoakes@oracle.com>
+ <a3778bea-0a1e-41b7-b41c-15b116bcbb32@linuxfoundation.org>
+ <a6133831-3fc3-49aa-83c6-f9aeef3713c9@lucifer.local>
+ <5b0b8e1e-6f50-4e18-bf46-39b00376c26e@nvidia.com>
+ <20250501114235.GP4198@noisy.programming.kicks-ass.net>
+ <20250501124646.GC4356@noisy.programming.kicks-ass.net>
 MIME-Version: 1.0
-References: <20260213095410.1862978-1-glider@google.com>
-In-Reply-To: <20260213095410.1862978-1-glider@google.com>
-From: Marco Elver <elver@google.com>
-Date: Fri, 13 Feb 2026 11:50:28 +0100
-X-Gm-Features: AZwV_Qj3kSyotLTHtMF94eaTev9fGUyX13rb1GtRDWyCVZcl4zIsPhmkTtg7Z6o
-Message-ID: <CANpmjNPJV-aQKnQ7Mtr6e8_12UR3C2S3abJx_ePFWmS1WV_UVg@mail.gmail.com>
-Subject: Re: [PATCH v1] mm/kfence: disable KFENCE upon KASAN HW tags enablement
-To: Alexander Potapenko <glider@google.com>
-Cc: akpm@linux-foundation.org, mark.rutland@arm.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, pimyn@google.com, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, 
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>, Greg KH <gregkh@linuxfoundation.org>, 
-	Kees Cook <kees@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: c6bypdrua9fsh9gdekd7b8x1phpexmu5
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250501124646.GC4356@noisy.programming.kicks-ass.net>
+X-Rspamd-Queue-Id: E9008C0013
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 0D6AF40002
-X-HE-Tag: 1770979866-883176
-X-HE-Meta: U2FsdGVkX1+uzjjsVTE0Fgqt/N9/cjzyphLM+H2jZubDaYGi5ypoMs4coxq9lgCWn2aJGl26Jz/VCDxH6wz1r32vnt2waiY6WPeMmnoEX/7zzkyc7BNPem26Efkd/Rheb6ROhe/s9smSsqRNJjwpuFRd4n3rDHgV4vk+1Bdq+y6Ll44CGSXKzFg7qAo0FfY48UQnxgQsKKtrNnqZejDuxSnki03BIVVLWOG3EAm8fPKr4yBcIFIJuemD5GkCVHOm9fBBaxJU9tlYE92HWc/KcPgZZGJ4MrhUzvfRTv2yEoVpI1eCIcvhhc48KeE1Oq3UTIAqQgh9Hmvw4BlZf0FGR/8QML9gsch3EyD39Ot3J8ppPgoSBSghY3IXzk1KuHkzikWJyUla9t7yi/g3wFzVsNB4plRdCeIKFo666MBCpZZnKq3w9aFG4d/Lkn12jpe47d558y3yI5bIogeyIr7xC65iuYpExCV5AlvbS+DZfopsQ91t1vkvJ4hW/P2zdFN/mf3BmFxL+BrQGp3gZA+J9v+F8aj3f5u32vn/w9ZQ1hnWOeIAIOFuLk5Sewl31CF5I0vqIVktZ4LvTdw3WisRS3DGJIooXRWj/jOGQJ6MQajHdVfgusrQ3XzUZHEkcpQcjt2K4AB7XcXWRqVlQKXdbT8xaV77/TFAtkhp7EqlQYGPXLvHWQhPy7OMRqT813AXkLCucZ6l9NJc3tgq9iVOhhrVW/u27ImUeVNkfQb3fdAg+gCFSYa2LHKGO214hP4VMyGIsT31c1SeXOyeHUBu5mZP8SBfXsrMXrnrOkHvz6l7fY9Q5uk/iM7WounDZp5q4uPfFq4tIjKF5VlpdRbxZjmJVGNaLaXZWWoVb4fKCXUTsalDV2UHs/N+dw2gsKqjpMemlmDqJbLb13KVRbE/jXyY87OLkBIwDknjD0GviJZu+HOyR+cXYQBDNV5eSASmq4IRsT17LVSs/HgBp68
- QqroQ6GB
- czBYnzQq0OHLbpN2B8ANLjvhVPsNJFXRgviN5BX+F0R6a78tKdR6iT5S9lA==
+X-Rspamd-Server: rspam05
+X-Stat-Signature: xid3u8fmru3qk7hi35f37drtkjw9p6gb
+X-HE-Tag: 1770980564-449254
+X-HE-Meta: U2FsdGVkX19ZOcs2mdGG6v9W9vvZcxJy6c6RAO6HKsxksTcEa9nBbp0MVX6Gfr9FGOiYI6X/iCCeNr6uu+NuhZV808cUMl4MbbF3DFoJMU5CfVR/PV0xbnbxrpxDqdGTWyIR9SaHSEu8KZVh6XjpYuvZP5omHeoXP/BkMEn1V1p6WN/Fd/fl3kV4Kw2XJ061L2/J32h5/I0mszbLR0KImRsCzkAFxt23hhjMZ+EERnHqRWYF2vhtb9ERTc5jZoydx+C1rF34tQR2A7lBHGhQACtTjI4PTso2ADRaVMbEZxyjpuQ6TtsCm37r49y2WtcScwVqXAYgQ0huymSgKV/aHG0ddOfJG2M/YXiT5eSy+P+K6YlVv2LTBkAtxfme/l4aBpIPRZGfTCoF9+VBs2dEIoPHldf2GPLz7PeOhORDOrfJ2Q+k59jQ4z5OMrqHBf7240Lp20khVt34s+M01wF5cNhOCOm3YbYfWK9iqZ4hzuLsp/OyqDM5zMCvUsq1+9fIVUaNe4kMQEje3JRzPkYe29OVDxTuNfYj1rvFro5NKKgurgjVmMZc1CTOsbP37wdHFG71NcAXakXhD061Eew5e5uBRLFEe55RNj+pl/iCc6DDcGMuzmLewC0JOj5LtUf9NP2+e1iVRDEeKNiipD/3L3N5BAuU1MhQ5LqgdpKnNY0Ytsse0LzgBb+f9SRwKpemw072+DtkAT4Ko4tiIfJWNPwtoBRIbvaSqw1pZU8nrjQHNxh7irPUYW9OcDi4Qo6X3FrT+oyB3/lxsKZONSK/YiWrfdy+ZCDe6osykYIhPgqVcJ8WLe7yil61Y49YSUOM/xpIP2D1Kr6RRD8c99gzw5QrYKRYE9XzGY8Lw9cAywILNjn3+Oo7G1KQYds1XPk+EYvjtBCahGcNtRFzvbiBWqq6Dl5+EBa9ZWGmsxr3AxQGdlqZSCMXHAfAAILEgkmgqWuq25+pNFRuKgjBJrr
+ lT+SmjPG
+ ouGZAxwswh9U3mz+oJldUlXNHZ2W5AYbU1Hfb6eTszXzO6h9KzeGH1U5HNt0eWjE49DZkzfct7V7/MHJGypFQV7+N9g1ZJ7Us4C+I8HAM+BqA2L4oH/ZrdBNDLXAClrSvTue7Kud4b30K23Tk2Kn/B8P0BciLK+KHuiEpkBhhYpPKspFS5ca3QbVASzU8XRIFovOm+nT5jYBWO2Y4dH8EtdsOX3GzhLK/i9MFWYI3Sy4+UILDxQge1Z3scUaphK3ks5A5mJDj0yjikaqXZ5ad5f7mFFhTytjtc0Q3wyrdErCr+Ch+WjciVYhMJaKb+OiKvTPmhg4D9qHRXY0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,76 +107,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 13 Feb 2026 at 10:54, Alexander Potapenko <glider@google.com> wrote:
->
-> KFENCE does not currently support KASAN hardware tags. As a result, the
-> two features are incompatible when enabled simultaneously.
->
-> Given that MTE provides deterministic protection and KFENCE is a
-> sampling-based debugging tool, prioritize the stronger hardware
-> protections. Disable KFENCE initialization and free the pre-allocated
-> pool if KASAN hardware tags are detected to ensure the system maintains
-> the security guarantees provided by MTE.
->
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Andrey Konovalov <andreyknvl@gmail.com>
-> Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-> Cc: Dmitry Vyukov <dvyukov@google.com>
-> Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-> Cc: Greg KH <gregkh@linuxfoundation.org>
-> Cc: Kees Cook <kees@kernel.org>
-> Cc: <stable@vger.kernel.org>
-> Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-> Suggested-by: Marco Elver <elver@google.com>
-> Signed-off-by: Alexander Potapenko <glider@google.com>
+On Thu, May 01, 2025 at 02:46:46PM +0200, Peter Zijlstra wrote:
+> On Thu, May 01, 2025 at 01:42:35PM +0200, Peter Zijlstra wrote:
+> > On Wed, Oct 16, 2024 at 07:14:34PM -0700, John Hubbard wrote:
+> > > On 10/16/24 3:06 PM, Lorenzo Stoakes wrote:
+> > > > On Wed, Oct 16, 2024 at 02:00:27PM -0600, Shuah Khan wrote:
+> > > > > On 10/16/24 04:20, Lorenzo Stoakes wrote:
+> > > ...
+> > > > > > diff --git a/tools/testing/selftests/pidfd/pidfd.h b/tools/testing/selftests/pidfd/pidfd.h
+> > > > > > index 88d6830ee004..1640b711889b 100644
+> > > > > > --- a/tools/testing/selftests/pidfd/pidfd.h
+> > > > > > +++ b/tools/testing/selftests/pidfd/pidfd.h
+> > > > > > @@ -50,6 +50,14 @@
+> > > > > >    #define PIDFD_NONBLOCK O_NONBLOCK
+> > > > > >    #endif
+> > > > > > +/* System header file may not have this available. */
+> > > > > > +#ifndef PIDFD_SELF_THREAD
+> > > > > > +#define PIDFD_SELF_THREAD -100
+> > > > > > +#endif
+> > > > > > +#ifndef PIDFD_SELF_THREAD_GROUP
+> > > > > > +#define PIDFD_SELF_THREAD_GROUP -200
+> > > > > > +#endif
+> > > > > > +
+> > > > > 
+> > > > > As mentioned in my response to v1 patch:
+> > > > > 
+> > > > > kselftest has dependency on "make headers" and tests include
+> > > > > headers from linux/ directory
+> > > > 
+> > > > Right but that assumes you install the kernel headers on the build system,
+> > > > which is quite a painful thing to have to do when you are quickly iterating
+> > > > on a qemu setup.
+> > > > 
+> > > > This is a use case I use all the time so not at all theoretical.
+> > > > 
+> > > 
+> > > This is turning out to be a fairly typical reaction from kernel
+> > > developers, when presented with the "you must first run make headers"
+> > > requirement for kselftests.
+> > > 
+> > > Peter Zijlstra's "NAK NAK NAK" response [1] last year was the most
+> > > colorful, so I'll helpfully cite it here. :)
+> > 
+> > Let me re-try this.
+> > 
+> > This is driving me insane. I've spend the past _TWO_ days trying to
+> > build KVM selftests and I'm still failing.
+> > 
+> > This is absolute atrocious crap and is costing me valuable time.
+> > 
+> > Please fix this fucking selftests shit to just build. This is unusable
+> > garbage.
+> 
+> So after spending more time trying to remember how to debug Makefiles (I
+> hate my life), I found that not only do I need this headers shit, the
+> kvm selftests Makefile is actively broken if you use: make O=foo
+> 
+> -INSTALL_HDR_PATH = $(top_srcdir)/usr
+> +INSTALL_HDR_PATH = $(top_srcdir)/$(O)/usr
+> 
+> 
+> And then finally, I can do:
+> 
+> make O=foo headers_install
+> make O=foo -C tools/testing/selftests/kvm/
+> 
+> So yeah, thank you very much for wasting my time *AGAIN*.
 
-Reviewed-by: Marco Elver <elver@google.com>
+And *AGAIN*.. this is still the state of things. Selftests are still
+hopelessly broken and useless.
 
-Just double-checking this is explicitly ok: If this is being skipped
-enablement at boot, a user is still free to do 'echo 123 >
-/sys/module/kfence/parameters/sample_interval' to re-enable KFENCE? In
-my opinion, this should be allowed.
-
-Thanks!
-
-> ---
->  mm/kfence/core.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-> index 4f79ec7207525..71f87072baf9b 100644
-> --- a/mm/kfence/core.c
-> +++ b/mm/kfence/core.c
-> @@ -13,6 +13,7 @@
->  #include <linux/hash.h>
->  #include <linux/irq_work.h>
->  #include <linux/jhash.h>
-> +#include <linux/kasan-enabled.h>
->  #include <linux/kcsan-checks.h>
->  #include <linux/kfence.h>
->  #include <linux/kmemleak.h>
-> @@ -911,6 +912,20 @@ void __init kfence_alloc_pool_and_metadata(void)
->         if (!kfence_sample_interval)
->                 return;
->
-> +       /*
-> +        * If KASAN hardware tags are enabled, disable KFENCE, because it
-> +        * does not support MTE yet.
-> +        */
-> +       if (kasan_hw_tags_enabled()) {
-> +               pr_info("disabled as KASAN HW tags are enabled\n");
-> +               if (__kfence_pool) {
-> +                       memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
-> +                       __kfence_pool = NULL;
-> +               }
-> +               kfence_sample_interval = 0;
-> +               return;
-> +       }
-> +
->         /*
->          * If the pool has already been initialized by arch, there is no need to
->          * re-allocate the memory pool.
-> --
-> 2.53.0.273.g2a3d683680-goog
->
+Maybe we should just delete the lot?
 
