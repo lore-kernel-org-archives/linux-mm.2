@@ -4,97 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB4C9EDF16E
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 14:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76EA5EDF16D
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 14:51:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 292356B0005; Fri, 13 Feb 2026 09:35:59 -0500 (EST)
+	id B7A2C6B0005; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23FD76B0088; Fri, 13 Feb 2026 09:35:59 -0500 (EST)
+	id B27D46B0088; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15F556B008A; Fri, 13 Feb 2026 09:35:59 -0500 (EST)
+	id A2A156B008A; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 07B8D6B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:35:59 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C93558BF9F
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:35:58 +0000 (UTC)
-X-FDA: 84439682796.26.376E61E
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CA25C4000F
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:35:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SpgTSiou;
-	spf=none (imf04.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EAF16B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 09:51:32 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 18B87C203E
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:51:32 +0000 (UTC)
+X-FDA: 84439722024.24.3C83590
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf18.hostedemail.com (Postfix) with ESMTP id EB6D11C0006
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:51:29 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf18.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770993357;
+	s=arc-20220608; t=1770994290;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NK+YgypWNu/fcoY8YLKG/o15be3Fp0W5wYo+Y4JNt2g=;
-	b=zsj2LZIk+5fqY9RSlpefaEbSu6KuxdsrC8bsBSDisZrd2D180OZ/JL5mU23vJSz6HUe5Vz
-	ZMXZt/9I4Aos91HdjfyDwOCwTUNNkdPTAHqW/s22O7xOvTiePKhgfSyCAIlxZComaNrZl9
-	38AZgtqot7xkynVYq1Qww3M1pQl0Ls8=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=/FM0Wiq/ZeKBX91tuQ16UlDgomzVlMPfBN2i8g1Yk18=;
+	b=lUHpN6+U3YgepkE8kE8M7oKT4EpMQuKTNJBslrf+HoPtEk1YMJufvBu9gVLiXDWeYm3dVK
+	KulOEAhOGVBb7y3LDsqj7Gy9kRSYSIp4++zPFukGkX2G1AzZacjNuRqQWMc1KKX5ecsUIL
+	hFaY0N80m/SbWGljNbrG8q6eWoPSyhE=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=SpgTSiou;
-	spf=none (imf04.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770993357; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei-partners.com;
+	spf=pass (imf18.hostedemail.com: domain of gutierrez.asier@huawei-partners.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=gutierrez.asier@huawei-partners.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770994290; a=rsa-sha256;
 	cv=none;
-	b=loAxspsSz5/wK8U6Aku12PFs2Tnove9qZ8hTrOa+cE2okfrqHtz8hwiCe5tA0tXhyAfSZw
-	Y9HQ10Rb67h2N5/xK7vE/+BDq75stYYmxNlzKYUfc0Z1FvIYnS8YwdAMU+JZLpqqxhQ92m
-	AQ/rs5zQrhmIparbZB2hRMXt5/HJuAw=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NK+YgypWNu/fcoY8YLKG/o15be3Fp0W5wYo+Y4JNt2g=; b=SpgTSiou05sIQdsCcM8qJvwzLL
-	YJ1gnl1i2b4HvgbsVmqUAf5wfX9B2ezKbQLOf3SEXOTjknPqdeKLAvm0uIRDX1ugN+8j4gvhDCbJJ
-	C9K+bDlTg/iB3RrK+sObRnjxdn3eYnqQD36aUcQd/AQmxZz7qVfYNvjBMrpY1zZyiGeDykScXy6YO
-	TcnMrmOlkfGDygHoeJELEx/emxZerUN3UJTkknEF7YnU5+/CGRYjowIVDnL8sOnOZ0ojZZBME0vSG
-	5pTjO9AwOMDcfG2DQJjamxgsiKy4tZ6db2R37vXBeFK4rwH3Re+c1jgYNWLwPpHP3FJEo6X2LCXm9
-	UC2t1aIw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vquGu-0000000FqYz-1OEh;
-	Fri, 13 Feb 2026 14:35:52 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A61CD300969; Fri, 13 Feb 2026 15:35:51 +0100 (CET)
-Date: Fri, 13 Feb 2026 15:35:51 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <20260213143551.GW2995752@noisy.programming.kicks-ass.net>
-References: <20260213-page-volatile-io-v3-1-d60487b04d40@kernel.org>
- <MJX-TLnHWp9yJ9t7suTC8ExghroIz2g2epZG9Rmp6l-9W7BylahrPTqXQBI3D0EUah4xdEt3UXh6ROBa4LdEDw==@protonmail.internalid>
- <20260213112837.GT2995752@noisy.programming.kicks-ass.net>
- <87a4xcu80n.fsf@kernel.org>
+	b=RWdO2Gv2UuDvpzTksG7xQAPW2aWNcjCHLTYlISJwXJwHf2X1bRTPKn5iEVXqPM7c+II/qB
+	vEpjItaBvaYntgDNbMT+PuFYK9VlV3xW3wPg4JzSVB5hTKKG2elSfTNVyc65darPliUUXq
+	nFyR50RQYuaiuUFvYr0vZjDHdBWpqOQ=
+Received: from mail.maildlp.com (unknown [172.18.224.83])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTPS id 4fCFV20nGMzHnGgv;
+	Fri, 13 Feb 2026 22:51:06 +0800 (CST)
+Received: from mscpeml500003.china.huawei.com (unknown [7.188.49.51])
+	by mail.maildlp.com (Postfix) with ESMTPS id 7E3AE40569;
+	Fri, 13 Feb 2026 22:51:24 +0800 (CST)
+Received: from mscphis01197.huawei.com (10.123.65.218) by
+ mscpeml500003.china.huawei.com (7.188.49.51) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 13 Feb 2026 17:51:23 +0300
+From: <gutierrez.asier@huawei-partners.com>
+To: <gutierrez.asier@huawei-partners.com>, <artem.kuzin@huawei.com>,
+	<stepanov.anatoly@huawei.com>, <wangkefeng.wang@huawei.com>,
+	<yanquanmin1@huawei.com>, <zuoze1@huawei.com>, <damon@lists.linux.dev>,
+	<sj@kernel.org>, <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 1/1] mm/damon: remove unused target param of get_scheme_score()
+Date: Fri, 13 Feb 2026 14:50:32 +0000
+Message-ID: <20260213145032.1740407-1-gutierrez.asier@huawei-partners.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87a4xcu80n.fsf@kernel.org>
-X-Rspamd-Server: rspam01
-X-Rspamd-Queue-Id: CA25C4000F
-X-Stat-Signature: t4occ8ei9dce5tw4guhjkda9wpbcrqe6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.123.65.218]
+X-ClientProxiedBy: mscpeml500003.china.huawei.com (7.188.49.51) To
+ mscpeml500003.china.huawei.com (7.188.49.51)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: EB6D11C0006
+X-Stat-Signature: dc48g1nu1bdgmny6wsajufex6ztitqps
 X-Rspam-User: 
-X-HE-Tag: 1770993356-514970
-X-HE-Meta: U2FsdGVkX1/0OAZCDT6DxhTnsqR/A52bvwT3iqyHsMV3pauu8ulfVNpuGIftiAtN+zKxJzGTaoJWo7tYRwK7tLUfNbvOmPIWCggQOuAB2vwRMijffQyh2lNAwTQcYOsx8yyJwxmjo1un7SU0jEtfSdMOs4RiErdyToLSq6ErVUoiHANVQHfde5OP2RfzMO5G1072Aa/+LQldThUeiEUM0kbgmBiHEa1CotmxChdv2FKG2P4kP//+uf9PsnCXrAVaK/EpzLeaLr39+xO+pHoR+rn5MuGrjfqj10LTQ3FYOXkn+mHHEt/+Q8ApMLuFuRFQmH2nL70W5oL2Xk6fAzPav33L4kg1GC51XPtHdK2q2zGoJQ1CjH5j8QSpra8X/lw8FK/KCBI6yu0x+Wff9rgrNpFA9n15q2R9zX+freshbrAUEkDSeLxE5/XBujDlyv/bXKK/22lqvi581MJjHYRMIs3dIf8CuAToTaJTNT5ttlPtrNyh6VLv92291V4cHmi0wQeQvhXdEHX8wtWvwAqBxiiSaGKwYNPJyJ+YF3BwS8aA9+a+0Hq3fDiDhjeUXgSjnBqsXkelqaUWhvTxTm7uqA/IYQTZvvePc9rLi6xrUXObo6voizoUiWdBf7lHK4MAxB+8f9m3xrdvwqC9ePvKtqyEpLtiD8GA5x50KGeBv7LU7jIXmWx6TnWfm2tiU7Ll3sIUgMH+2EMoFYmpExptAsF8Q+ZhpxI7ua4bCZnojIospvuhRXU8bZKj08YjJOQVAAh31kElxjrdHdF6M7E6qeJvSf1VVfr0PsxDsBrXCWzqoSC/FQ3CnOdeBVjq2xsMlHo9HtwIVPYfemdS78K08abwZtBxKh3nmxbTIP1K8TJD3TYjypml7nBtb4lG4OtvFN+YrFscTmXo4+Ho2DzlKb7bkYMHbxpjksVxtHOpO4NvdXIwS0mzv4gshYArOtZpmcSvFhNEkRPEcDE6AW3
- /sFN5DPt
- uJHzw8nCPAhBLxqHgDxLZpQXzL+tjhyzrQE2VoTNIPMiylWbtW2gqWHUn/gvY4/Z6GSxQEfwO/1o9g/S9Z7iC7Dqf+Fg6D1/AI6aOFhRIHkoyRtKUljJ5TcDOe1Ybq2MekUh1juKRmrc2xVyAUj5NuwxAfJSb2VvqkzytOJlVv9KG+miZvxZbV+4j+X5JmPeGBQTVDPvNKtGerV2Z9q2Ug3KTqT0HFDDS2PJVqidIatmsoTXRsadaSOzo8sRtqZQ5o/S1Wnc4SazrcYEuPReNTsK1Ny1BD/rNP1q1
+X-HE-Tag: 1770994289-601910
+X-HE-Meta: U2FsdGVkX1+UX/w9iqi8GlBfwW/SiqOsr3cPUsjOw4Tbs9uobqby/A6RtL9xU+d5pCdYVPx2zKu3yIDKxSdqjS6ecMH4QIISPSl9UfXdLDNEa3fn6jYE9gQw6a224QugIOeUru2i1n0J4FOVqoWHNN+gcHtneWUAou42Jl9uAmlzRwEIRpFpWODc1pYDVPUmtHxX9lVfWjgnZtZyqclgdUeC+tqesHOx9jzgn/w2jbcZSjWNPlPRdxSsZMG6MUvQWcwN07qAKZxCdz/HPe0t4gMkE1aLKbrZm6clDJl9FkwIDpukoI/9ByjfqDeYYzykW8w/XERGp/G7tEt3adkTIzN87ACyO6Q5vu3G5aFb+emy6gzG+xNMth+uG52C+q/eq/nFtC3fWRkURVSdIW/x4CSBeUyD7Gl+kCUkGBn1xdKtNUHmxzQ7x0ttnAhpuE7zyGyTtr3QqRVAOYEDF6rRw/YDeZtild0Uu6gmd3C0xBqAp30owA6/qxmnfKFgUVJtVLtPF1KfgReenJuYBEwuurQWjvKwTsEaXcbF0Dj3kelUGMAWVaLfTSaR6h8eP0f1CyO+4/lV3JgxSbCWgRSSp0sd+LeqRgdtNlMZBnlOnY/7F3EnR3aWjLrfmA/xVN11HvfjUec5n5rEsvLrJnjFazKjZnEZHBfVm4cPjGiBncliXc7xMq4UdPbuCOxzdJRndrPY7iJLOo+KjcGxKdSfbt0MUmVCrPHEVwJ79ERGcKa61jALoh5yuuwWFozCCAxdd8Ik5mwJGD+G81k40MCOYXf1adi8uxlVrBhS8PkkzA/PFd4ZLE6yI6amERw50lpLoQp980awGg9wFMR4ru6oi1JYpdWP/G/3Foid04hUs73nbaS3z376q66aVwfEC0ZAPAVBA4Su/umdiflXs6Ic9U6R1aN4YVtbet0TYnfFjNYTJBizDPjPOhs4obFG8PIg74X/lsw1wH14htSsu/Z
+ 4hunHI76
+ NT9jF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,16 +90,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 01:45:28PM +0100, Andreas Hindborg wrote:
+From: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
 
-> > And same comment as for v2, none of this makes sense. Byte loads are not
-> > magically atomic. And they don't actually fix anything.
-> 
-> I am curious about on what architectures byte loads can tear?
+damon_target is not used by get_scheme_score operations,
+nor with virtual neither with physical addresses.
 
-That's not the point. It's just a byte load, not an atomic byte load.
+Changes in v2:
+ - Patch against mm-next
 
-Unless you're thinking of using load-exclusive or something along those
-lines; but that would be completely insane, nor actually solve the
-problem.
+Signed-off-by: Asier Gutierrez <gutierrez.asier@huawei-partners.com>
+---
+ include/linux/damon.h |  3 +--
+ mm/damon/core.c       | 10 +++++-----
+ mm/damon/paddr.c      |  3 +--
+ mm/damon/vaddr.c      |  3 +--
+ 4 files changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index a4fea23da857..9a88cf8d152d 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -647,8 +647,7 @@ struct damon_operations {
+ 	void (*prepare_access_checks)(struct damon_ctx *context);
+ 	unsigned int (*check_accesses)(struct damon_ctx *context);
+ 	int (*get_scheme_score)(struct damon_ctx *context,
+-			struct damon_target *t, struct damon_region *r,
+-			struct damos *scheme);
++			struct damon_region *r, struct damos *scheme);
+ 	unsigned long (*apply_scheme)(struct damon_ctx *context,
+ 			struct damon_target *t, struct damon_region *r,
+ 			struct damos *scheme, unsigned long *sz_filter_passed);
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 5e2724a4f285..925908415a04 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1679,15 +1679,15 @@ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
+ 		r->age <= s->pattern.max_age_region;
+ }
+ 
+-static bool damos_valid_target(struct damon_ctx *c, struct damon_target *t,
+-		struct damon_region *r, struct damos *s)
++static bool damos_valid_target(struct damon_ctx *c, struct damon_region *r,
++		struct damos *s)
+ {
+ 	bool ret = __damos_valid_target(r, s);
+ 
+ 	if (!ret || !s->quota.esz || !c->ops.get_scheme_score)
+ 		return ret;
+ 
+-	return c->ops.get_scheme_score(c, t, r, s) >= s->quota.min_score;
++	return c->ops.get_scheme_score(c, r, s) >= s->quota.min_score;
+ }
+ 
+ /*
+@@ -2011,7 +2011,7 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 				s->max_nr_snapshots <= s->stat.nr_snapshots)
+ 			continue;
+ 
+-		if (damos_valid_target(c, t, r, s))
++		if (damos_valid_target(c, r, s))
+ 			damos_apply_scheme(c, t, r, s);
+ 
+ 		if (damon_is_last_region(r, t))
+@@ -2309,7 +2309,7 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 		damon_for_each_region(r, t) {
+ 			if (!__damos_valid_target(r, s))
+ 				continue;
+-			score = c->ops.get_scheme_score(c, t, r, s);
++			score = c->ops.get_scheme_score(c, r, s);
+ 			c->regions_score_histogram[score] +=
+ 				damon_sz_region(r);
+ 			if (score > max_score)
+diff --git a/mm/damon/paddr.c b/mm/damon/paddr.c
+index 9bfe48826840..5cdcc5037cbc 100644
+--- a/mm/damon/paddr.c
++++ b/mm/damon/paddr.c
+@@ -343,8 +343,7 @@ static unsigned long damon_pa_apply_scheme(struct damon_ctx *ctx,
+ }
+ 
+ static int damon_pa_scheme_score(struct damon_ctx *context,
+-		struct damon_target *t, struct damon_region *r,
+-		struct damos *scheme)
++		struct damon_region *r, struct damos *scheme)
+ {
+ 	switch (scheme->action) {
+ 	case DAMOS_PAGEOUT:
+diff --git a/mm/damon/vaddr.c b/mm/damon/vaddr.c
+index 83ab3d8c3792..4e3430d4191d 100644
+--- a/mm/damon/vaddr.c
++++ b/mm/damon/vaddr.c
+@@ -986,8 +986,7 @@ static unsigned long damon_va_apply_scheme(struct damon_ctx *ctx,
+ }
+ 
+ static int damon_va_scheme_score(struct damon_ctx *context,
+-		struct damon_target *t, struct damon_region *r,
+-		struct damos *scheme)
++		struct damon_region *r, struct damos *scheme)
+ {
+ 
+ 	switch (scheme->action) {
+-- 
+2.43.0
+
 
