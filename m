@@ -4,86 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F09A6EF48C6
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 03:58:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 252CDEF48CC
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 05:01:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E2F76B0005; Thu, 12 Feb 2026 22:58:48 -0500 (EST)
+	id 3FAA76B0005; Fri, 13 Feb 2026 00:01:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BB766B0089; Thu, 12 Feb 2026 22:58:48 -0500 (EST)
+	id 3A81F6B0089; Fri, 13 Feb 2026 00:01:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F29FA6B008A; Thu, 12 Feb 2026 22:58:47 -0500 (EST)
+	id 280106B008A; Fri, 13 Feb 2026 00:01:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E05176B0005
-	for <linux-mm@kvack.org>; Thu, 12 Feb 2026 22:58:47 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 54F3E1A0399
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:58:47 +0000 (UTC)
-X-FDA: 84438077094.28.2C319E0
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 25893180008
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 03:58:43 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 16FE56B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 00:01:30 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EE5435895A
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 05:01:28 +0000 (UTC)
+X-FDA: 84438235056.29.6333291
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CD541180009
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 05:01:26 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770955125;
+	dkim=pass header.d=google.com header.s=20230601 header.b=l6cUV4xO;
+	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1770958887;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+36eDJPSYyydgFT4mp9EFn53AxjU57nXfpxoDtxOGNo=;
-	b=8CuvRhGEp+zx/L6S4VqYmIVAilS9uM98xzFho3ievrYplDBQt+U1sUvVEhF2zWK8nJIThz
-	vKadb4a8XJtnaow5qPaBmGDebmZOZrz9Ij2ICDyNKqxMDgsP8+CJhPl2ItBjF0zu+8aSLX
-	XNPkj2yvHNeturGtNEcsM24onu6v2Bk=
-ARC-Authentication-Results: i=1;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=F+gdGRO5WQmxL11L59saL1WXLHxYBJRsrTDD771Wy4o=;
+	b=0q0xb/7C6FCw2kHk8QMLab4GwUNDFFj5jo3C+XKxXSogyH8B+OBJUr0DlE7qDhf1g1aqNc
+	3+rQw0r/rRCqK2ybL21HH6Lq7i/oz22Wk72PcCjncP4FcGlv7CwHjUxYfpjCaA3ap7e7kt
+	OfCMh6Vh5MLRtXVh7sqRsbLt06WqLSM=
+ARC-Authentication-Results: i=2;
 	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770955125; a=rsa-sha256;
-	cv=none;
-	b=miEiEpb50/Wz0yYbO0tpPixWpl73zaQ7tH4/VKNuol2Ex8AYUrY9nl0ELVVfHQUKG0KfA5
-	c7WjopdbqJJRVRMNSNYLrhETAdEkyikXCdK3FmLtsphh4pamqcXLh5ZH2wUecN2BY2oQ88
-	zsik+8gWUoiz0nZFwJxi6PlNo0DjbRM=
-Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 13 Feb 2026 12:58:40 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-Date: Fri, 13 Feb 2026 12:58:40 +0900
-From: YoungJun Park <youngjun.park@lge.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, gunho.lee@lge.com,
-	taejoon.song@lge.com, austin.kim@lge.com
-Subject: Re: [RFC PATCH v2 0/5] mm/swap, memcg: Introduce swap tiers for
- cgroup based swap control
-Message-ID: <aY6hcPNxiolf5jj6@yjaykim-PowerEdge-T330>
-References: <20260126065242.1221862-1-youngjun.park@lge.com>
- <aY4bQFvpPRWgnOTM@linux.dev>
+	dkim=pass header.d=google.com header.s=20230601 header.b=l6cUV4xO;
+	spf=pass (imf16.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.51 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
+	arc=pass ("google.com:s=arc-20240605:i=1");
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1770958887; a=rsa-sha256;
+	cv=pass;
+	b=m5poxOaKf+NdiBkSqzlDiF1wrpRQKjpf3rGwwRTwGG6WHfKS6IAqMp+QW8GTKCdr0oDjo/
+	AieC2k/+c5Q6iPOjoESSPyZWtER4VCz7RGfNojJWaVydTsP1rTuHuIX+52+e/GQr9170Tg
+	CscEWjhHFqfL10cZCxwYJWYZEJgOXw8=
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-48318d08ec2so25445e9.1
+        for <linux-mm@kvack.org>; Thu, 12 Feb 2026 21:01:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770958885; cv=none;
+        d=google.com; s=arc-20240605;
+        b=NKxx9jnKjOIIuSi7G/t3IeMyzF4D/xrLLuxKO2xZBTtPcB7qrt6WW/cfG61YUrTplx
+         VvTiMkrIdRt3RkI6+7DOZv8wIarqdnbpjJ0U2qw5D2lL+RDny6M58odtrzRUbmHLr6sx
+         ElSVaVa5KA1fXGJy79j9Q3fFCYL1hKoVU9pOwV6BpRvUM/A/VZCFj93t1tiUXZctQ//W
+         qG/ht5uf33q2grRSmRVLFh2Q1rldCKN9kjhpLRrCGU7hhYt45ND1YmKGs7cRyz6RcV8h
+         HHZ+SPdNxgrgj01oykYMpYhEYiUgQS6bttTkQBbEB1CuBn2cTloL8f6v15CEXJPhETna
+         p4lg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=F+gdGRO5WQmxL11L59saL1WXLHxYBJRsrTDD771Wy4o=;
+        fh=kWs0+ZRXLloVeDku5oEortdwPx3SXwidVYTEJ193ZJ8=;
+        b=dq3b4tl/n9Hgns+1I9S/ko0W5wkgQTRPKsko35nb9xO6k7+tEiQj20/i8Dovls0dPv
+         sdgLNKFJJU7oWXK/AhaY3kUFnstocqfVrSDK/PNkJ9WRnMt3QnO0exvnF7CKoSq8ww5m
+         XguzUTMdV1JggIIQNy87JZiUvGG9k2vxURbOOwptAMb+cQaL59xOEH7+6XnKcwJhd4H1
+         m0vzr262amGqqQlA323OgfBq4vTAe4jFVdbkMWKK4yAwcLxCeX3pQdyF57ZjfxQDhB3B
+         XiiwG+UZ2h+UI+1jgOUbiZLwb/9VBYxTymNS0GzFYhp4g1UZrCQ632fMITjZg6ZUF3cB
+         R4JA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770958885; x=1771563685; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F+gdGRO5WQmxL11L59saL1WXLHxYBJRsrTDD771Wy4o=;
+        b=l6cUV4xOr1NcwQum/W9wYDJR5iDclEbhZ9yy9lWVYYCOwbeJhWzdRkvhNe9p3gUt8h
+         rZf8bpJizuQUM3hDlCPCL1rMmdPGDv9y+SY1T7YaovNMdYrb4Q7v4GLWil9+A/YqVeBC
+         WCV95crI8qWbwopZF2rKhqhnGYLkGDmbdHCbg2aLLG/tbtnqncbRX/VnHFljSPJ6XnKS
+         uUP/MpAywNAQzcrWljYscpoCm6fQvHS7ttZIDF1kjNxlJJFsRzW0AOXXfRm778krkcU/
+         bO2/ArZe/KBdGVvJZQ0CDhLvTCfUqX5bz1wk+10grwzap1vUjq08vSD4s9Noc69jsvj4
+         DCjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770958885; x=1771563685;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=F+gdGRO5WQmxL11L59saL1WXLHxYBJRsrTDD771Wy4o=;
+        b=XAVaIdwhzHFGNClvoxNNFN1W4fv8lkU7gGiiFO/IPq1OX/I0GPVN5B/TGNwtq8VNj/
+         O4vflE/hKYxa77FuZCORqu0nbjSqqxdQYDLmNvorgwN5gmUxVA5xAr8mqit2XJMklZJU
+         O8IwHiPsjXkIncmQT2qyynG/47GOGjf1lwrmjEvk9nwP0XwSA7+fTim24UbisZLqYOpR
+         DVXFvrzfuCFazJMAC5F5ByO3XKcINO/YStbSFlLSsvSHUfFOhjUP7YBy4RdDwubAmhq8
+         O+igKml8y0dGfUxhw6YCC3i0VM+QX0XeJOYcH0MDQ7TQZVFELhvleK94zU/W4qzyIQDN
+         x7dw==
+X-Forwarded-Encrypted: i=1; AJvYcCVeIxwfYAdQAQU2W94gWFCM3Iyzfd+q5WArBraE5R6WEM9emdrW8zybMbhgtxqO+ZuS/1LtvzULDw==@kvack.org
+X-Gm-Message-State: AOJu0Yz7RVLDoaQhLsP7DDI6QP9hDSC46l4w2iAPcm6fDzTalLDx+SgI
+	lTMSVB2+RoXsAM3ZCR2+7cGD+L6fAgaWNOx8Z+JtQ4Osd+i4VfSttHVP0dlUtE1iszQWvkfKA3v
+	PQvpeCYuTHnlzMX8bIYqQQLIZsuNfxug+CP/rZ7Bz
+X-Gm-Gg: AZuq6aKfz5C3G9APRpAVghmsutYjmsBrtSVCW4c26s0mfUq0y2XrvoW1sxJnqhQ5yKr
+	xbPvIh2fyHRFNcvlOsXBzchZX3xvnKgOq+bokXBo5xv3gCzES1i/lCcYid7gCvQ/ZkAVJf+3qi+
+	ZYlTolKqnK3DEbgxPuD9hDbQH4aCaZ/oYwNhQlMBHYS5Xyy38BI9LPvOvwblpfJG7HGIMBlMUgw
+	QjOsu5RnSETRq6oWmGrHZjbDstRcuiBAVKtIozpGqosHVchbqrmKJtRNmPiaRzCDXQDfHhGOdB/
+	YwalkP1j+BYjAQl85gWZsfied+LrW4YMvuyGCTmA
+X-Received: by 2002:a7b:c5ca:0:b0:477:95a8:3805 with SMTP id
+ 5b1f17b1804b1-48372ef5367mr158855e9.15.1770958884545; Thu, 12 Feb 2026
+ 21:01:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aY4bQFvpPRWgnOTM@linux.dev>
+References: <20260203192352.2674184-1-jiaqiyan@google.com> <20260203192352.2674184-2-jiaqiyan@google.com>
+ <7ad34b69-2fb4-770b-14e5-bea13cf63d2f@huawei.com> <CACw3F50PwJ+sSOX0wySQgBzrEW2XOctxuX5jM37OG0HS_kHdbQ@mail.gmail.com>
+ <31cc7bed-c30f-489c-3ac3-4842aa00b869@huawei.com>
+In-Reply-To: <31cc7bed-c30f-489c-3ac3-4842aa00b869@huawei.com>
+From: Jiaqi Yan <jiaqiyan@google.com>
+Date: Thu, 12 Feb 2026 21:01:12 -0800
+X-Gm-Features: AZwV_QhlllUi0eHTdCejlItd_Ytr-GAEoFEDHxBi4v3ZMGnCptGiz5Tmjy4xcP0
+Message-ID: <CACw3F50BwnLJW75EXgz0t5g+eUhr+wKgJ3YfRFq5208N5KfaiA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] mm: memfd/hugetlb: introduce memfd-based userspace
+ MFR policy
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: nao.horiguchi@gmail.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
+	willy@infradead.org, akpm@linux-foundation.org, osalvador@suse.de, 
+	rientjes@google.com, duenwen@google.com, jthoughton@google.com, 
+	jgg@nvidia.com, ankita@nvidia.com, peterx@redhat.com, 
+	sidhartha.kumar@oracle.com, ziy@nvidia.com, david@redhat.com, 
+	dave.hansen@linux.intel.com, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	william.roche@oracle.com, harry.yoo@oracle.com, jane.chu@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam01
+X-Rspamd-Queue-Id: CD541180009
+X-Stat-Signature: jijw1rz85bsuocwmqwgtsp718hwq9yx7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 25893180008
-X-Rspamd-Server: rspam07
-X-Stat-Signature: c3j3iteru6fua8zbrfa5a8fedwko8fsq
-X-HE-Tag: 1770955123-328670
-X-HE-Meta: U2FsdGVkX1/j0fLmObEBJhrxZ2+D8BkW1WE/9SMwdqJ638vfXDZcY43B5sKqQ4odLcUetDuqKl/mHmUe3POPPND17dSwDrgzTZSliWSmderka/m1MRnH/808c7XUXUBQOPf6sAWayIM6NzQw+CFp7QL5eiXySHYV2ymZ0Dz/A5kXbgRs/bmZ3EF2T1dt2ec8bygyAG9xW/avLKEfQLHy6dxMBZTmknJblXs8jc6RW7WrRFb7itSvETonIwx/f5IYc11GCmtYF6APJRwRFOBDjLfJEY6h2LdCLOVBu9j3dkUb2QNafWcrD7iycS1Kdl7wM6M/fFjLb953vZHs3bQaGETQpwuufSBv6swa9DWVSXAZxSAqyqr/BxxVIQD0OOPjm8GPzi5/mXi6z38zgJ2hoSZDkfuPr/0kKBkIvvflZeJLVnDuBcY+p/x93rTMEF3aC5PHJTo2/TqwEMcAyEjLoWZobZYV5ZP3O911NhlkNn4PlbttEykZcAZ30n0Usg0DYVT3aLW4GAWhImpf+u2lNkn7VYgjO5Uip4f59TM4DgbXXdbPoze8NoOTuJU3G8W+yFNqQwTdefCIQmZXoSncqsO/m7BUd/NYpvJ6r4/gjwxBTAiJWaWGxHTgGHwYSRbc8u4zDhtWB1jW2+9KmvdG3NaGLyeQP9f36Qu8KznxyjWtw1/e0BabquRb2A5XyU0cmiUAQjNoJOeACFUCnVjNnCGqwOGOGFjnXGSL7GhwprqtLuA11jtVmLNaqf+hmoyxtmWa/yQqWTqWZfoKiZMb1w+kjZiCZ6YP59SQdTwXlxlNsJMtxHXlCY9NNUt3zwhMIRBsI0KYgSvFsmmpvtWgGdX58C9m/AckbIPOrR0lW1oi7nCaomedfh4BDoldfXFsNTgaVv4sOCccMHzdkyrOqE3+akF08AN44iaZKYCSvGqdWW4p3lthhgXJwyHm6mU7FI6Z9AHDz2qGWvuC/rQ
- uCzk2xQt
- k8Y2KgVL3zWFy1G23RJxOA3P9KYQEpblw0xCienYVM/KdS0z5lT05d2NKGPwa26m/k8dyyhZz2fmwk/eLHfmNle1LhCmq6HNbZfo6GWv+8KdNL41WcgITExxYfH2Pox58xAXpPHg4v8vyDNJHqD5gLSrcaPlyKMIFyHealP5hjs0R30RHq32fdOVdyLx3YllYMhrRUqxBt9wrp7GjbWz5oOg+P8k4hyMjTiUBDzda6nHIDDamA7a7K4+JK9PQ0Wy+WpkkMBbzBVhbjewdaWOXlJY0Ucc9W2xvq/lGxn7lzFV9A4leg4pLax7UZA4IXwc4E4Vmq7AseK5fpED8Mb9igHRBSj8FHx3z/gyoHMwChgUOWD5CtI7cyszRkQ==
+X-HE-Tag: 1770958886-364421
+X-HE-Meta: U2FsdGVkX18IPdBvkJllTR2iWsaUEikkUz5iBgYRrLpsOB0pxX3xNd5TxPtETxYsmZAEz2KT5ekT3V4XynbG4A9J24EW81QlA19smPzXz9zfUtcjBpRwUht2uuIYh0r+jUK+WNOHu5dp6Rvo93TUWWE5BBji+C9NpZ7wl2LYR8ck1OxM3qWOu3BrRYQeOwDAlTAFloG2mdwq5N2Sd3rMx6/4JEfKO1HJjiV6xqc5940iaf0NrU62CpFDt6NsXxaEwaHu0uohHuRHhZ4nfTnemf2gIjO/QmLh8QC7NoptUnkT2xwfkiNME7ooGZ3TXzblGCtdVXlhK+6kI7ZYb6ZtAwAQTgygk48UaerbBDZkefFithann55yv+LMTZzozUWPF4g3rkpzwaUQFA9G8IE5C6864JGoNthX5yhOlP1Vdtn+SA+8e6TpuTi8nbDvP9cNkx2hDf3k08wgswVZtb/s94fct7QCtHkcuZki9Hhcrpw4PUpHC0vqSVPUK8FmczeacWGil4jC9QYW+wSET/V0YQt8G1NfpIjc8vJOJEiYpRCaJhdwnrfkTgfo/yjd9pPNktNxdd4WR0qkEIZQduZPmP5sY3/XyCe68QOy/S5+H8ayVUNCvi4LgUnsS6HFtBIgzT4AHE5TFFFlWDRgpc9XUllkycI4e0qzyB7jp27alCd3SxNkQjmXoifTDBPUgQBZSQbPDbHMibED4B6GRJdNkVu9WSd/3F/gsgOlmo28BGYMvX/NnQLKmI2ebAVWFB3AxGRbIiW+sJVBrNTnTIv51Xmj8rhJPaoxE9C9mBlvbqsRYH3gLmqC+enyh1R+VMwOaEkQSOHaECbl2D7q2tcAWELZZBIVwwqVLRdbFpTn8HrCPhiNJDpmtbqtEdo0VaEJG3Zq8e//V7wG15fhpH/Ogu0hMtf5rMppbteYGZFl8xrSSa3bojqlVk5UZsJcNvcPodAzIJ4KeoBKStWOP9P
+ XzIRsRne
+ buxAlNbCYPODUr6Tmz7BrDp4Li0cs/Vr+yzS44TvLQ2GCMQmHs4IJPfKM/xQQMS9gbbnDCIAh4KapaM0e6SUEJ5dDEnU4UV1oeqS+Xdlm3YvDINvJIU2TWVjxkurA/bUyp0MzftRo50FtE6V2lnOBOhagpd7owWWmCWqBTFS+4ASrKhdHgRJESMtFnRFlCl0XHkCiIfEkbF7PXS1RgOqJ9mndivAgjUHWxHFxpMhizSE2YU1QPkGhEH32T05ZJZcmKsh1MkeXMVMW0QtcBGDuuTlWw3VYTZyQjPQ8fz4PKfq7ZaQIdDBZw8ZWtpuEkWxYa1k69z2/Pp0BbNo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,87 +148,255 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Feb 12, 2026 at 10:33:22AM -0800, Shakeel Butt wrote:
-> Hi Youngjun,
-> 
-> On Mon, Jan 26, 2026 at 03:52:37PM +0900, Youngjun Park wrote:
-> > This is the second version of the RFC for the "Swap Tiers" concept.
-> > Link to v1: https://lore.kernel.org/linux-mm/20251109124947.1101520-1-youngjun.park@lge.com/
-> > 
-> > This version incorporates feedback received during LPC 2025 and addresses
-> > comments from the previous review. We have also included experimental
-> > results based on usage scenarios intended for our internal platforms.
-> > 
-> > Motivation & Concept recap
-> > ==========================
-> > Current Linux swap allocation is global, limiting the ability to assign
-> > faster devices to specific cgroups. Our initial attempt at per-cgroup
-> > priorities proved over-engineered and caused LRU inversion.
-> > 
-> > Following Chris Li's suggestion, we pivoted to "Swap Tiers." A tier is
-> > simply a user-named group of swap devices sharing the same priority range.
-> > This abstraction facilitates swap device selection based on speed, allowing
-> > users to configure specific tiers for cgroups.
-> > 
-> > For more details, please refer to the LPC 2025 presentation
-> > https://lpc.events/event/19/contributions/2141/attachments/1857/3998/LPC2025Finalss.pdf
-> > or v1 patch.
-> > 
-> 
-> One of the LPC feedback you missed is to not add memcg interface for
-> this functionality and explore BPF way instead.
-> 
-> We are normally very conservative to add new interfaces to cgroup.
-> However I am not even convinced that memcg interface is the right way to
-> expose this functionality. Swap is currently global and the idea to
-> limit or assign specific swap devices to specific cgroups makes sense
-> but that is the decision for the job orchestator or node controller.
-> Allowing workloads to pick and choose swap devices do not make sense to
-> me.
+On Mon, Feb 9, 2026 at 11:31=E2=80=AFPM Miaohe Lin <linmiaohe@huawei.com> w=
+rote:
+>
+> On 2026/2/10 12:47, Jiaqi Yan wrote:
+> > On Mon, Feb 9, 2026 at 3:54=E2=80=AFAM Miaohe Lin <linmiaohe@huawei.com=
+> wrote:
+> >>
+> >> On 2026/2/4 3:23, Jiaqi Yan wrote:
+> >>> Sometimes immediately hard offlining a large chunk of contigous memor=
+y
+> >>> having uncorrected memory errors (UE) may not be the best option.
+> >>> Cloud providers usually serve capacity- and performance-critical gues=
+t
+> >>> memory with 1G HugeTLB hugepages, as this significantly reduces the
+> >>> overhead associated with managing page tables and TLB misses. However=
+,
+> >>> for today's HugeTLB system, once a byte of memory in a hugepage is
+> >>> hardware corrupted, the kernel discards the whole hugepage, including
+> >>> the healthy portion. Customer workload running in the VM can hardly
+> >>> recover from such a great loss of memory.
+> >>
+> >> Thanks for your patch. Some questions below.
+> >>
+> >>>
+> >>> Therefore keeping or discarding a large chunk of contiguous memory
+> >>> owned by userspace (particularly to serve guest memory) due to
+> >>> recoverable UE may better be controlled by userspace process
+> >>> that owns the memory, e.g. VMM in the Cloud environment.
+> >>>
+> >>> Introduce a memfd-based userspace memory failure (MFR) policy,
+> >>> MFD_MF_KEEP_UE_MAPPED. It is possible to support for other memfd,
+> >>> but the current implementation only covers HugeTLB.
+> >>>
+> >>> For a hugepage associated with MFD_MF_KEEP_UE_MAPPED enabled memfd,
+> >>> whenever it runs into a new UE,
+> >>>
+> >>> * MFR defers hard offline operations, i.e., unmapping and
+> >>
+> >> So the folio can't be unpoisoned until hugetlb folio becomes free?
+> >
+> > Are you asking from testing perspective, are we still able to clean up
+> > injected test errors via unpoison_memory() with MFD_MF_KEEP_UE_MAPPED?
+> >
+> > If so, unpoison_memory() can't turn the HWPoison hugetlb page to
+> > normal hugetlb page as MFD_MF_KEEP_UE_MAPPED automatically dissolves
+>
+> We might loss some testability but that should be an acceptable compromis=
+e.
 
-Apologies for overlooking the feedback regarding the BPF approach. Thank you
-for the suggestion.
+To clarify, looking at unpoison_memory(), it seems unpoison should
+still work if called before truncated or memfd closed.
 
-I agree that using BPF would provide greater flexibility, allowing control not
-just at the memcg level, but also per-process or for complex workloads.
-(As like orchestrator and node controller)
+What I wanted to say is, for my test hugetlb-mfr.c, since I really
+want to test the cleanup code (dissolving free hugepage having
+multiple errors) after truncation or memfd closed, so we can only
+unpoison the raw pages rejected by buddy allocator.
 
-However, I am concerned that this level of freedom might introduce logical
-contradictions, particularly regarding cgroup hierarchy semantics.
+>
+> > it. unpoison_memory(pfn) can probably still turn the HWPoison raw page
+> > back to a normal one, but you already lost the hugetlb page.
+> >
+> >>
+> >>>   dissolving. MFR still sets HWPoison flag, holds a refcount
+> >>>   for every raw HWPoison page, record them in a list, sends SIGBUS
+> >>>   to the consuming thread, but si_addr_lsb is reduced to PAGE_SHIFT.
+> >>>   If userspace is able to handle the SIGBUS, the HWPoison hugepage
+> >>>   remains accessible via the mapping created with that memfd.
+> >>>
+> >>> * If the memory was not faulted in yet, the fault handler also
+> >>>   allows fault in the HWPoison folio.
+> >>>
+> >>> For a MFD_MF_KEEP_UE_MAPPED enabled memfd, when it is closed, or
+> >>> when userspace process truncates its hugepages:
+> >>>
+> >>> * When the HugeTLB in-memory file system removes the filemap's
+> >>>   folios one by one, it asks MFR to deal with HWPoison folios
+> >>>   on the fly, implemented by filemap_offline_hwpoison_folio().
+> >>>
+> >>> * MFR drops the refcounts being held for the raw HWPoison
+> >>>   pages within the folio. Now that the HWPoison folio becomes
+> >>>   free, MFR dissolves it into a set of raw pages. The healthy pages
+> >>>   are recycled into buddy allocator, while the HWPoison ones are
+> >>>   prevented from re-allocation.
+> >>>
+> >> ...
+> >>
+> >>>
+> >>> +static void filemap_offline_hwpoison_folio_hugetlb(struct folio *fol=
+io)
+> >>> +{
+> >>> +     int ret;
+> >>> +     struct llist_node *head;
+> >>> +     struct raw_hwp_page *curr, *next;
+> >>> +
+> >>> +     /*
+> >>> +      * Since folio is still in the folio_batch, drop the refcount
+> >>> +      * elevated by filemap_get_folios.
+> >>> +      */
+> >>> +     folio_put_refs(folio, 1);
+> >>> +     head =3D llist_del_all(raw_hwp_list_head(folio));
+> >>
+> >> We might race with get_huge_page_for_hwpoison()? llist_add() might be =
+called
+> >> by folio_set_hugetlb_hwpoison() just after llist_del_all()?
+> >
+> > Oh, when there is a new UE while we releasing the folio here, right?
+>
+> Right.
+>
+> > In that case, would mutex_lock(&mf_mutex) eliminate potential race?
+>
+> IMO spin_lock_irq(&hugetlb_lock) might be better.
 
-For example, BPF might allow a topology that violates hierarchical constraints
-(a concern that was also touched upon during LPC)
+Looks like I don't need any lock given the correction below.
 
-  - Group A (Parent): Assigned to SSD1
-  - Group B (Child of A): Assigned to SSD2
+>
+> >
+> >>
+> >>> +
+> >>> +     /*
+> >>> +      * Release refcounts held by try_memory_failure_hugetlb, one pe=
+r
+> >>> +      * HWPoison-ed page in the raw hwp list.
+> >>> +      *
+> >>> +      * Set HWPoison flag on each page so that free_has_hwpoisoned()
+> >>> +      * can exclude them during dissolve_free_hugetlb_folio().
+> >>> +      */
+> >>> +     llist_for_each_entry_safe(curr, next, head, node) {
+> >>> +             folio_put(folio);
+> >>
+> >> The hugetlb folio refcnt will only be increased once even if it contai=
+ns multiple UE sub-pages.
+> >> See __get_huge_page_for_hwpoison() for details. So folio_put() might b=
+e called more times than
+> >> folio_try_get() in __get_huge_page_for_hwpoison().
+> >
+> > The changes in folio_set_hugetlb_hwpoison() should make
+> > __get_huge_page_for_hwpoison() not to take the "out" path which
+> > decrease the increased refcount for folio. IOW, every time a new UE
+> > happens, we handle the hugetlb page as if it is an in-use hugetlb
+> > page.
+>
+> See below code snippet (comment [1] and [2]):
+>
+> int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+>                                  bool *migratable_cleared)
+> {
+>         struct page *page =3D pfn_to_page(pfn);
+>         struct folio *folio =3D page_folio(page);
+>         int ret =3D 2;    /* fallback to normal page handling */
+>         bool count_increased =3D false;
+>
+>         if (!folio_test_hugetlb(folio))
+>                 goto out;
+>
+>         if (flags & MF_COUNT_INCREASED) {
+>                 ret =3D 1;
+>                 count_increased =3D true;
+>         } else if (folio_test_hugetlb_freed(folio)) {
+>                 ret =3D 0;
+>         } else if (folio_test_hugetlb_migratable(folio)) {
+>
+>                    ^^^^*hugetlb_migratable is checked before trying to ge=
+t folio refcnt* [1]
+>
+>                 ret =3D folio_try_get(folio);
+>                 if (ret)
+>                         count_increased =3D true;
+>         } else {
+>                 ret =3D -EBUSY;
+>                 if (!(flags & MF_NO_RETRY))
+>                         goto out;
+>         }
+>
+>         if (folio_set_hugetlb_hwpoison(folio, page)) {
+>                 ret =3D -EHWPOISON;
+>                 goto out;
+>         }
+>
+>         /*
+>          * Clearing hugetlb_migratable for hwpoisoned hugepages to preven=
+t them
+>          * from being migrated by memory hotremove.
+>          */
+>         if (count_increased && folio_test_hugetlb_migratable(folio)) {
+>                 folio_clear_hugetlb_migratable(folio);
+>
+>                 ^^^^^*hugetlb_migratable is cleared when first time seein=
+g folio* [2]
+>
+>                 *migratable_cleared =3D true;
+>         }
+>
+> Or am I miss something?
 
-If Group A has a `memory.swap.max` limit, and Group B swaps out to SSD2, it
-creates a consistency issue. Group B consumes Group A's swap quota, but it is
-utilizing a device (SSD2) that is distinct from the Parent's assignment. This
-could lead to situations where the Parent's limit is exhausted by usage on a
-device it effectively doesn't "own" or shouldn't be using.
+Thanks for your explaination! You are absolutely right. It turns out
+the extra refcount I saw (during running hugetlb-mfr.c) on the folio
+at the moment of filemap_offline_hwpoison_folio_hugetlb() is actually
+because of the MF_COUNT_INCREASED during MADV_HWPOISON. In the past I
+used to think that is the effect of folio_try_get() in
+__get_huge_page_for_hwpoison(), and it is wrong. Now I see two cases:
+- MADV_HWPOISON: instead of __get_huge_page_for_hwpoison(),
+madvise_inject_error() is the one that increments hugepage refcount
+for every error injected. Different from other cases,
+MFD_MF_KEEP_UE_MAPPED makes the hugepage still a in-use page after
+memory_failure(MF_COUNT_INCREASED), so I think madvise_inject_error()
+should decrement in MFD_MF_KEEP_UE_MAPPED case.
+- In the real world: as you pointed out, MF always just increments
+hugepage refcount once in __get_huge_page_for_hwpoison(), even if it
+runs into multiple errors. When
+filemap_offline_hwpoison_folio_hugetlb() drops the refcount elevated
+by filemap_get_folios(), it only needs to decrement again if
+folio_ref_dec_and_test() returns false. I tested something like below:
 
-One might suggest restricting BPF to strictly adhere to these hierarchical
-constraints. However, doing so would effectively eliminate the primary
-advantage of using BPF—its flexibility. If we are to enforce standard cgroup
-semantics anyway, a native interface seems more appropriate than a constrained
-BPF hook.
+    /* drop the refcount elevated by filemap_get_folios. */
+    folio_put(folio);
+    if (folio_ref_count(folio))
+        folio_put(folio);
+    /* now refcount should be zero. */
+    ret =3D dissolve_free_hugetlb_folio(folio);
 
-Beyond this specific example, I suspect that delegating this logic to BPF
-might introduce other unforeseen edge cases regarding hierarchy enforcement.
-In my view, the BPF approach seems more like a "next step."
+Besides, the good news is that
+filemap_offline_hwpoison_folio_hugetlb() no longer needs to touch
+raw_hwp_list.
 
-Since you acknowledged that the idea of assigning swap devices to cgroups
-"makes sense," I believe implementing this within the standard, strictly
-constrained "cgroup land" is preferable. 
+>
+> >
+> >>
+> >>> +             SetPageHWPoison(curr->page);
+> >>
+> >> If hugetlb folio vmemmap is optimized, I think SetPageHWPoison might t=
+rigger BUG.
+> >
+> > Ah, I see, vmemmap optimization doesn't allow us to move flags from
+> > raw_hwp_list to tail pages. I guess the best I can do is to bail out
+> > if vmemmap is enabled like folio_clear_hugetlb_hwpoison().
+>
+> I think you can do this after hugetlb_vmemmap_restore_folio() is called.
 
-A strict cgroup interface ensures
-that hierarchy and accounting rules are consistently enforced, avoiding the
-potential conflicts that the unrestricted freedom of BPF might create.
+Since I can get rid of the wrong folio_put() per raw HWPoison page, I
+can just rely on dissolve_free_hugetlb_folio() to do the
+hugetlb_vmemmap_restore_folio() and reuse the
+folio_clear_hugetlb_hwpoison() code to move HWPoison flags to raw
+pages.
 
-Ultimately, I hope this swap tier mechanism can serve as a foundation to be
-leveraged by other subsystems, such as BPF and DAMON. I view this proposal as
-the necessary first step toward that future.
+I will do some more testing while preparing v4. Will also try if I can
+avoid adding a speical cased folio_put() in madvise_inject_error().
 
-Youngjun Park
+>
+> Thanks.
+> .
 
