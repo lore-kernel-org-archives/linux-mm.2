@@ -4,122 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E1F2EF99D1
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 19:36:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A446EF99DC
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 20:09:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A843A6B0005; Fri, 13 Feb 2026 14:36:28 -0500 (EST)
+	id 1F9E56B0005; Fri, 13 Feb 2026 15:09:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A654D6B0088; Fri, 13 Feb 2026 14:36:28 -0500 (EST)
+	id 17D986B0088; Fri, 13 Feb 2026 15:09:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 964596B008A; Fri, 13 Feb 2026 14:36:28 -0500 (EST)
+	id 0AF796B008A; Fri, 13 Feb 2026 15:09:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 840DA6B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 14:36:28 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1FFA31A065F
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 19:36:28 +0000 (UTC)
-X-FDA: 84440440056.26.3F777B3
-Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CA0AA1C000E
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 19:36:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=F2sK7ybn;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.195 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EF7DE6B0005
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:09:09 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7C3C61A0630
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 20:09:09 +0000 (UTC)
+X-FDA: 84440522418.07.CDBFB54
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 563091C0013
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 20:09:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=cmU+b4bS;
+	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1771011386;
+	s=arc-20220608; t=1771013347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=llkjJOAUSGkOBuN7S3aJDNNVSVBODvl4G/+bNRBiTNs=;
-	b=IhHybY53kIMGS/yGE52rmZF/15uTKRNPDFMsLQpIQlrfNFkUr+lugaIidvu+fBMENqkRNX
-	HUVVxoDttLnLLiq8IPpC3Nu0OHj4e5f/OU6gNGiwEq2qiPinTaD91EkBCRK95408T8GWg5
-	O1iwJjZHwfjEqkzGGmB0UnQNixV1lXM=
+	bh=7qPVnjkUUN7g5ZDl/2W4jZj/HTnTNtx2ZZEtCyQsavo=;
+	b=smpf5Ig64+FRvJgeGN1f/3AJmoWjUAdpvqt2qAH//b3vSux7BJy4a8aN8/DLDANh3ipWUZ
+	NOiJqDzItvVbqyKRf4tT2YJ3UKZTWF9xG09QNPZ1zXJh0beNZchZaEBXsmwtXk2Tbp02xi
+	1Ngmbijcj45Up+esGFlJETlRIYejPI4=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=cmpxchg.org header.s=google header.b=F2sK7ybn;
-	spf=pass (imf18.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.195 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=cmpxchg.org header.s=google header.b=cmU+b4bS;
+	spf=pass (imf21.hostedemail.com: domain of hannes@cmpxchg.org designates 209.85.222.177 as permitted sender) smtp.mailfrom=hannes@cmpxchg.org;
 	dmarc=pass (policy=none) header.from=cmpxchg.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771011386; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1771013347; a=rsa-sha256;
 	cv=none;
-	b=w5tv3S5lMdrTwIrRcLS05S0TAXyhtNsQn3Yxi9pr0vRM3D7CQtSu4KVK76NwLnXuFbaVlb
-	3fAUEzzpBOfP1LVmvAcRgzTaM7dAJofLnFwNxHcPGpExxp3xKUeAi8TQ8Xy5z3I3ULGWRf
-	iF3q8KCRCv8o/eKom0JrnxQ/TBM4AtQ=
-Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-8cb3bae8d3eso140779585a.1
-        for <linux-mm@kvack.org>; Fri, 13 Feb 2026 11:36:25 -0800 (PST)
+	b=Wag/F4tkGJ+eD+XaKsDPRJ5u57BUqjq+iPP8zjTDgK103sRBYFrk73BrKd4ntZrugB54oP
+	AF0Z75YfJv7KkdrRb45hUxdolDsI/JXoSu7LguWvi+TkpW4z5Pe1nCqopxFpyQSkGUCRLN
+	OMDvd3cYTu3m9tV8Vb1NxZgtN7lm9DA=
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cb40149037so128554485a.2
+        for <linux-mm@kvack.org>; Fri, 13 Feb 2026 12:09:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg.org; s=google; t=1771011385; x=1771616185; darn=kvack.org;
+        d=cmpxchg.org; s=google; t=1771013346; x=1771618146; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=llkjJOAUSGkOBuN7S3aJDNNVSVBODvl4G/+bNRBiTNs=;
-        b=F2sK7ybnZ32kuWkj0Ce+hD4Jn1emjANu3WmMcyMZCXCI4XDZp04MCPdi3aDBPhJqSk
-         I6JQC+/2vga4TpaL41H0Xjc2/SuoLozFcrM6j/qYO4qqE3Qd7GMOse8lJ0wbQEDeNvV2
-         TB9kYTa1dLyqlPHTZAQ7xGjEFgX2LPQ8eK2BBV7uYg9e5fVpvwfgcpOVUgWgoqT/JGnf
-         QqIoIk9HVjlj58HWbdCtCeuCfjCWRGi1z6WFmjGzyZrNyREFqpGPk60Gmh3ocX4Cf9cJ
-         uhvx9fM+1XXPmjk1tRIufPDggRU0XdmleraydNLvyMvukHwSnmogF4x0VUxW/Nz9CWy4
-         8ljw==
+        bh=7qPVnjkUUN7g5ZDl/2W4jZj/HTnTNtx2ZZEtCyQsavo=;
+        b=cmU+b4bSlweBWzOefF58LIgmMFgQv53ArWeXUDZslNFahoUPCS0KWM9mKZqm9HvdQ1
+         gUesFZ6/nBq1kr7MSWcftAjs0cPFW9WT9qqNIRVhv9lMDNj1Lu29GIbYEhe4XTN+hsdc
+         J8RDNmQrpVAXH8LzqwhRTR5wmH4yi4zaPq794vkCypfGG21Zlc9mkWnuacAzOp3Q96Ae
+         fmYyOuJPPLyA+n8rqCtTSApB2bqvpBZjARWWjBCn+iaMS+hkspjoaVh7LuNminQW3meh
+         Tt6fzaGwjucOVc4BcNKLLMJqeggCaYrUL8OK5EpMNSaHxdLoRMdtwFkAa/+jRzAy5lfS
+         4dfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771011385; x=1771616185;
+        d=1e100.net; s=20230601; t=1771013346; x=1771618146;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=llkjJOAUSGkOBuN7S3aJDNNVSVBODvl4G/+bNRBiTNs=;
-        b=CYGS/gEbsLgTKlm5hkBzggKIhbc2wGjVk+3hFpxqu3LI0fAaHHryOTblv05payAXLZ
-         CYzjQIsj79c6GB7XdRNfPTnXx4LrJ2wgNnIfisKGq0k3FzYgdKm0LT0+MPvsiwkQDEX4
-         40vX44d9goZaO4L85ZQvh8TLPmk6HMpp/4jGchKLUpJ8K4k1nem8dkaev0dsbWFNM8oA
-         L4dveudexHpbyc73y4zwZQ9d7RvJZGVR07SUAmImBv9P7tREdMmn772k/HmTwkByfDdx
-         zrsxtMGwCEJxeC7Q+WU0aQOgVE9N8CL+IjSLOy2N3qt1mFYLiS8s7c008S6BT/yL7KM7
-         QaUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/spgOg3/F+xHmikiCrBeDVkvOJw7X90+dbV7Jw+M+/HLP9npWP85M2jyxASvdHu+Y/O3Abng1hA==@kvack.org
-X-Gm-Message-State: AOJu0YyDmaKlLXe5keDSRM77sUreobdgXPLl4D15lMCr6rEo4znOv+0Y
-	5sx1Fd/RQgDNd+S4MjrKXCMMwF2oFM4QUfDt58RZ3nV+HeLJ6dNX4AB+dwagIQ8JWMU=
-X-Gm-Gg: AZuq6aLXJaNpFCdqwFtVSrUTZj1cZhmgpiRfIMnDlPtJ9daMgsfIrJUASNxfYBdMV8d
-	zmCt7yte3LTm7pYCDRH6iIl5URIJzr4Y8SJXNq+J+RzDL9ONQvNQV1UEFIZnAnuoMwP6fFmL/An
-	YiZuqyBS0b/CWMIV0iJmT1FemNieUy0Odpg74SIKAL4J4/ikk7B8BmprIDyV4RBFsPdSuHIbopj
-	ko+Lz+nHwxZHyLAkW+l5NvdUNlubbEsHfde3o+LYJcBr3bKXLnI2cQrk/z+zc2Y7e4PTv8OcaiC
-	MpJdG1wGLyTLnqtNcjw9yn8j8CMcSjLJk//SLEIY4ACzoc8hVMpzY1GxyVXBmaq+IqBqpFMFAUb
-	FsNTzk7bJGz/yeY0FQVlC/GjolkqOtB8mTxeHtsUIQB81zq61C/npqbFDC/SDLJwt9wsGHK8RAQ
-	4ZAO5GDjBMNM92D2AyYwpLVA==
-X-Received: by 2002:a05:620a:4505:b0:8cb:2b04:85fa with SMTP id af79cd13be357-8cb4081f6c3mr456742285a.13.1771011384548;
-        Fri, 13 Feb 2026 11:36:24 -0800 (PST)
+        bh=7qPVnjkUUN7g5ZDl/2W4jZj/HTnTNtx2ZZEtCyQsavo=;
+        b=LbOjNCriuWOazT4GrCFRFQXJs1UTmW4eJ2ADhV5F1g4ZtfToJnGpGhdRHttuuaqjYD
+         dZnHVQYi5RbJgWr19onTGT7oCL3SN92BkM9iG1mritMiwAWnu5tofTmh6sFVqqOGz8Ho
+         1pGUl7rpKL9QPV0lswTyr0tIzr4EWJQNuz/W+i6GhVSRdr7K0YOPe66zKnJ78AYGrUWc
+         x6J6kRc4NQvnM1ZkAtwDGmGHnRTw/0TXTHhhfMgkZslAXwRAtQhrqYEfQnll23JILfwL
+         DsCaDBY/UDImI+Egd0XBLJaJO6Z64ktQrde2Bgx/6W0tLQg4KlYonmL96dUN4Gdm5RvJ
+         PwGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVi4BTum90u+9RIcx/5xXKoAT2rnyFnCBXPx/SpXvSmiRR0Spo8Ryi3kIOPMpt4NCUqxaM1FP5lLA==@kvack.org
+X-Gm-Message-State: AOJu0Yzxh1wem5bU5MIo+ynlZT95P9A3ON9hte+jiEIKXgl41G+6sZiY
+	Gzd/2oU5IfOzjXCS/74oYPPaRG9f6jr694c2cHw2MKF5kQrueoMD/IAezte25X0fJsg=
+X-Gm-Gg: AZuq6aJzHjlHh72u02YfCKfl6uUD4M/yq2c1vJA3QGuFHuj9RnbweVPgVu3b0DaLIcC
+	41oRfvsJDYFvcMdTG7jp7ks5IRKwCTEdtQ9jJQArEZusmuvzx4TEOG9dlGX0+ywKIdv3M3UpxuT
+	e4jEJQS8umZTgCmRLXljAwHCmHo+miLzjwa/qeVUpoOs72J76G5qITC+ySIibUaWk+Chx4/SW8h
+	VRFI3Xpl8H5CTV8e7dm8R0iBoKRHiB12XJbA8KxrzNtV6LrsDFKncozcRgbh8Bb8b/CX9czmyyY
+	AU90wLMQAsxUeMaof/vLouahCxm2sJX0O8IiSkSBtitVN2+3hEcF6lAxLPhXxZJlUJrSMcCkFgy
+	cvDkw8Ca2Sj6w21iyjkKDvWSCLufKbRd1xrBOx1xwCm/eTx+SXd/PDglu992+zoySuIvB17MYGG
+	WIXqoVjPfhw4pIjw4BqJCkqw==
+X-Received: by 2002:a05:620a:1a13:b0:8cb:3bca:bb3a with SMTP id af79cd13be357-8cb4249f104mr378592785a.67.1771013346200;
+        Fri, 13 Feb 2026 12:09:06 -0800 (PST)
 Received: from localhost ([2603:7000:c00:3a00:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb2b0f38afsm675777385a.22.2026.02.13.11.36.23
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cb2b1c7ef7sm723625085a.28.2026.02.13.12.09.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Feb 2026 11:36:23 -0800 (PST)
-Date: Fri, 13 Feb 2026 14:36:19 -0500
+        Fri, 13 Feb 2026 12:09:05 -0800 (PST)
+Date: Fri, 13 Feb 2026 15:08:57 -0500
 From: Johannes Weiner <hannes@cmpxchg.org>
-To: Qiliang Yuan <realwujing@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Brendan Jackman <jackmanb@google.com>, Zi Yan <ziy@nvidia.com>,
-	Lance Yang <lance.yang@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9] mm/page_alloc: boost watermarks on atomic allocation
- failure
-Message-ID: <aY99MytyXnECJuel@cmpxchg.org>
-References: <20260213-wujing-mm-page_alloc-v8-v9-1-cd99f3a6cb70@gmail.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: cgroups@vger.kernel.org, linux-mm@kvack.org,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH] memcg: consolidate private id refcount get/put helpers
+Message-ID: <aY-E2Rj2gBrBHJsT@cmpxchg.org>
+References: <20260213-memcg-privid-v1-1-d8cb7afcf831@tencent.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260213-wujing-mm-page_alloc-v8-v9-1-cd99f3a6cb70@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: CA0AA1C000E
-X-Stat-Signature: 4ncir7b4zduy54s53bxm9f7uiua971fc
+In-Reply-To: <20260213-memcg-privid-v1-1-d8cb7afcf831@tencent.com>
+X-Stat-Signature: dddnru9jmxabpdzj5uffx13g53zrac9u
+X-Rspamd-Queue-Id: 563091C0013
 X-Rspam-User: 
-X-HE-Tag: 1771011385-265239
-X-HE-Meta: U2FsdGVkX196Pb9e5n/L98PgMylRq8ax0RR7NWybAtqDjKvOwq0WJxnAvfHp/xPw8MbGQ/kH5jceKAi750yM6vKGMXxnfjw5V1om0Vslqxxm8NM2et/7sVoXqOnfLsYHNBWLtMO9YcmdBDsYaXAzKPAtDd//tDOpCpNT6aK8eLiR6+OFinfuNTX3CxOA0N+lpe81PcuHorHHurBqPD53vaCeF6/TMFBy+DbOsf4ApH0GvAAQSMKlGb71X0pnOXCtcCmA7SMn6vz0skR//2Q/5Q+b2KedL/2y0Fz8zv3rroCFpcI5GptMzohX31g06ha14aq0WOxtxkiP05kljX45s7nBWq975cXV19y0AlL1u39W3uDDAxI+gbS0JpB7qQ4M67uHPjrIcJkv1974J0NNtUwGmJT3hFzwfeJ+6Ywy4SGpATaKjuOgRjDDImBbCwhtFfv/PbxNtXnqkymwxvUWrl0AMtM+6CZWtg+csr+FL+tgY21cUWufia36n4xXKOfDrLThgRCedWK59Qg6Sr17u6a0W9wIYTQ24txqYOD2HlfeMGL+N24NwgWRhS3SlnnWoEsF7nDMRhhfxFCYlYRyuzzRzXTnz8Zac8L2/o4FLJxbviw7TpUQIcby0TeJo6g2sDVNJCh6spJn+lUe6/85qShrQf/2v99g0I6YRpThzVCzlyV4/e3FNNhIlUJj5Fhksd58SaAERzFXFcMkiIWmyD1JG5vQfOazxkK6Ii8ddsiDmdu+/6zoXsgdwY0eSZvWkRQAvRtlPFV8pQGaRJdcXPjyJ2pbZ8jE1hVtpVH5oidQGQrrddLjFjfsakLOByMJlNh+l4gggANG+eHnk1klhM9FiYMSmpDzMxo2Zt6ukGeDBOkh/fDc0RR62wbxnJm0k4PL6agMSjX3Tui7dLBBJhkoj1TxEe7P4UXOXdIf0/HuwkBF1J++USHTROFAorXEDtt9oFkSR67JPDdX+zE
- Ro2xpIhX
- uJMsLYoWMsk+qmd44vYV13TT0f44fGoP7yCUQGnzyGPLZ8B6ZzdqsIzwRYRhoWDOiXjVO7cSzHetgWpGl1FD0DQ4hVpgGjvQI6aRJwxLyFTvQ9I/Z0ox8gwEWioudmIBdEW/a14Xf9cWxV/iqQJ0ZyJjBs6K+kNxbxEY51MHIcx+Ljl6CdXXKER6sokvH6qlGKqQgJlLlJZcGxt8=
+X-Rspamd-Server: rspam04
+X-HE-Tag: 1771013347-123674
+X-HE-Meta: U2FsdGVkX19gs0zxrlH+CpVqwc+VfY9sJeSwvfc/OQS0H+5rI8xV952yUUahLBTi9MwDaCb1JjQ987md2y/yeSWDUmz+Thp9xYBEtkUb9oZ1D8BgbqIdjohdtiEb8GyXhBStO92Rlwqd9Yrc5CZGIjwYGaoF9ooymtRMMUYZDSAV6KCCw5ac7V+scbEnj3cNWVv2p3B5KB/jstksWYFppdFlrH7nJAyHwfaS540PgUjNBcBNxYZuD+r86gaBUCVrGoMtMRl0uzLyUbh75SRbEfuMWd/z/hX8F7Ki4oB8zuAaJ46NCIDPA1mn7en5BE3FSBIq/Nyjt1SOaaxOBZw7794y1EqAUcZ8/BYWc0HcZsHfQUSouNqF0AlPQvHf4VuvosjNJ9arEcaUSrNvb+5OZ5MPC06U0nv0StYGegxc+3Ojllc5HqlcBdOwq0aiHPVs8YmcTgILZWtguv5oIeibCFkgsxSvpGrl7/XK7AsqyNo2v8sENocblrOLAz9nAihQ1Um/DYN1k4fglp5TkHiNgrQz9iDW041W7geWStRD8hxsQBhyzANeuO0WUW/eMK4BiJnw/zs8avhBNnXPQbjr58bjHjYZV2jzJUkviW+Jd3I4+04OmdWQmqWn3e1UenKU0uLmGzYgYEMMYy3vZrMRuik3cKJftTYTW4nWvsQx1op3UjKRCOx+BIh7/RkuvL9QicubBkz/17l6QhEU6VYrWX37dYJzP4Md+vkSc3XwnJ/ledv/DrgXLIvH1NIPhsHCIgBMIDG9gLqUXnqKviP1YDmuEHqu9pPHamDT8x6tifbtCTgb5rzMlDagMrCEaYXwpL2u1hg3Eyfrk7GWTyCS8PPb3VYAG7PchSTy0jLSMy73GRsm8zIZOdYNQqI2eUNRVCdoJgSy8lwxoZanaAkY7Hol2mEDeRdzSxCwok/z8pA5taYn83s5esH/B9NHWPV9KveZt0ZJSXcGZqAxXYy
+ XyZmY5yt
+ T24YisS1iElrQFcyDpnxGJeu3VWa6O189dQqU2zLJOHGTR6QDhWeAVXLi3qJbVHUZfQe9qJu9s+KC8A2lJS8pH7lD93jnAn6RG+HcfXiLGsy+/0rJfrXqq4iKZYOpHMcIpkISc+RdllLAYN29ij/YV6SE6cY6fzfoiIo2RVXNo/Z9R0v32F6rc0tINcKBTY9wkAjpljZbE3lCE7WQX97VyUPhYw6KNi82KsarnaArFNrPq8roiWQFreSRtpk3frySGq7euyhm2ZcukRpXRhrVfTaqtnHwk9yGoDonZ5lz1oDpNci2CrE3Pyi6MYo4E7DEiWa2ak5QzkiuJtcZeS/o3s5xgBhk7pLPeLFz+Cw+J+R7RivxP0qCDVsDJqVo8KaGxyvGgP8m6Qs79K0/WTIAuQO+xm9Rv3LG/hlAsN542X7nwcNmyakOPpex8lo7td2ixbZb84vUHitcyn0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,191 +122,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 11:17:59AM +0800, Qiliang Yuan wrote:
-> Atomic allocations (GFP_ATOMIC) are prone to failure under heavy memory
-> pressure as they cannot enter direct reclaim. This patch introduces a
-> watermark boost mechanism to mitigate this issue.
+On Fri, Feb 13, 2026 at 06:03:32PM +0800, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
 > 
-> When a GFP_ATOMIC request enters the slowpath, the preferred zone's
-> watermark_boost is increased under zone->lock protection. This triggers
-> kswapd to proactively reclaim memory, creating a safety buffer for
-> future atomic allocations. A 1-second debounce timer prevents excessive
-> boosts during traffic bursts.
+> We currently have two different sets of helpers for getting or putting
+> the private IDs' refcount for order 0 and large folios. This is
+> redundant. Just use one and always acquire the refcount of the swapout
+> folio size unless it's zero, and put the refcount using the folio size
+> if the charge failed, since the folio size can't change. Then there is
+> no need to update the refcount for tail pages.
 > 
-> This approach reuses existing watermark_boost infrastructure with
-> minimal overhead and proper locking to ensure thread safety.
+> Same for freeing, then only one pair of get/put helper is needed now.
 > 
-> Allocation failure logs:
-> [38535644.718700] node 0: slabs: 1031, objs: 43328, free: 0
-> [38535644.725059] node 1: slabs: 339, objs: 17616, free: 317
-> [38535645.428345] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.436888] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535645.447664] node 0: slabs: 940, objs: 40864, free: 144
-> [38535645.454026] node 1: slabs: 322, objs: 19168, free: 383
-> [38535645.556122] SLUB: Unable to allocate memory on node -1, gfp=0x480020(GFP_ATOMIC)
-> [38535645.564576] cache: skbuff_head_cache, object size: 232, buffer size: 256, default order: 2, min order: 0
-> [38535649.655523] warn_alloc: 59 callbacks suppressed
-> [38535649.655527] swapper/100: page allocation failure: order:0, mode:0x480020(GFP_ATOMIC), nodemask=(null)
-> [38535649.671692] swapper/100 cpuset=/ mems_allowed=0-1
+> The performance might be slightly better, too: both "inc unless zero"
+> and "add unless zero" use the same cmpxchg implementation. For large
+> folios, we saved an atomic operation. And for both order 0 and large
+> folios, we saved a branch.
 > 
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Qiliang Yuan <realwujing@gmail.com>
-> ---
-> v9:
-> - Use mult_frac() for boost calculation. (SJ)
-> - Add !can_direct_reclaim check. (Vlastimil)
-> - Code cleanup: naming, scope, and line limits. (SJ)
-> - Update tags: Add Vlastimil's Acked-by.
-> 
-> v8:
-> - Use spin_lock_irqsave() to prevent inconsistent lock state.
-> 
-> v7:
-> - Use local variable for boost_amount.
-> - Add zone->lock protection.
-> - Add lockdep assertion.
-> 
-> v6:
-> - Use ATOMIC_BOOST_SCALE_SHIFT define.
-> - Add documentation for 0.1% rationale.
-> 
-> v5:
-> - Use native boost_watermark().
-> 
-> v4:
-> - Add watermark_scale_boost and gradual decay.
-> 
-> v3:
-> - Per-zone debounce timer.
-> 
-> v2:
-> - Debounce logic and zone-proportional boosting.
-> 
-> v1:
-> - Initial version.
-> ---
-> Link to v8: https://lore.kernel.org/r/20260212-wujing-mm-page_alloc-v8-v8-1-daba38990cd3@gmail.com
-> ---
->  include/linux/mmzone.h |  1 +
->  mm/page_alloc.c        | 49 +++++++++++++++++++++++++++++++++++++++++++++++--
->  2 files changed, 48 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> index 75ef7c9f9307..8e37e4e6765b 100644
-> --- a/include/linux/mmzone.h
-> +++ b/include/linux/mmzone.h
-> @@ -882,6 +882,7 @@ struct zone {
->  	/* zone watermarks, access with *_wmark_pages(zone) macros */
->  	unsigned long _watermark[NR_WMARK];
->  	unsigned long watermark_boost;
-> +	unsigned long last_boost_jiffies;
->  
->  	unsigned long nr_reserved_highatomic;
->  	unsigned long nr_free_highatomic;
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index c380f063e8b7..8af88584a8bd 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -218,6 +218,13 @@ unsigned int pageblock_order __read_mostly;
->  static void __free_pages_ok(struct page *page, unsigned int order,
->  			    fpi_t fpi_flags);
->  
-> +/*
-> + * Boost watermarks by ~0.1% of zone size on atomic allocation pressure.
-> + * This provides zone-proportional safety buffers: ~1MB per 1GB of zone size.
-> + * Larger zones under GFP_ATOMIC pressure need proportionally larger reserves.
-> + */
-> +#define ATOMIC_BOOST_FACTOR 1
-> +
->  /*
->   * results with 256, 32 in the lowmem_reserve sysctl:
->   *	1G machine -> (16M dma, 800M-16M normal, 1G-800M high)
-> @@ -2161,6 +2168,9 @@ bool pageblock_unisolate_and_move_free_pages(struct zone *zone, struct page *pag
->  static inline bool boost_watermark(struct zone *zone)
->  {
->  	unsigned long max_boost;
-> +	unsigned long boost_amount;
-> +
-> +	lockdep_assert_held(&zone->lock);
->  
->  	if (!watermark_boost_factor)
->  		return false;
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-watermark_boost_factor is for fragmentation management. It's valid to
-have this set to 0 and still want boosting for atomic.
+Nice improvement!
 
-> @@ -2189,12 +2199,43 @@ static inline bool boost_watermark(struct zone *zone)
->  
->  	max_boost = max(pageblock_nr_pages, max_boost);
->  
-> -	zone->watermark_boost = min(zone->watermark_boost + pageblock_nr_pages,
-> -		max_boost);
-> +	boost_amount = max(pageblock_nr_pages,
-> +			   mult_frac(zone_managed_pages(zone), ATOMIC_BOOST_FACTOR, 1000));
-> +	zone->watermark_boost = min(zone->watermark_boost + boost_amount,
-> +				    max_boost);
-
-Likewise, you don't want to add the atomic boost every time there is a
-fragmentation event. You need to separate these paths.
-
-The mult_frac() with constants seems a bit funny to me. Just do
-zone_managed_pages(zone) / 1000, drop the define, and move the comment
-and move the comment here.
-
-> +static void boost_zone_for_atomic(struct alloc_context *ac, gfp_t gfp_mask)
-> +{
-> +	struct zoneref *z;
-> +	struct zone *zone;
-> +	unsigned long now = jiffies;
-> +
-> +	for_each_zone_zonelist(zone, z, ac->zonelist, ac->highest_zoneidx) {
-
-for_each_zone_zonelist_nodemask() with ac->nodemask?
-
-> +		/* Rate-limit boosts to once per second per zone */
-> +		if (time_after(now, zone->last_boost_jiffies + HZ)) {
-> +			unsigned long flags;
-> +			bool should_wake;
-> +
-> +			zone->last_boost_jiffies = now;
-> +
-> +			/* Modify watermark under lock, wake kswapd outside */
-> +			spin_lock_irqsave(&zone->lock, flags);
-> +			should_wake = boost_watermark(zone);
-> +			spin_unlock_irqrestore(&zone->lock, flags);
-> +
-> +			if (should_wake)
-> +				wakeup_kswapd(zone, gfp_mask, 0,
-> +					      ac->highest_zoneidx);
-> +
-> +			/* Boost only the preferred zone */
-> +			break;
-> +		}
-> +	}
-
-This is a bit strange to me. By the time you boost, all eligible zones
-have been tried, and ALL their reserves were found to be inadequate
-for the incoming atomic requests. They all *should* be boosted.
-
-By doing them one by one, you risk additional failures even though you
-already KNOW at this point that these other zones are problematic too.
-
-So IMO, by the time you reach here, they should all be boosted.
-
-> @@ -4742,6 +4783,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
->  	if (page)
->  		goto got_pg;
->  
-> +	/* Boost watermarks for atomic requests entering slowpath */
-> +	if ((gfp_mask & GFP_ATOMIC) && order == 0 && !can_direct_reclaim)
-
-This is a bit weird. GFP_ATOMIC is a mask, so this check will trigger
-on anything that has __GFP_KSWAPD_RECLAIM set (which is most things),
-so in turn you then have to filter out direct reclaim again (which the
-real GFP_ATOMIC implies).
-
-	if (gfp_has_flags(gfp_mask, GFP_ATOMIC))
-
-> +		boost_zone_for_atomic(ac, gfp_mask);
-> +
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
