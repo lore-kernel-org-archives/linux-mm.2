@@ -4,139 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BB1CEDF173
-	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:45:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 020D0EDF176
+	for <linux-mm@archiver.kernel.org>; Fri, 13 Feb 2026 15:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A1CB6B0005; Fri, 13 Feb 2026 10:45:27 -0500 (EST)
+	id 6AE116B0088; Fri, 13 Feb 2026 10:47:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 24FC46B0088; Fri, 13 Feb 2026 10:45:27 -0500 (EST)
+	id 65C656B008A; Fri, 13 Feb 2026 10:47:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 131AA6B008A; Fri, 13 Feb 2026 10:45:27 -0500 (EST)
+	id 533F26B008C; Fri, 13 Feb 2026 10:47:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 001C46B0005
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:45:26 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4997D160515
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:45:26 +0000 (UTC)
-X-FDA: 84439857852.09.432AA53
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 35E284000F
-	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:45:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l3MM4zxv;
-	spf=pass (imf11.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 432626B0088
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 10:47:39 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DD4B813AFB5
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:47:38 +0000 (UTC)
+X-FDA: 84439863396.04.42086DC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1723F18000F
+	for <linux-mm@kvack.org>; Fri, 13 Feb 2026 15:47:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E1q0w0cD;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1770997524;
+	s=arc-20220608; t=1770997657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tGmKZWNtIS9ERU6bcSUv7HtDJWFDT/GuOYhCFfjMzp4=;
-	b=1a+0ksXrq8bI0xzsTTXhdgd2l8cMhAr8N1s0YzSMTz3v2C1hyF7AmNrygjt1wvAId4+kwo
-	isR2TyCQl9hRf/J3OBvc1StmqQkv2+pIgpUBUKJ+qM8XhiHOxClt787aZsxb7Kci/9FlTH
-	B9pLsW9xX1iu6oMrnlehq4bmddBzsw0=
+	bh=/sqO62M0VA23+/Us4iYIJs6T1Y/ZN1kF3DRtuRbdkEc=;
+	b=wNlton2B7RbvFK+usV0Q+TGtDyu7GMJ4XPBAlf/Uyv3gDkQvdzKsIdz7y93Inb41Z7/Zwn
+	d5UOrT3Tg1wYl5+MaKKbhwxCaqaeh2pCa21eTt/y6R43Ey+N8V54b8sC76OzEL2EiDIhPQ
+	ANvORy/46KpNUpnBhJ4VxqfeKc3p+xU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=l3MM4zxv;
-	spf=pass (imf11.hostedemail.com: domain of boqun@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=boqun@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=E1q0w0cD;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770997524; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1770997657; a=rsa-sha256;
 	cv=none;
-	b=ZFHIVvrTkbpzV3kVp24fcCmbtTzknIsr6bhRUMh5jZAjmmi2wOcg3grgRGoTPaFV2UUyyD
-	L8xtH0G+tATvcnLynRisz4MFzH7bX+R3ArxLvsb0MXPY5eYMMtGQvX1RRqxadITPrc3QzB
-	tgbaOkQMqF7Cxmhati/BKkDpVOJ/ioY=
+	b=2CSG6pTdKVdsJfLCLogrmnQHFq8j0o9fQJth+FwhqnygJvqLxjp9UQayXin8r0Da4PVQl8
+	VH59abh4FKE+vKoO1Y2cZvfGzB7Mzr2mFDMwk4DStCPCaFRN0uVsH/oZoo6RlwdliF5qTk
+	C+KBwdQr2EF1whZMzbWNvgnOb2IBKR4=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5A7226132E;
-	Fri, 13 Feb 2026 15:45:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E770C4AF09;
-	Fri, 13 Feb 2026 15:45:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0E2D1419D6;
+	Fri, 13 Feb 2026 15:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C19BC116C6;
+	Fri, 13 Feb 2026 15:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770997522;
-	bh=fuTx15yFTxhe4W7/BhW2RKNzR0Hi3SfXJnorfKREQ2o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l3MM4zxv0MiTo2wKJ2i2NRNGrE/BCDraT1jV4ykLKDU2yJSucCYFxF6c4xQ9DCb1V
-	 jWw2yPJVNWXwq1VZt1cNEm3IWoDS6EMBApo6cHQ8EljV7u10ScG1bh7yN+MfQ8fVIA
-	 iuHzWSQEYmn16Ey+cf9n7xypHJkH0945tOC7ly5HsI6CUM2AkLtVYTnA6oWfuWxoq9
-	 WJhs7XOOEzfXN4XlaFzlFk7m6K6DpzdHiFRVAg17QJas4qo7gM8ql7VbJ14H/v61Qj
-	 9WEfbADg16d7YeRQGDWTUvoEBQqgjCuAvNHKSbUVRR9iTf5UrjCa+gWG4CoCHGYFUr
-	 4tgaERAk0YbWg==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5574DF4006D;
-	Fri, 13 Feb 2026 10:45:21 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 13 Feb 2026 10:45:21 -0500
-X-ME-Sender: <xms:EUePaY1KvQ4JLY5gmtQg1EFdqHnBHLkmQYx7y3_8kUKOrpTGSKIX3Q>
-    <xme:EUePaUcDqrn25Lg23j85d7w_pP-YFObnZfkYF8EQ7E9ZJGar87fSdQtWuYpzsHZnk
-    5pR4KacO0pUX9BAJbuZ_EHtS9GgKX5cI3f8Af_OcTfoo33WXARPtw>
-X-ME-Received: <xmr:EUePaaLuf__dT1BHzdPzOOyox4eFyAfCLlQKHk9bNpQSrF8b2aMWaxckBcaLfzr2_hSDlGBf8BlIWN4TX9jmezgDgA3sLp2J>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvtdekieegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhunhcu
-    hfgvnhhguceosghoqhhunheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrhhnpe
-    ehkeeijeeggeehkeehtddthfdtgfejueefleeutdefjeegvefhhffgueeiteekfeenucff
-    ohhmrghinhepohhpvghnqdhsthgurdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenuc
-    frrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhs
-    ohhnrghlihhthidqudeijedtleekgeejuddqudejjeekheehhedvqdgsohhquhhnpeepkh
-    gvrhhnvghlrdhorhhgsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepudelpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunh
-    gurghtihhonhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdr
-    ohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhho
-    rhgvnhiiohdrshhtohgrkhgvshesohhrrggtlhgvrdgtohhmpdhrtghpthhtoheplhhirg
-    hmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthhopehojhgvuggrsehk
-    vghrnhgvlhdrohhrghdprhgtphhtthhopegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvth
-X-ME-Proxy: <xmx:EUePaaHdLDclBdO7klwUFy4R70iYRyeIP9AuXIesLeN_ms_q7n3hZg>
-    <xmx:EUePaR4NS9Ho_VOpJ8PS4cUlKTMXu2gAQMdhWoflzs2772DQbG9Sng>
-    <xmx:EUePaV3nSLss3CIbLXyVt7nG4EVheKzWDlVNjpv1zKHejqFUN4vWNQ>
-    <xmx:EUePadhik9-Jbu1xdhvU6wB-_-xh9zACzcPooyk-2qDENPCpbGoMEQ>
-    <xmx:EUePaRReZTDK5S5mHAWUiURtVaqRz8LnbwcwJmEJHM-Mdt8E7LSYVPFa>
-Feedback-ID: i8dbe485b:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 13 Feb 2026 10:45:20 -0500 (EST)
-Date: Fri, 13 Feb 2026 07:45:19 -0800
-From: Boqun Feng <boqun@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <lossin@kernel.org>, Trevor Gross <tmgross@umich.edu>,
-	Danilo Krummrich <dakr@kernel.org>, Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: page: add byte-wise atomic memory copy methods
-Message-ID: <aY9HD7nH5A-DtgmR@tardis.local>
-References: <20260212-page-volatile-io-v2-1-a36cb97d15c2@kernel.org>
- <20260213095557.GS2995752@noisy.programming.kicks-ass.net>
- <40xUh92AU5E9oFxQrdej-AXVg76jmaWGKXZMLoOHXe35Lw9x_eNEoLup9bB60LyGZ_0USPmoxr-9hE3ujA67cQ==@protonmail.internalid>
- <2026021343-germicide-baritone-efe8@gregkh>
- <877bsgu7fb.fsf@kernel.org>
- <TZXRjQ6gkmJNdRcfDVKKEl8Zd-8b7HBCLMrrPXyXYq9HmsVE8BJS4a6FE-YxxNsOBrIQl1fiOvfS19rLkPSmiQ==@protonmail.internalid>
- <2026021313-embody-deprive-9da5@gregkh>
- <873434u3yq.fsf@kernel.org>
- <20260213142608.GV2995752@noisy.programming.kicks-ass.net>
- <2026021311-shorten-veal-532c@gregkh>
+	s=k20201202; t=1770997655;
+	bh=XfS2U8kOK3udT3K8Q+XXE1402dkA/o2Hbuihs3yn/YE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=E1q0w0cDwPhOB4LOSqfrUxeF5HN6B0FfC17poneLeKRwHBfHScquG3UD203zHqHjP
+	 Qdhqz0Ctjr1uFF/kXy6c+yP8JKhLJ6Ml+n1lHcsu85oCiL9wE7JRHZCHZLhVSwxYoJ
+	 xtzWwG7bm+gXJudcH/2V8Ebt/ixxX+OUI8d8Y2kehEBlV2mOTLHqa5fWa00cj7xPkR
+	 pdsYcyoULcTrFKrLoBBlCo841df4RR4dO0ETVGv/Osfz0dlW+TVxl70sQLFoljnFRj
+	 UE/YVpqYUgDaNVbdyDII+6taRrOJys0/+KcS33CEgCcwslbkpIx9NfhK7QKGUZQvMc
+	 3A5JqaribBaPw==
+Message-ID: <c450ee86-4c34-449d-b144-6b4dcb996998@kernel.org>
+Date: Fri, 13 Feb 2026 16:47:29 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026021311-shorten-veal-532c@gregkh>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 35E284000F
-X-Stat-Signature: pu4o4ojpxajt3z1jnuk3uodsw81k76y5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] mm/mprotect: 2x+ slowdown for >=400KiB regions since
+ PTE batching (cac1db8c3aad)
+To: Luke Yang <luyang@redhat.com>, dev.jain@arm.com
+Cc: jhladky@redhat.com, akpm@linux-foundation.org, Liam.Howlett@oracle.com,
+ willy@infradead.org, surenb@google.com, vbabka@suse.cz, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aY8-XuFZ7zCvXulB@luyang-thinkpadp1gen7.toromso.csb>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 4ndryboets948ajhtntob7q9uf9f19ap
 X-Rspam-User: 
-X-HE-Tag: 1770997524-457234
-X-HE-Meta: U2FsdGVkX19+69dgQy+s/OFg6y15o3mcBjQ6dkxP9vzSn9qgqL3ZdveYr30UKmdiJj9gpTRLj/d/K/somA/RyIyvHiUqaV/Z216nOtasrEQ9wLe5E8S9TIkmR4lQVwF3JTlkqG8kqHPuLmIoCMH5nsYr3DxterMxHvKI8OTg0RkhNexj4Mf6HIQJM0gMWFVE1/PkAE2XXGGCGu1/6HzufkLm5NpHjYLsH0ueFRaFsB/mN6dSAC9DJ28wJRGLFQ9whLx99y4goNd6HiuUPCwP7fZmxGu8VziFjlDoxUVfWRTbFeJ9EXOJQQI3UIxYiy5xUKDD4FJOwFj/Zgi+dmEQDcl0H2km8afohoCCi9h2lEECV9YCNW29K1Tk7fk1vx0E8Wd3PENAEC5tMIo6Yr4mFXla5gmh0pBuAvRxUQz28Dq93FMn7vQH5LvT4Gem9Ghde/GcdMEgQ6+Dlo7QHO5jiDDgOdTbFjnXc1T1qTfJNnBAU6/bY7iF11QMTp8NZHjUiWAxxtClHXqfduSt89nrMKZytv89XqJl3rQY3v8Sk2FFCmdQVSno26cEAXabBXllipVFVr7UOWHNHAbbLQdePOOo3JbSNQVyZQ2wLS6l7N3GpzYmmEah2VEhEnv2/bNhxgy86zRZcQiF1kxI3i0q2g2pDy2yzWMupJnPTiiORVlmeWqS5Yd8vFFfnPCZNgG9ANcPhJ4XuA4v44qFgxRPAI5rmHegAXJMDhgfhJ0Ga9fMFq7CLlJNE6iD78j+JrWrpab+FbAymI8AVfXmoQKLzNnw9z/zdMEBCclzySaDdcs1k/q0kgtawGUUHXZqxT5UuEDx7yz1CiaU1F7uukFTFK3DYmFrlSjeC6aoUewb7/YhZoUEPGhkkTQDehj+P5ZDXnMWfO70bWLaiXpzLPtWEjvCJWaOpKoPMRShGphVtgFDKh+XDGjOUhJH5cmMV7BP7QpGP4MNxfhdOak+AI6
- d3Vrc6Cy
- wdgFbGsUlBnewZxpaGoIEX9Ry3Vm2NGrLdlINpk63lWgwsN6cAk1w2i7T4m62uBSTgYZZm0Is7PO/HY7GvK4/gnSQNQIcaFZCzB6Y+O7B7e5H5C9NaBeh6leDoVfn0g0+V+1DDItJL5CqvqUtODh6JLfgHnpQmJuXpWByAve2r5dJtLBiDhZsHZiKQbiPjWKG3qT/mOCFpnUcTDAeq324Cfg0rUGl34kqt047hDxjObCGeg6zSzuaeuqucr5Godx3xkdpCy1PQg3m49YJPwTwfZxLKv3MYQf2y4AKmcLdmyYdEeCnmWftmV+CN1kcf45DPh3t1sYp3G+4LEJyPkeqK61N/Bgr4gOOkw93LoZOfLy82GiKXYYQoYn/COAWqQA4h6hHFjs1B/sMRbV3SzTqB+ENAJqRlerTqXjL
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 1723F18000F
+X-HE-Tag: 1770997656-970961
+X-HE-Meta: U2FsdGVkX19O6aSI26NygQ9jr3UYqrDaopxGwe2i/L78Pdr3uBMQuPoxmV5ncn5aD2emAPmgBkhBjiq5p6RC8HNE65diUC3cKct37f95s8TgomH7tLVYfUtdkARadtUMG8TTjwJvzG2EjdtUtSBk42BLukEXuF2USZgfYrm/3+TPP0OAXJxA5SakhLn/bGZLsjSw6iVQJYqGJYWZhLSZo6kmkC1qwf8G6VyL0sG6Fm5mwhuZ+VUa/enHQQH7Qos+va4qV6zofwSx84Pqam/sckssl6q0RiYxpXzhekYh1HFcF6mc9lZGZxVk7X2NUR/3RDfS/LXSX4pKob1rtdVp5N+ZXvW0EGWcEX3ncXjeK1ciie/UaJkj3WD2EtS9Ub1NQz3wZOq8JpwFvJhnRd56+fj6efPL49NzoiLOpKnCp2q6PNavIQ91zIB84JlbRKObgSQILUSTBt89iVusXwWl+ziLVsyGUGk6cu/JD5jcpYzWFweZja3cZ+3uzDhyf0/KIYNO7M0+cM/z8+qYfvFfhO6cuJ9RwqFGo/+MIOV+papiHgXAHfGKaOUtjCoH0SS5KtsJRybL3Ev/NvKdjzxfoJG4tJ+zqAk/zTk+GJZtpMPaHNlB2ILEWYpgtTLxtL62KxVprn7fW0hj0sIZicvaEbmgYxKerUPoJfrG6ki0KpV4RhiHCr+iYdSADhSAxwRipQn9dwsuwUCwKTnKGshuBYeO2uzJ8iS00HKzjhV3GGa510u1u+9CDQ3bbYpstLz/fRzUeZQIgVl+RBRd+YWs9w+mrsO8dLQRgvIi5rVVn4iej2e9GA4z8RSE6DAgOzXhXJkoa1z5bKk8Kibd3RyLaCrjhh5sKHpnimki2UCnqXF2pSj5HkLOhiOP8xuBjJCtORTU3JcCVDjH5t+ozhkh/B3+h1lQZhkFBL/xT9zri649t0QZiUQnHrD/EhNyJPUlaUiRpUtIU23sH9HNkRg
+ 641xS7Wo
+ laryaLryoJIRqf5ta/rkn3SplDH2PfEfkYbROx/YCxxRVibz5mUpg5Qq1UJE6msJWV8NKopFpv6o3EUo7eDnPgHBpTiH3prZmcik7FpYbqKPxGram5+ZmyYQop5zgjaH8VOsbfsOjMIgnnOk4zzo4lFh4w6CH8ZSvI8bsA5xaPicq+3GUBbl3TlMSiDbbS3s7C9bSO4imHCc611MS9BTIuZJmW5NbsjYXfv7HdsF3j8KZbmBHqrB5923PkqPFDHtAL7En
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,67 +140,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Feb 13, 2026 at 04:34:04PM +0100, Greg KH wrote:
-> On Fri, Feb 13, 2026 at 03:26:08PM +0100, Peter Zijlstra wrote:
-> > On Fri, Feb 13, 2026 at 03:13:01PM +0100, Andreas Hindborg wrote:
-> > 
-> > > C uses memcpy as seen in `bio_copy_data_iter` [1] and in the null_blk
-> > > driver [2].
-> > 
-> > Right. And that is *fine*.
-> > 
+On 2/13/26 16:08, Luke Yang wrote:
+> Hello,
 
-Yes, that's fine because memcpy() in C is volatile and per-byte atomic.
+Hi!
 
-> > > Rust has `core::ptr::copy` and `core::ptr::copy_nonoverlapping`. I was
-> > > informed these are not safe to use if source or destination may incur
-> > > data races, and that we need an operation that is volatile or byte-wise
-> > > atomic [3].
-> > 
-> > Safe how? It should just copy N bytes. Whatever it thinks those bytes
-> > are.
-> > 
-> > Nothing can guard against concurrent modification. If there is, you get
-> > to keep the pieces. Pretending anything else is delusional.
-> > 
-> > Suppose the memory was 'AAAA' and while you're reading it, it is written
-> > to be 'BBBB'. The resulting copy can be any combination of
-> > '[AB][AB][AB][AB]'. Not one of them is better than the other.
-> > 
-
-The idea is if using Rust's own `core::ptr::copy()` or
-`core::ptr::copy_nonoverlapping()`, you may get `CCCC`, because they are
-not semantically guaranteed atomic per byte (i.e. tearing can happen at
-bit level, because they are not designed for using in case of data
-races, and there is no defined asm implementation of them, compilers can
-do anything).
-
-> > No byte wise volatile barrier using nonsense is going to make this any
-> > better.
-
-It's byte-wise atomic [1], which should be guaranteed using asm to
-implement, hence at least at byte level, they are atomic (and volatile
-in our case).
-
-[1]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p1478r5.html
-
-> > 
 > 
-> I'm with Peter, just call memcpy() like the C code does, and you will be
-> "fine" (with a note that "fine" better include checking the data really
-
-We are. See v3, we actually use `memcpy()` for the copy (as I already
-pointed out, Andreas made a mistake in this version), it's just
-because it's per-byte atomic. What this "byte-wise atomic" does is
-clearing things out.
-
-Regards,
-Boqun
-
-> is what you think it is if you are going to do anything based on it and
-> not just pass it off to the hardware.)
+> we have bisected a significant mprotect() performance regression in
+> 6.17-rc1 to:
 > 
-> thanks,
+> cac1db8c3aad ("mm: optimize mprotect() by PTE batching")
 > 
-> greg k-h
+> The regression becomes clearly visible starting around 400 KiB region
+> sizes and above. It is also still present in the latest 6.19 kernel.
+> 
+
+Micro-benchmark results are nice. But what is the real word impact? IOW, 
+why should we care?
+
+-- 
+Cheers,
+
+David
 
